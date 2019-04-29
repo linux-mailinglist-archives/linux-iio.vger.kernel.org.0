@@ -2,78 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A35D3E2F5
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2019 14:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74D06E639
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2019 17:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728176AbfD2Mo1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Apr 2019 08:44:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55962 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727956AbfD2Mo1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 29 Apr 2019 08:44:27 -0400
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6860E21530;
-        Mon, 29 Apr 2019 12:44:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556541866;
-        bh=Ggyhg8DPvggSyL5RERc8iJGOFwasiEkW75GgxgRJbZA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=zqdosaHHAAmr3mNLOGR3uVYumPkTSKqrRwSlxHGLG67URDPSBRiDfSNz6gPYX4/pv
-         Xzsq+C3fji5XfZp4lmD2nC2hSyOuQqPBDT7btnEptcEmYl6dt9r9UHtjYw/dANYJ3n
-         09kTdrRLbSyMHWQlDfgnqN6S26TcD3PuYlYMm858=
-Received: by mail-qt1-f178.google.com with SMTP id c35so11677638qtk.3;
-        Mon, 29 Apr 2019 05:44:26 -0700 (PDT)
-X-Gm-Message-State: APjAAAXMTaNNA/q1UCy4j7Z8/1r51u46Znppt8X52dFL1JMAOhpyBh9N
-        7lW33geW9196vV/cHNjQg12dnn3StUqdH0IdXg==
-X-Google-Smtp-Source: APXvYqxiZhiB+jclpAyFocRSvqDl188dZe7YfLRzsfFn+DSKE81H4/Y7PEgye9SmTH9A+ZttmCPhfs4XwVPEsL/HCpc=
-X-Received: by 2002:a0c:9384:: with SMTP id f4mr5385619qvf.77.1556541865622;
- Mon, 29 Apr 2019 05:44:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190427182359.27254-1-masneyb@onstation.org>
-In-Reply-To: <20190427182359.27254-1-masneyb@onstation.org>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 29 Apr 2019 07:44:14 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+Wzc8W11E0XYg5bKfGoYNxFu0U0-Rdk5PqXZf40W21ZA@mail.gmail.com>
-Message-ID: <CAL_Jsq+Wzc8W11E0XYg5bKfGoYNxFu0U0-Rdk5PqXZf40W21ZA@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: isl29018: convert bindings to YAML format
-To:     Brian Masney <masneyb@onstation.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S1728311AbfD2PYN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Apr 2019 11:24:13 -0400
+Received: from albert.telenet-ops.be ([195.130.137.90]:37488 "EHLO
+        albert.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728653AbfD2PYM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Apr 2019 11:24:12 -0400
+Received: from ramsan ([84.194.111.163])
+        by albert.telenet-ops.be with bizsmtp
+        id 6FQA2000E3XaVaC06FQAUW; Mon, 29 Apr 2019 17:24:11 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1hL88Y-0002ZB-GR; Mon, 29 Apr 2019 17:24:10 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1hL88Y-000610-En; Mon, 29 Apr 2019 17:24:10 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Marek Vasut <marek.vasut+renesas@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Anson Huang <anson.huang@nxp.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org, Laxman Dewangan <ldewangan@nvidia.com>,
-        Rhyland Klein <rklein@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] iio: adc: rcar-gyroadc: Remove devm_iio_device_alloc() error printing
+Date:   Mon, 29 Apr 2019 17:24:09 +0200
+Message-Id: <20190429152409.23081-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Apr 27, 2019 at 1:25 PM Brian Masney <masneyb@onstation.org> wrote:
->
-> Convert the isl29018 device tree bindings to the new YAML format.
->
-> Signed-off-by: Brian Masney <masneyb@onstation.org>
-> ---
-> I'm willing to be listed as the maintainer since this is one of the
-> drivers that I moved out out of staging unless one of the original
-> authors wants to be listed instead.
->
-> I added the BSD-2-Clause to the new binding document. I wrote the
-> original document and the only commit since then was from Rob in
-> commit 791d3ef2e111 ("dt-bindings: remove 'interrupt-parent' from
-> bindings")
->
->  .../bindings/iio/light/isl29018.txt           | 27 ---------
->  .../bindings/iio/light/isl29018.yaml          | 56 +++++++++++++++++++
->  2 files changed, 56 insertions(+), 27 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/iio/light/isl29018.txt
->  create mode 100644 Documentation/devicetree/bindings/iio/light/isl29018.yaml
+devm_iio_device_alloc() can only fail due to a memory or IDA allocation
+failure.  Hence there is no need to print a message, as the memory
+allocation or IIO core code already takes care of that.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/iio/adc/rcar-gyroadc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
+index 2c0d0316d149707f..2d685730f8673e65 100644
+--- a/drivers/iio/adc/rcar-gyroadc.c
++++ b/drivers/iio/adc/rcar-gyroadc.c
+@@ -485,10 +485,8 @@ static int rcar_gyroadc_probe(struct platform_device *pdev)
+ 	int ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
+-	if (!indio_dev) {
+-		dev_err(dev, "Failed to allocate IIO device.\n");
++	if (!indio_dev)
+ 		return -ENOMEM;
+-	}
+ 
+ 	priv = iio_priv(indio_dev);
+ 	priv->dev = dev;
+-- 
+2.17.1
+

@@ -2,90 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CC25E997
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2019 19:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A00B105B7
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2019 09:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728844AbfD2R7p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Apr 2019 13:59:45 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:45926 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728748AbfD2R7p (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Apr 2019 13:59:45 -0400
-Received: by mail-qk1-f193.google.com with SMTP id d5so6471817qko.12;
-        Mon, 29 Apr 2019 10:59:45 -0700 (PDT)
+        id S1726014AbfEAHQA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 May 2019 03:16:00 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:44790 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725776AbfEAHQA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 May 2019 03:16:00 -0400
+Received: by mail-pf1-f196.google.com with SMTP id y13so8250134pfm.11;
+        Wed, 01 May 2019 00:16:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :content-transfer-encoding:user-agent;
-        bh=yL+SmVseEfdaIJChh77smjXMJCyTOeRPG4sdYAGm78c=;
-        b=S8Wpy22pQ6+hHsvpX2spQhaJkQhcdRhV1lH5EphIHaicUTdZPYoN+iogQNM0dyiXFD
-         8oh0bD1NbBysGrV6tXX47TnTl0LQ/OQGgnNdWhWgVEt3W5rYcDR0+JeWI3aPxahnumrX
-         VLeYIY0L9YsEKF8XT28Igf9rH27Wcs/AtZyES9YYsu2NR28HCKJuogcp9Pz1CgMLDPL8
-         a3O+37wpF5W1NfRNwLn1Syjw39rnQ7K2bzoTcF+W5OJJxVdiLHVejUrL0LX6bBwz5rw7
-         6UAjZNwhMmK2E/h7CJre3B+89hXFtXGNhp21E6gTXQ4+Es9VBO0/vmFlDjmJfeLPUKyg
-         Drkw==
+        h=from:to:cc:subject:date:message-id;
+        bh=2lTg3UwRF188Hyu1qFGSZBHjhJOOcy42FRYJbO0gLLI=;
+        b=nF1HMGNWHCZzcBQvlVSecKGX5SVnflrEGORafGvOJhRk8aDafzMkiICMCjy2LA98l9
+         vi2aTHHFcIDpt9Oyxlm5aSFwRLhs+7M9vE8zheuYGQifEybyxKq5ZsQfiLrMDgK2ShVe
+         qowh4o7+s2EL8+i14ReS/9RDMw68qsuKMrhD3Zjh+ZvCLMP/eghsZpctdHtEcUbJ95wR
+         c8q26/qZQ7R584up4S1Zzlfo/QNRbhD1TPyRgtOLu7l8ozCtp/JMQibOtLtWYiGbtsul
+         QZNh+e6F447FHxVEhSdmG3VPHKgWa3WZpRaZ1j6/jTZT3Yj8M92/1NTNCH4GqKOZWLIh
+         gUkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:content-transfer-encoding:user-agent;
-        bh=yL+SmVseEfdaIJChh77smjXMJCyTOeRPG4sdYAGm78c=;
-        b=PlEMOP987grOglqHkKUgX43bLN2u2fenOxPswVGA08YUvoz6xBRir5YQ3kCP5l5/Mt
-         0v59wPCdhFgqXtrkMd78MScY4/5SVyf/f9hEBkvcyo67SIxGbUwqyoyCrsNkUwDkjaE4
-         2fePv6CUlDJ9BTT0RTZeaXJ8iYA2vKqqMY8cMOvFVijVChH6rSgpOzNTgoQDD/PDiKtf
-         ks5VEYsbNVv/uTkJw3NXRunR1raWVwW8UuyX9GNUAuwz5tsfXiVcDw9YDOsft4VjwXHN
-         4VMjbNBBW/xs4gZdYvPq7vTL2p+hO+93srmxHxJi7c6w9NkEYYAn2mSOwOoosDxRvBoV
-         p1hA==
-X-Gm-Message-State: APjAAAWeG6mELZ2GSW9zZb+vfQNMX/TYui7khQyAK1AqQEWX97HnvkV0
-        VX2WvGErwL0P/uzv4xLxbJo=
-X-Google-Smtp-Source: APXvYqwqAQNE+Ut09opIpLJIGSCDS7bx5geJX+Lthjy6net0ioLipxgWRdOsP0mj9ccj7uDDu0D9ug==
-X-Received: by 2002:ae9:c20b:: with SMTP id j11mr45839310qkg.357.1556560784513;
-        Mon, 29 Apr 2019 10:59:44 -0700 (PDT)
-Received: from smtp.gmail.com ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id y18sm7542950qkf.7.2019.04.29.10.59.41
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 29 Apr 2019 10:59:44 -0700 (PDT)
-Date:   Mon, 29 Apr 2019 14:59:40 -0300
-From:   =?utf-8?B?Sm/Do28=?= Seckler <joaoseckler@gmail.com>
-To:     lars@metafoo.de, Michael.Hennerich@analog.com,
-        stefan.popa@analog.com, jic23@kernel.org, knaack.h@gmx.de,
-        pmeerw@pmeerw.net, gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, kernel-usp@googlegroups.com
-Subject: [PATCH] staging: iio: adt7316: match parenthesis alignment
-Message-ID: <20190429175939.2jvt4qwrtbmpvhl6@smtp.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: NeoMutt/20170113 (1.7.2)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=2lTg3UwRF188Hyu1qFGSZBHjhJOOcy42FRYJbO0gLLI=;
+        b=s6/6GPL/BZi99nUuaOMBEdUPts2doFr6gn8pYvoWp+dHMdNKiXziGZURquLLdgGzO6
+         fzjAo//c1CG+IgpEblt80OteKQc7ANAxieDQ9KOReSFS/pziN6r3no+qnUacxtns3Sar
+         BUtCYAscpCAujgtHWPfQRzWqau/6yzgtcZT3dohK9mSdRsx0D18Bm099miEZFj3Xzbys
+         jSLUPOlvihhr+D/85zfu3fmIxMEE4rJyXz14pCJK4Ggwy3mONI8d0BYJ36RrdsxeH/VP
+         Fa8dhWkFzCTGZCQLLY8HQu4EabBxRgfpL2llzPpgNaIw18rBT09PJagTwHgKctUACgq4
+         5Akg==
+X-Gm-Message-State: APjAAAWAnqBgTVubWwbKgYBsVbSjuvkU4dZWEy1eUG6uqPy/EEV3c+uH
+        67oKTcmSVoewgIhihHHploM=
+X-Google-Smtp-Source: APXvYqzhto3zBWANIqlONgb3cXufZS2EXRLnqHv3Qa/bGxdtqrI7gv4AYsngpAiXNVifvC214Qcj9g==
+X-Received: by 2002:a63:f707:: with SMTP id x7mr71571472pgh.343.1556694959735;
+        Wed, 01 May 2019 00:15:59 -0700 (PDT)
+Received: from localhost.localdomain ([103.87.57.94])
+        by smtp.gmail.com with ESMTPSA id w65sm25894769pfb.59.2019.05.01.00.15.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 May 2019 00:15:59 -0700 (PDT)
+From:   Vatsala Narang <vatsalanarang@gmail.com>
+To:     gregkh@linuxfoundation.org
+Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        julia.lawall@lip6.fr, Vatsala Narang <vatsalanarang@gmail.com>
+Subject: [PATCH] staging: iio: adc: Add paragraph to describe Kconfig symbol
+Date:   Wed,  1 May 2019 12:45:41 +0530
+Message-Id: <20190501071541.4734-1-vatsalanarang@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch solves the following checkpatch.pl message:
-CHECK: Alignment should match open parenthesis.
-This makes the file more compliant with the preferred coding style for
-the Linux kernel.
+This patch updates Kconfig with paragraph that describe config symbol
+fully.Issue addressed by checkpatch.
 
-Signed-off-by: João Seckler <joaoseckler@gmail.com>
+Signed-off-by: Vatsala Narang <vatsalanarang@gmail.com>
 ---
- drivers/staging/iio/addac/adt7316.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/iio/adc/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
-index b6a65ee8d558..37ce563cb0e1 100644
---- a/drivers/staging/iio/addac/adt7316.c
-+++ b/drivers/staging/iio/addac/adt7316.c
-@@ -2154,7 +2154,7 @@ int adt7316_probe(struct device *dev, struct adt7316_bus *bus,
- 		chip->dac_bits = 8;
+diff --git a/drivers/staging/iio/adc/Kconfig b/drivers/staging/iio/adc/Kconfig
+index 23d9a655a520..31cd9a12f40f 100644
+--- a/drivers/staging/iio/adc/Kconfig
++++ b/drivers/staging/iio/adc/Kconfig
+@@ -12,6 +12,9 @@ config AD7816
+ 	  Say yes here to build support for Analog Devices AD7816/7/8
+ 	  temperature sensors and ADC.
  
- 	chip->ldac_pin = devm_gpiod_get_optional(dev, "adi,ldac",
--						GPIOD_OUT_LOW);
-+						 GPIOD_OUT_LOW);
- 	if (IS_ERR(chip->ldac_pin)) {
- 		ret = PTR_ERR(chip->ldac_pin);
- 		dev_err(dev, "Failed to request ldac GPIO: %d\n", ret);
++	  To compile this driver as a module, choose M here: the
++	  module will be called ad7816.
++
+ config AD7192
+ 	tristate "Analog Devices AD7190 AD7192 AD7193 AD7195 ADC driver"
+ 	depends on SPI
 -- 
-2.11.0
+2.17.1
 

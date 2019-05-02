@@ -2,102 +2,295 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B9F01135D
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2019 08:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5079711FE7
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2019 18:14:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725764AbfEBGa5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 May 2019 02:30:57 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:41139 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726111AbfEBGa5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 May 2019 02:30:57 -0400
-Received: by mail-ed1-f68.google.com with SMTP id m4so1075764edd.8
-        for <linux-iio@vger.kernel.org>; Wed, 01 May 2019 23:30:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=essensium-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=XifxbheY5ZJMcIjK1Dcna4ZV4VxhYdswgXuoHoN07ds=;
-        b=W5Vi6C4PALXYi9bntNvSqVcq+/UxvMKNNQKeCYfXtVU7JKlp4CJa8ZE9p/ZyV0L1EI
-         u36NkKV0n2EyaAIsRxMZcAoIbmDNa22UuFVxhwHzZvGHNAkiBWTvXGfO1xMaStYTbiiO
-         1ygs9UiNA6h4aVrx7Qz2LABuy4WsmKnthewxz4Hbu7Ln9WOwfj0nhIYtJHlKunxBStgo
-         3PCf1wBDOfPzFxSjwdbac/75+Ve2gkcIvIGIOQkw7aUzbRIHEVtBprgompOg4L6J7wrO
-         jUsKrjkv+bVEQn6y+spUiwI5iLntSNZGNYmDicVjIg3Fe6fpxpunUk2JyV8ybu67oTac
-         3KNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=XifxbheY5ZJMcIjK1Dcna4ZV4VxhYdswgXuoHoN07ds=;
-        b=TiRHZcR+OH/JPlSp45GQGI1BZ/ZOm5h9M6aPF7bxi7t4jC9cLUTGZ1ZSQOZXspbbnL
-         h794WClvT4Du1QXuIkrw50dv4yKmOUg9jDH3HzdeFss92cTDcBFa3dNzlIidVFwLAQ4w
-         rhuWFoIqxI+EertDyHF69OahpABE9j55Ro0HZiJAQF7EFIS+nUB+JrONsMYxYGcyj6cZ
-         LLEThuIRQ/ScZZI2I9hFtIorEisYp+1e+VI2vh/e54n3y73yTotHMcVnzWvj+2Wpv7hb
-         RCo/xbwdTk+EXt+skxxqOg8uZYa0M+hlb3sCqARbD6gY6DqOBGn6A+gycs/AIqlYEcK+
-         WBNw==
-X-Gm-Message-State: APjAAAXH4pEnFhkZ2MsHEJno/f7sweR3l4Xs+24a3tUYF5Qtu0HYjOv7
-        JLrPL/YQTx8GBsDOaBGxgFJtD23lJTM=
-X-Google-Smtp-Source: APXvYqzCXqzBmV7CbIi+qzTwlBRjN6AtrUKhicdLtIjZhkphBOm2hAcbWT7moAEIfqLspoDjt+YedQ==
-X-Received: by 2002:a50:8c03:: with SMTP id p3mr1271439edp.267.1556778655182;
-        Wed, 01 May 2019 23:30:55 -0700 (PDT)
-Received: from ?IPv6:2a02:a03f:4485:9200:4176:609:b67e:249a? ([2a02:a03f:4485:9200:4176:609:b67e:249a])
-        by smtp.gmail.com with ESMTPSA id b23sm4066266ede.75.2019.05.01.23.30.54
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 01 May 2019 23:30:54 -0700 (PDT)
-Subject: Re: [PATCH 1/6] iio: ad7949: Support internal Vref
-To:     Adam Michaelis <adam.michaelis@rockwellcollins.com>,
-        linux-iio@vger.kernel.org
+        id S1726542AbfEBQOs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 May 2019 12:14:48 -0400
+Received: from secvs01.rockwellcollins.com ([205.175.225.240]:27143 "EHLO
+        secvs01.rockwellcollins.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726278AbfEBQOp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 May 2019 12:14:45 -0400
+Received: from ofwgwc03.rockwellcollins.com (HELO ciulimr02.rockwellcollins.com) ([205.175.225.12])
+  by secvs01.rockwellcollins.com with ESMTP; 02 May 2019 11:14:42 -0500
+X-Received: from righttwix.rockwellcollins.com (righttwix.rockwellcollins.com [192.168.141.218])
+        by ciulimr02.rockwellcollins.com (Postfix) with ESMTP id 96C072007E;
+        Thu,  2 May 2019 11:14:42 -0500 (CDT)
+From:   Adam Michaelis <adam.michaelis@rockwellcollins.com>
+To:     linux-iio@vger.kernel.org
 Cc:     lars@metafoo.de, michael.hennerich@analog.com, jic23@kernel.org,
         knaack.h@gmx.de, pmeerw@pmeerw.net, robh+dt@kernel.org,
-        mark.rutland@arm.com, devicetree@vger.kernel.org,
-        brandon.maier@rockwellcollins.com,
-        clayton.shotwell@rockwellcollins.com
-References: <1556745423-11368-1-git-send-email-adam.michaelis@rockwellcollins.com>
-From:   Couret Charles-Antoine <charles-antoine.couret@essensium.com>
-Message-ID: <4f674e6a-2346-4ca3-4043-205e54473dbd@essensium.com>
-Date:   Thu, 2 May 2019 08:30:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <1556745423-11368-1-git-send-email-adam.michaelis@rockwellcollins.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-GB
+        mark.rutland@arm.com, charles-antoine.couret@essensium.com,
+        devicetree@vger.kernel.org, brandon.maier@rockwellcollins.com,
+        clayton.shotwell@rockwellcollins.com,
+        Adam Michaelis <adam.michaelis@rockwellcollins.com>
+Subject: [PATCH v2 1/6] iio: ad7949: Support internal Vref
+Date:   Thu,  2 May 2019 11:14:27 -0500
+Message-Id: <1556813672-49861-1-git-send-email-adam.michaelis@rockwellcollins.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-I read your patch series and it seems really good. Thank you for the 
-improvements. :)
-But I have one comment about it there:
+Adding configurable (via device tree) options to select either an external
+reference voltage (default, original implementation) or one of the two
+internal reference voltages provided by the AD7949 part family.
 
-Le 01/05/2019 à 23:16, Adam Michaelis a écrit :
-> @@ -223,10 +247,18 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
->   {
->   	int ret;
->   	int val;
-> +	u16 adc_config = 0;
->   
-> -	/* Sequencer disabled, CFG readback disabled, IN0 as default channel */
->   	ad7949_adc->current_channel = 0;
-> -	ret = ad7949_spi_write_cfg(ad7949_adc, 0x3C79, AD7949_MASK_TOTAL);
-> +	ad7949_adc->cfg = 0;
-> +
-> +	adc_config = (0x3c << 8);
-> +	adc_config |= ((ad7949_adc->current_channel & 0x07) << 7);
-> +	adc_config |= (1 << 6);
-> +	adc_config |= (ad7949_adc->ref_sel << 3);
-> +	adc_config |= 1;
-> +
-> +	ret = ad7949_spi_write_cfg(ad7949_adc, adc_config, AD7949_MASK_TOTAL);
+Signed-off-by: Adam Michaelis <adam.michaelis@rockwellcollins.com>
+---
+	V2: Add some defines to reduce use of magic numbers.
+---
+ drivers/iio/adc/ad7949.c | 135 +++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 108 insertions(+), 27 deletions(-)
 
-That should be great to replace some _magic constants_ by a more 
-explicit name, shouldn't it? Especially (0x3c << 8) and (1 << 6 parts).
-
-Regards,
-
-Charles-Antoine Couret
+diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
+index ac0ffff6c5ae..afc1361af5fb 100644
+--- a/drivers/iio/adc/ad7949.c
++++ b/drivers/iio/adc/ad7949.c
+@@ -11,12 +11,27 @@
+ #include <linux/module.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/spi/spi.h>
+-
+-#define AD7949_MASK_CHANNEL_SEL		GENMASK(9, 7)
+-#define AD7949_MASK_TOTAL		GENMASK(13, 0)
+-#define AD7949_OFFSET_CHANNEL_SEL	7
+-#define AD7949_CFG_READ_BACK		0x1
+-#define AD7949_CFG_REG_SIZE_BITS	14
++#include <linux/of.h>
++
++#define AD7949_CFG_REG_SIZE_BITS           14
++#define AD7949_CFG_MASK_TOTAL              GENMASK(13, 0)
++#define AD7949_CFG_OVERWRITE_SHIFT         13
++#define AD7949_CFG_CHAN_CFG_UNIPOLAR_GND   0x7
++#define AD7949_CFG_CHAN_CFG_MASK           GENMASK(12, 10)
++#define AD7949_CFG_CHAN_CFG_SHIFT          10
++#define AD7949_CFG_CHAN_SEL_MASK           GENMASK(9, 7)
++#define AD7949_CFG_CHAN_SEL_SHIFT          7
++#define AD7949_CFG_BW_FULL                 1
++#define AD7949_CFG_BW_SHIFT                6
++#define AD7949_CFG_BW_MASK                 GENMASK(6, 6)
++#define AD7949_CFG_REF_SEL_MASK            GENMASK(5, 3)
++#define AD7949_CFG_REF_SEL_SHIFT           3
++#define AD7949_CFG_SEQ_DISABLED            0x0
++#define AD7949_CFG_SEQ_SHIFT               1
++#define AD7949_CFG_SEQ_MASK                GENMASK(2, 1)
++#define AD7949_CFG_READBACK_EN             0
++#define AD7949_CFG_READBACK_DIS            1
++#define AD7949_CFG_READBACK_MASK           GENMASK(0, 0)
+ 
+ enum {
+ 	ID_AD7949 = 0,
+@@ -24,6 +39,18 @@ enum {
+ 	ID_AD7689,
+ };
+ 
++enum ad7949_ref_sel {
++	AD7949_REF_2V5 = 0, /* 2.5V internal ref + temp sensor */
++	AD7949_REF_4V0, /* 4.096V internal ref + temp sensor */
++	AD7949_REF_EXT_TEMP, /* External ref + temp sensor, no buffer */
++	AD7949_REF_EXT_TEMP_BUF, /* External ref + temp sensor + buffer */
++	AD7949_REF_RSRV_4,
++	AD7949_REF_RSRV_5,
++	AD7949_REF_EXT, /* External ref, no temp, no buffer */
++	AD7949_REF_EXT_BUF, /* External ref + buffer, no temp */
++	AD7949_REF_MAX,
++};
++
+ struct ad7949_adc_spec {
+ 	u8 num_channels;
+ 	u8 resolution;
+@@ -41,6 +68,7 @@ struct ad7949_adc_spec {
+  * @vref: regulator generating Vref
+  * @iio_dev: reference to iio structure
+  * @spi: reference to spi structure
++ * @ref_sel: selected reference voltage source
+  * @resolution: resolution of the chip
+  * @cfg: copy of the configuration register
+  * @current_channel: current channel in use
+@@ -51,6 +79,7 @@ struct ad7949_adc_chip {
+ 	struct regulator *vref;
+ 	struct iio_dev *indio_dev;
+ 	struct spi_device *spi;
++	enum ad7949_ref_sel ref_sel;
+ 	u8 resolution;
+ 	u16 cfg;
+ 	unsigned int current_channel;
+@@ -59,7 +88,7 @@ struct ad7949_adc_chip {
+ 
+ static bool ad7949_spi_cfg_is_read_back(struct ad7949_adc_chip *ad7949_adc)
+ {
+-	if (!(ad7949_adc->cfg & AD7949_CFG_READ_BACK))
++	if (!(ad7949_adc->cfg & AD7949_CFG_READBACK_MASK))
+ 		return true;
+ 
+ 	return false;
+@@ -91,7 +120,7 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
+ 	};
+ 
+ 	ad7949_adc->cfg = (val & mask) | (ad7949_adc->cfg & ~mask);
+-	ad7949_adc->buffer = ad7949_adc->cfg << shift;
++	ad7949_adc->buffer = (ad7949_adc->cfg & AD7949_CFG_MASK_TOTAL) << shift;
+ 	spi_message_init_with_transfers(&msg, tx, 1);
+ 	ret = spi_sync(ad7949_adc->spi, &msg);
+ 
+@@ -119,8 +148,8 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+ 	};
+ 
+ 	ret = ad7949_spi_write_cfg(ad7949_adc,
+-				   channel << AD7949_OFFSET_CHANNEL_SEL,
+-				   AD7949_MASK_CHANNEL_SEL);
++				   channel << AD7949_CFG_CHAN_SEL_SHIFT,
++				   AD7949_CFG_CHAN_SEL_MASK);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -187,11 +216,20 @@ static int ad7949_spi_read_raw(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_SCALE:
+-		ret = regulator_get_voltage(ad7949_adc->vref);
+-		if (ret < 0)
+-			return ret;
++		if (ad7949_adc->vref) {
++			ret = regulator_get_voltage(ad7949_adc->vref);
++			if (ret < 0)
++				return ret;
++
++			*val = ret / 5000;
++		} else if (ad7949_adc->ref_sel == AD7949_REF_2V5) {
++			*val = 2500;
++		} else if (ad7949_adc->ref_sel == AD7949_REF_4V0) {
++			*val = 4096;
++		} else {
++			return -EINVAL;
++		}
+ 
+-		*val = ret / 5000;
+ 		return IIO_VAL_INT;
+ 	}
+ 
+@@ -209,7 +247,7 @@ static int ad7949_spi_reg_access(struct iio_dev *indio_dev,
+ 		*readval = ad7949_adc->cfg;
+ 	else
+ 		ret = ad7949_spi_write_cfg(ad7949_adc,
+-			writeval & AD7949_MASK_TOTAL, AD7949_MASK_TOTAL);
++			writeval & AD7949_CFG_MASK_TOTAL, AD7949_CFG_MASK_TOTAL);
+ 
+ 	return ret;
+ }
+@@ -223,10 +261,33 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
+ {
+ 	int ret;
+ 	int val;
++	u16 adc_config = 0;
+ 
+-	/* Sequencer disabled, CFG readback disabled, IN0 as default channel */
+ 	ad7949_adc->current_channel = 0;
+-	ret = ad7949_spi_write_cfg(ad7949_adc, 0x3C79, AD7949_MASK_TOTAL);
++	ad7949_adc->cfg = 0;
++
++	/*
++	 * 14-bit configuration register (pg 12 of AD7949 Datasheet):
++	 * | 13  | 12 - 10 | 9 - 7 | 6  | 5 -3 | 2 - 1 | 0  |
++	 * | CFG | INCC    | INx   | BW | REF  | SEQ   | RB |
++	 */
++	adc_config = 1 << AD7949_CFG_OVERWRITE_SHIFT;
++	adc_config |=
++		(AD7949_CFG_CHAN_CFG_UNIPOLAR_GND << AD7949_CFG_CHAN_CFG_SHIFT)
++			& AD7949_CFG_CHAN_CFG_MASK;
++	adc_config |= (ad7949_adc->current_channel << AD7949_CFG_CHAN_SEL_SHIFT)
++			& AD7949_CFG_CHAN_SEL_MASK;
++	adc_config |= (AD7949_CFG_BW_FULL << AD7949_CFG_BW_SHIFT) &
++			AD7949_CFG_BW_MASK;
++	adc_config |= (ad7949_adc->ref_sel << AD7949_CFG_REF_SEL_SHIFT) &
++			AD7949_CFG_REF_SEL_MASK;
++	adc_config |= (AD7949_CFG_SEQ_DISABLED << AD7949_CFG_SEQ_SHIFT) &
++			AD7949_CFG_SEQ_MASK;
++	adc_config |= AD7949_CFG_READBACK_DIS;
++
++	ret = ad7949_spi_write_cfg(ad7949_adc,
++			adc_config,
++			AD7949_CFG_MASK_TOTAL);
+ 
+ 	/*
+ 	 * Do two dummy conversions to apply the first configuration setting.
+@@ -245,6 +306,7 @@ static int ad7949_spi_probe(struct spi_device *spi)
+ 	struct ad7949_adc_chip *ad7949_adc;
+ 	struct iio_dev *indio_dev;
+ 	int ret;
++	u32 temp;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*ad7949_adc));
+ 	if (!indio_dev) {
+@@ -263,21 +325,38 @@ static int ad7949_spi_probe(struct spi_device *spi)
+ 	ad7949_adc = iio_priv(indio_dev);
+ 	ad7949_adc->indio_dev = indio_dev;
+ 	ad7949_adc->spi = spi;
++	ad7949_adc->vref = NULL;
+ 
+ 	spec = &ad7949_adc_spec[spi_get_device_id(spi)->driver_data];
+ 	indio_dev->num_channels = spec->num_channels;
+ 	ad7949_adc->resolution = spec->resolution;
+ 
+-	ad7949_adc->vref = devm_regulator_get(dev, "vref");
+-	if (IS_ERR(ad7949_adc->vref)) {
+-		dev_err(dev, "fail to request regulator\n");
+-		return PTR_ERR(ad7949_adc->vref);
++	ret = of_property_read_u32(ad7949_adc->indio_dev->dev.of_node,
++			"adi,reference-select",
++			&temp);
++	if ((ret == 0) && (temp < AD7949_REF_MAX) &&
++			(temp != AD7949_REF_RSRV_4) &&
++			(temp != AD7949_REF_RSRV_5)) {
++		ad7949_adc->ref_sel = (enum ad7949_ref_sel)temp;
++	} else {
++		ad7949_adc->ref_sel = AD7949_REF_EXT_BUF;
++		dev_warn(dev, "using external Vref by default\n");
+ 	}
+ 
+-	ret = regulator_enable(ad7949_adc->vref);
+-	if (ret < 0) {
+-		dev_err(dev, "fail to enable regulator\n");
+-		return ret;
++	/* Check whether using external Vref */
++	if ((ad7949_adc->ref_sel != AD7949_REF_2V5) &&
++			(ad7949_adc->ref_sel != AD7949_REF_4V0)) {
++		ad7949_adc->vref = devm_regulator_get(dev, "vref");
++		if (IS_ERR(ad7949_adc->vref)) {
++			dev_err(dev, "fail to request regulator\n");
++			return PTR_ERR(ad7949_adc->vref);
++		}
++
++		ret = regulator_enable(ad7949_adc->vref);
++		if (ret < 0) {
++			dev_err(dev, "fail to enable regulator\n");
++			return ret;
++		}
+ 	}
+ 
+ 	mutex_init(&ad7949_adc->lock);
+@@ -298,7 +377,8 @@ static int ad7949_spi_probe(struct spi_device *spi)
+ 
+ err:
+ 	mutex_destroy(&ad7949_adc->lock);
+-	regulator_disable(ad7949_adc->vref);
++	if (ad7949_adc->vref)
++		regulator_disable(ad7949_adc->vref);
+ 
+ 	return ret;
+ }
+@@ -310,7 +390,8 @@ static int ad7949_spi_remove(struct spi_device *spi)
+ 
+ 	iio_device_unregister(indio_dev);
+ 	mutex_destroy(&ad7949_adc->lock);
+-	regulator_disable(ad7949_adc->vref);
++	if (ad7949_adc->vref)
++		regulator_disable(ad7949_adc->vref);
+ 
+ 	return 0;
+ }
+-- 
+1.9.1
 

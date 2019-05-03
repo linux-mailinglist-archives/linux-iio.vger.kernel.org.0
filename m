@@ -2,103 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF34011FE5
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2019 18:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 769AB12652
+	for <lists+linux-iio@lfdr.de>; Fri,  3 May 2019 04:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbfEBQOq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 May 2019 12:14:46 -0400
-Received: from secvs02.rockwellcollins.com ([205.175.225.241]:35722 "EHLO
-        secvs02.rockwellcollins.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726524AbfEBQOp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 May 2019 12:14:45 -0400
-Received: from ofwgwc03.rockwellcollins.com (HELO ciulimr02.rockwellcollins.com) ([205.175.225.12])
-  by secvs02.rockwellcollins.com with ESMTP; 02 May 2019 11:14:44 -0500
-X-Received: from righttwix.rockwellcollins.com (righttwix.rockwellcollins.com [192.168.141.218])
-        by ciulimr02.rockwellcollins.com (Postfix) with ESMTP id DAF692007E;
-        Thu,  2 May 2019 11:14:43 -0500 (CDT)
-From:   Adam Michaelis <adam.michaelis@rockwellcollins.com>
-To:     linux-iio@vger.kernel.org
-Cc:     lars@metafoo.de, michael.hennerich@analog.com, jic23@kernel.org,
-        knaack.h@gmx.de, pmeerw@pmeerw.net, robh+dt@kernel.org,
-        mark.rutland@arm.com, charles-antoine.couret@essensium.com,
-        devicetree@vger.kernel.org, brandon.maier@rockwellcollins.com,
-        clayton.shotwell@rockwellcollins.com,
-        Adam Michaelis <adam.michaelis@rockwellcollins.com>
-Subject: [PATCH v2 6/6] iio: ad7949: Fix dummy read cycle placement
-Date:   Thu,  2 May 2019 11:14:32 -0500
-Message-Id: <1556813672-49861-6-git-send-email-adam.michaelis@rockwellcollins.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1556813672-49861-1-git-send-email-adam.michaelis@rockwellcollins.com>
-References: <1556813672-49861-1-git-send-email-adam.michaelis@rockwellcollins.com>
+        id S1726022AbfECCen (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 May 2019 22:34:43 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:32867 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725995AbfECCen (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 May 2019 22:34:43 -0400
+Received: by mail-qt1-f195.google.com with SMTP id m32so2044119qtf.0;
+        Thu, 02 May 2019 19:34:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=IHmi9Ibu7jtHY7PtCBhSSAF4IhbreLBAN5F0ptEmt0Q=;
+        b=eZXn/viYgV0Bz0GiIC+p6VL57OA23zgu6ajWkL4MIXc6CGKKxuWsVv2tkoMcoJEnk/
+         bI3SezCbRAg29i67UKQt63yrFF6E74Or+ROiiYT7CrJGt3hjIgLYM2T6EPQ1VvtYXmwU
+         9Ll5yXUEoT/l8TvD7BhV6ur7X+1Ob0/QEA9wI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IHmi9Ibu7jtHY7PtCBhSSAF4IhbreLBAN5F0ptEmt0Q=;
+        b=dCgDLiI1uMzZBIgyaEZQEmO/0nmU2l0/E9yJ5pLx7iBxfK5P0JvO2Kgyeoyjakambv
+         0ueZu5MB/XuuVB2wMiNNwcRORZXkOz1qlAnN29ARQlTp4pukc9axlh06YsRs8yWDyRoM
+         QNh8Tb5ZeG4oF14FYXUXqsECgcTin+P4WvAtBjCXhDOZSHEhJ4fsFhXXlDR3H88WdnoU
+         gUzTGosEtjfgmV0+mRBJMIytbUxCR/buqWXwOu3CwCQNxx5zk7jUfbceY9eC/gsCQJNP
+         oGtzxlBDRzgrSdxnHYv8sxR8uhRnwS8EpKLSO67LR7MRX4ceGIsRw73UbYW7YIfUcsvX
+         /djg==
+X-Gm-Message-State: APjAAAVJKJFLprchI4nPws9OXDMH73K/jeFf0rbXatvHfaUTHH7ePXb8
+        DSFb8tCx5yP6n7gba15fGyh5X3FnwEJc4n5Ai24=
+X-Google-Smtp-Source: APXvYqx5RxdF0dkmKrVJcM/FX5Hqq2lsUx2dPvDQpPCS0RCqtHLyQnKALRutFusuZJt3AyuF6JXPG1iWfe+c2Vj2JzM=
+X-Received: by 2002:a0c:ac83:: with SMTP id m3mr6157405qvc.85.1556850881888;
+ Thu, 02 May 2019 19:34:41 -0700 (PDT)
+MIME-Version: 1.0
+References: <1556721787-28500-1-git-send-email-eajames@linux.ibm.com>
+In-Reply-To: <1556721787-28500-1-git-send-email-eajames@linux.ibm.com>
+From:   Joel Stanley <joel@jms.id.au>
+Date:   Fri, 3 May 2019 02:34:30 +0000
+Message-ID: <CACPK8Xc2uwPwouto4Xg8fA0OAMJ3eP6kYjKcp9Bf4R90t1NdBg@mail.gmail.com>
+Subject: Re: [PATCH] iio: dps310: Add pressure sensing capability
+To:     Eddie James <eajames@linux.ibm.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The AD7949 requires two conversion cycles following any configuration
-change (including changing the analog channel being sampled). Therefore,
-adding a dummy read cycle when config is changed and removing the extra
-cycles at initial configuration.
+Hi Eddie,
 
-Signed-off-by: Adam Michaelis <adam.michaelis@rockwellcollins.com>
----
-	V2: Add some defines to reduce use of magic numbers.
----
- drivers/iio/adc/ad7949.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+On Wed, 1 May 2019 at 14:43, Eddie James <eajames@linux.ibm.com> wrote:
+>
+> The DPS310 supports measurement of pressure, so support that in the
+> driver. Use background measurement like the temperature sensing and
+> default to lowest precision and lowest measurement rate.
 
-diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-index cba152151908..5a6fe522c931 100644
---- a/drivers/iio/adc/ad7949.c
-+++ b/drivers/iio/adc/ad7949.c
-@@ -144,6 +144,25 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
- 		 * time to send a new command to the device
- 		 */
- 		udelay(2);
-+
-+		/*
-+		 * Perform extra read cycle to allow configuration, acquisition,
-+		 * and conversion sequences to complete for new configuration.
-+		 */
-+		(void)memset(&tx, 0, sizeof(tx));
-+		(void)memset(ad7949_adc->buffer, 0, AD7949_BUFFER_LEN);
-+
-+		tx.rx_buf = ad7949_adc->buffer;
-+		tx.len = ad7949_message_len(ad7949_adc);
-+
-+		spi_message_init_with_transfers(&msg, &tx, 1);
-+		ret = spi_sync(ad7949_adc->spi, &msg);
-+
-+		/*
-+		 * This delay is to avoid a new request before the required time
-+		 * to send a new command to the device.
-+		 */
-+		udelay(2);
- 	}
- 
- 	return ret;
-@@ -276,7 +295,6 @@ static int ad7949_spi_reg_access(struct iio_dev *indio_dev,
- static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
- {
- 	int ret;
--	int val;
- 	u16 adc_config = 0;
- 
- 	ad7949_adc->current_channel = 0;
-@@ -309,13 +327,6 @@ static int ad7949_spi_init(struct ad7949_adc_chip *ad7949_adc)
- 			adc_config,
- 			AD7949_CFG_MASK_TOTAL);
- 
--	/*
--	 * Do two dummy conversions to apply the first configuration setting.
--	 * Required only after the start up of the device.
--	 */
--	ad7949_spi_read_channel(ad7949_adc, &val, ad7949_adc->current_channel);
--	ad7949_spi_read_channel(ad7949_adc, &val, ad7949_adc->current_channel);
--
- 	return ret;
- }
- 
--- 
-1.9.1
+Upstream didn't accept my patch as they wanted it to support pressure
+in addition to temperature first. I didn't ever get around to doing
+that.
 
+I suggest you send my original patch and device tree binding along
+with this one as a series.
+
+Cheers,
+
+Joel

@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB4E313518
-	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2019 00:02:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9C2813519
+	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2019 00:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726862AbfECWCz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 May 2019 18:02:55 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:45964 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726604AbfECWCy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 May 2019 18:02:54 -0400
-Received: by mail-pl1-f196.google.com with SMTP id o5so3301922pls.12
-        for <linux-iio@vger.kernel.org>; Fri, 03 May 2019 15:02:53 -0700 (PDT)
+        id S1726883AbfECWC4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 May 2019 18:02:56 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:40885 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726604AbfECWC4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 May 2019 18:02:56 -0400
+Received: by mail-pg1-f195.google.com with SMTP id d31so3338793pgl.7
+        for <linux-iio@vger.kernel.org>; Fri, 03 May 2019 15:02:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=r3rCMyQRuqNEJNAJZNewCbprIO59xrVvdV6v6duMLLg=;
-        b=B6GEnkZtf7V5O3+ShAMbO4FvWXRdQGVwVvtL6ncU0Zg/8zRl8WtgsTZ5ZlepmrfYwp
-         slqaqHJihFE0LNTCwxmVHtrrjlhuwiKlQ1arTZekWfbMfBtLP9Ch6rAbzg3mMqj7DJNP
-         QEoU+V71jbcy8bIxkEqRWq/ZROR2SUzy7AQw0=
+        bh=utRRZmBDWriiA0qDDgbJrblOhySAxZnovWhMOsEjBZs=;
+        b=BhXWWpZZMoC99Esz0ClhppXkaxOLS6Ybl04UG4OUj2pwpqZgyC4LTicpVkUP9Ho7RN
+         awz5cISU+fSxoFIs4m4Ty0kalbqsFRbv1IwoXVVY9Q8XM5kFanzdN3hNX8r1XOO9M0Sp
+         20Rx6cJfM3jkP9zGEmddP5W5LiSopim6krpC0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=r3rCMyQRuqNEJNAJZNewCbprIO59xrVvdV6v6duMLLg=;
-        b=S0aR8ZxbMlkdMNeJffBoNpiIjanDeOvJo4ZX5p17pIjFRBfCkCbbCFRIOJ8yJjS5Eh
-         iO40rru/O6+GHyhov/+pIorFH8d4NRRXNhfzPAx+mNWin54Qr08T/CL0hrT4GsEk/PKT
-         17yIzxWNI8tr50XXjJu9vSJP6Pvelng3mFDCfe1e0NZhv83gCS/QGp0CiGck9zfth7U0
-         88zm7yR7eCT53tno+OQY9OWxVuSNdE0DhKAC9DzcSPwJ+dFkoibhIywkszo/AdrYqxNK
-         +saOkr8CZg166Yx5Nr4+OqTTbgJuP43ug416p5abNqreII/7PAxyY9U6oLxeC7DgYCH4
-         B9eQ==
-X-Gm-Message-State: APjAAAWY6OqyaT5jgusf0cuVncu1J02dWgr7nWHCY2b3GX5eTFkReYbE
-        lWAwd32FPu0c97OU4Bcb6gN8Ng==
-X-Google-Smtp-Source: APXvYqxpmhY4wRnFjUhE/QDZC50dZN6pP5IiCdtYRL3sHZgxX7WwRdnViwZ/iI5k0jxfhPsAtv2+rA==
-X-Received: by 2002:a17:902:4a:: with SMTP id 68mr14093554pla.212.1556920973305;
-        Fri, 03 May 2019 15:02:53 -0700 (PDT)
+        bh=utRRZmBDWriiA0qDDgbJrblOhySAxZnovWhMOsEjBZs=;
+        b=eSn8TO3XfUYLMx0YZho+7h/L7fY4NMvYL4ivt0o6N7PoxGyFmzfRk/q/HganHrIvmA
+         kV4lTaVkXz1w02uJZtTiG4NfCa3WeU7t6605vYVSJPOIMUp5GVeBqXKmXsJbyFWGfoN8
+         XUg/oNLKkr9Gf4ojPRm48tLrAr/m7o7PcaLK4lmbDobtDbW35omFFnEnxU+mVnvQIMNX
+         EqileKd3v215uu43NMc5Q7dzCalQp8R4q5LBv54BkBeFg9ovddYOM4c2KbHrH5LqWgqH
+         m6s9t+wuFsxcXtq3mdY9Tql1R98FbB8qRY8mlLCIJ4zmQau+U86iZkK422ajjwvP/2TE
+         IIvw==
+X-Gm-Message-State: APjAAAVh25TLXH0uX0LaVyg7ohg+MxyGYQCUacDlZ42Z4Dr5Wyq7I7qt
+        rK59nCF4RuAm3wjLR2TlycEIqA==
+X-Google-Smtp-Source: APXvYqwNEZgu9Zn2zQsuKNxoXIhL7gRW7+Zo7ztZYwRpHEzwUeD38ihOrk9MRX8X5e5EfK1czFGRiQ==
+X-Received: by 2002:a62:d286:: with SMTP id c128mr14704663pfg.159.1556920974909;
+        Fri, 03 May 2019 15:02:54 -0700 (PDT)
 Received: from localhost ([2620:15c:202:1:3c8f:512b:3522:dfaf])
-        by smtp.gmail.com with ESMTPSA id j2sm3800877pff.77.2019.05.03.15.02.52
+        by smtp.gmail.com with ESMTPSA id j5sm3896947pfe.15.2019.05.03.15.02.53
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 03 May 2019 15:02:52 -0700 (PDT)
+        Fri, 03 May 2019 15:02:54 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     enric.balletbo@collabora.com, bleung@chromium.org,
         groeck@chromium.org, lee.jones@linaro.org, jic23@kernel.org,
         broonie@kernel.org, cychiang@chromium.org, tiwai@suse.com
 Cc:     linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 06/30] mfd: cros_ec: use BIT macro
-Date:   Fri,  3 May 2019 15:02:09 -0700
-Message-Id: <20190503220233.64546-7-gwendal@chromium.org>
+Subject: [PATCH v2 07/30] mfd: cros_ec: Update ACPI interface definition
+Date:   Fri,  3 May 2019 15:02:10 -0700
+Message-Id: <20190503220233.64546-8-gwendal@chromium.org>
 X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
 In-Reply-To: <20190503220233.64546-1-gwendal@chromium.org>
 References: <20190503220233.64546-1-gwendal@chromium.org>
@@ -60,298 +60,516 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Replace (1 << ...) with BIT().
+Add more fields and improve API when EC presents data through ACPI
+memory space.
 
 Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- include/linux/mfd/cros_ec_commands.h | 110 +++++++++++++--------------
- 1 file changed, 55 insertions(+), 55 deletions(-)
+ include/linux/mfd/cros_ec_commands.h | 419 +++++++++++++++++++--------
+ 1 file changed, 293 insertions(+), 126 deletions(-)
 
 diff --git a/include/linux/mfd/cros_ec_commands.h b/include/linux/mfd/cros_ec_commands.h
-index 735d4f8ce09d..7044f459cb1d 100644
+index 7044f459cb1d..6538c5789c43 100644
 --- a/include/linux/mfd/cros_ec_commands.h
 +++ b/include/linux/mfd/cros_ec_commands.h
-@@ -28,7 +28,7 @@
- #define EC_PROTO_VERSION          0x00000002
+@@ -83,13 +83,15 @@
+ /* Unused 0x28 - 0x2f */
+ #define EC_MEMMAP_SWITCHES         0x30	/* 8 bits */
+ /* Unused 0x31 - 0x33 */
+-#define EC_MEMMAP_HOST_EVENTS      0x34 /* 32 bits */
+-/* Reserve 0x38 - 0x3f for additional host event-related stuff */
+-/* Battery values are all 32 bits */
++#define EC_MEMMAP_HOST_EVENTS      0x34 /* 64 bits */
++/* Battery values are all 32 bits, unless otherwise noted. */
+ #define EC_MEMMAP_BATT_VOLT        0x40 /* Battery Present Voltage */
+ #define EC_MEMMAP_BATT_RATE        0x44 /* Battery Present Rate */
+ #define EC_MEMMAP_BATT_CAP         0x48 /* Battery Remaining Capacity */
+-#define EC_MEMMAP_BATT_FLAG        0x4c /* Battery State, defined below */
++#define EC_MEMMAP_BATT_FLAG        0x4c /* Battery State, see below (8-bit) */
++#define EC_MEMMAP_BATT_COUNT       0x4d /* Battery Count (8-bit) */
++#define EC_MEMMAP_BATT_INDEX       0x4e /* Current Battery Data Index (8-bit) */
++/* Unused 0x4f */
+ #define EC_MEMMAP_BATT_DCAP        0x50 /* Battery Design Capacity */
+ #define EC_MEMMAP_BATT_DVLT        0x54 /* Battery Design Voltage */
+ #define EC_MEMMAP_BATT_LFCC        0x58 /* Battery Last Full Charge Capacity */
+@@ -103,10 +105,19 @@
+ /* Unused 0x84 - 0x8f */
+ #define EC_MEMMAP_ACC_STATUS       0x90 /* Accelerometer status (8 bits )*/
+ /* Unused 0x91 */
+-#define EC_MEMMAP_ACC_DATA         0x92 /* Accelerometer data 0x92 - 0x9f */
++#define EC_MEMMAP_ACC_DATA         0x92 /* Accelerometers data 0x92 - 0x9f */
++/* 0x92: Lid Angle if available, LID_ANGLE_UNRELIABLE otherwise */
++/* 0x94 - 0x99: 1st Accelerometer */
++/* 0x9a - 0x9f: 2nd Accelerometer */
+ #define EC_MEMMAP_GYRO_DATA        0xa0 /* Gyroscope data 0xa0 - 0xa5 */
+-/* Unused 0xa6 - 0xfe (remember, 0xff is NOT part of the memmap region) */
++/* Unused 0xa6 - 0xdf */
  
- /* Command version mask */
--#define EC_VER_MASK(version) (1UL << (version))
-+#define EC_VER_MASK(version) BIT(version)
- 
- /* I/O addresses for ACPI commands */
- #define EC_LPC_ADDR_ACPI_DATA  0x62
-@@ -57,13 +57,13 @@
- #define EC_HOST_CMD_REGION_SIZE 0x80
- 
- /* EC command register bit functions */
--#define EC_LPC_CMDR_DATA	(1 << 0)  /* Data ready for host to read */
--#define EC_LPC_CMDR_PENDING	(1 << 1)  /* Write pending to EC */
--#define EC_LPC_CMDR_BUSY	(1 << 2)  /* EC is busy processing a command */
--#define EC_LPC_CMDR_CMD		(1 << 3)  /* Last host write was a command */
--#define EC_LPC_CMDR_ACPI_BRST	(1 << 4)  /* Burst mode (not used) */
--#define EC_LPC_CMDR_SCI		(1 << 5)  /* SCI event is pending */
--#define EC_LPC_CMDR_SMI		(1 << 6)  /* SMI event is pending */
-+#define EC_LPC_CMDR_DATA	BIT(0)  /* Data ready for host to read */
-+#define EC_LPC_CMDR_PENDING	BIT(1)  /* Write pending to EC */
-+#define EC_LPC_CMDR_BUSY	BIT(2)  /* EC is busy processing a command */
-+#define EC_LPC_CMDR_CMD		BIT(3)  /* Last host write was a command */
-+#define EC_LPC_CMDR_ACPI_BRST	BIT(4)  /* Burst mode (not used) */
-+#define EC_LPC_CMDR_SCI		BIT(5)  /* SCI event is pending */
-+#define EC_LPC_CMDR_SMI		BIT(6)  /* SMI event is pending */
- 
- #define EC_LPC_ADDR_MEMMAP       0x900
- #define EC_MEMMAP_SIZE         255 /* ACPI IO buffer max is 255 bytes */
-@@ -110,8 +110,8 @@
++/*
++ * ACPI is unable to access memory mapped data at or above this offset due to
++ * limitations of the ACPI protocol. Do not place data in the range 0xe0 - 0xfe
++ * which might be needed by ACPI.
++ */
++#define EC_MEMMAP_NO_ACPI 0xe0
  
  /* Define the format of the accelerometer mapped memory status byte. */
  #define EC_MEMMAP_ACC_STATUS_SAMPLE_ID_MASK  0x0f
--#define EC_MEMMAP_ACC_STATUS_BUSY_BIT        (1 << 4)
--#define EC_MEMMAP_ACC_STATUS_PRESENCE_BIT    (1 << 7)
-+#define EC_MEMMAP_ACC_STATUS_BUSY_BIT        BIT(4)
-+#define EC_MEMMAP_ACC_STATUS_PRESENCE_BIT    BIT(7)
+@@ -155,6 +166,8 @@
+ #define EC_BATT_FLAG_DISCHARGING  0x04
+ #define EC_BATT_FLAG_CHARGING     0x08
+ #define EC_BATT_FLAG_LEVEL_CRITICAL 0x10
++/* Set if some of the static/dynamic data is invalid (or outdated). */
++#define EC_BATT_FLAG_INVALID_DATA 0x20
  
- /* Number of temp sensors at EC_MEMMAP_TEMP_SENSOR */
- #define EC_TEMP_SENSOR_ENTRIES     16
-@@ -336,7 +336,7 @@ enum host_event_code {
- 	EC_HOST_EVENT_INVALID = 32
- };
- /* Host event mask */
--#define EC_HOST_EVENT_MASK(event_code) (1UL << ((event_code) - 1))
-+#define EC_HOST_EVENT_MASK(event_code) BIT_ULL((event_code) - 1)
+ /* Switch flags at EC_MEMMAP_SWITCHES */
+ #define EC_SWITCH_LID_OPEN               0x01
+@@ -180,12 +193,200 @@
+ #define EC_WIRELESS_SWITCH_WWAN       0x04  /* WWAN power */
+ #define EC_WIRELESS_SWITCH_WLAN_POWER 0x08  /* WLAN power */
  
- /**
-  * struct ec_lpc_host_args - Arguments at EC_LPC_ADDR_HOST_ARGS
-@@ -734,7 +734,7 @@ struct ec_response_get_cmd_versions {
- 
- /* Avoid using ec_status which is for return values */
- enum ec_comms_status {
--	EC_COMMS_STATUS_PROCESSING	= 1 << 0,	/* Processing cmd */
-+	EC_COMMS_STATUS_PROCESSING	= BIT(0),	/* Processing cmd */
- };
- 
- /**
-@@ -766,7 +766,7 @@ struct ec_response_test_protocol {
- 
- /* Flags for ec_response_get_protocol_info.flags */
- /* EC_RES_IN_PROGRESS may be returned if a command is slow */
--#define EC_PROTOCOL_INFO_IN_PROGRESS_SUPPORTED (1 << 0)
-+#define EC_PROTOCOL_INFO_IN_PROGRESS_SUPPORTED BIT(0)
- 
- /**
-  * struct ec_response_get_protocol_info - Response to the get protocol info.
-@@ -895,8 +895,8 @@ enum ec_feature_code {
- 	EC_FEATURE_ISH = 40,
- };
- 
--#define EC_FEATURE_MASK_0(event_code) (1UL << (event_code % 32))
--#define EC_FEATURE_MASK_1(event_code) (1UL << (event_code - 32))
-+#define EC_FEATURE_MASK_0(event_code) BIT(event_code % 32)
-+#define EC_FEATURE_MASK_1(event_code) BIT(event_code - 32)
- 
- struct ec_response_get_features {
- 	uint32_t flags[2];
-@@ -931,7 +931,7 @@ struct ec_response_flash_info {
-  * Flags for version 1+ flash info command
-  * EC flash erases bits to 0 instead of 1.
-  */
--#define EC_FLASH_INFO_ERASE_TO_0 (1 << 0)
-+#define EC_FLASH_INFO_ERASE_TO_0 BIT(0)
- 
- /**
-  * struct ec_response_flash_info_1 - Response to the flash info v1 command.
-@@ -1031,26 +1031,26 @@ struct ec_params_flash_erase {
- 
- /* Flags for flash protection */
- /* RO flash code protected when the EC boots */
--#define EC_FLASH_PROTECT_RO_AT_BOOT         (1 << 0)
-+#define EC_FLASH_PROTECT_RO_AT_BOOT         BIT(0)
++/*****************************************************************************/
++/*
++ * ACPI commands
++ *
++ * These are valid ONLY on the ACPI command/data port.
++ */
++
++/*
++ * ACPI Read Embedded Controller
++ *
++ * This reads from ACPI memory space on the EC (EC_ACPI_MEM_*).
++ *
++ * Use the following sequence:
++ *
++ *    - Write EC_CMD_ACPI_READ to EC_LPC_ADDR_ACPI_CMD
++ *    - Wait for EC_LPC_CMDR_PENDING bit to clear
++ *    - Write address to EC_LPC_ADDR_ACPI_DATA
++ *    - Wait for EC_LPC_CMDR_DATA bit to set
++ *    - Read value from EC_LPC_ADDR_ACPI_DATA
++ */
++#define EC_CMD_ACPI_READ 0x0080
++
++/*
++ * ACPI Write Embedded Controller
++ *
++ * This reads from ACPI memory space on the EC (EC_ACPI_MEM_*).
++ *
++ * Use the following sequence:
++ *
++ *    - Write EC_CMD_ACPI_WRITE to EC_LPC_ADDR_ACPI_CMD
++ *    - Wait for EC_LPC_CMDR_PENDING bit to clear
++ *    - Write address to EC_LPC_ADDR_ACPI_DATA
++ *    - Wait for EC_LPC_CMDR_PENDING bit to clear
++ *    - Write value to EC_LPC_ADDR_ACPI_DATA
++ */
++#define EC_CMD_ACPI_WRITE 0x0081
++
++/*
++ * ACPI Burst Enable Embedded Controller
++ *
++ * This enables burst mode on the EC to allow the host to issue several
++ * commands back-to-back. While in this mode, writes to mapped multi-byte
++ * data are locked out to ensure data consistency.
++ */
++#define EC_CMD_ACPI_BURST_ENABLE 0x0082
++
++/*
++ * ACPI Burst Disable Embedded Controller
++ *
++ * This disables burst mode on the EC and stops preventing EC writes to mapped
++ * multi-byte data.
++ */
++#define EC_CMD_ACPI_BURST_DISABLE 0x0083
++
++/*
++ * ACPI Query Embedded Controller
++ *
++ * This clears the lowest-order bit in the currently pending host events, and
++ * sets the result code to the 1-based index of the bit (event 0x00000001 = 1,
++ * event 0x80000000 = 32), or 0 if no event was pending.
++ */
++#define EC_CMD_ACPI_QUERY_EVENT 0x0084
++
++/* Valid addresses in ACPI memory space, for read/write commands */
++
++/* Memory space version; set to EC_ACPI_MEM_VERSION_CURRENT */
++#define EC_ACPI_MEM_VERSION            0x00
++/*
++ * Test location; writing value here updates test compliment byte to (0xff -
++ * value).
++ */
++#define EC_ACPI_MEM_TEST               0x01
++/* Test compliment; writes here are ignored. */
++#define EC_ACPI_MEM_TEST_COMPLIMENT    0x02
++
++/* Keyboard backlight brightness percent (0 - 100) */
++#define EC_ACPI_MEM_KEYBOARD_BACKLIGHT 0x03
++/* DPTF Target Fan Duty (0-100, 0xff for auto/none) */
++#define EC_ACPI_MEM_FAN_DUTY           0x04
++
++/*
++ * DPTF temp thresholds. Any of the EC's temp sensors can have up to two
++ * independent thresholds attached to them. The current value of the ID
++ * register determines which sensor is affected by the THRESHOLD and COMMIT
++ * registers. The THRESHOLD register uses the same EC_TEMP_SENSOR_OFFSET scheme
++ * as the memory-mapped sensors. The COMMIT register applies those settings.
++ *
++ * The spec does not mandate any way to read back the threshold settings
++ * themselves, but when a threshold is crossed the AP needs a way to determine
++ * which sensor(s) are responsible. Each reading of the ID register clears and
++ * returns one sensor ID that has crossed one of its threshold (in either
++ * direction) since the last read. A value of 0xFF means "no new thresholds
++ * have tripped". Setting or enabling the thresholds for a sensor will clear
++ * the unread event count for that sensor.
++ */
++#define EC_ACPI_MEM_TEMP_ID            0x05
++#define EC_ACPI_MEM_TEMP_THRESHOLD     0x06
++#define EC_ACPI_MEM_TEMP_COMMIT        0x07
++/*
++ * Here are the bits for the COMMIT register:
++ *   bit 0 selects the threshold index for the chosen sensor (0/1)
++ *   bit 1 enables/disables the selected threshold (0 = off, 1 = on)
++ * Each write to the commit register affects one threshold.
++ */
++#define EC_ACPI_MEM_TEMP_COMMIT_SELECT_MASK BIT(0)
++#define EC_ACPI_MEM_TEMP_COMMIT_ENABLE_MASK BIT(1)
++/*
++ * Example:
++ *
++ * Set the thresholds for sensor 2 to 50 C and 60 C:
++ *   write 2 to [0x05]      --  select temp sensor 2
++ *   write 0x7b to [0x06]   --  C_TO_K(50) - EC_TEMP_SENSOR_OFFSET
++ *   write 0x2 to [0x07]    --  enable threshold 0 with this value
++ *   write 0x85 to [0x06]   --  C_TO_K(60) - EC_TEMP_SENSOR_OFFSET
++ *   write 0x3 to [0x07]    --  enable threshold 1 with this value
++ *
++ * Disable the 60 C threshold, leaving the 50 C threshold unchanged:
++ *   write 2 to [0x05]      --  select temp sensor 2
++ *   write 0x1 to [0x07]    --  disable threshold 1
++ */
++
++/* DPTF battery charging current limit */
++#define EC_ACPI_MEM_CHARGING_LIMIT     0x08
++
++/* Charging limit is specified in 64 mA steps */
++#define EC_ACPI_MEM_CHARGING_LIMIT_STEP_MA   64
++/* Value to disable DPTF battery charging limit */
++#define EC_ACPI_MEM_CHARGING_LIMIT_DISABLED  0xff
++
++/*
++ * Report device orientation
++ *  Bits       Definition
++ *  3:1        Device DPTF Profile Number (DDPN)
++ *               0   = Reserved for backward compatibility (indicates no valid
++ *                     profile number. Host should fall back to using TBMD).
++ *              1..7 = DPTF Profile number to indicate to host which table needs
++ *                     to be loaded.
++ *   0         Tablet Mode Device Indicator (TBMD)
++ */
++#define EC_ACPI_MEM_DEVICE_ORIENTATION 0x09
++#define EC_ACPI_MEM_TBMD_SHIFT         0
++#define EC_ACPI_MEM_TBMD_MASK          0x1
++#define EC_ACPI_MEM_DDPN_SHIFT         1
++#define EC_ACPI_MEM_DDPN_MASK          0x7
++
++/*
++ * Report device features. Uses the same format as the host command, except:
++ *
++ * bit 0 (EC_FEATURE_LIMITED) changes meaning from "EC code has a limited set
++ * of features", which is of limited interest when the system is already
++ * interpreting ACPI bytecode, to "EC_FEATURES[0-7] is not supported". Since
++ * these are supported, it defaults to 0.
++ * This allows detecting the presence of this field since older versions of
++ * the EC codebase would simply return 0xff to that unknown address. Check
++ * FEATURES0 != 0xff (or FEATURES0[0] == 0) to make sure that the other bits
++ * are valid.
++ */
++#define EC_ACPI_MEM_DEVICE_FEATURES0 0x0a
++#define EC_ACPI_MEM_DEVICE_FEATURES1 0x0b
++#define EC_ACPI_MEM_DEVICE_FEATURES2 0x0c
++#define EC_ACPI_MEM_DEVICE_FEATURES3 0x0d
++#define EC_ACPI_MEM_DEVICE_FEATURES4 0x0e
++#define EC_ACPI_MEM_DEVICE_FEATURES5 0x0f
++#define EC_ACPI_MEM_DEVICE_FEATURES6 0x10
++#define EC_ACPI_MEM_DEVICE_FEATURES7 0x11
++
++#define EC_ACPI_MEM_BATTERY_INDEX    0x12
++
++/*
++ * USB Port Power. Each bit indicates whether the corresponding USB ports' power
++ * is enabled (1) or disabled (0).
++ *   bit 0 USB port ID 0
++ *   ...
++ *   bit 7 USB port ID 7
++ */
++#define EC_ACPI_MEM_USB_PORT_POWER 0x13
++
++/*
++ * ACPI addresses 0x20 - 0xff map to EC_MEMMAP offset 0x00 - 0xdf.  This data
++ * is read-only from the AP.  Added in EC_ACPI_MEM_VERSION 2.
++ */
++#define EC_ACPI_MEM_MAPPED_BEGIN   0x20
++#define EC_ACPI_MEM_MAPPED_SIZE    0xe0
++
++/* Current version of ACPI memory address space */
++#define EC_ACPI_MEM_VERSION_CURRENT 2
++
++
  /*
-  * RO flash code protected now.  If this bit is set, at-boot status cannot
-  * be changed.
+  * This header file is used in coreboot both in C and ACPI code.  The ACPI code
+  * is pre-processed to handle constants but the ASL compiler is unable to
+  * handle actual C code so keep it separate.
   */
--#define EC_FLASH_PROTECT_RO_NOW             (1 << 1)
-+#define EC_FLASH_PROTECT_RO_NOW             BIT(1)
- /* Entire flash code protected now, until reboot. */
--#define EC_FLASH_PROTECT_ALL_NOW            (1 << 2)
-+#define EC_FLASH_PROTECT_ALL_NOW            BIT(2)
- /* Flash write protect GPIO is asserted now */
--#define EC_FLASH_PROTECT_GPIO_ASSERTED      (1 << 3)
-+#define EC_FLASH_PROTECT_GPIO_ASSERTED      BIT(3)
- /* Error - at least one bank of flash is stuck locked, and cannot be unlocked */
--#define EC_FLASH_PROTECT_ERROR_STUCK        (1 << 4)
-+#define EC_FLASH_PROTECT_ERROR_STUCK        BIT(4)
- /*
-  * Error - flash protection is in inconsistent state.  At least one bank of
-  * flash which should be protected is not protected.  Usually fixed by
-  * re-requesting the desired flags, or by a hard reset if that fails.
-  */
--#define EC_FLASH_PROTECT_ERROR_INCONSISTENT (1 << 5)
-+#define EC_FLASH_PROTECT_ERROR_INCONSISTENT BIT(5)
- /* Entire flash code protected when the EC boots */
--#define EC_FLASH_PROTECT_ALL_AT_BOOT        (1 << 6)
-+#define EC_FLASH_PROTECT_ALL_AT_BOOT        BIT(6)
- 
- /**
-  * struct ec_params_flash_protect - Parameters for the flash protect command.
-@@ -1421,8 +1421,8 @@ enum ec_led_id {
- };
- 
- /* LED control flags */
--#define EC_LED_FLAGS_QUERY (1 << 0) /* Query LED capability only */
--#define EC_LED_FLAGS_AUTO  (1 << 1) /* Switch LED back to automatic control */
-+#define EC_LED_FLAGS_QUERY BIT(0) /* Query LED capability only */
-+#define EC_LED_FLAGS_AUTO  BIT(1) /* Switch LED back to automatic control */
- 
- enum ec_led_colors {
- 	EC_LED_COLOR_RED = 0,
-@@ -2086,13 +2086,13 @@ enum mkbp_config_flags {
- };
- 
- enum mkbp_config_valid {
--	EC_MKBP_VALID_SCAN_PERIOD		= 1 << 0,
--	EC_MKBP_VALID_POLL_TIMEOUT		= 1 << 1,
--	EC_MKBP_VALID_MIN_POST_SCAN_DELAY	= 1 << 3,
--	EC_MKBP_VALID_OUTPUT_SETTLE		= 1 << 4,
--	EC_MKBP_VALID_DEBOUNCE_DOWN		= 1 << 5,
--	EC_MKBP_VALID_DEBOUNCE_UP		= 1 << 6,
--	EC_MKBP_VALID_FIFO_MAX_DEPTH		= 1 << 7,
-+	EC_MKBP_VALID_SCAN_PERIOD		= BIT(0),
-+	EC_MKBP_VALID_POLL_TIMEOUT		= BIT(1),
-+	EC_MKBP_VALID_MIN_POST_SCAN_DELAY	= BIT(3),
-+	EC_MKBP_VALID_OUTPUT_SETTLE		= BIT(4),
-+	EC_MKBP_VALID_DEBOUNCE_DOWN		= BIT(5),
-+	EC_MKBP_VALID_DEBOUNCE_UP		= BIT(6),
-+	EC_MKBP_VALID_FIFO_MAX_DEPTH		= BIT(7),
- };
+-#ifndef __ACPI__
++
  
  /*
-@@ -2146,7 +2146,7 @@ enum ec_collect_flags {
- 	 * Indicates this scan was processed by the EC. Due to timing, some
- 	 * scans may be skipped.
- 	 */
--	EC_KEYSCAN_SEQ_FLAG_DONE	= 1 << 0,
-+	EC_KEYSCAN_SEQ_FLAG_DONE	= BIT(0),
- };
+  * Attributes for EC request and response packets.  Just defining __packed
+@@ -238,7 +439,7 @@
+ #define EC_LPC_STATUS_PROCESSING  0x04
+ /* Last write to EC was a command, not data */
+ #define EC_LPC_STATUS_LAST_CMD    0x08
+-/* EC is in burst mode.  Unsupported by Chrome EC, so this bit is never set */
++/* EC is in burst mode */
+ #define EC_LPC_STATUS_BURST_MODE  0x10
+ /* SCI event is pending (requesting SCI query) */
+ #define EC_LPC_STATUS_SCI_PENDING 0x20
+@@ -2293,6 +2494,8 @@ struct ec_response_temp_sensor_get_info {
+ /*****************************************************************************/
+ /* Host event commands */
  
- struct ec_collect_item {
-@@ -2513,7 +2513,7 @@ struct ec_params_console_read_v1 {
-  */
- #define EC_CMD_BATTERY_CUT_OFF 0x0099
- 
--#define EC_BATTERY_CUTOFF_FLAG_AT_SHUTDOWN	(1 << 0)
-+#define EC_BATTERY_CUTOFF_FLAG_AT_SHUTDOWN	BIT(0)
- 
- struct ec_params_battery_cutoff {
- 	uint8_t flags;
-@@ -2584,13 +2584,13 @@ struct ec_response_power_info {
- #define EC_CMD_I2C_PASSTHRU 0x009E
- 
- /* Read data; if not present, message is a write */
--#define EC_I2C_FLAG_READ	(1 << 15)
-+#define EC_I2C_FLAG_READ	BIT(15)
- 
- /* Mask for address */
- #define EC_I2C_ADDR_MASK	0x3ff
- 
--#define EC_I2C_STATUS_NAK	(1 << 0) /* Transfer was not acknowledged */
--#define EC_I2C_STATUS_TIMEOUT	(1 << 1) /* Timeout during transfer */
-+#define EC_I2C_STATUS_NAK	BIT(0) /* Transfer was not acknowledged */
-+#define EC_I2C_STATUS_TIMEOUT	BIT(1) /* Timeout during transfer */
- 
- /* Any error */
- #define EC_I2C_STATUS_ERROR	(EC_I2C_STATUS_NAK | EC_I2C_STATUS_TIMEOUT)
-@@ -2620,27 +2620,27 @@ struct ec_response_i2c_passthru {
- 
- /* Reasons to start hang detection timer */
- /* Power button pressed */
--#define EC_HANG_START_ON_POWER_PRESS  (1 << 0)
-+#define EC_HANG_START_ON_POWER_PRESS  BIT(0)
- 
- /* Lid closed */
--#define EC_HANG_START_ON_LID_CLOSE    (1 << 1)
-+#define EC_HANG_START_ON_LID_CLOSE    BIT(1)
- 
-  /* Lid opened */
--#define EC_HANG_START_ON_LID_OPEN     (1 << 2)
-+#define EC_HANG_START_ON_LID_OPEN     BIT(2)
- 
- /* Start of AP S3->S0 transition (booting or resuming from suspend) */
--#define EC_HANG_START_ON_RESUME       (1 << 3)
-+#define EC_HANG_START_ON_RESUME       BIT(3)
- 
- /* Reasons to cancel hang detection */
- 
- /* Power button released */
--#define EC_HANG_STOP_ON_POWER_RELEASE (1 << 8)
-+#define EC_HANG_STOP_ON_POWER_RELEASE BIT(8)
- 
- /* Any host command from AP received */
--#define EC_HANG_STOP_ON_HOST_COMMAND  (1 << 9)
-+#define EC_HANG_STOP_ON_HOST_COMMAND  BIT(9)
- 
- /* Stop on end of AP S0->S3 transition (suspending or shutting down) */
--#define EC_HANG_STOP_ON_SUSPEND       (1 << 10)
-+#define EC_HANG_STOP_ON_SUSPEND       BIT(10)
- 
++
++/* Obsolete. New implementation should use EC_CMD_HOST_EVENT instead */
  /*
-  * If this flag is set, all the other fields are ignored, and the hang detect
-@@ -2648,14 +2648,14 @@ struct ec_response_i2c_passthru {
-  * without reconfiguring any of the other hang detect settings.  Note that
-  * you must previously have configured the timeouts.
-  */
--#define EC_HANG_START_NOW             (1 << 30)
-+#define EC_HANG_START_NOW             BIT(30)
+  * Host event mask params and response structures, shared by all of the host
+  * event commands below.
+@@ -2318,6 +2521,86 @@ struct ec_response_host_event_mask {
+ #define EC_CMD_HOST_EVENT_SET_WAKE_MASK 0x008E
+ #define EC_CMD_HOST_EVENT_CLEAR_B       0x008F
  
++/*
++ * Unified host event programming interface - Should be used by newer versions
++ * of BIOS/OS to program host events and masks
++ */
++
++struct ec_params_host_event {
++
++	/* Action requested by host - one of enum ec_host_event_action. */
++	uint8_t action;
++
++	/*
++	 * Mask type that the host requested the action on - one of
++	 * enum ec_host_event_mask_type.
++	 */
++	uint8_t mask_type;
++
++	/* Set to 0, ignore on read */
++	uint16_t reserved;
++
++	/* Value to be used in case of set operations. */
++	uint64_t value;
++} __ec_align4;
++
++/*
++ * Response structure returned by EC_CMD_HOST_EVENT.
++ * Update the value on a GET request. Set to 0 on GET/CLEAR
++ */
++
++struct ec_response_host_event {
++
++	/* Mask value in case of get operation */
++	uint64_t value;
++} __ec_align4;
++
++enum ec_host_event_action {
++	/*
++	 * params.value is ignored. Value of mask_type populated
++	 * in response.value
++	 */
++	EC_HOST_EVENT_GET,
++
++	/* Bits in params.value are set */
++	EC_HOST_EVENT_SET,
++
++	/* Bits in params.value are cleared */
++	EC_HOST_EVENT_CLEAR,
++};
++
++enum ec_host_event_mask_type {
++
++	/* Main host event copy */
++	EC_HOST_EVENT_MAIN,
++
++	/* Copy B of host events */
++	EC_HOST_EVENT_B,
++
++	/* SCI Mask */
++	EC_HOST_EVENT_SCI_MASK,
++
++	/* SMI Mask */
++	EC_HOST_EVENT_SMI_MASK,
++
++	/* Mask of events that should be always reported in hostevents */
++	EC_HOST_EVENT_ALWAYS_REPORT_MASK,
++
++	/* Active wake mask */
++	EC_HOST_EVENT_ACTIVE_WAKE_MASK,
++
++	/* Lazy wake mask for S0ix */
++	EC_HOST_EVENT_LAZY_WAKE_MASK_S0IX,
++
++	/* Lazy wake mask for S3 */
++	EC_HOST_EVENT_LAZY_WAKE_MASK_S3,
++
++	/* Lazy wake mask for S5 */
++	EC_HOST_EVENT_LAZY_WAKE_MASK_S5,
++};
++
++#define EC_CMD_HOST_EVENT       0x00A4
++
+ /*****************************************************************************/
+ /* Switch commands */
+ 
+@@ -2969,122 +3252,6 @@ struct ec_params_reboot_ec {
+  */
+ #define EC_CMD_GET_PANIC_INFO 0x00D3
+ 
+-/*****************************************************************************/
+-/*
+- * ACPI commands
+- *
+- * These are valid ONLY on the ACPI command/data port.
+- */
+-
+-/*
+- * ACPI Read Embedded Controller
+- *
+- * This reads from ACPI memory space on the EC (EC_ACPI_MEM_*).
+- *
+- * Use the following sequence:
+- *
+- *    - Write EC_CMD_ACPI_READ to EC_LPC_ADDR_ACPI_CMD
+- *    - Wait for EC_LPC_CMDR_PENDING bit to clear
+- *    - Write address to EC_LPC_ADDR_ACPI_DATA
+- *    - Wait for EC_LPC_CMDR_DATA bit to set
+- *    - Read value from EC_LPC_ADDR_ACPI_DATA
+- */
+-#define EC_CMD_ACPI_READ 0x80
+-
+-/*
+- * ACPI Write Embedded Controller
+- *
+- * This reads from ACPI memory space on the EC (EC_ACPI_MEM_*).
+- *
+- * Use the following sequence:
+- *
+- *    - Write EC_CMD_ACPI_WRITE to EC_LPC_ADDR_ACPI_CMD
+- *    - Wait for EC_LPC_CMDR_PENDING bit to clear
+- *    - Write address to EC_LPC_ADDR_ACPI_DATA
+- *    - Wait for EC_LPC_CMDR_PENDING bit to clear
+- *    - Write value to EC_LPC_ADDR_ACPI_DATA
+- */
+-#define EC_CMD_ACPI_WRITE 0x81
+-
+-/*
+- * ACPI Query Embedded Controller
+- *
+- * This clears the lowest-order bit in the currently pending host events, and
+- * sets the result code to the 1-based index of the bit (event 0x00000001 = 1,
+- * event 0x80000000 = 32), or 0 if no event was pending.
+- */
+-#define EC_CMD_ACPI_QUERY_EVENT 0x84
+-
+-/* Valid addresses in ACPI memory space, for read/write commands */
+-
+-/* Memory space version; set to EC_ACPI_MEM_VERSION_CURRENT */
+-#define EC_ACPI_MEM_VERSION            0x00
+-/*
+- * Test location; writing value here updates test compliment byte to (0xff -
+- * value).
+- */
+-#define EC_ACPI_MEM_TEST               0x01
+-/* Test compliment; writes here are ignored. */
+-#define EC_ACPI_MEM_TEST_COMPLIMENT    0x02
+-
+-/* Keyboard backlight brightness percent (0 - 100) */
+-#define EC_ACPI_MEM_KEYBOARD_BACKLIGHT 0x03
+-/* DPTF Target Fan Duty (0-100, 0xff for auto/none) */
+-#define EC_ACPI_MEM_FAN_DUTY           0x04
+-
+-/*
+- * DPTF temp thresholds. Any of the EC's temp sensors can have up to two
+- * independent thresholds attached to them. The current value of the ID
+- * register determines which sensor is affected by the THRESHOLD and COMMIT
+- * registers. The THRESHOLD register uses the same EC_TEMP_SENSOR_OFFSET scheme
+- * as the memory-mapped sensors. The COMMIT register applies those settings.
+- *
+- * The spec does not mandate any way to read back the threshold settings
+- * themselves, but when a threshold is crossed the AP needs a way to determine
+- * which sensor(s) are responsible. Each reading of the ID register clears and
+- * returns one sensor ID that has crossed one of its threshold (in either
+- * direction) since the last read. A value of 0xFF means "no new thresholds
+- * have tripped". Setting or enabling the thresholds for a sensor will clear
+- * the unread event count for that sensor.
+- */
+-#define EC_ACPI_MEM_TEMP_ID            0x05
+-#define EC_ACPI_MEM_TEMP_THRESHOLD     0x06
+-#define EC_ACPI_MEM_TEMP_COMMIT        0x07
+-/*
+- * Here are the bits for the COMMIT register:
+- *   bit 0 selects the threshold index for the chosen sensor (0/1)
+- *   bit 1 enables/disables the selected threshold (0 = off, 1 = on)
+- * Each write to the commit register affects one threshold.
+- */
+-#define EC_ACPI_MEM_TEMP_COMMIT_SELECT_MASK (1 << 0)
+-#define EC_ACPI_MEM_TEMP_COMMIT_ENABLE_MASK (1 << 1)
+-/*
+- * Example:
+- *
+- * Set the thresholds for sensor 2 to 50 C and 60 C:
+- *   write 2 to [0x05]      --  select temp sensor 2
+- *   write 0x7b to [0x06]   --  C_TO_K(50) - EC_TEMP_SENSOR_OFFSET
+- *   write 0x2 to [0x07]    --  enable threshold 0 with this value
+- *   write 0x85 to [0x06]   --  C_TO_K(60) - EC_TEMP_SENSOR_OFFSET
+- *   write 0x3 to [0x07]    --  enable threshold 1 with this value
+- *
+- * Disable the 60 C threshold, leaving the 50 C threshold unchanged:
+- *   write 2 to [0x05]      --  select temp sensor 2
+- *   write 0x1 to [0x07]    --  disable threshold 1
+- */
+-
+-/* DPTF battery charging current limit */
+-#define EC_ACPI_MEM_CHARGING_LIMIT     0x08
+-
+-/* Charging limit is specified in 64 mA steps */
+-#define EC_ACPI_MEM_CHARGING_LIMIT_STEP_MA   64
+-/* Value to disable DPTF battery charging limit */
+-#define EC_ACPI_MEM_CHARGING_LIMIT_DISABLED  0xff
+-
+-/* Current version of ACPI memory address space */
+-#define EC_ACPI_MEM_VERSION_CURRENT 1
+-
+-
+ /*****************************************************************************/
  /*
-  * If this flag is set, all the other fields are ignored (including
-  * EC_HANG_START_NOW).  This provides the AP a way to stop the hang timer
-  * without reconfiguring any of the other hang detect settings.
+  * HDMI CEC commands
+@@ -3198,8 +3365,6 @@ enum mkbp_cec_event {
   */
--#define EC_HANG_STOP_NOW              (1 << 31)
-+#define EC_HANG_STOP_NOW              BIT(31)
+ #define EC_CMD_VERSION0 0x00DC
  
- struct ec_params_hang_detect {
- 	/* Flags; see EC_HANG_* */
-@@ -2953,8 +2953,8 @@ enum ec_reboot_cmd {
- };
+-#endif  /* !__ACPI__ */
+-
+ /*****************************************************************************/
+ /*
+  * PD commands
+@@ -3540,4 +3705,6 @@ struct ec_response_usb_pd_mux_info {
+ #define EC_LPC_ADDR_OLD_PARAM   EC_HOST_CMD_REGION1
+ #define EC_OLD_PARAM_SIZE       EC_HOST_CMD_REGION_SIZE
  
- /* Flags for ec_params_reboot_ec.reboot_flags */
--#define EC_REBOOT_FLAG_RESERVED0      (1 << 0)  /* Was recovery request */
--#define EC_REBOOT_FLAG_ON_AP_SHUTDOWN (1 << 1)  /* Reboot after AP shutdown */
-+#define EC_REBOOT_FLAG_RESERVED0      BIT(0)  /* Was recovery request */
-+#define EC_REBOOT_FLAG_ON_AP_SHUTDOWN BIT(1)  /* Reboot after AP shutdown */
- 
- struct ec_params_reboot_ec {
- 	uint8_t cmd;           /* enum ec_reboot_cmd */
-@@ -3256,9 +3256,9 @@ struct ec_params_usb_pd_control {
- 	uint8_t swap;
- } __ec_align1;
- 
--#define PD_CTRL_RESP_ENABLED_COMMS      (1 << 0) /* Communication enabled */
--#define PD_CTRL_RESP_ENABLED_CONNECTED  (1 << 1) /* Device connected */
--#define PD_CTRL_RESP_ENABLED_PD_CAPABLE (1 << 2) /* Partner is PD capable */
-+#define PD_CTRL_RESP_ENABLED_COMMS      BIT(0) /* Communication enabled */
-+#define PD_CTRL_RESP_ENABLED_CONNECTED  BIT(1) /* Device connected */
-+#define PD_CTRL_RESP_ENABLED_PD_CAPABLE BIT(2) /* Partner is PD capable */
- 
- #define PD_CTRL_RESP_ROLE_POWER         BIT(0) /* 0=SNK/1=SRC */
- #define PD_CTRL_RESP_ROLE_DATA          BIT(1) /* 0=UFP/1=DFP */
-@@ -3458,10 +3458,10 @@ struct ec_params_usb_pd_mux_info {
- } __ec_align1;
- 
- /* Flags representing mux state */
--#define USB_PD_MUX_USB_ENABLED       (1 << 0)
--#define USB_PD_MUX_DP_ENABLED        (1 << 1)
--#define USB_PD_MUX_POLARITY_INVERTED (1 << 2)
--#define USB_PD_MUX_HPD_IRQ           (1 << 3)
-+#define USB_PD_MUX_USB_ENABLED       BIT(0) /* USB connected */
-+#define USB_PD_MUX_DP_ENABLED        BIT(1) /* DP connected */
-+#define USB_PD_MUX_POLARITY_INVERTED BIT(2) /* CC line Polarity inverted */
-+#define USB_PD_MUX_HPD_IRQ           BIT(3) /* HPD IRQ is asserted */
- 
- struct ec_response_usb_pd_mux_info {
- 	uint8_t flags; /* USB_PD_MUX_*-encoded USB mux state */
++
++
+ #endif  /* __CROS_EC_COMMANDS_H */
 -- 
 2.21.0.1020.gf2820cf01a-goog
 

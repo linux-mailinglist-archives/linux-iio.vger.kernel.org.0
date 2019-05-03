@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84CAD128C1
-	for <lists+linux-iio@lfdr.de>; Fri,  3 May 2019 09:28:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 111D8128D3
+	for <lists+linux-iio@lfdr.de>; Fri,  3 May 2019 09:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727028AbfECH2b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 May 2019 03:28:31 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:41534 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727004AbfECH2a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 May 2019 03:28:30 -0400
-Received: by mail-pf1-f193.google.com with SMTP id 188so2459423pfd.8;
-        Fri, 03 May 2019 00:28:29 -0700 (PDT)
+        id S1727061AbfECH2f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 May 2019 03:28:35 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:37767 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727044AbfECH2c (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 May 2019 03:28:32 -0400
+Received: by mail-pf1-f195.google.com with SMTP id g3so2468451pfi.4;
+        Fri, 03 May 2019 00:28:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=whcenm+FX4qRQPz4bN0k/i1kY0g1Fng8zixTNhvTcc0=;
-        b=uqQ8gcq1579BJNvE9790OgzNmqf4HWV9M7gwyiq9lHH1omarfHr1jDi+g+jksPJRTH
-         H8p1NT3fu+z+GbSYqr+hhhDa1/f3ihBIoxKPQTk//no9j9Ulm/aQsZUfhFq5eG8DvAJB
-         i1Ye2+kQTkhgj5DWYza7dP8/XEyVbAVhnAtmtNIZOK5NG4ql9cyjrvjbiTFjE8sUPnGj
-         0L6QityL0jphNFqbOwjXQKeRwz3Zl+48b2qAaWnskTorLGa8//i4A6Jbq2L3Nhfaopbc
-         XEzgDjcLWPEoZKsHy7Ef0az4f53exQ5zIRIDpsZ3tVIPHDq/YNH+GOnPS0UGSJYb2T9H
-         SYtg==
+        bh=gVZ2hqRXWtLcmOTx5ox6LNbjK3xqtyJ5f5GpEMyudKg=;
+        b=g73z3cy3M5ok9jIYuhXWrFWMx1XV6tg1I96a9U9izJ/ZS0IWD229f2w8WplFIuQ1QR
+         z2sE3omVPJOieDsXIilbDHaJGWfHRJXc7IXO6oqkUVAkyliKINFiJ/EDxuIMwRj+fDzP
+         vQyy6nPLc18A4IlRduGPKz7ckOUAyTMyzTgf7nhGwuxYzDcoOsPD4gtVuTTyt9sK5Up+
+         BCExGq0YQSE3V1KBUnH/EPE6w0kk6n14uhBps4LblIH6UJOfo8KaN6/poYqlHUhKi3ut
+         7xtfpZt4Zf6rClEiUyDiAU2bs8MVV5G6/85BgWR7fUoaPIcLvWZdOAucVHkkC5AWFquy
+         Tc9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=whcenm+FX4qRQPz4bN0k/i1kY0g1Fng8zixTNhvTcc0=;
-        b=l/CAHqVewDcKhfkZZmmIFurRLSbIRUEG/S+dVPelC0zsto/suwjsPwH7BtMRYkDzv6
-         elrAfN6YnR+foCZRRVr7rwbprhv0VKJYMC1HJ+Vi+jlyjJgJjK51YkJQFaHxTayWXGog
-         vil78f6EEKJ6rIcEbO91t8j9grpABh5KUQJlDWyu94Mu+tPUssFpgXATV0UZIgAyx4wZ
-         hcuGnZ8D9alFoKhQRhiHSxj4mox7j5ynO9GPORIgB0lyTDYYJTf3idO3th6QscpOUzKt
-         ZTNQS9VqA1Itj8pX/vmgmrg4D/xfhs0sDEaUbb0X3OPsNnB85iZC8jSAmSXaGhGQ0htK
-         t2bg==
-X-Gm-Message-State: APjAAAXRD5g2/qNoA1nM2Bo3oBxJjbKyoSdUvBG5vt6haHu9ply3ZTgS
-        vnWxoPv0VKohudC/ukyrWrg=
-X-Google-Smtp-Source: APXvYqxWSnuIybJbjilvsuTpxUl/E3mOx1lW2LrSkVylcN9LtF+lbeVXh1tDcp13jE2vVkAUHnpftQ==
-X-Received: by 2002:a63:5443:: with SMTP id e3mr8411067pgm.265.1556868509325;
-        Fri, 03 May 2019 00:28:29 -0700 (PDT)
+        bh=gVZ2hqRXWtLcmOTx5ox6LNbjK3xqtyJ5f5GpEMyudKg=;
+        b=nCrSVoQUggjfMlCHdEQsYK8oCs9zUNOzw4tokheUzCnfj1aLCvgLeeyRWSbmu0Aojx
+         RBJoH20FHxBamiWFoC9cCrrRrQ+1alzjPQ23SG/mIaGuC7qVu15VT02DNcjibTdWnitV
+         S9dsQNpd9K9giTOrwugB5dnY6Qd3p57VoajZuFG/uO2Xo0c/hVJKYEsGNr9AVYinJ5dM
+         KbJn0YkPoPOaDNzGhdTMeAqUpOGkhvzDp4dYl8Ic74LVdPHRyiMuQ2Jncd/2IRQ86hnB
+         AVj4wnR8kWtUMQLx0tJQTn3yQ7mHibo6tm0dTE1QPdZUhNdnXhtdVaiiYVTA76kIJTzD
+         GDdQ==
+X-Gm-Message-State: APjAAAVltKFrZgYym3JSXMN1CIjbuWyAQ+e8CXPXi36BB8P7vly6rNYU
+        QXSow+ur6AZardxxey8oJts=
+X-Google-Smtp-Source: APXvYqxYc5VWDFUgbHShXTIGD8SRCAC8A5n0VEfy+lTVDjkOMeSveLaECAOjNbh8qqWfEAyLHZWVdQ==
+X-Received: by 2002:a62:4602:: with SMTP id t2mr8912629pfa.26.1556868511886;
+        Fri, 03 May 2019 00:28:31 -0700 (PDT)
 Received: from localhost (68.168.130.77.16clouds.com. [68.168.130.77])
-        by smtp.gmail.com with ESMTPSA id k65sm1744995pfj.141.2019.05.03.00.28.28
+        by smtp.gmail.com with ESMTPSA id q5sm1877338pfb.51.2019.05.03.00.28.31
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 03 May 2019 00:28:28 -0700 (PDT)
+        Fri, 03 May 2019 00:28:31 -0700 (PDT)
 From:   Yangtao Li <tiny.windzz@gmail.com>
 To:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
         maxime.ripard@bootlin.com, wens@csie.org, jic23@kernel.org,
@@ -50,9 +50,9 @@ To:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
 Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Yangtao Li <tiny.windzz@gmail.com>
-Subject: [PATCH 3/7] iio: adc: sun4i-gpadc: introduce gpadc_enable and gpadc_disable in gpadc_data
-Date:   Fri,  3 May 2019 03:28:09 -0400
-Message-Id: <20190503072813.2719-4-tiny.windzz@gmail.com>
+Subject: [PATCH 4/7] iio: adc: sun4i-gpadc-iio: support clocks and reset
+Date:   Fri,  3 May 2019 03:28:10 -0400
+Message-Id: <20190503072813.2719-5-tiny.windzz@gmail.com>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20190503072813.2719-1-tiny.windzz@gmail.com>
 References: <20190503072813.2719-1-tiny.windzz@gmail.com>
@@ -61,125 +61,94 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Different sensors may have different enable and disable functions, so
-introduce enable and disable in gpadc_data to support soc specific
-function.
+H6 has bus clock and a reset, so introduce something in
+gpadc_data/sun4i_gpadc_iio and adds the process of the
+clocks and resets.
+
+This is pre-work for supprt it.
 
 Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
 ---
- drivers/iio/adc/sun4i-gpadc-iio.c | 37 ++++++++++++++++++++++++++-----
- 1 file changed, 31 insertions(+), 6 deletions(-)
+ drivers/iio/adc/sun4i-gpadc-iio.c | 32 +++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
-index b41ec0d5964d..de6b8556a549 100644
+index de6b8556a549..f24eb76d65c0 100644
 --- a/drivers/iio/adc/sun4i-gpadc-iio.c
 +++ b/drivers/iio/adc/sun4i-gpadc-iio.c
-@@ -49,6 +49,8 @@ static unsigned int sun6i_gpadc_chan_select(unsigned int chan)
- 	return SUN6I_GPADC_CTRL1_ADC_CHAN_SELECT(chan);
- }
+@@ -22,6 +22,7 @@
+  * shutdown for not being used.
+  */
  
-+struct sun4i_gpadc_iio;
-+
++#include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+@@ -31,6 +32,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regmap.h>
++#include <linux/reset.h>
+ #include <linux/thermal.h>
+ #include <linux/delay.h>
+ 
+@@ -52,6 +54,8 @@ static unsigned int sun6i_gpadc_chan_select(unsigned int chan)
+ struct sun4i_gpadc_iio;
+ 
  struct gpadc_data {
++	bool            has_bus_clk;
++	bool            has_bus_rst;
  	int		temp_offset;
  	int		temp_scale;
-@@ -56,10 +58,15 @@ struct gpadc_data {
- 	unsigned int	tp_adc_select;
- 	unsigned int	(*adc_chan_select)(unsigned int chan);
- 	unsigned int	adc_chan_mask;
-+	int             (*gpadc_enable)(struct sun4i_gpadc_iio *info);
-+	int             (*gpadc_disable)(struct sun4i_gpadc_iio *info);
- 	unsigned int    sensor_count;
- 	unsigned int    temp_data_base;
+ 	unsigned int	tp_mode_en;
+@@ -140,6 +144,8 @@ struct sun4i_gpadc_iio {
+ 	struct mutex			mutex;
+ 	struct sun4i_sensor_tzd         tzds[MAX_SENSOR_COUNT];
+ 	struct device			*sensor_device;
++	struct clk                      *bus_clk;
++	struct reset_control            *reset;
  };
  
-+static int sun4i_gpadc_disable(struct sun4i_gpadc_iio *info);
-+static int sun4i_gpadc_enable(struct sun4i_gpadc_iio *info);
-+
- static const struct gpadc_data sun4i_gpadc_data = {
- 	.temp_offset = -1932,
- 	.temp_scale = 133,
-@@ -67,6 +74,8 @@ static const struct gpadc_data sun4i_gpadc_data = {
- 	.tp_adc_select = SUN4I_GPADC_CTRL1_TP_ADC_SELECT,
- 	.adc_chan_select = &sun4i_gpadc_chan_select,
- 	.adc_chan_mask = SUN4I_GPADC_CTRL1_ADC_CHAN_MASK,
-+	.gpadc_enable = sun4i_gpadc_enable,
-+	.gpadc_disable = sun4i_gpadc_disable,
- 	.sensor_count = 1,
- 	.temp_data_base = SUN4I_GPADC_TEMP_DATA,
- };
-@@ -78,6 +87,8 @@ static const struct gpadc_data sun5i_gpadc_data = {
- 	.tp_adc_select = SUN4I_GPADC_CTRL1_TP_ADC_SELECT,
- 	.adc_chan_select = &sun4i_gpadc_chan_select,
- 	.adc_chan_mask = SUN4I_GPADC_CTRL1_ADC_CHAN_MASK,
-+	.gpadc_enable = sun4i_gpadc_enable,
-+	.gpadc_disable = sun4i_gpadc_disable,
- 	.sensor_count = 1,
- 	.temp_data_base = SUN4I_GPADC_TEMP_DATA,
- };
-@@ -89,6 +100,8 @@ static const struct gpadc_data sun6i_gpadc_data = {
- 	.tp_adc_select = SUN6I_GPADC_CTRL1_TP_ADC_SELECT,
- 	.adc_chan_select = &sun6i_gpadc_chan_select,
- 	.adc_chan_mask = SUN6I_GPADC_CTRL1_ADC_CHAN_MASK,
-+	.gpadc_enable = sun4i_gpadc_enable,
-+	.gpadc_disable = sun4i_gpadc_disable,
- 	.sensor_count = 1,
- 	.temp_data_base = SUN4I_GPADC_TEMP_DATA,
- };
-@@ -97,6 +110,8 @@ static const struct gpadc_data sun8i_a33_gpadc_data = {
- 	.temp_offset = -1662,
- 	.temp_scale = 162,
- 	.tp_mode_en = SUN8I_GPADC_CTRL1_CHOP_TEMP_EN,
-+	.gpadc_enable = sun4i_gpadc_enable,
-+	.gpadc_disable = sun4i_gpadc_disable,
- 	.sensor_count = 1,
- 	.temp_data_base = SUN4I_GPADC_TEMP_DATA,
- };
-@@ -402,10 +417,8 @@ static irqreturn_t sun4i_gpadc_fifo_data_irq_handler(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
+ #define SUN4I_GPADC_ADC_CHANNEL(_channel, _name) {		\
+@@ -564,14 +570,36 @@ static int sun4i_gpadc_probe_dt(struct platform_device *pdev,
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
  
--static int sun4i_gpadc_runtime_suspend(struct device *dev)
-+static int sun4i_gpadc_disable(struct sun4i_gpadc_iio *info)
- {
--	struct sun4i_gpadc_iio *info = iio_priv(dev_get_drvdata(dev));
--
- 	/* Disable the ADC on IP */
- 	regmap_write(info->regmap, SUN4I_GPADC_CTRL1, 0);
- 	/* Disable temperature sensor on IP */
-@@ -414,10 +427,8 @@ static int sun4i_gpadc_runtime_suspend(struct device *dev)
- 	return 0;
- }
+-	info->regmap = devm_regmap_init_mmio(&pdev->dev, base,
+-					     &sun4i_gpadc_regmap_config);
++	if (info->data->has_bus_clk)
++		info->regmap = devm_regmap_init_mmio_clk(&pdev->dev, "bus",
++							 base,
++						&sun4i_gpadc_regmap_config);
++	else
++		info->regmap = devm_regmap_init_mmio(&pdev->dev, base,
++						&sun4i_gpadc_regmap_config);
++
+ 	if (IS_ERR(info->regmap)) {
+ 		ret = PTR_ERR(info->regmap);
+ 		dev_err(&pdev->dev, "failed to init regmap: %d\n", ret);
+ 		return ret;
+ 	}
  
--static int sun4i_gpadc_runtime_resume(struct device *dev)
-+static int sun4i_gpadc_enable(struct sun4i_gpadc_iio *info)
- {
--	struct sun4i_gpadc_iio *info = iio_priv(dev_get_drvdata(dev));
--
- 	/* clkin = 6MHz */
- 	regmap_write(info->regmap, SUN4I_GPADC_CTRL0,
- 		     SUN4I_GPADC_CTRL0_ADC_CLK_DIVIDER(2) |
-@@ -435,6 +446,20 @@ static int sun4i_gpadc_runtime_resume(struct device *dev)
- 	return 0;
- }
++	if (info->data->has_bus_rst) {
++		info->reset = devm_reset_control_get(&pdev->dev, "bus");
++		if (IS_ERR(info->reset)) {
++			ret = PTR_ERR(info->reset);
++			return ret;
++		}
++	}
++
++	if (info->data->has_bus_clk) {
++		info->bus_clk = devm_clk_get(&pdev->dev, "bus");
++		if (IS_ERR(info->bus_clk)) {
++			ret = PTR_ERR(info->bus_clk);
++			return ret;
++		}
++	}
++
+ 	if (IS_ENABLED(CONFIG_THERMAL_OF))
+ 		info->sensor_device = &pdev->dev;
  
-+static int sun4i_gpadc_runtime_suspend(struct device *dev)
-+{
-+	struct sun4i_gpadc_iio *info = iio_priv(dev_get_drvdata(dev));
-+
-+	return info->data->gpadc_disable(info);
-+}
-+
-+static int sun4i_gpadc_runtime_resume(struct device *dev)
-+{
-+	struct sun4i_gpadc_iio *info = iio_priv(dev_get_drvdata(dev));
-+
-+	return info->data->gpadc_enable(info);
-+}
-+
- static int sun4i_gpadc_get_temp(void *data, int *temp)
- {
- 	struct sun4i_sensor_tzd *tzd = data;
 -- 
 2.17.1
 

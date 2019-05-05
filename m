@@ -2,41 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BE211409A
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2019 17:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 056CB140A4
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2019 17:33:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727847AbfEEPZy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 May 2019 11:25:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36776 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727343AbfEEPZy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 5 May 2019 11:25:54 -0400
+        id S1727295AbfEEPc7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 May 2019 11:32:59 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:38516 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726905AbfEEPc7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 May 2019 11:32:59 -0400
 Received: from archlinux (cpc91196-cmbg18-2-0-cust659.5-4.cable.virginm.net [81.96.234.148])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CF8822082F;
-        Sun,  5 May 2019 15:25:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557069952;
-        bh=fIqjOlxzOgrK3zCqzNMKHZNwuH1rod6mWG8P0cloWxM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pRmC2HWrd/lZWHHUHXLFkAaXe4zbBbq5NxOp6N+4yOF2QuRYcAKTRETfTnRgp1R+z
-         jMDwuTNeDamVvVLr3ghaeETGH4RIkrkd1uyg6l3cAZXicvv+om3W/guQIVKzMHh4Dz
-         dq/XpnujkJA/IP0b40jHsXS13rkqkJJ7jSxS53KQ=
-Date:   Sun, 5 May 2019 16:25:46 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Yangtao Li <tiny.windzz@gmail.com>
-Cc:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        maxime.ripard@bootlin.com, wens@csie.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 6/7] iio: adc: sun4i-gpadc-iio: add support for H6
- thermal sensor
-Message-ID: <20190505162546.634bae93@archlinux>
-In-Reply-To: <20190503072813.2719-7-tiny.windzz@gmail.com>
-References: <20190503072813.2719-1-tiny.windzz@gmail.com>
-        <20190503072813.2719-7-tiny.windzz@gmail.com>
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 7BD209E8C78;
+        Sun,  5 May 2019 16:32:57 +0100 (BST)
+Date:   Sun, 5 May 2019 16:32:55 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [RFC 0/1] Add new sysfs ABI for chromebook devices
+Message-ID: <20190505163255.41c25c67@archlinux>
+In-Reply-To: <cover.1556873525.git.fabien.lahoudere@collabora.com>
+References: <cover.1556873525.git.fabien.lahoudere@collabora.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,146 +31,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  3 May 2019 03:28:12 -0400
-Yangtao Li <tiny.windzz@gmail.com> wrote:
+On Fri,  3 May 2019 12:54:45 +0200
+Fabien Lahoudere <fabien.lahoudere@collabora.com> wrote:
 
-> This patch adds support for the H6 ths sensor.
+> Chromebooks embedded controller (EC) provides new field in the 3rd version of 
+> its protocol. Those values need to be exposed as sysfs entries.
 > 
-> TODO: calibrate thermal sensor by using information from sid.
-> 
-> Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
-This and the patches before it that I haven't comment on look fine to me.
+> Minimum and maximum frequencies may probably be a standard iio ABI.
+> There is an existing ABI (sampling_frequency_available) but only for discrete 
+> set of values.
+> We have different possible solution and I want to ask interested people for the 
+> best one:
+> 1. we keep the ABI proposed in this RFC (in the chromebook specific code)
+> 2. we move min and max freq as 2 different standard ABI
+> 3. we add a new standard iio ABI to set a range (sampling_frequency_range)
+> 4. we change the 'sampling_frequency_available' ABI to return discrete values 
+> like '2 4 6 8' or a range like '[2 - 8]'
+> 5. the solution I didn't think about
+Gah, it's been on my todo list for far too long to put out proper docs for
+it but we do have a way of doing this in IIO.
 
-thanks,
+Best bet is too look at the code in
+industrialio-core.c for iio_read_channel_info_avail, and specifically
+iio_format_avail_range
+
+That produces strings of the format [MIN STEP MAX] so more or less your
+option 4, with the [] syntax indicating to userspace that it's a range
+version.
+
+We did this a while back to provide a single interface for consumer drivers
+and for userspace.  If you poke around in the period around when that
+patch was merged you'll find a discussion which was pretty much the
+options you have above.
+
+Note if anyone else wants to have a go at docs for this feature I would
+definitely welcome it!
 
 Jonathan
-> ---
->  drivers/iio/adc/sun4i-gpadc-iio.c | 65 +++++++++++++++++++++++++++++++
->  include/linux/mfd/sun4i-gpadc.h   |  9 +++++
->  2 files changed, 74 insertions(+)
+
 > 
-> diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
-> index f24eb76d65c0..9b6fc592f54c 100644
-> --- a/drivers/iio/adc/sun4i-gpadc-iio.c
-> +++ b/drivers/iio/adc/sun4i-gpadc-iio.c
-> @@ -120,6 +120,20 @@ static const struct gpadc_data sun8i_a33_gpadc_data = {
->  	.temp_data_base = SUN4I_GPADC_TEMP_DATA,
->  };
->  
-> +static int sun50i_gpadc_disable(struct sun4i_gpadc_iio *info);
-> +static int sun50i_gpadc_enable(struct sun4i_gpadc_iio *info);
-> +
-> +static const struct gpadc_data sun50i_h6_gpadc_data = {
-> +	.temp_offset = -2809,
-> +	.temp_scale = -67,
-> +	.has_bus_clk = true,
-> +	.has_bus_rst = true,
-> +	.gpadc_enable = sun50i_gpadc_enable,
-> +	.gpadc_disable = sun50i_gpadc_disable,
-> +	.sensor_count = 2,
-> +	.temp_data_base = SUN50I_H6_GPADC_TEMP_DATA,
-> +};
-> +
->  struct sun4i_sensor_tzd {
->  	struct sun4i_gpadc_iio          *info;
->  	struct thermal_zone_device      *tzd;
-> @@ -452,6 +466,53 @@ static int sun4i_gpadc_enable(struct sun4i_gpadc_iio *info)
->  	return 0;
->  }
->  
-> +static int sun50i_gpadc_enable(struct sun4i_gpadc_iio *info)
-> +{
-> +	int ret, val;
-> +
-> +	ret = reset_control_deassert(info->reset);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = clk_prepare_enable(info->bus_clk);
-> +	if (ret)
-> +		goto assert_reset;
-> +
-> +	/*
-> +	 * clkin = 24MHz
-> +	 * T acquire = clkin / (SUN50I_GPADC_CTRL0_T_ACQ + 1)
-> +	 *           = 20us
-> +	 */
-> +	regmap_write(info->regmap, SUN4I_GPADC_CTRL0,
-> +		     SUN50I_GPADC_CTRL0_T_ACQ(479));
-> +	/* average over 4 samples */
-> +	regmap_write(info->regmap, SUN50I_H6_GPADC_CTRL3,
-> +		     SUN4I_GPADC_CTRL3_FILTER_EN |
-> +		     SUN4I_GPADC_CTRL3_FILTER_TYPE(1));
-> +	/* period = (SUN50I_GPADC_TPR_TEMP_PERIOD + 1) * 4096 / clkin; ~10ms */
-> +	regmap_write(info->regmap, SUN50I_GPADC_TPR,
-> +		     SUN50I_GPADC_TPR_TEMP_PERIOD(58));
-> +	/* TODO: calibrate ths */
-> +	/* enable sensor */
-> +	val = GENMASK(info->data->sensor_count - 1, 0);
-> +	regmap_write(info->regmap, SUN4I_GPADC_CTRL1, val);
-> +
-> +	return 0;
-> +
-> +assert_reset:
-> +	reset_control_assert(info->reset);
-> +
-> +	return ret;
-> +}
-> +
-> +static int sun50i_gpadc_disable(struct sun4i_gpadc_iio *info)
-> +{
-> +	clk_disable_unprepare(info->bus_clk);
-> +	reset_control_assert(info->reset);
-> +
-> +	return 0;
-> +}
-> +
->  static int sun4i_gpadc_runtime_suspend(struct device *dev)
->  {
->  	struct sun4i_gpadc_iio *info = iio_priv(dev_get_drvdata(dev));
-> @@ -546,6 +607,10 @@ static const struct of_device_id sun4i_gpadc_of_id[] = {
->  		.compatible = "allwinner,sun8i-a33-ths",
->  		.data = &sun8i_a33_gpadc_data,
->  	},
-> +	{
-> +		.compatible = "allwinner,sun50i-h6-ths",
-> +		.data = &sun50i_h6_gpadc_data,
-> +	},
->  	{ /* sentinel */ }
->  };
->  
-> diff --git a/include/linux/mfd/sun4i-gpadc.h b/include/linux/mfd/sun4i-gpadc.h
-> index 139872c2e0fe..f505013e9c0d 100644
-> --- a/include/linux/mfd/sun4i-gpadc.h
-> +++ b/include/linux/mfd/sun4i-gpadc.h
-> @@ -19,6 +19,9 @@
->  #define SUN4I_GPADC_CTRL0_FS_DIV(x)			((GENMASK(3, 0) & (x)) << 16)
->  #define SUN4I_GPADC_CTRL0_T_ACQ(x)			(GENMASK(15, 0) & (x))
->  
-> +/* TP_CTRL0 bits for sun50i SOCs */
-> +#define SUN50I_GPADC_CTRL0_T_ACQ(x)			((GENMASK(15, 0) & (x)) << 16)
-> +
->  #define SUN4I_GPADC_CTRL1				0x04
->  
->  #define SUN4I_GPADC_CTRL1_STYLUS_UP_DEBOUNCE(x)		((GENMASK(7, 0) & (x)) << 12)
-> @@ -49,6 +52,9 @@
->  #define SUN4I_GPADC_CTRL2_PRE_MEA_EN			BIT(24)
->  #define SUN4I_GPADC_CTRL2_PRE_MEA_THRE_CNT(x)		(GENMASK(23, 0) & (x))
->  
-> +#define SUN50I_GPADC_TPR				0x08
-> +#define SUN50I_GPADC_TPR_TEMP_PERIOD(x)			((GENMASK(19, 0) & (x)) << 12)
-> +
->  #define SUN4I_GPADC_CTRL3				0x0c
->  
->  #define SUN4I_GPADC_CTRL3_FILTER_EN			BIT(2)
-> @@ -84,6 +90,9 @@
->  #define SUN4I_GPADC_TEMP_DATA				0x20
->  #define SUN4I_GPADC_DATA				0x24
->  
-> +#define SUN50I_H6_GPADC_CTRL3				0x30
-> +#define SUN50I_H6_GPADC_TEMP_DATA			0xc0
-> +
->  #define SUN4I_GPADC_IRQ_FIFO_DATA			0
->  #define SUN4I_GPADC_IRQ_TEMP_DATA			1
->  
+> Thanks
+> 
+> Gwendal Grignou (1):
+>   iio: common: cros_ec_sensors: add extra sensor API
+> 
+>  .../ABI/testing/sysfs-bus-iio-cros-ec         |  24 ++++
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 126 +++++++++++++++++-
+>  .../linux/iio/common/cros_ec_sensors_core.h   |   7 +
+>  include/linux/mfd/cros_ec_commands.h          |  21 +++
+>  4 files changed, 177 insertions(+), 1 deletion(-)
+> 
 

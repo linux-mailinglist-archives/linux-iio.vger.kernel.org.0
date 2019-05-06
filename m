@@ -2,199 +2,186 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 325DC15324
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2019 19:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58AEA15469
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2019 21:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726616AbfEFRz3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 May 2019 13:55:29 -0400
-Received: from vps.xff.cz ([195.181.215.36]:53132 "EHLO vps.xff.cz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726591AbfEFRz3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 6 May 2019 13:55:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=megous.com; s=mail;
-        t=1557165326; bh=QToEKXP2eCsa3a89ivPJya44poxVDY+W0mrcVNncgzU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aC+4w2+sYJQXzcI226MvyxCEq28Ds0mPf9srDIxrQGAflss/0ZPhrSV2Fq/xNlJiO
-         iHF6yRftWmuTOR1UssD3uq4Cn9LYZD+6TXm7P04pXINVmEB8dJ9StUX5vVAeHxxNeg
-         Nqv6HcP8aHxISL+7r3vHuQLtMuaFF6fx5+DUJY2M=
-Date:   Mon, 6 May 2019 19:55:25 +0200
-From:   =?utf-8?Q?Ond=C5=99ej?= Jirman <megous@megous.com>
-To:     Frank Lee <tiny.windzz@gmail.com>
-Cc:     Icenowy Zheng <icenowy@aosc.io>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, lars@metafoo.de,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>,
-        robh+dt@kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        pmeerw@pmeerw.net, knaack.h@gmx.de,
-        Lee Jones <lee.jones@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 1/7] iio: adc: sun4i-gpadc: rework for support multiple
- thermal sensor
-Message-ID: <20190506175525.swc5u7j6ntry7v3g@core.my.home>
-Mail-Followup-To: Frank Lee <tiny.windzz@gmail.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
-        lars@metafoo.de, Maxime Ripard <maxime.ripard@bootlin.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>,
-        robh+dt@kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>, pmeerw@pmeerw.net,
-        knaack.h@gmx.de, Lee Jones <lee.jones@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-References: <20190503072813.2719-1-tiny.windzz@gmail.com>
- <20190503072813.2719-2-tiny.windzz@gmail.com>
- <20190505162215.3594f77d@archlinux>
- <20190506122807.4u323iys74jddcet@flea>
- <282ccf0979e6c58effd0e177917bdf824c32f64e.camel@aosc.io>
- <CAEExFWusPoxtkGCoA+3gXq69cXZEfjZW+UpHW_0UfrcjpLmaXg@mail.gmail.com>
+        id S1726329AbfEFT2V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 May 2019 15:28:21 -0400
+Received: from secvs02.rockwellcollins.com ([205.175.225.241]:55856 "EHLO
+        secvs02.rockwellcollins.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726249AbfEFT2V (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 May 2019 15:28:21 -0400
+X-RC-All-From: , 205.175.225.60, No hostname, adam.michaelis@rockwellcollins.com,
+ Adam Michaelis <adam.michaelis@rockwellcollins.com>, , 
+X-RC-Attachments: , ,
+X-RC-RemoteIP: 205.175.225.60
+X-RC-RemoteHost: No hostname
+X-RC-IP-Hostname: secip02.rockwellcollins.com
+X-RC-IP-MID: 254077175
+X-RC-IP-Group: GOOGLE_RELAYED
+X-RC-IP-Policy: $GOOGLE_RELAYED
+X-RC-IP-SBRS: None
+Received: from unknown (HELO mail-ot1-f70.google.com) ([205.175.225.60])
+  by secvs02.rockwellcollins.com with ESMTP/TLS/AES128-GCM-SHA256; 06 May 2019 14:28:19 -0500
+Received: by mail-ot1-f70.google.com with SMTP id g8so8021564otq.6
+        for <linux-iio@vger.kernel.org>; Mon, 06 May 2019 12:28:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=a3/jhiD/ZbEhEosCJkMtvsmPNvbV1LiPl/2lWhpTi5w=;
+        b=fe0MgCj14fq7sZ7gG9G8E2tMClhebNWIdYw16l5jTSHMjHxbaNdH1SNo4+TQ8mcuHd
+         8l6h2W+Gc7rjr92lR4Fn0WH1264mv9D8oDJNaFO632ygfQcYhXQIGnLqc7v+LZtVqMgn
+         5oK3nzpTzsxud0ZYbnaPPSe5GgiuAaCbMf7pDvuzOrX75rTSADQyY1Sg7w3YXsIIQIGe
+         nqfcBHa6PZ/OQ+1ll0BFI89HgnXK4gP827MJUrSzIO7j+Zcm/uzVuM90FAN9lPcNXWmM
+         9tIMDHjBVNdarK9obvENW7kc1FpWgcH9iPZEEK7x8FZhh7WTfKG3y6sXcK3qM6oCpgV/
+         QjOQ==
+X-Gm-Message-State: APjAAAXE6hz8tB9jPxtY6xuW84B1RVB4iAjPSgyIfl15LqDkY9L/gHJJ
+        07Zopqqxx/WxKn2Ws907loEgMdu0B1/IZekPyw76JGFWIjt7OQviBci2V/NMjIDJ20Zej629jsO
+        LTbDVXwddSfb0FiMXTGwCWFMiZXXSGq5KJEHfUWc2AnZCRBNBU1gKxCY=
+X-Received: by 2002:a9d:7850:: with SMTP id c16mr17131335otm.201.1557170898350;
+        Mon, 06 May 2019 12:28:18 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxrQXTXRB8Wwnb7clRJC81hWLLDcaBCV2PI3LOlcyFuKV+BEf5DxOqZNIZkybetlKC4TJEj1pbpM3rzKPXUO0Y=
+X-Received: by 2002:a9d:7850:: with SMTP id c16mr17131322otm.201.1557170898091;
+ Mon, 06 May 2019 12:28:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEExFWusPoxtkGCoA+3gXq69cXZEfjZW+UpHW_0UfrcjpLmaXg@mail.gmail.com>
+References: <1556745423-11368-1-git-send-email-adam.michaelis@rockwellcollins.com>
+ <1556745423-11368-2-git-send-email-adam.michaelis@rockwellcollins.com> <20190505132234.313b78e9@archlinux>
+In-Reply-To: <20190505132234.313b78e9@archlinux>
+From:   Adam Michaelis <adam.michaelis@rockwellcollins.com>
+Date:   Mon, 6 May 2019 14:28:06 -0500
+Message-ID: <CALMrGWVOZbnomuSXdg=Z-a+Az=gRKHgj5_gSnDYiGPGJGp71pQ@mail.gmail.com>
+Subject: Re: [PATCH 2/6] dt-bindings: iio: ad7949: Add adi,reference-select
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
+        michael.hennerich@analog.com, knaack.h@gmx.de, pmeerw@pmeerw.net,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        Couret Charles-Antoine <charles-antoine.couret@essensium.com>,
+        devicetree@vger.kernel.org,
+        Brandon Maier <brandon.maier@rockwellcollins.com>,
+        Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+The property name "adi,reference-select" was copied from the
+adi,ad7124 bindings as a similar hardware register configuration value
+field. If the property was separated into three independent fields,
+there would be a lot of explanation and checking required since many
+of the combinations are invalid (for example, temperature sensor and
+buffer are always enabled if internal reference is used). I could
+possibly see removing the temperature sensor configuration from the
+device tree, but, the current driver (even after these patches) does
+not provide any support to read the temperature sensor's value. I
+include that information in the configuration options as a summary of
+the datasheet.
 
-On Tue, May 07, 2019 at 01:08:39AM +0800, Frank Lee wrote:
-> On Tue, May 7, 2019 at 12:52 AM Icenowy Zheng <icenowy@aosc.io> wrote:
+On Sun, May 5, 2019 at 7:22 AM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Wed,  1 May 2019 16:16:59 -0500
+> Adam Michaelis <adam.michaelis@rockwellcollins.com> wrote:
+>
+> > Adding optional parameter to AD7949 to specify the source for the
+> > reference voltage signal. Default value is maintaned with option '6' to
+> > match previous version of driver.
 > >
-> > 在 2019-05-06一的 14:28 +0200，Maxime Ripard写道：
-> > > Hi,
-> > >
-> > > On Sun, May 05, 2019 at 04:22:15PM +0100, Jonathan Cameron wrote:
-> > > > On Fri,  3 May 2019 03:28:07 -0400
-> > > > Yangtao Li <tiny.windzz@gmail.com> wrote:
-> > > >
-> > > > > For some SOCs, there are more than one thermal sensor, and there
-> > > > > are
-> > > > > currently four sensors on the A80. So we need to do some work in
-> > > > > order
-> > > > > to support multiple thermal sensors:
-> > > > >
-> > > > >   1) add sensor_count in gpadc_data.
-> > > > >   2) introduce sun4i_sensor_tzd in sun4i_gpadc_iio, to support
-> > > > > multiple
-> > > > >      thermal_zone_device and distinguish between different
-> > > > > sensors.
-> > > > >   3) modify read temperature and initialization function.
-> > > >
-> > > > This comment doesn't mention the devm change. If it had it would
-> > > > have
-> > > > raised immediate alarm bells.
-> > > >
-> > > > I'm also not keen on the web of pointers that this driver is
-> > > > steadily
-> > > > evolving.  I can't immediately see how to reduce that complexity
-> > > > however.
-> > >
-> > > So I might be responsible for that, and looking back, this has been a
-> > > mistake.
-> > >
-> > > This driver was initally put together to support a controller found
-> > > in
-> > > older (A10 up to A31) Allwinner SoCs. This controller had an ADC
-> > > driver that could be operated as a touchscreen controller, and was
-> > > providing a CPU temperature sensor and a general purpose ADC.
-> > >
-> > > However, we already had a driver for that controller in drivers/input
-> > > to report the CPU temperature, and the one in IIO was introduced to
-> > > support the general purpose ADC (and the CPU temperature). The long
-> > > term goal was to add the touchscreen feature as well eventually so
-> > > that we could remove the one in drivers/input. That didn't happen.
-> > >
-> > > At the same time, the Allwinner hardware slowly evolved to remove the
-> > > touchscreen and ADC features, and only keep the CPU temperature
-> > > readout. It then evolved further on to support multiple temperatures
-> > > (for different clusters, the GPU, and so on).
-> > >
-> > > So, today, we're in a situation where I was pushing everything into
-> > > that IIO drivers since there was similiraties between all the
-> > > generations, but the fact that we have to support so many odd cases
-> > > (DT bindings compatibility, controllers with and without ADC, etc)
-> > > that it becomes a real mess.
-> > >
-> > > And that mess isn't really used by anybody, since we want to have the
-> > > touchscreen.
-> > >
-> > > There's only one SoC that is supported only by that driver, which is
-> > > the A33 that only had a CPU temperature readout, and is still pretty
-> > > similar to the latest SoC from Allwinner (that is supported by this
-> > > series).
-> > >
-> > > I guess, for everyone's sanity and in order to not stall this
-> > > further,
-> > > it would just be better to create an hwmon driver for the A33 (and
-> > > onwards, including the H6) for the SoC that just have the temperature
-> > > readout feature. And for the older SoC, we just keep the older driver
-> > > under input/. Once the A33 is supported, we'll remove the driver in
-> > > IIO (and the related bits in drivers/mfd).
-> 
-> a hwmon driver or a thermal driver？
-> 
+> > Signed-off-by: Adam Michaelis <adam.michaelis@rockwellcollins.com>
+> > ---
+> >  .../devicetree/bindings/iio/adc/ad7949.txt         | 22 ++++++++++++++++++++--
+> >  1 file changed, 20 insertions(+), 2 deletions(-)
 > >
-> > I think a thermal driver is better.
-> 
-> This is what I hope to see a few months ago.
-> 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/ad7949.txt b/Documentation/devicetree/bindings/iio/adc/ad7949.txt
+> > index c7f5057356b1..14ee9a2cb2a5 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/ad7949.txt
+> > +++ b/Documentation/devicetree/bindings/iio/adc/ad7949.txt
+> > @@ -6,11 +6,29 @@ Required properties:
+> >       * "adi,ad7682"
+> >       * "adi,ad7689"
+> >   - reg: spi chip select number for the device
+> > - - vref-supply: The regulator supply for ADC reference voltage
 > >
-> > Other SoCs' thermal sensor drivers are all thermal drivers.
-> >
-> > >
-> > > Armbian already has a driver for that they never upstreamed iirc, so
-> > > it might be a good starting point, and we would add the support for
-> > > the H6. How does that sound?
-> >
-> > I think the developer abandoned to upstream it because of the previous
-> > problem ;-)
-> >
-> > Maybe it can be taken and add A33&H6 support.
-> 
-> If OK, I am going to start some thermal driver work this weekend.  : )
+> > -Example:
+> > +Optional properties:
+> > + - adi,reference-select: Select the reference voltage source to use
+> > + when converting the input voltages. Valid values are:
+> So my immediate thought here is we are mapping one binding to several
+> different things. Some of which are definitely better described in other
+> ways.
+>
+> So let us break it down:
+>
+> Internal vs external.
+> - External should require a regulator.  If the regulator is there, normal
+> assumption would be you want to use it.
+>
+> Which internal reference?  Hmm. This would be incompatible with the external
+> regulator and I'd expect the presence of such a regulator to override this.
+> That does need a new binding.
+> adi,internal-reference-milivolts = 2500 or 4096.   Much nicer to have
+> real numbers for someone wondering how it is configured than an enum.
+>
+> Temperature sensor enabled: Why is this a devicetree question rather than
+> a runtime decision?
+>
+> Buffer enabled: This needs a custom binding
+> adi,external-reference-buffer-enable or something like that?
+>
+> Makes for a more consistent binding where some elements can be common
+> across similar devices.  It would be good to see if similar bindings
+> already exist.  Potentially tings like the reference-buffer enable
+> may be worth making standard ADC properties rather than device
+> specific.
+>
+> Thanks,
+>
+> Jonathan
+>
+>
+> > +   0: Internal 2.5V reference; temperature sensor enabled
+> > +   1: Internal 4.096V reference; temperature sensor enabled
+> > +   2: External reference, temperature sensor enabled, no buffer
+> > +   3: External reference, temperature sensor enabled, buffer enabled
+> > +   6: External reference, temperature sensor disabled, no buffer
+> > +   7: External reference, temperature sensor disabled, buffer enabled
+> > + - vref-supply: The regulator supply for ADC reference voltage. Required
+> > + if external reference selected by 'adi,reference-select'.
+> > +
+> > +Examples:
+> >  adc@0 {
+> >       compatible = "adi,ad7949";
+> >       reg = <0>;
+> > +     adi,reference-select = <2>;
+> >       vref-supply = <&vdd_supply>;
+> >  };
+> > +
+> > +adc@0 {
+> > +     compatible = "adi,ad7949";
+> > +     reg = <0>;
+> > +     adi,reference-select = <0>;
+> > +};
+>
 
-There are plenty of thermal drivers flying around, with varying levels
-of support for various SoCs:
 
-- H3/H5: https://megous.com/git/linux/commit/?h=ths-5.1&id=b8e20c5da7a00b3a3fa1b274fc8d5bea95872b0a
-- A83T: https://megous.com/git/linux/commit/?h=ths-5.1&id=796dff9a946fd475cc1e4bb948a723ea841c640c
-- H6: https://megous.com/git/linux/commit/?h=opi3-5.1&id=aeab762c19b4aa228a295258c9d6b2e1f143bf86
+-- 
 
-For H3/H5 Icenowy also tried to upstream some variant of my THS driver, with
-better SID/calibration data reading support.
+Adam Michaelis | Sr Software Engineer | Comm Engineering | Mission Systems
 
-I'd suggest starting with the H6 driver above (as that implements the
-calibration data readout correctly), and make it so that it can support multiple
-SoCs.
+COLLINS AEROSPACE
 
-regards,
-	o.
+400 Collins Road, Cedar Rapids, IA 52498 U.S.A.
 
-> Cheers,
-> Yangtao
-> 
-> >
-> > >
-> > > Sorry for wasting everybody's time on this.
-> > >
-> > > Maxime
-> > >
-> > > --
-> > > Maxime Ripard, Bootlin
-> > > Embedded Linux and Kernel engineering
-> > > https://bootlin.com
-> > > _______________________________________________
-> > > linux-arm-kernel mailing list
-> > > linux-arm-kernel@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> >
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Tel: +1 319 295 4102
+
+adam.michaelis@collins.com | collinsaerospace.com
+
+
+
+CONFIDENTIALITY WARNING: This message may contain proprietary and/or
+privileged information of Collins Aerospace and its affiliated
+companies. If you are not the intended recipient, please 1) Do not
+disclose, copy, distribute or use this message or its contents. 2)
+Advise the sender by return email. 3) Delete all copies (including all
+attachments) from your computer. Your cooperation is greatly
+appreciated.

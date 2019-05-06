@@ -2,228 +2,225 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFAC714BA6
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2019 16:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31D4814BCF
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2019 16:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726302AbfEFORt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 May 2019 10:17:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42784 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726190AbfEFORs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 6 May 2019 10:17:48 -0400
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D368520C01;
-        Mon,  6 May 2019 14:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557152268;
-        bh=KdeRILpTjWSB3lMVpKPyYNeVBsxjh4PqpfZ+DCj85jQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HsrZ9E+hTQoliTdhrcsFRFV6UBvHBT/GsNdDofnH8QvXI+JXYi2Z6PEc7jzsb6SSz
-         UbWdoKaw3kkIVN5V2mPE822kfCRi5xS9yd6zpPOYdeS/q0AQE72Je2WuSHnkG4zrtY
-         S9lB4qrbZptj7qHsJYGxsJ7jVqKCu3UdJGkt2PO8=
-Received: by mail-qk1-f175.google.com with SMTP id a132so7837297qkb.13;
-        Mon, 06 May 2019 07:17:47 -0700 (PDT)
-X-Gm-Message-State: APjAAAU+pjVlvaTOM668/X9SoHVEVTTKF4ASnV6MRyCCnlpTgdsw7+5A
-        DQaVGsm/lE3CLD5MnVM+oTlmRbPwRZ3Q5z7Awg==
-X-Google-Smtp-Source: APXvYqx92AuG59JmQNKgfchswPwGNjmkT9qmBU/HsXQfKOJH1UxJadbVwkiAAZKYc7Cbb9Fl0nbc9PqNlHl8GS1wqEw=
-X-Received: by 2002:a37:4711:: with SMTP id u17mr19850810qka.326.1557152267032;
- Mon, 06 May 2019 07:17:47 -0700 (PDT)
-MIME-Version: 1.0
+        id S1726277AbfEFOaF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 May 2019 10:30:05 -0400
+Received: from mail-eopbgr790052.outbound.protection.outlook.com ([40.107.79.52]:18872
+        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726283AbfEFOaF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 6 May 2019 10:30:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector1-analog-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kNQBPkuoQE4YyTB4E+acGgcXdpTwZvy7yT8VJlFgT1s=;
+ b=swpKNIkJixpdOFLZJcKHKF5cjSNWKEfVPI59+Oq9fBAuItnyw0U7vCSvmND0kxXrzUxryPuWNQlsHdCh4mAt+6z9TRc3U8nfPWeR24Xi6s7Yg5v8iw5oX550+WVAJnd1B1L0iM3JFz5dI4PMkrXFphL9HSE73gqjLewr+5NIEco=
+Received: from BN6PR03CA0086.namprd03.prod.outlook.com (2603:10b6:405:6f::24)
+ by BL2PR03MB545.namprd03.prod.outlook.com (2a01:111:e400:c23::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1856.15; Mon, 6 May
+ 2019 14:29:56 +0000
+Received: from SN1NAM02FT052.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e44::207) by BN6PR03CA0086.outlook.office365.com
+ (2603:10b6:405:6f::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1856.11 via Frontend
+ Transport; Mon, 6 May 2019 14:29:56 +0000
+Authentication-Results: spf=pass (sender IP is 137.71.25.55)
+ smtp.mailfrom=analog.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
+ header.from=analog.com;
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
+Received: from nwd2mta1.analog.com (137.71.25.55) by
+ SN1NAM02FT052.mail.protection.outlook.com (10.152.72.146) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1856.11
+ via Frontend Transport; Mon, 6 May 2019 14:29:56 +0000
+Received: from NWD2HUBCAS8.ad.analog.com (nwd2hubcas8.ad.analog.com [10.64.69.108])
+        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x46ETtla026678
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Mon, 6 May 2019 07:29:55 -0700
+Received: from NWD2MBX7.ad.analog.com ([fe80::190e:f9c1:9a22:9663]) by
+ NWD2HUBCAS8.ad.analog.com ([fe80::90a0:b93e:53c6:afee%12]) with mapi id
+ 14.03.0415.000; Mon, 6 May 2019 10:29:54 -0400
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "robh+dt@kernel.org" <robh+dt@kernel.org>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [RFC][PATCH] dt-bindings: iio: accel: add adi,adxl345.yaml
+ binding
+Thread-Topic: [RFC][PATCH] dt-bindings: iio: accel: add adi,adxl345.yaml
+ binding
+Thread-Index: AQHVBAFSe2DVRijSLECaFD7K1EKCAqZeZ/CAgAADb4A=
+Date:   Mon, 6 May 2019 14:29:54 +0000
+Message-ID: <fdf60ff605e040ef24ae10c1e0b3b522de6ef9ab.camel@analog.com>
 References: <20190506114610.28083-1-alexandru.ardelean@analog.com>
-In-Reply-To: <20190506114610.28083-1-alexandru.ardelean@analog.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 6 May 2019 09:17:33 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqL-jKM-qpawVoaLaqTpZhqNNFmgAOjv_azSwOU6zFS08g@mail.gmail.com>
-Message-ID: <CAL_JsqL-jKM-qpawVoaLaqTpZhqNNFmgAOjv_azSwOU6zFS08g@mail.gmail.com>
-Subject: Re: [RFC][PATCH] dt-bindings: iio: accel: add adi,adxl345.yaml binding
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+         <CAL_JsqL-jKM-qpawVoaLaqTpZhqNNFmgAOjv_azSwOU6zFS08g@mail.gmail.com>
+In-Reply-To: <CAL_JsqL-jKM-qpawVoaLaqTpZhqNNFmgAOjv_azSwOU6zFS08g@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.50.1.244]
+x-adiroutedonprem: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <13F818D9A522B94992B263241AD9C443@analog.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(136003)(346002)(396003)(376002)(39860400002)(2980300002)(199004)(189003)(356004)(2906002)(54906003)(486006)(118296001)(3846002)(6116002)(106002)(86362001)(8936002)(8676002)(70586007)(70206006)(36756003)(229853002)(186003)(26005)(336012)(966005)(436003)(426003)(53376002)(4326008)(11346002)(14454004)(446003)(476003)(2616005)(126002)(6246003)(305945005)(102836004)(478600001)(7636002)(7736002)(50466002)(316002)(14444005)(246002)(47776003)(6306002)(23676004)(2486003)(7696005)(76176011)(53546011)(5660300002)(142933001);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR03MB545;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 6553a7d1-91ca-4a26-59a4-08d6d22f4fda
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4709054)(2017052603328)(7193020);SRVR:BL2PR03MB545;
+X-MS-TrafficTypeDiagnostic: BL2PR03MB545:
+X-MS-Exchange-PUrlCount: 4
+X-Microsoft-Antispam-PRVS: <BL2PR03MB545B3098863B49C94D3DB92F9300@BL2PR03MB545.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-Forefront-PRVS: 0029F17A3F
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: TdgVnCya2ajBSNsVc2KpGR8XkrwKJLouShJ1CduYLjjevLjeg7qnc416C4fbxwIPSxK7G9xtHePkvS2KZw+f1Zt7DYW0P9yMCid/IvDRqr/po+xof4CAys3bZLPV3obSJ8ouita0A2Sln4jrMpAPmKr6Iyc4E1BWnNJZWeDa7496xaOZ1b18jRwTtB2Hog6c8E0LZfV6tu+JkDJjSeIcNepMJXROr8Ce7nPGTxRSy/ySTxBTWOK9nYdKbdX/CkITQoEz02OIMuEOXmwByNL8XWVbehBxWXrQpb1DXrXtjYJZxiDAa1C88OEhCNHqHaFduzK3hgXQILP6NEOwYHeRFrCKNmjxhbXqSSRMs6MA3/WM2adlROVt6eeme/C7GqfAhzcNX4Jg4m13noOMhoHgSSB2obio5+cS0MNaEgX8+wk=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2019 14:29:56.2147
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6553a7d1-91ca-4a26-59a4-08d6d22f4fda
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR03MB545
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 6, 2019 at 6:46 AM Alexandru Ardelean
-<alexandru.ardelean@analog.com> wrote:
->
-> This patch adds a YAML binding for the Analog Devices ADXL345 I2C/SPI
-> accelerometer.
->
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> ---
->
-> And now for the RFC part.
-> Normally, I would dig into source-code to try to figure this out, but at
-> this point-in-time, I am low on time/energy to do this.
-> And maybe this helps trigger a discussion about this.
->
-> Apologies if this has been coverted on the devicetree mailing list, but
-> at least we'd get some coverage on the IIO list (with this).
->
-> The ADXL345 device (as others) supports both I2C & SPI interfaces.
->
-> Question1: do we write 2 YAML files, or 1 ? I was looking at Zephyr (for
-> some ideas/reference) but it seems to me that the YAML DT binding format is
-> different than this one ? They write 2 files for ADXL372 (1 for SPI, 1 for
-> I2C).
->
-> Question1-a: one thing is that SPI requires some props to be `required`
-> that would not be required for the I2C binding. This could be solved by
-> doing 2 files, but if doing 1 YAML file, is there a way to do conditional
-> `required` ? i.e. property is required if `SPI` ? not sure how to check for
-> SPI vs I2C, it would be interesting (at some point) to somehow enforce
-> SPI/I2C bindings correctness.
-
-The challenge here is there's not really any way for the schema to
-know which bus it is. The only ways to know this are knowing all
-possible spi or i2c controller compatibles or using the parent node
-name (which hasn't been strictly enforced). In order to get this
-information available to the schema, we'd need to add the information
-to the node. We do this with '$nodename'. We could add a '$bus'
-property for example. The tools would have to understand different
-buses and things like I2C muxes complicate doing that.
-
-Once you have something like $bus available, you could either have 2
-files with a custom 'select' that checks compatible and $bus or we
-could have 1 file using if/then/else keywords. However, we don't yet
-support if/then/else json-schema that was added in draft7, but that's
-being worked on by Maxime Ripard.
-
-However, for this case, I'd just not worry about the issue. Really,
-spi-cpha and spi-cpol should not be required. If only 1 mode is
-supported, the driver can know that. IOW, it is implied by the
-compatible strings.
-
-
-> Question2: `make dt_binding_check` seems to generate only the first
-> example. Is this known behavior, or do I need to take something else into
-> consideration ?
-
-That's correct. I haven't figured out how to do a variable number of
-examples in kbuild.
-
-> Question3: one idea that was neat in Zephyr, is that there is a 'inherits'
-> + `!include` mechanism for including common SPI & I2C device stuff. It
-> would be neat to have this. Is there a way to do this now, or maybe this
-> would come later ? Maybe, just having a way to include a YAML file into
-> another would be interesting.
-
-This is done with the 'allOf' keyword at the top-level. See
-i2c-gpio.yaml for an example.
-
-I don't think that helps you here. If you had a long list of custom
-properties, then it might be useful. But that's orthogonal to your
-issue of needing conditional logic.
-
->
->  .../bindings/iio/accel/adi,adxl345.yaml       | 63 +++++++++++++++++++
->  1 file changed, 63 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
->
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> new file mode 100644
-> index 000000000000..246b90c07aaa
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> @@ -0,0 +1,63 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/accelerometers/adi,adxl345.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices ADXL345/ADXL375 3-Axis Digital Accelerometers
-> +
-> +maintainers:
-> +  - Michael Hennerich <michael.hennerich@analog.com>
-> +
-> +description: |
-> +  Driver for Analog Devices ADXL345/ADXL375 3-Axis Digital Accelerometers
-
-This is not a driver.
-
-> +    http://www.analog.com/en/products/mems/accelerometers/adxl345.html
-> +    http://www.analog.com/en/products/sensors-mems/accelerometers/adxl375.html
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - adi,adxl345
-> +              - adi,adxl375
-
-This can be simplified to just:
-
-compatible:
-  enum:
-    - adi,adxl345
-    - adi,adxl375
-
-'oneOf' is only needed if you have different combinations of
-compatibles (a variable number or multiple fallbacks). 'items' is only
-needed if compatible is more than 1 string.
-
-> +
-> +  reg:
-> +    description:
-> +      The I2C address or SPI chip select number of the sensor
-
-The top-level description should probably say the device supports I2C
-and SPI. You don't need a description here for a common property
-unless you have something device specific to add.
-
-> +    maxItems: 1
-> +
-> +  spi-cpha:
-> +    description:
-> +      SPI clock phase must be set, to select SPI mode 3
-
-Again, standard property, so just 'spi-cpha: true' is sufficient.
-
-> +
-> +  spi-cpol:
-> +    description:
-> +      SPI clock polarity must be set, to select SPI mode 3
-> +
-> +  interrupts:
-> +    description:
-> +      A variable number of interrupts warrants a description of what conditions
-> +      affect the number of interrupts. Otherwise, descriptions on standard
-> +      properties are not necessary.
-
-This description from the example is explaining when you need a
-description. For a single interrupt, just need 'maxItems: 1'.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    /* Example for a I2C device node */
-> +    accelerometer@2a {
-
-This should give you an error because the examples default to assuming
-a simple-bus. So you need an 'i2c' node around this.
-
-> +         compatible = "adi,adxl345";
-> +         reg = <0x53>;
-> +    };
-> +  - |
-> +    /* Example for a SPI device node */
-> +    accelerometer@0 {
-> +         compatible = "adi,adxl345";
-> +         reg = <0>;
-> +         spi-max-frequency = <5000000>;
-> +         spi-cpol;
-> +         spi-cpha;
-> +    };
-> --
-> 2.17.1
->
+T24gTW9uLCAyMDE5LTA1LTA2IGF0IDA5OjE3IC0wNTAwLCBSb2IgSGVycmluZyB3cm90ZToNCj4g
+W0V4dGVybmFsXQ0KPiANCj4gDQo+IE9uIE1vbiwgTWF5IDYsIDIwMTkgYXQgNjo0NiBBTSBBbGV4
+YW5kcnUgQXJkZWxlYW4NCj4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPiB3cm90ZToN
+Cj4gPiANCj4gPiBUaGlzIHBhdGNoIGFkZHMgYSBZQU1MIGJpbmRpbmcgZm9yIHRoZSBBbmFsb2cg
+RGV2aWNlcyBBRFhMMzQ1IEkyQy9TUEkNCj4gPiBhY2NlbGVyb21ldGVyLg0KPiA+IA0KPiA+IFNp
+Z25lZC1vZmYtYnk6IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxv
+Zy5jb20+DQo+ID4gLS0tDQo+ID4gDQo+ID4gQW5kIG5vdyBmb3IgdGhlIFJGQyBwYXJ0Lg0KPiA+
+IE5vcm1hbGx5LCBJIHdvdWxkIGRpZyBpbnRvIHNvdXJjZS1jb2RlIHRvIHRyeSB0byBmaWd1cmUg
+dGhpcyBvdXQsIGJ1dA0KPiA+IGF0DQo+ID4gdGhpcyBwb2ludC1pbi10aW1lLCBJIGFtIGxvdyBv
+biB0aW1lL2VuZXJneSB0byBkbyB0aGlzLg0KPiA+IEFuZCBtYXliZSB0aGlzIGhlbHBzIHRyaWdn
+ZXIgYSBkaXNjdXNzaW9uIGFib3V0IHRoaXMuDQo+ID4gDQo+ID4gQXBvbG9naWVzIGlmIHRoaXMg
+aGFzIGJlZW4gY292ZXJ0ZWQgb24gdGhlIGRldmljZXRyZWUgbWFpbGluZyBsaXN0LCBidXQNCj4g
+PiBhdCBsZWFzdCB3ZSdkIGdldCBzb21lIGNvdmVyYWdlIG9uIHRoZSBJSU8gbGlzdCAod2l0aCB0
+aGlzKS4NCj4gPiANCj4gPiBUaGUgQURYTDM0NSBkZXZpY2UgKGFzIG90aGVycykgc3VwcG9ydHMg
+Ym90aCBJMkMgJiBTUEkgaW50ZXJmYWNlcy4NCj4gPiANCj4gPiBRdWVzdGlvbjE6IGRvIHdlIHdy
+aXRlIDIgWUFNTCBmaWxlcywgb3IgMSA/IEkgd2FzIGxvb2tpbmcgYXQgWmVwaHlyDQo+ID4gKGZv
+cg0KPiA+IHNvbWUgaWRlYXMvcmVmZXJlbmNlKSBidXQgaXQgc2VlbXMgdG8gbWUgdGhhdCB0aGUg
+WUFNTCBEVCBiaW5kaW5nDQo+ID4gZm9ybWF0IGlzDQo+ID4gZGlmZmVyZW50IHRoYW4gdGhpcyBv
+bmUgPyBUaGV5IHdyaXRlIDIgZmlsZXMgZm9yIEFEWEwzNzIgKDEgZm9yIFNQSSwgMQ0KPiA+IGZv
+cg0KPiA+IEkyQykuDQo+ID4gDQo+ID4gUXVlc3Rpb24xLWE6IG9uZSB0aGluZyBpcyB0aGF0IFNQ
+SSByZXF1aXJlcyBzb21lIHByb3BzIHRvIGJlIGByZXF1aXJlZGANCj4gPiB0aGF0IHdvdWxkIG5v
+dCBiZSByZXF1aXJlZCBmb3IgdGhlIEkyQyBiaW5kaW5nLiBUaGlzIGNvdWxkIGJlIHNvbHZlZCBi
+eQ0KPiA+IGRvaW5nIDIgZmlsZXMsIGJ1dCBpZiBkb2luZyAxIFlBTUwgZmlsZSwgaXMgdGhlcmUg
+YSB3YXkgdG8gZG8NCj4gPiBjb25kaXRpb25hbA0KPiA+IGByZXF1aXJlZGAgPyBpLmUuIHByb3Bl
+cnR5IGlzIHJlcXVpcmVkIGlmIGBTUElgID8gbm90IHN1cmUgaG93IHRvIGNoZWNrDQo+ID4gZm9y
+DQo+ID4gU1BJIHZzIEkyQywgaXQgd291bGQgYmUgaW50ZXJlc3RpbmcgKGF0IHNvbWUgcG9pbnQp
+IHRvIHNvbWVob3cgZW5mb3JjZQ0KPiA+IFNQSS9JMkMgYmluZGluZ3MgY29ycmVjdG5lc3MuDQo+
+IA0KPiBUaGUgY2hhbGxlbmdlIGhlcmUgaXMgdGhlcmUncyBub3QgcmVhbGx5IGFueSB3YXkgZm9y
+IHRoZSBzY2hlbWEgdG8NCj4ga25vdyB3aGljaCBidXMgaXQgaXMuIFRoZSBvbmx5IHdheXMgdG8g
+a25vdyB0aGlzIGFyZSBrbm93aW5nIGFsbA0KPiBwb3NzaWJsZSBzcGkgb3IgaTJjIGNvbnRyb2xs
+ZXIgY29tcGF0aWJsZXMgb3IgdXNpbmcgdGhlIHBhcmVudCBub2RlDQo+IG5hbWUgKHdoaWNoIGhh
+c24ndCBiZWVuIHN0cmljdGx5IGVuZm9yY2VkKS4gSW4gb3JkZXIgdG8gZ2V0IHRoaXMNCj4gaW5m
+b3JtYXRpb24gYXZhaWxhYmxlIHRvIHRoZSBzY2hlbWEsIHdlJ2QgbmVlZCB0byBhZGQgdGhlIGlu
+Zm9ybWF0aW9uDQo+IHRvIHRoZSBub2RlLiBXZSBkbyB0aGlzIHdpdGggJyRub2RlbmFtZScuIFdl
+IGNvdWxkIGFkZCBhICckYnVzJw0KPiBwcm9wZXJ0eSBmb3IgZXhhbXBsZS4gVGhlIHRvb2xzIHdv
+dWxkIGhhdmUgdG8gdW5kZXJzdGFuZCBkaWZmZXJlbnQNCj4gYnVzZXMgYW5kIHRoaW5ncyBsaWtl
+IEkyQyBtdXhlcyBjb21wbGljYXRlIGRvaW5nIHRoYXQuDQo+IA0KPiBPbmNlIHlvdSBoYXZlIHNv
+bWV0aGluZyBsaWtlICRidXMgYXZhaWxhYmxlLCB5b3UgY291bGQgZWl0aGVyIGhhdmUgMg0KPiBm
+aWxlcyB3aXRoIGEgY3VzdG9tICdzZWxlY3QnIHRoYXQgY2hlY2tzIGNvbXBhdGlibGUgYW5kICRi
+dXMgb3Igd2UNCj4gY291bGQgaGF2ZSAxIGZpbGUgdXNpbmcgaWYvdGhlbi9lbHNlIGtleXdvcmRz
+LiBIb3dldmVyLCB3ZSBkb24ndCB5ZXQNCj4gc3VwcG9ydCBpZi90aGVuL2Vsc2UganNvbi1zY2hl
+bWEgdGhhdCB3YXMgYWRkZWQgaW4gZHJhZnQ3LCBidXQgdGhhdCdzDQo+IGJlaW5nIHdvcmtlZCBv
+biBieSBNYXhpbWUgUmlwYXJkLg0KPiANCj4gSG93ZXZlciwgZm9yIHRoaXMgY2FzZSwgSSdkIGp1
+c3Qgbm90IHdvcnJ5IGFib3V0IHRoZSBpc3N1ZS4gUmVhbGx5LA0KPiBzcGktY3BoYSBhbmQgc3Bp
+LWNwb2wgc2hvdWxkIG5vdCBiZSByZXF1aXJlZC4gSWYgb25seSAxIG1vZGUgaXMNCj4gc3VwcG9y
+dGVkLCB0aGUgZHJpdmVyIGNhbiBrbm93IHRoYXQuIElPVywgaXQgaXMgaW1wbGllZCBieSB0aGUN
+Cj4gY29tcGF0aWJsZSBzdHJpbmdzLg0KPiANCj4gDQo+ID4gUXVlc3Rpb24yOiBgbWFrZSBkdF9i
+aW5kaW5nX2NoZWNrYCBzZWVtcyB0byBnZW5lcmF0ZSBvbmx5IHRoZSBmaXJzdA0KPiA+IGV4YW1w
+bGUuIElzIHRoaXMga25vd24gYmVoYXZpb3IsIG9yIGRvIEkgbmVlZCB0byB0YWtlIHNvbWV0aGlu
+ZyBlbHNlDQo+ID4gaW50bw0KPiA+IGNvbnNpZGVyYXRpb24gPw0KPiANCj4gVGhhdCdzIGNvcnJl
+Y3QuIEkgaGF2ZW4ndCBmaWd1cmVkIG91dCBob3cgdG8gZG8gYSB2YXJpYWJsZSBudW1iZXIgb2YN
+Cj4gZXhhbXBsZXMgaW4ga2J1aWxkLg0KDQpUaGVuLCB3b3VsZCBpdCBiZSBmaW5lIHRvIGhhdmUg
+bXVsdGlwbGUgZXhhbXBsZXMsIGFuZCB3YWl0IGZvciB0aGlzIHRvIHBvcC0NCmluIHRoZSBZQU1M
+IGR0IHN0dWZmIGF0IGEgbGF0ZXIgcG9pbnQgaW4gdGltZSA/DQpPciwganVzdCAxIGV4YW1wbGUg
+Pw0KDQo+IA0KPiA+IFF1ZXN0aW9uMzogb25lIGlkZWEgdGhhdCB3YXMgbmVhdCBpbiBaZXBoeXIs
+IGlzIHRoYXQgdGhlcmUgaXMgYQ0KPiA+ICdpbmhlcml0cycNCj4gPiArIGAhaW5jbHVkZWAgbWVj
+aGFuaXNtIGZvciBpbmNsdWRpbmcgY29tbW9uIFNQSSAmIEkyQyBkZXZpY2Ugc3R1ZmYuIEl0DQo+
+ID4gd291bGQgYmUgbmVhdCB0byBoYXZlIHRoaXMuIElzIHRoZXJlIGEgd2F5IHRvIGRvIHRoaXMg
+bm93LCBvciBtYXliZQ0KPiA+IHRoaXMNCj4gPiB3b3VsZCBjb21lIGxhdGVyID8gTWF5YmUsIGp1
+c3QgaGF2aW5nIGEgd2F5IHRvIGluY2x1ZGUgYSBZQU1MIGZpbGUgaW50bw0KPiA+IGFub3RoZXIg
+d291bGQgYmUgaW50ZXJlc3RpbmcuDQo+IA0KPiBUaGlzIGlzIGRvbmUgd2l0aCB0aGUgJ2FsbE9m
+JyBrZXl3b3JkIGF0IHRoZSB0b3AtbGV2ZWwuIFNlZQ0KPiBpMmMtZ3Bpby55YW1sIGZvciBhbiBl
+eGFtcGxlLg0KPiANCj4gSSBkb24ndCB0aGluayB0aGF0IGhlbHBzIHlvdSBoZXJlLiBJZiB5b3Ug
+aGFkIGEgbG9uZyBsaXN0IG9mIGN1c3RvbQ0KPiBwcm9wZXJ0aWVzLCB0aGVuIGl0IG1pZ2h0IGJl
+IHVzZWZ1bC4gQnV0IHRoYXQncyBvcnRob2dvbmFsIHRvIHlvdXINCj4gaXNzdWUgb2YgbmVlZGlu
+ZyBjb25kaXRpb25hbCBsb2dpYy4NCj4gDQo+ID4gDQo+ID4gIC4uLi9iaW5kaW5ncy9paW8vYWNj
+ZWwvYWRpLGFkeGwzNDUueWFtbCAgICAgICB8IDYzICsrKysrKysrKysrKysrKysrKysNCj4gPiAg
+MSBmaWxlIGNoYW5nZWQsIDYzIGluc2VydGlvbnMoKykNCj4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0
+DQo+ID4gRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9hY2NlbC9hZGksYWR4
+bDM0NS55YW1sDQo+ID4gDQo+ID4gZGlmZiAtLWdpdA0KPiA+IGEvRG9jdW1lbnRhdGlvbi9kZXZp
+Y2V0cmVlL2JpbmRpbmdzL2lpby9hY2NlbC9hZGksYWR4bDM0NS55YW1sDQo+ID4gYi9Eb2N1bWVu
+dGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2FjY2VsL2FkaSxhZHhsMzQ1LnlhbWwNCj4g
+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+IGluZGV4IDAwMDAwMDAwMDAwMC4uMjQ2YjkwYzA3
+YWFhDQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJl
+ZS9iaW5kaW5ncy9paW8vYWNjZWwvYWRpLGFkeGwzNDUueWFtbA0KPiA+IEBAIC0wLDAgKzEsNjMg
+QEANCj4gPiArIyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMA0KPiA+ICslWUFNTCAx
+LjINCj4gPiArLS0tDQo+ID4gKyRpZDogDQo+ID4gaHR0cDovL2RldmljZXRyZWUub3JnL3NjaGVt
+YXMvaWlvL2FjY2VsZXJvbWV0ZXJzL2FkaSxhZHhsMzQ1LnlhbWwjDQo+ID4gKyRzY2hlbWE6IGh0
+dHA6Ly9kZXZpY2V0cmVlLm9yZy9tZXRhLXNjaGVtYXMvY29yZS55YW1sIw0KPiA+ICsNCj4gPiAr
+dGl0bGU6IEFuYWxvZyBEZXZpY2VzIEFEWEwzNDUvQURYTDM3NSAzLUF4aXMgRGlnaXRhbCBBY2Nl
+bGVyb21ldGVycw0KPiA+ICsNCj4gPiArbWFpbnRhaW5lcnM6DQo+ID4gKyAgLSBNaWNoYWVsIEhl
+bm5lcmljaCA8bWljaGFlbC5oZW5uZXJpY2hAYW5hbG9nLmNvbT4NCj4gPiArDQo+ID4gK2Rlc2Ny
+aXB0aW9uOiB8DQo+ID4gKyAgRHJpdmVyIGZvciBBbmFsb2cgRGV2aWNlcyBBRFhMMzQ1L0FEWEwz
+NzUgMy1BeGlzIERpZ2l0YWwNCj4gPiBBY2NlbGVyb21ldGVycw0KPiANCj4gVGhpcyBpcyBub3Qg
+YSBkcml2ZXIuDQo+IA0KPiA+ICsgICAgaHR0cDovL3d3dy5hbmFsb2cuY29tL2VuL3Byb2R1Y3Rz
+L21lbXMvYWNjZWxlcm9tZXRlcnMvYWR4bDM0NS5odG1sDQo+ID4gKyAgICANCj4gPiBodHRwOi8v
+d3d3LmFuYWxvZy5jb20vZW4vcHJvZHVjdHMvc2Vuc29ycy1tZW1zL2FjY2VsZXJvbWV0ZXJzL2Fk
+eGwzNzUuaHRtbA0KPiA+ICsNCj4gPiArcHJvcGVydGllczoNCj4gPiArICBjb21wYXRpYmxlOg0K
+PiA+ICsgICAgb25lT2Y6DQo+ID4gKyAgICAgIC0gaXRlbXM6DQo+ID4gKyAgICAgICAgICAtIGVu
+dW06DQo+ID4gKyAgICAgICAgICAgICAgLSBhZGksYWR4bDM0NQ0KPiA+ICsgICAgICAgICAgICAg
+IC0gYWRpLGFkeGwzNzUNCj4gDQo+IFRoaXMgY2FuIGJlIHNpbXBsaWZpZWQgdG8ganVzdDoNCj4g
+DQo+IGNvbXBhdGlibGU6DQo+ICAgZW51bToNCj4gICAgIC0gYWRpLGFkeGwzNDUNCj4gICAgIC0g
+YWRpLGFkeGwzNzUNCj4gDQo+ICdvbmVPZicgaXMgb25seSBuZWVkZWQgaWYgeW91IGhhdmUgZGlm
+ZmVyZW50IGNvbWJpbmF0aW9ucyBvZg0KPiBjb21wYXRpYmxlcyAoYSB2YXJpYWJsZSBudW1iZXIg
+b3IgbXVsdGlwbGUgZmFsbGJhY2tzKS4gJ2l0ZW1zJyBpcyBvbmx5DQo+IG5lZWRlZCBpZiBjb21w
+YXRpYmxlIGlzIG1vcmUgdGhhbiAxIHN0cmluZy4NCj4gDQo+ID4gKw0KPiA+ICsgIHJlZzoNCj4g
+PiArICAgIGRlc2NyaXB0aW9uOg0KPiA+ICsgICAgICBUaGUgSTJDIGFkZHJlc3Mgb3IgU1BJIGNo
+aXAgc2VsZWN0IG51bWJlciBvZiB0aGUgc2Vuc29yDQo+IA0KPiBUaGUgdG9wLWxldmVsIGRlc2Ny
+aXB0aW9uIHNob3VsZCBwcm9iYWJseSBzYXkgdGhlIGRldmljZSBzdXBwb3J0cyBJMkMNCj4gYW5k
+IFNQSS4gWW91IGRvbid0IG5lZWQgYSBkZXNjcmlwdGlvbiBoZXJlIGZvciBhIGNvbW1vbiBwcm9w
+ZXJ0eQ0KPiB1bmxlc3MgeW91IGhhdmUgc29tZXRoaW5nIGRldmljZSBzcGVjaWZpYyB0byBhZGQu
+DQo+IA0KPiA+ICsgICAgbWF4SXRlbXM6IDENCj4gPiArDQo+ID4gKyAgc3BpLWNwaGE6DQo+ID4g
+KyAgICBkZXNjcmlwdGlvbjoNCj4gPiArICAgICAgU1BJIGNsb2NrIHBoYXNlIG11c3QgYmUgc2V0
+LCB0byBzZWxlY3QgU1BJIG1vZGUgMw0KPiANCj4gQWdhaW4sIHN0YW5kYXJkIHByb3BlcnR5LCBz
+byBqdXN0ICdzcGktY3BoYTogdHJ1ZScgaXMgc3VmZmljaWVudC4NCj4gDQo+ID4gKw0KPiA+ICsg
+IHNwaS1jcG9sOg0KPiA+ICsgICAgZGVzY3JpcHRpb246DQo+ID4gKyAgICAgIFNQSSBjbG9jayBw
+b2xhcml0eSBtdXN0IGJlIHNldCwgdG8gc2VsZWN0IFNQSSBtb2RlIDMNCj4gPiArDQo+ID4gKyAg
+aW50ZXJydXB0czoNCj4gPiArICAgIGRlc2NyaXB0aW9uOg0KPiA+ICsgICAgICBBIHZhcmlhYmxl
+IG51bWJlciBvZiBpbnRlcnJ1cHRzIHdhcnJhbnRzIGEgZGVzY3JpcHRpb24gb2Ygd2hhdA0KPiA+
+IGNvbmRpdGlvbnMNCj4gPiArICAgICAgYWZmZWN0IHRoZSBudW1iZXIgb2YgaW50ZXJydXB0cy4g
+T3RoZXJ3aXNlLCBkZXNjcmlwdGlvbnMgb24NCj4gPiBzdGFuZGFyZA0KPiA+ICsgICAgICBwcm9w
+ZXJ0aWVzIGFyZSBub3QgbmVjZXNzYXJ5Lg0KPiANCj4gVGhpcyBkZXNjcmlwdGlvbiBmcm9tIHRo
+ZSBleGFtcGxlIGlzIGV4cGxhaW5pbmcgd2hlbiB5b3UgbmVlZCBhDQo+IGRlc2NyaXB0aW9uLiBG
+b3IgYSBzaW5nbGUgaW50ZXJydXB0LCBqdXN0IG5lZWQgJ21heEl0ZW1zOiAxJy4NCg0KWWVwLCBJ
+IG5vdGljZWQgcmlnaHQgYWZ0ZXIgc2VuZGluZy4NClNvcnJ5IGFib3V0IHRoYXQuDQpJIHRoaW5r
+IEkgc3RhcnRlZCB0aGlzIGZpbGUgYSBmZXcgd2Vla3MgYWdvLCBhbmQgY2FtZSBiYWNrIGZyb20g
+dmFjYXRpb24gYQ0KYml0IG9mIGFuIGFpcmhlYWQuDQoNCj4gDQo+ID4gKw0KPiA+ICtyZXF1aXJl
+ZDoNCj4gPiArICAtIGNvbXBhdGlibGUNCj4gPiArICAtIHJlZw0KPiA+ICsNCj4gPiArZXhhbXBs
+ZXM6DQo+ID4gKyAgLSB8DQo+ID4gKyAgICAvKiBFeGFtcGxlIGZvciBhIEkyQyBkZXZpY2Ugbm9k
+ZSAqLw0KPiA+ICsgICAgYWNjZWxlcm9tZXRlckAyYSB7DQo+IA0KPiBUaGlzIHNob3VsZCBnaXZl
+IHlvdSBhbiBlcnJvciBiZWNhdXNlIHRoZSBleGFtcGxlcyBkZWZhdWx0IHRvIGFzc3VtaW5nDQo+
+IGEgc2ltcGxlLWJ1cy4gU28geW91IG5lZWQgYW4gJ2kyYycgbm9kZSBhcm91bmQgdGhpcy4NCj4g
+DQo+ID4gKyAgICAgICAgIGNvbXBhdGlibGUgPSAiYWRpLGFkeGwzNDUiOw0KPiA+ICsgICAgICAg
+ICByZWcgPSA8MHg1Mz47DQo+ID4gKyAgICB9Ow0KPiA+ICsgIC0gfA0KPiA+ICsgICAgLyogRXhh
+bXBsZSBmb3IgYSBTUEkgZGV2aWNlIG5vZGUgKi8NCj4gPiArICAgIGFjY2VsZXJvbWV0ZXJAMCB7
+DQo+ID4gKyAgICAgICAgIGNvbXBhdGlibGUgPSAiYWRpLGFkeGwzNDUiOw0KPiA+ICsgICAgICAg
+ICByZWcgPSA8MD47DQo+ID4gKyAgICAgICAgIHNwaS1tYXgtZnJlcXVlbmN5ID0gPDUwMDAwMDA+
+Ow0KPiA+ICsgICAgICAgICBzcGktY3BvbDsNCj4gPiArICAgICAgICAgc3BpLWNwaGE7DQo+ID4g
+KyAgICB9Ow0KPiA+IC0tDQo+ID4gMi4xNy4xDQo+ID4gDQo=

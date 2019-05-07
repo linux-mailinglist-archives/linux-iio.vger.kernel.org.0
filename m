@@ -2,211 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CBB216037
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 11:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D60D216148
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 11:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726175AbfEGJNL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 May 2019 05:13:11 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:57340 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725926AbfEGJNL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 May 2019 05:13:11 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x479BuXH003642;
-        Tue, 7 May 2019 11:12:36 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=OSWmrVuuFcUHBeWLjxnCf2tM/b2q7fucVTqUAzYwn6s=;
- b=nzBY8knpfdJ1kGKaNdXZAbnUmSZj6Dhx3tukY+IqMN2WP7BYMgy/v+NWhObmJWNdno3+
- al6KjFoR1w0UklWFG6j9B2SvbJXqkJL6mNHo2YL1RRm+J6Af3XKMH90g1tODLBF4QDN3
- 7PVoic2fvqu3n7gS78q8sPRtktCLUYQIwV9MQhoPk0+bF8HlLcKzT9hYrtW9PUBxEDZf
- AGRSQVy+GSx7OT6tC4b6dpFNw5uQ0B08BctSYCMTl+pezyFRo2QJR89XBi/4qUBTLJPv
- 58zb847uLbPevDp21NYyY02vnpD9kZ8E6Xct8BPk2IsOmVMrX8r+wl8KKf/bNylE4mXw ag== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2s94cdegpx-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Tue, 07 May 2019 11:12:36 +0200
-Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7DB0946;
-        Tue,  7 May 2019 09:12:35 +0000 (GMT)
-Received: from Webmail-eu.st.com (Safex1hubcas21.st.com [10.75.90.44])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 5495318A8;
-        Tue,  7 May 2019 09:12:35 +0000 (GMT)
-Received: from SAFEX1HUBCAS24.st.com (10.75.90.95) by SAFEX1HUBCAS21.st.com
- (10.75.90.44) with Microsoft SMTP Server (TLS) id 14.3.361.1; Tue, 7 May 2019
- 11:12:35 +0200
-Received: from localhost (10.201.20.122) by webmail-ga.st.com (10.75.90.48)
- with Microsoft SMTP Server (TLS) id 14.3.439.0; Tue, 7 May 2019 11:12:34
- +0200
-From:   Benjamin Gaignard <benjamin.gaignard@st.com>
-To:     <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
-        <pmeerw@pmeerw.net>, <fabrice.gasnier@st.com>,
-        <vilhelm.gray@gmail.com>
-CC:     <alexandre.torgue@st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Benjamin Gaignard <benjamin.gaignard@st.com>
-Subject: [PATCH] IIO: stm32: Remove quadrature related functions from trigger driver
-Date:   Tue, 7 May 2019 11:12:24 +0200
-Message-ID: <20190507091224.17781-1-benjamin.gaignard@st.com>
-X-Mailer: git-send-email 2.15.0
+        id S1726340AbfEGJou (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 May 2019 05:44:50 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:35022 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726063AbfEGJou (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 May 2019 05:44:50 -0400
+Received: by mail-wm1-f66.google.com with SMTP id y197so19048422wmd.0
+        for <linux-iio@vger.kernel.org>; Tue, 07 May 2019 02:44:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=tBpp/bG/ZmwTb4vBiTX4r+mHSsHGogQ7hhruU5zMJ7o=;
+        b=IzDbYDwYnXtOG1djPxlvt2LH/gq3sVbvwRxtcnZgh6Xe8g4j7rqnzNmj0GBVChEvaJ
+         sCrDxLQtGvvbltABdIA7Q3iAnHOjsjJS2V5BCXI33456vJ76skhl8UNDLNGV/Kg45ktt
+         3iTiKjG6v6Rsgc0Ss9yrXs3ASwzs4oAwJDEXE5DMhaehSneauawPeGroDKnJJtQe8poa
+         /AQJW6XWId70OxT2gxdI34ZmYbN598BCI4E49YeRnEWa/HLGQhvU6NbtaxsSZRiF3iGa
+         IjBc2ucSTG7XWWcY4I4HKU0plyMf70gDpWlbD9bpR+EFGF8ZIFfPoAUqAn0xNzW59Waf
+         +c+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=tBpp/bG/ZmwTb4vBiTX4r+mHSsHGogQ7hhruU5zMJ7o=;
+        b=qtLc3dS+wKJFNDt7JIgLZc1AgjRakLuEfhMMv0A0MqJhW1XIA7Rs4fxy1QQmG1aGEe
+         Na1nwPn6tCOVrDnXZ8O08KF3QFDptVr9Q5DYFsqP6AG7ya/JmEgS23yy/NTdCWeOU6lC
+         4bzhU20ayZWY+xFMj/YcNAKvhuuZbFRc2RKW7BayZmsY0nuaYtliKSfjgF7vIQ7GUVPI
+         o+LVXGBGwRPLg2wechqNYJMs6onix60X8ljWJpyxAKep1HApsx21GE7gqf/wyb7wjWgp
+         qArbPFELXb27QrKaXBT6aE53hHYU4pzir6ReESM9TL7ypLsOLgsyVPsLTu/AN3YpzRd7
+         8tug==
+X-Gm-Message-State: APjAAAWZ78VilHxSjg03z+KyEo3zpqQRBxz/8HJGVPAguUsfZKFD4xuj
+        rjfyVd6JURzRItnNHL+L+bYoXg==
+X-Google-Smtp-Source: APXvYqycfwgVAYDhFRxFI6FyrSmaV7Jpwm1mE2kT04bW6crWZrdbMErveEz28TjLhod7S7fOIVm3OA==
+X-Received: by 2002:a7b:c415:: with SMTP id k21mr7780514wmi.29.1557222288438;
+        Tue, 07 May 2019 02:44:48 -0700 (PDT)
+Received: from dell ([2.27.167.43])
+        by smtp.gmail.com with ESMTPSA id 195sm27122082wme.32.2019.05.07.02.44.47
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 07 May 2019 02:44:47 -0700 (PDT)
+Date:   Tue, 7 May 2019 10:44:46 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     enric.balletbo@collabora.com, bleung@chromium.org,
+        groeck@chromium.org, jic23@kernel.org, broonie@kernel.org,
+        cychiang@chromium.org, tiwai@suse.com, linux-iio@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH v2 00/30] Update cros_ec_commands.h
+Message-ID: <20190507094446.GD4529@dell>
+References: <20190503220233.64546-1-gwendal@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.201.20.122]
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-07_05:,,
- signatures=0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190503220233.64546-1-gwendal@chromium.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quadrature feature is now hosted on it own framework.
-Remove quadrature related code from stm32-trigger driver to avoid
-code duplication and simplify the ABI.
+On Fri, 03 May 2019, Gwendal Grignou wrote:
 
-Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
----
- .../ABI/testing/sysfs-bus-iio-timer-stm32          | 23 ------
- drivers/iio/trigger/stm32-timer-trigger.c          | 84 ----------------------
- 2 files changed, 107 deletions(-)
+> The interface between CrosEC embedded controller and the host,
+> described by cros_ec_commands.h, as diverged from what the embedded
+> controller really support.
+> 
+> The source of thruth is at
+> https://chromium.googlesource.com/chromiumos/platform/ec/+/master/include/ec_commands.h
+> 
+> That include file is converted to remove ACPI and Embedded only code.
+> 
+> From now on, cros_ec_commands.h will be automatically generated from
+> the file above, do not modify directly.
+> 
+> Fell free to squash the commits below.
+> 
+> Changes in v2:
+> - Move I2S changes at the end of the patchset, squashed with change in
+>   sound/soc/codecs/cros_ec_codec.c to match new interface.
+> - Add Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> 
+> Gwendal Grignou (30):
+>   mfd: cros_ec: Update license term
+>   mfd: cros_ec: Zero BUILD_ macro
+>   mfd: cros_ec: set comments properly
+>   mfd: cros_ec: add ec_align macros
+>   mfd: cros_ec: Define commands as 4-digit UPPER CASE hex values
+>   mfd: cros_ec: use BIT macro
+>   mfd: cros_ec: Update ACPI interface definition
+>   mfd: cros_ec: move HDMI CEC API definition
+>   mfd: cros_ec: Remove zero-size structs
+>   mfd: cros_ec: Add Flash V2 commands API
+>   mfd: cros_ec: Add PWM_SET_DUTY API
+>   mfd: cros_ec: Add lightbar v2 API
+>   mfd: cros_ec: Expand hash API
+>   mfd: cros_ec: Add EC transport protocol v4
+>   mfd: cros_ec: Complete MEMS sensor API
+>   mfd: cros_ec: Fix event processing API
+>   mfd: cros_ec: Add fingerprint API
+>   mfd: cros_ec: Fix temperature API
+>   mfd: cros_ec: Complete Power and USB PD API
+>   mfd: cros_ec: Add API for keyboard testing
+>   mfd: cros_ec: Add Hibernate API
+>   mfd: cros_ec: Add Smart Battery Firmware update API
+>   mfd: cros_ec: Add I2C passthru protection API
+>   mfd: cros_ec: Add API for EC-EC communication
+>   mfd: cros_ec: Add API for Touchpad support
+>   mfd: cros_ec: Add API for Fingerprint support
+>   mfd: cros_ec: Add API for rwsig
+>   mfd: cros_ec: Add SKU ID and Secure storage API
+>   mfd: cros_ec: Add Management API entry points
+>   mfd: cros_ec: Update I2S API
+> 
+>  include/linux/mfd/cros_ec_commands.h | 3735 +++++++++++++++++++++-----
+>  sound/soc/codecs/cros_ec_codec.c     |    8 +-
+>  2 files changed, 2997 insertions(+), 746 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32 b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
-index 161c147d3c40..b7259234ad70 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
-@@ -91,29 +91,6 @@ Description:
- 		When counting down the counter start from preset value
- 		and fire event when reach 0.
- 
--What:		/sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
--KernelVersion:	4.12
--Contact:	benjamin.gaignard@st.com
--Description:
--		Reading returns the list possible quadrature modes.
--
--What:		/sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode
--KernelVersion:	4.12
--Contact:	benjamin.gaignard@st.com
--Description:
--		Configure the device counter quadrature modes:
--		channel_A:
--			Encoder A input servers as the count input and B as
--			the UP/DOWN direction control input.
--
--		channel_B:
--			Encoder B input serves as the count input and A as
--			the UP/DOWN direction control input.
--
--		quadrature:
--			Encoder A and B inputs are mixed to get direction
--			and count with a scale of 0.25.
--
- What:		/sys/bus/iio/devices/iio:deviceX/in_count_enable_mode_available
- KernelVersion:	4.12
- Contact:	benjamin.gaignard@st.com
-diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
-index ccf1ce653b25..a5dfe65cd9b9 100644
---- a/drivers/iio/trigger/stm32-timer-trigger.c
-+++ b/drivers/iio/trigger/stm32-timer-trigger.c
-@@ -608,86 +608,6 @@ static const struct iio_enum stm32_enable_mode_enum = {
- 	.get = stm32_get_enable_mode
- };
- 
--static const char *const stm32_quadrature_modes[] = {
--	"channel_A",
--	"channel_B",
--	"quadrature",
--};
--
--static int stm32_set_quadrature_mode(struct iio_dev *indio_dev,
--				     const struct iio_chan_spec *chan,
--				     unsigned int mode)
--{
--	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
--
--	regmap_update_bits(priv->regmap, TIM_SMCR, TIM_SMCR_SMS, mode + 1);
--
--	return 0;
--}
--
--static int stm32_get_quadrature_mode(struct iio_dev *indio_dev,
--				     const struct iio_chan_spec *chan)
--{
--	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
--	u32 smcr;
--	int mode;
--
--	regmap_read(priv->regmap, TIM_SMCR, &smcr);
--	mode = (smcr & TIM_SMCR_SMS) - 1;
--	if ((mode < 0) || (mode > ARRAY_SIZE(stm32_quadrature_modes)))
--		return -EINVAL;
--
--	return mode;
--}
--
--static const struct iio_enum stm32_quadrature_mode_enum = {
--	.items = stm32_quadrature_modes,
--	.num_items = ARRAY_SIZE(stm32_quadrature_modes),
--	.set = stm32_set_quadrature_mode,
--	.get = stm32_get_quadrature_mode
--};
--
--static const char *const stm32_count_direction_states[] = {
--	"up",
--	"down"
--};
--
--static int stm32_set_count_direction(struct iio_dev *indio_dev,
--				     const struct iio_chan_spec *chan,
--				     unsigned int dir)
--{
--	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
--	u32 val;
--	int mode;
--
--	/* In encoder mode, direction is RO (given by TI1/TI2 signals) */
--	regmap_read(priv->regmap, TIM_SMCR, &val);
--	mode = (val & TIM_SMCR_SMS) - 1;
--	if ((mode >= 0) || (mode < ARRAY_SIZE(stm32_quadrature_modes)))
--		return -EBUSY;
--
--	return regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_DIR,
--				  dir ? TIM_CR1_DIR : 0);
--}
--
--static int stm32_get_count_direction(struct iio_dev *indio_dev,
--				     const struct iio_chan_spec *chan)
--{
--	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
--	u32 cr1;
--
--	regmap_read(priv->regmap, TIM_CR1, &cr1);
--
--	return ((cr1 & TIM_CR1_DIR) ? 1 : 0);
--}
--
--static const struct iio_enum stm32_count_direction_enum = {
--	.items = stm32_count_direction_states,
--	.num_items = ARRAY_SIZE(stm32_count_direction_states),
--	.set = stm32_set_count_direction,
--	.get = stm32_get_count_direction
--};
--
- static ssize_t stm32_count_get_preset(struct iio_dev *indio_dev,
- 				      uintptr_t private,
- 				      const struct iio_chan_spec *chan,
-@@ -728,10 +648,6 @@ static const struct iio_chan_spec_ext_info stm32_trigger_count_info[] = {
- 		.read = stm32_count_get_preset,
- 		.write = stm32_count_set_preset
- 	},
--	IIO_ENUM("count_direction", IIO_SEPARATE, &stm32_count_direction_enum),
--	IIO_ENUM_AVAILABLE("count_direction", &stm32_count_direction_enum),
--	IIO_ENUM("quadrature_mode", IIO_SEPARATE, &stm32_quadrature_mode_enum),
--	IIO_ENUM_AVAILABLE("quadrature_mode", &stm32_quadrature_mode_enum),
- 	IIO_ENUM("enable_mode", IIO_SEPARATE, &stm32_enable_mode_enum),
- 	IIO_ENUM_AVAILABLE("enable_mode", &stm32_enable_mode_enum),
- 	IIO_ENUM("trigger_mode", IIO_SEPARATE, &stm32_trigger_mode_enum),
+Again, it would be good to get 1 or 2 more Chromium Acks, given the
+extent of the changes.
+
 -- 
-2.15.0
-
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

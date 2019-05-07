@@ -2,200 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B55B16540
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 15:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 441B5165B5
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 16:31:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726416AbfEGN7S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 May 2019 09:59:18 -0400
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:50871 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726414AbfEGN7S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 May 2019 09:59:18 -0400
-X-Originating-IP: 90.88.28.253
-Received: from localhost (aaubervilliers-681-1-86-253.w90-88.abo.wanadoo.fr [90.88.28.253])
-        (Authenticated sender: maxime.ripard@bootlin.com)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id D76541C0017;
-        Tue,  7 May 2019 13:59:12 +0000 (UTC)
-Date:   Tue, 7 May 2019 15:59:12 +0200
-From:   Maxime Ripard <maxime.ripard@bootlin.com>
-To:     Frank Lee <tiny.windzz@gmail.com>, Icenowy Zheng <icenowy@aosc.io>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, lars@metafoo.de,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>,
-        robh+dt@kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        pmeerw@pmeerw.net, knaack.h@gmx.de,
-        Lee Jones <lee.jones@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 1/7] iio: adc: sun4i-gpadc: rework for support multiple
- thermal sensor
-Message-ID: <20190507135912.4lev7ly2w4drlt7s@flea>
-References: <20190503072813.2719-1-tiny.windzz@gmail.com>
- <20190503072813.2719-2-tiny.windzz@gmail.com>
- <20190505162215.3594f77d@archlinux>
- <20190506122807.4u323iys74jddcet@flea>
- <282ccf0979e6c58effd0e177917bdf824c32f64e.camel@aosc.io>
- <CAEExFWusPoxtkGCoA+3gXq69cXZEfjZW+UpHW_0UfrcjpLmaXg@mail.gmail.com>
- <20190506175525.swc5u7j6ntry7v3g@core.my.home>
+        id S1726403AbfEGOb5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 May 2019 10:31:57 -0400
+Received: from mail-eopbgr40109.outbound.protection.outlook.com ([40.107.4.109]:32686
+        "EHLO EUR03-DB5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726340AbfEGOb5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 7 May 2019 10:31:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8p7dJeec2rydzXAsQFgVikLcIA0qKJ/k1RuN3ew8/fc=;
+ b=gfC81bEt4gHl3B//jwASDBP1MrYb1JqeKoUYaS3261hb/W9Mk7rk6fqD7JoMHs2b2WqG+TWCZsO1dEax2VzQokTn3clvLVm/23syU4J0yHd1gxVgMIOYb+KFSmOl9lTd08+ZYbOOOQ5934s9TPhexHUM9SU3snpV4H2kpVHhe5s=
+Received: from VI1PR0502MB3965.eurprd05.prod.outlook.com (52.134.17.157) by
+ VI1PR0502MB3871.eurprd05.prod.outlook.com (52.134.5.15) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1856.11; Tue, 7 May 2019 14:31:49 +0000
+Received: from VI1PR0502MB3965.eurprd05.prod.outlook.com
+ ([fe80::48ff:f344:98da:6571]) by VI1PR0502MB3965.eurprd05.prod.outlook.com
+ ([fe80::48ff:f344:98da:6571%5]) with mapi id 15.20.1856.012; Tue, 7 May 2019
+ 14:31:49 +0000
+From:   Philippe Schenker <philippe.schenker@toradex.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>,
+        "David.Laight@ACULAB.COM" <David.Laight@ACULAB.COM>
+CC:     "stefan@agner.ch" <stefan@agner.ch>,
+        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        "alexandre.torgue@st.com" <alexandre.torgue@st.com>,
+        Max Krummenacher <max.krummenacher@toradex.com>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 2/3] iio: stmpe-adc: Make wait_completion non
+ interruptible
+Thread-Topic: [PATCH 2/3] iio: stmpe-adc: Make wait_completion non
+ interruptible
+Thread-Index: AQHVAbgvhKEqeNeMGUGopQqxfyxbHKZZeJoAgAAWGICAAyCfgIACqXCAgABnAwA=
+Date:   Tue, 7 May 2019 14:31:49 +0000
+Message-ID: <69a00774deb5d5c8f5611855fa354cccbe92a6aa.camel@toradex.com>
+References: <20190503135725.9959-1-dev@pschenker.ch>
+         <20190503135725.9959-2-dev@pschenker.ch>
+         <0aab3e91bb9644acb430a8beba927b5a@AcuMS.aculab.com>
+         <1aa6533aa8b1bf4a01c1c5f8d6a208337be6b57e.camel@toradex.com>
+         <20190505164409.7976f43e@archlinux>
+         <4df31129d19c4128a4bbc5e0575886af@AcuMS.aculab.com>
+In-Reply-To: <4df31129d19c4128a4bbc5e0575886af@AcuMS.aculab.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=philippe.schenker@toradex.com; 
+x-originating-ip: [46.140.72.82]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: edff2429-5768-4af5-3c7b-08d6d2f8bdb8
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:VI1PR0502MB3871;
+x-ms-traffictypediagnostic: VI1PR0502MB3871:
+x-microsoft-antispam-prvs: <VI1PR0502MB38716A831BBC8E868036A6C0F4310@VI1PR0502MB3871.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 0030839EEE
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(346002)(136003)(39850400004)(366004)(376002)(199004)(189003)(2906002)(68736007)(36756003)(229853002)(2501003)(6512007)(7416002)(316002)(8936002)(99286004)(6486002)(3846002)(6436002)(6116002)(71200400001)(71190400001)(446003)(2616005)(476003)(478600001)(11346002)(81156014)(81166006)(256004)(14444005)(14454004)(76116006)(66446008)(64756008)(66556008)(66476007)(66946007)(91956017)(73956011)(486006)(44832011)(7736002)(66066001)(4326008)(110136005)(25786009)(6246003)(53936002)(305945005)(118296001)(6506007)(54906003)(76176011)(26005)(8676002)(86362001)(186003)(5660300002)(102836004);DIR:OUT;SFP:1102;SCL:1;SRVR:VI1PR0502MB3871;H:VI1PR0502MB3965.eurprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: toradex.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: ESKjahfAQepahqpyGtg7Jfk7YuJwd4S55SEFeGtQ5+9dUBfkh0F6PLGUefKgxY0r7DMZzgH8poNX+xoy2NdtVK2J3TaNaoOsn7p6tn/bAwjiZxluIoCNL3nsav3r6USRAAGOdR7/NGXM/fbp//1D8xiXWafZNyj5/WTxzo90ZARcWNkRAe12w8lqfKdtyQtiu8wb4Q+dYZDtIah0zoaqIcHJotjo7Xqx8EOFKVxgPfIXzZs1UGIaChJPTFCGPPVrvXGakLhNqKS1rO6eHFO3irXNUsHfPfbUd1+M4m9IM5LaHMAH1VU6MWC4LyLc4GTl2SmQU20brjPjnNR8od1b2xDNY1OqZnHUMYhRA2nonEFiM701hOjVgDTsVCr7FXisZZ0tykFazQFmZ+lTyazusyUf1YgeYQ07UUgKIcIV21Y=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EAA6079BD1A28F43886E8BD45814DA37@eurprd05.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="bydgprfj47ik7yub"
-Content-Disposition: inline
-In-Reply-To: <20190506175525.swc5u7j6ntry7v3g@core.my.home>
-User-Agent: NeoMutt/20180716
+X-OriginatorOrg: toradex.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: edff2429-5768-4af5-3c7b-08d6d2f8bdb8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 May 2019 14:31:49.4663
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0502MB3871
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---bydgprfj47ik7yub
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, May 06, 2019 at 07:55:25PM +0200, Ond=C5=99ej Jirman wrote:
-> On Tue, May 07, 2019 at 01:08:39AM +0800, Frank Lee wrote:
-> > On Tue, May 7, 2019 at 12:52 AM Icenowy Zheng <icenowy@aosc.io> wrote:
-> > >
-> > > =E5=9C=A8 2019-05-06=E4=B8=80=E7=9A=84 14:28 +0200=EF=BC=8CMaxime Rip=
-ard=E5=86=99=E9=81=93=EF=BC=9A
-> > > > Hi,
-> > > >
-> > > > On Sun, May 05, 2019 at 04:22:15PM +0100, Jonathan Cameron wrote:
-> > > > > On Fri,  3 May 2019 03:28:07 -0400
-> > > > > Yangtao Li <tiny.windzz@gmail.com> wrote:
-> > > > >
-> > > > > > For some SOCs, there are more than one thermal sensor, and there
-> > > > > > are
-> > > > > > currently four sensors on the A80. So we need to do some work in
-> > > > > > order
-> > > > > > to support multiple thermal sensors:
-> > > > > >
-> > > > > >   1) add sensor_count in gpadc_data.
-> > > > > >   2) introduce sun4i_sensor_tzd in sun4i_gpadc_iio, to support
-> > > > > > multiple
-> > > > > >      thermal_zone_device and distinguish between different
-> > > > > > sensors.
-> > > > > >   3) modify read temperature and initialization function.
-> > > > >
-> > > > > This comment doesn't mention the devm change. If it had it would
-> > > > > have
-> > > > > raised immediate alarm bells.
-> > > > >
-> > > > > I'm also not keen on the web of pointers that this driver is
-> > > > > steadily
-> > > > > evolving.  I can't immediately see how to reduce that complexity
-> > > > > however.
-> > > >
-> > > > So I might be responsible for that, and looking back, this has been=
- a
-> > > > mistake.
-> > > >
-> > > > This driver was initally put together to support a controller found
-> > > > in
-> > > > older (A10 up to A31) Allwinner SoCs. This controller had an ADC
-> > > > driver that could be operated as a touchscreen controller, and was
-> > > > providing a CPU temperature sensor and a general purpose ADC.
-> > > >
-> > > > However, we already had a driver for that controller in drivers/inp=
-ut
-> > > > to report the CPU temperature, and the one in IIO was introduced to
-> > > > support the general purpose ADC (and the CPU temperature). The long
-> > > > term goal was to add the touchscreen feature as well eventually so
-> > > > that we could remove the one in drivers/input. That didn't happen.
-> > > >
-> > > > At the same time, the Allwinner hardware slowly evolved to remove t=
-he
-> > > > touchscreen and ADC features, and only keep the CPU temperature
-> > > > readout. It then evolved further on to support multiple temperatures
-> > > > (for different clusters, the GPU, and so on).
-> > > >
-> > > > So, today, we're in a situation where I was pushing everything into
-> > > > that IIO drivers since there was similiraties between all the
-> > > > generations, but the fact that we have to support so many odd cases
-> > > > (DT bindings compatibility, controllers with and without ADC, etc)
-> > > > that it becomes a real mess.
-> > > >
-> > > > And that mess isn't really used by anybody, since we want to have t=
-he
-> > > > touchscreen.
-> > > >
-> > > > There's only one SoC that is supported only by that driver, which is
-> > > > the A33 that only had a CPU temperature readout, and is still pretty
-> > > > similar to the latest SoC from Allwinner (that is supported by this
-> > > > series).
-> > > >
-> > > > I guess, for everyone's sanity and in order to not stall this
-> > > > further,
-> > > > it would just be better to create an hwmon driver for the A33 (and
-> > > > onwards, including the H6) for the SoC that just have the temperatu=
-re
-> > > > readout feature. And for the older SoC, we just keep the older driv=
-er
-> > > > under input/. Once the A33 is supported, we'll remove the driver in
-> > > > IIO (and the related bits in drivers/mfd).
-> >
-> > a hwmon driver or a thermal driver=EF=BC=9F
-> >
-> > >
-> > > I think a thermal driver is better.
-> >
-> > This is what I hope to see a few months ago.
-> >
-> > >
-> > > Other SoCs' thermal sensor drivers are all thermal drivers.
-> > >
-> > > >
-> > > > Armbian already has a driver for that they never upstreamed iirc, so
-> > > > it might be a good starting point, and we would add the support for
-> > > > the H6. How does that sound?
-> > >
-> > > I think the developer abandoned to upstream it because of the previous
-> > > problem ;-)
-> > >
-> > > Maybe it can be taken and add A33&H6 support.
-> >
-> > If OK, I am going to start some thermal driver work this weekend.  : )
->
-> There are plenty of thermal drivers flying around, with varying levels
-> of support for various SoCs:
->
-> - H3/H5: https://megous.com/git/linux/commit/?h=3Dths-5.1&id=3Db8e20c5da7=
-a00b3a3fa1b274fc8d5bea95872b0a
-> - A83T: https://megous.com/git/linux/commit/?h=3Dths-5.1&id=3D796dff9a946=
-fd475cc1e4bb948a723ea841c640c
-> - H6: https://megous.com/git/linux/commit/?h=3Dopi3-5.1&id=3Daeab762c19b4=
-aa228a295258c9d6b2e1f143bf86
->
-> For H3/H5 Icenowy also tried to upstream some variant of my THS driver, w=
-ith
-> better SID/calibration data reading support.
->
-> I'd suggest starting with the H6 driver above (as that implements the
-> calibration data readout correctly), and make it so that it can support m=
-ultiple
-> SoCs.
-
-Yeah, that seems like a good plan
-
-Maxime
-
---
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---bydgprfj47ik7yub
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXNGPMAAKCRDj7w1vZxhR
-xS2VAQDOVlzfYshYqB3RzzDSqFMZPH8If+sem/QedfMd4Lyj7AD+KkQ+2ms4+Ca9
-JJceZmhL6UGhaXOTV4RQUMJQA+c6zgU=
-=DXHT
------END PGP SIGNATURE-----
-
---bydgprfj47ik7yub--
+T24gVHVlLCAyMDE5LTA1LTA3IGF0IDA4OjIzICswMDAwLCBEYXZpZCBMYWlnaHQgd3JvdGU6DQo+
+IEZyb206IEpvbmF0aGFuIENhbWVyb24NCj4gPiBTZW50OiAwNSBNYXkgMjAxOSAxNjo0NA0KPiA+
+IE9uIEZyaSwgMyBNYXkgMjAxOSAxNTo1ODozOCArMDAwMA0KPiA+IFBoaWxpcHBlIFNjaGVua2Vy
+IDxwaGlsaXBwZS5zY2hlbmtlckB0b3JhZGV4LmNvbT4gd3JvdGU6DQo+ID4gDQo+ID4gPiBPbiBG
+cmksIDIwMTktMDUtMDMgYXQgMTQ6MzkgKzAwMDAsIERhdmlkIExhaWdodCB3cm90ZToNCj4gPiA+
+ID4gRnJvbTogUGhpbGlwcGUgU2NoZW5rZXINCj4gPiA+ID4gPiBTZW50OiAwMyBNYXkgMjAxOSAx
+NDo1Nw0KPiA+ID4gPiA+IEluIHNvbWUgY2FzZXMsIHRoZSB3YWl0X2NvbXBsZXRpb24gZ290IGlu
+dGVycnVwdGVkLiBUaGlzIGNhdXNlZCB0aGUNCj4gPiA+ID4gPiBlcnJvci1oYW5kbGluZyB0byBt
+dXRleF91bmxvY2sgdGhlIGZ1bmN0aW9uLiBUaGUgYmVmb3JlIHR1cm5lZCBvbg0KPiA+ID4gPiA+
+IGludGVycnVwdCB0aGVuIGdvdCBjYWxsZWQgYW55d2F5LiBJbiB0aGUgSVNSIHRoZW4gY29tcGxl
+dGlvbigpDQo+ID4gPiA+ID4gd2FzIGNhbGxlZCBjYXVzaW5nIHByb2JsZW1zLg0KPiA+ID4gPiA+
+IA0KPiA+ID4gPiA+IE1ha2luZyB0aGlzIHdhaXRfY29tcGxldGlvbiBub24gaW50ZXJydXB0aWJs
+ZSBzb2x2ZXMgdGhlIHByb2JsZW0uDQo+ID4gPiA+IA0KPiA+ID4gPiBXb24ndCB0aGUgc2FtZSB0
+aGluZyBoYXBwZW4gaWYgdGhlIGludGVycnVwdCBvY2N1cnMganVzdCBhZnRlcg0KPiA+ID4gPiB0
+aGUgdGltZW91dD8NCj4gPiA+ID4gDQo+ID4gPiA+IAlEYXZpZA0KPiA+ID4gPiANCj4gPiA+ID4g
+DQo+ID4gPiA+IC0NCj4gPiA+ID4gUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5
+IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsDQo+ID4gPiA+IE1LMSAxUFQsDQo+ID4g
+PiA+IFVLDQo+ID4gPiA+IFJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo+ID4gPiA+
+IA0KPiA+ID4gDQo+ID4gPiBZb3UncmUgb2YgY291cnNlIHJpZ2h0Li4uIFRoYW5rcyBmb3IgcG9p
+bnRpbmcgdGhpcyBvdXQuIEkgd2lsbCBzZW5kIGEgdjINCj4gPiA+IHdpdGggYQ0KPiA+ID4gYmV0
+dGVyIHNvbHV0aW9uIHRoZW4uDQo+ID4gPiANCj4gPiANCj4gPiBJc24ndCB0aGUgdGltZW91dCBs
+b25nIGVub3VnaCB0aGF0IGl0IHNob3VsZCBvbmx5IGhhcHBlbiBpZiB0aGUgaGFyZHdhcmUgaGFz
+DQo+ID4gYSBmYXVsdD8gSWYgdGhhdCdzIHRoZSBjYXNlLCBJIHdvdWxkbid0IHdvcnJ5IHRvbyBt
+dWNoIGFib3V0IHBvc3NpYmlsaXR5IG9mDQo+ID4gYW4gaW50ZXJydXB0IGNhdXNpbmcgY29uZnVz
+aW9uIGFzIGxvbmcgYXMgaXQgaXNuJ3QgY2F0YXN0cm9waGljLg0KPiANCj4gVGhlICdjb25mdXNp
+b24nIGlzIGxpa2VseSB0byBiZSAnY2F0YXN0cm9waGljJyB1bmxlc3MgdGhlIGNvZGUgaXMgd3Jp
+dHRlbg0KPiB0byBoYW5kbGUgaXQgcHJvcGVybHkuDQo+IA0KPiBDYW5jZWxsaW5nIGNhbGxiYWNr
+cyBpcyBoYXJkIHRvIGdldCByaWdodCBhbmQgb2Z0ZW4gbm90IGRvbmUgcHJvcGVybHkuDQo+IFRp
+bWluZyBvdXQgYW4gaW50ZXJydXB0IGlzIG11Y2ggdGhlIHNhbWUgcHJvYmxlbS4NCj4gDQo+IAlE
+YXZpZA0KDQpJIHNvcnRlZCBpdCBvdXQgbm93LCB0aGVyZSB3aGVyZSBhbHNvIHNvbWUgbW9yZSBi
+dWdzIEkgZm91bmQgYW5kIGNvcnJlY3RlZC4NCg0KQEpvbmF0aGFuOiBJIHdpbGwgc2VuZCBhIGNv
+bXBsZXRlbHkgbmV3IHNlcmllcyBvZiBwYXRjaGVzIHRoYXQgd2lsbCBpbmNsdWRlDQpwYXRjaCAz
+LzMgZnJvbSB0aGlzIHNlcmllcyBidXQgbm90IHRoZSBvbmUgeW91IGFscmVhZHkgYXBwbGllZC4g
+VGhpcyBkdWUgdG8NCmluY3JlYXNlZCBwYXRjaCBudW1iZXIgYW5kIGRpZmZlcmVudCBvcmRlci4u
+Lg0KPiANCj4gLQ0KPiBSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwg
+TW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwNCj4gVUsNCj4gUmVnaXN0cmF0aW9u
+IE5vOiAxMzk3Mzg2IChXYWxlcykNCj4gDQo=

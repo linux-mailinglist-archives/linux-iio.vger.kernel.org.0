@@ -2,221 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 115A61616D
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 11:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A28D7161CE
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 12:18:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726448AbfEGJup (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 May 2019 05:50:45 -0400
-Received: from mail-vk1-f193.google.com ([209.85.221.193]:41221 "EHLO
-        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726063AbfEGJup (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 May 2019 05:50:45 -0400
-Received: by mail-vk1-f193.google.com with SMTP id l73so1128102vkl.8
-        for <linux-iio@vger.kernel.org>; Tue, 07 May 2019 02:50:44 -0700 (PDT)
+        id S1726452AbfEGKSy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 May 2019 06:18:54 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:44114 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726340AbfEGKSy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 May 2019 06:18:54 -0400
+Received: by mail-pf1-f194.google.com with SMTP id y13so8413038pfm.11;
+        Tue, 07 May 2019 03:18:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ItZj+cZayrvSVkSWqDa4A7M4jL0GmunrDFPDNocBX6Q=;
-        b=bR7etZ1B5jxM7NxI4H5Ov/jd2EPcgkuWMfFiLD5BvJZZcGNPPUs0JMKXtDagW3DTwp
-         TapWrKXXE1kc/+Lxcglp7oaTAJLR4LvKzprPWJEB6fg5dEUAe35Dhx+jwgF3Q7Shl3Ba
-         9cc/ljRlabgtSYS/5KICPXbmRRYHuIZbJFEW0=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=G8pBOHepmnJE1/KzU1bAO4V1FlfT0xpTPU7pMbXBSIs=;
+        b=YdndEbZRVbfd6JyBmK3pprG9Tj5uVoHj96dazYWHgaGCvSG9YackGco1b+A+QwJsbo
+         2IB2Aw7AFIlHUyQQC8OO/PyGaFsdl3a+Ui0i9jS+jmmybLAhKCrIMdroPMTkQ4BW4r1J
+         XSWyDl7hgLw/Es8QDdli57it39JXrJgf6xEww/UU0Hu1MQ8k/YIfVupnm/ShMrbpS40i
+         TKaQf3XBE204zQnuxlm1FjbqkYCb/c4oOboF9mZGIDj6wFWS3BAOXO7ZYcUzlP4MtSsH
+         wcYN7m+dzyRII4/Z/8oiuJ4u3KTWDHMSyqpYRZGyhveY3ro3kPT0yKrdQtrjvIXjMhrU
+         OYyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ItZj+cZayrvSVkSWqDa4A7M4jL0GmunrDFPDNocBX6Q=;
-        b=tohj0+/JtISplzhNdLNdEEu2Yfjcku0Dd/fA1Ei4kP7eXnmpLlmSv6ylnwVv98GaZN
-         RHt7Q+C24ojLUxUUX3DOY1oeSSi4x+Ihn32aA1iWECXdfazu73t1DSDf13WAvxdCfNa7
-         nb7A2r0YzAK+t+eJBDfQcnZ9H1VQCZFudHHHKhgKS8icPCznrgAbuH31i+c8pRIT7Agy
-         YyzB+MCIhGm51kMDapbjtF4xPNGKEofzd+mnYn9G6936px0MaQghjwSNU62ojmPSEEOu
-         63MNQgw8mi1PPB+TAOuDIIX+0WEer4rAPjWA8CZylIF5AOpWZtEvC83jfjJSU48KqkWj
-         xMEw==
-X-Gm-Message-State: APjAAAWYIi1qQM1DTPGWEjomW9MZm95HDto/63EEuR9WOhTGUKkbVUTO
-        weS4gDAgEiw/Gc233dUYDPOyJEaDCjxqCQ52pyVn9Q==
-X-Google-Smtp-Source: APXvYqxqHK/+FtHyw2cyBS5z6nFUlGd7uR8B9ID7V7BGH3XqT8oKHyCS9RsjAXV7mYIWeto8ZZ9tMQz+I1zo6ct5Okg=
-X-Received: by 2002:a1f:a385:: with SMTP id m127mr12122695vke.88.1557222643680;
- Tue, 07 May 2019 02:50:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190503220233.64546-1-gwendal@chromium.org> <20190503220233.64546-31-gwendal@chromium.org>
-In-Reply-To: <20190503220233.64546-31-gwendal@chromium.org>
-From:   Cheng-yi Chiang <cychiang@chromium.org>
-Date:   Tue, 7 May 2019 17:50:17 +0800
-Message-ID: <CAFv8NwJzSrAU+AsFuqy6YBabmYKO+jJmDeS27_rE=hcqUU-tvQ@mail.gmail.com>
-Subject: Re: [PATCH v2 30/30] mfd: cros_ec: Update I2S API
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Lee Jones <lee.jones@linaro.org>, jic23@kernel.org,
-        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=G8pBOHepmnJE1/KzU1bAO4V1FlfT0xpTPU7pMbXBSIs=;
+        b=iUVvvjzOdMaLqNhgpuEYVxYlcY/A8gJ4b/9D0yQFli2InhXG2kM2hFioyDtyI7M29V
+         mzDmLwksFLtX+2TRDCriu51/uWZsU+Ahv7B6XgZ+DrME1qqhrJAkC1Xpq4vZ+CXHCSPX
+         EXI3Ot39TsEL3UnPUTTVfvx8Dn9RgZJfS1kvO7/oRgcNGrfZXVjQZJop6ZiU1mgXmUBY
+         rkL6lgBBM2ZMxyMWZIpw/A/pR8f2/LLmtIKG2A4DejsDUdjWqV4NVjlwh8J09hmCBYso
+         HOqQx1kHQOTc+JHdZFjhZi28Nc3gTJAC2DzWIZ2cpIemh866IPYWtxLzV3EgUULOmSwc
+         jFxA==
+X-Gm-Message-State: APjAAAXzfkVllIiNmthDuXKOZWEWcCTXa0ZZqC7PYFNQdyPgsloZaGXD
+        GwA6Q00YqEToKhWccqH/eXk=
+X-Google-Smtp-Source: APXvYqw0MpKiLCvqwe8N+6fugyXUfcfqbZxka1Z+eJC2FrcXxk4z1+/4iDtrJjM2rg8zYe1KAD/hYw==
+X-Received: by 2002:aa7:9ac4:: with SMTP id x4mr14324313pfp.43.1557224333621;
+        Tue, 07 May 2019 03:18:53 -0700 (PDT)
+Received: from icarus ([2001:268:c1c3:2283:c70:4af9:86e2:2])
+        by smtp.gmail.com with ESMTPSA id a6sm26288248pgd.67.2019.05.07.03.18.45
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 07 May 2019 03:18:51 -0700 (PDT)
+Date:   Tue, 7 May 2019 19:18:29 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Benjamin Gaignard <benjamin.gaignard@st.com>
+Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, fabrice.gasnier@st.com, alexandre.torgue@st.com,
         linux-iio@vger.kernel.org,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] IIO: stm32: Remove quadrature related functions from
+ trigger driver
+Message-ID: <20190507101729.GA3420@icarus>
+References: <20190507091224.17781-1-benjamin.gaignard@st.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190507091224.17781-1-benjamin.gaignard@st.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Gwendal,
-Thanks for the fix!
+On Tue, May 07, 2019 at 11:12:24AM +0200, Benjamin Gaignard wrote:
+> Quadrature feature is now hosted on it own framework.
+> Remove quadrature related code from stm32-trigger driver to avoid
+> code duplication and simplify the ABI.
+> 
+> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
 
+Although this functionality is now provided by the Counter subsystem, we
+should keep the IIO Counter interface for this driver intact since
+existing user applications may depend on it; this is the same reason why
+the IIO Counter code in the 104-QUAD-8 device driver was not removed
+despite moving to the Counter subsystem.
 
-From: Gwendal Grignou <gwendal@chromium.org>
-Date: Sat, May 4, 2019 at 6:03 AM
-To: <enric.balletbo@collabora.com>, <bleung@chromium.org>,
-<groeck@chromium.org>, <lee.jones@linaro.org>, <jic23@kernel.org>,
-<broonie@kernel.org>, <cychiang@chromium.org>, <tiwai@suse.com>
-Cc: <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>, Gwendal Grignou
+Once user applications have had enough time to migrate to the Generic
+Counter interface, we can consider removing the deprecated IIO Counter
+interface.
 
-> Improve I2S API.
-> Rename ec_response_codec_gain into ec_codec_i2s_gain,
-> update caller accordlingly.
->
-> Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> ---
->  include/linux/mfd/cros_ec_commands.h | 44 +++++++++++++---------------
->  sound/soc/codecs/cros_ec_codec.c     |  8 ++---
->  2 files changed, 24 insertions(+), 28 deletions(-)
->
-> diff --git a/include/linux/mfd/cros_ec_commands.h b/include/linux/mfd/cros_ec_commands.h
-> index fc8babce1576..fa397722f17e 100644
-> --- a/include/linux/mfd/cros_ec_commands.h
-> +++ b/include/linux/mfd/cros_ec_commands.h
-> @@ -4471,6 +4471,7 @@ enum mkbp_cec_event {
->  /* Commands for I2S recording on audio codec. */
->
->  #define EC_CMD_CODEC_I2S 0x00BC
-> +#define EC_WOV_I2S_SAMPLE_RATE 48000
->
->  enum ec_codec_i2s_subcmd {
->         EC_CODEC_SET_SAMPLE_DEPTH = 0x0,
-> @@ -4480,6 +4481,7 @@ enum ec_codec_i2s_subcmd {
->         EC_CODEC_I2S_SET_CONFIG = 0x4,
->         EC_CODEC_I2S_SET_TDM_CONFIG = 0x5,
->         EC_CODEC_I2S_SET_BCLK = 0x6,
-> +       EC_CODEC_I2S_SUBCMD_COUNT = 0x7,
->  };
->
->  enum ec_sample_depth_value {
-> @@ -4496,6 +4498,21 @@ enum ec_i2s_config {
->         EC_DAI_FMT_PCM_TDM = 5,
->  };
->
-> +/*
-> + * For subcommand EC_CODEC_GET_GAIN.
-> + */
-> +struct __ec_align1 ec_codec_i2s_gain {
-> +       uint8_t left;
-> +       uint8_t right;
-> +};
-> +
-> +struct __ec_todo_unpacked ec_param_codec_i2s_tdm {
-> +       int16_t ch0_delay; /* 0 to 496 */
-> +       int16_t ch1_delay; /* -1 to 496 */
-> +       uint8_t adjacent_to_ch0;
-> +       uint8_t adjacent_to_ch1;
-> +};
-> +
->  struct __ec_todo_packed ec_param_codec_i2s {
->         /* enum ec_codec_i2s_subcmd */
->         uint8_t cmd;
-> @@ -4510,10 +4527,7 @@ struct __ec_todo_packed ec_param_codec_i2s {
->                  * EC_CODEC_SET_GAIN
->                  * Value should be 0~43 for both channels.
->                  */
-> -               struct __ec_align1 ec_param_codec_i2s_set_gain {
-> -                       uint8_t left;
-> -                       uint8_t right;
-> -               } gain;
-> +               struct ec_codec_i2s_gain gain;
->
->                 /*
->                  * EC_CODEC_I2S_ENABLE
-> @@ -4522,7 +4536,7 @@ struct __ec_todo_packed ec_param_codec_i2s {
->                 uint8_t i2s_enable;
->
->                 /*
-> -                * EC_CODEC_I2S_SET_COFNIG
-> +                * EC_CODEC_I2S_SET_CONFIG
->                  * Value should be one of ec_i2s_config.
->                  */
->                 uint8_t i2s_config;
-> @@ -4531,18 +4545,7 @@ struct __ec_todo_packed ec_param_codec_i2s {
->                  * EC_CODEC_I2S_SET_TDM_CONFIG
->                  * Value should be one of ec_i2s_config.
->                  */
-> -               struct __ec_todo_unpacked ec_param_codec_i2s_tdm {
-> -                       /*
-> -                        * 0 to 496
-> -                        */
-> -                       int16_t ch0_delay;
-> -                       /*
-> -                        * -1 to 496
-> -                        */
-> -                       int16_t ch1_delay;
-> -                       uint8_t adjacent_to_ch0;
-> -                       uint8_t adjacent_to_ch1;
-> -               } tdm_param;
-> +               struct ec_param_codec_i2s_tdm tdm_param;
->
->                 /*
->                  * EC_CODEC_I2S_SET_BCLK
-> @@ -4551,13 +4554,6 @@ struct __ec_todo_packed ec_param_codec_i2s {
->         };
->  };
->
-> -/*
-> - * For subcommand EC_CODEC_GET_GAIN.
-> - */
-> -struct ec_response_codec_gain {
-> -       uint8_t left;
-> -       uint8_t right;
-> -} __ec_align1;
->
->  /*****************************************************************************/
->  /* System commands */
-> diff --git a/sound/soc/codecs/cros_ec_codec.c b/sound/soc/codecs/cros_ec_codec.c
-> index 99a3af8a15ff..87830ed5ebf4 100644
-> --- a/sound/soc/codecs/cros_ec_codec.c
-> +++ b/sound/soc/codecs/cros_ec_codec.c
-> @@ -38,21 +38,21 @@ static const DECLARE_TLV_DB_SCALE(ec_mic_gain_tlv, 0, 100, 0);
->
->  static int ec_command_get_gain(struct snd_soc_component *component,
->                                struct ec_param_codec_i2s *param,
-> -                              struct ec_response_codec_gain *resp)
-> +                              struct ec_codec_i2s_gain *resp)
->  {
->         struct cros_ec_codec_data *codec_data =
->                 snd_soc_component_get_drvdata(component);
->         struct cros_ec_device *ec_device = codec_data->ec_device;
->         u8 buffer[sizeof(struct cros_ec_command) +
->                   max(sizeof(struct ec_param_codec_i2s),
-> -                     sizeof(struct ec_response_codec_gain))];
-> +                     sizeof(struct ec_codec_i2s_gain))];
->         struct cros_ec_command *msg = (struct cros_ec_command *)&buffer;
->         int ret;
->
->         msg->version = 0;
->         msg->command = EC_CMD_CODEC_I2S;
->         msg->outsize = sizeof(struct ec_param_codec_i2s);
-> -       msg->insize = sizeof(struct ec_response_codec_gain);
-> +       msg->insize = sizeof(struct ec_codec_i2s_gain);
->
->         memcpy(msg->data, param, msg->outsize);
->
-> @@ -226,7 +226,7 @@ static int get_ec_mic_gain(struct snd_soc_component *component,
->                            u8 *left, u8 *right)
->  {
->         struct ec_param_codec_i2s param;
-> -       struct ec_response_codec_gain resp;
-> +       struct ec_codec_i2s_gain resp;
->         int ret;
->
->         param.cmd = EC_CODEC_GET_GAIN;
-> --
-> 2.21.0.1020.gf2820cf01a-goog
->
-Acked-by: Cheng-Yi Chiang <cychiang@chromium.org>
+William Breathitt Gray

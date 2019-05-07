@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CB6815A5A
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 07:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9130215A20
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 07:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729516AbfEGFmV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 May 2019 01:42:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33322 "EHLO mail.kernel.org"
+        id S1729656AbfEGFmu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 May 2019 01:42:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33722 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728964AbfEGFmU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 7 May 2019 01:42:20 -0400
+        id S1728734AbfEGFmu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 7 May 2019 01:42:50 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 59EF520578;
-        Tue,  7 May 2019 05:42:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DDBBE20578;
+        Tue,  7 May 2019 05:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557207740;
-        bh=0esvBg3sZPHXqyPWKf8K32UkMNDTLhp2VPF6mDiGBRk=;
+        s=default; t=1557207769;
+        bh=ORIW/Z6sxOAMgncxRTcvupdrdp7O7IKVNDywnbsCAvU=;
         h=From:To:Cc:Subject:Date:From;
-        b=do8xcuLo5ZtPfCPsVQHmLx8l9xcFYqbrMpZLQiUzO9E1naRmhqjmHwSAYZiGG/aap
-         KXOtl5Hxj6y1VHidonrmYcN6xm/L1Z+JyM4BzK6dwUNfyj+nq80Iq0yJP2ePp/N5Ux
-         /ea3x4by0Q5pLOqNawEPFjJNbf1vPTMtJeaaFKlA=
+        b=HYMBgw5QwTCbjI/kLMcpIdGvz1EIBJZXkF1VWuMQLTpQeKJwLPd/flgbAIYO/fX/r
+         TJ37rWMErpvlnTsRE73t+PWUZaFA/Nl4AQvxxw5YREQ0sp9FuX1hjRlGnf8ceJ9dcD
+         aWLgry1qsiL25ReaDVg8/FcSYXkT6PZtj+Tc0Dm4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sven Van Asbroeck <thesven73@gmail.com>,
         Sven Van Asbroeck <TheSven73@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 01/14] iio: adc: xilinx: fix potential use-after-free on remove
-Date:   Tue,  7 May 2019 01:42:03 -0400
-Message-Id: <20190507054218.340-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 3.18 01/10] iio: adc: xilinx: fix potential use-after-free on remove
+Date:   Tue,  7 May 2019 01:42:37 -0400
+Message-Id: <20190507054247.537-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 X-stable: review
@@ -62,10 +62,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index 475c5a74f2d1..6398e86a272b 100644
+index a483747cdc9b..b520de11fc17 100644
 --- a/drivers/iio/adc/xilinx-xadc-core.c
 +++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1299,7 +1299,7 @@ static int xadc_remove(struct platform_device *pdev)
+@@ -1315,7 +1315,7 @@ static int xadc_remove(struct platform_device *pdev)
  	}
  	free_irq(irq, indio_dev);
  	clk_disable_unprepare(xadc->clk);

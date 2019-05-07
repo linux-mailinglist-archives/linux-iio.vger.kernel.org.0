@@ -2,24 +2,24 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32CAD165D2
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 16:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2369F165D4
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2019 16:37:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726793AbfEGOg0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 May 2019 10:36:26 -0400
-Received: from mxout012.mail.hostpoint.ch ([217.26.49.172]:63402 "EHLO
-        mxout012.mail.hostpoint.ch" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726674AbfEGOg0 (ORCPT
+        id S1726811AbfEGOg1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 May 2019 10:36:27 -0400
+Received: from mxout017.mail.hostpoint.ch ([217.26.49.177]:34234 "EHLO
+        mxout017.mail.hostpoint.ch" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726324AbfEGOg0 (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Tue, 7 May 2019 10:36:26 -0400
 Received: from [10.0.2.46] (helo=asmtp013.mail.hostpoint.ch)
-        by mxout012.mail.hostpoint.ch with esmtp (Exim 4.91 (FreeBSD))
+        by mxout017.mail.hostpoint.ch with esmtp (Exim 4.91 (FreeBSD))
         (envelope-from <dev@pschenker.ch>)
-        id 1hO1Ce-000454-QD; Tue, 07 May 2019 16:36:20 +0200
+        id 1hO1Cf-000DwF-Qc; Tue, 07 May 2019 16:36:21 +0200
 Received: from [46.140.72.82] (helo=philippe-pc.toradex.int)
         by asmtp013.mail.hostpoint.ch with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
         (Exim 4.91 (FreeBSD))
         (envelope-from <dev@pschenker.ch>)
-        id 1hO1Ce-0008oW-Jv; Tue, 07 May 2019 16:36:20 +0200
+        id 1hO1Cf-0008oW-Jv; Tue, 07 May 2019 16:36:21 +0200
 X-Authenticated-Sender-Id: dev@pschenker.ch
 From:   Philippe Schenker <dev@pschenker.ch>
 To:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
@@ -36,9 +36,9 @@ Cc:     Marcel Ziswiler <marcel.ziswiler@toradex.com>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 2/5] iio: stmpe-adc: Reinit completion struct on begin conversion
-Date:   Tue,  7 May 2019 16:36:12 +0200
-Message-Id: <20190507143615.28477-2-dev@pschenker.ch>
+Subject: [PATCH 3/5] iio: stmpe-adc: Enable all stmpe-adc interrupts just once
+Date:   Tue,  7 May 2019 16:36:13 +0200
+Message-Id: <20190507143615.28477-3-dev@pschenker.ch>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190507143615.28477-1-dev@pschenker.ch>
 References: <20190507143615.28477-1-dev@pschenker.ch>
@@ -51,42 +51,43 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Philippe Schenker <philippe.schenker@toradex.com>
 
-In some cases, the wait_completion got interrupted. This caused the
-error-handling to mutex_unlock the function. The before turned on
-interrupt then got called anyway. In the ISR then completion() was
-called causing wrong adc-values returned in a following adc-readout.
+This commit will enable the interrupts of all channels handled by this
+driver only once in the probe function.
 
-Reinitialise completion struct to make sure the counter is zero
-when beginning a new adc-conversion.
+This will improve performance because one byte less has to be written over
+i2c on each read out of the adc. On the fastest ADC mode this will improve
+read out speed by 15%.
 
 Signed-off-by: Philippe Schenker <philippe.schenker@toradex.com>
 ---
 
- drivers/iio/adc/stmpe-adc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/adc/stmpe-adc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/adc/stmpe-adc.c b/drivers/iio/adc/stmpe-adc.c
-index 9ec338ba3440..b3872eb37293 100644
+index b3872eb37293..82b43e4522b6 100644
 --- a/drivers/iio/adc/stmpe-adc.c
 +++ b/drivers/iio/adc/stmpe-adc.c
-@@ -65,6 +65,8 @@ static int stmpe_read_voltage(struct stmpe_adc *info,
+@@ -74,9 +74,6 @@ static int stmpe_read_voltage(struct stmpe_adc *info,
+ 		return -EINVAL;
+ 	}
  
- 	mutex_lock(&info->lock);
+-	stmpe_reg_write(info->stmpe, STMPE_REG_ADC_INT_EN,
+-			STMPE_ADC_CH(info->channel));
+-
+ 	stmpe_reg_write(info->stmpe, STMPE_REG_ADC_CAPT,
+ 			STMPE_ADC_CH(info->channel));
  
-+	reinit_completion(&info->completion);
+@@ -336,6 +333,9 @@ static int stmpe_adc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
++	stmpe_reg_write(info->stmpe, STMPE_REG_ADC_INT_EN,
++			~(norequest_mask & 0xFF));
 +
- 	info->channel = (u8)chan->channel;
+ 	return devm_iio_device_register(&pdev->dev, indio_dev);
+ }
  
- 	if (info->channel > STMPE_ADC_LAST_NR) {
-@@ -105,6 +107,8 @@ static int stmpe_read_temp(struct stmpe_adc *info,
- 
- 	mutex_lock(&info->lock);
- 
-+	reinit_completion(&info->completion);
-+
- 	info->channel = (u8)chan->channel;
- 
- 	if (info->channel != STMPE_TEMP_CHANNEL) {
 -- 
 2.21.0
 

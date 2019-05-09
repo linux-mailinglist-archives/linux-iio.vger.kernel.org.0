@@ -2,173 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00FFB183F8
-	for <lists+linux-iio@lfdr.de>; Thu,  9 May 2019 05:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3216C18522
+	for <lists+linux-iio@lfdr.de>; Thu,  9 May 2019 08:11:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726100AbfEIDKJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 May 2019 23:10:09 -0400
-Received: from mail-it1-f193.google.com ([209.85.166.193]:35239 "EHLO
-        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726109AbfEIDKI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 May 2019 23:10:08 -0400
-Received: by mail-it1-f193.google.com with SMTP id u186so1094702ith.0
-        for <linux-iio@vger.kernel.org>; Wed, 08 May 2019 20:10:08 -0700 (PDT)
+        id S1726771AbfEIGLZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 May 2019 02:11:25 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:37204 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725869AbfEIGLZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 May 2019 02:11:25 -0400
+Received: by mail-wm1-f66.google.com with SMTP id y5so1503079wma.2
+        for <linux-iio@vger.kernel.org>; Wed, 08 May 2019 23:11:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tzFejlNEzzPWI2r7iGHhXKbUYOinWB90ZjCR6lplpJM=;
-        b=MLZ+PiNhFL5hha/66D5ODFUNYQ/skp7nsqd36wDgUuqDzaQcdCDnVSKy7otHyCgg7G
-         /NskfxkW9Ea4pf7FxQozEFB7iQjQLi+UFdUQCmrsgke5a6AqmoyJcHH5M6DuOItu9Qym
-         T68sJkaE1MQp9UqhHSJ+lEkmbqbBI4A4vIVvk=
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=10yNfjWlj6Q+p5zJZH8R6Odak87HYwUB4RGRx/vkup4=;
+        b=laZZODAesL0bLuuZenPPuVdtnwFMncG9bBdMr8peQvRNZYuu4JSUJvE6CyZlFBi52q
+         DBDT+TOFV/NzibULe+t2UcLsAgjWf6DQaKje+NvL4dt/ANOnJkLTca4Yjb65ZHbiYvfg
+         kcMgNVMNH7gwzLb4yLACOGzO1VGg+r5KE46B+nCQxHeXltIAtQ/jUVL8NchSYENN8DqJ
+         +O7aZUJv/YWOh78j1i3oigS3XNvw1cZTrrdn3JwzoTlul7CRPhlb9vLHnIJNKWkY7CYi
+         aMJ3+87uhtvSVECffSlgUT+mn7mURg31oiDF43ZvtxFiCEyj2JDTRcc63eFBleB4ohZW
+         4TpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tzFejlNEzzPWI2r7iGHhXKbUYOinWB90ZjCR6lplpJM=;
-        b=kyS1ZgzlDAW91TVognJ6IGil8UODKfqmUT3JSci35vzB9EXw9O/qFr98pZt4QuP+cN
-         /rNgPVg8aMdLtUwxXimVQH1Ys9DAlRW7Rgl5g8iULP88btPHIY0RBu34VapVJIbKUGTP
-         g8sLwTu7ys0Q9Riuo/IDrlWFYOoV8AhVU2p0AEsdMoD6r2pFoMq8+PsIXporNQAfcXGf
-         KFippAjpvJtkLOeLG/tiNZXVfSJVpxSY2kM6WPf7Z23RblX/E3I4/3EgcJ8wTbCV5fea
-         bjWK7gHqa6YamH87icUldBwq4GcLDQIvmpLP9YtbjOI3ivJ2OlacB5FptUOEUFdlhagj
-         jczw==
-X-Gm-Message-State: APjAAAVFJJ0TZPESRKNQLlb44zWzgBqm0KvAj8GyQft63z93RNx1vcgf
-        KuGVIt+bn6Na79/A8q07kkDOjcbGYZnIdjJk90L0Sw==
-X-Google-Smtp-Source: APXvYqyqeTraiqcoBgrs1Y5Hn4sTqYBHZrLGAU/Y2T6uREISJrV6U8WvJa1xGGDNCYO4MkT7gMND0OlRjiDLAomEYuU=
-X-Received: by 2002:a02:3b24:: with SMTP id c36mr1346624jaa.52.1557371407664;
- Wed, 08 May 2019 20:10:07 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=10yNfjWlj6Q+p5zJZH8R6Odak87HYwUB4RGRx/vkup4=;
+        b=f4O5nBVA7YcVfS4MRhUGAyY9ry6kXcnYZE+j1L5HPJOlCv1DfMzuENVtke7UPPHI9v
+         HkD5HdzmBRMx0DXLK+Gs3PqFw183l90LW9TcazyWO/3BUqnW7ILOMSFz/NF34PSSc29n
+         x+EKJCuh1zbbvEcZXNDNgoj577InMTtAkei5ioI0qNI4KEu81oTcnLt0r7Ki15m+c1BS
+         8I9BMlPit9MoBeBS4dgbNzSoDXLqLPXlMJdg9/zJnzHwdyXxVU7/TLnGTdghMRgUEcjW
+         tSMrRLRY0l3lTH4L3uYABqxGa9NCbCH2qpgdG7bwAn91Fmskdy2b+XnwK25GoNOzpEJ1
+         1ihg==
+X-Gm-Message-State: APjAAAWjswmhku00cu55RO4m9gyXgexMs8qG05FQXiDS0ldyvnkMupNP
+        6zguL7dvE98Vd6Dysnw2Hs/WCQ==
+X-Google-Smtp-Source: APXvYqw/E0mALvZqOxNaf2fa6zR5nT5NOytbPtk51OufaRcnN5C3ta1VLzkNXx/u8ButibYxSfElwA==
+X-Received: by 2002:a1c:e3d7:: with SMTP id a206mr475288wmh.7.1557382282720;
+        Wed, 08 May 2019 23:11:22 -0700 (PDT)
+Received: from dell ([2.27.167.43])
+        by smtp.gmail.com with ESMTPSA id u9sm997939wmd.14.2019.05.08.23.11.20
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 08 May 2019 23:11:21 -0700 (PDT)
+Date:   Thu, 9 May 2019 07:11:19 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Benson Leung <bleung@google.com>
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        enric.balletbo@collabora.com, bleung@chromium.org,
+        groeck@chromium.org, jic23@kernel.org, broonie@kernel.org,
+        cychiang@chromium.org, tiwai@suse.com, linux-iio@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH v2 00/30] Update cros_ec_commands.h
+Message-ID: <20190509061119.GT31645@dell>
+References: <20190503220233.64546-1-gwendal@chromium.org>
+ <20190507094446.GD4529@dell>
+ <20190508231954.GA41543@google.com>
 MIME-Version: 1.0
-References: <1557344128-690-1-git-send-email-eajames@linux.ibm.com> <1557344128-690-3-git-send-email-eajames@linux.ibm.com>
-In-Reply-To: <1557344128-690-3-git-send-email-eajames@linux.ibm.com>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Thu, 9 May 2019 11:09:56 +0800
-Message-ID: <CAJCx=gn0Yv+oP56HQQNm-9JbH2aoZuEQ-73b1grLTVNfbYsDsg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] iio: dps310: Temperature measurement errata
-To:     Eddie James <eajames@linux.ibm.com>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>, joel@jms.id.au,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Christopher Bostic <cbostic@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190508231954.GA41543@google.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, May 9, 2019 at 3:36 AM Eddie James <eajames@linux.ibm.com> wrote:
->
-> From: Christopher Bostic <cbostic@linux.vnet.ibm.com>
->
-> Add a manufacturer's suggested workaround to deal with early revisions
-> of chip that don't indicate correct temperature. Readings can be in the
-> ~60C range when they should be in the ~20's.
->
-> Signed-off-by: Christopher Bostic <cbostic@linux.vnet.ibm.com>
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> Signed-off-by: Eddie James <eajames@linux.ibm.com>
-> ---
->  drivers/iio/pressure/dps310.c | 51 ++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 50 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-> index 7afaa88..c42808e 100644
-> --- a/drivers/iio/pressure/dps310.c
-> +++ b/drivers/iio/pressure/dps310.c
-> @@ -221,6 +221,9 @@ static bool dps310_is_writeable_reg(struct device *dev, unsigned int reg)
->         case DPS310_MEAS_CFG:
->         case DPS310_CFG_REG:
->         case DPS310_RESET:
-> +       case 0x0e:
-> +       case 0x0f:
-> +       case 0x62:
+On Wed, 08 May 2019, Benson Leung wrote:
 
-What is with the magic values? Are they not documented to what they
-are, and hence not defining enum values for them?
+> Hi Gwendal, Hi Lee,
+> 
+> On Tue, May 07, 2019 at 10:44:46AM +0100, Lee Jones wrote:
+> > On Fri, 03 May 2019, Gwendal Grignou wrote:
+> > 
+> > > The interface between CrosEC embedded controller and the host,
+> > > described by cros_ec_commands.h, as diverged from what the embedded
+> > > controller really support.
+> > > 
+> > > The source of thruth is at
+> > > https://chromium.googlesource.com/chromiumos/platform/ec/+/master/include/ec_commands.h
+> > > 
+> > > That include file is converted to remove ACPI and Embedded only code.
+> > > 
+> > > From now on, cros_ec_commands.h will be automatically generated from
+> > > the file above, do not modify directly.
+> > > 
+> > > Fell free to squash the commits below.
+> > > 
+> > > Changes in v2:
+> > > - Move I2S changes at the end of the patchset, squashed with change in
+> > >   sound/soc/codecs/cros_ec_codec.c to match new interface.
+> > > - Add Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> > > 
+> > > Gwendal Grignou (30):
+> > >   mfd: cros_ec: Update license term
+> > >   mfd: cros_ec: Zero BUILD_ macro
+> > >   mfd: cros_ec: set comments properly
+> > >   mfd: cros_ec: add ec_align macros
+> > >   mfd: cros_ec: Define commands as 4-digit UPPER CASE hex values
+> > >   mfd: cros_ec: use BIT macro
+> > >   mfd: cros_ec: Update ACPI interface definition
+> > >   mfd: cros_ec: move HDMI CEC API definition
+> > >   mfd: cros_ec: Remove zero-size structs
+> > >   mfd: cros_ec: Add Flash V2 commands API
+> > >   mfd: cros_ec: Add PWM_SET_DUTY API
+> > >   mfd: cros_ec: Add lightbar v2 API
+> > >   mfd: cros_ec: Expand hash API
+> > >   mfd: cros_ec: Add EC transport protocol v4
+> > >   mfd: cros_ec: Complete MEMS sensor API
+> > >   mfd: cros_ec: Fix event processing API
+> > >   mfd: cros_ec: Add fingerprint API
+> > >   mfd: cros_ec: Fix temperature API
+> > >   mfd: cros_ec: Complete Power and USB PD API
+> > >   mfd: cros_ec: Add API for keyboard testing
+> > >   mfd: cros_ec: Add Hibernate API
+> > >   mfd: cros_ec: Add Smart Battery Firmware update API
+> > >   mfd: cros_ec: Add I2C passthru protection API
+> > >   mfd: cros_ec: Add API for EC-EC communication
+> > >   mfd: cros_ec: Add API for Touchpad support
+> > >   mfd: cros_ec: Add API for Fingerprint support
+> > >   mfd: cros_ec: Add API for rwsig
+> > >   mfd: cros_ec: Add SKU ID and Secure storage API
+> > >   mfd: cros_ec: Add Management API entry points
+> > >   mfd: cros_ec: Update I2S API
+> > > 
+> > >  include/linux/mfd/cros_ec_commands.h | 3735 +++++++++++++++++++++-----
+> > >  sound/soc/codecs/cros_ec_codec.c     |    8 +-
+> > >  2 files changed, 2997 insertions(+), 746 deletions(-)
+> > 
+> > Again, it would be good to get 1 or 2 more Chromium Acks, given the
+> > extent of the changes.
+> 
+> I've gone ahead and looked through all 30 of the changes here. It looks good to me.
+> 
+> Acked-By: Benson Leung <bleung@chromium.org>
 
-- Matt
+Thanks for taking he time.
 
->                 return true;
->         default:
->                 return false;
-> @@ -237,6 +240,7 @@ static bool dps310_is_volatile_reg(struct device *dev, unsigned int reg)
->         case DPS310_TMP_B1:
->         case DPS310_TMP_B2:
->         case DPS310_MEAS_CFG:
-> +       case 0x32:
->                 return true;
->         default:
->                 return false;
-> @@ -314,7 +318,7 @@ static int dps310_read_raw(struct iio_dev *iio,
->         .writeable_reg = dps310_is_writeable_reg,
->         .volatile_reg = dps310_is_volatile_reg,
->         .cache_type = REGCACHE_RBTREE,
-> -       .max_register = 0x29,
-> +       .max_register = 0x62,
->  };
->
->  static const struct iio_info dps310_info = {
-> @@ -322,6 +326,47 @@ static int dps310_read_raw(struct iio_dev *iio,
->         .write_raw = dps310_write_raw,
->  };
->
-> +/*
-> + * Some verions of chip will read temperatures in the ~60C range when
-> + * its actually ~20C. This is the manufacturer recommended workaround
-> + * to correct the issue.
-> + */
-> +static int dps310_temp_workaround(struct dps310_data *data)
-> +{
-> +       int r, reg;
-> +
-> +       r = regmap_read(data->regmap, 0x32, &reg);
-> +       if (r < 0)
-> +               return r;
-> +
-> +       /*
-> +        * If bit 1 is set then the device is okay, and the workaround does not
-> +        * need to be applied
-> +        */
-> +       if (reg & BIT(1))
-> +               return 0;
-> +
-> +       r = regmap_write(data->regmap, 0x0e, 0xA5);
-> +       if (r < 0)
-> +               return r;
-> +
-> +       r = regmap_write(data->regmap, 0x0f, 0x96);
-> +       if (r < 0)
-> +               return r;
-> +
-> +       r = regmap_write(data->regmap, 0x62, 0x02);
-> +       if (r < 0)
-> +               return r;
-> +
-> +       r = regmap_write(data->regmap, 0x0e, 0x00);
-> +       if (r < 0)
-> +               return r;
-> +
-> +       r = regmap_write(data->regmap, 0x0f, 0x00);
-> +
-> +       return r;
-> +}
-> +
->  static int dps310_probe(struct i2c_client *client,
->                         const struct i2c_device_id *id)
->  {
-> @@ -383,6 +428,10 @@ static int dps310_probe(struct i2c_client *client,
->         if (r < 0)
->                 goto err;
->
-> +       r = dps310_temp_workaround(data);
-> +       if (r < 0)
-> +               return r;
-> +
->         r = devm_iio_device_register(&client->dev, iio);
->         if (r)
->                 goto err;
-> --
-> 1.8.3.1
->
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

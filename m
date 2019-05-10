@@ -2,193 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14979196A4
-	for <lists+linux-iio@lfdr.de>; Fri, 10 May 2019 04:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20F6719A13
+	for <lists+linux-iio@lfdr.de>; Fri, 10 May 2019 10:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726855AbfEJCVP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 May 2019 22:21:15 -0400
-Received: from mail-it1-f193.google.com ([209.85.166.193]:35446 "EHLO
-        mail-it1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726839AbfEJCVO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 May 2019 22:21:14 -0400
-Received: by mail-it1-f193.google.com with SMTP id u186so6741131ith.0
-        for <linux-iio@vger.kernel.org>; Thu, 09 May 2019 19:21:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4Tp3A1HqkaYqPPsTWL7+ahBUw9fqMa6q/M4oCRraR6I=;
-        b=umxrHH80RYhOBiTsV3B4M/Uxz4aTJ4aASrnbnYZ2YkvTegxriWRTYW+SIm+7Zsl+TF
-         mUe2veiyhK1Uc0+rjfEh1fqBxEAIzmiu0devtVTqPK5s2KBBzlhUCrWx2KRbgT+F9W4e
-         ivbhiGlUapMGm8J6hDw0Nk97aboVibHoboKvs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4Tp3A1HqkaYqPPsTWL7+ahBUw9fqMa6q/M4oCRraR6I=;
-        b=tDAql2r/8TEiGx+g1ApVojUsAxQIFUWVJcE9Zk3T6qZEhsx9z9OsNU/LgBiqpw4B4z
-         10wJh8ae6rbX4T9ZE+Votxw0d55PaNZZaMRVyNN59sRmgOUQQp3T38Ty1dLzQr0Gq9DH
-         QUx/G4eKxLgvWsYSWZmWfuQkpzzVUftlbYNV9fO6AIMxnaUw18QOKsn6JjN26exx9OKG
-         6AqQimIyfrNBGjTJoOeopyXAo3t0f/fQyUeO5Dmr0+fygBH4nuXQdkboDzd1Kc2yp3YS
-         GSPJ8Ndhb2zOI/m8fPOC8VClmO/tSFT+aOYDt2dVgBKxrC08Po7ExPPiFsCM8azEKAUE
-         MDNg==
-X-Gm-Message-State: APjAAAWMkned60y5ay8TSIWFioFGEJbCU561HuayAmCD4x/ekvSg+PGC
-        L3jpX5vGW7obs4tPKxi5PqjGyczjpJrgckbJ6pzjZQ==
-X-Google-Smtp-Source: APXvYqxcmQLKLzTB/D743xQIshga/tSYISns0c8/zehIacxiLCb0Yfy8T0iBU5X5Fdf4Ep+YwUfwff/c08VbjwKhtNo=
-X-Received: by 2002:a24:c545:: with SMTP id f66mr5619946itg.114.1557454873514;
- Thu, 09 May 2019 19:21:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <1557344128-690-1-git-send-email-eajames@linux.ibm.com>
- <1557344128-690-3-git-send-email-eajames@linux.ibm.com> <CAJCx=gn0Yv+oP56HQQNm-9JbH2aoZuEQ-73b1grLTVNfbYsDsg@mail.gmail.com>
- <5217daa3-4f43-0fce-5d1f-438f8c9e47bb@linux.vnet.ibm.com>
-In-Reply-To: <5217daa3-4f43-0fce-5d1f-438f8c9e47bb@linux.vnet.ibm.com>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Fri, 10 May 2019 10:21:02 +0800
-Message-ID: <CAJCx=gk3EwF_CTjVm=Ktx408iqcYUgZCSbZABXBSuGjfAjwXQw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] iio: dps310: Temperature measurement errata
-To:     Eddie James <eajames@linux.vnet.ibm.com>
-Cc:     Eddie James <eajames@linux.ibm.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>, joel@jms.id.au,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        id S1727010AbfEJI5C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 May 2019 04:57:02 -0400
+Received: from relay3-d.mail.gandi.net ([217.70.183.195]:42755 "EHLO
+        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727001AbfEJI5C (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 May 2019 04:57:02 -0400
+X-Originating-IP: 83.155.44.161
+Received: from classic (mon69-7-83-155-44-161.fbx.proxad.net [83.155.44.161])
+        (Authenticated sender: hadess@hadess.net)
+        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 847936000D;
+        Fri, 10 May 2019 08:56:56 +0000 (UTC)
+Message-ID: <55468fdd88da9f487789b2073a1babb14bc7a282.camel@hadess.net>
+Subject: Re: [RFC v3] iio: input-bridge: optionally bridge iio acceleometers
+ to create a /dev/input interface
+From:   Bastien Nocera <hadess@hadess.net>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Eric Piel <eric.piel@tremplin-utc.net>,
+        linux-input@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Christopher Bostic <cbostic@linux.vnet.ibm.com>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Date:   Fri, 10 May 2019 10:56:55 +0200
+In-Reply-To: <AA2B43FE-E196-4FEC-B4C5-897D0F44A76F@goldelico.com>
+References: <d52cf9ee5944c90c69f6e74a46d844cef51e487e.1555362312.git.hns@goldelico.com>
+         <0189da8d91652dd3ecf729b03029ab9db5a24f99.camel@hadess.net>
+         <AA2B43FE-E196-4FEC-B4C5-897D0F44A76F@goldelico.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.1 (3.32.1-1.fc30) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, May 9, 2019 at 11:17 PM Eddie James <eajames@linux.vnet.ibm.com> wrote:
->
->
-> On 5/8/19 10:09 PM, Matt Ranostay wrote:
-> > On Thu, May 9, 2019 at 3:36 AM Eddie James <eajames@linux.ibm.com> wrote:
-> >> From: Christopher Bostic <cbostic@linux.vnet.ibm.com>
-> >>
-> >> Add a manufacturer's suggested workaround to deal with early revisions
-> >> of chip that don't indicate correct temperature. Readings can be in the
-> >> ~60C range when they should be in the ~20's.
-> >>
-> >> Signed-off-by: Christopher Bostic <cbostic@linux.vnet.ibm.com>
-> >> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> >> Signed-off-by: Eddie James <eajames@linux.ibm.com>
-> >> ---
-> >>   drivers/iio/pressure/dps310.c | 51 ++++++++++++++++++++++++++++++++++++++++++-
-> >>   1 file changed, 50 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-> >> index 7afaa88..c42808e 100644
-> >> --- a/drivers/iio/pressure/dps310.c
-> >> +++ b/drivers/iio/pressure/dps310.c
-> >> @@ -221,6 +221,9 @@ static bool dps310_is_writeable_reg(struct device *dev, unsigned int reg)
-> >>          case DPS310_MEAS_CFG:
-> >>          case DPS310_CFG_REG:
-> >>          case DPS310_RESET:
-> >> +       case 0x0e:
-> >> +       case 0x0f:
-> >> +       case 0x62:
-> > What is with the magic values? Are they not documented to what they
-> > are, and hence not defining enum values for them?
-> >
-> > - Matt
->
->
-> Thats correct. These don't show up in the data sheet so I left them as
-> raw values. Chris, do you know what the source for these values was?
+On Tue, 2019-04-16 at 21:33 +0200, H. Nikolaus Schaller wrote:
+> Hi Bastien,
+> 
+> > Am 16.04.2019 um 18:04 schrieb Bastien Nocera <hadess@hadess.net>:
+> > This can be done in user-space, reading the data from the IIO driver,
+> > and using uinput to feed it back. Why is doing this at the kernel level
+> > better?
+> 
+> Well, I'd estimate that >80% of the current kernel could be done in user-space
+> (but not at the same speed/quality).
+> 
+> E.g. TCP could most likely be done by directly accessing the Ethernet layer and
+> providing other processes access through named pipes instead of sockets.
+> 
+> But usually a user-space daemon feeding things back into the kernel is slower
+> (because it is scheduled differently) and needs more resources for running the
+> process and IPC and is less protected against hickups and deadlocks.
 
-Please at least make a comment in the code stating as much.
+This is mostly irrelevant for the amount of data we're treating, but it
+doesn't matter too much.
 
-- Matt
->
-> Thanks,
->
-> Eddie
->
->
-> >
-> >>                  return true;
-> >>          default:
-> >>                  return false;
-> >> @@ -237,6 +240,7 @@ static bool dps310_is_volatile_reg(struct device *dev, unsigned int reg)
-> >>          case DPS310_TMP_B1:
-> >>          case DPS310_TMP_B2:
-> >>          case DPS310_MEAS_CFG:
-> >> +       case 0x32:
-> >>                  return true;
-> >>          default:
-> >>                  return false;
-> >> @@ -314,7 +318,7 @@ static int dps310_read_raw(struct iio_dev *iio,
-> >>          .writeable_reg = dps310_is_writeable_reg,
-> >>          .volatile_reg = dps310_is_volatile_reg,
-> >>          .cache_type = REGCACHE_RBTREE,
-> >> -       .max_register = 0x29,
-> >> +       .max_register = 0x62,
-> >>   };
-> >>
-> >>   static const struct iio_info dps310_info = {
-> >> @@ -322,6 +326,47 @@ static int dps310_read_raw(struct iio_dev *iio,
-> >>          .write_raw = dps310_write_raw,
-> >>   };
-> >>
-> >> +/*
-> >> + * Some verions of chip will read temperatures in the ~60C range when
-> >> + * its actually ~20C. This is the manufacturer recommended workaround
-> >> + * to correct the issue.
-> >> + */
-> >> +static int dps310_temp_workaround(struct dps310_data *data)
-> >> +{
-> >> +       int r, reg;
-> >> +
-> >> +       r = regmap_read(data->regmap, 0x32, &reg);
-> >> +       if (r < 0)
-> >> +               return r;
-> >> +
-> >> +       /*
-> >> +        * If bit 1 is set then the device is okay, and the workaround does not
-> >> +        * need to be applied
-> >> +        */
-> >> +       if (reg & BIT(1))
-> >> +               return 0;
-> >> +
-> >> +       r = regmap_write(data->regmap, 0x0e, 0xA5);
-> >> +       if (r < 0)
-> >> +               return r;
-> >> +
-> >> +       r = regmap_write(data->regmap, 0x0f, 0x96);
-> >> +       if (r < 0)
-> >> +               return r;
-> >> +
-> >> +       r = regmap_write(data->regmap, 0x62, 0x02);
-> >> +       if (r < 0)
-> >> +               return r;
-> >> +
-> >> +       r = regmap_write(data->regmap, 0x0e, 0x00);
-> >> +       if (r < 0)
-> >> +               return r;
-> >> +
-> >> +       r = regmap_write(data->regmap, 0x0f, 0x00);
-> >> +
-> >> +       return r;
-> >> +}
-> >> +
-> >>   static int dps310_probe(struct i2c_client *client,
-> >>                          const struct i2c_device_id *id)
-> >>   {
-> >> @@ -383,6 +428,10 @@ static int dps310_probe(struct i2c_client *client,
-> >>          if (r < 0)
-> >>                  goto err;
-> >>
-> >> +       r = dps310_temp_workaround(data);
-> >> +       if (r < 0)
-> >> +               return r;
-> >> +
-> >>          r = devm_iio_device_register(&client->dev, iio);
-> >>          if (r)
-> >>                  goto err;
-> >> --
-> >> 1.8.3.1
-> >>
->
+> Two more aspects come to my mind from reading your project page:
+> 
+> a) "It requires libgudev and systemd"
+> b) "Note that a number of kernel bugs will prevent it from working correctly"
+> 
+> a) this makes quite significant assumptions about the user-space while a kernel
+>    driver can be kept independent of this
+
+It's made for modern desktop OSes/"traditional" Linux. I don't think
+that those 2 libraries are problematic dependencies unless you're on
+Android, where a replacement could be implemented or iio-sensor-proxy
+modified for that use case.
+
+> b) if it is in-kernel it will be kept in sync with kernel changes and such bugs
+>    are less likely
+
+No they're not. This warning was because 1) drivers sometimes have bugs
+2) user-space sometimes has bugs 3) user-space sometimes causes the
+kernel to have bugs.
+
+The 2 significant breakages for iio-sensor-proxy were caused by runtime
+PM bugs in the hid-sensor-hub driver, and in the USB core. I doubt a
+kernel-space implementation would have been able to magically fix those
+bugs unfortunately.
+

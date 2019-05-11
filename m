@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6490B1A771
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2019 12:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12CD41A77F
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2019 12:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728445AbfEKKJk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 May 2019 06:09:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58288 "EHLO mail.kernel.org"
+        id S1728509AbfEKKP5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 May 2019 06:15:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34062 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726231AbfEKKJk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 11 May 2019 06:09:40 -0400
+        id S1728507AbfEKKP5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 11 May 2019 06:15:57 -0400
 Received: from archlinux (cpc91196-cmbg18-2-0-cust659.5-4.cable.virginm.net [81.96.234.148])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3222F208C0;
-        Sat, 11 May 2019 10:09:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7916D208C0;
+        Sat, 11 May 2019 10:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557569379;
-        bh=lhbK+i4DBoD29MQ6wtvmJNog/VnQ3v6fvRLB/M5EOzU=;
+        s=default; t=1557569755;
+        bh=GVjvzUgaZO5L08Vrif/Gj4NVQZ3V+nUBXORBy/xPtl0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oei5RmKiBXQGpIfBoODyvkMH3Rlv1lT4YNkPlGO2ptQBZivYPlEuyQx8YjtPUZS6i
-         iXIoeC5eRrfnmuwXrd5bR+wBSOAbn6wYyAqk9m24sEiQZ/0gH6ahxe1FsVc3DG5ozQ
-         Hi7BGigEBpeLiiMlv9riVkNxOrjujUsBVb+8sUOE=
-Date:   Sat, 11 May 2019 11:09:32 +0100
+        b=VGf7UATU+wbNMZj8Vn2IfAkAO93ECqaYnkNM0nI0ktDg20F/OWYS4d5STB4IPid8V
+         bJwGWBld4bljFXZoG2vYlPdfr6JILEOLGCkmixATxgCYkevjNLgQrSVoWQqRtQa9mJ
+         m7Z56V8aACpmRetJEsb5WCM9t/TRbG56GmxM5S4k=
+Date:   Sat, 11 May 2019 11:15:48 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Philippe Schenker <dev@pschenker.ch>
 Cc:     linux-iio@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
@@ -39,12 +39,11 @@ Cc:     linux-iio@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/5] iio: stmpe-adc: Enable all stmpe-adc interrupts
- just once
-Message-ID: <20190511110932.75b2b186@archlinux>
-In-Reply-To: <20190507143615.28477-3-dev@pschenker.ch>
+Subject: Re: [PATCH 4/5] iio: stmpe-adc: Use wait_for_completion_timeout
+Message-ID: <20190511111548.504948ae@archlinux>
+In-Reply-To: <20190507143615.28477-4-dev@pschenker.ch>
 References: <20190507143615.28477-1-dev@pschenker.ch>
-        <20190507143615.28477-3-dev@pschenker.ch>
+        <20190507143615.28477-4-dev@pschenker.ch>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,53 +53,77 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  7 May 2019 16:36:13 +0200
+On Tue,  7 May 2019 16:36:14 +0200
 Philippe Schenker <dev@pschenker.ch> wrote:
 
 > From: Philippe Schenker <philippe.schenker@toradex.com>
 > 
-> This commit will enable the interrupts of all channels handled by this
-> driver only once in the probe function.
+> Use wait_for_completion_timeout instead of
+> wait_for_completion_interuptible_timeout.
 > 
-> This will improve performance because one byte less has to be written over
-> i2c on each read out of the adc. On the fastest ADC mode this will improve
-> read out speed by 15%.
+> The interruptible variant gets constantly interrupted if a user
+> program is compiled with the -pg option.
+> The killable variant was not used due to the fact that a second
+> program, reading on this device, that gets killed is then also killing
+> that wait.
 > 
 > Signed-off-by: Philippe Schenker <philippe.schenker@toradex.com>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+Hi Phillippe
+
+This one clashed a little bit with our earlier patch to remove the
+unnecessary assignment.  I've applied it by hand but please check it.
+
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
-
 > ---
 > 
->  drivers/iio/adc/stmpe-adc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/iio/adc/stmpe-adc.c | 18 ++++--------------
+>  1 file changed, 4 insertions(+), 14 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/stmpe-adc.c b/drivers/iio/adc/stmpe-adc.c
-> index b3872eb37293..82b43e4522b6 100644
+> index 82b43e4522b6..cc752a47444c 100644
 > --- a/drivers/iio/adc/stmpe-adc.c
 > +++ b/drivers/iio/adc/stmpe-adc.c
-> @@ -74,9 +74,6 @@ static int stmpe_read_voltage(struct stmpe_adc *info,
->  		return -EINVAL;
->  	}
->  
-> -	stmpe_reg_write(info->stmpe, STMPE_REG_ADC_INT_EN,
-> -			STMPE_ADC_CH(info->channel));
-> -
+> @@ -77,17 +77,11 @@ static int stmpe_read_voltage(struct stmpe_adc *info,
 >  	stmpe_reg_write(info->stmpe, STMPE_REG_ADC_CAPT,
 >  			STMPE_ADC_CH(info->channel));
 >  
-> @@ -336,6 +333,9 @@ static int stmpe_adc_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
+> -	*val = info->value;
+> -
+> -	ret = wait_for_completion_interruptible_timeout
+> -		(&info->completion, STMPE_ADC_TIMEOUT);
+> +	ret = wait_for_completion_timeout(&info->completion, STMPE_ADC_TIMEOUT);
 >  
-> +	stmpe_reg_write(info->stmpe, STMPE_REG_ADC_INT_EN,
-> +			~(norequest_mask & 0xFF));
-> +
->  	return devm_iio_device_register(&pdev->dev, indio_dev);
->  }
+>  	if (ret <= 0) {
+>  		mutex_unlock(&info->lock);
+> -		if (ret == 0)
+> -			return -ETIMEDOUT;
+> -		else
+> -			return ret;
+> +		return -ETIMEDOUT;
+>  	}
 >  
+>  	*val = info->value;
+> @@ -116,15 +110,11 @@ static int stmpe_read_temp(struct stmpe_adc *info,
+>  	stmpe_reg_write(info->stmpe, STMPE_REG_TEMP_CTRL,
+>  			STMPE_START_ONE_TEMP_CONV);
+>  
+> -	ret = wait_for_completion_interruptible_timeout
+> -		(&info->completion, STMPE_ADC_TIMEOUT);
+> +	ret = wait_for_completion_timeout(&info->completion, STMPE_ADC_TIMEOUT);
+>  
+>  	if (ret <= 0) {
+>  		mutex_unlock(&info->lock);
+> -		if (ret == 0)
+> -			return -ETIMEDOUT;
+> -		else
+> -			return ret;
+> +		return -ETIMEDOUT;
+>  	}
+>  
+>  	/*
 

@@ -2,183 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69B6F1A7CB
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2019 14:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB621A7D7
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2019 14:38:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728550AbfEKMbC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 May 2019 08:31:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50514 "EHLO mail.kernel.org"
+        id S1728520AbfEKMiU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 May 2019 08:38:20 -0400
+Received: from first.geanix.com ([116.203.34.67]:42852 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726240AbfEKMbC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 11 May 2019 08:31:02 -0400
-Received: from localhost.localdomain (unknown [151.66.17.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EE2E22173B;
-        Sat, 11 May 2019 12:30:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557577861;
-        bh=Hcyu+viM7h7fg1KqjpVcZDwtv+M4qckuDfqZOrE+ssw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=I8ADU4ciJ2UmC2OwTea9caKZ9+i8WaeaywLHaNdaAeHPtVG1QVZ2LikHYGNzhYWQe
-         /8fnslqOJIT4ZBMp3Z/LWl4IwGvB3Wh2jYa/z5nHdRI2sYjFJQ9Bc54/RUpILzF31U
-         S1vnBxKMMuQKMt9+G7VM6IuwzYTsy+RxwGHH1gYU=
-Date:   Sat, 11 May 2019 14:30:56 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
-        martin@geanix.com, Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Denis CIOCCA <denis.ciocca@st.com>
+        id S1726240AbfEKMiU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 11 May 2019 08:38:20 -0400
+Received: from [192.168.100.11] (unknown [95.138.208.137])
+        by first.geanix.com (Postfix) with ESMTPSA id 2D2339D3;
+        Sat, 11 May 2019 12:37:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1557578238; bh=UC/puYH+wt85IV2W4tZCv0pxU6/8sAVbfby7+26BUjM=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=cdvmuM6L27/g3WTP/lo+ZXg8e5CrD12GVZg/xzqF3/VnUiqcK64lcH3af7/SyPehK
+         ht31pyBdAuogPKL6ey8zo3/VKCrWEM8PVown56DoibSLg5VO15Ndvm0MNCy4wxpsP6
+         zasDvtzRky0PMPU17Zh7asIcoFBVobOOH9kDl26stM7v0talE78QIjm1hae/q1/Mt/
+         2k5YXsq/odNIIsd21pdPQzOiig5MSm9XuE/ZeGVfntw/c3WGTQLQFXXtEcqykkD8GO
+         Ihpb2s2nd8EMil+FHYI8JjXMJQzVldcSD+Zr2/2t30Pg8UIzk9LKh+/zBn4J2Xqpm0
+         /ydjut3GCCVYA==
 Subject: Re: [PATCH 2/2] iio: imu: st_lsm6dsx: add iio trigger and buffer
  support
-Message-ID: <20190511123054.GA14837@localhost.localdomain>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, martin@geanix.com,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Denis CIOCCA <denis.ciocca@st.com>
 References: <20190507080225.108000-1-sean@geanix.com>
- <20190507080225.108000-2-sean@geanix.com>
- <20190511123755.2d220233@archlinux>
+ <20190507080225.108000-2-sean@geanix.com> <20190511123755.2d220233@archlinux>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <893b615d-693a-3a48-9c91-97559bd247e1@geanix.com>
+Date:   Sat, 11 May 2019 14:38:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="k1lZvvs/B4yU6o8G"
-Content-Disposition: inline
 In-Reply-To: <20190511123755.2d220233@archlinux>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US-large
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 9cf0eadf640b
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---k1lZvvs/B4yU6o8G
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
+On 11/05/2019 13.37, Jonathan Cameron wrote:
 > On Tue,  7 May 2019 10:02:25 +0200
 > Sean Nyekjaer <sean@geanix.com> wrote:
->=20
-> > This adds support for using iio triggers, this is needed because
-> > our hardware guys forgot to connect the irq pins from imu device
-> > to the SoC.
-> >=20
-> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> 
+>> This adds support for using iio triggers, this is needed because
+>> our hardware guys forgot to connect the irq pins from imu device
+>> to the SoC.
+>>
+>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 > Hi Sean
->=20
+> 
 > A small question on the size of the buffer needed inline.  Otherwise looks
 > good to me.
-
-Hi Sean,
-
-this patch does not make sense to me since running st_lsm6dsx_read_oneshot
-you need to wait to power up the device (and you will power it down at the
-end). I guess you will not be able to read at a given ODR (e.g. 416Hz).
-Moreover you can't read from the hw fifo without the irq line since
-you need to read a full pattern from it in order to maintain the alignment.
-=46rom my point of view you have 2 possibility:
-- poll the output registers from userspace (this is what you are actually
-  doing from inside the kernel, what is the advantage of doing so?)
-- fix the hw bug
-
-Moreover if I read the patch correctly it has a NULL pointer dereference bug
-since hw->iio_devs[i] can be NULL (e.g. if sensor hub is disabled)
-
-Regards,
-Lorenzo
-
-> > ---
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 37 ++++++++++++++++++++
-> >  1 file changed, 37 insertions(+)
-> >=20
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio=
-/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > index 1ca69598678f..65ab853202de 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > @@ -40,8 +40,11 @@
-> >  #include <linux/kernel.h>
-> >  #include <linux/module.h>
-> >  #include <linux/delay.h>
-> > +#include <linux/iio/buffer.h>
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> > +#include <linux/iio/trigger_consumer.h>
-> > +#include <linux/iio/triggered_buffer.h>
-> >  #include <linux/pm.h>
-> >  #include <linux/regmap.h>
-> >  #include <linux/bitfield.h>
-> > @@ -945,6 +948,30 @@ static int st_lsm6dsx_init_hw_timer(struct st_lsm6=
-dsx_hw *hw)
-> >  	return 0;
-> >  }
-> > =20
-> > +static irqreturn_t st_lsm6dsx_trigger_handler(int irq, void *p)
-> > +{
-> > +	struct iio_poll_func *pf =3D p;
-> > +	struct iio_dev *indio_dev =3D pf->indio_dev;
-> > +	struct st_lsm6dsx_sensor *sensor =3D iio_priv(indio_dev);
-> > +	u16 buffer[4 * sizeof(s64)/sizeof(u16)];
-> The size may well be correct, but that particular way of expressing it do=
-esn't make
+>> ---
+>>   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 37 ++++++++++++++++++++
+>>   1 file changed, 37 insertions(+)
+>>
+>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+>> index 1ca69598678f..65ab853202de 100644
+>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+>> @@ -40,8 +40,11 @@
+>>   #include <linux/kernel.h>
+>>   #include <linux/module.h>
+>>   #include <linux/delay.h>
+>> +#include <linux/iio/buffer.h>
+>>   #include <linux/iio/iio.h>
+>>   #include <linux/iio/sysfs.h>
+>> +#include <linux/iio/trigger_consumer.h>
+>> +#include <linux/iio/triggered_buffer.h>
+>>   #include <linux/pm.h>
+>>   #include <linux/regmap.h>
+>>   #include <linux/bitfield.h>
+>> @@ -945,6 +948,30 @@ static int st_lsm6dsx_init_hw_timer(struct st_lsm6dsx_hw *hw)
+>>   	return 0;
+>>   }
+>>   
+>> +static irqreturn_t st_lsm6dsx_trigger_handler(int irq, void *p)
+>> +{
+>> +	struct iio_poll_func *pf = p;
+>> +	struct iio_dev *indio_dev = pf->indio_dev;
+>> +	struct st_lsm6dsx_sensor *sensor = iio_priv(indio_dev);
+>> +	u16 buffer[4 * sizeof(s64)/sizeof(u16)];
+> The size may well be correct, but that particular way of expressing it doesn't make
 > it terribly clear.
->=20
-> It seems a bit large... You need the space for the timestamp, so it needs=
- to be
+> 
+> It seems a bit large... You need the space for the timestamp, so it needs to be
 > padded to a u64, but that would still require your other channels to need
 > more than 2*sizeof(s64)/sizeof(u16) u16s which is 9 or more of them.
->=20
-> > +	int tmp, bit;
-> > +
-> > +	memset(buffer, 0, sizeof(buffer));
-> > +
-> > +	for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklen=
-gth) {
-> > +		st_lsm6dsx_read_oneshot(sensor,
-> > +					indio_dev->channels[bit].address, &tmp);
-> > +		buffer[bit] =3D tmp;
-> > +	}
-> > +
-> > +	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
-> > +					   iio_get_time_ns(indio_dev));
-> > +
-> > +	iio_trigger_notify_done(indio_dev->trig);
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> > +
-> >  static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
-> >  {
-> >  	u8 drdy_int_reg;
-> > @@ -1093,6 +1120,16 @@ int st_lsm6dsx_probe(struct device *dev, int irq=
-, int hw_id, const char *name,
-> >  		err =3D st_lsm6dsx_fifo_setup(hw);
-> >  		if (err < 0)
-> >  			return err;
-> > +	} else {
-> > +		for (i =3D 0; i < ST_LSM6DSX_ID_MAX; i++) {
-> > +			err =3D devm_iio_triggered_buffer_setup(hw->dev,
-> > +					hw->iio_devs[i], NULL,
-> > +					st_lsm6dsx_trigger_handler, NULL);
+Right now we have u16[16], so that quite at bit large :-)
 
-I guess hw->iio_devs[i] can be NULL here
+So maybe something like:
+/* 3x s16 + 1x s16(padding) + 1x s64 timestamp */
+u16 buffer[2 * sizeof(s64)/sizeof(u16)];
+Would do it?
 
-> > +			if (err < 0) {
-> > +				dev_err(hw->dev, "iio triggered buffer setup failed\n");
-> > +				return err;
-> > +			}
-> > +		}
-> >  	}
-> > =20
-> >  	for (i =3D 0; i < ST_LSM6DSX_ID_MAX; i++) {
->=20
-
-
---k1lZvvs/B4yU6o8G
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXNbAewAKCRA6cBh0uS2t
-rBsfAQCi5z6ccIaB7pHJw1ORErOG5sj3dNumpurE48ii4JHYQAD8DODPpGpLaIsy
-EGRk0peTcWexOKPfbFreKVS+a9c2nAE=
-=lqDW
------END PGP SIGNATURE-----
-
---k1lZvvs/B4yU6o8G--
+> 
+>> +	int tmp, bit;
+>> +
+>> +	memset(buffer, 0, sizeof(buffer));
+>> +
+>> +	for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklength) {
+>> +		st_lsm6dsx_read_oneshot(sensor,
+>> +					indio_dev->channels[bit].address, &tmp);
+>> +		buffer[bit] = tmp;
+>> +	}
+As you pointed out in the
+"[PATCH 1/2] iio: adc: ti-ads8688: save values correct in buffer"
+When taking this approach it will not shift down.
+>> +
+>> +	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+>> +					   iio_get_time_ns(indio_dev));
+>> +
+>> +	iio_trigger_notify_done(indio_dev->trig);
+>> +
+>> +	return IRQ_HANDLED;
+>> +}
+>> +
+>>   static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+>>   {
+>>   	u8 drdy_int_reg;
+>> @@ -1093,6 +1120,16 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
+>>   		err = st_lsm6dsx_fifo_setup(hw);
+>>   		if (err < 0)
+>>   			return err;
+>> +	} else {
+>> +		for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+>> +			err = devm_iio_triggered_buffer_setup(hw->dev,
+>> +					hw->iio_devs[i], NULL,
+>> +					st_lsm6dsx_trigger_handler, NULL);
+>> +			if (err < 0) {
+>> +				dev_err(hw->dev, "iio triggered buffer setup failed\n");
+>> +				return err;
+>> +			}
+>> +		}
+>>   	}
+>>   
+>>   	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+> 

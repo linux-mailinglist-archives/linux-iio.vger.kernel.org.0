@@ -2,156 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 619E41A892
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2019 19:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F5C91A91A
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2019 20:47:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726038AbfEKRAr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 May 2019 13:00:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49152 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725945AbfEKRAr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 11 May 2019 13:00:47 -0400
-Received: from localhost.localdomain (unknown [151.66.17.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 62C0E2183F;
-        Sat, 11 May 2019 17:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557594045;
-        bh=wxHqbq9y1QoGMbMlMSras3xY+VhCssKH16SZQHmKYQ0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Uy2lct5/f9jQ01cFEghXDaNhWR/21Rlz9YRTPp4F/9VbcqmzxHxbPXT3uH/2Y0lGU
-         dHgYUtSrbsLiwdqs+91TjatBmaUjVNAuNYO4zphhPkxldZzNaxOAh847qh/3volASR
-         cPOTET+YclMpTgK/OB2gAZCSWaC90ARM8mjA9gqw=
-Date:   Sat, 11 May 2019 19:00:41 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        martin@geanix.com, Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Denis CIOCCA <denis.ciocca@st.com>
-Subject: Re: [PATCH 2/2] iio: imu: st_lsm6dsx: add iio trigger and buffer
- support
-Message-ID: <20190511170039.GA4547@localhost.localdomain>
-References: <20190507080225.108000-1-sean@geanix.com>
- <20190507080225.108000-2-sean@geanix.com>
- <20190511123755.2d220233@archlinux>
- <20190511123054.GA14837@localhost.localdomain>
- <a8dc4bcc-b004-b287-2126-7c3b082dd3ba@geanix.com>
+        id S1726033AbfEKSrn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 May 2019 14:47:43 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:45618 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725911AbfEKSrn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 May 2019 14:47:43 -0400
+Received: by mail-qt1-f196.google.com with SMTP id t1so1520660qtc.12;
+        Sat, 11 May 2019 11:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JDUH+ECvLR1j+epjg5DNmKksHTWaTEUOaV6JPEZYcdA=;
+        b=Xm15bRCctxqDFymgWz01KUJxzlroz8Mgt0yFTwhBRpHNNxOuNxeocQP4+G4Jn8xK0V
+         /KzBgYeawBk93f4EpcaGFdCwPOeNGo/9ghk1MGIYn9eJFWBQVXT9HdhajYtLu2OSVfRI
+         sv7kRjDprj5Feip9sKJ00dLi7/JbuM2113OrKEllakTg7/7++X+PeFv5cf9kfMmC1I/W
+         EXvxhKMdYndKODIqRP09GAeoPW7ultpaellRZRQXjIJdfKBqqtqbOgNih8EI5xxfrvi9
+         tvXyhRkQi2a5+g5ot1kSf2D/I7x1TqyEpHdTkZDI+6KehPhkVEAY6h4U4v/r7T4rU6RS
+         RSuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JDUH+ECvLR1j+epjg5DNmKksHTWaTEUOaV6JPEZYcdA=;
+        b=fwKabJBeOO4cLK9mS8Y+9edWxzOkX41XMNIMp5IbIHkQ62Vp/3UcMJZRHCT+o29lIE
+         tz2oA6adF6vNeYW/wkbRIo6WAOCQEhDCxhwRR/WYHnMhVqtopm8pSEs2eU8+2D8kUhGr
+         q0GP8DcWH0hX39oc8H6lMyW6kJ7JaScs75gMu3BUBTgYj1uIlt+vpWV2uIYPKa+oe/78
+         Wdtru3HnCh9E5M8Jd4FgowornjIed1Fxm4w8a1hMYQiOteGVIWHieD4jCnqxAZe/LEAp
+         /y/zUXjzI7y7J7TKOo6LcU2lxIoP5J+UdwKPVxOvqzcouKXqZagMmEyaDdTeaklVTrN8
+         +ihQ==
+X-Gm-Message-State: APjAAAU0PP1OkT126Kjb/1rOb19okSLstkx/lB3S2v+rN4VW+KVPVBQE
+        teS11Sp7ZFVgYwqbOp/WrSnpfcMe+F54n9gFdD8=
+X-Google-Smtp-Source: APXvYqzDhG2cRN30u5fD5CsogZpcT00fmZHCbwX9PMlnx8NRNi9ZX9DcPEBcyA2IDZ23gOYfUb5tsWFFbFDEOf7uzn8=
+X-Received: by 2002:ad4:542c:: with SMTP id g12mr15084174qvt.223.1557600462077;
+ Sat, 11 May 2019 11:47:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="cNdxnHkX5QqsyA0e"
-Content-Disposition: inline
-In-Reply-To: <a8dc4bcc-b004-b287-2126-7c3b082dd3ba@geanix.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+References: <195994ebff28de22eae872df134d086c761b83b8.1554026986.git.hns@goldelico.com>
+ <20190407133037.0ad98897@archlinux> <CD44AFA0-6676-4842-9C80-61BB363DD556@goldelico.com>
+ <20190414124029.1f1f6084@archlinux> <CAEc3jaCnHLA9PV5gLiBvHT5y26mwMGSUxa3YCO=c+FYmcszePQ@mail.gmail.com>
+ <d9f2ee79b8690939f36377990fb6d6fb08e9f0bc.camel@hadess.net>
+In-Reply-To: <d9f2ee79b8690939f36377990fb6d6fb08e9f0bc.camel@hadess.net>
+From:   Roderick Colenbrander <thunderbird2k@gmail.com>
+Date:   Sat, 11 May 2019 11:47:30 -0700
+Message-ID: <CAEc3jaBTbH=zHogxekRw5i=GtQcRc9O_d68fMwQb-7jdOcvh5w@mail.gmail.com>
+Subject: Re: [RFC v2] iio: input-bridge: optionally bridge iio acceleometers
+ to create a /dev/input interface
+To:     Bastien Nocera <hadess@hadess.net>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Eric Piel <eric.piel@tremplin-utc.net>,
+        linux-input <linux-input@vger.kernel.org>,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        lkml <linux-kernel@vger.kernel.org>, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, May 10, 2019 at 1:57 AM Bastien Nocera <hadess@hadess.net> wrote:
+>
+> On Sun, 2019-04-14 at 09:26 -0700, Roderick Colenbrander wrote:
+> >
+> <snip>
+> > We at the time were one of the first to expose acceleration and gyro
+> > data through /dev/input for DualShock 4 as supported by hid-sony. We
+> > report acceleration in 'g' and angular velocity in 'degree / s'. We
+> > set the resolution to respectively '1 g' and '1 degree / s'. The range
+> > we set to the range of the device e.g. for DS4 -4g to +4g for
+> > acceleration. I need to check though what coordinate system we use,
+> > but I think it is right handed (gyro counter clockwise relative to
+> > acceleration axes).
+>
+> How do you export the gyro information through the input device?
 
---cNdxnHkX5QqsyA0e
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+For each DS4, there are multiple evdev devices for a DS4 for
+respectively "gamepad", touchpad and motion sensors. The motion
+sensors one, has INPUT_PROP_ACCELEROMETER set. ABS_X/_Y_Z provide
+acceleration and ABS_RX/_RY/_RZ provide gyro. When we added this we
+also updated the input documentation (event-codes.rst) to allow gyro
+to use the rotational axes.
 
-> On 11/05/2019 14.30, Lorenzo Bianconi wrote:
-> > > On Tue,  7 May 2019 10:02:25 +0200
-> > > Sean Nyekjaer <sean@geanix.com> wrote:
-> > >=20
-> > > > This adds support for using iio triggers, this is needed because
-> > > > our hardware guys forgot to connect the irq pins from imu device
-> > > > to the SoC.
-> > > >=20
-> > > > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> > > Hi Sean
-> > >=20
-> > > A small question on the size of the buffer needed inline.  Otherwise =
-looks
-> > > good to me.
-> >=20
-> > Hi Sean,
-> >=20
-> > this patch does not make sense to me since running st_lsm6dsx_read_ones=
-hot
-> > you need to wait to power up the device (and you will power it down at =
-the
-> > end). I guess you will not be able to read at a given ODR (e.g. 416Hz).
-> > Moreover you can't read from the hw fifo without the irq line since
-> > you need to read a full pattern from it in order to maintain the alignm=
-ent.
-> We are not using the hw fifo if the hw irq isn't present...
-> So if I understand correctly we could speed things up a bit, with leaving
-> the sensor powered by implementing a new reading function and
-> calling st_lsm6dsx_sensor_set_enable when we enable the trigger?
-
-I do not think so since in this way you will not know when the hw has updat=
-ed
-the output registers
-
->=20
-> >  From my point of view you have 2 possibility:
-> > - poll the output registers from userspace (this is what you are actual=
-ly
-> >    doing from inside the kernel, what is the advantage of doing so?)
-> Yes this is exactly what I'm trying to accomplish here.
-> It would be nice for us to have the same hrtimer/trigger to sample this a=
-nd
-> our adc.
-
-Since we need to wait the data to be ready there is no difference between r=
-eading
-them polling the output registers in the sysfs and doing so
-
->=20
-> > - fix the hw bug
-> Not possible on +20K devices. ;-)
->=20
-> >=20
-> > Moreover if I read the patch correctly it has a NULL pointer dereferenc=
-e bug
-> > since hw->iio_devs[i] can be NULL (e.g. if sensor hub is disabled)
-> Right above, there is:
-> if (!hw->iio_devs[i])
-> 	return -ENOMEM;
->=20
-> Should be enough...
-
-Do you mean when we alloc hw->iio_devs[]? If so the for loop stops at
-ST_LSM6DSX_ID_EXT0 while you are going through the complete list here
-(ST_LSM6DSX_ID_MAX)...
-
-> >=20
-> > Regards,
-> > Lorenzo
-> >=20
-
-What I think can be doable is to read data trough the hw fifo but use
-the iio hr timer as trigger. We need to set the hr timer timeout according =
-to
-the pattern len and read the complete pattern. I am not 100% sure it will w=
-ork
-since read accesses and data generation are asynchronous (so there will be a
-drift).
-@Jonathan, Denis: can it work?
-
-Regards,
-Lorenzo
-
-
->=20
-> BR
-> /Sean
-
-
---cNdxnHkX5QqsyA0e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXNb/tAAKCRA6cBh0uS2t
-rNPpAQD0MxEB6fiMZ6CbOLhPANnB5/q0+5vrSX+UfVcI4YQGSAEA13Nzpvwk7FeG
-WZOq5pqceNWA8S3QNMEYA/oyp0NPlwQ=
-=0qER
------END PGP SIGNATURE-----
-
---cNdxnHkX5QqsyA0e--
+> FWIW, we needed to do extra work in iio-sensor-proxy so that the
+> accelerometer in the Sixaxis/DS4 joypads (and uDraw tablet) didn't
+> appear as though they were accelerometer for the system:
+> https://github.com/hadess/iio-sensor-proxy/commit/401d59e54b3123860180d4401e09df8a1e1bc6c3
+>
+> > The two other drivers using INPUT_PROC_ACCELEROMETER are hid-wacom and
+> > hid-udraw-ps3 Wacom. Both seem to report resolution in 'g'  as well.
+>
+> I wrote hid-udraw-ps3, and it's reporting accelerometer data through
+> input because the rest of the driver is input, and it didn't make much
+> sense to use another subsystem for just that small portion of the
+> events the device sends out.
+>

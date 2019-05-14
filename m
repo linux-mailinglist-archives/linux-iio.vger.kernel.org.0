@@ -2,107 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B02F51CD1A
-	for <lists+linux-iio@lfdr.de>; Tue, 14 May 2019 18:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A26B21CEFC
+	for <lists+linux-iio@lfdr.de>; Tue, 14 May 2019 20:23:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726363AbfENQfO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 14 May 2019 12:35:14 -0400
-Received: from dyobmr.btconnect.com ([193.113.5.104]:60856 "EHLO
-        mail.btconnect.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726338AbfENQfN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 May 2019 12:35:13 -0400
-Received: from host81-133-121-108.in-addr.btopenworld.com (EHLO btconnect.com) ([81.133.121.108])
-        by dy11780omr11.dci.bt.com
-        with ESMTP id ZHD69244;
-        Tue, 14 May 2019 17:29:08 +0100 (BST)
-Reply-To: forwardboxx007@gmail.com
-From:   "Dr. Cheong Kong" <jinglebellhouse@btconnect.com>
-To:     linux-iio@vger.kernel.org
-Subject: Business Contact.
-Date:   14 May 2019 17:29:09 +0100
-Message-ID: <20190514172909.451F787E55E781E4@btconnect.com>
+        id S1726772AbfENSXO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 May 2019 14:23:14 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:36729 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726281AbfENSXN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 May 2019 14:23:13 -0400
+Received: by mail-ot1-f67.google.com with SMTP id c3so16166088otr.3;
+        Tue, 14 May 2019 11:23:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=CJM+GBkUu/KSiPUs87tSjj6fH1n6jC/eS4ffHGbTOqo=;
+        b=iiSMnWqWrYW/3DpZiGhKDvJfTt+w5rpMQqE5c6jXFpEhLs//RnkOtEh8v3CCnwtR0Z
+         hh+zwRNn56LsXjBQUTadcguPILRnLrXhWE9+EjcNaTqkERe6Lp1rbPwWd6V3ytUAp0rm
+         272Krtiem0dFnUcW5fG/JBn1dZ86SXT5dPo5k1jTUCohMRX+HPKP5n0RQp6rLnXIuVd3
+         pr1oQKHvbcTlKjHc/lZz2wbUd0aaNgFZTcVZrAzA1kTv7Lvm8RXxUpWtolR4WufECTlG
+         +ITHIBLGZTBOZIl6f0vnEl6ByJ4S8Dy3kQ+jLFBnTSI25Osjw7/iS149mGTcEZFOU5oO
+         AzAg==
+X-Gm-Message-State: APjAAAUymQL4HWZGKTt3jEdC/NMfE+OPv17XpV3uNiz/Ol99n47AiGJ5
+        eHVE7G9z8tD/sBuCql5HQt1jl8k=
+X-Google-Smtp-Source: APXvYqw7x+JOuQpyjxYQovxpTWqfTUdQUZmBn8H3eG+MqZYjsbgPw6VYeyCexDQhKOk6Az0UQ6nREA==
+X-Received: by 2002:a9d:eb7:: with SMTP id 52mr21149478otj.185.1557858193015;
+        Tue, 14 May 2019 11:23:13 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id q124sm6608447oia.13.2019.05.14.11.23.12
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 14 May 2019 11:23:12 -0700 (PDT)
+Date:   Tue, 14 May 2019 13:23:11 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Adam Michaelis <adam.michaelis@rockwellcollins.com>
+Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
+        michael.hennerich@analog.com, jic23@kernel.org, knaack.h@gmx.de,
+        pmeerw@pmeerw.net, robh+dt@kernel.org, mark.rutland@arm.com,
+        charles-antoine.couret@essensium.com, devicetree@vger.kernel.org,
+        brandon.maier@rockwellcollins.com,
+        clayton.shotwell@rockwellcollins.com,
+        Adam Michaelis <adam.michaelis@rockwellcollins.com>
+Subject: Re: [PATCH v3 3/5] dt-bindings: iio: ad7949: Add adi,reference-select
+Message-ID: <20190514182311.GA31516@bogus>
+References: <1557759185-167857-1-git-send-email-adam.michaelis@rockwellcollins.com>
+ <1557759185-167857-3-git-send-email-adam.michaelis@rockwellcollins.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Mirapoint-IP-Reputation: reputation=Neutral-1,
-        source=Queried,
-        refid=tid=0001.0A0B0301.5CDAECCD.0001,
-        actions=TAG
-X-Junkmail-Premium-Raw: score=10/50,
-        refid=2.7.2:2019.5.14.155116:17:10.910,
-        ip=,
-        rules=__HAS_REPLYTO,
-                __FRAUD_WEBMAIL_REPLYTO,
-                __HAS_FROM,
-                FROM_NAME_PHRASE,
-                __TO_MALFORMED_2,
-                __TO_NO_NAME,
-                __HAS_MSGID,
-                __SANE_MSGID,
-                __MIME_VERSION,
-                __CT,
-                __CT_TEXT_PLAIN,
-                __CTE,
-                __FRAUD_AIRLINE,
-                __NO_HTML_TAG_RAW,
-                BODY_SIZE_700_799,
-                BODYTEXTP_SIZE_3000_LESS,
-                __MIME_TEXT_P1,
-                __MIME_TEXT_ONLY,
-                RDNS_GENERIC_POOLED,
-                HTML_00_01,
-                HTML_00_10,
-                BODY_SIZE_5000_LESS,
-                RDNS_SUSP_GENERIC,
-                __FRAUD_WEBMAIL,
-                WEBMAIL_REPLYTO_NOT_FROM,
-                FRAUD_WEBMAIL_R_NOT_F,
-                __MIME_TEXT_P,
-                NO_URI_FOUND,
-                NO_CTA_URI_FOUND,
-                __PHISH_SPEAR_STRUCTURE_1,
-                BODY_SIZE_1000_LESS,
-                BODY_SIZE_2000_LESS,
-                RDNS_SUSP,
-                __PHISH_SPEAR_STRUCTURE_2,
-                REPLYTO_FROM_DIFF_ADDY,
-                NO_URI_HTTPS,
-                BODY_SIZE_7000_LESS
-X-Junkmail-Status: score=10/50, host=dy11780omr11.dci.bt.com
-X-Junkmail-Signature-Raw: score=unknown,
-        refid=str=0001.0A0B0211.5CDAECD4.0058,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
-        ip=0.0.0.0,
-        so=2016-11-06 16:00:04,
-        dmn=2013-03-21 17:37:32,
-        mode=multiengine
-X-Junkmail-IWF: false
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1557759185-167857-3-git-send-email-adam.michaelis@rockwellcollins.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Compliment of the day,
+On Mon, 13 May 2019 09:53:03 -0500, Adam Michaelis wrote:
+> Adding optional parameter to AD7949 to specify the source for the
+> reference voltage signal. Default value is maintained with option '3' to
+> match previous version of driver.
+> 
+> Signed-off-by: Adam Michaelis <adam.michaelis@rockwellcollins.com>
+> ---
+> 	V2:
+> 	- Add some defines to reduce use of magic numbers.
+> 	V3:
+> 	- Re-think usage of device tree parameter to focus on the
+> 	actual reference sources instead of the raw hardware
+> 	configuration.
+> ---
+>  .../devicetree/bindings/iio/adc/ad7949.txt          | 21 +++++++++++++++++++--
+>  1 file changed, 19 insertions(+), 2 deletions(-)
+> 
 
-I am Dr. Cheong Choong Kong, a Malaysia Singaporean. I was the 
-immediate past chairman/CEO OCBC bank, and former Chairman/CEO 
-Singapore airline.
-
-
-Since the world is now a global place, every individual aims to 
-become a successful business mogul. I am looking for a business 
-partner with a good business deal. It would be an honor to 
-ascertain your interest in this opportunity and for us to work 
-together as partners on the project.
-
-If you are interested, write back for more information on the 
-partnership.
-
-This project will not interfere with your present job or 
-business.
-
-Sincerely,
-
-Dr. Cheong Choong Kong
-Past Chairman & Board of Directors
-OCBC Bank Malaysia/ Singapore
+Reviewed-by: Rob Herring <robh@kernel.org>

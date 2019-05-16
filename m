@@ -2,90 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EE4B20107
-	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2019 10:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDDAD2060D
+	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2019 13:59:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726887AbfEPILj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 May 2019 04:11:39 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:37807 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726674AbfEPIL0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 May 2019 04:11:26 -0400
-X-UUID: f450220cab504dc2be8cd2eba0479dbf-20190516
-X-UUID: f450220cab504dc2be8cd2eba0479dbf-20190516
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <chun-hung.wu@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 2012717291; Thu, 16 May 2019 16:11:14 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs03n1.mediatek.inc (172.21.101.181) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Thu, 16 May 2019 16:11:14 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Thu, 16 May 2019 16:11:13 +0800
-From:   Chun-Hung Wu <chun-hung.wu@mediatek.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <wsd_upstream@mediatek.com>,
-        <peter.wang@mediatek.com>, <kuohong.wang@mediatek.com>,
-        <jg_poxu@mediatek.com>, Chun-Hung Wu <chun-hung.wu@mediatek.com>
-Subject: [PATCH 4/4] iio: auxadc: mediatek: change to subsys_initcall
-Date:   Thu, 16 May 2019 16:10:47 +0800
-Message-ID: <1557994247-16739-5-git-send-email-chun-hung.wu@mediatek.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1557994247-16739-1-git-send-email-chun-hung.wu@mediatek.com>
-References: <1557994247-16739-1-git-send-email-chun-hung.wu@mediatek.com>
+        id S1727658AbfEPLqV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 May 2019 07:46:21 -0400
+Received: from first.geanix.com ([116.203.34.67]:58892 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728168AbfEPLqR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 16 May 2019 07:46:17 -0400
+Received: from [192.168.100.161] (unknown [95.138.208.137])
+        by first.geanix.com (Postfix) with ESMTPSA id A562E9C6;
+        Thu, 16 May 2019 11:45:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1558007159; bh=48NKzE1/3iP61tLwlRVE1PgLB30RBeybnWDZN7lLIFg=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=j6A058Td5vwyWp9Uu5PiUeWvg+sHjuUmrLEX/jNQ8NoFB2S9VFoOPP7/pI74AqYPY
+         z7od0sDUk4E1F9zAhnnJZLYM5iHwfTlbuuYrCoiXmdm7PNnONbxWN6UjuBaqWW1YD+
+         RJIJ9mTIOxQHyHfSf7O0BQjKZjE12J6N3DlnkwI2G6Z3C/K6QJKmH+UaIxPdt+xMrY
+         Kz5dtFkeBwFhoI/628a1EpP24Rj8ncT9PHmngHRuJV55ZDWwpXYhPN2Xw9Ke965neJ
+         1eee83FOhpYBxnGJrCH162tQw9rcPgrw32Mbffg69lrGDVQA4fZvxin4suIOxQHP4+
+         Ik9v/CMrwGtlA==
+Subject: Re: [PATCH 2/2] iio: imu: st_lsm6dsx: add iio trigger and buffer
+ support
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        martin@geanix.com, Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Denis CIOCCA <denis.ciocca@st.com>
+References: <20190507080225.108000-1-sean@geanix.com>
+ <20190507080225.108000-2-sean@geanix.com> <20190511123755.2d220233@archlinux>
+ <20190511123054.GA14837@localhost.localdomain>
+ <a8dc4bcc-b004-b287-2126-7c3b082dd3ba@geanix.com>
+ <20190511170039.GA4547@localhost.localdomain>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <d2946e63-6814-6fe0-b268-486a5e68dcb9@geanix.com>
+Date:   Thu, 16 May 2019 13:46:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <20190511170039.GA4547@localhost.localdomain>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US-large
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 796779db2bec
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-  Move auxadc platform_driver_register() from module_init
-to subsys_initcall because auxadc user drivers
-are all moudle drivers, need to gurantee
-auxadc driver ready before module_init.
+Please ignore this patchset.
+The IRQ is indeed connected to our SoC
 
-Signed-off-by: Chun-Hung Wu <chun-hung.wu@mediatek.com>
----
- drivers/iio/adc/mt6577_auxadc.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
-index 58d7cb2..cb8e3dd 100644
---- a/drivers/iio/adc/mt6577_auxadc.c
-+++ b/drivers/iio/adc/mt6577_auxadc.c
-@@ -350,7 +350,19 @@ static int mt6577_auxadc_remove(struct platform_device *pdev)
- 	.probe	= mt6577_auxadc_probe,
- 	.remove	= mt6577_auxadc_remove,
- };
--module_platform_driver(mt6577_auxadc_driver);
-+
-+static int __init mt6577_auxadc_init(void)
-+{
-+	return platform_driver_register(&mt6577_auxadc_driver);
-+}
-+
-+static void __exit mt6577_auxadc_exit(void)
-+{
-+	platform_driver_unregister(&mt6577_auxadc_driver);
-+}
-+
-+subsys_initcall(mt6577_auxadc_init);
-+module_exit(mt6577_auxadc_exit);
- 
- MODULE_AUTHOR("Zhiyong Tao <zhiyong.tao@mediatek.com>");
- MODULE_DESCRIPTION("MTK AUXADC Device Driver");
--- 
-1.9.1
-
+/Sean

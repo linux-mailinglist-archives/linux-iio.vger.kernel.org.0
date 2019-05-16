@@ -2,68 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4D911FA68
-	for <lists+linux-iio@lfdr.de>; Wed, 15 May 2019 21:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BD9720104
+	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2019 10:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726170AbfEOTZM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 May 2019 15:25:12 -0400
-Received: from www381.your-server.de ([78.46.137.84]:53502 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726124AbfEOTZL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 May 2019 15:25:11 -0400
-X-Greylist: delayed 1662 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 May 2019 15:25:11 EDT
-Received: from [88.198.220.132] (helo=sslproxy03.your-server.de)
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1hQz5j-0007jh-V3; Wed, 15 May 2019 20:57:28 +0200
-Received: from [93.104.106.165] (helo=[192.168.178.20])
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89)
-        (envelope-from <lars@metafoo.de>)
-        id 1hQz5j-0006DY-KX; Wed, 15 May 2019 20:57:27 +0200
-Subject: Re: iio buffer dmaengine
-To:     Paul Thomas <pthomas8589@gmail.com>, linux-iio@vger.kernel.org
-References: <CAD56B7eKeaobf5xES8PFLSKvMHvpe2t52-w-rnVnRJpBX7bh8Q@mail.gmail.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <dfafbc0e-5fdd-16e4-35d1-7b4375394674@metafoo.de>
-Date:   Wed, 15 May 2019 20:57:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726503AbfEPILf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 May 2019 04:11:35 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:65281 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726738AbfEPIL0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 May 2019 04:11:26 -0400
+X-UUID: e3542c8ee8a74750adb7df7e9a167c4e-20190516
+X-UUID: e3542c8ee8a74750adb7df7e9a167c4e-20190516
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <chun-hung.wu@mediatek.com>)
+        (mhqrelay.mediatek.com ESMTP with TLS)
+        with ESMTP id 670884927; Thu, 16 May 2019 16:11:14 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs03n1.mediatek.inc (172.21.101.181) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Thu, 16 May 2019 16:11:13 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Thu, 16 May 2019 16:11:13 +0800
+From:   Chun-Hung Wu <chun-hung.wu@mediatek.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <wsd_upstream@mediatek.com>,
+        <peter.wang@mediatek.com>, <kuohong.wang@mediatek.com>,
+        <jg_poxu@mediatek.com>, Chun-Hung Wu <chun-hung.wu@mediatek.com>
+Subject: [PATCH 0/4] iio: adc: mediatek: add mt6765 driver support
+Date:   Thu, 16 May 2019 16:10:43 +0800
+Message-ID: <1557994247-16739-1-git-send-email-chun-hung.wu@mediatek.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-In-Reply-To: <CAD56B7eKeaobf5xES8PFLSKvMHvpe2t52-w-rnVnRJpBX7bh8Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.100.3/25450/Wed May 15 09:59:26 2019)
+Content-Type: text/plain
+X-MTK:  N
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/15/19 4:15 PM, Paul Thomas wrote:
-> Hello,
-> 
-> Currently I have a driver directly using a dmaengine channel and then
-> calling iio_push_to_buffers_with_timestamp() in the callback. I ran
-> accross the industrialiio-buffer-dmaengin.c implementation, and it
-> looks like this may be a better way to go. However, I had a few
-> questions.
-> 
-> First, am I correct that there are no current users of this interface
-> in the mainline kernel? I pulled the analog devices kernel and I see
-> users there, but the interface is a little bit different.
-> 
-> Second, it's not clear to me how or if multiple samples / dma transfer
-> and time stamping is supported.
+This patch adds support of auxadc to MT6765 SoC.
 
-If you are using the DMA based buffer it is not possible to have per
-sample software timestamps. The idea behind the DMA support is that all
-the data is supplied by the device and the kernel driver never has to
-never even look at it. Inserting a timestamp for each sample would
-negate all the benefits of DMA and provide not much improvement in terms
-of performance over a non DMA setup.
+Chun-Hung Wu (4):
+  dt-bindings: iio: adc: mediatek: Add document for mt6765
+  iio: adc: mediatek: mt6765 upstream driver
+  iio: adc: mediatek: SET_LATE_SYSTEM_SLEEP_PM_OPS support
+  iio: auxadc: mediatek: change to subsys_initcall
 
-If you have to insert timestamps by software and your update rate is low
-enough your current implementation is probably the best approach.
+ .../devicetree/bindings/iio/adc/mt6577_auxadc.txt  |  1 +
+ drivers/iio/adc/mt6577_auxadc.c                    | 75 +++++++++++++++++-----
+ 2 files changed, 59 insertions(+), 17 deletions(-)
+
+-- 
+1.9.1
+

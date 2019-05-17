@@ -2,221 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6271121AE7
-	for <lists+linux-iio@lfdr.de>; Fri, 17 May 2019 17:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB3572206C
+	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 00:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729369AbfEQPo6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 May 2019 11:44:58 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:55727 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729214AbfEQPo6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 May 2019 11:44:58 -0400
-Received: by mail-wm1-f66.google.com with SMTP id x64so7379741wmb.5;
-        Fri, 17 May 2019 08:44:56 -0700 (PDT)
+        id S1727200AbfEQWs7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 May 2019 18:48:59 -0400
+Received: from mail-it1-f194.google.com ([209.85.166.194]:51341 "EHLO
+        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726761AbfEQWs7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 May 2019 18:48:59 -0400
+Received: by mail-it1-f194.google.com with SMTP id m3so10663098itl.1
+        for <linux-iio@vger.kernel.org>; Fri, 17 May 2019 15:48:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=h4O+JRlbWeC+gbeDKXavJ2OzVFIPFbBGitJDrGVsGfA=;
-        b=k61PYtg5BO6fmjdBURTaAanXbkQMhA4N1gvTbaxBfVz80Xgl6irEBj1Sr3XTkI9nv3
-         /7n8ci6pzasWZJM9tXjjxk5Z0mYhSbIi9kaDuWnVUSnBGmR/UCssFM66tNG2cIKkRMEs
-         xMU/Y4h1E+WxB+/yfAIm4aPZJFJ/+Pxui9UQDK2WnL+hGogkcjelGXdI1byuHSyVEPGM
-         RCPqVcOAutpjsma3CWapyGR3i+IYRQo/psgIgGntkqAzQUJh4nFBLbCQWy9yFCENAodX
-         8eRHnLL73dd11gDu8zTmkBjsorrg7xcoWLofN+93+ljKkfPxX2onbCOQAzO3qZTXpfRy
-         9BxQ==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fWLIDy2co5Vn50CtpXbdQSItadAnwXRU6oL36I+LMbU=;
+        b=j1fMEwmFBzpq5dKJ/MaU3D+drIuI0ARLCKClUL2DUep1n6kX4Fj3FE+3y2BpqzVZcg
+         cEeqDwknBjsY/k8bhbZb9ooIqb2AicXfoG+WcGFLfDGOXOwGm39gXALlBPzi1fE7dZkl
+         Gy0hqJ4vSeb3tcYqh9HvuEQUYmtA/7AZnr2/4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=h4O+JRlbWeC+gbeDKXavJ2OzVFIPFbBGitJDrGVsGfA=;
-        b=RqCVxku4XSlobdlg6c6TpJ+4MNrvT/mx+kNoVuogKsPDrps+MYj7/OsbjnGNsA+BUO
-         6fXN5D21PJjvD17t6iNkg4gprVJ1xPaSXuLjYZXD8soaYlJsSrzQMyB3+to+GNL8SbMV
-         wzw3DuLRU+AhL0yfZM1VOoX7mW4t7N/SPyn2sMnPznCjn3ODd95T2YRh+xuasb+ond3l
-         xgggPXTf4XAV8gFnukwyDh0+oGb3kb4ThsmZdttqhyedAVzhxfRlmO7RyyfEGrhTpJuy
-         SajbCcUK2yuxDXZJ2tmGdbi4hYbmZIUpI5j+HgVlbuFEE0QjGQUTzKiTZkYnj/d4yfxg
-         5zaQ==
-X-Gm-Message-State: APjAAAXYcaRc7c14A3579KfmCbJ76rArVAbKjub0IaBsdBwWWP6ZpavT
-        dw26QXnKTxb6mQXJI16uu8WpNXSL230=
-X-Google-Smtp-Source: APXvYqw41bURtZLYfBBPOA5OOH6/i37/WFkVDSWAUxCEAvCc3F3kC/ozMsd37kJWrzv+VR8lpVD7ug==
-X-Received: by 2002:a1c:7312:: with SMTP id d18mr2741689wmb.147.1558107895135;
-        Fri, 17 May 2019 08:44:55 -0700 (PDT)
-Received: from localhost.localdomain ([188.24.21.151])
-        by smtp.gmail.com with ESMTPSA id k63sm1503312wmf.35.2019.05.17.08.44.53
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 17 May 2019 08:44:54 -0700 (PDT)
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     robh+dt@kernel.org,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH][V3] dt-bindings: iio: accel: adxl345: switch to YAML bindings
-Date:   Fri, 17 May 2019 18:44:41 +0300
-Message-Id: <20190517154441.27080-1-ardeleanalex@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190516133609.10975-1-alexandru.ardelean@analog.com>
-References: <20190516133609.10975-1-alexandru.ardelean@analog.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fWLIDy2co5Vn50CtpXbdQSItadAnwXRU6oL36I+LMbU=;
+        b=EohEuxLCF7shiYJMMQcTWKMRLb8RNHQKpHjfzo9LqtI5d9ESMbasJ33hzicPk4IsNL
+         EYOvGYj2rLeZ6F31An9pwW9gZUgt/xmQuvCfgqF9rCoeNYXjj13HxhalIg6akjXiRLf3
+         W1DWpZ1v+sflFJ24tPSU2hHuO0g/mYsUaF7dpcQ9SPyziE+uGYje5qF3vnsFrcmKguY0
+         qp/XeT6z4AQFFLXAetd4YnEbF46ZoskROXtXzQdwyMVQn3Gmph9LWjL4ZWRqFMpHu4hH
+         bQDfh4d+rPxS/K0rDEymSUrwClVdl3c/nB2b6w7w9tVABUpFohwxPm8MRXHMFW6r2vf6
+         6QIA==
+X-Gm-Message-State: APjAAAUlFXUYpsFdkkmfLtPOyGa6mvhKJtBOmUHcjD0yCD7FVHU1ej2y
+        scUZWhvsioVuGVojvB3kA0sWcyA4EaTjF5x3hrPNCQ==
+X-Google-Smtp-Source: APXvYqyYg5NJJ7Eb1Cf1sch9W6PqiIZNmQkePH7xL+iwmKaY8JvrKHQXzNzcY6+FGrg1OB6xJE1HilF2iy1ns9vW/Ag=
+X-Received: by 2002:a02:1142:: with SMTP id 63mr37714962jaf.19.1558133338638;
+ Fri, 17 May 2019 15:48:58 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190509211353.213194-1-gwendal@chromium.org>
+In-Reply-To: <20190509211353.213194-1-gwendal@chromium.org>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Fri, 17 May 2019 15:48:47 -0700
+Message-ID: <CAPUE2ut4OUhrmbx6n8KCj7+ghXmC9iMnxGN8DMvyvZstznwwng@mail.gmail.com>
+Subject: Re: [PATCH v3 00/30] Update cros_ec_commands.h
+To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Cheng-Yi Chiang <cychiang@chromium.org>,
+        Takashi Iwai <tiwai@suse.com>
+Cc:     linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Lee,
 
-The ADX345 supports both I2C & SPI bindings.
-This change switches from old text bindings, to YAML bindings, and also
-tries to make use of the recent multiple-examples support.
+I verified and merged the changes on the kernels (3.18, 4.4 and 4.14)
+used on chromebook using a squashed version of these patches.
+(crrev.com/c/1583322, crrev.com/c/1583385, crrev.com/c/1583321
+respectively)
+Please let me know if you have any questions.
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
----
+Thanks,
 
-Changelog v1 -> v2:
-* dropped interrupt-parent from DT, as suggested by Rob
+Gwendal.
 
-Changelog v2 -> v3:
-* add Rob's Reviewed-by tag
-* add YAML file to MAINTAINERS - main reason for this V3
-
- .../bindings/iio/accel/adi,adxl345.yaml       | 72 +++++++++++++++++++
- .../devicetree/bindings/iio/accel/adxl345.txt | 39 ----------
- MAINTAINERS                                   |  1 +
- 3 files changed, 73 insertions(+), 39 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/accel/adxl345.txt
-
-diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-new file mode 100644
-index 000000000000..7ba167e2e1ea
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-@@ -0,0 +1,72 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/accelerometers/adi,adxl345.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices ADXL345/ADXL375 3-Axis Digital Accelerometers
-+
-+maintainers:
-+  - Michael Hennerich <michael.hennerich@analog.com>
-+
-+description: |
-+  Analog Devices ADXL345/ADXL375 3-Axis Digital Accelerometers that supports
-+  both I2C & SPI interfaces.
-+    http://www.analog.com/en/products/mems/accelerometers/adxl345.html
-+    http://www.analog.com/en/products/sensors-mems/accelerometers/adxl375.html
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adxl345
-+      - adi,adxl375
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-cpha: true
-+
-+  spi-cpol: true
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        /* Example for a I2C device node */
-+        accelerometer@2a {
-+            compatible = "adi,adxl345";
-+            reg = <0x53>;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        /* Example for a SPI device node */
-+        accelerometer@0 {
-+            compatible = "adi,adxl345";
-+            reg = <0>;
-+            spi-max-frequency = <5000000>;
-+            spi-cpol;
-+            spi-cpha;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/iio/accel/adxl345.txt b/Documentation/devicetree/bindings/iio/accel/adxl345.txt
-deleted file mode 100644
-index f9525f6e3d43..000000000000
---- a/Documentation/devicetree/bindings/iio/accel/adxl345.txt
-+++ /dev/null
-@@ -1,39 +0,0 @@
--Analog Devices ADXL345/ADXL375 3-Axis Digital Accelerometers
--
--http://www.analog.com/en/products/mems/accelerometers/adxl345.html
--http://www.analog.com/en/products/sensors-mems/accelerometers/adxl375.html
--
--Required properties:
-- - compatible : should be one of
--		"adi,adxl345"
--		"adi,adxl375"
-- - reg : the I2C address or SPI chip select number of the sensor
--
--Required properties for SPI bus usage:
-- - spi-max-frequency : set maximum clock frequency, must be 5000000
-- - spi-cpol and spi-cpha : must be defined for adxl345 to enable SPI mode 3
--
--Optional properties:
-- - interrupts: interrupt mapping for IRQ as documented in
--   Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
--
--Example for a I2C device node:
--
--	accelerometer@2a {
--		compatible = "adi,adxl345";
--		reg = <0x53>;
--		interrupt-parent = <&gpio1>;
--		interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
--	};
--
--Example for a SPI device node:
--
--	accelerometer@0 {
--		compatible = "adi,adxl345";
--		reg = <0>;
--		spi-max-frequency = <5000000>;
--		spi-cpol;
--		spi-cpha;
--		interrupt-parent = <&gpio1>;
--		interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
--	};
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 43a9cebb2c19..54c8e14fae98 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -551,6 +551,7 @@ W:	http://wiki.analog.com/ADXL345
- W:	http://ez.analog.com/community/linux-device-drivers
- S:	Supported
- F:	drivers/input/misc/adxl34x.c
-+F:	Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
- 
- ADXL372 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
- M:	Stefan Popa <stefan.popa@analog.com>
--- 
-2.17.1
-
+On Thu, May 9, 2019 at 2:14 PM Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> The interface between CrosEC embedded controller and the host,
+> described by cros_ec_commands.h, as diverged from what the embedded
+> controller really support.
+>
+> The source of thruth is at
+> https://chromium.googlesource.com/chromiumos/platform/ec/+/master/include/ec_commands.h
+>
+> That include file is converted to remove ACPI and Embedded only code.
+>
+> From now on, cros_ec_commands.h will be automatically generated from
+> the file above, do not modify directly.
+>
+> Fell free to squash the commits below.
+>
+> Changes in v3:
+> - Rebase after commit 81888d8ab1532 ("mfd: cros_ec: Update the EC feature codes")
+> - Add Acked-by: Benson Leung <bleung@chromium.org>
+>
+> Changes in v2:
+> - Move I2S changes at the end of the patchset, squashed with change in
+>   sound/soc/codecs/cros_ec_codec.c to match new interface.
+> - Add Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+>
+> Gwendal Grignou (30):
+>   mfd: cros_ec: Update license term
+>   mfd: cros_ec: Zero BUILD_ macro
+>   mfd: cros_ec: set comments properly
+>   mfd: cros_ec: add ec_align macros
+>   mfd: cros_ec: Define commands as 4-digit UPPER CASE hex values
+>   mfd: cros_ec: use BIT macro
+>   mfd: cros_ec: Update ACPI interface definition
+>   mfd: cros_ec: move HDMI CEC API definition
+>   mfd: cros_ec: Remove zero-size structs
+>   mfd: cros_ec: Add Flash V2 commands API
+>   mfd: cros_ec: Add PWM_SET_DUTY API
+>   mfd: cros_ec: Add lightbar v2 API
+>   mfd: cros_ec: Expand hash API
+>   mfd: cros_ec: Add EC transport protocol v4
+>   mfd: cros_ec: Complete MEMS sensor API
+>   mfd: cros_ec: Fix event processing API
+>   mfd: cros_ec: Add fingerprint API
+>   mfd: cros_ec: Fix temperature API
+>   mfd: cros_ec: Complete Power and USB PD API
+>   mfd: cros_ec: Add API for keyboard testing
+>   mfd: cros_ec: Add Hibernate API
+>   mfd: cros_ec: Add Smart Battery Firmware update API
+>   mfd: cros_ec: Add I2C passthru protection API
+>   mfd: cros_ec: Add API for EC-EC communication
+>   mfd: cros_ec: Add API for Touchpad support
+>   mfd: cros_ec: Add API for Fingerprint support
+>   mfd: cros_ec: Add API for rwsig
+>   mfd: cros_ec: Add SKU ID and Secure storage API
+>   mfd: cros_ec: Add Management API entry points
+>   mfd: cros_ec: Update I2S API
+>
+>  include/linux/mfd/cros_ec_commands.h | 3658 ++++++++++++++++++++------
+>  sound/soc/codecs/cros_ec_codec.c     |    8 +-
+>  2 files changed, 2915 insertions(+), 751 deletions(-)
+>
+> --
+> 2.21.0.1020.gf2820cf01a-goog
+>

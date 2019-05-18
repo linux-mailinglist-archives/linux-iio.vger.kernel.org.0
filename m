@@ -2,102 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4D0C224E9
-	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 22:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 980D8224EB
+	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 22:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729262AbfERUoe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 May 2019 16:44:34 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:32926 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727926AbfERUod (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 16:44:33 -0400
-Received: by mail-qt1-f195.google.com with SMTP id m32so12065609qtf.0
-        for <linux-iio@vger.kernel.org>; Sat, 18 May 2019 13:44:33 -0700 (PDT)
+        id S1729377AbfERUsa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 May 2019 16:48:30 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:42768 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727600AbfERUsa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 16:48:30 -0400
+Received: by mail-qt1-f196.google.com with SMTP id j53so11992888qta.9;
+        Sat, 18 May 2019 13:48:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp-br.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=i3ucxkelR/HQP9bUpvsE26VSnR/v3o3kZTaDa44EE1c=;
-        b=ON6uo1bw+ET/PyUWYmc+hLE1PopU0xxIuMNPfiHk4Sg30DuBt/UDdPosCsccA6BQns
-         JW6JieUAvK0x4k4C8t+fuTHiCMV1qR8aGcGRZrxFU8zwpzkeXJ24ohC4ndkzaxgGXIfT
-         2g72OBxA3qdgGBJjJxRv+toI/1baW/puaUY/11T46zHHneJV6fhszAn7QHEeFgzwM/XK
-         opRApu3GroVH8InlIhv4OzevBegnqCHwIIutzLJxj9rcBM8qrDxQO+De1ykJdxw0ZJzz
-         r+JTE2+cIG+PGvCKXOwZylhPvzaKVgjAHF8NN9IlYXWSNshw1Rl3oxdDan6lJFfSYUaR
-         q5Hg==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :content-transfer-encoding:user-agent;
+        bh=WciszLrf+StkjFt3IBn6hpgp/9AF96pJ0rNKW3jR/+M=;
+        b=HLb5TpL2OZK9F+Sws7GtcM0fcYy2Fpa0ZMJdNhCMtOLZMVEY+ElJpjmIm0P8JJRbD2
+         Prrlb0Mh4QB6LBxWpjojlXoIr2Bo7FvtQpL1unzh7VBbRxCMs0NjXu25uVay1W2blkQ1
+         xJ51654h0C+9hGDdq1Exe/Oy0rtqGvn2DvKV8U8QuPksMetMWUY+cYb8Ybxf0eNqnmKC
+         AW1G+Csw9mchDYubTetAqRvAwyxXC0kEQ1tNjHyClhCLecElOVZ3Ao6Bm9p1MZ1+JXMU
+         0CK/vflRyF3sKzM/DJc2QTy1JfdwxVqLU8I8VcZ17pekXd6QTC3fNAKQxthAFKZb5JHW
+         ARYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=i3ucxkelR/HQP9bUpvsE26VSnR/v3o3kZTaDa44EE1c=;
-        b=fVKd98XSeVJ/6QEsv3oENCmIyVAwfMexfSRQClW7fB6eFVRMpFB+K8lQRR4rWU7xXy
-         I0TifY4TgHlH491cVEcxDOpiRQYprpqiplfaZNt59nDTXx9VwxXOoW49CpQZUb9uu7q8
-         Ivd8AKBNgUD2Q0M7TPEQBTpQxKIlFGlndhSG/ZUoecoP+oWCrvy9MMKhVLFb8mLkAFkg
-         dNkm0T34GSz1kizSM7xNZC3/NCsW/EBhtzR+J6QV9uIsFjIrhGmfu0fGQO+He7qawUDl
-         RsphXvGIMi5nD1tBjd4SAXbPl7k90N36iGPUcLFRY/eHZs8eZqViwmdbDLMKSx48Vs36
-         rb/w==
-X-Gm-Message-State: APjAAAWQbEBDlIZxtMm4pDYU8DpuZD2MERmj8Es2liEGYeVNCzVvLMHq
-        ZTjiKO9HsebLAfMutlVtraxMSGfdEbc=
-X-Google-Smtp-Source: APXvYqyNXly3zNshlkxFWo9pdW363slsAY6ICkTQqQZyA4NjYb9fyNv1xP/N9JZR4KTqH7YX3ybqRQ==
-X-Received: by 2002:ac8:19dd:: with SMTP id s29mr55369287qtk.353.1558212272493;
-        Sat, 18 May 2019 13:44:32 -0700 (PDT)
-Received: from greta.semfio.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id c32sm9252327qte.2.2019.05.18.13.44.30
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 18 May 2019 13:44:32 -0700 (PDT)
-From:   =?UTF-8?q?B=C3=A1rbara=20Fernandes?= <barbara.fernandes@usp.br>
-To:     linux-iio@vger.kernel.org
-Cc:     =?UTF-8?q?B=C3=A1rbara=20Fernandes?= <barbara.fernandes@usp.br>,
-        Wilson Sales <spoonm@spoonm.org>
-Subject: [PATCH] staging: iio: ad7192: create of_device_id array
-Date:   Sat, 18 May 2019 17:44:27 -0300
-Message-Id: <20190518204427.8883-1-barbara.fernandes@usp.br>
-X-Mailer: git-send-email 2.22.0.rc0.1.g337bb99195.dirty
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:content-transfer-encoding:user-agent;
+        bh=WciszLrf+StkjFt3IBn6hpgp/9AF96pJ0rNKW3jR/+M=;
+        b=QnBA3fNUYijIR8CNzsDljh4rPz+/kN/ktNyE25ynPQoeaFUVQ9xr3SLVnIXxeMCu2c
+         jho4uNZZoc6Jc/60VaYp88pER9nddvzCtxd3pU1hE3m+YsaCM+C5HlA/TjMfArszVpcy
+         MWLoPs7U/+wlEfnGXmnn3yIxL+numlhO4s2ZhfRk5Y8RuXWA0MttTaVrl4SP/COUzAVE
+         jsRNfW+CdZGK2EEYiDb+utsNPt2O3pz1HjNAR0zsv+mnBwu7/ZqImC8HGfku5c3GN2Hm
+         BjydfFsrXR+xbrDVTB2PPxgAUFFy5thseDjGc4EMhRUNkgB+qXm/S8grIQYASxeQHu3d
+         g/6g==
+X-Gm-Message-State: APjAAAXWX5Po8pypjzH70sl8+bIyeuaHjbyisB6rBZnNivL83YvSYS+y
+        6kOb3T6LAsPKcoY2V4Qa/jGT7jILXE0=
+X-Google-Smtp-Source: APXvYqy2gfnMW7/yiWdNTqPE4nLkdak6PNML06Ce9ea32BPPhxLwoi2G0Zob0InNNm7XJjBrCJh9jw==
+X-Received: by 2002:a0c:9523:: with SMTP id l32mr54285129qvl.75.1558212509186;
+        Sat, 18 May 2019 13:48:29 -0700 (PDT)
+Received: from smtp.gmail.com ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id d15sm5528204qko.77.2019.05.18.13.48.26
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 18 May 2019 13:48:28 -0700 (PDT)
+Date:   Sat, 18 May 2019 17:48:25 -0300
+From:   =?utf-8?B?Sm/Do28=?= Seckler <joaoseckler@gmail.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: iio: ad9832: Add device tree support
+Message-ID: <20190518204825.4kh5qkqo2e5q2se6@smtp.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Create list of compatible device ids to be matched with those stated in
-the device tree.
+Add a of_device_id struct variable and subsequent call to
+MODULE_DEVICE_TABLE macro to support device tree.
 
-Signed-off-by: Bárbara Fernandes <barbara.fernandes@usp.br>
-Signed-off-by: Wilson Sales <spoonm@spoonm.org>
-Co-developed by: Wilson Sales <spoonm@spoonm.org>
+Signed-off-by: João Seckler <joaoseckler@gmail.com>
+Signed-off-by: Anderson Reis <andersonreisrosa@gmail.com>
+Co-developed-by: Anderson Reis  <andersonreisrosa@gmail.com>
+Signed-off-by: Andre Tadeu de Carvalho <andre.tadeu.de.carvalho@gmail.com>
+Co-developed-by: Andre Tadeu de Carvalho <andre.tadeu.de.carvalho@gmail.com>
 ---
- drivers/staging/iio/adc/ad7192.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/staging/iio/frequency/ad9832.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
-index 3d74da9d37e7..cc886f944dbf 100644
---- a/drivers/staging/iio/adc/ad7192.c
-+++ b/drivers/staging/iio/adc/ad7192.c
-@@ -810,11 +810,23 @@ static const struct spi_device_id ad7192_id[] = {
- 	{"ad7195", ID_AD7195},
- 	{}
- };
-+
-+static const struct of_device_id ad7192_of_spi_match[] = {
-+	{ .compatible = "adi,ad7190" },
-+	{ .compatible = "adi,ad7192" },
-+	{ .compatible = "adi,ad7193" },
-+	{ .compatible = "adi,ad7195" },
-+	{}
-+};
-+
-+MODULE_DEVICE_TABLE(of, ad7192_of_spi_match);
-+
- MODULE_DEVICE_TABLE(spi, ad7192_id);
+diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+index 74308a2e72db..51e97c74c6b2 100644
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -451,6 +451,13 @@ static int ad9832_remove(struct spi_device *spi)
+ 	return 0;
+ }
  
- static struct spi_driver ad7192_driver = {
- 	.driver = {
- 		.name	= "ad7192",
-+		.of_match_table = ad7192_of_spi_match,
- 	},
- 	.probe		= ad7192_probe,
- 	.remove		= ad7192_remove,
++static const struct of_device_id ad9832_of_match[] = {
++	{ .compatible = "adi,ad9832", },
++	{ .compatible = "adi,ad9835", },
++	{ /* sentinel */ },
++};
++MODULE_DEVICE_TABLE(of, ad9832_of_match);
++
+ static const struct spi_device_id ad9832_id[] = {
+ 	{"ad9832", 0},
+ 	{"ad9835", 0},
 -- 
-2.22.0.rc0.1.g337bb99195.dirty
+2.11.0
 

@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8E9F22311
-	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 12:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 860BC2231B
+	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 12:20:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727366AbfERKH4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 May 2019 06:07:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34876 "EHLO mail.kernel.org"
+        id S1728977AbfERKUh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 May 2019 06:20:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38778 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726050AbfERKH4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 May 2019 06:07:56 -0400
+        id S1727286AbfERKUg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 May 2019 06:20:36 -0400
 Received: from archlinux (cpc91196-cmbg18-2-0-cust659.5-4.cable.virginm.net [81.96.234.148])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A642420882;
-        Sat, 18 May 2019 10:07:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A21CE20882;
+        Sat, 18 May 2019 10:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558174074;
-        bh=sUB5hovs/rIf/1+OYH5HuM1pm0D1fXyH9bo/DU9kax4=;
+        s=default; t=1558174835;
+        bh=6NB9Z0T4EVef3CpmXtyWuLQlD836mhIpMXiN7OIS92U=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SuqC8lJYndA+qDxIEQ3UiU5TI/vXjU4XgPEfDmaA2NcL+3dWoPt/KkRVJfJCfFhPn
-         LHvvS7X59ccHhiLMSJeWH1kQVNQ3kcG+IY65WuytW+H5XOIyd7PBwrCqc8oIMI8mC6
-         1QIGK1lhcfel4EcuqCkJui64jtNlGt7JwzJVn+5M=
-Date:   Sat, 18 May 2019 11:07:49 +0100
+        b=Uotz2nEgDQovm2TQSdJ6NAI+XVi+5qRJ/XYINMVixiX908IepDgKjS+tN0rWEm5+R
+         Qb1g6ABesGGcm66qeA2361AROgMx4+PzEKkdHrnSmlMI32eau3h7vN/0FZ6DjTiScN
+         0iP0MoNLAPm96xCRfhz4eqAyvGwmX4hP7XuSaHJI=
+Date:   Sat, 18 May 2019 11:20:30 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Beniamin Bia <beniamin.bia@analog.com>
 Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
@@ -32,131 +32,156 @@ Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
         <mark.rutland@arm.com>, <robh+dt@kernel.org>,
         <devicetree@vger.kernel.org>, <biabeniamin@outlook.com>
-Subject: Re: [PATCH 2/5] iio: adc: ad7606: Add software configuration
-Message-ID: <20190518110749.080c7a04@archlinux>
-In-Reply-To: <20190516143208.19294-2-beniamin.bia@analog.com>
+Subject: Re: [PATCH 3/5] iio: adc: ad7606: Make SPI register calculation
+ generic and add spi support
+Message-ID: <20190518112030.56c0411f@archlinux>
+In-Reply-To: <20190516143208.19294-3-beniamin.bia@analog.com>
 References: <20190516143208.19294-1-beniamin.bia@analog.com>
-        <20190516143208.19294-2-beniamin.bia@analog.com>
+ <20190516143208.19294-3-beniamin.bia@analog.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 May 2019 17:32:05 +0300
+On Thu, 16 May 2019 17:32:06 +0300
 Beniamin Bia <beniamin.bia@analog.com> wrote:
 
-> Because this driver will support multiple configurations for software,
-> the software configuration was made generic.
->=20
+> In order to support AD7616 software mode, the spi register access must be
+> added and the calculation of registers address must be generic.
+> The length of address and bit which specifies the read/write operation is
+> different for every device, that is why it was made generic.
+> 
 > Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+The break up patches has ended up a little odd. This one introduced unused
+functions for example. Probably best to merge this and the next patch.
 
-Thanks
+As a potential follow up, could this driver just use a 16 bit word
+length and avoid some of the endian handling? (this might also fix
+the casting issues).
+
+However, there are some nasty casts in here that sparse is unhappy about.
+I would definitely like those cleaned up before we add more of them.
+
+If changing to 16bit SPI words doesn't do the job, then perhaps
+we have to have a be16 version of data (as a union to avoid more
+space usage).
+
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/ad7606.c | 40 +++++++++++++++++++++++++++++++++++++---
+>  drivers/iio/adc/ad7606.c | 60 ++++++++++++++++++++++++++++++++++++++++
 >  drivers/iio/adc/ad7606.h |  2 ++
->  2 files changed, 39 insertions(+), 3 deletions(-)
->=20
+>  2 files changed, 62 insertions(+)
+> 
 > diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index c66ff22f32d2..aba0fd123a51 100644
+> index aba0fd123a51..6df81117cacc 100644
 > --- a/drivers/iio/adc/ad7606.c
 > +++ b/drivers/iio/adc/ad7606.c
-> @@ -140,7 +140,7 @@ static int ad7606_read_raw(struct iio_dev *indio_dev,
->  			   int *val2,
->  			   long m)
+> @@ -25,6 +25,8 @@
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  
+> +#include <linux/spi/spi.h>
+> +
+>  #include "ad7606.h"
+>  
+>  /*
+> @@ -43,6 +45,11 @@ static const unsigned int ad7616_oversampling_avail[8] = {
+>  	1, 2, 4, 8, 16, 32, 64, 128,
+>  };
+>  
+> +static int ad7616_spi_rd_wr_cmd(int addr, char isWriteOp)
+> +{
+> +	return ((addr & 0x7F) << 1) | ((isWriteOp & 0x1) << 7);
+> +}
+> +
+>  static int ad7606_reset(struct ad7606_state *st)
 >  {
-> -	int ret;
-> +	int ret, ch =3D 0;
->  	struct ad7606_state *st =3D iio_priv(indio_dev);
-> =20
->  	switch (m) {
-> @@ -157,8 +157,10 @@ static int ad7606_read_raw(struct iio_dev *indio_dev,
->  		*val =3D (short)ret;
->  		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_SCALE:
-> +		if (st->sw_mode_en)
-> +			ch =3D chan->address;
->  		*val =3D 0;
-> -		*val2 =3D st->scale_avail[st->range[0]];
-> +		*val2 =3D st->scale_avail[st->range[ch]];
->  		return IIO_VAL_INT_PLUS_MICRO;
->  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
->  		*val =3D st->oversampling;
-> @@ -233,7 +235,9 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_SCALE:
->  		mutex_lock(&st->lock);
->  		i =3D find_closest(val2, st->scale_avail, st->num_scales);
-> -		ret =3D st->write_scale(indio_dev, chan->address, i);
-> +		if (st->sw_mode_en)
-> +			ch =3D chan->address;
-> +		ret =3D st->write_scale(indio_dev, ch, i);
->  		if (ret < 0) {
->  			mutex_unlock(&st->lock);
->  			return ret;
-> @@ -616,6 +620,36 @@ int ad7606_probe(struct device *dev, int irq, void _=
-_iomem *base_address,
->  	st->write_scale =3D ad7606_write_scale_hw;
->  	st->write_os =3D ad7606_write_os_hw;
-> =20
-> +	if (st->chip_info->sw_mode_config)
-> +		st->sw_mode_en =3D device_property_present(st->dev,
-> +							 "adi,sw-mode");
+>  	if (st->gpio_reset) {
+> @@ -55,6 +62,59 @@ static int ad7606_reset(struct ad7606_state *st)
+>  	return -ENODEV;
+>  }
+>  
+> +static int ad7606_spi_reg_read(struct ad7606_state *st, unsigned int addr)
+> +{
+> +	struct spi_device *spi = to_spi_device(st->dev);
+> +	struct spi_transfer t[] = {
+> +		{
+> +			.tx_buf = &st->data[0],
+> +			.len = 2,
+> +			.cs_change = 0,
+> +		}, {
+> +			.rx_buf = &st->data[1],
+> +			.len = 2,
+> +		},
+> +	};
+> +	int ret;
 > +
-> +	if (st->sw_mode_en) {
-> +		/* After reset, in software mode, =C2=B110 V is set by default */
-> +		memset32(st->range, 2, ARRAY_SIZE(st->range));
-> +		indio_dev->info =3D &ad7606_info_os_and_range;
+> +	st->data[0] = cpu_to_be16(st->chip_info->spi_rd_wr_cmd(addr, 0) << 8);
 > +
-> +		/*
-> +		 * In software mode, the range gpio has no longer its function.
-> +		 * Instead, the scale can be configured individually for each
-> +		 * channel from the range registers.
-> +		 */
-> +		if (st->chip_info->write_scale_sw)
-> +			st->write_scale =3D st->chip_info->write_scale_sw;
+> +	ret = spi_sync_transfer(spi, t, ARRAY_SIZE(t));
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +		/*
-> +		 * In software mode, the oversampling is no longer configured
-> +		 * with GPIO pins. Instead, the oversampling can be configured
-> +		 * in configuratiion register.
-> +		 */
-> +		if (st->chip_info->write_os_sw)
-> +			st->write_os =3D st->chip_info->write_os_sw;
+> +	return be16_to_cpu(st->data[1]);
+> +}
 > +
-> +		ret =3D st->chip_info->sw_mode_config(indio_dev);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
+> +static int ad7606_spi_reg_write(struct ad7606_state *st,
+> +				unsigned int addr,
+> +				unsigned int val)
+> +{
+> +	struct spi_device *spi = to_spi_device(st->dev);
 > +
->  	st->trig =3D devm_iio_trigger_alloc(dev, "%s-dev%d",
->  					  indio_dev->name, indio_dev->id);
->  	if (!st->trig)
+> +	st->data[0] = cpu_to_be16((st->chip_info->spi_rd_wr_cmd(addr, 1) << 8) |
+> +				  (val & 0x1FF));
+> +
+> +	return spi_write(spi, &st->data[0], sizeof(st->data[0]));
+> +}
+> +
+> +static int ad7606_spi_write_mask(struct ad7606_state *st,
+> +				 unsigned int addr,
+> +				 unsigned long mask,
+> +				 unsigned int val)
+> +{
+> +	int readval;
+> +
+> +	readval = ad7606_spi_reg_read(st, addr);
+> +	if (readval < 0)
+> +		return readval;
+> +
+> +	readval &= ~mask;
+> +	readval |= val;
+> +
+> +	return ad7606_spi_reg_write(st, addr, readval);
+> +}
+> +
+>  static int ad7606_read_samples(struct ad7606_state *st)
+>  {
+>  	unsigned int num = st->chip_info->num_channels;
 > diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-> index 143c30163df9..d8a509c2c428 100644
+> index d8a509c2c428..dfc60af9b8ac 100644
 > --- a/drivers/iio/adc/ad7606.h
 > +++ b/drivers/iio/adc/ad7606.h
-> @@ -43,6 +43,7 @@ struct ad7606_chip_info {
->   * @range		voltage range selection, selects which scale to apply
->   * @oversampling	oversampling selection
->   * @base_address	address from where to read data in parallel operation
-> + * @sw_mode_en		software mode enabled
->   * @scale_avail		pointer to the array which stores the available scales
->   * @num_scales		number of elements stored in the scale_avail array
->   * @oversampling_avail	pointer to the array which stores the available
-> @@ -71,6 +72,7 @@ struct ad7606_state {
->  	unsigned int			range[16];
->  	unsigned int			oversampling;
->  	void __iomem			*base_address;
-> +	bool				sw_mode_en;
->  	const unsigned int		*scale_avail;
->  	unsigned int			num_scales;
+> @@ -16,6 +16,7 @@
+>   *			oversampling ratios.
+>   * @oversampling_num	number of elements stored in oversampling_avail array
+>   * @os_req_reset	some devices require a reset to update oversampling
+> + * @spi_rd_wr_cmd	pointer to the function which calculates the spi address
+>   * @write_scale_sw	pointer to the function which writes the scale via spi
+>  			in software mode
+>   * @write_os_sw		pointer to the function which writes the os via spi
+> @@ -29,6 +30,7 @@ struct ad7606_chip_info {
 >  	const unsigned int		*oversampling_avail;
+>  	unsigned int			oversampling_num;
+>  	bool				os_req_reset;
+> +	int (*spi_rd_wr_cmd)(int addr, char isWriteOp);
+>  	int (*write_scale_sw)(struct iio_dev *indio_dev, int ch, int val);
+>  	int (*write_os_sw)(struct iio_dev *indio_dev, int val);
+>  	int (*sw_mode_config)(struct iio_dev *indio_dev);
 

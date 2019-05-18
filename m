@@ -2,189 +2,223 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBA7922565
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 00:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB33E22569
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 00:41:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727622AbfERWkz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 May 2019 18:40:55 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:33779 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727506AbfERWkz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 18:40:55 -0400
-Received: by mail-qt1-f195.google.com with SMTP id m32so12229548qtf.0
-        for <linux-iio@vger.kernel.org>; Sat, 18 May 2019 15:40:54 -0700 (PDT)
+        id S1728435AbfERWlT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 May 2019 18:41:19 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:37748 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728395AbfERWlT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 18:41:19 -0400
+Received: by mail-qt1-f193.google.com with SMTP id o7so12198124qtp.4;
+        Sat, 18 May 2019 15:41:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp-br.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NASEVCcQeLERmb3lFWeHn5RecIxubexy9jBBwowK7lA=;
-        b=0WjwMwDTtuOEdvLcrR7O/8y6q3Rf/jfoWaYAaqz9hczEVdCBlBz8K5nNxL3ukRDmiY
-         IyWLRGZPFEsWBUMGAmLtJ5LyIQiEh9t3cPu+lLPnCulGzaL1xRygGE7uOXB/EpKDEido
-         HDZxHzy8J1Z98lG9zvEiPRYGOtMoD3bxv84E20uuVU/SNUnCIUGvm4beapkNoiMcn5WC
-         4ZGzv27ojqbVWdbycutUL//GamTmS7xJC5e+WkYbZqRsm6qdw/PfZFRlQa+9MhfgOMoA
-         odmY6Nw8z7jxxTPNYtVfhg26omWkcHUr2rHOgX9u9dUc2QjEnk95vvBxKemrdmeMFe8K
-         Ataw==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=rdPx5/YxFpSy0ERuJlDi1pCpRRi+1n/Zz/+OlelD9So=;
+        b=FJCbU/zwkd1ybQFCZz+699GV78RWenKbd4yAsMu89og+U+ud/G0gBA1lLk0jhGKsHd
+         /20pvQNl52SYjWHYXchRUJjluZBM2eBKpfnPvW1OozPtO56p/DzxBQFQUiVXlJU6Tgo5
+         NiM5cke8s86ykQn1jl2k3Ilrvuh02qxKhkqRp9jdQC0Hrph2C8UzakGGFpmHm/jVsFCe
+         YdJALjVEEwbmU5XL7oJ0Yw2bEk8leZkaPI4sCmG5F3PY7EBLqB9WfpBW2KJBu14Y9dmg
+         TTGGm7pzAPSacONyQ7Iw3eoaotMknPYVxUW4nFb5E5FZUAOAP7+Tlohju3+bAr61PSN1
+         kzwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NASEVCcQeLERmb3lFWeHn5RecIxubexy9jBBwowK7lA=;
-        b=USybdUUvx6ymUjcTRq5NN5Cw75sdcbotqqDfeD30LEY9acLsxmIH3Oj8uz2G6SKtBo
-         UMyMfJo2/V2djwmpAVsMhSb3PasDoAkth6QjCPQYBUn6n6QEln48MlzJINSLHc55XiVu
-         nefRHkUPxZOilNIgoAUJTaQQ0uELVYOEmTeZ6VlB2NmsVZCpgJT0ROK22hDKkmbFwmWg
-         eLcu7Vbe/I57cSSeSKaggCZ7WQZxUAoXYJb3fxa81cTRgolZU6RoBVLQG23vW9lfD5DW
-         MBfkgFLm4xDCU9UP7dFliGdmI2HjD2Yd5cl7oZbH5TJfLCSOGJqdZmlUs1hDZlxaWV60
-         A6cQ==
-X-Gm-Message-State: APjAAAXAxhqmGx6ReqeYn1RY5tM99Wl7kF8R1u6NCFmtW5Z//GJ5LaMV
-        VJnHaPE7xnAxvidJrZKX79+K8w==
-X-Google-Smtp-Source: APXvYqyPKneCyjGVMlT3EJFQrZD2wyAhm8de9f0HAHvFJ3KyB4wrL6VrwPg95rw2zSvLZemmW/Cmzg==
-X-Received: by 2002:ac8:16b4:: with SMTP id r49mr47957644qtj.157.1558219253774;
-        Sat, 18 May 2019 15:40:53 -0700 (PDT)
-Received: from joao-pc.ime.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id g15sm6415068qkl.2.2019.05.18.15.40.50
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=rdPx5/YxFpSy0ERuJlDi1pCpRRi+1n/Zz/+OlelD9So=;
+        b=njOMmd3NmbHQnGCHItughQAyIbNUGNbxhJTmP2GKqVtUH/bWRQOoAW/9F1rbmJqnP4
+         hsAES1BYqeEESujKbOjKP9WTBylRmgtwkO1YYmw76w4pvq/AFURy8tfKOWIZ01tEAxpY
+         EUKZWCyd6Khd6oX+VA3/OD/rZpNFIwkXtVP4nxJXhR9+HHg7hx5uzBRX05cdWnQyQeRp
+         LzILPFX5EZuOFvrVZ6BuNsn9T11yJd/z4YV9SPlPdh+UmLJY9IyPBuNz+p0oUtIthbHn
+         7SeW5dzM7JV+lZXmpuH5VBYl7//tin5NwKMJyHekhKg8bARKOxm+KQ+ipIiNaAtEVoPH
+         f6WA==
+X-Gm-Message-State: APjAAAUywbJfB+jQW0amYSxUP4tlIDHh39SJbj2vnMllpfVLCtcqGfbx
+        qxiN+iNJRZWG8LL/smSvkfQ=
+X-Google-Smtp-Source: APXvYqzxdBO9MMb6dET4SnQAlTM0tXLawxXOprdKRncPC6Dp2iRyLxgfWrglWQjKRRXI+LF10RTPeg==
+X-Received: by 2002:aed:3f9d:: with SMTP id s29mr1168876qth.337.1558219278103;
+        Sat, 18 May 2019 15:41:18 -0700 (PDT)
+Received: from renatolg ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id y47sm1236580qtb.55.2019.05.18.15.41.13
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 18 May 2019 15:40:53 -0700 (PDT)
-From:   =?UTF-8?q?Jo=C3=A3o=20Victor=20Marques=20de=20Oliveira?= 
-        <joao.marques.oliveira@usp.br>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-usp@googlegroups.com,
-        "Thiago L . A . Miller" <tmiller@mochsl.org.br>,
-        "Osvaldo M . Yasuda" <omyasuda@yahoo.com.br>
-Subject: [PATCH] dt-bindings: iio: ad7949: switch binding to yaml
-Date:   Sat, 18 May 2019 19:40:36 -0300
-Message-Id: <20190518224036.29596-1-joao.marques.oliveira@usp.br>
-X-Mailer: git-send-email 2.21.0
+        Sat, 18 May 2019 15:41:17 -0700 (PDT)
+Date:   Sat, 18 May 2019 19:41:12 -0300
+From:   Renato Lui Geh <renatogeh@gmail.com>
+To:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+        knaack.h@gmx.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
+        stefan.popa@analog.com, alexandru.Ardelean@analog.com,
+        robh+dt@kernel.org, mark.rutland@arm.com
+Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org, kernel-usp@googlegroups.com,
+        devicetree@vger.kernel.org
+Subject: [PATCH] dt-bindings: iio: adc: add adi,ad7780.yaml binding
+Message-ID: <9992a318aec777b9b7788bb40d976aa89e5963fe.1558219042.git.renatogeh@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Changes switches from old text bindings, to YAML bindings, and also
-include adi,reference-select property to specify the source for the
-reference voltage signal.
+This patch adds a YAML binding for the Analog Devices AD7780/1 and
+AD7170/1 analog-to-digital converters.
 
-Signed-off-by: João Victor Marques de Oliveira <joao.marques.oliveira@usp.br>
-Signed-off-by: Thiago L. A. Miller <tmiller@mochsl.org.br>
-Co-developed-by: Thiago L. A. Miller <tmiller@mochsl.org.br>
-Signed-off-by: Osvaldo M. Yasuda <omyasuda@yahoo.com.br>
-Co-developed-by: Osvaldo M. Yasuda <omyasuda@yahoo.com.br>
+Signed-off-by: Renato Lui Geh <renatogeh@gmail.com>
 ---
-We're adding Charles-Antoine Couret as main dt maintainer since we have
-just switched documentation to yaml format. 
+ .../bindings/iio/adc/adi,ad7780.txt           | 48 -----------
+ .../bindings/iio/adc/adi,ad7780.yaml          | 85 +++++++++++++++++++
+ 2 files changed, 85 insertions(+), 48 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
 
- .../devicetree/bindings/iio/adc/ad7949.txt    | 16 -----
- .../devicetree/bindings/iio/adc/ad7949.yaml   | 71 +++++++++++++++++++
- 2 files changed, 71 insertions(+), 16 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/adc/ad7949.txt
- create mode 100644 Documentation/devicetree/bindings/iio/adc/ad7949.yaml
-
-diff --git a/Documentation/devicetree/bindings/iio/adc/ad7949.txt b/Documentation/devicetree/bindings/iio/adc/ad7949.txt
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
 deleted file mode 100644
-index c7f5057356b1..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/ad7949.txt
+index 440e52555349..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
 +++ /dev/null
-@@ -1,16 +0,0 @@
--* Analog Devices AD7949/AD7682/AD7689
+@@ -1,48 +0,0 @@
+-* Analog Devices AD7170/AD7171/AD7780/AD7781
+-
+-Data sheets:
+-
+-- AD7170:
+-	* https://www.analog.com/media/en/technical-documentation/data-sheets/AD7170.pdf
+-- AD7171:
+-	* https://www.analog.com/media/en/technical-documentation/data-sheets/AD7171.pdf
+-- AD7780:
+-	* https://www.analog.com/media/en/technical-documentation/data-sheets/ad7780.pdf
+-- AD7781:
+-	* https://www.analog.com/media/en/technical-documentation/data-sheets/AD7781.pdf
 -
 -Required properties:
-- - compatible: Should be one of
--	* "adi,ad7949"
--	* "adi,ad7682"
--	* "adi,ad7689"
-- - reg: spi chip select number for the device
-- - vref-supply: The regulator supply for ADC reference voltage
+-
+-- compatible: should be one of
+-	* "adi,ad7170"
+-	* "adi,ad7171"
+-	* "adi,ad7780"
+-	* "adi,ad7781"
+-- reg: spi chip select number for the device
+-- vref-supply: the regulator supply for the ADC reference voltage
+-
+-Optional properties:
+-
+-- powerdown-gpios:  must be the device tree identifier of the PDRST pin. If
+-		    specified, it will be asserted during driver probe. As the
+-		    line is active high, it should be marked GPIO_ACTIVE_HIGH.
+-- adi,gain-gpios:   must be the device tree identifier of the GAIN pin. Only for
+-		    the ad778x chips. If specified, it will be asserted during
+-		    driver probe. As the line is active low, it should be marked
+-		    GPIO_ACTIVE_LOW.
+-- adi,filter-gpios: must be the device tree identifier of the FILTER pin. Only
+-		    for the ad778x chips. If specified, it will be asserted
+-		    during driver probe. As the line is active low, it should be
+-		    marked GPIO_ACTIVE_LOW.
 -
 -Example:
+-
 -adc@0 {
--	compatible = "adi,ad7949";
--	reg = <0>;
--	vref-supply = <&vdd_supply>;
+-	compatible =  "adi,ad7780";
+-	reg =	      <0>;
+-	vref-supply = <&vdd_supply>
+-
+-	powerdown-gpios  = <&gpio 12 GPIO_ACTIVE_HIGH>;
+-	adi,gain-gpios   = <&gpio  5 GPIO_ACTIVE_LOW>;
+-	adi,filter-gpios = <&gpio 15 GPIO_ACTIVE_LOW>;
 -};
-diff --git a/Documentation/devicetree/bindings/iio/adc/ad7949.yaml b/Documentation/devicetree/bindings/iio/adc/ad7949.yaml
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
 new file mode 100644
-index 000000000000..111c9e26f8e7
+index 000000000000..931bc4f8ec04
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ad7949.yaml
-@@ -0,0 +1,71 @@
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
+@@ -0,0 +1,85 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/adc/ad7949.yaml#
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7780.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+
-+title: Analog Devices AD7949/AD7682/AD7689
++title: Analog Devices AD7170/AD7171/AD7780/AD7781 analog to digital converters
 +
 +maintainers:
-+  - Charles-Antoine Couret <charles-antoine.couret@essensium.com>
-+  - João Victor Marques de Oliveira <joao.marques.oliveira@usp.br>
-+  - Thiago L. A. Miller <tmiller@mochsl.org.br>
-+  - Osvaldo M. Yasuda <omyasuda@yahoo.com.br>
++  - Michael Hennerich <michael.hennerich@analog.com>
++
++description: |
++  The ad7780 is a sigma-delta analog to digital converter. This driver provides
++  reading voltage values and status bits from both the ad778x and ad717x series.
++  Its interface also allows writing on the FILTER and GAIN GPIO pins on the
++  ad778x.
++
++  Specifications on the converters can be found at:
++    AD7170:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7170.pdf
++    AD7171:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7171.pdf
++    AD7780:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/ad7780.pdf
++    AD7781:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7781.pdf
 +
 +properties:
 +  compatible:
 +    enum:
-+      - adi,ad7949
-+      - adi,ad7682
-+      - adi,ad7689
++      - adi,ad7170
++      - adi,ad7171
++      - adi,ad7780
++      - adi,ad7781
 +
-+  reg:  
++  reg:
 +    description:
-+      spi chip select number for the device
++      Chip select number for the device
 +    maxItems: 1
 +
 +  vref-supply:
 +    description:
-+      The regulator supply for ADC reference voltage
++      The regulator supply for the ADC reference voltage
 +    maxItems: 1
 +
-+  adi,reference-select:
-+    enum: [0, 1, 2, 3, 6, 7]
++  powerdown-gpios:
 +    description:
-+        Select the reference voltage source to use when converting the input voltages.
-+            0 - Internal 2.5V reference; temperature sensor enabled
-+            1 - Internal 4.096V reference; temperature sensor enabled
-+            2 - External reference, temperature sensor enabled, no buffer
-+            3 - External reference, temperature sensor enabled, buffer enabled
-+            6 - External reference, temperature sensor disabled, no buffer
-+            7 - External reference, temperature sensor disabled, buffer enabled
++      Must be the device tree identifier of the PDRST pin. If
++      specified, it will be asserted during driver probe. As the
++      line is active high, it should be marked GPIO_ACTIVE_HIGH.
++    maxItems: 1
++
++  adi,gain-gpios:
++    description:
++      Must be the device tree identifier of the GAIN pin. Only for
++      the ad778x chips. If specified, it will be asserted during
++      driver probe. As the line is active low, it should be marked
++      GPIO_ACTIVE_LOW.
++    maxItems: 1
++
++  adi,filter-gpios:
++    description:
++      Must be the device tree identifier of the FILTER pin. Only
++      for the ad778x chips. If specified, it will be asserted
++      during driver probe. As the line is active low, it should be
++      marked GPIO_ACTIVE_LOW.
 +    maxItems: 1
 +
 +required:
-+  - compatible 
++  - compatible
 +  - reg
 +  - vref-supply
 +
 +examples:
 +  - |
-+    spi0 {
-+        #address-cells = <0x1>;
-+        #size-cells = <0x0>;
-+        adc@0 {
-+            compatible = "adi,ad7949";
-+            reg = <0>;
-+            adi,reference-select = <0>;
-+            vref-supply = <&vdd_supply>;
-+        };
-+    };
-+  - |
-+    spi0 {
-+        #address-cells = <0x1>;
-+        #size-cells = <0x0>;
-+        adc@0 {
-+            compatible = "adi,ad7949";
-+            reg = <0>;
-+            adi,reference-select = <0>;
-+        };
++    #include <dt-bindings/gpio/gpio.h>
++    adc@0 {
++      compatible =  "adi,ad7780";
++      reg = <0>;
++      vref-supply = <&vdd_supply>;
++
++      powerdown-gpios  = <&gpio0 12 GPIO_ACTIVE_HIGH>;
++      adi,gain-gpios   = <&gpio1  5 GPIO_ACTIVE_LOW>;
++      adi,filter-gpios = <&gpio2 15 GPIO_ACTIVE_LOW>;
 +    };
 -- 
 2.21.0

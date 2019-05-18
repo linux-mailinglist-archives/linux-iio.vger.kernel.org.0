@@ -2,96 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB66F224F9
-	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 23:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E37622502
+	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 23:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729541AbfERVBC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 May 2019 17:01:02 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:39026 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728387AbfERVBC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 17:01:02 -0400
-Received: by mail-qk1-f196.google.com with SMTP id z128so6601453qkb.6;
-        Sat, 18 May 2019 14:01:02 -0700 (PDT)
+        id S1727958AbfERVHG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 May 2019 17:07:06 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:34631 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726671AbfERVHG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 17:07:06 -0400
+Received: by mail-lf1-f68.google.com with SMTP id v18so7670302lfi.1;
+        Sat, 18 May 2019 14:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vsAT5qbsaotm0oBGUetquV7WtLzGgBbpbWMnm1fUtaw=;
-        b=FNpAL29qZqJo1UbDaDy/m2Lx+72Jdb/OcpovJocPvNdp8WBksBQuzTgTykux8OFEry
-         u7I0119akjhgDUCZaMemtZzzAY+Nce0SIu4gcu8otcvtmQP5OUc3K9AJzRIRCCQ/5QT2
-         Usk+/Q1Y3Jqf8QpXqcMawAnSv3sFqsaFNepu7mzfwoqWmbkfFerAsRz67rnleRgN68pP
-         /OMaOgbmt4Un+ZoapzcSr1CxD9vQqKdgiMG3mcXs0svJKhG+AqIhtnQsSfhWmQOMg9rd
-         vFBaje0SFFonG9/h748wKquhNT6wFCc/Z9B8BGZtvU0LDKTCubGCI/mQ3kjvtwOtLkwS
-         uL1w==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3p6wWF59ZsveqGprf3DgYpOGTHja2l9mhpdTwfZFFaM=;
+        b=vQzpQaMlTVSiJnQgQXste8BGixnjGcLOfLI6iXbMIb2UdKRjYsteD0wWdmmu/zPmKB
+         d9f+UFNq01IfLvcSuXtLrrMTHAOHs7HTav2sqi7K0WkgcjtiIcLSWNbvxrVbZOgXRtzM
+         imIHlZ0G3Rsskswi+aXhMCycKU+DGvJLDnlDYnQzg93uvN+jSqotXNwbwjzETP8pzNLY
+         8BjAQsjD+xkDh5oqKNGLUN4hOANLNWNKicyVS7Szs4CQ0qzNxKl9456FcRnaPH5PdQB1
+         b2R81EMUeVvWrSRQTL9yQ4ZNtIV2Dmg/gSzOD1PkiHpp9mbSEeA3Z27WR2aToLEJt2Vr
+         2wIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vsAT5qbsaotm0oBGUetquV7WtLzGgBbpbWMnm1fUtaw=;
-        b=HHyK1Bgxfplge6t7PwZfx87cyUcoKY5lMABCc8YyxarwLwoLV+FKFTpdE1d0OUfulT
-         UEUREUBQ8SHxn1nuwrlY8ls7kkea1/YoS/uWSw3eZ8eapaKBZgwx3nY4JmyV17m8YCGh
-         o99asHA96zw8nfEmrunYFjqao1AXxyvF5U6bpLs+DoLSRlgcKn6plZRyzfrebejakyn8
-         Ga1vr0VhKaGmHXXwcTHwVpzf+KKo22zyy/xH+ibm2V/oA1HMgnrJVTXEJY3A6k7bndlX
-         CsnC1AOxZlwIDkYUwTJVjzpCut5AoLWmoU86Kyvmu2Hl/1JCSFVt5i/LK76ZJgWN4sjL
-         dWLg==
-X-Gm-Message-State: APjAAAWFLGhuh3osCnvJC8VviqFjhhnma4CctjefBxopb8rLJtCMmkrv
-        +lLUA1BHrtYnjTZJ10HSisA=
-X-Google-Smtp-Source: APXvYqzxWN1QgdaQ3liwyrherSRNq5sJ61pYI5Zg395d80UXIdRoppdxLpHirXw2L9D4LwA2p75eRA==
-X-Received: by 2002:a37:6043:: with SMTP id u64mr39779236qkb.9.1558213261871;
-        Sat, 18 May 2019 14:01:01 -0700 (PDT)
-Received: from wall-e.ime.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id q5sm7730906qtj.3.2019.05.18.14.00.58
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 18 May 2019 14:01:01 -0700 (PDT)
-From:   Lucas Oshiro <lucasseikioshiro@gmail.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3p6wWF59ZsveqGprf3DgYpOGTHja2l9mhpdTwfZFFaM=;
+        b=h4dg+BtoB9kRZdSlSecu2Z5zawbJ5vLQvkO/UsfrecuXbO+jiUEc6WgFxhTQQcrX6h
+         xn05XZLL6gQQVq7Y+9avXAaiKw0Mgd+xnHMo11JTCjin9rkrxRN6tHmJdO7gaLCc7Sas
+         Ox+kTZyobfH7yZxJJYUJ3M3EJTvmRMRLJbgg4/MtW8NAEFXju0JQ/yRfINsMykG3xtDt
+         KKGAQ9H+UixrrBzixpuTSbxv3bEFmeEbxtttVq/tyntSHiAna0XcFyke1olli5E7zjUJ
+         sVYtSQj5AbzLAarbRXsXiN7qr+v6/NoQ26maWqCsc/StH7xKU4tOMWMVXLGkfgUIMb+S
+         2UjA==
+X-Gm-Message-State: APjAAAVogxOepgubLeaOMVDsIft1hv/q5jKfBwYlnuEiAdHLn3dLI+nk
+        Cwo+pOZVxCbvs7YfxgFTm2gKF21rel58PYeNtFo=
+X-Google-Smtp-Source: APXvYqxurWCLzYbRooydRmlbrAzU6r5dSq9ppZ/jOuDyH4jRwxWgFDP9fyydWEXyJP+merckg0S9bPx351c1hQ5XrqE=
+X-Received: by 2002:a19:5045:: with SMTP id z5mr32798202lfj.108.1558213624358;
+ Sat, 18 May 2019 14:07:04 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190518210008.20147-1-lucasseikioshiro@gmail.com>
+In-Reply-To: <20190518210008.20147-1-lucasseikioshiro@gmail.com>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Sat, 18 May 2019 18:06:55 -0300
+Message-ID: <CAOMZO5DvKGu61Q1o0f8PvcHGMjgHBKY-fsawzUY0UVX-sHGJSw@mail.gmail.com>
+Subject: Re: [PATCH] staging: iio: adis16240: add device to module device table
+To:     Lucas Oshiro <lucasseikioshiro@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Stefan Popa <stefan.popa@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, kernel-usp@googlegroups.com,
-        Rodrigo Ribeiro <rodrigorsdc@gmail.com>
-Subject: [PATCH] staging: iio: adis16240: add device to module device table
-Date:   Sat, 18 May 2019 18:00:08 -0300
-Message-Id: <20190518210008.20147-1-lucasseikioshiro@gmail.com>
-X-Mailer: git-send-email 2.21.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Rodrigo Ribeiro <rodrigorsdc@gmail.com>,
+        kernel-usp@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a of_device_id struct and MODULE_DEVICE_TABLE call.
+Hi Lucas,
 
-Signed-off-by: Lucas Oshiro <lucasseikioshiro@gmail.com>
-Signed-off-by: Rodrigo Ribeiro <rodrigorsdc@gmail.com>
-Co-developed-by: Rodrigo Ribeiro <rodrigorsdc@gmail.com>
----
- drivers/staging/iio/accel/adis16240.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+On Sat, May 18, 2019 at 6:01 PM Lucas Oshiro <lucasseikioshiro@gmail.com> wrote:
+>
+> Add a of_device_id struct and MODULE_DEVICE_TABLE call.
 
-diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/accel/adis16240.c
-index b80e0d248b0f..8c6d23604eca 100644
---- a/drivers/staging/iio/accel/adis16240.c
-+++ b/drivers/staging/iio/accel/adis16240.c
-@@ -435,6 +435,12 @@ static int adis16240_remove(struct spi_device *spi)
- 	return 0;
- }
- 
-+static const struct of_device_id adis16240_of_match[] = {
-+	{ .compatible = "adi,adis16240" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, adis16240_of_match);
-+
- static struct spi_driver adis16240_driver = {
- 	.driver = {
- 		.name = "adis16240",
--- 
-2.21.0
+Please provide an explanation as to why you are doing this.
 
+Thanks

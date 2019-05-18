@@ -2,62 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1E6C22548
-	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 23:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17FB72254F
+	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 23:55:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727600AbfERVoo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 May 2019 17:44:44 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:33437 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726671AbfERVoo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 17:44:44 -0400
-Received: by mail-qt1-f195.google.com with SMTP id m32so12156438qtf.0;
-        Sat, 18 May 2019 14:44:44 -0700 (PDT)
+        id S1728435AbfERVzy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 May 2019 17:55:54 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:39053 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727958AbfERVzy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 17:55:54 -0400
+Received: by mail-qt1-f194.google.com with SMTP id y42so12121111qtk.6;
+        Sat, 18 May 2019 14:55:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=jJ5BRXNmtBYhU5KLCuS1xg2MlRH8bwhzIAasFCh/DOo=;
-        b=maN8W3t5H1DNQIgzJCDprNKkVjep+KwFN0fMsVa9RUsrMSqp6yaLfSW9nrfmkhvfyo
-         yTGr8uuUNZEUG2NvDyFbtVF+3sVlO4DQz2nu0BXUdQJ/x/wcwRAYFtucN2z12F08KIww
-         encs/kF/M8cdOXgCm5yfxIeFYR4NSizg7EIno8WPXs/oE9J9/mvv/vMBQdSasqAZPwm7
-         RNF1MLVv8Wb4Nis6vXPKQadOIhZvu907703LSWYOfkY4/WBVYoLzo3DFkD0AmDkcTtqN
-         5eIij1WP2+/uwpckPTU1wUdR7TCobUyu9UgIs/YzADyUiaccn3Oek6Mlx0K+urXGJW2a
-         TXkg==
+        bh=F7kGZLgsWFNccN5jm5MJgbPyqpoPp4bIUgv86OI6qys=;
+        b=oMMpz9hUX7vJmNX9AE2o21KSXo7niJiVpqmbhL9LG4Mb5BeaP063SbLMRT3gqm2kB7
+         vnLdx8kymi9/1KuZxsnObcusD+lDqYXxFRvdW/AFELqa7Mvcx9CMsPzHOZT+0sgEPuHy
+         PI4a4pVE+o+WZ8VqTHktsq9lfrb3LBGEklBkA/h+I+Z7WkoCP/whENTGO53FIiKAYiYn
+         EoPf4k1ZcVEzGrQX6ohldCkTBpMpnij84eqNNPipken+aZN49pyD08igbt/zPbkSoa/L
+         1e8ykPmeca0cq6M3IdZQZCJ2yrDgRL82506jB/us59kiQdaDuLi8fQH8Lz9TMVNE6Nmx
+         hH6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=jJ5BRXNmtBYhU5KLCuS1xg2MlRH8bwhzIAasFCh/DOo=;
-        b=por1BR5ZC2PjaFEPAiHb2jI6IotFXn5h9JrUJywNBa7uaWDCYqDnX5Kye7bez+BR7u
-         B/b2NxBIRkuglojzZYbhiN53BL9MDwAi99M8ODOok3kXiu74MhzYwl6HxUwXuQVUmKdO
-         NV+Phhr0i87xhD6OEJToQMfXhnXI5697zfulEgv4ycVF8rK4i3ES+r5F+S3kWuAPHaKy
-         fPGMmH1P+wyN4dDj00btUpcIm+T8KbzR9KVIREwuOU29oLpsxDrKGvJ6MdSHVQO6Xe1D
-         gYWndsyTU7Wq1J9ZCG7Xexv+YEEV69Gz316k1fHL0TT7iJksyXuWX9QFy5NMS/KrNjlB
-         k/xQ==
-X-Gm-Message-State: APjAAAUq6ywzX2mBC+tBmoXMMULlzrQZPqJEnB1c+MbgBDC73CEHJ23b
-        zXBLfCHqMIk5ygtJkSkkATg=
-X-Google-Smtp-Source: APXvYqyFsB4cbFR6WK/GdTpC/L6EjHHB/VoLoxxr++FzPhf3RZRMVm1V2r8hdHE6BufpS47pq1fgmg==
-X-Received: by 2002:ac8:2e84:: with SMTP id h4mr7898725qta.267.1558215883813;
-        Sat, 18 May 2019 14:44:43 -0700 (PDT)
+        bh=F7kGZLgsWFNccN5jm5MJgbPyqpoPp4bIUgv86OI6qys=;
+        b=IcVVCmPnECyTfMXvltYVkzXfS6TO1kjIyJf5PR5KBO0wNYugc+6OmDcIdqEcccg3/4
+         NpxZauZaA3d2eBvYric2krq2GM0gV1Rzx278YMwIw5N0pZ/6+wZQAq050YUWu343iB/F
+         PHetzjJvWQKwpgPlQjnVvp0FXhmdJIJM0B1XQUBsW/HBlVO2lpomX581Z61ESPJ3DqfA
+         I3o5+fPxE6A+S6Y1bYhRtFXE6lrsqRJZMXkTNm5FZTc3zrYzy85841TbIoa4SaJvXAer
+         6Zud5OiyHqrXoR7ZS8Lagz5zdF2iVadphE1XhKq9lq1ttLea1VTKrdItFVe2/M4ihFEv
+         IGMA==
+X-Gm-Message-State: APjAAAXSa0Jr38xi0dxzYJBypqA0Q5KSLmXcp3QRBUausUbRC+hIO6aD
+        qILe5bT7to5iGkzRRZktna0oQF5ncqc=
+X-Google-Smtp-Source: APXvYqw3IA1BdawiLxSPcOk5SXMAHPsatl/On2nn+iBayvDG3T48bV+8tmD1hCNUNfiYytYnermx5A==
+X-Received: by 2002:ac8:2da8:: with SMTP id p37mr56526209qta.180.1558216553105;
+        Sat, 18 May 2019 14:55:53 -0700 (PDT)
 Received: from wall-e.ime.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id b22sm7313294qtc.37.2019.05.18.14.44.39
+        by smtp.gmail.com with ESMTPSA id i7sm6239964qkk.35.2019.05.18.14.55.49
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 18 May 2019 14:44:43 -0700 (PDT)
+        Sat, 18 May 2019 14:55:52 -0700 (PDT)
 From:   Lucas Oshiro <lucasseikioshiro@gmail.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Stefan Popa <stefan.popa@analog.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-usp@googlegroups.com,
         Rodrigo Ribeiro <rodrigorsdc@gmail.com>
-Subject: [PATCH v2] staging: iio: adis16240: add device to module device table
-Date:   Sat, 18 May 2019 18:44:34 -0300
-Message-Id: <20190518214434.23660-1-lucasseikioshiro@gmail.com>
+Subject: [PATCH] dt-bindings: iio: accel: adxl372: switch to YAML bindings
+Date:   Sat, 18 May 2019 18:55:42 -0300
+Message-Id: <20190518215542.25140-1-lucasseikioshiro@gmail.com>
 X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -66,33 +66,134 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a of_device_id struct and MODULE_DEVICE_TABLE call, in order to add
-device-tree support for this driver.
+Convert the old device tree documentation to yaml format.
 
 Signed-off-by: Lucas Oshiro <lucasseikioshiro@gmail.com>
 Signed-off-by: Rodrigo Ribeiro <rodrigorsdc@gmail.com>
 Co-developed-by: Rodrigo Ribeiro <rodrigorsdc@gmail.com>
 ---
- drivers/staging/iio/accel/adis16240.c | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/accel/adis16240.c
-index b80e0d248b0f..8c6d23604eca 100644
---- a/drivers/staging/iio/accel/adis16240.c
-+++ b/drivers/staging/iio/accel/adis16240.c
-@@ -435,6 +435,12 @@ static int adis16240_remove(struct spi_device *spi)
- 	return 0;
- }
- 
-+static const struct of_device_id adis16240_of_match[] = {
-+	{ .compatible = "adi,adis16240" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, adis16240_of_match);
+Hello,
+We've added Stefan Popa as maintainer of the yaml documentation of this driver
+because we found through git that he was the author of the older documentation.
+
+ .../bindings/iio/accel/adi,adxl372.yaml       | 66 +++++++++++++++++++
+ .../devicetree/bindings/iio/accel/adxl372.txt | 33 ----------
+ 2 files changed, 66 insertions(+), 33 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/accel/adxl372.txt
+
+diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
+new file mode 100644
+index 000000000000..a6e2893d2ab1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
+@@ -0,0 +1,66 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/accelerometers/adi,adxl372.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- static struct spi_driver adis16240_driver = {
- 	.driver = {
- 		.name = "adis16240",
++title: Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer
++
++maintainers:
++  - Stefan Popa <stefan.popa@analog.com>
++
++description: |
++  Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer that supports
++  both I2C & SPI interfaces
++    https://www.analog.com/en/products/adxl372.html
++
++properties:
++  compatible:
++    enum:
++      - adi,adxl372
++
++  reg:
++    description: the I2C address or SPI chip select number for the device
++    maxItems: 1
++
++  interrupts:
++    description:
++      interrupt mapping for IRQ as documented in
++      Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++examples:
++  - |
++        #include <dt-bindings/gpio/gpio.h>
++        #include <dt-bindings/interrupt-controller/irq.h>
++        i2c0 {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                /* Example for a I2C device node */
++                accelerometer@53 {
++                        compatible = "adi,adxl372";
++                        reg = <0x53>;
++                        interrupt-parent = <&gpio>;
++                        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
++                };
++        };
++  - |
++        #include <dt-bindings/gpio/gpio.h>
++        #include <dt-bindings/interrupt-controller/irq.h>
++        spi0 {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                accelerometer@0 {
++                        compatible = "adi,adxl372";
++                        reg = <0>;
++                        spi-max-frequency = <1000000>;
++                        interrupt-parent = <&gpio>;
++                        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
++                };
++        };
+diff --git a/Documentation/devicetree/bindings/iio/accel/adxl372.txt b/Documentation/devicetree/bindings/iio/accel/adxl372.txt
+deleted file mode 100644
+index a289964756a7..000000000000
+--- a/Documentation/devicetree/bindings/iio/accel/adxl372.txt
++++ /dev/null
+@@ -1,33 +0,0 @@
+-Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer
+-
+-http://www.analog.com/media/en/technical-documentation/data-sheets/adxl372.pdf
+-
+-Required properties:
+- - compatible : should be "adi,adxl372"
+- - reg: the I2C address or SPI chip select number for the device
+-
+-Required properties for SPI bus usage:
+- - spi-max-frequency: Max SPI frequency to use
+-
+-Optional properties:
+- - interrupts: interrupt mapping for IRQ as documented in
+-   Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
+-
+-Example for a I2C device node:
+-
+-	accelerometer@53 {
+-		compatible = "adi,adxl372";
+-		reg = <0x53>;
+-		interrupt-parent = <&gpio>;
+-		interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+-	};
+-
+-Example for a SPI device node:
+-
+-	accelerometer@0 {
+-		compatible = "adi,adxl372";
+-		reg = <0>;
+-		spi-max-frequency = <1000000>;
+-		interrupt-parent = <&gpio>;
+-		interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+-	};
 -- 
 2.21.0
 

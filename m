@@ -2,49 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1ACA22557
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 00:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 042742255F
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 00:27:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726407AbfERWPz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 May 2019 18:15:55 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:42814 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725783AbfERWPz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 18:15:55 -0400
-Received: by mail-qt1-f193.google.com with SMTP id j53so12118990qta.9
-        for <linux-iio@vger.kernel.org>; Sat, 18 May 2019 15:15:55 -0700 (PDT)
+        id S1727121AbfERW1o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 May 2019 18:27:44 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:46271 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727042AbfERW1n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 18:27:43 -0400
+Received: by mail-qk1-f195.google.com with SMTP id a132so6603077qkb.13;
+        Sat, 18 May 2019 15:27:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=y87QQQeaLiI1oNeEvmjlObGb959ta9/nwNHRHt6yTIY=;
-        b=i7EWYzfUI7wZ55lYvmgrWJibFvXkvP5ATGyedFaUpxf2Id68eWrJgZFQPE8bwx3s9g
-         SFuKshGbYvq6oKTjm/JUp1AN6XhIAgNjhZb9QbD+cCEeaf3eS3LVUuTVC1e2DSYst9Vu
-         Tu8E8xjmY1j30fA/tQSj4Jnmvm21rPpI1NpWRY8F6s91eceoEMZBXJ4RVkXUBKskpYo8
-         0wpDfL0JnajFkvF3i7s8ZdivBubFt7t+AsgSnv+/TeElhkhq4pDaaPSuGoRlViNtz7aG
-         X1PvJ2B/5flcObh5uGyUdtZ8k8dFyMynjhbBSvoCAbhIrK3LY3TlVUGL/P98JOvBtCDS
-         p2FA==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :content-transfer-encoding:user-agent;
+        bh=hy5p245u/hqfnBo05YVJIyRfP8Rg4GNqhBJE2ChmnFU=;
+        b=S8YmYgYEIqWloUrBR/fwQpYB01cQKqEWJ52gGf0snm/GKFZGEet2pUE6m6NVS6vTl+
+         iJcby4aq70fMsKx/JUjQvZPz6beLW92ERuI90JAtMKFzONo5Hrl88oXLkySDxgS43QqE
+         i6MvqcU6eJnhb3WQi2cgqha03yfeFRqqcc8NYax4E3Q876WDD9HIv9KOuCHLVfPdA5Dg
+         vRdAMcRhptxZJkP92pRjNQWJJhLbhmQ0Qa1TsLjueSAjCag7KVf6y52nZ4qcrPUatFXU
+         M8LCidr1j3mtksIS66hvDdgpQkgqqWWxMuqnJ5Mf1AD1dCN3FhJ06xG4wfkf6P9opDGh
+         mH6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=y87QQQeaLiI1oNeEvmjlObGb959ta9/nwNHRHt6yTIY=;
-        b=D5M5N139zy69X7zpPrw5fafS4TSagsQ/NF8WZBCV/Rr/R6o7CT2E28JTAl6eELcHAM
-         VnzH+d+wNOaI0cJgL/XoiwSgaD+nURzUk5zJbHvhnLbqCIbVoFW+MhtWsPXczRUTZ+td
-         F+IQGkLTRn1z6cHwM1sEAw4rFRKM2Clq3UpbVyCktsykHJ6Beq7ACeEjGIWAp/14eWfB
-         86uLFCDLkT04Qnq36KD77EMXB4K/qheiCVbLvqORLfUI5+byzTa6Pj5F8+OZ/PdaIJj7
-         uUUMs7LRA53x752UJo7HpUcwVlHSMERAJVAF7+Nryu7jgZMkI/fdmrQUQq7MJCL5N2ny
-         qlYQ==
-X-Gm-Message-State: APjAAAVLuwP+9dvDK2qkLlhpVxfnnBfOQAucYGD0Z3BjI33ax/OKUhCP
-        LZ2ajXXkuhrCq1K2auxPUhk=
-X-Google-Smtp-Source: APXvYqwg0K0VCuYjngl+wFVaIlBXJoCL0u/uoZfGo/MXwGzsNURXWzE9n9+Gn4qk06cQ2zrYdtInkg==
-X-Received: by 2002:aed:2307:: with SMTP id h7mr54881137qtc.87.1558217754601;
-        Sat, 18 May 2019 15:15:54 -0700 (PDT)
-Received: from tallys-pc.ime.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id s17sm7702970qke.60.2019.05.18.15.15.49
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 18 May 2019 15:15:54 -0700 (PDT)
-From:   Tallys Martins <tallysmartins@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:content-transfer-encoding:user-agent;
+        bh=hy5p245u/hqfnBo05YVJIyRfP8Rg4GNqhBJE2ChmnFU=;
+        b=VRFOjX0YNJVACOjCmD/9WuEY1MVuQfsm6fZaJQ5ZTjPCfevNTM1GnFRolmRhNtiL01
+         AVx/iK1nCpQ7hSmdwOeWveSNQ4lte9rm5UUpoV870Sg02tOqiR7xEVi1cYwmkfv8HG+H
+         L7YWSVjcT5beL7fqVIx/o+wTcv/t95dPWwpPslLGcC8LUrtlfP8PL1i4hETAOvPRyYyC
+         qmh8+jTN5DbSC7qrEq08PG4RX+Ag+Z/yOnponqhKL9050tDUhOCJ0rvEt+7rkfPe38hu
+         0pUFNKgboAvEze292mfWpU5plc7vumFR50PBqrARs6TGY6gFZ05H1PgJUKJ1q8opIisQ
+         E97A==
+X-Gm-Message-State: APjAAAWXFr3OZ/gYo5Z97q94POGl7EM0Db5WsPkjenpHXMpsKILEQQzr
+        /z684opamFCxCo8JXyS1tnw=
+X-Google-Smtp-Source: APXvYqwbh0b5G7fQ/Je9ThH/GFzks8ivtZyyrVjHAZyJWdBrSA2GNyTILBkZKch71UD4lhHvnemmWQ==
+X-Received: by 2002:ae9:ed45:: with SMTP id c66mr49545224qkg.86.1558218462666;
+        Sat, 18 May 2019 15:27:42 -0700 (PDT)
+Received: from smtp.gmail.com ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id x3sm7201145qtk.75.2019.05.18.15.27.39
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 18 May 2019 15:27:42 -0700 (PDT)
+Date:   Sat, 18 May 2019 19:27:33 -0300
+From:   =?utf-8?B?Sm/Do28=?= Seckler <joaoseckler@gmail.com>
 To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Stefan Popa <stefan.popa@analog.com>,
@@ -53,81 +54,53 @@ To:     Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.or, kernel-usp@googlegroups.com,
-        Tallys Martins <tallysmartins@gmail.com>,
-        Souza Guilherme <gdsdsilva@inf.ufpel.edu.br>
-Subject: [PATCH 2/2] staging: iio: ad2s1210: Add devicetree yaml doc
-Date:   Sat, 18 May 2019 19:15:58 -0300
-Message-Id: <20190518221558.21799-2-tallysmartins@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190518221558.21799-1-tallysmartins@gmail.com>
-References: <20190518221558.21799-1-tallysmartins@gmail.com>
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: iio: ad7746: add device tree support
+Message-ID: <20190518222733.2ttcgvy7fct4awra@smtp.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The driver currently has no devicetree documentation. This commit adds a
-devicetree folder and documentation for it. Documentation must be moved
-as well when the driver gets out of staging.
+Add a of_device_id struct variable and subsequent call to
+MODULE_DEVICE_TABLE macro to support device tree.
 
-Signed-off-by: Tallys Martins <tallysmartins@gmail.com>
-Signed-off-by: Souza Guilherme <gdsdsilva@inf.ufpel.edu.br>
-Co-developed-by: Souza Guilherme <gdsdsilva@inf.ufpel.edu.br>
+Signed-off-by: João Seckler <joaoseckler@gmail.com>
+Signed-off-by: Lucas Oshiro <lucasseikioshiro@gmail.com>
+Co-developed-by: Lucas Oshiro <lucasseikioshiro@gmail.com>
 ---
- .../Documentation/devicetree/ad2s1210.yaml    | 41 +++++++++++++++++++
- 1 file changed, 41 insertions(+)
- create mode 100644 drivers/staging/iio/Documentation/devicetree/ad2s1210.yaml
+ drivers/staging/iio/cdc/ad7746.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/staging/iio/Documentation/devicetree/ad2s1210.yaml b/drivers/staging/iio/Documentation/devicetree/ad2s1210.yaml
-new file mode 100644
-index 000000000000..733aa07b4626
---- /dev/null
-+++ b/drivers/staging/iio/Documentation/devicetree/ad2s1210.yaml
-@@ -0,0 +1,41 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/iio/ad2s1210.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
+index 47610d863908..21527d84f940 100644
+--- a/drivers/staging/iio/cdc/ad7746.c
++++ b/drivers/staging/iio/cdc/ad7746.c
+@@ -748,9 +748,19 @@ static const struct i2c_device_id ad7746_id[] = {
+ 
+ MODULE_DEVICE_TABLE(i2c, ad7746_id);
+ 
++static const struct of_device_id ad7746_of_match[] = {
++	{ .compatible = "adi,ad7745" },
++	{ .compatible = "adi,ad7746" },
++	{ .compatible = "adi,ad7747" },
++	{ },
++};
 +
-+title: |
-+  Analog Devices Inc. AD2S1210 10-Bit to 16-Bit R/D Converters
++MODULE_DEVICE_TABLE(of, ad7746_of_match);
 +
-+maintainers:
-+  - Graff Yang <graff.yang@gmail.com>
-+
-+description: |
-+  Analog Devices AD2S1210 Resolver to Digital SPI driver
-+
-+  https://www.analog.com/en/products/ad2s1210.html
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad2s1210
-+
-+  reg:
-+    maxItems: 1
-+
-+  clock-frequency:
-+    minimum: 2000
-+    maximum: 20000
-+    default: 8192
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+  resolver@0 {
-+    compatible = "adi,ad2s1210";
-+    reg = <0>;
-+  };
-+...
+ static struct i2c_driver ad7746_driver = {
+ 	.driver = {
+ 		.name = KBUILD_MODNAME,
++		.of_match_table = ad7746_of_match,
+ 	},
+ 	.probe = ad7746_probe,
+ 	.id_table = ad7746_id,
 -- 
-2.21.0
+2.11.0
 

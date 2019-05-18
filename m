@@ -2,76 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E37622502
-	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 23:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 365CC2253E
+	for <lists+linux-iio@lfdr.de>; Sat, 18 May 2019 23:35:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727958AbfERVHG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 May 2019 17:07:06 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:34631 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726671AbfERVHG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 17:07:06 -0400
-Received: by mail-lf1-f68.google.com with SMTP id v18so7670302lfi.1;
-        Sat, 18 May 2019 14:07:05 -0700 (PDT)
+        id S1728435AbfERVfT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 May 2019 17:35:19 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:46811 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726671AbfERVfS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 17:35:18 -0400
+Received: by mail-qk1-f196.google.com with SMTP id a132so6567450qkb.13
+        for <linux-iio@vger.kernel.org>; Sat, 18 May 2019 14:35:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3p6wWF59ZsveqGprf3DgYpOGTHja2l9mhpdTwfZFFaM=;
-        b=vQzpQaMlTVSiJnQgQXste8BGixnjGcLOfLI6iXbMIb2UdKRjYsteD0wWdmmu/zPmKB
-         d9f+UFNq01IfLvcSuXtLrrMTHAOHs7HTav2sqi7K0WkgcjtiIcLSWNbvxrVbZOgXRtzM
-         imIHlZ0G3Rsskswi+aXhMCycKU+DGvJLDnlDYnQzg93uvN+jSqotXNwbwjzETP8pzNLY
-         8BjAQsjD+xkDh5oqKNGLUN4hOANLNWNKicyVS7Szs4CQ0qzNxKl9456FcRnaPH5PdQB1
-         b2R81EMUeVvWrSRQTL9yQ4ZNtIV2Dmg/gSzOD1PkiHpp9mbSEeA3Z27WR2aToLEJt2Vr
-         2wIg==
+        d=usp-br.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YfANJ0NjSuT03hGxYrrybmRloobQ2aNV6k4ZVS8sjkk=;
+        b=afVQrH7Xz2a3XaYRj2EcNEOI1KliTo4373wrA8RqskUkwhpp/S/zaAhEugOgFiu4eh
+         MY0oAASE4aq5CXpHsoJeyhFiXxPl+eFazwLQU5XZ7j2s4gzqI4Io/KDeJU3WVElPvENG
+         zw4dQL0mcl3IgQvxKAMj7IUcK3ssvmH+JlQUWcAEUq187N2OpSgGyzOelTTlzRC7ap1b
+         5UuAwviYFGG5hh2pACCIWF8bIkJdt4XQnpceFnHChu7Ng9kXy2X20VHpKdj6afAW0kT3
+         HkaFnpdxgXY3GZjSfNQD8tlTk6Ui0oqS50QVmU2v2pnHJAfRdvXmQhqFlDyCuO8i2wBb
+         JhyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3p6wWF59ZsveqGprf3DgYpOGTHja2l9mhpdTwfZFFaM=;
-        b=h4dg+BtoB9kRZdSlSecu2Z5zawbJ5vLQvkO/UsfrecuXbO+jiUEc6WgFxhTQQcrX6h
-         xn05XZLL6gQQVq7Y+9avXAaiKw0Mgd+xnHMo11JTCjin9rkrxRN6tHmJdO7gaLCc7Sas
-         Ox+kTZyobfH7yZxJJYUJ3M3EJTvmRMRLJbgg4/MtW8NAEFXju0JQ/yRfINsMykG3xtDt
-         KKGAQ9H+UixrrBzixpuTSbxv3bEFmeEbxtttVq/tyntSHiAna0XcFyke1olli5E7zjUJ
-         sVYtSQj5AbzLAarbRXsXiN7qr+v6/NoQ26maWqCsc/StH7xKU4tOMWMVXLGkfgUIMb+S
-         2UjA==
-X-Gm-Message-State: APjAAAVogxOepgubLeaOMVDsIft1hv/q5jKfBwYlnuEiAdHLn3dLI+nk
-        Cwo+pOZVxCbvs7YfxgFTm2gKF21rel58PYeNtFo=
-X-Google-Smtp-Source: APXvYqxurWCLzYbRooydRmlbrAzU6r5dSq9ppZ/jOuDyH4jRwxWgFDP9fyydWEXyJP+merckg0S9bPx351c1hQ5XrqE=
-X-Received: by 2002:a19:5045:: with SMTP id z5mr32798202lfj.108.1558213624358;
- Sat, 18 May 2019 14:07:04 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YfANJ0NjSuT03hGxYrrybmRloobQ2aNV6k4ZVS8sjkk=;
+        b=d7ba7Yguk+eUnTPs/GV+PqZQt598Q58D7lYvN/st5pMli4sXQkL2RvWbB+R9fZeT19
+         pEvxUD36Gs8vYxh4B6joOi8ica8fQB2na6hzX9rqtEiY6OSSW4b8bFPvzw5BSOWrCoBP
+         jFdOMoIGb88X+vJJ8G8F52pnX4RvaD4BKBDWjNxIIJ+W4rWxaK0sJUSrIebwnnAmrCnF
+         3iMDcAlifE/DxJvAoGnjA9s3PXQdPW4Ob5DaVyVHzuJU5hl94+tz70qnaHKUtSHxkpJZ
+         8WdOSbcAiT12Q8uuMHP6QR7DcDwlpQtlV6YKhM8PoSlG4bR26gYYGTlJLmjHSgPulIZ1
+         LdTA==
+X-Gm-Message-State: APjAAAXjKYBQLqqLOS7GvBzcpNLfo9S0X9jqiLHlXlzbf3ewAjKjllEB
+        jJcFPy9LPRbCCOn5p/2vod/PdPa+Npw=
+X-Google-Smtp-Source: APXvYqzlZ5E6k8ZLklMdQh8QfvWFADE6l2VeHowYvETh4p2a8kg0xNj0DtXAFAu5j2pPM2f3rhAXqQ==
+X-Received: by 2002:a05:620a:131b:: with SMTP id o27mr23774271qkj.115.1558215317642;
+        Sat, 18 May 2019 14:35:17 -0700 (PDT)
+Received: from greta.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id e133sm3168333qkb.76.2019.05.18.14.35.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 18 May 2019 14:35:16 -0700 (PDT)
+From:   =?UTF-8?q?B=C3=A1rbara=20Fernandes?= <barbara.fernandes@usp.br>
+To:     linux-iio@vger.kernel.org
+Cc:     =?UTF-8?q?B=C3=A1rbara=20Fernandes?= <barbara.fernandes@usp.br>
+Subject: [PATCH 0/2] Enhance dt support and channel creation
+Date:   Sat, 18 May 2019 18:35:09 -0300
+Message-Id: <20190518213511.23253-1-barbara.fernandes@usp.br>
+X-Mailer: git-send-email 2.22.0.rc0.1.g337bb99195.dirty
 MIME-Version: 1.0
-References: <20190518210008.20147-1-lucasseikioshiro@gmail.com>
-In-Reply-To: <20190518210008.20147-1-lucasseikioshiro@gmail.com>
-From:   Fabio Estevam <festevam@gmail.com>
-Date:   Sat, 18 May 2019 18:06:55 -0300
-Message-ID: <CAOMZO5DvKGu61Q1o0f8PvcHGMjgHBKY-fsawzUY0UVX-sHGJSw@mail.gmail.com>
-Subject: Re: [PATCH] staging: iio: adis16240: add device to module device table
-To:     Lucas Oshiro <lucasseikioshiro@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org,
-        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Rodrigo Ribeiro <rodrigorsdc@gmail.com>,
-        kernel-usp@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lucas,
+This series of patches set a struct of_device_id with all the devices this
+driver is able to manage and also add a macro to facilitate channel creation for
+its two capacitance channels.
 
-On Sat, May 18, 2019 at 6:01 PM Lucas Oshiro <lucasseikioshiro@gmail.com> wrote:
->
-> Add a of_device_id struct and MODULE_DEVICE_TABLE call.
+Bárbara Fernandes (2):
+  staging: iio: cdc: ad7150: create of_device_id array
+  staging: iio: cdc: ad7150: create macro for capacitance channels
 
-Please provide an explanation as to why you are doing this.
+ drivers/staging/iio/cdc/ad7150.c | 39 ++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
 
-Thanks
+-- 
+2.22.0.rc0.1.g337bb99195.dirty
+

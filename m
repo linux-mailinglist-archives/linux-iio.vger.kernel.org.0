@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FC662256D
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 00:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64F272256F
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 00:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729687AbfERWlx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 May 2019 18:41:53 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:39222 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728395AbfERWlx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 18:41:53 -0400
-Received: by mail-qk1-f193.google.com with SMTP id z128so6673831qkb.6
-        for <linux-iio@vger.kernel.org>; Sat, 18 May 2019 15:41:52 -0700 (PDT)
+        id S1729725AbfERWl7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 May 2019 18:41:59 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:37813 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729682AbfERWl6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 May 2019 18:41:58 -0400
+Received: by mail-qt1-f195.google.com with SMTP id o7so12198955qtp.4
+        for <linux-iio@vger.kernel.org>; Sat, 18 May 2019 15:41:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=usp-br.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=HjafOF3we2ISgKmws+AAmSPCOfvoMlLfEcLpwFAOH20=;
-        b=hZ4gxLpg6e+HdwfQ1NXXRXfPKNh09IvaB2r/AWlEKTZFEOStyNY7rBeDbJe6CnaQ3Q
-         UaR1WbRUT9HhSIT2GZshGU5CmTP46jiP/ZpxgKvNwwznxCDNWAys9BL+DXLLH7trevO+
-         g5ahNdjbPGvFwrZ4cOxY7e+VsQy6uTF5ET2N/T1jZje7SH/dHL3NeYwuCXx6JIdHYsmd
-         LKwC4D/zcDzCvNO3pD79ItH1bdGXVBwM2G1vAeL9p6ll8P7YWDSCd3yw+olCwj0BPVgN
-         ym7wqa2PpNPaeyfuUijgm1dMLd/0su+PQenVezSJnZJ3IDkmWojRSFFjNmHr5r3pT/mJ
-         f6eA==
+        bh=jKyoBKDfoJbBN8ZdJzWAMlrp7KnkxmJ6vA1sEgIrsvE=;
+        b=yV+S7pgOzzbyCqFkDCEFt0jhKExLmBzHHNuFwDdEIcxQn5lVwe5+Ot/pPsbp6E5q8g
+         rk06n2713VHScfotxZp0imBhciMduhnW/ffhbngY0mVadoR6Z5AL8R9U8KiPtGRD/iqp
+         woGi14VDZQfa6B04dZpDqplOdtMXBP1UtmmS9FaMnNclaMpARA9/pd+hmMZdnpM1H3b6
+         9c+AxHTuPJu9v2Q3me5urcxy63wtrCvm4Q3pRRsbd3AGZOYitI76awJuBU8INCVCtCBP
+         ukFQnjaGwBUirqT9BakPf/qp1Kse+CKHt2kshrp0ugBPrPfTtSMo/Xg7AN4IVLkLp+Wr
+         DG3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=HjafOF3we2ISgKmws+AAmSPCOfvoMlLfEcLpwFAOH20=;
-        b=BpKa+q57w+1SvXDjJSmmG9mO9UrKrYTj2H+Xp6Yuxowna1GLFsklcbOqcK5+nzgj5K
-         pJlJBRxf3DYrzOE6E5frRWIXYtKgdkcc/0HrNcw8Sj3RgHM6nu/4a1OE0x2BtavZ4OJ0
-         HaSxMMq6xwKChBiVUYTATUaxTkVxMoDQb36D3L5dGnCD2/rPM45+2qt0Q6cz+ZHXLVrx
-         AV+OTaApo6xnKp1CysW3eq8rIj/7g8EYv0sIbn+jzZeEXhcGwltVfITcexSrDvIpn7yf
-         TI2lcs4soCaEZdoi8QCQ9PA/6Sjig1HjkkLXQyz0VNVk2A0mMQ4DvXTJ4JCFLxOxRDMw
-         n12A==
-X-Gm-Message-State: APjAAAVpvNbtr53lb+JbbOyEys0sEHMdHVEyeGDU4JPHDwM4KbluQ7X7
-        ppDRb2gdCSeaVCLl+1d4sW2T1g==
-X-Google-Smtp-Source: APXvYqws6NF4t7YOPS1d8LkVgLg7sYRMajLfSLBfYLOL1vQBd5nqSp7jevx1MMGLFOVwau3R4HRHnQ==
-X-Received: by 2002:a37:7fc3:: with SMTP id a186mr50951745qkd.65.1558219312472;
-        Sat, 18 May 2019 15:41:52 -0700 (PDT)
+        bh=jKyoBKDfoJbBN8ZdJzWAMlrp7KnkxmJ6vA1sEgIrsvE=;
+        b=XYGN5rcPHublYkTQSiL55DNewezY0GFcPlButx/alBhzw5KrCvotoI/G8xtmhLkR1P
+         BHamC3WuSDDlbvvuUVT9ba1BkjbKrTn48u67WGGt6Px2ZpbHP3KvyagJrURWllG/qrkc
+         QJIp77UifxXjy1kElLMnzhKBEkWkZ0dPBzuST8J39dUOPokseSvfI8IIxGTkF+xJAsi2
+         SmVHZV4qT8aj+U9pagFkd31A2AYlrUMGyJ7TbrzjLtE1qHNnZmTtAcxuuC8lY7W4VoJ5
+         Vv5Sx7dL8o0ZVQ7SxJ9b2j3SclkeZjWPtNVuhJjDImbx3JjAhZd882r9m1dSiBkPcOl8
+         lpjA==
+X-Gm-Message-State: APjAAAW0HET/u40I6QbhlVWtoSapPAy4LnxspCCrLW6Aj9qG21GH4NsY
+        fG2DBSsPGJR41b47BVBA+XA31w==
+X-Google-Smtp-Source: APXvYqwe6b/2fIeowTUPXLJW6AzydKeOoAwyOiyvZxsj2W75hS42mLp/UENCdlPbJiN4ffKnlk51Yg==
+X-Received: by 2002:ac8:1a62:: with SMTP id q31mr16565529qtk.25.1558219318006;
+        Sat, 18 May 2019 15:41:58 -0700 (PDT)
 Received: from greta.semfio.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id d32sm7348992qtk.0.2019.05.18.15.41.47
+        by smtp.gmail.com with ESMTPSA id d32sm7348992qtk.0.2019.05.18.15.41.52
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 18 May 2019 15:41:52 -0700 (PDT)
+        Sat, 18 May 2019 15:41:57 -0700 (PDT)
 From:   =?UTF-8?q?B=C3=A1rbara=20Fernandes?= <barbara.fernandes@usp.br>
 To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -55,11 +55,10 @@ To:     Lars-Peter Clausen <lars@metafoo.de>,
 Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
         linux-kernel@vger.kernel.org,
         =?UTF-8?q?B=C3=A1rbara=20Fernandes?= <barbara.fernandes@usp.br>,
-        Melissa Wen <melissa.srw@gmail.com>,
         Wilson Sales <spoonm@spoonm.org>
-Subject: [PATCH 1/2] staging: iio: cdc: ad7150: create of_device_id array
-Date:   Sat, 18 May 2019 19:41:35 -0300
-Message-Id: <20190518224136.16942-2-barbara.fernandes@usp.br>
+Subject: [PATCH 2/2] staging: iio: cdc: ad7150: create macro for capacitance channels
+Date:   Sat, 18 May 2019 19:41:36 -0300
+Message-Id: <20190518224136.16942-3-barbara.fernandes@usp.br>
 X-Mailer: git-send-email 2.22.0.rc0.1.g337bb99195.dirty
 In-Reply-To: <20190518224136.16942-1-barbara.fernandes@usp.br>
 References: <20190518224136.16942-1-barbara.fernandes@usp.br>
@@ -71,44 +70,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Create structure of type of_device_id in order to register all devices
-the driver is able to manage.
+Create macro for capacitance channels in order to remove the repeated
+code and improve its readability.
 
 Signed-off-by: Bárbara Fernandes <barbara.fernandes@usp.br>
-Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
-Co-developed-by: Melissa Wen <melissa.srw@gmail.com>
 Signed-off-by: Wilson Sales <spoonm@spoonm.org>
 Co-developed-by: Wilson Sales <spoonm@spoonm.org>
 ---
- drivers/staging/iio/cdc/ad7150.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/staging/iio/cdc/ad7150.c | 29 ++++++++++++-----------------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
-index 4b1c90e1b0ea..072094227e1b 100644
+index 072094227e1b..d8c43cabce25 100644
 --- a/drivers/staging/iio/cdc/ad7150.c
 +++ b/drivers/staging/iio/cdc/ad7150.c
-@@ -655,11 +655,21 @@ static const struct i2c_device_id ad7150_id[] = {
- 	{}
+@@ -468,24 +468,19 @@ static const struct iio_event_spec ad7150_events[] = {
+ 	},
  };
  
-+static const struct of_device_id ad7150_of_i2c_match[] = {
-+	{ .compatible = "adi,ad7150" },
-+	{ .compatible = "adi,ad7151" },
-+	{ .compatible = "adi,ad7156" },
-+	{}
-+};
++#define AD7150_CAPACITANCE_CHAN(_chan)	{			\
++		.type = IIO_CAPACITANCE,			\
++		.indexed = 1,					\
++		.channel = _chan,				\
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
++		BIT(IIO_CHAN_INFO_AVERAGE_RAW),			\
++		.event_spec = ad7150_events,			\
++		.num_event_specs = ARRAY_SIZE(ad7150_events),	\
++	}
 +
-+MODULE_DEVICE_TABLE(of, ad7150_of_i2c_match);
-+
- MODULE_DEVICE_TABLE(i2c, ad7150_id);
+ static const struct iio_chan_spec ad7150_channels[] = {
+-	{
+-		.type = IIO_CAPACITANCE,
+-		.indexed = 1,
+-		.channel = 0,
+-		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+-		BIT(IIO_CHAN_INFO_AVERAGE_RAW),
+-		.event_spec = ad7150_events,
+-		.num_event_specs = ARRAY_SIZE(ad7150_events),
+-	}, {
+-		.type = IIO_CAPACITANCE,
+-		.indexed = 1,
+-		.channel = 1,
+-		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+-		BIT(IIO_CHAN_INFO_AVERAGE_RAW),
+-		.event_spec = ad7150_events,
+-		.num_event_specs = ARRAY_SIZE(ad7150_events),
+-	},
++	AD7150_CAPACITANCE_CHAN(0),
++	AD7150_CAPACITANCE_CHAN(1)
+ };
  
- static struct i2c_driver ad7150_driver = {
- 	.driver = {
- 		.name = "ad7150",
-+		.of_match_table = ad7150_of_i2c_match
- 	},
- 	.probe = ad7150_probe,
- 	.id_table = ad7150_id,
+ /*
 -- 
 2.22.0.rc0.1.g337bb99195.dirty
 

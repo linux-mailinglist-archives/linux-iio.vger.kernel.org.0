@@ -2,193 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62A10227A4
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 19:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BDC6227B0
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 19:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726384AbfESRWX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 May 2019 13:22:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34128 "EHLO mail.kernel.org"
+        id S1727219AbfESR10 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 May 2019 13:27:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35454 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726436AbfESRWW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 19 May 2019 13:22:22 -0400
+        id S1725923AbfESR1W (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 19 May 2019 13:27:22 -0400
 Received: from archlinux (cpc91196-cmbg18-2-0-cust659.5-4.cable.virginm.net [81.96.234.148])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4B1F0217F4;
-        Sun, 19 May 2019 11:24:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3EDB12183F;
+        Sun, 19 May 2019 11:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558265064;
-        bh=JCr63lX///u8XKMNJmGMKqINHcVAQTw2lJQSqfPH06E=;
+        s=default; t=1558265389;
+        bh=T3PsiJ+c9i291nIGZ2UJklxfGuIhW4xPOj6zpxSXP3s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lYQr2+bTvKfhLsvg7+mByE3826DEtER8vAS42B1hpAsmRzolTWOMtMRvXDGCssWFO
-         8HjqjkbgKsOb6DW1PjUIqQ9kZdBXkYkM/cbxey7T6XQBfX7q7aui54FyvQjUaxVyTU
-         jnJlEP1tHZpKY7AAdyHvgod/gIwez/VNu5MDK2bM=
-Date:   Sun, 19 May 2019 12:24:18 +0100
+        b=SZOgNiRVAUi0n9HlyMsrDYDcQ3GAuk80VbWExE/h+pnvz0yHO14J3nxnpmPoXux9o
+         SwwtR9H1InRvEE1LyD1kj+mqGirUYxqkvByp+aVg1axkPWRs7wogGN6QjDuJAMMcOv
+         99eYUDktqKFKO76p/eO840BFIIHVu3jxj++2hBj8=
+Date:   Sun, 19 May 2019 12:29:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lucas Oshiro <lucasseikioshiro@gmail.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+To:     =?UTF-8?B?Sm/Do28=?= Victor Marques de Oliveira 
+        <joao.marques.oliveira@usp.br>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
         Stefan Popa <stefan.popa@analog.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-usp@googlegroups.com,
-        Rodrigo Ribeiro <rodrigorsdc@gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: accel: adxl372: switch to YAML
- bindings
-Message-ID: <20190519122418.7722641b@archlinux>
-In-Reply-To: <20190518215542.25140-1-lucasseikioshiro@gmail.com>
-References: <20190518215542.25140-1-lucasseikioshiro@gmail.com>
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-usp@googlegroups.com,
+        "Thiago L . A . Miller" <tmiller@mochsl.org.br>,
+        "Osvaldo M . Yasuda" <omyasuda@yahoo.com.br>
+Subject: Re: [PATCH] dt-bindings: iio: ad7949: switch binding to yaml
+Message-ID: <20190519122944.3326e803@archlinux>
+In-Reply-To: <20190518224036.29596-1-joao.marques.oliveira@usp.br>
+References: <20190518224036.29596-1-joao.marques.oliveira@usp.br>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 May 2019 18:55:42 -0300
-Lucas Oshiro <lucasseikioshiro@gmail.com> wrote:
+On Sat, 18 May 2019 19:40:36 -0300
+Jo=C3=A3o Victor Marques de Oliveira         <joao.marques.oliveira@usp.br>=
+ wrote:
 
-> Convert the old device tree documentation to yaml format.
-> 
-> Signed-off-by: Lucas Oshiro <lucasseikioshiro@gmail.com>
-> Signed-off-by: Rodrigo Ribeiro <rodrigorsdc@gmail.com>
-> Co-developed-by: Rodrigo Ribeiro <rodrigorsdc@gmail.com>
+> Changes switches from old text bindings, to YAML bindings, and also
+> include adi,reference-select property to specify the source for the
+> reference voltage signal.
+>=20
+> Signed-off-by: Jo=C3=A3o Victor Marques de Oliveira <joao.marques.oliveir=
+a@usp.br>
+> Signed-off-by: Thiago L. A. Miller <tmiller@mochsl.org.br>
+> Co-developed-by: Thiago L. A. Miller <tmiller@mochsl.org.br>
+> Signed-off-by: Osvaldo M. Yasuda <omyasuda@yahoo.com.br>
+> Co-developed-by: Osvaldo M. Yasuda <omyasuda@yahoo.com.br>
 > ---
-> 
-> Hello,
-> We've added Stefan Popa as maintainer of the yaml documentation of this driver
-> because we found through git that he was the author of the older documentation.
+> We're adding Charles-Antoine Couret as main dt maintainer since we have
+> just switched documentation to yaml format.=20
 
-Definitely going to need an Ack from Stefan for that ;)
+Hmm. I'm not sure it makes sense to list you all as maintainers
+of this rather simple binding.
 
-I've not really gotten yaml formats into my head yet, but from a quick
-look I think this is fine.  I will however be looking for review from others
-on these. 
+We also just went through some changes on the reference handling so
+I think you are based on stale information here.
 
 Thanks,
 
 Jonathan
 
-> 
->  .../bindings/iio/accel/adi,adxl372.yaml       | 66 +++++++++++++++++++
->  .../devicetree/bindings/iio/accel/adxl372.txt | 33 ----------
->  2 files changed, 66 insertions(+), 33 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
->  delete mode 100644 Documentation/devicetree/bindings/iio/accel/adxl372.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
+>=20
+>  .../devicetree/bindings/iio/adc/ad7949.txt    | 16 -----
+>  .../devicetree/bindings/iio/adc/ad7949.yaml   | 71 +++++++++++++++++++
+>  2 files changed, 71 insertions(+), 16 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/adc/ad7949.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ad7949.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/ad7949.txt b/Docum=
+entation/devicetree/bindings/iio/adc/ad7949.txt
+> deleted file mode 100644
+> index c7f5057356b1..000000000000
+> --- a/Documentation/devicetree/bindings/iio/adc/ad7949.txt
+> +++ /dev/null
+> @@ -1,16 +0,0 @@
+> -* Analog Devices AD7949/AD7682/AD7689
+> -
+> -Required properties:
+> - - compatible: Should be one of
+> -	* "adi,ad7949"
+> -	* "adi,ad7682"
+> -	* "adi,ad7689"
+> - - reg: spi chip select number for the device
+> - - vref-supply: The regulator supply for ADC reference voltage
+> -
+> -Example:
+> -adc@0 {
+> -	compatible =3D "adi,ad7949";
+> -	reg =3D <0>;
+> -	vref-supply =3D <&vdd_supply>;
+> -};
+> diff --git a/Documentation/devicetree/bindings/iio/adc/ad7949.yaml b/Docu=
+mentation/devicetree/bindings/iio/adc/ad7949.yaml
 > new file mode 100644
-> index 000000000000..a6e2893d2ab1
+> index 000000000000..111c9e26f8e7
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> @@ -0,0 +1,66 @@
+> +++ b/Documentation/devicetree/bindings/iio/adc/ad7949.yaml
+> @@ -0,0 +1,71 @@
 > +# SPDX-License-Identifier: GPL-2.0
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/accelerometers/adi,adxl372.yaml#
+> +$id: http://devicetree.org/schemas/iio/adc/ad7949.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer
+> +
+> +title: Analog Devices AD7949/AD7682/AD7689
 > +
 > +maintainers:
-> +  - Stefan Popa <stefan.popa@analog.com>
-> +
-> +description: |
-> +  Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer that supports
-> +  both I2C & SPI interfaces
-> +    https://www.analog.com/en/products/adxl372.html
+> +  - Charles-Antoine Couret <charles-antoine.couret@essensium.com>
+> +  - Jo=C3=A3o Victor Marques de Oliveira <joao.marques.oliveira@usp.br>
+> +  - Thiago L. A. Miller <tmiller@mochsl.org.br>
+> +  - Osvaldo M. Yasuda <omyasuda@yahoo.com.br>
 > +
 > +properties:
 > +  compatible:
 > +    enum:
-> +      - adi,adxl372
+> +      - adi,ad7949
+> +      - adi,ad7682
+> +      - adi,ad7689
 > +
-> +  reg:
-> +    description: the I2C address or SPI chip select number for the device
+> +  reg: =20
+> +    description:
+> +      spi chip select number for the device
 > +    maxItems: 1
 > +
-> +  interrupts:
+> +  vref-supply:
 > +    description:
-> +      interrupt mapping for IRQ as documented in
-> +      Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
+> +      The regulator supply for ADC reference voltage
+> +    maxItems: 1
+> +
+> +  adi,reference-select:
+> +    enum: [0, 1, 2, 3, 6, 7]
+> +    description:
+> +        Select the reference voltage source to use when converting the i=
+nput voltages.
+> +            0 - Internal 2.5V reference; temperature sensor enabled
+> +            1 - Internal 4.096V reference; temperature sensor enabled
+> +            2 - External reference, temperature sensor enabled, no buffer
+> +            3 - External reference, temperature sensor enabled, buffer e=
+nabled
+> +            6 - External reference, temperature sensor disabled, no buff=
+er
+> +            7 - External reference, temperature sensor disabled, buffer =
+enabled
+This is changing...
+
 > +    maxItems: 1
 > +
 > +required:
-> +  - compatible
+> +  - compatible=20
 > +  - reg
+> +  - vref-supply
 > +
 > +examples:
 > +  - |
-> +        #include <dt-bindings/gpio/gpio.h>
-> +        #include <dt-bindings/interrupt-controller/irq.h>
-> +        i2c0 {
-> +                #address-cells = <1>;
-> +                #size-cells = <0>;
-> +
-> +                /* Example for a I2C device node */
-> +                accelerometer@53 {
-> +                        compatible = "adi,adxl372";
-> +                        reg = <0x53>;
-> +                        interrupt-parent = <&gpio>;
-> +                        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
-> +                };
+> +    spi0 {
+> +        #address-cells =3D <0x1>;
+> +        #size-cells =3D <0x0>;
+> +        adc@0 {
+> +            compatible =3D "adi,ad7949";
+> +            reg =3D <0>;
+> +            adi,reference-select =3D <0>;
+> +            vref-supply =3D <&vdd_supply>;
 > +        };
+> +    };
 > +  - |
-> +        #include <dt-bindings/gpio/gpio.h>
-> +        #include <dt-bindings/interrupt-controller/irq.h>
-> +        spi0 {
-> +                #address-cells = <1>;
-> +                #size-cells = <0>;
-> +
-> +                accelerometer@0 {
-> +                        compatible = "adi,adxl372";
-> +                        reg = <0>;
-> +                        spi-max-frequency = <1000000>;
-> +                        interrupt-parent = <&gpio>;
-> +                        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
-> +                };
+> +    spi0 {
+> +        #address-cells =3D <0x1>;
+> +        #size-cells =3D <0x0>;
+> +        adc@0 {
+> +            compatible =3D "adi,ad7949";
+> +            reg =3D <0>;
+> +            adi,reference-select =3D <0>;
 > +        };
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adxl372.txt b/Documentation/devicetree/bindings/iio/accel/adxl372.txt
-> deleted file mode 100644
-> index a289964756a7..000000000000
-> --- a/Documentation/devicetree/bindings/iio/accel/adxl372.txt
-> +++ /dev/null
-> @@ -1,33 +0,0 @@
-> -Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer
-> -
-> -http://www.analog.com/media/en/technical-documentation/data-sheets/adxl372.pdf
-> -
-> -Required properties:
-> - - compatible : should be "adi,adxl372"
-> - - reg: the I2C address or SPI chip select number for the device
-> -
-> -Required properties for SPI bus usage:
-> - - spi-max-frequency: Max SPI frequency to use
-> -
-> -Optional properties:
-> - - interrupts: interrupt mapping for IRQ as documented in
-> -   Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
-> -
-> -Example for a I2C device node:
-> -
-> -	accelerometer@53 {
-> -		compatible = "adi,adxl372";
-> -		reg = <0x53>;
-> -		interrupt-parent = <&gpio>;
-> -		interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
-> -	};
-> -
-> -Example for a SPI device node:
-> -
-> -	accelerometer@0 {
-> -		compatible = "adi,adxl372";
-> -		reg = <0>;
-> -		spi-max-frequency = <1000000>;
-> -		interrupt-parent = <&gpio>;
-> -		interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
-> -	};
+> +    };
 

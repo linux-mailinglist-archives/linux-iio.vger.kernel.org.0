@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD053227AE
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 19:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AD08227C1
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2019 19:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726434AbfESR1W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 May 2019 13:27:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35452 "EHLO mail.kernel.org"
+        id S1727626AbfESRcW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 May 2019 13:32:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725769AbfESR1V (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 19 May 2019 13:27:21 -0400
+        id S1727107AbfESRcW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 19 May 2019 13:32:22 -0400
 Received: from archlinux (cpc91196-cmbg18-2-0-cust659.5-4.cable.virginm.net [81.96.234.148])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 14829208C3;
-        Sun, 19 May 2019 10:21:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9E78B214C6;
+        Sun, 19 May 2019 10:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558261294;
-        bh=RMAcnNdzYjfx2XpG3oSH8rKO9nCYYU3tLEvOgbs2bfw=;
+        s=default; t=1558261606;
+        bh=1zR31saxehPnsex0bI+S/uyzkj4IbV2AcviDgFyjyAY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ALJneouBfemWqoMOmAVZQyy5VwLTVanD2N7pDQjKN6NgjR1MN8XgrsbhrDjMjcQAB
-         dCnkOpMTz6TD/BDEe8+8mX+tl3tAIGfhY9R/Wg5fPQlhCA7HVQzC6jE9YTjYc0X/cR
-         9FXKEx6QaOyBgxBKsxhyCiQp6ki3Bt12xIoyUTos=
-Date:   Sun, 19 May 2019 11:21:29 +0100
+        b=QDQRfaND21P7wsMyDDuUyDGn8uC3Pd+MQ199hpzMvL0lcxzr920C+mKtU79wyWlil
+         9Xq2DQESYKE+4MAWJZVohn2oIWoMs7rMalAzuCPP6akKnwpMCa2bGWVTbW3GJ8i7Cz
+         Vck/q2rtdZDhVgBxcOZzXo4I8Yu0kAFxedvDCz3U=
+Date:   Sun, 19 May 2019 11:26:41 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     =?UTF-8?B?QsOhcmJhcmE=?= Fernandes <barbara.fernandes@usp.br>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -33,14 +33,13 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, Melissa Wen <melissa.srw@gmail.com>,
-        Wilson Sales <spoonm@spoonm.org>
-Subject: Re: [PATCH 1/2] staging: iio: cdc: ad7150: create of_device_id
- array
-Message-ID: <20190519112129.5d83e393@archlinux>
-In-Reply-To: <20190518224136.16942-2-barbara.fernandes@usp.br>
+        linux-kernel@vger.kernel.org, Wilson Sales <spoonm@spoonm.org>
+Subject: Re: [PATCH 2/2] staging: iio: cdc: ad7150: create macro for
+ capacitance channels
+Message-ID: <20190519112641.23f05287@archlinux>
+In-Reply-To: <20190518224136.16942-3-barbara.fernandes@usp.br>
 References: <20190518224136.16942-1-barbara.fernandes@usp.br>
-        <20190518224136.16942-2-barbara.fernandes@usp.br>
+        <20190518224136.16942-3-barbara.fernandes@usp.br>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -50,65 +49,82 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 May 2019 19:41:35 -0300
+On Sat, 18 May 2019 19:41:36 -0300
 B=C3=A1rbara Fernandes <barbara.fernandes@usp.br> wrote:
 
-> Create structure of type of_device_id in order to register all devices
-> the driver is able to manage.
+> Create macro for capacitance channels in order to remove the repeated
+> code and improve its readability.
 >=20
 > Signed-off-by: B=C3=A1rbara Fernandes <barbara.fernandes@usp.br>
-> Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
-> Co-developed-by: Melissa Wen <melissa.srw@gmail.com>
 > Signed-off-by: Wilson Sales <spoonm@spoonm.org>
 > Co-developed-by: Wilson Sales <spoonm@spoonm.org>
+Not a totally clear cut case given there are only two instances, but
+I think, on balance that it is an improvement.
 
-Hi,
+As this isn't really connected to patch 1 in the series (or the fix
+going via the other tree) I'll apply this one now.  Please only
+send a new version of patch 1.
 
-One really minor point inline, otherwise looks good to me.
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders (0-day etc) to see if they can find anything
+we have missed.
+
+Some time after those test results have come in, I'll push the tree
+out as togreg, and in a few weeks send a pull request to Greg to
+hopefully have it pulled into his tree which is part of Linux next
+and from which he will then send a pull request to Linus in the
+next merge window.
 
 Thanks,
 
 Jonathan
 
+
 > ---
->  drivers/staging/iio/cdc/ad7150.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  drivers/staging/iio/cdc/ad7150.c | 29 ++++++++++++-----------------
+>  1 file changed, 12 insertions(+), 17 deletions(-)
 >=20
 > diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/a=
 d7150.c
-> index 4b1c90e1b0ea..072094227e1b 100644
+> index 072094227e1b..d8c43cabce25 100644
 > --- a/drivers/staging/iio/cdc/ad7150.c
 > +++ b/drivers/staging/iio/cdc/ad7150.c
-> @@ -655,11 +655,21 @@ static const struct i2c_device_id ad7150_id[] =3D {
->  	{}
+> @@ -468,24 +468,19 @@ static const struct iio_event_spec ad7150_events[] =
+=3D {
+>  	},
 >  };
 > =20
-> +static const struct of_device_id ad7150_of_i2c_match[] =3D {
-> +	{ .compatible =3D "adi,ad7150" },
-> +	{ .compatible =3D "adi,ad7151" },
-> +	{ .compatible =3D "adi,ad7156" },
-> +	{}
-> +};
+> +#define AD7150_CAPACITANCE_CHAN(_chan)	{			\
+> +		.type =3D IIO_CAPACITANCE,			\
+> +		.indexed =3D 1,					\
+> +		.channel =3D _chan,				\
+> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |	\
+> +		BIT(IIO_CHAN_INFO_AVERAGE_RAW),			\
+> +		.event_spec =3D ad7150_events,			\
+> +		.num_event_specs =3D ARRAY_SIZE(ad7150_events),	\
+> +	}
 > +
-> +MODULE_DEVICE_TABLE(of, ad7150_of_i2c_match);
-> +
-I would suggest keeping the below MODULE_DEVICE_TABLE
-entry next to the definition of ad7150_id rather than putting
-this new block in between them.
-
-In short, just move your additions below the next line.
-
-Thanks,
-
-Jonathan
-
->  MODULE_DEVICE_TABLE(i2c, ad7150_id);
+>  static const struct iio_chan_spec ad7150_channels[] =3D {
+> -	{
+> -		.type =3D IIO_CAPACITANCE,
+> -		.indexed =3D 1,
+> -		.channel =3D 0,
+> -		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> -		BIT(IIO_CHAN_INFO_AVERAGE_RAW),
+> -		.event_spec =3D ad7150_events,
+> -		.num_event_specs =3D ARRAY_SIZE(ad7150_events),
+> -	}, {
+> -		.type =3D IIO_CAPACITANCE,
+> -		.indexed =3D 1,
+> -		.channel =3D 1,
+> -		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> -		BIT(IIO_CHAN_INFO_AVERAGE_RAW),
+> -		.event_spec =3D ad7150_events,
+> -		.num_event_specs =3D ARRAY_SIZE(ad7150_events),
+> -	},
+> +	AD7150_CAPACITANCE_CHAN(0),
+> +	AD7150_CAPACITANCE_CHAN(1)
+>  };
 > =20
->  static struct i2c_driver ad7150_driver =3D {
->  	.driver =3D {
->  		.name =3D "ad7150",
-> +		.of_match_table =3D ad7150_of_i2c_match
->  	},
->  	.probe =3D ad7150_probe,
->  	.id_table =3D ad7150_id,
+>  /*
 

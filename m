@@ -2,230 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E07B62326B
-	for <lists+linux-iio@lfdr.de>; Mon, 20 May 2019 13:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D280A23319
+	for <lists+linux-iio@lfdr.de>; Mon, 20 May 2019 13:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732848AbfETLam (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 May 2019 07:30:42 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:41222 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732850AbfETLam (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 May 2019 07:30:42 -0400
-Received: by mail-oi1-f194.google.com with SMTP id y10so9674480oia.8;
-        Mon, 20 May 2019 04:30:41 -0700 (PDT)
+        id S1730780AbfETL5U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 May 2019 07:57:20 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:35128 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730679AbfETL5U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 May 2019 07:57:20 -0400
+Received: by mail-ot1-f52.google.com with SMTP id n14so12710690otk.2
+        for <linux-iio@vger.kernel.org>; Mon, 20 May 2019 04:57:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=nyKZfAuaROY2BjFNib6WMeJ7XG4lSb4BAQnu9LjW4yQ=;
-        b=JFaGZzNiBg1xlxHlRz6WI7/41fnkwKy6Cd5nvHzSSi8pSDhT2V7TYwPRt4qou/23tB
-         ZS1byABLyJ2BkGDZ/1FCYzEHCIL+CV80MqN9gEGFPl5PKPI4kgJh4kVYuteGz74evnvD
-         S6Rs6CDMFSB1EtBq1U6mewSejwQhsiD0/XPcwmGDJHRPU0vFjHJo07VR0d8zuUgdhhDv
-         s16Z9keGM1fm8BZTq2M6FtdIgzzFbcu6gOa/B759dhzJPl2ipgAAXIo58iYQycT9s3hS
-         dTPwImjjCCTyo/vgf+c1yJvILO7gaDFt9ABAPzFj+UyOjw+yNzU8/XrDsi9PG0FaxAJF
-         4G6A==
+         :cc;
+        bh=Bgb9Ew3pevEYqcSi2GXYSzmdFw8MXSkjiiYW1t/04RM=;
+        b=Rge68e5fGSXeh8KgGq/EnF4PbodqOxy7jOFmFVZLRDKF5r0CuTIviA7uabZCtR9npM
+         mcavM7a20moCB/7oc0wDy1luu+Ed4f+wccz0MnkAHk1TeTdnIEJkzF4IRwiFU3+yuyD/
+         VuS+cztVQcBXDpih7rqOa1TMEPILgWvqL4/ffoGCbBxnDavlBtX4x8REei6cSl0124Wk
+         cnEmN0T/moQ+Zmx2ZeGTjbfQkTL4o09wEM+1eMES36cGHWcqRghUIjpT5gdXHxxVB+tn
+         DDuqHTraF7WBJXMozXAludpGDHUbsirZGzJGnVzW5sSxUmdoBy/nMVFKnXlnseHLBKFj
+         dLfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=nyKZfAuaROY2BjFNib6WMeJ7XG4lSb4BAQnu9LjW4yQ=;
-        b=lig8YaYpBByhCR21T0kGmZB797Cz/78S/EFXk/M+je63Ks78vFPMCqEG11GbaKOrOx
-         bceFQVVFYwDrQlAue8A5np2+m9h7M5ftt0FRZIUih1dQF9rQXoK50chknAMI3hQP1BIE
-         sZGtDFdDUlUQdu84OBf8oqTaYAateP8WLsHCIO4ut1llwQh5Sb6Br3i5r60KdwaObOh7
-         bBJBbyY9mj3fDzsCgLX+D7cQbtFUNN1SBCirZ2JoVwEIcSVz4c+k6yAPBieQSq9z7bpQ
-         GrOHGEU8Fwzo2alTzHcRJNzyasZSG6yaqLczxj1ns7F5c6NpiNUq8EL/NQ17q3tpCZQm
-         cNDQ==
-X-Gm-Message-State: APjAAAXDLeaxmKzkG272rfU6cLHtU59TWQrGUQlEl55i5+w9JeXQd9dY
-        nszmisza+IDO46028r8GIatzHAT57GOAtIVzEt4=
-X-Google-Smtp-Source: APXvYqy+hBIDWN7ld5J5EKHCPKrNI1j9comLjyZhCaZbYTVL4OGVddZSvMuPc1sNUxi24GFPtT/cwcMQhqJLamDnLdk=
-X-Received: by 2002:aca:6208:: with SMTP id w8mr22583932oib.128.1558351841160;
- Mon, 20 May 2019 04:30:41 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=Bgb9Ew3pevEYqcSi2GXYSzmdFw8MXSkjiiYW1t/04RM=;
+        b=BufODyaIlLXV72Pq1pxxajyvuw6aPztBpi2Nwgk8VCG1QR+Ub+XGndSYsUsMqhOKV2
+         p0WP+vHgWzN6/KxVLrTXoc2dYTqt6uEkeFN5wyDnbGm8HsHKakoP132P4FpOppmD1Xx/
+         HYzgSRoro4IkKy9QTRxfx0FRleJ4jwNmAHC4UCTZSNwzLw9h7OqWvYMA4P+oRmZLaRE8
+         XSSnFZkiiJqmUEM5FY39xavAtkBSGUzDpvrDp/PI5ZuGnGOsz7r19YmyWiOmdwOvZp2X
+         RwfuLUQSwF2Da/EIXD/xdvh4zJBpgzGvtsxORstIiDQ3jjo5jhFDv40ggWdHi+IGcls7
+         WzuQ==
+X-Gm-Message-State: APjAAAX86kjXQ7mPRwp295gRqvnKEPQfBtohNKUfN88GnXPSV4Q1C3cx
+        KSOpuw7BR9Xq10erlrKnGouF5lSejO9zYuNMJY8=
+X-Google-Smtp-Source: APXvYqyg0tLn7EZdSx4T+0dgkJu2sWQIeaxqq0sRwUcMh7euLXLDCuOwrUEir0l8RiYC5rHWOaZPG0oKCeOtzqrg6OM=
+X-Received: by 2002:a9d:68c5:: with SMTP id i5mr24876076oto.224.1558353439267;
+ Mon, 20 May 2019 04:57:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190518224036.29596-1-joao.marques.oliveira@usp.br> <20190519122944.3326e803@archlinux>
-In-Reply-To: <20190519122944.3326e803@archlinux>
+References: <CAMyZ8d4ya5VpgnQBS-8isgQP5RcoDbxyRGnxYWhjtL1b2RagwQ@mail.gmail.com>
+In-Reply-To: <CAMyZ8d4ya5VpgnQBS-8isgQP5RcoDbxyRGnxYWhjtL1b2RagwQ@mail.gmail.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Mon, 20 May 2019 14:30:29 +0300
-Message-ID: <CA+U=DsrqzW6c1dR68PztzrQ9S7mYD0tZ50GdEdboN0pocVw5SQ@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: ad7949: switch binding to yaml
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     =?UTF-8?Q?Jo=C3=A3o_Victor_Marques_de_Oliveira?= 
-        <joao.marques.oliveira@usp.br>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        kernel-usp@googlegroups.com,
-        "Thiago L . A . Miller" <tmiller@mochsl.org.br>,
-        "Osvaldo M . Yasuda" <omyasuda@yahoo.com.br>
+Date:   Mon, 20 May 2019 14:57:07 +0300
+Message-ID: <CA+U=DspSs3xnYwyT_JUgJiYLzWW=d+qOAwg_rryRq7upew_1JA@mail.gmail.com>
+Subject: Re: Question about ADIS162XX low voltage status bit
+To:     Pedro Sousa <pedroteosousa@gmail.com>
+Cc:     linux-iio@vger.kernel.org,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 19, 2019 at 8:29 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat, May 18, 2019 at 11:51 PM Pedro Sousa <pedroteosousa@gmail.com> wrote:
 >
-> On Sat, 18 May 2019 19:40:36 -0300
-> Jo=C3=A3o Victor Marques de Oliveira         <joao.marques.oliveira@usp.b=
-r> wrote:
+> Hi everyone,
 >
-> > Changes switches from old text bindings, to YAML bindings, and also
-> > include adi,reference-select property to specify the source for the
-> > reference voltage signal.
-> >
-> > Signed-off-by: Jo=C3=A3o Victor Marques de Oliveira <joao.marques.olive=
-ira@usp.br>
-> > Signed-off-by: Thiago L. A. Miller <tmiller@mochsl.org.br>
-> > Co-developed-by: Thiago L. A. Miller <tmiller@mochsl.org.br>
-> > Signed-off-by: Osvaldo M. Yasuda <omyasuda@yahoo.com.br>
-> > Co-developed-by: Osvaldo M. Yasuda <omyasuda@yahoo.com.br>
-> > ---
-> > We're adding Charles-Antoine Couret as main dt maintainer since we have
-> > just switched documentation to yaml format.
->
-> Hmm. I'm not sure it makes sense to list you all as maintainers
-> of this rather simple binding.
->
-> We also just went through some changes on the reference handling so
-> I think you are based on stale information here.
->
-> Thanks,
->
-> Jonathan
->
-> >
-> >  .../devicetree/bindings/iio/adc/ad7949.txt    | 16 -----
-> >  .../devicetree/bindings/iio/adc/ad7949.yaml   | 71 +++++++++++++++++++
-> >  2 files changed, 71 insertions(+), 16 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/adc/ad7949.tx=
-t
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ad7949.ya=
-ml
+> I saw that all iio drivers ADIS162XX have a comment on the low voltage
+> status bit specifying 3.15V as a safe lower bound, but this value does
+> not match the ones in the datasheet, which are all lower. What is the
+> reason for this discrepancy?
 
-Maybe also update the MAINTAINERS file with this.
+Good find.
+You are correct. The values should be 2.975V in the driver.
+This is a bit hard-to-tell (why it happened to be 3.15 in the driver).
 
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/ad7949.txt b/Doc=
-umentation/devicetree/bindings/iio/adc/ad7949.txt
-> > deleted file mode 100644
-> > index c7f5057356b1..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/adc/ad7949.txt
-> > +++ /dev/null
-> > @@ -1,16 +0,0 @@
-> > -* Analog Devices AD7949/AD7682/AD7689
-> > -
-> > -Required properties:
-> > - - compatible: Should be one of
-> > -     * "adi,ad7949"
-> > -     * "adi,ad7682"
-> > -     * "adi,ad7689"
-> > - - reg: spi chip select number for the device
-> > - - vref-supply: The regulator supply for ADC reference voltage
-> > -
-> > -Example:
-> > -adc@0 {
-> > -     compatible =3D "adi,ad7949";
-> > -     reg =3D <0>;
-> > -     vref-supply =3D <&vdd_supply>;
-> > -};
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/ad7949.yaml b/Do=
-cumentation/devicetree/bindings/iio/adc/ad7949.yaml
-> > new file mode 100644
-> > index 000000000000..111c9e26f8e7
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/ad7949.yaml
-> > @@ -0,0 +1,71 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/ad7949.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +
+Sometimes, drivers are written before the part is released, and the
+specs sometimes change from Rev A to Rev E.
+Or the docs get corrected.
+Or, sometimes copies a base driver from somewhere else, and forgets to
+update things; no idea if that was the case here.
 
-nitpick: extra line
+In any case, feel free to send a patch to fix the driver.
+If not, we can send to fix them.
 
-> > +title: Analog Devices AD7949/AD7682/AD7689
-> > +
-> > +maintainers:
-> > +  - Charles-Antoine Couret <charles-antoine.couret@essensium.com>
-> > +  - Jo=C3=A3o Victor Marques de Oliveira <joao.marques.oliveira@usp.br=
->
-> > +  - Thiago L. A. Miller <tmiller@mochsl.org.br>
-> > +  - Osvaldo M. Yasuda <omyasuda@yahoo.com.br>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - adi,ad7949
-> > +      - adi,ad7682
-> > +      - adi,ad7689
-> > +
-> > +  reg:
-> > +    description:
-> > +      spi chip select number for the device
-
-this doesn't need a description
-it's a standard property
-
-> > +    maxItems: 1
-> > +
-> > +  vref-supply:
-> > +    description:
-> > +      The regulator supply for ADC reference voltage
-> > +    maxItems: 1
-> > +
-> > +  adi,reference-select:
-> > +    enum: [0, 1, 2, 3, 6, 7]
-> > +    description:
-> > +        Select the reference voltage source to use when converting the=
- input voltages.
-> > +            0 - Internal 2.5V reference; temperature sensor enabled
-> > +            1 - Internal 4.096V reference; temperature sensor enabled
-> > +            2 - External reference, temperature sensor enabled, no buf=
-fer
-> > +            3 - External reference, temperature sensor enabled, buffer=
- enabled
-> > +            6 - External reference, temperature sensor disabled, no bu=
-ffer
-> > +            7 - External reference, temperature sensor disabled, buffe=
-r enabled
-> This is changing...
->
-> > +    maxItems: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - vref-supply
-> > +
-> > +examples:
-> > +  - |
-> > +    spi0 {
-> > +        #address-cells =3D <0x1>;
-> > +        #size-cells =3D <0x0>;
-> > +        adc@0 {
-> > +            compatible =3D "adi,ad7949";
-> > +            reg =3D <0>;
-> > +            adi,reference-select =3D <0>;
-> > +            vref-supply =3D <&vdd_supply>;
-> > +        };
-> > +    };
-
-One example is enough in this case.
-They don't differ much.
-
-> > +  - |
-> > +    spi0 {
-> > +        #address-cells =3D <0x1>;
-> > +        #size-cells =3D <0x0>;
-> > +        adc@0 {
-> > +            compatible =3D "adi,ad7949";
-> > +            reg =3D <0>;
-> > +            adi,reference-select =3D <0>;
-> > +        };
-> > +    };
->
+Thanks
+Alex

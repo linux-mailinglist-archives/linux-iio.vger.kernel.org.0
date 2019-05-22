@@ -2,233 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C181B2683B
-	for <lists+linux-iio@lfdr.de>; Wed, 22 May 2019 18:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 660DF2697E
+	for <lists+linux-iio@lfdr.de>; Wed, 22 May 2019 20:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730018AbfEVQ25 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 May 2019 12:28:57 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:41779 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729475AbfEVQ25 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 May 2019 12:28:57 -0400
-Received: by mail-ed1-f68.google.com with SMTP id m4so4652395edd.8;
-        Wed, 22 May 2019 09:28:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=MKBOeO0I9me0REzLAUQ1ZtwXk0eiTALHoyi1Mra4MjA=;
-        b=hqHsymq5tZJfPSU0f+nBtgNtfX2+xifPc+quIwiW7TAm+5lh+GdFIUBLd3WJ98FpkS
-         NcSmbmMMAxrVauAbG8e4OR71PhO9NEVGDxmCY0sN0Dz2cDEoheG+9et3OFv0q3k01Hak
-         1pMpfdvm6Ke7v2t8Q9ddrXO+PvNzNuJ6GoqJHwrwkRVL0I3n0ChnQgkiQVDWi8bv4fP8
-         snpy4zggBU4O5SghShbcKrp+7ZKF6w6nIhFzoIxYhrRsXDkRSrtxpphbPFkYzPmILMbm
-         3T1AQ7VvZtHoiJFowj1MWtpzwpQw8CKT4Q6XOM2x9Hhd1ONmbz0jaGFDlEyuuaCU0iit
-         lLww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=MKBOeO0I9me0REzLAUQ1ZtwXk0eiTALHoyi1Mra4MjA=;
-        b=aF5I4k68PvB+FQQiLyQF4ac39P4Gf5hFb7KgADzlF7tHn8xIBEg35OI30UNFeL/z1z
-         LGefhQUT8J+FxQsPeytDwXwraibDt23eQTuDWisaIOvF5SvjW6dAkCz80oRe0lw5VUVO
-         Bw66NxV1fMlAMb9QDtrbCbHowzmB7JO1VSOFvxTXnHdCN/nk6PoeGB9pStoL9wWDPWc0
-         +bXocBWkDksxA6a+4evPJa5jhiiPCNcJ592vesj7liEbf+kcKUMdntYlMyrZtxYqhZWs
-         hfLuBkkMECCU1U9XicrBQKxnFbbWwpX7Gfp0hMueMbyd6bjJJTa4pDuF+icFevpd29oC
-         pFwQ==
-X-Gm-Message-State: APjAAAV+HUJvrm2ObtwuT2LmckExOhhIMEesPXUk905n94W08ZtNrsGJ
-        u6VieL/rHIf2t2oRGIC6YOc=
-X-Google-Smtp-Source: APXvYqySYDXJOvKu+VVFEdZdRhdrYajizwqa8WEkc/h/65i5zdLJoM+fCp/IRJ9evLcIDTXKCKRITw==
-X-Received: by 2002:a17:906:c4f:: with SMTP id t15mr28637972ejf.190.1558542534111;
-        Wed, 22 May 2019 09:28:54 -0700 (PDT)
-Received: from ziggy.stardust ([37.223.141.112])
-        by smtp.gmail.com with ESMTPSA id qq13sm3992219ejb.1.2019.05.22.09.28.50
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 22 May 2019 09:28:53 -0700 (PDT)
-Subject: Re: [PATCH 3/4] iio: adc: mediatek: SET_LATE_SYSTEM_SLEEP_PM_OPS
- support
-To:     Chun-Hung Wu <chun-hung.wu@mediatek.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        wsd_upstream@mediatek.com, peter.wang@mediatek.com,
-        kuohong.wang@mediatek.com, jg_poxu@mediatek.com
-References: <1557994247-16739-1-git-send-email-chun-hung.wu@mediatek.com>
- <1557994247-16739-4-git-send-email-chun-hung.wu@mediatek.com>
- <20190518113527.5210b0bf@archlinux> <1558332205.11080.6.camel@mtkswgap22>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=matthias.bgg@gmail.com; prefer-encrypt=mutual; keydata=
- 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
- jrHWeQEI2ucSKsNa8FllDmG/fQ==
-Message-ID: <7838dcae-8a69-0297-718b-a061b14a456d@gmail.com>
-Date:   Wed, 22 May 2019 18:28:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <1558332205.11080.6.camel@mtkswgap22>
-Content-Type: text/plain; charset=utf-8
+        id S1728615AbfEVSEh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 May 2019 14:04:37 -0400
+Received: from mga07.intel.com ([134.134.136.100]:58562 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727975AbfEVSEh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 22 May 2019 14:04:37 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 May 2019 11:04:36 -0700
+X-ExtLoop1: 1
+Received: from orsmsx101.amr.corp.intel.com ([10.22.225.128])
+  by fmsmga008.fm.intel.com with ESMTP; 22 May 2019 11:04:35 -0700
+Received: from orsmsx116.amr.corp.intel.com (10.22.240.14) by
+ ORSMSX101.amr.corp.intel.com (10.22.225.128) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Wed, 22 May 2019 11:04:35 -0700
+Received: from orsmsx109.amr.corp.intel.com ([169.254.11.251]) by
+ ORSMSX116.amr.corp.intel.com ([169.254.7.165]) with mapi id 14.03.0415.000;
+ Wed, 22 May 2019 11:04:35 -0700
+From:   "Pandruvada, Srinivas" <srinivas.pandruvada@intel.com>
+To:     "jikos@kernel.org" <jikos@kernel.org>,
+        "Song, Hongyan" <hongyan.song@intel.com>
+CC:     "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Xu, Even" <even.xu@intel.com>
+Subject: Re: [PATCH] hid: remove NO_D3 flag for ish not CHV platform
+Thread-Topic: [PATCH] hid: remove NO_D3 flag for ish not CHV platform
+Thread-Index: AQHVDI0GAhvu/aY6BkWQ/IXL1ZBgUKZ3cI2AgAB9TgA=
+Date:   Wed, 22 May 2019 18:04:34 +0000
+Message-ID: <497b1b7fe4fca84f1a2bf450db196950c1e98310.camel@intel.com>
+References: <1558082782-29279-1-git-send-email-hongyan.song@intel.com>
+         <nycvar.YFH.7.76.1905221235140.1962@cbobk.fhfr.pm>
+In-Reply-To: <nycvar.YFH.7.76.1905221235140.1962@cbobk.fhfr.pm>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.252.192.124]
+Content-Type: multipart/signed; micalg=sha-1;
+        protocol="application/x-pkcs7-signature"; boundary="=-TRjw2x1OutWDwf/DePsT"
+MIME-Version: 1.0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+--=-TRjw2x1OutWDwf/DePsT
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 2019-05-22 at 12:36 +0200, Jiri Kosina wrote:=20
+> On Fri, 17 May 2019, hongyan.song@intel.com wrote:
+>=20
+> > From: Song Hongyan <hongyan.song@intel.com>
+Also commit summary "hid: remove NO_D3 flag for non Cherry Trail (CHT)"
 
 
-On 20/05/2019 08:03, Chun-Hung Wu wrote:
-> Hi Jonathan:
-> 
->   Thanks for the prompt reply,
-> 
-> On Sat, 2019-05-18 at 11:35 +0100, Jonathan Cameron wrote:
->> On Thu, 16 May 2019 16:10:46 +0800
->> Chun-Hung Wu <chun-hung.wu@mediatek.com> wrote:
->>
->>>   Move suspend/resume to late_suspend and
->>> early_resume to gurantee users can use auxadc
->> guarantee
->>
-> will fix it in next version.
->>> driver at suspend/resume stage.
->> No problem with the patch content, but we need a reason why they may
->> want to do so?
-> Our thermal drivers uses auxadc at suspend/resume stage.
-> In order to avoid auxadc suspended prior to thermal driver,
-> we move auxadc to late_suspend and early_resume.
-> 
+> >=20
+> > NO_D3 flag is set for CHV and the older platforms, the other
+> > platform
+> > suppose can enter D3, if have this NO_D3 flag set it can never
+> > enter D3
+>=20
+> Could you please provide a little bit more descriptive changelog --
+> namely=20
+> what observable problem is it fixing.
 
-That sounds like a user of device_links [1] to me.
 
-[1] https://www.kernel.org/doc/html/latest/driver-api/device_link.html
+In addition, I don't think this is a rc2+ release fix.
 
+Thanks,
+Srinivas
+
+>=20
+> > Signed-off-by: Song Hongyan <hongyan.song@intel.com>
+> > ---
+> >  drivers/hid/intel-ish-hid/ipc/pci-ish.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+> > b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+> > index a6e1ee7..de1459b 100644
+> > --- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+> > +++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+> > @@ -154,7 +154,9 @@ static int ish_probe(struct pci_dev *pdev,
+> > const struct pci_device_id *ent)
+> >  	/* mapping IO device memory */
+> >  	hw->mem_addr =3D pcim_iomap_table(pdev)[0];
+> >  	ishtp->pdev =3D pdev;
+> > -	pdev->dev_flags |=3D PCI_DEV_FLAGS_NO_D3;
+> > +	/*This NO_D3 flag is only for CHV and older platforms*/
+>=20
+> ... and while you're updating the changelog, please also stick a
+> space=20
+> before and after the comment mark.
+>=20
 > Thanks,
-> Chun-Hung
->>
->> Thanks,
->>
->> Jonathan
->>>
->>> Signed-off-by: Chun-Hung Wu <chun-hung.wu@mediatek.com>
->>> ---
->>>  drivers/iio/adc/mt6577_auxadc.c | 7 ++++---
->>>  1 file changed, 4 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
->>> index e1bdcc0..58d7cb2 100644
->>> --- a/drivers/iio/adc/mt6577_auxadc.c
->>> +++ b/drivers/iio/adc/mt6577_auxadc.c
->>> @@ -326,9 +326,10 @@ static int mt6577_auxadc_remove(struct platform_device *pdev)
->>>  	return 0;
->>>  }
->>>  
->>> -static SIMPLE_DEV_PM_OPS(mt6577_auxadc_pm_ops,
->>> -			 mt6577_auxadc_suspend,
->>> -			 mt6577_auxadc_resume);
->>> +static const struct dev_pm_ops mt6577_auxadc_pm_ops = {
->>> +	SET_LATE_SYSTEM_SLEEP_PM_OPS(mt6577_auxadc_suspend,
->>> +				     mt6577_auxadc_resume)
->>> +};
->>>  
->>>  static const struct of_device_id mt6577_auxadc_of_match[] = {
->>>  	{ .compatible = "mediatek,mt2701-auxadc", .data = &mt8173_compat},
->>
-> 
-> 
+>=20
+
+--=-TRjw2x1OutWDwf/DePsT
+Content-Type: application/x-pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+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
+3SyI6+n6vMJgXVPqCZ+UUkqssxrHlBE2Wa5Z0MvLJIGB/Rwm/FA63bht6f4JWZH5uoRzW4SuyhsR
+xVcjLhL3AgMBAAGjggI9MIICOTAdBgNVHQ4EFgQUqm34QzHPi1eNUuCtd75VDPG++SgwHwYDVR0j
+BBgwFoAU2kEjnFqPca9Xgz4g0+Nl2wzLC9swZQYDVR0fBF4wXDBaoFigVoZUaHR0cDovL3d3dy5p
+bnRlbC5jb20vcmVwb3NpdG9yeS9DUkwvSW50ZWwlMjBFeHRlcm5hbCUyMEJhc2ljJTIwSXNzdWlu
+ZyUyMENBJTIwNEIuY3JsMIGfBggrBgEFBQcBAQSBkjCBjzAiBggrBgEFBQcwAYYWaHR0cDovL29j
+c3AuaW50ZWwuY29tLzBpBggrBgEFBQcwAoZdaHR0cDovL3d3dy5pbnRlbC5jb20vcmVwb3NpdG9y
+eS9jZXJ0aWZpY2F0ZXMvSW50ZWwlMjBFeHRlcm5hbCUyMEJhc2ljJTIwSXNzdWluZyUyMENBJTIw
+NEIuY3J0MAsGA1UdDwQEAwIHgDA8BgkrBgEEAYI3FQcELzAtBiUrBgEEAYI3FQiGw4x1hJnlUYP9
+gSiFjp9TgpHACWeB3r05lfBDAgFkAgEJMB8GA1UdJQQYMBYGCCsGAQUFBwMEBgorBgEEAYI3CgMM
+MCkGCSsGAQQBgjcVCgQcMBowCgYIKwYBBQUHAwQwDAYKKwYBBAGCNwoDDDBXBgNVHREEUDBOoC0G
+CisGAQQBgjcUAgOgHwwdc3Jpbml2YXMucGFuZHJ1dmFkYUBpbnRlbC5jb22BHXNyaW5pdmFzLnBh
+bmRydXZhZGFAaW50ZWwuY29tMA0GCSqGSIb3DQEBBQUAA4IBAQA7saUQRNb6+9biC882UTQMmxO9
+6cbLa4/jipKD0mQvmUpZn/vcTTfQRKahKyW9mUFdbXvC7dVPvOF3LWTj1PK96TcnEssbWKVmJJ3t
+gNjnoc8Yuj8AsOi5ErV+KXqJBddMyM7QLQprBlvSNLhZaT4OdT+561W4WVkBJf6hNPUwDn48+x/n
+Cb/qTdIehTd+Oh1Rb3wyk2Ll268rRqO6/8cdi2NrrBfMX23wpl0MBCXCUMAD07Otx/bgoTJmLnZi
+LNoR7WuA45dz6gNv6h4156p2qyZ8zmYWhjkR7fwBlUV10bFty4/PLghz2BIEH/QsHuY+QxSfFXCl
+SsaBUrbEHklWMYICFzCCAhMCAQEwgZAweTELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRQwEgYD
+VQQHEwtTYW50YSBDbGFyYTEaMBgGA1UEChMRSW50ZWwgQ29ycG9yYXRpb24xKzApBgNVBAMTIklu
+dGVsIEV4dGVybmFsIEJhc2ljIElzc3VpbmcgQ0EgNEICEzMAAGlQPrQId7Ylrr4AAAAAaVAwCQYF
+Kw4DAhoFAKBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MDUy
+MjE4MDQzMlowIwYJKoZIhvcNAQkEMRYEFOSai5k3Tx5D+9XahZ/Vj8Fbib/TMA0GCSqGSIb3DQEB
+AQUABIIBAKS7y5bF2EB5ZdB4/g04T7/5TGgp57goNnVfrSxheMGRiU2rNPdcllVaib0HeP8FKDla
+xZ6ba2xGhwZs0bRJD0UITgKufBAHzm9kMFR7eBW2RZpY0NOZaojBLRBZjM8hQ0vFie2XoDkL3b/U
+7K6Hb21maRPBptJY2B8WY2pac+oWM1LooTwH//pICpv/yomYxQcJUVE7Rj0Ydq+9pITXs9MVvVnX
+c5W919g1nWxyh1BNdYRDG7KYNtXXBxFHmnGhgM+IXXhfH8w5joJTnP3OG/I6i8W7dMLLasMUuj1C
+y0dRdizjL8mdtMrNPL8xl+fahlBXZn6U0NilaRwe5fsYK34AAAAAAAA=
+
+
+--=-TRjw2x1OutWDwf/DePsT--

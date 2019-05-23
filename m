@@ -2,25 +2,24 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80924278D7
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2019 11:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20DEE278D9
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2019 11:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729996AbfEWJII (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 May 2019 05:08:08 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:34588 "EHLO
+        id S1726913AbfEWJIR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 May 2019 05:08:17 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:34600 "EHLO
         bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726913AbfEWJII (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 May 2019 05:08:08 -0400
+        with ESMTP id S1726429AbfEWJIR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 May 2019 05:08:17 -0400
 Received: from laptop.home (unknown [IPv6:2a01:cb19:8ad6:900:42dd:dd1c:19ee:7c60])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: aragua)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id BC331280175;
-        Thu, 23 May 2019 10:08:05 +0100 (BST)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 3860D26C4A5;
+        Thu, 23 May 2019 10:08:15 +0100 (BST)
 From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
 Cc:     kernel@collabora.com,
         Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        Nick Vaccaro <nvaccaro@chromium.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -31,9 +30,9 @@ Cc:     kernel@collabora.com,
         Lee Jones <lee.jones@linaro.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/3] iio: common: cros_ec_sensors: support protocol v3 message
-Date:   Thu, 23 May 2019 11:07:35 +0200
-Message-Id: <b619ce4f7f2d10ce1ede2b99d7262828f5b24952.1558601329.git.fabien.lahoudere@collabora.com>
+Subject: [PATCH v2 2/3] iio: common: cros_ec_sensors: add sysfs attribute for frequencies
+Date:   Thu, 23 May 2019 11:07:36 +0200
+Message-Id: <f1891f9da2e9362a4efebf0ebce487b9584d4f5a.1558601329.git.fabien.lahoudere@collabora.com>
 X-Mailer: git-send-email 2.19.2
 In-Reply-To: <cover.1558601329.git.fabien.lahoudere@collabora.com>
 References: <cover.1558601329.git.fabien.lahoudere@collabora.com>
@@ -45,180 +44,191 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Version 3 of the EC protocol provides min and max frequencies and fifo
-size for EC sensors.
+In order to provide minimum and maximum frequencies for each sensors,
+we use a standard API (sampling_frequency_available) to provide them
+to userland.
+As cros_ec_sensors_core_init do not manage default attrs, we change
+the signature to let all kind of sensors to provide "struct iio_info"
+with their callback. This change impact drivers using that function.
+
+Then cros_ec_* sensors provides frequencies range in sysfs like this:
+[min step max]
 
 Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
 ---
- .../cros_ec_sensors/cros_ec_sensors_core.c    | 83 ++++++++++++++++++-
- .../linux/iio/common/cros_ec_sensors_core.h   |  4 +
- include/linux/mfd/cros_ec_commands.h          | 21 +++++
- 3 files changed, 107 insertions(+), 1 deletion(-)
+ .../common/cros_ec_sensors/cros_ec_sensors.c  |  6 +--
+ .../cros_ec_sensors/cros_ec_sensors_core.c    | 38 +++++++++++++++++++
+ drivers/iio/light/cros_ec_light_prox.c        |  6 +--
+ drivers/iio/pressure/cros_ec_baro.c           |  6 +--
+ .../linux/iio/common/cros_ec_sensors_core.h   |  4 +-
+ 5 files changed, 50 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+index 17af4e0fd5f8..a0ecee15a6c8 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+@@ -172,7 +172,7 @@ static int cros_ec_sensors_write(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
+-static const struct iio_info ec_sensors_info = {
++static struct iio_info ec_sensors_info = {
+ 	.read_raw = &cros_ec_sensors_read,
+ 	.write_raw = &cros_ec_sensors_write,
+ };
+@@ -195,11 +195,11 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+-	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
++	ret = cros_ec_sensors_core_init(pdev, indio_dev, &ec_sensors_info,
++					true);
+ 	if (ret)
+ 		return ret;
+ 
+-	indio_dev->info = &ec_sensors_info;
+ 	state = iio_priv(indio_dev);
+ 	for (channel = state->channels, i = CROS_EC_SENSOR_X;
+ 	     i < CROS_EC_SENSOR_MAX_AXIS; i++, channel++) {
 diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index 719a0df5aeeb..ac53ea32c1b1 100644
+index ac53ea32c1b1..08fb5d3dc7b5 100644
 --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
 +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -25,6 +25,67 @@ static char *cros_ec_loc[] = {
- 	[MOTIONSENSE_LOC_MAX] = "unknown",
- };
+@@ -10,6 +10,7 @@
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/common/cros_ec_sensors_core.h>
+ #include <linux/iio/iio.h>
++#include <linux/iio/sysfs.h>
+ #include <linux/iio/kfifo_buf.h>
+ #include <linux/iio/trigger_consumer.h>
+ #include <linux/kernel.h>
+@@ -86,8 +87,42 @@ static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
+ 	return ret;
+ }
  
-+static void get_default_min_max_freq(enum motionsensor_type type,
-+				     u32 *min_freq,
-+				     u32 *max_freq)
++/**
++ * cros_ec_sensors_read_freq() - sysfs function to get available frequencies
++ * @dev: Device structure for this device.
++ * @attr: Description of the attribute.
++ * @buf: Incoming string
++ *
++ * The later modes are only relevant to the ring buffer - and depend on current
++ * mode. Note that data sheet gives rather wide tolerances for these so integer
++ * division will give good enough answer and not all chips have them specified
++ * at all.
++ **/
++static ssize_t cros_ec_sensors_read_freq(struct device *dev,
++					 struct device_attribute *attr,
++					 char *buf)
 +{
-+	switch (type) {
-+	case MOTIONSENSE_TYPE_ACCEL:
-+	case MOTIONSENSE_TYPE_GYRO:
-+		*min_freq = 12500;
-+		*max_freq = 100000;
-+		break;
-+	case MOTIONSENSE_TYPE_MAG:
-+		*min_freq = 5000;
-+		*max_freq = 25000;
-+		break;
-+	case MOTIONSENSE_TYPE_PROX:
-+	case MOTIONSENSE_TYPE_LIGHT:
-+		*min_freq = 100;
-+		*max_freq = 50000;
-+		break;
-+	case MOTIONSENSE_TYPE_BARO:
-+		*min_freq = 250;
-+		*max_freq = 20000;
-+		break;
-+	case MOTIONSENSE_TYPE_ACTIVITY:
-+	default:
-+		*min_freq = 0;
-+		*max_freq = 0;
-+		break;
-+	}
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
++	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
++
++	return snprintf(buf, PAGE_SIZE, "[%d 1 %d]\n", state->min_freq,
++			state->max_freq);
 +}
 +
-+static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
-+					     u16 cmd_offset, u16 cmd, u32 *mask)
-+{
-+	struct {
-+		struct cros_ec_command msg;
-+		union {
-+			struct ec_params_get_cmd_versions params;
-+			struct ec_response_get_cmd_versions resp;
-+		};
-+	} __packed buf;
-+	struct ec_params_get_cmd_versions *params = &buf.params;
-+	struct ec_response_get_cmd_versions *resp = &buf.resp;
-+	struct cros_ec_command *msg = &buf.msg;
-+	int ret;
++static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(cros_ec_sensors_read_freq);
 +
-+	memset(&buf, 0, sizeof(buf));
-+	msg->command = EC_CMD_GET_CMD_VERSIONS + cmd_offset;
-+	msg->insize = sizeof(*resp);
-+	msg->outsize = sizeof(*params);
-+	params->cmd = cmd;
-+	ret = cros_ec_cmd_xfer_status(ec_dev, msg);
-+	if (ret >= 0) {
-+		if (msg->result == EC_RES_SUCCESS)
-+			*mask = resp->version_mask;
-+		else
-+			*mask = 0;
-+	}
-+	return ret;
-+}
++static struct attribute *cros_ec_sensors_attributes[] = {
++	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
++	NULL,
++};
++
++static const struct attribute_group cros_ec_sensors_attribute_group = {
++	.attrs = cros_ec_sensors_attributes,
++};
 +
  int cros_ec_sensors_core_init(struct platform_device *pdev,
  			      struct iio_dev *indio_dev,
++			      struct iio_info *info,
  			      bool physical_device)
-@@ -33,6 +94,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
- 	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
- 	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
-+	u32 ver_mask;
-+	int ret;
- 
- 	platform_set_drvdata(pdev, indio_dev);
- 
-@@ -47,8 +110,16 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 
- 	mutex_init(&state->cmd_lock);
- 
-+	/* determine what version of MOTIONSENSE CMD EC has */
-+	ret = cros_ec_get_host_cmd_version_mask(state->ec,
-+						ec->cmd_offset,
-+						EC_CMD_MOTION_SENSE_CMD,
-+						&ver_mask);
-+	if (ret < 0 || ver_mask == 0)
-+		return -ENODEV;
-+
- 	/* Set up the host command structure. */
--	state->msg->version = 2;
-+	state->msg->version = fls(ver_mask) - 1;
- 	state->msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
- 	state->msg->outsize = sizeof(struct ec_params_motion_sense);
- 
-@@ -66,6 +137,16 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -149,6 +184,9 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
  		}
- 		state->type = state->resp->info.type;
- 		state->loc = state->resp->info.location;
-+		if (state->msg->version < 3) {
-+			get_default_min_max_freq(state->resp->info.type,
-+						 &state->min_freq,
-+						 &state->max_freq);
-+		} else {
-+			state->min_freq =
-+				state->resp->info_3.min_frequency;
-+			state->max_freq =
-+				state->resp->info_3.max_frequency;
-+		}
  	}
  
++	info->attrs = &cros_ec_sensors_attribute_group;
++	indio_dev->info = info;
++
  	return 0;
+ }
+ EXPORT_SYMBOL_GPL(cros_ec_sensors_core_init);
+diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
+index 308ee6ff2e22..1772e339cf14 100644
+--- a/drivers/iio/light/cros_ec_light_prox.c
++++ b/drivers/iio/light/cros_ec_light_prox.c
+@@ -161,7 +161,7 @@ static int cros_ec_light_prox_write(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
+-static const struct iio_info cros_ec_light_prox_info = {
++static struct iio_info cros_ec_light_prox_info = {
+ 	.read_raw = &cros_ec_light_prox_read,
+ 	.write_raw = &cros_ec_light_prox_write,
+ };
+@@ -184,11 +184,11 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+-	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
++	ret = cros_ec_sensors_core_init(pdev, indio_dev,
++					&cros_ec_light_prox_info, true);
+ 	if (ret)
+ 		return ret;
+ 
+-	indio_dev->info = &cros_ec_light_prox_info;
+ 	state = iio_priv(indio_dev);
+ 	state->core.type = state->core.resp->info.type;
+ 	state->core.loc = state->core.resp->info.location;
+diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
+index 034ce98d6e97..cd3be0f16226 100644
+--- a/drivers/iio/pressure/cros_ec_baro.c
++++ b/drivers/iio/pressure/cros_ec_baro.c
+@@ -107,7 +107,7 @@ static int cros_ec_baro_write(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
+-static const struct iio_info cros_ec_baro_info = {
++static struct iio_info cros_ec_baro_info = {
+ 	.read_raw = &cros_ec_baro_read,
+ 	.write_raw = &cros_ec_baro_write,
+ };
+@@ -130,11 +130,11 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+-	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
++	ret = cros_ec_sensors_core_init(pdev, indio_dev, &cros_ec_baro_info,
++					true);
+ 	if (ret)
+ 		return ret;
+ 
+-	indio_dev->info = &cros_ec_baro_info;
+ 	state = iio_priv(indio_dev);
+ 	state->core.type = state->core.resp->info.type;
+ 	state->core.loc = state->core.resp->info.location;
 diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-index ce16445411ac..32fd08bbcf52 100644
+index 32fd08bbcf52..f170a72ac08d 100644
 --- a/include/linux/iio/common/cros_ec_sensors_core.h
 +++ b/include/linux/iio/common/cros_ec_sensors_core.h
-@@ -78,6 +78,10 @@ struct cros_ec_sensors_core_state {
- 				    unsigned long scan_mask, s16 *data);
- 
- 	int curr_sampl_freq;
-+
-+	/* Min and Max Sampling Frequency in mHz */
-+	u32 min_freq;
-+	u32 max_freq;
- };
+@@ -114,12 +114,14 @@ struct platform_device;
+  * cros_ec_sensors_core_init() - basic initialization of the core structure
+  * @pdev:		platform device created for the sensors
+  * @indio_dev:		iio device structure of the device
++ * @info:		iio info structure with read and write callback
+  * @physical_device:	true if the device refers to a physical device
+  *
+  * Return: 0 on success, -errno on failure.
+  */
+ int cros_ec_sensors_core_init(struct platform_device *pdev,
+-			      struct iio_dev *indio_dev, bool physical_device);
++			      struct iio_dev *indio_dev, struct iio_info *info,
++			      bool physical_device);
  
  /**
-diff --git a/include/linux/mfd/cros_ec_commands.h b/include/linux/mfd/cros_ec_commands.h
-index dcec96f01879..db2e3a9a656e 100644
---- a/include/linux/mfd/cros_ec_commands.h
-+++ b/include/linux/mfd/cros_ec_commands.h
-@@ -1744,6 +1744,27 @@ struct ec_response_motion_sense {
- 			uint8_t chip;
- 		} info;
- 
-+		/* Used for MOTIONSENSE_CMD_INFO version 3 */
-+		struct __ec_todo_unpacked {
-+			/* Should be element of enum motionsensor_type. */
-+			uint8_t type;
-+
-+			/* Should be element of enum motionsensor_location. */
-+			uint8_t location;
-+
-+			/* Should be element of enum motionsensor_chip. */
-+			uint8_t chip;
-+
-+			/* Minimum sensor sampling frequency */
-+			uint32_t min_frequency;
-+
-+			/* Maximum sensor sampling frequency */
-+			uint32_t max_frequency;
-+
-+			/* Reserved field */
-+			uint32_t reserved;
-+		} info_3;
-+
- 		/* Used for MOTIONSENSE_CMD_DATA */
- 		struct ec_response_motion_sensor_data data;
- 
+  * cros_ec_sensors_capture() - the trigger handler function
 -- 
 2.20.1
 

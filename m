@@ -2,329 +2,243 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1C6A27D35
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2019 14:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5201927ED9
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2019 15:54:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730806AbfEWMvc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 May 2019 08:51:32 -0400
-Received: from mail-eopbgr700074.outbound.protection.outlook.com ([40.107.70.74]:60705
-        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730791AbfEWMvc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 23 May 2019 08:51:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iGD4cNaT7jdMxQcvTvR52dorUmRa/pn5ss7LH7wblAY=;
- b=QuJJEI07IepPBEtnEnnjgMWnHtm6pLHRZesm4kiTLM4LFbK3yA7C3mrN6jZX/wHajPt/IEi2Vk76RdWWzxvRxflvTokAfDhlvcVvbifzPMjwKWmgGgZlHn4eaxUWIgFhdBObqeaIyAkN7RvKTPxqh3JhW5WtA7UaCgmsYI/U52o=
-Received: from BN6PR03CA0115.namprd03.prod.outlook.com (2603:10b6:404:10::29)
- by BL2PR03MB547.namprd03.prod.outlook.com (2a01:111:e400:c23::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1922.16; Thu, 23 May
- 2019 12:51:28 +0000
-Received: from BL2NAM02FT042.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e46::207) by BN6PR03CA0115.outlook.office365.com
- (2603:10b6:404:10::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1922.16 via Frontend
- Transport; Thu, 23 May 2019 12:51:28 +0000
-Authentication-Results: spf=pass (sender IP is 137.71.25.57)
- smtp.mailfrom=analog.com; rockwellcollins.com; dkim=none (message not signed)
- header.d=none;rockwellcollins.com; dmarc=bestguesspass action=none
- header.from=analog.com;
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
-Received: from nwd2mta2.analog.com (137.71.25.57) by
- BL2NAM02FT042.mail.protection.outlook.com (10.152.76.193) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1922.16
- via Frontend Transport; Thu, 23 May 2019 12:51:28 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x4NCpR0c019964
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Thu, 23 May 2019 05:51:27 -0700
-Received: from NWD2MBX7.ad.analog.com ([fe80::190e:f9c1:9a22:9663]) by
- NWD2HUBCAS7.ad.analog.com ([fe80::595b:ced1:cc03:539d%12]) with mapi id
- 14.03.0415.000; Thu, 23 May 2019 08:51:27 -0400
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "ardeleanalex@gmail.com" <ardeleanalex@gmail.com>,
-        "adam.michaelis@rockwellcollins.com" 
-        <adam.michaelis@rockwellcollins.com>
-CC:     "lars@metafoo.de" <lars@metafoo.de>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "charles-antoine.couret@essensium.com" 
-        <charles-antoine.couret@essensium.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "clayton.shotwell@rockwellcollins.com" 
-        <clayton.shotwell@rockwellcollins.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "brandon.maier@rockwellcollins.com" 
-        <brandon.maier@rockwellcollins.com>
-Subject: Re: [PATCH v3 2/5] iio: ad7949: Support internal Vref
-Thread-Topic: [PATCH v3 2/5] iio: ad7949: Support internal Vref
-Thread-Index: AQHVEWDNvfYmYLKgjE+MYki1LumTk6Z47MKA
-Date:   Thu, 23 May 2019 12:51:26 +0000
-Message-ID: <3db30e68aa1407ab03a20c485bda6acf0a991b38.camel@analog.com>
-References: <1557759185-167857-1-git-send-email-adam.michaelis@rockwellcollins.com>
-         <1557759185-167857-2-git-send-email-adam.michaelis@rockwellcollins.com>
-         <CA+U=DsoQRQJoWrP3shnDyRVUxcgYCpeiQtusFHWqVAeWRmwarQ@mail.gmail.com>
-In-Reply-To: <CA+U=DsoQRQJoWrP3shnDyRVUxcgYCpeiQtusFHWqVAeWRmwarQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.50.1.244]
-x-adiroutedonprem: True
+        id S1730719AbfEWNyP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 May 2019 09:54:15 -0400
+Received: from mail.fixposition.ch ([212.51.146.252]:51390 "EHLO
+        mail.fixposition.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730323AbfEWNyP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 May 2019 09:54:15 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.fixposition.ch (Postfix) with ESMTP id 3BAA81FD7B;
+        Thu, 23 May 2019 15:54:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fixposition.ch;
+        s=mail; t=1558619652;
+        bh=PA8e0mAyI05eeyPdXbeaUuDGGdyjfTjWwscmDMjVUoc=;
+        h=In-Reply-To:From:Date:Cc:To:Subject:From;
+        b=TbW6+/HNtYT4iA3Zlv2GRktYYVo8WRtdfHUo2cJZhfQ9uzv5sgYFOrH1foCpqR0Y/
+         BYFETHtc/PvCR7wKbgnSKlD+w7FYOFI1mfV80lXCJ0YTdrdTBayjxJ6L1cFy7pUelA
+         QzcefFh4N6H2N13IsJVxPNxOIfWOFI3OIxuGeLBMVb8oweeHL+vEOWBEYyduh5WGqN
+         6EVvZ5BI592/ZapYwo/HwsQSxpVmHLPoQBYSuXoU6lP5+aEvN33765+8fnC+EkflXm
+         GZpDvCp1j7RbbASmNxPVitTstTU/jsy+IFC0bZAjOIH2lSkg3Pet5quuGbCadAoW+w
+         80c1XLAa97aIQ==
+X-Virus-Scanned: Debian amavisd-new at fixposition.ch
+Received: from mail.fixposition.ch ([127.0.0.1])
+        by localhost (mail.fixposition.ch [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id x8T_B6QxQIWG; Thu, 23 May 2019 15:54:09 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.fixposition.ch (Postfix) with ESMTP id 1C8A51FF91;
+        Thu, 23 May 2019 15:54:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fixposition.ch;
+        s=mail; t=1558619649;
+        bh=PA8e0mAyI05eeyPdXbeaUuDGGdyjfTjWwscmDMjVUoc=;
+        h=In-Reply-To:From:Date:Cc:To:Subject:From;
+        b=RNvdWUXDs4JozcTX5gUu7ovxs4aHnKIH+PZ1JX7bkcPMID0+HUINTM73aBn7mAdQj
+         A9u0DdPwp7kE0NBIS7gqmwxvg78JWJp2pIZOwngjHsNZDW/HmZLxSf1xuMryks0fg8
+         zPWRLd1Scn/HcnQS001jo+ZRqC3vBbte2MON66mR6+Q6XUM1GDti3hw3t7rA1eoEFC
+         WTOZ/XHWECmPVWHonKQ3TC9i39OPOPBd4RNxL/4y3dXnA2JdyJE/TrO3pOYMRNxZkN
+         WPK83fWZx+JSCb3gaxTDa6Mb9ovP2qS8EcsAc6xT5wHuGW0qy6HLTQZJx6az9Sb/Z0
+         g1jTrqU+T5x8g==
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <E4AD9547280C1B49AF942CF252AC4E55@analog.com>
-Content-Transfer-Encoding: base64
+In-Reply-To: <MN2PR12MB337375FCA3AAA2EB5F08B15AC4010@MN2PR12MB3373.namprd12.prod.outlook.com>
+From:   "Andreea Lutac" <andreea.lutac@fixposition.ch>
+X-Forward: 82.130.71.40
+Date:   Thu, 23 May 2019 15:54:09 +0200
+Cc:     =?utf-8?q?stevemo=40skydio=2Ecom?= <stevemo@skydio.com>,
+        =?utf-8?q?jic23=40kernel=2Eorg?= <jic23@kernel.org>,
+        =?utf-8?q?knaack=2Eh=40gmx=2Ede?= <knaack.h@gmx.de>,
+        =?utf-8?q?lars=40metafoo=2Ede?= <lars@metafoo.de>,
+        =?utf-8?q?pmeerw=40pmeerw=2Enet?= <pmeerw@pmeerw.net>,
+        =?utf-8?q?linux-iio=40vger=2Ekernel=2Eorg?= 
+        <linux-iio@vger.kernel.org>,
+        =?utf-8?q?linux-kernel=40vger=2Ekernel=2Eorg?= 
+        <linux-kernel@vger.kernel.org>
+To:     "Jean-Baptiste Maneyrol" <JManeyrol@invensense.com>
 MIME-Version: 1.0
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(346002)(396003)(136003)(376002)(39860400002)(2980300002)(199004)(189003)(316002)(7636002)(246002)(7736002)(50466002)(2501003)(53546011)(2906002)(102836004)(4326008)(478600001)(8676002)(6246003)(14454004)(8936002)(14444005)(47776003)(86362001)(126002)(23676004)(2486003)(186003)(7696005)(2616005)(476003)(118296001)(486006)(436003)(76176011)(426003)(70586007)(336012)(70206006)(446003)(110136005)(54906003)(356004)(26005)(305945005)(36756003)(11346002)(229853002)(7416002)(5660300002)(106002)(6116002)(3846002);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR03MB547;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fe09db0d-ac6e-423b-5ff2-08d6df7d5f5e
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4709054)(2017052603328)(7193020);SRVR:BL2PR03MB547;
-X-MS-TrafficTypeDiagnostic: BL2PR03MB547:
-X-Microsoft-Antispam-PRVS: <BL2PR03MB547366971D6DB8C1A39E680F9010@BL2PR03MB547.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-Forefront-PRVS: 00462943DE
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: n65el0+9sH2j86f5up5DecEDFJXY0LU8MUeLTqJSzpuLAqvYv9nbbpJdhy8te18qCyiwI+S2JgZu8iSWEhaJCZrroclyWa2tXjMubMnAO0eclU4EJoJc0YLojrUB6eITu02WG3b+plmGmhsKHlxCnuev5zA8UCViZL+wsDkW4gU/CD3RCVVu/StwFUh91WakRjOiniEy5FzFC9mzm3VVn+j9ahDUmNa15byHdHb0CcajcEHo6N448dAjPY/MpxYLZi3r+pMXPx2KYscs3aeuC35GND6t/yNb78PK39IvrJZYxNUIWfsq2MT2kDEmy3rqjJmw4fNXVfcb2q2k5T0RDqIMJZ0vGcZw5PB25MOWBfG5LD4QP37X9cWlXitwRmY/qdni0HHSusMaxHjZ2vnyAWGCMKrGQAcZu8ctRkvblF8=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2019 12:51:28.2429
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe09db0d-ac6e-423b-5ff2-08d6df7d5f5e
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR03MB547
+Message-ID: <42bd-5ce6a600-59-ca9e8b0@181727209>
+Subject: =?utf-8?q?Re=3A?= ICM20602 buffer issues with the =?utf-8?q?inv=5Fmpu6050?= 
+ driver
+User-Agent: SOGoMail 4.0.7
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVGh1LCAyMDE5LTA1LTIzIGF0IDE1OjEyICswMzAwLCBBbGV4YW5kcnUgQXJkZWxlYW4gd3Jv
-dGU6DQo+IFtFeHRlcm5hbF0NCj4gDQo+IA0KPiBPbiBNb24sIE1heSAxMywgMjAxOSBhdCA3OjE2
-IFBNIEFkYW0gTWljaGFlbGlzDQo+IDxhZGFtLm1pY2hhZWxpc0Byb2Nrd2VsbGNvbGxpbnMuY29t
-PiB3cm90ZToNCj4gPiANCj4gPiBBZGRpbmcgY29uZmlndXJhYmxlICh2aWEgZGV2aWNlIHRyZWUp
-IG9wdGlvbnMgdG8gc2VsZWN0IG9uZSBvZiB0aGUgdHdvDQo+ID4gZXh0ZXJuYWwgcmVmZXJlbmNl
-IHZvbHRhZ2VzIChSRUZJTiBhcyBkZWZhdWx0LCBvcmlnaW5hbCBpbXBsZW1lbnRhdGlvbikNCj4g
-PiBvciBvbmUgb2YgdGhlIHR3byBpbnRlcm5hbCByZWZlcmVuY2Ugdm9sdGFnZXMgcHJvdmlkZWQg
-YnkgdGhlIEFENzk0OQ0KPiA+IHBhcnQgZmFtaWx5Lg0KPiA+IA0KPiANCg0KU28sIEkgbWFuYWdl
-ZCB0byBnbyB0aHJvdWdoIHRoZSBwYXRjaGVzLg0KDQpJJ2xsIHByb3Bvc2UgdG8gcmUtb3JnYW5p
-emUgdGhlIHBhdGNoZXMgaW50byBzbWFsbGVyIGdyb3Vwcy4NCg0KTGV0J3MgdGFrZSB0aGlzIHBh
-dGNoICsgdGhlIGRldmljZS10cmVlIHBhdGNoIChhc3NvY2lhdGVkIHdpdGggdGhpcykgaW50byBh
-bm90aGVyIHNlcmllcy4NCkFkZGluZyBzdXBwb3J0IGZvciBpbnRlcm5hbCBWcmVmIHNlZW1zIHBy
-ZXR0eSBzdHJhaWdodGZvcndhcmQgdG8gbWUuDQoNClRoZSBTUEkgY29tbXVuaWNhdGlvbiBwYXRj
-aGVzIHNlZW0gd2VpcmQgYW5kIHJlcXVpcmUgbW9yZSB0aG91Z2h0L2RpZ2dpbmcgb24gb3VyIHNp
-ZGUgYXMgd2VsbC4NCg0KSSdsbCB3YWl0IGZvciBTdGVmYW4gdG8gYWRkIGhpcyBpbnB1dCBhcyB3
-ZWxsLg0KDQpUaGFua3MNCkFsZXgNCg0KDQo+IEkgd291bGQgcnVuIGEgLi9zY3JpcHRzL2NoZWNr
-cGF0Y2gucGwgb24gdGhpcyBwYXRjaCAobWF5YmUgYWxzbyBvbiB0aGUgc2VyaWVzKS4NCj4gSSB3
-b3VsZCBvbmx5IGNvbXBsYWluIGFib3V0IHN0eWxlLXN0dWZmIChvbiB0aGlzIHBhdGNoKSwgYnV0
-IHRob3NlDQo+IHdvdWxkIGFsc28gZ2V0IHJlcG9ydGVkIGJ5IGNoZWNrcGF0Y2guDQo+IA0KPiA+
-IFNpZ25lZC1vZmYtYnk6IEFkYW0gTWljaGFlbGlzIDxhZGFtLm1pY2hhZWxpc0Byb2Nrd2VsbGNv
-bGxpbnMuY29tPg0KPiA+IC0tLQ0KPiA+ICAgICAgICAgVjI6DQo+ID4gICAgICAgICAtIEFkZCBz
-b21lIGRlZmluZXMgdG8gcmVkdWNlIHVzZSBvZiBtYWdpYyBudW1iZXJzLg0KPiA+ICAgICAgICAg
-VjM6DQo+ID4gICAgICAgICAtIEFkZCBiaXRmaWVsZC5oIG1hY3JvcyB0aHJvdWdob3V0Lg0KPiA+
-ICAgICAgICAgLSBSZS10aGluayB1c2FnZSBvZiBkZXZpY2UgdHJlZSBwYXJhbWV0ZXIgdG8gZm9j
-dXMgb24gdGhlDQo+ID4gICAgICAgICBhY3R1YWwgcmVmZXJlbmNlIHNvdXJjZXMgaW5zdGVhZCBv
-ZiB0aGUgcmF3IGhhcmR3YXJlDQo+ID4gICAgICAgICBjb25maWd1cmF0aW9uLg0KPiA+IC0tLQ0K
-PiA+ICBkcml2ZXJzL2lpby9hZGMvYWQ3OTQ5LmMgfCAxMzggKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKy0tLS0tLS0tLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDExMSBpbnNl
-cnRpb25zKCspLCAyNyBkZWxldGlvbnMoLSkNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9paW8vYWRjL2FkNzk0OS5jIGIvZHJpdmVycy9paW8vYWRjL2FkNzk0OS5jDQo+ID4gaW5kZXgg
-YzdmZTI3YWEyNTE5Li5iNjQ4YjFhYjk1NTkgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9paW8v
-YWRjL2FkNzk0OS5jDQo+ID4gKysrIGIvZHJpdmVycy9paW8vYWRjL2FkNzk0OS5jDQo+ID4gQEAg
-LTExLDEyICsxMSwyMyBAQA0KPiA+ICAjaW5jbHVkZSA8bGludXgvbW9kdWxlLmg+DQo+ID4gICNp
-bmNsdWRlIDxsaW51eC9yZWd1bGF0b3IvY29uc3VtZXIuaD4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4
-L3NwaS9zcGkuaD4NCj4gPiAtDQo+ID4gLSNkZWZpbmUgQUQ3OTQ5X01BU0tfQ0hBTk5FTF9TRUwg
-ICAgICAgICAgICAgICAgR0VOTUFTSyg5LCA3KQ0KPiA+IC0jZGVmaW5lIEFENzk0OV9NQVNLX1RP
-VEFMICAgICAgICAgICAgICBHRU5NQVNLKDEzLCAwKQ0KPiA+IC0jZGVmaW5lIEFENzk0OV9PRkZT
-RVRfQ0hBTk5FTF9TRUwgICAgICA3DQo+ID4gLSNkZWZpbmUgQUQ3OTQ5X0NGR19SRUFEX0JBQ0sg
-ICAgICAgICAgIDB4MQ0KPiA+IC0jZGVmaW5lIEFENzk0OV9DRkdfUkVHX1NJWkVfQklUUyAgICAg
-ICAxNA0KPiA+ICsjaW5jbHVkZSA8bGludXgvb2YuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L2Jp
-dGZpZWxkLmg+DQo+ID4gKw0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfUkVHX1NJWkVfQklUUyAg
-ICAgICAgICAgMTQNCj4gPiArI2RlZmluZSBBRDc5NDlfQ0ZHX01BU0tfVE9UQUwgICAgICAgICAg
-ICAgIEdFTk1BU0soMTMsIDApDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19BUFBMWSAgICAgICAg
-ICAgICAgICAgICBCSVQoMTMpDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19DSEFOX0NGRyAgICAg
-ICAgICAgICAgICBHRU5NQVNLKDEyLCAxMCkNCj4gPiArI2RlZmluZSBBRDc5NDlfQ0ZHX0NIQU5f
-Q0ZHX1VOSVBPTEFSX0dORCAgIDB4Nw0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfQ0hBTl9TRUwg
-ICAgICAgICAgICAgICAgR0VOTUFTSyg5LCA3KQ0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfQlcg
-ICAgICAgICAgICAgICAgICAgICAgQklUKDYpDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19CV19G
-VUxMICAgICAgICAgICAgICAgICAxDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19SRUZfU0VMICAg
-ICAgICAgICAgICAgICBHRU5NQVNLKDUsIDMpDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19TRVEg
-ICAgICAgICAgICAgICAgICAgICBHRU5NQVNLKDIsIDEpDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NG
-R19TRVFfRElTQUJMRUQgICAgICAgICAgICAweDANCj4gPiArI2RlZmluZSBBRDc5NDlfQ0ZHX1JF
-QURCQUNLICAgICAgICAgICAgICAgIEJJVCgwKQ0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfUkVB
-REJBQ0tfRU4gICAgICAgICAgICAgMA0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfUkVBREJBQ0tf
-RElTICAgICAgICAgICAgMQ0KPiA+IA0KPiA+ICBlbnVtIHsNCj4gPiAgICAgICAgIElEX0FENzk0
-OSA9IDAsDQo+ID4gQEAgLTI0LDYgKzM1LDE4IEBAIGVudW0gew0KPiA+ICAgICAgICAgSURfQUQ3
-Njg5LA0KPiA+ICB9Ow0KPiA+IA0KPiA+ICtlbnVtIGFkNzk0OV9yZWZfc2VsIHsNCj4gPiArICAg
-ICAgIEFENzk0OV9SRUZfMlY1ID0gMCwgLyogMi41ViBpbnRlcm5hbCByZWYgKyB0ZW1wIHNlbnNv
-ciAqLw0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl80VjAsIC8qIDQuMDk2ViBpbnRlcm5hbCByZWYg
-KyB0ZW1wIHNlbnNvciAqLw0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl9FWFRfVEVNUCwgLyogUkVG
-ICsgdGVtcCBzZW5zb3IgKi8NCj4gPiArICAgICAgIEFENzk0OV9SRUZfRVhUX1RFTVBfQlVGLCAv
-KiBSRUZJTiArIHRlbXAgc2Vuc29yICovDQo+ID4gKyAgICAgICBBRDc5NDlfUkVGX1JTUlZfNCwN
-Cj4gPiArICAgICAgIEFENzk0OV9SRUZfUlNSVl81LA0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl9F
-WFQsIC8qIFJFRiwgbm8gdGVtcCAqLw0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl9FWFRfQlVGLCAv
-KiBSRUZJTiwgbm8gdGVtcCAqLw0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl9NQVgsDQo+ID4gK307
-DQo+ID4gKw0KPiA+ICBzdHJ1Y3QgYWQ3OTQ5X2FkY19zcGVjIHsNCj4gPiAgICAgICAgIHU4IG51
-bV9jaGFubmVsczsNCj4gPiAgICAgICAgIHU4IHJlc29sdXRpb247DQo+ID4gQEAgLTQxLDYgKzY0
-LDcgQEAgc3RydWN0IGFkNzk0OV9hZGNfc3BlYyB7DQo+ID4gICAqIEB2cmVmOiByZWd1bGF0b3Ig
-Z2VuZXJhdGluZyBWcmVmDQo+ID4gICAqIEBpaW9fZGV2OiByZWZlcmVuY2UgdG8gaWlvIHN0cnVj
-dHVyZQ0KPiA+ICAgKiBAc3BpOiByZWZlcmVuY2UgdG8gc3BpIHN0cnVjdHVyZQ0KPiA+ICsgKiBA
-cmVmX3NlbDogc2VsZWN0ZWQgcmVmZXJlbmNlIHZvbHRhZ2Ugc291cmNlDQo+ID4gICAqIEByZXNv
-bHV0aW9uOiByZXNvbHV0aW9uIG9mIHRoZSBjaGlwDQo+ID4gICAqIEBjZmc6IGNvcHkgb2YgdGhl
-IGNvbmZpZ3VyYXRpb24gcmVnaXN0ZXINCj4gPiAgICogQGN1cnJlbnRfY2hhbm5lbDogY3VycmVu
-dCBjaGFubmVsIGluIHVzZQ0KPiA+IEBAIC01MSw2ICs3NSw3IEBAIHN0cnVjdCBhZDc5NDlfYWRj
-X2NoaXAgew0KPiA+ICAgICAgICAgc3RydWN0IHJlZ3VsYXRvciAqdnJlZjsNCj4gPiAgICAgICAg
-IHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXY7DQo+ID4gICAgICAgICBzdHJ1Y3Qgc3BpX2Rldmlj
-ZSAqc3BpOw0KPiA+ICsgICAgICAgZW51bSBhZDc5NDlfcmVmX3NlbCByZWZfc2VsOw0KPiA+ICAg
-ICAgICAgdTggcmVzb2x1dGlvbjsNCj4gPiAgICAgICAgIHUxNiBjZmc7DQo+ID4gICAgICAgICB1
-bnNpZ25lZCBpbnQgY3VycmVudF9jaGFubmVsOw0KPiA+IEBAIC01OSw3ICs4NCw3IEBAIHN0cnVj
-dCBhZDc5NDlfYWRjX2NoaXAgew0KPiA+IA0KPiA+ICBzdGF0aWMgYm9vbCBhZDc5NDlfc3BpX2Nm
-Z19pc19yZWFkX2JhY2soc3RydWN0IGFkNzk0OV9hZGNfY2hpcCAqYWQ3OTQ5X2FkYykNCj4gPiAg
-ew0KPiA+IC0gICAgICAgaWYgKCEoYWQ3OTQ5X2FkYy0+Y2ZnICYgQUQ3OTQ5X0NGR19SRUFEX0JB
-Q0spKQ0KPiA+ICsgICAgICAgaWYgKCEoYWQ3OTQ5X2FkYy0+Y2ZnICYgQUQ3OTQ5X0NGR19SRUFE
-QkFDSykpDQo+ID4gICAgICAgICAgICAgICAgIHJldHVybiB0cnVlOw0KPiA+IA0KPiA+ICAgICAg
-ICAgcmV0dXJuIGZhbHNlOw0KPiA+IEBAIC05MSw3ICsxMTYsNyBAQCBzdGF0aWMgaW50IGFkNzk0
-OV9zcGlfd3JpdGVfY2ZnKHN0cnVjdCBhZDc5NDlfYWRjX2NoaXAgKmFkNzk0OV9hZGMsIHUxNiB2
-YWwsDQo+ID4gICAgICAgICB9Ow0KPiA+IA0KPiA+ICAgICAgICAgYWQ3OTQ5X2FkYy0+Y2ZnID0g
-KHZhbCAmIG1hc2spIHwgKGFkNzk0OV9hZGMtPmNmZyAmIH5tYXNrKTsNCj4gPiAtICAgICAgIGFk
-Nzk0OV9hZGMtPmJ1ZmZlciA9IGFkNzk0OV9hZGMtPmNmZyA8PCBzaGlmdDsNCj4gPiArICAgICAg
-IGFkNzk0OV9hZGMtPmJ1ZmZlciA9IChhZDc5NDlfYWRjLT5jZmcgJiBBRDc5NDlfQ0ZHX01BU0tf
-VE9UQUwpIDw8IHNoaWZ0Ow0KPiA+ICAgICAgICAgc3BpX21lc3NhZ2VfaW5pdF93aXRoX3RyYW5z
-ZmVycygmbXNnLCB0eCwgMSk7DQo+ID4gICAgICAgICByZXQgPSBzcGlfc3luYyhhZDc5NDlfYWRj
-LT5zcGksICZtc2cpOw0KPiA+IA0KPiA+IEBAIC0xMzYsOCArMTYxLDggQEAgc3RhdGljIGludCBh
-ZDc5NDlfc3BpX3JlYWRfY2hhbm5lbChzdHJ1Y3QgYWQ3OTQ5X2FkY19jaGlwICphZDc5NDlfYWRj
-LCBpbnQgKnZhbCwNCj4gPiAgICAgICAgIH07DQo+ID4gDQo+ID4gICAgICAgICByZXQgPSBhZDc5
-NDlfc3BpX3dyaXRlX2NmZyhhZDc5NDlfYWRjLA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgY2hhbm5lbCA8PCBBRDc5NDlfT0ZGU0VUX0NIQU5ORUxfU0VMLA0KPiA+IC0g
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQUQ3OTQ5X01BU0tfQ0hBTk5FTF9TRUwp
-Ow0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRklFTERfUFJFUChBRDc5
-NDlfQ0ZHX0NIQU5fU0VMLCBjaGFubmVsKSwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIEFENzk0OV9DRkdfQ0hBTl9TRUwpOw0KPiA+ICAgICAgICAgaWYgKHJldCkNCj4g
-PiAgICAgICAgICAgICAgICAgcmV0dXJuIHJldDsNCj4gPiANCj4gPiBAQCAtMjA0LDExICsyMjks
-MjAgQEAgc3RhdGljIGludCBhZDc5NDlfc3BpX3JlYWRfcmF3KHN0cnVjdCBpaW9fZGV2ICppbmRp
-b19kZXYsDQo+ID4gICAgICAgICAgICAgICAgIHJldHVybiBJSU9fVkFMX0lOVDsNCj4gPiANCj4g
-PiAgICAgICAgIGNhc2UgSUlPX0NIQU5fSU5GT19TQ0FMRToNCj4gPiAtICAgICAgICAgICAgICAg
-cmV0ID0gcmVndWxhdG9yX2dldF92b2x0YWdlKGFkNzk0OV9hZGMtPnZyZWYpOw0KPiA+IC0gICAg
-ICAgICAgICAgICBpZiAocmV0IDwgMCkNCj4gPiAtICAgICAgICAgICAgICAgICAgICAgICByZXR1
-cm4gcmV0Ow0KPiA+ICsgICAgICAgICAgICAgICBpZiAoYWQ3OTQ5X2FkYy0+dnJlZikgew0KPiA+
-ICsgICAgICAgICAgICAgICAgICAgICAgIHJldCA9IHJlZ3VsYXRvcl9nZXRfdm9sdGFnZShhZDc5
-NDlfYWRjLT52cmVmKTsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBpZiAocmV0IDwgMCkN
-Cj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiByZXQ7DQo+ID4gKw0K
-PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICp2YWwgPSByZXQgLyA1MDAwOw0KPiA+ICsgICAg
-ICAgICAgICAgICB9IGVsc2UgaWYgKGFkNzk0OV9hZGMtPnJlZl9zZWwgPT0gQUQ3OTQ5X1JFRl8y
-VjUpIHsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAqdmFsID0gMjUwMDsNCj4gPiArICAg
-ICAgICAgICAgICAgfSBlbHNlIGlmIChhZDc5NDlfYWRjLT5yZWZfc2VsID09IEFENzk0OV9SRUZf
-NFYwKSB7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgKnZhbCA9IDQwOTY7DQo+ID4gKyAg
-ICAgICAgICAgICAgIH0gZWxzZSB7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJu
-IC1FSU5WQUw7DQo+ID4gKyAgICAgICAgICAgICAgIH0NCj4gPiANCj4gPiAtICAgICAgICAgICAg
-ICAgKnZhbCA9IHJldCAvIDUwMDA7DQo+ID4gICAgICAgICAgICAgICAgIHJldHVybiBJSU9fVkFM
-X0lOVDsNCj4gPiAgICAgICAgIH0NCj4gPiANCj4gPiBAQCAtMjI2LDcgKzI2MCw4IEBAIHN0YXRp
-YyBpbnQgYWQ3OTQ5X3NwaV9yZWdfYWNjZXNzKHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYsDQo+
-ID4gICAgICAgICAgICAgICAgICpyZWFkdmFsID0gYWQ3OTQ5X2FkYy0+Y2ZnOw0KPiA+ICAgICAg
-ICAgZWxzZQ0KPiA+ICAgICAgICAgICAgICAgICByZXQgPSBhZDc5NDlfc3BpX3dyaXRlX2NmZyhh
-ZDc5NDlfYWRjLA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgIHdyaXRldmFsICYgQUQ3OTQ5
-X01BU0tfVE9UQUwsIEFENzk0OV9NQVNLX1RPVEFMKTsNCj4gPiArICAgICAgICAgICAgICAgICAg
-ICAgICB3cml0ZXZhbCAmIEFENzk0OV9DRkdfTUFTS19UT1RBTCwNCj4gPiArICAgICAgICAgICAg
-ICAgICAgICAgICBBRDc5NDlfQ0ZHX01BU0tfVE9UQUwpOw0KPiA+IA0KPiA+ICAgICAgICAgcmV0
-dXJuIHJldDsNCj4gPiAgfQ0KPiA+IEBAIC0yNDAsMTAgKzI3NSwyNCBAQCBzdGF0aWMgaW50IGFk
-Nzk0OV9zcGlfaW5pdChzdHJ1Y3QgYWQ3OTQ5X2FkY19jaGlwICphZDc5NDlfYWRjKQ0KPiA+ICB7
-DQo+ID4gICAgICAgICBpbnQgcmV0Ow0KPiA+ICAgICAgICAgaW50IHZhbDsNCj4gPiArICAgICAg
-IHUxNiBhZGNfY29uZmlnID0gMDsNCj4gPiANCj4gPiAtICAgICAgIC8qIFNlcXVlbmNlciBkaXNh
-YmxlZCwgQ0ZHIHJlYWRiYWNrIGRpc2FibGVkLCBJTjAgYXMgZGVmYXVsdCBjaGFubmVsICovDQo+
-ID4gICAgICAgICBhZDc5NDlfYWRjLT5jdXJyZW50X2NoYW5uZWwgPSAwOw0KPiA+IC0gICAgICAg
-cmV0ID0gYWQ3OTQ5X3NwaV93cml0ZV9jZmcoYWQ3OTQ5X2FkYywgMHgzQzc5LCBBRDc5NDlfTUFT
-S19UT1RBTCk7DQo+ID4gKyAgICAgICBhZDc5NDlfYWRjLT5jZmcgPSAwOw0KPiA+ICsNCj4gPiAr
-ICAgICAgIGFkY19jb25maWcgfD0gRklFTERfUFJFUChBRDc5NDlfQ0ZHX0FQUExZLCAxKTsNCj4g
-PiArICAgICAgIGFkY19jb25maWcgfD0gRklFTERfUFJFUChBRDc5NDlfQ0ZHX0NIQU5fQ0ZHLA0K
-PiA+ICsgICAgICAgICAgICAgICAgICAgICAgIEFENzk0OV9DRkdfQ0hBTl9DRkdfVU5JUE9MQVJf
-R05EKTsNCj4gPiArICAgICAgIGFkY19jb25maWcgfD0gRklFTERfUFJFUChBRDc5NDlfQ0ZHX0NI
-QU5fU0VMLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGFkNzk0OV9hZGMtPmN1cnJlbnRf
-Y2hhbm5lbCk7DQo+ID4gKyAgICAgICBhZGNfY29uZmlnIHw9IEZJRUxEX1BSRVAoQUQ3OTQ5X0NG
-R19CVywgQUQ3OTQ5X0NGR19CV19GVUxMKTsNCj4gPiArICAgICAgIGFkY19jb25maWcgfD0gRklF
-TERfUFJFUChBRDc5NDlfQ0ZHX1JFRl9TRUwsIGFkNzk0OV9hZGMtPnJlZl9zZWwpOw0KPiA+ICsg
-ICAgICAgYWRjX2NvbmZpZyB8PSBGSUVMRF9QUkVQKEFENzk0OV9DRkdfU0VRLCBBRDc5NDlfQ0ZH
-X1NFUV9ESVNBQkxFRCk7DQo+ID4gKyAgICAgICBhZGNfY29uZmlnIHw9IEZJRUxEX1BSRVAoQUQ3
-OTQ5X0NGR19SRUFEQkFDSywgQUQ3OTQ5X0NGR19SRUFEQkFDS19ESVMpOw0KPiA+ICsNCj4gPiAr
-ICAgICAgIHJldCA9IGFkNzk0OV9zcGlfd3JpdGVfY2ZnKGFkNzk0OV9hZGMsDQo+ID4gKyAgICAg
-ICAgICAgICAgICAgICAgICAgYWRjX2NvbmZpZywNCj4gPiArICAgICAgICAgICAgICAgICAgICAg
-ICBBRDc5NDlfQ0ZHX01BU0tfVE9UQUwpOw0KPiA+IA0KPiA+ICAgICAgICAgLyoNCj4gPiAgICAg
-ICAgICAqIERvIGEgZHVtbXkgY29udmVyc2lvbiB0byBhcHBseSB0aGUgZmlyc3QgY29uZmlndXJh
-dGlvbiBzZXR0aW5nLg0KPiA+IEBAIC0yNjEsNiArMzEwLDcgQEAgc3RhdGljIGludCBhZDc5NDlf
-c3BpX3Byb2JlKHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpDQo+ID4gICAgICAgICBzdHJ1Y3QgYWQ3
-OTQ5X2FkY19jaGlwICphZDc5NDlfYWRjOw0KPiA+ICAgICAgICAgc3RydWN0IGlpb19kZXYgKmlu
-ZGlvX2RldjsNCj4gPiAgICAgICAgIGludCByZXQ7DQo+ID4gKyAgICAgICB1MzIgdGVtcDsNCj4g
-PiANCj4gPiAgICAgICAgIGluZGlvX2RldiA9IGRldm1faWlvX2RldmljZV9hbGxvYyhkZXYsIHNp
-emVvZigqYWQ3OTQ5X2FkYykpOw0KPiA+ICAgICAgICAgaWYgKCFpbmRpb19kZXYpIHsNCj4gPiBA
-QCAtMjc5LDIxICszMjksNTMgQEAgc3RhdGljIGludCBhZDc5NDlfc3BpX3Byb2JlKHN0cnVjdCBz
-cGlfZGV2aWNlICpzcGkpDQo+ID4gICAgICAgICBhZDc5NDlfYWRjID0gaWlvX3ByaXYoaW5kaW9f
-ZGV2KTsNCj4gPiAgICAgICAgIGFkNzk0OV9hZGMtPmluZGlvX2RldiA9IGluZGlvX2RldjsNCj4g
-PiAgICAgICAgIGFkNzk0OV9hZGMtPnNwaSA9IHNwaTsNCj4gPiArICAgICAgIGFkNzk0OV9hZGMt
-PnZyZWYgPSBOVUxMOw0KPiA+IA0KPiA+ICAgICAgICAgc3BlYyA9ICZhZDc5NDlfYWRjX3NwZWNb
-c3BpX2dldF9kZXZpY2VfaWQoc3BpKS0+ZHJpdmVyX2RhdGFdOw0KPiA+ICAgICAgICAgaW5kaW9f
-ZGV2LT5udW1fY2hhbm5lbHMgPSBzcGVjLT5udW1fY2hhbm5lbHM7DQo+ID4gICAgICAgICBhZDc5
-NDlfYWRjLT5yZXNvbHV0aW9uID0gc3BlYy0+cmVzb2x1dGlvbjsNCj4gPiANCj4gPiAtICAgICAg
-IGFkNzk0OV9hZGMtPnZyZWYgPSBkZXZtX3JlZ3VsYXRvcl9nZXQoZGV2LCAidnJlZiIpOw0KPiA+
-IC0gICAgICAgaWYgKElTX0VSUihhZDc5NDlfYWRjLT52cmVmKSkgew0KPiA+IC0gICAgICAgICAg
-ICAgICBkZXZfZXJyKGRldiwgImZhaWwgdG8gcmVxdWVzdCByZWd1bGF0b3JcbiIpOw0KPiA+IC0g
-ICAgICAgICAgICAgICByZXR1cm4gUFRSX0VSUihhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiArICAg
-ICAgIHJldCA9IG9mX3Byb3BlcnR5X3JlYWRfdTMyKGFkNzk0OV9hZGMtPmluZGlvX2Rldi0+ZGV2
-Lm9mX25vZGUsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgImFkaSxyZWZlcmVuY2Utc2Vs
-ZWN0IiwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAmdGVtcCk7DQo+ID4gKyAgICAgICBp
-ZiAocmV0ID09IDApIHsNCj4gPiArICAgICAgICAgICAgICAgc3dpdGNoICh0ZW1wKSB7DQo+ID4g
-KyAgICAgICAgICAgICAgIGNhc2UgMDoNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBhZDc5
-NDlfYWRjLT5yZWZfc2VsID0gQUQ3OTQ5X1JFRl8yVjU7DQo+ID4gKyAgICAgICAgICAgICAgICAg
-ICAgICAgYnJlYWs7DQo+ID4gKyAgICAgICAgICAgICAgIGNhc2UgMToNCj4gPiArICAgICAgICAg
-ICAgICAgICAgICAgICBhZDc5NDlfYWRjLT5yZWZfc2VsID0gQUQ3OTQ5X1JFRl80VjA7DQo+ID4g
-KyAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ID4gKyAgICAgICAgICAgICAgIGNhc2Ug
-MjoNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBhZDc5NDlfYWRjLT5yZWZfc2VsID0gQUQ3
-OTQ5X1JFRl9FWFQ7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ID4gKyAg
-ICAgICAgICAgICAgIGNhc2UgMzoNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBhZDc5NDlf
-YWRjLT5yZWZfc2VsID0gQUQ3OTQ5X1JFRl9FWFRfQlVGOw0KPiA+ICsgICAgICAgICAgICAgICAg
-ICAgICAgIGJyZWFrOw0KPiA+ICsgICAgICAgICAgICAgICBkZWZhdWx0Og0KPiA+ICsgICAgICAg
-ICAgICAgICAgICAgICAgIGFkNzk0OV9hZGMtPnJlZl9zZWwgPSBBRDc5NDlfUkVGX0VYVF9CVUY7
-DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgZGV2X3dhcm4oZGV2LA0KPiA+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgInVua25vd24gcmVmZXJlbmNlLXNlbGVjdCB2YWx1ZSwg
-dXNpbmcgUkVGSU4gZXh0ZXJuYWwgVnJlZiAoMykgYnkgZGVmYXVsdFxuIik7DQo+ID4gKyAgICAg
-ICAgICAgICAgIH0NCj4gPiArICAgICAgIH0gZWxzZSB7DQo+ID4gKyAgICAgICAgICAgICAgIGFk
-Nzk0OV9hZGMtPnJlZl9zZWwgPSBBRDc5NDlfUkVGX0VYVF9CVUY7DQo+ID4gKyAgICAgICAgICAg
-ICAgIGRldl93YXJuKGRldiwgInVzaW5nIGV4dGVybmFsIFZyZWYgYnkgZGVmYXVsdFxuIik7DQo+
-ID4gICAgICAgICB9DQo+ID4gDQo+ID4gLSAgICAgICByZXQgPSByZWd1bGF0b3JfZW5hYmxlKGFk
-Nzk0OV9hZGMtPnZyZWYpOw0KPiA+IC0gICAgICAgaWYgKHJldCA8IDApIHsNCj4gPiAtICAgICAg
-ICAgICAgICAgZGV2X2VycihkZXYsICJmYWlsIHRvIGVuYWJsZSByZWd1bGF0b3JcbiIpOw0KPiA+
-IC0gICAgICAgICAgICAgICByZXR1cm4gcmV0Ow0KPiA+ICsgICAgICAgLyogQ2hlY2sgd2hldGhl
-ciB1c2luZyBleHRlcm5hbCBWcmVmICovDQo+ID4gKyAgICAgICBpZiAoKGFkNzk0OV9hZGMtPnJl
-Zl9zZWwgIT0gQUQ3OTQ5X1JFRl8yVjUpICYmDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAg
-KGFkNzk0OV9hZGMtPnJlZl9zZWwgIT0gQUQ3OTQ5X1JFRl80VjApKSB7DQo+ID4gKyAgICAgICAg
-ICAgICAgIGFkNzk0OV9hZGMtPnZyZWYgPSBkZXZtX3JlZ3VsYXRvcl9nZXQoZGV2LCAidnJlZiIp
-Ow0KPiA+ICsgICAgICAgICAgICAgICBpZiAoSVNfRVJSKGFkNzk0OV9hZGMtPnZyZWYpKSB7DQo+
-ID4gKyAgICAgICAgICAgICAgICAgICAgICAgZGV2X2VycihkZXYsICJmYWlsIHRvIHJlcXVlc3Qg
-cmVndWxhdG9yXG4iKTsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICByZXR1cm4gUFRSX0VS
-UihhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiArICAgICAgICAgICAgICAgfQ0KPiA+ICsNCj4gPiAr
-ICAgICAgICAgICAgICAgcmV0ID0gcmVndWxhdG9yX2VuYWJsZShhZDc5NDlfYWRjLT52cmVmKTsN
-Cj4gPiArICAgICAgICAgICAgICAgaWYgKHJldCA8IDApIHsNCj4gPiArICAgICAgICAgICAgICAg
-ICAgICAgICBkZXZfZXJyKGRldiwgImZhaWwgdG8gZW5hYmxlIHJlZ3VsYXRvclxuIik7DQo+ID4g
-KyAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIHJldDsNCj4gPiArICAgICAgICAgICAgICAg
-fQ0KPiA+ICAgICAgICAgfQ0KPiA+IA0KPiA+ICAgICAgICAgbXV0ZXhfaW5pdCgmYWQ3OTQ5X2Fk
-Yy0+bG9jayk7DQo+ID4gQEAgLTMxNCw3ICszOTYsOCBAQCBzdGF0aWMgaW50IGFkNzk0OV9zcGlf
-cHJvYmUoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkNCj4gPiANCj4gPiAgZXJyOg0KPiA+ICAgICAg
-ICAgbXV0ZXhfZGVzdHJveSgmYWQ3OTQ5X2FkYy0+bG9jayk7DQo+ID4gLSAgICAgICByZWd1bGF0
-b3JfZGlzYWJsZShhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiArICAgICAgIGlmIChhZDc5NDlfYWRj
-LT52cmVmKQ0KPiA+ICsgICAgICAgICAgICAgICByZWd1bGF0b3JfZGlzYWJsZShhZDc5NDlfYWRj
-LT52cmVmKTsNCj4gPiANCj4gPiAgICAgICAgIHJldHVybiByZXQ7DQo+ID4gIH0NCj4gPiBAQCAt
-MzI2LDcgKzQwOSw4IEBAIHN0YXRpYyBpbnQgYWQ3OTQ5X3NwaV9yZW1vdmUoc3RydWN0IHNwaV9k
-ZXZpY2UgKnNwaSkNCj4gPiANCj4gPiAgICAgICAgIGlpb19kZXZpY2VfdW5yZWdpc3RlcihpbmRp
-b19kZXYpOw0KPiA+ICAgICAgICAgbXV0ZXhfZGVzdHJveSgmYWQ3OTQ5X2FkYy0+bG9jayk7DQo+
-ID4gLSAgICAgICByZWd1bGF0b3JfZGlzYWJsZShhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiArICAg
-ICAgIGlmIChhZDc5NDlfYWRjLT52cmVmKQ0KPiA+ICsgICAgICAgICAgICAgICByZWd1bGF0b3Jf
-ZGlzYWJsZShhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiANCj4gPiAgICAgICAgIHJldHVybiAwOw0K
-PiA+ICB9DQo+ID4gLS0NCj4gPiAxLjkuMQ0KPiA+IA0K
+Hi Jean-Baptiste,
+
+Thank you for the prompt response. Your explanation makes sense and I k=
+now how to at least work around this issue for now. For my current purp=
+oses, it is still useful to have the temperature data as well, so I'll =
+stick to reading all 14 bytes for now and then see if there's a way to =
+permanently enable temp as a more long-term solution.
+
+I probably wouldn't have come across this problem had it not been the c=
+ase that libiio fails to enable the temp channel. Looking into it I fou=
+nd that libiio has an open issue where channels like temp that are neit=
+her modified, nor indexed are not counted as scan elements and thus can=
+'t be enabled. So just in case someone facing a similar issue comes acr=
+oss this thread, this can be either worked around by making temp an ind=
+exed channel in the driver and hopefully solved definitively by waiting=
+ for the fix to be merged into libiio.
+
+Thanks for all the help!
+All the best,
+Andreea
+
+
+On Thursday, May 23, 2019 12:12 CEST, Jean-Baptiste Maneyrol <JManeyrol=
+@invensense.com> wrote: 
+
+> Hi Andreea,
+> 
+> I understand the issue now. The problem is that temperature data are =
+always present in the FIFO. Even when the attribute is disabled. This i=
+s a limitation of this chip and cannot be changed on the hardware side.=
+
+> 
+> When temp attribute is disabled while accel and gyro are on, the iio =
+buffer is expecting to have 12 bytes with accel + gyro data. But the dr=
+iver will still provides 14 bytes with temperature in the middle since =
+the FIFO will contain that. Always enabling temperature attribute on us=
+erspace will solve this issue, but that's certainly not the best.
+> 
+> A correct solution would be to enforce temperature data in iio buffer=
+ by having the temp attribute always enabled and read-only in userspace=
+. That would reflect correctly the chip capabilities. But I don't know =
+if this is feasible. A workaround would be to add data post-processing =
+in the driver and delete temp data when it is disabled. But I don't lik=
+e this kind of workaround because that goes against iio buffer design p=
+rinciple.
+> 
+> Hope this help you.
+> 
+> Best regards,
+> Jean-Baptiste Maneyrol
+> 
+> From: Andreea Lutac <andreea.lutac@fixposition.ch>
+> Sent: Thursday, May 23, 2019 11:44
+> To: Jean-Baptiste Maneyrol
+> Cc: stevemo@skydio.com; jic23@kernel.org; knaack.h@gmx.de; lars@metaf=
+oo.de; pmeerw@pmeerw.net; linux-iio@vger.kernel.org; linux-kernel@vger.=
+kernel.org
+> Subject: Re: ICM20602 buffer issues with the inv=5Fmpu6050 driver
+> =C2=A0
+> =C2=A0CAUTION: This email originated from outside of the organization=
+. Please make sure the sender is who they say they are and do not click=
+ links or open attachments unless you recognize the sender and know the=
+ content is safe.
+> 
+> Hi Jean-Baptiste and Stepan,
+> 
+> Thanks so much for the replies and the advice. I've dug a bit deeper =
+into this and added a few printk statements to the driver, as suggested=
+ by Stepan. It looks like the device is getting recognized correctly as=
+ ICM20602 and the buffer is being filled with 14 bytes as expected.
+> 
+> But I've identified some strange behaviour regarding the temperature =
+channeI. If I manually enable all 7 scan elements and read 14 bytes fro=
+m the device file, the readings appear correct and change accordingly w=
+hen I move the chip around. However, if I set in=5Ftemp=5Fen set to 0 (=
+with everything else still enabled) and read 12 bytes, the buffer doesn=
+'t seem to acknowledge this change and shift the gyro values up, instea=
+d getting only the first 12 bytes (accel=5Fx, accel=5Fy, accel=5Fz, tem=
+p, gyro=5Fx, gyro=5Fy), without gyro=5Fz. So this is why it looks as if=
+ temp is replacing gyro=5Fx.
+> I made a pastebin here with some of the (unconverted) values I got wh=
+ile testing these cases: https://urldefense.proofpoint.com/v2/url?u=3Dh=
+ttps-3A=5F=5Fpastebin.com=5FBYVqDNch&d=3DDwIFaQ&c=3DWoJWtq5JV8YrKnzRxvD=
+8NxmTP=5F1wxfE0prPmo0NeZwg&r=3D4jiDX=5F1brsSWfCjfA6Ovj1d4h9MF8q7Xk5aBwG=
+28mVk&m=3DsbkHiUlsj8pOWjf2iTq5CXEFvv-MNyqBKOqCjxOj9kc&s=3DPmb23R-DoTj9h=
+DwYk3qqiUfOCUWbtfpVQjUZ1lajeFI&e=3D
+> 
+> Attempting the same reads with my C++ program via libiio always resul=
+ts in only the first 12 bytes being read, as for some strange reason li=
+biio fails to enable the temperature channel, so iio=5Fdevice=5Fget=5Fs=
+ample=5Fsize() is always 12 and it's actually gyro=5Fz that I can't get=
+ to.
+> 
+> I'll try to look through the code that is supposed to enable a channe=
+l and see why it's not succeeding via libiio. Do you have any clue as t=
+o which bit of code does the adjustment of the buffer values according =
+to which channels are enabled? Is this done in the driver or deeper in =
+the kernel?
+> 
+> Thanks once again for the help!
+> Best regards,
+> Andreea
+> 
+> On Wednesday, May 22, 2019 16:33 CEST, Jean-Baptiste Maneyrol <JManey=
+rol@invensense.com> wrote:
+> 
+> > Hello,
+> >
+> > I had a look inside the driver to verify the buffer implementation.=
+ It looks correct to me. I don't see where the problem can come from. I=
+ am sorry I don't have a setup currently to test in live.
+> >
+> > For sure you can have a different result by reading the buffer thro=
+ugh the char device file compared to reading the raw sysfs entry. The b=
+uffer is taking the data from the FIFO and the raw sysfs from the senso=
+r data registers.
+> >
+> > You can perhaps test value 1 by 1 in the buffer, and verify the cor=
+rectness of every attributes. If you can also send a complete buffer lo=
+g that would be helpful.
+> > Every data is 2 bytes long and in the following order: accel=5Fx, a=
+ccel=5Fy, accel=5Fz, temp, gyro=5Fx, gyro=5Fy, gyro=5Fz
+> >
+> > Best regards,
+> > JB Maneyrol
+> >
+> > From: Andreea Lutac <andreea.lutac@fixposition.ch>
+> > Sent: Tuesday, May 21, 2019 12:40
+> > Cc: Jean-Baptiste Maneyrol; stevemo@skydio.com; jic23@kernel.org; k=
+naack.h@gmx.de; lars@metafoo.de; pmeerw@pmeerw.net; linux-iio@vger.kern=
+el.org; linux-kernel@vger.kernel.org
+> > Subject: ICM20602 buffer issues with the inv=5Fmpu6050 driver
+> > =C2=A0
+> > Hello,
+> >
+> > I've been trying to get some data samples from the ICM20602 IMU usi=
+ng the mpu6050 driver which recently added support for it, but I'm enco=
+untering an issue with the ordering of the data in the FIFO.
+> > According to the specs of the device, if the accel and gyro XYZ cha=
+nnels are enabled, then the hardware FIFO is filled with 14 bytes corre=
+sponding to the following channels: accel=5Fx, accel=5Fy, accel=5Fz, te=
+mp, anglvel=5Fx, anglvel=5Fy, anglvel=5Fz. However, when reading out th=
+e buffer, the value I get for anglvel=5Fx seems to actually be the temp=
+erature. This=C2=A0 occurs both when reading with iio=5Fchannel=5Fread =
+(via libiio) and also if I read directly from /dev/iio:device with only=
+ in=5Fanglvel=5Fx=5Fen set. But in=5Fanglvel=5Fx=5Fraw reports correct =
+values, which made me suspect that maybe somewhere in the driver this i=
+nterleaved temp channel is not accounted for in the buffer structure.
+> >
+> > I had a look at the driver code and inv=5Fmpu6050=5Fread=5Ffifo() i=
+n particular, but I can't identify anything amiss. I've applied the rec=
+ent patch that added the extra 2 temperature bytes ( ), but the problem=
+ persists. So far I've tried changing the size of the data buffer, defi=
+ned in inv=5Fmpu=5Fiio.h:
+> >
+> > /* 6 + 6 round up and plus 8 */
+> > #define INV=5FMPU6050=5FOUTPUT=5FDATA=5FSIZE=C2=A0=C2=A0=C2=A0=C2=A0=
+ 24
+> >
+> > from 24 to 32, according to the intuition that 24 corresponds to re=
+adings without temperature (i.e. 6 bytes for accel, rounded up to 8 + 6=
+ bytes for gyro, rounded up to 8 + 8 bytes for the timestamp =3D 24) an=
+d thus another 8 bytes would be needed, but that doesn't seem to have s=
+olved it.
+> >
+> > I'm quite new to driver development though, so I think there might =
+be something I'm not getting. I would be really grateful if anyone coul=
+d shed some light over what's happening here or give some advice as to =
+what I could be doing wrong.
+> >
+> > Best regards,
+> > Andreea Lutac
+> >
+>
+

@@ -2,339 +2,329 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E28A727CFD
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2019 14:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1C6A27D35
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2019 14:51:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729863AbfEWMjm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 May 2019 08:39:42 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:45553 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729762AbfEWMjl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 May 2019 08:39:41 -0400
-Received: by mail-ot1-f68.google.com with SMTP id t24so5215891otl.12;
-        Thu, 23 May 2019 05:39:41 -0700 (PDT)
+        id S1730806AbfEWMvc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 May 2019 08:51:32 -0400
+Received: from mail-eopbgr700074.outbound.protection.outlook.com ([40.107.70.74]:60705
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730791AbfEWMvc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 23 May 2019 08:51:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Shf1bn4QnDbo/EuDScxES/Yn7hUe+srYKFncU2F12Do=;
-        b=MBYLftF+j9Jn+eY2K16X33ojsS2jcN0lVV3YPi2/H/+Pjj1P0cQ9tycjj9WMxtrL+f
-         FNHRVOEwqK5VmV8VhO4fE4IoxRvzLLo04X4XGSulLDB17XxPfiK5LiKJ1e8R782X0nLn
-         ewxygZW3/JYdUqRUQ0KqB+W70NIoemx8+RoE60FNBeQjgcNthcvKuZiyZQWF01E+Leav
-         6cFMToUzUSXk6vedmD7E09q4kBZ2s26XmXOIAWTumg21EoZJKXnb8Gi6PnutxP+uUbTp
-         iQgw2VmA70n7tcge41h08WcnbMCuGojU4iiDBWhrPgr1+DF9xlA+NaCkvwf5OHJHNJ/b
-         xMjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Shf1bn4QnDbo/EuDScxES/Yn7hUe+srYKFncU2F12Do=;
-        b=rHpceVcBu77u0dMNaEK4EG1SzUCY/YGX6vjVJUwlhbXkxmMqOLNYnZLaAU9W2qqoXz
-         xSq8a+pvypAc7rV0TZcBz+Bf9hzwP0k8RsTe11fuC5EhBlxWIzC8dI8jrP0Euq2bn0g/
-         C45JZHsL2c8GroioZkh6+1Zcd0FmFVOx1ImxfUBjvFUQI69Us+eMGYbSv8LK3lYf+xAV
-         px+Q41z35A5DFA4jF61LrGOSA99SECjEr8OGhZgeYzycAX/TPmWOkSFjnumhHCRdzl5T
-         ReKGjV2oEPXLzdzh19v7RyOQ89ZabMKTy7LySXrJ/v5Bk/bkjdcp2d1IYRA3ighiPfTi
-         dweA==
-X-Gm-Message-State: APjAAAVMetj41yf78KI5OGCY8rBuN6cULUtBJzCdUPjRFO1BRZNQLTnl
-        TANnDu7H2EgtnY2U26EyUFrrL39EEdyXkeWrqP4=
-X-Google-Smtp-Source: APXvYqwKQzlCRqaeq+qHmMaXuv2vlT3hOSyk1Wu6yPggLRH0qhtO/Y3pTzPEOKMpsihlH0rzCzyNG3F5bqUDQk2vdGU=
-X-Received: by 2002:a9d:6e96:: with SMTP id a22mr1894231otr.207.1558615180660;
- Thu, 23 May 2019 05:39:40 -0700 (PDT)
-MIME-Version: 1.0
+ d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iGD4cNaT7jdMxQcvTvR52dorUmRa/pn5ss7LH7wblAY=;
+ b=QuJJEI07IepPBEtnEnnjgMWnHtm6pLHRZesm4kiTLM4LFbK3yA7C3mrN6jZX/wHajPt/IEi2Vk76RdWWzxvRxflvTokAfDhlvcVvbifzPMjwKWmgGgZlHn4eaxUWIgFhdBObqeaIyAkN7RvKTPxqh3JhW5WtA7UaCgmsYI/U52o=
+Received: from BN6PR03CA0115.namprd03.prod.outlook.com (2603:10b6:404:10::29)
+ by BL2PR03MB547.namprd03.prod.outlook.com (2a01:111:e400:c23::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1922.16; Thu, 23 May
+ 2019 12:51:28 +0000
+Received: from BL2NAM02FT042.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::207) by BN6PR03CA0115.outlook.office365.com
+ (2603:10b6:404:10::29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1922.16 via Frontend
+ Transport; Thu, 23 May 2019 12:51:28 +0000
+Authentication-Results: spf=pass (sender IP is 137.71.25.57)
+ smtp.mailfrom=analog.com; rockwellcollins.com; dkim=none (message not signed)
+ header.d=none;rockwellcollins.com; dmarc=bestguesspass action=none
+ header.from=analog.com;
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
+Received: from nwd2mta2.analog.com (137.71.25.57) by
+ BL2NAM02FT042.mail.protection.outlook.com (10.152.76.193) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1922.16
+ via Frontend Transport; Thu, 23 May 2019 12:51:28 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x4NCpR0c019964
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Thu, 23 May 2019 05:51:27 -0700
+Received: from NWD2MBX7.ad.analog.com ([fe80::190e:f9c1:9a22:9663]) by
+ NWD2HUBCAS7.ad.analog.com ([fe80::595b:ced1:cc03:539d%12]) with mapi id
+ 14.03.0415.000; Thu, 23 May 2019 08:51:27 -0400
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "ardeleanalex@gmail.com" <ardeleanalex@gmail.com>,
+        "adam.michaelis@rockwellcollins.com" 
+        <adam.michaelis@rockwellcollins.com>
+CC:     "lars@metafoo.de" <lars@metafoo.de>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "charles-antoine.couret@essensium.com" 
+        <charles-antoine.couret@essensium.com>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "clayton.shotwell@rockwellcollins.com" 
+        <clayton.shotwell@rockwellcollins.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "brandon.maier@rockwellcollins.com" 
+        <brandon.maier@rockwellcollins.com>
+Subject: Re: [PATCH v3 2/5] iio: ad7949: Support internal Vref
+Thread-Topic: [PATCH v3 2/5] iio: ad7949: Support internal Vref
+Thread-Index: AQHVEWDNvfYmYLKgjE+MYki1LumTk6Z47MKA
+Date:   Thu, 23 May 2019 12:51:26 +0000
+Message-ID: <3db30e68aa1407ab03a20c485bda6acf0a991b38.camel@analog.com>
 References: <1557759185-167857-1-git-send-email-adam.michaelis@rockwellcollins.com>
- <1557759185-167857-4-git-send-email-adam.michaelis@rockwellcollins.com> <20190518101050.75c5d60e@archlinux>
-In-Reply-To: <20190518101050.75c5d60e@archlinux>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Thu, 23 May 2019 15:39:27 +0300
-Message-ID: <CA+U=Dsou8wqBgZiS5DuPzJ_jD6AG9d5Q86ptwFm4m-59xy0K0w@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] iio: ad7949: Fix SPI interfacing for 14-bit messages
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Adam Michaelis <adam.michaelis@rockwellcollins.com>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <michael.hennerich@analog.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        charles-antoine.couret@essensium.com, devicetree@vger.kernel.org,
-        Brandon Maier <brandon.maier@rockwellcollins.com>,
-        Clayton Shotwell <clayton.shotwell@rockwellcollins.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+         <1557759185-167857-2-git-send-email-adam.michaelis@rockwellcollins.com>
+         <CA+U=DsoQRQJoWrP3shnDyRVUxcgYCpeiQtusFHWqVAeWRmwarQ@mail.gmail.com>
+In-Reply-To: <CA+U=DsoQRQJoWrP3shnDyRVUxcgYCpeiQtusFHWqVAeWRmwarQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.50.1.244]
+x-adiroutedonprem: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E4AD9547280C1B49AF942CF252AC4E55@analog.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(346002)(396003)(136003)(376002)(39860400002)(2980300002)(199004)(189003)(316002)(7636002)(246002)(7736002)(50466002)(2501003)(53546011)(2906002)(102836004)(4326008)(478600001)(8676002)(6246003)(14454004)(8936002)(14444005)(47776003)(86362001)(126002)(23676004)(2486003)(186003)(7696005)(2616005)(476003)(118296001)(486006)(436003)(76176011)(426003)(70586007)(336012)(70206006)(446003)(110136005)(54906003)(356004)(26005)(305945005)(36756003)(11346002)(229853002)(7416002)(5660300002)(106002)(6116002)(3846002);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR03MB547;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: fe09db0d-ac6e-423b-5ff2-08d6df7d5f5e
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4709054)(2017052603328)(7193020);SRVR:BL2PR03MB547;
+X-MS-TrafficTypeDiagnostic: BL2PR03MB547:
+X-Microsoft-Antispam-PRVS: <BL2PR03MB547366971D6DB8C1A39E680F9010@BL2PR03MB547.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 00462943DE
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: n65el0+9sH2j86f5up5DecEDFJXY0LU8MUeLTqJSzpuLAqvYv9nbbpJdhy8te18qCyiwI+S2JgZu8iSWEhaJCZrroclyWa2tXjMubMnAO0eclU4EJoJc0YLojrUB6eITu02WG3b+plmGmhsKHlxCnuev5zA8UCViZL+wsDkW4gU/CD3RCVVu/StwFUh91WakRjOiniEy5FzFC9mzm3VVn+j9ahDUmNa15byHdHb0CcajcEHo6N448dAjPY/MpxYLZi3r+pMXPx2KYscs3aeuC35GND6t/yNb78PK39IvrJZYxNUIWfsq2MT2kDEmy3rqjJmw4fNXVfcb2q2k5T0RDqIMJZ0vGcZw5PB25MOWBfG5LD4QP37X9cWlXitwRmY/qdni0HHSusMaxHjZ2vnyAWGCMKrGQAcZu8ctRkvblF8=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2019 12:51:28.2429
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe09db0d-ac6e-423b-5ff2-08d6df7d5f5e
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR03MB547
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, May 18, 2019 at 12:11 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Mon, 13 May 2019 09:53:04 -0500
-> Adam Michaelis <adam.michaelis@rockwellcollins.com> wrote:
->
-
-CC-ing my work email.
-
-> > The AD7949 (but not the other two models supported by this driver) uses
-> > samples 14 bits wide. When attempting to communicate through certain SPI
-> > controllers that do not support word widths of 14, this fails. Adding
-> > logic to pack the 14-bit messages into the most-significant bits of a
-> > 16-bit message or a 2-word 8-bit message for communication using more SPI
-> > bus controllers.
-> >
-
-General note, there are some changes in this patch that are
-unrelated/un-needed to the semantic of the patch.
-I'm seeing some comments being re-arranged, and some newlines being added.
-Jonathan also mentioned something about them.
-
-It's good practice to not touch whitespace, or style in a patch that
-is mostly functional.
-For now, this is fine as-is from my side as well.
-
-In any case, sticking to this patch:
-I am wondering whether this driver needs to care about SPI packing
-logic, or the SPI controller needs to do that, or the SPI framework ?
-I would assume, that the way to do things, is to provide the SPI
-framework the parameters of the data (shifting, bits-per-word, etc)
-and the SPI framework would do the rest.
-
-
-> > Only able to test with AD7949 part on Cadence SPI, but should support
-> > the 16-bit samples of the AD7682 and AD7689, as well.
-> >
-> > Signed-off-by: Adam Michaelis <adam.michaelis@rockwellcollins.com>
-> This one looks fine to me as well.  For my reference
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Note a trivial comment inline that can be tidied up whilst applying
-> or if you do another spin.
->
-> Jonathan
-> > ---
-> >       V2:
-> >       - Add some defines to reduce use of magic numbers.
-> >       V3:
-> >       - Use union for message buffer to keep messages word-aligned for
-> >       various word sizes.
-> >       - Calculate SPI bits-per-word once and use for logic throughout.
-> >       - Add logic to use SPI controller's bits-per-word field to make
-> >       the most use of the hardware's capabilities.
-> >       - Try to support SPI word widths of 16, 14, and 8 bits.
-> > ---
-> >  drivers/iio/adc/ad7949.c | 115 +++++++++++++++++++++++++++++++++++------------
-> >  1 file changed, 87 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-> > index b648b1ab9559..d67033a008e5 100644
-> > --- a/drivers/iio/adc/ad7949.c
-> > +++ b/drivers/iio/adc/ad7949.c
-> > @@ -78,10 +78,30 @@ struct ad7949_adc_chip {
-> >       enum ad7949_ref_sel ref_sel;
-> >       u8 resolution;
-> >       u16 cfg;
-> > +     u8 bits_per_word;
-> >       unsigned int current_channel;
-> > -     u32 buffer ____cacheline_aligned;
-> > +     union {
-> > +             u32 buffer;
-> > +             u16 buf16[2];
-> > +             u8 buf8[4];
-> > +     } ____cacheline_aligned;
-> >  };
-> >
-> > +static void ad7949_set_bits_per_word(struct ad7949_adc_chip *ad7949_adc)
-> > +{
-> > +     /* Prefer messages that match the ADC's resolution */
-> > +     if (ad7949_adc->spi->controller->bits_per_word_mask &
-> > +                     SPI_BPW_MASK(ad7949_adc->resolution))
-
-My sentiment is that this mail evaluate to true even when you don't want it to.
-
-I'm guessing the intention here was something like:
-
-     u32 resolution_msk = SPI_BPW_MASK(ad7949_adc->resolution);
-     u32 resolution = resolution_msk;
-
-     resolution &= ad7949_adc->spi->controller->bits_per_word_mask;
-
-     if (resolution == resolution_msk)
-         ad7949_adc->bits_per_word = ad7949_adc->resolution;
-     else if (resolution == SPI_BPW_MASK(16))
-             ad7949_adc->bits_per_word = 16;
-     else
-             ad7949_adc->bits_per_word = 8;
-
-
-> > +             ad7949_adc->bits_per_word = ad7949_adc->resolution;
-> > +     /* Second choice is to pad 14-bit words to 16 */
-> > +     else if (ad7949_adc->spi->controller->bits_per_word_mask &
-> > +                     SPI_BPW_MASK(16))
-> > +             ad7949_adc->bits_per_word = 16;
-> > +     /* Last resort, use 8-bit words */
-> > +     else
-> > +             ad7949_adc->bits_per_word = 8;
-> > +}
-> > +
-> >  static bool ad7949_spi_cfg_is_read_back(struct ad7949_adc_chip *ad7949_adc)
-> >  {
-> >       if (!(ad7949_adc->cfg & AD7949_CFG_READBACK))
-> > @@ -90,39 +110,63 @@ static bool ad7949_spi_cfg_is_read_back(struct ad7949_adc_chip *ad7949_adc)
-> >       return false;
-> >  }
-> >
-> > -static int ad7949_spi_bits_per_word(struct ad7949_adc_chip *ad7949_adc)
-> > +static int ad7949_message_len(struct ad7949_adc_chip *ad7949_adc)
-> >  {
-> > -     int ret = ad7949_adc->resolution;
-> > +     int tx_len = 2;
-> >
-> >       if (ad7949_spi_cfg_is_read_back(ad7949_adc))
-> > -             ret += AD7949_CFG_REG_SIZE_BITS;
-> > +             tx_len += 2;
-> >
-> > -     return ret;
-> > +     return tx_len;
-> >  }
-> >
-> >  static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
-> >                               u16 mask)
-> >  {
-> > -     int ret;
-> > -     int bits_per_word = ad7949_spi_bits_per_word(ad7949_adc);
-> > -     int shift = bits_per_word - AD7949_CFG_REG_SIZE_BITS;
-> > +     int ret = 0;
-> > +     u16 tmp_cfg = 0;
-> >       struct spi_message msg;
-> >       struct spi_transfer tx[] = {
-> >               {
-> >                       .tx_buf = &ad7949_adc->buffer,
-> > -                     .len = 4,
-> > -                     .bits_per_word = bits_per_word,
-> > -             },
-> > +                     .len = ad7949_message_len(ad7949_adc),
-> > +                     .bits_per_word = ad7949_adc->bits_per_word,
-> > +             }
-> >       };
-> >
-> > -     ad7949_adc->cfg = (val & mask) | (ad7949_adc->cfg & ~mask);
-> > -     ad7949_adc->buffer = (ad7949_adc->cfg & AD7949_CFG_MASK_TOTAL) << shift;
-> > +     ad7949_adc->buffer = 0;
-> > +
-> > +     tmp_cfg = ((val & mask) | (ad7949_adc->cfg & ~mask)) &
-> > +             AD7949_CFG_MASK_TOTAL;
-> > +
-> > +     /* If no change, return */
-> > +     if (tmp_cfg == ad7949_adc->cfg)
-> > +             return 0;
-> > +
-> > +     ad7949_adc->cfg = tmp_cfg;
-> > +
-> > +     switch (ad7949_adc->bits_per_word) {
-> > +     case 16:
-> > +             ad7949_adc->buf16[0] = ad7949_adc->cfg << 2;
-> > +             break;
-> > +     case 14:
-> > +             ad7949_adc->buf16[0] = ad7949_adc->cfg;
-> > +             break;
-> > +     default: /* 8 */
-> > +             /* Pack 14-bit value into 2 bytes, MSB first */
-> > +             ad7949_adc->buf8[0] = FIELD_GET(GENMASK(13, 6), ad7949_adc->cfg);
-> > +             ad7949_adc->buf8[1] = FIELD_GET(GENMASK(5, 0), ad7949_adc->cfg);
-> > +             ad7949_adc->buf8[1] = ad7949_adc->buf8[1] << 2;
-> > +             break;
-> > +     }
-> > +
-> >       spi_message_init_with_transfers(&msg, tx, 1);
-> > +
-> >       ret = spi_sync(ad7949_adc->spi, &msg);
-> >
-> >       /*
-> > -      * This delay is to avoid a new request before the required time to
-> > -      * send a new command to the device
-> > +      * This delay is to avoid a new request before the required
-> > +      * time to send a new command to the device
-> >        */
-> >       udelay(2);
-> >
-> > @@ -149,17 +193,17 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
-> >                                  unsigned int channel)
-> >  {
-> >       int ret;
-> > -     int bits_per_word = ad7949_spi_bits_per_word(ad7949_adc);
-> > -     int mask = GENMASK(ad7949_adc->resolution, 0);
-> >       struct spi_message msg;
-> >       struct spi_transfer tx[] = {
-> >               {
-> >                       .rx_buf = &ad7949_adc->buffer,
-> > -                     .len = 4,
-> > -                     .bits_per_word = bits_per_word,
-> > -             },
-> > +                     .len = ad7949_message_len(ad7949_adc),
-> > +                     .bits_per_word = ad7949_adc->bits_per_word,
-> > +             }
-> >       };
-> >
-> > +     ad7949_adc->current_channel = channel;
-> > +
-> >       ret = ad7949_spi_write_cfg(ad7949_adc,
-> >                                  FIELD_PREP(AD7949_CFG_CHAN_SEL, channel),
-> >                                  AD7949_CFG_CHAN_SEL);
-> > @@ -167,23 +211,37 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
-> >               return ret;
-> >
-> >       ad7949_adc->buffer = 0;
-> > +
-> >       spi_message_init_with_transfers(&msg, tx, 1);
-> > +
-> Unrelated change. Nothing wrong with it, but not in a patch making
-> functional changes.
->
-> >       ret = spi_sync(ad7949_adc->spi, &msg);
-> >       if (ret)
-> >               return ret;
-> >
-> >       /*
-> > -      * This delay is to avoid a new request before the required time to
-> > -      * send a new command to the device
-> > +      * This delay is to avoid a new request before the required time
-> > +      * to send a new command to the device.
-> >        */
-> >       udelay(2);
-> >
-> > -     ad7949_adc->current_channel = channel;
-> > -
-> > -     if (ad7949_spi_cfg_is_read_back(ad7949_adc))
-> > -             *val = (ad7949_adc->buffer >> AD7949_CFG_REG_SIZE_BITS) & mask;
-> > -     else
-> > -             *val = ad7949_adc->buffer & mask;
-> > +     switch (ad7949_adc->bits_per_word) {
-> > +     case 16:
-> > +             *val = ad7949_adc->buf16[0];
-> > +             /* Shift-out padding bits */
-> > +             if (ad7949_adc->resolution == 14)
-> > +                     *val = *val >> 2;
-> > +             break;
-> > +     case 14:
-> > +             *val = ad7949_adc->buf16[0] & GENMASK(13, 0);
-> > +             break;
-> > +     default: /* 8 */
-> > +             /* Convert byte array to u16, MSB first */
-> > +             *val = (ad7949_adc->buf8[0] << 8) | ad7949_adc->buf8[1];
-> > +             /* Shift-out padding bits */
-> > +             if (ad7949_adc->resolution == 14)
-> > +                     *val = *val >> 2;
-> > +             break;
-> > +     }
-> >
-> >       return 0;
-> >  }
-> > @@ -334,6 +392,7 @@ static int ad7949_spi_probe(struct spi_device *spi)
-> >       spec = &ad7949_adc_spec[spi_get_device_id(spi)->driver_data];
-> >       indio_dev->num_channels = spec->num_channels;
-> >       ad7949_adc->resolution = spec->resolution;
-> > +     ad7949_set_bits_per_word(ad7949_adc);
-> >
-> >       ret = of_property_read_u32(ad7949_adc->indio_dev->dev.of_node,
-> >                       "adi,reference-select",
->
+T24gVGh1LCAyMDE5LTA1LTIzIGF0IDE1OjEyICswMzAwLCBBbGV4YW5kcnUgQXJkZWxlYW4gd3Jv
+dGU6DQo+IFtFeHRlcm5hbF0NCj4gDQo+IA0KPiBPbiBNb24sIE1heSAxMywgMjAxOSBhdCA3OjE2
+IFBNIEFkYW0gTWljaGFlbGlzDQo+IDxhZGFtLm1pY2hhZWxpc0Byb2Nrd2VsbGNvbGxpbnMuY29t
+PiB3cm90ZToNCj4gPiANCj4gPiBBZGRpbmcgY29uZmlndXJhYmxlICh2aWEgZGV2aWNlIHRyZWUp
+IG9wdGlvbnMgdG8gc2VsZWN0IG9uZSBvZiB0aGUgdHdvDQo+ID4gZXh0ZXJuYWwgcmVmZXJlbmNl
+IHZvbHRhZ2VzIChSRUZJTiBhcyBkZWZhdWx0LCBvcmlnaW5hbCBpbXBsZW1lbnRhdGlvbikNCj4g
+PiBvciBvbmUgb2YgdGhlIHR3byBpbnRlcm5hbCByZWZlcmVuY2Ugdm9sdGFnZXMgcHJvdmlkZWQg
+YnkgdGhlIEFENzk0OQ0KPiA+IHBhcnQgZmFtaWx5Lg0KPiA+IA0KPiANCg0KU28sIEkgbWFuYWdl
+ZCB0byBnbyB0aHJvdWdoIHRoZSBwYXRjaGVzLg0KDQpJJ2xsIHByb3Bvc2UgdG8gcmUtb3JnYW5p
+emUgdGhlIHBhdGNoZXMgaW50byBzbWFsbGVyIGdyb3Vwcy4NCg0KTGV0J3MgdGFrZSB0aGlzIHBh
+dGNoICsgdGhlIGRldmljZS10cmVlIHBhdGNoIChhc3NvY2lhdGVkIHdpdGggdGhpcykgaW50byBh
+bm90aGVyIHNlcmllcy4NCkFkZGluZyBzdXBwb3J0IGZvciBpbnRlcm5hbCBWcmVmIHNlZW1zIHBy
+ZXR0eSBzdHJhaWdodGZvcndhcmQgdG8gbWUuDQoNClRoZSBTUEkgY29tbXVuaWNhdGlvbiBwYXRj
+aGVzIHNlZW0gd2VpcmQgYW5kIHJlcXVpcmUgbW9yZSB0aG91Z2h0L2RpZ2dpbmcgb24gb3VyIHNp
+ZGUgYXMgd2VsbC4NCg0KSSdsbCB3YWl0IGZvciBTdGVmYW4gdG8gYWRkIGhpcyBpbnB1dCBhcyB3
+ZWxsLg0KDQpUaGFua3MNCkFsZXgNCg0KDQo+IEkgd291bGQgcnVuIGEgLi9zY3JpcHRzL2NoZWNr
+cGF0Y2gucGwgb24gdGhpcyBwYXRjaCAobWF5YmUgYWxzbyBvbiB0aGUgc2VyaWVzKS4NCj4gSSB3
+b3VsZCBvbmx5IGNvbXBsYWluIGFib3V0IHN0eWxlLXN0dWZmIChvbiB0aGlzIHBhdGNoKSwgYnV0
+IHRob3NlDQo+IHdvdWxkIGFsc28gZ2V0IHJlcG9ydGVkIGJ5IGNoZWNrcGF0Y2guDQo+IA0KPiA+
+IFNpZ25lZC1vZmYtYnk6IEFkYW0gTWljaGFlbGlzIDxhZGFtLm1pY2hhZWxpc0Byb2Nrd2VsbGNv
+bGxpbnMuY29tPg0KPiA+IC0tLQ0KPiA+ICAgICAgICAgVjI6DQo+ID4gICAgICAgICAtIEFkZCBz
+b21lIGRlZmluZXMgdG8gcmVkdWNlIHVzZSBvZiBtYWdpYyBudW1iZXJzLg0KPiA+ICAgICAgICAg
+VjM6DQo+ID4gICAgICAgICAtIEFkZCBiaXRmaWVsZC5oIG1hY3JvcyB0aHJvdWdob3V0Lg0KPiA+
+ICAgICAgICAgLSBSZS10aGluayB1c2FnZSBvZiBkZXZpY2UgdHJlZSBwYXJhbWV0ZXIgdG8gZm9j
+dXMgb24gdGhlDQo+ID4gICAgICAgICBhY3R1YWwgcmVmZXJlbmNlIHNvdXJjZXMgaW5zdGVhZCBv
+ZiB0aGUgcmF3IGhhcmR3YXJlDQo+ID4gICAgICAgICBjb25maWd1cmF0aW9uLg0KPiA+IC0tLQ0K
+PiA+ICBkcml2ZXJzL2lpby9hZGMvYWQ3OTQ5LmMgfCAxMzggKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKy0tLS0tLS0tLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDExMSBpbnNl
+cnRpb25zKCspLCAyNyBkZWxldGlvbnMoLSkNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9paW8vYWRjL2FkNzk0OS5jIGIvZHJpdmVycy9paW8vYWRjL2FkNzk0OS5jDQo+ID4gaW5kZXgg
+YzdmZTI3YWEyNTE5Li5iNjQ4YjFhYjk1NTkgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9paW8v
+YWRjL2FkNzk0OS5jDQo+ID4gKysrIGIvZHJpdmVycy9paW8vYWRjL2FkNzk0OS5jDQo+ID4gQEAg
+LTExLDEyICsxMSwyMyBAQA0KPiA+ICAjaW5jbHVkZSA8bGludXgvbW9kdWxlLmg+DQo+ID4gICNp
+bmNsdWRlIDxsaW51eC9yZWd1bGF0b3IvY29uc3VtZXIuaD4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4
+L3NwaS9zcGkuaD4NCj4gPiAtDQo+ID4gLSNkZWZpbmUgQUQ3OTQ5X01BU0tfQ0hBTk5FTF9TRUwg
+ICAgICAgICAgICAgICAgR0VOTUFTSyg5LCA3KQ0KPiA+IC0jZGVmaW5lIEFENzk0OV9NQVNLX1RP
+VEFMICAgICAgICAgICAgICBHRU5NQVNLKDEzLCAwKQ0KPiA+IC0jZGVmaW5lIEFENzk0OV9PRkZT
+RVRfQ0hBTk5FTF9TRUwgICAgICA3DQo+ID4gLSNkZWZpbmUgQUQ3OTQ5X0NGR19SRUFEX0JBQ0sg
+ICAgICAgICAgIDB4MQ0KPiA+IC0jZGVmaW5lIEFENzk0OV9DRkdfUkVHX1NJWkVfQklUUyAgICAg
+ICAxNA0KPiA+ICsjaW5jbHVkZSA8bGludXgvb2YuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L2Jp
+dGZpZWxkLmg+DQo+ID4gKw0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfUkVHX1NJWkVfQklUUyAg
+ICAgICAgICAgMTQNCj4gPiArI2RlZmluZSBBRDc5NDlfQ0ZHX01BU0tfVE9UQUwgICAgICAgICAg
+ICAgIEdFTk1BU0soMTMsIDApDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19BUFBMWSAgICAgICAg
+ICAgICAgICAgICBCSVQoMTMpDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19DSEFOX0NGRyAgICAg
+ICAgICAgICAgICBHRU5NQVNLKDEyLCAxMCkNCj4gPiArI2RlZmluZSBBRDc5NDlfQ0ZHX0NIQU5f
+Q0ZHX1VOSVBPTEFSX0dORCAgIDB4Nw0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfQ0hBTl9TRUwg
+ICAgICAgICAgICAgICAgR0VOTUFTSyg5LCA3KQ0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfQlcg
+ICAgICAgICAgICAgICAgICAgICAgQklUKDYpDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19CV19G
+VUxMICAgICAgICAgICAgICAgICAxDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19SRUZfU0VMICAg
+ICAgICAgICAgICAgICBHRU5NQVNLKDUsIDMpDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NGR19TRVEg
+ICAgICAgICAgICAgICAgICAgICBHRU5NQVNLKDIsIDEpDQo+ID4gKyNkZWZpbmUgQUQ3OTQ5X0NG
+R19TRVFfRElTQUJMRUQgICAgICAgICAgICAweDANCj4gPiArI2RlZmluZSBBRDc5NDlfQ0ZHX1JF
+QURCQUNLICAgICAgICAgICAgICAgIEJJVCgwKQ0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfUkVB
+REJBQ0tfRU4gICAgICAgICAgICAgMA0KPiA+ICsjZGVmaW5lIEFENzk0OV9DRkdfUkVBREJBQ0tf
+RElTICAgICAgICAgICAgMQ0KPiA+IA0KPiA+ICBlbnVtIHsNCj4gPiAgICAgICAgIElEX0FENzk0
+OSA9IDAsDQo+ID4gQEAgLTI0LDYgKzM1LDE4IEBAIGVudW0gew0KPiA+ICAgICAgICAgSURfQUQ3
+Njg5LA0KPiA+ICB9Ow0KPiA+IA0KPiA+ICtlbnVtIGFkNzk0OV9yZWZfc2VsIHsNCj4gPiArICAg
+ICAgIEFENzk0OV9SRUZfMlY1ID0gMCwgLyogMi41ViBpbnRlcm5hbCByZWYgKyB0ZW1wIHNlbnNv
+ciAqLw0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl80VjAsIC8qIDQuMDk2ViBpbnRlcm5hbCByZWYg
+KyB0ZW1wIHNlbnNvciAqLw0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl9FWFRfVEVNUCwgLyogUkVG
+ICsgdGVtcCBzZW5zb3IgKi8NCj4gPiArICAgICAgIEFENzk0OV9SRUZfRVhUX1RFTVBfQlVGLCAv
+KiBSRUZJTiArIHRlbXAgc2Vuc29yICovDQo+ID4gKyAgICAgICBBRDc5NDlfUkVGX1JTUlZfNCwN
+Cj4gPiArICAgICAgIEFENzk0OV9SRUZfUlNSVl81LA0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl9F
+WFQsIC8qIFJFRiwgbm8gdGVtcCAqLw0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl9FWFRfQlVGLCAv
+KiBSRUZJTiwgbm8gdGVtcCAqLw0KPiA+ICsgICAgICAgQUQ3OTQ5X1JFRl9NQVgsDQo+ID4gK307
+DQo+ID4gKw0KPiA+ICBzdHJ1Y3QgYWQ3OTQ5X2FkY19zcGVjIHsNCj4gPiAgICAgICAgIHU4IG51
+bV9jaGFubmVsczsNCj4gPiAgICAgICAgIHU4IHJlc29sdXRpb247DQo+ID4gQEAgLTQxLDYgKzY0
+LDcgQEAgc3RydWN0IGFkNzk0OV9hZGNfc3BlYyB7DQo+ID4gICAqIEB2cmVmOiByZWd1bGF0b3Ig
+Z2VuZXJhdGluZyBWcmVmDQo+ID4gICAqIEBpaW9fZGV2OiByZWZlcmVuY2UgdG8gaWlvIHN0cnVj
+dHVyZQ0KPiA+ICAgKiBAc3BpOiByZWZlcmVuY2UgdG8gc3BpIHN0cnVjdHVyZQ0KPiA+ICsgKiBA
+cmVmX3NlbDogc2VsZWN0ZWQgcmVmZXJlbmNlIHZvbHRhZ2Ugc291cmNlDQo+ID4gICAqIEByZXNv
+bHV0aW9uOiByZXNvbHV0aW9uIG9mIHRoZSBjaGlwDQo+ID4gICAqIEBjZmc6IGNvcHkgb2YgdGhl
+IGNvbmZpZ3VyYXRpb24gcmVnaXN0ZXINCj4gPiAgICogQGN1cnJlbnRfY2hhbm5lbDogY3VycmVu
+dCBjaGFubmVsIGluIHVzZQ0KPiA+IEBAIC01MSw2ICs3NSw3IEBAIHN0cnVjdCBhZDc5NDlfYWRj
+X2NoaXAgew0KPiA+ICAgICAgICAgc3RydWN0IHJlZ3VsYXRvciAqdnJlZjsNCj4gPiAgICAgICAg
+IHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXY7DQo+ID4gICAgICAgICBzdHJ1Y3Qgc3BpX2Rldmlj
+ZSAqc3BpOw0KPiA+ICsgICAgICAgZW51bSBhZDc5NDlfcmVmX3NlbCByZWZfc2VsOw0KPiA+ICAg
+ICAgICAgdTggcmVzb2x1dGlvbjsNCj4gPiAgICAgICAgIHUxNiBjZmc7DQo+ID4gICAgICAgICB1
+bnNpZ25lZCBpbnQgY3VycmVudF9jaGFubmVsOw0KPiA+IEBAIC01OSw3ICs4NCw3IEBAIHN0cnVj
+dCBhZDc5NDlfYWRjX2NoaXAgew0KPiA+IA0KPiA+ICBzdGF0aWMgYm9vbCBhZDc5NDlfc3BpX2Nm
+Z19pc19yZWFkX2JhY2soc3RydWN0IGFkNzk0OV9hZGNfY2hpcCAqYWQ3OTQ5X2FkYykNCj4gPiAg
+ew0KPiA+IC0gICAgICAgaWYgKCEoYWQ3OTQ5X2FkYy0+Y2ZnICYgQUQ3OTQ5X0NGR19SRUFEX0JB
+Q0spKQ0KPiA+ICsgICAgICAgaWYgKCEoYWQ3OTQ5X2FkYy0+Y2ZnICYgQUQ3OTQ5X0NGR19SRUFE
+QkFDSykpDQo+ID4gICAgICAgICAgICAgICAgIHJldHVybiB0cnVlOw0KPiA+IA0KPiA+ICAgICAg
+ICAgcmV0dXJuIGZhbHNlOw0KPiA+IEBAIC05MSw3ICsxMTYsNyBAQCBzdGF0aWMgaW50IGFkNzk0
+OV9zcGlfd3JpdGVfY2ZnKHN0cnVjdCBhZDc5NDlfYWRjX2NoaXAgKmFkNzk0OV9hZGMsIHUxNiB2
+YWwsDQo+ID4gICAgICAgICB9Ow0KPiA+IA0KPiA+ICAgICAgICAgYWQ3OTQ5X2FkYy0+Y2ZnID0g
+KHZhbCAmIG1hc2spIHwgKGFkNzk0OV9hZGMtPmNmZyAmIH5tYXNrKTsNCj4gPiAtICAgICAgIGFk
+Nzk0OV9hZGMtPmJ1ZmZlciA9IGFkNzk0OV9hZGMtPmNmZyA8PCBzaGlmdDsNCj4gPiArICAgICAg
+IGFkNzk0OV9hZGMtPmJ1ZmZlciA9IChhZDc5NDlfYWRjLT5jZmcgJiBBRDc5NDlfQ0ZHX01BU0tf
+VE9UQUwpIDw8IHNoaWZ0Ow0KPiA+ICAgICAgICAgc3BpX21lc3NhZ2VfaW5pdF93aXRoX3RyYW5z
+ZmVycygmbXNnLCB0eCwgMSk7DQo+ID4gICAgICAgICByZXQgPSBzcGlfc3luYyhhZDc5NDlfYWRj
+LT5zcGksICZtc2cpOw0KPiA+IA0KPiA+IEBAIC0xMzYsOCArMTYxLDggQEAgc3RhdGljIGludCBh
+ZDc5NDlfc3BpX3JlYWRfY2hhbm5lbChzdHJ1Y3QgYWQ3OTQ5X2FkY19jaGlwICphZDc5NDlfYWRj
+LCBpbnQgKnZhbCwNCj4gPiAgICAgICAgIH07DQo+ID4gDQo+ID4gICAgICAgICByZXQgPSBhZDc5
+NDlfc3BpX3dyaXRlX2NmZyhhZDc5NDlfYWRjLA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgY2hhbm5lbCA8PCBBRDc5NDlfT0ZGU0VUX0NIQU5ORUxfU0VMLA0KPiA+IC0g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQUQ3OTQ5X01BU0tfQ0hBTk5FTF9TRUwp
+Ow0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRklFTERfUFJFUChBRDc5
+NDlfQ0ZHX0NIQU5fU0VMLCBjaGFubmVsKSwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIEFENzk0OV9DRkdfQ0hBTl9TRUwpOw0KPiA+ICAgICAgICAgaWYgKHJldCkNCj4g
+PiAgICAgICAgICAgICAgICAgcmV0dXJuIHJldDsNCj4gPiANCj4gPiBAQCAtMjA0LDExICsyMjks
+MjAgQEAgc3RhdGljIGludCBhZDc5NDlfc3BpX3JlYWRfcmF3KHN0cnVjdCBpaW9fZGV2ICppbmRp
+b19kZXYsDQo+ID4gICAgICAgICAgICAgICAgIHJldHVybiBJSU9fVkFMX0lOVDsNCj4gPiANCj4g
+PiAgICAgICAgIGNhc2UgSUlPX0NIQU5fSU5GT19TQ0FMRToNCj4gPiAtICAgICAgICAgICAgICAg
+cmV0ID0gcmVndWxhdG9yX2dldF92b2x0YWdlKGFkNzk0OV9hZGMtPnZyZWYpOw0KPiA+IC0gICAg
+ICAgICAgICAgICBpZiAocmV0IDwgMCkNCj4gPiAtICAgICAgICAgICAgICAgICAgICAgICByZXR1
+cm4gcmV0Ow0KPiA+ICsgICAgICAgICAgICAgICBpZiAoYWQ3OTQ5X2FkYy0+dnJlZikgew0KPiA+
+ICsgICAgICAgICAgICAgICAgICAgICAgIHJldCA9IHJlZ3VsYXRvcl9nZXRfdm9sdGFnZShhZDc5
+NDlfYWRjLT52cmVmKTsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBpZiAocmV0IDwgMCkN
+Cj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiByZXQ7DQo+ID4gKw0K
+PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICp2YWwgPSByZXQgLyA1MDAwOw0KPiA+ICsgICAg
+ICAgICAgICAgICB9IGVsc2UgaWYgKGFkNzk0OV9hZGMtPnJlZl9zZWwgPT0gQUQ3OTQ5X1JFRl8y
+VjUpIHsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAqdmFsID0gMjUwMDsNCj4gPiArICAg
+ICAgICAgICAgICAgfSBlbHNlIGlmIChhZDc5NDlfYWRjLT5yZWZfc2VsID09IEFENzk0OV9SRUZf
+NFYwKSB7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgKnZhbCA9IDQwOTY7DQo+ID4gKyAg
+ICAgICAgICAgICAgIH0gZWxzZSB7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJu
+IC1FSU5WQUw7DQo+ID4gKyAgICAgICAgICAgICAgIH0NCj4gPiANCj4gPiAtICAgICAgICAgICAg
+ICAgKnZhbCA9IHJldCAvIDUwMDA7DQo+ID4gICAgICAgICAgICAgICAgIHJldHVybiBJSU9fVkFM
+X0lOVDsNCj4gPiAgICAgICAgIH0NCj4gPiANCj4gPiBAQCAtMjI2LDcgKzI2MCw4IEBAIHN0YXRp
+YyBpbnQgYWQ3OTQ5X3NwaV9yZWdfYWNjZXNzKHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYsDQo+
+ID4gICAgICAgICAgICAgICAgICpyZWFkdmFsID0gYWQ3OTQ5X2FkYy0+Y2ZnOw0KPiA+ICAgICAg
+ICAgZWxzZQ0KPiA+ICAgICAgICAgICAgICAgICByZXQgPSBhZDc5NDlfc3BpX3dyaXRlX2NmZyhh
+ZDc5NDlfYWRjLA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgIHdyaXRldmFsICYgQUQ3OTQ5
+X01BU0tfVE9UQUwsIEFENzk0OV9NQVNLX1RPVEFMKTsNCj4gPiArICAgICAgICAgICAgICAgICAg
+ICAgICB3cml0ZXZhbCAmIEFENzk0OV9DRkdfTUFTS19UT1RBTCwNCj4gPiArICAgICAgICAgICAg
+ICAgICAgICAgICBBRDc5NDlfQ0ZHX01BU0tfVE9UQUwpOw0KPiA+IA0KPiA+ICAgICAgICAgcmV0
+dXJuIHJldDsNCj4gPiAgfQ0KPiA+IEBAIC0yNDAsMTAgKzI3NSwyNCBAQCBzdGF0aWMgaW50IGFk
+Nzk0OV9zcGlfaW5pdChzdHJ1Y3QgYWQ3OTQ5X2FkY19jaGlwICphZDc5NDlfYWRjKQ0KPiA+ICB7
+DQo+ID4gICAgICAgICBpbnQgcmV0Ow0KPiA+ICAgICAgICAgaW50IHZhbDsNCj4gPiArICAgICAg
+IHUxNiBhZGNfY29uZmlnID0gMDsNCj4gPiANCj4gPiAtICAgICAgIC8qIFNlcXVlbmNlciBkaXNh
+YmxlZCwgQ0ZHIHJlYWRiYWNrIGRpc2FibGVkLCBJTjAgYXMgZGVmYXVsdCBjaGFubmVsICovDQo+
+ID4gICAgICAgICBhZDc5NDlfYWRjLT5jdXJyZW50X2NoYW5uZWwgPSAwOw0KPiA+IC0gICAgICAg
+cmV0ID0gYWQ3OTQ5X3NwaV93cml0ZV9jZmcoYWQ3OTQ5X2FkYywgMHgzQzc5LCBBRDc5NDlfTUFT
+S19UT1RBTCk7DQo+ID4gKyAgICAgICBhZDc5NDlfYWRjLT5jZmcgPSAwOw0KPiA+ICsNCj4gPiAr
+ICAgICAgIGFkY19jb25maWcgfD0gRklFTERfUFJFUChBRDc5NDlfQ0ZHX0FQUExZLCAxKTsNCj4g
+PiArICAgICAgIGFkY19jb25maWcgfD0gRklFTERfUFJFUChBRDc5NDlfQ0ZHX0NIQU5fQ0ZHLA0K
+PiA+ICsgICAgICAgICAgICAgICAgICAgICAgIEFENzk0OV9DRkdfQ0hBTl9DRkdfVU5JUE9MQVJf
+R05EKTsNCj4gPiArICAgICAgIGFkY19jb25maWcgfD0gRklFTERfUFJFUChBRDc5NDlfQ0ZHX0NI
+QU5fU0VMLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGFkNzk0OV9hZGMtPmN1cnJlbnRf
+Y2hhbm5lbCk7DQo+ID4gKyAgICAgICBhZGNfY29uZmlnIHw9IEZJRUxEX1BSRVAoQUQ3OTQ5X0NG
+R19CVywgQUQ3OTQ5X0NGR19CV19GVUxMKTsNCj4gPiArICAgICAgIGFkY19jb25maWcgfD0gRklF
+TERfUFJFUChBRDc5NDlfQ0ZHX1JFRl9TRUwsIGFkNzk0OV9hZGMtPnJlZl9zZWwpOw0KPiA+ICsg
+ICAgICAgYWRjX2NvbmZpZyB8PSBGSUVMRF9QUkVQKEFENzk0OV9DRkdfU0VRLCBBRDc5NDlfQ0ZH
+X1NFUV9ESVNBQkxFRCk7DQo+ID4gKyAgICAgICBhZGNfY29uZmlnIHw9IEZJRUxEX1BSRVAoQUQ3
+OTQ5X0NGR19SRUFEQkFDSywgQUQ3OTQ5X0NGR19SRUFEQkFDS19ESVMpOw0KPiA+ICsNCj4gPiAr
+ICAgICAgIHJldCA9IGFkNzk0OV9zcGlfd3JpdGVfY2ZnKGFkNzk0OV9hZGMsDQo+ID4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgYWRjX2NvbmZpZywNCj4gPiArICAgICAgICAgICAgICAgICAgICAg
+ICBBRDc5NDlfQ0ZHX01BU0tfVE9UQUwpOw0KPiA+IA0KPiA+ICAgICAgICAgLyoNCj4gPiAgICAg
+ICAgICAqIERvIGEgZHVtbXkgY29udmVyc2lvbiB0byBhcHBseSB0aGUgZmlyc3QgY29uZmlndXJh
+dGlvbiBzZXR0aW5nLg0KPiA+IEBAIC0yNjEsNiArMzEwLDcgQEAgc3RhdGljIGludCBhZDc5NDlf
+c3BpX3Byb2JlKHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpDQo+ID4gICAgICAgICBzdHJ1Y3QgYWQ3
+OTQ5X2FkY19jaGlwICphZDc5NDlfYWRjOw0KPiA+ICAgICAgICAgc3RydWN0IGlpb19kZXYgKmlu
+ZGlvX2RldjsNCj4gPiAgICAgICAgIGludCByZXQ7DQo+ID4gKyAgICAgICB1MzIgdGVtcDsNCj4g
+PiANCj4gPiAgICAgICAgIGluZGlvX2RldiA9IGRldm1faWlvX2RldmljZV9hbGxvYyhkZXYsIHNp
+emVvZigqYWQ3OTQ5X2FkYykpOw0KPiA+ICAgICAgICAgaWYgKCFpbmRpb19kZXYpIHsNCj4gPiBA
+QCAtMjc5LDIxICszMjksNTMgQEAgc3RhdGljIGludCBhZDc5NDlfc3BpX3Byb2JlKHN0cnVjdCBz
+cGlfZGV2aWNlICpzcGkpDQo+ID4gICAgICAgICBhZDc5NDlfYWRjID0gaWlvX3ByaXYoaW5kaW9f
+ZGV2KTsNCj4gPiAgICAgICAgIGFkNzk0OV9hZGMtPmluZGlvX2RldiA9IGluZGlvX2RldjsNCj4g
+PiAgICAgICAgIGFkNzk0OV9hZGMtPnNwaSA9IHNwaTsNCj4gPiArICAgICAgIGFkNzk0OV9hZGMt
+PnZyZWYgPSBOVUxMOw0KPiA+IA0KPiA+ICAgICAgICAgc3BlYyA9ICZhZDc5NDlfYWRjX3NwZWNb
+c3BpX2dldF9kZXZpY2VfaWQoc3BpKS0+ZHJpdmVyX2RhdGFdOw0KPiA+ICAgICAgICAgaW5kaW9f
+ZGV2LT5udW1fY2hhbm5lbHMgPSBzcGVjLT5udW1fY2hhbm5lbHM7DQo+ID4gICAgICAgICBhZDc5
+NDlfYWRjLT5yZXNvbHV0aW9uID0gc3BlYy0+cmVzb2x1dGlvbjsNCj4gPiANCj4gPiAtICAgICAg
+IGFkNzk0OV9hZGMtPnZyZWYgPSBkZXZtX3JlZ3VsYXRvcl9nZXQoZGV2LCAidnJlZiIpOw0KPiA+
+IC0gICAgICAgaWYgKElTX0VSUihhZDc5NDlfYWRjLT52cmVmKSkgew0KPiA+IC0gICAgICAgICAg
+ICAgICBkZXZfZXJyKGRldiwgImZhaWwgdG8gcmVxdWVzdCByZWd1bGF0b3JcbiIpOw0KPiA+IC0g
+ICAgICAgICAgICAgICByZXR1cm4gUFRSX0VSUihhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiArICAg
+ICAgIHJldCA9IG9mX3Byb3BlcnR5X3JlYWRfdTMyKGFkNzk0OV9hZGMtPmluZGlvX2Rldi0+ZGV2
+Lm9mX25vZGUsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgImFkaSxyZWZlcmVuY2Utc2Vs
+ZWN0IiwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAmdGVtcCk7DQo+ID4gKyAgICAgICBp
+ZiAocmV0ID09IDApIHsNCj4gPiArICAgICAgICAgICAgICAgc3dpdGNoICh0ZW1wKSB7DQo+ID4g
+KyAgICAgICAgICAgICAgIGNhc2UgMDoNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBhZDc5
+NDlfYWRjLT5yZWZfc2VsID0gQUQ3OTQ5X1JFRl8yVjU7DQo+ID4gKyAgICAgICAgICAgICAgICAg
+ICAgICAgYnJlYWs7DQo+ID4gKyAgICAgICAgICAgICAgIGNhc2UgMToNCj4gPiArICAgICAgICAg
+ICAgICAgICAgICAgICBhZDc5NDlfYWRjLT5yZWZfc2VsID0gQUQ3OTQ5X1JFRl80VjA7DQo+ID4g
+KyAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ID4gKyAgICAgICAgICAgICAgIGNhc2Ug
+MjoNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBhZDc5NDlfYWRjLT5yZWZfc2VsID0gQUQ3
+OTQ5X1JFRl9FWFQ7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ID4gKyAg
+ICAgICAgICAgICAgIGNhc2UgMzoNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBhZDc5NDlf
+YWRjLT5yZWZfc2VsID0gQUQ3OTQ5X1JFRl9FWFRfQlVGOw0KPiA+ICsgICAgICAgICAgICAgICAg
+ICAgICAgIGJyZWFrOw0KPiA+ICsgICAgICAgICAgICAgICBkZWZhdWx0Og0KPiA+ICsgICAgICAg
+ICAgICAgICAgICAgICAgIGFkNzk0OV9hZGMtPnJlZl9zZWwgPSBBRDc5NDlfUkVGX0VYVF9CVUY7
+DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgZGV2X3dhcm4oZGV2LA0KPiA+ICsgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgInVua25vd24gcmVmZXJlbmNlLXNlbGVjdCB2YWx1ZSwg
+dXNpbmcgUkVGSU4gZXh0ZXJuYWwgVnJlZiAoMykgYnkgZGVmYXVsdFxuIik7DQo+ID4gKyAgICAg
+ICAgICAgICAgIH0NCj4gPiArICAgICAgIH0gZWxzZSB7DQo+ID4gKyAgICAgICAgICAgICAgIGFk
+Nzk0OV9hZGMtPnJlZl9zZWwgPSBBRDc5NDlfUkVGX0VYVF9CVUY7DQo+ID4gKyAgICAgICAgICAg
+ICAgIGRldl93YXJuKGRldiwgInVzaW5nIGV4dGVybmFsIFZyZWYgYnkgZGVmYXVsdFxuIik7DQo+
+ID4gICAgICAgICB9DQo+ID4gDQo+ID4gLSAgICAgICByZXQgPSByZWd1bGF0b3JfZW5hYmxlKGFk
+Nzk0OV9hZGMtPnZyZWYpOw0KPiA+IC0gICAgICAgaWYgKHJldCA8IDApIHsNCj4gPiAtICAgICAg
+ICAgICAgICAgZGV2X2VycihkZXYsICJmYWlsIHRvIGVuYWJsZSByZWd1bGF0b3JcbiIpOw0KPiA+
+IC0gICAgICAgICAgICAgICByZXR1cm4gcmV0Ow0KPiA+ICsgICAgICAgLyogQ2hlY2sgd2hldGhl
+ciB1c2luZyBleHRlcm5hbCBWcmVmICovDQo+ID4gKyAgICAgICBpZiAoKGFkNzk0OV9hZGMtPnJl
+Zl9zZWwgIT0gQUQ3OTQ5X1JFRl8yVjUpICYmDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAg
+KGFkNzk0OV9hZGMtPnJlZl9zZWwgIT0gQUQ3OTQ5X1JFRl80VjApKSB7DQo+ID4gKyAgICAgICAg
+ICAgICAgIGFkNzk0OV9hZGMtPnZyZWYgPSBkZXZtX3JlZ3VsYXRvcl9nZXQoZGV2LCAidnJlZiIp
+Ow0KPiA+ICsgICAgICAgICAgICAgICBpZiAoSVNfRVJSKGFkNzk0OV9hZGMtPnZyZWYpKSB7DQo+
+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgZGV2X2VycihkZXYsICJmYWlsIHRvIHJlcXVlc3Qg
+cmVndWxhdG9yXG4iKTsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICByZXR1cm4gUFRSX0VS
+UihhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiArICAgICAgICAgICAgICAgfQ0KPiA+ICsNCj4gPiAr
+ICAgICAgICAgICAgICAgcmV0ID0gcmVndWxhdG9yX2VuYWJsZShhZDc5NDlfYWRjLT52cmVmKTsN
+Cj4gPiArICAgICAgICAgICAgICAgaWYgKHJldCA8IDApIHsNCj4gPiArICAgICAgICAgICAgICAg
+ICAgICAgICBkZXZfZXJyKGRldiwgImZhaWwgdG8gZW5hYmxlIHJlZ3VsYXRvclxuIik7DQo+ID4g
+KyAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIHJldDsNCj4gPiArICAgICAgICAgICAgICAg
+fQ0KPiA+ICAgICAgICAgfQ0KPiA+IA0KPiA+ICAgICAgICAgbXV0ZXhfaW5pdCgmYWQ3OTQ5X2Fk
+Yy0+bG9jayk7DQo+ID4gQEAgLTMxNCw3ICszOTYsOCBAQCBzdGF0aWMgaW50IGFkNzk0OV9zcGlf
+cHJvYmUoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkNCj4gPiANCj4gPiAgZXJyOg0KPiA+ICAgICAg
+ICAgbXV0ZXhfZGVzdHJveSgmYWQ3OTQ5X2FkYy0+bG9jayk7DQo+ID4gLSAgICAgICByZWd1bGF0
+b3JfZGlzYWJsZShhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiArICAgICAgIGlmIChhZDc5NDlfYWRj
+LT52cmVmKQ0KPiA+ICsgICAgICAgICAgICAgICByZWd1bGF0b3JfZGlzYWJsZShhZDc5NDlfYWRj
+LT52cmVmKTsNCj4gPiANCj4gPiAgICAgICAgIHJldHVybiByZXQ7DQo+ID4gIH0NCj4gPiBAQCAt
+MzI2LDcgKzQwOSw4IEBAIHN0YXRpYyBpbnQgYWQ3OTQ5X3NwaV9yZW1vdmUoc3RydWN0IHNwaV9k
+ZXZpY2UgKnNwaSkNCj4gPiANCj4gPiAgICAgICAgIGlpb19kZXZpY2VfdW5yZWdpc3RlcihpbmRp
+b19kZXYpOw0KPiA+ICAgICAgICAgbXV0ZXhfZGVzdHJveSgmYWQ3OTQ5X2FkYy0+bG9jayk7DQo+
+ID4gLSAgICAgICByZWd1bGF0b3JfZGlzYWJsZShhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiArICAg
+ICAgIGlmIChhZDc5NDlfYWRjLT52cmVmKQ0KPiA+ICsgICAgICAgICAgICAgICByZWd1bGF0b3Jf
+ZGlzYWJsZShhZDc5NDlfYWRjLT52cmVmKTsNCj4gPiANCj4gPiAgICAgICAgIHJldHVybiAwOw0K
+PiA+ICB9DQo+ID4gLS0NCj4gPiAxLjkuMQ0KPiA+IA0K

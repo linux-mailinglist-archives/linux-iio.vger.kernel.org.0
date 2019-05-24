@@ -2,69 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E97F2943C
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2019 11:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B8D929105
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2019 08:34:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389674AbfEXJKZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 May 2019 05:10:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36970 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389425AbfEXJKY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 24 May 2019 05:10:24 -0400
-Received: from pobox.suse.cz (prg-ext-pat.suse.com [213.151.95.130])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C4525205ED;
-        Fri, 24 May 2019 09:10:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558689024;
-        bh=lGN+Cywaq8H+sE5gF6NGv4eIntU+WT31VUYToX1nm4o=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=tNCFGjPOcr8wbx69MZNBYdQhCntwD4gTxyb60zcAEBjm4qR+7SX+zU3U7vMUgjV4N
-         gQCbwEecE0xD17NiFDPC66gSj2gyzMLOuK3wAMMHhTtvwCZhzOquh1bNFy27pdwpWo
-         lJNq+K+LPsjma1t2T0Hlg0xf0xys7mSYGoN5H8cU=
-Date:   Fri, 24 May 2019 11:10:20 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     "Pandruvada, Srinivas" <srinivas.pandruvada@intel.com>
-cc:     "Song, Hongyan" <hongyan.song@intel.com>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "Xu, Even" <even.xu@intel.com>
-Subject: Re: [PATCH] hid: remove NO_D3 flag for ish not CHV platform
-In-Reply-To: <497b1b7fe4fca84f1a2bf450db196950c1e98310.camel@intel.com>
-Message-ID: <nycvar.YFH.7.76.1905241109390.1962@cbobk.fhfr.pm>
-References: <1558082782-29279-1-git-send-email-hongyan.song@intel.com>  <nycvar.YFH.7.76.1905221235140.1962@cbobk.fhfr.pm> <497b1b7fe4fca84f1a2bf450db196950c1e98310.camel@intel.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S2388260AbfEXGeT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 May 2019 02:34:19 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:32985 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387936AbfEXGeT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 May 2019 02:34:19 -0400
+Received: by mail-ot1-f67.google.com with SMTP id 66so7751663otq.0;
+        Thu, 23 May 2019 23:34:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WweuK19xa24l5W9LMdbztVqMPaDctoIgcKyXzOqKMhE=;
+        b=Rx4R/PCrjzbiBEVKS5NJc/b+SHaiNOuSv+5G49HOQQGH6DkE3C1/wTUPfg7sYNHf+U
+         YdtBdAp3raM+VpCc7/4rj1on2Tzwbu/jo5h8h+hrKPZCrp4COegxgM4Ih8y/Jx0bMZnQ
+         JUujxGiy2IkVnrl4zeP5yj0opuw3jtGp0rytygCyrgfTTD6GNRGFtvjDZPCQbJ8lPUWP
+         FUl0gxd5EBNtTqZM+98nzi+i7KkxeNrHQ2kICnbra09Swxh9rMLSB+2n9aY+Pq7oWG3W
+         Ik7x26/j0+Tbwknb9ub8x+gKEi1mwqisoGxYCHCs7G1rT0FeQ8pC/+YknKFC9/G57ZdJ
+         5LYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WweuK19xa24l5W9LMdbztVqMPaDctoIgcKyXzOqKMhE=;
+        b=bEMRVeiWeOvjfA4tO4kio5w96YNXDMbqwh2TzlmVibpmkg+iRC7NdK+D4dB28gc6pA
+         chXkYpbYOUprPeIQrXi66J0+2G4/5Up1Kqt5tMUxsecvlC3vcFB2Fssk3XldQvA9mLuu
+         FuHAcQDyHcVb4a+ru0Ng+i0UhwvD1drUcdgY1j64EAzaGoM4XgC+E4E8oqo+ZKiFtgxP
+         /SeZjg5/Op0w3VKq7b9qQe2M1Af754XLoJjLcua4wYqBc4k6PdjmQLOrpcReGg+8TeXo
+         ZteqJ/BLfmtCzqQXTELxtwx+0V/OGnD5pL+nD0UYBwH5mIAnSL8fo6gwMc638fZj6kGh
+         /gGA==
+X-Gm-Message-State: APjAAAXjCazTTHQYJWosFfbr1twlwbBtxQ/+WZnnh5FG7QYJI/q5JdQp
+        /8kRXUPiZBb6QID+v+c7imI6jkH9enJtZ8o2Quc=
+X-Google-Smtp-Source: APXvYqwO4WAV/RQ6brDgsW2z6/O0nT1SeWLWXXXfQbL7jqStL+jI/RDuC/HbNHoTbPa1sLafu+feh2zqkD9UvOvNj9g=
+X-Received: by 2002:a05:6830:1182:: with SMTP id u2mr11542717otq.71.1558679658680;
+ Thu, 23 May 2019 23:34:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20190524032950.2398-1-rodrigorsdc@gmail.com>
+In-Reply-To: <20190524032950.2398-1-rodrigorsdc@gmail.com>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Fri, 24 May 2019 12:34:05 +0300
+Message-ID: <CA+U=DspqLFBMrRcV6VmypHOpE6Qs7OqmiDzWAd6pxpA7B=4S4g@mail.gmail.com>
+Subject: Re: [PATCH] staging: iio: adis16240: add of_match_table entry
+To:     Rodrigo Ribeiro <rodrigorsdc@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        LKML <linux-kernel@vger.kernel.org>, kernel-usp@googlegroups.com,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 22 May 2019, Pandruvada, Srinivas wrote:
+On Fri, May 24, 2019 at 6:30 AM Rodrigo Ribeiro <rodrigorsdc@gmail.com> wrote:
+>
+> This patch adds of_match_table entry in device driver in order to
+> enable spi fallback probing.
+>
+> Signed-off-by: Rodrigo Ribeiro <rodrigorsdc@gmail.com>
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> ---
+>  drivers/staging/iio/accel/adis16240.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/accel/adis16240.c
+> index 8c6d23604eca..b80c8529784b 100644
+> --- a/drivers/staging/iio/accel/adis16240.c
+> +++ b/drivers/staging/iio/accel/adis16240.c
+> @@ -444,6 +444,7 @@ MODULE_DEVICE_TABLE(of, adis16240_of_match);
+>  static struct spi_driver adis16240_driver = {
+>         .driver = {
+>                 .name = "adis16240",
+> +               .of_match_table = adis16240_of_match,
 
-> > > From: Song Hongyan <hongyan.song@intel.com>
-> Also commit summary "hid: remove NO_D3 flag for non Cherry Trail (CHT)"
-> 
-> > > 
-> > > NO_D3 flag is set for CHV and the older platforms, the other
-> > > platform
-> > > suppose can enter D3, if have this NO_D3 flag set it can never
-> > > enter D3
-> > 
-> > Could you please provide a little bit more descriptive changelog --
-> > namely 
-> > what observable problem is it fixing.
-> 
-> 
-> In addition, I don't think this is a rc2+ release fix.
+This patch is missing the actual table.
 
-Thanks Srinivas. Could you please Ack v2 so that I could queue it?
-
--- 
-Jiri Kosina
-SUSE Labs
-
+>         },
+>         .probe = adis16240_probe,
+>         .remove = adis16240_remove,
+> --
+> 2.20.1
+>

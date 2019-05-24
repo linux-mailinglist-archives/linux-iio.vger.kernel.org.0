@@ -2,113 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63AE2297C1
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2019 14:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70F0C29944
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2019 15:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391245AbfEXMCj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 May 2019 08:02:39 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:33348 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391235AbfEXMCj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 May 2019 08:02:39 -0400
-Received: by mail-ed1-f68.google.com with SMTP id n17so14085349edb.0
-        for <linux-iio@vger.kernel.org>; Fri, 24 May 2019 05:02:38 -0700 (PDT)
+        id S2391553AbfEXNum (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 May 2019 09:50:42 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:35671 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391124AbfEXNum (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 May 2019 09:50:42 -0400
+Received: by mail-qk1-f196.google.com with SMTP id c15so7640585qkl.2;
+        Fri, 24 May 2019 06:50:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=essensium-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=EKk/cIwaLyICV+zUNt5nE7tK5hxV2T/gKNg2bYYa8aU=;
-        b=kmZphTPLFDEK6kXZCM3P0Gzre9Zxs0Zc1VUb0swQdOVOQkghpXjjHuYcS/Qa1lsbHN
-         2n+pakxrHnLGZ6KWp7OEDq09goDKrGqePvDSJEve8WOijva+bg4Rh06NqgHaz+GABrfw
-         bwz0V0+FVewN2wiFMrGqHz7tMD7Z5aZPAiSWShLR//h8S72PPpPAZjSqQbstg7zvyNTY
-         Q34V0mqtu3ROc/SErqdoHd8uaFOfk9/eYaTo4uUpNbZ69KDppSfCgzwHuztGsSLg0VxP
-         r9eXxo0/CrHQeiLbeQgWsgc5CgFzDlLZByXOhDSKbQ7UVBF1SrHFUWJrRpATVsqLiArE
-         1a1w==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=p8F4WyQZW+GI44XlYkE2TwGfMqACxuEMgKBoIKdGQcU=;
+        b=P3DLjgakvjT7EAxdRbyr6rciA5GOllMVOr5E5Qalw2k7kdxVQRBO5KJoQWjVXPFDbr
+         2LXSXh/tlmEDqR3dnEYOWJQQSWQv2lcz+5gxg0hBY7wow5DpVBwYTPHNmreVZAKlNG8Q
+         BSBG09n9QlR6TBvyRaeUp+zTs8Amn+Z2mMUFMZgSdR6LSvxLVnNwbmwlMbl0sk80WKo6
+         6+NBDTPmQ72c6VgiwkRs7a4b9rQGKRWGPTtEQWwQgG6GipX6DyHgNpy6Ng+A7U0cek0M
+         qcGoE0VWSc2W3m+uLHHttAPTwQH0MbqBUyh9oK2wiJhDAd6whVpsz1t8hvnYV+lXV+mX
+         ytdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=EKk/cIwaLyICV+zUNt5nE7tK5hxV2T/gKNg2bYYa8aU=;
-        b=fJvmk4plKvkc02TVLEK8MhTn2Ds5oVjm4klqMrhJQ8cZ4aoGDVXkvCmSduY3i7GIJA
-         0hR66cgqeNjJw7WXV2ZoYGThIfN6/4D9a3DaDsuTxLjTwiBtMb2n1wm+8leW23XxWjg0
-         BgQc0fHPAU3AVL5uF8D07qf+zmhbHx4PH+BJoJT5Xbbw1RJAagiTL2CgHsGVpKaRgd0i
-         fOTCFeL/uQKPpYbg1Yqt6UCWP62N61whh716TBeA/v2veTib3yG9i4q2mXN0el/+6cea
-         LCU9xu9JrP4K4ajWPqO34TNzLKcjKF5txL6l69wSFRQJr7GEc966driJb8x8OU3K2jlb
-         QdBQ==
-X-Gm-Message-State: APjAAAUzW7Mlmaw1hjfoUaCi/JV25effzks9Z+Rb4ANvDgwIZ4bUawWj
-        yV8jnW2DWWdvVl81Ihfj5cyhbw==
-X-Google-Smtp-Source: APXvYqzNrNQ34o178qgF58YqCzsN717OWDCY6SXgnER717yhuxeF496z/3libVrM2TkpvMl2rOd6Rg==
-X-Received: by 2002:aa7:c512:: with SMTP id o18mr104340990edq.82.1558699357520;
-        Fri, 24 May 2019 05:02:37 -0700 (PDT)
-Received: from [10.1.0.123] (ip-188-118-3-185.reverse.destiny.be. [188.118.3.185])
-        by smtp.gmail.com with ESMTPSA id t3sm686925edd.49.2019.05.24.05.02.36
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Fri, 24 May 2019 05:02:36 -0700 (PDT)
-Subject: Re: [PATCH v2 3/6] iio: ad7949: Support configuration read-back
-To:     Adam Michaelis <adam.michaelis@collins.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
-        michael.hennerich@analog.com, knaack.h@gmx.de, pmeerw@pmeerw.net,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        devicetree@vger.kernel.org,
-        Brandon Maier <brandon.maier@rockwellcollins.com>,
-        Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
-References: <1556813672-49861-1-git-send-email-adam.michaelis@rockwellcollins.com>
- <1556813672-49861-3-git-send-email-adam.michaelis@rockwellcollins.com>
- <20190505154227.1735b1b2@archlinux>
- <CALMrGWV6rtYQShtm7uBQygtdOpPW30mLnKMxb2Jk8pY68B6yyw@mail.gmail.com>
-From:   Couret Charles-Antoine <charles-antoine.couret@essensium.com>
-Message-ID: <154f2b5c-91e1-41dc-e7c5-a5ec35ca1c05@essensium.com>
-Date:   Fri, 24 May 2019 14:02:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=p8F4WyQZW+GI44XlYkE2TwGfMqACxuEMgKBoIKdGQcU=;
+        b=LrY5xsBu/rBQW/NZvTaIqdhVMc0+Dh5ulkHr9d4WWCa55xgM9kDzlcS1p0ZYmdwxEk
+         TszH7kl0VLuOcJMJSrKjOtu7lk1ecMDg3hoUcOoKk1jWKLA6OnnFbLZg/JyaW7/0gUb5
+         7QfreZxA0Nz+yijyyjkLxP5n/GG7K6YQvi6UcWSaxUS8XEbw25lIOKl+lMRcST0vQ7E5
+         Rf2K+qjauleaOzwuLOyq9nFNXjHDQ5Z883CkoLg4ig8B/Je3bbWtnEQauxl8AtXsFaM7
+         vxUeAhp18g/NbxZIWTC/NRiMHO5461sEEgjm3M2nKNTQDtwGYBtf9TJetQVrItEB/Mkp
+         jlAQ==
+X-Gm-Message-State: APjAAAWYH3VR+EnN84oDHPPUMxLkJ3xwO0yWJYmzPuW0TcJNB1yqka1K
+        GRHWgt7YzBY8L0aGt2N9r+o=
+X-Google-Smtp-Source: APXvYqxIb7KnFdaoUvh+xhdTgH619i0pVWqH9VkoiettkG+ekigRjW25Pf0XMhomyWxIbx+I7n2LbQ==
+X-Received: by 2002:ac8:2e74:: with SMTP id s49mr85793416qta.23.1558705841124;
+        Fri, 24 May 2019 06:50:41 -0700 (PDT)
+Received: from smtp.gmail.com ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id u2sm1064043qtq.45.2019.05.24.06.50.37
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 24 May 2019 06:50:40 -0700 (PDT)
+Date:   Fri, 24 May 2019 10:50:35 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>
+Cc:     Rodrigo Ribeiro <rodrigorsdc@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        LKML <linux-kernel@vger.kernel.org>, kernel-usp@googlegroups.com,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: Re: [PATCH] staging: iio: adis16240: add of_match_table entry
+Message-ID: <20190524135034.u2mbtq2jwhp6ent7@smtp.gmail.com>
+References: <20190524032950.2398-1-rodrigorsdc@gmail.com>
+ <CA+U=DspqLFBMrRcV6VmypHOpE6Qs7OqmiDzWAd6pxpA7B=4S4g@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CALMrGWV6rtYQShtm7uBQygtdOpPW30mLnKMxb2Jk8pY68B6yyw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+U=DspqLFBMrRcV6VmypHOpE6Qs7OqmiDzWAd6pxpA7B=4S4g@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le 07/05/2019 à 21:53, Adam Michaelis a écrit :
-> On Sun, May 5, 2019 at 9:42 AM Jonathan Cameron <jic23@kernel.org> wrote:
->> On Thu,  2 May 2019 11:14:29 -0500
->> Adam Michaelis <adam.michaelis@rockwellcollins.com> wrote:
->>
->>> Adds device tree parameter to set the configuration read-back bit
->>> in the configuration register to tell the AD7949 to include the value of
->>> the configuration register at the time the current sample was acquired
->>> when reading from the part.
->>>
->>> Further work must be done to make read-back information available to
->>> consumer.
->> This needs some explanation of why it is useful at all. I'm certainly unclear
->> on why it would be useful to configure this at boot time.
->>
->> Code looks fine.
->>
->> Jonathan
->>
-> The configuration read-back feature is being maintained from the
-> original version of this driver. Before adding the device tree entry,
-> there was no way to change this setting other than debugfs raw access
-> to the SPI interface, and there is still no access to the returned
-> configuration data should the feature be enabled. I would be willing
-> to remove the feature altogether, but wanted to tread softly on
-> existing features.
+Hi Alexandru,
 
-Hi,
+On 05/24, Alexandru Ardelean wrote:
+> On Fri, May 24, 2019 at 6:30 AM Rodrigo Ribeiro <rodrigorsdc@gmail.com> wrote:
+> >
+> > This patch adds of_match_table entry in device driver in order to
+> > enable spi fallback probing.
+> >
+> > Signed-off-by: Rodrigo Ribeiro <rodrigorsdc@gmail.com>
+> > Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> > ---
+> >  drivers/staging/iio/accel/adis16240.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/accel/adis16240.c
+> > index 8c6d23604eca..b80c8529784b 100644
+> > --- a/drivers/staging/iio/accel/adis16240.c
+> > +++ b/drivers/staging/iio/accel/adis16240.c
+> > @@ -444,6 +444,7 @@ MODULE_DEVICE_TABLE(of, adis16240_of_match);
+> >  static struct spi_driver adis16240_driver = {
+> >         .driver = {
+> >                 .name = "adis16240",
+> > +               .of_match_table = adis16240_of_match,
+> 
+> This patch is missing the actual table.
 
-I added this feature for debug purpose but it is not used in our case 
-anymore because the driver and the device are working as expected.
+Struct with compatible devices table was included separately in a
+previous patch at commit d9e533b6c0a26c7ef8116b7f3477c164c07bb6fb.
+Yeah, I also thought it was missing the match table the first time I was
+this patch. It's really confusing when we have two patches, one
+depending on another, that are not part of the same patch set. We're
+trying to avoid things like this the most but that slipped out from our
+internal review. We're sorry about that.
 
-But maybe we can use it the check if the config is correctly applied? I 
-don't know, it is probably useless to keep this feature here.
-
-Regards,
-
-Charles-Antoine Couret
-
+> 
+> >         },
+> >         .probe = adis16240_probe,
+> >         .remove = adis16240_remove,
+> > --
+> > 2.20.1
+> >

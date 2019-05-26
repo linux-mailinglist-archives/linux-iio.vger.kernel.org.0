@@ -2,625 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB49B2AB64
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2019 19:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 401062AB78
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2019 19:40:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727966AbfEZRfv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 May 2019 13:35:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59066 "EHLO mail.kernel.org"
+        id S1727989AbfEZRks (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 May 2019 13:40:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60376 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727959AbfEZRfu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 26 May 2019 13:35:50 -0400
+        id S1727950AbfEZRks (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 May 2019 13:40:48 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4605C20815;
-        Sun, 26 May 2019 17:35:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4639A2054F;
+        Sun, 26 May 2019 17:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558892149;
-        bh=VUUH7bANa61e20Y9dIDPSXAHiwWeZLuc8JMxfvr+Dtg=;
+        s=default; t=1558892447;
+        bh=vqVnTEF2+44KSXHzhAVJzSN6+ZF8bB4yeWV0VNhLVpc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GG8+8+V8pN1bViTaRx5wyNhHIOYga72sAibLzir3Booo+4bhna2giooNBfJdXJRjO
-         ZBlexVX7SwYa4m12YtpE20epxsc6/4DC7w5q/vKgrkLAjb4IpfSrevOcC8JJ8Hle3S
-         Qyl/O/mw4bQKzKmd496ITKNgLpw+6C7Ofsf165HM=
-Date:   Sun, 26 May 2019 18:35:45 +0100
+        b=fe1myetdB2QEWgIDOfyAE+OTBnkKw7pizON85OOemGDZzXy/n4DgoPGpfE5yHXkdo
+         1zKyFy1tXlaFr7zn+mzDskh4k0hfUPNR6m+9M/LtvHSgHe9eqsWGmSMy+R4jQ7qQOv
+         2NfTLGcF2eEYEiqJA4EkGFCplROLG5A/YMRsmsyA=
+Date:   Sun, 26 May 2019 18:40:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Eddie James <eajames@linux.ibm.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        joel@jms.id.au, lars@metafoo.de, knaack.h@gmx.de
-Subject: Re: [PATCH v4 3/3] iio: dps310: Add pressure sensing capability
-Message-ID: <20190526183545.268bde1d@archlinux>
-In-Reply-To: <1558404814-26078-4-git-send-email-eajames@linux.ibm.com>
-References: <1558404814-26078-1-git-send-email-eajames@linux.ibm.com>
-        <1558404814-26078-4-git-send-email-eajames@linux.ibm.com>
+To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Cc:     kernel@collabora.com, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] docs: iio: add precision about
+ sampling_frequency_available
+Message-ID: <20190526184016.11a56ee0@archlinux>
+In-Reply-To: <c1c56310da539b6af66811084bd69806622e1903.1558601329.git.fabien.lahoudere@collabora.com>
+References: <cover.1558601329.git.fabien.lahoudere@collabora.com>
+        <c1c56310da539b6af66811084bd69806622e1903.1558601329.git.fabien.lahoudere@collabora.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 20 May 2019 21:13:34 -0500
-Eddie James <eajames@linux.ibm.com> wrote:
+On Thu, 23 May 2019 11:07:37 +0200
+Fabien Lahoudere <fabien.lahoudere@collabora.com> wrote:
 
-> The DPS310 supports measurement of pressure, so support that in the
-> driver. Use background measurement like the temperature sensing and
-> default to lowest precision and lowest measurement rate.
->=20
-> Signed-off-by: Eddie James <eajames@linux.ibm.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> The documentation give some exemple on what format can be expected
+> from sampling_frequency_available sysfs attribute
+> 
+> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Great.
+
 Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+the autobuilders to completely ignore ;)
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/pressure/dps310.c | 363 ++++++++++++++++++++++++++++++++++++=
-+++---
->  1 file changed, 337 insertions(+), 26 deletions(-)
->=20
-> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-> index a093e3a..2c1943b 100644
-> --- a/drivers/iio/pressure/dps310.c
-> +++ b/drivers/iio/pressure/dps310.c
-> @@ -11,11 +11,12 @@
->   *   c0 * 0.5 + c1 * T_raw / kT =C2=B0C
->   *
->   * TODO:
-> - *  - Pressure sensor readings
->   *  - Optionally support the FIFO
->   */
-> =20
->  #include <linux/i2c.h>
-> +#include <linux/limits.h>
-> +#include <linux/math64.h>
->  #include <linux/module.h>
->  #include <linux/regmap.h>
-> =20
-> @@ -31,6 +32,8 @@
->  #define DPS310_TMP_B1		0x04
->  #define DPS310_TMP_B2		0x05
->  #define DPS310_PRS_CFG		0x06
-> +#define  DPS310_PRS_RATE_BITS	GENMASK(6, 4)
-> +#define  DPS310_PRS_PRC_BITS	GENMASK(3, 0)
->  #define DPS310_TMP_CFG		0x07
->  #define  DPS310_TMP_RATE_BITS	GENMASK(6, 4)
->  #define  DPS310_TMP_PRC_BITS	GENMASK(3, 0)
-> @@ -83,6 +86,8 @@ struct dps310_data {
->  	struct mutex lock;	/* Lock for sequential HW access functions */
-> =20
->  	s32 c0, c1;
-> +	s32 c00, c10, c20, c30, c01, c11, c21;
-> +	s32 pressure_raw;
->  	s32 temp_raw;
->  };
-> =20
-> @@ -93,33 +98,79 @@ struct dps310_data {
->  			BIT(IIO_CHAN_INFO_SAMP_FREQ) |
->  			BIT(IIO_CHAN_INFO_PROCESSED),
->  	},
-> +	{
-> +		.type =3D IIO_PRESSURE,
-> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
-> +			BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> +			BIT(IIO_CHAN_INFO_PROCESSED),
-> +	},
->  };
-> =20
->  /* To be called after checking the COEF_RDY bit in MEAS_CFG */
-> -static int dps310_get_temp_coef(struct dps310_data *data)
-> +static int dps310_get_coefs(struct dps310_data *data)
->  {
->  	int rc;
-> -	u8 coef[3];
-> +	u8 coef[18];
->  	u32 c0, c1;
-> +	u32 c00, c10, c20, c30, c01, c11, c21;
-> =20
-> -	/*
-> -	 * Read temperature calibration coefficients c0 and c1 from the
-> -	 * COEF register. The numbers are 12-bit 2's compliment numbers
-> -	 */
-> +	/* Read all sensor calibration coefficients from the COEF registers. */
->  	rc =3D regmap_bulk_read(data->regmap, DPS310_COEF_BASE, coef,
->  			      sizeof(coef));
->  	if (rc < 0)
->  		return rc;
-> =20
-> +	/*
-> +	 * Calculate temperature calibration coefficients c0 and c1. The
-> +	 * numbers are 12-bit 2's complement numbers.
-> +	 */
->  	c0 =3D (coef[0] << 4) | (coef[1] >> 4);
->  	data->c0 =3D sign_extend32(c0, 11);
-> =20
->  	c1 =3D ((coef[1] & GENMASK(3, 0)) << 8) | coef[2];
->  	data->c1 =3D sign_extend32(c1, 11);
-> =20
-> +	/*
-> +	 * Calculate pressure calibration coefficients. c00 and c10 are 20 bit
-> +	 * 2's complement numbers, while the rest are 16 bit 2's complement
-> +	 * numbers.
-> +	 */
-> +	c00 =3D (coef[3] << 12) | (coef[4] << 4) | (coef[5] >> 4);
-> +	data->c00 =3D sign_extend32(c00, 19);
-> +
-> +	c10 =3D ((coef[5] & GENMASK(3, 0)) << 16) | (coef[6] << 8) | coef[7];
-> +	data->c10 =3D sign_extend32(c10, 19);
-> +
-> +	c01 =3D (coef[8] << 8) | coef[9];
-> +	data->c01 =3D sign_extend32(c01, 15);
-> +
-> +	c11 =3D (coef[10] << 8) | coef[11];
-> +	data->c11 =3D sign_extend32(c11, 15);
-> +
-> +	c20 =3D (coef[12] << 8) | coef[13];
-> +	data->c20 =3D sign_extend32(c20, 15);
-> +
-> +	c21 =3D (coef[14] << 8) | coef[15];
-> +	data->c21 =3D sign_extend32(c21, 15);
-> +
-> +	c30 =3D (coef[16] << 8) | coef[17];
-> +	data->c30 =3D sign_extend32(c30, 15);
-> +
->  	return 0;
->  }
-> =20
-> +static int dps310_get_pres_precision(struct dps310_data *data)
-> +{
-> +	int rc;
-> +	int val;
-> +
-> +	rc =3D regmap_read(data->regmap, DPS310_PRS_CFG, &val);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	return BIT(val & GENMASK(2, 0));
-> +}
-> +
->  static int dps310_get_temp_precision(struct dps310_data *data)
->  {
->  	int rc;
-> @@ -137,6 +188,25 @@ static int dps310_get_temp_precision(struct dps310_d=
-ata *data)
->  }
-> =20
->  /* Called with lock held */
-> +static int dps310_set_pres_precision(struct dps310_data *data, int val)
-> +{
-> +	int rc;
-> +	u8 shift_en;
-> +
-> +	if (val < 0 || val > 128)
-> +		return -EINVAL;
-> +
-> +	shift_en =3D val >=3D 16 ? DPS310_PRS_SHIFT_EN : 0;
-> +	rc =3D regmap_write_bits(data->regmap, DPS310_CFG_REG,
-> +			       DPS310_PRS_SHIFT_EN, shift_en);
-> +	if (rc)
-> +		return rc;
-> +
-> +	return regmap_update_bits(data->regmap, DPS310_PRS_CFG,
-> +				  DPS310_PRS_PRC_BITS, ilog2(val));
-> +}
-> +
-> +/* Called with lock held */
->  static int dps310_set_temp_precision(struct dps310_data *data, int val)
->  {
->  	int rc;
-> @@ -156,6 +226,20 @@ static int dps310_set_temp_precision(struct dps310_d=
-ata *data, int val)
->  }
-> =20
->  /* Called with lock held */
-> +static int dps310_set_pres_samp_freq(struct dps310_data *data, int freq)
-> +{
-> +	u8 val;
-> +
-> +	if (freq < 0 || freq > 128)
-> +		return -EINVAL;
-> +
-> +	val =3D ilog2(freq) << 4;
-> +
-> +	return regmap_update_bits(data->regmap, DPS310_PRS_CFG,
-> +				  DPS310_PRS_RATE_BITS, val);
-> +}
-> +
-> +/* Called with lock held */
->  static int dps310_set_temp_samp_freq(struct dps310_data *data, int freq)
->  {
->  	u8 val;
-> @@ -169,6 +253,18 @@ static int dps310_set_temp_samp_freq(struct dps310_d=
-ata *data, int freq)
->  				  DPS310_TMP_RATE_BITS, val);
->  }
-> =20
-> +static int dps310_get_pres_samp_freq(struct dps310_data *data)
-> +{
-> +	int rc;
-> +	int val;
-> +
-> +	rc =3D regmap_read(data->regmap, DPS310_PRS_CFG, &val);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	return BIT((val & DPS310_PRS_RATE_BITS) >> 4);
-> +}
-> +
->  static int dps310_get_temp_samp_freq(struct dps310_data *data)
->  {
->  	int rc;
-> @@ -181,6 +277,16 @@ static int dps310_get_temp_samp_freq(struct dps310_d=
-ata *data)
->  	return BIT((val & DPS310_TMP_RATE_BITS) >> 4);
->  }
-> =20
-> +static int dps310_get_pres_k(struct dps310_data *data)
-> +{
-> +	int rc =3D dps310_get_pres_precision(data);
-> +
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	return scale_factors[ilog2(rc)];
-> +}
-> +
->  static int dps310_get_temp_k(struct dps310_data *data)
->  {
->  	int rc =3D dps310_get_temp_precision(data);
-> @@ -191,7 +297,7 @@ static int dps310_get_temp_k(struct dps310_data *data)
->  	return scale_factors[ilog2(rc)];
->  }
-> =20
-> -static int dps310_read_temp(struct dps310_data *data)
-> +static int dps310_read_pres_raw(struct dps310_data *data)
->  {
->  	int rc;
->  	int rate;
-> @@ -203,23 +309,67 @@ static int dps310_read_temp(struct dps310_data *dat=
-a)
->  	if (mutex_lock_interruptible(&data->lock))
->  		return -EINTR;
-> =20
-> -	rate =3D dps310_get_temp_samp_freq(data);
-> +	rate =3D dps310_get_pres_samp_freq(data);
->  	timeout =3D DPS310_POLL_TIMEOUT_US(rate);
-> =20
->  	/* Poll for sensor readiness; base the timeout upon the sample rate. */
->  	rc =3D regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
-> -				      ready & DPS310_TMP_RDY,
-> +				      ready & DPS310_PRS_RDY,
->  				      DPS310_POLL_SLEEP_US(timeout), timeout);
-> +	if (rc)
-> +		goto done;
-> +
-> +	rc =3D regmap_bulk_read(data->regmap, DPS310_PRS_BASE, val, sizeof(val)=
-);
->  	if (rc < 0)
->  		goto done;
-> =20
-> +	raw =3D (val[0] << 16) | (val[1] << 8) | val[2];
-> +	data->pressure_raw =3D sign_extend32(raw, 23);
-> +
-> +done:
-> +	mutex_unlock(&data->lock);
-> +	return rc;
-> +}
-> +
-> +/* Called with lock held */
-> +static int dps310_read_temp_ready(struct dps310_data *data)
-> +{
-> +	int rc;
-> +	u8 val[3];
-> +	s32 raw;
-> +
->  	rc =3D regmap_bulk_read(data->regmap, DPS310_TMP_BASE, val, sizeof(val)=
-);
->  	if (rc < 0)
-> -		goto done;
-> +		return rc;
-> =20
->  	raw =3D (val[0] << 16) | (val[1] << 8) | val[2];
->  	data->temp_raw =3D sign_extend32(raw, 23);
-> =20
-> +	return 0;
-> +}
-> +
-> +static int dps310_read_temp_raw(struct dps310_data *data)
-> +{
-> +	int rc;
-> +	int rate;
-> +	int ready;
-> +	int timeout;
-> +
-> +	if (mutex_lock_interruptible(&data->lock))
-> +		return -EINTR;
-> +
-> +	rate =3D dps310_get_temp_samp_freq(data);
-> +	timeout =3D DPS310_POLL_TIMEOUT_US(rate);
-> +
-> +	/* Poll for sensor readiness; base the timeout upon the sample rate. */
-> +	rc =3D regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
-> +				      ready & DPS310_TMP_RDY,
-> +				      DPS310_POLL_SLEEP_US(timeout), timeout);
-> +	if (rc < 0)
-> +		goto done;
-> +
-> +	rc =3D dps310_read_temp_ready(data);
-> +
->  done:
->  	mutex_unlock(&data->lock);
->  	return rc;
-> @@ -267,19 +417,40 @@ static int dps310_write_raw(struct iio_dev *iio,
->  	int rc;
->  	struct dps310_data *data =3D iio_priv(iio);
-> =20
-> -	if (chan->type !=3D IIO_TEMP)
-> -		return -EINVAL;
-> -
->  	if (mutex_lock_interruptible(&data->lock))
->  		return -EINTR;
-> =20
->  	switch (mask) {
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		rc =3D dps310_set_temp_samp_freq(data, val);
-> +		switch (chan->type) {
-> +		case IIO_PRESSURE:
-> +			rc =3D dps310_set_pres_samp_freq(data, val);
-> +			break;
-> +
-> +		case IIO_TEMP:
-> +			rc =3D dps310_set_temp_samp_freq(data, val);
-> +			break;
-> +
-> +		default:
-> +			rc =3D -EINVAL;
-> +			break;
-> +		}
->  		break;
-> =20
->  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> -		rc =3D dps310_set_temp_precision(data, val);
-> +		switch (chan->type) {
-> +		case IIO_PRESSURE:
-> +			rc =3D dps310_set_pres_precision(data, val);
-> +			break;
-> +
-> +		case IIO_TEMP:
-> +			rc =3D dps310_set_temp_precision(data, val);
-> +			break;
-> +
-> +		default:
-> +			rc =3D -EINVAL;
-> +			break;
-> +		}
->  		break;
-> =20
->  	default:
-> @@ -291,6 +462,124 @@ static int dps310_write_raw(struct iio_dev *iio,
->  	return rc;
->  }
-> =20
-> +static int dps310_calculate_pressure(struct dps310_data *data)
-> +{
-> +	int i;
-> +	int rc;
-> +	int t_ready;
-> +	int kpi =3D dps310_get_pres_k(data);
-> +	int kti =3D dps310_get_temp_k(data);
-> +	s64 rem =3D 0ULL;
-> +	s64 pressure =3D 0ULL;
-> +	s64 p;
-> +	s64 t;
-> +	s64 denoms[7];
-> +	s64 nums[7];
-> +	s64 rems[7];
-> +	s64 kp;
-> +	s64 kt;
-> +
-> +	if (kpi < 0)
-> +		return kpi;
-> +
-> +	if (kti < 0)
-> +		return kti;
-> +
-> +	kp =3D (s64)kpi;
-> +	kt =3D (s64)kti;
-> +
-> +	/* Refresh temp if it's ready, otherwise just use the latest value */
-> +	if (mutex_trylock(&data->lock)) {
-> +		rc =3D regmap_read(data->regmap, DPS310_MEAS_CFG, &t_ready);
-> +		if (rc >=3D 0 && t_ready & DPS310_TMP_RDY)
-> +			dps310_read_temp_ready(data);
-> +
-> +		mutex_unlock(&data->lock);
-> +	}
-> +
-> +	p =3D (s64)data->pressure_raw;
-> +	t =3D (s64)data->temp_raw;
-> +
-> +	/* Section 4.9.1 of the DPS310 spec; algebra'd to avoid underflow */
-> +	nums[0] =3D (s64)data->c00;
-> +	denoms[0] =3D 1LL;
-> +	nums[1] =3D p * (s64)data->c10;
-> +	denoms[1] =3D kp;
-> +	nums[2] =3D p * p * (s64)data->c20;
-> +	denoms[2] =3D kp * kp;
-> +	nums[3] =3D p * p * p * (s64)data->c30;
-> +	denoms[3] =3D kp * kp * kp;
-> +	nums[4] =3D t * (s64)data->c01;
-> +	denoms[4] =3D kt;
-> +	nums[5] =3D t * p * (s64)data->c11;
-> +	denoms[5] =3D kp * kt;
-> +	nums[6] =3D t * p * p * (s64)data->c21;
-> +	denoms[6] =3D kp * kp * kt;
-> +
-> +	/* Kernel lacks a div64_s64_rem function; denoms are all positive */
-> +	for (i =3D 0; i < 7; ++i) {
-> +		u64 irem;
-> +
-> +		if (nums[i] < 0LL) {
-> +			pressure -=3D div64_u64_rem(-nums[i], denoms[i], &irem);
-> +			rems[i] =3D -irem;
-> +		} else {
-> +			pressure +=3D div64_u64_rem(nums[i], denoms[i], &irem);
-> +			rems[i] =3D (s64)irem;
-> +		}
-> +	}
-> +
-> +	/* Increase precision and calculate the remainder sum */
-> +	for (i =3D 0; i < 7; ++i)
-> +		rem +=3D div64_s64((s64)rems[i] * 1000000000LL, denoms[i]);
-> +
-> +	pressure +=3D div_s64(rem, 1000000000LL);
-> +	if (pressure < 0LL)
-> +		return -ERANGE;
-> +
-> +	return (int)min_t(s64, pressure, INT_MAX);
-> +}
-> +
-> +static int dps310_read_pressure(struct dps310_data *data, int *val, int =
-*val2,
-> +				long mask)
-> +{
-> +	int rc;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		rc =3D dps310_get_pres_samp_freq(data);
-> +		if (rc < 0)
-> +			return rc;
-> +
-> +		*val =3D rc;
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		rc =3D dps310_read_pres_raw(data);
-> +		if (rc)
-> +			return rc;
-> +
-> +		rc =3D dps310_calculate_pressure(data);
-> +		if (rc < 0)
-> +			return rc;
-> +
-> +		*val =3D rc;
-> +		*val2 =3D 1000; /* Convert Pa to KPa per IIO ABI */
-> +		return IIO_VAL_FRACTIONAL;
-> +
-> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +		rc =3D dps310_get_pres_precision(data);
-> +		if (rc < 0)
-> +			return rc;
-> +
-> +		*val =3D rc;
-> +		return IIO_VAL_INT;
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
->  static int dps310_calculate_temp(struct dps310_data *data)
->  {
->  	s64 c0;
-> @@ -310,11 +599,9 @@ static int dps310_calculate_temp(struct dps310_data =
-*data)
->  	return (int)div_s64(t * 1000LL, kt);
->  }
-> =20
-> -static int dps310_read_raw(struct iio_dev *iio,
-> -			   struct iio_chan_spec const *chan,
-> -			   int *val, int *val2, long mask)
-> +static int dps310_read_temp(struct dps310_data *data, int *val, int *val=
-2,
-> +			    long mask)
->  {
-> -	struct dps310_data *data =3D iio_priv(iio);
->  	int rc;
-> =20
->  	switch (mask) {
-> @@ -327,7 +614,7 @@ static int dps310_read_raw(struct iio_dev *iio,
->  		return IIO_VAL_INT;
-> =20
->  	case IIO_CHAN_INFO_PROCESSED:
-> -		rc =3D dps310_read_temp(data);
-> +		rc =3D dps310_read_temp_raw(data);
->  		if (rc)
->  			return rc;
-> =20
-> @@ -351,6 +638,24 @@ static int dps310_read_raw(struct iio_dev *iio,
->  	}
->  }
-> =20
-> +static int dps310_read_raw(struct iio_dev *iio,
-> +			   struct iio_chan_spec const *chan,
-> +			   int *val, int *val2, long mask)
-> +{
-> +	struct dps310_data *data =3D iio_priv(iio);
-> +
-> +	switch (chan->type) {
-> +	case IIO_PRESSURE:
-> +		return dps310_read_pressure(data, val, val2, mask);
-> +
-> +	case IIO_TEMP:
-> +		return dps310_read_temp(data, val, val2, mask);
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
->  static void dps310_reset(void *action_data)
->  {
->  	struct dps310_data *data =3D action_data;
-> @@ -444,6 +749,12 @@ static int dps310_probe(struct i2c_client *client,
->  		return rc;
-> =20
->  	/*
-> +	 * Set up pressure sensor in single sample, one measurement per second
-> +	 * mode
-> +	 */
-> +	rc =3D regmap_write(data->regmap, DPS310_PRS_CFG, 0);
-> +
-> +	/*
->  	 * Set up external (MEMS) temperature sensor in single sample, one
->  	 * measurement per second mode
->  	 */
-> @@ -451,9 +762,9 @@ static int dps310_probe(struct i2c_client *client,
->  	if (rc < 0)
->  		return rc;
-> =20
-> -	/* Temp shift is disabled when PRC <=3D 8 */
-> +	/* Temp and pressure shifts are disabled when PRC <=3D 8 */
->  	rc =3D regmap_write_bits(data->regmap, DPS310_CFG_REG,
-> -			       DPS310_TMP_SHIFT_EN, 0);
-> +			       DPS310_PRS_SHIFT_EN | DPS310_TMP_SHIFT_EN, 0);
->  	if (rc < 0)
->  		return rc;
-> =20
-> @@ -463,9 +774,9 @@ static int dps310_probe(struct i2c_client *client,
->  	if (rc < 0)
->  		return rc;
-> =20
-> -	/* Turn on temperature measurement in the background */
-> +	/* Turn on temperature and pressure measurement in the background */
->  	rc =3D regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
-> -			       DPS310_MEAS_CTRL_BITS,
-> +			       DPS310_MEAS_CTRL_BITS, DPS310_PRS_EN |
->  			       DPS310_TEMP_EN | DPS310_BACKGROUND);
->  	if (rc < 0)
->  		return rc;
-> @@ -479,7 +790,7 @@ static int dps310_probe(struct i2c_client *client,
->  	if (rc < 0)
->  		return rc;
-> =20
-> -	rc =3D dps310_get_temp_coef(data);
-> +	rc =3D dps310_get_coefs(data);
->  	if (rc < 0)
->  		return rc;
-> =20
+>  Documentation/ABI/testing/sysfs-bus-iio | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index 6aef7dbbde44..680451695422 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -61,8 +61,11 @@ What:		/sys/bus/iio/devices/triggerX/sampling_frequency_available
+>  KernelVersion:	2.6.35
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+> -		When the internal sampling clock can only take a small
+> -		discrete set of values, this file lists those available.
+> +		When the internal sampling clock can only take a specific set of
+> +		frequencies, we can specify the available values with:
+> +		- a small discrete set of values like "0 2 4 6 8"
+> +		- a range with minimum, step and maximum frequencies like
+> +		  "[min step max]"
+>  
+>  What:		/sys/bus/iio/devices/iio:deviceX/oversampling_ratio
+>  KernelVersion:	2.6.38
 

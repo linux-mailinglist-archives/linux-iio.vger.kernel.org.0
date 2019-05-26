@@ -2,42 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 757422AB5B
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2019 19:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD6982AB5E
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2019 19:34:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727942AbfEZRbJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 May 2019 13:31:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58008 "EHLO mail.kernel.org"
+        id S1727926AbfEZReX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 May 2019 13:34:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58478 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727926AbfEZRbJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 26 May 2019 13:31:09 -0400
+        id S1727963AbfEZReX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 May 2019 13:34:23 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52FDB20815;
-        Sun, 26 May 2019 17:31:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1FB9E20815;
+        Sun, 26 May 2019 17:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558891868;
-        bh=0rAboCc8XEOGzXP0MtgGj7KHDtMUTxgvOsIANyyfQXU=;
+        s=default; t=1558892062;
+        bh=cjxs0x5g72KAdKRfhvddBBpkpRu4WLB1Kh/hW3pcvtM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=zJXIoddpUytuEu0WOc3yzfVVCNJ8qeeYfz6vrtY2Es8Pq1FXhxpVyUQBPKq3kagDX
-         NbAgSQppGobz4WAxqwYYDdz3AU0Qim4XsyIhMTs4U+wznSwm+JU6Tf79AnA6GME5Ac
-         zjvzzQQqETXqzeaAtwXH3DXDfmdZpV0yHE/FIJoQ=
-Date:   Sun, 26 May 2019 18:31:03 +0100
+        b=pumNv1n+HHTymjuFHiVXRAm7/dDr4x8rrDtBqviPSZjkShPQl9iE73XAFWG0Ymbn1
+         pT6fOZFj88ZJv3QQJi5Z6NBE9tpAy1yL/wl3NhVr46444ikK52ebgqJHLHEyMBurfX
+         9Jo33dgCv5X5J6pA6FA3TbhOMLadHVp1VxGk1oDE=
+Date:   Sun, 26 May 2019 18:34:17 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Andreea Lutac" <andreea.lutac@fixposition.ch>
-Cc:     "Jean-Baptiste Maneyrol" <JManeyrol@invensense.com>,
-        "stevemo@skydio.com" <stevemo@skydio.com>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org " <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org " <linux-kernel@vger.kernel.org>
-Subject: Re: ICM20602 buffer issues with the inv_mpu6050  driver
-Message-ID: <20190526183103.51d33e6c@archlinux>
-In-Reply-To: <42bd-5ce6a600-59-ca9e8b0@181727209>
-References: <MN2PR12MB337375FCA3AAA2EB5F08B15AC4010@MN2PR12MB3373.namprd12.prod.outlook.com>
-        <42bd-5ce6a600-59-ca9e8b0@181727209>
+To:     Eddie James <eajames@linux.ibm.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        joel@jms.id.au, lars@metafoo.de, knaack.h@gmx.de
+Subject: Re: [PATCH v4 1/3] iio: Add driver for Infineon DPS310
+Message-ID: <20190526183417.4bdfabc7@archlinux>
+In-Reply-To: <1558404814-26078-2-git-send-email-eajames@linux.ibm.com>
+References: <1558404814-26078-1-git-send-email-eajames@linux.ibm.com>
+        <1558404814-26078-2-git-send-email-eajames@linux.ibm.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -47,190 +42,559 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 23 May 2019 15:54:09 +0200
-"Andreea Lutac" <andreea.lutac@fixposition.ch> wrote:
+On Mon, 20 May 2019 21:13:32 -0500
+Eddie James <eajames@linux.ibm.com> wrote:
 
-> Hi Jean-Baptiste,
+> From: Joel Stanley <joel@jms.id.au>
 >=20
-> Thank you for the prompt response. Your explanation makes sense and I kno=
-w how to at least work around this issue for now. For my current purposes, =
-it is still useful to have the temperature data as well, so I'll stick to r=
-eading all 14 bytes for now and then see if there's a way to permanently en=
-able temp as a more long-term solution.
+> The DPS310 is a temperature and pressure sensor. It can be accessed over
+> i2c and SPI, but this driver only supports polling over i2c.
 >=20
-> I probably wouldn't have come across this problem had it not been the cas=
-e that libiio fails to enable the temp channel. Looking into it I found tha=
-t libiio has an open issue where channels like temp that are neither modifi=
-ed, nor indexed are not counted as scan elements and thus can't be enabled.=
- So just in case someone facing a similar issue comes across this thread, t=
-his can be either worked around by making temp an indexed channel in the dr=
-iver and hopefully solved definitively by waiting for the fix to be merged =
-into libiio.
->=20
-> Thanks for all the help!
-> All the best,
-> Andreea
+> Signed-off-by: Eddie James <eajames@linux.ibm.com>
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
-Hi Andreea / Jean-Baptiste.
-
-One 'easy' way to make this work (based on your discussion)
-is to provide the available_scan_masks element of the iio_dev.
-
-That is used to find a 'superset' of the channels that have been
-intentionally enabled, and enable that on the hardware side.
-If userspace has requested something that isn't an exact match
-there is demux code that will automatically reorganize the
-incoming data so that userspace sees what it is expecting.
-
-That code will be bypassed in the event of the channel selection
-matching a case that is in the list.
+Thanks,
 
 Jonathan
+
+> ---
+>  MAINTAINERS                   |   6 +
+>  drivers/iio/pressure/Kconfig  |  11 +
+>  drivers/iio/pressure/Makefile |   1 +
+>  drivers/iio/pressure/dps310.c | 468 ++++++++++++++++++++++++++++++++++++=
+++++++
+>  4 files changed, 486 insertions(+)
+>  create mode 100644 drivers/iio/pressure/dps310.c
 >=20
->=20
-> On Thursday, May 23, 2019 12:12 CEST, Jean-Baptiste Maneyrol <JManeyrol@i=
-nvensense.com> wrote:=20
->=20
-> > Hi Andreea,
-> >=20
-> > I understand the issue now. The problem is that temperature data are al=
-ways present in the FIFO. Even when the attribute is disabled. This is a li=
-mitation of this chip and cannot be changed on the hardware side.
-> >=20
-> > When temp attribute is disabled while accel and gyro are on, the iio bu=
-ffer is expecting to have 12 bytes with accel + gyro data. But the driver w=
-ill still provides 14 bytes with temperature in the middle since the FIFO w=
-ill contain that. Always enabling temperature attribute on userspace will s=
-olve this issue, but that's certainly not the best.
-> >=20
-> > A correct solution would be to enforce temperature data in iio buffer b=
-y having the temp attribute always enabled and read-only in userspace. That=
- would reflect correctly the chip capabilities. But I don't know if this is=
- feasible. A workaround would be to add data post-processing in the driver =
-and delete temp data when it is disabled. But I don't like this kind of wor=
-karound because that goes against iio buffer design principle.
-> >=20
-> > Hope this help you.
-> >=20
-> > Best regards,
-> > Jean-Baptiste Maneyrol
-> >=20
-> > From: Andreea Lutac <andreea.lutac@fixposition.ch>
-> > Sent: Thursday, May 23, 2019 11:44
-> > To: Jean-Baptiste Maneyrol
-> > Cc: stevemo@skydio.com; jic23@kernel.org; knaack.h@gmx.de; lars@metafoo=
-.de; pmeerw@pmeerw.net; linux-iio@vger.kernel.org; linux-kernel@vger.kernel=
-.org
-> > Subject: Re: ICM20602 buffer issues with the inv_mpu6050 driver
-> > =C2=A0
-> > =C2=A0CAUTION: This email originated from outside of the organization. =
-Please make sure the sender is who they say they are and do not click links=
- or open attachments unless you recognize the sender and know the content i=
-s safe.
-> >=20
-> > Hi Jean-Baptiste and Stepan,
-> >=20
-> > Thanks so much for the replies and the advice. I've dug a bit deeper in=
-to this and added a few printk statements to the driver, as suggested by St=
-epan. It looks like the device is getting recognized correctly as ICM20602 =
-and the buffer is being filled with 14 bytes as expected.
-> >=20
-> > But I've identified some strange behaviour regarding the temperature ch=
-anneI. If I manually enable all 7 scan elements and read 14 bytes from the =
-device file, the readings appear correct and change accordingly when I move=
- the chip around. However, if I set in_temp_en set to 0 (with everything el=
-se still enabled) and read 12 bytes, the buffer doesn't seem to acknowledge=
- this change and shift the gyro values up, instead getting only the first 1=
-2 bytes (accel_x, accel_y, accel_z, temp, gyro_x, gyro_y), without gyro_z. =
-So this is why it looks as if temp is replacing gyro_x.
-> > I made a pastebin here with some of the (unconverted) values I got whil=
-e testing these cases: https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3=
-A__pastebin.com_BYVqDNch&d=3DDwIFaQ&c=3DWoJWtq5JV8YrKnzRxvD8NxmTP_1wxfE0prP=
-mo0NeZwg&r=3D4jiDX_1brsSWfCjfA6Ovj1d4h9MF8q7Xk5aBwG28mVk&m=3DsbkHiUlsj8pOWj=
-f2iTq5CXEFvv-MNyqBKOqCjxOj9kc&s=3DPmb23R-DoTj9hDwYk3qqiUfOCUWbtfpVQjUZ1laje=
-FI&e=3D
-> >=20
-> > Attempting the same reads with my C++ program via libiio always results=
- in only the first 12 bytes being read, as for some strange reason libiio f=
-ails to enable the temperature channel, so iio_device_get_sample_size() is =
-always 12 and it's actually gyro_z that I can't get to.
-> >=20
-> > I'll try to look through the code that is supposed to enable a channel =
-and see why it's not succeeding via libiio. Do you have any clue as to whic=
-h bit of code does the adjustment of the buffer values according to which c=
-hannels are enabled? Is this done in the driver or deeper in the kernel?
-> >=20
-> > Thanks once again for the help!
-> > Best regards,
-> > Andreea
-> >=20
-> > On Wednesday, May 22, 2019 16:33 CEST, Jean-Baptiste Maneyrol <JManeyro=
-l@invensense.com> wrote:
-> >  =20
-> > > Hello,
-> > >
-> > > I had a look inside the driver to verify the buffer implementation. I=
-t looks correct to me. I don't see where the problem can come from. I am so=
-rry I don't have a setup currently to test in live.
-> > >
-> > > For sure you can have a different result by reading the buffer throug=
-h the char device file compared to reading the raw sysfs entry. The buffer =
-is taking the data from the FIFO and the raw sysfs from the sensor data reg=
-isters.
-> > >
-> > > You can perhaps test value 1 by 1 in the buffer, and verify the corre=
-ctness of every attributes. If you can also send a complete buffer log that=
- would be helpful.
-> > > Every data is 2 bytes long and in the following order: accel_x, accel=
-_y, accel_z, temp, gyro_x, gyro_y, gyro_z
-> > >
-> > > Best regards,
-> > > JB Maneyrol
-> > >
-> > > From: Andreea Lutac <andreea.lutac@fixposition.ch>
-> > > Sent: Tuesday, May 21, 2019 12:40
-> > > Cc: Jean-Baptiste Maneyrol; stevemo@skydio.com; jic23@kernel.org; kna=
-ack.h@gmx.de; lars@metafoo.de; pmeerw@pmeerw.net; linux-iio@vger.kernel.org=
-; linux-kernel@vger.kernel.org
-> > > Subject: ICM20602 buffer issues with the inv_mpu6050 driver
-> > > =C2=A0
-> > > Hello,
-> > >
-> > > I've been trying to get some data samples from the ICM20602 IMU using=
- the mpu6050 driver which recently added support for it, but I'm encounteri=
-ng an issue with the ordering of the data in the FIFO.
-> > > According to the specs of the device, if the accel and gyro XYZ chann=
-els are enabled, then the hardware FIFO is filled with 14 bytes correspondi=
-ng to the following channels: accel_x, accel_y, accel_z, temp, anglvel_x, a=
-nglvel_y, anglvel_z. However, when reading out the buffer, the value I get =
-for anglvel_x seems to actually be the temperature. This=C2=A0 occurs both =
-when reading with iio_channel_read (via libiio) and also if I read directly=
- from /dev/iio:device with only in_anglvel_x_en set. But in_anglvel_x_raw r=
-eports correct values, which made me suspect that maybe somewhere in the dr=
-iver this interleaved temp channel is not accounted for in the buffer struc=
-ture.
-> > >
-> > > I had a look at the driver code and inv_mpu6050_read_fifo() in partic=
-ular, but I can't identify anything amiss. I've applied the recent patch th=
-at added the extra 2 temperature bytes ( ), but the problem persists. So fa=
-r I've tried changing the size of the data buffer, defined in inv_mpu_iio.h:
-> > >
-> > > /* 6 + 6 round up and plus 8 */
-> > > #define INV_MPU6050_OUTPUT_DATA_SIZE=C2=A0=C2=A0=C2=A0=C2=A0 24
-> > >
-> > > from 24 to 32, according to the intuition that 24 corresponds to read=
-ings without temperature (i.e. 6 bytes for accel, rounded up to 8 + 6 bytes=
- for gyro, rounded up to 8 + 8 bytes for the timestamp =3D 24) and thus ano=
-ther 8 bytes would be needed, but that doesn't seem to have solved it.
-> > >
-> > > I'm quite new to driver development though, so I think there might be=
- something I'm not getting. I would be really grateful if anyone could shed=
- some light over what's happening here or give some advice as to what I cou=
-ld be doing wrong.
-> > >
-> > > Best regards,
-> > > Andreea Lutac
-> > > =20
-> > =20
->=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a2cd369..091eb49 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7760,6 +7760,12 @@ W:	http://industrypack.sourceforge.net
+>  S:	Maintained
+>  F:	drivers/ipack/
+> =20
+> +INFINEON DPS310 Driver
+> +M:	Eddie James <eajames@linux.ibm.com>
+> +L:	linux-iio@vger.kernel.org
+> +F:	drivers/iio/pressure/dps310.c
+> +S:	Maintained
+> +
+>  INFINIBAND SUBSYSTEM
+>  M:	Doug Ledford <dledford@redhat.com>
+>  M:	Jason Gunthorpe <jgg@mellanox.com>
+> diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
+> index efeb89f..97976de 100644
+> --- a/drivers/iio/pressure/Kconfig
+> +++ b/drivers/iio/pressure/Kconfig
+> @@ -52,6 +52,17 @@ config IIO_CROS_EC_BARO
+>  	  To compile this driver as a module, choose M here: the module
+>  	  will be called cros_ec_baro.
+> =20
+> +config DPS310
+> +	tristate "Infineon DPS310 pressure and temperature sensor"
+> +	depends on I2C
+> +	select REGMAP_I2C
+> +	help
+> +	  Support for the Infineon DPS310 digital barometric pressure sensor.
+> +	  It can be accessed over I2C bus.
+> +
+> +	  This driver can also be built as a module.  If so, the module will be
+> +	  called dps310.
+> +
+>  config HID_SENSOR_PRESS
+>  	depends on HID_SENSOR_HUB
+>  	select IIO_BUFFER
+> diff --git a/drivers/iio/pressure/Makefile b/drivers/iio/pressure/Makefile
+> index c2058d7..d8f5ace 100644
+> --- a/drivers/iio/pressure/Makefile
+> +++ b/drivers/iio/pressure/Makefile
+> @@ -9,6 +9,7 @@ obj-$(CONFIG_BMP280) +=3D bmp280.o
+>  bmp280-objs :=3D bmp280-core.o bmp280-regmap.o
+>  obj-$(CONFIG_BMP280_I2C) +=3D bmp280-i2c.o
+>  obj-$(CONFIG_BMP280_SPI) +=3D bmp280-spi.o
+> +obj-$(CONFIG_DPS310) +=3D dps310.o
+>  obj-$(CONFIG_IIO_CROS_EC_BARO) +=3D cros_ec_baro.o
+>  obj-$(CONFIG_HID_SENSOR_PRESS)   +=3D hid-sensor-press.o
+>  obj-$(CONFIG_HP03) +=3D hp03.o
+> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
+> new file mode 100644
+> index 0000000..9acfccb
+> --- /dev/null
+> +++ b/drivers/iio/pressure/dps310.c
+> @@ -0,0 +1,468 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +// Copyright IBM Corp 2019
+> +/*
+> + * The DPS310 is a barometric pressure and temperature sensor.
+> + * Currently only reading a single temperature is supported by
+> + * this driver.
+> + *
+> + * https://www.infineon.com/dgdl/?fileId=3D5546d462576f34750157750826c42=
+242
+> + *
+> + * Temperature calculation:
+> + *   c0 * 0.5 + c1 * T_raw / kT =C2=B0C
+> + *
+> + * TODO:
+> + *  - Pressure sensor readings
+> + *  - Optionally support the FIFO
+> + */
+> +
+> +#include <linux/i2c.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +
+> +#define DPS310_DEV_NAME		"dps310"
+> +
+> +#define DPS310_PRS_B0		0x00
+> +#define DPS310_PRS_B1		0x01
+> +#define DPS310_PRS_B2		0x02
+> +#define DPS310_TMP_B0		0x03
+> +#define DPS310_TMP_B1		0x04
+> +#define DPS310_TMP_B2		0x05
+> +#define DPS310_PRS_CFG		0x06
+> +#define DPS310_TMP_CFG		0x07
+> +#define  DPS310_TMP_RATE_BITS	GENMASK(6, 4)
+> +#define  DPS310_TMP_PRC_BITS	GENMASK(3, 0)
+> +#define  DPS310_TMP_EXT		BIT(7)
+> +#define DPS310_MEAS_CFG		0x08
+> +#define  DPS310_MEAS_CTRL_BITS	GENMASK(2, 0)
+> +#define   DPS310_PRS_EN		BIT(0)
+> +#define   DPS310_TEMP_EN	BIT(1)
+> +#define   DPS310_BACKGROUND	BIT(2)
+> +#define  DPS310_PRS_RDY		BIT(4)
+> +#define  DPS310_TMP_RDY		BIT(5)
+> +#define  DPS310_SENSOR_RDY	BIT(6)
+> +#define  DPS310_COEF_RDY	BIT(7)
+> +#define DPS310_CFG_REG		0x09
+> +#define  DPS310_INT_HL		BIT(7)
+> +#define  DPS310_TMP_SHIFT_EN	BIT(3)
+> +#define  DPS310_PRS_SHIFT_EN	BIT(4)
+> +#define  DPS310_FIFO_EN		BIT(5)
+> +#define  DPS310_SPI_EN		BIT(6)
+> +#define DPS310_RESET		0x0c
+> +#define  DPS310_RESET_MAGIC	0x09
+> +#define DPS310_COEF_BASE	0x10
+> +#define DPS310_COEF_SRC		0x28
+> +
+> +/* Make sure sleep time is <=3D 20ms for usleep_range */
+> +#define DPS310_POLL_SLEEP_US(t)		min(20000, (t) / 8)
+> +/* Silently handle error in rate value here */
+> +#define DPS310_POLL_TIMEOUT_US(rc)	((rc) <=3D 0 ? 1000000 : 1000000 / (r=
+c))
+> +
+> +#define DPS310_PRS_BASE		DPS310_PRS_B0
+> +#define DPS310_TMP_BASE		DPS310_TMP_B0
+> +
+> +/*
+> + * These values (defined in the spec) indicate how to scale the raw regi=
+ster
+> + * values for each level of precision available.
+> + */
+> +static const int scale_factors[] =3D {
+> +	 524288,
+> +	1572864,
+> +	3670016,
+> +	7864320,
+> +	 253952,
+> +	 516096,
+> +	1040384,
+> +	2088960,
+> +};
+> +
+> +struct dps310_data {
+> +	struct i2c_client *client;
+> +	struct regmap *regmap;
+> +	struct mutex lock;	/* Lock for sequential HW access functions */
+> +
+> +	s32 c0, c1;
+> +	s32 temp_raw;
+> +};
+> +
+> +static const struct iio_chan_spec dps310_channels[] =3D {
+> +	{
+> +		.type =3D IIO_TEMP,
+> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+> +			BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+> +			BIT(IIO_CHAN_INFO_PROCESSED),
+> +	},
+> +};
+> +
+> +/* To be called after checking the COEF_RDY bit in MEAS_CFG */
+> +static int dps310_get_temp_coef(struct dps310_data *data)
+> +{
+> +	int rc;
+> +	u8 coef[3];
+> +	u32 c0, c1;
+> +
+> +	/*
+> +	 * Read temperature calibration coefficients c0 and c1 from the
+> +	 * COEF register. The numbers are 12-bit 2's compliment numbers
+> +	 */
+> +	rc =3D regmap_bulk_read(data->regmap, DPS310_COEF_BASE, coef,
+> +			      sizeof(coef));
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	c0 =3D (coef[0] << 4) | (coef[1] >> 4);
+> +	data->c0 =3D sign_extend32(c0, 11);
+> +
+> +	c1 =3D ((coef[1] & GENMASK(3, 0)) << 8) | coef[2];
+> +	data->c1 =3D sign_extend32(c1, 11);
+> +
+> +	return 0;
+> +}
+> +
+> +static int dps310_get_temp_precision(struct dps310_data *data)
+> +{
+> +	int rc;
+> +	int val;
+> +
+> +	rc =3D regmap_read(data->regmap, DPS310_TMP_CFG, &val);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	/*
+> +	 * Scale factor is bottom 4 bits of the register, but 1111 is
+> +	 * reserved so just grab bottom three
+> +	 */
+> +	return BIT(val & GENMASK(2, 0));
+> +}
+> +
+> +/* Called with lock held */
+> +static int dps310_set_temp_precision(struct dps310_data *data, int val)
+> +{
+> +	int rc;
+> +	u8 shift_en;
+> +
+> +	if (val < 0 || val > 128)
+> +		return -EINVAL;
+> +
+> +	shift_en =3D val >=3D 16 ? DPS310_TMP_SHIFT_EN : 0;
+> +	rc =3D regmap_write_bits(data->regmap, DPS310_CFG_REG,
+> +			       DPS310_TMP_SHIFT_EN, shift_en);
+> +	if (rc)
+> +		return rc;
+> +
+> +	return regmap_update_bits(data->regmap, DPS310_TMP_CFG,
+> +				  DPS310_TMP_PRC_BITS, ilog2(val));
+> +}
+> +
+> +/* Called with lock held */
+> +static int dps310_set_temp_samp_freq(struct dps310_data *data, int freq)
+> +{
+> +	u8 val;
+> +
+> +	if (freq < 0 || freq > 128)
+> +		return -EINVAL;
+> +
+> +	val =3D ilog2(freq) << 4;
+> +
+> +	return regmap_update_bits(data->regmap, DPS310_TMP_CFG,
+> +				  DPS310_TMP_RATE_BITS, val);
+> +}
+> +
+> +static int dps310_get_temp_samp_freq(struct dps310_data *data)
+> +{
+> +	int rc;
+> +	int val;
+> +
+> +	rc =3D regmap_read(data->regmap, DPS310_TMP_CFG, &val);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	return BIT((val & DPS310_TMP_RATE_BITS) >> 4);
+> +}
+> +
+> +static int dps310_get_temp_k(struct dps310_data *data)
+> +{
+> +	int rc =3D dps310_get_temp_precision(data);
+> +
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	return scale_factors[ilog2(rc)];
+> +}
+> +
+> +static int dps310_read_temp(struct dps310_data *data)
+> +{
+> +	int rc;
+> +	int rate;
+> +	int ready;
+> +	int timeout;
+> +	s32 raw;
+> +	u8 val[3];
+> +
+> +	if (mutex_lock_interruptible(&data->lock))
+> +		return -EINTR;
+> +
+> +	rate =3D dps310_get_temp_samp_freq(data);
+> +	timeout =3D DPS310_POLL_TIMEOUT_US(rate);
+> +
+> +	/* Poll for sensor readiness; base the timeout upon the sample rate. */
+> +	rc =3D regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
+> +				      ready & DPS310_TMP_RDY,
+> +				      DPS310_POLL_SLEEP_US(timeout), timeout);
+> +	if (rc < 0)
+> +		goto done;
+> +
+> +	rc =3D regmap_bulk_read(data->regmap, DPS310_TMP_BASE, val, sizeof(val)=
+);
+> +	if (rc < 0)
+> +		goto done;
+> +
+> +	raw =3D (val[0] << 16) | (val[1] << 8) | val[2];
+> +	data->temp_raw =3D sign_extend32(raw, 23);
+> +
+> +done:
+> +	mutex_unlock(&data->lock);
+> +	return rc;
+> +}
+> +
+> +static bool dps310_is_writeable_reg(struct device *dev, unsigned int reg)
+> +{
+> +	switch (reg) {
+> +	case DPS310_PRS_CFG:
+> +	case DPS310_TMP_CFG:
+> +	case DPS310_MEAS_CFG:
+> +	case DPS310_CFG_REG:
+> +	case DPS310_RESET:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+> +static bool dps310_is_volatile_reg(struct device *dev, unsigned int reg)
+> +{
+> +	switch (reg) {
+> +	case DPS310_PRS_B0:
+> +	case DPS310_PRS_B1:
+> +	case DPS310_PRS_B2:
+> +	case DPS310_TMP_B0:
+> +	case DPS310_TMP_B1:
+> +	case DPS310_TMP_B2:
+> +	case DPS310_MEAS_CFG:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+> +static int dps310_write_raw(struct iio_dev *iio,
+> +			    struct iio_chan_spec const *chan, int val,
+> +			    int val2, long mask)
+> +{
+> +	int rc;
+> +	struct dps310_data *data =3D iio_priv(iio);
+> +
+> +	if (chan->type !=3D IIO_TEMP)
+> +		return -EINVAL;
+> +
+> +	if (mutex_lock_interruptible(&data->lock))
+> +		return -EINTR;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		rc =3D dps310_set_temp_samp_freq(data, val);
+> +		break;
+> +
+> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> +		rc =3D dps310_set_temp_precision(data, val);
+> +		break;
+> +
+> +	default:
+> +		rc =3D -EINVAL;
+> +		break;
+> +	}
+> +
+> +	mutex_unlock(&data->lock);
+> +	return rc;
+> +}
+> +
+> +static int dps310_calculate_temp(struct dps310_data *data)
+> +{
+> +	s64 c0;
+> +	s64 t;
+> +	int kt =3D dps310_get_temp_k(data);
+> +
+> +	if (kt < 0)
+> +		return kt;
+> +
+> +	/* Obtain inverse-scaled offset */
+> +	c0 =3D div_s64((s64)kt * (s64)data->c0, 2);
+> +
+> +	/* Add the offset to the unscaled temperature */
+> +	t =3D c0 + ((s64)data->temp_raw * (s64)data->c1);
+> +
+> +	/* Convert to milliCelsius and scale the temperature */
+> +	return (int)div_s64(t * 1000LL, kt);
+> +}
+> +
+> +static int dps310_read_raw(struct iio_dev *iio,
+> +			   struct iio_chan_spec const *chan,
+> +			   int *val, int *val2, long mask)
+> +{
+> +	struct dps310_data *data =3D iio_priv(iio);
+> +	int rc;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		rc =3D dps310_get_temp_samp_freq(data);
+> +		if (rc < 0)
+> +			return rc;
+> +
+> +		*val =3D rc;
+> +		return IIO_VAL_INT;
+> +
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +		rc =3D dps310_read_temp(data);
+> +		if (rc)
+> +			return rc;
+> +
+> +		rc =3D dps310_calculate_temp(data);
+> +		if (rc < 0)
+> +			return rc;
+> +
+> +		*val =3D rc;
+> +		return IIO_VAL_INT;
+> +
+> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> +		rc =3D dps310_get_temp_precision(data);
+> +		if (rc < 0)
+> +			return rc;
+> +
+> +		*val =3D rc;
+> +		return IIO_VAL_INT;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static void dps310_reset(void *action_data)
+> +{
+> +	struct dps310_data *data =3D action_data;
+> +
+> +	regmap_write(data->regmap, DPS310_RESET, DPS310_RESET_MAGIC);
+> +}
+> +
+> +static const struct regmap_config dps310_regmap_config =3D {
+> +	.reg_bits =3D 8,
+> +	.val_bits =3D 8,
+> +	.writeable_reg =3D dps310_is_writeable_reg,
+> +	.volatile_reg =3D dps310_is_volatile_reg,
+> +	.cache_type =3D REGCACHE_RBTREE,
+> +	.max_register =3D DPS310_COEF_SRC,
+> +};
+> +
+> +static const struct iio_info dps310_info =3D {
+> +	.read_raw =3D dps310_read_raw,
+> +	.write_raw =3D dps310_write_raw,
+> +};
+> +
+> +static int dps310_probe(struct i2c_client *client,
+> +			const struct i2c_device_id *id)
+> +{
+> +	struct dps310_data *data;
+> +	struct iio_dev *iio;
+> +	int rc, ready;
+> +
+> +	iio =3D devm_iio_device_alloc(&client->dev,  sizeof(*data));
+> +	if (!iio)
+> +		return -ENOMEM;
+> +
+> +	data =3D iio_priv(iio);
+> +	data->client =3D client;
+> +	mutex_init(&data->lock);
+> +
+> +	iio->dev.parent =3D &client->dev;
+> +	iio->name =3D id->name;
+> +	iio->channels =3D dps310_channels;
+> +	iio->num_channels =3D ARRAY_SIZE(dps310_channels);
+> +	iio->info =3D &dps310_info;
+> +	iio->modes =3D INDIO_DIRECT_MODE;
+> +
+> +	data->regmap =3D devm_regmap_init_i2c(client, &dps310_regmap_config);
+> +	if (IS_ERR(data->regmap))
+> +		return PTR_ERR(data->regmap);
+> +
+> +	/* Register to run the device reset when the device is removed */
+> +	rc =3D devm_add_action_or_reset(&client->dev, dps310_reset, data);
+> +	if (rc)
+> +		return rc;
+> +
+> +	/*
+> +	 * Set up external (MEMS) temperature sensor in single sample, one
+> +	 * measurement per second mode
+> +	 */
+> +	rc =3D regmap_write(data->regmap, DPS310_TMP_CFG, DPS310_TMP_EXT);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	/* Temp shift is disabled when PRC <=3D 8 */
+> +	rc =3D regmap_write_bits(data->regmap, DPS310_CFG_REG,
+> +			       DPS310_TMP_SHIFT_EN, 0);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	/* MEAS_CFG doesn't update correctly unless first written with 0 */
+> +	rc =3D regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
+> +			       DPS310_MEAS_CTRL_BITS, 0);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	/* Turn on temperature measurement in the background */
+> +	rc =3D regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
+> +			       DPS310_MEAS_CTRL_BITS,
+> +			       DPS310_TEMP_EN | DPS310_BACKGROUND);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	/*
+> +	 * Calibration coefficients required for reporting temperature.
+> +	 * They are available 40ms after the device has started
+> +	 */
+> +	rc =3D regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
+> +				      ready & DPS310_COEF_RDY, 10000, 40000);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	rc =3D dps310_get_temp_coef(data);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	rc =3D devm_iio_device_register(&client->dev, iio);
+> +	if (rc)
+> +		return rc;
+> +
+> +	i2c_set_clientdata(client, iio);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct i2c_device_id dps310_id[] =3D {
+> +	{ DPS310_DEV_NAME, 0 },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(i2c, dps310_id);
+> +
+> +static struct i2c_driver dps310_driver =3D {
+> +	.driver =3D {
+> +		.name =3D DPS310_DEV_NAME,
+> +	},
+> +	.probe =3D dps310_probe,
+> +	.id_table =3D dps310_id,
+> +};
+> +module_i2c_driver(dps310_driver);
+> +
+> +MODULE_AUTHOR("Joel Stanley <joel@jms.id.au>");
+> +MODULE_DESCRIPTION("Infineon DPS310 pressure and temperature sensor");
+> +MODULE_LICENSE("GPL v2");
 

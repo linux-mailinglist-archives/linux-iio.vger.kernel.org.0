@@ -2,291 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A9352B19E
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2019 11:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD0852B1B0
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2019 12:00:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbfE0JzR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 May 2019 05:55:17 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:35440 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725991AbfE0JzQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 May 2019 05:55:16 -0400
-Received: from laptop-1.home (unknown [IPv6:2a01:cb19:8ad6:900:42dd:dd1c:19ee:7c60])
+        id S1726115AbfE0KA5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 May 2019 06:00:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52198 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726072AbfE0KA4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 27 May 2019 06:00:56 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: aragua)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 634CD260CB2;
-        Mon, 27 May 2019 10:55:14 +0100 (BST)
-Message-ID: <3af7925c5dad281774b6d12826770cbefb32ea09.camel@collabora.com>
-Subject: Re: [PATCH v2 2/3] iio: common: cros_ec_sensors: add sysfs
- attribute for frequencies
-From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     kernel@collabora.com, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 27 May 2019 11:55:11 +0200
-In-Reply-To: <20190526184507.45c54053@archlinux>
-References: <cover.1558601329.git.fabien.lahoudere@collabora.com>
-         <f1891f9da2e9362a4efebf0ebce487b9584d4f5a.1558601329.git.fabien.lahoudere@collabora.com>
-         <20190526184507.45c54053@archlinux>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.2 (3.30.2-2.fc29) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        by mail.kernel.org (Postfix) with ESMTPSA id B844C20859;
+        Mon, 27 May 2019 10:00:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558951255;
+        bh=zQSP2oxEwhoYHWNhZYqcTmEYoyqzbKsFZie/g5auO50=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=b3Vkl9PDjQmktjwL+gUnj3S06jw7NDpJK0C0NidExpuZHXhoVomkZ8BCRNKQcz9Eq
+         cVf31r7onXVpNhrmrnqlyFGXUUrafLc6AZAgLAKsyo+jmk+2Z3UDkjRJQ7YDdnc7ZQ
+         t5GXnXekVD9EY691fPTS79lRTu2u/gBYphhkLkyQ=
+Date:   Mon, 27 May 2019 11:00:49 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Crt Mori <cmo@melexis.com>
+Cc:     Linux Iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: temperature: mlx90632 Relax the compatibility
+ check
+Message-ID: <20190527105902.03155898@archlinux>
+In-Reply-To: <CAKv63usGXfJYF9SXn6MaDuh1LphHUVcRcYUKhta8rqqmksaRtg@mail.gmail.com>
+References: <20190523120722.25848-1-cmo@melexis.com>
+        <20190526174817.6d59b9f6@archlinux>
+        <CAKv63usGXfJYF9SXn6MaDuh1LphHUVcRcYUKhta8rqqmksaRtg@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le dimanche 26 mai 2019 à 18:45 +0100, Jonathan Cameron a écrit :
-> On Thu, 23 May 2019 11:07:36 +0200
-> Fabien Lahoudere <fabien.lahoudere@collabora.com> wrote:
-> 
-> > In order to provide minimum and maximum frequencies for each
-> > sensors,
-> > we use a standard API (sampling_frequency_available) to provide
-> > them
-> > to userland.
-> > As cros_ec_sensors_core_init do not manage default attrs, we change
-> > the signature to let all kind of sensors to provide "struct
-> > iio_info"
-> > with their callback. This change impact drivers using that
-> > function.
-> > 
-> > Then cros_ec_* sensors provides frequencies range in sysfs like
-> > this:
-> > [min step max]
-> > 
-> > Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> When I was pointing at the _available syntax I was meaning that
-> the ideal is to implement this using the associated callbacks rather
-> than as a custom sysfs attribute.
-> 
+On Mon, 27 May 2019 09:40:53 +0200
+Crt Mori <cmo@melexis.com> wrote:
 
-Sorry, I misunderstood. Let me retry with that callback implemented.
+> On Sun, 26 May 2019 at 18:48, Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Thu, 23 May 2019 14:07:22 +0200
+> > Crt Mori <cmo@melexis.com> wrote:
+> >  
+> > > Register EE_VERSION contains mixture of calibration information and DSP
+> > > version. So far, because calibrations were definite, the driver
+> > > compatibility depended on whole contents, but in the newer production
+> > > process the calibration part changes. Because of that, value in EE_VERSION
+> > > will be changed and to avoid that calibration value is same as DSP version
+> > > the MSB in calibration part was fixed to 1.
+> > > That means existing calibrations (medical and consumer) will now have
+> > > hex values (bits 8 to 15) of 83 and 84 respectively. Driver compatibility
+> > > should be based only on DSP version part of the EE_VERSION (bits 0 to 7)
+> > > register.
+> > >
+> > > Signed-off-by: Crt Mori <cmo@melexis.com>  
+> > Hi.
+> >
+> > I'm going to take this via the slow path as you haven't called it out that
+> > you want it applied as a fix (so for stable kernels).  Let me know if these
+> > parts are in the wild and hence we should send it earlier.   We can do that
+> > after it is in mainline anyway as a specific request to the stable maintainers.  
+> Hi,
+> Since this is our change I did not think it warrants a fix label, but
+> if we could, we would be very happy, if this could go in for all
+> stable kernels. It is designed to be backwards compatible, so it
+> should not cause new problems.
+Cool. I've moved it across to the fixes-togreg branch and should do a pull
+request for that in a week or two at which point it'll get picked up
+by the stable trees.
 
-> > ---
-> >  .../common/cros_ec_sensors/cros_ec_sensors.c  |  6 +--
-> >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 38
-> > +++++++++++++++++++
-> >  drivers/iio/light/cros_ec_light_prox.c        |  6 +--
-> >  drivers/iio/pressure/cros_ec_baro.c           |  6 +--
-> >  .../linux/iio/common/cros_ec_sensors_core.h   |  4 +-
-> >  5 files changed, 50 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> > b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> > index 17af4e0fd5f8..a0ecee15a6c8 100644
-> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> > @@ -172,7 +172,7 @@ static int cros_ec_sensors_write(struct iio_dev
-> > *indio_dev,
-> >  	return ret;
-> >  }
-> >  
-> > -static const struct iio_info ec_sensors_info = {
-> > +static struct iio_info ec_sensors_info = {
-> >  	.read_raw = &cros_ec_sensors_read,
-> >  	.write_raw = &cros_ec_sensors_write,
-> >  };
-> > @@ -195,11 +195,11 @@ static int cros_ec_sensors_probe(struct
-> > platform_device *pdev)
-> >  	if (!indio_dev)
-> >  		return -ENOMEM;
-> >  
-> > -	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
-> > +	ret = cros_ec_sensors_core_init(pdev, indio_dev,
-> > &ec_sensors_info,
-> > +					true);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	indio_dev->info = &ec_sensors_info;
-> >  	state = iio_priv(indio_dev);
-> >  	for (channel = state->channels, i = CROS_EC_SENSOR_X;
-> >  	     i < CROS_EC_SENSOR_MAX_AXIS; i++, channel++) {
-> > diff --git
-> > a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > index ac53ea32c1b1..08fb5d3dc7b5 100644
-> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > @@ -10,6 +10,7 @@
-> >  #include <linux/iio/buffer.h>
-> >  #include <linux/iio/common/cros_ec_sensors_core.h>
-> >  #include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
-> >  #include <linux/iio/kfifo_buf.h>
-> >  #include <linux/iio/trigger_consumer.h>
-> >  #include <linux/kernel.h>
-> > @@ -86,8 +87,42 @@ static int
-> > cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
-> >  	return ret;
-> >  }
-> >  
-> > +/**
-> > + * cros_ec_sensors_read_freq() - sysfs function to get available
-> > frequencies
-> > + * @dev: Device structure for this device.
-> > + * @attr: Description of the attribute.
-> > + * @buf: Incoming string
-> > + *
-> > + * The later modes are only relevant to the ring buffer - and
-> > depend on current
-> > + * mode. Note that data sheet gives rather wide tolerances for
-> > these so integer
-> > + * division will give good enough answer and not all chips have
-> > them specified
-> > + * at all.
-> > + **/
-> > +static ssize_t cros_ec_sensors_read_freq(struct device *dev,
-> > +					 struct device_attribute *attr,
-> > +					 char *buf)
-> > +{
-> > +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > +	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
-> > +
-> > +	return snprintf(buf, PAGE_SIZE, "[%d 1 %d]\n", state->min_freq,
-> > +			state->max_freq);
-> Whilst it is a bit more fiddly I would much prefer if this was done
-> with
-> the info_mask_shared_by_all_available bit mask in the iio_dev and
-> providing
-> the read_avail callback.
 > 
-> The original reason to introduce this form was as part of trying to
-> (far too slowly) kill off as much hand defined ABI as possible. 
-> Ultimate aim is to make the IIO interface optional for cases where
-> the channels are mostly being used by other consumer drivers rather
-> than
-> being directly consumed by userspace.  To do that we need all of
-> these elements to be easily accessible from the consumer hooks.
+> > Applied to the togreg branch of iio.git and pushed out as testing for the
+> > autobuilders to play with it.
+> >
+> > Umm. This didn't actually apply to the current tree, so I did what I think
+> > was intended by hand. Please take a look at the testing branch of iio.git
+> > and check it is correct.  
+> Sorry, but togreg branch does not even have temperature subdirectory
+> inside. Can you push testing to remote as well? Summary (git kernel
+> org) still has last update 8 days ago, or are you pushing somewhere
+> else?
+Umm. togreg should definitely have a temperature subdirectory.
+I suspect this is the odd nature of the web interface for kernel.org.
+For reasons I've never understood when you browse a 'tree' of a branch
+other than master, it doesn't show the current head of that branch.
+The easiest way to get there is to click on a particular commit and
+then switch to the tree view.
+
+For the other day it seems I hit an issue with the push and didn't notice.
+
+Should be there now.
+
+Jonathan
+
 > 
-> 
-> 
-> > +}
-> > +
-> > +static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(cros_ec_sensors_read_freq);
-> > +
-> > +static struct attribute *cros_ec_sensors_attributes[] = {
-> > +	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
-> > +	NULL,
-> > +};
-> > +
-> > +static const struct attribute_group
-> > cros_ec_sensors_attribute_group = {
-> > +	.attrs = cros_ec_sensors_attributes,
-> > +};
-> > +
-> >  int cros_ec_sensors_core_init(struct platform_device *pdev,
-> >  			      struct iio_dev *indio_dev,
-> > +			      struct iio_info *info,
-> >  			      bool physical_device)
-> >  {
-> >  	struct device *dev = &pdev->dev;
-> > @@ -149,6 +184,9 @@ int cros_ec_sensors_core_init(struct
-> > platform_device *pdev,
-> >  		}
-> >  	}
+> >
+> > Applied to the togreg branch of iio.git and pushed out as testing for the
+> > autobuilders to play with it.
+> >
+> > Thanks,
+> >
+> > Jonathan
 > >  
-> > +	info->attrs = &cros_ec_sensors_attribute_group;
-> > +	indio_dev->info = info;
-> > +
-> >  	return 0;
-> >  }
-> >  EXPORT_SYMBOL_GPL(cros_ec_sensors_core_init);
-> > diff --git a/drivers/iio/light/cros_ec_light_prox.c
-> > b/drivers/iio/light/cros_ec_light_prox.c
-> > index 308ee6ff2e22..1772e339cf14 100644
-> > --- a/drivers/iio/light/cros_ec_light_prox.c
-> > +++ b/drivers/iio/light/cros_ec_light_prox.c
-> > @@ -161,7 +161,7 @@ static int cros_ec_light_prox_write(struct
-> > iio_dev *indio_dev,
-> >  	return ret;
-> >  }
+> > > ---
+> > >  drivers/iio/temperature/mlx90632.c | 9 +++++++--
+> > >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+> > > index 2243e8057ffc..2d54d9cac61d 100644
+> > > --- a/drivers/iio/temperature/mlx90632.c
+> > > +++ b/drivers/iio/temperature/mlx90632.c
+> > > @@ -81,6 +81,8 @@
+> > >  /* Magic constants */
+> > >  #define MLX90632_ID_MEDICAL  0x0105 /* EEPROM DSPv5 Medical device id */
+> > >  #define MLX90632_ID_CONSUMER 0x0205 /* EEPROM DSPv5 Consumer device id */
+> > > +#define MLX90632_DSP_VERSION 5 /* DSP version */
+> > > +#define MLX90632_DSP_MASK    GENMASK(7, 0) /* DSP version in EE_VERSION */
+> > >  #define MLX90632_RESET_CMD   0x0006 /* Reset sensor (address or global) */
+> > >  #define MLX90632_REF_12              12LL /**< ResCtrlRef value of Ch 1 or Ch 2 */
+> > >  #define MLX90632_REF_3               12LL /**< ResCtrlRef value of Channel 3 */
+> > > @@ -666,10 +668,13 @@ static int mlx90632_probe(struct i2c_client *client,
+> > >       } else if (read == MLX90632_ID_CONSUMER) {
+> > >               dev_dbg(&client->dev,
+> > >                       "Detected Consumer EEPROM calibration %x\n", read);
+> > > +     } else if ((read & MLX90632_DSP_MASK) == MLX90632_DSP_VERSION) {
+> > > +             dev_dbg(&client->dev,
+> > > +                     "Detected Unknown EEPROM calibration %x\n", read);
+> > >       } else {
+> > >               dev_err(&client->dev,
+> > > -                     "Wrong DSP version %x (expected %x or %x)\n",
+> > > -                     read, MLX90632_DSPv5);
+> > > +                     "Wrong DSP version %x (expected %x)\n",
+> > > +                     read, MLX90632_DSP_VERSION);
+> > >               return -EPROTONOSUPPORT;
+> > >       }
+> > >  
 > >  
-> > -static const struct iio_info cros_ec_light_prox_info = {
-> > +static struct iio_info cros_ec_light_prox_info = {
-> >  	.read_raw = &cros_ec_light_prox_read,
-> >  	.write_raw = &cros_ec_light_prox_write,
-> >  };
-> > @@ -184,11 +184,11 @@ static int cros_ec_light_prox_probe(struct
-> > platform_device *pdev)
-> >  	if (!indio_dev)
-> >  		return -ENOMEM;
-> >  
-> > -	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
-> > +	ret = cros_ec_sensors_core_init(pdev, indio_dev,
-> > +					&cros_ec_light_prox_info,
-> > true);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	indio_dev->info = &cros_ec_light_prox_info;
-> >  	state = iio_priv(indio_dev);
-> >  	state->core.type = state->core.resp->info.type;
-> >  	state->core.loc = state->core.resp->info.location;
-> > diff --git a/drivers/iio/pressure/cros_ec_baro.c
-> > b/drivers/iio/pressure/cros_ec_baro.c
-> > index 034ce98d6e97..cd3be0f16226 100644
-> > --- a/drivers/iio/pressure/cros_ec_baro.c
-> > +++ b/drivers/iio/pressure/cros_ec_baro.c
-> > @@ -107,7 +107,7 @@ static int cros_ec_baro_write(struct iio_dev
-> > *indio_dev,
-> >  	return ret;
-> >  }
-> >  
-> > -static const struct iio_info cros_ec_baro_info = {
-> > +static struct iio_info cros_ec_baro_info = {
-> >  	.read_raw = &cros_ec_baro_read,
-> >  	.write_raw = &cros_ec_baro_write,
-> >  };
-> > @@ -130,11 +130,11 @@ static int cros_ec_baro_probe(struct
-> > platform_device *pdev)
-> >  	if (!indio_dev)
-> >  		return -ENOMEM;
-> >  
-> > -	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
-> > +	ret = cros_ec_sensors_core_init(pdev, indio_dev,
-> > &cros_ec_baro_info,
-> > +					true);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	indio_dev->info = &cros_ec_baro_info;
-> >  	state = iio_priv(indio_dev);
-> >  	state->core.type = state->core.resp->info.type;
-> >  	state->core.loc = state->core.resp->info.location;
-> > diff --git a/include/linux/iio/common/cros_ec_sensors_core.h
-> > b/include/linux/iio/common/cros_ec_sensors_core.h
-> > index 32fd08bbcf52..f170a72ac08d 100644
-> > --- a/include/linux/iio/common/cros_ec_sensors_core.h
-> > +++ b/include/linux/iio/common/cros_ec_sensors_core.h
-> > @@ -114,12 +114,14 @@ struct platform_device;
-> >   * cros_ec_sensors_core_init() - basic initialization of the core
-> > structure
-> >   * @pdev:		platform device created for the sensors
-> >   * @indio_dev:		iio device structure of the device
-> > + * @info:		iio info structure with read and write callback
-> >   * @physical_device:	true if the device refers to a physical
-> > device
-> >   *
-> >   * Return: 0 on success, -errno on failure.
-> >   */
-> >  int cros_ec_sensors_core_init(struct platform_device *pdev,
-> > -			      struct iio_dev *indio_dev, bool
-> > physical_device);
-> > +			      struct iio_dev *indio_dev, struct
-> > iio_info *info,
-> > +			      bool physical_device);
-> >  
-> >  /**
-> >   * cros_ec_sensors_capture() - the trigger handler function
 

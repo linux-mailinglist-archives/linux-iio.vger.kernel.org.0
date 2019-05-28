@@ -2,161 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C06C42C4DC
-	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2019 12:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FB872C4FF
+	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2019 13:00:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726580AbfE1K41 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 May 2019 06:56:27 -0400
-Received: from mail-eopbgr770085.outbound.protection.outlook.com ([40.107.77.85]:28807
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726282AbfE1K41 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 28 May 2019 06:56:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cwV8OShxfwW0qegSCpjAggTC97WmyfImuuoeB/q3850=;
- b=Sb7eIfOikVaBDV+5E3nOVtc3obYFU09H4waGr0yPskE2ZV8PzI9SG/CzmJGKnLdd3KIwfF9xJpINA3Lo0L0JB+vjZQ2Wur+sodzYQP/XDjUcGh+NYvx7bm0P/AdMGoVmDx1dqbVr6595UGAu6u6TNYgEnAOTcTNOJW+F5UWyrG4=
-Received: from CY1PR03CA0012.namprd03.prod.outlook.com (2603:10b6:600::22) by
- BL2PR03MB546.namprd03.prod.outlook.com (2a01:111:e400:c24::24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1922.23; Tue, 28 May 2019 10:56:24 +0000
-Received: from CY1NAM02FT031.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e45::205) by CY1PR03CA0012.outlook.office365.com
- (2603:10b6:600::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1943.16 via Frontend
- Transport; Tue, 28 May 2019 10:56:24 +0000
-Authentication-Results: spf=pass (sender IP is 137.71.25.55)
- smtp.mailfrom=analog.com; gmx.de; dkim=none (message not signed)
- header.d=none;gmx.de; dmarc=bestguesspass action=none header.from=analog.com;
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- CY1NAM02FT031.mail.protection.outlook.com (10.152.75.180) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1922.16
- via Frontend Transport; Tue, 28 May 2019 10:56:23 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x4SAuMkp004510
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Tue, 28 May 2019 03:56:22 -0700
-Received: from linux.ad.analog.com (10.50.1.179) by NWD2HUBCAS7.ad.analog.com
- (10.64.69.107) with Microsoft SMTP Server id 14.3.408.0; Tue, 28 May 2019
- 06:56:22 -0400
-From:   Stefan Popa <stefan.popa@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>
-CC:     <mark.rutland@arm.com>, <knaack.h@gmx.de>, <lars@metafoo.de>,
-        <pmeerw@pmeerw.net>, <Michael.Hennerich@analog.com>,
-        <gregkh@linuxfoundation.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stefan.popa@analog.com>
-Subject: [PATCH v3 2/2] dt-bindings: iio: frequency: Add docs for ADF4371 PLL
-Date:   Tue, 28 May 2019 13:56:08 +0300
-Message-ID: <1559040968-13832-1-git-send-email-stefan.popa@analog.com>
-X-Mailer: git-send-email 2.7.4
+        id S1726437AbfE1LAE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 May 2019 07:00:04 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:5043 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726305AbfE1LAE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 May 2019 07:00:04 -0400
+X-UUID: 37ca587f27c944d28c789b064b80d225-20190528
+X-UUID: 37ca587f27c944d28c789b064b80d225-20190528
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        (envelope-from <chun-hung.wu@mediatek.com>)
+        (mhqrelay.mediatek.com ESMTP with TLS)
+        with ESMTP id 1074950528; Tue, 28 May 2019 18:59:58 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs01n1.mediatek.inc (172.21.101.68) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Tue, 28 May 2019 18:59:56 +0800
+Received: from [172.21.77.33] (172.21.77.33) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Tue, 28 May 2019 18:59:56 +0800
+Message-ID: <1559041196.12867.3.camel@mtkswgap22>
+Subject: Re: [PATCH 3/4] iio: adc: mediatek: SET_LATE_SYSTEM_SLEEP_PM_OPS
+ support
+From:   Chun-Hung Wu <chun-hung.wu@mediatek.com>
+To:     Matthias Brugger <matthias.bgg@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>
+CC:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <wsd_upstream@mediatek.com>,
+        <peter.wang@mediatek.com>, <kuohong.wang@mediatek.com>,
+        <jg_poxu@mediatek.com>, <stanley.chu@mediatek.com>
+Date:   Tue, 28 May 2019 18:59:56 +0800
+In-Reply-To: <7838dcae-8a69-0297-718b-a061b14a456d@gmail.com>
+References: <1557994247-16739-1-git-send-email-chun-hung.wu@mediatek.com>
+         <1557994247-16739-4-git-send-email-chun-hung.wu@mediatek.com>
+         <20190518113527.5210b0bf@archlinux> <1558332205.11080.6.camel@mtkswgap22>
+         <7838dcae-8a69-0297-718b-a061b14a456d@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(376002)(39860400002)(396003)(346002)(136003)(2980300002)(199004)(189003)(7696005)(8936002)(51416003)(426003)(44832011)(336012)(7416002)(6306002)(6666004)(356004)(77096007)(53376002)(107886003)(186003)(478600001)(50226002)(72206003)(4326008)(26005)(966005)(8676002)(48376002)(70586007)(47776003)(36756003)(110136005)(50466002)(16586007)(7636002)(54906003)(305945005)(246002)(486006)(2616005)(476003)(126002)(106002)(5660300002)(316002)(70206006)(2906002);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR03MB546;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 54f7bb44-9d3f-41b8-6794-08d6e35b201a
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709054)(1401327)(2017052603328);SRVR:BL2PR03MB546;
-X-MS-TrafficTypeDiagnostic: BL2PR03MB546:
-X-MS-Exchange-PUrlCount: 3
-X-Microsoft-Antispam-PRVS: <BL2PR03MB546177C5988CF82EF6583D59D1E0@BL2PR03MB546.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
-X-Forefront-PRVS: 00514A2FE6
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: 6sB1sfdFqkpb1R8U/0u4qKuzJn2KiE+EN9LernPABm64vHCZzkV5pq7jwurSwbOAUUOngjm+VPqgbwXWNpdT+eMovx6HuMAxe+nm+dmxljP63EPWhAU3jPzlvYaFmURD17UTKRMMGKFNCj36p9A7OU+ohJm0PPu5lcCrZl2qFvGICgGbCcsQp3SIOsT5SonmoHpvsI0LVVdXJdDE1JG9LCXnRhVkTysQxGRfI7pq7eu9qyRQZOGncDWm79/7i5WVy4ni6zDXfQGsw6aOuwmGtK87KT1/bXX0RkHENthFkWuF7ZNJyeJ2ZJBkZ+yZsbIefogFDLOyw01NOzwUbowSkEDzZ64qbnds1EDytjCtpGRxHsq9bugwIoVABgIvCdFTmtB00WqwqGVu5xvUvnxuPeGfUKpnlqgeQKEs99a44qk=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2019 10:56:23.2808
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54f7bb44-9d3f-41b8-6794-08d6e35b201a
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR03MB546
+X-MTK:  N
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Document support for Analog Devices ADF4371 SPI Wideband Synthesizer.
+Hi Matthias:
 
-Signed-off-by: Stefan Popa <stefan.popa@analog.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
----
-Changes in v2:
-	- Nothing changed.
-Changes in v3:
-	- Nothing changed.
+  Thanks for your suggestion, I think device_links is a good way to
+make dependency of module's suspend/resume order.
 
- .../devicetree/bindings/iio/frequency/adf4371.yaml | 54 ++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+Hi Jonathan:
 
-diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-new file mode 100644
-index 0000000..d7adf074
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-@@ -0,0 +1,54 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/frequency/adf4371.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices ADF4371 Wideband Synthesizer
-+
-+maintainers:
-+  - Popa Stefan <stefan.popa@analog.com>
-+
-+description: |
-+  Analog Devices ADF4371 SPI Wideband Synthesizer
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/adf4371.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adf4371
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    description:
-+      Definition of the external clock (see clock/clock-bindings.txt)
-+    maxItems: 1
-+
-+  clock-names:
-+    description:
-+      Must be "clkin"
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+
-+examples:
-+  - |
-+    spi0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        frequency@0 {
-+                compatible = "adi,adf4371";
-+                reg = <0>;
-+                spi-max-frequency = <1000000>;
-+                clocks = <&adf4371_clkin>;
-+                clock-names = "clkin";
-+        };
-+    };
-+...
--- 
-2.7.4
+  Is it ok to keep using late_suspend and early_resume, or do you think
+it's better to use device_links?
+
+Thanks,
+Chun-Hung
+On Wed, 2019-05-22 at 18:28 +0200, Matthias Brugger wrote:
+> 
+> On 20/05/2019 08:03, Chun-Hung Wu wrote:
+> > Hi Jonathan:
+> > 
+> >   Thanks for the prompt reply,
+> > 
+> > On Sat, 2019-05-18 at 11:35 +0100, Jonathan Cameron wrote:
+> >> On Thu, 16 May 2019 16:10:46 +0800
+> >> Chun-Hung Wu <chun-hung.wu@mediatek.com> wrote:
+> >>
+> >>>   Move suspend/resume to late_suspend and
+> >>> early_resume to gurantee users can use auxadc
+> >> guarantee
+> >>
+> > will fix it in next version.
+> >>> driver at suspend/resume stage.
+> >> No problem with the patch content, but we need a reason why they may
+> >> want to do so?
+> > Our thermal drivers uses auxadc at suspend/resume stage.
+> > In order to avoid auxadc suspended prior to thermal driver,
+> > we move auxadc to late_suspend and early_resume.
+> > 
+> 
+> That sounds like a user of device_links [1] to me.
+> 
+> [1] https://www.kernel.org/doc/html/latest/driver-api/device_link.html
+> 
+> > Thanks,
+> > Chun-Hung
+> >>
+> >> Thanks,
+> >>
+> >> Jonathan
+> >>>
+> >>> Signed-off-by: Chun-Hung Wu <chun-hung.wu@mediatek.com>
+> >>> ---
+> >>>  drivers/iio/adc/mt6577_auxadc.c | 7 ++++---
+> >>>  1 file changed, 4 insertions(+), 3 deletions(-)
+> >>>
+> >>> diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
+> >>> index e1bdcc0..58d7cb2 100644
+> >>> --- a/drivers/iio/adc/mt6577_auxadc.c
+> >>> +++ b/drivers/iio/adc/mt6577_auxadc.c
+> >>> @@ -326,9 +326,10 @@ static int mt6577_auxadc_remove(struct platform_device *pdev)
+> >>>  	return 0;
+> >>>  }
+> >>>  
+> >>> -static SIMPLE_DEV_PM_OPS(mt6577_auxadc_pm_ops,
+> >>> -			 mt6577_auxadc_suspend,
+> >>> -			 mt6577_auxadc_resume);
+> >>> +static const struct dev_pm_ops mt6577_auxadc_pm_ops = {
+> >>> +	SET_LATE_SYSTEM_SLEEP_PM_OPS(mt6577_auxadc_suspend,
+> >>> +				     mt6577_auxadc_resume)
+> >>> +};
+> >>>  
+> >>>  static const struct of_device_id mt6577_auxadc_of_match[] = {
+> >>>  	{ .compatible = "mediatek,mt2701-auxadc", .data = &mt8173_compat},
+> >>
+> > 
+> > 
+
 

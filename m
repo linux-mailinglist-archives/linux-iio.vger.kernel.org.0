@@ -2,158 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D959B2DF8B
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2019 16:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD0A62F35E
+	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2019 06:28:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726937AbfE2OUs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 May 2019 10:20:48 -0400
-Received: from mail-eopbgr770048.outbound.protection.outlook.com ([40.107.77.48]:29761
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726889AbfE2OUr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 29 May 2019 10:20:47 -0400
+        id S1729583AbfE3E2l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 May 2019 00:28:41 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:43769 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728844AbfE3E2k (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 May 2019 00:28:40 -0400
+Received: by mail-io1-f66.google.com with SMTP id k20so3886797ios.10
+        for <linux-iio@vger.kernel.org>; Wed, 29 May 2019 21:28:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UwI8H0vuX/QHTBW8JvsG6/4EjsWlnhhgVQRIM7i5ghY=;
- b=sA7AX5vR2Hcrbn/3eXF4PW0OCVaVr8DVh7MRL+HuhWd9OpCRr8GffwFQiALwKvnvkQ/IKPlPxYpbFIlm87s9+Cji0yMqW9J2vR8jdAKjYKPunsSRBcLTs2ca+0zN8RMhgonOa/2U5xpmKwKredj2XYbIuAJUvDYszfj0CS501a4=
-Received: from BN6PR03CA0114.namprd03.prod.outlook.com (2603:10b6:404:10::28)
- by BL2PR03MB545.namprd03.prod.outlook.com (2a01:111:e400:c23::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1922.15; Wed, 29 May
- 2019 14:20:45 +0000
-Received: from BL2NAM02FT033.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e46::205) by BN6PR03CA0114.outlook.office365.com
- (2603:10b6:404:10::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1943.17 via Frontend
- Transport; Wed, 29 May 2019 14:20:45 +0000
-Authentication-Results: spf=pass (sender IP is 137.71.25.55)
- smtp.mailfrom=analog.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
- header.from=analog.com;
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- BL2NAM02FT033.mail.protection.outlook.com (10.152.77.163) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1922.16
- via Frontend Transport; Wed, 29 May 2019 14:20:45 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x4TEKipf029987
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Wed, 29 May 2019 07:20:44 -0700
-Received: from saturn.analog.com (10.50.1.244) by NWD2HUBCAS7.ad.analog.com
- (10.64.69.107) with Microsoft SMTP Server id 14.3.408.0; Wed, 29 May 2019
- 10:20:44 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     <pmeerw@pmeerw.net>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: tcs3414: fix iio_triggered_buffer_{pre,post}enable positions
-Date:   Wed, 29 May 2019 17:20:40 +0300
-Message-ID: <20190529142040.7993-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DwRO/TSythWb36X3ombHqwGg/YcZXc+W15nNG8w7o4Q=;
+        b=FFcbyccx/SWgV2+YtKe0ieWLqAmbwmkBAvRgaQeP8RgdXFCdeFfldp2ZpdaTTavfl4
+         XM+doA23/townPIUONGAJ14Fuz/ImS7zoFLqUm9R5gfie3Unfq2rRldAX36PGX5gBXNw
+         3+g+4PuPrCGLHw+OwQiObuQFWTbbZTx5Z5tz0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DwRO/TSythWb36X3ombHqwGg/YcZXc+W15nNG8w7o4Q=;
+        b=SziDwUwFhHuWy1HZXPBjm2zBGYSb0Y7wQFLVwCNJkasIsMnR7BTIYRGNIDWhIz5COK
+         2FNmYMUMAYYtHwt7M4vJBen6/+II1Qh7CuC/aO5CJ4CvjBoLrwdRE/P/Y8uAjCdopY4V
+         I0u0nGgKSEKOKybij/P1Zp9AMJWPfck62QJweC/8unr3qnFKcAyBQIS+UqfSCBdoY0yU
+         nUmLgXIljja5sJnwI8Epx1ZYDwb23xOraqLmzJwJJbsj5YKhmpcZOYHspsBeNW08lqU6
+         3HjOcVczOmOi7dOw/wxjGfTK9ipsYihsF6/tPC85+7xr9VRuiPxIy4drgPAQ1UjcvCTE
+         v1iA==
+X-Gm-Message-State: APjAAAUG0bblkyBog4Hj0FmUeqm+uu/9HCryr7qjwKMImc38IVMUflV4
+        9lda354s3tX+ZtdTPC0LI0SH75Yo1v6ofPZ7D4zP5/K/dRo=
+X-Google-Smtp-Source: APXvYqz847NSZfnq8RE2DIIj1HJhfcxpbujSFFz3azlx734cCjodfxuBKRL4ncgq8yCJ4Wzu70/MPnAZp/vMvzfC4nk=
+X-Received: by 2002:a6b:8f93:: with SMTP id r141mr1223781iod.145.1559190520043;
+ Wed, 29 May 2019 21:28:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(376002)(396003)(136003)(346002)(39860400002)(2980300002)(199004)(189003)(44832011)(48376002)(2616005)(126002)(54906003)(26005)(1076003)(476003)(50466002)(4326008)(486006)(7636002)(305945005)(36756003)(6916009)(5660300002)(53416004)(106002)(478600001)(7696005)(77096007)(186003)(50226002)(336012)(2351001)(426003)(356004)(6666004)(51416003)(246002)(8936002)(70586007)(70206006)(316002)(5024004)(2870700001)(2906002)(86362001)(8676002)(107886003)(47776003)(142933001);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR03MB545;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 470bd11b-cd35-4ac7-9022-08d6e440d6c1
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(4709054)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:BL2PR03MB545;
-X-MS-TrafficTypeDiagnostic: BL2PR03MB545:
-X-Microsoft-Antispam-PRVS: <BL2PR03MB5458478102C8BBC16C22FE3F91F0@BL2PR03MB545.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
-X-Forefront-PRVS: 0052308DC6
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: RlxfEcghyWMX550xOdZ6sinf3GhPtxZW4FkmKa+6xlou+krHvCrFAChAXCONe+LR1WaCocb2+arIjLsJcRqxmWDsKZfwGYtn9zn7vqGPCbVBVYX+j56PA5uF0eWMzeDJFUi2B1b1mrlRG45Xo1R/kzyRBCkCwzovMuE65bcnxVxA5sNSMSW03TkqiHphNMe8fHbtsMZ8T5X51lHMo1H/ObYBIS6pz33r7j8LqXJNS7yhxfF4jcx5gyMZSVWHXbfCTRLNVQxQelbj29BlldVsTKK+6fni5p8KrFkh+7v95+Qj70V+QOODFHPmxKAOIrmfK7ktvTRzKWZU20mfUNL+jiccAwhGOweizLJVwnzLdE8P/TEaN53G0YyURMXv776HHBVsBU/GsUku60IvNhVq2rZAr3dkAd3KyLmRMRRAbhI=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2019 14:20:45.0622
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 470bd11b-cd35-4ac7-9022-08d6e440d6c1
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR03MB545
+References: <cover.1556873525.git.fabien.lahoudere@collabora.com>
+ <f30612908370460d61904450d6f7c5224082898e.1556873525.git.fabien.lahoudere@collabora.com>
+ <20190505163647.4f961a0d@archlinux> <CAPUE2usHHhzzE4cRDxk3KBwRvaaUWQZ=M7j+thHxpCiYmkguFA@mail.gmail.com>
+ <20190527101804.3dac8802@archlinux>
+In-Reply-To: <20190527101804.3dac8802@archlinux>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Wed, 29 May 2019 21:28:28 -0700
+Message-ID: <CAPUE2us1qG2AcOhO54qmZ9Azx_97C2id2vgdJRx=715xuDxqpw@mail.gmail.com>
+Subject: Re: [RFC 1/1] iio: common: cros_ec_sensors: add extra sensor API
+To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+Cc:     Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-the poll functions.
+On Mon, May 27, 2019 at 2:18 AM Jonathan Cameron
+<jic23@jic23.retrosnub.co.uk> wrote:
+>
+> On Fri, 24 May 2019 17:28:42 -0700
+> Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> > On Sun, May 5, 2019 at 8:36 AM Jonathan Cameron
+> > <jic23@jic23.retrosnub.co.uk> wrote:
+> > >
+> > > On Fri,  3 May 2019 12:54:46 +0200
+> > > Fabien Lahoudere <fabien.lahoudere@collabora.com> wrote:
+> > >
+> > > > From: Gwendal Grignou <gwendal@chromium.org>
+> > > >
+> > > > Version 3 of the EC protocol provides min and max frequencies and fifo
+> > > > size for EC sensors.
+> > > > The driver allows EC to set parameters for version 3 and set default values
+> > > > for earlier versions.
+> > > > The sysfs entries are read only and cannot be used to impact on values.
+> > > >
+> > > > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> > > > Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+> > > Mostly changes in here will follow from comments on the cover letter
+> > > but a few other things inline.
+> > >
+> > > Thanks,
+> > >
+> > > Jonathan
+> > > > ---
+> > > >  .../ABI/testing/sysfs-bus-iio-cros-ec         |  24 ++++
+> > > >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 126 +++++++++++++++++-
+> > > >  .../linux/iio/common/cros_ec_sensors_core.h   |   7 +
+> > > >  include/linux/mfd/cros_ec_commands.h          |  21 +++
+> > > >  4 files changed, 177 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-cros-ec b/Documentation/ABI/testing/sysfs-bus-iio-cros-ec
+> > > > index 0e95c2ca105c..85d266f4a57e 100644
+> > > > --- a/Documentation/ABI/testing/sysfs-bus-iio-cros-ec
+> > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-cros-ec
+> > > > @@ -26,3 +26,27 @@ Description:
+> > > >               driver and represents the sensor ID as exposed by the EC. This
+> > > >               ID is used by the Android sensor service hardware abstraction
+> > > >               layer (sensor HAL) through the Android container on ChromeOS.
+> > > > +
+> > > > +What:                /sys/bus/iio/devices/iio:deviceX/min_frequency
+> > > > +Date:                April 2019
+> > > > +KernelVersion:       5.0
+> > > > +Contact:     linux-iio@vger.kernel.org
+> > > > +Description:
+> > > > +             This attribute is exposed by CrOS EC sensors. It defines the
+> > > > +             minimum frequency used by the sensor.
+> > > > +
+> > > > +What:                /sys/bus/iio/devices/iio:deviceX/max_frequency
+> > > > +Date:                April 2019
+> > > > +KernelVersion:       5.0
+> > > > +Contact:     linux-iio@vger.kernel.org
+> > > > +Description:
+> > > > +             This attribute is exposed by CrOS EC sensors. It defines the
+> > > > +             maximum frequency used by the sensor.
+> > > > +
+> > > See reply to the cover letter on these.  Bonus points if you implement them
+> > > with the read_avail callback.
+> > >
+> > > > +What:                /sys/bus/iio/devices/iio:deviceX/max_events
+> > > > +Date:                April 2019
+> > > > +KernelVersion:       5.0
+> > > > +Contact:     linux-iio@vger.kernel.org
+> > > > +Description:
+> > > > +             This attribute is exposed by CrOS EC sensors. It defines the
+> > > > +             maximum number of events in the fifo.
+> > >
+> > > Why does userspace care?
+> > Is use to report the size of the hardware FIFO to Android, to enable
+> > batching mode:
+> > https://source.android.com/devices/sensors/batching.
+> > It is reported in fifoReservedEventCount or fifoMaxEventCount in the
+> > sensor_t structure described at
+> > https://source.android.com/devices/sensors/hal-interface#sensor_t.
+> > Having said that, batching is not terribly useful for tablet or
+> > laptop, but is critical for wearable.
+>
+> Ok. So let me just check, in android terms, events are just readings
+> from the sensor?
+Yes [https://source.android.com/devices/sensors/hal-interface#sensors_event_t]
+> These aren't events in the IIO sense of 'thresholds'
+> being passed?
+Correct.
+>
+> If so can we map this to hwfifo_watermark[_available] using the range
+> descriptor? We have a bit of legacy around that with  hwfifo_watermark_max
+> and hwfifo_watermark_min also defined, but should probably move towards
+> the more standard _available form and deprecate the other two.
+That make sense: hwfifo_watermark_available will be set to a single
+value, which match hwfifo_watermak_max.
+Cros EC has a limited support:
+- the size can not be changed
+- the EC will seldom fill the hwfifo, it fires interrupt to a hard
+coded threshold to avoid losing samples
+- the hwfifo is shared by all sensors
+- sampling_frequency attribute is used to force the EC to generate
+interrupt before the hwfifo is full.
 
-For the predisable hook, the disable code should occur before detaching
-the poll func, and for the postenable hook, the poll func should be
-attached before the enable code.
+Replacing max_events with hwfifo_watermark_max works for me.
 
-The driver was slightly reworked. The preenable hook was moved to the
-postenable, to add some symmetry to the postenable/predisable part.
-
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/light/tcs3414.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/iio/light/tcs3414.c b/drivers/iio/light/tcs3414.c
-index 205e5659ce6b..ae70bf89be70 100644
---- a/drivers/iio/light/tcs3414.c
-+++ b/drivers/iio/light/tcs3414.c
-@@ -243,32 +243,42 @@ static const struct iio_info tcs3414_info = {
- 	.attrs = &tcs3414_attribute_group,
- };
- 
--static int tcs3414_buffer_preenable(struct iio_dev *indio_dev)
-+static int tcs3414_buffer_postenable(struct iio_dev *indio_dev)
- {
- 	struct tcs3414_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = iio_triggered_buffer_postenable(indio_dev);
-+	if (ret)
-+		return ret;
- 
- 	data->control |= TCS3414_CONTROL_ADC_EN;
--	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
-+	ret = i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
- 		data->control);
-+	if (ret)
-+		iio_triggered_buffer_predisable(indio_dev);
-+
-+	return ret;
- }
- 
- static int tcs3414_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	struct tcs3414_data *data = iio_priv(indio_dev);
--	int ret;
--
--	ret = iio_triggered_buffer_predisable(indio_dev);
--	if (ret < 0)
--		return ret;
-+	int ret, ret2;
- 
- 	data->control &= ~TCS3414_CONTROL_ADC_EN;
--	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
-+	ret = i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
- 		data->control);
-+
-+	ret2 = iio_triggered_buffer_predisable(indio_dev);
-+	if (!ret)
-+		ret = ret2;
-+
-+	return ret;
- }
- 
- static const struct iio_buffer_setup_ops tcs3414_buffer_setup_ops = {
--	.preenable = tcs3414_buffer_preenable,
--	.postenable = &iio_triggered_buffer_postenable,
-+	.postenable = tcs3414_buffer_postenable,
- 	.predisable = tcs3414_buffer_predisable,
- };
- 
--- 
-2.20.1
-
+Thanks,
+Gwendal.
+>
+> Jonathan
+>
+>

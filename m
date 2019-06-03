@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52CF4337F6
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2019 20:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EB94337F8
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2019 20:35:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726963AbfFCSem (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Jun 2019 14:34:42 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:36638 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726958AbfFCSem (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Jun 2019 14:34:42 -0400
-Received: by mail-pf1-f196.google.com with SMTP id u22so11103314pfm.3
-        for <linux-iio@vger.kernel.org>; Mon, 03 Jun 2019 11:34:41 -0700 (PDT)
+        id S1726984AbfFCSeq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Jun 2019 14:34:46 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:38436 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726973AbfFCSeo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Jun 2019 14:34:44 -0400
+Received: by mail-pg1-f195.google.com with SMTP id v11so8765308pgl.5
+        for <linux-iio@vger.kernel.org>; Mon, 03 Jun 2019 11:34:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=PPnzB4+ekdR6MgK0N6rYp72AUYX34yF3bdFMrhiS2nI=;
-        b=n006p07LUn1rqIDZLl97/sH1SmE4SUCOdWEGI7tIS673YMHQxXxpFf9PC2OxSj+Cxy
-         g9Ol6K51u3N2QQOV7YeAwN+RLk/EfQFZaazOlFqryCx1F69eiMEdLUS9pFD8DRpIbUdq
-         X8stQSGNm1z8Porz0ZLouQ77PllVbSP6T1KqY=
+        bh=Hz5V6YUUKbQCf9zJopKesHEceG79IQrE8elrPDeqfIA=;
+        b=aQ9MPswYniQYF/VdKEGa83AHZ5RcwOnAiRjnZU9kdPMUKqq4lkWjJfrxGSYaNBSa2M
+         7Ozd1L3YdSwCVfklSjOEq+yoZ3Aq5rcVjPm3TXVn5aD/gT6wAu241TMQdNeNEoRv1W4n
+         UkQo6o4yyGV9LY1WQFNGimqIwNoKhnUVrlciM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=PPnzB4+ekdR6MgK0N6rYp72AUYX34yF3bdFMrhiS2nI=;
-        b=hGut4FnbE6bB3pOQFiiRo0Vx2rpwbF7IscSeypAEIktXgDL7n7Lw0q2f+5rOnXypJ5
-         fedtAHEZTm2ih7vTO9+gZIdb67ksp6kmdBOOilDOQpQSS4s3Wn1ILGrj4OZyEy2I5M2j
-         F90GBnYmKDApjP9kkjBQlcwUw7EaXQ2bdsuYubmmmWSuHHVk6rErBw9v8if/3GXB0hmu
-         gTa9rwsOGd/uN/NmTWpl107W5YU3PazySQL9/TEc4ttPV/EMKC+JvocxF3sU3hTDfrCp
-         X8TJ2pncCcwaqiKPGvglT1kmXrs2VCrLpnzyBSrfol5RN01qg5Dnp8h28HIU64ZWr+Vz
-         DljA==
-X-Gm-Message-State: APjAAAW1wYZ8Y5V0x8BjhLSF4f/hvywn1HbmKK47Zbd+IDpcHhUJPX8g
-        bKg0r2/KBKC2c36O3+LNUcAJzQ==
-X-Google-Smtp-Source: APXvYqxGEh4codWtYzCotWUDRWC62TxiynvejvyuxhVMDNLhv1lkKK4pOz6vKvp8FlURm1CUMvFW+Q==
-X-Received: by 2002:a63:87c8:: with SMTP id i191mr30553912pge.131.1559586881467;
-        Mon, 03 Jun 2019 11:34:41 -0700 (PDT)
+        bh=Hz5V6YUUKbQCf9zJopKesHEceG79IQrE8elrPDeqfIA=;
+        b=tvRHPOB6Or3SSN50X+Rcuoh4aH7Tvg+m6eLTAW4DxioJUlLVTnmMI/HQdPDDPjlhyR
+         358XtaXVHU6+B3urlkbm1xyHT9Ixc/CppyYCQMKcNI5y03myFm4d/NESF9UO0vOEi3bv
+         /78Z9gplmEhLgGzrAm7iIocym695YCVPAtgg4gQj/XhAAgJl2TWwgnB6E2taChpyiGEy
+         aPTkv4Ygp2pPROSsWAJDARIvjmEUmqHZHSx3PAaWGXlWs5t65At7MHNAZNBNLkXSRAJM
+         o+7vbPutc56YYVQtmlJNJNhzeoIchfRQ9/QzdERWJLQ8EQJD4HueqVoY8pt1iaP45BG+
+         +aEA==
+X-Gm-Message-State: APjAAAWU5tipyrUp7SyI1sPm2Eh7BskmbEQZV+oSmp2HydzPGpSof55D
+        xrh5FHIUzHNeaS9subeZwDMaGA==
+X-Google-Smtp-Source: APXvYqxCgWJ0IzOoKA7UD5Ilf35KswSj9PGa5spcxGeDMhtHufZS+8vOm3xoElqubc+gwOmf6i+aNg==
+X-Received: by 2002:a63:ee12:: with SMTP id e18mr16056124pgi.412.1559586883446;
+        Mon, 03 Jun 2019 11:34:43 -0700 (PDT)
 Received: from localhost ([2620:15c:202:1:3c8f:512b:3522:dfaf])
-        by smtp.gmail.com with ESMTPSA id b2sm6165098pgk.50.2019.06.03.11.34.40
+        by smtp.gmail.com with ESMTPSA id e124sm20964180pfa.135.2019.06.03.11.34.41
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 03 Jun 2019 11:34:40 -0700 (PDT)
+        Mon, 03 Jun 2019 11:34:42 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     enric.balletbo@collabora.com, bleung@chromium.org,
         groeck@chromium.org, lee.jones@linaro.org, jic23@kernel.org,
@@ -49,9 +49,9 @@ To:     enric.balletbo@collabora.com, bleung@chromium.org,
 Cc:     linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
         linux-kernel@vger.kernel.org,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [RESEND PATCH v3 22/30] mfd: cros_ec: Add Smart Battery Firmware update API
-Date:   Mon,  3 Jun 2019 11:33:53 -0700
-Message-Id: <20190603183401.151408-23-gwendal@chromium.org>
+Subject: [RESEND PATCH v3 23/30] mfd: cros_ec: Add I2C passthru protection API
+Date:   Mon,  3 Jun 2019 11:33:54 -0700
+Message-Id: <20190603183401.151408-24-gwendal@chromium.org>
 X-Mailer: git-send-email 2.22.0.rc1.311.g5d7573a151-goog
 In-Reply-To: <20190603183401.151408-1-gwendal@chromium.org>
 References: <20190603183401.151408-1-gwendal@chromium.org>
@@ -62,96 +62,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add API to update battery firmware.
+Prevent direct i2c access to device behind EC when not in development mode.
 
 Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Acked-by: Benson Leung <bleung@chromium.org>
 Reviewed-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- include/linux/mfd/cros_ec_commands.h | 73 ++++++++++++++++++++++++++++
- 1 file changed, 73 insertions(+)
+ include/linux/mfd/cros_ec_commands.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/include/linux/mfd/cros_ec_commands.h b/include/linux/mfd/cros_ec_commands.h
-index 7f98c6e63ad1..49ea905cfd18 100644
+index 49ea905cfd18..59ad6bae3f9b 100644
 --- a/include/linux/mfd/cros_ec_commands.h
 +++ b/include/linux/mfd/cros_ec_commands.h
-@@ -4243,6 +4243,79 @@ struct ec_response_battery_vendor_param {
- 	uint32_t value;
- } __ec_align4;
+@@ -4316,6 +4316,28 @@ struct ec_params_entering_mode {
+ #define VBOOT_MODE_DEVELOPER 1
+ #define VBOOT_MODE_RECOVERY  2
  
 +/*****************************************************************************/
 +/*
-+ * Smart Battery Firmware Update Commands
++ * I2C passthru protection command: Protects I2C tunnels against access on
++ * certain addresses (board-specific).
 + */
-+#define EC_CMD_SB_FW_UPDATE 0x00B5
++#define EC_CMD_I2C_PASSTHRU_PROTECT 0x00B7
 +
-+enum ec_sb_fw_update_subcmd {
-+	EC_SB_FW_UPDATE_PREPARE  = 0x0,
-+	EC_SB_FW_UPDATE_INFO     = 0x1, /*query sb info */
-+	EC_SB_FW_UPDATE_BEGIN    = 0x2, /*check if protected */
-+	EC_SB_FW_UPDATE_WRITE    = 0x3, /*check if protected */
-+	EC_SB_FW_UPDATE_END      = 0x4,
-+	EC_SB_FW_UPDATE_STATUS   = 0x5,
-+	EC_SB_FW_UPDATE_PROTECT  = 0x6,
-+	EC_SB_FW_UPDATE_MAX      = 0x7,
++enum ec_i2c_passthru_protect_subcmd {
++	EC_CMD_I2C_PASSTHRU_PROTECT_STATUS = 0x0,
++	EC_CMD_I2C_PASSTHRU_PROTECT_ENABLE = 0x1,
 +};
 +
-+#define SB_FW_UPDATE_CMD_WRITE_BLOCK_SIZE 32
-+#define SB_FW_UPDATE_CMD_STATUS_SIZE 2
-+#define SB_FW_UPDATE_CMD_INFO_SIZE 8
-+
-+struct ec_sb_fw_update_header {
-+	uint16_t subcmd;  /* enum ec_sb_fw_update_subcmd */
-+	uint16_t fw_id;   /* firmware id */
-+} __ec_align4;
-+
-+struct ec_params_sb_fw_update {
-+	struct ec_sb_fw_update_header hdr;
-+	union {
-+		/* EC_SB_FW_UPDATE_PREPARE  = 0x0 */
-+		/* EC_SB_FW_UPDATE_INFO     = 0x1 */
-+		/* EC_SB_FW_UPDATE_BEGIN    = 0x2 */
-+		/* EC_SB_FW_UPDATE_END      = 0x4 */
-+		/* EC_SB_FW_UPDATE_STATUS   = 0x5 */
-+		/* EC_SB_FW_UPDATE_PROTECT  = 0x6 */
-+		/* Those have no args */
-+
-+		/* EC_SB_FW_UPDATE_WRITE    = 0x3 */
-+		struct __ec_align4 {
-+			uint8_t  data[SB_FW_UPDATE_CMD_WRITE_BLOCK_SIZE];
-+		} write;
-+	};
-+} __ec_align4;
-+
-+struct ec_response_sb_fw_update {
-+	union {
-+		/* EC_SB_FW_UPDATE_INFO     = 0x1 */
-+		struct __ec_align1 {
-+			uint8_t data[SB_FW_UPDATE_CMD_INFO_SIZE];
-+		} info;
-+
-+		/* EC_SB_FW_UPDATE_STATUS   = 0x5 */
-+		struct __ec_align1 {
-+			uint8_t data[SB_FW_UPDATE_CMD_STATUS_SIZE];
-+		} status;
-+	};
++struct ec_params_i2c_passthru_protect {
++	uint8_t subcmd;
++	uint8_t port;		/* I2C port number */
 +} __ec_align1;
 +
-+/*
-+ * Entering Verified Boot Mode Command
-+ * Default mode is VBOOT_MODE_NORMAL if EC did not receive this command.
-+ * Valid Modes are: normal, developer, and recovery.
-+ */
-+#define EC_CMD_ENTERING_MODE 0x00B6
++struct ec_response_i2c_passthru_protect {
++	uint8_t status;		/* Status flags (0: unlocked, 1: locked) */
++} __ec_align1;
 +
-+struct ec_params_entering_mode {
-+	int vboot_mode;
-+} __ec_align4;
-+
-+#define VBOOT_MODE_NORMAL    0
-+#define VBOOT_MODE_DEVELOPER 1
-+#define VBOOT_MODE_RECOVERY  2
 +
  /*****************************************************************************/
  /*

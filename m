@@ -2,533 +2,825 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3100C34AD6
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2019 16:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 037C934B1A
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2019 16:58:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727737AbfFDOr1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Jun 2019 10:47:27 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:46841 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727873AbfFDOrV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jun 2019 10:47:21 -0400
-Received: by mail-wr1-f66.google.com with SMTP id n4so10885705wrw.13
-        for <linux-iio@vger.kernel.org>; Tue, 04 Jun 2019 07:47:20 -0700 (PDT)
+        id S1727727AbfFDO6T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Jun 2019 10:58:19 -0400
+Received: from mail-eopbgr690061.outbound.protection.outlook.com ([40.107.69.61]:44741
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727537AbfFDO6T (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 4 Jun 2019 10:58:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=KFNX0x0uDiVEnACY7GX/xfcM9Z1YE5k1Hro/dmSU21U=;
-        b=tL9ZDb1HmSqQuR6YGGVWJKZZVio2W9Srq8Iq3w8+YQVB79OgI97cvGgjtA5qqIvLEq
-         xpBtXIY+Bq+QVM+Hg3xmsa1Fw1ZvfJQ+iuTJ7AFEzdXWgdfXl4drvbHrOuWAEc1YrEuu
-         q//R9SUG3TQjJelcxzvSjRZZ1xR3Mr7PCmLsJZfiTaa3MXJFQfLr8uN8gTgGNAyf9BFn
-         Yn2ACvOu5w2DfO2rvRguXVXpSqKKThj+TxKbAdOySWiFds79a9M/ICZRWfl4uc8tfTOh
-         wd+OW21degsYpfNBHJ7DEWDoh9UJqOlt/C4RFxD8wRYpCxFE4+l8TZj3NgLVLr7sw31o
-         a9EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=KFNX0x0uDiVEnACY7GX/xfcM9Z1YE5k1Hro/dmSU21U=;
-        b=Ee2JjMPeUcBnaLmlNS8Ibq6sZEqPXvLMR4yaE5YiHDkRqbjpgX57Lkj/ivssApdBum
-         2NZFelMeMdq+OxbHvwMnrr7pGneS9NPYTBfHwpOGyO8/krWWhKMiiK2pafrK170YKTq1
-         A/zuCW1b1vBOY73Ii0a9XdJkcd+alKgkd03ijHmrSV2X2/5ENPv0tEMqi8M3x4rteIrh
-         JKtaVgl4O47EF8G5kJxkZlR1021MzQC5Loxri+5fx19+3I0WsHbARsCOdQocyA+yBlS+
-         Z4KNJb3waLnJoWEXOzooCHu+AvWnnKHULGmuZ1MqEKN6oLCbHu7nLJqIRSELAR4n4/DN
-         UGoA==
-X-Gm-Message-State: APjAAAUJKQs30+RjH8pG17xCfuhM730MebnnM3oIx2KL9oHDEjdoLiX/
-        LEzFLjXRwQ1nb3hYH3uLL/yBFA==
-X-Google-Smtp-Source: APXvYqwnQlYmXdRjEl9h3Z01LMzU9Jkhig/p/oYJ+TOwizec2QZYooOw7KZ0UbRELLEhOW4YxXOzpw==
-X-Received: by 2002:a5d:518c:: with SMTP id k12mr21042838wrv.322.1559659639754;
-        Tue, 04 Jun 2019 07:47:19 -0700 (PDT)
-Received: from glaroque-ThinkPad-T480.baylibre.local (lmontsouris-657-1-212-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id v184sm3649639wme.10.2019.06.04.07.47.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 04 Jun 2019 07:47:19 -0700 (PDT)
-From:   Guillaume La Roque <glaroque@baylibre.com>
-To:     jic23@kernel.org, khilman@baylibre.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] iio: temperature: add a driver for the temperature sensor found in Amlogic Meson G12 SoCs
-Date:   Tue,  4 Jun 2019 16:47:14 +0200
-Message-Id: <20190604144714.2009-4-glaroque@baylibre.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190604144714.2009-1-glaroque@baylibre.com>
-References: <20190604144714.2009-1-glaroque@baylibre.com>
+ d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9BH1sAQnmthGdxrLHOqgJal0dwhJ1yp+xj+IZQ3rdsk=;
+ b=WcMMFZ2azxmSGtH+oOR9iaFeJAGluXeK0oVVoPCa8hoUlVfxwla0U9Ym1ASCp2WzjGn0RCVY4VoT8zTszaPW1wIVT/7Vk8gDDsz3mLF6v+IDps9mMzAifkn/204847uFtRZlbdi/91YNf44+MrrXmzkOZ33LhwSxbX8qUzsr6A0=
+Received: from CY1PR03CA0018.namprd03.prod.outlook.com (2603:10b6:600::28) by
+ CY1PR03MB2268.namprd03.prod.outlook.com (2a01:111:e400:c614::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1943.17; Tue, 4 Jun
+ 2019 14:58:13 +0000
+Received: from BL2NAM02FT025.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::200) by CY1PR03CA0018.outlook.office365.com
+ (2603:10b6:600::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1943.17 via Frontend
+ Transport; Tue, 4 Jun 2019 14:58:12 +0000
+Authentication-Results: spf=pass (sender IP is 137.71.25.55)
+ smtp.mailfrom=analog.com; gmx.de; dkim=none (message not signed)
+ header.d=none;gmx.de; dmarc=bestguesspass action=none header.from=analog.com;
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
+Received: from nwd2mta1.analog.com (137.71.25.55) by
+ BL2NAM02FT025.mail.protection.outlook.com (10.152.77.151) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1943.19
+ via Frontend Transport; Tue, 4 Jun 2019 14:58:11 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x54Ew8BK008229
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Tue, 4 Jun 2019 07:58:08 -0700
+Received: from linux.ad.analog.com (10.32.224.122) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Tue, 4 Jun 2019 10:58:07 -0400
+From:   Stefan Popa <stefan.popa@analog.com>
+To:     <jic23@kernel.org>
+CC:     <Michael.Hennerich@analog.com>, <knaack.h@gmx.de>,
+        <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <gregkh@linuxfoundation.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <stefan.popa@analog.com>
+Subject: [PATCH v6 1/2] iio: frequency: adf4371: Add support for ADF4371 PLL
+Date:   Tue, 4 Jun 2019 17:58:02 +0300
+Message-ID: <1559660282-12183-1-git-send-email-stefan.popa@analog.com>
+X-Mailer: git-send-email 2.7.4
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(39860400002)(346002)(136003)(376002)(396003)(2980300002)(189003)(199004)(85664002)(36756003)(50466002)(2906002)(6916009)(70206006)(2870700001)(6666004)(14444005)(356004)(186003)(72206003)(54906003)(30864003)(316002)(5660300002)(966005)(478600001)(5820100001)(126002)(476003)(2616005)(70586007)(486006)(336012)(4326008)(426003)(44832011)(7696005)(2351001)(23676004)(26005)(246002)(8936002)(8676002)(47776003)(305945005)(7636002)(50226002)(106002)(6306002)(77096007)(107886003);DIR:OUT;SFP:1101;SCL:1;SRVR:CY1PR03MB2268;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;MX:1;A:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 87103ec8-8886-4f9f-82b2-08d6e8fd10cb
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328);SRVR:CY1PR03MB2268;
+X-MS-TrafficTypeDiagnostic: CY1PR03MB2268:
+X-MS-Exchange-PUrlCount: 1
+X-Microsoft-Antispam-PRVS: <CY1PR03MB22687B33B8850D2AA12CDFC09D150@CY1PR03MB2268.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2331;
+X-Forefront-PRVS: 0058ABBBC7
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: PfTrIDWO9ObxdYSkXyGfEiP1sEQIsneMfarBDc91vnVIZ4N18PiAtxyClkpjNqvxsHpMqhhMr4r8XJzCekqFmUfmP7x8KAxmJu/OXHQ1OEqraLgglvfJuVKoepkpQ3f5g7RWU6Czf4MkcPGj93syVtXt2agKkj+bZMY+DZh5TCvWxZCem/rUQ70yTL7Jv+olFBGvcM1h6wcDxi6CnT6exOkeUWPY1aW2NPckYNJR72mI5WlP/zBMJQNqiuUiTNn/MRtgFNSpCd3Cfs1CnJAFjk38wdf27RbRc9w+jl5D9beTk2sbOwdPjokeB0X92jYI9gUJ2jlRFU0ue3oJdDJW/cftByqIo0S8U6/JJUPsTj3srH6DzPoG1klIVva9PwP91Ik2r8XBiucycXiH0RNA6MqGXSF/HZSd+j005+OBi1s=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2019 14:58:11.7480
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 87103ec8-8886-4f9f-82b2-08d6e8fd10cb
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR03MB2268
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The code is based on Amlogic source code. No public datasheet for this.
-Currently the G12A SoCs are supported.
+The ADF4371 is a frequency synthesizer with an integrated voltage
+controlled oscillator (VCO) for phase-locked loops (PLLs). The ADF4371
+has an integrated VCO with a fundamental output frequency ranging from
+4000 MHz to 8000 MHz. In addition, the VCO frequency is connected to
+divide by 1, 2, 4, 8, 16, 32, or 64 circuits that allows the user to
+generate radio frequency (RF) output frequencies as low as 62.5 MHz at
+RF8x. A frequency multiplier at RF16x generates from 8 GHz to 16 GHz. A
+frequency quadrupler generates frequencies from 16 GHz to 32 GHz at RF32x.
+RFAUX8x duplicates the frequency range of RF8x or permits direct access to
+the VCO output.
 
-Supported features:
-- possibility to set an automatic reboot temperature
+The driver takes the reference input frequency from the device tree and
+uses it to calculate and maximize the PFD frequency (frequency of the phase
+frequency detector). The PFD frequency is further used to calculate the
+timeouts: synthesizer lock, VCO band selection, automatic level
+calibration (ALC) and PLL settling time.
 
-Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+This initial driver exposes the attributes for setting the frequency and
+enabling/disabling the different adf4371 channels.
+
+Datasheet:
+Link: https://www.analog.com/media/en/technical-documentation/data-sheets/adf4371.pdf
+
+Signed-off-by: Stefan Popa <stefan.popa@analog.com>
 ---
- drivers/iio/temperature/Kconfig         |  11 +
- drivers/iio/temperature/Makefile        |   1 +
- drivers/iio/temperature/meson_tsensor.c | 416 ++++++++++++++++++++++++
- 3 files changed, 428 insertions(+)
- create mode 100644 drivers/iio/temperature/meson_tsensor.c
+Changes in v2:
+	- Added a new sysfs-bus-iio-frequency-adf4371 file which documents the ABI
+	  changes.
+	- Modified the ADF4371_REG() macro to take the reg values in hex as params
+	- ADF4371_MAX_MODULUS2 macro is now defined as BIT(14)
+	- regmap_bulk_write() can do DMA directly, so the buffer was forced into
+	  it's own cacheline.
+	- Fixed the multi line comment style.
+Changes in v3:
+	- out_altvoltageY_frequency and out_altvoltageY_powerdown attributes are
+	  treated as normal indexed channels.
+	- out_altvoltageY_name attribute was added, from which the datasheet names
+	  of the channels can be read.
+	- Added more information in the documentation.
+	- Documented the use of mutex lock.
+	- As part of adf4371_write(), used a bool variable for power down and a
+	  64 bit variable for the frequency.
+Changes in v4:
+	- Misc style fixes.
+Changes in v5:
+	- Added st->spi = spi; line of code in probe and fixing possible NULL
+	  pointer dereference.
+Changes in v6:
+	- Channel RF8AUX was accidentally duplicated.
 
-diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
-index 737faa0901fe..712a0062790d 100644
---- a/drivers/iio/temperature/Kconfig
-+++ b/drivers/iio/temperature/Kconfig
-@@ -34,6 +34,17 @@ config HID_SENSOR_TEMP
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called hid-sensor-temperature.
- 
-+config MESON_TSENSOR
-+	tristate "Amlogic Meson temperature sensor Support"
-+	default ARCH_MESON
-+	depends on OF && ARCH_MESON
-+	help
-+	  If you say yess here you get support for Meson Temperature sensor
-+	  for G12 SoC Family.
-+
-+	  This driver can also be built as a module. If so, the module will
-+	  be called meson_tsensor.
-+
- config MLX90614
- 	tristate "MLX90614 contact-less infrared sensor"
- 	depends on I2C
-diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
-index baca4776ca0d..466d8c1c91d6 100644
---- a/drivers/iio/temperature/Makefile
-+++ b/drivers/iio/temperature/Makefile
-@@ -6,6 +6,7 @@
- obj-$(CONFIG_HID_SENSOR_TEMP) += hid-sensor-temperature.o
- obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
- obj-$(CONFIG_MAX31856) += max31856.o
-+obj-$(CONFIG_MESON_TSENSOR) += meson_tsensor.o
- obj-$(CONFIG_MLX90614) += mlx90614.o
- obj-$(CONFIG_MLX90632) += mlx90632.o
- obj-$(CONFIG_TMP006) += tmp006.o
-diff --git a/drivers/iio/temperature/meson_tsensor.c b/drivers/iio/temperature/meson_tsensor.c
+ .../ABI/testing/sysfs-bus-iio-frequency-adf4371    |  44 ++
+ drivers/iio/frequency/Kconfig                      |  10 +
+ drivers/iio/frequency/Makefile                     |   1 +
+ drivers/iio/frequency/adf4371.c                    | 594 +++++++++++++++++++++
+ 4 files changed, 649 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371
+ create mode 100644 drivers/iio/frequency/adf4371.c
+
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371 b/Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371
 new file mode 100644
-index 000000000000..be0a8d073ba3
+index 0000000..302de64
 --- /dev/null
-+++ b/drivers/iio/temperature/meson_tsensor.c
-@@ -0,0 +1,416 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Amlogic Meson Temperature Sensor
-+ *
-+ * Copyright (C) 2017 Huan Biao <huan.biao@amlogic.com>
-+ * Copyright (C) 2019 Guillaume La Roque <glaroque@baylibre.com>
-+ *
-+ * Register value to celsius temperature formulas:
-+ *	Read_Val	    m * U
-+ * U = ---------, Uptat = ---------
-+ *	2^16		  1 + n * U
-+ *
-+ * Temperature = A * ( Uptat + u_efuse / 2^16 )- B
-+ *
-+ *  A B m n : calibration parameters
-+ *  u_efuse : fused calibration value, it's a signed 16 bits value
-+ */
++++ b/Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371
+@@ -0,0 +1,44 @@
++What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency
++KernelVersion:
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Stores the PLL frequency in Hz for channel Y.
++		Reading returns the actual frequency in Hz.
++		The ADF4371 has an integrated VCO with fundamendal output
++		frequency ranging from 4000000000 Hz 8000000000 Hz.
 +
++		out_altvoltage0_frequency:
++			A divide by 1, 2, 4, 8, 16, 32 or circuit generates
++			frequencies from 62500000 Hz to 8000000000 Hz.
++		out_altvoltage1_frequency:
++			This channel duplicates the channel 0 frequency
++		out_altvoltage2_frequency:
++			A frequency doubler generates frequencies from
++			8000000000 Hz to 16000000000 Hz.
++		out_altvoltage3_frequency:
++			A frequency quadrupler generates frequencies from
++			16000000000 Hz to 32000000000 Hz.
++
++		Note: writes to one of the channels will affect the frequency of
++		all the other channels, since it involves changing the VCO
++		fundamental output frequency.
++
++What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_name
++KernelVersion:
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Reading returns the datasheet name for channel Y:
++
++		out_altvoltage0_name: RF8x
++		out_altvoltage1_name: RFAUX8x
++		out_altvoltage2_name: RF16x
++		out_altvoltage3_name: RF32x
++
++What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_powerdown
++KernelVersion:
++Contact:	linux-iio@vger.kernel.org
++Description:
++		This attribute allows the user to power down the PLL and it's
++		RFOut buffers.
++		Writing 1 causes the specified channel to power down.
++		Clearing returns to normal operation.
+diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
+index dc5e0b7..e4a921f 100644
+--- a/drivers/iio/frequency/Kconfig
++++ b/drivers/iio/frequency/Kconfig
+@@ -38,5 +38,15 @@ config ADF4350
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called adf4350.
+ 
++config ADF4371
++	tristate "Analog Devices ADF4371 Wideband Synthesizer"
++	depends on SPI
++	select REGMAP_SPI
++	help
++	  Say yes here to build support for Analog Devices  ADF4371
++	  Wideband Synthesizer. The driver provides direct access via sysfs.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called adf4371.
+ endmenu
+ endmenu
+diff --git a/drivers/iio/frequency/Makefile b/drivers/iio/frequency/Makefile
+index 2bca03f..2ddda77 100644
+--- a/drivers/iio/frequency/Makefile
++++ b/drivers/iio/frequency/Makefile
+@@ -5,3 +5,4 @@
+ # When adding new entries keep the list in alphabetical order
+ obj-$(CONFIG_AD9523) += ad9523.o
+ obj-$(CONFIG_ADF4350) += adf4350.o
++obj-$(CONFIG_ADF4371) += adf4371.o
+diff --git a/drivers/iio/frequency/adf4371.c b/drivers/iio/frequency/adf4371.c
+new file mode 100644
+index 0000000..d8c414b
+--- /dev/null
++++ b/drivers/iio/frequency/adf4371.c
+@@ -0,0 +1,594 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Analog Devices ADF4371 SPI Wideband Synthesizer driver
++ *
++ * Copyright 2019 Analog Devices Inc.
++ */
 +#include <linux/bitfield.h>
 +#include <linux/clk.h>
-+#include <linux/iio/iio.h>
-+#include <linux/io.h>
-+#include <linux/mfd/syscon.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/gcd.h>
++#include <linux/kernel.h>
 +#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_address.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
 +#include <linux/regmap.h>
++#include <linux/sysfs.h>
++#include <linux/spi/spi.h>
 +
-+#define TSENSOR_CFG_REG1			0x4
-+	#define TSENSOR_CFG_REG1_RSET_VBG	BIT(12)
-+	#define TSENSOR_CFG_REG1_RSET_ADC	BIT(11)
-+	#define TSENSOR_CFG_REG1_VCM_EN		BIT(10)
-+	#define TSENSOR_CFG_REG1_VBG_EN		BIT(9)
-+	#define TSENSOR_CFG_REG1_OUT_CTL	BIT(6)
-+	#define TSENSOR_CFG_REG1_FILTER_EN	BIT(5)
-+	#define TSENSOR_CFG_REG1_DEM_EN		BIT(3)
-+	#define TSENSOR_CFG_REG1_CH_SEL		GENMASK(1, 0)
-+	#define TSENSOR_CFG_REG1_ENABLE		\
-+		(TSENSOR_CFG_REG1_FILTER_EN |	\
-+		 TSENSOR_CFG_REG1_VCM_EN |	\
-+		 TSENSOR_CFG_REG1_VBG_EN |	\
-+		 TSENSOR_CFG_REG1_DEM_EN |	\
-+		 TSENSOR_CFG_REG1_CH_SEL)
++#include <linux/iio/iio.h>
 +
-+#define TSENSOR_CFG_REG2				0x8
-+	#define TSENSOR_CFG_REG2_HITEMP_EN		BIT(31)
-+	#define TSENSOR_CFG_REG2_REBOOT_ALL_EN		BIT(30)
-+	#define TSENSOR_CFG_REG2_REBOOT_TIME		GENMASK(25, 16)
-+	#define TSENSOR_CFG_REG2_HITEMP_REBOOT_ENABLE	\
-+		(TSENSOR_CFG_REG2_HITEMP_EN |		\
-+		 TSENSOR_CFG_REG2_REBOOT_ALL_EN |	\
-+		 TSENSOR_CFG_REG2_REBOOT_TIME)
-+	#define TSENSOR_CFG_REG2_HITEMP_REBOOT_ENABLE_MASK		\
-+		(GENMASK(31, 30) | GENMASK(25, 4))
-+	#define TSENSOR_CFG_REG2_HITEMP_REBOOT_REG_MASK			\
-+		GENMASK(15, 4)
-+	#define TSENSOR_CFG_REG2_HITEMP_REG_VAL(_reg_val)		\
-+		(FIELD_PREP(TSENSOR_CFG_REG2_HITEMP_REBOOT_REG_MASK,	\
-+			    _reg_val) |					\
-+		 TSENSOR_CFG_REG2_HITEMP_REBOOT_ENABLE)
++/* Registers address macro */
++#define ADF4371_REG(x)			(x)
 +
-+#define TSENSOR_CFG_REG3		0xC
-+#define TSENSOR_CFG_REG4		0x10
-+#define TSENSOR_CFG_REG5		0x14
-+#define TSENSOR_CFG_REG6		0x18
-+#define TSENSOR_CFG_REG7		0x1C
-+#define TSENSOR_CFG_REG8		0x20
++/* ADF4371_REG0 */
++#define ADF4371_ADDR_ASC_MSK		BIT(2)
++#define ADF4371_ADDR_ASC(x)		FIELD_PREP(ADF4371_ADDR_ASC_MSK, x)
++#define ADF4371_ADDR_ASC_R_MSK		BIT(5)
++#define ADF4371_ADDR_ASC_R(x)		FIELD_PREP(ADF4371_ADDR_ASC_R_MSK, x)
++#define ADF4371_RESET_CMD		0x81
 +
-+#define TSENSOR_STAT0			0x40
++/* ADF4371_REG17 */
++#define ADF4371_FRAC2WORD_L_MSK		GENMASK(7, 1)
++#define ADF4371_FRAC2WORD_L(x)		FIELD_PREP(ADF4371_FRAC2WORD_L_MSK, x)
++#define ADF4371_FRAC1WORD_MSK		BIT(0)
++#define ADF4371_FRAC1WORD(x)		FIELD_PREP(ADF4371_FRAC1WORD_MSK, x)
 +
-+#define TSENSOR_STAT9			0x64
++/* ADF4371_REG18 */
++#define ADF4371_FRAC2WORD_H_MSK		GENMASK(6, 0)
++#define ADF4371_FRAC2WORD_H(x)		FIELD_PREP(ADF4371_FRAC2WORD_H_MSK, x)
 +
-+#define TSENSOR_READ_TEMP_MASK		GENMASK(15, 0)
-+#define TSENSOR_TEMP_MASK		GENMASK(11, 0)
++/* ADF4371_REG1A */
++#define ADF4371_MOD2WORD_MSK		GENMASK(5, 0)
++#define ADF4371_MOD2WORD(x)		FIELD_PREP(ADF4371_MOD2WORD_MSK, x)
 +
-+#define TSENSOR_TRIM_SIGN_MASK		BIT(15)
-+#define TSENSOR_TRIM_TEMP_MASK		GENMASK(14, 0)
-+#define TSENSOR_TRIM_VERSION_MASK	GENMASK(31, 24)
++/* ADF4371_REG24 */
++#define ADF4371_RF_DIV_SEL_MSK		GENMASK(6, 4)
++#define ADF4371_RF_DIV_SEL(x)		FIELD_PREP(ADF4371_RF_DIV_SEL_MSK, x)
 +
-+#define TSENSOR_TRIM_VERSION(_version) 	\
-+	FIELD_GET(TSENSOR_TRIM_VERSION_MASK, _version)
++/* ADF4371_REG32 */
++#define ADF4371_TIMEOUT_MSK		GENMASK(1, 0)
++#define ADF4371_TIMEOUT(x)		FIELD_PREP(ADF4371_TIMEOUT_MSK, x)
 +
-+#define TSENSOR_TRIM_CALIB_VALID_MASK	(GENMASK(3, 2) | BIT(7))
++/* ADF4371_REG34 */
++#define ADF4371_VCO_ALC_TOUT_MSK	GENMASK(4, 0)
++#define ADF4371_VCO_ALC_TOUT(x)		FIELD_PREP(ADF4371_VCO_ALC_TOUT_MSK, x)
 +
-+#define TSENSOR_CALIB_OFFSET	1
-+#define TSENSOR_CALIB_SHIFT	4
++/* Specifications */
++#define ADF4371_MIN_VCO_FREQ		4000000000ULL /* 4000 MHz */
++#define ADF4371_MAX_VCO_FREQ		8000000000ULL /* 8000 MHz */
++#define ADF4371_MAX_OUT_RF8_FREQ	ADF4371_MAX_VCO_FREQ /* Hz */
++#define ADF4371_MIN_OUT_RF8_FREQ	(ADF4371_MIN_VCO_FREQ / 64) /* Hz */
++#define ADF4371_MAX_OUT_RF16_FREQ	(ADF4371_MAX_VCO_FREQ * 2) /* Hz */
++#define ADF4371_MIN_OUT_RF16_FREQ	(ADF4371_MIN_VCO_FREQ * 2) /* Hz */
++#define ADF4371_MAX_OUT_RF32_FREQ	(ADF4371_MAX_VCO_FREQ * 4) /* Hz */
++#define ADF4371_MIN_OUT_RF32_FREQ	(ADF4371_MIN_VCO_FREQ * 4) /* Hz */
 +
-+static const struct iio_chan_spec temperature_channel[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.channel = 0,
-+		.address = 0,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+	},
++#define ADF4371_MAX_FREQ_PFD		250000000UL /* Hz */
++#define ADF4371_MAX_FREQ_REFIN		600000000UL /* Hz */
++
++/* MOD1 is a 24-bit primary modulus with fixed value of 2^25 */
++#define ADF4371_MODULUS1		33554432ULL
++/* MOD2 is the programmable, 14-bit auxiliary fractional modulus */
++#define ADF4371_MAX_MODULUS2		BIT(14)
++
++#define ADF4371_CHECK_RANGE(freq, range) \
++	((freq > ADF4371_MAX_ ## range) || (freq < ADF4371_MIN_ ## range))
++
++enum {
++	ADF4371_FREQ,
++	ADF4371_POWER_DOWN,
++	ADF4371_CHANNEL_NAME
 +};
 +
-+/**
-+ * struct meson_tsensor_soc_data
-+ * @A, B, m, n: calibration parameters
-+ * This structure is required for configuration of meson tsensor driver.
-+ */
-+struct meson_tsensor_soc_data {
-+	int A;
-+	int B;
-+	int m;
-+	int n;
++enum {
++	ADF4371_CH_RF8,
++	ADF4371_CH_RFAUX8,
++	ADF4371_CH_RF16,
++	ADF4371_CH_RF32
 +};
 +
-+/**
-+ * struct meson_tsensor_data
-+ * @u_efuse_off: register offset to read fused calibration value
-+ * @soc: calibration parameters structure pointer
-+ * @regmap_config: regmap config for the device
-+ * This structure is required for configuration of meson tsensor driver.
-+ */
-+struct meson_tsensor_data {
-+	int u_efuse_off;
-+	const struct meson_tsensor_soc_data *soc;
-+	const struct regmap_config *regmap_config;
++struct adf4371_pwrdown {
++	unsigned int reg;
++	unsigned int bit;
 +};
 +
-+struct meson_tsensor {
-+	int id;
-+	const struct meson_tsensor_data *data;
++static const char * const adf4371_ch_names[] = {
++	"RF8x", "RFAUX8x", "RF16x", "RF32x"
++};
++
++static const struct adf4371_pwrdown adf4371_pwrdown_ch[4] = {
++	[ADF4371_CH_RF8] = { ADF4371_REG(0x25), 2 },
++	[ADF4371_CH_RFAUX8] = { ADF4371_REG(0x72), 3 },
++	[ADF4371_CH_RF16] = { ADF4371_REG(0x25), 3 },
++	[ADF4371_CH_RF32] = { ADF4371_REG(0x25), 4 },
++};
++
++static const struct reg_sequence adf4371_reg_defaults[] = {
++	{ ADF4371_REG(0x0),  0x18 },
++	{ ADF4371_REG(0x12), 0x40 },
++	{ ADF4371_REG(0x1E), 0x48 },
++	{ ADF4371_REG(0x20), 0x14 },
++	{ ADF4371_REG(0x22), 0x00 },
++	{ ADF4371_REG(0x23), 0x00 },
++	{ ADF4371_REG(0x24), 0x80 },
++	{ ADF4371_REG(0x25), 0x07 },
++	{ ADF4371_REG(0x27), 0xC5 },
++	{ ADF4371_REG(0x28), 0x83 },
++	{ ADF4371_REG(0x2C), 0x44 },
++	{ ADF4371_REG(0x2D), 0x11 },
++	{ ADF4371_REG(0x2E), 0x12 },
++	{ ADF4371_REG(0x2F), 0x94 },
++	{ ADF4371_REG(0x32), 0x04 },
++	{ ADF4371_REG(0x35), 0xFA },
++	{ ADF4371_REG(0x36), 0x30 },
++	{ ADF4371_REG(0x39), 0x07 },
++	{ ADF4371_REG(0x3A), 0x55 },
++	{ ADF4371_REG(0x3E), 0x0C },
++	{ ADF4371_REG(0x3F), 0x80 },
++	{ ADF4371_REG(0x40), 0x50 },
++	{ ADF4371_REG(0x41), 0x28 },
++	{ ADF4371_REG(0x47), 0xC0 },
++	{ ADF4371_REG(0x52), 0xF4 },
++	{ ADF4371_REG(0x70), 0x03 },
++	{ ADF4371_REG(0x71), 0x60 },
++	{ ADF4371_REG(0x72), 0x32 },
++};
++
++static const struct regmap_config adf4371_regmap_config = {
++	.reg_bits = 16,
++	.val_bits = 8,
++	.read_flag_mask = BIT(7),
++};
++
++struct adf4371_state {
++	struct spi_device *spi;
 +	struct regmap *regmap;
-+	struct regmap *sec_ao_map;
-+	struct clk *clk;
-+	u32 trim_info;
-+	void __iomem *base;
-+	int reboot_temp;
++	struct clk *clkin;
++	/*
++	 * Lock for accessing device registers. Some operations require
++	 * multiple consecutive R/W operations, during which the device
++	 * shouldn't be interrupted. The buffers are also shared across
++	 * all operations so need to be protected on stand alone reads and
++	 * writes.
++	 */
++	struct mutex lock;
++	unsigned long clkin_freq;
++	unsigned long fpfd;
++	unsigned int integer;
++	unsigned int fract1;
++	unsigned int fract2;
++	unsigned int mod2;
++	unsigned int rf_div_sel;
++	unsigned int ref_div_factor;
++	u8 buf[10] ____cacheline_aligned;
 +};
 +
-+/*
-+ * tsensor treats temperature as a mapped temperature code.
-+ * The temperature is converted differently depending on the calibration type.
-+ */
-+static u32 temp_to_code(struct meson_tsensor *priv, int temp)
++static unsigned long long adf4371_pll_fract_n_get_rate(struct adf4371_state *st,
++						       u32 channel)
 +{
-+	const struct meson_tsensor_soc_data *param = priv->data->soc;
-+	s64 divisor, factor, uefuse;
-+	u32 reg_code;
++	unsigned long long val, tmp;
++	unsigned int ref_div_sel;
 +
-+	uefuse = priv->trim_info & TSENSOR_TRIM_SIGN_MASK ?
-+			 ~(priv->trim_info & TSENSOR_TRIM_TEMP_MASK) + 1 :
-+			 (priv->trim_info & TSENSOR_TRIM_TEMP_MASK);
++	val = (((u64)st->integer * ADF4371_MODULUS1) + st->fract1) * st->fpfd;
++	tmp = (u64)st->fract2 * st->fpfd;
++	do_div(tmp, st->mod2);
++	val += tmp + ADF4371_MODULUS1 / 2;
 +
-+	factor = BIT(16) * (temp * 10 + param->B);
-+	factor = div_s64(factor, param->A);
-+	factor = factor + uefuse;
++	if (channel == ADF4371_CH_RF8 || channel == ADF4371_CH_RFAUX8)
++		ref_div_sel = st->rf_div_sel;
++	else
++		ref_div_sel = 0;
 +
-+	factor = factor * 100;
++	do_div(val, ADF4371_MODULUS1 * (1 << ref_div_sel));
 +
-+	divisor = param->n * factor;
-+	divisor = div_s64(divisor, BIT(16));
-+	divisor = param->m - divisor;
++	if (channel == ADF4371_CH_RF16)
++		val <<= 1;
++	else if (channel == ADF4371_CH_RF32)
++		val <<= 2;
 +
-+	reg_code = div_s64(factor, divisor);
-+	reg_code = ((reg_code >> TSENSOR_CALIB_SHIFT) & TSENSOR_TEMP_MASK) +
-+		   TSENSOR_CALIB_OFFSET;
-+
-+	return reg_code;
++	return val;
 +}
 +
-+/*
-+ * Calculate a temperature value from a temperature code.
-+ * The unit of the temperature is degree Celsius.
-+ */
-+static int code_to_temp(struct meson_tsensor *priv, int temp_code)
++static void adf4371_pll_fract_n_compute(unsigned long long vco,
++				       unsigned long long pfd,
++				       unsigned int *integer,
++				       unsigned int *fract1,
++				       unsigned int *fract2,
++				       unsigned int *mod2)
 +{
-+	const struct meson_tsensor_soc_data *param = priv->data->soc;
-+	int temp;
-+	s64 factor, Uptat, uefuse;
++	unsigned long long tmp;
++	u32 gcd_div;
 +
-+	uefuse = priv->trim_info & TSENSOR_TRIM_SIGN_MASK ?
-+			     ~(priv->trim_info & TSENSOR_TRIM_TEMP_MASK) + 1 :
-+			     (priv->trim_info & TSENSOR_TRIM_TEMP_MASK);
++	tmp = do_div(vco, pfd);
++	tmp = tmp * ADF4371_MODULUS1;
++	*fract2 = do_div(tmp, pfd);
 +
-+	factor = param->n * temp_code;
-+	factor = div_s64(factor, 100);
++	*integer = vco;
++	*fract1 = tmp;
 +
-+	Uptat = temp_code * param->m;
-+	Uptat = div_s64(Uptat, 100);
-+	Uptat = Uptat * BIT(16);
-+	Uptat = div_s64(Uptat, BIT(16) + factor);
++	*mod2 = pfd;
 +
-+	temp = (Uptat + uefuse) * param->A;
-+	temp = div_s64(temp, BIT(16));
-+	temp = (temp - param->B) * 100;
-+
-+	return temp;
-+}
-+
-+static int meson_tsensor_initialize(struct iio_dev *indio_dev)
-+{
-+	struct meson_tsensor *priv = iio_priv(indio_dev);
-+	u32 reg_val;
-+	int ret = 0;
-+	int ver;
-+
-+	regmap_read(priv->sec_ao_map, priv->data->u_efuse_off,
-+		    &priv->trim_info);
-+
-+	ver = TSENSOR_TRIM_VERSION(priv->trim_info);
-+
-+	if ((ver & TSENSOR_TRIM_CALIB_VALID_MASK) == 0) {
-+		ret = -EINVAL;
-+		dev_err(&indio_dev->dev,
-+			"tsensor thermal calibration not supported: 0x%x!\n",
-+			ver);
-+		goto out;
++	while (*mod2 > ADF4371_MAX_MODULUS2) {
++		*mod2 >>= 1;
++		*fract2 >>= 1;
 +	}
 +
-+	/* init the ts reboot soc function */
-+	if (priv->reboot_temp) {
-+		/* register need value in celsius */
-+		reg_val = temp_to_code(priv, priv->reboot_temp / 1000);
-+		regmap_update_bits(priv->regmap, TSENSOR_CFG_REG2,
-+				   TSENSOR_CFG_REG2_HITEMP_REBOOT_ENABLE_MASK,
-+				   TSENSOR_CFG_REG2_HITEMP_REG_VAL(reg_val));
-+	}
-+
-+out:
-+	return ret;
++	gcd_div = gcd(*fract2, *mod2);
++	*mod2 /= gcd_div;
++	*fract2 /= gcd_div;
 +}
 +
-+static int meson_tsensor_enable(struct iio_dev *indio_dev)
++static int adf4371_set_freq(struct adf4371_state *st, unsigned long long freq,
++			    unsigned int channel)
 +{
-+	struct meson_tsensor *priv = iio_priv(indio_dev);
++	u32 cp_bleed;
++	u8 int_mode = 0;
++	int ret;
 +
-+	clk_prepare_enable(priv->clk);
-+	regmap_update_bits(priv->regmap, TSENSOR_CFG_REG1,
-+			   TSENSOR_CFG_REG1_ENABLE, TSENSOR_CFG_REG1_ENABLE);
++	switch (channel) {
++	case ADF4371_CH_RF8:
++	case ADF4371_CH_RFAUX8:
++		if (ADF4371_CHECK_RANGE(freq, OUT_RF8_FREQ))
++			return -EINVAL;
 +
-+	return 0;
-+}
++		st->rf_div_sel = 0;
 +
-+static int meson_tsensor_disable(struct iio_dev *indio_dev)
-+{
-+	struct meson_tsensor *priv = iio_priv(indio_dev);
++		while (freq < ADF4371_MIN_VCO_FREQ) {
++			freq <<= 1;
++			st->rf_div_sel++;
++		}
++		break;
++	case ADF4371_CH_RF16:
++		/* ADF4371 RF16 8000...16000 MHz */
++		if (ADF4371_CHECK_RANGE(freq, OUT_RF16_FREQ))
++			return -EINVAL;
 +
-+	regmap_update_bits(priv->regmap, TSENSOR_CFG_REG1,
-+			   TSENSOR_CFG_REG1_ENABLE, 0);
-+	clk_disable(priv->clk);
++		freq >>= 1;
++		break;
++	case ADF4371_CH_RF32:
++		/* ADF4371 RF32 16000...32000 MHz */
++		if (ADF4371_CHECK_RANGE(freq, OUT_RF32_FREQ))
++			return -EINVAL;
 +
-+	return 0;
-+}
-+
-+static int meson_tsensor_read(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan, int *val,
-+			      int *val2, long mask)
-+{
-+	unsigned int tvalue;
-+	struct meson_tsensor *priv = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_PROCESSED:
-+		regmap_read(priv->regmap, TSENSOR_STAT0, &tvalue);
-+		*val = code_to_temp(priv,
-+				    tvalue & TSENSOR_READ_TEMP_MASK);
-+
-+		return IIO_VAL_INT;
++		freq >>= 2;
++		break;
 +	default:
 +		return -EINVAL;
 +	}
++
++	adf4371_pll_fract_n_compute(freq, st->fpfd, &st->integer, &st->fract1,
++				    &st->fract2, &st->mod2);
++	st->buf[0] = st->integer >> 8;
++	st->buf[1] = 0x40; /* REG12 default */
++	st->buf[2] = 0x00;
++	st->buf[3] = st->fract2 & 0xFF;
++	st->buf[4] = st->fract2 >> 7;
++	st->buf[5] = st->fract2 >> 15;
++	st->buf[6] = ADF4371_FRAC2WORD_L(st->fract2 & 0x7F) |
++		     ADF4371_FRAC1WORD(st->fract1 >> 23);
++	st->buf[7] = ADF4371_FRAC2WORD_H(st->fract2 >> 7);
++	st->buf[8] = st->mod2 & 0xFF;
++	st->buf[9] = ADF4371_MOD2WORD(st->mod2 >> 8);
++
++	ret = regmap_bulk_write(st->regmap, ADF4371_REG(0x11), st->buf, 10);
++	if (ret < 0)
++		return ret;
++	/*
++	 * The R counter allows the input reference frequency to be
++	 * divided down to produce the reference clock to the PFD
++	 */
++	ret = regmap_write(st->regmap, ADF4371_REG(0x1F), st->ref_div_factor);
++	if (ret < 0)
++		return ret;
++
++	ret = regmap_update_bits(st->regmap, ADF4371_REG(0x24),
++				 ADF4371_RF_DIV_SEL_MSK,
++				 ADF4371_RF_DIV_SEL(st->rf_div_sel));
++	if (ret < 0)
++		return ret;
++
++	cp_bleed = DIV_ROUND_UP(400 * 1750, st->integer * 375);
++	cp_bleed = clamp(cp_bleed, 1U, 255U);
++	ret = regmap_write(st->regmap, ADF4371_REG(0x26), cp_bleed);
++	if (ret < 0)
++		return ret;
++	/*
++	 * Set to 1 when in INT mode (when FRAC1 = FRAC2 = 0),
++	 * and set to 0 when in FRAC mode.
++	 */
++	if (st->fract1 == 0 && st->fract2 == 0)
++		int_mode = 0x01;
++
++	ret = regmap_write(st->regmap, ADF4371_REG(0x2B), int_mode);
++	if (ret < 0)
++		return ret;
++
++	return regmap_write(st->regmap, ADF4371_REG(0x10), st->integer & 0xFF);
 +}
 +
-+static const struct iio_info meson_tsensor_iio_info = {
-+	.read_raw = &meson_tsensor_read,
-+};
-+
-+static const struct regmap_config meson_tsensor_regmap_config_g12a = {
-+	.reg_bits = 8,
-+	.val_bits = 32,
-+	.reg_stride = 4,
-+	.max_register = TSENSOR_STAT9,
-+};
-+
-+static const struct meson_tsensor_soc_data meson_tsensor_g12a = {
-+	.A = 9411,
-+	.B = 3159,
-+	.m = 424,
-+	.n = 324,
-+};
-+
-+static const struct meson_tsensor_data meson_tsensor_g12a_cpu_param = {
-+	.u_efuse_off = 0x128,
-+	.soc = &meson_tsensor_g12a,
-+	.regmap_config = &meson_tsensor_regmap_config_g12a,
-+};
-+
-+static const struct meson_tsensor_data meson_tsensor_g12a_ddr_param = {
-+	.u_efuse_off = 0xF0,
-+	.soc = &meson_tsensor_g12a,
-+	.regmap_config = &meson_tsensor_regmap_config_g12a,
-+};
-+
-+static const struct of_device_id meson_tsensor_of_match[] = {
-+	{
-+		.compatible = "amlogic,meson-g12a-ddr-tsensor",
-+		.data = &meson_tsensor_g12a_ddr_param,
-+	},
-+	{
-+		.compatible = "amlogic,meson-g12a-cpu-tsensor",
-+		.data = &meson_tsensor_g12a_cpu_param,
-+	},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, meson_tsensor_of_match);
-+
-+static int meson_tsensor_probe(struct platform_device *pdev)
++static ssize_t adf4371_read(struct iio_dev *indio_dev,
++			    uintptr_t private,
++			    const struct iio_chan_spec *chan,
++			    char *buf)
 +{
-+	struct meson_tsensor *priv;
-+	struct iio_dev *indio_dev;
-+	struct resource *res;
-+
++	struct adf4371_state *st = iio_priv(indio_dev);
++	unsigned long long val = 0;
++	unsigned int readval, reg, bit;
 +	int ret;
 +
-+	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
-+	if (!indio_dev) {
-+		dev_err(&pdev->dev, "failed allocating iio device\n");
++	switch ((u32)private) {
++	case ADF4371_FREQ:
++		val = adf4371_pll_fract_n_get_rate(st, chan->channel);
++		ret = regmap_read(st->regmap, ADF4371_REG(0x7C), &readval);
++		if (ret < 0)
++			break;
++
++		if (readval == 0x00) {
++			dev_dbg(&st->spi->dev, "PLL un-locked\n");
++			ret = -EBUSY;
++		}
++		break;
++	case ADF4371_POWER_DOWN:
++		reg = adf4371_pwrdown_ch[chan->channel].reg;
++		bit = adf4371_pwrdown_ch[chan->channel].bit;
++
++		ret = regmap_read(st->regmap, reg, &readval);
++		if (ret < 0)
++			break;
++
++		val = !(readval & BIT(bit));
++		break;
++	case ADF4371_CHANNEL_NAME:
++		return sprintf(buf, "%s\n", adf4371_ch_names[chan->channel]);
++	default:
++		ret = -EINVAL;
++		val = 0;
++		break;
++	}
++
++	return ret < 0 ? ret : sprintf(buf, "%llu\n", val);
++}
++
++static ssize_t adf4371_write(struct iio_dev *indio_dev,
++			     uintptr_t private,
++			     const struct iio_chan_spec *chan,
++			     const char *buf, size_t len)
++{
++	struct adf4371_state *st = iio_priv(indio_dev);
++	unsigned long long freq;
++	bool power_down;
++	unsigned int bit, readval, reg;
++	int ret;
++
++	mutex_lock(&st->lock);
++	switch ((u32)private) {
++	case ADF4371_FREQ:
++		ret = kstrtoull(buf, 10, &freq);
++		if (ret)
++			break;
++
++		ret = adf4371_set_freq(st, freq, chan->channel);
++		break;
++	case ADF4371_POWER_DOWN:
++		ret = kstrtobool(buf, &power_down);
++		if (ret)
++			break;
++
++		reg = adf4371_pwrdown_ch[chan->channel].reg;
++		bit = adf4371_pwrdown_ch[chan->channel].bit;
++		ret = regmap_read(st->regmap, reg, &readval);
++		if (ret < 0)
++			break;
++
++		readval &= ~BIT(bit);
++		readval |= (!power_down << bit);
++
++		ret = regmap_write(st->regmap, reg, readval);
++		break;
++	default:
++		ret = -EINVAL;
++		break;
++	}
++	mutex_unlock(&st->lock);
++
++	return ret ? ret : len;
++}
++
++#define _ADF4371_EXT_INFO(_name, _ident) { \
++		.name = _name, \
++		.read = adf4371_read, \
++		.write = adf4371_write, \
++		.private = _ident, \
++		.shared = IIO_SEPARATE, \
++}
++
++static const struct iio_chan_spec_ext_info adf4371_ext_info[] = {
++	/*
++	 * Ideally we use IIO_CHAN_INFO_FREQUENCY, but there are
++	 * values > 2^32 in order to support the entire frequency range
++	 * in Hz. Using scale is a bit ugly.
++	 */
++	_ADF4371_EXT_INFO("frequency", ADF4371_FREQ),
++	_ADF4371_EXT_INFO("powerdown", ADF4371_POWER_DOWN),
++	_ADF4371_EXT_INFO("name", ADF4371_CHANNEL_NAME),
++	{ },
++};
++
++#define ADF4371_CHANNEL(index) { \
++		.type = IIO_ALTVOLTAGE, \
++		.output = 1, \
++		.channel = index, \
++		.ext_info = adf4371_ext_info, \
++		.indexed = 1, \
++	}
++
++static const struct iio_chan_spec adf4371_chan[] = {
++	ADF4371_CHANNEL(ADF4371_CH_RF8),
++	ADF4371_CHANNEL(ADF4371_CH_RFAUX8),
++	ADF4371_CHANNEL(ADF4371_CH_RF16),
++	ADF4371_CHANNEL(ADF4371_CH_RF32),
++};
++
++static int adf4371_reg_access(struct iio_dev *indio_dev,
++			      unsigned int reg,
++			      unsigned int writeval,
++			      unsigned int *readval)
++{
++	struct adf4371_state *st = iio_priv(indio_dev);
++
++	if (readval)
++		return regmap_read(st->regmap, reg, readval);
++	else
++		return regmap_write(st->regmap, reg, writeval);
++}
++
++static const struct iio_info adf4371_info = {
++	.debugfs_reg_access = &adf4371_reg_access,
++};
++
++static int adf4371_setup(struct adf4371_state *st)
++{
++	unsigned int synth_timeout = 2, timeout = 1, vco_alc_timeout = 1;
++	unsigned int vco_band_div, tmp;
++	int ret;
++
++	/* Perform a software reset */
++	ret = regmap_write(st->regmap, ADF4371_REG(0x0), ADF4371_RESET_CMD);
++	if (ret < 0)
++		return ret;
++
++	ret = regmap_multi_reg_write(st->regmap, adf4371_reg_defaults,
++				     ARRAY_SIZE(adf4371_reg_defaults));
++	if (ret < 0)
++		return ret;
++
++	/* Set address in ascending order, so the bulk_write() will work */
++	ret = regmap_update_bits(st->regmap, ADF4371_REG(0x0),
++				 ADF4371_ADDR_ASC_MSK | ADF4371_ADDR_ASC_R_MSK,
++				 ADF4371_ADDR_ASC(1) | ADF4371_ADDR_ASC_R(1));
++	if (ret < 0)
++		return ret;
++	/*
++	 * Calculate and maximize PFD frequency
++	 * fPFD = REFIN × ((1 + D)/(R × (1 + T)))
++	 * Where D is the REFIN doubler bit, T is the reference divide by 2,
++	 * R is the reference division factor
++	 * TODO: it is assumed D and T equal 0.
++	 */
++	do {
++		st->ref_div_factor++;
++		st->fpfd = st->clkin_freq / st->ref_div_factor;
++	} while (st->fpfd > ADF4371_MAX_FREQ_PFD);
++
++	/* Calculate Timeouts */
++	vco_band_div = DIV_ROUND_UP(st->fpfd, 2400000U);
++
++	tmp = DIV_ROUND_CLOSEST(st->fpfd, 1000000U);
++	do {
++		timeout++;
++		if (timeout > 1023) {
++			timeout = 2;
++			synth_timeout++;
++		}
++	} while (synth_timeout * 1024 + timeout <= 20 * tmp);
++
++	do {
++		vco_alc_timeout++;
++	} while (vco_alc_timeout * 1024 - timeout <= 50 * tmp);
++
++	st->buf[0] = vco_band_div;
++	st->buf[1] = timeout & 0xFF;
++	st->buf[2] = ADF4371_TIMEOUT(timeout >> 8) | 0x04;
++	st->buf[3] = synth_timeout;
++	st->buf[4] = ADF4371_VCO_ALC_TOUT(vco_alc_timeout);
++
++	return regmap_bulk_write(st->regmap, ADF4371_REG(0x30), st->buf, 5);
++}
++
++static void adf4371_clk_disable(void *data)
++{
++	struct adf4371_state *st = data;
++
++	clk_disable_unprepare(st->clkin);
++}
++
++static int adf4371_probe(struct spi_device *spi)
++{
++	const struct spi_device_id *id = spi_get_device_id(spi);
++	struct iio_dev *indio_dev;
++	struct adf4371_state *st;
++	struct regmap *regmap;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	if (!indio_dev)
 +		return -ENOMEM;
++
++	regmap = devm_regmap_init_spi(spi, &adf4371_regmap_config);
++	if (IS_ERR(regmap)) {
++		dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
++			PTR_ERR(regmap));
++		return PTR_ERR(regmap);
 +	}
 +
-+	priv = iio_priv(indio_dev);
-+	priv->data = of_device_get_match_data(&pdev->dev);
-+	if (!priv->data) {
-+		dev_err(&pdev->dev, "failed to get match data\n");
-+		return -ENODEV;
-+	}
++	st = iio_priv(indio_dev);
++	spi_set_drvdata(spi, indio_dev);
++	st->spi = spi;
++	st->regmap = regmap;
++	mutex_init(&st->lock);
 +
-+	indio_dev->channels = temperature_channel;
-+	indio_dev->num_channels = ARRAY_SIZE(temperature_channel);
-+	indio_dev->name = dev_name(&pdev->dev);
-+	indio_dev->dev.parent = &pdev->dev;
-+	indio_dev->dev.of_node = pdev->dev.of_node;
++	indio_dev->dev.parent = &spi->dev;
++	indio_dev->name = id->name;
++	indio_dev->info = &adf4371_info;
 +	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &meson_tsensor_iio_info;
++	indio_dev->channels = adf4371_chan;
++	indio_dev->num_channels = ARRAY_SIZE(adf4371_chan);
 +
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	priv->base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(priv->base))
-+		return PTR_ERR(priv->base);
++	st->clkin = devm_clk_get(&spi->dev, "clkin");
++	if (IS_ERR(st->clkin))
++		return PTR_ERR(st->clkin);
 +
-+	priv->regmap = devm_regmap_init_mmio(&pdev->dev, priv->base,
-+					     priv->data->regmap_config);
-+	if (IS_ERR(priv->regmap))
-+		return PTR_ERR(priv->regmap);
++	ret = clk_prepare_enable(st->clkin);
++	if (ret < 0)
++		return ret;
 +
-+	priv->clk = devm_clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(priv->clk)) {
-+		if (PTR_ERR(priv->clk) != -EPROBE_DEFER)
-+			dev_err(&pdev->dev, "failed to get clock\n");
-+		return PTR_ERR(priv->clk);
-+	}
-+
-+	if (of_property_read_u32(pdev->dev.of_node,
-+				 "amlogic,critical-temperature",
-+				 &priv->reboot_temp)) {
-+		priv->reboot_temp = 0;
-+	}
-+
-+	priv->sec_ao_map = syscon_regmap_lookup_by_phandle
-+		(pdev->dev.of_node, "amlogic,ao-secure");
-+	if (IS_ERR(priv->sec_ao_map)) {
-+		dev_err(&pdev->dev, "syscon regmap lookup failed.\n");
-+		return PTR_ERR(priv->sec_ao_map);
-+	}
-+
-+	ret = meson_tsensor_initialize(indio_dev);
++	ret = devm_add_action_or_reset(&spi->dev, adf4371_clk_disable, st);
 +	if (ret)
 +		return ret;
 +
-+	ret = meson_tsensor_enable(indio_dev);
-+	if (ret)
-+		goto err;
++	st->clkin_freq = clk_get_rate(st->clkin);
 +
-+	platform_set_drvdata(pdev, indio_dev);
-+	ret = iio_device_register(indio_dev);
-+	if (ret)
-+		goto err_hw;
++	ret = adf4371_setup(st);
++	if (ret < 0) {
++		dev_err(&spi->dev, "ADF4371 setup failed\n");
++		return ret;
++	}
 +
-+	return 0;
-+
-+err_hw:
-+	meson_tsensor_disable(indio_dev);
-+err:
-+	clk_unprepare(priv->clk);
-+
-+	return ret;
++	return devm_iio_device_register(&spi->dev, indio_dev);
 +}
 +
-+static int meson_tsensor_remove(struct platform_device *pdev)
-+{
-+	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-+
-+	iio_device_unregister(indio_dev);
-+
-+	return meson_tsensor_disable(indio_dev);
-+}
-+
-+static struct platform_driver meson_tsensor_driver = {
-+	.probe = meson_tsensor_probe,
-+	.remove = meson_tsensor_remove,
-+	.driver = {
-+			.name = "meson-tsensor",
-+			.of_match_table = meson_tsensor_of_match,
-+		},
++static const struct spi_device_id adf4371_id_table[] = {
++	{ "adf4371", 0 },
++	{}
 +};
++MODULE_DEVICE_TABLE(spi, adf4371_id_table);
 +
-+module_platform_driver(meson_tsensor_driver);
++static const struct of_device_id adf4371_of_match[] = {
++	{ .compatible = "adi,adf4371" },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, adf4371_of_match);
 +
-+MODULE_AUTHOR("Guillaume La Roque <glaroque@baylibre.com>");
-+MODULE_DESCRIPTION("Amlogic Meson Temperature Sensor Driver");
-+MODULE_LICENSE("GPL v2");
++static struct spi_driver adf4371_driver = {
++	.driver = {
++		.name = "adf4371",
++		.of_match_table = adf4371_of_match,
++	},
++	.probe = adf4371_probe,
++	.id_table = adf4371_id_table,
++};
++module_spi_driver(adf4371_driver);
++
++MODULE_AUTHOR("Stefan Popa <stefan.popa@analog.com>");
++MODULE_DESCRIPTION("Analog Devices ADF4371 SPI PLL");
++MODULE_LICENSE("GPL");
 -- 
-2.17.1
+2.7.4
 

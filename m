@@ -2,84 +2,278 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05E0F349B9
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2019 16:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF56349DC
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2019 16:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727327AbfFDODt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Jun 2019 10:03:49 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:45284 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727041AbfFDODt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jun 2019 10:03:49 -0400
-Received: by mail-ed1-f66.google.com with SMTP id f20so590710edt.12
-        for <linux-iio@vger.kernel.org>; Tue, 04 Jun 2019 07:03:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=essensium-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=C89Zm5tqX6wwdqdwxOr1J581zGxrK1/FIkPJm608gBw=;
-        b=ReKQN1Ltrc6A4Z2El8pR0PXGPrStXWhkcji/2N49UFsdqNCVNCvN0X51v/dE1/VPRd
-         HPhxKvSXknjmV5O5G37Zgr/+sD5IH9j3pfDGes/yd1qFzfjvkOeVJ9ueDFqRPogPOMFE
-         kJ0k087RquGzueGpV1rBYb6vJ2sXkSzbpZJEhwVmSl81s4UCQC0LKLN+Kql5RCnWBOsn
-         XRliNKxpM+wnPaNSqjD2PMGxo0FoKaNIJgMgeqzR0F/pRgTERUGzKSF7SKhZ08gis1dK
-         olAB2pwpRVOYAw2XSWckeGQzDeMlS+P1M1RAjn+UinMUCzpJFpsiHg6Plsn6gDvyRZ4t
-         dcFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=C89Zm5tqX6wwdqdwxOr1J581zGxrK1/FIkPJm608gBw=;
-        b=RDj85AW9KtDKirQsThi4HCfAYYTeaTNWTm8eM2t2YODjm8QzIrZYMn/H957Foxe2ZF
-         ls7EqBObtTWLlbLoRxmdPHP14rjw/XGI5yPgYYxYCaJCwMc604xIdBO4DpgfLbUqqJz4
-         PSE7kYUAGlLTStMXbyuEL9QZbom360lZY5FAz6ZeqQESat2/ElZ0f+FC4cVovuFsK/mV
-         beDglWIUWGvqAypZpUiaBfb0n7kfV0JKXhUXwIqVfTuybGHVNNVt5ulQbUfz7X0EmIak
-         l2JAfjSfcnqmDbpKsc5TNw0bPfFd2TPaWEouQqzSueEIganssUy11KlfE8O301R0Qoww
-         53Ng==
-X-Gm-Message-State: APjAAAWNwdPRrKT1dlb30jpzG15NA3Uh+Pmh+XJxJLPEQqqlKvBOMGm1
-        YFb3CRQkQ95MwKJ1jde4rzI8tA==
-X-Google-Smtp-Source: APXvYqzNo6pxIWtWg6c+hl2tqLBkAFuScB+C1FTzvmh8Szoa7TT0yDrjXkqI6mOBi2SBSea2psc1yg==
-X-Received: by 2002:a50:905a:: with SMTP id z26mr35907729edz.96.1559657027339;
-        Tue, 04 Jun 2019 07:03:47 -0700 (PDT)
-Received: from localhost.localdomain (ip-188-118-3-185.reverse.destiny.be. [188.118.3.185])
-        by smtp.gmail.com with ESMTPSA id j27sm3194485eja.91.2019.06.04.07.03.45
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 04 Jun 2019 07:03:46 -0700 (PDT)
-From:   Patrick Havelange <patrick.havelange@essensium.com>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        id S1727456AbfFDOPg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Jun 2019 10:15:36 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:42444 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727452AbfFDOPg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jun 2019 10:15:36 -0400
+Received: from laptop-1.home (unknown [IPv6:2a01:cb19:8ad6:900:42dd:dd1c:19ee:7c60])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: aragua)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 464BF2852B8;
+        Tue,  4 Jun 2019 15:15:34 +0100 (BST)
+Message-ID: <075093e4a45556569f5ecde7f5489fe02df57946.camel@collabora.com>
+Subject: Re: [PATCH 1/3] iio: common: cros_ec_sensors: support protocol v3
+ message
+From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     kernel@collabora.com, Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Patrick Havelange <patrick.havelange@essensium.com>
-Subject: [PATCH 1/1] counter/ftm-quaddec: Add missing dependencies in Kconfig
-Date:   Tue,  4 Jun 2019 16:03:26 +0200
-Message-Id: <20190604140326.12295-1-patrick.havelange@essensium.com>
-X-Mailer: git-send-email 2.19.1
-MIME-Version: 1.0
+Date:   Tue, 04 Jun 2019 16:15:31 +0200
+In-Reply-To: <20190603125509.GV4797@dell>
+References: <9d5dbba798410321177efa5d8a562105ff8cf429.1558533743.git.fabien.lahoudere@collabora.com>
+         <20190603125509.GV4797@dell>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.2 (3.30.2-2.fc29) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This driver uses devm_ioremap and of* functions. This fixes a
-linking failure with e.g. ARCH=um.
+Le lundi 03 juin 2019 à 13:55 +0100, Lee Jones a écrit :
+> On Wed, 22 May 2019, Fabien Lahoudere wrote:
+> 
+> > Version 3 of the EC protocol provides min and max frequencies and
+> > fifo
+> > size for EC sensors.
+> > 
+> > Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+> > ---
+> >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 98
+> > ++++++++++++++++++-
+> >  .../linux/iio/common/cros_ec_sensors_core.h   |  7 ++
+> >  include/linux/mfd/cros_ec_commands.h          | 21 ++++
+> 
+> Please note that we are about to add a pretty bit update for this
+> file.  Once it's complete you may wish to rebase in order to avoid
+> any possible merge conflicts.
+> 
 
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Patrick Havelange <patrick.havelange@essensium.com>
----
- drivers/counter/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Thanks Lee. Indeed I see and reviewed this 30 patches series.
+I am waiting they are applied to rebase ans submit v3.
 
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index 233ac305d878..c9e3f5c98484 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -50,6 +50,7 @@ config STM32_LPTIMER_CNT
- 
- config FTM_QUADDEC
- 	tristate "Flex Timer Module Quadrature decoder driver"
-+	depends on HAS_IOMEM && OF
- 	help
- 	  Select this option to enable the Flex Timer Quadrature decoder
- 	  driver.
--- 
-2.19.1
+> >  3 files changed, 125 insertions(+), 1 deletion(-)
+> > 
+> > diff --git
+> > a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > index 719a0df5aeeb..d5c8b4714ad6 100644
+> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > @@ -19,12 +19,84 @@
+> >  #include <linux/slab.h>
+> >  #include <linux/platform_device.h>
+> >  
+> > +/*
+> > + * Hard coded to the first device to support sensor fifo.  The EC
+> > has a 2048
+> > + * byte fifo and will trigger an interrupt when fifo is 2/3 full.
+> > + */
+> > +#define CROS_EC_FIFO_SIZE (2048 * 2 / 3)
+> > +
+> >  static char *cros_ec_loc[] = {
+> >  	[MOTIONSENSE_LOC_BASE] = "base",
+> >  	[MOTIONSENSE_LOC_LID] = "lid",
+> >  	[MOTIONSENSE_LOC_MAX] = "unknown",
+> >  };
+> >  
+> > +static void get_default_min_max_freq_and_fifo_size(enum
+> > motionsensor_type type,
+> > +						   u32 *min_freq,
+> > +						   u32 *max_freq,
+> > +						   u32
+> > *max_fifo_events)
+> > +{
+> > +	/* we don't know fifo size, set to size previously used by
+> > sensor HAL */
+> > +	*max_fifo_events = CROS_EC_FIFO_SIZE;
+> > +
+> > +	switch (type) {
+> > +	case MOTIONSENSE_TYPE_ACCEL:
+> > +	case MOTIONSENSE_TYPE_GYRO:
+> > +		*min_freq = 12500;
+> > +		*max_freq = 100000;
+> > +		break;
+> > +	case MOTIONSENSE_TYPE_MAG:
+> > +		*min_freq = 5000;
+> > +		*max_freq = 25000;
+> > +		break;
+> > +	case MOTIONSENSE_TYPE_PROX:
+> > +	case MOTIONSENSE_TYPE_LIGHT:
+> > +		*min_freq = 100;
+> > +		*max_freq = 50000;
+> > +		break;
+> > +	case MOTIONSENSE_TYPE_BARO:
+> > +		*min_freq = 250;
+> > +		*max_freq = 20000;
+> > +		break;
+> > +	case MOTIONSENSE_TYPE_ACTIVITY:
+> > +	default:
+> > +		*max_fifo_events = 0;
+> > +		*min_freq = 0;
+> > +		*max_freq = 0;
+> > +		break;
+> > +	}
+> > +}
+> > +
+> > +static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device
+> > *ec_dev,
+> > +					     u16 cmd_offset, u16 cmd,
+> > u32 *mask)
+> > +{
+> > +	struct {
+> > +		struct cros_ec_command msg;
+> > +		union {
+> > +			struct ec_params_get_cmd_versions params;
+> > +			struct ec_response_get_cmd_versions resp;
+> > +		};
+> > +	} __packed buf;
+> > +	struct ec_params_get_cmd_versions *params = &buf.params;
+> > +	struct ec_response_get_cmd_versions *resp = &buf.resp;
+> > +	struct cros_ec_command *msg = &buf.msg;
+> > +	int ret;
+> > +
+> > +	memset(&buf, 0, sizeof(buf));
+> > +	msg->command = EC_CMD_GET_CMD_VERSIONS + cmd_offset;
+> > +	msg->insize = sizeof(*resp);
+> > +	msg->outsize = sizeof(*params);
+> > +	params->cmd = cmd;
+> > +	ret = cros_ec_cmd_xfer_status(ec_dev, msg);
+> > +	if (ret >= 0) {
+> > +		if (msg->result == EC_RES_SUCCESS)
+> > +			*mask = resp->version_mask;
+> > +		else
+> > +			*mask = 0;
+> > +	}
+> > +	return ret;
+> > +}
+> > +
+> >  int cros_ec_sensors_core_init(struct platform_device *pdev,
+> >  			      struct iio_dev *indio_dev,
+> >  			      bool physical_device)
+> > @@ -33,6 +105,8 @@ int cros_ec_sensors_core_init(struct
+> > platform_device *pdev,
+> >  	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
+> >  	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
+> >  	struct cros_ec_sensor_platform *sensor_platform =
+> > dev_get_platdata(dev);
+> > +	u32 ver_mask;
+> > +	int ret;
+> >  
+> >  	platform_set_drvdata(pdev, indio_dev);
+> >  
+> > @@ -47,8 +121,16 @@ int cros_ec_sensors_core_init(struct
+> > platform_device *pdev,
+> >  
+> >  	mutex_init(&state->cmd_lock);
+> >  
+> > +	/* determine what version of MOTIONSENSE CMD EC has */
+> > +	ret = cros_ec_get_host_cmd_version_mask(state->ec,
+> > +						ec->cmd_offset,
+> > +						EC_CMD_MOTION_SENSE_CMD
+> > ,
+> > +						&ver_mask);
+> > +	if (ret < 0 || ver_mask == 0)
+> > +		return -ENODEV;
+> > +
+> >  	/* Set up the host command structure. */
+> > -	state->msg->version = 2;
+> > +	state->msg->version = fls(ver_mask) - 1;
+> >  	state->msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
+> >  	state->msg->outsize = sizeof(struct ec_params_motion_sense);
+> >  
+> > @@ -66,6 +148,20 @@ int cros_ec_sensors_core_init(struct
+> > platform_device *pdev,
+> >  		}
+> >  		state->type = state->resp->info.type;
+> >  		state->loc = state->resp->info.location;
+> > +		if (state->msg->version < 3) {
+> > +			get_default_min_max_freq_and_fifo_size(
+> > +					state->resp->info.type,
+> > +					&state->min_freq,
+> > +					&state->max_freq,
+> > +					&state->fifo_max_event_count);
+> > +		} else {
+> > +			state->min_freq =
+> > +				state->resp->info_3.min_frequency;
+> > +			state->max_freq =
+> > +				state->resp->info_3.max_frequency;
+> > +			state->fifo_max_event_count =
+> > +				state->resp-
+> > >info_3.fifo_max_event_count;
+> > +		}
+> >  	}
+> >  
+> >  	return 0;
+> > diff --git a/include/linux/iio/common/cros_ec_sensors_core.h
+> > b/include/linux/iio/common/cros_ec_sensors_core.h
+> > index ce16445411ac..4742a9637a85 100644
+> > --- a/include/linux/iio/common/cros_ec_sensors_core.h
+> > +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+> > @@ -78,6 +78,13 @@ struct cros_ec_sensors_core_state {
+> >  				    unsigned long scan_mask, s16
+> > *data);
+> >  
+> >  	int curr_sampl_freq;
+> > +
+> > +	/* Min and Max Sampling Frequency in mHz */
+> > +	u32 min_freq;
+> > +	u32 max_freq;
+> > +
+> > +	/* event fifo size represented in number of events */
+> > +	u32 fifo_max_event_count;
+> >  };
+> >  
+> >  /**
+> > diff --git a/include/linux/mfd/cros_ec_commands.h
+> > b/include/linux/mfd/cros_ec_commands.h
+> > index dcec96f01879..27d71cbf22f1 100644
+> > --- a/include/linux/mfd/cros_ec_commands.h
+> > +++ b/include/linux/mfd/cros_ec_commands.h
+> > @@ -1744,6 +1744,27 @@ struct ec_response_motion_sense {
+> >  			uint8_t chip;
+> >  		} info;
+> >  
+> > +		/* Used for MOTIONSENSE_CMD_INFO version 3 */
+> > +		struct __ec_todo_unpacked {
+> > +			/* Should be element of enum motionsensor_type.
+> > */
+> > +			uint8_t type;
+> > +
+> > +			/* Should be element of enum
+> > motionsensor_location. */
+> > +			uint8_t location;
+> > +
+> > +			/* Should be element of enum motionsensor_chip.
+> > */
+> > +			uint8_t chip;
+> > +
+> > +			/* Minimum sensor sampling frequency */
+> > +			uint32_t min_frequency;
+> > +
+> > +			/* Maximum sensor sampling frequency */
+> > +			uint32_t max_frequency;
+> > +
+> > +			/* Max number of sensor events that could be in
+> > fifo */
+> > +			uint32_t fifo_max_event_count;
+> > +		} info_3;
+> > +
+> >  		/* Used for MOTIONSENSE_CMD_DATA */
+> >  		struct ec_response_motion_sensor_data data;
+> >  
 

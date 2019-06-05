@@ -2,33 +2,20 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79AA135A13
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2019 12:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3746C35F0E
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2019 16:20:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727124AbfFEKD1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Jun 2019 06:03:27 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:50280 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726690AbfFEKD1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jun 2019 06:03:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=u3C13c87086hMiV9w85rPm7zIsQPWFDde0xcEZuXQO4=; b=dorjVI3a+BwPR4KW5H82UKRlg
-        Q9KqAanswJa5R2Wb689KlEmobdDfNHeCIoIrmt5I/PSgctZsHRi60Lg3gnFmHSNLPuQAliaq0R9s2
-        vaYe1Hr5IKUF5PPoEbYIxmcmqmsGkWm/Qs6VhqrIEdJ0/Z6P1uHRVEgDVNJ/doyVFZ37k=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hYSkO-0008Uv-UU; Wed, 05 Jun 2019 10:02:21 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id 7EA0A440046; Wed,  5 Jun 2019 11:02:20 +0100 (BST)
-Date:   Wed, 5 Jun 2019 11:02:20 +0100
-From:   Mark Brown <broonie@kernel.org>
+        id S1727993AbfFEOUE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Jun 2019 10:20:04 -0400
+Received: from sauhun.de ([88.99.104.3]:54932 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727893AbfFEOUE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 5 Jun 2019 10:20:04 -0400
+Received: from localhost (p5486CB35.dip0.t-ipconnect.de [84.134.203.53])
+        by pokefinder.org (Postfix) with ESMTPSA id 291123E43B4;
+        Wed,  5 Jun 2019 16:20:01 +0200 (CEST)
+Date:   Wed, 5 Jun 2019 16:20:00 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
 To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Cc:     linux-kernel@vger.kernel.org, gwendal@chromium.org,
         Guenter Roeck <groeck@chromium.org>,
@@ -54,8 +41,7 @@ Cc:     linux-kernel@vger.kernel.org, gwendal@chromium.org,
         linux-media@vger.kernel.org, linux-pwm@vger.kernel.org,
         Thierry Reding <thierry.reding@gmail.com>,
         Ravi Chandra Sadineni <ravisadineni@chromium.org>,
-        linux-pm@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
-        Takashi Iwai <tiwai@suse.com>,
+        linux-pm@vger.kernel.org, Takashi Iwai <tiwai@suse.com>,
         Liam Girdwood <lgirdwood@gmail.com>,
         MyungJoo Ham <myungjoo.ham@samsung.com>,
         Evan Green <evgreen@chromium.org>,
@@ -64,21 +50,21 @@ Cc:     linux-kernel@vger.kernel.org, gwendal@chromium.org,
         Jaroslav Kysela <perex@perex.cz>,
         Kees Cook <keescook@chromium.org>,
         Colin Ian King <colin.king@canonical.com>,
+        Mark Brown <broonie@kernel.org>,
         Neil Armstrong <narmstrong@baylibre.com>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Jiri Kosina <jikos@kernel.org>
 Subject: Re: [PATCH 06/10] mfd / platform: cros_ec: Reorganize platform and
  mfd includes
-Message-ID: <20190605100220.GN2456@sirena.org.uk>
+Message-ID: <20190605142000.GC962@kunai>
 References: <20190604152019.16100-1-enric.balletbo@collabora.com>
  <20190604152019.16100-7-enric.balletbo@collabora.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="RnxXMyWEPIZsopkG"
+        protocol="application/pgp-signature"; boundary="Clx92ZfkiYIKRjnr"
 Content-Disposition: inline
 In-Reply-To: <20190604152019.16100-7-enric.balletbo@collabora.com>
-X-Cookie: The other line moves faster.
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -86,30 +72,63 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---RnxXMyWEPIZsopkG
+--Clx92ZfkiYIKRjnr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 On Tue, Jun 04, 2019 at 05:20:15PM +0200, Enric Balletbo i Serra wrote:
 > There is a bit of mess between cros-ec mfd includes and platform
 > includes. For example, we have a linux/mfd/cros_ec.h include that
 > exports the interface implemented in platform/chrome/cros_ec_proto.c. Or
+> we have a linux/mfd/cros_ec_commands.h file that is non related to the
+> multifunction device (in the sense that is not exporting any function of
+> the mfd device). This causes crossed includes between mfd and
+> platform/chrome subsystems and makes the code difficult to read, apart
+> from creating 'curious' situations where a platform/chrome driver includes
+> a linux/mfd/cros_ec.h file just to get the exported functions that are
+> implemented in another platform/chrome driver.
+>=20
+> In order to have a better separation on what the cros-ec multifunction
+> driver does and what the cros-ec core provides move and rework the
+> affected includes doing:
+>=20
+>  - Move cros_ec_commands.h to include/linux/platform_data/cros_ec_command=
+s.h
+>  - Get rid of the parts that are implemented in the platform/chrome/cros_=
+ec_proto.c
+>    driver from include/linux/mfd/cros_ec.h to a new file
+>    include/linux/platform_data/cros_ec_proto.h
+>  - Update all the drivers with the new includes, so
+>    - Drivers that only need to know about the protocol include
+>      - linux/platform_data/cros_ec_proto.h
+>      - linux/platform_data/cros_ec_commands.h
+>    - Drivers that need to know about the cros-ec mfd device also include
+>      - linux/mfd/cros_ec.h
+>=20
+> Signed-off-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Acked-by: Wolfram Sang <wsa@the-dreams.de> (for the I2C part)
 
---RnxXMyWEPIZsopkG
+
+--Clx92ZfkiYIKRjnr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlz3kysACgkQJNaLcl1U
-h9BVMAf+I/I3bNW13EZ789wBAFxmn5KXFbH0t6CdJDgbILW9HMsGSKGbJXJRTRDG
-GGeIfMEYK0lv5boeQbArMfoX/kkuVYHVj/71aQVsgC53JIBFFxHS2zEfzrFzgN+R
-sNsvROQYmO1T5gOySrMN+AsqPwnu3CR2LgMPRqsvguCPduIfXzEM3afJQuRh2lAW
-a5Im4U6GQX5cez1MGDHB3/Mk8fH194coSUTUtH134gpeA5LWemALrlDCRsfdSbw2
-G2oeM++LQIDx2VcKfRKWfqvKhC1Ajp5FdiZw6Z7lo6+BXFHKSVupSjKAhtIdT4gj
-RVhPy7IzR78PM8sLvDnqD6CyTHtuXQ==
-=7p/R
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlz3z5AACgkQFA3kzBSg
+KbYuGA/9GcL4++C/ViixlrJ+2KnwVIZhutol9fcA8YKEeEpGQq42AkU9zJV8pX3y
+U6sLvo3bHeDjA98mwO+aWKCaZIp1W5vZrKdQNqUZ35xvEaIgjhZ2dATu2+ontUAI
+Yv9koHktSt4oTbZlAPmcIwV/vLrhmJgr0FA1B6pS4qFbccYh+ePsTKvYpsjaguox
+vwDsmzJkZJ6AjW51Nx0dvMGJuUX6RLnv14etbz6P1I47cPKG9lYyVOsDiUIHsOPG
+JmhUiCaertI9rrsjaYNQIGrzGbkAozoO0c5klJC5BlnfBvqEfwjgBh5+ccqH1HXL
+WuegitNsfkAX3Y5nSZUsGoC1wtg+pqmLWsNs2eTc1uQAxYOwlleFOiMKXuhUIG2U
+0BMFoJ6/AYCuMkvIPyDdl8UWMjXW8Odreu2Y0h1rF6SuJ+mmI8TfhgfbTG/s1uX7
+qs9bPWwmi1EOJ1AoNv3ouLrC2PT6ES7Kt5mnvi4byXFcwkdq8EKcTfLVpy0xz6l/
+tDTHCxNLCrku2WX32buEW+mHZfCpbNRfcU7/VlTNU8o9i4QYy4WeL/SgaGLDVZvM
+zDFRRhXw2U+mtxRI6yAI/bl0Tl8VJG7cqCHeGuKGeA30siz75gSi6b2n+rCTnkba
+dfCggQuvByFYBOqqO4mnuvTflAYInnad7IyBnbGhS7p7NEkPbgE=
+=Nrms
 -----END PGP SIGNATURE-----
 
---RnxXMyWEPIZsopkG--
+--Clx92ZfkiYIKRjnr--

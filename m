@@ -2,47 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4B237869
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2019 17:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A06F3788E
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2019 17:52:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729222AbfFFPqV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Jun 2019 11:46:21 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:35506 "EHLO huawei.com"
+        id S1729461AbfFFPwe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Jun 2019 11:52:34 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:18096 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729185AbfFFPqV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 Jun 2019 11:46:21 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 4D16868F10A3783AD570;
-        Thu,  6 Jun 2019 23:46:18 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Thu, 6 Jun 2019
- 23:46:14 +0800
-Date:   Thu, 6 Jun 2019 16:46:00 +0100
+        id S1729156AbfFFPwe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 Jun 2019 11:52:34 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id CA921F2BDD7A2939A96E;
+        Thu,  6 Jun 2019 23:52:30 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Thu, 6 Jun 2019
+ 23:52:27 +0800
+Date:   Thu, 6 Jun 2019 16:52:14 +0100
 From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Chun-Hung Wu <chun-hung.wu@mediatek.com>
-CC:     Matthias Brugger <matthias.bgg@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <wsd_upstream@mediatek.com>,
-        <peter.wang@mediatek.com>, <kuohong.wang@mediatek.com>,
-        <jg_poxu@mediatek.com>, <stanley.chu@mediatek.com>
-Subject: Re: [PATCH 3/4] iio: adc: mediatek: SET_LATE_SYSTEM_SLEEP_PM_OPS
- support
-Message-ID: <20190606164600.000060b3@huawei.com>
-In-Reply-To: <1559041196.12867.3.camel@mtkswgap22>
-References: <1557994247-16739-1-git-send-email-chun-hung.wu@mediatek.com>
-        <1557994247-16739-4-git-send-email-chun-hung.wu@mediatek.com>
-        <20190518113527.5210b0bf@archlinux>
-        <1558332205.11080.6.camel@mtkswgap22>
-        <7838dcae-8a69-0297-718b-a061b14a456d@gmail.com>
-        <1559041196.12867.3.camel@mtkswgap22>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+CC:     "renatogeh@gmail.com" <renatogeh@gmail.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "kernel-usp@googlegroups.com" <kernel-usp@googlegroups.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add adi,ad7780.yaml
+ binding
+Message-ID: <20190606165214.00006f09@huawei.com>
+In-Reply-To: <d70b1ffcc903495cd5eac04e17fd1600e67b9c53.camel@analog.com>
+References: <cover.1558746978.git.renatogeh@gmail.com>
+        <2426649b2d8224ae72e7706bcb8c4f2c44c581d2.1558746978.git.renatogeh@gmail.com>
+        <20190526173911.57ae3d11@archlinux>
+        <20190605203554.podktlonhp527iqq@renatolg>
+        <d70b1ffcc903495cd5eac04e17fd1600e67b9c53.camel@analog.com>
 Organization: Huawei
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -55,90 +56,223 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 May 2019 18:59:56 +0800
-Chun-Hung Wu <chun-hung.wu@mediatek.com> wrote:
+On Thu, 6 Jun 2019 11:13:52 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> Hi Matthias:
+> On Wed, 2019-06-05 at 17:35 -0300, Renato Lui Geh wrote:
+> > [External]
+> > 
+> > 
+> > On 05/26, Jonathan Cameron wrote:  
+> > > On Fri, 24 May 2019 22:26:30 -0300
+> > > Renato Lui Geh <renatogeh@gmail.com> wrote:
+> > >   
+> > > > This patch adds a YAML binding for the Analog Devices AD7780/1 and
+> > > > AD7170/1 analog-to-digital converters.
+> > > > 
+> > > > Signed-off-by: Renato Lui Geh <renatogeh@gmail.com>  
+> > > Looks good to me, but I'm still finding my feet with these so will
+> > > leave it for a few days for others to have time to comment.
+> > > 
+> > > Michael, looking for a quick reply from you to say if you are happy
+> > > being explicitly listed as maintainer for this one, or if you'd
+> > > rather land it on someone else.  Same applies for patch 2.
+> > > 
+> > > Renato, if I seem to have forgotten this in a week or so, feel
+> > > free to give me a poke. I've been known to loose patches entirely!  
+> > 
+> > Hi Jonathan,
+> > 
+> > Just here to give you a poke. :)
+> > 
+> > By the way, in these cases, which would be easier for you? To send you
+> > an email like I'm doing right now on last week's thread; or to resend
+> > the entire patch(set)?
+> >   
 > 
->   Thanks for your suggestion, I think device_links is a good way to
-> make dependency of module's suspend/resume order.
+> I think in this case, maybe let's wait a bit longer.
+> Jonathan has not been active recently.
 > 
-> Hi Jonathan:
+> I think a [RESEND] would be a good idea when he gets back/active and misses your patchset.
 > 
->   Is it ok to keep using late_suspend and early_resume, or do you think
-> it's better to use device_links?
-I think device links would be preferable as the reasoning becomes explicit.
-As I understand them they are also a less fragile solution.
+Sorry, was away last weekend and haven't caught up since.
+
+I should be fine to pick this up this weekend.
+
+A ping like this is fine rather than a resend.
 
 Thanks,
 
 Jonathan
 
+> Thanks
+> Alex
 > 
-> Thanks,
-> Chun-Hung
-> On Wed, 2019-05-22 at 18:28 +0200, Matthias Brugger wrote:
-> > 
-> > On 20/05/2019 08:03, Chun-Hung Wu wrote:  
-> > > Hi Jonathan:
-> > > 
-> > >   Thanks for the prompt reply,
-> > > 
-> > > On Sat, 2019-05-18 at 11:35 +0100, Jonathan Cameron wrote:  
-> > >> On Thu, 16 May 2019 16:10:46 +0800
-> > >> Chun-Hung Wu <chun-hung.wu@mediatek.com> wrote:
-> > >>  
-> > >>>   Move suspend/resume to late_suspend and
-> > >>> early_resume to gurantee users can use auxadc  
-> > >> guarantee
-> > >>  
-> > > will fix it in next version.  
-> > >>> driver at suspend/resume stage.  
-> > >> No problem with the patch content, but we need a reason why they may
-> > >> want to do so?  
-> > > Our thermal drivers uses auxadc at suspend/resume stage.
-> > > In order to avoid auxadc suspended prior to thermal driver,
-> > > we move auxadc to late_suspend and early_resume.
-> > >   
-> > 
-> > That sounds like a user of device_links [1] to me.
-> > 
-> > [1] https://www.kernel.org/doc/html/latest/driver-api/device_link.html
-> >   
+> > Thanks,
+> > Renato  
 > > > Thanks,
-> > > Chun-Hung  
-> > >>
-> > >> Thanks,
-> > >>
-> > >> Jonathan  
-> > >>>
-> > >>> Signed-off-by: Chun-Hung Wu <chun-hung.wu@mediatek.com>
-> > >>> ---
-> > >>>  drivers/iio/adc/mt6577_auxadc.c | 7 ++++---
-> > >>>  1 file changed, 4 insertions(+), 3 deletions(-)
-> > >>>
-> > >>> diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
-> > >>> index e1bdcc0..58d7cb2 100644
-> > >>> --- a/drivers/iio/adc/mt6577_auxadc.c
-> > >>> +++ b/drivers/iio/adc/mt6577_auxadc.c
-> > >>> @@ -326,9 +326,10 @@ static int mt6577_auxadc_remove(struct platform_device *pdev)
-> > >>>  	return 0;
-> > >>>  }
-> > >>>  
-> > >>> -static SIMPLE_DEV_PM_OPS(mt6577_auxadc_pm_ops,
-> > >>> -			 mt6577_auxadc_suspend,
-> > >>> -			 mt6577_auxadc_resume);
-> > >>> +static const struct dev_pm_ops mt6577_auxadc_pm_ops = {
-> > >>> +	SET_LATE_SYSTEM_SLEEP_PM_OPS(mt6577_auxadc_suspend,
-> > >>> +				     mt6577_auxadc_resume)
-> > >>> +};
-> > >>>  
-> > >>>  static const struct of_device_id mt6577_auxadc_of_match[] = {
-> > >>>  	{ .compatible = "mediatek,mt2701-auxadc", .data = &mt8173_compat},  
-> > >>  
 > > > 
-> > >   
-> 
-> 
+> > > Jonathan  
+> > > > ---
+> > > > Changes in v2:
+> > > >  - vref-supply to avdd-supply
+> > > >  - remove avdd-supply from required list
+> > > >  - include adc block in an spi block
+> > > > 
+> > > >  .../bindings/iio/adc/adi,ad7780.txt           | 48 ----------
+> > > >  .../bindings/iio/adc/adi,ad7780.yaml          | 87 +++++++++++++++++++
+> > > >  2 files changed, 87 insertions(+), 48 deletions(-)
+> > > >  delete mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
+> > > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
+> > > > 
+> > > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
+> > > > b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
+> > > > deleted file mode 100644
+> > > > index 440e52555349..000000000000
+> > > > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
+> > > > +++ /dev/null
+> > > > @@ -1,48 +0,0 @@
+> > > > -* Analog Devices AD7170/AD7171/AD7780/AD7781
+> > > > -
+> > > > -Data sheets:
+> > > > -
+> > > > -- AD7170:
+> > > > -    * https://www.analog.com/media/en/technical-documentation/data-sheets/AD7170.pdf
+> > > > -- AD7171:
+> > > > -    * https://www.analog.com/media/en/technical-documentation/data-sheets/AD7171.pdf
+> > > > -- AD7780:
+> > > > -    * https://www.analog.com/media/en/technical-documentation/data-sheets/ad7780.pdf
+> > > > -- AD7781:
+> > > > -    * https://www.analog.com/media/en/technical-documentation/data-sheets/AD7781.pdf
+> > > > -
+> > > > -Required properties:
+> > > > -
+> > > > -- compatible: should be one of
+> > > > -    * "adi,ad7170"
+> > > > -    * "adi,ad7171"
+> > > > -    * "adi,ad7780"
+> > > > -    * "adi,ad7781"
+> > > > -- reg: spi chip select number for the device
+> > > > -- vref-supply: the regulator supply for the ADC reference voltage
+> > > > -
+> > > > -Optional properties:
+> > > > -
+> > > > -- powerdown-gpios:  must be the device tree identifier of the PDRST pin. If
+> > > > -                specified, it will be asserted during driver probe. As the
+> > > > -                line is active high, it should be marked GPIO_ACTIVE_HIGH.
+> > > > -- adi,gain-gpios:   must be the device tree identifier of the GAIN pin. Only for
+> > > > -                the ad778x chips. If specified, it will be asserted during
+> > > > -                driver probe. As the line is active low, it should be marked
+> > > > -                GPIO_ACTIVE_LOW.
+> > > > -- adi,filter-gpios: must be the device tree identifier of the FILTER pin. Only
+> > > > -                for the ad778x chips. If specified, it will be asserted
+> > > > -                during driver probe. As the line is active low, it should be
+> > > > -                marked GPIO_ACTIVE_LOW.
+> > > > -
+> > > > -Example:
+> > > > -
+> > > > -adc@0 {
+> > > > -    compatible =  "adi,ad7780";
+> > > > -    reg =         <0>;
+> > > > -    vref-supply = <&vdd_supply>
+> > > > -
+> > > > -    powerdown-gpios  = <&gpio 12 GPIO_ACTIVE_HIGH>;
+> > > > -    adi,gain-gpios   = <&gpio  5 GPIO_ACTIVE_LOW>;
+> > > > -    adi,filter-gpios = <&gpio 15 GPIO_ACTIVE_LOW>;
+> > > > -};
+> > > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
+> > > > b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..d1109416963c
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
+> > > > @@ -0,0 +1,87 @@
+> > > > +# SPDX-License-Identifier: GPL-2.0
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7780.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Analog Devices AD7170/AD7171/AD7780/AD7781 analog to digital converters
+> > > > +
+> > > > +maintainers:
+> > > > +  - Michael Hennerich <michael.hennerich@analog.com>
+> > > > +
+> > > > +description: |
+> > > > +  The ad7780 is a sigma-delta analog to digital converter. This driver provides
+> > > > +  reading voltage values and status bits from both the ad778x and ad717x series.
+> > > > +  Its interface also allows writing on the FILTER and GAIN GPIO pins on the
+> > > > +  ad778x.
+> > > > +
+> > > > +  Specifications on the converters can be found at:
+> > > > +    AD7170:
+> > > > +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7170.pdf
+> > > > +    AD7171:
+> > > > +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7171.pdf
+> > > > +    AD7780:
+> > > > +      https://www.analog.com/media/en/technical-documentation/data-sheets/ad7780.pdf
+> > > > +    AD7781:
+> > > > +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7781.pdf
+> > > > +
+> > > > +properties:
+> > > > +  compatible:
+> > > > +    enum:
+> > > > +      - adi,ad7170
+> > > > +      - adi,ad7171
+> > > > +      - adi,ad7780
+> > > > +      - adi,ad7781
+> > > > +
+> > > > +  reg:
+> > > > +    maxItems: 1
+> > > > +
+> > > > +  avdd-supply:
+> > > > +    description:
+> > > > +      The regulator supply for the ADC reference voltage.
+> > > > +    maxItems: 1
+> > > > +
+> > > > +  powerdown-gpios:
+> > > > +    description:
+> > > > +      Must be the device tree identifier of the PDRST pin. If
+> > > > +      specified, it will be asserted during driver probe. As the
+> > > > +      line is active high, it should be marked GPIO_ACTIVE_HIGH.
+> > > > +    maxItems: 1
+> > > > +
+> > > > +  adi,gain-gpios:
+> > > > +    description:
+> > > > +      Must be the device tree identifier of the GAIN pin. Only for
+> > > > +      the ad778x chips. If specified, it will be asserted during
+> > > > +      driver probe. As the line is active low, it should be marked
+> > > > +      GPIO_ACTIVE_LOW.
+> > > > +    maxItems: 1
+> > > > +
+> > > > +  adi,filter-gpios:
+> > > > +    description:
+> > > > +      Must be the device tree identifier of the FILTER pin. Only
+> > > > +      for the ad778x chips. If specified, it will be asserted
+> > > > +      during driver probe. As the line is active low, it should be
+> > > > +      marked GPIO_ACTIVE_LOW.
+> > > > +    maxItems: 1
+> > > > +
+> > > > +required:
+> > > > +  - compatible
+> > > > +  - reg
+> > > > +
+> > > > +examples:
+> > > > +  - |
+> > > > +    #include <dt-bindings/gpio/gpio.h>
+> > > > +    spi0 {
+> > > > +        #address-cells = <1>;
+> > > > +        #size-cells = <0>;
+> > > > +
+> > > > +        adc@0 {
+> > > > +            compatible = "adi,ad7780";
+> > > > +            reg = <0>;
+> > > > +
+> > > > +            avdd-supply      = <&vdd_supply>;
+> > > > +            powerdown-gpios  = <&gpio0 12 GPIO_ACTIVE_HIGH>;
+> > > > +            adi,gain-gpios   = <&gpio1  5 GPIO_ACTIVE_LOW>;
+> > > > +            adi,filter-gpios = <&gpio2 15 GPIO_ACTIVE_LOW>;
+> > > > +        };
+> > > > +    };  
 
 

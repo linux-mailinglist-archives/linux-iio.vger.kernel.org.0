@@ -2,277 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A06F3788E
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2019 17:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C356237972
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2019 18:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729461AbfFFPwe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Jun 2019 11:52:34 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:18096 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729156AbfFFPwe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 Jun 2019 11:52:34 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id CA921F2BDD7A2939A96E;
-        Thu,  6 Jun 2019 23:52:30 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Thu, 6 Jun 2019
- 23:52:27 +0800
-Date:   Thu, 6 Jun 2019 16:52:14 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-CC:     "renatogeh@gmail.com" <renatogeh@gmail.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "kernel-usp@googlegroups.com" <kernel-usp@googlegroups.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add adi,ad7780.yaml
- binding
-Message-ID: <20190606165214.00006f09@huawei.com>
-In-Reply-To: <d70b1ffcc903495cd5eac04e17fd1600e67b9c53.camel@analog.com>
-References: <cover.1558746978.git.renatogeh@gmail.com>
-        <2426649b2d8224ae72e7706bcb8c4f2c44c581d2.1558746978.git.renatogeh@gmail.com>
-        <20190526173911.57ae3d11@archlinux>
-        <20190605203554.podktlonhp527iqq@renatolg>
-        <d70b1ffcc903495cd5eac04e17fd1600e67b9c53.camel@analog.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1729137AbfFFQZ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Jun 2019 12:25:26 -0400
+Received: from sauhun.de ([88.99.104.3]:35498 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728223AbfFFQZ0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 Jun 2019 12:25:26 -0400
+Received: from localhost (p5486CDEB.dip0.t-ipconnect.de [84.134.205.235])
+        by pokefinder.org (Postfix) with ESMTPSA id 7FAEA2C35BF;
+        Thu,  6 Jun 2019 18:25:23 +0200 (CEST)
+Date:   Thu, 6 Jun 2019 18:25:23 +0200
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Vitor Soares <Vitor.Soares@synopsys.com>
+Cc:     linux-iio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+        broonie@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org,
+        bbrezillon@kernel.org, Joao.Pinto@synopsys.com,
+        lorenzo.bianconi83@gmail.com
+Subject: Re: [PATCH v2 0/3] Add ST lsm6dso i3c support
+Message-ID: <20190606162522.GA3782@kunai>
+References: <cover.1559831663.git.vitor.soares@synopsys.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2oS5YaxWCcQjTEyO"
+Content-Disposition: inline
+In-Reply-To: <cover.1559831663.git.vitor.soares@synopsys.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 6 Jun 2019 11:13:52 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> On Wed, 2019-06-05 at 17:35 -0300, Renato Lui Geh wrote:
-> > [External]
-> > 
-> > 
-> > On 05/26, Jonathan Cameron wrote:  
-> > > On Fri, 24 May 2019 22:26:30 -0300
-> > > Renato Lui Geh <renatogeh@gmail.com> wrote:
-> > >   
-> > > > This patch adds a YAML binding for the Analog Devices AD7780/1 and
-> > > > AD7170/1 analog-to-digital converters.
-> > > > 
-> > > > Signed-off-by: Renato Lui Geh <renatogeh@gmail.com>  
-> > > Looks good to me, but I'm still finding my feet with these so will
-> > > leave it for a few days for others to have time to comment.
-> > > 
-> > > Michael, looking for a quick reply from you to say if you are happy
-> > > being explicitly listed as maintainer for this one, or if you'd
-> > > rather land it on someone else.  Same applies for patch 2.
-> > > 
-> > > Renato, if I seem to have forgotten this in a week or so, feel
-> > > free to give me a poke. I've been known to loose patches entirely!  
-> > 
-> > Hi Jonathan,
-> > 
-> > Just here to give you a poke. :)
-> > 
-> > By the way, in these cases, which would be easier for you? To send you
-> > an email like I'm doing right now on last week's thread; or to resend
-> > the entire patch(set)?
-> >   
-> 
-> I think in this case, maybe let's wait a bit longer.
-> Jonathan has not been active recently.
-> 
-> I think a [RESEND] would be a good idea when he gets back/active and misses your patchset.
-> 
-Sorry, was away last weekend and haven't caught up since.
+--2oS5YaxWCcQjTEyO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I should be fine to pick this up this weekend.
+On Thu, Jun 06, 2019 at 05:12:01PM +0200, Vitor Soares wrote:
+> This patch series add i3c support for STM LSM6DSO and LSM6DSR sensors.
 
-A ping like this is fine rather than a resend.
-
-Thanks,
-
-Jonathan
-
-> Thanks
-> Alex
-> 
-> > Thanks,
-> > Renato  
-> > > Thanks,
-> > > 
-> > > Jonathan  
-> > > > ---
-> > > > Changes in v2:
-> > > >  - vref-supply to avdd-supply
-> > > >  - remove avdd-supply from required list
-> > > >  - include adc block in an spi block
-> > > > 
-> > > >  .../bindings/iio/adc/adi,ad7780.txt           | 48 ----------
-> > > >  .../bindings/iio/adc/adi,ad7780.yaml          | 87 +++++++++++++++++++
-> > > >  2 files changed, 87 insertions(+), 48 deletions(-)
-> > > >  delete mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
-> > > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
-> > > > 
-> > > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
-> > > > b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
-> > > > deleted file mode 100644
-> > > > index 440e52555349..000000000000
-> > > > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
-> > > > +++ /dev/null
-> > > > @@ -1,48 +0,0 @@
-> > > > -* Analog Devices AD7170/AD7171/AD7780/AD7781
-> > > > -
-> > > > -Data sheets:
-> > > > -
-> > > > -- AD7170:
-> > > > -    * https://www.analog.com/media/en/technical-documentation/data-sheets/AD7170.pdf
-> > > > -- AD7171:
-> > > > -    * https://www.analog.com/media/en/technical-documentation/data-sheets/AD7171.pdf
-> > > > -- AD7780:
-> > > > -    * https://www.analog.com/media/en/technical-documentation/data-sheets/ad7780.pdf
-> > > > -- AD7781:
-> > > > -    * https://www.analog.com/media/en/technical-documentation/data-sheets/AD7781.pdf
-> > > > -
-> > > > -Required properties:
-> > > > -
-> > > > -- compatible: should be one of
-> > > > -    * "adi,ad7170"
-> > > > -    * "adi,ad7171"
-> > > > -    * "adi,ad7780"
-> > > > -    * "adi,ad7781"
-> > > > -- reg: spi chip select number for the device
-> > > > -- vref-supply: the regulator supply for the ADC reference voltage
-> > > > -
-> > > > -Optional properties:
-> > > > -
-> > > > -- powerdown-gpios:  must be the device tree identifier of the PDRST pin. If
-> > > > -                specified, it will be asserted during driver probe. As the
-> > > > -                line is active high, it should be marked GPIO_ACTIVE_HIGH.
-> > > > -- adi,gain-gpios:   must be the device tree identifier of the GAIN pin. Only for
-> > > > -                the ad778x chips. If specified, it will be asserted during
-> > > > -                driver probe. As the line is active low, it should be marked
-> > > > -                GPIO_ACTIVE_LOW.
-> > > > -- adi,filter-gpios: must be the device tree identifier of the FILTER pin. Only
-> > > > -                for the ad778x chips. If specified, it will be asserted
-> > > > -                during driver probe. As the line is active low, it should be
-> > > > -                marked GPIO_ACTIVE_LOW.
-> > > > -
-> > > > -Example:
-> > > > -
-> > > > -adc@0 {
-> > > > -    compatible =  "adi,ad7780";
-> > > > -    reg =         <0>;
-> > > > -    vref-supply = <&vdd_supply>
-> > > > -
-> > > > -    powerdown-gpios  = <&gpio 12 GPIO_ACTIVE_HIGH>;
-> > > > -    adi,gain-gpios   = <&gpio  5 GPIO_ACTIVE_LOW>;
-> > > > -    adi,filter-gpios = <&gpio 15 GPIO_ACTIVE_LOW>;
-> > > > -};
-> > > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
-> > > > b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..d1109416963c
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
-> > > > @@ -0,0 +1,87 @@
-> > > > +# SPDX-License-Identifier: GPL-2.0
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7780.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: Analog Devices AD7170/AD7171/AD7780/AD7781 analog to digital converters
-> > > > +
-> > > > +maintainers:
-> > > > +  - Michael Hennerich <michael.hennerich@analog.com>
-> > > > +
-> > > > +description: |
-> > > > +  The ad7780 is a sigma-delta analog to digital converter. This driver provides
-> > > > +  reading voltage values and status bits from both the ad778x and ad717x series.
-> > > > +  Its interface also allows writing on the FILTER and GAIN GPIO pins on the
-> > > > +  ad778x.
-> > > > +
-> > > > +  Specifications on the converters can be found at:
-> > > > +    AD7170:
-> > > > +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7170.pdf
-> > > > +    AD7171:
-> > > > +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7171.pdf
-> > > > +    AD7780:
-> > > > +      https://www.analog.com/media/en/technical-documentation/data-sheets/ad7780.pdf
-> > > > +    AD7781:
-> > > > +      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7781.pdf
-> > > > +
-> > > > +properties:
-> > > > +  compatible:
-> > > > +    enum:
-> > > > +      - adi,ad7170
-> > > > +      - adi,ad7171
-> > > > +      - adi,ad7780
-> > > > +      - adi,ad7781
-> > > > +
-> > > > +  reg:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  avdd-supply:
-> > > > +    description:
-> > > > +      The regulator supply for the ADC reference voltage.
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  powerdown-gpios:
-> > > > +    description:
-> > > > +      Must be the device tree identifier of the PDRST pin. If
-> > > > +      specified, it will be asserted during driver probe. As the
-> > > > +      line is active high, it should be marked GPIO_ACTIVE_HIGH.
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  adi,gain-gpios:
-> > > > +    description:
-> > > > +      Must be the device tree identifier of the GAIN pin. Only for
-> > > > +      the ad778x chips. If specified, it will be asserted during
-> > > > +      driver probe. As the line is active low, it should be marked
-> > > > +      GPIO_ACTIVE_LOW.
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  adi,filter-gpios:
-> > > > +    description:
-> > > > +      Must be the device tree identifier of the FILTER pin. Only
-> > > > +      for the ad778x chips. If specified, it will be asserted
-> > > > +      during driver probe. As the line is active low, it should be
-> > > > +      marked GPIO_ACTIVE_LOW.
-> > > > +    maxItems: 1
-> > > > +
-> > > > +required:
-> > > > +  - compatible
-> > > > +  - reg
-> > > > +
-> > > > +examples:
-> > > > +  - |
-> > > > +    #include <dt-bindings/gpio/gpio.h>
-> > > > +    spi0 {
-> > > > +        #address-cells = <1>;
-> > > > +        #size-cells = <0>;
-> > > > +
-> > > > +        adc@0 {
-> > > > +            compatible = "adi,ad7780";
-> > > > +            reg = <0>;
-> > > > +
-> > > > +            avdd-supply      = <&vdd_supply>;
-> > > > +            powerdown-gpios  = <&gpio0 12 GPIO_ACTIVE_HIGH>;
-> > > > +            adi,gain-gpios   = <&gpio1  5 GPIO_ACTIVE_LOW>;
-> > > > +            adi,filter-gpios = <&gpio2 15 GPIO_ACTIVE_LOW>;
-> > > > +        };
-> > > > +    };  
+Why is the I2C list on CC? Is there something relevant I missed?
 
 
+--2oS5YaxWCcQjTEyO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlz5Pm4ACgkQFA3kzBSg
+KbapNg//cBKxDRaQW1S7u+5yCetAmE74WJLlzFtJOzL0oS+qcPOsi5YATvPGnu/1
+k+bPwNGKf3MT1fvax7/qcZjGxLsiGqUfx7AkDYwUEK9Z1Uy6ZN+zdvGjNw9hw5mB
+vbF4un8buF3bMxM31ggNx3nQL28SXKgnCiqKkyL/7Ohr1x9jodcSeCrZlLsDjebm
+x68IPtUsPZkd3sVfUEdirkoBuX7j0H0dbzUyoxYM/Zfooo79uDH/pXKhiBMWQmtK
+vixrFUwZdPO3i2hUtvG4K+8gMUNfH7Z0bLBRVV3P8yZ1Zae0IcBPilJUZifirOLr
+8BOxiI03pzrn1LbOG0HkB6RcsgnSaHWZmycLyWJmdcrm6TDzq8e/eCFs9ZhVl0Hx
+12OSitCoI2oX8GJnW2uCdruh/twfwXtZMOvJpaRHFApGQbnH+FRIfC9Bm3+Jrt/K
+z0baLeWx4fl+YDeKyHhtNcTR0o3hAT7yMiNDDU2duYiCbpH7/+Bp6Pun61WHsPSX
+aNmH0UwyPyRQNxrVHi3ytxSfJQ/Zi/dr9XI+ls2idGR5OnjpZhUR1QxNd84Rm529
+WTBKK/1ygE72ulUl5aX45FcyGEVLf6QMjDRBAJZebVXNVcEYQauMr/C/JjFUMQN1
+1Nitl/qlfEf4FITpEWE351oJF3RjrNgmSmpyEI0vNccDLOVl134=
+=/qTU
+-----END PGP SIGNATURE-----
+
+--2oS5YaxWCcQjTEyO--

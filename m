@@ -2,117 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB56B372C3
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2019 13:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4894337783
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2019 17:12:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727166AbfFFLZx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Jun 2019 07:25:53 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:45185 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726961AbfFFLZx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jun 2019 07:25:53 -0400
-Received: by mail-qt1-f194.google.com with SMTP id j19so2087590qtr.12;
-        Thu, 06 Jun 2019 04:25:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5dNsy9b7wSo0PojyEFmG8hPYvRxvl4pE0j/UUGtnkT4=;
-        b=PfJA17hV5DxfAedjpGZ9hI2xgFiAXw5rZ2cDbI2LVufOOBGUWNCzM9PTOgW38P91bX
-         Hhd+Z1cV3gDc61Vn0HObvmU5cRH13KhcUe+YRqDR3SVM2MQWSfiKxZYRy/uhJEvdabg2
-         FPbzUW8FX8oKwH86dsxSySwjPkeDO08FFqXPNIDdceu7+Mzzxkp5gvMRebpB9fVHPUYB
-         Gt4Ur2wu4pxXwF3qTEGZh2VRlsOWpQtwFzWQiQsOmfvWlwMoC4X59eBPca9s69or1aNs
-         1wkM3xuSIZizUSxijaHtZgxJCcpqBm/Ec+EJzJFQPaWIhxqR8a13wrwkZrjTy74DXFaK
-         cT6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5dNsy9b7wSo0PojyEFmG8hPYvRxvl4pE0j/UUGtnkT4=;
-        b=IHQIU82yHMGm9OiELgWnemarEn1P1quLtC1lF0ciFphZFmpXchzqo6WhivlGztBO4A
-         Wo3MogH2gs696ziMxO7XEdRwogGwRtqDcYtbJPlGs/cKW+C7E7jdERjk91fTSW6JtZ+X
-         okMLs+w4uxZ785O1Mw1zUCfuuc7ZjX3pjp44gUS2cFx3SSK9dcL/zMG26z5CGX4n7GT/
-         uhgud0noVnULKH43pOyYR3/ymkko6Ox2k3m7b6D8H9n5ElduNnxufYeE+c/wz5IiTce1
-         LmycAE+YrzEyWp1Qa8Tjj1ttMoyhQNANlNEXvjNufdU9d7SJHDiK9RUEfKOvaDQZ8pF5
-         x5CA==
-X-Gm-Message-State: APjAAAXJPq3ZRZFrZR5a37SbzfYqlHqTwhIMHnm3SLkw67qnlvb/Sbc4
-        WVaNC3sqmwuEQbO+4FE/V4pvKhgCRdkwHxtGCu4=
-X-Google-Smtp-Source: APXvYqxI4DVrPMjWmEMhMewy/0MU4rt1SR7d41hBlwI1sK4buOiQ0PwUYfkjIRaPn7qU9VQJcA8j/66jTPavg7CNUJs=
-X-Received: by 2002:a0c:d163:: with SMTP id c32mr39262393qvh.139.1559820352349;
- Thu, 06 Jun 2019 04:25:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190603183401.151408-1-gwendal@chromium.org> <20190604055908.GA4797@dell>
-In-Reply-To: <20190604055908.GA4797@dell>
-From:   Enric Balletbo Serra <eballetbo@gmail.com>
-Date:   Thu, 6 Jun 2019 13:25:40 +0200
-Message-ID: <CAFqH_51gMu81f=VFQaF4u9-tAWDMocGAwM_fOPT3Cctv6KWniw@mail.gmail.com>
-Subject: Re: [alsa-devel] [RESEND PATCH v3 00/30] Update cros_ec_commands.h
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Gwendal Grignou <gwendal@chromium.org>,
-        alsa-devel@alsa-project.org, linux-iio@vger.kernel.org,
-        fabien.lahoudere@collabora.com, Takashi Iwai <tiwai@suse.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Benson Leung <bleung@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Cheng-Yi Chiang <cychiang@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S1729029AbfFFPMJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Jun 2019 11:12:09 -0400
+Received: from dc2-smtprelay2.synopsys.com ([198.182.61.142]:50650 "EHLO
+        smtprelay-out1.synopsys.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727559AbfFFPMJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jun 2019 11:12:09 -0400
+Received: from mailhost.synopsys.com (mdc-mailhost1.synopsys.com [10.225.0.209])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 0FA1CC0BA5;
+        Thu,  6 Jun 2019 15:11:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
+        t=1559833908; bh=0xawz4OatXGzaBqtYj6nS/EfNnp/z+E5VwinuXJDtLQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=AZg1Yd1UvRb7GN5XhHpGuTWa45lSMBb5oho1rMamz+DMIBTzwL7++qDfU0zRK/ahA
+         GL9HjOsdNcdTlNAkVuCluuUghwxxrgmekwGebFyCrdpFFyyQJOWnWlFEqZwjSXxobr
+         mUh2O0o/TCY6YpLwj4d1ABhXEm58H6PjjJ27rDuUqPUAcu3mo10VKCLQ4mcLs44dNy
+         uPfDqNBjHAqLhdpiFcU4mV1ccs66S84iMhQtdaeeYUmh8CmhsnbM99oJgU4fqZ1l7K
+         LbM9q8e1/1+IFyl3At97an0TMptIBW+3AkKYmTP2gGdH3h0y9HG6uf3p4LB/tc1CWf
+         Ra6x0KQZRT2cg==
+Received: from de02.synopsys.com (de02.internal.synopsys.com [10.225.17.21])
+        by mailhost.synopsys.com (Postfix) with ESMTP id AF36DA0057;
+        Thu,  6 Jun 2019 15:12:06 +0000 (UTC)
+Received: from de02dwia024.internal.synopsys.com (de02dwia024.internal.synopsys.com [10.225.19.81])
+        by de02.synopsys.com (Postfix) with ESMTP id 9191D3FECC;
+        Thu,  6 Jun 2019 17:12:06 +0200 (CEST)
+From:   Vitor Soares <Vitor.Soares@synopsys.com>
+To:     linux-iio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     broonie@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org,
+        bbrezillon@kernel.org, Joao.Pinto@synopsys.com,
+        lorenzo.bianconi83@gmail.com,
+        Vitor Soares <Vitor.Soares@synopsys.com>
+Subject: [PATCH v2 0/3] Add ST lsm6dso i3c support
+Date:   Thu,  6 Jun 2019 17:12:01 +0200
+Message-Id: <cover.1559831663.git.vitor.soares@synopsys.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lee,
+This patch series add i3c support for STM LSM6DSO and LSM6DSR sensors.
 
-Missatge de Lee Jones <lee.jones@linaro.org> del dia dt., 4 de juny
-2019 a les 8:00:
->
-> On Mon, 03 Jun 2019, Gwendal Grignou wrote:
->
-> > The interface between CrosEC embedded controller and the host,
-> > described by cros_ec_commands.h, as diverged from what the embedded
-> > controller really support.
-> >
-> > The source of thruth is at
-> > https://chromium.googlesource.com/chromiumos/platform/ec/+/master/inclu=
-de/ec_commands.h
-> >
-> > That include file is converted to remove ACPI and Embedded only code.
-> >
-> > From now on, cros_ec_commands.h will be automatically generated from
-> > the file above, do not modify directly.
-> >
-> > Fell free to squash the commits below.
-> >
-> > v3 resent: Add Fabien's ack.
->
-> Thanks for doing that.
->
-> In future, please ensure *-bys tags are in chronological order with
-> the first one either being a Suggested-by or your SoB.  Reviews, tests
-> etc usually come *after* first submission.
->
-> I've changed this for you this time, yes in all 30 patches!  :)
->
-> Anyway, all applied, thanks.
->
+It is also introduced i3c support on regmap api. Due the lack of
+i3c devices HDR capables on the market the support for now is only for
+i3c sdr mode by using i3c_device_do_priv_xfers() method.
 
-Could you do an immutable branch with those? I've few patches that
-depends on those changes and probably I'll have more. Otherwise, I'll
-wait for those to land.
+Changes in v2:
+  Change i3c_get_device_id() to drivers/i3c/device.c
+  Add support for LSM6DSR
 
-Thanks,
- Enric
+Vitor Soares (3):
+  regmap: add i3c bus support
+  i3c: Add i3c_get_device_id helper
+  iio: imu: st_lsm6dsx: add i3c basic support for LSM6DSO and LSM6DSR
 
-> --
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> Linaro Services Technical Lead
-> Linaro.org =E2=94=82 Open source software for ARM SoCs
-> Follow Linaro: Facebook | Twitter | Blog
-> _______________________________________________
-> Alsa-devel mailing list
-> Alsa-devel@alsa-project.org
-> https://mailman.alsa-project.org/mailman/listinfo/alsa-devel
+ drivers/base/regmap/Kconfig                 |  6 ++-
+ drivers/base/regmap/Makefile                |  1 +
+ drivers/base/regmap/regmap-i3c.c            | 60 +++++++++++++++++++++++
+ drivers/i3c/device.c                        |  8 +++
+ drivers/iio/imu/st_lsm6dsx/Kconfig          |  8 ++-
+ drivers/iio/imu/st_lsm6dsx/Makefile         |  1 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c | 76 +++++++++++++++++++++++++++++
+ include/linux/i3c/device.h                  |  1 +
+ include/linux/regmap.h                      | 20 ++++++++
+ 9 files changed, 179 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/base/regmap/regmap-i3c.c
+ create mode 100644 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+
+-- 
+2.7.4
+

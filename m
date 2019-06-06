@@ -2,74 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 204F5369CA
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2019 04:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B9A936A77
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2019 05:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726581AbfFFCGh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Jun 2019 22:06:37 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:42667 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726568AbfFFCGh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jun 2019 22:06:37 -0400
-Received: by mail-lf1-f65.google.com with SMTP id y13so315968lfh.9
-        for <linux-iio@vger.kernel.org>; Wed, 05 Jun 2019 19:06:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=88ECF44BWpL23s1dEr3eppcssIoU6JXyInAfcio0zoQ=;
-        b=dNHrFF9iZ1C+q+eqDwyH3Y/mKptP033n2cjGq0Boy4k/jD+VX3QKwyHqAaW9p3JsEZ
-         50z2rCcR2bD6pjdfuKzKW5goMhn/6XVS7tYWo0PoaHoIf0PX/yrQ3aCJgR+noLvcRfsE
-         zf8WGDfMTB9PCNvDv17O6a2kAUCM+EU7nCNMHSrYsXgsbDfTPl3J3TF/XQxhsEh3Aijq
-         e0Yh657rt/lWqH8mDLCvBM4qWlqgcdXWVrP2X+a6oMX2hqBeAbZMDKZ07by/W4wHN/IG
-         hg2m3+FdOve4/kfa/rjAhCAVcupKX0Ewjq8DoCWUmROwNEciZz45voFO5gq3WTrxPVft
-         yLsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=88ECF44BWpL23s1dEr3eppcssIoU6JXyInAfcio0zoQ=;
-        b=sFd2oxohMEC6CAbx0p6xHscnBEuQXHYuvmJle4a7S7504zSt/piSG4iAstPbxcb5iS
-         vxvjDixg2VhDa0RV8ITRstYS63XBpvI+soElcKLuy2KR//HFO94IGzxdazdFmtI15YUG
-         Qx2LHQbyI6Fs/PHYupBAqv4djyRZT7u9uK4Jlgi2RL+QoKqJ3tuADt2P/KkrV81hF767
-         Z9CAqTm30vUw3SaCKGKnrQ8KgE9+5B/43aoM8y8rEtywrBiXCzRYFG49iyfPKBNwiBEO
-         dwgrvBd5vT3+AEE6V78zCWALvkQfWygfjROM1nPxcmIGiWvCWIT4DFeAzWZ7dgI3PEQd
-         93xw==
-X-Gm-Message-State: APjAAAVP8zg6gGusjY/CW0gVvg6uBfMS3Gxi6d1JJS9QU6nk+B0cChrU
-        /AJ6Faz1IzRhy6HejlF5NkKKY7+eCP22v1iB9ys=
-X-Google-Smtp-Source: APXvYqyjbFnmg3Yh4T/j1CFsWigkIHLOBA9P6N1LbgUNEXHZTZI3tonoM2Q14fno09rHRbTfw6vWQv+xUONyovDBaKY=
-X-Received: by 2002:a19:5046:: with SMTP id z6mr22308952lfj.185.1559786795716;
- Wed, 05 Jun 2019 19:06:35 -0700 (PDT)
+        id S1726474AbfFFDY0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Jun 2019 23:24:26 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:58948 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726427AbfFFDY0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jun 2019 23:24:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ANLy3Q/E3unt0aMYgl32mxZOvr5sBbpUf7AyjjywVKQ=; b=iEghK4qoZQaADY0SiQN7EkLdZY
+        EbUM7WxIlLTyuMPQSgRIyojMDBfY8EtVg4DIQjFOp7jbZmEAVGNEW0q/ETCAigxoEAmlJ/ChuI5hY
+        Wox7phb1k5chDjUY9EjJD/XNSL1w6JkV0fdr7lTaTLoh8zXrIBxdMXLogUs0kkMGb6YZcivjE9W1L
+        PNUTi81pS5IR4MM1YHOioUOx5tDuSXLoB7uXqEmKQGoPenJs50PalcK+iAs3Lc4OAew3AUeVvMcNN
+        mPa0ceMdpW0XycAGqcJKSCr08/WrQNzIAR5DsRhykRgjHUqzr/P9yXy1rMKx34zjDqhzAhADCL2ZQ
+        qu17LiYg==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
+        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hYj0d-0004PK-Ax; Thu, 06 Jun 2019 03:24:11 +0000
+Subject: Re: [PATCH v2] staging: iio: adt7316: Fix build errors when GPIOLIB
+ is not set
+To:     Fabio Estevam <festevam@gmail.com>, jic23@kernel.org
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        linux-iio@vger.kernel.org, gregkh@linuxfoundation.org,
+        devel@driverdev.osuosl.org, preid@electromag.com.au
+References: <20190606020532.4864-1-festevam@gmail.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <7edb325e-9af8-8ae8-d26e-da75c0252284@infradead.org>
+Date:   Wed, 5 Jun 2019 20:24:09 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <20190606014246.1850-1-festevam@gmail.com> <81b33d1f-0129-5fe4-9883-a9c30feafd9d@electromag.com.au>
-In-Reply-To: <81b33d1f-0129-5fe4-9883-a9c30feafd9d@electromag.com.au>
-From:   Fabio Estevam <festevam@gmail.com>
-Date:   Wed, 5 Jun 2019 23:06:27 -0300
-Message-ID: <CAOMZO5BkCFxLJS4ytrOmc5qw_Z83q_+1HpjDJ7hspA=ERUpGoA@mail.gmail.com>
-Subject: Re: [PATCH] staging: iio: adt7316: Fix build errors when GPIOLIB is
- not set
-To:     Phil Reid <preid@electromag.com.au>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-iio@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190606020532.4864-1-festevam@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Phil,
+On 6/5/19 7:05 PM, Fabio Estevam wrote:
+> On x86_64 when GPIOLIB is not set the following build errors
+> are seen:
+> 
+> drivers/staging/iio/addac/adt7316.c:947:3: error: implicit declaration of function 'gpiod_set_value' [-Werror=implicit-function-declaration]
+> drivers/staging/iio/addac/adt7316.c:1805:2: error: implicit declaration of function 'irqd_get_trigger_type' [-Werror=implicit-function-declaration]
+> 
+> These functions are provided by the <linux/gpio/consumer.h>
+> and <linux/irq.h> headers, so include them to fix these
+> build errors.
+> 
+> While at it, remove <linux/gpio.h> as this driver is a GPIO
+> consumer and not a GPIO driver.
+> 
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Signed-off-by: Fabio Estevam <festevam@gmail.com>
 
-On Wed, Jun 5, 2019 at 10:59 PM Phil Reid <preid@electromag.com.au> wrote:
+Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
 
-> >   #include <linux/gpio.h>
-> This should be removed as well.
-> See comment at top of linux/gpio.h
+Thanks.
 
-Good catch! Just sent a v2.
+> ---
+> Changes since v1:
+> - Remove <linux/gpio.h> - Phil
+> 
+>  drivers/staging/iio/addac/adt7316.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
+> index 37ce563cb0e1..9cb3d0e42c38 100644
+> --- a/drivers/staging/iio/addac/adt7316.c
+> +++ b/drivers/staging/iio/addac/adt7316.c
+> @@ -6,7 +6,8 @@
+>   */
+>  
+>  #include <linux/interrupt.h>
+> -#include <linux/gpio.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/irq.h>
+>  #include <linux/workqueue.h>
+>  #include <linux/device.h>
+>  #include <linux/kernel.h>
+> 
 
-Thanks
+
+-- 
+~Randy

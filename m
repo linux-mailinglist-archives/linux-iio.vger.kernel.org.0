@@ -2,140 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95A68381B0
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2019 01:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C3D938507
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2019 09:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726817AbfFFXPH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Jun 2019 19:15:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51674 "EHLO mail.kernel.org"
+        id S1726116AbfFGH27 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Jun 2019 03:28:59 -0400
+Received: from smtp1.iitb.ac.in ([103.21.127.13]:60574 "EHLO smtp1.iitb.ac.in"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726809AbfFFXPG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 Jun 2019 19:15:06 -0400
-Received: from localhost.localdomain (unknown [151.66.15.3])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5A7A820717;
-        Thu,  6 Jun 2019 23:15:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559862905;
-        bh=eN63Cxv37IQMvGAIkgiAA8HvAvDJYgGI1d0WNqRj+hA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=td5p9gbL/5xQq9dptW5LUVk/H6NpfAonY2pzEsrKrHQpk3pgpc8gNr5uhQPd/DYiB
-         UGU2xPekNwe/jBSSMhEL3/SjlZxxyoZPnFz29bsbk8S82uncrKGKzGeUzR5A7a1IIz
-         MJsO03sXrGnG14rOPuO70iJ7Qh0z8boGUJyyzJ/4=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        Vitor.Soares@synopsys.com, boris.brezillon@collabora.com
-Subject: [PATCH] iio: imu: st_lsm6dsx: get device name from st_lsm6dsx_dev_name
-Date:   Fri,  7 Jun 2019 01:14:21 +0200
-Message-Id: <2531966256f991d802a775d953656b92ae8216bd.1559862531.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1727357AbfFGH27 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 7 Jun 2019 03:28:59 -0400
+Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
+        by smtp1.iitb.ac.in (Postfix) with SMTP id 183141051F87
+        for <linux-iio@vger.kernel.org>; Fri,  7 Jun 2019 12:01:54 +0530 (IST)
+Received: (qmail 29995 invoked by uid 510); 7 Jun 2019 12:01:34 +0530
+X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
+ spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
+ Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 3.224183 secs; 07 Jun 2019 12:01:34 +0530
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns2.iitb.ac.in
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
+        MISSING_HEADERS,PROPER_IITB_MSGID autolearn=disabled version=3.4.1
+X-Spam-Pyzor: Reported 1 times.
+X-Envelope-From: rws@aero.iitb.ac.in
+X-Qmail-Scanner-Mime-Attachments: |
+X-Qmail-Scanner-Zip-Files: |
+Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
+  by ldns2.iitb.ac.in with SMTP; 7 Jun 2019 12:01:31 +0530
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by ldns2.iitb.ac.in (Postfix) with ESMTP id CB958341965;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 9509A8902E52F;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 3VnK-_U7b-vs; Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 5DAB88902E54D;
+        Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id TgJiwoMo_EHZ; Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 0EEE684310111;
+        Fri,  7 Jun 2019 12:01:10 +0530 (IST)
+Date:   Fri, 7 Jun 2019 12:01:09 +0530 (IST)
+From:   Martins Henry <rws@aero.iitb.ac.in>
+Message-ID: <412557711.60336.1559889069980.JavaMail.zimbra@aero.iitb.ac.in>
+Subject: Thanks and I wait for your answer
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.101.1.5]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
+Thread-Index: SsslhYkcLNFU69da/wYft5cO9/ZYnA==
+Thread-Topic: Thanks and I wait for your answer
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Introduce st_lsm6dsx_dev_name lookup table to get device name. This is
-a preliminary patch to add I3C support to st_lsm6dsx since i3c_device_id
-data structure does not contain a name field
+Hello,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 +-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 16 +++++++++++++++-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  3 +--
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  3 +--
- 4 files changed, 18 insertions(+), 6 deletions(-)
+I am Martin Henry, An American Citizen; I am the personal secretary to
+Mr. Donald Railton, the controller of a Lottery Company. Please I am
+having big problem now, I have a 6yrs old daughter who has leukemia, a
+disease of the blood, and she needs a bone marrow transplant or she
+will die.
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 004a8a1a0027..71627206fc30 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -302,7 +302,7 @@ struct st_lsm6dsx_hw {
- static const unsigned long st_lsm6dsx_available_scan_masks[] = {0x7, 0x0};
- extern const struct dev_pm_ops st_lsm6dsx_pm_ops;
- 
--int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
-+int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
- 		     struct regmap *regmap);
- int st_lsm6dsx_sensor_set_enable(struct st_lsm6dsx_sensor *sensor,
- 				 bool enable);
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index cf82c9049945..339b75040732 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -70,6 +70,18 @@
- #define ST_LSM6DSX_REG_GYRO_OUT_Y_L_ADDR	0x24
- #define ST_LSM6DSX_REG_GYRO_OUT_Z_L_ADDR	0x26
- 
-+static const char st_lsm6dsx_dev_name[][32] = {
-+	[ST_LSM6DS3_ID] = ST_LSM6DS3_DEV_NAME,
-+	[ST_LSM6DS3H_ID] = ST_LSM6DS3H_DEV_NAME,
-+	[ST_LSM6DSL_ID] = ST_LSM6DSL_DEV_NAME,
-+	[ST_LSM6DSM_ID] = ST_LSM6DSM_DEV_NAME,
-+	[ST_ISM330DLC_ID] = ST_ISM330DLC_DEV_NAME,
-+	[ST_LSM6DSO_ID] = ST_LSM6DSO_DEV_NAME,
-+	[ST_ASM330LHH_ID] = ST_ASM330LHH_DEV_NAME,
-+	[ST_LSM6DSOX_ID] = ST_LSM6DSOX_DEV_NAME,
-+	[ST_LSM6DSR_ID] = ST_LSM6DSR_DEV_NAME,
-+};
-+
- static const struct st_lsm6dsx_odr_table_entry st_lsm6dsx_odr_table[] = {
- 	[ST_LSM6DSX_ID_ACC] = {
- 		.reg = {
-@@ -1041,11 +1053,12 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
- 	return iio_dev;
- }
- 
--int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
-+int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
- 		     struct regmap *regmap)
- {
- 	const struct st_lsm6dsx_shub_settings *hub_settings;
- 	struct st_lsm6dsx_hw *hw;
-+	const char *name;
- 	int i, err;
- 
- 	hw = devm_kzalloc(dev, sizeof(*hw), GFP_KERNEL);
-@@ -1070,6 +1083,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
- 	if (err < 0)
- 		return err;
- 
-+	name = st_lsm6dsx_dev_name[hw_id];
- 	for (i = 0; i < ST_LSM6DSX_ID_EXT0; i++) {
- 		hw->iio_devs[i] = st_lsm6dsx_alloc_iiodev(hw, i, name);
- 		if (!hw->iio_devs[i])
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-index f54370196098..47581a4e456e 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-@@ -36,8 +36,7 @@ static int st_lsm6dsx_i2c_probe(struct i2c_client *client,
- 		return PTR_ERR(regmap);
- 	}
- 
--	return st_lsm6dsx_probe(&client->dev, client->irq,
--				hw_id, id->name, regmap);
-+	return st_lsm6dsx_probe(&client->dev, client->irq, hw_id, regmap);
- }
- 
- static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-index 4a4abb2935da..facf66978a4b 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-@@ -36,8 +36,7 @@ static int st_lsm6dsx_spi_probe(struct spi_device *spi)
- 		return PTR_ERR(regmap);
- 	}
- 
--	return st_lsm6dsx_probe(&spi->dev, spi->irq,
--				hw_id, id->name, regmap);
-+	return st_lsm6dsx_probe(&spi->dev, spi->irq, hw_id, regmap);
- }
- 
- static const struct of_device_id st_lsm6dsx_spi_of_match[] = {
--- 
-2.21.0
+Please I am only asking for your help and you will benefit from it
+also. As an insider with Lottery Firm, working as the personal
+secretary to the controller, I want you to send me your name to play,
+I have some numbers that are going to win, stored in his secret data
+system in the office. The Lottery is an online entry with credit card
+anywhere with a name and address. All I want you to do is to send your
+name to play it and I will send confirmation to you.
 
+I will play with my card on your name and the Prize will be shared
+equally between us. Immediately the results are released they will
+contact you for payment as the oversea winner. The lotto can be played
+with 9.00 dollars, or 50 dollars but the prize will be Millions.
+Remember that I am playing on your name with my card; I just want to
+front you for this, because I need this money to save the life of my
+little daughter.
+
+Thanks and I wait for your answer
+Martin Henry.

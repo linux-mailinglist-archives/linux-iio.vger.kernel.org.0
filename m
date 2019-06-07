@@ -2,153 +2,255 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84753395BF
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2019 21:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90B2A39734
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2019 23:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728724AbfFGTcn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Jun 2019 15:32:43 -0400
-Received: from sed198n136.SEDSystems.ca ([198.169.180.136]:9215 "EHLO
-        sed198n136.sedsystems.ca" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729081AbfFGTcn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Jun 2019 15:32:43 -0400
-Received: from barney.sedsystems.ca (barney [198.169.180.121])
-        by sed198n136.sedsystems.ca  with ESMTP id x57JWC27000337
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 7 Jun 2019 13:32:12 -0600 (CST)
-Received: from eng1n65.eng.sedsystems.ca (eng1n65.eng.sedsystems.ca [172.21.1.65])
-        by barney.sedsystems.ca (8.14.7/8.14.4) with ESMTP id x57JWBOe035937
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-        Fri, 7 Jun 2019 13:32:11 -0600
-Subject: Re: [PATCH] iio: adc: xilinx: support all ARM platforms
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>
-Cc:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>
-References: <1559768858-1175-1-git-send-email-hancock@sedsystems.ca>
- <379a99c8405b4cfbaa61ac49f9b40d4c577eb2a8.camel@analog.com>
- <95be35ff-2e3d-bc00-8798-7c9f462a96a6@sedsystems.ca>
- <a96943b7-00f5-288f-fa27-a82f1d6aa8dd@xilinx.com>
- <CA+U=DsrBqfmqfxS_SaPJHHiet0ZuAsCK5Kdha_rH+Cbm4VRP4A@mail.gmail.com>
-From:   Robert Hancock <hancock@sedsystems.ca>
-Openpgp: preference=signencrypt
-Autocrypt: addr=hancock@sedsystems.ca; prefer-encrypt=mutual; keydata=
- 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
-Organization: SED Systems
-Message-ID: <13a8eaf3-b5ee-151b-d959-80fb41e8a7f8@sedsystems.ca>
-Date:   Fri, 7 Jun 2019 13:32:11 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1730342AbfFGVAb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Jun 2019 17:00:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36584 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730242AbfFGVA3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 7 Jun 2019 17:00:29 -0400
+Received: from localhost.localdomain (unknown [151.66.40.206])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 05FE8208E3;
+        Fri,  7 Jun 2019 21:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559941228;
+        bh=Y4QruScmMk7KnSOzJ12zZw3SMDZhNFR+YbwjBFwuog8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NQ8c5be2Wjo4C9mdNcW5tehXdwiHG5Bc4Jr9ZMyu2rpEdVGWUuu96rVxBz4CQyn5a
+         X3otgZB7Tb2KZTniplRMBWhS2K9hgLQJkzQ1oZgKDEf04eHD26WDzzx/KyeLHXbkBr
+         SnRNeHTKu0cJx/OjosYPolVMd5azA43AcOq5buEA=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        Vitor.Soares@synopsys.com, boris.brezillon@collabora.com
+Subject: [PATCH v2] iio: imu: st_lsm6dsx: get device name from st_lsm6dsx_sensor_settings
+Date:   Fri,  7 Jun 2019 23:00:20 +0200
+Message-Id: <22ad57099bf50226027e7f5c537207a5b4a6f99b.1559941022.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <CA+U=DsrBqfmqfxS_SaPJHHiet0ZuAsCK5Kdha_rH+Cbm4VRP4A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.64 on 198.169.180.136
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2019-06-07 1:17 p.m., Alexandru Ardelean wrote:
-> On Fri, Jun 7, 2019 at 10:33 AM Michal Simek <michal.simek@xilinx.com> wrote:
->>
->> On 06. 06. 19 17:21, Robert Hancock wrote:
->>> On 2019-06-06 4:09 a.m., Ardelean, Alexandru wrote:
->>>> On Wed, 2019-06-05 at 15:07 -0600, Robert Hancock wrote:
->>>>> [External]
->>>>>
->>>>>
->>>>> Since the XADC logic can be used with standalone Xilinx FPGAs, this driver
->>>>> can potentially be used with various ARM platforms, not just Zynq.
->>>>> Change the Zynq dependency to ARM in the list of supported platforms
->>>>> in the Kconfig dependencies for this driver.
->>>>
->>>> To my knowledge, there are 3 FPGA platforms with ARM supported in Linux.
->>>> And symbols are ARCH_ZYNQ, ARCH_ZYNQMP & ARCH_SOCFPGA.
->>>> For these ARM + FPGA SoCs, it is usually preferred to list the supported/tested ARM + FPGA platforms in Kconfig.
->>>>
->>>> I am curious: are you using something that isn't in the above list?
->>>
->>> Yes, we are using the XADC on a Kintex-7 FPGA through a PCIe to AXI
->>> bridge using an iMX6D platform - not an integrated ARM+FPGA.
->>>
-> 
-> In that case, it would be a bit more interesting to do a depends on
-> PCIE_XILINX, or whichever is the Kconfig symbol for the PCIe-to-AXI
-> bridge.
-> 
-> And there are some benefits to that, the major being that you can also
-> support other ARCHs as well (x86, ppc, mips, etc).
+Introduce sensor name in st_lsm6dsx_sensor_settings table. This is
+a preliminary patch to add I3C support to st_lsm6dsx since i3c_device_id
+data structure does not contain a name field
 
-There isn't a kernel driver for that PCIe-AXI bridge - it doesn't really
-do much very interesting on its own, it just acts as a regular PCIe
-endpoint and has build-time settings to map AXI memory to PCIe BARs and
-host memory into AXI memory space. You have to build your own logic to
-do things like map interrupts from the AXI side onto MSI interrupts from
-the bridge.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+changes since v1:
+- move sensor name in st_lsm6dsx_sensor_settings  
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  9 ++--
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 53 +++++++++++++++-----
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  3 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  3 +-
+ 4 files changed, 48 insertions(+), 20 deletions(-)
 
-It kind of seems like the easiest solution would be to just delete the
-platform restriction entirely for this driver, as I really don't see
-anything platform specific in there. Would anyone object to that?
-
-> 
-> Naturally, if using a different PCIe-to-AXI bridge controller (other
-> than Xilinx's), it would be an idea to use that Kconfig symbol.
-> 
->>> Using such an approach this driver could potentially be used on just
->>> about any platform, but I didn't want to open it up too much for now in
->>> case of some compile issues.
->>
->> 0day system should answer this for you.
->>
->> M
-
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 004a8a1a0027..a736829d25cd 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -198,7 +198,7 @@ struct st_lsm6dsx_ext_dev_settings {
+  * struct st_lsm6dsx_settings - ST IMU sensor settings
+  * @wai: Sensor WhoAmI default value.
+  * @max_fifo_size: Sensor max fifo length in FIFO words.
+- * @id: List of hw id supported by the driver configuration.
++ * @id: List of hw id/device name supported by the driver configuration.
+  * @decimator: List of decimator register info (addr + mask).
+  * @batch: List of FIFO batching register info (addr + mask).
+  * @fifo_ops: Sensor hw FIFO parameters.
+@@ -208,7 +208,10 @@ struct st_lsm6dsx_ext_dev_settings {
+ struct st_lsm6dsx_settings {
+ 	u8 wai;
+ 	u16 max_fifo_size;
+-	enum st_lsm6dsx_hw_id id[ST_LSM6DSX_MAX_ID];
++	struct {
++		enum st_lsm6dsx_hw_id hw_id;
++		const char name[32];
++	} id[ST_LSM6DSX_MAX_ID];
+ 	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
+ 	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
+ 	struct st_lsm6dsx_fifo_ops fifo_ops;
+@@ -302,7 +305,7 @@ struct st_lsm6dsx_hw {
+ static const unsigned long st_lsm6dsx_available_scan_masks[] = {0x7, 0x0};
+ extern const struct dev_pm_ops st_lsm6dsx_pm_ops;
+ 
+-int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
++int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 		     struct regmap *regmap);
+ int st_lsm6dsx_sensor_set_enable(struct st_lsm6dsx_sensor *sensor,
+ 				 bool enable);
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index cf82c9049945..04233928d23e 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -125,7 +125,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		.wai = 0x69,
+ 		.max_fifo_size = 1365,
+ 		.id = {
+-			[0] = ST_LSM6DS3_ID,
++			{
++				.hw_id = ST_LSM6DS3_ID,
++				.name = ST_LSM6DS3_DEV_NAME,
++			},
+ 		},
+ 		.decimator = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+@@ -172,7 +175,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		.wai = 0x69,
+ 		.max_fifo_size = 682,
+ 		.id = {
+-			[0] = ST_LSM6DS3H_ID,
++			{
++				.hw_id = ST_LSM6DS3H_ID,
++				.name = ST_LSM6DS3H_DEV_NAME,
++			},
+ 		},
+ 		.decimator = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+@@ -219,9 +225,16 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		.wai = 0x6a,
+ 		.max_fifo_size = 682,
+ 		.id = {
+-			[0] = ST_LSM6DSL_ID,
+-			[1] = ST_LSM6DSM_ID,
+-			[2] = ST_ISM330DLC_ID,
++			{
++				.hw_id = ST_LSM6DSL_ID,
++				.name = ST_LSM6DSL_DEV_NAME,
++			}, {
++				.hw_id = ST_LSM6DSM_ID,
++				.name = ST_LSM6DSM_DEV_NAME,
++			}, {
++				.hw_id = ST_ISM330DLC_ID,
++				.name = ST_ISM330DLC_DEV_NAME,
++			},
+ 		},
+ 		.decimator = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+@@ -268,8 +281,13 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		.wai = 0x6c,
+ 		.max_fifo_size = 512,
+ 		.id = {
+-			[0] = ST_LSM6DSO_ID,
+-			[1] = ST_LSM6DSOX_ID,
++			{
++				.hw_id = ST_LSM6DSO_ID,
++				.name = ST_LSM6DSO_DEV_NAME,
++			}, {
++				.hw_id = ST_LSM6DSOX_ID,
++				.name = ST_LSM6DSOX_DEV_NAME,
++			},
+ 		},
+ 		.batch = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+@@ -334,7 +352,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		.wai = 0x6b,
+ 		.max_fifo_size = 512,
+ 		.id = {
+-			[0] = ST_ASM330LHH_ID,
++			{
++				.hw_id = ST_ASM330LHH_ID,
++				.name = ST_ASM330LHH_DEV_NAME,
++			},
+ 		},
+ 		.batch = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+@@ -373,7 +394,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		.wai = 0x6b,
+ 		.max_fifo_size = 512,
+ 		.id = {
+-			[0] = ST_LSM6DSR_ID,
++			{
++				.hw_id = ST_LSM6DSR_ID,
++				.name = ST_LSM6DSR_DEV_NAME,
++			},
+ 		},
+ 		.batch = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+@@ -471,13 +495,14 @@ int st_lsm6dsx_set_page(struct st_lsm6dsx_hw *hw, bool enable)
+ 	return err;
+ }
+ 
+-static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
++static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
++				   const char **name)
+ {
+ 	int err, i, j, data;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
+ 		for (j = 0; j < ST_LSM6DSX_MAX_ID; j++) {
+-			if (id == st_lsm6dsx_sensor_settings[i].id[j])
++			if (id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
+ 				break;
+ 		}
+ 		if (j < ST_LSM6DSX_MAX_ID)
+@@ -500,6 +525,7 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
+ 		return -ENODEV;
+ 	}
+ 
++	*name = st_lsm6dsx_sensor_settings[i].id[j].name;
+ 	hw->settings = &st_lsm6dsx_sensor_settings[i];
+ 
+ 	return 0;
+@@ -1041,11 +1067,12 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+ 	return iio_dev;
+ }
+ 
+-int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
++int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 		     struct regmap *regmap)
+ {
+ 	const struct st_lsm6dsx_shub_settings *hub_settings;
+ 	struct st_lsm6dsx_hw *hw;
++	const char *name = NULL;
+ 	int i, err;
+ 
+ 	hw = devm_kzalloc(dev, sizeof(*hw), GFP_KERNEL);
+@@ -1066,7 +1093,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
+ 	hw->irq = irq;
+ 	hw->regmap = regmap;
+ 
+-	err = st_lsm6dsx_check_whoami(hw, hw_id);
++	err = st_lsm6dsx_check_whoami(hw, hw_id, &name);
+ 	if (err < 0)
+ 		return err;
+ 
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+index f54370196098..47581a4e456e 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+@@ -36,8 +36,7 @@ static int st_lsm6dsx_i2c_probe(struct i2c_client *client,
+ 		return PTR_ERR(regmap);
+ 	}
+ 
+-	return st_lsm6dsx_probe(&client->dev, client->irq,
+-				hw_id, id->name, regmap);
++	return st_lsm6dsx_probe(&client->dev, client->irq, hw_id, regmap);
+ }
+ 
+ static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+index 4a4abb2935da..facf66978a4b 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+@@ -36,8 +36,7 @@ static int st_lsm6dsx_spi_probe(struct spi_device *spi)
+ 		return PTR_ERR(regmap);
+ 	}
+ 
+-	return st_lsm6dsx_probe(&spi->dev, spi->irq,
+-				hw_id, id->name, regmap);
++	return st_lsm6dsx_probe(&spi->dev, spi->irq, hw_id, regmap);
+ }
+ 
+ static const struct of_device_id st_lsm6dsx_spi_of_match[] = {
 -- 
-Robert Hancock
-Senior Software Developer
-SED Systems, a division of Calian Ltd.
-Email: hancock@sedsystems.ca
+2.21.0
+

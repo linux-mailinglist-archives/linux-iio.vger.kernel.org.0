@@ -2,103 +2,176 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE54C399F1
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 02:28:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32543399F9
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 03:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729977AbfFHA2r convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 7 Jun 2019 20:28:47 -0400
-Received: from rdslmr.btconnect.com ([62.239.164.79]:12785 "EHLO
-        mail.btconnect.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729899AbfFHA2r (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Jun 2019 20:28:47 -0400
-X-Greylist: delayed 363 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Jun 2019 20:28:46 EDT
-Received: from mail.btconnect.com (rd11780omr12.iuser.iroot.adidom.com [10.187.89.173])
-        by rd11780slr11.dci.bt.com (MOS 4.4.8-GA)
-        with ESMTP id AOS29703;
-        Sat, 8 Jun 2019 01:22:41 +0100
-Received: (from localhost [127.0.0.1])
-        by rd11780omr12.dci.bt.com (MOS 4.4.8-GA)
-        id CMA57397;
-        Sat,  8 Jun 2019 01:22:41 +0100 (BST)
-Received: from host81-142-175-179.in-addr.btopenworld.com (EHLO btconnect.com) ([81.142.175.179])
-        by rd11780omr12.dci.bt.com
-        with ESMTP id CMA57378;
-        Sat, 08 Jun 2019 01:22:41 +0100 (BST)
-Reply-To: jmridgeway2@gmail.com
-From:   "United States Department of Homeland Security" 
-        <eileenwhite@btconnect.com>
-To:     linux-iio@vger.kernel.org
-Subject: Have You Received Your Funds?
-Date:   08 Jun 2019 01:22:41 +0100
-Message-ID: <20190608012241.921D94315C321D15@btconnect.com>
+        id S1728456AbfFHBCw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Jun 2019 21:02:52 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:36210 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727933AbfFHBCw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Jun 2019 21:02:52 -0400
+Received: by mail-pg1-f195.google.com with SMTP id a3so2006488pgb.3;
+        Fri, 07 Jun 2019 18:02:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=YgvRM0fa8wItnmd/7e3mHREuafKBIW7aDiObwQNf1zI=;
+        b=mB7+gv4HF9j+P7mQTHXqtorleukYleS3WanGBKgSAydJIIL+xk+mUK1J9XcOVVhTB9
+         8KGeMfXKt4FKbDa2tKIh/onCsCRZfgOfjzfX+vWed004sI347VTMiKO7NsICAckwi2Yl
+         EH2RaBYI4Zm8chxMetvg+HlAh9yyO7EDQSB3QZOfECg84AU/PVGJxjjcVOc3d7CWTz8u
+         rSKciVIaaSBx1cnagQ+2HKvJAngg+16e+lBygU+y2tRcUc3Ntg3FO1LTpwjuUSbEOrCP
+         dECtUZxQqLlOl5StA7UqS1Xr03msNSMWT9bfuqKp0wzc6zKUNV/ae774eEPby7oy0/RN
+         PVAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=YgvRM0fa8wItnmd/7e3mHREuafKBIW7aDiObwQNf1zI=;
+        b=liZjpjPnoLeWpvVNQMKR1nQL0PlOmIvrmWh5Q70/sitoDjirVMPTbx2/H2AtuziCA8
+         LngXk5OD+dZiUBDDPqphijnE2iL6NWh4IdmkRcZMpHWWkkQTKyGNQvkCpz8IU5uoTaYh
+         mI+i/WBn1weo2ybzIWYx1sK+5CPVDfHG/YaixBe6CeRN0F0cS5qJrG1WPLF9k7XjZ6We
+         54I5y6bVDhwr7MvsObIFd/DwufNjtekkoGMXMVBeyIT2tJlRuP+yQqoQFdi9uTSPb6B+
+         zfFyLzJwhchVQjgGITDHmRlIM5fdJnklD1WzdqT0r+5zALbSxk+MfGm+jt/sEk4ic0Ph
+         M/Ow==
+X-Gm-Message-State: APjAAAVlr+Us4Xj9V0pq+1srfjdMo77BHiWbOpcS0s54QHPBYuXCj9cz
+        2RPEd/kigGgOTreVm5rg2v+HkLjP
+X-Google-Smtp-Source: APXvYqzX74zqceXQykHaNAit68dyghLJ5CBj4exNfV2VYZtCpkuxHoqHR5e2ls87m36J3U9R+jFM1A==
+X-Received: by 2002:a63:fb05:: with SMTP id o5mr5591847pgh.203.1559955771254;
+        Fri, 07 Jun 2019 18:02:51 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id n1sm2884222pgv.15.2019.06.07.18.02.48
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 07 Jun 2019 18:02:50 -0700 (PDT)
+Subject: Re: [PATCH 2/2] hwmon: Add ads1000/ads1100 voltage ADCs driver
+To:     Serge Semin <fancer.lancer@gmail.com>
+Cc:     Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Serge Semin <Sergey.Semin@t-platforms.ru>,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+References: <20190514225810.12591-1-fancer.lancer@gmail.com>
+ <20190514225810.12591-3-fancer.lancer@gmail.com>
+ <20190530125510.GA26072@roeck-us.net> <20190603121117.0000512c@huawei.com>
+ <20190605205556.GA397@roeck-us.net>
+ <20190607230144.fnkzljhnnqks5oqx@mobilestation>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <02ff9666-d666-c539-aeb3-9e67fc358b17@roeck-us.net>
+Date:   Fri, 7 Jun 2019 18:02:48 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Mirapoint-IP-Reputation: reputation=Good-1,
-        source=Queried,
-        refid=tid=0001.0A0B0303.5CFAFC68.00E6,
-        actions=TAG
-X-Junkmail: UCE(55)
-X-Junkmail-Status: score=55/50, host=rd11780omr12.dci.bt.com
-X-Junkmail-Signature-Raw: score=bulk(5),
-        refid=str=0001.0A0B0203.5CFAFA32.0010,ss=3,sh,re=0.000,recu=0.000,reip=0.000,cl=3,cld=1,fgs=0,
-        ip=0.0.0.0,
-        so=2016-11-06 16:00:04,
-        dmn=2013-03-21 17:37:32,
-        mode=multiengine
-X-Junkmail-IWF: false
+In-Reply-To: <20190607230144.fnkzljhnnqks5oqx@mobilestation>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Good Day ,
+On 6/7/19 4:01 PM, Serge Semin wrote:
+> Hello folks
+> 
+> On Wed, Jun 05, 2019 at 01:55:56PM -0700, Guenter Roeck wrote:
+>> On Mon, Jun 03, 2019 at 12:11:17PM +0100, Jonathan Cameron wrote:
+>>> On Thu, 30 May 2019 05:55:10 -0700
+>>> Guenter Roeck <linux@roeck-us.net> wrote:
+>>>
+>>>> Hi,
+>>>>
+>>>> On Wed, May 15, 2019 at 01:58:09AM +0300, Serge Semin wrote:
+>>>>> These are simple Texas Instruments ADC working over i2c-interface with
+>>>>> just one differential input and with configurable 12-16 bits resolution.
+>>>>> Sample rate is fixed to 128 for ads1000 and can vary from 8 to 128 for
+>>>>> ads1100. Vdd value reference value must be supplied so to properly
+>>>>> translate the sampled code to the real voltage. All of these configs are
+>>>>> implemented in the device drivers for hwmon subsystem. The next dts
+>>>>> properties should be specified to comply the device platform setup:
+>>>>>   - vdd-supply - voltage regulator connected to the Vdd pin of the device
+>>>>>   - ti,gain - programmable gain amplifier
+>>>>>   - ti,datarate - converter data rate
+>>>>>   - ti,voltage-divider - possible resistors-base external divider
+>>>>> See bindings documentation file for details.
+>>>>>
+>>>>> Even though these devices seem more like ads1015 series, they
+>>>>> in fact pretty much different. First of all ads1000/ads1100 got less
+>>>>> capabilities: just one port, no configurations of digital comparator, no
+>>>>> input multi-channel multiplexer, smaller PGA and data-rate ranges.
+>>>>> In addition they haven't got internal voltage reference, but instead
+>>>>> are created to use Vdd pin voltage. Finally the output code value is
+>>>>> provided in different format. As a result it was much easier for
+>>>>> development and for future support to create a separate driver.
+>>>>>    
+>>>>
+>>>> This chicp doesn't have any real hardware monitoring characteristics
+>>>> (no limit registers). It seems to be better suited to be implemented
+>>>> as iio driver. If it is used as hardware monitor, the iio-hwmon bridge
+>>>> should work just fine.
+>>>>
+>>>> Jonathan, what do you think ?
+>>> Sorry for slow response, was on vacation.
+>>>
+>>> Agreed, this looks like a standard multipurpose ADC so probably more suited
+>>> to IIO. Whether you bother with a buffered /chardev interface or not given it
+>>> is a fairly slow device is a separate question (can always be added later
+>>> when someone wants it).
+>>>
+>>> Note the voltage-divider in the DT properties is something that should
+>>> have a generic representation. In IIO we have drivers/iio/afe/iio-rescale.c
+>>> for that, in this case using the voltage divider binding.
+>>>
+>>> gain and datarate are both characteristics that should be controlled from
+>>> userspace rather than via a binding.
+>>>
+>>
+>> In summary: Serge, please re-implement the driver as iio adc driver.
+>>
+> 
+> Thanks for the comments. I see your point, but since you are asking of a pretty
+> much serious code redevelopment, I want to make sure it is fully justified.
+> 
+> I made my decision of creating the hwmon driver following the next logic.
+> Before I started this driver development, I searched the kernel for either a
+> ready-to-use code or for a similar device driver to add the ads1000 ADC support.
+> I found the ads1015 driver, which is created for TI ADC1015 ADCs. These devices
+> are similar to the ads1000 series, but are more complex. Due to the complexity
+> I decided to create a separate driver for ads1000s, and of course since the similar
+> device driver lived in hwmon, I chose it to be home of my new driver.
+> 
+> But now you are asking me to move it to IIO, while the driver of more complex
+> ads1015 device exists in the hwmon subsystem of the kernel. Moreover the ads1000
 
-Have you received your funds of $10.5 Million dollars from the 
-IRS / Homeland office? If not contact the information below; This 
-Mail has been securely verified from the office of the United 
-States Department Of Treasury.
+A driver for ADS1015 also exists in drivers/iio/adc/ti-ads1015.c, meaning there
+are already two drivers for that chip. Accepting the driver for ads1000 into
+hwmon would ultimately mean that we would end up with another duplicate driver,
+as soon as someone needs iio support for this chip. From hwmon perspective,
+that driver would have zero additional functionality.
 
-We are happy to inform you that our office in Washington 
-recovered funds from Africa, Asia, United Kingdom and here in the 
-State from internet fraudster with the help of international 
-Criminal Committee and the {F.B.I}.Reason for contacting you is 
-that we have found your email worthy of the people assigned to be 
-compensated with the sum above as your email and name has fallen 
-among our list of credible funds recipient. You don't have to 
-worry as long as you follow the right instruction from Mrs 
-Kirstjen Nielsen who is to approve and direct your payment/funds 
-to you.
+Users would then have to choose between the hwmon ads1000 driver and the iio
+ads1000 driver plus iio->hwmon bridge. The kernel maintainers would have to
+maintain two drivers instead of one, for no good reason. We would therefore
+at that time remove hwmon driver from the kernel because it doesn't make sense
+to keep two drivers for the same chip if both drivers provide exactly the same
+functionality. This just doesn't make sense.
 
-We have informed Mrs Kirstjen Nielsen to make arrangements of 
-your payment to you which we believe is ready and has been 
-confirmed. As soon as you contact her, there should not be any 
-delay or problem on this, as it is highly legitimate.The IRS / 
-Homeland have been waiting for you to get in touch,we see no 
-reason why you should abandon your funds. Also make sure you Re-
-confirm your information to the IRS / Homeland to avoid any 
-mistake.
+On top of that, the ads1000 has zero characteristics of a typical hardware
+monitoring chip. It doesn't have any limit or alarm status registers.
 
-You can confirm your information below;
+> device is utilized on our board to monitor system itself (voltage on the input
+> DC-DC). Could you please tell me why the driver should really be in IIO instead
+> of hwmon and how do you select which subsystem one or another driver is supposed
+> to live in?
+> 
+If a chip has typical hardware monitoring characteristics such as slow but accurate
+conversion rates and limit/alarm registers, we are happy to accept it into the
+hardware monitoring subsystem. If the chip has no such characteristics,
+it should be implemented as iio driver.
 
-Full Name :
+Actually, we should remove the ads1015 driver from the hwmon subsystem.
+I'll start a separate thread to discuss that.
 
-Full Home Address :
-
-Tel Phone Number :
-
-Valid ID CARD:
-
-Contact the IRS / Homeland as soon as this mail gets to you, to 
-avoid any delay of your payment. Mrs. Charity Donalds received 
-her funds of $10.5 Million a week ago. Your email will be 
-responded to as soon as you confirm your information as we will 
-treat your case urgent and release your payment of Ten Million 
-five hundred thousand United State dollars ($10.5 Million ) to 
-you. Please you are only advised to contact us if you have not 
-received your payment.
-
-Homeland Security US Department
-Federal Government Office
-300 7th St SW
+Thanks,
+Guenter

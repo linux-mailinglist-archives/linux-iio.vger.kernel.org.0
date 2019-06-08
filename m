@@ -2,37 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52ABC39FCD
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 15:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEAB839FD3
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 15:08:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727164AbfFHNEB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Jun 2019 09:04:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46952 "EHLO mail.kernel.org"
+        id S1726933AbfFHNIn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Jun 2019 09:08:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48148 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727304AbfFHNEB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 8 Jun 2019 09:04:01 -0400
+        id S1726870AbfFHNIm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 8 Jun 2019 09:08:42 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8687B214C6;
-        Sat,  8 Jun 2019 13:03:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D235C214D8;
+        Sat,  8 Jun 2019 13:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559999040;
-        bh=jIo3OiDmil8gZLJBku+OS6A5AmSN+B4YOfpTnvd8CDw=;
+        s=default; t=1559999322;
+        bh=qibYb2+Tw2dU1CRX2K6Pe0fUHlSQcrMnJPszrmFTEhU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RV953XsZ9U87K3kYOlccSGq8/U8EswFBp9mp0yxzUBkdu+cVuaY1FH6nG5xuKvK9x
-         PrttsVJWxNaJrAu/LCT7iFvD841YWqeMiaEUCI9MYlbTBol7Xqo3DU8g1Umz1NN278
-         LL9ZXNBdihM441a27UE0DOLzS5G9JZVOEgtk8sNs=
-Date:   Sat, 8 Jun 2019 14:03:56 +0100
+        b=kTRP1lkBO7Th+hJvCqVvf+XqzIVK/0uWu3eIEfvOUMeo08sbbZhNqAWA4tBhpRAAU
+         cxZT+WUFVo+JH59Hs5VOuMgzNoEe2MsbRoE+A3YnHo+I1inieh/m26DbgtMebGfp3g
+         QTlveRLXp53g509Wy8dIXpS6xQCnxcwBp/vZKkEw=
+Date:   Sat, 8 Jun 2019 14:08:37 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        Vitor.Soares@synopsys.com, boris.brezillon@collabora.com
-Subject: Re: [PATCH v3] iio: imu: st_lsm6dsx: get device name from
- st_lsm6dsx_sensor_settings
-Message-ID: <20190608140356.430076ee@archlinux>
-In-Reply-To: <2f5173e0249a47fa1d902c83e67c5a4127d36b5a.1559996872.git.lorenzo@kernel.org>
-References: <2f5173e0249a47fa1d902c83e67c5a4127d36b5a.1559996872.git.lorenzo@kernel.org>
+To:     Guillaume La Roque <glaroque@baylibre.com>
+Cc:     khilman@baylibre.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] Documentation: dt-bindings: add the Amlogic Meson
+ Temperature Sensor
+Message-ID: <20190608140837.34a499a4@archlinux>
+In-Reply-To: <20190604144714.2009-2-glaroque@baylibre.com>
+References: <20190604144714.2009-1-glaroque@baylibre.com>
+        <20190604144714.2009-2-glaroque@baylibre.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,230 +44,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  8 Jun 2019 14:30:08 +0200
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+On Tue,  4 Jun 2019 16:47:12 +0200
+Guillaume La Roque <glaroque@baylibre.com> wrote:
 
-> Introduce sensor name in st_lsm6dsx_sensor_settings table. This is
-> a preliminary patch to add I3C support to st_lsm6dsx since i3c_device_id
-> data structure does not contain a name field
+> This adds the devicetree binding documentation for the Temperature
+> Sensor found in the Amlogic Meson G12 SoCs.
+> Currently only the G12A SoCs are supported.
 > 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+
+Hi Guillaume,
+
+I'm afraid we decided a month or so back that all new dt bindings proposed
+for IIO drivers should be in yaml format.
+
+Please reformat this appropriately for v2 and make sure to run
+make dt_bindings_check.
+
+There are a few examples in tree already, but we are deliberately
+not converting existing bindings too quickly to avoid overloading
+reviewers.
 
 Thanks,
 
 Jonathan
 
 > ---
-> changes since v2:
-> - use const char *name instead of const char name[32] in
->   st_lsm6dsx_settings
-> changes since v1:
-> - move sensor name in st_lsm6dsx_sensor_settings  
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  9 ++--
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 53 +++++++++++++++-----
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  3 +-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  3 +-
->  4 files changed, 48 insertions(+), 20 deletions(-)
+>  .../iio/temperature/amlogic,meson-tsensor.txt | 31 +++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt
 > 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> index 004a8a1a0027..cd1642bb4ec0 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -198,7 +198,7 @@ struct st_lsm6dsx_ext_dev_settings {
->   * struct st_lsm6dsx_settings - ST IMU sensor settings
->   * @wai: Sensor WhoAmI default value.
->   * @max_fifo_size: Sensor max fifo length in FIFO words.
-> - * @id: List of hw id supported by the driver configuration.
-> + * @id: List of hw id/device name supported by the driver configuration.
->   * @decimator: List of decimator register info (addr + mask).
->   * @batch: List of FIFO batching register info (addr + mask).
->   * @fifo_ops: Sensor hw FIFO parameters.
-> @@ -208,7 +208,10 @@ struct st_lsm6dsx_ext_dev_settings {
->  struct st_lsm6dsx_settings {
->  	u8 wai;
->  	u16 max_fifo_size;
-> -	enum st_lsm6dsx_hw_id id[ST_LSM6DSX_MAX_ID];
-> +	struct {
-> +		enum st_lsm6dsx_hw_id hw_id;
-> +		const char *name;
-> +	} id[ST_LSM6DSX_MAX_ID];
->  	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
->  	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
->  	struct st_lsm6dsx_fifo_ops fifo_ops;
-> @@ -302,7 +305,7 @@ struct st_lsm6dsx_hw {
->  static const unsigned long st_lsm6dsx_available_scan_masks[] = {0x7, 0x0};
->  extern const struct dev_pm_ops st_lsm6dsx_pm_ops;
->  
-> -int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
-> +int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
->  		     struct regmap *regmap);
->  int st_lsm6dsx_sensor_set_enable(struct st_lsm6dsx_sensor *sensor,
->  				 bool enable);
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index cf82c9049945..04233928d23e 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -125,7 +125,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  		.wai = 0x69,
->  		.max_fifo_size = 1365,
->  		.id = {
-> -			[0] = ST_LSM6DS3_ID,
-> +			{
-> +				.hw_id = ST_LSM6DS3_ID,
-> +				.name = ST_LSM6DS3_DEV_NAME,
-> +			},
->  		},
->  		.decimator = {
->  			[ST_LSM6DSX_ID_ACC] = {
-> @@ -172,7 +175,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  		.wai = 0x69,
->  		.max_fifo_size = 682,
->  		.id = {
-> -			[0] = ST_LSM6DS3H_ID,
-> +			{
-> +				.hw_id = ST_LSM6DS3H_ID,
-> +				.name = ST_LSM6DS3H_DEV_NAME,
-> +			},
->  		},
->  		.decimator = {
->  			[ST_LSM6DSX_ID_ACC] = {
-> @@ -219,9 +225,16 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  		.wai = 0x6a,
->  		.max_fifo_size = 682,
->  		.id = {
-> -			[0] = ST_LSM6DSL_ID,
-> -			[1] = ST_LSM6DSM_ID,
-> -			[2] = ST_ISM330DLC_ID,
-> +			{
-> +				.hw_id = ST_LSM6DSL_ID,
-> +				.name = ST_LSM6DSL_DEV_NAME,
-> +			}, {
-> +				.hw_id = ST_LSM6DSM_ID,
-> +				.name = ST_LSM6DSM_DEV_NAME,
-> +			}, {
-> +				.hw_id = ST_ISM330DLC_ID,
-> +				.name = ST_ISM330DLC_DEV_NAME,
-> +			},
->  		},
->  		.decimator = {
->  			[ST_LSM6DSX_ID_ACC] = {
-> @@ -268,8 +281,13 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  		.wai = 0x6c,
->  		.max_fifo_size = 512,
->  		.id = {
-> -			[0] = ST_LSM6DSO_ID,
-> -			[1] = ST_LSM6DSOX_ID,
-> +			{
-> +				.hw_id = ST_LSM6DSO_ID,
-> +				.name = ST_LSM6DSO_DEV_NAME,
-> +			}, {
-> +				.hw_id = ST_LSM6DSOX_ID,
-> +				.name = ST_LSM6DSOX_DEV_NAME,
-> +			},
->  		},
->  		.batch = {
->  			[ST_LSM6DSX_ID_ACC] = {
-> @@ -334,7 +352,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  		.wai = 0x6b,
->  		.max_fifo_size = 512,
->  		.id = {
-> -			[0] = ST_ASM330LHH_ID,
-> +			{
-> +				.hw_id = ST_ASM330LHH_ID,
-> +				.name = ST_ASM330LHH_DEV_NAME,
-> +			},
->  		},
->  		.batch = {
->  			[ST_LSM6DSX_ID_ACC] = {
-> @@ -373,7 +394,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  		.wai = 0x6b,
->  		.max_fifo_size = 512,
->  		.id = {
-> -			[0] = ST_LSM6DSR_ID,
-> +			{
-> +				.hw_id = ST_LSM6DSR_ID,
-> +				.name = ST_LSM6DSR_DEV_NAME,
-> +			},
->  		},
->  		.batch = {
->  			[ST_LSM6DSX_ID_ACC] = {
-> @@ -471,13 +495,14 @@ int st_lsm6dsx_set_page(struct st_lsm6dsx_hw *hw, bool enable)
->  	return err;
->  }
->  
-> -static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
-> +static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
-> +				   const char **name)
->  {
->  	int err, i, j, data;
->  
->  	for (i = 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
->  		for (j = 0; j < ST_LSM6DSX_MAX_ID; j++) {
-> -			if (id == st_lsm6dsx_sensor_settings[i].id[j])
-> +			if (id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
->  				break;
->  		}
->  		if (j < ST_LSM6DSX_MAX_ID)
-> @@ -500,6 +525,7 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
->  		return -ENODEV;
->  	}
->  
-> +	*name = st_lsm6dsx_sensor_settings[i].id[j].name;
->  	hw->settings = &st_lsm6dsx_sensor_settings[i];
->  
->  	return 0;
-> @@ -1041,11 +1067,12 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
->  	return iio_dev;
->  }
->  
-> -int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
-> +int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
->  		     struct regmap *regmap)
->  {
->  	const struct st_lsm6dsx_shub_settings *hub_settings;
->  	struct st_lsm6dsx_hw *hw;
-> +	const char *name = NULL;
->  	int i, err;
->  
->  	hw = devm_kzalloc(dev, sizeof(*hw), GFP_KERNEL);
-> @@ -1066,7 +1093,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
->  	hw->irq = irq;
->  	hw->regmap = regmap;
->  
-> -	err = st_lsm6dsx_check_whoami(hw, hw_id);
-> +	err = st_lsm6dsx_check_whoami(hw, hw_id, &name);
->  	if (err < 0)
->  		return err;
->  
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> index f54370196098..47581a4e456e 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> @@ -36,8 +36,7 @@ static int st_lsm6dsx_i2c_probe(struct i2c_client *client,
->  		return PTR_ERR(regmap);
->  	}
->  
-> -	return st_lsm6dsx_probe(&client->dev, client->irq,
-> -				hw_id, id->name, regmap);
-> +	return st_lsm6dsx_probe(&client->dev, client->irq, hw_id, regmap);
->  }
->  
->  static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> index 4a4abb2935da..facf66978a4b 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> @@ -36,8 +36,7 @@ static int st_lsm6dsx_spi_probe(struct spi_device *spi)
->  		return PTR_ERR(regmap);
->  	}
->  
-> -	return st_lsm6dsx_probe(&spi->dev, spi->irq,
-> -				hw_id, id->name, regmap);
-> +	return st_lsm6dsx_probe(&spi->dev, spi->irq, hw_id, regmap);
->  }
->  
->  static const struct of_device_id st_lsm6dsx_spi_of_match[] = {
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt b/Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt
+> new file mode 100644
+> index 000000000000..d064db0e9cac
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt
+> @@ -0,0 +1,31 @@
+> +* Amlogic Meson Temperature Sensor
+> +
+> +Required properties:
+> +- compatible:	depending on the SoC and the position of the sensor,
+> +		this should be one of:
+> +		- "amlogic,meson-g12a-cpu-tsensor" for the CPU G12A SoC sensor
+> +		- "amlogic,meson-g12a-ddr-tsensor" for the DDR G12A SoC sensor
+> +		followed by the common :
+> +		- "amlogic,meson-g12a-tsensor" for G12A SoC family
+> +- reg:		the physical base address and length of the registers
+> +- interrupts:	the interrupt indicating end of sampling
+> +- clocks:	phandle identifier for the reference clock of temperature sensor
+> +- #io-channel-cells: must be 1, see ../iio-bindings.txt
+> +- amlogic,ao-secure: phandle to the ao-secure syscon
+> +
+> +Optional properties:
+> +- amlogic,critical-temperature: temperature value in milli degrees Celsius
+> +	to set automatic reboot on too high temperature
+> +
+> +Example:
+> +	cpu_temp: temperature-sensor@ff634800 {
+> +		compatible = "amlogic,meson-g12a-cpu-tsensor",
+> +			     "amlogic,meson-g12a-tsensor";
+> +		reg = <0x0 0xff634800 0x0 0x50>;
+> +		interrupts = <GIC_SPI 35 IRQ_TYPE_EDGE_RISING>;
+> +		clocks = <&clkc CLKID_TS>;
+> +		status = "okay";
+> +		#io-channel-cells = <1>;
+> +		amlogic,meson-ao-secure = <&sec_AO>;
+> +		amlogic,critical-temperature = <115000>;
+> +	};
 

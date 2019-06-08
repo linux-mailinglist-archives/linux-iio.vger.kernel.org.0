@@ -2,81 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0242539D4E
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 13:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8705439DA5
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 13:43:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbfFHLju (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Jun 2019 07:39:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56784 "EHLO mail.kernel.org"
+        id S1727835AbfFHLmg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Jun 2019 07:42:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59876 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726935AbfFHLju (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 8 Jun 2019 07:39:50 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727833AbfFHLmf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 8 Jun 2019 07:42:35 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 338E9208C0;
-        Sat,  8 Jun 2019 11:39:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E3580214AF;
+        Sat,  8 Jun 2019 11:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559993989;
-        bh=xfk2wRGEM4iv26ktKy2rXmXoYgltCUoUo9eEQWOVnKk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pQTRSkU4qclN1APUcAgyy15vvD+kWn8KddareEMCj0Tz3uURVBr/E1blj8GecqzcF
-         ytzNymxwMaQLjhnd2RWVB+RUQ5m3j8yLq1P8etg6TPFubbflq8erKCTA+7ywJTH9QU
-         rbo9ZcrQGZ5w6fQpqlMpk6s2aasGxd4ejYauI+qE=
-Date:   Sat, 8 Jun 2019 12:39:45 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-i2c@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/34] iio: light: bh1780: simplify getting the adapter
- of a client
-Message-ID: <20190608123945.4bef51e0@archlinux>
-In-Reply-To: <20190608105619.593-4-wsa+renesas@sang-engineering.com>
-References: <20190608105619.593-1-wsa+renesas@sang-engineering.com>
-        <20190608105619.593-4-wsa+renesas@sang-engineering.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        s=default; t=1559994154;
+        bh=9erjZsPr+3muEteXmFDk9IJ6Bob2nrx1jhDybrkdOHM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=E+Qd/EccmaS/aW15Fazra4NgelusknRboowoIZG5sCCmvfB10KRGRYEeKtEtROlot
+         imyhBVn0PwkFCrsKC1PWG3FXUsnSwztHMPW+pilywe6GskAl7fEXy+W5Gm8QeNVmN2
+         i0ejlRYkbEuJPoIYkiU2BLOeNmhslxnFpuuvcW8w=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ruslan Babayev <ruslan@babayev.com>, xe-linux-external@cisco.com,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 01/49] iio: dac: ds4422/ds4424 fix chip verification
+Date:   Sat,  8 Jun 2019 07:41:42 -0400
+Message-Id: <20190608114232.8731-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  8 Jun 2019 12:55:42 +0200
-Wolfram Sang <wsa+renesas@sang-engineering.com> wrote:
+From: Ruslan Babayev <ruslan@babayev.com>
 
-> We have a dedicated pointer for that, so use it. Much easier to read and
-> less computation involved.
-> 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+[ Upstream commit 60f2208699ec08ff9fdf1f97639a661a92a18f1c ]
 
-Thanks,
+The ds4424_get_value function takes channel number as it's 3rd
+argument and translates it internally into I2C address using
+DS4424_DAC_ADDR macro. The caller ds4424_verify_chip was passing an
+already translated I2C address as its last argument.
 
-Jonathan
+Signed-off-by: Ruslan Babayev <ruslan@babayev.com>
+Cc: xe-linux-external@cisco.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/iio/dac/ds4424.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> ---
-> 
-> Please apply to your subsystem tree.
-> 
->  drivers/iio/light/bh1780.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/light/bh1780.c b/drivers/iio/light/bh1780.c
-> index 340d64d0ac59..a8361006dcd9 100644
-> --- a/drivers/iio/light/bh1780.c
-> +++ b/drivers/iio/light/bh1780.c
-> @@ -146,7 +146,7 @@ static int bh1780_probe(struct i2c_client *client,
->  {
->  	int ret;
->  	struct bh1780_data *bh1780;
-> -	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
-> +	struct i2c_adapter *adapter = client->adapter;
->  	struct iio_dev *indio_dev;
->  
->  	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE))
+diff --git a/drivers/iio/dac/ds4424.c b/drivers/iio/dac/ds4424.c
+index 883a47562055..714a97f91319 100644
+--- a/drivers/iio/dac/ds4424.c
++++ b/drivers/iio/dac/ds4424.c
+@@ -166,7 +166,7 @@ static int ds4424_verify_chip(struct iio_dev *indio_dev)
+ {
+ 	int ret, val;
+ 
+-	ret = ds4424_get_value(indio_dev, &val, DS4424_DAC_ADDR(0));
++	ret = ds4424_get_value(indio_dev, &val, 0);
+ 	if (ret < 0)
+ 		dev_err(&indio_dev->dev,
+ 				"%s failed. ret: %d\n", __func__, ret);
+-- 
+2.20.1
 

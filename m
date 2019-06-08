@@ -2,76 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D662439C50
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 12:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9392439C64
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 12:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726807AbfFHKBu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Jun 2019 06:01:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50436 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726700AbfFHKBt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 8 Jun 2019 06:01:49 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CB561214DA;
-        Sat,  8 Jun 2019 10:01:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559988108;
-        bh=VxUpXuFY/lVkCuNer53WeeVgBD8oF05e070wMrjzqdU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ufq5SCUMJvvLQsVUgksCEQDyjg2BydCTu6DURdyv/kfYjdl2c4gVL4B2HyoEwTSM4
-         sFitYUKQdnlVl5JIL9evG1ZF9Rn0izqK7uSvqEHGllgqafaujh286lQrSalMTcCtvW
-         fSPw3qsGoKeAI2oELQU1JBDowk1qT2RptZEIeEQc=
-Date:   Sat, 8 Jun 2019 11:01:43 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Dirk Eibach <eibach@gdsys.de>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: Removing ADS1015 driver from hwmon subsystem
-Message-ID: <20190608110143.48a221bb@archlinux>
-In-Reply-To: <4aaa9d0c-2ed9-ccd2-2d84-a5bda4ea4a23@roeck-us.net>
-References: <4aaa9d0c-2ed9-ccd2-2d84-a5bda4ea4a23@roeck-us.net>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726788AbfFHKX3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Jun 2019 06:23:29 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:53350 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726692AbfFHKX2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Jun 2019 06:23:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1559989406; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tdw8LUmBZWbwyaBxKvH4GHIrDdHlccVhMKjUUwHBxHI=;
+        b=UdXmnH//oB+A+1isESaZyhXYu0NH4gh4KgrUMjNuJ9fWmfgz1gHkiR95hu/hr6+WNu5dgv
+        OsmBfY/lYaT+ccL1u5JiD/E3aNiUG9R2ShNYXg38ExH4u5XNyWn4QCCDtbj4xbYJCGowYY
+        mTXF3x6/KhMXyPY/RuVnnexzwGEh3WE=
+Date:   Sat, 08 Jun 2019 12:23:21 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH] iio: ingenic-adc: Make probe function __init_or_module
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     Artur Rojek <contact@artur-rojek.eu>, od@zcrc.me,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <1559989401.1815.6@crapouillou.net>
+In-Reply-To: <20190607160501.16369-1-paul@crapouillou.net>
+References: <20190607160501.16369-1-paul@crapouillou.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 7 Jun 2019 18:13:27 -0700
-Guenter Roeck <linux@roeck-us.net> wrote:
+I misunderstood what __init_or_module was for. Please ignore this=20
+patch. Sorry for the noise.
 
-> Hi all,
-> 
-> there are currently two drivers for ADS1015 in the linux kernel:
-> 
-> drivers/iio/adc/ti-ads1015.c
-> drivers/hwmon/ads1015.c
-> 
-> The driver in the iio subsystem provides more flexible support for
-> the chip's capabilities. Even if the hwmon driver is removed,
-> the iio->hwmon bridge can still be used and would provide the same
-> information as before to the user. Existing devicetree entries
-> for ads1015 both point to the iio driver. The platform include file
-> is only included by the drivers, but not from any platform code.
-> 
-> With that in mind, keeping the hwmon driver around does not really
-> add value. I suggest to remove it. Are there any objections or
-> concerns ?
 
-It is probably not worth the dance of creating a stub driver
-in hwmon to bring up the iio->hwmon bridge but that might be
-an option if anyone minds just dropping the ads1015 hwmon driver.
+Le ven. 7 juin 2019 =E0 18:05, Paul Cercueil <paul@crapouillou.net> a=20
+=E9crit :
+> This allows the probe function to be dropped after the kernel finished
+> its initialization, in the case where the driver was not compiled as a
+> module.
+>=20
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>  drivers/iio/adc/ingenic-adc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/adc/ingenic-adc.c=20
+> b/drivers/iio/adc/ingenic-adc.c
+> index 92b1d5037ac9..027f710df843 100644
+> --- a/drivers/iio/adc/ingenic-adc.c
+> +++ b/drivers/iio/adc/ingenic-adc.c
+> @@ -279,7 +279,7 @@ static const struct iio_chan_spec=20
+> ingenic_channels[] =3D {
+>  	},
+>  };
+>=20
+> -static int ingenic_adc_probe(struct platform_device *pdev)
+> +static int __init_or_module ingenic_adc_probe(struct platform_device=20
+> *pdev)
+>  {
+>  	struct device *dev =3D &pdev->dev;
+>  	struct iio_dev *iio_dev;
+> --
+> 2.21.0.593.g511ec345e18
+>=20
 
-Thanks,
-
-Jonathan
-
-> 
-> Thanks,
-> Guenter
+=
 

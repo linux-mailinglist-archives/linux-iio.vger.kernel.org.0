@@ -2,36 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EF3039FC6
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 15:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52ABC39FCD
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 15:04:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727063AbfFHNBd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Jun 2019 09:01:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46262 "EHLO mail.kernel.org"
+        id S1727164AbfFHNEB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Jun 2019 09:04:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46952 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726976AbfFHNBc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 8 Jun 2019 09:01:32 -0400
+        id S1727304AbfFHNEB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 8 Jun 2019 09:04:01 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 40CF320693;
-        Sat,  8 Jun 2019 13:01:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8687B214C6;
+        Sat,  8 Jun 2019 13:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559998892;
-        bh=lEIcalaH40D/Gfqlg8EJH6JZshvXrRFZWeDDh7rbnSk=;
+        s=default; t=1559999040;
+        bh=jIo3OiDmil8gZLJBku+OS6A5AmSN+B4YOfpTnvd8CDw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Mxn+KXZ7+s7avp3I2qKqTkhwMjDfGuGUQClhhHWHXZJU1soR+JGLBvBdyPZ2miAzV
-         Gkp3c8lnRzFzlGWyBUxk3oR5JUF2f4rEeIbDP47B7oPMmuO2eIXR4aqSPyYN2yMWs+
-         XrVxHKc+1GYdJml6LLjs1W3SkehEQgXBMV+yLu78=
-Date:   Sat, 8 Jun 2019 14:01:28 +0100
+        b=RV953XsZ9U87K3kYOlccSGq8/U8EswFBp9mp0yxzUBkdu+cVuaY1FH6nG5xuKvK9x
+         PrttsVJWxNaJrAu/LCT7iFvD841YWqeMiaEUCI9MYlbTBol7Xqo3DU8g1Umz1NN278
+         LL9ZXNBdihM441a27UE0DOLzS5G9JZVOEgtk8sNs=
+Date:   Sat, 8 Jun 2019 14:03:56 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Fabio Estevam <festevam@gmail.com>
-Cc:     andrew.smirnov@gmail.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 4/4] iio: imx7d_adc: Remove unneeded 'average_en' member
-Message-ID: <20190608140128.31e11cc8@archlinux>
-In-Reply-To: <20190603193433.6394-4-festevam@gmail.com>
-References: <20190603193433.6394-1-festevam@gmail.com>
-        <20190603193433.6394-4-festevam@gmail.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        Vitor.Soares@synopsys.com, boris.brezillon@collabora.com
+Subject: Re: [PATCH v3] iio: imu: st_lsm6dsx: get device name from
+ st_lsm6dsx_sensor_settings
+Message-ID: <20190608140356.430076ee@archlinux>
+In-Reply-To: <2f5173e0249a47fa1d902c83e67c5a4127d36b5a.1559996872.git.lorenzo@kernel.org>
+References: <2f5173e0249a47fa1d902c83e67c5a4127d36b5a.1559996872.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,54 +42,230 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  3 Jun 2019 16:34:33 -0300
-Fabio Estevam <festevam@gmail.com> wrote:
+On Sat,  8 Jun 2019 14:30:08 +0200
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> average_en is always true, so there is not really need for
-> this structure member.
+> Introduce sensor name in st_lsm6dsx_sensor_settings table. This is
+> a preliminary patch to add I3C support to st_lsm6dsx since i3c_device_id
+> data structure does not contain a name field
 > 
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Applied.
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/imx7d_adc.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
+> changes since v2:
+> - use const char *name instead of const char name[32] in
+>   st_lsm6dsx_settings
+> changes since v1:
+> - move sensor name in st_lsm6dsx_sensor_settings  
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  9 ++--
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 53 +++++++++++++++-----
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  3 +-
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  3 +-
+>  4 files changed, 48 insertions(+), 20 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/imx7d_adc.c b/drivers/iio/adc/imx7d_adc.c
-> index 46e88899ad74..26a7bbe4d534 100644
-> --- a/drivers/iio/adc/imx7d_adc.c
-> +++ b/drivers/iio/adc/imx7d_adc.c
-> @@ -101,8 +101,6 @@ struct imx7d_adc_feature {
->  	enum imx7d_adc_average_num avg_num;
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> index 004a8a1a0027..cd1642bb4ec0 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> @@ -198,7 +198,7 @@ struct st_lsm6dsx_ext_dev_settings {
+>   * struct st_lsm6dsx_settings - ST IMU sensor settings
+>   * @wai: Sensor WhoAmI default value.
+>   * @max_fifo_size: Sensor max fifo length in FIFO words.
+> - * @id: List of hw id supported by the driver configuration.
+> + * @id: List of hw id/device name supported by the driver configuration.
+>   * @decimator: List of decimator register info (addr + mask).
+>   * @batch: List of FIFO batching register info (addr + mask).
+>   * @fifo_ops: Sensor hw FIFO parameters.
+> @@ -208,7 +208,10 @@ struct st_lsm6dsx_ext_dev_settings {
+>  struct st_lsm6dsx_settings {
+>  	u8 wai;
+>  	u16 max_fifo_size;
+> -	enum st_lsm6dsx_hw_id id[ST_LSM6DSX_MAX_ID];
+> +	struct {
+> +		enum st_lsm6dsx_hw_id hw_id;
+> +		const char *name;
+> +	} id[ST_LSM6DSX_MAX_ID];
+>  	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
+>  	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
+>  	struct st_lsm6dsx_fifo_ops fifo_ops;
+> @@ -302,7 +305,7 @@ struct st_lsm6dsx_hw {
+>  static const unsigned long st_lsm6dsx_available_scan_masks[] = {0x7, 0x0};
+>  extern const struct dev_pm_ops st_lsm6dsx_pm_ops;
 >  
->  	u32 core_time_unit;	/* impact the sample rate */
-> -
-> -	bool average_en;
->  };
->  
->  struct imx7d_adc {
-> @@ -180,7 +178,6 @@ static void imx7d_adc_feature_config(struct imx7d_adc *info)
->  	info->adc_feature.clk_pre_div = IMX7D_ADC_ANALOG_CLK_PRE_DIV_4;
->  	info->adc_feature.avg_num = IMX7D_ADC_AVERAGE_NUM_32;
->  	info->adc_feature.core_time_unit = 1;
-> -	info->adc_feature.average_en = true;
+> -int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
+> +int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+>  		     struct regmap *regmap);
+>  int st_lsm6dsx_sensor_set_enable(struct st_lsm6dsx_sensor *sensor,
+>  				 bool enable);
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index cf82c9049945..04233928d23e 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -125,7 +125,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  		.wai = 0x69,
+>  		.max_fifo_size = 1365,
+>  		.id = {
+> -			[0] = ST_LSM6DS3_ID,
+> +			{
+> +				.hw_id = ST_LSM6DS3_ID,
+> +				.name = ST_LSM6DS3_DEV_NAME,
+> +			},
+>  		},
+>  		.decimator = {
+>  			[ST_LSM6DSX_ID_ACC] = {
+> @@ -172,7 +175,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  		.wai = 0x69,
+>  		.max_fifo_size = 682,
+>  		.id = {
+> -			[0] = ST_LSM6DS3H_ID,
+> +			{
+> +				.hw_id = ST_LSM6DS3H_ID,
+> +				.name = ST_LSM6DS3H_DEV_NAME,
+> +			},
+>  		},
+>  		.decimator = {
+>  			[ST_LSM6DSX_ID_ACC] = {
+> @@ -219,9 +225,16 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  		.wai = 0x6a,
+>  		.max_fifo_size = 682,
+>  		.id = {
+> -			[0] = ST_LSM6DSL_ID,
+> -			[1] = ST_LSM6DSM_ID,
+> -			[2] = ST_ISM330DLC_ID,
+> +			{
+> +				.hw_id = ST_LSM6DSL_ID,
+> +				.name = ST_LSM6DSL_DEV_NAME,
+> +			}, {
+> +				.hw_id = ST_LSM6DSM_ID,
+> +				.name = ST_LSM6DSM_DEV_NAME,
+> +			}, {
+> +				.hw_id = ST_ISM330DLC_ID,
+> +				.name = ST_ISM330DLC_DEV_NAME,
+> +			},
+>  		},
+>  		.decimator = {
+>  			[ST_LSM6DSX_ID_ACC] = {
+> @@ -268,8 +281,13 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  		.wai = 0x6c,
+>  		.max_fifo_size = 512,
+>  		.id = {
+> -			[0] = ST_LSM6DSO_ID,
+> -			[1] = ST_LSM6DSOX_ID,
+> +			{
+> +				.hw_id = ST_LSM6DSO_ID,
+> +				.name = ST_LSM6DSO_DEV_NAME,
+> +			}, {
+> +				.hw_id = ST_LSM6DSOX_ID,
+> +				.name = ST_LSM6DSOX_DEV_NAME,
+> +			},
+>  		},
+>  		.batch = {
+>  			[ST_LSM6DSX_ID_ACC] = {
+> @@ -334,7 +352,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  		.wai = 0x6b,
+>  		.max_fifo_size = 512,
+>  		.id = {
+> -			[0] = ST_ASM330LHH_ID,
+> +			{
+> +				.hw_id = ST_ASM330LHH_ID,
+> +				.name = ST_ASM330LHH_DEV_NAME,
+> +			},
+>  		},
+>  		.batch = {
+>  			[ST_LSM6DSX_ID_ACC] = {
+> @@ -373,7 +394,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  		.wai = 0x6b,
+>  		.max_fifo_size = 512,
+>  		.id = {
+> -			[0] = ST_LSM6DSR_ID,
+> +			{
+> +				.hw_id = ST_LSM6DSR_ID,
+> +				.name = ST_LSM6DSR_DEV_NAME,
+> +			},
+>  		},
+>  		.batch = {
+>  			[ST_LSM6DSX_ID_ACC] = {
+> @@ -471,13 +495,14 @@ int st_lsm6dsx_set_page(struct st_lsm6dsx_hw *hw, bool enable)
+>  	return err;
 >  }
 >  
->  static void imx7d_adc_sample_rate_set(struct imx7d_adc *info)
-> @@ -241,9 +238,8 @@ static void imx7d_adc_channel_set(struct imx7d_adc *info)
+> -static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
+> +static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
+> +				   const char **name)
+>  {
+>  	int err, i, j, data;
 >  
->  	/* the channel choose single conversion, and enable average mode */
->  	cfg1 |= (IMX7D_REG_ADC_CH_CFG1_CHANNEL_EN |
-> -		 IMX7D_REG_ADC_CH_CFG1_CHANNEL_SINGLE);
-> -	if (info->adc_feature.average_en)
-> -		cfg1 |= IMX7D_REG_ADC_CH_CFG1_CHANNEL_AVG_EN;
-> +		 IMX7D_REG_ADC_CH_CFG1_CHANNEL_SINGLE |
-> +		 IMX7D_REG_ADC_CH_CFG1_CHANNEL_AVG_EN);
+>  	for (i = 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
+>  		for (j = 0; j < ST_LSM6DSX_MAX_ID; j++) {
+> -			if (id == st_lsm6dsx_sensor_settings[i].id[j])
+> +			if (id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
+>  				break;
+>  		}
+>  		if (j < ST_LSM6DSX_MAX_ID)
+> @@ -500,6 +525,7 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
+>  		return -ENODEV;
+>  	}
 >  
->  	/*
->  	 * physical channel 0 chose logical channel A
+> +	*name = st_lsm6dsx_sensor_settings[i].id[j].name;
+>  	hw->settings = &st_lsm6dsx_sensor_settings[i];
+>  
+>  	return 0;
+> @@ -1041,11 +1067,12 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+>  	return iio_dev;
+>  }
+>  
+> -int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
+> +int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+>  		     struct regmap *regmap)
+>  {
+>  	const struct st_lsm6dsx_shub_settings *hub_settings;
+>  	struct st_lsm6dsx_hw *hw;
+> +	const char *name = NULL;
+>  	int i, err;
+>  
+>  	hw = devm_kzalloc(dev, sizeof(*hw), GFP_KERNEL);
+> @@ -1066,7 +1093,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
+>  	hw->irq = irq;
+>  	hw->regmap = regmap;
+>  
+> -	err = st_lsm6dsx_check_whoami(hw, hw_id);
+> +	err = st_lsm6dsx_check_whoami(hw, hw_id, &name);
+>  	if (err < 0)
+>  		return err;
+>  
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+> index f54370196098..47581a4e456e 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+> @@ -36,8 +36,7 @@ static int st_lsm6dsx_i2c_probe(struct i2c_client *client,
+>  		return PTR_ERR(regmap);
+>  	}
+>  
+> -	return st_lsm6dsx_probe(&client->dev, client->irq,
+> -				hw_id, id->name, regmap);
+> +	return st_lsm6dsx_probe(&client->dev, client->irq, hw_id, regmap);
+>  }
+>  
+>  static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+> index 4a4abb2935da..facf66978a4b 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+> @@ -36,8 +36,7 @@ static int st_lsm6dsx_spi_probe(struct spi_device *spi)
+>  		return PTR_ERR(regmap);
+>  	}
+>  
+> -	return st_lsm6dsx_probe(&spi->dev, spi->irq,
+> -				hw_id, id->name, regmap);
+> +	return st_lsm6dsx_probe(&spi->dev, spi->irq, hw_id, regmap);
+>  }
+>  
+>  static const struct of_device_id st_lsm6dsx_spi_of_match[] = {
 

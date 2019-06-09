@@ -2,251 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3907A3A1EA
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2019 22:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC01C3A6D6
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2019 18:38:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727521AbfFHUUP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Jun 2019 16:20:15 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:41265 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727441AbfFHUUP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Jun 2019 16:20:15 -0400
-Received: by mail-oi1-f194.google.com with SMTP id g7so550982oia.8
-        for <linux-iio@vger.kernel.org>; Sat, 08 Jun 2019 13:20:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=q/W7efTTupqaqXMVrn3pnAy07nzRFc5ujLZukVxgV6s=;
-        b=H2IXhxDmbk6kCr2jgqPZ1O+azQS5qkFuFnMbe7pjfHMZQmfsJtUtdd5ysxdgySbmIC
-         +eSX9/AZ6jJbtynl2YEUL5SNwBj2aSMXi/xPR+WefBGqKR9wGeFvaCV3hMnAAykhBN+3
-         CiOLLYL3xFA5joLrYmzJEbprnXpJ7cvRXtNXWJFvZkp0++iG0jbkvwCHJ7yI4YpqwgaW
-         cx4lF8BFXr1TL/W2qAYiJ3t7HYabj6qK+CJshHOxRL1/3ljmKCaKuemVHrjvPL1toI9Q
-         OkBSrTXJZCivnMM72vUegpvbfNKeLbSjH/7EFYi48UYGgUUfG3uas9RoNqrQsd8ll/TQ
-         zB0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=q/W7efTTupqaqXMVrn3pnAy07nzRFc5ujLZukVxgV6s=;
-        b=GSOAXO1ffnOxu1DMn8X2s7hM/3QoEUiu5oMnz7Lr/RYMmuDU8KvkLRHOnL7DPsj3e1
-         yU7uNnZb/R/cmsp8qlM3ictbKRlj4r9GBmumHzOku/a+nUlLH9gnpbr3Gdsc3jVOfhcV
-         /rFrnMy/xZQUZuSMASSCElRWaTcIqrxDUCy4o57Fwn0JeYW1o8MJFO0IJL2A4DJaBjyO
-         txNAAuzBV20ok3f2MSon8IhCanUuqPFlvIEJVO15Q1LfjtvzZ3APkzEe+ykwqUnFfiOj
-         TvUKwmxp3+Ps5fnyWPqcShH2/QLFSe4b3Y5ykEXToWppzIbZblJaqHSbTAUwnEfCEmMD
-         Gljw==
-X-Gm-Message-State: APjAAAVYRumlfcAgH7wbAsYy80RJ40YBIOz6W5N8Hy/au/kN2KK7DXLV
-        sQRkGyDEUKWdNrI8KjOk9vGdQ9llOdwp7oq7fAIdrw==
-X-Google-Smtp-Source: APXvYqy5Yh/r/ZfHEEerRre4kJT1f0FAUIAZCwMCVwn1XeO6QMItWFGRWwESTrPKdaUJ/wCaSbeJiTDLNs6CAdpvsUQ=
-X-Received: by 2002:aca:51cf:: with SMTP id f198mr5674429oib.140.1560025213800;
- Sat, 08 Jun 2019 13:20:13 -0700 (PDT)
+        id S1729030AbfFIQiB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Jun 2019 12:38:01 -0400
+Received: from mail-eopbgr30121.outbound.protection.outlook.com ([40.107.3.121]:35491
+        "EHLO EUR03-AM5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728678AbfFIQiB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 9 Jun 2019 12:38:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EngMpKounZPzZ32Ch+Ck4ZFFgS/evJSip8KYe1nOlZw=;
+ b=Tg5EmUYE64TeuLXo+AMqNPdL8tewMD6bxc/CKftnk4Ir1b1i61r3udvbesw5bdfeVYeEvQS9GkmKDny0J0emAhdL0XZr2pfzjU/szQ50AZYbSyV2gq57Q/lXAGSQWKw3Wcj2NqgOI76g5BZgAnth80wCm0cQKIODEYrxXTJqo0E=
+Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com (52.134.66.158) by
+ DB3PR0202MB3466.eurprd02.prod.outlook.com (52.134.72.29) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1965.12; Sun, 9 Jun 2019 16:37:53 +0000
+Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com
+ ([fe80::49ac:3a71:a3ec:d6bf]) by DB3PR0202MB3434.eurprd02.prod.outlook.com
+ ([fe80::49ac:3a71:a3ec:d6bf%5]) with mapi id 15.20.1965.017; Sun, 9 Jun 2019
+ 16:37:53 +0000
+From:   Peter Rosin <peda@axentia.se>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
+CC:     "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH 00/34] treewide: simplify getting the adapter of an I2C
+ client
+Thread-Topic: [PATCH 00/34] treewide: simplify getting the adapter of an I2C
+ client
+Thread-Index: AQHVHelLRUjwurRB7Uaj1nj2qmlQFKaTh4UA
+Date:   Sun, 9 Jun 2019 16:37:52 +0000
+Message-ID: <661f1084-da4e-75f0-e632-335134932801@axentia.se>
+References: <20190608105619.593-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20190608105619.593-1-wsa+renesas@sang-engineering.com>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+x-originating-ip: [213.112.138.100]
+x-clientproxiedby: HE1PR0902CA0028.eurprd09.prod.outlook.com
+ (2603:10a6:7:15::17) To DB3PR0202MB3434.eurprd02.prod.outlook.com
+ (2603:10a6:8:5::30)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=peda@axentia.se; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: de20f092-15a7-4702-8fc2-08d6ecf8d141
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:DB3PR0202MB3466;
+x-ms-traffictypediagnostic: DB3PR0202MB3466:
+x-microsoft-antispam-prvs: <DB3PR0202MB34662F819F80F0C79EA26E7CBC120@DB3PR0202MB3466.eurprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 006339698F
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(136003)(366004)(376002)(39830400003)(396003)(189003)(199004)(6246003)(65806001)(2501003)(66066001)(71200400001)(86362001)(6116002)(3846002)(31696002)(65826007)(71190400001)(5660300002)(4326008)(65956001)(66556008)(7416002)(64756008)(66446008)(256004)(66476007)(66946007)(73956011)(26005)(36756003)(25786009)(476003)(2616005)(14454004)(53936002)(6436002)(186003)(229853002)(8936002)(99286004)(52116002)(6512007)(6486002)(68736007)(53546011)(6506007)(386003)(11346002)(31686004)(446003)(64126003)(81166006)(81156014)(76176011)(110136005)(316002)(8676002)(7736002)(508600001)(74482002)(102836004)(2906002)(486006)(54906003)(58126008)(305945005);DIR:OUT;SFP:1102;SCL:1;SRVR:DB3PR0202MB3466;H:DB3PR0202MB3434.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: axentia.se does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: b5PbBXdfDmrxCUpaoqEeP2qIdv9epeSARFxp+Ctrw7uz8w0o/3OyFrDay2wEG0IkjivZIlW321ahRt3eTE1i9pomhJehCDP9vbTXa+1u7oAna0reWVUunYsM+PDK1jsxv8bVvTPfv0ICQHS1Y6GzIzOtBkUmsEBk8wVUiE4MmQ12KD8eD5IlPOo2Tc3H5wp9mS3zh3+1sor8Pjo86ZUKURBhUA3+LweyRO9UHQd30L9DZD6CbSLxtQRwP2WscT6Il6mG6V3FXQTnbDh3PGheCVZbdDVw+g2HZKemwzZ9JfFlArver5OvyyKXQay5CJ5CVglaNXjWGG+ThF/PWtn82KSdt+AKwv2Ood1U/sdTvUS5/6xTQkn5AF2vsHM04RBTIjPb3p/3yFAtK1f1vlQZdoZOcHO7Y+YO05XitWSJwc4=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C55F5D15CFF4704BB7913C0E714412B0@eurprd02.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20190530131812.3476-1-alexandru.ardelean@analog.com>
- <20190530131812.3476-4-alexandru.ardelean@analog.com> <20190608150433.49a356aa@archlinux>
-In-Reply-To: <20190608150433.49a356aa@archlinux>
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Sat, 8 Jun 2019 23:20:00 +0300
-Message-ID: <CA+U=DsougRHksjnR-35-tVZjQAr4vVQ98NnUX6NMEAjS1V-p9g@mail.gmail.com>
-Subject: Re: [PATCH 4/5] iio: amplifiers: ad8366: Add support for the ADA4961 DGA
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio@vger.kernel.org,
-        Paul Cercueil <paul.cercueil@analog.com>,
-        Michael Hennerich <michael.hennerich@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: de20f092-15a7-4702-8fc2-08d6ecf8d141
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jun 2019 16:37:52.9651
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: peda@axentia.se
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0202MB3466
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jun 8, 2019 at 5:05 PM Jonathan Cameron
-<jic23@jic23.retrosnub.co.uk> wrote:
->
-> On Thu, 30 May 2019 16:18:11 +0300
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
->
-> > From: Paul Cercueil <paul.cercueil@analog.com>
-> >
-> > This change adds support for the ADA4961 BiCMOS RF Digital Gain Amplifier,
-> > (DGA), which is optimized for driving heavy loads out 2.0 GHz and beyond.
-> > The device typically achieves -90 dBc IMD3 performance at 500 MHz and
-> > -85  dBc at 1.5 GHz.
-> >
-> > Datasheet link:
-> >  http://www.analog.com/media/en/technical-documentation/data-sheets/ADA4961.pdf
-> >
-> > This change re-uses the existing ad8366 driver, as most logic is similar.
-> > Also, this chip has a reset pin which is initialized during probe.
-> >
-> > Signed-off-by: Paul Cercueil <paul.cercueil@analog.com>
-> > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
->
-> I'm fairly sure you want a GPIOLIB kconfig dependency.
-> I've added it rather than going for a v2 for just that.
-> Give me a shout if it's not actually required!
->
-> Applied to the togreg branch of iio.git and pushed out as testing
-> for the autobuilders to play with it.
->
-
-oops
-thanks for catching this
-
-Alex
-
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/amplifiers/Kconfig  |  9 ++++++---
-> >  drivers/iio/amplifiers/ad8366.c | 34 +++++++++++++++++++++++++++++++--
-> >  2 files changed, 38 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/iio/amplifiers/Kconfig b/drivers/iio/amplifiers/Kconfig
-> > index da5830da9bcf..259058da8811 100644
-> > --- a/drivers/iio/amplifiers/Kconfig
-> > +++ b/drivers/iio/amplifiers/Kconfig
-> > @@ -7,12 +7,15 @@
-> >  menu "Amplifiers"
-> >
-> >  config AD8366
-> > -     tristate "Analog Devices AD8366 VGA"
-> > +     tristate "Analog Devices AD8366 and similar Gain Amplifiers"
-> >       depends on SPI
-> >       select BITREVERSE
-> >       help
-> > -       Say yes here to build support for Analog Devices AD8366
-> > -       SPI Dual-Digital Variable Gain Amplifier (VGA).
-> > +       Say yes here to build support for Analog Devices AD8366 and similar
-> > +       gain amplifiers. This driver supports the following gain amplifiers
-> > +       from Analog Devices:
-> > +         AD8366 Dual-Digital Variable Gain Amplifier (VGA)
-> > +         ADA4961 BiCMOS RF Digital Gain Amplifier (DGA)
-> >
-> >         To compile this driver as a module, choose M here: the
-> >         module will be called ad8366.
-> > diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
-> > index 1beda6409301..0a9883e8eb2e 100644
-> > --- a/drivers/iio/amplifiers/ad8366.c
-> > +++ b/drivers/iio/amplifiers/ad8366.c
-> > @@ -1,6 +1,9 @@
-> >  // SPDX-License-Identifier: GPL-2.0
-> >  /*
-> > - * AD8366 SPI Dual-Digital Variable Gain Amplifier (VGA)
-> > + * AD8366 and similar Gain Amplifiers
-> > + * This driver supports the following gain amplifiers:
-> > + *   AD8366 Dual-Digital Variable Gain Amplifier (VGA)
-> > + *   ADA4961 BiCMOS RF Digital Gain Amplifier (DGA)
-> >   *
-> >   * Copyright 2012-2019 Analog Devices Inc.
-> >   */
-> > @@ -11,6 +14,7 @@
-> >  #include <linux/sysfs.h>
-> >  #include <linux/spi/spi.h>
-> >  #include <linux/regulator/consumer.h>
-> > +#include <linux/gpio/consumer.h>
-> I'd be highly surprised if this didn't need a KCONFIG dependency
-> change...
->
-> >  #include <linux/err.h>
-> >  #include <linux/module.h>
-> >  #include <linux/bitrev.h>
-> > @@ -20,6 +24,7 @@
-> >
-> >  enum ad8366_type {
-> >       ID_AD8366,
-> > +     ID_ADA4961,
-> >  };
-> >
-> >  struct ad8366_info {
-> > @@ -31,6 +36,7 @@ struct ad8366_state {
-> >       struct spi_device       *spi;
-> >       struct regulator        *reg;
-> >       struct mutex            lock; /* protect sensor state */
-> > +     struct gpio_desc        *reset_gpio;
-> >       unsigned char           ch[2];
-> >       enum ad8366_type        type;
-> >       struct ad8366_info      *info;
-> > @@ -46,6 +52,10 @@ static struct ad8366_info ad8366_infos[] = {
-> >               .gain_min = 4500,
-> >               .gain_max = 20500,
-> >       },
-> > +     [ID_ADA4961] = {
-> > +             .gain_min = -6000,
-> > +             .gain_max = 15000,
-> > +     },
-> >  };
-> >
-> >  static int ad8366_write(struct iio_dev *indio_dev,
-> > @@ -62,6 +72,9 @@ static int ad8366_write(struct iio_dev *indio_dev,
-> >               st->data[0] = ch_b >> 4;
-> >               st->data[1] = (ch_b << 4) | (ch_a >> 2);
-> >               break;
-> > +     case ID_ADA4961:
-> > +             st->data[0] = ch_a & 0x1F;
-> > +             break;
-> >       }
-> >
-> >       ret = spi_write(st->spi, st->data, indio_dev->num_channels);
-> > @@ -90,6 +103,9 @@ static int ad8366_read_raw(struct iio_dev *indio_dev,
-> >               case ID_AD8366:
-> >                       gain = code * 253 + 4500;
-> >                       break;
-> > +             case ID_ADA4961:
-> > +                     gain = 15000 - code * 1000;
-> > +                     break;
-> >               }
-> >
-> >               /* Values in dB */
-> > @@ -130,6 +146,9 @@ static int ad8366_write_raw(struct iio_dev *indio_dev,
-> >       case ID_AD8366:
-> >               code = (gain - 4500) / 253;
-> >               break;
-> > +     case ID_ADA4961:
-> > +             code = (15000 - gain) / 1000;
-> > +             break;
-> >       }
-> >
-> >       mutex_lock(&st->lock);
-> > @@ -164,6 +183,10 @@ static const struct iio_chan_spec ad8366_channels[] = {
-> >       AD8366_CHAN(1),
-> >  };
-> >
-> > +static const struct iio_chan_spec ada4961_channels[] = {
-> > +     AD8366_CHAN(0),
-> > +};
-> > +
-> >  static int ad8366_probe(struct spi_device *spi)
-> >  {
-> >       struct iio_dev *indio_dev;
-> > @@ -193,6 +216,12 @@ static int ad8366_probe(struct spi_device *spi)
-> >               indio_dev->channels = ad8366_channels;
-> >               indio_dev->num_channels = ARRAY_SIZE(ad8366_channels);
-> >               break;
-> > +     case ID_ADA4961:
-> > +             st->reset_gpio = devm_gpiod_get(&spi->dev, "reset",
-> > +                     GPIOD_OUT_HIGH);
-> > +             indio_dev->channels = ada4961_channels;
-> > +             indio_dev->num_channels = ARRAY_SIZE(ada4961_channels);
-> > +             break;
-> >       default:
-> >               dev_err(&spi->dev, "Invalid device ID\n");
-> >               ret = -EINVAL;
-> > @@ -238,6 +267,7 @@ static int ad8366_remove(struct spi_device *spi)
-> >
-> >  static const struct spi_device_id ad8366_id[] = {
-> >       {"ad8366",  ID_AD8366},
-> > +     {"ada4961", ID_ADA4961},
-> >       {}
-> >  };
-> >  MODULE_DEVICE_TABLE(spi, ad8366_id);
-> > @@ -254,5 +284,5 @@ static struct spi_driver ad8366_driver = {
-> >  module_spi_driver(ad8366_driver);
-> >
-> >  MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
-> > -MODULE_DESCRIPTION("Analog Devices AD8366 VGA");
-> > +MODULE_DESCRIPTION("Analog Devices AD8366 and similar Gain Amplifiers");
-> >  MODULE_LICENSE("GPL v2");
->
+T24gMjAxOS0wNi0wOCAxMjo1NSwgV29sZnJhbSBTYW5nIHdyb3RlOg0KPiBXaGlsZSBwcmVwYXJp
+bmcgYSByZWZhY3RvcmluZyBzZXJpZXMsIEkgbm90aWNlZCB0aGF0IHNvbWUgZHJpdmVycyB1c2Ug
+YQ0KPiBjb21wbGljYXRlZCB3YXkgb2YgZGV0ZXJtaW5pbmcgdGhlIGFkYXB0ZXIgb2YgYSBjbGll
+bnQuIFRoZSBlYXN5IHdheSBpcw0KPiB0byB1c2UgdGhlIGludGVuZGVkIHBvaW50ZXI6IGNsaWVu
+dC0+YWRhcHRlcg0KPiANCj4gVGhlc2UgZHJpdmVycyBkbzoNCj4gCXRvX2kyY19hZGFwdGVyKGNs
+aWVudC0+ZGV2LnBhcmVudCk7DQo+IA0KPiBUaGUgSTJDIGNvcmUgcG9wdWxhdGVzIHRoZSBwYXJl
+bnQgcG9pbnRlciBhczoNCj4gCWNsaWVudC0+ZGV2LnBhcmVudCA9ICZjbGllbnQtPmFkYXB0ZXIt
+PmRldjsNCj4gDQo+IE5vdyB0YWtlIGludG8gY29uc2lkZXJhdGlvbiB0aGF0DQo+IAl0b19pMmNf
+YWRhcHRlcigmYWRhcHRlci0+ZGV2KTsNCj4gDQo+IGlzIGEgY29tcGxpY2F0ZWQgd2F5IG9mIHNh
+eWluZyAnYWRhcHRlcicsIHRoZW4gd2UgY2FuIGV2ZW4gZm9ybWFsbHkNCj4gcHJvdmUgdGhhdCB0
+aGUgY29tcGxpY2F0ZWQgZXhwcmVzc2lvbiBjYW4gYmUgc2ltcGxpZmllZCBieSB1c2luZw0KPiBj
+bGllbnQtPmFkYXB0ZXIuDQo+IA0KPiBUaGUgY29udmVyc2lvbiB3YXMgZG9uZSB1c2luZyBhIGNv
+Y2NpbmVsbGUgc2NyaXB0IHdpdGggc29tZSBtYW51YWwNCj4gaW5kZW50YXRpb24gZml4ZXMgYXBw
+bGllZCBvbiB0b3AuDQo+IA0KPiBUbyBhdm9pZCBhIGJyb3duIHBhcGVyIGJhZyBtaXN0YWtlLCBJ
+IGRvdWJsZSBjaGVja2VkIHRoaXMgb24gYSBSZW5lc2FzDQo+IFNhbHZhdG9yLVhTIGJvYXJkIChS
+LUNhciBNM04pIGFuZCB2ZXJpZmllZCBib3RoIGV4cHJlc3Npb24gcmVzdWx0IGluIHRoZQ0KPiBz
+YW1lIHBvaW50ZXIuIE90aGVyIHRoYW4gdGhhdCwgdGhlIHNlcmllcyBpcyBvbmx5IGJ1aWxkIHRl
+c3RlZC4NCg0KU2ltaWxhciB0aGluZ3MgZ28gb24gaW46DQoNCmRyaXZlcnMvaHdtb24vbG05MC5j
+DQpkcml2ZXJzL2xlZHMvbGVkcy1pczMxZmwzMTl4LmMNCmRyaXZlcnMvb2YvdW5pdHRlc3QuYw0K
+DQpUaG9zZSBoYXZlIHRoaXMgcGF0dGVybjoNCg0KCXN0cnVjdCBkZXZpY2UgKmRldiA9ICZjbGll
+bnQtPmRldjsNCglzdHJ1Y3QgaTJjX2FkYXB0ZXIgKmFkYXB0ZXIgPSB0b19pMmNfYWRhcHRlcihk
+ZXYtPnBhcmVudCk7DQoNCkFuZCBkcml2ZXJzL3J0Yy9ydGMtZm0zMTMwLmMgaGFzIGEgY291cGxl
+IG9mIHRoZXNlOg0KDQoJdG1wID0gaTJjX3RyYW5zZmVyKHRvX2kyY19hZGFwdGVyKGZtMzEzMC0+
+Y2xpZW50LT5kZXYucGFyZW50KSwNCgkJCS4uLik7DQoNCndoZXJlIGZtMzEzMC0+Y2xpZW50IGlz
+IG9mIHR5cGUgInN0cnVjdCBpMmNfY2xpZW50ICoiDQoNCkNoZWVycywNClBldGVyDQo=

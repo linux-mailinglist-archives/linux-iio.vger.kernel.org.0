@@ -2,121 +2,186 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12D093B60C
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2019 15:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41343B7DD
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2019 16:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390360AbfFJNb2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jun 2019 09:31:28 -0400
-Received: from mail-eopbgr710073.outbound.protection.outlook.com ([40.107.71.73]:63568
-        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2390345AbfFJNb2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 10 Jun 2019 09:31:28 -0400
+        id S2390955AbfFJO5J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jun 2019 10:57:09 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:43655 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390087AbfFJO5J (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jun 2019 10:57:09 -0400
+Received: by mail-lj1-f194.google.com with SMTP id 16so8233253ljv.10;
+        Mon, 10 Jun 2019 07:57:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D5aummxxU1hYNcU4kpvKgQlJrTanJ8YpXj96zFsOaw0=;
- b=x6+0Y7Qh9uIEheDQYsUUVNOHxF+83Up5PPDi8sYwQheFToGVO1ggNk8FYfglioRo8oSAvkp67SneRhgJ9xYUnX0Fk+7nQuLUbTOqbw5Xb8f30v/1KoHqfJSpjwwV5UtUD5Ftqoax43UPkWbL6oZmabGOUBrPvC12lz7lOuoEhiI=
-Received: from BN3PR03CA0115.namprd03.prod.outlook.com (2603:10b6:400:4::33)
- by BN6PR03MB3123.namprd03.prod.outlook.com (2603:10b6:405:44::29) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1965.12; Mon, 10 Jun
- 2019 13:31:25 +0000
-Received: from CY1NAM02FT006.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e45::206) by BN3PR03CA0115.outlook.office365.com
- (2603:10b6:400:4::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1965.15 via Frontend
- Transport; Mon, 10 Jun 2019 13:31:25 +0000
-Authentication-Results: spf=pass (sender IP is 137.71.25.55)
- smtp.mailfrom=analog.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
- header.from=analog.com;
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- CY1NAM02FT006.mail.protection.outlook.com (10.152.74.104) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1965.12
- via Frontend Transport; Mon, 10 Jun 2019 13:31:25 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x5ADVO5U021077
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Mon, 10 Jun 2019 06:31:24 -0700
-Received: from NWD2MBX7.ad.analog.com ([fe80::190e:f9c1:9a22:9663]) by
- NWD2HUBCAS7.ad.analog.com ([fe80::595b:ced1:cc03:539d%12]) with mapi id
- 14.03.0415.000; Mon, 10 Jun 2019 09:31:24 -0400
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
-CC:     "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: [RFC] Supporting CLK frequencies above 4.29 Ghz
-Thread-Topic: [RFC] Supporting CLK frequencies above 4.29 Ghz
-Thread-Index: AQHVH5DMT+gj9BELpEK8P9ZZfFsVrg==
-Date:   Mon, 10 Jun 2019 13:31:23 +0000
-Message-ID: <3cceaaaa8fbbc0086dccbd6b009129c05519bdc0.camel@analog.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.65.129]
-x-adiroutedonprem: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B03CB295FEC9F54E8793CC9A7CB694B4@analog.com>
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=PYmx133KZQoJKDFhZXpflZLvuaXqiDVJHDj8dnvFK3c=;
+        b=fbu4D2EgerCZ8FNWJPtQDISqx63NaDowo7n/mstpGpU/xykkL8yOFxZuacw62v6XQf
+         1iJo5/rx8BI29ePuVNjIwPs4EnoJ/3coLMCxG7+TH/JLrRZp/Rx3guDb3eNY9J/mBFx7
+         SCVXNggMrj1hRcUw+FVPQphyH8TF3hGv5Gn3lbxPWYZXjmsrau2ZHfSm5wPmKZwwZwca
+         IT+YYg1GBYyb9v+BownkloeB6fHIOvAdPkNyeP3SuaOYUqypnK9AI/i9lrTy8Aom51SK
+         Ponr29VCpDxtxTYyO3B0XlR92ftOpNO5E9SvhOPuMNuHiFYhf/aY9uZJVi/Ne3WvgJuV
+         n9Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=PYmx133KZQoJKDFhZXpflZLvuaXqiDVJHDj8dnvFK3c=;
+        b=rn+eLt9TXSVvTTpjxKrG+qBjy79Isg7x22VGGuIfcA6LL8ja/u8kYi3I1Tt7CSQWCQ
+         hlqL3nBV6MvU1lnUO+8J9zt9Optr0Fm18AA9VfuzE4k7IwaX+B6skxkzTq1tH3ypB100
+         sk9GYq/NQ8zbVIt2ccwNIc6mnLJbhXUIG0hOf6+eCROnsSPnN1Z4ktABrM0RnE3KlxEi
+         ktE5HeELLIBq7UqkhACFxpKvd8iZ3Mq4Jq0yAe5hNPrUrduWSBDmFt7UOmMSrJQPT8V7
+         yzdpfLdSyngj32cgsJ9g8ViV6sDn1zSlRD/GD9n+OfvgzQiFqENcjXUZ6f0c9xi2LjUv
+         rOSQ==
+X-Gm-Message-State: APjAAAUsWIypz2pUsgUuv0ZmYyWVwAvrMOIqxq+JNwYE8oyBgUW0nuvv
+        Xmi76MiJM2pXrWp1OJmzVbE=
+X-Google-Smtp-Source: APXvYqwkoaAsQc0xLpcBSP3WoJ20Ez1h8UYrPQfhT1yfxDdElhqvqJkB19rRLWhY4W32ccUwgR/3qg==
+X-Received: by 2002:a2e:29c4:: with SMTP id p65mr7961612ljp.141.1560178626442;
+        Mon, 10 Jun 2019 07:57:06 -0700 (PDT)
+Received: from mobilestation ([5.164.217.122])
+        by smtp.gmail.com with ESMTPSA id q1sm2041202lfc.79.2019.06.10.07.57.05
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 10 Jun 2019 07:57:05 -0700 (PDT)
+Date:   Mon, 10 Jun 2019 17:57:04 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Serge Semin <Sergey.Semin@t-platforms.ru>,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 2/2] hwmon: Add ads1000/ads1100 voltage ADCs driver
+Message-ID: <20190610145702.fa7px7zkic4x5zqd@mobilestation>
+References: <20190514225810.12591-1-fancer.lancer@gmail.com>
+ <20190514225810.12591-3-fancer.lancer@gmail.com>
+ <20190530125510.GA26072@roeck-us.net>
+ <20190603121117.0000512c@huawei.com>
+ <20190605205556.GA397@roeck-us.net>
+ <20190607230144.fnkzljhnnqks5oqx@mobilestation>
+ <02ff9666-d666-c539-aeb3-9e67fc358b17@roeck-us.net>
 MIME-Version: 1.0
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(136003)(376002)(346002)(396003)(39860400002)(2980300002)(199004)(189003)(2351001)(2501003)(126002)(305945005)(36756003)(8936002)(70206006)(70586007)(476003)(486006)(450100002)(7636002)(2616005)(966005)(26005)(7736002)(186003)(8676002)(246002)(2906002)(102836004)(14454004)(478600001)(6116002)(316002)(5640700003)(3846002)(54906003)(50466002)(106002)(47776003)(5660300002)(6306002)(6916009)(118296001)(336012)(86362001)(2486003)(23676004)(7696005)(426003)(436003)(356004)(4326008);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR03MB3123;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 50f44bfa-676e-46dd-0146-08d6eda7ef9d
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328)(7193020);SRVR:BN6PR03MB3123;
-X-MS-TrafficTypeDiagnostic: BN6PR03MB3123:
-X-MS-Exchange-PUrlCount: 2
-X-Microsoft-Antispam-PRVS: <BN6PR03MB31235A52B342FD703E75C42BF9130@BN6PR03MB3123.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-Forefront-PRVS: 0064B3273C
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: S73Pj6jUt6DTYVd3HrAhj79Igx9aeRdRKRMdK7JIbTpg/exyZaGWAayHxzJpy7qNnicoPgd3EbWsGnnmiS3jHuceftV4MyBTqls3e7seQz9XH2fqqYJ/58N0ypzFRBrHYDJmrfQm38ITDYl3D46FJrYeWR6nDpcRDJBae2rMk1YwEybIQjpwGzQ101+jrzmaqyquz7bTIxGNfptMfF6vPD5aU1pCH11brsyupshO8C/t+0rllmqdzL33fHkh4Pd+0bKtkynIIMokugex3aZjxqpUUyQl5k1L2zV08yvt8sXty9awpTivIiYsyv2Ow7HZ2UOQypf8nIL6R1/IQadZmu3FbMa8+42+SQBZ//Em5Uy9B8dug1wYKPnBEcAgvnm7o0h4ZuQzuCXI1TZ+g4neDYb2iGytcrFUkZoFk0ADMUM=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2019 13:31:25.1456
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50f44bfa-676e-46dd-0146-08d6eda7ef9d
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR03MB3123
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <02ff9666-d666-c539-aeb3-9e67fc358b17@roeck-us.net>
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGV5LA0KDQoNClRoaXMgZW1haWwgaXMgdGFyZ2V0ZWQgbW9zdGx5IHRvIHRoZSBDTEsgc3Vic3lz
-dGVtL2ZyYW1ld29yay4NCldlJ3ZlIGluY2x1ZGVkIHRoZSBJSU8gc3Vic3lzdGVtIGFzIHdlbGws
-IGFzIHRoZSBkcml2ZXJzIHRoYXQgd2UnbGwgY29uc2lkZXIgd3JpdGluZyB3aWxsIGJlIGFkZGVk
-IHVuZGVyDQpkcml2ZXJzL2lpby9mcmVxdWVuY3kgYW5kIHJlZ2lzdGVyIGFzIFtPRl0gQ0xLIHBy
-b3ZpZGVycy4NClRoZSByZWFzb24gZm9yIGluY2x1ZGluZyB0aGVtIHVuZGVyIElJTywgaXMgdHlw
-aWNhbGx5IHRoZSBmYWN0IHRoYXQgd2UgcHJlZmVyL2xpa2UgdGhlIHN5c2ZzIGNvbnRyb2wgdGhh
-dCBJSU8gaGFzLg0KDQpMb25nLXN0b3J5LXNob3J0ICh0aGUgaW50cm8gd2Fzbid0IHRvbyBzaG9y
-dCksIHdlIGhhdmUgc29tZSBDTEsgY2hpcHMgdGhhdCB3ZSdyZSB3cml0aW5nIHNvbWUgZHJpdmVy
-cyBmb3IsIHRoYXQgZ28gdXAgdG8NCjMyIEdoei4gQW5kIHdlIGhhdmUgYSBmZXcgbW9yZSBvZiB0
-aGVtIHRoYXQgZ28gYWJvdmUgNC4yOSBHaHouDQoNClRoZSBzdGFuZGFyZCBgY2xrX3tnZXQsc2V0
-fV9yYXRlKClgIHN1cHBvcnQgb25seSBgdW5zaWduZWQgbG9uZ2AgKHUzMikuDQoNCkludGVybmFs
-bHkgKGluIG91ciB0cmVlKSB3ZSB1c2UgYW4gbWVjaGFuaXNtIChub3QgdXBzdHJlYW1lZCkgZm9y
-IHdvcmtpbmcgYXJvdW5kIHRoZSA0LjI5IEdoeiBjYXAsIGJ5IHByb3ZpZGluZw0KbXVsdGlwbGll
-cnMvc2NhbGVzLg0KQW5kIHNvbWUgZ2V0L3NldCB2YXJpYW50cywgY2FsbGVkIGBjbGtfe2dldCxz
-ZXR9X3JhdGVfc2NhbGVkKClgDQpFeGFtcGxlczoNCmh0dHBzOi8vZ2l0aHViLmNvbS9hbmFsb2dk
-ZXZpY2VzaW5jL2xpbnV4L2Jsb2IvbWFzdGVyL2luY2x1ZGUvbGludXgvY2xrL2Nsa3NjYWxlLmgN
-Cmh0dHBzOi8vZ2l0aHViLmNvbS9hbmFsb2dkZXZpY2VzaW5jL2xpbnV4L2NvbW1pdC9mNjFhNjdl
-YzY1YjkxOTEwMjFkN2FmYTU2ZDM5YWJlOTU1YWMwZDQxI2RpZmYtMTE4ODg2NDI5Yzk0ZTY1Nzdm
-YmU1ZmU1OGI5OGU0OTgNCg0KQnV0LCB3ZSB0aG91Z2h0IHdlJ2Qgc3RhcnQgYSBkaXNjdXNzaW9u
-L1JGQyBhYm91dCBwb3RlbnRpYWxseSBzd2l0Y2hpbmcgZnJvbSB1MzIgKG9yIHVuc2lnbmVkIGxv
-bmcpIHRvIHU2NCAodW5zaWduZWQNCmxvbmcgbG9uZykgdHlwZXMuDQpUaGF0IHdvdWxkIGFsbG93
-IGZvciBzaWduaWZpY2FudGx5IGhpZ2hlciBmcmVxdWVuY2llcyB0aGFuIDQuMjlHaHoganVzdCB2
-aWEgYGNsa197Z2V0LHNldH1fcmF0ZSgpYA0KDQpUaGVyZSBhcmUgc29tZSBodXJkbGVzIHRvIGRv
-IGl0LCBhcyBtYW55IGRyaXZlcnMgc2hvdWxkIG5lZWQgc29tZSBpbnZlc3RpZ2F0aW9uL2NoYW5n
-aW5nLg0KSSdkIGJlIHdpbGxpbmcgdG8gaGVscCB3aXRoIHRoZSBjb252ZXJzaW9uIGlmIHRoYXQn
-cyBhIHBsYW4uDQoNCldoYXRldmVyIHRoZSBjb25zZW5zdXMgd291bGQgYmUgKHN3aXRjaGluZyB0
-byB1NjQsIG9yIGltcGxlbWVudGluZyBhIGNsb2NrX3NjYWxlIHN0cnVjdC9tZWNoYW5pc20pIGlz
-IGZpbmUgZnJvbSBteSBzaWRlLg0KV2Ugd291bGQgZmluZCBhIHdheSB0byBhZGFwdCBvdXIgZHJp
-dmVycyB0byBlaXRoZXIgdmFyaWFudC4NCkludGVybmFsbHkgKGluIG91ciBncm91cCksIHRoZXJl
-IGlzIGEgcHJlZmVyZW5jZSB0byB0aGUgc3dpdGNoIHRvIHU2NC4NCg0KVGhhbmtzDQpBbGV4DQo=
+Hello Guenter
+
+On Fri, Jun 07, 2019 at 06:02:48PM -0700, Guenter Roeck wrote:
+> On 6/7/19 4:01 PM, Serge Semin wrote:
+> > Hello folks
+> > 
+> > On Wed, Jun 05, 2019 at 01:55:56PM -0700, Guenter Roeck wrote:
+> > > On Mon, Jun 03, 2019 at 12:11:17PM +0100, Jonathan Cameron wrote:
+> > > > On Thu, 30 May 2019 05:55:10 -0700
+> > > > Guenter Roeck <linux@roeck-us.net> wrote:
+> > > > 
+> > > > > Hi,
+> > > > > 
+> > > > > On Wed, May 15, 2019 at 01:58:09AM +0300, Serge Semin wrote:
+> > > > > > These are simple Texas Instruments ADC working over i2c-interface with
+> > > > > > just one differential input and with configurable 12-16 bits resolution.
+> > > > > > Sample rate is fixed to 128 for ads1000 and can vary from 8 to 128 for
+> > > > > > ads1100. Vdd value reference value must be supplied so to properly
+> > > > > > translate the sampled code to the real voltage. All of these configs are
+> > > > > > implemented in the device drivers for hwmon subsystem. The next dts
+> > > > > > properties should be specified to comply the device platform setup:
+> > > > > >   - vdd-supply - voltage regulator connected to the Vdd pin of the device
+> > > > > >   - ti,gain - programmable gain amplifier
+> > > > > >   - ti,datarate - converter data rate
+> > > > > >   - ti,voltage-divider - possible resistors-base external divider
+> > > > > > See bindings documentation file for details.
+> > > > > > 
+> > > > > > Even though these devices seem more like ads1015 series, they
+> > > > > > in fact pretty much different. First of all ads1000/ads1100 got less
+> > > > > > capabilities: just one port, no configurations of digital comparator, no
+> > > > > > input multi-channel multiplexer, smaller PGA and data-rate ranges.
+> > > > > > In addition they haven't got internal voltage reference, but instead
+> > > > > > are created to use Vdd pin voltage. Finally the output code value is
+> > > > > > provided in different format. As a result it was much easier for
+> > > > > > development and for future support to create a separate driver.
+> > > > > 
+> > > > > This chicp doesn't have any real hardware monitoring characteristics
+> > > > > (no limit registers). It seems to be better suited to be implemented
+> > > > > as iio driver. If it is used as hardware monitor, the iio-hwmon bridge
+> > > > > should work just fine.
+> > > > > 
+> > > > > Jonathan, what do you think ?
+> > > > Sorry for slow response, was on vacation.
+> > > > 
+> > > > Agreed, this looks like a standard multipurpose ADC so probably more suited
+> > > > to IIO. Whether you bother with a buffered /chardev interface or not given it
+> > > > is a fairly slow device is a separate question (can always be added later
+> > > > when someone wants it).
+> > > > 
+> > > > Note the voltage-divider in the DT properties is something that should
+> > > > have a generic representation. In IIO we have drivers/iio/afe/iio-rescale.c
+> > > > for that, in this case using the voltage divider binding.
+> > > > 
+> > > > gain and datarate are both characteristics that should be controlled from
+> > > > userspace rather than via a binding.
+> > > > 
+> > > 
+> > > In summary: Serge, please re-implement the driver as iio adc driver.
+> > > 
+> > 
+> > Thanks for the comments. I see your point, but since you are asking of a pretty
+> > much serious code redevelopment, I want to make sure it is fully justified.
+> > 
+> > I made my decision of creating the hwmon driver following the next logic.
+> > Before I started this driver development, I searched the kernel for either a
+> > ready-to-use code or for a similar device driver to add the ads1000 ADC support.
+> > I found the ads1015 driver, which is created for TI ADC1015 ADCs. These devices
+> > are similar to the ads1000 series, but are more complex. Due to the complexity
+> > I decided to create a separate driver for ads1000s, and of course since the similar
+> > device driver lived in hwmon, I chose it to be home of my new driver.
+> > 
+> > But now you are asking me to move it to IIO, while the driver of more complex
+> > ads1015 device exists in the hwmon subsystem of the kernel. Moreover the ads1000
+> 
+> A driver for ADS1015 also exists in drivers/iio/adc/ti-ads1015.c, meaning there
+> are already two drivers for that chip. Accepting the driver for ads1000 into
+> hwmon would ultimately mean that we would end up with another duplicate driver,
+> as soon as someone needs iio support for this chip. From hwmon perspective,
+> that driver would have zero additional functionality.
+> 
+> Users would then have to choose between the hwmon ads1000 driver and the iio
+> ads1000 driver plus iio->hwmon bridge. The kernel maintainers would have to
+> maintain two drivers instead of one, for no good reason. We would therefore
+> at that time remove hwmon driver from the kernel because it doesn't make sense
+> to keep two drivers for the same chip if both drivers provide exactly the same
+> functionality. This just doesn't make sense.
+> 
+> On top of that, the ads1000 has zero characteristics of a typical hardware
+> monitoring chip. It doesn't have any limit or alarm status registers.
+> 
+> > device is utilized on our board to monitor system itself (voltage on the input
+> > DC-DC). Could you please tell me why the driver should really be in IIO instead
+> > of hwmon and how do you select which subsystem one or another driver is supposed
+> > to live in?
+> > 
+> If a chip has typical hardware monitoring characteristics such as slow but accurate
+> conversion rates and limit/alarm registers, we are happy to accept it into the
+> hardware monitoring subsystem. If the chip has no such characteristics,
+> it should be implemented as iio driver.
+> 
+> Actually, we should remove the ads1015 driver from the hwmon subsystem.
+> I'll start a separate thread to discuss that.
+> 
+
+Thank you very much for the detailed explanation. I can't believe I missed that
+iio-version of ads1015. I'll take a look at that. If it's possible to add
+ads1000 support right into the ads1015 drive, I'll do this. Otherwise I'll
+port the ads1000 to the IIO subsystem as you suggested.
+
+Regards,
+-Sergey
+
+> Thanks,
+> Guenter

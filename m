@@ -2,208 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FCF73C99C
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jun 2019 13:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B89023C9A4
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jun 2019 13:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729079AbfFKLBk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jun 2019 07:01:40 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:39609 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729078AbfFKLBj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jun 2019 07:01:39 -0400
-Received: by mail-wm1-f67.google.com with SMTP id z23so2405304wma.4
-        for <linux-iio@vger.kernel.org>; Tue, 11 Jun 2019 04:01:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:openpgp:autocrypt:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=HGCftkSHpKLWELmSFAK/o0qPA0nwcHk8AkL38CX0UA8=;
-        b=KkrrTS1Clu1/ToalKbEGPTeGgoETAQ3joz8xJqvsmRl/kyhvR7hP8TWT+G7kdNygHG
-         cmqq3qdoUmYU1oRmb1P+LCMc0+Fal0R+NzaMrjCUAun6Wud2V36w2hRwbywGU/GRw7vB
-         EUpME2yr6RVyYgroFW9ziBVW+qNJfgQvIO9E0gTtSJukvJQcqw2W++2cpLo9hkL6f0xC
-         PWAFeT8YO0mUj6eWDEIEjVkh+NgzHSLctCDs14JxKyWfeKHRdfc0cq5Rh+1VbnqvBCkX
-         o1tJ21iM6xnmIzZ1oBgULEjaBI/adlliZQv458VEaaaVSWfcX1xenW7weqn+fqx5TY2X
-         Bz6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :organization:message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=HGCftkSHpKLWELmSFAK/o0qPA0nwcHk8AkL38CX0UA8=;
-        b=i1QjzE2zV/UvAbxcQR5keBxo71mdx9Y1uVo1PZFDSpQcv5te1hXYY7XXOXujhseKWa
-         FoOjWtAKlJNruIhmCDoCkWoMTO2YGskNlZihNHLfIraftQuewKkVFvP3NwDFlLtrR8BW
-         g0FMavyj5THiYZqhU7C0ioSgXrvEohF5PeeO2OJJMJSg11JLsh/+SDEgHywYmPwQZTlw
-         PMDHybZQFNRlrzo/wwvxm9O6NrRdcBonhMSsVAkAbd+Ye3CkAilxEDadPaPbmFQXFxCE
-         yZh5RqTEylOhm00dxYxmkoLJnj2yK57ET5HiENqzyjA1BvLW0O/RWFrOnYS/gyRLjZw6
-         YTZg==
-X-Gm-Message-State: APjAAAX7ytXxfuFeZe2z8bsB/PWYQvOR8pyEcgO9X3c1OmeTm3g3b77t
-        Bam4Tn+tj2HwDOc5p2k5iP/bTw==
-X-Google-Smtp-Source: APXvYqyPiVk7Saf5lzMmnLLvD5VpZ3bXVkhTXya27VP/rsiz2+NET+l11ahDPVnTAcen3/TtwdPGWA==
-X-Received: by 2002:a1c:ddd6:: with SMTP id u205mr16651562wmg.54.1560250896605;
-        Tue, 11 Jun 2019 04:01:36 -0700 (PDT)
-Received: from [10.1.2.12] (lmontsouris-657-1-212-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id u1sm2360393wml.14.2019.06.11.04.01.35
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 11 Jun 2019 04:01:35 -0700 (PDT)
-Subject: Re: [PATCH 1/3] Documentation: dt-bindings: add the Amlogic Meson
- Temperature Sensor
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Guillaume La Roque <glaroque@baylibre.com>
-Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        khilman@baylibre.com, linux-kernel@vger.kernel.org,
-        jic23@kernel.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20190604144714.2009-1-glaroque@baylibre.com>
- <20190604144714.2009-2-glaroque@baylibre.com>
- <CAFBinCBN4QC2tPDEQmTW_c+PP5yu2qoK5M1eSye=SmvpieKWQg@mail.gmail.com>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
- 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
- ZaTUOEkgIor5losDrePdPgE=
-Organization: Baylibre
-Message-ID: <d68aae23-f877-1f65-94a4-79e909ae111a@baylibre.com>
-Date:   Tue, 11 Jun 2019 13:01:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <CAFBinCBN4QC2tPDEQmTW_c+PP5yu2qoK5M1eSye=SmvpieKWQg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+        id S2388669AbfFKLC7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jun 2019 07:02:59 -0400
+Received: from mail-eopbgr80135.outbound.protection.outlook.com ([40.107.8.135]:55043
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2388629AbfFKLC7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 11 Jun 2019 07:02:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fXrpjXdyrMEC4Y3ToVddBb46orM5cvC5HVFEfF3fwaM=;
+ b=hH13luEsPUy8yF17GPnbWdv+P5ppy/67/L9QgLF1GrnmFdDx1+duQlzLkrgNK8gfdD2oeUncZisUIz7axD15GcVPuhkkdqo7nf+4eR2VO7ciFGQq5AxMynioEQ0LvSl+OUSOVp/lqCD9vAxIcvwMBguuZ8j6NsBEYgfb5j/V22k=
+Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com (52.134.66.158) by
+ DB3PR0202MB3419.eurprd02.prod.outlook.com (52.134.66.138) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1965.12; Tue, 11 Jun 2019 11:02:14 +0000
+Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com
+ ([fe80::49ac:3a71:a3ec:d6bf]) by DB3PR0202MB3434.eurprd02.prod.outlook.com
+ ([fe80::49ac:3a71:a3ec:d6bf%5]) with mapi id 15.20.1965.017; Tue, 11 Jun 2019
+ 11:02:14 +0000
+From:   Peter Rosin <peda@axentia.se>
+To:     =?utf-8?B?TXlsw6huZSBKb3NzZXJhbmQ=?= <mylene.josserand@bootlin.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "thomas.petazzoni@bootlin.com" <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v1 0/3] iio: afe: rescale: Add INFO_PROCESSED support
+Thread-Topic: [PATCH v1 0/3] iio: afe: rescale: Add INFO_PROCESSED support
+Thread-Index: AQHVIDwQ2wrcSoZDXECKyQXOexLw8aaWScMA
+Date:   Tue, 11 Jun 2019 11:02:14 +0000
+Message-ID: <36890130-24ed-2200-1e8d-964612fee62d@axentia.se>
+References: <20190611095659.29845-1-mylene.josserand@bootlin.com>
+In-Reply-To: <20190611095659.29845-1-mylene.josserand@bootlin.com>
+Accept-Language: en-US, sv-SE
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+x-originating-ip: [213.112.138.100]
+x-clientproxiedby: HE1P190CA0018.EURP190.PROD.OUTLOOK.COM (2603:10a6:3:bc::28)
+ To DB3PR0202MB3434.eurprd02.prod.outlook.com (2603:10a6:8:5::30)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=peda@axentia.se; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a3b43a9f-0872-4b61-9923-08d6ee5c426a
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:DB3PR0202MB3419;
+x-ms-traffictypediagnostic: DB3PR0202MB3419:
+x-microsoft-antispam-prvs: <DB3PR0202MB341951A8E419C08E520033B5BCED0@DB3PR0202MB3419.eurprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 006546F32A
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(136003)(366004)(396003)(376002)(39830400003)(53754006)(52314003)(189003)(199004)(8676002)(25786009)(6246003)(5660300002)(53546011)(7416002)(76176011)(102836004)(99286004)(36756003)(68736007)(6506007)(386003)(66574012)(81166006)(81156014)(52116002)(31696002)(3846002)(486006)(6512007)(6116002)(14444005)(256004)(6436002)(2501003)(2906002)(4326008)(65956001)(65806001)(66066001)(66446008)(64756008)(66556008)(66476007)(446003)(11346002)(8936002)(73956011)(53936002)(66946007)(2616005)(476003)(2201001)(229853002)(14454004)(6486002)(74482002)(186003)(26005)(7736002)(305945005)(64126003)(65826007)(86362001)(54906003)(31686004)(110136005)(58126008)(508600001)(71200400001)(71190400001)(316002);DIR:OUT;SFP:1102;SCL:1;SRVR:DB3PR0202MB3419;H:DB3PR0202MB3434.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: axentia.se does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: MK/Wr5yYdUBuONaQPKvtf+/q+1F5FpaMgck7r9ii1NwY6ueNSiYVOMGVGBXdakMP4IL2qwcwx/wWcE3lLdQ7cpoeYpRqMnPviO8VwAv9f0SaEha45unKI6OINNZDCZWQnTRFU8Gkrqfud66GIsu4NLOUcJe9VKMOLuwlAnLa0HOeUF+sFs6VGe6evv7Xe1thgYLBPjDhC1VYaGJPCJ8DMO2XrxgRoSRUWFISaK4r7a7FlW45ir8U08ZBOgwExpXmWFc6Kk2Jl2Y/aHp4ZPR/t5cWE1iOFxlH+iArjIKGeSxkEXEUzwVa4Fd4qBXqqzNQa1RdmB9NWEua8s4ZBqXIp/ToH4SUEq6dvvwSsFTt3e1KulX+ynzps0wAZiUGzwx6PY2opJWGOTQ9afrfvXdSVL1emA66AEUxixgT7JPwUoE=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D7D25203C01DD6489FDB4D707A76C402@eurprd02.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3b43a9f-0872-4b61-9923-08d6ee5c426a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jun 2019 11:02:14.1206
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: peda@axentia.se
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0202MB3419
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 06/06/2019 21:16, Martin Blumenstingl wrote:
-> Hi Guillaume,
-> 
-> thank you for working on this!
-> 
-> On Tue, Jun 4, 2019 at 4:47 PM Guillaume La Roque <glaroque@baylibre.com> wrote:
->>
->> This adds the devicetree binding documentation for the Temperature
->> Sensor found in the Amlogic Meson G12 SoCs.
->> Currently only the G12A SoCs are supported.
-> so G12B is not supported (yet)?
-
-G12B is 95% similar as G12A, it will certainly use slighly different values.
-
-> 
->> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
->> ---
->>  .../iio/temperature/amlogic,meson-tsensor.txt | 31 +++++++++++++++++++
->>  1 file changed, 31 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt
->>
->> diff --git a/Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt b/Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt
->> new file mode 100644
->> index 000000000000..d064db0e9cac
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt
->> @@ -0,0 +1,31 @@
->> +* Amlogic Meson Temperature Sensor
->> +
->> +Required properties:
->> +- compatible:  depending on the SoC and the position of the sensor,
->> +               this should be one of:
->> +               - "amlogic,meson-g12a-cpu-tsensor" for the CPU G12A SoC sensor
->> +               - "amlogic,meson-g12a-ddr-tsensor" for the DDR G12A SoC sensor
->> +               followed by the common :
->> +               - "amlogic,meson-g12a-tsensor" for G12A SoC family
->> +- reg:         the physical base address and length of the registers
->> +- interrupts:  the interrupt indicating end of sampling
->> +- clocks:      phandle identifier for the reference clock of temperature sensor
->> +- #io-channel-cells: must be 1, see ../iio-bindings.txt
-> have you considered using the thermal framework [0] instead of the iio
-> framework (see below)?
-
-Question: why thermal, and not hwmon ? what's the main difference ?
-
-> 
->> +- amlogic,ao-secure: phandle to the ao-secure syscon
-> the driver has some "u_efuse_off" access. do we need to get some
-> calibration values from the AO syscon or can we also fetch it from the
-> eFuse? you can look at arch/arm/boot/dts/meson8.dtsi where I'm passing
-> the temperature sensor calibration data to the SAR ADC (there's no
-> dedicated temperature sensor IP block prior to G12A) while reading the
-> data from the eFuse
-> 
->> +Optional properties:
->> +- amlogic,critical-temperature: temperature value in milli degrees Celsius
->> +       to set automatic reboot on too high temperature
-> as far as I can tell the thermal framework supports multiple trip
-> points. I'm seeing this as a benefit because the hardware can raise
-> interrupts at four different temperatures (defined by the driver)
-
-Theoretically, but the implementation code differs a lot from the datasheet.
-
-> 
->> +Example:
->> +       cpu_temp: temperature-sensor@ff634800 {
->> +               compatible = "amlogic,meson-g12a-cpu-tsensor",
->> +                            "amlogic,meson-g12a-tsensor";
->> +               reg = <0x0 0xff634800 0x0 0x50>;
->> +               interrupts = <GIC_SPI 35 IRQ_TYPE_EDGE_RISING>;
->> +               clocks = <&clkc CLKID_TS>;
->> +               status = "okay";
-> as far as I know the dt-bindings should not have a status property in
-> the examples
-> 
-> 
-> Martin
-> 
-> _______________________________________________
-> linux-amlogic mailing list
-> linux-amlogic@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-amlogic
-> 
-
+T24gMjAxOS0wNi0xMSAxMTo1NiwgTXlsw6huZSBKb3NzZXJhbmQgd3JvdGU6DQo+IEhlbGxvIGV2
+ZXJ5b25lLA0KPiANCj4gWW91IHdpbGwgZmluZCBhIHNtYWxsIHNlcmllcyB0aGF0IGFkZCB0aGUg
+c3VwcG9ydCBvZiBwcm9jZXNzZWQgdmFsdWVzDQo+IGZvciBpaW8tcmVzY2FsZSBkcml2ZXIuDQo+
+IFRoYW5rcyB0byB0aGF0LCBpdCBpcyBwb3NzaWJsZSB0byByZWFkIHByb2Nlc3NlZCB2YWx1ZXMg
+aW4gc3lzZnMgaW5zdGVhZA0KPiBvZiBnZXR0aW5nIG9ubHkgcmF3IGFuZCBzY2FsZSB2YWx1ZXMu
+DQo+IA0KPiBIZXJlIGlzIGFuIGV4YW1wbGUgZm9yIGEgM3YzIHZvbHRhZ2UgcmVhZGluZzoNCj4g
+IyBjYXQgL3N5cy9idXMvaWlvL2RldmljZXMvaWlvXDpkZXZpY2UxL2luX3ZvbHRhZ2UwX3NjYWxl
+DQo+IDMuNzkxMDE1NjI1DQo+ICMgY2F0IC9zeXMvYnVzL2lpby9kZXZpY2VzL2lpb1w6ZGV2aWNl
+MS9pbl92b2x0YWdlMF9yYXcNCj4gODc5DQo+ICMgY2F0IC9zeXMvYnVzL2lpby9kZXZpY2VzL2lp
+b1w6ZGV2aWNlMS9pbl92b2x0YWdlMF9pbnB1dA0KPiAzMzMyDQo+IA0KPiBJdCBpcyBhbHNvIHBv
+c3NpYmxlIHRvIHJlYWQgZGlyZWN0bHkgdGhlIHByb2Nlc3NlZCB2YWx1ZXMgdXNpbmcgaWlvLWh3
+bW9uDQo+IGRyaXZlciAoc2VlIGV4YW1wbGUgaW4gcGF0Y2gwMyk6DQo+IA0KPiAjIGNhdCAvc3lz
+L2NsYXNzL2h3bW9uL2h3bW9uMC9pbjFfaW5wdXQNCj4gMzMyOA0KPiANCj4gSSBzZXBlcmF0ZWQg
+bXkgc2VyaWVzIGluIDMgcGF0Y2hlczoNCj4gICAgLSBQYXRjaDAxOiBNb3ZlIHRoZSBzY2FsZSBj
+b252ZXJzaW9uIGludG8gYSBmdW5jdGlvbiB0byBwcmVwYXJlIHRoZQ0KPiAgICBzdXBwb3J0IG9m
+IElJT19DSEFOX0lORk9fUFJPQ0VTU0VELg0KPiAgICAtIFBhdGNoMDI6IEFkZCB0aGUgc3VwcG9y
+dCBvZiBJSU9fQ0hBTl9JTkZPX1BST0NFU1NFRC4NCj4gICAgLSBQYXRjaDAzOiBBZGQgYW4gZXhh
+bXBsZSBvZiB0aGUgdXNlIG9mIGh3bW9uIGFuZCB2b2x0YWdlLWRpdmlkZXIgbm9kZXMNCj4gICAg
+aW4gZGV2aWNlLXRyZWUuDQo+IA0KPiBJZiB5b3UgaGF2ZSBhbnkgZmVlZGJhY2tzIG9uIGl0LCBJ
+IHdpbGwgYmUgcGxlYXNlZCB0byByZWFkIHRoZW0hDQoNCg0KVGhlIGxhc3QgcGF0Y2ggYWJvdXQg
+aHdtb24gaGFzIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGlzIHNlcmllcywgYW5kDQpzaG91bGQgYmUg
+cG9zc2libGUgYXMtaXMgd2l0aG91dCBhbnkgY29kZSBjaGFuZ2VzLiBObz8gQUZBSUNULA0KaWlv
+X2h3bW9uIGNhbGxzIGlpb19yZWFkX2NoYW5uZWxfcHJvY2Vzc2VkLCB3aGljaCBjYWxscw0KaWlv
+X2NvbnZlcnRfcmF3X3RvX3Byb2Nlc3NlZF91bmxvY2tlZCBpbiBjYXNlIElJT19DSEFOX0lORk9f
+UFJPQ0VTU0VTDQppcyBub3QgaGFuZGxlZCBieSB0aGUgZHJpdmVyLiBJcyB0aGF0IG5vdCB3b3Jr
+aW5nPw0KDQpUaGVyZSBpcyBhbHNvIGxpYmlpbyBpbiB1c2Vyc3BhY2UgdGhhdCBwcm92aWRlcyB0
+aGUgc2NhbGUgYXMgYSBkb3VibGUNCmFuZCBtYWtlcyB0aGUgY29udmVyc2lvbiB0byBhIHByb2Nl
+c3NlZCB2YWx1ZSB0cml2aWFsLCBzbyB0aGUgc2VyaWVzDQppcyByZWFsbHkgbW9zdGx5IGFib3V0
+IHRoZSBjb252ZW5pZW5jZSBvZiBoYXZpbmcgYSBodW1hbiBkaXJlY3RseQ0Kc2VlaW5nIHRoZSBw
+cm9jZXNzZWQgdmFsdWUgaW4gc3lzZnMuIFJpZ2h0Pw0KDQpJZiB0aGF0IGlzIGRlZW1lZCB2YWx1
+YWJsZSwgdGhlbiBJIHRoaW5rIGl0IHNob3VsZCBiZSBmaXhlZCBpbiBhDQpjZW50cmFsIGxvY2F0
+aW9uLCBhbmQgbm90IGluZGl2aWR1YWxseSBmb3IgZWFjaCBhbmQgZXZlcnkgZHJpdmVyLg0KDQpB
+bnl3YXksIG5vdCBteSBjYWxsLCBqdXN0IHN0YXRpbmcgbXkgb3BpbmlvbiwgYnV0IHRob3NlIGFy
+ZSB0aGUNCnJlYXNvbnMgZm9yIG1lIG5vdCBhZGRpbmcgYSBwcm9jZXNzZWQgY2hhbm5lbCBmcm9t
+IHRoZSB2ZXJ5IGJlZ2lubmluZy4NCg0KQ2hlZXJzLA0KUGV0ZXINCg0KPiBCZXN0IHJlZ2FyZHMs
+DQo+IE15bMOobmUNCj4gDQo+IE15bMOobmUgSm9zc2VyYW5kICgzKToNCj4gICBpaW86IGFmZTog
+cmVzY2FsZTogTW92ZSBzY2FsZSBjb252ZXJzaW9uIHRvIG5ldyBmdW5jdGlvbg0KPiAgIGlpbzog
+YWZlOiByZXNjYWxlOiBBZGQgc3VwcG9ydCBvZiBDSEFOX0lORk9fUFJPQ0VTU0VEDQo+ICAgZHQt
+YmluZGluZ3M6IGlpbzogYWZlOiBBZGQgaHdtb24gZXhhbXBsZQ0KPiANCj4gIC4uLi9iaW5kaW5n
+cy9paW8vYWZlL3ZvbHRhZ2UtZGl2aWRlci50eHQgICAgICAgICAgIHwgMjQgKysrKysrDQo+ICBk
+cml2ZXJzL2lpby9hZmUvaWlvLXJlc2NhbGUuYyAgICAgICAgICAgICAgICAgICAgICB8IDk2ICsr
+KysrKysrKysrKysrKystLS0tLS0NCj4gIDIgZmlsZXMgY2hhbmdlZCwgOTYgaW5zZXJ0aW9ucygr
+KSwgMjQgZGVsZXRpb25zKC0pDQo+IA0KDQo=

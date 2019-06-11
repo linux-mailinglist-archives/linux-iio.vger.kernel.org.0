@@ -2,191 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A5F93CA38
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jun 2019 13:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BBA93CA41
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jun 2019 13:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403814AbfFKLm4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jun 2019 07:42:56 -0400
-Received: from smtprelay-out1.synopsys.com ([198.182.47.102]:38204 "EHLO
-        smtprelay-out1.synopsys.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728985AbfFKLmz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jun 2019 07:42:55 -0400
-Received: from mailhost.synopsys.com (dc2-mailhost1.synopsys.com [10.12.135.161])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id B37C3C1DE8;
-        Tue, 11 Jun 2019 11:42:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
-        t=1560253372; bh=g8oeyelB6hldkR6WwiY+4Dqrwocyt9Ba2IGFUbhBTGU=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-        b=JRMdvyguQLB5qokXh7BnKEVNqvMDZy0Rcb1iTNTwk1mgTnkfB9chGPLrI1e8dNPks
-         yLUzCZwRVLIh2N3EDPhDwj/wqQPNCHiUhMJp89Byh4H398s85rFZQZo7aBjuG7rprC
-         cWQRxQtCPCeTJDZoVki0NEzQIMnnq7O2Xec0A5Uqe7SVHjzlcwlgDgoyVUKRtkWSpo
-         RwtSJstwM3w/Weeqy3uhUY3gKF3li1+N2pfqx26N9xAg1Nx55dF5xTuUFDdTKmf+Iq
-         k8IqOy62ihwF3ikEWIga37AOlRNhA73eD++esLA+U68MS8z0aDvQ4JE3h+M7ndvPRv
-         +aoEUerXscj/w==
-Received: from us01wehtc1.internal.synopsys.com (us01wehtc1-vip.internal.synopsys.com [10.12.239.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mailhost.synopsys.com (Postfix) with ESMTPS id 89A92A0070;
-        Tue, 11 Jun 2019 11:42:53 +0000 (UTC)
-Received: from DE02WEHTCB.internal.synopsys.com (10.225.19.94) by
- us01wehtc1.internal.synopsys.com (10.12.239.235) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Tue, 11 Jun 2019 04:42:53 -0700
-Received: from DE02WEMBXB.internal.synopsys.com ([fe80::95ce:118a:8321:a099])
- by DE02WEHTCB.internal.synopsys.com ([::1]) with mapi id 14.03.0415.000; Tue,
- 11 Jun 2019 13:42:50 +0200
-From:   Vitor Soares <Vitor.Soares@synopsys.com>
-To:     Vitor Soares <Vitor.Soares@synopsys.com>,
+        id S2403965AbfFKLop convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 11 Jun 2019 07:44:45 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:18126 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2403960AbfFKLop (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 11 Jun 2019 07:44:45 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 54B027808EA8580B77F4;
+        Tue, 11 Jun 2019 19:44:32 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Tue, 11 Jun 2019
+ 19:44:29 +0800
+Date:   Tue, 11 Jun 2019 12:44:17 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     Peter Rosin <peda@axentia.se>
+CC:     =?ISO-8859-1?Q?Myl=E8ne?= Josserand 
+        <mylene.josserand@bootlin.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     "broonie@kernel.org" <broonie@kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
-        Joao Pinto <Joao.Pinto@synopsys.com>,
-        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>
-Subject: RE: [PATCH v2 0/3] Add ST lsm6dso i3c support
-Thread-Topic: [PATCH v2 0/3] Add ST lsm6dso i3c support
-Thread-Index: AQHVHHo44zPwTswqGE2xcyuxzKkZ+6aWWjXw
-Date:   Tue, 11 Jun 2019 11:42:50 +0000
-Message-ID: <13D59CF9CEBAF94592A12E8AE55501350AABEAF3@DE02WEMBXB.internal.synopsys.com>
-References: <cover.1559831663.git.vitor.soares@synopsys.com>
-In-Reply-To: <cover.1559831663.git.vitor.soares@synopsys.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcc29hcmVzXGFw?=
- =?us-ascii?Q?cGRhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
- =?us-ascii?Q?OWUzNWJcbXNnc1xtc2ctMDg3MmU5OTctOGMzZS0xMWU5LTgyNDYtYjgwOGNm?=
- =?us-ascii?Q?NTlkN2ZjXGFtZS10ZXN0XDA4NzJlOTk4LThjM2UtMTFlOS04MjQ2LWI4MDhj?=
- =?us-ascii?Q?ZjU5ZDdmY2JvZHkudHh0IiBzej0iMTc1MyIgdD0iMTMyMDQ3MjY5Njg2NzIx?=
- =?us-ascii?Q?OTc3IiBoPSJrNFU2YkpkZWVjbVpnSEp2QlZOL0hSVHNKYWs9IiBpZD0iIiBi?=
- =?us-ascii?Q?bD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQUFCUUpBQUM1?=
- =?us-ascii?Q?dlR6TFNpRFZBYndnM2FHQ0dzOGl2Q0Rkb1lJYXp5SU9BQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBSEFBQUFDa0NBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?RUFBUUFCQUFBQVZ6ZGhHZ0FBQUFBQUFBQUFBQUFBQUo0QUFBQm1BR2tBYmdC?=
- =?us-ascii?Q?aEFHNEFZd0JsQUY4QWNBQnNBR0VBYmdCdUFHa0FiZ0JuQUY4QWR3QmhBSFFB?=
- =?us-ascii?Q?WlFCeUFHMEFZUUJ5QUdzQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFF?=
- =?us-ascii?Q?QUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdZQWJ3QjFBRzRBWkFCeUFIa0FYd0J3?=
- =?us-ascii?Q?QUdFQWNnQjBBRzRBWlFCeUFITUFYd0JuQUdZQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFB?=
- =?us-ascii?Q?QUFDZUFBQUFaZ0J2QUhVQWJnQmtBSElBZVFCZkFIQUFZUUJ5QUhRQWJnQmxB?=
- =?us-ascii?Q?SElBY3dCZkFITUFZUUJ0QUhNQWRRQnVBR2NBWHdCakFHOEFiZ0JtQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQkFBQUFBQUFBQUFJQUFBQUFBSjRBQUFCbUFHOEFk?=
- =?us-ascii?Q?UUJ1QUdRQWNnQjVBRjhBY0FCaEFISUFkQUJ1QUdVQWNnQnpBRjhBY3dCaEFH?=
- =?us-ascii?Q?MEFjd0IxQUc0QVp3QmZBSElBWlFCekFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR1lBYndCMUFHNEFaQUJ5QUhrQVh3?=
- =?us-ascii?Q?QndBR0VBY2dCMEFHNEFaUUJ5QUhNQVh3QnpBRzBBYVFCakFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
- =?us-ascii?Q?QUFBQUNlQUFBQVpnQnZBSFVBYmdCa0FISUFlUUJmQUhBQVlRQnlBSFFBYmdC?=
- =?us-ascii?Q?bEFISUFjd0JmQUhNQWRBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFKNEFBQUJtQUc4?=
- =?us-ascii?Q?QWRRQnVBR1FBY2dCNUFGOEFjQUJoQUhJQWRBQnVBR1VBY2dCekFGOEFkQUJ6?=
- =?us-ascii?Q?QUcwQVl3QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBRUFBQUFBQUFBQUFnQUFBQUFBbmdBQUFHWUFid0IxQUc0QVpBQnlBSGtB?=
- =?us-ascii?Q?WHdCd0FHRUFjZ0IwQUc0QVpRQnlBSE1BWHdCMUFHMEFZd0FBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVFBQUFBQUFBQUFD?=
- =?us-ascii?Q?QUFBQUFBQ2VBQUFBWndCMEFITUFYd0J3QUhJQWJ3QmtBSFVBWXdCMEFGOEFk?=
- =?us-ascii?Q?QUJ5QUdFQWFRQnVBR2tBYmdCbkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUJBQUFBQUFBQUFBSUFBQUFBQUo0QUFBQnpB?=
- =?us-ascii?Q?R0VBYkFCbEFITUFYd0JoQUdNQVl3QnZBSFVBYmdCMEFGOEFjQUJzQUdFQWJn?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUhNQVlRQnNBR1VBY3dCZkFI?=
- =?us-ascii?Q?RUFkUUJ2QUhRQVpRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBUUFBQUFBQUFB?=
- =?us-ascii?Q?QUNBQUFBQUFDZUFBQUFjd0J1QUhBQWN3QmZBR3dBYVFCakFHVUFiZ0J6QUdV?=
- =?us-ascii?Q?QVh3QjBBR1VBY2dCdEFGOEFNUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQkFBQUFBQUFBQUFJQUFBQUFBSjRBQUFC?=
- =?us-ascii?Q?ekFHNEFjQUJ6QUY4QWJBQnBBR01BWlFCdUFITUFaUUJmQUhRQVpRQnlBRzBB?=
- =?us-ascii?Q?WHdCekFIUUFkUUJrQUdVQWJnQjBBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBSFlBWndCZkFHc0FaUUI1?=
- =?us-ascii?Q?QUhjQWJ3QnlBR1FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFB?=
- =?us-ascii?Q?QUFBQ0FBQUFBQUE9Ii8+PC9tZXRhPg=3D=3D?=
-x-originating-ip: [10.107.19.137]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "thomas.petazzoni@bootlin.com" <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v1 0/3] iio: afe: rescale: Add INFO_PROCESSED support
+Message-ID: <20190611124417.0000137a@huawei.com>
+In-Reply-To: <36890130-24ed-2200-1e8d-964612fee62d@axentia.se>
+References: <20190611095659.29845-1-mylene.josserand@bootlin.com>
+        <36890130-24ed-2200-1e8d-964612fee62d@axentia.se>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Tue, 11 Jun 2019 11:02:14 +0000
+Peter Rosin <peda@axentia.se> wrote:
 
-Since the regmap-i3c.c was already applied in:
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git=20
-tags/regmap-i3c
+> On 2019-06-11 11:56, Mylène Josserand wrote:
+> > Hello everyone,
+> > 
+> > You will find a small series that add the support of processed values
+> > for iio-rescale driver.
+> > Thanks to that, it is possible to read processed values in sysfs instead
+> > of getting only raw and scale values.
+> > 
+> > Here is an example for a 3v3 voltage reading:
+> > # cat /sys/bus/iio/devices/iio\:device1/in_voltage0_scale
+> > 3.791015625
+> > # cat /sys/bus/iio/devices/iio\:device1/in_voltage0_raw
+> > 879
+> > # cat /sys/bus/iio/devices/iio\:device1/in_voltage0_input
+> > 3332
+> > 
+> > It is also possible to read directly the processed values using iio-hwmon
+> > driver (see example in patch03):
+> > 
+> > # cat /sys/class/hwmon/hwmon0/in1_input
+> > 3328
+> > 
+> > I seperated my series in 3 patches:
+> >    - Patch01: Move the scale conversion into a function to prepare the
+> >    support of IIO_CHAN_INFO_PROCESSED.
+> >    - Patch02: Add the support of IIO_CHAN_INFO_PROCESSED.
+> >    - Patch03: Add an example of the use of hwmon and voltage-divider nodes
+> >    in device-tree.
+> > 
+> > If you have any feedbacks on it, I will be pleased to read them!  
+> 
+> 
+> The last patch about hwmon has nothing to do with this series, and
+> should be possible as-is without any code changes. No? AFAICT,
+> iio_hwmon calls iio_read_channel_processed, which calls
+> iio_convert_raw_to_processed_unlocked in case IIO_CHAN_INFO_PROCESSES
+> is not handled by the driver. Is that not working?
+> 
+> There is also libiio in userspace that provides the scale as a double
+> and makes the conversion to a processed value trivial, so the series
+> is really mostly about the convenience of having a human directly
+> seeing the processed value in sysfs. Right?
+> 
+> If that is deemed valuable, then I think it should be fixed in a
+> central location, and not individually for each and every driver.
+> 
+> Anyway, not my call, just stating my opinion, but those are the
+> reasons for me not adding a processed channel from the very beginning.
 
-I wonder what is clean way to submit this patch set?
+I definitely want to fully understand the reasoning behind this proposal.
 
-And since the i3c-regmap was merge in=20
-From: Vitor Soares <vitor.soares@synopsys.com>
-Date: Thu, Jun 06, 2019 at 16:12:01
+My gut feeling is that it doesn't make sense a sit ends up with two
+interfaces to the same thing in userspace, which we generally want to
+avoid.
 
-> This patch series add i3c support for STM LSM6DSO and LSM6DSR sensors.
->=20
-> It is also introduced i3c support on regmap api. Due the lack of
-> i3c devices HDR capables on the market the support for now is only for
-> i3c sdr mode by using i3c_device_do_priv_xfers() method.
->=20
-> Changes in v2:
->   Change i3c_get_device_id() to drivers/i3c/device.c
->   Add support for LSM6DSR
->=20
-> Vitor Soares (3):
->   regmap: add i3c bus support
->   i3c: Add i3c_get_device_id helper
->   iio: imu: st_lsm6dsx: add i3c basic support for LSM6DSO and LSM6DSR
->=20
->  drivers/base/regmap/Kconfig                 |  6 ++-
->  drivers/base/regmap/Makefile                |  1 +
->  drivers/base/regmap/regmap-i3c.c            | 60 +++++++++++++++++++++++
->  drivers/i3c/device.c                        |  8 +++
->  drivers/iio/imu/st_lsm6dsx/Kconfig          |  8 ++-
->  drivers/iio/imu/st_lsm6dsx/Makefile         |  1 +
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c | 76 +++++++++++++++++++++++=
-++++++
->  include/linux/i3c/device.h                  |  1 +
->  include/linux/regmap.h                      | 20 ++++++++
->  9 files changed, 179 insertions(+), 2 deletions(-)
->  create mode 100644 drivers/base/regmap/regmap-i3c.c
->  create mode 100644 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
->=20
-> --=20
-> 2.7.4
+It's really trivial to do the maths in userspace and often doing it in
+kernel is less accurate, or much more complex.
 
-Best regards,
-Vitor Soares
+Jonathan
+> 
+> Cheers,
+> Peter
+> 
+> > Best regards,
+> > Mylène
+> > 
+> > Mylène Josserand (3):
+> >   iio: afe: rescale: Move scale conversion to new function
+> >   iio: afe: rescale: Add support of CHAN_INFO_PROCESSED
+> >   dt-bindings: iio: afe: Add hwmon example
+> > 
+> >  .../bindings/iio/afe/voltage-divider.txt           | 24 ++++++
+> >  drivers/iio/afe/iio-rescale.c                      | 96 ++++++++++++++++------
+> >  2 files changed, 96 insertions(+), 24 deletions(-)
+> >   
+> 
+
 

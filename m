@@ -2,136 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D36F3D39B
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jun 2019 19:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F184A3D4AE
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jun 2019 19:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405845AbfFKRKf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jun 2019 13:10:35 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:44591 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389356AbfFKRKe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jun 2019 13:10:34 -0400
-Received: by mail-pf1-f193.google.com with SMTP id t16so7808092pfe.11;
-        Tue, 11 Jun 2019 10:10:34 -0700 (PDT)
+        id S2406641AbfFKR6L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jun 2019 13:58:11 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:35352 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406628AbfFKR6L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jun 2019 13:58:11 -0400
+Received: by mail-ot1-f65.google.com with SMTP id j19so12789586otq.2;
+        Tue, 11 Jun 2019 10:58:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=QfcRtoONgWVTwtnQoP4rlwBElT3so0FbJIuhPmULhig=;
-        b=m6uDPrf0xbKxHOBxlYlJgBJluDseTqpUrZe+FhasYzB64ReBzKMIdV5XGEhIGV9N+T
-         GciSYgvch7xUNYa81gxMPnMByXHKgU/Oyv2MWE9wocowq9z8bHYJcScjGr0PcGcTVy4I
-         lGX1/Dn9Pq/uG79uFh2Z+2aImHK6qBLTTR6lwi3S0LODaisIL34fRlEQ9XyAQWRucmCq
-         gxSvkYh0kzEMswZuMDBdN9iubeyxHBLfT0gAiB/xF3+YWiYhw8eQQakd8aQ1mSs0vc7O
-         SCjhUKvcmVw0/pQC222MOMCTzDBLJNwhJoJ9HST5soGEe0+2ih1NjRliyjzmVz3qsaNq
-         dc2Q==
+        d=googlemail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VCk8yXyDlU45xhcdQhx1a6hD5bkWPN082lBz8bnOkUY=;
+        b=P1UKhIYgxM+XqSIsgTb87emPKNlNd6xALypb/TZzyRb+jBUnC8i5Nd+y9bqj8zezw1
+         PVLkE5srBChxTYeKSTiG/xzCtE2O39FMElMr++lFqkDifYYzZHHXxNVa6ZAUbKOpMyhe
+         u6PlXZNboq4L0jgn7AkxtSd28W736ruhkywHshY+jyCzZvIMs1O56l0gflaBZ7UqhwQL
+         x2RQMfu1NCl93I1mh4SAyT5fO5WxjcRqNVi6NdN2yKWoaWkd3acM80QLStmQWoTnX1v5
+         7M1JBXsMpTxCe4p9R78MjJh5v33YPLvhehDsyfHgqx7cuL09xlhmcldE4dAYPb/FmdZm
+         6TOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=QfcRtoONgWVTwtnQoP4rlwBElT3so0FbJIuhPmULhig=;
-        b=oFvjPrHxfAuJsU6BvBEklWdbMtcEUe+Zv+JGE4+CO5RhAqBAA6npe3KRMwBv+q+Naa
-         Aq24fmJHpcfw0+nxE3VOPdTv/JFvkL/QQiUwmEPI/224lsVercjHWrIhnOZS71KGTl9y
-         m3sUWujZn3c01XPr/1B6pgLf/1s85DG3poEYdhgHdNLm/Q/bJEn7DGNG7eCqT9/4yqLj
-         ZguVZBl68BXFvHtERW3F+XS0OBFEtY6G6/CnTOmC2tPNptBowpZ0ltOHLsbbAP+FJuPq
-         wUdHb1E74Vz0RNRsCfkO6pJUQc9dh5D7rxUIdYvnHQHgNxXwTtzIMZdcXd7eMpNgXxY5
-         eTSw==
-X-Gm-Message-State: APjAAAXojb2UGebfQEybAbsrgmnACc5UQWOIF6KdjMhto9mmM9lP3U+s
-        f0cGRF2lzoNyf4noVY3CCh0=
-X-Google-Smtp-Source: APXvYqwMksWM0B/q19Q0jWzNmvs/opGNhXpundemVkKe3ekBw/AhIEcAanhmfVC6alp8iLNfynW0+g==
-X-Received: by 2002:a63:eb0a:: with SMTP id t10mr19060142pgh.99.1560273033558;
-        Tue, 11 Jun 2019 10:10:33 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id p15sm16391934pgj.61.2019.06.11.10.10.31
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 11 Jun 2019 10:10:32 -0700 (PDT)
-Date:   Tue, 11 Jun 2019 10:10:30 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Cc:     linux-kernel@vger.kernel.org, gwendal@chromium.org,
-        Guenter Roeck <groeck@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Lee Jones <lee.jones@linaro.org>, kernel@collabora.com,
-        dtor@chromium.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
-        alsa-devel@alsa-project.org,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        linux-iio@vger.kernel.org,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-i2c@vger.kernel.org, linux-rtc@vger.kernel.org,
-        Heiko Stuebner <heiko@sntech.de>,
-        Brian Norris <briannorris@chromium.org>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Rushikesh S Kadam <rushikesh.s.kadam@intel.com>,
-        linux-input@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-media@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Ravi Chandra Sadineni <ravisadineni@chromium.org>,
-        linux-pm@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
-        Takashi Iwai <tiwai@suse.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Evan Green <evgreen@chromium.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Cheng-Yi Chiang <cychiang@chromium.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Kees Cook <keescook@chromium.org>,
-        Colin Ian King <colin.king@canonical.com>,
-        Mark Brown <broonie@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Jiri Kosina <jikos@kernel.org>
-Subject: Re: [PATCH 06/10] mfd / platform: cros_ec: Reorganize platform and
- mfd includes
-Message-ID: <20190611171030.GC143729@dtor-ws>
-References: <20190604152019.16100-1-enric.balletbo@collabora.com>
- <20190604152019.16100-7-enric.balletbo@collabora.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VCk8yXyDlU45xhcdQhx1a6hD5bkWPN082lBz8bnOkUY=;
+        b=i/EzGORW0GxMPsExG4+Uf3MGJGPLozly2hDQmUlb7QlXqbBr9bHMimkOXiUWmTzs+I
+         MlWZpXJTaZ5crgPd86XGPRMVNUAHVY0yfrMdoxQjNe766jS+92s7GPqhgo5x4yLIqvyF
+         Q4bUn/wflq05F0JHlVYAATv61ADPQOm/QPk5fq/ei0UJDCQ4xPD2VFpaE8baTthSlYt9
+         gmIL42VlT111KUPMbgQB84r13PblhNPiahU55Cu0UsR4x/lT+A1kc7ZZDn6G28RILoGf
+         U+xXh6KSQ0nNWmZPHriK2a3UJPBRAD1Jqm7OQTfL6uZv0uYSfkHJS+qY8BCGJCWJTar5
+         yqXg==
+X-Gm-Message-State: APjAAAWbQO+dIhyb8K9qkj3zAC6EvvIgeQYD6JzH1tPmTaR6NSOismuv
+        Jz6jH+gQMWndJW6s/D/KAXlh/xAicr8KHpMHad4=
+X-Google-Smtp-Source: APXvYqzoPj3Xa4uMgvBC9zsIyKzC4P0HF+b5cZAVaQucBLGJZkMH7tOH6JRC+xDDYFPIUVm3dwteObyR0yuyPX59K5A=
+X-Received: by 2002:a9d:32a6:: with SMTP id u35mr36257313otb.81.1560275890132;
+ Tue, 11 Jun 2019 10:58:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190604152019.16100-7-enric.balletbo@collabora.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190604144714.2009-1-glaroque@baylibre.com> <20190604144714.2009-2-glaroque@baylibre.com>
+ <CAFBinCBN4QC2tPDEQmTW_c+PP5yu2qoK5M1eSye=SmvpieKWQg@mail.gmail.com> <d68aae23-f877-1f65-94a4-79e909ae111a@baylibre.com>
+In-Reply-To: <d68aae23-f877-1f65-94a4-79e909ae111a@baylibre.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Tue, 11 Jun 2019 19:57:59 +0200
+Message-ID: <CAFBinCBCUxZjnrRxFHApp4iwPUCQQ+PU54V6zJew8Sr8La3u7w@mail.gmail.com>
+Subject: Re: [PATCH 1/3] Documentation: dt-bindings: add the Amlogic Meson
+ Temperature Sensor
+To:     Neil Armstrong <narmstrong@baylibre.com>
+Cc:     Guillaume La Roque <glaroque@baylibre.com>,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        khilman@baylibre.com, linux-kernel@vger.kernel.org,
+        jic23@kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 04, 2019 at 05:20:15PM +0200, Enric Balletbo i Serra wrote:
-> There is a bit of mess between cros-ec mfd includes and platform
-> includes. For example, we have a linux/mfd/cros_ec.h include that
-> exports the interface implemented in platform/chrome/cros_ec_proto.c. Or
-> we have a linux/mfd/cros_ec_commands.h file that is non related to the
-> multifunction device (in the sense that is not exporting any function of
-> the mfd device). This causes crossed includes between mfd and
-> platform/chrome subsystems and makes the code difficult to read, apart
-> from creating 'curious' situations where a platform/chrome driver includes
-> a linux/mfd/cros_ec.h file just to get the exported functions that are
-> implemented in another platform/chrome driver.
-> 
-> In order to have a better separation on what the cros-ec multifunction
-> driver does and what the cros-ec core provides move and rework the
-> affected includes doing:
-> 
->  - Move cros_ec_commands.h to include/linux/platform_data/cros_ec_commands.h
->  - Get rid of the parts that are implemented in the platform/chrome/cros_ec_proto.c
->    driver from include/linux/mfd/cros_ec.h to a new file
->    include/linux/platform_data/cros_ec_proto.h
->  - Update all the drivers with the new includes, so
->    - Drivers that only need to know about the protocol include
->      - linux/platform_data/cros_ec_proto.h
->      - linux/platform_data/cros_ec_commands.h
->    - Drivers that need to know about the cros-ec mfd device also include
->      - linux/mfd/cros_ec.h
-> 
-> Signed-off-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Hi Neil,
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com> # for input
+On Tue, Jun 11, 2019 at 1:01 PM Neil Armstrong <narmstrong@baylibre.com> wrote:
+>
+> On 06/06/2019 21:16, Martin Blumenstingl wrote:
+> > Hi Guillaume,
+> >
+> > thank you for working on this!
+> >
+> > On Tue, Jun 4, 2019 at 4:47 PM Guillaume La Roque <glaroque@baylibre.com> wrote:
+> >>
+> >> This adds the devicetree binding documentation for the Temperature
+> >> Sensor found in the Amlogic Meson G12 SoCs.
+> >> Currently only the G12A SoCs are supported.
+> > so G12B is not supported (yet)?
+>
+> G12B is 95% similar as G12A, it will certainly use slighly different values.
+OK, thank you for clarifying this
+as far as I can tell Guillaume's code is already prepared for that (as
+there's a per-instance specific struct with settings for the specific
+instance) which is good to know
 
-Thanks.
+> >
+> >> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+> >> ---
+> >>  .../iio/temperature/amlogic,meson-tsensor.txt | 31 +++++++++++++++++++
+> >>  1 file changed, 31 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt b/Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt
+> >> new file mode 100644
+> >> index 000000000000..d064db0e9cac
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/iio/temperature/amlogic,meson-tsensor.txt
+> >> @@ -0,0 +1,31 @@
+> >> +* Amlogic Meson Temperature Sensor
+> >> +
+> >> +Required properties:
+> >> +- compatible:  depending on the SoC and the position of the sensor,
+> >> +               this should be one of:
+> >> +               - "amlogic,meson-g12a-cpu-tsensor" for the CPU G12A SoC sensor
+> >> +               - "amlogic,meson-g12a-ddr-tsensor" for the DDR G12A SoC sensor
+> >> +               followed by the common :
+> >> +               - "amlogic,meson-g12a-tsensor" for G12A SoC family
+> >> +- reg:         the physical base address and length of the registers
+> >> +- interrupts:  the interrupt indicating end of sampling
+> >> +- clocks:      phandle identifier for the reference clock of temperature sensor
+> >> +- #io-channel-cells: must be 1, see ../iio-bindings.txt
+> > have you considered using the thermal framework [0] instead of the iio
+> > framework (see below)?
+>
+> Question: why thermal, and not hwmon ? what's the main difference ?
+this is what came to my mind why the thermal framework fits best (at
+least based on my current knowledge):
+a) the thermal-zones (see meson-gxm-khadas-vim2.dts for example) a
+"thermal-sensors" property. so for active (with a fan) or passive (by
+limiting the maximum frequency and thus the supply voltage) cooling we
+need a thermal device anyways
+b) the thermal bindings support multiple trip points. we can map them
+to one of the four interrupts which the IP block can generate
+c) defining a temperature where the chip will power off sounds like a
+use-case which may be implemented by other thermal IP blocks (in other
+words: maybe the thermal frameworks provides some generic property to
+replace the "amlogic,critical-temperature" property)
+d) as far as I know you can tell the thermal framework to create a
+hwmon device with only a couple (5?) lines of code
 
--- 
-Dmitry
+as Guillaume has already shown we can implement c) with a custom
+property, but that's not limited to the underlying framework (IIO,
+hwmon, thermal, ...)
+
+use-case d) is not a strong one because I'm using iio-hwmon to create
+a hwmon device on the 32-bit SoCs.
+however, together with case a) using an IIO driver is going to be more
+difficult because currently there's "only" a "generic-adc-thermal"
+binding (but not a "generic-iio-temperature-thermal" binding)
+
+the initial driver version doesn't have to support everything I listed above.
+however, I believe with the thermal framework we don't limit ourselves
+to one use-case and can extend the driver in the future
+
+
+Martin

@@ -2,162 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F8D13C1C6
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jun 2019 05:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58DB53C3E7
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jun 2019 08:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391017AbfFKD4C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jun 2019 23:56:02 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:34011 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390985AbfFKD4C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jun 2019 23:56:02 -0400
-Received: by mail-pg1-f193.google.com with SMTP id p10so298242pgn.1;
-        Mon, 10 Jun 2019 20:56:01 -0700 (PDT)
+        id S2391121AbfFKG2I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jun 2019 02:28:08 -0400
+Received: from mail-eopbgr750084.outbound.protection.outlook.com ([40.107.75.84]:7814
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2390485AbfFKG2I (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 11 Jun 2019 02:28:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=mTzRo3n3K2VxjjsiqqmtCWCsBKqmuZ3UyS2JxCpDSv4=;
-        b=lPhGLVG6/t2L9QQBAK9Cv2PvZwTk/cMgQFiBtEC835tN1PRPoW6pDYFxSz17YVhDFD
-         HFiQ4a57yAFxr1Jsqxr/Oq8S4c8TKWN1vAn7fx9hqP9JGEj42dlkzNfstvVpAcA08DNe
-         92hTkaCEiKz1Kfz1qtAFkEp+lk7nj7VUo+Nn3ATK/GVIexF0xKjX+LLgPPzumEEXDPVU
-         vziTHwfs0P48fc3Iae0mXw5f1WJYTsVpSiwN4JgDnOg/uJHuy7nx3tgXWOTvbJxsQLuu
-         CUeVL2t5DIsgqbZQjk91EAapzzQx06lGSciY3F7NDoIWohoVg+m4Lx56XQHr6gYIf3kw
-         98LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=mTzRo3n3K2VxjjsiqqmtCWCsBKqmuZ3UyS2JxCpDSv4=;
-        b=jTdBqXcfFklFPmcOkdkCDte9uN7u2EPrgbQ3KzuRitVVlGAaLc1DGBijmVPo0PVS0h
-         8Hgnp6WrFnAWJRTR8PMt8hec+xrwZOrPhmV77/IfXvwGPl48yBeitLZJr1ESEP9U2wA7
-         n8DuopVGzQBcrzqCZKmWkAhEizUrMuAdWWqDkXFmbsaPjVdWorMsDNf4hXXrpsHpUqGt
-         gnURa66lCTuoFeHMhheBOhYxykK1/jIwFQcgwKxKQGbxjxCNxYpkj2N5cTVFiQXyynpj
-         OWdyubxkLCQTmQepmLeMyFLqoVjiACDwzgFHXbGXq7HptmLULmMiy3jzUUYKCA6TVUuI
-         /Vsw==
-X-Gm-Message-State: APjAAAU6u+8BS9EEDjC5pU2t9drdwhyTOPsSLzQyBNsAvSArAnc7kZc0
-        h3dqZm5nbiVYpUCWlactV6c=
-X-Google-Smtp-Source: APXvYqz+Xnt2HUGrc/sBTFjjjGMlEt3VpJVIlOjLqvkF+0LD1W8Kaa5018BLm5rwMMVp9SZFsXxHpA==
-X-Received: by 2002:a65:5684:: with SMTP id v4mr18784442pgs.160.1560225361285;
-        Mon, 10 Jun 2019 20:56:01 -0700 (PDT)
-Received: from t-1000 (c-98-210-58-162.hsd1.ca.comcast.net. [98.210.58.162])
-        by smtp.gmail.com with ESMTPSA id 5sm11939074pfh.109.2019.06.10.20.55.59
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 10 Jun 2019 20:56:00 -0700 (PDT)
-Date:   Mon, 10 Jun 2019 20:55:57 -0700
-From:   Shobhit Kukreti <shobhitkukreti@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        harald@ccbib.org
-Cc:     shobhitkukreti@gmail.com
-Subject: [PATCH] iio: humidity: Replace older GPIO APIs with GPIO Consumer
- APIs for the dht11 sensor
-Message-ID: <20190611035554.GA20589@t-1000>
+ d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OhFrMwATMHrV4R/vxZxsl69hYFrZHxuvfjdjvOO932M=;
+ b=keioaEtddrKxT2g1MF50fJgmr3URjPcNJCuuYWKQFugqoXsCkPOQlDtYwMxR+ROgSEBIzdshnrO29lSgA2z/5sd2/o7gEQIHioqqAuQtEyI3nOk1Gjtr4wcbDpxnK9oh7vxi2j8NLaUFVl/yH6H/WIFcVrTWfBedrKdfoPHVHn8=
+Received: from BYAPR03CA0003.namprd03.prod.outlook.com (2603:10b6:a02:a8::16)
+ by CY1PR03MB2265.namprd03.prod.outlook.com (2603:10b6:600:1::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1965.12; Tue, 11 Jun
+ 2019 06:28:05 +0000
+Received: from SN1NAM02FT036.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e44::208) by BYAPR03CA0003.outlook.office365.com
+ (2603:10b6:a02:a8::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1965.12 via Frontend
+ Transport; Tue, 11 Jun 2019 06:28:05 +0000
+Authentication-Results: spf=pass (sender IP is 137.71.25.57)
+ smtp.mailfrom=analog.com; metafoo.de; dkim=none (message not signed)
+ header.d=none;metafoo.de; dmarc=bestguesspass action=none
+ header.from=analog.com;
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
+Received: from nwd2mta2.analog.com (137.71.25.57) by
+ SN1NAM02FT036.mail.protection.outlook.com (10.152.72.149) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1965.12
+ via Frontend Transport; Tue, 11 Jun 2019 06:28:04 +0000
+Received: from NWD2HUBCAS8.ad.analog.com (nwd2hubcas8.ad.analog.com [10.64.69.108])
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x5B6S30R002139
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Mon, 10 Jun 2019 23:28:03 -0700
+Received: from NWD2MBX7.ad.analog.com ([fe80::190e:f9c1:9a22:9663]) by
+ NWD2HUBCAS8.ad.analog.com ([fe80::90a0:b93e:53c6:afee%12]) with mapi id
+ 14.03.0415.000; Tue, 11 Jun 2019 02:28:03 -0400
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "hancock@sedsystems.ca" <hancock@sedsystems.ca>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC:     "ardeleanalex@gmail.com" <ardeleanalex@gmail.com>,
+        "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "lars@metafoo.de" <lars@metafoo.de>
+Subject: Re: [PATCH] iio: adc: xilinx: support all platforms
+Thread-Topic: [PATCH] iio: adc: xilinx: support all platforms
+Thread-Index: AQHVH6j1tuMWpYcb8UG29tfpB27xz6aWQV6A
+Date:   Tue, 11 Jun 2019 06:28:02 +0000
+Message-ID: <2c4116f4923ac710de15c2980e620f9d59f902b6.camel@analog.com>
+References: <1560183824-19061-1-git-send-email-hancock@sedsystems.ca>
+In-Reply-To: <1560183824-19061-1-git-send-email-hancock@sedsystems.ca>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.65.129]
+x-adiroutedonprem: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9B334E5662118341AA37A81CDF9C5A5F@analog.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(376002)(346002)(396003)(136003)(39860400002)(2980300002)(199004)(189003)(70206006)(356004)(478600001)(118296001)(50466002)(70586007)(36756003)(86362001)(4326008)(426003)(110136005)(316002)(305945005)(54906003)(3846002)(14444005)(6116002)(446003)(486006)(2486003)(14454004)(26005)(2616005)(476003)(229853002)(126002)(6246003)(102836004)(106002)(11346002)(23676004)(76176011)(7696005)(336012)(2906002)(8936002)(47776003)(5660300002)(2501003)(246002)(8676002)(436003)(186003)(7636002)(7736002);DIR:OUT;SFP:1101;SCL:1;SRVR:CY1PR03MB2265;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: fd85ab00-bbbc-4ac1-210d-08d6ee35f601
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328)(7193020);SRVR:CY1PR03MB2265;
+X-MS-TrafficTypeDiagnostic: CY1PR03MB2265:
+X-Microsoft-Antispam-PRVS: <CY1PR03MB2265FDE00DDC3499F559BF95F9ED0@CY1PR03MB2265.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 006546F32A
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: 7Vgh3+HjI3AJNFiHIGDPVEuYBc9Xg6mMW87G3pVhAySumX1ts4ixKz3sT/PQgshItZGFL7RCy9nJ6Lu3BgA7wOOA6YvRJKKTvz5WPuMQvwF7RRGJFjVZfCHuz2exZJoHYq8tSXyflqnkhp+EMq4h9XGGucA+GFj5mhP4jYnHzufghQwEUg3wCCew2tBVs1+L3VgKxTm7i3cxTP2XeWfE1sbPyEEEpGJYVnJ4TZi2GIfeccxxIezBQsPIM9VLID9VcSIOfaB5wUHOxbDsijuYOlGwH/r7Ae0au5yIVwOqlg1QSbJpo5lFD13X3lsXy9dAJZMX/IRnb4G/gxuMFss+BFsw4rZ9eK4Hw5ytqRniZlIfXwQKNw7/XlV+3CLU+6YwHvgaPx45XCKD1TPtLPT9NPMwHVy+ich4ljC71JT6jB8=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2019 06:28:04.3417
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd85ab00-bbbc-4ac1-210d-08d6ee35f601
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR03MB2265
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The dht11 driver uses a single gpio to make measurements. It was
-using the older global gpio numberspace. The patch replaces the
-old gpio api with the new gpio descriptor based api.
-
-Removed header files "linux/gpio.h" and "linux/of_gpio.h"
-
-Signed-off-by: Shobhit Kukreti <shobhitkukreti@gmail.com>
----
- drivers/iio/humidity/dht11.c | 28 ++++++++++------------------
- 1 file changed, 10 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/iio/humidity/dht11.c b/drivers/iio/humidity/dht11.c
-index c815920..f5128d8 100644
---- a/drivers/iio/humidity/dht11.c
-+++ b/drivers/iio/humidity/dht11.c
-@@ -22,8 +22,7 @@
- #include <linux/completion.h>
- #include <linux/mutex.h>
- #include <linux/delay.h>
--#include <linux/gpio.h>
--#include <linux/of_gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/timekeeping.h>
- 
- #include <linux/iio/iio.h>
-@@ -72,7 +71,7 @@
- struct dht11 {
- 	struct device			*dev;
- 
--	int				gpio;
-+	struct gpio_desc		*gpiod;
- 	int				irq;
- 
- 	struct completion		completion;
-@@ -179,7 +178,7 @@ static irqreturn_t dht11_handle_irq(int irq, void *data)
- 	if (dht11->num_edges < DHT11_EDGES_PER_READ && dht11->num_edges >= 0) {
- 		dht11->edges[dht11->num_edges].ts = ktime_get_boot_ns();
- 		dht11->edges[dht11->num_edges++].value =
--						gpio_get_value(dht11->gpio);
-+						gpiod_get_value(dht11->gpiod);
- 
- 		if (dht11->num_edges >= DHT11_EDGES_PER_READ)
- 			complete(&dht11->completion);
-@@ -217,12 +216,12 @@ static int dht11_read_raw(struct iio_dev *iio_dev,
- 		reinit_completion(&dht11->completion);
- 
- 		dht11->num_edges = 0;
--		ret = gpio_direction_output(dht11->gpio, 0);
-+		ret = gpiod_direction_output(dht11->gpiod, 0);
- 		if (ret)
- 			goto err;
- 		usleep_range(DHT11_START_TRANSMISSION_MIN,
- 			     DHT11_START_TRANSMISSION_MAX);
--		ret = gpio_direction_input(dht11->gpio);
-+		ret = gpiod_direction_input(dht11->gpiod);
- 		if (ret)
- 			goto err;
- 
-@@ -294,10 +293,8 @@ MODULE_DEVICE_TABLE(of, dht11_dt_ids);
- static int dht11_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	struct device_node *node = dev->of_node;
- 	struct dht11 *dht11;
- 	struct iio_dev *iio;
--	int ret;
- 
- 	iio = devm_iio_device_alloc(dev, sizeof(*dht11));
- 	if (!iio) {
-@@ -307,18 +304,13 @@ static int dht11_probe(struct platform_device *pdev)
- 
- 	dht11 = iio_priv(iio);
- 	dht11->dev = dev;
-+	dht11->gpiod = devm_gpiod_get(dev, NULL, GPIOD_IN);
-+	if (IS_ERR(dht11->gpiod))
-+		return PTR_ERR(dht11->gpiod);
- 
--	ret = of_get_gpio(node, 0);
--	if (ret < 0)
--		return ret;
--	dht11->gpio = ret;
--	ret = devm_gpio_request_one(dev, dht11->gpio, GPIOF_IN, pdev->name);
--	if (ret)
--		return ret;
--
--	dht11->irq = gpio_to_irq(dht11->gpio);
-+	dht11->irq = gpiod_to_irq(dht11->gpiod);
- 	if (dht11->irq < 0) {
--		dev_err(dev, "GPIO %d has no interrupt\n", dht11->gpio);
-+		dev_err(dev, "GPIO %d has no interrupt\n", desc_to_gpio(dht11->gpiod));
- 		return -EINVAL;
- 	}
- 
--- 
-2.7.4
-
+T24gTW9uLCAyMDE5LTA2LTEwIGF0IDEwOjIzIC0wNjAwLCBSb2JlcnQgSGFuY29jayB3cm90ZToN
+Cj4gW0V4dGVybmFsXQ0KPiANCj4gDQo+IFNpbmNlIHRoZSBYQURDIGxvZ2ljIGNhbiBiZSB1c2Vk
+IHdpdGggc3RhbmRhbG9uZSBYaWxpbnggRlBHQXMsIHRoaXMNCj4gZHJpdmVyIGNhbiBwb3RlbnRp
+YWxseSBiZSB1c2VkIHdpdGggbWFueSBkaWZmZXJlbnQgcGxhdGZvcm1zLCBub3QganVzdA0KPiB0
+aGUgWnlucSBhbmQgTWljcm9CbGF6ZSBwbGF0Zm9ybXMgdGhpcyBkcml2ZXIgd2FzIGFsbG93ZWQg
+dG8gYmUgYnVpbHQNCj4gZm9yLiBUaGVyZSBzaG91bGQgYmUgbm8gcGxhdGZvcm0tc3BlY2lmaWMg
+Y29kZSBpbiB0aGlzIGRyaXZlciwgc28ganVzdA0KPiBkZWxldGUgdGhlIHBsYXRmb3JtIGRlcGVu
+ZGVuY3kuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBSb2JlcnQgSGFuY29jayA8aGFuY29ja0BzZWRz
+eXN0ZW1zLmNhPg0KPiAtLS0NCj4gDQo+IFRoaXMgaXMgYW4gdXBkYXRlZCB2ZXJzaW9uIG9mIGFu
+IGVhcmxpZXIgcGF0Y2ggImlpbzogYWRjOiB4aWxpbng6IHN1cHBvcnQgYWxsDQo+IEFSTSBwbGF0
+Zm9ybXMiLCBidXQgdGhpcyBvbmUganVzdCBkZWxldGVzIHRoZSBwbGF0Zm9ybSByZXN0cmljdGlv
+biBlbnRpcmVseQ0KPiBhcyBpdCBzZWVtcyB1bm5lY2Vzc2FyeS4NCj4gDQo+ICBkcml2ZXJzL2lp
+by9hZGMvS2NvbmZpZyB8IDEgLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgZGVsZXRpb24oLSkNCj4g
+DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9hZGMvS2NvbmZpZyBiL2RyaXZlcnMvaWlvL2Fk
+Yy9LY29uZmlnDQo+IGluZGV4IGY5NmE3NzAuLjdlMzI4NjIgMTAwNjQ0DQo+IC0tLSBhL2RyaXZl
+cnMvaWlvL2FkYy9LY29uZmlnDQo+ICsrKyBiL2RyaXZlcnMvaWlvL2FkYy9LY29uZmlnDQo+IEBA
+IC0xMDg1LDcgKzEwODUsNiBAQCBjb25maWcgVklQRVJCT0FSRF9BREMNCj4gDQo+ICBjb25maWcg
+WElMSU5YX1hBREMNCj4gICAgICAgICB0cmlzdGF0ZSAiWGlsaW54IFhBREMgZHJpdmVyIg0KPiAt
+ICAgICAgIGRlcGVuZHMgb24gQVJDSF9aWU5RIHx8IE1JQ1JPQkxBWkUgfHwgQ09NUElMRV9URVNU
+DQoNCkp1c3QgY3VyaW9zIGhlcmU6IGlzIGBkZXBlbmRzIENPTVBJTEVfVEVTVGAgbmVlZGVkIHNv
+IHRoYXQgdGhpcyBnZXRzIGluY2x1ZGVkIGluIGEgY29tcGlsZS10ZXN0IGJ1aWxkID8NCkknbSBz
+b21ld2hhdCB2YWd1ZSBvbiBMaW51eCdzIG1ha2VmaWxlIGxvZ2ljL3N0cnVjdHVyZS4NCg0KVGhh
+bmtzDQpBbGV4DQoNCj4gICAgICAgICBkZXBlbmRzIG9uIEhBU19JT01FTQ0KPiAgICAgICAgIHNl
+bGVjdCBJSU9fQlVGRkVSDQo+ICAgICAgICAgc2VsZWN0IElJT19UUklHR0VSRURfQlVGRkVSDQo+
+IC0tDQo+IDEuOC4zLjENCj4gDQo=

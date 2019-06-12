@@ -2,101 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 327DC41F73
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2019 10:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8B47420DC
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2019 11:33:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729413AbfFLImu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Jun 2019 04:42:50 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:40523 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726357AbfFLImu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jun 2019 04:42:50 -0400
-Received: by mail-wm1-f68.google.com with SMTP id v19so5586259wmj.5
-        for <linux-iio@vger.kernel.org>; Wed, 12 Jun 2019 01:42:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=Vy/mEqXU/U3wrsZD2Jkiz7elwZu303ZemKwcaxzfKNE=;
-        b=kQwI9QpLQIVMzRxAg2KZ0HhaUR+hVsU47EOuC6kXAUzU3yET5ccoaWu8g8sAwhuqF0
-         THhYGXXsDbrq4biwYS1FO89TeA+EST23eNU+EnRab6ZVXDpK0bfbSMq0HGAHey3q4u6k
-         QqsDi/DNo9yr2Y8BY6k7QbTomS071661F8cAJBwPulacoTXhhFCNFjbffAWzsuWqr0xJ
-         fvvEcA2fvpzmbB9YvSlnrN7UUym+7rT7R07QX9f2V9AfPB4JTQAvvIn3n/8WT3QvYwCH
-         vBrZmZtJTJmgNgYRY9eSiaW131ZuLI/jrgtpcjNnrLwkSeAcAzrcpxaQ+x4Lw06d0gSz
-         kMIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=Vy/mEqXU/U3wrsZD2Jkiz7elwZu303ZemKwcaxzfKNE=;
-        b=PcED/lrsJmANatfaKDRkSL+SrLZ4mFlZA9KWpxBzRo1QrkxQ13Dq5yZpkt6P8CKJIi
-         Jrj5fRIytvjrLjHdXaCojfatxSfPkPPlenVUOrDcvWEoBZj5/0ysB0VUw6ZBHBthD1Jf
-         Wg+UYaFpE0FtgY//h3qJbOzLtdFDFa+7eKM4U2FbSWkFlZizQkbXTEfLkpn2T8noOYx8
-         jfkmUufEGZIUMbR0s/Ffe9NnrqthYcrWGKtQ+T+MtNV+E305EW0jFCwasL+trqhZEKc3
-         7gjBgX7NN7kyLW4BMkue6+pLJHtaXKqJ6vJQf/gQd6b2lw0EskkOanVUQ4ai1AACvNmh
-         5mJA==
-X-Gm-Message-State: APjAAAVPKZgbHQXCvJ8IHucsLv18xVpp/ICBrtHVWMn5vn2d2c8Np80p
-        DxYX2XYuEZUWieq0mXLkAtJPQw==
-X-Google-Smtp-Source: APXvYqzi/I2WoVwZfkLjbykWRV0LWKhr9BIfOxagRzC9h79bGL0UiupB8mBqM6ygP1BDqtGAyarcuQ==
-X-Received: by 2002:a1c:48c5:: with SMTP id v188mr20340723wma.175.1560328968062;
-        Wed, 12 Jun 2019 01:42:48 -0700 (PDT)
-Received: from dell ([2a01:4c8:f:9687:619a:bb91:d243:fc8b])
-        by smtp.gmail.com with ESMTPSA id s8sm27496285wra.55.2019.06.12.01.42.46
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 12 Jun 2019 01:42:47 -0700 (PDT)
-Date:   Wed, 12 Jun 2019 09:42:43 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Cc:     kernel@collabora.com, Nick Vaccaro <nvaccaro@chromium.org>,
+        id S2408702AbfFLJbw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Jun 2019 05:31:52 -0400
+Received: from eddie.linux-mips.org ([148.251.95.138]:50848 "EHLO
+        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408577AbfFLJbw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jun 2019 05:31:52 -0400
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+        (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+        id S23991911AbfFLJbtn45Y1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 12 Jun 2019 11:31:49 +0200
+Date:   Wed, 12 Jun 2019 11:31:42 +0200
+From:   Ladislav Michl <ladis@linux-mips.org>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     linux-iio@vger.kernel.org,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] iio: common: cros_ec_sensors: support protocol v3
- message
-Message-ID: <20190612084243.GC4797@dell>
-References: <cover.1558601329.git.fabien.lahoudere@collabora.com>
- <b619ce4f7f2d10ce1ede2b99d7262828f5b24952.1558601329.git.fabien.lahoudere@collabora.com>
+        Georg Ottinger <g.ottinger@abatec.at>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>
+Subject: Re: [RFC] iio: adc: at91: fix acking DRDY irq (again)
+Message-ID: <20190612093142.GA21203@lenoch>
+References: <20190611115603.GA11086@lenoch>
+ <20190612081419.GM25472@piout.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b619ce4f7f2d10ce1ede2b99d7262828f5b24952.1558601329.git.fabien.lahoudere@collabora.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190612081419.GM25472@piout.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 23 May 2019, Fabien Lahoudere wrote:
-
-> Version 3 of the EC protocol provides min and max frequencies and fifo
-> size for EC sensors.
+On Wed, Jun 12, 2019 at 10:15:33AM +0200, Alexandre Belloni wrote:
+> On 11/06/2019 13:56:03+0200, Ladislav Michl wrote:
+> > Driver also contains some code for TC triggers. How is that supposed to
+> > work? [**] The very same manual states in chapter 39.5.5:
+> >   "If one of the TIOA outputs is selected, the corresponding Timer Counter
+> >    channel must be programmed in Waveform Mode."
+> > There are two drivers touching TC: drivers/clocksource/timer-atmel-tcb.c
+> > and drivers/pwm/pwm-atmel-tcb.c, they seem to conflict each other and
 > 
-> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
-> ---
->  .../cros_ec_sensors/cros_ec_sensors_core.c    | 83 ++++++++++++++++++-
->  .../linux/iio/common/cros_ec_sensors_core.h   |  4 +
->  include/linux/mfd/cros_ec_commands.h          | 21 +++++
+> They don't, they can work simultaneously, on different TCBs. I'm still
+> planning to rework pwm-atmel-tcb to switch it to the proper binding.
 
-There have been many changes to this file recently.  We will have to
-co-ordinate the merge.
+Is there any draft how should that "proper binding" look like?
+By "conflict" I mean DT can be written so both race for the same resource,
+while I would expect timer definition with PWM and ADC using its phandle.
 
-But for now:
+> > none of them is anyhow related to ADC driver. Here it would seem
+> > appropriate to have TC MFD driver and allocate timers for ADC, PWM and
+> > clocksource from there.
+> 
+> No, MFD is way too late for clocksource, this would break some platforms.
+> 
+> However, there is definitively some timer framework that is missing to
+> allow handling of timers that are not used as clocksource/clockevent
+> devices. So indeed, there is a missing piece to make the TC trigger
+> work.
 
-For my own reference:
-  Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+Can that be done similar way drivers/clocksource/timer-ti-dm.c is
+implemented or do you have something else in mind?
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Thank you,
+	ladis

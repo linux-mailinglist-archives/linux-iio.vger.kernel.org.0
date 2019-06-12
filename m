@@ -2,72 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B47420DC
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2019 11:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F78421D7
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2019 11:58:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408702AbfFLJbw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Jun 2019 05:31:52 -0400
-Received: from eddie.linux-mips.org ([148.251.95.138]:50848 "EHLO
-        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2408577AbfFLJbw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jun 2019 05:31:52 -0400
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
-        (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S23991911AbfFLJbtn45Y1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 12 Jun 2019 11:31:49 +0200
-Date:   Wed, 12 Jun 2019 11:31:42 +0200
-From:   Ladislav Michl <ladis@linux-mips.org>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     linux-iio@vger.kernel.org,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        id S1731934AbfFLJ6V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Jun 2019 05:58:21 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:44848 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726878AbfFLJ6V (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jun 2019 05:58:21 -0400
+Received: from laptop-1.home (unknown [IPv6:2a01:cb19:8ad6:900:42dd:dd1c:19ee:7c60])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: aragua)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 8517E260D5E;
+        Wed, 12 Jun 2019 10:58:19 +0100 (BST)
+Message-ID: <46f153d21d91cdc910a074864ac92fce7f9c76b7.camel@collabora.com>
+Subject: Re: [PATCH v2 1/3] iio: common: cros_ec_sensors: support protocol
+ v3 message
+From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     kernel@collabora.com, Nick Vaccaro <nvaccaro@chromium.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Georg Ottinger <g.ottinger@abatec.at>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [RFC] iio: adc: at91: fix acking DRDY irq (again)
-Message-ID: <20190612093142.GA21203@lenoch>
-References: <20190611115603.GA11086@lenoch>
- <20190612081419.GM25472@piout.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190612081419.GM25472@piout.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 12 Jun 2019 11:58:16 +0200
+In-Reply-To: <20190612084243.GC4797@dell>
+References: <cover.1558601329.git.fabien.lahoudere@collabora.com>
+         <b619ce4f7f2d10ce1ede2b99d7262828f5b24952.1558601329.git.fabien.lahoudere@collabora.com>
+         <20190612084243.GC4797@dell>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.2 (3.30.2-2.fc29) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 10:15:33AM +0200, Alexandre Belloni wrote:
-> On 11/06/2019 13:56:03+0200, Ladislav Michl wrote:
-> > Driver also contains some code for TC triggers. How is that supposed to
-> > work? [**] The very same manual states in chapter 39.5.5:
-> >   "If one of the TIOA outputs is selected, the corresponding Timer Counter
-> >    channel must be programmed in Waveform Mode."
-> > There are two drivers touching TC: drivers/clocksource/timer-atmel-tcb.c
-> > and drivers/pwm/pwm-atmel-tcb.c, they seem to conflict each other and
+Le mercredi 12 juin 2019 à 09:42 +0100, Lee Jones a écrit :
+> On Thu, 23 May 2019, Fabien Lahoudere wrote:
 > 
-> They don't, they can work simultaneously, on different TCBs. I'm still
-> planning to rework pwm-atmel-tcb to switch it to the proper binding.
-
-Is there any draft how should that "proper binding" look like?
-By "conflict" I mean DT can be written so both race for the same resource,
-while I would expect timer definition with PWM and ADC using its phandle.
-
-> > none of them is anyhow related to ADC driver. Here it would seem
-> > appropriate to have TC MFD driver and allocate timers for ADC, PWM and
-> > clocksource from there.
+> > Version 3 of the EC protocol provides min and max frequencies and
+> > fifo
+> > size for EC sensors.
+> > 
+> > Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+> > Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
+> > ---
+> >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 83
+> > ++++++++++++++++++-
+> >  .../linux/iio/common/cros_ec_sensors_core.h   |  4 +
+> >  include/linux/mfd/cros_ec_commands.h          | 21 +++++
 > 
-> No, MFD is way too late for clocksource, this would break some platforms.
+> There have been many changes to this file recently.  We will have to
+> co-ordinate the merge.
 > 
-> However, there is definitively some timer framework that is missing to
-> allow handling of timers that are not used as clocksource/clockevent
-> devices. So indeed, there is a missing piece to make the TC trigger
-> work.
+> But for now:
+> 
+> For my own reference:
+>   Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+> 
 
-Can that be done similar way drivers/clocksource/timer-ti-dm.c is
-implemented or do you have something else in mind?
+Yes I see the changes and my next submission will use recent patch and
+drop my modification in cros_ec_commands.h.
 
-Thank you,
-	ladis
+Thanks for reviewing
+
+

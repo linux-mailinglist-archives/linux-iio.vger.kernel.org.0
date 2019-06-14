@@ -2,95 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20EFE464FD
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2019 18:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4941646838
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2019 21:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725812AbfFNQvM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Jun 2019 12:51:12 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:36748 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725801AbfFNQvM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jun 2019 12:51:12 -0400
-Received: by mail-wr1-f67.google.com with SMTP id n4so3270604wrs.3;
-        Fri, 14 Jun 2019 09:51:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=3tjYBStu1LjnzhWqBptYBriF+bgQ9rTx2Bw7QcMOvJA=;
-        b=Oyx95PK4KOIjIb7OOTGl9gw2WKLfs7prx2Mt9Qc3ZsXrXp88Smjidi11p3+a2eP3s5
-         mmMXcBgnYcToGArp16I1K6Q3Ern9XTx3lngsnyA24FDdbBmPyNgcJCFHStNYncF8j0hp
-         5ZMYtPY1eBZVVbPPlqLiihYOcPiHmS82z5wrcNUaZHv47z5ViZekPbX/fmBId7cw59yp
-         PLzLgKOJsUuN19TtXDGdCM0ha9or7pgXE1nyvXsPQkqlzfAklUVIhqgrAd0EgocJ2bbl
-         24scSrqUMzrRCXhhH1FAJ5i3CM7bK1Fy43l8dgPedauDGM3l/utGxM9kRejbs/kUzayA
-         uD7w==
+        id S1726094AbfFNTnF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Jun 2019 15:43:05 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:36124 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726047AbfFNTnF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jun 2019 15:43:05 -0400
+Received: by mail-qk1-f193.google.com with SMTP id g18so2457223qkl.3;
+        Fri, 14 Jun 2019 12:43:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=3tjYBStu1LjnzhWqBptYBriF+bgQ9rTx2Bw7QcMOvJA=;
-        b=PtbvUxyKJw2wd0PMUy5k8dkCz8umf+tQfu2Fq0zYwrDL7LBNeyQ/CeI6H8wV9dsu5/
-         90c10PUauGvHAa41+kxNwfmvf+HUqCJi5R+EGBEC7RaQmyZrhKlkIzxsAjzxyDxGhCHl
-         ECpZm+vdA/WOhgZmLs643JjdWrXBaBSo54FGkBicEd89oF1d4CleSeyl86DT92NKP4tC
-         Abqi/dl96zUnI8tdOiIFPnJjdcrYEPmCXnJGhdKySqie1dRbI5MlKdJapORqK/xJ+bHW
-         fcuA6T5HooyH1pi02LLsUBA3LXbcRS/rz3tRZXc05zlTx1usrVH9LkpDkrU0/kHN2QNZ
-         Xt6A==
-X-Gm-Message-State: APjAAAVheasnVtYVFoSkvljK37TUPrwkBuFFeqSaknG3HWi5HBp4TcYG
-        hGgYYhmduJAgn3fu1g+tlEa2qw3b6aQ=
-X-Google-Smtp-Source: APXvYqytYV+jti5VJHYHLE4IWpeLMPvSQ7veUqlqTSu08+uhs45aFwoeLRGR8rSwd20t6tPCErqesQ==
-X-Received: by 2002:adf:e54b:: with SMTP id z11mr50141374wrm.198.1560531069659;
-        Fri, 14 Jun 2019 09:51:09 -0700 (PDT)
-Received: from smtp.gmail.com (1.77.115.89.rev.vodafone.pt. [89.115.77.1])
-        by smtp.gmail.com with ESMTPSA id o8sm4627462wrj.71.2019.06.14.09.51.07
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Mp8xTO5oNN7LboeBKHyfl41RYppmWJR4foCIg2c5W1s=;
+        b=EknriUybNYqed1WZbFQUVevwq9svztvZ5srHJWTyzGaVziLtsMRxKcU3vTz/pjaW3r
+         +35JiogVtbuYw949qB00IoYJTC5u2keANjmtyYjciEFa1k7cEmsAL7PoD/5Q+o5DmQY3
+         niBkCA4DC1LbZLHzKhGmprq2Yf4b/7C1D//B4wqObTcY3fVrsicXTbZy1qqSCVff0ak9
+         mmjFQXkd8ys2tSecgoZ1ZeFTVN2PU8XEUJMofv3v1A9OPd9Mx9/P8FR+nx77UsapKUkk
+         Jxez95537JEhb8QrJu5ylw5OTBrxeidl6XL6++yxIWc1kjEyn1+xuYVtTAxdhczzQ5jB
+         KhRw==
+X-Gm-Message-State: APjAAAUbCJQ8ttv1ejc9tby4u2YEy/7Pf8Jyy41XN7loUdo2gfKtdf7y
+        XZMb4YL75QHUSPzk2uY5ag==
+X-Google-Smtp-Source: APXvYqz0aEx4FDJ3gg/LvUzydLqr7NaukJPecyN5OsnEwsUCU0LY+1pAYvSd5Ebr1tqcYxuiJF4DxA==
+X-Received: by 2002:ae9:c106:: with SMTP id z6mr57253623qki.285.1560541383979;
+        Fri, 14 Jun 2019 12:43:03 -0700 (PDT)
+Received: from localhost ([64.188.179.243])
+        by smtp.gmail.com with ESMTPSA id j141sm2430766qke.28.2019.06.14.12.43.03
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 14 Jun 2019 09:51:08 -0700 (PDT)
-Date:   Fri, 14 Jun 2019 13:50:59 -0300
-From:   Melissa Wen <melissa.srw@gmail.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Barry Song <21cnbao@gmail.com>
-Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, kernel-usp@googlegroups.com
-Subject: [PATCH] staging: iio: ad7150: use ternary operating to ensure 0/1
- value
-Message-ID: <20190614165059.7bifufvhxofy6ybu@smtp.gmail.com>
+        Fri, 14 Jun 2019 12:43:03 -0700 (PDT)
+Date:   Fri, 14 Jun 2019 13:43:02 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Renato Lui Geh <renatogeh@gmail.com>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+        knaack.h@gmx.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
+        stefan.popa@analog.com, alexandru.Ardelean@analog.com,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org, kernel-usp@googlegroups.com,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add adi,ad7780.yaml binding
+Message-ID: <20190614194302.GA18613@bogus>
+References: <cover.1558746978.git.renatogeh@gmail.com>
+ <2426649b2d8224ae72e7706bcb8c4f2c44c581d2.1558746978.git.renatogeh@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-User-Agent: NeoMutt/20180716
+In-Reply-To: <2426649b2d8224ae72e7706bcb8c4f2c44c581d2.1558746978.git.renatogeh@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Remove idiom and use ternary operator for consistently trigger 0/1 value
-on variable declaration.
+On Fri, 24 May 2019 22:26:30 -0300, Renato Lui Geh wrote:
+> This patch adds a YAML binding for the Analog Devices AD7780/1 and
+> AD7170/1 analog-to-digital converters.
+> 
+> Signed-off-by: Renato Lui Geh <renatogeh@gmail.com>
+> ---
+> Changes in v2:
+>  - vref-supply to avdd-supply
+>  - remove avdd-supply from required list
+>  - include adc block in an spi block
+> 
+>  .../bindings/iio/adc/adi,ad7780.txt           | 48 ----------
+>  .../bindings/iio/adc/adi,ad7780.yaml          | 87 +++++++++++++++++++
+>  2 files changed, 87 insertions(+), 48 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
+> 
 
-Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
----
- drivers/staging/iio/cdc/ad7150.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
-index 8234da4b8c65..25598bf124fb 100644
---- a/drivers/staging/iio/cdc/ad7150.c
-+++ b/drivers/staging/iio/cdc/ad7150.c
-@@ -350,8 +350,8 @@ static ssize_t ad7150_show_timeout(struct device *dev,
- 
- 	/* use the event code for consistency reasons */
- 	int chan = IIO_EVENT_CODE_EXTRACT_CHAN(this_attr->address);
--	int rising = !!(IIO_EVENT_CODE_EXTRACT_DIR(this_attr->address)
--			== IIO_EV_DIR_RISING);
-+	int rising = (IIO_EVENT_CODE_EXTRACT_DIR(this_attr->address)
-+		      == IIO_EV_DIR_RISING) ? 1 : 0;
- 
- 	switch (IIO_EVENT_CODE_EXTRACT_TYPE(this_attr->address)) {
- 	case IIO_EV_TYPE_MAG_ADAPTIVE:
--- 
-2.20.1
-
+Reviewed-by: Rob Herring <robh@kernel.org>

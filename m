@@ -2,88 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00BCA44AD3
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2019 20:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18852451A9
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2019 04:04:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726626AbfFMSia (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Jun 2019 14:38:30 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:47416 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725851AbfFMSia (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Jun 2019 14:38:30 -0400
+        id S1727277AbfFNCEe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Jun 2019 22:04:34 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:52986 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727264AbfFNCEe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Jun 2019 22:04:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=N5gjGcYoQZZl5JqrcxsUv1o4lauQ728+0lZMR0CyIYo=; b=KVerzfWIuvgOGWj2T9+4xZwpz
-        SPEygCiZ+IwCDwxWi17byi9WoJLv220Lg9VWaSRDHpxJj35cTBKSsOHyrT8B5/wBxWgYb7B4XC+A6
-        JDIpMtJIdmhAVNRQpM/uq6kXhytOSAYEaafiQJFdlJOVWY5vQIiZ4q2DPgcrBqy5aNDb4=;
-Received: from [2001:470:1f1d:6b5:7e7a:91ff:fede:4a45] (helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hbUcB-0005Oc-Il; Thu, 13 Jun 2019 18:38:23 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id 0726D440046; Thu, 13 Jun 2019 19:38:22 +0100 (BST)
-Date:   Thu, 13 Jun 2019 19:38:22 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Vitor Soares <Vitor.Soares@synopsys.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
-        Joao Pinto <Joao.Pinto@synopsys.com>,
-        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>
-Subject: Re: [PATCH v2 0/3] Add ST lsm6dso i3c support
-Message-ID: <20190613183822.GS5316@sirena.org.uk>
-References: <cover.1559831663.git.vitor.soares@synopsys.com>
- <13D59CF9CEBAF94592A12E8AE55501350AABEAF3@DE02WEMBXB.internal.synopsys.com>
+         bh=aQUK413dBnPXJRbLUE6/RHV++edzrn3sivF8fzDWpGc=; b=hkvPTUNcFjmIKqVi/42DI9hcc
+        djs1/CZZ1gEi9/pkYp7JBfy+mzE4TN3vkpNxJQh+cxpMRjoZUQcYKThK+Lbc9vaeo/sl8COrkoihQ
+        2Nkm9p9a41yPkSk0oiQ+uqa9oaJuLpxhPzO87IqfhV1REBX6QdyTJk7Iexd5hgkPKXUb5IA07VKQe
+        XftuKi6beE3iXFUKmgQ526h4XS+dEAK09FLVKDxMSBZDMm71B91V+TcVb8eWcF/Dwv1toe1WcA/6A
+        XywndEaNPy/piJ98UTvHIdgHMyT3QFWskJPRUdKWRYklnTH2RNGvnLIL8zv28a+39Mv9Q16ozoVaQ
+        AKLPWGR4A==;
+Received: from 201.86.169.251.dynamic.adsl.gvt.net.br ([201.86.169.251] helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hbbZv-0000EJ-7a; Fri, 14 Jun 2019 02:04:31 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
+        (envelope-from <mchehab@bombadil.infradead.org>)
+        id 1hbbZn-0002nV-M0; Thu, 13 Jun 2019 23:04:23 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        linuxppc-dev@lists.ozlabs.org,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Anton Vorontsov <anton@enomsg.org>, linux-pm@vger.kernel.org,
+        Colin Cross <ccross@android.com>, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Stefan Achatz <erazor_de@users.sourceforge.net>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 00/14] Add support to generate ABI documentation at admin-guide
+Date:   Thu, 13 Jun 2019 23:04:06 -0300
+Message-Id: <cover.1560477540.git.mchehab+samsung@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="1Sa0i77dkqaUxqYg"
-Content-Disposition: inline
-In-Reply-To: <13D59CF9CEBAF94592A12E8AE55501350AABEAF3@DE02WEMBXB.internal.synopsys.com>
-X-Cookie: Editing is a rewording activity.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Greg,
 
---1Sa0i77dkqaUxqYg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+As promised, I'm resending the patch series with adds the Kernel ABI to
+Documentation/admin-guide.
 
-On Tue, Jun 11, 2019 at 11:42:50AM +0000, Vitor Soares wrote:
+Those patches are basically the version 3 patchset I sent back in 2017,
+rebased on the top of linux-next (next-20190613), and with some fixes
+in order for it to work.
 
-> Since the regmap-i3c.c was already applied in:
->   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git=20
-> tags/regmap-i3c
+- The 4 initial patches to fix some ABI descriptions that are violating 
+  the syntax described at Documentation/ABI/README;
 
-> I wonder what is clean way to submit this patch set?
+- The next 6 patches are the ones originally written in 2017 with a
+  script with parses the ABI files;
 
-Just mention in the cover letter that it depends on that tag, the point
-with the tag is to allow other trees to pull it in if they need it.
+- The 11th patch is a new one: it relaxes a little bit the parser in 
+  order to parse file headers that contains colons on it;
 
---1Sa0i77dkqaUxqYg
-Content-Type: application/pgp-signature; name="signature.asc"
+- The 12th patch adds the new script to the documentation build
+  system, together with a new python Sphinx extension with calls it;
 
------BEGIN PGP SIGNATURE-----
+- The 13th patch fixes the python script when running with newer
+  Sphinx versions (1.7 and upper);
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0CmB4ACgkQJNaLcl1U
-h9DdLAf6A5rVHIcRFaF0D/uW7cFQ1G2BO4pg7pNoyrzr8oOHuBBi48aBuLG2UETF
-9QXMIPL3tXBf1d+zYcAadqM1mmZJ1Rhqb9KmRSMVrHj14gmHJ0t/9WOiwA3kCpdJ
-ka0ybLtuSwRilY6jyol7h6sMsaIhn32Ua4tWwBBpiPvsIxGYwZE0sdvmG0racV5p
-rjEVIJhfPrRIfH4+C9g9W3EwzhfAiyolf+8+r7SgoQCrAiNTCQjc8Kyg8iGLObbj
-ORZwz4GDHk0FJq0ntnYhN317EQflHz3NXyqPkNpEzVtYTvNmnLkk1TZpvPvPbAQD
-fP8ERKAe0E5wwy+9AKHTlB+iWfqLVQ==
-=DRFp
------END PGP SIGNATURE-----
+- The final patch fixes an UTF-8 trouble. I noticed it only with Sphinx
+  1.4, but it could affect other versions too. So, I ended by changing
+  the UTF-8 encoding logit to work version-independent, just like
+  what happens with kerneldoc.py extension.
 
---1Sa0i77dkqaUxqYg--
+Mauro Carvalho Chehab (14):
+  ABI: fix some syntax issues at the ABI database
+  ABI: sysfs-driver-hid: the "What" field doesn't parse fine
+  ABI: sysfs-class-uwb_rc: remove a duplicated incomplete entry
+  ABI: better identificate tables
+  scripts: add an script to parse the ABI files
+  scripts/get_abi.pl: parse files with text at beginning
+  scripts/get_abi.pl: avoid use literal blocks when not needed
+  scripts/get_abi.pl: split label naming from xref logic
+  scripts/get_abi.pl: add support for searching for ABI symbols
+  scripts/get_abi.pl: represent what in tables
+  scripts/get_abi.pl: fix parse issues with some files
+  doc-rst: add ABI documentation to the admin-guide book
+  sphinx/kernel_abi.py: make it compatible with Sphinx 1.7+
+  docs: sphinx/kernel_abi.py: fix UTF-8 support
+
+ .../ABI/obsolete/sysfs-driver-hid-roccat-pyra |   2 +-
+ Documentation/ABI/testing/pstore              |   2 +-
+ .../sysfs-bus-event_source-devices-format     |   2 +-
+ .../ABI/testing/sysfs-bus-i2c-devices-hm6352  |   6 +-
+ .../ABI/testing/sysfs-bus-iio-distance-srf08  |   4 +-
+ .../testing/sysfs-bus-iio-proximity-as3935    |   4 +-
+ .../ABI/testing/sysfs-bus-pci-devices-cciss   |  22 +-
+ .../testing/sysfs-bus-usb-devices-usbsevseg   |  12 +-
+ .../sysfs-class-backlight-driver-lm3533       |   6 +-
+ Documentation/ABI/testing/sysfs-class-cxl     |   6 +-
+ Documentation/ABI/testing/sysfs-class-devfreq |   2 +-
+ .../ABI/testing/sysfs-class-led-driver-lm3533 |   8 +-
+ .../ABI/testing/sysfs-class-leds-gt683r       |   4 +-
+ .../ABI/testing/sysfs-class-powercap          |   2 +-
+ Documentation/ABI/testing/sysfs-class-uwb_rc  |   6 -
+ Documentation/ABI/testing/sysfs-driver-hid    |  12 +-
+ .../ABI/testing/sysfs-driver-hid-roccat-kone  |   2 +-
+ Documentation/ABI/testing/sysfs-kernel-fscaps |   2 +-
+ .../ABI/testing/sysfs-kernel-vmcoreinfo       |   2 +-
+ Documentation/admin-guide/abi-obsolete.rst    |  10 +
+ Documentation/admin-guide/abi-removed.rst     |   4 +
+ Documentation/admin-guide/abi-stable.rst      |  13 +
+ Documentation/admin-guide/abi-testing.rst     |  19 +
+ Documentation/admin-guide/abi.rst             |  11 +
+ Documentation/admin-guide/index.rst           |   1 +
+ Documentation/conf.py                         |   2 +-
+ Documentation/sphinx/kernel_abi.py            | 172 +++++++
+ scripts/get_abi.pl                            | 450 ++++++++++++++++++
+ 28 files changed, 731 insertions(+), 57 deletions(-)
+ create mode 100644 Documentation/admin-guide/abi-obsolete.rst
+ create mode 100644 Documentation/admin-guide/abi-removed.rst
+ create mode 100644 Documentation/admin-guide/abi-stable.rst
+ create mode 100644 Documentation/admin-guide/abi-testing.rst
+ create mode 100644 Documentation/admin-guide/abi.rst
+ create mode 100644 Documentation/sphinx/kernel_abi.py
+ create mode 100755 scripts/get_abi.pl
+
+-- 
+2.21.0
+
+

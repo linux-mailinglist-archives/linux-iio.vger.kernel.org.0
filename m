@@ -2,40 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 997F8474D2
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2019 15:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16C62474D7
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2019 15:47:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727138AbfFPNmJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Jun 2019 09:42:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32826 "EHLO mail.kernel.org"
+        id S1726012AbfFPNrs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Jun 2019 09:47:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34096 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725874AbfFPNmJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 Jun 2019 09:42:09 -0400
+        id S1725874AbfFPNrs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 Jun 2019 09:47:48 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B723D2133D;
-        Sun, 16 Jun 2019 13:42:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BE4BF2133D;
+        Sun, 16 Jun 2019 13:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560692528;
-        bh=tSbRzbrtt/zEflDQDg9uIaA4GWFGCnT9f9zwbV/BW+E=;
+        s=default; t=1560692867;
+        bh=p0iL82cdaEa1Vv36sQ0BnhAX2AFRjC9Qqy5te+FMyV4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Y3C8R9giyk6um4wcjEAnRPvSqf2+Xu6/5HdK8EUrkQiRtdYxXTv4kpHpzTGjtQLVA
-         vmsdwyql6gWlxM8jYiMMdtbXSEGH+mUeQyE/5keh68451j60ibs8dRAj+5JuPYlIf6
-         OwvBBGhbplZqVY6GTXBLIeGJ0CtU0bO3vyksA05g=
-Date:   Sun, 16 Jun 2019 14:42:02 +0100
+        b=uXHXVAVj4eO6fSQ2kfhTGQ2xpE6Yu1dRTsqgbI2J1u5IuOSaZ4YA04ycR3zkB/Y5j
+         n/s90Kh/RzWT8qHMF/qlEt2STWUCj+8XN1/qU9OAD1xVWvgeDaWrOiYYbkQbBkIXhe
+         Dng7WdvB62qLiR2JTkTyZRtPW22LS2D39Meb/dyk=
+Date:   Sun, 16 Jun 2019 14:47:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
-        lorenzo.bianconi83@gmail.com, denis.ciocca@st.com,
-        martin@geanix.com
-Subject: Re: [RFC PATCH 3/3] iio: imu: st_lsm6dsx: add wake on accelerometer
- threshold hook in sysfs
-Message-ID: <20190616144202.6ba14dbb@archlinux>
-In-Reply-To: <20190615083557.GA5778@localhost.localdomain>
-References: <20190614122604.52935-1-sean@geanix.com>
-        <20190614122604.52935-4-sean@geanix.com>
-        <20190615083557.GA5778@localhost.localdomain>
+To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v1 24/31] docs: iio: convert to ReST
+Message-ID: <20190616144742.7e2dce98@archlinux>
+In-Reply-To: <6b9df01697dde8b9bb9be9accf28d63ed821956d.1560364494.git.mchehab+samsung@kernel.org>
+References: <cover.1560364493.git.mchehab+samsung@kernel.org>
+        <6b9df01697dde8b9bb9be9accf28d63ed821956d.1560364494.git.mchehab+samsung@kernel.org>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,116 +47,241 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 15 Jun 2019 10:35:58 +0200
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+On Wed, 12 Jun 2019 15:38:27 -0300
+Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
 
-> > This adds a wakeup threshold hook in sysfs, it enables us to
-> > change the threshold value on the run.
-> > For now this is the raw register value...
-> > 
-> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> > ---
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 34 ++++++++++++++++++++
-> >  1 file changed, 34 insertions(+)
-> >   
+> Rename the iio documentation files to ReST, add an
+> index for them and adjust in order to produce a nice html
+> output via the Sphinx build system.
 > 
-> What about using write_event_config routine pointer for it instead od adding a sysfs
-> entries?
-> @Jonathan: what do you think?
-I must admit this support has me a little confused.
+> At its new index.rst, let's add a :orphan: while this is not linked to
+> the main index.rst file, in order to avoid build warnings.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Thanks, looks good to me.   At some point we need to look at how
+to tie together the various IIO docs as they are split between
+here and the driver-api/iio/ directory.  That split isn't currently
+along particularly logical lines.
 
-Is what is actually going on here that we are implementing generic
-threshold events, but instead of reporting them as interrupts and through the
-usual userspace pipeline we are using a wakeup aware gpio to bring the
-system out of suspend?
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-If that's the case then I'd like to see these supported as normal IIO events
-first, and then look at adding the general ability to use these as wakeup
-events if the particular interrupt line happens to support it.  This isn't
-really a thing specific to this device, but rather something that we should
-be enable on any threshold event.   Clearly for a driver to support it, there
-must be a means of preventing it going too deeply to sleep so each
-driver is likely to need some specific handling.
-
-To get a remotely predictable interface we might need to have
-enables more directly tied to the actual events than they would be
-using the power/wakeup interface. That discussion would need to
-involve the power management people as well. In particular I can see
-you might want different events enabled when going to sleep than
-at other times, so we might to have additional wakeup specific
-enable attributes, and perhaps thresholds?
-
-I can see something like:
-/sys/bus/iio/devices/iio\:device0/events/in_accel_x_thresh_rising_[wakeup]value
-/sys/bus/iio/devices/iio\:device0/events/in_accel_x_thresh_rising_wakeup
-
-Making some sense.
+Thanks for tidying this up!
 
 Jonathan
-
+> ---
+>  .../iio/{ep93xx_adc.txt => ep93xx_adc.rst}    | 15 +++++-
+>  .../{iio_configfs.txt => iio_configfs.rst}    | 52 +++++++++++--------
+>  Documentation/iio/index.rst                   | 12 +++++
+>  drivers/iio/Kconfig                           |  2 +-
+>  4 files changed, 56 insertions(+), 25 deletions(-)
+>  rename Documentation/iio/{ep93xx_adc.txt => ep93xx_adc.rst} (71%)
+>  rename Documentation/iio/{iio_configfs.txt => iio_configfs.rst} (73%)
+>  create mode 100644 Documentation/iio/index.rst
 > 
-> Regards,
-> Lorenzo
-> 
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > index 2c8ad7d65d2f..cbcd7920f05d 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > @@ -657,12 +657,45 @@ static ssize_t st_lsm6dsx_sysfs_set_wakeup_enabled(struct device *dev,
-> >  	return len;
-> >  }
-> >  
-> > +static ssize_t st_lsm6dsx_sysfs_get_wakeup_threshold(struct device *dev,
-> > +					    struct device_attribute *attr,
-> > +					    char *buf)
-> > +{
-> > +	struct st_lsm6dsx_sensor *sensor = iio_priv(dev_get_drvdata(dev));
-> > +	struct st_lsm6dsx_hw *hw = sensor->hw;
-> > +
-> > +	return sprintf(buf, "%d\n", hw->wake_threshold);
-> > +}
-> > +
-> > +static ssize_t st_lsm6dsx_sysfs_set_wakeup_threshold(struct device *dev,
-> > +					    struct device_attribute *attr,
-> > +					    const char *buf, size_t len)
-> > +{
-> > +	struct st_lsm6dsx_sensor *sensor = iio_priv(dev_get_drvdata(dev));
-> > +	struct st_lsm6dsx_hw *hw = sensor->hw;
-> > +	int threshold;
-> > +
-> > +	if (kstrtoint(buf, 0, &threshold))
-> > +		return -EINVAL;
-> > +
-> > +	if ((threshold < 0) || (threshold > 31))
-> > +		return -EINVAL;
-> > +
-> > +	if (!st_lsm6dsx_set_wake_threshold(hw, threshold))
-> > +		return len;
-> > +
-> > +	return -EINVAL;
-> > +}
-> > +
-> >  static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(st_lsm6dsx_sysfs_sampling_frequency_avail);
-> >  static IIO_DEVICE_ATTR(in_accel_scale_available, 0444,
-> >  		       st_lsm6dsx_sysfs_scale_avail, NULL, 0);
-> >  static IIO_DEVICE_ATTR(wakeup_enabled, 0644,
-> >  		       st_lsm6dsx_sysfs_get_wakeup_enabled,
-> >  		       st_lsm6dsx_sysfs_set_wakeup_enabled, 0);
-> > +static IIO_DEVICE_ATTR(wakeup_threshold, 0644,
-> > +		       st_lsm6dsx_sysfs_get_wakeup_threshold,
-> > +		       st_lsm6dsx_sysfs_set_wakeup_threshold, 0);
-> >  static IIO_DEVICE_ATTR(in_anglvel_scale_available, 0444,
-> >  		       st_lsm6dsx_sysfs_scale_avail, NULL, 0);
-> >  
-> > @@ -670,6 +703,7 @@ static struct attribute *st_lsm6dsx_acc_attributes[] = {
-> >  	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
-> >  	&iio_dev_attr_in_accel_scale_available.dev_attr.attr,
-> >  	&iio_dev_attr_wakeup_enabled.dev_attr.attr,
-> > +	&iio_dev_attr_wakeup_threshold.dev_attr.attr,
-> >  	NULL,
-> >  };
-> >  
-> > -- 
-> > 2.22.0
-> >   
+> diff --git a/Documentation/iio/ep93xx_adc.txt b/Documentation/iio/ep93xx_adc.rst
+> similarity index 71%
+> rename from Documentation/iio/ep93xx_adc.txt
+> rename to Documentation/iio/ep93xx_adc.rst
+> index 23053e7817bd..4fd8dea3f6b8 100644
+> --- a/Documentation/iio/ep93xx_adc.txt
+> +++ b/Documentation/iio/ep93xx_adc.rst
+> @@ -1,12 +1,16 @@
+> -Cirrus Logic EP93xx ADC driver.
+> +==============================
+> +Cirrus Logic EP93xx ADC driver
+> +==============================
+>  
+>  1. Overview
+> +===========
+>  
+>  The driver is intended to work on both low-end (EP9301, EP9302) devices with
+>  5-channel ADC and high-end (EP9307, EP9312, EP9315) devices with 10-channel
+>  touchscreen/ADC module.
+>  
+>  2. Channel numbering
+> +====================
+>  
+>  Numbering scheme for channels 0..4 is defined in EP9301 and EP9302 datasheets.
+>  EP9307, EP9312 and EP9312 have 3 channels more (total 8), but the numbering is
+> @@ -17,13 +21,20 @@ Assuming ep93xx_adc is IIO device0, you'd find the following entries under
+>  
+>    +-----------------+---------------+
+>    | sysfs entry     | ball/pin name |
+> -  +-----------------+---------------+
+> +  +=================+===============+
+>    | in_voltage0_raw | YM            |
+> +  +-----------------+---------------+
+>    | in_voltage1_raw | SXP           |
+> +  +-----------------+---------------+
+>    | in_voltage2_raw | SXM           |
+> +  +-----------------+---------------+
+>    | in_voltage3_raw | SYP           |
+> +  +-----------------+---------------+
+>    | in_voltage4_raw | SYM           |
+> +  +-----------------+---------------+
+>    | in_voltage5_raw | XP            |
+> +  +-----------------+---------------+
+>    | in_voltage6_raw | XM            |
+> +  +-----------------+---------------+
+>    | in_voltage7_raw | YP            |
+>    +-----------------+---------------+
+> diff --git a/Documentation/iio/iio_configfs.txt b/Documentation/iio/iio_configfs.rst
+> similarity index 73%
+> rename from Documentation/iio/iio_configfs.txt
+> rename to Documentation/iio/iio_configfs.rst
+> index 4e5f101837a8..ecbfdb3afef7 100644
+> --- a/Documentation/iio/iio_configfs.txt
+> +++ b/Documentation/iio/iio_configfs.rst
+> @@ -1,6 +1,9 @@
+> +===============================
+>  Industrial IIO configfs support
+> +===============================
+>  
+>  1. Overview
+> +===========
+>  
+>  Configfs is a filesystem-based manager of kernel objects. IIO uses some
+>  objects that could be easily configured using configfs (e.g.: devices,
+> @@ -10,20 +13,22 @@ See Documentation/filesystems/configfs/configfs.txt for more information
+>  about how configfs works.
+>  
+>  2. Usage
+> +========
+>  
+>  In order to use configfs support in IIO we need to select it at compile
+>  time via CONFIG_IIO_CONFIGFS config option.
+>  
+> -Then, mount the configfs filesystem (usually under /config directory):
+> +Then, mount the configfs filesystem (usually under /config directory)::
+>  
+> -$ mkdir /config
+> -$ mount -t configfs none /config
+> +  $ mkdir /config
+> +  $ mount -t configfs none /config
+>  
+>  At this point, all default IIO groups will be created and can be accessed
+>  under /config/iio. Next chapters will describe available IIO configuration
+>  objects.
+>  
+>  3. Software triggers
+> +====================
+>  
+>  One of the IIO default configfs groups is the "triggers" group. It is
+>  automagically accessible when the configfs is mounted and can be found
+> @@ -31,40 +36,40 @@ under /config/iio/triggers.
+>  
+>  IIO software triggers implementation offers support for creating multiple
+>  trigger types. A new trigger type is usually implemented as a separate
+> -kernel module following the interface in include/linux/iio/sw_trigger.h:
+> +kernel module following the interface in include/linux/iio/sw_trigger.h::
+>  
+> -/*
+> - * drivers/iio/trigger/iio-trig-sample.c
+> - * sample kernel module implementing a new trigger type
+> - */
+> -#include <linux/iio/sw_trigger.h>
+> +  /*
+> +   * drivers/iio/trigger/iio-trig-sample.c
+> +   * sample kernel module implementing a new trigger type
+> +   */
+> +  #include <linux/iio/sw_trigger.h>
+>  
+>  
+> -static struct iio_sw_trigger *iio_trig_sample_probe(const char *name)
+> -{
+> +  static struct iio_sw_trigger *iio_trig_sample_probe(const char *name)
+> +  {
+>  	/*
+>  	 * This allocates and registers an IIO trigger plus other
+>  	 * trigger type specific initialization.
+>  	 */
+> -}
+> +  }
+>  
+> -static int iio_trig_hrtimer_remove(struct iio_sw_trigger *swt)
+> -{
+> +  static int iio_trig_hrtimer_remove(struct iio_sw_trigger *swt)
+> +  {
+>  	/*
+>  	 * This undoes the actions in iio_trig_sample_probe
+>  	 */
+> -}
+> +  }
+>  
+> -static const struct iio_sw_trigger_ops iio_trig_sample_ops = {
+> +  static const struct iio_sw_trigger_ops iio_trig_sample_ops = {
+>  	.probe		= iio_trig_sample_probe,
+>  	.remove		= iio_trig_sample_remove,
+> -};
+> +  };
+>  
+> -static struct iio_sw_trigger_type iio_trig_sample = {
+> +  static struct iio_sw_trigger_type iio_trig_sample = {
+>  	.name = "trig-sample",
+>  	.owner = THIS_MODULE,
+>  	.ops = &iio_trig_sample_ops,
+> -};
+> +  };
+>  
+>  module_iio_sw_trigger_driver(iio_trig_sample);
+>  
+> @@ -73,21 +78,24 @@ iio-trig-sample module will create 'trig-sample' trigger type directory
+>  /config/iio/triggers/trig-sample.
+>  
+>  We support the following interrupt sources (trigger types):
+> +
+>  	* hrtimer, uses high resolution timers as interrupt source
+>  
+>  3.1 Hrtimer triggers creation and destruction
+> +---------------------------------------------
+>  
+>  Loading iio-trig-hrtimer module will register hrtimer trigger types allowing
+>  users to create hrtimer triggers under /config/iio/triggers/hrtimer.
+>  
+> -e.g:
+> +e.g::
+>  
+> -$ mkdir /config/iio/triggers/hrtimer/instance1
+> -$ rmdir /config/iio/triggers/hrtimer/instance1
+> +  $ mkdir /config/iio/triggers/hrtimer/instance1
+> +  $ rmdir /config/iio/triggers/hrtimer/instance1
+>  
+>  Each trigger can have one or more attributes specific to the trigger type.
+>  
+>  3.2 "hrtimer" trigger types attributes
+> +--------------------------------------
+>  
+>  "hrtimer" trigger type doesn't have any configurable attribute from /config dir.
+>  It does introduce the sampling_frequency attribute to trigger directory.
+> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+> new file mode 100644
+> index 000000000000..0593dca89a94
+> --- /dev/null
+> +++ b/Documentation/iio/index.rst
+> @@ -0,0 +1,12 @@
+> +:orphan:
+> +
+> +==============
+> +Industrial I/O
+> +==============
+> +
+> +.. toctree::
+> +   :maxdepth: 1
+> +
+> +   iio_configfs
+> +
+> +   ep93xx_adc
+> diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
+> index 1d736a4952ab..5bd51853b15e 100644
+> --- a/drivers/iio/Kconfig
+> +++ b/drivers/iio/Kconfig
+> @@ -28,7 +28,7 @@ config IIO_CONFIGFS
+>  	help
+>  	  This allows configuring various IIO bits through configfs
+>  	  (e.g. software triggers). For more info see
+> -	  Documentation/iio/iio_configfs.txt.
+> +	  Documentation/iio/iio_configfs.rst.
+>  
+>  config IIO_TRIGGER
+>  	bool "Enable triggered sampling support"
 

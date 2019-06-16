@@ -2,45 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48D3247436
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2019 12:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 566B44749C
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2019 15:11:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726612AbfFPKUz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Jun 2019 06:20:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34766 "EHLO mail.kernel.org"
+        id S1727175AbfFPNLn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Jun 2019 09:11:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50184 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725861AbfFPKUz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 Jun 2019 06:20:55 -0400
+        id S1725865AbfFPNLn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 Jun 2019 09:11:43 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 04F092084A;
-        Sun, 16 Jun 2019 10:20:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B696020866;
+        Sun, 16 Jun 2019 13:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560680454;
-        bh=HeAVqFhEnFHaGE/MLt8iG4KF9+eU3HYvjifK8118Rak=;
+        s=default; t=1560690702;
+        bh=zWOZhjjiwUw9kLTG/2bybfeHap0bYa+9tK3KavN6Ag0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Mnf1Pj/huamHWR6SCw8l2VcZkO3Fh1eunBrqAEP/wKDkhAUUfaux8hWOgKsdOv+TR
-         6QZq0TcotwXJEGHe5WTci4kjd1ChlSG3g6fiDA9U2TpHKqicsxx5yFiU/QPmZrBENG
-         WFG28OKNi7mHn5KtT1U6V9lDlWbIwSB9sn/xxGgU=
-Date:   Sun, 16 Jun 2019 11:20:48 +0100
+        b=LLrnfsyoPILj/fmVxOAtjvrWnHhRr7Z24BQwVwqhFiXVWpNLcFXua2O27YcPpMvSo
+         1mAzyAiMqcKLUWGJh4/IAZcGoQGya3BglEHCwXOgXVqyPedHr1rrL7LoGWHrsRrGP1
+         Rrpb1aqrG3TqfpAXo8PdXrJW1hsNfZTHBI6FDFzA=
+Date:   Sun, 16 Jun 2019 14:11:37 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Melissa Wen <melissa.srw@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Barry Song <21cnbao@gmail.com>, linux-iio@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        kernel-usp@googlegroups.com
-Subject: Re: [PATCH v2 2/3] staging: iio: ad7150: simplify i2c SMBus return
- treatment
-Message-ID: <20190616112048.67082117@archlinux>
-In-Reply-To: <90e8a25eca0825878d55fe0a9e760906b4689035.1560529045.git.melissa.srw@gmail.com>
-References: <cover.1560529045.git.melissa.srw@gmail.com>
-        <90e8a25eca0825878d55fe0a9e760906b4689035.1560529045.git.melissa.srw@gmail.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     <gregkh@linuxfoundation.org>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>, <stefan.popa@analog.com>,
+        <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <linux-kernel@vger.kernel.org>, <devel@driverdev.osuosl.org>,
+        <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] staging: iio: adt7316: Add missing include files
+Message-ID: <20190616141137.254a1291@archlinux>
+In-Reply-To: <20190614152846.28108-1-yuehaibing@huawei.com>
+References: <20190614152846.28108-1-yuehaibing@huawei.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -50,45 +44,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 Jun 2019 13:32:54 -0300
-Melissa Wen <melissa.srw@gmail.com> wrote:
+On Fri, 14 Jun 2019 23:28:46 +0800
+YueHaibing <yuehaibing@huawei.com> wrote:
 
-> Since i2c_smbus_write_byte_data returns no-positive value, this commit
-> making the treatment of its return value less verbose.
+> Fix build error:
 > 
-> Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+> drivers/staging/iio/addac/adt7316.c: In function adt7316_store_update_DAC:
+> drivers/staging/iio/addac/adt7316.c:949:3: error: implicit declaration of
+>  function gpiod_set_value; did you mean gpio_set_value? [-Werror=implicit-function-declaration]
+>    gpiod_set_value(chip->ldac_pin, 0);
+> 
+> drivers/staging/iio/addac/adt7316.c: In function adt7316_setup_irq:
+> drivers/staging/iio/addac/adt7316.c:1807:13: error: implicit declaration of
+>  function irqd_get_trigger_type; did you mean devm_iio_trigger_free? [-Werror=implicit-function-declaration]
+>   irq_type = irqd_get_trigger_type(irq_get_irq_data(chip->bus.irq));
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Fixes: 7f6b6d553df7 ("Staging: iio: adt7316: Add all irq related code in adt7316_irq_setup()")
+> Fixes: c63460c4298f ("Staging: iio: adt7316: Use device tree data to set ldac_pin")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Hi yuehaibing,
+
+You were second to send a fix for this. I've had it in my
+fixes branch since last week, but not done a pull request quite yet.
+I'll probably send it out later today.
+
+https://patchwork.kernel.org/patch/10978301/
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/staging/iio/cdc/ad7150.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+>  drivers/staging/iio/addac/adt7316.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
-> index 091aa33589d7..7d56f10a19ed 100644
-> --- a/drivers/staging/iio/cdc/ad7150.c
-> +++ b/drivers/staging/iio/cdc/ad7150.c
-> @@ -202,16 +202,11 @@ static int ad7150_write_event_params(struct iio_dev *indio_dev,
->  	ret = i2c_smbus_write_byte_data(chip->client,
->  					ad7150_addresses[chan][4],
->  					sens);
-> -	if (ret < 0)
-> +	if (ret)
->  		return ret;
-> -
-> -	ret = i2c_smbus_write_byte_data(chip->client,
-> +	return i2c_smbus_write_byte_data(chip->client,
->  					ad7150_addresses[chan][5],
->  					timeout);
-> -	if (ret < 0)
-> -		return ret;
-> -
-> -	return 0;
->  }
+> diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
+> index 37ce563..9d3d159 100644
+> --- a/drivers/staging/iio/addac/adt7316.c
+> +++ b/drivers/staging/iio/addac/adt7316.c
+> @@ -16,6 +16,8 @@
+>  #include <linux/i2c.h>
+>  #include <linux/rtc.h>
+>  #include <linux/module.h>
+> +#include <linux/irq.h>
+> +#include <linux/gpio/consumer.h>
 >  
->  static int ad7150_write_event_config(struct iio_dev *indio_dev,
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/events.h>
 

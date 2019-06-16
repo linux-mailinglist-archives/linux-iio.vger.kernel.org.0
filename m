@@ -2,140 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DA7146F10
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2019 10:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AE6D47424
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2019 12:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725943AbfFOIil (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Jun 2019 04:38:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37084 "EHLO mail.kernel.org"
+        id S1726612AbfFPKPX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Jun 2019 06:15:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59280 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725825AbfFOIil (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 15 Jun 2019 04:38:41 -0400
-Received: from localhost.localdomain (unknown [77.246.15.90])
+        id S1725766AbfFPKPW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 Jun 2019 06:15:22 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 85EFD21848;
-        Sat, 15 Jun 2019 08:38:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E50762084A;
+        Sun, 16 Jun 2019 10:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560587920;
-        bh=w4FV9QFJPg67zMuaEg0tRrd3hFhiXE0yxS/3dfBiiPc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Seyt4Lx/Bn0uc6verPIMtGyNdB/Mv93+7T3bat6k+2e5OKMkK5RCrrh96Sh92uj3I
-         OeYFl2AKKX5d+2ebbAExyZO5XF1jwN7BMg50+qEJRWoi61aLeoqSDOsxe8roXPtL8A
-         fx1Y9VuayzfrwzwicyFwGbvutF9xF43BJm8L0Jrw=
-Date:   Sat, 15 Jun 2019 10:38:35 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com, denis.ciocca@st.com,
-        martin@geanix.com
-Subject: Re: [RFC PATCH 2/3] iio: imu: st_lsm6dsx: add wake on accelerometer
- enable hook in sysfs
-Message-ID: <20190615083834.GB5778@localhost.localdomain>
-References: <20190614122604.52935-1-sean@geanix.com>
- <20190614122604.52935-3-sean@geanix.com>
+        s=default; t=1560680122;
+        bh=116gNnnNy/e29WMtBdj5C75Li/l8wNZzUynmTfBEW/A=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Je+DETy2uWBpOU5jANMAp8ZiIKDWT6Or26kBfzSkBvcVQxEXT1AKAuEv0Sg4GJ92U
+         bSLcq6Gq2aYZJC3iq7xmeMVUYoeRkE8k3DuSzanaV882kjKhHiN3Utn7L8bJ+K9waL
+         8X45AtbYgjqFGlcUqxrCW1r9OTiLHSvoUCaqC02Y=
+Date:   Sun, 16 Jun 2019 11:15:16 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Melissa Wen <melissa.srw@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Barry Song <21cnbao@gmail.com>, linux-iio@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-usp@googlegroups.com
+Subject: Re: [PATCH] staging: iio: ad7150: use ternary operating to ensure
+ 0/1 value
+Message-ID: <20190616111516.1af0d41b@archlinux>
+In-Reply-To: <20190614165059.7bifufvhxofy6ybu@smtp.gmail.com>
+References: <20190614165059.7bifufvhxofy6ybu@smtp.gmail.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="IrhDeMKUP4DT/M7F"
-Content-Disposition: inline
-In-Reply-To: <20190614122604.52935-3-sean@geanix.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, 14 Jun 2019 13:50:59 -0300
+Melissa Wen <melissa.srw@gmail.com> wrote:
 
---IrhDeMKUP4DT/M7F
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Remove idiom and use ternary operator for consistently trigger 0/1 value
+> on variable declaration.
+> 
+> Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
+Hi Melissa,
 
-> This adds a wakeup_enabled hook in sysfs.
-> If wakeup-source is enabled, wake on accelerometer event is default activ=
-e.
->=20
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+In general I would consider this unnecessary churn as, whilst
+it's no longer a favoured idiom, it is extremely common in the
+kernel.  However, as this is a staging cleanup, fair enough to
+make it as 'nice as possible'! 
+
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
+
+Thanks,
+
+Jonathan
+
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 31 ++++++++++++++++++++
->  1 file changed, 31 insertions(+)
->=20
+>  drivers/staging/iio/cdc/ad7150.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
+> index 8234da4b8c65..25598bf124fb 100644
+> --- a/drivers/staging/iio/cdc/ad7150.c
+> +++ b/drivers/staging/iio/cdc/ad7150.c
+> @@ -350,8 +350,8 @@ static ssize_t ad7150_show_timeout(struct device *dev,
+>  
+>  	/* use the event code for consistency reasons */
+>  	int chan = IIO_EVENT_CODE_EXTRACT_CHAN(this_attr->address);
+> -	int rising = !!(IIO_EVENT_CODE_EXTRACT_DIR(this_attr->address)
+> -			== IIO_EV_DIR_RISING);
+> +	int rising = (IIO_EVENT_CODE_EXTRACT_DIR(this_attr->address)
+> +		      == IIO_EV_DIR_RISING) ? 1 : 0;
+>  
+>  	switch (IIO_EVENT_CODE_EXTRACT_TYPE(this_attr->address)) {
+>  	case IIO_EV_TYPE_MAG_ADAPTIVE:
 
-same here, what about using write_event_value/write_event_config function
-pointer?
-
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 092c4d02bd4e..2c8ad7d65d2f 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -630,15 +630,46 @@ static ssize_t st_lsm6dsx_sysfs_scale_avail(struct =
-device *dev,
->  	return len;
->  }
-> =20
-> +static ssize_t st_lsm6dsx_sysfs_get_wakeup_enabled(struct device *dev,
-> +					    struct device_attribute *attr,
-> +					    char *buf)
-> +{
-> +	struct st_lsm6dsx_sensor *sensor =3D iio_priv(dev_get_drvdata(dev));
-> +	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> +
-> +	if (device_may_wakeup(hw->dev))
-> +		return sprintf(buf, "%d\n", 1);
-> +	return sprintf(buf, "%d\n", 0);
-
-what about:
-
-return sprintf(buf, "%d\n", device_may_wakeup(hw->dev));
-
-> +}
-> +
-> +static ssize_t st_lsm6dsx_sysfs_set_wakeup_enabled(struct device *dev,
-> +					    struct device_attribute *attr,
-> +					    const char *buf, size_t len)
-> +{
-> +	struct st_lsm6dsx_sensor *sensor =3D iio_priv(dev_get_drvdata(dev));
-> +	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> +
-> +	if (strncmp(buf, "1", 1) =3D=3D 0)
-> +		device_set_wakeup_enable(hw->dev, true);
-> +	else
-> +		device_set_wakeup_enable(hw->dev, false);
-> +
-> +	return len;
-> +}
-> +
->  static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(st_lsm6dsx_sysfs_sampling_frequency_=
-avail);
->  static IIO_DEVICE_ATTR(in_accel_scale_available, 0444,
->  		       st_lsm6dsx_sysfs_scale_avail, NULL, 0);
-> +static IIO_DEVICE_ATTR(wakeup_enabled, 0644,
-> +		       st_lsm6dsx_sysfs_get_wakeup_enabled,
-> +		       st_lsm6dsx_sysfs_set_wakeup_enabled, 0);
->  static IIO_DEVICE_ATTR(in_anglvel_scale_available, 0444,
->  		       st_lsm6dsx_sysfs_scale_avail, NULL, 0);
-> =20
->  static struct attribute *st_lsm6dsx_acc_attributes[] =3D {
->  	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
->  	&iio_dev_attr_in_accel_scale_available.dev_attr.attr,
-> +	&iio_dev_attr_wakeup_enabled.dev_attr.attr,
->  	NULL,
->  };
-> =20
-> --=20
-> 2.22.0
->=20
-
---IrhDeMKUP4DT/M7F
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXQSuhgAKCRA6cBh0uS2t
-rItNAQDSRuHMwhsao7A0wDTVRMfK7VDadXcVfkwb8GFZB8MazwEA/5HSIia6FYlP
-xmi82nnys0KtLPFZJTw7TchztTBPGwM=
-=sy+g
------END PGP SIGNATURE-----
-
---IrhDeMKUP4DT/M7F--

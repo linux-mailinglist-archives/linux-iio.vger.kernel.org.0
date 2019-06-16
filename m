@@ -2,42 +2,29 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16C62474D7
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2019 15:47:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC8F8474DB
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2019 15:52:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726012AbfFPNrs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Jun 2019 09:47:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34096 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725874AbfFPNrs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 Jun 2019 09:47:48 -0400
+        id S1726087AbfFPNwb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Jun 2019 09:52:31 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:41014 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725874AbfFPNwb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jun 2019 09:52:31 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BE4BF2133D;
-        Sun, 16 Jun 2019 13:47:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560692867;
-        bh=p0iL82cdaEa1Vv36sQ0BnhAX2AFRjC9Qqy5te+FMyV4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uXHXVAVj4eO6fSQ2kfhTGQ2xpE6Yu1dRTsqgbI2J1u5IuOSaZ4YA04ycR3zkB/Y5j
-         n/s90Kh/RzWT8qHMF/qlEt2STWUCj+8XN1/qU9OAD1xVWvgeDaWrOiYYbkQbBkIXhe
-         Dng7WdvB62qLiR2JTkTyZRtPW22LS2D39Meb/dyk=
-Date:   Sun, 16 Jun 2019 14:47:42 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v1 24/31] docs: iio: convert to ReST
-Message-ID: <20190616144742.7e2dce98@archlinux>
-In-Reply-To: <6b9df01697dde8b9bb9be9accf28d63ed821956d.1560364494.git.mchehab+samsung@kernel.org>
-References: <cover.1560364493.git.mchehab+samsung@kernel.org>
-        <6b9df01697dde8b9bb9be9accf28d63ed821956d.1560364494.git.mchehab+samsung@kernel.org>
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 659889E8FF9;
+        Sun, 16 Jun 2019 14:52:29 +0100 (BST)
+Date:   Sun, 16 Jun 2019 14:52:27 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Patrick Havelange <patrick.havelange@essensium.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan.Cameron@huawei.com
+Subject: Re: [PATCH 1/1] MAINTAINERS: add counter/ftm-quaddec driver entry
+Message-ID: <20190616145227.6198d6c1@archlinux>
+In-Reply-To: <20190612150221.GA6631@icarus>
+References: <20190612145223.8402-1-patrick.havelange@essensium.com>
+        <20190612150221.GA6631@icarus>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,241 +34,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 12 Jun 2019 15:38:27 -0300
-Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
+On Thu, 13 Jun 2019 00:02:21 +0900
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> Rename the iio documentation files to ReST, add an
-> index for them and adjust in order to produce a nice html
-> output via the Sphinx build system.
+> On Wed, Jun 12, 2019 at 04:52:23PM +0200, Patrick Havelange wrote:
+> > Adding myself as maintainer for this driver
+> > 
+> > Signed-off-by: Patrick Havelange <patrick.havelange@essensium.com>
+> > ---
+> >  MAINTAINERS | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 57f496cff999..6671854098d6 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -6218,6 +6218,14 @@ M:	Philip Kelleher <pjk1939@linux.ibm.com>
+> >  S:	Maintained
+> >  F:	drivers/block/rsxx/
+> >  
+> > +FLEXTIMER FTM-QUADDEC DRIVER
+> > +M:	Patrick Havelange <patrick.havelange@essensium.com>
+> > +L:	linux-iio@vger.kernel.org
+> > +S:	Maintained
+> > +F:	Documentation/ABI/testing/sysfs-bus-counter-ftm-quadddec
+> > +F:	Documentation/devicetree/bindings/counter/ftm-quaddec.txt
+> > +F:	drivers/counter/ftm-quaddec.c
+> > +
+> >  FLOPPY DRIVER
+> >  M:	Jiri Kosina <jikos@kernel.org>
+> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jikos/floppy.git
+> > -- 
+> > 2.19.1  
 > 
-> At its new index.rst, let's add a :orphan: while this is not linked to
-> the main index.rst file, in order to avoid build warnings.
+> Thank you, this should take care of those files.
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Thanks, looks good to me.   At some point we need to look at how
-to tie together the various IIO docs as they are split between
-here and the driver-api/iio/ directory.  That split isn't currently
-along particularly logical lines.
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Given I took the last patch related to this driver, I'll pick this
+one up as well.   William, let me know on each series whether you want
+me to.  I would imagine that sometimes you'll have a enough going on
+you'll want to do something more efficient, but whilst it's individual
+patches this works fine.
 
-Thanks for tidying this up!
+Applied to the togreg branch of iio.git and pushed out as testing.
+
+Thanks,
 
 Jonathan
-> ---
->  .../iio/{ep93xx_adc.txt => ep93xx_adc.rst}    | 15 +++++-
->  .../{iio_configfs.txt => iio_configfs.rst}    | 52 +++++++++++--------
->  Documentation/iio/index.rst                   | 12 +++++
->  drivers/iio/Kconfig                           |  2 +-
->  4 files changed, 56 insertions(+), 25 deletions(-)
->  rename Documentation/iio/{ep93xx_adc.txt => ep93xx_adc.rst} (71%)
->  rename Documentation/iio/{iio_configfs.txt => iio_configfs.rst} (73%)
->  create mode 100644 Documentation/iio/index.rst
-> 
-> diff --git a/Documentation/iio/ep93xx_adc.txt b/Documentation/iio/ep93xx_adc.rst
-> similarity index 71%
-> rename from Documentation/iio/ep93xx_adc.txt
-> rename to Documentation/iio/ep93xx_adc.rst
-> index 23053e7817bd..4fd8dea3f6b8 100644
-> --- a/Documentation/iio/ep93xx_adc.txt
-> +++ b/Documentation/iio/ep93xx_adc.rst
-> @@ -1,12 +1,16 @@
-> -Cirrus Logic EP93xx ADC driver.
-> +==============================
-> +Cirrus Logic EP93xx ADC driver
-> +==============================
->  
->  1. Overview
-> +===========
->  
->  The driver is intended to work on both low-end (EP9301, EP9302) devices with
->  5-channel ADC and high-end (EP9307, EP9312, EP9315) devices with 10-channel
->  touchscreen/ADC module.
->  
->  2. Channel numbering
-> +====================
->  
->  Numbering scheme for channels 0..4 is defined in EP9301 and EP9302 datasheets.
->  EP9307, EP9312 and EP9312 have 3 channels more (total 8), but the numbering is
-> @@ -17,13 +21,20 @@ Assuming ep93xx_adc is IIO device0, you'd find the following entries under
->  
->    +-----------------+---------------+
->    | sysfs entry     | ball/pin name |
-> -  +-----------------+---------------+
-> +  +=================+===============+
->    | in_voltage0_raw | YM            |
-> +  +-----------------+---------------+
->    | in_voltage1_raw | SXP           |
-> +  +-----------------+---------------+
->    | in_voltage2_raw | SXM           |
-> +  +-----------------+---------------+
->    | in_voltage3_raw | SYP           |
-> +  +-----------------+---------------+
->    | in_voltage4_raw | SYM           |
-> +  +-----------------+---------------+
->    | in_voltage5_raw | XP            |
-> +  +-----------------+---------------+
->    | in_voltage6_raw | XM            |
-> +  +-----------------+---------------+
->    | in_voltage7_raw | YP            |
->    +-----------------+---------------+
-> diff --git a/Documentation/iio/iio_configfs.txt b/Documentation/iio/iio_configfs.rst
-> similarity index 73%
-> rename from Documentation/iio/iio_configfs.txt
-> rename to Documentation/iio/iio_configfs.rst
-> index 4e5f101837a8..ecbfdb3afef7 100644
-> --- a/Documentation/iio/iio_configfs.txt
-> +++ b/Documentation/iio/iio_configfs.rst
-> @@ -1,6 +1,9 @@
-> +===============================
->  Industrial IIO configfs support
-> +===============================
->  
->  1. Overview
-> +===========
->  
->  Configfs is a filesystem-based manager of kernel objects. IIO uses some
->  objects that could be easily configured using configfs (e.g.: devices,
-> @@ -10,20 +13,22 @@ See Documentation/filesystems/configfs/configfs.txt for more information
->  about how configfs works.
->  
->  2. Usage
-> +========
->  
->  In order to use configfs support in IIO we need to select it at compile
->  time via CONFIG_IIO_CONFIGFS config option.
->  
-> -Then, mount the configfs filesystem (usually under /config directory):
-> +Then, mount the configfs filesystem (usually under /config directory)::
->  
-> -$ mkdir /config
-> -$ mount -t configfs none /config
-> +  $ mkdir /config
-> +  $ mount -t configfs none /config
->  
->  At this point, all default IIO groups will be created and can be accessed
->  under /config/iio. Next chapters will describe available IIO configuration
->  objects.
->  
->  3. Software triggers
-> +====================
->  
->  One of the IIO default configfs groups is the "triggers" group. It is
->  automagically accessible when the configfs is mounted and can be found
-> @@ -31,40 +36,40 @@ under /config/iio/triggers.
->  
->  IIO software triggers implementation offers support for creating multiple
->  trigger types. A new trigger type is usually implemented as a separate
-> -kernel module following the interface in include/linux/iio/sw_trigger.h:
-> +kernel module following the interface in include/linux/iio/sw_trigger.h::
->  
-> -/*
-> - * drivers/iio/trigger/iio-trig-sample.c
-> - * sample kernel module implementing a new trigger type
-> - */
-> -#include <linux/iio/sw_trigger.h>
-> +  /*
-> +   * drivers/iio/trigger/iio-trig-sample.c
-> +   * sample kernel module implementing a new trigger type
-> +   */
-> +  #include <linux/iio/sw_trigger.h>
->  
->  
-> -static struct iio_sw_trigger *iio_trig_sample_probe(const char *name)
-> -{
-> +  static struct iio_sw_trigger *iio_trig_sample_probe(const char *name)
-> +  {
->  	/*
->  	 * This allocates and registers an IIO trigger plus other
->  	 * trigger type specific initialization.
->  	 */
-> -}
-> +  }
->  
-> -static int iio_trig_hrtimer_remove(struct iio_sw_trigger *swt)
-> -{
-> +  static int iio_trig_hrtimer_remove(struct iio_sw_trigger *swt)
-> +  {
->  	/*
->  	 * This undoes the actions in iio_trig_sample_probe
->  	 */
-> -}
-> +  }
->  
-> -static const struct iio_sw_trigger_ops iio_trig_sample_ops = {
-> +  static const struct iio_sw_trigger_ops iio_trig_sample_ops = {
->  	.probe		= iio_trig_sample_probe,
->  	.remove		= iio_trig_sample_remove,
-> -};
-> +  };
->  
-> -static struct iio_sw_trigger_type iio_trig_sample = {
-> +  static struct iio_sw_trigger_type iio_trig_sample = {
->  	.name = "trig-sample",
->  	.owner = THIS_MODULE,
->  	.ops = &iio_trig_sample_ops,
-> -};
-> +  };
->  
->  module_iio_sw_trigger_driver(iio_trig_sample);
->  
-> @@ -73,21 +78,24 @@ iio-trig-sample module will create 'trig-sample' trigger type directory
->  /config/iio/triggers/trig-sample.
->  
->  We support the following interrupt sources (trigger types):
-> +
->  	* hrtimer, uses high resolution timers as interrupt source
->  
->  3.1 Hrtimer triggers creation and destruction
-> +---------------------------------------------
->  
->  Loading iio-trig-hrtimer module will register hrtimer trigger types allowing
->  users to create hrtimer triggers under /config/iio/triggers/hrtimer.
->  
-> -e.g:
-> +e.g::
->  
-> -$ mkdir /config/iio/triggers/hrtimer/instance1
-> -$ rmdir /config/iio/triggers/hrtimer/instance1
-> +  $ mkdir /config/iio/triggers/hrtimer/instance1
-> +  $ rmdir /config/iio/triggers/hrtimer/instance1
->  
->  Each trigger can have one or more attributes specific to the trigger type.
->  
->  3.2 "hrtimer" trigger types attributes
-> +--------------------------------------
->  
->  "hrtimer" trigger type doesn't have any configurable attribute from /config dir.
->  It does introduce the sampling_frequency attribute to trigger directory.
-> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-> new file mode 100644
-> index 000000000000..0593dca89a94
-> --- /dev/null
-> +++ b/Documentation/iio/index.rst
-> @@ -0,0 +1,12 @@
-> +:orphan:
-> +
-> +==============
-> +Industrial I/O
-> +==============
-> +
-> +.. toctree::
-> +   :maxdepth: 1
-> +
-> +   iio_configfs
-> +
-> +   ep93xx_adc
-> diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
-> index 1d736a4952ab..5bd51853b15e 100644
-> --- a/drivers/iio/Kconfig
-> +++ b/drivers/iio/Kconfig
-> @@ -28,7 +28,7 @@ config IIO_CONFIGFS
->  	help
->  	  This allows configuring various IIO bits through configfs
->  	  (e.g. software triggers). For more info see
-> -	  Documentation/iio/iio_configfs.txt.
-> +	  Documentation/iio/iio_configfs.rst.
->  
->  config IIO_TRIGGER
->  	bool "Enable triggered sampling support"
+
 

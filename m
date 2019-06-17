@@ -2,105 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2D947D5F
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2019 10:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DFFE48041
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2019 13:10:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726977AbfFQIl3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Jun 2019 04:41:29 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:33508 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725837AbfFQIl3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jun 2019 04:41:29 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5H8dG9s171166;
-        Mon, 17 Jun 2019 08:40:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=mtHQgsyMZPGWe/GtLM4GBjN4evtvLlkaFbbD9s9dYHc=;
- b=tpPU+h5+tChKaBLVITUdWhziFfm/aZCQvxbIk6T1ZoreFkfteknyoZphPXRVsOWSnRHc
- yT7fkuV2H3JGDzfx5Wqoe9CltzTt/8BQ4SS6AdavygyUnCqBmdP1RXDJmp4hTCqf2Oel
- e0axr6p5JsEg88NvqWwaoMjsxJ+AkvlKry8VJTLEKSFXGHCAzv4CMuoO/GrIYyFd4BZM
- Drj17BYZIYYQpWvQPAF++51ZTIJv3wb4wFpiCduHYxAICMGKR2/piciLbJJHJcqCdh3N
- D6zpLun1X48U29YHR/7grjby/ZE6mfOMgjxlk4kgLP2hlk6j9gXieYTJaAftOrnGPnW3 OQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2t4rmnw486-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 17 Jun 2019 08:40:50 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5H8eN7o165168;
-        Mon, 17 Jun 2019 08:40:50 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2t5mgb7wt2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 17 Jun 2019 08:40:50 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5H8ehRn003768;
-        Mon, 17 Jun 2019 08:40:43 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 17 Jun 2019 01:40:43 -0700
-Date:   Mon, 17 Jun 2019 11:40:34 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Melissa Wen <melissa.srw@gmail.com>, devel@driverdev.osuosl.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stefan Popa <stefan.popa@analog.com>,
+        id S1727020AbfFQLKk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jun 2019 07:10:40 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:41567 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726730AbfFQLKk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jun 2019 07:10:40 -0400
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MFb38-1hqXBM2ZJe-00H9YY; Mon, 17 Jun 2019 13:10:02 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Barry Song <21cnbao@gmail.com>, linux-kernel@vger.kernel.org,
-        kernel-usp@googlegroups.com,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Shreeya Patel <shreeya.patel23498@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Hartmut Knaack <knaack.h@gmx.de>
-Subject: Re: [PATCH] staging: iio: ad7150: use ternary operating to ensure
- 0/1 value
-Message-ID: <20190617084033.GG28859@kadam>
-References: <20190614165059.7bifufvhxofy6ybu@smtp.gmail.com>
- <20190616111516.1af0d41b@archlinux>
+        Jeremy Fertic <jeremyfertic@gmail.com>,
+        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] Staging: iio: adt7316: use correct headers for gpio
+Date:   Mon, 17 Jun 2019 13:09:20 +0200
+Message-Id: <20190617110951.2085648-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190616111516.1af0d41b@archlinux>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9290 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906170081
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9290 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906170082
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:cTNvSQ9TaXGrz6GNYn/l47SM2aOEl9ewVkuzYHttzbQ18FhJ43p
+ XbN9BwodkIHe7auBf9exzPpX8+XLgvTH0lskZMyeAenvZIHswz3XX+WWI/HSZDipF1HT4m5
+ +350Y5/T+jrkz3leY7UMJfO/q8w8r3WBf06lna+Lp4989vU93D9IYu+l7mUwiYxsfENmgwK
+ ucyY2l2PxMpaYqqMvJYSA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:V5BTVesWKOo=:2cXnZF3aZ8tbG/yPkPAQM4
+ gxfPEl22HrRSJj6PwZC5Mc707yi5tWA3AVHPm9Pe6P4oGnr55t4/ucVn+OqL4Cm43bR+JMgez
+ CMMZV0bG3J0s3TVgTtsIB3wt1wZMc/PJnelZ5+aiqDX/AoUin7FdA0QT2atsJTVPgoDZcFjEx
+ 5IXX9jOQPvdXaC5PqauYzhgA3lbrKIhDz+X8/ewBMMLPLfsF5mrZd6PMzP4rPGwmH8TeDofH+
+ 9CYYoOARCCnZxoNpn1rUk4POaCRobviaPCfeEJJuM8H64CewD/UkoaQtA28Ido0VO6bKXC+Xj
+ rZA7iOT16yy+KJDKO0CgnH9DNNyq+F+sOrrhcfB0MTFjvfZIYgYb7qx+QZ3/U7y83DamcrRel
+ qnx/l7e0j8pF/kOfHoHbLnRlRvBDZlXmpa0cZi/hGD+pxkHN2+FLE5j/9SVFo4Z03oBkpStHj
+ k+sqDO3czfdaMLujhR+83Z44IoRwA2uueMI8C/ixZRIJ5dzuDD6aTp/jfRhcvk92Y3MI1svZs
+ CKn+Go8wNfN+kJMY1HKxOUZwoUed8HGKep6WKgqidaEzbQ0YO1sgFEoftT3UauT2wDbbKlixy
+ bg+nZtwn4tXS1RVUN+YvkgOc1txR9dql4Cxtsihecfq6sjWLfG1vV0xmlbtDP6vqI71Ta6fRX
+ sdF/eBvyc/tLtRJTYdY1zWBn58SOPU67j/wm8NoY2zI0R/ECVFKmiWRh2xf46DZ7MfWX+Rdue
+ bHAGGNwweL3jnWPJ7YRS5yvyM0fvYK7s2aFNpA==
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jun 16, 2019 at 11:15:16AM +0100, Jonathan Cameron wrote:
-> On Fri, 14 Jun 2019 13:50:59 -0300
-> Melissa Wen <melissa.srw@gmail.com> wrote:
-> 
-> > Remove idiom and use ternary operator for consistently trigger 0/1 value
-> > on variable declaration.
-> > 
-> > Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
-> Hi Melissa,
-> 
-> In general I would consider this unnecessary churn as, whilst
-> it's no longer a favoured idiom, it is extremely common in the
-> kernel.
+When building without CONFIG_GPIOLIB, we get a compile-time failure:
 
-It's still my favourite...  Why wouldn't people like it?  It feels like
-last week I just saw someone send a bunch of:
+drivers/staging/iio/addac/adt7316.c:947:3: error: implicit declaration of function 'gpiod_set_value' [-Werror,-Wimplicit-function-declaration]
+                gpiod_set_value(chip->ldac_pin, 0);
+                ^
+drivers/staging/iio/addac/adt7316.c:947:3: note: did you mean 'gpio_set_value'?
+include/linux/gpio.h:169:20: note: 'gpio_set_value' declared here
+static inline void gpio_set_value(unsigned gpio, int value)
+                   ^
+drivers/staging/iio/addac/adt7316.c:947:3: error: this function declaration is not a prototype [-Werror,-Wstrict-prototypes]
+                gpiod_set_value(chip->ldac_pin, 0);
+                ^
+drivers/staging/iio/addac/adt7316.c:1805:13: error: implicit declaration of function 'irqd_get_trigger_type' [-Werror,-Wimplicit-function-declaration]
+        irq_type = irqd_get_trigger_type(irq_get_irq_data(chip->bus.irq));
 
--	foo = (bar == baz) ? 1 : 0;
-+	foo = (bar == baz);
+Include the correct headers that contain the declarations for these
+functions.
 
-patches and I thought it was an improvement at the time...
+Fixes: c63460c4298f ("Staging: iio: adt7316: Use device tree data to set ldac_pin")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/staging/iio/addac/adt7316.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
+index 37ce563cb0e1..9cb3d0e42c38 100644
+--- a/drivers/staging/iio/addac/adt7316.c
++++ b/drivers/staging/iio/addac/adt7316.c
+@@ -6,7 +6,8 @@
+  */
+ 
+ #include <linux/interrupt.h>
+-#include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
++#include <linux/irq.h>
+ #include <linux/workqueue.h>
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+-- 
+2.20.0
 

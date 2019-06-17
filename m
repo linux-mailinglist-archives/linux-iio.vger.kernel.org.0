@@ -2,79 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DEF14759D
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2019 17:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08BD347796
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2019 03:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726385AbfFPPp4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Jun 2019 11:45:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48474 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725895AbfFPPpz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 16 Jun 2019 11:45:55 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E55202063F;
-        Sun, 16 Jun 2019 15:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560699954;
-        bh=FfgxTZ0FGxbj3xlmt5bwJEqweYKRnTtg8LNoSPRC0Lw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CvMSrzqOXMv2n8ac+ol7mLeNMxoosOicaYWKvMibcPR4JgFwQ362TG/bFkT1oeMrP
-         4E7QnDDS6SN4RM3FfYb4CM1m9ysh2LyqHSwO2NxtOX2IjKuGZEP8tnKOiQnv8dA0X6
-         y25aIaYbp9Lp9Vy7Y9PSvPBtdrcw2chMEAoWdpKg=
-Date:   Sun, 16 Jun 2019 16:45:48 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Renato Lui Geh <renatogeh@gmail.com>, lars@metafoo.de,
-        Michael.Hennerich@analog.com, knaack.h@gmx.de, pmeerw@pmeerw.net,
-        gregkh@linuxfoundation.org, stefan.popa@analog.com,
-        alexandru.Ardelean@analog.com, robh+dt@kernel.org,
-        mark.rutland@arm.com, linux-iio@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        kernel-usp@googlegroups.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add adi,ad7780.yaml
- binding
-Message-ID: <20190616164548.01444b50@archlinux>
-In-Reply-To: <20190614194302.GA18613@bogus>
-References: <cover.1558746978.git.renatogeh@gmail.com>
-        <2426649b2d8224ae72e7706bcb8c4f2c44c581d2.1558746978.git.renatogeh@gmail.com>
-        <20190614194302.GA18613@bogus>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727382AbfFQB0O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Jun 2019 21:26:14 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:18583 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727238AbfFQB0O (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 16 Jun 2019 21:26:14 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 3281799FBA00CC102677;
+        Mon, 17 Jun 2019 09:26:11 +0800 (CST)
+Received: from [127.0.0.1] (10.133.213.239) by DGGEMS412-HUB.china.huawei.com
+ (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Mon, 17 Jun 2019
+ 09:26:05 +0800
+Subject: Re: [PATCH] staging: iio: adt7316: Add missing include files
+To:     Jonathan Cameron <jic23@kernel.org>
+References: <20190614152846.28108-1-yuehaibing@huawei.com>
+ <20190616141137.254a1291@archlinux>
+CC:     <gregkh@linuxfoundation.org>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>, <stefan.popa@analog.com>,
+        <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <linux-kernel@vger.kernel.org>, <devel@driverdev.osuosl.org>,
+        <linux-iio@vger.kernel.org>
+From:   Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <9732d7dc-a9a3-ee19-51fc-3aa8322423f3@huawei.com>
+Date:   Mon, 17 Jun 2019 09:26:04 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20190616141137.254a1291@archlinux>
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 Jun 2019 13:43:02 -0600
-Rob Herring <robh@kernel.org> wrote:
-
-> On Fri, 24 May 2019 22:26:30 -0300, Renato Lui Geh wrote:
-> > This patch adds a YAML binding for the Analog Devices AD7780/1 and
-> > AD7170/1 analog-to-digital converters.
-> > 
-> > Signed-off-by: Renato Lui Geh <renatogeh@gmail.com>
-> > ---
-> > Changes in v2:
-> >  - vref-supply to avdd-supply
-> >  - remove avdd-supply from required list
-> >  - include adc block in an spi block
-> > 
-> >  .../bindings/iio/adc/adi,ad7780.txt           | 48 ----------
-> >  .../bindings/iio/adc/adi,ad7780.yaml          | 87 +++++++++++++++++++
-> >  2 files changed, 87 insertions(+), 48 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.txt
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
-> >   
+On 2019/6/16 21:11, Jonathan Cameron wrote:
+> On Fri, 14 Jun 2019 23:28:46 +0800
+> YueHaibing <yuehaibing@huawei.com> wrote:
 > 
-> Reviewed-by: Rob Herring <robh@kernel.org>
+>> Fix build error:
+>>
+>> drivers/staging/iio/addac/adt7316.c: In function adt7316_store_update_DAC:
+>> drivers/staging/iio/addac/adt7316.c:949:3: error: implicit declaration of
+>>  function gpiod_set_value; did you mean gpio_set_value? [-Werror=implicit-function-declaration]
+>>    gpiod_set_value(chip->ldac_pin, 0);
+>>
+>> drivers/staging/iio/addac/adt7316.c: In function adt7316_setup_irq:
+>> drivers/staging/iio/addac/adt7316.c:1807:13: error: implicit declaration of
+>>  function irqd_get_trigger_type; did you mean devm_iio_trigger_free? [-Werror=implicit-function-declaration]
+>>   irq_type = irqd_get_trigger_type(irq_get_irq_data(chip->bus.irq));
+>>
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Fixes: 7f6b6d553df7 ("Staging: iio: adt7316: Add all irq related code in adt7316_irq_setup()")
+>> Fixes: c63460c4298f ("Staging: iio: adt7316: Use device tree data to set ldac_pin")
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Hi yuehaibing,
+> 
+> You were second to send a fix for this. I've had it in my
+> fixes branch since last week, but not done a pull request quite yet.
+> I'll probably send it out later today.
 
-Thanks. As I'd not yet pushed out as togreg (rather than testing)
-I've rebased to add your RB.
+Sorry, our robot report this again and I forgot this ...
 
-Thanks,
+> 
+> https://patchwork.kernel.org/patch/10978301/
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+>> ---
+>>  drivers/staging/iio/addac/adt7316.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
+>> index 37ce563..9d3d159 100644
+>> --- a/drivers/staging/iio/addac/adt7316.c
+>> +++ b/drivers/staging/iio/addac/adt7316.c
+>> @@ -16,6 +16,8 @@
+>>  #include <linux/i2c.h>
+>>  #include <linux/rtc.h>
+>>  #include <linux/module.h>
+>> +#include <linux/irq.h>
+>> +#include <linux/gpio/consumer.h>
+>>  
+>>  #include <linux/iio/iio.h>
+>>  #include <linux/iio/events.h>
+> 
+> 
+> .
+> 
 
-Jonathan

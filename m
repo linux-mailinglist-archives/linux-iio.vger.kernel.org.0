@@ -2,83 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 114A1488BF
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2019 18:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 600FF488E8
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2019 18:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726631AbfFQQV5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Jun 2019 12:21:57 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:35446 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725863AbfFQQV5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jun 2019 12:21:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Date:Message-ID:Subject:From:Cc:To:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=I+3dZymZ36bDT+SYPOPtFYrTLqbyyrx6FBC7YcP64m4=; b=pyZwABOhiF03uQ7pO88KTepolG
-        gJfIgqubE3Xu7VCulG5ILy+0XOzm1hQ5rRiurXcbjmtXZsEGtuSCCZ7JU1m8lH/MiZa5KvSc8lCAG
-        Ka/rLuHfNZutgYB/mKm+BhrkD+zuJujVaiwFvoKSM8hBRAVgQfMpqUJ7Kqu9+e17IT4x3dNc8m2rX
-        tb7v90vmBb6JtltQhMzZuafvyWNaEQpBZvMsUH3XUas8nh7CaR4ullem0UdebRSItFmJ2BADFJA3v
-        LM0ZSY+bUGWhGS4xg4Ga4Gf3cIgJS1bUb903//initn9ID+heZhXn94u8tpFMLuidvLqnpTPuzdeN
-        +QqnFq7w==;
-Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
-        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hcuO7-0000qD-OH; Mon, 17 Jun 2019 16:21:44 +0000
-To:     LKML <linux-kernel@vger.kernel.org>, linux-iio@vger.kernel.org
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Kjeld Flarup <kfa@deif.com>,
-        Patrick Havelange <patrick.havelange@essensium.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Richard Weinberger <richard@nod.at>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH] counter: fix ftm-quaddec build error on UML
-Message-ID: <e33254e5-3e8e-fc86-de72-b3dd2f6c310c@infradead.org>
-Date:   Mon, 17 Jun 2019 09:21:40 -0700
+        id S1726974AbfFQQ3d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jun 2019 12:29:33 -0400
+Received: from first.geanix.com ([116.203.34.67]:57996 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725863AbfFQQ3c (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 17 Jun 2019 12:29:32 -0400
+Received: from [192.168.100.94] (unknown [95.138.208.137])
+        by first.geanix.com (Postfix) with ESMTPSA id 1889ED4C;
+        Mon, 17 Jun 2019 16:29:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1560788968; bh=O/3+hRgaDJ183ic5XPNYcjt1FwsMXDU9oMGi6lxEGlc=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=idIy96hRF/yNznv8j4HXecPjSGi30Z3wKB+JZwgwpmu1eeAL1nJkBUkJQyTgs04Uo
+         EsE7ww+O29YdLjopwpbXQRMhiu9VFM6DbLYJI3Qv8H+3Zjg27rpNz+AZBhpT9SroyU
+         4XmXDMTwWYPbhFpVguEWNYmTAv9eImxAbLco6lUvL4Sl8L6ycNREy+ioqGvFQ93v/C
+         qMT1AdBRJvGkNbH6WtFL6YeNvQC1ZN1msDKmQaq7uffxb8Bu1rAmqaMFowIjEGARJs
+         ewk3SRvJde3I0m9GpfS4f2v7+SL0Tb+IJ3a5GVCTeLGQOD65qsKMDaWyZ4Kt/NI7qv
+         k3dJALkkwvp/Q==
+Subject: Re: [RFC PATCH 2/3] iio: imu: st_lsm6dsx: add wake on accelerometer
+ enable hook in sysfs
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi83@gmail.com,
+        denis.ciocca@st.com, martin@geanix.com
+References: <20190614122604.52935-1-sean@geanix.com>
+ <20190614122604.52935-3-sean@geanix.com> <20190616143035.0e845c8a@archlinux>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <0bb53184-89e8-a007-8f8c-3f9ae14567a8@geanix.com>
+Date:   Mon, 17 Jun 2019 18:29:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <20190616143035.0e845c8a@archlinux>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US-large
 Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF autolearn=disabled
+        version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 884f5ce5917a
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
-
-Fix build error on user-mode Linux, which does not set HAS_IOMEM,
-so devm_ioremap() is not available.  Fixes this build error:
-
-ERROR: "devm_ioremap" [drivers/counter/ftm-quaddec.ko] undefined!
-
-Fixes: a3b9a99980d9 ("counter: add FlexTimer Module Quadrature decoder counter driver")
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Kjeld Flarup <kfa@deif.com>
-Cc: Patrick Havelange <patrick.havelange@essensium.com>
-Cc: William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc: linux-iio@vger.kernel.org
----
-BTW, please fix these lines to have ending '>' characters:
-MODULE_AUTHOR("Kjeld Flarup <kfa@deif.com");
-MODULE_AUTHOR("Patrick Havelange <patrick.havelange@essensium.com");
-
- drivers/counter/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
-
---- lnx-52-rc5.orig/drivers/counter/Kconfig
-+++ lnx-52-rc5/drivers/counter/Kconfig
-@@ -51,6 +51,7 @@ config STM32_LPTIMER_CNT
- 
- config FTM_QUADDEC
- 	tristate "Flex Timer Module Quadrature decoder driver"
-+	depends on HAS_IOMEM
- 	help
- 	  Select this option to enable the Flex Timer Quadrature decoder
- 	  driver.
 
 
+On 16/06/2019 15.30, Jonathan Cameron wrote:
+> On Fri, 14 Jun 2019 14:26:03 +0200
+> Sean Nyekjaer<sean@geanix.com>  wrote:
+> 
+>> This adds a wakeup_enabled hook in sysfs.
+>> If wakeup-source is enabled, wake on accelerometer event is default active.
+>>
+>> Signed-off-by: Sean Nyekjaer<sean@geanix.com>
+> This seems to replicate the stuff that should be there under ../power
+> to allow the wake up source to turned on and off..
+> 
+
+Hi,
+
+Doh, I have already done it the correct way :-)
+The hook is here:
+
+root@host:~# cat /sys/devices/soc0/***/i2c-1/1-006a/power/wakeup
+enabled
+
+/Sean

@@ -2,65 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48BD5494EE
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 00:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DEF94960E
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 01:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728405AbfFQWMK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Jun 2019 18:12:10 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:2614 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728736AbfFQWMK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jun 2019 18:12:10 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5HM9WWJ006192;
-        Tue, 18 Jun 2019 00:12:04 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : subject :
- date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=jAnmRQW43Qc2vH6nL4QCkLyTRWj7YG93n8QiO+qYZCY=;
- b=HzwPsnamTJBdN8eupFSq6jg2V6ITNK6OwdZ3byyfo10cdopUBP7LKu2foITtFd0b0wfU
- /ulURMyXNEKnlWUdaq1Xg/Yw2iHlhA0e9XHdbvVE7ZkgryCqUIR/yTCBuc97cKIkSRD5
- XwV463XYuqspGsWpjsDYii5zJcme8mBrKQGNpzxR18LI+TDW0z5KnZlVG38ryHtl22kt
- 32wQMypiqczCvIenYHil6V9No+VE02EDSvc6RN4pfhgHEspzAoOoe2cXDkGHqTdkDfp9
- UuAWUNAZLSEVVoDQ/6EW8hIxK0vW/L8zemFzbFSrvJsYxUsiiALbtpRvC0yIW8/6TP7A NQ== 
+        id S1726776AbfFQXuQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jun 2019 19:50:16 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:43664 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726427AbfFQXuQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jun 2019 19:50:16 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5HNkFOp021454;
+        Tue, 18 Jun 2019 01:50:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=STMicroelectronics;
+ bh=Sp8DiK8sYIq0lkn6ngtuCxv6tqYrY1I8jQR7zX3uDVU=;
+ b=e8RIclCLf1i9W1lpIXpo1XkPAFbQPT7R2tUTcDh0WxwgC2+q4FjXjMaUngXD8NbkrD+e
+ kI9mQkNGaiXQUVS45+wSxJCvbrX82dXuDGfCxmM7Q/nvOXI/op0J2Jw+9u9BvUo8wkeH
+ ImugkJ7egYsrRHyyqw7ZgfGl1q3L1SBlocX0TJ72fQTPohjr0BbhmIGnvNKmMxfxILZg
+ RRP7T+QnoSOboJOWKwb1qQId6e8FO9+aW8z/ow/Iiu3mtvira/UZEjEJiZgaduNi1ORX
+ Avf72vA+6/3R92HAtneKBGwju68nJnvqnwzg0JVZd7fgSLfWXLl/1YgdIyqDUXdUZbmZ YQ== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2t4peu4jhr-1
+        by mx08-00178001.pphosted.com with ESMTP id 2t4qjhvws1-1
         (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Tue, 18 Jun 2019 00:12:04 +0200
+        Tue, 18 Jun 2019 01:50:10 +0200
 Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 9E66531;
-        Mon, 17 Jun 2019 22:12:03 +0000 (GMT)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 8537DF14;
-        Mon, 17 Jun 2019 22:12:03 +0000 (GMT)
-Received: from SFHDAG2NODE1.st.com (10.75.127.4) by SFHDAG2NODE2.st.com
- (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Tue, 18 Jun
- 2019 00:12:02 +0200
-Received: from SFHDAG2NODE1.st.com ([fe80::4413:c8c:992b:bb90]) by
- SFHDAG2NODE1.st.com ([fe80::4413:c8c:992b:bb90%20]) with mapi id
- 15.00.1347.000; Tue, 18 Jun 2019 00:12:03 +0200
-From:   Denis CIOCCA <denis.ciocca@st.com>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: RE: [PATCH][V3] iio: st_accel: fix
- iio_triggered_buffer_{pre,post}enable positions
-Thread-Topic: [PATCH][V3] iio: st_accel: fix
- iio_triggered_buffer_{pre,post}enable positions
-Thread-Index: AQHVIp6W+PHSaNTcrEyHcDDTo7MJ/aagbZuA
-Date:   Mon, 17 Jun 2019 22:12:02 +0000
-Message-ID: <0420c90b027249eb9dd28bd9e266088a@SFHDAG2NODE1.st.com>
-References: <20190529135848.11964-1-alexandru.ardelean@analog.com>
- <20190614104725.4535-1-alexandru.ardelean@analog.com>
-In-Reply-To: <20190614104725.4535-1-alexandru.ardelean@analog.com>
-Accept-Language: it-IT, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.75.127.47]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 456EF34;
+        Mon, 17 Jun 2019 23:50:10 +0000 (GMT)
+Received: from Webmail-eu.st.com (sfhdag2node1.st.com [10.75.127.4])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 2C1AB1276;
+        Mon, 17 Jun 2019 23:50:10 +0000 (GMT)
+Received: from localhost (10.75.127.45) by SFHDAG2NODE1.st.com (10.75.127.4)
+ with Microsoft SMTP Server (TLS) id 15.0.1347.2; Tue, 18 Jun 2019 01:50:09
+ +0200
+From:   Denis Ciocca <denis.ciocca@st.com>
+To:     <linux-iio@vger.kernel.org>, <jic23@kernel.org>
+CC:     <denis.ciocca@st.com>, <lorenzo@kernel.org>
+Subject: [PATCH 0/7] iio:st_sensors: make use of regmap API
+Date:   Mon, 17 Jun 2019 16:49:36 -0700
+Message-ID: <20190617234943.10669-1-denis.ciocca@st.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.45]
+X-ClientProxiedBy: SFHDAG8NODE2.st.com (10.75.127.23) To SFHDAG2NODE1.st.com
+ (10.75.127.4)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-17_09:,,
  signatures=0
 Sender: linux-iio-owner@vger.kernel.org
@@ -68,105 +56,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Alexandru,
+This series is meant to replace I2C/SPI APIs and make use of regmap
+to reduce redundancy.
 
-Looks good to me.
+Denis Ciocca (7):
+  iio:common:st_sensors: add st_sensors_get_settings_index() helper
+    function
+  iio:accel: introduce st_accel_multiread_bit() function
+  iio:magn: introduce st_magn_multiread_bit() function
+  iio:gyro: introduce st_gyro_multiread_bit() function
+  iio:pressure: introduce st_pressure_multiread_bit() function
+  iio: make st_sensors driver use regmap
+  iio:common: make st_sensors_write_data_with_mask() inline
 
-Acked-by: Denis Ciocca <denis.ciocca@st.com>
+ drivers/iio/accel/st_accel.h                  |   1 +
+ drivers/iio/accel/st_accel_core.c             |  19 +++-
+ drivers/iio/accel/st_accel_i2c.c              |   7 +-
+ drivers/iio/accel/st_accel_spi.c              |   6 +-
+ .../iio/common/st_sensors/st_sensors_buffer.c |  10 +-
+ .../iio/common/st_sensors/st_sensors_core.c   |  90 ++++++++-------
+ .../iio/common/st_sensors/st_sensors_i2c.c    |  65 +++++------
+ .../iio/common/st_sensors/st_sensors_spi.c    | 103 +++++-------------
+ .../common/st_sensors/st_sensors_trigger.c    |  10 +-
+ drivers/iio/gyro/st_gyro.h                    |   1 +
+ drivers/iio/gyro/st_gyro_core.c               |  19 +++-
+ drivers/iio/gyro/st_gyro_i2c.c                |   5 +-
+ drivers/iio/gyro/st_gyro_spi.c                |   6 +-
+ drivers/iio/magnetometer/st_magn.h            |   1 +
+ drivers/iio/magnetometer/st_magn_core.c       |  19 +++-
+ drivers/iio/magnetometer/st_magn_i2c.c        |   5 +-
+ drivers/iio/magnetometer/st_magn_spi.c        |   6 +-
+ drivers/iio/pressure/st_pressure.h            |   1 +
+ drivers/iio/pressure/st_pressure_core.c       |  19 +++-
+ drivers/iio/pressure/st_pressure_i2c.c        |   5 +-
+ drivers/iio/pressure/st_pressure_spi.c        |   6 +-
+ include/linux/iio/common/st_sensors.h         |  41 +------
+ include/linux/iio/common/st_sensors_i2c.h     |   5 +-
+ include/linux/iio/common/st_sensors_spi.h     |   5 +-
+ 24 files changed, 230 insertions(+), 225 deletions(-)
 
-Thanks,
-Denis
-
-
------Original Message-----
-From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> On =
-Behalf Of Alexandru Ardelean
-Sent: Friday, June 14, 2019 3:47 AM
-To: linux-iio@vger.kernel.org
-Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH][V3] iio: st_accel: fix iio_triggered_buffer_{pre,post}enab=
-le positions
-
-The iio_triggered_buffer_{predisable,postenable} functions attach/detach th=
-e poll functions.
-
-For the predisable hook, the disable code should occur before detaching the=
- poll func, and for the postenable hook, the poll func should be attached b=
-efore the enable code.
-
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
-
-Changelog v1 -> v2:
-* record the first error in st_accel_buffer_predisable() and return that=20
-
-Changelog v2 -> v3:
-* move iio_triggered_buffer_postenable() after the allocation, but before
-  `st_sensors_set_axis_enable()` based on comment from
-  `Denis Ciocca <denis.ciocca@st.com>`
-
- drivers/iio/accel/st_accel_buffer.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/iio/accel/st_accel_buffer.c b/drivers/iio/accel/st_acc=
-el_buffer.c
-index 7fddc137e91e..802ab7d2d93f 100644
---- a/drivers/iio/accel/st_accel_buffer.c
-+++ b/drivers/iio/accel/st_accel_buffer.c
-@@ -46,17 +46,19 @@ static int st_accel_buffer_postenable(struct iio_dev *i=
-ndio_dev)
- 		goto allocate_memory_error;
- 	}
-=20
--	err =3D st_sensors_set_axis_enable(indio_dev,
--					(u8)indio_dev->active_scan_mask[0]);
-+	err =3D iio_triggered_buffer_postenable(indio_dev);
- 	if (err < 0)
- 		goto st_accel_buffer_postenable_error;
-=20
--	err =3D iio_triggered_buffer_postenable(indio_dev);
-+	err =3D st_sensors_set_axis_enable(indio_dev,
-+					(u8)indio_dev->active_scan_mask[0]);
- 	if (err < 0)
--		goto st_accel_buffer_postenable_error;
-+		goto st_sensors_set_axis_enable_error;
-=20
- 	return err;
-=20
-+st_sensors_set_axis_enable_error:
-+	iio_triggered_buffer_predisable(indio_dev);
- st_accel_buffer_postenable_error:
- 	kfree(adata->buffer_data);
- allocate_memory_error:
-@@ -65,20 +67,22 @@ static int st_accel_buffer_postenable(struct iio_dev *i=
-ndio_dev)
-=20
- static int st_accel_buffer_predisable(struct iio_dev *indio_dev)  {
--	int err;
-+	int err, err2;
- 	struct st_sensor_data *adata =3D iio_priv(indio_dev);
-=20
--	err =3D iio_triggered_buffer_predisable(indio_dev);
--	if (err < 0)
--		goto st_accel_buffer_predisable_error;
--
- 	err =3D st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS)=
-;
- 	if (err < 0)
- 		goto st_accel_buffer_predisable_error;
-=20
- 	err =3D st_sensors_set_enable(indio_dev, false);
-+	if (err < 0)
-+		goto st_accel_buffer_predisable_error;
-=20
- st_accel_buffer_predisable_error:
-+	err2 =3D iio_triggered_buffer_predisable(indio_dev);
-+	if (!err)
-+		err =3D err2;
-+
- 	kfree(adata->buffer_data);
- 	return err;
- }
---
-2.20.1
+-- 
+2.22.0
 

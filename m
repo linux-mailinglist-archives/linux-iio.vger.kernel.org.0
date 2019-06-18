@@ -2,94 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3252249CE4
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 11:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 743F049DA1
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 11:42:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729334AbfFRJRu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Jun 2019 05:17:50 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:33090 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729253AbfFRJRu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Jun 2019 05:17:50 -0400
-Received: by mail-pg1-f196.google.com with SMTP id k187so7354049pga.0;
-        Tue, 18 Jun 2019 02:17:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=T8iho8zB2EI5q4Vs8qH35kthzunfwFzXsVq/N63fSg8=;
-        b=DnxmFqcYaL4E0yzWf4Ny5XU9Lmr/iNvLlEKA5tvmoA4m4tj3jhKkImeaeUHgor7hzs
-         kcKgPn51oQkNGADmzyWj8AzIZoR5a6pXcfGzQ2FijHCV/BvmCCeZI7YOSp4NJdKcrR+V
-         GK8iJkCzAO0Ath3MeQwKo/aBK+hEqkYugd7mGs5ejJCr1QKHQLQlCA2YXspN5D+Z/xaU
-         AAyTECbtdH59r1Skk0PiabZiNtSBPOhQQl8O769/sk0dGao+xhdvYN0FdMwVbc99giAr
-         BunOzlcA6JOZi0hd0AGcULuhbdOFSkAwOMprauXIYES3otB3MFPejHFeo5wO/AARyE9Q
-         oskA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=T8iho8zB2EI5q4Vs8qH35kthzunfwFzXsVq/N63fSg8=;
-        b=UqwNFLERpueOe7pFKnIVejAqy77G2sLLVy1C8xgqA8hdkyG1BxX0CpI/bd3XCWawbM
-         I1rfg6PTDaITq95+BTi25v/SHmV/CILK2z5NiN3iQFKgrQlEu3IHfBb7GuC1Ior4bQip
-         2AFqBLplMlqSl+ayf41tasLbefs2kjrOYs+74JIACYLSB9p1uOxeRbuCREPGJ/vpw0YZ
-         7JNgTZY7n4i0oblkqxXP72edw0v3pZGJnd9LjJzUykkawi0C9bsk0U5jWUlUfP+gh1sT
-         Pox4h9T0BSUlkZH6RtDeQbWCpfcn2h4fwI78O9Bhlj8PjZF32GFeU8XgrmN9oxak5cd/
-         OXSw==
-X-Gm-Message-State: APjAAAVQJZTaqVdgAGbU33xtblA6EKVYaaS3MmmMnGRSN/E24JhNunJP
-        4J/A3f+Hy/Spz6h+/JzI6aw=
-X-Google-Smtp-Source: APXvYqznfc4oBivpsKSj5zEbVhuvELVe7pEx+mqDBog7fgwcN7DeBJo8RqY39olEqs5lV86NOwGOkA==
-X-Received: by 2002:a63:4d0f:: with SMTP id a15mr1779210pgb.101.1560849469025;
-        Tue, 18 Jun 2019 02:17:49 -0700 (PDT)
-Received: from icarus ([2001:268:c0c9:ec1e:c70:4af9:86e2:2])
-        by smtp.gmail.com with ESMTPSA id i127sm14163574pfc.91.2019.06.18.02.17.46
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 18 Jun 2019 02:17:48 -0700 (PDT)
-Date:   Tue, 18 Jun 2019 18:17:31 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Patrick Havelange <patrick.havelange@essensium.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH 1/1] counter/ftm-quaddec: Add missing '>' in MODULE_AUTHOR
-Message-ID: <20190618091731.GA8257@icarus>
-References: <20190618090542.13885-1-patrick.havelange@essensium.com>
+        id S1729499AbfFRJmA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Jun 2019 05:42:00 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:56261 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729466AbfFRJmA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Jun 2019 05:42:00 -0400
+Received: from [192.168.1.110] ([95.114.66.109]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1M26iv-1hbFkb3jpJ-002UDo; Tue, 18 Jun 2019 11:41:56 +0200
+Subject: Re:
+To:     "Grim, Dennis" <Dennis.Grim@teejet.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+References: <DM5PR19MB165765D43BE979AB51A9897E9EEB0@DM5PR19MB1657.namprd19.prod.outlook.com>
+From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <fb5c1163-bd0a-ab22-d3ed-3c7b4f7862e6@metux.net>
+Date:   Tue, 18 Jun 2019 11:41:55 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
+In-Reply-To: <DM5PR19MB165765D43BE979AB51A9897E9EEB0@DM5PR19MB1657.namprd19.prod.outlook.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190618090542.13885-1-patrick.havelange@essensium.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:YViguX+LrOwdwVJJO62D+q4AifRp5xKxIr77rS0kh17dh2To9HF
+ uIlcilTWaDLZwsxsb/Mpy8o1Bs316u7rADp1RYJGyfRAShuDg2DYSDw9SEag7fmiilX6fPz
+ BITQk+HRhffFtY9EPqhDQiU+RTmTf50QaR9W4Xm72+LbO+rphVofmAgt7LXQeCUk9JTPbB3
+ 5gqEyR4f7wqa04VzdFkGw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4Z7qpC7IaFY=:Pzd9pQaO0BkTRpknvU4BKM
+ U5Q8+zjnUzwV4nWMIbNY995WaDfXfXaLV5fp/jcmRw20xWw5/fZVxrvu6I+uG7f4iESczgg8/
+ hWWVsti8Gys7UHiY+BlXhSGjPNJDM4Xm1D64wO4lvHUNXmlDGy1Z8AzIxY1Ou7BzB20+mli1l
+ rK7oJuSChdQM93IOnDOcBTPPCKwxEiItzARMUsCvkSMwZtL9/lCULx3jP6ZnHt07X038x4G/v
+ XPJlkhInF6TedTGINUHI2j+ZwcolQc5IW0zuRM+QznnoeJmAZNvTqSPhs2hm9QmnxvA8AXueQ
+ UDl+2BW9W+dEccuiHSEkPc9rTb6ryhrweN5YtunEh9z6RP6rfO75rTJVKH4pLL8G8TWaIHQSq
+ gAx4MWY5yH9iHhDOikFIWEFgtVr0FrsBUqzbWuyHIDyX5XUoXVZS+VZkcArUmbDfP51j3+C8h
+ OUailgKIqOFHeiA0CXx7Q+fUaQmjAq92ZiTMFm7eHBI9SNa3oFI2DijhTJsFEJug/npuSGwdS
+ jasnyXhgwgagwnX2RMTFTEcpVnrtu6xMAaGo3aYohWatC32Z9HW7yYfFTd4kyeOJAU106KsK6
+ ev3UhajFlt5vHBx5u7pRQtaQN7XpcFNBnVQAQqCi/n/oO/j5/i5Tvn3aZ8iCLqGf3F8F8GLI2
+ Sf8RK9vC5dvgiRdE66vJfjeke/kKRMNFUyTiqK/7gUut7DlpYEU7PSr4ShsWcZ8bQ0tiQ08U3
+ v5oWrCBALUt9C94JqDosd/kZJP2H10eTUDRca4OGo1Bg0DSJYlLL7iMf4ZQ=
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 18, 2019 at 11:05:41AM +0200, Patrick Havelange wrote:
-> The last '>' chars were missing in the MODULE_AUTHOR entries.
+On 17.06.19 16:58, Grim, Dennis wrote:
+> Is Industrial IO considered to be stable in kernel-3.6.0?
 > 
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Fixes: a3b9a99980d9 ("counter: add FlexTimer Module Quadrature decoder counter driver")
-> Signed-off-by: Patrick Havelange <patrick.havelange@essensium.com>
-> ---
->  drivers/counter/ftm-quaddec.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
-> index c83c8875bf82..68a9b7393457 100644
-> --- a/drivers/counter/ftm-quaddec.c
-> +++ b/drivers/counter/ftm-quaddec.c
-> @@ -352,5 +352,5 @@ static struct platform_driver ftm_quaddec_driver = {
->  module_platform_driver(ftm_quaddec_driver);
->  
->  MODULE_LICENSE("GPL");
-> -MODULE_AUTHOR("Kjeld Flarup <kfa@deif.com");
-> -MODULE_AUTHOR("Patrick Havelange <patrick.havelange@essensium.com");
-> +MODULE_AUTHOR("Kjeld Flarup <kfa@deif.com>");
-> +MODULE_AUTHOR("Patrick Havelange <patrick.havelange@essensium.com>");
-> -- 
-> 2.19.1
 
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+What exactly are you trying to achieve ?
 
-Jonathan, please pick up this fix as well.
+3.6 is *very* old and completely unmaintained. And it's likely to miss
+lots of things you'll probably want, sooner or later. And backporting
+such far is anything but practical. (I recently had a client who asked
+me to backport recent BT features onto some old 3.15 vendor kernel -
+that would have taken years to get anythings stable).
 
-William Breathit Gray
+Seriously, don't try to use such old code in production systems.
+It's better to rebase your individual customizations onto recent
+mainline releases.
+
+
+--mtx
+
+-- 
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287

@@ -2,75 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 743F049DA1
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 11:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18F4D4A149
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 14:59:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729499AbfFRJmA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Jun 2019 05:42:00 -0400
-Received: from mout.kundenserver.de ([212.227.126.187]:56261 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729466AbfFRJmA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Jun 2019 05:42:00 -0400
-Received: from [192.168.1.110] ([95.114.66.109]) by mrelayeu.kundenserver.de
- (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1M26iv-1hbFkb3jpJ-002UDo; Tue, 18 Jun 2019 11:41:56 +0200
-Subject: Re:
-To:     "Grim, Dennis" <Dennis.Grim@teejet.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-References: <DM5PR19MB165765D43BE979AB51A9897E9EEB0@DM5PR19MB1657.namprd19.prod.outlook.com>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <fb5c1163-bd0a-ab22-d3ed-3c7b4f7862e6@metux.net>
-Date:   Tue, 18 Jun 2019 11:41:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+        id S1725988AbfFRM7y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Jun 2019 08:59:54 -0400
+Received: from first.geanix.com ([116.203.34.67]:37306 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725955AbfFRM7y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 18 Jun 2019 08:59:54 -0400
+Received: from zen.localdomain (unknown [85.184.140.241])
+        by first.geanix.com (Postfix) with ESMTPSA id E30CDB0E;
+        Tue, 18 Jun 2019 12:59:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1560862786; bh=8IWt/p/yksJ+AzH167bNBHR96XlZdJ9BCx8ESwMzIew=;
+        h=From:To:Cc:Subject:Date;
+        b=TPS5jyyGKkYi/Sj8AKQtez2CiLwlTKsLqC+thfmoqg3UBMkKPXxrT3V0jlbDiB8eX
+         bMvVliOa3ofY20JlUPF6tA4EnmG3dnf5sR4N+wFLnMZUODMyxqvxFNwi+lbmVLtQwV
+         9+lijQBroxG7kre7yRKOz6Cc9LYTfNpAT6Vcuco1+UHxsgHq4Luy1T3srL8H4Okl9u
+         XWnko80vm+kU+FNeR2aDk51+0j9ecu2TlEVJDEtffZVhqrTwzk1aBVjdtjwvbDg7xS
+         hyYcYiYOwAXM7XHA9josmCGZurBV7qqJ+AKiLsl9BF3Q24Wgo+sW5IWKhN7BmOPWzt
+         NccQkNa8Ij74g==
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     linux-iio@vger.kernel.org, jic23@kernel.org
+Cc:     Sean Nyekjaer <sean@geanix.com>, lorenzo.bianconi83@gmail.com,
+        martin@geanix.com
+Subject: [PATCH 0/5] iio: imu: st_lsm6dsx: add event reporting and wakeup
+Date:   Tue, 18 Jun 2019 14:59:34 +0200
+Message-Id: <20190618125939.105903-1-sean@geanix.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-In-Reply-To: <DM5PR19MB165765D43BE979AB51A9897E9EEB0@DM5PR19MB1657.namprd19.prod.outlook.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:YViguX+LrOwdwVJJO62D+q4AifRp5xKxIr77rS0kh17dh2To9HF
- uIlcilTWaDLZwsxsb/Mpy8o1Bs316u7rADp1RYJGyfRAShuDg2DYSDw9SEag7fmiilX6fPz
- BITQk+HRhffFtY9EPqhDQiU+RTmTf50QaR9W4Xm72+LbO+rphVofmAgt7LXQeCUk9JTPbB3
- 5gqEyR4f7wqa04VzdFkGw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:4Z7qpC7IaFY=:Pzd9pQaO0BkTRpknvU4BKM
- U5Q8+zjnUzwV4nWMIbNY995WaDfXfXaLV5fp/jcmRw20xWw5/fZVxrvu6I+uG7f4iESczgg8/
- hWWVsti8Gys7UHiY+BlXhSGjPNJDM4Xm1D64wO4lvHUNXmlDGy1Z8AzIxY1Ou7BzB20+mli1l
- rK7oJuSChdQM93IOnDOcBTPPCKwxEiItzARMUsCvkSMwZtL9/lCULx3jP6ZnHt07X038x4G/v
- XPJlkhInF6TedTGINUHI2j+ZwcolQc5IW0zuRM+QznnoeJmAZNvTqSPhs2hm9QmnxvA8AXueQ
- UDl+2BW9W+dEccuiHSEkPc9rTb6ryhrweN5YtunEh9z6RP6rfO75rTJVKH4pLL8G8TWaIHQSq
- gAx4MWY5yH9iHhDOikFIWEFgtVr0FrsBUqzbWuyHIDyX5XUoXVZS+VZkcArUmbDfP51j3+C8h
- OUailgKIqOFHeiA0CXx7Q+fUaQmjAq92ZiTMFm7eHBI9SNa3oFI2DijhTJsFEJug/npuSGwdS
- jasnyXhgwgagwnX2RMTFTEcpVnrtu6xMAaGo3aYohWatC32Z9HW7yYfFTd4kyeOJAU106KsK6
- ev3UhajFlt5vHBx5u7pRQtaQN7XpcFNBnVQAQqCi/n/oO/j5/i5Tvn3aZ8iCLqGf3F8F8GLI2
- Sf8RK9vC5dvgiRdE66vJfjeke/kKRMNFUyTiqK/7gUut7DlpYEU7PSr4ShsWcZ8bQ0tiQ08U3
- v5oWrCBALUt9C94JqDosd/kZJP2H10eTUDRca4OGo1Bg0DSJYlLL7iMf4ZQ=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=disabled version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 884f5ce5917a
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 17.06.19 16:58, Grim, Dennis wrote:
-> Is Industrial IO considered to be stable in kernel-3.6.0?
-> 
+Hi,
 
-What exactly are you trying to achieve ?
+This series is completely reworked from the RFC, I hope I included all comments.
+I'm now using the iio event system to report events while running. :-)
 
-3.6 is *very* old and completely unmaintained. And it's likely to miss
-lots of things you'll probably want, sooner or later. And backporting
-such far is anything but practical. (I recently had a client who asked
-me to backport recent BT features onto some old 3.15 vendor kernel -
-that would have taken years to get anythings stable).
+Wakeup is controlled via the PM framework, wakeup is only activated if
+the event system have been activated before suspending.
 
-Seriously, don't try to use such old code in production systems.
-It's better to rebase your individual customizations onto recent
-mainline releases.
+/Sean
 
+Sean Nyekjaer (5):
+  iio: imu: st_lsm6dsx: move interrupt thread to core
+  iio: imu: st_lsm6dsx: add motion events
+  iio: imu: st_lsm6dsx: add wakeup-source option
+  iio: imu: st_lsm6dsx: always enter interrupt thread
+  iio: imu: st_lsm6dsx: add motion report function and call from
+    interrupt
 
---mtx
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |   3 +
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    |  80 +----
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 302 +++++++++++++++++-
+ 3 files changed, 301 insertions(+), 84 deletions(-)
 
 -- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+2.22.0
+

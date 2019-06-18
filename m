@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06C394A5EC
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 17:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0B724A5F8
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 17:57:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729189AbfFRPze (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Jun 2019 11:55:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40316 "EHLO mail.kernel.org"
+        id S1729209AbfFRP5N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Jun 2019 11:57:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41100 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729246AbfFRPze (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 18 Jun 2019 11:55:34 -0400
+        id S1729189AbfFRP5N (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 18 Jun 2019 11:57:13 -0400
 Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A339920873;
-        Tue, 18 Jun 2019 15:55:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2268F213F2;
+        Tue, 18 Jun 2019 15:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560873333;
-        bh=Ywi8PDV5uzrsD6mxjASgt3nebZaP9+Y6OwBqYvnfnCI=;
+        s=default; t=1560873431;
+        bh=4dZxdbSrcB7HKkyYiutDZkE9fRMvWPoQAi1IVlBvgmE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vw5Jg3sYic2shyy8eKW51F/W3Eb2OV5Hd1Qjmk9kqI90DJZqEH69J4f25sMF4gzfx
-         i0vLdPRg5VDGH7TNXVsnXKap44jfgYFpWxEQ5ex1Rmh9R9Kx5vAjGZ94NFMOFiRuSB
-         NtmAfjCaogDIKzWzaIixqPL/ZIqrg4ac6rKfL5gw=
-Date:   Tue, 18 Jun 2019 17:55:27 +0200
+        b=QQmgqERzadTNhXVdbVRW6kcoEzR2FCxB/Knz/zu+hNValv9Ww1uuI4h/oqP7i/ZNT
+         Up/xrwYy/M3/uYowv/zGbfvBsS4/iI2+6nqINy0hOHpoqXk/Zmr5S7uxF/p1kPpl1B
+         YVBhDj8ewGudX8qYkMKUlI5NoGivqI8qI4G79Ce0=
+Date:   Tue, 18 Jun 2019 17:57:06 +0200
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     Sean Nyekjaer <sean@geanix.com>
 Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
         lorenzo.bianconi83@gmail.com, martin@geanix.com
-Subject: Re: [PATCH 4/5] iio: imu: st_lsm6dsx: always enter interrupt thread
-Message-ID: <20190618155527.GD20044@localhost.localdomain>
+Subject: Re: [PATCH 1/5] iio: imu: st_lsm6dsx: move interrupt thread to core
+Message-ID: <20190618155705.GA22268@localhost.localdomain>
 References: <20190618125939.105903-1-sean@geanix.com>
- <20190618125939.105903-5-sean@geanix.com>
+ <20190618125939.105903-2-sean@geanix.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="sgneBHv3152wZ8jf"
+        protocol="application/pgp-signature"; boundary="82I3+IH0IqGh5yIs"
 Content-Disposition: inline
-In-Reply-To: <20190618125939.105903-5-sean@geanix.com>
+In-Reply-To: <20190618125939.105903-2-sean@geanix.com>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -44,97 +44,300 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---sgneBHv3152wZ8jf
+--82I3+IH0IqGh5yIs
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-> The interrupt source can come from multiple sources, fifo and wake interr=
-upts.
-> Enter interrupt thread to check which interrupt that has fired.
+> This prepares the interrupt to be used for other stuff than
+> fifo reading -> event readings.
 >=20
 > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 30 +++++++++++++++-----
->  1 file changed, 23 insertions(+), 7 deletions(-)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  1 +
+>  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 80 +----------------
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 87 +++++++++++++++++++
+>  3 files changed, 90 insertions(+), 78 deletions(-)
 >=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 59a34894e495..76aec5024d83 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -78,6 +78,12 @@
->  #define ST_LSM6DSX_REG_GYRO_OUT_Y_L_ADDR	0x24
->  #define ST_LSM6DSX_REG_GYRO_OUT_Z_L_ADDR	0x26
+
+I can't see why we need this patch
+
+Regards,
+Lorenzo
+
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st=
+_lsm6dsx/st_lsm6dsx.h
+> index edcd838037cd..a5e373680e9c 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> @@ -175,5 +175,6 @@ int st_lsm6dsx_update_watermark(struct st_lsm6dsx_sen=
+sor *sensor,
+>  int st_lsm6dsx_flush_fifo(struct st_lsm6dsx_hw *hw);
+>  int st_lsm6dsx_set_fifo_mode(struct st_lsm6dsx_hw *hw,
+>  			     enum st_lsm6dsx_fifo_mode fifo_mode);
+> +int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw);
 > =20
-> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_ADDR		0x1B
-> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_Z_WU_MASK	BIT(0)
-> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_Y_WU_MASK	BIT(1)
-> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_X_WU_MASK	BIT(2)
-> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_WU_MASK	BIT(4)
-> +
->  #define ST_LSM6DSX_REG_TAP_CFG_ADDR		0x58
->  #define ST_LSM6DSX_REG_TAP_CFG_INT_EN_MASK	BIT(7)
->  #define ST_LSM6DSX_REG_TAP_CFG_INACT_EN_MASK	GENMASK(6, 5)
-> @@ -946,19 +952,29 @@ int st_lsm6dsx_event_setup(struct st_lsm6dsx_hw *hw)
+>  #endif /* ST_LSM6DSX_H */
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio=
+/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> index 631360b14ca7..a1ed61a64a64 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> @@ -25,8 +25,6 @@
+>   * Licensed under the GPL-2.
+>   */
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+>  #include <linux/iio/kfifo_buf.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/buffer.h>
+> @@ -37,10 +35,6 @@
 > =20
->  static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+>  #include "st_lsm6dsx.h"
+> =20
+> -#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
+> -#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
+> -#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
+> -#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
+>  #define ST_LSM6DSX_REG_FIFO_MODE_ADDR		0x0a
+>  #define ST_LSM6DSX_FIFO_MODE_MASK		GENMASK(2, 0)
+>  #define ST_LSM6DSX_FIFO_ODR_MASK		GENMASK(6, 3)
+> @@ -282,7 +276,7 @@ static inline int st_lsm6dsx_read_block(struct st_lsm=
+6dsx_hw *hw, u8 *data,
+>   *
+>   * Return: Number of bytes read from the FIFO
+>   */
+> -static int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
+> +int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
 >  {
+>  	u16 fifo_len, pattern_len =3D hw->sip * ST_LSM6DSX_SAMPLE_SIZE;
+>  	u16 fifo_diff_mask =3D hw->settings->fifo_ops.fifo_diff.mask;
+> @@ -465,25 +459,6 @@ static int st_lsm6dsx_update_fifo(struct iio_dev *ii=
+o_dev, bool enable)
+>  	return err;
+>  }
+> =20
+> -static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+> -{
 > -	struct st_lsm6dsx_hw *hw =3D private;
 > -
 > -	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
-> +	return IRQ_WAKE_THREAD;
-
-I guess this will break shared interrupt, isn't it?
-
->  }
-> =20
->  static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
->  {
->  	struct st_lsm6dsx_hw *hw =3D private;
+> -}
+> -
+> -static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+> -{
+> -	struct st_lsm6dsx_hw *hw =3D private;
 > -	int count;
-> +	int count =3D 0;
-> +	int data, err;
-> +
-> +	if (hw->enable_event) {
-> +		err =3D regmap_read(hw->regmap,
-> +				  ST_LSM6DSX_REG_WAKE_UP_SRC_ADDR, &data);
-> +		if (err < 0)
-> +			goto try_fifo;
-
-You can simplify this just doing something like:
-
-		if (err < 0 && !hw->sip)
-			return IRQ_NONE;
-
-> +
-> +	}
-> =20
+> -
 > -	mutex_lock(&hw->fifo_lock);
 > -	count =3D st_lsm6dsx_read_fifo(hw);
 > -	mutex_unlock(&hw->fifo_lock);
-> +try_fifo:
-> +	if (hw->sip > 0) {
-> +		mutex_lock(&hw->fifo_lock);
-> +		count =3D st_lsm6dsx_read_fifo(hw);
-> +		mutex_unlock(&hw->fifo_lock);
-> +	}
+> -
+> -	return !count ? IRQ_NONE : IRQ_HANDLED;
+> -}
+> -
+>  static int st_lsm6dsx_buffer_preenable(struct iio_dev *iio_dev)
+>  {
+>  	return st_lsm6dsx_update_fifo(iio_dev, true);
+> @@ -501,59 +476,8 @@ static const struct iio_buffer_setup_ops st_lsm6dsx_=
+buffer_ops =3D {
 > =20
->  	return !count ? IRQ_NONE : IRQ_HANDLED;
+>  int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
+>  {
+> -	struct device_node *np =3D hw->dev->of_node;
+> -	struct st_sensors_platform_data *pdata;
+>  	struct iio_buffer *buffer;
+> -	unsigned long irq_type;
+> -	bool irq_active_low;
+> -	int i, err;
+> -
+> -	irq_type =3D irqd_get_trigger_type(irq_get_irq_data(hw->irq));
+> -
+> -	switch (irq_type) {
+> -	case IRQF_TRIGGER_HIGH:
+> -	case IRQF_TRIGGER_RISING:
+> -		irq_active_low =3D false;
+> -		break;
+> -	case IRQF_TRIGGER_LOW:
+> -	case IRQF_TRIGGER_FALLING:
+> -		irq_active_low =3D true;
+> -		break;
+> -	default:
+> -		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
+> -		return -EINVAL;
+> -	}
+> -
+> -	err =3D regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
+> -				 ST_LSM6DSX_REG_HLACTIVE_MASK,
+> -				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
+> -					    irq_active_low));
+> -	if (err < 0)
+> -		return err;
+> -
+> -	pdata =3D (struct st_sensors_platform_data *)hw->dev->platform_data;
+> -	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
+> -	    (pdata && pdata->open_drain)) {
+> -		err =3D regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
+> -					 ST_LSM6DSX_REG_PP_OD_MASK,
+> -					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
+> -						    1));
+> -		if (err < 0)
+> -			return err;
+> -
+> -		irq_type |=3D IRQF_SHARED;
+> -	}
+> -
+> -	err =3D devm_request_threaded_irq(hw->dev, hw->irq,
+> -					st_lsm6dsx_handler_irq,
+> -					st_lsm6dsx_handler_thread,
+> -					irq_type | IRQF_ONESHOT,
+> -					"lsm6dsx", hw);
+> -	if (err) {
+> -		dev_err(hw->dev, "failed to request trigger irq %d\n",
+> -			hw->irq);
+> -		return err;
+> -	}
+> +	int i;
+> =20
+>  	for (i =3D 0; i < ST_LSM6DSX_ID_MAX; i++) {
+>  		buffer =3D devm_iio_kfifo_allocate(hw->dev);
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_core.c
+> index aebbe0ddd8d8..b5d3fa354de7 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -36,6 +36,8 @@
+>  #include <linux/delay.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+>  #include <linux/pm.h>
+>  #include <linux/regmap.h>
+>  #include <linux/bitfield.h>
+> @@ -55,6 +57,11 @@
+>  #define ST_LSM6DSX_REG_INT2_ON_INT1_ADDR	0x13
+>  #define ST_LSM6DSX_REG_INT2_ON_INT1_MASK	BIT(5)
+> =20
+> +#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
+> +#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
+> +#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
+> +#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
+> +
+>  #define ST_LSM6DSX_REG_ACC_ODR_ADDR		0x10
+>  #define ST_LSM6DSX_REG_ACC_ODR_MASK		GENMASK(7, 4)
+>  #define ST_LSM6DSX_REG_ACC_FS_ADDR		0x10
+> @@ -804,6 +811,83 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struc=
+t st_lsm6dsx_hw *hw,
+>  	return iio_dev;
 >  }
+> =20
+> +static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+> +{
+> +	struct st_lsm6dsx_hw *hw =3D private;
+> +
+> +	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
+> +}
+> +
+> +static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+> +{
+> +	struct st_lsm6dsx_hw *hw =3D private;
+> +	int count;
+> +
+> +	mutex_lock(&hw->fifo_lock);
+> +	count =3D st_lsm6dsx_read_fifo(hw);
+> +	mutex_unlock(&hw->fifo_lock);
+> +
+> +	return !count ? IRQ_NONE : IRQ_HANDLED;
+> +}
+> +
+> +int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
+> +{
+> +	struct st_sensors_platform_data *pdata;
+> +	struct device_node *np =3D hw->dev->of_node;
+> +	unsigned long irq_type;
+> +	bool irq_active_low;
+> +	int err;
+> +
+> +	irq_type =3D irqd_get_trigger_type(irq_get_irq_data(hw->irq));
+> +
+> +	switch (irq_type) {
+> +	case IRQF_TRIGGER_HIGH:
+> +	case IRQF_TRIGGER_RISING:
+> +		irq_active_low =3D false;
+> +		break;
+> +	case IRQF_TRIGGER_LOW:
+> +	case IRQF_TRIGGER_FALLING:
+> +		irq_active_low =3D true;
+> +		break;
+> +	default:
+> +		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
+> +		return -EINVAL;
+> +	}
+> +
+> +	err =3D regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
+> +				 ST_LSM6DSX_REG_HLACTIVE_MASK,
+> +				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
+> +					    irq_active_low));
+> +	if (err < 0)
+> +		return err;
+> +
+> +	pdata =3D (struct st_sensors_platform_data *)hw->dev->platform_data;
+> +	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
+> +	    (pdata && pdata->open_drain)) {
+> +		err =3D regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
+> +					 ST_LSM6DSX_REG_PP_OD_MASK,
+> +					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
+> +						    1));
+> +		if (err < 0)
+> +			return err;
+> +
+> +		irq_type |=3D IRQF_SHARED;
+> +	}
+> +
+> +	err =3D devm_request_threaded_irq(hw->dev, hw->irq,
+> +					st_lsm6dsx_handler_irq,
+> +					st_lsm6dsx_handler_thread,
+> +					irq_type | IRQF_ONESHOT,
+> +					"lsm6dsx", hw);
+> +	if (err) {
+> +		dev_err(hw->dev, "failed to request trigger irq %d\n",
+> +			hw->irq);
+> +		return err;
+> +	}
+> +
+> +	return err;
+> +}
+> +
+>  int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char =
+*name,
+>  		     struct regmap *regmap)
+>  {
+> @@ -842,6 +926,9 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int=
+ hw_id, const char *name,
+>  		return err;
+> =20
+>  	if (hw->irq > 0) {
+> +		err =3D st_lsm6dsx_irq_setup(hw);
+> +		if (err < 0)
+> +			return err;
+>  		err =3D st_lsm6dsx_fifo_setup(hw);
+>  		if (err < 0)
+>  			return err;
 > --=20
 > 2.22.0
 >=20
 
---sgneBHv3152wZ8jf
+--82I3+IH0IqGh5yIs
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXQkJbAAKCRA6cBh0uS2t
-rPr2AQC3aXD1+T84LqwstDz0G4zXwab238pxkSSI8yM347sdmwEAtnLLojwDkCzF
-JqAG+sLQEEbzDnP3QiMGZauaA0OF3wU=
-=yHa4
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXQkJzgAKCRA6cBh0uS2t
+rMRCAP4lPo7jrjUgR1MTdaheNG3Ce1zlKt5MSZp8OThLQaayOwD9FPIyXO6fNcvg
+UTqTUxecQRKERh3QPOsS7mJmtSG6gQo=
+=5jKc
 -----END PGP SIGNATURE-----
 
---sgneBHv3152wZ8jf--
+--82I3+IH0IqGh5yIs--

@@ -2,44 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0A4F4AAF4
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 21:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B8874AB05
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2019 21:31:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730250AbfFRTTT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Jun 2019 15:19:19 -0400
-Received: from first.geanix.com ([116.203.34.67]:40818 "EHLO first.geanix.com"
+        id S1730242AbfFRTbj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Jun 2019 15:31:39 -0400
+Received: from first.geanix.com ([116.203.34.67]:41300 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730176AbfFRTTS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 18 Jun 2019 15:19:18 -0400
+        id S1730189AbfFRTbj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 18 Jun 2019 15:31:39 -0400
 Received: from [192.168.100.94] (unknown [95.138.208.137])
-        by first.geanix.com (Postfix) with ESMTPSA id 129A1345;
-        Tue, 18 Jun 2019 19:19:09 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id AA7A335E;
+        Tue, 18 Jun 2019 19:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1560885549; bh=MYe9V96w9OMws+bkzcqU0hJ+NwKsJrEAyAa9eg+lxTo=;
+        t=1560886288; bh=4PWcdhPAFZROBKU3NkKGdb/gK8xQTN5oEkim1DpqkGA=;
         h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=itZ5+XAjk6K6b13YQmtXBIyze6SSoRt3diFGl+tItH8cGVc2/h1W295F9Eg+5uBGu
-         pj3msxm5KldpId/Tmx4Ke0Aamt7nNOyPVwNVa/A6ty3B8kz7dkVUYx5kDUpccUhJMS
-         JM7cOiVYHTTq0F57hCEekHKy+A1LmrImPuVz5R32D9ihWvJgyB/sITXUT8nAVDynun
-         sVuyy9Dq2ErMfJ/Q1L/QUWbykMdimtPejUiYwFZmt+kiCF5g+RBPAviyCp225dqaRV
-         ab8OwBMtQqkpqawUt1LJ8/ppAgGUmigp+ilfYEZP96Ad/4YtES9Vob7SaPpKKDqUnj
-         nuXYdud5U9TDA==
-Subject: Re: [PATCH 3/5] iio: imu: st_lsm6dsx: add wakeup-source option
+        b=TIqdIHQxkajNA5PqY/Y5CeufqeiTYcUQqSrwFRZkv9HZEh3eaRVc5RPWifOOeQdjB
+         uL+TppMDllLUAaAcbMzeCMJ57rSNAHVDBx/EmosHhdkvddgYjwu37ek99nsqONqOGK
+         XLgne3JFfYzTsx1JyMtj52B2/mll0abegerGKS55cpmQa2zZ+F4c0OBEGIRmD5/obL
+         +Xnlxpp/HJum5B5bdW+bP5ZdejP3mS64C1AvTq0SO6Q47Xx43zRgKzMMgppt02qFXD
+         u2jDdqqeeuBneEELgRrl6TQfptENB4WRUu91vh5xvHF76ITzezw1Oc/p2qh6ot4A0g
+         y20MCKQ7EyjpA==
+Subject: Re: [PATCH 4/5] iio: imu: st_lsm6dsx: always enter interrupt thread
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
         lorenzo.bianconi83@gmail.com, martin@geanix.com
 References: <20190618125939.105903-1-sean@geanix.com>
- <20190618125939.105903-4-sean@geanix.com>
- <20190618155122.GC20044@localhost.localdomain>
+ <20190618125939.105903-5-sean@geanix.com>
+ <20190618155527.GD20044@localhost.localdomain>
 From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <d7bcc9a5-37ae-d65a-7841-4468d49bb8bd@geanix.com>
-Date:   Tue, 18 Jun 2019 21:19:03 +0200
+Message-ID: <3c1f1f3c-7de8-160a-a5bf-b9abfca78d50@geanix.com>
+Date:   Tue, 18 Jun 2019 21:31:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.1
 MIME-Version: 1.0
-In-Reply-To: <20190618155122.GC20044@localhost.localdomain>
+In-Reply-To: <20190618155527.GD20044@localhost.localdomain>
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Language: en-US-large
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.1 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
         autolearn=disabled version=3.4.2
@@ -51,68 +51,79 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-On 18/06/2019 17.51, Lorenzo Bianconi wrote:
->> this add ways for the SoC to wake from accelerometer wake events.
->>
->> In the suspend function we skip disabling the sensor if wakeup-source
->> and events are activated.
+On 18/06/2019 17.55, Lorenzo Bianconi wrote:
+>> The interrupt source can come from multiple sources, fifo and wake interrupts.
+>> Enter interrupt thread to check which interrupt that has fired.
 >>
 >> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 >> ---
->>   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 15 +++++++++++++++
->>   1 file changed, 15 insertions(+)
+>>   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 30 +++++++++++++++-----
+>>   1 file changed, 23 insertions(+), 7 deletions(-)
 >>
 >> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
->> index 351c46f01662..59a34894e495 100644
+>> index 59a34894e495..76aec5024d83 100644
 >> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 >> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
->> @@ -1076,6 +1076,10 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
->>   			return err;
->>   	}
+>> @@ -78,6 +78,12 @@
+>>   #define ST_LSM6DSX_REG_GYRO_OUT_Y_L_ADDR	0x24
+>>   #define ST_LSM6DSX_REG_GYRO_OUT_Z_L_ADDR	0x26
 >>   
->> +	if (dev->of_node)
->> +		if (of_property_read_bool(dev->of_node, "wakeup-source"))
->> +			device_init_wakeup(dev, true);
+>> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_ADDR		0x1B
+>> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_Z_WU_MASK	BIT(0)
+>> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_Y_WU_MASK	BIT(1)
+>> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_X_WU_MASK	BIT(2)
+>> +#define ST_LSM6DSX_REG_WAKE_UP_SRC_WU_MASK	BIT(4)
 >> +
->>   	return 0;
+>>   #define ST_LSM6DSX_REG_TAP_CFG_ADDR		0x58
+>>   #define ST_LSM6DSX_REG_TAP_CFG_INT_EN_MASK	BIT(7)
+>>   #define ST_LSM6DSX_REG_TAP_CFG_INACT_EN_MASK	GENMASK(6, 5)
+>> @@ -946,19 +952,29 @@ int st_lsm6dsx_event_setup(struct st_lsm6dsx_hw *hw)
+>>   
+>>   static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+>>   {
+>> -	struct st_lsm6dsx_hw *hw = private;
+>> -
+>> -	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
+>> +	return IRQ_WAKE_THREAD;
+> 
+> I guess this will break shared interrupt, isn't it?
+
+When you write shared interrupt you mean: the drdy-int-pin stuff?
+I need to add so we can use all this functionality with the INT2 as well...
+
+> 
 >>   }
->>   EXPORT_SYMBOL(st_lsm6dsx_probe);
->> @@ -1088,6 +1092,12 @@ static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
->>   	int i, err = 0;
 >>   
->>   	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
->> +		if (device_may_wakeup(dev) && (i == ST_LSM6DSX_ID_ACC)) {
->> +			/* Enable wake from IRQ */
->> +			enable_irq_wake(hw->irq);
->> +			continue;
-> 
-> This is breaking buffering mode
-
-Hmm, what is missing? :-)
-We need the accelerometer to continue to run in suspend, but skip 
-writing to the internal fifo.
-
-> 
->> +		}
+>>   static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+>>   {
+>>   	struct st_lsm6dsx_hw *hw = private;
+>> -	int count;
+>> +	int count = 0;
+>> +	int data, err;
 >> +
->>   		sensor = iio_priv(hw->iio_devs[i]);
->>   		if (!(hw->enable_mask & BIT(sensor->id)))
->>   			continue;
->> @@ -1112,6 +1122,11 @@ static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
->>   	int i, err = 0;
->>   
->>   	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
->> +		if (device_may_wakeup(dev) && (i == ST_LSM6DSX_ID_ACC)) {
->> +			disable_irq_wake(hw->irq);
+>> +	if (hw->enable_event) {
+>> +		err = regmap_read(hw->regmap,
+>> +				  ST_LSM6DSX_REG_WAKE_UP_SRC_ADDR, &data);
+>> +		if (err < 0)
+>> +			goto try_fifo;
 > 
-> same here
+> You can simplify this just doing something like:
 > 
->> +			continue;
->> +		}
->> +
->>   		sensor = iio_priv(hw->iio_devs[i]);
->>   		if (!(hw->enable_mask & BIT(sensor->id)))
->>   			continue;
->> -- 
->> 2.22.0
->>
+> 		if (err < 0 && !hw->sip)
+> 			return IRQ_NONE;
+>
+Will apply :-)
+
+Thanks for the review Lorenzo...
+
+-- 
+Best regards,
+Sean Nyekjær
+Embedded Linux Consultant
+
++45 42427326
+sean@geanix.com
+
+Geanix ApS
+https://geanix.com
+DK39600706

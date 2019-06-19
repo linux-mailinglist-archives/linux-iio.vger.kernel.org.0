@@ -2,76 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8B894B21B
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2019 08:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A315F4B820
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2019 14:25:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725892AbfFSGa2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Jun 2019 02:30:28 -0400
-Received: from first.geanix.com ([116.203.34.67]:48468 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725854AbfFSGa2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 19 Jun 2019 02:30:28 -0400
-Received: from [192.168.100.94] (unknown [95.138.208.137])
-        by first.geanix.com (Postfix) with ESMTPSA id D2E4B345;
-        Wed, 19 Jun 2019 06:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1560925824; bh=rPfLhxJi+2oIXAvcokkMlTvFUL7qeGTImf480mmZF5I=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=hOtu1/GKc3KbKI50yKkkbDu3qr96D2OWh45g+NWWs5oY+OnEd/WKnqPHSDfLcwpL5
-         wRtYxIjHOHZbGhhqqI2mdPqLI8oGxGQzIkgGYWaGpXGsCHFdsxvELysfzT4SoAB5oD
-         ztmQVzdNvG9bD9aCDdJF/GoyMdJRzv9OD17K+wFo4qMtY8dbSSj2XxqfzaJu3v94B1
-         syvTKgE51BrixEu0awV0qLeLsFhZ0LcISH6EzRwbA3KvPZitG8bu+Czzwchq5LhKKx
-         7SiC6cLeNv/w3AG1VcaWUE75yPMC9vUdeUkq/tvszVbUhomul946i9OTf0Xqkq+4YP
-         vBuyTIBxpHqwQ==
-Subject: Re: [PATCH 2/5] iio: imu: st_lsm6dsx: add motion events
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com, martin@geanix.com
-References: <20190618125939.105903-1-sean@geanix.com>
- <20190618125939.105903-3-sean@geanix.com>
- <20190618154928.GB20044@localhost.localdomain>
- <e41ada28-a8b5-2911-7dd0-d8833debdcee@geanix.com>
- <20190618202142.GA930@localhost.localdomain>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <a6234f3d-9994-cc62-6365-39b43af3d196@geanix.com>
-Date:   Wed, 19 Jun 2019 08:30:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
-MIME-Version: 1.0
-In-Reply-To: <20190618202142.GA930@localhost.localdomain>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US-large
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 884f5ce5917a
+        id S1727076AbfFSMY2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Jun 2019 08:24:28 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:40778 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727068AbfFSMY2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jun 2019 08:24:28 -0400
+Received: from laptop-1.home (unknown [IPv6:2a01:cb19:8ad6:900:42dd:dd1c:19ee:7c60])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: aragua)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 87E5E260701;
+        Wed, 19 Jun 2019 13:24:26 +0100 (BST)
+Message-ID: <55fe8db5c6bcc7e7736a099ce7d923b7752acb74.camel@collabora.com>
+Subject: Re: [PATCH v3 0/8] Expose cros_ec_sensors frequency range via iio
+ sysfs
+From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
+To:     kernel@collabora.com
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 19 Jun 2019 14:24:23 +0200
+In-Reply-To: <cover.1560848479.git.fabien.lahoudere@collabora.com>
+References: <cover.1560848479.git.fabien.lahoudere@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.2 (3.30.2-2.fc29) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 18/06/2019 22.21, Lorenzo Bianconi wrote:
-
->>>
->>> Could you please verify this registermap is used for all supported devices?
->>> (e.g. LSM6DS3 or LSM6DS3H)
->>
->> They have the same registers and the bits meaning the same.
->> But I can't test on those devices...
+Le mardi 18 juin 2019 à 11:06 +0200, Fabien Lahoudere a écrit :
+> Chromebooks EC sensors must expose a range of frequencies for each
+> sensors using
+> the standard ABI sampling_frquency_available.
 > 
-> I do think so since BIT(7) of 0x58 TAP_CFG in LSM6DS3/LSM6DS3H is used to
-> enable hw timestamp...moreover I think there are other differences
+> Changes since v2:
+> 
+> - use read_avail callback
+> - rework core functions to avoid code duplication
+
+- now sample-frequency-available sysfs return a list of known
+frequencies instead of a range, because the step depend on sensors
+(fast vs slow) and is hidden by EC.
+See https://patchwork.kernel.org/patch/10957141/#22662201
+
+> 
+> Changes since v1:
+> - Add a cover letter
+> - Add Nick Vaccaro SoB to patch 1
+> - Drop fifo size related code
+> 
+> Fabien Lahoudere (8):
+>   iio: common: cros_ec_sensors: move iio_info management to core
+>   iio: common: cros_ec_sensors: move channels to core structure
+>   iio: common: cros_ec_sensors: move registration to core
+>   iio: common: cros_ec_sensors: clean code
+>   iio: common: cros_ec_sensors: use core structure
+>   iio: common: cros_ec_sensors: support protocol v3 message
+>   iio: common: cros_ec_sensors: add sysfs attribute for frequencies
+>   docs: iio: add precision about sampling_frequency_available
+> 
+>  Documentation/ABI/testing/sysfs-bus-iio       |   7 +-
+>  .../common/cros_ec_sensors/cros_ec_sensors.c  | 148 +++++------
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 230 +++++++++++++++-
+> --
+>  drivers/iio/light/cros_ec_light_prox.c        | 124 ++++------
+>  drivers/iio/pressure/cros_ec_baro.c           | 101 +++-----
+>  .../linux/iio/common/cros_ec_sensors_core.h   |  43 +++-
+>  6 files changed, 357 insertions(+), 296 deletions(-)
 > 
 
-The LSM6DS3/LSM6DS3H have the inactivity function enable in
-WAKE_UP_THS 0x5B, BIT(6), ISM330 have that in TAP_CFG 0x58.
-The rest of the WAKE_UP_THS have the same register layout
-
-WAKE_UP_SRC 0x1B have the same register layout
-
-MD1_CFG 0x5E have the same register layout
-
-/Sean

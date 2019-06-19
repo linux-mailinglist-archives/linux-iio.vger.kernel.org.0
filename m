@@ -2,91 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB77F4B958
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2019 15:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9614BABD
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2019 16:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731888AbfFSNEe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Jun 2019 09:04:34 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:63798 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731894AbfFSNEe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jun 2019 09:04:34 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5JCu1vs023624;
-        Wed, 19 Jun 2019 15:04:03 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : subject :
- date : message-id : in-reply-to : references : mime-version :
- content-type; s=STMicroelectronics;
- bh=1RIed4PSnLNoF/Qg8Sp7JJ0Sajo64o3gdxbSWUs/b4M=;
- b=0xenS9bcGVcF8713j77nhv9uVF0N+3rssP3bIA4M00CmyUSAdrwem78TNJJNHfTMdReb
- hibMRJP0HII90WclTnhXFen799MWDD/raHoZnqsHbOBbPWUJFplV8tYCsdK8h7BOWAgB
- xk1FVwbkGYx828MwMagijwfaNOg1olBktgZfIZ5utfW8B/d5l+iFdSI+juK5e5c9iuKR
- x4dpT76VUixZ5pa0Yz+5LRtRPnSyXKu7GCWx+etdZhJt7Ei2O0LF3lXSLgV/jD/V4e1U
- Rs27nGZcFT54Z0W4601g8h6Ui5MHlqxcEanwRD+C6rqGePLtRs9XHJiNAg7pWbj8FW+J cA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2t7813c0aq-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Wed, 19 Jun 2019 15:04:03 +0200
-Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DC7D638;
-        Wed, 19 Jun 2019 13:04:02 +0000 (GMT)
-Received: from Webmail-eu.st.com (Safex1hubcas23.st.com [10.75.90.46])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B5A452834;
-        Wed, 19 Jun 2019 13:04:02 +0000 (GMT)
-Received: from SAFEX1HUBCAS21.st.com (10.75.90.45) by SAFEX1HUBCAS23.st.com
- (10.75.90.46) with Microsoft SMTP Server (TLS) id 14.3.439.0; Wed, 19 Jun
- 2019 15:04:02 +0200
-Received: from localhost (10.201.23.16) by Webmail-ga.st.com (10.75.90.48)
- with Microsoft SMTP Server (TLS) id 14.3.439.0; Wed, 19 Jun 2019 15:04:02
- +0200
-From:   Olivier Moysan <olivier.moysan@st.com>
-To:     <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
-        <pmeerw@pmeerw.net>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <benjamin.gaignard@st.com>,
-        <olivier.moysan@st.com>
-Subject: [PATCH 5/5] iio: adc: stm32-dfsdm: add comment for 16 bits record
-Date:   Wed, 19 Jun 2019 15:03:51 +0200
-Message-ID: <1560949431-22948-6-git-send-email-olivier.moysan@st.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1560949431-22948-1-git-send-email-olivier.moysan@st.com>
-References: <1560949431-22948-1-git-send-email-olivier.moysan@st.com>
+        id S1725893AbfFSOHH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Jun 2019 10:07:07 -0400
+Received: from mga01.intel.com ([192.55.52.88]:24467 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728699AbfFSOHG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 19 Jun 2019 10:07:06 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Jun 2019 07:07:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,392,1557212400"; 
+   d="scan'208";a="162222109"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga003.jf.intel.com with ESMTP; 19 Jun 2019 07:07:04 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 3BEEA177; Wed, 19 Jun 2019 17:07:03 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1] iio: hid-sensor-attributes: Convert to use int_pow()
+Date:   Wed, 19 Jun 2019 17:07:02 +0300
+Message-Id: <20190619140702.18506-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.201.23.16]
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-19_07:,,
- signatures=0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a comment on DMA configuration for 16 bits record.
+Instead of linear approach to calculate power of 10, use generic int_pow()
+which does it better.
 
-Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/adc/stm32-dfsdm-adc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../hid-sensors/hid-sensor-attributes.c       | 53 ++++++++-----------
+ 1 file changed, 22 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-index d855a605eab6..ee1e0569d0e1 100644
---- a/drivers/iio/adc/stm32-dfsdm-adc.c
-+++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -918,6 +918,11 @@ static void stm32_dfsdm_dma_buffer_done(void *data)
- static int stm32_dfsdm_adc_dma_start(struct iio_dev *indio_dev)
+diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+index a8a3fe428d8d..b9dd19b34267 100644
+--- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+@@ -8,6 +8,7 @@
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
++#include <linux/kernel.h>
+ #include <linux/slab.h>
+ #include <linux/hid-sensor-hub.h>
+ #include <linux/iio/iio.h>
+@@ -68,16 +69,6 @@ static struct {
+ 	{HID_USAGE_SENSOR_HUMIDITY, 0, 1000, 0},
+ };
+ 
+-static int pow_10(unsigned power)
+-{
+-	int i;
+-	int ret = 1;
+-	for (i = 0; i < power; ++i)
+-		ret = ret * 10;
+-
+-	return ret;
+-}
+-
+ static void simple_div(int dividend, int divisor, int *whole,
+ 				int *micro_frac)
  {
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-+	/*
-+	 * The DFSDM supports half-word transfers. However, for 16 bits record,
-+	 * 4 bytes buswidth is kept, to avoid losing samples LSBs when left
-+	 * shift is required.
-+	 */
- 	struct dma_slave_config config = {
- 		.src_addr = (dma_addr_t)adc->dfsdm->phys_base,
- 		.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES,
+@@ -96,14 +87,14 @@ static void simple_div(int dividend, int divisor, int *whole,
+ 			rem *= 10;
+ 			exp++;
+ 		}
+-		*micro_frac = (rem / divisor) * pow_10(6-exp);
++		*micro_frac = (rem / divisor) * int_pow(10, 6 - exp);
+ 	}
+ }
+ 
+ static void split_micro_fraction(unsigned int no, int exp, int *val1, int *val2)
+ {
+-	*val1 = no/pow_10(exp);
+-	*val2 = no%pow_10(exp) * pow_10(6-exp);
++	*val1 = no / int_pow(10, exp);
++	*val2 = no % int_pow(10, exp) * int_pow(10, 6 - exp);
+ }
+ 
+ /*
+@@ -125,7 +116,7 @@ static void convert_from_vtf_format(u32 value, int size, int exp,
+ 	}
+ 	exp = hid_sensor_convert_exponent(exp);
+ 	if (exp >= 0) {
+-		*val1 = sign * value * pow_10(exp);
++		*val1 = sign * value * int_pow(10, exp);
+ 		*val2 = 0;
+ 	} else {
+ 		split_micro_fraction(value, -exp, val1, val2);
+@@ -145,10 +136,10 @@ static u32 convert_to_vtf_format(int size, int exp, int val1, int val2)
+ 		sign = -1;
+ 	exp = hid_sensor_convert_exponent(exp);
+ 	if (exp < 0) {
+-		value = abs(val1) * pow_10(-exp);
+-		value += abs(val2) / pow_10(6+exp);
++		value = abs(val1) * int_pow(10, -exp);
++		value += abs(val2) / int_pow(10, 6 + exp);
+ 	} else
+-		value = abs(val1) / pow_10(exp);
++		value = abs(val1) / int_pow(10, exp);
+ 	if (sign < 0)
+ 		value =  ((1LL << (size * 8)) - value);
+ 
+@@ -211,12 +202,12 @@ int hid_sensor_write_samp_freq_value(struct hid_sensor_common *st,
+ 	if (val1 < 0 || val2 < 0)
+ 		return -EINVAL;
+ 
+-	value = val1 * pow_10(6) + val2;
++	value = val1 * int_pow(10, 6) + val2;
+ 	if (value) {
+ 		if (st->poll.units == HID_USAGE_SENSOR_UNITS_MILLISECOND)
+-			value = pow_10(9)/value;
++			value = int_pow(10, 9) / value;
+ 		else if (st->poll.units == HID_USAGE_SENSOR_UNITS_SECOND)
+-			value = pow_10(6)/value;
++			value = int_pow(10, 6) / value;
+ 		else
+ 			value = 0;
+ 	}
+@@ -311,34 +302,34 @@ static void adjust_exponent_nano(int *val0, int *val1, int scale0,
+ 	int rem;
+ 
+ 	if (exp > 0) {
+-		*val0 = scale0 * pow_10(exp);
++		*val0 = scale0 * int_pow(10, exp);
+ 		res = 0;
+ 		if (exp > 9) {
+ 			*val1 = 0;
+ 			return;
+ 		}
+ 		for (i = 0; i < exp; ++i) {
+-			x = scale1 / pow_10(8 - i);
+-			res += (pow_10(exp - 1 - i) * x);
+-			scale1 = scale1 % pow_10(8 - i);
++			x = scale1 / int_pow(10, 8 - i);
++			res += int_pow(10, exp - 1 - i) * x;
++			scale1 = scale1 % int_pow(10, 8 - i);
+ 		}
+ 		*val0 += res;
+-		*val1 = scale1 * pow_10(exp);
++		*val1 = scale1 * int_pow(10, exp);
+ 	} else if (exp < 0) {
+ 		exp = abs(exp);
+ 		if (exp > 9) {
+ 			*val0 = *val1 = 0;
+ 			return;
+ 		}
+-		*val0 = scale0 / pow_10(exp);
+-		rem = scale0 % pow_10(exp);
++		*val0 = scale0 / int_pow(10, exp);
++		rem = scale0 % int_pow(10, exp);
+ 		res = 0;
+ 		for (i = 0; i < (9 - exp); ++i) {
+-			x = scale1 / pow_10(8 - i);
+-			res += (pow_10(8 - exp - i) * x);
+-			scale1 = scale1 % pow_10(8 - i);
++			x = scale1 / int_pow(10, 8 - i);
++			res += int_pow(10, 8 - exp - i) * x;
++			scale1 = scale1 % int_pow(10, 8 - i);
+ 		}
+-		*val1 = rem * pow_10(9 - exp) + res;
++		*val1 = rem * int_pow(10, 9 - exp) + res;
+ 	} else {
+ 		*val0 = scale0;
+ 		*val1 = scale1;
 -- 
-2.7.4
+2.20.1
 

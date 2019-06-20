@@ -2,89 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EF064C9A2
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2019 10:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEE6D4CA91
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2019 11:19:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725889AbfFTIna (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Jun 2019 04:43:30 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:49557 "EHLO
-        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725875AbfFTIna (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jun 2019 04:43:30 -0400
-X-Originating-IP: 92.137.69.152
-Received: from localhost (alyon-656-1-672-152.w92-137.abo.wanadoo.fr [92.137.69.152])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 1595CE0004;
-        Thu, 20 Jun 2019 08:43:23 +0000 (UTC)
-Date:   Thu, 20 Jun 2019 10:43:22 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Ladislav Michl <ladis@linux-mips.org>
-Cc:     linux-iio@vger.kernel.org,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Georg Ottinger <g.ottinger@abatec.at>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [RFC] iio: adc: at91: fix acking DRDY irq (again)
-Message-ID: <20190620084322.GV23549@piout.net>
-References: <20190611115603.GA11086@lenoch>
- <20190612081419.GM25472@piout.net>
- <20190612093142.GA21203@lenoch>
+        id S1726185AbfFTJTg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jun 2019 05:19:36 -0400
+Received: from mail-eopbgr790089.outbound.protection.outlook.com ([40.107.79.89]:6932
+        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725875AbfFTJTg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 20 Jun 2019 05:19:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O0PVaOH+gsirioJtKnMwB8zuZ8zQabuEKQHuNYKFLpU=;
+ b=DdPRlZfybLLzn5oPFsWW7+abuMLEoWJjez+gLBAoGy86sqvVUfWLHFcO8lXd97RJidbrQ2JPdSitWOYz7zwuckuFMFVjGJ9SeMSzu4POLqMI4vudU82nmqwkt0wI85TtQEfaHt0sVCJcQZlRNSdfORRTslAjAfYSUm5iwQfW7mE=
+Received: from DM6PR03CA0016.namprd03.prod.outlook.com (2603:10b6:5:40::29) by
+ BL2PR03MB545.namprd03.prod.outlook.com (2a01:111:e400:c23::14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1987.15; Thu, 20 Jun 2019 09:19:33 +0000
+Received: from BL2NAM02FT033.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::200) by DM6PR03CA0016.outlook.office365.com
+ (2603:10b6:5:40::29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.12 via Frontend
+ Transport; Thu, 20 Jun 2019 09:19:33 +0000
+Authentication-Results: spf=pass (sender IP is 137.71.25.55)
+ smtp.mailfrom=analog.com; metafoo.de; dkim=none (message not signed)
+ header.d=none;metafoo.de; dmarc=bestguesspass action=none
+ header.from=analog.com;
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
+Received: from nwd2mta1.analog.com (137.71.25.55) by
+ BL2NAM02FT033.mail.protection.outlook.com (10.152.77.163) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1987.11
+ via Frontend Transport; Thu, 20 Jun 2019 09:19:30 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x5K9JTJP023127
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Thu, 20 Jun 2019 02:19:29 -0700
+Received: from mircea-Latitude-E6540.ad.analog.com (10.48.65.115) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Thu, 20 Jun 2019 05:19:28 -0400
+From:   Mircea Caprioru <mircea.caprioru@analog.com>
+To:     <jic23@kernel.org>
+CC:     <Michael.Hennerich@analog.com>, <stefan.popa@analog.com>,
+        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        Mircea Caprioru <mircea.caprioru@analog.com>
+Subject: [PATCH 1/4] iio: adc: ad7124: Remove input number limitation
+Date:   Thu, 20 Jun 2019 12:19:05 +0300
+Message-ID: <20190620091908.12041-1-mircea.caprioru@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190612093142.GA21203@lenoch>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(136003)(39860400002)(376002)(396003)(346002)(2980300002)(37524003)(199004)(189003)(186003)(51416003)(7696005)(356004)(6666004)(86362001)(107886003)(2906002)(54906003)(2351001)(316002)(16586007)(70586007)(36756003)(70206006)(106002)(77096007)(305945005)(7636002)(26005)(1076003)(8676002)(47776003)(5660300002)(8936002)(6916009)(246002)(2616005)(486006)(126002)(476003)(44832011)(426003)(336012)(478600001)(50226002)(50466002)(4326008)(72206003)(48376002);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR03MB545;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 59fbc025-4868-4482-cbbe-08d6f56067a1
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328);SRVR:BL2PR03MB545;
+X-MS-TrafficTypeDiagnostic: BL2PR03MB545:
+X-Microsoft-Antispam-PRVS: <BL2PR03MB5453022EF47FBF4F0AF56E681E40@BL2PR03MB545.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Forefront-PRVS: 0074BBE012
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: TO0++dZOhFwhu+ItEA7cJiNemOcxHEdpMxRqB5srBZ4LP2SQNHvzrurbO9M2lRYHewIPhr7B9HYe3e4CfW4UeNEIxX3cRo9asNfglSe+SfWJg01elQOxSVGxELr/gE6dDcTEpq6dHjV26MZzxoa01dHsoHioegrJcIStK5o4gMHzWSeT7Ha46kz1EM1o7myZL/FBdh1+Q/gVVCB4xoYwTQy9AQFgzQh6RSq0N6PK24iRTzZ0ZWV7Vnh1mgvEe8qqx37vbSVGsQKqALga+saU61dvkKfoZphWZ6elbdAenZkhFZXbuyATy9soeivHqWJqQd8rsVWn5AVV6wzDBgCNAzXLWpQAcb0ikrKxAdqLbCMlVPlsT3iRAXhjsl/RceqdsEvkv/pzjRyIVNGPQsZBCdDaORH/WrC5YfYq8XeX8sE=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2019 09:19:30.5236
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59fbc025-4868-4482-cbbe-08d6f56067a1
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR03MB545
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/06/2019 11:31:42+0200, Ladislav Michl wrote:
-> On Wed, Jun 12, 2019 at 10:15:33AM +0200, Alexandre Belloni wrote:
-> > On 11/06/2019 13:56:03+0200, Ladislav Michl wrote:
-> > > Driver also contains some code for TC triggers. How is that supposed to
-> > > work? [**] The very same manual states in chapter 39.5.5:
-> > >   "If one of the TIOA outputs is selected, the corresponding Timer Counter
-> > >    channel must be programmed in Waveform Mode."
-> > > There are two drivers touching TC: drivers/clocksource/timer-atmel-tcb.c
-> > > and drivers/pwm/pwm-atmel-tcb.c, they seem to conflict each other and
-> > 
-> > They don't, they can work simultaneously, on different TCBs. I'm still
-> > planning to rework pwm-atmel-tcb to switch it to the proper binding.
-> 
-> Is there any draft how should that "proper binding" look like?
-> By "conflict" I mean DT can be written so both race for the same resource,
-> while I would expect timer definition with PWM and ADC using its phandle.
-> 
+The driver limits the user to use only 4/8 differential inputs, but this
+device has the option to use pseudo-differential channels. This will
+increase the number of channels to be equal with the number of inputs so 8
+channels for ad7124-4 and 16 for ad7124-8.
 
-Last part of https://lore.kernel.org/lkml/20170530215139.9983-2-alexandre.belloni@free-electrons.com/
+This patch removes the check between channel nodes and num_inputs value.
 
-This is not yet upstream but I'm planning to resend sometime in July.
+Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+---
+ drivers/iio/adc/ad7124.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-
-> > > none of them is anyhow related to ADC driver. Here it would seem
-> > > appropriate to have TC MFD driver and allocate timers for ADC, PWM and
-> > > clocksource from there.
-> > 
-> > No, MFD is way too late for clocksource, this would break some platforms.
-> > 
-> > However, there is definitively some timer framework that is missing to
-> > allow handling of timers that are not used as clocksource/clockevent
-> > devices. So indeed, there is a missing piece to make the TC trigger
-> > work.
-> 
-> Can that be done similar way drivers/clocksource/timer-ti-dm.c is
-> implemented or do you have something else in mind?
-> 
-
-Yes, something similar but this could probably be made more generic as
-this would benefit many other platforms too (i.e broadcom, nxp,
-amlogic).
-
-
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index 659ef37d5fe8..810234db9c0d 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -462,13 +462,6 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+ 		if (ret)
+ 			goto err;
+ 
+-		if (ain[0] >= st->chip_info->num_inputs ||
+-		    ain[1] >= st->chip_info->num_inputs) {
+-			dev_err(indio_dev->dev.parent,
+-				"Input pin number out of range.\n");
+-			ret = -EINVAL;
+-			goto err;
+-		}
+ 		st->channel_config[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
+ 						  AD7124_CHANNEL_AINM(ain[1]);
+ 		st->channel_config[channel].bipolar =
 -- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.17.1
+

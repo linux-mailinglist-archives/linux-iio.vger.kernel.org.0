@@ -2,85 +2,258 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D5A59308
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2019 06:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26CA34D03C
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2019 16:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726694AbfF1Ex6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Jun 2019 00:53:58 -0400
-Received: from mail-pf1-f229.google.com ([209.85.210.229]:46384 "EHLO
-        mail-pf1-f229.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726659AbfF1Ex5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jun 2019 00:53:57 -0400
-Received: by mail-pf1-f229.google.com with SMTP id 81so2313051pfy.13
-        for <linux-iio@vger.kernel.org>; Thu, 27 Jun 2019 21:53:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ctcd-edu.20150623.gappssmtp.com; s=20150623;
-        h=from:subject:thread-topic:thread-index:date:message-id
-         :accept-language:content-language:content-transfer-encoding
-         :mime-version;
-        bh=uja0RKLj8/ZClYB7/xee4WJU8BS3tEVS8HkeIEY1v6o=;
-        b=Pp6ugwMblAVk8EdSg2uZmnwCkjDnAeUEtYkyl/2pd63LjuHbk2LC1q+xge5CQIC/GH
-         pNJGwVNnOYcmjYXoYf2oan/rFHg6jNqjzfTJF61crDfC7ANiGAwRM8eGWxPOMRhAUQyg
-         lvdfAI0FfcjnvflgOXPvcA6EYs2cbKrmPfHb1o4wQKeSph2+crg4HdF4tb7L54XcZta/
-         /fnDZjiJQb5VzkHj3lI0XB3f129ALqpevx0mKDb5YpjTfAqrLwH+19+2nC7YgxGKaPst
-         vrV+q9eb+0yRY8GkmSrqDs/6aTIyTKO1scCH0BR7nb5KP/AyjnoZR+d5eS80Idxrzoet
-         bK/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:thread-topic:thread-index:date
-         :message-id:accept-language:content-language
-         :content-transfer-encoding:mime-version;
-        bh=uja0RKLj8/ZClYB7/xee4WJU8BS3tEVS8HkeIEY1v6o=;
-        b=Jdx2GV9mSxJsgnPRIfNoiruMm+8/T5qeoI5M0WIBCJG6IlH2cc1gt0o+RYePkvrf0i
-         Qx35sgEOQg5cN/VeOEWuAPQ2utRn7nB3+7QWt3uKG8PG2sHlQLX/4/mvL54nGhPcKx/Y
-         wqNpDntp0tVB0orTgR/kaqhefLoTqCH2kzCsviYPjUlZ65CrO3wpEBRElqV/CeLZ7ApB
-         IFAXh1/4qiyyHSFpShYAeS65+aSdYeVkAxsjM+T4p9XbjUor7TQ0tzF/FcskmpQM6oF8
-         6Lzdr/t16XAt8xeNz9G6TspUdQ5SV47EgVanmHnHqqbRHAjGl1kZ8LT4D0TMdRJYBdDe
-         y7HA==
-X-Gm-Message-State: APjAAAWIXclJ0tyGx3crW2ualhuU0/waC/C7V079rjNDjp6xh8W9gC7c
-        FhvMBarNty2/pKSCIxMVDQvayydYtjKYVvzdiYcyvBwWaQp3/Q==
-X-Google-Smtp-Source: APXvYqyDOfZDdbFJ4o/JaxBjQfLRRMqZEDtH+CcFi8WIpV2AIUfzPQ1HX/vVf+o0DsKm/s5gVaROJ/mA9eje
-X-Received: by 2002:a17:90a:cb18:: with SMTP id z24mr10369284pjt.108.1561697634618;
-        Thu, 27 Jun 2019 21:53:54 -0700 (PDT)
-Received: from mail.ctcd.edu (rrcs-67-79-90-89.sw.biz.rr.com. [67.79.90.89])
-        by smtp-relay.gmail.com with ESMTPS id n69sm110753pjb.9.2019.06.27.21.53.54
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 27 Jun 2019 21:53:54 -0700 (PDT)
-X-Relaying-Domain: ctcd.edu
-Received: from CTCEmail02.campus.ctcd.org (172.17.139.89) by
- CTCEmail01.campus.ctcd.org (172.17.139.87) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.845.34; Thu, 20 Jun 2019 09:18:40 -0500
-Received: from CTCEmail02.campus.ctcd.org ([fe80::a0bb:ad1f:8c21:8800]) by
- CTCEmail02.campus.ctcd.org ([fe80::a0bb:ad1f:8c21:8800%2]) with mapi id
- 15.01.0845.034; Thu, 20 Jun 2019 09:18:40 -0500
-From:   "Chambers, Marcine" <MChambers@ctcd.edu>
-Subject: GOOD DAY
-Thread-Topic: GOOD DAY
-Thread-Index: AQHVJ3MOz3fw4vybV0CezupQuoA3uw==
-Date:   Thu, 20 Jun 2019 14:18:40 +0000
-Message-ID: <6406a540a0c54cb4900afa0f5889c847@ctcd.edu>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.17.139.254]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1731950AbfFTOVC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jun 2019 10:21:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35726 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726391AbfFTOVC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 20 Jun 2019 10:21:02 -0400
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 903BD2085A;
+        Thu, 20 Jun 2019 14:21:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561040460;
+        bh=6F5deMei+k5+YeIpCzNrBLuu2IPKgo+Fob+rK4Iy+NQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=D6CfA/ADEPYvgec3kZ65C4dvIwt5vIiHBo3o+qeieu87Ce+NsXE/YURm9z0yLCYL8
+         NIDFqt192RyFpvQCqFRvRyciuLjrCaMqJqiqsmTFrXWYGsHsgFjmQLtFdMhfW69TGw
+         4LGwM+HYGo7hkAula2TvcTZgMwtCfX98wHuIXkKU=
+Received: by mail-qt1-f175.google.com with SMTP id h21so3292734qtn.13;
+        Thu, 20 Jun 2019 07:21:00 -0700 (PDT)
+X-Gm-Message-State: APjAAAULEUUGa07iejw0d9orJeTFaNVzx2DtvgUqz8d72KEqL3Olfjy+
+        ZpWd/GI3+Cnw4w8lGzHUzubo9aeVDhP1qszVvA==
+X-Google-Smtp-Source: APXvYqw03gZBMsZRPNi1BjzZT8MEMjOmAfMJmJ2g9chv7u9G+/iC5PFAdptyPt9iPpUBZAF4tOoKVlaJ6n9XxPv+neY=
+X-Received: by 2002:a0c:8a43:: with SMTP id 3mr40415318qvu.138.1561040459773;
+ Thu, 20 Jun 2019 07:20:59 -0700 (PDT)
 MIME-Version: 1.0
-To:     unlisted-recipients:; (no To-header on input)
+References: <20190620094203.13654-1-mircea.caprioru@analog.com> <20190620094203.13654-4-mircea.caprioru@analog.com>
+In-Reply-To: <20190620094203.13654-4-mircea.caprioru@analog.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 20 Jun 2019 08:20:47 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+P3oG1MPcMMrEfp58Ltw92kk66os34wVwNuUC9a=F2vg@mail.gmail.com>
+Message-ID: <CAL_Jsq+P3oG1MPcMMrEfp58Ltw92kk66os34wVwNuUC9a=F2vg@mail.gmail.com>
+Subject: Re: [RESEND PATCH 4/4] dt-bindings: iio: adc: Convert ad7124
+ documentation to YAML
+To:     Mircea Caprioru <mircea.caprioru@analog.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-I am Vice Chairman of Hang Seng Bank, I have Important Matter to Discuss wi=
-th you concerning my late client, Died without a NEXT OF KIN. Send me your =
-private email for full details information. email me at (chienkraymond@outl=
-ook.com)
+On Thu, Jun 20, 2019 at 3:42 AM Mircea Caprioru
+<mircea.caprioru@analog.com> wrote:
+>
+> Convert AD7124 bindings documentation to YAML format.
+>
+> Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+> ---
+>  .../bindings/iio/adc/adi,ad7124.yaml          | 146 ++++++++++++++++++
+>  1 file changed, 146 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+> new file mode 100644
+> index 000000000000..2dba3759b8e3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+> @@ -0,0 +1,146 @@
+> +# SPDX-License-Identifier: GPL-2.0
 
-Mail:infocarfer@aim.com
+The preference for new bindings is dual (GPL-2.0 OR BSD-2-Clause) if
+that is okay with you.
 
-Regards
-Dr.Raymond Chien Kuo Fung
+> +# Copyright 2019 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/bindings/iio/adc/adi,ad7124.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD7124 ADC device driver
+> +
+> +maintainers:
+> +  - Stefan Popa <stefan.popa@analog.com>
+> +
+> +description: |
+> +  Bindings for the Analog Devices AD7124 ADC device. Datasheet can be
+> +  found here:
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7124-8.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7124-4
+> +      - adi,ad7124-8
+> +
+> +  reg:
+> +    description: SPI chip select number for the device
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +    description: phandle to the master clock (mclk)
+> +
+> +  clock-names:
+> +    items:
+> +      - const: mclk
+> +
+> +  interrupts:
+> +    description: IRQ line for the ADC
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  refin1-supply:
+> +    description: refin1 supply can be used as reference for conversion.
+> +    maxItems: 1
+> +
+> +  refin2-supply:
+> +    description: refin2 supply can be used as reference for conversion.
+> +    maxItems: 1
+> +
+> +  avdd-supply:
+> +    description: avdd supply can be used as reference for conversion.
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - interrupts
+> +
+> +patternProperties:
+> +  "^channel@[01]$":
 
+Need to allow 2-15?
+
+> +    type: object
+> +    description: |
+> +      Represents the external channels which are connected to the ADC.
+> +      See Documentation/devicetree/bindings/iio/adc/adc.txt.
+> +
+> +    properties:
+> +      reg:
+> +        description: |
+> +          The channel number. It can have up to 8 channels on ad7124-4
+> +          and 16 channels on ad7124-8, numbered from 0 to 15.
+
+Sounds like constraints.
+
+items:
+  - minimum: 0
+    maximum: 15
+
+> +        maxItems: 1
+
+And then you can drop this as it is implied with the number of 'items' entries.
+
+> +
+> +      adi,reference-select:
+> +        description: |
+> +          Select the reference source to use when converting on
+> +          the specific channel.
+> +          If this field is left empty, internal reference is selected.
+> +        maxItems: 1
+
+Type? Range of values?
+
+> +
+> +      diff-channels:
+> +        description: see Documentation/devicetree/bindings/iio/adc/adc.txt
+> +        maxItems: 1
+
+Not correct as this is an array. Assuming this is covered by a common
+adc schema, you just need to define constraints on the values:
+
+items:
+  minimum: 0
+  maximum: 15
+
+> +
+> +      bipolar:
+> +        description: see Documentation/devicetree/bindings/iio/adc/adc.txt
+> +        maxItems: 1
+
+You can assume this is covered by common adc schema. So just 'bipolar:
+true' is enough.
+
+> +
+> +      adi,buffered-positive:
+> +        description: Enable buffered mode for positive input.
+> +        maxItems: 1
+
+Not right as this is bool. Needs 'type: boolean'
+
+> +      adi,buffered-negative:
+> +        description: Enable buffered mode for negative input.
+> +        maxItems: 1
+
+ditto
+
+> +
+> +    required:
+> +      - reg
+> +      - diff-channels
+> +
+> +examples:
+> +  - |
+> +    adc@0 {
+> +      compatible = "adi,ad7124-4";
+> +      reg = <0>;
+> +      spi-max-frequency = <5000000>;
+> +      interrupts = <25 2>;
+> +      interrupt-parent = <&gpio>;
+> +      refin1-supply = <&adc_vref>;
+> +      clocks = <&ad7124_mclk>;
+> +      clock-names = "mclk";
+> +
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      channel@0 {
+> +        reg = <0>;
+> +        diff-channels = <0 1>;
+> +        adi,reference-select = <0>;
+> +        adi,buffered-positive;
+> +      };
+> +
+> +      channel@1 {
+> +        reg = <1>;
+> +        bipolar;
+> +        diff-channels = <2 3>;
+> +        adi,reference-select = <0>;
+> +        adi,buffered-positive;
+> +        adi,buffered-negative;
+> +      };
+> +
+> +      channel@2 {
+> +        reg = <2>;
+> +        diff-channels = <4 5>;
+> +      };
+> +
+> +      channel@3 {
+> +        reg = <3>;
+> +        diff-channels = <6 7>;
+> +      };
+> +    };
+> --
+> 2.17.1
+>

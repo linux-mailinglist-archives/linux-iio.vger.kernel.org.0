@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5183D4CA94
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2019 11:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B00F64CA96
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2019 11:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726124AbfFTJTv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Jun 2019 05:19:51 -0400
-Received: from mail-eopbgr780084.outbound.protection.outlook.com ([40.107.78.84]:43904
-        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
+        id S1726084AbfFTJT6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jun 2019 05:19:58 -0400
+Received: from mail-eopbgr680049.outbound.protection.outlook.com ([40.107.68.49]:39811
+        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725875AbfFTJTv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 20 Jun 2019 05:19:51 -0400
+        id S1725875AbfFTJT6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 20 Jun 2019 05:19:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9pv2UHx8Ba7okxCOOxIYWIe1cSD6oxWxUIusS95Vhf8=;
- b=gvlMw/PTOL/c7uWwiP4TG7BslCKlx9jmLSCjwb1U53B2TZpUtBK58Wwsv2DY40yurrE//ze8VjRiE/V1/cgvdHLZvIKZF+l4C6FgqMTO6wbWhn9Tq6U5Dh8emVJVYEMvEZiVc1Qg9v4c7RE5cPWQNgY9lyLk+Qnw1VV3/3PEKY4=
-Received: from BN8PR03CA0022.namprd03.prod.outlook.com (2603:10b6:408:94::35)
- by DM2PR03MB558.namprd03.prod.outlook.com (2a01:111:e400:241d::27) with
+ bh=SAuFOPNCH51KU4B9qyEKHOmP9JFEhdxPDYZXO1DMeTE=;
+ b=zjyXloi4WnHgfyEVtFaVx4Q7N3FFpDr/b25N/nVaaoEK7uRTKHhU+gXy/VtCncwsn9DcKSQwauC93jIxKihdmXPsH/T8yXxR3rqkyLWbrxO/n9vJ9xQ/IeKPnD/eFBQTQr/zyJaGsB/KfXu7yQOL5EH1erJwcAziEC991C/CrTE=
+Received: from BN8PR03CA0036.namprd03.prod.outlook.com (2603:10b6:408:94::49)
+ by BN3PR03MB2258.namprd03.prod.outlook.com (2a01:111:e400:7bbf::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.13; Thu, 20 Jun
- 2019 09:19:48 +0000
-Received: from SN1NAM02FT033.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e44::201) by BN8PR03CA0022.outlook.office365.com
- (2603:10b6:408:94::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.11; Thu, 20 Jun
+ 2019 09:19:55 +0000
+Received: from SN1NAM02FT006.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e44::207) by BN8PR03CA0036.outlook.office365.com
+ (2603:10b6:408:94::49) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1965.15 via Frontend
- Transport; Thu, 20 Jun 2019 09:19:48 +0000
+ Transport; Thu, 20 Jun 2019 09:19:55 +0000
 Authentication-Results: spf=pass (sender IP is 137.71.25.55)
  smtp.mailfrom=analog.com; metafoo.de; dkim=none (message not signed)
  header.d=none;metafoo.de; dmarc=bestguesspass action=none
@@ -35,25 +35,25 @@ Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
  137.71.25.55 as permitted sender) receiver=protection.outlook.com;
  client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
 Received: from nwd2mta1.analog.com (137.71.25.55) by
- SN1NAM02FT033.mail.protection.outlook.com (10.152.72.133) with Microsoft SMTP
+ SN1NAM02FT006.mail.protection.outlook.com (10.152.72.68) with Microsoft SMTP
  Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1987.11
- via Frontend Transport; Thu, 20 Jun 2019 09:19:47 +0000
+ via Frontend Transport; Thu, 20 Jun 2019 09:19:52 +0000
 Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x5K9JkfW023159
+        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x5K9Jpwk023177
         (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Thu, 20 Jun 2019 02:19:46 -0700
+        Thu, 20 Jun 2019 02:19:51 -0700
 Received: from mircea-Latitude-E6540.ad.analog.com (10.48.65.115) by
  NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
- 14.3.408.0; Thu, 20 Jun 2019 05:19:46 -0400
+ 14.3.408.0; Thu, 20 Jun 2019 05:19:50 -0400
 From:   Mircea Caprioru <mircea.caprioru@analog.com>
 To:     <jic23@kernel.org>
 CC:     <Michael.Hennerich@analog.com>, <stefan.popa@analog.com>,
         <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
         <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         Mircea Caprioru <mircea.caprioru@analog.com>
-Subject: [PATCH 2/4] iio: adc: ad7124: Add buffered input support
-Date:   Thu, 20 Jun 2019 12:19:06 +0300
-Message-ID: <20190620091908.12041-2-mircea.caprioru@analog.com>
+Subject: [PATCH 3/4] iio: adc: ad7124: Shift to dynamic allocation for channel configuration
+Date:   Thu, 20 Jun 2019 12:19:07 +0300
+Message-ID: <20190620091908.12041-3-mircea.caprioru@analog.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190620091908.12041-1-mircea.caprioru@analog.com>
 References: <20190620091908.12041-1-mircea.caprioru@analog.com>
@@ -62,99 +62,82 @@ Content-Type: text/plain
 X-ADIRoutedOnPrem: True
 X-EOPAttributedMessage: 0
 X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(376002)(39860400002)(396003)(136003)(346002)(2980300002)(199004)(189003)(246002)(486006)(7636002)(5660300002)(50466002)(4326008)(72206003)(48376002)(36756003)(86362001)(305945005)(478600001)(356004)(1076003)(107886003)(6916009)(7696005)(446003)(50226002)(6666004)(51416003)(8936002)(336012)(11346002)(76176011)(8676002)(186003)(44832011)(2616005)(2351001)(70586007)(426003)(126002)(476003)(54906003)(26005)(16586007)(70206006)(2906002)(316002)(106002)(77096007)(47776003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM2PR03MB558;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
+X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(346002)(396003)(376002)(39860400002)(136003)(2980300002)(199004)(189003)(2351001)(50466002)(48376002)(6666004)(107886003)(356004)(36756003)(4326008)(6916009)(47776003)(336012)(70206006)(8936002)(246002)(70586007)(8676002)(14444005)(50226002)(186003)(76176011)(51416003)(7696005)(7636002)(305945005)(16586007)(316002)(2906002)(54906003)(106002)(44832011)(478600001)(86362001)(77096007)(26005)(5660300002)(486006)(126002)(426003)(446003)(476003)(1076003)(72206003)(2616005)(11346002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN3PR03MB2258;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 026547da-4f70-48ad-99c8-08d6f56070e1
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328);SRVR:DM2PR03MB558;
-X-MS-TrafficTypeDiagnostic: DM2PR03MB558:
-X-Microsoft-Antispam-PRVS: <DM2PR03MB558580434739D24816A831B81E40@DM2PR03MB558.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2657;
+X-MS-Office365-Filtering-Correlation-Id: d0088bad-515c-4c8d-98ec-08d6f56074d6
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(4709080)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:BN3PR03MB2258;
+X-MS-TrafficTypeDiagnostic: BN3PR03MB2258:
+X-Microsoft-Antispam-PRVS: <BN3PR03MB225837404ED630544EC71B0B81E40@BN3PR03MB2258.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3968;
 X-Forefront-PRVS: 0074BBE012
 X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: HjDfu6f6iAt+nxikzZBSBDVA0yWxT+G0cmYaF0V/xwuvrxEuPzavaQq5wsanNalZM/IvdW+dviFllW8sFZlJJnBECiN4rzTNdQnpy8RBfMNl+OEDV13AGfHal23VR99I7WXztgS0qXIRUHMuivs2Nj4LFdrocEKLaF+XohEnYG+cd0lNJ8NdmC/2EZCVUTiUoUxjBHgSxTSQbo77LQfm/LvbDVzQR+gd++poBCa2WHJwNU6xyDMoKofW8bJKZuilSDlwbqrkNelEz9E4y5+/cD9FxS2Golf4t4jPQbTBWjwWm5oQExa0yvjtNPDUFZPzL+N+c1lm3VUTAU/ZHsq0lHwe+8iaNq0FUgm7Mq1vOYr7oOPN5B64S77yzzUtjAiqf5IyCXjSua89HC9ceGCptfQo34epfL0tX0tF9Kf/gT4=
+X-Microsoft-Antispam-Message-Info: PtO5Z8J5mCv9rR6WQv+d8nwxNTIz6LwqIr+eBpMpSEgvg3VB1IOE/Jh8v7fcSB7esslBic2cdFmO+a/FMVXJ0BPxP2syJCHcvL4JBWAmr+HSz1N23m1ucjSzjevsDDGFmBZYq66lWy9aJsV3XqyiqJg+/lNC6S1/H4lYCFu8fELPy8dca7hvx/NuBL4QJBHbZOuSgI0TV8HrijhlXftcbtaydb0pa5foc1m0Iv+Knhepk6H+RuzJ1iQ02v/nXclKoHWZkgCr2kf5alDN2fzhKOOEBYXeyMHRvB15VMrhS8qKscc7aDb0aqc7IQtNvXcLJvSog4Luwn/V3WpS4KBawyJS4f7S5yOGUx7nl+M1BwPza+1aTk/zojlIy5kmbPLs+EyzR+6FfgMsfGsVygv0p7JkW2fbB//qD0QT85Mn7Ho=
 X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2019 09:19:47.5569
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2019 09:19:52.5835
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 026547da-4f70-48ad-99c8-08d6f56070e1
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0088bad-515c-4c8d-98ec-08d6f56074d6
 X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM2PR03MB558
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR03MB2258
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch adds the option to enable the buffered mode for positive and
-negative inputs. Each option can be enabled independently.
+This patch changes the channel configuration member of the device
+structure from a fixed size array to a dynamic allocated one with a size
+equal to the number of channels specified in the device tree. This will
+ensure a more flexibility for compatible devices.
 
-In buffered mode, the input channel feeds into a high impedance input stage
-of the buffer amplifier. Therefore, the input can tolerate significant
-source impedances and is tailored for direct connection to external
-resistive type sensors such as strain gages or RTDs.
+Ex. ad7124-4 - can have 4 differential or 8 pseudo-differential channels
+ad7124-8 - can have 8 differential or 16 pseudo-differential channels
+
+Also the device can suspport any other combination of differential and
+pseudo-differential channels base on the physical number of inputs
+available.
 
 Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
 ---
- drivers/iio/adc/ad7124.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7124.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 810234db9c0d..ab52c5e9ecb1 100644
+index ab52c5e9ecb1..edc6f1cc90b2 100644
 --- a/drivers/iio/adc/ad7124.c
 +++ b/drivers/iio/adc/ad7124.c
-@@ -61,6 +61,8 @@
- #define AD7124_CONFIG_REF_SEL(x)	FIELD_PREP(AD7124_CONFIG_REF_SEL_MSK, x)
- #define AD7124_CONFIG_PGA_MSK		GENMASK(2, 0)
- #define AD7124_CONFIG_PGA(x)		FIELD_PREP(AD7124_CONFIG_PGA_MSK, x)
-+#define AD7124_CONFIG_IN_BUFF_MSK	GENMASK(7, 6)
-+#define AD7124_CONFIG_IN_BUFF(x)	FIELD_PREP(AD7124_CONFIG_IN_BUFF_MSK, x)
+@@ -121,7 +121,7 @@ struct ad7124_channel_config {
+ struct ad7124_state {
+ 	const struct ad7124_chip_info *chip_info;
+ 	struct ad_sigma_delta sd;
+-	struct ad7124_channel_config channel_config[4];
++	struct ad7124_channel_config *channel_config;
+ 	struct regulator *vref[4];
+ 	struct clk *mclk;
+ 	unsigned int adc_control;
+@@ -439,6 +439,7 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+ 	struct ad7124_state *st = iio_priv(indio_dev);
+ 	struct device_node *child;
+ 	struct iio_chan_spec *chan;
++	struct ad7124_channel_config *chan_config;
+ 	unsigned int ain[2], channel = 0, tmp;
+ 	int ret;
  
- /* AD7124_FILTER_X */
- #define AD7124_FILTER_FS_MSK		GENMASK(10, 0)
-@@ -108,6 +110,8 @@ struct ad7124_chip_info {
- struct ad7124_channel_config {
- 	enum ad7124_ref_sel refsel;
- 	bool bipolar;
-+	bool buf_positive;
-+	bool buf_negative;
- 	unsigned int ain;
- 	unsigned int vref_mv;
- 	unsigned int pga_bits;
-@@ -473,6 +477,11 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 		else
- 			st->channel_config[channel].refsel = tmp;
+@@ -453,8 +454,14 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+ 	if (!chan)
+ 		return -ENOMEM;
  
-+		st->channel_config[channel].buf_positive =
-+			of_property_read_bool(child, "adi,buffered-positive");
-+		st->channel_config[channel].buf_negative =
-+			of_property_read_bool(child, "adi,buffered-negative");
++	chan_config = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
++				   sizeof(*chan_config), GFP_KERNEL);
++	if (!chan_config)
++		return -ENOMEM;
 +
- 		*chan = ad7124_channel_template;
- 		chan->address = channel;
- 		chan->scan_index = channel;
-@@ -492,7 +501,7 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- static int ad7124_setup(struct ad7124_state *st)
- {
- 	unsigned int val, fclk, power_mode;
--	int i, ret;
-+	int i, ret, tmp;
+ 	indio_dev->channels = chan;
+ 	indio_dev->num_channels = st->num_channels;
++	st->channel_config = chan_config;
  
- 	fclk = clk_get_rate(st->mclk);
- 	if (!fclk)
-@@ -525,8 +534,12 @@ static int ad7124_setup(struct ad7124_state *st)
- 		if (ret < 0)
- 			return ret;
- 
-+		tmp = (st->channel_config[i].buf_positive << 1)  +
-+			st->channel_config[i].buf_negative;
-+
- 		val = AD7124_CONFIG_BIPOLAR(st->channel_config[i].bipolar) |
--		      AD7124_CONFIG_REF_SEL(st->channel_config[i].refsel);
-+		      AD7124_CONFIG_REF_SEL(st->channel_config[i].refsel) |
-+		      AD7124_CONFIG_IN_BUFF(tmp);
- 		ret = ad_sd_write_reg(&st->sd, AD7124_CONFIG(i), 2, val);
- 		if (ret < 0)
- 			return ret;
+ 	for_each_available_child_of_node(np, child) {
+ 		ret = of_property_read_u32(child, "reg", &channel);
 -- 
 2.17.1
 

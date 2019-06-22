@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8A654F4A6
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 11:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E7534F4AA
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 11:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726272AbfFVJVZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jun 2019 05:21:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58510 "EHLO mail.kernel.org"
+        id S1726281AbfFVJXW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jun 2019 05:23:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32918 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726187AbfFVJVY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 22 Jun 2019 05:21:24 -0400
+        id S1726187AbfFVJXW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 22 Jun 2019 05:23:22 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9F86E205F4;
-        Sat, 22 Jun 2019 09:21:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E8572206BA;
+        Sat, 22 Jun 2019 09:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561195283;
-        bh=wkdTMticKHUz+cqAK4HXYfHz22t3/vjmhA1xKNHdB30=;
+        s=default; t=1561195401;
+        bh=8MdsXVlMi4vSBSz+Up33KUEB/PHAE+taEljjGpQ1cvo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=2b1Fs1wv3cLZcM3ddy5Imq5aX1oUyn4BskTADmRj3/zN0VqBAh8p4ZDaOdh4oivQ6
-         Ef9+oE8oBzYGvMBa40/aB4e/iqxJ2ICfzNyPVnKuBxjc2YiNqy9uNgf5FH9Y1Oxd7P
-         EytmmecSLYh0JNtWxL5ybfYBrpICRGVvz0MMTeoI=
-Date:   Sat, 22 Jun 2019 10:21:17 +0100
+        b=ssmbRe9ttHQo0BO0o0UJlKAZDtHHdgGh4RQRJ3UeaAli22V7anbUE0Hu2y+O7Fruf
+         OqzozYlIa/SB9yPtNZH5vGuKCugOXK4K0O4AXLUF0VjC72QrGY0xMpz9lOkEIM0PT8
+         nC9VS9JyFcfqATYAspQpwxBZcB6pqyndFRd4Cagw=
+Date:   Sat, 22 Jun 2019 10:23:15 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Olivier Moysan <olivier.moysan@st.com>
 Cc:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
@@ -32,11 +32,12 @@ Cc:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
         <linux-stm32@st-md-mailman.stormreply.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <benjamin.gaignard@st.com>
-Subject: Re: [PATCH 2/5] iio: adc: stm32-dfsdm: fix data type
-Message-ID: <20190622102117.5289e1e2@archlinux>
-In-Reply-To: <1560949431-22948-3-git-send-email-olivier.moysan@st.com>
+Subject: Re: [PATCH 3/5] iio: adc: stm32-dfsdm: manage data resolution in
+ trigger mode
+Message-ID: <20190622102315.2484d6de@archlinux>
+In-Reply-To: <1560949431-22948-4-git-send-email-olivier.moysan@st.com>
 References: <1560949431-22948-1-git-send-email-olivier.moysan@st.com>
-        <1560949431-22948-3-git-send-email-olivier.moysan@st.com>
+        <1560949431-22948-4-git-send-email-olivier.moysan@st.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,46 +47,101 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 19 Jun 2019 15:03:48 +0200
+On Wed, 19 Jun 2019 15:03:49 +0200
 Olivier Moysan <olivier.moysan@st.com> wrote:
 
-> Fix the data type as DFSDM raw output is complements 2,
-> 24bits left aligned in a 32-bit register.
-> This change does not affect AUDIO path
-> - Set data as signed for IIO (as for AUDIO)
-> - Set 8 bit right shift for IIO.
-> The 8 LSBs bits of data contains channel info and are masked.
-> 
-> Fixes: e2e6771c6462 ("IIO: ADC: add STM32 DFSDM sigma delta ADC support")
+> Add output sample resolution management in scan mode.
+> Add stm32_dfsdm_process_data() function to share sample
+> processing between continuous and trigger modes.
 > 
 > Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to play with them.
+Makes sense, though I would have preferred a little bit more info
+on what the user visible effects fo this change are in
+the patch description.  I think I know from reading the code,
+but not every one will do that ;)
+
+Applied to the togreg branch of iio.git and pushed out as
+testing for the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/stm32-dfsdm-adc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/stm32-dfsdm-adc.c | 41 ++++++++++++++++++++++++++-------------
+>  1 file changed, 28 insertions(+), 13 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-> index cb596f104919..6b90a40882f2 100644
+> index 6b90a40882f2..5b19a88412a6 100644
 > --- a/drivers/iio/adc/stm32-dfsdm-adc.c
 > +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-> @@ -1365,11 +1365,11 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev,
->  					BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> @@ -779,6 +779,30 @@ static unsigned int stm32_dfsdm_adc_dma_residue(struct stm32_dfsdm_adc *adc)
+>  	return 0;
+>  }
 >  
->  	if (adc->dev_data->type == DFSDM_AUDIO) {
-> -		ch->scan_type.sign = 's';
->  		ch->ext_info = dfsdm_adc_audio_ext_info;
->  	} else {
-> -		ch->scan_type.sign = 'u';
-> +		ch->scan_type.shift = 8;
->  	}
-> +	ch->scan_type.sign = 's';
->  	ch->scan_type.realbits = 24;
->  	ch->scan_type.storagebits = 32;
+> +static inline void stm32_dfsdm_process_data(struct stm32_dfsdm_adc *adc,
+> +					    s32 *buffer)
+> +{
+> +	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[adc->fl_id];
+> +	struct stm32_dfsdm_filter_osr *flo = &fl->flo;
+> +	unsigned int i = adc->nconv;
+> +	s32 *ptr = buffer;
+> +
+> +	while (i--) {
+> +		/* Mask 8 LSB that contains the channel ID */
+> +		*ptr &= 0xFFFFFF00;
+> +		/* Convert 2^(n-1) sample to 2^(n-1)-1 to avoid wrap-around */
+> +		if (*ptr > flo->max)
+> +			*ptr -= 1;
+> +		/*
+> +		 * Samples from filter are retrieved with 23 bits resolution
+> +		 * or less. Shift left to align MSB on 24 bits.
+> +		 */
+> +		*ptr <<= flo->lshift;
+> +
+> +		ptr++;
+> +	}
+> +}
+> +
+>  static irqreturn_t stm32_dfsdm_adc_trigger_handler(int irq, void *p)
+>  {
+>  	struct iio_poll_func *pf = p;
+> @@ -787,7 +811,9 @@ static irqreturn_t stm32_dfsdm_adc_trigger_handler(int irq, void *p)
+>  	int available = stm32_dfsdm_adc_dma_residue(adc);
 >  
+>  	while (available >= indio_dev->scan_bytes) {
+> -		u32 *buffer = (u32 *)&adc->rx_buf[adc->bufi];
+> +		s32 *buffer = (s32 *)&adc->rx_buf[adc->bufi];
+> +
+> +		stm32_dfsdm_process_data(adc, buffer);
+>  
+>  		iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+>  						   pf->timestamp);
+> @@ -806,8 +832,6 @@ static void stm32_dfsdm_dma_buffer_done(void *data)
+>  {
+>  	struct iio_dev *indio_dev = data;
+>  	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+> -	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[adc->fl_id];
+> -	struct stm32_dfsdm_filter_osr *flo = &fl->flo;
+>  	int available = stm32_dfsdm_adc_dma_residue(adc);
+>  	size_t old_pos;
+>  
+> @@ -832,16 +856,7 @@ static void stm32_dfsdm_dma_buffer_done(void *data)
+>  	while (available >= indio_dev->scan_bytes) {
+>  		s32 *buffer = (s32 *)&adc->rx_buf[adc->bufi];
+>  
+> -		/* Mask 8 LSB that contains the channel ID */
+> -		*buffer &= 0xFFFFFF00;
+> -		/* Convert 2^(n-1) sample to 2^(n-1)-1 to avoid wrap-around */
+> -		if (*buffer > flo->max)
+> -			*buffer -= 1;
+> -		/*
+> -		 * Samples from filter are retrieved with 23 bits resolution
+> -		 * or less. Shift left to align MSB on 24 bits.
+> -		 */
+> -		*buffer <<= flo->lshift;
+> +		stm32_dfsdm_process_data(adc, buffer);
+>  
+>  		available -= indio_dev->scan_bytes;
+>  		adc->bufi += indio_dev->scan_bytes;
 

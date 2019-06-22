@@ -2,57 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBA244F566
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 12:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 814084F569
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 12:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726290AbfFVKwJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sat, 22 Jun 2019 06:52:09 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:51184 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726278AbfFVKwJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jun 2019 06:52:09 -0400
+        id S1726289AbfFVKxD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jun 2019 06:53:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55754 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726278AbfFVKxC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 22 Jun 2019 06:53:02 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 8FF989E74F4;
-        Sat, 22 Jun 2019 11:52:07 +0100 (BST)
-Date:   Sat, 22 Jun 2019 11:52:05 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     =?UTF-8?B?WmJ5bsSbaw==?= Kocur <zbynek.kocur@fel.cvut.cz>
-Cc:     linux-iio@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>
-Subject: Re: SRF04.c - wrong range for filter (line 145)
-Message-ID: <20190622115205.767777c2@archlinux>
-In-Reply-To: <B08A7378-8CBD-4B77-B18D-B0C157FAEC07@fel.cvut.cz>
-References: <B08A7378-8CBD-4B77-B18D-B0C157FAEC07@fel.cvut.cz>
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE8552070B;
+        Sat, 22 Jun 2019 10:53:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561200781;
+        bh=XsbuTsWAoPCkGtHDg3vcdixFu29Z85KfcwCZsLv7mjk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=EPAoZkeC+6QAR2EdwogfOoGFFEZE+gmxui1DPjGHrEGbnyTkDXCNB4JV4jkWgM7RU
+         4ZRclW5kES0zbpu/D1sqdT/fWDk5RHUnknTH/1sQO9YErbxx61w6Vof8f60uNhjh3i
+         sV3+9PRA+EAyyxE/3X1tQMsfJUVFX5BsGKVDkzeo=
+Date:   Sat, 22 Jun 2019 11:52:57 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Documentation: ABI: Add missing newline at end of file
+Message-ID: <20190622115257.7198f8d4@archlinux>
+In-Reply-To: <20190617143057.4096-1-geert+renesas@glider.be>
+References: <20190617143057.4096-1-geert+renesas@glider.be>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-+CC Andreas.
+On Mon, 17 Jun 2019 16:30:57 +0200
+Geert Uytterhoeven <geert+renesas@glider.be> wrote:
 
-On Mon, 17 Jun 2019 21:21:37 +0200
-Zbyněk Kocur <zbynek.kocur@fel.cvut.cz> wrote:
+> "git diff" says:
+> 
+>     \ No newline at end of file
+> 
+> after modifying the files.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Applied to the togreg branch of iio.git and pushed out as testing.
 
-> Hello,
-> 
-> I try to use linux kernel module for proximity sensor SRF04 and i was not able to measure distance longer than 1.5 m. The problem is on implementation maximum range filter in function srf04_read, line 145. The reasoning assumes that the distance to 3 meters is limited, but the direction back and forth is neglected. Therefore, the resulting limit is a maximum of 1.5 meres and not a required 3 meters. The solution is to come out of the formula:
-> 
->                  *         distance       2 * 3 m
->                  * time = ---------- = --------- = 18808777 ns
->                  *          speed       319 m/s
->                  *
-> 
-> 
-> Best Regards,
-> Zbyněk Kocur
+Thanks,
+
+Jonathan
+
 > ---
-> email: zbynek.kocur@fel.cvut.cz
-> phone: +420 224 354 054
-> web: http://www.fel.cvut.cz
-> Department of Telecommunications Engineering
-> Faculty of Electrical Engineering
+>  Documentation/ABI/testing/sysfs-bus-iio-dfsdm-adc-stm32 | 2 +-
+>  Documentation/ABI/testing/sysfs-power                   | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dfsdm-adc-stm32 b/Documentation/ABI/testing/sysfs-bus-iio-dfsdm-adc-stm32
+> index da9822309f0757bd..0e66ae9b0071e80b 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio-dfsdm-adc-stm32
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-dfsdm-adc-stm32
+> @@ -13,4 +13,4 @@ Description:
+>  			error on writing
+>  		If DFSDM input is SPI Slave:
+>  			Reading returns value previously set.
+> -			Writing value before starting conversions.
+> \ No newline at end of file
+> +			Writing value before starting conversions.
+> diff --git a/Documentation/ABI/testing/sysfs-power b/Documentation/ABI/testing/sysfs-power
+> index 18b7dc929234f625..3c51303550118474 100644
+> --- a/Documentation/ABI/testing/sysfs-power
+> +++ b/Documentation/ABI/testing/sysfs-power
+> @@ -300,4 +300,4 @@ Description:
+>  		attempt.
+>  
+>  		Using this sysfs file will override any values that were
+> -		set using the kernel command line for disk offset.
+> \ No newline at end of file
+> +		set using the kernel command line for disk offset.
 

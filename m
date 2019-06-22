@@ -2,191 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1C64F5B8
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 14:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 962254F652
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 16:57:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726138AbfFVMXX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jun 2019 08:23:23 -0400
-Received: from mail-yw1-f66.google.com ([209.85.161.66]:46878 "EHLO
-        mail-yw1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726112AbfFVMXX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jun 2019 08:23:23 -0400
-Received: by mail-yw1-f66.google.com with SMTP id z197so3876387ywd.13
-        for <linux-iio@vger.kernel.org>; Sat, 22 Jun 2019 05:23:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=T9L9ixhOyb1JJm5y6IcoxX4+XTrjiWSI5rJmn9mvaXM=;
-        b=ibflR9p+KaXz5eBpH6I1b7tNRbUzVtKj01mpF/zF18CHt8YkCSFQYA8+wrJOTN52yJ
-         vt/SbNM+BRFI5NzDWmlJyIvwfcrh5n2zLJflzxRJjGs2AeJIzGPAwgU/8PGJ7iVQjUvK
-         Weftb74sB7XYS1GB8W/wsKO9B2MiqXRmpQ7xu9QReoaL7jnTme0K2TjYQJ84oGzV/qJ4
-         pVQ7FllujR9MkDOHznPBOM9HDrjwPRJan03oT57ljLYHWdQGOd122WCPDS4ofF7PjguK
-         wn50T5h8H3R85vgMWDuxpnirdOGNhPyFETpdGcgGTasR6BVPyI6TjCDGEoF2h+Ot1hCX
-         R3mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=T9L9ixhOyb1JJm5y6IcoxX4+XTrjiWSI5rJmn9mvaXM=;
-        b=uX3yb+KD2oGmcOEQyvEJmyK9r2/qlINDtlK+vpydo0GGEchCo8mWTvyrBiXL5MnWnc
-         55tuE9oW2n8Hf89uqJInjvI9olp3Ry6iBGd6XgClZrAg1lzgbpRzXPHs0Amw8KEJyimR
-         OqV2f9u1XfZDuZ6GLXkrPCQmlLGLoQFyvdCJ1bhpQkBg3V5MMm3ivZmYQUhI2TP5Vtrb
-         bk4AgQlqCeKZMP76z8fQo4EI1Cmw5XJbcANUHqLguEfkP2E6dBs5HF6OcnLhgdzDEn4U
-         +gPnjQiuQHUwmLvCrxsrPvYVg+T49/Y+EGiXDHRAQxRtmpLkOzPt3OZ/mzSy4jVa0BZ8
-         gLSQ==
-X-Gm-Message-State: APjAAAXPn5gxFe8vIJt4jn1Una1Y/5sQLVnlfV4LOUtgG7oOXrDMBZDo
-        D/hnt3Xj0cSpBsLVKyit3RO+KQR7Sm6QOrYcniQ=
-X-Google-Smtp-Source: APXvYqwTgQJMGY1Gbia/1zxXZr3QqCqbSmLcE83IIkv3wjbjea3ivmZFNdXTBYcp6LSJ5Q0uQ7yv6KnFRL6i809hla8=
-X-Received: by 2002:a81:195:: with SMTP id 143mr65624217ywb.147.1561206202268;
- Sat, 22 Jun 2019 05:23:22 -0700 (PDT)
+        id S1726286AbfFVO50 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jun 2019 10:57:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57924 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726276AbfFVO50 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 22 Jun 2019 10:57:26 -0400
+Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE94D20449;
+        Sat, 22 Jun 2019 14:57:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561215445;
+        bh=j935Tv6qDA7STP636RvvyBwjYWz+e6Ww+7V6XBuDiGg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lQl5/+Exwb80nc2sFRKmrVQn+l3bz8CU8bHaJHOPR/e/IYovmG2zY8TJmidP9m9RD
+         B87eqMZ20+PmgTucvBxcGUtevckBZZkYHGn61x8NPu8BYTqPed0ntA92TdeL1FWNaS
+         RcACsJ98fiZO6fdYccJ1Unisgz19Ffr+6Wv/vgQM=
+From:   jic23@kernel.org
+To:     linux-iio@vger.kernel.org
+Cc:     Daniel Baluta <daniel.baluta@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 00/14] iio: SPDX headers for core + non device driver parts.
+Date:   Sat, 22 Jun 2019 15:55:02 +0100
+Message-Id: <20190622145516.3231-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-References: <20190618125939.105903-1-sean@geanix.com> <20190618125939.105903-5-sean@geanix.com>
- <20190618155527.GD20044@localhost.localdomain> <3c1f1f3c-7de8-160a-a5bf-b9abfca78d50@geanix.com>
- <20190618202413.GB930@localhost.localdomain> <20190622105527.6ed23da3@archlinux>
-In-Reply-To: <20190622105527.6ed23da3@archlinux>
-From:   Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Date:   Sat, 22 Jun 2019 14:23:11 +0200
-Message-ID: <CAA2SeN+ctjsxh4kshKGGpGCqu8yf7Ou78CTz0X-iMnXhuFvzzg@mail.gmail.com>
-Subject: Re: [PATCH 4/5] iio: imu: st_lsm6dsx: always enter interrupt thread
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
-        martin@geanix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
->
-> On Tue, 18 Jun 2019 22:24:14 +0200
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->
-> > On Jun 18, Sean Nyekjaer wrote:
-> > >
-> > >
-> > > On 18/06/2019 17.55, Lorenzo Bianconi wrote:
-> > > > > The interrupt source can come from multiple sources, fifo and wak=
-e interrupts.
-> > > > > Enter interrupt thread to check which interrupt that has fired.
-> > > > >
-> > > > > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> > > > > ---
-> > > > >   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 30 +++++++++++++=
-++-----
-> > > > >   1 file changed, 23 insertions(+), 7 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drive=
-rs/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > index 59a34894e495..76aec5024d83 100644
-> > > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > @@ -78,6 +78,12 @@
-> > > > >   #define ST_LSM6DSX_REG_GYRO_OUT_Y_L_ADDR      0x24
-> > > > >   #define ST_LSM6DSX_REG_GYRO_OUT_Z_L_ADDR      0x26
-> > > > > +#define ST_LSM6DSX_REG_WAKE_UP_SRC_ADDR                0x1B
-> > > > > +#define ST_LSM6DSX_REG_WAKE_UP_SRC_Z_WU_MASK   BIT(0)
-> > > > > +#define ST_LSM6DSX_REG_WAKE_UP_SRC_Y_WU_MASK   BIT(1)
-> > > > > +#define ST_LSM6DSX_REG_WAKE_UP_SRC_X_WU_MASK   BIT(2)
-> > > > > +#define ST_LSM6DSX_REG_WAKE_UP_SRC_WU_MASK     BIT(4)
-> > > > > +
-> > > > >   #define ST_LSM6DSX_REG_TAP_CFG_ADDR           0x58
-> > > > >   #define ST_LSM6DSX_REG_TAP_CFG_INT_EN_MASK    BIT(7)
-> > > > >   #define ST_LSM6DSX_REG_TAP_CFG_INACT_EN_MASK  GENMASK(6, 5)
-> > > > > @@ -946,19 +952,29 @@ int st_lsm6dsx_event_setup(struct st_lsm6ds=
-x_hw *hw)
-> > > > >   static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *privat=
-e)
-> > > > >   {
-> > > > > -       struct st_lsm6dsx_hw *hw =3D private;
-> > > > > -
-> > > > > -       return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
-> > > > > +       return IRQ_WAKE_THREAD;
-> > > >
-> > > > I guess this will break shared interrupt, isn't it?
-> > >
-> > > When you write shared interrupt you mean: the drdy-int-pin stuff?
-> > > I need to add so we can use all this functionality with the INT2 as w=
-ell...
-> >
-> > nope, shared IRQ line with other devices (when you set drive-open-drain=
- dts
-> > property)
->
-> It's been a while since I looked at this, but...
->
-> It shouldn't be broken.  When using shared interrupts, all interrupt hand=
-lers
-> tend to get run, whether or not a given one return IRQ_NONE.
->
-> Nothing stops multiple devices setting their interrupt lines at the same
-> time.
->
-> See __handle_irq_event_percpu in kernel/irq/handle.c which is probably
-> the right code. No return values are taken notice of until all registered
-> handlers have run.
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Ops, right. I do not know why I was thinking returning IRQ_NONE stops
-the iteration over action list.
-Thanks for pointing it out :)
+There is a general movement towards ensuring all of the kernel source
+files have SPDX headers.  I have previously expressed the view, that,
+like many cleanups it would be better to do these when otherwise touching
+the relevant part of the code, rather than creating noise throughout.
 
-Regards,
-Lorenzo
+Time to change my mind on that, and push through adding these to IIO.
 
->
-> Jonathan
->
-> >
-> > >
-> > > >
-> > > > >   }
-> > > > >   static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *pri=
-vate)
-> > > > >   {
-> > > > >         struct st_lsm6dsx_hw *hw =3D private;
-> > > > > -       int count;
-> > > > > +       int count =3D 0;
-> > > > > +       int data, err;
-> > > > > +
-> > > > > +       if (hw->enable_event) {
-> > > > > +               err =3D regmap_read(hw->regmap,
-> > > > > +                                 ST_LSM6DSX_REG_WAKE_UP_SRC_ADDR=
-, &data);
-> > > > > +               if (err < 0)
-> > > > > +                       goto try_fifo;
-> > > >
-> > > > You can simplify this just doing something like:
-> > > >
-> > > >           if (err < 0 && !hw->sip)
-> > > >                   return IRQ_NONE;
-> > > >
-> > > Will apply :-)
-> > >
-> > > Thanks for the review Lorenzo...
-> >
-> > Thanks for working on this :)
-> >
-> > Regards,
-> > Lorenzo
-> >
-> > >
-> > > --
-> > > Best regards,
-> > > Sean Nyekj=C3=A6r
-> > > Embedded Linux Consultant
-> > >
-> > > +45 42427326
-> > > sean@geanix.com
-> > >
-> > > Geanix ApS
-> > > https://geanix.com
-> > > DK39600706
->
+Even in the core code, I was less than entirely consistent with the
+existing license markings, so there are places where the file headers
+don't match with the MODULE_LICENSE macro.
+There were also headers that gained default SPDX license markings
+that actually aren't quite correct given the related c files sometimes
+did have well stated licenses.
 
+If someone has time to check my logic on the these that would be great.
 
---=20
-UNIX is Sexy: who | grep -i blonde | talk; cd ~; wine; talk; touch;
-unzip; touch; strip; gasp; finger; gasp; mount; fsck; more; yes; gasp;
-umount; make clean; sleep
+For the drivers, my intent is to use random periods of boredom
+(I'm on some long haul flights in the near future) to see if I can
+plough through them.  If anyone wants to get ahead of the game and
+do their own drivers that would be great.  This is particularly true
+in the big octopus drivers that spread throughout the IIO directories
+and beyond.  I'd love it if other people took those on.
+
+If in doubt, don't do a given file or put out a clearly worded email
+to the list asking for help!
+
+Jonathan Cameron (14):
+  iio: core: SPDX headers for core files. Note fix to MODULE_LICENSE
+  iio:configfs: SPDX headers.
+  iio: sw-device: SPDX headers
+  iio: sw-trigger: SPDX headers.
+  iio: triggered-event: Add SPDX and fix header license to match the
+    code.
+  iio:buffer-dma: SPDX headers.
+  iio: buffer-cb: SPDX headers
+  iio: kfifo-buf: Add SPDX header
+  iio: buffer-dmaengine: SPDX GPL-2.0+
+  iio: triggered-buffer: SPDX + fix MODULE_LICENSE to GPLv2
+  iio: trig-hrtimer: SPDX header GPLv2
+  iio: trig-interrupt: SPDX headers. GPLv2
+  iio: trig-loop: SPDX headers GPL-v2
+  iio: trig-sysfs: SPDX headers GPLv2.
+
+ drivers/iio/buffer/industrialio-buffer-cb.c        |  8 +++-----
+ drivers/iio/buffer/industrialio-buffer-dma.c       |  3 +--
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c |  3 +--
+ drivers/iio/buffer/industrialio-triggered-buffer.c |  9 +++------
+ drivers/iio/buffer/kfifo_buf.c                     |  1 +
+ drivers/iio/iio_core.h                             |  8 +++-----
+ drivers/iio/iio_core_trigger.h                     |  2 +-
+ drivers/iio/industrialio-buffer.c                  |  8 +++-----
+ drivers/iio/industrialio-configfs.c                |  5 +----
+ drivers/iio/industrialio-core.c                    | 10 ++++------
+ drivers/iio/industrialio-event.c                   |  4 +++-
+ drivers/iio/industrialio-sw-device.c               |  5 +----
+ drivers/iio/industrialio-sw-trigger.c              |  5 +----
+ drivers/iio/industrialio-trigger.c                 |  8 +++-----
+ drivers/iio/industrialio-triggered-event.c         |  6 +-----
+ drivers/iio/inkern.c                               |  8 +++-----
+ drivers/iio/trigger/iio-trig-hrtimer.c             |  6 +-----
+ drivers/iio/trigger/iio-trig-interrupt.c           |  5 +----
+ drivers/iio/trigger/iio-trig-loop.c                |  3 +--
+ drivers/iio/trigger/iio-trig-sysfs.c               |  4 +---
+ include/linux/iio/buffer-dma.h                     |  3 +--
+ include/linux/iio/buffer-dmaengine.h               |  3 +--
+ include/linux/iio/buffer.h                         |  8 +++-----
+ include/linux/iio/configfs.h                       |  5 +----
+ include/linux/iio/consumer.h                       |  5 +----
+ include/linux/iio/driver.h                         |  5 +----
+ include/linux/iio/events.h                         |  8 +++-----
+ include/linux/iio/iio.h                            |  9 +++------
+ include/linux/iio/kfifo_buf.h                      |  2 +-
+ include/linux/iio/machine.h                        |  5 +----
+ include/linux/iio/sw_device.h                      |  5 +----
+ include/linux/iio/sw_trigger.h                     |  5 +----
+ include/linux/iio/sysfs.h                          | 10 ++++------
+ include/linux/iio/trigger.h                        |  5 +----
+ include/linux/iio/trigger_consumer.h               |  8 +++-----
+ include/linux/iio/triggered_event.h                |  2 +-
+ include/linux/iio/types.h                          |  8 +++-----
+ 37 files changed, 67 insertions(+), 140 deletions(-)
+
+-- 
+2.22.0
+

@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 364D24F65B
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 16:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 923644F65C
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 16:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbfFVO6A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jun 2019 10:58:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58326 "EHLO mail.kernel.org"
+        id S1726333AbfFVO6D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jun 2019 10:58:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58366 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726276AbfFVO6A (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 22 Jun 2019 10:58:00 -0400
+        id S1726276AbfFVO6D (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 22 Jun 2019 10:58:03 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 07037208C3;
-        Sat, 22 Jun 2019 14:57:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B3089208CA;
+        Sat, 22 Jun 2019 14:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561215480;
-        bh=6ONcomDlYjJApHPD4hTDvu0t0LcRkKO5jTYgIbLvoyw=;
+        s=default; t=1561215482;
+        bh=+zgqrw0ByGWaHhZpsJe8f0namex8Ygb1+BOHzEh3KXo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o+Q93BBZR77rMWaudQGjRZp4AtgwK37g1KwcWNxO4lmBrOdeazhAPXBMWk8/JzyCf
-         QW7Qw3vPuDpaSqL9Ct0uLM60Fm3qoPm2XsD9IvKByE3ovIeSUufVMapiwNUaeUUv/c
-         hk3hU1y9szd57YUHUaubyPyWgpPE6ih0Q7tDyWHg=
+        b=dDWKolDUhzGDP8Syg/sqGJetXuEvT4+h2FHphLqeWl7olmCEs1NbuXVjih3fsnAKb
+         LFEVDnO0buP4W8spRXppOVPBci2nQFyeozFkDtbQzUMZfLqWdISzMk8ifVQFpqZv9Y
+         0Uwemr5JAkJTX2qCSnF7K+6CNkmvODTapGRx+D88=
 From:   jic23@kernel.org
 To:     linux-iio@vger.kernel.org
 Cc:     Daniel Baluta <daniel.baluta@gmail.com>,
@@ -30,9 +30,9 @@ Cc:     Daniel Baluta <daniel.baluta@gmail.com>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 09/14] iio: buffer-dmaengine: SPDX GPL-2.0+
-Date:   Sat, 22 Jun 2019 15:55:11 +0100
-Message-Id: <20190622145516.3231-10-jic23@kernel.org>
+Subject: [PATCH 10/14] iio: triggered-buffer: SPDX + fix MODULE_LICENSE to GPLv2
+Date:   Sat, 22 Jun 2019 15:55:12 +0100
+Message-Id: <20190622145516.3231-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190622145516.3231-1-jic23@kernel.org>
 References: <20190622145516.3231-1-jic23@kernel.org>
@@ -45,42 +45,38 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Clearly stated in existing headers so just convert to SDPX.
+The licensing was inconsistent for this module, so gone with
+the clearly stated header text which had no "or later"
+element.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/buffer/industrialio-buffer-dmaengine.c | 3 +--
- include/linux/iio/buffer-dmaengine.h               | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/iio/buffer/industrialio-triggered-buffer.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-index 2b5a320f42c5..9a0a02e89e9b 100644
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -1,8 +1,7 @@
-+// SPDX-License-Identifier: GPL-2.0+
- /*
-  * Copyright 2014-2015 Analog Devices Inc.
+diff --git a/drivers/iio/buffer/industrialio-triggered-buffer.c b/drivers/iio/buffer/industrialio-triggered-buffer.c
+index d3db1fce54d2..0c413012f8e1 100644
+--- a/drivers/iio/buffer/industrialio-triggered-buffer.c
++++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
+@@ -1,10 +1,7 @@
+- /*
++// SPDX-License-Identifier: GPL-2.0
++/*
+  * Copyright (c) 2012 Analog Devices, Inc.
   *  Author: Lars-Peter Clausen <lars@metafoo.de>
 - *
-- * Licensed under the GPL-2 or later.
+- * This program is free software; you can redistribute it and/or modify it
+- * under the terms of the GNU General Public License version 2 as published by
+- * the Free Software Foundation.
   */
  
- #include <linux/slab.h>
-diff --git a/include/linux/iio/buffer-dmaengine.h b/include/linux/iio/buffer-dmaengine.h
-index 5dcddf427bb0..c7dbcd359213 100644
---- a/include/linux/iio/buffer-dmaengine.h
-+++ b/include/linux/iio/buffer-dmaengine.h
-@@ -1,8 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
- /*
-  * Copyright 2014-2015 Analog Devices Inc.
-  *  Author: Lars-Peter Clausen <lars@metafoo.de>
-- *
-- * Licensed under the GPL-2 or later.
-  */
+ #include <linux/kernel.h>
+@@ -142,4 +139,4 @@ EXPORT_SYMBOL_GPL(devm_iio_triggered_buffer_cleanup);
  
- #ifndef __IIO_DMAENGINE_H__
+ MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
+ MODULE_DESCRIPTION("IIO helper functions for setting up triggered buffers");
+-MODULE_LICENSE("GPL");
++MODULE_LICENSE("GPL v2");
 -- 
 2.22.0
 

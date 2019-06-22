@@ -2,40 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6430F4F51B
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 12:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7762C4F51F
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 12:15:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbfFVKNO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jun 2019 06:13:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60098 "EHLO mail.kernel.org"
+        id S1726136AbfFVKPQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jun 2019 06:15:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34360 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726138AbfFVKNO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 22 Jun 2019 06:13:14 -0400
+        id S1726121AbfFVKPP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 22 Jun 2019 06:15:15 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 64C7D20665;
-        Sat, 22 Jun 2019 10:13:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1981020665;
+        Sat, 22 Jun 2019 10:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561198392;
-        bh=P838qqKIByvC2ij1sQPICo8DwqDcy/iHlmBWgZupFkg=;
+        s=default; t=1561198514;
+        bh=PQzwQraMLL3vzAgVlf8Nc3bpSNwv9Dk/yJXFLls1GLE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SCKAaijZO5plNFaQ/v2AZDMWeC4T3XzrvBXn67PQzExDgO1vd9CXztV7XYfvrXfvA
-         5B6PPKXbi0vngUoWjnrRL7FKRst9z5LaAKSLQvDurr3hWfqhoofeoyPJn//8q8YwJc
-         nY8/JAgdQa6sNZ7WT4JqMUkUYisF56gXK27l/1+Y=
-Date:   Sat, 22 Jun 2019 11:13:08 +0100
+        b=SnbLDfjZux51t1km6mrW9B7ZOcMJsDz0jW79UOU9ZoMzl27NjD4L2WSLJQRn2JN3N
+         YPyuwz64iNsTH0azH1d1xSHj13M2VLhYF7MaqwaGXgz1VwxavguDMXeamXbnaQyLVo
+         DKofFvSDtLY8jldwcURnGpNDgzIBsEklo1iwdvPM=
+Date:   Sat, 22 Jun 2019 11:15:09 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Cc:     kernel@collabora.com, Hartmut Knaack <knaack.h@gmx.de>,
+Cc:     kernel@collabora.com, Nick Vaccaro <nvaccaro@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/8] iio: common: cros_ec_sensors: move registration
- to core
-Message-ID: <20190622111308.524a2c75@archlinux>
-In-Reply-To: <2edb6d26030dbde1952bc1b25b6ca666233adfac.1560848479.git.fabien.lahoudere@collabora.com>
+Subject: Re: [PATCH v3 6/8] iio: common: cros_ec_sensors: support protocol
+ v3 message
+Message-ID: <20190622111509.314d25bf@archlinux>
+In-Reply-To: <ac3cdc104e59565d178dfa86f2727045224dc4da.1560848479.git.fabien.lahoudere@collabora.com>
 References: <cover.1560848479.git.fabien.lahoudere@collabora.com>
-        <2edb6d26030dbde1952bc1b25b6ca666233adfac.1560848479.git.fabien.lahoudere@collabora.com>
+        <ac3cdc104e59565d178dfa86f2727045224dc4da.1560848479.git.fabien.lahoudere@collabora.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,239 +46,155 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 18 Jun 2019 11:06:34 +0200
+On Tue, 18 Jun 2019 11:06:37 +0200
 Fabien Lahoudere <fabien.lahoudere@collabora.com> wrote:
 
-> In order to simplify derivated drivers from cros_ec_sensors_core,
-> a new core function is created to registered IIO stricture.
+> Version 3 of the EC protocol provides min and max frequencies for EC sensors.
 > 
 > Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-This one looks good to me.
-I'll pick it up once the minor stuff in other patches is sorted.
+> Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
+Looks good to me. I'll pick up next time if no one else raises any
+issues on this one.
 
 Thanks,
 
 Jonathan
 
 > ---
->  .../common/cros_ec_sensors/cros_ec_sensors.c  |  9 +-
->  .../cros_ec_sensors/cros_ec_sensors_core.c    | 97 ++++++++++++-------
->  drivers/iio/light/cros_ec_light_prox.c        |  7 +-
->  drivers/iio/pressure/cros_ec_baro.c           |  7 +-
->  .../linux/iio/common/cros_ec_sensors_core.h   | 16 ++-
->  5 files changed, 72 insertions(+), 64 deletions(-)
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 85 ++++++++++++++++++-
+>  .../linux/iio/common/cros_ec_sensors_core.h   |  3 +
+>  2 files changed, 87 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> index 897dc83a3355..c4bee9265246 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> @@ -14,7 +14,7 @@
->  #include <linux/iio/iio.h>
->  #include <linux/iio/kfifo_buf.h>
->  #include <linux/iio/trigger_consumer.h>
-> -#include <linux/iio/triggered_buffer.h>
-> +
->  #include <linux/kernel.h>
->  #include <linux/mfd/cros_ec.h>
->  #include <linux/mfd/cros_ec_commands.h>
-> @@ -233,12 +233,7 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
->  	else
->  		state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
->  
-> -	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> -			cros_ec_sensors_capture, NULL);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return devm_iio_device_register(dev, indio_dev);
-> +	return cros_ec_sensors_core_register(pdev, indio_dev);
->  }
->  
->  static const struct platform_device_id cros_ec_sensors_ids[] = {
 > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> index e5181e007dd7..3880849c5cca 100644
+> index 57034e212fe1..2ce077b576a4 100644
 > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
 > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> @@ -12,6 +12,7 @@
->  #include <linux/iio/iio.h>
->  #include <linux/iio/kfifo_buf.h>
->  #include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
->  #include <linux/kernel.h>
->  #include <linux/mfd/cros_ec.h>
->  #include <linux/mfd/cros_ec_commands.h>
-> @@ -95,6 +96,67 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->  }
->  EXPORT_SYMBOL_GPL(cros_ec_sensors_core_init);
+> @@ -26,6 +26,66 @@ static char *cros_ec_loc[] = {
+>  	[MOTIONSENSE_LOC_MAX] = "unknown",
+>  };
 >  
-> +/**
-> + * cros_ec_sensors_capture() - the trigger handler function
-> + * @irq:	the interrupt number.
-> + * @p:		a pointer to the poll function.
-> + *
-> + * On a trigger event occurring, if the pollfunc is attached then this
-> + * handler is called as a threaded interrupt (and hence may sleep). It
-> + * is responsible for grabbing data from the device and pushing it into
-> + * the associated buffer.
-> + *
-> + * Return: IRQ_HANDLED
-> + */
-> +static irqreturn_t cros_ec_sensors_capture(int irq, void *p)
+> +static void get_default_min_max_freq(enum motionsensor_type type,
+> +				     u32 *min_freq,
+> +				     u32 *max_freq)
 > +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	mutex_lock(&st->cmd_lock);
-> +
-> +	/* Clear capture data. */
-> +	memset(st->samples, 0, indio_dev->scan_bytes);
-> +
-> +	/* Read data based on which channels are enabled in scan mask. */
-> +	ret = st->read_ec_sensors_data(indio_dev,
-> +				       *indio_dev->active_scan_mask,
-> +				       (s16 *)st->samples);
-> +	if (ret < 0)
-> +		goto done;
-> +
-> +	iio_push_to_buffers_with_timestamp(indio_dev, st->samples,
-> +					   iio_get_time_ns(indio_dev));
-> +
-> +done:
-> +	/*
-> +	 * Tell the core we are done with this trigger and ready for the
-> +	 * next one.
-> +	 */
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	mutex_unlock(&st->cmd_lock);
-> +
-> +	return IRQ_HANDLED;
+> +	switch (type) {
+> +	case MOTIONSENSE_TYPE_ACCEL:
+> +	case MOTIONSENSE_TYPE_GYRO:
+> +		*min_freq = 12500;
+> +		*max_freq = 100000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_MAG:
+> +		*min_freq = 5000;
+> +		*max_freq = 25000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_PROX:
+> +	case MOTIONSENSE_TYPE_LIGHT:
+> +		*min_freq = 100;
+> +		*max_freq = 50000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_BARO:
+> +		*min_freq = 250;
+> +		*max_freq = 20000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_ACTIVITY:
+> +	default:
+> +		*min_freq = 0;
+> +		*max_freq = 0;
+> +		break;
+> +	}
 > +}
 > +
-> +int cros_ec_sensors_core_register(struct platform_device *pdev,
-> +				  struct iio_dev *indio_dev)
+> +static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
+> +					     u16 cmd_offset, u16 cmd, u32 *mask)
 > +{
 > +	int ret;
-> +	struct device *dev = &pdev->dev;
+> +	struct {
+> +		struct cros_ec_command msg;
+> +		union {
+> +			struct ec_params_get_cmd_versions params;
+> +			struct ec_response_get_cmd_versions resp;
+> +		};
+> +	} __packed buf = {
+> +		.msg = {
+> +			.command = EC_CMD_GET_CMD_VERSIONS + cmd_offset,
+> +			.insize = sizeof(struct ec_response_get_cmd_versions),
+> +			.outsize = sizeof(struct ec_params_get_cmd_versions)
+> +			},
+> +		.params = {.cmd = cmd}
+> +	};
 > +
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> +					      cros_ec_sensors_capture, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
+> +	ret = cros_ec_cmd_xfer_status(ec_dev, &buf.msg);
+> +	if (ret >= 0) {
+> +		if (buf.msg.result == EC_RES_SUCCESS)
+> +			*mask = buf.resp.version_mask;
+> +		else
+> +			*mask = 0;
+> +	}
+> +	return ret;
 > +}
-> +EXPORT_SYMBOL_GPL(cros_ec_sensors_core_register);
 > +
->  int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
->  				 u16 opt_length)
->  {
-> @@ -380,41 +442,6 @@ int cros_ec_sensors_read_cmd(struct iio_dev *indio_dev,
->  }
->  EXPORT_SYMBOL_GPL(cros_ec_sensors_read_cmd);
+>  int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  			      int num_channels,
+>  			      bool physical_device)
+> @@ -35,6 +95,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
+>  	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+>  	struct iio_dev *indio_dev;
+> +	u32 ver_mask;
+> +	int ret;
 >  
-> -irqreturn_t cros_ec_sensors_capture(int irq, void *p)
-> -{
-> -	struct iio_poll_func *pf = p;
-> -	struct iio_dev *indio_dev = pf->indio_dev;
-> -	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
-> -	int ret;
-> -
-> -	mutex_lock(&st->cmd_lock);
-> -
-> -	/* Clear capture data. */
-> -	memset(st->samples, 0, indio_dev->scan_bytes);
-> -
-> -	/* Read data based on which channels are enabled in scan mask. */
-> -	ret = st->read_ec_sensors_data(indio_dev,
-> -				       *(indio_dev->active_scan_mask),
-> -				       (s16 *)st->samples);
-> -	if (ret < 0)
-> -		goto done;
-> -
-> -	iio_push_to_buffers_with_timestamp(indio_dev, st->samples,
-> -					   iio_get_time_ns(indio_dev));
-> -
-> -done:
-> -	/*
-> -	 * Tell the core we are done with this trigger and ready for the
-> -	 * next one.
-> -	 */
-> -	iio_trigger_notify_done(indio_dev->trig);
-> -
-> -	mutex_unlock(&st->cmd_lock);
-> -
-> -	return IRQ_HANDLED;
-> -}
-> -EXPORT_SYMBOL_GPL(cros_ec_sensors_capture);
-> -
->  int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
->  			  struct iio_chan_spec const *chan,
->  			  int *val, int *val2, long mask)
-> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
-> index 32ea5afd495f..682dc19c2bf3 100644> --- a/drivers/iio/light/cros_ec_light_prox.c
-> +++ b/drivers/iio/light/cros_ec_light_prox.c
-> @@ -215,12 +215,7 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
+>  	if (num_channels > CROS_EC_SENSORS_CORE_MAX_CHANNELS)
+>  		return -EINVAL;
+> @@ -57,8 +119,16 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
 >  
->  	state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
+>  	mutex_init(&state->cmd_lock);
 >  
-> -	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> -					      cros_ec_sensors_capture, NULL);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return devm_iio_device_register(dev, indio_dev);
-> +	return cros_ec_sensors_core_register(pdev, indio_dev);
->  }
+> +	/* determine what version of MOTIONSENSE CMD EC has */
+> +	ret = cros_ec_get_host_cmd_version_mask(state->ec,
+> +						ec->cmd_offset,
+> +						EC_CMD_MOTION_SENSE_CMD,
+> +						&ver_mask);
+> +	if (ret < 0 || ver_mask == 0)
+> +		return -ENODEV;
+> +
+>  	/* Set up the host command structure. */
+> -	state->msg->version = 2;
+> +	state->msg->version = fls(ver_mask) - 1;
+>  	state->msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
+>  	state->msg->outsize = sizeof(struct ec_params_motion_sense);
 >  
->  static const struct platform_device_id cros_ec_light_prox_ids[] = {
-> diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
-> index 8718036d74d2..9d3745bc2fba 100644
-> --- a/drivers/iio/pressure/cros_ec_baro.c
-> +++ b/drivers/iio/pressure/cros_ec_baro.c
-> @@ -152,12 +152,7 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
+> @@ -76,6 +146,19 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  		}
+>  		state->type = state->resp->info.type;
+>  		state->loc = state->resp->info.location;
+> +
+> +		/* Value to stop the device */
+> +		state->frequency_range[0] = 0;
+> +		if (state->msg->version < 3) {
+> +			get_default_min_max_freq(state->resp->info.type,
+> +						 &state->frequency_range[1],
+> +						 &state->frequency_range[2]);
+> +		} else {
+> +			state->frequency_range[1] =
+> +			    state->resp->info_3.min_frequency;
+> +			state->frequency_range[2] =
+> +			    state->resp->info_3.max_frequency;
+> +		}
+>  	}
 >  
->  	state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
->  
-> -	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> -					      cros_ec_sensors_capture, NULL);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return devm_iio_device_register(dev, indio_dev);
-> +	return cros_ec_sensors_core_register(pdev, indio_dev);
->  }
->  
->  static const struct platform_device_id cros_ec_baro_ids[] = {
+>  	indio_dev->info = &state->info;
 > diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-> index 485c649b421f..60f40d253f4a 100644
+> index 3e6de427076e..89937ad242ef 100644
 > --- a/include/linux/iio/common/cros_ec_sensors_core.h
 > +++ b/include/linux/iio/common/cros_ec_sensors_core.h
-> @@ -116,18 +116,14 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->  			      bool physical_device);
+> @@ -74,6 +74,9 @@ struct cros_ec_sensors_core_state {
+>  	int curr_sampl_freq;
+>  	struct iio_info info;
+>  	struct iio_chan_spec channels[CROS_EC_SENSORS_CORE_MAX_CHANNELS];
+> +
+> +	/* Disable, Min and Max Sampling Frequency in mHz */
+> +	int frequency_range[3];
+>  };
 >  
 >  /**
-> - * cros_ec_sensors_capture() - the trigger handler function
-> - * @irq:	the interrupt number.
-> - * @p:		a pointer to the poll function.
-> - *
-> - * On a trigger event occurring, if the pollfunc is attached then this
-> - * handler is called as a threaded interrupt (and hence may sleep). It
-> - * is responsible for grabbing data from the device and pushing it into
-> - * the associated buffer.
-> + * cros_ec_sensors_core_register() - registration of the core structure
-> + * @pdev:		platform device created for the sensors
-> + * @indio_dev:		iio device structure of the device
->   *
-> - * Return: IRQ_HANDLED
-> + * Return: 0 on success, -errno on failure.
->   */
-> -irqreturn_t cros_ec_sensors_capture(int irq, void *p);
-> +int cros_ec_sensors_core_register(struct platform_device *pdev,
-> +				  struct iio_dev *indio_dev);
->  
->  /**
->   * cros_ec_core_channel_init() - initialize channel
 

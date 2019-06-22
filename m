@@ -2,42 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66D2F4F4CE
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 11:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F7CA4F4D5
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 11:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726278AbfFVJjZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jun 2019 05:39:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53770 "EHLO mail.kernel.org"
+        id S1726136AbfFVJnH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jun 2019 05:43:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58068 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726272AbfFVJjZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 22 Jun 2019 05:39:25 -0400
+        id S1726112AbfFVJnH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 22 Jun 2019 05:43:07 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 668842070B;
-        Sat, 22 Jun 2019 09:39:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E9FCC2084E;
+        Sat, 22 Jun 2019 09:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561196363;
-        bh=62wqamZTufCpuZJ2+wwSe9gHyryf/3KEt5zf+QDPazA=;
+        s=default; t=1561196585;
+        bh=t+jdhrtqnAeVSdTIuwqh5S0S8lqQudNzmmkSgt8+mNY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AivjhXf/pCteBL38ChM4XsrZCIl4SXwVurhN97FIwh7bxNv4IP+1Z2Vvg+03XLer9
-         cw0yYJrEf7ZfxGO3hiSQLbc5X4Q7JjmxQHPgOeJ3SkSg2cFMLxleAu2n1NDqfmxXUz
-         SQgYKw4i7GUUdYZT6/5Rki7NlKgQ0QoPXeOUy3zU=
-Date:   Sat, 22 Jun 2019 10:39:18 +0100
+        b=QkqDoDMQ8Tfy9zCFMuN2FS6chXTfNjoDIFZ8bO5yQW0Eamu0RIeew/hoHwQuMgbPH
+         uo4iewCHBEkJmzYmErZgwDR6Kw1lfwogjQXJQjOLMRGtqkSANbxXyPYQz+PRDvKLll
+         i5ZADS5Pu/wJgu+cuFQ5LVpfonRPSSWg1wqQRkVE=
+Date:   Sat, 22 Jun 2019 10:43:00 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc:     <robh+dt@kernel.org>, <alexandre.torgue@st.com>,
-        <mark.rutland@arm.com>, <mcoquelin.stm32@gmail.com>,
-        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/5] iio: adc: stm32-adc: add missing vdda-supply
-Message-ID: <20190622103918.1ccbd452@archlinux>
-In-Reply-To: <1560947398-11592-3-git-send-email-fabrice.gasnier@st.com>
-References: <1560947398-11592-1-git-send-email-fabrice.gasnier@st.com>
-        <1560947398-11592-3-git-send-email-fabrice.gasnier@st.com>
+To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 22/29] docs: iio: convert to ReST
+Message-ID: <20190622104300.6ff9e871@archlinux>
+In-Reply-To: <f54094f023f1ab7130af64ffdbe4bc4cf66452b9.1560890801.git.mchehab+samsung@kernel.org>
+References: <cover.1560890800.git.mchehab+samsung@kernel.org>
+        <f54094f023f1ab7130af64ffdbe4bc4cf66452b9.1560890801.git.mchehab+samsung@kernel.org>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,100 +48,242 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 19 Jun 2019 14:29:55 +0200
-Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
+On Tue, 18 Jun 2019 17:53:40 -0300
+Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
 
-> Add missing vdda-supply, analog power supply, to STM32 ADC. When vdda is
-> an independent supply, it needs to be properly turned on or off to supply
-> the ADC.
+> Rename the iio documentation files to ReST, add an
+> index for them and adjust in order to produce a nice html
+> output via the Sphinx build system.
 > 
-> Fixes: 1add69880240 ("iio: adc: Add support for STM32 ADC core").
+> At its new index.rst, let's add a :orphan: while this is not linked to
+> the main index.rst file, in order to avoid build warnings.
 > 
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-I'm going to assume there is a board out there where this matters as that
-doesn't seem to be the case for the two in tree dts files so I've
-marked it for stable.
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I'll take this via IIO.
 
-Going via togreg branch however rather than fixes as we are late in this
-cycle so this can wait for the merge window.
+Applied to the togreg branch of iio.git and pushed out as testing.
+I'll probably do a pull request to Greg tomorrow and these will hopefully
+turn up in linux-next not long after that.
 
-Thanks,
+Thanks Mauro!
 
 Jonathan
 
-
 > ---
->  drivers/iio/adc/stm32-adc-core.c | 21 ++++++++++++++++++++-
->  1 file changed, 20 insertions(+), 1 deletion(-)
+>  .../iio/{ep93xx_adc.txt => ep93xx_adc.rst}    | 15 +++++-
+>  .../{iio_configfs.txt => iio_configfs.rst}    | 52 +++++++++++--------
+>  Documentation/iio/index.rst                   | 12 +++++
+>  drivers/iio/Kconfig                           |  2 +-
+>  4 files changed, 56 insertions(+), 25 deletions(-)
+>  rename Documentation/iio/{ep93xx_adc.txt => ep93xx_adc.rst} (71%)
+>  rename Documentation/iio/{iio_configfs.txt => iio_configfs.rst} (73%)
+>  create mode 100644 Documentation/iio/index.rst
 > 
-> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> index 2327ec1..1f7ce51 100644
-> --- a/drivers/iio/adc/stm32-adc-core.c
-> +++ b/drivers/iio/adc/stm32-adc-core.c
-> @@ -87,6 +87,7 @@ struct stm32_adc_priv_cfg {
->   * @domain:		irq domain reference
->   * @aclk:		clock reference for the analog circuitry
->   * @bclk:		bus clock common for all ADCs, depends on part used
-> + * @vdda:		vdda analog supply reference
->   * @vref:		regulator reference
->   * @cfg:		compatible configuration data
->   * @common:		common data for all ADC instances
-> @@ -97,6 +98,7 @@ struct stm32_adc_priv {
->  	struct irq_domain		*domain;
->  	struct clk			*aclk;
->  	struct clk			*bclk;
-> +	struct regulator		*vdda;
->  	struct regulator		*vref;
->  	const struct stm32_adc_priv_cfg	*cfg;
->  	struct stm32_adc_common		common;
-> @@ -394,10 +396,16 @@ static int stm32_adc_core_hw_start(struct device *dev)
->  	struct stm32_adc_priv *priv = to_stm32_adc_priv(common);
->  	int ret;
+> diff --git a/Documentation/iio/ep93xx_adc.txt b/Documentation/iio/ep93xx_adc.rst
+> similarity index 71%
+> rename from Documentation/iio/ep93xx_adc.txt
+> rename to Documentation/iio/ep93xx_adc.rst
+> index 23053e7817bd..4fd8dea3f6b8 100644
+> --- a/Documentation/iio/ep93xx_adc.txt
+> +++ b/Documentation/iio/ep93xx_adc.rst
+> @@ -1,12 +1,16 @@
+> -Cirrus Logic EP93xx ADC driver.
+> +==============================
+> +Cirrus Logic EP93xx ADC driver
+> +==============================
 >  
-> +	ret = regulator_enable(priv->vdda);
-> +	if (ret < 0) {
-> +		dev_err(dev, "vdda enable failed %d\n", ret);
-> +		return ret;
-> +	}
+>  1. Overview
+> +===========
+>  
+>  The driver is intended to work on both low-end (EP9301, EP9302) devices with
+>  5-channel ADC and high-end (EP9307, EP9312, EP9315) devices with 10-channel
+>  touchscreen/ADC module.
+>  
+>  2. Channel numbering
+> +====================
+>  
+>  Numbering scheme for channels 0..4 is defined in EP9301 and EP9302 datasheets.
+>  EP9307, EP9312 and EP9312 have 3 channels more (total 8), but the numbering is
+> @@ -17,13 +21,20 @@ Assuming ep93xx_adc is IIO device0, you'd find the following entries under
+>  
+>    +-----------------+---------------+
+>    | sysfs entry     | ball/pin name |
+> -  +-----------------+---------------+
+> +  +=================+===============+
+>    | in_voltage0_raw | YM            |
+> +  +-----------------+---------------+
+>    | in_voltage1_raw | SXP           |
+> +  +-----------------+---------------+
+>    | in_voltage2_raw | SXM           |
+> +  +-----------------+---------------+
+>    | in_voltage3_raw | SYP           |
+> +  +-----------------+---------------+
+>    | in_voltage4_raw | SYM           |
+> +  +-----------------+---------------+
+>    | in_voltage5_raw | XP            |
+> +  +-----------------+---------------+
+>    | in_voltage6_raw | XM            |
+> +  +-----------------+---------------+
+>    | in_voltage7_raw | YP            |
+>    +-----------------+---------------+
+> diff --git a/Documentation/iio/iio_configfs.txt b/Documentation/iio/iio_configfs.rst
+> similarity index 73%
+> rename from Documentation/iio/iio_configfs.txt
+> rename to Documentation/iio/iio_configfs.rst
+> index 4e5f101837a8..ecbfdb3afef7 100644
+> --- a/Documentation/iio/iio_configfs.txt
+> +++ b/Documentation/iio/iio_configfs.rst
+> @@ -1,6 +1,9 @@
+> +===============================
+>  Industrial IIO configfs support
+> +===============================
+>  
+>  1. Overview
+> +===========
+>  
+>  Configfs is a filesystem-based manager of kernel objects. IIO uses some
+>  objects that could be easily configured using configfs (e.g.: devices,
+> @@ -10,20 +13,22 @@ See Documentation/filesystems/configfs/configfs.txt for more information
+>  about how configfs works.
+>  
+>  2. Usage
+> +========
+>  
+>  In order to use configfs support in IIO we need to select it at compile
+>  time via CONFIG_IIO_CONFIGFS config option.
+>  
+> -Then, mount the configfs filesystem (usually under /config directory):
+> +Then, mount the configfs filesystem (usually under /config directory)::
+>  
+> -$ mkdir /config
+> -$ mount -t configfs none /config
+> +  $ mkdir /config
+> +  $ mount -t configfs none /config
+>  
+>  At this point, all default IIO groups will be created and can be accessed
+>  under /config/iio. Next chapters will describe available IIO configuration
+>  objects.
+>  
+>  3. Software triggers
+> +====================
+>  
+>  One of the IIO default configfs groups is the "triggers" group. It is
+>  automagically accessible when the configfs is mounted and can be found
+> @@ -31,40 +36,40 @@ under /config/iio/triggers.
+>  
+>  IIO software triggers implementation offers support for creating multiple
+>  trigger types. A new trigger type is usually implemented as a separate
+> -kernel module following the interface in include/linux/iio/sw_trigger.h:
+> +kernel module following the interface in include/linux/iio/sw_trigger.h::
+>  
+> -/*
+> - * drivers/iio/trigger/iio-trig-sample.c
+> - * sample kernel module implementing a new trigger type
+> - */
+> -#include <linux/iio/sw_trigger.h>
+> +  /*
+> +   * drivers/iio/trigger/iio-trig-sample.c
+> +   * sample kernel module implementing a new trigger type
+> +   */
+> +  #include <linux/iio/sw_trigger.h>
+>  
+>  
+> -static struct iio_sw_trigger *iio_trig_sample_probe(const char *name)
+> -{
+> +  static struct iio_sw_trigger *iio_trig_sample_probe(const char *name)
+> +  {
+>  	/*
+>  	 * This allocates and registers an IIO trigger plus other
+>  	 * trigger type specific initialization.
+>  	 */
+> -}
+> +  }
+>  
+> -static int iio_trig_hrtimer_remove(struct iio_sw_trigger *swt)
+> -{
+> +  static int iio_trig_hrtimer_remove(struct iio_sw_trigger *swt)
+> +  {
+>  	/*
+>  	 * This undoes the actions in iio_trig_sample_probe
+>  	 */
+> -}
+> +  }
+>  
+> -static const struct iio_sw_trigger_ops iio_trig_sample_ops = {
+> +  static const struct iio_sw_trigger_ops iio_trig_sample_ops = {
+>  	.probe		= iio_trig_sample_probe,
+>  	.remove		= iio_trig_sample_remove,
+> -};
+> +  };
+>  
+> -static struct iio_sw_trigger_type iio_trig_sample = {
+> +  static struct iio_sw_trigger_type iio_trig_sample = {
+>  	.name = "trig-sample",
+>  	.owner = THIS_MODULE,
+>  	.ops = &iio_trig_sample_ops,
+> -};
+> +  };
+>  
+>  module_iio_sw_trigger_driver(iio_trig_sample);
+>  
+> @@ -73,21 +78,24 @@ iio-trig-sample module will create 'trig-sample' trigger type directory
+>  /config/iio/triggers/trig-sample.
+>  
+>  We support the following interrupt sources (trigger types):
 > +
->  	ret = regulator_enable(priv->vref);
->  	if (ret < 0) {
->  		dev_err(dev, "vref enable failed\n");
-> -		return ret;
-> +		goto err_vdda_disable;
->  	}
+>  	* hrtimer, uses high resolution timers as interrupt source
 >  
->  	if (priv->bclk) {
-> @@ -425,6 +433,8 @@ static int stm32_adc_core_hw_start(struct device *dev)
->  		clk_disable_unprepare(priv->bclk);
->  err_regulator_disable:
->  	regulator_disable(priv->vref);
-> +err_vdda_disable:
-> +	regulator_disable(priv->vdda);
+>  3.1 Hrtimer triggers creation and destruction
+> +---------------------------------------------
 >  
->  	return ret;
->  }
-> @@ -441,6 +451,7 @@ static void stm32_adc_core_hw_stop(struct device *dev)
->  	if (priv->bclk)
->  		clk_disable_unprepare(priv->bclk);
->  	regulator_disable(priv->vref);
-> +	regulator_disable(priv->vdda);
->  }
+>  Loading iio-trig-hrtimer module will register hrtimer trigger types allowing
+>  users to create hrtimer triggers under /config/iio/triggers/hrtimer.
 >  
->  static int stm32_adc_probe(struct platform_device *pdev)
-> @@ -468,6 +479,14 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  		return PTR_ERR(priv->common.base);
->  	priv->common.phys_base = res->start;
+> -e.g:
+> +e.g::
 >  
-> +	priv->vdda = devm_regulator_get(&pdev->dev, "vdda");
-> +	if (IS_ERR(priv->vdda)) {
-> +		ret = PTR_ERR(priv->vdda);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&pdev->dev, "vdda get failed, %d\n", ret);
-> +		return ret;
-> +	}
+> -$ mkdir /config/iio/triggers/hrtimer/instance1
+> -$ rmdir /config/iio/triggers/hrtimer/instance1
+> +  $ mkdir /config/iio/triggers/hrtimer/instance1
+> +  $ rmdir /config/iio/triggers/hrtimer/instance1
+>  
+>  Each trigger can have one or more attributes specific to the trigger type.
+>  
+>  3.2 "hrtimer" trigger types attributes
+> +--------------------------------------
+>  
+>  "hrtimer" trigger type doesn't have any configurable attribute from /config dir.
+>  It does introduce the sampling_frequency attribute to trigger directory.
+> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+> new file mode 100644
+> index 000000000000..0593dca89a94
+> --- /dev/null
+> +++ b/Documentation/iio/index.rst
+> @@ -0,0 +1,12 @@
+> +:orphan:
 > +
->  	priv->vref = devm_regulator_get(&pdev->dev, "vref");
->  	if (IS_ERR(priv->vref)) {
->  		ret = PTR_ERR(priv->vref);
+> +==============
+> +Industrial I/O
+> +==============
+> +
+> +.. toctree::
+> +   :maxdepth: 1
+> +
+> +   iio_configfs
+> +
+> +   ep93xx_adc
+> diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
+> index 1d736a4952ab..5bd51853b15e 100644
+> --- a/drivers/iio/Kconfig
+> +++ b/drivers/iio/Kconfig
+> @@ -28,7 +28,7 @@ config IIO_CONFIGFS
+>  	help
+>  	  This allows configuring various IIO bits through configfs
+>  	  (e.g. software triggers). For more info see
+> -	  Documentation/iio/iio_configfs.txt.
+> +	  Documentation/iio/iio_configfs.rst.
+>  
+>  config IIO_TRIGGER
+>  	bool "Enable triggered sampling support"
 

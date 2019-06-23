@@ -2,64 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FC554F6E3
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2019 18:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0CA04FAB1
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2019 09:58:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726417AbfFVQ2x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jun 2019 12:28:53 -0400
-Received: from sonic301-3.consmr.mail.bf2.yahoo.com ([74.6.129.42]:35350 "EHLO
-        sonic301-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726379AbfFVQ2u (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jun 2019 12:28:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220929; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=FwrBLUl7u665XwQeVPTq5hUQ4Ptv5qPcwgE0MfCyAxPjQW66W+sBKlTITy95Xiak8M/9mL3k87XvuhuNYmdzjOXFqAsXXJ7ZeR0tr0xQhaR4qpp9+I79zHB4JVXDeOtUnrv/ni1DEn3m49tSMIml9+1SbDvUcui/xLYzcB7mOtvlwJJC6bBkcbOwJW8drH7WnSKYQVlUvO9PRg8+IWYABo4m/HoTrmg3JSd7+tfq1bmdsTjreC9G6uwJClVG1p8XyGEOijmNqXv9Ivunj8UzUvxVldTIg/taTAKdSlSG3i+xbnz28LKLpxSK2+M63p52Vf+hNJ0OycyVj1TkO+H8OQ==
-X-YMail-OSG: BClZlNgVM1mJa1pSUAMlnjmDwJQUKDn0osVKNVIeZ6AC0JZQ8NzrV_.P2vPToBw
- lk4l1yMYy0P1wu9iKWHPF1vwWtED.NCcY6jE.jXdELnZdUngnDzcX.f1Ik7TcPjN._6dUftCNvSG
- 0ilPDIIh6JKut3rld3EDzfXqVTEprJFL10dLfXEmdNXy8_9HzWnLN9Uxxh6FWr8nj4DbExyF48M8
- b8CzHn8AtWzh0fDjJqMRXb5UR1L1fHF.mq4wk_41bl8VHLLREhO8D9AiMB_Iou.TvP.xektI4Uzf
- lBotEg54S8nbe5a5a2eamKaLSiD6XaCIzSQkrGwkgk9qzk7J4361PG1C2lAWhSULJjGYH.uKi9SH
- 8omXh8MvwuZmVU7umqXbA4eIFWV8ruRR3qRFWtA.2B0Eer.D49EbNovsAu.wRPm8yYyL6YMdaoys
- 3vYAkjype1yPgR0gHAH3zObnNPMrtMzQfsTzcaha59dNYsVWPRo5EvcFgAIKXVIUqnKnooWuODru
- O4SgrdrM8PGEZGs5dJS.h.dJB3gwQ.0I1wf1Q_CLgJhbPMrumaMiWl3ifhN9G_CCxrGhRPRltqdB
- RyAvAXGENXKEJswzM.sYWHkLQyblOWaGX5TLKzeDGaJCZVu7CtZvQ0aNcyWtqrf4SAtE7MK9SqUH
- 7phABBxeBrGdyDkvdUQOX_EPh25.Hb3SncDKllMEIHjvEdwbQcMGmqMEDVCI8Jh0nfgpjh259ODl
- q.bGW_sz63_QvjPWXygjUQ4RzfXiei1bHIkvbkPAHc04dS.Qr8LP1Jyxp2QD0wtNtJgo5RScK99X
- P5NPqcNAR8eez8YgXpk3cKLQCR9JSylhL6QyUVACODhQSLMO_l73eEDpWzNQUeEQLrEwA53TFUO9
- BXx4lR26gADp4OeWMANR3pTNDn8J7Oc5G1l.tF8AqVFtdsoB5vgCdw0tzoX9_22cJzNNteihaN9H
- ktOSXaCeUY26x9DWNkYi7HTOCc9F4vHnioRwelB9Lv.KGDeGPUJBBPmfcn0xXC8MB2YTlUFeVHzN
- FJsHhvFz9eJx.VwEAdhJs3DHW6xmbj9a_RSOf.BoLPiAvMAdoBe_1sVY8nFOqhuBwpkbj17TOzIW
- ts0JEWafkyantIFw8kEnIr0AHDEAK4aB1fgOVS8TQpbEaj2tB4pKHPa4OOjXszQAPBozr7PYVj2f
- 6AcwHFYhcmsrFfliX20p43dgFMRY8GMXgvUWeegBAeAuOTxCoUC9WvAdL
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:28:49 +0000
-Date:   Sat, 22 Jun 2019 16:28:46 +0000 (UTC)
-From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
-Reply-To: miss.fmayusuf11@gmail.com
-Message-ID: <270302503.296556.1561220926635@mail.yahoo.com>
-Subject: From:Miss: Fatima Yusuf.
+        id S1726056AbfFWH4p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Jun 2019 03:56:45 -0400
+Received: from mail10.wdc04.mandrillapp.com ([205.201.139.10]:59202 "EHLO
+        mail10.wdc04.mandrillapp.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726378AbfFWH4o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Jun 2019 03:56:44 -0400
+X-Greylist: delayed 904 seconds by postgrey-1.27 at vger.kernel.org; Sun, 23 Jun 2019 03:56:43 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=mandrill; d=nexedi.com;
+ h=From:Subject:To:Cc:Message-Id:In-Reply-To:References:Date:MIME-Version:Content-Type:Content-Transfer-Encoding; i=kirr@nexedi.com;
+ bh=SQoaU4CrfNl4Jf6eu/xkbrQQO2NHeGQLLOHbulVuvP0=;
+ b=ZwaquKaAAIpxxVQEmVOT20IFfM3TMqO23bu/l9VI1hdlMD38vOfkJAPHN+oLM6CxHTN+K/l0/Yrt
+   IGni4RFYHR+YACpcXAjgkPsVqzXAV2IfAZhtGtA8g04LwaFhcmIDpWnzLDeDrHLiuoSr+X2dMc3W
+   22/snrvgn7MtTVocGo4=
+Received: from pmta08.mandrill.prod.suw01.rsglab.com (127.0.0.1) by mail10.wdc04.mandrillapp.com id h1sobo1jvmgc for <linux-iio@vger.kernel.org>; Sun, 23 Jun 2019 07:29:04 +0000 (envelope-from <bounce-md_31050260.5d0f2a40.v1-58a979e9d737410fa520058dacd342e3@mandrillapp.com>)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com; 
+ i=@mandrillapp.com; q=dns/txt; s=mandrill; t=1561274944; h=From : 
+ Subject : To : Cc : Message-Id : In-Reply-To : References : Date : 
+ MIME-Version : Content-Type : Content-Transfer-Encoding : From : 
+ Subject : Date : X-Mandrill-User : List-Unsubscribe; 
+ bh=SQoaU4CrfNl4Jf6eu/xkbrQQO2NHeGQLLOHbulVuvP0=; 
+ b=heJrSMnHQWCGWzsl8h/w5zgwVtCwfoZnUV0KKdOcVCJFq23XOse0MannbQ15D+vKAXkJKb
+ i40erQl26b5//TWMWUUKri8AORF/xUA8LgF0y4VItMSSdNpfNOf6EnrkRwvKexBm6P6giEc/
+ 693nMiLlsQzxwU9XyKJ0YA4VW6qoY=
+From:   Kirill Smelkov <kirr@nexedi.com>
+Subject: [PATCH 2/2] *: convert stream-like files -> stream_open, even if they use noop_llseek
+Received: from [87.98.221.171] by mandrillapp.com id 58a979e9d737410fa520058dacd342e3; Sun, 23 Jun 2019 07:29:04 +0000
+X-Mailer: git-send-email 2.20.1
+To:     <cocci@systeme.lip6.fr>, <linux-input@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Cc:     Kirill Smelkov <kirr@nexedi.com>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Jan Blunck <jblunck@suse.de>, Arnd Bergmann <arnd@arndb.de>,
+        Jiri Kosina <jikos@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Message-Id: <20190623072838.31234-2-kirr@nexedi.com>
+In-Reply-To: <20190623072838.31234-1-kirr@nexedi.com>
+References: <20190623072838.31234-1-kirr@nexedi.com>
+X-Report-Abuse: Please forward a copy of this message, including all headers, to abuse@mandrill.com
+X-Report-Abuse: You can also report abuse here: http://mandrillapp.com/contact/abuse?id=31050260.58a979e9d737410fa520058dacd342e3
+X-Mandrill-User: md_31050260
+Date:   Sun, 23 Jun 2019 07:29:04 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This patch continues 10dce8af3422 (fs: stream_open - opener for
+stream-like files so that read and write can run simultaneously without
+deadlock) and c5bf68fe0c86 (*: convert stream-like files from
+nonseekable_open -> stream_open) and teaches steam_open.cocci to
+consider files as being stream-like not only if they have
+.llseek=no_llseek, but also if they have .llseek=noop_llseek.
 
+This is safe to do: the comment about noop_llseek says
 
-From:Miss: Fatima Yusuf.
+	This is an implementation of ->llseek useable for the rare special case when
+	userspace expects the seek to succeed but the (device) file is actually not
+	able to perform the seek. In this case you use noop_llseek() instead of
+	falling back to the default implementation of ->llseek.
 
-For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
+and in general noop_llseek was massively added to drivers in 6038f373a3dc
+(llseek: automatically add .llseek fop) when changing default for NULL .llseek
+from NOP to no_llseek with the idea to avoid breaking compatibility, if
+maybe some user-space program was using lseek on a device without caring
+about the result, but caring if it was an error or not.
 
-I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
+Amended semantic patch produces two changes when applied tree-wide:
 
-Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
+        drivers/hid/hid-sensor-custom.c:690:8-24: WARNING: hid_sensor_custom_fops: .read() has stream semantic; safe to change nonseekable_open -> stream_open.
+        drivers/input/mousedev.c:564:1-17: ERROR: mousedev_fops: .read() can deadlock .write(); change nonseekable_open -> stream_open to fix.
 
-I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
+Cc: Julia Lawall <Julia.Lawall@lip6.fr>
+Cc: Jan Blunck <jblunck@suse.de>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Kirill Smelkov <kirr@nexedi.com>
+---
+ drivers/hid/hid-sensor-custom.c          | 2 +-
+ drivers/input/mousedev.c                 | 2 +-
+ scripts/coccinelle/api/stream_open.cocci | 9 ++++++++-
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
-I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
-
-My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
-
-I am waiting to hear from you.
-Yours Sincerely,
-Miss.Fatima Yusuf.
+diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
+index c60f82673cf2..fb827c295842 100644
+--- a/drivers/hid/hid-sensor-custom.c
++++ b/drivers/hid/hid-sensor-custom.c
+@@ -687,7 +687,7 @@ static int hid_sensor_custom_open(struct inode *inode, struct file *file)
+ 	if (test_and_set_bit(0, &sensor_inst->misc_opened))
+ 		return -EBUSY;
+ 
+-	return nonseekable_open(inode, file);
++	return stream_open(inode, file);
+ }
+ 
+ static __poll_t hid_sensor_custom_poll(struct file *file,
+diff --git a/drivers/input/mousedev.c b/drivers/input/mousedev.c
+index 412fa71245af..58afd5253485 100644
+--- a/drivers/input/mousedev.c
++++ b/drivers/input/mousedev.c
+@@ -561,7 +561,7 @@ static int mousedev_open(struct inode *inode, struct file *file)
+ 		goto err_free_client;
+ 
+ 	file->private_data = client;
+-	nonseekable_open(inode, file);
++	stream_open(inode, file);
+ 
+ 	return 0;
+ 
+diff --git a/scripts/coccinelle/api/stream_open.cocci b/scripts/coccinelle/api/stream_open.cocci
+index 12ce18fa6b74..df00d6619b06 100644
+--- a/scripts/coccinelle/api/stream_open.cocci
++++ b/scripts/coccinelle/api/stream_open.cocci
+@@ -134,6 +134,13 @@ identifier fops0.fops;
+     .llseek = no_llseek,
+   };
+ 
++@ has_noop_llseek @
++identifier fops0.fops;
++@@
++  struct file_operations fops = {
++    .llseek = noop_llseek,
++  };
++
+ @ has_mmap @
+ identifier fops0.fops;
+ identifier mmap_f;
+@@ -180,7 +187,7 @@ identifier splice_write_f;
+ //
+ // XXX for simplicity require no .{read/write}_iter and no .splice_{read/write} for now.
+ // XXX maybe_steam.fops cannot be used in other rules - it gives "bad rule maybe_stream or bad variable fops".
+-@ maybe_stream depends on (!has_llseek || has_no_llseek) && !has_mmap && !has_copy_file_range && !has_remap_file_range && !has_read_iter && !has_write_iter && !has_splice_read && !has_splice_write @
++@ maybe_stream depends on (!has_llseek || has_no_llseek || has_noop_llseek) && !has_mmap && !has_copy_file_range && !has_remap_file_range && !has_read_iter && !has_write_iter && !has_splice_read && !has_splice_write @
+ identifier fops0.fops;
+ @@
+   struct file_operations fops = {
+-- 
+2.20.1

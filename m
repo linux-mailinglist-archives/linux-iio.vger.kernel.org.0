@@ -2,676 +2,312 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DFD954FFF
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2019 15:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E87B550CF
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2019 15:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730637AbfFYNNz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Jun 2019 09:13:55 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:63904 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730554AbfFYNNy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Jun 2019 09:13:54 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5PDCjaF013203;
-        Tue, 25 Jun 2019 09:13:53 -0400
-Received: from nam05-by2-obe.outbound.protection.outlook.com (mail-by2nam05lp2057.outbound.protection.outlook.com [104.47.50.57])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2t9e63gwjq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Tue, 25 Jun 2019 09:13:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LSo/WwhKHOuMoaCHJQ4ebIS7FgfZVa4ZKmIs3bJiVkY=;
- b=T+r1M7SfuL35xK49wxftqEGqbhVS98+iAKDGGDzyg4wQ6FoTz8UW9Dtq83nirGmKLFfVzHP9oseFkxyCG4SpdKqePfcSFYPb8yiATFYPjdl80sMj67v+0wChB9jzJ9NWAA6hNbbiTRo+8gp2XC5akC6CVx53FN4jkGnhWSUTS+E=
-Received: from BY5PR03CA0017.namprd03.prod.outlook.com (2603:10b6:a03:1e0::27)
- by BN3PR03MB2260.namprd03.prod.outlook.com (2a01:111:e400:7bb9::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2008.16; Tue, 25 Jun
- 2019 13:13:51 +0000
-Received: from SN1NAM02FT016.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e44::200) by BY5PR03CA0017.outlook.office365.com
- (2603:10b6:a03:1e0::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.16 via Frontend
- Transport; Tue, 25 Jun 2019 13:13:50 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- SN1NAM02FT016.mail.protection.outlook.com (10.152.72.113) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1987.11
- via Frontend Transport; Tue, 25 Jun 2019 13:13:50 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x5PDDnGt008741
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Tue, 25 Jun 2019 06:13:49 -0700
-Received: from saturn.ad.analog.com (10.48.65.145) by
- NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
- 14.3.408.0; Tue, 25 Jun 2019 09:13:49 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Michael Hennerich <michael.hennerich@analog.com>
-Subject: [PATCH 4/5] iio: imu: Add support for the ADIS16460 IMU
-Date:   Tue, 25 Jun 2019 16:13:27 +0300
-Message-ID: <20190625131328.11883-4-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190625131328.11883-1-alexandru.ardelean@analog.com>
-References: <20190625131328.11883-1-alexandru.ardelean@analog.com>
+        id S1726702AbfFYNxM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Jun 2019 09:53:12 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:57368 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726659AbfFYNxL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Jun 2019 09:53:11 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 92F9C28A3E6
+Subject: Re: [PATCH v7 2/2] iio: cros_ec: Add lid angle driver
+To:     Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Enric Balletbo Serra <eballetbo@gmail.com>
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+References: <20190517233856.155793-1-gwendal@chromium.org>
+ <20190517233856.155793-3-gwendal@chromium.org>
+ <20190518105350.1a863bfd@archlinux>
+ <CAPUE2uvONxJN7MdUKU-tCx59kd+x+pbYqPH8fLKbSp4_cvSzJg@mail.gmail.com>
+ <CAFqH_53orAG1d3k11517_qP5fC=V1RR14yZHK6VUgcvS-2wgEg@mail.gmail.com>
+ <20190621163112.00005914@huawei.com>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <d8881c53-8c84-edf4-1f43-d188ca00454d@collabora.com>
+Date:   Tue, 25 Jun 2019 15:53:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(376002)(346002)(136003)(39860400002)(396003)(2980300002)(189003)(199004)(50466002)(36756003)(70206006)(48376002)(2870700001)(966005)(316002)(30864003)(50226002)(356004)(6666004)(450100002)(5660300002)(478600001)(47776003)(2201001)(86362001)(14444005)(26005)(6306002)(426003)(7696005)(486006)(446003)(4326008)(70586007)(336012)(2616005)(11346002)(476003)(77096007)(186003)(126002)(76176011)(7636002)(44832011)(2906002)(107886003)(305945005)(51416003)(8676002)(54906003)(246002)(1076003)(8936002)(110136005)(106002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN3PR03MB2260;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;MX:1;A:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e97f77c0-ac51-4342-2eb2-08d6f96ef707
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328);SRVR:BN3PR03MB2260;
-X-MS-TrafficTypeDiagnostic: BN3PR03MB2260:
-X-MS-Exchange-PUrlCount: 2
-X-Microsoft-Antispam-PRVS: <BN3PR03MB2260115BB14353DDC4DFE574F9E30@BN3PR03MB2260.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
-X-Forefront-PRVS: 0079056367
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: 4bWcuq45F4t/L3eh2FJJX1L4dSNQrexlQs3pxLqakqN0I5ImucwhFUl0I8dpKjxhSQvIwFQHBGsLNj/MfIfaSTj5TPKSTU0OAdu1lyzZKICbGRGnob9kPWqSHKaUbOSUzfHSa7O2O7KmVDbmj7gN+O6rBUsuG3aq8cSOUQvVheX4dam7XRiYQUQTZvgo5HFkFpjZ7in+t20d2VAVNlnm43PrW6IPr0Y2ltW5iYikMFfY+s/9Sjf1dq/ZhfrAA469BV/WIT6Y8ajvK6oA1shEYyu6b8DDz8DZZ9lIdMIEBEJ1BDjnTeDUKnmqEFlyN0fjUn5aEIoF7SdjsMIbQGNbjMUa9qEUwiuteb5/dsR8In0ujBFSogLmutf+Y+jpFxRvTpvhf/IrRfSPeHSBhB5nVbPDLRvvFpAEx2WdVbyzQXY=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2019 13:13:50.2853
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e97f77c0-ac51-4342-2eb2-08d6f96ef707
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR03MB2260
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-25_10:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906250103
+In-Reply-To: <20190621163112.00005914@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The ADIS16460 device is a complete inertial system that includes a triaxial
-gyroscope and a triaxial accelerometer. It's more simplified design than
-that of the ADIS16480, and does not offer the triaxial magnetometers &
-pressure sensors. It does also have a temperature sensor (like the
-ADIS16480).
-Since it is part of the ADIS16XXX family, it re-uses parts of the ADIS
-library.
 
-Naturally, the register map is different and much more simplified than the
-ADIS16480 subfamily, so it cannot be integrated into that driver. A major
-difference is that the registers are not paged.
 
-One thing that is particularly special about it, is that it requires a
-higher CS stall delay between data (around 16 uS vs other chips from the
-family requiring around 2 uS).
+On 21/6/19 17:31, Jonathan Cameron wrote:
+> On Wed, 19 Jun 2019 22:49:04 +0200
+> Enric Balletbo Serra <eballetbo@gmail.com> wrote:
+> 
+>> Missatge de Gwendal Grignou <gwendal@chromium.org> del dia dv., 14 de
+>> juny 2019 a les 23:56:
+>>>
+>>> On Sat, May 18, 2019 at 2:53 AM Jonathan Cameron <jic23@kernel.org> wrote:  
+>>>>
+>>>> On Fri, 17 May 2019 16:38:56 -0700
+>>>> Gwendal Grignou <gwendal@chromium.org> wrote:
+>>>>  
+>>>>> Add a IIO driver that reports the angle between the lid and the base for
+>>>>> ChromeOS convertible device.
+>>>>>
+>>>>> Tested on eve with ToT EC firmware.
+>>>>> Check driver is loaded and lid angle is correct.
+>>>>>
+>>>>> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>  
+>>>> Hi Gwendal.
+>>>>
+>>>> Please do list dependencies in patches.  I think this one is still
+>>>> dependent on the larger set of MFD changes.
+>>>>
+>>>> For my reference
+>>>>
+>>>> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>>
+>>>> Please do poke if this seems to have gotten lost once the precursors
+>>>> are upstream.  
+>>> The large set of MFD changes for update cros_ec_commands.h has landed
+>>> in a immutable branch:
+>>> git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git branch
+>>> ib-mfd-cros-5.3.
+>>>  
+>>
+>> Jonathan, if you don't want to deal with the big patchset that this
+>> depends and the immutable branch, I can pick the patch and can go
+>> through the chrome-platform tree. I think it is unlikely have merge
+>> conflicts, as these patches only touch cros-ec iio parts and, anyway,
+>> I'll need to deal with the immutable branch because other patches also
+>> depends on the ib.
+> 
+> That would be great thanks.
+> 
 
-Datasheet:
-  https://www.analog.com/media/en/technical-documentation/data-sheets/adis16460.pdf
+Ok, applied for 5.3 via chrome-platform tree
 
-Signed-off-by: Dragos Bogdan <dragos.bogdan@analog.com>
-Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- MAINTAINERS                 |   7 +
- drivers/iio/imu/Kconfig     |   9 +
- drivers/iio/imu/Makefile    |   1 +
- drivers/iio/imu/adis16460.c | 490 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 507 insertions(+)
- create mode 100644 drivers/iio/imu/adis16460.c
+Thanks,
+~ Enric
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 544e23753e96..ef2e2cee32e1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -937,6 +937,13 @@ L:	linux-iio@vger.kernel.org
- F:	include/linux/iio/imu/adis.h
- F:	drivers/iio/imu/adis.c
- 
-+ANALOG DEVICES INC ADIS16460 DRIVER
-+M:	Dragos Bogdan <dragos.bogdan@analog.com>
-+S:	Supported
-+L:	linux-iio@vger.kernel.org
-+W:	http://ez.analog.com/community/linux-device-drivers
-+F:	drivers/iio/imu/adis16460.c
-+
- ANALOG DEVICES INC ADP5061 DRIVER
- M:	Stefan Popa <stefan.popa@analog.com>
- L:	linux-pm@vger.kernel.org
-diff --git a/drivers/iio/imu/Kconfig b/drivers/iio/imu/Kconfig
-index 156630a21696..a29a481c20d2 100644
---- a/drivers/iio/imu/Kconfig
-+++ b/drivers/iio/imu/Kconfig
-@@ -16,6 +16,15 @@ config ADIS16400
- 	  adis16365, adis16400 and adis16405 triaxial inertial sensors
- 	  (adis16400 series also have magnetometers).
- 
-+config ADIS16460
-+	tristate "Analog Devices ADIS16460 and similar IMU driver"
-+	depends on SPI
-+	select IIO_ADIS_LIB
-+	select IIO_ADIS_LIB_BUFFER if IIO_BUFFER
-+	help
-+	  Say yes here to build support for Analog Devices ADIS16460 inertial
-+	  sensor.
-+
- config ADIS16480
- 	tristate "Analog Devices ADIS16480 and similar IMU driver"
- 	depends on SPI
-diff --git a/drivers/iio/imu/Makefile b/drivers/iio/imu/Makefile
-index 9e452fce1aaf..4a6958865504 100644
---- a/drivers/iio/imu/Makefile
-+++ b/drivers/iio/imu/Makefile
-@@ -5,6 +5,7 @@
- 
- # When adding new entries keep the list in alphabetical order
- obj-$(CONFIG_ADIS16400) += adis16400.o
-+obj-$(CONFIG_ADIS16460) += adis16460.o
- obj-$(CONFIG_ADIS16480) += adis16480.o
- 
- adis_lib-y += adis.o
-diff --git a/drivers/iio/imu/adis16460.c b/drivers/iio/imu/adis16460.c
-new file mode 100644
-index 000000000000..6c86af06b5d1
---- /dev/null
-+++ b/drivers/iio/imu/adis16460.c
-@@ -0,0 +1,490 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * ADIS16460 IMU driver
-+ *
-+ * Copyright 2019 Analog Devices Inc.
-+ *
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/module.h>
-+#include <linux/spi/spi.h>
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/imu/adis.h>
-+
-+#include <linux/debugfs.h>
-+
-+#define ADIS16460_REG_FLASH_CNT		0x00
-+#define ADIS16460_REG_DIAG_STAT		0x02
-+#define ADIS16460_REG_X_GYRO_LOW	0x04
-+#define ADIS16460_REG_X_GYRO_OUT	0x06
-+#define ADIS16460_REG_Y_GYRO_LOW	0x08
-+#define ADIS16460_REG_Y_GYRO_OUT	0x0A
-+#define ADIS16460_REG_Z_GYRO_LOW	0x0C
-+#define ADIS16460_REG_Z_GYRO_OUT	0x0E
-+#define ADIS16460_REG_X_ACCL_LOW	0x10
-+#define ADIS16460_REG_X_ACCL_OUT	0x12
-+#define ADIS16460_REG_Y_ACCL_LOW	0x14
-+#define ADIS16460_REG_Y_ACCL_OUT	0x16
-+#define ADIS16460_REG_Z_ACCL_LOW	0x18
-+#define ADIS16460_REG_Z_ACCL_OUT	0x1A
-+#define ADIS16460_REG_SMPL_CNTR		0x1C
-+#define ADIS16460_REG_TEMP_OUT		0x1E
-+#define ADIS16460_REG_X_DELT_ANG	0x24
-+#define ADIS16460_REG_Y_DELT_ANG	0x26
-+#define ADIS16460_REG_Z_DELT_ANG	0x28
-+#define ADIS16460_REG_X_DELT_VEL	0x2A
-+#define ADIS16460_REG_Y_DELT_VEL	0x2C
-+#define ADIS16460_REG_Z_DELT_VEL	0x2E
-+#define ADIS16460_REG_MSC_CTRL		0x32
-+#define ADIS16460_REG_SYNC_SCAL		0x34
-+#define ADIS16460_REG_DEC_RATE		0x36
-+#define ADIS16460_REG_FLTR_CTRL		0x38
-+#define ADIS16460_REG_GLOB_CMD		0x3E
-+#define ADIS16460_REG_X_GYRO_OFF	0x40
-+#define ADIS16460_REG_Y_GYRO_OFF	0x42
-+#define ADIS16460_REG_Z_GYRO_OFF	0x44
-+#define ADIS16460_REG_X_ACCL_OFF	0x46
-+#define ADIS16460_REG_Y_ACCL_OFF	0x48
-+#define ADIS16460_REG_Z_ACCL_OFF	0x4A
-+#define ADIS16460_REG_LOT_ID1 R		0x52
-+#define ADIS16460_REG_LOT_ID2 R		0x54
-+#define ADIS16460_REG_PROD_ID		0x56
-+#define ADIS16460_REG_SERIAL_NUM	0x58
-+#define ADIS16460_REG_CAL_SGNTR		0x60
-+#define ADIS16460_REG_CAL_CRC		0x62
-+#define ADIS16460_REG_CODE_SGNTR	0x64
-+#define ADIS16460_REG_CODE_CRC		0x66
-+
-+struct adis16460_chip_info {
-+	unsigned int num_channels;
-+	const struct iio_chan_spec *channels;
-+	unsigned int gyro_max_val;
-+	unsigned int gyro_max_scale;
-+	unsigned int accel_max_val;
-+	unsigned int accel_max_scale;
-+};
-+
-+struct adis16460 {
-+	const struct adis16460_chip_info *chip_info;
-+	struct adis adis;
-+};
-+
-+#ifdef CONFIG_DEBUG_FS
-+
-+static int adis16460_show_serial_number(void *arg, u64 *val)
-+{
-+	struct adis16460 *adis16460 = arg;
-+	u16 serial;
-+	int ret;
-+
-+	ret = adis_read_reg_16(&adis16460->adis, ADIS16460_REG_SERIAL_NUM,
-+		&serial);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = serial;
-+
-+	return 0;
-+}
-+DEFINE_SIMPLE_ATTRIBUTE(adis16460_serial_number_fops,
-+	adis16460_show_serial_number, NULL, "0x%.4llx\n");
-+
-+static int adis16460_show_product_id(void *arg, u64 *val)
-+{
-+	struct adis16460 *adis16460 = arg;
-+	u16 prod_id;
-+	int ret;
-+
-+	ret = adis_read_reg_16(&adis16460->adis, ADIS16460_REG_PROD_ID,
-+		&prod_id);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = prod_id;
-+
-+	return 0;
-+}
-+DEFINE_SIMPLE_ATTRIBUTE(adis16460_product_id_fops,
-+	adis16460_show_product_id, NULL, "%llu\n");
-+
-+static int adis16460_show_flash_count(void *arg, u64 *val)
-+{
-+	struct adis16460 *adis16460 = arg;
-+	u32 flash_count;
-+	int ret;
-+
-+	ret = adis_read_reg_32(&adis16460->adis, ADIS16460_REG_FLASH_CNT,
-+		&flash_count);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = flash_count;
-+
-+	return 0;
-+}
-+DEFINE_SIMPLE_ATTRIBUTE(adis16460_flash_count_fops,
-+	adis16460_show_flash_count, NULL, "%lld\n");
-+
-+static int adis16460_debugfs_init(struct iio_dev *indio_dev)
-+{
-+	struct adis16460 *adis16460 = iio_priv(indio_dev);
-+
-+	debugfs_create_file("serial_number", 0400, indio_dev->debugfs_dentry,
-+		adis16460, &adis16460_serial_number_fops);
-+	debugfs_create_file("product_id", 0400, indio_dev->debugfs_dentry,
-+		adis16460, &adis16460_product_id_fops);
-+	debugfs_create_file("flash_count", 0400, indio_dev->debugfs_dentry,
-+		adis16460, &adis16460_flash_count_fops);
-+
-+	return 0;
-+}
-+
-+#else
-+
-+static int adis16460_debugfs_init(struct iio_dev *indio_dev)
-+{
-+	return 0;
-+}
-+
-+#endif
-+
-+static int adis16460_set_freq(struct iio_dev *indio_dev, int val, int val2)
-+{
-+	struct adis16460 *st = iio_priv(indio_dev);
-+	unsigned int t;
-+
-+	t =  val * 1000 + val2 / 1000;
-+	if (t <= 0)
-+		return -EINVAL;
-+
-+	t = 2048000 / t;
-+	if (t > 2048)
-+		t = 2048;
-+
-+	if (t != 0)
-+		t--;
-+
-+	return adis_write_reg_16(&st->adis, ADIS16460_REG_DEC_RATE, t);
-+}
-+
-+static int adis16460_get_freq(struct iio_dev *indio_dev, int *val, int *val2)
-+{
-+	struct adis16460 *st = iio_priv(indio_dev);
-+	uint16_t t;
-+	int ret;
-+	unsigned freq;
-+
-+	ret = adis_read_reg_16(&st->adis, ADIS16460_REG_DEC_RATE, &t);
-+	if (ret < 0)
-+		return ret;
-+
-+	freq = 2048000 / (t + 1);
-+	*val = freq / 1000;
-+	*val2 = (freq % 1000) * 1000;
-+
-+	return IIO_VAL_INT_PLUS_MICRO;
-+}
-+
-+static int adis16460_read_raw(struct iio_dev *indio_dev,
-+	const struct iio_chan_spec *chan, int *val, int *val2, long info)
-+{
-+	struct adis16460 *st = iio_priv(indio_dev);
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_RAW:
-+		return adis_single_conversion(indio_dev, chan, 0, val);
-+	case IIO_CHAN_INFO_SCALE:
-+		switch (chan->type) {
-+		case IIO_ANGL_VEL:
-+			*val = st->chip_info->gyro_max_scale;
-+			*val2 = st->chip_info->gyro_max_val;
-+			return IIO_VAL_FRACTIONAL;
-+		case IIO_ACCEL:
-+			*val = st->chip_info->accel_max_scale;
-+			*val2 = st->chip_info->accel_max_val;
-+			return IIO_VAL_FRACTIONAL;
-+		case IIO_TEMP:
-+			*val = 50; /* 50 milli degrees Celsius/LSB */
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_OFFSET:
-+		*val = 500; /* 25 degrees Celsius = 0x0000 */
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return adis16460_get_freq(indio_dev, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int adis16460_write_raw(struct iio_dev *indio_dev,
-+	const struct iio_chan_spec *chan, int val, int val2, long info)
-+{
-+	switch (info) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return adis16460_set_freq(indio_dev, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+enum {
-+	ADIS16460_SCAN_GYRO_X,
-+	ADIS16460_SCAN_GYRO_Y,
-+	ADIS16460_SCAN_GYRO_Z,
-+	ADIS16460_SCAN_ACCEL_X,
-+	ADIS16460_SCAN_ACCEL_Y,
-+	ADIS16460_SCAN_ACCEL_Z,
-+	ADIS16460_SCAN_TEMP,
-+};
-+
-+#define ADIS16460_MOD_CHANNEL(_type, _mod, _address, _si, _bits) \
-+	{ \
-+		.type = (_type), \
-+		.modified = 1, \
-+		.channel2 = (_mod), \
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-+		.address = (_address), \
-+		.scan_index = (_si), \
-+		.scan_type = { \
-+			.sign = 's', \
-+			.realbits = (_bits), \
-+			.storagebits = (_bits), \
-+			.endianness = IIO_BE, \
-+		}, \
-+	}
-+
-+#define ADIS16460_GYRO_CHANNEL(_mod) \
-+	ADIS16460_MOD_CHANNEL(IIO_ANGL_VEL, IIO_MOD_ ## _mod, \
-+	ADIS16460_REG_ ## _mod ## _GYRO_LOW, ADIS16460_SCAN_GYRO_ ## _mod, \
-+	32)
-+
-+#define ADIS16460_ACCEL_CHANNEL(_mod) \
-+	ADIS16460_MOD_CHANNEL(IIO_ACCEL, IIO_MOD_ ## _mod, \
-+	ADIS16460_REG_ ## _mod ## _ACCL_LOW, ADIS16460_SCAN_ACCEL_ ## _mod, \
-+	32)
-+
-+#define ADIS16460_TEMP_CHANNEL() { \
-+		.type = IIO_TEMP, \
-+		.indexed = 1, \
-+		.channel = 0, \
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-+			BIT(IIO_CHAN_INFO_SCALE) | \
-+			BIT(IIO_CHAN_INFO_OFFSET), \
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-+		.address = ADIS16460_REG_TEMP_OUT, \
-+		.scan_index = ADIS16460_SCAN_TEMP, \
-+		.scan_type = { \
-+			.sign = 's', \
-+			.realbits = 16, \
-+			.storagebits = 16, \
-+			.endianness = IIO_BE, \
-+		}, \
-+	}
-+
-+static const struct iio_chan_spec adis16460_channels[] = {
-+	ADIS16460_GYRO_CHANNEL(X),
-+	ADIS16460_GYRO_CHANNEL(Y),
-+	ADIS16460_GYRO_CHANNEL(Z),
-+	ADIS16460_ACCEL_CHANNEL(X),
-+	ADIS16460_ACCEL_CHANNEL(Y),
-+	ADIS16460_ACCEL_CHANNEL(Z),
-+	ADIS16460_TEMP_CHANNEL(),
-+	IIO_CHAN_SOFT_TIMESTAMP(7)
-+};
-+
-+static const struct adis16460_chip_info adis16460_chip_info = {
-+	.channels = adis16460_channels,
-+	.num_channels = ARRAY_SIZE(adis16460_channels),
-+	/*
-+	 * storing the value in rad/degree and the scale in degree
-+	 * gives us the result in rad and better precession than
-+	 * storing the scale directly in rad.
-+	 */
-+	.gyro_max_val = IIO_RAD_TO_DEGREE(200 << 16),
-+	.gyro_max_scale = 1,
-+	.accel_max_val = IIO_M_S_2_TO_G(20000 << 16),
-+	.accel_max_scale = 5,
-+};
-+
-+static const struct iio_info adis16460_info = {
-+	.read_raw = &adis16460_read_raw,
-+	.write_raw = &adis16460_write_raw,
-+	.update_scan_mode = adis_update_scan_mode,
-+	.debugfs_reg_access = adis_debugfs_reg_access,
-+};
-+
-+static int adis16460_enable_irq(struct adis *adis, bool enable)
-+{
-+	/*
-+	 * There is no way to gate the data-ready signal internally inside the
-+	 * ADIS16460 :(
-+	 */
-+	if (enable)
-+		enable_irq(adis->spi->irq);
-+	else
-+		disable_irq(adis->spi->irq);
-+
-+	return 0;
-+}
-+
-+static int adis16460_initial_setup(struct iio_dev *indio_dev)
-+{
-+	struct adis16460 *st = iio_priv(indio_dev);
-+	uint16_t prod_id;
-+	unsigned int device_id;
-+	int ret;
-+
-+	adis_reset(&st->adis);
-+	msleep(222);
-+
-+	ret = adis_write_reg_16(&st->adis, ADIS16460_REG_GLOB_CMD, BIT(1));
-+	if (ret)
-+		return ret;
-+	msleep(75);
-+
-+	ret = adis_check_status(&st->adis);
-+	if (ret)
-+		return ret;
-+
-+	ret = adis_read_reg_16(&st->adis, ADIS16460_REG_PROD_ID, &prod_id);
-+	if (ret)
-+		return ret;
-+
-+	ret = sscanf(indio_dev->name, "adis%u\n", &device_id);
-+	if (ret != 1)
-+		return -EINVAL;
-+
-+	if (prod_id != device_id)
-+		dev_warn(&indio_dev->dev, "Device ID(%u) and product ID(%u) do not match.",
-+				device_id, prod_id);
-+
-+	return 0;
-+}
-+
-+#define ADIS16460_DIAG_STAT_IN_CLK_OOS	7
-+#define ADIS16460_DIAG_STAT_FLASH_MEM	6
-+#define ADIS16460_DIAG_STAT_SELF_TEST	5
-+#define ADIS16460_DIAG_STAT_OVERRANGE	4
-+#define ADIS16460_DIAG_STAT_SPI_COMM	3
-+#define ADIS16460_DIAG_STAT_FLASH_UPT	2
-+
-+static const char * const adis16460_status_error_msgs[] = {
-+	[ADIS16460_DIAG_STAT_IN_CLK_OOS] = "Input clock out of sync",
-+	[ADIS16460_DIAG_STAT_FLASH_MEM] = "Flash memory failure",
-+	[ADIS16460_DIAG_STAT_SELF_TEST] = "Self test diagnostic failure",
-+	[ADIS16460_DIAG_STAT_OVERRANGE] = "Sensor overrange",
-+	[ADIS16460_DIAG_STAT_SPI_COMM] = "SPI communication failure",
-+	[ADIS16460_DIAG_STAT_FLASH_UPT] = "Flash update failure",
-+};
-+
-+static const struct adis_data adis16460_data = {
-+	.diag_stat_reg = ADIS16460_REG_DIAG_STAT,
-+	.glob_cmd_reg = ADIS16460_REG_GLOB_CMD,
-+	.has_paging = false,
-+	.read_delay = 5,
-+	.write_delay = 5,
-+	.cs_stall_delay = 16,
-+	.status_error_msgs = adis16460_status_error_msgs,
-+	.status_error_mask = BIT(ADIS16460_DIAG_STAT_IN_CLK_OOS) |
-+		BIT(ADIS16460_DIAG_STAT_FLASH_MEM) |
-+		BIT(ADIS16460_DIAG_STAT_SELF_TEST) |
-+		BIT(ADIS16460_DIAG_STAT_OVERRANGE) |
-+		BIT(ADIS16460_DIAG_STAT_SPI_COMM) |
-+		BIT(ADIS16460_DIAG_STAT_FLASH_UPT),
-+	.enable_irq = adis16460_enable_irq,
-+};
-+
-+static int adis16460_probe(struct spi_device *spi)
-+{
-+	struct iio_dev *indio_dev;
-+	struct adis16460 *st;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-+	if (indio_dev == NULL)
-+		return -ENOMEM;
-+
-+	spi_set_drvdata(spi, indio_dev);
-+
-+	st = iio_priv(indio_dev);
-+
-+	st->chip_info = &adis16460_chip_info;
-+	indio_dev->dev.parent = &spi->dev;
-+	indio_dev->name = spi_get_device_id(spi)->name;
-+	indio_dev->channels = st->chip_info->channels;
-+	indio_dev->num_channels = st->chip_info->num_channels;
-+	indio_dev->info = &adis16460_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	ret = adis_init(&st->adis, indio_dev, spi, &adis16460_data);
-+	if (ret)
-+		return ret;
-+
-+	ret = adis_setup_buffer_and_trigger(&st->adis, indio_dev, NULL);
-+	if (ret)
-+		return ret;
-+
-+	adis16460_enable_irq(&st->adis, 0);
-+
-+	ret = adis16460_initial_setup(indio_dev);
-+	if (ret)
-+		goto error_cleanup_buffer;
-+
-+	ret = iio_device_register(indio_dev);
-+	if (ret)
-+		goto error_cleanup_buffer;
-+
-+	adis16460_debugfs_init(indio_dev);
-+
-+	return 0;
-+
-+error_cleanup_buffer:
-+	adis_cleanup_buffer_and_trigger(&st->adis, indio_dev);
-+	return ret;
-+}
-+
-+static int adis16460_remove(struct spi_device *spi)
-+{
-+	struct iio_dev *indio_dev = spi_get_drvdata(spi);
-+	struct adis16460 *st = iio_priv(indio_dev);
-+
-+	iio_device_unregister(indio_dev);
-+
-+	adis_cleanup_buffer_and_trigger(&st->adis, indio_dev);
-+
-+	return 0;
-+}
-+
-+static const struct spi_device_id adis16460_ids[] = {
-+	{ "adis16460", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, adis16460_id);
-+
-+static const struct of_device_id adis16460_of_match[] = {
-+	{ .compatible = "adi,adis16460" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, adis16460_of_match);
-+
-+static struct spi_driver adis16460_driver = {
-+	.driver = {
-+		.name = "adis16460",
-+		.of_match_table = adis16460_of_match,
-+	},
-+	.id_table = adis16460_ids,
-+	.probe = adis16460_probe,
-+	.remove = adis16460_remove,
-+};
-+module_spi_driver(adis16460_driver);
-+
-+MODULE_AUTHOR("Dragos Bogdan <dragos.bogdan@analog.com>");
-+MODULE_DESCRIPTION("Analog Devices ADIS16460 IMU driver");
-+MODULE_LICENSE("GPL");
--- 
-2.20.1
-
+> I'll almost always take the option that involves me doing less work ;)
+> 
+> Jonathan
+> 
+>>
+>> Thanks,
+>> ~ Enric
+>>
+>>> Thanks,
+>>> Gwendal.
+>>>
+>>>  
+>>>>
+>>>> Thanks,
+>>>>
+>>>> Jonathan
+>>>>  
+>>>>> ---
+>>>>> Changes in v7:
+>>>>> - Split patch in two: This is the IIO section.
+>>>>>
+>>>>> Changes in v6:
+>>>>> - Fix lock held in an error path error.
+>>>>>
+>>>>> Changes in v5:
+>>>>> - Remove unnecessary define.
+>>>>> - v4 was the wrong patch file
+>>>>>
+>>>>> Changes in v3:
+>>>>> - Use static channel array, simplify code because index is always 0.
+>>>>>
+>>>>> Changes in v2:
+>>>>> - Fix license, remove driver_module field.
+>>>>>
+>>>>>  drivers/iio/common/cros_ec_sensors/Kconfig    |   9 ++
+>>>>>  drivers/iio/common/cros_ec_sensors/Makefile   |   1 +
+>>>>>  .../cros_ec_sensors/cros_ec_lid_angle.c       | 139 ++++++++++++++++++
+>>>>>  3 files changed, 149 insertions(+)
+>>>>>  create mode 100644 drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+>>>>>
+>>>>> diff --git a/drivers/iio/common/cros_ec_sensors/Kconfig b/drivers/iio/common/cros_ec_sensors/Kconfig
+>>>>> index 135f6825903f..aacc2ab9c34f 100644
+>>>>> --- a/drivers/iio/common/cros_ec_sensors/Kconfig
+>>>>> +++ b/drivers/iio/common/cros_ec_sensors/Kconfig
+>>>>> @@ -20,3 +20,12 @@ config IIO_CROS_EC_SENSORS
+>>>>>         Accelerometers, Gyroscope and Magnetometer that are
+>>>>>         presented by the ChromeOS EC Sensor hub.
+>>>>>         Creates an IIO device for each functions.
+>>>>> +
+>>>>> +config IIO_CROS_EC_SENSORS_LID_ANGLE
+>>>>> +     tristate "ChromeOS EC Sensor for lid angle"
+>>>>> +     depends on IIO_CROS_EC_SENSORS_CORE
+>>>>> +     help
+>>>>> +       Module to report the angle between lid and base for some
+>>>>> +       convertible devices.
+>>>>> +       This module is loaded when the EC can calculate the angle between the base
+>>>>> +       and the lid.
+>>>>> diff --git a/drivers/iio/common/cros_ec_sensors/Makefile b/drivers/iio/common/cros_ec_sensors/Makefile
+>>>>> index ec716ff2a775..a35ee232ac07 100644
+>>>>> --- a/drivers/iio/common/cros_ec_sensors/Makefile
+>>>>> +++ b/drivers/iio/common/cros_ec_sensors/Makefile
+>>>>> @@ -4,3 +4,4 @@
+>>>>>
+>>>>>  obj-$(CONFIG_IIO_CROS_EC_SENSORS_CORE) += cros_ec_sensors_core.o
+>>>>>  obj-$(CONFIG_IIO_CROS_EC_SENSORS) += cros_ec_sensors.o
+>>>>> +obj-$(CONFIG_IIO_CROS_EC_SENSORS_LID_ANGLE) += cros_ec_lid_angle.o
+>>>>> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+>>>>> new file mode 100644
+>>>>> index 000000000000..876dfd176b0e
+>>>>> --- /dev/null
+>>>>> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+>>>>> @@ -0,0 +1,139 @@
+>>>>> +// SPDX-License-Identifier: GPL-2.0
+>>>>> +
+>>>>> +/*
+>>>>> + * cros_ec_lid_angle - Driver for CrOS EC lid angle sensor.
+>>>>> + *
+>>>>> + * Copyright 2018 Google, Inc
+>>>>> + *
+>>>>> + * This driver uses the cros-ec interface to communicate with the Chrome OS
+>>>>> + * EC about counter sensors. Counters are presented through
+>>>>> + * iio sysfs.
+>>>>> + */
+>>>>> +
+>>>>> +#include <linux/delay.h>
+>>>>> +#include <linux/device.h>
+>>>>> +#include <linux/iio/buffer.h>
+>>>>> +#include <linux/iio/common/cros_ec_sensors_core.h>
+>>>>> +#include <linux/iio/iio.h>
+>>>>> +#include <linux/iio/kfifo_buf.h>
+>>>>> +#include <linux/iio/trigger.h>
+>>>>> +#include <linux/iio/triggered_buffer.h>
+>>>>> +#include <linux/iio/trigger_consumer.h>
+>>>>> +#include <linux/kernel.h>
+>>>>> +#include <linux/mfd/cros_ec.h>
+>>>>> +#include <linux/mfd/cros_ec_commands.h>
+>>>>> +#include <linux/module.h>
+>>>>> +#include <linux/platform_device.h>
+>>>>> +#include <linux/slab.h>
+>>>>> +
+>>>>> +#define DRV_NAME "cros-ec-lid-angle"
+>>>>> +
+>>>>> +/*
+>>>>> + * One channel for the lid angle, the other for timestamp.
+>>>>> + */
+>>>>> +static const struct iio_chan_spec cros_ec_lid_angle_channels[] = {
+>>>>> +     {
+>>>>> +             .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+>>>>> +             .scan_type.realbits = CROS_EC_SENSOR_BITS,
+>>>>> +             .scan_type.storagebits = CROS_EC_SENSOR_BITS,
+>>>>> +             .scan_type.sign = 'u',
+>>>>> +             .type = IIO_ANGL
+>>>>> +     },
+>>>>> +     IIO_CHAN_SOFT_TIMESTAMP(1)
+>>>>> +};
+>>>>> +
+>>>>> +/* State data for ec_sensors iio driver. */
+>>>>> +struct cros_ec_lid_angle_state {
+>>>>> +     /* Shared by all sensors */
+>>>>> +     struct cros_ec_sensors_core_state core;
+>>>>> +};
+>>>>> +
+>>>>> +static int cros_ec_sensors_read_lid_angle(struct iio_dev *indio_dev,
+>>>>> +                                       unsigned long scan_mask, s16 *data)
+>>>>> +{
+>>>>> +     struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
+>>>>> +     int ret;
+>>>>> +
+>>>>> +     st->param.cmd = MOTIONSENSE_CMD_LID_ANGLE;
+>>>>> +     ret = cros_ec_motion_send_host_cmd(st, sizeof(st->resp->lid_angle));
+>>>>> +     if (ret) {
+>>>>> +             dev_warn(&indio_dev->dev, "Unable to read lid angle\n");
+>>>>> +             return ret;
+>>>>> +     }
+>>>>> +
+>>>>> +     *data = st->resp->lid_angle.value;
+>>>>> +     return 0;
+>>>>> +}
+>>>>> +
+>>>>> +static int cros_ec_lid_angle_read(struct iio_dev *indio_dev,
+>>>>> +                                 struct iio_chan_spec const *chan,
+>>>>> +                                 int *val, int *val2, long mask)
+>>>>> +{
+>>>>> +     struct cros_ec_lid_angle_state *st = iio_priv(indio_dev);
+>>>>> +     s16 data;
+>>>>> +     int ret;
+>>>>> +
+>>>>> +     mutex_lock(&st->core.cmd_lock);
+>>>>> +     ret = cros_ec_sensors_read_lid_angle(indio_dev, 1, &data);
+>>>>> +     if (ret == 0) {
+>>>>> +             *val = data;
+>>>>> +             ret = IIO_VAL_INT;
+>>>>> +     }
+>>>>> +     mutex_unlock(&st->core.cmd_lock);
+>>>>> +     return ret;
+>>>>> +}
+>>>>> +
+>>>>> +static const struct iio_info cros_ec_lid_angle_info = {
+>>>>> +     .read_raw = &cros_ec_lid_angle_read,
+>>>>> +};
+>>>>> +
+>>>>> +static int cros_ec_lid_angle_probe(struct platform_device *pdev)
+>>>>> +{
+>>>>> +     struct device *dev = &pdev->dev;
+>>>>> +     struct iio_dev *indio_dev;
+>>>>> +     struct cros_ec_lid_angle_state *state;
+>>>>> +     int ret;
+>>>>> +
+>>>>> +     indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
+>>>>> +     if (!indio_dev)
+>>>>> +             return -ENOMEM;
+>>>>> +
+>>>>> +     ret = cros_ec_sensors_core_init(pdev, indio_dev, false);
+>>>>> +     if (ret)
+>>>>> +             return ret;
+>>>>> +
+>>>>> +     indio_dev->info = &cros_ec_lid_angle_info;
+>>>>> +     state = iio_priv(indio_dev);
+>>>>> +     indio_dev->channels = cros_ec_lid_angle_channels;
+>>>>> +     indio_dev->num_channels = ARRAY_SIZE(cros_ec_lid_angle_channels);
+>>>>> +
+>>>>> +     state->core.read_ec_sensors_data = cros_ec_sensors_read_lid_angle;
+>>>>> +
+>>>>> +     ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
+>>>>> +                     cros_ec_sensors_capture, NULL);
+>>>>> +     if (ret)
+>>>>> +             return ret;
+>>>>> +
+>>>>> +     return devm_iio_device_register(dev, indio_dev);
+>>>>> +}
+>>>>> +
+>>>>> +static const struct platform_device_id cros_ec_lid_angle_ids[] = {
+>>>>> +     {
+>>>>> +             .name = DRV_NAME,
+>>>>> +     },
+>>>>> +     { /* sentinel */ }
+>>>>> +};
+>>>>> +MODULE_DEVICE_TABLE(platform, cros_ec_lid_angle_ids);
+>>>>> +
+>>>>> +static struct platform_driver cros_ec_lid_angle_platform_driver = {
+>>>>> +     .driver = {
+>>>>> +             .name   = DRV_NAME,
+>>>>> +             .pm     = &cros_ec_sensors_pm_ops,
+>>>>> +     },
+>>>>> +     .probe          = cros_ec_lid_angle_probe,
+>>>>> +     .id_table       = cros_ec_lid_angle_ids,
+>>>>> +};
+>>>>> +module_platform_driver(cros_ec_lid_angle_platform_driver);
+>>>>> +
+>>>>> +MODULE_DESCRIPTION("ChromeOS EC driver for reporting convertible lid angle.");
+>>>>> +MODULE_LICENSE("GPL v2");  
+>>>>  
+> 
+> 

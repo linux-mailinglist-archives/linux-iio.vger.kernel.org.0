@@ -2,40 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E87B550CF
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2019 15:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72ED855568
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2019 19:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726702AbfFYNxM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Jun 2019 09:53:12 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:57368 "EHLO
+        id S1728130AbfFYREp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Jun 2019 13:04:45 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:58492 "EHLO
         bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726659AbfFYNxL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Jun 2019 09:53:11 -0400
+        with ESMTP id S1727215AbfFYREp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Jun 2019 13:04:45 -0400
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: eballetbo)
-        with ESMTPSA id 92F9C28A3E6
-Subject: Re: [PATCH v7 2/2] iio: cros_ec: Add lid angle driver
-To:     Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Enric Balletbo Serra <eballetbo@gmail.com>
-Cc:     Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-References: <20190517233856.155793-1-gwendal@chromium.org>
- <20190517233856.155793-3-gwendal@chromium.org>
- <20190518105350.1a863bfd@archlinux>
- <CAPUE2uvONxJN7MdUKU-tCx59kd+x+pbYqPH8fLKbSp4_cvSzJg@mail.gmail.com>
- <CAFqH_53orAG1d3k11517_qP5fC=V1RR14yZHK6VUgcvS-2wgEg@mail.gmail.com>
- <20190621163112.00005914@huawei.com>
+        with ESMTPSA id B33BB2604D6
+Subject: Re: [PATCH v3 6/8] iio: common: cros_ec_sensors: support protocol v3
+ message
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Cc:     kernel@collabora.com, Nick Vaccaro <nvaccaro@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Enrico Granata <egranata@chromium.org>
+References: <cover.1560848479.git.fabien.lahoudere@collabora.com>
+ <ac3cdc104e59565d178dfa86f2727045224dc4da.1560848479.git.fabien.lahoudere@collabora.com>
+ <20190622111509.314d25bf@archlinux>
 From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <d8881c53-8c84-edf4-1f43-d188ca00454d@collabora.com>
-Date:   Tue, 25 Jun 2019 15:53:05 +0200
+Message-ID: <373ba164-d174-9a2e-f9eb-ed0d6b7b4bb8@collabora.com>
+Date:   Tue, 25 Jun 2019 19:04:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.1
 MIME-Version: 1.0
-In-Reply-To: <20190621163112.00005914@huawei.com>
+In-Reply-To: <20190622111509.314d25bf@archlinux>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -44,270 +43,241 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Fabien, Jonathan,
 
+cc'ing Gwendal and Enrico who might be interested on this patch.
 
-On 21/6/19 17:31, Jonathan Cameron wrote:
-> On Wed, 19 Jun 2019 22:49:04 +0200
-> Enric Balletbo Serra <eballetbo@gmail.com> wrote:
+It'd be nice if we can land this patch before [1], otherwise the legacy support
+for cros-ec sensors on veyron minnie won't work and we will mess the kernel log
+with a couple of errors.
+
+I just have a few comments that I think should be quick to respin.
+
+[1] https://lkml.org/lkml/2019/6/24/1464
+
+On 22/6/19 12:15, Jonathan Cameron wrote:
+> On Tue, 18 Jun 2019 11:06:37 +0200
+> Fabien Lahoudere <fabien.lahoudere@collabora.com> wrote:
 > 
->> Missatge de Gwendal Grignou <gwendal@chromium.org> del dia dv., 14 de
->> juny 2019 a les 23:56:
->>>
->>> On Sat, May 18, 2019 at 2:53 AM Jonathan Cameron <jic23@kernel.org> wrote:  
->>>>
->>>> On Fri, 17 May 2019 16:38:56 -0700
->>>> Gwendal Grignou <gwendal@chromium.org> wrote:
->>>>  
->>>>> Add a IIO driver that reports the angle between the lid and the base for
->>>>> ChromeOS convertible device.
->>>>>
->>>>> Tested on eve with ToT EC firmware.
->>>>> Check driver is loaded and lid angle is correct.
->>>>>
->>>>> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>  
->>>> Hi Gwendal.
->>>>
->>>> Please do list dependencies in patches.  I think this one is still
->>>> dependent on the larger set of MFD changes.
->>>>
->>>> For my reference
->>>>
->>>> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>>
->>>> Please do poke if this seems to have gotten lost once the precursors
->>>> are upstream.  
->>> The large set of MFD changes for update cros_ec_commands.h has landed
->>> in a immutable branch:
->>> git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git branch
->>> ib-mfd-cros-5.3.
->>>  
+>> Version 3 of the EC protocol provides min and max frequencies for EC sensors.
 >>
->> Jonathan, if you don't want to deal with the big patchset that this
->> depends and the immutable branch, I can pick the patch and can go
->> through the chrome-platform tree. I think it is unlikely have merge
->> conflicts, as these patches only touch cros-ec iio parts and, anyway,
->> I'll need to deal with the immutable branch because other patches also
->> depends on the ib.
+
+I think we are mixing two things. One is determine what version of the
+MOTIONSENSE command the EC has, and another one is add some default values
+supported by the third version. I'd split this in two separate patches, and fix
+the subject and the commit description.
+
+
+>> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+>> Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
+> Looks good to me. I'll pick up next time if no one else raises any
+> issues on this one.
 > 
-> That would be great thanks.
-> 
-
-Ok, applied for 5.3 via chrome-platform tree
-
-Thanks,
-~ Enric
-
-> I'll almost always take the option that involves me doing less work ;)
+> Thanks,
 > 
 > Jonathan
 > 
+>> ---
+>>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 85 ++++++++++++++++++-
+>>  .../linux/iio/common/cros_ec_sensors_core.h   |  3 +
+>>  2 files changed, 87 insertions(+), 1 deletion(-)
 >>
->> Thanks,
->> ~ Enric
->>
->>> Thanks,
->>> Gwendal.
->>>
->>>  
->>>>
->>>> Thanks,
->>>>
->>>> Jonathan
->>>>  
->>>>> ---
->>>>> Changes in v7:
->>>>> - Split patch in two: This is the IIO section.
->>>>>
->>>>> Changes in v6:
->>>>> - Fix lock held in an error path error.
->>>>>
->>>>> Changes in v5:
->>>>> - Remove unnecessary define.
->>>>> - v4 was the wrong patch file
->>>>>
->>>>> Changes in v3:
->>>>> - Use static channel array, simplify code because index is always 0.
->>>>>
->>>>> Changes in v2:
->>>>> - Fix license, remove driver_module field.
->>>>>
->>>>>  drivers/iio/common/cros_ec_sensors/Kconfig    |   9 ++
->>>>>  drivers/iio/common/cros_ec_sensors/Makefile   |   1 +
->>>>>  .../cros_ec_sensors/cros_ec_lid_angle.c       | 139 ++++++++++++++++++
->>>>>  3 files changed, 149 insertions(+)
->>>>>  create mode 100644 drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
->>>>>
->>>>> diff --git a/drivers/iio/common/cros_ec_sensors/Kconfig b/drivers/iio/common/cros_ec_sensors/Kconfig
->>>>> index 135f6825903f..aacc2ab9c34f 100644
->>>>> --- a/drivers/iio/common/cros_ec_sensors/Kconfig
->>>>> +++ b/drivers/iio/common/cros_ec_sensors/Kconfig
->>>>> @@ -20,3 +20,12 @@ config IIO_CROS_EC_SENSORS
->>>>>         Accelerometers, Gyroscope and Magnetometer that are
->>>>>         presented by the ChromeOS EC Sensor hub.
->>>>>         Creates an IIO device for each functions.
->>>>> +
->>>>> +config IIO_CROS_EC_SENSORS_LID_ANGLE
->>>>> +     tristate "ChromeOS EC Sensor for lid angle"
->>>>> +     depends on IIO_CROS_EC_SENSORS_CORE
->>>>> +     help
->>>>> +       Module to report the angle between lid and base for some
->>>>> +       convertible devices.
->>>>> +       This module is loaded when the EC can calculate the angle between the base
->>>>> +       and the lid.
->>>>> diff --git a/drivers/iio/common/cros_ec_sensors/Makefile b/drivers/iio/common/cros_ec_sensors/Makefile
->>>>> index ec716ff2a775..a35ee232ac07 100644
->>>>> --- a/drivers/iio/common/cros_ec_sensors/Makefile
->>>>> +++ b/drivers/iio/common/cros_ec_sensors/Makefile
->>>>> @@ -4,3 +4,4 @@
->>>>>
->>>>>  obj-$(CONFIG_IIO_CROS_EC_SENSORS_CORE) += cros_ec_sensors_core.o
->>>>>  obj-$(CONFIG_IIO_CROS_EC_SENSORS) += cros_ec_sensors.o
->>>>> +obj-$(CONFIG_IIO_CROS_EC_SENSORS_LID_ANGLE) += cros_ec_lid_angle.o
->>>>> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
->>>>> new file mode 100644
->>>>> index 000000000000..876dfd176b0e
->>>>> --- /dev/null
->>>>> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
->>>>> @@ -0,0 +1,139 @@
->>>>> +// SPDX-License-Identifier: GPL-2.0
->>>>> +
->>>>> +/*
->>>>> + * cros_ec_lid_angle - Driver for CrOS EC lid angle sensor.
->>>>> + *
->>>>> + * Copyright 2018 Google, Inc
->>>>> + *
->>>>> + * This driver uses the cros-ec interface to communicate with the Chrome OS
->>>>> + * EC about counter sensors. Counters are presented through
->>>>> + * iio sysfs.
->>>>> + */
->>>>> +
->>>>> +#include <linux/delay.h>
->>>>> +#include <linux/device.h>
->>>>> +#include <linux/iio/buffer.h>
->>>>> +#include <linux/iio/common/cros_ec_sensors_core.h>
->>>>> +#include <linux/iio/iio.h>
->>>>> +#include <linux/iio/kfifo_buf.h>
->>>>> +#include <linux/iio/trigger.h>
->>>>> +#include <linux/iio/triggered_buffer.h>
->>>>> +#include <linux/iio/trigger_consumer.h>
->>>>> +#include <linux/kernel.h>
->>>>> +#include <linux/mfd/cros_ec.h>
->>>>> +#include <linux/mfd/cros_ec_commands.h>
->>>>> +#include <linux/module.h>
->>>>> +#include <linux/platform_device.h>
->>>>> +#include <linux/slab.h>
->>>>> +
->>>>> +#define DRV_NAME "cros-ec-lid-angle"
->>>>> +
->>>>> +/*
->>>>> + * One channel for the lid angle, the other for timestamp.
->>>>> + */
->>>>> +static const struct iio_chan_spec cros_ec_lid_angle_channels[] = {
->>>>> +     {
->>>>> +             .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
->>>>> +             .scan_type.realbits = CROS_EC_SENSOR_BITS,
->>>>> +             .scan_type.storagebits = CROS_EC_SENSOR_BITS,
->>>>> +             .scan_type.sign = 'u',
->>>>> +             .type = IIO_ANGL
->>>>> +     },
->>>>> +     IIO_CHAN_SOFT_TIMESTAMP(1)
->>>>> +};
->>>>> +
->>>>> +/* State data for ec_sensors iio driver. */
->>>>> +struct cros_ec_lid_angle_state {
->>>>> +     /* Shared by all sensors */
->>>>> +     struct cros_ec_sensors_core_state core;
->>>>> +};
->>>>> +
->>>>> +static int cros_ec_sensors_read_lid_angle(struct iio_dev *indio_dev,
->>>>> +                                       unsigned long scan_mask, s16 *data)
->>>>> +{
->>>>> +     struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
->>>>> +     int ret;
->>>>> +
->>>>> +     st->param.cmd = MOTIONSENSE_CMD_LID_ANGLE;
->>>>> +     ret = cros_ec_motion_send_host_cmd(st, sizeof(st->resp->lid_angle));
->>>>> +     if (ret) {
->>>>> +             dev_warn(&indio_dev->dev, "Unable to read lid angle\n");
->>>>> +             return ret;
->>>>> +     }
->>>>> +
->>>>> +     *data = st->resp->lid_angle.value;
->>>>> +     return 0;
->>>>> +}
->>>>> +
->>>>> +static int cros_ec_lid_angle_read(struct iio_dev *indio_dev,
->>>>> +                                 struct iio_chan_spec const *chan,
->>>>> +                                 int *val, int *val2, long mask)
->>>>> +{
->>>>> +     struct cros_ec_lid_angle_state *st = iio_priv(indio_dev);
->>>>> +     s16 data;
->>>>> +     int ret;
->>>>> +
->>>>> +     mutex_lock(&st->core.cmd_lock);
->>>>> +     ret = cros_ec_sensors_read_lid_angle(indio_dev, 1, &data);
->>>>> +     if (ret == 0) {
->>>>> +             *val = data;
->>>>> +             ret = IIO_VAL_INT;
->>>>> +     }
->>>>> +     mutex_unlock(&st->core.cmd_lock);
->>>>> +     return ret;
->>>>> +}
->>>>> +
->>>>> +static const struct iio_info cros_ec_lid_angle_info = {
->>>>> +     .read_raw = &cros_ec_lid_angle_read,
->>>>> +};
->>>>> +
->>>>> +static int cros_ec_lid_angle_probe(struct platform_device *pdev)
->>>>> +{
->>>>> +     struct device *dev = &pdev->dev;
->>>>> +     struct iio_dev *indio_dev;
->>>>> +     struct cros_ec_lid_angle_state *state;
->>>>> +     int ret;
->>>>> +
->>>>> +     indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
->>>>> +     if (!indio_dev)
->>>>> +             return -ENOMEM;
->>>>> +
->>>>> +     ret = cros_ec_sensors_core_init(pdev, indio_dev, false);
->>>>> +     if (ret)
->>>>> +             return ret;
->>>>> +
->>>>> +     indio_dev->info = &cros_ec_lid_angle_info;
->>>>> +     state = iio_priv(indio_dev);
->>>>> +     indio_dev->channels = cros_ec_lid_angle_channels;
->>>>> +     indio_dev->num_channels = ARRAY_SIZE(cros_ec_lid_angle_channels);
->>>>> +
->>>>> +     state->core.read_ec_sensors_data = cros_ec_sensors_read_lid_angle;
->>>>> +
->>>>> +     ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
->>>>> +                     cros_ec_sensors_capture, NULL);
->>>>> +     if (ret)
->>>>> +             return ret;
->>>>> +
->>>>> +     return devm_iio_device_register(dev, indio_dev);
->>>>> +}
->>>>> +
->>>>> +static const struct platform_device_id cros_ec_lid_angle_ids[] = {
->>>>> +     {
->>>>> +             .name = DRV_NAME,
->>>>> +     },
->>>>> +     { /* sentinel */ }
->>>>> +};
->>>>> +MODULE_DEVICE_TABLE(platform, cros_ec_lid_angle_ids);
->>>>> +
->>>>> +static struct platform_driver cros_ec_lid_angle_platform_driver = {
->>>>> +     .driver = {
->>>>> +             .name   = DRV_NAME,
->>>>> +             .pm     = &cros_ec_sensors_pm_ops,
->>>>> +     },
->>>>> +     .probe          = cros_ec_lid_angle_probe,
->>>>> +     .id_table       = cros_ec_lid_angle_ids,
->>>>> +};
->>>>> +module_platform_driver(cros_ec_lid_angle_platform_driver);
->>>>> +
->>>>> +MODULE_DESCRIPTION("ChromeOS EC driver for reporting convertible lid angle.");
->>>>> +MODULE_LICENSE("GPL v2");  
->>>>  
+>> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+>> index 57034e212fe1..2ce077b576a4 100644
+>> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+>> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+>> @@ -26,6 +26,66 @@ static char *cros_ec_loc[] = {
+>>  	[MOTIONSENSE_LOC_MAX] = "unknown",
+>>  };
+>>  
+>> +static void get_default_min_max_freq(enum motionsensor_type type,
+>> +				     u32 *min_freq,
+>> +				     u32 *max_freq)
+>> +{
+>> +	switch (type) {
+>> +	case MOTIONSENSE_TYPE_ACCEL:
+>> +	case MOTIONSENSE_TYPE_GYRO:
+>> +		*min_freq = 12500;
+>> +		*max_freq = 100000;
+>> +		break;
+>> +	case MOTIONSENSE_TYPE_MAG:
+>> +		*min_freq = 5000;
+>> +		*max_freq = 25000;
+>> +		break;
+>> +	case MOTIONSENSE_TYPE_PROX:
+>> +	case MOTIONSENSE_TYPE_LIGHT:
+>> +		*min_freq = 100;
+>> +		*max_freq = 50000;
+>> +		break;
+>> +	case MOTIONSENSE_TYPE_BARO:
+>> +		*min_freq = 250;
+>> +		*max_freq = 20000;
+>> +		break;
+>> +	case MOTIONSENSE_TYPE_ACTIVITY:
+>> +	default:
+>> +		*min_freq = 0;
+>> +		*max_freq = 0;
+>> +		break;
+>> +	}
+>> +}
+
+This is the second part. It adds default values for version 3. I'd send this
+part on the patch that adds support min/max freq.
+
+>> +
+>> +static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
+>> +					     u16 cmd_offset, u16 cmd, u32 *mask)
+>> +{
+>> +	int ret;
+>> +	struct {
+>> +		struct cros_ec_command msg;
+>> +		union {
+>> +			struct ec_params_get_cmd_versions params;
+>> +			struct ec_response_get_cmd_versions resp;
+>> +		};
+>> +	} __packed buf = {
+>> +		.msg = {
+>> +			.command = EC_CMD_GET_CMD_VERSIONS + cmd_offset,
+>> +			.insize = sizeof(struct ec_response_get_cmd_versions),
+>> +			.outsize = sizeof(struct ec_params_get_cmd_versions)
+>> +			},
+>> +		.params = {.cmd = cmd}
+>> +	};
+>> +
+
+nit: Actually when someone is sending a command to the EC there is a bit of mess
+how to do it, some use dynamic allocations, other static. IMO is more readable
+have something that explicitly initializes the struct and then assigns the
+different fields. Something like this:
+
+
+        struct {
+                struct cros_ec_command cmd;
+                union {
+                        struct ec_params_get_cmd_versions params;
+                        struct ec_response_get_cmd_versions resp;
+                };
+        } __packed msg = {};
+        int ret;
+
+        msg.cmd.command = EC_CMD_GET_CMD_VERSIONS + cmd_offset;
+        msg.cmd.insize = sizeof(msg.resp);
+        msg.cmd.outsize = sizeof(msg.params);
+        msg.params.cmd = cmd;
+
+
+>> +	ret = cros_ec_cmd_xfer_status(ec_dev, &buf.msg);
+>> +	if (ret >= 0) {
+>> +		if (buf.msg.result == EC_RES_SUCCESS)
+
+Note that cros_ec_cmd_xfer_status returns a <0 on error and 0 or positive number
+when EC_RES_SUCCESS. So no need to double check the result.
+
+>> +			*mask = buf.resp.version_mask;
+>> +		else
+>> +			*mask = 0;
+>> +	}
+>> +	return ret;
+
+So, I think that all this can be reworked as
+
+        ret = cros_ec_cmd_xfer_status(ec_dev, &buf.msg);
+        if (ret < 0)
+                return ret;
+
+        *mask = msg.resp.version_mask;
+
+        return 0;
+
+
+>> +}
+>> +
+>>  int cros_ec_sensors_core_init(struct platform_device *pdev,
+>>  			      int num_channels,
+>>  			      bool physical_device)
+>> @@ -35,6 +95,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>>  	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
+>>  	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+>>  	struct iio_dev *indio_dev;
+>> +	u32 ver_mask;
+>> +	int ret;
+>>  
+>>  	if (num_channels > CROS_EC_SENSORS_CORE_MAX_CHANNELS)
+>>  		return -EINVAL;
+>> @@ -57,8 +119,16 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>>  
+>>  	mutex_init(&state->cmd_lock);
+>>  
+>> +	/* determine what version of MOTIONSENSE CMD EC has */
+
+nit: Capitalize
+
+>> +	ret = cros_ec_get_host_cmd_version_mask(state->ec,
+>> +						ec->cmd_offset,
+>> +						EC_CMD_MOTION_SENSE_CMD,
+>> +						&ver_mask);
+
+It will return <0 on error
+
+>> +	if (ret < 0 || ver_mask == 0)
+>> +		return -ENODEV;
+>> +
+
+so no need to check ver_mask
+
+        if (ret < 0)
+		return ret;
+
+
+>>  	/* Set up the host command structure. */
+>> -	state->msg->version = 2;
+>> +	state->msg->version = fls(ver_mask) - 1;
+>>  	state->msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
+>>  	state->msg->outsize = sizeof(struct ec_params_motion_sense);
+>>  
+>> @@ -76,6 +146,19 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>>  		}
+>>  		state->type = state->resp->info.type;
+>>  		state->loc = state->resp->info.location;
+>> +
+>> +		/* Value to stop the device */
+>> +		state->frequency_range[0] = 0;
+>> +		if (state->msg->version < 3) {
+>> +			get_default_min_max_freq(state->resp->info.type,
+>> +						 &state->frequency_range[1],
+>> +						 &state->frequency_range[2]);
+>> +		} else {
+>> +			state->frequency_range[1] =
+>> +			    state->resp->info_3.min_frequency;
+>> +			state->frequency_range[2] =
+>> +			    state->resp->info_3.max_frequency;
+>> +		}
+
+This is part of the second patch.
+
+>>  	}
+>>  
+>>  	indio_dev->info = &state->info;
+>> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+>> index 3e6de427076e..89937ad242ef 100644
+>> --- a/include/linux/iio/common/cros_ec_sensors_core.h
+>> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+>> @@ -74,6 +74,9 @@ struct cros_ec_sensors_core_state {
+>>  	int curr_sampl_freq;
+>>  	struct iio_info info;
+>>  	struct iio_chan_spec channels[CROS_EC_SENSORS_CORE_MAX_CHANNELS];
+>> +
+>> +	/* Disable, Min and Max Sampling Frequency in mHz */
+>> +	int frequency_range[3];
+>>  };
+>>  
+>>  /**
 > 
 > 
+
+As I said I'd send a first patch with the EC protocol bits separated of this
+patchset and create a second patch into this patchset with the min/max frequency
+bits.
+
+Thanks,
+~ Enric

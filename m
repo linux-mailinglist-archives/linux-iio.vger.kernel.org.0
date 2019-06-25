@@ -2,90 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30A72526AB
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2019 10:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 559A952833
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2019 11:38:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730214AbfFYIao (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Jun 2019 04:30:44 -0400
-Received: from relay2-d.mail.gandi.net ([217.70.183.194]:60737 "EHLO
-        relay2-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726702AbfFYIao (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Jun 2019 04:30:44 -0400
-X-Originating-IP: 90.88.16.156
-Received: from localhost (aaubervilliers-681-1-41-156.w90-88.abo.wanadoo.fr [90.88.16.156])
-        (Authenticated sender: maxime.ripard@bootlin.com)
-        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 202B640008;
-        Tue, 25 Jun 2019 08:30:36 +0000 (UTC)
-Date:   Tue, 25 Jun 2019 10:30:36 +0200
-From:   Maxime Ripard <maxime.ripard@bootlin.com>
-To:     Stefan Popa <stefan.popa@analog.com>
-Cc:     jic23@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        Michael.Hennerich@analog.com, gregkh@linuxfoundation.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] dt-bindings: iio: frequency: Use dt-schema for
- clock-names
-Message-ID: <20190625083036.jrr7kz7f6ks6nqps@flea>
-References: <1561389097-26075-1-git-send-email-stefan.popa@analog.com>
+        id S1731439AbfFYJij (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Jun 2019 05:38:39 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:44576 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729258AbfFYJij (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Jun 2019 05:38:39 -0400
+Received: by mail-wr1-f67.google.com with SMTP id r16so17019435wrl.11
+        for <linux-iio@vger.kernel.org>; Tue, 25 Jun 2019 02:38:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=+bllI+uhX4ifvIS1PickYrW1huvdTbgr8Lv09pVb6FU=;
+        b=qGxAYu0Kc8a8QY81cpAL/vOs7zUNruOUSdBRb4/Y7HKovLSdoDG/DiAaFRzPayZr3x
+         PRu8itVSbPTpwqKwopbWNOFC8GFoI642nQaC3eVrliaJqXdgR/Pa37oMb03KDS9QzED4
+         oZt1r9UQGCngckqw7LRqBoAFDXA9tdxUNa0wFOyQSLWSb5rW/mt/TYWlijzhfYJPGmgx
+         UsUbSSz3CSLGF/2PC2k0Nc/2tn+WCwzTZ5Jbsp+d88G52hGeCnDxfw/eWTytDb6sxCQk
+         aZj9iy8kRedoYJBURiMtiqSATb91DnSJLnNvtEr7T6d+vziU+mlA3U1Xexo+1Mnr4SJ/
+         EFzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=+bllI+uhX4ifvIS1PickYrW1huvdTbgr8Lv09pVb6FU=;
+        b=QceluwbhfEVkkfo8arnsZyXK999/d6Pty2Pm/fY8F3r7brlRdXMlWklIoxFtDGlWHk
+         v8iwkqhoFQhnuyXhKoX2wP6fnPoYeKRGNiEcNuikKamG/94rV0X0h5yV1CT0Lok8N2P9
+         1byOKpQj+ER36JRT/2biB+1r7NSS05XdlEEu5tWMD8qyHeJbWZlONCvs0/Fa0cwRm2xh
+         ipw4CmzW2uje8rz96LA/+mUgIv52Lvz4E2Hfgh7cJjLc94JWm41w1h8oQ3w07lnkS6Vz
+         eUQ+W90POSdnhdS99z+qKfCoIY/nq7vmqKc9EemOg9TNj9MBTMEIleM/GxvgMXFpOJx8
+         6iRw==
+X-Gm-Message-State: APjAAAXq9Rcr4wLhwM+Iw5VJMtUnXGANrDOSl3phmmSoNaUlD/MmiV0I
+        fp8/HsjbnfaT6H/tMkiKOiFf3S15OoZdNybqN1Y=
+X-Google-Smtp-Source: APXvYqw0M6+69Cx78Pb2WgjNR/GcV376Kk13F8KBQFWAO9Cvr1SVrvRen9G4vPtV0pEqqeC6LcTpKLVnqq7yVStYPgA=
+X-Received: by 2002:adf:ec0f:: with SMTP id x15mr26815133wrn.165.1561455517240;
+ Tue, 25 Jun 2019 02:38:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3yps4smao6vtc5y5"
-Content-Disposition: inline
-In-Reply-To: <1561389097-26075-1-git-send-email-stefan.popa@analog.com>
-User-Agent: NeoMutt/20180716
+Received: by 2002:a5d:4d44:0:0:0:0:0 with HTTP; Tue, 25 Jun 2019 02:38:36
+ -0700 (PDT)
+Reply-To: arnettdavid2030@gmail.com
+From:   "Sgt,Arnett David" <alasanahmad200@gmail.com>
+Date:   Tue, 25 Jun 2019 14:08:36 +0430
+Message-ID: <CACLpcxwKYFjwfXOUx=mhkNRK=hRM=nTCYageT7H34PpFeF+gsQ@mail.gmail.com>
+Subject: Assist Request From You
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+-- 
 
---3yps4smao6vtc5y5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Accept my greetings to you
 
-Hi,
+Assist Request From You
 
-On Mon, Jun 24, 2019 at 06:11:37PM +0300, Stefan Popa wrote:
-> Dt-schema can be used for clock-names property.
->
-> Signed-off-by: Stefan Popa <stefan.popa@analog.com>
-> ---
->  Documentation/devicetree/bindings/iio/frequency/adf4371.yaml | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> index d7adf074..8a2a8f6 100644
-> --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> @@ -27,9 +27,8 @@ properties:
->      maxItems: 1
->
->    clock-names:
-> -    description:
-> -      Must be "clkin"
-> -    maxItems: 1
-> +    items:
-> +      - clkin
+I am 28 years old single an orphan my parents died when I am five
+years old nobody to help me,I send you my business proposal with tears
+and sorrow,Please let this not be a surprised message to you because I
+decided to contact you on this magnitude and lucrative transaction for
+our present and future survival in life. Moreover, I have laid all the
+solemn trust in you before i decided to disclose this successful and
+confidential transaction to you.
 
-You can even just have const: clkin here
+I am  Arnett David ,I hope all is well with you? I am female soldier
+working as United Nations peace keeping troop in Afghanistan on war
+against terrorism. I have in my possession the sum of $3.5million USD
+Which I made here in Afghanistan 2014,I deposited this money with a
+Red Cross agent. I want you to stand as my beneficiary and receive the
+fund And keep it safe so that as soon as am through with my mission
+here in Afghanistan.
 
-Maxime
+You will assist me to invest it in a good profitable Venture or you
+keep it for me until I arrive your country, I will give You 40% of the
+total money for your assistance after you have receive The money.
+Please reply back to me via my private email address
+(arnettdavid2030@gmail.com ) if you are willing to work with me so
+that I can send you the information where the money is been deposited,
+your urgent reply is needed  so i can send you more details.
 
---
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---3yps4smao6vtc5y5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXRHbrAAKCRDj7w1vZxhR
-xQZuAQC9jlgQRUnCtCGNePxUg5qP7pF5UA7RwPOekZVZTRmsvwD/c9wseWa2S6Qf
-Iz+4hrxBAEEHVy3f/iOqUj5u6guy/AQ=
-=k49w
------END PGP SIGNATURE-----
-
---3yps4smao6vtc5y5--
+Thank Yours
+Sgt,Arnett David

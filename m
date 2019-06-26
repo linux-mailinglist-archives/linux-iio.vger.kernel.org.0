@@ -2,75 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A675C55586
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2019 19:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C1A656837
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2019 14:07:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728701AbfFYRJy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Jun 2019 13:09:54 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:58508 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727039AbfFYRJy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Jun 2019 13:09:54 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 366BD2604D6
-Subject: Re: [PATCH v3 0/2] Support accelerometers for veyron_minnie
-To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org,
-        bleung@chromium.org, groeck@chromium.org,
-        fabien.lahoudere@collabora.com, dianders@chromium.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190624225312.131745-1-gwendal@chromium.org>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <5326bfb8-611f-765b-1c9c-c95032102c71@collabora.com>
-Date:   Tue, 25 Jun 2019 19:09:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        id S1726242AbfFZMHN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Jun 2019 08:07:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48172 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726104AbfFZMHN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 26 Jun 2019 08:07:13 -0400
+Received: from pobox.suse.cz (prg-ext-pat.suse.com [213.151.95.130])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A4EAD20656;
+        Wed, 26 Jun 2019 12:07:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561550832;
+        bh=jXGutaTjejtrAQAneu9IrbdI/efrD3y52cxsTEwVDGY=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=Ad1D0480qprxHCrqmW/MmgrEoYC0r8Fietb9QqJ476F3/oGBFdWBuCtThCCWv46mf
+         ugAzLfn773BdCrbVgTfERcWmSU/Ah8Upw0PFL/EEUKYMu3kgKQRGLcZJ6e47EeuWg8
+         JH3qavwhxXvLxOLFksZdedReoTCyJ5jfNsCXJ1ew=
+Date:   Wed, 26 Jun 2019 14:07:08 +0200 (CEST)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     hongyan.song@intel.com
+cc:     srinivas.pandruvada@linux.intel.com, linux-input@vger.kernel.org,
+        linux-iio@vger.kernel.org, hdegoede@redhat.com, jic23@kernel.org,
+        even.xu@intel.com
+Subject: Re: [PATCH v3] hid: remove NO_D3 flag when remove driver
+In-Reply-To: <1559434641-11783-1-git-send-email-hongyan.song@intel.com>
+Message-ID: <nycvar.YFH.7.76.1906261406120.27227@cbobk.fhfr.pm>
+References: <1559434641-11783-1-git-send-email-hongyan.song@intel.com>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <20190624225312.131745-1-gwendal@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Sun, 2 Jun 2019, hongyan.song@intel.com wrote:
 
-On 25/6/19 0:53, Gwendal Grignou wrote:
-> veyron_minnie - ASUS Chromebook Flip C100PA - embedded controller
-> controls two accelerometers, one in the lid, one in the base.
-> However, the EC firmware does not follow the new interface that
-> cros_ec_accel driver use.
-> Extend the legacy driver used on glimmer - Lenovo ThinkPad 11e
-> Chromebook - to veyron_minnie.
-> veyron_minnie being ARM based, issue command over the I2C bus to the EC
-> instead of relying on the shared registers over LPC.
+> From: Song Hongyan <hongyan.song@intel.com>
 > 
-> Gwendal Grignou (2):
->   iio: cros_ec: Add sign vector in core for backward compatibility
->   iio: cros_ec: Extend legacy support to ARM device
+> Remove the NO_D3 flag when remove the driver and let device enter
+> into D3, it will save more power.
 > 
-> Changes in v3:
-> - Fix commit message, add reviewed-by for first patch.
-> 
-> Changes in v2:
-> - Readd empty line to reduce amount of change in patch.
-> - Remove Keywords used by ChromeOS commit queue.
-> 
->  drivers/iio/accel/Kconfig                     |   4 +-
->  drivers/iio/accel/cros_ec_accel_legacy.c      | 350 ++++--------------
->  .../cros_ec_sensors/cros_ec_sensors_core.c    |   4 +
->  .../linux/iio/common/cros_ec_sensors_core.h   |   1 +
->  4 files changed, 84 insertions(+), 275 deletions(-)
-> 
+> Signed-off-by: Song Hongyan <hongyan.song@intel.com>
+> Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> ---
+> v3 changes: 
+> After test the former implmentation, we found FW will enter D3 when
+> system enter into S0i3. Change the implementation to meet the requirement:
+> device enter D3 and have no impact to ISH platform.
 
-Just a side note that I think that this patch depends on [1] to have the legacy
-sensors working on veyron minnie.
+Srinivas, I'd prefer changes like this to go to Linus tree in merge window 
+and not -rc phase, so I'll do that unless you tell me there is a good 
+reason to push it to Linus still in -rc.
 
-For the full series:
+Thanks,
 
-Tested-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+-- 
+Jiri Kosina
+SUSE Labs
 
-
-[1] https://lkml.org/lkml/2019/6/18/268

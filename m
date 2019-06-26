@@ -2,112 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEAF357176
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2019 21:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4FB85717C
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2019 21:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726359AbfFZTVJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Jun 2019 15:21:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49516 "EHLO mail.kernel.org"
+        id S1726362AbfFZTWk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Jun 2019 15:22:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50720 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726227AbfFZTVI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 26 Jun 2019 15:21:08 -0400
+        id S1726320AbfFZTWk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 26 Jun 2019 15:22:40 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 86B38208E3;
-        Wed, 26 Jun 2019 19:21:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AB0AB20663;
+        Wed, 26 Jun 2019 19:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561576868;
-        bh=MeUtiuq80Z0XHGc2cI3QcUP4twkdPZotPLeqSG+0VvU=;
+        s=default; t=1561576959;
+        bh=VtNAJvPAlN7MdrrgP7iDPLLlHySWmZPh02eLT8C8OTY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=XBeVSqb3Ui14OL0VzT6ePpOYQxsNi3VBOhz8uJJQYuE+OxmmwASDuHezJBB+QtGvS
-         GIZekyIrkKrykiDBQyVo9xN/Ky/d6S9QLrup9CO4iyF4VLLYyCa/AO49IfAB8t+/je
-         PDlUnW3CV3lZ7/0XY2ymwXfCOoYbN2MNmy53fx6c=
-Date:   Wed, 26 Jun 2019 20:21:03 +0100
+        b=x8YmlYDE47jCCCq0hOxKbUZmUuPD58o4abgh3o9iA4aP25U9NrIjpFUKom/d5om8I
+         FXOrzZZtoucm5hyJF86iFs4b/vcijipZYFkM34wLkQEoBgj9rD31MKgOH6tC1tvX9z
+         nkKAzDyAE7kFAeZD5XpTLPIXeSPqOdgp89H/ZtEc=
+Date:   Wed, 26 Jun 2019 20:22:34 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Cc:     Gwendal Grignou <gwendal@chromium.org>, bleung@chromium.org,
-        groeck@chromium.org, fabien.lahoudere@collabora.com,
-        dianders@chromium.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] Support accelerometers for veyron_minnie
-Message-ID: <20190626202103.07e27e5e@archlinux>
-In-Reply-To: <5326bfb8-611f-765b-1c9c-c95032102c71@collabora.com>
-References: <20190624225312.131745-1-gwendal@chromium.org>
-        <5326bfb8-611f-765b-1c9c-c95032102c71@collabora.com>
+To:     Mircea Caprioru <mircea.caprioru@analog.com>
+Cc:     <Michael.Hennerich@analog.com>, <stefan.popa@analog.com>,
+        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
+Subject: Re: [PATCH V4 1/5] iio: adc: ad7124: Remove input number limitation
+Message-ID: <20190626202234.7c4cd0da@archlinux>
+In-Reply-To: <20190625081128.22190-1-mircea.caprioru@analog.com>
+References: <20190625081128.22190-1-mircea.caprioru@analog.com>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 25 Jun 2019 19:09:50 +0200
-Enric Balletbo i Serra <enric.balletbo@collabora.com> wrote:
+On Tue, 25 Jun 2019 11:11:24 +0300
+Mircea Caprioru <mircea.caprioru@analog.com> wrote:
 
-> Hi,
->=20
-> On 25/6/19 0:53, Gwendal Grignou wrote:
-> > veyron_minnie - ASUS Chromebook Flip C100PA - embedded controller
-> > controls two accelerometers, one in the lid, one in the base.
-> > However, the EC firmware does not follow the new interface that
-> > cros_ec_accel driver use.
-> > Extend the legacy driver used on glimmer - Lenovo ThinkPad 11e
-> > Chromebook - to veyron_minnie.
-> > veyron_minnie being ARM based, issue command over the I2C bus to the EC
-> > instead of relying on the shared registers over LPC.
-> >=20
-> > Gwendal Grignou (2):
-> >   iio: cros_ec: Add sign vector in core for backward compatibility
-> >   iio: cros_ec: Extend legacy support to ARM device
-> >=20
-> > Changes in v3:
-> > - Fix commit message, add reviewed-by for first patch.
-> >=20
-> > Changes in v2:
-> > - Readd empty line to reduce amount of change in patch.
-> > - Remove Keywords used by ChromeOS commit queue.
-> >=20
-> >  drivers/iio/accel/Kconfig                     |   4 +-
-> >  drivers/iio/accel/cros_ec_accel_legacy.c      | 350 ++++--------------
-> >  .../cros_ec_sensors/cros_ec_sensors_core.c    |   4 +
-> >  .../linux/iio/common/cros_ec_sensors_core.h   |   1 +
-> >  4 files changed, 84 insertions(+), 275 deletions(-)
-> >  =20
->=20
-> Just a side note that I think that this patch depends on [1] to have the =
-legacy
-> sensors working on veyron minnie.
->=20
-> For the full series:
->=20
-> Tested-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Ah. I was assuming you mean a runtime dependency.  Whereas applying this
-on it's own is giving me a build problem:
+> The driver limits the user to use only 4/8 differential inputs, but this
+> device has the option to use pseudo-differential channels. This will
+> increase the number of channels to be equal with the number of inputs so 8
+> channels for ad7124-4 and 16 for ad7124-8.
+> 
+> This patch removes the check between channel nodes and num_inputs value.
+> 
+> Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
- drivers/iio/accel/cros_ec_accel_legacy.c: In function =E2=80=98cros_ec_acc=
-el_legacy_read_cmd=E2=80=99:
-drivers/iio/accel/cros_ec_accel_legacy.c:50:16: error: =E2=80=98struct <ano=
-nymous>=E2=80=99 has no member named =E2=80=98max_sensor_count=E2=80=99
-   50 |  st->param.dump.max_sensor_count =3D CROS_EC_SENSOR_LEGACY_NUM;
-      |                ^
-make[3]: *** [scripts/Makefile.build:285: drivers/iio/accel/cros_ec_accel_l=
-egacy.o] Error 1
-make[2]: *** [scripts/Makefile.build:489: drivers/iio/accel] Error 2
-make[1]: *** [scripts/Makefile.build:489: drivers/iio] Error 2
+Thanks,
 
-Which I'll assume is related to that other set.
+Jonathan
 
-I'm happy for these to go another route to sit on top of that series.
-If not I'll pick them up for the next cycle via IIO.
-
-Should they go another route,
-
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> for both of them.
-
->=20
->=20
-> [1] https://lkml.org/lkml/2019/6/18/268
+> ---
+> 
+> Changelog v2:
+> - nothing changed here
+> 
+> Changelog v3:
+> - nothing changed here
+> 
+> Changelog v4:
+> - nothing changed here
+> 
+>  drivers/iio/adc/ad7124.c | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> index 659ef37d5fe8..810234db9c0d 100644
+> --- a/drivers/iio/adc/ad7124.c
+> +++ b/drivers/iio/adc/ad7124.c
+> @@ -462,13 +462,6 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+>  		if (ret)
+>  			goto err;
+>  
+> -		if (ain[0] >= st->chip_info->num_inputs ||
+> -		    ain[1] >= st->chip_info->num_inputs) {
+> -			dev_err(indio_dev->dev.parent,
+> -				"Input pin number out of range.\n");
+> -			ret = -EINVAL;
+> -			goto err;
+> -		}
+>  		st->channel_config[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
+>  						  AD7124_CHANNEL_AINM(ain[1]);
+>  		st->channel_config[channel].bipolar =
 

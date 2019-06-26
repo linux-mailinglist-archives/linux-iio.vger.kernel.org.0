@@ -2,26 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F02F0571DF
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2019 21:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFFF8571E0
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2019 21:38:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbfFZTgs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Jun 2019 15:36:48 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:36164 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726104AbfFZTgs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Jun 2019 15:36:48 -0400
+        id S1726227AbfFZTi3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Jun 2019 15:38:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58002 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726104AbfFZTi3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 26 Jun 2019 15:38:29 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 2CBCE9E752A;
-        Wed, 26 Jun 2019 20:36:45 +0100 (BST)
-Date:   Wed, 26 Jun 2019 20:36:44 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: mpu6050: add available scan masks
-Message-ID: <20190626203644.43a100c3@archlinux>
-In-Reply-To: <20190624145651.24320-1-jmaneyrol@invensense.com>
-References: <20190624145651.24320-1-jmaneyrol@invensense.com>
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9C9342080C;
+        Wed, 26 Jun 2019 19:38:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561577908;
+        bh=TYwYKYJL8lPLEpOE7swHjNPloAclMVSkKc9sxkNtf40=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=DivaedGPDB/M4tommm+cqfsNf76BsFk5HIILZ8qd4ioriNfFoGD1H4SqfQJoVPhRa
+         G5DDfcC6uKPsahyzjULaaZqEKDkpIXFsziytq11H18hK/F4NMKFEg0adu1aZLpu6Nf
+         7UlCYWGSTRdxs7d1vOXx28U4hWtqXVmwgbneBo0c=
+Date:   Wed, 26 Jun 2019 20:38:24 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Bastien Nocera <hadess@hadess.net>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: iio-utils: Fix possible incorrect mask calculation
+Message-ID: <20190626203824.2abe12d8@archlinux>
+In-Reply-To: <c4b10f0d0d765c1ae972cdf896ddc490fe898c8a.camel@hadess.net>
+References: <c4b10f0d0d765c1ae972cdf896ddc490fe898c8a.camel@hadess.net>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -31,69 +40,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 24 Jun 2019 14:57:24 +0000
-Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+On Mon, 24 Jun 2019 13:34:47 +0200
+Bastien Nocera <hadess@hadess.net> wrote:
 
-> Only allow 3-axis gyro and/or 3-axis accel.
-> For icm20602, temp data is mandatory for all conf.
+> On some machines, iio-sensor-proxy was returning all 0's for IIO sensor
+> values. It turns out that the bits_used for this sensor is 32, which makes
+> the mask calculation:
 > 
-> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Hi Jean-Baptiste,
+> *mask = (1 << 32) - 1;
+> 
+> If the compiler interprets the 1 literals as 32-bit ints, it generates
+> undefined behavior depending on compiler version and optimization level.
+> On my system, it optimizes out the shift, so the mask value becomes
+> 
+> *mask = (1) - 1;
+> 
+> With a mask value of 0, iio-sensor-proxy will always return 0 for every axis.
+> 
+> Avoid incorrect 0 values caused by compiler optimization.
+> 
+> See original fix by Brett Dutro <brett.dutro@gmail.com> in
+> iio-sensor-proxy:
+> https://github.com/hadess/iio-sensor-proxy/commit/9615ceac7c134d838660e209726cd86aa2064fd3
 
-Is this policy or a hardware requirement, and hence a fix for
-the driver?  If it's a fix, please make that clearer and add
-a fixes tag.
+Needs a Signed-off-by:
 
-Thanks,
+Otherwise good fix!
 
 Jonathan
 
 > ---
->  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+>  tools/iio/iio_utils.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> index 385f14a4d5a7..bfd6d093e54d 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> @@ -851,6 +851,13 @@ static const struct iio_chan_spec inv_mpu_channels[] = {
->  	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_SCAN_ACCL_Z),
->  };
+> diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
+> index a22b6e8fad46..7399eb7f1378 100644
+> --- a/tools/iio/iio_utils.c
+> +++ b/tools/iio/iio_utils.c
+> @@ -156,9 +156,9 @@ int iioutils_get_type(unsigned *is_signed, unsigned *bytes, unsigned *bits_used,
+>  			*be = (endianchar == 'b');
+>  			*bytes = padint / 8;
+>  			if (*bits_used == 64)
+> -				*mask = ~0;
+> +				*mask = ~(0ULL);
+>  			else
+> -				*mask = (1ULL << *bits_used) - 1;
+> +				*mask = (1ULL << *bits_used) - 1ULL;
 >  
-> +static const unsigned long inv_mpu_scan_masks[] = {
-> +	0x07,	/* 3-axis accel */
-> +	0x38,	/* 3-axis gyro */
-> +	0x3F,	/* 6-axis accel + gyro */
-> +	0,
-> +};
-> +
->  static const struct iio_chan_spec inv_icm20602_channels[] = {
->  	IIO_CHAN_SOFT_TIMESTAMP(INV_ICM20602_SCAN_TIMESTAMP),
->  	{
-> @@ -877,6 +884,13 @@ static const struct iio_chan_spec inv_icm20602_channels[] = {
->  	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_ICM20602_SCAN_ACCL_Z),
->  };
->  
-> +static const unsigned long inv_icm20602_scan_masks[] = {
-> +	0x0F,	/* 3-axis accel + temp (mandatory) */
-> +	0x78,	/* 3-axis gyro + temp (mandatory) */
-> +	0x7F,	/* 6-axis accel + gyro + temp (mandatory) */
-> +	0,
-> +};
-> +
->  /*
->   * The user can choose any frequency between INV_MPU6050_MIN_FIFO_RATE and
->   * INV_MPU6050_MAX_FIFO_RATE, but only these frequencies are matched by the
-> @@ -1136,9 +1150,11 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
->  	if (chip_type == INV_ICM20602) {
->  		indio_dev->channels = inv_icm20602_channels;
->  		indio_dev->num_channels = ARRAY_SIZE(inv_icm20602_channels);
-> +		indio_dev->available_scan_masks = inv_icm20602_scan_masks;
->  	} else {
->  		indio_dev->channels = inv_mpu_channels;
->  		indio_dev->num_channels = ARRAY_SIZE(inv_mpu_channels);
-> +		indio_dev->available_scan_masks = inv_mpu_scan_masks;
->  	}
->  
->  	indio_dev->info = &mpu_info;
+>  			*is_signed = (signchar == 's');
+>  			if (fclose(sysfsfp)) {
+> 
 

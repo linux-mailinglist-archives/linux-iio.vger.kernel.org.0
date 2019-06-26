@@ -2,93 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B5E5721A
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2019 22:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 112015721F
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2019 22:00:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726531AbfFZUAC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Jun 2019 16:00:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36506 "EHLO mail.kernel.org"
+        id S1726271AbfFZUAt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Jun 2019 16:00:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37044 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726104AbfFZUAB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 26 Jun 2019 16:00:01 -0400
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726104AbfFZUAs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 26 Jun 2019 16:00:48 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EE3DB217D4;
-        Wed, 26 Jun 2019 20:00:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F14BD208E3;
+        Wed, 26 Jun 2019 20:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561579201;
-        bh=PqkQacy8e28qP3sUTBhoHayPPBYArIhVloWeM/yincM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=0TnV2TM+KzAMvU87BxAxZvIfn2O43BItJkPjOAxnXJJbRL7twuT6s8UmGCGTQQPMf
-         y/iRLLHN4+NXEi2N0uza+PD3gq2vWSTIcJU15mINmVGI7UXqIBRGCvBkz+G+FUXiiI
-         4isHic/ZCW2TRL6tf7kAb+Ul5hlkYJRHqy23BCOo=
-Received: by mail-qt1-f181.google.com with SMTP id w40so3847113qtk.0;
-        Wed, 26 Jun 2019 13:00:00 -0700 (PDT)
-X-Gm-Message-State: APjAAAUYdI2livavuRGssqdAKph+DmhuBXAGcS9EqmTRmPX4l/LTBJ+k
-        hCO4/Bmviyukme9M8EUBZ6WOEG3gEKIJAtgMsg==
-X-Google-Smtp-Source: APXvYqzq5VKBQtvH5B3vNDjgzQKna5ozyimyAo13hCtAdjYwyS3AUtxMI+8ovK7r0ch9L898z9KqjFrg6te9ckWuQB4=
-X-Received: by 2002:ac8:368a:: with SMTP id a10mr5473062qtc.143.1561579200198;
- Wed, 26 Jun 2019 13:00:00 -0700 (PDT)
+        s=default; t=1561579247;
+        bh=noTqyNIwJyLDx8XJ2EstO7aBoUGnOC8TvIrd50fKSls=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=xcTa4fUI1752dJ1ZEfNu+4cOMWwsYWr24+5OYtJ4Prr5hg92/EhydxJf/zmMVHQWp
+         ZrfR/+00DMolQiujaTnttLbiOsYaQwQlm6fAVFdGDPuwis+1+IdUEWhYVb9OHqZpZy
+         qPCzYfl7c4I7LWPTcGrZMSJY9uIPY1h65ieNfKOw=
+Date:   Wed, 26 Jun 2019 21:00:42 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Artur Rojek <contact@artur-rojek.eu>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 3/4] IIO: Ingenic JZ47xx: Set clock divider on probe
+Message-ID: <20190626210042.386ae6e2@archlinux>
+In-Reply-To: <20190623184732.5492-3-contact@artur-rojek.eu>
+References: <20190623184732.5492-1-contact@artur-rojek.eu>
+        <20190623184732.5492-3-contact@artur-rojek.eu>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <1561389236-26464-1-git-send-email-stefan.popa@analog.com>
-In-Reply-To: <1561389236-26464-1-git-send-email-stefan.popa@analog.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Wed, 26 Jun 2019 13:59:49 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL-Pxef5oNAx5-crGxL9Q0Ph5gx2Z=KejLSq_jdgVUvbQ@mail.gmail.com>
-Message-ID: <CAL_JsqL-Pxef5oNAx5-crGxL9Q0Ph5gx2Z=KejLSq_jdgVUvbQ@mail.gmail.com>
-Subject: Re: [PATCH 4/4] iio: frequency: adf4371: Add support for output stage mute
-To:     Stefan Popa <stefan.popa@analog.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 24, 2019 at 9:14 AM Stefan Popa <stefan.popa@analog.com> wrote:
->
-> Another feature of the ADF4371/ADF4372 is that the supply current to the
-> RF8P and RF8N output stage can shut down until the ADF4371 achieves lock
-> as measured by the digital lock detect circuitry. The mute to lock
-> detect bit (MUTE_LD) in REG25 enables this function.
->
-> Signed-off-by: Stefan Popa <stefan.popa@analog.com>
+On Sun, 23 Jun 2019 20:47:31 +0200
+Artur Rojek <contact@artur-rojek.eu> wrote:
+
+> From: Maarten ter Huurne <maarten@treewalker.org>
+> 
+> The SADC component can run at up to 8 MHz on JZ4725B, but is fed
+> a 12 MHz input clock (EXT). Divide it by two to get 6 MHz, then
+> set up another divider to match, to produce a 10us clock.
+> 
+> If the clock dividers are left on their power-on defaults (a divider
+> of 1), the SADC mostly works, but will occasionally produce erroneous
+> readings. This led to button presses being detected out of nowhere on
+> the RS90 every few minutes. With this change, no ghost button presses
+> were logged in almost a day worth of testing.
+> 
+> The ADCLK register for configuring clock dividers doesn't exist on
+> JZ4740, so avoid writing it there.
+> 
+> A function has been introduced rather than a flag because there is a lot
+> of variation between the ADCLK registers on JZ47xx SoCs, both in
+> the internal layout of the register and in the frequency range
+> supported by the SADC. So this solution should make it easier
+> to add support for other JZ47xx SoCs later.
+> 
+> Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+This sounds like it perhaps should be marked as a fix and have appropriate
+fixes tag?  Otherwise, looks fine to me.
+
+Jonathan
+
 > ---
->  .../devicetree/bindings/iio/frequency/adf4371.yaml          |  6 ++++++
+>  drivers/iio/adc/ingenic-adc.c | 54 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 54 insertions(+)
+> 
+> diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
+> index 92b1d5037ac9..e234970b7150 100644
+> --- a/drivers/iio/adc/ingenic-adc.c
+> +++ b/drivers/iio/adc/ingenic-adc.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/iio/iio.h>
+>  #include <linux/io.h>
+>  #include <linux/iopoll.h>
+> +#include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/platform_device.h>
+> @@ -22,8 +23,11 @@
+>  #define JZ_ADC_REG_ADTCH		0x18
+>  #define JZ_ADC_REG_ADBDAT		0x1c
+>  #define JZ_ADC_REG_ADSDAT		0x20
+> +#define JZ_ADC_REG_ADCLK		0x28
+>  
+>  #define JZ_ADC_REG_CFG_BAT_MD		BIT(4)
+> +#define JZ_ADC_REG_ADCLK_CLKDIV_LSB	0
+> +#define JZ_ADC_REG_ADCLK_CLKDIV10US_LSB	16
+>  
+>  #define JZ_ADC_AUX_VREF				3300
+>  #define JZ_ADC_AUX_VREF_BITS			12
+> @@ -34,6 +38,8 @@
+>  #define JZ4740_ADC_BATTERY_HIGH_VREF		(7500 * 0.986)
+>  #define JZ4740_ADC_BATTERY_HIGH_VREF_BITS	12
+>  
+> +struct ingenic_adc;
+> +
+>  struct ingenic_adc_soc_data {
+>  	unsigned int battery_high_vref;
+>  	unsigned int battery_high_vref_bits;
+> @@ -41,6 +47,7 @@ struct ingenic_adc_soc_data {
+>  	size_t battery_raw_avail_size;
+>  	const int *battery_scale_avail;
+>  	size_t battery_scale_avail_size;
+> +	int (*init_clk_div)(struct device *dev, struct ingenic_adc *adc);
+>  };
+>  
+>  struct ingenic_adc {
+> @@ -151,6 +158,42 @@ static const int jz4740_adc_battery_scale_avail[] = {
+>  	JZ_ADC_BATTERY_LOW_VREF, JZ_ADC_BATTERY_LOW_VREF_BITS,
+>  };
+>  
+> +static int jz4725b_adc_init_clk_div(struct device *dev, struct ingenic_adc *adc)
+> +{
+> +	struct clk *parent_clk;
+> +	unsigned long parent_rate, rate;
+> +	unsigned int div_main, div_10us;
+> +
+> +	parent_clk = clk_get_parent(adc->clk);
+> +	if (!parent_clk) {
+> +		dev_err(dev, "ADC clock has no parent\n");
+> +		return -ENODEV;
+> +	}
+> +	parent_rate = clk_get_rate(parent_clk);
+> +
+> +	/*
+> +	 * The JZ4725B ADC works at 500 kHz to 8 MHz.
+> +	 * We pick the highest rate possible.
+> +	 * In practice we typically get 6 MHz, half of the 12 MHz EXT clock.
+> +	 */
+> +	div_main = DIV_ROUND_UP(parent_rate, 8000000);
+> +	div_main = clamp(div_main, 1u, 64u);
+> +	rate = parent_rate / div_main;
+> +	if (rate < 500000 || rate > 8000000) {
+> +		dev_err(dev, "No valid divider for ADC main clock\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* We also need a divider that produces a 10us clock. */
+> +	div_10us = DIV_ROUND_UP(rate, 100000);
+> +
+> +	writel(((div_10us - 1) << JZ_ADC_REG_ADCLK_CLKDIV10US_LSB) |
+> +	       (div_main - 1) << JZ_ADC_REG_ADCLK_CLKDIV_LSB,
+> +	       adc->base + JZ_ADC_REG_ADCLK);
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct ingenic_adc_soc_data jz4725b_adc_soc_data = {
+>  	.battery_high_vref = JZ4725B_ADC_BATTERY_HIGH_VREF,
+>  	.battery_high_vref_bits = JZ4725B_ADC_BATTERY_HIGH_VREF_BITS,
+> @@ -158,6 +201,7 @@ static const struct ingenic_adc_soc_data jz4725b_adc_soc_data = {
+>  	.battery_raw_avail_size = ARRAY_SIZE(jz4725b_adc_battery_raw_avail),
+>  	.battery_scale_avail = jz4725b_adc_battery_scale_avail,
+>  	.battery_scale_avail_size = ARRAY_SIZE(jz4725b_adc_battery_scale_avail),
+> +	.init_clk_div = jz4725b_adc_init_clk_div,
+>  };
+>  
+>  static const struct ingenic_adc_soc_data jz4740_adc_soc_data = {
+> @@ -167,6 +211,7 @@ static const struct ingenic_adc_soc_data jz4740_adc_soc_data = {
+>  	.battery_raw_avail_size = ARRAY_SIZE(jz4740_adc_battery_raw_avail),
+>  	.battery_scale_avail = jz4740_adc_battery_scale_avail,
+>  	.battery_scale_avail_size = ARRAY_SIZE(jz4740_adc_battery_scale_avail),
+> +	.init_clk_div = NULL, /* no ADCLK register on JZ4740 */
+>  };
+>  
+>  static int ingenic_adc_read_avail(struct iio_dev *iio_dev,
+> @@ -317,6 +362,15 @@ static int ingenic_adc_probe(struct platform_device *pdev)
+>  		return ret;
+>  	}
+>  
+> +	/* Set clock dividers. */
+> +	if (soc_data->init_clk_div) {
+> +		ret = soc_data->init_clk_div(dev, adc);
+> +		if (ret) {
+> +			clk_disable_unprepare(adc->clk);
+> +			return ret;
+> +		}
+> +	}
+> +
+>  	/* Put hardware in a known passive state. */
+>  	writeb(0x00, adc->base + JZ_ADC_REG_ENABLE);
+>  	writeb(0xff, adc->base + JZ_ADC_REG_CTRL);
 
-If you resend and in the future, please split bindings to separate patch.
-
->  drivers/iio/frequency/adf4371.c                             | 13 +++++++++++++
->  2 files changed, 19 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> index a268a9d..6db8742 100644
-> --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> @@ -32,6 +32,12 @@ properties:
->      items:
->        - clkin
->
-> +  adi,mute-till-lock-en:
-> +    description:
-> +      If this property is present, then the supply current to RF8P and RF8N
-> +      output stage will shut down until the ADF4371/ADF4372 achieves lock as
-> +      measured by the digital lock detect circuitry.
-
-You need to define the type:
-
-type: boolean
-
-Maybe Jonathan will fix up.
-
-Rob

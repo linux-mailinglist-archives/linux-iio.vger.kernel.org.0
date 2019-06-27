@@ -2,136 +2,203 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6765A58690
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 17:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25841589F0
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 20:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726563AbfF0P7h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Jun 2019 11:59:37 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:47114 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726187AbfF0P7h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jun 2019 11:59:37 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 8A4A0285135
-Subject: Re: [PATCH 1/2] iio: common: cros_ec_sensors: determine protocol
- version
-To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Cc:     kernel@collabora.com, Nick Vaccaro <nvaccaro@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        id S1726426AbfF0S2V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Jun 2019 14:28:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56674 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726384AbfF0S2V (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 27 Jun 2019 14:28:21 -0400
+Received: from earth.universe (unknown [185.62.205.103])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9D92F205F4;
+        Thu, 27 Jun 2019 18:28:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561660100;
+        bh=taqyQ1APEgX+EVCAzATmMcA2vqF2xWfz1x10hWSRsgI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hR15WHn5VGnYjJBJF3P3KfFz2mIU6gWMdyBW1J9JfNrAe3Wkox4nvnMreFyFc8Oga
+         gHHKlRxzScRITQpZl1lYB4jheGTy3CTkrWujVUNozMy3/DQtRu1+16z5GQ7OQZL9gE
+         dfQ26EIv4VN+fxjVF3qFiQDlpLL05BiHlURmYc7g=
+Received: by earth.universe (Postfix, from userid 1000)
+        id 66ADF3C08D5; Thu, 27 Jun 2019 20:28:17 +0200 (CEST)
+Date:   Thu, 27 Jun 2019 20:28:17 +0200
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-i2c@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        devel@driverdev.osuosl.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Doug Anderson <dianders@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Enrico Granata <egranata@chromium.org>
-References: <cover.1561642224.git.fabien.lahoudere@collabora.com>
- <4724b46665d919cae0ea3b60e334053b0b17d686.1561642224.git.fabien.lahoudere@collabora.com>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <f8df78b4-8ae9-f292-cf70-ef682a4a47f4@collabora.com>
-Date:   Thu, 27 Jun 2019 17:59:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 00/34] treewide: simplify getting the adapter of an I2C
+ client
+Message-ID: <20190627182817.5vrfmuzn7kanvtwu@earth.universe>
+References: <20190608105619.593-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-In-Reply-To: <4724b46665d919cae0ea3b60e334053b0b17d686.1561642224.git.fabien.lahoudere@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="dtrjmbi6re7vojrt"
+Content-Disposition: inline
+In-Reply-To: <20190608105619.593-1-wsa+renesas@sang-engineering.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+
+--dtrjmbi6re7vojrt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 Hi,
 
-cc'ing Doug, Gwendal and Enrico that might be interested to give a review.
+On Sat, Jun 08, 2019 at 12:55:39PM +0200, Wolfram Sang wrote:
+> While preparing a refactoring series, I noticed that some drivers use a
+> complicated way of determining the adapter of a client. The easy way is
+> to use the intended pointer: client->adapter
+>=20
+> These drivers do:
+> 	to_i2c_adapter(client->dev.parent);
+>=20
+> The I2C core populates the parent pointer as:
+> 	client->dev.parent =3D &client->adapter->dev;
+>=20
+> Now take into consideration that
+> 	to_i2c_adapter(&adapter->dev);
+>=20
+> is a complicated way of saying 'adapter', then we can even formally
+> prove that the complicated expression can be simplified by using
+> client->adapter.
+>=20
+> The conversion was done using a coccinelle script with some manual
+> indentation fixes applied on top.
+>=20
+> To avoid a brown paper bag mistake, I double checked this on a Renesas
+> Salvator-XS board (R-Car M3N) and verified both expression result in the
+> same pointer. Other than that, the series is only build tested.
+>=20
+> A branch can be found here:
+>=20
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/no_to_ada=
+pter
+>=20
+> Please apply the patches to the individual subsystem trees. There are no
+> dependencies.
+>=20
+> Thanks and kind regards,
+>=20
+>    Wolfram
 
-This patch can be picked alone without 2/2, an is needed to have cros-ec-sensors
-legacy support on ARM (see [1] and [2])
+Thanks, I queued the patches prefixed with "power: supply: [...]".
 
-Jonathan, as [1] and [2] will go through the chrome-platform tree if you don't
-mind I'd also like to carry with this patch once you're fine with it.
+-- Sebastian
 
-Thanks,
-~ Enric
+> Wolfram Sang (34):
+>   clk: clk-cdce706: simplify getting the adapter of a client
+>   gpu: drm: bridge: sii9234: simplify getting the adapter of a client
+>   iio: light: bh1780: simplify getting the adapter of a client
+>   leds: leds-pca955x: simplify getting the adapter of a client
+>   leds: leds-tca6507: simplify getting the adapter of a client
+>   media: i2c: ak881x: simplify getting the adapter of a client
+>   media: i2c: mt9m001: simplify getting the adapter of a client
+>   media: i2c: mt9m111: simplify getting the adapter of a client
+>   media: i2c: mt9p031: simplify getting the adapter of a client
+>   media: i2c: ov2640: simplify getting the adapter of a client
+>   media: i2c: tw9910: simplify getting the adapter of a client
+>   misc: fsa9480: simplify getting the adapter of a client
+>   misc: isl29003: simplify getting the adapter of a client
+>   misc: tsl2550: simplify getting the adapter of a client
+>   mtd: maps: pismo: simplify getting the adapter of a client
+>   power: supply: bq24190_charger: simplify getting the adapter of a client
+>   power: supply: bq24257_charger: simplify getting the adapter of a client
+>   power: supply: bq25890_charger: simplify getting the adapter of a client
+>   power: supply: max14656_charger_detector: simplify getting the adapter
+>     of a client
+>   power: supply: max17040_battery: simplify getting the adapter of a clie=
+nt
+>   power: supply: max17042_battery: simplify getting the adapter of a clie=
+nt
+>   power: supply: rt5033_battery: simplify getting the adapter of a client
+>   power: supply: rt9455_charger: simplify getting the adapter of a client
+>   power: supply: sbs-manager: simplify getting the adapter of a client
+>   regulator: max8952: simplify getting the adapter of a client
+>   rtc: fm3130: simplify getting the adapter of a client
+>   rtc: m41t80: simplify getting the adapter of a client
+>   rtc: rv8803: simplify getting the adapter of a client
+>   rtc: rx8010: simplify getting the adapter of a client
+>   rtc: rx8025: simplify getting the adapter of a client
+>   staging: media: soc_camera: imx074: simplify getting the adapter of a c=
+lient
+>   staging: media: soc_camera: mt9t031: simplify getting the adapter of a =
+client
+>   staging: media: soc_camera: soc_mt9v022: simplify getting the adapter
+>     of a client
+>   usb: typec: tcpm: fusb302: simplify getting the adapter of a client
+>=20
+>  drivers/clk/clk-cdce706.c                        | 2 +-
+>  drivers/gpu/drm/bridge/sii9234.c                 | 4 ++--
+>  drivers/iio/light/bh1780.c                       | 2 +-
+>  drivers/leds/leds-pca955x.c                      | 2 +-
+>  drivers/leds/leds-tca6507.c                      | 2 +-
+>  drivers/media/i2c/ak881x.c                       | 2 +-
+>  drivers/media/i2c/mt9m001.c                      | 2 +-
+>  drivers/media/i2c/mt9m111.c                      | 2 +-
+>  drivers/media/i2c/mt9p031.c                      | 2 +-
+>  drivers/media/i2c/ov2640.c                       | 2 +-
+>  drivers/media/i2c/tw9910.c                       | 3 +--
+>  drivers/misc/fsa9480.c                           | 2 +-
+>  drivers/misc/isl29003.c                          | 2 +-
+>  drivers/misc/tsl2550.c                           | 2 +-
+>  drivers/mtd/maps/pismo.c                         | 2 +-
+>  drivers/power/supply/bq24190_charger.c           | 2 +-
+>  drivers/power/supply/bq24257_charger.c           | 2 +-
+>  drivers/power/supply/bq25890_charger.c           | 2 +-
+>  drivers/power/supply/max14656_charger_detector.c | 2 +-
+>  drivers/power/supply/max17040_battery.c          | 2 +-
+>  drivers/power/supply/max17042_battery.c          | 2 +-
+>  drivers/power/supply/rt5033_battery.c            | 2 +-
+>  drivers/power/supply/rt9455_charger.c            | 2 +-
+>  drivers/power/supply/sbs-manager.c               | 2 +-
+>  drivers/regulator/max8952.c                      | 2 +-
+>  drivers/rtc/rtc-fm3130.c                         | 8 +++-----
+>  drivers/rtc/rtc-m41t80.c                         | 2 +-
+>  drivers/rtc/rtc-rv8803.c                         | 2 +-
+>  drivers/rtc/rtc-rx8010.c                         | 2 +-
+>  drivers/rtc/rtc-rx8025.c                         | 2 +-
+>  drivers/staging/media/soc_camera/imx074.c        | 2 +-
+>  drivers/staging/media/soc_camera/mt9t031.c       | 2 +-
+>  drivers/staging/media/soc_camera/soc_mt9v022.c   | 2 +-
+>  drivers/usb/typec/tcpm/fusb302.c                 | 3 +--
+>  34 files changed, 37 insertions(+), 41 deletions(-)
+>=20
+> --=20
+> 2.19.1
+>=20
 
-[1] https://patchwork.kernel.org/patch/11014329/
-[2] https://patchwork.kernel.org/patch/11014327/
+--dtrjmbi6re7vojrt
+Content-Type: application/pgp-signature; name="signature.asc"
 
-On 27/6/19 16:04, Fabien Lahoudere wrote:
-> This patch adds a function to determine which version of the
-> protocol is used to communicate with EC.
-> 
-> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
+-----BEGIN PGP SIGNATURE-----
 
-Tested-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl0VCsEACgkQ2O7X88g7
++poEpxAAm77/GZ4czva5lDqclyAk1YfbiV55qi+jow32xQwZ17FXo8Ch9G11Qrwl
+famQPiB/pD3r3m2TfihhFAcFjOGiwl9GxQJ+4at64Atab2w5BWh9zwDQWdtT80jF
+3ytFncogbL36MVBgIv5YQUZQiqIiZlUei6lTOnnyfv3PLtvNVbIodxSVYp5qJWMy
+M+qrdy6tAVsuK6yqAwPRhfjBzlmlLZVudUZqbAWKMbK1YBt0rkkSNw9xpF1pLrv6
+zLbGdmBngoivDyNJldn+5bhMiwsDyxf/8E7eblcAMkO/D1oPrb51zV92FFX7qyzT
+eI5KRHwY88XkUuIK25aDnO1bR3eDn3RDcxtW8MMMeRihWX3gNSL+hKZ24XGxOgz5
+L3tL9nm6X6sHg867+V5voAxNACnbgFT/Mrzhal4HGbN8adctDoaSEuiMPAQlAkEG
+PbW3c2B0n+Bav3XksRT4h19t7drSk4a3aR04I/GHc3l9jDQicnDr4DwiVaPpd1UF
+gpPhBXgO4NSZr5yUEzoVOSOsW6WS2k5SFV+sQjU1C5R+oXBH59J9oIMlOOaNKo0w
+rTXxOtxQ38vqyMiQZBLwoTh1remxiOBp+5lwmYWGWYpBDVcr9HB+kzNJPFxDVk5A
+YgiEzXje0LsgjUBgpmiq5YPAmsNIntDezydWTc20Otk1+Vgotgo=
+=CJhg
+-----END PGP SIGNATURE-----
 
-> ---
->  .../cros_ec_sensors/cros_ec_sensors_core.c    | 36 ++++++++++++++++++-
->  1 file changed, 35 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> index 130362ca421b..2e0f97448e64 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> @@ -25,6 +25,31 @@ static char *cros_ec_loc[] = {
->  	[MOTIONSENSE_LOC_MAX] = "unknown",
->  };
->  
-> +static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
-> +					     u16 cmd_offset, u16 cmd, u32 *mask)
-> +{
-> +	int ret;
-> +	struct {
-> +		struct cros_ec_command msg;
-> +		union {
-> +			struct ec_params_get_cmd_versions params;
-> +			struct ec_response_get_cmd_versions resp;
-> +		};
-> +	} __packed buf = {
-> +		.msg = {
-> +			.command = EC_CMD_GET_CMD_VERSIONS + cmd_offset,
-> +			.insize = sizeof(struct ec_response_get_cmd_versions),
-> +			.outsize = sizeof(struct ec_params_get_cmd_versions)
-> +			},
-> +		.params = {.cmd = cmd}
-> +	};
-> +
-> +	ret = cros_ec_cmd_xfer_status(ec_dev, &buf.msg);
-> +	if (ret >= 0)
-> +		*mask = buf.resp.version_mask;
-> +	return ret;
-> +}
-> +
->  int cros_ec_sensors_core_init(struct platform_device *pdev,
->  			      struct iio_dev *indio_dev,
->  			      bool physical_device)
-> @@ -33,6 +58,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->  	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
->  	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
->  	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
-> +	u32 ver_mask;
-> +	int ret;
->  
->  	platform_set_drvdata(pdev, indio_dev);
->  
-> @@ -47,8 +74,15 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->  
->  	mutex_init(&state->cmd_lock);
->  
-> +	ret = cros_ec_get_host_cmd_version_mask(state->ec,
-> +						ec->cmd_offset,
-> +						EC_CMD_MOTION_SENSE_CMD,
-> +						&ver_mask);
-> +	if (ret < 0)
-> +		return ret;
-> +
->  	/* Set up the host command structure. */
-> -	state->msg->version = 2;
-> +	state->msg->version = fls(ver_mask) - 1;;
->  	state->msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
->  	state->msg->outsize = sizeof(struct ec_params_motion_sense);
->  
-> 
+--dtrjmbi6re7vojrt--

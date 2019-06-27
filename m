@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 497B4577AE
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 02:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BA9576BF
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 02:42:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726906AbfF0Aq4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Jun 2019 20:46:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43818 "EHLO mail.kernel.org"
+        id S1729083AbfF0Alg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Jun 2019 20:41:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45340 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727150AbfF0Ajl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 26 Jun 2019 20:39:41 -0400
+        id S1729519AbfF0Alg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 26 Jun 2019 20:41:36 -0400
 Received: from sasha-vm.mshome.net (unknown [107.242.116.147])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8ADD621852;
-        Thu, 27 Jun 2019 00:39:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E7F18205ED;
+        Thu, 27 Jun 2019 00:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561595980;
-        bh=ASAyQwDJn9ijxd0J2ft20g97IVewi6vMKx3OIQ4Trrw=;
+        s=default; t=1561596095;
+        bh=VsJkr3EEXuQFoL6/yfyS1qSeCsV8OtZ4xaSs7kkoeF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z4bufO8dfzpP3oMeFpCNTLdtc737GcqYMpef47nPbHC5c8Y7BDk7IahaQ5qyHu9Qn
-         g3sonQuMw0M8jE280GId1/mtahzXFhG7PlEMhjgFHYiry57xgE4h5crxxPQ1foeZ2I
-         6hziOtDe/+Ss6ncZz08LYMKncKQc4F9Cz9SRv4YY=
+        b=IemOrleWVxw6e2s8I/XTD2l5uTuefyQSg+NWYpxNIjBv/ajh4vuj9UPEFKbZDREBc
+         Uuh7j6YdYb4yoeYj4C/gO+Z+OOOjyk/ZNUnEav4TQgszaQkmHmT8jkfhgl0ejT+2WB
+         HJc8SFCAfh13mZOzySlweDXKdUgILATSQc9RSXnE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Melissa Wen <melissa.srw@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org,
         devel@driverdev.osuosl.org
-Subject: [PATCH AUTOSEL 4.14 04/35] staging:iio:ad7150: fix threshold mode config bit
-Date:   Wed, 26 Jun 2019 20:38:52 -0400
-Message-Id: <20190627003925.21330-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 03/21] staging:iio:ad7150: fix threshold mode config bit
+Date:   Wed, 26 Jun 2019 20:41:03 -0400
+Message-Id: <20190627004122.21671-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190627003925.21330-1-sashal@kernel.org>
-References: <20190627003925.21330-1-sashal@kernel.org>
+In-Reply-To: <20190627004122.21671-1-sashal@kernel.org>
+References: <20190627004122.21671-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,7 +65,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 11 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
-index a6f249e9c1e1..4d218d554878 100644
+index 50a5b0c2cc7b..7ab95efcf1dc 100644
 --- a/drivers/staging/iio/cdc/ad7150.c
 +++ b/drivers/staging/iio/cdc/ad7150.c
 @@ -6,6 +6,7 @@

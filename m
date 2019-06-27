@@ -2,100 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C408585F8
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 17:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50CF358641
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 17:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726543AbfF0PgF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Jun 2019 11:36:05 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:42082 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726487AbfF0PgF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jun 2019 11:36:05 -0400
-Received: by mail-qt1-f194.google.com with SMTP id s15so2877590qtk.9;
-        Thu, 27 Jun 2019 08:36:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/typNmvfpo6n2nRWYXCSUtwpwFH0hbL1yifmGXDUXjA=;
-        b=peRBWqan6O6qEXFrXMteK+MS/S6EgfTXZknPJIwL1M5qATYKuCAnVnswVGIz0kw/3l
-         1eh1hRoMzqQpJPcZzgMzjbgit1Gd+w7m0vxVe6gzt7+gns0LL0Vvsu0FovJBw4qY3jBW
-         cVCY/3llpZSz+tCeYEYkKg3W9++z02KrtN9gunaamIdgAVfZUxEDWsXSQbbDurVQ9CY0
-         1XxBO8+i3JTX7cf7l9SLAlLSwFGYEWOgy0QMlwzfsSotEfr+dk8uGELV1Tkuf9V7cN0K
-         kKVDbFZCz5bPh6NWJOuvrfrdiQSFy3dVPPNG0xmr9lRBFPgyR3pNflPytw8EHZZw4F67
-         qPEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/typNmvfpo6n2nRWYXCSUtwpwFH0hbL1yifmGXDUXjA=;
-        b=dk/33UOLxaB2yvvEYpEAET1hDquLob4Q5iFpteUpR4HZ1YGZXYwi5bNWBRa7mBAXwM
-         VSs3X9UWpTeTEMIDbtyiS1GuL6pgJrmtRD4GH3yjjbMCLrZqCYR4OGmlC7pH3/c7wY7i
-         8JQctS/uPNH7nbnU81UTtYHXb8eqN7Dsy4j+rvp9Xxus1HqOm9bWl6P9FhamieKHRLZz
-         upOnD/IoFnf33znkyvp0ZMZhr6HXppk0QmQHq/uKOcgEWO1fJIiQssDMtAQVIwHBmRJa
-         GBHXZi8uKkNqahiMFrGS6whP+LYSlngj7c9NG1jjul0lIlay0LKaKLOoD4d8LQzNigTt
-         WYog==
-X-Gm-Message-State: APjAAAWD6wVMLLxZFSbTDz54gVOa0U4Y4k+cC9Wswh6js/Acqw1goY1P
-        2cQRwoic8xMWKM70zY9xOUuZAb5KyetXZFPnGHg=
-X-Google-Smtp-Source: APXvYqwRhORZGW0V54k9ULDweW2/6DUQ4z65MN7Pekp9eOnYcCEx+B33+W4hd8MKVTFRI3t5MsdqRzBWYOChM2ngRfY=
-X-Received: by 2002:ac8:336a:: with SMTP id u39mr3710752qta.178.1561649764161;
- Thu, 27 Jun 2019 08:36:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190624225312.131745-1-gwendal@chromium.org> <20190624225312.131745-3-gwendal@chromium.org>
- <CAD=FV=WYg8d8ZHqcH7LWsSXx5-9kNP+nC+eS84=XNdaZi_7_-w@mail.gmail.com>
-In-Reply-To: <CAD=FV=WYg8d8ZHqcH7LWsSXx5-9kNP+nC+eS84=XNdaZi_7_-w@mail.gmail.com>
-From:   Enric Balletbo Serra <eballetbo@gmail.com>
-Date:   Thu, 27 Jun 2019 17:35:52 +0200
-Message-ID: <CAFqH_52MDbGL+ixpf7bueLcdV_oo3AJ9iDZGfxVyga0W3VK25g@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] iio: cros_ec: Extend legacy support to ARM device
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        id S1726315AbfF0PtC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Jun 2019 11:49:02 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:47070 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726187AbfF0PtC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jun 2019 11:49:02 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 9D6C2285135
+Subject: Re: [PATCH 2/2] iio: common: cros_ec_sensors: set default frequencies
+To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Cc:     kernel@collabora.com, Nick Vaccaro <nvaccaro@chromium.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1561642224.git.fabien.lahoudere@collabora.com>
+ <7d3972d1200065fe6e98a310e66f53a7ed12e281.1561642224.git.fabien.lahoudere@collabora.com>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <6ca7ee49-51f9-a65f-5f71-0eac04ee9434@collabora.com>
+Date:   Thu, 27 Jun 2019 17:48:57 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
+MIME-Version: 1.0
+In-Reply-To: <7d3972d1200065fe6e98a310e66f53a7ed12e281.1561642224.git.fabien.lahoudere@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Hi Fabien,
 
-Missatge de Doug Anderson <dianders@chromium.org> del dia dc., 26 de
-juny 2019 a les 23:06:
->
-> Hi,
->
-> On Mon, Jun 24, 2019 at 3:53 PM Gwendal Grignou <gwendal@chromium.org> wrote:
-> >
-> > -static int read_ec_accel_data(struct cros_ec_accel_legacy_state *st,
-> > -                             unsigned long scan_mask, s16 *data)
-> > +int cros_ec_accel_legacy_read_cmd(struct iio_dev *indio_dev,
-> > +                                 unsigned long scan_mask, s16 *data)
->
-> As found by 0day (see https://crrev.com/c/1678822), the
-> cros_ec_accel_legacy_read_cmd() should have been static.
->
-> I presume this will cause less confusion if a maintainer just fixes
-> this up when landing the patch so Gwendal shouldn't send out a new
-> version to fix it.  ...but if this is not the case then yell!  :-)
->
+On 27/6/19 16:04, Fabien Lahoudere wrote:
+> Version 3 of the EC protocol provides min and max frequencies for EC sensors.
+> Default frequencies are provided for earlier protocol.
+> 
 
-As probably will go through the chrome-platform tree I'll fix this
-when I apply the patch. No need to resend.
+This patch should really go together with a respin of your previous patchset to
+'Expose cros_ec_sensors frequency range via iio sysfs' [1]
 
-Gwendal, Doug, to have cros-ec-sensors legacy support for ARM in
-upstream, could you spend 5 min reviewing the following patch?
+[1] https://www.spinics.net/lists/linux-iio/msg44963.html
 
-https://lore.kernel.org/patchwork/patch/1094790/
-
-I'll also test it.
-
-Thanks,
-~ Enric
-
-> -Doug
+> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+> Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
+> ---
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 44 +++++++++++++++++++
+>  .../linux/iio/common/cros_ec_sensors_core.h   |  3 ++
+>  2 files changed, 47 insertions(+)
+> 
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 2e0f97448e64..72f56d54cccd 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -50,6 +50,37 @@ static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
+>  	return ret;
+>  }
+>  
+> +static void get_default_min_max_freq(enum motionsensor_type type,
+> +				     u32 *min_freq,
+> +				     u32 *max_freq)
+> +{
+> +	switch (type) {
+> +	case MOTIONSENSE_TYPE_ACCEL:
+> +	case MOTIONSENSE_TYPE_GYRO:
+> +		*min_freq = 12500;
+> +		*max_freq = 100000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_MAG:
+> +		*min_freq = 5000;
+> +		*max_freq = 25000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_PROX:
+> +	case MOTIONSENSE_TYPE_LIGHT:
+> +		*min_freq = 100;
+> +		*max_freq = 50000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_BARO:
+> +		*min_freq = 250;
+> +		*max_freq = 20000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_ACTIVITY:
+> +	default:
+> +		*min_freq = 0;
+> +		*max_freq = 0;
+> +		break;
+> +	}
+> +}
+> +
+>  int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  			      struct iio_dev *indio_dev,
+>  			      bool physical_device)
+> @@ -100,6 +131,19 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  		}
+>  		state->type = state->resp->info.type;
+>  		state->loc = state->resp->info.location;
+> +
+> +		/* Value to stop the device */
+> +		state->frequencies[0] = 0;
+> +		if (state->msg->version < 3) {
+> +			get_default_min_max_freq(state->resp->info.type,
+> +						 &state->frequencies[1],
+> +						 &state->frequencies[2]);
+> +		} else {
+> +			state->frequencies[1] =
+> +			    state->resp->info_3.min_frequency;
+> +			state->frequencies[2] =
+> +			    state->resp->info_3.max_frequency;
+> +		}
+>  	}
+>  
+>  	return 0;
+> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+> index 0c636b9fe8d7..94c87da22c04 100644
+> --- a/include/linux/iio/common/cros_ec_sensors_core.h
+> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+> @@ -70,6 +70,9 @@ struct cros_ec_sensors_core_state {
+>  				    unsigned long scan_mask, s16 *data);
+>  
+>  	int curr_sampl_freq;
+> +
+> +	/* Disable, Min and Max Sampling Frequency in mHz */
+> +	int frequencies[3];
+>  };
+>  
+>  /**
+> 

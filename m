@@ -2,120 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99BA9576BF
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 02:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 311015772A
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 02:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729083AbfF0Alg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Jun 2019 20:41:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45340 "EHLO mail.kernel.org"
+        id S1729872AbfF0AnW convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 26 Jun 2019 20:43:22 -0400
+Received: from mga09.intel.com ([134.134.136.24]:11270 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729519AbfF0Alg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 26 Jun 2019 20:41:36 -0400
-Received: from sasha-vm.mshome.net (unknown [107.242.116.147])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E7F18205ED;
-        Thu, 27 Jun 2019 00:41:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561596095;
-        bh=VsJkr3EEXuQFoL6/yfyS1qSeCsV8OtZ4xaSs7kkoeF8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IemOrleWVxw6e2s8I/XTD2l5uTuefyQSg+NWYpxNIjBv/ajh4vuj9UPEFKbZDREBc
-         Uuh7j6YdYb4yoeYj4C/gO+Z+OOOjyk/ZNUnEav4TQgszaQkmHmT8jkfhgl0ejT+2WB
-         HJc8SFCAfh13mZOzySlweDXKdUgILATSQc9RSXnE=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Melissa Wen <melissa.srw@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org,
-        devel@driverdev.osuosl.org
-Subject: [PATCH AUTOSEL 4.9 03/21] staging:iio:ad7150: fix threshold mode config bit
-Date:   Wed, 26 Jun 2019 20:41:03 -0400
-Message-Id: <20190627004122.21671-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190627004122.21671-1-sashal@kernel.org>
-References: <20190627004122.21671-1-sashal@kernel.org>
+        id S1729871AbfF0AnW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 26 Jun 2019 20:43:22 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Jun 2019 17:43:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,421,1557212400"; 
+   d="scan'208";a="360515306"
+Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
+  by fmsmga005.fm.intel.com with ESMTP; 26 Jun 2019 17:43:20 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx107.amr.corp.intel.com (10.18.124.205) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 26 Jun 2019 17:43:20 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Wed, 26 Jun 2019 17:43:19 -0700
+Received: from shsmsx105.ccr.corp.intel.com (10.239.4.158) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
+ via Frontend Transport; Wed, 26 Jun 2019 17:43:19 -0700
+Received: from shsmsx103.ccr.corp.intel.com ([169.254.4.83]) by
+ SHSMSX105.ccr.corp.intel.com ([169.254.11.72]) with mapi id 14.03.0439.000;
+ Thu, 27 Jun 2019 08:43:18 +0800
+From:   "Song, Hongyan" <hongyan.song@intel.com>
+To:     Jiri Kosina <jikos@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+CC:     "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Xu, Even" <even.xu@intel.com>
+Subject: RE: [PATCH v3] hid: remove NO_D3 flag when remove driver
+Thread-Topic: [PATCH v3] hid: remove NO_D3 flag when remove driver
+Thread-Index: AQHVGNiSNbVdT14cSEyAQBwUe1GZ/qatd40AgAA4r4CAAGX8AIAAuinA
+Date:   Thu, 27 Jun 2019 00:43:18 +0000
+Message-ID: <AE3E3DFA698D6144A7445C92D1D41E2F10D92AD8@SHSMSX103.ccr.corp.intel.com>
+References: <1559434641-11783-1-git-send-email-hongyan.song@intel.com>
+  <nycvar.YFH.7.76.1906261406120.27227@cbobk.fhfr.pm>
+ <67a1ec6dd44866c29333f5b05184cc402bc20382.camel@linux.intel.com>
+ <nycvar.YFH.7.76.1906262334161.27227@cbobk.fhfr.pm>
+In-Reply-To: <nycvar.YFH.7.76.1906262334161.27227@cbobk.fhfr.pm>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ctpclassification: CTP_NT
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiM2YyYmQyZWYtZDJlMy00NTM1LThhZjEtYzA4MjlkZmFmMjBiIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiRTRYRVp3WDZac2dkemFrUFF1YUIzZjJsNXhpakpZK3lLK1l4OGVqWXhpSDk5ZzJcL1d1andyZjhnNmZoS3FFbGQifQ==
+dlp-product: dlpe-windows
+dlp-version: 11.0.600.7
+dlp-reaction: no-action
+x-originating-ip: [10.239.127.40]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Melissa Wen <melissa.srw@gmail.com>
+Hi,
+Thanks Jiri& Srinivas for the merge schedule information.
 
-[ Upstream commit df4d737ee4d7205aaa6275158aeebff87fd14488 ]
+BR
+Hongyan
+-----Original Message-----
+From: Jiri Kosina [mailto:jikos@kernel.org] 
+Sent: Thursday, June 27, 2019 5:35 AM
+To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Song, Hongyan <hongyan.song@intel.com>; linux-input@vger.kernel.org; linux-iio@vger.kernel.org; hdegoede@redhat.com; jic23@kernel.org; Xu, Even <even.xu@intel.com>
+Subject: Re: [PATCH v3] hid: remove NO_D3 flag when remove driver
 
-According to the AD7150 configuration register description, bit 7 assumes
-value 1 when the threshold mode is fixed and 0 when it is adaptive,
-however, the operation that identifies this mode was considering the
-opposite values.
+On Wed, 26 Jun 2019, Srinivas Pandruvada wrote:
 
-This patch renames the boolean variable to describe it correctly and
-properly replaces it in the places where it is used.
+> > Srinivas, I'd prefer changes like this to go to Linus tree in merge 
+> > window and not -rc phase, so I'll do that unless you tell me there 
+> > is a good reason to push it to Linus still in -rc.
+> Correct. I will tell you if it is important enough to go to -rc 
+> release, otherwise all changes you can assume for the next merge 
+> window.
 
-Fixes: 531efd6aa0991 ("staging:iio:adc:ad7150: chan_spec conv + i2c_smbus commands + drop unused poweroff timeout control.")
-Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/staging/iio/cdc/ad7150.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+Thanks for your confirmation. Now queued in for-5.3/ish.
 
-diff --git a/drivers/staging/iio/cdc/ad7150.c b/drivers/staging/iio/cdc/ad7150.c
-index 50a5b0c2cc7b..7ab95efcf1dc 100644
---- a/drivers/staging/iio/cdc/ad7150.c
-+++ b/drivers/staging/iio/cdc/ad7150.c
-@@ -6,6 +6,7 @@
-  * Licensed under the GPL-2 or later.
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/interrupt.h>
- #include <linux/device.h>
- #include <linux/kernel.h>
-@@ -129,7 +130,7 @@ static int ad7150_read_event_config(struct iio_dev *indio_dev,
- {
- 	int ret;
- 	u8 threshtype;
--	bool adaptive;
-+	bool thrfixed;
- 	struct ad7150_chip_info *chip = iio_priv(indio_dev);
- 
- 	ret = i2c_smbus_read_byte_data(chip->client, AD7150_CFG);
-@@ -137,21 +138,23 @@ static int ad7150_read_event_config(struct iio_dev *indio_dev,
- 		return ret;
- 
- 	threshtype = (ret >> 5) & 0x03;
--	adaptive = !!(ret & 0x80);
-+
-+	/*check if threshold mode is fixed or adaptive*/
-+	thrfixed = FIELD_GET(AD7150_CFG_FIX, ret);
- 
- 	switch (type) {
- 	case IIO_EV_TYPE_MAG_ADAPTIVE:
- 		if (dir == IIO_EV_DIR_RISING)
--			return adaptive && (threshtype == 0x1);
--		return adaptive && (threshtype == 0x0);
-+			return !thrfixed && (threshtype == 0x1);
-+		return !thrfixed && (threshtype == 0x0);
- 	case IIO_EV_TYPE_THRESH_ADAPTIVE:
- 		if (dir == IIO_EV_DIR_RISING)
--			return adaptive && (threshtype == 0x3);
--		return adaptive && (threshtype == 0x2);
-+			return !thrfixed && (threshtype == 0x3);
-+		return !thrfixed && (threshtype == 0x2);
- 	case IIO_EV_TYPE_THRESH:
- 		if (dir == IIO_EV_DIR_RISING)
--			return !adaptive && (threshtype == 0x1);
--		return !adaptive && (threshtype == 0x0);
-+			return thrfixed && (threshtype == 0x1);
-+		return thrfixed && (threshtype == 0x0);
- 	default:
- 		break;
- 	}
--- 
-2.20.1
+--
+Jiri Kosina
+SUSE Labs
 

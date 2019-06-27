@@ -2,276 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5820E5834D
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 15:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC2795834E
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2019 15:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726431AbfF0NTa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Jun 2019 09:19:30 -0400
-Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:49904 "EHLO
+        id S1726536AbfF0NT7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Jun 2019 09:19:59 -0400
+Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:14416 "EHLO
         mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726059AbfF0NTa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jun 2019 09:19:30 -0400
-X-Greylist: delayed 642 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jun 2019 09:19:29 EDT
+        by vger.kernel.org with ESMTP id S1726059AbfF0NT7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jun 2019 09:19:59 -0400
 Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
-        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x5RD4wTZ030706;
-        Thu, 27 Jun 2019 06:08:43 -0700
+        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x5RDJvCw014932;
+        Thu, 27 Jun 2019 06:19:57 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt1;
- bh=UX9epgXNZXkP1B5c0zZWJjXWZesi4xmNKUf1SR8jbiM=;
- b=a+FlzDLs3/8xSa1eUevSg1pvARJFisTWOwEteDg0dTl+k8fJP3l3a1a5yQPwgNwd8RzE
- OuFOsi5iXmQnjiioT5FHivk0qGIT7UrsBLHUOWehAUaB1oSrc35+EAGfajp6iXdabssF
- iXMOcjp1uuZtV3dWMub67/jsZ89TsBCVdg+Nxv/l+J53ggzBVc1zwO2TnH3DUEh0Qbm/
- nmojUUHJnfIS0MWaFjpx6Rw/7swd2kxq546pe914HNR3HZdPmxz2WqiwHb01dLWoHT8a
- 6bkceLqzCyOkYrOZ66Z7x3cHbhl8LTqC9Jo4t+A5UX3g1e7gLbeqosPEXNfjarEGHIlV 5w== 
-Received: from nam05-co1-obe.outbound.protection.outlook.com (mail-co1nam05lp2059.outbound.protection.outlook.com [104.47.48.59])
-        by mx0b-00328301.pphosted.com with ESMTP id 2tcaturf11-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 27 Jun 2019 06:08:43 -0700
+ subject : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pfpt1; bh=HgtP1RXkEGsA1aI9a7Puj0bHIr9+t2NSCo6mWXp6X6Q=;
+ b=qGOOpxuWHo5jQQk3OBBQq+MpISde4CbL9WiKqLdp95cbH4thktikVTdesSNEEd7tDzIr
+ usZRQh+FxpPSp0SZJ56kQHUybqYvCTgMAd9swqDykE0QfXXsqqlyGpIOpSoH1qEzGf+y
+ sduzcnoh6VuOGzd5nAUv0bjxb3lF5UvzDb+0lpjNiwGp56IKUgXU9STFOmcYbLBbr8ES
+ 0DeWGhks1RQevU6mvAQcWCn4tXxgVQ3aTR9BnrO7DJzoS0SBOJcQztqeC0vdpeOiYCQ1
+ PM84fshps85Ed/xskIic1cltm4jiF6r52f5Az3ZjuM8sMtbRkXHAutfujVEPxqyKQyz8 Lg== 
+Received: from nam04-co1-obe.outbound.protection.outlook.com (mail-co1nam04lp2054.outbound.protection.outlook.com [104.47.45.54])
+        by mx0b-00328301.pphosted.com with ESMTP id 2tcaturf67-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jun 2019 06:19:57 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=invensense.onmicrosoft.com; s=selector1-invensense-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UX9epgXNZXkP1B5c0zZWJjXWZesi4xmNKUf1SR8jbiM=;
- b=ISJNze10cCGMB+mlChtsGEW3Kr0LgjW8CTGqvS0kqOAF2Qy+s0D8xpYgYvfAKWXfpnFelsIfziiPLBHUBmO1ZFe5EohIPmPqdQc4ZxqWA5bKSeg6drNMHGEf0NfX7ZOH22H8Y+uWZq3+izk8BPgzecZerdBPLFgl+mSnN0h8HRE=
+ bh=HgtP1RXkEGsA1aI9a7Puj0bHIr9+t2NSCo6mWXp6X6Q=;
+ b=C2x3gjnuwhgFtqSxydq1gIRpU9fL7ZitO+JPyix4EY8ePaJKoaO2Lp2+dvlB1la/jS1Jhw1J2+6IhCGK/grFugTedlEVlyS+h+SLCixhMqZQ3z1neNPB2Fy5NGErLS69cN11Cg1rwrKGPRsrYF3uxxMgh/CtkcTvspXuc3qpFBQ=
 Received: from MN2PR12MB3373.namprd12.prod.outlook.com (20.178.242.33) by
- MN2PR12MB2957.namprd12.prod.outlook.com (20.179.82.14) with Microsoft SMTP
+ MN2PR12MB3550.namprd12.prod.outlook.com (20.179.84.22) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2008.16; Thu, 27 Jun 2019 13:08:40 +0000
+ 15.20.2008.16; Thu, 27 Jun 2019 13:19:53 +0000
 Received: from MN2PR12MB3373.namprd12.prod.outlook.com
  ([fe80::f5e0:d455:c8e0:4c13]) by MN2PR12MB3373.namprd12.prod.outlook.com
  ([fe80::f5e0:d455:c8e0:4c13%5]) with mapi id 15.20.2008.017; Thu, 27 Jun 2019
- 13:08:40 +0000
+ 13:19:53 +0000
 From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: mpu6050: add available scan masks
-Thread-Topic: [PATCH] iio: imu: mpu6050: add available scan masks
-Thread-Index: AQHVKp0iTnMyK6ou20uFDeztak7OlaauV74AgAEjrJE=
-Date:   Thu, 27 Jun 2019 13:08:39 +0000
-Message-ID: <MN2PR12MB3373FC5335BFD33AC06CAA04C4FD0@MN2PR12MB3373.namprd12.prod.outlook.com>
-References: <20190624145651.24320-1-jmaneyrol@invensense.com>,<20190626203644.43a100c3@archlinux>
-In-Reply-To: <20190626203644.43a100c3@archlinux>
+To:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+Subject: [PATCH v2] iio: imu: mpu6050: add missing available scan masks
+Thread-Topic: [PATCH v2] iio: imu: mpu6050: add missing available scan masks
+Thread-Index: AQHVLOsB+Bohq3cjZUigraO6Qp/HnA==
+Date:   Thu, 27 Jun 2019 13:19:53 +0000
+Message-ID: <20190627131918.19619-1-jmaneyrol@invensense.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
+x-clientproxiedby: DB7PR05CA0054.eurprd05.prod.outlook.com
+ (2603:10a6:10:2e::31) To MN2PR12MB3373.namprd12.prod.outlook.com
+ (2603:10b6:208:c8::33)
 x-originating-ip: [77.157.193.39]
+x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 2.17.1
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6f40ee83-bd14-410b-5c8b-08d6fb0092d9
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MN2PR12MB2957;
-x-ms-traffictypediagnostic: MN2PR12MB2957:
-x-microsoft-antispam-prvs: <MN2PR12MB29579BD42FA88E7B73DD7624C4FD0@MN2PR12MB2957.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-office365-filtering-correlation-id: e1df100a-113d-4343-b58d-08d6fb022406
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MN2PR12MB3550;
+x-ms-traffictypediagnostic: MN2PR12MB3550:
+x-microsoft-antispam-prvs: <MN2PR12MB355097C3E52E7B4162C3C207C4FD0@MN2PR12MB3550.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6108;
 x-forefront-prvs: 008184426E
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(396003)(376002)(39850400004)(136003)(366004)(189003)(199004)(8676002)(4326008)(229853002)(6916009)(25786009)(76176011)(6116002)(3846002)(99286004)(80792005)(316002)(7696005)(53936002)(5660300002)(66946007)(66446008)(305945005)(55016002)(6436002)(73956011)(52536014)(81166006)(81156014)(9686003)(2906002)(91956017)(76116006)(8936002)(74316002)(66476007)(64756008)(66556008)(7736002)(72206003)(14454004)(66066001)(86362001)(6246003)(53546011)(102836004)(6506007)(186003)(26005)(33656002)(256004)(5024004)(478600001)(11346002)(68736007)(476003)(446003)(486006)(71190400001)(71200400001)(131093003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB2957;H:MN2PR12MB3373.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(366004)(346002)(376002)(39850400004)(396003)(199004)(189003)(50226002)(6116002)(3846002)(99286004)(52116002)(8936002)(2906002)(316002)(7736002)(305945005)(54906003)(8676002)(68736007)(2351001)(81156014)(81166006)(72206003)(36756003)(478600001)(5640700003)(6436002)(107886003)(6486002)(53936002)(6512007)(14454004)(2501003)(25786009)(386003)(186003)(80792005)(476003)(2616005)(6506007)(66066001)(4326008)(450100002)(26005)(6916009)(486006)(256004)(66946007)(66476007)(66556008)(64756008)(66446008)(1076003)(86362001)(73956011)(102836004)(71200400001)(71190400001)(5660300002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB3550;H:MN2PR12MB3373.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: invensense.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: ai2Hgmxkxk0padeW1UZejdYcX6DYdjxTWISgsu7jeq65PKmVPzmJAMLdj/p/vN29Jt1ZTrBh8zj6A8r4EcNlbPcwwp2l1ntfBhfaGUVH+zvuXE3paDPixIeNp9gbmDjZpbY7NDnhmXfjXM397763pcYNnyFOBdqD7cT9u/J1fWMW86zarORZeboKiadB2IerPlZ62awfg2eLAVGZdN8jgLiFTt6rVHxmfwZP//wyotP8ElrSMZ1Jp8jA1qwsnLAKDS3VdunmELAAQqKlPYjwEfMVsAb4QDeFVbvHrQFAFEU5AqVTOQapmxXVooKCPyMQJCGsFXr2bJFCsY2sX4aTX3PY6/7oQLJxV7HY0P3Vq9LzF3LWYHfz95SjYz7Z8jSjLrbPvtxe/xTWxJec0AZG+omtfz0pLFua+DTfF/CpsPk=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+x-microsoft-antispam-message-info: FixhnTNOa6EAteqeBSEwNrc6Andgtr8n93iT5lWoKjlGbGiZpWe8oKsnPVEZt4Pag3Le2zRAaRes/x0pWdw7BCwI/P0et/LwTt5bvCuocGPQSbgTLDSh6uNvwMpGwIqfTjOqJ+kQJv3gLNYsOFVJVJYikdKqMvyxUx4a7b/z5uc2K9QBXOBfmTxc0ZJV2XijHMLe6ImlKo7sM9su45bPEGJTZfG+a6PhPfcKtA/AowZ8hiRfVjiyPvpeTGyGXLhg1Dhq1TxOlOoVz9KPtLa9NHfXiUlJzCxlPI1S1WaDd6Ga8U/0Q/AiDLVlZzRPR74cie7mFJ2l/L/9NSILA4na2/mrkv28ID1gztM5UIAjsrhvyT8pLmBDJNaNegvEGOHFe8eSAPf1OyW8VKoi9C8cKJF5OV4bLItTIauYe3aA47A=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f40ee83-bd14-410b-5c8b-08d6fb0092d9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jun 2019 13:08:39.9325
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1df100a-113d-4343-b58d-08d6fb022406
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jun 2019 13:19:53.5178
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
 X-MS-Exchange-CrossTenant-userprincipalname: JManeyrol@invensense.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB2957
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3550
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:5.22.84,1.0.8
  definitions=2019-06-27_07:2019-06-25,2019-06-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
  suspectscore=0 phishscore=0 malwarescore=0 priorityscore=1501
  clxscore=1011 spamscore=0 impostorscore=0 adultscore=0 bulkscore=0
  mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1904300001 definitions=main-1906270153
+ engine=8.12.0-1904300001 definitions=main-1906270156
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,=0A=
-=0A=
-this is indeed a fix. Without it you cannot have a single axis buffer confi=
-guration working, or a buffer without temp for icm20602.=0A=
-Since 3-axis configuration is always used, it was not spotted before. The m=
-ain issue is for icm20602 where it is making gyro only configuration a mess=
-, mixing temp and gyro data together.=0A=
-=0A=
-I am sending a new patch more readable (using the scan defines rather than =
-a constant for the masks) and add a fixes tag referring to the icm20602 fif=
-o support.=0A=
-=0A=
-Best regards,=0A=
-JB=0A=
-=0A=
-From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> on =
-behalf of Jonathan Cameron <jic23@jic23.retrosnub.co.uk>=0A=
-=0A=
-Sent: Wednesday, June 26, 2019 21:36=0A=
-=0A=
-To: Jean-Baptiste Maneyrol=0A=
-=0A=
-Cc: linux-iio@vger.kernel.org=0A=
-=0A=
-Subject: Re: [PATCH] iio: imu: mpu6050: add available scan masks=0A=
-=0A=
-=A0=0A=
-=0A=
-=0A=
-=A0CAUTION: This email originated from outside of the organization. Please =
-make sure the sender is who they say they are and do not click links or ope=
-n attachments unless you recognize the sender and know the content is safe.=
-=0A=
-=0A=
-=0A=
-=0A=
-On Mon, 24 Jun 2019 14:57:24 +0000=0A=
-=0A=
-Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:=0A=
-=0A=
-=0A=
-=0A=
-> Only allow 3-axis gyro and/or 3-axis accel.=0A=
-=0A=
-> For icm20602, temp data is mandatory for all conf.=0A=
-=0A=
-> =0A=
-=0A=
-> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>=0A=
-=0A=
-Hi Jean-Baptiste,=0A=
-=0A=
-=0A=
-=0A=
-Is this policy or a hardware requirement, and hence a fix for=0A=
-=0A=
-the driver?=A0 If it's a fix, please make that clearer and add=0A=
-=0A=
-a fixes tag.=0A=
-=0A=
-=0A=
-=0A=
-Thanks,=0A=
-=0A=
-=0A=
-=0A=
-Jonathan=0A=
-=0A=
-=0A=
-=0A=
-> ---=0A=
-=0A=
->=A0 drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 16 ++++++++++++++++=0A=
-=0A=
->=A0 1 file changed, 16 insertions(+)=0A=
-=0A=
-> =0A=
-=0A=
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu=
-/inv_mpu6050/inv_mpu_core.c=0A=
-=0A=
-> index 385f14a4d5a7..bfd6d093e54d 100644=0A=
-=0A=
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c=0A=
-=0A=
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c=0A=
-=0A=
-> @@ -851,6 +851,13 @@ static const struct iio_chan_spec inv_mpu_channels[]=
- =3D {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_S=
-CAN_ACCL_Z),=0A=
-=0A=
->=A0 };=0A=
-=0A=
->=A0 =0A=
-=0A=
-> +static const unsigned long inv_mpu_scan_masks[] =3D {=0A=
-=0A=
-> +=A0=A0=A0=A0 0x07,=A0=A0 /* 3-axis accel */=0A=
-=0A=
-> +=A0=A0=A0=A0 0x38,=A0=A0 /* 3-axis gyro */=0A=
-=0A=
-> +=A0=A0=A0=A0 0x3F,=A0=A0 /* 6-axis accel + gyro */=0A=
-=0A=
-> +=A0=A0=A0=A0 0,=0A=
-=0A=
-> +};=0A=
-=0A=
-> +=0A=
-=0A=
->=A0 static const struct iio_chan_spec inv_icm20602_channels[] =3D {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 IIO_CHAN_SOFT_TIMESTAMP(INV_ICM20602_SCAN_TIMESTAMP)=
-,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 {=0A=
-=0A=
-> @@ -877,6 +884,13 @@ static const struct iio_chan_spec inv_icm20602_chann=
-els[] =3D {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_ICM20602_=
-SCAN_ACCL_Z),=0A=
-=0A=
->=A0 };=0A=
-=0A=
->=A0 =0A=
-=0A=
-> +static const unsigned long inv_icm20602_scan_masks[] =3D {=0A=
-=0A=
-> +=A0=A0=A0=A0 0x0F,=A0=A0 /* 3-axis accel + temp (mandatory) */=0A=
-=0A=
-> +=A0=A0=A0=A0 0x78,=A0=A0 /* 3-axis gyro + temp (mandatory) */=0A=
-=0A=
-> +=A0=A0=A0=A0 0x7F,=A0=A0 /* 6-axis accel + gyro + temp (mandatory) */=0A=
-=0A=
-> +=A0=A0=A0=A0 0,=0A=
-=0A=
-> +};=0A=
-=0A=
-> +=0A=
-=0A=
->=A0 /*=0A=
-=0A=
->=A0=A0 * The user can choose any frequency between INV_MPU6050_MIN_FIFO_RA=
-TE and=0A=
-=0A=
->=A0=A0 * INV_MPU6050_MAX_FIFO_RATE, but only these frequencies are matched=
- by the=0A=
-=0A=
-> @@ -1136,9 +1150,11 @@ int inv_mpu_core_probe(struct regmap *regmap, int =
-irq, const char *name,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 if (chip_type =3D=3D INV_ICM20602) {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 indio_dev->channels =3D inv_=
-icm20602_channels;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 indio_dev->num_channels =3D =
-ARRAY_SIZE(inv_icm20602_channels);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 indio_dev->available_scan_masks =3D=
- inv_icm20602_scan_masks;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 } else {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 indio_dev->channels =3D inv_=
-mpu_channels;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 indio_dev->num_channels =3D =
-ARRAY_SIZE(inv_mpu_channels);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 indio_dev->available_scan_masks =3D=
- inv_mpu_scan_masks;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 indio_dev->info =3D &mpu_info;=0A=
-=0A=
-=0A=
-=0A=
+RHJpdmVyIG9ubHkgc3VwcG9ydHMgMy1heGlzIGd5cm8gYW5kL29yIDMtYXhpcyBhY2NlbC4NCkZv
+ciBpY20yMDYwMiwgdGVtcCBkYXRhIGlzIG1hbmRhdG9yeSBmb3IgYWxsIGNvbmZpZ3VyYXRpb25z
+Lg0KDQpGaXggYWxsIHNpbmdsZSBhbmQgZG91YmxlIGF4aXMgY29uZmlndXJhdGlvbnMgKGFsbW9z
+dCBuZXZlciB1c2VkKSBhbmQgbW9yZQ0KaW1wb3J0YW50bHkgZml4IDMtYXhpcyBneXJvIGFuZCA2
+LWF4aXMgYWNjZWwrZ3lybyBidWZmZXIgb24gaWNtMjA2MDIgd2hlbg0KdGVtcCBkYXRhIGlzIG5v
+dCBlbmFibGVkLg0KDQpTaWduZWQtb2ZmLWJ5OiBKZWFuLUJhcHRpc3RlIE1hbmV5cm9sIDxqbWFu
+ZXlyb2xAaW52ZW5zZW5zZS5jb20+DQpGaXhlczogMTYxNWZlNDFhMTk1ICgiaWlvOiBpbXU6IG1w
+dTYwNTA6IEZpeCBGSUZPIGxheW91dCBmb3IgSUNNMjA2MDIiKQ0KLS0tDQpDaGFuZ2VzIGluIHYy
+Og0KICAtIFVzZSBtb3JlIGV4cGxpY2l0IHNjYW4gZGVmaW5lcyBmb3IgbWFza3MNCg0KIGRyaXZl
+cnMvaWlvL2ltdS9pbnZfbXB1NjA1MC9pbnZfbXB1X2NvcmUuYyB8IDQzICsrKysrKysrKysrKysr
+KysrKysrKysNCiAxIGZpbGUgY2hhbmdlZCwgNDMgaW5zZXJ0aW9ucygrKQ0KDQpkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9paW8vaW11L2ludl9tcHU2MDUwL2ludl9tcHVfY29yZS5jIGIvZHJpdmVycy9p
+aW8vaW11L2ludl9tcHU2MDUwL2ludl9tcHVfY29yZS5jDQppbmRleCAzODVmMTRhNGQ1YTcuLjY2
+NjI5YzNhZGMyMSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvaWlvL2ltdS9pbnZfbXB1NjA1MC9pbnZf
+bXB1X2NvcmUuYw0KKysrIGIvZHJpdmVycy9paW8vaW11L2ludl9tcHU2MDUwL2ludl9tcHVfY29y
+ZS5jDQpAQCAtODUxLDYgKzg1MSwyNSBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGlpb19jaGFuX3Nw
+ZWMgaW52X21wdV9jaGFubmVsc1tdID0gew0KIAlJTlZfTVBVNjA1MF9DSEFOKElJT19BQ0NFTCwg
+SUlPX01PRF9aLCBJTlZfTVBVNjA1MF9TQ0FOX0FDQ0xfWiksDQogfTsNCiANCitzdGF0aWMgY29u
+c3QgdW5zaWduZWQgbG9uZyBpbnZfbXB1X3NjYW5fbWFza3NbXSA9IHsNCisJLyogMy1heGlzIGFj
+Y2VsICovDQorCUJJVChJTlZfTVBVNjA1MF9TQ0FOX0FDQ0xfWCkNCisJCXwgQklUKElOVl9NUFU2
+MDUwX1NDQU5fQUNDTF9ZKQ0KKwkJfCBCSVQoSU5WX01QVTYwNTBfU0NBTl9BQ0NMX1opLA0KKwkv
+KiAzLWF4aXMgZ3lybyAqLw0KKwlCSVQoSU5WX01QVTYwNTBfU0NBTl9HWVJPX1gpDQorCQl8IEJJ
+VChJTlZfTVBVNjA1MF9TQ0FOX0dZUk9fWSkNCisJCXwgQklUKElOVl9NUFU2MDUwX1NDQU5fR1lS
+T19aKSwNCisJLyogNi1heGlzIGFjY2VsICsgZ3lybyAqLw0KKwlCSVQoSU5WX01QVTYwNTBfU0NB
+Tl9BQ0NMX1gpDQorCQl8IEJJVChJTlZfTVBVNjA1MF9TQ0FOX0FDQ0xfWSkNCisJCXwgQklUKElO
+Vl9NUFU2MDUwX1NDQU5fQUNDTF9aKQ0KKwkJfCBCSVQoSU5WX01QVTYwNTBfU0NBTl9HWVJPX1gp
+DQorCQl8IEJJVChJTlZfTVBVNjA1MF9TQ0FOX0dZUk9fWSkNCisJCXwgQklUKElOVl9NUFU2MDUw
+X1NDQU5fR1lST19aKSwNCisJMCwNCit9Ow0KKw0KIHN0YXRpYyBjb25zdCBzdHJ1Y3QgaWlvX2No
+YW5fc3BlYyBpbnZfaWNtMjA2MDJfY2hhbm5lbHNbXSA9IHsNCiAJSUlPX0NIQU5fU09GVF9USU1F
+U1RBTVAoSU5WX0lDTTIwNjAyX1NDQU5fVElNRVNUQU1QKSwNCiAJew0KQEAgLTg3Nyw2ICs4OTYs
+MjggQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBpaW9fY2hhbl9zcGVjIGludl9pY20yMDYwMl9jaGFu
+bmVsc1tdID0gew0KIAlJTlZfTVBVNjA1MF9DSEFOKElJT19BQ0NFTCwgSUlPX01PRF9aLCBJTlZf
+SUNNMjA2MDJfU0NBTl9BQ0NMX1opLA0KIH07DQogDQorc3RhdGljIGNvbnN0IHVuc2lnbmVkIGxv
+bmcgaW52X2ljbTIwNjAyX3NjYW5fbWFza3NbXSA9IHsNCisJLyogMy1heGlzIGFjY2VsICsgdGVt
+cCAobWFuZGF0b3J5KSAqLw0KKwlCSVQoSU5WX0lDTTIwNjAyX1NDQU5fQUNDTF9YKQ0KKwkJfCBC
+SVQoSU5WX0lDTTIwNjAyX1NDQU5fQUNDTF9ZKQ0KKwkJfCBCSVQoSU5WX0lDTTIwNjAyX1NDQU5f
+QUNDTF9aKQ0KKwkJfCBCSVQoSU5WX0lDTTIwNjAyX1NDQU5fVEVNUCksDQorCS8qIDMtYXhpcyBn
+eXJvICsgdGVtcCAobWFuZGF0b3J5KSAqLw0KKwlCSVQoSU5WX0lDTTIwNjAyX1NDQU5fR1lST19Y
+KQ0KKwkJfCBCSVQoSU5WX0lDTTIwNjAyX1NDQU5fR1lST19ZKQ0KKwkJfCBCSVQoSU5WX0lDTTIw
+NjAyX1NDQU5fR1lST19aKQ0KKwkJfCBCSVQoSU5WX0lDTTIwNjAyX1NDQU5fVEVNUCksDQorCS8q
+IDYtYXhpcyBhY2NlbCArIGd5cm8gKyB0ZW1wIChtYW5kYXRvcnkpICovDQorCUJJVChJTlZfSUNN
+MjA2MDJfU0NBTl9BQ0NMX1gpDQorCQl8IEJJVChJTlZfSUNNMjA2MDJfU0NBTl9BQ0NMX1kpDQor
+CQl8IEJJVChJTlZfSUNNMjA2MDJfU0NBTl9BQ0NMX1opDQorCQl8IEJJVChJTlZfSUNNMjA2MDJf
+U0NBTl9HWVJPX1gpDQorCQl8IEJJVChJTlZfSUNNMjA2MDJfU0NBTl9HWVJPX1kpDQorCQl8IEJJ
+VChJTlZfSUNNMjA2MDJfU0NBTl9HWVJPX1opDQorCQl8IEJJVChJTlZfSUNNMjA2MDJfU0NBTl9U
+RU1QKSwNCisJMCwNCit9Ow0KKw0KIC8qDQogICogVGhlIHVzZXIgY2FuIGNob29zZSBhbnkgZnJl
+cXVlbmN5IGJldHdlZW4gSU5WX01QVTYwNTBfTUlOX0ZJRk9fUkFURSBhbmQNCiAgKiBJTlZfTVBV
+NjA1MF9NQVhfRklGT19SQVRFLCBidXQgb25seSB0aGVzZSBmcmVxdWVuY2llcyBhcmUgbWF0Y2hl
+ZCBieSB0aGUNCkBAIC0xMTM2LDkgKzExNzcsMTEgQEAgaW50IGludl9tcHVfY29yZV9wcm9iZShz
+dHJ1Y3QgcmVnbWFwICpyZWdtYXAsIGludCBpcnEsIGNvbnN0IGNoYXIgKm5hbWUsDQogCWlmIChj
+aGlwX3R5cGUgPT0gSU5WX0lDTTIwNjAyKSB7DQogCQlpbmRpb19kZXYtPmNoYW5uZWxzID0gaW52
+X2ljbTIwNjAyX2NoYW5uZWxzOw0KIAkJaW5kaW9fZGV2LT5udW1fY2hhbm5lbHMgPSBBUlJBWV9T
+SVpFKGludl9pY20yMDYwMl9jaGFubmVscyk7DQorCQlpbmRpb19kZXYtPmF2YWlsYWJsZV9zY2Fu
+X21hc2tzID0gaW52X2ljbTIwNjAyX3NjYW5fbWFza3M7DQogCX0gZWxzZSB7DQogCQlpbmRpb19k
+ZXYtPmNoYW5uZWxzID0gaW52X21wdV9jaGFubmVsczsNCiAJCWluZGlvX2Rldi0+bnVtX2NoYW5u
+ZWxzID0gQVJSQVlfU0laRShpbnZfbXB1X2NoYW5uZWxzKTsNCisJCWluZGlvX2Rldi0+YXZhaWxh
+YmxlX3NjYW5fbWFza3MgPSBpbnZfbXB1X3NjYW5fbWFza3M7DQogCX0NCiANCiAJaW5kaW9fZGV2
+LT5pbmZvID0gJm1wdV9pbmZvOw0KLS0gDQoyLjE3LjENCg0K

@@ -2,139 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9E4F5A507
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2019 21:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 387715A561
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2019 21:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726925AbfF1TR3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Jun 2019 15:17:29 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:37446 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727036AbfF1TR3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jun 2019 15:17:29 -0400
-Received: by mail-pf1-f194.google.com with SMTP id 19so3471994pfa.4
-        for <linux-iio@vger.kernel.org>; Fri, 28 Jun 2019 12:17:28 -0700 (PDT)
+        id S1726957AbfF1TuJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Jun 2019 15:50:09 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:39772 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726852AbfF1TuJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jun 2019 15:50:09 -0400
+Received: by mail-qk1-f194.google.com with SMTP id i125so5898879qkd.6
+        for <linux-iio@vger.kernel.org>; Fri, 28 Jun 2019 12:50:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ne5OGTEt+b44J1ebg+R1lxp7ErzK0usnYJD4hX8q19M=;
-        b=Dktc8FN+sStr4EzcdIIZGVluhYjUdYIhB/9LfbkrQ2L3AK4lMXlCfXtCKEwDs9N7Eq
-         cpCM6cHsrDUFBXlVm3u+IRZlYeQnqP1yzNqgOIpvERGitdjKEemPOyXk//CLvPqMrdZv
-         aNe4SLH93i10mgI5lvdrTGkNf3Rxc+Z8ne33A=
+        d=usp-br.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jZRO3VzZkmVCxDN0Eltf5dWSrbxlKFxXjJd0EkGNJt8=;
+        b=n/pLk2Blz54TcW6mfCs+FT0vklOVTcqyX4q8d20Z5/ABNjFoWsNfTzqHH9v8r6HAOd
+         hi3GeNg2iC0l4UAzKGKW9zJpOprL+2Xl4ffvrV38Ga1vJAEjEUY2oEQcUJnIQJ/uEMFx
+         0UjTXgBGOdiay5zb8VP1umXEMoArjkcwYJSRaKLea3uwry1q/1wF0poXZlzbNZnb1Qjq
+         NPiYjRL4T+WybrjBX8IJRQZghCWPlXD8EvA5y3mZi6wEC5kt2OdrGqWi9FcYL+fgfZwq
+         kKCzds0GscXsXABZu45uYi+N/pEHmU8Irve6DJWBcSkktZjY0uxXW1kJougZOvyo/UhX
+         SDDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ne5OGTEt+b44J1ebg+R1lxp7ErzK0usnYJD4hX8q19M=;
-        b=LCf7W9Gm1oATqWZOylDxzICv5fg6s1qsmPWpRo+N0ib80JBD0vMVbErit0BIFUDtTu
-         /JxIFz6pywXBTj7RVzpIdWFGVzP+e58WL+LgmoxlH9zSXi/KYCxl3b6DVPGkScdX24lD
-         Y3mphjvbMAdJNJWy2oGGq+ISXq5PGyFjY/1tKyYHAYxbXJ+hnvwwUUxAE5r3Y0hBlc1k
-         KfuUiSG/QtNi2GxxQSUSPRTj3NuF/EQsPbdX4UbF310H+ed71liqugoH0sEH08yaSPYa
-         6gDDBC3WLrZbY9t9Z/mbuMLo9Vk/1SmYp1q1n6M4s/FU8VFAlTLWXudvvvJTbiPt91xn
-         Mk5A==
-X-Gm-Message-State: APjAAAVhzBGwqgt9Vqu2wV5BrWG9KuwjhDLkrCFPBl+ppwbhIiQ+cU3x
-        vAa9q3Gp1ycDPZ7KEAkse7Ho9Q==
-X-Google-Smtp-Source: APXvYqzXWLF1Kb5aUF3GUmJENXBYZoKGjbUNrX5zlC+HSxHR1A28vTr/Z6u2vn3WOxdLLVkiBSK+0w==
-X-Received: by 2002:a17:90a:1904:: with SMTP id 4mr15504578pjg.116.1561749448139;
-        Fri, 28 Jun 2019 12:17:28 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:3c8f:512b:3522:dfaf])
-        by smtp.gmail.com with ESMTPSA id y14sm2547782pjr.13.2019.06.28.12.17.27
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jZRO3VzZkmVCxDN0Eltf5dWSrbxlKFxXjJd0EkGNJt8=;
+        b=WtXzs6pE4CVELEwir/OubaLRMhkvwTO774+YKnl3JU+0NDLXWYo/vnuTwcXtltfkpa
+         B9eg0mUzNbyZFTtKBukBXvnrp5Sy/9ue5BaZ571N0ldy1kG5TzzRK6bxPFczEsz9kDvF
+         aAXvSqOi1mmQ/lE1mWiM9vD9gM7Ups2XoPPaGeXn532KH1vPSaRPI4ZcViqL9zrGFDEf
+         JeFN3eR3ciZu9SaKhV5kq8C0oCdhaumnh/KM3E6da3ub2XMC0xLEOIDqsWz4UBf26W2r
+         vu3jBPDHDS/GXGp/sb9y+KsW4decSdtuPVxwUGJQzSB66b7PzXPi663Hozb/Zp55vVCV
+         2J2A==
+X-Gm-Message-State: APjAAAUao3sUKL7mAKb+6SyY3wO43HmKWMq+x9Rgp5FMu7JZkg2Kxm8b
+        EDNpnkyUB+1jfP710/Kk12hb1g==
+X-Google-Smtp-Source: APXvYqwoB+1hTX6NcQcoYm7J38heVzgt5n/r06M3b9POecQl9mwE7FfNXzKKP8Nnuns04rRl+HTCwQ==
+X-Received: by 2002:a37:4e17:: with SMTP id c23mr10251959qkb.34.1561751407986;
+        Fri, 28 Jun 2019 12:50:07 -0700 (PDT)
+Received: from greta.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id c55sm1535141qtk.53.2019.06.28.12.50.04
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 28 Jun 2019 12:17:27 -0700 (PDT)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     jic23@kernel.org, bleung@chromium.org,
-        enric.balletbo@collabora.com, groeck@chromium.org,
-        fabien.lahoudere@collabora.com, dianders@chromium.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v4 4/4] iio: cros_ec_accel_legacy: Add support for veyron-minnie
-Date:   Fri, 28 Jun 2019 12:17:11 -0700
-Message-Id: <20190628191711.23584-5-gwendal@chromium.org>
-X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
-In-Reply-To: <20190628191711.23584-1-gwendal@chromium.org>
-References: <20190628191711.23584-1-gwendal@chromium.org>
+        Fri, 28 Jun 2019 12:50:07 -0700 (PDT)
+From:   =?UTF-8?q?B=C3=A1rbara=20Fernandes?= <barbara.fernandes@usp.br>
+To:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        stefan.popa@analog.com, jic23@kernel.org, knaack.h@gmx.de,
+        pmeerw@pmeerw.net, gregkh@linuxfoundation.org
+Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org, kernel-usp@googlegroups.com,
+        =?UTF-8?q?B=C3=A1rbara=20Fernandes?= <barbara.fernandes@usp.br>,
+        Wilson Sales <spoonm@spoonm.org>
+Subject: [PATCH v2] staging: iio: ad7192: create of_device_id array
+Date:   Fri, 28 Jun 2019 16:49:22 -0300
+Message-Id: <20190628194922.13277-1-barbara.fernandes@usp.br>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Veyron minnie embedded controller presents 2 accelerometers using an
-older interface. Add function to query the data in cros_ec_accel.
+Create list of compatible device ids to be matched with those stated in
+the device tree.
 
-Verify accelerometers on veyron-minnie are presented and working.
-
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Signed-off-by: Bárbara Fernandes <barbara.fernandes@usp.br>
+Signed-off-by: Wilson Sales <spoonm@spoonm.org>
+Co-developed by: Wilson Sales <spoonm@spoonm.org>
 ---
- drivers/iio/accel/cros_ec_accel_legacy.c | 40 ++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 2 deletions(-)
+ drivers/staging/iio/adc/ad7192.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-index 2399f0cbdf2b..2c6196446d90 100644
---- a/drivers/iio/accel/cros_ec_accel_legacy.c
-+++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-@@ -5,7 +5,7 @@
-  * Copyright 2017 Google, Inc
-  *
-  * This driver uses the memory mapper cros-ec interface to communicate
-- * with the Chrome OS EC about accelerometer data.
-+ * with the Chrome OS EC about accelerometer data or older commands.
-  * Accelerometer access is presented through iio sysfs.
-  */
- 
-@@ -33,6 +33,39 @@
-  */
- #define ACCEL_LEGACY_NSCALE 9586168
- 
-+static int cros_ec_accel_legacy_read_cmd(struct iio_dev *indio_dev,
-+				  unsigned long scan_mask, s16 *data)
-+{
-+	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
-+	int ret;
-+	unsigned int i;
-+	u8 sensor_num;
+diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
+index 3d74da9d37e7..70118db98d94 100644
+--- a/drivers/staging/iio/adc/ad7192.c
++++ b/drivers/staging/iio/adc/ad7192.c
+@@ -810,11 +810,23 @@ static const struct spi_device_id ad7192_id[] = {
+ 	{"ad7195", ID_AD7195},
+ 	{}
+ };
 +
-+	/*
-+	 * Read all sensor data through a command.
-+	 * Save sensor_num, it is assumed to stay.
-+	 */
-+	sensor_num = st->param.info.sensor_num;
-+	st->param.cmd = MOTIONSENSE_CMD_DUMP;
-+	st->param.dump.max_sensor_count = CROS_EC_SENSOR_LEGACY_NUM;
-+	ret = cros_ec_motion_send_host_cmd(st,
-+			sizeof(st->resp->dump) + CROS_EC_SENSOR_LEGACY_NUM *
-+			sizeof(struct ec_response_motion_sensor_data));
-+	st->param.info.sensor_num = sensor_num;
-+	if (ret != 0) {
-+		dev_warn(&indio_dev->dev, "Unable to read sensor data\n");
-+		return ret;
-+	}
-+
-+	for_each_set_bit(i, &scan_mask, indio_dev->masklength) {
-+		*data = st->resp->dump.sensor[sensor_num].data[i] *
-+			st->sign[i];
-+		data++;
-+	}
-+
-+	return 0;
-+}
-+
- static int cros_ec_accel_legacy_read(struct iio_dev *indio_dev,
- 				     struct iio_chan_spec const *chan,
- 				     int *val, int *val2, long mask)
-@@ -149,7 +182,10 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
- 	indio_dev->info = &cros_ec_accel_legacy_info;
- 	state = iio_priv(indio_dev);
+ MODULE_DEVICE_TABLE(spi, ad7192_id);
  
--	state->read_ec_sensors_data = cros_ec_sensors_read_lpc;
-+	if (state->ec->cmd_readmem != NULL)
-+		state->read_ec_sensors_data = cros_ec_sensors_read_lpc;
-+	else
-+		state->read_ec_sensors_data = cros_ec_accel_legacy_read_cmd;
- 
- 	indio_dev->channels = cros_ec_accel_legacy_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(cros_ec_accel_legacy_channels);
++static const struct of_device_id ad7192_of_match[] = {
++	{ .compatible = "adi,ad7190" },
++	{ .compatible = "adi,ad7192" },
++	{ .compatible = "adi,ad7193" },
++	{ .compatible = "adi,ad7195" },
++	{}
++};
++
++MODULE_DEVICE_TABLE(of, ad7192_of_match);
++
+ static struct spi_driver ad7192_driver = {
+ 	.driver = {
+ 		.name	= "ad7192",
++		.of_match_table = ad7192_of_match,
+ 	},
+ 	.probe		= ad7192_probe,
+ 	.remove		= ad7192_remove,
 -- 
-2.22.0.410.gd8fdbe21b5-goog
+2.17.1
 

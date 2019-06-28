@@ -2,186 +2,282 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01F3F59951
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2019 13:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 541C159ABD
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2019 14:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726574AbfF1LhO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Jun 2019 07:37:14 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:53744 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726514AbfF1LhO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jun 2019 07:37:14 -0400
-Received: from laptop (unknown [IPv6:2a01:e34:ee7d:73d0:5796:7015:7f6:aeeb])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: aragua)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 02577285642;
-        Fri, 28 Jun 2019 12:37:10 +0100 (BST)
-Message-ID: <0af8a4bc994b4e90cb0d079d1c7f105dd2a60e32.camel@collabora.com>
-Subject: Re: [PATCH 1/2] iio: common: cros_ec_sensors: determine protocol
- version
-From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
-To:     Gwendal Grignou <gwendal@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Cc:     kernel@collabora.com, Nick Vaccaro <nvaccaro@chromium.org>,
+        id S1727150AbfF1MWz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Jun 2019 08:22:55 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:58848 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726833AbfF1MUr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jun 2019 08:20:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=3Fh9wRg+Eq4JTwEvQU8ngerz8amnm4rh8SHGD5kScnc=; b=iy2DEV0SUQ9i4mHrz4pG+8l+zI
+        0LxKIrl+2ueDd9Zvl5iOaf+nI7RK2melPE+LRA27nQM8ELMe8Bey2l+BD4DnQqTvhQAoxIAoFk8VU
+        NulPA/8sTPIuteRv8ufSJQ4NOffnMFq5L1aiIYBAigkAwECv5BRJeHC1ZCHiPUnOU1+kVEWPjTrBb
+        xoLec3SjVxJzz7NtAvgPV7L/UOmRJ6BettQF2goYyxBP2kl8NGMtN0Tf0HKLQZfLucCx98X3b7xE9
+        iIGIHbKR7tkFg+6sLnFyILDJrNHxmUDKRhdhjakPfXLzsKTNp5qr1pOV86uK8nnc93+tobL4wybdH
+        TWHi0qog==;
+Received: from [186.213.242.156] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hgpru-00009p-VY; Fri, 28 Jun 2019 12:20:43 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
+        (envelope-from <mchehab@bombadil.infradead.org>)
+        id 1hgprt-00056w-1A; Fri, 28 Jun 2019 09:20:41 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Doug Anderson <dianders@chromium.org>,
-        Enrico Granata <egranata@chromium.org>
-Date:   Fri, 28 Jun 2019 13:37:07 +0200
-In-Reply-To: <CAPUE2ut=imx=mhV_iyMwaYmfkFJ0zw3Jvsbxf+TbfqV1Sa_WJw@mail.gmail.com>
-References: <cover.1561642224.git.fabien.lahoudere@collabora.com>
-         <4724b46665d919cae0ea3b60e334053b0b17d686.1561642224.git.fabien.lahoudere@collabora.com>
-         <f8df78b4-8ae9-f292-cf70-ef682a4a47f4@collabora.com>
-         <CAPUE2ut=imx=mhV_iyMwaYmfkFJ0zw3Jvsbxf+TbfqV1Sa_WJw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.2 (3.30.2-2.fc29) 
-Mime-Version: 1.0
+        linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 02/43] docs: iio: convert to ReST
+Date:   Fri, 28 Jun 2019 09:19:58 -0300
+Message-Id: <c89bb920ce65ee5a80d62a7bb5bc259785c8c966.1561723980.git.mchehab+samsung@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <cover.1561723979.git.mchehab+samsung@kernel.org>
+References: <cover.1561723979.git.mchehab+samsung@kernel.org>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le jeudi 27 juin 2019 à 14:59 -0700, Gwendal Grignou a écrit :
-> On Thu, Jun 27, 2019 at 8:59 AM Enric Balletbo i Serra
-> <enric.balletbo@collabora.com> wrote:
-> > Hi,
-> > 
-> > cc'ing Doug, Gwendal and Enrico that might be interested to give a
-> > review.
-> > 
-> > This patch can be picked alone without 2/2, an is needed to have
-> > cros-ec-sensors
-> > legacy support on ARM (see [1] and [2])
-> > 
-> > Jonathan, as [1] and [2] will go through the chrome-platform tree
-> > if you don't
-> > mind I'd also like to carry with this patch once you're fine with
-> > it.
-> > 
-> > Thanks,
-> > ~ Enric
-> > 
-> > [1] https://patchwork.kernel.org/patch/11014329/
-> > [2] https://patchwork.kernel.org/patch/11014327/
-> > 
-> > On 27/6/19 16:04, Fabien Lahoudere wrote:
-> > > This patch adds a function to determine which version of the
-> > > protocol is used to communicate with EC.
-> > > 
-> > > Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> > > Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
-> > 
-> > Tested-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> > 
-> > > ---
-> > >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 36
-> > > ++++++++++++++++++-
-> > >  1 file changed, 35 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git
-> > > a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > > b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > > index 130362ca421b..2e0f97448e64 100644
-> > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > > @@ -25,6 +25,31 @@ static char *cros_ec_loc[] = {
-> > >       [MOTIONSENSE_LOC_MAX] = "unknown",
-> > >  };
-> > > 
-> > > +static int cros_ec_get_host_cmd_version_mask(struct
-> > > cros_ec_device *ec_dev,
-> > > +                                          u16 cmd_offset, u16
-> > > cmd, u32 *mask)
-> > > +{
-> > > +     int ret;
-> > > +     struct {
-> > > +             struct cros_ec_command msg;
-> > > +             union {
-> > > +                     struct ec_params_get_cmd_versions params;
-> > > +                     struct ec_response_get_cmd_versions resp;
-> > > +             };
-> > > +     } __packed buf = {
-> > > +             .msg = {
-> add
-> .version = 0,
-> As the variable is coming from the stack, the version should be set.
-> > > +                     .command = EC_CMD_GET_CMD_VERSIONS +
-> > > cmd_offset,
-> > > +                     .insize = sizeof(struct
-> > > ec_response_get_cmd_versions),
-> > > +                     .outsize = sizeof(struct
-> > > ec_params_get_cmd_versions)
-> > > +                     },
-> > > +             .params = {.cmd = cmd}
-> > > +     };
-> > > +
-> > > +     ret = cros_ec_cmd_xfer_status(ec_dev, &buf.msg);
-> > > +     if (ret >= 0)
-> It should be > 0: when the command is a success, it returns the
-> number
-> of byte in the response buffer. When don't expect == 0  here, because
-> when successful, EC_CMD_GET_CMD_VERSIONS will return a mask.
-> > > +             *mask = buf.resp.version_mask;
-> > > +     return ret;
-> > > +}
-> > > +
-> > >  int cros_ec_sensors_core_init(struct platform_device *pdev,
-> > >                             struct iio_dev *indio_dev,
-> > >                             bool physical_device)
-> > > @@ -33,6 +58,8 @@ int cros_ec_sensors_core_init(struct
-> > > platform_device *pdev,
-> > >       struct cros_ec_sensors_core_state *state =
-> > > iio_priv(indio_dev);
-> > >       struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
-> > >       struct cros_ec_sensor_platform *sensor_platform =
-> > > dev_get_platdata(dev);
-> > > +     u32 ver_mask;
-> > > +     int ret;
-> > > 
-> > >       platform_set_drvdata(pdev, indio_dev);
-> > > 
-> > > @@ -47,8 +74,15 @@ int cros_ec_sensors_core_init(struct
-> > > platform_device *pdev,
-> > > 
-> > >       mutex_init(&state->cmd_lock);
-> > > 
-> > > +     ret = cros_ec_get_host_cmd_version_mask(state->ec,
-> > > +                                             ec->cmd_offset,
-> > > +                                             EC_CMD_MOTION_SENSE
-> > > _CMD,
-> > > +                                             &ver_mask);
-> > > +     if (ret < 0)
-> Use:
-> if (ret <= 0 || ver_mask == 0) {
-> In case the EC is really old or misbehaving, we don't want to set an
-> invalid version later.
+Rename the iio documentation files to ReST, add an
+index for them and adjust in order to produce a nice html
+output via the Sphinx build system.
 
-To not return a positive value on error if ret >= 0 and ver_mask = 0  
-I would prefer this:
+At its new index.rst, let's add a :orphan: while this is not linked to
+the main index.rst file, in order to avoid build warnings.
 
-	if (ret <= 0)
-		return ret;
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ .../iio/{ep93xx_adc.txt => ep93xx_adc.rst}    | 15 +++++-
+ .../{iio_configfs.txt => iio_configfs.rst}    | 52 +++++++++++--------
+ Documentation/iio/index.rst                   | 12 +++++
+ drivers/iio/Kconfig                           |  2 +-
+ 4 files changed, 56 insertions(+), 25 deletions(-)
+ rename Documentation/iio/{ep93xx_adc.txt => ep93xx_adc.rst} (71%)
+ rename Documentation/iio/{iio_configfs.txt => iio_configfs.rst} (73%)
+ create mode 100644 Documentation/iio/index.rst
 
-	if (ver_mask == 0)
-		return -EIO;
-
-Let me know if I am wrong
-
-> > > +             return ret;
-> > > +
-> > >       /* Set up the host command structure. */
-> > > -     state->msg->version = 2;
-> > > +     state->msg->version = fls(ver_mask) - 1;;
-> > >       state->msg->command = EC_CMD_MOTION_SENSE_CMD + ec-
-> > > >cmd_offset;
-> > >       state->msg->outsize = sizeof(struct
-> > > ec_params_motion_sense);
-> > > 
-> > > 
+diff --git a/Documentation/iio/ep93xx_adc.txt b/Documentation/iio/ep93xx_adc.rst
+similarity index 71%
+rename from Documentation/iio/ep93xx_adc.txt
+rename to Documentation/iio/ep93xx_adc.rst
+index 23053e7817bd..4fd8dea3f6b8 100644
+--- a/Documentation/iio/ep93xx_adc.txt
++++ b/Documentation/iio/ep93xx_adc.rst
+@@ -1,12 +1,16 @@
+-Cirrus Logic EP93xx ADC driver.
++==============================
++Cirrus Logic EP93xx ADC driver
++==============================
+ 
+ 1. Overview
++===========
+ 
+ The driver is intended to work on both low-end (EP9301, EP9302) devices with
+ 5-channel ADC and high-end (EP9307, EP9312, EP9315) devices with 10-channel
+ touchscreen/ADC module.
+ 
+ 2. Channel numbering
++====================
+ 
+ Numbering scheme for channels 0..4 is defined in EP9301 and EP9302 datasheets.
+ EP9307, EP9312 and EP9312 have 3 channels more (total 8), but the numbering is
+@@ -17,13 +21,20 @@ Assuming ep93xx_adc is IIO device0, you'd find the following entries under
+ 
+   +-----------------+---------------+
+   | sysfs entry     | ball/pin name |
+-  +-----------------+---------------+
++  +=================+===============+
+   | in_voltage0_raw | YM            |
++  +-----------------+---------------+
+   | in_voltage1_raw | SXP           |
++  +-----------------+---------------+
+   | in_voltage2_raw | SXM           |
++  +-----------------+---------------+
+   | in_voltage3_raw | SYP           |
++  +-----------------+---------------+
+   | in_voltage4_raw | SYM           |
++  +-----------------+---------------+
+   | in_voltage5_raw | XP            |
++  +-----------------+---------------+
+   | in_voltage6_raw | XM            |
++  +-----------------+---------------+
+   | in_voltage7_raw | YP            |
+   +-----------------+---------------+
+diff --git a/Documentation/iio/iio_configfs.txt b/Documentation/iio/iio_configfs.rst
+similarity index 73%
+rename from Documentation/iio/iio_configfs.txt
+rename to Documentation/iio/iio_configfs.rst
+index 4e5f101837a8..ecbfdb3afef7 100644
+--- a/Documentation/iio/iio_configfs.txt
++++ b/Documentation/iio/iio_configfs.rst
+@@ -1,6 +1,9 @@
++===============================
+ Industrial IIO configfs support
++===============================
+ 
+ 1. Overview
++===========
+ 
+ Configfs is a filesystem-based manager of kernel objects. IIO uses some
+ objects that could be easily configured using configfs (e.g.: devices,
+@@ -10,20 +13,22 @@ See Documentation/filesystems/configfs/configfs.txt for more information
+ about how configfs works.
+ 
+ 2. Usage
++========
+ 
+ In order to use configfs support in IIO we need to select it at compile
+ time via CONFIG_IIO_CONFIGFS config option.
+ 
+-Then, mount the configfs filesystem (usually under /config directory):
++Then, mount the configfs filesystem (usually under /config directory)::
+ 
+-$ mkdir /config
+-$ mount -t configfs none /config
++  $ mkdir /config
++  $ mount -t configfs none /config
+ 
+ At this point, all default IIO groups will be created and can be accessed
+ under /config/iio. Next chapters will describe available IIO configuration
+ objects.
+ 
+ 3. Software triggers
++====================
+ 
+ One of the IIO default configfs groups is the "triggers" group. It is
+ automagically accessible when the configfs is mounted and can be found
+@@ -31,40 +36,40 @@ under /config/iio/triggers.
+ 
+ IIO software triggers implementation offers support for creating multiple
+ trigger types. A new trigger type is usually implemented as a separate
+-kernel module following the interface in include/linux/iio/sw_trigger.h:
++kernel module following the interface in include/linux/iio/sw_trigger.h::
+ 
+-/*
+- * drivers/iio/trigger/iio-trig-sample.c
+- * sample kernel module implementing a new trigger type
+- */
+-#include <linux/iio/sw_trigger.h>
++  /*
++   * drivers/iio/trigger/iio-trig-sample.c
++   * sample kernel module implementing a new trigger type
++   */
++  #include <linux/iio/sw_trigger.h>
+ 
+ 
+-static struct iio_sw_trigger *iio_trig_sample_probe(const char *name)
+-{
++  static struct iio_sw_trigger *iio_trig_sample_probe(const char *name)
++  {
+ 	/*
+ 	 * This allocates and registers an IIO trigger plus other
+ 	 * trigger type specific initialization.
+ 	 */
+-}
++  }
+ 
+-static int iio_trig_hrtimer_remove(struct iio_sw_trigger *swt)
+-{
++  static int iio_trig_hrtimer_remove(struct iio_sw_trigger *swt)
++  {
+ 	/*
+ 	 * This undoes the actions in iio_trig_sample_probe
+ 	 */
+-}
++  }
+ 
+-static const struct iio_sw_trigger_ops iio_trig_sample_ops = {
++  static const struct iio_sw_trigger_ops iio_trig_sample_ops = {
+ 	.probe		= iio_trig_sample_probe,
+ 	.remove		= iio_trig_sample_remove,
+-};
++  };
+ 
+-static struct iio_sw_trigger_type iio_trig_sample = {
++  static struct iio_sw_trigger_type iio_trig_sample = {
+ 	.name = "trig-sample",
+ 	.owner = THIS_MODULE,
+ 	.ops = &iio_trig_sample_ops,
+-};
++  };
+ 
+ module_iio_sw_trigger_driver(iio_trig_sample);
+ 
+@@ -73,21 +78,24 @@ iio-trig-sample module will create 'trig-sample' trigger type directory
+ /config/iio/triggers/trig-sample.
+ 
+ We support the following interrupt sources (trigger types):
++
+ 	* hrtimer, uses high resolution timers as interrupt source
+ 
+ 3.1 Hrtimer triggers creation and destruction
++---------------------------------------------
+ 
+ Loading iio-trig-hrtimer module will register hrtimer trigger types allowing
+ users to create hrtimer triggers under /config/iio/triggers/hrtimer.
+ 
+-e.g:
++e.g::
+ 
+-$ mkdir /config/iio/triggers/hrtimer/instance1
+-$ rmdir /config/iio/triggers/hrtimer/instance1
++  $ mkdir /config/iio/triggers/hrtimer/instance1
++  $ rmdir /config/iio/triggers/hrtimer/instance1
+ 
+ Each trigger can have one or more attributes specific to the trigger type.
+ 
+ 3.2 "hrtimer" trigger types attributes
++--------------------------------------
+ 
+ "hrtimer" trigger type doesn't have any configurable attribute from /config dir.
+ It does introduce the sampling_frequency attribute to trigger directory.
+diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+new file mode 100644
+index 000000000000..0593dca89a94
+--- /dev/null
++++ b/Documentation/iio/index.rst
+@@ -0,0 +1,12 @@
++:orphan:
++
++==============
++Industrial I/O
++==============
++
++.. toctree::
++   :maxdepth: 1
++
++   iio_configfs
++
++   ep93xx_adc
+diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
+index 1d736a4952ab..5bd51853b15e 100644
+--- a/drivers/iio/Kconfig
++++ b/drivers/iio/Kconfig
+@@ -28,7 +28,7 @@ config IIO_CONFIGFS
+ 	help
+ 	  This allows configuring various IIO bits through configfs
+ 	  (e.g. software triggers). For more info see
+-	  Documentation/iio/iio_configfs.txt.
++	  Documentation/iio/iio_configfs.rst.
+ 
+ config IIO_TRIGGER
+ 	bool "Enable triggered sampling support"
+-- 
+2.21.0
 

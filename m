@@ -2,50 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F7AB5BA4E
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2019 13:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A7E5BC56
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2019 15:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728214AbfGALGa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Jul 2019 07:06:30 -0400
-Received: from first.geanix.com ([116.203.34.67]:50192 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728213AbfGALGa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 1 Jul 2019 07:06:30 -0400
-Received: from [192.168.100.94] (unknown [95.138.208.137])
-        by first.geanix.com (Postfix) with ESMTPSA id C706F1697;
-        Mon,  1 Jul 2019 11:05:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1561979133; bh=v4LHxOwn9+/VM2loVjnq0LB4IqNtrmoRjYxa9zumqdU=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=O7/xWHXOk/TLkM4uagNM44WSOkUR3K+qI/JHSj+96KIiPNfkYsfnTJg0GntQQiT7G
-         EX6SKxr0DbMLcX1n7+mf0mQKMfp6z7AJcOmXICQ135AKlXFcfwG7FBjs9lc71kn3zc
-         /iTaug0E5CSSzxfz4917DqjBse38nH2Fg3rSq+8d4md7yBrQJeci/6SgjWLE4OkaRS
-         ntvLfPlrpviIt82+7oa2oGt35VAtHmNfwUpgMmcgfEaTgm3m3c0s/be8g/XI+FVs9e
-         5dpxUc5TrVcDobZCvMrHsbSKCfckKfJGvmQlyf1pQWmFr0BkP2ObHQlFuQQjgRN9qE
-         kLlZS/JHGk40A==
-Subject: Re: [PATCH 3/5] iio: imu: st_lsm6dsx: add wakeup-source option
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com, martin@geanix.com
-References: <20190618125939.105903-1-sean@geanix.com>
- <20190618125939.105903-4-sean@geanix.com>
- <20190618155122.GC20044@localhost.localdomain>
- <d7bcc9a5-37ae-d65a-7841-4468d49bb8bd@geanix.com>
- <20190618202745.GC930@localhost.localdomain>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <771dad97-a46e-4d3a-467b-d20bc7a70679@geanix.com>
-Date:   Mon, 1 Jul 2019 13:06:11 +0200
+        id S1727654AbfGANFV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Jul 2019 09:05:21 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:49366 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726329AbfGANFU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Jul 2019 09:05:20 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 4CFB326394C
+Subject: Re: [PATCH v3 1/1] iio: common: cros_ec_sensors: determine protocol
+ version
+To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Cc:     gwendal@chromium.org, egranata@chromium.org, kernel@collabora.com,
+        Nick Vaccaro <nvaccaro@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1561968653.git.fabien.lahoudere@collabora.com>
+ <e74cb88645a02a3e84445b0567d72e8b90f18335.1561968653.git.fabien.lahoudere@collabora.com>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <22f8d62a-b36e-fd96-cb6d-ddac642b34a6@collabora.com>
+Date:   Mon, 1 Jul 2019 15:05:15 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <20190618202745.GC930@localhost.localdomain>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US-large
+In-Reply-To: <e74cb88645a02a3e84445b0567d72e8b90f18335.1561968653.git.fabien.lahoudere@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 884f5ce5917a
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -53,56 +45,90 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-On 18/06/2019 22.27, Lorenzo Bianconi wrote:
-> On Jun 18, Sean Nyekjaer wrote:
->>
->>
->> On 18/06/2019 17.51, Lorenzo Bianconi wrote:
->>>> this add ways for the SoC to wake from accelerometer wake events.
->>>>
->>>> In the suspend function we skip disabling the sensor if wakeup-source
->>>> and events are activated.
->>>>
->>>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
->>>> ---
->>>>    drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 15 +++++++++++++++
->>>>    1 file changed, 15 insertions(+)
->>>>
->>>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
->>>> index 351c46f01662..59a34894e495 100644
->>>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
->>>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
->>>> @@ -1076,6 +1076,10 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
->>>>    			return err;
->>>>    	}
->>>> +	if (dev->of_node)
->>>> +		if (of_property_read_bool(dev->of_node, "wakeup-source"))
->>>> +			device_init_wakeup(dev, true);
->>>> +
->>>>    	return 0;
->>>>    }
->>>>    EXPORT_SYMBOL(st_lsm6dsx_probe);
->>>> @@ -1088,6 +1092,12 @@ static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
->>>>    	int i, err = 0;
->>>>    	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
->>>> +		if (device_may_wakeup(dev) && (i == ST_LSM6DSX_ID_ACC)) {
->>>> +			/* Enable wake from IRQ */
->>>> +			enable_irq_wake(hw->irq);
->>>> +			continue;
->>>
->>> This is breaking buffering mode
->>
->> Hmm, what is missing? :-)
->> We need the accelerometer to continue to run in suspend, but skip writing to
->> the internal fifo.
+On 1/7/19 10:14, Fabien Lahoudere wrote:
+> This patch adds a function to determine which version of the
+> protocol is used to communicate with EC.
 > 
-> I think we should keep the accel enabled, but we need to put the FIFO in bypas
-> mode
+> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+> Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
+> Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
+> Tested-by: Gwendal Grignou <gwendal@chromium.org>
+
+For my own reference and for if the patch ends going through the platform-chrome
+tree:
+
+Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+
+Just need the ack and the ok from Jonathan.
+
+Thanks,
+~ Enric
+
+
+> ---
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 36 ++++++++++++++++++-
+>  1 file changed, 35 insertions(+), 1 deletion(-)
 > 
-
-I think it's exactly whats happening here, we keep the accel enabled and 
-set the FIFO in bypass mode after.
-st_lsm6dsx_flush_fifo (which sets the bypass mode) is called after the 
-for loop.
-
-/Sean
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 130362ca421b..2e0f97448e64 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -25,6 +25,31 @@ static char *cros_ec_loc[] = {
+>  	[MOTIONSENSE_LOC_MAX] = "unknown",
+>  };
+>  
+> +static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
+> +					     u16 cmd_offset, u16 cmd, u32 *mask)
+> +{
+> +	int ret;
+> +	struct {
+> +		struct cros_ec_command msg;
+> +		union {
+> +			struct ec_params_get_cmd_versions params;
+> +			struct ec_response_get_cmd_versions resp;
+> +		};
+> +	} __packed buf = {
+> +		.msg = {
+> +			.command = EC_CMD_GET_CMD_VERSIONS + cmd_offset,
+> +			.insize = sizeof(struct ec_response_get_cmd_versions),
+> +			.outsize = sizeof(struct ec_params_get_cmd_versions)
+> +			},
+> +		.params = {.cmd = cmd}
+> +	};
+> +
+> +	ret = cros_ec_cmd_xfer_status(ec_dev, &buf.msg);
+> +	if (ret >= 0)
+> +		*mask = buf.resp.version_mask;
+> +	return ret;
+> +}
+> +
+>  int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  			      struct iio_dev *indio_dev,
+>  			      bool physical_device)
+> @@ -33,6 +58,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
+>  	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
+>  	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+> +	u32 ver_mask;
+> +	int ret;
+>  
+>  	platform_set_drvdata(pdev, indio_dev);
+>  
+> @@ -47,8 +74,15 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  
+>  	mutex_init(&state->cmd_lock);
+>  
+> +	ret = cros_ec_get_host_cmd_version_mask(state->ec,
+> +						ec->cmd_offset,
+> +						EC_CMD_MOTION_SENSE_CMD,
+> +						&ver_mask);
+> +	if (ret < 0)
+> +		return ret;
+> +
+>  	/* Set up the host command structure. */
+> -	state->msg->version = 2;
+> +	state->msg->version = fls(ver_mask) - 1;;
+>  	state->msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
+>  	state->msg->outsize = sizeof(struct ec_params_motion_sense);
+>  
+> 

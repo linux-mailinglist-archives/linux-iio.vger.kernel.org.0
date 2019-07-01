@@ -2,108 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 025C35AA4F
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2019 12:57:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 449525B685
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2019 10:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726888AbfF2K5x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Jun 2019 06:57:53 -0400
-Received: from sauhun.de ([88.99.104.3]:60668 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726874AbfF2K5x (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 29 Jun 2019 06:57:53 -0400
-Received: from localhost (p5486CA23.dip0.t-ipconnect.de [84.134.202.35])
-        by pokefinder.org (Postfix) with ESMTPSA id EB8862C047A;
-        Sat, 29 Jun 2019 12:57:49 +0200 (CEST)
-Date:   Sat, 29 Jun 2019 12:57:49 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Peter Rosin <peda@axentia.se>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Andreas Werner <andreas.werner@men.de>,
-        Rudolf Marek <r.marek@assembler.cz>,
-        Seth Heasley <seth.heasley@intel.com>,
-        Neil Horman <nhorman@tuxdriver.com>,
-        Vadim Pasternak <vadimp@mellanox.com>,
-        Michael Shych <michaelsh@mellanox.com>,
-        Ajay Gupta <ajayg@nvidia.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Jim Cromie <jim.cromie@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        id S1727887AbfGAIOe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Jul 2019 04:14:34 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:46742 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727138AbfGAIOe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Jul 2019 04:14:34 -0400
+Received: from laptop.home (unknown [IPv6:2a01:cb19:8ad6:900:42dd:dd1c:19ee:7c60])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: aragua)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 0BB43284F73;
+        Mon,  1 Jul 2019 09:14:32 +0100 (BST)
+From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Cc:     gwendal@chromium.org, egranata@chromium.org, kernel@collabora.com,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH 3/5] docs: i2c: convert to ReST and add to driver-api
- bookset
-Message-ID: <20190629105749.GA1685@kunai>
-References: <cover.1561756511.git.mchehab+samsung@kernel.org>
- <3997b54a2e73887b96ec665573f08ded78b71421.1561756511.git.mchehab+samsung@kernel.org>
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Nick Vaccaro <nvaccaro@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/1] iio: common: cros_ec_sensors: Add protocol v3 support
+Date:   Mon,  1 Jul 2019 10:14:17 +0200
+Message-Id: <cover.1561968653.git.fabien.lahoudere@collabora.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wRRV7LY7NUeQGEoC"
-Content-Disposition: inline
-In-Reply-To: <3997b54a2e73887b96ec665573f08ded78b71421.1561756511.git.mchehab+samsung@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This patch is part of a split of the following patch:
+https://lkml.org/lkml/2019/6/18/268
+To fix Enric comments from https://lkml.org/lkml/2019/6/25/949
+I extract it from the other serie to speed up acceptance because
+other patches need it to be upstreamed.
 
---wRRV7LY7NUeQGEoC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Changes since v2:
+- Use patch 1 from v1 after discussion on ML
 
-On Fri, Jun 28, 2019 at 06:23:14PM -0300, Mauro Carvalho Chehab wrote:
-> Convert each file at I2C subsystem, renaming them to .rst and
-> adding to the driver-api book.
->=20
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Changes since v1:
+- Drop second patch
+- return ENODEV if version is 0
 
-I glimpsed over it and it looks basically OK. I won't have time to
-actually review all of this. But I trust you and we can fix things
-later. So:
+Fabien Lahoudere (1):
+  iio: common: cros_ec_sensors: determine protocol version
 
-Acked-by: Wolfram Sang <wsa@the-dreams.de>
+ .../cros_ec_sensors/cros_ec_sensors_core.c    | 36 ++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-I assume this goes in via your or doc-tree?
+-- 
+2.19.2
 
->  Next/merge.log                                |   6 +-
-
-This file doesn't exist upstream, though.
-
-
---wRRV7LY7NUeQGEoC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl0XRCkACgkQFA3kzBSg
-KbaLuBAAhCf3TNn+xCMcOgGyyRchSfnkRlEbd1ptubc40pHEy7Qw7R8spyI7CKjK
-S8R50Cj2tH4i6DPbAjQeGi5ofxQZ1RABHJ9iW6nphOdpGtsmfpyabgu85Q40Atqp
-kvu0OAkfeei37NPiNhIbCS7kRfjUtKgihy5V9gkcqlil3VTsUwF1nCyFOGuCxnfO
-D01UaoItfPqPDOSrXRsRvDUGe4CR4jStuUd5SADKrvewvfky7ZpK36oMBfyRBwH9
-sCLErIk3Dvpf538qcBQFklQ/wipy/d2ubulNtrAYuTn1IBKMrV03126mhAj+LZru
-lOEuBxq/Xpq7P4WaQr/BuZHJtQnW9D8m4f1jlWMZsUFEdUzTl+oaAEiZkuFY8pvB
-XjNYuYcOdRnKOcD4IiRnZxyoKc/9tuInVjugogRrbafOfg1u45wF9uL+T6y051NC
-6+v4wBEm6IFaw2BMRa0rk92wFmEmejeRzIofSS/qxBJR1TAS9r1cvOb+yaJYaDSg
-1hH5B0qXKYK+g1fNeaiSD1dtRnEhNKw5mXGrj74R637xFE9tOO3hAoWUnb9M72b3
-N+9e//Ry4PhsL/bK/p2T0jHYL5dSX7UYPdYJLAnxvaDv8EdCZc5+VbhGXmYsUB5p
-+YA9xi1SfGk3kHnJm7JMKAO94RpOmAAiON8FhApNx/kzLO1FNlA=
-=5j5T
------END PGP SIGNATURE-----
-
---wRRV7LY7NUeQGEoC--

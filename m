@@ -2,120 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19BFA5B689
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2019 10:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F9675B765
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2019 11:02:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727904AbfGAIOg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Jul 2019 04:14:36 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:46762 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727138AbfGAIOg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Jul 2019 04:14:36 -0400
-Received: from laptop.home (unknown [IPv6:2a01:cb19:8ad6:900:42dd:dd1c:19ee:7c60])
+        id S1728191AbfGAJC2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Jul 2019 05:02:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43678 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728184AbfGAJC2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 1 Jul 2019 05:02:28 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: aragua)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 6F7072891C3;
-        Mon,  1 Jul 2019 09:14:34 +0100 (BST)
-From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Cc:     gwendal@chromium.org, egranata@chromium.org, kernel@collabora.com,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        Nick Vaccaro <nvaccaro@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/1] iio: common: cros_ec_sensors: determine protocol version
-Date:   Mon,  1 Jul 2019 10:14:18 +0200
-Message-Id: <e74cb88645a02a3e84445b0567d72e8b90f18335.1561968653.git.fabien.lahoudere@collabora.com>
-X-Mailer: git-send-email 2.19.2
-In-Reply-To: <cover.1561968653.git.fabien.lahoudere@collabora.com>
-References: <cover.1561968653.git.fabien.lahoudere@collabora.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id 31EE321743;
+        Mon,  1 Jul 2019 09:02:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561971747;
+        bh=CYz7hUtRKBwaUPejT2s4Y9pfmGP9H5URGDOSmv4ZmF8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FNPqYQKGKkUgr/bdu+3C+KPJSWZpB6hCgjVJGdcWsrXoEFaaaLrmFjWXwsIpHMwsK
+         OWEQdnnNX/fZ4hlJlXxPokiE+0Q3PB81F0nU8jrya6VWug9d+e5bA7KCp77W56pzBt
+         Zvlq3JnCgODOqzuq4phSxF8HduIGubiUYjlElf2k=
+Date:   Mon, 1 Jul 2019 10:59:58 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PULL] Second set of IIO new device support, features and
+ cleanups for the 5.3 cycle.
+Message-ID: <20190701085958.GA11465@kroah.com>
+References: <20190627204945.104a3af2@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190627204945.104a3af2@archlinux>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch adds a function to determine which version of the
-protocol is used to communicate with EC.
+On Thu, Jun 27, 2019 at 08:49:45PM +0100, Jonathan Cameron wrote:
+> The following changes since commit 1f48d056287d58f425c4f36705764f2ba802feba:
+> 
+>   MAINTAINERS: Add entry for anybuss drivers (2019-05-24 21:20:43 +0200)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.3b
 
-Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
-Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
-Tested-by: Gwendal Grignou <gwendal@chromium.org>
----
- .../cros_ec_sensors/cros_ec_sensors_core.c    | 36 ++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+Pulled and pushed out.  NOte, there was one tiny merge issue that you
+might want to check that I got correct.
 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index 130362ca421b..2e0f97448e64 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -25,6 +25,31 @@ static char *cros_ec_loc[] = {
- 	[MOTIONSENSE_LOC_MAX] = "unknown",
- };
- 
-+static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
-+					     u16 cmd_offset, u16 cmd, u32 *mask)
-+{
-+	int ret;
-+	struct {
-+		struct cros_ec_command msg;
-+		union {
-+			struct ec_params_get_cmd_versions params;
-+			struct ec_response_get_cmd_versions resp;
-+		};
-+	} __packed buf = {
-+		.msg = {
-+			.command = EC_CMD_GET_CMD_VERSIONS + cmd_offset,
-+			.insize = sizeof(struct ec_response_get_cmd_versions),
-+			.outsize = sizeof(struct ec_params_get_cmd_versions)
-+			},
-+		.params = {.cmd = cmd}
-+	};
-+
-+	ret = cros_ec_cmd_xfer_status(ec_dev, &buf.msg);
-+	if (ret >= 0)
-+		*mask = buf.resp.version_mask;
-+	return ret;
-+}
-+
- int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			      struct iio_dev *indio_dev,
- 			      bool physical_device)
-@@ -33,6 +58,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
- 	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
- 	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
-+	u32 ver_mask;
-+	int ret;
- 
- 	platform_set_drvdata(pdev, indio_dev);
- 
-@@ -47,8 +74,15 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 
- 	mutex_init(&state->cmd_lock);
- 
-+	ret = cros_ec_get_host_cmd_version_mask(state->ec,
-+						ec->cmd_offset,
-+						EC_CMD_MOTION_SENSE_CMD,
-+						&ver_mask);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* Set up the host command structure. */
--	state->msg->version = 2;
-+	state->msg->version = fls(ver_mask) - 1;;
- 	state->msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
- 	state->msg->outsize = sizeof(struct ec_params_motion_sense);
- 
--- 
-2.19.2
+thanks,
 
+greg k-h

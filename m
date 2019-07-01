@@ -2,399 +2,749 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68EC95C2A1
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2019 20:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE30B5C2B0
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2019 20:12:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726664AbfGASIe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Jul 2019 14:08:34 -0400
-Received: from mail.bugwerft.de ([46.23.86.59]:38156 "EHLO mail.bugwerft.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727109AbfGASIe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 1 Jul 2019 14:08:34 -0400
-Received: from localhost.localdomain (pD95EF93B.dip0.t-ipconnect.de [217.94.249.59])
-        by mail.bugwerft.de (Postfix) with ESMTPSA id C7ADB29006C;
-        Mon,  1 Jul 2019 17:59:10 +0000 (UTC)
-From:   Daniel Mack <daniel@zonque.org>
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, Daniel Mack <daniel@zonque.org>
-Subject: [PATCH 2/2] iio: add driver for PCT2075 temperature sensor
-Date:   Mon,  1 Jul 2019 20:01:58 +0200
-Message-Id: <20190701180158.9463-2-daniel@zonque.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190701180158.9463-1-daniel@zonque.org>
-References: <20190701180158.9463-1-daniel@zonque.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727041AbfGASMm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Jul 2019 14:12:42 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:43472 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726846AbfGASMm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Jul 2019 14:12:42 -0400
+Received: by mail-pg1-f195.google.com with SMTP id f25so6403006pgv.10;
+        Mon, 01 Jul 2019 11:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=d2ulrH6/y7c43YiBTnz+FUUFg+v8yfVH30VHbNG6Npg=;
+        b=lKN80P5ePaO8N+n1b3u2majjBrlDxaCq4qphKxVE97P33Tjktr2g722qyamOVws6N6
+         XoWKWl4OLid574c5LzQmpiYgzw1qF88HeK5apJ16FjMnZliGzOK3DbYcK7psWo3ImvOP
+         bdc5YmiWZfQAeOTQRJ3rW4tL7bwWutHP2NCi/y9gECNkGbxb3AIrA+M/gYL16NtWuZ8H
+         1YsMvxOKlqANLsGP4BUtBiNLFRLEVQlFPE+nfYWrqcl87MAwc5G9FF3PEXDtRByjyTQs
+         mvC1Fdrvh8qn9TorC95pdrvCNo1NPhNVl5Yd0iD+eRxkO1GEIBPAwzv/jXvUcTL+zdk1
+         /xkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=d2ulrH6/y7c43YiBTnz+FUUFg+v8yfVH30VHbNG6Npg=;
+        b=Zs4WtmZDatSxpkTuf5vr9FN3L89ebdzR+APaC+EBPQYfjD+HbRu6Bm2J09CxaAARR3
+         Nc/MgHS7E4H5JHHTA3PZRDNRVLBVJ//hWFOcodxQpVbaSD+sW9MPb0lSRmUJTRqpj5Dt
+         jsKVyOLaDOJO/Luy9FWtohPH6lhD7axIYbGwYM3R6uogq5ZJkWAyOse4ysuOesTqzchl
+         rlOueCagcr+Cl2MRIfEYwcH/SZve6TowQWVuQ2/LgXMGEkd76jis+ays3rfr0IJx9QQs
+         2VECB2THEvQlsJ8UZ384KG8Gn6t9mk8+6BBhO8Hij1/6UWPEEqmlXuMMhsayMp1b+qN2
+         OsGA==
+X-Gm-Message-State: APjAAAX8IZJaYLM0KQAPwfYdTDEvNHCTCrRmCdVqOxLzT4A+AWbvoqaG
+        0i3RRxP3AujS+pJBvbZdC68=
+X-Google-Smtp-Source: APXvYqzMwXofYeABAvy5w/11yDDQF8GqmHA/HQeql7OVIijTnc7jdogCsmUqkNB1xlADd220IiSf0w==
+X-Received: by 2002:a63:6089:: with SMTP id u131mr26865742pgb.314.1562004761244;
+        Mon, 01 Jul 2019 11:12:41 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id u16sm203449pjb.2.2019.07.01.11.12.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 01 Jul 2019 11:12:40 -0700 (PDT)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dirk Eibach <eibach@gdsys.de>
+Subject: [PATCH] hwmon: Remove ads1015 driver
+Date:   Mon,  1 Jul 2019 11:12:38 -0700
+Message-Id: <1562004758-13025-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch adds a driver for NXP PCT2075 temperature sensors, connected
-via I2C.
+A driver for ADS1015 with more functionality is available in the iio
+subsystem.
 
-The datasheet for this part is here:
+Remove the hwmon driver as duplicate. If the chip is used for hardware
+monitoring, the iio->hwmon bridge should be used.
 
- https://www.nxp.com/docs/en/data-sheet/PCT2075.pdf
-
-All hardware configuration options are accessible via DT properites.
-
-Signed-off-by: Daniel Mack <daniel@zonque.org>
+Cc: Dirk Eibach <eibach@gdsys.de>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/iio/temperature/Kconfig   |  11 ++
- drivers/iio/temperature/Makefile  |   1 +
- drivers/iio/temperature/pct2075.c | 307 ++++++++++++++++++++++++++++++
- 3 files changed, 319 insertions(+)
- create mode 100644 drivers/iio/temperature/pct2075.c
+Current plan is to queue this removal for v5.4 (not v5.3) in the hwmon
+tree.
 
-diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
-index c185cbee25c7..20aeb4c764b7 100644
---- a/drivers/iio/temperature/Kconfig
-+++ b/drivers/iio/temperature/Kconfig
-@@ -55,6 +55,17 @@ config MLX90632
- 	  This driver can also be built as a module. If so, the module will
- 	  be called mlx90632.
- 
-+config PCT2075
-+	tristate "NXP PCT2075 temperature sensor"
-+	depends on I2C
-+	help
-+	  If you say yes here you get support for the NXP
-+	  NCP2075 I2C connected Fm+ digital temperature sensor and
-+	  thermal watchdog.
-+
-+	  This driver can also be built as a module. If so, the module will
-+	  be called pct2075.
-+
- config TMP006
- 	tristate "TMP006 infrared thermopile sensor"
- 	depends on I2C
-diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
-index baca4776ca0d..7fad51b8be4f 100644
---- a/drivers/iio/temperature/Makefile
-+++ b/drivers/iio/temperature/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
- obj-$(CONFIG_MAX31856) += max31856.o
- obj-$(CONFIG_MLX90614) += mlx90614.o
- obj-$(CONFIG_MLX90632) += mlx90632.o
-+obj-$(CONFIG_PCT2075) += pct2075.o
- obj-$(CONFIG_TMP006) += tmp006.o
- obj-$(CONFIG_TMP007) += tmp007.o
- obj-$(CONFIG_TSYS01) += tsys01.o
-diff --git a/drivers/iio/temperature/pct2075.c b/drivers/iio/temperature/pct2075.c
+ .../devicetree/bindings/hwmon/ads1015.txt          |  73 -----
+ .../devicetree/bindings/iio/adc/ads1015.txt        |  73 +++++
+ Documentation/hwmon/ads1015.rst                    |  90 ------
+ Documentation/hwmon/index.rst                      |   1 -
+ MAINTAINERS                                        |   8 -
+ drivers/hwmon/Kconfig                              |  10 -
+ drivers/hwmon/Makefile                             |   1 -
+ drivers/hwmon/ads1015.c                            | 324 ---------------------
+ drivers/iio/adc/Kconfig                            |   2 +-
+ 9 files changed, 74 insertions(+), 508 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/hwmon/ads1015.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ads1015.txt
+ delete mode 100644 Documentation/hwmon/ads1015.rst
+ delete mode 100644 drivers/hwmon/ads1015.c
+
+diff --git a/Documentation/devicetree/bindings/hwmon/ads1015.txt b/Documentation/devicetree/bindings/hwmon/ads1015.txt
+deleted file mode 100644
+index 918a507d1159..000000000000
+--- a/Documentation/devicetree/bindings/hwmon/ads1015.txt
++++ /dev/null
+@@ -1,73 +0,0 @@
+-ADS1015 (I2C)
+-
+-This device is a 12-bit A-D converter with 4 inputs.
+-
+-The inputs can be used single ended or in certain differential combinations.
+-
+-For configuration all possible combinations are mapped to 8 channels:
+-  0: Voltage over AIN0 and AIN1.
+-  1: Voltage over AIN0 and AIN3.
+-  2: Voltage over AIN1 and AIN3.
+-  3: Voltage over AIN2 and AIN3.
+-  4: Voltage over AIN0 and GND.
+-  5: Voltage over AIN1 and GND.
+-  6: Voltage over AIN2 and GND.
+-  7: Voltage over AIN3 and GND.
+-
+-Each channel can be configured individually:
+- - pga is the programmable gain amplifier (values are full scale)
+-    0: +/- 6.144 V
+-    1: +/- 4.096 V
+-    2: +/- 2.048 V (default)
+-    3: +/- 1.024 V
+-    4: +/- 0.512 V
+-    5: +/- 0.256 V
+- - data_rate in samples per second
+-    0: 128
+-    1: 250
+-    2: 490
+-    3: 920
+-    4: 1600 (default)
+-    5: 2400
+-    6: 3300
+-
+-1) The /ads1015 node
+-
+-  Required properties:
+-
+-   - compatible : must be "ti,ads1015"
+-   - reg : I2C bus address of the device
+-   - #address-cells : must be <1>
+-   - #size-cells : must be <0>
+-
+-  The node contains child nodes for each channel that the platform uses.
+-
+-  Example ADS1015 node:
+-
+-    ads1015@49 {
+-	    compatible = "ti,ads1015";
+-	    reg = <0x49>;
+-	    #address-cells = <1>;
+-	    #size-cells = <0>;
+-
+-	    [ child node definitions... ]
+-    }
+-
+-2) channel nodes
+-
+-  Required properties:
+-
+-   - reg : the channel number
+-
+-  Optional properties:
+-
+-   - ti,gain : the programmable gain amplifier setting
+-   - ti,datarate : the converter data rate
+-
+-  Example ADS1015 channel node:
+-
+-    channel@4 {
+-	    reg = <4>;
+-	    ti,gain = <3>;
+-	    ti,datarate = <5>;
+-    };
+diff --git a/Documentation/devicetree/bindings/iio/adc/ads1015.txt b/Documentation/devicetree/bindings/iio/adc/ads1015.txt
 new file mode 100644
-index 000000000000..e2a092079905
+index 000000000000..918a507d1159
 --- /dev/null
-+++ b/drivers/iio/temperature/pct2075.c
-@@ -0,0 +1,307 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/Documentation/devicetree/bindings/iio/adc/ads1015.txt
+@@ -0,0 +1,73 @@
++ADS1015 (I2C)
 +
-+#include <linux/err.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regulator/consumer.h>
++This device is a 12-bit A-D converter with 4 inputs.
 +
-+#define PCT2075_REG_CONF	1
-+#define		PCT2075_CONF_OS_F_QUEUE(val) (((val) & 0x3) << 3)
-+#define		PCT2075_CONF_OS_ACTIVE_HIGH	BIT(2)
-+#define		PCT2075_CONF_OS_COMP_INT	BIT(1)
-+#define		PCT2075_CONF_SHUTDOWN		BIT(0)
++The inputs can be used single ended or in certain differential combinations.
 +
-+#define PCT2075_REG_TEMP	0
-+#define PCT2075_REG_THYST	2
-+#define PCT2075_REG_TOS		3
-+#define PCT2075_REG_TIDLE	4
++For configuration all possible combinations are mapped to 8 channels:
++  0: Voltage over AIN0 and AIN1.
++  1: Voltage over AIN0 and AIN3.
++  2: Voltage over AIN1 and AIN3.
++  3: Voltage over AIN2 and AIN3.
++  4: Voltage over AIN0 and GND.
++  5: Voltage over AIN1 and GND.
++  6: Voltage over AIN2 and GND.
++  7: Voltage over AIN3 and GND.
 +
-+struct pct2075_data {
-+	struct i2c_client *client;
-+	struct regulator *regulator;
-+	u8 reg_conf;
-+	u8 reg_tidle;
-+	u16 reg_thyst;
-+	u16 reg_tos;
-+};
++Each channel can be configured individually:
++ - pga is the programmable gain amplifier (values are full scale)
++    0: +/- 6.144 V
++    1: +/- 4.096 V
++    2: +/- 2.048 V (default)
++    3: +/- 1.024 V
++    4: +/- 0.512 V
++    5: +/- 0.256 V
++ - data_rate in samples per second
++    0: 128
++    1: 250
++    2: 490
++    3: 920
++    4: 1600 (default)
++    5: 2400
++    6: 3300
 +
-+static const struct iio_chan_spec pct2075_channel = {
-+	.type = IIO_TEMP,
-+	.channel = IIO_MOD_TEMP_AMBIENT,
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+};
++1) The /ads1015 node
 +
-+static int pct2075_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int *val,
-+			    int *val2,
-+			    long mask)
-+{
-+	struct pct2075_data *pct2075 = iio_priv(indio_dev);
-+	int ret, v;
++  Required properties:
 +
-+	ret = i2c_smbus_read_word_swapped(pct2075->client,
-+					  PCT2075_REG_TEMP);
-+	if (ret < 0)
-+		return ret;
++   - compatible : must be "ti,ads1015"
++   - reg : I2C bus address of the device
++   - #address-cells : must be <1>
++   - #size-cells : must be <0>
 +
-+	v = sign_extend32(ret >> 5, 10) * 125;
-+	*val = v / 1000;
-+	*val2 = (v % 1000) * 1000;
++  The node contains child nodes for each channel that the platform uses.
 +
-+	return IIO_VAL_INT_PLUS_MICRO;
-+}
++  Example ADS1015 node:
 +
-+static int pct2075_sync(struct pct2075_data *pct2075)
-+{
-+	struct i2c_client *client = pct2075->client;
-+	struct device *dev = &client->dev;
-+	int ret;
++    ads1015@49 {
++	    compatible = "ti,ads1015";
++	    reg = <0x49>;
++	    #address-cells = <1>;
++	    #size-cells = <0>;
 +
-+	ret = i2c_smbus_write_byte_data(client, PCT2075_REG_CONF,
-+					pct2075->reg_conf);
-+	if (ret < 0) {
-+		dev_err(dev, "Cannot write CONF register: %d\n", ret);
-+		return ret;
-+	}
++	    [ child node definitions... ]
++    }
 +
-+	ret = i2c_smbus_write_byte_data(client, PCT2075_REG_TIDLE,
-+					pct2075->reg_tidle);
-+	if (ret < 0) {
-+		dev_err(dev, "Cannot write TIDLE register: %d\n", ret);
-+		return ret;
-+	}
++2) channel nodes
 +
-+	ret = i2c_smbus_write_word_swapped(client, PCT2075_REG_TOS,
-+					   pct2075->reg_tos);
-+	if (ret < 0) {
-+		dev_err(dev, "Cannot write TOS register: %d\n", ret);
-+		return ret;
-+	}
++  Required properties:
 +
-+	ret = i2c_smbus_write_word_swapped(client, PCT2075_REG_THYST,
-+					   pct2075->reg_thyst);
-+	if (ret < 0) {
-+		dev_err(dev, "Cannot write THYST register: %d\n", ret);
-+		return ret;
-+	}
++   - reg : the channel number
 +
-+	return 0;
-+}
++  Optional properties:
 +
-+static void pct2075_of_parse_temperature(struct device *dev,
-+					 u16 *out, const char *name)
-+{
-+	int ret;
-+	s32 tmp;
++   - ti,gain : the programmable gain amplifier setting
++   - ti,datarate : the converter data rate
 +
-+	ret = of_property_read_s32(dev->of_node, name, &tmp);
-+	if (ret != 0)
-+		return;
++  Example ADS1015 channel node:
 +
-+	if (tmp < -55000 || tmp > 125000 || tmp % 500 != 0) {
-+		dev_err(dev, "Unsupported value for %s", name);
-+		return;
-+	}
-+
-+	*out = ((u16) (tmp / 500)) << 7;
-+}
-+
-+static const struct iio_info pct2075_info = {
-+	.read_raw = pct2075_read_raw,
-+};
-+
-+static int pct2075_probe(struct i2c_client *client,
-+			 const struct i2c_device_id *id)
-+{
-+	struct device *dev = &client->dev;
-+	struct pct2075_data *pct2075;
-+	struct iio_dev *indio_dev;
-+	u32 tmp;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*pct2075));
-+	if (!indio_dev) {
-+		dev_err(&client->dev, "Failed to allocate device\n");
-+		return -ENOMEM;
-+	}
-+
-+	pct2075 = iio_priv(indio_dev);
-+	i2c_set_clientdata(client, indio_dev);
-+	pct2075->client = client;
-+
-+	indio_dev->dev.parent = dev;
-+	indio_dev->name = id->name;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &pct2075_info;
-+	indio_dev->channels = &pct2075_channel;
-+	indio_dev->num_channels = 1;
-+
-+	pct2075->regulator = devm_regulator_get_optional(dev, "vcc");
-+	if (IS_ERR(pct2075->regulator)) {
-+		ret = PTR_ERR(pct2075->regulator);
-+		if (ret == -EPROBE_DEFER)
-+			return ret;
-+
-+		pct2075->regulator = NULL;
-+	}
-+
-+	if (pct2075->regulator) {
-+		ret = regulator_enable(pct2075->regulator);
-+		if (ret < 0) {
-+			dev_err(dev, "Cannot enable regulator: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	/* Read hardware defaults */
-+	ret = i2c_smbus_read_word_swapped(client, PCT2075_REG_TOS);
-+	if (ret < 0) {
-+		dev_err(dev, "Cannot read TOS register: %d\n", ret);
-+		return ret;
-+	}
-+	pct2075->reg_tos = ret;
-+
-+	ret = i2c_smbus_read_word_swapped(client, PCT2075_REG_THYST);
-+	if (ret < 0) {
-+		dev_err(dev, "Cannot read THYST register: %d\n", ret);
-+		return ret;
-+	}
-+	pct2075->reg_thyst = ret;
-+
-+	ret = i2c_smbus_read_byte_data(client, PCT2075_REG_TIDLE);
-+	if (ret < 0) {
-+		dev_err(dev, "Cannot read TIDLE register: %d\n", ret);
-+		return ret;
-+	}
-+	pct2075->reg_tidle = ret;
-+
-+	/* Parse DT properties */
-+	ret = of_property_read_u32(dev->of_node, "nxp,os-fault-queue", &tmp);
-+	if (ret == 0) {
-+		switch (tmp) {
-+		case 1:
-+			pct2075->reg_conf |= PCT2075_CONF_OS_F_QUEUE(0);
-+			break;
-+		case 2:
-+			pct2075->reg_conf |= PCT2075_CONF_OS_F_QUEUE(1);
-+			break;
-+		case 4:
-+			pct2075->reg_conf |= PCT2075_CONF_OS_F_QUEUE(2);
-+			break;
-+		case 6:
-+			pct2075->reg_conf |= PCT2075_CONF_OS_F_QUEUE(3);
-+			break;
-+		default:
-+			dev_err(dev, "Unsupported value for nxp,os-fault-queue");
-+		}
-+	}
-+
-+	if (of_property_read_bool(dev->of_node, "nxp,os-active-high"))
-+		pct2075->reg_conf |= PCT2075_CONF_OS_ACTIVE_HIGH;
-+
-+	if (of_property_read_bool(dev->of_node, "nxp,os-mode-interrupt"))
-+		pct2075->reg_conf |= PCT2075_CONF_OS_COMP_INT;
-+
-+	ret = of_property_read_u32(dev->of_node, "nxp,sample-period-ms", &tmp);
-+	if (ret == 0) {
-+		if (tmp % 100 == 0 && tmp <= 3100)
-+			pct2075->reg_tidle = tmp / 100;
-+		else
-+			dev_err(dev, "Unsupported value for nxp,sample-period-ms");
-+	}
-+
-+	pct2075_of_parse_temperature(dev, &pct2075->reg_tos,
-+				     "nxp,overtemperature-shutdown-millicelsius");
-+	pct2075_of_parse_temperature(dev, &pct2075->reg_thyst,
-+				     "nxp,hysteresis-millicelsius");
-+
-+	ret = pct2075_sync(pct2075);
-+	if (ret < 0)
-+		return ret;
-+
-+	pm_runtime_disable(dev);
-+	ret = pm_runtime_set_active(dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	pm_runtime_enable(&client->dev);
-+	pm_runtime_set_autosuspend_delay(dev, 10);
-+	pm_runtime_use_autosuspend(dev);
-+
-+	return iio_device_register(indio_dev);
-+}
-+
-+static int pct2075_remove(struct i2c_client *client)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-+	struct pct2075_data *pct2075 = iio_priv(indio_dev);
-+	struct device *dev = &client->dev;
-+
-+	i2c_smbus_write_byte_data(client, PCT2075_REG_CONF,
-+				  PCT2075_CONF_SHUTDOWN);
-+
-+	if (pct2075->regulator)
-+		regulator_disable(pct2075->regulator);
-+
-+	iio_device_unregister(indio_dev);
-+
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
-+	pm_runtime_put_noidle(dev);
-+
-+	return 0;
-+}
-+
-+static const struct i2c_device_id pct2075_id[] = {
-+	{ "pct2075", 0 },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, pct2075_id);
-+
-+static const struct of_device_id pct2075_of_match[] = {
-+	{ .compatible = "nxp,pct2075" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, pct2075_of_match);
-+
-+static int __maybe_unused pct2075_pm_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct pct2075_data *pct2075 = iio_priv(indio_dev);
-+
-+	return i2c_smbus_write_byte_data(pct2075->client, PCT2075_REG_CONF,
-+					 PCT2075_CONF_SHUTDOWN);
-+}
-+
-+static int __maybe_unused pct2075_pm_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct pct2075_data *pct2075 = iio_priv(indio_dev);
-+
-+	return pct2075_sync(pct2075);
-+}
-+
-+static UNIVERSAL_DEV_PM_OPS(pct2075_pm_ops, pct2075_pm_suspend,
-+			    pct2075_pm_resume, NULL);
-+
-+static struct i2c_driver pct2075_driver = {
-+	.driver = {
-+		.name	= "pct2075",
-+		.of_match_table = pct2075_of_match,
-+		.pm	= &pct2075_pm_ops,
-+	},
-+	.probe = pct2075_probe,
-+	.remove = pct2075_remove,
-+	.id_table = pct2075_id,
-+};
-+module_i2c_driver(pct2075_driver);
-+
-+MODULE_AUTHOR("Daniel Mack <daniel@zonque.org>");
-+MODULE_DESCRIPTION("NXP PCT2075 temperature sensor driver");
-+MODULE_LICENSE("GPL v2");
++    channel@4 {
++	    reg = <4>;
++	    ti,gain = <3>;
++	    ti,datarate = <5>;
++    };
+diff --git a/Documentation/hwmon/ads1015.rst b/Documentation/hwmon/ads1015.rst
+deleted file mode 100644
+index e0951c4e57bb..000000000000
+--- a/Documentation/hwmon/ads1015.rst
++++ /dev/null
+@@ -1,90 +0,0 @@
+-Kernel driver ads1015
+-=====================
+-
+-Supported chips:
+-
+-  * Texas Instruments ADS1015
+-
+-    Prefix: 'ads1015'
+-
+-    Datasheet: Publicly available at the Texas Instruments website:
+-
+-	       http://focus.ti.com/lit/ds/symlink/ads1015.pdf
+-
+-  * Texas Instruments ADS1115
+-
+-    Prefix: 'ads1115'
+-
+-    Datasheet: Publicly available at the Texas Instruments website:
+-
+-	       http://focus.ti.com/lit/ds/symlink/ads1115.pdf
+-
+-Authors:
+-	Dirk Eibach, Guntermann & Drunck GmbH <eibach@gdsys.de>
+-
+-Description
+------------
+-
+-This driver implements support for the Texas Instruments ADS1015/ADS1115.
+-
+-This device is a 12/16-bit A-D converter with 4 inputs.
+-
+-The inputs can be used single ended or in certain differential combinations.
+-
+-The inputs can be made available by 8 sysfs input files in0_input - in7_input:
+-
+-  - in0: Voltage over AIN0 and AIN1.
+-  - in1: Voltage over AIN0 and AIN3.
+-  - in2: Voltage over AIN1 and AIN3.
+-  - in3: Voltage over AIN2 and AIN3.
+-  - in4: Voltage over AIN0 and GND.
+-  - in5: Voltage over AIN1 and GND.
+-  - in6: Voltage over AIN2 and GND.
+-  - in7: Voltage over AIN3 and GND.
+-
+-Which inputs are available can be configured using platform data or devicetree.
+-
+-By default all inputs are exported.
+-
+-Platform Data
+--------------
+-
+-In linux/platform_data/ads1015.h platform data is defined, channel_data contains
+-configuration data for the used input combinations:
+-
+-- pga is the programmable gain amplifier (values are full scale)
+-
+-    - 0: +/- 6.144 V
+-    - 1: +/- 4.096 V
+-    - 2: +/- 2.048 V
+-    - 3: +/- 1.024 V
+-    - 4: +/- 0.512 V
+-    - 5: +/- 0.256 V
+-
+-- data_rate in samples per second
+-
+-    - 0: 128
+-    - 1: 250
+-    - 2: 490
+-    - 3: 920
+-    - 4: 1600
+-    - 5: 2400
+-    - 6: 3300
+-
+-Example::
+-
+-  struct ads1015_platform_data data = {
+-	.channel_data = {
+-		[2] = { .enabled = true, .pga = 1, .data_rate = 0 },
+-		[4] = { .enabled = true, .pga = 4, .data_rate = 5 },
+-	}
+-  };
+-
+-In this case only in2_input (FS +/- 4.096 V, 128 SPS) and in4_input
+-(FS +/- 0.512 V, 2400 SPS) would be created.
+-
+-Devicetree
+-----------
+-
+-Configuration is also possible via devicetree:
+-Documentation/devicetree/bindings/hwmon/ads1015.txt
+diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
+index ee090e51653a..1d301d0e6f4d 100644
+--- a/Documentation/hwmon/index.rst
++++ b/Documentation/hwmon/index.rst
+@@ -30,7 +30,6 @@ Hardware Monitoring Kernel Drivers
+    adm1031
+    adm1275
+    adm9240
+-   ads1015
+    ads7828
+    adt7410
+    adt7411
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 01a52fc964da..11744a3735f0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -517,14 +517,6 @@ W:	http://ez.analog.com/community/linux-device-drivers
+ S:	Supported
+ F:	drivers/video/backlight/adp8860_bl.c
+ 
+-ADS1015 HARDWARE MONITOR DRIVER
+-M:	Dirk Eibach <eibach@gdsys.de>
+-L:	linux-hwmon@vger.kernel.org
+-S:	Maintained
+-F:	Documentation/hwmon/ads1015.rst
+-F:	drivers/hwmon/ads1015.c
+-F:	include/linux/platform_data/ads1015.h
+-
+ ADT746X FAN DRIVER
+ M:	Colin Leroy <colin@colino.net>
+ S:	Maintained
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 650dd71f9724..76cd0647ee2c 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -1570,16 +1570,6 @@ config SENSORS_ADC128D818
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called adc128d818.
+ 
+-config SENSORS_ADS1015
+-	tristate "Texas Instruments ADS1015"
+-	depends on I2C
+-	help
+-	  If you say yes here you get support for Texas Instruments
+-	  ADS1015/ADS1115 12/16-bit 4-input ADC device.
+-
+-	  This driver can also be built as a module. If so, the module
+-	  will be called ads1015.
+-
+ config SENSORS_ADS7828
+ 	tristate "Texas Instruments ADS7828 and compatibles"
+ 	depends on I2C
+diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
+index 8db472ea04f0..6a52a964038b 100644
+--- a/drivers/hwmon/Makefile
++++ b/drivers/hwmon/Makefile
+@@ -35,7 +35,6 @@ obj-$(CONFIG_SENSORS_ADM1026)	+= adm1026.o
+ obj-$(CONFIG_SENSORS_ADM1029)	+= adm1029.o
+ obj-$(CONFIG_SENSORS_ADM1031)	+= adm1031.o
+ obj-$(CONFIG_SENSORS_ADM9240)	+= adm9240.o
+-obj-$(CONFIG_SENSORS_ADS1015)	+= ads1015.o
+ obj-$(CONFIG_SENSORS_ADS7828)	+= ads7828.o
+ obj-$(CONFIG_SENSORS_ADS7871)	+= ads7871.o
+ obj-$(CONFIG_SENSORS_ADT7X10)	+= adt7x10.o
+diff --git a/drivers/hwmon/ads1015.c b/drivers/hwmon/ads1015.c
+deleted file mode 100644
+index 3727a3762eb8..000000000000
+--- a/drivers/hwmon/ads1015.c
++++ /dev/null
+@@ -1,324 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * ads1015.c - lm_sensors driver for ads1015 12-bit 4-input ADC
+- * (C) Copyright 2010
+- * Dirk Eibach, Guntermann & Drunck GmbH <eibach@gdsys.de>
+- *
+- * Based on the ads7828 driver by Steve Hardy.
+- *
+- * Datasheet available at: http://focus.ti.com/lit/ds/symlink/ads1015.pdf
+- */
+-
+-#include <linux/module.h>
+-#include <linux/init.h>
+-#include <linux/slab.h>
+-#include <linux/delay.h>
+-#include <linux/i2c.h>
+-#include <linux/hwmon.h>
+-#include <linux/hwmon-sysfs.h>
+-#include <linux/err.h>
+-#include <linux/mutex.h>
+-#include <linux/of_device.h>
+-#include <linux/of.h>
+-
+-#include <linux/platform_data/ads1015.h>
+-
+-/* ADS1015 registers */
+-enum {
+-	ADS1015_CONVERSION = 0,
+-	ADS1015_CONFIG = 1,
+-};
+-
+-/* PGA fullscale voltages in mV */
+-static const unsigned int fullscale_table[8] = {
+-	6144, 4096, 2048, 1024, 512, 256, 256, 256 };
+-
+-/* Data rates in samples per second */
+-static const unsigned int data_rate_table_1015[8] = {
+-	128, 250, 490, 920, 1600, 2400, 3300, 3300
+-};
+-
+-static const unsigned int data_rate_table_1115[8] = {
+-	8, 16, 32, 64, 128, 250, 475, 860
+-};
+-
+-#define ADS1015_DEFAULT_CHANNELS 0xff
+-#define ADS1015_DEFAULT_PGA 2
+-#define ADS1015_DEFAULT_DATA_RATE 4
+-
+-enum ads1015_chips {
+-	ads1015,
+-	ads1115,
+-};
+-
+-struct ads1015_data {
+-	struct device *hwmon_dev;
+-	struct mutex update_lock; /* mutex protect updates */
+-	struct ads1015_channel_data channel_data[ADS1015_CHANNELS];
+-	enum ads1015_chips id;
+-};
+-
+-static int ads1015_read_adc(struct i2c_client *client, unsigned int channel)
+-{
+-	u16 config;
+-	struct ads1015_data *data = i2c_get_clientdata(client);
+-	unsigned int pga = data->channel_data[channel].pga;
+-	unsigned int data_rate = data->channel_data[channel].data_rate;
+-	unsigned int conversion_time_ms;
+-	const unsigned int * const rate_table = data->id == ads1115 ?
+-		data_rate_table_1115 : data_rate_table_1015;
+-	int res;
+-
+-	mutex_lock(&data->update_lock);
+-
+-	/* get channel parameters */
+-	res = i2c_smbus_read_word_swapped(client, ADS1015_CONFIG);
+-	if (res < 0)
+-		goto err_unlock;
+-	config = res;
+-	conversion_time_ms = DIV_ROUND_UP(1000, rate_table[data_rate]);
+-
+-	/* setup and start single conversion */
+-	config &= 0x001f;
+-	config |= (1 << 15) | (1 << 8);
+-	config |= (channel & 0x0007) << 12;
+-	config |= (pga & 0x0007) << 9;
+-	config |= (data_rate & 0x0007) << 5;
+-
+-	res = i2c_smbus_write_word_swapped(client, ADS1015_CONFIG, config);
+-	if (res < 0)
+-		goto err_unlock;
+-
+-	/* wait until conversion finished */
+-	msleep(conversion_time_ms);
+-	res = i2c_smbus_read_word_swapped(client, ADS1015_CONFIG);
+-	if (res < 0)
+-		goto err_unlock;
+-	config = res;
+-	if (!(config & (1 << 15))) {
+-		/* conversion not finished in time */
+-		res = -EIO;
+-		goto err_unlock;
+-	}
+-
+-	res = i2c_smbus_read_word_swapped(client, ADS1015_CONVERSION);
+-
+-err_unlock:
+-	mutex_unlock(&data->update_lock);
+-	return res;
+-}
+-
+-static int ads1015_reg_to_mv(struct i2c_client *client, unsigned int channel,
+-			     s16 reg)
+-{
+-	struct ads1015_data *data = i2c_get_clientdata(client);
+-	unsigned int pga = data->channel_data[channel].pga;
+-	int fullscale = fullscale_table[pga];
+-	const int mask = data->id == ads1115 ? 0x7fff : 0x7ff0;
+-
+-	return DIV_ROUND_CLOSEST(reg * fullscale, mask);
+-}
+-
+-/* sysfs callback function */
+-static ssize_t in_show(struct device *dev, struct device_attribute *da,
+-		       char *buf)
+-{
+-	struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
+-	struct i2c_client *client = to_i2c_client(dev);
+-	int res;
+-	int index = attr->index;
+-
+-	res = ads1015_read_adc(client, index);
+-	if (res < 0)
+-		return res;
+-
+-	return sprintf(buf, "%d\n", ads1015_reg_to_mv(client, index, res));
+-}
+-
+-static const struct sensor_device_attribute ads1015_in[] = {
+-	SENSOR_ATTR_RO(in0_input, in, 0),
+-	SENSOR_ATTR_RO(in1_input, in, 1),
+-	SENSOR_ATTR_RO(in2_input, in, 2),
+-	SENSOR_ATTR_RO(in3_input, in, 3),
+-	SENSOR_ATTR_RO(in4_input, in, 4),
+-	SENSOR_ATTR_RO(in5_input, in, 5),
+-	SENSOR_ATTR_RO(in6_input, in, 6),
+-	SENSOR_ATTR_RO(in7_input, in, 7),
+-};
+-
+-/*
+- * Driver interface
+- */
+-
+-static int ads1015_remove(struct i2c_client *client)
+-{
+-	struct ads1015_data *data = i2c_get_clientdata(client);
+-	int k;
+-
+-	hwmon_device_unregister(data->hwmon_dev);
+-	for (k = 0; k < ADS1015_CHANNELS; ++k)
+-		device_remove_file(&client->dev, &ads1015_in[k].dev_attr);
+-	return 0;
+-}
+-
+-#ifdef CONFIG_OF
+-static int ads1015_get_channels_config_of(struct i2c_client *client)
+-{
+-	struct ads1015_data *data = i2c_get_clientdata(client);
+-	struct device_node *node;
+-
+-	if (!client->dev.of_node
+-	    || !of_get_next_child(client->dev.of_node, NULL))
+-		return -EINVAL;
+-
+-	for_each_child_of_node(client->dev.of_node, node) {
+-		u32 pval;
+-		unsigned int channel;
+-		unsigned int pga = ADS1015_DEFAULT_PGA;
+-		unsigned int data_rate = ADS1015_DEFAULT_DATA_RATE;
+-
+-		if (of_property_read_u32(node, "reg", &pval)) {
+-			dev_err(&client->dev, "invalid reg on %pOF\n", node);
+-			continue;
+-		}
+-
+-		channel = pval;
+-		if (channel >= ADS1015_CHANNELS) {
+-			dev_err(&client->dev,
+-				"invalid channel index %d on %pOF\n",
+-				channel, node);
+-			continue;
+-		}
+-
+-		if (!of_property_read_u32(node, "ti,gain", &pval)) {
+-			pga = pval;
+-			if (pga > 6) {
+-				dev_err(&client->dev, "invalid gain on %pOF\n",
+-					node);
+-				return -EINVAL;
+-			}
+-		}
+-
+-		if (!of_property_read_u32(node, "ti,datarate", &pval)) {
+-			data_rate = pval;
+-			if (data_rate > 7) {
+-				dev_err(&client->dev,
+-					"invalid data_rate on %pOF\n", node);
+-				return -EINVAL;
+-			}
+-		}
+-
+-		data->channel_data[channel].enabled = true;
+-		data->channel_data[channel].pga = pga;
+-		data->channel_data[channel].data_rate = data_rate;
+-	}
+-
+-	return 0;
+-}
+-#endif
+-
+-static void ads1015_get_channels_config(struct i2c_client *client)
+-{
+-	unsigned int k;
+-	struct ads1015_data *data = i2c_get_clientdata(client);
+-	struct ads1015_platform_data *pdata = dev_get_platdata(&client->dev);
+-
+-	/* prefer platform data */
+-	if (pdata) {
+-		memcpy(data->channel_data, pdata->channel_data,
+-		       sizeof(data->channel_data));
+-		return;
+-	}
+-
+-#ifdef CONFIG_OF
+-	if (!ads1015_get_channels_config_of(client))
+-		return;
+-#endif
+-
+-	/* fallback on default configuration */
+-	for (k = 0; k < ADS1015_CHANNELS; ++k) {
+-		data->channel_data[k].enabled = true;
+-		data->channel_data[k].pga = ADS1015_DEFAULT_PGA;
+-		data->channel_data[k].data_rate = ADS1015_DEFAULT_DATA_RATE;
+-	}
+-}
+-
+-static int ads1015_probe(struct i2c_client *client,
+-			 const struct i2c_device_id *id)
+-{
+-	struct ads1015_data *data;
+-	int err;
+-	unsigned int k;
+-
+-	data = devm_kzalloc(&client->dev, sizeof(struct ads1015_data),
+-			    GFP_KERNEL);
+-	if (!data)
+-		return -ENOMEM;
+-
+-	if (client->dev.of_node)
+-		data->id = (enum ads1015_chips)
+-			of_device_get_match_data(&client->dev);
+-	else
+-		data->id = id->driver_data;
+-	i2c_set_clientdata(client, data);
+-	mutex_init(&data->update_lock);
+-
+-	/* build sysfs attribute group */
+-	ads1015_get_channels_config(client);
+-	for (k = 0; k < ADS1015_CHANNELS; ++k) {
+-		if (!data->channel_data[k].enabled)
+-			continue;
+-		err = device_create_file(&client->dev, &ads1015_in[k].dev_attr);
+-		if (err)
+-			goto exit_remove;
+-	}
+-
+-	data->hwmon_dev = hwmon_device_register(&client->dev);
+-	if (IS_ERR(data->hwmon_dev)) {
+-		err = PTR_ERR(data->hwmon_dev);
+-		goto exit_remove;
+-	}
+-
+-	return 0;
+-
+-exit_remove:
+-	for (k = 0; k < ADS1015_CHANNELS; ++k)
+-		device_remove_file(&client->dev, &ads1015_in[k].dev_attr);
+-	return err;
+-}
+-
+-static const struct i2c_device_id ads1015_id[] = {
+-	{ "ads1015",  ads1015},
+-	{ "ads1115",  ads1115},
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(i2c, ads1015_id);
+-
+-static const struct of_device_id __maybe_unused ads1015_of_match[] = {
+-	{
+-		.compatible = "ti,ads1015",
+-		.data = (void *)ads1015
+-	},
+-	{
+-		.compatible = "ti,ads1115",
+-		.data = (void *)ads1115
+-	},
+-	{ },
+-};
+-MODULE_DEVICE_TABLE(of, ads1015_of_match);
+-
+-static struct i2c_driver ads1015_driver = {
+-	.driver = {
+-		.name = "ads1015",
+-		.of_match_table = of_match_ptr(ads1015_of_match),
+-	},
+-	.probe = ads1015_probe,
+-	.remove = ads1015_remove,
+-	.id_table = ads1015_id,
+-};
+-
+-module_i2c_driver(ads1015_driver);
+-
+-MODULE_AUTHOR("Dirk Eibach <eibach@gdsys.de>");
+-MODULE_DESCRIPTION("ADS1015 driver");
+-MODULE_LICENSE("GPL");
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index f96a7702b020..47d073006a13 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -958,7 +958,7 @@ config TI_ADC161S626
+ 
+ config TI_ADS1015
+ 	tristate "Texas Instruments ADS1015 ADC"
+-	depends on I2C && !SENSORS_ADS1015
++	depends on I2C
+ 	select REGMAP_I2C
+ 	select IIO_BUFFER
+ 	select IIO_TRIGGERED_BUFFER
 -- 
-2.21.0
+2.7.4
 

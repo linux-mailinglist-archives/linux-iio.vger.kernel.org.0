@@ -2,24 +2,24 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 178C55EB29
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2019 20:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A945EB2C
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2019 20:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727134AbfGCSG7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Jul 2019 14:06:59 -0400
-Received: from mail.z3ntu.xyz ([128.199.32.197]:59196 "EHLO mail.z3ntu.xyz"
+        id S1726430AbfGCSHC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Jul 2019 14:07:02 -0400
+Received: from mail.z3ntu.xyz ([128.199.32.197]:59254 "EHLO mail.z3ntu.xyz"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726762AbfGCSG6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 3 Jul 2019 14:06:58 -0400
+        id S1727153AbfGCSHB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 3 Jul 2019 14:07:01 -0400
 Received: from localhost.localdomain (80-110-121-20.cgn.dynamic.surfer.at [80.110.121.20])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A0722C55AD;
-        Wed,  3 Jul 2019 18:06:55 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 7B752C6432;
+        Wed,  3 Jul 2019 18:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1562177216; bh=kogtn/O296w1GSoKnB+SwvfVRWMRr1dQ7m1eOkn1I0I=;
+        t=1562177219; bh=aPToY7twoPc/frU4dp+Z2DD+iPJlG9FAsZ0bAsYXf04=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=OoJZ1GPQCIGeUanjuy4vyz9IWqFfk6yxHwOx7sOtxVAjBdjbihK+spNkLUg5Bv4Pq
-         bIXxuckqAztvUu3ScK8I3zV2dHIBjsK9NBE5LHVZbMzZeRyIPjkARqDWZPEVTBTDWT
-         IhDtWZx4EQrvVg0auiHbTi4U0fzTTHwHebb8Y/GQ=
+        b=j8ufLMJqJsEuP/4OP3alP0ja620IMh7DMJe4xw6oONMHuHLt9efUqnYTvwaRxyW/g
+         +lFZFu1QHNrqzi4x4vazeTCYph2ZnAx/ba4Awljv/zJpN6FtgAy+sw5jCN0HjgnW+n
+         6ul7a+hJiSbByBjHqXrPu2Dxg3lVRTUBQ4AnpTjM=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -41,10 +41,11 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Allison Randal <allison@lohutok.net>,
         Martijn Braam <martijn@brixit.nl>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        ~martijnbraam/pmos-upstream@lists.sr.ht
-Subject: [PATCH 2/3] dt-bindings: iio: light: add stk33xx
-Date:   Wed,  3 Jul 2019 20:05:58 +0200
-Message-Id: <20190703180604.9840-2-luca@z3ntu.xyz>
+        ~martijnbraam/pmos-upstream@lists.sr.ht,
+        Kate Stewart <kstewart@linuxfoundation.org>
+Subject: [PATCH 3/3] iio: light: stk3310: Add device tree support
+Date:   Wed,  3 Jul 2019 20:05:59 +0200
+Message-Id: <20190703180604.9840-3-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190703180604.9840-1-luca@z3ntu.xyz>
 References: <20190703180604.9840-1-luca@z3ntu.xyz>
@@ -55,70 +56,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add binding documentation for the stk33xx family of ambient light
-sensors.
+Add device tree support for the stk33xx family of ambient light sensors.
 
+Tested-by: Martijn Braam <martijn@brixit.nl>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- .../bindings/iio/light/stk33xx.yaml           | 49 +++++++++++++++++++
- 1 file changed, 49 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+ drivers/iio/light/stk3310.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
-new file mode 100644
-index 000000000000..aae8a6d627c9
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
-@@ -0,0 +1,49 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/light/stk33xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+index b955183edfe8..185c24a75ae6 100644
+--- a/drivers/iio/light/stk3310.c
++++ b/drivers/iio/light/stk3310.c
+@@ -679,9 +679,18 @@ static const struct acpi_device_id stk3310_acpi_id[] = {
+ 
+ MODULE_DEVICE_TABLE(acpi, stk3310_acpi_id);
+ 
++static const struct of_device_id stk3310_of_match[] = {
++	{ .compatible = "sensortek,stk3310", },
++	{ .compatible = "sensortek,stk3311", },
++	{ .compatible = "sensortek,stk3335", },
++	{}
++};
++MODULE_DEVICE_TABLE(of, stk3310_of_match);
 +
-+title: |
-+  Sensortek STK33xx I2C Ambient Light and Proximity sensor
-+
-+maintainers:
-+  - Jonathan Cameron <jic23@kernel.org>
-+
-+description: |
-+  Ambient light and proximity sensor over an i2c interface.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - sensortek,stk3310
-+      - sensortek,stk3311
-+      - sensortek,stk3335
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    i2c {
-+
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        stk3310@48 {
-+                compatible = "sensortek,stk3310";
-+                reg = <0x48>;
-+                interrupt-parent = <&gpio1>;
-+                interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
-+        };
-+    };
-+...
+ static struct i2c_driver stk3310_driver = {
+ 	.driver = {
+ 		.name = "stk3310",
++		.of_match_table = stk3310_of_match,
+ 		.pm = STK3310_PM_OPS,
+ 		.acpi_match_table = ACPI_PTR(stk3310_acpi_id),
+ 	},
 -- 
 2.22.0
 

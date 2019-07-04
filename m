@@ -2,43 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 079065F7B5
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2019 14:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 427EC5FAD1
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2019 17:27:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727627AbfGDMKe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Jul 2019 08:10:34 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:37707 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727612AbfGDMKe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Jul 2019 08:10:34 -0400
-Received: by mail-ot1-f67.google.com with SMTP id s20so5763790otp.4;
-        Thu, 04 Jul 2019 05:10:33 -0700 (PDT)
+        id S1727629AbfGDP1U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Jul 2019 11:27:20 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:35459 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727066AbfGDP1U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Jul 2019 11:27:20 -0400
+Received: by mail-wm1-f67.google.com with SMTP id c6so6577564wml.0;
+        Thu, 04 Jul 2019 08:27:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:openpgp:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=sJaoAJm+vr+hfSZiUJmGgzcbIrgfovbrJWCxV23LtM4=;
+        b=NgnTWA1WXAcTz9gdGhK99h4bL/9yxcQVlZNQd68BtineVAPG2iI/J06YkfFVdTDC0Y
+         8mDkh2BPuGEVsTlww7JN5vQC6e/bCQw3BAAXqQjEgvKnVuzexneQf7V9Y7U/Rf7OPa1H
+         proiI3qw7kiYervEZWdz/+/rgNg+ZQjvthe8dUKeAjIkGF/bDSVYd3TEbbNBb2wgNROQ
+         58Z9bgoF37eXTwfNaZ4jJdvLEDTIAdVZ/qZE5z5Ld5l035DxJvL5N9NcOZO9LyPRJ+AD
+         fi0M5xhY8sdgHzviaHau8lB1IdmRN9UYv5bJ4j6w30w5SL/HvBx2FgkjodEfEpMJfgI4
+         5rAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=J7m+O+up5FGnrJOrM1NTZjuCCOYBaAlc+EU+VST+P0o=;
-        b=ic3Tirp2LhDgUc3OVqfrOg+5Ad4v+eg6vpA/WUjQem3aHFjvnEj6nFiTJQ9AGN8S2s
-         +2Zd8/jw9Ch3ItvXWZhtx3ovKkNDLb1j2Zc9cxQclyUrick2xW+CBV/ffJ6BLOQdToaf
-         IR4ZNS+JbRks6TP47th7GbdxmAvHD7gXAPCVrBzAgoQmMXb8penX0u2NXGUC8TUTkMd5
-         /pVXMH2zaZEg77vHw0xMK+vlDfu4V9kcd1Z+3oA/1Vlrurm2D+mFNEnpXYItVe/NvGX7
-         KY5sVniiP+27Jr1HzzgnVwqpHLrVNhDNiixNYv7gylWTFJDdHlTEMQwaDttS1sB/7l78
-         cytg==
-X-Gm-Message-State: APjAAAUg+bLQ1KFXy3eOO4OjPbe0VEheeuP1kPacWDasepl0AessRVmr
-        dZYH/l0phaA2O4htFf7h/A/0DgYEF8hemdXiRRs=
-X-Google-Smtp-Source: APXvYqwYVnlGQV7NAmK+2d/0Yyxu0t2VshoBe2404yndi+GEtMIgW92/ip8BqYBix9Pi1jCPsHVu+iyF3JLrAsJ2CFk=
-X-Received: by 2002:a9d:704f:: with SMTP id x15mr13127896otj.297.1562242233106;
- Thu, 04 Jul 2019 05:10:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190704113800.3299636-1-arnd@arndb.de> <20190704120756.GA1582@kunai>
-In-Reply-To: <20190704120756.GA1582@kunai>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 4 Jul 2019 14:10:22 +0200
-Message-ID: <CAMuHMdXDN60WWFerok1h05COdNNPZTMDCgKXejmQZMj9B6y5Cw@mail.gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=sJaoAJm+vr+hfSZiUJmGgzcbIrgfovbrJWCxV23LtM4=;
+        b=VB8MfWg7XF6yvaO/qsX++4ie1ICQcajTnpyZjyzXd03YRQoklKZG1ZL3qFt9RBADf+
+         kjqQpb5z3FidHI3X6ngDP94piM2dfpL1Jfk6ZrVpqkIgvscyd7LrNOFobFjGupsCCwHF
+         qQe7uTblXg4183Acp6By2Jlo6yT7obe9V8xZ3O96mnzFEcnbyxM3pX9QUWFytR4Y49hM
+         OmEIKrz6jKU3GOuOxyBJowr4g9+0BDhk/ese2N9hU2/rhAnnqhklMWXXnaBdyDh7Ubed
+         Rgt+Z044qVXaCItTLzeVlUblFCLZoelrUPCnEKqTkT52qdic7lcAGELtuUI8tDBrhpMI
+         DhVg==
+X-Gm-Message-State: APjAAAVbq9P2pP4OhsQ1JgdqJtimvUat3Bwqa7H7avlNFc27UNQ48qgx
+        oarS2ZTgrRhTJkpsWjSC9BNwKw94
+X-Google-Smtp-Source: APXvYqysqF+b3wxfuoECdI3oA1dHTqn4SnBT+bb+Z9O3tDFZvG5N7ZnZT+OCBn1OJGdU69siqSCbtQ==
+X-Received: by 2002:a05:600c:2056:: with SMTP id p22mr69988wmg.155.1562254037051;
+        Thu, 04 Jul 2019 08:27:17 -0700 (PDT)
+Received: from [192.168.1.4] (ip-86-49-110-70.net.upcbroadband.cz. [86.49.110.70])
+        by smtp.gmail.com with ESMTPSA id q10sm6108288wrf.32.2019.07.04.08.27.15
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Thu, 04 Jul 2019 08:27:16 -0700 (PDT)
 Subject: Re: [PATCH] iio: adc: gyroadc: fix uninitialized return code
-To:     Wolfram Sang <wsa@the-dreams.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Marek Vasut <marek.vasut@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Wolfram Sang <wsa@the-dreams.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Jonathan Cameron <jic23@kernel.org>,
         stable <stable@vger.kernel.org>,
         Marek Vasut <marek.vasut+renesas@gmail.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
@@ -51,44 +61,55 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Marek Vasut <marek.vasut@gmail.com>,
         Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
         linux-iio@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20190704113800.3299636-1-arnd@arndb.de>
+ <20190704120756.GA1582@kunai>
+ <CAMuHMdXDN60WWFerok1h05COdNNPZTMDCgKXejmQZMj9B6y5Cw@mail.gmail.com>
+From:   Marek Vasut <marek.vasut@gmail.com>
+Openpgp: preference=signencrypt
+Message-ID: <fc3b8b4e-fe0e-9573-124d-4b41efa409e4@gmail.com>
+Date:   Thu, 4 Jul 2019 17:27:15 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <CAMuHMdXDN60WWFerok1h05COdNNPZTMDCgKXejmQZMj9B6y5Cw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Wolfram,
+On 7/4/19 2:10 PM, Geert Uytterhoeven wrote:
+> Hi Wolfram,
+> 
+> On Thu, Jul 4, 2019 at 2:08 PM Wolfram Sang <wsa@the-dreams.de> wrote:
+>> On Thu, Jul 04, 2019 at 01:37:47PM +0200, Arnd Bergmann wrote:
+>>> gcc-9 complains about a blatant uninitialized variable use that
+>>> all earlier compiler versions missed:
+>>>
+>>> drivers/iio/adc/rcar-gyroadc.c:510:5: warning: 'ret' may be used uninitialized in this function [-Wmaybe-uninitialized]
+>>>
+>>> Return -EINVAL instead here.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 059c53b32329 ("iio: adc: Add Renesas GyroADC driver")
+>>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>>
+>> This is correct but missing that the above 'return ret' is broken, too.
+>> ret is initialized but 0 in that case.
+> 
+> Nice catch! Oh well, given enough eyeballs, ...
 
-On Thu, Jul 4, 2019 at 2:08 PM Wolfram Sang <wsa@the-dreams.de> wrote:
-> On Thu, Jul 04, 2019 at 01:37:47PM +0200, Arnd Bergmann wrote:
-> > gcc-9 complains about a blatant uninitialized variable use that
-> > all earlier compiler versions missed:
-> >
-> > drivers/iio/adc/rcar-gyroadc.c:510:5: warning: 'ret' may be used uninitialized in this function [-Wmaybe-uninitialized]
-> >
-> > Return -EINVAL instead here.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 059c53b32329 ("iio: adc: Add Renesas GyroADC driver")
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> This is correct but missing that the above 'return ret' is broken, too.
-> ret is initialized but 0 in that case.
+I don't think ret is initialized, reg is, not ret .
 
-Nice catch! Oh well, given enough eyeballs, ...
+>> And maybe we can use something else than -EINVAL for this case? I am on
+>> the go right now, I will look for a suggestion later.
+> 
+> -EINVAL is correct here (and in the above case, too), IMHO.
 
-> And maybe we can use something else than -EINVAL for this case? I am on
-> the go right now, I will look for a suggestion later.
-
--EINVAL is correct here (and in the above case, too), IMHO.
-
-Gr{oetje,eeting}s,
-
-                        Geert
+Yep, -EINVAL is fine.
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Best regards,
+Marek Vasut

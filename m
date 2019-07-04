@@ -2,90 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71DE25F165
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2019 04:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D32F5F175
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2019 04:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727242AbfGDCVR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Jul 2019 22:21:17 -0400
-Received: from mail-ed1-f47.google.com ([209.85.208.47]:36771 "EHLO
-        mail-ed1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727063AbfGDCVQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Jul 2019 22:21:16 -0400
-Received: by mail-ed1-f47.google.com with SMTP id k21so3931220edq.3
-        for <linux-iio@vger.kernel.org>; Wed, 03 Jul 2019 19:21:15 -0700 (PDT)
+        id S1727324AbfGDCgU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Jul 2019 22:36:20 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:45447 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727321AbfGDCgU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Jul 2019 22:36:20 -0400
+Received: by mail-pl1-f195.google.com with SMTP id bi6so2228637plb.12;
+        Wed, 03 Jul 2019 19:36:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=martingkelly-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=WQDxuucyQOhf8t2+jL0l+xbEW3In4RzgoMTN2OnYWeQ=;
-        b=Ub5qqHiWg9iOEzxfOsTl0T117Cjn7lLYZkCqvbWCAbJ32p3xaUrSj5Xy4V7e4l4Uv9
-         NwPjWsEUJYLYO+pWL+3REjR5lIjcHIWJ7CV7X+IHpl0kxfHr5radcJbtg7IJ3MwJbIZ/
-         Kof7qnVcuKtJ+LC2BqHkiiAqVc4J9xF5aM6YRgJ1HXkOjjfUDq8TGgXCQPcV+qFIHdDL
-         Xxmxhq5/YSZXlXnTuZF51hK7VtKQEC+JA2fawtoNDNpZ9LLlvE8Y4RRdLKHJi4rVAQFX
-         1goiLq0TbHf4PggEYmeIQWLeddJQS5ZNhyiceWszTSzQI/q7JKTwUfzzENk7M4iklZvL
-         0tnQ==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=17cMyJgkH0HXIw8s34At2XEgsBcEyQIQIxsPseRkodQ=;
+        b=AhZu6qwNvuKVgc2zCyQWl3kpfq9nrUQ7ZGdN6X84iD8N/26u0xKL81+p3gtxhrdzRM
+         dkALJCpyzfrpqDiWLEFCxSZCRZtI24uPKw+ybheFuYW13A/G+LAD/5AvTvnXCLuRibCu
+         qgM54t5LaflpwC0jfVCB8IXB+SKa9zmbWUuY0fbv/eGHf8BdAfYqMU0M6T2WGKlhURcr
+         y6t7IZeZViNno5SMudoWsdRUqWEaLYJuJik5mmMAuypDU2IjJ8o59XQlFm0mPBCX1OFs
+         OOCqxWrshJm24ozgbcJIdPC39PF+ryUu5A04bKgrxFDcCGQ2Kr3OXr+mrpqmraUPOi7u
+         PbFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=WQDxuucyQOhf8t2+jL0l+xbEW3In4RzgoMTN2OnYWeQ=;
-        b=S+xQbz9to0bL0vHGjcU97iCPYZ8AuzsZUK9i0UF8BfzP1BAC/FcIOVVYy1/AlQwfy9
-         Jivk3Gw8LHzNQEzDnuIR5yiBmyjPQoE/37PK7QszXwOaxNhUm5SUS09hW5nOa+It8/AA
-         4e/rVN+aqPlk2KnFZle2e7FNahCvQNJW9bq0E3fLrLtKfo4/iwRu6FwDFGnSDgDZHhCC
-         y3GV0xvoCqplrPSlz1cvhT7TBUudNXDi+BDITOfECJxBfWYaVb2vHe3P7RUO9ANNsa85
-         SjTWknGMDZQtjeKY1ypN5vu9pZQaJPov+mESaJYBDjrhCr1RxUqX/occCGpmTdQPpTqM
-         Ta8g==
-X-Gm-Message-State: APjAAAX0LmOIn7K3xecQe5dnwktXLzQ3ydeRuGbo6ZOTEFobkmyTcc1e
-        1PDOC67Q838cHQ/NBaPB0kYPAaySlnqoQ7lVOZulpuydly8=
-X-Google-Smtp-Source: APXvYqxQuEFnE9HgYFs1HkTDo9BLisRw+6NbmMq6NY9OljPIae0n+HLzUSqQkOdGxwEJTmH11bSWbIL68hgYDJR14KQ=
-X-Received: by 2002:a50:9153:: with SMTP id f19mr46935160eda.70.1562206875249;
- Wed, 03 Jul 2019 19:21:15 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a17:906:1343:0:0:0:0 with HTTP; Wed, 3 Jul 2019 19:21:14
- -0700 (PDT)
-In-Reply-To: <CALAE=UBgn6CoWZ84Gq5a4=pw6pQ0WnCOVMgy8Z7miZ-r3pjwVQ@mail.gmail.com>
-References: <CALAE=UBgn6CoWZ84Gq5a4=pw6pQ0WnCOVMgy8Z7miZ-r3pjwVQ@mail.gmail.com>
-From:   Martin Kelly <martin@martingkelly.com>
-Date:   Wed, 3 Jul 2019 19:21:14 -0700
-Message-ID: <CAN8CM3yKvCZOLTs0Q_7JU3PTb3-yEkS62w+MLd0RV6OY0riqhA@mail.gmail.com>
-Subject: Re: LSM9DS1 Accel/Gyro Support?
-To:     Bobby Jones <rjones@gateworks.com>
-Cc:     linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=17cMyJgkH0HXIw8s34At2XEgsBcEyQIQIxsPseRkodQ=;
+        b=nTa6ENsna82i80cz9TDER2N/LtdIQr5Qm+Jkpvo+AQRAzcnQktnIl4Ok5TbG3GNufT
+         F7nRzpnzwmVzA1sDoLURf+WbJocQIgZ/XmYI0vnMvn+2etKvnUWK2HpTtFOPbn9ArglR
+         E1U7RJqw0o6Blw3crBYkH44ZubWa2v1Gd/A/HJNASbrk/ugjyTLXp8sRfEUje3QErGGk
+         YmFQIz8282tiAV3vQYLZh1oY5T+ZRcDX5DJhLB5y2l5uEONlUjd8V83ujcAXHFC2rPWh
+         F/g4zGABlGVvN4qfz2ffiYVNvFQxOrWvcAk2LY0wSLgrMBtOBfIIQg7kpkZogSr2L60e
+         +MpQ==
+X-Gm-Message-State: APjAAAVI5dQvZWUox6sNl888HlUSo5DKQHBs8F8U+mlzRfJzyl340wq+
+        HsIFpgyrQMS0y/Z6zJvfLdE=
+X-Google-Smtp-Source: APXvYqyYa/qQjBq+L2gVp4kXx/POPivUqzYoxZec3adveil5Y74g248FhWBgTXuiScCpCkSHU+aWog==
+X-Received: by 2002:a17:902:a03:: with SMTP id 3mr45646324plo.302.1562207779601;
+        Wed, 03 Jul 2019 19:36:19 -0700 (PDT)
+Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.googlemail.com with ESMTPSA id n26sm4055726pfa.83.2019.07.03.19.36.16
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Jul 2019 19:36:19 -0700 (PDT)
+From:   Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Fuqian Huang <huangfq.daxian@gmail.com>
+Subject: [Patch v2 05/10] iio: using dev_get_drvdata directly
+Date:   Thu,  4 Jul 2019 10:36:13 +0800
+Message-Id: <20190704023613.4643-1-huangfq.daxian@gmail.com>
+X-Mailer: git-send-email 2.11.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/3/19, Bobby Jones <rjones@gateworks.com> wrote:
-> Hi Martin and linux-iio,
->
-> I have a device using the LSM9DS1 and saw that you added support for
-> the magnetometer of the chip but I was unable to follow what was done
-> for the accel and gyro of the same part. Was this still something
-> you're working on or perhaps those components are compatible with
-> another st device?
->
+Several drivers cast a struct device pointer to a struct
+platform_device pointer only to then call platform_get_drvdata().
+To improve readability, these constructs can be simplified
+by using dev_get_drvdata() directly.
 
-Hi Bobby,
+Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+---
+Changes in v2:
+  - Make the commit message more clearly.
 
-I'm on vacation right now so I'll be able to reply only sporadically,
-but I'll do my best.
+ drivers/iio/adc/at91-sama5d2_adc.c | 12 ++++--------
+ drivers/iio/adc/at91_adc.c         |  4 ++--
+ 2 files changed, 6 insertions(+), 10 deletions(-)
 
-Basically, the LSM9DS1 accelerometer and gyroscope share a FIFO, which
-means they can't be controlled independently. This breaks the current
-abstraction of having two separate drivers for accelerometer and
-gyroscope. The correct but more difficult solution is to create a
-combined driver that supports both functions and understands the FIFO
-interaction. No one has done this work yet.
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index d384cf0250ff..a2837a0e7cba 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -1578,8 +1578,7 @@ static void at91_adc_hw_init(struct at91_adc_state *st)
+ static ssize_t at91_adc_get_fifo_state(struct device *dev,
+ 				       struct device_attribute *attr, char *buf)
+ {
+-	struct iio_dev *indio_dev =
+-			platform_get_drvdata(to_platform_device(dev));
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
+ 
+ 	return scnprintf(buf, PAGE_SIZE, "%d\n", !!st->dma_st.dma_chan);
+@@ -1588,8 +1587,7 @@ static ssize_t at91_adc_get_fifo_state(struct device *dev,
+ static ssize_t at91_adc_get_watermark(struct device *dev,
+ 				      struct device_attribute *attr, char *buf)
+ {
+-	struct iio_dev *indio_dev =
+-			platform_get_drvdata(to_platform_device(dev));
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
+ 
+ 	return scnprintf(buf, PAGE_SIZE, "%d\n", st->dma_st.watermark);
+@@ -1841,8 +1839,7 @@ static int at91_adc_remove(struct platform_device *pdev)
+ 
+ static __maybe_unused int at91_adc_suspend(struct device *dev)
+ {
+-	struct iio_dev *indio_dev =
+-			platform_get_drvdata(to_platform_device(dev));
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
+ 
+ 	/*
+@@ -1862,8 +1859,7 @@ static __maybe_unused int at91_adc_suspend(struct device *dev)
+ 
+ static __maybe_unused int at91_adc_resume(struct device *dev)
+ {
+-	struct iio_dev *indio_dev =
+-			platform_get_drvdata(to_platform_device(dev));
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
+ 	int ret;
+ 
+diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
+index d23709ed9049..32f1c4a33b20 100644
+--- a/drivers/iio/adc/at91_adc.c
++++ b/drivers/iio/adc/at91_adc.c
+@@ -1359,7 +1359,7 @@ static int at91_adc_remove(struct platform_device *pdev)
+ #ifdef CONFIG_PM_SLEEP
+ static int at91_adc_suspend(struct device *dev)
+ {
+-	struct iio_dev *idev = platform_get_drvdata(to_platform_device(dev));
++	struct iio_dev *idev = dev_get_drvdata(dev);
+ 	struct at91_adc_state *st = iio_priv(idev);
+ 
+ 	pinctrl_pm_select_sleep_state(dev);
+@@ -1370,7 +1370,7 @@ static int at91_adc_suspend(struct device *dev)
+ 
+ static int at91_adc_resume(struct device *dev)
+ {
+-	struct iio_dev *idev = platform_get_drvdata(to_platform_device(dev));
++	struct iio_dev *idev = dev_get_drvdata(dev);
+ 	struct at91_adc_state *st = iio_priv(idev);
+ 
+ 	clk_prepare_enable(st->clk);
+-- 
+2.11.0
 
-More details here, in which I submitted a patch for accelerometer
-support, which was rejected for the above reasons:
-
-https://patchwork.kernel.org/patch/10138321/
-
-Hopefully this answers your question. Let me know if you need more information.
-
-> Thanks,
-> Bobby Jones
->

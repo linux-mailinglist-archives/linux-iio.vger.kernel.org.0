@@ -2,114 +2,187 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 427EC5FAD1
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2019 17:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F04E5FC8A
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2019 19:33:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727629AbfGDP1U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Jul 2019 11:27:20 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:35459 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727066AbfGDP1U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Jul 2019 11:27:20 -0400
-Received: by mail-wm1-f67.google.com with SMTP id c6so6577564wml.0;
-        Thu, 04 Jul 2019 08:27:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:openpgp:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=sJaoAJm+vr+hfSZiUJmGgzcbIrgfovbrJWCxV23LtM4=;
-        b=NgnTWA1WXAcTz9gdGhK99h4bL/9yxcQVlZNQd68BtineVAPG2iI/J06YkfFVdTDC0Y
-         8mDkh2BPuGEVsTlww7JN5vQC6e/bCQw3BAAXqQjEgvKnVuzexneQf7V9Y7U/Rf7OPa1H
-         proiI3qw7kiYervEZWdz/+/rgNg+ZQjvthe8dUKeAjIkGF/bDSVYd3TEbbNBb2wgNROQ
-         58Z9bgoF37eXTwfNaZ4jJdvLEDTIAdVZ/qZE5z5Ld5l035DxJvL5N9NcOZO9LyPRJ+AD
-         fi0M5xhY8sdgHzviaHau8lB1IdmRN9UYv5bJ4j6w30w5SL/HvBx2FgkjodEfEpMJfgI4
-         5rAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=sJaoAJm+vr+hfSZiUJmGgzcbIrgfovbrJWCxV23LtM4=;
-        b=VB8MfWg7XF6yvaO/qsX++4ie1ICQcajTnpyZjyzXd03YRQoklKZG1ZL3qFt9RBADf+
-         kjqQpb5z3FidHI3X6ngDP94piM2dfpL1Jfk6ZrVpqkIgvscyd7LrNOFobFjGupsCCwHF
-         qQe7uTblXg4183Acp6By2Jlo6yT7obe9V8xZ3O96mnzFEcnbyxM3pX9QUWFytR4Y49hM
-         OmEIKrz6jKU3GOuOxyBJowr4g9+0BDhk/ese2N9hU2/rhAnnqhklMWXXnaBdyDh7Ubed
-         Rgt+Z044qVXaCItTLzeVlUblFCLZoelrUPCnEKqTkT52qdic7lcAGELtuUI8tDBrhpMI
-         DhVg==
-X-Gm-Message-State: APjAAAVbq9P2pP4OhsQ1JgdqJtimvUat3Bwqa7H7avlNFc27UNQ48qgx
-        oarS2ZTgrRhTJkpsWjSC9BNwKw94
-X-Google-Smtp-Source: APXvYqysqF+b3wxfuoECdI3oA1dHTqn4SnBT+bb+Z9O3tDFZvG5N7ZnZT+OCBn1OJGdU69siqSCbtQ==
-X-Received: by 2002:a05:600c:2056:: with SMTP id p22mr69988wmg.155.1562254037051;
-        Thu, 04 Jul 2019 08:27:17 -0700 (PDT)
-Received: from [192.168.1.4] (ip-86-49-110-70.net.upcbroadband.cz. [86.49.110.70])
-        by smtp.gmail.com with ESMTPSA id q10sm6108288wrf.32.2019.07.04.08.27.15
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 04 Jul 2019 08:27:16 -0700 (PDT)
-Subject: Re: [PATCH] iio: adc: gyroadc: fix uninitialized return code
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Wolfram Sang <wsa@the-dreams.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Jonathan Cameron <jic23@kernel.org>,
-        stable <stable@vger.kernel.org>,
-        Marek Vasut <marek.vasut+renesas@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh@kernel.org>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        linux-iio@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20190704113800.3299636-1-arnd@arndb.de>
- <20190704120756.GA1582@kunai>
- <CAMuHMdXDN60WWFerok1h05COdNNPZTMDCgKXejmQZMj9B6y5Cw@mail.gmail.com>
-From:   Marek Vasut <marek.vasut@gmail.com>
-Openpgp: preference=signencrypt
-Message-ID: <fc3b8b4e-fe0e-9573-124d-4b41efa409e4@gmail.com>
-Date:   Thu, 4 Jul 2019 17:27:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727230AbfGDRdE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Jul 2019 13:33:04 -0400
+Received: from relay1-d.mail.gandi.net ([217.70.183.193]:46839 "EHLO
+        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726805AbfGDRdE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Jul 2019 13:33:04 -0400
+X-Originating-IP: 195.189.32.242
+Received: from pc.localdomain (unknown [195.189.32.242])
+        (Authenticated sender: contact@artur-rojek.eu)
+        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 938E8240004;
+        Thu,  4 Jul 2019 17:32:56 +0000 (UTC)
+From:   Artur Rojek <contact@artur-rojek.eu>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Artur Rojek <contact@artur-rojek.eu>
+Subject: [PATCH v2] IIO: Ingenic JZ47xx: Set clock divider on probe
+Date:   Thu,  4 Jul 2019 19:36:56 +0200
+Message-Id: <20190704173656.6617-1-contact@artur-rojek.eu>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdXDN60WWFerok1h05COdNNPZTMDCgKXejmQZMj9B6y5Cw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/4/19 2:10 PM, Geert Uytterhoeven wrote:
-> Hi Wolfram,
-> 
-> On Thu, Jul 4, 2019 at 2:08 PM Wolfram Sang <wsa@the-dreams.de> wrote:
->> On Thu, Jul 04, 2019 at 01:37:47PM +0200, Arnd Bergmann wrote:
->>> gcc-9 complains about a blatant uninitialized variable use that
->>> all earlier compiler versions missed:
->>>
->>> drivers/iio/adc/rcar-gyroadc.c:510:5: warning: 'ret' may be used uninitialized in this function [-Wmaybe-uninitialized]
->>>
->>> Return -EINVAL instead here.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: 059c53b32329 ("iio: adc: Add Renesas GyroADC driver")
->>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->>
->> This is correct but missing that the above 'return ret' is broken, too.
->> ret is initialized but 0 in that case.
-> 
-> Nice catch! Oh well, given enough eyeballs, ...
+From: Maarten ter Huurne <maarten@treewalker.org>
 
-I don't think ret is initialized, reg is, not ret .
+The SADC component can run at up to 8 MHz on JZ4725B, but is fed
+a 12 MHz input clock (EXT). Divide it by two to get 6 MHz, then
+set up another divider to match, to produce a 10us clock.
 
->> And maybe we can use something else than -EINVAL for this case? I am on
->> the go right now, I will look for a suggestion later.
-> 
-> -EINVAL is correct here (and in the above case, too), IMHO.
+If the clock dividers are left on their power-on defaults (a divider
+of 1), the SADC mostly works, but will occasionally produce erroneous
+readings. This led to button presses being detected out of nowhere on
+the RS90 every few minutes. With this change, no ghost button presses
+were logged in almost a day worth of testing.
 
-Yep, -EINVAL is fine.
+The ADCLK register for configuring clock dividers doesn't exist on
+JZ4740, so avoid writing it there.
 
+A function has been introduced rather than a flag because there is a lot
+of variation between the ADCLK registers on JZ47xx SoCs, both in
+the internal layout of the register and in the frequency range
+supported by the SADC. So this solution should make it easier
+to add support for other JZ47xx SoCs later.
+
+Fixes: 1a78daea107d ("iio: adc: probe should set clock divider")
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+---
+
+ Changes:
+
+ v2: Add the fixes tag.
+
+ drivers/iio/adc/ingenic-adc.c | 54 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+
+diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
+index 92b1d5037ac9..e234970b7150 100644
+--- a/drivers/iio/adc/ingenic-adc.c
++++ b/drivers/iio/adc/ingenic-adc.c
+@@ -11,6 +11,7 @@
+ #include <linux/iio/iio.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
++#include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/platform_device.h>
+@@ -22,8 +23,11 @@
+ #define JZ_ADC_REG_ADTCH		0x18
+ #define JZ_ADC_REG_ADBDAT		0x1c
+ #define JZ_ADC_REG_ADSDAT		0x20
++#define JZ_ADC_REG_ADCLK		0x28
+ 
+ #define JZ_ADC_REG_CFG_BAT_MD		BIT(4)
++#define JZ_ADC_REG_ADCLK_CLKDIV_LSB	0
++#define JZ_ADC_REG_ADCLK_CLKDIV10US_LSB	16
+ 
+ #define JZ_ADC_AUX_VREF				3300
+ #define JZ_ADC_AUX_VREF_BITS			12
+@@ -34,6 +38,8 @@
+ #define JZ4740_ADC_BATTERY_HIGH_VREF		(7500 * 0.986)
+ #define JZ4740_ADC_BATTERY_HIGH_VREF_BITS	12
+ 
++struct ingenic_adc;
++
+ struct ingenic_adc_soc_data {
+ 	unsigned int battery_high_vref;
+ 	unsigned int battery_high_vref_bits;
+@@ -41,6 +47,7 @@ struct ingenic_adc_soc_data {
+ 	size_t battery_raw_avail_size;
+ 	const int *battery_scale_avail;
+ 	size_t battery_scale_avail_size;
++	int (*init_clk_div)(struct device *dev, struct ingenic_adc *adc);
+ };
+ 
+ struct ingenic_adc {
+@@ -151,6 +158,42 @@ static const int jz4740_adc_battery_scale_avail[] = {
+ 	JZ_ADC_BATTERY_LOW_VREF, JZ_ADC_BATTERY_LOW_VREF_BITS,
+ };
+ 
++static int jz4725b_adc_init_clk_div(struct device *dev, struct ingenic_adc *adc)
++{
++	struct clk *parent_clk;
++	unsigned long parent_rate, rate;
++	unsigned int div_main, div_10us;
++
++	parent_clk = clk_get_parent(adc->clk);
++	if (!parent_clk) {
++		dev_err(dev, "ADC clock has no parent\n");
++		return -ENODEV;
++	}
++	parent_rate = clk_get_rate(parent_clk);
++
++	/*
++	 * The JZ4725B ADC works at 500 kHz to 8 MHz.
++	 * We pick the highest rate possible.
++	 * In practice we typically get 6 MHz, half of the 12 MHz EXT clock.
++	 */
++	div_main = DIV_ROUND_UP(parent_rate, 8000000);
++	div_main = clamp(div_main, 1u, 64u);
++	rate = parent_rate / div_main;
++	if (rate < 500000 || rate > 8000000) {
++		dev_err(dev, "No valid divider for ADC main clock\n");
++		return -EINVAL;
++	}
++
++	/* We also need a divider that produces a 10us clock. */
++	div_10us = DIV_ROUND_UP(rate, 100000);
++
++	writel(((div_10us - 1) << JZ_ADC_REG_ADCLK_CLKDIV10US_LSB) |
++	       (div_main - 1) << JZ_ADC_REG_ADCLK_CLKDIV_LSB,
++	       adc->base + JZ_ADC_REG_ADCLK);
++
++	return 0;
++}
++
+ static const struct ingenic_adc_soc_data jz4725b_adc_soc_data = {
+ 	.battery_high_vref = JZ4725B_ADC_BATTERY_HIGH_VREF,
+ 	.battery_high_vref_bits = JZ4725B_ADC_BATTERY_HIGH_VREF_BITS,
+@@ -158,6 +201,7 @@ static const struct ingenic_adc_soc_data jz4725b_adc_soc_data = {
+ 	.battery_raw_avail_size = ARRAY_SIZE(jz4725b_adc_battery_raw_avail),
+ 	.battery_scale_avail = jz4725b_adc_battery_scale_avail,
+ 	.battery_scale_avail_size = ARRAY_SIZE(jz4725b_adc_battery_scale_avail),
++	.init_clk_div = jz4725b_adc_init_clk_div,
+ };
+ 
+ static const struct ingenic_adc_soc_data jz4740_adc_soc_data = {
+@@ -167,6 +211,7 @@ static const struct ingenic_adc_soc_data jz4740_adc_soc_data = {
+ 	.battery_raw_avail_size = ARRAY_SIZE(jz4740_adc_battery_raw_avail),
+ 	.battery_scale_avail = jz4740_adc_battery_scale_avail,
+ 	.battery_scale_avail_size = ARRAY_SIZE(jz4740_adc_battery_scale_avail),
++	.init_clk_div = NULL, /* no ADCLK register on JZ4740 */
+ };
+ 
+ static int ingenic_adc_read_avail(struct iio_dev *iio_dev,
+@@ -317,6 +362,15 @@ static int ingenic_adc_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	/* Set clock dividers. */
++	if (soc_data->init_clk_div) {
++		ret = soc_data->init_clk_div(dev, adc);
++		if (ret) {
++			clk_disable_unprepare(adc->clk);
++			return ret;
++		}
++	}
++
+ 	/* Put hardware in a known passive state. */
+ 	writeb(0x00, adc->base + JZ_ADC_REG_ENABLE);
+ 	writeb(0xff, adc->base + JZ_ADC_REG_CTRL);
 -- 
-Best regards,
-Marek Vasut
+2.22.0
+

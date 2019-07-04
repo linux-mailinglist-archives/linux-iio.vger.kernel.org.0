@@ -2,88 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8BE95F746
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2019 13:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4C905F76E
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2019 13:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727547AbfGDLio (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Jul 2019 07:38:44 -0400
-Received: from mout.kundenserver.de ([212.227.126.135]:37417 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727436AbfGDLio (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Jul 2019 07:38:44 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MMGAg-1hzyic1MGM-00JKWZ; Thu, 04 Jul 2019 13:38:08 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Marek Vasut <marek.vasut@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
+        id S1727577AbfGDLta (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Jul 2019 07:49:30 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:39404 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727574AbfGDLt3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Jul 2019 07:49:29 -0400
+Received: by mail-ot1-f67.google.com with SMTP id r21so988537otq.6;
+        Thu, 04 Jul 2019 04:49:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9xEWPejmpIWFTbFjzce4Zj6zywXXGW0Iij2wHk7f11M=;
+        b=uh9kGeqNrjP7WCSq9SDyONqUKFZX/kAOgxMYZ8PX/EbIQiL+h3mj6KI4JZwsL3WfFA
+         QXfn5zlXvoGgKo76X6Pht2K7QOsG9XgFaz7qnEK1uJ9SNt3PeLzYuYHWKWa6Q7VBaw1u
+         iA93PWh409iVdkBWQxMFlgD830zq4V4k5EN1vp3Sg/HmZJ77+iAckCLfmFFpLaFpICUr
+         3PWTq2DdIWO5C+5fNriHuemqAslZhpjJgsTC6p77KI4x+0pZy8p97gRDYEzFFGHGoLRN
+         MS4wZ5tNq5/WcCIp8N5A0qMvT3v/Bc5VTY6/0DrvehD0qRiAnIrwOmE2XOZ/gveFUbrh
+         onTg==
+X-Gm-Message-State: APjAAAUYb3Grsqjzyz15+cN4aDe7aaiDTGANAiZNKnUb6/brcIyBVJEl
+        mcwRRsPqqkD6CJwSmIHrJWUcIX2TATPvZKWIjYE=
+X-Google-Smtp-Source: APXvYqw/cs2Mt3Js4W2qPvntgiHP6KeISngqlC9yO6L5/qIpIQNg08AZWAXxjh+pIOjaAyKDfibVyqFd7YYIVFmaJGE=
+X-Received: by 2002:a9d:704f:: with SMTP id x15mr13052250otj.297.1562240968938;
+ Thu, 04 Jul 2019 04:49:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190704113800.3299636-1-arnd@arndb.de>
+In-Reply-To: <20190704113800.3299636-1-arnd@arndb.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 4 Jul 2019 13:49:17 +0200
+Message-ID: <CAMuHMdXFkF_940-sKCZrx3KxgJU4wA-ezb_gfgHL9J-G1y4mVA@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: gyroadc: fix uninitialized return code
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Marek Vasut <marek.vasut@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        stable <stable@vger.kernel.org>,
         Marek Vasut <marek.vasut+renesas@gmail.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Simon Horman <horms+renesas@verge.net.au>,
-        linux-renesas-soc@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
         Wolfram Sang <wsa@the-dreams.de>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Rob Herring <robh@kernel.org>,
         Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: gyroadc: fix uninitialized return code
-Date:   Thu,  4 Jul 2019 13:37:47 +0200
-Message-Id: <20190704113800.3299636-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:h9aKGiMAS6Xlil+2UxkJhJCnUoDDgR+JZ2AvN4jHsrCx8ckyZuS
- yTEZldLJ/UP6OFu9DOsy4VetZ/N0GFIf9RT57cxc+NW20LzRCQC2iRf4QEYCBTQtaQBnhZs
- Qej58IDikUem+RSWapqZYEEPHFnIdfcBlPm6CdrxZCiXwsHI9nhtiidJFXsoxZ9sssiflqh
- O+kzS9bxP3uF49LI2VnMg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:CrZfIuHva64=:k5xMOa0IWCAKm3yNcyNVYf
- dL5/tWOzmLrqTaBpZz3j4i+7oSpo/kGE+TRdCrBIy+mRYkOoR66SojF8+bHRg4tJmlIfTB4bu
- /LJUeYEPmBC3TzvvYEgGQM1F/aYhqm5l3wIzgrv8mrZB5DVaM0wZZMVlPR+vDO7cUXoaH6/VZ
- LbFl4Lm+dMElV2jR36wM/iCSk5x6yf/BD+6XB14vBrcwjcPVSsIVlAg5wKr0CHKYOz9Q9OKZj
- JVd4WiEXAsjI6a69+zqa/CiiaC62QObwPoTbMP1SopA9WfgeAF0BroPsPwspNF4U3vNABxXLj
- 1/lR+ZDvw459rku6B4R1FWzmwbJPJekjIZI5kpmHS4A73dfsSGEUfi0Hh8fzCC6L7h714Tgui
- 3r4gZDBtTkTnyA8TqQiLuHChbrCwxN6tHWWzg4SsRY+kM4f/nTV2Pm+gPijhs0iyT56qjyAkw
- W5KecNpVD7qDDFm1tGLhbIpwko9PXKHQJelmmwNFPyaQyUCWCQbt3voWVUVELVT5OGSN7GSdX
- Ynb7N2FBnyhCOu5U1TFVMFu2XT26DQSA+t84FLiVWnGQftDxeQO3P2wEtATD0rOYnviddIQ5r
- Lyv5E1qOtJUtPG/cDAQNbCZGyftkfo8NkGD4cgLH5Yv9Wnb3rXplqvvNLsQgypquy1CSXBewI
- kuYBADE90oIOKvH/zTSckq/DIM+erVVlYoXIjcSI5TDQwNiCq66CIQg0AOJITqJ2vbVH/yRMN
- g7aB2O8660O6uSLOGvd7Rh67ds0fc0ijiMBmHA==
+        linux-iio@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-gcc-9 complains about a blatant uninitialized variable use that
-all earlier compiler versions missed:
+Hi Arnd,
 
-drivers/iio/adc/rcar-gyroadc.c:510:5: warning: 'ret' may be used uninitialized in this function [-Wmaybe-uninitialized]
+On Thu, Jul 4, 2019 at 1:38 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> gcc-9 complains about a blatant uninitialized variable use that
+> all earlier compiler versions missed:
+>
+> drivers/iio/adc/rcar-gyroadc.c:510:5: warning: 'ret' may be used uninitialized in this function [-Wmaybe-uninitialized]
 
-Return -EINVAL instead here.
+Actually gcc-4.1 warned about that one too ;-)
 
-Cc: stable@vger.kernel.org
-Fixes: 059c53b32329 ("iio: adc: Add Renesas GyroADC driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/iio/adc/rcar-gyroadc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+So either I must have missed that warning when it appeared first,
+or I must have concluded wrongly that it was a false positive.
+Sorry for that...
 
-diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
-index 2d685730f867..aec73cc43e23 100644
---- a/drivers/iio/adc/rcar-gyroadc.c
-+++ b/drivers/iio/adc/rcar-gyroadc.c
-@@ -391,7 +391,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
- 			dev_err(dev,
- 				"Channel %i uses different ADC mode than the rest.\n",
- 				reg);
--			return ret;
-+			return -EINVAL;
- 		}
- 
- 		/* Channel is valid, grab the regulator. */
+> Return -EINVAL instead here.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 059c53b32329 ("iio: adc: Add Renesas GyroADC driver")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.20.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

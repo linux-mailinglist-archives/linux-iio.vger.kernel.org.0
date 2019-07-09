@@ -2,92 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0E1B633A1
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2019 11:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AD66634BF
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2019 13:07:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726530AbfGIJnd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Jul 2019 05:43:33 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:41124 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725961AbfGIJnd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Jul 2019 05:43:33 -0400
-Received: from laptop-1.home (unknown [IPv6:2a01:cb19:8ad6:900:42dd:dd1c:19ee:7c60])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: aragua)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 0681E28B1DA;
-        Tue,  9 Jul 2019 10:43:30 +0100 (BST)
-Message-ID: <5c3e6d57e83839c278f3ae8be16c39c50be2dee4.camel@collabora.com>
-Subject: Re: [PATCH v3 8/8] docs: iio: add precision about
- sampling_frequency_available
-From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     kernel@collabora.com, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Tue, 09 Jul 2019 11:43:28 +0200
-In-Reply-To: <20190622112114.78a58440@archlinux>
-References: <cover.1560848479.git.fabien.lahoudere@collabora.com>
-         <0c5b7e1f7996e8c1c5f6787cbb9fb58986be1f17.1560848479.git.fabien.lahoudere@collabora.com>
-         <20190622112114.78a58440@archlinux>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.2 (3.30.2-2.fc29) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1726057AbfGILG4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Jul 2019 07:06:56 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:44187 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726046AbfGILG4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Jul 2019 07:06:56 -0400
+Received: by mail-pl1-f193.google.com with SMTP id t14so6824673plr.11;
+        Tue, 09 Jul 2019 04:06:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=vcLUjHeh6h5uRgV4arFKMehsSH4BFabQLIxDxss6ZJ4=;
+        b=JXnOkwxRPW4lN1TVBlKXh44workAk1kDfFsZVyOw4Ludga29DE6wVIqyrLIv0TPH3X
+         1nzgKZH9iKxy3yb6Uv/aPNBKKKFJfZeAGaUnJXZzeoh/sF42TUOsG/9Bpx8Y4NpmzPkQ
+         j20JPYWc6AdJaxkZrJeLlhaHkUydzAqftb2mZc2gWKd77vUIYAmR41cWXQ6NTbQ5oHp/
+         aUJRaO7n9n0Ohj7XZ+JjPqn4y2vXCeIsbgRv7Yuk3haWTL0yO+ovPrZXw6Gy5LCYTm2a
+         oBElS/O2IeRzyKAQRseN/ZXxCdU3H+HW8RBXNgAMnxjJ7eNJ8UySdaZLUmdAGp/0ux7U
+         UDmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=vcLUjHeh6h5uRgV4arFKMehsSH4BFabQLIxDxss6ZJ4=;
+        b=ebdO9A76Mcff343cIqzNatK5EF4BWjuPx/6aAZt3Y2vOWkYiES3itLpbp5wqbBMu6d
+         ag/GpbqxxPhy9bXL5o/XQqgjifyPlJcLjMc7ECJGFKiBxaZuj1yUy4MDRdUk4DhWJaiV
+         LpOJy33XuiaUE0VUpw+ZkCjxzobA6u4875pal2rx2MLRnolgx3H7qhSb+pFbPMJolnSf
+         OkkNAwA2LyWu+uD0b6q0KEkOlJvP5fzpb5sI0h5bqH7PZp1gAbNeT03e+2kzxng5jK3d
+         kMiTUJkOLUQtfKMzF6KeqIAQXAA9fMDhv6ezSLgOYDzDHBgMhEeSQ0UDpW7o/WEqhfG6
+         rnmA==
+X-Gm-Message-State: APjAAAUKgPn/81c9HlKSpLyyl2UKBoHGUMufiLNAnZXLMSCYYI4UqjaP
+        kACqkzjSdTo58wLvc3QCPlQ=
+X-Google-Smtp-Source: APXvYqy2N4F/E6s4YB0OPMYZJTxr/jPSl8pt2vXg8mDcllsDoKMSeWYdu5jq4uQU8BdRrUrAF+ev1g==
+X-Received: by 2002:a17:902:8b82:: with SMTP id ay2mr29213267plb.164.1562670415368;
+        Tue, 09 Jul 2019 04:06:55 -0700 (PDT)
+Received: from icarus ([2001:268:c145:6825:1c79:bf4:8232:d614])
+        by smtp.gmail.com with ESMTPSA id h1sm29334483pfo.152.2019.07.09.04.06.52
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 09 Jul 2019 04:06:54 -0700 (PDT)
+Date:   Tue, 9 Jul 2019 20:06:33 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] docs: driver-api: generic-counter: fix file path to
+ ABI doc
+Message-ID: <20190709110613.GA4476@icarus>
+References: <20190709075436.7294-1-marcus.folkesson@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190709075436.7294-1-marcus.folkesson@gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le samedi 22 juin 2019 à 11:21 +0100, Jonathan Cameron a écrit :
-> On Tue, 18 Jun 2019 11:06:39 +0200
-> Fabien Lahoudere <fabien.lahoudere@collabora.com> wrote:
+On Tue, Jul 09, 2019 at 09:54:36AM +0200, Marcus Folkesson wrote:
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> ---
+> v2: Correct the other place as well..
 > 
-> > The documentation give some exemple on what format can be expected
-> > from sampling_frequency_available sysfs attribute
-> > 
-> > Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> It seems I already applied this one, though probably haven't sent
-> a pull request for it to Greg yet.
+>  Documentation/driver-api/generic-counter.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Please drop it from your v4 posting as otherwise I'll get confused
-> (again).
-> 
+> diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
+> index 0c161b1a3be6..8382f01a53e3 100644
+> --- a/Documentation/driver-api/generic-counter.rst
+> +++ b/Documentation/driver-api/generic-counter.rst
+> @@ -233,7 +233,7 @@ Userspace Interface
+>  Several sysfs attributes are generated by the Generic Counter interface,
+>  and reside under the /sys/bus/counter/devices/counterX directory, where
+>  counterX refers to the respective counter device. Please see
+> -Documentation/ABI/testing/sys-bus-counter-generic-sysfs for detailed
+> +Documentation/ABI/testing/sysfs-bus-counter for detailed
+>  information on each Generic Counter interface sysfs attribute.
+>  
+>  Through these sysfs attributes, programs and scripts may interact with
+> @@ -325,7 +325,7 @@ sysfs attributes, where Y is the unique ID of the respective Count:
+>  
+>  For a more detailed breakdown of the available Generic Counter interface
+>  sysfs attributes, please refer to the
+> -Documentation/ABI/testing/sys-bus-counter file.
+> +Documentation/ABI/testing/sysfs-bus-counter file.
+>  
+>  The Signals and Counts associated with the Counter device are registered
+>  to the system as well by the counter_register function. The
+> -- 
+> 2.22.0
 
-Sorry, it will be dropped next time.
+Fixes: 09e7d4ed8991 ("docs: Add Generic Counter interface documentation")
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
-> > ---
-> >  Documentation/ABI/testing/sysfs-bus-iio | 7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio
-> > b/Documentation/ABI/testing/sysfs-bus-iio
-> > index 6aef7dbbde44..680451695422 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-iio
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> > @@ -61,8 +61,11 @@ What:		/sys/bus/iio/devices/triggerX/s
-> > ampling_frequency_available
-> >  KernelVersion:	2.6.35
-> >  Contact:	linux-iio@vger.kernel.org
-> >  Description:
-> > -		When the internal sampling clock can only take a small
-> > -		discrete set of values, this file lists those
-> > available.
-> > +		When the internal sampling clock can only take a
-> > specific set of
-> > +		frequencies, we can specify the available values with:
-> > +		- a small discrete set of values like "0 2 4 6 8"
-> > +		- a range with minimum, step and maximum frequencies
-> > like
-> > +		  "[min step max]"
-> >  
-> >  What:		/sys/bus/iio/devices/iio:deviceX/oversampling_r
-> > atio
-> >  KernelVersion:	2.6.38
+Jonathan, would you be able to pick this up in your tree?
 
+Thanks,
+
+William Breathitt Gray

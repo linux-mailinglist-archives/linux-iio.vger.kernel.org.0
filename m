@@ -2,87 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22F8E61E75
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2019 14:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B4026325A
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2019 09:49:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729397AbfGHMdr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Jul 2019 08:33:47 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:39897 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727373AbfGHMdr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Jul 2019 08:33:47 -0400
-Received: by mail-pl1-f196.google.com with SMTP id b7so8215898pls.6;
-        Mon, 08 Jul 2019 05:33:46 -0700 (PDT)
+        id S1726002AbfGIHtm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Jul 2019 03:49:42 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:36320 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725975AbfGIHtl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Jul 2019 03:49:41 -0400
+Received: by mail-lf1-f67.google.com with SMTP id q26so12717087lfc.3;
+        Tue, 09 Jul 2019 00:49:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=jAthm+WxbxKT3w7i0wyvJ8rNAQ4gSuwe1Onff42CQls=;
-        b=COmFwheYaqCs3c7QPhN18QiYnYAtIpekULwaQLYy7zw/NDr+RwcMaHcElLMG0+11qc
-         bw3/JczgJacs0zd1jB+chz1vURSYjchaV6sz9uQmaTZ8zak1x3tf+DEkjbA8TMfx3Kgn
-         4H39xsp7gJPC8z+ixSNXr1e2GXw4l+bB4l0sEYWolpQ6+9B7cI5GJlDNt3csKD8BNaVJ
-         rwdKZmDrtoMN3oN9Bsa15LRo/Bo5vOREWMt3E9OR3inNtE/ZPSJdKcFilYHC4UI9ERpv
-         f/z/Ozypxhn3BfQmVpsi3Jiuk1YxycWDhvBByjb6Lw765j8ZyzctfFWhC7haJK9shArV
-         d2Vg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Lr2whDP6TvqJ2ADIjhq7mz88RZ7yHusi+UOpci+undc=;
+        b=lsjoQQxrT+7be45fZKC40vABY2rSG3KtriNO+swSZsexezOt1wA3gifEm9uyUOiyWx
+         ZMx8ufFL4sWlYexviVex5BFwbVB+ltod5Y/ZKu+bQgkmaWyFjk39h+9Nn1hl5GpYas1i
+         jymMFT4mj9LLqgJp1iXIUXFYJapnvZwU0pWrLtx7FcdwL2aSezElDDvgC7HbH1eJhH4h
+         1sYEgX88gN2h2S388BPs64mkzWxj5iLyTPlSs1y0PcWDk0Rkzg6FzYuIHdXzUtqtbGdJ
+         Io45ez7HngIokVLanp43RnceuUvmaUPRSDdDnqHIZPZBvTL4+hXHQ7h4SwNMEtOsZ2zc
+         3cGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=jAthm+WxbxKT3w7i0wyvJ8rNAQ4gSuwe1Onff42CQls=;
-        b=HOID3B30IFensHi8AyRVA80zjdXCLfqw36z+88AN/Hx9giJUNlWzTLGrfrX22ybKC4
-         G2rfVhvqCp5XkusEU+v5LMOsdoq7/8vRuldp3zPAefXM0E4/wTECx4nxk/oXgZ1W2I0n
-         rvI0JDjLBXkiKV3FUofus36EfUit5K8AbneyDZzDV7RSgPDXr9ka9l6bFU12fgTpsg4B
-         l3efiiXVadLRMrwVWdOO0PERghH5c/VrWBzUMoT2G52QwcQvQRGGgwFOyL0UxlFWMaO3
-         cXrIVK4lcxpwkgtSAnJgFsSRw0zmhwGC3b6i+YcCxWcrPQKaWza2Qvyb9SfEiVqj3I65
-         u9yg==
-X-Gm-Message-State: APjAAAWZlMNDrqHVQPcSBkqfPY/0FIVQ8TOsnEOx3HSz65N0mRvc17eg
-        uACimkFTluX1D+iRqee5WwE=
-X-Google-Smtp-Source: APXvYqzWEYy5DWmnGPZx/MdBsBT8HflhtCaUZk2qoy59jNEbuI4R8Dn/xfHORQmcDA8wqETHW1+F6A==
-X-Received: by 2002:a17:902:4e25:: with SMTP id f34mr24265563ple.305.1562589226504;
-        Mon, 08 Jul 2019 05:33:46 -0700 (PDT)
-Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.googlemail.com with ESMTPSA id g2sm13103473pfq.88.2019.07.08.05.33.44
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 08 Jul 2019 05:33:46 -0700 (PDT)
-From:   Fuqian Huang <huangfq.daxian@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Lr2whDP6TvqJ2ADIjhq7mz88RZ7yHusi+UOpci+undc=;
+        b=trALjgLVZq7LsmMMuh6wGF++hoIROokQrhji5V7u8E3OFc3Ei1te7q4pilbGG0+6IP
+         AAqsWpAKeTEGJ+RYhFJEtcH2SAaV39iEfWh1l5Z/uwu70NHyyS4ne9E7JhrIrtcy1gmj
+         p0HoTxJPsag2rjMmK79pme9gPc/IieDECafyn134DA+aSgxjwaWXlRVtxuqYsEtNzClZ
+         Gb3opLPMg0hx/zzAgS5imSG8oGTRUYJpJlsFdxMr93sHwTNNIh09nUkEQqIe3uBFI8Jl
+         EkgfFgu4IL1Ak7Rmo0aj+huxgWIxObn2vPM95KtpcuK4NfDpxz82Y8CjgRjSJJnqJHBJ
+         eocA==
+X-Gm-Message-State: APjAAAV/47WjJlPlh2J23dXhLKdfOkJASKRLt+pFF+Q+aFDJcV3xhvqf
+        PP/BVH0Wo4ieqpMf6upB3b4lT1dJRxI=
+X-Google-Smtp-Source: APXvYqzOSJ47E7gu9Ez7XhZdasbZBKZZzzh5AKJAVmI7DTbhVGLsqWKowYZuFdezcE23bYVGQZkxxQ==
+X-Received: by 2002:a19:a87:: with SMTP id 129mr10467586lfk.98.1562658579418;
+        Tue, 09 Jul 2019 00:49:39 -0700 (PDT)
+Received: from localhost.localdomain ([94.234.49.38])
+        by smtp.gmail.com with ESMTPSA id o11sm3148665lfl.15.2019.07.09.00.49.37
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 09 Jul 2019 00:49:38 -0700 (PDT)
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Fuqian Huang <huangfq.daxian@gmail.com>
-Subject: [PATCH 09/14] iio: imu: mpu6050: Replace devm_add_action() followed by failure action with devm_add_action_or_reset()
-Date:   Mon,  8 Jul 2019 20:33:41 +0800
-Message-Id: <20190708123341.12035-1-huangfq.daxian@gmail.com>
-X-Mailer: git-send-email 2.11.0
-To:     unlisted-recipients:; (no To-header on input)
+        Marcus Folkesson <marcus.folkesson@gmail.com>
+Subject: [PATCH] docs: driver-api: generic-counter: fix file path to ABI doc
+Date:   Tue,  9 Jul 2019 09:51:42 +0200
+Message-Id: <20190709075142.6909-1-marcus.folkesson@gmail.com>
+X-Mailer: git-send-email 2.22.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-devm_add_action_or_reset() is introduced as a helper function which 
-internally calls devm_add_action(). If devm_add_action() fails 
-then it will execute the action mentioned and return the error code.
-This reduce source code size (avoid writing the action twice) 
-and reduce the likelyhood of bugs.
-
-Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ Documentation/driver-api/generic-counter.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 53a59957cc54..e067927317bd 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -1096,10 +1096,9 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 	if (result)
- 		return result;
+diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
+index 0c161b1a3be6..b62375782c75 100644
+--- a/Documentation/driver-api/generic-counter.rst
++++ b/Documentation/driver-api/generic-counter.rst
+@@ -233,7 +233,7 @@ Userspace Interface
+ Several sysfs attributes are generated by the Generic Counter interface,
+ and reside under the /sys/bus/counter/devices/counterX directory, where
+ counterX refers to the respective counter device. Please see
+-Documentation/ABI/testing/sys-bus-counter-generic-sysfs for detailed
++Documentation/ABI/testing/sysfs-bus-counter for detailed
+ information on each Generic Counter interface sysfs attribute.
  
--	result = devm_add_action(dev, inv_mpu_core_disable_regulator_action,
-+	result = devm_add_action_or_reset(dev, inv_mpu_core_disable_regulator_action,
- 				 st);
- 	if (result) {
--		inv_mpu_core_disable_regulator_action(st);
- 		dev_err(dev, "Failed to setup regulator cleanup action %d\n",
- 			result);
- 		return result;
+ Through these sysfs attributes, programs and scripts may interact with
 -- 
-2.11.0
+2.22.0
 

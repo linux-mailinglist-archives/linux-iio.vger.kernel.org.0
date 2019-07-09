@@ -2,106 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AD66634BF
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2019 13:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 175A963533
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2019 13:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726057AbfGILG4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Jul 2019 07:06:56 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:44187 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726046AbfGILG4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Jul 2019 07:06:56 -0400
-Received: by mail-pl1-f193.google.com with SMTP id t14so6824673plr.11;
-        Tue, 09 Jul 2019 04:06:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vcLUjHeh6h5uRgV4arFKMehsSH4BFabQLIxDxss6ZJ4=;
-        b=JXnOkwxRPW4lN1TVBlKXh44workAk1kDfFsZVyOw4Ludga29DE6wVIqyrLIv0TPH3X
-         1nzgKZH9iKxy3yb6Uv/aPNBKKKFJfZeAGaUnJXZzeoh/sF42TUOsG/9Bpx8Y4NpmzPkQ
-         j20JPYWc6AdJaxkZrJeLlhaHkUydzAqftb2mZc2gWKd77vUIYAmR41cWXQ6NTbQ5oHp/
-         aUJRaO7n9n0Ohj7XZ+JjPqn4y2vXCeIsbgRv7Yuk3haWTL0yO+ovPrZXw6Gy5LCYTm2a
-         oBElS/O2IeRzyKAQRseN/ZXxCdU3H+HW8RBXNgAMnxjJ7eNJ8UySdaZLUmdAGp/0ux7U
-         UDmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vcLUjHeh6h5uRgV4arFKMehsSH4BFabQLIxDxss6ZJ4=;
-        b=ebdO9A76Mcff343cIqzNatK5EF4BWjuPx/6aAZt3Y2vOWkYiES3itLpbp5wqbBMu6d
-         ag/GpbqxxPhy9bXL5o/XQqgjifyPlJcLjMc7ECJGFKiBxaZuj1yUy4MDRdUk4DhWJaiV
-         LpOJy33XuiaUE0VUpw+ZkCjxzobA6u4875pal2rx2MLRnolgx3H7qhSb+pFbPMJolnSf
-         OkkNAwA2LyWu+uD0b6q0KEkOlJvP5fzpb5sI0h5bqH7PZp1gAbNeT03e+2kzxng5jK3d
-         kMiTUJkOLUQtfKMzF6KeqIAQXAA9fMDhv6ezSLgOYDzDHBgMhEeSQ0UDpW7o/WEqhfG6
-         rnmA==
-X-Gm-Message-State: APjAAAUKgPn/81c9HlKSpLyyl2UKBoHGUMufiLNAnZXLMSCYYI4UqjaP
-        kACqkzjSdTo58wLvc3QCPlQ=
-X-Google-Smtp-Source: APXvYqy2N4F/E6s4YB0OPMYZJTxr/jPSl8pt2vXg8mDcllsDoKMSeWYdu5jq4uQU8BdRrUrAF+ev1g==
-X-Received: by 2002:a17:902:8b82:: with SMTP id ay2mr29213267plb.164.1562670415368;
-        Tue, 09 Jul 2019 04:06:55 -0700 (PDT)
-Received: from icarus ([2001:268:c145:6825:1c79:bf4:8232:d614])
-        by smtp.gmail.com with ESMTPSA id h1sm29334483pfo.152.2019.07.09.04.06.52
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 09 Jul 2019 04:06:54 -0700 (PDT)
-Date:   Tue, 9 Jul 2019 20:06:33 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] docs: driver-api: generic-counter: fix file path to
- ABI doc
-Message-ID: <20190709110613.GA4476@icarus>
-References: <20190709075436.7294-1-marcus.folkesson@gmail.com>
+        id S1725989AbfGILyD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Jul 2019 07:54:03 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:42026 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725947AbfGILyD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Jul 2019 07:54:03 -0400
+Received: from laptop.home (unknown [IPv6:2a01:cb19:8ad6:900:42dd:dd1c:19ee:7c60])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: aragua)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id BD54728ABEB;
+        Tue,  9 Jul 2019 12:54:00 +0100 (BST)
+From:   Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Cc:     gwendal@chromium.org, egranata@chromium.org, kernel@collabora.com,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Nick Vaccaro <nvaccaro@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/1] Expose cros_ec_sensors frequency range via iio sysfs
+Date:   Tue,  9 Jul 2019 13:53:44 +0200
+Message-Id: <cover.1562672771.git.fabien.lahoudere@collabora.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190709075436.7294-1-marcus.folkesson@gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 09, 2019 at 09:54:36AM +0200, Marcus Folkesson wrote:
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-> ---
-> v2: Correct the other place as well..
-> 
->  Documentation/driver-api/generic-counter.rst | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-> index 0c161b1a3be6..8382f01a53e3 100644
-> --- a/Documentation/driver-api/generic-counter.rst
-> +++ b/Documentation/driver-api/generic-counter.rst
-> @@ -233,7 +233,7 @@ Userspace Interface
->  Several sysfs attributes are generated by the Generic Counter interface,
->  and reside under the /sys/bus/counter/devices/counterX directory, where
->  counterX refers to the respective counter device. Please see
-> -Documentation/ABI/testing/sys-bus-counter-generic-sysfs for detailed
-> +Documentation/ABI/testing/sysfs-bus-counter for detailed
->  information on each Generic Counter interface sysfs attribute.
->  
->  Through these sysfs attributes, programs and scripts may interact with
-> @@ -325,7 +325,7 @@ sysfs attributes, where Y is the unique ID of the respective Count:
->  
->  For a more detailed breakdown of the available Generic Counter interface
->  sysfs attributes, please refer to the
-> -Documentation/ABI/testing/sys-bus-counter file.
-> +Documentation/ABI/testing/sysfs-bus-counter file.
->  
->  The Signals and Counts associated with the Counter device are registered
->  to the system as well by the counter_register function. The
-> -- 
-> 2.22.0
+Chromebooks EC sensors must expose a range of frequencies for each sensors using
+the standard ABI sampling_frquency_available.
 
-Fixes: 09e7d4ed8991 ("docs: Add Generic Counter interface documentation")
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+This patch needs https://lkml.org/lkml/2019/7/2/345
 
-Jonathan, would you be able to pick this up in your tree?
+Changes since v3:
+- Split patch 6
+- Drop clean up patches
+- Fix minor changes
 
-Thanks,
+Changes since v2:
+- use read_avail callback
+- rework core functions to avoid code duplication
 
-William Breathitt Gray
+Changes since v1:
+- Add a cover letter
+- Add Nick Vaccaro SoB to patch 1
+- Drop fifo size related code
+
+Fabien Lahoudere (1):
+  iio: common: cros_ec_sensors: Expose cros_ec_sensors frequency range
+    via iio sysfs
+
+ .../common/cros_ec_sensors/cros_ec_sensors.c  |  3 +
+ .../cros_ec_sensors/cros_ec_sensors_core.c    | 65 +++++++++++++++++++
+ drivers/iio/light/cros_ec_light_prox.c        |  3 +
+ .../linux/iio/common/cros_ec_sensors_core.h   | 21 ++++++
+ 4 files changed, 92 insertions(+)
+
+-- 
+2.19.2
+

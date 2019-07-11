@@ -2,144 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56E4965739
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2019 14:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3DAD66010
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2019 21:39:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726053AbfGKMoK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 11 Jul 2019 08:44:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32832 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726016AbfGKMoK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 11 Jul 2019 08:44:10 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DA8A92084B;
-        Thu, 11 Jul 2019 12:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562849048;
-        bh=lZFM/H31Fs5Z6ab6aWawrjKOVYQXr73MU24M7sjvFzo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FG78Uq6t54M6qxvPOcrTnLDhy+6LJohKCZpA2CPYzB2MPWd9Qd9tY1vmmCipDQ+wW
-         iYDntFTTzMth2Ap++Ryozpuep3KcsORzj++qwyZ+DSpbxNE5D38yOoArb+RiplWHE7
-         ZALKy+/h4kyUrx7A2QSc/aaBvtAt16pbMdQ3qaes=
-Date:   Thu, 11 Jul 2019 14:44:02 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Vitor Soares <Vitor.Soares@synopsys.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "bbrezillon@knernel.org" <bbrezillon@knernel.org>,
-        "Joao.Pinto@synopsys.com" <Joao.Pinto@synopsys.com>
-Subject: Re: [PATCH v3 3/3] iio: imu: st_lsm6dsx: add i3c basic support for
- LSM6DSO and LSM6DSR
-Message-ID: <20190711124402.GC3452@localhost.localdomain>
-References: <cover.1562767521.git.vitor.soares@synopsys.com>
- <73955529ae0c31f428221abb88031ab3b4165659.1562767521.git.vitor.soares@synopsys.com>
- <20190710194405.GA10520@lore-desk-wlan.lan>
- <SN6PR12MB2655AC6DF4A959A1705FC8A4AEF30@SN6PR12MB2655.namprd12.prod.outlook.com>
- <SN6PR12MB2655939CB14D0EF848B4F4A8AEF30@SN6PR12MB2655.namprd12.prod.outlook.com>
+        id S1728681AbfGKTjW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 Jul 2019 15:39:22 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:46149 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726903AbfGKTjW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Jul 2019 15:39:22 -0400
+Received: by mail-io1-f66.google.com with SMTP id i10so15086076iol.13
+        for <linux-iio@vger.kernel.org>; Thu, 11 Jul 2019 12:39:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=x0OfFyDSv7uqZ4H9kFB70rUY+FxjLYehEf95uMRcOJw=;
+        b=TCtEU4xAG/2PFpFTwZCGQm8fp1CJunBDFrUfWNvzOXfrcb6Z0h4IN4eJs5ZNdtKBHC
+         1awKYob9n5HiaCmBUjGNfUzfhKhYDUSuQayEw2wJfwhiai7JRZ6FFVJq60HuFX91x8I9
+         OfGPGdpuej7Eicw8dWPvIqWmHE+ZAHJyyGmv1RuqSh8xcTIHeN4ZGMvE48Iq2rPx5Vmm
+         zazpq7uBXz+JeObPIKG8J23P0c9ryxyr/8lxyvE8fdQFZWp/ynm7yuVXv1sATUwcEEKW
+         xvbZCkf/Bas8YCXzx8uOWGlK3puNSWy49SfhuVdHWa1QQEwdfrHWhBAlPVw8rbm/zWIY
+         k1zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=x0OfFyDSv7uqZ4H9kFB70rUY+FxjLYehEf95uMRcOJw=;
+        b=MPWS4WhLW+dKdO0SOKeR3+UsTPDt9/b2a+5wdpemLzulexk0J2Iuh2Wtr8EtCKtxyp
+         lb/a3BUEDlBpCOuDo9TbSjtM9WXn3NfskS0ubJhPY0yDuBX/S9rvqaC837nm39N1IRpS
+         I8uv/BAIqU9LA6IuDnbnawXU80bDywvTVjv0LWeBC5CzqxVrd6OM6OI6EJMHlwvNPF+P
+         oGBEk5I4KNvROJJrMo1MfiW92z3qU3j7agQw9R9mnQvjaQKIgTcQ//cwUqrVtCtOpEeV
+         eccUtPrrQZ3NaM6HRv9MUiSYWHL+WiDMT4bpaVt27x6sK+BlOCzOCwadphq390jlJ6Z9
+         4IpQ==
+X-Gm-Message-State: APjAAAXOnJgk/tXu8SKaq+tXB6AndHOkKnDl8UwpMcjsWOGoJfGZVwsj
+        ZNDpEEFhJeR0IzS9jCIfksk4LT4rWRJ26h01Jf0NVQ==
+X-Google-Smtp-Source: APXvYqw+aCosuTpDrixR7DpUCuQLyuw245INjlb7yGJWA5V5P3qr0JNuNuRPoEeyKdxVV8zUJH1eECoRJfZWz7kXyLs=
+X-Received: by 2002:a5e:a712:: with SMTP id b18mr6112048iod.220.1562873961976;
+ Thu, 11 Jul 2019 12:39:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="KDt/GgjP6HVcx58l"
-Content-Disposition: inline
-In-Reply-To: <SN6PR12MB2655939CB14D0EF848B4F4A8AEF30@SN6PR12MB2655.namprd12.prod.outlook.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+References: <20190610092945.6330-1-amergnat@baylibre.com> <20190610092945.6330-4-amergnat@baylibre.com>
+ <20190616163945.06bdbef0@archlinux>
+In-Reply-To: <20190616163945.06bdbef0@archlinux>
+From:   Alexandre Mergnat <amergnat@baylibre.com>
+Date:   Thu, 11 Jul 2019 21:39:10 +0200
+Message-ID: <CAFGrd9ox2FGpL5a26_weZ9tC9XDTL_QnANR5PNTDYXcus2TJGw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] iio: Add PAT9125 optical tracker sensor
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        baylibre-upstreaming@groups.io,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-input@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Le dim. 16 juin 2019 =C3=A0 17:39, Jonathan Cameron <jic23@kernel.org> a =
+=C3=A9crit :
+>
+> On Mon, 10 Jun 2019 11:29:45 +0200
+> Alexandre Mergnat <amergnat@baylibre.com> wrote:
+ ...
+>
+> > +/*
+> > + * To detect if a new value is available, register status is checked. =
+This
+> > + * method is safer than using a flag on GPIO IRQ to track event while =
+sampling
+> > + * because falling edge is missed when device trig just after a read r=
+eg value
+> > + * (that happen for fast motions or high CPI setting).
+>
+> So we have an edge triggered interrupt that doesn't have a 'minimum low'
+> period? If so then the only safe way to handle it would be as a level
+> interrupt. Can you do that here?
+> (I once had the delights of a sensor like this tied to a edge sensitive o=
+nly
+> interrupt, but thankfully those are a rare thing these days).
+>
 
---KDt/GgjP6HVcx58l
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Trigger level is the first setup I tried (and retried during
+modifications) but it cannot
+works despite of ONESHOT flag. I'm wrong or it's probably due to
+nested_irq because
+it works when I reset interrupt (by reading data) during one of the
+IRQ thread, that what
+I did in my V1 patch. I spent a lot of time to try to use level
+trigger but this is the
+best way I found to do it properly without corner cases.
+The result with nested IRQ and low level trigger is a spamming IRQ
+(probably due to IRQ no more masked during nested IRQ thread) who that stuc=
+k the
+board because it hasn't time to make an I2C read to reset interrupt pin.
 
-> From: Vitor Soares <soares@synopsys.com>
-> Date: Thu, Jul 11, 2019 at 11:12:34
->=20
-> > Hi Lorenzo,
-> >=20
-> > From: Lorenzo Bianconi <lorenzo@kernel.org>
-> > Date: Wed, Jul 10, 2019 at 20:44:05
-> >=20
-> > > > For today the st_lsm6dsx driver support LSM6DSO and LSM6DSR sensor =
-only in
-> > > > spi and i2c mode.
-> > > >=20
-> > > > The LSM6DSO and LSM6DSR are also i3c capable so lets give i3c suppo=
-rt to
-> > > > them.
-> > >=20
-> > > Hi Vitor,
-> > >=20
-> > > just few comments inline.
-> > >=20
-> > > Regards,
-> > > Lorenzo
-> > >=20
-> > > >=20
-> > > > Signed-off-by: Vitor Soares <vitor.soares@synopsys.com>
-> > > > Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > ---
-> > > > Changes in v3:
-> > > >   Remove unnecessary st_lsm6dsx_i3c_data table used to hold device =
-name
-> > > >   Use st_lsm6dsx_probe new form
-> > > >=20
-> > > > Changes in v2:
-> > > >   Add support for LSM6DSR
-> > > >   Set pm_ops to st_lsm6dsx_pm_ops
-> > > >=20
-> > > >  drivers/iio/imu/st_lsm6dsx/Kconfig          |  8 +++-
-> > > >  drivers/iio/imu/st_lsm6dsx/Makefile         |  1 +
-> > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c | 61 +++++++++++++++++=
-++++++++++++
-> > > >  3 files changed, 69 insertions(+), 1 deletion(-)
-> > > >  create mode 100644 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> > > >=20
-> > >=20
-> > > [...]
-> > > > +static int st_lsm6dsx_i3c_probe(struct i3c_device *i3cdev)
-> > > > +{
-> > > > +	const struct i3c_device_id *id =3D i3c_device_match_id(i3cdev,
-> > > > +							    st_lsm6dsx_i3c_ids);
-> > >=20
-> > > i3c_device_match_id can theoretically fail so is it better to check
-> > > return value here? (maybe I am too paranoid :))
->=20
-> I was preparing the patch and if the i3c_device_match_id() fail it return=
-=20
-> NULL so the st_lsm6dsx_probe() will fail automatically.
-> Checking the spi_get_device_id(), the drivers don't test the return value=
-=20
-> too.
 
-multiple drivers deference it directly so I am fine to skip this check.
+> > + * buffer mode and kernel warning due to nested IRQ thread,
+> > + * this function must return 0.
+> > + */
+> > +static int pat9125_trig_try_reenable(struct iio_trigger *trig)
+> > +{
+> > +     struct pat9125_data *data =3D iio_trigger_get_drvdata(trig);
+> > +     struct regmap *regmap =3D data->regmap;
+> > +     int status =3D 0;
+> > +
+> > +     if (data->sampling) {
+> > +             regmap_read(regmap, PAT9125_MOTION_STATUS_REG, &status);
+> > +             if (status & PAT9125_VALID_MOTION_DATA_BIT) {
+> > +                     data->sampling =3D false;
+> So we only ever do 2 reads?  Why can't we be unlucky on timing
+> twice in a row?
 
-Regards,
-Lorenzo
+That can works indefinitely, I tested for some retry in a row by
+moving the chip fastly.
+If the method blocked at 2 readings, I should have been stuck during this t=
+est.
 
->=20
-> Do you think it is really necessary to test it before the=20
-> st_lsm6dsx_probe() function?
->=20
-> Best regards,
-> Vitor Soares
-
---KDt/GgjP6HVcx58l
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXScvDwAKCRA6cBh0uS2t
-rFqeAQCzrowWY6v6CrwXaKkUC1U9wBmyu7LaicNrBFZvExOFZQEAupmsvMoZ9yTZ
-gOS6GkPOJEh4byeeFrEweGB5tbWlNg8=
-=Ueu9
------END PGP SIGNATURE-----
-
---KDt/GgjP6HVcx58l--
+If read status return "New data available", a new read value is done
+through the same
+process (that mean data->sampling put to true) thanks to nested IRQ
+thread which will
+call try_reenable again and then re-check pat9125 status.

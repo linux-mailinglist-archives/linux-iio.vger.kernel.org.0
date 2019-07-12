@@ -2,61 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E34D667024
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2019 15:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9089C672D3
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2019 17:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727805AbfGLNeR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Jul 2019 09:34:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36644 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727800AbfGLNeR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 12 Jul 2019 09:34:17 -0400
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726984AbfGLP6I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Jul 2019 11:58:08 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:51004 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726811AbfGLP6I (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Jul 2019 11:58:08 -0400
+Received: from linux.home (2a01cb0c80061e007f541addd69f0d47.ipv6.abo.wanadoo.fr [IPv6:2a01:cb0c:8006:1e00:7f54:1add:d69f:d47])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 778BA206B8;
-        Fri, 12 Jul 2019 13:34:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562938456;
-        bh=7DVIw6J/+3Y+t8Z186PXZUP4BTrAdMiN89HZu0/laIE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=JxmZBIP0Tv4Cbd9X/r7+UrAbIpmxLebTvVZWWJpH+Rwa32tYYYMOwT2m5bxOCAksS
-         QpMvEonzo1PZwz4QSwOImC/ZXwqqvRjVXn1izwryJq33LRF2h6KQg9u06695s9cvWI
-         5fWqC22VuJenwx7SeAxVQsUy65anKCrXNHzrB/bQ=
-Received: by mail-qk1-f181.google.com with SMTP id r21so6398998qke.2;
-        Fri, 12 Jul 2019 06:34:16 -0700 (PDT)
-X-Gm-Message-State: APjAAAVXNZA0q0s/6hxmY2f0zLUW0W0daEgWTPpaMi+o9kN69+UkS8R9
-        Eeu2JuN0tlTGPXhiQ6lIBpJ4AxrKcz9hUckHHA==
-X-Google-Smtp-Source: APXvYqxoZc5cotlmgm5nkNDcer2rciXaWhu3NOBE539CmmHXCP4PxcjsozaAi4Fo52shXfIkxEK2Kzgw6i94UBHSDKg=
-X-Received: by 2002:a37:a010:: with SMTP id j16mr6521466qke.152.1562938455759;
- Fri, 12 Jul 2019 06:34:15 -0700 (PDT)
+        (Authenticated sender: bbrezillon)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 2D5DA28BBDA;
+        Fri, 12 Jul 2019 16:58:06 +0100 (BST)
+Date:   Fri, 12 Jul 2019 17:58:03 +0200
+From:   Boris Brezillon <boris.brezillon@collabora.com>
+To:     Vitor Soares <Vitor.Soares@synopsys.com>
+Cc:     linux-iio@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-kernel@vger.kernel.org, lorenzo@kernel.org,
+        gregkh@linuxfoundation.org, rafael@kernel.org,
+        bbrezillon@kernel.org, Joao.Pinto@synopsys.com
+Subject: Re: [PATCH v4 0/3] Add ST lsm6dso i3c support
+Message-ID: <20190712175803.3e1f3ac8@linux.home>
+In-Reply-To: <cover.1562931742.git.vitor.soares@synopsys.com>
+References: <cover.1562931742.git.vitor.soares@synopsys.com>
+Organization: Collabora
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20190712094050.17432-1-amergnat@baylibre.com>
-In-Reply-To: <20190712094050.17432-1-amergnat@baylibre.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 12 Jul 2019 07:34:03 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLs-AGjf1A6nky+5VaTTTDyNkBPgmrGCPqyqKa=UvmLYw@mail.gmail.com>
-Message-ID: <CAL_JsqLs-AGjf1A6nky+5VaTTTDyNkBPgmrGCPqyqKa=UvmLYw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] Add PAT9125 optical tracker driver
-To:     Alexandre Mergnat <amergnat@baylibre.com>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        baylibre-upstreaming@groups.io,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Linux Input <linux-input@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 12, 2019 at 3:41 AM Alexandre Mergnat <amergnat@baylibre.com> wrote:
->
-> PixArt Imaging PAT9125 is a miniature low power optical navigation chip
-> using LASER light source enabling digital surface tracking.
+On Fri, 12 Jul 2019 13:53:27 +0200
+Vitor Soares <Vitor.Soares@synopsys.com> wrote:
 
-Please resend to the DT list if you want this reviewed.
+> This patch series add i3c support for STM LSM6DSO and LSM6DSR sensors.
+> 
+> It is also introduced i3c support on regmap api. Due the lack of
+> i3c devices HDR capables on the market the support for now is only for
+> i3c sdr mode by using i3c_device_do_priv_xfers() method.
+> 
+> The i3c regmap api is already available in the Git repository at:
+>   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git
+>   tags/regmap-i3c
+> 
+> Change in v4:
+>   remover hw_id variable from st_lsm6dsx_i3c_probe()
+> 
+> Change in v3:
+>   Update st_lsm6dsx_probe() call
+>   Remove i3c_get_device_id() and use i3c_device_match_id()
 
-Rob
+Did not receive this v3...
+
+> 
+> Changes in v2:
+>   Change i3c_get_device_id() to drivers/i3c/device.c
+>   Add support for LSM6DSR
+> 
+> Vitor Soares (3):
+>   regmap: add i3c bus support
+>   i3c: add i3c_get_device_id helper
+>   iio: imu: st_lsm6dsx: add i3c basic support for LSM6DSO and LSM6DSR
+> 
+>  drivers/base/regmap/Kconfig                 |  6 ++-
+>  drivers/base/regmap/Makefile                |  1 +
+>  drivers/base/regmap/regmap-i3c.c            | 60 +++++++++++++++++++++++++++++
+>  drivers/i3c/device.c                        | 46 ++++++++++++++++++++++
+>  drivers/i3c/master.c                        | 45 ----------------------
+>  drivers/iio/imu/st_lsm6dsx/Kconfig          |  8 +++-
+>  drivers/iio/imu/st_lsm6dsx/Makefile         |  1 +
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c | 58 ++++++++++++++++++++++++++++
+>  include/linux/i3c/device.h                  |  4 ++
+>  include/linux/regmap.h                      | 20 ++++++++++
+>  10 files changed, 202 insertions(+), 47 deletions(-)
+>  create mode 100644 drivers/base/regmap/regmap-i3c.c
+>  create mode 100644 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+> 
+

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3832466BD9
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2019 13:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C86366BE1
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2019 13:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727052AbfGLLxh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Jul 2019 07:53:37 -0400
-Received: from smtprelay-out1.synopsys.com ([198.182.61.142]:47650 "EHLO
+        id S1727025AbfGLLxg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Jul 2019 07:53:36 -0400
+Received: from smtprelay-out1.synopsys.com ([198.182.47.102]:57462 "EHLO
         smtprelay-out1.synopsys.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727032AbfGLLxg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Jul 2019 07:53:36 -0400
-Received: from mailhost.synopsys.com (mdc-mailhost2.synopsys.com [10.225.0.210])
+        by vger.kernel.org with ESMTP id S1726266AbfGLLxf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Jul 2019 07:53:35 -0400
+Received: from mailhost.synopsys.com (mdc-mailhost1.synopsys.com [10.225.0.209])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 4814AC0A65;
-        Fri, 12 Jul 2019 11:53:35 +0000 (UTC)
+        by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id C472FC29C3;
+        Fri, 12 Jul 2019 11:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
-        t=1562932416; bh=s7k+F9RV3/x17uWxmrMO4H+nLFKzqjvRnY013eCLHe4=;
+        t=1562932415; bh=pX6+srmcqljtGLIDX/tJ43DrJ4jEro9DaSq1hNafCT0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:In-Reply-To:
          References:From;
-        b=TF28VhShLxcLH4VM+0xUTsmc+oLhvGZflsOnDFHYnEE02N059mX6dr/CfQRrqG977
-         SI/DiT0asLgeuwb+pb8oG5zfDrIavTKUR24VTrzpNPjkqqerlOHrBzT0q9uICn0A/N
-         pxdTnxeq4GEyotYWMGEu+8mAmNE3CVWLFo7FBJr3qYAoRWd8pdN9/siWu2yLrQnvt0
-         VKYw4+7sSuvPo9jKLKvbnxoyA2lDUK+nRSWR0Mvts5ix2CN4PBAu2GZIQ6FQLAyqoo
-         4uDe5A8ru6/vrKhpJDIcKZTUTFY50WKiNyxS4E+HdNB2EwnWGrxUp2ULatWkbpC78p
-         00dQ8bVyOR4Yg==
+        b=VDT08TjnDVIqirJLpwD2Iahy9WrpLUKU/QDhkVyNmKHEojlbMtrLkUdkNbQoQ9UG2
+         FJPrR8pAnixQa/v2BWmo1fhXjDsCW/bXVTm2RQq22YZX9e10YX7749Z3eBd0QklswB
+         MnaLdf1TBqLdd99gvNFxMpwbJMN3GG0bsGvBnrA7jO+968DJ3/ScalfjrmkncK2HOU
+         vlVLXLWtruQCVfzmZ3olysc73dlUbBk9H76uiEWGaVNP/O9vcnH/bbQmahvLvqdfOU
+         LFlvpieAOKBvt3yruZFpBP2boCq9+SLlOfFU6GVZox4qPO5+dnKuKD566Ild6E4qJK
+         qxPY/Jc4jUqwg==
 Received: from de02.synopsys.com (germany.internal.synopsys.com [10.225.17.21])
-        by mailhost.synopsys.com (Postfix) with ESMTP id 548CCA0065;
+        by mailhost.synopsys.com (Postfix) with ESMTP id 6972EA0064;
         Fri, 12 Jul 2019 11:53:33 +0000 (UTC)
 Received: from de02dwia024.internal.synopsys.com (de02dwia024.internal.synopsys.com [10.225.19.81])
-        by de02.synopsys.com (Postfix) with ESMTP id 38F843E589;
+        by de02.synopsys.com (Postfix) with ESMTP id 4EE1A3E58C;
         Fri, 12 Jul 2019 13:53:33 +0200 (CEST)
 From:   Vitor Soares <Vitor.Soares@synopsys.com>
 To:     linux-iio@vger.kernel.org, linux-i3c@lists.infradead.org,
@@ -38,9 +38,9 @@ To:     linux-iio@vger.kernel.org, linux-i3c@lists.infradead.org,
 Cc:     lorenzo@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org,
         bbrezillon@kernel.org, Joao.Pinto@synopsys.com,
         Vitor Soares <Vitor.Soares@synopsys.com>
-Subject: [PATCH v4 2/3] i3c: move i3c_device_match_id to device.c and export it
-Date:   Fri, 12 Jul 2019 13:53:29 +0200
-Message-Id: <debadccffef84c541601a97162ac656cd7c58478.1562931742.git.vitor.soares@synopsys.com>
+Subject: [PATCH v4 3/3] iio: imu: st_lsm6dsx: add i3c basic support for LSM6DSO and LSM6DSR
+Date:   Fri, 12 Jul 2019 13:53:30 +0200
+Message-Id: <f239834a6b8bd179094cdc19a3ac5ecaf807cee3.1562931742.git.vitor.soares@synopsys.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <cover.1562931742.git.vitor.soares@synopsys.com>
 References: <cover.1562931742.git.vitor.soares@synopsys.com>
@@ -51,155 +51,132 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The i3c device driver needs the i3c_device_id table.
-Lets move it to device.c and export it to be used.
+For today the st_lsm6dsx driver support LSM6DSO and LSM6DSR sensor only in
+spi and i2c mode.
+
+The LSM6DSO and LSM6DSR are also i3c capable so lets give i3c support to
+them.
 
 Signed-off-by: Vitor Soares <vitor.soares@synopsys.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
 Changes in v4:
-  None
+  Remove hw_id variable
 
 Changes in v3:
-  Remove i3c_get_device_id
-  Move i3c_device_match_id from drivers/i3c/master.c to drivers/i3c/device.c
-  Export i3c_device_match_id
+  Remove unnecessary st_lsm6dsx_i3c_data table used to hold device name
+  Use st_lsm6dsx_probe new form
 
 Changes in v2:
-  move this function to drivers/i3c/device.c
+  Add support for LSM6DSR
+  Set pm_ops to st_lsm6dsx_pm_ops
 
- drivers/i3c/device.c       | 46 ++++++++++++++++++++++++++++++++++++++++++++++
- drivers/i3c/master.c       | 45 ---------------------------------------------
- include/linux/i3c/device.h |  4 ++++
- 3 files changed, 50 insertions(+), 45 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/Kconfig          |  8 +++-
+ drivers/iio/imu/st_lsm6dsx/Makefile         |  1 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c | 58 +++++++++++++++++++++++++++++
+ 3 files changed, 66 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
 
-diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
-index 69cc040..383df3b 100644
---- a/drivers/i3c/device.c
-+++ b/drivers/i3c/device.c
-@@ -200,6 +200,52 @@ struct i3c_device *dev_to_i3cdev(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(dev_to_i3cdev);
+diff --git a/drivers/iio/imu/st_lsm6dsx/Kconfig b/drivers/iio/imu/st_lsm6dsx/Kconfig
+index 9e59297..6b5a73c 100644
+--- a/drivers/iio/imu/st_lsm6dsx/Kconfig
++++ b/drivers/iio/imu/st_lsm6dsx/Kconfig
+@@ -1,11 +1,12 @@
  
-+const struct i3c_device_id *
-+i3c_device_match_id(struct i3c_device *i3cdev,
-+		    const struct i3c_device_id *id_table)
+ config IIO_ST_LSM6DSX
+ 	tristate "ST_LSM6DSx driver for STM 6-axis IMU MEMS sensors"
+-	depends on (I2C || SPI)
++	depends on (I2C || SPI || I3C)
+ 	select IIO_BUFFER
+ 	select IIO_KFIFO_BUF
+ 	select IIO_ST_LSM6DSX_I2C if (I2C)
+ 	select IIO_ST_LSM6DSX_SPI if (SPI_MASTER)
++	select IIO_ST_LSM6DSX_I3C if (I3C)
+ 	help
+ 	  Say yes here to build support for STMicroelectronics LSM6DSx imu
+ 	  sensor. Supported devices: lsm6ds3, lsm6ds3h, lsm6dsl, lsm6dsm,
+@@ -23,3 +24,8 @@ config IIO_ST_LSM6DSX_SPI
+ 	tristate
+ 	depends on IIO_ST_LSM6DSX
+ 	select REGMAP_SPI
++
++config IIO_ST_LSM6DSX_I3C
++	tristate
++	depends on IIO_ST_LSM6DSX
++	select REGMAP_I3C
+diff --git a/drivers/iio/imu/st_lsm6dsx/Makefile b/drivers/iio/imu/st_lsm6dsx/Makefile
+index e5f733c..c676965 100644
+--- a/drivers/iio/imu/st_lsm6dsx/Makefile
++++ b/drivers/iio/imu/st_lsm6dsx/Makefile
+@@ -4,3 +4,4 @@ st_lsm6dsx-y := st_lsm6dsx_core.o st_lsm6dsx_buffer.o \
+ obj-$(CONFIG_IIO_ST_LSM6DSX) += st_lsm6dsx.o
+ obj-$(CONFIG_IIO_ST_LSM6DSX_I2C) += st_lsm6dsx_i2c.o
+ obj-$(CONFIG_IIO_ST_LSM6DSX_SPI) += st_lsm6dsx_spi.o
++obj-$(CONFIG_IIO_ST_LSM6DSX_I3C) += st_lsm6dsx_i3c.o
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+new file mode 100644
+index 0000000..2e89524
+--- /dev/null
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2018 Synopsys, Inc. and/or its affiliates.
++ *
++ * Author: Vitor Soares <vitor.soares@synopsys.com>
++ */
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/i3c/device.h>
++#include <linux/i3c/master.h>
++#include <linux/slab.h>
++#include <linux/of.h>
++#include <linux/regmap.h>
++
++#include "st_lsm6dsx.h"
++
++static const struct i3c_device_id st_lsm6dsx_i3c_ids[] = {
++	I3C_DEVICE(0x0104, 0x006C, (void *)ST_LSM6DSO_ID),
++	I3C_DEVICE(0x0104, 0x006B, (void *)ST_LSM6DSR_ID),
++	{ /* sentinel */ },
++};
++MODULE_DEVICE_TABLE(i3c, st_lsm6dsx_i3c_ids);
++
++static const struct regmap_config st_lsm6dsx_i3c_regmap_config = {
++	.reg_bits = 8,
++	.val_bits = 8,
++};
++
++static int st_lsm6dsx_i3c_probe(struct i3c_device *i3cdev)
 +{
-+	struct i3c_device_info devinfo;
-+	const struct i3c_device_id *id;
++	const struct i3c_device_id *id = i3c_device_match_id(i3cdev,
++							    st_lsm6dsx_i3c_ids);
++	struct regmap *regmap;
 +
-+	i3c_device_get_info(i3cdev, &devinfo);
-+
-+	/*
-+	 * The lower 32bits of the provisional ID is just filled with a random
-+	 * value, try to match using DCR info.
-+	 */
-+	if (!I3C_PID_RND_LOWER_32BITS(devinfo.pid)) {
-+		u16 manuf = I3C_PID_MANUF_ID(devinfo.pid);
-+		u16 part = I3C_PID_PART_ID(devinfo.pid);
-+		u16 ext_info = I3C_PID_EXTRA_INFO(devinfo.pid);
-+
-+		/* First try to match by manufacturer/part ID. */
-+		for (id = id_table; id->match_flags != 0; id++) {
-+			if ((id->match_flags & I3C_MATCH_MANUF_AND_PART) !=
-+			    I3C_MATCH_MANUF_AND_PART)
-+				continue;
-+
-+			if (manuf != id->manuf_id || part != id->part_id)
-+				continue;
-+
-+			if ((id->match_flags & I3C_MATCH_EXTRA_INFO) &&
-+			    ext_info != id->extra_info)
-+				continue;
-+
-+			return id;
-+		}
++	regmap = devm_regmap_init_i3c(i3cdev, &st_lsm6dsx_i3c_regmap_config);
++	if (IS_ERR(regmap)) {
++		dev_err(&i3cdev->dev, "Failed to register i3c regmap %d\n",
++			(int)PTR_ERR(regmap));
++		return PTR_ERR(regmap);
 +	}
 +
-+	/* Fallback to DCR match. */
-+	for (id = id_table; id->match_flags != 0; id++) {
-+		if ((id->match_flags & I3C_MATCH_DCR) &&
-+		    id->dcr == devinfo.dcr)
-+			return id;
-+	}
-+
-+	return NULL;
++	return st_lsm6dsx_probe(&i3cdev->dev, 0, (int)id->data, regmap);
 +}
-+EXPORT_SYMBOL_GPL(i3c_device_match_id);
 +
- /**
-  * i3c_driver_register_with_owner() - register an I3C device driver
-  *
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 5f4bd52..7667f84 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -270,51 +270,6 @@ static const struct device_type i3c_device_type = {
- 	.uevent = i3c_device_uevent,
- };
- 
--static const struct i3c_device_id *
--i3c_device_match_id(struct i3c_device *i3cdev,
--		    const struct i3c_device_id *id_table)
--{
--	struct i3c_device_info devinfo;
--	const struct i3c_device_id *id;
--
--	i3c_device_get_info(i3cdev, &devinfo);
--
--	/*
--	 * The lower 32bits of the provisional ID is just filled with a random
--	 * value, try to match using DCR info.
--	 */
--	if (!I3C_PID_RND_LOWER_32BITS(devinfo.pid)) {
--		u16 manuf = I3C_PID_MANUF_ID(devinfo.pid);
--		u16 part = I3C_PID_PART_ID(devinfo.pid);
--		u16 ext_info = I3C_PID_EXTRA_INFO(devinfo.pid);
--
--		/* First try to match by manufacturer/part ID. */
--		for (id = id_table; id->match_flags != 0; id++) {
--			if ((id->match_flags & I3C_MATCH_MANUF_AND_PART) !=
--			    I3C_MATCH_MANUF_AND_PART)
--				continue;
--
--			if (manuf != id->manuf_id || part != id->part_id)
--				continue;
--
--			if ((id->match_flags & I3C_MATCH_EXTRA_INFO) &&
--			    ext_info != id->extra_info)
--				continue;
--
--			return id;
--		}
--	}
--
--	/* Fallback to DCR match. */
--	for (id = id_table; id->match_flags != 0; id++) {
--		if ((id->match_flags & I3C_MATCH_DCR) &&
--		    id->dcr == devinfo.dcr)
--			return id;
--	}
--
--	return NULL;
--}
--
- static int i3c_device_match(struct device *dev, struct device_driver *drv)
- {
- 	struct i3c_device *i3cdev;
-diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
-index 5ecb055..de102e4 100644
---- a/include/linux/i3c/device.h
-+++ b/include/linux/i3c/device.h
-@@ -188,6 +188,10 @@ static inline struct i3c_driver *drv_to_i3cdrv(struct device_driver *drv)
- struct device *i3cdev_to_dev(struct i3c_device *i3cdev);
- struct i3c_device *dev_to_i3cdev(struct device *dev);
- 
-+const struct i3c_device_id *
-+i3c_device_match_id(struct i3c_device *i3cdev,
-+		    const struct i3c_device_id *id_table);
++static struct i3c_driver st_lsm6dsx_driver = {
++	.driver = {
++		.name = "st_lsm6dsx_i3c",
++		.pm = &st_lsm6dsx_pm_ops,
++	},
++	.probe = st_lsm6dsx_i3c_probe,
++	.id_table = st_lsm6dsx_i3c_ids,
++};
++module_i3c_driver(st_lsm6dsx_driver);
 +
- static inline void i3cdev_set_drvdata(struct i3c_device *i3cdev,
- 				      void *data)
- {
++MODULE_AUTHOR("Vitor Soares <vitor.soares@synopsys.com>");
++MODULE_DESCRIPTION("STMicroelectronics st_lsm6dsx i3c driver");
++MODULE_LICENSE("GPL v2");
 -- 
 2.7.4
 

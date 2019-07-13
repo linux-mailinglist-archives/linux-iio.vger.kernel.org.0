@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCD536792C
+	by mail.lfdr.de (Postfix) with ESMTP id 03F776792B
 	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2019 10:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727553AbfGMIFV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Jul 2019 04:05:21 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:35509 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726474AbfGMIFH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Jul 2019 04:05:07 -0400
-Received: by mail-wr1-f68.google.com with SMTP id y4so12117387wrm.2
-        for <linux-iio@vger.kernel.org>; Sat, 13 Jul 2019 01:05:05 -0700 (PDT)
+        id S1726460AbfGMIFU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Jul 2019 04:05:20 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:37493 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727553AbfGMIFI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Jul 2019 04:05:08 -0400
+Received: by mail-wr1-f67.google.com with SMTP id n9so12111642wrr.4
+        for <linux-iio@vger.kernel.org>; Sat, 13 Jul 2019 01:05:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=PCPAVIoBuVICJSah+Q7UfWDYKagBj0M35hF6OR30pG8=;
-        b=VyOLpZSo1+lXygJnf7L4tUyVOCvRuvglGR+cOpoMEp+aWlzqFfR0oFDg6Ca9Xyo+AZ
-         iwt8F+9XEFXRioksk0AOG7h1zmgXCRhkJiX/BdVnMGLlAjcR543kaqU3aBJe+GqiWhAb
-         5J4/EtZ2uHB8VZPW9j1oQxHR3U46wSFjAxyHVNTq6YKwWj6GLnjBYXujHfKfMX4jWc5N
-         a4mhxWB7PFeXv5NRvj48T/1pFPXVtO+mcD79EjRloDw2TXUKKHVY3yeKHIy/LvqyDI/5
-         dLdyCv8oT4tomgqaSPriTKiHwUQ40mRrqSeTg6psi4ejBHHQhN3M+jHRgGH/f5FPCUeu
-         X6Nw==
+        bh=K7MVo1cgFDsjyODbl6UghYby+bBwKYEV5/hf6CSHL9M=;
+        b=wg4PnSKC1zr343VJSPKwlmxqO+ByphpHmnJapoYMhUKUhQYGgEv3SC81CURUjA4PxO
+         W+NITGFc22UBcACrUoEd31VcCw/EUDVFRN1PEuBWKNtXaVlVqexeKya6OLMB0TSAVA8e
+         AhyNIFCTxUEz+Ft63uZLjUxZJ5GOiwe3YgajBb/Pjm3igmMFBl5y5r1UAeNtm7mxV6ka
+         A4mniTSWFEiQXLsKKPI+yk4vzn82/zOhfXi/WYEXuxBBYoABCvhqNQGqM/2+LKtxM3CJ
+         NWiPENznVeh0Vkp/STULZA0kq3zwszCg8kmNZGIMwXThCxpJL0eukFkueSVcI/lcQVMi
+         6Buw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=PCPAVIoBuVICJSah+Q7UfWDYKagBj0M35hF6OR30pG8=;
-        b=FWxfy92lbd+2mTr3XnYLlO3BCQ6iKigBl9DswlsW9l4q/6TfQSWNCfnRbWJXya4gqV
-         S/IdBQALRHXv5sCHsliL+oLP2Tq6nBktcnc2jV+AchsjD3f+jh/Wevc2rEC7cRDkAmq4
-         DP+m/CgaMZFtoQVCUwVMb8y7FhnttY99oACunfIaeZEJCFvSpNO5c31VOw29KOrvSeOs
-         mIk4UYijtfgBHF7mtIs7tfmG1ahv4Yj7eAsDXOccTdmt39eZR9EWuR9h4dwXHv4DSh1s
-         SFRY091m830wGZlQOOfN6qK8YUZR1hVhiuEZn7+34/33eiYORf1wTCh/xjX9d9FBCQFR
-         eZsA==
-X-Gm-Message-State: APjAAAUBkbaFRO7acxz45smoyWYx/KK07B+vB2Zjo+eISiCzV4pkscwp
-        J9g4s/SXeoyZx0wXPDVzQK19Og==
-X-Google-Smtp-Source: APXvYqzwLKvM1hEt5S+/RZGioP8rLTZCageVp8c98fn1RIYt39e9v/S7ytPFoajyUtUAlye133fipg==
-X-Received: by 2002:adf:de08:: with SMTP id b8mr16247723wrm.282.1563005105302;
-        Sat, 13 Jul 2019 01:05:05 -0700 (PDT)
+        bh=K7MVo1cgFDsjyODbl6UghYby+bBwKYEV5/hf6CSHL9M=;
+        b=fVzJrvK8ZbrMFt8s+qdVDLtGIUcWY81s3SICLXb2fgHdekbpX39s3RTsmT3u4tLj7e
+         valX3kUncfhdQ1TNAw1Crz9FCpcxwBfVihZe/RxyvR4/MPeA8vqq6yAvVTiPyrZ1j7rO
+         BvOIDZU9txB3peaaQ9XIsa0DPZurUmHGRL9Bm/LwEEjHqsgwn79OMawqDrSPbOu7orjw
+         +gchOrM8tNkoe1GunsY3WuQl+ZbOAF9EhniaeV75QYdtub2hp0zFLEml0P7r28icdRkm
+         HkNp3SnjsZH40iIMT1FhiQ1ZxQEuY20MSNaHTrhCkKlaMl8pa/9lhzWypNdpyb2q9z7p
+         Uriw==
+X-Gm-Message-State: APjAAAVXjypjljD3ivgc0hp3iCSTN7u6AFVZ3NMUL2UAnIdscv35vpJm
+        lEjMr9UBvryn2fJs47/+3smfbw==
+X-Google-Smtp-Source: APXvYqwHIkGDbVtUIpi7BaIFcXYTfm6oWcUszrNs0OI2hHBGtooeN8vMx4ADX4HykZvzepsubdgNkQ==
+X-Received: by 2002:a5d:4e06:: with SMTP id p6mr16790962wrt.336.1563005106590;
+        Sat, 13 Jul 2019 01:05:06 -0700 (PDT)
 Received: from pop-os.baylibre.local ([2a01:e35:8ad2:2cb0:2dbb:fac9:5ec0:e3ef])
-        by smtp.googlemail.com with ESMTPSA id o26sm9621634wro.53.2019.07.13.01.05.04
+        by smtp.googlemail.com with ESMTPSA id o26sm9621634wro.53.2019.07.13.01.05.05
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 13 Jul 2019 01:05:04 -0700 (PDT)
+        Sat, 13 Jul 2019 01:05:06 -0700 (PDT)
 From:   Alexandre Mergnat <amergnat@baylibre.com>
 To:     robh+dt@kernel.org, mark.rutland@arm.com, jic23@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         baylibre-upstreaming@groups.io, dmitry.torokhov@gmail.com,
         linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         Alexandre Mergnat <amergnat@baylibre.com>
-Subject: [PATCH v4 1/3] dt-bindings: Add pixart vendor
-Date:   Sat, 13 Jul 2019 10:04:53 +0200
-Message-Id: <20190713080455.17513-2-amergnat@baylibre.com>
+Subject: [PATCH v4 2/3] dt-bindings: iio: position: Add docs pat9125
+Date:   Sat, 13 Jul 2019 10:04:54 +0200
+Message-Id: <20190713080455.17513-3-amergnat@baylibre.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190713080455.17513-1-amergnat@baylibre.com>
 References: <20190713080455.17513-1-amergnat@baylibre.com>
@@ -60,27 +60,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-PixArt Imaging Inc. is expertized in CMOS image sensors (CIS),
-capacitive touch controllers and related imaging application development.
+Add documentation for the optical tracker PAT9125 and
+"position" directory for chip which can provides position data.
 
 Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ .../bindings/iio/position/pat9125.txt          | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/position/pat9125.txt
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 18b79c4cf7d5..120529f40c7c 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -705,6 +705,8 @@ patternProperties:
-     description: Pine64
-   "^pineriver,.*":
-     description: Shenzhen PineRiver Designs Co., Ltd.
-+  "^pixart,.*":
-+    description: PixArt Imaging Inc.
-   "^pixcir,.*":
-     description: PIXCIR MICROELECTRONICS Co., Ltd
-   "^plantower,.*":
+diff --git a/Documentation/devicetree/bindings/iio/position/pat9125.txt b/Documentation/devicetree/bindings/iio/position/pat9125.txt
+new file mode 100644
+index 000000000000..4028aeef9b42
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/position/pat9125.txt
+@@ -0,0 +1,18 @@
++PixArt Imaging PAT9125 Optical Tracking Miniature Chip device driver
++
++Required properties:
++	- compatible: must be "pixart,pat9125"
++	- reg: i2c address where to find the device
++	- interrupts: the sole interrupt generated by the device
++
++	Refer to interrupt-controller/interrupts.txt for generic
++	interrupt client node bindings.
++
++Example:
++
++pat9125@75 {
++	compatible = "pixart,pat9125";
++	reg = <0x75>;
++	interrupt-parent = <&gpio3>;
++	interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
++};
 -- 
 2.17.1
 

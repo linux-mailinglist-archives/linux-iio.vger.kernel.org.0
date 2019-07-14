@@ -2,149 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CCBA67F52
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2019 16:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EAC967F72
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2019 16:50:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728368AbfGNOgs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Jul 2019 10:36:48 -0400
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:59963 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728146AbfGNOgs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Jul 2019 10:36:48 -0400
-X-Originating-IP: 126.159.224.182
-Received: from uno.localdomain (softbank126159224182.bbtec.net [126.159.224.182])
-        (Authenticated sender: jacopo@jmondi.org)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 5ACC81BF206;
-        Sun, 14 Jul 2019 14:36:40 +0000 (UTC)
-Date:   Sun, 14 Jul 2019 16:37:56 +0200
-From:   Jacopo Mondi <jacopo@jmondi.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 04/12] iio: adc: max9611: Fix misuse of GENMASK macro
-Message-ID: <20190714143756.2hqmncnbx7nftj7w@uno.localdomain>
-References: <cover.1562734889.git.joe@perches.com>
- <2929234bd4ecec41c0d012edc52416ef80f3e368.1562734889.git.joe@perches.com>
- <20190714125403.0789dc9e@archlinux>
- <b3744e64b22de98bfe8885f76811d4fc7e41b8eb.camel@perches.com>
+        id S1728362AbfGNOu6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Jul 2019 10:50:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52832 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728146AbfGNOu6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 14 Jul 2019 10:50:58 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4218E205F4;
+        Sun, 14 Jul 2019 14:50:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563115857;
+        bh=8Vy3EmFWn6pgNPzexJDXyBDOHfyJgBlPGs3qDdxFGAc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=i70z4zNGWQIKn5nRY4VLY/cYdZX7zfBFYN3fmhD2poFWUxI7IRs1BNeWVyBMPNx0d
+         9Rg4tA5d8oa7TtW/dp4d5Yy4c7x3uZ5o4eMrY5OunrBi1AnqQgtIDUx8jJV47qio2d
+         hhsnjvkx2+Lc65S0/9Ht3B57S98aiDs61eRZ9xDc=
+Date:   Sun, 14 Jul 2019 15:50:52 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        freeman.liu@spreadtrum.com
+Subject: Re: [PATCH 01/14] iio: adc: sc27xx: Introduce local variable
+ 'struct device *dev'
+Message-ID: <20190714155052.5092cf0d@archlinux>
+In-Reply-To: <20190708123221.11658-1-huangfq.daxian@gmail.com>
+References: <20190708123221.11658-1-huangfq.daxian@gmail.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="e2dafb6smz57535e"
-Content-Disposition: inline
-In-Reply-To: <b3744e64b22de98bfe8885f76811d4fc7e41b8eb.camel@perches.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon,  8 Jul 2019 20:32:21 +0800
+Fuqian Huang <huangfq.daxian@gmail.com> wrote:
 
---e2dafb6smz57535e
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+> Introduce local variable 'struct device *dev' and use it instead of
+> dereferencing it repeatly.
+> 
+> Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
 
-Hi Joe, Jonathan,
+Ok, this is a fair bit of churn but probably on balance a worthwhile
+little improvement.
 
-On Sun, Jul 14, 2019 at 05:19:32AM -0700, Joe Perches wrote:
-> On Sun, 2019-07-14 at 12:54 +0100, Jonathan Cameron wrote:
-> > On Tue,  9 Jul 2019 22:04:17 -0700
-> > Joe Perches <joe@perches.com> wrote:
-> >
-> > > Arguments are supposed to be ordered high then low.
-> > >
-> > > Signed-off-by: Joe Perches <joe@perches.com>
-> >
-> > Applied to the fixes-togreg branch of iio.git and marked for
-> > stable etc.
->
-> This mask is used in an init function called from a probe.
->
-> I don't have this hardware but it looks as if it could
-> never have worked so I doubt the driver and the hardware
-> have ever been tested.
->
+Applied to the togreg branch of iio.git and pushed out
+as testing to see if we missed anything.
 
-Ups, this is embarassing! Thanks for noticing
++CC Freeman Liu as original author.
 
-I actually tested the device before sending the driver of course
+Thanks,
 
-> Does anyone have this device in actual use?
->
+Jonathan
 
-The driver is currently in use in Renesas Gen3 Salvator boards:
-arch/arm64/boot/dts/renesas/salvator-common.dtsi:466
 
-I might need some time before I can actually test and tell what's
-happening though. It might work by pure chance. Fortunately the mask
-is only used for validation of the temperature reading at probe time,
-and I can tell this passes (we would have noticed otherwise, Salvator
-is one of the reference Gen3 platforms for upstream development).
+> ---
+>  drivers/iio/adc/sc27xx_adc.c | 41 +++++++++++++++++++++--------------------
+>  1 file changed, 21 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
+> index f7f7a18904b4..ec86f640e963 100644
+> --- a/drivers/iio/adc/sc27xx_adc.c
+> +++ b/drivers/iio/adc/sc27xx_adc.c
+> @@ -504,88 +504,89 @@ static void sc27xx_adc_free_hwlock(void *_data)
+>  
+>  static int sc27xx_adc_probe(struct platform_device *pdev)
+>  {
+> -	struct device_node *np = pdev->dev.of_node;
+> +	struct device *dev = &pdev->dev;
+> +	struct device_node *np = dev->of_node;
+>  	struct sc27xx_adc_data *sc27xx_data;
+>  	struct iio_dev *indio_dev;
+>  	int ret;
+>  
+> -	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*sc27xx_data));
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*sc27xx_data));
+>  	if (!indio_dev)
+>  		return -ENOMEM;
+>  
+>  	sc27xx_data = iio_priv(indio_dev);
+>  
+> -	sc27xx_data->regmap = dev_get_regmap(pdev->dev.parent, NULL);
+> +	sc27xx_data->regmap = dev_get_regmap(dev->parent, NULL);
+>  	if (!sc27xx_data->regmap) {
+> -		dev_err(&pdev->dev, "failed to get ADC regmap\n");
+> +		dev_err(dev, "failed to get ADC regmap\n");
+>  		return -ENODEV;
+>  	}
+>  
+>  	ret = of_property_read_u32(np, "reg", &sc27xx_data->base);
+>  	if (ret) {
+> -		dev_err(&pdev->dev, "failed to get ADC base address\n");
+> +		dev_err(dev, "failed to get ADC base address\n");
+>  		return ret;
+>  	}
+>  
+>  	sc27xx_data->irq = platform_get_irq(pdev, 0);
+>  	if (sc27xx_data->irq < 0) {
+> -		dev_err(&pdev->dev, "failed to get ADC irq number\n");
+> +		dev_err(dev, "failed to get ADC irq number\n");
+>  		return sc27xx_data->irq;
+>  	}
+>  
+>  	ret = of_hwspin_lock_get_id(np, 0);
+>  	if (ret < 0) {
+> -		dev_err(&pdev->dev, "failed to get hwspinlock id\n");
+> +		dev_err(dev, "failed to get hwspinlock id\n");
+>  		return ret;
+>  	}
+>  
+>  	sc27xx_data->hwlock = hwspin_lock_request_specific(ret);
+>  	if (!sc27xx_data->hwlock) {
+> -		dev_err(&pdev->dev, "failed to request hwspinlock\n");
+> +		dev_err(dev, "failed to request hwspinlock\n");
+>  		return -ENXIO;
+>  	}
+>  
+> -	ret = devm_add_action(&pdev->dev, sc27xx_adc_free_hwlock,
+> +	ret = devm_add_action(dev, sc27xx_adc_free_hwlock,
+>  			      sc27xx_data->hwlock);
+>  	if (ret) {
+>  		sc27xx_adc_free_hwlock(sc27xx_data->hwlock);
+> -		dev_err(&pdev->dev, "failed to add hwspinlock action\n");
+> +		dev_err(dev, "failed to add hwspinlock action\n");
+>  		return ret;
+>  	}
+>  
+>  	init_completion(&sc27xx_data->completion);
+> -	sc27xx_data->dev = &pdev->dev;
+> +	sc27xx_data->dev = dev;
+>  
+>  	ret = sc27xx_adc_enable(sc27xx_data);
+>  	if (ret) {
+> -		dev_err(&pdev->dev, "failed to enable ADC module\n");
+> +		dev_err(dev, "failed to enable ADC module\n");
+>  		return ret;
+>  	}
+>  
+> -	ret = devm_add_action(&pdev->dev, sc27xx_adc_disable, sc27xx_data);
+> +	ret = devm_add_action(dev, sc27xx_adc_disable, sc27xx_data);
+>  	if (ret) {
+>  		sc27xx_adc_disable(sc27xx_data);
+> -		dev_err(&pdev->dev, "failed to add ADC disable action\n");
+> +		dev_err(dev, "failed to add ADC disable action\n");
+>  		return ret;
+>  	}
+>  
+> -	ret = devm_request_threaded_irq(&pdev->dev, sc27xx_data->irq, NULL,
+> +	ret = devm_request_threaded_irq(dev, sc27xx_data->irq, NULL,
+>  					sc27xx_adc_isr, IRQF_ONESHOT,
+>  					pdev->name, sc27xx_data);
+>  	if (ret) {
+> -		dev_err(&pdev->dev, "failed to request ADC irq\n");
+> +		dev_err(dev, "failed to request ADC irq\n");
+>  		return ret;
+>  	}
+>  
+> -	indio_dev->dev.parent = &pdev->dev;
+> -	indio_dev->name = dev_name(&pdev->dev);
+> +	indio_dev->dev.parent = dev;
+> +	indio_dev->name = dev_name(dev);
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->info = &sc27xx_info;
+>  	indio_dev->channels = sc27xx_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(sc27xx_channels);
+> -	ret = devm_iio_device_register(&pdev->dev, indio_dev);
+> +	ret = devm_iio_device_register(dev, indio_dev);
+>  	if (ret)
+> -		dev_err(&pdev->dev, "could not register iio (ADC)");
+> +		dev_err(dev, "could not register iio (ADC)");
+>  
+>  	return ret;
+>  }
 
-As said I might need some time before I can test this, but the change
-is indeed correct.
-
-Thanks
-   j
-
->
-> 	regval = ret & MAX9611_TEMP_MASK;
->
-> 	if ((regval > MAX9611_TEMP_MAX_POS &&
-> 	     regval < MAX9611_TEMP_MIN_NEG) ||
-> 	     regval > MAX9611_TEMP_MAX_NEG) {
-> 		dev_err(max9611->dev,
-> 			"Invalid value received from ADC 0x%4x: aborting\n",
-> 			regval);
-> 		return -EIO;
-> 	}
->
->
-> > Thanks,
-> >
-> > Jonathan
-> >
-> > > ---
-> > >  drivers/iio/adc/max9611.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
-> > > index 917223d5ff5b..0e3c6529fc4c 100644
-> > > --- a/drivers/iio/adc/max9611.c
-> > > +++ b/drivers/iio/adc/max9611.c
-> > > @@ -83,7 +83,7 @@
-> > >  #define MAX9611_TEMP_MAX_POS		0x7f80
-> > >  #define MAX9611_TEMP_MAX_NEG		0xff80
-> > >  #define MAX9611_TEMP_MIN_NEG		0xd980
-> > > -#define MAX9611_TEMP_MASK		GENMASK(7, 15)
-> > > +#define MAX9611_TEMP_MASK		GENMASK(15, 7)
-> > >  #define MAX9611_TEMP_SHIFT		0x07
-> > >  #define MAX9611_TEMP_RAW(_r)		((_r) >> MAX9611_TEMP_SHIFT)
-> > >  #define MAX9611_TEMP_SCALE_NUM		1000000
->
-
---e2dafb6smz57535e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEtcQ9SICaIIqPWDjAcjQGjxahVjwFAl0rPkQACgkQcjQGjxah
-Vjx/tg/+Na7MQuV44rg4baxabcBZgnsryXWGW3tX+2T0nGYUopagAj+md9VGP2hq
-bK476Vtnqk+x2vFyzZpuB2UlWzOqR25lxnQX9zD+7VxbqmugTtPhKDuE5W4uUMjz
-RX62qX4bSKqQ3roiGpPrOWsKbjVj083AVVovUMbHGnnnAd0WWuefyzolZF0SU5YC
-FniBmRsug+8e7pOYP22Ni5Cet9X05QuQaTrrc2OxTdNruDNcFGVUYt/b4kl2ExC+
-HiO+eoDcBkmgr0WYzGFcpQ07gGz7KEOebYI1k/yrI1deyIlflFL8fJejDcuzpgrA
-13Hpdq1RFlqI5eE3bP76AQlbWtCbwreXvMAzte4pPzv0JtZ3EnbAiWE1m8PrzspU
-76utkkJIr7jpSI14KflN11FgRMCfw2onknsRl2pZDHdPcCCrbKE7i/9T2znveLo/
-LF3sUHcncbV5WtioP8vZQOvpgU0HwG+qFV43sYXFlOCnCQPO55EukvNX6BEaCMjr
-zBCMCqn7X6fw4jh8ubP9Xw4ZNqHDR39fH5Y2k4cSs85WZA6SqDJAzWKtjDTEu4ht
-8Jwvtq9ZN3vrj/mgqO0Njuip3dboEMw7xfGbZ7RwSOg6WraQ70AS0WmrMOZNaPjb
-2iyftvch5psoWYG7c0ZCfzm1Lq1uxZLeSt8RqtaqkFrB6flWT1I=
-=TLNj
------END PGP SIGNATURE-----
-
---e2dafb6smz57535e--

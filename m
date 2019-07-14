@@ -2,91 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2080F67F47
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2019 16:28:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CCBA67F52
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2019 16:36:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728446AbfGNO2s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Jul 2019 10:28:48 -0400
-Received: from mail133-22.atl131.mandrillapp.com ([198.2.133.22]:64923 "EHLO
-        mail133-22.atl131.mandrillapp.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728442AbfGNO2s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Jul 2019 10:28:48 -0400
-X-Greylist: delayed 901 seconds by postgrey-1.27 at vger.kernel.org; Sun, 14 Jul 2019 10:28:47 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=mandrill; d=nexedi.com;
- h=From:Subject:To:Cc:Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding; i=kirr@nexedi.com;
- bh=OkdXMsKChIXf9sKU+iNJjSMcEzWlygaeee1sm+U5lN8=;
- b=OhE+ucWJMuTEEahgvz5s1kT1MIePtRlyoN4wmmUGU4NfO3YVURy/OmnvZDqZgtEJf6QGq3kb3zgz
-   kIXBmnm/JOOIYeN5rVTVJekE9edPvnVqfH6azsv3yF9oNYVfJlrqaswFyHMKOzomtVTqpUQUjlP+
-   e/h8o0YmCis7HTcQoBc=
-Received: from pmta02.mandrill.prod.atl01.rsglab.com (127.0.0.1) by mail133-22.atl131.mandrillapp.com id h5cu1u1sar8t for <linux-iio@vger.kernel.org>; Sun, 14 Jul 2019 14:13:45 +0000 (envelope-from <bounce-md_31050260.5d2b3899.v1-4d26c2d48fe346548dff410fc66ec2ac@mandrillapp.com>)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com; 
- i=@mandrillapp.com; q=dns/txt; s=mandrill; t=1563113625; h=From : 
- Subject : To : Cc : Message-Id : Date : MIME-Version : Content-Type : 
- Content-Transfer-Encoding : From : Subject : Date : X-Mandrill-User : 
- List-Unsubscribe; bh=OkdXMsKChIXf9sKU+iNJjSMcEzWlygaeee1sm+U5lN8=; 
- b=L4w05nho6BTrmzaJZTZrKV0F3cNXNHM+fWKDhdWu9sM0JzQ0EJ7MxsqSruMCC8+KUjI3Ip
- lATDftW32p52s51r61TgbvbNRMwvAvQUYHGpkW4YsFJtYpGERhXQnYzWJCQy4xAQIUQXFwMU
- jLs9U/d4nIjHM1JSTtF0qYbGYfJ1k=
-From:   Kirill Smelkov <kirr@nexedi.com>
-Subject: [PULL] stream_open bits for Linux 5.3
-Received: from [87.98.221.171] by mandrillapp.com id 4d26c2d48fe346548dff410fc66ec2ac; Sun, 14 Jul 2019 14:13:45 +0000
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Julia Lawall <Julia.Lawall@lip6.fr>, Jan Blunck <jblunck@suse.de>,
-        Arnd Bergmann <arnd@arndb.de>, Jiri Kosina <jikos@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        <cocci@systeme.lip6.fr>, <linux-input@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Message-Id: <20190714141317.GA20277@deco.navytux.spb.ru>
-X-Report-Abuse: Please forward a copy of this message, including all headers, to abuse@mandrill.com
-X-Report-Abuse: You can also report abuse here: http://mandrillapp.com/contact/abuse?id=31050260.4d26c2d48fe346548dff410fc66ec2ac
-X-Mandrill-User: md_31050260
-Date:   Sun, 14 Jul 2019 14:13:45 +0000
+        id S1728368AbfGNOgs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Jul 2019 10:36:48 -0400
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:59963 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728146AbfGNOgs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Jul 2019 10:36:48 -0400
+X-Originating-IP: 126.159.224.182
+Received: from uno.localdomain (softbank126159224182.bbtec.net [126.159.224.182])
+        (Authenticated sender: jacopo@jmondi.org)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 5ACC81BF206;
+        Sun, 14 Jul 2019 14:36:40 +0000 (UTC)
+Date:   Sun, 14 Jul 2019 16:37:56 +0200
+From:   Jacopo Mondi <jacopo@jmondi.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 04/12] iio: adc: max9611: Fix misuse of GENMASK macro
+Message-ID: <20190714143756.2hqmncnbx7nftj7w@uno.localdomain>
+References: <cover.1562734889.git.joe@perches.com>
+ <2929234bd4ecec41c0d012edc52416ef80f3e368.1562734889.git.joe@perches.com>
+ <20190714125403.0789dc9e@archlinux>
+ <b3744e64b22de98bfe8885f76811d4fc7e41b8eb.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="e2dafb6smz57535e"
+Content-Disposition: inline
+In-Reply-To: <b3744e64b22de98bfe8885f76811d4fc7e41b8eb.camel@perches.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Linus,
 
-Please consider pulling the following stream_open related bits:
+--e2dafb6smz57535e
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-This time on stream_open front it is only two small changes:
+Hi Joe, Jonathan,
 
-- the first one converts stream_open.cocci to treat all functions that
-  start with wait_.* as blocking. Previously it was only wait_event_.*
-  functions that were considered as blocking, but this was falsely
-  reporting deadlock cases as only warning. The patch was picked by
-  linux-kbuild and already entered your tree as 0c4ab18fc33b.
-  It is thus omitted from hereby pull-request.
+On Sun, Jul 14, 2019 at 05:19:32AM -0700, Joe Perches wrote:
+> On Sun, 2019-07-14 at 12:54 +0100, Jonathan Cameron wrote:
+> > On Tue,  9 Jul 2019 22:04:17 -0700
+> > Joe Perches <joe@perches.com> wrote:
+> >
+> > > Arguments are supposed to be ordered high then low.
+> > >
+> > > Signed-off-by: Joe Perches <joe@perches.com>
+> >
+> > Applied to the fixes-togreg branch of iio.git and marked for
+> > stable etc.
+>
+> This mask is used in an init function called from a probe.
+>
+> I don't have this hardware but it looks as if it could
+> never have worked so I doubt the driver and the hardware
+> have ever been tested.
+>
 
-- the second one teaches stream_open.cocci to consider files as being
-  stream-like even if they use noop_llseek. I posted this patch for
-  review 3 weeks ago[1], but got neither feedback nor complaints.
+Ups, this is embarassing! Thanks for noticing
 
-  [1] https://lore.kernel.org/lkml/20190623072838.31234-2-kirr@nexedi.com/
+I actually tested the device before sending the driver of course
 
+> Does anyone have this device in actual use?
+>
 
-The changes are available for pulling from here:
+The driver is currently in use in Renesas Gen3 Salvator boards:
+arch/arm64/boot/dts/renesas/salvator-common.dtsi:466
 
-	https://lab.nexedi.com/kirr/linux.git stream_open-5.3
+I might need some time before I can actually test and tell what's
+happening though. It might work by pure chance. Fortunately the mask
+is only used for validation of the temperature reading at probe time,
+and I can tell this passes (we would have noticed otherwise, Salvator
+is one of the reference Gen3 platforms for upstream development).
 
+As said I might need some time before I can test this, but the change
+is indeed correct.
 
-Thanks beforehand,
-Kirill
+Thanks
+   j
 
+>
+> 	regval = ret & MAX9611_TEMP_MASK;
+>
+> 	if ((regval > MAX9611_TEMP_MAX_POS &&
+> 	     regval < MAX9611_TEMP_MIN_NEG) ||
+> 	     regval > MAX9611_TEMP_MAX_NEG) {
+> 		dev_err(max9611->dev,
+> 			"Invalid value received from ADC 0x%4x: aborting\n",
+> 			regval);
+> 		return -EIO;
+> 	}
+>
+>
+> > Thanks,
+> >
+> > Jonathan
+> >
+> > > ---
+> > >  drivers/iio/adc/max9611.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
+> > > index 917223d5ff5b..0e3c6529fc4c 100644
+> > > --- a/drivers/iio/adc/max9611.c
+> > > +++ b/drivers/iio/adc/max9611.c
+> > > @@ -83,7 +83,7 @@
+> > >  #define MAX9611_TEMP_MAX_POS		0x7f80
+> > >  #define MAX9611_TEMP_MAX_NEG		0xff80
+> > >  #define MAX9611_TEMP_MIN_NEG		0xd980
+> > > -#define MAX9611_TEMP_MASK		GENMASK(7, 15)
+> > > +#define MAX9611_TEMP_MASK		GENMASK(15, 7)
+> > >  #define MAX9611_TEMP_SHIFT		0x07
+> > >  #define MAX9611_TEMP_RAW(_r)		((_r) >> MAX9611_TEMP_SHIFT)
+> > >  #define MAX9611_TEMP_SCALE_NUM		1000000
+>
 
-Kirill Smelkov (1):
-      *: convert stream-like files -> stream_open, even if they use noop_llseek
+--e2dafb6smz57535e
+Content-Type: application/pgp-signature; name="signature.asc"
 
- drivers/hid/hid-sensor-custom.c          | 2 +-
- drivers/input/mousedev.c                 | 2 +-
- scripts/coccinelle/api/stream_open.cocci | 9 ++++++++-
- 3 files changed, 10 insertions(+), 3 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEtcQ9SICaIIqPWDjAcjQGjxahVjwFAl0rPkQACgkQcjQGjxah
+Vjx/tg/+Na7MQuV44rg4baxabcBZgnsryXWGW3tX+2T0nGYUopagAj+md9VGP2hq
+bK476Vtnqk+x2vFyzZpuB2UlWzOqR25lxnQX9zD+7VxbqmugTtPhKDuE5W4uUMjz
+RX62qX4bSKqQ3roiGpPrOWsKbjVj083AVVovUMbHGnnnAd0WWuefyzolZF0SU5YC
+FniBmRsug+8e7pOYP22Ni5Cet9X05QuQaTrrc2OxTdNruDNcFGVUYt/b4kl2ExC+
+HiO+eoDcBkmgr0WYzGFcpQ07gGz7KEOebYI1k/yrI1deyIlflFL8fJejDcuzpgrA
+13Hpdq1RFlqI5eE3bP76AQlbWtCbwreXvMAzte4pPzv0JtZ3EnbAiWE1m8PrzspU
+76utkkJIr7jpSI14KflN11FgRMCfw2onknsRl2pZDHdPcCCrbKE7i/9T2znveLo/
+LF3sUHcncbV5WtioP8vZQOvpgU0HwG+qFV43sYXFlOCnCQPO55EukvNX6BEaCMjr
+zBCMCqn7X6fw4jh8ubP9Xw4ZNqHDR39fH5Y2k4cSs85WZA6SqDJAzWKtjDTEu4ht
+8Jwvtq9ZN3vrj/mgqO0Njuip3dboEMw7xfGbZ7RwSOg6WraQ70AS0WmrMOZNaPjb
+2iyftvch5psoWYG7c0ZCfzm1Lq1uxZLeSt8RqtaqkFrB6flWT1I=
+=TLNj
+-----END PGP SIGNATURE-----
+
+--e2dafb6smz57535e--

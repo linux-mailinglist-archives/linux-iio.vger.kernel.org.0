@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C38CD67FCD
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2019 17:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 358C567FD2
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2019 17:23:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728106AbfGNPWx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Jul 2019 11:22:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33296 "EHLO mail.kernel.org"
+        id S1728106AbfGNPXy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Jul 2019 11:23:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33744 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726783AbfGNPWx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 14 Jul 2019 11:22:53 -0400
+        id S1728095AbfGNPXy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 14 Jul 2019 11:23:54 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 78B4F205F4;
-        Sun, 14 Jul 2019 15:22:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EC238205F4;
+        Sun, 14 Jul 2019 15:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563117772;
-        bh=raB9vkEEe7qFQ9TRMUvaSV5zb0Fq4CC95+AbgJOEm6s=;
+        s=default; t=1563117832;
+        bh=iEG5GUnMOj2lTxT3cH5J8+wWEV1D3nTI5obA2yehjR0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uPNWjp79LbcSMSwtaZg0xJpGhHkb2UzgB+Yw0T26r2qtSlp21AKcSR1L4/lVclFB4
-         O/93c1kguc+pJmqHaEcbe62wp0upDsdwUxe4yYLbzzq37uxt/+QkDxRdvXLsTF4y7s
-         DZo3z69rkcrNOI9pgYzURfcTzZaLtkuu+3hYkNG8=
-Date:   Sun, 14 Jul 2019 16:22:31 +0100
+        b=k9Rjj6lCSoW5bQLkrveeOvVl57G8AMdVPg9gDJtUMiAYl91u39QhDFSE8tDD/eTC9
+         fwQxETGNeOedj/fI6/3RyJZK+8VhE/9Clbow/gKQ2INdTI0tx0+kXUuSteXDLOcBDX
+         lv0ZSatScisnP7FC/Qb/f14rlG6TmMNfdwR4ZTLg=
+Date:   Sun, 14 Jul 2019 16:23:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Luca Weiss <luca@z3ntu.xyz>
 Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
@@ -44,12 +44,12 @@ Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
         Martijn Braam <martijn@brixit.nl>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         ~martijnbraam/pmos-upstream@lists.sr.ht,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Michael Tretter <m.tretter@pengutronix.de>
-Subject: Re: [PATCH 1/3] dt-bindings: Add vendor prefix for sensortek
-Message-ID: <20190714162231.2b5c94bb@archlinux>
-In-Reply-To: <20190703180604.9840-1-luca@z3ntu.xyz>
+        Kate Stewart <kstewart@linuxfoundation.org>
+Subject: Re: [PATCH 3/3] iio: light: stk3310: Add device tree support
+Message-ID: <20190714162324.66af1b33@archlinux>
+In-Reply-To: <20190703180604.9840-3-luca@z3ntu.xyz>
 References: <20190703180604.9840-1-luca@z3ntu.xyz>
+        <20190703180604.9840-3-luca@z3ntu.xyz>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,38 +59,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  3 Jul 2019 20:05:57 +0200
+On Wed,  3 Jul 2019 20:05:59 +0200
 Luca Weiss <luca@z3ntu.xyz> wrote:
 
-> Sensortek Technology Corp. produces Proximity Sensors with ALS and
-> Accelerometers.
+> Add device tree support for the stk33xx family of ambient light sensors.
 > 
+> Tested-by: Martijn Braam <martijn@brixit.nl>
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to play with it.
+Applied,
 
 Thanks,
 
 Jonathan
 
 > ---
-> This patch series depends on "iio: light: stk3310: Add support for
-> stk3335", that's curerntly in linux-next.
+>  drivers/iio/light/stk3310.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> index 342bb23e0a73..d197c9609ea7 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -813,6 +813,8 @@ patternProperties:
->      description: Semtech Corporation
->    "^sensirion,.*":
->      description: Sensirion AG
-> +  "^sensortek,.*":
-> +    description: Sensortek Technology Corporation
->    "^sff,.*":
->      description: Small Form Factor Committee
->    "^sgd,.*":
+> diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+> index b955183edfe8..185c24a75ae6 100644
+> --- a/drivers/iio/light/stk3310.c
+> +++ b/drivers/iio/light/stk3310.c
+> @@ -679,9 +679,18 @@ static const struct acpi_device_id stk3310_acpi_id[] = {
+>  
+>  MODULE_DEVICE_TABLE(acpi, stk3310_acpi_id);
+>  
+> +static const struct of_device_id stk3310_of_match[] = {
+> +	{ .compatible = "sensortek,stk3310", },
+> +	{ .compatible = "sensortek,stk3311", },
+> +	{ .compatible = "sensortek,stk3335", },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, stk3310_of_match);
+> +
+>  static struct i2c_driver stk3310_driver = {
+>  	.driver = {
+>  		.name = "stk3310",
+> +		.of_match_table = stk3310_of_match,
+>  		.pm = STK3310_PM_OPS,
+>  		.acpi_match_table = ACPI_PTR(stk3310_acpi_id),
+>  	},
 

@@ -2,111 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6050683D5
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2019 09:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79E83683E0
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2019 09:08:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726948AbfGOHCI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Jul 2019 03:02:08 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:8358 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725787AbfGOHCI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Jul 2019 03:02:08 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6F6uSio030992;
-        Mon, 15 Jul 2019 09:01:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=Zl4deGZbQ+vwkjKjMySHruoNEZ/Tdqr9qboU+Ck4czs=;
- b=mNuPpWJUbgOtsdKvOrrjxjRe5FJn4yQ5m9gUfKCWt4Az42LPaH/qFaD6E5SKi5Sr3khE
- P4urEGi0kp9oYCLif+cM3vFABuf0kmRFrSqlwBQD56IM5MGYxFfrAl/VM4NkZMqU5Ka0
- W6bFfGJwZwgrRb8bYKCpUNvf98urVDrhNGBKdGuUSfvc/LqWGob3Pt3N+ltZTwN7Xknz
- vaOPqmF5MasW0iGCW68hvqF4OpaWz0OHHcb8TAsHDMVJbVqFoA2byGwYpVN+3LZQJEec
- bVWGt9WrvuwTOkuLPH63oj6+iboOzdKlQCi4yNn0bcqY4RqPsvilzISC+CYcZL1gGvY4 cQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2tq52u3xy5-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 15 Jul 2019 09:01:10 +0200
-Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 6839A38;
-        Mon, 15 Jul 2019 07:01:08 +0000 (GMT)
-Received: from Webmail-eu.st.com (Safex1hubcas22.st.com [10.75.90.92])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0FEA515AB;
-        Mon, 15 Jul 2019 07:01:08 +0000 (GMT)
-Received: from SAFEX1HUBCAS24.st.com (10.75.90.95) by Safex1hubcas22.st.com
- (10.75.90.92) with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 15 Jul
- 2019 09:01:07 +0200
-Received: from [10.48.0.167] (10.48.0.167) by webmail-ga.st.com (10.75.90.48)
- with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 15 Jul 2019 09:01:07
- +0200
-Subject: Re: [PATCH v2 3/3] ARM: dts: stm32: add syscfg to ADC on stm32mp157c
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     <robh+dt@kernel.org>, <alexandre.torgue@st.com>,
-        <mark.rutland@arm.com>, <mcoquelin.stm32@gmail.com>,
-        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <1562148496-26789-1-git-send-email-fabrice.gasnier@st.com>
- <1562148496-26789-4-git-send-email-fabrice.gasnier@st.com>
- <20190714171310.1816afe3@archlinux>
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-Message-ID: <c69cff23-b67e-2aed-f250-c237e9cd4a3d@st.com>
-Date:   Mon, 15 Jul 2019 09:01:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1726948AbfGOHHk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Jul 2019 03:07:40 -0400
+Received: from first.geanix.com ([116.203.34.67]:53426 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726748AbfGOHHk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 15 Jul 2019 03:07:40 -0400
+Received: from zen.localdomain (unknown [85.184.140.241])
+        by first.geanix.com (Postfix) with ESMTPSA id 163931837;
+        Mon, 15 Jul 2019 07:07:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1563174436; bh=j4VtWezcu7jnb0yKDk5r3StBvebXCu01N1RbblwzIzA=;
+        h=From:To:Cc:Subject:Date;
+        b=OIs3gmu25uxIQG2l8Njs3FcpsKgjmB+L6dfoe6akzNcibFnO5M7DC730T5hg+1knm
+         e8fXv2wO/qXbgCHmYfUmmLtuLZSO7nuqEfNQqX3SS8r3eaadkAny5VT5aRRI6DbvMu
+         7WMJ9xlUD6OF7BEexVn+cdq/B6Urky12KRRBdgM9Pc8TGYJ3ZJueuZQkqzjryfo6cG
+         cWYYBMrvppHa74A100ztd/+Aj2nEoZ5LqyLdiuFDcwhZpa9nl+VExJ94Jn0nAuTWHO
+         0wAudLCTmkGQ9m/tgpTow7yMtnHP8YybElWdeZ5lvjYhTFZ/B9als6a/z9yrqehTcf
+         +8fRE18DmJF3w==
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     linux-iio@vger.kernel.org, jic23@kernel.org
+Cc:     Sean Nyekjaer <sean@geanix.com>, lorenzo.bianconi83@gmail.com,
+        martin@geanix.com
+Subject: [PATCH] iio: imu: st_lsm6dsx: flip irq return logic
+Date:   Mon, 15 Jul 2019 09:07:15 +0200
+Message-Id: <20190715070715.75976-1-sean@geanix.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-In-Reply-To: <20190714171310.1816afe3@archlinux>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.48.0.167]
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-15_02:,,
- signatures=0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=disabled version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 8945dcc0271d
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/14/19 6:13 PM, Jonathan Cameron wrote:
-> On Wed, 3 Jul 2019 12:08:16 +0200
-> Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
-> 
->> On stm32mp157c, the ADC inputs are multiplexed with analog switches which
->> have reduced performances when their supply is below 2.7V (vdda by
->> default).
->> Add syscfg registers that can be used on stm32mp157c, to get full ADC
->> analog performances.
->>
->> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-> I've applied the patches using this on the assumption this will go via
-> the usual SoC route.
-> 
-> Thanks,
+No need for using reverse logic in the irq return,
+fix this by flip things around.
 
-Hi Jonathan,
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Many thanks,
-Fabrice
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+index 38194f4d2b7e..1be1cec2ab23 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -670,7 +670,7 @@ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+ 	count = hw->settings->fifo_ops.read_fifo(hw);
+ 	mutex_unlock(&hw->fifo_lock);
+ 
+-	return !count ? IRQ_NONE : IRQ_HANDLED;
++	return count ? IRQ_HANDLED : IRQ_NONE;
+ }
+ 
+ static int st_lsm6dsx_buffer_preenable(struct iio_dev *iio_dev)
+-- 
+2.22.0
 
-> 
-> Jonathan
-> 
->> ---
->>  arch/arm/boot/dts/stm32mp157c.dtsi | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/arm/boot/dts/stm32mp157c.dtsi b/arch/arm/boot/dts/stm32mp157c.dtsi
->> index 2dd5162..b9a5b58 100644
->> --- a/arch/arm/boot/dts/stm32mp157c.dtsi
->> +++ b/arch/arm/boot/dts/stm32mp157c.dtsi
->> @@ -862,6 +862,7 @@
->>  			clocks = <&rcc ADC12>, <&rcc ADC12_K>;
->>  			clock-names = "bus", "adc";
->>  			interrupt-controller;
->> +			st,syscfg = <&syscfg>;
->>  			#interrupt-cells = <1>;
->>  			#address-cells = <1>;
->>  			#size-cells = <0>;
-> 

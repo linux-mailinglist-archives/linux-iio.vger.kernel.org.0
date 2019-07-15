@@ -2,67 +2,289 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10FF7684D0
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2019 10:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B213268500
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2019 10:15:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729375AbfGOIEB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Jul 2019 04:04:01 -0400
-Received: from mail133-22.atl131.mandrillapp.com ([198.2.133.22]:45299 "EHLO
-        mail133-22.atl131.mandrillapp.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726948AbfGOIEB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Jul 2019 04:04:01 -0400
-X-Greylist: delayed 1800 seconds by postgrey-1.27 at vger.kernel.org; Mon, 15 Jul 2019 04:04:00 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=mandrill; d=nexedi.com;
- h=From:Subject:To:Cc:Message-Id:References:In-Reply-To:Date:MIME-Version:Content-Type:Content-Transfer-Encoding; i=kirr@nexedi.com;
- bh=VSAtOYjdYu8frJkKtKcesmwi099NUTNw9EPSls9KEqE=;
- b=XD405b8941VRcXAU+gGOQ/4UbnMEwZhJ+qayUEbAXwWqqkpwCOYggUlYw5OcHFeCmQNR74gEvgH7
-   EvgHA4nM6U1r4q5/sGHWcOmkeJCUkUUhz7G6olSUdQPAuDoATuElG2FLowL8nHa+eTi4PKX7oi1M
-   hPYJTjJjbDACrUa0oRs=
-Received: from pmta02.mandrill.prod.atl01.rsglab.com (127.0.0.1) by mail133-22.atl131.mandrillapp.com id h5gpn01sar8e for <linux-iio@vger.kernel.org>; Mon, 15 Jul 2019 07:33:59 +0000 (envelope-from <bounce-md_31050260.5d2c2c67.v1-0ad35a854a554d16bef4c6801ec3ac1f@mandrillapp.com>)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com; 
- i=@mandrillapp.com; q=dns/txt; s=mandrill; t=1563176039; h=From : 
- Subject : To : Cc : Message-Id : References : In-Reply-To : Date : 
- MIME-Version : Content-Type : Content-Transfer-Encoding : From : 
- Subject : Date : X-Mandrill-User : List-Unsubscribe; 
- bh=VSAtOYjdYu8frJkKtKcesmwi099NUTNw9EPSls9KEqE=; 
- b=PdtJb98I5GQcqlmK+4hf2AkthiUWCVFutWAfJcAxImOTugFUxSTzl5Roq4E0iV5tw6MWkU
- 2aoSUmAa2SdB3avczozuyyE8T+UYtv5n1bDCRLlLXMJBGe7YKQppZnivopsmz2T8w9FvhN7F
- x6f+qE1w6s7LnaxdpdbtVCqkfiFjU=
-From:   Kirill Smelkov <kirr@nexedi.com>
-Subject: Re: [PULL] stream_open bits for Linux 5.3
-Received: from [87.98.221.171] by mandrillapp.com id 0ad35a854a554d16bef4c6801ec3ac1f; Mon, 15 Jul 2019 07:33:59 +0000
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Julia Lawall <Julia.Lawall@lip6.fr>, Jan Blunck <jblunck@suse.de>,
-        Arnd Bergmann <arnd@arndb.de>, Jiri Kosina <jikos@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        <cocci@systeme.lip6.fr>, <linux-input@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <pr-tracker-bot@kernel.org>
-Message-Id: <20190715073353.GA3208@deco.navytux.spb.ru>
-References: <20190714141317.GA20277@deco.navytux.spb.ru> <156315060268.32091.6748401501797941411.pr-tracker-bot@kernel.org>
-In-Reply-To: <156315060268.32091.6748401501797941411.pr-tracker-bot@kernel.org>
-X-Report-Abuse: Please forward a copy of this message, including all headers, to abuse@mandrill.com
-X-Report-Abuse: You can also report abuse here: http://mandrillapp.com/contact/abuse?id=31050260.0ad35a854a554d16bef4c6801ec3ac1f
-X-Mandrill-User: md_31050260
-Date:   Mon, 15 Jul 2019 07:33:59 +0000
+        id S1728933AbfGOIPZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Jul 2019 04:15:25 -0400
+Received: from first.geanix.com ([116.203.34.67]:55286 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726170AbfGOIPZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 15 Jul 2019 04:15:25 -0400
+Received: from zen.localdomain (unknown [85.184.140.241])
+        by first.geanix.com (Postfix) with ESMTPSA id 7149642BDB;
+        Mon, 15 Jul 2019 08:14:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1563178499; bh=dKfSWpV7y8ack4Lk/btX6CH9aM7tl5Njcp9UW+6liQ0=;
+        h=From:To:Cc:Subject:Date;
+        b=NjjjotE5jZeKzDC0u/lpQ75F73ih2v2R5SVauVr+PN7bTaX+7i6LNOwYhi88nIYuF
+         kbtK3CdIdAsrcXueVb9o3tL6/1fTL6MCIEhJcZlax3lUhDd/0jT4qfpCRBHiDJF6qH
+         FL11ENzTriODiVtf8ek0Cjh3n5NrbWqfdugePtlBWpPLSG6DcMSxUz88IPZQVMfvZo
+         rVzlmfAAaxO20zYm5Xk2ycc9Qh+UFlC3GfxTt/T7OzR406ZQJ4bEsqIqghBWBnCGQI
+         X2eGM51GeYHW8Y6Qh+vO4wTYN2b+uMQSWEL2xPiK/+nIxO5OzrvZ2HaK4f29sfphxu
+         zBgKPzLcSRVQA==
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     linux-iio@vger.kernel.org, jic23@kernel.org
+Cc:     Sean Nyekjaer <sean@geanix.com>, lorenzo.bianconi83@gmail.com,
+        martin@geanix.com
+Subject: [PATCH v2 1/6] iio: imu: st_lsm6dsx: move interrupt thread to core
+Date:   Mon, 15 Jul 2019 10:15:09 +0200
+Message-Id: <20190715081514.81129-1-sean@geanix.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=disabled version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 8945dcc0271d
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 15, 2019 at 12:30:02AM +0000, pr-tracker-bot@kernel.org wrote:
-> The pull request you sent on Sun, 14 Jul 2019 14:13:45 +0000:
-> 
-> > https://lab.nexedi.com/kirr/linux.git stream_open-5.3
-> 
-> has been merged into torvalds/linux.git:
-> https://git.kernel.org/torvalds/c/fcd98147ac71f35b69e2f50b5fddc5524dd2dfa8
+This prepares the interrupt to be used for other stuff than
+fifo reading + event readings.
 
-Thanks.
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+---
+
+Changes since v1:
+ * none
+
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 78 +----------------
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 87 +++++++++++++++++++
+ 2 files changed, 88 insertions(+), 77 deletions(-)
+
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+index 38194f4d2b7e..2b938d87ae34 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -29,8 +29,6 @@
+  * Denis Ciocca <denis.ciocca@st.com>
+  */
+ #include <linux/module.h>
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+ #include <linux/iio/kfifo_buf.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
+@@ -41,10 +39,6 @@
+ 
+ #include "st_lsm6dsx.h"
+ 
+-#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
+-#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
+-#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
+-#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
+ #define ST_LSM6DSX_REG_FIFO_MODE_ADDR		0x0a
+ #define ST_LSM6DSX_FIFO_MODE_MASK		GENMASK(2, 0)
+ #define ST_LSM6DSX_FIFO_ODR_MASK		GENMASK(6, 3)
+@@ -654,25 +648,6 @@ static int st_lsm6dsx_update_fifo(struct iio_dev *iio_dev, bool enable)
+ 	return err;
+ }
+ 
+-static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+-{
+-	struct st_lsm6dsx_hw *hw = private;
+-
+-	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
+-}
+-
+-static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+-{
+-	struct st_lsm6dsx_hw *hw = private;
+-	int count;
+-
+-	mutex_lock(&hw->fifo_lock);
+-	count = hw->settings->fifo_ops.read_fifo(hw);
+-	mutex_unlock(&hw->fifo_lock);
+-
+-	return !count ? IRQ_NONE : IRQ_HANDLED;
+-}
+-
+ static int st_lsm6dsx_buffer_preenable(struct iio_dev *iio_dev)
+ {
+ 	return st_lsm6dsx_update_fifo(iio_dev, true);
+@@ -690,59 +665,8 @@ static const struct iio_buffer_setup_ops st_lsm6dsx_buffer_ops = {
+ 
+ int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
+ {
+-	struct device_node *np = hw->dev->of_node;
+-	struct st_sensors_platform_data *pdata;
+ 	struct iio_buffer *buffer;
+-	unsigned long irq_type;
+-	bool irq_active_low;
+-	int i, err;
+-
+-	irq_type = irqd_get_trigger_type(irq_get_irq_data(hw->irq));
+-
+-	switch (irq_type) {
+-	case IRQF_TRIGGER_HIGH:
+-	case IRQF_TRIGGER_RISING:
+-		irq_active_low = false;
+-		break;
+-	case IRQF_TRIGGER_LOW:
+-	case IRQF_TRIGGER_FALLING:
+-		irq_active_low = true;
+-		break;
+-	default:
+-		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
+-		return -EINVAL;
+-	}
+-
+-	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
+-				 ST_LSM6DSX_REG_HLACTIVE_MASK,
+-				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
+-					    irq_active_low));
+-	if (err < 0)
+-		return err;
+-
+-	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
+-	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
+-	    (pdata && pdata->open_drain)) {
+-		err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
+-					 ST_LSM6DSX_REG_PP_OD_MASK,
+-					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
+-						    1));
+-		if (err < 0)
+-			return err;
+-
+-		irq_type |= IRQF_SHARED;
+-	}
+-
+-	err = devm_request_threaded_irq(hw->dev, hw->irq,
+-					st_lsm6dsx_handler_irq,
+-					st_lsm6dsx_handler_thread,
+-					irq_type | IRQF_ONESHOT,
+-					"lsm6dsx", hw);
+-	if (err) {
+-		dev_err(hw->dev, "failed to request trigger irq %d\n",
+-			hw->irq);
+-		return err;
+-	}
++	int i;
+ 
+ 	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+ 		if (!hw->iio_devs[i])
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index d8c4417cf4eb..e67341802fc6 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -41,6 +41,8 @@
+ #include <linux/delay.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/pm.h>
+ #include <linux/regmap.h>
+ #include <linux/bitfield.h>
+@@ -61,6 +63,11 @@
+ #define ST_LSM6DSX_REG_INT2_ON_INT1_ADDR	0x13
+ #define ST_LSM6DSX_REG_INT2_ON_INT1_MASK	BIT(5)
+ 
++#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
++#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
++#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
++#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
++
+ #define ST_LSM6DSX_REG_ACC_OUT_X_L_ADDR		0x28
+ #define ST_LSM6DSX_REG_ACC_OUT_Y_L_ADDR		0x2a
+ #define ST_LSM6DSX_REG_ACC_OUT_Z_L_ADDR		0x2c
+@@ -1069,6 +1076,83 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+ 	return iio_dev;
+ }
+ 
++static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
++{
++	struct st_lsm6dsx_hw *hw = private;
++
++	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
++}
++
++static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
++{
++	struct st_lsm6dsx_hw *hw = private;
++	int count;
++
++	mutex_lock(&hw->fifo_lock);
++	count = st_lsm6dsx_read_fifo(hw);
++	mutex_unlock(&hw->fifo_lock);
++
++	return !count ? IRQ_NONE : IRQ_HANDLED;
++}
++
++int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
++{
++	struct st_sensors_platform_data *pdata;
++	struct device_node *np = hw->dev->of_node;
++	unsigned long irq_type;
++	bool irq_active_low;
++	int err;
++
++	irq_type = irqd_get_trigger_type(irq_get_irq_data(hw->irq));
++
++	switch (irq_type) {
++	case IRQF_TRIGGER_HIGH:
++	case IRQF_TRIGGER_RISING:
++		irq_active_low = false;
++		break;
++	case IRQF_TRIGGER_LOW:
++	case IRQF_TRIGGER_FALLING:
++		irq_active_low = true;
++		break;
++	default:
++		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
++		return -EINVAL;
++	}
++
++	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
++				 ST_LSM6DSX_REG_HLACTIVE_MASK,
++				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
++					    irq_active_low));
++	if (err < 0)
++		return err;
++
++	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
++	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
++	    (pdata && pdata->open_drain)) {
++		err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
++					 ST_LSM6DSX_REG_PP_OD_MASK,
++					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
++						    1));
++		if (err < 0)
++			return err;
++
++		irq_type |= IRQF_SHARED;
++	}
++
++	err = devm_request_threaded_irq(hw->dev, hw->irq,
++					st_lsm6dsx_handler_irq,
++					st_lsm6dsx_handler_thread,
++					irq_type | IRQF_ONESHOT,
++					"lsm6dsx", hw);
++	if (err) {
++		dev_err(hw->dev, "failed to request trigger irq %d\n",
++			hw->irq);
++		return err;
++	}
++
++	return err;
++}
++
+ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 		     struct regmap *regmap)
+ {
+@@ -1117,6 +1201,9 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 	}
+ 
+ 	if (hw->irq > 0) {
++		err = st_lsm6dsx_irq_setup(hw);
++		if (err < 0)
++			return err;
+ 		err = st_lsm6dsx_fifo_setup(hw);
+ 		if (err < 0)
+ 			return err;
+-- 
+2.22.0
+

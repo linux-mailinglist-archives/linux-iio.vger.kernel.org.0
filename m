@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B7F568502
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2019 10:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FD9A68504
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2019 10:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729384AbfGOIP1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Jul 2019 04:15:27 -0400
-Received: from first.geanix.com ([116.203.34.67]:55302 "EHLO first.geanix.com"
+        id S1729394AbfGOIP2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Jul 2019 04:15:28 -0400
+Received: from first.geanix.com ([116.203.34.67]:55308 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726170AbfGOIP1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 15 Jul 2019 04:15:27 -0400
+        id S1729383AbfGOIP2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 15 Jul 2019 04:15:28 -0400
 Received: from zen.localdomain (unknown [85.184.140.241])
-        by first.geanix.com (Postfix) with ESMTPSA id B81394361D;
-        Mon, 15 Jul 2019 08:15:02 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id BD99543620;
+        Mon, 15 Jul 2019 08:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1563178502; bh=ImJrCnp61KHcPzIUn7tTxAsJTCx0JL12z5dzII4tKAA=;
+        t=1563178503; bh=7aDigxqC+X0yPPBGZM/U6xh5Q966jFFnYHQLlR+CQTE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=NKztfCHNcrd9R8i2polMzIOI/vXToTwu1lP+MxCpACy7BMjr0hGC8iNZdf0xn2IJD
-         TFgQIazblWfB7/4QXd3DZ4HldhRijTw8y+lYUwZ3oC626JPKpl/KN2GV47IWdR8brj
-         mRhjEXf/4oiDxq0pyYgHPugEFsThBaLFfOizB0qCo2RaGNteR/Spbv7oQwWCDss+QS
-         RY9dJCWMe4olcQ48ne8i9cRtHIb7C3y1OyPCaX5sGdOkghYUYrV5RHStPFlEiE60++
-         oj4U4obZ7P5zjnBEd8nFVI5heZ0awTXWZow2gwpgC69tnfg29rd/w4O2c6DqO9wgs9
-         ZL2JoZrQr6v9g==
+        b=fj8FAGLWQOy/O6hnu2BLSSbReEfmhvJu6zHxeDoq7HRrccI5LWijQgw1NWNYvO04j
+         dsGfNNB28B9WVI4G1pW+m/yKixRCAlNYhRI3vKAvDPQuboeKeDSENVbY7rmwfpWBvz
+         ddj5bfXcoJ+I0qndcJp08p/s88fwya+ZCrPUUVsG++6/ro7lVtVvQvM/vc8CaGXAFC
+         tWLsKyVwGw8v0PffUzzV3zTxk+ZFO2e6ct3EZ7QRtspk9GGwkS2jtDCx1VhybpZKAO
+         V8J3AkFcn0GXSm2/ITaFPUN24Ild0f95s70ljt+6QL0kKifoLE7V4oXPolEv9SalZ9
+         5at3dSV5c0JUA==
 From:   Sean Nyekjaer <sean@geanix.com>
 To:     linux-iio@vger.kernel.org, jic23@kernel.org
 Cc:     Sean Nyekjaer <sean@geanix.com>, lorenzo.bianconi83@gmail.com,
         martin@geanix.com
-Subject: [PATCH v2 4/6] iio: imu: st_lsm6dsx: add wakeup-source option
-Date:   Mon, 15 Jul 2019 10:15:12 +0200
-Message-Id: <20190715081514.81129-4-sean@geanix.com>
+Subject: [PATCH v2 5/6] iio: imu: st_lsm6dsx: always enter interrupt thread
+Date:   Mon, 15 Jul 2019 10:15:13 +0200
+Message-Id: <20190715081514.81129-5-sean@geanix.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190715081514.81129-1-sean@geanix.com>
 References: <20190715081514.81129-1-sean@geanix.com>
@@ -44,61 +44,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This add ways for the SoC to wake from accelerometer wake events.
-
-In the suspend function we skip disabling the sensor if wakeup-source
-and events are activated.
+The interrupt source can come from multiple sources,
+fifo and wake interrupts.
+Enter interrupt thread to check which interrupt that has fired.
 
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
 
 Changes since v1:
- * none, as the call to st_lsm6dsx_flush_fifo will put the fifo in
-   bypass mode.
+ * None
 
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 6decb0846f1a..fc450eeb9870 100644
+index fc450eeb9870..0503abab6efc 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -1358,6 +1358,10 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
- 			return err;
- 	}
+@@ -1215,19 +1215,19 @@ int st_lsm6dsx_event_setup(int id, struct st_lsm6dsx_hw *hw)
  
-+	if (dev->of_node)
-+		if (of_property_read_bool(dev->of_node, "wakeup-source"))
-+			device_init_wakeup(dev, true);
-+
- 	return 0;
+ static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+ {
+-	struct st_lsm6dsx_hw *hw = private;
+-
+-	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
++	return IRQ_WAKE_THREAD;
  }
- EXPORT_SYMBOL(st_lsm6dsx_probe);
-@@ -1372,6 +1376,12 @@ static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
- 		if (!hw->iio_devs[i])
- 			continue;
  
-+		if (device_may_wakeup(dev) && (i == ST_LSM6DSX_ID_ACC)) {
-+			/* Enable wake from IRQ */
-+			enable_irq_wake(hw->irq);
-+			continue;
-+		}
-+
- 		sensor = iio_priv(hw->iio_devs[i]);
- 		if (!(hw->enable_mask & BIT(sensor->id)))
- 			continue;
-@@ -1404,6 +1414,11 @@ static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
- 		if (!hw->iio_devs[i])
- 			continue;
+ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+ {
+ 	struct st_lsm6dsx_hw *hw = private;
+-	int count;
++	int count = 0;
  
-+		if (device_may_wakeup(dev) && (i == ST_LSM6DSX_ID_ACC)) {
-+			disable_irq_wake(hw->irq);
-+			continue;
-+		}
-+
- 		sensor = iio_priv(hw->iio_devs[i]);
- 		if (!(hw->suspend_mask & BIT(sensor->id)))
- 			continue;
+-	mutex_lock(&hw->fifo_lock);
+-	count = st_lsm6dsx_read_fifo(hw);
+-	mutex_unlock(&hw->fifo_lock);
++	if (hw->sip > 0) {
++		mutex_lock(&hw->fifo_lock);
++		count = st_lsm6dsx_read_fifo(hw);
++		mutex_unlock(&hw->fifo_lock);
++	}
+ 
+ 	return !count ? IRQ_NONE : IRQ_HANDLED;
+ }
 -- 
 2.22.0
 

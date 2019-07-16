@@ -2,419 +2,495 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED27F6A3D7
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2019 10:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD6826A428
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2019 10:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727889AbfGPI3e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Jul 2019 04:29:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46242 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727796AbfGPI3e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 16 Jul 2019 04:29:34 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 642A420659;
-        Tue, 16 Jul 2019 08:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563265773;
-        bh=be+zYigtRuF+fdvdibIAsKQVYV0vmSeXrde0OCBGZB4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VXL8M3fGtCU645EPOLildpmlbac+q08tP/QPfIERVTXDlkbj5O8lW7lTe4aft476P
-         C2mF5NgmpAg/l7prElPwoxkAbroL4ql1EqPzH4EIAT8nqIP5kt5NsK8iv07cYOIWHN
-         Tp5jlLHgGe/XkhOivVvfwen4TaA32L77A0nkJRkg=
-Date:   Tue, 16 Jul 2019 10:29:27 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com, martin@geanix.com,
-        denis.ciocca@st.com, mario.tesi@st.com, armando.visconti@st.com
-Subject: Re: [PATCH v2 3/6] iio: imu: st_lsm6dsx: add motion events
-Message-ID: <20190716082927.GB13440@localhost.localdomain>
-References: <20190715081514.81129-1-sean@geanix.com>
- <20190715081514.81129-3-sean@geanix.com>
+        id S1731825AbfGPIqu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Jul 2019 04:46:50 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:58474 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726465AbfGPIqt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Jul 2019 04:46:49 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 7A14828B674
+Subject: Re: [PATCH v6 3/4] iio: cros_ec_accel_legacy: Use
+ cros_ec_sensors_core
+To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org,
+        bleung@chromium.org, groeck@chromium.org,
+        fabien.lahoudere@collabora.com, dianders@chromium.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20190715231454.189459-1-gwendal@chromium.org>
+ <20190715231454.189459-4-gwendal@chromium.org>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <126bb09b-1b13-5f75-e269-32543efc5df7@collabora.com>
+Date:   Tue, 16 Jul 2019 10:46:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="v9Ux+11Zm5mwPlX6"
-Content-Disposition: inline
-In-Reply-To: <20190715081514.81129-3-sean@geanix.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+In-Reply-To: <20190715231454.189459-4-gwendal@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---v9Ux+11Zm5mwPlX6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-> Add event channels that controls the creation of motion events.
->=20
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+On 16/7/19 1:14, Gwendal Grignou wrote:
+> Remove duplicate code in cros-ec-accel-legacy,
+> use cros-ec-sensors-core functions and structures when possible.
+> 
+> On glimmer, check the 2 accelerometers are presented and working.
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+As the mutex problem is fixed:
+
+Reviewed-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+
 > ---
->=20
-> Changes since v1:
->  * added handling of LSM6
->  * added CHANNEL info with events for ACC
->  * removed st_lsm6dsx_set_event_threshold function
->  * added check of event type to event channels
->=20
-> Issues:
->  * This currently breaks buffered reads, as the interrupt stays high.
->    This happens when MD1_CFG INT1_WU (wakeup event routes to INT1) is
->    enabled.
->    The datasheet doesn't seem to decribe whats happening and I can't
->    find a status register to read somehing useful.
->    Maybe it's impossible to share the buffered reads interrupt with
->    the wakeup interrupt?
-
-Could you explain this issue a bit more? adding st folks...
-
->=20
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  30 ++++
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 164 +++++++++++++++++--
->  2 files changed, 182 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st=
-_lsm6dsx/st_lsm6dsx.h
-> index 738bed4a9752..fef08b7cf2a0 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+>  drivers/iio/accel/Kconfig                |   4 +-
+>  drivers/iio/accel/cros_ec_accel_legacy.c | 336 ++++-------------------
+>  2 files changed, 55 insertions(+), 285 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index 62a970a20219..7d0848f9ea45 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -201,9 +201,7 @@ config HID_SENSOR_ACCEL_3D
+>  
+>  config IIO_CROS_EC_ACCEL_LEGACY
+>  	tristate "ChromeOS EC Legacy Accelerometer Sensor"
+> -	select IIO_BUFFER
+> -	select IIO_TRIGGERED_BUFFER
+> -	select CROS_EC_LPC_REGISTER_DEVICE
+> +	depends on IIO_CROS_EC_SENSORS_CORE
+>  	help
+>  	  Say yes here to get support for accelerometers on Chromebook using
+>  	  legacy EC firmware.
+> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> index ad19d9c716f4..f65578c65a1c 100644
+> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
 > @@ -12,6 +12,7 @@
->  #define ST_LSM6DSX_H
-> =20
+>  #include <linux/delay.h>
 >  #include <linux/device.h>
-> +#include <linux/iio/iio.h>
-> =20
->  #define ST_LSM6DS3_DEV_NAME	"lsm6ds3"
->  #define ST_LSM6DS3H_DEV_NAME	"lsm6ds3h"
-> @@ -50,6 +51,26 @@ enum st_lsm6dsx_hw_id {
->  					 * ST_LSM6DSX_TAGGED_SAMPLE_SIZE)
->  #define ST_LSM6DSX_SHIFT_VAL(val, mask)	(((val) << __ffs(mask)) & (mask))
-> =20
-> +#define ST_LSM6DSX_CHANNEL_ACC(chan_type, addr, mod, scan_idx)		\
-> +{									\
-> +	.type =3D chan_type,						\
-> +	.address =3D addr,						\
-> +	.modified =3D 1,							\
-> +	.channel2 =3D mod,						\
-> +	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |			\
-> +			      BIT(IIO_CHAN_INFO_SCALE),			\
-> +	.info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-> +	.scan_index =3D scan_idx,						\
-> +	.scan_type =3D {							\
-> +		.sign =3D 's',						\
-> +		.realbits =3D 16,						\
-> +		.storagebits =3D 16,					\
-> +		.endianness =3D IIO_LE,					\
-> +	},								\
-> +	.event_spec =3D &st_lsm6dsx_event,				\
-> +	.num_event_specs =3D 1,						\
-> +}
-
-I would prefer to extend existing macros
-
-> +
->  #define ST_LSM6DSX_CHANNEL(chan_type, addr, mod, scan_idx)		\
->  {									\
->  	.type =3D chan_type,						\
-> @@ -297,6 +318,8 @@ struct st_lsm6dsx_hw {
->  	u8 enable_mask;
->  	u8 ts_sip;
->  	u8 sip;
-> +	u8 event_threshold;
-> +	bool enable_event;
->  	int drdy_pin;
-> =20
->  	u8 *buff;
-> @@ -306,6 +329,13 @@ struct st_lsm6dsx_hw {
->  	const struct st_lsm6dsx_settings *settings;
->  };
-> =20
-> +static const struct iio_event_spec st_lsm6dsx_event =3D {
-> +	.type =3D IIO_EV_TYPE_THRESH,
-> +	.dir =3D IIO_EV_DIR_EITHER,
-> +	.mask_separate =3D BIT(IIO_EV_INFO_VALUE) |
-> +			 BIT(IIO_EV_INFO_ENABLE)
-> +};
-> +
->  static const unsigned long st_lsm6dsx_available_scan_masks[] =3D {0x7, 0=
-x0};
->  extern const struct dev_pm_ops st_lsm6dsx_pm_ops;
-> =20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 2c11addf568b..6decb0846f1a 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -76,6 +76,16 @@
->  #define ST_LSM6DSX_REG_GYRO_OUT_Y_L_ADDR	0x24
->  #define ST_LSM6DSX_REG_GYRO_OUT_Z_L_ADDR	0x26
-> =20
-> +#define ST_LSM6DSX_REG_TAP_CFG_ADDR		0x58
-> +#define ST_LSM6DSX_REG_TAP_CFG_INT_EN_MASK	BIT(7)
-
-I am pretty sure this is not true at least for lsm6ds3/lsm6ds3h
-
-> +
-> +#define ST_LSM6DSX_REG_WAKE_UP_ADDR		0x5B
-> +#define ST_LSM6DSX_REG_WAKE_UP_THRES_MASK	GENMASK(5, 0)
-> +
-> +#define ST_LSM6DSX_REG_MD1_CFG_ADDR		0x5E
-> +#define ST_LSM6DSX_REG_MD2_CFG_ADDR		0x5F
-> +#define ST_LSM6DSX_REG_MD_CFG_INT_WU_MASK	BIT(5)
-> +
->  static const struct st_lsm6dsx_odr_table_entry st_lsm6dsx_odr_table[] =
-=3D {
->  	[ST_LSM6DSX_ID_ACC] =3D {
->  		.reg =3D {
-> @@ -470,12 +480,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_=
-sensor_settings[] =3D {
->  };
-> =20
->  static const struct iio_chan_spec st_lsm6dsx_acc_channels[] =3D {
-> -	ST_LSM6DSX_CHANNEL(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_X_L_ADDR,
-> -			   IIO_MOD_X, 0),
-> -	ST_LSM6DSX_CHANNEL(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_Y_L_ADDR,
-> -			   IIO_MOD_Y, 1),
-> -	ST_LSM6DSX_CHANNEL(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_Z_L_ADDR,
-> -			   IIO_MOD_Z, 2),
-> +	ST_LSM6DSX_CHANNEL_ACC(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_X_L_ADDR,
-> +			       IIO_MOD_X, 0),
-> +	ST_LSM6DSX_CHANNEL_ACC(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_Y_L_ADDR,
-> +			       IIO_MOD_Y, 1),
-> +	ST_LSM6DSX_CHANNEL_ACC(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_Z_L_ADDR,
-> +			       IIO_MOD_Z, 2),
->  	IIO_CHAN_SOFT_TIMESTAMP(3),
->  };
-> =20
-> @@ -679,18 +689,21 @@ static int st_lsm6dsx_read_oneshot(struct st_lsm6ds=
-x_sensor *sensor,
->  	int err, delay;
->  	__le16 data;
-> =20
-> -	err =3D st_lsm6dsx_sensor_set_enable(sensor, true);
-> -	if (err < 0)
-> -		return err;
-> +	if (!hw->enable_event) {
-> +		err =3D st_lsm6dsx_sensor_set_enable(sensor, true);
-> +		if (err < 0)
-> +			return err;
-> =20
-> -	delay =3D 1000000 / sensor->odr;
-> -	usleep_range(delay, 2 * delay);
-> +		delay =3D 1000000 / sensor->odr;
-> +		usleep_range(delay, 2 * delay);
-> +	}
-> =20
->  	err =3D st_lsm6dsx_read_locked(hw, addr, &data, sizeof(data));
->  	if (err < 0)
->  		return err;
-> =20
-> -	st_lsm6dsx_sensor_set_enable(sensor, false);
-> +	if (!hw->enable_event)
-> +		st_lsm6dsx_sensor_set_enable(sensor, false);
-> =20
->  	*val =3D (s16)le16_to_cpu(data);
-> =20
-> @@ -763,6 +776,94 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_=
-dev,
->  	return err;
->  }
-> =20
-> +static int st_lsm6dsx_read_event(struct iio_dev *iio_dev,
-> +				   const struct iio_chan_spec *chan,
-> +				   enum iio_event_type type,
-> +				   enum iio_event_direction dir,
-> +				   enum iio_event_info info,
-> +				   int *val, int *val2)
-> +{
-> +	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
-> +	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> +
-> +	if (type !=3D IIO_EV_TYPE_THRESH)
-> +		return -EINVAL;
-> +
-> +	*val2 =3D 0;
-> +	*val =3D hw->event_threshold;
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static int st_lsm6dsx_write_event(struct iio_dev *iio_dev,
-> +				    const struct iio_chan_spec *chan,
-> +				    enum iio_event_type type,
-> +				    enum iio_event_direction dir,
-> +				    enum iio_event_info info,
-> +				    int val, int val2)
-> +{
-> +	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
-> +	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> +	int err;
-> +
-> +	if (type !=3D IIO_EV_TYPE_THRESH)
-> +		return -EINVAL;
-> +
-> +	if (!hw->enable_event)
-> +		return -EBUSY;
-
-I guess it is ok to configure the threshold first, no?
-
-> +
-> +	if (val < 0 || val > 31)
-> +		return -EINVAL;
-> +
-> +	err =3D regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_WAKE_UP_ADDR,
-> +				 ST_LSM6DSX_REG_WAKE_UP_THRES_MASK,
-> +				 val);
-> +	if (err)
-> +		return -EINVAL;
-> +
-> +	hw->event_threshold =3D val;
-> +
-> +	return 0;
-> +}
-> +
-> +static int st_lsm6dsx_read_event_config(struct iio_dev *iio_dev,
-> +					  const struct iio_chan_spec *chan,
-> +					  enum iio_event_type type,
-> +					  enum iio_event_direction dir)
-> +{
-> +	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
-> +	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> +
-> +	if (type !=3D IIO_EV_TYPE_THRESH)
-> +		return -EINVAL;
-> +
-> +	return hw->enable_event;
-> +}
-> +
-> +static int st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
-> +					   const struct iio_chan_spec *chan,
-> +					   enum iio_event_type type,
-> +					   enum iio_event_direction dir,
-> +					   int state)
-> +{
-> +	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
-> +	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> +
-> +	if (type !=3D IIO_EV_TYPE_THRESH)
-> +		return -EINVAL;
-> +
-> +	if (state && hw->enable_event)
-> +		return 0;
-> +
-> +	hw->enable_event =3D state;
-> +	if (state)
-> +		st_lsm6dsx_sensor_set_enable(sensor, true);
-> +	else
-> +		st_lsm6dsx_sensor_set_enable(sensor, false);
-
-st_lsm6dsx_sensor_set_enable can fails. Why not do
-
-	err =3D st_lsm6dsx_sensor_set_enable(sensor, state);
-	if (err < 0)
-		return err;
-
-	hw->enable_event =3D state;;
-	return 0;
-
-> +
-> +	return 0;
-> +}
-> +
->  int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
+>  #include <linux/iio/buffer.h>
+> +#include <linux/iio/common/cros_ec_sensors_core.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/kfifo_buf.h>
+>  #include <linux/iio/trigger_consumer.h>
+> @@ -25,191 +26,51 @@
+>  
+>  #define DRV_NAME	"cros-ec-accel-legacy"
+>  
+> +#define CROS_EC_SENSOR_LEGACY_NUM 2
+>  /*
+>   * Sensor scale hard coded at 10 bits per g, computed as:
+>   * g / (2^10 - 1) = 0.009586168; with g = 9.80665 m.s^-2
+>   */
+>  #define ACCEL_LEGACY_NSCALE 9586168
+>  
+> -/* Indices for EC sensor values. */
+> -enum {
+> -	X,
+> -	Y,
+> -	Z,
+> -	MAX_AXIS,
+> -};
+> -
+> -/* State data for cros_ec_accel_legacy iio driver. */
+> -struct cros_ec_accel_legacy_state {
+> -	struct cros_ec_device *ec;
+> -
+> -	/*
+> -	 * Array holding data from a single capture. 2 bytes per channel
+> -	 * for the 3 channels plus the timestamp which is always last and
+> -	 * 8-bytes aligned.
+> -	 */
+> -	s16 capture_data[8];
+> -	s8 sign[MAX_AXIS];
+> -	u8 sensor_num;
+> -};
+> -
+> -static int ec_cmd_read_u8(struct cros_ec_device *ec, unsigned int offset,
+> -			  u8 *dest)
+> -{
+> -	return ec->cmd_readmem(ec, offset, 1, dest);
+> -}
+> -
+> -static int ec_cmd_read_u16(struct cros_ec_device *ec, unsigned int offset,
+> -			   u16 *dest)
+> -{
+> -	__le16 tmp;
+> -	int ret = ec->cmd_readmem(ec, offset, 2, &tmp);
+> -
+> -	*dest = le16_to_cpu(tmp);
+> -
+> -	return ret;
+> -}
+> -
+> -/**
+> - * read_ec_until_not_busy() - Read from EC status byte until it reads not busy.
+> - * @st: Pointer to state information for device.
+> - *
+> - * This function reads EC status until its busy bit gets cleared. It does not
+> - * wait indefinitely and returns -EIO if the EC status is still busy after a
+> - * few hundreds milliseconds.
+> - *
+> - * Return: 8-bit status if ok, -EIO on error
+> - */
+> -static int read_ec_until_not_busy(struct cros_ec_accel_legacy_state *st)
+> -{
+> -	struct cros_ec_device *ec = st->ec;
+> -	u8 status;
+> -	int attempts = 0;
+> -
+> -	ec_cmd_read_u8(ec, EC_MEMMAP_ACC_STATUS, &status);
+> -	while (status & EC_MEMMAP_ACC_STATUS_BUSY_BIT) {
+> -		/* Give up after enough attempts, return error. */
+> -		if (attempts++ >= 50)
+> -			return -EIO;
+> -
+> -		/* Small delay every so often. */
+> -		if (attempts % 5 == 0)
+> -			msleep(25);
+> -
+> -		ec_cmd_read_u8(ec, EC_MEMMAP_ACC_STATUS, &status);
+> -	}
+> -
+> -	return status;
+> -}
+> -
+> -/**
+> - * read_ec_accel_data_unsafe() - Read acceleration data from EC shared memory.
+> - * @st:        Pointer to state information for device.
+> - * @scan_mask: Bitmap of the sensor indices to scan.
+> - * @data:      Location to store data.
+> - *
+> - * This is the unsafe function for reading the EC data. It does not guarantee
+> - * that the EC will not modify the data as it is being read in.
+> - */
+> -static void read_ec_accel_data_unsafe(struct cros_ec_accel_legacy_state *st,
+> -				      unsigned long scan_mask, s16 *data)
+> -{
+> -	int i = 0;
+> -	int num_enabled = bitmap_weight(&scan_mask, MAX_AXIS);
+> -
+> -	/* Read all sensors enabled in scan_mask. Each value is 2 bytes. */
+> -	while (num_enabled--) {
+> -		i = find_next_bit(&scan_mask, MAX_AXIS, i);
+> -		ec_cmd_read_u16(st->ec,
+> -				EC_MEMMAP_ACC_DATA +
+> -				sizeof(s16) *
+> -				(1 + i + st->sensor_num * MAX_AXIS),
+> -				data);
+> -		*data *= st->sign[i];
+> -		i++;
+> -		data++;
+> -	}
+> -}
+> -
+> -/**
+> - * read_ec_accel_data() - Read acceleration data from EC shared memory.
+> - * @st:        Pointer to state information for device.
+> - * @scan_mask: Bitmap of the sensor indices to scan.
+> - * @data:      Location to store data.
+> - *
+> - * This is the safe function for reading the EC data. It guarantees that
+> - * the data sampled was not modified by the EC while being read.
+> - *
+> - * Return: 0 if ok, -ve on error
+> - */
+> -static int read_ec_accel_data(struct cros_ec_accel_legacy_state *st,
+> -			      unsigned long scan_mask, s16 *data)
+> -{
+> -	u8 samp_id = 0xff;
+> -	u8 status = 0;
+> -	int ret;
+> -	int attempts = 0;
+> -
+> -	/*
+> -	 * Continually read all data from EC until the status byte after
+> -	 * all reads reflects that the EC is not busy and the sample id
+> -	 * matches the sample id from before all reads. This guarantees
+> -	 * that data read in was not modified by the EC while reading.
+> -	 */
+> -	while ((status & (EC_MEMMAP_ACC_STATUS_BUSY_BIT |
+> -			  EC_MEMMAP_ACC_STATUS_SAMPLE_ID_MASK)) != samp_id) {
+> -		/* If we have tried to read too many times, return error. */
+> -		if (attempts++ >= 5)
+> -			return -EIO;
+> -
+> -		/* Read status byte until EC is not busy. */
+> -		ret = read_ec_until_not_busy(st);
+> -		if (ret < 0)
+> -			return ret;
+> -		status = ret;
+> -
+> -		/*
+> -		 * Store the current sample id so that we can compare to the
+> -		 * sample id after reading the data.
+> -		 */
+> -		samp_id = status & EC_MEMMAP_ACC_STATUS_SAMPLE_ID_MASK;
+> -
+> -		/* Read all EC data, format it, and store it into data. */
+> -		read_ec_accel_data_unsafe(st, scan_mask, data);
+> -
+> -		/* Read status byte. */
+> -		ec_cmd_read_u8(st->ec, EC_MEMMAP_ACC_STATUS, &status);
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  static int cros_ec_accel_legacy_read(struct iio_dev *indio_dev,
+>  				     struct iio_chan_spec const *chan,
+>  				     int *val, int *val2, long mask)
 >  {
->  	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
-> @@ -839,6 +940,10 @@ static const struct iio_info st_lsm6dsx_acc_info =3D=
- {
->  	.attrs =3D &st_lsm6dsx_acc_attribute_group,
->  	.read_raw =3D st_lsm6dsx_read_raw,
->  	.write_raw =3D st_lsm6dsx_write_raw,
-> +	.read_event_value =3D st_lsm6dsx_read_event,
-> +	.write_event_value =3D st_lsm6dsx_write_event,
-> +	.read_event_config =3D st_lsm6dsx_read_event_config,
-> +	.write_event_config =3D st_lsm6dsx_write_event_config,
->  	.hwfifo_set_watermark =3D st_lsm6dsx_set_watermark,
->  };
-> =20
-> @@ -1076,6 +1181,38 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(str=
-uct st_lsm6dsx_hw *hw,
->  	return iio_dev;
->  }
-> =20
-> +int st_lsm6dsx_event_setup(int id, struct st_lsm6dsx_hw *hw)
-> +{
-> +	int err;
-> +	unsigned int md_reg;
+> -	struct cros_ec_accel_legacy_state *st = iio_priv(indio_dev);
+> +	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
+>  	s16 data = 0;
+> -	int ret = IIO_VAL_INT;
+> +	int ret;
+> +	int idx = chan->scan_index;
 > +
-> +	if (id =3D=3D ST_ISM330DLC_ID) {
-> +		/* Enable basic interrupts for ISM330 */
-> +		err =3D regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_TAP_CFG_ADDR,
-> +					 ST_LSM6DSX_REG_TAP_CFG_INT_EN_MASK,
-> +					 ST_LSM6DSX_REG_TAP_CFG_INT_EN_MASK);
-
-please put device differences in st_lsm6dsx_sensor_settings[]
-
-> +		if (err < 0)
-> +			return err;
-> +	}
-> +
-> +	switch (hw->drdy_pin) {
-
-drdy_pin it is only used here right? If so we do not need it just enable th=
-is
-configuration by default. I would prefer to maintain the code simple
-
-> +	case 1:
-> +		md_reg =3D ST_LSM6DSX_REG_MD1_CFG_ADDR;
+> +	mutex_lock(&st->cmd_lock);
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_RAW:
+> -		ret = read_ec_accel_data(st, (1 << chan->scan_index), &data);
+> -		if (ret)
+> -			return ret;
+> +		ret = st->read_ec_sensors_data(indio_dev, 1 << idx, &data);
+> +		if (ret < 0)
+> +			break;
+> +		ret = IIO_VAL_INT;
+>  		*val = data;
+> -		return IIO_VAL_INT;
 > +		break;
-> +	case 2:
-> +		md_reg =3D ST_LSM6DSX_REG_MD2_CFG_ADDR;
+>  	case IIO_CHAN_INFO_SCALE:
+> +		WARN_ON(st->type != MOTIONSENSE_TYPE_ACCEL);
+>  		*val = 0;
+>  		*val2 = ACCEL_LEGACY_NSCALE;
+> -		return IIO_VAL_INT_PLUS_NANO;
+> +		ret = IIO_VAL_INT_PLUS_NANO;
 > +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +	/* Enable wakeup interrupt */
-> +	err =3D regmap_update_bits(hw->regmap, md_reg,
-> +				 ST_LSM6DSX_REG_MD_CFG_INT_WU_MASK,
-> +				 ST_LSM6DSX_REG_MD_CFG_INT_WU_MASK);
-> +
-> +	return err;
-> +}
-> +
->  static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
->  {
->  	struct st_lsm6dsx_hw *hw =3D private;
-> @@ -1207,6 +1344,9 @@ int st_lsm6dsx_probe(struct device *dev, int irq, i=
-nt hw_id,
->  		err =3D st_lsm6dsx_fifo_setup(hw);
->  		if (err < 0)
->  			return err;
-
-newline here please
-
-> +		err =3D st_lsm6dsx_event_setup(hw_id, hw);
-> +		if (err < 0)
-> +			return err;
+>  	case IIO_CHAN_INFO_CALIBBIAS:
+>  		/* Calibration not supported. */
+>  		*val = 0;
+> -		return IIO_VAL_INT;
+> +		ret = IIO_VAL_INT;
+> +		break;
+>  	default:
+> -		return -EINVAL;
+> +		ret = cros_ec_sensors_core_read(st, chan, val, val2,
+> +				mask);
+> +		break;
 >  	}
-> =20
->  	for (i =3D 0; i < ST_LSM6DSX_ID_MAX; i++) {
-> --=20
-> 2.22.0
->=20
-
---v9Ux+11Zm5mwPlX6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXS2K5AAKCRA6cBh0uS2t
-rJscAP909NINDXj8XyRHRDRPMx0U9WbkWhS8BTGOyKwAK1cFlgD/eMiuvvsuiejd
-jlX6VYwWYNoi2rf0t9fdHmT+kbKXywI=
-=6CAs
------END PGP SIGNATURE-----
-
---v9Ux+11Zm5mwPlX6--
+> +	mutex_unlock(&st->cmd_lock);
+> +
+> +	return ret;
+>  }
+>  
+>  static int cros_ec_accel_legacy_write(struct iio_dev *indio_dev,
+> @@ -231,86 +92,14 @@ static const struct iio_info cros_ec_accel_legacy_info = {
+>  	.write_raw = &cros_ec_accel_legacy_write,
+>  };
+>  
+> -/**
+> - * cros_ec_accel_legacy_capture() - The trigger handler function
+> - * @irq: The interrupt number.
+> - * @p:   Private data - always a pointer to the poll func.
+> - *
+> - * On a trigger event occurring, if the pollfunc is attached then this
+> - * handler is called as a threaded interrupt (and hence may sleep). It
+> - * is responsible for grabbing data from the device and pushing it into
+> - * the associated buffer.
+> - *
+> - * Return: IRQ_HANDLED
+> +/*
+> + * Present the channel using HTML5 standard:
+> + * need to invert X and Y and invert some lid axis.
+>   */
+> -static irqreturn_t cros_ec_accel_legacy_capture(int irq, void *p)
+> -{
+> -	struct iio_poll_func *pf = p;
+> -	struct iio_dev *indio_dev = pf->indio_dev;
+> -	struct cros_ec_accel_legacy_state *st = iio_priv(indio_dev);
+> -
+> -	/* Clear capture data. */
+> -	memset(st->capture_data, 0, sizeof(st->capture_data));
+> -
+> -	/*
+> -	 * Read data based on which channels are enabled in scan mask. Note
+> -	 * that on a capture we are always reading the calibrated data.
+> -	 */
+> -	read_ec_accel_data(st, *indio_dev->active_scan_mask, st->capture_data);
+> -
+> -	iio_push_to_buffers_with_timestamp(indio_dev, (void *)st->capture_data,
+> -					   iio_get_time_ns(indio_dev));
+> -
+> -	/*
+> -	 * Tell the core we are done with this trigger and ready for the
+> -	 * next one.
+> -	 */
+> -	iio_trigger_notify_done(indio_dev->trig);
+> -
+> -	return IRQ_HANDLED;
+> -}
+> -
+> -static char *cros_ec_accel_legacy_loc_strings[] = {
+> -	[MOTIONSENSE_LOC_BASE] = "base",
+> -	[MOTIONSENSE_LOC_LID] = "lid",
+> -	[MOTIONSENSE_LOC_MAX] = "unknown",
+> -};
+> -
+> -static ssize_t cros_ec_accel_legacy_loc(struct iio_dev *indio_dev,
+> -					uintptr_t private,
+> -					const struct iio_chan_spec *chan,
+> -					char *buf)
+> -{
+> -	struct cros_ec_accel_legacy_state *st = iio_priv(indio_dev);
+> -
+> -	return sprintf(buf, "%s\n",
+> -		       cros_ec_accel_legacy_loc_strings[st->sensor_num +
+> -							MOTIONSENSE_LOC_BASE]);
+> -}
+> -
+> -static ssize_t cros_ec_accel_legacy_id(struct iio_dev *indio_dev,
+> -				       uintptr_t private,
+> -				       const struct iio_chan_spec *chan,
+> -				       char *buf)
+> -{
+> -	struct cros_ec_accel_legacy_state *st = iio_priv(indio_dev);
+> -
+> -	return sprintf(buf, "%d\n", st->sensor_num);
+> -}
+> -
+> -static const struct iio_chan_spec_ext_info cros_ec_accel_legacy_ext_info[] = {
+> -	{
+> -		.name = "id",
+> -		.shared = IIO_SHARED_BY_ALL,
+> -		.read = cros_ec_accel_legacy_id,
+> -	},
+> -	{
+> -		.name = "location",
+> -		.shared = IIO_SHARED_BY_ALL,
+> -		.read = cros_ec_accel_legacy_loc,
+> -	},
+> -	{ }
+> -};
+> +#define CROS_EC_ACCEL_ROTATE_AXIS(_axis)				\
+> +	((_axis) == CROS_EC_SENSOR_Z ? CROS_EC_SENSOR_Z :		\
+> +	 ((_axis) == CROS_EC_SENSOR_X ? CROS_EC_SENSOR_Y :		\
+> +	  CROS_EC_SENSOR_X))
+>  
+>  #define CROS_EC_ACCEL_LEGACY_CHAN(_axis)				\
+>  	{								\
+> @@ -321,28 +110,28 @@ static const struct iio_chan_spec_ext_info cros_ec_accel_legacy_ext_info[] = {
+>  			BIT(IIO_CHAN_INFO_RAW) |			\
+>  			BIT(IIO_CHAN_INFO_CALIBBIAS),			\
+>  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SCALE),	\
+> -		.ext_info = cros_ec_accel_legacy_ext_info,		\
+> +		.ext_info = cros_ec_sensors_ext_info,			\
+>  		.scan_type = {						\
+>  			.sign = 's',					\
+> -			.realbits = 16,					\
+> -			.storagebits = 16,				\
+> +			.realbits = CROS_EC_SENSOR_BITS,		\
+> +			.storagebits = CROS_EC_SENSOR_BITS,		\
+>  		},							\
+> +		.scan_index = CROS_EC_ACCEL_ROTATE_AXIS(_axis),		\
+>  	}								\
+>  
+> -static struct iio_chan_spec ec_accel_channels[] = {
+> -	CROS_EC_ACCEL_LEGACY_CHAN(X),
+> -	CROS_EC_ACCEL_LEGACY_CHAN(Y),
+> -	CROS_EC_ACCEL_LEGACY_CHAN(Z),
+> -	IIO_CHAN_SOFT_TIMESTAMP(MAX_AXIS)
+> +static const struct iio_chan_spec cros_ec_accel_legacy_channels[] = {
+> +		CROS_EC_ACCEL_LEGACY_CHAN(CROS_EC_SENSOR_X),
+> +		CROS_EC_ACCEL_LEGACY_CHAN(CROS_EC_SENSOR_Y),
+> +		CROS_EC_ACCEL_LEGACY_CHAN(CROS_EC_SENSOR_Z),
+> +		IIO_CHAN_SOFT_TIMESTAMP(CROS_EC_SENSOR_MAX_AXIS)
+>  };
+>  
+>  static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+>  {
+>  	struct device *dev = &pdev->dev;
+>  	struct cros_ec_dev *ec = dev_get_drvdata(dev->parent);
+> -	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+>  	struct iio_dev *indio_dev;
+> -	struct cros_ec_accel_legacy_state *state;
+> +	struct cros_ec_sensors_core_state *state;
+>  	int ret;
+>  
+>  	if (!ec || !ec->ec_dev) {
+> @@ -350,46 +139,29 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (!ec->ec_dev->cmd_readmem) {
+> -		dev_warn(&pdev->dev, "EC does not support direct reads.\n");
+> -		return -EINVAL;
+> -	}
+> -
+>  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*state));
+>  	if (!indio_dev)
+>  		return -ENOMEM;
+>  
+> -	platform_set_drvdata(pdev, indio_dev);
+> -	state = iio_priv(indio_dev);
+> -	state->ec = ec->ec_dev;
+> -	state->sensor_num = sensor_platform->sensor_num;
+> -
+> -	indio_dev->dev.parent = dev;
+> -	indio_dev->name = pdev->name;
+> -	indio_dev->channels = ec_accel_channels;
+> -	/*
+> -	 * Present the channel using HTML5 standard:
+> -	 * need to invert X and Y and invert some lid axis.
+> -	 */
+> -	ec_accel_channels[X].scan_index = Y;
+> -	ec_accel_channels[Y].scan_index = X;
+> -	ec_accel_channels[Z].scan_index = Z;
+> +	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
+> +	if (ret)
+> +		return ret;
+>  
+> -	state->sign[Y] = 1;
+> +	indio_dev->info = &cros_ec_accel_legacy_info;
+> +	state = iio_priv(indio_dev);
+>  
+> -	if (state->sensor_num == MOTIONSENSE_LOC_LID)
+> -		state->sign[X] = state->sign[Z] = -1;
+> -	else
+> -		state->sign[X] = state->sign[Z] = 1;
+> +	state->read_ec_sensors_data = cros_ec_sensors_read_lpc;
+>  
+> -	indio_dev->num_channels = ARRAY_SIZE(ec_accel_channels);
+> -	indio_dev->dev.parent = &pdev->dev;
+> -	indio_dev->info = &cros_ec_accel_legacy_info;
+> -	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = cros_ec_accel_legacy_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(cros_ec_accel_legacy_channels);
+> +	/* The lid sensor needs to be presented inverted. */
+> +	if (state->loc == MOTIONSENSE_LOC_LID) {
+> +		state->sign[CROS_EC_SENSOR_X] = -1;
+> +		state->sign[CROS_EC_SENSOR_Z] = -1;
+> +	}
+>  
+>  	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
+> -					      cros_ec_accel_legacy_capture,
+> -					      NULL);
+> +			cros_ec_sensors_capture, NULL);
+>  	if (ret)
+>  		return ret;
+>  
+> 

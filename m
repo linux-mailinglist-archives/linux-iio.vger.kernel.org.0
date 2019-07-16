@@ -2,355 +2,328 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E303B6A5D0
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2019 11:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAC0D6A98F
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2019 15:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732460AbfGPJsK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Jul 2019 05:48:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35614 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726536AbfGPJsK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 16 Jul 2019 05:48:10 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1728470AbfGPNWt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Jul 2019 09:22:49 -0400
+Received: from dc2-smtprelay2.synopsys.com ([198.182.61.142]:48376 "EHLO
+        smtprelay-out1.synopsys.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726997AbfGPNWt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Jul 2019 09:22:49 -0400
+Received: from mailhost.synopsys.com (dc2-mailhost1.synopsys.com [10.12.135.161])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 929EB2064B;
-        Tue, 16 Jul 2019 09:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563270489;
-        bh=EzqVw9kpLAhkRr4eBfArHTiE/LCcjaWz+TfLD8GZXfw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LPTOe36qookTMo14Ivqws+PhVTIZIj8BaboxvcSF2/4f68cZu967n3qayjLTckvTM
-         im4p3Xz6DqMcReQJc+FrDHyanq+n3pGZkVx+PltyuuWZaSsWUgN94FPidOCBolYl8r
-         eQuPhYiC585VzFv5ubiID0MxaTnnqed5C2BOt0/A=
-Date:   Tue, 16 Jul 2019 11:48:03 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv2 2/3] iio: imu: st_lsm6dsx: add support for accel/gyro
- unit of lsm9sd1
-Message-ID: <20190716094803.GD13440@localhost.localdomain>
-References: <20190716093325.7683-1-martin.kepplinger@puri.sm>
- <20190716093325.7683-2-martin.kepplinger@puri.sm>
+        by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id D6D89C0A85;
+        Tue, 16 Jul 2019 13:22:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
+        t=1563283366; bh=oCX7Y4Z1skNaCLXzquwj1OsZ5C8sii4CNk7BdZoIleA=;
+        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+        b=WSGxrEmFpGLVlFpjn2RUGCt3a6nnJDayhhSd2CO3IfYRi3uCncmviDmleUlxV2paa
+         viufcdzYa1s15Di1TV190DRyw+gyZpIJBC2AWDOQs8z6xAB8giuHdbkDOq4P6fvmgz
+         ANgfhNSyqthF20aKy7ZOmjOb+3ngKuIX2T59AryeOsihAn0IE6WKumOlMeN4TajOIx
+         4EHgsA9JIomXNpOHByYxDHx5NA2Ki+QpksqiiexqA4q13WB+yTVPnTxNj38oXY0MOG
+         Iru+1bHxQwpVa6j6raVRBtx2wf0UevTV9VXW9RARrWoASi35b756dgq9fDyerPo16W
+         QL8d17wexvJgw==
+Received: from us01wehtc1.internal.synopsys.com (us01wehtc1-vip.internal.synopsys.com [10.12.239.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mailhost.synopsys.com (Postfix) with ESMTPS id E97FCA0097;
+        Tue, 16 Jul 2019 13:22:38 +0000 (UTC)
+Received: from US01HYBRID2.internal.synopsys.com (10.15.246.24) by
+ us01wehtc1.internal.synopsys.com (10.12.239.235) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Tue, 16 Jul 2019 06:22:27 -0700
+Received: from NAM03-DM3-obe.outbound.protection.outlook.com (10.13.134.195)
+ by mrs.synopsys.com (10.15.246.24) with Microsoft SMTP Server (TLS) id
+ 14.3.408.0; Tue, 16 Jul 2019 06:22:26 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=synopsys.onmicrosoft.com; s=selector1-synopsys-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oCX7Y4Z1skNaCLXzquwj1OsZ5C8sii4CNk7BdZoIleA=;
+ b=AvqWMlofZ2UN7I6XnepfZrSTPboU995wn8K1usZbl2SWrgMRDUPkSqbtzbP/laslTqdQfaaI9g3NraLavWODLjrKg88GToNk4w4Uz/xMKSS5TWYxs+9AkIk+i0IjWxAPrSyP5FFFag05pjbB9BYSJYQBfEI052Dp5gjbKudlDuY=
+Received: from SN6PR12MB2655.namprd12.prod.outlook.com (52.135.103.20) by
+ SN6PR12MB2749.namprd12.prod.outlook.com (52.135.107.28) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2052.19; Tue, 16 Jul 2019 13:22:25 +0000
+Received: from SN6PR12MB2655.namprd12.prod.outlook.com
+ ([fe80::1dbd:69dc:e782:92b6]) by SN6PR12MB2655.namprd12.prod.outlook.com
+ ([fe80::1dbd:69dc:e782:92b6%6]) with mapi id 15.20.2073.012; Tue, 16 Jul 2019
+ 13:22:25 +0000
+From:   Vitor Soares <Vitor.Soares@synopsys.com>
+To:     Boris Brezillon <boris.brezillon@collabora.com>,
+        Vitor Soares <Vitor.Soares@synopsys.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
+        "Joao.Pinto@synopsys.com" <Joao.Pinto@synopsys.com>
+Subject: RE: [PATCH v4 3/3] iio: imu: st_lsm6dsx: add i3c basic support for
+ LSM6DSO and LSM6DSR
+Thread-Topic: [PATCH v4 3/3] iio: imu: st_lsm6dsx: add i3c basic support for
+ LSM6DSO and LSM6DSR
+Thread-Index: AQHVOKh+l9t5FEWliU2HloLoNlfSoabHKHKAgAACN7CAAAXcgIAAHrLQgAAZLACABdLQQA==
+Date:   Tue, 16 Jul 2019 13:22:25 +0000
+Message-ID: <SN6PR12MB2655E375BBEC555BFFBA1B05AECE0@SN6PR12MB2655.namprd12.prod.outlook.com>
+References: <cover.1562931742.git.vitor.soares@synopsys.com>
+        <f239834a6b8bd179094cdc19a3ac5ecaf807cee3.1562931742.git.vitor.soares@synopsys.com>
+        <20190712181332.04f8b3da@linux.home>
+        <SN6PR12MB26553046898233A094DCC952AEF20@SN6PR12MB2655.namprd12.prod.outlook.com>
+        <20190712184323.28547c44@pc-381.home>
+        <SN6PR12MB2655C68059719693C7EFF05CAEF20@SN6PR12MB2655.namprd12.prod.outlook.com>
+ <20190712220320.50e7cfff@pc-381.home>
+In-Reply-To: <20190712220320.50e7cfff@pc-381.home>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
+ =?utf-8?B?bk5jYzI5aGNtVnpYR0Z3Y0dSaGRHRmNjbTloYldsdVoxd3dPV1E0TkRsaU5p?=
+ =?utf-8?B?MHpNbVF6TFRSaE5EQXRPRFZsWlMwMllqZzBZbUV5T1dVek5XSmNiWE5uYzF4?=
+ =?utf-8?B?dGMyY3RZbU5pTVRRM1pEa3RZVGRqWXkweE1XVTVMVGd5TkdJdFlqZ3dPR05t?=
+ =?utf-8?B?TlRsa04yWmpYR0Z0WlMxMFpYTjBYR0pqWWpFME4yUmhMV0UzWTJNdE1URmxP?=
+ =?utf-8?B?UzA0TWpSaUxXSTRNRGhqWmpVNVpEZG1ZMkp2WkhrdWRIaDBJaUJ6ZWowaU5q?=
+ =?utf-8?B?WXlPU0lnZEQwaU1UTXlNRGMzTlRZNU5ERTVNRFEwTURZeUlpQm9QU0pGZG1o?=
+ =?utf-8?B?eWNYSmpTakZoVmpoSFQxQlJWa1psVEdOU1JVOXNWa1U5SWlCcFpEMGlJaUJp?=
+ =?utf-8?B?YkQwaU1DSWdZbTg5SWpFaUlHTnBQU0pqUVVGQlFVVlNTRlV4VWxOU1ZVWk9R?=
+ =?utf-8?B?MmRWUVVGQ1VVcEJRVVJsTlVGVFFUSlVkbFpCVkhOVVdUWkZTR0kzYVRaUGVF?=
+ =?utf-8?B?NXFiMUZrZG5WTWIwOUJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlNFRkJRVUZEYTBOQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UlVGQlVVRkNRVUZCUVZaNlpHaEhaMEZCUVVGQlFVRkJRVUZCUVVGQlFVbzBR?=
+ =?utf-8?B?VUZCUW0xQlIydEJZbWRDYUVGSE5FRlpkMEpzUVVZNFFXTkJRbk5CUjBWQllt?=
+ =?utf-8?B?ZENkVUZIYTBGaVowSnVRVVk0UVdSM1FtaEJTRkZCV2xGQ2VVRkhNRUZaVVVK?=
+ =?utf-8?B?NVFVZHpRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZGUVVGQlFVRkJRVUZCUVdk?=
+ =?utf-8?B?QlFVRkJRVUZ1WjBGQlFVZFpRV0ozUWpGQlJ6UkJXa0ZDZVVGSWEwRllkMEoz?=
+ =?utf-8?B?UVVkRlFXTm5RakJCUnpSQldsRkNlVUZJVFVGWWQwSnVRVWRaUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlVVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVTkJRVUZCUVVGRFpVRkJRVUZhWjBKMlFVaFZRV0puUW10QlNF?=
+ =?utf-8?B?bEJaVkZDWmtGSVFVRlpVVUo1UVVoUlFXSm5RbXhCU0VsQlkzZENaa0ZJVFVG?=
+ =?utf-8?B?WlVVSjBRVWhOUVdSUlFuVkJSMk5CV0hkQ2FrRkhPRUZpWjBKdFFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRa0ZCUVVGQlFVRkJRVUZKUVVGQlFVRkJTalJCUVVGQ2JVRkhPRUZr?=
+ =?utf-8?B?VVVKMVFVZFJRV05uUWpWQlJqaEJZMEZDYUVGSVNVRmtRVUoxUVVkVlFXTm5R?=
+ =?utf-8?B?bnBCUmpoQlkzZENhRUZITUVGamQwSXhRVWMwUVZwM1FtWkJTRWxCV2xGQ2Vr?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVWQlFVRkJRVUZCUVVGQlowRkJRVUZCUVc1blFV?=
+ =?utf-8?B?RkJSMWxCWW5kQ01VRkhORUZhUVVKNVFVaHJRVmgzUW5kQlIwVkJZMmRDTUVG?=
+ =?utf-8?B?SE5FRmFVVUo1UVVoTlFWaDNRbnBCUnpCQllWRkNha0ZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRlJRVUZCUVVGQlFVRkJRMEZC?=
+ =?utf-8?B?UVVGQlFVTmxRVUZCUVZwblFuWkJTRlZCWW1kQ2EwRklTVUZsVVVKbVFVaEJR?=
+ =?utf-8?B?VmxSUW5sQlNGRkJZbWRDYkVGSVNVRmpkMEptUVVoTlFXUkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZDUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVsQlFVRkJRVUZLTkVGQlFVSnRRVWM0UVdSUlFuVkJSMUZCWTJk?=
+ =?utf-8?B?Q05VRkdPRUZqUVVKb1FVaEpRV1JCUW5WQlIxVkJZMmRDZWtGR09FRmtRVUo2?=
+ =?utf-8?B?UVVjd1FWbDNRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlJVRkJRVUZCUVVGQlFVRm5RVUZCUVVGQmJtZEJRVUZIV1VGaWQwSXhR?=
+ =?utf-8?B?VWMwUVZwQlFubEJTR3RCV0hkQ2QwRkhSVUZqWjBJd1FVYzBRVnBSUW5sQlNF?=
+ =?utf-8?B?MUJXSGRDTVVGSE1FRlpkMEZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVkZCUVVGQlFVRkJRVUZEUVVGQlFVRkJRMlZCUVVG?=
+ =?utf-8?B?QlduZENNRUZJVFVGWWQwSjNRVWhKUVdKM1FtdEJTRlZCV1hkQ01FRkdPRUZr?=
+ =?utf-8?B?UVVKNVFVZEZRV0ZSUW5WQlIydEJZbWRDYmtGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVKQlFVRkJRVUZCUVVGQlNVRkJR?=
+ =?utf-8?B?VUZCUVVvMFFVRkJRbnBCUjBWQllrRkNiRUZJVFVGWWQwSm9RVWROUVZsM1Fu?=
+ =?utf-8?B?WkJTRlZCWW1kQ01FRkdPRUZqUVVKelFVZEZRV0puUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRV2RCUVVGQlFVRnVaMEZCUVVoTlFWbFJRbk5CUjFWQlkzZENaa0ZJ?=
+ =?utf-8?B?UlVGa1VVSjJRVWhSUVZwUlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCVVVGQlFVRkJRVUZCUVVOQlFVRkJRVUZEWlVGQlFVRmpkMEoxUVVoQlFX?=
+ =?utf-8?B?TjNRbVpCUjNkQllWRkNha0ZIVlVGaVowSjZRVWRWUVZoM1FqQkJSMVZCWTJk?=
+ =?utf-8?B?Q2RFRkdPRUZOVVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlNqUkJRVUZD?=
+ =?utf-8?B?ZWtGSE5FRmpRVUo2UVVZNFFXSkJRbkJCUjAxQldsRkNkVUZJVFVGYVVVSm1R?=
+ =?utf-8?B?VWhSUVZwUlFubEJSekJCV0hkQ2VrRklVVUZrVVVKclFVZFZRV0puUWpCQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVVZCUVVGQlFVRkJRVUZCWjBGQlFV?=
+ =?utf-8?B?RkJRVzVuUVVGQlNGbEJXbmRDWmtGSGMwRmFVVUkxUVVoalFXSjNRbmxCUjFG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGUlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlEwRkJRVUZCUVVFOUlpOCtQQzl0WlhSaFBnPT0=?=
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=soares@synopsys.com; 
+x-originating-ip: [83.174.63.141]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ea0aff8b-9782-476e-6154-08d709f0a482
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:SN6PR12MB2749;
+x-ms-traffictypediagnostic: SN6PR12MB2749:
+x-microsoft-antispam-prvs: <SN6PR12MB2749E7C3832D8C8048E0F249AECE0@SN6PR12MB2749.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0100732B76
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(346002)(396003)(39860400002)(366004)(136003)(54094003)(189003)(199004)(305945005)(4326008)(446003)(66066001)(6636002)(9686003)(186003)(55016002)(26005)(102836004)(7736002)(71200400001)(71190400001)(6506007)(14444005)(256004)(476003)(2906002)(86362001)(486006)(14454004)(11346002)(8936002)(478600001)(316002)(54906003)(74316002)(3846002)(6116002)(25786009)(52536014)(229853002)(5660300002)(99286004)(7696005)(66946007)(76176011)(76116006)(6436002)(66476007)(66556008)(64756008)(66446008)(68736007)(8676002)(81156014)(110136005)(81166006)(107886003)(33656002)(53936002)(6246003)(42413003)(32563001);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR12MB2749;H:SN6PR12MB2655.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: synopsys.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: Xk6lCRvQIxmxjk9brotlpF6wkdBXQFs/T6ynip9espU2IwoZ1B/0DgxHRgMK0g2t0TtUxukjPZuCbdTl4i2E9bGoUBQnlW5QK0oWMtJ16bhPPPRNXjvxBM5TCX1PkZtVTvmi5MANFThlyDiGj4RIv45JgYP/3fiqW9+sjlx84hMZK5vV4DjZh1t45acce3nNtVEFZMwwEHjerQztF2eZFlbR/b8ueI3wryWfF7E11I15rQnRnI1PVQXHXowP4Af9wCDGVUAphq8atQxk7QoHaPiYZYSy8lWodjOK2HOYf7i5KSJZ4eS0rlP+NdkN1Vxc5DB7eR8fpTn2yOHJhQLL81wDlL2CiL2HWzGs85FKJnt7YQg6hoBD6HJGG/VouR1NRK+AUuHoCU3bxzc4T9o1tmvOJd4xMLpjwG4LmDNVBhs=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Hf61M2y+wYpnELGG"
-Content-Disposition: inline
-In-Reply-To: <20190716093325.7683-2-martin.kepplinger@puri.sm>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea0aff8b-9782-476e-6154-08d709f0a482
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jul 2019 13:22:25.0554
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: soares@synopsys.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2749
+X-OriginatorOrg: synopsys.com
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---Hf61M2y+wYpnELGG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> The LSM9DS1's accelerometer / gyroscope unit and it's magnetometer (separ=
-ately
-> supported in iio/magnetometer/st_magn*) are located on a separate i2c add=
-resses
-> on the bus.
->=20
-> For the datasheet, see https://www.st.com/resource/en/datasheet/lsm9ds1.p=
-df
->=20
-> Treat it just like the LSM6* devices and, despite it's name, hook it up
-> to the st_lsm6dsx driver, using it's basic functionality.
-
-I think LSM9DS1 relies on LSM6DS0 for acc and gyro part so I guess we can u=
-se
-this name here, what do you think?
-
->=20
-> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> ---
->=20
->=20
-> This is already based on Lorenzo's recent changes:
-> https://lore.kernel.org/linux-iio/853f216a-7814-cb79-180b-078ac5e8a359@pu=
-ri.sm/T/#u
-> https://lore.kernel.org/linux-iio/501b0db9-63cb-905c-c09b-682eb73f1ff3@pu=
-ri.sm/T/#u
->=20
-> revision history:
-> v2: overall further simplification
->=20
-> thanks
->                        martin
->=20
->=20
->=20
->  drivers/iio/imu/st_lsm6dsx/Kconfig           |  1 +
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 +
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 94 +++++++++++++++++++-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  5 ++
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  5 ++
->  5 files changed, 104 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/Kconfig b/drivers/iio/imu/st_lsm6=
-dsx/Kconfig
-> index 2d8b2e1edfce..4a57bfb3c12e 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/Kconfig
-> +++ b/drivers/iio/imu/st_lsm6dsx/Kconfig
-> @@ -11,6 +11,7 @@ config IIO_ST_LSM6DSX
->  	  Say yes here to build support for STMicroelectronics LSM6DSx imu
->  	  sensor. Supported devices: lsm6ds3, lsm6ds3h, lsm6dsl, lsm6dsm,
->  	  ism330dlc, lsm6dso, lsm6dsox, asm330lhh, lsm6dsr, lsm6ds3tr-c
-> +	  and the accelerometer/gyroscope of lsm9ds1.
-> =20
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called st_lsm6dsx.
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st=
-_lsm6dsx/st_lsm6dsx.h
-> index 3c47f5d27d30..9a30cc717de2 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -23,6 +23,7 @@
->  #define ST_LSM6DSOX_DEV_NAME	"lsm6dsox"
->  #define ST_LSM6DSR_DEV_NAME	"lsm6dsr"
->  #define ST_LSM6DS3TRC_DEV_NAME	"lsm6ds3tr-c"
-> +#define ST_LSM9DS1_DEV_NAME	"lsm9ds1"
-> =20
->  enum st_lsm6dsx_hw_id {
->  	ST_LSM6DS3_ID,
-> @@ -35,6 +36,7 @@ enum st_lsm6dsx_hw_id {
->  	ST_LSM6DSOX_ID,
->  	ST_LSM6DSR_ID,
->  	ST_LSM6DS3TRC_ID,
-> +	ST_LSM9DS1_ID,
->  	ST_LSM6DSX_MAX_ID,
->  };
-> =20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index e0d2149625cc..2f3d2bf25646 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -10,6 +10,8 @@
->   * +-125/+-245/+-500/+-1000/+-2000 dps
->   * LSM6DSx series has an integrated First-In-First-Out (FIFO) buffer
->   * allowing dynamic batching of sensor data.
-> + * LSM9DSx series is similar but includes an additional magnetometer, ha=
-ndled
-> + * by a different driver.
->   *
->   * Supported sensors:
->   * - LSM6DS3:
-> @@ -30,6 +32,13 @@
->   *   - Gyroscope supported full-scale [dps]: +-125/+-245/+-500/+-1000/+-=
-2000
->   *   - FIFO size: 3KB
->   *
-> + * - LSM9DS1:
-> + *   - Accelerometer supported ODR [Hz]: 10, 50, 119, 238, 476, 952
-> + *   - Accelerometer supported full-scale [g]: +-2/+-4/+-8/+-16
-> + *   - Gyroscope supported ODR [Hz]: 15, 60, 119, 238, 476, 952
-> + *   - Gyroscope supported full-scale [dps]: +-245/+-500/+-2000
-> + *   - FIFO size: 32
-> + *
->   * Copyright 2016 STMicroelectronics Inc.
->   *
->   * Lorenzo Bianconi <lorenzo.bianconi@st.com>
-> @@ -64,7 +73,72 @@
->  #define ST_LSM6DSX_REG_GYRO_OUT_Y_L_ADDR	0x24
->  #define ST_LSM6DSX_REG_GYRO_OUT_Z_L_ADDR	0x26
-> =20
-> +#define ST_LSM9DSX_REG_GYRO_OUT_X_L_ADDR	0x18
-> +#define ST_LSM9DSX_REG_GYRO_OUT_Y_L_ADDR	0x1a
-> +#define ST_LSM9DSX_REG_GYRO_OUT_Z_L_ADDR	0x1c
-> +
->  static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] =3D=
- {
-> +	{
-> +		.wai =3D 0x68,
-> +		.int1_addr =3D 0x0c,
-> +		.int2_addr =3D 0x0d,
-> +		.reset_addr =3D 0x22,
-> +		.max_fifo_size =3D 32,
-> +		.id =3D {
-> +			{
-> +				.hw_id =3D ST_LSM9DS1_ID,
-> +				.name =3D ST_LSM9DS1_DEV_NAME,
-> +			},
-> +		},
-> +		.odr_table =3D {
-> +			[ST_LSM6DSX_ID_ACC] =3D {
-> +				.reg =3D {
-> +					.addr =3D 0x20,
-> +					.mask =3D GENMASK(7, 5),
-> +				},
-> +				.odr_avl[0] =3D {  10, 0x01 },
-> +				.odr_avl[1] =3D {  50, 0x02 },
-> +				.odr_avl[2] =3D { 119, 0x03 },
-> +				.odr_avl[3] =3D { 238, 0x04 },
-> +				.odr_avl[4] =3D { 476, 0x05 },
-> +				.odr_avl[5] =3D { 952, 0x06 },
-> +			},
-> +			[ST_LSM6DSX_ID_GYRO] =3D {
-> +				.reg =3D {
-> +					.addr =3D 0x10,
-> +					.mask =3D GENMASK(7, 5),
-> +				},
-> +				.odr_avl[0] =3D {  15, 0x01 },
-> +				.odr_avl[1] =3D {  60, 0x02 },
-> +				.odr_avl[2] =3D { 119, 0x03 },
-> +				.odr_avl[3] =3D { 238, 0x04 },
-> +				.odr_avl[4] =3D { 476, 0x05 },
-> +				.odr_avl[5] =3D { 952, 0x06 },
-> +			},
-> +		},
-> +		.fs_table =3D {
-> +			[ST_LSM6DSX_ID_ACC] =3D {
-> +				.reg =3D {
-> +					.addr =3D 0x20,
-> +					.mask =3D GENMASK(4, 3),
-> +				},
-> +				.fs_avl[0] =3D {  599, 0x0 },
-> +				.fs_avl[1] =3D { 1197, 0x2 },
-> +				.fs_avl[2] =3D { 2394, 0x3 },
-> +				.fs_avl[3] =3D { 4788, 0x1 },
-> +			},
-> +			[ST_LSM6DSX_ID_GYRO] =3D {
-> +				.reg =3D {
-> +					.addr =3D 0x10,
-> +					.mask =3D GENMASK(4, 3),
-> +				},
-> +				.fs_avl[0] =3D { IIO_DEGREE_TO_RAD(245), 0x0 },
-> +				.fs_avl[1] =3D { IIO_DEGREE_TO_RAD(500), 0x1 },
-> +				.fs_avl[2] =3D { IIO_DEGREE_TO_RAD(0), 0x2 },
-> +				.fs_avl[3] =3D { IIO_DEGREE_TO_RAD(2000), 0x3 },
-> +			},
-> +		},
-> +	},
->  	{
->  		.wai =3D 0x69,
->  		.int1_addr =3D 0x0d,
-> @@ -733,6 +807,16 @@ static const struct iio_chan_spec st_lsm6dsx_gyro_ch=
-annels[] =3D {
->  	IIO_CHAN_SOFT_TIMESTAMP(3),
->  };
-> =20
-> +static const struct iio_chan_spec st_lsm9dsx_gyro_channels[] =3D {
-> +	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, ST_LSM9DSX_REG_GYRO_OUT_X_L_ADDR,
-> +			   IIO_MOD_X, 0),
-
-I guess you can use 0x18, 0x1a and 0x1c here and remove the definitions
-
-> +	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, ST_LSM9DSX_REG_GYRO_OUT_Y_L_ADDR,
-> +			   IIO_MOD_Y, 1),
-> +	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, ST_LSM9DSX_REG_GYRO_OUT_Z_L_ADDR,
-> +			   IIO_MOD_Z, 2),
-> +	IIO_CHAN_SOFT_TIMESTAMP(3),
-> +};
-> +
->  int st_lsm6dsx_set_page(struct st_lsm6dsx_hw *hw, bool enable)
->  {
->  	const struct st_lsm6dsx_shub_settings *hub_settings;
-> @@ -1278,7 +1362,7 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx=
-_hw *hw)
-> =20
->  static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
->  					       enum st_lsm6dsx_sensor_id id,
-> -					       const char *name)
-> +					       const char *name, int hw_id)
->  {
->  	struct st_lsm6dsx_sensor *sensor;
->  	struct iio_dev *iio_dev;
-> @@ -1308,7 +1392,11 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(str=
-uct st_lsm6dsx_hw *hw,
->  			  name);
->  		break;
->  	case ST_LSM6DSX_ID_GYRO:
-> -		iio_dev->channels =3D st_lsm6dsx_gyro_channels;
-> +		if (hw_id =3D=3D ST_LSM9DS1_ID)
-> +			iio_dev->channels =3D st_lsm9dsx_gyro_channels;
-> +		else
-> +			iio_dev->channels =3D st_lsm6dsx_gyro_channels;
-> +
->  		iio_dev->num_channels =3D ARRAY_SIZE(st_lsm6dsx_gyro_channels);
->  		iio_dev->info =3D &st_lsm6dsx_gyro_info;
-> =20
-> @@ -1354,7 +1442,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, i=
-nt hw_id,
->  		return err;
-> =20
->  	for (i =3D 0; i < ST_LSM6DSX_ID_EXT0; i++) {
-> -		hw->iio_devs[i] =3D st_lsm6dsx_alloc_iiodev(hw, i, name);
-> +		hw->iio_devs[i] =3D st_lsm6dsx_alloc_iiodev(hw, i, name, hw_id);
->  		if (!hw->iio_devs[i])
->  			return -ENOMEM;
->  	}
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/im=
-u/st_lsm6dsx/st_lsm6dsx_i2c.c
-> index 28581eb0532c..c36a057c36ee 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> @@ -79,6 +79,10 @@ static const struct of_device_id st_lsm6dsx_i2c_of_mat=
-ch[] =3D {
->  		.compatible =3D "st,lsm6ds3tr-c",
->  		.data =3D (void *)ST_LSM6DS3TRC_ID,
->  	},
-> +	{
-> +		.compatible =3D "st,lsm9ds1",
-> +		.data =3D (void *)ST_LSM9DS1_ID,
-> +	},
->  	{},
->  };
->  MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
-> @@ -94,6 +98,7 @@ static const struct i2c_device_id st_lsm6dsx_i2c_id_tab=
-le[] =3D {
->  	{ ST_LSM6DSOX_DEV_NAME, ST_LSM6DSOX_ID },
->  	{ ST_LSM6DSR_DEV_NAME, ST_LSM6DSR_ID },
->  	{ ST_LSM6DS3TRC_DEV_NAME, ST_LSM6DS3TRC_ID },
-> +	{ ST_LSM9DS1_DEV_NAME, ST_LSM9DS1_ID },
->  	{},
->  };
->  MODULE_DEVICE_TABLE(i2c, st_lsm6dsx_i2c_id_table);
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/im=
-u/st_lsm6dsx/st_lsm6dsx_spi.c
-> index 0371e8b94a3e..138e3b985865 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> @@ -79,6 +79,10 @@ static const struct of_device_id st_lsm6dsx_spi_of_mat=
-ch[] =3D {
->  		.compatible =3D "st,lsm6ds3tr-c",
->  		.data =3D (void *)ST_LSM6DS3TRC_ID,
->  	},
-> +	{
-> +		.compatible =3D "st,lsm9ds1",
-> +		.data =3D (void *)ST_LSM9DS1_ID,
-> +	},
->  	{},
->  };
->  MODULE_DEVICE_TABLE(of, st_lsm6dsx_spi_of_match);
-> @@ -94,6 +98,7 @@ static const struct spi_device_id st_lsm6dsx_spi_id_tab=
-le[] =3D {
->  	{ ST_LSM6DSOX_DEV_NAME, ST_LSM6DSOX_ID },
->  	{ ST_LSM6DSR_DEV_NAME, ST_LSM6DSR_ID },
->  	{ ST_LSM6DS3TRC_DEV_NAME, ST_LSM6DS3TRC_ID },
-> +	{ ST_LSM9DS1_DEV_NAME, ST_LSM9DS1_ID },
->  	{},
->  };
->  MODULE_DEVICE_TABLE(spi, st_lsm6dsx_spi_id_table);
-> --=20
-> 2.20.1
->=20
-
---Hf61M2y+wYpnELGG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXS2dUQAKCRA6cBh0uS2t
-rOj5AP9OOv82J4Zego70/iF6IsEichJMRn2iFmBHmgtsN62qawEAtmQBpaQGtBS0
-Lb9LhTQIB1KJn1ZuXP8igBJtOn4cPA8=
-=SVQf
------END PGP SIGNATURE-----
-
---Hf61M2y+wYpnELGG--
+SGkgQm9yaXMsDQoNCkZyb206IEJvcmlzIEJyZXppbGxvbiA8Ym9yaXMuYnJlemlsbG9uQGNvbGxh
+Ym9yYS5jb20+DQpEYXRlOiBGcmksIEp1bCAxMiwgMjAxOSBhdCAyMTowMzoyMA0KDQo+IE9uIEZy
+aSwgMTIgSnVsIDIwMTkgMTg6NDA6MTQgKzAwMDANCj4gVml0b3IgU29hcmVzIDxWaXRvci5Tb2Fy
+ZXNAc3lub3BzeXMuY29tPiB3cm90ZToNCj4gDQo+ID4gRnJvbTogQm9yaXMgQnJlemlsbG9uIDxi
+b3Jpcy5icmV6aWxsb25AY29sbGFib3JhLmNvbT4NCj4gPiBEYXRlOiBGcmksIEp1bCAxMiwgMjAx
+OSBhdCAxNzo0MzoyMw0KPiA+IA0KPiA+ID4gT24gRnJpLCAxMiBKdWwgMjAxOSAxNjoyODowMiAr
+MDAwMA0KPiA+ID4gVml0b3IgU29hcmVzIDxWaXRvci5Tb2FyZXNAc3lub3BzeXMuY29tPiB3cm90
+ZToNCj4gPiA+ICAgDQo+ID4gPiA+IEZyb206IEJvcmlzIEJyZXppbGxvbiA8Ym9yaXMuYnJlemls
+bG9uQGNvbGxhYm9yYS5jb20+DQo+ID4gPiA+IERhdGU6IEZyaSwgSnVsIDEyLCAyMDE5IGF0IDE3
+OjE0OjI5DQo+ID4gPiA+ICAgDQo+ID4gPiA+ID4gT24gRnJpLCAxMiBKdWwgMjAxOSAxMzo1Mzoz
+MCArMDIwMA0KPiA+ID4gPiA+IFZpdG9yIFNvYXJlcyA8Vml0b3IuU29hcmVzQHN5bm9wc3lzLmNv
+bT4gd3JvdGU6DQo+ID4gPiA+ID4gICAgIA0KPiA+ID4gPiA+ID4gRm9yIHRvZGF5IHRoZSBzdF9s
+c202ZHN4IGRyaXZlciBzdXBwb3J0IExTTTZEU08gYW5kIExTTTZEU1Igc2Vuc29yIG9ubHkgaW4N
+Cj4gPiA+ID4gPiA+IHNwaSBhbmQgaTJjIG1vZGUuDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+
+IFRoZSBMU002RFNPIGFuZCBMU002RFNSIGFyZSBhbHNvIGkzYyBjYXBhYmxlIHNvIGxldHMgZ2l2
+ZSBpM2Mgc3VwcG9ydCB0bw0KPiA+ID4gPiA+ID4gdGhlbS4NCj4gPiA+ID4gPiA+IA0KPiA+ID4g
+PiA+ID4gU2lnbmVkLW9mZi1ieTogVml0b3IgU29hcmVzIDx2aXRvci5zb2FyZXNAc3lub3BzeXMu
+Y29tPg0KPiA+ID4gPiA+ID4gQWNrZWQtYnk6IExvcmVuem8gQmlhbmNvbmkgPGxvcmVuem9Aa2Vy
+bmVsLm9yZz4NCj4gPiA+ID4gPiA+IC0tLQ0KPiA+ID4gPiA+ID4gQ2hhbmdlcyBpbiB2NDoNCj4g
+PiA+ID4gPiA+ICAgUmVtb3ZlIGh3X2lkIHZhcmlhYmxlDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4g
+PiA+IENoYW5nZXMgaW4gdjM6DQo+ID4gPiA+ID4gPiAgIFJlbW92ZSB1bm5lY2Vzc2FyeSBzdF9s
+c202ZHN4X2kzY19kYXRhIHRhYmxlIHVzZWQgdG8gaG9sZCBkZXZpY2UgbmFtZQ0KPiA+ID4gPiA+
+ID4gICBVc2Ugc3RfbHNtNmRzeF9wcm9iZSBuZXcgZm9ybQ0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+
+ID4gPiBDaGFuZ2VzIGluIHYyOg0KPiA+ID4gPiA+ID4gICBBZGQgc3VwcG9ydCBmb3IgTFNNNkRT
+Ug0KPiA+ID4gPiA+ID4gICBTZXQgcG1fb3BzIHRvIHN0X2xzbTZkc3hfcG1fb3BzDQo+ID4gPiA+
+ID4gPiANCj4gPiA+ID4gPiA+ICBkcml2ZXJzL2lpby9pbXUvc3RfbHNtNmRzeC9LY29uZmlnICAg
+ICAgICAgIHwgIDggKysrLQ0KPiA+ID4gPiA+ID4gIGRyaXZlcnMvaWlvL2ltdS9zdF9sc202ZHN4
+L01ha2VmaWxlICAgICAgICAgfCAgMSArDQo+ID4gPiA+ID4gPiAgZHJpdmVycy9paW8vaW11L3N0
+X2xzbTZkc3gvc3RfbHNtNmRzeF9pM2MuYyB8IDU4ICsrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrDQo+ID4gPiA+ID4gPiAgMyBmaWxlcyBjaGFuZ2VkLCA2NiBpbnNlcnRpb25zKCspLCAxIGRl
+bGV0aW9uKC0pDQo+ID4gPiA+ID4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvaWlvL2lt
+dS9zdF9sc202ZHN4L3N0X2xzbTZkc3hfaTNjLmMNCj4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4g
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2ltdS9zdF9sc202ZHN4L0tjb25maWcgYi9kcml2ZXJz
+L2lpby9pbXUvc3RfbHNtNmRzeC9LY29uZmlnDQo+ID4gPiA+ID4gPiBpbmRleCA5ZTU5Mjk3Li42
+YjVhNzNjIDEwMDY0NA0KPiA+ID4gPiA+ID4gLS0tIGEvZHJpdmVycy9paW8vaW11L3N0X2xzbTZk
+c3gvS2NvbmZpZw0KPiA+ID4gPiA+ID4gKysrIGIvZHJpdmVycy9paW8vaW11L3N0X2xzbTZkc3gv
+S2NvbmZpZw0KPiA+ID4gPiA+ID4gQEAgLTEsMTEgKzEsMTIgQEANCj4gPiA+ID4gPiA+ICANCj4g
+PiA+ID4gPiA+ICBjb25maWcgSUlPX1NUX0xTTTZEU1gNCj4gPiA+ID4gPiA+ICAJdHJpc3RhdGUg
+IlNUX0xTTTZEU3ggZHJpdmVyIGZvciBTVE0gNi1heGlzIElNVSBNRU1TIHNlbnNvcnMiDQo+ID4g
+PiA+ID4gPiAtCWRlcGVuZHMgb24gKEkyQyB8fCBTUEkpDQo+ID4gPiA+ID4gPiArCWRlcGVuZHMg
+b24gKEkyQyB8fCBTUEkgfHwgSTNDKQ0KPiA+ID4gPiA+ID4gIAlzZWxlY3QgSUlPX0JVRkZFUg0K
+PiA+ID4gPiA+ID4gIAlzZWxlY3QgSUlPX0tGSUZPX0JVRg0KPiA+ID4gPiA+ID4gIAlzZWxlY3Qg
+SUlPX1NUX0xTTTZEU1hfSTJDIGlmIChJMkMpDQo+ID4gPiA+ID4gPiAgCXNlbGVjdCBJSU9fU1Rf
+TFNNNkRTWF9TUEkgaWYgKFNQSV9NQVNURVIpDQo+ID4gPiA+ID4gPiArCXNlbGVjdCBJSU9fU1Rf
+TFNNNkRTWF9JM0MgaWYgKEkzQykNCj4gPiA+ID4gPiA+ICAJaGVscA0KPiA+ID4gPiA+ID4gIAkg
+IFNheSB5ZXMgaGVyZSB0byBidWlsZCBzdXBwb3J0IGZvciBTVE1pY3JvZWxlY3Ryb25pY3MgTFNN
+NkRTeCBpbXUNCj4gPiA+ID4gPiA+ICAJICBzZW5zb3IuIFN1cHBvcnRlZCBkZXZpY2VzOiBsc202
+ZHMzLCBsc202ZHMzaCwgbHNtNmRzbCwgbHNtNmRzbSwNCj4gPiA+ID4gPiA+IEBAIC0yMywzICsy
+NCw4IEBAIGNvbmZpZyBJSU9fU1RfTFNNNkRTWF9TUEkNCj4gPiA+ID4gPiA+ICAJdHJpc3RhdGUN
+Cj4gPiA+ID4gPiA+ICAJZGVwZW5kcyBvbiBJSU9fU1RfTFNNNkRTWA0KPiA+ID4gPiA+ID4gIAlz
+ZWxlY3QgUkVHTUFQX1NQSQ0KPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gK2NvbmZpZyBJSU9f
+U1RfTFNNNkRTWF9JM0MNCj4gPiA+ID4gPiA+ICsJdHJpc3RhdGUNCj4gPiA+ID4gPiA+ICsJZGVw
+ZW5kcyBvbiBJSU9fU1RfTFNNNkRTWA0KPiA+ID4gPiA+ID4gKwlzZWxlY3QgUkVHTUFQX0kzQw0K
+PiA+ID4gPiA+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2ltdS9zdF9sc202ZHN4L01ha2Vm
+aWxlIGIvZHJpdmVycy9paW8vaW11L3N0X2xzbTZkc3gvTWFrZWZpbGUNCj4gPiA+ID4gPiA+IGlu
+ZGV4IGU1ZjczM2MuLmM2NzY5NjUgMTAwNjQ0DQo+ID4gPiA+ID4gPiAtLS0gYS9kcml2ZXJzL2lp
+by9pbXUvc3RfbHNtNmRzeC9NYWtlZmlsZQ0KPiA+ID4gPiA+ID4gKysrIGIvZHJpdmVycy9paW8v
+aW11L3N0X2xzbTZkc3gvTWFrZWZpbGUNCj4gPiA+ID4gPiA+IEBAIC00LDMgKzQsNCBAQCBzdF9s
+c202ZHN4LXkgOj0gc3RfbHNtNmRzeF9jb3JlLm8gc3RfbHNtNmRzeF9idWZmZXIubyBcDQo+ID4g
+PiA+ID4gPiAgb2JqLSQoQ09ORklHX0lJT19TVF9MU002RFNYKSArPSBzdF9sc202ZHN4Lm8NCj4g
+PiA+ID4gPiA+ICBvYmotJChDT05GSUdfSUlPX1NUX0xTTTZEU1hfSTJDKSArPSBzdF9sc202ZHN4
+X2kyYy5vDQo+ID4gPiA+ID4gPiAgb2JqLSQoQ09ORklHX0lJT19TVF9MU002RFNYX1NQSSkgKz0g
+c3RfbHNtNmRzeF9zcGkubw0KPiA+ID4gPiA+ID4gK29iai0kKENPTkZJR19JSU9fU1RfTFNNNkRT
+WF9JM0MpICs9IHN0X2xzbTZkc3hfaTNjLm8NCj4gPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL2lpby9pbXUvc3RfbHNtNmRzeC9zdF9sc202ZHN4X2kzYy5jIGIvZHJpdmVycy9paW8vaW11
+L3N0X2xzbTZkc3gvc3RfbHNtNmRzeF9pM2MuYw0KPiA+ID4gPiA+ID4gbmV3IGZpbGUgbW9kZSAx
+MDA2NDQNCj4gPiA+ID4gPiA+IGluZGV4IDAwMDAwMDAuLjJlODk1MjQNCj4gPiA+ID4gPiA+IC0t
+LSAvZGV2L251bGwNCj4gPiA+ID4gPiA+ICsrKyBiL2RyaXZlcnMvaWlvL2ltdS9zdF9sc202ZHN4
+L3N0X2xzbTZkc3hfaTNjLmMNCj4gPiA+ID4gPiA+IEBAIC0wLDAgKzEsNTggQEANCj4gPiA+ID4g
+PiA+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMA0KPiA+ID4gPiA+ID4gKy8q
+DQo+ID4gPiA+ID4gPiArICogQ29weXJpZ2h0IChjKSAyMDE4IFN5bm9wc3lzLCBJbmMuIGFuZC9v
+ciBpdHMgYWZmaWxpYXRlcy4NCj4gPiA+ID4gPiA+ICsgKg0KPiA+ID4gPiA+ID4gKyAqIEF1dGhv
+cjogVml0b3IgU29hcmVzIDx2aXRvci5zb2FyZXNAc3lub3BzeXMuY29tPg0KPiA+ID4gPiA+ID4g
+KyAqLw0KPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxsaW51eC9rZXJuZWwu
+aD4NCj4gPiA+ID4gPiA+ICsjaW5jbHVkZSA8bGludXgvbW9kdWxlLmg+DQo+ID4gPiA+ID4gPiAr
+I2luY2x1ZGUgPGxpbnV4L2kzYy9kZXZpY2UuaD4NCj4gPiA+ID4gPiA+ICsjaW5jbHVkZSA8bGlu
+dXgvaTNjL21hc3Rlci5oPg0KPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxsaW51eC9zbGFiLmg+DQo+
+ID4gPiA+ID4gPiArI2luY2x1ZGUgPGxpbnV4L29mLmg+DQo+ID4gPiA+ID4gPiArI2luY2x1ZGUg
+PGxpbnV4L3JlZ21hcC5oPg0KPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gKyNpbmNsdWRlICJz
+dF9sc202ZHN4LmgiDQo+ID4gPiA+ID4gPiArDQo+ID4gPiA+ID4gPiArc3RhdGljIGNvbnN0IHN0
+cnVjdCBpM2NfZGV2aWNlX2lkIHN0X2xzbTZkc3hfaTNjX2lkc1tdID0gew0KPiA+ID4gPiA+ID4g
+KwlJM0NfREVWSUNFKDB4MDEwNCwgMHgwMDZDLCAodm9pZCAqKVNUX0xTTTZEU09fSUQpLA0KPiA+
+ID4gPiA+ID4gKwlJM0NfREVWSUNFKDB4MDEwNCwgMHgwMDZCLCAodm9pZCAqKVNUX0xTTTZEU1Jf
+SUQpLCAgICANCj4gPiA+ID4gPiANCj4gPiA+ID4gPiBJIHRoaW5rIHlvdSBuZWVkIGFuIHVpbnRw
+dHJfdCBjYXN0IGhlcmU6DQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gCUkzQ19ERVZJQ0UoMHgwMTA0
+LCAweDAwNkMsICh2b2lkICopKHVpbnRwdHJfdClTVF9MU002RFNPX0lEKSwNCj4gPiA+ID4gPiAJ
+STNDX0RFVklDRSgweDAxMDQsIDB4MDA2QiwgKHZvaWQgKikodWludHB0cl90KVNUX0xTTTZEU1Jf
+SUQpLA0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IG90aGVyd2lzZSBnY2MgbWlnaHQgY29tcGxhaW4g
+dGhhdCB0aGUgaW50ZWdlciBhbmQgcG9pbnRlciBkbyBub3QgaGF2ZQ0KPiA+ID4gPiA+IHRoZSBz
+YW1lIHNpemUgKG9uIDY0LWJpdCBhcmNoaXRlY3R1cmVzKS4gICAgDQo+ID4gPiA+IA0KPiA+ID4g
+PiBJIGRvbid0IHVuZGVyc3RhbmQgdGhpcyBwYXJ0LiBDYW4geW91IHByb3ZpZGUgb3IgcG9pbnQg
+c29tZSBiYWNrZ3JvdW5kPyAgDQo+ID4gPiANCj4gPiA+IElmIHlvdSBkb24ndCBkbyB0aGF0IHlv
+dSdsbCBnZXQgdGhlIGZvbGxvd2luZyB3YXJuaW5nOg0KPiA+ID4gDQo+ID4gPiAJd2FybmluZzog
+Y2FzdCB0byAndm9pZCAqJyBmcm9tIHNtYWxsZXIgaW50ZWdlciB0eXBlICdpbnQnIFstV2ludC10
+by12b2lkLXBvaW50ZXItY2FzdF0gIA0KPiA+IA0KPiA+IEkgZG9uJ3QgZ2V0IHRoZSB3YXJuaW5n
+IGR1cmluZyBjb21waWxhdGlvbi4gSXMgdGhlcmUgYW55IGZsYWcgdG8gZW5hYmxlIA0KPiA+IG9y
+IHNvPw0KPiANCj4gTm9wZSwgbm90aGluZyBzcGVjaWZpYyB0byBlbmFibGUsIGp1c3QgZW5hYmxl
+IHRoaXMgZHJpdmVyIG9uIGFuIGFybTY0DQo+IGNvbmZpZy4gTm90ZSB0aGF0IHRoYXQgZ2NjIGRv
+ZXNuJ3Qgc2VlbSB0byBjb21wbGFpbiBhYm91dCB0aGlzDQo+IGludCAtPiB2b2lkICogY2FzdCAo
+dGhlcmUncyBwcm9iYWJseSBzb21lIGtpbmQgb2YgYXV0by1wcm9tb3Rpb24gdG8NCj4gcG9pbnRl
+ciBzaXplKSwgYnV0IGl0IGRvZXMgY29tcGxhaW5zIGFib3V0IHRoZSBmb2xsb3dpbmcgdm9pZCAq
+IC0+IGludA0KPiBjYXN0Og0KPiANCj4gZHJpdmVycy9paW8vaW11L3N0X2xzbTZkc3gvc3RfbHNt
+NmRzeF9pM2MuYzogSW4gZnVuY3Rpb24g4oCYc3RfbHNtNmRzeF9pM2NfcHJvYmXigJk6DQo+IGRy
+aXZlcnMvaWlvL2ltdS9zdF9sc202ZHN4L3N0X2xzbTZkc3hfaTNjLmM6NDM6NDM6IHdhcm5pbmc6
+IGNhc3QgZnJvbSBwb2ludGVyIHRvIGludGVnZXIgb2YgZGlmZmVyZW50IHNpemUgWy1XcG9pbnRl
+ci10by1pbnQtY2FzdF0NCj4gICAgNDMgfCAgcmV0dXJuIHN0X2xzbTZkc3hfcHJvYmUoJmkzY2Rl
+di0+ZGV2LCAwLCAoaW50KWlkLT5kYXRhLCByZWdtYXApOw0KPiAgICAgICB8ICAgICANCg0KSSBm
+aXhlZCB0aGUgd2FybmluZyBieSBjaGFuZ2luZzoNCg0Kc3RfbHNtNmRzeF9wcm9iZSgmaTNjZGV2
+LT5kZXYsIDAsIChpbnQpaWQtPmRhdGEsIHJlZ21hcCk7DQoNCnRvDQoNCnN0X2xzbTZkc3hfcHJv
+YmUoJmkzY2Rldi0+ZGV2LCAwLCAoaW50KSh1aW50cHRyX3QpaWQtPmRhdGEsIHJlZ21hcCk7DQoN
+CkJ1dCBJIHdvbmRlciBpZiBpdCBpc24ndCBtb3JlIHNhdmUgdG8gY2hhbmdlIHRoZSBmb2xsb3dp
+bmcgdG9vOg0KCUkzQ19ERVZJQ0UoMHgwMTA0LCAweDAwNkMsICh2b2lkICopKHVpbnRwdHJfdClT
+VF9MU002RFNPX0lEKSwNCglJM0NfREVWSUNFKDB4MDEwNCwgMHgwMDZCLCAodm9pZCAqKSh1aW50
+cHRyX3QpU1RfTFNNNkRTUl9JRCksDQoNCldoYXQgZG8geW91IHRoaW5rPw0KDQpCZXN0IHJlZ2Fy
+ZHMsDQpWaXRvciBTb2FyZXMNCg==

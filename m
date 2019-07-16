@@ -2,211 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30DC66A9C8
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2019 15:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9CD6B077
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2019 22:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728390AbfGPNkW convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 16 Jul 2019 09:40:22 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:33094 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725926AbfGPNkW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Jul 2019 09:40:22 -0400
-Received: from pc-375.home (2a01cb0c88d94a005820d607da339aae.ipv6.abo.wanadoo.fr [IPv6:2a01:cb0c:88d9:4a00:5820:d607:da33:9aae])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: bbrezillon)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id D2944260C98;
-        Tue, 16 Jul 2019 14:40:19 +0100 (BST)
-Date:   Tue, 16 Jul 2019 15:40:13 +0200
-From:   Boris Brezillon <boris.brezillon@collabora.com>
-To:     Vitor Soares <Vitor.Soares@synopsys.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "lorenzo@kernel.org" <lorenzo@kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
-        "Joao.Pinto@synopsys.com" <Joao.Pinto@synopsys.com>
-Subject: Re: [PATCH v4 3/3] iio: imu: st_lsm6dsx: add i3c basic support for
- LSM6DSO and LSM6DSR
-Message-ID: <20190716154013.66fcaeb4@pc-375.home>
-In-Reply-To: <SN6PR12MB2655E375BBEC555BFFBA1B05AECE0@SN6PR12MB2655.namprd12.prod.outlook.com>
-References: <cover.1562931742.git.vitor.soares@synopsys.com>
-        <f239834a6b8bd179094cdc19a3ac5ecaf807cee3.1562931742.git.vitor.soares@synopsys.com>
-        <20190712181332.04f8b3da@linux.home>
-        <SN6PR12MB26553046898233A094DCC952AEF20@SN6PR12MB2655.namprd12.prod.outlook.com>
-        <20190712184323.28547c44@pc-381.home>
-        <SN6PR12MB2655C68059719693C7EFF05CAEF20@SN6PR12MB2655.namprd12.prod.outlook.com>
-        <20190712220320.50e7cfff@pc-381.home>
-        <SN6PR12MB2655E375BBEC555BFFBA1B05AECE0@SN6PR12MB2655.namprd12.prod.outlook.com>
-Organization: Collabora
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S2388609AbfGPUd1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Jul 2019 16:33:27 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:41843 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728340AbfGPUd1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Jul 2019 16:33:27 -0400
+Received: by mail-io1-f67.google.com with SMTP id j5so37964733ioj.8;
+        Tue, 16 Jul 2019 13:33:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pJc1PcJm9Tt09i+2U5/xWRkjZFmGO/Wn7hMK25ujlGw=;
+        b=EDcEfboTO/4q81ES400SGr8JMyFcPCBa153/+y6Q9dy9FKrrIkzuppMSMvlzr5cJDc
+         Y2E51UVngVr3nk7dFi96rn/orN+6jBun1OKr+jBtrHI5pAhr8tSYweOg/ayHy/gPmlCe
+         sDhJLLmBjOeZ/svkEc7aCSL9IGj/+jnUd7yjFcOzD/26rhwObY/9p/Wds0e5UnkL92hs
+         lv8kd0yJ2IYjSvb1R2p/4RsFcp4vS6jLxTUNAtoXKSE64Ps63yA8hRqypvNljGsv6/J0
+         oT2vdDSj62MycNabZ91Lp88kEcIVQroPGwXBKyTP7LoVlLY7EsnzuVC31xMKona5a50P
+         h26g==
+X-Gm-Message-State: APjAAAVvd5p6wLA4QtN6+2izR9fqkLrfUu/n4rcI56pDeQiirRkB7Vdf
+        C4lu8UvnTyVGCQ1rM5ZquQpkFVk=
+X-Google-Smtp-Source: APXvYqzGKqRg3xuVUiB/PIvC9kmukt3EEX04P6L+1ohND3H//O6fPFUDf9l5Je8IwSruzJXGGRKs9Q==
+X-Received: by 2002:a6b:7602:: with SMTP id g2mr21037284iom.82.1563309206203;
+        Tue, 16 Jul 2019 13:33:26 -0700 (PDT)
+Received: from xps15.herring.priv ([64.188.179.249])
+        by smtp.googlemail.com with ESMTPSA id k2sm16605168iom.50.2019.07.16.13.33.25
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 16 Jul 2019 13:33:25 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: iio: avia-hx711: Fix avdd-supply typo in example
+Date:   Tue, 16 Jul 2019 14:33:23 -0600
+Message-Id: <20190716203324.12198-1-robh@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 16 Jul 2019 13:22:25 +0000
-Vitor Soares <Vitor.Soares@synopsys.com> wrote:
+Now that examples are validated against the DT schema, a typo in
+avia-hx711 example generates a warning:
 
-> Hi Boris,
-> 
-> From: Boris Brezillon <boris.brezillon@collabora.com>
-> Date: Fri, Jul 12, 2019 at 21:03:20
-> 
-> > On Fri, 12 Jul 2019 18:40:14 +0000
-> > Vitor Soares <Vitor.Soares@synopsys.com> wrote:
-> >   
-> > > From: Boris Brezillon <boris.brezillon@collabora.com>
-> > > Date: Fri, Jul 12, 2019 at 17:43:23
-> > >   
-> > > > On Fri, 12 Jul 2019 16:28:02 +0000
-> > > > Vitor Soares <Vitor.Soares@synopsys.com> wrote:
-> > > >     
-> > > > > From: Boris Brezillon <boris.brezillon@collabora.com>
-> > > > > Date: Fri, Jul 12, 2019 at 17:14:29
-> > > > >     
-> > > > > > On Fri, 12 Jul 2019 13:53:30 +0200
-> > > > > > Vitor Soares <Vitor.Soares@synopsys.com> wrote:
-> > > > > >       
-> > > > > > > For today the st_lsm6dsx driver support LSM6DSO and LSM6DSR sensor only in
-> > > > > > > spi and i2c mode.
-> > > > > > > 
-> > > > > > > The LSM6DSO and LSM6DSR are also i3c capable so lets give i3c support to
-> > > > > > > them.
-> > > > > > > 
-> > > > > > > Signed-off-by: Vitor Soares <vitor.soares@synopsys.com>
-> > > > > > > Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > > > > ---
-> > > > > > > Changes in v4:
-> > > > > > >   Remove hw_id variable
-> > > > > > > 
-> > > > > > > Changes in v3:
-> > > > > > >   Remove unnecessary st_lsm6dsx_i3c_data table used to hold device name
-> > > > > > >   Use st_lsm6dsx_probe new form
-> > > > > > > 
-> > > > > > > Changes in v2:
-> > > > > > >   Add support for LSM6DSR
-> > > > > > >   Set pm_ops to st_lsm6dsx_pm_ops
-> > > > > > > 
-> > > > > > >  drivers/iio/imu/st_lsm6dsx/Kconfig          |  8 +++-
-> > > > > > >  drivers/iio/imu/st_lsm6dsx/Makefile         |  1 +
-> > > > > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c | 58 +++++++++++++++++++++++++++++
-> > > > > > >  3 files changed, 66 insertions(+), 1 deletion(-)
-> > > > > > >  create mode 100644 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> > > > > > > 
-> > > > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/Kconfig b/drivers/iio/imu/st_lsm6dsx/Kconfig
-> > > > > > > index 9e59297..6b5a73c 100644
-> > > > > > > --- a/drivers/iio/imu/st_lsm6dsx/Kconfig
-> > > > > > > +++ b/drivers/iio/imu/st_lsm6dsx/Kconfig
-> > > > > > > @@ -1,11 +1,12 @@
-> > > > > > >  
-> > > > > > >  config IIO_ST_LSM6DSX
-> > > > > > >  	tristate "ST_LSM6DSx driver for STM 6-axis IMU MEMS sensors"
-> > > > > > > -	depends on (I2C || SPI)
-> > > > > > > +	depends on (I2C || SPI || I3C)
-> > > > > > >  	select IIO_BUFFER
-> > > > > > >  	select IIO_KFIFO_BUF
-> > > > > > >  	select IIO_ST_LSM6DSX_I2C if (I2C)
-> > > > > > >  	select IIO_ST_LSM6DSX_SPI if (SPI_MASTER)
-> > > > > > > +	select IIO_ST_LSM6DSX_I3C if (I3C)
-> > > > > > >  	help
-> > > > > > >  	  Say yes here to build support for STMicroelectronics LSM6DSx imu
-> > > > > > >  	  sensor. Supported devices: lsm6ds3, lsm6ds3h, lsm6dsl, lsm6dsm,
-> > > > > > > @@ -23,3 +24,8 @@ config IIO_ST_LSM6DSX_SPI
-> > > > > > >  	tristate
-> > > > > > >  	depends on IIO_ST_LSM6DSX
-> > > > > > >  	select REGMAP_SPI
-> > > > > > > +
-> > > > > > > +config IIO_ST_LSM6DSX_I3C
-> > > > > > > +	tristate
-> > > > > > > +	depends on IIO_ST_LSM6DSX
-> > > > > > > +	select REGMAP_I3C
-> > > > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/Makefile b/drivers/iio/imu/st_lsm6dsx/Makefile
-> > > > > > > index e5f733c..c676965 100644
-> > > > > > > --- a/drivers/iio/imu/st_lsm6dsx/Makefile
-> > > > > > > +++ b/drivers/iio/imu/st_lsm6dsx/Makefile
-> > > > > > > @@ -4,3 +4,4 @@ st_lsm6dsx-y := st_lsm6dsx_core.o st_lsm6dsx_buffer.o \
-> > > > > > >  obj-$(CONFIG_IIO_ST_LSM6DSX) += st_lsm6dsx.o
-> > > > > > >  obj-$(CONFIG_IIO_ST_LSM6DSX_I2C) += st_lsm6dsx_i2c.o
-> > > > > > >  obj-$(CONFIG_IIO_ST_LSM6DSX_SPI) += st_lsm6dsx_spi.o
-> > > > > > > +obj-$(CONFIG_IIO_ST_LSM6DSX_I3C) += st_lsm6dsx_i3c.o
-> > > > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> > > > > > > new file mode 100644
-> > > > > > > index 0000000..2e89524
-> > > > > > > --- /dev/null
-> > > > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> > > > > > > @@ -0,0 +1,58 @@
-> > > > > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > > > > +/*
-> > > > > > > + * Copyright (c) 2018 Synopsys, Inc. and/or its affiliates.
-> > > > > > > + *
-> > > > > > > + * Author: Vitor Soares <vitor.soares@synopsys.com>
-> > > > > > > + */
-> > > > > > > +
-> > > > > > > +#include <linux/kernel.h>
-> > > > > > > +#include <linux/module.h>
-> > > > > > > +#include <linux/i3c/device.h>
-> > > > > > > +#include <linux/i3c/master.h>
-> > > > > > > +#include <linux/slab.h>
-> > > > > > > +#include <linux/of.h>
-> > > > > > > +#include <linux/regmap.h>
-> > > > > > > +
-> > > > > > > +#include "st_lsm6dsx.h"
-> > > > > > > +
-> > > > > > > +static const struct i3c_device_id st_lsm6dsx_i3c_ids[] = {
-> > > > > > > +	I3C_DEVICE(0x0104, 0x006C, (void *)ST_LSM6DSO_ID),
-> > > > > > > +	I3C_DEVICE(0x0104, 0x006B, (void *)ST_LSM6DSR_ID),      
-> > > > > > 
-> > > > > > I think you need an uintptr_t cast here:
-> > > > > > 
-> > > > > > 	I3C_DEVICE(0x0104, 0x006C, (void *)(uintptr_t)ST_LSM6DSO_ID),
-> > > > > > 	I3C_DEVICE(0x0104, 0x006B, (void *)(uintptr_t)ST_LSM6DSR_ID),
-> > > > > > 
-> > > > > > otherwise gcc might complain that the integer and pointer do not have
-> > > > > > the same size (on 64-bit architectures).      
-> > > > > 
-> > > > > I don't understand this part. Can you provide or point some background?    
-> > > > 
-> > > > If you don't do that you'll get the following warning:
-> > > > 
-> > > > 	warning: cast to 'void *' from smaller integer type 'int' [-Wint-to-void-pointer-cast]    
-> > > 
-> > > I don't get the warning during compilation. Is there any flag to enable 
-> > > or so?  
-> > 
-> > Nope, nothing specific to enable, just enable this driver on an arm64
-> > config. Note that that gcc doesn't seem to complain about this
-> > int -> void * cast (there's probably some kind of auto-promotion to
-> > pointer size), but it does complains about the following void * -> int
-> > cast:
-> > 
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c: In function ‘st_lsm6dsx_i3c_probe’:
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c:43:43: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
-> >    43 |  return st_lsm6dsx_probe(&i3cdev->dev, 0, (int)id->data, regmap);
-> >       |       
-> 
-> I fixed the warning by changing:
-> 
-> st_lsm6dsx_probe(&i3cdev->dev, 0, (int)id->data, regmap);
-> 
-> to
-> 
-> st_lsm6dsx_probe(&i3cdev->dev, 0, (int)(uintptr_t)id->data, regmap);
+Documentation/devicetree/bindings/iio/adc/avia-hx711.example.dt.yaml: weight: 'avdd-supply' is a required property
 
-The (int) cast is implicit, no need to add it here.
+Fix the typo.
 
-> 
-> But I wonder if it isn't more save to change the following too:
-> 	I3C_DEVICE(0x0104, 0x006C, (void *)(uintptr_t)ST_LSM6DSO_ID),
-> 	I3C_DEVICE(0x0104, 0x006B, (void *)(uintptr_t)ST_LSM6DSR_ID),
-> 
-> What do you think?
+Fixes: 5150ec3fe125 ("avia-hx711.yaml: transform DT binding to YAML")
+Cc: Andreas Klinger <ak@it-klinger.de>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+Jonathan,
 
-I think we're good, we would have a problem if you were defining
-ST_LSM6DSO_ID as an ULL (unsigned long long, AKA u64) and trying to
-cast that value to a void pointer on a 32-bit arch.
+I have some other fixes I'm sending to Linus and can take these 2 if 
+that's easier.
+
+Rob
+
+ Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml b/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
+index 8a4100ceeaf2..d76ece97c76c 100644
+--- a/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
+@@ -61,6 +61,6 @@ examples:
+         compatible = "avia,hx711";
+         sck-gpios = <&gpio3 10 GPIO_ACTIVE_HIGH>;
+         dout-gpios = <&gpio0 7 GPIO_ACTIVE_HIGH>;
+-        avdd-suppy = <&avdd>;
++        avdd-supply = <&avdd>;
+         clock-frequency = <100000>;
+     };
+-- 
+2.20.1
+

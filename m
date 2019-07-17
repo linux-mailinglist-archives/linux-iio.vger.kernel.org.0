@@ -2,89 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E78C6BF80
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Jul 2019 18:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 892FB6C0B7
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Jul 2019 19:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727060AbfGQQNw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Jul 2019 12:13:52 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:47694 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726620AbfGQQNu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 17 Jul 2019 12:13:50 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id BBF80605C121F65CC65C;
-        Thu, 18 Jul 2019 00:13:46 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Thu, 18 Jul 2019
- 00:13:42 +0800
-Date:   Wed, 17 Jul 2019 17:13:20 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-CC:     <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Len Brown" <lenb@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
-        "Hartmut Knaack" <knaack.h@gmx.de>,
+        id S2388845AbfGQR6s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Jul 2019 13:58:48 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:38541 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726085AbfGQR6r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Jul 2019 13:58:47 -0400
+Received: by mail-pf1-f193.google.com with SMTP id y15so11216789pfn.5;
+        Wed, 17 Jul 2019 10:58:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=/8HQuCB2v08Yln0bNuTQlxaR1maXNczeOW7YEb8C4Oo=;
+        b=IECISgBdEA4C4UaoDjqifGX4QrCDXIyvu19ZuK92uB+VigMMRa/RGdrivlNwGZvOz9
+         ULFMc3zcnfd98uDG2NprDiokeWSgflzsdH6y4inuXpBEKpdcVNPeI/vG7xpmlevngyVg
+         t35m9NR3HAYgrYy9YuPWqfs+9roCQIsTBFDfoVYGBewrgnWFOFJshDDKePJcf7gDlQTT
+         AsR7T9biGdj4FOXFV0TE5RHe2f64wtm0ykcXel5Ir1wtu3tq2rLClcVUgIEDtLjShgRL
+         ih2KE/6mQqJI04cmjfVfHMV7KV1Efh1Hywo+vCbd2CNNoHt9Yn0ikaSUjIdj6YleYTXQ
+         AvjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/8HQuCB2v08Yln0bNuTQlxaR1maXNczeOW7YEb8C4Oo=;
+        b=EpQG3c4lnPsnDt5+tzpx6C0A8SLSLCntgMi8az1qWKi2uhJQGEtAxeNI916xOmOBK4
+         wOGZD4qlzzdUJ5/Dr/8OPmo5R1aCoBydYYXstRSGqqDsg5L0fQRNYeIO6ll+D23BOP7P
+         /lyN/1XUSqwnvhF9McTix/6pawo2s0akv/Hj67+Afa/QrkR5WXkeIb5TwBTQ/zQvDAy8
+         L68gEE0UZ1rkmmIDM/+dekIBu7HvkWZ0lfQqiUfj7vyWOpPf4huDZzfjlyVUknO63JJw
+         5IoUbRJR486QW9Hz3HFTZOHBuAraw4ZqUynkiRG+Pqlg9CuhjmjGYuGDii0jUU5xjZv5
+         Pg9g==
+X-Gm-Message-State: APjAAAXdBKZjqFAzXbew7bJkHGvhnhn1TOp+0K6J6FjiodYOdgDy3A6q
+        5b7E3IIQwAgJ7bGmOt/9NrE=
+X-Google-Smtp-Source: APXvYqzp+ZoGjZJreUYg6UNYO2kMKQanjpN0iWxUgqIqs33D1uMnM234u2gPPQkL7KWsoXw5vEZNsw==
+X-Received: by 2002:a17:90a:b883:: with SMTP id o3mr45286080pjr.50.1563386326687;
+        Wed, 17 Jul 2019 10:58:46 -0700 (PDT)
+Received: from himanshu-Vostro-3559 ([103.46.195.2])
+        by smtp.gmail.com with ESMTPSA id x1sm21459532pjo.4.2019.07.17.10.58.41
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 17 Jul 2019 10:58:44 -0700 (PDT)
+Date:   Wed, 17 Jul 2019 23:28:37 +0530
+From:   Himanshu Jha <himanshujha199640@gmail.com>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, Daniel Baluta <daniel.baluta@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
-        Peter Rosin <peda@axentia.se>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        "Frederic Barrat" <fbarrat@linux.ibm.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        "Stefano Stabellini" <sstabellini@kernel.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, <linux-acpi@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-pm@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
-        <linux-mm@kvack.org>, <netdev@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH v4 13/15] docs: ABI: testing: make the files compatible
- with ReST output
-Message-ID: <20190717171320.000035c2@huawei.com>
-In-Reply-To: <88d15fa38167e3f2e73e65e1c1a1f39bca0267b4.1563365880.git.mchehab+samsung@kernel.org>
-References: <cover.1563365880.git.mchehab+samsung@kernel.org>
-        <88d15fa38167e3f2e73e65e1c1a1f39bca0267b4.1563365880.git.mchehab+samsung@kernel.org>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-spdx@vger.kernel.org
+Subject: Re: [PATCH 13/14] iio: trig-loop: SPDX headers GPL-v2
+Message-ID: <20190717175837.GA31268@himanshu-Vostro-3559>
+References: <20190622145516.3231-1-jic23@kernel.org>
+ <20190622145516.3231-14-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190622145516.3231-14-jic23@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 17 Jul 2019 09:28:17 -0300
-Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
-
-> Some files over there won't parse well by Sphinx.
+On Sat, Jun 22, 2019 at 03:55:15PM +0100, jic23@kernel.org wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Fix them.
+> Not exactly standard license text, but clear in intent and it's
+> my copyright anyway.
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Hi Mauro,
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/iio/trigger/iio-trig-loop.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/trigger/iio-trig-loop.c b/drivers/iio/trigger/iio-trig-loop.c
+> index 9258d3cf149b..f0205a9e47d0 100644
+> --- a/drivers/iio/trigger/iio-trig-loop.c
+> +++ b/drivers/iio/trigger/iio-trig-loop.c
+> @@ -1,8 +1,7 @@
+> +// SPDX-License-Identifier: GPL-2.0
 
-Does feel like this one should perhaps have been broken up a touch!
+I think it should be:
 
-For the IIO ones I've eyeballed it rather than testing the results
+	// SPDX-License-Identifier: GPL-2.0-only
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+https://spdx.org/licenses/
+https://spdx.org/licenses/GPL-2.0-only.html
+
+I don't know if `spdxcheck.py` points out about
+such a mismatch.
+
+Yes, documentation and sanity checkers needs to be updated.
+https://lore.kernel.org/lkml/CAHk-=wipjStEwJj2_iWxBdVC4oV8rY5NjrRb1tmWLUa0VrS_Eg@mail.gmail.com/
 
 
+>  /*
+>   * Copyright 2016 Jonathan Cameron <jic23@kernel.org>
+>   *
+> - * Licensed under the GPL-2.
+> - *
+>   * Based on a mashup of the hrtimer trigger and continuous sampling proposal of
+>   * Gregor Boirie <gregor.boirie@parrot.com>
+>   *
+> -- 
+> 2.22.0
+> 
+
+-- 
+Himanshu Jha
+Undergraduate Student
+Department of Electronics & Communication
+Guru Tegh Bahadur Institute of Technology

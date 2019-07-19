@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FF136DEE2
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Jul 2019 06:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78C086DEB9
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Jul 2019 06:30:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731032AbfGSEE0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Jul 2019 00:04:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36686 "EHLO mail.kernel.org"
+        id S1731349AbfGSEEy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Jul 2019 00:04:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37100 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731009AbfGSEEZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 19 Jul 2019 00:04:25 -0400
+        id S1731334AbfGSEEy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 19 Jul 2019 00:04:54 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 87C24218CA;
-        Fri, 19 Jul 2019 04:04:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4E1DE218A3;
+        Fri, 19 Jul 2019 04:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563509064;
-        bh=QeqbiBHLeOYnomZOPhjCcLO0gyl5URbYFXDGeDoVHTo=;
+        s=default; t=1563509093;
+        bh=vL3AmHwHotQnShlqS79F0dQKm8AQqsbtutrbeGWT9OU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=axBedZw/m/Qk+VePddSXcN/ouT+qGAHHVL2IVLBe49pHLaw5Ec9DCumhQA5VmAgMi
-         dtK7AYLIwUM71KNAh3KlLu0wEGhvfPWuNORUaVs6/4lze5HpHwfENQfg30SHSPIi7A
-         DtIK3Gn3seAWuteFLyDGTR+racn0GGT6W96J6aKU=
+        b=Xjs/7uVBLUfuUFaodpNPOoSEd9+Qt2XMt7LTqd/m06L648rb/XlIwUoQ68S+3yy83
+         GMUgGSurQieJ93Y1kNNdkDTh1iKGkvs/2F+tfCKdaWKlGgJs45p5YL3EK8+RUIVNeo
+         ysDqoNAB9Wtc53UZOwAAtviE/UuO6JgSUCIyyb1Y=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Denis Ciocca <denis.ciocca@st.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 048/141] iio: adxl372: fix iio_triggered_buffer_{pre,post}enable positions
-Date:   Fri, 19 Jul 2019 00:01:13 -0400
-Message-Id: <20190719040246.15945-48-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 064/141] iio: st_accel: fix iio_triggered_buffer_{pre,post}enable positions
+Date:   Fri, 19 Jul 2019 00:01:29 -0400
+Message-Id: <20190719040246.15945-64-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190719040246.15945-1-sashal@kernel.org>
 References: <20190719040246.15945-1-sashal@kernel.org>
@@ -45,7 +46,7 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-[ Upstream commit 0e4f0b42f42d88507b48282c8915f502551534e4 ]
+[ Upstream commit 05b8bcc96278c9ef927a6f25a98e233e55de42e1 ]
 
 The iio_triggered_buffer_{predisable,postenable} functions attach/detach
 the poll functions.
@@ -55,79 +56,69 @@ the poll func, and for the postenable hook, the poll func should be
 attached before the enable code.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Acked-by: Denis Ciocca <denis.ciocca@st.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/adxl372.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ drivers/iio/accel/st_accel_buffer.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
-index 3b84cb243a87..055227cb3d43 100644
---- a/drivers/iio/accel/adxl372.c
-+++ b/drivers/iio/accel/adxl372.c
-@@ -782,10 +782,14 @@ static int adxl372_buffer_postenable(struct iio_dev *indio_dev)
- 	unsigned int mask;
- 	int i, ret;
- 
--	ret = adxl372_set_interrupts(st, ADXL372_INT1_MAP_FIFO_FULL_MSK, 0);
-+	ret = iio_triggered_buffer_postenable(indio_dev);
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = adxl372_set_interrupts(st, ADXL372_INT1_MAP_FIFO_FULL_MSK, 0);
-+	if (ret < 0)
-+		goto err;
-+
- 	mask = *indio_dev->active_scan_mask;
- 
- 	for (i = 0; i < ARRAY_SIZE(adxl372_axis_lookup_table); i++) {
-@@ -793,8 +797,10 @@ static int adxl372_buffer_postenable(struct iio_dev *indio_dev)
- 			break;
+diff --git a/drivers/iio/accel/st_accel_buffer.c b/drivers/iio/accel/st_accel_buffer.c
+index 7fddc137e91e..802ab7d2d93f 100644
+--- a/drivers/iio/accel/st_accel_buffer.c
++++ b/drivers/iio/accel/st_accel_buffer.c
+@@ -46,17 +46,19 @@ static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
+ 		goto allocate_memory_error;
  	}
  
--	if (i == ARRAY_SIZE(adxl372_axis_lookup_table))
--		return -EINVAL;
-+	if (i == ARRAY_SIZE(adxl372_axis_lookup_table)) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
+-	err = st_sensors_set_axis_enable(indio_dev,
+-					(u8)indio_dev->active_scan_mask[0]);
++	err = iio_triggered_buffer_postenable(indio_dev);
+ 	if (err < 0)
+ 		goto st_accel_buffer_postenable_error;
  
- 	st->fifo_format = adxl372_axis_lookup_table[i].fifo_format;
- 	st->fifo_set_size = bitmap_weight(indio_dev->active_scan_mask,
-@@ -814,26 +820,25 @@ static int adxl372_buffer_postenable(struct iio_dev *indio_dev)
- 	if (ret < 0) {
- 		st->fifo_mode = ADXL372_FIFO_BYPASSED;
- 		adxl372_set_interrupts(st, 0, 0);
--		return ret;
-+		goto err;
- 	}
+-	err = iio_triggered_buffer_postenable(indio_dev);
++	err = st_sensors_set_axis_enable(indio_dev,
++					(u8)indio_dev->active_scan_mask[0]);
+ 	if (err < 0)
+-		goto st_accel_buffer_postenable_error;
++		goto st_sensors_set_axis_enable_error;
  
--	return iio_triggered_buffer_postenable(indio_dev);
-+	return 0;
-+
-+err:
+ 	return err;
+ 
++st_sensors_set_axis_enable_error:
 +	iio_triggered_buffer_predisable(indio_dev);
-+	return ret;
- }
+ st_accel_buffer_postenable_error:
+ 	kfree(adata->buffer_data);
+ allocate_memory_error:
+@@ -65,20 +67,22 @@ static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
  
- static int adxl372_buffer_predisable(struct iio_dev *indio_dev)
+ static int st_accel_buffer_predisable(struct iio_dev *indio_dev)
  {
- 	struct adxl372_state *st = iio_priv(indio_dev);
--	int ret;
+-	int err;
++	int err, err2;
+ 	struct st_sensor_data *adata = iio_priv(indio_dev);
+ 
+-	err = iio_triggered_buffer_predisable(indio_dev);
+-	if (err < 0)
+-		goto st_accel_buffer_predisable_error;
 -
--	ret = iio_triggered_buffer_predisable(indio_dev);
--	if (ret < 0)
--		return ret;
+ 	err = st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
+ 	if (err < 0)
+ 		goto st_accel_buffer_predisable_error;
  
- 	adxl372_set_interrupts(st, 0, 0);
- 	st->fifo_mode = ADXL372_FIFO_BYPASSED;
- 	adxl372_configure_fifo(st);
+ 	err = st_sensors_set_enable(indio_dev, false);
++	if (err < 0)
++		goto st_accel_buffer_predisable_error;
  
--	return 0;
-+	return iio_triggered_buffer_predisable(indio_dev);
+ st_accel_buffer_predisable_error:
++	err2 = iio_triggered_buffer_predisable(indio_dev);
++	if (!err)
++		err = err2;
++
+ 	kfree(adata->buffer_data);
+ 	return err;
  }
- 
- static const struct iio_buffer_setup_ops adxl372_buffer_ops = {
 -- 
 2.20.1
 

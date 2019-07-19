@@ -2,38 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2207E6DD3A
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Jul 2019 06:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69E7E6DFD0
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Jul 2019 06:38:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729186AbfGSEVR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Jul 2019 00:21:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47262 "EHLO mail.kernel.org"
+        id S1728023AbfGSEhx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Jul 2019 00:37:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59294 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388653AbfGSEMF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 19 Jul 2019 00:12:05 -0400
+        id S1728795AbfGSD7i (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 18 Jul 2019 23:59:38 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DD19E21873;
-        Fri, 19 Jul 2019 04:12:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6CA162189F;
+        Fri, 19 Jul 2019 03:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563509524;
-        bh=iZ67JdgCIuYaVGiGuIHDqG7PjRoM2Dbn3bbUpNl2z/Q=;
+        s=default; t=1563508777;
+        bh=9f1wajjvi5fzOiQPCP16sLyUiNuP4qgvjsgcriCP8us=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FqqvpKgB5fkuNSFugf/VFASx2vTNBrFsKqC1rLceKNxss8OIGFs74MtJut7k5ER/h
-         Ye3KWTZe1mAHnzjRG+tR+MeBwFmI7NFS+BtLAH/aOUF8UhGf0ZYW2/jaqWr9fwnIVQ
-         ZGeb8uADpPt4RUgnCA/OKvwPx3dWQxU9EUl+DadY=
+        b=2a/LfTbcb12rrIGe+d3zYnH+a+BKUGKzQwX8Z+4IGIi4PPCEDQwjYK3JtzToMiva/
+         xzbRwunUyOkQx7bXUPSrkg6rkp9dnjAKAd9/+HcYd9XTYtg6l1754rF1CDPgAqxdGu
+         r/fwfIoxmIGspwggS7Nnmm8LILssyv8fpN+0nzTg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Bastien Nocera <hadess@hadess.net>,
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Denis Ciocca <denis.ciocca@st.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 30/60] iio: iio-utils: Fix possible incorrect mask calculation
-Date:   Fri, 19 Jul 2019 00:10:39 -0400
-Message-Id: <20190719041109.18262-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 084/171] iio: st_accel: fix iio_triggered_buffer_{pre,post}enable positions
+Date:   Thu, 18 Jul 2019 23:55:15 -0400
+Message-Id: <20190719035643.14300-84-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190719041109.18262-1-sashal@kernel.org>
-References: <20190719041109.18262-1-sashal@kernel.org>
+In-Reply-To: <20190719035643.14300-1-sashal@kernel.org>
+References: <20190719035643.14300-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -43,53 +44,81 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Bastien Nocera <hadess@hadess.net>
+From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-[ Upstream commit 208a68c8393d6041a90862992222f3d7943d44d6 ]
+[ Upstream commit 05b8bcc96278c9ef927a6f25a98e233e55de42e1 ]
 
-On some machines, iio-sensor-proxy was returning all 0's for IIO sensor
-values. It turns out that the bits_used for this sensor is 32, which makes
-the mask calculation:
+The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+the poll functions.
 
-*mask = (1 << 32) - 1;
+For the predisable hook, the disable code should occur before detaching
+the poll func, and for the postenable hook, the poll func should be
+attached before the enable code.
 
-If the compiler interprets the 1 literals as 32-bit ints, it generates
-undefined behavior depending on compiler version and optimization level.
-On my system, it optimizes out the shift, so the mask value becomes
-
-*mask = (1) - 1;
-
-With a mask value of 0, iio-sensor-proxy will always return 0 for every axis.
-
-Avoid incorrect 0 values caused by compiler optimization.
-
-See original fix by Brett Dutro <brett.dutro@gmail.com> in
-iio-sensor-proxy:
-https://github.com/hadess/iio-sensor-proxy/commit/9615ceac7c134d838660e209726cd86aa2064fd3
-
-Signed-off-by: Bastien Nocera <hadess@hadess.net>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Acked-by: Denis Ciocca <denis.ciocca@st.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_utils.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/accel/st_accel_buffer.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
-index 7a6d61c6c012..55272fef3b50 100644
---- a/tools/iio/iio_utils.c
-+++ b/tools/iio/iio_utils.c
-@@ -159,9 +159,9 @@ int iioutils_get_type(unsigned *is_signed, unsigned *bytes, unsigned *bits_used,
- 			*be = (endianchar == 'b');
- 			*bytes = padint / 8;
- 			if (*bits_used == 64)
--				*mask = ~0;
-+				*mask = ~(0ULL);
- 			else
--				*mask = (1ULL << *bits_used) - 1;
-+				*mask = (1ULL << *bits_used) - 1ULL;
+diff --git a/drivers/iio/accel/st_accel_buffer.c b/drivers/iio/accel/st_accel_buffer.c
+index 54f2ae91f614..0205c0167cdd 100644
+--- a/drivers/iio/accel/st_accel_buffer.c
++++ b/drivers/iio/accel/st_accel_buffer.c
+@@ -45,17 +45,19 @@ static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
+ 		goto allocate_memory_error;
+ 	}
  
- 			*is_signed = (signchar == 's');
- 			if (fclose(sysfsfp)) {
+-	err = st_sensors_set_axis_enable(indio_dev,
+-					(u8)indio_dev->active_scan_mask[0]);
++	err = iio_triggered_buffer_postenable(indio_dev);
+ 	if (err < 0)
+ 		goto st_accel_buffer_postenable_error;
+ 
+-	err = iio_triggered_buffer_postenable(indio_dev);
++	err = st_sensors_set_axis_enable(indio_dev,
++					(u8)indio_dev->active_scan_mask[0]);
+ 	if (err < 0)
+-		goto st_accel_buffer_postenable_error;
++		goto st_sensors_set_axis_enable_error;
+ 
+ 	return err;
+ 
++st_sensors_set_axis_enable_error:
++	iio_triggered_buffer_predisable(indio_dev);
+ st_accel_buffer_postenable_error:
+ 	kfree(adata->buffer_data);
+ allocate_memory_error:
+@@ -64,20 +66,22 @@ static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
+ 
+ static int st_accel_buffer_predisable(struct iio_dev *indio_dev)
+ {
+-	int err;
++	int err, err2;
+ 	struct st_sensor_data *adata = iio_priv(indio_dev);
+ 
+-	err = iio_triggered_buffer_predisable(indio_dev);
+-	if (err < 0)
+-		goto st_accel_buffer_predisable_error;
+-
+ 	err = st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
+ 	if (err < 0)
+ 		goto st_accel_buffer_predisable_error;
+ 
+ 	err = st_sensors_set_enable(indio_dev, false);
++	if (err < 0)
++		goto st_accel_buffer_predisable_error;
+ 
+ st_accel_buffer_predisable_error:
++	err2 = iio_triggered_buffer_predisable(indio_dev);
++	if (!err)
++		err = err2;
++
+ 	kfree(adata->buffer_data);
+ 	return err;
+ }
 -- 
 2.20.1
 

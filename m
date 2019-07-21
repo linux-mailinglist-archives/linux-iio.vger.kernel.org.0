@@ -2,40 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3B1E6F44D
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2019 19:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A5A6F450
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2019 19:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726031AbfGURRD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Jul 2019 13:17:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49606 "EHLO mail.kernel.org"
+        id S1726455AbfGURX1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Jul 2019 13:23:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51470 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725828AbfGURRD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 21 Jul 2019 13:17:03 -0400
+        id S1726405AbfGURX0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 21 Jul 2019 13:23:26 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EBCB120823;
-        Sun, 21 Jul 2019 17:16:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F2F0F20578;
+        Sun, 21 Jul 2019 17:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563729421;
-        bh=oNRjiYNFNSWuU2Hl7R3Blq8C4KrNwXnyrvj2jWzMeig=;
+        s=default; t=1563729804;
+        bh=cL+FxSXOE8Wyo9AZIWlhVoZLYHfAKQoCpJqz846ftLw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jvu6bkoJiSs2XGQsWbSgrFkqfxl7NdN2b/Rdwc6LE/ZRld2mjJ2Y6igginFFU7zOL
-         zjbRALsUsGZhwBOZz7a3sGl2q3K33lMoR2AmepOAQKnwAOY8PxJpkssM52RGSu4k5A
-         wis7aA1d4mjgamD6S2srVpmnA32aaRGN6PK2OzKQ=
-Date:   Sun, 21 Jul 2019 18:16:56 +0100
+        b=Kt1Uj4kKS0quqR6xY++eL9upPn8uUkmJSCq/9DUuosUZBhAYaD+U8wuWzLAOUE4NI
+         G+lO1/g358izkaTh7hxddwu+lxTIZ40sCcfgv/dImL5Ze5bJI1fZIkRWMl510GiwU+
+         qwYqqyxfGLaHtj6XvJ2yYXtt/wAWOsJI4XFsG/Gg=
+Date:   Sun, 21 Jul 2019 18:23:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Vitor Soares <Vitor.Soares@synopsys.com>
-Cc:     linux-iio@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-kernel@vger.kernel.org, lorenzo@kernel.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        bbrezillon@kernel.org, Joao.Pinto@synopsys.com
-Subject: Re: [PATCH v6 2/2] iio: imu: st_lsm6dsx: add i3c basic support for
- LSM6DSO and LSM6DSR
-Message-ID: <20190721181656.236faa63@archlinux>
-In-Reply-To: <77c709aca8607f31f141ee7c4dc28bf89266bd23.1563542515.git.vitor.soares@synopsys.com>
-References: <cover.1563542515.git.vitor.soares@synopsys.com>
-        <77c709aca8607f31f141ee7c4dc28bf89266bd23.1563542515.git.vitor.soares@synopsys.com>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.4 17/35] iio: st_accel: fix
+ iio_triggered_buffer_{pre,post}enable positions
+Message-ID: <20190721182256.70ab6692@archlinux>
+In-Reply-To: <20190719041423.19322-17-sashal@kernel.org>
+References: <20190719041423.19322-1-sashal@kernel.org>
+        <20190719041423.19322-17-sashal@kernel.org>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,147 +46,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 19 Jul 2019 15:30:55 +0200
-Vitor Soares <Vitor.Soares@synopsys.com> wrote:
+On Fri, 19 Jul 2019 00:14:05 -0400
+Sasha Levin <sashal@kernel.org> wrote:
 
-> For today the st_lsm6dsx driver support LSM6DSO and LSM6DSR sensor only in
-> spi and i2c mode.
+> From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 > 
-> The LSM6DSO and LSM6DSR are also i3c capable so let's give i3c support to
-> them.
+> [ Upstream commit 05b8bcc96278c9ef927a6f25a98e233e55de42e1 ]
 > 
-> Signed-off-by: Vitor Soares <vitor.soares@synopsys.com>
-> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Great. I'll pick this up once Boris has that immutable branch
-available. Give me a poke if I seem to have lost it!
+> The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+> the poll functions.
+> 
+> For the predisable hook, the disable code should occur before detaching
+> the poll func, and for the postenable hook, the poll func should be
+> attached before the enable code.
+> 
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> Acked-by: Denis Ciocca <denis.ciocca@st.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hi Sasha,
 
-Thanks,
+This should do any harm, but I deliberately didn't cc stable on
+this one.
+
+Alex, my assumption on this one is that it was fixing a logical
+ordering problem, but one that had no visible impact.
+Whilst the pollfunc will be attached too early, the trigger
+will be disabled for the whole of this function anyway so
+it shouldn't cause any visible problem.  Is that a correct interpretation?
+There are going to be a few more similar fixes in the near future
+as Alex is trying to tidy up various paths so we can do a general
+bit of refactoring.
+
+If I'm too late for this, then not a problem, just noise
+in the stable release.
 
 Jonathan
 
+
 > ---
-> Changes in v6:
->   none
+>  drivers/iio/accel/st_accel_buffer.c | 22 +++++++++++++---------
+>  1 file changed, 13 insertions(+), 9 deletions(-)
 > 
-> Changes in v5:
->   Move regmap_config declaration inside st_lsm6dsx_i3c_probe()
->   Fix warning [-Wint-to-void-pointer-cast] when compiling in 64-bit arch
-> 
-> Changes in v4:
->   Remove hw_id variable
-> 
-> Changes in v3:
->   Remove unnecessary st_lsm6dsx_i3c_data table used to hold device name
->   Use st_lsm6dsx_probe new form
-> 
-> Changes in v2:
->   Add support for LSM6DSR
->   Set pm_ops to st_lsm6dsx_pm_ops
-> 
->  drivers/iio/imu/st_lsm6dsx/Kconfig          |  8 +++-
->  drivers/iio/imu/st_lsm6dsx/Makefile         |  1 +
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c | 57 +++++++++++++++++++++++++++++
->  3 files changed, 65 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/Kconfig b/drivers/iio/imu/st_lsm6dsx/Kconfig
-> index 9e59297..6b5a73c 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/Kconfig
-> +++ b/drivers/iio/imu/st_lsm6dsx/Kconfig
-> @@ -1,11 +1,12 @@
+> diff --git a/drivers/iio/accel/st_accel_buffer.c b/drivers/iio/accel/st_accel_buffer.c
+> index a1e642ee13d6..4f838277184a 100644
+> --- a/drivers/iio/accel/st_accel_buffer.c
+> +++ b/drivers/iio/accel/st_accel_buffer.c
+> @@ -46,17 +46,19 @@ static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
+>  		goto allocate_memory_error;
+>  	}
 >  
->  config IIO_ST_LSM6DSX
->  	tristate "ST_LSM6DSx driver for STM 6-axis IMU MEMS sensors"
-> -	depends on (I2C || SPI)
-> +	depends on (I2C || SPI || I3C)
->  	select IIO_BUFFER
->  	select IIO_KFIFO_BUF
->  	select IIO_ST_LSM6DSX_I2C if (I2C)
->  	select IIO_ST_LSM6DSX_SPI if (SPI_MASTER)
-> +	select IIO_ST_LSM6DSX_I3C if (I3C)
->  	help
->  	  Say yes here to build support for STMicroelectronics LSM6DSx imu
->  	  sensor. Supported devices: lsm6ds3, lsm6ds3h, lsm6dsl, lsm6dsm,
-> @@ -23,3 +24,8 @@ config IIO_ST_LSM6DSX_SPI
->  	tristate
->  	depends on IIO_ST_LSM6DSX
->  	select REGMAP_SPI
+> -	err = st_sensors_set_axis_enable(indio_dev,
+> -					(u8)indio_dev->active_scan_mask[0]);
+> +	err = iio_triggered_buffer_postenable(indio_dev);
+>  	if (err < 0)
+>  		goto st_accel_buffer_postenable_error;
+>  
+> -	err = iio_triggered_buffer_postenable(indio_dev);
+> +	err = st_sensors_set_axis_enable(indio_dev,
+> +					(u8)indio_dev->active_scan_mask[0]);
+>  	if (err < 0)
+> -		goto st_accel_buffer_postenable_error;
+> +		goto st_sensors_set_axis_enable_error;
+>  
+>  	return err;
+>  
+> +st_sensors_set_axis_enable_error:
+> +	iio_triggered_buffer_predisable(indio_dev);
+>  st_accel_buffer_postenable_error:
+>  	kfree(adata->buffer_data);
+>  allocate_memory_error:
+> @@ -65,20 +67,22 @@ static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
+>  
+>  static int st_accel_buffer_predisable(struct iio_dev *indio_dev)
+>  {
+> -	int err;
+> +	int err, err2;
+>  	struct st_sensor_data *adata = iio_priv(indio_dev);
+>  
+> -	err = iio_triggered_buffer_predisable(indio_dev);
+> -	if (err < 0)
+> -		goto st_accel_buffer_predisable_error;
+> -
+>  	err = st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
+>  	if (err < 0)
+>  		goto st_accel_buffer_predisable_error;
+>  
+>  	err = st_sensors_set_enable(indio_dev, false);
+> +	if (err < 0)
+> +		goto st_accel_buffer_predisable_error;
+>  
+>  st_accel_buffer_predisable_error:
+> +	err2 = iio_triggered_buffer_predisable(indio_dev);
+> +	if (!err)
+> +		err = err2;
 > +
-> +config IIO_ST_LSM6DSX_I3C
-> +	tristate
-> +	depends on IIO_ST_LSM6DSX
-> +	select REGMAP_I3C
-> diff --git a/drivers/iio/imu/st_lsm6dsx/Makefile b/drivers/iio/imu/st_lsm6dsx/Makefile
-> index e5f733c..c676965 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/Makefile
-> +++ b/drivers/iio/imu/st_lsm6dsx/Makefile
-> @@ -4,3 +4,4 @@ st_lsm6dsx-y := st_lsm6dsx_core.o st_lsm6dsx_buffer.o \
->  obj-$(CONFIG_IIO_ST_LSM6DSX) += st_lsm6dsx.o
->  obj-$(CONFIG_IIO_ST_LSM6DSX_I2C) += st_lsm6dsx_i2c.o
->  obj-$(CONFIG_IIO_ST_LSM6DSX_SPI) += st_lsm6dsx_spi.o
-> +obj-$(CONFIG_IIO_ST_LSM6DSX_I3C) += st_lsm6dsx_i3c.o
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> new file mode 100644
-> index 0000000..57e6331
-> --- /dev/null
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> @@ -0,0 +1,57 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2018 Synopsys, Inc. and/or its affiliates.
-> + *
-> + * Author: Vitor Soares <vitor.soares@synopsys.com>
-> + */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/i3c/device.h>
-> +#include <linux/i3c/master.h>
-> +#include <linux/slab.h>
-> +#include <linux/of.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "st_lsm6dsx.h"
-> +
-> +static const struct i3c_device_id st_lsm6dsx_i3c_ids[] = {
-> +	I3C_DEVICE(0x0104, 0x006C, (void *)ST_LSM6DSO_ID),
-> +	I3C_DEVICE(0x0104, 0x006B, (void *)ST_LSM6DSR_ID),
-> +	{ /* sentinel */ },
-> +};
-> +MODULE_DEVICE_TABLE(i3c, st_lsm6dsx_i3c_ids);
-> +
-> +static int st_lsm6dsx_i3c_probe(struct i3c_device *i3cdev)
-> +{
-> +	struct regmap_config st_lsm6dsx_i3c_regmap_config = {
-> +		.reg_bits = 8,
-> +		.val_bits = 8,
-> +	};
-> +	const struct i3c_device_id *id = i3c_device_match_id(i3cdev,
-> +							    st_lsm6dsx_i3c_ids);
-> +	struct regmap *regmap;
-> +
-> +	regmap = devm_regmap_init_i3c(i3cdev, &st_lsm6dsx_i3c_regmap_config);
-> +	if (IS_ERR(regmap)) {
-> +		dev_err(&i3cdev->dev, "Failed to register i3c regmap %d\n",
-> +			(int)PTR_ERR(regmap));
-> +		return PTR_ERR(regmap);
-> +	}
-> +
-> +	return st_lsm6dsx_probe(&i3cdev->dev, 0, (uintptr_t)id->data, regmap);
-> +}
-> +
-> +static struct i3c_driver st_lsm6dsx_driver = {
-> +	.driver = {
-> +		.name = "st_lsm6dsx_i3c",
-> +		.pm = &st_lsm6dsx_pm_ops,
-> +	},
-> +	.probe = st_lsm6dsx_i3c_probe,
-> +	.id_table = st_lsm6dsx_i3c_ids,
-> +};
-> +module_i3c_driver(st_lsm6dsx_driver);
-> +
-> +MODULE_AUTHOR("Vitor Soares <vitor.soares@synopsys.com>");
-> +MODULE_DESCRIPTION("STMicroelectronics st_lsm6dsx i3c driver");
-> +MODULE_LICENSE("GPL v2");
+>  	kfree(adata->buffer_data);
+>  	return err;
+>  }
 

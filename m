@@ -2,112 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1561571323
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2019 09:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8E4C71432
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2019 10:42:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733000AbfGWHnM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Jul 2019 03:43:12 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:36247 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731556AbfGWHnM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Jul 2019 03:43:12 -0400
-Received: by mail-lj1-f193.google.com with SMTP id i21so40103447ljj.3
-        for <linux-iio@vger.kernel.org>; Tue, 23 Jul 2019 00:43:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=npbXQAsUfiZBLcbkpCR3x+7qby8hxGom1+tEjhLtF84=;
-        b=w2FX51BoqEBTS87kh8KgQ128Lnm4K7aScbKp7p7KG0RZvuFmQ5ZeRyaNckPGbvdFfd
-         8orXXAGJ+J4pQFnxBaEEcLCgF22+U7W9tc/Se+sTjW+wVQ+cOPmne1a6xgAVBwrxyiNh
-         TyzT6LtLmqQi2itKyV/WpgOyRuHQxcy1se2WY8AB/7q/Rf5go+whVPWnNJF7t+VWEMBd
-         pmuUhr5pgIWRD+HapcglpyXMp8CBvQlzcP+LVXe8O4I1jpUnUpCl39BNcbsU3tOVat/t
-         SQFR3NgezXOd3vPtIE3FCFrwJ8jp7bjOIR2zd0+zta18H2ppvKmMQYo682YAvS+adqMp
-         YIVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=npbXQAsUfiZBLcbkpCR3x+7qby8hxGom1+tEjhLtF84=;
-        b=lwpFI1Z4tZJwuTBCNKHbwIWFbZGfvaqboEbvnCoqhvqBFy8R6YnBzwFdLirvfkUSbc
-         zSfDcYIxWb0LP7ff8dYIjllPlsGVBY1XtkWNxyrlmRxaGzi5IoOEv65BeIdNSAv/8A82
-         2aosYnY+hhcG90xzsN6duf3aq9XJ5NkM897l1XYH+WxXIiRG2HNwSCkfRyErQ7GfoCuf
-         Mh1Uwp3UESUjNtf0qYEOslE4uwnu3vYk2aZkZzlI+700MDVaIbWM0FuVnDaDGi2/zJQ9
-         iQGtEYSbX3XmI3X8DBor9oZlOYf2Lvy3y/ylyoV7Vv8an+isUiICDoVPbX+5xnwQLlpl
-         U07w==
-X-Gm-Message-State: APjAAAUYYnlisb/jYNiRuqkh19uM7wTciWQ8Zzu+LOX7si2e8p0yWfFn
-        wU5tNieVtFJYkZih5aOqnWrdoJdSPm+dcG434ljWKQ==
-X-Google-Smtp-Source: APXvYqztHvJTCupc2FazH78NnbhNbFFXwlBZr0o8C796oaMUffxQHCWl5TXPmgAEdCLgwY6Sn/kLyvB5/v3zH9bxp3k=
-X-Received: by 2002:a2e:a0cf:: with SMTP id f15mr17161946ljm.180.1563867790559;
- Tue, 23 Jul 2019 00:43:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1550768574.git.hns@goldelico.com> <32025b2a8ccc97cc01f8115ee962529eb5990f00.1550768574.git.hns@goldelico.com>
-In-Reply-To: <32025b2a8ccc97cc01f8115ee962529eb5990f00.1550768574.git.hns@goldelico.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 23 Jul 2019 09:42:59 +0200
-Message-ID: <CACRpkdZ5Z9VY457Fywt6X=K5XONgiPVcwbwSkwL_U+GCqZ+u5g@mail.gmail.com>
-Subject: Re: [PATCH v2 02/10] iio: document bindings for mounting matrices
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S1728249AbfGWImS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Jul 2019 04:42:18 -0400
+Received: from muru.com ([72.249.23.125]:55596 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727109AbfGWImS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Jul 2019 04:42:18 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 5AD4F808C;
+        Tue, 23 Jul 2019 08:42:42 +0000 (UTC)
+Date:   Tue, 23 Jul 2019 01:42:13 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Martin Kelly <mkelly@xevo.com>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Brian Masney <masneyb@onstation.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Gregor Boirie <gregor.boirie@parrot.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Samu Onkalo <samu.onkalo@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH 3/4] ARM: dts: am33xx: Add nodes for eQEP
+Message-ID: <20190723084213.GR5447@atomide.com>
+References: <20190722154538.5314-1-david@lechnology.com>
+ <20190722154538.5314-4-david@lechnology.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190722154538.5314-4-david@lechnology.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi H. Nikolaus,
+* David Lechner <david@lechnology.com> [190722 15:46]:
+> This adds new nodes for the Texas Instruments Enhanced Quadrature
+> Encoder Pulse (eQEP) module in the PWM subsystem on AM33XX.
+> 
+> Signed-off-by: David Lechner <david@lechnology.com>
+> ---
+>  arch/arm/boot/dts/am33xx-l4.dtsi | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+> index 3b1fb2ba4dff..7fdc2f61c553 100644
+> --- a/arch/arm/boot/dts/am33xx-l4.dtsi
+> +++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+> @@ -1908,6 +1908,15 @@
+>  					status = "disabled";
+>  				};
+>  
+> +				eqep0: eqep@180 {
+> +					compatible = "ti,am3352-eqep";
+> +					reg = <0x180 0x80>;
+> +					clocks = <&l4ls_gclk>;
+> +					clock-names = "fck";
+> +					interrupts = <79>;
+> +					status = "disabled";
+> +				};
+> +
 
-On Thu, Feb 21, 2019 at 6:03 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+You probably no longer need to map any clocks here as this
+is now a child of the interconnect target module managed
+by ti-sysc driver. I have not checked but probably l4ls_gclk
+is same as clocks = <&l4ls_clkctrl AM3_L4LS_EPWMSS0_CLKCTRL 0>
+already managed by ti-sysc. If so, then just using runtime PM
+calls in any of the child device drivers will keep it enabled.
 
-> From: Linus Walleij <linus.walleij@linaro.org>
+If l4ls_gclk is a separate functional clock, then it still
+needs to be managed by the child device driver directly.
 
-It is fair for you to change authorship to yourself at this point.
-Just keeping my Signed-off-by is sufficient.
+Regards,
 
-> The mounting matrix for sensors was introduced in
-> commit dfc57732ad38 ("iio:core: mounting matrix support")
->
-> However the device tree bindings are very terse and since this is
-> a widely applicable property, we need a proper binding for it
-> that the other bindings can reference. This will also be useful
-> for other operating systems and sensor engineering at large.
->
-> I think all 3D sensors should support it, the current situation
-> is probably that the mounting information is confined in magic
-> userspace components rather than using the mounting matrix, which
-> is not good for portability and reuse.
->
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Gregor Boirie <gregor.boirie@parrot.com>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Samu Onkalo <samu.onkalo@intel.com>
-> Cc: devicetree@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-
-Did this patch fall off somewhere? I think it's really neat, even in this
-form it is great help for developers. If you want I can try picking up the
-comments and resend it.
-
-Linus Walleij
+Tony

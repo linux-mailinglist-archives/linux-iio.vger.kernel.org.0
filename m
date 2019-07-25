@@ -2,101 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0360D74E4B
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2019 14:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 279AF758A4
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2019 22:07:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388591AbfGYMk5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Jul 2019 08:40:57 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:39330 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388147AbfGYMk5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Jul 2019 08:40:57 -0400
-Received: by mail-pf1-f195.google.com with SMTP id f17so18714567pfn.6;
-        Thu, 25 Jul 2019 05:40:57 -0700 (PDT)
+        id S1726595AbfGYUHO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Jul 2019 16:07:14 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:33498 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726166AbfGYUHM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Jul 2019 16:07:12 -0400
+Received: by mail-qt1-f194.google.com with SMTP id r6so46114631qtt.0;
+        Thu, 25 Jul 2019 13:07:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=J/ML/61niP752oM19bE97gL7v9QOrp5SMkL6UiNcqYE=;
-        b=PY7ogkWJSakBzZPZF4n2rjhfrfmSkjdugD/7CnQ2AqUGOsDzDMnWigVTfJnXOSd/nG
-         OHvI4U1bWrzJc10q0ELDmuahZITR4TYwVJ3U2w7H6z7M1oLchLHnOOLYol3n/ELqfIHN
-         +0MsLULuJdKSSZKIOOevgIyn+nmTJawaLgthP5bamahLF47jndtaNLyi+gIXTQobQVkL
-         BIoSjO7QJEgIPzV6C2CyBOvtdA8yhr4972R5ZnEwIgmCPjEarOszKBCWPqWlaGYKnNaa
-         yI1pmOeXcdlYxTV7oKBhiOVlLC7umlDnqTBUZOm4Z/uTcEkK6sKwX540uFSaK9HVZHFu
-         OWvg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JUKV8WRNFyPUgh72J2ygKbXLGmL3yg1CtOIEnQ3ys8Q=;
+        b=dQPZ9xr5JDDOjCF7rG8SZMnCbkMeZmnwNjiXYICC0ydBM86Vn5XGqOtYYCso904WEN
+         rkO5Kdpek6TREvb1CUOFZ2xlofa3+1Dz/mXtCmwlJa9KxE/+tGsoBS+cEYvaeieZ0ads
+         h2BxtBG3aKG/X0e5VCq5/QHGzKvn+MxRUkgdx/K110yQNIo4xVqFVdzxN3oeBzSAQlsa
+         6ghaFVqSbThPwZ7n8t0iZ7XEmpORWy48ZIqewk/8vY1xZOfsmuwGe0wiJM4uQ3uxttgl
+         NXPqQyjohfu4R4oo0q3rfiiTGLiimANHKOZDWgONTvM8UJVF05urU9S4VzISttcA2h9z
+         J36A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=J/ML/61niP752oM19bE97gL7v9QOrp5SMkL6UiNcqYE=;
-        b=YjYhDo3BE4SFpmr7ovwvKcdoCLIjldpREzmO76ZQUcZaR9HNPaTttkBl3rIKfYDAfA
-         TMIGl6TInS+Tu5nrbJHO8kAOjAM5YwXgLDNLOk+MPdlolsn9y21m6KCYDlQCYTNgtXqr
-         5E0V6KI1Nx7cFSkGphjWjOQn7t0/afJFD9GmrRBL5JjupMHmV6f7NJUH8KChPRabVF0y
-         x8F6GvlBb5AkKVxqR+HNbUW7tuqMiVTyKTfvOEyJRribVQJpTXJxTJnb59xDdZDAZ4sn
-         d3f+ilsO81DCyXY8vQYMAfAl6zibI6LpqEul26zb0h3xpomttGazBApKLiCmKMGa47qZ
-         EeuA==
-X-Gm-Message-State: APjAAAW2X71VreSNqLWvQGsb23pNn/zXDtCWk2c6DhpJ5wrtVYIGME9a
-        N7ty6BdjW34ZljQwAxGeCSE=
-X-Google-Smtp-Source: APXvYqzZVtmGtPxVfQ7kMqq6RGu0TK7XEyvGUo+ip6f/tN4SU+bt3iJP2qgOxVj7+4bnA9svqwtsOQ==
-X-Received: by 2002:aa7:9786:: with SMTP id o6mr16119807pfp.222.1564058456426;
-        Thu, 25 Jul 2019 05:40:56 -0700 (PDT)
-Received: from icarus ([2001:268:c144:ff3:774d:cc30:25fc:d4ac])
-        by smtp.gmail.com with ESMTPSA id n7sm57496320pff.59.2019.07.25.05.40.52
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 25 Jul 2019 05:40:55 -0700 (PDT)
-Date:   Thu, 25 Jul 2019 21:40:37 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 0/4] new driver for TI eQEP
-Message-ID: <20190725124037.GA4802@icarus>
-References: <20190722154538.5314-1-david@lechnology.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JUKV8WRNFyPUgh72J2ygKbXLGmL3yg1CtOIEnQ3ys8Q=;
+        b=a/dhKAqdG07UkXPX3qSzySPqncl6Uhp2NOJuVpsF1gZp2ggZKrRPUJI599fxLqzo0m
+         mMXXF1dg52HoM5I3hlOKkWGlnSeuuL7BExvq7CKW0XFnbMNEJZuyRLxQu8CDSa+zV0Jp
+         O6ogCPWnY6MXg9BAu+qgxYGiVcY0Gse2jrOVbRv+K6gtxcW5d2MAjEDpKAs1hRChoG+j
+         cN2On5lBQXY/6NSasdnKzgkIcNkd7BzJsJU3xLE1iciRrbqfoWIdqpNdshCZgQSnT+lV
+         rpUMZULnabKEcvvA577oumtq8YTd4TaqbDURzddJ2905lIYWrlMnWUFNxU9KpxePqSSg
+         srvQ==
+X-Gm-Message-State: APjAAAVeiCgpLLe1rVbyCLdqdwPkruROd0A6oA6NDIYSSquMlCLxay3M
+        ph0iOl3XyPiLxTMJ+YY3mKY=
+X-Google-Smtp-Source: APXvYqzTAnhUIkULBN0XJBcTBc0KkqTq7wvnRGk68Q1Vi1EEcYmBr1jGdDzUfom5Ei+A5SLsCSLrBQ==
+X-Received: by 2002:a0c:d7cc:: with SMTP id g12mr31578289qvj.220.1564085231696;
+        Thu, 25 Jul 2019 13:07:11 -0700 (PDT)
+Received: from karz-laptop.vlan96.localdomain ([200.17.97.58])
+        by smtp.gmail.com with ESMTPSA id g10sm21709514qkk.91.2019.07.25.13.07.07
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 25 Jul 2019 13:07:11 -0700 (PDT)
+From:   Kartik Kulkarni <kartik.koolks@gmail.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org, kernel-usp@googlegroups.com,
+        Kartik Kulkarni <kartik.koolks@gmail.com>,
+        Matheus Tavares <matheus.bernardino@usp.br>
+Subject: [PATCH] staging:iio:adc:ad7280a: add of_match_table entry
+Date:   Fri, 26 Jul 2019 01:36:49 +0530
+Message-Id: <20190725200649.30592-1-kartik.koolks@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190722154538.5314-1-david@lechnology.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 22, 2019 at 10:45:34AM -0500, David Lechner wrote:
-> This series adds device tree bindings and a new counter driver for the Texas
-> Instruments Enhanced Quadrature Encoder Pulse (eQEP).
-> 
-> As mentioned in one of the commit messages, to start with, the driver only
-> supports reading the current counter value and setting the min/max values.
-> Other features can be added on an as-needed basis.
-> 
-> The only other feature I am interested in is adding is getting time data in
-> order to calculate the rotational speed of a motor. However, there probably
-> needs to be a higher level discussion of how this can fit into the counter
-> subsystem in general first.
+Add the of_device_id struct and the respective
+of_match_device entry to complete device tree support.
 
-I believe exposing some sort of time data has merit. Quadrature counter
-devices in particular are commonly used for position tracking of
-automation systems, and such systems would benefit from velocity/speed
-information. So let's try to introduce that sort of functionality in this
-driver if possible.
+Signed-off-by: Kartik Kulkarni <kartik.koolks@gmail.com>
+Reviewed-by: Matheus Tavares <matheus.bernardino@usp.br>
+---
+ drivers/staging/iio/adc/ad7280a.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-First, let's discuss your specific use case and requirements, and hopefully we
-can generalize it enough to be of use for future drivers. From your description,
-it sounds like you're attaching some sort of rotary encoder to the eQEP device.
-Is that correct? What sort of time data are you hoping to use; does the eQEP
-device provide a clock value, or would you be grabbing a timestamp from the
-system?
+diff --git a/drivers/staging/iio/adc/ad7280a.c b/drivers/staging/iio/adc/ad7280a.c
+index 2d9c7551f314..ded0ba093a28 100644
+--- a/drivers/staging/iio/adc/ad7280a.c
++++ b/drivers/staging/iio/adc/ad7280a.c
+@@ -1027,9 +1027,16 @@ static const struct spi_device_id ad7280_id[] = {
+ };
+ MODULE_DEVICE_TABLE(spi, ad7280_id);
+ 
++static const struct of_device_id ad7280_of_match[] = {
++	{ .compatible = "adi,ad7280a", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ad7280_of_match);
++
+ static struct spi_driver ad7280_driver = {
+ 	.driver = {
+ 		.name	= "ad7280a",
++		.of_match_table = ad7280_of_match,
+ 	},
+ 	.probe		= ad7280_probe,
+ 	.id_table	= ad7280_id,
+-- 
+2.20.1
 
-I'm not sure yet if it would make sense to expose rotational speed directly as
-an attribute. If we were to expose just the count value and timestamp since the
-last read, that should be enough for a user to compute the delta and derive
-speed. I'll think more about this since some devices may simplify that case if
-the hardware is able to compute the speed for us.
-
-William Breathitt Gray

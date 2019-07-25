@@ -2,80 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BFE271BED
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2019 17:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B1D174500
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2019 07:32:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727647AbfGWPjK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Jul 2019 11:39:10 -0400
-Received: from mga09.intel.com ([134.134.136.24]:46098 "EHLO mga09.intel.com"
+        id S2403792AbfGYFcP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Jul 2019 01:32:15 -0400
+Received: from comms.puri.sm ([159.203.221.185]:59486 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725601AbfGWPjK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Jul 2019 11:39:10 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jul 2019 08:39:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,299,1559545200"; 
-   d="scan'208";a="344776871"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by orsmga005.jf.intel.com with ESMTP; 23 Jul 2019 08:39:04 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hpwsY-0004Nk-76; Tue, 23 Jul 2019 18:39:02 +0300
-Date:   Tue, 23 Jul 2019 18:39:02 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Martin Kelly <mkelly@xevo.com>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Brian Masney <masneyb@onstation.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Gregor Boirie <gregor.boirie@parrot.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Samu Onkalo <samu.onkalo@intel.com>
-Subject: Re: [PATCH v2 02/10] iio: document bindings for mounting matrices
-Message-ID: <20190723153902.GM9224@smile.fi.intel.com>
-References: <cover.1550768574.git.hns@goldelico.com>
- <32025b2a8ccc97cc01f8115ee962529eb5990f00.1550768574.git.hns@goldelico.com>
- <CACRpkdZ5Z9VY457Fywt6X=K5XONgiPVcwbwSkwL_U+GCqZ+u5g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACRpkdZ5Z9VY457Fywt6X=K5XONgiPVcwbwSkwL_U+GCqZ+u5g@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S2403750AbfGYFcN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 25 Jul 2019 01:32:13 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id DA12CE048D;
+        Wed, 24 Jul 2019 22:32:12 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id BHbscUMLiBDJ; Wed, 24 Jul 2019 22:32:12 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: [PATCH v3 0/5] iio: imu: st_lsm6dsx: Add support for LSM9DS1
+Date:   Thu, 25 Jul 2019 07:31:27 +0200
+Message-Id: <20190725053132.9589-1-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 23, 2019 at 09:42:59AM +0200, Linus Walleij wrote:
-> On Thu, Feb 21, 2019 at 6:03 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+Resend 2 of Lorenzo's patches that this builds upon. They have been previously
+posted to linux-iio only:
+https://lore.kernel.org/linux-iio/cover.1563226641.git.lorenzo@kernel.org/
 
-> > From: Linus Walleij <linus.walleij@linaro.org>
-> 
-> It is fair for you to change authorship to yourself at this point.
-> Just keeping my Signed-off-by is sufficient.
+Then, add support for the LSM9DS1 accel/gyro unit in 3 simple steps. This
+is also only a resend and rebase of the v2:
+https://lore.kernel.org/linux-iio/20190716093325.7683-1-martin.kepplinger@puri.sm/
 
-...or Co-developed-by: can be used.
+So I call this v3 and Lorenzo, I hope that it's fine for you that I just
+take your patches here - also since they mention to be intended for supporting
+the device.
+
+
+revision history
+----------------
+v3: rebase and add Lorenzo's patches in order to apply to the iio testing brach
+v2: further simplifications based on Lorenzo's feedback
+v1: initial change for adding lsm9ds1 support
+
+
+
+
+Lorenzo Bianconi (2):
+  iio: imu: st_lsm6dsx: move odr_table in st_lsm6dsx_sensor_settings
+  iio: imu: st_lsm6dsx: move fs_table in st_lsm6dsx_sensor_settings
+
+Martin Kepplinger (3):
+  iio: imu: st_lsm6sdx: move register definitions to sensor_settings
+    struct
+  iio: imu: st_lsm6dsx: add support for accel/gyro unit of lsm9sd1
+  dt-bindings: iio: imu: st_lsm6dsx: add lsm9ds1 device bindings
+
+ .../bindings/iio/imu/st_lsm6dsx.txt           |   1 +
+ drivers/iio/imu/st_lsm6dsx/Kconfig            |   1 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  12 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 490 +++++++++++++++---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c   |   5 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c   |   5 +
+ 6 files changed, 440 insertions(+), 74 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.20.1
 

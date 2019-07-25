@@ -2,108 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D20DC74D16
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2019 13:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0360D74E4B
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2019 14:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391876AbfGYLb4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Jul 2019 07:31:56 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:44591 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391875AbfGYLbz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Jul 2019 07:31:55 -0400
-Received: by mail-oi1-f194.google.com with SMTP id e189so37300874oib.11
-        for <linux-iio@vger.kernel.org>; Thu, 25 Jul 2019 04:31:55 -0700 (PDT)
+        id S2388591AbfGYMk5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Jul 2019 08:40:57 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:39330 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388147AbfGYMk5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Jul 2019 08:40:57 -0400
+Received: by mail-pf1-f195.google.com with SMTP id f17so18714567pfn.6;
+        Thu, 25 Jul 2019 05:40:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=essensium-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KhuBXKW1pqwu3I/a51C/lMMrHG93yOL/odw0jXksmsM=;
-        b=NFaF/0+HWBocaTISPRN64FldkQJsCLdLOvTsLvCXfup95wjAONzWuBKO5ZBfS6oF1J
-         ekdw5EqRu1vDsLkUPP8yayxmbdrOGMKKvDgdSqTumrq/ZI2blPkLolJokz3tMpSz5Od7
-         HWqfiq+FtTHlUP+8d6HXhtaQyDxiNFxwvQFtqs/IPrI2nN9+kLAbJhhHho20DwC9vkII
-         iPPEL36enx+NCendroTEzk3RZ2eR4hq/QsxLtDL7oviQHOAk7K1QoZ4arpkFtKrTG0OF
-         2qXJXB2jE18QVAJwsyM2BX8o5PSu/f32LtkYRTY6e+0sXgxGSTCjNCgu8MFCj2e64/FE
-         njZg==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=J/ML/61niP752oM19bE97gL7v9QOrp5SMkL6UiNcqYE=;
+        b=PY7ogkWJSakBzZPZF4n2rjhfrfmSkjdugD/7CnQ2AqUGOsDzDMnWigVTfJnXOSd/nG
+         OHvI4U1bWrzJc10q0ELDmuahZITR4TYwVJ3U2w7H6z7M1oLchLHnOOLYol3n/ELqfIHN
+         +0MsLULuJdKSSZKIOOevgIyn+nmTJawaLgthP5bamahLF47jndtaNLyi+gIXTQobQVkL
+         BIoSjO7QJEgIPzV6C2CyBOvtdA8yhr4972R5ZnEwIgmCPjEarOszKBCWPqWlaGYKnNaa
+         yI1pmOeXcdlYxTV7oKBhiOVlLC7umlDnqTBUZOm4Z/uTcEkK6sKwX540uFSaK9HVZHFu
+         OWvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KhuBXKW1pqwu3I/a51C/lMMrHG93yOL/odw0jXksmsM=;
-        b=jTi/v7ud9Kw4Nh1xYZ07CdsqVPVoixdOIF/S7/4T31uvI7elvVYCsk9kjwmPYQRkcR
-         VzjLdN64pVqxvV6jml/4JIZK1inqR3rQG0zJDoLjJmZNTbEbkMa4Qah40V2lk56D5Glw
-         hddx6+3DzkKxkU5wsrrF/xojtcarlMM0rdNLF2XFeTx5GHu+9bjD1BDYPLNiua6lGE5Y
-         vW3diDPAzjcpEd7a1Kg4w3ifm8NUID0GfxMy4WeI9iHk/1LUgLkMm3vdlcJh+uW77Xli
-         cDyg3zhEBlpNwo5ONiLYO2BmpiNrZSRnaQl0ye1G1oExbqnz8Js3RIt7wQlU6cO4kYJr
-         ciCw==
-X-Gm-Message-State: APjAAAXXoGKHljMQQQ5jmtAg2hz1jEjuMV463Kx9zagZgW/qkmNiw1wk
-        UMJpixG7Hk/28F52FmjtpUWgqgseI5F/gwaeFD+kwg==
-X-Google-Smtp-Source: APXvYqyTumoJZ0ix0stK6lv6nkJJmb3o/KhhwbmFxp6XK2dHaRDdSRFrJZl7q7gsxLKrWmIrfy6vJiZqQtl3NavRNws=
-X-Received: by 2002:a05:6808:8d3:: with SMTP id k19mr41623577oij.164.1564054314741;
- Thu, 25 Jul 2019 04:31:54 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=J/ML/61niP752oM19bE97gL7v9QOrp5SMkL6UiNcqYE=;
+        b=YjYhDo3BE4SFpmr7ovwvKcdoCLIjldpREzmO76ZQUcZaR9HNPaTttkBl3rIKfYDAfA
+         TMIGl6TInS+Tu5nrbJHO8kAOjAM5YwXgLDNLOk+MPdlolsn9y21m6KCYDlQCYTNgtXqr
+         5E0V6KI1Nx7cFSkGphjWjOQn7t0/afJFD9GmrRBL5JjupMHmV6f7NJUH8KChPRabVF0y
+         x8F6GvlBb5AkKVxqR+HNbUW7tuqMiVTyKTfvOEyJRribVQJpTXJxTJnb59xDdZDAZ4sn
+         d3f+ilsO81DCyXY8vQYMAfAl6zibI6LpqEul26zb0h3xpomttGazBApKLiCmKMGa47qZ
+         EeuA==
+X-Gm-Message-State: APjAAAW2X71VreSNqLWvQGsb23pNn/zXDtCWk2c6DhpJ5wrtVYIGME9a
+        N7ty6BdjW34ZljQwAxGeCSE=
+X-Google-Smtp-Source: APXvYqzZVtmGtPxVfQ7kMqq6RGu0TK7XEyvGUo+ip6f/tN4SU+bt3iJP2qgOxVj7+4bnA9svqwtsOQ==
+X-Received: by 2002:aa7:9786:: with SMTP id o6mr16119807pfp.222.1564058456426;
+        Thu, 25 Jul 2019 05:40:56 -0700 (PDT)
+Received: from icarus ([2001:268:c144:ff3:774d:cc30:25fc:d4ac])
+        by smtp.gmail.com with ESMTPSA id n7sm57496320pff.59.2019.07.25.05.40.52
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 25 Jul 2019 05:40:55 -0700 (PDT)
+Date:   Thu, 25 Jul 2019 21:40:37 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH 0/4] new driver for TI eQEP
+Message-ID: <20190725124037.GA4802@icarus>
+References: <20190722154538.5314-1-david@lechnology.com>
 MIME-Version: 1.0
-References: <20190725085458.21838-1-hslester96@gmail.com>
-In-Reply-To: <20190725085458.21838-1-hslester96@gmail.com>
-From:   Patrick Havelange <patrick.havelange@essensium.com>
-Date:   Thu, 25 Jul 2019 13:31:43 +0200
-Message-ID: <CAKKE0ZE_9dK=nCodqHjTZFF2iQQvJRn=etdT_fm4ug7L_maCgg@mail.gmail.com>
-Subject: Re: [PATCH] counter/ftm-quaddec: Use device-managed registration API
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190722154538.5314-1-david@lechnology.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+On Mon, Jul 22, 2019 at 10:45:34AM -0500, David Lechner wrote:
+> This series adds device tree bindings and a new counter driver for the Texas
+> Instruments Enhanced Quadrature Encoder Pulse (eQEP).
+> 
+> As mentioned in one of the commit messages, to start with, the driver only
+> supports reading the current counter value and setting the min/max values.
+> Other features can be added on an as-needed basis.
+> 
+> The only other feature I am interested in is adding is getting time data in
+> order to calculate the rotational speed of a motor. However, there probably
+> needs to be a higher level discussion of how this can fit into the counter
+> subsystem in general first.
 
-Comments inline
+I believe exposing some sort of time data has merit. Quadrature counter
+devices in particular are commonly used for position tracking of
+automation systems, and such systems would benefit from velocity/speed
+information. So let's try to introduce that sort of functionality in this
+driver if possible.
 
-On Thu, Jul 25, 2019 at 10:55 AM Chuhong Yuan <hslester96@gmail.com> wrote:
->
-> Make use of devm_counter_register.
-> Then we can remove redundant unregistration API
-> usage to make code simpler.
->
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> ---
->  drivers/counter/ftm-quaddec.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
-> index 68a9b7393457..bccbca8681b6 100644
-> --- a/drivers/counter/ftm-quaddec.c
-> +++ b/drivers/counter/ftm-quaddec.c
-> @@ -317,7 +317,7 @@ static int ftm_quaddec_probe(struct platform_device *pdev)
->
->         ftm_quaddec_init(ftm);
->
-> -       ret = counter_register(&ftm->counter);
-> +       ret = devm_counter_register(&pdev->dev, &ftm->counter);
->         if (ret)
->                 ftm_quaddec_disable(ftm);
->
-> @@ -328,8 +328,6 @@ static int ftm_quaddec_remove(struct platform_device *pdev)
->  {
->         struct ftm_quaddec *ftm = platform_get_drvdata(pdev);
->
-> -       counter_unregister(&ftm->counter);
-> -
+First, let's discuss your specific use case and requirements, and hopefully we
+can generalize it enough to be of use for future drivers. From your description,
+it sounds like you're attaching some sort of rotary encoder to the eQEP device.
+Is that correct? What sort of time data are you hoping to use; does the eQEP
+device provide a clock value, or would you be grabbing a timestamp from the
+system?
 
-The orders of (de)initialization should be kept symmetrical.
-In this case, now that counter_unregister() will be called via devm,
-it will be executed after ftm_quaddec_remove()
+I'm not sure yet if it would make sense to expose rotational speed directly as
+an attribute. If we were to expose just the count value and timestamp since the
+last read, that should be enough for a user to compute the delta and derive
+speed. I'll think more about this since some devices may simplify that case if
+the hardware is able to compute the speed for us.
 
-This introduces a race condition where the ftm-quaddec is disabled but
-the counter entry itself is not.
-
-Somebody else (William?) should confirm this.
-
-
->         ftm_quaddec_disable(ftm);
->
->         return 0;
-> --
-> 2.20.1
->
+William Breathitt Gray

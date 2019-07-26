@@ -2,54 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12BF576043
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2019 10:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2709376185
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2019 11:08:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725842AbfGZIDE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Jul 2019 04:03:04 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:44294 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725815AbfGZIDD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Jul 2019 04:03:03 -0400
-Received: by mail-pf1-f193.google.com with SMTP id t16so24092253pfe.11;
-        Fri, 26 Jul 2019 01:03:03 -0700 (PDT)
+        id S1725878AbfGZJIg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Jul 2019 05:08:36 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:33781 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725815AbfGZJIg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Jul 2019 05:08:36 -0400
+Received: by mail-pf1-f196.google.com with SMTP id g2so24213511pfq.0;
+        Fri, 26 Jul 2019 02:08:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=hMe5uKhvczAsGIczBY6wv4d6jpwWM+g7rT71u8zhUT8=;
-        b=ZGn5V/hhVXThkYc5+9ypEko++Dco1vB3j9OjCjRLUdJ1d/XqtgKtbV4ASenScK8CJN
-         2qX1brclvxlxaqEkcjLQn6PJaP/jgCUeDF5PnW5G28u9WD/zY7HGwWATDAH4tGrTav61
-         99GSSVYz4SghGSD+PobiyTmggY0L14+5lO8s9saHK0XuD2Svo7c5QzLNQvCtkmv5UDxU
-         EAj8EcDQJamYBqavlWA2Ik7ILSVYmubZSA5dKAYjYhd8rZmYT93+BfIO/4zqgnZaPEdH
-         H3zEyKk2tN9X4eiI+HDR0iJbt5QSjAMQpE6rjxT/dwavOerXo2LZt8txPCmErvrak1CR
-         S3gQ==
+        bh=Sl9ak2o2uQzwNPD5/4s22uTgucUrMMNJrOBG4XX3NNQ=;
+        b=akcpUf2+qYcrl7GEwXjRMLmRnhSMBI0S28EtF1EBs4ISYZGuZYFYUL6MhDgnf80NBS
+         JkXh2FWYcJOQD1B9VPLEeOnSNczCl8hw106N4ancPc0st6mmcW/0x4AVJYdTKR5EBejD
+         Cp3dlHwaEV18ZtEtxa4lrlTq/l3Wz76dlZmUvnksq/r6WLlxsOv38/NM63KdZ/Lr5SdO
+         yCh1igmU9qhoP/NGOkvJROUHo/NgPFm+3z6M/ckT8Dqw8Ya2aGvV2r0ZB7PTmJjuh7F+
+         6M1h6pDK6h3YonjTikTwv0g8y/4S40R+bKAgxsTFLIUivMNH4x98DB3MXu1i6TPemQuY
+         kRIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=hMe5uKhvczAsGIczBY6wv4d6jpwWM+g7rT71u8zhUT8=;
-        b=UCz9upHf/55CDiHLqp9a+LWnYtcsaIEkv4clw4/XbCJC3pbH5vVITP1REd8bXQezpq
-         mphutmAcuVsTTzWEgnE9oEsSFQO1RsTRUCT0Z21ZCj0Cgoq0z2tyn7DBrJGozcnRSkdP
-         rH5/yQB7kqF4bfqKfDMBP1aHK+bZK3FCR8oc5vTwEez9X+dhg5R+aXH3KXEf43lhs9qS
-         mmAD2gKVSgrpNJm0CyGzJ1EjQKMy5zBYgS8zuUwd0VTHWrKsGBblDJLLHfIc8w90ChOL
-         zyvNFCDkvw9ANJbOz8Msg7dcKsBqB1GUJkE8zehd3dcrdrNWPm3wF8bVWdftfGt/qAd8
-         /8CA==
-X-Gm-Message-State: APjAAAUo3ecGYKX6O8WuazDuIZOMyLqAshO5QiyaJs6Ty46IaUmESj5N
-        VCmzQnhw5tBUcFaJMVSOZug=
-X-Google-Smtp-Source: APXvYqyBULFpTkd0szfg14Xa/0UeiQd1hq5s+NS3x16Cm1gNDiIsCqzIj/gaA/sQbk0UTXpxo5xnaQ==
-X-Received: by 2002:a17:90a:cb81:: with SMTP id a1mr94386101pju.81.1564128183115;
-        Fri, 26 Jul 2019 01:03:03 -0700 (PDT)
+        bh=Sl9ak2o2uQzwNPD5/4s22uTgucUrMMNJrOBG4XX3NNQ=;
+        b=DAXhhV2bF41pWQsgv1DFzoUGbFnWPC9yClvPKiB4+d1sXD0k8dPet5lFALbPfZ3TEy
+         9ELTMONuLpomuA935F7oj9Bu+3WGDWqz54U/TNrAM1zau1qfeI/k1y6s6QOP96T599fR
+         YmwCJSyivdhIJd2mW2X9ZcKlRTExBNls4gphaUX9xCf2yf7YYfti1aSZGB2GGooeQNk0
+         qJAhmrPg37ro6tPjhHNHRQXy4e4wLpvohzSqPLxG56SmE24DRMoaMOM3uwsvz6ju8g20
+         h77kQln4FZsqg4hu2n8Vhpvxvs2684cxEiXwIFpsWxvxyF6omg1CSpr5CSg8TK2L4EgF
+         dJEg==
+X-Gm-Message-State: APjAAAVi00Dz3BFJom+W9tp7tLO5+LJ6Sw9c8wz+11+7VWLvvx0/qsLt
+        h9cUmHirYjrnDemTrS/jmQM=
+X-Google-Smtp-Source: APXvYqzmH4ONSATgubzOLMnn8csvaEAeMHceOnU9JLK0FdSn4cekseMXU34W0DbTlt/Ieue3yuqqhA==
+X-Received: by 2002:a65:65c5:: with SMTP id y5mr89541205pgv.342.1564132114939;
+        Fri, 26 Jul 2019 02:08:34 -0700 (PDT)
 Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
-        by smtp.gmail.com with ESMTPSA id y10sm53028132pfm.66.2019.07.26.01.03.00
+        by smtp.gmail.com with ESMTPSA id z24sm93209667pfr.51.2019.07.26.02.08.32
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 26 Jul 2019 01:03:02 -0700 (PDT)
+        Fri, 26 Jul 2019 02:08:34 -0700 (PDT)
 From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+Cc:     Kevin Tsai <ktsai@capellamicro.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] iio: humidity: Use device-managed APIs
-Date:   Fri, 26 Jul 2019 16:02:55 +0800
-Message-Id: <20190726080255.13226-1-hslester96@gmail.com>
+Subject: [PATCH] iio: light: Use device-managed APIs
+Date:   Fri, 26 Jul 2019 17:08:29 +0800
+Message-Id: <20190726090829.16979-1-hslester96@gmail.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,102 +66,166 @@ be deleted.
 
 Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 ---
- drivers/iio/humidity/am2315.c  | 21 ++++-----------------
- drivers/iio/humidity/hdc100x.c | 18 ++++--------------
- 2 files changed, 8 insertions(+), 31 deletions(-)
+ drivers/iio/light/cm3323.c | 31 ++++++++++-----------------
+ drivers/iio/light/si1145.c | 44 ++++++++++++++------------------------
+ 2 files changed, 27 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/iio/humidity/am2315.c b/drivers/iio/humidity/am2315.c
-index f18da7859229..038638e92f4a 100644
---- a/drivers/iio/humidity/am2315.c
-+++ b/drivers/iio/humidity/am2315.c
-@@ -240,32 +240,20 @@ static int am2315_probe(struct i2c_client *client,
- 	indio_dev->channels = am2315_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(am2315_channels);
+diff --git a/drivers/iio/light/cm3323.c b/drivers/iio/light/cm3323.c
+index 50f3438c2b49..fd352c0a4507 100644
+--- a/drivers/iio/light/cm3323.c
++++ b/drivers/iio/light/cm3323.c
+@@ -101,15 +101,16 @@ static int cm3323_init(struct iio_dev *indio_dev)
+ 	return 0;
+ }
  
--	ret = iio_triggered_buffer_setup(indio_dev, iio_pollfunc_store_time,
-+	ret = devm_iio_triggered_buffer_setup(&client->dev,
-+					indio_dev, iio_pollfunc_store_time,
- 					 am2315_trigger_handler, NULL);
- 	if (ret < 0) {
- 		dev_err(&client->dev, "iio triggered buffer setup failed\n");
+-static void cm3323_disable(struct iio_dev *indio_dev)
++static void cm3323_disable(void *data)
+ {
+ 	int ret;
+-	struct cm3323_data *data = iio_priv(indio_dev);
++	struct iio_dev *indio_dev = data;
++	struct cm3323_data *cm_data = iio_priv(indio_dev);
+ 
+-	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF,
++	ret = i2c_smbus_write_word_data(cm_data->client, CM3323_CMD_CONF,
+ 					CM3323_CONF_SD_BIT);
+ 	if (ret < 0)
+-		dev_err(&data->client->dev, "Error writing reg_conf\n");
++		dev_err(&cm_data->client->dev, "Error writing reg_conf\n");
+ }
+ 
+ static int cm3323_set_it_bits(struct cm3323_data *data, int val, int val2)
+@@ -243,25 +244,16 @@ static int cm3323_probe(struct i2c_client *client,
  		return ret;
  	}
  
 -	ret = iio_device_register(indio_dev);
-+	ret = devm_iio_device_register(&client->dev, indio_dev);
- 	if (ret < 0)
--		goto err_buffer_cleanup;
++	ret = devm_add_action_or_reset(&client->dev, cm3323_disable, indio_dev);
++	if (ret < 0)
 +		return ret;
++
++	ret = devm_iio_device_register(&client->dev, indio_dev);
+ 	if (ret < 0) {
+ 		dev_err(&client->dev, "failed to register iio dev\n");
+-		goto err_init;
++		return ret;
+ 	}
  
- 	return 0;
- 
--err_buffer_cleanup:
--	iio_triggered_buffer_cleanup(indio_dev);
+-	return 0;
+-err_init:
+-	cm3323_disable(indio_dev);
 -	return ret;
 -}
 -
--static int am2315_remove(struct i2c_client *client)
+-static int cm3323_remove(struct i2c_client *client)
 -{
 -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
 -
 -	iio_device_unregister(indio_dev);
--	iio_triggered_buffer_cleanup(indio_dev);
+-	cm3323_disable(indio_dev);
 -
--	return 0;
+ 	return 0;
  }
  
- static const struct i2c_device_id am2315_i2c_id[] = {
-@@ -287,7 +275,6 @@ static struct i2c_driver am2315_driver = {
- 		.acpi_match_table = ACPI_PTR(am2315_acpi_id),
+@@ -276,7 +268,6 @@ static struct i2c_driver cm3323_driver = {
+ 		.name = CM3323_DRV_NAME,
  	},
- 	.probe =            am2315_probe,
--	.remove =	    am2315_remove,
- 	.id_table =         am2315_i2c_id,
+ 	.probe		= cm3323_probe,
+-	.remove		= cm3323_remove,
+ 	.id_table	= cm3323_id,
  };
  
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index 066e05f92081..5186fd9bfdc5 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -385,26 +385,17 @@ static int hdc100x_probe(struct i2c_client *client,
- 	hdc100x_set_it_time(data, 1, hdc100x_int_time[1][0]);
- 	hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE, 0);
+diff --git a/drivers/iio/light/si1145.c b/drivers/iio/light/si1145.c
+index 6579d2418814..61867552b27c 100644
+--- a/drivers/iio/light/si1145.c
++++ b/drivers/iio/light/si1145.c
+@@ -1271,13 +1271,14 @@ static int si1145_probe_trigger(struct iio_dev *indio_dev)
+ 	return 0;
+ }
+ 
+-static void si1145_remove_trigger(struct iio_dev *indio_dev)
++static void si1145_remove_trigger(void *data)
+ {
+-	struct si1145_data *data = iio_priv(indio_dev);
++	struct iio_dev *indio_dev = data;
++	struct si1145_data *si_data = iio_priv(indio_dev);
+ 
+-	if (data->trig) {
+-		iio_trigger_unregister(data->trig);
+-		data->trig = NULL;
++	if (si_data->trig) {
++		iio_trigger_unregister(si_data->trig);
++		si_data->trig = NULL;
+ 	}
+ }
+ 
+@@ -1332,7 +1333,8 @@ static int si1145_probe(struct i2c_client *client,
+ 	if (ret < 0)
+ 		return ret;
  
 -	ret = iio_triggered_buffer_setup(indio_dev, NULL,
 +	ret = devm_iio_triggered_buffer_setup(&client->dev,
-+					 indio_dev, NULL,
- 					 hdc100x_trigger_handler,
- 					 &hdc_buffer_setup_ops);
- 	if (ret < 0) {
- 		dev_err(&client->dev, "iio triggered buffer setup failed\n");
++		indio_dev, NULL,
+ 		si1145_trigger_handler, &si1145_buffer_setup_ops);
+ 	if (ret < 0)
  		return ret;
+@@ -1340,23 +1342,21 @@ static int si1145_probe(struct i2c_client *client,
+ 	if (client->irq) {
+ 		ret = si1145_probe_trigger(indio_dev);
+ 		if (ret < 0)
+-			goto error_free_buffer;
++			return ret;
++
++		ret = devm_add_action_or_reset(&client->dev,
++					si1145_remove_trigger, indio_dev);
++		if (ret < 0)
++			return ret;
++
+ 	} else {
+ 		dev_info(&client->dev, "no irq, using polling\n");
  	}
+ 
 -	ret = iio_device_register(indio_dev);
 +	ret = devm_iio_device_register(&client->dev, indio_dev);
  	if (ret < 0)
--		iio_triggered_buffer_cleanup(indio_dev);
+-		goto error_free_trigger;
++		return ret;
+ 
+ 	return 0;
+-
+-error_free_trigger:
+-	si1145_remove_trigger(indio_dev);
+-error_free_buffer:
+-	iio_triggered_buffer_cleanup(indio_dev);
 -
 -	return ret;
--}
--
--static int hdc100x_remove(struct i2c_client *client)
+ }
+ 
+ static const struct i2c_device_id si1145_ids[] = {
+@@ -1371,23 +1371,11 @@ static const struct i2c_device_id si1145_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, si1145_ids);
+ 
+-static int si1145_remove(struct i2c_client *client)
 -{
 -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
 -
 -	iio_device_unregister(indio_dev);
+-	si1145_remove_trigger(indio_dev);
 -	iio_triggered_buffer_cleanup(indio_dev);
-+		return ret;
- 
- 	return 0;
- }
-@@ -436,7 +427,6 @@ static struct i2c_driver hdc100x_driver = {
- 		.of_match_table = of_match_ptr(hdc100x_dt_ids),
+-
+-	return 0;
+-}
+-
+ static struct i2c_driver si1145_driver = {
+ 	.driver = {
+ 		.name   = "si1145",
  	},
- 	.probe = hdc100x_probe,
--	.remove = hdc100x_remove,
- 	.id_table = hdc100x_id,
+ 	.probe  = si1145_probe,
+-	.remove = si1145_remove,
+ 	.id_table = si1145_ids,
  };
- module_i2c_driver(hdc100x_driver);
+ 
 -- 
 2.20.1
 

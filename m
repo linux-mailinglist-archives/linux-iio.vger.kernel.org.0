@@ -2,54 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41131763DE
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2019 12:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71BBD7641F
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2019 13:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726371AbfGZKt4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Jul 2019 06:49:56 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:36440 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726253AbfGZKt4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Jul 2019 06:49:56 -0400
-Received: by mail-pf1-f195.google.com with SMTP id r7so24343235pfl.3;
-        Fri, 26 Jul 2019 03:49:56 -0700 (PDT)
+        id S1726820AbfGZLHt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Jul 2019 07:07:49 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:40734 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725953AbfGZLHt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Jul 2019 07:07:49 -0400
+Received: by mail-pg1-f193.google.com with SMTP id w10so24636404pgj.7;
+        Fri, 26 Jul 2019 04:07:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=5QKp71tQvI7iZBNA7DNqsUKPGMxUoV7lqv+sxtTM26c=;
-        b=Sb5wA6P+FdCteyCR+H6uEoRF1upvBfduM15VnKvzZGm9OCWUbQSsqHj+0XlsTJAeqZ
-         jt8cAlisoqm5jpJRtjVp+V2pIOXl9G9XT2Q570eEsjYntUEoqv22toZErJQhoXKes+88
-         7JeZvMt5vMthjSFWNJ+5V71vVM+PWogjmwLNS6wTd/FJdei1DqQlCFaZvw/lYvKJ9Njq
-         DN+gpLN31I4Q0aghrt0Y0AgL8J5qz8tEplHMX8A+5z123982gH1qDHZrrGPc2TnguZYu
-         7Dh8W5O9OIfcoW1eZoU34Se3OMMWWKq2dNLpuc716uUaCKfFMAxsaoPepokbwomYasW4
-         nIfQ==
+        bh=/u86tfhQcNUSlYnznWNfROL83FOU2PZDyMsPMgWpdt4=;
+        b=Sw1m99dQ1GzjlHLbGqnzu70FxBtzRaQHol/jb6+KaF+HcEpBDJtve25ugTJ+NEPXEi
+         kDtTX+WunvJPbELt9OHJZYnNPFKioaIJ2VH4CH6Xk5+UHzDrzAk8Y3cu7e6ekUSKVYqH
+         XX09pZfTGhIw6goKE/C0fdiY8CNGHoH9ceO1frZzsKCyPbHm2ukUF28a2bs+plEUM/k1
+         RfAF7znQA4+TG8ojLSDg2U5rfd3dFMj3FMnaEfgZun7b99eHlCsO6rK6GgxLU7uh2Ta1
+         TbqnfJJeElbqSU73yAnuycdOZKbyGs34VG08povgQtOXmDsT9xYhMddcwW7IFIJR74tR
+         Wjqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=5QKp71tQvI7iZBNA7DNqsUKPGMxUoV7lqv+sxtTM26c=;
-        b=IIabbB+k8FKn7Ii8obzJNSE1v74jb8VTm0kf6FsElW1xJIfNh71tV2iuSdXkbiU9Oc
-         tm2wb7pcotZoSHU9pCbVkmnQScQNsvJzAV3kUcBnBuwl1qevEl869g+sJdR01TigQhSx
-         08pxH59XaJTxV23/SnuTXK3FZwbMBviwGn25ZJP1/+wbTuvJf/B4Kn7izJIsQ2iRcpuO
-         gdes5jsEpTesTn7C4zFfm8NS5/qXb8pvclj8SaAw/hijf4JsMXcK5lFCTRrLH3sH74ga
-         zzwKfB4ZP6dvQKh4ZBTK1ZZ7hTmvRKZXRw7n7APNuLSQwJJKljgRHWxEMR+k/kPGZ2H0
-         U8iQ==
-X-Gm-Message-State: APjAAAX6nOOD0mEbbrsuH+0nCsO19hdlMDn8k9Ydsnts9sRSf4AF/8d4
-        OwvojNaJLpgXt+OI8fG5uVs=
-X-Google-Smtp-Source: APXvYqyjj3vNrLQHvI4xllpxaoF4KCKbF+kpxLvU/otphz4njoVxEcpx4Mmn5oSlQbTYB1uIgpdJgQ==
-X-Received: by 2002:a17:90a:ad93:: with SMTP id s19mr97229750pjq.36.1564138195940;
-        Fri, 26 Jul 2019 03:49:55 -0700 (PDT)
+        bh=/u86tfhQcNUSlYnznWNfROL83FOU2PZDyMsPMgWpdt4=;
+        b=OOEd2tnyeWqu2czXDcUczF07fHu5MI5yDNhc9wbzjAPNl+rKjOjtIS3sIEqg5VejVB
+         5l0co1EnxG9hU94v/wrQpWlucWwfUk2rELXs6hwg8l0JsYSD6LUI8sMwg0cqVsdcS7qy
+         Ay5nd26PQRYgC76+a/FUIr8HmeK9VTX+PRjCIB8A6FrjkROQFbGmKG3FHtJUp4f00DkQ
+         RyncpUfukezn3H0T8eueVVW/3eIMNTKsy6XGocR6sXKOh+XLeDQMFWTOUW2VyZ7soq4j
+         efFN4PyV1QUuHEK7qmWh1Yxn4Ek/bDs2xaimP+YedeipRtHDv8wwHnnAkibF17XJdbNF
+         6+TA==
+X-Gm-Message-State: APjAAAWoYUegsxKbhhrFAoLoVD0v/bv9/2pfMNC9XrEUIqppQ1Uqcapk
+        saqTu8b7POyOHruuNqa/Byo=
+X-Google-Smtp-Source: APXvYqzTteDe4J3AZvvA/tFoePe0pGzSlEDOJwQ5IIZ4F3KPosMf8GMZPllfopvHebNMUwWthNnTcw==
+X-Received: by 2002:a63:5860:: with SMTP id i32mr62745268pgm.124.1564139268690;
+        Fri, 26 Jul 2019 04:07:48 -0700 (PDT)
 Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
-        by smtp.gmail.com with ESMTPSA id q126sm9137008pfb.56.2019.07.26.03.49.53
+        by smtp.gmail.com with ESMTPSA id x13sm55647182pfn.6.2019.07.26.04.07.44
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 26 Jul 2019 03:49:54 -0700 (PDT)
+        Fri, 26 Jul 2019 04:07:47 -0700 (PDT)
 From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
         linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] iio: maxim_thermocouple: Use device-managed APIs
-Date:   Fri, 26 Jul 2019 18:49:50 +0800
-Message-Id: <20190726104950.19171-1-hslester96@gmail.com>
+Subject: [PATCH] staging: iio: ad2s1210: Use device-managed API
+Date:   Fri, 26 Jul 2019 19:07:42 +0800
+Message-Id: <20190726110742.20445-1-hslester96@gmail.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -59,61 +64,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use device-managed APIs to simplify the code.
-The remove functions are redundant now and can
+Use device-managed API to simplify the code.
+The remove function is redundant now and can
 be deleted.
 
 Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 ---
- drivers/iio/temperature/maxim_thermocouple.c | 23 ++++----------------
- 1 file changed, 4 insertions(+), 19 deletions(-)
+ drivers/staging/iio/resolver/ad2s1210.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
-index c613a64c017f..314b6e11e386 100644
---- a/drivers/iio/temperature/maxim_thermocouple.c
-+++ b/drivers/iio/temperature/maxim_thermocouple.c
-@@ -230,29 +230,15 @@ static int maxim_thermocouple_probe(struct spi_device *spi)
- 	data->spi = spi;
- 	data->chip = chip;
- 
--	ret = iio_triggered_buffer_setup(indio_dev, NULL,
-+	ret = devm_iio_triggered_buffer_setup(&spi->dev,
-+				indio_dev, NULL,
- 				maxim_thermocouple_trigger_handler, NULL);
- 	if (ret)
- 		return ret;
+diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
+index 0c1bd108c386..4b25a3a314ed 100644
+--- a/drivers/staging/iio/resolver/ad2s1210.c
++++ b/drivers/staging/iio/resolver/ad2s1210.c
+@@ -671,7 +671,7 @@ static int ad2s1210_probe(struct spi_device *spi)
+ 	indio_dev->num_channels = ARRAY_SIZE(ad2s1210_channels);
+ 	indio_dev->name = spi_get_device_id(spi)->name;
  
 -	ret = iio_device_register(indio_dev);
 +	ret = devm_iio_device_register(&spi->dev, indio_dev);
  	if (ret)
--		goto error_unreg_buffer;
--
--	return 0;
--
--error_unreg_buffer:
--	iio_triggered_buffer_cleanup(indio_dev);
--
--	return ret;
--}
--
--static int maxim_thermocouple_remove(struct spi_device *spi)
+ 		return ret;
+ 
+@@ -683,15 +683,6 @@ static int ad2s1210_probe(struct spi_device *spi)
+ 	return 0;
+ }
+ 
+-static int ad2s1210_remove(struct spi_device *spi)
 -{
 -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
 -
 -	iio_device_unregister(indio_dev);
--	iio_triggered_buffer_cleanup(indio_dev);
-+		return ret;
- 
- 	return 0;
- }
-@@ -277,7 +263,6 @@ static struct spi_driver maxim_thermocouple_driver = {
- 		.of_match_table = maxim_thermocouple_of_match,
+-
+-	return 0;
+-}
+-
+ static const struct of_device_id ad2s1210_of_match[] = {
+ 	{ .compatible = "adi,ad2s1210", },
+ 	{ }
+@@ -710,7 +701,6 @@ static struct spi_driver ad2s1210_driver = {
+ 		.of_match_table = of_match_ptr(ad2s1210_of_match),
  	},
- 	.probe		= maxim_thermocouple_probe,
--	.remove		= maxim_thermocouple_remove,
- 	.id_table	= maxim_thermocouple_id,
+ 	.probe = ad2s1210_probe,
+-	.remove = ad2s1210_remove,
+ 	.id_table = ad2s1210_id,
  };
- module_spi_driver(maxim_thermocouple_driver);
+ module_spi_driver(ad2s1210_driver);
 -- 
 2.20.1
 

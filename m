@@ -2,96 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3670E76E6A
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2019 18:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53F3B770C7
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2019 19:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726253AbfGZQBB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Jul 2019 12:01:01 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:16842 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726000AbfGZQBB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Jul 2019 12:01:01 -0400
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6QFuGIF006272;
-        Fri, 26 Jul 2019 18:00:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=Y75BNG+ZG7vXH0PyAhO98l9SHQ/zPoys4fP5bNxiSws=;
- b=xElqh+q7EgccAjNQffkCsqWxvs1nv14CqX4moJ8gnskKJjhmcurLrp+L6KGCmIbqUU+8
- idG0GWPq5KfFQxUHs/pA/fE6LLVPbe7a//MWkqB3C3kuTz85tjREBD/c7kMCXbmU+VDB
- ZC6tyHrW+L6KDVBw1ohv2H7vYRBm05IizZ0hIoVNFb6M+jS+aiJjfX0TQTpcih7j9TTW
- qgnLb3PZdzbMD0Y+9EHvhA/SBUIzrbd4I2DDFeb7ifE2VD2+/+uonT2CbxWm710JcTWu
- +AeFXe3AmdqjLHxLmPQtNZeRXVbkrVWIvDieTT/1KAwarNxxemk09vbJe5BS4jHwJvG7 2w== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx08-00178001.pphosted.com with ESMTP id 2tx60abn3e-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 26 Jul 2019 18:00:08 +0200
-Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id A40D634;
-        Fri, 26 Jul 2019 16:00:07 +0000 (GMT)
-Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 4EF254F17;
-        Fri, 26 Jul 2019 16:00:07 +0000 (GMT)
-Received: from lmecxl0912.lme.st.com (10.75.127.49) by SFHDAG3NODE2.st.com
- (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Fri, 26 Jul
- 2019 18:00:06 +0200
-Subject: Re: [PATCH 0/5] Add missing vdda-supply to STM32 ADC
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>, <jic23@kernel.org>,
-        <robh+dt@kernel.org>
-CC:     <mark.rutland@arm.com>, <mcoquelin.stm32@gmail.com>,
-        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <1560947398-11592-1-git-send-email-fabrice.gasnier@st.com>
-From:   Alexandre Torgue <alexandre.torgue@st.com>
-Message-ID: <b91163f5-ad6f-0a22-eb8a-ceb0b0c056c6@st.com>
-Date:   Fri, 26 Jul 2019 18:00:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1729010AbfGZR73 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Jul 2019 13:59:29 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:38202 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726581AbfGZR73 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Jul 2019 13:59:29 -0400
+Received: by mail-io1-f68.google.com with SMTP id j6so31390162ioa.5
+        for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2019 10:59:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=usp-br.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Mz6yFp/JdoMmP88Hd9wgTkqmhK5wh8hSxVlurnjVo58=;
+        b=AqdQBSa+KR+uV7HGSwYjR8NLjKpjPepgw0zylTLXZ2QQt/1THpF/IcxTn9NEC2+a1o
+         mEdqDuJaXZJSxYKkUXBcNCmPTgQq3dGfUhPsntmMSDH5QtHkMKiKDU86C/gca8cxTMd8
+         6/yzBbfm3RVHl15/DODIgB3Cd/GPtXpUnJkV2SR4GLk5GbVLK8RwEW3EX2EtkejrFmNv
+         HVjdQh5HsFf+GdZ0BQSIw5dMf1rZZwStF4kg1X0vW0pmSU3Lgs4BDbgxFVRlci6MTiKY
+         tZK3xW9fmKhVo7LFGLcFqYWBmUa72CuL2KwU9npClRTQetuaBXMVcAyI7GofbWa4TVm4
+         OFKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Mz6yFp/JdoMmP88Hd9wgTkqmhK5wh8hSxVlurnjVo58=;
+        b=F//d5tUh3Bx9dMCkfSrRfT6S3XMWtEPTwkUQf6QdLgKyt8YsG7BOXI9SwKiF6442ZN
+         mo6fegnDrgiZNmRTKFjltek6UmdWtr71kGZcSBaqcL0455b4EwAs6ffy0UbSM+c5g35M
+         35fBhkVND910KVusd536KaSef35449eTAGG3xGib/K9EZS2DBC+xYdjdJbETetxOkKoc
+         BPJZNE+NiIpoLx01f6vDSqKGkbnZZzAxC3Ft/PnB2hTMtD19kRNNFQx/IXdWho6Q1FCf
+         nKEVPd6Lz5FbDxuw8Vaa87fLXRViG06aNR2Uda6Ibi2dcmCa0slHJe+UaKffnJ86fFD0
+         VJqQ==
+X-Gm-Message-State: APjAAAVCOyZBF7bcIJyufurLbA74gfPyXhuR2xvRaOeZeQUxnoqF3F06
+        0urxxoYnN3r/Bh0pDALotyvcRosfTU7QF1GnMerPRQ==
+X-Google-Smtp-Source: APXvYqxQgZBD3hEdmYQN0ATdE+xO3I4QX7GvRTvtCBuN9N9yUSx7Dm9vAjvX0rbeiciuckyUOL3NhdqK6yM+PYnGSzE=
+X-Received: by 2002:a5d:9711:: with SMTP id h17mr16548342iol.280.1564163967979;
+ Fri, 26 Jul 2019 10:59:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1560947398-11592-1-git-send-email-fabrice.gasnier@st.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.49]
-X-ClientProxiedBy: SFHDAG8NODE3.st.com (10.75.127.24) To SFHDAG3NODE2.st.com
- (10.75.127.8)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-26_12:,,
- signatures=0
+References: <20190725200817.31277-1-kartik.koolks@gmail.com> <0e273486f1c4fb6249896225837cdf2da0fd2415.camel@analog.com>
+In-Reply-To: <0e273486f1c4fb6249896225837cdf2da0fd2415.camel@analog.com>
+From:   Matheus Tavares Bernardino <matheus.bernardino@usp.br>
+Date:   Fri, 26 Jul 2019 14:59:16 -0300
+Message-ID: <CAHd-oW5sOry2g_tQbgQ9-dp1esVStmS+UF-TTYoB2mWmzR10jQ@mail.gmail.com>
+Subject: Re: [PATCH] staging:iio:adc:ad7280a: add of_match_table entry
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "kartik.koolks@gmail.com" <kartik.koolks@gmail.com>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "kernel-usp@googlegroups.com" <kernel-usp@googlegroups.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Fabrice
+On Fri, Jul 26, 2019 at 2:30 AM Ardelean, Alexandru
+<alexandru.Ardelean@analog.com> wrote:
+>
+> On Fri, 2019-07-26 at 01:38 +0530, Kartik Kulkarni wrote:
+> > Add the of_device_id struct and the respective
+> > of_match_device entry to complete device tree support.
+> >
+>
+> This would be a [V2] I suppose.
+>
+> This change also does the rename of the driver name in a single go.
+> Since it's a trivial change, it's fine from my side.
 
-On 6/19/19 2:29 PM, Fabrice Gasnier wrote:
-> Add missing vdda-supply, analog power supply, to STM32 ADC. When vdda is
-> an independent supply, it needs to be properly turned on or off to supply
-> the ADC.
-> This series proposes fixes for the dt-bindings, IIO driver and relevant
-> device tree files.
-> 
-> Fabrice Gasnier (5):
->    dt-bindings: iio: adc: stm32: add missing vdda supply
->    iio: adc: stm32-adc: add missing vdda-supply
->    ARM: dts: stm32: remove fixed regulator unit address on stm32429i-eval
->    ARM: dts: stm32: add missing vdda-supply to adc on stm32429i-eval
->    ARM: dts: stm32: add missing vdda-supply to adc on stm32h743i-eval
-> 
->   .../devicetree/bindings/iio/adc/st,stm32-adc.txt   |  1 +
->   arch/arm/boot/dts/stm32429i-eval.dts               | 25 +++++++++++-----------
->   arch/arm/boot/dts/stm32h743i-eval.dts              |  1 +
->   drivers/iio/adc/stm32-adc-core.c                   | 21 +++++++++++++++++-
->   4 files changed, 35 insertions(+), 13 deletions(-)
-> 
+I think there was a small confusion when we sent the patches. Sorry
+for that. Originally, Kartik made the rename in its own patch. Would
+it be better if we resend the two patches separately?
 
-DT patches applied on stm32-next. I plan to add them in my PR for v5.4.
-However those patches are marked as "fixes", do you see an issue to only 
-send it for v5.4 ?
+Thanks,
+Matheus
 
-Regards
-alex
+> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+>
+>
+> > Signed-off-by: Kartik Kulkarni <kartik.koolks@gmail.com>
+> > Reviewed-by: Matheus Tavares <matheus.bernardino@usp.br>
+> > ---
+> >  drivers/staging/iio/adc/ad7280a.c | 9 ++++++++-
+> >  1 file changed, 8 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/staging/iio/adc/ad7280a.c b/drivers/staging/iio/adc/ad7280a.c
+> > index 19a5f244dcae..ded0ba093a28 100644
+> > --- a/drivers/staging/iio/adc/ad7280a.c
+> > +++ b/drivers/staging/iio/adc/ad7280a.c
+> > @@ -1027,9 +1027,16 @@ static const struct spi_device_id ad7280_id[] = {
+> >  };
+> >  MODULE_DEVICE_TABLE(spi, ad7280_id);
+> >
+> > +static const struct of_device_id ad7280_of_match[] = {
+> > +     { .compatible = "adi,ad7280a", },
+> > +     { }
+> > +};
+> > +MODULE_DEVICE_TABLE(of, ad7280_of_match);
+> > +
+> >  static struct spi_driver ad7280_driver = {
+> >       .driver = {
+> > -             .name   = "ad7280",
+> > +             .name   = "ad7280a",
+> > +             .of_match_table = ad7280_of_match,
+> >       },
+> >       .probe          = ad7280_probe,
+> >       .id_table       = ad7280_id,
+>
+> --
+> You received this message because you are subscribed to the Google Groups "Kernel USP" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-usp+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/kernel-usp/0e273486f1c4fb6249896225837cdf2da0fd2415.camel%40analog.com.

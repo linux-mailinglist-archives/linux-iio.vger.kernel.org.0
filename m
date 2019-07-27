@@ -2,187 +2,260 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D1377C46
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2019 00:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9D4977C48
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2019 00:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726404AbfG0WKl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Jul 2019 18:10:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36614 "EHLO mail.kernel.org"
+        id S1725280AbfG0WQt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Jul 2019 18:16:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37198 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725265AbfG0WKl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 27 Jul 2019 18:10:41 -0400
+        id S1725265AbfG0WQs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 27 Jul 2019 18:16:48 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DC3CB206DD;
-        Sat, 27 Jul 2019 22:10:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5D2D6206DD;
+        Sat, 27 Jul 2019 22:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564265440;
-        bh=00yF2jx/qVIhC8Cz9VBWgx9ALb8Uuea2njN1/i9ZEg4=;
+        s=default; t=1564265807;
+        bh=QimxdqQCdQ7fVUROv7RLUc4aY9G5ZVwucFUgcKObSD0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LzP3bs3iCOUvZfcVj4dlxGSfDuTHr68blANVBN/0OCdw0Xic3LxEN6ZxJLVPx8Ww2
-         t0HVkYYJd8sXkQqvGwlNMeMApEhZHR9qUrHqJXR8fdvYSA1t65TAroAR9dB2XwBaMe
-         QXnXZhFpkHs3tWU84cAwED3DA+e6WDNpCIX8m3Es=
-Date:   Sat, 27 Jul 2019 23:10:35 +0100
+        b=Yb+XCCjjIQWYdzhtUVRiD6ZX2Iw4YWNij742FkISIv3UPxjZVu34K40BOcF6YUkr7
+         fY3006Ahe7BV3sHtH+LPAd7Eg0bDHYNGbxWcDewnBHIbJhrzJZ3YHBBz7S09ttc1Uc
+         3LUSX1Bo3KXg2Mpm4vRBkK78UJBx3fr95pEoTECw=
+Date:   Sat, 27 Jul 2019 23:16:37 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Cc:     Gwendal Grignou <gwendal@chromium.org>, bleung@chromium.org,
-        groeck@chromium.org, fabien.lahoudere@collabora.com,
-        dianders@chromium.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] iio: cros_ec: Add sign vector in core for
- backward compatibility
-Message-ID: <20190727231035.1e3fb6bc@archlinux>
-In-Reply-To: <3729385a-6628-22e1-da50-e22233737a4b@collabora.com>
-References: <20190628191711.23584-1-gwendal@chromium.org>
-        <20190628191711.23584-2-gwendal@chromium.org>
-        <20190714173203.0b50d5c7@archlinux>
-        <3729385a-6628-22e1-da50-e22233737a4b@collabora.com>
+To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Cc:     kernel@collabora.com, Nick Vaccaro <nvaccaro@chromium.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/1] iio: common: cros_ec_sensors: Expose
+ cros_ec_sensors frequency range via iio sysfs
+Message-ID: <20190727231112.3dde6723@archlinux>
+In-Reply-To: <36eda13de50426c1b5e46a201e17122f9d899f1a.1563268064.git.fabien.lahoudere@collabora.com>
+References: <cover.1563268064.git.fabien.lahoudere@collabora.com>
+        <36eda13de50426c1b5e46a201e17122f9d899f1a.1563268064.git.fabien.lahoudere@collabora.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 22 Jul 2019 16:53:41 +0200
-Enric Balletbo i Serra <enric.balletbo@collabora.com> wrote:
+On Tue, 16 Jul 2019 11:11:06 +0200
+Fabien Lahoudere <fabien.lahoudere@collabora.com> wrote:
 
-> Hi Jonathan,
->=20
-> On 14/7/19 18:32, Jonathan Cameron wrote:
-> > On Fri, 28 Jun 2019 12:17:08 -0700
-> > Gwendal Grignou <gwendal@chromium.org> wrote:
-> >  =20
-> >> To allow cros_ec iio core library to be used with legacy device, add a
-> >> vector to rotate sensor data if necessary: legacy devices are not
-> >> reporting data in HTML5/Android sensor referential.
-> >>
-> >> Check the data is not rotated on recent chromebooks that use the HTML5
-> >> standard to present sensor data.
-> >>
-> >> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> >> Reviewed-by: Douglas Anderson <dianders@chromium.org> =20
-> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >=20
-> > As I mentioned in one of the other series.  I've lost track of whether
-> > anyone wants me to apply any of these through IIO, so will just ack
-> > them as appropriate and assume someone will shout if they do want
-> > me to pick them up ;)
-> >  =20
->=20
-> To try to give you a bit of light on this, all the required changes in
-> chrome-platform are now in upstream so all the patches can go safely thro=
-ugh
-> your tree. The order to pick the patches is as follow:
->=20
->=20
-> 1096491 [v4,1/1] iio: common: cros_ec_sensors: determine protocol version
->=20
-> 1100922 [v6,1/4] iio: cros_ec: Add sign vector in core for backward
->                  compatibility
-> 1100924 [v6,3/4] iio: cros_ec_accel_legacy: Use cros_ec_sensors_core
-> 1100923 [v6,4/4] iio: cros_ec_accel_legacy: Add support for veyron-minnie
->=20
-> 1100982 [v5,1/1] iio: common: cros_ec_sensors: Expose cros_ec_sensors fre=
-quency
->                  range via iio sysfs
->=20
-> But if you try to apply latest versions from patchwork you'll get some tr=
-ivial
-> conflicts. So, I fixed the problems, rebased on top of your testing branc=
-h,
-> added my Rb tag to all the patches and put together in this branch [1]
->=20
-> All the patches have your Ack, so should be fine if you apply all of them=
- just
-> replacing your Ack for your Signed-off
-Thanks!  This is very helpful indeed.
+> Embedded controller return minimum and maximum frequencies, unfortunately
+> we have no way to know the step for all available frequencies.
+> Even if not complete, we can return a list of known values using the
+> standard read_avail callback (IIO_CHAN_INFO_SAMP_FREQ) to provide them to
+> userland.
+> 
+> Now cros_ec_* sensors provides frequencies values in sysfs like this:
+> "0 min max". 0 is always true to disable the sensor.
+> 
+> Default frequencies are provided for earlier protocol.
+> 
+> Signed-off-by: Nick Vaccaro <nvaccaro@chromium.org>
+> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I've done exactly - well sort of :)
+I applied a version Enric had rebased. Hopefully it matches this!
+Was easier than repeating his conflict resolution.
 
-Note I did get:
-
-drivers/iio/light/cros_ec_light_prox.c:120:9: warning: =E2=80=98ret=E2=80=
-=99 may be used uninitialized in this function [-Wmaybe-uninitialized]
-  120 |  return ret;
-      |         ^~~
-
-Which looks like a bug, as there is one path under=20
-
-	case IIO_CHAN_INFO_CALIBBIAS:
-that got caught by gcc.
-
-Ah, it's my merge mess up on an earlier patch. I'll fix it and post
-in reply to that patch.
-
-Also I swapped in the v6 of the veyron_minnie patches and  v5 of the sysfs =
-one
-as your branch predates those I think.
-
-Thanks,
+thanks,
 
 Jonathan
 
->=20
-> I can also send a new patch series with those if you prefer this option.
->=20
-> Hopefully is more clear now and sorry for that mess.
-> ~ Enric
->=20
-> [1]
-> https://git.kernel.org/pub/scm/linux/kernel/git/chrome-platform/linux.git=
-/log/?h=3Dfor-iio-next
->=20
->=20
-> > Thanks,
-> >=20
-> > Jonathan
-> >  =20
-> >> ---
-> >>  drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 4 ++++
-> >>  include/linux/iio/common/cros_ec_sensors_core.h           | 1 +
-> >>  2 files changed, 5 insertions(+)
-> >>
-> >> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c=
- b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> >> index 719a0df5aeeb..e8a4d78659c8 100644
-> >> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> >> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> >> @@ -66,6 +66,9 @@ int cros_ec_sensors_core_init(struct platform_device=
- *pdev,
-> >>  		}
-> >>  		state->type =3D state->resp->info.type;
-> >>  		state->loc =3D state->resp->info.location;
-> >> +
-> >> +		/* Set sign vector, only used for backward compatibility. */
-> >> +		memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
-> >>  	}
-> >> =20
-> >>  	return 0;
-> >> @@ -254,6 +257,7 @@ static int cros_ec_sensors_read_data_unsafe(struct=
- iio_dev *indio_dev,
-> >>  		if (ret < 0)
-> >>  			return ret;
-> >> =20
-> >> +		*data *=3D st->sign[i];
-> >>  		data++;
-> >>  	}
-> >> =20
-> >> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include=
-/linux/iio/common/cros_ec_sensors_core.h
-> >> index ce16445411ac..a1c85ad4df91 100644
-> >> --- a/include/linux/iio/common/cros_ec_sensors_core.h
-> >> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
-> >> @@ -71,6 +71,7 @@ struct cros_ec_sensors_core_state {
-> >>  	enum motionsensor_location loc;
-> >> =20
-> >>  	s16 calib[CROS_EC_SENSOR_MAX_AXIS];
-> >> +	s8 sign[CROS_EC_SENSOR_MAX_AXIS];
-> >> =20
-> >>  	u8 samples[CROS_EC_SAMPLE_SIZE];
-> >>   =20
-> >  =20
+> ---
+>  .../common/cros_ec_sensors/cros_ec_sensors.c  |  3 +
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 65 +++++++++++++++++++
+>  drivers/iio/light/cros_ec_light_prox.c        |  3 +
+>  .../linux/iio/common/cros_ec_sensors_core.h   | 21 ++++++
+>  4 files changed, 92 insertions(+)
+> 
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> index 17af4e0fd5f8..dbca02688c4f 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> @@ -175,6 +175,7 @@ static int cros_ec_sensors_write(struct iio_dev *indio_dev,
+>  static const struct iio_info ec_sensors_info = {
+>  	.read_raw = &cros_ec_sensors_read,
+>  	.write_raw = &cros_ec_sensors_write,
+> +	.read_avail = &cros_ec_sensors_core_read_avail,
+>  };
+>  
+>  static int cros_ec_sensors_probe(struct platform_device *pdev)
+> @@ -211,6 +212,8 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+>  			BIT(IIO_CHAN_INFO_SCALE) |
+>  			BIT(IIO_CHAN_INFO_FREQUENCY) |
+>  			BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> +		channel->info_mask_shared_by_all_available =
+> +			BIT(IIO_CHAN_INFO_SAMP_FREQ);
+>  		channel->scan_type.realbits = CROS_EC_SENSOR_BITS;
+>  		channel->scan_type.storagebits = CROS_EC_SENSOR_BITS;
+>  		channel->scan_index = i;
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 81111af8a167..805652250960 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -50,6 +50,37 @@ static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
+>  	return ret;
+>  }
+>  
+> +static void get_default_min_max_freq(enum motionsensor_type type,
+> +				     u32 *min_freq,
+> +				     u32 *max_freq)
+> +{
+> +	switch (type) {
+> +	case MOTIONSENSE_TYPE_ACCEL:
+> +	case MOTIONSENSE_TYPE_GYRO:
+> +		*min_freq = 12500;
+> +		*max_freq = 100000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_MAG:
+> +		*min_freq = 5000;
+> +		*max_freq = 25000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_PROX:
+> +	case MOTIONSENSE_TYPE_LIGHT:
+> +		*min_freq = 100;
+> +		*max_freq = 50000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_BARO:
+> +		*min_freq = 250;
+> +		*max_freq = 20000;
+> +		break;
+> +	case MOTIONSENSE_TYPE_ACTIVITY:
+> +	default:
+> +		*min_freq = 0;
+> +		*max_freq = 0;
+> +		break;
+> +	}
+> +}
+> +
+>  int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  			      struct iio_dev *indio_dev,
+>  			      bool physical_device)
+> @@ -100,6 +131,19 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  		}
+>  		state->type = state->resp->info.type;
+>  		state->loc = state->resp->info.location;
+> +
+> +		/* 0 is a correct value used to stop the device */
+> +		state->frequencies[0] = 0;
+> +		if (state->msg->version < 3) {
+> +			get_default_min_max_freq(state->resp->info.type,
+> +						 &state->frequencies[1],
+> +						 &state->frequencies[2]);
+> +		} else {
+> +			state->frequencies[1] =
+> +			    state->resp->info_3.min_frequency;
+> +			state->frequencies[2] =
+> +			    state->resp->info_3.max_frequency;
+> +		}
+>  	}
+>  
+>  	return 0;
+> @@ -461,6 +505,27 @@ int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
+>  }
+>  EXPORT_SYMBOL_GPL(cros_ec_sensors_core_read);
+>  
+> +int cros_ec_sensors_core_read_avail(struct iio_dev *indio_dev,
+> +				    struct iio_chan_spec const *chan,
+> +				    const int **vals,
+> +				    int *type,
+> +				    int *length,
+> +				    long mask)
+> +{
+> +	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		*length = ARRAY_SIZE(state->frequencies);
+> +		*vals = (const int *)&state->frequencies;
+> +		*type = IIO_VAL_INT;
+> +		return IIO_AVAIL_LIST;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL_GPL(cros_ec_sensors_core_read_avail);
+> +
+>  int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
+>  			       struct iio_chan_spec const *chan,
+>  			       int val, int val2, long mask)
+> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
+> index 308ee6ff2e22..b9838bf25248 100644
+> --- a/drivers/iio/light/cros_ec_light_prox.c
+> +++ b/drivers/iio/light/cros_ec_light_prox.c
+> @@ -164,6 +164,7 @@ static int cros_ec_light_prox_write(struct iio_dev *indio_dev,
+>  static const struct iio_info cros_ec_light_prox_info = {
+>  	.read_raw = &cros_ec_light_prox_read,
+>  	.write_raw = &cros_ec_light_prox_write,
+> +	.read_avail = &cros_ec_sensors_core_read_avail,
+>  };
+>  
+>  static int cros_ec_light_prox_probe(struct platform_device *pdev)
+> @@ -198,6 +199,8 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
+>  	channel->info_mask_shared_by_all =
+>  		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>  		BIT(IIO_CHAN_INFO_FREQUENCY);
+> +	channel->info_mask_shared_by_all_available =
+> +		BIT(IIO_CHAN_INFO_SAMP_FREQ);
+>  	channel->scan_type.realbits = CROS_EC_SENSOR_BITS;
+>  	channel->scan_type.storagebits = CROS_EC_SENSOR_BITS;
+>  	channel->scan_type.shift = 0;
+> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+> index 0c636b9fe8d7..a9623111f7c9 100644
+> --- a/include/linux/iio/common/cros_ec_sensors_core.h
+> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+> @@ -70,6 +70,9 @@ struct cros_ec_sensors_core_state {
+>  				    unsigned long scan_mask, s16 *data);
+>  
+>  	int curr_sampl_freq;
+> +
+> +	/* Table of known available frequencies : 0, Min and Max in mHz */
+> +	int frequencies[3];
+>  };
+>  
+>  /**
+> @@ -150,6 +153,24 @@ int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
+>  			      struct iio_chan_spec const *chan,
+>  			      int *val, int *val2, long mask);
+>  
+> +/**
+> + * cros_ec_sensors_core_read_avail() - get available values
+> + * @indio_dev:		pointer to state information for device
+> + * @chan:	channel specification structure table
+> + * @vals:	list of available values
+> + * @type:	type of data returned
+> + * @length:	number of data returned in the array
+> + * @mask:	specifies which values to be requested
+> + *
+> + * Return:	an error code, IIO_AVAIL_RANGE or IIO_AVAIL_LIST
+> + */
+> +int cros_ec_sensors_core_read_avail(struct iio_dev *indio_dev,
+> +				    struct iio_chan_spec const *chan,
+> +				    const int **vals,
+> +				    int *type,
+> +				    int *length,
+> +				    long mask);
+> +
+>  /**
+>   * cros_ec_sensors_core_write() - function to write a value to the sensor
+>   * @st:		pointer to state information for device
 

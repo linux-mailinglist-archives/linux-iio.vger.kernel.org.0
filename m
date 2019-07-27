@@ -2,38 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ED5C77834
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 12:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDF9277882
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 13:57:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725886AbfG0KmS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Jul 2019 06:42:18 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:39550 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725875AbfG0KmS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Jul 2019 06:42:18 -0400
-Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
+        id S1725875AbfG0L5y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Jul 2019 07:57:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52804 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725975AbfG0L5y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 27 Jul 2019 07:57:54 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: bbrezillon)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 0EACC283CED;
-        Sat, 27 Jul 2019 11:42:16 +0100 (BST)
-Date:   Sat, 27 Jul 2019 12:42:12 +0200
-From:   Boris Brezillon <boris.brezillon@collabora.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Vitor Soares <Vitor.Soares@synopsys.com>,
-        linux-iio@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-kernel@vger.kernel.org, lorenzo@kernel.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        bbrezillon@kernel.org, Joao.Pinto@synopsys.com
-Subject: Re: [PATCH v6 2/2] iio: imu: st_lsm6dsx: add i3c basic support for
- LSM6DSO and LSM6DSR
-Message-ID: <20190727124212.3da89d41@collabora.com>
-In-Reply-To: <20190721181656.236faa63@archlinux>
-References: <cover.1563542515.git.vitor.soares@synopsys.com>
-        <77c709aca8607f31f141ee7c4dc28bf89266bd23.1563542515.git.vitor.soares@synopsys.com>
-        <20190721181656.236faa63@archlinux>
-Organization: Collabora
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        by mail.kernel.org (Postfix) with ESMTPSA id A3D5A2077C;
+        Sat, 27 Jul 2019 11:57:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564228673;
+        bh=Qt1Rf8kXzBIqNTkx2KISu/ts1iMKogFu67lTKS8akwI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=v/HEhMy0bQOo4vFVcF94DEwwyVIWHx7+pCMkhVSsEY3OVeC7TUfFW103L3KbvqJcq
+         VH7Za++mrEkiLmJgYnQmayvu3G2mS8ZXy5dlfL/mFHkeyodeVaG989Xpg1V39kKTNS
+         guPhMWIvdhu0M9ba8dA+QI6Yij3H8KPpAqd+Zdv0=
+Date:   Sat, 27 Jul 2019 12:57:49 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     Brian Masney <masneyb@onstation.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: tsl2772: Use device-managed API
+Message-ID: <20190727125749.63297c28@archlinux>
+In-Reply-To: <20190726123058.22915-1-hslester96@gmail.com>
+References: <20190726123058.22915-1-hslester96@gmail.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -42,48 +41,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 21 Jul 2019 18:16:56 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Fri, 26 Jul 2019 20:30:58 +0800
+Chuhong Yuan <hslester96@gmail.com> wrote:
 
-> On Fri, 19 Jul 2019 15:30:55 +0200
-> Vitor Soares <Vitor.Soares@synopsys.com> wrote:
+> Use devm_iio_device_register to simplify
+> the code.
 > 
-> > For today the st_lsm6dsx driver support LSM6DSO and LSM6DSR sensor only in
-> > spi and i2c mode.
-> > 
-> > The LSM6DSO and LSM6DSR are also i3c capable so let's give i3c support to
-> > them.
-> > 
-> > Signed-off-by: Vitor Soares <vitor.soares@synopsys.com>
-> > Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>  
-> Great. I'll pick this up once Boris has that immutable branch
-> available. Give me a poke if I seem to have lost it!
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 
-Here it is:
+Please try to pick up on likely reviewers in your cc list.  In this case
+Brian did a lot of work cleaning these drivers up so I've added him.
+Not everyone keeps up with the linux-iio list for some reason ;)
 
-The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
+Immediate thought was that you had broken the ordering but turns out
+it is already buggy.
 
-  Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
+As things stand, we remove the userspace interfaces (iio_device_unregister)
+after turning off the power.   This is obviously a bad idea and also
+form a purely "obviously correct" stand point, we aren't doing the reverse
+of probe.
 
-are available in the Git repository at:
+So, I 'think' the right option is to reorder remove so that the power left
+on until after the iio_device_unregister call. At that point, we can't
+use devm_iio_device_register as we'll have the same incorrect ordering
+we currently have.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/i3c/linux.git tags/i3c/export-i3c_device_match_id
+Brian, you looked at this driver most recently.  Thoughts?
 
-for you to fetch changes up to 934d24a5e1508e73c0001afb54a3916e4270428f:
+Thanks,
 
-  i3c: move i3c_device_match_id to device.c and export it (2019-07-27 11:22:19 +0200)
+Jonathan
 
-----------------------------------------------------------------
-Needed for the st_lsm6dsx_i3c.c driver
 
-----------------------------------------------------------------
-Vitor Soares (1):
-      i3c: move i3c_device_match_id to device.c and export it
 
- drivers/i3c/device.c       | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/i3c/master.c       | 45 ---------------------------------------------
- include/linux/i3c/device.h |  4 ++++
- 3 files changed, 57 insertions(+), 45 deletions(-)
-
+> ---
+>  drivers/iio/light/tsl2772.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
+> index 83cece921843..aa5891d105e8 100644
+> --- a/drivers/iio/light/tsl2772.c
+> +++ b/drivers/iio/light/tsl2772.c
+> @@ -1877,7 +1877,7 @@ static int tsl2772_probe(struct i2c_client *clientp,
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	ret = iio_device_register(indio_dev);
+> +	ret = devm_iio_device_register(&clientp->dev, indio_dev);
+>  	if (ret) {
+>  		tsl2772_chip_off(indio_dev);
+>  		dev_err(&clientp->dev,
+> @@ -1928,8 +1928,6 @@ static int tsl2772_remove(struct i2c_client *client)
+>  
+>  	tsl2772_chip_off(indio_dev);
+>  
+> -	iio_device_unregister(indio_dev);
+> -
+>  	return 0;
+>  }
+>  
 

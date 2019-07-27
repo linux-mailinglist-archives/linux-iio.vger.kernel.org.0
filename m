@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E92A977AAC
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 19:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45D3677ABA
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 19:17:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387691AbfG0RIW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Jul 2019 13:08:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33214 "EHLO mail.kernel.org"
+        id S2387823AbfG0RRt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Jul 2019 13:17:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34808 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387665AbfG0RIW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 27 Jul 2019 13:08:22 -0400
+        id S2387814AbfG0RRt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 27 Jul 2019 13:17:49 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 976892084C;
-        Sat, 27 Jul 2019 17:08:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2684B2087C;
+        Sat, 27 Jul 2019 17:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564247300;
-        bh=+5rybbzMCfeUCU9zj0JwT7+RbQ9TvG9+x6KA+ybGIT0=;
+        s=default; t=1564247867;
+        bh=CJ3l7czGcf01NJN/jvzDvAh2w37DWgQGgHLk7dxWoz4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=C0cvKrxK5hKi33q686/t9d2x8yrKhta7fUwU1RlVrrpZWtrxqr32xShPIrrlHqmxF
-         E6XEvwEJeZXkkAWmy2DqW6NYX4v3qZb8WqBoDzo/DGDGs+4E9OFiOGOObSHZZFur6T
-         qKF0As8cEfRnvT1z5ewUzr9qwyTP1JWGjOEAXwdM=
-Date:   Sat, 27 Jul 2019 18:08:15 +0100
+        b=nnfBPtXhvRgfcIO4xwsW1Hc85LSNV57/RIkGGuo9W7v63DMnsY4GiL8B1ccWzF1Jq
+         xS+VIcxz8H/ueYJGTcqu4nwZnBO7uYYv/cS3lDp7YNjGX+1U8TbbHma+RMnrTZMH3E
+         2/XOxJfz+bTlCc+ASAlmwV2tp+fOsVIbyuCZkmsw=
+Date:   Sat, 27 Jul 2019 18:17:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     Kevin Tsai <ktsai@capellamicro.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: Use device-managed APIs
-Message-ID: <20190727180815.0c3e655e@archlinux>
-In-Reply-To: <20190726090829.16979-1-hslester96@gmail.com>
-References: <20190726090829.16979-1-hslester96@gmail.com>
+Cc:     Matt Ranostay <matt.ranostay@konsulko.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: humidity: Use device-managed APIs
+Message-ID: <20190727181743.6701f1dc@archlinux>
+In-Reply-To: <20190726080255.13226-1-hslester96@gmail.com>
+References: <20190726080255.13226-1-hslester96@gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,7 +41,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 26 Jul 2019 17:08:29 +0800
+On Fri, 26 Jul 2019 16:02:55 +0800
 Chuhong Yuan <hslester96@gmail.com> wrote:
 
 > Use device-managed APIs to simplify the code.
@@ -49,199 +49,126 @@ Chuhong Yuan <hslester96@gmail.com> wrote:
 > be deleted.
 > 
 > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-Hi,
+This one I've tidied up and applied, but see note below.
 
-This should have been split along the lines of the drivers as these
-have different authors and hence could be merged at different times.
-Not to mention the nature of the changes isn't exactly the same
-between the two.
+Also, two patches would have been nicer as different potential
+reviewers. 
++CC Matt as I think I have a current address for him.
 
-I might have taken the cm3323 one with a small tweak as below if they
-had been separate.
+These will be in a rebaseable tree for a week or so, hence
+plenty of time for more comments.
 
-Thanks,
+Thanks for tidying these up.
 
 Jonathan
 
 > ---
->  drivers/iio/light/cm3323.c | 31 ++++++++++-----------------
->  drivers/iio/light/si1145.c | 44 ++++++++++++++------------------------
->  2 files changed, 27 insertions(+), 48 deletions(-)
+>  drivers/iio/humidity/am2315.c  | 21 ++++-----------------
+>  drivers/iio/humidity/hdc100x.c | 18 ++++--------------
+>  2 files changed, 8 insertions(+), 31 deletions(-)
 > 
-> diff --git a/drivers/iio/light/cm3323.c b/drivers/iio/light/cm3323.c
-> index 50f3438c2b49..fd352c0a4507 100644
-> --- a/drivers/iio/light/cm3323.c
-> +++ b/drivers/iio/light/cm3323.c
-> @@ -101,15 +101,16 @@ static int cm3323_init(struct iio_dev *indio_dev)
->  	return 0;
->  }
+> diff --git a/drivers/iio/humidity/am2315.c b/drivers/iio/humidity/am2315.c
+> index f18da7859229..038638e92f4a 100644
+> --- a/drivers/iio/humidity/am2315.c
+> +++ b/drivers/iio/humidity/am2315.c
+> @@ -240,32 +240,20 @@ static int am2315_probe(struct i2c_client *client,
+>  	indio_dev->channels = am2315_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(am2315_channels);
 >  
-> -static void cm3323_disable(struct iio_dev *indio_dev)
-> +static void cm3323_disable(void *data)
->  {
->  	int ret;
-> -	struct cm3323_data *data = iio_priv(indio_dev);
-> +	struct iio_dev *indio_dev = data;
-> +	struct cm3323_data *cm_data = iio_priv(indio_dev);
->  
-> -	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF,
-> +	ret = i2c_smbus_write_word_data(cm_data->client, CM3323_CMD_CONF,
->  					CM3323_CONF_SD_BIT);
->  	if (ret < 0)
-> -		dev_err(&data->client->dev, "Error writing reg_conf\n");
-> +		dev_err(&cm_data->client->dev, "Error writing reg_conf\n");
->  }
->  
->  static int cm3323_set_it_bits(struct cm3323_data *data, int val, int val2)
-> @@ -243,25 +244,16 @@ static int cm3323_probe(struct i2c_client *client,
+> -	ret = iio_triggered_buffer_setup(indio_dev, iio_pollfunc_store_time,
+> +	ret = devm_iio_triggered_buffer_setup(&client->dev,
+> +					indio_dev, iio_pollfunc_store_time,
+>  					 am2315_trigger_handler, NULL);
+>  	if (ret < 0) {
+>  		dev_err(&client->dev, "iio triggered buffer setup failed\n");
 >  		return ret;
 >  	}
 >  
 > -	ret = iio_device_register(indio_dev);
-> +	ret = devm_add_action_or_reset(&client->dev, cm3323_disable, indio_dev);
-> +	if (ret < 0)
-> +		return ret;
-> +
 > +	ret = devm_iio_device_register(&client->dev, indio_dev);
->  	if (ret < 0) {
->  		dev_err(&client->dev, "failed to register iio dev\n");
-> -		goto err_init;
+>  	if (ret < 0)
+> -		goto err_buffer_cleanup;
 > +		return ret;
-
-I'd drop the failed to register message and just
-return devm_iio_device_register(...);
-
-Most of the likely paths that can cause that to fail report errors anyway
-in the core code.
-
->  	}
 >  
-> -	return 0;
-> -err_init:
-> -	cm3323_disable(indio_dev);
+>  	return 0;
+>  
+> -err_buffer_cleanup:
+> -	iio_triggered_buffer_cleanup(indio_dev);
 > -	return ret;
 > -}
 > -
-> -static int cm3323_remove(struct i2c_client *client)
+> -static int am2315_remove(struct i2c_client *client)
 > -{
 > -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
 > -
 > -	iio_device_unregister(indio_dev);
-> -	cm3323_disable(indio_dev);
+> -	iio_triggered_buffer_cleanup(indio_dev);
 > -
->  	return 0;
+> -	return 0;
 >  }
 >  
-> @@ -276,7 +268,6 @@ static struct i2c_driver cm3323_driver = {
->  		.name = CM3323_DRV_NAME,
+>  static const struct i2c_device_id am2315_i2c_id[] = {
+> @@ -287,7 +275,6 @@ static struct i2c_driver am2315_driver = {
+>  		.acpi_match_table = ACPI_PTR(am2315_acpi_id),
 >  	},
->  	.probe		= cm3323_probe,
-> -	.remove		= cm3323_remove,
->  	.id_table	= cm3323_id,
+>  	.probe =            am2315_probe,
+> -	.remove =	    am2315_remove,
+>  	.id_table =         am2315_i2c_id,
 >  };
 >  
-> diff --git a/drivers/iio/light/si1145.c b/drivers/iio/light/si1145.c
-> index 6579d2418814..61867552b27c 100644
-> --- a/drivers/iio/light/si1145.c
-> +++ b/drivers/iio/light/si1145.c
-> @@ -1271,13 +1271,14 @@ static int si1145_probe_trigger(struct iio_dev *indio_dev)
->  	return 0;
->  }
->  
-> -static void si1145_remove_trigger(struct iio_dev *indio_dev)
-> +static void si1145_remove_trigger(void *data)
->  {
-> -	struct si1145_data *data = iio_priv(indio_dev);
-> +	struct iio_dev *indio_dev = data;
-> +	struct si1145_data *si_data = iio_priv(indio_dev);
->  
-> -	if (data->trig) {
-> -		iio_trigger_unregister(data->trig);
-> -		data->trig = NULL;
-> +	if (si_data->trig) {
-> +		iio_trigger_unregister(si_data->trig);
-
-This doesn't look right.  Why not use the devm trigger
-registration directly?
-
-> +		si_data->trig = NULL;
-
-I find it unlikely that we actually need to set this to
-NULL, but please check closely in the driver.
-The obvious path would be that the interrupt fired
-after the trigger was unregistered (shouldn't be possible
-unless something odd is going on), however there is no
-obviously signs of this being checked there.
-
-
->  	}
->  }
->  
-> @@ -1332,7 +1333,8 @@ static int si1145_probe(struct i2c_client *client,
->  	if (ret < 0)
->  		return ret;
+> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+> index 066e05f92081..5186fd9bfdc5 100644
+> --- a/drivers/iio/humidity/hdc100x.c
+> +++ b/drivers/iio/humidity/hdc100x.c
+> @@ -385,26 +385,17 @@ static int hdc100x_probe(struct i2c_client *client,
+>  	hdc100x_set_it_time(data, 1, hdc100x_int_time[1][0]);
+>  	hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE, 0);
 >  
 > -	ret = iio_triggered_buffer_setup(indio_dev, NULL,
 > +	ret = devm_iio_triggered_buffer_setup(&client->dev,
-> +		indio_dev, NULL,
->  		si1145_trigger_handler, &si1145_buffer_setup_ops);
->  	if (ret < 0)
+> +					 indio_dev, NULL,
+>  					 hdc100x_trigger_handler,
+>  					 &hdc_buffer_setup_ops);
+>  	if (ret < 0) {
+>  		dev_err(&client->dev, "iio triggered buffer setup failed\n");
 >  		return ret;
-> @@ -1340,23 +1342,21 @@ static int si1145_probe(struct i2c_client *client,
->  	if (client->irq) {
->  		ret = si1145_probe_trigger(indio_dev);
->  		if (ret < 0)
-> -			goto error_free_buffer;
-> +			return ret;
-> +
-> +		ret = devm_add_action_or_reset(&client->dev,
-> +					si1145_remove_trigger, indio_dev);
-> +		if (ret < 0)
-> +			return ret;
-> +
->  	} else {
->  		dev_info(&client->dev, "no irq, using polling\n");
 >  	}
->  
 > -	ret = iio_device_register(indio_dev);
 > +	ret = devm_iio_device_register(&client->dev, indio_dev);
 >  	if (ret < 0)
-> -		goto error_free_trigger;
-> +		return ret;
->  
->  	return 0;
-> -
-> -error_free_trigger:
-> -	si1145_remove_trigger(indio_dev);
-> -error_free_buffer:
-> -	iio_triggered_buffer_cleanup(indio_dev);
+> -		iio_triggered_buffer_cleanup(indio_dev);
 > -
 > -	return ret;
->  }
->  
->  static const struct i2c_device_id si1145_ids[] = {
-> @@ -1371,23 +1371,11 @@ static const struct i2c_device_id si1145_ids[] = {
->  };
->  MODULE_DEVICE_TABLE(i2c, si1145_ids);
->  
-> -static int si1145_remove(struct i2c_client *client)
+> -}
+> -
+> -static int hdc100x_remove(struct i2c_client *client)
 > -{
 > -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
 > -
 > -	iio_device_unregister(indio_dev);
-> -	si1145_remove_trigger(indio_dev);
 > -	iio_triggered_buffer_cleanup(indio_dev);
-> -
-> -	return 0;
-> -}
-> -
->  static struct i2c_driver si1145_driver = {
->  	.driver = {
->  		.name   = "si1145",
->  	},
->  	.probe  = si1145_probe,
-> -	.remove = si1145_remove,
->  	.id_table = si1145_ids,
->  };
+> +		return ret;
+return devm_iio_device_register(..);
+
+Note that this has come up several time.  If I had been you I would
+have sent these patches out slightly slower so that any feedback on
+the first 1 or 2 could be applied to the others and saved on rerolling
+the lot.
+
+It's easy enough for me to reply the same thing multiple times to short
+patches, but I'd not have bothered if it had been more substantial
+changes (and would have ranted rather more about this ;)
+
+Sadly, even the 'obvious' patches aren't always as simple as they seem.
 >  
+>  	return 0;
+>  }
+> @@ -436,7 +427,6 @@ static struct i2c_driver hdc100x_driver = {
+>  		.of_match_table = of_match_ptr(hdc100x_dt_ids),
+>  	},
+>  	.probe = hdc100x_probe,
+> -	.remove = hdc100x_remove,
+>  	.id_table = hdc100x_id,
+>  };
+>  module_i2c_driver(hdc100x_driver);
 

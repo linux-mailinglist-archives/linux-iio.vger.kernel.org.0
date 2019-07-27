@@ -2,37 +2,29 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AD8D77C01
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 23:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BEF77C0D
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 23:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725263AbfG0VXC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Jul 2019 17:23:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58016 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726404AbfG0VXC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 27 Jul 2019 17:23:02 -0400
+        id S1726307AbfG0V1S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Jul 2019 17:27:18 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:45714 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725280AbfG0V1S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Jul 2019 17:27:18 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0EDD420657;
-        Sat, 27 Jul 2019 21:22:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564262581;
-        bh=eh8OvF0VESRy2rOeDGmzPK+Ei3PaxUgCOoCB/2LnIxM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JSBd0EbAGBpSAAf+P0AQahA5ItTPm4Fsv2n8PmUg67G93Tbocml+GuPHHlxa3CUvS
-         1M8t7jXVKxW0aFUpP8r9PeQBvfj90rglE264D7IpWXewvSdiDEIQit2lzNmbwIfwLR
-         qLxbP6d1j1vVW4qcV4sqOMKIyl2vOESb8EGNGKGg=
-Date:   Sat, 27 Jul 2019 22:22:56 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: avia-hx711: Fix avdd-supply typo
- in example
-Message-ID: <20190727222256.2d451e82@archlinux>
-In-Reply-To: <20190716203324.12198-1-robh@kernel.org>
-References: <20190716203324.12198-1-robh@kernel.org>
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id D957B9E73DD;
+        Sat, 27 Jul 2019 22:27:16 +0100 (BST)
+Date:   Sat, 27 Jul 2019 22:27:15 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     Patrick Havelange <patrick.havelange@essensium.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] counter/ftm-quaddec: Use device-managed registration
+ API
+Message-ID: <20190727222702.736d91f7@archlinux>
+In-Reply-To: <20190726133916.26186-1-hslester96@gmail.com>
+References: <20190726133916.26186-1-hslester96@gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,47 +34,92 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 16 Jul 2019 14:33:23 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Fri, 26 Jul 2019 21:39:16 +0800
+Chuhong Yuan <hslester96@gmail.com> wrote:
 
-> Now that examples are validated against the DT schema, a typo in
-> avia-hx711 example generates a warning:
+> Make use of devm_counter_register.
+> Then we can remove redundant unregistration API
+> usage to make code simpler.
 > 
-> Documentation/devicetree/bindings/iio/adc/avia-hx711.example.dt.yaml: weight: 'avdd-supply' is a required property
-> 
-> Fix the typo.
-> 
-> Fixes: 5150ec3fe125 ("avia-hx711.yaml: transform DT binding to YAML")
-> Cc: Andreas Klinger <ak@it-klinger.de>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: linux-iio@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> Jonathan,
-> 
-> I have some other fixes I'm sending to Linus and can take these 2 if 
-> that's easier.
-> 
-> Rob
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 
-Thanks for dealing with these, I missed this thread entirely in my email
-whilst travelling / playing catch up.
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
+
+Thanks,
 
 Jonathan
+
+> ---
+> Changes in v2:
+>   - Use devm_add_action_or_reset to keep
+>     resource release order.
+>   - remove() function is redundant now,
+>     delete it.
 > 
->  Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/counter/ftm-quaddec.c | 30 ++++++++++++------------------
+>  1 file changed, 12 insertions(+), 18 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml b/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
-> index 8a4100ceeaf2..d76ece97c76c 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
-> @@ -61,6 +61,6 @@ examples:
->          compatible = "avia,hx711";
->          sck-gpios = <&gpio3 10 GPIO_ACTIVE_HIGH>;
->          dout-gpios = <&gpio0 7 GPIO_ACTIVE_HIGH>;
-> -        avdd-suppy = <&avdd>;
-> +        avdd-supply = <&avdd>;
->          clock-frequency = <100000>;
->      };
+> diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
+> index 68a9b7393457..4046aa9f9234 100644
+> --- a/drivers/counter/ftm-quaddec.c
+> +++ b/drivers/counter/ftm-quaddec.c
+> @@ -100,16 +100,18 @@ static void ftm_quaddec_init(struct ftm_quaddec *ftm)
+>  	ftm_set_write_protection(ftm);
+>  }
+>  
+> -static void ftm_quaddec_disable(struct ftm_quaddec *ftm)
+> +static void ftm_quaddec_disable(void *ftm)
+>  {
+> -	ftm_clear_write_protection(ftm);
+> -	ftm_write(ftm, FTM_MODE, 0);
+> -	ftm_write(ftm, FTM_QDCTRL, 0);
+> +	struct ftm_quaddec *ftm_qua = ftm;
+> +
+> +	ftm_clear_write_protection(ftm_qua);
+> +	ftm_write(ftm_qua, FTM_MODE, 0);
+> +	ftm_write(ftm_qua, FTM_QDCTRL, 0);
+>  	/*
+>  	 * This is enough to disable the counter. No clock has been
+>  	 * selected by writing to FTM_SC in init()
+>  	 */
+> -	ftm_set_write_protection(ftm);
+> +	ftm_set_write_protection(ftm_qua);
+>  }
+>  
+>  static int ftm_quaddec_get_prescaler(struct counter_device *counter,
+> @@ -317,20 +319,13 @@ static int ftm_quaddec_probe(struct platform_device *pdev)
+>  
+>  	ftm_quaddec_init(ftm);
+>  
+> -	ret = counter_register(&ftm->counter);
+> +	ret = devm_add_action_or_reset(&pdev->dev, ftm_quaddec_disable, ftm);
+>  	if (ret)
+> -		ftm_quaddec_disable(ftm);
+> -
+> -	return ret;
+> -}
+> +		return ret;
+>  
+> -static int ftm_quaddec_remove(struct platform_device *pdev)
+> -{
+> -	struct ftm_quaddec *ftm = platform_get_drvdata(pdev);
+> -
+> -	counter_unregister(&ftm->counter);
+> -
+> -	ftm_quaddec_disable(ftm);
+> +	ret = devm_counter_register(&pdev->dev, &ftm->counter);
+> +	if (ret)
+> +		return ret;
+>  
+>  	return 0;
+>  }
+> @@ -346,7 +341,6 @@ static struct platform_driver ftm_quaddec_driver = {
+>  		.of_match_table = ftm_quaddec_match,
+>  	},
+>  	.probe = ftm_quaddec_probe,
+> -	.remove = ftm_quaddec_remove,
+>  };
+>  
+>  module_platform_driver(ftm_quaddec_driver);
 

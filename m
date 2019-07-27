@@ -2,124 +2,278 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99BEF77C0D
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 23:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4554377C15
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 23:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726307AbfG0V1S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Jul 2019 17:27:18 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:45714 "EHLO
+        id S1726253AbfG0VcB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sat, 27 Jul 2019 17:32:01 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:45740 "EHLO
         saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725280AbfG0V1S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Jul 2019 17:27:18 -0400
+        with ESMTP id S1725280AbfG0VcB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Jul 2019 17:32:01 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id D957B9E73DD;
-        Sat, 27 Jul 2019 22:27:16 +0100 (BST)
-Date:   Sat, 27 Jul 2019 22:27:15 +0100
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 8CE479E6A7A;
+        Sat, 27 Jul 2019 22:31:59 +0100 (BST)
+Date:   Sat, 27 Jul 2019 22:31:58 +0100
 From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     Patrick Havelange <patrick.havelange@essensium.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] counter/ftm-quaddec: Use device-managed registration
- API
-Message-ID: <20190727222702.736d91f7@archlinux>
-In-Reply-To: <20190726133916.26186-1-hslester96@gmail.com>
-References: <20190726133916.26186-1-hslester96@gmail.com>
+To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: imu: mpu6050: add missing available scan masks
+Message-ID: <20190727223158.363646ea@archlinux>
+In-Reply-To: <MN2PR12MB3373EB934E21684C64201A02C4C90@MN2PR12MB3373.namprd12.prod.outlook.com>
+References: <20190627131918.19619-1-jmaneyrol@invensense.com>
+        <20190714182026.5edebf23@archlinux>
+        <MN2PR12MB3373EB934E21684C64201A02C4C90@MN2PR12MB3373.namprd12.prod.outlook.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 26 Jul 2019 21:39:16 +0800
-Chuhong Yuan <hslester96@gmail.com> wrote:
+On Wed, 17 Jul 2019 13:45:07 +0000
+Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
 
-> Make use of devm_counter_register.
-> Then we can remove redundant unregistration API
-> usage to make code simpler.
+> Hello Jonathan,
 > 
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> I am still not seeing this patch in the fixes-togreg branch or in the testing branch. Neither in the testing-fixes branch.
+> 
+> Is this expected?
+I've been in a bit of a mess due to travel etc, so
+more than possible I hadn't pushed it out as I should have
+done.
 
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to play with it.
+https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=fixes-togreg&id=1244a720572fd1680ac8d6b8a4235f2e8557b810
 
-Thanks,
+I didn't see this before I'd pushed out for Arnd's patch hence
+not sure if it was there before or not!
+
+Sorry about that,
 
 Jonathan
 
-> ---
-> Changes in v2:
->   - Use devm_add_action_or_reset to keep
->     resource release order.
->   - remove() function is redundant now,
->     delete it.
+
 > 
->  drivers/counter/ftm-quaddec.c | 30 ++++++++++++------------------
->  1 file changed, 12 insertions(+), 18 deletions(-)
+> Thanks for your response.
+> JB
 > 
-> diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
-> index 68a9b7393457..4046aa9f9234 100644
-> --- a/drivers/counter/ftm-quaddec.c
-> +++ b/drivers/counter/ftm-quaddec.c
-> @@ -100,16 +100,18 @@ static void ftm_quaddec_init(struct ftm_quaddec *ftm)
->  	ftm_set_write_protection(ftm);
->  }
->  
-> -static void ftm_quaddec_disable(struct ftm_quaddec *ftm)
-> +static void ftm_quaddec_disable(void *ftm)
->  {
-> -	ftm_clear_write_protection(ftm);
-> -	ftm_write(ftm, FTM_MODE, 0);
-> -	ftm_write(ftm, FTM_QDCTRL, 0);
-> +	struct ftm_quaddec *ftm_qua = ftm;
-> +
-> +	ftm_clear_write_protection(ftm_qua);
-> +	ftm_write(ftm_qua, FTM_MODE, 0);
-> +	ftm_write(ftm_qua, FTM_QDCTRL, 0);
->  	/*
->  	 * This is enough to disable the counter. No clock has been
->  	 * selected by writing to FTM_SC in init()
->  	 */
-> -	ftm_set_write_protection(ftm);
-> +	ftm_set_write_protection(ftm_qua);
->  }
->  
->  static int ftm_quaddec_get_prescaler(struct counter_device *counter,
-> @@ -317,20 +319,13 @@ static int ftm_quaddec_probe(struct platform_device *pdev)
->  
->  	ftm_quaddec_init(ftm);
->  
-> -	ret = counter_register(&ftm->counter);
-> +	ret = devm_add_action_or_reset(&pdev->dev, ftm_quaddec_disable, ftm);
->  	if (ret)
-> -		ftm_quaddec_disable(ftm);
-> -
-> -	return ret;
-> -}
-> +		return ret;
->  
-> -static int ftm_quaddec_remove(struct platform_device *pdev)
-> -{
-> -	struct ftm_quaddec *ftm = platform_get_drvdata(pdev);
-> -
-> -	counter_unregister(&ftm->counter);
-> -
-> -	ftm_quaddec_disable(ftm);
-> +	ret = devm_counter_register(&pdev->dev, &ftm->counter);
-> +	if (ret)
-> +		return ret;
->  
->  	return 0;
->  }
-> @@ -346,7 +341,6 @@ static struct platform_driver ftm_quaddec_driver = {
->  		.of_match_table = ftm_quaddec_match,
->  	},
->  	.probe = ftm_quaddec_probe,
-> -	.remove = ftm_quaddec_remove,
->  };
->  
->  module_platform_driver(ftm_quaddec_driver);
+> From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> on behalf of Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+> 
+> Sent: Sunday, July 14, 2019 19:20
+> 
+> To: Jean-Baptiste Maneyrol
+> 
+> Cc: linux-iio@vger.kernel.org; stable@vger.kernel.org
+> 
+> Subject: Re: [PATCH v2] iio: imu: mpu6050: add missing available scan masks
+> 
+>  
+> 
+> 
+>  CAUTION: This email originated from outside of the organization. Please make sure the sender is who they say they are and do not click links or open attachments unless you recognize the sender and know the content is safe.
+> 
+> 
+> 
+> On Thu, 27 Jun 2019 13:19:53 +0000
+> 
+> Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+> 
+> 
+> 
+> > Driver only supports 3-axis gyro and/or 3-axis accel.  
+> 
+> > For icm20602, temp data is mandatory for all configurations.  
+> 
+> >   
+> 
+> > Fix all single and double axis configurations (almost never used) and more  
+> 
+> > importantly fix 3-axis gyro and 6-axis accel+gyro buffer on icm20602 when  
+> 
+> > temp data is not enabled.  
+> 
+> >   
+> 
+> > Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>  
+> 
+> > Fixes: 1615fe41a195 ("iio: imu: mpu6050: Fix FIFO layout for ICM20602")  
+> 
+> Something odd happened in this email that meant my client saved it as garbage.
+> 
+> Oh well, cut and pasted worked ;)
+> 
+> 
+> 
+> Applied to the fixes-togreg branch of iio.git and marked for stable.
+> 
+> 
+> 
+> Thanks,
+> 
+> 
+> 
+> Jonathan
+> 
+> 
+> 
+> > ---  
+> 
+> > Changes in v2:  
+> 
+> >   - Use more explicit scan defines for masks  
+> 
+> >   
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 43 ++++++++++++++++++++++  
+> 
+> >  1 file changed, 43 insertions(+)  
+> 
+> >   
+> 
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c  
+> 
+> > index 385f14a4d5a7..66629c3adc21 100644  
+> 
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c  
+> 
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c  
+> 
+> > @@ -851,6 +851,25 @@ static const struct iio_chan_spec inv_mpu_channels[] = {  
+> 
+> >        INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_SCAN_ACCL_Z),  
+> 
+> >  };  
+> 
+> >    
+> 
+> > +static const unsigned long inv_mpu_scan_masks[] = {  
+> 
+> > +     /* 3-axis accel */  
+> 
+> > +     BIT(INV_MPU6050_SCAN_ACCL_X)  
+> 
+> > +             | BIT(INV_MPU6050_SCAN_ACCL_Y)  
+> 
+> > +             | BIT(INV_MPU6050_SCAN_ACCL_Z),  
+> 
+> > +     /* 3-axis gyro */  
+> 
+> > +     BIT(INV_MPU6050_SCAN_GYRO_X)  
+> 
+> > +             | BIT(INV_MPU6050_SCAN_GYRO_Y)  
+> 
+> > +             | BIT(INV_MPU6050_SCAN_GYRO_Z),  
+> 
+> > +     /* 6-axis accel + gyro */  
+> 
+> > +     BIT(INV_MPU6050_SCAN_ACCL_X)  
+> 
+> > +             | BIT(INV_MPU6050_SCAN_ACCL_Y)  
+> 
+> > +             | BIT(INV_MPU6050_SCAN_ACCL_Z)  
+> 
+> > +             | BIT(INV_MPU6050_SCAN_GYRO_X)  
+> 
+> > +             | BIT(INV_MPU6050_SCAN_GYRO_Y)  
+> 
+> > +             | BIT(INV_MPU6050_SCAN_GYRO_Z),  
+> 
+> > +     0,  
+> 
+> > +};  
+> 
+> > +  
+> 
+> >  static const struct iio_chan_spec inv_icm20602_channels[] = {  
+> 
+> >        IIO_CHAN_SOFT_TIMESTAMP(INV_ICM20602_SCAN_TIMESTAMP),  
+> 
+> >        {  
+> 
+> > @@ -877,6 +896,28 @@ static const struct iio_chan_spec inv_icm20602_channels[] = {  
+> 
+> >        INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_ICM20602_SCAN_ACCL_Z),  
+> 
+> >  };  
+> 
+> >    
+> 
+> > +static const unsigned long inv_icm20602_scan_masks[] = {  
+> 
+> > +     /* 3-axis accel + temp (mandatory) */  
+> 
+> > +     BIT(INV_ICM20602_SCAN_ACCL_X)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_ACCL_Y)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_ACCL_Z)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_TEMP),  
+> 
+> > +     /* 3-axis gyro + temp (mandatory) */  
+> 
+> > +     BIT(INV_ICM20602_SCAN_GYRO_X)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_GYRO_Y)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_GYRO_Z)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_TEMP),  
+> 
+> > +     /* 6-axis accel + gyro + temp (mandatory) */  
+> 
+> > +     BIT(INV_ICM20602_SCAN_ACCL_X)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_ACCL_Y)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_ACCL_Z)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_GYRO_X)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_GYRO_Y)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_GYRO_Z)  
+> 
+> > +             | BIT(INV_ICM20602_SCAN_TEMP),  
+> 
+> > +     0,  
+> 
+> > +};  
+> 
+> > +  
+> 
+> >  /*  
+> 
+> >   * The user can choose any frequency between INV_MPU6050_MIN_FIFO_RATE and  
+> 
+> >   * INV_MPU6050_MAX_FIFO_RATE, but only these frequencies are matched by the  
+> 
+> > @@ -1136,9 +1177,11 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,  
+> 
+> >        if (chip_type == INV_ICM20602) {  
+> 
+> >                indio_dev->channels = inv_icm20602_channels;  
+> 
+> >                indio_dev->num_channels = ARRAY_SIZE(inv_icm20602_channels);  
+> 
+> > +             indio_dev->available_scan_masks = inv_icm20602_scan_masks;  
+> 
+> >        } else {  
+> 
+> >                indio_dev->channels = inv_mpu_channels;  
+> 
+> >                indio_dev->num_channels = ARRAY_SIZE(inv_mpu_channels);  
+> 
+> > +             indio_dev->available_scan_masks = inv_mpu_scan_masks;  
+> 
+> >        }  
+> 
+> >    
+> 
+> >        indio_dev->info = &mpu_info;  
+> 
+> 
+> 
 

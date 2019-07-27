@@ -2,34 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2417277B9D
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 21:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27BF077BA3
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 21:56:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388078AbfG0Tsm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Jul 2019 15:48:42 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:45078 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387841AbfG0Tsm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Jul 2019 15:48:42 -0400
+        id S2388116AbfG0T4q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Jul 2019 15:56:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41766 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388004AbfG0T4q (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 27 Jul 2019 15:56:46 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 69FA69E774D;
-        Sat, 27 Jul 2019 20:48:39 +0100 (BST)
-Date:   Sat, 27 Jul 2019 20:48:36 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 1/4] dt-bindings: counter: new bindings for TI eQEP
-Message-ID: <20190727204836.1514265d@archlinux>
-In-Reply-To: <20190722154538.5314-2-david@lechnology.com>
-References: <20190722154538.5314-1-david@lechnology.com>
-        <20190722154538.5314-2-david@lechnology.com>
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C66272083B;
+        Sat, 27 Jul 2019 19:56:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564257405;
+        bh=CGf2yeOtB5OppLv91IleKJBexkBJqF5tbvujn6zHJ6k=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=aOv8MxEtvpMMK6M9IOLoVkGdCrLbYDJA0n3cbtmC0v8JNWULBbXiv5DWOGzJuU5UM
+         9C49qcxQyXzqd7k5IDK9sDkmDLAshGyJ/DWTtNhOZ3xrD6PM5NFFMB+yZHJ6lCijt2
+         azLW6f4v6MSYAcDPgyM48NZ8lNyLNrxbbgp/RWr4=
+Date:   Sat, 27 Jul 2019 20:56:40 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-i2c@vger.kernel.org, Kevin Tsai <ktsai@capellamicro.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] iio: light: cm36651: convert to
+ i2c_new_dummy_device
+Message-ID: <20190727205640.2686db5f@archlinux>
+In-Reply-To: <20190722172613.3890-2-wsa+renesas@sang-engineering.com>
+References: <20190722172613.3890-1-wsa+renesas@sang-engineering.com>
+        <20190722172613.3890-2-wsa+renesas@sang-engineering.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,50 +46,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 22 Jul 2019 10:45:35 -0500
-David Lechner <david@lechnology.com> wrote:
+On Mon, 22 Jul 2019 19:26:11 +0200
+Wolfram Sang <wsa+renesas@sang-engineering.com> wrote:
 
-> This documents device tree binding for the Texas Instruments Enhanced
-> Quadrature Encoder Pulse (eQEP) Module found in various TI SoCs.
+> Move from i2c_new_dummy() to i2c_new_dummy_device(), so we now get an
+> ERRPTR which we use in error handling.
 > 
-> Signed-off-by: David Lechner <david@lechnology.com>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Up to William given it is a counter binding, (unless Rob overrules)
-but new bindings are generally preferred as yaml.
+Hi,
 
-Content looks fine to me.
+Hmm. I've been rather busy recently so the IIO tree is based before this
+got introduced.
+
+Meh, it's early in the cycle so I'm just going to rebase and hope it
+doesn't cause anyone too much pain.  I suspect the number of people
+tracking my togreg branch is very small to 0.
+
+Applied to a rebase version of the togreg branch of iio.git and
+pushed out as testing for the autobuilders to poke at it.
 
 Thanks,
 
 Jonathan
 
+
 > ---
->  .../devicetree/bindings/counter/ti-eqep.txt    | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/counter/ti-eqep.txt
 > 
-> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.txt b/Documentation/devicetree/bindings/counter/ti-eqep.txt
-> new file mode 100644
-> index 000000000000..fbcebc2c2cc2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.txt
-> @@ -0,0 +1,18 @@
-> +Texas Instruments Enhanced Quadrature Encoder Pulse (eQEP) Module
-> +
-> +Required properties:
-> +- compatible:		Must be "ti,am3352-eqep".
-> +- reg:			Physical base address and size of the registers map.
-> +- clocks:		Handle to the PWM's functional clock.
-> +- clock-names:		Must be "fck".
-> +- interrupts:		Handle to the eQEP event interrupt
-> +
-> +Example:
-> +
-> +	eqep0: eqep@180 {
-> +		compatible = "ti,am3352-eqep";
-> +		reg = <0x180 0x80>;
-> +		clocks = <&l4ls_gclk>;
-> +		clock-names = "fck";
-> +		interrupts = <79>;
-> +	};
+> Generated with coccinelle. Build tested by me and buildbot. Not tested on HW.
+> 
+>  drivers/iio/light/cm36651.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/iio/light/cm36651.c b/drivers/iio/light/cm36651.c
+> index 7702c2bcbcfa..1019d625adb1 100644
+> --- a/drivers/iio/light/cm36651.c
+> +++ b/drivers/iio/light/cm36651.c
+> @@ -646,18 +646,18 @@ static int cm36651_probe(struct i2c_client *client,
+>  	i2c_set_clientdata(client, indio_dev);
+>  
+>  	cm36651->client = client;
+> -	cm36651->ps_client = i2c_new_dummy(client->adapter,
+> +	cm36651->ps_client = i2c_new_dummy_device(client->adapter,
+>  						     CM36651_I2C_ADDR_PS);
+> -	if (!cm36651->ps_client) {
+> +	if (IS_ERR(cm36651->ps_client)) {
+>  		dev_err(&client->dev, "%s: new i2c device failed\n", __func__);
+> -		ret = -ENODEV;
+> +		ret = PTR_ERR(cm36651->ps_client);
+>  		goto error_disable_reg;
+>  	}
+>  
+> -	cm36651->ara_client = i2c_new_dummy(client->adapter, CM36651_ARA);
+> -	if (!cm36651->ara_client) {
+> +	cm36651->ara_client = i2c_new_dummy_device(client->adapter, CM36651_ARA);
+> +	if (IS_ERR(cm36651->ara_client)) {
+>  		dev_err(&client->dev, "%s: new i2c device failed\n", __func__);
+> -		ret = -ENODEV;
+> +		ret = PTR_ERR(cm36651->ara_client);
+>  		goto error_i2c_unregister_ps;
+>  	}
+>  
 

@@ -2,35 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0F5377ABD
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 19:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 994A277AC1
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2019 19:27:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387814AbfG0RUw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Jul 2019 13:20:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35816 "EHLO mail.kernel.org"
+        id S2387899AbfG0R1Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Jul 2019 13:27:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37956 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387665AbfG0RUv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 27 Jul 2019 13:20:51 -0400
+        id S2387665AbfG0R1Q (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 27 Jul 2019 13:27:16 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BD1E32087C;
-        Sat, 27 Jul 2019 17:20:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5A0092083B;
+        Sat, 27 Jul 2019 17:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564248050;
-        bh=8DARoeGTUmpxxO7pWm5eZSLoaX3TmdO2TXyRi5cuXv0=;
+        s=default; t=1564248435;
+        bh=TgHbtdhceCuB6Z5ciNGix1YdP05JeK/vtR5Z63isVLo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=F2SK/llYzBc2MHFYZUas+E9dVadvElt4KDVIJQ5I9BoW8o8G0YyVcFDkWBUA8nwDu
-         9c1ZMkLE26VAC8Qgonqgnbp+4hEe3qZSN5z/jDwTc1pQYQazBJHEpUrsjmb8pM1Sqm
-         12JDSg2xhgh4eFks1ZBr59fPxXydgQNDO2/H4hd0=
-Date:   Sat, 27 Jul 2019 18:20:45 +0100
+        b=UpHUMlNRce5rXGhikWfLBpsNdcA/Ub+11QzYDBBseNNpcTmA3puzd6QvA+2JQq0lB
+         DxQOvy2FnEHdEVoD0uwnrx+r3NDmMwarVNntzw8MB1JyEvpe5mP/BWS/TDbQfNHXE2
+         GSaH9XTZOBNT38XOLttLVeWRBWNmDReikaG3xk1w=
+Date:   Sat, 27 Jul 2019 18:27:09 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: mxc4005: Use device-managed APIs
-Message-ID: <20190727182045.283fef07@archlinux>
-In-Reply-To: <20190726063616.11045-1-hslester96@gmail.com>
-References: <20190726063616.11045-1-hslester96@gmail.com>
+To:     Baolin Wang <baolin.wang@linaro.org>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        freeman.liu@unisoc.com, vincent.guittot@linaro.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: sc27xx: Change to polling mode to read data
+Message-ID: <20190727182709.037fc595@archlinux>
+In-Reply-To: <1870ea18729f93fb36694affaf7e9443733dd988.1564035575.git.baolin.wang@linaro.org>
+References: <1870ea18729f93fb36694affaf7e9443733dd988.1564035575.git.baolin.wang@linaro.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,107 +42,217 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 26 Jul 2019 14:36:16 +0800
-Chuhong Yuan <hslester96@gmail.com> wrote:
+On Thu, 25 Jul 2019 14:33:50 +0800
+Baolin Wang <baolin.wang@linaro.org> wrote:
 
-> Use device-managed APIs to simplify the code.
-> The remove function is redundant now and can
-> be deleted.
+> From: Freeman Liu <freeman.liu@unisoc.com>
 > 
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-Applied, with a similar change to the other patches I modified earlier.
+> On Spreadtrum platform, the headphone will read one ADC channel multiple
+> times to identify the headphone type, and the headphone identification is
+> sensitive of the ADC reading time. And we found it will take longer time
+> to reading ADC data by using interrupt mode comparing with the polling
+> mode, thus we should change to polling mode to improve the efficiency
+> of reading data, which can identify the headphone type successfully.
+> 
+> Signed-off-by: Freeman Liu <freeman.liu@unisoc.com>
+> Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+Hi,
+
+My concerns with this sort of approach is that we may be sacrificing power
+efficiency for some usecases to support one demanding one.
+
+The maximum sleep time is 1 second (I think) which is probably too long
+to poll a register for in general.
+
+Is there some way we can bound that time and perhaps switch between
+interrupt and polling modes depending on how long we expect to wait?
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/accel/mxc4005.c | 35 +++++++----------------------------
->  1 file changed, 7 insertions(+), 28 deletions(-)
+>  drivers/iio/adc/sc27xx_adc.c |   81 ++++++++++++++----------------------------
+>  1 file changed, 27 insertions(+), 54 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
-> index 637e6e676061..d8b999023ef2 100644
-> --- a/drivers/iio/accel/mxc4005.c
-> +++ b/drivers/iio/accel/mxc4005.c
-> @@ -424,7 +424,7 @@ static int mxc4005_probe(struct i2c_client *client,
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->info = &mxc4005_info;
+> diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
+> index f7f7a189..ea864290 100644
+> --- a/drivers/iio/adc/sc27xx_adc.c
+> +++ b/drivers/iio/adc/sc27xx_adc.c
+> @@ -3,7 +3,6 @@
 >  
-> -	ret = iio_triggered_buffer_setup(indio_dev,
-> +	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
->  					 iio_pollfunc_store_time,
->  					 mxc4005_trigger_handler,
->  					 NULL);
-> @@ -452,7 +452,7 @@ static int mxc4005_probe(struct i2c_client *client,
->  		if (ret) {
->  			dev_err(&client->dev,
->  				"failed to init threaded irq\n");
-> -			goto err_buffer_cleanup;
-> +			return ret;
->  		}
+>  #include <linux/hwspinlock.h>
+>  #include <linux/iio/iio.h>
+> -#include <linux/interrupt.h>
+>  #include <linux/module.h>
+>  #include <linux/nvmem-consumer.h>
+>  #include <linux/of.h>
+> @@ -46,14 +45,18 @@
+>  /* Bits definitions for SC27XX_ADC_INT_CLR registers */
+>  #define SC27XX_ADC_IRQ_CLR		BIT(0)
 >  
->  		data->dready_trig->dev.parent = &client->dev;
-> @@ -460,43 +460,23 @@ static int mxc4005_probe(struct i2c_client *client,
->  		iio_trigger_set_drvdata(data->dready_trig, indio_dev);
->  		indio_dev->trig = data->dready_trig;
->  		iio_trigger_get(indio_dev->trig);
-> -		ret = iio_trigger_register(data->dready_trig);
-> +		ret = devm_iio_trigger_register(&client->dev,
-> +						data->dready_trig);
->  		if (ret) {
->  			dev_err(&client->dev,
->  				"failed to register trigger\n");
-> -			goto err_trigger_unregister;
-> +			return ret;
->  		}
->  	}
+> +/* Bits definitions for SC27XX_ADC_INT_RAW registers */
+> +#define SC27XX_ADC_IRQ_RAW		BIT(0)
+> +
+>  /* Mask definition for SC27XX_ADC_DATA register */
+>  #define SC27XX_ADC_DATA_MASK		GENMASK(11, 0)
 >  
-> -	ret = iio_device_register(indio_dev);
-> +	ret = devm_iio_device_register(&client->dev, indio_dev);
->  	if (ret < 0) {
->  		dev_err(&client->dev,
->  			"unable to register iio device %d\n", ret);
-> -		goto err_buffer_cleanup;
-> +		return ret;
-I dropped the print out and tidied this up as
-return devm_iio_device_register();
+>  /* Timeout (ms) for the trylock of hardware spinlocks */
+>  #define SC27XX_ADC_HWLOCK_TIMEOUT	5000
+>  
+> -/* Timeout (ms) for ADC data conversion according to ADC datasheet */
+> -#define SC27XX_ADC_RDY_TIMEOUT		100
+> +/* Timeout (us) for ADC data conversion according to ADC datasheet */
+> +#define SC27XX_ADC_RDY_TIMEOUT		1000000
 
->  	}
+This is 10 x the value I think...
+
+> +#define SC27XX_ADC_POLL_RAW_STATUS	500
 >  
->  	return 0;
-> -
-> -err_trigger_unregister:
-> -	iio_trigger_unregister(data->dready_trig);
-> -err_buffer_cleanup:
-> -	iio_triggered_buffer_cleanup(indio_dev);
-> -
-> -	return ret;
-> -}
-> -
-> -static int mxc4005_remove(struct i2c_client *client)
-> -{
-> -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> -	struct mxc4005_data *data = iio_priv(indio_dev);
-> -
-> -	iio_device_unregister(indio_dev);
-> -
-> -	iio_triggered_buffer_cleanup(indio_dev);
-> -	if (data->dready_trig)
-> -		iio_trigger_unregister(data->dready_trig);
-> -
-> -	return 0;
->  }
->  
->  static const struct acpi_device_id mxc4005_acpi_match[] = {
-> @@ -517,7 +497,6 @@ static struct i2c_driver mxc4005_driver = {
->  		.acpi_match_table = ACPI_PTR(mxc4005_acpi_match),
->  	},
->  	.probe		= mxc4005_probe,
-> -	.remove		= mxc4005_remove,
->  	.id_table	= mxc4005_id,
+>  /* Maximum ADC channel number */
+>  #define SC27XX_ADC_CHANNEL_MAX		32
+> @@ -72,10 +75,8 @@ struct sc27xx_adc_data {
+>  	 * subsystems which will access the unique ADC controller.
+>  	 */
+>  	struct hwspinlock *hwlock;
+> -	struct completion completion;
+>  	int channel_scale[SC27XX_ADC_CHANNEL_MAX];
+>  	u32 base;
+> -	int value;
+>  	int irq;
 >  };
 >  
+> @@ -188,9 +189,7 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
+>  			   int scale, int *val)
+>  {
+>  	int ret;
+> -	u32 tmp;
+> -
+> -	reinit_completion(&data->completion);
+> +	u32 tmp, value, status;
+>  
+>  	ret = hwspin_lock_timeout_raw(data->hwlock, SC27XX_ADC_HWLOCK_TIMEOUT);
+>  	if (ret) {
+> @@ -203,6 +202,11 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
+>  	if (ret)
+>  		goto unlock_adc;
+>  
+> +	ret = regmap_update_bits(data->regmap, data->base + SC27XX_ADC_INT_CLR,
+> +				 SC27XX_ADC_IRQ_CLR, SC27XX_ADC_IRQ_CLR);
+> +	if (ret)
+> +		goto disable_adc;
+> +
+>  	/* Configure the channel id and scale */
+>  	tmp = (scale << SC27XX_ADC_SCALE_SHIFT) & SC27XX_ADC_SCALE_MASK;
+>  	tmp |= channel & SC27XX_ADC_CHN_ID_MASK;
+> @@ -226,15 +230,22 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
+>  	if (ret)
+>  		goto disable_adc;
+>  
+> -	ret = wait_for_completion_timeout(&data->completion,
+> -				msecs_to_jiffies(SC27XX_ADC_RDY_TIMEOUT));
+> -	if (!ret) {
+> -		dev_err(data->dev, "read ADC data timeout\n");
+> -		ret = -ETIMEDOUT;
+> -	} else {
+> -		ret = 0;
+> +	ret = regmap_read_poll_timeout(data->regmap,
+> +				       data->base + SC27XX_ADC_INT_RAW,
+> +				       status, (status & SC27XX_ADC_IRQ_RAW),
+> +				       SC27XX_ADC_POLL_RAW_STATUS,
+> +				       SC27XX_ADC_RDY_TIMEOUT);
+> +	if (ret) {
+> +		dev_err(data->dev, "read adc timeout, status = 0x%x\n", status);
+> +		goto disable_adc;
+>  	}
+>  
+> +	ret = regmap_read(data->regmap, data->base + SC27XX_ADC_DATA, &value);
+> +	if (ret)
+> +		goto disable_adc;
+> +
+> +	value &= SC27XX_ADC_DATA_MASK;
+> +
+>  disable_adc:
+>  	regmap_update_bits(data->regmap, data->base + SC27XX_ADC_CTL,
+>  			   SC27XX_ADC_EN, 0);
+> @@ -242,32 +253,11 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
+>  	hwspin_unlock_raw(data->hwlock);
+>  
+>  	if (!ret)
+> -		*val = data->value;
+> +		*val = value;
+>  
+>  	return ret;
+>  }
+>  
+> -static irqreturn_t sc27xx_adc_isr(int irq, void *dev_id)
+> -{
+> -	struct sc27xx_adc_data *data = dev_id;
+> -	int ret;
+> -
+> -	ret = regmap_update_bits(data->regmap, data->base + SC27XX_ADC_INT_CLR,
+> -				 SC27XX_ADC_IRQ_CLR, SC27XX_ADC_IRQ_CLR);
+> -	if (ret)
+> -		return IRQ_RETVAL(ret);
+> -
+> -	ret = regmap_read(data->regmap, data->base + SC27XX_ADC_DATA,
+> -			  &data->value);
+> -	if (ret)
+> -		return IRQ_RETVAL(ret);
+> -
+> -	data->value &= SC27XX_ADC_DATA_MASK;
+> -	complete(&data->completion);
+> -
+> -	return IRQ_HANDLED;
+> -}
+> -
+>  static void sc27xx_adc_volt_ratio(struct sc27xx_adc_data *data,
+>  				  int channel, int scale,
+>  				  u32 *div_numerator, u32 *div_denominator)
+> @@ -454,11 +444,6 @@ static int sc27xx_adc_enable(struct sc27xx_adc_data *data)
+>  	if (ret)
+>  		goto disable_adc;
+>  
+> -	ret = regmap_update_bits(data->regmap, data->base + SC27XX_ADC_INT_EN,
+> -				 SC27XX_ADC_IRQ_EN, SC27XX_ADC_IRQ_EN);
+> -	if (ret)
+> -		goto disable_clk;
+> -
+>  	/* ADC channel scales' calibration from nvmem device */
+>  	ret = sc27xx_adc_scale_calibration(data, true);
+>  	if (ret)
+> @@ -484,9 +469,6 @@ static void sc27xx_adc_disable(void *_data)
+>  {
+>  	struct sc27xx_adc_data *data = _data;
+>  
+> -	regmap_update_bits(data->regmap, data->base + SC27XX_ADC_INT_EN,
+> -			   SC27XX_ADC_IRQ_EN, 0);
+> -
+>  	/* Disable ADC work clock and controller clock */
+>  	regmap_update_bits(data->regmap, SC27XX_ARM_CLK_EN,
+>  			   SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN, 0);
+> @@ -553,7 +535,6 @@ static int sc27xx_adc_probe(struct platform_device *pdev)
+>  		return ret;
+>  	}
+>  
+> -	init_completion(&sc27xx_data->completion);
+>  	sc27xx_data->dev = &pdev->dev;
+>  
+>  	ret = sc27xx_adc_enable(sc27xx_data);
+> @@ -569,14 +550,6 @@ static int sc27xx_adc_probe(struct platform_device *pdev)
+>  		return ret;
+>  	}
+>  
+> -	ret = devm_request_threaded_irq(&pdev->dev, sc27xx_data->irq, NULL,
+> -					sc27xx_adc_isr, IRQF_ONESHOT,
+> -					pdev->name, sc27xx_data);
+> -	if (ret) {
+> -		dev_err(&pdev->dev, "failed to request ADC irq\n");
+> -		return ret;
+> -	}
+> -
+>  	indio_dev->dev.parent = &pdev->dev;
+>  	indio_dev->name = dev_name(&pdev->dev);
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
 

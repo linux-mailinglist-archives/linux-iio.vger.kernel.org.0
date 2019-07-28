@@ -2,126 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DA3677E83
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2019 09:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59E4877E92
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2019 10:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725880AbfG1H7F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Jul 2019 03:59:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50358 "EHLO mail.kernel.org"
+        id S1725961AbfG1Ibm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Jul 2019 04:31:42 -0400
+Received: from onstation.org ([52.200.56.107]:60198 "EHLO onstation.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725937AbfG1H7E (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 28 Jul 2019 03:59:04 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        id S1725880AbfG1Ibm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 28 Jul 2019 04:31:42 -0400
+Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EC9422085A;
-        Sun, 28 Jul 2019 07:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564300743;
-        bh=fycF8RP0WU9/NMk4CEpQiYWpTGtseQg109lSyQuWX+g=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DP5jcM6ghA252s4jw5KpnPb7oHKBYP0OL00XmPG5j/WzsNRN2XYSubEj+vZ9djxzG
-         DtG7KWxF5jZABowMVA3ffQOuBueEE1E461hFttQf28jYegyo7ldVz2JX4jNwRoW/wW
-         vmGAA1EW6afLWLOXvTO86SiJkRXjI0iI93VI3kqY=
-Date:   Sun, 28 Jul 2019 08:58:59 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Beniamin Bia <beniamin.bia@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <biabeniamin@outlook.com>
-Subject: Re: [PATCH 5/5] iio: adc: ad7606: Add debug mode for ad7616
-Message-ID: <20190728085859.2c5c2932@archlinux>
-In-Reply-To: <20190718062734.17306-5-beniamin.bia@analog.com>
-References: <20190718062734.17306-1-beniamin.bia@analog.com>
-        <20190718062734.17306-5-beniamin.bia@analog.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        (Authenticated sender: masneyb)
+        by onstation.org (Postfix) with ESMTPSA id 677C43E910;
+        Sun, 28 Jul 2019 08:31:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
+        s=default; t=1564302701;
+        bh=AWKgQKrrvDNiwarsZqzB/zOZ+odDStBIqipGpwB/cb4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PkPOV222FnMi9TEHjWgqDBD+keBEuoPt4lf5fkQ4rAdDytDHQRD4Qjhht+mslgDu8
+         WOHjytkf4k6+W31WEqzqs9aSb51JA2FG77lVTX6l+sgz0YlLv97+RCIPxLdUyHb0fh
+         QMhTQGSReBk/tNkwXFn8hftHOwOFKn7HJtOvmOlI=
+Date:   Sun, 28 Jul 2019 04:31:41 -0400
+From:   Brian Masney <masneyb@onstation.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Chuhong Yuan <hslester96@gmail.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: tsl2772: Use device-managed API
+Message-ID: <20190728083141.GA14194@onstation.org>
+References: <20190726123058.22915-1-hslester96@gmail.com>
+ <20190727125749.63297c28@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190727125749.63297c28@archlinux>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 18 Jul 2019 09:27:34 +0300
-Beniamin Bia <beniamin.bia@analog.com> wrote:
+On Sat, Jul 27, 2019 at 12:57:49PM +0100, Jonathan Cameron wrote:
+> On Fri, 26 Jul 2019 20:30:58 +0800
+> Chuhong Yuan <hslester96@gmail.com> wrote:
+> 
+> > Use devm_iio_device_register to simplify
+> > the code.
+> > 
+> > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> 
+> Please try to pick up on likely reviewers in your cc list.  In this case
+> Brian did a lot of work cleaning these drivers up so I've added him.
+> Not everyone keeps up with the linux-iio list for some reason ;)
+> 
+> Immediate thought was that you had broken the ordering but turns out
+> it is already buggy.
+> 
+> As things stand, we remove the userspace interfaces (iio_device_unregister)
+> after turning off the power.   This is obviously a bad idea and also
+> form a purely "obviously correct" stand point, we aren't doing the reverse
+> of probe.
+> 
+> So, I 'think' the right option is to reorder remove so that the power left
+> on until after the iio_device_unregister call. At that point, we can't
+> use devm_iio_device_register as we'll have the same incorrect ordering
+> we currently have.
+> 
+> Brian, you looked at this driver most recently.  Thoughts?
 
-> Support for register access was added for devices which have software
-> mode.
->=20
-> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-> Acked-by: Jonathan Cameron <jic23@kernel.org>
+devm_add_action() could be used in the probe function to schedule the call
+to tsl2772_chip_off(). That would eliminate the need for
+tsl2772_remove(). See tsl2772_disable_regulators_action() for an example in
+that driver.
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+Chuhong: Another potential cleanup to shrink the size of this driver is
+to move it over to the regulator_bulk_() API. I didn't realize that API
+existed at the time I introduced the regulator support. If you're
+interested in taking on that cleanup as well, I can test those changes
+for you if you don't have the hardware.
 
-Thanks,
+Brian
 
-Jonathan
 
-> ---
-> Changes in v2:
-> -nothing changed
->=20
->  drivers/iio/adc/ad7606.c | 33 ++++++++++++++++++++++++++++++++-
->  1 file changed, 32 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index be2330c8b277..ed2d08437e5d 100644
-> --- a/drivers/iio/adc/ad7606.c
-> +++ b/drivers/iio/adc/ad7606.c
-> @@ -60,6 +60,29 @@ static int ad7606_reset(struct ad7606_state *st)
->  	return -ENODEV;
->  }
-> =20
-> +static int ad7606_reg_access(struct iio_dev *indio_dev,
-> +			     unsigned int reg,
-> +			     unsigned int writeval,
-> +			     unsigned int *readval)
-> +{
-> +	struct ad7606_state *st =3D iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	if (readval) {
-> +		ret =3D st->bops->reg_read(st, reg);
-> +		if (ret < 0)
-> +			goto err_unlock;
-> +		*readval =3D ret;
-> +		ret =3D 0;
-> +	} else {
-> +		ret =3D st->bops->reg_write(st, reg, writeval);
-> +	}
-> +err_unlock:
-> +	mutex_unlock(&st->lock);
-> +	return ret;
-> +}
-> +
->  static int ad7606_read_samples(struct ad7606_state *st)
->  {
->  	unsigned int num =3D st->chip_info->num_channels;
-> @@ -501,6 +524,14 @@ static const struct iio_info ad7606_info_os_and_rang=
-e =3D {
->  	.validate_trigger =3D &ad7606_validate_trigger,
->  };
-> =20
-> +static const struct iio_info ad7606_info_os_range_and_debug =3D {
-> +	.read_raw =3D &ad7606_read_raw,
-> +	.write_raw =3D &ad7606_write_raw,
-> +	.debugfs_reg_access =3D &ad7606_reg_access,
-> +	.attrs =3D &ad7606_attribute_group_os_and_range,
-> +	.validate_trigger =3D &ad7606_validate_trigger,
-> +};
-> +
->  static const struct iio_info ad7606_info_os =3D {
->  	.read_raw =3D &ad7606_read_raw,
->  	.write_raw =3D &ad7606_write_raw,
-> @@ -617,7 +648,7 @@ int ad7606_probe(struct device *dev, int irq, void __=
-iomem *base_address,
-> =20
->  		/* After reset, in software mode, =C2=B110 V is set by default */
->  		memset32(st->range, 2, ARRAY_SIZE(st->range));
-> -		indio_dev->info =3D &ad7606_info_os_and_range;
-> +		indio_dev->info =3D &ad7606_info_os_range_and_debug;
-> =20
->  		ret =3D st->bops->sw_mode_config(indio_dev);
->  		if (ret < 0)
-
+> > ---
+> >  drivers/iio/light/tsl2772.c | 4 +---
+> >  1 file changed, 1 insertion(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
+> > index 83cece921843..aa5891d105e8 100644
+> > --- a/drivers/iio/light/tsl2772.c
+> > +++ b/drivers/iio/light/tsl2772.c
+> > @@ -1877,7 +1877,7 @@ static int tsl2772_probe(struct i2c_client *clientp,
+> >  	if (ret < 0)
+> >  		return ret;
+> >  
+> > -	ret = iio_device_register(indio_dev);
+> > +	ret = devm_iio_device_register(&clientp->dev, indio_dev);
+> >  	if (ret) {
+> >  		tsl2772_chip_off(indio_dev);
+> >  		dev_err(&clientp->dev,
+> > @@ -1928,8 +1928,6 @@ static int tsl2772_remove(struct i2c_client *client)
+> >  
+> >  	tsl2772_chip_off(indio_dev);
+> >  
+> > -	iio_device_unregister(indio_dev);
+> > -
+> >  	return 0;
+> >  }
+> >  

@@ -2,96 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B46C377EFF
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2019 12:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A248777FDE
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2019 16:36:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725985AbfG1KH6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Jul 2019 06:07:58 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:35695 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725961AbfG1KH6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Jul 2019 06:07:58 -0400
-Received: by mail-lf1-f66.google.com with SMTP id p197so39942669lfa.2
-        for <linux-iio@vger.kernel.org>; Sun, 28 Jul 2019 03:07:56 -0700 (PDT)
+        id S1726060AbfG1Ogo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Jul 2019 10:36:44 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:34233 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726043AbfG1Ogo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Jul 2019 10:36:44 -0400
+Received: by mail-pf1-f195.google.com with SMTP id b13so26693934pfo.1;
+        Sun, 28 Jul 2019 07:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0PdnB4+DVETsuhtxt6ZrOFlXGwuc4dLlLuSMGN0xrw8=;
-        b=SBZAHqGUVpiWTwyGhjgib6Ba8GdoI75a+L56oQjr43fm4qV2BFxftfLsMlqrqFn+EZ
-         5mdVWAT+B+VByU2CkAVFlJxxvpHFN2tm/Cpiyr9ulZVBOMGyg4Mud8P9Q1qJhxDA5erJ
-         ESRpyTBSFLBBgNZ8EmdPLcw7TcmuZ5dWXuz3D3WsZtikm9kKl6/8RjhBaq1cCXWLwNJC
-         0oeXcRF5K2vATaK9Ugac2PfqhBrPYXrWIHUet/CE+Vr5nKOkPJa6boOi9BLeiUzq1aHR
-         kRgfRj8FD4OEp9TxabCKtDhHabREwEel8ghVMku29geSLkfmp0y7XUSxiDDx3g46Hsz+
-         5YSg==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QZJfnNtysLiC4XTp1HgEs2uOITRSitKSTACuAECWVcc=;
+        b=PdE/BeuDhkkQ/xvsecAPIMZ4UdyFm+rsCgFHauyMVnVq846+tacytYU0OBH6qPAdQk
+         1gWb48/gzqRXMvJCzjJ9wDUYqwztDF6fqOweAabAZACnituMGk3gS4PN7ygriuO1oeGu
+         k4t+RQl3fuLfECODEoUJHk0G8s6aFAC3HYLY6LxBPPnIhEf3xqmTVfn51Apm58XqcLEd
+         zOm1uG8RN/zBdWbTWa42wYnj1e4p4ehHAfnHaVtEagLR0ByuIEWdIQAsHmjf+ff43Oyk
+         ejIUcAIuERlHq/zM0B+nOQFv97O0Ul6qBsGQFmDbBAqIX/kPSuR7my8pNKdQo5CiSohX
+         s8Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0PdnB4+DVETsuhtxt6ZrOFlXGwuc4dLlLuSMGN0xrw8=;
-        b=PJg0JH2Xtdbksd28QCA0DNGd5yxh3s5qvGuYXa4jnGqbZCFE/zmw9lhE+eUS+b9Nfg
-         ItJWlPTAsYFZRZWggAk1+CAKskRN0fnKm1/tQxNBYK6zjoEZHi8X4cIKkZDlm3vQFC0/
-         NPFIu/IU876lBYG+H75sYl4IebhoMqFi6vMreoyD6hGQC1kgw44Sb69ZuhHSa2gvOYxd
-         hTwVoDM78coz+mgKXIV7XFgZFFUc8KeYu389HM2bwIgfQOFOsJZ7kiPB485UfVKYtr9Z
-         drei1089vNSI1y5Pm1ZhAHDGbmJxONgjurn2W4211772h3/+59IJUO+Poc5jm+pi2lFI
-         CzgQ==
-X-Gm-Message-State: APjAAAVUNMOBGtiPb+xtg/j5h2eMOzDgr5T/2CWHI2UCExV7tGu36R+j
-        QKg959pyAZPvlJykEzrLGZrnov+Z5qFaoiNgENV5gg==
-X-Google-Smtp-Source: APXvYqzSNjt1lYKjURaRXuVncVRWOToNmhOfLXFnEo7r8V/3u9q15MPobypEm+Fc3TnK08e+rNVdVXdF65GrsXrVICo=
-X-Received: by 2002:ac2:4891:: with SMTP id x17mr50180412lfc.60.1564308476044;
- Sun, 28 Jul 2019 03:07:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1550768574.git.hns@goldelico.com> <32025b2a8ccc97cc01f8115ee962529eb5990f00.1550768574.git.hns@goldelico.com>
- <CACRpkdZ5Z9VY457Fywt6X=K5XONgiPVcwbwSkwL_U+GCqZ+u5g@mail.gmail.com>
- <4C901747-1657-47AD-A9D7-10E41AFB35CB@goldelico.com> <20190728085010.36040cb2@archlinux>
-In-Reply-To: <20190728085010.36040cb2@archlinux>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 28 Jul 2019 12:07:44 +0200
-Message-ID: <CACRpkdb1-d3mzJAs2AVdz3n8vWGy-cgajiTP4k=cJSqTsbgpeQ@mail.gmail.com>
-Subject: Re: [PATCH v2 02/10] iio: document bindings for mounting matrices
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Martin Kelly <mkelly@xevo.com>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Brian Masney <masneyb@onstation.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, Hartmut Knaack <knaack.h@gmx.de>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QZJfnNtysLiC4XTp1HgEs2uOITRSitKSTACuAECWVcc=;
+        b=ZWbXYzE+MPz7AwV9lEiYYPEwvRiStne8KJy2klpkeq/GdYi5DO08FiwuPGwc2WCh60
+         g4JhsV097lFCY6cL8AvLpYDSiP+jyO4d0l8S6wIztHyw3HBzw3I8awPkHw2YmMS5uP0x
+         A9tkOwVOwyhunI8hrXM0BJoD8YLGYE6CrkWRh65T8Wegz4IBOEXNAUfhjGA01Dg49LnP
+         9E1FpqI/XomPR7OkqiJbKv5XG5Pbc8/o2k93juCZJ/ZbfDXH0uTzi35vIaoPPmYPW0wn
+         JxeMJg6lXt7Z+VlAharrjUCiqNki09aOdlafGh5GKATUkw9hVTa/hzcxuDUMcBbzPEXO
+         4OqA==
+X-Gm-Message-State: APjAAAVa+stD8sx4OlU/W7gr2GoYB3H8lC0sMmRDxRW0VCJS4EdAnFwk
+        Bo2sgWHgfMwt0G93Zb1DRyQ=
+X-Google-Smtp-Source: APXvYqyDNA35DNBOOtNufPtgnsGS/a+jmEItkCvKrnOVXAwwEQleWYuTnyexXTtEWl4XmOadl+QxzA==
+X-Received: by 2002:a62:1ac8:: with SMTP id a191mr31944970pfa.164.1564324603830;
+        Sun, 28 Jul 2019 07:36:43 -0700 (PDT)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
+        by smtp.gmail.com with ESMTPSA id f27sm41786790pgm.60.2019.07.28.07.36.39
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sun, 28 Jul 2019 07:36:42 -0700 (PDT)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Kevin Tsai <ktsai@capellamicro.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Gregor Boirie <gregor.boirie@parrot.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Samu Onkalo <samu.onkalo@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH v2] iio: light: cm3323: Use device-managed APIs
+Date:   Sun, 28 Jul 2019 22:36:30 +0800
+Message-Id: <20190728143630.7620-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 28, 2019 at 9:50 AM Jonathan Cameron <jic23@kernel.org> wrote:
+Use device-managed APIs to simplify the code.
+The remove functions are redundant now and can
+be deleted.
 
-> Given the comments that 'need' any response are fairly minor, I've just
-> taken the view that the perfect is the enemy of the good and applied
-> it to the togreg branch of iio.git with some really small tweaks.
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+Changes in v2:
+  - Split v1 into two patches.
+  - Drop the failed to register message and just
+    return devm_iio_register.
 
-Oh that works, too :) whoever is most annoyed will get to fix any
-remaining offenders.
+ drivers/iio/light/cm3323.c | 33 +++++++++------------------------
+ 1 file changed, 9 insertions(+), 24 deletions(-)
 
-The quality of documentation really depends on perspective.
-This weekend I read some old UNIX System V manuals
-and this was "extremly professional" documentation at one
-point. It wasn't very good. I think we're pretty well off with what
-we have here.
+diff --git a/drivers/iio/light/cm3323.c b/drivers/iio/light/cm3323.c
+index 50f3438c2b49..0443861ba1ec 100644
+--- a/drivers/iio/light/cm3323.c
++++ b/drivers/iio/light/cm3323.c
+@@ -101,15 +101,16 @@ static int cm3323_init(struct iio_dev *indio_dev)
+ 	return 0;
+ }
+ 
+-static void cm3323_disable(struct iio_dev *indio_dev)
++static void cm3323_disable(void *data)
+ {
+ 	int ret;
+-	struct cm3323_data *data = iio_priv(indio_dev);
++	struct iio_dev *indio_dev = data;
++	struct cm3323_data *cm_data = iio_priv(indio_dev);
+ 
+-	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF,
++	ret = i2c_smbus_write_word_data(cm_data->client, CM3323_CMD_CONF,
+ 					CM3323_CONF_SD_BIT);
+ 	if (ret < 0)
+-		dev_err(&data->client->dev, "Error writing reg_conf\n");
++		dev_err(&cm_data->client->dev, "Error writing reg_conf\n");
+ }
+ 
+ static int cm3323_set_it_bits(struct cm3323_data *data, int val, int val2)
+@@ -243,26 +244,11 @@ static int cm3323_probe(struct i2c_client *client,
+ 		return ret;
+ 	}
+ 
+-	ret = iio_device_register(indio_dev);
+-	if (ret < 0) {
+-		dev_err(&client->dev, "failed to register iio dev\n");
+-		goto err_init;
+-	}
+-
+-	return 0;
+-err_init:
+-	cm3323_disable(indio_dev);
+-	return ret;
+-}
+-
+-static int cm3323_remove(struct i2c_client *client)
+-{
+-	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+-
+-	iio_device_unregister(indio_dev);
+-	cm3323_disable(indio_dev);
++	ret = devm_add_action_or_reset(&client->dev, cm3323_disable, indio_dev);
++	if (ret < 0)
++		return ret;
+ 
+-	return 0;
++	return devm_iio_device_register(&client->dev, indio_dev);
+ }
+ 
+ static const struct i2c_device_id cm3323_id[] = {
+@@ -276,7 +262,6 @@ static struct i2c_driver cm3323_driver = {
+ 		.name = CM3323_DRV_NAME,
+ 	},
+ 	.probe		= cm3323_probe,
+-	.remove		= cm3323_remove,
+ 	.id_table	= cm3323_id,
+ };
+ 
+-- 
+2.20.1
 
-Yours,
-Linus Walleij

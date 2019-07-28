@@ -2,83 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B01A7803F
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2019 17:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68FCC78050
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2019 17:43:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726099AbfG1Piq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Jul 2019 11:38:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47772 "EHLO mail.kernel.org"
+        id S1726173AbfG1PnO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Jul 2019 11:43:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48952 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726082AbfG1Pip (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 28 Jul 2019 11:38:45 -0400
+        id S1726067AbfG1PnO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 28 Jul 2019 11:43:14 -0400
 Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B2D022075E;
-        Sun, 28 Jul 2019 15:38:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 223A92075E;
+        Sun, 28 Jul 2019 15:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564328325;
-        bh=2O8OS/mVeg0GkWhVKPx2kspWI8Wf5ayhG+FJwWamPos=;
+        s=default; t=1564328593;
+        bh=Dq6QoeL4ezr8ZMXAdrLCOVGLtVrBtn6BM2sBUdeCB9g=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KPFxmdKq/aklh/bQD5Y0muvUgMwaI5iVrTVwscrhmrMJ+zjqVPUCL3aBQGABCNrPq
-         30+BhEBXK1aL7FexsCzazWsvnXbV3ViNYIF3WW2PzWM7XiTwpB68Z2avoOfyZyENgR
-         dk7gpoRGh2pQnQ8wIhrHV93gxqAo7G2DtYffvhQU=
-Date:   Sun, 28 Jul 2019 11:38:43 -0400
+        b=2kdhgneqNrndEjMHQ3ivzAHCizetTNGmYiQIwcSITKs2WTjP+ILuQ9/pel/OXx6Rt
+         OwJnWAX+HFTWIHiVG3tcBp0h1vR+g1TDDlagOmRjDJql7F72S5NrUMMWnxqu9diIj3
+         EOYumr0qVw7XimeNyd4sEZ6y56M4/9vX1TamnLls=
+Date:   Sun, 28 Jul 2019 11:43:12 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Young Xiao <92siuyang@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 4.14 19/60] iio:core: Fix bug in length of event
- info_mask and catch unhandled bits set in masks.
-Message-ID: <20190728153843.GH8637@sasha-vm>
-References: <20190719041109.18262-1-sashal@kernel.org>
- <20190719041109.18262-19-sashal@kernel.org>
- <20190721182643.3fd0515b@archlinux>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "jic23@kernel.org" <jic23@kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "denis.ciocca@st.com" <denis.ciocca@st.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH AUTOSEL 4.4 17/35] iio: st_accel: fix
+ iio_triggered_buffer_{pre,post}enable positions
+Message-ID: <20190728154312.GJ8637@sasha-vm>
+References: <20190719041423.19322-1-sashal@kernel.org>
+ <20190719041423.19322-17-sashal@kernel.org>
+ <20190721182256.70ab6692@archlinux>
+ <1fcd1ef5f55de84c2b8c58492cd5fac9b8acf7ee.camel@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20190721182643.3fd0515b@archlinux>
+In-Reply-To: <1fcd1ef5f55de84c2b8c58492cd5fac9b8acf7ee.camel@analog.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 21, 2019 at 06:27:02PM +0100, Jonathan Cameron wrote:
->On Fri, 19 Jul 2019 00:10:28 -0400
->Sasha Levin <sashal@kernel.org> wrote:
->
->> From: Young Xiao <92siuyang@gmail.com>
+On Mon, Jul 22, 2019 at 06:47:47AM +0000, Ardelean, Alexandru wrote:
+>On Sun, 2019-07-21 at 18:23 +0100, Jonathan Cameron wrote:
+>> [External]
 >>
->> [ Upstream commit 936d3e536dcf88ce80d27bdb637009b13dba6d8c ]
+>> On Fri, 19 Jul 2019 00:14:05 -0400
+>> Sasha Levin <sashal@kernel.org> wrote:
 >>
->> The incorrect limit for the for_each_set_bit loop was noticed whilst fixing
->> this other case.  Note that as we only have 3 possible entries a the moment
->> and the value was set to 4, the bug would not have any effect currently.
->> It will bite fairly soon though, so best fix it now.
+>> > From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+>> >
+>> > [ Upstream commit 05b8bcc96278c9ef927a6f25a98e233e55de42e1 ]
+>> >
+>> > The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+>> > the poll functions.
+>> >
+>> > For the predisable hook, the disable code should occur before detaching
+>> > the poll func, and for the postenable hook, the poll func should be
+>> > attached before the enable code.
+>> >
+>> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+>> > Acked-by: Denis Ciocca <denis.ciocca@st.com>
+>> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> Hi Sasha,
 >>
->> See commit ef4b4856593f ("iio:core: Fix bug in length of event info_mask and
->> catch unhandled bits set in masks.") for details.
+>> This should do any harm, but I deliberately didn't cc stable on
+>> this one.
 >>
->> Signed-off-by: Young Xiao <92siuyang@gmail.com>
->> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
->> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> Alex, my assumption on this one is that it was fixing a logical
+>> ordering problem, but one that had no visible impact.
+>> Whilst the pollfunc will be attached too early, the trigger
+>> will be disabled for the whole of this function anyway so
+>> it shouldn't cause any visible problem.  Is that a correct interpretation?
 >
->As the patch states, this bug doesn't have any impact.  It would only
->be triggered by a buggy driver setting a bit in that mask that makes no
->sense.
+>Yes.
+>That is correct.
 >
->So it's good to fix in upstream, but debatable if it's worth porting back
->to stable.
->
->I don't have a strong opinion on this one and again, it should do no
->harm.
+>Maybe I'll change the commit title format so that there is no confusion.
+>It's a fix, but not in the sense that something was broken.
+>Just something that is the realm of cleaning up.
 
-I'll drop it then, thanks!
+I'll drop it from the queue, thanks!
 
 --
 Thanks,

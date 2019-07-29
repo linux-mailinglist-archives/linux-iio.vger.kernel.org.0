@@ -2,163 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A3578389
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2019 05:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2707864C
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2019 09:23:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726150AbfG2DDP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Jul 2019 23:03:15 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:40247 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725681AbfG2DDN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Jul 2019 23:03:13 -0400
-Received: by mail-ed1-f67.google.com with SMTP id k8so57934494eds.7;
-        Sun, 28 Jul 2019 20:03:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=fXVvE8jAIC1NNZIfikHDR/1QE5dXSm7MFMLRP9/brXQ=;
-        b=P1CWbXcBwor5hFfN6eM0+AZeIpRuigARlpWFs0jelf9IA36v5ICoIlMCwgXaWmDvR3
-         /QiTkrYUa1MEMIP8Q0hsBw9fZDe5/zr1BkIhoMXo+tLCEBSgTPqlT9jRmInlLb1z4RZ/
-         slc8QwWFz4/T7l4QyY9jTsP19d/g7cRQ+Eh9aT8PsEEQYIKyXAEZKJ8KBlSCUOdkfryn
-         FpxQ+HkX/qhvxC67cK9Z6n8LC7ebtmVP9ZxHcra2IziDVfBLEit6D+hPX9KmGOA7VeCQ
-         rxKfQQIAyhmHk8S1iR7dSCNhUkCemuGkg0f3njn5YR0+7yUTPZ4nVRRsxNCZNjt6v445
-         FDaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=fXVvE8jAIC1NNZIfikHDR/1QE5dXSm7MFMLRP9/brXQ=;
-        b=HK26qDV1Vjikk3M8Cjokwf5tLFwyQJt9EFhWAcv5bXjJ+aW96fZXpdZyrCke1tN0Gu
-         wNx3gBWiT6NL6tp5TzwdSTQPFGdOXpP7gMZbzEO8EfjyJQTZO5bwikJL/MBmrpCRti43
-         obK6p6bTDUiEds0IeKj3AahQhftjiw/+oT80r8f9c1nTH4gXV1e77tmtJzRW6lPKLg3y
-         nErSYQBOL2oLDpNis65h5CCQY7rQoKe+4EUTPQYYb+fKFLYRfeHi1bxxh9FP/9mfUYaT
-         efQAGiQWCITpFG3foiouHU2lj0Nmrfd2i4Ss8xs97GbyA+hounfP1V1rqiRlVDLcnoy6
-         n5dw==
-X-Gm-Message-State: APjAAAXCTCeOsSLzd9xcqgj+spVH73R0emIBemHgudT28XcSBkS7K81s
-        ZzwyD+V0S+cEMLpVzEv9LfponBdnU9ByguMuGfE=
-X-Google-Smtp-Source: APXvYqztZbNHWBjSUVnHMw4zUWMdTxfXHtkbV4nwpJQsA4Cbwma358T7+XXK91et5uMJwGA2a51svvZGHt8E4wrdLtA=
-X-Received: by 2002:a17:906:8317:: with SMTP id j23mr69799975ejx.51.1564369391203;
- Sun, 28 Jul 2019 20:03:11 -0700 (PDT)
+        id S1726048AbfG2HXm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Jul 2019 03:23:42 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:38988 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725917AbfG2HXm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Jul 2019 03:23:42 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6T7GbUO017808;
+        Mon, 29 Jul 2019 09:23:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=knB1CFf+dV5YYBti2FACI1fBFDRzZJ7xPVnkJzKHsnw=;
+ b=vF21dSF/PU8U7f7SbGvtjtdeSN+ptbef8kPnk+134RREY8U9s9kwdEFIauzD3qkRPYJf
+ aLJwaGsAOlR+vL0bzGOfOK4VgPqFFCsOlbar4SxW9kC5XJSsm4KMRy0pM0S7vmzXke4h
+ +r0cazmiUUD0kKVceMGb+QKcsgOWIYN9vGTQ+WwRwJNmkRhBR8pEdQVxTx8LYzhUMxrh
+ Gz9W+F+cEgtAfmFWV8ozPzQbAAM8UkQ/cVpdRzUEf3gJztwKlxGEqzHy2vtvKMp+MpUZ
+ q8iXCUU0wUVlODhzGr+Rq5US6v/ycIAZ1xPn1U2+PL0oi/Gacod75c1gFnNLC9jOrSW8 Kw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2u0dggtn0k-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Mon, 29 Jul 2019 09:23:10 +0200
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 376CD34;
+        Mon, 29 Jul 2019 07:23:08 +0000 (GMT)
+Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id F2CD456C5;
+        Mon, 29 Jul 2019 07:23:07 +0000 (GMT)
+Received: from lmecxl0912.lme.st.com (10.75.127.51) by SFHDAG3NODE2.st.com
+ (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon, 29 Jul
+ 2019 09:23:07 +0200
+Subject: Re: [PATCH v2 3/3] ARM: dts: stm32: add syscfg to ADC on stm32mp157c
+To:     Fabrice Gasnier <fabrice.gasnier@st.com>, <jic23@kernel.org>,
+        <robh+dt@kernel.org>
+CC:     <mark.rutland@arm.com>, <mcoquelin.stm32@gmail.com>,
+        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <1562148496-26789-1-git-send-email-fabrice.gasnier@st.com>
+ <1562148496-26789-4-git-send-email-fabrice.gasnier@st.com>
+From:   Alexandre Torgue <alexandre.torgue@st.com>
+Message-ID: <0687ec4c-0930-058d-4a55-c4cf712ab83c@st.com>
+Date:   Mon, 29 Jul 2019 09:23:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20190726123058.22915-1-hslester96@gmail.com> <20190727125749.63297c28@archlinux>
- <20190728083141.GA14194@onstation.org>
-In-Reply-To: <20190728083141.GA14194@onstation.org>
-From:   Chuhong Yuan <hslester96@gmail.com>
-Date:   Mon, 29 Jul 2019 11:03:00 +0800
-Message-ID: <CANhBUQ3QiV1mPD6p+AROv6YnK+1CB5voVAHKbmzueUWc7P6vcQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: tsl2772: Use device-managed API
-To:     Brian Masney <masneyb@onstation.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1562148496-26789-4-git-send-email-fabrice.gasnier@st.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.51]
+X-ClientProxiedBy: SFHDAG8NODE1.st.com (10.75.127.22) To SFHDAG3NODE2.st.com
+ (10.75.127.8)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-29_04:,,
+ signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Brian Masney <masneyb@onstation.org> =E4=BA=8E2019=E5=B9=B47=E6=9C=8828=E6=
-=97=A5=E5=91=A8=E6=97=A5 =E4=B8=8B=E5=8D=884:31=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Sat, Jul 27, 2019 at 12:57:49PM +0100, Jonathan Cameron wrote:
-> > On Fri, 26 Jul 2019 20:30:58 +0800
-> > Chuhong Yuan <hslester96@gmail.com> wrote:
-> >
-> > > Use devm_iio_device_register to simplify
-> > > the code.
-> > >
-> > > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> >
-> > Please try to pick up on likely reviewers in your cc list.  In this cas=
-e
-> > Brian did a lot of work cleaning these drivers up so I've added him.
-> > Not everyone keeps up with the linux-iio list for some reason ;)
-> >
-> > Immediate thought was that you had broken the ordering but turns out
-> > it is already buggy.
-> >
-> > As things stand, we remove the userspace interfaces (iio_device_unregis=
-ter)
-> > after turning off the power.   This is obviously a bad idea and also
-> > form a purely "obviously correct" stand point, we aren't doing the reve=
-rse
-> > of probe.
-> >
-> > So, I 'think' the right option is to reorder remove so that the power l=
-eft
-> > on until after the iio_device_unregister call. At that point, we can't
-> > use devm_iio_device_register as we'll have the same incorrect ordering
-> > we currently have.
-> >
-> > Brian, you looked at this driver most recently.  Thoughts?
->
-> devm_add_action() could be used in the probe function to schedule the cal=
-l
-> to tsl2772_chip_off(). That would eliminate the need for
-> tsl2772_remove(). See tsl2772_disable_regulators_action() for an example =
-in
-> that driver.
->
+Hi fabrice
 
-I find that we can use devm_add_action_or_reset() for
-tsl2772_disable_regulators_action() to eliminate the fault handling code.
+On 7/3/19 12:08 PM, Fabrice Gasnier wrote:
+> On stm32mp157c, the ADC inputs are multiplexed with analog switches which
+> have reduced performances when their supply is below 2.7V (vdda by
+> default).
+> Add syscfg registers that can be used on stm32mp157c, to get full ADC
+> analog performances.
+> 
+> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+> ---
+>   arch/arm/boot/dts/stm32mp157c.dtsi | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm/boot/dts/stm32mp157c.dtsi b/arch/arm/boot/dts/stm32mp157c.dtsi
+> index 2dd5162..b9a5b58 100644
+> --- a/arch/arm/boot/dts/stm32mp157c.dtsi
+> +++ b/arch/arm/boot/dts/stm32mp157c.dtsi
+> @@ -862,6 +862,7 @@
+>   			clocks = <&rcc ADC12>, <&rcc ADC12_K>;
+>   			clock-names = "bus", "adc";
+>   			interrupt-controller;
+> +			st,syscfg = <&syscfg>;
+>   			#interrupt-cells = <1>;
+>   			#address-cells = <1>;
+>   			#size-cells = <0>;
+> 
 
-I am not sure whether devm_add_action() can be used for
-tsl2772_chip_off() because it returns an integer, not void.
-And the return value is used in several functions.
 
-> Chuhong: Another potential cleanup to shrink the size of this driver is
-> to move it over to the regulator_bulk_() API. I didn't realize that API
-> existed at the time I introduced the regulator support. If you're
-> interested in taking on that cleanup as well, I can test those changes
-> for you if you don't have the hardware.
->
-> Brian
->
+Applied on stm32-next.
 
-Does that mean merging vdd_supply and vddio_supply to an array of
-regulator_bulk_data and utilize regulator_bulk_() API to operate them
-together?
-If so, I can do that cleanup in next version.
-
-I have an additional question that I find regulator_disable() is used in th=
-e
-end of many .remove functions of drivers, which hinders us to use devm
-functions.
-One example is drivers/iio/light/gp2ap020a00f.c.
-Is there any solution to this problem?
-
-Regards,
-Chuhong
-
->
-> > > ---
-> > >  drivers/iio/light/tsl2772.c | 4 +---
-> > >  1 file changed, 1 insertion(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.=
-c
-> > > index 83cece921843..aa5891d105e8 100644
-> > > --- a/drivers/iio/light/tsl2772.c
-> > > +++ b/drivers/iio/light/tsl2772.c
-> > > @@ -1877,7 +1877,7 @@ static int tsl2772_probe(struct i2c_client *cli=
-entp,
-> > >     if (ret < 0)
-> > >             return ret;
-> > >
-> > > -   ret =3D iio_device_register(indio_dev);
-> > > +   ret =3D devm_iio_device_register(&clientp->dev, indio_dev);
-> > >     if (ret) {
-> > >             tsl2772_chip_off(indio_dev);
-> > >             dev_err(&clientp->dev,
-> > > @@ -1928,8 +1928,6 @@ static int tsl2772_remove(struct i2c_client *cl=
-ient)
-> > >
-> > >     tsl2772_chip_off(indio_dev);
-> > >
-> > > -   iio_device_unregister(indio_dev);
-> > > -
-> > >     return 0;
-> > >  }
-> > >
+Thanks.
+Alex

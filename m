@@ -2,254 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92AC4793B4
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2019 21:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E914E79B81
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2019 23:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729364AbfG2TXB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Jul 2019 15:23:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35792 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725938AbfG2TXB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 29 Jul 2019 15:23:01 -0400
-Received: from lore-desk-wlan.lan (unknown [151.66.59.187])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A4E562070B;
-        Mon, 29 Jul 2019 19:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564428179;
-        bh=TRj/ssDcMSVFt6+u8XPqJCyyT0IJhKAhELwFvT07pQ8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pP7FsePRKZfYIbTxCTPh89POOiqs7+9b9rA3Y+ijAVhSxPssdhb9rnWwf6ZfcoQfe
-         JGqAayhMqLrmhrC5Nn0EEqEO2Yya+EetyI4mFSb53yIAeSNE7wYjwIbjy349YdajbU
-         vo2uDjeQczvVXWtgK2qmyMtW/3UbGhq4Gv4RhJ18=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org,
-        martin.kepplinger@puri.sm
-Subject: [PATCH v2 4/4] iio: imu: st_lsm6dsx: move iio chan definitions in st_lsm6dsx_sensor_settings
-Date:   Mon, 29 Jul 2019 21:22:31 +0200
-Message-Id: <f4adc084ad92c1c31c2ed9cc748321c29e457c1c.1564427804.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1564427804.git.lorenzo@kernel.org>
-References: <cover.1564427804.git.lorenzo@kernel.org>
+        id S1727714AbfG2VvB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Jul 2019 17:51:01 -0400
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:60255 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727129AbfG2VvA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Jul 2019 17:51:00 -0400
+X-Originating-IP: 37.176.111.81
+Received: from uno.localdomain (mob-37-176-111-81.net.vodafone.it [37.176.111.81])
+        (Authenticated sender: jacopo@jmondi.org)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 9443C20005;
+        Mon, 29 Jul 2019 21:50:56 +0000 (UTC)
+Date:   Mon, 29 Jul 2019 23:52:14 +0200
+From:   Jacopo Mondi <jacopo@jmondi.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 04/12] iio: adc: max9611: Fix misuse of GENMASK macro
+Message-ID: <20190729215214.eueitve4tfxmqer3@uno.localdomain>
+References: <cover.1562734889.git.joe@perches.com>
+ <2929234bd4ecec41c0d012edc52416ef80f3e368.1562734889.git.joe@perches.com>
+ <20190714125403.0789dc9e@archlinux>
+ <b3744e64b22de98bfe8885f76811d4fc7e41b8eb.camel@perches.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="bspti6iz3s7zaaw6"
+Content-Disposition: inline
+In-Reply-To: <b3744e64b22de98bfe8885f76811d4fc7e41b8eb.camel@perches.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Move IIO channel definitions in st_lsm6dsx_sensor_settings in order to
-support sensors with different channels maps.
-This is a preliminary patch to add support for LSM9DS1 sensor to
-st_lsm6dsx driver.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  5 +
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 96 ++++++++++++++++----
- 2 files changed, 81 insertions(+), 20 deletions(-)
+--bspti6iz3s7zaaw6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index ab1c66615d67..5090f1b3525a 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -200,6 +200,7 @@ struct st_lsm6dsx_ext_dev_settings {
-  * @wai: Sensor WhoAmI default value.
-  * @max_fifo_size: Sensor max fifo length in FIFO words.
-  * @id: List of hw id/device name supported by the driver configuration.
-+ * @channels: IIO channels supported by the device.
-  * @odr_table: Hw sensors odr table (Hz + val).
-  * @fs_table: Hw sensors gain table (gain + val).
-  * @decimator: List of decimator register info (addr + mask).
-@@ -215,6 +216,10 @@ struct st_lsm6dsx_settings {
- 		enum st_lsm6dsx_hw_id hw_id;
- 		const char *name;
- 	} id[ST_LSM6DSX_MAX_ID];
-+	struct {
-+		const struct iio_chan_spec *chan;
-+		int len;
-+	} channels[2];
- 	struct st_lsm6dsx_odr_table_entry odr_table[2];
- 	struct st_lsm6dsx_fs_table_entry fs_table[2];
- 	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 0abd5b85b398..fc4d18b58c97 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -61,6 +61,20 @@
- #define ST_LSM6DSX_REG_INT2_ON_INT1_ADDR	0x13
- #define ST_LSM6DSX_REG_INT2_ON_INT1_MASK	BIT(5)
- 
-+static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
-+	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
-+	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
-+	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
-+static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
-+	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
-+	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
-+	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x26, IIO_MOD_Z, 2),
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
- static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 	{
- 		.wai = 0x69,
-@@ -71,6 +85,16 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.name = ST_LSM6DS3_DEV_NAME,
- 			},
- 		},
-+		.channels = {
-+			[ST_LSM6DSX_ID_ACC] = {
-+				.chan = st_lsm6dsx_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+			},
-+			[ST_LSM6DSX_ID_GYRO] = {
-+				.chan = st_lsm6dsx_gyro_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
-+			},
-+		},
- 		.odr_table = {
- 			[ST_LSM6DSX_ID_ACC] = {
- 				.reg = {
-@@ -169,6 +193,16 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.name = ST_LSM6DS3H_DEV_NAME,
- 			},
- 		},
-+		.channels = {
-+			[ST_LSM6DSX_ID_ACC] = {
-+				.chan = st_lsm6dsx_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+			},
-+			[ST_LSM6DSX_ID_GYRO] = {
-+				.chan = st_lsm6dsx_gyro_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
-+			},
-+		},
- 		.odr_table = {
- 			[ST_LSM6DSX_ID_ACC] = {
- 				.reg = {
-@@ -276,6 +310,16 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.name = ST_LSM6DS3TRC_DEV_NAME,
- 			},
- 		},
-+		.channels = {
-+			[ST_LSM6DSX_ID_ACC] = {
-+				.chan = st_lsm6dsx_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+			},
-+			[ST_LSM6DSX_ID_GYRO] = {
-+				.chan = st_lsm6dsx_gyro_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
-+			},
-+		},
- 		.odr_table = {
- 			[ST_LSM6DSX_ID_ACC] = {
- 				.reg = {
-@@ -377,6 +421,16 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.name = ST_LSM6DSOX_DEV_NAME,
- 			},
- 		},
-+		.channels = {
-+			[ST_LSM6DSX_ID_ACC] = {
-+				.chan = st_lsm6dsx_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+			},
-+			[ST_LSM6DSX_ID_GYRO] = {
-+				.chan = st_lsm6dsx_gyro_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
-+			},
-+		},
- 		.odr_table = {
- 			[ST_LSM6DSX_ID_ACC] = {
- 				.reg = {
-@@ -493,6 +547,16 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.name = ST_ASM330LHH_DEV_NAME,
- 			},
- 		},
-+		.channels = {
-+			[ST_LSM6DSX_ID_ACC] = {
-+				.chan = st_lsm6dsx_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+			},
-+			[ST_LSM6DSX_ID_GYRO] = {
-+				.chan = st_lsm6dsx_gyro_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
-+			},
-+		},
- 		.odr_table = {
- 			[ST_LSM6DSX_ID_ACC] = {
- 				.reg = {
-@@ -583,6 +647,16 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.name = ST_LSM6DSR_DEV_NAME,
- 			},
- 		},
-+		.channels = {
-+			[ST_LSM6DSX_ID_ACC] = {
-+				.chan = st_lsm6dsx_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+			},
-+			[ST_LSM6DSX_ID_GYRO] = {
-+				.chan = st_lsm6dsx_gyro_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
-+			},
-+		},
- 		.odr_table = {
- 			[ST_LSM6DSX_ID_ACC] = {
- 				.reg = {
-@@ -692,20 +766,6 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 	},
- };
- 
--static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
--	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
--	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
--	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
--	IIO_CHAN_SOFT_TIMESTAMP(3),
--};
--
--static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
--	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
--	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
--	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x26, IIO_MOD_Z, 2),
--	IIO_CHAN_SOFT_TIMESTAMP(3),
--};
--
- int st_lsm6dsx_set_page(struct st_lsm6dsx_hw *hw, bool enable)
- {
- 	const struct st_lsm6dsx_shub_settings *hub_settings;
-@@ -1263,6 +1323,8 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
- 	iio_dev->modes = INDIO_DIRECT_MODE;
- 	iio_dev->dev.parent = hw->dev;
- 	iio_dev->available_scan_masks = st_lsm6dsx_available_scan_masks;
-+	iio_dev->channels = hw->settings->channels[id].chan;
-+	iio_dev->num_channels = hw->settings->channels[id].len;
- 
- 	sensor = iio_priv(iio_dev);
- 	sensor->id = id;
-@@ -1273,18 +1335,12 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
- 
- 	switch (id) {
- 	case ST_LSM6DSX_ID_ACC:
--		iio_dev->channels = st_lsm6dsx_acc_channels;
--		iio_dev->num_channels = ARRAY_SIZE(st_lsm6dsx_acc_channels);
- 		iio_dev->info = &st_lsm6dsx_acc_info;
--
- 		scnprintf(sensor->name, sizeof(sensor->name), "%s_accel",
- 			  name);
- 		break;
- 	case ST_LSM6DSX_ID_GYRO:
--		iio_dev->channels = st_lsm6dsx_gyro_channels;
--		iio_dev->num_channels = ARRAY_SIZE(st_lsm6dsx_gyro_channels);
- 		iio_dev->info = &st_lsm6dsx_gyro_info;
--
- 		scnprintf(sensor->name, sizeof(sensor->name), "%s_gyro",
- 			  name);
- 		break;
--- 
-2.21.0
+Hello,
+  so I finally run some test and...
 
+On Sun, Jul 14, 2019 at 05:19:32AM -0700, Joe Perches wrote:
+> On Sun, 2019-07-14 at 12:54 +0100, Jonathan Cameron wrote:
+> > On Tue,  9 Jul 2019 22:04:17 -0700
+> > Joe Perches <joe@perches.com> wrote:
+> >
+> > > Arguments are supposed to be ordered high then low.
+> > >
+> > > Signed-off-by: Joe Perches <joe@perches.com>
+> >
+> > Applied to the fixes-togreg branch of iio.git and marked for
+> > stable etc.
+
+I don't see it in v5.3-rc2, has it been collected or are we still in
+time for an additional fix?
+
+>
+> This mask is used in an init function called from a probe.
+>
+> I don't have this hardware but it looks as if it could
+> never have worked so I doubt the driver and the hardware
+> have ever been tested.
+>
+> Does anyone have this device in actual use?
+
+Because it turns out this is 2 times embarrassing. The mask definition
+is indeed wrong, as Joe reported and fixed, but also this line
+>
+> 	regval = ret & MAX9611_TEMP_MASK;
+
+is very wrong as regval is read as:
+        ret = max9611_read_single(max9611, CONF_TEMP, &regval);
+
+So that should actually be:
+        regval &= MAX9611_TEMP_MASK;
+not
+ 	regval = ret & MAX9611_TEMP_MASK;
+Ups...
+
+Yes, it worked by chance, as regval was always 0, which is in the
+range of acceptable temperatures :/
+
+>
+> 	if ((regval > MAX9611_TEMP_MAX_POS &&
+> 	     regval < MAX9611_TEMP_MIN_NEG) ||
+> 	     regval > MAX9611_TEMP_MAX_NEG) {
+
+Also reading this condition and how I had defined the temperature
+calculation formula makes me wonder if this it totally correct, but
+for the moment:
+
+1) if Joe's patch has been collected, I can send an additional patch to
+fix how regval is computed.
+2) If Joe's patch still have to be collected, the regval computation
+might be fixed there.
+
+Sorry for taking so long to get back to you and thanks for noticing.
+
+Thanks
+  j
+
+> 		dev_err(max9611->dev,
+> 			"Invalid value received from ADC 0x%4x: aborting\n",
+> 			regval);
+> 		return -EIO;
+> 	}
+>
+>
+> > Thanks,
+> >
+> > Jonathan
+> >
+> > > ---
+> > >  drivers/iio/adc/max9611.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
+> > > index 917223d5ff5b..0e3c6529fc4c 100644
+> > > --- a/drivers/iio/adc/max9611.c
+> > > +++ b/drivers/iio/adc/max9611.c
+> > > @@ -83,7 +83,7 @@
+> > >  #define MAX9611_TEMP_MAX_POS		0x7f80
+> > >  #define MAX9611_TEMP_MAX_NEG		0xff80
+> > >  #define MAX9611_TEMP_MIN_NEG		0xd980
+> > > -#define MAX9611_TEMP_MASK		GENMASK(7, 15)
+> > > +#define MAX9611_TEMP_MASK		GENMASK(15, 7)
+> > >  #define MAX9611_TEMP_SHIFT		0x07
+> > >  #define MAX9611_TEMP_RAW(_r)		((_r) >> MAX9611_TEMP_SHIFT)
+> > >  #define MAX9611_TEMP_SCALE_NUM		1000000
+>
+
+--bspti6iz3s7zaaw6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEtcQ9SICaIIqPWDjAcjQGjxahVjwFAl0/aogACgkQcjQGjxah
+VjyVXBAAjXySZDbxeeH6TCp5TWOwWLpebJjJ99v++lJUK4A6ohVeqyyGbyZt7ak6
+ADGJEjNkeh1ilm/DXcyCCqTQ7w4loj6RsYPK5AHPT2jYaCf43VIkHArYg20SKtYI
+5nREJc2RYXpmOk+2s3oaosA4RgL6WV2shsLF/OYGubvdDWhGfRlAlPAZTtNG/siv
+GLidkma6RAbi1iqQUw4hsI7LJTmFn6F1T4wkiRx0SejBkLqHmLnrtvFjsWH1hgXW
+k9urqsRYR9Io3wVBvMOiKcQUVrfneOW6wo2KMYMVhNfxwUtKU6NWyWUzfgGpk8Hl
+jDG1FoRs3u86e3gTsN+yT4JSZuOjsPovuGOo7NO0MepRRGbfHqFJRBBL7Z9T04pL
+QySWlgMZvVQIi40uI/QHLmgm0ztzl19Ez/rJm6fYVSyBE8VKtLCkySI+pmiL8OWl
+JcjfMMq2KgElToxFfSF+CuU0Qe6hn8ye/boKsnuWfz9Vk7em07uPGaCDTe+gD4RR
+c3pQLaGO16FhSQygRDpiO9/3K9OsGUDCDPrkOoCi5nDqXjmBD4Uu2OEJvch86rku
+bmnyJ4ejXzsStjpUUbsNP1AmLT8yPxMA+SvZ8nrUIvfeKkEbD4Mff61ndJP52BX/
+g1yN+rSGk8OWRoB++9TUqmHr5EXxgLyJI0hJ9+B+chlgmvapGCM=
+=5EgF
+-----END PGP SIGNATURE-----
+
+--bspti6iz3s7zaaw6--

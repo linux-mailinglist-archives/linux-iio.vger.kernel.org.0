@@ -2,156 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23F6B780CF
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2019 19:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE3A7831D
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2019 03:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726109AbfG1Rwm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Jul 2019 13:52:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39190 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726099AbfG1Rwm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 28 Jul 2019 13:52:42 -0400
-Received: from lore-desk-wlan.lan (unknown [151.66.36.246])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B73A02075C;
-        Sun, 28 Jul 2019 17:52:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564336360;
-        bh=ZZe+81SreSVGPqP1Jj7PbXG/THnOdvbavPJEtJjxHuo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=W7lAJtnbIdP4Orxh+gc8R6bzKvyJnnC7TL1jLtcnPUQG/wK2P1WZ743eXQSROwAu5
-         MAg0353GwQ39WfiIMOwYhD2blXACxlzGSTNo87DSeZXFnh4eHkkVR22nvDm3oiOz+c
-         c7j1zwfWCSaY9A9tMa1fK9UU9MlZjea9VNrSQM+I=
-Date:   Sun, 28 Jul 2019 19:52:34 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Martin Kepplinger <martin.kepplinger@puri.sm>,
-        lorenzo.bianconi83@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/5] iio: imu: st_lsm6dsx: add support for accel/gyro
- unit of lsm9sd1
-Message-ID: <20190728175234.GA7652@lore-desk-wlan.lan>
-References: <20190725053132.9589-1-martin.kepplinger@puri.sm>
- <20190725053132.9589-5-martin.kepplinger@puri.sm>
- <20190727184844.307255a2@archlinux>
- <a2f6d5fe-04c6-f5d8-ad38-56b8fa033295@puri.sm>
- <20190728093414.5d3ca94d@archlinux>
+        id S1726247AbfG2BnI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Jul 2019 21:43:08 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:40669 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726216AbfG2BnI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Jul 2019 21:43:08 -0400
+Received: by mail-pf1-f194.google.com with SMTP id p184so27124856pfp.7;
+        Sun, 28 Jul 2019 18:43:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LV39I9aLdwL8Ba7krSV4uBeXZ89IOyHpbCxzE7258B4=;
+        b=gvWWSK0JytSMopVhFA0NawbhUPQQPNyzNxYAQY5G00eOVqDZsp1Ys370zU7aDPBbFl
+         xz8/HU7B+7VUOD8bbMNLKx0/RGh6CVk8SomEfrbTI8MVnML3WIdGl/6sxgbSkDfsuJKP
+         1NCV1aFIE746ubZOX8jn8EOHuxcLwFljuQ6TuZSXX7oSa5BafoBzbPH/5aOvwxHC5BZL
+         Guh4Y+mCzhpYNnjl7vav69WJPc8xNCTkYwd9YuAAQpelRthTG8O1vDrELvg1epKzO9by
+         hVHn22fBNIcgeMl0fxI6fwHRil5gcImSufsi+2kILwaJp+uE89nwRNth2ucvxLjG4cgP
+         gCDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LV39I9aLdwL8Ba7krSV4uBeXZ89IOyHpbCxzE7258B4=;
+        b=B33BXczhRQ+8SNiEMaZrWIOCyphpv2XVjeThAbz3nrK5HsJAK1Lez2csTAgBwYeO1z
+         1dOHZjAAzbyBTSVqyGMmgm1QyCbDmO2j/qRm5ZPhTmuMR3MMhPVfXnmNrz1LlyXJL+zQ
+         m1snLfoacu3n19lSzBgu4HJG7dcD+JCp8zaTbx5sXHMRkHMNPSHjh0vX6Ci6EQwrCCg+
+         DI26OWkc6hzefRlv6RJnkZDcJ8N6SgZ/UrN11tGs0wCG9VzexeWVhaUEwc5/gsMGbNMA
+         NVkijnh2OlZUlfn2Eq9rSJPgVsQTDQgLDtGoNVCDOy9kaiN4N7N+QD5TDTiQQVBb6JGo
+         vPNg==
+X-Gm-Message-State: APjAAAW2eH8TAkU93Xp7j1f4xa1M5uKCICz051tK8z46ZJFBf++H2NbN
+        Yht8XeXtp7GQYCblSlN7yB4=
+X-Google-Smtp-Source: APXvYqy33T1WT3c2ceVt49IN+W8TfL9YaK4sBZZ5C+bItnu4spucVXkt+KxG/Gn+mGavkkjYCGawMw==
+X-Received: by 2002:a17:90a:9bc5:: with SMTP id b5mr110329060pjw.109.1564364587501;
+        Sun, 28 Jul 2019 18:43:07 -0700 (PDT)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
+        by smtp.gmail.com with ESMTPSA id b6sm52386509pgq.26.2019.07.28.18.43.04
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sun, 28 Jul 2019 18:43:06 -0700 (PDT)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH v2] iio: light: si1145: Use device-managed APIs
+Date:   Mon, 29 Jul 2019 09:43:01 +0800
+Message-Id: <20190729014301.13402-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="RnlQjJ0d97Da+TV1"
-Content-Disposition: inline
-In-Reply-To: <20190728093414.5d3ca94d@archlinux>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Use device-managed APIs to simplify the code.
+The remove functions are redundant now and can
+be deleted.
 
---RnlQjJ0d97Da+TV1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+Changes in v2:
+  - Split v1 into two patches.
+  - Use devm_iio_trigger_register in probe_trigger,
+    delete redundant remove_trigger.
+  - Return devm_iio_device_register directly as a
+    minor optimization.
 
-> On Sun, 28 Jul 2019 08:04:51 +0200
-> Martin Kepplinger <martin.kepplinger@puri.sm> wrote:
->=20
-> > On 27.07.19 19:48, Jonathan Cameron wrote:
-> > > On Thu, 25 Jul 2019 07:31:31 +0200
-> > > Martin Kepplinger <martin.kepplinger@puri.sm> wrote:
-> > >  =20
-> > >> The LSM9DS1's accelerometer / gyroscope unit and it's magnetometer (=
-separately
-> > >> supported in iio/magnetometer/st_magn*) are located on a separate i2=
-c addresses
-> > >> on the bus.
-> > >>
-> > >> For the datasheet, see https://www.st.com/resource/en/datasheet/lsm9=
-ds1.pdf
-> > >>
-> > >> Treat it just like the LSM6* devices and, despite it's name, hook it=
- up
-> > >> to the st_lsm6dsx driver, using it's basic functionality.
-> > >>
-> > >> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm> =20
-> > > I'm a little confused on this hardware.
-> > >=20
-> > > How does buffered output work if these are independently clocked?
-> > >=20
-> > > I took a quick look at the datasheet, and 'suspect' the answer is that
-> > > it runs at the gyro frequencies if both are enable. Is that right?
-> > >  =20
-> >=20
-> > Thanks for reviewing, Jonathan,
-> >=20
-> > Correct. It says so in chapter 7.12. But that's a "problem" with all
-> > these imu devices, not specific to this addition right?
-> It's not a problem as such, but there is a related difference in this
-> device to the others supported by this driver.
->=20
-> The other parts seem to allow for independent data rate setting, with
-> streaming to the buffer that isn't in 'lock step'.  I.e you can get
->=20
-> Ax_1, Ay_1, Az_1, Gx_1, Gy_1, Gz_1, Gx_2, Gy_2, Gz_2, Ax_2, Ay_2, Az_2, G=
-y_3...
+ drivers/iio/light/si1145.c | 42 +++++---------------------------------
+ 1 file changed, 5 insertions(+), 37 deletions(-)
 
-correct
+diff --git a/drivers/iio/light/si1145.c b/drivers/iio/light/si1145.c
+index 6579d2418814..982bba0c54e7 100644
+--- a/drivers/iio/light/si1145.c
++++ b/drivers/iio/light/si1145.c
+@@ -1261,7 +1261,7 @@ static int si1145_probe_trigger(struct iio_dev *indio_dev)
+ 		return ret;
+ 	}
+ 
+-	ret = iio_trigger_register(trig);
++	ret = devm_iio_trigger_register(&client->dev, trig);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1271,16 +1271,6 @@ static int si1145_probe_trigger(struct iio_dev *indio_dev)
+ 	return 0;
+ }
+ 
+-static void si1145_remove_trigger(struct iio_dev *indio_dev)
+-{
+-	struct si1145_data *data = iio_priv(indio_dev);
+-
+-	if (data->trig) {
+-		iio_trigger_unregister(data->trig);
+-		data->trig = NULL;
+-	}
+-}
+-
+ static int si1145_probe(struct i2c_client *client,
+ 			const struct i2c_device_id *id)
+ {
+@@ -1332,7 +1322,8 @@ static int si1145_probe(struct i2c_client *client,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = iio_triggered_buffer_setup(indio_dev, NULL,
++	ret = devm_iio_triggered_buffer_setup(&client->dev,
++		indio_dev, NULL,
+ 		si1145_trigger_handler, &si1145_buffer_setup_ops);
+ 	if (ret < 0)
+ 		return ret;
+@@ -1340,23 +1331,12 @@ static int si1145_probe(struct i2c_client *client,
+ 	if (client->irq) {
+ 		ret = si1145_probe_trigger(indio_dev);
+ 		if (ret < 0)
+-			goto error_free_buffer;
++			return ret;
+ 	} else {
+ 		dev_info(&client->dev, "no irq, using polling\n");
+ 	}
+ 
+-	ret = iio_device_register(indio_dev);
+-	if (ret < 0)
+-		goto error_free_trigger;
+-
+-	return 0;
+-
+-error_free_trigger:
+-	si1145_remove_trigger(indio_dev);
+-error_free_buffer:
+-	iio_triggered_buffer_cleanup(indio_dev);
+-
+-	return ret;
++	return devm_iio_device_register(&client->dev, indio_dev);
+ }
+ 
+ static const struct i2c_device_id si1145_ids[] = {
+@@ -1371,23 +1351,11 @@ static const struct i2c_device_id si1145_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, si1145_ids);
+ 
+-static int si1145_remove(struct i2c_client *client)
+-{
+-	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+-
+-	iio_device_unregister(indio_dev);
+-	si1145_remove_trigger(indio_dev);
+-	iio_triggered_buffer_cleanup(indio_dev);
+-
+-	return 0;
+-}
+-
+ static struct i2c_driver si1145_driver = {
+ 	.driver = {
+ 		.name   = "si1145",
+ 	},
+ 	.probe  = si1145_probe,
+-	.remove = si1145_remove,
+ 	.id_table = si1145_ids,
+ };
+ 
+-- 
+2.20.1
 
->=20
-> That required us to split them up into two devices and means that, to fuse
-> data from these two source, userspace has to do the harder job of
-> aligning the two datasets.
->=20
-> For this device, things are simpler in that you always a 'scan' that goes
-> across both accelerometer and gyroscope channels.  That allows us to
-> represent it as a single IIO device with a single buffer.
->=20
-> I'm not seeing any reference in the lsm9ds1 to the pattern registers
-> that are used to handle difference in frequency for the other
-> parts by letting us know what is actually present in each data set
-> in the fifo.
->=20
-> Now, that doesn't meant we can't still handle them separately given
-> we already do that for other parts.
-
-what about reusing st_lsm6dsx_read_fifo() for lsm6ds0/lsm9ds1 but setting h=
-w->sip to:
-- hw->sip =3D 1 (acc_sip =3D 1, gyro_sip =3D 0) when just the acc is enabled
-- hw->sip =3D 2 (acc_sip =3D 1, gyro_sip =3D 1) when both devices are enabl=
-ed
-
-I guess it is just a matter of adding a 'bool fixed_pattern' in
-st_lsm6dsx_settings. What do you think?
-
-Regards,
-Lorenzo
-
->=20
-> Anyhow, is my understanding correct?
->=20
-> Jonathan
->=20
-> >=20
-> > Sidenote: I thought about renaming things to "lsm6ds0" here just because
-> > of the name and because the registers are (almost) the same as for my
-> > lsm9ds1. But I'm not a fan of blindly doing that without being able to
-> > test. When the current patchset looks good to you, let's keep it that w=
-ay.
-> >=20
-> >                             martin
->=20
-
---RnlQjJ0d97Da+TV1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXT3g3wAKCRA6cBh0uS2t
-rGupAQCt+nMZtGSwipK9+ymzax7tfEW+pxfeFjw/zMEAu1c1gwD/bN3E83uTG5Nf
-SrhTtz0NnIlKgEyO09ceZtLisuQUXA0=
-=BiVb
------END PGP SIGNATURE-----
-
---RnlQjJ0d97Da+TV1--

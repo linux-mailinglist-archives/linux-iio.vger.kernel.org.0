@@ -2,101 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C2707864C
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2019 09:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7A29786F1
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2019 10:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726048AbfG2HXm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Jul 2019 03:23:42 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:38988 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725917AbfG2HXm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Jul 2019 03:23:42 -0400
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6T7GbUO017808;
-        Mon, 29 Jul 2019 09:23:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=knB1CFf+dV5YYBti2FACI1fBFDRzZJ7xPVnkJzKHsnw=;
- b=vF21dSF/PU8U7f7SbGvtjtdeSN+ptbef8kPnk+134RREY8U9s9kwdEFIauzD3qkRPYJf
- aLJwaGsAOlR+vL0bzGOfOK4VgPqFFCsOlbar4SxW9kC5XJSsm4KMRy0pM0S7vmzXke4h
- +r0cazmiUUD0kKVceMGb+QKcsgOWIYN9vGTQ+WwRwJNmkRhBR8pEdQVxTx8LYzhUMxrh
- Gz9W+F+cEgtAfmFWV8ozPzQbAAM8UkQ/cVpdRzUEf3gJztwKlxGEqzHy2vtvKMp+MpUZ
- q8iXCUU0wUVlODhzGr+Rq5US6v/ycIAZ1xPn1U2+PL0oi/Gacod75c1gFnNLC9jOrSW8 Kw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx08-00178001.pphosted.com with ESMTP id 2u0dggtn0k-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 29 Jul 2019 09:23:10 +0200
-Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 376CD34;
-        Mon, 29 Jul 2019 07:23:08 +0000 (GMT)
-Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id F2CD456C5;
-        Mon, 29 Jul 2019 07:23:07 +0000 (GMT)
-Received: from lmecxl0912.lme.st.com (10.75.127.51) by SFHDAG3NODE2.st.com
- (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon, 29 Jul
- 2019 09:23:07 +0200
-Subject: Re: [PATCH v2 3/3] ARM: dts: stm32: add syscfg to ADC on stm32mp157c
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>, <jic23@kernel.org>,
-        <robh+dt@kernel.org>
-CC:     <mark.rutland@arm.com>, <mcoquelin.stm32@gmail.com>,
-        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <1562148496-26789-1-git-send-email-fabrice.gasnier@st.com>
- <1562148496-26789-4-git-send-email-fabrice.gasnier@st.com>
-From:   Alexandre Torgue <alexandre.torgue@st.com>
-Message-ID: <0687ec4c-0930-058d-4a55-c4cf712ab83c@st.com>
-Date:   Mon, 29 Jul 2019 09:23:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727403AbfG2IDJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Jul 2019 04:03:09 -0400
+Received: from onstation.org ([52.200.56.107]:34798 "EHLO onstation.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727391AbfG2IDJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 29 Jul 2019 04:03:09 -0400
+Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: masneyb)
+        by onstation.org (Postfix) with ESMTPSA id 184053E910;
+        Mon, 29 Jul 2019 08:03:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
+        s=default; t=1564387388;
+        bh=joh8VV5EaxT+jOmdPyG+T/41nGKY4pOiEOL5KacGdLk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mIpV0wf5TCz7WHo4cBMcWd7PErqViXdtOnCyqGIJXWFdWWhDNRg0dUWV+RtpRea2A
+         Qur7nPomUq692W6W9Lovyst8a2Kzt4D2lDOoFF8igXmZyhXI933EClSTc8gzyzOAOs
+         RZexBOnYHxYrXGxgmWwzZcmjtSOlc2Y8IqzuGtW4=
+Date:   Mon, 29 Jul 2019 04:03:07 -0400
+From:   Brian Masney <masneyb@onstation.org>
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: tsl2772: Use device-managed API
+Message-ID: <20190729080307.GA360@onstation.org>
+References: <20190726123058.22915-1-hslester96@gmail.com>
+ <20190727125749.63297c28@archlinux>
+ <20190728083141.GA14194@onstation.org>
+ <CANhBUQ3QiV1mPD6p+AROv6YnK+1CB5voVAHKbmzueUWc7P6vcQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1562148496-26789-4-git-send-email-fabrice.gasnier@st.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.51]
-X-ClientProxiedBy: SFHDAG8NODE1.st.com (10.75.127.22) To SFHDAG3NODE2.st.com
- (10.75.127.8)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-29_04:,,
- signatures=0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANhBUQ3QiV1mPD6p+AROv6YnK+1CB5voVAHKbmzueUWc7P6vcQ@mail.gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi fabrice
-
-On 7/3/19 12:08 PM, Fabrice Gasnier wrote:
-> On stm32mp157c, the ADC inputs are multiplexed with analog switches which
-> have reduced performances when their supply is below 2.7V (vdda by
-> default).
-> Add syscfg registers that can be used on stm32mp157c, to get full ADC
-> analog performances.
+On Mon, Jul 29, 2019 at 11:03:00AM +0800, Chuhong Yuan wrote:
+> Brian Masney <masneyb@onstation.org> 于2019年7月28日周日 下午4:31写道：
+> > devm_add_action() could be used in the probe function to schedule the call
+> > to tsl2772_chip_off(). That would eliminate the need for
+> > tsl2772_remove(). See tsl2772_disable_regulators_action() for an example in
+> > that driver.
+> >
 > 
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-> ---
->   arch/arm/boot/dts/stm32mp157c.dtsi | 1 +
->   1 file changed, 1 insertion(+)
+> I find that we can use devm_add_action_or_reset() for
+> tsl2772_disable_regulators_action() to eliminate the fault handling code.
 > 
-> diff --git a/arch/arm/boot/dts/stm32mp157c.dtsi b/arch/arm/boot/dts/stm32mp157c.dtsi
-> index 2dd5162..b9a5b58 100644
-> --- a/arch/arm/boot/dts/stm32mp157c.dtsi
-> +++ b/arch/arm/boot/dts/stm32mp157c.dtsi
-> @@ -862,6 +862,7 @@
->   			clocks = <&rcc ADC12>, <&rcc ADC12_K>;
->   			clock-names = "bus", "adc";
->   			interrupt-controller;
-> +			st,syscfg = <&syscfg>;
->   			#interrupt-cells = <1>;
->   			#address-cells = <1>;
->   			#size-cells = <0>;
+> I am not sure whether devm_add_action() can be used for
+> tsl2772_chip_off() because it returns an integer, not void.
+> And the return value is used in several functions.
+
+I would add a wrapper function (tsl2772_chip_off_action?) with the
+expected declaration that calls tsl2772_chip_off().
+
+> > Chuhong: Another potential cleanup to shrink the size of this driver is
+> > to move it over to the regulator_bulk_() API. I didn't realize that API
+> > existed at the time I introduced the regulator support. If you're
+> > interested in taking on that cleanup as well, I can test those changes
+> > for you if you don't have the hardware.
+> >
+> > Brian
+> >
 > 
+> Does that mean merging vdd_supply and vddio_supply to an array of
+> regulator_bulk_data and utilize regulator_bulk_() API to operate them
+> together?
 
+Yes.
 
-Applied on stm32-next.
+> I have an additional question that I find regulator_disable() is used in the
+> end of many .remove functions of drivers, which hinders us to use devm
+> functions.
+> One example is drivers/iio/light/gp2ap020a00f.c.
+> Is there any solution to this problem?
 
-Thanks.
-Alex
+There are devm_regulator_*() variants of the regulator API available
+that you can use. Lots of other APIs in the kernel have devm variants
+to simply drivers.
+
+Brian

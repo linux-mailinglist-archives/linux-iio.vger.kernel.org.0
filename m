@@ -2,178 +2,442 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA83C7AD44
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2019 18:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F36F57B1B9
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2019 20:20:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727951AbfG3QIb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Jul 2019 12:08:31 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:39978 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727698AbfG3QIb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Jul 2019 12:08:31 -0400
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6UG8HTn019173;
-        Tue, 30 Jul 2019 18:08:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : subject :
- date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=202e2ADEbGgErr7GUznVXs+SjgZJ5xjYoKP3c3o5usM=;
- b=eBD75mvkSo6aIMmgFoFKXwgxPlsr1DpzTcO21IYpryZzCxbVMZHa+f4st8dECaJ6rusQ
- KKNaAgO0glCyDiEkc1aBSQgO29Iy5q3oNDpDPIIF+YVNh69uZ/7NSPoAguFBac9x4OWQ
- 4nr8z1RQRHebNHaQjsD/ipr1bOIU76XWW6+cbHQJ0RVjkXraSyW8+mOanE/1Vtg7s7Py
- whEd5eNgrnYb2pSjXhi4uCyyAXELl8rF+NdfZmVMMURXLe9LfTVhxZ3XL/etUoSHt7FW
- ppI6lvfMjAZ8dExNQoGx3lR5u9DFoN+JZ2rUdHZWDd2lsRlCCEDDakDuPX5CvGvtauKn ng== 
-Received: from eur02-he1-obe.outbound.protection.outlook.com (mail-he1eur02lp2056.outbound.protection.outlook.com [104.47.5.56])
-        by mx08-00178001.pphosted.com with ESMTP id 2u2jp4a4cs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 Jul 2019 18:08:21 +0200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dF4l+VjLOHrmkgr8Z5JdRvau9gIDGUD8lBbEP0JWqLsnK/ALBay+/8MPa1UplHn87CbhsGA6XHODV2maEWegOEtEI2hCSBlzY8H4xHuQtZspTkDdwih7lGLVqFnu7eRvv806WgSFMWIDK1Ud8thT6P3PhxSJwFtxdL+Y6tXb1cRKIFkJfs9SBh++yCG5g6i9y98OsEIf1321IC5YX8GLpjn5JtyuQhTDEXLyLpRn1M5ga7XuMYgV7lj1elZkfbvXB03rzwdMJlRLInBWc1+o1p7z//31Ij/BljR+JbNKy5nKBAl+p7+OWyvEHakd8vvx0tTR7AMu2XHzWdQiNbOR9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=202e2ADEbGgErr7GUznVXs+SjgZJ5xjYoKP3c3o5usM=;
- b=WiXWfhy4TpR6VoBc/RQ9zRKZgjL6XPbCJBlXUd/fkf8csu+eTRCrNN1zvWGOjRrE0MZcppEutg4w+itEj+uW0i9pKm7qxPOnVXnHHVUiya9tZ4ZPznQcKOnVHiRhUiBiUYUtAvMuMYHXC1FO5dKBVvliC9R/C4OaY35EJh7sUbbrjl16Ohu8lGxBPgpCKY9DXpwszQ+cSwktq3Dj/V+9kj/beX2jGFadsCmy2Dve2/0K75kmrEb/8d2Nhp5UEZuyoH1HqKT3pCb8/pQCrvf/p3nSJLXpCsE9SFKzClVTZ8NMYwreN6/1j7On/WLG9KLe7bmxXwninmYuVkrdYwxJ5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=st.com;dmarc=pass action=none header.from=st.com;dkim=pass
- header.d=st.com;arc=none
-Received: from VE1PR10MB2912.EURPRD10.PROD.OUTLOOK.COM (10.255.158.157) by
- VE1PR10MB3054.EURPRD10.PROD.OUTLOOK.COM (20.179.30.97) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2115.11; Tue, 30 Jul 2019 16:08:19 +0000
-Received: from VE1PR10MB2912.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::e98c:3ebb:f5fd:89f3]) by VE1PR10MB2912.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::e98c:3ebb:f5fd:89f3%6]) with mapi id 15.20.2115.005; Tue, 30 Jul 2019
- 16:08:19 +0000
-From:   Denis CIOCCA <denis.ciocca@st.com>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: RE: [PATCH 4/4] iio:pressure: preenable/postenable/predisable fixup
- for ST press buffer
-Thread-Topic: [PATCH 4/4] iio:pressure: preenable/postenable/predisable fixup
- for ST press buffer
-Thread-Index: AQHVRmtQH5lKzSvTyU+qKfPA7gGdKabi3iYAgABz4bA=
-Date:   Tue, 30 Jul 2019 16:08:19 +0000
-Message-ID: <VE1PR10MB291275F4B3C439A1B86F8579EDDC0@VE1PR10MB2912.EURPRD10.PROD.OUTLOOK.COM>
-References: <20190730000305.30958-1-denis.ciocca@st.com>
-         <20190730000305.30958-5-denis.ciocca@st.com>
- <c73657b4203d8112636751413c85f525f57dcc2a.camel@analog.com>
-In-Reply-To: <c73657b4203d8112636751413c85f525f57dcc2a.camel@analog.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [165.225.34.76]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 3e8aadfc-2d49-4bcd-a38b-08d7150823b8
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(7168020)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:VE1PR10MB3054;
-x-ms-traffictypediagnostic: VE1PR10MB3054:
-x-microsoft-antispam-prvs: <VE1PR10MB3054ACA20B397234916FA2F0EDDC0@VE1PR10MB3054.EURPRD10.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 0114FF88F6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(396003)(136003)(346002)(366004)(376002)(189003)(199004)(13464003)(7736002)(66476007)(316002)(53936002)(76176011)(66066001)(5660300002)(2501003)(68736007)(6116002)(3846002)(6436002)(7696005)(81166006)(99286004)(9686003)(55236004)(186003)(86362001)(26005)(81156014)(55016002)(110136005)(2201001)(52536014)(102836004)(8676002)(53546011)(8936002)(6506007)(71190400001)(25786009)(256004)(11346002)(71200400001)(446003)(6246003)(478600001)(486006)(74316002)(305945005)(14454004)(33656002)(76116006)(66946007)(66446008)(64756008)(66556008)(476003)(2906002)(229853002);DIR:OUT;SFP:1101;SCL:1;SRVR:VE1PR10MB3054;H:VE1PR10MB2912.EURPRD10.PROD.OUTLOOK.COM;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: st.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 2FURmAD8P58bUZem8X9QSYotxRON4cnN1oXRYZ6nP0cQoXapXzU44MgqmusqnKREojdtQEzV+DscceGpOS64Sdl6ebprNEpVzOJg30v919fDuJRWioDLwNoU5eGg4eHw/sFwyrsobZ71+fgWr0Jq3RwVU6cbRDWw6nxFkneecdaQ5xS92/8lEsOFVIyWPCotx/lG9QjbI5kHT0Mdy1FHamwKA7SvNtMX2dzFQgITBG5+GeGs/jOuv7n4ym0583v8JYyGFsUt8whIXv+vSNK2TMDRUFc8KA2Mr6egvNO5WU0UC7CcHuXgyedY3u/zUnMrdpIC8/gZFkRCnx05RLLHXiiKDBX2SLrU25DPuSwRr9eNswgtv5PWHR3SfzSFljFJIIFEsTQN9YQNBbuHi5WflaHaGbUr1M/oNpQ4y036dkk=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1728967AbfG3SQR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Jul 2019 14:16:17 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:39169 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387897AbfG3SQQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Jul 2019 14:16:16 -0400
+Received: by mail-pf1-f196.google.com with SMTP id f17so26270053pfn.6
+        for <linux-iio@vger.kernel.org>; Tue, 30 Jul 2019 11:16:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=awJrQleBIUVGJQK3rTOtDDbg8xU4V2Bj4TIsZiL01ro=;
+        b=UZnp3XQ/h/JlVwP0Nlks/jUOrKjDaE0w7W3pvEny+QNsIiWfxCAmXjo42fer4Xfvig
+         hMLhbrYsUn/jeKNNh/1UqUOrGaqwcagT4iNNcIES/qams3D4O6yfL2+jKnCqXJ9EkIaj
+         0OS2UWrI6/lImtnvL936SBUikJyw8otOr7eFM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=awJrQleBIUVGJQK3rTOtDDbg8xU4V2Bj4TIsZiL01ro=;
+        b=dBQR7CkC+5BLfKYRHnRYpXv8u2Mo2gvZ+9368bBn91BPWQ0OmtWsUuSmgKz/MTXFGX
+         pXn37+ddrH8XMaIr2z6XmtdgWMjE+UjiY9q5tjDkIO/fE34ARMBpqE0Tn1BvMbYswSMJ
+         NDjdAN2SKl8DN2iRd38GTT4A1v3Oj1haaOzXzXl6CB2ZUyh+tS8+MLb4zH9ti+oO/Q/H
+         vIbmO/kGaVJrKAFDAtdhtpkCOBX1s5mDDkswuOy5i/wm7n3T1YUpZOa9+vSMrht3tnzz
+         Inob62ZflL+109EtujWv/ryi8Kuq8J2hkEBktdKV7cRn4niQJK8W3HL0b0po7XGzQsy0
+         B3CA==
+X-Gm-Message-State: APjAAAUlQ81lXA2WbfrDX3C2XdVQv4n7oaN5JrfLvndtdJNCjGlOzfql
+        yfkmO0sgQMYoiVBMQ4ouLkUMxg==
+X-Google-Smtp-Source: APXvYqzkOoNFgvVfw3KVmsrqc/w0lwCiQyXjE/d7Ro7hgU8SuvqgT3psv24N1LLp+frpVnPfhDneRg==
+X-Received: by 2002:a17:90a:c70c:: with SMTP id o12mr3609875pjt.62.1564510575268;
+        Tue, 30 Jul 2019 11:16:15 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:1:fa53:7765:582b:82b9])
+        by smtp.gmail.com with ESMTPSA id g1sm106744083pgg.27.2019.07.30.11.16.14
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 30 Jul 2019 11:16:14 -0700 (PDT)
+From:   Stephen Boyd <swboyd@chromium.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v6 19/57] iio: Remove dev_err() usage after platform_get_irq()
+Date:   Tue, 30 Jul 2019 11:15:19 -0700
+Message-Id: <20190730181557.90391-20-swboyd@chromium.org>
+X-Mailer: git-send-email 2.22.0.709.g102302147b-goog
+In-Reply-To: <20190730181557.90391-1-swboyd@chromium.org>
+References: <20190730181557.90391-1-swboyd@chromium.org>
 MIME-Version: 1.0
-X-OriginatorOrg: ST.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e8aadfc-2d49-4bcd-a38b-08d7150823b8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2019 16:08:19.7520
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: denis.ciocca@st.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR10MB3054
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-30_07:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1907300167
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgQWxleGFuZHJ1LA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFy
-ZGVsZWFuLCBBbGV4YW5kcnUgPGFsZXhhbmRydS5BcmRlbGVhbkBhbmFsb2cuY29tPg0KPiBTZW50
-OiBUdWVzZGF5LCBKdWx5IDMwLCAyMDE5IDI6MDIgQU0NCj4gVG86IGppYzIzQGtlcm5lbC5vcmc7
-IERlbmlzIENJT0NDQSA8ZGVuaXMuY2lvY2NhQHN0LmNvbT47IGxpbnV4LQ0KPiBpaW9Admdlci5r
-ZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggNC80XSBpaW86cHJlc3N1cmU6IHByZWVu
-YWJsZS9wb3N0ZW5hYmxlL3ByZWRpc2FibGUNCj4gZml4dXAgZm9yIFNUIHByZXNzIGJ1ZmZlcg0K
-PiANCj4gT24gTW9uLCAyMDE5LTA3LTI5IGF0IDE3OjAzIC0wNzAwLCBEZW5pcyBDaW9jY2Egd3Jv
-dGU6DQo+ID4gW0V4dGVybmFsXQ0KPiA+DQo+ID4gVGhpcyBwYXRjaCBpcyB0cnlpbmcgdG8gY2xl
-YW51cCBmb3IgZ29vZCB0aGUgYnVmZmVycyBvcGVyYXRpb24gZnVuY3Rpb25zLg0KPiA+IFRoZXJl
-IGlzIG5vIG5lZWQgb2YgdXNpbmcgcHJlZW5hYmxlLCBhbGwgY2FuIGJlIGRvbmUgaW50byBwb3N0
-ZW5hYmxlLg0KPiA+IExldCdzIGFsc28gdXNlIGxvZ2ljYWwgc2VxdWVuY2Ugb2Ygb3BlcmF0aW9u
-cyBhcyBhbHJlYWR5IGRvbmUgaW4gYWNjZWwNCj4gPiBkcml2ZXIuDQo+ID4gRmluYWxseSBhbHNv
-IHJlbmFtZSB0aGUgZ290byBsYWJlbCB1c2luZyBvcGVyYXRpb24gdG8gcGVyZm9ybSBhbmQgbm90
-DQo+ID4gd2hlcmUgaXQgZmFpbHMuDQo+ID4NCj4gDQo+IFJldmlld2VkLWJ5OiBBbGV4YW5kcnUg
-QXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPg0KPiANCj4gDQo+IFVucmVs
-YXRlZCB0byB0aGlzIHBhdGNoLCBJIHdhcyB0aGlua2luZyB0aGF0IGl0IHdvdWxkIGJlIGEgbmVh
-dCBpZGVhIHRvIG1vdmUNCj4gdGhlIGBidWZmZXJfZGF0YWAgYWxsb2NhdGlvbiBpbg0KPiBgZHJp
-dmVycy9paW8vY29tbW9uL3N0X3NlbnNvcnMvc3Rfc2Vuc29yc19idWZmZXIuY2ANCj4gDQo+IFRo
-aXMgd291bGQgcmVtb3ZlIHNvbWUgZHVwbGljYXRpb24gb2YgdGhpcyBhbGxvYyArIGZyZWUgaW4g
-ZHJpdmVycy4NCj4gDQo+IE1heWJlIGluIHN0X3NlbnNvcnNfdHJpZ2dlcl9oYW5kbGVyKCkgc29t
-ZXRoaW5nIGxpa2U6DQo+IA0KPiBpZiAoIXNkYXRhLT5idWZmZXJfZGF0YSkgew0KPiAgICAgc2Rh
-dGEtPmJ1ZmZlcl9kYXRhID0gZGV2bV9rbWFsbG9jKCkNCj4gICAgIGlmICghc2RhdGEtPmJ1ZmZl
-cl9kYXRhKSB7DQo+ICAgICAgICAgZGV2X2VycihpbmRpb19kZXYtPmRldiwgIkZhaWxlZCB0byBh
-bGxvY2F0ZSBidWZmZXIgZGF0YVxuIik7DQo+ICAgICAgICAgZ290byBzdF9zZW5zb3JzX2dldF9i
-dWZmZXJfZWxlbWVudF9lcnJvcjsNCj4gICAgIH0NCj4gfQ0KPiANCj4gVXNpbmcgZGV2bV9rbWFs
-bG9jKCkgb3IgYSBzaW1pbGFyIGRldm1fIHZhcmlhbnQgd291bGQgYmUgbmVhdCwgc2luY2UgaXQg
-Z2V0cw0KPiBmcmVlJ2Qgd2hlbiB0aGUgZGV2aWNlIGdldHMgcmVtb3ZlZC4NCg0KTm90IHN1cmUg
-YWJvdXQgdGhlIHNvbHV0aW9uIHByb3Bvc2VkLg0KTWVtb3J5IGFsbG9jYXRpb24gaXMgYWN0dWFs
-bHkgcmVsYXRlZCB0byBob3cgbWFueSBjaGFubmVscyBhcmUgZW5hYmxlZCwNCm9uZSBwb3NzaWJp
-bGl0eSBjb3VsZCBiZSB0byBhbGxvY2F0ZSB0aGUgbWF4aW11bSBidXQgbm90IHN1cmUgaXQncyB3
-b3J0aC4uLg0KTW9yZW92ZXIgdGhlIG1lbW9yeSBhbGxvY2F0aW9uIHRoZXJlIGNvdWxkIGxldCBk
-cml2ZXIgbWlzcyB0aGUgZmlyc3Qgc2FtcGxlIEkgZ3Vlc3MuDQoNCg0KPiANCj4gVGhhbmtzDQo+
-IEFsZXgNCj4gDQo+ID4gU2lnbmVkLW9mZi1ieTogRGVuaXMgQ2lvY2NhIDxkZW5pcy5jaW9jY2FA
-c3QuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL2lpby9wcmVzc3VyZS9zdF9wcmVzc3VyZV9i
-dWZmZXIuYyB8IDMyDQo+ID4gKysrKysrKystLS0tLS0tLS0tLS0tLS0NCj4gPiAgMSBmaWxlIGNo
-YW5nZWQsIDExIGluc2VydGlvbnMoKyksIDIxIGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAt
-LWdpdCBhL2RyaXZlcnMvaWlvL3ByZXNzdXJlL3N0X3ByZXNzdXJlX2J1ZmZlci5jDQo+ID4gYi9k
-cml2ZXJzL2lpby9wcmVzc3VyZS9zdF9wcmVzc3VyZV9idWZmZXIuYw0KPiA+IGluZGV4IGYyMWI2
-MzBhYmFhMC4uNTQ4MjNjZmNmYWI1IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvaWlvL3ByZXNz
-dXJlL3N0X3ByZXNzdXJlX2J1ZmZlci5jDQo+ID4gKysrIGIvZHJpdmVycy9paW8vcHJlc3N1cmUv
-c3RfcHJlc3N1cmVfYnVmZmVyLmMNCj4gPiBAQCAtMjksNTMgKzI5LDQzIEBAIGludCBzdF9wcmVz
-c190cmlnX3NldF9zdGF0ZShzdHJ1Y3QgaWlvX3RyaWdnZXIgKnRyaWcsDQo+IGJvb2wgc3RhdGUp
-DQo+ID4gIAlyZXR1cm4gc3Rfc2Vuc29yc19zZXRfZGF0YXJlYWR5X2lycShpbmRpb19kZXYsIHN0
-YXRlKTsgIH0NCj4gPg0KPiA+IC1zdGF0aWMgaW50IHN0X3ByZXNzX2J1ZmZlcl9wcmVlbmFibGUo
-c3RydWN0IGlpb19kZXYgKmluZGlvX2RldikgLXsNCj4gPiAtCXJldHVybiBzdF9zZW5zb3JzX3Nl
-dF9lbmFibGUoaW5kaW9fZGV2LCB0cnVlKTsNCj4gPiAtfQ0KPiA+IC0NCj4gPiAgc3RhdGljIGlu
-dCBzdF9wcmVzc19idWZmZXJfcG9zdGVuYWJsZShzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2KSAg
-ew0KPiA+IC0JaW50IGVycjsNCj4gPiAgCXN0cnVjdCBzdF9zZW5zb3JfZGF0YSAqcHJlc3NfZGF0
-YSA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ID4gKwlpbnQgZXJyOw0KPiA+DQo+ID4gIAlwcmVz
-c19kYXRhLT5idWZmZXJfZGF0YSA9IGttYWxsb2MoaW5kaW9fZGV2LT5zY2FuX2J5dGVzLA0KPiA+
-ICAJCQkJCSAgR0ZQX0RNQSB8IEdGUF9LRVJORUwpOw0KPiA+IC0JaWYgKHByZXNzX2RhdGEtPmJ1
-ZmZlcl9kYXRhID09IE5VTEwpIHsNCj4gPiAtCQllcnIgPSAtRU5PTUVNOw0KPiA+IC0JCWdvdG8g
-YWxsb2NhdGVfbWVtb3J5X2Vycm9yOw0KPiA+IC0JfQ0KPiA+ICsJaWYgKCFwcmVzc19kYXRhLT5i
-dWZmZXJfZGF0YSkNCj4gPiArCQlyZXR1cm4gLUVOT01FTTsNCj4gPg0KPiA+ICAJZXJyID0gaWlv
-X3RyaWdnZXJlZF9idWZmZXJfcG9zdGVuYWJsZShpbmRpb19kZXYpOw0KPiA+ICAJaWYgKGVyciA8
-IDApDQo+ID4gLQkJZ290byBzdF9wcmVzc19idWZmZXJfcG9zdGVuYWJsZV9lcnJvcjsNCj4gPiAr
-CQlnb3RvIHN0X3ByZXNzX2ZyZWVfYnVmZmVyOw0KPiA+DQo+ID4gLQlyZXR1cm4gZXJyOw0KPiA+
-ICsJcmV0dXJuIHN0X3NlbnNvcnNfc2V0X2VuYWJsZShpbmRpb19kZXYsIHRydWUpOw0KPiA+DQo+
-ID4gLXN0X3ByZXNzX2J1ZmZlcl9wb3N0ZW5hYmxlX2Vycm9yOg0KPiA+ICtzdF9wcmVzc19mcmVl
-X2J1ZmZlcjoNCj4gPiAgCWtmcmVlKHByZXNzX2RhdGEtPmJ1ZmZlcl9kYXRhKTsNCj4gPiAtYWxs
-b2NhdGVfbWVtb3J5X2Vycm9yOg0KPiA+ICAJcmV0dXJuIGVycjsNCj4gPiAgfQ0KPiA+DQo+ID4g
-IHN0YXRpYyBpbnQgc3RfcHJlc3NfYnVmZmVyX3ByZWRpc2FibGUoc3RydWN0IGlpb19kZXYgKmlu
-ZGlvX2RldikNCj4gPiAgew0KPiA+IC0JaW50IGVycjsNCj4gPiAgCXN0cnVjdCBzdF9zZW5zb3Jf
-ZGF0YSAqcHJlc3NfZGF0YSA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ID4gLQ0KPiA+IC0JZXJy
-ID0gaWlvX3RyaWdnZXJlZF9idWZmZXJfcHJlZGlzYWJsZShpbmRpb19kZXYpOw0KPiA+IC0JaWYg
-KGVyciA8IDApDQo+ID4gLQkJZ290byBzdF9wcmVzc19idWZmZXJfcHJlZGlzYWJsZV9lcnJvcjsN
-Cj4gPiArCWludCBlcnIsIGVycjI7DQo+ID4NCj4gPiAgCWVyciA9IHN0X3NlbnNvcnNfc2V0X2Vu
-YWJsZShpbmRpb19kZXYsIGZhbHNlKTsNCj4gPg0KPiA+IC1zdF9wcmVzc19idWZmZXJfcHJlZGlz
-YWJsZV9lcnJvcjoNCj4gPiArCWVycjIgPSBpaW9fdHJpZ2dlcmVkX2J1ZmZlcl9wcmVkaXNhYmxl
-KGluZGlvX2Rldik7DQo+ID4gKwlpZiAoIWVycikNCj4gPiArCQllcnIgPSBlcnIyOw0KPiA+ICsN
-Cj4gPiAgCWtmcmVlKHByZXNzX2RhdGEtPmJ1ZmZlcl9kYXRhKTsNCj4gPiAgCXJldHVybiBlcnI7
-DQo+ID4gIH0NCj4gPg0KPiA+ICBzdGF0aWMgY29uc3Qgc3RydWN0IGlpb19idWZmZXJfc2V0dXBf
-b3BzIHN0X3ByZXNzX2J1ZmZlcl9zZXR1cF9vcHMgPSB7DQo+ID4gLQkucHJlZW5hYmxlID0gJnN0
-X3ByZXNzX2J1ZmZlcl9wcmVlbmFibGUsDQo+ID4gIAkucG9zdGVuYWJsZSA9ICZzdF9wcmVzc19i
-dWZmZXJfcG9zdGVuYWJsZSwNCj4gPiAgCS5wcmVkaXNhYmxlID0gJnN0X3ByZXNzX2J1ZmZlcl9w
-cmVkaXNhYmxlLA0KPiA+ICB9Ow0K
+We don't need dev_err() messages when platform_get_irq() fails now that
+platform_get_irq() prints an error message itself when something goes
+wrong. Let's remove these prints with a simple semantic patch.
+
+// <smpl>
+@@
+expression ret;
+struct platform_device *E;
+@@
+
+ret =
+(
+platform_get_irq(E, ...)
+|
+platform_get_irq_byname(E, ...)
+);
+
+if ( \( ret < 0 \| ret <= 0 \) )
+{
+(
+-if (ret != -EPROBE_DEFER)
+-{ ...
+-dev_err(...);
+-... }
+|
+...
+-dev_err(...);
+)
+...
+}
+// </smpl>
+
+While we're here, remove braces on if statements that only have one
+statement (manually).
+
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Hartmut Knaack <knaack.h@gmx.de>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc: linux-iio@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+---
+
+Please apply directly to subsystem trees
+
+ drivers/iio/adc/ad7606_par.c        | 4 +---
+ drivers/iio/adc/at91_adc.c          | 4 +---
+ drivers/iio/adc/axp288_adc.c        | 4 +---
+ drivers/iio/adc/bcm_iproc_adc.c     | 7 ++-----
+ drivers/iio/adc/da9150-gpadc.c      | 4 +---
+ drivers/iio/adc/envelope-detector.c | 5 +----
+ drivers/iio/adc/exynos_adc.c        | 4 +---
+ drivers/iio/adc/fsl-imx25-gcq.c     | 1 -
+ drivers/iio/adc/imx7d_adc.c         | 4 +---
+ drivers/iio/adc/lpc32xx_adc.c       | 4 +---
+ drivers/iio/adc/npcm_adc.c          | 1 -
+ drivers/iio/adc/rockchip_saradc.c   | 4 +---
+ drivers/iio/adc/sc27xx_adc.c        | 4 +---
+ drivers/iio/adc/spear_adc.c         | 1 -
+ drivers/iio/adc/stm32-adc-core.c    | 1 -
+ drivers/iio/adc/stm32-adc.c         | 4 +---
+ drivers/iio/adc/stm32-dfsdm-adc.c   | 5 +----
+ drivers/iio/adc/sun4i-gpadc-iio.c   | 4 +---
+ drivers/iio/adc/twl6030-gpadc.c     | 4 +---
+ drivers/iio/adc/vf610_adc.c         | 4 +---
+ 20 files changed, 17 insertions(+), 56 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
+index 1b08028facde..f732b3ac7878 100644
+--- a/drivers/iio/adc/ad7606_par.c
++++ b/drivers/iio/adc/ad7606_par.c
+@@ -53,10 +53,8 @@ static int ad7606_par_probe(struct platform_device *pdev)
+ 	int irq;
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(&pdev->dev, "no irq: %d\n", irq);
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	addr = devm_ioremap_resource(&pdev->dev, res);
+diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
+index 32f1c4a33b20..abe99856c823 100644
+--- a/drivers/iio/adc/at91_adc.c
++++ b/drivers/iio/adc/at91_adc.c
+@@ -1179,10 +1179,8 @@ static int at91_adc_probe(struct platform_device *pdev)
+ 	idev->info = &at91_adc_info;
+ 
+ 	st->irq = platform_get_irq(pdev, 0);
+-	if (st->irq < 0) {
+-		dev_err(&pdev->dev, "No IRQ ID is designated\n");
++	if (st->irq < 0)
+ 		return -ENODEV;
+-	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 
+diff --git a/drivers/iio/adc/axp288_adc.c b/drivers/iio/adc/axp288_adc.c
+index 31d51bcc5f2c..adc9cf7a075d 100644
+--- a/drivers/iio/adc/axp288_adc.c
++++ b/drivers/iio/adc/axp288_adc.c
+@@ -225,10 +225,8 @@ static int axp288_adc_probe(struct platform_device *pdev)
+ 
+ 	info = iio_priv(indio_dev);
+ 	info->irq = platform_get_irq(pdev, 0);
+-	if (info->irq < 0) {
+-		dev_err(&pdev->dev, "no irq resource?\n");
++	if (info->irq < 0)
+ 		return info->irq;
+-	}
+ 	platform_set_drvdata(pdev, indio_dev);
+ 	info->regmap = axp20x->regmap;
+ 	/*
+diff --git a/drivers/iio/adc/bcm_iproc_adc.c b/drivers/iio/adc/bcm_iproc_adc.c
+index c46c0aa15376..646ebdc0a8b4 100644
+--- a/drivers/iio/adc/bcm_iproc_adc.c
++++ b/drivers/iio/adc/bcm_iproc_adc.c
+@@ -540,11 +540,8 @@ static int iproc_adc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	adc_priv->irqno = platform_get_irq(pdev, 0);
+-	if (adc_priv->irqno <= 0) {
+-		dev_err(&pdev->dev, "platform_get_irq failed\n");
+-		ret = -ENODEV;
+-		return ret;
+-	}
++	if (adc_priv->irqno <= 0)
++		return -ENODEV;
+ 
+ 	ret = regmap_update_bits(adc_priv->regmap, IPROC_REGCTL2,
+ 				IPROC_ADC_AUXIN_SCAN_ENA, 0);
+diff --git a/drivers/iio/adc/da9150-gpadc.c b/drivers/iio/adc/da9150-gpadc.c
+index 354433996101..ae8bcc32f63d 100644
+--- a/drivers/iio/adc/da9150-gpadc.c
++++ b/drivers/iio/adc/da9150-gpadc.c
+@@ -337,10 +337,8 @@ static int da9150_gpadc_probe(struct platform_device *pdev)
+ 	init_completion(&gpadc->complete);
+ 
+ 	irq = platform_get_irq_byname(pdev, "GPADC");
+-	if (irq < 0) {
+-		dev_err(dev, "Failed to get IRQ: %d\n", irq);
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	ret = devm_request_threaded_irq(dev, irq, NULL, da9150_gpadc_irq,
+ 					IRQF_ONESHOT, "GPADC", gpadc);
+diff --git a/drivers/iio/adc/envelope-detector.c b/drivers/iio/adc/envelope-detector.c
+index 2f2b563c1162..28f3d6758eb5 100644
+--- a/drivers/iio/adc/envelope-detector.c
++++ b/drivers/iio/adc/envelope-detector.c
+@@ -357,11 +357,8 @@ static int envelope_detector_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	env->comp_irq = platform_get_irq_byname(pdev, "comp");
+-	if (env->comp_irq < 0) {
+-		if (env->comp_irq != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get compare interrupt\n");
++	if (env->comp_irq < 0)
+ 		return env->comp_irq;
+-	}
+ 
+ 	ret = devm_request_irq(dev, env->comp_irq, envelope_detector_comp_isr,
+ 			       0, "envelope-detector", env);
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index d4c3ece21679..42a3ced11fbd 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -805,10 +805,8 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(&pdev->dev, "no irq resource?\n");
++	if (irq < 0)
+ 		return irq;
+-	}
+ 	info->irq = irq;
+ 
+ 	irq = platform_get_irq(pdev, 1);
+diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
+index df19ecae52f7..fa71489195c6 100644
+--- a/drivers/iio/adc/fsl-imx25-gcq.c
++++ b/drivers/iio/adc/fsl-imx25-gcq.c
+@@ -340,7 +340,6 @@ static int mx25_gcq_probe(struct platform_device *pdev)
+ 
+ 	priv->irq = platform_get_irq(pdev, 0);
+ 	if (priv->irq <= 0) {
+-		dev_err(dev, "Failed to get IRQ\n");
+ 		ret = priv->irq;
+ 		if (!ret)
+ 			ret = -ENXIO;
+diff --git a/drivers/iio/adc/imx7d_adc.c b/drivers/iio/adc/imx7d_adc.c
+index 26a7bbe4d534..2a2fbf788e95 100644
+--- a/drivers/iio/adc/imx7d_adc.c
++++ b/drivers/iio/adc/imx7d_adc.c
+@@ -492,10 +492,8 @@ static int imx7d_adc_probe(struct platform_device *pdev)
+ 		return PTR_ERR(info->regs);
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(dev, "No irq resource?\n");
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	info->clk = devm_clk_get(dev, "adc");
+ 	if (IS_ERR(info->clk)) {
+diff --git a/drivers/iio/adc/lpc32xx_adc.c b/drivers/iio/adc/lpc32xx_adc.c
+index a6ee1c3a9064..b896f7ff4572 100644
+--- a/drivers/iio/adc/lpc32xx_adc.c
++++ b/drivers/iio/adc/lpc32xx_adc.c
+@@ -172,10 +172,8 @@ static int lpc32xx_adc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq <= 0) {
+-		dev_err(&pdev->dev, "failed getting interrupt resource\n");
++	if (irq <= 0)
+ 		return -ENXIO;
+-	}
+ 
+ 	retval = devm_request_irq(&pdev->dev, irq, lpc32xx_adc_isr, 0,
+ 				  LPC32XXAD_NAME, st);
+diff --git a/drivers/iio/adc/npcm_adc.c b/drivers/iio/adc/npcm_adc.c
+index 193b3b81de4d..910f3585fa54 100644
+--- a/drivers/iio/adc/npcm_adc.c
++++ b/drivers/iio/adc/npcm_adc.c
+@@ -225,7 +225,6 @@ static int npcm_adc_probe(struct platform_device *pdev)
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq <= 0) {
+-		dev_err(dev, "failed getting interrupt resource\n");
+ 		ret = -EINVAL;
+ 		goto err_disable_clk;
+ 	}
+diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+index dd8299831e09..582ba047c4a6 100644
+--- a/drivers/iio/adc/rockchip_saradc.c
++++ b/drivers/iio/adc/rockchip_saradc.c
+@@ -244,10 +244,8 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+ 	init_completion(&info->completion);
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(&pdev->dev, "no irq resource?\n");
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, irq, rockchip_saradc_isr,
+ 			       0, dev_name(&pdev->dev), info);
+diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
+index f7f7a18904b4..bb616aa01f4f 100644
+--- a/drivers/iio/adc/sc27xx_adc.c
++++ b/drivers/iio/adc/sc27xx_adc.c
+@@ -528,10 +528,8 @@ static int sc27xx_adc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	sc27xx_data->irq = platform_get_irq(pdev, 0);
+-	if (sc27xx_data->irq < 0) {
+-		dev_err(&pdev->dev, "failed to get ADC irq number\n");
++	if (sc27xx_data->irq < 0)
+ 		return sc27xx_data->irq;
+-	}
+ 
+ 	ret = of_hwspin_lock_get_id(np, 0);
+ 	if (ret < 0) {
+diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
+index a33d0a4cc088..592b97c464da 100644
+--- a/drivers/iio/adc/spear_adc.c
++++ b/drivers/iio/adc/spear_adc.c
+@@ -301,7 +301,6 @@ static int spear_adc_probe(struct platform_device *pdev)
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq <= 0) {
+-		dev_err(dev, "failed getting interrupt resource\n");
+ 		ret = -EINVAL;
+ 		goto errout2;
+ 	}
+diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+index 1f7ce5186dfc..da292d2e424e 100644
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -349,7 +349,6 @@ static int stm32_adc_irq_probe(struct platform_device *pdev,
+ 			 */
+ 			if (i && priv->irq[i] == -ENXIO)
+ 				continue;
+-			dev_err(&pdev->dev, "failed to get irq\n");
+ 
+ 			return priv->irq[i];
+ 		}
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index 205e1699f954..6a7dd08b1e0b 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -1919,10 +1919,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	adc->irq = platform_get_irq(pdev, 0);
+-	if (adc->irq < 0) {
+-		dev_err(&pdev->dev, "failed to get irq\n");
++	if (adc->irq < 0)
+ 		return adc->irq;
+-	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, adc->irq, stm32_adc_isr,
+ 			       0, pdev->name, adc);
+diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+index ee1e0569d0e1..e493242c266e 100644
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -1601,11 +1601,8 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
+ 	 * So IRQ associated to filter instance 0 is dedicated to the Filter 0.
+ 	 */
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		if (irq != -EPROBE_DEFER)
+-			dev_err(dev, "Failed to get IRQ: %d\n", irq);
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	ret = devm_request_irq(dev, irq, stm32_dfsdm_irq,
+ 			       0, pdev->name, adc);
+diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
+index f13c6248a662..176e1cb4abb1 100644
+--- a/drivers/iio/adc/sun4i-gpadc-iio.c
++++ b/drivers/iio/adc/sun4i-gpadc-iio.c
+@@ -460,10 +460,8 @@ static int sun4i_irq_init(struct platform_device *pdev, const char *name,
+ 	atomic_set(atomic, 1);
+ 
+ 	ret = platform_get_irq_byname(pdev, name);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "no %s interrupt registered\n", name);
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ 	ret = regmap_irq_get_virq(mfd_dev->regmap_irqc, ret);
+ 	if (ret < 0) {
+diff --git a/drivers/iio/adc/twl6030-gpadc.c b/drivers/iio/adc/twl6030-gpadc.c
+index 2fa6ec83bb13..f24148bd15de 100644
+--- a/drivers/iio/adc/twl6030-gpadc.c
++++ b/drivers/iio/adc/twl6030-gpadc.c
+@@ -905,10 +905,8 @@ static int twl6030_gpadc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(&pdev->dev, "failed to get irq\n");
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	ret = devm_request_threaded_irq(dev, irq, NULL,
+ 				twl6030_gpadc_irq_handler,
+diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+index 41d3621c4787..98b30475bbc6 100644
+--- a/drivers/iio/adc/vf610_adc.c
++++ b/drivers/iio/adc/vf610_adc.c
+@@ -821,10 +821,8 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 		return PTR_ERR(info->regs);
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(&pdev->dev, "no irq resource?\n");
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	ret = devm_request_irq(info->dev, irq,
+ 				vf610_adc_isr, 0,
+-- 
+Sent by a computer through tubes
+

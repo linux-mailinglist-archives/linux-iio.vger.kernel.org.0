@@ -2,335 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0620F7A018
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2019 06:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE8D67A366
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2019 10:52:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728661AbfG3EqB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Jul 2019 00:46:01 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:36477 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728554AbfG3EqB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Jul 2019 00:46:01 -0400
-Received: by mail-pf1-f195.google.com with SMTP id r7so29153970pfl.3;
-        Mon, 29 Jul 2019 21:46:00 -0700 (PDT)
+        id S1728980AbfG3IwW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Jul 2019 04:52:22 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:53016 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728206AbfG3IwV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Jul 2019 04:52:21 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6U8mK64001385;
+        Tue, 30 Jul 2019 04:52:15 -0400
+Received: from nam03-by2-obe.outbound.protection.outlook.com (mail-by2nam03lp2056.outbound.protection.outlook.com [104.47.42.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2u1nfbvtk7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 30 Jul 2019 04:52:15 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SblxishdcYVKhHrtUgqqxZeavR2O01d28srzsh5mf+0Hu0Mvesylt9RsaGwChRvJnP32qLCWRNRheWxVaZCZBdMj/5wb1VZfauva6fk0Vn7JgqR+KFPw2VI3YPTZ6QFYdOoVS98iUwofQeS08HH48R9x6eFTQxYxIIJkDbzfuWIGmD52yV3o76G6ZrH0qMBYWAzsA3ejzyOj07c7U78syxVJ8wXCj3pUGKwF7/dDupaePkRsse7cJuYjEUuIryWgSY7LFIohycQokPidiwA5nVQzOhkE2rPJ2CW9OvPNl4zXrJq2jW//KN3+2/Lh0Q+Hm6KuwcEp/388A2BxK18IVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RnHltITySSuxPEPC8hFZQXmyUXGhQo4M/t3liLiZ/ZQ=;
+ b=nGro4C5/8taXEA42cCAf2F7Ews3HheyhHwM0KY9wn7wvtwF93NOVFwM6K4cXIZFeDnMHO35sZX+vm5fQXf3GJtZHpXlFrNN2QC1hSLQLX0Fv4Nxh/sJea84i+bh9vUdGjn3bRsKRXTH/0nYoibb36C3NLf5Z23gDyLW0JVqg8dUM+EcQn9W2NOyu8801nwBHefPgMosXWmeJ8PlNlClTpNs2W/f16vaY8ewTCRe1w2qnTpi+zAl7Ry77C3t6sx4CZNS1/FZAeVSBMCBBtbxfQ7NzQr8VpwJvku87yvay3XARbd1byJIN66Ha1YWSpTtYVK7IBBGq8RW46bC5vQQ52A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass (sender ip is
+ 137.71.25.55) smtp.rcpttodomain=vger.kernel.org
+ smtp.mailfrom=analog.com;dmarc=bestguesspass action=none
+ header.from=analog.com;dkim=none (message not signed);arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Wv8DWY08GJEMxC7NWmO7+gLC+yTdYVQmPavAno3uIdU=;
-        b=PiZOHOhFVESZCZRuk8yA2q62dB4REo9ehIvOOLnyMVpMb878mrDpqxzyO7oSS5iFH8
-         2Jvca/DAnruayAq06RMV5jgjjRlzC2LnqIn3B6CtXnn96ntvi4r7JtwyIFTqRUMAE6ru
-         rZkMz2XR+5zYDAntaPBp6mC3qCc2O3frrldjw8azwP1yi56gRMlvw1IMdnqbZmc0IsJB
-         3HK2Zfos/LG7WXYTZmwnulabRWqSqK/+6nFkUc3OAxw12rPXLaQ+dYZIHLk1p8sbCnnw
-         qPG+8YMHjxxoe5EyUakYeoUkDLmpsI+tyg9TjxIBPts2O7k5CUt45slrdfWstMHyJRRk
-         5dEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Wv8DWY08GJEMxC7NWmO7+gLC+yTdYVQmPavAno3uIdU=;
-        b=MnuI62kMZFqJ9tNNtTWwEYcHznHElUvoJHk54bx0Rq95LS6gsw8MBNHyh3Y5n67t2w
-         fqCSxlyJUp2+zKOqhAEyZIYIC7xM3NjtW8N4hxxLG4svLcgzpKtumIsLtOTOHoL83pQ6
-         UckWn2tAIGPa/mFYBxHOlWyP5+H+7Q842Nfa95yu5YUu03DU2URas9I3TDSRlagyur6U
-         JmSXMYcWWgWHRah3B3JpJQbB6s5z6CPnZ0mopvGaEsADeAyE5G/F8FVCO0vvI/NIpK5d
-         ffgJpY1T7K2uAD/sDPL8o9TdDJKwVC4qaT4kC541RyDxKOqiy8LtUYTJqqmBO0rRtpca
-         r9hw==
-X-Gm-Message-State: APjAAAWZkUpMfx7AOAI14j2DwvmcNxRGDQ3dnNPVGBQvo1CYNs5JnWUY
-        WxmOqTVfHluU3isw0JiVmKQ=
-X-Google-Smtp-Source: APXvYqxFCfAzJGa1k5c3LAK/vUqF/r7i1noLfCqemvD+Wd9M3RjfvKecUzgt1pqjSfDPgsHrPKMn+w==
-X-Received: by 2002:a62:35c6:: with SMTP id c189mr40033698pfa.96.1564461960067;
-        Mon, 29 Jul 2019 21:46:00 -0700 (PDT)
-Received: from icarus ([2001:268:c147:5dce:41f:f559:d580:dcd4])
-        by smtp.gmail.com with ESMTPSA id c8sm72532828pjq.2.2019.07.29.21.45.55
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 29 Jul 2019 21:45:58 -0700 (PDT)
-Date:   Tue, 30 Jul 2019 13:45:36 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 0/4] new driver for TI eQEP
-Message-ID: <20190730044536.GA5063@icarus>
-References: <20190722154538.5314-1-david@lechnology.com>
- <20190725124037.GA4802@icarus>
- <4616508c-d753-586d-0d3b-5a003e86f582@lechnology.com>
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RnHltITySSuxPEPC8hFZQXmyUXGhQo4M/t3liLiZ/ZQ=;
+ b=eGSQcPLHQjSzsoRei1cvgPHyWn1iq2+v8aN6aiL/4dLnjZ7gCTsFAD1l6N6ZpnZ+Wqgc7h0AMEuwr1uw23+9OVMME/x2y2NPzE31w8pGtFm0LChMw9jXPEmBtq+TPX9cOltgGX/IFH24jK+WMFq35xEZ3VfRXus65r+FiVmPGZc=
+Received: from MWHPR03CA0047.namprd03.prod.outlook.com (2603:10b6:301:3b::36)
+ by BYAPR03MB4838.namprd03.prod.outlook.com (2603:10b6:a03:138::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2115.10; Tue, 30 Jul
+ 2019 08:52:13 +0000
+Received: from BL2NAM02FT035.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::203) by MWHPR03CA0047.outlook.office365.com
+ (2603:10b6:301:3b::36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2115.10 via Frontend
+ Transport; Tue, 30 Jul 2019 08:52:13 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
+Received: from nwd2mta1.analog.com (137.71.25.55) by
+ BL2NAM02FT035.mail.protection.outlook.com (10.152.77.157) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2115.10
+ via Frontend Transport; Tue, 30 Jul 2019 08:52:13 +0000
+Received: from NWD2HUBCAS9.ad.analog.com (nwd2hubcas9.ad.analog.com [10.64.69.109])
+        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x6U8qAJf013047
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Tue, 30 Jul 2019 01:52:10 -0700
+Received: from NWD2MBX7.ad.analog.com ([fe80::190e:f9c1:9a22:9663]) by
+ NWD2HUBCAS9.ad.analog.com ([fe80::44a2:871b:49ab:ea47%12]) with mapi id
+ 14.03.0415.000; Tue, 30 Jul 2019 04:52:12 -0400
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>,
+        "denis.ciocca@st.com" <denis.ciocca@st.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 1/4] iio:accel: preenable/postenable/predisable fixup
+ for ST accel buffer
+Thread-Topic: [PATCH 1/4] iio:accel: preenable/postenable/predisable fixup
+ for ST accel buffer
+Thread-Index: AQHVRmtJBMdjlbVqCU2quu5A8vrRBqbjUKiA
+Date:   Tue, 30 Jul 2019 08:52:12 +0000
+Message-ID: <b50940d1c40d0a152dff1500d232db3097ace08b.camel@analog.com>
+References: <20190730000305.30958-1-denis.ciocca@st.com>
+         <20190730000305.30958-2-denis.ciocca@st.com>
+In-Reply-To: <20190730000305.30958-2-denis.ciocca@st.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.65.107]
+x-adiroutedonprem: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6DE1C33721822343AE17FBF4DACD66AA@analog.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <4616508c-d753-586d-0d3b-5a003e86f582@lechnology.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(39860400002)(136003)(346002)(376002)(396003)(2980300002)(199004)(189003)(486006)(70206006)(426003)(102836004)(106002)(436003)(76176011)(2486003)(50466002)(11346002)(126002)(23676004)(7696005)(8676002)(110136005)(7636002)(2501003)(14454004)(70586007)(336012)(5660300002)(86362001)(305945005)(7736002)(2906002)(316002)(186003)(47776003)(246002)(2201001)(26005)(8936002)(229853002)(3846002)(476003)(6116002)(118296001)(6246003)(2616005)(478600001)(446003)(356004)(36756003);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR03MB4838;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: bc8a1fbe-f802-41b2-8cc9-08d714cb3734
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328)(7193020);SRVR:BYAPR03MB4838;
+X-MS-TrafficTypeDiagnostic: BYAPR03MB4838:
+X-Microsoft-Antispam-PRVS: <BYAPR03MB48384AF9DDB6B043E71A7108F9DC0@BYAPR03MB4838.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Forefront-PRVS: 0114FF88F6
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: ja34s4twsmgnfXXLoS5pIo3EXGQsSuKw8MtI8o9IxHIbKaTYo4j9piMEnmNCOuoaDESqmRYtStuoL20E4XcTjqP0UuHOPKqL7XYzB83vmOK0Fii5J4fnBWBQw/mMagH9qN7m3aBGYXcrpBSs5aD9OpCF8VWDbFAQ259F1EzBWGyYT26/7WZWiysem7LY7o1LGwS8znCDlRi0CnYSI9vro2SyTkOUogoxJBrUOFlphM/UXwq0NTPwGS3qRGMOhgDkhbQKZ7kbriLbOomt4x7vYHf9sc+SsgWRrjcaZV8ikuSj3B622ysRgKypQuUEYx4ADYzhojs6GA4EDdFAnkBbYyCJUtfUEarcY+8N1dHlMPsNHSdzcmDokSomkepFnplYvzxway2hxYoQjN0kRztrv+r4zczh8zopN31mI3X/mgE=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2019 08:52:13.2100
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc8a1fbe-f802-41b2-8cc9-08d714cb3734
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR03MB4838
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-30_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1907300095
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jul 25, 2019 at 05:52:21PM -0500, David Lechner wrote:
-> On 7/25/19 7:40 AM, William Breathitt Gray wrote:
-> > On Mon, Jul 22, 2019 at 10:45:34AM -0500, David Lechner wrote:
-> >> This series adds device tree bindings and a new counter driver for the Texas
-> >> Instruments Enhanced Quadrature Encoder Pulse (eQEP).
-> >>
-> >> As mentioned in one of the commit messages, to start with, the driver only
-> >> supports reading the current counter value and setting the min/max values.
-> >> Other features can be added on an as-needed basis.
-> >>
-> >> The only other feature I am interested in is adding is getting time data in
-> >> order to calculate the rotational speed of a motor. However, there probably
-> >> needs to be a higher level discussion of how this can fit into the counter
-> >> subsystem in general first.
-> > 
-> > I believe exposing some sort of time data has merit. Quadrature counter
-> > devices in particular are commonly used for position tracking of
-> > automation systems, and such systems would benefit from velocity/speed
-> > information. So let's try to introduce that sort of functionality in this
-> > driver if possible.
-> > 
-> > First, let's discuss your specific use case and requirements, and hopefully we
-> > can generalize it enough to be of use for future drivers. From your description,
-> > it sounds like you're attaching some sort of rotary encoder to the eQEP device.
-> > Is that correct? What sort of time data are you hoping to use; does the eQEP
-> > device provide a clock value, or would you be grabbing a timestamp from the
-> > system?
-> 
-> My use case is robotics using LEGO MINDSTORMS. More specifically, I am using
-> motors that have a cheap optical rotary encoder (plastic wheel and infrared
-> LED/detectors) that give 360 counts per 1 rotation of the motor shaft. One count
-> is defined as the rising edge or falling edge of the A signal. We are looking at
-> anywhere from 0 to around 2000 counts per second. We use the speed as feedback in
-> a control algorithm to drive the motor at a constant speed. The control loop
-> updates on the order of 1 to 10 ms.
-> 
-> Because the encoder resolution and speeds are relatively low, we are currently
-> logging a timestamp for each count. If no count occurs for 50ms, then we log the
-> same count again with a new timestamp (otherwise we would never see 0 speed). To
-> get the actual speed, we find the first timestamp > 20 ms before the current
-> timestamp then compute the speed as the change in position divided by the change
-> in time between these two samples. This give a fairly accurate speed across most
-> of the range, but does get a bit noisy once we get below 100 counts per second.
-> It also means that we need a ring buffer that holds about 50 samples.
-> 
-> The timestamp itself comes from the eQEP, not the system. There are latching
-> registers to ensure that the timestamp read is from exactly the moment when
-> the count register was read.
-
-So if I understand correctly, there are two registers you're reading: a
-count register and a timestamp register. The count register is updated
-by the rotation of the motor shaft, while the timestamp register is
-updated by reading the count register (thus logging the time associated
-with the read count value).
-
-> > I'm not sure yet if it would make sense to expose rotational speed directly as
-> > an attribute. If we were to expose just the count value and timestamp since the
-> > last read, that should be enough for a user to compute the delta and derive
-> > speed. I'll think more about this since some devices may simplify that case if
-> > the hardware is able to compute the speed for us.
-> > 
-> 
-> I agree that it probably doesn't make sense to expect drivers to compute the
-> speed. There isn't really a general way to do that works for an arbitrary
-> speed. For example at high speeds, it is better to just look at the change
-> in counts over a fixed interval rather than triggering a timestamp based on
-> a certain number of counts.
-
-This is a good point. Depending on the resolution the user cares about,
-they may be more interested in the speed over a short time interval
-versus a long time interval. It doesn't seem practical to have the driver
-try to handle all possible speed calculations when the user can decide
-themselves how best to use the data.
-
-> I also don't think having a timestamp sysfs attribute would be very useful.
-> To make it work at all, I think it would have to be implemented such that
-> it returns the timestamp for the count that was most recently read via sysfs.
-> And it would require 4 syscalls (2 seeks and 2 reads) to get a single count/
-> timestamp pair in a control loop. On a 300MHz ARM9 processor, this is not
-> a negligible amount of time.
-
-This is a concern I've had as well. The sysfs interface is useful in
-that it provides an intuitive and human-friendly way to expose data
-about devices. But as you note, there is considerable overhead in the
-amount of syscalls we have to make to interact with multiple attributes.
-
-One solution that may work is providing a character device interface in
-addition to the sysfs interface. I believe that should reduce the
-syscall overhead since a user can pass in a data structure with a
-configuration defining what data/actions they want, and receive back
-all data in a single syscall.
-
-I think concern over latency was one of the reasons the GPIO subsystem
-gained a character device interface as well. It's an addition to the
-Counter subsystem that is worth considering, but the possible downsides
-to such an interface should also be investigated.
- 
-> I noticed that several of the other counter drivers also register an IIO
-> device. So this got me thinking that perhaps the counter subsystem should
-> just be for configuring a counter device an then the IIO subsystem should
-> be used for triggers and ring buffers.
-> 
-> For the general case a counter device could have two possible triggers.
-> One that triggers an interrupt after X counts and another that triggers
-> with a period of T nanoseconds (or microseconds). Both triggers would add
-> a count/timestamp pair to an IIO ring buffer.
-> 
-> To fully reproduce our current methodology the first trigger would actually
-> need two configurable settings, the count X that triggers every X counts and
-> a watchdog time setting (using terminology from eQEP docs) that will also
-> trigger if and only if the count does not change before the time has elapsed.
-> Note, this is different from the other proposed time based trigger which
-> would cause a trigger interrupt at a fixed period regardless of whether
-> the count changed or not.
-
-The counter drivers in the kernel right now are registering IIO devices
-in order to keep the preexisting (but now deprecated) IIO Counter
-interface working for these devices -- some users may be using this
-older interface so we don't want to remove it cold turkey. Regardless,
-there's nothing the prevents incorporating the IIO interface with your
-Counter drivers; in fact, in some circumstances it's better that you do
-just that.
-
-The key idea to recognize is how the Counter subsystem differs from the
-IIO subsystem on a conceptual level: the IIO subsystem provides an
-interface for your device by describing it on a hardware level, whereas
-the Counter subsystem provides an interface for your device by
-describing it on a more abstract level.
-
-What I mean is that every interface interaction in the Counter subsystem
-relates to the abstract concept of an ideal "counter device" (Counts,
-Synapses, Signals); if a device functionality or data does not relate
-directly to those ideal counter device components, then the Counter
-subsystem isn't that right interface for it.
-
-For example, it makes sense to have an "enable" attribute or "present"
-attribute, because these functionalities/data are directly related to
-the Count, Synapse, and Signal components conceptually. However, in the
-Counter subsystem you will likely not see something like the IIO
-"in_voltageY_supply_raw" attribute -- not because that data is not
-useful to know about for the operation of the counter device hardware,
-but because it is outside the scope of the Counter subsystem paradigm
-(i.e. it does not directly related to Counts, Synapses, or Signals).
-As such, this would be a case where the counter driver should register
-both a Counter device and IIO device, one to handle the counter device
-on an abstract level while the other provides an interface for control
-of the more specific hardware details.
-
-> ---
-> 
-> Thinking more generally though, I think what I would propose is adding a new
-> component to the existing list of Count, Signal and Synapse. The new component
-> could be called Event. Event would be more general than the trigger conditions
-> I have just discussed. In addition to those two, it could be any event
-> generated by the hardware, such as an error condition or a change in direction.
-> 
-> Drivers could register an arbitrary number of events for each Count, so we
-> would have /sys/bus/counter/devices/counterX/eventY/*. There should be a few
-> standard attributes, like "name" and "enable". Configurable events would need
-> ext attributes to allow configuration.
-> 
-> However, I see that there are already preset and error_noise "events" for
-> count objects, so maybe we don't do the eventY thing and keep it flatter (or
-> is the counter subsystem still considered in "staging" where breaking ABI
-> changes could be made?).
-
-The components for handling events already exist in the Counter
-interface paradigm: Signals and Synapses. Although, the Counter
-subsystem is currently lacking the implementation (I still need to code
-in support for interrupts and such), the paradigm itself supports the
-concept of events and triggers.
-
-Recall that the Counter subsystem represents hardware via the
-abstraction of an idealized "counter device". This is important to
-understand because it means that Signals are not necessarily limited to
-the physical wires of the hardware. To summarize the Counter interface
-paradigm:
-
-    * A Signal is a stream of data to be evaluated.
-    * A Synapse is a trigger condition based on the evaluation of the
-      data streams (i.e. the Signals).
-    * A Count is the accumulation of the effects of Synapses (i.e. the
-      triggers).
-
-As such, in order to represent an event, you would add in a Signal to
-represent the stream of device events, and a Synapse defining the
-specific event that will trigger the action. I'll give an example in
-order to demonstrate what I mean.
-
-A simple clock can be conceptualize as a proper counter device: an
-oscillation is a Signal, a rising edge from that oscillation line can be
-the Synapse, and the current clock value is the Count.
-
-                Count                Synapse          Signal
-                -----                -------          ------
-        +---------------------+
-        | Data: Clock ticks   |    Rising Edge     _____________
-        | Function: Increase  |  <-------------   / Oscillation \
-        |                     |                  _________________
-        +---------------------+
-
-Now, in order to represent your timestamping clock we need two Signals:
-a simple clock and an event stream. The simple clock is the source of
-the current clock ticks we will store, while the event stream provides
-the rotation count register read notification that will trigger the
-timestamp.
-
-                   Count                       Synapse      Signal
-                   -----                       -------      ------
-        +-------------------------------+
-        | Data: Timestamp               |       None        _______
-        | Function: Current clock ticks |  <------------   / Clock \
-        |                               |                 ___________
-        |                               |
-        |                               |    Read event     ________
-        |                               |  <------------   / Events \
-        |                               |                 ____________
-        +-------------------------------+
-
-Note that in this case both Signals either do not exist in or are not
-exposed by the hardware (maybe the simple clock is exposed, but it's not
-necessary to be) -- they are meant to be abstract representations of the
-components of the timestamp clock as an idealized "counter device".
-
-By organizing the timestamp clock in this way, we can control and
-configure the components using the standard Counter interface: common
-attributes such as "name", "preset", "enable", etc. can now be exposed
-to users like every other counter device component.
-
-In theory we can sleep on the timestamp count attribute read (or
-character device equivalent if we go down that route), and be woken when
-an event triggers updating the timestamp value. However, the current
-Counter subsystem implementation is lacking the code for this so it
-needs to be added to the core functionality first.
-
-> When thinking about what events would actually do when enabled though, it
-> seems like we should be using IIO events and triggers (we have found reading
-> sysfs attributes to be insufficient performance-wise). It seems like unnecessary
-> work to reproduce all of this in the counter subsystem. Which makes me wonder if
-> it would be better to have counter devices just be a different device type (i.e.
-> different struct device_type for dev->type) in the IIO subsystem instead of
-> creating a completely new subsystem.
-
-I plan on adding interrupt support for the 104-QUAD-8 counter driver
-since this device has some useful interrupts on configured threshold
-conditions and such, so having the ability to handle an event rather
-than constantly read and loop is something I want to have in the Counter
-subsystem.
-
-It's possible that I can reuse some code from the IIO subsystem, as
-Jonathan pointed out, but overall I believe these should be separate
-subsystems. From the reasons described above, the IIO subsystem and
-Counter subsystem have different goals and thus different
-implementations. I don't think that's a bad thing, and we can share code
-in the few cases where the two may overlap.
-
-Regarding whether to use IIO events and triggers within the TI eQEP
-counter driver, I think we should wait for a proper Counter subsystem
-implementation to be added first. My fear is that we'll have a similar
-situation as what happened with IIO_COUNT, where we'll have to keep a
-IIO interface present with a newer Counter interface. If adding in event
-support to the Counter subsystem will take too long, we can add this TI
-eQEP driver as-is now and later add in the timestamp support.
-
-William Breathitt Gray
+T24gTW9uLCAyMDE5LTA3LTI5IGF0IDE3OjAzIC0wNzAwLCBEZW5pcyBDaW9jY2Egd3JvdGU6DQo+
+IFtFeHRlcm5hbF0NCj4gDQo+IFRoaXMgcGF0Y2ggaXMgdHJ5aW5nIHRvIGNsZWFudXAgZm9yIGdv
+b2QgdGhlIGJ1ZmZlcnMgb3BlcmF0aW9uIGZ1bmN0aW9ucy4NCj4gVGhlcmUgaXMgbm8gbmVlZCBv
+ZiB1c2luZyBwcmVlbmFibGUsIGFsbCBjYW4gYmUgZG9uZSBpbnRvDQo+IHBvc3RlbmFibGUuDQo+
+IExldCdzIGFsc28gcmVuYW1lIHRoZSBnb3RvIGxhYmVsIHVzaW5nIG9wZXJhdGlvbiB0byBwZXJm
+b3JtIGFuZCBub3QNCj4gd2hlcmUgaXQgZmFpbHMuDQo+IA0KDQpSZXZpZXdlZC1ieTogQWxleGFu
+ZHJ1IEFyZGVsZWFuIDxhbGV4YW5kcnUuYXJkZWxlYW5AYW5hbG9nLmNvbT4NCg0KPiBTaWduZWQt
+b2ZmLWJ5OiBEZW5pcyBDaW9jY2EgPGRlbmlzLmNpb2NjYUBzdC5jb20+DQo+IC0tLQ0KPiAgZHJp
+dmVycy9paW8vYWNjZWwvc3RfYWNjZWxfYnVmZmVyLmMgfCAzNyArKysrKysrKysrLS0tLS0tLS0t
+LS0tLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDI0IGRlbGV0
+aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2FjY2VsL3N0X2FjY2VsX2J1
+ZmZlci5jIGIvZHJpdmVycy9paW8vYWNjZWwvc3RfYWNjZWxfYnVmZmVyLmMNCj4gaW5kZXggMDVm
+OWFlYTQzMWUyLi44MWY4OWRhMTI1YWEgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvaWlvL2FjY2Vs
+L3N0X2FjY2VsX2J1ZmZlci5jDQo+ICsrKyBiL2RyaXZlcnMvaWlvL2FjY2VsL3N0X2FjY2VsX2J1
+ZmZlci5jDQo+IEBAIC0yOSw1NiArMjksNDYgQEAgaW50IHN0X2FjY2VsX3RyaWdfc2V0X3N0YXRl
+KHN0cnVjdCBpaW9fdHJpZ2dlciAqdHJpZywgYm9vbCBzdGF0ZSkNCj4gIAlyZXR1cm4gc3Rfc2Vu
+c29yc19zZXRfZGF0YXJlYWR5X2lycShpbmRpb19kZXYsIHN0YXRlKTsNCj4gIH0NCj4gIA0KPiAt
+c3RhdGljIGludCBzdF9hY2NlbF9idWZmZXJfcHJlZW5hYmxlKHN0cnVjdCBpaW9fZGV2ICppbmRp
+b19kZXYpDQo+IC17DQo+IC0JcmV0dXJuIHN0X3NlbnNvcnNfc2V0X2VuYWJsZShpbmRpb19kZXYs
+IHRydWUpOw0KPiAtfQ0KPiAtDQo+ICBzdGF0aWMgaW50IHN0X2FjY2VsX2J1ZmZlcl9wb3N0ZW5h
+YmxlKHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYpDQo+ICB7DQo+IC0JaW50IGVycjsNCj4gIAlz
+dHJ1Y3Qgc3Rfc2Vuc29yX2RhdGEgKmFkYXRhID0gaWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4gKwlp
+bnQgZXJyOw0KPiAgDQo+ICAJYWRhdGEtPmJ1ZmZlcl9kYXRhID0ga21hbGxvYyhpbmRpb19kZXYt
+PnNjYW5fYnl0ZXMsDQo+ICAJCQkJICAgICBHRlBfRE1BIHwgR0ZQX0tFUk5FTCk7DQo+IC0JaWYg
+KGFkYXRhLT5idWZmZXJfZGF0YSA9PSBOVUxMKSB7DQo+IC0JCWVyciA9IC1FTk9NRU07DQo+IC0J
+CWdvdG8gYWxsb2NhdGVfbWVtb3J5X2Vycm9yOw0KPiAtCX0NCj4gKwlpZiAoIWFkYXRhLT5idWZm
+ZXJfZGF0YSkNCj4gKwkJcmV0dXJuIC1FTk9NRU07DQo+ICANCj4gIAllcnIgPSBpaW9fdHJpZ2dl
+cmVkX2J1ZmZlcl9wb3N0ZW5hYmxlKGluZGlvX2Rldik7DQo+ICAJaWYgKGVyciA8IDApDQo+IC0J
+CWdvdG8gc3RfYWNjZWxfYnVmZmVyX3Bvc3RlbmFibGVfZXJyb3I7DQo+ICsJCWdvdG8gc3RfYWNj
+ZWxfZnJlZV9idWZmZXI7DQo+ICANCj4gIAllcnIgPSBzdF9zZW5zb3JzX3NldF9heGlzX2VuYWJs
+ZShpbmRpb19kZXYsDQo+ICAJCQkJCSh1OClpbmRpb19kZXYtPmFjdGl2ZV9zY2FuX21hc2tbMF0p
+Ow0KPiAgCWlmIChlcnIgPCAwKQ0KPiAtCQlnb3RvIHN0X3NlbnNvcnNfc2V0X2F4aXNfZW5hYmxl
+X2Vycm9yOw0KPiArCQlnb3RvIHN0X2FjY2VsX2J1ZmZlcl9wcmVkaXNhYmxlOw0KPiAgDQo+IC0J
+cmV0dXJuIGVycjsNCj4gKwlyZXR1cm4gc3Rfc2Vuc29yc19zZXRfZW5hYmxlKGluZGlvX2Rldiwg
+dHJ1ZSk7DQo+ICANCj4gLXN0X3NlbnNvcnNfc2V0X2F4aXNfZW5hYmxlX2Vycm9yOg0KPiArc3Rf
+YWNjZWxfYnVmZmVyX3ByZWRpc2FibGU6DQo+ICAJaWlvX3RyaWdnZXJlZF9idWZmZXJfcHJlZGlz
+YWJsZShpbmRpb19kZXYpOw0KPiAtc3RfYWNjZWxfYnVmZmVyX3Bvc3RlbmFibGVfZXJyb3I6DQo+
+ICtzdF9hY2NlbF9mcmVlX2J1ZmZlcjoNCj4gIAlrZnJlZShhZGF0YS0+YnVmZmVyX2RhdGEpOw0K
+PiAtYWxsb2NhdGVfbWVtb3J5X2Vycm9yOg0KPiAgCXJldHVybiBlcnI7DQo+ICB9DQo+ICANCj4g
+IHN0YXRpYyBpbnQgc3RfYWNjZWxfYnVmZmVyX3ByZWRpc2FibGUoc3RydWN0IGlpb19kZXYgKmlu
+ZGlvX2RldikNCj4gIHsNCj4gLQlpbnQgZXJyLCBlcnIyOw0KPiAgCXN0cnVjdCBzdF9zZW5zb3Jf
+ZGF0YSAqYWRhdGEgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0KPiAtDQo+IC0JZXJyID0gc3Rfc2Vu
+c29yc19zZXRfYXhpc19lbmFibGUoaW5kaW9fZGV2LCBTVF9TRU5TT1JTX0VOQUJMRV9BTExfQVhJ
+Uyk7DQo+IC0JaWYgKGVyciA8IDApDQo+IC0JCWdvdG8gc3RfYWNjZWxfYnVmZmVyX3ByZWRpc2Fi
+bGVfZXJyb3I7DQo+ICsJaW50IGVyciwgZXJyMjsNCj4gIA0KPiAgCWVyciA9IHN0X3NlbnNvcnNf
+c2V0X2VuYWJsZShpbmRpb19kZXYsIGZhbHNlKTsNCj4gIAlpZiAoZXJyIDwgMCkNCj4gLQkJZ290
+byBzdF9hY2NlbF9idWZmZXJfcHJlZGlzYWJsZV9lcnJvcjsNCj4gKwkJZ290byBzdF9hY2NlbF9i
+dWZmZXJfcHJlZGlzYWJsZTsNCj4gKw0KPiArCWVyciA9IHN0X3NlbnNvcnNfc2V0X2F4aXNfZW5h
+YmxlKGluZGlvX2RldiwgU1RfU0VOU09SU19FTkFCTEVfQUxMX0FYSVMpOw0KPiAgDQo+IC1zdF9h
+Y2NlbF9idWZmZXJfcHJlZGlzYWJsZV9lcnJvcjoNCj4gK3N0X2FjY2VsX2J1ZmZlcl9wcmVkaXNh
+YmxlOg0KPiAgCWVycjIgPSBpaW9fdHJpZ2dlcmVkX2J1ZmZlcl9wcmVkaXNhYmxlKGluZGlvX2Rl
+dik7DQo+ICAJaWYgKCFlcnIpDQo+ICAJCWVyciA9IGVycjI7DQo+IEBAIC04OCw3ICs3OCw2IEBA
+IHN0YXRpYyBpbnQgc3RfYWNjZWxfYnVmZmVyX3ByZWRpc2FibGUoc3RydWN0IGlpb19kZXYgKmlu
+ZGlvX2RldikNCj4gIH0NCj4gIA0KPiAgc3RhdGljIGNvbnN0IHN0cnVjdCBpaW9fYnVmZmVyX3Nl
+dHVwX29wcyBzdF9hY2NlbF9idWZmZXJfc2V0dXBfb3BzID0gew0KPiAtCS5wcmVlbmFibGUgPSAm
+c3RfYWNjZWxfYnVmZmVyX3ByZWVuYWJsZSwNCj4gIAkucG9zdGVuYWJsZSA9ICZzdF9hY2NlbF9i
+dWZmZXJfcG9zdGVuYWJsZSwNCj4gIAkucHJlZGlzYWJsZSA9ICZzdF9hY2NlbF9idWZmZXJfcHJl
+ZGlzYWJsZSwNCj4gIH07DQo=

@@ -2,125 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B67E57D052
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2019 23:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB4167D05F
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2019 23:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730504AbfGaVxP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Jul 2019 17:53:15 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:14426 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727987AbfGaVxO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Jul 2019 17:53:14 -0400
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6VLlVoj017013;
-        Wed, 31 Jul 2019 23:53:07 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=STMicroelectronics;
- bh=c2R5PGscM6eXuYCQbXpNI5k/P+egYypUIzMikfSs97w=;
- b=fyaSUND6ylSJJPDDjvRMgYpNtGyOsX72VNJ6L7B2KIhM6gX6KUhf5x4FI74CTAQgBf3H
- 8LWsYT0Pljv5fL6JmR2/q42mHtin+EDUnug1NkdH5Dh7apPiK2SYqqx0ufXIWRC7eGf8
- PUy7jdy+vonazow03x90IwWiug0Y6aj1zccvrA65ys3BUTWt74gRvUk0o9UDXSI9Tlu/
- ueso3YaM4L4Ql2DcA+j/OacrOPaD2qJrRJJ2Rftpl5xmXOTQmg2tFFt2OKV9kRQdEfzZ
- Y+RwUK7HEcP5Q40dOCA0EVWrOqSWPBnnnUkxwJ7IbmjwvAejHF169EvarGuK+FMyj72j oA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx08-00178001.pphosted.com with ESMTP id 2u0bra6m4f-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Wed, 31 Jul 2019 23:53:07 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 2D29C31;
-        Wed, 31 Jul 2019 21:53:07 +0000 (GMT)
-Received: from Webmail-eu.st.com (sfhdag1node1.st.com [10.75.127.1])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 25AFC777EB;
-        Wed, 31 Jul 2019 23:53:07 +0200 (CEST)
-Received: from localhost (10.75.127.47) by SFHDAG1NODE1.st.com (10.75.127.1)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 31 Jul 2019 23:53:06
- +0200
-From:   Denis Ciocca <denis.ciocca@st.com>
-To:     <linux-iio@vger.kernel.org>, <alexandru.Ardelean@analog.com>,
-        <jic23@kernel.org>
-CC:     Denis Ciocca <denis.ciocca@st.com>
-Subject: [PATCH 5/5] iio:pressure: do not allocate/de-allocate buffer here but link setup_ops to st_sensors_buffer
-Date:   Wed, 31 Jul 2019 14:52:50 -0700
-Message-ID: <20190731215250.16403-6-denis.ciocca@st.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190731215250.16403-1-denis.ciocca@st.com>
-References: <20190731215250.16403-1-denis.ciocca@st.com>
+        id S1731062AbfGaV4M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Jul 2019 17:56:12 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:42876 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727809AbfGaV4M (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Jul 2019 17:56:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=K/tOdg0rARIHNKt8myQdNk7juboEm6U9R00/FeIUiBE=; b=dAQCdVcqawi/p92YlttDZTR93
+        BKyG7tTLWgF7ROCBKJ78mPeMReOpPz03DvX3MgsE3fL4jZKpXbSgEfnsqgHzMIJoSh2RNJNUt/7Vs
+        W4pmxcdPzOCef23B1cmjFfttX03YC386eRlZje3tRqBKZnkd81Qs+16ww3Bey4vn/dVho=;
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1hswZ4-0003OG-Ci; Wed, 31 Jul 2019 21:55:18 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id 1A3322742C6C; Wed, 31 Jul 2019 22:55:17 +0100 (BST)
+Date:   Wed, 31 Jul 2019 22:55:16 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        samba-technical@lists.samba.org, devicetree@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>, linux-iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Evgeniy Dushistov <dushistov@mail.ru>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Steve French <sfrench@samba.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        linux-cifs@vger.kernel.org, Dave Kleikamp <shaggy@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Evgeniy Polyakov <zbr@ioremap.net>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        jfs-discussion@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org,
+        Hartmut Knaack <knaack.h@gmx.de>, linux-spi@vger.kernel.org
+Subject: Re: [PATCH 0/6] ReST conversion patches not applied yet
+Message-ID: <20190731215516.GM4369@sirena.org.uk>
+References: <cover.1564603513.git.mchehab+samsung@kernel.org>
+ <20190731141734.1fa9ce64@lwn.net>
+ <20190731202007.GI4369@sirena.org.uk>
+ <20190731172613.32d65ad8@coco.lan>
+ <20190731203712.GJ4369@sirena.org.uk>
+ <20190731182729.01c98cd3@coco.lan>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG5NODE1.st.com (10.75.127.13) To SFHDAG1NODE1.st.com
- (10.75.127.1)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-31_11:,,
- signatures=0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="iKKZt69u2Wx/rspf"
+Content-Disposition: inline
+In-Reply-To: <20190731182729.01c98cd3@coco.lan>
+X-Cookie: FEELINGS are cascading over me!!!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Setup buffer_setup_ops pre/post enable/disable to use
-st_sensor_buffers functions for memory allocation/de-allocation.
 
-Signed-off-by: Denis Ciocca <denis.ciocca@st.com>
----
- drivers/iio/pressure/st_pressure_buffer.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+--iKKZt69u2Wx/rspf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/iio/pressure/st_pressure_buffer.c b/drivers/iio/pressure/st_pressure_buffer.c
-index 77cb2d862f19..4306541953d0 100644
---- a/drivers/iio/pressure/st_pressure_buffer.c
-+++ b/drivers/iio/pressure/st_pressure_buffer.c
-@@ -31,17 +31,11 @@ int st_press_trig_set_state(struct iio_trigger *trig, bool state)
- 
- static int st_press_buffer_postenable(struct iio_dev *indio_dev)
- {
--	struct st_sensor_data *press_data = iio_priv(indio_dev);
- 	int err;
- 
--	press_data->buffer_data = kmalloc(indio_dev->scan_bytes,
--					  GFP_DMA | GFP_KERNEL);
--	if (!press_data->buffer_data)
--		return -ENOMEM;
--
- 	err = iio_triggered_buffer_postenable(indio_dev);
- 	if (err < 0)
--		goto st_press_free_buffer;
-+		return err;
- 
- 	err = st_sensors_set_enable(indio_dev, true);
- 	if (err < 0)
-@@ -51,14 +45,11 @@ static int st_press_buffer_postenable(struct iio_dev *indio_dev)
- 
- st_press_buffer_predisable:
- 	iio_triggered_buffer_predisable(indio_dev);
--st_press_free_buffer:
--	kfree(press_data->buffer_data);
- 	return err;
- }
- 
- static int st_press_buffer_predisable(struct iio_dev *indio_dev)
- {
--	struct st_sensor_data *press_data = iio_priv(indio_dev);
- 	int err, err2;
- 
- 	err = st_sensors_set_enable(indio_dev, false);
-@@ -67,13 +58,14 @@ static int st_press_buffer_predisable(struct iio_dev *indio_dev)
- 	if (!err)
- 		err = err2;
- 
--	kfree(press_data->buffer_data);
- 	return err;
- }
- 
- static const struct iio_buffer_setup_ops st_press_buffer_setup_ops = {
-+	.preenable = &st_sensors_buffer_preenable,
- 	.postenable = &st_press_buffer_postenable,
- 	.predisable = &st_press_buffer_predisable,
-+	.postdisable = &st_sensors_buffer_postdisable,
- };
- 
- int st_press_allocate_ring(struct iio_dev *indio_dev)
--- 
-2.22.0
+On Wed, Jul 31, 2019 at 06:27:29PM -0300, Mauro Carvalho Chehab wrote:
 
+> Meanwhile, if someone needs something that it is at the wrong book, he
+> can just use some search tool to seek what he needs, no matter on
+> what book the relevant information is stored.
+
+OTOH it might be weird for the intended audience of the book.
+
+> Mark Brown <broonie@kernel.org> escreveu:
+
+> > I don't know if it makes sense to have an embedded developer's
+> > manual as well?
+
+> Yeah, that's a good question.=20
+
+> Jon is planning todo a documentation track at LPC. One of the things
+> that should be discussed, IMO, is how we'll organize the books.
+
+I'll be at Plumbers, not sure what the schedule's looking like yet
+though.
+
+--iKKZt69u2Wx/rspf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1CDkQACgkQJNaLcl1U
+h9DmyQf8CbO6RT3vDVCTbWB0f/yKJ/A87r+D9XnXG94SH0Vqj3KAl/HFsPpl4gyU
+1t9Uo9ZtFC8lSFh29z5fxpIzNkfsanBjnTrJS1lxOvU+DgmoTfXV5+2xa3rel1E0
+oOzMumEUJLWQmAQIaSzObUMvLTHaHZXE9UwveI9WkjfE0k7lsrK4vKzotxGDUk1a
+6B/LdVb+NH3ME369z6GL2hpH6SkNc0jCRYj4PcGud8PTKBqHim7kBI3AeE51lFUV
+Dsr7zD6gH+cbj/GXdXApIDJvlR8bH6LLM/dakss84cM6CvJoD/pd4z9fn2kmUkVY
+5tMO7f2i3x9slM6yQ78bDwGSrn8XIg==
+=1tp/
+-----END PGP SIGNATURE-----
+
+--iKKZt69u2Wx/rspf--

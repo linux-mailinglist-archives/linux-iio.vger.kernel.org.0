@@ -2,199 +2,251 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEDAF7BE9D
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2019 12:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1C567C45B
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2019 16:07:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387806AbfGaKtK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Jul 2019 06:49:10 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:34316 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387805AbfGaKtK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Jul 2019 06:49:10 -0400
-Received: by mail-ed1-f65.google.com with SMTP id s49so30444752edb.1;
-        Wed, 31 Jul 2019 03:49:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=tUnV833Lm6/1yn2OaK84vuhlz85401lYVu2Fonrmp+0=;
-        b=jKz1ttiMgDzl6FxSvVGtfIdxCCH2qspfRsJFlBX0ZZs3ckLFc+ieYLIWACoAM/8QxG
-         gwZfGVGlX9EA0zUf4olMgId3qXrFsvlrFxWXKHvTJ1HNwO2vOf/EkBdpNtICt4jxxKo8
-         0KLSTD4wjyLxj2dUQ2hSpRc3LRgLW9xeX9SOqSylyrs+F4vHzqLwSo6j4m8KoqiEYLn0
-         +HQQHjZ4bBPEbI9CKAVx9NIiwYznFlJHxkceJFt6iw9eSut65by5PYSbrQTXYpBKggoE
-         di8GWKUxnE41EgDnwPLA4bLqY4JXEFXOzIEnUd8shggT9IuORkT1TWl4bqkVnQ8Thqlm
-         cIOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=tUnV833Lm6/1yn2OaK84vuhlz85401lYVu2Fonrmp+0=;
-        b=Hcfdw7bLyBEstMX4Cfm25KENBHkODnwom/cFlZZz05R/GyyUInTRN5jkWwKCtgGGTK
-         kwSQCtVMqM1pEe7VfT49KYkSzS7LGt9K3pWKdqyU6ffNc1wj18TjdAxVVoTgEdg4KTBB
-         zOlActy23B+eN450G3GogxPjaCe4gmmLj4wYq76SIyUthFCA6GYvPIenWxZD/pUv/FWc
-         hMLIv7gP1MYnaQGO6Zs7kdQ55p2ZUdoBsSQcm1Z8AU60i5/7/namGYaYKVwLntW+yOMG
-         OdPaTetx4nDI191r6L5ZaaKg7gJPtQy7iM0f7l0JVVsLC9IcXJMyDT24RHMLdjKsSvLd
-         27yQ==
-X-Gm-Message-State: APjAAAVRcejfo6UPMQgpM2prKTPQyORoomxYJUNHyAfgWb5Qd8DMYbqu
-        oTMgt/VVFNGTZPIkd0aWmaOygBtpE5pbzJ5efN0=
-X-Google-Smtp-Source: APXvYqwV4srv3tqBx2s+pM8zlAsAnc5Q8QO6pEIQqv+zVbNn0leIoEcrj303xJ9kGD4a1SZfWRYQotfHlUBpidhCy2c=
-X-Received: by 2002:a17:906:8317:: with SMTP id j23mr80702999ejx.51.1564570148094;
- Wed, 31 Jul 2019 03:49:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190731030423.8116-1-hslester96@gmail.com> <20190731094016.GB19501@onstation.org>
-In-Reply-To: <20190731094016.GB19501@onstation.org>
-From:   Chuhong Yuan <hslester96@gmail.com>
-Date:   Wed, 31 Jul 2019 18:48:57 +0800
-Message-ID: <CANhBUQ2OtXPnhG+b4JY+jAdMW4+yarNxm5hvhWF-Fk5kpR4rBA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] iio: tsl2772: Use regulator_bulk_() APIs
-To:     Brian Masney <masneyb@onstation.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S2387509AbfGaOHt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Jul 2019 10:07:49 -0400
+Received: from viti.kaiser.cx ([85.214.81.225]:55920 "EHLO viti.kaiser.cx"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727614AbfGaOHs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 31 Jul 2019 10:07:48 -0400
+Received: from pd956d63d.dip0.t-ipconnect.de ([217.86.214.61] helo=martin-debian-1.paytec.ch)
+        by viti.kaiser.cx with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <martin@kaiser.cx>)
+        id 1hspGY-0004ht-PX; Wed, 31 Jul 2019 16:07:42 +0200
+From:   Martin Kaiser <martin@kaiser.cx>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Rob Herring <robh+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Martin Kaiser <martin@kaiser.cx>
+Subject: [PATCH v4 1/2] iio: potentiometer: add a driver for Maxim 5432-5435
+Date:   Wed, 31 Jul 2019 16:07:05 +0200
+Message-Id: <20190731140706.2765-1-martin@kaiser.cx>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20190721175915.27192-1-martin@kaiser.cx>
+References: <20190721175915.27192-1-martin@kaiser.cx>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Brian Masney <masneyb@onstation.org> =E4=BA=8E2019=E5=B9=B47=E6=9C=8831=E6=
-=97=A5=E5=91=A8=E4=B8=89 =E4=B8=8B=E5=8D=885:40=E5=86=99=E9=81=93=EF=BC=9A
->
-> Hi Chuhong,
->
-> On Wed, Jul 31, 2019 at 11:04:23AM +0800, Chuhong Yuan wrote:
-> > Use regulator_bulk_() APIs to shrink driver size.
-> >
-> > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
->
-> Just a few minor nitpicks below. Overall, this is looking nice.
->
-> > ---
-> > Changes in v3:
-> >   - Split v2 into two patches.
-> >   - Add dev_err to log error messages.
-> >   - Add a check for EPROBE_DEFER.
-> >
-> >  drivers/iio/light/tsl2772.c | 82 +++++++++++--------------------------
-> >  1 file changed, 24 insertions(+), 58 deletions(-)
-> >
-> > diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
-> > index f1134f183be7..fd6d44297dba 100644
-> > --- a/drivers/iio/light/tsl2772.c
-> > +++ b/drivers/iio/light/tsl2772.c
-> > @@ -134,6 +134,12 @@ enum {
-> >       TSL2772_CHIP_SUSPENDED =3D 2
-> >  };
-> >
-> > +enum {
-> > +     TSL2772_SUPPLY_VDD =3D 0,
-> > +     TSL2772_SUPPLY_VDDIO =3D 1,
-> > +     TSL2772_NUM_SUPPLIES =3D 2
-> > +};
-> > +
-> >  /* Per-device data */
-> >  struct tsl2772_als_info {
-> >       u16 als_ch0;
-> > @@ -161,8 +167,7 @@ struct tsl2772_chip {
-> >       struct mutex prox_mutex;
-> >       struct mutex als_mutex;
-> >       struct i2c_client *client;
-> > -     struct regulator *vdd_supply;
-> > -     struct regulator *vddio_supply;
-> > +     struct regulator_bulk_data reg[TSL2772_NUM_SUPPLIES];
->
-> I prefer that this was named something other than 'reg'. Maybe
-> 'supplies'? I know that there are a few other drivers in IIO that use
-> this name.
->
+Add a driver for the Maxim Integrated MAX5432-MAX5435 family of digital
+potentiometers.
 
-I have used grep "regulator_bulk_data" in drivers/iio but find no variable
-is named "supplies"...
+These potentiometers are connected via I2C and have 32 wiper
+positions.
 
-> >       u16 prox_data;
-> >       struct tsl2772_als_info als_cur_info;
-> >       struct tsl2772_settings settings;
-> > @@ -697,46 +702,7 @@ static void tsl2772_disable_regulators_action(void=
- *_data)
-> >  {
-> >       struct tsl2772_chip *chip =3D _data;
-> >
-> > -     regulator_disable(chip->vdd_supply);
-> > -     regulator_disable(chip->vddio_supply);
-> > -}
-> > -
-> > -static int tsl2772_enable_regulator(struct tsl2772_chip *chip,
-> > -                                 struct regulator *regulator)
-> > -{
-> > -     int ret;
-> > -
-> > -     ret =3D regulator_enable(regulator);
-> > -     if (ret < 0) {
-> > -             dev_err(&chip->client->dev, "Failed to enable regulator: =
-%d\n",
-> > -                     ret);
-> > -             return ret;
-> > -     }
-> > -
-> > -     return 0;
-> > -}
-> > -
-> > -static struct regulator *tsl2772_get_regulator(struct tsl2772_chip *ch=
-ip,
-> > -                                            char *name)
-> > -{
-> > -     struct regulator *regulator;
-> > -     int ret;
-> > -
-> > -     regulator =3D devm_regulator_get(&chip->client->dev, name);
-> > -     if (IS_ERR(regulator)) {
-> > -             if (PTR_ERR(regulator) !=3D -EPROBE_DEFER)
-> > -                     dev_err(&chip->client->dev,
-> > -                             "Failed to get %s regulator %d\n",
-> > -                             name, (int)PTR_ERR(regulator));
-> > -
-> > -             return regulator;
-> > -     }
-> > -
-> > -     ret =3D tsl2772_enable_regulator(chip, regulator);
-> > -     if (ret < 0)
-> > -             return ERR_PTR(ret);
-> > -
-> > -     return regulator;
-> > +     regulator_bulk_disable(ARRAY_SIZE(chip->reg), chip->reg);
-> >  }
-> >
-> >  static int tsl2772_chip_on(struct iio_dev *indio_dev)
-> > @@ -1804,14 +1770,21 @@ static int tsl2772_probe(struct i2c_client *cli=
-entp,
-> >       chip->client =3D clientp;
-> >       i2c_set_clientdata(clientp, indio_dev);
-> >
-> > -     chip->vddio_supply =3D tsl2772_get_regulator(chip, "vddio");
-> > -     if (IS_ERR(chip->vddio_supply))
-> > -             return PTR_ERR(chip->vddio_supply);
-> > +     chip->reg[TSL2772_SUPPLY_VDD].supply =3D "vdd";
-> > +     chip->reg[TSL2772_SUPPLY_VDDIO].supply =3D "vddio";
-> >
-> > -     chip->vdd_supply =3D tsl2772_get_regulator(chip, "vdd");
-> > -     if (IS_ERR(chip->vdd_supply)) {
-> > -             regulator_disable(chip->vddio_supply);
-> > -             return PTR_ERR(chip->vdd_supply);
-> > +     ret =3D devm_regulator_bulk_get(&clientp->dev, ARRAY_SIZE(chip->r=
-eg),
-> > +                                                             chip->reg=
-);
->
-> This needs to be aligned with devm_regulator_bulk_get, not ARRAY_SIZE.
->
-> > +     if (ret < 0) {
-> > +             if (ret !=3D -EPROBE_DEFER)
-> > +                     dev_err(&clientp->dev, "Failed to get regulators:=
- %d\n", ret);
->
-> Add newline.
->
-> Brian
+Supported functionality
+- set the volatile wiper position
+- read the potentiometer scale
+
+Datasheet:
+https://datasheets.maximintegrated.com/en/ds/MAX5432-MAX5435.pdf
+
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+---
+changes in v4
+ - fix the dt bindings
+   - replace ic20 with i2c
+   - document the reg property
+   - add additionalProperties and required
+
+changes in v3
+ - split dt bindings and driver code into separate patches
+ - use yaml format for dt bindings
+ - fix formatting of parameter lists
+
+changes in v2
+ - use MAX5432_ prefix for all defines
+ - fix indentation
+ - convert void * to unsigned long, not to u32
+   (warning from kbuild test robot)
+
+ drivers/iio/potentiometer/Kconfig   |  11 +++
+ drivers/iio/potentiometer/Makefile  |   1 +
+ drivers/iio/potentiometer/max5432.c | 135 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 147 insertions(+)
+ create mode 100644 drivers/iio/potentiometer/max5432.c
+
+diff --git a/drivers/iio/potentiometer/Kconfig b/drivers/iio/potentiometer/Kconfig
+index ebc7c72a5e36..4cac0173db8b 100644
+--- a/drivers/iio/potentiometer/Kconfig
++++ b/drivers/iio/potentiometer/Kconfig
+@@ -26,6 +26,17 @@ config DS1803
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called ds1803.
+ 
++config MAX5432
++	tristate "Maxim MAX5432-MAX5435 Digital Potentiometer driver"
++	depends on I2C
++	help
++	  Say yes here to build support for the Maxim
++	  MAX5432, MAX5433, MAX5434 and MAX5435 digital
++	  potentiometer chips.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called max5432.
++
+ config MAX5481
+ 	tristate "Maxim MAX5481-MAX5484 Digital Potentiometer driver"
+ 	depends on SPI
+diff --git a/drivers/iio/potentiometer/Makefile b/drivers/iio/potentiometer/Makefile
+index 8ff55138cf12..091adf3cdd0b 100644
+--- a/drivers/iio/potentiometer/Makefile
++++ b/drivers/iio/potentiometer/Makefile
+@@ -6,6 +6,7 @@
+ # When adding new entries keep the list in alphabetical order
+ obj-$(CONFIG_AD5272) += ad5272.o
+ obj-$(CONFIG_DS1803) += ds1803.o
++obj-$(CONFIG_MAX5432) += max5432.o
+ obj-$(CONFIG_MAX5481) += max5481.o
+ obj-$(CONFIG_MAX5487) += max5487.o
+ obj-$(CONFIG_MCP4018) += mcp4018.o
+diff --git a/drivers/iio/potentiometer/max5432.c b/drivers/iio/potentiometer/max5432.c
+new file mode 100644
+index 000000000000..641b1821fdf6
+--- /dev/null
++++ b/drivers/iio/potentiometer/max5432.c
+@@ -0,0 +1,135 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Maxim Integrated MAX5432-MAX5435 digital potentiometer driver
++ * Copyright (C) 2019 Martin Kaiser <martin@kaiser.cx>
++ *
++ * Datasheet:
++ * https://datasheets.maximintegrated.com/en/ds/MAX5432-MAX5435.pdf
++ */
++
++#include <linux/i2c.h>
++#include <linux/iio/iio.h>
++#include <linux/limits.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
++
++/* All chip variants have 32 wiper positions. */
++#define MAX5432_MAX_POS 31
++
++#define MAX5432_OHM_50K   (50  * 1000)
++#define MAX5432_OHM_100K  (100 * 1000)
++
++/* Update the volatile (currently active) setting. */
++#define MAX5432_CMD_VREG  0x11
++
++struct max5432_data {
++	struct i2c_client *client;
++	unsigned long ohm;
++};
++
++static const struct iio_chan_spec max5432_channels[] = {
++	{
++		.type = IIO_RESISTANCE,
++		.indexed = 1,
++		.output = 1,
++		.channel = 0,
++		.address = MAX5432_CMD_VREG,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
++		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
++	}
++};
++
++static int max5432_read_raw(struct iio_dev *indio_dev,
++			struct iio_chan_spec const *chan,
++			int *val, int *val2, long mask)
++{
++	struct max5432_data *data = iio_priv(indio_dev);
++
++	if (mask != IIO_CHAN_INFO_SCALE)
++		return -EINVAL;
++
++	if (unlikely(data->ohm > INT_MAX))
++		return -ERANGE;
++
++	*val = data->ohm;
++	*val2 = MAX5432_MAX_POS;
++
++	return IIO_VAL_FRACTIONAL;
++}
++
++static int max5432_write_raw(struct iio_dev *indio_dev,
++			struct iio_chan_spec const *chan,
++			int val, int val2, long mask)
++{
++	struct max5432_data *data = iio_priv(indio_dev);
++	u8 data_byte;
++
++	if (mask != IIO_CHAN_INFO_RAW)
++		return -EINVAL;
++
++	if (val < 0 || val > MAX5432_MAX_POS)
++		return -EINVAL;
++
++	if (val2 != 0)
++		return -EINVAL;
++
++	/* Wiper position is in bits D7-D3. (D2-D0 are don't care bits.) */
++	data_byte = val << 3;
++	return i2c_smbus_write_byte_data(data->client, chan->address,
++			data_byte);
++}
++
++static const struct iio_info max5432_info = {
++	.read_raw = max5432_read_raw,
++	.write_raw = max5432_write_raw,
++};
++
++static int max5432_probe(struct i2c_client *client,
++		const struct i2c_device_id *id)
++{
++	struct device *dev = &client->dev;
++	struct iio_dev *indio_dev;
++	struct max5432_data *data;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(struct max5432_data));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	i2c_set_clientdata(client, indio_dev);
++
++	data = iio_priv(indio_dev);
++	data->client = client;
++	data->ohm = (unsigned long)of_device_get_match_data(dev);
++
++	indio_dev->dev.parent = dev;
++	indio_dev->info = &max5432_info;
++	indio_dev->channels = max5432_channels;
++	indio_dev->num_channels = ARRAY_SIZE(max5432_channels);
++	indio_dev->name = client->name;
++
++	return devm_iio_device_register(dev, indio_dev);
++}
++
++static const struct of_device_id max5432_dt_ids[] = {
++	{ .compatible = "maxim,max5432", .data = (void *)MAX5432_OHM_50K  },
++	{ .compatible = "maxim,max5433", .data = (void *)MAX5432_OHM_100K },
++	{ .compatible = "maxim,max5434", .data = (void *)MAX5432_OHM_50K  },
++	{ .compatible = "maxim,max5435", .data = (void *)MAX5432_OHM_100K },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, max5432_dt_ids);
++
++static struct i2c_driver max5432_driver = {
++	.driver = {
++		.name = "max5432",
++		.of_match_table = of_match_ptr(max5432_dt_ids),
++	},
++	.probe = max5432_probe,
++};
++
++module_i2c_driver(max5432_driver);
++
++MODULE_AUTHOR("Martin Kaiser <martin@kaiser.cx>");
++MODULE_DESCRIPTION("max5432-max5435 digital potentiometers");
++MODULE_LICENSE("GPL v2");
+-- 
+2.11.0
+

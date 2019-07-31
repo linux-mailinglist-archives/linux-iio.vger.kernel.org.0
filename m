@@ -2,156 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55E5D7BBCF
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2019 10:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFDB67BD26
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2019 11:28:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726556AbfGaIhX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Jul 2019 04:37:23 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:40446 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726168AbfGaIhX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 31 Jul 2019 04:37:23 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id D7681FA5D765ABC0D6C1;
-        Wed, 31 Jul 2019 16:37:17 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS404-HUB.china.huawei.com
- (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Wed, 31 Jul 2019
- 16:37:16 +0800
-Date:   Wed, 31 Jul 2019 09:37:04 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Jacopo Mondi <jacopo@jmondi.org>
-CC:     Joe Perches <joe@perches.com>, Jonathan Cameron <jic23@kernel.org>,
-        "Jacopo Mondi" <jacopo+renesas@jmondi.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        <linux-kernel@vger.kernel.org>, Hartmut Knaack <knaack.h@gmx.de>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
+        id S1727492AbfGaJ25 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Jul 2019 05:28:57 -0400
+Received: from onstation.org ([52.200.56.107]:45234 "EHLO onstation.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727209AbfGaJ24 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 31 Jul 2019 05:28:56 -0400
+Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: masneyb)
+        by onstation.org (Postfix) with ESMTPSA id 608933E910;
+        Wed, 31 Jul 2019 09:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
+        s=default; t=1564565335;
+        bh=u/qIdrUUjq1FaYIdEEDKhkEXHmOBKALGw9ffBDa0lkM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RA4VY+hyr3qzD6yMvR7wssWRi28SHeHBC7t26nv2NbPOD7GH5QCyHx6h4se+vYRKO
+         w/TU5JH7IGc2PWeIlZ2QsSnq57tKmEbFpvHjQtMNntRMW0iSGB9AzhW6Q5dwiJ1Om/
+         sMmA4tiuqWG7T3AtLMpOZUdKWpvADzYZb6wkLuqY=
+Date:   Wed, 31 Jul 2019 05:28:54 -0400
+From:   Brian Masney <masneyb@onstation.org>
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 04/12] iio: adc: max9611: Fix misuse of GENMASK macro
-Message-ID: <20190731093704.00006c84@huawei.com>
-In-Reply-To: <20190729215214.eueitve4tfxmqer3@uno.localdomain>
-References: <cover.1562734889.git.joe@perches.com>
-        <2929234bd4ecec41c0d012edc52416ef80f3e368.1562734889.git.joe@perches.com>
-        <20190714125403.0789dc9e@archlinux>
-        <b3744e64b22de98bfe8885f76811d4fc7e41b8eb.camel@perches.com>
-        <20190729215214.eueitve4tfxmqer3@uno.localdomain>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] iio: tsl2772: Use device-managed API
+Message-ID: <20190731092854.GA19501@onstation.org>
+References: <20190731030415.8062-1-hslester96@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190731030415.8062-1-hslester96@gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 29 Jul 2019 23:52:14 +0200
-Jacopo Mondi <jacopo@jmondi.org> wrote:
+Hi Chuhong,
 
-> Hello,
->   so I finally run some test and...
+On Wed, Jul 31, 2019 at 11:04:15AM +0800, Chuhong Yuan wrote:
+> Use devm_() APIs to simplify the code.
 > 
-> On Sun, Jul 14, 2019 at 05:19:32AM -0700, Joe Perches wrote:
-> > On Sun, 2019-07-14 at 12:54 +0100, Jonathan Cameron wrote:  
-> > > On Tue,  9 Jul 2019 22:04:17 -0700
-> > > Joe Perches <joe@perches.com> wrote:
-> > >  
-> > > > Arguments are supposed to be ordered high then low.
-> > > >
-> > > > Signed-off-by: Joe Perches <joe@perches.com>  
-> > >
-> > > Applied to the fixes-togreg branch of iio.git and marked for
-> > > stable etc.  
-> 
-> I don't see it in v5.3-rc2, has it been collected or are we still in
-> time for an additional fix?
-> 
-> >
-> > This mask is used in an init function called from a probe.
-> >
-> > I don't have this hardware but it looks as if it could
-> > never have worked so I doubt the driver and the hardware
-> > have ever been tested.
-> >
-> > Does anyone have this device in actual use?  
-> 
-> Because it turns out this is 2 times embarrassing. The mask definition
-> is indeed wrong, as Joe reported and fixed, but also this line
-> >
-> > 	regval = ret & MAX9611_TEMP_MASK;  
-> 
-> is very wrong as regval is read as:
->         ret = max9611_read_single(max9611, CONF_TEMP, &regval);
-> 
-> So that should actually be:
->         regval &= MAX9611_TEMP_MASK;
-> not
->  	regval = ret & MAX9611_TEMP_MASK;
-> Ups...
-> 
-> Yes, it worked by chance, as regval was always 0, which is in the
-> range of acceptable temperatures :/
-> 
-> >
-> > 	if ((regval > MAX9611_TEMP_MAX_POS &&
-> > 	     regval < MAX9611_TEMP_MIN_NEG) ||
-> > 	     regval > MAX9611_TEMP_MAX_NEG) {  
-> 
-> Also reading this condition and how I had defined the temperature
-> calculation formula makes me wonder if this it totally correct, but
-> for the moment:
-> 
-> 1) if Joe's patch has been collected, I can send an additional patch to
-> fix how regval is computed.
-> 2) If Joe's patch still have to be collected, the regval computation
-> might be fixed there.
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 
-I think this will have hit linux-next on the same day as your email.
+There needs to be more of a changelog associated with this patch since
+this doesn't describe what all is done below. I see the following
+distinct three things that are done with this patch:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/iio/adc?id=ae8cc91a7d85e018c0c267f580820b2bb558cd48
+- Use devm_add_action_or_reset to remove the call to
+  tsl2772_disable_regulators_action to simplify the error path.
 
-So follow up patch please.
+- Use devm_add_action_or_reset to call tsl2772_chip_off
+  when the device is removed. The changelog should also mention that
+  this fixes an issue where the chip is turned off before the device is
+  unregistered from the IIO subsystem. There should also be a Fixes tag
+  and you can reference my patch that moved the driver out of staging as
+  the commit that was fixed to make it easier for the folks that
+  maintain the stable kernels. This issue most likely has been present
+  since the driver was first introduced into mainline in 2012, however
+  there were a large number commits that were needed in order to get this
+  out of staging.
 
-Thanks!
+- Use devm_iio_device_register, which removes the tsl2772_remove
+  function.
 
-Jonathan
-> 
-> Sorry for taking so long to get back to you and thanks for noticing.
-> 
-> Thanks
->   j
-> 
-> > 		dev_err(max9611->dev,
-> > 			"Invalid value received from ADC 0x%4x: aborting\n",
-> > 			regval);
-> > 		return -EIO;
-> > 	}
-> >
-> >  
-> > > Thanks,
-> > >
-> > > Jonathan
-> > >  
-> > > > ---
-> > > >  drivers/iio/adc/max9611.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
-> > > > index 917223d5ff5b..0e3c6529fc4c 100644
-> > > > --- a/drivers/iio/adc/max9611.c
-> > > > +++ b/drivers/iio/adc/max9611.c
-> > > > @@ -83,7 +83,7 @@
-> > > >  #define MAX9611_TEMP_MAX_POS		0x7f80
-> > > >  #define MAX9611_TEMP_MAX_NEG		0xff80
-> > > >  #define MAX9611_TEMP_MIN_NEG		0xd980
-> > > > -#define MAX9611_TEMP_MASK		GENMASK(7, 15)
-> > > > +#define MAX9611_TEMP_MASK		GENMASK(15, 7)
-> > > >  #define MAX9611_TEMP_SHIFT		0x07
-> > > >  #define MAX9611_TEMP_RAW(_r)		((_r) >> MAX9611_TEMP_SHIFT)
-> > > >  #define MAX9611_TEMP_SCALE_NUM		1000000  
-> >  
-> 
+I would break this up further into three patches that are described
+above. The patches will be small but it makes it much easier on the
+maintainers who see a large number of patches come through. It helps
+to keep the git history in the kernel clean, which is very helpful to
+other developers.
+
+Brian
 
 
+> ---
+> Changes in v3:
+>   - Split v2 into two patches.
+> 
+>  drivers/iio/light/tsl2772.c | 36 +++++++++++++++---------------------
+>  1 file changed, 15 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
+> index 83cece921843..f1134f183be7 100644
+> --- a/drivers/iio/light/tsl2772.c
+> +++ b/drivers/iio/light/tsl2772.c
+> @@ -860,6 +860,13 @@ static int tsl2772_chip_off(struct iio_dev *indio_dev)
+>  	return tsl2772_write_control_reg(chip, 0x00);
+>  }
+>  
+> +static void tsl2772_chip_off_action(void *data)
+> +{
+> +	struct iio_dev *indio_dev = data;
+> +
+> +	tsl2772_chip_off(indio_dev);
+> +}
+> +
+>  /**
+>   * tsl2772_invoke_change - power cycle the device to implement the user
+>   *                         parameters
+> @@ -1807,10 +1814,10 @@ static int tsl2772_probe(struct i2c_client *clientp,
+>  		return PTR_ERR(chip->vdd_supply);
+>  	}
+>  
+> -	ret = devm_add_action(&clientp->dev, tsl2772_disable_regulators_action,
+> +	ret = devm_add_action_or_reset(&clientp->dev,
+> +				tsl2772_disable_regulators_action,
+>  			      chip);
+>  	if (ret < 0) {
+> -		tsl2772_disable_regulators_action(chip);
+>  		dev_err(&clientp->dev, "Failed to setup regulator cleanup action %d\n",
+>  			ret);
+>  		return ret;
+> @@ -1877,15 +1884,14 @@ static int tsl2772_probe(struct i2c_client *clientp,
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	ret = iio_device_register(indio_dev);
+> -	if (ret) {
+> -		tsl2772_chip_off(indio_dev);
+> -		dev_err(&clientp->dev,
+> -			"%s: iio registration failed\n", __func__);
+> +	ret = devm_add_action_or_reset(&clientp->dev,
+> +					tsl2772_chip_off_action,
+> +					indio_dev);
+> +
+> +	if (ret < 0)
+>  		return ret;
+> -	}
+>  
+> -	return 0;
+> +	return devm_iio_device_register(&clientp->dev, indio_dev);
+>  }
+>  
+>  static int tsl2772_suspend(struct device *dev)
+> @@ -1922,17 +1928,6 @@ static int tsl2772_resume(struct device *dev)
+>  	return tsl2772_chip_on(indio_dev);
+>  }
+>  
+> -static int tsl2772_remove(struct i2c_client *client)
+> -{
+> -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> -
+> -	tsl2772_chip_off(indio_dev);
+> -
+> -	iio_device_unregister(indio_dev);
+> -
+> -	return 0;
+> -}
+> -
+>  static const struct i2c_device_id tsl2772_idtable[] = {
+>  	{ "tsl2571", tsl2571 },
+>  	{ "tsl2671", tsl2671 },
+> @@ -1979,7 +1974,6 @@ static struct i2c_driver tsl2772_driver = {
+>  	},
+>  	.id_table = tsl2772_idtable,
+>  	.probe = tsl2772_probe,
+> -	.remove = tsl2772_remove,
+>  };
+>  
+>  module_i2c_driver(tsl2772_driver);
+> -- 
+> 2.20.1

@@ -2,94 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8C767DBB2
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2019 14:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0669D7DE13
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2019 16:39:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730878AbfHAMlr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Aug 2019 08:41:47 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3694 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730319AbfHAMlr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 1 Aug 2019 08:41:47 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id BFE41B0E29E4A17A32B1;
-        Thu,  1 Aug 2019 20:41:35 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Thu, 1 Aug 2019
- 20:41:34 +0800
-Date:   Thu, 1 Aug 2019 13:41:21 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Rob Herring <robh+dt@kernel.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Mark Brown" <broonie@kernel.org>
-Subject: Re: [PATCH 3/3][V4] dt-bindings: iio: imu: add bindings for
- ADIS16460
-Message-ID: <20190801134121.00003097@huawei.com>
-In-Reply-To: <CAL_JsqLXTnrtCr4hVVc9HrOkkvwGWk02EibdutfUBm4JDnJO5Q@mail.gmail.com>
-References: <20190723073641.27801-1-alexandru.ardelean@analog.com>
-        <20190723073641.27801-4-alexandru.ardelean@analog.com>
-        <20190727195623.42c8b4f3@archlinux>
-        <CAL_JsqLXTnrtCr4hVVc9HrOkkvwGWk02EibdutfUBm4JDnJO5Q@mail.gmail.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+        id S1726521AbfHAOja (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Aug 2019 10:39:30 -0400
+Received: from comms.puri.sm ([159.203.221.185]:54674 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726409AbfHAOj3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 1 Aug 2019 10:39:29 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 29B3EE0F66;
+        Thu,  1 Aug 2019 07:39:29 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id FG_DbJrd2E_C; Thu,  1 Aug 2019 07:39:28 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: [PATCH] iio: imu: st_lsm6dsx: make IIO_CHAN_INFO_SCALE shared by type
+Date:   Thu,  1 Aug 2019 16:39:08 +0200
+Message-Id: <20190801143908.27608-1-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 29 Jul 2019 17:24:40 -0600
-Rob Herring <robh+dt@kernel.org> wrote:
+in_accel_x_scale, in_accel_y_scale and in_accel_z_scale are always
+the same. The scale is still defined to be in "info_mask_separate".
 
-> On Sat, Jul 27, 2019 at 12:56 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Tue, 23 Jul 2019 10:36:40 +0300
-> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> >  
-> > > This change adds device-tree bindings for the ADIS16460.
-> > >
-> > > Reviewed-by: Rob Herring <robh@kernel.org>
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> >
-> > Really trivial, but convention (as driven by what git am -s does if nothing
-> > else, is to add extra tags in chronological order.  So Rob would be after
-> > you.  I tweaked it which I don't always remember to do.  
-> 
-> I'd argue it is in chronological order as the submitter added my tag
-> and then sent it out. If you applied it and added my tag, then it
-> would be after (but before yours).
+Userspace (iio-sensor-proxy and others) is not used to that and only
+looks for "in_accel_scale" for the scaling factor to apply.
 
-Bike shedding to follow...
+Change IIO_CHAN_INFO_SCALE from being separate in all channel to be
+shared by type.
 
-Possibly but given you gave the Reviewed-by for v2, and it hasn't changed
-is Alex's the same Signed-off-by as seen on V2, or a new one reflecting the
-addition of your Reviewed-by? 
+This removes in_accel_x_scale, in_accel_y_scale and in_accel_z_scale and
+makes available in_accel_scale.
 
-:)
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+---
+
+AFAIK in all other drivers, IIO_CHAN_INFO_SCALE is "shared by type". Sure
+devices are different, but LSM6DSX devices still don't have different
+scales for x/y/z channels :)
+
+thanks,
+
+                              martin
 
 
-> 
-> > It's not consistent across the kernel but I'll fight for my little corner
-> > to be :)  
-> 
-> More consistency would be nice then there's less tribal knowledge
-> about maintainers for submitters to learn.
 
-Agreed.
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Jonathan
-
-> 
-> Rob
-
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index af379a5429ed..59c3ab7cbb6f 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -56,8 +56,8 @@ enum st_lsm6dsx_hw_id {
+ 	.address = addr,						\
+ 	.modified = 1,							\
+ 	.channel2 = mod,						\
+-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
+-			      BIT(IIO_CHAN_INFO_SCALE),			\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),		\
+ 	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
+ 	.scan_index = scan_idx,						\
+ 	.scan_type = {							\
+-- 
+2.20.1
 

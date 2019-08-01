@@ -2,101 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFBCB7D8B2
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2019 11:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8C767DBB2
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2019 14:41:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728740AbfHAJhd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Aug 2019 05:37:33 -0400
-Received: from onstation.org ([52.200.56.107]:49252 "EHLO onstation.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725790AbfHAJhd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 1 Aug 2019 05:37:33 -0400
-Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: masneyb)
-        by onstation.org (Postfix) with ESMTPSA id AEA9D3E910;
-        Thu,  1 Aug 2019 09:37:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
-        s=default; t=1564652252;
-        bh=bSREQHe0K6R3ACsHI8onhePS75HmOgPd/6TZve63MgA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Nj95LxDaFriwiQaSAsOJb7M1D+sCBezKlRMBw0ZBe3WQ1vgmtEF6M1lVy5yBF385X
-         NThk1/24wo/YdDGOnvl2OnZ67NcOi7SsYZcJqDrH3ZNUo0UofDMgAYJC0vq9YvIoA3
-         8ZZhEZ7KfNsuLfSx6EeRvavP5EE2Rlobb1uijBro=
-Date:   Thu, 1 Aug 2019 05:37:31 -0400
-From:   Brian Masney <masneyb@onstation.org>
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] iio: tsl2772: Use devm_add_action_or_reset
-Message-ID: <20190801093731.GC27653@onstation.org>
-References: <20190801073557.9578-1-hslester96@gmail.com>
- <20190801093347.GA27653@onstation.org>
+        id S1730878AbfHAMlr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Aug 2019 08:41:47 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3694 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730319AbfHAMlr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 1 Aug 2019 08:41:47 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id BFE41B0E29E4A17A32B1;
+        Thu,  1 Aug 2019 20:41:35 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS407-HUB.china.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Thu, 1 Aug 2019
+ 20:41:34 +0800
+Date:   Thu, 1 Aug 2019 13:41:21 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     Rob Herring <robh+dt@kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Mark Brown" <broonie@kernel.org>
+Subject: Re: [PATCH 3/3][V4] dt-bindings: iio: imu: add bindings for
+ ADIS16460
+Message-ID: <20190801134121.00003097@huawei.com>
+In-Reply-To: <CAL_JsqLXTnrtCr4hVVc9HrOkkvwGWk02EibdutfUBm4JDnJO5Q@mail.gmail.com>
+References: <20190723073641.27801-1-alexandru.ardelean@analog.com>
+        <20190723073641.27801-4-alexandru.ardelean@analog.com>
+        <20190727195623.42c8b4f3@archlinux>
+        <CAL_JsqLXTnrtCr4hVVc9HrOkkvwGWk02EibdutfUBm4JDnJO5Q@mail.gmail.com>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190801093347.GA27653@onstation.org>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 01, 2019 at 05:33:47AM -0400, Brian Masney wrote:
-> On Thu, Aug 01, 2019 at 03:35:57PM +0800, Chuhong Yuan wrote:
-> > Use devm_add_action_or_reset to remove the call to
-> > tsl2772_disable_regulators_action to simplify the error path.
-> > 
-> > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> 
-> For the whole series:
-> 
-> Reviewed-by: Brian Masney <masneyb@onstation.org>
+On Mon, 29 Jul 2019 17:24:40 -0600
+Rob Herring <robh+dt@kernel.org> wrote:
 
-Oops, I forgot to add this as well:
-
-Tested-by: Brian Masney <masneyb@onstation.org>
-
-I tested this on a Nexus 5 phone.
-
-Brian
-
-
-> 
-> I forgot to mention this before, but next time please use a cover letter
-> if you're sending more than one patch: git format-patch --cover-letter.
-> 
-> Brian
-> 
-> 
-> > ---
-> > Changes in v4:
-> >   - Split v3 into three patches.
-> >   - Revise description to make it more precise.
-> > 
-> >  drivers/iio/light/tsl2772.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
-> > index 83cece921843..29cfd8ae2700 100644
-> > --- a/drivers/iio/light/tsl2772.c
-> > +++ b/drivers/iio/light/tsl2772.c
-> > @@ -1807,10 +1807,10 @@ static int tsl2772_probe(struct i2c_client *clientp,
-> >  		return PTR_ERR(chip->vdd_supply);
-> >  	}
+> On Sat, Jul 27, 2019 at 12:56 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Tue, 23 Jul 2019 10:36:40 +0300
+> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 > >  
-> > -	ret = devm_add_action(&clientp->dev, tsl2772_disable_regulators_action,
-> > -			      chip);
-> > +	ret = devm_add_action_or_reset(&clientp->dev,
-> > +					tsl2772_disable_regulators_action,
-> > +					chip);
-> >  	if (ret < 0) {
-> > -		tsl2772_disable_regulators_action(chip);
-> >  		dev_err(&clientp->dev, "Failed to setup regulator cleanup action %d\n",
-> >  			ret);
-> >  		return ret;
-> > -- 
-> > 2.20.1
+> > > This change adds device-tree bindings for the ADIS16460.
+> > >
+> > > Reviewed-by: Rob Herring <robh@kernel.org>
+> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
+> >
+> > Really trivial, but convention (as driven by what git am -s does if nothing
+> > else, is to add extra tags in chronological order.  So Rob would be after
+> > you.  I tweaked it which I don't always remember to do.  
+> 
+> I'd argue it is in chronological order as the submitter added my tag
+> and then sent it out. If you applied it and added my tag, then it
+> would be after (but before yours).
+
+Bike shedding to follow...
+
+Possibly but given you gave the Reviewed-by for v2, and it hasn't changed
+is Alex's the same Signed-off-by as seen on V2, or a new one reflecting the
+addition of your Reviewed-by? 
+
+:)
+
+
+> 
+> > It's not consistent across the kernel but I'll fight for my little corner
+> > to be :)  
+> 
+> More consistency would be nice then there's less tribal knowledge
+> about maintainers for submitters to learn.
+
+Agreed.
+
+Jonathan
+
+> 
+> Rob
+
+

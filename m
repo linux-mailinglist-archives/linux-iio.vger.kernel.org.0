@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92E497EC25
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Aug 2019 07:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64AF17EC26
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Aug 2019 07:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732752AbfHBFfu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Aug 2019 01:35:50 -0400
-Received: from comms.puri.sm ([159.203.221.185]:42194 "EHLO comms.puri.sm"
+        id S1732770AbfHBFgI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Aug 2019 01:36:08 -0400
+Received: from comms.puri.sm ([159.203.221.185]:42208 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732543AbfHBFfu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 2 Aug 2019 01:35:50 -0400
+        id S1732543AbfHBFgH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 2 Aug 2019 01:36:07 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 5CF5BE0F91;
-        Thu,  1 Aug 2019 22:35:49 -0700 (PDT)
+        by comms.puri.sm (Postfix) with ESMTP id A7B62E0F91;
+        Thu,  1 Aug 2019 22:36:06 -0700 (PDT)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id z8rkH0o6BpJW; Thu,  1 Aug 2019 22:35:48 -0700 (PDT)
-Subject: Re: [PATCH v2 3/4] iio: imu: st_lsm6dsx: inline output acc/gyro
- output regs
+        with ESMTP id GfM1l7CcuI9Q; Thu,  1 Aug 2019 22:36:06 -0700 (PDT)
+Subject: Re: [PATCH v2 4/4] iio: imu: st_lsm6dsx: move iio chan definitions in
+ st_lsm6dsx_sensor_settings
 To:     Lorenzo Bianconi <lorenzo@kernel.org>, jic23@kernel.org
 Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org
 References: <cover.1564427804.git.lorenzo@kernel.org>
- <930dffcdf5fa9c398c34a3c25a39e65fbd8ae836.1564427804.git.lorenzo@kernel.org>
+ <f4adc084ad92c1c31c2ed9cc748321c29e457c1c.1564427804.git.lorenzo@kernel.org>
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
 Openpgp: preference=signencrypt
 Autocrypt: addr=martin.kepplinger@puri.sm; keydata=
@@ -130,11 +130,11 @@ Autocrypt: addr=martin.kepplinger@puri.sm; keydata=
  4t1RG8Nxma/hJwwu1zRNsFK55Q/8Nlukc1WI1U+iF+EmpjZVfjFl9P9X2ArrX6mZfOgUipiY
  5VqX5Dys8s44RkFWa02WJygLuO9YUb/P+g8eSbmSYAwp2Gpzcdww63kTLv56uk32jnpDLcYD
  WG//KA68tPVBR2xhy7Fp+qAa
-Message-ID: <b6562850-0067-378a-572d-368de04221ac@puri.sm>
-Date:   Fri, 2 Aug 2019 07:35:46 +0200
+Message-ID: <dff3f76d-a4f7-bed2-496f-daa0139ee1b0@puri.sm>
+Date:   Fri, 2 Aug 2019 07:36:03 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
-In-Reply-To: <930dffcdf5fa9c398c34a3c25a39e65fbd8ae836.1564427804.git.lorenzo@kernel.org>
+In-Reply-To: <f4adc084ad92c1c31c2ed9cc748321c29e457c1c.1564427804.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -144,15 +144,17 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 29.07.19 21:22, Lorenzo Bianconi wrote:
-> Remove output register definition and inline register value since
-> they are used only for iio channel definition. This is a preliminary
-> patch to add support for LSM9DS1 sensor to st_lsm6dsx driver
+> Move IIO channel definitions in st_lsm6dsx_sensor_settings in order to
+> support sensors with different channels maps.
+> This is a preliminary patch to add support for LSM9DS1 sensor to
+> st_lsm6dsx driver.
 > 
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 26 +++++---------------
->  1 file changed, 6 insertions(+), 20 deletions(-)
-> 
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  5 +
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 96 ++++++++++++++++----
+>  2 files changed, 81 insertions(+), 20 deletions(-)
+
 
 thanks. I'm running this patchset now and will resend LSM9DS1 patches
 after these are merged.

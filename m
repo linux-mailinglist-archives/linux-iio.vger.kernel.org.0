@@ -2,596 +2,384 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B1307F072
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Aug 2019 11:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5DB77F452
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Aug 2019 12:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387958AbfHBJ1i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Aug 2019 05:27:38 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:39152 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729406AbfHBJ1i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Aug 2019 05:27:38 -0400
-Received: by mail-pf1-f196.google.com with SMTP id f17so31742639pfn.6;
-        Fri, 02 Aug 2019 02:27:37 -0700 (PDT)
+        id S2405120AbfHBKEZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Aug 2019 06:04:25 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:2438 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2390716AbfHBKEN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Aug 2019 06:04:13 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x72A2L6q028756;
+        Fri, 2 Aug 2019 06:03:28 -0400
+Received: from nam01-bn3-obe.outbound.protection.outlook.com (mail-bn3nam01lp2050.outbound.protection.outlook.com [104.47.33.50])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2u4jdfg3tr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 02 Aug 2019 06:03:28 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZLEMVJ/is7LIzueyaxVuy/8eKs9mRVvpPOVsZZntwp6V6s8g2JEEcLg+aNFSy+1vSbXUdtQus2JtNAMJZe67OLgLpqG94kvqTIC5OGSpldPgHpzSHSWnSYi8GbLzqGtd6T5bmZdu/M3z62Mm7vMNldxK1gQGQNFeeJdcgiZUFj8tg07nUPY40ohdEPY2BkTSDNo4NUUpWNpZp3sEqVStzwyNv1HNKe5wY0oaUrpS4baQRE1PqDt5JqRUOR0lcvSbJXesFfzCsuk4dLi/hVFDKV2pJwen94Wdy/jZCB7vd8pZFscghXfyScB0ixvTqzDa/zxbc/lAjKooVqi9N3UpHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cNK2/8LN8VMf9bRy4br24HkEx5YObFuWM0J5rqw5GFY=;
+ b=QitxlB2sTLY6cLd7BZ5b2tPAEaSCC0Az7CFSV7aSuVuW5TK2L4GVF9Cb/I1pKkBLzU5BIXWje+oRL/oNYGIwujBQVzulZgZspi1sE4bpC1XDN36HQJpnHNH2CkCzLXlwnMiA/LMX1cNIN3fKdA6JxLW1lqm7lfYWjhnb8u6w4xfrRblCsKEjNfS+t8rlOonHSYlloQx4j0pej16oY/9yEng+cPUgXPv4O+kmJTFGbX1LO3SOd4LiWRjPHjz+axA766WkN6h7HjiG2/hxUnG4zFcGbZMsoJDgWinOFMdAs1UjPk6h2UWX65GVQqRQiTkL/W3+rX1UHrsoSyOrMkGwXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass (sender ip is
+ 137.71.25.57) smtp.rcpttodomain=vger.kernel.org
+ smtp.mailfrom=analog.com;dmarc=bestguesspass action=none
+ header.from=analog.com;dkim=none (message not signed);arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=tmMYhEmhRaQPy5HQGC1bjPyErSOTSkAIYv3USe0z520=;
-        b=efdqs3SG06JXyS9Ziq6adY0OatK2czwxDXZYA3o3T/59HXxwys2uJaTLC/kzjT91x8
-         1Zs6G/32oe0BNExeQTF/0gooOJ0GtXzI7MoXtlrIns2QFcC7tglFJRJdVsunwOFVdneM
-         ksHZtsW0dMwcnAgIO7e4VR4gf6Fr9P9vrKhdIlJPAdy8NM321V+0UTpvp6BXGnX5QNt+
-         iQMKWaSRrUfK9J+kxFQwdWv9FRMM55HXveTpVvm+C5asDUZKXX/N3SRj+lF+JOtbuTAW
-         DT2W0HQ95v7ZvCoUUktOFlO89HD4oe1ivdb5OtgEXaHrnJYzAMWgsoEms+WmeGNk3eEU
-         iTGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tmMYhEmhRaQPy5HQGC1bjPyErSOTSkAIYv3USe0z520=;
-        b=cLeByWpVIiR1uT40XFkY/BR0C6jL62PncqCpL8ckilY1dTFphhxPW42GararMZLj3H
-         xXOP87KGXRaojIiXEx9cnup2JhujAA+2rN99NrXM+dyM5N5EpojqwNq5nV5ElddKSx6n
-         DO97zbuRCN+Roci/zFpWGdeYpPe6in2QZji0HRBN5nGdWek3mFkd2+b6culFuc6Srgny
-         kVZVt4S0q4MVw0iv1AXnEqQ0imsAK/wfN4LVGXkqJ1NkoweFyz1cBQnZH/pumscUaDgq
-         iOeq+ASxzf1RH8707NHfivfDEFmZzEcxYwRqFeRcXUMrqu6qEciCwCj13Ek6CLp2PN1j
-         VlxA==
-X-Gm-Message-State: APjAAAXKAN3hRJvwxpwna+TQDovX8lwwLxSDQxMab4GeKI9rG1e8dt+W
-        hnbeyByFosta7f+C5Ivp9sA=
-X-Google-Smtp-Source: APXvYqx2aCnEchcSURSFANix4DMQd6lLdawln8nTL5+Qx8dml8vVge8sKDs5unQh8KdZtszkN3/utQ==
-X-Received: by 2002:a17:90a:e38f:: with SMTP id b15mr3509108pjz.85.1564738056662;
-        Fri, 02 Aug 2019 02:27:36 -0700 (PDT)
-Received: from icarus ([2001:268:c146:e9f9:e343:65f1:6148:c56c])
-        by smtp.gmail.com with ESMTPSA id f32sm8500297pgb.21.2019.08.02.02.27.31
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 02 Aug 2019 02:27:35 -0700 (PDT)
-Date:   Fri, 2 Aug 2019 18:27:27 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 2/4] counter: new TI eQEP driver
-Message-ID: <20190802092727.GB30522@icarus>
-References: <20190722154538.5314-1-david@lechnology.com>
- <20190722154538.5314-3-david@lechnology.com>
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cNK2/8LN8VMf9bRy4br24HkEx5YObFuWM0J5rqw5GFY=;
+ b=HuSkQtzwbHMkWdQCcbNOaLTo6zS5GCaMpJzl8DEiTO5uFOP+fZ/DdaaMeNI6joTUW5GmgtcGxf5PN3ayCVX6Qn5R23/K/hKjvb+DPFLl1rsHqWwP9B9e+agpOx2Psin+JUCAmXV5K5rTESoT9XfCR4Kq1/7SjykBVtDMaoY+9fA=
+Received: from DM3PR03CA0022.namprd03.prod.outlook.com (2603:10b6:0:50::32) by
+ MWHPR03MB3310.namprd03.prod.outlook.com (2603:10b6:301:43::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2136.13; Fri, 2 Aug 2019 10:03:25 +0000
+Received: from BL2NAM02FT030.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::204) by DM3PR03CA0022.outlook.office365.com
+ (2603:10b6:0:50::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2136.12 via Frontend
+ Transport; Fri, 2 Aug 2019 10:03:24 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
+Received: from nwd2mta2.analog.com (137.71.25.57) by
+ BL2NAM02FT030.mail.protection.outlook.com (10.152.77.172) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2136.14
+ via Frontend Transport; Fri, 2 Aug 2019 10:03:24 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x72A3NQC025274
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Fri, 2 Aug 2019 03:03:23 -0700
+Received: from ben-Latitude-E6540.ad.analog.com (10.48.65.163) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Fri, 2 Aug 2019 06:03:23 -0400
+From:   Beniamin Bia <beniamin.bia@analog.com>
+To:     <jic23@kernel.org>
+CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <gregkh@linuxfoundation.org>, <linux-iio@vger.kernel.org>,
+        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
+        <mark.rutland@arm.com>, <robh+dt@kernel.org>,
+        <devicetree@vger.kernel.org>, <paulmck@linux.ibm.com>,
+        <mchehab+samsung@kernel.org>, <linus.walleij@linaro.org>,
+        <nicolas.ferre@microchip.com>, <biabeniamin@outlook.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Beniamin Bia <beniamin.bia@analog.com>
+Subject: [PATCH 1/4] iio: adc: ad7606: Add support for AD7606B ADC
+Date:   Fri, 2 Aug 2019 13:03:01 +0300
+Message-ID: <20190802100304.15899-1-beniamin.bia@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190722154538.5314-3-david@lechnology.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(979002)(136003)(376002)(39860400002)(346002)(396003)(2980300002)(189003)(199004)(478600001)(7636002)(50226002)(14444005)(486006)(476003)(126002)(70586007)(5660300002)(246002)(2616005)(106002)(8936002)(356004)(6666004)(70206006)(1076003)(316002)(8676002)(5820100001)(426003)(305945005)(44832011)(54906003)(336012)(7416002)(86362001)(186003)(4326008)(2906002)(107886003)(2351001)(2870700001)(36756003)(50466002)(26005)(6916009)(23676004)(47776003)(7696005)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR03MB3310;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;MX:1;A:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4c535782-5af1-4246-c8fd-08d71730a865
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328);SRVR:MWHPR03MB3310;
+X-MS-TrafficTypeDiagnostic: MWHPR03MB3310:
+X-Microsoft-Antispam-PRVS: <MWHPR03MB33102C6540E898AFAAEB49A7F0D90@MWHPR03MB3310.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 011787B9DD
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: 7hlZJM1Eo86lkmEG+AAS6Xh5zDvKbvGZYGBUyV7VHgJmdmT6TqF6E0iZQheRKQmUytHm+BSDELje7BqIG3k2Xg45PadohDnDOqvY/SW0N81ObhqKHPrYFzDVD8tDKsiDcunlzBIUwlj++UAtfIIIxK+kSi91HYVf/SUj/XtJmvufmbdtR9D0F0Yv+E9Jsg6eGJW+HuhJrv1Ghuj6gAEZ1VWDdv/+jUzjh6wRbdgT4GF4NEOx9vzR6/yH5rPinrmttAZOLw/fRJvwIc3U/qhZZ4Dwvmj2j7foTqSWzAmqNba7j+EsfWL5Fd7LpWAe6zZkAVEMBBLWZA8X7NkS2jRNw/suKu8VCRVmAhrkX9a640jdzTK3XQnX4Tw/ZK3mEL2KwxeDEV93IiG+phIlsyC2CsPT0/jBJ8CG9jq7oYoWGnM=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2019 10:03:24.6365
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c535782-5af1-4246-c8fd-08d71730a865
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR03MB3310
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-02_05:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908020102
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 22, 2019 at 10:45:36AM -0500, David Lechner wrote:
-> This adds a new counter driver for the Texas Instruments Enhanced
-> Quadrature Encoder Pulse (eQEP) module.
-> 
-> Only very basic functionality is currently implemented - only enough to
-> be able to read the position. The actual device has many more features
-> which can be added to the driver on an as-needed basis.
-> 
-> Signed-off-by: David Lechner <david@lechnology.com>
+From: Stefan Popa <stefan.popa@analog.com>
 
-Some changes suggested below, but most of the important stuff is there
-and correct so good job.
+The AD7606B is a 16-bit ADC that supports simultaneous sampling of 8
+channels. It is pin compatible to AD7606, but adds extra modes by
+writing to the register map.
 
-William Breathitt Gray
+The AD7606B can be configured to work in software mode by setting all
+oversampling pins to high. This mode is selected by default.
+The oversampling ratio is configured from the OS_MODE register (address
+0x08) with the addition of OS=128 and OS=256 that were not available in
+hardware mode.
 
-> ---
->  MAINTAINERS               |   6 +
->  drivers/counter/Kconfig   |  12 ++
->  drivers/counter/Makefile  |   1 +
->  drivers/counter/ti-eqep.c | 381 ++++++++++++++++++++++++++++++++++++++
->  drivers/pwm/Kconfig       |   2 +-
->  5 files changed, 401 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/counter/ti-eqep.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 783569e3c4b4..f3b5e275732b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16014,6 +16014,12 @@ S:	Maintained
->  F:	drivers/media/platform/davinci/
->  F:	include/media/davinci/
->  
-> +TI ENHANCED QUADRATURE ENCODER PULSE (eQEP) DRIVER
-> +R:	David Lechner <david@lechnology.com>
-> +L:	linux-iio@vger.kernel.org
-> +F:	Documentation/devicetree/bindings/counter/ti-eqep.txt
-> +F:	drivers/counter/ti-eqep.c
-> +
->  TI ETHERNET SWITCH DRIVER (CPSW)
->  R:	Grygorii Strashko <grygorii.strashko@ti.com>
->  L:	linux-omap@vger.kernel.org
-> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-> index 2967d0a9ff91..7eeb310f0cda 100644
-> --- a/drivers/counter/Kconfig
-> +++ b/drivers/counter/Kconfig
-> @@ -49,6 +49,18 @@ config STM32_LPTIMER_CNT
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called stm32-lptimer-cnt.
->  
-> +config TI_EQEP
-> +	tristate "TI eQEP counter driver"
-> +	depends on (SOC_AM33XX || COMPILE_TEST)
-> +	select PWM
-> +	select REGMAP_MMIO
-> +	help
-> +	  Select this option to enable the Texas Instruments Enhanced Quadrature
-> +	  Encoder Pulse (eQEP) counter driver.
-> +
-> +	  To compile this driver as a module, choose M here: the module will be
-> +	  called ti-eqep.
-> +
->  config FTM_QUADDEC
->  	tristate "Flex Timer Module Quadrature decoder driver"
->  	depends on HAS_IOMEM && OF
-> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-> index 40d35522937d..55142d1f4c43 100644
-> --- a/drivers/counter/Makefile
-> +++ b/drivers/counter/Makefile
-> @@ -8,4 +8,5 @@ obj-$(CONFIG_COUNTER) += counter.o
->  obj-$(CONFIG_104_QUAD_8)	+= 104-quad-8.o
->  obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
->  obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
-> +obj-$(CONFIG_TI_EQEP)		+= ti-eqep.o
->  obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
-> diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
-> new file mode 100644
-> index 000000000000..7aaa4abbc9c5
-> --- /dev/null
-> +++ b/drivers/counter/ti-eqep.c
-> @@ -0,0 +1,381 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2019 David Lechner <david@lechnology.com>
-> + *
-> + * Counter driver for Texas Instruments Enhanced Quadrature Encoder Pulse (eQEP)
-> + */
-> +
-> +#include <linux/bitops.h>
-> +#include <linux/counter.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regmap.h>
-> +
-> +/* 32-bit registers */
-> +#define QPOSCNT		0x0
-> +#define QPOSINIT	0x4
-> +#define QPOSMAX		0x8
-> +#define QPOSCMP		0xc
-> +#define QPOSILAT	0x10
-> +#define QPOSSLAT	0x14
-> +#define QPOSLAT		0x18
-> +#define QUTMR		0x1c
-> +#define QUPRD		0x20
-> +
-> +/* 16-bit registers */
-> +#define QWDTMR		0x0	/* 0x24 */
-> +#define QWDPRD		0x2	/* 0x26 */
-> +#define QDECCTL		0x4	/* 0x28 */
-> +#define QEPCTL		0x6	/* 0x2a */
-> +#define QCAPCTL		0x8	/* 0x2c */
-> +#define QPOSCTL		0xa	/* 0x2e */
-> +#define QEINT		0xc	/* 0x30 */
-> +#define QFLG		0xe	/* 0x32 */
-> +#define QCLR		0x10	/* 0x34 */
-> +#define QFRC		0x12	/* 0x36 */
-> +#define QEPSTS		0x14	/* 0x38 */
-> +#define QCTMR		0x16	/* 0x3a */
-> +#define QCPRD		0x18	/* 0x3c */
-> +#define QCTMRLAT	0x1a	/* 0x3e */
-> +#define QCPRDLAT	0x1c	/* 0x40 */
-> +
-> +#define QDECCTL_QSRC_SHIFT	14
-> +#define QDECCTL_QSRC		GENMASK(15, 14)
-> +#define QDECCTL_SOEN		BIT(13)
-> +#define QDECCTL_SPSEL		BIT(12)
-> +#define QDECCTL_XCR		BIT(11)
-> +#define QDECCTL_SWAP		BIT(10)
-> +#define QDECCTL_IGATE		BIT(9)
-> +#define QDECCTL_QAP		BIT(8)
-> +#define QDECCTL_QBP		BIT(7)
-> +#define QDECCTL_QIP		BIT(6)
-> +#define QDECCTL_QSP		BIT(5)
-> +
-> +#define QEPCTL_FREE_SOFT	GENMASK(15, 14)
-> +#define QEPCTL_PCRM		GENMASK(13, 12)
-> +#define QEPCTL_SEI		GENMASK(11, 10)
-> +#define QEPCTL_IEI		GENMASK(9, 8)
-> +#define QEPCTL_SWI		BIT(7)
-> +#define QEPCTL_SEL		BIT(6)
-> +#define QEPCTL_IEL		GENMASK(5, 4)
-> +#define QEPCTL_PHEN		BIT(3)
-> +#define QEPCTL_QCLM		BIT(2)
-> +#define QEPCTL_UTE		BIT(1)
-> +#define QEPCTL_WDE		BIT(0)
-> +
-> +/* EQEP Inputs */
-> +enum {
-> +	TI_EQEP_SIGNAL_QEPA,	/* QEPA/XCLK */
-> +	TI_EQEP_SIGNAL_QEPB,	/* QEPB/XDIR */
-> +	TI_EQEP_SIGNAL_QEPI,	/* Index */
-> +	TI_EQEP_SIGNAL_QEPS,	/* Strobe */
-> +};
-> +
-> +/* Position Counter Input Modes */
-> +enum {
-> +	TI_EQEP_COUNT_FUNC_QUAD_COUNT,
-> +	TI_EQEP_COUNT_FUNC_DIR_COUNT,
-> +	TI_EQEP_COUNT_FUNC_UP_COUNT,
-> +	TI_EQEP_COUNT_FUNC_DOWN_COUNT,
-> +};
-> +
-> +struct ti_eqep_cnt {
-> +	struct counter_device counter;
-> +	struct regmap *regmap32;
-> +	struct regmap *regmap16;
-> +};
-> +
-> +static int ti_eqep_count_read(struct counter_device *counter,
-> +			      struct counter_count *count,
-> +			      struct counter_count_read_value *val)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +	u32 cnt;
-> +
-> +	regmap_read(priv->regmap32, QPOSCNT, &cnt);
-> +	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &cnt);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ti_eqep_count_write(struct counter_device *counter,
-> +			       struct counter_count *count,
-> +			       struct counter_count_write_value *val)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +	u32 cnt, max;
-> +	int err;
-> +
-> +	err = counter_count_write_value_get(&cnt, COUNTER_COUNT_POSITION, val);
-> +	if (err)
-> +		return err;
-> +
-> +	regmap_read(priv->regmap32, QPOSMAX, &max);
-> +	if (cnt > max)
-> +		return -EINVAL;
-> +
-> +	return regmap_write(priv->regmap32, QPOSCNT, cnt);
-> +}
-> +
-> +static int ti_eqep_function_get(struct counter_device *counter,
-> +				struct counter_count *count, size_t *function)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +	u32 qdecctl;
-> +
-> +	regmap_read(priv->regmap16, QDECCTL, &qdecctl);
-> +	*function = (qdecctl & QDECCTL_QSRC) >> QDECCTL_QSRC_SHIFT;
-> +
-> +	return 0;
-> +}
-> +
-> +static int ti_eqep_function_set(struct counter_device *counter,
-> +				struct counter_count *count, size_t function)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +
-> +	return regmap_write_bits(priv->regmap16, QDECCTL, QDECCTL_QSRC,
-> +				 function << QDECCTL_QSRC_SHIFT);
-> +}
-> +
-> +static ssize_t ti_eqep_position_ceiling_read(struct counter_device *counter,
-> +					     struct counter_count *count,
-> +					     void *ext_priv, char *buf)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +	u32 qposmax;
-> +
-> +	regmap_read(priv->regmap32, QPOSMAX, &qposmax);
-> +
-> +	return sprintf(buf, "%u\n", qposmax);
-> +}
-> +
-> +static ssize_t ti_eqep_position_ceiling_write(struct counter_device *counter,
-> +					      struct counter_count *count,
-> +					      void *ext_priv, const char *buf,
-> +					      size_t len)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +	int err;
-> +	u32 res;
-> +
-> +	err = kstrtouint(buf, 10, &res);
+The device is configured to output data on a single spi channel, but this
+configuration must be done right after restart. That is why the delay was
+removed for devices which doesn't require it.
 
-In Documentation/ABI/testing/sysfs-bus-counter, a base is not specified
-for the ceiling attribute so the expectation is for the base of the
-string to be automatically detected with the conventional semantics.
+Moreover, in software mode, the range gpio has no longer its function.
+Instead, the scale can be configured individually for each channel from
+the RANGE_CH registers (address 0x03 to 0x06). Besides the already
+supported ±10 V and ±5 V ranges, software mode can also accommodate the
+±2.5 V range.
 
-That means you should pass 0 here to kstrtouint instead of 10.
+Signed-off-by: Stefan Popa <stefan.popa@analog.com>
+Co-developed-by: Beniamin Bia <beniamin.bia@analog.com>
+Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+---
+ drivers/iio/adc/ad7606.c     |  13 ++++-
+ drivers/iio/adc/ad7606.h     |   4 ++
+ drivers/iio/adc/ad7606_spi.c | 107 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 122 insertions(+), 2 deletions(-)
 
-> +	if (err < 0)
-> +		return err;
-> +
-> +	regmap_write(priv->regmap32, QPOSMAX, res);
-> +
-> +	return len;
-> +}
-> +
-> +static ssize_t ti_eqep_position_floor_read(struct counter_device *counter,
-> +					   struct counter_count *count,
-> +					   void *ext_priv, char *buf)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +	u32 qposinit;
-> +
-> +	regmap_read(priv->regmap32, QPOSINIT, &qposinit);
-> +
-> +	return sprintf(buf, "%u\n", qposinit);
-> +}
-> +
-> +static ssize_t ti_eqep_position_floor_write(struct counter_device *counter,
-> +					    struct counter_count *count,
-> +					    void *ext_priv, const char *buf,
-> +					    size_t len)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +	int err;
-> +	u32 res;
-> +
-> +	err = kstrtouint(buf, 10, &res);
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index ed2d08437e5d..f5ba94c03a8d 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -410,12 +410,19 @@ static const struct ad7606_chip_info ad7606_chip_info_tbl[] = {
+ 		.oversampling_avail = ad7606_oversampling_avail,
+ 		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
+ 	},
++	[ID_AD7606B] = {
++		.channels = ad7606_channels,
++		.num_channels = 9,
++		.oversampling_avail = ad7606_oversampling_avail,
++		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
++	},
+ 	[ID_AD7616] = {
+ 		.channels = ad7616_channels,
+ 		.num_channels = 17,
+ 		.oversampling_avail = ad7616_oversampling_avail,
+ 		.oversampling_num = ARRAY_SIZE(ad7616_oversampling_avail),
+ 		.os_req_reset = true,
++		.init_delay_ms = 15,
+ 	},
+ };
+ 
+@@ -631,8 +638,10 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 		dev_warn(st->dev, "failed to RESET: no RESET GPIO specified\n");
+ 
+ 	/* AD7616 requires al least 15ms to reconfigure after a reset */
+-	if (msleep_interruptible(15))
+-		return -ERESTARTSYS;
++	if (st->chip_info->init_delay_ms) {
++		if (msleep_interruptible(st->chip_info->init_delay_ms))
++			return -ERESTARTSYS;
++	}
+ 
+ 	st->write_scale = ad7606_write_scale_hw;
+ 	st->write_os = ad7606_write_os_hw;
+diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+index eeaaa8b905db..9350ef1f63b5 100644
+--- a/drivers/iio/adc/ad7606.h
++++ b/drivers/iio/adc/ad7606.h
+@@ -46,6 +46,8 @@
+  *			oversampling ratios.
+  * @oversampling_num	number of elements stored in oversampling_avail array
+  * @os_req_reset	some devices require a reset to update oversampling
++ * @init_delay_ms	required delay in miliseconds for initialization
++ *			after a restart
+  */
+ struct ad7606_chip_info {
+ 	const struct iio_chan_spec	*channels;
+@@ -53,6 +55,7 @@ struct ad7606_chip_info {
+ 	const unsigned int		*oversampling_avail;
+ 	unsigned int			oversampling_num;
+ 	bool				os_req_reset;
++	unsigned long			init_delay_ms;
+ };
+ 
+ /**
+@@ -155,6 +158,7 @@ enum ad7606_supported_device_ids {
+ 	ID_AD7606_8,
+ 	ID_AD7606_6,
+ 	ID_AD7606_4,
++	ID_AD7606B,
+ 	ID_AD7616,
+ };
+ 
+diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+index 98ed52b74507..070ee7e31e2c 100644
+--- a/drivers/iio/adc/ad7606_spi.c
++++ b/drivers/iio/adc/ad7606_spi.c
+@@ -31,6 +31,20 @@
+ /* The range of the channel is stored on 2 bits*/
+ #define AD7616_RANGE_CH_MSK(ch)		(0b11 << (((ch) & 0b11) * 2))
+ #define AD7616_RANGE_CH_MODE(ch, mode)	((mode) << ((((ch) & 0b11)) * 2))
++
++#define AD7606_CONFIGURATION_REGISTER	0x02
++#define AD7606_SINGLE_DOUT		0x0
++
++/*
++ * Range for AD7606B channels are stored in registers starting with address 0x3.
++ * Each register stores range for 2 channels(4 bits per channel).
++ */
++#define AD7606_RANGE_CH_MSK(ch)		(GENMASK(3, 0) << (4 * ((ch) & 0x1)))
++#define AD7606_RANGE_CH_MODE(ch, mode)	\
++	((GENMASK(3, 0) & mode) << (4 * ((ch) & 0x1)))
++#define AD7606_RANGE_CH_ADDR(ch)	(0x03 + ((ch) >> 1))
++#define AD7606_OS_MODE			0x08
++
+ static const struct iio_chan_spec ad7616_sw_channels[] = {
+ 	IIO_CHAN_SOFT_TIMESTAMP(16),
+ 	AD7616_CHANNEL(0),
+@@ -51,6 +65,22 @@ static const struct iio_chan_spec ad7616_sw_channels[] = {
+ 	AD7616_CHANNEL(15),
+ };
+ 
++static const struct iio_chan_spec ad7606B_sw_channels[] = {
++	IIO_CHAN_SOFT_TIMESTAMP(8),
++	AD7616_CHANNEL(0),
++	AD7616_CHANNEL(1),
++	AD7616_CHANNEL(2),
++	AD7616_CHANNEL(3),
++	AD7616_CHANNEL(4),
++	AD7616_CHANNEL(5),
++	AD7616_CHANNEL(6),
++	AD7616_CHANNEL(7),
++};
++
++static const unsigned int ad7606B_oversampling_avail[9] = {
++	1, 2, 4, 8, 16, 32, 64, 128, 256
++};
++
+ static u16 ad7616_spi_rd_wr_cmd(int addr, char isWriteOp)
+ {
+ 	/*
+@@ -60,6 +90,16 @@ static u16 ad7616_spi_rd_wr_cmd(int addr, char isWriteOp)
+ 	return ((addr & 0x7F) << 1) | ((isWriteOp & 0x1) << 7);
+ }
+ 
++static u16 ad7606B_spi_rd_wr_cmd(int addr, char isWriteOp)
++{
++	/*
++	 * The address of register consists of one bit which
++	 * specifies a read command placed bit 6, followed by
++	 * 6 bits of address.
++	 */
++	return (addr & 0x3F) | (((~isWriteOp) & 0x1) << 6);
++}
++
+ static int ad7606_spi_read_block(struct device *dev,
+ 				 int count, void *buf)
+ {
+@@ -169,6 +209,23 @@ static int ad7616_write_os_sw(struct iio_dev *indio_dev, int val)
+ 				     AD7616_OS_MASK, val << 2);
+ }
+ 
++static int ad7606_write_scale_sw(struct iio_dev *indio_dev, int ch, int val)
++{
++	struct ad7606_state *st = iio_priv(indio_dev);
++
++	return ad7606_spi_write_mask(st,
++				     AD7606_RANGE_CH_ADDR(ch),
++				     AD7606_RANGE_CH_MSK(ch),
++				     AD7606_RANGE_CH_MODE(ch, val));
++}
++
++static int ad7606_write_os_sw(struct iio_dev *indio_dev, int val)
++{
++	struct ad7606_state *st = iio_priv(indio_dev);
++
++	return ad7606_spi_reg_write(st, AD7606_OS_MODE, val);
++}
++
+ static int ad7616_sw_mode_config(struct iio_dev *indio_dev)
+ {
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+@@ -189,6 +246,42 @@ static int ad7616_sw_mode_config(struct iio_dev *indio_dev)
+ 			      AD7616_BURST_MODE | AD7616_SEQEN_MODE);
+ }
+ 
++static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
++{
++	struct ad7606_state *st = iio_priv(indio_dev);
++	unsigned long os[3] = {1};
++
++	/*
++	 * Software mode is enabled when all three oversampling
++	 * pins are set to high. If oversampling gpios are defined
++	 * in the device tree, then they need to be set to high,
++	 * otherwise, they must be hardwired to VDD
++	 */
++	if (st->gpio_os) {
++		gpiod_set_array_value(ARRAY_SIZE(os),
++				      st->gpio_os->desc, st->gpio_os->info, os);
++	}
++	/* OS of 128 and 256 are available only in software mode */
++	st->oversampling_avail = ad7606B_oversampling_avail;
++	st->num_os_ratios = ARRAY_SIZE(ad7606B_oversampling_avail);
++
++	st->write_scale = ad7606_write_scale_sw;
++	st->write_os = &ad7606_write_os_sw;
++
++	/* Configure device spi to output on a single channel */
++	st->bops->reg_write(st,
++			    AD7606_CONFIGURATION_REGISTER,
++			    AD7606_SINGLE_DOUT);
++
++	/*
++	 * Scale can be configured individually for each channel
++	 * in software mode.
++	 */
++	indio_dev->channels = ad7606B_sw_channels;
++
++	return 0;
++}
++
+ static const struct ad7606_bus_ops ad7606_spi_bops = {
+ 	.read_block = ad7606_spi_read_block,
+ };
+@@ -202,6 +295,15 @@ static const struct ad7606_bus_ops ad7616_spi_bops = {
+ 	.sw_mode_config = ad7616_sw_mode_config,
+ };
+ 
++static const struct ad7606_bus_ops ad7606B_spi_bops = {
++	.read_block = ad7606_spi_read_block,
++	.reg_read = ad7606_spi_reg_read,
++	.reg_write = ad7606_spi_reg_write,
++	.write_mask = ad7606_spi_write_mask,
++	.rd_wr_cmd = ad7606B_spi_rd_wr_cmd,
++	.sw_mode_config = ad7606B_sw_mode_config,
++};
++
+ static int ad7606_spi_probe(struct spi_device *spi)
+ {
+ 	const struct spi_device_id *id = spi_get_device_id(spi);
+@@ -211,6 +313,9 @@ static int ad7606_spi_probe(struct spi_device *spi)
+ 	case ID_AD7616:
+ 		bops = &ad7616_spi_bops;
+ 		break;
++	case ID_AD7606B:
++		bops = &ad7606B_spi_bops;
++		break;
+ 	default:
+ 		bops = &ad7606_spi_bops;
+ 		break;
+@@ -226,6 +331,7 @@ static const struct spi_device_id ad7606_id_table[] = {
+ 	{ "ad7606-4", ID_AD7606_4 },
+ 	{ "ad7606-6", ID_AD7606_6 },
+ 	{ "ad7606-8", ID_AD7606_8 },
++	{ "ad7606b",  ID_AD7606B },
+ 	{ "ad7616",   ID_AD7616 },
+ 	{}
+ };
+@@ -236,6 +342,7 @@ static const struct of_device_id ad7606_of_match[] = {
+ 	{ .compatible = "adi,ad7606-4" },
+ 	{ .compatible = "adi,ad7606-6" },
+ 	{ .compatible = "adi,ad7606-8" },
++	{ .compatible = "adi,ad7606b" },
+ 	{ .compatible = "adi,ad7616" },
+ 	{ },
+ };
+-- 
+2.17.1
 
-For the same reason as the ceiling attribute, you should pass 0 here to
-kstrtouint instead of 10.
-
-> +	if (err < 0)
-> +		return err;
-> +
-> +	regmap_write(priv->regmap32, QPOSINIT, res);
-> +
-> +	return len;
-> +}
-> +
-> +static ssize_t ti_eqep_position_enable_read(struct counter_device *counter,
-> +					    struct counter_count *count,
-> +					    void *ext_priv, char *buf)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +	u32 qepctl;
-> +
-> +	regmap_read(priv->regmap16, QEPCTL, &qepctl);
-> +
-> +	return sprintf(buf, "%u\n", !!(qepctl & QEPCTL_PHEN));
-> +}
-> +
-> +static ssize_t ti_eqep_position_enable_write(struct counter_device *counter,
-> +					     struct counter_count *count,
-> +					     void *ext_priv, const char *buf,
-> +					     size_t len)
-> +{
-> +	struct ti_eqep_cnt *priv = counter->priv;
-> +	int err;
-> +	bool res;
-> +
-> +	err = kstrtobool(buf, &res);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	regmap_write_bits(priv->regmap16, QEPCTL, QEPCTL_PHEN, res ? -1 : 0);
-> +
-> +	return len;
-> +}
-> +
-> +static const struct regmap_config ti_eqep_regmap32_config = {
-> +	.name = "32-bit",
-> +	.reg_bits = 32,
-> +	.val_bits = 32,
-> +	.reg_stride = 4,
-> +	.max_register = 0x24,
-> +};
-> +
-> +static const struct regmap_config ti_eqep_regmap16_config = {
-> +	.name = "16-bit",
-> +	.reg_bits = 16,
-> +	.val_bits = 16,
-> +	.reg_stride = 2,
-> +	.max_register = 0x1e,
-> +};
-> +
-> +static const struct counter_ops ti_eqep_counter_ops = {
-> +	.count_read	= ti_eqep_count_read,
-> +	.count_write	= ti_eqep_count_write,
-> +	.function_get	= ti_eqep_function_get,
-> +	.function_set	= ti_eqep_function_set,
-> +};
-
-Are you able to provide a signal_read function, or are the Signals not
-exposed to the user by this device? Sometimes quadrature encoder devices
-provide an instanteous read of the signal lines to tell whether they are
-high or low, so I figured I'd ask.
-
-You should define an action_get function as well along with Synapses
-corresponding to each Signal. This will allow users to know whether the
-Synapse fires on a rising edge, falling edge, no edge, or both edges.
-
-For example, consider the drivers/counter/104-quad-8.c file. Each count
-register has three associated signal lines: Quadrature A, Quadrature B,
-and Index.
-
-Quadrature A and B are your typical quadrature encoder lines and
-depending on the function mode selected (quadrature x4, pulse-direction,
-etc.) could have a Synapse action mode of none, rising edge, falling
-edge, or both edges; see the quad8_synapse_actions_list array.
-
-In contrast, the Index signal line only has two Synapse action modes:
-rising edge (in the case preset functionality is enabled) or none.
-
-For the TI eQEP driver, there will be four Synapses corresponding to the
-four Signals: QEPA, QEPB, QEPI, and QEPS. See if you are able to
-implement the Synapses and action_get function by using the 104-quad-8.c
-file as a reference. That file does have a lot of extra functionality
-tossed in compared to yours, so if you have trouble groking it, just let
-me know and I'll try to help.
-
-> +
-> +static const enum counter_count_function ti_eqep_position_functions[] = {
-> +	[TI_EQEP_COUNT_FUNC_QUAD_COUNT]	= COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
-> +	[TI_EQEP_COUNT_FUNC_DIR_COUNT]	= COUNTER_COUNT_FUNCTION_PULSE_DIRECTION,
-> +	[TI_EQEP_COUNT_FUNC_UP_COUNT]	= COUNTER_COUNT_FUNCTION_INCREASE,
-> +	[TI_EQEP_COUNT_FUNC_DOWN_COUNT]	= COUNTER_COUNT_FUNCTION_DECREASE,
-> +};
-> +
-> +static struct counter_signal ti_eqep_signals[] = {
-> +	[TI_EQEP_SIGNAL_QEPA] = {
-> +		.id = TI_EQEP_SIGNAL_QEPA,
-> +		.name = "QEPA"
-> +	},
-> +	[TI_EQEP_SIGNAL_QEPB] = {
-> +		.id = TI_EQEP_SIGNAL_QEPB,
-> +		.name = "QEPB"
-> +	},
-> +	[TI_EQEP_SIGNAL_QEPI] = {
-> +		.id = TI_EQEP_SIGNAL_QEPI,
-> +		.name = "QEPI"
-> +	},
-> +	[TI_EQEP_SIGNAL_QEPS] = {
-> +		.id = TI_EQEP_SIGNAL_QEPS,
-> +		.name = "QEPS"
-> +	},
-> +};
-> +
-> +static struct counter_count_ext ti_eqep_position_ext[] = {
-> +	{
-> +		.name	= "ceiling",
-> +		.read	= ti_eqep_position_ceiling_read,
-> +		.write	= ti_eqep_position_ceiling_write,
-> +	},
-> +	{
-> +		.name	= "floor",
-> +		.read	= ti_eqep_position_floor_read,
-> +		.write	= ti_eqep_position_floor_write,
-> +	},
-> +	{
-> +		.name	= "enable",
-> +		.read	= ti_eqep_position_enable_read,
-> +		.write	= ti_eqep_position_enable_write,
-> +	},
-> +};
-> +
-> +static struct counter_count ti_eqep_counts[] = {
-> +	{
-> +		.id		= 0,
-> +		.name		= "QPOSCNT",
-> +		.functions_list	= ti_eqep_position_functions,
-> +		.num_functions	= ARRAY_SIZE(ti_eqep_position_functions),
-> +		.ext		= ti_eqep_position_ext,
-> +		.num_ext	= ARRAY_SIZE(ti_eqep_position_ext),
-
-When you have your Synapses defined, pass them here to your Count via
-the synapses and num_synapses members.
-
-> +	},
-> +};
-> +
-> +static int ti_eqep_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct ti_eqep_cnt *priv;
-> +	struct resource *res;
-> +	void __iomem *base;
-> +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	base = devm_ioremap_resource(dev, res);
-> +	if (IS_ERR(base))
-> +		return PTR_ERR(base);
-> +
-> +	priv->regmap32 = devm_regmap_init_mmio(dev, base,
-> +					       &ti_eqep_regmap32_config);
-> +	if (IS_ERR(priv->regmap32))
-> +		return PTR_ERR(priv->regmap32);
-> +
-> +	priv->regmap16 = devm_regmap_init_mmio(dev, base + 0x24,
-> +					       &ti_eqep_regmap16_config);
-> +	if (IS_ERR(priv->regmap16))
-> +		return PTR_ERR(priv->regmap16);
-> +
-> +	priv->counter.name = dev_name(dev);
-> +	priv->counter.parent = dev;
-> +	priv->counter.ops = &ti_eqep_counter_ops;
-> +	priv->counter.counts = ti_eqep_counts;
-> +	priv->counter.num_counts = ARRAY_SIZE(ti_eqep_counts);
-> +	priv->counter.signals = ti_eqep_signals;
-> +	priv->counter.num_signals = ARRAY_SIZE(ti_eqep_signals);
-> +	priv->counter.priv = priv;
-> +
-> +	pm_runtime_enable(dev);
-> +	pm_runtime_get(dev);
-> +
-> +	return devm_counter_register(dev, &priv->counter);
-> +}
-> +
-> +static int ti_eqep_remove(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +
-> +	pm_runtime_put(dev),
-> +	pm_runtime_disable(dev);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id ti_eqep_of_match[] = {
-> +	{ .compatible = "ti,am3352-eqep", },
-> +	{ },
-> +};
-> +MODULE_DEVICE_TABLE(of, ti_eqep_of_match);
-> +
-> +static struct platform_driver ti_eqep_driver = {
-> +	.probe = ti_eqep_probe,
-> +	.remove = ti_eqep_remove,
-> +	.driver = {
-> +		.name = "ti-eqep-cnt",
-> +		.of_match_table = ti_eqep_of_match,
-> +	},
-> +};
-> +module_platform_driver(ti_eqep_driver);
-> +
-> +MODULE_AUTHOR("David Lechner <david@lechnology.com>");
-> +MODULE_DESCRIPTION("TI eQEP counter driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-> index a7e57516959e..ddcbb8573894 100644
-> --- a/drivers/pwm/Kconfig
-> +++ b/drivers/pwm/Kconfig
-> @@ -499,7 +499,7 @@ config  PWM_TIEHRPWM
->  
->  config  PWM_TIPWMSS
->  	bool
-> -	default y if (ARCH_OMAP2PLUS) && (PWM_TIECAP || PWM_TIEHRPWM)
-> +	default y if (ARCH_OMAP2PLUS) && (PWM_TIECAP || PWM_TIEHRPWM || TI_EQEP)
->  	help
->  	  PWM Subsystem driver support for AM33xx SOC.
-
-I was surprised to see this pwm Kconfig change in this patch. Is
-PWM_TIPWMSS required for TI_EQEP to work? If not required, then this
-could be a separate patch; otherwise, put in a mention about why in the
-commit message so that the purpose of this change is clearer.
-
->  
-> -- 
-> 2.17.1
-> 

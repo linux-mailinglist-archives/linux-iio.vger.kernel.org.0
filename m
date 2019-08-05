@@ -2,136 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F6081D59
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2019 15:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E530B81DC5
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2019 15:44:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728843AbfHENhI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Aug 2019 09:37:08 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:40960 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726834AbfHENhI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Aug 2019 09:37:08 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x75DNCM5025497;
-        Mon, 5 Aug 2019 09:37:05 -0400
-Received: from nam04-bn3-obe.outbound.protection.outlook.com (mail-bn3nam04lp2055.outbound.protection.outlook.com [104.47.46.55])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2u5448sb81-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 05 Aug 2019 09:37:05 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CZTnA31dg2I2ttmd+vwtpeXP0qJDUJVL4ZqwY1wlAPozsliIe1groGviszIw7RYPYwegTslDWwfPxoErnRp7zqY9fChBVa0ih7fMk4aoe+ZiPgTSgt3ArQwhrnQ54mhtWscCw4BGp4pixUyMEK/gVOfKYlFogrkdl6cmAcoOIe6kuU69gLhxiWEVRHwRzQoi3EK4Y9ZI0PuV4pk7yTwqEFrwefsydNtGCqv2oLxL9eksek53JKG7gobnouZjltkAi2Nu6uvJg7uzKWshozhDyx3p865dSbGVC4t7YkntqOwIkWGc28dCvqUrmdFZe94FuMrlrSzuuFc/y+b10ovMmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GZULgjRf4MNJogrxBoQQeMs2RO7KJPrg/HkrAuRoY0s=;
- b=GcSmGvBi5smmhgbTGm0BoowHdNH9b8Q9HttffDFR7sNJJnyb37I/W5vDLlSkyJR/dtSSCQ5lDVithRfNzSl47Zua338v5Dg9Do4FAQetuqVNhAFU//oOjo98CawUEPWUupbm6t+S109pTx9nlgWTwlHlMz/l86Ey/sQqniX3vg32/+zHinPd2AVDmA4baIiHhCl5045AoUFiKLAE8cyWtMOcZdj+z+kFLbFKrkLJ/56D9BJvGpW1M64EmeygxdArvFA2h7ErWa0Dxlfjrp1YiASSnj8VtKY7ZY2S5/kfxR7gkwC/eUi6rvRYe9wNOSSWGyvYEAlcW1VJdOE/29HBaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass (sender ip is
- 137.71.25.55) smtp.rcpttodomain=vger.kernel.org
- smtp.mailfrom=analog.com;dmarc=bestguesspass action=none
- header.from=analog.com;dkim=none (message not signed);arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GZULgjRf4MNJogrxBoQQeMs2RO7KJPrg/HkrAuRoY0s=;
- b=BhjKMCSaw9TOPRglPCrYrb48I/hnZfzGrOIoRR7ZltTaQgtsloYpXa8fXQfecp7eaqJ0KMACuehSi/iTPrJbAZQ6AzQMUunvCFNnwabo0N8Bxu9pdPeCB4fDrvzgVPkydA2tbS2KyAX+F74ZXGag7SXjz/uAUgAkOSmNhdkbTeU=
-Received: from BYAPR03CA0033.namprd03.prod.outlook.com (2603:10b6:a02:a8::46)
- by DM6PR03MB3852.namprd03.prod.outlook.com (2603:10b6:5:4f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2115.14; Mon, 5 Aug
- 2019 13:37:03 +0000
-Received: from BL2NAM02FT036.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e46::202) by BYAPR03CA0033.outlook.office365.com
- (2603:10b6:a02:a8::46) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2136.16 via Frontend
- Transport; Mon, 5 Aug 2019 13:37:02 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- BL2NAM02FT036.mail.protection.outlook.com (10.152.77.154) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2136.14
- via Frontend Transport; Mon, 5 Aug 2019 13:37:02 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x75Dax7a012174
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Mon, 5 Aug 2019 06:36:59 -0700
-Received: from nsa.sphairon.box (10.44.3.90) by NWD2HUBCAS7.ad.analog.com
- (10.64.69.107) with Microsoft SMTP Server (TLS) id 14.3.408.0; Mon, 5 Aug
- 2019 09:37:01 -0400
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     <stefan.popa@analog.com>, <jic23@kernel.org>,
-        <Michael.Hennerich@analog.com>
-Subject: [PATCH] iio: frequency: adf4371: Fix output frequency setting
-Date:   Mon, 5 Aug 2019 15:37:16 +0200
-Message-ID: <20190805133716.7808-1-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.22.0
+        id S1731114AbfHENoo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Aug 2019 09:44:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41596 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731112AbfHENoo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 5 Aug 2019 09:44:44 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 177142087B;
+        Mon,  5 Aug 2019 13:44:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565012683;
+        bh=y4WpUC9q34H82VZ0dcYCM8MoJKvxUAW1HgdUrVm32JQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=MfqclNGZF3xBa0FIKSpVGVyIJW3Vs0e/hJx4mB4hDyIoE12SMOPuSHBAqGV3HvIVS
+         4Zjs01jnTLGIFWswz9rEBy0yJ0I3qn4lcNP1Q9IJyHq2UNPbXc9JNti6YNoZr+hR17
+         K/UXLg1GFGG0dDnvfmV/vui2xcd+uaxmH0sVZlzc=
+Date:   Mon, 5 Aug 2019 14:44:38 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Martin Kepplinger <martin.kepplinger@puri.sm>,
+        lorenzo.bianconi83@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 4/5] iio: imu: st_lsm6dsx: add support for accel/gyro
+ unit of lsm9sd1
+Message-ID: <20190805144438.133867b2@archlinux>
+In-Reply-To: <20190728175234.GA7652@lore-desk-wlan.lan>
+References: <20190725053132.9589-1-martin.kepplinger@puri.sm>
+        <20190725053132.9589-5-martin.kepplinger@puri.sm>
+        <20190727184844.307255a2@archlinux>
+        <a2f6d5fe-04c6-f5d8-ad38-56b8fa033295@puri.sm>
+        <20190728093414.5d3ca94d@archlinux>
+        <20190728175234.GA7652@lore-desk-wlan.lan>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.44.3.90]
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(396003)(39860400002)(376002)(346002)(136003)(2980300002)(199004)(189003)(16526019)(316002)(2906002)(2870700001)(186003)(5820100001)(426003)(106002)(336012)(23676004)(3846002)(6116002)(26005)(6916009)(476003)(356004)(486006)(53416004)(2351001)(70586007)(6666004)(246002)(47776003)(50466002)(7636002)(7736002)(126002)(86362001)(50226002)(36756003)(54906003)(45776006)(4326008)(2616005)(8936002)(107886003)(70206006)(305945005)(5660300002)(478600001)(8676002)(1076003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR03MB3852;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 33fc7bf0-93fb-4188-1911-08d719a9ffab
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328)(7193020);SRVR:DM6PR03MB3852;
-X-MS-TrafficTypeDiagnostic: DM6PR03MB3852:
-X-Microsoft-Antispam-PRVS: <DM6PR03MB385223CD27443BF357064FBD99DA0@DM6PR03MB3852.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
-X-Forefront-PRVS: 01208B1E18
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: aoI5+Osb+3gubbrieCyFdKc4HHuK5u/jvs4eHw7/O3Qx0tna5ZYtNz8BxnGZEX3hoDiQJXOiVUq/idz/IDr6XRLTKlGI5vsmCf7vfR3gd+Feo4FMwkTRIGMBaubwJu8KaXhYokJocJhrSt5HuI93YhQT/irOs/drMBoyxbdW/jTuj5NBSPMvrIU8URWJnJ3LkglbFhC/itFO746Vi/EVScwcNjuEYcM2WKJLVNNcMQQiKeX/FENT0pSJ4UNO9Ii2dCyi1CAX1dKaP2XA5WzzoBCLXMQDkW1Jom2t/wk1cTZHgVKr4FWYij1SzrYHeKz6xkV4r3SVAccE02M3ioW4AyC1CW1scnKzBU9Ig6fiNOdIWnr4RokUGpU4T6wq/Gx73uBsGibSIk8snbCq+lVwag+b3wVLbLuem2fp+sn4rc0=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2019 13:37:02.4293
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33fc7bf0-93fb-4188-1911-08d719a9ffab
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB3852
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-05_07:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=903 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908050150
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The fract1 word was not being properly programmed on the device leading
-to wrong output frequencies.
+On Sun, 28 Jul 2019 19:52:34 +0200
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-Fixes: 7f699bd14913 (iio: frequency: adf4371: Add support for ADF4371 PLL)
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/iio/frequency/adf4371.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> > On Sun, 28 Jul 2019 08:04:51 +0200
+> > Martin Kepplinger <martin.kepplinger@puri.sm> wrote:
+> >   
+> > > On 27.07.19 19:48, Jonathan Cameron wrote:  
+> > > > On Thu, 25 Jul 2019 07:31:31 +0200
+> > > > Martin Kepplinger <martin.kepplinger@puri.sm> wrote:
+> > > >     
+> > > >> The LSM9DS1's accelerometer / gyroscope unit and it's magnetometer (separately
+> > > >> supported in iio/magnetometer/st_magn*) are located on a separate i2c addresses
+> > > >> on the bus.
+> > > >>
+> > > >> For the datasheet, see https://www.st.com/resource/en/datasheet/lsm9ds1.pdf
+> > > >>
+> > > >> Treat it just like the LSM6* devices and, despite it's name, hook it up
+> > > >> to the st_lsm6dsx driver, using it's basic functionality.
+> > > >>
+> > > >> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>    
+> > > > I'm a little confused on this hardware.
+> > > > 
+> > > > How does buffered output work if these are independently clocked?
+> > > > 
+> > > > I took a quick look at the datasheet, and 'suspect' the answer is that
+> > > > it runs at the gyro frequencies if both are enable. Is that right?
+> > > >     
+> > > 
+> > > Thanks for reviewing, Jonathan,
+> > > 
+> > > Correct. It says so in chapter 7.12. But that's a "problem" with all
+> > > these imu devices, not specific to this addition right?  
+> > It's not a problem as such, but there is a related difference in this
+> > device to the others supported by this driver.
+> > 
+> > The other parts seem to allow for independent data rate setting, with
+> > streaming to the buffer that isn't in 'lock step'.  I.e you can get
+> > 
+> > Ax_1, Ay_1, Az_1, Gx_1, Gy_1, Gz_1, Gx_2, Gy_2, Gz_2, Ax_2, Ay_2, Az_2, Gy_3...  
+> 
+> correct
+> 
+> > 
+> > That required us to split them up into two devices and means that, to fuse
+> > data from these two source, userspace has to do the harder job of
+> > aligning the two datasets.
+> > 
+> > For this device, things are simpler in that you always a 'scan' that goes
+> > across both accelerometer and gyroscope channels.  That allows us to
+> > represent it as a single IIO device with a single buffer.
+> > 
+> > I'm not seeing any reference in the lsm9ds1 to the pattern registers
+> > that are used to handle difference in frequency for the other
+> > parts by letting us know what is actually present in each data set
+> > in the fifo.
+> > 
+> > Now, that doesn't meant we can't still handle them separately given
+> > we already do that for other parts.  
+> 
+> what about reusing st_lsm6dsx_read_fifo() for lsm6ds0/lsm9ds1 but setting hw->sip to:
+> - hw->sip = 1 (acc_sip = 1, gyro_sip = 0) when just the acc is enabled
+> - hw->sip = 2 (acc_sip = 1, gyro_sip = 1) when both devices are enabled
+> 
+> I guess it is just a matter of adding a 'bool fixed_pattern' in
+> st_lsm6dsx_settings. What do you think?
 
-diff --git a/drivers/iio/frequency/adf4371.c b/drivers/iio/frequency/adf4371.c
-index e48f15cc9ab5..ff82863cbf42 100644
---- a/drivers/iio/frequency/adf4371.c
-+++ b/drivers/iio/frequency/adf4371.c
-@@ -276,11 +276,11 @@ static int adf4371_set_freq(struct adf4371_state *st, unsigned long long freq,
- 	st->buf[0] = st->integer >> 8;
- 	st->buf[1] = 0x40; /* REG12 default */
- 	st->buf[2] = 0x00;
--	st->buf[3] = st->fract2 & 0xFF;
--	st->buf[4] = st->fract2 >> 7;
--	st->buf[5] = st->fract2 >> 15;
-+	st->buf[3] = st->fract1 & 0xFF;
-+	st->buf[4] = st->fract1 >> 8;
-+	st->buf[5] = st->fract1 >> 16;
- 	st->buf[6] = ADF4371_FRAC2WORD_L(st->fract2 & 0x7F) |
--		     ADF4371_FRAC1WORD(st->fract1 >> 23);
-+		     ADF4371_FRAC1WORD(st->fract1 >> 24);
- 	st->buf[7] = ADF4371_FRAC2WORD_H(st->fract2 >> 7);
- 	st->buf[8] = st->mod2 & 0xFF;
- 	st->buf[9] = ADF4371_MOD2WORD(st->mod2 >> 8);
--- 
-2.22.0
+If I understand this, the intent is still to split it to two separate
+IIO devices?  I don't really mind if that's the case and it seems like something
+similar to what you describe should work for that.
+
+If we go this way, some comments should be added to explain that whilst
+we could have handled this as a single IIO device, we have split it to
+be more consistent with the other more flexible devices.
+
+Thanks,
+
+Jonathan
+
+> 
+> Regards,
+> Lorenzo
+> 
+> > 
+> > Anyhow, is my understanding correct?
+> > 
+> > Jonathan
+> >   
+> > > 
+> > > Sidenote: I thought about renaming things to "lsm6ds0" here just because
+> > > of the name and because the registers are (almost) the same as for my
+> > > lsm9ds1. But I'm not a fan of blindly doing that without being able to
+> > > test. When the current patchset looks good to you, let's keep it that way.
+> > > 
+> > >                             martin  
+> >   
 

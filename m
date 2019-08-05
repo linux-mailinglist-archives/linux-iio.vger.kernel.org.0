@@ -2,145 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FDB181FB5
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2019 17:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9991B81FBC
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2019 17:04:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728043AbfHEPEQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Aug 2019 11:04:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36770 "EHLO mail.kernel.org"
+        id S1728918AbfHEPEn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Aug 2019 11:04:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36936 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727259AbfHEPEP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 5 Aug 2019 11:04:15 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        id S1728885AbfHEPEm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 5 Aug 2019 11:04:42 -0400
+Received: from localhost.localdomain (unknown [151.66.62.27])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 58F73206C1;
-        Mon,  5 Aug 2019 15:04:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 153B0206C1;
+        Mon,  5 Aug 2019 15:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565017454;
-        bh=hNtIxM9tns9/3ZnqcjZqPe0wE5g9uKJD8Xeg17jshfM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rcxkhtDZ2ihANUQjCoijR78KBqCnz5SmZqivach6iH1R2mSoLsvaZBG49+4lrAcnR
-         CdcdgXYFQOzfNbmsb10q9oO1NU+J/ymhD6J8mDv2ss1qR8yWrgLZxnha6arYb8LxRJ
-         hq6wdzsnIU5gQsH6SR8WdTRdR9U+ryy7N0PRE/CI=
-Date:   Mon, 5 Aug 2019 16:04:10 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Brian Masney <masneyb@onstation.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] iio: tsl2772: Use device-managed API
-Message-ID: <20190805160356.2fbd7868@archlinux>
-In-Reply-To: <20190731030415.8062-1-hslester96@gmail.com>
-References: <20190731030415.8062-1-hslester96@gmail.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        s=default; t=1565017481;
+        bh=6SJSdyDbFDLeQFF5ITDNOv7RkepckDurk2I+Z0EiFsY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yac3Z2ucmDuY654rgEaaZfCY6ZN0SK6lY4rjXjoXAMKlyxIlLfxr3x9bfJWm4dtIo
+         NdVAdTEO7L/E5qt06LNC3Y2HaPeDuiLwn8AvI6EORdN1L2cfg19H/Gsc2yXYeRc87S
+         v8HiIZYEck2YVQNrQMEG2kOmeP5kOl5YgZLpDjAk=
+Date:   Mon, 5 Aug 2019 17:04:35 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Martin Kepplinger <martin.kepplinger@puri.sm>,
+        lorenzo.bianconi83@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: make IIO_CHAN_INFO_SCALE shared by
+ type
+Message-ID: <20190805150435.GA15250@localhost.localdomain>
+References: <20190801143908.27608-1-martin.kepplinger@puri.sm>
+ <20190805152148.0ea55f6e@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mYCpIKhGyMATD0i+"
+Content-Disposition: inline
+In-Reply-To: <20190805152148.0ea55f6e@archlinux>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 31 Jul 2019 11:04:15 +0800
-Chuhong Yuan <hslester96@gmail.com> wrote:
 
-> Use devm_() APIs to simplify the code.
-> 
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> ---
-> Changes in v3:
->   - Split v2 into two patches.
-> 
->  drivers/iio/light/tsl2772.c | 36 +++++++++++++++---------------------
->  1 file changed, 15 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
-> index 83cece921843..f1134f183be7 100644
-> --- a/drivers/iio/light/tsl2772.c
-> +++ b/drivers/iio/light/tsl2772.c
-> @@ -860,6 +860,13 @@ static int tsl2772_chip_off(struct iio_dev *indio_dev)
->  	return tsl2772_write_control_reg(chip, 0x00);
->  }
->  
-> +static void tsl2772_chip_off_action(void *data)
-> +{
-> +	struct iio_dev *indio_dev = data;
-> +
-> +	tsl2772_chip_off(indio_dev);
-> +}
-> +
->  /**
->   * tsl2772_invoke_change - power cycle the device to implement the user
->   *                         parameters
-> @@ -1807,10 +1814,10 @@ static int tsl2772_probe(struct i2c_client *clientp,
->  		return PTR_ERR(chip->vdd_supply);
->  	}
->  
-> -	ret = devm_add_action(&clientp->dev, tsl2772_disable_regulators_action,
-> +	ret = devm_add_action_or_reset(&clientp->dev,
-> +				tsl2772_disable_regulators_action,
+--mYCpIKhGyMATD0i+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Please fix that alignment in here.
+> On Thu,  1 Aug 2019 16:39:08 +0200
+> Martin Kepplinger <martin.kepplinger@puri.sm> wrote:
+>=20
+> > in_accel_x_scale, in_accel_y_scale and in_accel_z_scale are always
+> > the same. The scale is still defined to be in "info_mask_separate".
+> >=20
+> > Userspace (iio-sensor-proxy and others) is not used to that and only
+> > looks for "in_accel_scale" for the scaling factor to apply.
+> >=20
+> > Change IIO_CHAN_INFO_SCALE from being separate in all channel to be
+> > shared by type.
+> >=20
+> > This removes in_accel_x_scale, in_accel_y_scale and in_accel_z_scale and
+> > makes available in_accel_scale.
+> >=20
+> > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> > ---
+> >=20
+> > AFAIK in all other drivers, IIO_CHAN_INFO_SCALE is "shared by type". Su=
+re
+> > devices are different, but LSM6DSX devices still don't have different
+> > scales for x/y/z channels :)
+>=20
+> I'm fine with this, but would like a Lorenzo ack as we have had
+> devices in other series where these are not equal.   It used to
+> be common in accelerometers as I think it was hard to get a large
+> range in the vertical direction.  Doubt that applies on these modern
+> parts though!
+>=20
+> Thanks,
+>=20
+> Jonathan
 
-Thanks,
+AFAIK all the supported sensors have the same sensitivity on all axis and s=
+o I
+am fine with this patch (it should be done in this way from day 0 actually =
+:))
+but is it going to break uapi? if not feel free to add:
 
-Jonathan
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
->  			      chip);
->  	if (ret < 0) {
-> -		tsl2772_disable_regulators_action(chip);
->  		dev_err(&clientp->dev, "Failed to setup regulator cleanup action %d\n",
->  			ret);
->  		return ret;
-> @@ -1877,15 +1884,14 @@ static int tsl2772_probe(struct i2c_client *clientp,
->  	if (ret < 0)
->  		return ret;
->  
-> -	ret = iio_device_register(indio_dev);
-> -	if (ret) {
-> -		tsl2772_chip_off(indio_dev);
-> -		dev_err(&clientp->dev,
-> -			"%s: iio registration failed\n", __func__);
-> +	ret = devm_add_action_or_reset(&clientp->dev,
-> +					tsl2772_chip_off_action,
-> +					indio_dev);
-> +
-> +	if (ret < 0)
->  		return ret;
-> -	}
->  
-> -	return 0;
-> +	return devm_iio_device_register(&clientp->dev, indio_dev);
->  }
->  
->  static int tsl2772_suspend(struct device *dev)
-> @@ -1922,17 +1928,6 @@ static int tsl2772_resume(struct device *dev)
->  	return tsl2772_chip_on(indio_dev);
->  }
->  
-> -static int tsl2772_remove(struct i2c_client *client)
-> -{
-> -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> -
-> -	tsl2772_chip_off(indio_dev);
-> -
-> -	iio_device_unregister(indio_dev);
-> -
-> -	return 0;
-> -}
-> -
->  static const struct i2c_device_id tsl2772_idtable[] = {
->  	{ "tsl2571", tsl2571 },
->  	{ "tsl2671", tsl2671 },
-> @@ -1979,7 +1974,6 @@ static struct i2c_driver tsl2772_driver = {
->  	},
->  	.id_table = tsl2772_idtable,
->  	.probe = tsl2772_probe,
-> -	.remove = tsl2772_remove,
->  };
->  
->  module_i2c_driver(tsl2772_driver);
+Regards,
+Lorenzo
 
+>=20
+>=20
+> >=20
+> > thanks,
+> >=20
+> >                               martin
+> >=20
+> >=20
+> >=20
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/=
+st_lsm6dsx/st_lsm6dsx.h
+> > index af379a5429ed..59c3ab7cbb6f 100644
+> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> > @@ -56,8 +56,8 @@ enum st_lsm6dsx_hw_id {
+> >  	.address =3D addr,						\
+> >  	.modified =3D 1,							\
+> >  	.channel2 =3D mod,						\
+> > -	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |			\
+> > -			      BIT(IIO_CHAN_INFO_SCALE),			\
+> > +	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),			\
+> > +	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),		\
+> >  	.info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
+> >  	.scan_index =3D scan_idx,						\
+> >  	.scan_type =3D {							\
+>=20
+
+--mYCpIKhGyMATD0i+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXUhFgQAKCRA6cBh0uS2t
+rMtiAQCclTOniECTRlWfSm0HPOwK5O7sL9GHP5DCp2avHVWz6AEAtf9XQPfIo/Kn
+ib+ne9EnoUEkLVI2HY21THROulATFQc=
+=/f7d
+-----END PGP SIGNATURE-----
+
+--mYCpIKhGyMATD0i+--

@@ -2,39 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF57382052
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2019 17:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18CD88205A
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2019 17:35:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728690AbfHEPeU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Aug 2019 11:34:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43672 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727802AbfHEPeU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 5 Aug 2019 11:34:20 -0400
+        id S1727460AbfHEPfj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Aug 2019 11:35:39 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:46088 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727328AbfHEPfj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Aug 2019 11:35:39 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 25C3720B1F;
-        Mon,  5 Aug 2019 15:34:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565019259;
-        bh=nFZl8Ezzm4gz9Nz30tAC5bC8jHrdhY6mFkbX5D53lx8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=daZiDgOftPc6OZSPYfT2nfPYh92+bhwM0gB0iubHKicm5h1tCvzPQikK4rKVrN0zu
-         +iY1U/uFL6RGRp77MTpUDPYiMsaYX344zG79UtK+StVjJ/uZGcQz0hjfOCEkbBwxA3
-         Uu+9h9XjqjG9ViChTTV8Sx0Rb4Q2jhFN13s+mgMg=
-Date:   Mon, 5 Aug 2019 16:34:14 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Brian Masney <masneyb@onstation.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/4] iio: tsl2772: Use regulator_bulk_() APIs
-Message-ID: <20190805163414.369561ab@archlinux>
-In-Reply-To: <20190801073619.9743-1-hslester96@gmail.com>
-References: <20190801073619.9743-1-hslester96@gmail.com>
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id A5DAD9E748F;
+        Mon,  5 Aug 2019 16:35:36 +0100 (BST)
+Date:   Mon, 5 Aug 2019 16:35:34 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "denis.ciocca@st.com" <denis.ciocca@st.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 1/5] iio:common: introduce
+ st_sensors_buffer_preenable/predisable functions
+Message-ID: <20190805163534.68c00bf3@archlinux>
+In-Reply-To: <20190805162135.68dc97c4@archlinux>
+References: <20190731215250.16403-1-denis.ciocca@st.com>
+        <20190731215250.16403-2-denis.ciocca@st.com>
+        <6939dc8b7c28b1f4ed00f33b5ed2cfde17b73d41.camel@analog.com>
+        <20190805162135.68dc97c4@archlinux>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,164 +36,112 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  1 Aug 2019 15:36:19 +0800
-Chuhong Yuan <hslester96@gmail.com> wrote:
+On Mon, 5 Aug 2019 16:21:35 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Use regulator_bulk_() APIs to shrink driver size.
+> On Thu, 1 Aug 2019 08:24:10 +0000
+> "Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 > 
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to play with it.
-
-Thanks,
-
-Jonathan
-
-> ---
-> Changes in v4:
->   - Change the var name of regulator_bulk_data.
->   - Adjust alignment.
->   - Add a new line between two if blocks.
+> > On Wed, 2019-07-31 at 14:52 -0700, Denis Ciocca wrote:  
+> > > [External]
+> > > 
+> > > This patch is introducing preenable/postdisable in the common
+> > > st_sensors_buffer code in order to remove the memory allocation /
+> > > de-allocation from each single st driver.
+> > >     
+> > 
+> > Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> >   
+> > > Signed-off-by: Denis Ciocca <denis.ciocca@st.com>  
 > 
->  drivers/iio/light/tsl2772.c | 87 +++++++++++++------------------------
->  1 file changed, 29 insertions(+), 58 deletions(-)
+> As a rework, this is clearly reasonable, however, if we are going to
+> touch this code at all, there are a few things I would like to tidy
+> up about it.
 > 
-> diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
-> index 680afdb078d2..be37fcbd4654 100644
-> --- a/drivers/iio/light/tsl2772.c
-> +++ b/drivers/iio/light/tsl2772.c
-> @@ -134,6 +134,12 @@ enum {
->  	TSL2772_CHIP_SUSPENDED = 2
->  };
->  
-> +enum {
-> +	TSL2772_SUPPLY_VDD = 0,
-> +	TSL2772_SUPPLY_VDDIO = 1,
-> +	TSL2772_NUM_SUPPLIES = 2
-> +};
-> +
->  /* Per-device data */
->  struct tsl2772_als_info {
->  	u16 als_ch0;
-> @@ -161,8 +167,7 @@ struct tsl2772_chip {
->  	struct mutex prox_mutex;
->  	struct mutex als_mutex;
->  	struct i2c_client *client;
-> -	struct regulator *vdd_supply;
-> -	struct regulator *vddio_supply;
-> +	struct regulator_bulk_data supplies[TSL2772_NUM_SUPPLIES];
->  	u16 prox_data;
->  	struct tsl2772_als_info als_cur_info;
->  	struct tsl2772_settings settings;
-> @@ -697,46 +702,7 @@ static void tsl2772_disable_regulators_action(void *_data)
->  {
->  	struct tsl2772_chip *chip = _data;
->  
-> -	regulator_disable(chip->vdd_supply);
-> -	regulator_disable(chip->vddio_supply);
-> -}
-> -
-> -static int tsl2772_enable_regulator(struct tsl2772_chip *chip,
-> -				    struct regulator *regulator)
-> -{
-> -	int ret;
-> -
-> -	ret = regulator_enable(regulator);
-> -	if (ret < 0) {
-> -		dev_err(&chip->client->dev, "Failed to enable regulator: %d\n",
-> -			ret);
-> -		return ret;
-> -	}
-> -
-> -	return 0;
-> -}
-> -
-> -static struct regulator *tsl2772_get_regulator(struct tsl2772_chip *chip,
-> -					       char *name)
-> -{
-> -	struct regulator *regulator;
-> -	int ret;
-> -
-> -	regulator = devm_regulator_get(&chip->client->dev, name);
-> -	if (IS_ERR(regulator)) {
-> -		if (PTR_ERR(regulator) != -EPROBE_DEFER)
-> -			dev_err(&chip->client->dev,
-> -				"Failed to get %s regulator %d\n",
-> -				name, (int)PTR_ERR(regulator));
-> -
-> -		return regulator;
-> -	}
-> -
-> -	ret = tsl2772_enable_regulator(chip, regulator);
-> -	if (ret < 0)
-> -		return ERR_PTR(ret);
-> -
-> -	return regulator;
-> +	regulator_bulk_disable(ARRAY_SIZE(chip->supplies), chip->supplies);
->  }
->  
->  static int tsl2772_chip_on(struct iio_dev *indio_dev)
-> @@ -1804,14 +1770,26 @@ static int tsl2772_probe(struct i2c_client *clientp,
->  	chip->client = clientp;
->  	i2c_set_clientdata(clientp, indio_dev);
->  
-> -	chip->vddio_supply = tsl2772_get_regulator(chip, "vddio");
-> -	if (IS_ERR(chip->vddio_supply))
-> -		return PTR_ERR(chip->vddio_supply);
-> +	chip->supplies[TSL2772_SUPPLY_VDD].supply = "vdd";
-> +	chip->supplies[TSL2772_SUPPLY_VDDIO].supply = "vddio";
->  
-> -	chip->vdd_supply = tsl2772_get_regulator(chip, "vdd");
-> -	if (IS_ERR(chip->vdd_supply)) {
-> -		regulator_disable(chip->vddio_supply);
-> -		return PTR_ERR(chip->vdd_supply);
-> +	ret = devm_regulator_bulk_get(&clientp->dev,
-> +				      ARRAY_SIZE(chip->supplies),
-> +				      chip->supplies);
-> +	if (ret < 0) {
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&clientp->dev,
-> +				"Failed to get regulators: %d\n",
-> +				ret);
-> +
-> +		return ret;
-> +	}
-> +
-> +	ret = regulator_bulk_enable(ARRAY_SIZE(chip->supplies), chip->supplies);
-> +	if (ret < 0) {
-> +		dev_err(&clientp->dev, "Failed to enable regulators: %d\n",
-> +			ret);
-> +		return ret;
->  	}
->  
->  	ret = devm_add_action_or_reset(&clientp->dev,
-> @@ -1900,8 +1878,7 @@ static int tsl2772_suspend(struct device *dev)
->  	int ret;
->  
->  	ret = tsl2772_chip_off(indio_dev);
-> -	regulator_disable(chip->vdd_supply);
-> -	regulator_disable(chip->vddio_supply);
-> +	regulator_bulk_disable(ARRAY_SIZE(chip->supplies), chip->supplies);
->  
->  	return ret;
->  }
-> @@ -1912,16 +1889,10 @@ static int tsl2772_resume(struct device *dev)
->  	struct tsl2772_chip *chip = iio_priv(indio_dev);
->  	int ret;
->  
-> -	ret = tsl2772_enable_regulator(chip, chip->vddio_supply);
-> +	ret = regulator_bulk_enable(ARRAY_SIZE(chip->supplies), chip->supplies);
->  	if (ret < 0)
->  		return ret;
->  
-> -	ret = tsl2772_enable_regulator(chip, chip->vdd_supply);
-> -	if (ret < 0) {
-> -		regulator_disable(chip->vddio_supply);
-> -		return ret;
-> -	}
-> -
->  	usleep_range(TSL2772_BOOT_MIN_SLEEP_TIME, TSL2772_BOOT_MAX_SLEEP_TIME);
->  
->  	return tsl2772_chip_on(indio_dev);
+> Firstly it's one of relatively few drivers that actually touch scan_bytes
+> in the first place.  That is supposed to be internal state to the core
+> subsystem and not used by drivers (see INTERN marking in iio.h).
+> It bled across the boundary in too many places where I wasn't looking.
+> 
+> Secondly these allocations are small.  You would be better off just
+> making them part of the main state structure and not dynamically allocated
+> at all.
+> 
+> So move buffer_data to the end of struct st_sensor_data and make it
+> whatever the maximum size needed is - I'm thinking probably 32 bytes
+> but haven't checked.
+Maths escapes me today, probably only 16 bytes as 3 channel devices
+mostly 16 bits max + timestamp.
+
+J
+> 
+> You call the bulk regmap API against it so you also need to ensure
+> it's in it's own cacheline.  Use the __cacheline_aligned magic
+> to enforce that.  The iio_priv region is always aligned appropriately
+> to allow iio_priv accessed structures to pull this trick.
+> 
+> That way we don't need to do any memory handling on demand at all.
+> We may or many not save memory as will depend on exactly how big
+> that structure already is and what mood the allocator is in.
+> 
+> I don't think I'm missing a reason we can't take the approach of
+> embedding the buffer and it definitely makes the code simpler.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
+> > > ---
+> > >  .../iio/common/st_sensors/st_sensors_buffer.c | 22 +++++++++++++++++++
+> > >  include/linux/iio/common/st_sensors.h         |  2 ++
+> > >  2 files changed, 24 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/common/st_sensors/st_sensors_buffer.c b/drivers/iio/common/st_sensors/st_sensors_buffer.c
+> > > index eee30130ae23..9da1c8104883 100644
+> > > --- a/drivers/iio/common/st_sensors/st_sensors_buffer.c
+> > > +++ b/drivers/iio/common/st_sensors/st_sensors_buffer.c
+> > > @@ -81,6 +81,28 @@ irqreturn_t st_sensors_trigger_handler(int irq, void *p)
+> > >  }
+> > >  EXPORT_SYMBOL(st_sensors_trigger_handler);
+> > >  
+> > > +int st_sensors_buffer_preenable(struct iio_dev *indio_dev)
+> > > +{
+> > > +	struct st_sensor_data *sdata = iio_priv(indio_dev);
+> > > +
+> > > +	sdata->buffer_data = kmalloc(indio_dev->scan_bytes,
+> > > +				     GFP_DMA | GFP_KERNEL);
+> > > +	if (!sdata->buffer_data)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +EXPORT_SYMBOL(st_sensors_buffer_preenable);
+> > > +
+> > > +int st_sensors_buffer_postdisable(struct iio_dev *indio_dev)
+> > > +{
+> > > +	struct st_sensor_data *sdata = iio_priv(indio_dev);
+> > > +
+> > > +	kfree(sdata->buffer_data);
+> > > +	return 0;
+> > > +}
+> > > +EXPORT_SYMBOL(st_sensors_buffer_postdisable);
+> > > +
+> > >  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+> > >  MODULE_DESCRIPTION("STMicroelectronics ST-sensors buffer");
+> > >  MODULE_LICENSE("GPL v2");
+> > > diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/common/st_sensors.h
+> > > index 28fc1f9fa7d5..c66ebb236a15 100644
+> > > --- a/include/linux/iio/common/st_sensors.h
+> > > +++ b/include/linux/iio/common/st_sensors.h
+> > > @@ -254,6 +254,8 @@ struct st_sensor_data {
+> > >  
+> > >  #ifdef CONFIG_IIO_BUFFER
+> > >  irqreturn_t st_sensors_trigger_handler(int irq, void *p);
+> > > +int st_sensors_buffer_preenable(struct iio_dev *indio_dev);
+> > > +int st_sensors_buffer_postdisable(struct iio_dev *indio_dev);
+> > >  #endif
+> > >  
+> > >  #ifdef CONFIG_IIO_TRIGGER    
+> 
 

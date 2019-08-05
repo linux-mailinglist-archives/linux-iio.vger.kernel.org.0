@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8AA82009
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2019 17:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 952A08202E
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2019 17:29:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728801AbfHEPZf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Aug 2019 11:25:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41332 "EHLO mail.kernel.org"
+        id S1729246AbfHEP30 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Aug 2019 11:29:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42530 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728468AbfHEPZf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 5 Aug 2019 11:25:35 -0400
+        id S1728801AbfHEP3Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 5 Aug 2019 11:29:25 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3435120880;
-        Mon,  5 Aug 2019 15:25:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4C51B21738;
+        Mon,  5 Aug 2019 15:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565018734;
-        bh=46qT1njeA/amYMLiDTb4zMUL3B7EVT91q/FztoHlmQA=;
+        s=default; t=1565018964;
+        bh=KZoZhIg+Ku63ddEXj59y9xDS/EYnXHJ38GB5+0ZbPpI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=wvIANRTPX4AeyxmqbYyqGn8M07hRGn27gjj7WdBTWhCwLVSLFMFz58SxBw056LF6j
-         +yI/mGvRv4rNTARY5C/UDPUjEeAWOZq418bXkyhEfL9A5n98sg9JWTnTGV+KtXWUr5
-         1TeDBRT2rJz+LRpauU6dPCyXcvUf3G/ny79IW4z4=
-Date:   Mon, 5 Aug 2019 16:25:30 +0100
+        b=b7LFwM5y5YwWKYElAOtCo1Nat/J1W1xyxp+6tXkk7mYuZ30FIt/BcpbBumIeYhfEL
+         YiL7TW14qIBnivEaMg6UAPRFqSo8mgKsI4lDLagCpGr0P5Pt3xqyUNASq0BrVuIFvY
+         FFnDAIK3zpWxIo6qE2mGeC1y9w8GqmofFcHJYu28=
+Date:   Mon, 5 Aug 2019 16:29:20 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Brian Masney <masneyb@onstation.org>
 Cc:     Chuhong Yuan <hslester96@gmail.com>,
@@ -31,12 +31,12 @@ Cc:     Chuhong Yuan <hslester96@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] iio: tsl2772: Use devm_add_action_or_reset
-Message-ID: <20190805162530.4c24df1c@archlinux>
-In-Reply-To: <20190801093731.GC27653@onstation.org>
-References: <20190801073557.9578-1-hslester96@gmail.com>
-        <20190801093347.GA27653@onstation.org>
-        <20190801093731.GC27653@onstation.org>
+Subject: Re: [PATCH v4 2/4] iio: tsl2772: Use devm_add_action_or_reset for
+ tsl2772_chip_off
+Message-ID: <20190805162920.762c48b5@archlinux>
+In-Reply-To: <20190801093526.GB27653@onstation.org>
+References: <20190801073605.9635-1-hslester96@gmail.com>
+        <20190801093526.GB27653@onstation.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,74 +46,91 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 1 Aug 2019 05:37:31 -0400
+On Thu, 1 Aug 2019 05:35:26 -0400
 Brian Masney <masneyb@onstation.org> wrote:
 
-> On Thu, Aug 01, 2019 at 05:33:47AM -0400, Brian Masney wrote:
-> > On Thu, Aug 01, 2019 at 03:35:57PM +0800, Chuhong Yuan wrote:  
-> > > Use devm_add_action_or_reset to remove the call to
-> > > tsl2772_disable_regulators_action to simplify the error path.
-> > > 
-> > > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>  
+> On Thu, Aug 01, 2019 at 03:36:05PM +0800, Chuhong Yuan wrote:
+> > Use devm_add_action_or_reset to call tsl2772_chip_off
+> > when the device is removed.
+> > This also fixes the issue that the chip is turned off
+> > before the device is unregistered.
 > > 
-> > For the whole series:
-> > 
-> > Reviewed-by: Brian Masney <masneyb@onstation.org>  
+> > Fixes: 4e24c1719f34 ("staging: iio: tsl2x7x: rename driver to tsl2772")
+> > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>  
 > 
-> Oops, I forgot to add this as well:
+> Let's use this Fixes tag instead:
 > 
-> Tested-by: Brian Masney <masneyb@onstation.org>
+> Fixes: c06c4d793584 ("staging: iio: tsl2x7x/tsl2772: move out of staging")
 > 
-> I tested this on a Nexus 5 phone.
-> 
-> Brian
-> 
-Applied to the togreg branch of iio.git and pushed out as testing.
+> I'd wait and see if Jonathan wants you to resend out the series if he
+> has any changes.
 
-Now the fact we have a fix in the middle of this series is
-a bit unfortunate as it'll mean we need an explicit backport to
-take that for stable.
+I've added a note to say this will probably need a backport for stable.
+Actually in that case we should be looking for a more minimal solution than
+this anyway.
 
-Oh well, if anyone wants it up to them to do the work ;)
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
 > 
+> Brian
+> 
+> 
+> > ---
+> > Changes in v4:
+> >   - Split v3 into three patches.
+> >   - Revise description to make it more precise.
 > > 
-> > I forgot to mention this before, but next time please use a cover letter
-> > if you're sending more than one patch: git format-patch --cover-letter.
+> >  drivers/iio/light/tsl2772.c | 16 +++++++++++++---
+> >  1 file changed, 13 insertions(+), 3 deletions(-)
 > > 
-> > Brian
-> > 
-> >   
-> > > ---
-> > > Changes in v4:
-> > >   - Split v3 into three patches.
-> > >   - Revise description to make it more precise.
-> > > 
-> > >  drivers/iio/light/tsl2772.c | 6 +++---
-> > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
-> > > index 83cece921843..29cfd8ae2700 100644
-> > > --- a/drivers/iio/light/tsl2772.c
-> > > +++ b/drivers/iio/light/tsl2772.c
-> > > @@ -1807,10 +1807,10 @@ static int tsl2772_probe(struct i2c_client *clientp,
-> > >  		return PTR_ERR(chip->vdd_supply);
-> > >  	}
-> > >  
-> > > -	ret = devm_add_action(&clientp->dev, tsl2772_disable_regulators_action,
-> > > -			      chip);
-> > > +	ret = devm_add_action_or_reset(&clientp->dev,
-> > > +					tsl2772_disable_regulators_action,
-> > > +					chip);
-> > >  	if (ret < 0) {
-> > > -		tsl2772_disable_regulators_action(chip);
-> > >  		dev_err(&clientp->dev, "Failed to setup regulator cleanup action %d\n",
-> > >  			ret);
-> > >  		return ret;
-> > > -- 
-> > > 2.20.1  
+> > diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
+> > index 29cfd8ae2700..e866ae40f157 100644
+> > --- a/drivers/iio/light/tsl2772.c
+> > +++ b/drivers/iio/light/tsl2772.c
+> > @@ -860,6 +860,13 @@ static int tsl2772_chip_off(struct iio_dev *indio_dev)
+> >  	return tsl2772_write_control_reg(chip, 0x00);
+> >  }
+> >  
+> > +static void tsl2772_chip_off_action(void *data)
+> > +{
+> > +	struct iio_dev *indio_dev = data;
+> > +
+> > +	tsl2772_chip_off(indio_dev);
+> > +}
+> > +
+> >  /**
+> >   * tsl2772_invoke_change - power cycle the device to implement the user
+> >   *                         parameters
+> > @@ -1877,9 +1884,14 @@ static int tsl2772_probe(struct i2c_client *clientp,
+> >  	if (ret < 0)
+> >  		return ret;
+> >  
+> > +	ret = devm_add_action_or_reset(&clientp->dev,
+> > +					tsl2772_chip_off_action,
+> > +					indio_dev);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> >  	ret = iio_device_register(indio_dev);
+> >  	if (ret) {
+> > -		tsl2772_chip_off(indio_dev);
+> >  		dev_err(&clientp->dev,
+> >  			"%s: iio registration failed\n", __func__);
+> >  		return ret;
+> > @@ -1926,8 +1938,6 @@ static int tsl2772_remove(struct i2c_client *client)
+> >  {
+> >  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> >  
+> > -	tsl2772_chip_off(indio_dev);
+> > -
+> >  	iio_device_unregister(indio_dev);
+> >  
+> >  	return 0;
+> > -- 
+> > 2.20.1  
 

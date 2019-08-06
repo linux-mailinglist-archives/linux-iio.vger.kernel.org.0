@@ -2,124 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E07A82CCA
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2019 09:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CFF082CF3
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2019 09:41:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731828AbfHFH34 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Aug 2019 03:29:56 -0400
-Received: from relay12.mail.gandi.net ([217.70.178.232]:42819 "EHLO
-        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731807AbfHFH34 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Aug 2019 03:29:56 -0400
-Received: from uno.localdomain (mob-109-112-31-244.net.vodafone.it [109.112.31.244])
-        (Authenticated sender: jacopo@jmondi.org)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 79D0420000F;
-        Tue,  6 Aug 2019 07:29:51 +0000 (UTC)
-Date:   Tue, 6 Aug 2019 09:31:14 +0200
-From:   Jacopo Mondi <jacopo@jmondi.org>
+        id S1728716AbfHFHj6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Aug 2019 03:39:58 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:39754 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727259AbfHFHj6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Aug 2019 03:39:58 -0400
+Received: by mail-ot1-f66.google.com with SMTP id r21so84195465otq.6
+        for <linux-iio@vger.kernel.org>; Tue, 06 Aug 2019 00:39:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CIZEerWqkr3qP4GjJoYs3qISFZdQGgzjOqxk6I3KMeU=;
+        b=gstrFwaNmRcqW1esc/wFUaKf0bDVNM6DzjH2sCuYPctxXt2d7aoWkv713NojGJEX+9
+         kK7eBc9XhVGFl7P2zAnoPEVGCFDNOdv2IS7rCR/5C8OBN2QP2IyCsXhSrvPZGGzIXwRD
+         Fm0Bj+3CPwSw+sp/jMR8J308iNm85eb60s2/VubFTHn+6IHIXt0T0baSthIfKo+ubX9o
+         Sfy3/WKp1V38zcPuzHW8VTdEy5R0tML/L4z0KwmP2XOFNtiRMa5wVrQ7Pdn3zBah+Njj
+         birdnRYUN5AxqkHupAD7YE253FjJTogLRkcdsCeXQ/ZeoDAelAprqogTCvXNcAgf8SMs
+         BaLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CIZEerWqkr3qP4GjJoYs3qISFZdQGgzjOqxk6I3KMeU=;
+        b=oGflQveYlWQnhAQqfPNOC7TBnG00sjIrCMfUkxaIqBC6OPg1zxwWO/yWKhQhIgeq+E
+         B1MsHc+nXWn4yyqS4hboec+vDWT+NhDSNayRJpDPoSV8WD9KJNcaZ8FTeEB/KJtSRH55
+         14BuE2DH210ehRnAOO3DaMO5DGwEgJXPNx3rUAglkZHuzT8iHeZu+tac4VcgSR2A1jmc
+         FeyeZ3vYEuHGLtNf5NjBBuf3naC+XkVqmqbkVY3f8vt2WgsLK8Bfwyg8eARgXwJg9A7H
+         Wvlhx7fz6+ssfsPSAF9bLndjBRHPrwidq+5VxxcSjmGwy40J8oWQUXZKuyztC8pRF9TW
+         dxKQ==
+X-Gm-Message-State: APjAAAWCHZrq+kLBz4Qz2e0B5ZugmPu3T0ihQzWf0Riornl9lckTbSrF
+        uGkuHh7t+wcsxBns4UfN3azjW/L5dSWGiyNg+q2gsQ==
+X-Google-Smtp-Source: APXvYqyV2qPn+A7HJOH/Tr5TclR9N20jVLWbCl1u7l8zu9WJl+qjvblTgBP+1uMO0BtNrkCyz3d3/BVZCAXhfLgSWrE=
+X-Received: by 2002:a9d:1718:: with SMTP id i24mr1707633ota.269.1565077196930;
+ Tue, 06 Aug 2019 00:39:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <1870ea18729f93fb36694affaf7e9443733dd988.1564035575.git.baolin.wang@linaro.org>
+ <20190727182709.037fc595@archlinux> <CAMz4kuLLSYw0JRLRVN-JegxZcK1bdv4K2m4mVu7oep6xfb+xxg@mail.gmail.com>
+ <20190805145037.0a03f21e@archlinux>
+In-Reply-To: <20190805145037.0a03f21e@archlinux>
+From:   Baolin Wang <baolin.wang@linaro.org>
+Date:   Tue, 6 Aug 2019 15:39:45 +0800
+Message-ID: <CAMz4kuK4GFfOi3vGvFOLdRfmqrwVLDs5CN+Xp_it3jG4=iKi=w@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: sc27xx: Change to polling mode to read data
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Stefan Agner <stefan@agner.ch>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: max9611: Fix temperature reading in probe
-Message-ID: <20190806073114.4mujzdvbrgxivizs@uno.localdomain>
-References: <20190805155515.22621-1-jacopo+renesas@jmondi.org>
- <20190805181244.663585ac@archlinux>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hmkibl6tqohgtmac"
-Content-Disposition: inline
-In-Reply-To: <20190805181244.663585ac@archlinux>
-User-Agent: NeoMutt/20180716
+        freeman.liu@unisoc.com,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        linux-iio@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---hmkibl6tqohgtmac
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-
 Hi Jonathan,
 
-On Mon, Aug 05, 2019 at 06:12:44PM +0100, Jonathan Cameron wrote:
-> On Mon,  5 Aug 2019 17:55:15 +0200
-> Jacopo Mondi <jacopo+renesas@jmondi.org> wrote:
+On Mon, 5 Aug 2019 at 21:50, Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> > The max9611 driver reads the die temperature at probe time to validate
-> > the communication channel. Use the actual read value to perform the test
-> > instead of the read function return value, which was mistakenly used so
-> > far.
-> >
-> > The temperature reading test was only successful because the 0 return
-> > value is in the range of supported temperatures.
-> >
-> > Fixes: 69780a3bbc0b ("iio: adc: Add Maxim max9611 ADC driver")
-> > Signed-off-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
+> On Mon, 29 Jul 2019 10:19:48 +0800
+> Baolin Wang <baolin.wang@linaro.org> wrote:
 >
-> Applied to the fixes-togreg branch of iio.git and marked for
-> stable.  That'll be a bit fiddly given other changes around this
-> so we may need to do backports.
+> > Hi Jonathan,
+> >
+> > On Sun, 28 Jul 2019 at 01:27, Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > > On Thu, 25 Jul 2019 14:33:50 +0800
+> > > Baolin Wang <baolin.wang@linaro.org> wrote:
+> > >
+> > > > From: Freeman Liu <freeman.liu@unisoc.com>
+> > > >
+> > > > On Spreadtrum platform, the headphone will read one ADC channel multiple
+> > > > times to identify the headphone type, and the headphone identification is
+> > > > sensitive of the ADC reading time. And we found it will take longer time
+> > > > to reading ADC data by using interrupt mode comparing with the polling
+> > > > mode, thus we should change to polling mode to improve the efficiency
+> > > > of reading data, which can identify the headphone type successfully.
+> > > >
+> > > > Signed-off-by: Freeman Liu <freeman.liu@unisoc.com>
+> > > > Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+> > >
+> > > Hi,
+> > >
+> > > My concerns with this sort of approach is that we may be sacrificing power
+> > > efficiency for some usecases to support one demanding one.
+> > >
+> > > The maximum sleep time is 1 second (I think) which is probably too long
+> > > to poll a register for in general.
+> >
+> > 1 second is the timeout time, that means something wrong when reading
+> > the data taking 1 second, and we will poll the register status every
+> > 500 us.
+> > From the testing, polling mode takes less time than interrupt mode
+> > when reading ADC data multiple times, so polling mode did not
+> > sacrifice power
+> > efficiency.
 >
-
-Indeed, I should have mentioned this patch depends on Joe's
-ae8cc91a7d85 ("iio: adc: max9611: Fix misuse of GENMASK macro")
-which is now in linux-next, otherwise it might atually trigger errors
-due to the wrong mask value.
-
-I wonder if there's a way to keep track of these dependencies for the
-sake of backporting, or it's an operation that has to be carried out
-manually...
-
-Thanks
-   j
-
+> Hmm.  I'll go with a probably on that, depends on interrupt response
+> latency etc so isn't entirely obvious.  Faster response doesn't necessarily
+> mean lower power.
 >
-> > ---
-> >  drivers/iio/adc/max9611.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
 > >
-> > diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
-> > index 917223d5ff5b..e9f6b1da1b94 100644
-> > --- a/drivers/iio/adc/max9611.c
-> > +++ b/drivers/iio/adc/max9611.c
-> > @@ -480,7 +480,7 @@ static int max9611_init(struct max9611_dev *max9611)
-> >  	if (ret)
-> >  		return ret;
+> > > Is there some way we can bound that time and perhaps switch between
+> > > interrupt and polling modes depending on how long we expect to wait?
 > >
-> > -	regval = ret & MAX9611_TEMP_MASK;
-> > +	regval &= MAX9611_TEMP_MASK;
-> >
-> >  	if ((regval > MAX9611_TEMP_MAX_POS &&
-> >  	     regval < MAX9611_TEMP_MIN_NEG) ||
-> > --
-> > 2.22.0
-> >
+> > I do not think the interrupt mode is needed any more, since the ADC
+> > reading is so fast enough usually. Thanks.
+> The reason for interrupts in such devices is usually precisely the opposite.
 >
+> You do it because things are slow enough that you can go to sleep
+> for a long time before the interrupt occurs.
+>
+> So question becomes whether there are circumstances in which we are
+> running with long timescales and would benefit from using interrupts.
 
---hmkibl6tqohgtmac
-Content-Type: application/pgp-signature; name="signature.asc"
+From our testing, the ADC version time is usually about 100us, it will
+be faster to get data if we poll every 50us in this case. But if we
+change to use interrupt mode, it will take millisecond level time to
+get data. That will cause problems for those time sensitive scenarios,
+like headphone detection, that's the main reason we can not use
+interrupt mode.
 
------BEGIN PGP SIGNATURE-----
+For those non-time-sensitive scenarios, yes, I agree with you, the
+interrupt mode will get a better power efficiency. But ADC driver can
+not know what scenarios asked by consumers, so changing to polling
+mode seems the easiest way to solve the problem, and we've applied
+this patch in our downstream kernel for a while, we did not see any
+other problem.
 
-iQIzBAABCAAdFiEEtcQ9SICaIIqPWDjAcjQGjxahVjwFAl1JLMIACgkQcjQGjxah
-Vjx4OBAAxQU3tgkW1phGiUlCylmAblCdAtYezFCdcbL28QA5ui5zPocDUerLjRar
-06uAx/kjK5oxH9rDMWh5OgwznfUkenGpNeo3n6/n7CVq6yUW4oTzb802/5EgqOfP
-4P7iKVRbEwOj3DJgcS/l+GCqkZfDj+IncK5C4up2c0NYvTr4kIDOHFCr84qI4Doe
-6O7DDmNZsA1GHTc/KbMBuo0AekVF7SdXgzSHm+EN41SOPK93YtvS7d9z7ethOvYr
-cHrdtWveTOK+HNTO0fWILq0wdKC+n0FXSnGBVdWDPRBJCzYyUIvP9m4NTDETe9fE
-PQH84hC052OmoUxwQmnLh8FB15d4VfOfP/QuykvaVuao3JoQyI4EeVzEgiGV1Eg6
-nhkr/QsEMmxgAzDGVZ39eSXJWZos4lueWnQ5ohzTs5SjeYQnFsPMEnsNoGfX15wL
-z3Z2hZh9Ra8fs3cDeijbwbyljffVEA+ZnFXPItjlZaNeMTKXM66qSy0vKENteRJi
-JJPNAO+3/MDDWFweAUFXimd8htUSAHWEuRRG2EE5sweBam4V/AnkC3AdZsVXBMeg
-QtuS4/VfkZXS1UL8FOGyWU9xQ+daMc2vMDWeA/+EwEes8s1uMzP6aAQ1h6y/W46s
-g6+sxY53Yp+RzsNKoi8OCiQpF7lkESc9XxUKuKV0jhrhT6oQLZE=
-=oFtH
------END PGP SIGNATURE-----
+Thanks for your comments.
 
---hmkibl6tqohgtmac--
+-- 
+Baolin Wang
+Best Regards

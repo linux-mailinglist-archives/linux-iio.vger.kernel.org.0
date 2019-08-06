@@ -2,217 +2,258 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2904C82DC8
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2019 10:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE7882DCB
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2019 10:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732256AbfHFIeU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Aug 2019 04:34:20 -0400
-Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:4512 "EHLO
-        mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728056AbfHFIeT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Aug 2019 04:34:19 -0400
-X-Greylist: delayed 1743 seconds by postgrey-1.27 at vger.kernel.org; Tue, 06 Aug 2019 04:34:18 EDT
-Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
-        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7685BSh008438;
-        Tue, 6 Aug 2019 01:05:11 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt1;
- bh=dQCb0rMLYonc6OQdqqSG6CNyQduZWpPMLVQaswOSvrE=;
- b=yQbVn5Yr7h1lBSS3Xek+MpuXSOhsXxHdhhtZ/cBoaXsmNRABty8JYjoM2PJiqNfDp5JA
- GW8kci9i7R4mz1eoLjpvOeQWdcO0nNY7knzCU4OXmjsskmAkid5QPNQ7bKvyC0DNmFRV
- NTysWjIANoTxZuaqYChNzRlFDEDHr65cVi5Q25xrhB+Qj8XxWg/4CVt/pBqeg5t4Fl3o
- /UIuEV9adiAz0QwyKBl72FCfd4q3b1y4n2u3SQpSTEbYUH4C3LyI9eU6ObMdCIT6ZT/1
- csgQlsGzEiHWJlKwdCMSoM5YXLOBsk4klOLarBFPqDN9lMtBRAUb44Kjx3Ws+H7mvNIu 6g== 
-Received: from nam03-dm3-obe.outbound.protection.outlook.com (mail-dm3nam03lp2054.outbound.protection.outlook.com [104.47.41.54])
-        by mx0b-00328301.pphosted.com with ESMTP id 2u5sv9gxqn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 06 Aug 2019 01:05:11 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M2FkRC9x4CJc1wT4ScNQLy0iDvxjo2x/5NS3/nXGwrwY5+Hav31Jg02gFsGsSEmqsv0nKw8Nr88rRzbG8eiuYdKjVgY+cYb8Pojus8j3RsmTc9bGWyZ5majOBcnCSGf+cWNeyWWnRay8N6Rf00JMbkgU9Fz3Z5L7xv/nDa/dzxxqQMRvKPi3h6P/VRjgHLlsMB+aIpL0mIFrooKmIkh9eUJ0S3kKW5kEqcPQzCIsD1c3SzPvKS8/xZLLx6n+LVyVOdvB5n5Trx9PjbrdUlHC8UuBruGRmq5dbut9ttRimiz1AgAh5YMozv/pZwufUZWyH2UN/5PyxyezsnKGH18buw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dQCb0rMLYonc6OQdqqSG6CNyQduZWpPMLVQaswOSvrE=;
- b=mr4ulrE9aOSkrtKAXUfkRegZKzAr51K49PzIlXzWHaA/g1gEW+qrrmHxs4RuobugTxenj6lMUtsigGoRujc1GBOUPvLPFcKgMvcJQabHDmegzjHxmFQNSSwfOQc2r5ZXNqwfL8wVFs7bn/rSwvQN6Ep4sE9fo/vK2Dql6T3C/c/bWc2TiCoqQgGG60R/Pp3GpW9czyaPAfoLj1seK2eXNC9WF5huDR1it+uC1K2aIKFCM2Y33Ca+83OYs1U3g/zyVNV7Xr4TlMVpMYbGbpefhGQyiXiv+IC/d7lTUzW1t5OKOOJTz2q1mrLElmeL40v31jZ55i63zf/VmbPgouIazQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=invensense.com;dmarc=pass action=none
- header.from=invensense.com;dkim=pass header.d=invensense.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector1-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dQCb0rMLYonc6OQdqqSG6CNyQduZWpPMLVQaswOSvrE=;
- b=F7j7pAcp53+vj5YTmQpbIPHD8P9rXiVqFCkxEVQSl1eUH/Kx1fnbdX5KGoQCtB1VzEPNcbmPeiIiwoIHf/MvhwUmE+HVXvYIC6yL9CLgF/z26jUlCpxHoiBtGtrPNcvBwtV4X2NeZtfyePNaEySk0LQwCVat9JmZFDerZJxb/R4=
-Received: from BYAPR12MB3366.namprd12.prod.outlook.com (20.178.55.207) by
- BYAPR12MB3221.namprd12.prod.outlook.com (20.179.92.221) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2136.14; Tue, 6 Aug 2019 08:05:09 +0000
-Received: from BYAPR12MB3366.namprd12.prod.outlook.com
- ([fe80::9c03:b359:233:42c4]) by BYAPR12MB3366.namprd12.prod.outlook.com
- ([fe80::9c03:b359:233:42c4%7]) with mapi id 15.20.2136.018; Tue, 6 Aug 2019
- 08:05:09 +0000
-From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: add header include protection
- macro
-Thread-Topic: [PATCH] iio: imu: inv_mpu6050: add header include protection
- macro
-Thread-Index: AQHVS4jmdphJPlu5nEy8cN0WRDo//Kbsv6kAgAEDrek=
-Date:   Tue, 6 Aug 2019 08:05:09 +0000
-Message-ID: <BYAPR12MB3366E1F9CA2A951762E4C726C4D50@BYAPR12MB3366.namprd12.prod.outlook.com>
-References: <20190805122513.8399-1-jmaneyrol@invensense.com>,<20190805173226.71757a05@archlinux>
-In-Reply-To: <20190805173226.71757a05@archlinux>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [77.157.193.39]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 842c3a1a-91c9-46c6-ef2d-08d71a44ccdb
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BYAPR12MB3221;
-x-ms-traffictypediagnostic: BYAPR12MB3221:
-x-microsoft-antispam-prvs: <BYAPR12MB322115E38EE2E22503DB736CC4D50@BYAPR12MB3221.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 0121F24F22
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(366004)(136003)(376002)(396003)(39850400004)(199004)(189003)(9686003)(68736007)(53936002)(446003)(11346002)(99286004)(6436002)(186003)(486006)(4326008)(55016002)(25786009)(476003)(316002)(66066001)(102836004)(26005)(5660300002)(71190400001)(256004)(5024004)(71200400001)(6916009)(478600001)(14444005)(52536014)(7696005)(74316002)(66446008)(76176011)(2906002)(6116002)(229853002)(8936002)(33656002)(66946007)(66476007)(6246003)(76116006)(86362001)(66556008)(64756008)(3846002)(80792005)(7736002)(53546011)(14454004)(6506007)(81156014)(81166006)(8676002)(305945005);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR12MB3221;H:BYAPR12MB3366.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: invensense.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: qUrZ1yWCyg/9qRQDHWGFQuwfENbarpwwLnCDoZYX9iiEXiUhi635lY8PRx5Ea6YBV5jeZLh8yz2me5djIs7gtQRWLLuIFU2stKNtRygcMKHQH9unNCVfZE/8RXa+qF/ACF8G5VP2g3OyZU8f6K0K1SJPyCO/YkOwIvkr3aNjtByxEyGvM46k3CRz5Dql9OiZVwfT33AObV8LxJHP2pvDnVeIucH4s2VNRff7x7ObSHxtlGyjk5KxPTmXA8YTox/nI2TJJqrc5y2icNN0yTNaSpF3KCbyagyk9pyrpPCTHDMXo3aDR65M/GJ3m1P47xFfWGQOvNDRVZBcfu8lAhlDqnIgQC4oiw1h23/M4cjc0olIwVOeKWiYFJlXLdsZQOCm9q6ndHKEflAxW/lUezSSW22mOWn0hzhpxyAsWlnIE2o=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1728056AbfHFIe4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Aug 2019 04:34:56 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:32828 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731835AbfHFIez (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Aug 2019 04:34:55 -0400
+Received: from [192.168.0.20] (cpc89242-aztw30-2-0-cust488.18-1.cable.virginm.net [86.31.129.233])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 10F942F9;
+        Tue,  6 Aug 2019 10:34:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1565080491;
+        bh=1EJ90QSULyAIN2/TqvfMCU/CwyF3VdoamOhXihEJFEI=;
+        h=Reply-To:Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=a0Cw175mzK645ftUDLnAhQp5BDqqLtEVwLHqCHbP4j3Yybku9Ki7t9tk8xVm95cKR
+         allKTKsMO53lWfd171u5nxJKjGBcDb0Z8tJSMyh0ueodgggZPFYbEp7uf/jraypxZC
+         HX30AwxJlcJce+267Y1I8sAq+9BZkr2Eu6zd7u/k=
+Reply-To: kieran.bingham@ideasonboard.com
+Subject: Re: [PATCH] media: uvcvideo: Add boottime clock support
+To:     Tomasz Figa <tfiga@chromium.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>
+Cc:     Alexandru Stan <amstan@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Heng-Ruey Hsu <henryhsu@chromium.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ricky Liang <jcliang@chromium.org>, linux-iio@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        =?UTF-8?B?SnVuZ28gTGluICjmnpfmmI7kv4op?= <jungo.lin@mediatek.com>
+References: <20181017075242.21790-1-henryhsu@chromium.org>
+ <CAAFQd5AL2CnnWLk+i133RRa36HTa0baFkezRhpTXf9YP0DSF1Q@mail.gmail.com>
+ <CAHNYxRwbSSp02Zr4a1z5gh0q6cHUUDnZCqRQU7QtP8LMe3Jp2A@mail.gmail.com>
+ <1610184.U7oo9Z4Yep@avalon>
+ <CAAFQd5A7k2VgmawF-x=AcKhJiG-shrJiCP4Tu9054J0eE91+9w@mail.gmail.com>
+ <d79e0857-c6ae-9e57-52e2-e596864a68f8@metafoo.de>
+ <CAAFQd5C_QucJiZMUgCpztC52Mi3p6HDThHNkcNOm9C+SZUDDYQ@mail.gmail.com>
+ <20190313012451.GR891@pendragon.ideasonboard.com>
+ <CAAFQd5DtSD3TrXz8jaFnmBgpRQ6Gnq+LKxyY+LNZrqiM1pxNVA@mail.gmail.com>
+ <CAAFQd5DreQkUsG9PnUxWMUDo6c+AxQMHm4ErZQFPjGqJz=wmCg@mail.gmail.com>
+From:   Kieran Bingham <kieran.bingham@ideasonboard.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=kieran.bingham@ideasonboard.com; keydata=
+ mQINBFYE/WYBEACs1PwjMD9rgCu1hlIiUA1AXR4rv2v+BCLUq//vrX5S5bjzxKAryRf0uHat
+ V/zwz6hiDrZuHUACDB7X8OaQcwhLaVlq6byfoBr25+hbZG7G3+5EUl9cQ7dQEdvNj6V6y/SC
+ rRanWfelwQThCHckbobWiQJfK9n7rYNcPMq9B8e9F020LFH7Kj6YmO95ewJGgLm+idg1Kb3C
+ potzWkXc1xmPzcQ1fvQMOfMwdS+4SNw4rY9f07Xb2K99rjMwZVDgESKIzhsDB5GY465sCsiQ
+ cSAZRxqE49RTBq2+EQsbrQpIc8XiffAB8qexh5/QPzCmR4kJgCGeHIXBtgRj+nIkCJPZvZtf
+ Kr2EAbc6tgg6DkAEHJb+1okosV09+0+TXywYvtEop/WUOWQ+zo+Y/OBd+8Ptgt1pDRyOBzL8
+ RXa8ZqRf0Mwg75D+dKntZeJHzPRJyrlfQokngAAs4PaFt6UfS+ypMAF37T6CeDArQC41V3ko
+ lPn1yMsVD0p+6i3DPvA/GPIksDC4owjnzVX9kM8Zc5Cx+XoAN0w5Eqo4t6qEVbuettxx55gq
+ 8K8FieAjgjMSxngo/HST8TpFeqI5nVeq0/lqtBRQKumuIqDg+Bkr4L1V/PSB6XgQcOdhtd36
+ Oe9X9dXB8YSNt7VjOcO7BTmFn/Z8r92mSAfHXpb07YJWJosQOQARAQABtDBLaWVyYW4gQmlu
+ Z2hhbSA8a2llcmFuLmJpbmdoYW1AaWRlYXNvbmJvYXJkLmNvbT6JAkAEEwEKACoCGwMFCwkI
+ BwIGFQgJCgsCBBYCAwECHgECF4ACGQEFAlnDk/gFCQeA/YsACgkQoR5GchCkYf3X5w/9EaZ7
+ cnUcT6dxjxrcmmMnfFPoQA1iQXr/MXQJBjFWfxRUWYzjvUJb2D/FpA8FY7y+vksoJP7pWDL7
+ QTbksdwzagUEk7CU45iLWL/CZ/knYhj1I/+5LSLFmvZ/5Gf5xn2ZCsmg7C0MdW/GbJ8IjWA8
+ /LKJSEYH8tefoiG6+9xSNp1p0Gesu3vhje/GdGX4wDsfAxx1rIYDYVoX4bDM+uBUQh7sQox/
+ R1bS0AaVJzPNcjeC14MS226mQRUaUPc9250aj44WmDfcg44/kMsoLFEmQo2II9aOlxUDJ+x1
+ xohGbh9mgBoVawMO3RMBihcEjo/8ytW6v7xSF+xP4Oc+HOn7qebAkxhSWcRxQVaQYw3S9iZz
+ 2iA09AXAkbvPKuMSXi4uau5daXStfBnmOfalG0j+9Y6hOFjz5j0XzaoF6Pln0jisDtWltYhP
+ X9LjFVhhLkTzPZB/xOeWGmsG4gv2V2ExbU3uAmb7t1VSD9+IO3Km4FtnYOKBWlxwEd8qOFpS
+ jEqMXURKOiJvnw3OXe9MqG19XdeENA1KyhK5rqjpwdvPGfSn2V+SlsdJA0DFsobUScD9qXQw
+ OvhapHe3XboK2+Rd7L+g/9Ud7ZKLQHAsMBXOVJbufA1AT+IaOt0ugMcFkAR5UbBg5+dZUYJj
+ 1QbPQcGmM3wfvuaWV5+SlJ+WeKIb8ta5Ag0EVgT9ZgEQAM4o5G/kmruIQJ3K9SYzmPishRHV
+ DcUcvoakyXSX2mIoccmo9BHtD9MxIt+QmxOpYFNFM7YofX4lG0ld8H7FqoNVLd/+a0yru5Cx
+ adeZBe3qr1eLns10Q90LuMo7/6zJhCW2w+HE7xgmCHejAwuNe3+7yt4QmwlSGUqdxl8cgtS1
+ PlEK93xXDsgsJj/bw1EfSVdAUqhx8UQ3aVFxNug5OpoX9FdWJLKROUrfNeBE16RLrNrq2ROc
+ iSFETpVjyC/oZtzRFnwD9Or7EFMi76/xrWzk+/b15RJ9WrpXGMrttHUUcYZEOoiC2lEXMSAF
+ SSSj4vHbKDJ0vKQdEFtdgB1roqzxdIOg4rlHz5qwOTynueiBpaZI3PHDudZSMR5Fk6QjFooE
+ XTw3sSl/km/lvUFiv9CYyHOLdygWohvDuMkV/Jpdkfq8XwFSjOle+vT/4VqERnYFDIGBxaRx
+ koBLfNDiiuR3lD8tnJ4A1F88K6ojOUs+jndKsOaQpDZV6iNFv8IaNIklTPvPkZsmNDhJMRHH
+ Iu60S7BpzNeQeT4yyY4dX9lC2JL/LOEpw8DGf5BNOP1KgjCvyp1/KcFxDAo89IeqljaRsCdP
+ 7WCIECWYem6pLwaw6IAL7oX+tEqIMPph/G/jwZcdS6Hkyt/esHPuHNwX4guqTbVEuRqbDzDI
+ 2DJO5FbxABEBAAGJAiUEGAEKAA8CGwwFAlnDlGsFCQeA/gIACgkQoR5GchCkYf1yYRAAq+Yo
+ nbf9DGdK1kTAm2RTFg+w9oOp2Xjqfhds2PAhFFvrHQg1XfQR/UF/SjeUmaOmLSczM0s6XMeO
+ VcE77UFtJ/+hLo4PRFKm5X1Pcar6g5m4xGqa+Xfzi9tRkwC29KMCoQOag1BhHChgqYaUH3yo
+ UzaPwT/fY75iVI+yD0ih/e6j8qYvP8pvGwMQfrmN9YB0zB39YzCSdaUaNrWGD3iCBxg6lwSO
+ LKeRhxxfiXCIYEf3vwOsP3YMx2JkD5doseXmWBGW1U0T/oJF+DVfKB6mv5UfsTzpVhJRgee7
+ 4jkjqFq4qsUGxcvF2xtRkfHFpZDbRgRlVmiWkqDkT4qMA+4q1y/dWwshSKi/uwVZNycuLsz+
+ +OD8xPNCsMTqeUkAKfbD8xW4LCay3r/dD2ckoxRxtMD9eOAyu5wYzo/ydIPTh1QEj9SYyvp8
+ O0g6CpxEwyHUQtF5oh15O018z3ZLztFJKR3RD42VKVsrnNDKnoY0f4U0z7eJv2NeF8xHMuiU
+ RCIzqxX1GVYaNkKTnb/Qja8hnYnkUzY1Lc+OtwiGmXTwYsPZjjAaDX35J/RSKAoy5wGo/YFA
+ JxB1gWThL4kOTbsqqXj9GLcyOImkW0lJGGR3o/fV91Zh63S5TKnf2YGGGzxki+ADdxVQAm+Q
+ sbsRB8KNNvVXBOVNwko86rQqF9drZuw=
+Organization: Ideas on Board
+Message-ID: <7c76f7ce-57ca-d7d5-fd81-70607f97b792@ideasonboard.com>
+Date:   Tue, 6 Aug 2019 09:34:47 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 842c3a1a-91c9-46c6-ef2d-08d71a44ccdb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Aug 2019 08:05:09.1919
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JManeyrol@invensense.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3221
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:5.22.84,1.0.8
- definitions=2019-08-06_05:2019-07-31,2019-08-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 impostorscore=0 phishscore=0 adultscore=0
- malwarescore=0 suspectscore=0 bulkscore=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1906280000 definitions=main-1908060086
+In-Reply-To: <CAAFQd5DreQkUsG9PnUxWMUDo6c+AxQMHm4ErZQFPjGqJz=wmCg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,=0A=
-=0A=
-this is required for further patches coming soon.=0A=
-=0A=
-I am planning to add support for full 9-axis on MPU9250, using the chip i2c=
- master to drive the integrated magnetometer and retrieve all data in the M=
-PU FIFO. It will be behind a kernel config option to not break existing sup=
-port driving the magnetometer from the kernel.=0A=
-=0A=
-Hope to have this cleaned-up and ready soon.=0A=
-=0A=
-Best regards,=0A=
-JB=0A=
-=0A=
-From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> on =
-behalf of Jonathan Cameron <jic23@jic23.retrosnub.co.uk>=0A=
-=0A=
-Sent: Monday, August 5, 2019 18:32=0A=
-=0A=
-To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>=0A=
-=0A=
-Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>=0A=
-=0A=
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: add header include protection m=
-acro=0A=
-=0A=
-=A0=0A=
-=0A=
-=0A=
-=A0CAUTION: This email originated from outside of the organization. Please =
-make sure the sender is who they say they are and do not click links or ope=
-n attachments unless you recognize the sender and know the content is safe.=
-=0A=
-=0A=
-=0A=
-=0A=
-On Mon, 5 Aug 2019 12:25:43 +0000=0A=
-=0A=
-Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:=0A=
-=0A=
-=0A=
-=0A=
-> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>=0A=
-=0A=
-No problem with adding this,=A0 but why specifically did you do so?=0A=
-=0A=
-=0A=
-=0A=
-Thanks,=0A=
-=0A=
-=0A=
-=0A=
-Jonathan=0A=
-=0A=
-=0A=
-=0A=
-> ---=0A=
-=0A=
->=A0 drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h | 6 ++++++=0A=
-=0A=
->=A0 1 file changed, 6 insertions(+)=0A=
-=0A=
-> =0A=
-=0A=
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/=
-inv_mpu6050/inv_mpu_iio.h=0A=
-=0A=
-> index db1c6904388b..e64eb978e810 100644=0A=
-=0A=
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h=0A=
-=0A=
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h=0A=
-=0A=
-> @@ -2,6 +2,10 @@=0A=
-=0A=
->=A0 /*=0A=
-=0A=
->=A0 * Copyright (C) 2012 Invensense, Inc.=0A=
-=0A=
->=A0 */=0A=
-=0A=
-> +=0A=
-=0A=
-> +#ifndef INV_MPU_IIO_H_=0A=
-=0A=
-> +#define INV_MPU_IIO_H_=0A=
-=0A=
-> +=0A=
-=0A=
->=A0 #include <linux/i2c.h>=0A=
-=0A=
->=A0 #include <linux/i2c-mux.h>=0A=
-=0A=
->=A0 #include <linux/mutex.h>=0A=
-=0A=
-> @@ -342,3 +346,5 @@ void inv_mpu_acpi_delete_mux_client(struct i2c_client=
- *client);=0A=
-=0A=
->=A0 int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *nam=
-e,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 int (*inv_mpu_bus_setup)(str=
-uct iio_dev *), int chip_type);=0A=
-=0A=
->=A0 extern const struct dev_pm_ops inv_mpu_pmops;=0A=
-=0A=
-> +=0A=
-=0A=
-> +#endif=0A=
-=0A=
-=0A=
-=0A=
+Hi Tomasz,
+
+On 06/08/2019 05:15, Tomasz Figa wrote:
+> On Wed, Mar 13, 2019 at 11:38 AM Tomasz Figa <tfiga@chromium.org> wrote:
+>>
+>> On Wed, Mar 13, 2019 at 10:25 AM Laurent Pinchart
+>> <laurent.pinchart@ideasonboard.com> wrote:
+>>>
+>>> Hi Tomasz,
+>>>
+>>> On Fri, Nov 23, 2018 at 11:46:43PM +0900, Tomasz Figa wrote:
+>>>> On Fri, Nov 2, 2018 at 12:03 AM Lars-Peter Clausen wrote:
+>>>>> On 11/01/2018 03:30 PM, Tomasz Figa wrote:
+>>>>>> On Thu, Nov 1, 2018 at 11:03 PM Laurent Pinchart wrote:
+>>>>>>> On Thursday, 18 October 2018 20:28:06 EET Alexandru M Stan wrote:
+>>>>>>>> On Wed, Oct 17, 2018 at 9:31 PM, Tomasz Figa wrote:
+>>>>>>>>> On Thu, Oct 18, 2018 at 5:50 AM Laurent Pinchart wrote:
+>>>>>>>>>> On Wednesday, 17 October 2018 11:28:52 EEST Tomasz Figa wrote:
+>>>>>>>>>>> On Wed, Oct 17, 2018 at 5:02 PM Laurent Pinchart wrote:
+>>>>>>>>>>>> On Wednesday, 17 October 2018 10:52:42 EEST Heng-Ruey Hsu wrote:
+>>>>>>>>>>>>> Android requires camera timestamps to be reported with
+>>>>>>>>>>>>> CLOCK_BOOTTIME to sync timestamp with other sensor sources.
+>>>>>>>>>>>>
+>>>>>>>>>>>> What's the rationale behind this, why can't CLOCK_MONOTONIC work ? If
+>>>>>>>>>>>> the monotonic clock has shortcomings that make its use impossible for
+>>>>>>>>>>>> proper synchronization, then we should consider switching to
+>>>>>>>>>>>> CLOCK_BOOTTIME globally in V4L2, not in selected drivers only.
+>>>>>>>>>>>
+>>>>>>>>>>> CLOCK_BOOTTIME includes the time spent in suspend, while
+>>>>>>>>>>> CLOCK_MONOTONIC doesn't. I can imagine the former being much more
+>>>>>>>>>>> useful for anything that cares about the actual, long term, time
+>>>>>>>>>>> tracking. Especially important since suspend is a very common event on
+>>>>>>>>>>> Android and doesn't stop the time flow there, i.e. applications might
+>>>>>>>>>>> wake up the device to perform various tasks at necessary times.
+>>>>>>>>>>
+>>>>>>>>>> Sure, but this patch mentions timestamp synchronization with other
+>>>>>>>>>> sensors, and from that point of view, I'd like to know what is wrong with
+>>>>>>>>>> the monotonic clock if all devices use it.
+>>>>>>>>>
+>>>>>>>>> AFAIK the sensors mentioned there are not camera sensors, but rather
+>>>>>>>>> things we normally put under IIO, e.g. accelerometers, gyroscopes and
+>>>>>>>>> so on. I'm not sure how IIO deals with timestamps, but Android seems
+>>>>>>>>> to operate in the CLOCK_BOTTIME domain. Let me add some IIO folks.
+>>>>>>>>>
+>>>>>>>>> Gwendal, Alexandru, do you think you could shed some light on how we
+>>>>>>>>> handle IIO sensors timestamps across the kernel, Chrome OS and
+>>>>>>>>> Android?
+>>>>>>>>
+>>>>>>>> On our devices of interest have a specialized "sensor" that comes via
+>>>>>>>> IIO (from the EC, cros-ec-ring driver) that can be used to more
+>>>>>>>> accurately timestamp each frame (since it's recorded with very low
+>>>>>>>> jitter by a realtime-ish OS). In some high level userspace thing
+>>>>>>>> (specifically the Android Camera HAL) we try to pick the best
+>>>>>>>> timestamp from the IIO, whatever's closest to what the V4L stuff gives
+>>>>>>>> us.
+>>>>>>>>
+>>>>>>>> I guess the Android convention is for sensor timestamps to be in
+>>>>>>>> CLOCK_BOOTTIME (maybe because it likes sleeping so much). There's
+>>>>>>>> probably no advantage to using one over the other, but the important
+>>>>>>>> thing is that they have to be the same, otherwise the closest match
+>>>>>>>> logic would fail.
+>>>>>>>
+>>>>>>> That's my understanding too, I don't think CLOCK_BOOTTIME really brings much
+>>>>>>> benefit in this case,
+>>>>>>
+>>>>>> I think it does have a significant benefit. CLOCK_MONOTONIC stops when
+>>>>>> the device is sleeping, but the sensors can still capture various
+>>>>>> actions. We would lose the time keeping of those actions if we use
+>>>>>> CLOCK_MONOTONIC.
+
+That's an important distinction. If there are operations that can run
+while the main host is in 'suspend' and still maintain "relative"
+timestamps in any form - then time must continue during suspend.
+
+
+>>>>>>> but it's important than all timestamps use the same
+>>>>>>> clock. The question is thus which clock we should select. Mainline mostly uses
+>>>>>>> CLOCK_MONOTONIC, and Android CLOCK_BOOTTIME. Would you like to submit patches
+>>>>>>> to switch Android to CLOCK_MONOTONIC ? :-)
+>>>>>> Is it Android using CLOCK_BOOTTIME or the sensors (IIO?). I have
+>>>>>> almost zero familiarity with the IIO subsystem and was hoping someone
+>>>>>> from there could comment on what time domain is used for those
+>>>>>> sensors.
+>>>>>
+>>>>> IIO has the option to choose between BOOTTIME or MONOTONIC (and a few
+>>>>> others) for the timestamp on a per device basis.
+>>>>>
+>>>>> There was a bit of a discussion about this a while back. See
+>>>>> https://lkml.org/lkml/2018/7/10/432 and the following thread.
+>>>>
+>>>> Given that IIO supports BOOTTIME in upstream already and also the
+>>>> important advantage of using it over MONOTONIC for systems which keep
+>>>> capturing events during sleep, do you think we could move on with some
+>>>> way to support it in uvcvideo or preferably V4L2 in general?
+>>>
+>>> I'm not opposed to that, but I don't think we should approach that from
+>>> a UVC point of view. The issue should be addressed in V4L2, and then
+>>> driver-specific support could be added, if needed.
+
+Agreed, this is a V4L2 topic - not a UVC specific topic.
+
+
+>> Yes, fully agreed. The purpose of sending this patch was just to start
+>> the discussion on how to support this.
+>>
+>> Do you think something like a buffer flag called
+>> V4L2_BUF_FLAG_TIMESTAMP_BOOTTIME that could be set by the userspace at
+>> QBUF could work here? (That would change the timestamp flags
+>> semantics, because it used to be just the information from the driver,
+>> but shouldn't have any compatibility implications.) I suppose we would
+>> also need some capability flag for querying purposes, possibly added
+>> to the capability flags returned by REQBUFS/CREATE_BUFS?
+
+What kind of 'compatibility' do we actually need to maintain here? IMO -
+CLOCK_BOOTTIME makes much more sense globally for video, because it's
+more representative of the temporal difference between frames captured
+if a system goes into suspend.
+
+If frames are captured:
+
+A B         C D
+   <suspend>
+
+Then I believe it would be correct for the timestamp delta between B-C
+to be large <representative of the suspend duration/real time>
+
+
+> Any thoughts?
+
+Aha, there might be some gotchas around non-live sources operating
+across suspend-resume boundaries .. so perhaps there are certainly
+use-cases where both _MONOTONIC and _BOOTTIME have their relevance ...
+
+
+> Adding Hans and Kieran for more insight.
+
+I think if we're talking about core-V4L2, Hans' opinion takes more
+weight than my mumblings :-) - but overall - supporting _BOOTTIME in
+some form sounds beneficial to me.
+
+
+> Best regards,
+> Tomasz
+> 
+
+-- 
+Regards
+--
+Kieran

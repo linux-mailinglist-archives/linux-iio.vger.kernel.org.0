@@ -2,311 +2,189 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7419D82523
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2019 20:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68DFC82A3A
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2019 06:23:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730310AbfHES5X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Aug 2019 14:57:23 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:14614 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730222AbfHES5X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Aug 2019 14:57:23 -0400
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x75IpuX9010007;
-        Mon, 5 Aug 2019 20:57:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=STMicroelectronics;
- bh=C5Ilg9oa2EhmRzeCTEN+xN7Bnx5Q3scVd3cizwlWTSE=;
- b=iJEmRlEDLQmI0q6QBwBU8cUJR9Fw1VoBqhp3HsWhBdk6eySGqLtKcmKvo19sH1dDf3+3
- PaVNxEJL/7Fea55JzGX+pmtVK8R8g7eQI8uwVB/sDSPu51GRjA+Z3gFTIe770ORsFpyd
- NvxrpZc5QYdzwYN+8BCLtpTF6OZeKyFPuO+c/79SA2zz3UwvZM6dDqeJWhL0Xzx71U2u
- C2I5zEAvBR2XI5E6f5yxbtzeu/ePSHyDVtA/HuFEgDvbVhns+mr0SaT0LKx+Mxom6Njc
- QD6+RjVqt8z0NUf6HPLENeMN+ZC9xUneNiVDD2Fi1Bq8On4gbg4ZHXnHGSMouY5w7qSg 0g== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx08-00178001.pphosted.com with ESMTP id 2u5sd1fvfa-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 05 Aug 2019 20:57:15 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 60E8A31;
-        Mon,  5 Aug 2019 18:57:14 +0000 (GMT)
-Received: from Webmail-eu.st.com (sfhdag1node1.st.com [10.75.127.1])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 52DDC3BE572;
-        Mon,  5 Aug 2019 20:57:14 +0200 (CEST)
-Received: from localhost (10.75.127.45) by SFHDAG1NODE1.st.com (10.75.127.1)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 5 Aug 2019 20:57:13
- +0200
-From:   Denis Ciocca <denis.ciocca@st.com>
-To:     <linux-iio@vger.kernel.org>, <jic23@kernel.org>
-CC:     <alexandru.Ardelean@analog.com>, Denis Ciocca <denis.ciocca@st.com>
-Subject: [PATCH] iio:st_sensors: remove buffer allocation at each buffer enable
-Date:   Mon, 5 Aug 2019 11:57:11 -0700
-Message-ID: <20190805185711.2890-1-denis.ciocca@st.com>
-X-Mailer: git-send-email 2.22.0
+        id S1725853AbfHFEXe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Aug 2019 00:23:34 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:44966 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725747AbfHFEXe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Aug 2019 00:23:34 -0400
+Received: by mail-ed1-f65.google.com with SMTP id k8so80989635edr.11
+        for <linux-iio@vger.kernel.org>; Mon, 05 Aug 2019 21:23:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pl4laxveqxbFoLVSBJBsq2q/ipMs/mfndz3RNUveMcY=;
+        b=DzyWmD70Zod3tb8nY7SBaJ4s0DWTv5hzieoY1t3GEvpTHlT0z0PqeA5HuhuyPtBXeO
+         ssFzaWqQydsNv2erkIXMw18neZsvg1hmc5NXlBGD3cK5nXU8UlbWgbWVvWG1eFtUd9J1
+         9chrOStlqltKvAyh1pVAZbCTr1c3uxL9tphL8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pl4laxveqxbFoLVSBJBsq2q/ipMs/mfndz3RNUveMcY=;
+        b=Sg34wc6sjrjY/sN99By+SErsFRQ+YCSzBmHr3sJ85dN67IxwNF9xxWxtNhSuSNpiQc
+         /RChwtpRu5KikqJPmPYJ45QDv13ebuZupF5Gh376ekzKrFKXiWZvYKq1Y0YnCfvQuARg
+         GSOdOdRVN7y3XxqTPEChkvAlmYvpYx52JUo8HaYoz8oDKDKg5pacAlXZ79aTgdXQmAf4
+         bw9gRBYhvXdiENcSHT2dKeywmFBfpZHAPdaKUvquqPdrColpf68QATeNFVrwQIqFsBxR
+         nKXObEJa9PF9m8sKQYIPSf4cMRGt+Rizp/m3Aj+wp3xnIFb3P8UGOwEXMObAyC8cmRvu
+         7PSw==
+X-Gm-Message-State: APjAAAWWq+7yymwS9U8uMf9wvKNeZusjnUaCGBXONSxPoylY7liMHJ0y
+        4378+KZo8kqwiXEwrJuVLzvWpzXxP1ne/Q==
+X-Google-Smtp-Source: APXvYqxeN9fJC9eFB0ZApWEYAs4X4dowUJjk9rtZRqH2u2ktSO6fZRr55vksowkjkXzv9lleYTSmsg==
+X-Received: by 2002:a17:906:1911:: with SMTP id a17mr1244847eje.290.1565065411143;
+        Mon, 05 Aug 2019 21:23:31 -0700 (PDT)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com. [209.85.128.53])
+        by smtp.gmail.com with ESMTPSA id x21sm20426467edb.0.2019.08.05.21.23.31
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Mon, 05 Aug 2019 21:23:31 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id u25so64606434wmc.4
+        for <linux-iio@vger.kernel.org>; Mon, 05 Aug 2019 21:23:31 -0700 (PDT)
+X-Received: by 2002:a1c:407:: with SMTP id 7mr1839604wme.113.1565064969579;
+ Mon, 05 Aug 2019 21:16:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG1NODE1.st.com (10.75.127.1) To SFHDAG1NODE1.st.com
- (10.75.127.1)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-05_09:,,
- signatures=0
+References: <20181017075242.21790-1-henryhsu@chromium.org> <CAAFQd5AL2CnnWLk+i133RRa36HTa0baFkezRhpTXf9YP0DSF1Q@mail.gmail.com>
+ <CAHNYxRwbSSp02Zr4a1z5gh0q6cHUUDnZCqRQU7QtP8LMe3Jp2A@mail.gmail.com>
+ <1610184.U7oo9Z4Yep@avalon> <CAAFQd5A7k2VgmawF-x=AcKhJiG-shrJiCP4Tu9054J0eE91+9w@mail.gmail.com>
+ <d79e0857-c6ae-9e57-52e2-e596864a68f8@metafoo.de> <CAAFQd5C_QucJiZMUgCpztC52Mi3p6HDThHNkcNOm9C+SZUDDYQ@mail.gmail.com>
+ <20190313012451.GR891@pendragon.ideasonboard.com> <CAAFQd5DtSD3TrXz8jaFnmBgpRQ6Gnq+LKxyY+LNZrqiM1pxNVA@mail.gmail.com>
+In-Reply-To: <CAAFQd5DtSD3TrXz8jaFnmBgpRQ6Gnq+LKxyY+LNZrqiM1pxNVA@mail.gmail.com>
+From:   Tomasz Figa <tfiga@chromium.org>
+Date:   Tue, 6 Aug 2019 13:15:57 +0900
+X-Gmail-Original-Message-ID: <CAAFQd5DreQkUsG9PnUxWMUDo6c+AxQMHm4ErZQFPjGqJz=wmCg@mail.gmail.com>
+Message-ID: <CAAFQd5DreQkUsG9PnUxWMUDo6c+AxQMHm4ErZQFPjGqJz=wmCg@mail.gmail.com>
+Subject: Re: [PATCH] media: uvcvideo: Add boottime clock support
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham@ideasonboard.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>
+Cc:     Alexandru Stan <amstan@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Heng-Ruey Hsu <henryhsu@chromium.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ricky Liang <jcliang@chromium.org>, linux-iio@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        =?UTF-8?B?SnVuZ28gTGluICjmnpfmmI7kv4op?= <jungo.lin@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch is removing the buffer allocation at each buffer enable.
-We just allocate enough memory in the main structure during probe
-to cover maximum size needed (that anyway is pretty small) [16bytes].
+On Wed, Mar 13, 2019 at 11:38 AM Tomasz Figa <tfiga@chromium.org> wrote:
+>
+> On Wed, Mar 13, 2019 at 10:25 AM Laurent Pinchart
+> <laurent.pinchart@ideasonboard.com> wrote:
+> >
+> > Hi Tomasz,
+> >
+> > On Fri, Nov 23, 2018 at 11:46:43PM +0900, Tomasz Figa wrote:
+> > > On Fri, Nov 2, 2018 at 12:03 AM Lars-Peter Clausen wrote:
+> > > > On 11/01/2018 03:30 PM, Tomasz Figa wrote:
+> > > >> On Thu, Nov 1, 2018 at 11:03 PM Laurent Pinchart wrote:
+> > > >>> On Thursday, 18 October 2018 20:28:06 EET Alexandru M Stan wrote:
+> > > >>>> On Wed, Oct 17, 2018 at 9:31 PM, Tomasz Figa wrote:
+> > > >>>>> On Thu, Oct 18, 2018 at 5:50 AM Laurent Pinchart wrote:
+> > > >>>>>> On Wednesday, 17 October 2018 11:28:52 EEST Tomasz Figa wrote:
+> > > >>>>>>> On Wed, Oct 17, 2018 at 5:02 PM Laurent Pinchart wrote:
+> > > >>>>>>>> On Wednesday, 17 October 2018 10:52:42 EEST Heng-Ruey Hsu wrote:
+> > > >>>>>>>>> Android requires camera timestamps to be reported with
+> > > >>>>>>>>> CLOCK_BOOTTIME to sync timestamp with other sensor sources.
+> > > >>>>>>>>
+> > > >>>>>>>> What's the rationale behind this, why can't CLOCK_MONOTONIC work ? If
+> > > >>>>>>>> the monotonic clock has shortcomings that make its use impossible for
+> > > >>>>>>>> proper synchronization, then we should consider switching to
+> > > >>>>>>>> CLOCK_BOOTTIME globally in V4L2, not in selected drivers only.
+> > > >>>>>>>
+> > > >>>>>>> CLOCK_BOOTTIME includes the time spent in suspend, while
+> > > >>>>>>> CLOCK_MONOTONIC doesn't. I can imagine the former being much more
+> > > >>>>>>> useful for anything that cares about the actual, long term, time
+> > > >>>>>>> tracking. Especially important since suspend is a very common event on
+> > > >>>>>>> Android and doesn't stop the time flow there, i.e. applications might
+> > > >>>>>>> wake up the device to perform various tasks at necessary times.
+> > > >>>>>>
+> > > >>>>>> Sure, but this patch mentions timestamp synchronization with other
+> > > >>>>>> sensors, and from that point of view, I'd like to know what is wrong with
+> > > >>>>>> the monotonic clock if all devices use it.
+> > > >>>>>
+> > > >>>>> AFAIK the sensors mentioned there are not camera sensors, but rather
+> > > >>>>> things we normally put under IIO, e.g. accelerometers, gyroscopes and
+> > > >>>>> so on. I'm not sure how IIO deals with timestamps, but Android seems
+> > > >>>>> to operate in the CLOCK_BOTTIME domain. Let me add some IIO folks.
+> > > >>>>>
+> > > >>>>> Gwendal, Alexandru, do you think you could shed some light on how we
+> > > >>>>> handle IIO sensors timestamps across the kernel, Chrome OS and
+> > > >>>>> Android?
+> > > >>>>
+> > > >>>> On our devices of interest have a specialized "sensor" that comes via
+> > > >>>> IIO (from the EC, cros-ec-ring driver) that can be used to more
+> > > >>>> accurately timestamp each frame (since it's recorded with very low
+> > > >>>> jitter by a realtime-ish OS). In some high level userspace thing
+> > > >>>> (specifically the Android Camera HAL) we try to pick the best
+> > > >>>> timestamp from the IIO, whatever's closest to what the V4L stuff gives
+> > > >>>> us.
+> > > >>>>
+> > > >>>> I guess the Android convention is for sensor timestamps to be in
+> > > >>>> CLOCK_BOOTTIME (maybe because it likes sleeping so much). There's
+> > > >>>> probably no advantage to using one over the other, but the important
+> > > >>>> thing is that they have to be the same, otherwise the closest match
+> > > >>>> logic would fail.
+> > > >>>
+> > > >>> That's my understanding too, I don't think CLOCK_BOOTTIME really brings much
+> > > >>> benefit in this case,
+> > > >>
+> > > >> I think it does have a significant benefit. CLOCK_MONOTONIC stops when
+> > > >> the device is sleeping, but the sensors can still capture various
+> > > >> actions. We would lose the time keeping of those actions if we use
+> > > >> CLOCK_MONOTONIC.
+> > > >>
+> > > >>> but it's important than all timestamps use the same
+> > > >>> clock. The question is thus which clock we should select. Mainline mostly uses
+> > > >>> CLOCK_MONOTONIC, and Android CLOCK_BOOTTIME. Would you like to submit patches
+> > > >>> to switch Android to CLOCK_MONOTONIC ? :-)
+> > > >>
+> > > >> Is it Android using CLOCK_BOOTTIME or the sensors (IIO?). I have
+> > > >> almost zero familiarity with the IIO subsystem and was hoping someone
+> > > >> from there could comment on what time domain is used for those
+> > > >> sensors.
+> > > >
+> > > > IIO has the option to choose between BOOTTIME or MONOTONIC (and a few
+> > > > others) for the timestamp on a per device basis.
+> > > >
+> > > > There was a bit of a discussion about this a while back. See
+> > > > https://lkml.org/lkml/2018/7/10/432 and the following thread.
+> > >
+> > > Given that IIO supports BOOTTIME in upstream already and also the
+> > > important advantage of using it over MONOTONIC for systems which keep
+> > > capturing events during sleep, do you think we could move on with some
+> > > way to support it in uvcvideo or preferably V4L2 in general?
+> >
+> > I'm not opposed to that, but I don't think we should approach that from
+> > a UVC point of view. The issue should be addressed in V4L2, and then
+> > driver-specific support could be added, if needed.
+>
+> Yes, fully agreed. The purpose of sending this patch was just to start
+> the discussion on how to support this.
+>
+> Do you think something like a buffer flag called
+> V4L2_BUF_FLAG_TIMESTAMP_BOOTTIME that could be set by the userspace at
+> QBUF could work here? (That would change the timestamp flags
+> semantics, because it used to be just the information from the driver,
+> but shouldn't have any compatibility implications.) I suppose we would
+> also need some capability flag for querying purposes, possibly added
+> to the capability flags returned by REQBUFS/CREATE_BUFS?
 
-Signed-off-by: Denis Ciocca <denis.ciocca@st.com>
----
- drivers/iio/accel/st_accel_buffer.c       | 12 +-----------
- drivers/iio/gyro/st_gyro_buffer.c         | 12 +-----------
- drivers/iio/magnetometer/st_magn_buffer.c | 12 +-----------
- drivers/iio/pressure/st_pressure_buffer.c | 12 +-----------
- include/linux/iio/common/st_sensors.h     | 14 +++++++++-----
- 5 files changed, 13 insertions(+), 49 deletions(-)
+Any thoughts?
 
-diff --git a/drivers/iio/accel/st_accel_buffer.c b/drivers/iio/accel/st_accel_buffer.c
-index 59dcef02ec19..9f2b40474b8e 100644
---- a/drivers/iio/accel/st_accel_buffer.c
-+++ b/drivers/iio/accel/st_accel_buffer.c
-@@ -31,17 +31,11 @@ int st_accel_trig_set_state(struct iio_trigger *trig, bool state)
- 
- static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
- {
--	struct st_sensor_data *adata = iio_priv(indio_dev);
- 	int err;
- 
--	adata->buffer_data = kmalloc(indio_dev->scan_bytes,
--				     GFP_DMA | GFP_KERNEL);
--	if (!adata->buffer_data)
--		return -ENOMEM;
--
- 	err = iio_triggered_buffer_postenable(indio_dev);
- 	if (err < 0)
--		goto st_accel_free_buffer;
-+		return err;
- 
- 	err = st_sensors_set_axis_enable(indio_dev,
- 					 (u8)indio_dev->active_scan_mask[0]);
-@@ -58,14 +52,11 @@ static int st_accel_buffer_postenable(struct iio_dev *indio_dev)
- 	st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
- st_accel_buffer_predisable:
- 	iio_triggered_buffer_predisable(indio_dev);
--st_accel_free_buffer:
--	kfree(adata->buffer_data);
- 	return err;
- }
- 
- static int st_accel_buffer_predisable(struct iio_dev *indio_dev)
- {
--	struct st_sensor_data *adata = iio_priv(indio_dev);
- 	int err, err2;
- 
- 	err = st_sensors_set_enable(indio_dev, false);
-@@ -79,7 +70,6 @@ static int st_accel_buffer_predisable(struct iio_dev *indio_dev)
- 	if (!err)
- 		err = err2;
- 
--	kfree(adata->buffer_data);
- 	return err;
- }
- 
-diff --git a/drivers/iio/gyro/st_gyro_buffer.c b/drivers/iio/gyro/st_gyro_buffer.c
-index c6ddfecc1fc3..7465ad62391c 100644
---- a/drivers/iio/gyro/st_gyro_buffer.c
-+++ b/drivers/iio/gyro/st_gyro_buffer.c
-@@ -31,17 +31,11 @@ int st_gyro_trig_set_state(struct iio_trigger *trig, bool state)
- 
- static int st_gyro_buffer_postenable(struct iio_dev *indio_dev)
- {
--	struct st_sensor_data *gdata = iio_priv(indio_dev);
- 	int err;
- 
--	gdata->buffer_data = kmalloc(indio_dev->scan_bytes,
--				     GFP_DMA | GFP_KERNEL);
--	if (!gdata->buffer_data)
--		return -ENOMEM;
--
- 	err = iio_triggered_buffer_postenable(indio_dev);
- 	if (err < 0)
--		goto st_gyro_free_buffer;
-+		return err;
- 
- 	err = st_sensors_set_axis_enable(indio_dev,
- 					 (u8)indio_dev->active_scan_mask[0]);
-@@ -58,15 +52,12 @@ static int st_gyro_buffer_postenable(struct iio_dev *indio_dev)
- 	st_sensors_set_axis_enable(indio_dev, ST_SENSORS_ENABLE_ALL_AXIS);
- st_gyro_buffer_predisable:
- 	iio_triggered_buffer_predisable(indio_dev);
--st_gyro_free_buffer:
--	kfree(gdata->buffer_data);
- 	return err;
- }
- 
- static int st_gyro_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	int err, err2;
--	struct st_sensor_data *gdata = iio_priv(indio_dev);
- 
- 	err = st_sensors_set_enable(indio_dev, false);
- 	if (err < 0)
-@@ -79,7 +70,6 @@ static int st_gyro_buffer_predisable(struct iio_dev *indio_dev)
- 	if (!err)
- 		err = err2;
- 
--	kfree(gdata->buffer_data);
- 	return err;
- }
- 
-diff --git a/drivers/iio/magnetometer/st_magn_buffer.c b/drivers/iio/magnetometer/st_magn_buffer.c
-index 658d627dad8e..bb425c167a96 100644
---- a/drivers/iio/magnetometer/st_magn_buffer.c
-+++ b/drivers/iio/magnetometer/st_magn_buffer.c
-@@ -31,17 +31,11 @@ int st_magn_trig_set_state(struct iio_trigger *trig, bool state)
- 
- static int st_magn_buffer_postenable(struct iio_dev *indio_dev)
- {
--	struct st_sensor_data *mdata = iio_priv(indio_dev);
- 	int err;
- 
--	mdata->buffer_data = kmalloc(indio_dev->scan_bytes,
--				     GFP_DMA | GFP_KERNEL);
--	if (!mdata->buffer_data)
--		return -ENOMEM;
--
- 	err = iio_triggered_buffer_postenable(indio_dev);
- 	if (err < 0)
--		goto st_magn_free_buffer;
-+		return err;
- 
- 	err = st_sensors_set_enable(indio_dev, true);
- 	if (err < 0)
-@@ -51,14 +45,11 @@ static int st_magn_buffer_postenable(struct iio_dev *indio_dev)
- 
- st_magn_buffer_predisable:
- 	iio_triggered_buffer_predisable(indio_dev);
--st_magn_free_buffer:
--	kfree(mdata->buffer_data);
- 	return err;
- }
- 
- static int st_magn_buffer_predisable(struct iio_dev *indio_dev)
- {
--	struct st_sensor_data *mdata = iio_priv(indio_dev);
- 	int err, err2;
- 
- 	err = st_sensors_set_enable(indio_dev, false);
-@@ -67,7 +58,6 @@ static int st_magn_buffer_predisable(struct iio_dev *indio_dev)
- 	if (!err)
- 		err = err2;
- 
--	kfree(mdata->buffer_data);
- 	return err;
- }
- 
-diff --git a/drivers/iio/pressure/st_pressure_buffer.c b/drivers/iio/pressure/st_pressure_buffer.c
-index 77cb2d862f19..418dbf9e6e1e 100644
---- a/drivers/iio/pressure/st_pressure_buffer.c
-+++ b/drivers/iio/pressure/st_pressure_buffer.c
-@@ -31,17 +31,11 @@ int st_press_trig_set_state(struct iio_trigger *trig, bool state)
- 
- static int st_press_buffer_postenable(struct iio_dev *indio_dev)
- {
--	struct st_sensor_data *press_data = iio_priv(indio_dev);
- 	int err;
- 
--	press_data->buffer_data = kmalloc(indio_dev->scan_bytes,
--					  GFP_DMA | GFP_KERNEL);
--	if (!press_data->buffer_data)
--		return -ENOMEM;
--
- 	err = iio_triggered_buffer_postenable(indio_dev);
- 	if (err < 0)
--		goto st_press_free_buffer;
-+		return err;
- 
- 	err = st_sensors_set_enable(indio_dev, true);
- 	if (err < 0)
-@@ -51,14 +45,11 @@ static int st_press_buffer_postenable(struct iio_dev *indio_dev)
- 
- st_press_buffer_predisable:
- 	iio_triggered_buffer_predisable(indio_dev);
--st_press_free_buffer:
--	kfree(press_data->buffer_data);
- 	return err;
- }
- 
- static int st_press_buffer_predisable(struct iio_dev *indio_dev)
- {
--	struct st_sensor_data *press_data = iio_priv(indio_dev);
- 	int err, err2;
- 
- 	err = st_sensors_set_enable(indio_dev, false);
-@@ -67,7 +58,6 @@ static int st_press_buffer_predisable(struct iio_dev *indio_dev)
- 	if (!err)
- 		err = err2;
- 
--	kfree(press_data->buffer_data);
- 	return err;
- }
- 
-diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/common/st_sensors.h
-index 4d0889bf1c6c..686be532f4cb 100644
---- a/include/linux/iio/common/st_sensors.h
-+++ b/include/linux/iio/common/st_sensors.h
-@@ -20,8 +20,12 @@
- 
- #include <linux/platform_data/st_sensors_pdata.h>
- 
--#define ST_SENSORS_TX_MAX_LENGTH		2
--#define ST_SENSORS_RX_MAX_LENGTH		6
-+/*
-+ * Buffer size max case: 2bytes per channel, 3 channels in total +
-+ *			 8bytes timestamp channel (s64)
-+ */
-+#define ST_SENSORS_MAX_BUFFER_SIZE		(ALIGN(2 * 3, sizeof(s64)) + \
-+						 sizeof(s64))
- 
- #define ST_SENSORS_ODR_LIST_MAX			10
- #define ST_SENSORS_FULLSCALE_AVL_MAX		10
-@@ -215,7 +219,6 @@ struct st_sensor_settings {
-  * @vdd_io: Pointer to sensor's Vdd-IO power supply
-  * @regmap: Pointer to specific sensor regmap configuration.
-  * @enabled: Status of the sensor (false->off, true->on).
-- * @buffer_data: Data used by buffer part.
-  * @odr: Output data rate of the sensor [Hz].
-  * num_data_channels: Number of data channels used in buffer.
-  * @drdy_int_pin: Redirect DRDY on pin 1 (1) or pin 2 (2).
-@@ -224,6 +227,7 @@ struct st_sensor_settings {
-  * @edge_irq: the IRQ triggers on edges and need special handling.
-  * @hw_irq_trigger: if we're using the hardware interrupt on the sensor.
-  * @hw_timestamp: Latest timestamp from the interrupt handler, when in use.
-+ * @buffer_data: Data used by buffer part.
-  */
- struct st_sensor_data {
- 	struct device *dev;
-@@ -237,8 +241,6 @@ struct st_sensor_data {
- 
- 	bool enabled;
- 
--	char *buffer_data;
--
- 	unsigned int odr;
- 	unsigned int num_data_channels;
- 
-@@ -249,6 +251,8 @@ struct st_sensor_data {
- 	bool edge_irq;
- 	bool hw_irq_trigger;
- 	s64 hw_timestamp;
-+
-+	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
- };
- 
- #ifdef CONFIG_IIO_BUFFER
--- 
-2.22.0
+Adding Hans and Kieran for more insight.
 
+Best regards,
+Tomasz

@@ -2,155 +2,248 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3D5D84D4D
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2019 15:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D14784D92
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2019 15:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388700AbfHGNcs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Aug 2019 09:32:48 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:3390 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388390AbfHGNcq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Aug 2019 09:32:46 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x77DS0Jo029504;
-        Wed, 7 Aug 2019 09:32:08 -0400
-Received: from nam05-dm3-obe.outbound.protection.outlook.com (mail-dm3nam05lp2055.outbound.protection.outlook.com [104.47.49.55])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2u7bcx3bdh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Wed, 07 Aug 2019 09:32:07 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CvUI4sCSwP00qTGAe6g9wb1SM29aid0zsynatv7hMpS76J0UHH/ksjHSjFdRa9E3h6a3BvwpU9UkITZwlGJW5Hqhxd3XdSrvAyaQoQmCaLU6eLc9Oz1l+mAbSUjOwSSSWnZtYaX+ebDPH35hY2kzOwjaxvcUFE3TfmIvFcEjc1ANflnjsWoTMUrawYrEdBe1FRQTr7nYqCqtY3uQNB6JvjfPT7lBEGo7Lx1PymjLDqn852BKE3YJrscNY2lh/Pa0lMhpsS6tYzuHxZPDh51Y2hrtytThRgq8Suux4ECBLrr7Jnfmv96GugBCHPOgwXUW0hhjtvlSHyB6mtwcKPAiKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hzUsn6l388YzL6ZIOqa+iLPYsO9aW4QGiq3j+MSBH4M=;
- b=AvLZKYAuU1O75+sZoT2O0z2EbUlSPlK2qdlyhDyefzN08UcrvfldzjiS2MgIKOzcgaMA2UWUZQVNtVnU1qgPEA/+q0HHvtyjcOND8fyiUQpae6Ep5UybAWZnuYRgjQHbx9mNNeL8fU3OFSTl6M4ZQkqGc3ehgpuKq/YYWMEeYRxAq0w47iX1aeA0/n8nnDjEAyqsmIVEoNOzi3GHUvgRXS+tXmhA2oBliEpEpcifzwAhcAlyXhE6UbKrt/VYZPRnrSudkSphnDjzSMOdOpAXfIY/MmmE9zXgEoYT8UgLFca4tSPpZyaiJX3/Et01cMwairr3mb3kZLaRxh0CvGcHMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass (sender ip is
- 137.71.25.55) smtp.rcpttodomain=vger.kernel.org
- smtp.mailfrom=analog.com;dmarc=bestguesspass action=none
- header.from=analog.com;dkim=none (message not signed);arc=none
+        id S2388411AbfHGNim (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Aug 2019 09:38:42 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:40628 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388306AbfHGNim (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Aug 2019 09:38:42 -0400
+Received: by mail-ed1-f66.google.com with SMTP id k8so86238089eds.7
+        for <linux-iio@vger.kernel.org>; Wed, 07 Aug 2019 06:38:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hzUsn6l388YzL6ZIOqa+iLPYsO9aW4QGiq3j+MSBH4M=;
- b=PgZusNeTlcumgKhIFpG7TVWj3YorOgYFMMkc366wnF1ELy8pvbZa4MQ7PGD5LBnEtmCShdMfV4sdzT7xRwHxGbTXWZ9CnGq73poxHe8SpUTjEeRlAGV8VKiD44yaB1Qb56gP/wQtM7ZpDR/mYMZHKeZlMOx2GLWOQJjlSiElnn0=
-Received: from BN6PR03CA0083.namprd03.prod.outlook.com (2603:10b6:405:6f::21)
- by DM5PR03MB2681.namprd03.prod.outlook.com (2603:10b6:3:43::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2136.17; Wed, 7 Aug
- 2019 13:32:05 +0000
-Received: from SN1NAM02FT013.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e44::200) by BN6PR03CA0083.outlook.office365.com
- (2603:10b6:405:6f::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2157.14 via Frontend
- Transport; Wed, 7 Aug 2019 13:32:05 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- SN1NAM02FT013.mail.protection.outlook.com (10.152.72.98) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2157.15
- via Frontend Transport; Wed, 7 Aug 2019 13:32:04 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x77DW1v0029042
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Wed, 7 Aug 2019 06:32:01 -0700
-Received: from ben-Latitude-E6540.ad.analog.com (10.48.65.163) by
- NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
- 14.3.408.0; Wed, 7 Aug 2019 09:32:03 -0400
-From:   Beniamin Bia <beniamin.bia@analog.com>
-To:     <jic23@kernel.org>
-CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
-        <gregkh@linuxfoundation.org>, <linux-iio@vger.kernel.org>,
-        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
-        <mark.rutland@arm.com>, <robh+dt@kernel.org>,
-        <devicetree@vger.kernel.org>, <paulmck@linux.ibm.com>,
-        <mchehab+samsung@kernel.org>, <linus.walleij@linaro.org>,
-        <nicolas.ferre@microchip.com>, <biabeniamin@outlook.com>,
-        Beniamin Bia <beniamin.bia@analog.com>
-Subject: [PATCH v2 4/4] dt-bindings: iio: adc: Add AD7606B ADC documentation
-Date:   Wed, 7 Aug 2019 16:31:37 +0300
-Message-ID: <20190807133137.11185-4-beniamin.bia@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190807133137.11185-1-beniamin.bia@analog.com>
-References: <20190807133137.11185-1-beniamin.bia@analog.com>
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yX9lEy1eIykEiCGi0dNbf5cBImnr6fHn7uE5y9QaXtA=;
+        b=JDWBeuiQgQUJwUvfYvsB7+KP/t2cGBTp9ViMOgIN2F4oVmgaH/syhCZp6qVdbZ5SmU
+         7YFOai3LfF4DqkvVP4RfB15O2vEINB4a2Sxmorr+4Ts9PbdLjEni8LGkxuEfqIiZaGe4
+         eAFt+9Rc+G5o7j6MG634S2wXOM4B9hmGcgu1U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yX9lEy1eIykEiCGi0dNbf5cBImnr6fHn7uE5y9QaXtA=;
+        b=Ui6Ic4hq22YUxp6xvvRJycTJeN8lmbn6fbKwYrKOAV/vRqevFWq78YZ4oWRxKX2url
+         mRf333Tsr16OUKme8YSAtoef93Ic8itvBerzOebkGqg3rRbmbtMoGG5E7uOm+IpwSXFG
+         OlAne+7Q+KhV7qFlk0t6nVyc0AMIuNSAafXvTKy73Ba37sv8NL6tsPwcoRGV0ITKY27f
+         9T/gr2o4p3VhmmO1+zzGswPAAQFmLNldNdy5hd+TekFh3oYXZ7etq5s6MfesJyBnT+TI
+         WeVWHJyl0FCbQLRJaLqkiERMn4Yka7u9qQ1LKX3I2aLENNrPyhp/hV+1War/SsCvcuYS
+         nnFg==
+X-Gm-Message-State: APjAAAXop2w8f4Wd1sycPAZaY1ab7/wIg+W9JN5yIoQwd2qihoFSAS5T
+        a/fNNQ+cZUKjpN0kKySAPBLcJLXsqzGZSg==
+X-Google-Smtp-Source: APXvYqxnIL/Je79pz3uCpz1OdYxAYZg0Dxn4V/ebMsoQjHtMucrUL1Ah/tViRBFN5S3VbM3y20H+Hg==
+X-Received: by 2002:aa7:d297:: with SMTP id w23mr9613413edq.128.1565185120380;
+        Wed, 07 Aug 2019 06:38:40 -0700 (PDT)
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com. [209.85.128.43])
+        by smtp.gmail.com with ESMTPSA id k10sm21100138eda.9.2019.08.07.06.38.37
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Wed, 07 Aug 2019 06:38:37 -0700 (PDT)
+Received: by mail-wm1-f43.google.com with SMTP id p77so1682023wme.0
+        for <linux-iio@vger.kernel.org>; Wed, 07 Aug 2019 06:38:37 -0700 (PDT)
+X-Received: by 2002:a1c:407:: with SMTP id 7mr6104wme.113.1565185117043; Wed,
+ 07 Aug 2019 06:38:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(39860400002)(396003)(136003)(346002)(376002)(2980300002)(189003)(199004)(186003)(26005)(426003)(6916009)(336012)(8676002)(2906002)(4326008)(966005)(7416002)(106002)(2351001)(5660300002)(14444005)(16586007)(1076003)(54906003)(44832011)(7696005)(70206006)(76176011)(47776003)(8936002)(70586007)(305945005)(51416003)(6306002)(2616005)(126002)(476003)(11346002)(446003)(86362001)(486006)(246002)(36756003)(316002)(48376002)(478600001)(50466002)(6666004)(356004)(7636002)(107886003)(50226002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR03MB2681;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;MX:1;A:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a1a1783f-908b-4091-d9a7-08d71b3ba332
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328);SRVR:DM5PR03MB2681;
-X-MS-TrafficTypeDiagnostic: DM5PR03MB2681:
-X-MS-Exchange-PUrlCount: 3
-X-Microsoft-Antispam-PRVS: <DM5PR03MB268157E2A9DF5A12EC215CA6F0D40@DM5PR03MB2681.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
-X-Forefront-PRVS: 01221E3973
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: 05od7/1TmUlTDP6OAUHD3uDw/WlaiBJT5DBISk0+kolzdDyG0rld1tP3kcS8iBj1a6yIHLn17IMAMG4d/x2+PAqjvORtwD6L/mK8/rZgqbPWiG2tH5OWbKHwJ/EruSM8fRiOXZCO91Vq/X9bIWJB3Gafohg0TQC1FjQZ/gsMhVEwdsEuwZbE8qTq37EAO9DFT7uaH4p2l7+rB7yT3cRa2C4CK0liQZ3z43tzw/Cj9+DIwSyYJAXieoECRU3KRGuti/OsOowhXj1mkA2nD0yedATtlaK4N3iPj1Z6Dq2BEFClJI9NxtbGuVmY+WDGRqYpWoDnzY9g4a2SzJLqsRR98x+4UVAEx7RXFUYcgbavt3V5jyDp+gaaCjmKbdJB3AILBS+kRw6XzlADe7m5xBz96EMfSlEq8OPUoq3YBg4aYiM=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2019 13:32:04.4158
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1a1783f-908b-4091-d9a7-08d71b3ba332
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR03MB2681
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-07_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908070147
+References: <20181017075242.21790-1-henryhsu@chromium.org> <CAAFQd5AL2CnnWLk+i133RRa36HTa0baFkezRhpTXf9YP0DSF1Q@mail.gmail.com>
+ <CAHNYxRwbSSp02Zr4a1z5gh0q6cHUUDnZCqRQU7QtP8LMe3Jp2A@mail.gmail.com>
+ <1610184.U7oo9Z4Yep@avalon> <CAAFQd5A7k2VgmawF-x=AcKhJiG-shrJiCP4Tu9054J0eE91+9w@mail.gmail.com>
+ <d79e0857-c6ae-9e57-52e2-e596864a68f8@metafoo.de> <CAAFQd5C_QucJiZMUgCpztC52Mi3p6HDThHNkcNOm9C+SZUDDYQ@mail.gmail.com>
+ <20190313012451.GR891@pendragon.ideasonboard.com> <CAAFQd5DtSD3TrXz8jaFnmBgpRQ6Gnq+LKxyY+LNZrqiM1pxNVA@mail.gmail.com>
+ <CAAFQd5DreQkUsG9PnUxWMUDo6c+AxQMHm4ErZQFPjGqJz=wmCg@mail.gmail.com> <7c76f7ce-57ca-d7d5-fd81-70607f97b792@ideasonboard.com>
+In-Reply-To: <7c76f7ce-57ca-d7d5-fd81-70607f97b792@ideasonboard.com>
+From:   Tomasz Figa <tfiga@chromium.org>
+Date:   Wed, 7 Aug 2019 22:38:24 +0900
+X-Gmail-Original-Message-ID: <CAAFQd5DNA=ixWqq584r0goNitHs8bb7-h27jNGD_DMyt6jHp5A@mail.gmail.com>
+Message-ID: <CAAFQd5DNA=ixWqq584r0goNitHs8bb7-h27jNGD_DMyt6jHp5A@mail.gmail.com>
+Subject: Re: [PATCH] media: uvcvideo: Add boottime clock support
+To:     Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>,
+        Alexandru Stan <amstan@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Heng-Ruey Hsu <henryhsu@chromium.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ricky Liang <jcliang@chromium.org>, linux-iio@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        =?UTF-8?B?SnVuZ28gTGluICjmnpfmmI7kv4op?= <jungo.lin@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Documentation for AD7606B Analog to Digital Converter and software
-mode was added.
+On Tue, Aug 6, 2019 at 5:34 PM Kieran Bingham
+<kieran.bingham@ideasonboard.com> wrote:
+>
+> Hi Tomasz,
+>
+> On 06/08/2019 05:15, Tomasz Figa wrote:
+> > On Wed, Mar 13, 2019 at 11:38 AM Tomasz Figa <tfiga@chromium.org> wrote:
+> >>
+> >> On Wed, Mar 13, 2019 at 10:25 AM Laurent Pinchart
+> >> <laurent.pinchart@ideasonboard.com> wrote:
+> >>>
+> >>> Hi Tomasz,
+> >>>
+> >>> On Fri, Nov 23, 2018 at 11:46:43PM +0900, Tomasz Figa wrote:
+> >>>> On Fri, Nov 2, 2018 at 12:03 AM Lars-Peter Clausen wrote:
+> >>>>> On 11/01/2018 03:30 PM, Tomasz Figa wrote:
+> >>>>>> On Thu, Nov 1, 2018 at 11:03 PM Laurent Pinchart wrote:
+> >>>>>>> On Thursday, 18 October 2018 20:28:06 EET Alexandru M Stan wrote:
+> >>>>>>>> On Wed, Oct 17, 2018 at 9:31 PM, Tomasz Figa wrote:
+> >>>>>>>>> On Thu, Oct 18, 2018 at 5:50 AM Laurent Pinchart wrote:
+> >>>>>>>>>> On Wednesday, 17 October 2018 11:28:52 EEST Tomasz Figa wrote:
+> >>>>>>>>>>> On Wed, Oct 17, 2018 at 5:02 PM Laurent Pinchart wrote:
+> >>>>>>>>>>>> On Wednesday, 17 October 2018 10:52:42 EEST Heng-Ruey Hsu wrote:
+> >>>>>>>>>>>>> Android requires camera timestamps to be reported with
+> >>>>>>>>>>>>> CLOCK_BOOTTIME to sync timestamp with other sensor sources.
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> What's the rationale behind this, why can't CLOCK_MONOTONIC work ? If
+> >>>>>>>>>>>> the monotonic clock has shortcomings that make its use impossible for
+> >>>>>>>>>>>> proper synchronization, then we should consider switching to
+> >>>>>>>>>>>> CLOCK_BOOTTIME globally in V4L2, not in selected drivers only.
+> >>>>>>>>>>>
+> >>>>>>>>>>> CLOCK_BOOTTIME includes the time spent in suspend, while
+> >>>>>>>>>>> CLOCK_MONOTONIC doesn't. I can imagine the former being much more
+> >>>>>>>>>>> useful for anything that cares about the actual, long term, time
+> >>>>>>>>>>> tracking. Especially important since suspend is a very common event on
+> >>>>>>>>>>> Android and doesn't stop the time flow there, i.e. applications might
+> >>>>>>>>>>> wake up the device to perform various tasks at necessary times.
+> >>>>>>>>>>
+> >>>>>>>>>> Sure, but this patch mentions timestamp synchronization with other
+> >>>>>>>>>> sensors, and from that point of view, I'd like to know what is wrong with
+> >>>>>>>>>> the monotonic clock if all devices use it.
+> >>>>>>>>>
+> >>>>>>>>> AFAIK the sensors mentioned there are not camera sensors, but rather
+> >>>>>>>>> things we normally put under IIO, e.g. accelerometers, gyroscopes and
+> >>>>>>>>> so on. I'm not sure how IIO deals with timestamps, but Android seems
+> >>>>>>>>> to operate in the CLOCK_BOTTIME domain. Let me add some IIO folks.
+> >>>>>>>>>
+> >>>>>>>>> Gwendal, Alexandru, do you think you could shed some light on how we
+> >>>>>>>>> handle IIO sensors timestamps across the kernel, Chrome OS and
+> >>>>>>>>> Android?
+> >>>>>>>>
+> >>>>>>>> On our devices of interest have a specialized "sensor" that comes via
+> >>>>>>>> IIO (from the EC, cros-ec-ring driver) that can be used to more
+> >>>>>>>> accurately timestamp each frame (since it's recorded with very low
+> >>>>>>>> jitter by a realtime-ish OS). In some high level userspace thing
+> >>>>>>>> (specifically the Android Camera HAL) we try to pick the best
+> >>>>>>>> timestamp from the IIO, whatever's closest to what the V4L stuff gives
+> >>>>>>>> us.
+> >>>>>>>>
+> >>>>>>>> I guess the Android convention is for sensor timestamps to be in
+> >>>>>>>> CLOCK_BOOTTIME (maybe because it likes sleeping so much). There's
+> >>>>>>>> probably no advantage to using one over the other, but the important
+> >>>>>>>> thing is that they have to be the same, otherwise the closest match
+> >>>>>>>> logic would fail.
+> >>>>>>>
+> >>>>>>> That's my understanding too, I don't think CLOCK_BOOTTIME really brings much
+> >>>>>>> benefit in this case,
+> >>>>>>
+> >>>>>> I think it does have a significant benefit. CLOCK_MONOTONIC stops when
+> >>>>>> the device is sleeping, but the sensors can still capture various
+> >>>>>> actions. We would lose the time keeping of those actions if we use
+> >>>>>> CLOCK_MONOTONIC.
+>
+> That's an important distinction. If there are operations that can run
+> while the main host is in 'suspend' and still maintain "relative"
+> timestamps in any form - then time must continue during suspend.
+>
+>
+> >>>>>>> but it's important than all timestamps use the same
+> >>>>>>> clock. The question is thus which clock we should select. Mainline mostly uses
+> >>>>>>> CLOCK_MONOTONIC, and Android CLOCK_BOOTTIME. Would you like to submit patches
+> >>>>>>> to switch Android to CLOCK_MONOTONIC ? :-)
+> >>>>>> Is it Android using CLOCK_BOOTTIME or the sensors (IIO?). I have
+> >>>>>> almost zero familiarity with the IIO subsystem and was hoping someone
+> >>>>>> from there could comment on what time domain is used for those
+> >>>>>> sensors.
+> >>>>>
+> >>>>> IIO has the option to choose between BOOTTIME or MONOTONIC (and a few
+> >>>>> others) for the timestamp on a per device basis.
+> >>>>>
+> >>>>> There was a bit of a discussion about this a while back. See
+> >>>>> https://lkml.org/lkml/2018/7/10/432 and the following thread.
+> >>>>
+> >>>> Given that IIO supports BOOTTIME in upstream already and also the
+> >>>> important advantage of using it over MONOTONIC for systems which keep
+> >>>> capturing events during sleep, do you think we could move on with some
+> >>>> way to support it in uvcvideo or preferably V4L2 in general?
+> >>>
+> >>> I'm not opposed to that, but I don't think we should approach that from
+> >>> a UVC point of view. The issue should be addressed in V4L2, and then
+> >>> driver-specific support could be added, if needed.
+>
+> Agreed, this is a V4L2 topic - not a UVC specific topic.
+>
+>
+> >> Yes, fully agreed. The purpose of sending this patch was just to start
+> >> the discussion on how to support this.
+> >>
+> >> Do you think something like a buffer flag called
+> >> V4L2_BUF_FLAG_TIMESTAMP_BOOTTIME that could be set by the userspace at
+> >> QBUF could work here? (That would change the timestamp flags
+> >> semantics, because it used to be just the information from the driver,
+> >> but shouldn't have any compatibility implications.) I suppose we would
+> >> also need some capability flag for querying purposes, possibly added
+> >> to the capability flags returned by REQBUFS/CREATE_BUFS?
+>
+> What kind of 'compatibility' do we actually need to maintain here?
 
-Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
----
-Changes in v2:
--nothing changed
+The existing applications would expect the timestamps to come from
+CLOCK_MONOTONIC, so I believe that we can't make CLOCK_BOOTTIME the
+default.
 
- Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> IMO -
+> CLOCK_BOOTTIME makes much more sense globally for video, because it's
+> more representative of the temporal difference between frames captured
+> if a system goes into suspend.
+>
+> If frames are captured:
+>
+> A B         C D
+>    <suspend>
+>
+> Then I believe it would be correct for the timestamp delta between B-C
+> to be large <representative of the suspend duration/real time>
+>'
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-index 509dbe9c84d2..2afe31747a70 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-@@ -13,6 +13,7 @@ maintainers:
- description: |
-   Analog Devices AD7606 Simultaneous Sampling ADC
-   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606_7606-6_7606-4.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7606B.pdf
-   https://www.analog.com/media/en/technical-documentation/data-sheets/AD7616.pdf
- 
- properties:
-@@ -22,6 +23,7 @@ properties:
-       - adi,ad7606-8
-       - adi,ad7606-6
-       - adi,ad7606-4
-+      - adi,ad7606b
-       - adi,ad7616
- 
-   reg:
-@@ -87,7 +89,7 @@ properties:
- 
-   adi,sw-mode:
-     description:
--      Software mode of operation, so far available only for ad7616.
-+      Software mode of operation, so far available only for ad7616 and ad7606B.
-       It is enabled when all three oversampling mode pins are connected to
-       high level. The device is configured by the corresponding registers. If the
-       adi,oversampling-ratio-gpios property is defined, then the driver will set the
--- 
-2.17.1
+Indeed.
 
+>
+> > Any thoughts?
+>
+> Aha, there might be some gotchas around non-live sources operating
+> across suspend-resume boundaries .. so perhaps there are certainly
+> use-cases where both _MONOTONIC and _BOOTTIME have their relevance ...
+>
+
+What would be an example of such a non-live source?
+
+>
+> > Adding Hans and Kieran for more insight.
+>
+> I think if we're talking about core-V4L2, Hans' opinion takes more
+> weight than my mumblings :-) - but overall - supporting _BOOTTIME in
+> some form sounds beneficial to me.
+>
+
+Your input is very valuable. Thanks a lot! :)
+
+>
+> > Best regards,
+> > Tomasz
+> >
+>
+> --
+> Regards
+> --
+> Kieran

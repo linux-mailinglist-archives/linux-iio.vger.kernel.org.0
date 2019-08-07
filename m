@@ -2,248 +2,353 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D14784D92
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2019 15:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D951A85141
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2019 18:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388411AbfHGNim (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Aug 2019 09:38:42 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:40628 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388306AbfHGNim (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Aug 2019 09:38:42 -0400
-Received: by mail-ed1-f66.google.com with SMTP id k8so86238089eds.7
-        for <linux-iio@vger.kernel.org>; Wed, 07 Aug 2019 06:38:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yX9lEy1eIykEiCGi0dNbf5cBImnr6fHn7uE5y9QaXtA=;
-        b=JDWBeuiQgQUJwUvfYvsB7+KP/t2cGBTp9ViMOgIN2F4oVmgaH/syhCZp6qVdbZ5SmU
-         7YFOai3LfF4DqkvVP4RfB15O2vEINB4a2Sxmorr+4Ts9PbdLjEni8LGkxuEfqIiZaGe4
-         eAFt+9Rc+G5o7j6MG634S2wXOM4B9hmGcgu1U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yX9lEy1eIykEiCGi0dNbf5cBImnr6fHn7uE5y9QaXtA=;
-        b=Ui6Ic4hq22YUxp6xvvRJycTJeN8lmbn6fbKwYrKOAV/vRqevFWq78YZ4oWRxKX2url
-         mRf333Tsr16OUKme8YSAtoef93Ic8itvBerzOebkGqg3rRbmbtMoGG5E7uOm+IpwSXFG
-         OlAne+7Q+KhV7qFlk0t6nVyc0AMIuNSAafXvTKy73Ba37sv8NL6tsPwcoRGV0ITKY27f
-         9T/gr2o4p3VhmmO1+zzGswPAAQFmLNldNdy5hd+TekFh3oYXZ7etq5s6MfesJyBnT+TI
-         WeVWHJyl0FCbQLRJaLqkiERMn4Yka7u9qQ1LKX3I2aLENNrPyhp/hV+1War/SsCvcuYS
-         nnFg==
-X-Gm-Message-State: APjAAAXop2w8f4Wd1sycPAZaY1ab7/wIg+W9JN5yIoQwd2qihoFSAS5T
-        a/fNNQ+cZUKjpN0kKySAPBLcJLXsqzGZSg==
-X-Google-Smtp-Source: APXvYqxnIL/Je79pz3uCpz1OdYxAYZg0Dxn4V/ebMsoQjHtMucrUL1Ah/tViRBFN5S3VbM3y20H+Hg==
-X-Received: by 2002:aa7:d297:: with SMTP id w23mr9613413edq.128.1565185120380;
-        Wed, 07 Aug 2019 06:38:40 -0700 (PDT)
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com. [209.85.128.43])
-        by smtp.gmail.com with ESMTPSA id k10sm21100138eda.9.2019.08.07.06.38.37
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Wed, 07 Aug 2019 06:38:37 -0700 (PDT)
-Received: by mail-wm1-f43.google.com with SMTP id p77so1682023wme.0
-        for <linux-iio@vger.kernel.org>; Wed, 07 Aug 2019 06:38:37 -0700 (PDT)
-X-Received: by 2002:a1c:407:: with SMTP id 7mr6104wme.113.1565185117043; Wed,
- 07 Aug 2019 06:38:37 -0700 (PDT)
+        id S1730222AbfHGQln (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Aug 2019 12:41:43 -0400
+Received: from ns.pmeerw.net ([84.19.176.117]:39104 "EHLO ns.pmeerw.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730010AbfHGQln (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 7 Aug 2019 12:41:43 -0400
+Received: by ns.pmeerw.net (Postfix, from userid 1000)
+        id 50840E0260; Wed,  7 Aug 2019 18:41:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pmeerw.net; s=mail;
+        t=1565196100; bh=vVDRy+58opdQSjRaeyg8Dd3tCc/WQSdk26W7/7SurvI=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=ljIn/unUN+qYb3vsWo/D/SIzCCjfgwtvi5mowiKdMFkcIpCrAqy6sQ6t/ekHrZaO8
+         Ny+/eb+ll9IO3aLNxBpaHsSPexFczg+Nosuyte7awO+/8GI64lqqgryoldRRw/i8KZ
+         MRQ7ETSjA+OofYSWmtGb7XLXdzVW5oT5WklXgi8w=
+Received: from localhost (localhost [127.0.0.1])
+        by ns.pmeerw.net (Postfix) with ESMTP id 1E478E01A6;
+        Wed,  7 Aug 2019 18:41:40 +0200 (CEST)
+Date:   Wed, 7 Aug 2019 18:41:40 +0200 (CEST)
+From:   Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+To:     Beniamin Bia <beniamin.bia@analog.com>
+cc:     jic23@kernel.org, Michael.Hennerich@analog.com,
+        linux-iio@vger.kernel.org, biabeniamin@outlook.com,
+        Stefan Popa <stefan.popa@analog.com>
+Subject: Re: [PATCH v2 1/4] iio: adc: ad7606: Add support for AD7606B ADC
+In-Reply-To: <20190807133137.11185-1-beniamin.bia@analog.com>
+Message-ID: <alpine.DEB.2.21.1908071834040.32509@vps.pmeerw.net>
+References: <20190807133137.11185-1-beniamin.bia@analog.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-References: <20181017075242.21790-1-henryhsu@chromium.org> <CAAFQd5AL2CnnWLk+i133RRa36HTa0baFkezRhpTXf9YP0DSF1Q@mail.gmail.com>
- <CAHNYxRwbSSp02Zr4a1z5gh0q6cHUUDnZCqRQU7QtP8LMe3Jp2A@mail.gmail.com>
- <1610184.U7oo9Z4Yep@avalon> <CAAFQd5A7k2VgmawF-x=AcKhJiG-shrJiCP4Tu9054J0eE91+9w@mail.gmail.com>
- <d79e0857-c6ae-9e57-52e2-e596864a68f8@metafoo.de> <CAAFQd5C_QucJiZMUgCpztC52Mi3p6HDThHNkcNOm9C+SZUDDYQ@mail.gmail.com>
- <20190313012451.GR891@pendragon.ideasonboard.com> <CAAFQd5DtSD3TrXz8jaFnmBgpRQ6Gnq+LKxyY+LNZrqiM1pxNVA@mail.gmail.com>
- <CAAFQd5DreQkUsG9PnUxWMUDo6c+AxQMHm4ErZQFPjGqJz=wmCg@mail.gmail.com> <7c76f7ce-57ca-d7d5-fd81-70607f97b792@ideasonboard.com>
-In-Reply-To: <7c76f7ce-57ca-d7d5-fd81-70607f97b792@ideasonboard.com>
-From:   Tomasz Figa <tfiga@chromium.org>
-Date:   Wed, 7 Aug 2019 22:38:24 +0900
-X-Gmail-Original-Message-ID: <CAAFQd5DNA=ixWqq584r0goNitHs8bb7-h27jNGD_DMyt6jHp5A@mail.gmail.com>
-Message-ID: <CAAFQd5DNA=ixWqq584r0goNitHs8bb7-h27jNGD_DMyt6jHp5A@mail.gmail.com>
-Subject: Re: [PATCH] media: uvcvideo: Add boottime clock support
-To:     Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        Alexandru Stan <amstan@chromium.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Heng-Ruey Hsu <henryhsu@chromium.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ricky Liang <jcliang@chromium.org>, linux-iio@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        =?UTF-8?B?SnVuZ28gTGluICjmnpfmmI7kv4op?= <jungo.lin@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/mixed; boundary="324302256-509562479-1565196100=:32509"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 6, 2019 at 5:34 PM Kieran Bingham
-<kieran.bingham@ideasonboard.com> wrote:
->
-> Hi Tomasz,
->
-> On 06/08/2019 05:15, Tomasz Figa wrote:
-> > On Wed, Mar 13, 2019 at 11:38 AM Tomasz Figa <tfiga@chromium.org> wrote:
-> >>
-> >> On Wed, Mar 13, 2019 at 10:25 AM Laurent Pinchart
-> >> <laurent.pinchart@ideasonboard.com> wrote:
-> >>>
-> >>> Hi Tomasz,
-> >>>
-> >>> On Fri, Nov 23, 2018 at 11:46:43PM +0900, Tomasz Figa wrote:
-> >>>> On Fri, Nov 2, 2018 at 12:03 AM Lars-Peter Clausen wrote:
-> >>>>> On 11/01/2018 03:30 PM, Tomasz Figa wrote:
-> >>>>>> On Thu, Nov 1, 2018 at 11:03 PM Laurent Pinchart wrote:
-> >>>>>>> On Thursday, 18 October 2018 20:28:06 EET Alexandru M Stan wrote:
-> >>>>>>>> On Wed, Oct 17, 2018 at 9:31 PM, Tomasz Figa wrote:
-> >>>>>>>>> On Thu, Oct 18, 2018 at 5:50 AM Laurent Pinchart wrote:
-> >>>>>>>>>> On Wednesday, 17 October 2018 11:28:52 EEST Tomasz Figa wrote:
-> >>>>>>>>>>> On Wed, Oct 17, 2018 at 5:02 PM Laurent Pinchart wrote:
-> >>>>>>>>>>>> On Wednesday, 17 October 2018 10:52:42 EEST Heng-Ruey Hsu wrote:
-> >>>>>>>>>>>>> Android requires camera timestamps to be reported with
-> >>>>>>>>>>>>> CLOCK_BOOTTIME to sync timestamp with other sensor sources.
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> What's the rationale behind this, why can't CLOCK_MONOTONIC work ? If
-> >>>>>>>>>>>> the monotonic clock has shortcomings that make its use impossible for
-> >>>>>>>>>>>> proper synchronization, then we should consider switching to
-> >>>>>>>>>>>> CLOCK_BOOTTIME globally in V4L2, not in selected drivers only.
-> >>>>>>>>>>>
-> >>>>>>>>>>> CLOCK_BOOTTIME includes the time spent in suspend, while
-> >>>>>>>>>>> CLOCK_MONOTONIC doesn't. I can imagine the former being much more
-> >>>>>>>>>>> useful for anything that cares about the actual, long term, time
-> >>>>>>>>>>> tracking. Especially important since suspend is a very common event on
-> >>>>>>>>>>> Android and doesn't stop the time flow there, i.e. applications might
-> >>>>>>>>>>> wake up the device to perform various tasks at necessary times.
-> >>>>>>>>>>
-> >>>>>>>>>> Sure, but this patch mentions timestamp synchronization with other
-> >>>>>>>>>> sensors, and from that point of view, I'd like to know what is wrong with
-> >>>>>>>>>> the monotonic clock if all devices use it.
-> >>>>>>>>>
-> >>>>>>>>> AFAIK the sensors mentioned there are not camera sensors, but rather
-> >>>>>>>>> things we normally put under IIO, e.g. accelerometers, gyroscopes and
-> >>>>>>>>> so on. I'm not sure how IIO deals with timestamps, but Android seems
-> >>>>>>>>> to operate in the CLOCK_BOTTIME domain. Let me add some IIO folks.
-> >>>>>>>>>
-> >>>>>>>>> Gwendal, Alexandru, do you think you could shed some light on how we
-> >>>>>>>>> handle IIO sensors timestamps across the kernel, Chrome OS and
-> >>>>>>>>> Android?
-> >>>>>>>>
-> >>>>>>>> On our devices of interest have a specialized "sensor" that comes via
-> >>>>>>>> IIO (from the EC, cros-ec-ring driver) that can be used to more
-> >>>>>>>> accurately timestamp each frame (since it's recorded with very low
-> >>>>>>>> jitter by a realtime-ish OS). In some high level userspace thing
-> >>>>>>>> (specifically the Android Camera HAL) we try to pick the best
-> >>>>>>>> timestamp from the IIO, whatever's closest to what the V4L stuff gives
-> >>>>>>>> us.
-> >>>>>>>>
-> >>>>>>>> I guess the Android convention is for sensor timestamps to be in
-> >>>>>>>> CLOCK_BOOTTIME (maybe because it likes sleeping so much). There's
-> >>>>>>>> probably no advantage to using one over the other, but the important
-> >>>>>>>> thing is that they have to be the same, otherwise the closest match
-> >>>>>>>> logic would fail.
-> >>>>>>>
-> >>>>>>> That's my understanding too, I don't think CLOCK_BOOTTIME really brings much
-> >>>>>>> benefit in this case,
-> >>>>>>
-> >>>>>> I think it does have a significant benefit. CLOCK_MONOTONIC stops when
-> >>>>>> the device is sleeping, but the sensors can still capture various
-> >>>>>> actions. We would lose the time keeping of those actions if we use
-> >>>>>> CLOCK_MONOTONIC.
->
-> That's an important distinction. If there are operations that can run
-> while the main host is in 'suspend' and still maintain "relative"
-> timestamps in any form - then time must continue during suspend.
->
->
-> >>>>>>> but it's important than all timestamps use the same
-> >>>>>>> clock. The question is thus which clock we should select. Mainline mostly uses
-> >>>>>>> CLOCK_MONOTONIC, and Android CLOCK_BOOTTIME. Would you like to submit patches
-> >>>>>>> to switch Android to CLOCK_MONOTONIC ? :-)
-> >>>>>> Is it Android using CLOCK_BOOTTIME or the sensors (IIO?). I have
-> >>>>>> almost zero familiarity with the IIO subsystem and was hoping someone
-> >>>>>> from there could comment on what time domain is used for those
-> >>>>>> sensors.
-> >>>>>
-> >>>>> IIO has the option to choose between BOOTTIME or MONOTONIC (and a few
-> >>>>> others) for the timestamp on a per device basis.
-> >>>>>
-> >>>>> There was a bit of a discussion about this a while back. See
-> >>>>> https://lkml.org/lkml/2018/7/10/432 and the following thread.
-> >>>>
-> >>>> Given that IIO supports BOOTTIME in upstream already and also the
-> >>>> important advantage of using it over MONOTONIC for systems which keep
-> >>>> capturing events during sleep, do you think we could move on with some
-> >>>> way to support it in uvcvideo or preferably V4L2 in general?
-> >>>
-> >>> I'm not opposed to that, but I don't think we should approach that from
-> >>> a UVC point of view. The issue should be addressed in V4L2, and then
-> >>> driver-specific support could be added, if needed.
->
-> Agreed, this is a V4L2 topic - not a UVC specific topic.
->
->
-> >> Yes, fully agreed. The purpose of sending this patch was just to start
-> >> the discussion on how to support this.
-> >>
-> >> Do you think something like a buffer flag called
-> >> V4L2_BUF_FLAG_TIMESTAMP_BOOTTIME that could be set by the userspace at
-> >> QBUF could work here? (That would change the timestamp flags
-> >> semantics, because it used to be just the information from the driver,
-> >> but shouldn't have any compatibility implications.) I suppose we would
-> >> also need some capability flag for querying purposes, possibly added
-> >> to the capability flags returned by REQBUFS/CREATE_BUFS?
->
-> What kind of 'compatibility' do we actually need to maintain here?
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-The existing applications would expect the timestamps to come from
-CLOCK_MONOTONIC, so I believe that we can't make CLOCK_BOOTTIME the
-default.
+--324302256-509562479-1565196100=:32509
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-> IMO -
-> CLOCK_BOOTTIME makes much more sense globally for video, because it's
-> more representative of the temporal difference between frames captured
-> if a system goes into suspend.
->
-> If frames are captured:
->
-> A B         C D
->    <suspend>
->
-> Then I believe it would be correct for the timestamp delta between B-C
-> to be large <representative of the suspend duration/real time>
->'
+On Wed, 7 Aug 2019, Beniamin Bia wrote:
 
-Indeed.
+> From: Stefan Popa <stefan.popa@analog.com>
 
->
-> > Any thoughts?
->
-> Aha, there might be some gotchas around non-live sources operating
-> across suspend-resume boundaries .. so perhaps there are certainly
-> use-cases where both _MONOTONIC and _BOOTTIME have their relevance ...
->
+please see some minor comments below
 
-What would be an example of such a non-live source?
+> The AD7606B is a 16-bit ADC that supports simultaneous sampling of 8
+> channels. It is pin compatible to AD7606, but adds extra modes by
+> writing to the register map.
+> 
+> The AD7606B can be configured to work in software mode by setting all
+> oversampling pins to high. This mode is selected by default.
+> The oversampling ratio is configured from the OS_MODE register (address
+> 0x08) with the addition of OS=128 and OS=256 that were not available in
+> hardware mode.
+> 
+> The device is configured to output data on a single spi channel, but this
+> configuration must be done right after restart. That is why the delay was
+> removed for devices which doesn't require it.
+> 
+> Moreover, in software mode, the range gpio has no longer its function.
+> Instead, the scale can be configured individually for each channel from
+> the RANGE_CH registers (address 0x03 to 0x06). Besides the already
+> supported ±10 V and ±5 V ranges, software mode can also accommodate the
+> ±2.5 V range.
+> 
+> Signed-off-by: Stefan Popa <stefan.popa@analog.com>
+> Co-developed-by: Beniamin Bia <beniamin.bia@analog.com>
+> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+> Acked-by: Jonathan Cameron <jic23@kernel.org>
+> ---
+> Changes in v2:
+> -nothing changed
+> 
+>  drivers/iio/adc/ad7606.c     |  13 ++++-
+>  drivers/iio/adc/ad7606.h     |   4 ++
+>  drivers/iio/adc/ad7606_spi.c | 107 +++++++++++++++++++++++++++++++++++
+>  3 files changed, 122 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> index ed2d08437e5d..f5ba94c03a8d 100644
+> --- a/drivers/iio/adc/ad7606.c
+> +++ b/drivers/iio/adc/ad7606.c
+> @@ -410,12 +410,19 @@ static const struct ad7606_chip_info ad7606_chip_info_tbl[] = {
+>  		.oversampling_avail = ad7606_oversampling_avail,
+>  		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
+>  	},
+> +	[ID_AD7606B] = {
+> +		.channels = ad7606_channels,
+> +		.num_channels = 9,
+> +		.oversampling_avail = ad7606_oversampling_avail,
+> +		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
+> +	},
+>  	[ID_AD7616] = {
+>  		.channels = ad7616_channels,
+>  		.num_channels = 17,
+>  		.oversampling_avail = ad7616_oversampling_avail,
+>  		.oversampling_num = ARRAY_SIZE(ad7616_oversampling_avail),
+>  		.os_req_reset = true,
+> +		.init_delay_ms = 15,
+>  	},
+>  };
+>  
+> @@ -631,8 +638,10 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+>  		dev_warn(st->dev, "failed to RESET: no RESET GPIO specified\n");
+>  
+>  	/* AD7616 requires al least 15ms to reconfigure after a reset */
+> -	if (msleep_interruptible(15))
+> -		return -ERESTARTSYS;
+> +	if (st->chip_info->init_delay_ms) {
+> +		if (msleep_interruptible(st->chip_info->init_delay_ms))
+> +			return -ERESTARTSYS;
+> +	}
+>  
+>  	st->write_scale = ad7606_write_scale_hw;
+>  	st->write_os = ad7606_write_os_hw;
+> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+> index eeaaa8b905db..9350ef1f63b5 100644
+> --- a/drivers/iio/adc/ad7606.h
+> +++ b/drivers/iio/adc/ad7606.h
+> @@ -46,6 +46,8 @@
+>   *			oversampling ratios.
+>   * @oversampling_num	number of elements stored in oversampling_avail array
+>   * @os_req_reset	some devices require a reset to update oversampling
+> + * @init_delay_ms	required delay in miliseconds for initialization
 
->
-> > Adding Hans and Kieran for more insight.
->
-> I think if we're talking about core-V4L2, Hans' opinion takes more
-> weight than my mumblings :-) - but overall - supporting _BOOTTIME in
-> some form sounds beneficial to me.
->
+mil_l_iseconds
 
-Your input is very valuable. Thanks a lot! :)
+> + *			after a restart
+>   */
+>  struct ad7606_chip_info {
+>  	const struct iio_chan_spec	*channels;
+> @@ -53,6 +55,7 @@ struct ad7606_chip_info {
+>  	const unsigned int		*oversampling_avail;
+>  	unsigned int			oversampling_num;
+>  	bool				os_req_reset;
+> +	unsigned long			init_delay_ms;
+>  };
+>  
+>  /**
+> @@ -155,6 +158,7 @@ enum ad7606_supported_device_ids {
+>  	ID_AD7606_8,
+>  	ID_AD7606_6,
+>  	ID_AD7606_4,
+> +	ID_AD7606B,
+>  	ID_AD7616,
+>  };
+>  
+> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+> index 98ed52b74507..070ee7e31e2c 100644
+> --- a/drivers/iio/adc/ad7606_spi.c
+> +++ b/drivers/iio/adc/ad7606_spi.c
+> @@ -31,6 +31,20 @@
+>  /* The range of the channel is stored on 2 bits*/
 
->
-> > Best regards,
-> > Tomasz
-> >
->
-> --
-> Regards
-> --
-> Kieran
+space before */
+maybe: 'in' instead of 'on'
+
+>  #define AD7616_RANGE_CH_MSK(ch)		(0b11 << (((ch) & 0b11) * 2))
+>  #define AD7616_RANGE_CH_MODE(ch, mode)	((mode) << ((((ch) & 0b11)) * 2))
+> +
+> +#define AD7606_CONFIGURATION_REGISTER	0x02
+> +#define AD7606_SINGLE_DOUT		0x0
+
+maybe 0x00?
+
+> +
+> +/*
+> + * Range for AD7606B channels are stored in registers starting with address 0x3.
+> + * Each register stores range for 2 channels(4 bits per channel).
+> + */
+> +#define AD7606_RANGE_CH_MSK(ch)		(GENMASK(3, 0) << (4 * ((ch) & 0x1)))
+> +#define AD7606_RANGE_CH_MODE(ch, mode)	\
+> +	((GENMASK(3, 0) & mode) << (4 * ((ch) & 0x1)))
+> +#define AD7606_RANGE_CH_ADDR(ch)	(0x03 + ((ch) >> 1))
+> +#define AD7606_OS_MODE			0x08
+> +
+>  static const struct iio_chan_spec ad7616_sw_channels[] = {
+>  	IIO_CHAN_SOFT_TIMESTAMP(16),
+>  	AD7616_CHANNEL(0),
+> @@ -51,6 +65,22 @@ static const struct iio_chan_spec ad7616_sw_channels[] = {
+>  	AD7616_CHANNEL(15),
+>  };
+>  
+> +static const struct iio_chan_spec ad7606B_sw_channels[] = {
+
+I find it strange to uppercase the B (but not ad)
+
+> +	IIO_CHAN_SOFT_TIMESTAMP(8),
+> +	AD7616_CHANNEL(0),
+> +	AD7616_CHANNEL(1),
+> +	AD7616_CHANNEL(2),
+> +	AD7616_CHANNEL(3),
+> +	AD7616_CHANNEL(4),
+> +	AD7616_CHANNEL(5),
+> +	AD7616_CHANNEL(6),
+> +	AD7616_CHANNEL(7),
+> +};
+> +
+> +static const unsigned int ad7606B_oversampling_avail[9] = {
+> +	1, 2, 4, 8, 16, 32, 64, 128, 256
+> +};
+> +
+>  static u16 ad7616_spi_rd_wr_cmd(int addr, char isWriteOp)
+>  {
+>  	/*
+> @@ -60,6 +90,16 @@ static u16 ad7616_spi_rd_wr_cmd(int addr, char isWriteOp)
+>  	return ((addr & 0x7F) << 1) | ((isWriteOp & 0x1) << 7);
+>  }
+>  
+> +static u16 ad7606B_spi_rd_wr_cmd(int addr, char isWriteOp)
+
+bool isWriteOp?
+
+> +{
+> +	/*
+> +	 * The address of register consists of one bit which
+> +	 * specifies a read command placed bit 6, followed by
+
+placed _in_ bit 6
+
+> +	 * 6 bits of address.
+> +	 */
+> +	return (addr & 0x3F) | (((~isWriteOp) & 0x1) << 6);
+> +}
+> +
+>  static int ad7606_spi_read_block(struct device *dev,
+>  				 int count, void *buf)
+>  {
+> @@ -169,6 +209,23 @@ static int ad7616_write_os_sw(struct iio_dev *indio_dev, int val)
+>  				     AD7616_OS_MASK, val << 2);
+>  }
+>  
+> +static int ad7606_write_scale_sw(struct iio_dev *indio_dev, int ch, int val)
+> +{
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +
+> +	return ad7606_spi_write_mask(st,
+> +				     AD7606_RANGE_CH_ADDR(ch),
+> +				     AD7606_RANGE_CH_MSK(ch),
+> +				     AD7606_RANGE_CH_MODE(ch, val));
+> +}
+> +
+> +static int ad7606_write_os_sw(struct iio_dev *indio_dev, int val)
+> +{
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +
+> +	return ad7606_spi_reg_write(st, AD7606_OS_MODE, val);
+> +}
+> +
+>  static int ad7616_sw_mode_config(struct iio_dev *indio_dev)
+>  {
+>  	struct ad7606_state *st = iio_priv(indio_dev);
+> @@ -189,6 +246,42 @@ static int ad7616_sw_mode_config(struct iio_dev *indio_dev)
+>  			      AD7616_BURST_MODE | AD7616_SEQEN_MODE);
+>  }
+>  
+> +static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
+> +{
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +	unsigned long os[3] = {1};
+> +
+> +	/*
+> +	 * Software mode is enabled when all three oversampling
+> +	 * pins are set to high. If oversampling gpios are defined
+> +	 * in the device tree, then they need to be set to high,
+> +	 * otherwise, they must be hardwired to VDD
+> +	 */
+> +	if (st->gpio_os) {
+> +		gpiod_set_array_value(ARRAY_SIZE(os),
+> +				      st->gpio_os->desc, st->gpio_os->info, os);
+> +	}
+> +	/* OS of 128 and 256 are available only in software mode */
+> +	st->oversampling_avail = ad7606B_oversampling_avail;
+> +	st->num_os_ratios = ARRAY_SIZE(ad7606B_oversampling_avail);
+> +
+> +	st->write_scale = ad7606_write_scale_sw;
+> +	st->write_os = &ad7606_write_os_sw;
+> +
+> +	/* Configure device spi to output on a single channel */
+> +	st->bops->reg_write(st,
+> +			    AD7606_CONFIGURATION_REGISTER,
+> +			    AD7606_SINGLE_DOUT);
+> +
+> +	/*
+> +	 * Scale can be configured individually for each channel
+> +	 * in software mode.
+> +	 */
+> +	indio_dev->channels = ad7606B_sw_channels;
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct ad7606_bus_ops ad7606_spi_bops = {
+>  	.read_block = ad7606_spi_read_block,
+>  };
+> @@ -202,6 +295,15 @@ static const struct ad7606_bus_ops ad7616_spi_bops = {
+>  	.sw_mode_config = ad7616_sw_mode_config,
+>  };
+>  
+> +static const struct ad7606_bus_ops ad7606B_spi_bops = {
+> +	.read_block = ad7606_spi_read_block,
+> +	.reg_read = ad7606_spi_reg_read,
+> +	.reg_write = ad7606_spi_reg_write,
+> +	.write_mask = ad7606_spi_write_mask,
+> +	.rd_wr_cmd = ad7606B_spi_rd_wr_cmd,
+> +	.sw_mode_config = ad7606B_sw_mode_config,
+> +};
+> +
+>  static int ad7606_spi_probe(struct spi_device *spi)
+>  {
+>  	const struct spi_device_id *id = spi_get_device_id(spi);
+> @@ -211,6 +313,9 @@ static int ad7606_spi_probe(struct spi_device *spi)
+>  	case ID_AD7616:
+>  		bops = &ad7616_spi_bops;
+>  		break;
+> +	case ID_AD7606B:
+> +		bops = &ad7606B_spi_bops;
+> +		break;
+>  	default:
+>  		bops = &ad7606_spi_bops;
+>  		break;
+> @@ -226,6 +331,7 @@ static const struct spi_device_id ad7606_id_table[] = {
+>  	{ "ad7606-4", ID_AD7606_4 },
+>  	{ "ad7606-6", ID_AD7606_6 },
+>  	{ "ad7606-8", ID_AD7606_8 },
+> +	{ "ad7606b",  ID_AD7606B },
+>  	{ "ad7616",   ID_AD7616 },
+>  	{}
+>  };
+> @@ -236,6 +342,7 @@ static const struct of_device_id ad7606_of_match[] = {
+>  	{ .compatible = "adi,ad7606-4" },
+>  	{ .compatible = "adi,ad7606-6" },
+>  	{ .compatible = "adi,ad7606-8" },
+> +	{ .compatible = "adi,ad7606b" },
+>  	{ .compatible = "adi,ad7616" },
+>  	{ },
+>  };
+> 
+
+-- 
+
+Peter Meerwald-Stadler
+Mobile: +43 664 24 44 418
+--324302256-509562479-1565196100=:32509--

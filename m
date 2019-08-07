@@ -2,95 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71AD985142
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2019 18:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAC84853BA
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2019 21:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730229AbfHGQlv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Aug 2019 12:41:51 -0400
-Received: from ns.pmeerw.net ([84.19.176.117]:39136 "EHLO ns.pmeerw.net"
+        id S2389469AbfHGTlD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Aug 2019 15:41:03 -0400
+Received: from vern.gendns.com ([98.142.107.122]:43638 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730010AbfHGQlv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 7 Aug 2019 12:41:51 -0400
-Received: by ns.pmeerw.net (Postfix, from userid 1000)
-        id 4996EE0260; Wed,  7 Aug 2019 18:41:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pmeerw.net; s=mail;
-        t=1565196110; bh=UpvHWq6DKj02hd6Dz+wN9TDtvpir9uwiPlINm0z3RFM=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=Lez4DDiQ7AMPa+vVPy+KnOWI1fpFvWvhuFwnRMi+0iP5Acx4gUZWZxJT5Jnn9377W
-         S8nlMrJFgjIQ5Rfrtv8twDRT4uegDgGVqLl2FUf3f887m0v7Tn2BcYAVrSJQeSHtwP
-         MxgsPPYQL2fuKB+bsMXGrzBPB9Naav3pO9ed1DTI=
-Received: from localhost (localhost [127.0.0.1])
-        by ns.pmeerw.net (Postfix) with ESMTP id 3479CE01A6;
-        Wed,  7 Aug 2019 18:41:50 +0200 (CEST)
-Date:   Wed, 7 Aug 2019 18:41:50 +0200 (CEST)
-From:   Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-To:     Beniamin Bia <beniamin.bia@analog.com>
-cc:     jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        biabeniamin@outlook.com
-Subject: Re: [PATCH v2 4/4] dt-bindings: iio: adc: Add AD7606B ADC
- documentation
-In-Reply-To: <20190807133137.11185-4-beniamin.bia@analog.com>
-Message-ID: <alpine.DEB.2.21.1908071830110.32509@vps.pmeerw.net>
-References: <20190807133137.11185-1-beniamin.bia@analog.com> <20190807133137.11185-4-beniamin.bia@analog.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        id S2389462AbfHGTlC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 7 Aug 2019 15:41:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Message-Id:Date:Subject:Cc:To:From:Sender:
+        Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=JokjWWho/2zfAnvvaFBEyWXOCT3O2zg4J7WISh2hl5A=; b=Eos7XohVKEfGrdxSBI9kjkfm/2
+        WmdwutJ4Yt9HAuWwSgA3QbXfiLcnfXu4i2QvMLKqYbdbY8MMtR/aBfEjRl5gQqbtMhaQFmoKOrssJ
+        W51GaEZf890b3xuk4CFAzLdDiFbHBhmqbdSiA/rVQgetWbfYxNsWDePdYRhuNPEWzLUHCJSObQGwJ
+        3llycmnl3LZ/g6oPU4ThzdGv6cYiRpR3WgEcXTC98AIejQ+y5a7HWNpGoqBkzXdGtrrluh6zasKuq
+        iIVtWiTsMwc/baJ8x33Kup63axtfkezowE+xunOo0JyhO0ViMwjbouR35vmDGakQEJpNmDHIu6Yed
+        bmLb7P9w==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:60292 helo=freyr.lechnology.com)
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1hvRnv-00006r-Mm; Wed, 07 Aug 2019 15:40:59 -0400
+From:   David Lechner <david@lechnology.com>
+To:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org
+Cc:     David Lechner <david@lechnology.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: [PATCH v2 0/5] counter: new TI eQEP driver
+Date:   Wed,  7 Aug 2019 14:40:18 -0500
+Message-Id: <20190807194023.15318-1-david@lechnology.com>
+X-Mailer: git-send-email 2.17.1
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 7 Aug 2019, Beniamin Bia wrote:
+This series adds device tree bindings and a new counter driver for the Texas
+Instruments Enhanced Quadrature Encoder Pulse (eQEP).
 
-minor comment below
+As mentioned in one of the commit messages, to start with, the driver only
+supports reading the current counter value and setting the min/max values.
+Other features can be added as the counter subsystem gains support for them.
 
-> Documentation for AD7606B Analog to Digital Converter and software
-> mode was added.
-> 
-> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-> ---
-> Changes in v2:
-> -nothing changed
-> 
->  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> index 509dbe9c84d2..2afe31747a70 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> @@ -13,6 +13,7 @@ maintainers:
->  description: |
->    Analog Devices AD7606 Simultaneous Sampling ADC
->    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606_7606-6_7606-4.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7606B.pdf
->    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7616.pdf
->  
->  properties:
-> @@ -22,6 +23,7 @@ properties:
->        - adi,ad7606-8
->        - adi,ad7606-6
->        - adi,ad7606-4
-> +      - adi,ad7606b
->        - adi,ad7616
->  
->    reg:
-> @@ -87,7 +89,7 @@ properties:
->  
->    adi,sw-mode:
->      description:
-> -      Software mode of operation, so far available only for ad7616.
-> +      Software mode of operation, so far available only for ad7616 and ad7606B.
+v2 changes:
+- New patch to move TI PWMSS driver from drivers/pwm/ to drivers/bus/
+- Device tree bindings converted to .yaml format
+- Device tree clock renamed from "fck" to "sysclkout"
+- Dropped unused index and strobe signals from counter driver
+- Added synapses and actions to counter driver
+- Fixed base in of kstrtouint()
+- Clarifications in commit messages
 
-how about ad7606b to match the properties above?
+This series has been tested on a BeagleBone Blue with the following script:
 
->        It is enabled when all three oversampling mode pins are connected to
->        high level. The device is configured by the corresponding registers. If the
->        adi,oversampling-ratio-gpios property is defined, then the driver will set the
-> 
+#!/usr/bin/env python3
+
+from os import path
+from time import sleep
+
+COUNTER_PATH = '/sys/bus/counter/devices'
+COUNTERS = ['counter0', 'counter1', 'counter2']
+COUNT0 = 'count0'
+COUNT = 'count'
+FUNCTION = 'function'
+CEILING = 'ceiling'
+FLOOR = 'floor'
+ENABLE = 'enable'
+
+cnts = []
+
+for c in COUNTERS:
+    function_path = path.join(COUNTER_PATH, c, COUNT0, FUNCTION)
+    with open(function_path, 'w') as f:
+        f.write('quadrature x4')
+    floor_path = path.join(COUNTER_PATH, c, COUNT0, FLOOR)
+    with open(floor_path, 'w') as f:
+        f.write(str(0))
+    ceiling_path = path.join(COUNTER_PATH, c, COUNT0, CEILING)
+    with open(ceiling_path, 'w') as f:
+        f.write(str(0xffffffff))
+    enable_path = path.join(COUNTER_PATH, c, COUNT0, ENABLE)
+    with open(enable_path, 'w') as f:
+        f.write('1')
+
+    cnt_path = path.join(COUNTER_PATH, c, COUNT0, COUNT)
+    cnts.append(open(cnt_path, 'r'))
+
+while True:
+    for c in cnts:
+        c.seek(0)
+        val = int(c.read())
+        if val >= 0x80000000:
+            val -= 0x100000000
+        print(val, end=' ')
+    print()
+    sleep(1)
+
+David Lechner (5):
+  bus/ti-pwmss: move TI PWMSS driver from PWM to bus subsystem
+  dt-bindings: counter: new bindings for TI eQEP
+  counter: new TI eQEP driver
+  ARM: dts: am33xx: Add nodes for eQEP
+  ARM: dts: am335x-boneblue: Enable eQEP
+
+ .../devicetree/bindings/counter/ti-eqep.yaml  |  50 ++
+ MAINTAINERS                                   |   6 +
+ arch/arm/boot/dts/am335x-boneblue.dts         |  54 ++
+ arch/arm/boot/dts/am33xx-l4.dtsi              |  27 +
+ drivers/bus/Kconfig                           |   9 +
+ drivers/bus/Makefile                          |   1 +
+ drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} |   0
+ drivers/counter/Kconfig                       |  12 +
+ drivers/counter/Makefile                      |   1 +
+ drivers/counter/ti-eqep.c                     | 460 ++++++++++++++++++
+ drivers/pwm/Kconfig                           |   9 -
+ drivers/pwm/Makefile                          |   1 -
+ 12 files changed, 620 insertions(+), 10 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/counter/ti-eqep.yaml
+ rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)
+ create mode 100644 drivers/counter/ti-eqep.c
 
 -- 
+2.17.1
 
-Peter Meerwald-Stadler
-Mobile: +43 664 24 44 418

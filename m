@@ -2,128 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4122086621
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Aug 2019 17:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8D2687663
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2019 11:41:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733248AbfHHPoQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Aug 2019 11:44:16 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:46814 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732845AbfHHPoQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Aug 2019 11:44:16 -0400
-Received: by mail-pl1-f193.google.com with SMTP id c2so43679582plz.13;
-        Thu, 08 Aug 2019 08:44:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=HE8FZxsruLvX3xYGHWKwgoiLO1Rd2XyeDoDtQvRCtWY=;
-        b=grsy3TOjiWtkORQo0KQVvYxBio+r+1W1VYhuqO0Ixlp/eJi5+qv7krzNM//xDoPLjf
-         aBkSIM3msOdm+qIzlp9azGTTbNGkZhP5TFr0HVlrZ9t4M03fvyvSonRZmCKDywCANjhs
-         Xi9Bq+BOD0X78QLL6RevrbBDRJd+cN3beZVgVuqEDk7rsrYQ/rYlY5OXlg8AunTkSWs2
-         HzWEhqEIFmZWfk3sVQ6X011c4X8vtSd6jOz5IKNycI0EjqQgEMNcvpKclHRVmcnzjfJk
-         B7RjWLDD8GANCewwkrcjQAtQvvLXM79SSQ/OoHHPmZJkf2mG9zUUG7XK20WzGX/OfdF0
-         gkKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=HE8FZxsruLvX3xYGHWKwgoiLO1Rd2XyeDoDtQvRCtWY=;
-        b=eb8E+mH6r9AA+prvB0DQeruSCboemQ77QhBPnsRz+EYhJfJQWMEmzoulN7fypivcuO
-         /atr4Wiici3aRbT/YpLaaUcEpI/DMsSofbmjbXLJljUbEHxUy36WX0QbxguD4j2s/yEY
-         dP61XbItYZE9vajETQ0/txJzL8A99cBoizd9443uVVHnhmEQeIFoheCVDazJkbc4hIaV
-         H+kpXrmbvhmjSjY4h396a2cBSz8O6YwiHpcqLP3c4s4Q7Gn5hvBnjCSVok2OPADmKcRl
-         vsslsK1Nh63JCF4ERGA48BlU1spgDIYuMUN0rj+hxCxT4ghAbt9mFcKVOMt02ZrUdLn/
-         zU4w==
-X-Gm-Message-State: APjAAAWzE/Z1Cz06qmjdc+KCRz6tst2MUg7JLZCPjMYHIkPxEC3XbGoU
-        optWmpwrCleuL0xGbPR0c2Q=
-X-Google-Smtp-Source: APXvYqyJE4kvaS/a5NKJl4jOQIWf8UAHU39u6aDn4hk7Oz3YDqlkOVze10Lbmptf27kKa0ja5ylYAg==
-X-Received: by 2002:a17:902:b218:: with SMTP id t24mr10170494plr.213.1565279055259;
-        Thu, 08 Aug 2019 08:44:15 -0700 (PDT)
-Received: from localhost.localdomain ([103.83.147.157])
-        by smtp.gmail.com with ESMTPSA id j10sm64476517pfn.188.2019.08.08.08.44.03
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 08 Aug 2019 08:44:13 -0700 (PDT)
-From:   Himanshu Jha <himanshujha199640@gmail.com>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        dpfrey@gmail.com, mike.looijmans@topic.nl,
-        Himanshu Jha <himanshujha199640@gmail.com>
-Subject: [PATCH] iio: chemical: bme680: Fix pressure and humidity ABI mismatch
-Date:   Thu,  8 Aug 2019 21:13:50 +0530
-Message-Id: <20190808154350.9693-1-himanshujha199640@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S2405724AbfHIJlW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Aug 2019 05:41:22 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:26600
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726164AbfHIJlW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Aug 2019 05:41:22 -0400
+X-IronPort-AV: E=Sophos;i="5.64,364,1559512800"; 
+   d="scan'208";a="316002950"
+Received: from portablejulia.rsr.lip6.fr ([132.227.76.63])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Aug 2019 11:41:19 +0200
+Date:   Fri, 9 Aug 2019 11:41:19 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: julia@hadrien
+To:     David Lechner <david@lechnology.com>
+cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kbuild-all@01.org
+Subject: [PATCH] counter: fix devm_platform_ioremap_resource.cocci warnings
+Message-ID: <alpine.DEB.2.21.1908091139270.2946@hadrien>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Standard ABI for reporting pressure is kilopascal and for
-relative humidity it is millipercent.
+From: kbuild test robot <lkp@intel.com>
 
-What:           /sys/bus/iio/devices/iio:deviceX/in_pressureY_input
-What:           /sys/bus/iio/devices/iio:deviceX/in_pressure_input
-KernelVersion:  3.8
-Contact:        linux-iio@vger.kernel.org
-Description:
-                Scaled pressure measurement from channel Y, in kilopascal.
+ Use devm_platform_ioremap_resource helper which wraps
+ platform_get_resource() and devm_ioremap_resource() together.
 
-What:           /sys/bus/iio/devices/iio:deviceX/in_humidityrelative_input
-KernelVersion:  3.14
-Contact:        linux-iio@vger.kernel.org
-Description:
-                Scaled humidity measurement in milli percent.
+Generated by: scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
 
-Currently pressure is reported in hectopascal(hPa) and relative humidity
-in percent. Hence fix this ABI mismatch conforming to the standard ABI.
-
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Himanshu Jha <himanshujha199640@gmail.com>
+Fixes: 78958c294246 ("counter: new TI eQEP driver")
+Signed-off-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Julia Lawall <julia.lawall@lip6.fr>
 ---
 
-While cleaning this mess I wonder about the gas channel and there
-exists no `in_resistance_input` in standard ABI :-(
+tree:   https://github.com/dlech/linux bone-counter
+head:   669cef0feba0b11f271f462c4d26e4d1449a9db8
+commit: 78958c294246fe1177ff62518eef45d20ad0165e [5/8] counter: new TI eQEP driver
+:::::: branch date: 2 days ago
+:::::: commit date: 2 days ago
 
-We only have:
+Despite the fixes tag, this is not actually fixing a bug, it just makes
+the code a little shorter.
 
-What:           /sys/bus/iio/devices/iio:deviceX/in_resistance_raw
-What:           /sys/bus/iio/devices/iio:deviceX/in_resistanceX_raw
-What:           /sys/bus/iio/devices/iio:deviceX/out_resistance_raw
-What:           /sys/bus/iio/devices/iio:deviceX/out_resistanceX_raw
-KernelVersion:  4.3
-Contact:        linux-iio@vger.kernel.org
-Description:
-                Raw (unscaled no offset etc.) resistance reading that can be processed
-                into an ohm value.
+ ti-eqep.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-The sensor outputs processed value which is reported as is.
+--- a/drivers/counter/ti-eqep.c
++++ b/drivers/counter/ti-eqep.c
+@@ -392,15 +392,13 @@ static int ti_eqep_probe(struct platform
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct ti_eqep_cnt *priv;
+-	struct resource *res;
+ 	void __iomem *base;
 
-So, does it need a new ABI ?
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
 
- drivers/iio/chemical/bme680_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index ccde4c65ff93..28cc96d1e3c8 100644
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -670,7 +670,7 @@ static int bme680_read_press(struct bme680_data *data,
- 	}
- 
- 	*val = bme680_compensate_press(data, adc_press);
--	*val2 = 100;
-+	*val2 = 1000;
- 	return IIO_VAL_FRACTIONAL;
- }
- 
-@@ -704,7 +704,7 @@ static int bme680_read_humid(struct bme680_data *data,
- 	comp_humidity = bme680_compensate_humid(data, adc_humidity);
- 
- 	*val = comp_humidity;
--	*val2 = 1000;
-+	*val2 = 1000000;
- 	return IIO_VAL_FRACTIONAL;
- }
- 
--- 
-2.17.1
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	base = devm_ioremap_resource(dev, res);
++	base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
 

@@ -2,129 +2,414 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CD4C877A1
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2019 12:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAEFD87832
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2019 13:05:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726231AbfHIKiK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Aug 2019 06:38:10 -0400
-Received: from mail-eopbgr780040.outbound.protection.outlook.com ([40.107.78.40]:26160
-        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726140AbfHIKiK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 9 Aug 2019 06:38:10 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Vpqs9BmRfG9u1sZIvrKKgQFCmZtBIrKUt64IpkHJk1IBAcfLk0YY7Xkwnt5by+Y0iERK/GCWCPeb5x2Y0IRAHQE2Jd/CrnnmbbHDTZpL6MY6k+ul7lJXgGT38ztnq1CPLpdSv6zeCg60ePq5DjpyPscdNgwxi8rM+iO0a1s6RL8W98knDuzfI1sncZ/K2IMI8s2TiXnIwyU4/ugVYcvVcLCDkHL+pTXp2LtaQErH274FY0BUPeOUBF8gxOlRMMq9DPU9+TTMIUT/vStpnMm2PR0NLYB7LTfoY1WWsau4cgzsK7S1CwsADgXyxAhD1E9qxyAt9mkt2sVJKBTjjX5TQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mOaoXhSoeojsw9lCagC2OttUgoFzWJmgr+s+t4wzTq8=;
- b=f4fPWBYUI1fFlShQ2tT8qi+vksCgveNBFSb1fPYrnqxzG2T8fmhpA53ySC/gF7oVIVMUyBjyuRbmThG/lYvxxkgZmSvfSPSaS657GzqGMZ3KVP2ebQ2cVhwpv8xgfhDatof5WnhDS6KZf2WbnCWqCEAfqetEhgA3bDLVaBDk3DEOqFtrzdrvxWwr/w1BOxunFxnYI9EfMYD0kDK0i2nKO4LoTuAdRwjyW6wgLY8JZGQLBXYCNaMT5E+w7p4DFiHDih1j6MlImYf13RERz56RaegnWQC7/CvO2PDr7U3Ch0yZ9DJF8H6u5Gpm7KSwrZuiWJe8oeaOaG6bs1K81PSfqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass (sender ip is
- 149.199.60.100) smtp.rcpttodomain=vger.kernel.org
- smtp.mailfrom=xilinx.com;dmarc=bestguesspass action=none
- header.from=xilinx.com;dkim=none (message not signed);arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mOaoXhSoeojsw9lCagC2OttUgoFzWJmgr+s+t4wzTq8=;
- b=VzhAIzuZUVizV/RWtUqINK7dhdiYZwKFEswdfe8X4MN3cv56yzZXDv5KmS5HGBB07jemnwLZ8F+/3gjlwdSIa5yxuUNPWbaISK40nRCm+k2Q4l+rT3h4mOXr4Yhv++deaE5OJ80OiHdYadjkC0vTyOBHxBx9csLUH3iNodOombY=
-Received: from DM6PR02CA0005.namprd02.prod.outlook.com (20.176.108.18) by
- SN6PR02MB4831.namprd02.prod.outlook.com (52.135.116.17) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2115.10; Fri, 9 Aug 2019 10:38:07 +0000
-Received: from BL2NAM02FT007.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e46::202) by DM6PR02CA0005.outlook.office365.com
- (2603:10b6:5:1c::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2157.14 via Frontend
- Transport; Fri, 9 Aug 2019 10:38:07 +0000
-Authentication-Results: spf=pass (sender IP is 149.199.60.100)
- smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.100; helo=xsj-pvapsmtpgw02;
-Received: from xsj-pvapsmtpgw02 (149.199.60.100) by
- BL2NAM02FT007.mail.protection.outlook.com (10.152.77.46) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2157.15
- via Frontend Transport; Fri, 9 Aug 2019 10:38:07 +0000
-Received: from unknown-38-66.xilinx.com ([149.199.38.66]:55049 helo=xsj-pvapsmtp01)
-        by xsj-pvapsmtpgw02 with esmtp (Exim 4.63)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1hw2He-0007CY-75; Fri, 09 Aug 2019 03:38:06 -0700
-Received: from [127.0.0.1] (helo=xsj-smtp-dlp2.xlnx.xilinx.com)
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1hw2HZ-0005Vk-4R; Fri, 09 Aug 2019 03:38:01 -0700
-Received: from xsj-pvapsmtp01 (mail.xilinx.com [149.199.38.66] (may be forged))
-        by xsj-smtp-dlp2.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id x79Abxfv004123;
-        Fri, 9 Aug 2019 03:38:00 -0700
-Received: from [172.30.17.116]
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <michals@xilinx.com>)
-        id 1hw2HX-0005Vf-N7; Fri, 09 Aug 2019 03:37:59 -0700
-To:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        mtitinger@baylibre.com, Kevin Hilman <khilman@baylibre.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Guenter Roeck <linux@roeck-us.net>, narmstrong@baylibre.com
-From:   Michal Simek <michal.simek@xilinx.com>
-Subject: ina226 as IIO device instead of HWMON
-Message-ID: <24e73088-94f5-c231-37a4-90f1f63f0587@xilinx.com>
-Date:   Fri, 9 Aug 2019 12:37:57 +0200
+        id S2406423AbfHILFw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Aug 2019 07:05:52 -0400
+Received: from first.geanix.com ([116.203.34.67]:40236 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2405954AbfHILFw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 9 Aug 2019 07:05:52 -0400
+Received: from [192.168.100.94] (unknown [95.138.208.137])
+        by first.geanix.com (Postfix) with ESMTPSA id 58DA24AD0C;
+        Fri,  9 Aug 2019 11:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1565348700; bh=k+7vCrfoOuV/PBNxMv3dsCk+LgiaZLVbbnlRgYTyPIE=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=B8hKZlkjqjMv1FKW/hXHRIq+dwiorN0g/s93DLrZypS3COxeP2/fV5QIiYJDUQz+u
+         bCdjyxgYrp47hHae245m9hLcseG0zdAV9ZQjINBARgWeZR5yK8nF0szb1MEJfaKpUI
+         OhEd+SfX0yFVzdkLgWQvsqGoz44f5sMLsAwfCn3AD1+IeQACFciyT5/hrMKKOeO/nz
+         qfjth9HpDdhkcdwe0V+aBVEuSheG5GtqsRHHuDa4MYfOId+Q6MgkXNSQH7gs/YbnD6
+         riK1bbWbjlukofWr9jP3ZBb7pBdj9pxCpCN/42JSlsjYifC+yvPV4pZD8J/JC21gMj
+         s/tJnRqqsI0qw==
+Subject: Re: [PATCH v2 3/6] iio: imu: st_lsm6dsx: add motion events
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
+        lorenzo.bianconi83@gmail.com, martin@geanix.com,
+        denis.ciocca@st.com, mario.tesi@st.com, armando.visconti@st.com
+References: <20190715081514.81129-1-sean@geanix.com>
+ <20190715081514.81129-3-sean@geanix.com>
+ <20190716082927.GB13440@localhost.localdomain>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <40f74922-4c26-a9a1-ba98-6b7d7af1417a@geanix.com>
+Date:   Fri, 9 Aug 2019 13:05:32 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <20190716082927.GB13440@localhost.localdomain>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US-large
 Content-Transfer-Encoding: 7bit
-X-RCIS-Action: ALLOW
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.100;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(136003)(376002)(39860400002)(396003)(346002)(2980300002)(189003)(199004)(2486003)(36756003)(356004)(64126003)(2501003)(14444005)(6306002)(966005)(230700001)(26005)(23676004)(52146003)(4744005)(186003)(305945005)(44832011)(9786002)(16799955002)(65806001)(65956001)(106002)(31696002)(15188155005)(476003)(8676002)(50466002)(70206006)(58126008)(110136005)(2616005)(8936002)(316002)(47776003)(126002)(31686004)(426003)(63266004)(336012)(478600001)(65826007)(5660300002)(81156014)(70586007)(486006)(2906002)(81166006)(42866002)(5001870100001)(19623215001);DIR:OUT;SFP:1101;SCL:1;SRVR:SN6PR02MB4831;H:xsj-pvapsmtpgw02;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-100.xilinx.com,xapps1.xilinx.com;MX:1;A:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 05159f57-aeef-4541-cac0-08d71cb5aa9d
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(4709080)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:SN6PR02MB4831;
-X-MS-TrafficTypeDiagnostic: SN6PR02MB4831:
-X-MS-Exchange-PUrlCount: 1
-X-Microsoft-Antispam-PRVS: <SN6PR02MB483119A7E85386D17F6BB4DAC6D60@SN6PR02MB4831.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-Forefront-PRVS: 01244308DF
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: +LvfpEsWFJgeSB+Vs7BJYKw3G4lzQkdbqXUId+FhuQnj9tIJU5WtZlFdZf7AotbV2NBEfjtefE1Sbwmgl1HaJaNJZic16cLBrRBBdYAMzBv4HpHi5SY2DPaaQrf1xtUeepUyR8Vet9ei2ClcBXfCbk8pb7ZHyT3CanwA/wi4R6AIy69HdQRrjhQK1JUlQXwci4gALaAmDo5sgJChoqaio/B7X5FtFMHB1B3yGoMK/r20DSct5BYkuhH+YPDbr9YiYw+DcLUQI94hxvciGPXpEznpMmHTTr5uhJ2/abn72j+6UTol4lrV1YdPV2DNwwRa2GDuIcgYf9+DAYOXYz3dFuiwl9+XbMxFdJwlIC1Ir1cxduzqS24b01ap8FdF7cKFZOxk/1+nrF1gIuddwpKLH6etz2EcXZViyo9te0+0EBA=
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2019 10:38:07.1599
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05159f57-aeef-4541-cac0-08d71cb5aa9d
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.100];Helo=[xsj-pvapsmtpgw02]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR02MB4831
+X-Spam-Status: No, score=-3.1 required=3.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 1ffa6606a633
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Back from vacation :-)
 
-we are dealing with one issue with ina226 on xilinx platform when hwmon
-driver is used. We have board for battery monitoring with shunt resistor
-setup to 10 Ohm which is out of config value in hwmon driver. I have
-temporary code to workaround this but I have also found that ina226 is
-supported via iio framework. I have seen that Baylibre was trying to add
-generic iio support to sigrok.
-http://wiki.baylibre.com/doku.php?id=acme:oldstart
+On 16/07/2019 10.29, Lorenzo Bianconi wrote:
+>> Add event channels that controls the creation of motion events.
+>>
+>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+>> ---
+>>
+>> Changes since v1:
+>>   * added handling of LSM6
+>>   * added CHANNEL info with events for ACC
+>>   * removed st_lsm6dsx_set_event_threshold function
+>>   * added check of event type to event channels
+>>
+>> Issues:
+>>   * This currently breaks buffered reads, as the interrupt stays high.
+>>     This happens when MD1_CFG INT1_WU (wakeup event routes to INT1) is
+>>     enabled.
+>>     The datasheet doesn't seem to decribe whats happening and I can't
+>>     find a status register to read somehing useful.
+>>     Maybe it's impossible to share the buffered reads interrupt with
+>>     the wakeup interrupt?
+> 
+> Could you explain this issue a bit more? adding st folks...
+> 
+I can try, there is not much to it...
+When buffered reads is enabled, and I enable wake-up at the same time, 
+and then drop or shake the acc to create an event.
+The irq pin stays high, expected behavior would be it drops again when 
+the buffer is read and the event is finished signaling.
 
-I expect you wanted to use sigrok also for ina226.
+>>
+>>   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  30 ++++
+>>   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 164 +++++++++++++++++--
+>>   2 files changed, 182 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+>> index 738bed4a9752..fef08b7cf2a0 100644
+>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+>> @@ -12,6 +12,7 @@
+>>   #define ST_LSM6DSX_H
+>>   
+>>   #include <linux/device.h>
+>> +#include <linux/iio/iio.h>
+>>   
+>>   #define ST_LSM6DS3_DEV_NAME	"lsm6ds3"
+>>   #define ST_LSM6DS3H_DEV_NAME	"lsm6ds3h"
+>> @@ -50,6 +51,26 @@ enum st_lsm6dsx_hw_id {
+>>   					 * ST_LSM6DSX_TAGGED_SAMPLE_SIZE)
+>>   #define ST_LSM6DSX_SHIFT_VAL(val, mask)	(((val) << __ffs(mask)) & (mask))
+>>   
+>> +#define ST_LSM6DSX_CHANNEL_ACC(chan_type, addr, mod, scan_idx)		\
+>> +{									\
+>> +	.type = chan_type,						\
+>> +	.address = addr,						\
+>> +	.modified = 1,							\
+>> +	.channel2 = mod,						\
+>> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
+>> +			      BIT(IIO_CHAN_INFO_SCALE),			\
+>> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
+>> +	.scan_index = scan_idx,						\
+>> +	.scan_type = {							\
+>> +		.sign = 's',						\
+>> +		.realbits = 16,						\
+>> +		.storagebits = 16,					\
+>> +		.endianness = IIO_LE,					\
+>> +	},								\
+>> +	.event_spec = &st_lsm6dsx_event,				\
+>> +	.num_event_specs = 1,						\
+>> +}
+> 
+> I would prefer to extend existing macros
+> 
+Please explain how...
 
-Anyway my question is if there is any standard tool which is capable to
-calculate and show information from iio ina226 chip which is can be used
-instead of lm-sensors and hwmon driver.
+>> +
+>>   #define ST_LSM6DSX_CHANNEL(chan_type, addr, mod, scan_idx)		\
+>>   {									\
+>>   	.type = chan_type,						\
+>> @@ -297,6 +318,8 @@ struct st_lsm6dsx_hw {
+>>   	u8 enable_mask;
+>>   	u8 ts_sip;
+>>   	u8 sip;
+>> +	u8 event_threshold;
+>> +	bool enable_event;
+>>   	int drdy_pin;
+>>   
+>>   	u8 *buff;
+>> @@ -306,6 +329,13 @@ struct st_lsm6dsx_hw {
+>>   	const struct st_lsm6dsx_settings *settings;
+>>   };
+>>   
+>> +static const struct iio_event_spec st_lsm6dsx_event = {
+>> +	.type = IIO_EV_TYPE_THRESH,
+>> +	.dir = IIO_EV_DIR_EITHER,
+>> +	.mask_separate = BIT(IIO_EV_INFO_VALUE) |
+>> +			 BIT(IIO_EV_INFO_ENABLE)
+>> +};
+>> +
+>>   static const unsigned long st_lsm6dsx_available_scan_masks[] = {0x7, 0x0};
+>>   extern const struct dev_pm_ops st_lsm6dsx_pm_ops;
+>>   
+>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+>> index 2c11addf568b..6decb0846f1a 100644
+>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+>> @@ -76,6 +76,16 @@
+>>   #define ST_LSM6DSX_REG_GYRO_OUT_Y_L_ADDR	0x24
+>>   #define ST_LSM6DSX_REG_GYRO_OUT_Z_L_ADDR	0x26
+>>   
+>> +#define ST_LSM6DSX_REG_TAP_CFG_ADDR		0x58
+>> +#define ST_LSM6DSX_REG_TAP_CFG_INT_EN_MASK	BIT(7)
+> 
+> I am pretty sure this is not true at least for lsm6ds3/lsm6ds3h
+> 
+Will check
 
-I would expect that iio-hwmon could be also used but didn't try that yet
-with ina226 chip.
+>> +
+>> +#define ST_LSM6DSX_REG_WAKE_UP_ADDR		0x5B
+>> +#define ST_LSM6DSX_REG_WAKE_UP_THRES_MASK	GENMASK(5, 0)
+>> +
+>> +#define ST_LSM6DSX_REG_MD1_CFG_ADDR		0x5E
+>> +#define ST_LSM6DSX_REG_MD2_CFG_ADDR		0x5F
+>> +#define ST_LSM6DSX_REG_MD_CFG_INT_WU_MASK	BIT(5)
+>> +
+>>   static const struct st_lsm6dsx_odr_table_entry st_lsm6dsx_odr_table[] = {
+>>   	[ST_LSM6DSX_ID_ACC] = {
+>>   		.reg = {
+>> @@ -470,12 +480,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>>   };
+>>   
+>>   static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
+>> -	ST_LSM6DSX_CHANNEL(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_X_L_ADDR,
+>> -			   IIO_MOD_X, 0),
+>> -	ST_LSM6DSX_CHANNEL(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_Y_L_ADDR,
+>> -			   IIO_MOD_Y, 1),
+>> -	ST_LSM6DSX_CHANNEL(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_Z_L_ADDR,
+>> -			   IIO_MOD_Z, 2),
+>> +	ST_LSM6DSX_CHANNEL_ACC(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_X_L_ADDR,
+>> +			       IIO_MOD_X, 0),
+>> +	ST_LSM6DSX_CHANNEL_ACC(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_Y_L_ADDR,
+>> +			       IIO_MOD_Y, 1),
+>> +	ST_LSM6DSX_CHANNEL_ACC(IIO_ACCEL, ST_LSM6DSX_REG_ACC_OUT_Z_L_ADDR,
+>> +			       IIO_MOD_Z, 2),
+>>   	IIO_CHAN_SOFT_TIMESTAMP(3),
+>>   };
+>>   
+>> @@ -679,18 +689,21 @@ static int st_lsm6dsx_read_oneshot(struct st_lsm6dsx_sensor *sensor,
+>>   	int err, delay;
+>>   	__le16 data;
+>>   
+>> -	err = st_lsm6dsx_sensor_set_enable(sensor, true);
+>> -	if (err < 0)
+>> -		return err;
+>> +	if (!hw->enable_event) {
+>> +		err = st_lsm6dsx_sensor_set_enable(sensor, true);
+>> +		if (err < 0)
+>> +			return err;
+>>   
+>> -	delay = 1000000 / sensor->odr;
+>> -	usleep_range(delay, 2 * delay);
+>> +		delay = 1000000 / sensor->odr;
+>> +		usleep_range(delay, 2 * delay);
+>> +	}
+>>   
+>>   	err = st_lsm6dsx_read_locked(hw, addr, &data, sizeof(data));
+>>   	if (err < 0)
+>>   		return err;
+>>   
+>> -	st_lsm6dsx_sensor_set_enable(sensor, false);
+>> +	if (!hw->enable_event)
+>> +		st_lsm6dsx_sensor_set_enable(sensor, false);
+>>   
+>>   	*val = (s16)le16_to_cpu(data);
+>>   
+>> @@ -763,6 +776,94 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
+>>   	return err;
+>>   }
+>>   
+>> +static int st_lsm6dsx_read_event(struct iio_dev *iio_dev,
+>> +				   const struct iio_chan_spec *chan,
+>> +				   enum iio_event_type type,
+>> +				   enum iio_event_direction dir,
+>> +				   enum iio_event_info info,
+>> +				   int *val, int *val2)
+>> +{
+>> +	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
+>> +	struct st_lsm6dsx_hw *hw = sensor->hw;
+>> +
+>> +	if (type != IIO_EV_TYPE_THRESH)
+>> +		return -EINVAL;
+>> +
+>> +	*val2 = 0;
+>> +	*val = hw->event_threshold;
+>> +
+>> +	return IIO_VAL_INT;
+>> +}
+>> +
+>> +static int st_lsm6dsx_write_event(struct iio_dev *iio_dev,
+>> +				    const struct iio_chan_spec *chan,
+>> +				    enum iio_event_type type,
+>> +				    enum iio_event_direction dir,
+>> +				    enum iio_event_info info,
+>> +				    int val, int val2)
+>> +{
+>> +	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
+>> +	struct st_lsm6dsx_hw *hw = sensor->hw;
+>> +	int err;
+>> +
+>> +	if (type != IIO_EV_TYPE_THRESH)
+>> +		return -EINVAL;
+>> +
+>> +	if (!hw->enable_event)
+>> +		return -EBUSY;
+> 
+> I guess it is ok to configure the threshold first, no?
+> 
+Will test and allow the threshold to be configured first.
 
-Thanks,
-Michal
+>> +
+>> +	if (val < 0 || val > 31)
+>> +		return -EINVAL;
+>> +
+>> +	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_WAKE_UP_ADDR,
+>> +				 ST_LSM6DSX_REG_WAKE_UP_THRES_MASK,
+>> +				 val);
+>> +	if (err)
+>> +		return -EINVAL;
+>> +
+>> +	hw->event_threshold = val;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int st_lsm6dsx_read_event_config(struct iio_dev *iio_dev,
+>> +					  const struct iio_chan_spec *chan,
+>> +					  enum iio_event_type type,
+>> +					  enum iio_event_direction dir)
+>> +{
+>> +	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
+>> +	struct st_lsm6dsx_hw *hw = sensor->hw;
+>> +
+>> +	if (type != IIO_EV_TYPE_THRESH)
+>> +		return -EINVAL;
+>> +
+>> +	return hw->enable_event;
+>> +}
+>> +
+>> +static int st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
+>> +					   const struct iio_chan_spec *chan,
+>> +					   enum iio_event_type type,
+>> +					   enum iio_event_direction dir,
+>> +					   int state)
+>> +{
+>> +	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
+>> +	struct st_lsm6dsx_hw *hw = sensor->hw;
+>> +
+>> +	if (type != IIO_EV_TYPE_THRESH)
+>> +		return -EINVAL;
+>> +
+>> +	if (state && hw->enable_event)
+>> +		return 0;
+>> +
+>> +	hw->enable_event = state;
+>> +	if (state)
+>> +		st_lsm6dsx_sensor_set_enable(sensor, true);
+>> +	else
+>> +		st_lsm6dsx_sensor_set_enable(sensor, false);
+> 
+> st_lsm6dsx_sensor_set_enable can fails. Why not do
+> 
+> 	err = st_lsm6dsx_sensor_set_enable(sensor, state);
+> 	if (err < 0)
+> 		return err;
+> 
+> 	hw->enable_event = state;;
+> 	return 0;
+> 
+Will change to this approach :-)
+
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
+>>   {
+>>   	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
+>> @@ -839,6 +940,10 @@ static const struct iio_info st_lsm6dsx_acc_info = {
+>>   	.attrs = &st_lsm6dsx_acc_attribute_group,
+>>   	.read_raw = st_lsm6dsx_read_raw,
+>>   	.write_raw = st_lsm6dsx_write_raw,
+>> +	.read_event_value = st_lsm6dsx_read_event,
+>> +	.write_event_value = st_lsm6dsx_write_event,
+>> +	.read_event_config = st_lsm6dsx_read_event_config,
+>> +	.write_event_config = st_lsm6dsx_write_event_config,
+>>   	.hwfifo_set_watermark = st_lsm6dsx_set_watermark,
+>>   };
+>>   
+>> @@ -1076,6 +1181,38 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+>>   	return iio_dev;
+>>   }
+>>   
+>> +int st_lsm6dsx_event_setup(int id, struct st_lsm6dsx_hw *hw)
+>> +{
+>> +	int err;
+>> +	unsigned int md_reg;
+>> +
+>> +	if (id == ST_ISM330DLC_ID) {
+>> +		/* Enable basic interrupts for ISM330 */
+>> +		err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_TAP_CFG_ADDR,
+>> +					 ST_LSM6DSX_REG_TAP_CFG_INT_EN_MASK,
+>> +					 ST_LSM6DSX_REG_TAP_CFG_INT_EN_MASK);
+> 
+> please put device differences in st_lsm6dsx_sensor_settings[]
+> 
+Will do.
+
+>> +		if (err < 0)
+>> +			return err;
+>> +	}
+>> +
+>> +	switch (hw->drdy_pin) {
+> 
+> drdy_pin it is only used here right? If so we do not need it just enable this
+> configuration by default. I would prefer to maintain the code simple
+> 
+>> +	case 1:
+>> +		md_reg = ST_LSM6DSX_REG_MD1_CFG_ADDR;
+>> +		break;
+>> +	case 2:
+>> +		md_reg = ST_LSM6DSX_REG_MD2_CFG_ADDR;
+>> +		break;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +	/* Enable wakeup interrupt */
+>> +	err = regmap_update_bits(hw->regmap, md_reg,
+>> +				 ST_LSM6DSX_REG_MD_CFG_INT_WU_MASK,
+>> +				 ST_LSM6DSX_REG_MD_CFG_INT_WU_MASK);
+>> +
+>> +	return err;
+>> +}
+>> +
+>>   static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+>>   {
+>>   	struct st_lsm6dsx_hw *hw = private;
+>> @@ -1207,6 +1344,9 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+>>   		err = st_lsm6dsx_fifo_setup(hw);
+>>   		if (err < 0)
+>>   			return err;
+> 
+> newline here please
+> 
+>> +		err = st_lsm6dsx_event_setup(hw_id, hw);
+>> +		if (err < 0)
+>> +			return err;
+>>   	}
+>>   
+>>   	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+>> -- 
+>> 2.22.0
+>>

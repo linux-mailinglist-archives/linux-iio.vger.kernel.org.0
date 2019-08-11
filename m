@@ -2,135 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF9B188FDF
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Aug 2019 07:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDFC389046
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Aug 2019 10:03:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726164AbfHKFp4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Aug 2019 01:45:56 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:41163 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725829AbfHKFp4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Aug 2019 01:45:56 -0400
-Received: by mail-pl1-f193.google.com with SMTP id m9so46469966pls.8;
-        Sat, 10 Aug 2019 22:45:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=tWYbNtmjE1k1tu/MG+O0SFJsDideswIxOdaCbUQYasE=;
-        b=gAitQKL09xt88JIc9HbcMcn5r6YHPlFY6Stsy+ekKMLsMjyjdnmvXogx2xJpdezGM/
-         GtaGZMe4nl5Y0ZclMD8q/R8Y+VU1hFOSh2GGUDdGTlOEqb1E8EAiPPjc6YvfH6LOkolD
-         P5TI7VD2ILniW4EjGWkEKIPL4lVApDP1GVoo11qGfioaMfqYlLYjaZJyTyegnQLUvV8K
-         9VQ1jXZJqjvIcuJ0Uc20QsM95+ZznWNInBnou8iv0XirTb5HI8/0riuZsZmVLU0BU+vm
-         pOCbos//McDeRoxsglO6iQ8umSbg4E0dB7uDoe4IE4cQPbvF/IzPV7h0F/DYIL2zmCV4
-         W1nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=tWYbNtmjE1k1tu/MG+O0SFJsDideswIxOdaCbUQYasE=;
-        b=KgUfLPAM8Vv/1VYqwIcOee0OMEaCIN2gqyn9zlOeNKq582UH1UnHL0iTqG/BzTtN3Z
-         sWPi8L/a8ElWm968i6LgfwcwkC4izU189K1Cd8M6lXHMqb0sxT32iAs5t/6u7adcVX3x
-         BwAWRV4OkIFvlOgCWI0MDxtuTsHRcEsBLOg/7ylCQZgOcTeF1njQIb6QLp5LoeSv4hPH
-         cONETbJiEGUTdtgMa9QTvJKz6l1DEE8lB7X/7uE29p+RtK/OSi6d5gmvMD8RUqCdlDlN
-         nYpJLlUBeKA6LDaR4gUMY7iCwZlGRVlw2QVtjk2tig5LOl0HPHgkW6FtLaltuHYTo8BV
-         7Brw==
-X-Gm-Message-State: APjAAAWizWBydvylgWBf+aC7S9tazg8aLxNEyA6fUeAnnnawYGDzKRkv
-        fROzCPr/tNMQVepuy4CXiRYHQ2Od
-X-Google-Smtp-Source: APXvYqxDOsjZw2MrMD89MTU/Yx7aNmuQbi22YJCxYY94JXex1TJ4Y86oE98mc8cKHbfxjvCkPAlp5g==
-X-Received: by 2002:a17:902:1aa:: with SMTP id b39mr27712195plb.333.1565502354929;
-        Sat, 10 Aug 2019 22:45:54 -0700 (PDT)
-Received: from localhost.lan (c-67-185-54-80.hsd1.wa.comcast.net. [67.185.54.80])
-        by smtp.gmail.com with ESMTPSA id u16sm10998429pjb.2.2019.08.10.22.45.53
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sat, 10 Aug 2019 22:45:54 -0700 (PDT)
-From:   Andrey Smirnov <andrew.smirnov@gmail.com>
-To:     linux-iio@vger.kernel.org
-Cc:     Andrey Smirnov <andrew.smirnov@gmail.com>,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Chris Healy <cphealy@gmail.com>
-Subject: [PATCH] iio: hi8435: Drop hi8435_remove()
-Date:   Sat, 10 Aug 2019 22:45:45 -0700
-Message-Id: <20190811054545.6922-1-andrew.smirnov@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        id S1725826AbfHKIDX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Aug 2019 04:03:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60894 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725810AbfHKIDW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 11 Aug 2019 04:03:22 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A2F5C2085B;
+        Sun, 11 Aug 2019 08:03:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565510601;
+        bh=mdfX89J7i+I020yze43/ImZLz3U+e+1AfvwU979Ejv4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=O+G9jL5g/jV9cBbfxjaGSjkdAfE03ZkSqCWbrXwscD9uIX++wtts46w6Wr435CwXw
+         3VUT199SP6WFjzLkqojQHNi2i3kw6ah5DS8TDxF9dZH1isw3tml8Dwxw9eoD5oaWQv
+         GRYhKtJYlhTiOHJFbmYUYBM9H3/dqyoVbb/hKkoc=
+Date:   Sun, 11 Aug 2019 09:03:15 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Baolin Wang <baolin.wang@linaro.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        freeman.liu@unisoc.com,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        linux-iio@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: sc27xx: Change to polling mode to read data
+Message-ID: <20190811090251.5fbd7d75@archlinux>
+In-Reply-To: <CAMz4kuK4GFfOi3vGvFOLdRfmqrwVLDs5CN+Xp_it3jG4=iKi=w@mail.gmail.com>
+References: <1870ea18729f93fb36694affaf7e9443733dd988.1564035575.git.baolin.wang@linaro.org>
+        <20190727182709.037fc595@archlinux>
+        <CAMz4kuLLSYw0JRLRVN-JegxZcK1bdv4K2m4mVu7oep6xfb+xxg@mail.gmail.com>
+        <20190805145037.0a03f21e@archlinux>
+        <CAMz4kuK4GFfOi3vGvFOLdRfmqrwVLDs5CN+Xp_it3jG4=iKi=w@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the remainder of hi8435_probe() to use devres and get rid of
-hi8435_remove().
+On Tue, 6 Aug 2019 15:39:45 +0800
+Baolin Wang <baolin.wang@linaro.org> wrote:
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Chris Healy <cphealy@gmail.com>
----
- drivers/iio/adc/hi8435.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+> Hi Jonathan,
+> 
+> On Mon, 5 Aug 2019 at 21:50, Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Mon, 29 Jul 2019 10:19:48 +0800
+> > Baolin Wang <baolin.wang@linaro.org> wrote:
+> >  
+> > > Hi Jonathan,
+> > >
+> > > On Sun, 28 Jul 2019 at 01:27, Jonathan Cameron <jic23@kernel.org> wrote:  
+> > > >
+> > > > On Thu, 25 Jul 2019 14:33:50 +0800
+> > > > Baolin Wang <baolin.wang@linaro.org> wrote:
+> > > >  
+> > > > > From: Freeman Liu <freeman.liu@unisoc.com>
+> > > > >
+> > > > > On Spreadtrum platform, the headphone will read one ADC channel multiple
+> > > > > times to identify the headphone type, and the headphone identification is
+> > > > > sensitive of the ADC reading time. And we found it will take longer time
+> > > > > to reading ADC data by using interrupt mode comparing with the polling
+> > > > > mode, thus we should change to polling mode to improve the efficiency
+> > > > > of reading data, which can identify the headphone type successfully.
+> > > > >
+> > > > > Signed-off-by: Freeman Liu <freeman.liu@unisoc.com>
+> > > > > Signed-off-by: Baolin Wang <baolin.wang@linaro.org>  
+> > > >
+> > > > Hi,
+> > > >
+> > > > My concerns with this sort of approach is that we may be sacrificing power
+> > > > efficiency for some usecases to support one demanding one.
+> > > >
+> > > > The maximum sleep time is 1 second (I think) which is probably too long
+> > > > to poll a register for in general.  
+> > >
+> > > 1 second is the timeout time, that means something wrong when reading
+> > > the data taking 1 second, and we will poll the register status every
+> > > 500 us.
+> > > From the testing, polling mode takes less time than interrupt mode
+> > > when reading ADC data multiple times, so polling mode did not
+> > > sacrifice power
+> > > efficiency.  
+> >
+> > Hmm.  I'll go with a probably on that, depends on interrupt response
+> > latency etc so isn't entirely obvious.  Faster response doesn't necessarily
+> > mean lower power.
+> >  
+> > >  
+> > > > Is there some way we can bound that time and perhaps switch between
+> > > > interrupt and polling modes depending on how long we expect to wait?  
+> > >
+> > > I do not think the interrupt mode is needed any more, since the ADC
+> > > reading is so fast enough usually. Thanks.  
+> > The reason for interrupts in such devices is usually precisely the opposite.
+> >
+> > You do it because things are slow enough that you can go to sleep
+> > for a long time before the interrupt occurs.
+> >
+> > So question becomes whether there are circumstances in which we are
+> > running with long timescales and would benefit from using interrupts.  
+> 
+> From our testing, the ADC version time is usually about 100us, it will
+> be faster to get data if we poll every 50us in this case. But if we
+> change to use interrupt mode, it will take millisecond level time to
+> get data. That will cause problems for those time sensitive scenarios,
+> like headphone detection, that's the main reason we can not use
+> interrupt mode.
+> 
+> For those non-time-sensitive scenarios, yes, I agree with you, the
+> interrupt mode will get a better power efficiency. But ADC driver can
+> not know what scenarios asked by consumers, so changing to polling
+> mode seems the easiest way to solve the problem, and we've applied
+> this patch in our downstream kernel for a while, we did not see any
+> other problem.
+> 
+> Thanks for your comments.
 
-diff --git a/drivers/iio/adc/hi8435.c b/drivers/iio/adc/hi8435.c
-index c15f0e154e4d..fe1341383d30 100644
---- a/drivers/iio/adc/hi8435.c
-+++ b/drivers/iio/adc/hi8435.c
-@@ -456,6 +456,11 @@ static irqreturn_t hi8435_trigger_handler(int irq, void *private)
- 	return IRQ_HANDLED;
- }
- 
-+static void hi8435_triggered_event_cleanup(void *data)
-+{
-+	iio_triggered_event_cleanup(data);
-+}
-+
- static int hi8435_probe(struct spi_device *spi)
- {
- 	struct iio_dev *idev;
-@@ -513,26 +518,18 @@ static int hi8435_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
--	ret = iio_device_register(idev);
-+	ret = devm_add_action_or_reset(&spi->dev,
-+				       hi8435_triggered_event_cleanup,
-+				       idev);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_iio_device_register(&spi->dev, idev);
- 	if (ret < 0) {
- 		dev_err(&spi->dev, "unable to register device\n");
--		goto unregister_triggered_event;
-+		return ret;
- 	}
- 
--	return 0;
--
--unregister_triggered_event:
--	iio_triggered_event_cleanup(idev);
--	return ret;
--}
--
--static int hi8435_remove(struct spi_device *spi)
--{
--	struct iio_dev *idev = spi_get_drvdata(spi);
--
--	iio_device_unregister(idev);
--	iio_triggered_event_cleanup(idev);
--
- 	return 0;
- }
- 
-@@ -554,7 +551,6 @@ static struct spi_driver hi8435_driver = {
- 		.of_match_table	= of_match_ptr(hi8435_dt_ids),
- 	},
- 	.probe		= hi8435_probe,
--	.remove		= hi8435_remove,
- 	.id_table	= hi8435_id,
- };
- module_spi_driver(hi8435_driver);
--- 
-2.21.0
+OK. It's not ideal but sometimes such is life ;)
+
+So last question - fix or not?  If a fix, can I have a fixes tag
+please.
+
+Thanks,
+
+Jonathan
+
+> 
 

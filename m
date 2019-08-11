@@ -2,156 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 920D2891B6
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Aug 2019 14:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50A6C892AD
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Aug 2019 18:47:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726417AbfHKMvy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Aug 2019 08:51:54 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:46707 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726214AbfHKMvy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Aug 2019 08:51:54 -0400
-Received: by mail-pf1-f193.google.com with SMTP id q139so120133pfc.13;
-        Sun, 11 Aug 2019 05:51:54 -0700 (PDT)
+        id S1726011AbfHKQrS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Aug 2019 12:47:18 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:45336 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725939AbfHKQrS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Aug 2019 12:47:18 -0400
+Received: by mail-qk1-f193.google.com with SMTP id m2so1497163qki.12;
+        Sun, 11 Aug 2019 09:47:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9vaOsX6xjsXhfgGchvNQGFFfuLtXqJtssGmMQXkZBaE=;
-        b=aJ4ML8UBq0EMN3lbtl5fIskSyMSoFQd1sjRYEGSfzg3X4NSo/Zvzb6qCEeUFMoLCpZ
-         8T7uUMYctR/eq+VswZWaYd3XJkm7rvk+c5l+9sRUl3eNwJcQZbiMJ6COfiaX+909QP8z
-         v+O8U7Of7JHA3XWOvaA9deqxaBsrfGcODARASOuN5ZvySO7JYwMfuS+nJyn89WJCOOmh
-         rkr622UtmNtn4hgX2r9BlT1RX1utpEbn6A22HRjMrmcu2OEyS38eHkPcmJqs7v1Pv7CB
-         m3tGed8JRAZ4ePcI7DkXbtSmDen6Lm1KYeN6z+wGWlJpGxkWNFQuA7qcoVU5GYx6vHrJ
-         VCWA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=sIscX+Dcb2K+j96+0aYkQgwjXzBYA4SGfe0HBSClU4U=;
+        b=SmkBsObXwZBpsPIYRRG4Q0lF0YbM1tGZFXc6N0THDDVD6q4q6tYkrmX3Tum674bCu8
+         tXMpSPRgFTv2asOGQmoQ7C+m2zMPCDZG/x/gqMGBFb+ZBwkBO9CikjAzNUS3t+yTVQFI
+         8LrWIaBsePJsfUok3y6ir2jnJJZ4/u7IExKvGdA0zj6y39YkUjJbC/zWadOIlRcglBvj
+         vgwocUPPYrAmzXWYFWBOf/mRFNL3aRIrKx5GBs19/qYmYGnEYo0e8XohoBO6fKB0hpjJ
+         PqVRYXLL+eGJy3FEz8D8OyrLOoRZtk70UsmMfgqXLweWZAkZnZ8bqrc6D5AAyJtLKfyj
+         1s2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9vaOsX6xjsXhfgGchvNQGFFfuLtXqJtssGmMQXkZBaE=;
-        b=geF9i8u6edY5hzsxwQ4PZmLmD7n7A2vdbNwDAAEFLITW0UZjrDede15mwvw/j/tzy7
-         xbISaxYXYTltJ6p3KRUU/Wt0MeEhBK9u6qZfTuz4YXm3HdVZZUV26wPEBIFuzhvSyqVp
-         uLDnznX/TfW6Uma9Z+3ax09HYFNg45BhKv6AOffjhaSV5Yt+dmP3dAAmHFxAR7BqcMEP
-         cnt3w26Isr3UrHmpZRFzQ2tHac6yFc3/FNdnxHpECZ7GKrwDXln6URVLxrPzPcQH2Cff
-         RD2H7mF9o4Bom2ICE/VZIUam1l9qH1kh/W7Wxnc5dv2vmB3UvQaDQBPqkSiHyz7p19me
-         mVpQ==
-X-Gm-Message-State: APjAAAVVPpGUtGODFPwOQHd/OVeIQPvQLAB4kg96jcASgEJznfVtCUZv
-        mc2nceSrKoRqPUEyjh3vG9o=
-X-Google-Smtp-Source: APXvYqwByWhxupnx1SrLkMZznaYmlTnoc9+D/BV9YZx8LHuRDAcracIy4O0BUoe95HVVtmp/fTk7Nw==
-X-Received: by 2002:a62:1a45:: with SMTP id a66mr5354560pfa.142.1565527913856;
-        Sun, 11 Aug 2019 05:51:53 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
-        by smtp.gmail.com with ESMTPSA id p13sm12664500pjb.30.2019.08.11.05.51.50
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sun, 11 Aug 2019 05:51:52 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v2] iio: adc: max1027: Use device-managed APIs
-Date:   Sun, 11 Aug 2019 20:51:46 +0800
-Message-Id: <20190811125146.21355-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=sIscX+Dcb2K+j96+0aYkQgwjXzBYA4SGfe0HBSClU4U=;
+        b=Z2Hj13UzXKm1V/2gAxNZYvrZdFx7cuI5OvU6vuq9Dl+8+NLa9q8oJvPe6cMW4CESej
+         O+D/aC9wMi0o5SsT6L+f0ttsDtt0iWPseOLgtu/otVhZIb5RHPjZDoEb2kkInxEY6CVY
+         Xqj5RH+5S5ulOnajBwEQvhKWWmA/K8jDbmoIeGSETAXAY802DnVJDHgH5x5VRbZTQI3c
+         v/fqh7/JK94A1kIfEcRg/5RCJvWP74lAOdeTBySVmFr2MJrzTrvRsfsfXp+mdSCeeC3V
+         Vjgce+NbucP3Ag2ZLrZf2VSSDfSj+R5cpokZ4MlBOINaT4f3Te/Jx4HYXu83WAAdpkrf
+         ymfw==
+X-Gm-Message-State: APjAAAXOFsZ8bzcPYDB9+tu8NdnigJyHpkC6niJtmbO/SYetChzel18r
+        8z1HIEYSSp9odqrRybUYPf72bPx+2jupZm11IxI=
+X-Google-Smtp-Source: APXvYqwxmAL/qjnGtvMpV9nddlEzX8tmgNVKlSc+PW1N3fJXh+ML2UvGuETAMWpg0bQOMt/6QSDARANlAm14W+Kd8nM=
+X-Received: by 2002:a37:a484:: with SMTP id n126mr27060726qke.73.1565542037020;
+ Sun, 11 Aug 2019 09:47:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+References: <20190810150058.3509-1-rodrigorsdc@gmail.com> <20190811094322.063ad682@archlinux>
+In-Reply-To: <20190811094322.063ad682@archlinux>
+From:   Rodrigo Ribeiro <rodrigorsdc@gmail.com>
+Date:   Sun, 11 Aug 2019 13:47:04 -0300
+Message-ID: <CAOeBkLqGe-5LwBq1yrX_F8kNn2UK-7+7H+AOZPAqKS5OKHuYkA@mail.gmail.com>
+Subject: Re: [PATCH] staging: iio: accel: adis16240: Improve readability on
+ write_raw function
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        LKML <linux-kernel@vger.kernel.org>, kernel-usp@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use device-managed APIs to simplify the code.
+Em dom, 11 de ago de 2019 =C3=A0s 05:43, Jonathan Cameron
+<jic23@kernel.org> escreveu:
+>
+> On Sat, 10 Aug 2019 12:00:58 -0300
+> Rodrigo <rodrigorsdc@gmail.com> wrote:
+>
+> > From: Rodrigo Carvalho <rodrigorsdc@gmail.com>
+> >
+> > Improve readability by using GENMASK macro, changing switch statement
+> > by if statement and removing unnecessary local variables.
+>
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
-Changes in v2:
-  - Delete the debug print and _remove.
+Hi Jonathan. Thanks for reviewing!
 
- drivers/iio/adc/max1027.c | 38 +++++++-------------------------------
- 1 file changed, 7 insertions(+), 31 deletions(-)
+> From your description it sounds like multiple changes in one patch.
+> Always preferable to have one type of change in a patch and more
+> small patches.
+>
+> Based on comments below, I would leave the switch statement alone,
+> but put in your GENMASK change as that one is good and gets
+> rid of the odd local variable 'bits' as well :)
+>
+> Thanks,
+>
+> Jonathan
+>
+>
+> >
+> > Signed-off-by: Rodrigo Ribeiro Carvalho <rodrigorsdc@gmail.com>
+> > ---
+> >  drivers/staging/iio/accel/adis16240.c | 16 +++++++---------
+> >  1 file changed, 7 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/ii=
+o/accel/adis16240.c
+> > index 62f4b3b1b457..68f165501389 100644
+> > --- a/drivers/staging/iio/accel/adis16240.c
+> > +++ b/drivers/staging/iio/accel/adis16240.c
+> > @@ -309,17 +309,15 @@ static int adis16240_write_raw(struct iio_dev *in=
+dio_dev,
+> >                              long mask)
+> >  {
+> >       struct adis *st =3D iio_priv(indio_dev);
+> > -     int bits =3D 10;
+> > -     s16 val16;
+> > +     int m;
+> >       u8 addr;
+> >
+> > -     switch (mask) {
+> > -     case IIO_CHAN_INFO_CALIBBIAS:
+> > -             val16 =3D val & ((1 << bits) - 1);
+> > -             addr =3D adis16240_addresses[chan->scan_index][0];
+> > -             return adis_write_reg_16(st, addr, val16);
+> > -     }
+> > -     return -EINVAL;
+> > +     if (mask !=3D IIO_CHAN_INFO_CALIBBIAS)
+> > +             return -EINVAL;
+>
+> Hmm. We generally encourage the use of switch statements in these
+> cases because they reduce churn as new features are added.
+>
+> In this particular case, we don't have any control of sampling frequency
+> in the driver, but the hardware appears to support it (table 23 on the
+> datasheet).
 
-diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-index da84adfdb819..214883458582 100644
---- a/drivers/iio/adc/max1027.c
-+++ b/drivers/iio/adc/max1027.c
-@@ -427,8 +427,9 @@ static int max1027_probe(struct spi_device *spi)
- 		return -ENOMEM;
- 	}
- 
--	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
--					 &max1027_trigger_handler, NULL);
-+	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-+					&iio_pollfunc_store_time,
-+					&max1027_trigger_handler, NULL);
- 	if (ret < 0) {
- 		dev_err(&indio_dev->dev, "Failed to setup buffer\n");
- 		return ret;
-@@ -439,7 +440,7 @@ static int max1027_probe(struct spi_device *spi)
- 	if (st->trig == NULL) {
- 		ret = -ENOMEM;
- 		dev_err(&indio_dev->dev, "Failed to allocate iio trigger\n");
--		goto fail_trigger_alloc;
-+		return ret;
- 	}
- 
- 	st->trig->ops = &max1027_trigger_ops;
-@@ -454,7 +455,7 @@ static int max1027_probe(struct spi_device *spi)
- 					spi->dev.driver->name, st->trig);
- 	if (ret < 0) {
- 		dev_err(&indio_dev->dev, "Failed to allocate IRQ.\n");
--		goto fail_dev_register;
-+		return ret;
- 	}
- 
- 	/* Disable averaging */
-@@ -462,34 +463,10 @@ static int max1027_probe(struct spi_device *spi)
- 	ret = spi_write(st->spi, &st->reg, 1);
- 	if (ret < 0) {
- 		dev_err(&indio_dev->dev, "Failed to configure averaging register\n");
--		goto fail_dev_register;
--	}
--
--	ret = iio_device_register(indio_dev);
--	if (ret < 0) {
--		dev_err(&indio_dev->dev, "Failed to register iio device\n");
--		goto fail_dev_register;
-+		return ret;
- 	}
- 
--	return 0;
--
--fail_dev_register:
--fail_trigger_alloc:
--	iio_triggered_buffer_cleanup(indio_dev);
--
--	return ret;
--}
--
--static int max1027_remove(struct spi_device *spi)
--{
--	struct iio_dev *indio_dev = spi_get_drvdata(spi);
--
--	pr_debug("%s: remove(spi = 0x%p)\n", __func__, spi);
--
--	iio_device_unregister(indio_dev);
--	iio_triggered_buffer_cleanup(indio_dev);
--
--	return 0;
-+	return devm_iio_device_register(&spi->dev, indio_dev);
- }
- 
- static struct spi_driver max1027_driver = {
-@@ -498,7 +475,6 @@ static struct spi_driver max1027_driver = {
- 		.of_match_table = of_match_ptr(max1027_adc_dt_ids),
- 	},
- 	.probe		= max1027_probe,
--	.remove		= max1027_remove,
- 	.id_table	= max1027_id,
- };
- module_spi_driver(max1027_driver);
--- 
-2.20.1
+On drivers of same kind out of staging (adis16209 and adis16201), sampling
+frequency writing are not implemented, even though datasheets suggest a reg=
+ister
+writing for this. I can try to implement if it is a good one.
 
+> > +
+> > +     m =3D GENMASK(9, 0);
+> > +     addr =3D adis16240_addresses[chan->scan_index][0];
+> > +     return adis_write_reg_16(st, addr, val & m);
+> Why the local variable m?  Can we not just do
+>
+>         return adis_write_reg_16(st, addr, val & GENMASK(9, 0));
+>
+> If anything I think that is a little more readable than your
+> version.  There is a reasonable argument for just having
+> addr inline as well.
+>
+>         return adis_write_reg_16(st,
+>                                  adis16240_addresses[chan->scan_index][0]=
+,
+>                                  val & GENMASK(9, 0));
+>
+> However, given I'm suggesting you leave it as a switch statement, it
+> will be too long with addr inline.
+>
+> >  }
+> >
+> >  static const struct iio_chan_spec adis16240_channels[] =3D {
+>
+
+Regards,
+Rodrigo

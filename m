@@ -2,160 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65B7F89563
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2019 04:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 074DC89916
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2019 10:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726452AbfHLCh5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Aug 2019 22:37:57 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:42584 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726307AbfHLCh5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Aug 2019 22:37:57 -0400
-Received: by mail-ot1-f67.google.com with SMTP id j7so9003434ota.9
-        for <linux-iio@vger.kernel.org>; Sun, 11 Aug 2019 19:37:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vVPUyU0J20dZaP14ZLtarTnmhaUFJnFvaSIBf/iSdHg=;
-        b=HqKR6v7rUVKSqH/801mtUb1b78SxT444rRCVYLlXNrRvp07ibQehYufIH7zwzwDso/
-         IS581UNC9Z8ELxE5VeWHqzl8I0+7/AQXjYXv8hZ5jV2ZTVsYRXf20Gb0EYxfA8/z28sr
-         MRqdBnWVDqq/ZnLG/D42iTpl6ZxPuVa3lXzrwNHq9DwTray9m9bCOh2gpZ+EmIDRQE3X
-         POb1arab6XlIRV+ysy2faIH4gXg345Z0QVuhpy+zodgkrp1iLRmWiEXFWjK5cfPbIixu
-         g8XwfRwS0rwmmuWSs5qBONARdmSm+i2T/G17QvWwhQ6D0z1fPGRlBZJ5mIPEQzYiiosh
-         Qc2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vVPUyU0J20dZaP14ZLtarTnmhaUFJnFvaSIBf/iSdHg=;
-        b=XwzncLI6TVkgpim4chsH3ikjvsWLwWJ+cRysK2vvGdsbhKydU9ycMrAnRujM/fd5ZF
-         GXXtnqJ8XpdBrvWQM8VGeJ8gF/8EKjBu+cB6a/WyLISNdOmWNTCrfD8O6nT6aAOflQpW
-         SUFHxUSjxiT673vS8ZFYV05LzCb3k61d55f9MQHRFGhYGxzF/nZ25vvf0dkUUQhhAgEe
-         hjCU7PDUvga+zryYAwWd8b0V0HTmo/oGwpuMsYwTpO28KLkut0DmPpVp+7b7Ow3ZvjzT
-         RZsnOWeTH59V+gvl6vFV7uwl2rV1g/NyDwYRIC4iWaOpVerMqObV+pEzXgxuPYTnLAdW
-         5x1g==
-X-Gm-Message-State: APjAAAUDYLwLC6V+2tz86zapX2ZvsttcSY0qG8o18+WZ6uR+29fs3QfS
-        T++ZtXGsmIBvjgttQR47mFeXn5zVquELXZpfmYdZvg==
-X-Google-Smtp-Source: APXvYqy4/uubGIOKb1mot88/KCwAhXdUYNlH4ftJciezuK0kUKzJ1Q2YpBEmCO17/xgWuQUtu7VXOSNPqtPZCFhbso4=
-X-Received: by 2002:a9d:590d:: with SMTP id t13mr18027546oth.281.1565577475725;
- Sun, 11 Aug 2019 19:37:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <1870ea18729f93fb36694affaf7e9443733dd988.1564035575.git.baolin.wang@linaro.org>
- <20190727182709.037fc595@archlinux> <CAMz4kuLLSYw0JRLRVN-JegxZcK1bdv4K2m4mVu7oep6xfb+xxg@mail.gmail.com>
- <20190805145037.0a03f21e@archlinux> <CAMz4kuK4GFfOi3vGvFOLdRfmqrwVLDs5CN+Xp_it3jG4=iKi=w@mail.gmail.com>
- <20190811090251.5fbd7d75@archlinux>
-In-Reply-To: <20190811090251.5fbd7d75@archlinux>
-From:   Baolin Wang <baolin.wang@linaro.org>
-Date:   Mon, 12 Aug 2019 10:37:44 +0800
-Message-ID: <CAMz4ku+ansL1RJScmJRsvKR-dJVLNjAZqgTFqRSEJWQSYUy_Sg@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: sc27xx: Change to polling mode to read data
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        id S1727152AbfHLI5n convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 12 Aug 2019 04:57:43 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:56574 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727167AbfHLI5n (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 12 Aug 2019 04:57:43 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 9EE8799132131362ED60;
+        Mon, 12 Aug 2019 16:57:33 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS407-HUB.china.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Mon, 12 Aug 2019
+ 16:57:30 +0800
+Date:   Mon, 12 Aug 2019 09:57:17 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     Rodrigo Ribeiro <rodrigorsdc@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        freeman.liu@unisoc.com,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-iio@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-iio@vger.kernel.org>, <devel@driverdev.osuosl.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        <kernel-usp@googlegroups.com>
+Subject: Re: [PATCH] staging: iio: accel: adis16240: Improve readability on
+ write_raw function
+Message-ID: <20190812095717.00002918@huawei.com>
+In-Reply-To: <CAOeBkLqGe-5LwBq1yrX_F8kNn2UK-7+7H+AOZPAqKS5OKHuYkA@mail.gmail.com>
+References: <20190810150058.3509-1-rodrigorsdc@gmail.com>
+        <20190811094322.063ad682@archlinux>
+        <CAOeBkLqGe-5LwBq1yrX_F8kNn2UK-7+7H+AOZPAqKS5OKHuYkA@mail.gmail.com>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 11 Aug 2019 at 16:03, Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Tue, 6 Aug 2019 15:39:45 +0800
-> Baolin Wang <baolin.wang@linaro.org> wrote:
->
-> > Hi Jonathan,
-> >
-> > On Mon, 5 Aug 2019 at 21:50, Jonathan Cameron <jic23@kernel.org> wrote:
-> > >
-> > > On Mon, 29 Jul 2019 10:19:48 +0800
-> > > Baolin Wang <baolin.wang@linaro.org> wrote:
-> > >
-> > > > Hi Jonathan,
-> > > >
-> > > > On Sun, 28 Jul 2019 at 01:27, Jonathan Cameron <jic23@kernel.org> wrote:
-> > > > >
-> > > > > On Thu, 25 Jul 2019 14:33:50 +0800
-> > > > > Baolin Wang <baolin.wang@linaro.org> wrote:
-> > > > >
-> > > > > > From: Freeman Liu <freeman.liu@unisoc.com>
-> > > > > >
-> > > > > > On Spreadtrum platform, the headphone will read one ADC channel multiple
-> > > > > > times to identify the headphone type, and the headphone identification is
-> > > > > > sensitive of the ADC reading time. And we found it will take longer time
-> > > > > > to reading ADC data by using interrupt mode comparing with the polling
-> > > > > > mode, thus we should change to polling mode to improve the efficiency
-> > > > > > of reading data, which can identify the headphone type successfully.
-> > > > > >
-> > > > > > Signed-off-by: Freeman Liu <freeman.liu@unisoc.com>
-> > > > > > Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-> > > > >
-> > > > > Hi,
-> > > > >
-> > > > > My concerns with this sort of approach is that we may be sacrificing power
-> > > > > efficiency for some usecases to support one demanding one.
-> > > > >
-> > > > > The maximum sleep time is 1 second (I think) which is probably too long
-> > > > > to poll a register for in general.
-> > > >
-> > > > 1 second is the timeout time, that means something wrong when reading
-> > > > the data taking 1 second, and we will poll the register status every
-> > > > 500 us.
-> > > > From the testing, polling mode takes less time than interrupt mode
-> > > > when reading ADC data multiple times, so polling mode did not
-> > > > sacrifice power
-> > > > efficiency.
-> > >
-> > > Hmm.  I'll go with a probably on that, depends on interrupt response
-> > > latency etc so isn't entirely obvious.  Faster response doesn't necessarily
-> > > mean lower power.
-> > >
-> > > >
-> > > > > Is there some way we can bound that time and perhaps switch between
-> > > > > interrupt and polling modes depending on how long we expect to wait?
-> > > >
-> > > > I do not think the interrupt mode is needed any more, since the ADC
-> > > > reading is so fast enough usually. Thanks.
-> > > The reason for interrupts in such devices is usually precisely the opposite.
-> > >
-> > > You do it because things are slow enough that you can go to sleep
-> > > for a long time before the interrupt occurs.
-> > >
-> > > So question becomes whether there are circumstances in which we are
-> > > running with long timescales and would benefit from using interrupts.
-> >
-> > From our testing, the ADC version time is usually about 100us, it will
-> > be faster to get data if we poll every 50us in this case. But if we
-> > change to use interrupt mode, it will take millisecond level time to
-> > get data. That will cause problems for those time sensitive scenarios,
-> > like headphone detection, that's the main reason we can not use
-> > interrupt mode.
-> >
-> > For those non-time-sensitive scenarios, yes, I agree with you, the
-> > interrupt mode will get a better power efficiency. But ADC driver can
-> > not know what scenarios asked by consumers, so changing to polling
-> > mode seems the easiest way to solve the problem, and we've applied
-> > this patch in our downstream kernel for a while, we did not see any
-> > other problem.
-> >
-> > Thanks for your comments.
->
-> OK. It's not ideal but sometimes such is life ;)
+On Sun, 11 Aug 2019 13:47:04 -0300
+Rodrigo Ribeiro <rodrigorsdc@gmail.com> wrote:
 
-Thanks for your understanding :)
+> Em dom, 11 de ago de 2019 às 05:43, Jonathan Cameron
+> <jic23@kernel.org> escreveu:
+> >
+> > On Sat, 10 Aug 2019 12:00:58 -0300
+> > Rodrigo <rodrigorsdc@gmail.com> wrote:
+> >  
+> > > From: Rodrigo Carvalho <rodrigorsdc@gmail.com>
+> > >
+> > > Improve readability by using GENMASK macro, changing switch statement
+> > > by if statement and removing unnecessary local variables.  
+> >  
+> 
+> Hi Jonathan. Thanks for reviewing!
+> 
+> > From your description it sounds like multiple changes in one patch.
+> > Always preferable to have one type of change in a patch and more
+> > small patches.
+> >
+> > Based on comments below, I would leave the switch statement alone,
+> > but put in your GENMASK change as that one is good and gets
+> > rid of the odd local variable 'bits' as well :)
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >
+> >  
+> > >
+> > > Signed-off-by: Rodrigo Ribeiro Carvalho <rodrigorsdc@gmail.com>
+> > > ---
+> > >  drivers/staging/iio/accel/adis16240.c | 16 +++++++---------
+> > >  1 file changed, 7 insertions(+), 9 deletions(-)
+> > >
+> > > diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/accel/adis16240.c
+> > > index 62f4b3b1b457..68f165501389 100644
+> > > --- a/drivers/staging/iio/accel/adis16240.c
+> > > +++ b/drivers/staging/iio/accel/adis16240.c
+> > > @@ -309,17 +309,15 @@ static int adis16240_write_raw(struct iio_dev *indio_dev,
+> > >                              long mask)
+> > >  {
+> > >       struct adis *st = iio_priv(indio_dev);
+> > > -     int bits = 10;
+> > > -     s16 val16;
+> > > +     int m;
+> > >       u8 addr;
+> > >
+> > > -     switch (mask) {
+> > > -     case IIO_CHAN_INFO_CALIBBIAS:
+> > > -             val16 = val & ((1 << bits) - 1);
+> > > -             addr = adis16240_addresses[chan->scan_index][0];
+> > > -             return adis_write_reg_16(st, addr, val16);
+> > > -     }
+> > > -     return -EINVAL;
+> > > +     if (mask != IIO_CHAN_INFO_CALIBBIAS)
+> > > +             return -EINVAL;  
+> >
+> > Hmm. We generally encourage the use of switch statements in these
+> > cases because they reduce churn as new features are added.
+> >
+> > In this particular case, we don't have any control of sampling frequency
+> > in the driver, but the hardware appears to support it (table 23 on the
+> > datasheet).  
+> 
+> On drivers of same kind out of staging (adis16209 and adis16201), sampling
+> frequency writing are not implemented, even though datasheets suggest a register
+> writing for this. I can try to implement if it is a good one.
 
->
-> So last question - fix or not?  If a fix, can I have a fixes tag
-> please.
+I would be a bit nervous about doing so if you don't have
+hardware, and we can't find anyone who is setup to test the device.
 
-This is a bigger patch, I am afraid it can not be merged into stable
-kernel, and original code can work at most scenarios. So I think no
-need add stable tag for this patch. Thanks.
+Obviously if you can get it tested one way or the other, it would be good
+to add support.
 
--- 
-Baolin Wang
-Best Regards
+
+Thanks,
+
+J
+
+> 
+> > > +
+> > > +     m = GENMASK(9, 0);
+> > > +     addr = adis16240_addresses[chan->scan_index][0];
+> > > +     return adis_write_reg_16(st, addr, val & m);  
+> > Why the local variable m?  Can we not just do
+> >
+> >         return adis_write_reg_16(st, addr, val & GENMASK(9, 0));
+> >
+> > If anything I think that is a little more readable than your
+> > version.  There is a reasonable argument for just having
+> > addr inline as well.
+> >
+> >         return adis_write_reg_16(st,
+> >                                  adis16240_addresses[chan->scan_index][0],
+> >                                  val & GENMASK(9, 0));
+> >
+> > However, given I'm suggesting you leave it as a switch statement, it
+> > will be too long with addr inline.
+> >  
+> > >  }
+> > >
+> > >  static const struct iio_chan_spec adis16240_channels[] = {  
+> >  
+> 
+> Regards,
+> Rodrigo
+
+

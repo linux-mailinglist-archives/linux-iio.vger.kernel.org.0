@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 962508B13A
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2019 09:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A4DB8B13D
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2019 09:36:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727771AbfHMHgb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Aug 2019 03:36:31 -0400
-Received: from comms.puri.sm ([159.203.221.185]:43660 "EHLO comms.puri.sm"
+        id S1727605AbfHMHgg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Aug 2019 03:36:36 -0400
+Received: from comms.puri.sm ([159.203.221.185]:43680 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727605AbfHMHgb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 13 Aug 2019 03:36:31 -0400
+        id S1727796AbfHMHgg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 13 Aug 2019 03:36:36 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 0CF94E0301;
-        Tue, 13 Aug 2019 00:36:30 -0700 (PDT)
+        by comms.puri.sm (Postfix) with ESMTP id 300C3E030B;
+        Tue, 13 Aug 2019 00:36:34 -0700 (PDT)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id itKuBJg5QQdZ; Tue, 13 Aug 2019 00:36:29 -0700 (PDT)
+        with ESMTP id xFwXyHI2Sh7X; Tue, 13 Aug 2019 00:36:32 -0700 (PDT)
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
 To:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
         lars@metafoo.de, pmeerw@pmeerw.net
@@ -24,9 +24,9 @@ Cc:     robh+dt@kernel.org, mark.rutland@arm.com,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Martin Kepplinger <martin.kepplinger@puri.sm>
-Subject: [PATCH v4 1/3] iio: imu: st_lsm6sdx: move register definitions to sensor_settings struct
-Date:   Tue, 13 Aug 2019 09:35:31 +0200
-Message-Id: <20190813073533.8007-2-martin.kepplinger@puri.sm>
+Subject: [PATCH v4 2/3] iio: imu: st_lsm6dsx: add support for accel/gyro unit of lsm9sd1
+Date:   Tue, 13 Aug 2019 09:35:32 +0200
+Message-Id: <20190813073533.8007-3-martin.kepplinger@puri.sm>
 In-Reply-To: <20190813073533.8007-1-martin.kepplinger@puri.sm>
 References: <20190813073533.8007-1-martin.kepplinger@puri.sm>
 Content-Transfer-Encoding: 8bit
@@ -35,155 +35,221 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Move some register definitions to the per-device array of struct
-st_lsm6dsx_sensor_settings in order to simplify adding new sensor
-devices to the driver.
+The LSM9DS1's accelerometer / gyroscope unit and it's magnetometer (separately
+supported in iio/magnetometer/st_magn*) are located on a separate i2c addresses
+on the bus.
 
-Also, remove completely unused register definitions.
+For the datasheet, see https://www.st.com/resource/en/datasheet/lsm9ds1.pdf
+
+Treat it just like the LSM6* devices and, despite it's name, hook it up
+to the st_lsm6dsx driver, using it's basic functionality.
+
+accelerometer and gyroscope are not independently clocked. It runs at the gyro
+frequencies if both are enabled, see chapter 7.12 of the datasheet.
+We could have handled this as a single IIO device but we have split
+it up to be more consistent with the other more flexible devices.
 
 Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  6 ++++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 31 ++++++++++++++------
- 2 files changed, 28 insertions(+), 9 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/Kconfig           |  2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 87 ++++++++++++++++++++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  5 ++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  5 ++
+ 5 files changed, 100 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/iio/imu/st_lsm6dsx/Kconfig b/drivers/iio/imu/st_lsm6dsx/Kconfig
+index 939058b27746..77aa0e77212d 100644
+--- a/drivers/iio/imu/st_lsm6dsx/Kconfig
++++ b/drivers/iio/imu/st_lsm6dsx/Kconfig
+@@ -12,7 +12,7 @@ config IIO_ST_LSM6DSX
+ 	  Say yes here to build support for STMicroelectronics LSM6DSx imu
+ 	  sensor. Supported devices: lsm6ds3, lsm6ds3h, lsm6dsl, lsm6dsm,
+ 	  ism330dlc, lsm6dso, lsm6dsox, asm330lhh, lsm6dsr, lsm6ds3tr-c,
+-	  ism330dhcx
++	  ism330dhcx and the accelerometer/gyroscope of lsm9ds1.
+ 
+ 	  To compile this driver as a module, choose M here: the module
+ 	  will be called st_lsm6dsx.
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 4e8e67ae1632..c8f333902eb7 100644
+index c8f333902eb7..d03b5a2d8549 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -200,6 +200,9 @@ struct st_lsm6dsx_ext_dev_settings {
- /**
-  * struct st_lsm6dsx_settings - ST IMU sensor settings
-  * @wai: Sensor WhoAmI default value.
-+ * @int1_addr: Control Register address for INT1
-+ * @int2_addr: Control Register address for INT2
-+ * @reset_addr: register address for reset/reboot
-  * @max_fifo_size: Sensor max fifo length in FIFO words.
-  * @id: List of hw id/device name supported by the driver configuration.
-  * @channels: IIO channels supported by the device.
-@@ -213,6 +216,9 @@ struct st_lsm6dsx_ext_dev_settings {
-  */
- struct st_lsm6dsx_settings {
- 	u8 wai;
-+	u8 int1_addr;
-+	u8 int2_addr;
-+	u8 reset_addr;
- 	u16 max_fifo_size;
- 	struct {
- 		enum st_lsm6dsx_hw_id hw_id;
+@@ -24,6 +24,7 @@
+ #define ST_LSM6DSR_DEV_NAME	"lsm6dsr"
+ #define ST_LSM6DS3TRC_DEV_NAME	"lsm6ds3tr-c"
+ #define ST_ISM330DHCX_DEV_NAME	"ism330dhcx"
++#define ST_LSM9DS1_DEV_NAME	"lsm9ds1"
+ 
+ enum st_lsm6dsx_hw_id {
+ 	ST_LSM6DS3_ID,
+@@ -37,6 +38,7 @@ enum st_lsm6dsx_hw_id {
+ 	ST_LSM6DSR_ID,
+ 	ST_LSM6DS3TRC_ID,
+ 	ST_ISM330DHCX_ID,
++	ST_LSM9DS1_ID,
+ 	ST_LSM6DSX_MAX_ID,
+ };
+ 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 85824d6739ee..56e1c5262a2c 100644
+index 56e1c5262a2c..f038bb06f635 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -49,17 +49,12 @@
+@@ -10,6 +10,8 @@
+  * +-125/+-245/+-500/+-1000/+-2000 dps
+  * LSM6DSx series has an integrated First-In-First-Out (FIFO) buffer
+  * allowing dynamic batching of sensor data.
++ * LSM9DSx series is similar but includes an additional magnetometer, handled
++ * by a different driver.
+  *
+  * Supported sensors:
+  * - LSM6DS3:
+@@ -30,6 +32,13 @@
+  *   - Gyroscope supported full-scale [dps]: +-125/+-245/+-500/+-1000/+-2000
+  *   - FIFO size: 3KB
+  *
++ * - LSM9DS1:
++ *   - Accelerometer supported ODR [Hz]: 10, 50, 119, 238, 476, 952
++ *   - Accelerometer supported full-scale [g]: +-2/+-4/+-8/+-16
++ *   - Gyroscope supported ODR [Hz]: 15, 60, 119, 238, 476, 952
++ *   - Gyroscope supported full-scale [dps]: +-245/+-500/+-2000
++ *   - FIFO size: 32
++ *
+  * Copyright 2016 STMicroelectronics Inc.
+  *
+  * Lorenzo Bianconi <lorenzo.bianconi@st.com>
+@@ -70,7 +79,85 @@ static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
+ 	IIO_CHAN_SOFT_TIMESTAMP(3),
+ };
  
- #include "st_lsm6dsx.h"
- 
--#define ST_LSM6DSX_REG_INT1_ADDR		0x0d
--#define ST_LSM6DSX_REG_INT2_ADDR		0x0e
- #define ST_LSM6DSX_REG_FIFO_FTH_IRQ_MASK	BIT(3)
- #define ST_LSM6DSX_REG_WHOAMI_ADDR		0x0f
--#define ST_LSM6DSX_REG_RESET_ADDR		0x12
- #define ST_LSM6DSX_REG_RESET_MASK		BIT(0)
- #define ST_LSM6DSX_REG_BOOT_MASK		BIT(7)
- #define ST_LSM6DSX_REG_BDU_ADDR			0x12
- #define ST_LSM6DSX_REG_BDU_MASK			BIT(6)
--#define ST_LSM6DSX_REG_INT2_ON_INT1_ADDR	0x13
--#define ST_LSM6DSX_REG_INT2_ON_INT1_MASK	BIT(5)
- 
- static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
- 	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
-@@ -78,6 +73,9 @@ static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
++static const struct iio_chan_spec st_lsm9dsx_gyro_channels[] = {
++	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x18, IIO_MOD_X, 0),
++	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x1a, IIO_MOD_Y, 1),
++	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x1c, IIO_MOD_Z, 2),
++	IIO_CHAN_SOFT_TIMESTAMP(3),
++};
++
  static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
++	{
++		.wai = 0x68,
++		.int1_addr = 0x0c,
++		.int2_addr = 0x0d,
++		.reset_addr = 0x22,
++		.max_fifo_size = 32,
++		.id = {
++			{
++				.hw_id = ST_LSM9DS1_ID,
++				.name = ST_LSM9DS1_DEV_NAME,
++			},
++		},
++		.channels = {
++			[ST_LSM6DSX_ID_ACC] = {
++				.chan = st_lsm6dsx_acc_channels,
++				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
++			},
++			[ST_LSM6DSX_ID_GYRO] = {
++				.chan = st_lsm9dsx_gyro_channels,
++				.len = ARRAY_SIZE(st_lsm9dsx_gyro_channels),
++			},
++		},
++		.odr_table = {
++			[ST_LSM6DSX_ID_ACC] = {
++				.reg = {
++					.addr = 0x20,
++					.mask = GENMASK(7, 5),
++				},
++				.odr_avl[0] = {  10, 0x01 },
++				.odr_avl[1] = {  50, 0x02 },
++				.odr_avl[2] = { 119, 0x03 },
++				.odr_avl[3] = { 238, 0x04 },
++				.odr_avl[4] = { 476, 0x05 },
++				.odr_avl[5] = { 952, 0x06 },
++			},
++			[ST_LSM6DSX_ID_GYRO] = {
++				.reg = {
++					.addr = 0x10,
++					.mask = GENMASK(7, 5),
++				},
++				.odr_avl[0] = {  15, 0x01 },
++				.odr_avl[1] = {  60, 0x02 },
++				.odr_avl[2] = { 119, 0x03 },
++				.odr_avl[3] = { 238, 0x04 },
++				.odr_avl[4] = { 476, 0x05 },
++				.odr_avl[5] = { 952, 0x06 },
++			},
++		},
++		.fs_table = {
++			[ST_LSM6DSX_ID_ACC] = {
++				.reg = {
++					.addr = 0x20,
++					.mask = GENMASK(4, 3),
++				},
++				.fs_avl[0] = {  599, 0x0 },
++				.fs_avl[1] = { 1197, 0x2 },
++				.fs_avl[2] = { 2394, 0x3 },
++				.fs_avl[3] = { 4788, 0x1 },
++			},
++			[ST_LSM6DSX_ID_GYRO] = {
++				.reg = {
++					.addr = 0x10,
++					.mask = GENMASK(4, 3),
++				},
++				.fs_avl[0] = { IIO_DEGREE_TO_RAD(245), 0x0 },
++				.fs_avl[1] = { IIO_DEGREE_TO_RAD(500), 0x1 },
++				.fs_avl[2] = { IIO_DEGREE_TO_RAD(0), 0x2 },
++				.fs_avl[3] = { IIO_DEGREE_TO_RAD(2000), 0x3 },
++			},
++		},
++	},
  	{
  		.wai = 0x69,
-+		.int1_addr = 0x0d,
-+		.int2_addr = 0x0e,
-+		.reset_addr = 0x12,
- 		.max_fifo_size = 1365,
- 		.id = {
- 			{
-@@ -186,6 +184,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		.int1_addr = 0x0d,
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+index 15c6aa5b6caa..2f1b30ff083b 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+@@ -83,6 +83,10 @@ static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
+ 		.compatible = "st,ism330dhcx",
+ 		.data = (void *)ST_ISM330DHCX_ID,
  	},
- 	{
- 		.wai = 0x69,
-+		.int1_addr = 0x0d,
-+		.int2_addr = 0x0e,
-+		.reset_addr = 0x12,
- 		.max_fifo_size = 682,
- 		.id = {
- 			{
-@@ -294,6 +295,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
++	{
++		.compatible = "st,lsm9ds1",
++		.data = (void *)ST_LSM9DS1_ID,
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
+@@ -99,6 +103,7 @@ static const struct i2c_device_id st_lsm6dsx_i2c_id_table[] = {
+ 	{ ST_LSM6DSR_DEV_NAME, ST_LSM6DSR_ID },
+ 	{ ST_LSM6DS3TRC_DEV_NAME, ST_LSM6DS3TRC_ID },
+ 	{ ST_ISM330DHCX_DEV_NAME, ST_ISM330DHCX_ID },
++	{ ST_LSM9DS1_DEV_NAME, ST_LSM9DS1_ID },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(i2c, st_lsm6dsx_i2c_id_table);
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+index a8430ee11310..421ce704f346 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+@@ -83,6 +83,10 @@ static const struct of_device_id st_lsm6dsx_spi_of_match[] = {
+ 		.compatible = "st,ism330dhcx",
+ 		.data = (void *)ST_ISM330DHCX_ID,
  	},
- 	{
- 		.wai = 0x6a,
-+		.int1_addr = 0x0d,
-+		.int2_addr = 0x0e,
-+		.reset_addr = 0x12,
- 		.max_fifo_size = 682,
- 		.id = {
- 			{
-@@ -411,6 +415,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 	},
- 	{
- 		.wai = 0x6c,
-+		.int1_addr = 0x0d,
-+		.int2_addr = 0x0e,
-+		.reset_addr = 0x12,
- 		.max_fifo_size = 512,
- 		.id = {
- 			{
-@@ -540,6 +547,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 	},
- 	{
- 		.wai = 0x6b,
-+		.int1_addr = 0x0d,
-+		.int2_addr = 0x0e,
-+		.reset_addr = 0x12,
- 		.max_fifo_size = 512,
- 		.id = {
- 			{
-@@ -640,6 +650,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 	},
- 	{
- 		.wai = 0x6b,
-+		.int1_addr = 0x0d,
-+		.int2_addr = 0x0e,
-+		.reset_addr = 0x12,
- 		.max_fifo_size = 512,
- 		.id = {
- 			{
-@@ -1166,10 +1179,10 @@ static int st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw, u8 *drdy_reg)
- 
- 	switch (drdy_pin) {
- 	case 1:
--		*drdy_reg = ST_LSM6DSX_REG_INT1_ADDR;
-+		*drdy_reg = hw->settings->int1_addr;
- 		break;
- 	case 2:
--		*drdy_reg = ST_LSM6DSX_REG_INT2_ADDR;
-+		*drdy_reg = hw->settings->int2_addr;
- 		break;
- 	default:
- 		dev_err(hw->dev, "unsupported data ready pin\n");
-@@ -1269,7 +1282,7 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
- 	int err;
- 
- 	/* device sw reset */
--	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_RESET_ADDR,
-+	err = regmap_update_bits(hw->regmap, hw->settings->reset_addr,
- 				 ST_LSM6DSX_REG_RESET_MASK,
- 				 FIELD_PREP(ST_LSM6DSX_REG_RESET_MASK, 1));
- 	if (err < 0)
-@@ -1278,7 +1291,7 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
- 	msleep(50);
- 
- 	/* reload trimming parameter */
--	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_RESET_ADDR,
-+	err = regmap_update_bits(hw->regmap, hw->settings->reset_addr,
- 				 ST_LSM6DSX_REG_BOOT_MASK,
- 				 FIELD_PREP(ST_LSM6DSX_REG_BOOT_MASK, 1));
- 	if (err < 0)
++	{
++		.compatible = "st,lsm9ds1",
++		.data = (void *)ST_LSM9DS1_ID,
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, st_lsm6dsx_spi_of_match);
+@@ -99,6 +103,7 @@ static const struct spi_device_id st_lsm6dsx_spi_id_table[] = {
+ 	{ ST_LSM6DSR_DEV_NAME, ST_LSM6DSR_ID },
+ 	{ ST_LSM6DS3TRC_DEV_NAME, ST_LSM6DS3TRC_ID },
+ 	{ ST_ISM330DHCX_DEV_NAME, ST_ISM330DHCX_ID },
++	{ ST_LSM9DS1_DEV_NAME, ST_LSM9DS1_ID },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(spi, st_lsm6dsx_spi_id_table);
 -- 
 2.20.1
 

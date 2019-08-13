@@ -2,89 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBA568B40B
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2019 11:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E56E8B7DE
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2019 14:01:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727149AbfHMJ0Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Aug 2019 05:26:16 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:35151 "EHLO
+        id S1727504AbfHMMB5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Aug 2019 08:01:57 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:35682 "EHLO
         mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725781AbfHMJ0Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Aug 2019 05:26:16 -0400
-Received: by mail-ot1-f65.google.com with SMTP id g17so18965126otl.2
-        for <linux-iio@vger.kernel.org>; Tue, 13 Aug 2019 02:26:15 -0700 (PDT)
+        with ESMTP id S1726705AbfHMMB5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Aug 2019 08:01:57 -0400
+Received: by mail-ot1-f65.google.com with SMTP id g17so20392812otl.2
+        for <linux-iio@vger.kernel.org>; Tue, 13 Aug 2019 05:01:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=essensium-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dpJ1HxR677rrqzN3EZzIQmcSGDvCixhXFxeFq0HwGK8=;
-        b=fh2sYXeqSoNNkGtVSxX5I16eWwUzyEm4MHtIYg2B96Pcu0Lg4ILesreXhgaVDdIMR/
-         jcXguxUx3Gp1VqbeJO4DBt1Ru0w6G7DnAc4EoYT3OGZs3nJvHQDHYfMm6m/B0CgxO4/v
-         syKO3uKULX1QakQ6JDfUTeyg43UI7J6iZ6dsocuSVWu09IOoiNGlinkdwybw0sDySVmh
-         imMQKp0NTMYOWQvOXylcGtOGOY/6eVBS+7I87p7jPQj/s4yGB4xSyentXehYbAMstf+A
-         RatG1V9hPRbH+axk17QuqWmtUq9Yp4O1C3FdmuypyGIbXCkkfJb0dG1KdnzMm53kHGIE
-         D6gA==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=EMx0mOZwtUa+pEZgbyGg6WhFI6z1KpNlJpvfR+dDbck=;
+        b=lPDQ6EV1pyhoFE+U3uwvZyJyGVCfZxWd3kKe4BYxgPYdS0m30VzXbNm9D1yslz2/ZF
+         0pngH/mszKdNgI8y87NJtv5h16DcA3smoUKMpeckZ9RRJsVQEOtQnehvyywmwxRBWZmi
+         Ii8I0xOwn5veGu5FBcoHIW+mAz8Svd7Jo0F8ATSoRNvWKXcDDPSeDUAkonzY27P6he/y
+         RGrIqvyidyrwi1orqBvjxqEFAkAvSqYiERJatrM8arzbWJX3cTuTmIchvXBjQtCZqH9Q
+         mgjLAo1cHaPEFU2nBodG4SnC5oyxYGY3WqdUND+9m9M9R+rRKQ7/dfDZcCFV+DMiAqgw
+         t7Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dpJ1HxR677rrqzN3EZzIQmcSGDvCixhXFxeFq0HwGK8=;
-        b=Dc0UtAo11/B6X+FfHE+LwkPWkHeYtSxoDf6yYOmfDz27FumZUu1LjI19x6nrbhkYsf
-         ohYEHvoc+1wT6k/0g5WmJT5Yx+aNNMyWQQSIPAecgMXxIa9D0Asg4pQrS2/6opu9wEOJ
-         JuZjc88kqqZRwZjcqKWH2KF2DfwS/B6bqI+4gqmksOUwG+FffQ2J9pNYzyejwwiaSxGe
-         pHYV22GJxFgCLg58qiwuD0SfIkuYwNjA8I3WPTI4KB1AC5SmucrUwOX8tbO0TwCNVoAi
-         VNbusowP7fgm7y0CG8ThWDnRbKRlzZojdpzbK3i9eO8EIQTov/NQdXgDt7b/uyuhXcp+
-         mnuA==
-X-Gm-Message-State: APjAAAUD+mMa1pdyMp9cNTj0b9XO1UxI2faR06Gtm4V1zRxyUQeQHT3O
-        PgXyvgATDxozTCiw9NacUG8K4Y7O3EoiySngrTzirg==
-X-Google-Smtp-Source: APXvYqw6rHeiUiFJPgLV2nZLRO2wFPedXMqbwY4AU85yc+77oWTCo7iuxm3ZNj1wVwAdT+N6Np9t0/htAnPMIOK+cf8=
-X-Received: by 2002:aca:f003:: with SMTP id o3mr875487oih.59.1565688375236;
- Tue, 13 Aug 2019 02:26:15 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=EMx0mOZwtUa+pEZgbyGg6WhFI6z1KpNlJpvfR+dDbck=;
+        b=GkC7DNLfUNEDRYE2MPhfYFvlVtXEXfwdPAoyuSC3C5M34ftOEzAkKZ2Qp0dzxWISfJ
+         hxaJs8K9F7FrGq68AaBu4nDqcjoyv37sr06V+2NWJSXY+rsUQj5yLqZQTpipwEDlxMdZ
+         JodPdwKM4Emg5v8NhV/RS6wZ4Ur5KGlDqwRsjyE9gAWv3fQbN72gh4ev9FkB1EjMPzEu
+         X8OGeZRfSRuXtDcDDlszw0+g9PHWnLVjUHllQFoIKWrEd9CqT+2XsKJgTuivDqemHvqp
+         iVeWObC7ONwMK//K9C5HcCYiJOsFcN2dPsMlDvPDgZGisX4LtnsPNI69CW1bPOin5HeD
+         XFzA==
+X-Gm-Message-State: APjAAAVdFq0jeq3xBD8BPpz0rfxh9R1/Gb2zctTI+l8/FZMI/GOAfBDj
+        wdTdccxxTDnhQBWVsWXB9ut2IpyQT6QzPNKgDyY=
+X-Google-Smtp-Source: APXvYqxkTCN5ZT43DYw+fGW4eHNnVHhdk0/Dt/rTmG9aHiVrye2jb9G16y3dZXYzNDYApcydcj70MIp1mAL6nIVIQAs=
+X-Received: by 2002:aca:4d4b:: with SMTP id a72mr1157316oib.87.1565697715999;
+ Tue, 13 Aug 2019 05:01:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <7cd8d12f59bcacd18a78f599b46dac555f7f16c0.camel@perches.com> <20190813060234.11940-1-efremov@linux.com>
-In-Reply-To: <20190813060234.11940-1-efremov@linux.com>
-From:   Patrick Havelange <patrick.havelange@essensium.com>
-Date:   Tue, 13 Aug 2019 11:26:03 +0200
-Message-ID: <CAKKE0ZHEsHHTJNx=T4HdPp3j6GTjPh1_Dg+B-O0yfhDYsrM2TQ@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: ftm-quaddec: Fix typo in a filepath
-To:     Denis Efremov <efremov@linux.com>
-Cc:     linux-kernel@vger.kernel.org, joe@perches.com,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org
+Reply-To: malik_sanfo1@hotmail.com
+Received: by 2002:a8a:11c6:0:0:0:0:0 with HTTP; Tue, 13 Aug 2019 05:01:55
+ -0700 (PDT)
+From:   Malik Sanfo <maliksanfo1@gmail.com>
+Date:   Tue, 13 Aug 2019 05:01:55 -0700
+X-Google-Sender-Auth: VnnZnQsUYmwclrFZEqIITQvFs80
+Message-ID: <CAF7ubavyTtsUw9Tvno26xN7dgsUK+r48O-LMx555kMi+NxP0Kg@mail.gmail.com>
+Subject: YOUR REPLY IS NEEDED
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 13, 2019 at 8:02 AM Denis Efremov <efremov@linux.com> wrote:
->
-> Fix typo (s/quadddec/quaddec/) in the path to the documentation.
->
-> Cc: Patrick Havelange <patrick.havelange@essensium.com>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: linux-iio@vger.kernel.org
-> Fixes: 517b2d045aeb ("MAINTAINERS: add counter/ftm-quaddec driver entry")
-> Signed-off-by: Denis Efremov <efremov@linux.com>
-Acked-by: Patrick Havelange <patrick.havelange@essensium.com>
+Dear Friend,
 
-> ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 9b4717ea2cfe..f31b852acdf3 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6321,7 +6321,7 @@ FLEXTIMER FTM-QUADDEC DRIVER
->  M:     Patrick Havelange <patrick.havelange@essensium.com>
->  L:     linux-iio@vger.kernel.org
->  S:     Maintained
-> -F:     Documentation/ABI/testing/sysfs-bus-counter-ftm-quadddec
-> +F:     Documentation/ABI/testing/sysfs-bus-counter-ftm-quaddec
->  F:     Documentation/devicetree/bindings/counter/ftm-quaddec.txt
->  F:     drivers/counter/ftm-quaddec.c
->
-> --
-> 2.21.0
->
+
+I am a banker with one of the prime banks here in Burkina Faso. I want
+to transfer an abandoned 12 million Dollars into your Bank
+account.40/percent will be your share. No risk involved. Contact me
+for more d=C3=A9tails. Kindly send me the followings
+
+Full Names
+Address
+Occupation
+Direct Mobile Telephone Lines
+Nationality
+
+Malik Sanfo

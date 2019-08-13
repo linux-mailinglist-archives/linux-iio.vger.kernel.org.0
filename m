@@ -2,67 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 636DF8AAB4
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2019 00:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07DE18AF19
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2019 08:02:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727041AbfHLWqe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Aug 2019 18:46:34 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:37184 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726488AbfHLWqe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Aug 2019 18:46:34 -0400
-Received: by mail-ot1-f65.google.com with SMTP id f17so29896720otq.4;
-        Mon, 12 Aug 2019 15:46:34 -0700 (PDT)
+        id S1725869AbfHMGCt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Aug 2019 02:02:49 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:33100 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725815AbfHMGCs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Aug 2019 02:02:48 -0400
+Received: by mail-lf1-f66.google.com with SMTP id x3so76019973lfc.0;
+        Mon, 12 Aug 2019 23:02:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=KS0Ggk8/WnDOHf4y0WafUwtXAfrRj3bnVPQpHZODwE4=;
-        b=QHoSayy4NpFioKOE8MZpp4eC2XYT0sDp52QUEDqsXkgBmQI8IGKxGRmJcTMxIrPg40
-         tTQne/6wy033BsKgNqU6nQELNsl8wmmlc58EmOi2TpdiSu6HQOQylPR6MO7WceBIfJvB
-         EwMS93uxLJgwbwpE0NvOT3F9jbsvrCrAd0y+zdIEYaFd2GtUnckyu18vuOM5bNPo2vZV
-         LOsMqp3rHKXiUMaX5zTKnfHbACrSIfMVIW/EqozIYw1fNfjVpWohf5Gu+CNaSt39R/VG
-         TfTzRSYUTSUm0mfj+12y1B1isvkfiPUbpTEcUCkZhtRJWrfugTqs2UpgvRyvWRndkwTq
-         Rarg==
-X-Gm-Message-State: APjAAAVp0K8nHtdaNetJ82CeWm6/Ytd9GcJe35dPWjaYZjJUR6VMztzO
-        F8hWhnPS7Z1CT4NJDw3MtA==
-X-Google-Smtp-Source: APXvYqw0DHsEGO4r5uXAMeKV/9aPKTqdrrYppFG758qnraHchXhK+sOX7jXcXCutn/8jBoF6ZW+NBg==
-X-Received: by 2002:a6b:6012:: with SMTP id r18mr37836641iog.241.1565649993800;
-        Mon, 12 Aug 2019 15:46:33 -0700 (PDT)
-Received: from localhost ([64.188.179.254])
-        by smtp.gmail.com with ESMTPSA id f1sm11650956ioh.73.2019.08.12.15.46.32
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 12 Aug 2019 15:46:33 -0700 (PDT)
-Date:   Mon, 12 Aug 2019 16:46:32 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Alexandre Mergnat <amergnat@baylibre.com>
-Cc:     robh+dt@kernel.org, mark.rutland@arm.com, jic23@kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        baylibre-upstreaming@groups.io, dmitry.torokhov@gmail.com,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        Alexandre Mergnat <amergnat@baylibre.com>
-Subject: Re: [PATCH v4 1/3] dt-bindings: Add pixart vendor
-Message-ID: <20190812224632.GA12010@bogus>
-References: <20190713080455.17513-1-amergnat@baylibre.com>
- <20190713080455.17513-2-amergnat@baylibre.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=AYs/TeSQkX85iQZMbtgHOzb7k5bWDJf7qaO4aRO65P0=;
+        b=M0Hs00+YMfK0l3khXgXrzYl9SKLaT6Q5lrdR+7DP15Nf4FbrKIPIFckS75D1Kc+riF
+         qZWC2qVQS2+q++e28SvQXtxmxcLi/WLSrk86ZdaomvHdwInB8Q59LA0xYASNGid65BM1
+         Kf9fZ1IeVEdHWUbcjenv0wXLL7W8Kv1+chHrLrfZ/P36Sml4jDZZKcgCzIOBShKG26nA
+         Ipx4TYsgNyyftBwGChK7LUX6vIjExPRXBLOYPnBj5sgXA4gv/N2n73Qk8ZdHjafW1bZ9
+         fpCwbzXbOomn0/3cEkpAA//mjK120cX3fsDzd7BjlY3X7cuCuiUx7U2HRMuQueqkxC3m
+         aibQ==
+X-Gm-Message-State: APjAAAUyPOS3cLjv49nY3SDElOL8nyxsbhr7BrnzJldB8rDmDEzBsHjB
+        vu6BQdk8bg2dKI1awEGVdP4jI9PH9is=
+X-Google-Smtp-Source: APXvYqzsXx97aM7qAQVYx4w7Fvwbfj/KqihGRJoXPwAOcP9e69r6uUv1QAngcjZL6bwotd1iR301sQ==
+X-Received: by 2002:a19:8586:: with SMTP id h128mr22421374lfd.62.1565676166636;
+        Mon, 12 Aug 2019 23:02:46 -0700 (PDT)
+Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.googlemail.com with ESMTPSA id e26sm21426667ljl.33.2019.08.12.23.02.45
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Aug 2019 23:02:46 -0700 (PDT)
+From:   Denis Efremov <efremov@linux.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Denis Efremov <efremov@linux.com>, joe@perches.com,
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: ftm-quaddec: Fix typo in a filepath
+Date:   Tue, 13 Aug 2019 09:02:34 +0300
+Message-Id: <20190813060234.11940-1-efremov@linux.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <7cd8d12f59bcacd18a78f599b46dac555f7f16c0.camel@perches.com>
+References: <7cd8d12f59bcacd18a78f599b46dac555f7f16c0.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190713080455.17513-2-amergnat@baylibre.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 13 Jul 2019 10:04:53 +0200, Alexandre Mergnat wrote:
-> PixArt Imaging Inc. is expertized in CMOS image sensors (CIS),
-> capacitive touch controllers and related imaging application development.
-> 
-> Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
-> ---
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+Fix typo (s/quadddec/quaddec/) in the path to the documentation.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Cc: Patrick Havelange <patrick.havelange@essensium.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-iio@vger.kernel.org
+Fixes: 517b2d045aeb ("MAINTAINERS: add counter/ftm-quaddec driver entry")
+Signed-off-by: Denis Efremov <efremov@linux.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9b4717ea2cfe..f31b852acdf3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6321,7 +6321,7 @@ FLEXTIMER FTM-QUADDEC DRIVER
+ M:	Patrick Havelange <patrick.havelange@essensium.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/ABI/testing/sysfs-bus-counter-ftm-quadddec
++F:	Documentation/ABI/testing/sysfs-bus-counter-ftm-quaddec
+ F:	Documentation/devicetree/bindings/counter/ftm-quaddec.txt
+ F:	drivers/counter/ftm-quaddec.c
+ 
+-- 
+2.21.0
+

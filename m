@@ -2,73 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E56E8B7DE
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2019 14:01:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03AC68BA64
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2019 15:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727504AbfHMMB5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Aug 2019 08:01:57 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:35682 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726705AbfHMMB5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Aug 2019 08:01:57 -0400
-Received: by mail-ot1-f65.google.com with SMTP id g17so20392812otl.2
-        for <linux-iio@vger.kernel.org>; Tue, 13 Aug 2019 05:01:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=EMx0mOZwtUa+pEZgbyGg6WhFI6z1KpNlJpvfR+dDbck=;
-        b=lPDQ6EV1pyhoFE+U3uwvZyJyGVCfZxWd3kKe4BYxgPYdS0m30VzXbNm9D1yslz2/ZF
-         0pngH/mszKdNgI8y87NJtv5h16DcA3smoUKMpeckZ9RRJsVQEOtQnehvyywmwxRBWZmi
-         Ii8I0xOwn5veGu5FBcoHIW+mAz8Svd7Jo0F8ATSoRNvWKXcDDPSeDUAkonzY27P6he/y
-         RGrIqvyidyrwi1orqBvjxqEFAkAvSqYiERJatrM8arzbWJX3cTuTmIchvXBjQtCZqH9Q
-         mgjLAo1cHaPEFU2nBodG4SnC5oyxYGY3WqdUND+9m9M9R+rRKQ7/dfDZcCFV+DMiAqgw
-         t7Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=EMx0mOZwtUa+pEZgbyGg6WhFI6z1KpNlJpvfR+dDbck=;
-        b=GkC7DNLfUNEDRYE2MPhfYFvlVtXEXfwdPAoyuSC3C5M34ftOEzAkKZ2Qp0dzxWISfJ
-         hxaJs8K9F7FrGq68AaBu4nDqcjoyv37sr06V+2NWJSXY+rsUQj5yLqZQTpipwEDlxMdZ
-         JodPdwKM4Emg5v8NhV/RS6wZ4Ur5KGlDqwRsjyE9gAWv3fQbN72gh4ev9FkB1EjMPzEu
-         X8OGeZRfSRuXtDcDDlszw0+g9PHWnLVjUHllQFoIKWrEd9CqT+2XsKJgTuivDqemHvqp
-         iVeWObC7ONwMK//K9C5HcCYiJOsFcN2dPsMlDvPDgZGisX4LtnsPNI69CW1bPOin5HeD
-         XFzA==
-X-Gm-Message-State: APjAAAVdFq0jeq3xBD8BPpz0rfxh9R1/Gb2zctTI+l8/FZMI/GOAfBDj
-        wdTdccxxTDnhQBWVsWXB9ut2IpyQT6QzPNKgDyY=
-X-Google-Smtp-Source: APXvYqxkTCN5ZT43DYw+fGW4eHNnVHhdk0/Dt/rTmG9aHiVrye2jb9G16y3dZXYzNDYApcydcj70MIp1mAL6nIVIQAs=
-X-Received: by 2002:aca:4d4b:: with SMTP id a72mr1157316oib.87.1565697715999;
- Tue, 13 Aug 2019 05:01:55 -0700 (PDT)
+        id S1728820AbfHMNeh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Aug 2019 09:34:37 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:59782 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728442AbfHMNeh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 13 Aug 2019 09:34:37 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 4202F1B0A1A224276374;
+        Tue, 13 Aug 2019 21:34:32 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Tue, 13 Aug 2019
+ 21:34:30 +0800
+Date:   Tue, 13 Aug 2019 14:34:21 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [PULL] First set of new device support, cleanups and features
+ for IIO in the 5.4 cycle.
+Message-ID: <20190813143421.000070c0@huawei.com>
+In-Reply-To: <20190813081419.GA18284@kroah.com>
+References: <20190812210428.1668b6d8@archlinux>
+        <20190812205932.GA32616@kroah.com>
+        <20190813081419.GA18284@kroah.com>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Reply-To: malik_sanfo1@hotmail.com
-Received: by 2002:a8a:11c6:0:0:0:0:0 with HTTP; Tue, 13 Aug 2019 05:01:55
- -0700 (PDT)
-From:   Malik Sanfo <maliksanfo1@gmail.com>
-Date:   Tue, 13 Aug 2019 05:01:55 -0700
-X-Google-Sender-Auth: VnnZnQsUYmwclrFZEqIITQvFs80
-Message-ID: <CAF7ubavyTtsUw9Tvno26xN7dgsUK+r48O-LMx555kMi+NxP0Kg@mail.gmail.com>
-Subject: YOUR REPLY IS NEEDED
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear Friend,
+On Tue, 13 Aug 2019 10:14:19 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
+
+> On Mon, Aug 12, 2019 at 10:59:32PM +0200, Greg KH wrote:
+> > On Mon, Aug 12, 2019 at 09:04:28PM +0100, Jonathan Cameron wrote:  
+> > > The following changes since commit e59fc52529118aaad9aa666f25530dde6e2180e9:
+> > > 
+> > >   staging: rtl8192*: display ESSIDs using %pE (2019-07-25 14:38:52 +0200)
+> > > 
+> > > are available in the Git repository at:
+> > > 
+> > >   git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.4a  
+> > 
+> > Pulled and pushed out, thanks.  
+> 
+> 0-day gives me the following warning, did you not see this on your tree?
+
+Looks like my tree was based before the change that enabled the warning
+by default (I didn't check but a quick build shows it doesn't occur with
+iio.git/togreg and does with staging/staging-testing
+
+I can't actually find any completion message from 0-day so not sure if this
+hit an outage or if I'm not getting the completion messages for some reason.
+
+Oops on missing this one in review!
+
+> 
+> Can you send me a patch to fix this up?
+
+On it's way.
+
+Jonathan
+
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> ----------------
+> tree/branch: https://kernel.googlesource.com/pub/scm/linux/kernel/git/gregkh/staging.git  staging-testing
+> branch HEAD: 6aed51d8912460cab375f7fc4ea834851e107b7a  Merge tag 'iio-for-5.4a' of git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-next
+> 
+> Regressions in current branch:
+> 
+> drivers/iio/light/noa1305.c:87:9: warning: this statement may fall through [-Wimplicit-fallthrough=]
+> 
+> 
 
 
-I am a banker with one of the prime banks here in Burkina Faso. I want
-to transfer an abandoned 12 million Dollars into your Bank
-account.40/percent will be your share. No risk involved. Contact me
-for more d=C3=A9tails. Kindly send me the followings
-
-Full Names
-Address
-Occupation
-Direct Mobile Telephone Lines
-Nationality
-
-Malik Sanfo

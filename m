@@ -2,146 +2,363 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B998CC22
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2019 08:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 167498CCD7
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2019 09:32:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727197AbfHNG46 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Aug 2019 02:56:58 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:42906 "EHLO
+        id S1727072AbfHNHcY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Aug 2019 03:32:24 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:11176 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726007AbfHNG46 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Aug 2019 02:56:58 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7E6rXaS009034;
-        Wed, 14 Aug 2019 02:56:23 -0400
-Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2055.outbound.protection.outlook.com [104.47.37.55])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2uc0whhsdc-1
+        by vger.kernel.org with ESMTP id S1726880AbfHNHcY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Aug 2019 03:32:24 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7E7S255014574;
+        Wed, 14 Aug 2019 03:32:00 -0400
+Received: from nam03-dm3-obe.outbound.protection.outlook.com (mail-dm3nam03lp2052.outbound.protection.outlook.com [104.47.41.52])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2ubx1n2d3y-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 14 Aug 2019 02:56:22 -0400
+        Wed, 14 Aug 2019 03:32:00 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nKKE4kej61LSyR//Qc39ZXnqZpTdsan1K0GT9CkgAl1M9twDBk3DWrGP2qS+SXoKtixc9zJbAkoPzowg9Ly35+Zz8tnAyJU3FhxgBPrjXKA6HaO50vfyzCoprDXXv/4DCXCRt38Jnd9uC5PTqYNvNFItQ+iY+O+FgX6CUSVq01+855DkQ55wMtOiVAOnOij3q+HPzQcnqunVLMud+bqOv/3VYYm++4o1b5znLzfnFZ7bk0nDa6Wq1g4LVxEpfPI2RMYJfOgu1zJVaEp0Ic/w4kmTcH6p18JKn9k+QjbrwFS2yvodVyD/R8ZZ7OZ5WtCghDfjoFugd/sZGC/kPy+8nQ==
+ b=d6xY1oykDCKOtHlJrkrv5nlvtvqHP7FKwF8ND3kVRjhyMaa9GcsnDDiZtgBI1ydWLgpCooF30BpLH3Zu1fuvRxkjzKCZEgCJOPlWcUHI6UuOZ6wePyoYRNqAMo5r3Mf5QFKWUwO7PDteR8Kjkt5RHG5acA/+FHeWB45CqzjwmkV4wutp8SKIZBVB3dQoNl5lXSY7eEAj2aXfjx2bW7owZgFv6m9T/GkbEaVeB4jxTQ9+7Ct/ZbB2Hp0wofM4DAAV5VDhe3CCKkoxppTPAQIgA8FjWdVRIrLCkb+Uq52eycd3OSiXLIk3Rvq0R1Qt8RFdvCnZgjq1R51o+4LlWB2gqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NIwUMvLo1s8tG+DoBqsBKC+2kV7Og0PzsQJI2lwahdM=;
- b=mgy9ihmxNInv0Fm3StL+KEFytpXGp9vp7PIeblxKt+OOROOXrgyNINe6PCbkbvtgk/c/Xz4+8LqS67561ggDC6NBMcdPPosuwQOZoNP08bHii7GAsgoRGah20b6Lt4OwjuoEiuDFwpVUZH2JaoDQjeuDx1EGL3Guhru6lg7L2Ezozqezlv12vkqxZmHYPtM3ZX0kqXU0vy661ucRmoDGB5odHdmFMvdzUd8FbMFaFiltzr0id+jmbJie2DXJHHxaA60W/Qo1j6E/KEk9MS7P8uesCmhLCAUFg33xSw32iMW6MTo1IAT8xfUnrDzSj9/fWgznzFPrdsEHdP9Y+V65pQ==
+ bh=N48GBvZrXP1cgctP0trP+9OJeKy1UzOut2KQ8LS51K8=;
+ b=WP7hUY/b9HKyNsnQ5qawzFpAV0z4UKcwoqhiM8Out8y6aq6YrV2PUClTYxSr+lRZpuPbzaqcm5FZhZvLG/vAb5I5UJspdxEYK1iXA/Asg1qThm6Ntj9C7jsYXql+ZpUoTg92Zi2vN1d/Ba/toCVrUYdACa5RDz66wCVDAkengIpDbdpTrPJ5ePTNb2YUwgvfmsJ3Waz/j+hf/0zjmvOKBo4k0xby01rOK9ZBXyMkhLnWq5QV0p66TMf5IQds31Z/OKzxYAMPrAfcK6vNGs5YMQ7GAyhMABBvqUIZH77BHZW+a7jMpP6j/f893hNfiQGIJTADwSrURggOcc75aoSnCw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.71.25.57) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
+ 137.71.25.57) smtp.rcpttodomain=metafoo.de smtp.mailfrom=analog.com;
  dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
  not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NIwUMvLo1s8tG+DoBqsBKC+2kV7Og0PzsQJI2lwahdM=;
- b=FkZyoaSRBkJCVyigXKE62H9tJFZx/nxcPaeU2w4+QfH/5iAj340yVehk9Cb991cXSOHB6eVjpXzTw2vucyvFzWwSAzeDsIDDcs2nuGs94TKxkegHRoTovlA8tcJNT2/kRozr7w1PXty1ibdU8cT31Tnf9hYmOQ7eNyPaepWabYk=
-Received: from CH2PR03CA0029.namprd03.prod.outlook.com (2603:10b6:610:59::39)
- by BLUPR0301MB2084.namprd03.prod.outlook.com (2a01:111:e400:c474::22) with
+ bh=N48GBvZrXP1cgctP0trP+9OJeKy1UzOut2KQ8LS51K8=;
+ b=5xtEh6pbwaVW5+7x0k4/+UaDqVa+Hg7rDMj61ZDL6RAyVPjOEtgijRLlhSUNPu6EJYUHGZ1mZI52I8GRS4iJYYWkepu1kPsGeYQoVcNKzaPHQ5uMHF/i941F0UsRwNDHgai5G+e6pHfblOYZix21NwdiaLAJdDd0Bjp2YE/dNa8=
+Received: from DM6PR03CA0006.namprd03.prod.outlook.com (2603:10b6:5:40::19) by
+ BN6PR03MB2932.namprd03.prod.outlook.com (2603:10b6:404:119::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2157.16; Wed, 14 Aug
- 2019 06:56:21 +0000
-Received: from SN1NAM02FT064.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e44::207) by CH2PR03CA0029.outlook.office365.com
- (2603:10b6:610:59::39) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2157.15 via Frontend
- Transport; Wed, 14 Aug 2019 06:56:20 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2157.14; Wed, 14 Aug
+ 2019 07:31:58 +0000
+Received: from BL2NAM02FT031.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::201) by DM6PR03CA0006.outlook.office365.com
+ (2603:10b6:5:40::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2157.14 via Frontend
+ Transport; Wed, 14 Aug 2019 07:31:58 +0000
 Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
  137.71.25.57 as permitted sender) receiver=protection.outlook.com;
  client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
 Received: from nwd2mta2.analog.com (137.71.25.57) by
- SN1NAM02FT064.mail.protection.outlook.com (10.152.72.143) with Microsoft SMTP
+ BL2NAM02FT031.mail.protection.outlook.com (10.152.77.173) with Microsoft SMTP
  Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2157.15
- via Frontend Transport; Wed, 14 Aug 2019 06:56:20 +0000
+ via Frontend Transport; Wed, 14 Aug 2019 07:31:57 +0000
 Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x7E6uJGN012658
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x7E7Vv4o020929
         (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Tue, 13 Aug 2019 23:56:19 -0700
-Received: from NWD2MBX7.ad.analog.com ([fe80::190e:f9c1:9a22:9663]) by
- NWD2HUBCAS7.ad.analog.com ([fe80::595b:ced1:cc03:539d%12]) with mapi id
- 14.03.0415.000; Wed, 14 Aug 2019 02:56:19 -0400
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "rodrigorsdc@gmail.com" <rodrigorsdc@gmail.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>
-CC:     "kernel-usp@googlegroups.com" <kernel-usp@googlegroups.com>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2] staging: iio: accel: adis16240: Improve readability
- on write_raw function
-Thread-Topic: [PATCH v2] staging: iio: accel: adis16240: Improve readability
- on write_raw function
-Thread-Index: AQHVUg27ho7Fo7+PkkmXku6NXNI65qb6eawA
-Date:   Wed, 14 Aug 2019 06:56:18 +0000
-Message-ID: <28dda97db73c56fbaf746aa52eb63faaf02b15d7.camel@analog.com>
-References: <20190813193101.26867-1-rodrigorsdc@gmail.com>
-In-Reply-To: <20190813193101.26867-1-rodrigorsdc@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.65.113]
-x-adiroutedonprem: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DF30E5D4A3E6D54980D844CFF442E35F@analog.com>
-Content-Transfer-Encoding: base64
+        Wed, 14 Aug 2019 00:31:57 -0700
+Received: from mircea-Latitude-E6540.ad.analog.com (10.48.65.115) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Wed, 14 Aug 2019 03:31:56 -0400
+From:   Mircea Caprioru <mircea.caprioru@analog.com>
+To:     <jic23@kernel.org>
+CC:     <Michael.Hennerich@analog.com>, <stefan.popa@analog.com>,
+        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+        Mircea Caprioru <mircea.caprioru@analog.com>
+Subject: [PATCH V3 1/4] staging: iio: adc: ad7192: Add low_pass_3db_filter_frequency
+Date:   Wed, 14 Aug 2019 10:31:47 +0300
+Message-ID: <20190814073150.4602-1-mircea.caprioru@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
 X-EOPAttributedMessage: 0
 X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(376002)(346002)(396003)(39860400002)(136003)(2980300002)(189003)(199004)(4326008)(426003)(229853002)(14454004)(6246003)(8676002)(2501003)(50466002)(356004)(11346002)(7636002)(54906003)(86362001)(436003)(7416002)(305945005)(336012)(7736002)(5660300002)(2486003)(23676004)(110136005)(47776003)(446003)(2906002)(6116002)(3846002)(316002)(36756003)(486006)(476003)(126002)(246002)(70586007)(118296001)(186003)(7696005)(106002)(2616005)(70206006)(2201001)(26005)(102836004)(76176011)(8936002)(478600001)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:BLUPR0301MB2084;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;MX:1;A:1;
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(346002)(376002)(396003)(136003)(39860400002)(2980300002)(54534003)(199004)(189003)(47776003)(246002)(426003)(186003)(107886003)(4326008)(7636002)(14444005)(26005)(305945005)(5660300002)(51416003)(486006)(2616005)(44832011)(126002)(1076003)(476003)(8676002)(336012)(7696005)(50466002)(50226002)(16586007)(316002)(2351001)(70206006)(6916009)(478600001)(8936002)(36756003)(2906002)(86362001)(48376002)(6666004)(356004)(54906003)(70586007)(106002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR03MB2932;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 633cf9ca-a6e1-4923-2e3e-08d72084835b
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328)(7193020);SRVR:BLUPR0301MB2084;
-X-MS-TrafficTypeDiagnostic: BLUPR0301MB2084:
-X-Microsoft-Antispam-PRVS: <BLUPR0301MB20848D18702677BA012470C1F9AD0@BLUPR0301MB2084.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-MS-Office365-Filtering-Correlation-Id: 4f75ad02-22d5-41f2-887d-08d720897d07
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(4709080)(1401327)(2017052603328);SRVR:BN6PR03MB2932;
+X-MS-TrafficTypeDiagnostic: BN6PR03MB2932:
+X-Microsoft-Antispam-PRVS: <BN6PR03MB2932B4E1E5EDCB7297AC787481AD0@BN6PR03MB2932.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-Forefront-PRVS: 01294F875B
 X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: SWult33XP65Ll2GPRKmLEsZ9i8iJIIvn1lUfGlzqDQWiIQvgtB+r5K/M9g4xmOaf1AEkmWK5n+/pZk0E0NCoJH9SbG3rqD1q4FsC2YZVmVGjdHP0/wy8hn163D5i7Z3J5iQtx5HGDY3p3LMi0uJe8HX1MKayu1JsZvDFMllc7IAQXIqLMl12AIgbuL8rka4CqSgLVNzN4vPbGJayPaMwBcmObAFLQ2CKyeWuPbxM43zCzmYgy4djpMVo2UfitqlOna0KOzg/Z5x7i0i2HQI2TMK6mkOdGdYcYC8WGj9YKjyRyGdWGC3QXTNN8v9wQvgXuwj2jMb3aa46DDk0eq3aBCilnLP9BKH6wefTedgU8/N9J2WTMskMGibJ1btrm8J9GmEHzL3Slx2JLYDH7UCEKFEY70+7cR41HaipTz0hUhc=
+X-Microsoft-Antispam-Message-Info: Gb+2Ud757UlDzedj+C5FSjLICksoCclDbx4AhWQvwJc07Ch0fIOSY3Ao+pQUdRFLMD08kTp2+XykW8eQsmTQBn3NB+T/bElO4LgDJsLZmv1BFCq5BtuDOeSW2PgkB/3eDKOSIEescegFlA4hOLEB1XAoTebATXaTybQGPvoW2rGzjrCmyjgeJPk0WSGVDZd2Liwr61Y7Aj7rGzAQkKIjKLKrsfEzlQZtpIX5zZtyzEytiswRji8naB/g4tU9UePFOFMGfLQTZIPmKNCtMQAp76oM8NuSPpMtTmHjdqJ70IqDjqwhT8aSXEGAGVx87V1lMUhHdnCAxxEg4YakfXlTcj+5harnWRlWOZsTioZCyuKNWf4bDAco5OdNZx9eJcxiJTHYDRCOlqUsx5yvj2Clax4HJY3vHaIqM0q0FJexSTY=
 X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2019 06:56:20.2953
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2019 07:31:57.5407
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 633cf9ca-a6e1-4923-2e3e-08d72084835b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f75ad02-22d5-41f2-887d-08d720897d07
 X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLUPR0301MB2084
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR03MB2932
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-14_02:,,
  signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908140065
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908140072
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVHVlLCAyMDE5LTA4LTEzIGF0IDE2OjMxIC0wMzAwLCBSb2RyaWdvIFJpYmVpcm8gd3JvdGU6
-DQo+IFtFeHRlcm5hbF0NCj4gDQo+IFJlcGxhY2Ugc2hpZnQgYW5kIG1pbnVzIG9wZXJhdGlvbiBi
-eSBHRU5NQVNLIG1hY3JvIGFuZCByZW1vdmUgdGhlIGxvY2FsDQo+IHZhcmlhYmxlcyB1c2VkIHRv
-IHN0b3JlIGludGVybWVkaWF0ZSBkYXRhLg0KPiANCg0KUmV2aWV3ZWQtYnk6IEFsZXhhbmRydSBB
-cmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+DQoNCj4gU2lnbmVkLW9mZi1i
-eTogUm9kcmlnbyBSaWJlaXJvIENhcnZhbGhvIDxyb2RyaWdvcnNkY0BnbWFpbC5jb20+DQo+IC0t
-LQ0KPiB2MjoNCj4gICAgLSBMZWF2ZSBzd2l0Y2ggc3RhdGVtZW50IGluc3RlYWQgb2YgcmVwbGFj
-ZSBieSBpZiBzdGF0ZW1lbnQNCj4gIGRyaXZlcnMvc3RhZ2luZy9paW8vYWNjZWwvYWRpczE2MjQw
-LmMgfCA1ICstLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDQgZGVsZXRp
-b25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zdGFnaW5nL2lpby9hY2NlbC9hZGlz
-MTYyNDAuYyBiL2RyaXZlcnMvc3RhZ2luZy9paW8vYWNjZWwvYWRpczE2MjQwLmMNCj4gaW5kZXgg
-NjJmNGIzYjFiNDU3Li44MjA5OWRiNGJmMGMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvc3RhZ2lu
-Zy9paW8vYWNjZWwvYWRpczE2MjQwLmMNCj4gKysrIGIvZHJpdmVycy9zdGFnaW5nL2lpby9hY2Nl
-bC9hZGlzMTYyNDAuYw0KPiBAQCAtMzA5LDE1ICszMDksMTIgQEAgc3RhdGljIGludCBhZGlzMTYy
-NDBfd3JpdGVfcmF3KHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYsDQo+ICAJCQkgICAgICAgbG9u
-ZyBtYXNrKQ0KPiAgew0KPiAgCXN0cnVjdCBhZGlzICpzdCA9IGlpb19wcml2KGluZGlvX2Rldik7
-DQo+IC0JaW50IGJpdHMgPSAxMDsNCj4gLQlzMTYgdmFsMTY7DQo+ICAJdTggYWRkcjsNCj4gIA0K
-PiAgCXN3aXRjaCAobWFzaykgew0KPiAgCWNhc2UgSUlPX0NIQU5fSU5GT19DQUxJQkJJQVM6DQo+
-IC0JCXZhbDE2ID0gdmFsICYgKCgxIDw8IGJpdHMpIC0gMSk7DQo+ICAJCWFkZHIgPSBhZGlzMTYy
-NDBfYWRkcmVzc2VzW2NoYW4tPnNjYW5faW5kZXhdWzBdOw0KPiAtCQlyZXR1cm4gYWRpc193cml0
-ZV9yZWdfMTYoc3QsIGFkZHIsIHZhbDE2KTsNCj4gKwkJcmV0dXJuIGFkaXNfd3JpdGVfcmVnXzE2
-KHN0LCBhZGRyLCB2YWwgJiBHRU5NQVNLKDksIDApKTsNCj4gIAl9DQo+ICAJcmV0dXJuIC1FSU5W
-QUw7DQo+ICB9DQo=
+By adding this option we are able to remove the sync3 field and dt binding.
+When setting the required cutoff frequency we also determine the ADC
+configuration for chop and sync filter.
+
+Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+---
+Changelog V2:
+- no changes here
+
+Changelog V3:
+- no changes here
+
+ drivers/staging/iio/adc/ad7192.c | 148 +++++++++++++++++++++++++++----
+ 1 file changed, 132 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
+index 81ea2639c67c..d58ce08f3693 100644
+--- a/drivers/staging/iio/adc/ad7192.c
++++ b/drivers/staging/iio/adc/ad7192.c
+@@ -143,6 +143,10 @@
+ #define AD7192_EXT_FREQ_MHZ_MAX	5120000
+ #define AD7192_INT_FREQ_MHZ	4915200
+ 
++#define AD7192_NO_SYNC_FILTER	1
++#define AD7192_SYNC3_FILTER	3
++#define AD7192_SYNC4_FILTER	4
++
+ /* NOTE:
+  * The AD7190/2/5 features a dual use data out ready DOUT/RDY output.
+  * In order to avoid contentions on the SPI bus, it's therefore necessary
+@@ -250,7 +254,7 @@ static int ad7192_of_clock_select(struct ad7192_state *st)
+ static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+ {
+ 	struct iio_dev *indio_dev = spi_get_drvdata(st->sd.spi);
+-	bool rej60_en, sinc3_en, refin2_en, chop_en;
++	bool rej60_en, refin2_en;
+ 	bool buf_en, bipolar, burnout_curr_en;
+ 	unsigned long long scale_uv;
+ 	int i, ret, id;
+@@ -282,24 +286,12 @@ static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+ 	if (rej60_en)
+ 		st->mode |= AD7192_MODE_REJ60;
+ 
+-	sinc3_en = of_property_read_bool(np, "adi,sinc3-filter-enable");
+-	if (sinc3_en)
+-		st->mode |= AD7192_MODE_SINC3;
+-
+ 	refin2_en = of_property_read_bool(np, "adi,refin2-pins-enable");
+ 	if (refin2_en && st->devid != ID_AD7195)
+ 		st->conf |= AD7192_CONF_REFSEL;
+ 
+-	chop_en = of_property_read_bool(np, "adi,chop-enable");
+-	if (chop_en) {
+-		st->conf |= AD7192_CONF_CHOP;
+-		if (sinc3_en)
+-			st->f_order = 3; /* SINC 3rd order */
+-		else
+-			st->f_order = 4; /* SINC 4th order */
+-	} else {
+-		st->f_order = 1;
+-	}
++	st->conf &= ~AD7192_CONF_CHOP;
++	st->f_order = AD7192_NO_SYNC_FILTER;
+ 
+ 	buf_en = of_property_read_bool(np, "adi,buffer-enable");
+ 	if (buf_en)
+@@ -311,7 +303,7 @@ static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+ 
+ 	burnout_curr_en = of_property_read_bool(np,
+ 						"adi,burnout-currents-enable");
+-	if (burnout_curr_en && buf_en && !chop_en) {
++	if (burnout_curr_en && buf_en) {
+ 		st->conf |= AD7192_CONF_BURN;
+ 	} else if (burnout_curr_en) {
+ 		dev_warn(&st->sd.spi->dev,
+@@ -409,6 +401,49 @@ static ssize_t ad7192_set(struct device *dev,
+ 	return ret ? ret : len;
+ }
+ 
++static void ad7192_get_available_filter_freq(struct ad7192_state *st,
++						    int *freq)
++{
++	unsigned int fadc;
++
++	/* Formulas for filter at page 25 of the datasheet */
++	fadc = DIV_ROUND_CLOSEST(st->fclk,
++				 AD7192_SYNC4_FILTER * AD7192_MODE_RATE(st->mode));
++	freq[0] = DIV_ROUND_CLOSEST(fadc * 240, 1024);
++
++	fadc = DIV_ROUND_CLOSEST(st->fclk,
++				 AD7192_SYNC3_FILTER * AD7192_MODE_RATE(st->mode));
++	freq[1] = DIV_ROUND_CLOSEST(fadc * 240, 1024);
++
++	fadc = DIV_ROUND_CLOSEST(st->fclk, AD7192_MODE_RATE(st->mode));
++	freq[2] = DIV_ROUND_CLOSEST(fadc * 230, 1024);
++	freq[3] = DIV_ROUND_CLOSEST(fadc * 272, 1024);
++}
++
++static int ad7192_show_filter_avail(struct device *dev,
++				    struct device_attribute *attr,
++				    char *buf)
++{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
++	struct ad7192_state *st = iio_priv(indio_dev);
++	unsigned int freq_avail[4], i;
++	size_t len = 0;
++
++	ad7192_get_available_filter_freq(st, freq_avail);
++
++	for (i = 0; i < ARRAY_SIZE(freq_avail); i++)
++		len += scnprintf(buf + len, PAGE_SIZE - len,
++				 "%d.%d ", freq_avail[i] / 1000,
++				 freq_avail[i] % 1000);
++
++	buf[len - 1] = '\n';
++
++	return len;
++}
++
++static IIO_DEVICE_ATTR(filter_low_pass_3db_frequency_available,
++		       0444, ad7192_show_filter_avail, NULL, 0);
++
+ static IIO_DEVICE_ATTR(bridge_switch_en, 0644,
+ 		       ad7192_show_bridge_switch, ad7192_set,
+ 		       AD7192_REG_GPOCON);
+@@ -418,6 +453,7 @@ static IIO_DEVICE_ATTR(ac_excitation_en, 0644,
+ 		       AD7192_REG_MODE);
+ 
+ static struct attribute *ad7192_attributes[] = {
++	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
+ 	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
+ 	&iio_dev_attr_ac_excitation_en.dev_attr.attr,
+ 	NULL
+@@ -428,6 +464,7 @@ static const struct attribute_group ad7192_attribute_group = {
+ };
+ 
+ static struct attribute *ad7195_attributes[] = {
++	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
+ 	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
+ 	NULL
+ };
+@@ -441,6 +478,74 @@ static unsigned int ad7192_get_temp_scale(bool unipolar)
+ 	return unipolar ? 2815 * 2 : 2815;
+ }
+ 
++static int ad7192_set_3db_filter_freq(struct ad7192_state *st,
++				      int val, int val2)
++{
++	int freq_avail[4], i, ret, idx, freq;
++	unsigned int diff_new, diff_old;
++
++	diff_old = U32_MAX;
++	freq = val * 1000 + val2;
++
++	ad7192_get_available_filter_freq(st, freq_avail);
++
++	for (i = 0; i < ARRAY_SIZE(freq_avail); i++) {
++		diff_new = abs(freq - freq_avail[i]);
++		if (diff_new < diff_old) {
++			diff_old = diff_new;
++			idx = i;
++		}
++	}
++
++	switch (idx) {
++	case 0:
++		st->f_order = AD7192_SYNC4_FILTER;
++		st->mode &= ~AD7192_MODE_SINC3;
++
++		st->conf |= AD7192_CONF_CHOP;
++		break;
++	case 1:
++		st->f_order = AD7192_SYNC3_FILTER;
++		st->mode |= AD7192_MODE_SINC3;
++
++		st->conf |= AD7192_CONF_CHOP;
++		break;
++	case 2:
++		st->f_order = AD7192_NO_SYNC_FILTER;
++		st->mode &= ~AD7192_MODE_SINC3;
++
++		st->conf &= ~AD7192_CONF_CHOP;
++		break;
++	case 3:
++		st->f_order = AD7192_NO_SYNC_FILTER;
++		st->mode |= AD7192_MODE_SINC3;
++
++		st->conf &= ~AD7192_CONF_CHOP;
++		break;
++	}
++
++	ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
++	if (ret < 0)
++		return ret;
++
++	return ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
++}
++
++static int ad7192_get_3db_filter_freq(struct ad7192_state *st)
++{
++	unsigned int fadc;
++
++	fadc = DIV_ROUND_CLOSEST(st->fclk,
++				 st->f_order * AD7192_MODE_RATE(st->mode));
++
++	if (st->conf & AD7192_CONF_CHOP)
++		return DIV_ROUND_CLOSEST(fadc * 240, 1024);
++	if (st->mode & AD7192_MODE_SINC3)
++		return DIV_ROUND_CLOSEST(fadc * 272, 1024);
++	else
++		return DIV_ROUND_CLOSEST(fadc * 230, 1024);
++}
++
+ static int ad7192_read_raw(struct iio_dev *indio_dev,
+ 			   struct iio_chan_spec const *chan,
+ 			   int *val,
+@@ -481,6 +586,10 @@ static int ad7192_read_raw(struct iio_dev *indio_dev,
+ 		*val = st->fclk /
+ 			(st->f_order * 1024 * AD7192_MODE_RATE(st->mode));
+ 		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
++		*val = ad7192_get_3db_filter_freq(st);
++		*val2 = 1000;
++		return IIO_VAL_FRACTIONAL;
+ 	}
+ 
+ 	return -EINVAL;
+@@ -535,6 +644,9 @@ static int ad7192_write_raw(struct iio_dev *indio_dev,
+ 		st->mode |= AD7192_MODE_RATE(div);
+ 		ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+ 		break;
++	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
++		ret = ad7192_set_3db_filter_freq(st, val, val2 / 1000);
++		break;
+ 	default:
+ 		ret = -EINVAL;
+ 	}
+@@ -553,6 +665,8 @@ static int ad7192_write_raw_get_fmt(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT_PLUS_NANO;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
++		return IIO_VAL_INT_PLUS_MICRO;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -653,6 +767,8 @@ static int ad7192_channels_config(struct iio_dev *indio_dev)
+ 
+ 	for (i = 0; i < indio_dev->num_channels; i++) {
+ 		*chan = channels[i];
++		chan->info_mask_shared_by_all |=
++			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY);
+ 		if (chan->type != IIO_TEMP)
+ 			chan->info_mask_shared_by_type_available |=
+ 				BIT(IIO_CHAN_INFO_SCALE);
+-- 
+2.17.1
+

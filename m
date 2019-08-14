@@ -2,38 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B8C8C5E5
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2019 04:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 950778C74B
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2019 04:22:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727157AbfHNCLE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Aug 2019 22:11:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43252 "EHLO mail.kernel.org"
+        id S1728739AbfHNCSi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Aug 2019 22:18:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49562 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727144AbfHNCLD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 13 Aug 2019 22:11:03 -0400
+        id S1727502AbfHNCSh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 13 Aug 2019 22:18:37 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 24A452084D;
-        Wed, 14 Aug 2019 02:11:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D3A70216F4;
+        Wed, 14 Aug 2019 02:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565748662;
-        bh=y8odlk2dpswyj2RIwILXZLj5oh36R3W5sI1MEz6rc+A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vDlZax5FAKAIp1grank7QixEEHTubsvG6FXPVmBg9rFBr/vVE+G06hUJY30ckMc9r
-         cd4X/6bUCCVd+8Q5TeGPeMq0i5V8vghT3qZsyFdEBL2+8WJI2II2jkrfCUzIAmjhyV
-         kz4v7cuq31GCWaxExqNw0K8BSTSPxQZB3lko6iRs=
+        s=default; t=1565749116;
+        bh=vnD6QbuZC/TTYCF8Lp5FJPo0BzDSu5sadSNToVvaedM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=E6/83lCV7oNBTvGc38TKzm2DGO1z2vKVY6eyeC1ryTBOuB5yKs2dw8WaqTDDWLxt3
+         OX4OL5ssXUKo6ZoxDHvm3eCB23+5W19YGevBaSWPQ+N06VRtR7G6UR17R/C5lCcAHK
+         kbVDb14kV2uG13kSoPBkMW5mus8M2ab1R5yEr2Gw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Joe Perches <joe@perches.com>, Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 007/123] iio: adc: max9611: Fix misuse of GENMASK macro
-Date:   Tue, 13 Aug 2019 22:08:51 -0400
-Message-Id: <20190814021047.14828-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 01/44] iio: adc: max9611: Fix misuse of GENMASK macro
+Date:   Tue, 13 Aug 2019 22:17:50 -0400
+Message-Id: <20190814021834.16662-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190814021047.14828-1-sashal@kernel.org>
-References: <20190814021047.14828-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -59,10 +57,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
-index 917223d5ff5bb..0e3c6529fc4c9 100644
+index b1dd17cbce588..f8f298c33b287 100644
 --- a/drivers/iio/adc/max9611.c
 +++ b/drivers/iio/adc/max9611.c
-@@ -83,7 +83,7 @@
+@@ -86,7 +86,7 @@
  #define MAX9611_TEMP_MAX_POS		0x7f80
  #define MAX9611_TEMP_MAX_NEG		0xff80
  #define MAX9611_TEMP_MIN_NEG		0xd980

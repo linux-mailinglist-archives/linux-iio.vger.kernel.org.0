@@ -2,101 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B1F28E78D
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2019 10:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B538E8F0
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2019 12:21:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726098AbfHOI7e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Aug 2019 04:59:34 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:33326 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726008AbfHOI7e (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Aug 2019 04:59:34 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7F8wv9N016053;
-        Thu, 15 Aug 2019 08:59:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=NOyNWtkVoqyPJNSvFmROYTt7fYLKh1PcchhUSUu7iWc=;
- b=VtyGwuslcniAQC4M1/whICOgf70Qkh/wwEflzweZ5Gl2KGV2yWqwJy9LLR2wUigZJ13o
- 4isiaLqHyv3mZufIUI2Cwpo5hm32a5Y+87XQgFELXyXyv/UE9z/b2byuUWwaeuHgnziR
- Mv0n86m7brNcVVRbs8lgNysnRKQkTE3++GzCkiG2IM+lQhGX14alOxH8xv18KnKmPMDX
- 0Q6cXbYSHMWthc2aqq57kZfCO4KDF58gEIQQpCKNbAX3qW+N1x+HP25pTu8ZqrIzRsPB
- 0x1HTY5br8JOjMVJqhs3MMSwBfb7EeeufRu4ivHSBz6RCPwBiwUrkrJEJbchkCgmPtQc Mg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2u9nbtsu0r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 15 Aug 2019 08:59:31 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7F8vfqj037097;
-        Thu, 15 Aug 2019 08:59:31 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2ucgf0teew-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 15 Aug 2019 08:59:30 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x7F8xShN025988;
-        Thu, 15 Aug 2019 08:59:29 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 15 Aug 2019 01:59:27 -0700
-Date:   Thu, 15 Aug 2019 11:59:22 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     alexandru.ardelean@analog.com
-Cc:     linux-iio@vger.kernel.org
-Subject: [bug report] iio: imu: Add support for the ADIS16460 IMU
-Message-ID: <20190815085922.GA1025@mwanda>
+        id S1730452AbfHOKV0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Aug 2019 06:21:26 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38553 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730646AbfHOKVZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Aug 2019 06:21:25 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hyCsl-0006b3-9t; Thu, 15 Aug 2019 10:21:23 +0000
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.ne>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        linux-iio@vger.kernel.org,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>
+From:   Colin Ian King <colin.king@canonical.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
+ mQINBE6TJCgBEACo6nMNvy06zNKj5tiwDsXXS+LhT+LwtEsy9EnraKYXAf2xwazcICSjX06e
+ fanlyhB0figzQO0n/tP7BcfMVNG7n1+DC71mSyRK1ZERcG1523ajvdZOxbBCTvTitYOy3bjs
+ +LXKqeVMhK3mRvdTjjmVpWnWqJ1LL+Hn12ysDVVfkbtuIm2NoaSEC8Ae8LSSyCMecd22d9Pn
+ LR4UeFgrWEkQsqROq6ZDJT9pBLGe1ZS0pVGhkRyBP9GP65oPev39SmfAx9R92SYJygCy0pPv
+ BMWKvEZS/7bpetPNx6l2xu9UvwoeEbpzUvH26PHO3DDAv0ynJugPCoxlGPVf3zcfGQxy3oty
+ dNTWkP6Wh3Q85m+AlifgKZudjZLrO6c+fAw/jFu1UMjNuyhgShtFU7NvEzL3RqzFf9O1qM2m
+ uj83IeFQ1FZ65QAiCdTa3npz1vHc7N4uEQBUxyXgXfCI+A5yDnjHwzU0Y3RYS52TA3nfa08y
+ LGPLTf5wyAREkFYou20vh5vRvPASoXx6auVf1MuxokDShVhxLpryBnlKCobs4voxN54BUO7m
+ zuERXN8kadsxGFzItAyfKYzEiJrpUB1yhm78AecDyiPlMjl99xXk0zs9lcKriaByVUv/NsyJ
+ FQj/kmdxox3XHi9K29kopFszm1tFiDwCFr/xumbZcMY17Yi2bQARAQABtCVDb2xpbiBLaW5n
+ IDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+iQI2BBMBCAAhBQJOkyQoAhsDBQsJCAcDBRUK
+ CQgLBRYCAwEAAh4BAheAAAoJEGjCh9/GqAImsBcP9i6C/qLewfi7iVcOwqF9avfGzOPf7CVr
+ n8CayQnlWQPchmGKk6W2qgnWI2YLIkADh53TS0VeSQ7Tetj8f1gV75eP0Sr/oT/9ovn38QZ2
+ vN8hpZp0GxOUrzkvvPjpH+zdmKSaUsHGp8idfPpZX7XeBO0yojAs669+3BrnBcU5wW45SjSV
+ nfmVj1ZZj3/yBunb+hgNH1QRcm8ZPICpjvSsGFClTdB4xu2AR28eMiL/TTg9k8Gt72mOvhf0
+ fS0/BUwcP8qp1TdgOFyiYpI8CGyzbfwwuGANPSupGaqtIRVf+/KaOdYUM3dx/wFozZb93Kws
+ gXR4z6tyvYCkEg3x0Xl9BoUUyn9Jp5e6FOph2t7TgUvv9dgQOsZ+V9jFJplMhN1HPhuSnkvP
+ 5/PrX8hNOIYuT/o1AC7K5KXQmr6hkkxasjx16PnCPLpbCF5pFwcXc907eQ4+b/42k+7E3fDA
+ Erm9blEPINtt2yG2UeqEkL+qoebjFJxY9d4r8PFbEUWMT+t3+dmhr/62NfZxrB0nTHxDVIia
+ u8xM+23iDRsymnI1w0R78yaa0Eea3+f79QsoRW27Kvu191cU7QdW1eZm05wO8QUvdFagVVdW
+ Zg2DE63Fiin1AkGpaeZG9Dw8HL3pJAJiDe0KOpuq9lndHoGHs3MSa3iyQqpQKzxM6sBXWGfk
+ EkK5Ag0ETpMkKAEQAMX6HP5zSoXRHnwPCIzwz8+inMW7mJ60GmXSNTOCVoqExkopbuUCvinN
+ 4Tg+AnhnBB3R1KTHreFGoz3rcV7fmJeut6CWnBnGBtsaW5Emmh6gZbO5SlcTpl7QDacgIUuT
+ v1pgewVHCcrKiX0zQDJkcK8FeLUcB2PXuJd6sJg39kgsPlI7R0OJCXnvT/VGnd3XPSXXoO4K
+ cr5fcjsZPxn0HdYCvooJGI/Qau+imPHCSPhnX3WY/9q5/WqlY9cQA8tUC+7mgzt2VMjFft1h
+ rp/CVybW6htm+a1d4MS4cndORsWBEetnC6HnQYwuC4bVCOEg9eXMTv88FCzOHnMbE+PxxHzW
+ 3Gzor/QYZGcis+EIiU6hNTwv4F6fFkXfW6611JwfDUQCAHoCxF3B13xr0BH5d2EcbNB6XyQb
+ IGngwDvnTyKHQv34wE+4KtKxxyPBX36Z+xOzOttmiwiFWkFp4c2tQymHAV70dsZTBB5Lq06v
+ 6nJs601Qd6InlpTc2mjd5mRZUZ48/Y7i+vyuNVDXFkwhYDXzFRotO9VJqtXv8iqMtvS4xPPo
+ 2DtJx6qOyDE7gnfmk84IbyDLzlOZ3k0p7jorXEaw0bbPN9dDpw2Sh9TJAUZVssK119DJZXv5
+ 2BSc6c+GtMqkV8nmWdakunN7Qt/JbTcKlbH3HjIyXBy8gXDaEto5ABEBAAGJAh8EGAEIAAkF
+ Ak6TJCgCGwwACgkQaMKH38aoAiZ4lg/+N2mkx5vsBmcsZVd3ys3sIsG18w6RcJZo5SGMxEBj
+ t1UgyIXWI9lzpKCKIxKx0bskmEyMy4tPEDSRfZno/T7p1mU7hsM4owi/ic0aGBKP025Iok9G
+ LKJcooP/A2c9dUV0FmygecRcbIAUaeJ27gotQkiJKbi0cl2gyTRlolKbC3R23K24LUhYfx4h
+ pWj8CHoXEJrOdHO8Y0XH7059xzv5oxnXl2SD1dqA66INnX+vpW4TD2i+eQNPgfkECzKzGj+r
+ KRfhdDZFBJj8/e131Y0t5cu+3Vok1FzBwgQqBnkA7dhBsQm3V0R8JTtMAqJGmyOcL+JCJAca
+ 3Yi81yLyhmYzcRASLvJmoPTsDp2kZOdGr05Dt8aGPRJL33Jm+igfd8EgcDYtG6+F8MCBOult
+ TTAu+QAijRPZv1KhEJXwUSke9HZvzo1tNTlY3h6plBsBufELu0mnqQvHZmfa5Ay99dF+dL1H
+ WNp62+mTeHsX6v9EACH4S+Cw9Q1qJElFEu9/1vFNBmGY2vDv14gU2xEiS2eIvKiYl/b5Y85Q
+ QLOHWV8up73KK5Qq/6bm4BqVd1rKGI9un8kezUQNGBKre2KKs6wquH8oynDP/baoYxEGMXBg
+ GF/qjOC6OY+U7kNUW3N/A7J3M2VdOTLu3hVTzJMZdlMmmsg74azvZDV75dUigqXcwjE=
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: static analysis bug report in drivers/staging/iio/dac/ad5380.c
+Message-ID: <dd9e8ad0-31c8-a06f-be6b-e665e9b2c1c2@canonical.com>
+Date:   Thu, 15 Aug 2019 11:21:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9349 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=793
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908150096
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9349 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=850 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908150096
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Alexandru Ardelean,
+Hi,
 
-The patch db6ed4d23dd1: "iio: imu: Add support for the ADIS16460 IMU"
-from Jul 23, 2019, leads to the following static checker warning:
+Static analysis with Coverity Scan has detected a potential assignment
+bug in ad5380.c:
 
-	drivers/iio/imu/adis16460.c:158 adis16460_set_freq()
-	warn: 't' unsigned <= 0
+217        case IIO_CHAN_INFO_CALIBBIAS:
+218                ret = regmap_read(st->regmap,
+AD5380_REG_OFFSET(chan->address),
+219                                        val);
+220                if (ret)
+221                        return ret;
+222                *val >>= chan->scan_type.shift;
 
-drivers/iio/imu/adis16460.c
-   152  static int adis16460_set_freq(struct iio_dev *indio_dev, int val, int val2)
-   153  {
-   154          struct adis16460 *st = iio_priv(indio_dev);
-   155          unsigned int t;
-                ^^^^^^^^^^^^^^
+CID 43178 (#1 of 1): Unused value (UNUSED_VALUE)assigned_pointer:
+Assigning value from val - (1 << chan->scan_type.realbits) / 2 to val
+here, but that stored value is not used.
 
-   156  
-   157          t =  val * 1000 + val2 / 1000;
-   158          if (t <= 0)
-                    ^^^^^^
-Unsigned is not less than zero.
+223                val -= (1 << chan->scan_type.realbits) / 2;
+224                return IIO_VAL_INT;
 
-   159                  return -EINVAL;
-   160  
-   161          t = 2048000 / t;
-   162          if (t > 2048)
-   163                  t = 2048;
-   164  
-   165          if (t != 0)
-   166                  t--;
-   167  
-   168          return adis_write_reg_16(&st->adis, ADIS16460_REG_DEC_RATE, t);
-   169  }
+val is a pointer and so updating it before a return is probably not the
+intention.  I suspect the intention was probably:
 
-regards,
-dan carpenter
+		   *val -= (1 << chan->scan_type.realbits) / 2;
+
+However, I'm not confident about this as the following case has:
+
+225        case IIO_CHAN_INFO_SCALE:
+226                *val = 2 * st->vref;
+227                *val2 = chan->scan_type.realbits;
+228                return IIO_VAL_FRACTIONAL_LOG2;
+
+which may imply the update maybe to *val2 instead, e.g.:
+
+		*val2 -= (1 << chan->scan_type.realbits) / 2;
+
+Any ideas?
+
+Colin

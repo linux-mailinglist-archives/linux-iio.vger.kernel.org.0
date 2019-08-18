@@ -2,38 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2359191933
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2019 21:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C327991936
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2019 21:13:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726960AbfHRTKs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Aug 2019 15:10:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36510 "EHLO mail.kernel.org"
+        id S1727117AbfHRTN5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Aug 2019 15:13:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39388 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726089AbfHRTKs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Aug 2019 15:10:48 -0400
+        id S1726089AbfHRTN5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Aug 2019 15:13:57 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 05289206C1;
-        Sun, 18 Aug 2019 19:10:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 970592184E;
+        Sun, 18 Aug 2019 19:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566155447;
-        bh=4NE625COU9vsw1qoCX5e/Z9jrpUNI3ITbMNY3Hg17fo=;
+        s=default; t=1566155636;
+        bh=cx09dZ53SV60ZZEaD7lshSO/Q3ktfWm45yk+k4iQzc8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HDpSPiEULCoNCp/rJ/3JqpCQf+Er1fUgaRaxaAuvVsTgyQ225aV2DXPhGMha+ptie
-         2oDpknCo7NUIhC3yfir88/XsJjPkAS9tW4j89OASO9QUyewqSVLaJzT9cXO8rWo2Z0
-         xWWxGeXDB7Re22b0/SuA866k2EDdGt2PcQqn6FOI=
-Date:   Sun, 18 Aug 2019 20:10:41 +0100
+        b=nxBG3zF1PDXZwLKq9WFDEx+fpwnhWJTRldJzxCK2sizv8mx4uJYvwyAhoem8rERZi
+         5KaweEQflko+bBjNYA34wtMYENDZdwJxaEllq9xcwojhNcKJSehMvSOye/dY+DxuC4
+         y8rHw3BOJMnA9zeTgvPbyVMQzgg802JDlwcdsQgk=
+Date:   Sun, 18 Aug 2019 20:13:51 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     lorenzo.bianconi83@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] iio: imu: st_lsm6dsx: Add support for LSM9DS1
-Message-ID: <20190818201041.6b0bb698@archlinux>
-In-Reply-To: <20190813073533.8007-1-martin.kepplinger@puri.sm>
-References: <20190813073533.8007-1-martin.kepplinger@puri.sm>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "rodrigorsdc@gmail.com" <rodrigorsdc@gmail.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "kernel-usp@googlegroups.com" <kernel-usp@googlegroups.com>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2] staging: iio: accel: adis16240: Improve readability
+ on write_raw function
+Message-ID: <20190818201351.10ea83a2@archlinux>
+In-Reply-To: <28dda97db73c56fbaf746aa52eb63faaf02b15d7.camel@analog.com>
+References: <20190813193101.26867-1-rodrigorsdc@gmail.com>
+        <28dda97db73c56fbaf746aa52eb63faaf02b15d7.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,41 +52,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 13 Aug 2019 09:35:30 +0200
-Martin Kepplinger <martin.kepplinger@puri.sm> wrote:
+On Wed, 14 Aug 2019 06:56:18 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> Add basic functionality for LSM9DS1. This has become a trivial addition
-> by now.
+> On Tue, 2019-08-13 at 16:31 -0300, Rodrigo Ribeiro wrote:
+> > [External]
+> > 
+> > Replace shift and minus operation by GENMASK macro and remove the local
+> > variables used to store intermediate data.
+> >   
 > 
-
-To me these look fine, but I'd ideally like an Ack or reviewed-by from
-Lorenzo.
+> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
-
-> revision history
-> ----------------
-> v4: rebase on top of today's iio testing branch with Lorenzo's recent work
-> v3: rebase and add Lorenzo's patches in order to apply to the iio testing brach
-> v2: further simplifications based on Lorenzo's feedback
-> v1: initial change for adding lsm9ds1 support
 > 
-> 
-> Martin Kepplinger (3):
->   iio: imu: st_lsm6sdx: move register definitions to sensor_settings
->     struct
->   iio: imu: st_lsm6dsx: add support for accel/gyro unit of lsm9sd1
->   dt-bindings: iio: imu: st_lsm6dsx: add lsm9ds1 device bindings
-> 
->  .../bindings/iio/imu/st_lsm6dsx.txt           |   1 +
->  drivers/iio/imu/st_lsm6dsx/Kconfig            |   2 +-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |   8 ++
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 118 ++++++++++++++++--
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c   |   5 +
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c   |   5 +
->  6 files changed, 129 insertions(+), 10 deletions(-)
-> 
+> > Signed-off-by: Rodrigo Ribeiro Carvalho <rodrigorsdc@gmail.com>
+> > ---
+> > v2:
+> >    - Leave switch statement instead of replace by if statement
+> >  drivers/staging/iio/accel/adis16240.c | 5 +----
+> >  1 file changed, 1 insertion(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/accel/adis16240.c
+> > index 62f4b3b1b457..82099db4bf0c 100644
+> > --- a/drivers/staging/iio/accel/adis16240.c
+> > +++ b/drivers/staging/iio/accel/adis16240.c
+> > @@ -309,15 +309,12 @@ static int adis16240_write_raw(struct iio_dev *indio_dev,
+> >  			       long mask)
+> >  {
+> >  	struct adis *st = iio_priv(indio_dev);
+> > -	int bits = 10;
+> > -	s16 val16;
+> >  	u8 addr;
+> >  
+> >  	switch (mask) {
+> >  	case IIO_CHAN_INFO_CALIBBIAS:
+> > -		val16 = val & ((1 << bits) - 1);
+> >  		addr = adis16240_addresses[chan->scan_index][0];
+> > -		return adis_write_reg_16(st, addr, val16);
+> > +		return adis_write_reg_16(st, addr, val & GENMASK(9, 0));
+> >  	}
+> >  	return -EINVAL;
+> >  }  
 

@@ -2,36 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB1189187F
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2019 19:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D8E591883
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2019 19:55:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726247AbfHRRyl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Aug 2019 13:54:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47776 "EHLO mail.kernel.org"
+        id S1726817AbfHRRzu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Aug 2019 13:55:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48682 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726089AbfHRRyl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 18 Aug 2019 13:54:41 -0400
+        id S1726747AbfHRRzu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 18 Aug 2019 13:55:50 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1EA9A20B7C;
-        Sun, 18 Aug 2019 17:54:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4B6C220B7C;
+        Sun, 18 Aug 2019 17:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566150880;
-        bh=E4YAksr6/atavT3eenuPTPNHrhUiFlyVbLsPoOPBKdk=;
+        s=default; t=1566150949;
+        bh=81ed9RBM09C9vmEgmyh5QD5J7tn2TnHkzuCZiVnKQNw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nVn1KS69vWzqkVQsyvIntDNexxOK3ScycSUAPS2CEmS/kHhk8WlM0zOPXHF0AAgFe
-         UbsEqEUv5w6Qo8Bd2q3msN/19HvwZS11e3AKw5Zq91iGwibnvlJ/R61nEHfqZ8IVXE
-         hTZmWxi746zK7ajbckzE5Cgv7Ca+c59ym9S7QJ7k=
-Date:   Sun, 18 Aug 2019 18:54:36 +0100
+        b=baXrZ81Nj/oC6AstnQfLU4ymhv9m478hZqX7mJHqFJ8Q1UzpdggNWlQaRpitHULuU
+         riLpw5ycrtPNQnUjXpubYNkzquyVSISXhZAD66pgMg+Pt/vEt5sC/0eac7P256n+qc
+         IA4+d5q4eNMTnVWWtIQ5TXzFIOmSjpCR44Uin3YU=
+Date:   Sun, 18 Aug 2019 18:55:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH] iio: imu: adis16460: fix variable signedness
-Message-ID: <20190818185436.05969228@archlinux>
-In-Reply-To: <20190816062835.25588-1-alexandru.ardelean@analog.com>
-References: <20190816062835.25588-1-alexandru.ardelean@analog.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: dac: ad5380: fix incorrect assignment to val
+Message-ID: <20190818185544.66c32add@archlinux>
+In-Reply-To: <876a4d5190828619f75365863cc6bf2cfea4ffea.camel@analog.com>
+References: <20190815115846.21800-1-colin.king@canonical.com>
+        <876a4d5190828619f75365863cc6bf2cfea4ffea.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,58 +49,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 16 Aug 2019 09:28:35 +0300
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Fri, 16 Aug 2019 06:16:26 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> Caught via static-analysis checker:
-> ```
-> drivers/iio/imu/adis16460.c
->    152  static int adis16460_set_freq(struct iio_dev *indio_dev, int val, int val2)
->    153  {
->    154          struct adis16460 *st = iio_priv(indio_dev);
->    155          unsigned int t;
->                 ^^^^^^^^^^^^^^
+> On Thu, 2019-08-15 at 12:58 +0100, Colin King wrote:
+> > [External]
+> >   
 > 
->    156
->    157          t =  val * 1000 + val2 / 1000;
->    158          if (t <= 0)
->                     ^^^^^^
-> Unsigned is not less than zero.
-> ```
-> 
-> The types of `val` && `val2` are obtained from the IIO `write_raw` hook, so
-> userspace can provide negative values, which can cause weird behavior after
-> conversion to unsigned.
-> 
-> This patch changes the sign of variable `t` so that -EINVAL will be
-> returned for negative values as well.
-> 
-> Fixes: db6ed4d23dd1 ("iio: imu: Add support for the ADIS16460 IMU")
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/imu/adis16460.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/imu/adis16460.c b/drivers/iio/imu/adis16460.c
-> index 1ef11640ee20..6aed9e84abbf 100644
-> --- a/drivers/iio/imu/adis16460.c
-> +++ b/drivers/iio/imu/adis16460.c
-> @@ -152,7 +152,7 @@ static int adis16460_debugfs_init(struct iio_dev *indio_dev)
->  static int adis16460_set_freq(struct iio_dev *indio_dev, int val, int val2)
->  {
->  	struct adis16460 *st = iio_priv(indio_dev);
-> -	unsigned int t;
-> +	int t;
->  
->  	t =  val * 1000 + val2 / 1000;
->  	if (t <= 0)
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > Currently the pointer val is being incorrectly incremented
+> > instead of the value pointed to by val. Fix this by adding
+> > in the missing * indirection operator.
+> > 
+> > Addresses-Coverity: ("Unused value")
+> > Fixes: c03f2c536818 ("staging:iio:dac: Add AD5380 driver")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  drivers/iio/dac/ad5380.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/dac/ad5380.c b/drivers/iio/dac/ad5380.c
+> > index 4335214800d2..2ebe08326048 100644
+> > --- a/drivers/iio/dac/ad5380.c
+> > +++ b/drivers/iio/dac/ad5380.c
+> > @@ -220,7 +220,7 @@ static int ad5380_read_raw(struct iio_dev *indio_dev,
+> >  		if (ret)
+> >  			return ret;
+> >  		*val >>= chan->scan_type.shift;
+> > -		val -= (1 << chan->scan_type.realbits) / 2;
+> > +		*val -= (1 << chan->scan_type.realbits) / 2;
+> >  		return IIO_VAL_INT;
+> >  	case IIO_CHAN_INFO_SCALE:
+> >  		*val = 2 * st->vref;  
 

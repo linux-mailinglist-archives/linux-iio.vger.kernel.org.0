@@ -2,151 +2,220 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A1429751A
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 10:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9012D975AD
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 11:12:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727416AbfHUIhF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Aug 2019 04:37:05 -0400
-Received: from mail-eopbgr690063.outbound.protection.outlook.com ([40.107.69.63]:39842
-        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727085AbfHUIhF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 21 Aug 2019 04:37:05 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Pif25F/HJC+IMBl5NGU2BQI8rcc8edWpVidiyu9ZWR3+8TGGjNLvJeQ6pWyIniUzP1qSsERb67Y/VtuB5QXK4OVwOHsw1aiqFTkv6Mdzg6k33U/VxDBw7lV2nhEy4nEJc1hKaY4bvD0BdRYWoI0FYLMP1bPLqjUrMxZzRUkqg4hvVPevWrW4rNR/kBKY9qAbuS5mSgB6ZU+ma3LZi0+9JCRgHV6rFOcP0KFPFJFGaLZvPl2Bgrr+G98cgSjuVViqnxjpdmSJ8zZ/Cjdm0GyYZmrqZPtHqd3Hn0N+CwRyHEAaF1DPpSIJ2+/M2Ojsa0DMyWhvDPWalwmew8L0fpo+Jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kVkYCPSdIIeJmTrWtD+T5BFmGZyu+K6FPYhv8Gn5jXE=;
- b=Nre9yk2+tgYmyJEYaZ3dNroLlVHd3O+VtyOg57w6f3xqRqy0JJzSFi8jOEcq3c1BsTFVRTl/sxzs6UMjU5E43BkVUADMKnp/G2f6bq9zuML7n6XS3xC7sAfVnZIGjmLq0sIZQR5ajcTIctAf2YK8pw1urhaL9Dmsn7y3AcKXNbb7o2Zl9ZBGftaLwsyQtac9jOCiZ3Q9nipfAhh3kwSwgP4djMwCH9CASb3dEgkfMfiClqYII6EIgv3UYyK2dmFGDJ0sg2C2qECprGgEz+YvQV7K9+4BQRMUYfQynLyClDonpURvq9T9sCqAsbeQaIpIpf2zsd+y+Sa9gsMK5dDrMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.60.83) smtp.rcpttodomain=electromag.com.au smtp.mailfrom=xilinx.com;
- dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kVkYCPSdIIeJmTrWtD+T5BFmGZyu+K6FPYhv8Gn5jXE=;
- b=fSri4sCW7s//gKwd3CA9cyAQPLuLlWGLwPeh3Bkm2T/pXbr7tZQJn4SLhDeqgLExcibVnPJ7GCp5fISRVIuwd+dhgE8azBrnhaw0JMR1xtgGl8dLrZX2ESEj7PKrOsu1yz+9WNVndJE4pPJD0EJMTyTGfFUcnfOlaqri4Ooulzk=
-Received: from MWHPR02CA0038.namprd02.prod.outlook.com (2603:10b6:301:60::27)
- by BYAPR02MB4037.namprd02.prod.outlook.com (2603:10b6:a02:f9::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2178.18; Wed, 21 Aug
- 2019 08:36:23 +0000
-Received: from SN1NAM02FT012.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e44::208) by MWHPR02CA0038.outlook.office365.com
- (2603:10b6:301:60::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2178.16 via Frontend
- Transport; Wed, 21 Aug 2019 08:36:22 +0000
-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; electromag.com.au; dkim=none (message not signed)
- header.d=none;electromag.com.au; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- SN1NAM02FT012.mail.protection.outlook.com (10.152.72.95) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2178.16
- via Frontend Transport; Wed, 21 Aug 2019 08:36:19 +0000
-Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
-        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1i0M6M-0000O8-W9; Wed, 21 Aug 2019 01:36:18 -0700
-Received: from [127.0.0.1] (helo=localhost)
-        by xsj-pvapsmtp01 with smtp (Exim 4.63)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1i0M6H-00009r-Ia; Wed, 21 Aug 2019 01:36:13 -0700
-Received: from xsj-pvapsmtp01 (smtp2.xilinx.com [149.199.38.66])
-        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id x7L8a8ad018858;
-        Wed, 21 Aug 2019 01:36:08 -0700
-Received: from [172.30.17.116]
-        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
-        (envelope-from <michals@xilinx.com>)
-        id 1i0M6B-00008X-NA; Wed, 21 Aug 2019 01:36:07 -0700
-Subject: Re: [PATCH 2/4] iio: adc: ina2xx: Setup better name then simple
- ina2xx
-To:     Phil Reid <preid@electromag.com.au>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-kernel@vger.kernel.org, monstr@monstr.eu, linux@roeck-us.net
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        linux-iio@vger.kernel.org,
-        =?UTF-8?Q?Stefan_Br=c3=bcns?= <stefan.bruens@rwth-aachen.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Hartmut Knaack <knaack.h@gmx.de>
-References: <cover.1566310292.git.michal.simek@xilinx.com>
- <e1a9d7c5f94a4942a97a242e530a3bfdda8bbc74.1566310292.git.michal.simek@xilinx.com>
- <1c96bed1-2651-3667-3573-2167cd788bd7@electromag.com.au>
-From:   Michal Simek <michal.simek@xilinx.com>
-Message-ID: <282e9668-affd-7266-b144-125a59e08e5b@xilinx.com>
-Date:   Wed, 21 Aug 2019 10:36:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726696AbfHUJJF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Aug 2019 05:09:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60314 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726537AbfHUJJF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 21 Aug 2019 05:09:05 -0400
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 317F422DA7;
+        Wed, 21 Aug 2019 09:09:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566378544;
+        bh=hDaAZ9xHf7qqtmPVQR5FTy7Bni6GFVqIfLICzjW/uJY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=acehRPzUVYFoIQBm84kYSWucAIFsnLUDDoNok+YqzqYKVKhwDzXjoXa+XqfgroU/3
+         snma3LQz1Nh7k0qkQy/s1L/+dnYbvkkcJ76UAflQFPZbsrqw10VJEHcVlf/xvkXY5+
+         6GJ/o3i2eYW9GIQ06hp5o76ldaoNL0J/ZaGSZKqY=
+Date:   Wed, 21 Aug 2019 11:08:58 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] iio: imu: st_lsm6dsx: add support for accel/gyro
+ unit of lsm9sd1
+Message-ID: <20190821090858.GC13516@localhost.localdomain>
+References: <20190813073533.8007-1-martin.kepplinger@puri.sm>
+ <20190813073533.8007-3-martin.kepplinger@puri.sm>
+ <20190819094845.GB17835@localhost.localdomain>
+ <6c739681-d46e-b4f7-9831-bdf1e9bcd540@puri.sm>
 MIME-Version: 1.0
-In-Reply-To: <1c96bed1-2651-3667-3573-2167cd788bd7@electromag.com.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-RCIS-Action: ALLOW
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.83;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(136003)(396003)(346002)(376002)(2980300002)(199004)(189003)(31696002)(44832011)(486006)(478600001)(426003)(23676004)(52146003)(2486003)(305945005)(229853002)(446003)(11346002)(230700001)(76176011)(6246003)(31686004)(47776003)(70206006)(336012)(70586007)(36386004)(106002)(65956001)(65806001)(8936002)(7416002)(36756003)(2906002)(356004)(6666004)(53546011)(186003)(5660300002)(54906003)(9786002)(8676002)(110136005)(4326008)(126002)(50466002)(476003)(81156014)(81166006)(316002)(58126008)(14444005)(2616005)(26005);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR02MB4037;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-83.xilinx.com;A:1;MX:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 678bcaee-0c35-42ac-0282-08d72612a466
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(4709080)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:BYAPR02MB4037;
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4037:
-X-LD-Processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
-X-Microsoft-Antispam-PRVS: <BYAPR02MB40377E26BC41FA7EDD3B681CC6AA0@BYAPR02MB4037.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-Forefront-PRVS: 0136C1DDA4
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: L3L9iPCRWfbXdrvZpRiMVBLjPXrP1tLecBUdF9nmhZnCevSGvOeDi9oTb+q5DZzhnlCduOKvEFgGU6/hJ8tRMVt2zymY6QLiJAdgb6VcgtAUzKaI6VRJIIyhPwyUix+c8MmH9UrfvsiwDcVekzClHYyJZk9NXQA88fPCbRU97ijN8XZkdP+wA2lkU3/cT9wcoL6CKqZnDrNMOLW/73HhsexHDvxlaryGIv4ExxiL1ClUaTW6CKbxxQURGZm/gI7OAI3iF2SUfzatubUnW+HfUQohTHH0G/h/2irgTM+bWhQJoT/QQP9Ph1E4dnYd0WWdjbTobjUl9Sjtbmf83esYU9NDf+X7RGA5Q+vmQxQQcYNqrS3yJsLzLBYF10rJpPO9o7q7qVF7b1ArwX5M9vQV3sa32aAAt5cxMXQWkaEgnOk=
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2019 08:36:19.9725
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 678bcaee-0c35-42ac-0282-08d72612a466
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB4037
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mvpLiMfbWzRoNl4x"
+Content-Disposition: inline
+In-Reply-To: <6c739681-d46e-b4f7-9831-bdf1e9bcd540@puri.sm>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 21. 08. 19 4:10, Phil Reid wrote:
-> On 20/08/2019 22:11, Michal Simek wrote:
->> On systems with multiple ina2xx chips it is impossible to find out which
->> iio device is which one based on probe order. That's why it is
->> necessary to
->> setup better name based on possition.
->> The patch is reusing dev_name which is setup by core with client->name.
->>
->> name char array was setup to 128 byte length to correspond the same name
->> length by HID device.
->>
->> Before this patch:
->> iio:device9: ina226 (buffer capable)
->> After:
->> iio:device9: ina226-3-004a (buffer capable)
-> 
-> Could this break existing user space code that's just looking for just
-> ina226.
-> I2c bus numbers aren't all that great at id'ing devices either. It's
-> better than
-> nothing but depending on what cards we have plugged into our system the
-> same device gets
-> a different bus number.
 
-Fair point. Let's wait what dt guys say about label property.
-I can simply drop this patch and use just this.
+--mvpLiMfbWzRoNl4x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-indio_dev->name = of_get_property(np, "label", NULL) ? : id->name;
+> >> The LSM9DS1's accelerometer / gyroscope unit and it's magnetometer (se=
+parately
+> >> supported in iio/magnetometer/st_magn*) are located on a separate i2c =
+addresses
+> >> on the bus.
+> >>
+> >> For the datasheet, see https://www.st.com/resource/en/datasheet/lsm9ds=
+1.pdf
+> >>
+> >> Treat it just like the LSM6* devices and, despite it's name, hook it up
+> >> to the st_lsm6dsx driver, using it's basic functionality.
+> >>
+> >> accelerometer and gyroscope are not independently clocked. It runs at =
+the gyro
+> >> frequencies if both are enabled, see chapter 7.12 of the datasheet.
+> >> We could have handled this as a single IIO device but we have split
+> >> it up to be more consistent with the other more flexible devices.
+> >>
+> >> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> >=20
+> > Hi Martin,
+> >=20
+> > most of comments are nitpicks (inline), the only issue I can see here i=
+s we can enable
+> > hw fifo for lsm6ds0/lsm9ds1 and read_fifo routine pointer is not curren=
+tly
+> > initialized so we will end up with a NULL pointer dereference. Since we=
+ will
+> > need a different update FIFO routine for lsm6ds0/lsm9ds1 I am adding an
+> > update_fifo function pointer in fifo_ops in order to fix this issue.
+> >=20
+> > Regards,
+> > Lorenzo
+> >=20
+> >> ---
 
-Thanks,
-Michal
+[...]
+
+> >=20
+> > should be called 'lsm9ds1_imu' since lsm9ds1 is a 9-axis device? what d=
+o you
+> > think?
+> >=20
+> >> =20
+> >>  enum st_lsm6dsx_hw_id {
+> >>  	ST_LSM6DS3_ID,
+> >> @@ -37,6 +38,7 @@ enum st_lsm6dsx_hw_id {
+> >>  	ST_LSM6DSR_ID,
+> >>  	ST_LSM6DS3TRC_ID,
+> >>  	ST_ISM330DHCX_ID,
+> >> +	ST_LSM9DS1_ID,
+> >=20
+> > same here..ST_LSM9DS1_IMU_ID
+>=20
+> I wouldn't add "imu" to the actual part name, see below...
+>=20
+> >=20
+> >>  	ST_LSM6DSX_MAX_ID,
+> >>  };
+> >> =20
+
+[...]
+
+> >> +};
+> >> +
+> >=20
+> > why not st_lsm6ds0_gyro_channels?
+>=20
+> Would be ok with me. I'll remember this if I do a new iteration.
+>=20
+> >=20
+
+[...]
+
+> >> index 15c6aa5b6caa..2f1b30ff083b 100644
+> >> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+> >> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+> >> @@ -83,6 +83,10 @@ static const struct of_device_id st_lsm6dsx_i2c_of_=
+match[] =3D {
+> >>  		.compatible =3D "st,ism330dhcx",
+> >>  		.data =3D (void *)ST_ISM330DHCX_ID,
+> >>  	},
+> >> +	{
+> >> +		.compatible =3D "st,lsm9ds1",
+> >=20
+> > same here, what is the right compatible string? "st,lsm9ds1 or
+> > "st,lsm9ds1_imu"?
+>=20
+> well, I'm open for this change, but "imu" doesn't really mean much
+> technically, so I would stick with the device name. "imu" is not part of
+> the "part" name...
+>=20
+
+I have not a strong opinion on it but IMU means 'Inertial Measurement Unit'=
+ and
+it used to indicate a device that runs a combination of accelerometer and
+gyroscope. I think using LSM9DS1 as device name it is weird since I would
+expect even the magn in this case (all supported devices by st_lsm6dsx are =
+just
+IMU). I am not sure if "st,lsm9ds1_imu" is the right compatible string but I
+would indicate this node does not run a magn device.
+
+@Jonathan: what do you think?
+
+Regards,
+Lorenzo
+
+> >=20
+> >> +		.data =3D (void *)ST_LSM9DS1_ID,
+> >> +	},
+> >>  	{},
+> >>  };
+> >>  MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
+> >> @@ -99,6 +103,7 @@ static const struct i2c_device_id st_lsm6dsx_i2c_id=
+_table[] =3D {
+> >>  	{ ST_LSM6DSR_DEV_NAME, ST_LSM6DSR_ID },
+> >>  	{ ST_LSM6DS3TRC_DEV_NAME, ST_LSM6DS3TRC_ID },
+> >>  	{ ST_ISM330DHCX_DEV_NAME, ST_ISM330DHCX_ID },
+> >> +	{ ST_LSM9DS1_DEV_NAME, ST_LSM9DS1_ID },
+> >>  	{},
+> >>  };
+> >>  MODULE_DEVICE_TABLE(i2c, st_lsm6dsx_i2c_id_table);
+> >> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio=
+/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+> >> index a8430ee11310..421ce704f346 100644
+> >> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+> >> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+> >> @@ -83,6 +83,10 @@ static const struct of_device_id st_lsm6dsx_spi_of_=
+match[] =3D {
+> >>  		.compatible =3D "st,ism330dhcx",
+> >>  		.data =3D (void *)ST_ISM330DHCX_ID,
+> >>  	},
+> >> +	{
+> >> +		.compatible =3D "st,lsm9ds1",
+> >> +		.data =3D (void *)ST_LSM9DS1_ID,
+> >> +	},
+> >>  	{},
+> >>  };
+> >>  MODULE_DEVICE_TABLE(of, st_lsm6dsx_spi_of_match);
+> >> @@ -99,6 +103,7 @@ static const struct spi_device_id st_lsm6dsx_spi_id=
+_table[] =3D {
+> >>  	{ ST_LSM6DSR_DEV_NAME, ST_LSM6DSR_ID },
+> >>  	{ ST_LSM6DS3TRC_DEV_NAME, ST_LSM6DS3TRC_ID },
+> >>  	{ ST_ISM330DHCX_DEV_NAME, ST_ISM330DHCX_ID },
+> >> +	{ ST_LSM9DS1_DEV_NAME, ST_LSM9DS1_ID },
+> >>  	{},
+> >>  };
+> >>  MODULE_DEVICE_TABLE(spi, st_lsm6dsx_spi_id_table);
+> >> --=20
+> >> 2.20.1
+> >>
+>=20
+
+--mvpLiMfbWzRoNl4x
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXV0KJwAKCRA6cBh0uS2t
+rKi/AP9cwBGDlhI0BhmnTs8UumYUGi28HsylkDfMBVcjg+VbdwEAmwwyCgwL+bj+
+60MK3unYa5T02cuYvsQ8kguN7tXU6Qc=
+=Rcl6
+-----END PGP SIGNATURE-----
+
+--mvpLiMfbWzRoNl4x--

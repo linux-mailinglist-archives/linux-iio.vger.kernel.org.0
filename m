@@ -2,74 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A6796EB1
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 03:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E562E96F19
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 03:56:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726327AbfHUBK0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Aug 2019 21:10:26 -0400
-Received: from mail-wm1-f48.google.com ([209.85.128.48]:39261 "EHLO
-        mail-wm1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726193AbfHUBKZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Aug 2019 21:10:25 -0400
-Received: by mail-wm1-f48.google.com with SMTP id i63so401116wmg.4
-        for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2019 18:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=T9iBf6a01EUoyJeL0BKORzyCncq4SVoAwWt0B87jKfs=;
-        b=htezgSxp6VnSyelzNfU8CBJaySjeYfmbWci88QYQvuKZikYit1H9DL+Fg68V9A+IKW
-         dPv9X/Jy8xVPuOop9XvKmTN5jlsx48149Tgrh+Xv2YWHuIvKZGtMS6obYjbosBEoAqEt
-         /+6uZzXKatAz/gHktQh3+3UJo6PnIb1KU80YDMKFamYB+W8pfBbjGeSVw42NtkvVr52k
-         eigZc8XHnPKLzBVbr0G0Q/KUr0zjRAm7yTmEmQIFvaoQn50kwP2UZMlgzaJTLhkoX7zm
-         OuNTR2UclWMUJea/RHjjHHeg5SmZTE/a72kU2ag+FA5mJcECrzQNlL+Q9G9yWhNXfUIA
-         eBVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=T9iBf6a01EUoyJeL0BKORzyCncq4SVoAwWt0B87jKfs=;
-        b=EssdubaYJW0RGGVXEhN2fcZRJMFs7OzDfKoWaxk7SKo/RfWruKtDEm69nI0AcHz3o1
-         YsDZBv2jMV0pPRYGZxeiB39h9X/L/rVMmiMJ5fqhCo1hmpitrdnrDrdCGMUk5SPTC3dg
-         Dapy2OQgth3Uv/lV6kCjyslRxbDUFJSD8y+xsOQwz9Yh0OpRqneLLPKdn26/rfJm2jjv
-         XXfDBa/QqtITO5tqfGk3w3/2s9CqXO8898kNYKrqRtmLcfAEPgn3UtdvqUBPVvo0lL8z
-         Y537wWS3TMvu+bGenaiwjfyJqlhCtal9x/uFZAmQeYG8rCiwi10F7zQK/hVPQtWzI+Wi
-         UiDg==
-X-Gm-Message-State: APjAAAUXVPIb+Ib3N2oMjuBl7WrP2aBjaW3jTdPwO1F/2WdJO5FSwuLa
-        +zmQ6IP0EPLADX318F+0ZNQUnvDrrkiFEW7QBcU=
-X-Google-Smtp-Source: APXvYqwYSDsLjC7r2VDGZ+gTOFO2EBRbNEakZc9+RjWehmnhEVuSXmbYEIaWbdifTiE4bk5i3sIpHmpWpxEWnbQ31PI=
-X-Received: by 2002:a7b:c929:: with SMTP id h9mr2777370wml.1.1566349823637;
- Tue, 20 Aug 2019 18:10:23 -0700 (PDT)
+        id S1726193AbfHUB4S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Aug 2019 21:56:18 -0400
+Received: from anchovy2.45ru.net.au ([203.30.46.146]:49317 "EHLO
+        anchovy2.45ru.net.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726533AbfHUB4S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Aug 2019 21:56:18 -0400
+Received: (qmail 14515 invoked by uid 5089); 21 Aug 2019 01:56:15 -0000
+Received: by simscan 1.2.0 ppid: 14414, pid: 14415, t: 0.0643s
+         scanners: regex: 1.2.0 attach: 1.2.0 clamav: 0.88.3/m:40/d:1950
+Received: from unknown (HELO ?192.168.0.128?) (preid@electromag.com.au@203.59.235.95)
+  by anchovy3.45ru.net.au with ESMTPA; 21 Aug 2019 01:56:15 -0000
+Subject: Re: [PATCH 1/4] iio: adc: ina2xx: Define *device_node only once
+To:     Michal Simek <michal.simek@xilinx.com>,
+        linux-kernel@vger.kernel.org, monstr@monstr.eu, linux@roeck-us.net
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        linux-iio@vger.kernel.org,
+        =?UTF-8?Q?Stefan_Br=c3=bcns?= <stefan.bruens@rwth-aachen.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Hartmut Knaack <knaack.h@gmx.de>
+References: <cover.1566310292.git.michal.simek@xilinx.com>
+ <c13fb8284b68cf3dbe309941d767aa7701aa4c3a.1566310292.git.michal.simek@xilinx.com>
+From:   Phil Reid <preid@electromag.com.au>
+Message-ID: <fef37bf8-3c08-3bb2-b8f9-79c6447c9fac@electromag.com.au>
+Date:   Wed, 21 Aug 2019 09:56:03 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <DM5PR19MB1657A46C8631408A8D0989049EAB0@DM5PR19MB1657.namprd19.prod.outlook.com>
-In-Reply-To: <DM5PR19MB1657A46C8631408A8D0989049EAB0@DM5PR19MB1657.namprd19.prod.outlook.com>
-From:   Paul Thomas <pthomas8589@gmail.com>
-Date:   Tue, 20 Aug 2019 21:10:10 -0400
-Message-ID: <CAD56B7cOEvRVES8ZUtOo=J6U1Mwik51s+S=suoPBCOJ4H9ZNAg@mail.gmail.com>
-Subject: Re: read buffer
-To:     "Grim, Dennis" <Dennis.Grim@teejet.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <c13fb8284b68cf3dbe309941d767aa7701aa4c3a.1566310292.git.michal.simek@xilinx.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 20, 2019 at 6:36 PM Grim, Dennis <Dennis.Grim@teejet.com> wrote=
-:
->
-> In user space, how is it known that data is available in a buffer (i.e. /=
-dev/iio:device0)?  The buffer trigger happens on a separate thread.  I woul=
-d like to do this without polling.  I have tried select() but it does not s=
-eem to see new data from iio_push_to_buffers.
+On 20/08/2019 22:11, Michal Simek wrote:
+> There is no reason to c&p full client->dev.of_node link when simple
+> variable can keep it.
+One comment
 
-Hi Dennis,
+> 
+> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+> ---
+> 
+>   drivers/iio/adc/ina2xx-adc.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
+> index bdd7cba6f6b0..37058d9c2054 100644
+> --- a/drivers/iio/adc/ina2xx-adc.c
+> +++ b/drivers/iio/adc/ina2xx-adc.c
+> @@ -951,6 +951,7 @@ static int ina2xx_probe(struct i2c_client *client,
+>   	struct ina2xx_chip_info *chip;
+>   	struct iio_dev *indio_dev;
+>   	struct iio_buffer *buffer;
+> +	struct device_node *np = client->dev.of_node;
+>   	unsigned int val;
+>   	enum ina2xx_ids type;
+>   	int ret;
+> @@ -970,7 +971,7 @@ static int ina2xx_probe(struct i2c_client *client,
+>   		return PTR_ERR(chip->regmap);
+>   	}
+>   
+> -	if (client->dev.of_node)
+> +	if (np)
+>   		type = (enum ina2xx_ids)of_device_get_match_data(&client->dev);
+>   	else
+>   		type = id->driver_data;
+> @@ -978,7 +979,7 @@ static int ina2xx_probe(struct i2c_client *client,
+>   
+>   	mutex_init(&chip->state_lock);
+>   
+> -	if (of_property_read_u32(client->dev.of_node,
+> +	if (of_property_read_u32(np,
+>   				 "shunt-resistor", &val) < 0) {
 
-What's wrong with just a read(), which will block until data is
-available? You can put it in it's own thread if you have other stuff
-to do. select() will work, it's a little more complex to setup
-correctly, and isn't really needed unless you are waiting on multiple
-fd's
+This will fit on one line <80 now.
 
--Paul
+>   		struct ina2xx_platform_data *pdata =
+>   		    dev_get_platdata(&client->dev);
+> @@ -1016,7 +1017,7 @@ static int ina2xx_probe(struct i2c_client *client,
+>   
+>   	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
+>   	indio_dev->dev.parent = &client->dev;
+> -	indio_dev->dev.of_node = client->dev.of_node;
+> +	indio_dev->dev.of_node = np;
+>   	if (id->driver_data == ina226) {
+>   		indio_dev->channels = ina226_channels;
+>   		indio_dev->num_channels = ARRAY_SIZE(ina226_channels);
+> 
+
+
+-- 
+Regards
+Phil Reid
+
+ElectroMagnetic Imaging Technology Pty Ltd
+Development of Geophysical Instrumentation & Software
+www.electromag.com.au
+
+3 The Avenue, Midland WA 6056, AUSTRALIA
+Ph: +61 8 9250 8100
+Fax: +61 8 9250 7100
+Email: preid@electromag.com.au

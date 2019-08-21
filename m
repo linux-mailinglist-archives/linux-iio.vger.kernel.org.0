@@ -2,98 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFE54977C2
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 13:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 490EB977EB
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 13:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727004AbfHULLY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Aug 2019 07:11:24 -0400
-Received: from first.geanix.com ([116.203.34.67]:54578 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726330AbfHULLY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 21 Aug 2019 07:11:24 -0400
-Received: from [192.168.100.95] (unknown [95.138.208.137])
-        by first.geanix.com (Postfix) with ESMTPSA id 3159428B;
-        Wed, 21 Aug 2019 11:11:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1566385873; bh=LAGc1X0K3lso435hB5StiaA1bSF9jhorG+LPnCkJeko=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=dZWWPXvUsAGR0F2AekxIvFCiJylEnzlYC0yEqPnCU41bmbEjGBQjYGZrXXpHxny89
-         EOUgeJIVul4x6sOxvsUSNZwDYDWghLo3BmUMIxrbEuc6TiOpP0mBmYtvWkrsASpk8T
-         Bd1NTuCSSHCtinvoIrqrd2zskMHY5mddzoFzgFYXolWICPF+STmgmHMDsOBuaiEf1I
-         JVbEhQpNj+oKBor9dbM1FAGevCT4Ut4ZM7iDbKU902UinQIDvZxXREcxyhIAcv4SNm
-         S2+zTSQjuDmTLv+0rmgYZoQEuTRl2NTncYZ2euBmA1pqT6D97qiLv1nxmtPGZD6DCx
-         Kx3XXYR3v/uSQ==
-Subject: Re: [PATCH v2 3/6] iio: imu: st_lsm6dsx: add motion events
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com, martin@geanix.com,
-        denis.ciocca@st.com, mario.tesi@st.com, armando.visconti@st.com
-References: <20190715081514.81129-1-sean@geanix.com>
- <20190715081514.81129-3-sean@geanix.com>
- <20190716082927.GB13440@localhost.localdomain>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <2d8adf1f-4a8e-978b-dd48-2724c3c0b566@geanix.com>
-Date:   Wed, 21 Aug 2019 13:11:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726741AbfHUL23 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Aug 2019 07:28:29 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:34807 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726593AbfHUL23 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Aug 2019 07:28:29 -0400
+Received: by mail-ot1-f65.google.com with SMTP id c7so1718510otp.1;
+        Wed, 21 Aug 2019 04:28:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TuaZG7Omor+G/AkU6ujx9Ln8/VDzjqK3KDTH0UUDhuU=;
+        b=PinaZKHD4MuwCZgZ4BVknOphxjy2VBVHAwQZfD0PhJmnMkEmRfVl/TjzA0xTDT9aCH
+         6GGI2TEp9EFtbLlxMcCbQAkVlHVdEwtPztJZSSniTXbvqjbXWz8xWg5Hjpg7MHjz78ma
+         VYZ5oXNXq8vRgpnlwDpJtHClnnuOuFtYBeASegTLX3ra86Fbv9LNUrlGlPNNIlwQsee8
+         FZ+AYOi/1flfvsTqdHWmhhfsVCcTuIPFQSFMjmIRVWstrEAMIeum8dmpHkqZ11UBKnyH
+         oRUl5m+n0EeYNzkYbdEkvd2ydwYe4tA3Q9DeJv04XrdCDaCZQrniGgDAVMju9ymxEcD1
+         Ksbw==
+X-Gm-Message-State: APjAAAVbdjYAIFF6v6oVUB7XIamb/A9lhBSQ/cFnus7gAs1cHzd7lA4w
+        6z27WBxi0Kk5MqoWwXrx6Yrqu9Bapa5oh5alYlI=
+X-Google-Smtp-Source: APXvYqzVn6iwJJMy6xFU1GI7NKYrOHxrMHDdMw9ASzfZioKrVpu3RDiY5PRKEzuvDoneJw6SALvZzP5Pr3jReVY2v8w=
+X-Received: by 2002:a9d:68c5:: with SMTP id i5mr3012150oto.250.1566386908109;
+ Wed, 21 Aug 2019 04:28:28 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190716082927.GB13440@localhost.localdomain>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
+References: <20190805155515.22621-1-jacopo+renesas@jmondi.org> <20190805181244.663585ac@archlinux>
+In-Reply-To: <20190805181244.663585ac@archlinux>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 21 Aug 2019 13:28:16 +0200
+Message-ID: <CAMuHMdVT--S48M+BHTOH5SDi7AG=asOdNWH_UyM5nygZjWLmdg@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: max9611: Fix temperature reading in probe
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Stefan Agner <stefan@agner.ch>, linux-iio@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Jonathan, Jacopo,
+
+On Mon, Aug 5, 2019 at 7:15 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Mon,  5 Aug 2019 17:55:15 +0200
+> Jacopo Mondi <jacopo+renesas@jmondi.org> wrote:
+>
+> > The max9611 driver reads the die temperature at probe time to validate
+> > the communication channel. Use the actual read value to perform the test
+> > instead of the read function return value, which was mistakenly used so
+> > far.
+> >
+> > The temperature reading test was only successful because the 0 return
+> > value is in the range of supported temperatures.
+> >
+> > Fixes: 69780a3bbc0b ("iio: adc: Add Maxim max9611 ADC driver")
+> > Signed-off-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
+>
+> Applied to the fixes-togreg branch of iio.git and marked for
+> stable.  That'll be a bit fiddly given other changes around this
+> so we may need to do backports.
+
+This is now commit b9ddd5091160793e ("iio: adc: max9611: Fix temperature
+reading in probe") in v5.3-rc5, and has been backported to 4.14, 4.19,
+and 5.2.
+
+> > --- a/drivers/iio/adc/max9611.c
+> > +++ b/drivers/iio/adc/max9611.c
+> > @@ -480,7 +480,7 @@ static int max9611_init(struct max9611_dev *max9611)
+> >       if (ret)
+> >               return ret;
+> >
+> > -     regval = ret & MAX9611_TEMP_MASK;
+> > +     regval &= MAX9611_TEMP_MASK;
+> >
+> >       if ((regval > MAX9611_TEMP_MAX_POS &&
+> >            regval < MAX9611_TEMP_MIN_NEG) ||
+
+While this did fix a bug, it also introduced a regression: on Salvator-XS,
+which has two max9611 instances, I now see intermittent failures
+
+    max9611 4-007c: Invalid value received from ADC 0x8000: aborting
+    max9611: probe of 4-007c failed with error -5
+
+and/or
+
+    max9611 4-007f: Invalid value received from ADC 0x8000: aborting
+    max9611: probe of 4-007f failed with error -5
+
+during boot.
+
+Retrying on failure fixes the issue, e.g.:
+
+    max9611_init:483: regval = 0x8000
+    max9611 4-007f: Invalid value received from ADC 0x8000: aborting
+    max9611_init:483: regval = 0x2780
+
+According to the datasheet, 0x8000 is the Power-On Reset value.
+Looks like it should be ignored, and retried?
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 
-On 16/07/2019 10.29, Lorenzo Bianconi wrote:
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
->> +#define ST_LSM6DSX_CHANNEL_ACC(chan_type, addr, mod, scan_idx)		\
->> +{									\
->> +	.type = chan_type,						\
->> +	.address = addr,						\
->> +	.modified = 1,							\
->> +	.channel2 = mod,						\
->> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
->> +			      BIT(IIO_CHAN_INFO_SCALE),			\
->> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
->> +	.scan_index = scan_idx,						\
->> +	.scan_type = {							\
->> +		.sign = 's',						\
->> +		.realbits = 16,						\
->> +		.storagebits = 16,					\
->> +		.endianness = IIO_LE,					\
->> +	},								\
->> +	.event_spec = &st_lsm6dsx_event,				\
->> +	.num_event_specs = 1,						\
->> +}
-> 
-> I would prefer to extend existing macros
-> 
->> +
->>   #define ST_LSM6DSX_CHANNEL(chan_type, addr, mod, scan_idx)		\
->>   {									\
->>   	.type = chan_type,						\
->> @@ -297,6 +318,8 @@ struct st_lsm6dsx_hw {
->>   	u8 enable_mask;
->>   	u8 ts_sip;
->>   	u8 sip;
->> +	u8 event_threshold;
->> +	bool enable_event;
->>   	int drdy_pin;
->>   
->>   	u8 *buff;
->> @@ -306,6 +329,13 @@ struct st_lsm6dsx_hw {
->>   	const struct st_lsm6dsx_settings *settings;
->>   };
->>   
-
-How would I do that when we have the `event_spec` for the accelerometer?
-
-/Sean
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

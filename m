@@ -2,74 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD1CA98592
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 22:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F20D985A1
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 22:32:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727656AbfHUUZV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Aug 2019 16:25:21 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:42879 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727014AbfHUUZV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Aug 2019 16:25:21 -0400
-Received: by mail-ot1-f66.google.com with SMTP id j7so3306362ota.9;
-        Wed, 21 Aug 2019 13:25:20 -0700 (PDT)
+        id S1728955AbfHUUba (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Aug 2019 16:31:30 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:34295 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727014AbfHUUba (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Aug 2019 16:31:30 -0400
+Received: by mail-ot1-f65.google.com with SMTP id c7so3361351otp.1;
+        Wed, 21 Aug 2019 13:31:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=iJg47cQbCHnK8ufMuIHABp/qu3hQILpmFLj0ngT5bIQ=;
-        b=bWTZTXAZGy3bVhx8KFAvNenPW8s+HOr51DOPCssSi9WRdxMt1A6CH+rlfNnkl56Xqi
-         IFK51wBbQ77eTuyHwOp8dH7L7D8F71mf74G6g7taSCkfQm4nuybPzFCUtYTar0DCsumk
-         GIehF38PDAQZxgRCInCYLLr6YXprQYrGAUnDfzREhrNLt6Z7NGXnhNij5J23TqD7im5l
-         rYcvDeKdNDDFgVUsih1Etoy97frn4pelcPCrALs92RhTiqWYWSjAGvzNtmq4gXF65sNz
-         EMUpPdu2yOXboABL1R5CGNVXY0iRpbc8G1oL4Z6luyeNSGM9KGF0HofBToAHs2cJ1Q6i
-         +CBA==
-X-Gm-Message-State: APjAAAV1aYIF5U+UwHJLtXjzPXbvVfhSvMqxczmQNOfJKlZdUU4npkFE
-        mLewJ4i9k2YDf6gELM1oJQ==
-X-Google-Smtp-Source: APXvYqwSwDIjlEYrjfOBpsOH2FMZcHzCO/vFpoXUufv4hyoncemTSLkRaVUBNRzsMdWOmbzBbC0Cmw==
-X-Received: by 2002:a9d:1cf:: with SMTP id e73mr26436891ote.38.1566419120376;
-        Wed, 21 Aug 2019 13:25:20 -0700 (PDT)
+        bh=iabTxjGtNwFPz618omlBwY8T1BonwpR5OPoPhDx+RAI=;
+        b=WYbOEE9Gy49PJrRZIF4UzXIVNnr3FJk4n4J+C/Tb1KQz9hvmb1uczkBPxMBKM/igic
+         0SNsn4mNhaeqU/Tb5AS8Ni2Rpxxh0j+0WWN/5WrfIZKcY5/63lI2NMfwf6PK3BVqdPN7
+         DLwab1EEfwZ9T2vS9ceWnkIJ9hGAkJy2bszpoRGNyKJsgu0XQj6i0Ig1ziJW4CM6RPau
+         cowsQARkeHukD1/vawY5anj2mN2vbrYwmeTtCyUQ84uswelQdf7WQIOBV64CU1Rw5I+W
+         CJAZry04iuRsvm0CC4NOIPbEQg/SmOfaANmd0lA+ZgZxDdT0rpkkQkqr2eWD+2GPtH/k
+         /45Q==
+X-Gm-Message-State: APjAAAVoW7QyrpPLjF+scMFmsL/Rg9cl9HWIKDAC+JUaS/iUwjv1Cu7P
+        0C+M/iPipBU9yGSzkHGDtA==
+X-Google-Smtp-Source: APXvYqxA5DddGYiMIluqgvMEXnIjXJXPtUYSn4UKKWLOHwak79bzGLItjFHyJqv8AZhca2/koFNGsw==
+X-Received: by 2002:a9d:7a5a:: with SMTP id z26mr26056383otm.348.1566419488855;
+        Wed, 21 Aug 2019 13:31:28 -0700 (PDT)
 Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id a66sm7133353oii.15.2019.08.21.13.25.19
+        by smtp.gmail.com with ESMTPSA id d22sm6221319oic.23.2019.08.21.13.31.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2019 13:25:19 -0700 (PDT)
-Date:   Wed, 21 Aug 2019 15:25:19 -0500
+        Wed, 21 Aug 2019 13:31:28 -0700 (PDT)
+Date:   Wed, 21 Aug 2019 15:31:27 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Beniamin Bia <beniamin.bia@analog.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
-        knaack.h@gmx.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
-        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, mark.rutland@arm.com,
-        robh+dt@kernel.org, devicetree@vger.kernel.org,
-        paulmck@linux.ibm.com, mchehab+samsung@kernel.org,
-        linus.walleij@linaro.org, nicolas.ferre@microchip.com,
-        biabeniamin@outlook.com, Beniamin Bia <beniamin.bia@analog.com>
-Subject: Re: [PATCH v2 4/4] dt-bindings: iio: adc: Add AD7606B ADC
- documentation
-Message-ID: <20190821202519.GA28686@bogus>
-References: <20190807133137.11185-1-beniamin.bia@analog.com>
- <20190807133137.11185-4-beniamin.bia@analog.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] dt-bindings: counter: new bindings for TI eQEP
+Message-ID: <20190821203127.GA29308@bogus>
+References: <20190807194023.15318-1-david@lechnology.com>
+ <20190807194023.15318-3-david@lechnology.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190807133137.11185-4-beniamin.bia@analog.com>
+In-Reply-To: <20190807194023.15318-3-david@lechnology.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 7 Aug 2019 16:31:37 +0300, Beniamin Bia wrote:
-> Documentation for AD7606B Analog to Digital Converter and software
-> mode was added.
+On Wed, Aug 07, 2019 at 02:40:20PM -0500, David Lechner wrote:
+> This documents device tree binding for the Texas Instruments Enhanced
+> Quadrature Encoder Pulse (eQEP) Module found in various TI SoCs.
 > 
-> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+> Signed-off-by: David Lechner <david@lechnology.com>
 > ---
-> Changes in v2:
-> -nothing changed
 > 
->  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> v2 changes:
+> - convert to .yaml format
+> - rename clock to "sysclkout"
 > 
+>  .../devicetree/bindings/counter/ti-eqep.yaml  | 50 +++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/counter/ti-eqep.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+> new file mode 100644
+> index 000000000000..8f8b2e87e5c3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/counter/ti-eqep.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments Enhanced Quadrature Encoder Pulse (eQEP) Module
+> +
+> +maintainers:
+> +  - David Lechner <david@lechnology.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: "ti,am3352-eqep"
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+No need for quotes
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    description: The eQEP event interrupt
+
+Don't really have to have a description when there is only 1 entry.
+
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    description: The clock that determines the SYSCLKOUT rate for the eQEP
+> +                 peripheral.
+
+Same here. 2 spaces in from description is the normal indentation.
+
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: sysclkout
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    eqep0: eqep@180 {
+
+counter@...
+
+> +        compatible = "ti,am3352-eqep";
+> +        reg = <0x180 0x80>;
+> +        clocks = <&l4ls_gclk>;
+> +        clock-names = "sysclkout";
+> +        interrupts = <79>;
+> +    };
+> +
+> +...
+> -- 
+> 2.17.1
+> 

@@ -2,155 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97D4497C53
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 16:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13E9697F7F
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2019 17:57:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729317AbfHUORs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Aug 2019 10:17:48 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:7912 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728981AbfHUORs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Aug 2019 10:17:48 -0400
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7LEFt4X026159;
-        Wed, 21 Aug 2019 10:17:11 -0400
-Received: from nam01-bn3-obe.outbound.protection.outlook.com (mail-bn3nam01lp2055.outbound.protection.outlook.com [104.47.33.55])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2ug3mac2wd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Wed, 21 Aug 2019 10:17:11 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AQk6rVYfCOHb9kYWYp2ZohlBOJjFXWOrE6piCCBu9pjGzWdad5dUjGMRoFK9VmvJXEqcNDmIXrrPe3i5uNmggathcu9u3lZ2k7NGyClg0/1krgzMHE6iVKzfhKbi49GQz65XQjfI91owsYwS2T9XsoeE5ggLNyRz22Jdw8m/7qxdwiHjtMCQseW5BywheX/9KzfbW5FaqL/vjkWyZXs4XbwryfboJo6VoK/pEvRNsJ5DofUlEBc1FYf6uUMxFVAUfZb3Ed6FlY2CKREnLwzxm0qpZKrkNLJ/tfNIEQku22AXivWWE6c8Iuobm64C4dSDdYw+L1wpWbTyw+xmOUxdbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bh9sSZWrstr07mS0w9mNVsQBVCj7BgAlH0eJ4glJsM8=;
- b=n1K1aHikKuTEuLPo/ZzXOoVF7wbKSj9rWirIYh+dzwh4mXA8TD3HS61eG3dtAIt9M084gu0ejQG2HujX+YUdlooIstccJzeoBkbltZmApTpqSzOadQ3Jkp0QJaitMhXzhgY4SFZoZWJKn44QEPrBKgR8l7brq9rcvIJSQnDHhchS5Bd70YCHFfeEVm2rcY0BFxuiAQ7QOpeEc7Dwe8iyuO0+3088unKJR93KjEhEVAPJNJFbJMRJzDWVkEGet8nf/Deo59K4Eok+P0MyzngMj+MFhihbqBQKTG72oIxdMd+Hkx70IvuE96F0CREdwUt2sOQxAMqGfxjrvgIG4B4N1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.71.25.55) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
- dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bh9sSZWrstr07mS0w9mNVsQBVCj7BgAlH0eJ4glJsM8=;
- b=WV7qnMpia10DBoYixEw8PugnngaZxQ6wP7j8b/zXo/wss7UbAQXRoez5Xk1KsUIbIQyeb/vV6YXpc1bMPRfSPi7Vdymw1bIP5TOHHYgTDGL0QLw/FKVAA6oaly8JjwgZcZCo9kYBUphzFG6v4h1Fms1HEeV3ueeVjv10dUwhhIg=
-Received: from CY4PR03CA0088.namprd03.prod.outlook.com (2603:10b6:910:4d::29)
- by DM5PR03MB2553.namprd03.prod.outlook.com (2603:10b6:3:41::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2178.16; Wed, 21 Aug
- 2019 14:17:08 +0000
-Received: from BL2NAM02FT010.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e46::200) by CY4PR03CA0088.outlook.office365.com
- (2603:10b6:910:4d::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2178.16 via Frontend
- Transport; Wed, 21 Aug 2019 14:17:08 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- BL2NAM02FT010.mail.protection.outlook.com (10.152.77.53) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2178.16
- via Frontend Transport; Wed, 21 Aug 2019 14:17:08 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x7LEH4YD005682
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Wed, 21 Aug 2019 07:17:04 -0700
-Received: from ben-Latitude-E6540.ad.analog.com (10.48.65.163) by
- NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
- 14.3.408.0; Wed, 21 Aug 2019 10:17:07 -0400
-From:   Beniamin Bia <beniamin.bia@analog.com>
-To:     <jic23@kernel.org>
-CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
-        <gregkh@linuxfoundation.org>, <linux-iio@vger.kernel.org>,
-        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
-        <mark.rutland@arm.com>, <robh+dt@kernel.org>,
-        <devicetree@vger.kernel.org>, <paulmck@linux.ibm.com>,
-        <mchehab+samsung@kernel.org>, <linus.walleij@linaro.org>,
-        <nicolas.ferre@microchip.com>, <biabeniamin@outlook.com>,
-        Beniamin Bia <beniamin.bia@analog.com>
-Subject: [PATCH v3 4/4] dt-bindings: iio: adc: Add AD7606B ADC documentation
-Date:   Wed, 21 Aug 2019 17:16:56 +0300
-Message-ID: <20190821141656.4815-4-beniamin.bia@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190821141656.4815-1-beniamin.bia@analog.com>
-References: <20190821141656.4815-1-beniamin.bia@analog.com>
+        id S1727205AbfHUP5c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Aug 2019 11:57:32 -0400
+Received: from ox4u.de ([212.118.221.216]:36225 "EHLO s1.ox4u.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726828AbfHUP5c (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 21 Aug 2019 11:57:32 -0400
+X-Greylist: delayed 424 seconds by postgrey-1.27 at vger.kernel.org; Wed, 21 Aug 2019 11:57:32 EDT
+Received: by s1.ox4u.de (Postfix, from userid 65534)
+        id A8754260130; Wed, 21 Aug 2019 17:50:27 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on s1.ox4u.de
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=5.0 tests=ALL_TRUSTED
+        autolearn=disabled version=3.4.1
+Received: from ws-140106.systec.local (unknown [212.185.67.146])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by s1.ox4u.de (Postfix) with ESMTPSA id 12026260114;
+        Wed, 21 Aug 2019 17:50:27 +0200 (CEST)
+From:   Alexander Stein <alexander.stein@systec-electronic.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     Alexander Stein <alexander.stein@systec-electronic.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] iio: core: Fix fractional format generation
+Date:   Wed, 21 Aug 2019 17:50:23 +0200
+Message-Id: <20190821155023.6333-1-alexander.stein@systec-electronic.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(396003)(39860400002)(346002)(376002)(136003)(2980300002)(199004)(189003)(44832011)(305945005)(54906003)(106002)(2616005)(2351001)(486006)(476003)(446003)(51416003)(7696005)(11346002)(316002)(126002)(107886003)(14444005)(1076003)(4326008)(186003)(5660300002)(26005)(6666004)(356004)(70586007)(966005)(70206006)(76176011)(336012)(426003)(16586007)(36756003)(8936002)(86362001)(50466002)(48376002)(47776003)(6916009)(50226002)(2906002)(8676002)(7636002)(7416002)(478600001)(6306002)(246002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR03MB2553;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 469d2330-1e7a-4c9e-f8d0-08d72642401e
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(4709080)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:DM5PR03MB2553;
-X-MS-TrafficTypeDiagnostic: DM5PR03MB2553:
-X-MS-Exchange-PUrlCount: 3
-X-Microsoft-Antispam-PRVS: <DM5PR03MB2553E35A76F48E93A5B44A70F0AA0@DM5PR03MB2553.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
-X-Forefront-PRVS: 0136C1DDA4
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: f95nOJpPZ9ImLLRkPOjiy7WdOGiBcEkd5puhsiDBU0+NMUQqD27aSTej2Hd2Z/XVz4XqgpI0dJ9MUOT+173lK4aKQp5WDCx0UEym0EKy7bhj3FBP++wZrQl/5zistpBCv/3OmsR8X3YRcNEmEH53hbWAK5VFHMW2WnvhEsx6+xF/W+Ag0cYQd1TGW2lGeWJdrRgDBMOrEZvYsnf5d9JzmzrPQN8LxfRr4kGqGmNAl6KFijetjWgkeZaL5kIxXb7lKez9N5Slj8hYtUCFJwQsesg2QKcY7OxkdUg7O69LflrchSHzfVxlY2VE+WU6TjDTbcTjjS9x/JYftHVUXJodQcrPAjgma//DSiHbDCqkrKAR8VNCboW3zrAkoVlvGaeQuO9Qyu12x3O4eHHNUCFgI2c3Czk4XToddfxXb5XLZZk=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2019 14:17:08.0622
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 469d2330-1e7a-4c9e-f8d0-08d72642401e
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR03MB2553
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-21_05:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908210156
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Documentation for AD7606B Analog to Digital Converter and software
-mode was added.
+In case the result is -0.3252 tmp0 is 0 after the div_s64_rem, so tmp0 is
+non-negative which results in an output of 0.3252.
+Fix this by explicitly handling the negative sign ourselves.
 
-Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+Signed-off-by: Alexander Stein <alexander.stein@systec-electronic.com>
 ---
-Changes in v3:
--nothing changed
+ drivers/iio/industrialio-core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-index 509dbe9c84d2..2afe31747a70 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-@@ -13,6 +13,7 @@ maintainers:
- description: |
-   Analog Devices AD7606 Simultaneous Sampling ADC
-   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606_7606-6_7606-4.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7606B.pdf
-   https://www.analog.com/media/en/technical-documentation/data-sheets/AD7616.pdf
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 245b5844028d..18350c1959ae 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -568,6 +568,7 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
+ {
+ 	unsigned long long tmp;
+ 	int tmp0, tmp1;
++	const char *sign = vals[0] < 0 ? "-" : "";
+ 	bool scale_db = false;
  
- properties:
-@@ -22,6 +23,7 @@ properties:
-       - adi,ad7606-8
-       - adi,ad7606-6
-       - adi,ad7606-4
-+      - adi,ad7606b
-       - adi,ad7616
- 
-   reg:
-@@ -87,7 +89,7 @@ properties:
- 
-   adi,sw-mode:
-     description:
--      Software mode of operation, so far available only for ad7616.
-+      Software mode of operation, so far available only for ad7616 and ad7606B.
-       It is enabled when all three oversampling mode pins are connected to
-       high level. The device is configured by the corresponding registers. If the
-       adi,oversampling-ratio-gpios property is defined, then the driver will set the
+ 	switch (type) {
+@@ -593,11 +594,11 @@ static ssize_t __iio_format_value(char *buf, size_t len, unsigned int type,
+ 		tmp = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
+ 		tmp1 = vals[1];
+ 		tmp0 = (int)div_s64_rem(tmp, 1000000000, &tmp1);
+-		return snprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
++		return snprintf(buf, len, "%s%u.%09u", sign, abs(tmp0), abs(tmp1));
+ 	case IIO_VAL_FRACTIONAL_LOG2:
+ 		tmp = shift_right((s64)vals[0] * 1000000000LL, vals[1]);
+ 		tmp0 = (int)div_s64_rem(tmp, 1000000000LL, &tmp1);
+-		return snprintf(buf, len, "%d.%09u", tmp0, abs(tmp1));
++		return snprintf(buf, len, "%s%u.%09u", sign, abs(tmp0), abs(tmp1));
+ 	case IIO_VAL_INT_MULTIPLE:
+ 	{
+ 		int i;
 -- 
-2.17.1
+2.23.0
 

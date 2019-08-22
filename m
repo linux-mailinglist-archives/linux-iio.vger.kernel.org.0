@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3A5199764
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2019 16:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B63099765
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2019 16:53:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732412AbfHVOwo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Aug 2019 10:52:44 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:43913 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731958AbfHVOwo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Aug 2019 10:52:44 -0400
-Received: by mail-lf1-f65.google.com with SMTP id c19so4735512lfm.10
-        for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2019 07:52:40 -0700 (PDT)
+        id S1731958AbfHVOwp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Aug 2019 10:52:45 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:44798 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387623AbfHVOwp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Aug 2019 10:52:45 -0400
+Received: by mail-lj1-f195.google.com with SMTP id e24so5825919ljg.11
+        for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2019 07:52:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Uq/FBcnY++ZGKx98yifV3HfVEE2WnazvIb45Cz5nZfg=;
-        b=or9rU5G/s7a/M+/RkT8z8updGN4eI4GbLR0eIPQHXDv13JyM/ilyXvH6OqgXnkLOz+
-         HmYSH8wy9Y4Z71gFMOjhu9gGStwH0OIlioRKbD1FBMVXHFaAlj75ydjlA7xOlhNEUbbz
-         sHwK6mfmRvmfU8t7rUxyhBFs1AUBvF+dypXz6Gn9EvymKjdbLHwdkEd7pJaDUgsgjol4
-         0OEfo6PdJxqZwDKDoTEYZfdj+OYq/0Uq3s8uCT+xpvSgNN9TwJdYATinxrrLoK5pX6+y
-         SDN5Ms0ORB6zOI8uTE5zkJ/azAHNBt1yvGNaJtIlM6VBwcjYQBhQIPZamuY+41SGpmlb
-         un3w==
+        bh=vduYs4jGBIjKe7zPcKDuy0X/2xDgkunzFPkNYYDU8Jw=;
+        b=jQLup10kq9RQv0ZcNp+5fF+JzqyppUXDY+boNSh1FuAAWT3w+eBjqoY0Chep27O2VI
+         G9KE9n5p6guZ/UP0zOsdO+2CuMPGX9YJbvTNTfvhwz2iXH7MlfiWcXCO4wLTpEX2eCFo
+         i0ntWtrKHRGrvbuFfSddkXqMlaO5sLjWL9Rk0MFeqLRpFrp3tb1ERfTafId6dhGPRr0Y
+         C/67Cj+sq/6owYoBfh+LyqU5SV+FO9kGMvOUijG7fIk1kcRL//f8VpARfUcr44SmJI4D
+         hSFYXEhOHBFgBpp3mzG5BpzYZ23duP7FU3YvfkUr/Rjs54nj+JgkllOVJJl/ZP6/3ikO
+         OIkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Uq/FBcnY++ZGKx98yifV3HfVEE2WnazvIb45Cz5nZfg=;
-        b=sF7P1IvfHcjVs/Jgwc3AoYk/DecthZ9H3cF0hxpx2w1htgF5tWkQKO2oGZiPaH9dxM
-         9gJGA5jVyfYeVahvENBPfQRuQLODfGUkBLTRzVfEb8xTi8szXXgUBMg4eLdzPIEKSJlm
-         zXiTIJp6JBSJYVMPaONfs/q0CSaolbSUhi+zO455OYi5rMA0FyuWYEhuwRpXESMonjWH
-         QQVxHwlq7+OZGRHsqrPIiG3YQ14vohQaUNi9eGS+RoAYG16zBcEgrHfAA4epCmwbmpvO
-         ItcGqr3wok0ACUmdZ+75PpoWFtbWDm4sKxfqiucIQxnwWJBu1WLlhXZIETCHojOuy4g3
-         m+ZQ==
-X-Gm-Message-State: APjAAAXUn0vI4I+RnDWv9djtK6fa9fkoDuZbQ8N1IfYpCZW6DgvKpHK9
-        21+UIMdR7aNgqHiIlIObt17pqg==
-X-Google-Smtp-Source: APXvYqyW39nIgrQfYlAYocj6Rne1ZFIDWujNdIaiVsrhvbtR92DwR9075/OFcn8Uj5EQhpHVSNt+zA==
-X-Received: by 2002:ac2:428d:: with SMTP id m13mr21576276lfh.52.1566485560052;
-        Thu, 22 Aug 2019 07:52:40 -0700 (PDT)
+        bh=vduYs4jGBIjKe7zPcKDuy0X/2xDgkunzFPkNYYDU8Jw=;
+        b=LqgXjSwvUrGwLjexKBw/wHXOjSOWqk44clFA6CPpr+Dm/H29DpwK6Lhm6pGVsvzr6W
+         U83Vkyzf7cjiSA3j15ykuyfdYKA399NkCd/MSIIxt7/0hDLznKvs5f8nQ8EIzMJgrbC/
+         z1hww3oI5hZgwYilO/ljoxD1C/LYZXha3D9vvAloqJ6NLKemH0os9UyqLWkyozqm1/DV
+         l3PJRBjCZHFiYpFqs3GEWd7yRdleM+w48OaIuQ2F4MLsxvLfY/J+jVGnI4YNpjbsWhtd
+         fVpayOhHLjt9MV/lcGIzjIkwP05iKbJLTj6nhU8iqjEQyNVIIVph29F/cI1OVAS1Em9k
+         5s4Q==
+X-Gm-Message-State: APjAAAVWJRoXDcBlIVaLeRxGcKh0gVGHFOsXKZVMHGNpNeqgpPhgdwPX
+        JEJYVEl1YrAGNchDfdY73Lzt2A==
+X-Google-Smtp-Source: APXvYqzwyuwrSGnF3z0WCHMNGroW7FAExtjFK1D/+BBB/C3UmNmgDDuM4WtxWyjpGxS9OtDIpBl27A==
+X-Received: by 2002:a2e:b4e4:: with SMTP id s4mr19212147ljm.207.1566485562759;
+        Thu, 22 Aug 2019 07:52:42 -0700 (PDT)
 Received: from genomnajs.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id s3sm3959374ljj.85.2019.08.22.07.52.37
+        by smtp.gmail.com with ESMTPSA id s3sm3959374ljj.85.2019.08.22.07.52.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2019 07:52:38 -0700 (PDT)
+        Thu, 22 Aug 2019 07:52:41 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
@@ -53,9 +53,9 @@ To:     Lee Jones <lee.jones@linaro.org>,
 Cc:     Mboumba Cedric Madianga <cedric.madianga@gmail.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH 1/8 v2] power: supply: ab8500_btemp: convert to IIO ADC
-Date:   Thu, 22 Aug 2019 16:52:26 +0200
-Message-Id: <20190822145233.18222-2-linus.walleij@linaro.org>
+Subject: [PATCH 2/8 v2] power: supply: ab8500_charger: convert to IIO ADC
+Date:   Thu, 22 Aug 2019 16:52:27 +0200
+Message-Id: <20190822145233.18222-3-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190822145233.18222-1-linus.walleij@linaro.org>
 References: <20190822145233.18222-1-linus.walleij@linaro.org>
@@ -66,137 +66,176 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This switches the AB8500 battery temperature driver to using
+This switches the AB8500 battery charger driver to using
 the standard IIO ADC channel lookup and conversion routines.
 
-Acked-by: Sebastian Reichel <sre@kernel.org>
 Acked-by: Jonathan Cameron <jic23@kernel.org>
+Acked-by: Sebastian Reichel <sre@kernel.org>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
 ChangeLog v1->v2:
 - Collected ACKs.
-- Add a Kconfig dependency on IIO
-- Fixed some whitespace issues
 - Rebased on v5.3-rc5
-
+- Fixed some whitespace issues
 This will be applied along with the other changes in ARM
 SoC and should not be applied to the power tree right now.
 ---
- drivers/power/supply/Kconfig        |  2 +-
- drivers/power/supply/ab8500_btemp.c | 41 ++++++++++++++++++++---------
- 2 files changed, 30 insertions(+), 13 deletions(-)
+ drivers/power/supply/ab8500_charger.c | 78 ++++++++++++++++++++-------
+ 1 file changed, 58 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
-index 5d91b5160b41..758fabff2b1d 100644
---- a/drivers/power/supply/Kconfig
-+++ b/drivers/power/supply/Kconfig
-@@ -640,7 +640,7 @@ config BATTERY_GAUGE_LTC2941
- 
- config AB8500_BM
- 	bool "AB8500 Battery Management Driver"
--	depends on AB8500_CORE && AB8500_GPADC
-+	depends on AB8500_CORE && AB8500_GPADC && IIO
- 	help
- 	  Say Y to include support for AB8500 battery management.
- 
-diff --git a/drivers/power/supply/ab8500_btemp.c b/drivers/power/supply/ab8500_btemp.c
-index 8fe81259bfd9..ad8c51ef8b8b 100644
---- a/drivers/power/supply/ab8500_btemp.c
-+++ b/drivers/power/supply/ab8500_btemp.c
-@@ -26,7 +26,7 @@
- #include <linux/mfd/abx500.h>
+diff --git a/drivers/power/supply/ab8500_charger.c b/drivers/power/supply/ab8500_charger.c
+index 30de448de802..5562fd80e573 100644
+--- a/drivers/power/supply/ab8500_charger.c
++++ b/drivers/power/supply/ab8500_charger.c
+@@ -29,10 +29,10 @@
  #include <linux/mfd/abx500/ab8500.h>
+ #include <linux/mfd/abx500.h>
  #include <linux/mfd/abx500/ab8500-bm.h>
 -#include <linux/mfd/abx500/ab8500-gpadc.h>
+ #include <linux/mfd/abx500/ux500_chargalg.h>
+ #include <linux/usb/otg.h>
+ #include <linux/mutex.h>
 +#include <linux/iio/consumer.h>
  
- #define VTVOUT_V			1800
- 
-@@ -79,7 +79,8 @@ struct ab8500_btemp_ranges {
-  * @bat_temp:		Dispatched battery temperature in degree Celsius
-  * @prev_bat_temp	Last measured battery temperature in degree Celsius
+ /* Charger constants */
+ #define NO_PW_CONN			0
+@@ -233,7 +233,10 @@ struct ab8500_charger_max_usb_in_curr {
+  * @current_stepping_sessions:
+  *			Counter for current stepping sessions
   * @parent:		Pointer to the struct ab8500
 - * @gpadc:		Pointer to the struct gpadc
-+ * @adc_btemp_ball:	ADC channel for the battery ball temperature
-+ * @adc_bat_ctrl:	ADC channel for the battery control
-  * @fg:			Pointer to the struct fg
++ * @adc_main_charger_v	ADC channel for main charger voltage
++ * @adc_main_charger_c	ADC channel for main charger current
++ * @adc_vbus_v		ADC channel for USB charger voltage
++ * @adc_usb_charger_c	ADC channel for USB charger current
   * @bm:           	Platform specific battery management information
-  * @btemp_psy:		Structure for BTEMP specific battery properties
-@@ -96,7 +97,8 @@ struct ab8500_btemp {
- 	int bat_temp;
- 	int prev_bat_temp;
+  * @flags:		Structure for information about events triggered
+  * @usb_state:		Structure for usb stack information
+@@ -283,7 +286,10 @@ struct ab8500_charger {
+ 	int is_aca_rid;
+ 	atomic_t current_stepping_sessions;
  	struct ab8500 *parent;
 -	struct ab8500_gpadc *gpadc;
-+	struct iio_channel *btemp_ball;
-+	struct iio_channel *bat_ctrl;
- 	struct ab8500_fg *fg;
++	struct iio_channel *adc_main_charger_v;
++	struct iio_channel *adc_main_charger_c;
++	struct iio_channel *adc_vbus_v;
++	struct iio_channel *adc_usb_charger_c;
  	struct abx500_bm_data *bm;
- 	struct power_supply *btemp_psy;
-@@ -177,13 +179,13 @@ static int ab8500_btemp_batctrl_volt_to_res(struct ab8500_btemp *di,
+ 	struct ab8500_charger_event_flags flags;
+ 	struct ab8500_charger_usb_state usb_state;
+@@ -459,13 +465,13 @@ static void ab8500_charger_set_usb_connected(struct ab8500_charger *di,
   */
- static int ab8500_btemp_read_batctrl_voltage(struct ab8500_btemp *di)
+ static int ab8500_charger_get_ac_voltage(struct ab8500_charger *di)
  {
--	int vbtemp;
-+	int vbtemp, ret;
- 	static int prev;
+-	int vch;
++	int vch, ret;
  
--	vbtemp = ab8500_gpadc_convert(di->gpadc, BAT_CTRL);
--	if (vbtemp < 0) {
-+	ret = iio_read_channel_processed(di->bat_ctrl, &vbtemp);
-+	if (ret < 0) {
- 		dev_err(di->dev,
--			"%s gpadc conversion failed, using previous value",
-+			"%s ADC conversion failed, using previous value",
- 			__func__);
- 		return prev;
- 	}
-@@ -455,7 +457,7 @@ static int ab8500_btemp_res_to_temp(struct ab8500_btemp *di,
-  */
- static int ab8500_btemp_measure_temp(struct ab8500_btemp *di)
- {
--	int temp;
-+	int temp, ret;
- 	static int prev;
- 	int rbat, rntc, vntc;
- 	u8 id;
-@@ -480,10 +482,10 @@ static int ab8500_btemp_measure_temp(struct ab8500_btemp *di)
- 			di->bm->bat_type[id].r_to_t_tbl,
- 			di->bm->bat_type[id].n_temp_tbl_elements, rbat);
+ 	/* Only measure voltage if the charger is connected */
+ 	if (di->ac.charger_connected) {
+-		vch = ab8500_gpadc_convert(di->gpadc, MAIN_CHARGER_V);
+-		if (vch < 0)
+-			dev_err(di->dev, "%s gpadc conv failed,\n", __func__);
++		ret = iio_read_channel_processed(di->adc_main_charger_v, &vch);
++		if (ret < 0)
++			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
  	} else {
--		vntc = ab8500_gpadc_convert(di->gpadc, BTEMP_BALL);
--		if (vntc < 0) {
-+		ret = iio_read_channel_processed(di->btemp_ball, &vntc);
-+		if (ret < 0) {
- 			dev_err(di->dev,
--				"%s gpadc conversion failed,"
-+				"%s ADC conversion failed,"
- 				" using previous value\n", __func__);
- 			return prev;
- 		}
-@@ -1024,7 +1026,22 @@ static int ab8500_btemp_probe(struct platform_device *pdev)
+ 		vch = 0;
+ 	}
+@@ -510,13 +516,13 @@ static int ab8500_charger_ac_cv(struct ab8500_charger *di)
+  */
+ static int ab8500_charger_get_vbus_voltage(struct ab8500_charger *di)
+ {
+-	int vch;
++	int vch, ret;
+ 
+ 	/* Only measure voltage if the charger is connected */
+ 	if (di->usb.charger_connected) {
+-		vch = ab8500_gpadc_convert(di->gpadc, VBUS_V);
+-		if (vch < 0)
+-			dev_err(di->dev, "%s gpadc conv failed\n", __func__);
++		ret = iio_read_channel_processed(di->adc_vbus_v, &vch);
++		if (ret < 0)
++			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
+ 	} else {
+ 		vch = 0;
+ 	}
+@@ -532,13 +538,13 @@ static int ab8500_charger_get_vbus_voltage(struct ab8500_charger *di)
+  */
+ static int ab8500_charger_get_usb_current(struct ab8500_charger *di)
+ {
+-	int ich;
++	int ich, ret;
+ 
+ 	/* Only measure current if the charger is online */
+ 	if (di->usb.charger_online) {
+-		ich = ab8500_gpadc_convert(di->gpadc, USB_CHARGER_C);
+-		if (ich < 0)
+-			dev_err(di->dev, "%s gpadc conv failed\n", __func__);
++		ret = iio_read_channel_processed(di->adc_usb_charger_c, &ich);
++		if (ret < 0)
++			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
+ 	} else {
+ 		ich = 0;
+ 	}
+@@ -554,13 +560,13 @@ static int ab8500_charger_get_usb_current(struct ab8500_charger *di)
+  */
+ static int ab8500_charger_get_ac_current(struct ab8500_charger *di)
+ {
+-	int ich;
++	int ich, ret;
+ 
+ 	/* Only measure current if the charger is online */
+ 	if (di->ac.charger_online) {
+-		ich = ab8500_gpadc_convert(di->gpadc, MAIN_CHARGER_C);
+-		if (ich < 0)
+-			dev_err(di->dev, "%s gpadc conv failed\n", __func__);
++		ret = iio_read_channel_processed(di->adc_main_charger_c, &ich);
++		if (ret < 0)
++			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
+ 	} else {
+ 		ich = 0;
+ 	}
+@@ -3377,7 +3383,39 @@ static int ab8500_charger_probe(struct platform_device *pdev)
  	/* get parent data */
  	di->dev = &pdev->dev;
  	di->parent = dev_get_drvdata(pdev->dev.parent);
 -	di->gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
 +
 +	/* Get ADC channels */
-+	di->btemp_ball = devm_iio_channel_get(&pdev->dev, "btemp_ball");
-+	if (IS_ERR(di->btemp_ball)) {
-+		if (PTR_ERR(di->btemp_ball) == -ENODEV)
++	di->adc_main_charger_v = devm_iio_channel_get(&pdev->dev,
++						      "main_charger_v");
++	if (IS_ERR(di->adc_main_charger_v)) {
++		if (PTR_ERR(di->adc_main_charger_v) == -ENODEV)
 +			return -EPROBE_DEFER;
-+		dev_err(&pdev->dev, "failed to get BTEMP BALL ADC channel\n");
-+		return PTR_ERR(di->btemp_ball);
++		dev_err(&pdev->dev, "failed to get ADC main charger voltage\n");
++		return PTR_ERR(di->adc_main_charger_v);
 +	}
-+	di->bat_ctrl = devm_iio_channel_get(&pdev->dev, "bat_ctrl");
-+	if (IS_ERR(di->bat_ctrl)) {
-+		if (PTR_ERR(di->bat_ctrl) == -ENODEV)
++	di->adc_main_charger_c = devm_iio_channel_get(&pdev->dev,
++						      "main_charger_c");
++	if (IS_ERR(di->adc_main_charger_c)) {
++		if (PTR_ERR(di->adc_main_charger_c) == -ENODEV)
 +			return -EPROBE_DEFER;
-+		dev_err(&pdev->dev, "failed to get BAT CTRL ADC channel\n");
-+		return PTR_ERR(di->bat_ctrl);
++		dev_err(&pdev->dev, "failed to get ADC main charger current\n");
++		return PTR_ERR(di->adc_main_charger_v);
++	}
++	di->adc_vbus_v = devm_iio_channel_get(&pdev->dev, "vbus_v");
++	if (IS_ERR(di->adc_vbus_v)) {
++		if (PTR_ERR(di->adc_vbus_v) == -ENODEV)
++			return -EPROBE_DEFER;
++		dev_err(&pdev->dev, "failed to get ADC USB charger voltage\n");
++		return PTR_ERR(di->adc_vbus_v);
++	}
++	di->adc_usb_charger_c = devm_iio_channel_get(&pdev->dev,
++						     "usb_charger_c");
++	if (IS_ERR(di->adc_usb_charger_c)) {
++		if (PTR_ERR(di->adc_usb_charger_c) == -ENODEV)
++			return -EPROBE_DEFER;
++		dev_err(&pdev->dev, "failed to get ADC USB charger current\n");
++		return PTR_ERR(di->adc_usb_charger_c);
 +	}
  
- 	di->initialized = false;
- 
+ 	/* initialize lock */
+ 	spin_lock_init(&di->usb_state.usb_lock);
 -- 
 2.21.0
 

@@ -2,91 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C90993B9
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2019 14:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B2D1994DA
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2019 15:22:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731320AbfHVMde (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Aug 2019 08:33:34 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:43562 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729113AbfHVMdd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Aug 2019 08:33:33 -0400
-Received: by mail-lj1-f193.google.com with SMTP id h15so5358384ljg.10
-        for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2019 05:33:32 -0700 (PDT)
+        id S1729704AbfHVNW1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Aug 2019 09:22:27 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:52092 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727401AbfHVNW1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Aug 2019 09:22:27 -0400
+Received: by mail-wm1-f65.google.com with SMTP id k1so5635813wmi.1;
+        Thu, 22 Aug 2019 06:22:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=mSN3t/PDXoNAianC4YL28AuxFWbqe/p3ZmEq/9RzkMaS9VcrYbP+hNVrd+L2n1hpnq
-         RJHy01TvfnFh6vVzxr777SV6tHpVIe2MplhJXBUo75HYFr3TyzB1b+9+R1pfuMpVJXe6
-         X9N8MQSI1oAvnebcBPmdguV3wO6V3jMS/IHtBtwQcQDcm4AVpazizMrIy/G7YFrVZaui
-         uPwV1P4m0mItkNXNvDD0eU/I3LQ1JDCcQ5amyYSn7OxLWCwRlAWbdVrKZJ88Rk2RW5v6
-         jzZAWjWwq6vztVT9V8tArNGJf5LyKwPzHctCXVRt1UZ+gWt2XCAoQp7RS6swmCDXCHvo
-         EXTA==
+        h=from:to:cc:subject:date:message-id;
+        bh=Luuk1pqGXQ3LTo0vTwCyDXOtvHqT8koKOsr4J0FT5Fs=;
+        b=cD1pIDQETzko/f5Dq3TBV46ArVdMkx9fsJBv6BXBingcwaRSFNXnGIa8sGgYJR0US6
+         jGK1WFjr0g2Xkmv6iPon63GEdtS2s7Rd5ZPmBMSlWD4AUEVQMX/nxFX9ky1Qfr/JND1n
+         x19Lswx2JOx1uuMT16uCrE7/VZg14WFD7+rjsm+GU8lHFWHdi3zSlKrQcObSMy49HNLh
+         w5Do6UeAdJrfhBV/TslD48lJgDLkdQdNTRvh5tt3DJV/szK2BK776ZRYV5Nk7BvSLLTd
+         mzcLDTY/ZW85+qvd/JE2HSX7VDnJYezPv6j8d7EcXaThXljTrQiKU3Yov9SV1AL0Hk7Q
+         PfkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=P5TsY8VHuFdEAD4chcJUOWoBhZLzzGqsFvHXQ7M+hmggnHfcXsvaXypWW/3bajse8B
-         ZePoVHktWKDnayufZUoNLDyqxWYx4X2MpFj4+mMjUT4pxEUXJH15kmB/dfXPYXfgXVLH
-         DP+PwwzIV9/J8676yibqOdmXV8UPCLqAh3YhHzPryE3e5Lc/Pp6t3RG6dW3yZZXutksh
-         W8OrktgpK+PTSw7zaBVZewrWjzS1fHriGIpkT/wEJQ1pjp9jR4AcdJvOQPyy0TxXIE4C
-         LSBwxr0yGTa+EdN5w+Z/VsjA0T1qh3/aLZytj9/PVPUOGZ0mLK8rPKZJTOACM1nD+4Rm
-         ouiA==
-X-Gm-Message-State: APjAAAWPxJKQI/EuVz4xK6uJ3fyAdQ/CAExZHd8v0cG5gq31DYI0LYqD
-        P+VUSlEc2mD/LmbuqcjksiMUCga6jFaGKKTTr3M=
-X-Google-Smtp-Source: APXvYqzQsRoRn2wIpG3lSqYHuPzxhm3vD2oGq7cmc+rIuoyQi/uYwPKhKv5lsx49cFSP36sNdCD1mP/ADjI7spIEQ08=
-X-Received: by 2002:a2e:3a05:: with SMTP id h5mr22406569lja.135.1566477211782;
- Thu, 22 Aug 2019 05:33:31 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:33:31
- -0700 (PDT)
-Reply-To: eku.lawfirm@gmail.com
-From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
-Date:   Thu, 22 Aug 2019 12:33:31 +0000
-Message-ID: <CAN-_bTYioKgQ_KnVX-hd5T0VzTOPkF=KFBVPT36HW7Ho9orbHQ@mail.gmail.com>
-Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Luuk1pqGXQ3LTo0vTwCyDXOtvHqT8koKOsr4J0FT5Fs=;
+        b=XSJF/cosu51SQ11D3u/dbRabnrPnDXAHFKjzrPxtyj9kdt9KMW4i4qRiuqf5HBErqB
+         4SRvsLSymC/rzd7AWDoREBCNGbIeHQ90KhhD9nquS+U945icfoguK3NJVzKhF4iai2AF
+         CY9geDAkvUCvgGSEfKfKAm/hE/3G2+2zm/6j+FDRmLI9bGNmIPTx7smkKfmSCB+3y6wF
+         PnSibHvm/RYAzOM7w9b02v4xo7uyrVnJPIEuZu843gg8F3El2fsZVVCCkjQPzIwkfFc7
+         Hupu2/woeRIOxtKCHt9Fmfsa3Eigi7cZkkguNIZP+yS3j+WZG9wEGnorLFX3WoIf4zUj
+         gmSw==
+X-Gm-Message-State: APjAAAXW3LVu+tm511L4C9ZjG1RnG4V6i8SoW4siF8/xRBW+K0ulKTQT
+        A04dZ3HiW3AxGi44S/HFWtY=
+X-Google-Smtp-Source: APXvYqy3qNIEb+nlLulGT8/JnUEPqj/ydST6mPALa9wu2JHUvW5JsZt5uCa0vLVoqueqMEcfGp0EdA==
+X-Received: by 2002:a05:600c:204:: with SMTP id 4mr6699377wmi.167.1566480144544;
+        Thu, 22 Aug 2019 06:22:24 -0700 (PDT)
+Received: from ctocxl0004.cto.st.com ([37.160.86.50])
+        by smtp.gmail.com with ESMTPSA id j15sm22235083wrn.70.2019.08.22.06.22.22
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 22 Aug 2019 06:22:23 -0700 (PDT)
+From:   Mario Tesi <martepisa@gmail.com>
+To:     lorenzo.bianconi83@gmail.com
+Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mario.tesi@st.com
+Subject: [PATCH] iio: imu: st_lsm6dsx: Fix FIFO diff mask for tagged fifo
+Date:   Thu, 22 Aug 2019 15:22:19 +0200
+Message-Id: <1566480139-4015-1-git-send-email-martepisa@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Dear,
-With due respect this is not spam or Scam mail, because I have
-contacted you before and there was no response from you,I apologise if
-the contents of this mail are contrary to your moral ethics, which I
-feel may be of great disturbance to your person, but please treat this
-with absolute confidentiality, believing that this email reaches you
-in good faith. My contacting you is not a mistake or a coincidence
-because God can use any person known or unknown to accomplish great
-things.
-I am a lawyer and I have an investment business proposal to offer you.
-It is not official but should be considered as legal and confidential
-business. I have a customer's deposit of $US25 million dollars ready
-to be moved for investment if you can partner with us. We are ready to
-offer you 10% of this total amount as your compensation for supporting
-the transaction to completion. If you are interested to help me please
-reply me with your full details as stated below:
-(1) Your full names:
-(2) Your address:
-(3) Your occupation:
-(4) Your mobile telephone number:
-(5) Your nationality:
-(6) Your present location:
-(7) Your age:
-So that I will provide you more details on what to do and what is
-required for successful completion.
-Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
-MENTIONED DETAILS
+From: mario tesi <mario.tesi@st.com>
 
-Sinc=C3=A8rement v=C3=B4tre,
-Avocat Etienne Eku Esq.(Lawfirm)
-Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
-=E2=80=99ouest.
-Skype:westafricalawfirm
+	According to the latest version of datasheet the mask
+	for number of unread sensor data in FIFO_STATUS registers
+	has been extended to 10 bits
+
+	The devices involved are:
+	 - LSM6DSO
+	 - LSM6DSOX
+	 - ASM330LHH
+	 - LSM6DSR
+	 - ISM330DHCX
+
+Signed-off-by: mario tesi <mario.tesi@st.com>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 85824d6..47b77d0 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -497,7 +497,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			},
+ 			.fifo_diff = {
+ 				.addr = 0x3a,
+-				.mask = GENMASK(8, 0),
++				.mask = GENMASK(9, 0),
+ 			},
+ 			.th_wl = 1,
+ 		},
+@@ -623,7 +623,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			},
+ 			.fifo_diff = {
+ 				.addr = 0x3a,
+-				.mask = GENMASK(8, 0),
++				.mask = GENMASK(9, 0),
+ 			},
+ 			.th_wl = 1,
+ 		},
+@@ -726,7 +726,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			},
+ 			.fifo_diff = {
+ 				.addr = 0x3a,
+-				.mask = GENMASK(8, 0),
++				.mask = GENMASK(9, 0),
+ 			},
+ 			.th_wl = 1,
+ 		},
+-- 
+2.7.4
+

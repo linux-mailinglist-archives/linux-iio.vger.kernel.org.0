@@ -2,39 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D987A9C561
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Aug 2019 20:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4321B9C566
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Aug 2019 20:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728821AbfHYSJX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 25 Aug 2019 14:09:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47938 "EHLO mail.kernel.org"
+        id S1728653AbfHYSLQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 25 Aug 2019 14:11:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48062 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728648AbfHYSJW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 25 Aug 2019 14:09:22 -0400
+        id S1727835AbfHYSLQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 25 Aug 2019 14:11:16 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B02ED206E0;
-        Sun, 25 Aug 2019 18:09:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EF506206E0;
+        Sun, 25 Aug 2019 18:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566756561;
-        bh=hbQkd9m6IseZzFq6Etn1PdspQTSTv6FY/5gFLDiTlMk=;
+        s=default; t=1566756675;
+        bh=UUK7tEQ+rTb3ouj3U8uBFsbnz05fBk4q02q+1HY4H2w=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EEgRQ8vfNcONRYkA+3GtdVpKn3DBiATITm7qKEoVvzKASzMxy2D+7JHGmO3Vv6UXW
-         SAByMHTB3/HxY3R64+Igw/ybTKmYRe5QxlBb7JzMjjfDN3v5UYBMEH44jT+QBbJJ6r
-         sNlAY+y/gv+Zf/F0laXlq0KVBU9itHVz9uXXY8DE=
-Date:   Sun, 25 Aug 2019 19:09:16 +0100
+        b=1BSb1L20mqSuNK19ws+uDZPDUpe6dsgXXuSXqp31wZFFF2cIYxsJWBdOeITMLgjmc
+         4BcwXhSSjihImkjTenXfztO5PReV9tr0bc8uOeI+tWFtTPXYW+r8wv31JUbqrDBNR7
+         bqZva5MwxgJ3wlUA2tg9hb6/tmfLFQruv6rmdNw4=
+Date:   Sun, 25 Aug 2019 19:11:09 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        ak@it-klinger.de, robh@kernel.org, songqiang1304521@gmail.com,
-        tglx@linutronix.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Kconfig: Fix the reference to the RFD77402 ToF sensor
- in the 'help' section
-Message-ID: <20190825190916.7ca6e750@archlinux>
-In-Reply-To: <20190819044827.5259-1-christophe.jaillet@wanadoo.fr>
-References: <20190819044827.5259-1-christophe.jaillet@wanadoo.fr>
+To:     Simon Horman <horms+renesas@verge.net.au>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2] dt-bindings: iio: light: isl29501: Rename bindings
+ documentation file
+Message-ID: <20190825191109.510e91b5@archlinux>
+In-Reply-To: <20190819141708.20456-1-horms+renesas@verge.net.au>
+References: <20190819141708.20456-1-horms+renesas@verge.net.au>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,36 +49,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 19 Aug 2019 06:48:27 +0200
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+On Mon, 19 Aug 2019 16:17:08 +0200
+Simon Horman <horms+renesas@verge.net.au> wrote:
 
-> This should be RFD77402, not RFD77420.
+> Rename the bindings documentation file for Renesas ISL29501 Time-of-flight
+> sensor from isl29501.txt to renesas,isl29501.txt.
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> Not sure that the Kconfig prefix is correct. I have choosen it because of
-> commit 21cf20a84a ("Kconfig: change configuration of srf04 ultrasonic iio sensor")
+> This is part of an ongoing effort to name bindings documentation files for
+> Renesas IP blocks consistently, in line with the compat strings they
+> document.
+> 
+> Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 
-Applied thanks.  I left the prefix alone, though it's a bit unusual.
+Applied,
 
 Thanks,
 
 Jonathan
+
 > ---
->  drivers/iio/proximity/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Based on v5.3-rc1
 > 
-> diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
-> index 6b5cce6f1a7b..d53601447da4 100644
-> --- a/drivers/iio/proximity/Kconfig
-> +++ b/drivers/iio/proximity/Kconfig
-> @@ -62,7 +62,7 @@ config RFD77402
->  	tristate "RFD77402 ToF sensor"
->  	depends on I2C
->  	help
-> -	  Say Y to build a driver for the RFD77420 Time-of-Flight (distance)
-> +	  Say Y to build a driver for the RFD77402 Time-of-Flight (distance)
->  	  sensor module with I2C interface.
->  
->  	  To compile this driver as a module, choose M here: the
+> v2
+> * Drop spurious top-level Makefile hunk
+> ---
+>  .../devicetree/bindings/iio/light/{isl29501.txt => renesas,isl29501.txt}  | 0
+>  1 file changed, 0 insertions(+), 0 deletions(-)
+>  rename Documentation/devicetree/bindings/iio/light/{isl29501.txt => renesas,isl29501.txt} (100%)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/isl29501.txt b/Documentation/devicetree/bindings/iio/light/renesas,isl29501.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/iio/light/isl29501.txt
+> rename to Documentation/devicetree/bindings/iio/light/renesas,isl29501.txt
 

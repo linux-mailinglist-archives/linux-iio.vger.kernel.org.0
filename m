@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A5459CE43
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2019 13:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E0F69CEA8
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2019 13:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729852AbfHZLiG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Aug 2019 07:38:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55196 "EHLO mail.kernel.org"
+        id S1731024AbfHZLyU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Aug 2019 07:54:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42292 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727095AbfHZLiF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 26 Aug 2019 07:38:05 -0400
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+        id S1726497AbfHZLyU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 26 Aug 2019 07:54:20 -0400
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B2E0521883;
-        Mon, 26 Aug 2019 11:38:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3088A2189D;
+        Mon, 26 Aug 2019 11:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566819483;
-        bh=pPU7Oq6YBXwlfSpisXUSN7O/E9G4jOkzVz+PI2hUrds=;
+        s=default; t=1566820459;
+        bh=6d8Pf2giZ8gFsCA6Mlwav/1B6nTN9Sah3mq5E5Nvjo4=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=YVVkeqCGrG3RnXOr6Gj+t4zHOIB+BlcZI5yyr6HPo3yZJzIqmToqczkqCm9j4iU5m
-         lBHTgRoC7bhbhO9gFftmcJJYi0hmi5yEgD2avu6Q2AMUK5XXsvxVRGd496PE3SUSY+
-         hh+ONrjTKnrsJmIEt3wP6wh030ihBpf+X0tIGFCI=
-Received: by mail-qk1-f172.google.com with SMTP id m2so13678915qkd.10;
-        Mon, 26 Aug 2019 04:38:03 -0700 (PDT)
-X-Gm-Message-State: APjAAAUKTnPpmx2Neb0m5LulH+y9z3rlPwpo9MkBv/fAgbXHvLknWkKn
-        4lCVwXYB+e9FFfyHwtkMCaHDY16TAuazzoQTbQ==
-X-Google-Smtp-Source: APXvYqxFdFrhr6QC432iXohr425U9ALeyY0/jK/ZTob9D6kmp205upnoTXJdzQJK7UQEdHEAqtMAyO/qvMbS4UVFyYM=
-X-Received: by 2002:a37:4941:: with SMTP id w62mr14495060qka.119.1566819482797;
- Mon, 26 Aug 2019 04:38:02 -0700 (PDT)
+        b=QvJBQ55ojSqqsTPUhO00j6OJJz5EaQoXkuS9MHOOzMa5fzOJNWIYViaNorEhp/Sut
+         GoRpe9hoMwItkuwDeb0tTTdr5Ap5zStj9QwOOTRxEHy74nIkVG4gnYcqC4sAIs0t+p
+         +8LglhXXFueLMBm+Hf7Fbae0bnj4hvQ9tRJJui9I=
+Received: by mail-qk1-f173.google.com with SMTP id p13so13719907qkg.13;
+        Mon, 26 Aug 2019 04:54:19 -0700 (PDT)
+X-Gm-Message-State: APjAAAUieU+hYjjymLJ4H5Bcrw4JjnbsHehd83RFAsE8fVgmWc17mJsD
+        UuS2Vhf/XtxNJFXmCaG2Z7KjOL0mLn845TGsxA==
+X-Google-Smtp-Source: APXvYqwefTr2/bNUCQOk9axEdQjco6LCiAhg6K2odj3PCAzUTZW7osr4FjP132HUalSUByM7PTRXcJ6wplhPQhlnSiQ=
+X-Received: by 2002:a37:a010:: with SMTP id j16mr16163354qke.152.1566820458257;
+ Mon, 26 Aug 2019 04:54:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190823145356.6341-1-krzk@kernel.org>
-In-Reply-To: <20190823145356.6341-1-krzk@kernel.org>
+References: <20190823145356.6341-1-krzk@kernel.org> <20190823145356.6341-5-krzk@kernel.org>
+In-Reply-To: <20190823145356.6341-5-krzk@kernel.org>
 From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 26 Aug 2019 06:37:50 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+5MpPSjRtFp-xf8P0rBuArMFbum7yadcHNBQz_N=Ergg@mail.gmail.com>
-Message-ID: <CAL_Jsq+5MpPSjRtFp-xf8P0rBuArMFbum7yadcHNBQz_N=Ergg@mail.gmail.com>
-Subject: Re: [RFC 1/9] dt-bindings: arm: samsung: Convert Samsung board/soc
- bindings to json-schema
+Date:   Mon, 26 Aug 2019 06:54:02 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJybT41cEqiTriLMywUQj1BtAG_9muJ4=84OkF23y53CA@mail.gmail.com>
+Message-ID: <CAL_JsqJybT41cEqiTriLMywUQj1BtAG_9muJ4=84OkF23y53CA@mail.gmail.com>
+Subject: Re: [RFC 5/9] dt-bindings: arm: samsung: Convert Exynos PMU bindings
+ to json-schema
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Mark Rutland <mark.rutland@arm.com>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -67,231 +67,133 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Aug 23, 2019 at 9:54 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
-> Convert Samsung S5P and Exynos SoC bindings to DT schema format using
-> json-schema.  This is purely conversion of already documented bindings
-> so it does not cover all of DTS in the Linux kernel (few S5P/Exynos and
-> all S3C are missing).
+> Convert Samsung Exynos Power Management Unit (PMU) bindings to DT schema
+> format using json-schema.
 >
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
->
 > ---
->
-> If the schema looks sensible, I will continue on converting other
-> SoC and driver bindings and later adding missing schemas (S3C
-> SoCs).
-
-Looks pretty good.
-
-> ---
->  .../bindings/arm/samsung/samsung-boards.txt   |  83 --------
->  .../bindings/arm/samsung/samsung-boards.yaml  | 188 ++++++++++++++++++
->  2 files changed, 188 insertions(+), 83 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/arm/samsung/samsung-boards.txt
->  create mode 100644 Documentation/devicetree/bindings/arm/samsung/samsung-boards.yaml
+>  .../devicetree/bindings/arm/samsung/pmu.txt   | 72 --------------
+>  .../devicetree/bindings/arm/samsung/pmu.yaml  | 93 +++++++++++++++++++
+>  2 files changed, 93 insertions(+), 72 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.txt
+>  create mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.yaml
 
 
-> diff --git a/Documentation/devicetree/bindings/arm/samsung/samsung-boards.yaml b/Documentation/devicetree/bindings/arm/samsung/samsung-boards.yaml
+> diff --git a/Documentation/devicetree/bindings/arm/samsung/pmu.yaml b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
 > new file mode 100644
-> index 000000000000..e963fd70c436
+> index 000000000000..818c6f3488ef
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/arm/samsung/samsung-boards.yaml
-> @@ -0,0 +1,188 @@
+> +++ b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
+> @@ -0,0 +1,93 @@
 > +# SPDX-License-Identifier: GPL-2.0
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/arm/samsung/samsung-boards.yaml#
+> +$id: http://devicetree.org/schemas/arm/samsung/pmu.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Samsung Exynos and S5P SoC based boards
+> +title: Samsung Exynos SoC series Power Management Unit (PMU)
 > +
 > +maintainers:
 > +  - Krzysztof Kozlowski <krzk@kernel.org>
 > +
 > +properties:
-> +  $nodename:
-> +    const: '/'
 > +  compatible:
-> +    oneOf:
-> +      - description: S5PV210 based Aries boards
-> +        items:
-> +          - enum:
-> +              - samsung,fascinate4g             # Samsung Galaxy S Fascinate 4G (SGH-T959P)
-> +              - samsung,galaxys                 # Samsung Galaxy S (i9000)
-> +          - const: samsung,aries
-> +          - const: samsung,s5pv210
+> +    items:
+> +      - enum:
+> +          - samsung,exynos3250-pmu
+> +          - samsung,exynos4210-pmu
+> +          - samsung,exynos4412-pmu
+> +          - samsung,exynos5250-pmu
+> +          - samsung,exynos5260-pmu
+> +          - samsung,exynos5410-pmu
+> +          - samsung,exynos5420-pmu
+> +          - samsung,exynos5433-pmu
+> +          - samsung,exynos7-pmu
+> +      - const: syscon
 > +
-> +      - description: Exynos3250 based boards
-> +        items:
-> +          - enum:
-> +              - samsung,monk                    # Samsung Simband
-> +              - samsung,rinato                  # Samsung Gear2
-> +          - const: samsung,exynos3250
-> +          - const: samsung,exynos3
+> +  reg:
+> +    maxItems: 1
 > +
-> +      - description: Samsung ARTIK5 boards
-> +        items:
-> +          - enum:
-> +              - samsung,artik5-eval             # Samsung ARTIK5 eval board
-> +          - const: samsung,artik5               # Samsung ARTIK5 module
-> +          - const: samsung,exynos3250
-> +          - const: samsung,exynos3
+> +  '#clock-cells':
+> +    const: 1
 > +
-> +      - description: Exynos4210 based boards
-> +        items:
-> +          - enum:
-> +              - insignal,origen                 # Insignal Origen
-> +              - samsung,smdkv310                # Samsung SMDKV310 eval
-> +              - samsung,trats                   # Samsung Tizen Reference
-> +              - samsung,universal_c210          # Samsung C210
-> +          - const: samsung,exynos4210
-> +          - const: samsung,exynos4
-> +
-> +      - description: Exynos4412 based boards
-> +        items:
-> +          - enum:
-> +              - friendlyarm,tiny4412            # FriendlyARM TINY4412
-> +              - hardkernel,odroid-u3            # Hardkernel Odroid U3
-> +              - hardkernel,odroid-x             # Hardkernel Odroid X
-> +              - hardkernel,odroid-x2            # Hardkernel Odroid X2
-> +              - insignal,origen4412             # Insignal Origen
-> +              - samsung,smdk4412                # Samsung SMDK4412 eval
-> +              - topeet,itop4412-elite           # TOPEET Elite base
-> +          - const: samsung,exynos4412
-> +          - const: samsung,exynos4
-> +
-> +      - description: Samsung Midas family boards
-> +        items:
-> +          - enum:
-> +              - samsung,i9300                   # Samsung GT-I9300
-> +              - samsung,i9305                   # Samsung GT-I9305
-> +              - samsung,n710x                   # Samsung GT-N7100/GT-N7105
-> +              - samsung,trats2                  # Samsung Tizen Reference
-> +          - const: samsung,midas
-> +          - const: samsung,exynos4412
-> +          - const: samsung,exynos4
-> +
-> +      - description: Exynos5250 based boards
-> +        items:
-> +          - enum:
-> +              - google,snow-rev5                # Google Snow Rev 5+
-> +              - google,spring                   # Google Spring
-> +              - insignal,arndale                # Insignal Arndale
-> +              - samsung,smdk5250                # Samsung SMDK5250 eval
-> +          - const: samsung,exynos5250
-> +          - const: samsung,exynos5
-> +
-> +      - description: Google Snow Boards (Rev 4+)
-> +        items:
-> +          - enum:
-> +              - google,snow-rev4
-
-const here as I wouldn't expect this list to grow.
-
-> +          - const: google,snow
-> +          - const: samsung,exynos5250
-> +          - const: samsung,exynos5
-> +
-> +      - description: Exynos5260 based boards
-> +        items:
-> +          - enum:
-> +              - samsung,xyref5260               # Samsung Xyref5260 eval
-> +          - const: samsung,exynos5260
-> +          - const: samsung,exynos5
-> +
-> +      - description: Exynos5410 based boards
-> +        items:
-> +          - enum:
-> +              - hardkernel,odroid-xu            # Hardkernel Odroid XU
-> +              - samsung,smdk5410                # Samsung SMDK5410 eval
-> +          - const: samsung,exynos5410
-> +          - const: samsung,exynos5
-> +
-> +      - description: Exynos5420 based boards
-> +        items:
-> +          - enum:
-> +              - insignal,arndale-octa           # Insignal Arndale Octa
-> +              - samsung,smdk5420                # Samsung SMDK5420 eval
-> +          - const: samsung,exynos5420
-> +          - const: samsung,exynos5
-> +
-> +      - description: Google Peach Pit Boards (Rev 6+)
-> +        items:
-> +          - enum:
-> +              - google,pit-rev16
-
-const
-
-> +          - const: google,pit-rev15
-> +          - const: google,pit-rev14
-> +          - const: google,pit-rev13
-> +          - const: google,pit-rev12
-> +          - const: google,pit-rev11
-> +          - const: google,pit-rev10
-> +          - const: google,pit-rev9
-> +          - const: google,pit-rev8
-> +          - const: google,pit-rev7
-> +          - const: google,pit-rev6
-> +          - const: google,pit
-> +          - const: google,peach
-> +          - const: samsung,exynos5420
-> +          - const: samsung,exynos5
-> +
-> +      - description: Exynos5800 based boards
-> +        items:
-> +          - enum:
-> +              - hardkernel,odroid-xu3           # Hardkernel Odroid XU3
-> +              - hardkernel,odroid-xu3-lite      # Hardkernel Odroid XU3 Lite
-> +              - hardkernel,odroid-xu4           # Hardkernel Odroid XU4
-> +              - hardkernel,odroid-hc1           # Hardkernel Odroid HC1
-> +          - const: samsung,exynos5800
-> +          - const: samsung,exynos5
-> +
-> +      - description: Google Peach Pi Boards (Rev 10+)
-> +        items:
-> +          - enum:
-> +              - google,pi-rev16
-> +          - const: google,pi-rev15
-> +          - const: google,pi-rev14
-> +          - const: google,pi-rev13
-> +          - const: google,pi-rev12
-> +          - const: google,pi-rev11
-> +          - const: google,pi-rev10
-> +          - const: google,pi
-> +          - const: google,peach
-> +          - const: samsung,exynos5800
-> +          - const: samsung,exynos5
-> +
-> +      - description: Exynos5433 based boards
-> +        items:
-> +          - enum:
-> +              - samsung,tm2                     # Samsung TM2
-> +              - samsung,tm2e                    # Samsung TM2E
-> +          - const: samsung,exynos5433
-> +
-> +  firmware:
-
-This should be moved to its own file.
-
-> +    type: object
+> +  clock-names:
 > +    description:
-> +      node specifying presence and type of secure firmware
-> +    properties:
-> +      compatible:
-> +        enum:
-> +         - samsung,secure-firmware
-> +      reg:
-> +        description:
-> +          address of non-secure SYSRAM used for communication with firmware
-> +        maxItems: 1
+> +      list of clock names for particular CLKOUT mux inputs
+> +    # TODO: what is the maximum number of elements (mux inputs)?
+> +    minItems: 1
+> +    maxItems: 32
+> +    items:
+> +      - enum:
+
+This isn't correct as you are only defining possible names for the
+first item. Drop the '-' (making items a schema instead of a list) and
+then it applies to all. However, doing that will cause a meta-schema
+error which I need to fix to allow. Or if there's a small set of
+possibilities of number of inputs, you can list them under a 'oneOf'
+list.
+
+> +          - clkout0
+> +          - clkout1
+> +          - clkout2
+> +          - clkout3
+> +          - clkout4
+> +          - clkout5
+> +          - clkout6
+> +          - clkout7
+> +          - clkout8
+> +          - clkout9
+> +          - clkout10
+> +          - clkout11
+> +          - clkout12
+> +          - clkout13
+> +          - clkout14
+> +          - clkout15
+> +          - clkout16
+> +
+> +  clocks:
+> +    minItems: 1
+> +    maxItems: 32
+> +
+> +  interrupt-controller:
+> +    description:
+> +      Some PMUs are capable of behaving as an interrupt controller (mostly
+> +      to wake up a suspended PMU).
+> +
+> +  '#interrupt-cells':
+> +    # TODO: must be identical to the that of the parent interrupt controller.
+
+There's not really a way to express that. Just state that in the
+description if you want.
+
+> +    const: 3
+> +
+> +  # TODO: Mark interrupt-controller and #interrupt-cells as required, if one is present
+
+No need, the core schemas handle that dependency. It would be good to
+define for which compatibles the properties are required. You can do
+this with if/then schema. There's several examples in the tree.
+
+> +  # TODO: nodes defining the restart and poweroff syscon children
 > +
 > +required:
 > +  - compatible
+> +  - reg
+> +  - '#clock-cells'
+> +  - clock-names
+> +  - clocks
 > +
 > +examples:
 > +  - |
-> +    firmware@203f000 {
-> +      compatible = "samsung,secure-firmware";
-> +      reg = <0x0203F000 0x1000>;
+> +    pmu_system_controller: system-controller@10040000 {
+> +      compatible = "samsung,exynos5250-pmu", "syscon";
+> +      reg = <0x10040000 0x5000>;
+> +      interrupt-controller;
+> +      #interrupt-cells = <3>;
+> +       interrupt-parent = <&gic>;
+> +      #clock-cells = <1>;
+> +      clock-names = "clkout16";
+> +      clocks = <&clock 0>; // CLK_FIN_PLL
 > +    };
 > --
 > 2.17.1

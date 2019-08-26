@@ -2,206 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF3A9CEF7
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2019 14:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 930CD9D9BE
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2019 01:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731225AbfHZMGS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Aug 2019 08:06:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55034 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731060AbfHZMGS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 26 Aug 2019 08:06:18 -0400
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 64D3F2187F;
-        Mon, 26 Aug 2019 12:06:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566821176;
-        bh=pSm3PvDMTIhWrias2jUj42UGA5TFBFdrlS5QO6QgtCQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=io3aMAGY1vLQLpnXBTGGQRmRoMF0Z3ucgOly06j72Whv8rl7xT1KFCYyKmlLidWs3
-         Qit/fL3LL7kfMz6VSYutfHMnEYhIKe+/vtK0zd5YWrozSPVEGU8qnMYwsvvDG/CMl8
-         nKvLGU3h6Se1hrH6oINn9wwihCiN7pzs42pZsyN4=
-Received: by mail-qt1-f176.google.com with SMTP id j15so17486591qtl.13;
-        Mon, 26 Aug 2019 05:06:16 -0700 (PDT)
-X-Gm-Message-State: APjAAAV6TFX+4zvCfT+S2DIM9+B1r8stCY6Gl6bFY2XSL5eN8eX4poZg
-        liVbv00ZOIytea9cknjGnvpzdrMUgPgr7uyOFQ==
-X-Google-Smtp-Source: APXvYqywXvicr53vDpn7Lf7WyzQ+wjP/YIGuHrEhvTUukwIr28KdgsvczQlUyUAExmZ1tGD9jxYqR9nGPsTCyWlJexY=
-X-Received: by 2002:ad4:4050:: with SMTP id r16mr15115021qvp.200.1566821175529;
- Mon, 26 Aug 2019 05:06:15 -0700 (PDT)
+        id S1726990AbfHZXDI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Aug 2019 19:03:08 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:42285 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726606AbfHZXDH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Aug 2019 19:03:07 -0400
+Received: by mail-pg1-f196.google.com with SMTP id p3so11461677pgb.9
+        for <linux-iio@vger.kernel.org>; Mon, 26 Aug 2019 16:03:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bVRIjgzMwAqxXns5N+dHw5KIDXsRHaWlI4IhPrgP/ww=;
+        b=A3/pKOzD0Np24RKGi9Qn/ncAueuHM8pXQLnXWy9z0isNL1x4sDbTSgz6CkBCKOc4Ja
+         RnA2HndYqYa5y9l3awHSCbQI0qoSvVz3dHIxtBpbQ1oH7sueTZY7fx2utPPow/4ni5T0
+         DxQFq05fVhs+VeL0c8gPWJ7CFPGfneY7UYNMk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bVRIjgzMwAqxXns5N+dHw5KIDXsRHaWlI4IhPrgP/ww=;
+        b=bOCe0sCKCcbd77fCOsrYsOHpaxsjuySmG2+BgCMNhR3ZRsfoIACL/sKrqm4rIEns6d
+         lqrItcp8lI3MEIlNCCHwlN5YnoQLaOtJZi//pigMDUNKK56Xwzf3/d6OxPsr/rjAhDaU
+         qiMpUNwi40oPQjCBTntlOqd7FmjOYijeJ1bp5YpfL8guedS7GLnRjYXnHDrTvqIWzbTv
+         i+rXdtvtc5/nI7AAaPpB7wyWLPD2O44IMYXMD5iWuHrDgSghhvaIxBFOMkVZfz/XqiHa
+         bIb/DmTwffrq2c8Qhu65NVj547/b+seRiPH7iiJQGRRB2SeEqHDy3Cg2Vyi94JojwF/l
+         KBcg==
+X-Gm-Message-State: APjAAAU4O/0EsAC1//jL6vou0KmcTzDOYD7jI905akRcsyhW1QgGzSv7
+        60IzzdCVk2ODyM2uHcIJh9zg/Q==
+X-Google-Smtp-Source: APXvYqysY75VXURBl0E23DHyZYz/VYDdXkvwmZDWBIaDTyDU2tpIPODWt0f1nmHLQdN0O3PR5G4hfA==
+X-Received: by 2002:aa7:9a52:: with SMTP id x18mr23384036pfj.8.1566860587004;
+        Mon, 26 Aug 2019 16:03:07 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:3c8f:512b:3522:dfaf])
+        by smtp.gmail.com with ESMTPSA id 15sm5094062pfh.188.2019.08.26.16.03.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Aug 2019 16:03:06 -0700 (PDT)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org
+Cc:     enric.balletbo@collabora.com, linux-iio@vger.kernel.org,
+        nvaccaro@chromium.org, Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v2] iio: cros_ec: set calibscale for 3d MEMS to unit vector
+Date:   Mon, 26 Aug 2019 16:02:58 -0700
+Message-Id: <20190826230258.203235-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.23.0.187.g17f5b7556c-goog
 MIME-Version: 1.0
-References: <20190823145356.6341-1-krzk@kernel.org> <20190823145356.6341-7-krzk@kernel.org>
-In-Reply-To: <20190823145356.6341-7-krzk@kernel.org>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 26 Aug 2019 07:06:02 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKCpKuc=-4UyWFFv_RenKuSJcr9cdSKjbkL8F1ni+VODw@mail.gmail.com>
-Message-ID: <CAL_JsqKCpKuc=-4UyWFFv_RenKuSJcr9cdSKjbkL8F1ni+VODw@mail.gmail.com>
-Subject: Re: [RFC 7/9] dt-bindings: rtc: s3c: Convert S3C/Exynos RTC bindings
- to json-schema
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        =?UTF-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
-        devicetree@vger.kernel.org,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
-        <linux-rtc@vger.kernel.org>, notify@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 23, 2019 at 9:54 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> Convert Samsung S3C/Exynos Real Time Clock bindings to DT schema format
-> using json-schema.
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> ---
->  .../devicetree/bindings/rtc/s3c-rtc.txt       | 31 ------
->  .../devicetree/bindings/rtc/s3c-rtc.yaml      | 95 +++++++++++++++++++
->  2 files changed, 95 insertions(+), 31 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/rtc/s3c-rtc.txt
->  create mode 100644 Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
+By default, set the calibscale vector to unit vector.
+When calibrating one axis, the other axis calibrations  are sent as well.
+If left to 0, sensor data from uncalibrated axis are zero'ed out until
+all axis are calibrated.
 
+Fixes: ed1f2e85da79 ("iio: cros_ec: Add calibscale for 3d MEMS ")
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+---
+Changes in v2:
+- Add fixes tag.
+- Improve description.
 
-> diff --git a/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
-> new file mode 100644
-> index 000000000000..44b021812a83
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
-> @@ -0,0 +1,95 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/rtc/s3c-rtc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Samsung S3C, S5P and Exynos Real Time Clock controller
-> +
-> +maintainers:
-> +  - Krzysztof Kozlowski <krzk@kernel.org>
-> +
-> +# Select also deprecated compatibles (for finding deprecate usage)
-> +select:
-> +  properties:
-> +    compatible:
-> +      items:
-> +        - enum:
-> +            - samsung,s3c2410-rtc
-> +            - samsung,s3c2416-rtc
-> +            - samsung,s3c2443-rtc
-> +            - samsung,s3c6410-rtc
-> +            # Deprecated, use samsung,s3c6410-rtc
-> +            - samsung,exynos3250-rtc
+ drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-We've come up with a better way of doing this that doesn't need a
-custom 'select'. Add a 'oneOf' to compatible and add another entry:
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+index fd833295bb173..d44ae126f4578 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -90,7 +90,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+ 	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
+ 	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+ 	u32 ver_mask;
+-	int ret;
++	int ret, i;
+ 
+ 	platform_set_drvdata(pdev, indio_dev);
+ 
+@@ -136,6 +136,9 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+ 		/* Set sign vector, only used for backward compatibility. */
+ 		memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
+ 
++		for (i = CROS_EC_SENSOR_X; i < CROS_EC_SENSOR_MAX_AXIS; i++)
++			state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
++
+ 		/* 0 is a correct value used to stop the device */
+ 		state->frequencies[0] = 0;
+ 		if (state->msg->version < 3) {
+-- 
+2.23.0.187.g17f5b7556c-goog
 
-- const: samsung,exynos3250-rtc
-  deprecated: true
-
-It's not implemented yet in the tool, but we'll keep the compatible
-for 'select' and otherwise drop schema marked deprecated.
-
-> +  required:
-> +    - compatible
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-
-You can drop 'items' when there's only 1 entry.
-
-> +          - samsung,s3c2410-rtc
-> +          - samsung,s3c2416-rtc
-> +          - samsung,s3c2443-rtc
-> +          - samsung,s3c6410-rtc
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    description:
-> +      Must contain a list of phandle and clock specifier for the rtc
-> +      clock and in the case of a s3c6410 compatible controller, also
-> +      a source clock.
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  clock-names:
-> +    description:
-> +      Must contain "rtc" and for a s3c6410 compatible controller,
-> +      a "rtc_src" sorted in the same order as the clocks property.
-> +    oneOf:
-> +      - items:
-> +          - const: rtc
-> +      - items:
-> +          # TODO: This can be in any order matching clocks, how to express it?
-
-It shouldn't be in any order. Fix the dts files.
-
-> +          - const: rtc
-> +          - const: rtc_src
-
-You should drop all this and add an else clause below.
-
-> +
-> +  interrupts:
-> +    description:
-> +      Two interrupt numbers to the cpu should be specified. First
-> +      interrupt number is the rtc alarm interrupt and second interrupt number
-> +      is the rtc tick interrupt. The number of cells representing a interrupt
-> +      depends on the parent interrupt controller.
-> +    minItems: 2
-> +    maxItems: 2
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - samsung,s3c6410-rtc
-> +              - samsung,exynos3250-rtc
-> +
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 2
-> +          maxItems: 2
-> +        clock-names:
-> +          items:
-> +          - const: rtc
-> +          - const: rtc_src
-
-Should be indented 2 more spaces.
-
-> +
-> +examples:
-> +  - |
-> +    rtc@10070000 {
-> +      compatible = "samsung,s3c6410-rtc";
-> +      reg = <0x10070000 0x100>;
-> +      interrupts = <0 44 4>, <0 45 4>;
-> +      clocks = <&clock 0>, // CLK_RTC
-> +               <&s2mps11_osc 0>; // S2MPS11_CLK_AP
-> +      clock-names = "rtc", "rtc_src";
-> +    };
-> --
-> 2.17.1
->

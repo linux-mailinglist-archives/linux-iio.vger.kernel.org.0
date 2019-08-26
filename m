@@ -2,100 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD0359C761
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2019 04:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEB9D9CB63
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2019 10:15:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729333AbfHZCtL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 25 Aug 2019 22:49:11 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5656 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726215AbfHZCtL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 25 Aug 2019 22:49:11 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 45245C848C1EB97499E1;
-        Mon, 26 Aug 2019 10:49:08 +0800 (CST)
-Received: from [127.0.0.1] (10.133.213.239) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Mon, 26 Aug 2019
- 10:49:00 +0800
-Subject: Re: [PATCH -next] iio: st_sensors: Fix build error
-To:     Jonathan Cameron <jic23@kernel.org>
-References: <20190823121852.75108-1-yuehaibing@huawei.com>
- <20190825185936.0b31cde6@archlinux>
-CC:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <gregkh@linuxfoundation.org>, <tglx@linutronix.de>,
-        <denis.ciocca@st.com>, <Jonathan.Cameron@huawei.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-From:   Yuehaibing <yuehaibing@huawei.com>
-Message-ID: <0ce7f63c-2c62-aec4-d952-02bf696fd6b6@huawei.com>
-Date:   Mon, 26 Aug 2019 10:48:59 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1730495AbfHZIPn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Aug 2019 04:15:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36408 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727951AbfHZIPn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 26 Aug 2019 04:15:43 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 49DAE206BA;
+        Mon, 26 Aug 2019 08:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566807341;
+        bh=o46p+1wEJqHNxnPFY9zwnbijwyf1vyUPApcaVBqttjo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=eBVQ8VdzJxQqJMkSFiqjx4vTbtutkgBYvowmS97iIKq4vIOtejWME0yWED/aJFvEk
+         Ke03/HewJ/DLWin96UngA6PyncmMSSpZnIMkvw0WFyumnlKcURLKQEF9ia3+8JCkVU
+         StHkE0EubJErO1BdylmBXNoYHNwgK1RvjhLi8IZU=
+Date:   Mon, 26 Aug 2019 09:15:37 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Mario Tesi <martepisa@gmail.com>
+Cc:     lorenzo.bianconi83@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mario.tesi@st.com
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: Fix FIFO diff mask for tagged
+ fifo
+Message-ID: <20190826091537.66e07ec9@archlinux>
+In-Reply-To: <1566480139-4015-1-git-send-email-martepisa@gmail.com>
+References: <1566480139-4015-1-git-send-email-martepisa@gmail.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20190825185936.0b31cde6@archlinux>
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2019/8/26 1:59, Jonathan Cameron wrote:
-> On Fri, 23 Aug 2019 20:18:52 +0800
-> YueHaibing <yuehaibing@huawei.com> wrote:
-> 
->> IIO_ST_SENSORS_CORE select IIO_ST_SENSORS_I2C
->> unconditionally, if REGMAP_I2C is not set, build fails
->>
->> drivers/iio/common/st_sensors/st_sensors_i2c.o: In function `st_sensors_i2c_configure':
->> st_sensors_i2c.c:(.text+0x58): undefined reference to `__devm_regmap_init_i2c'
->>
->> This patch selects REGMAP_I2C to fix it.
->> IIO_ST_SENSORS_SPI is similar to SPI issue.
->>
->> Reported-by: Hulk Robot <hulkci@huawei.com>
->> Fixes: 062809ef7733 ("iio: make st_sensors drivers use regmap")
->> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> 
-> Hi,
-> 
-> Thanks,  I've fixed up the inconsistent ordering below.
+On Thu, 22 Aug 2019 15:22:19 +0200
+Mario Tesi <martepisa@gmail.com> wrote:
 
-Oh, thanks!
+> From: mario tesi <mario.tesi@st.com>
+> 
+> 	According to the latest version of datasheet the mask
+> 	for number of unread sensor data in FIFO_STATUS registers
+> 	has been extended to 10 bits
+> 
+> 	The devices involved are:
+> 	 - LSM6DSO
+> 	 - LSM6DSOX
+> 	 - ASM330LHH
+> 	 - LSM6DSR
+> 	 - ISM330DHCX
+> 
+> Signed-off-by: mario tesi <mario.tesi@st.com>
 
+Seems straight forward and should be side effect free I think.
+Hence I won't wait for Lorenzo to take a look (though there
+is still a small window for comments whilst the autobuilders
+poke at it!)
+
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to take a look.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> Applied to the togreg branch of iio.git and pushed out as
-> testing for the autobuilders to play with it.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->> ---
->>  drivers/iio/common/st_sensors/Kconfig | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/drivers/iio/common/st_sensors/Kconfig b/drivers/iio/common/st_sensors/Kconfig
->> index 91b98e1..16d973f 100644
->> --- a/drivers/iio/common/st_sensors/Kconfig
->> +++ b/drivers/iio/common/st_sensors/Kconfig
->> @@ -5,8 +5,10 @@
->>  
->>  config IIO_ST_SENSORS_I2C
->>  	tristate
->> +	select REGMAP_I2C
->>  
->>  config IIO_ST_SENSORS_SPI
->> +	select REGMAP_SPI
-> 
-> Inconsistent with the previous.
-> 
->>  	tristate
->>  
->>  config IIO_ST_SENSORS_CORE
-> 
-> 
-> .
-> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 85824d6..47b77d0 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -497,7 +497,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  			},
+>  			.fifo_diff = {
+>  				.addr = 0x3a,
+> -				.mask = GENMASK(8, 0),
+> +				.mask = GENMASK(9, 0),
+>  			},
+>  			.th_wl = 1,
+>  		},
+> @@ -623,7 +623,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  			},
+>  			.fifo_diff = {
+>  				.addr = 0x3a,
+> -				.mask = GENMASK(8, 0),
+> +				.mask = GENMASK(9, 0),
+>  			},
+>  			.th_wl = 1,
+>  		},
+> @@ -726,7 +726,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  			},
+>  			.fifo_diff = {
+>  				.addr = 0x3a,
+> -				.mask = GENMASK(8, 0),
+> +				.mask = GENMASK(9, 0),
+>  			},
+>  			.th_wl = 1,
+>  		},
 

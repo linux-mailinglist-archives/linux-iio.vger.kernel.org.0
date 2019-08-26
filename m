@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0F69CEA8
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2019 13:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CF3A9CEF7
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2019 14:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731024AbfHZLyU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Aug 2019 07:54:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42292 "EHLO mail.kernel.org"
+        id S1731225AbfHZMGS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Aug 2019 08:06:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55034 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726497AbfHZLyU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 26 Aug 2019 07:54:20 -0400
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+        id S1731060AbfHZMGS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 26 Aug 2019 08:06:18 -0400
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3088A2189D;
-        Mon, 26 Aug 2019 11:54:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 64D3F2187F;
+        Mon, 26 Aug 2019 12:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566820459;
-        bh=6d8Pf2giZ8gFsCA6Mlwav/1B6nTN9Sah3mq5E5Nvjo4=;
+        s=default; t=1566821176;
+        bh=pSm3PvDMTIhWrias2jUj42UGA5TFBFdrlS5QO6QgtCQ=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QvJBQ55ojSqqsTPUhO00j6OJJz5EaQoXkuS9MHOOzMa5fzOJNWIYViaNorEhp/Sut
-         GoRpe9hoMwItkuwDeb0tTTdr5Ap5zStj9QwOOTRxEHy74nIkVG4gnYcqC4sAIs0t+p
-         +8LglhXXFueLMBm+Hf7Fbae0bnj4hvQ9tRJJui9I=
-Received: by mail-qk1-f173.google.com with SMTP id p13so13719907qkg.13;
-        Mon, 26 Aug 2019 04:54:19 -0700 (PDT)
-X-Gm-Message-State: APjAAAUieU+hYjjymLJ4H5Bcrw4JjnbsHehd83RFAsE8fVgmWc17mJsD
-        UuS2Vhf/XtxNJFXmCaG2Z7KjOL0mLn845TGsxA==
-X-Google-Smtp-Source: APXvYqwefTr2/bNUCQOk9axEdQjco6LCiAhg6K2odj3PCAzUTZW7osr4FjP132HUalSUByM7PTRXcJ6wplhPQhlnSiQ=
-X-Received: by 2002:a37:a010:: with SMTP id j16mr16163354qke.152.1566820458257;
- Mon, 26 Aug 2019 04:54:18 -0700 (PDT)
+        b=io3aMAGY1vLQLpnXBTGGQRmRoMF0Z3ucgOly06j72Whv8rl7xT1KFCYyKmlLidWs3
+         Qit/fL3LL7kfMz6VSYutfHMnEYhIKe+/vtK0zd5YWrozSPVEGU8qnMYwsvvDG/CMl8
+         nKvLGU3h6Se1hrH6oINn9wwihCiN7pzs42pZsyN4=
+Received: by mail-qt1-f176.google.com with SMTP id j15so17486591qtl.13;
+        Mon, 26 Aug 2019 05:06:16 -0700 (PDT)
+X-Gm-Message-State: APjAAAV6TFX+4zvCfT+S2DIM9+B1r8stCY6Gl6bFY2XSL5eN8eX4poZg
+        liVbv00ZOIytea9cknjGnvpzdrMUgPgr7uyOFQ==
+X-Google-Smtp-Source: APXvYqywXvicr53vDpn7Lf7WyzQ+wjP/YIGuHrEhvTUukwIr28KdgsvczQlUyUAExmZ1tGD9jxYqR9nGPsTCyWlJexY=
+X-Received: by 2002:ad4:4050:: with SMTP id r16mr15115021qvp.200.1566821175529;
+ Mon, 26 Aug 2019 05:06:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190823145356.6341-1-krzk@kernel.org> <20190823145356.6341-5-krzk@kernel.org>
-In-Reply-To: <20190823145356.6341-5-krzk@kernel.org>
+References: <20190823145356.6341-1-krzk@kernel.org> <20190823145356.6341-7-krzk@kernel.org>
+In-Reply-To: <20190823145356.6341-7-krzk@kernel.org>
 From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 26 Aug 2019 06:54:02 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJybT41cEqiTriLMywUQj1BtAG_9muJ4=84OkF23y53CA@mail.gmail.com>
-Message-ID: <CAL_JsqJybT41cEqiTriLMywUQj1BtAG_9muJ4=84OkF23y53CA@mail.gmail.com>
-Subject: Re: [RFC 5/9] dt-bindings: arm: samsung: Convert Exynos PMU bindings
+Date:   Mon, 26 Aug 2019 07:06:02 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKCpKuc=-4UyWFFv_RenKuSJcr9cdSKjbkL8F1ni+VODw@mail.gmail.com>
+Message-ID: <CAL_JsqKCpKuc=-4UyWFFv_RenKuSJcr9cdSKjbkL8F1ni+VODw@mail.gmail.com>
+Subject: Re: [RFC 7/9] dt-bindings: rtc: s3c: Convert S3C/Exynos RTC bindings
  to json-schema
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Mark Rutland <mark.rutland@arm.com>,
@@ -67,133 +67,140 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Aug 23, 2019 at 9:54 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
-> Convert Samsung Exynos Power Management Unit (PMU) bindings to DT schema
-> format using json-schema.
+> Convert Samsung S3C/Exynos Real Time Clock bindings to DT schema format
+> using json-schema.
 >
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > ---
->  .../devicetree/bindings/arm/samsung/pmu.txt   | 72 --------------
->  .../devicetree/bindings/arm/samsung/pmu.yaml  | 93 +++++++++++++++++++
->  2 files changed, 93 insertions(+), 72 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.txt
->  create mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.yaml
+>  .../devicetree/bindings/rtc/s3c-rtc.txt       | 31 ------
+>  .../devicetree/bindings/rtc/s3c-rtc.yaml      | 95 +++++++++++++++++++
+>  2 files changed, 95 insertions(+), 31 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/rtc/s3c-rtc.txt
+>  create mode 100644 Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
 
 
-> diff --git a/Documentation/devicetree/bindings/arm/samsung/pmu.yaml b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
+> diff --git a/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
 > new file mode 100644
-> index 000000000000..818c6f3488ef
+> index 000000000000..44b021812a83
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
-> @@ -0,0 +1,93 @@
+> +++ b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
+> @@ -0,0 +1,95 @@
 > +# SPDX-License-Identifier: GPL-2.0
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/arm/samsung/pmu.yaml#
+> +$id: http://devicetree.org/schemas/rtc/s3c-rtc.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Samsung Exynos SoC series Power Management Unit (PMU)
+> +title: Samsung S3C, S5P and Exynos Real Time Clock controller
 > +
 > +maintainers:
 > +  - Krzysztof Kozlowski <krzk@kernel.org>
+> +
+> +# Select also deprecated compatibles (for finding deprecate usage)
+> +select:
+> +  properties:
+> +    compatible:
+> +      items:
+> +        - enum:
+> +            - samsung,s3c2410-rtc
+> +            - samsung,s3c2416-rtc
+> +            - samsung,s3c2443-rtc
+> +            - samsung,s3c6410-rtc
+> +            # Deprecated, use samsung,s3c6410-rtc
+> +            - samsung,exynos3250-rtc
+
+We've come up with a better way of doing this that doesn't need a
+custom 'select'. Add a 'oneOf' to compatible and add another entry:
+
+- const: samsung,exynos3250-rtc
+  deprecated: true
+
+It's not implemented yet in the tool, but we'll keep the compatible
+for 'select' and otherwise drop schema marked deprecated.
+
+> +  required:
+> +    - compatible
 > +
 > +properties:
 > +  compatible:
 > +    items:
 > +      - enum:
-> +          - samsung,exynos3250-pmu
-> +          - samsung,exynos4210-pmu
-> +          - samsung,exynos4412-pmu
-> +          - samsung,exynos5250-pmu
-> +          - samsung,exynos5260-pmu
-> +          - samsung,exynos5410-pmu
-> +          - samsung,exynos5420-pmu
-> +          - samsung,exynos5433-pmu
-> +          - samsung,exynos7-pmu
-> +      - const: syscon
-> +
+
+You can drop 'items' when there's only 1 entry.
+
+> +          - samsung,s3c2410-rtc
+> +          - samsung,s3c2416-rtc
+> +          - samsung,s3c2443-rtc
+> +          - samsung,s3c6410-rtc
 > +  reg:
 > +    maxItems: 1
 > +
-> +  '#clock-cells':
-> +    const: 1
+> +  clocks:
+> +    description:
+> +      Must contain a list of phandle and clock specifier for the rtc
+> +      clock and in the case of a s3c6410 compatible controller, also
+> +      a source clock.
+> +    minItems: 1
+> +    maxItems: 2
 > +
 > +  clock-names:
 > +    description:
-> +      list of clock names for particular CLKOUT mux inputs
-> +    # TODO: what is the maximum number of elements (mux inputs)?
-> +    minItems: 1
-> +    maxItems: 32
-> +    items:
-> +      - enum:
+> +      Must contain "rtc" and for a s3c6410 compatible controller,
+> +      a "rtc_src" sorted in the same order as the clocks property.
+> +    oneOf:
+> +      - items:
+> +          - const: rtc
+> +      - items:
+> +          # TODO: This can be in any order matching clocks, how to express it?
 
-This isn't correct as you are only defining possible names for the
-first item. Drop the '-' (making items a schema instead of a list) and
-then it applies to all. However, doing that will cause a meta-schema
-error which I need to fix to allow. Or if there's a small set of
-possibilities of number of inputs, you can list them under a 'oneOf'
-list.
+It shouldn't be in any order. Fix the dts files.
 
-> +          - clkout0
-> +          - clkout1
-> +          - clkout2
-> +          - clkout3
-> +          - clkout4
-> +          - clkout5
-> +          - clkout6
-> +          - clkout7
-> +          - clkout8
-> +          - clkout9
-> +          - clkout10
-> +          - clkout11
-> +          - clkout12
-> +          - clkout13
-> +          - clkout14
-> +          - clkout15
-> +          - clkout16
+> +          - const: rtc
+> +          - const: rtc_src
+
+You should drop all this and add an else clause below.
+
 > +
-> +  clocks:
-> +    minItems: 1
-> +    maxItems: 32
-> +
-> +  interrupt-controller:
+> +  interrupts:
 > +    description:
-> +      Some PMUs are capable of behaving as an interrupt controller (mostly
-> +      to wake up a suspended PMU).
+> +      Two interrupt numbers to the cpu should be specified. First
+> +      interrupt number is the rtc alarm interrupt and second interrupt number
+> +      is the rtc tick interrupt. The number of cells representing a interrupt
+> +      depends on the parent interrupt controller.
+> +    minItems: 2
+> +    maxItems: 2
 > +
-> +  '#interrupt-cells':
-> +    # TODO: must be identical to the that of the parent interrupt controller.
-
-There's not really a way to express that. Just state that in the
-description if you want.
-
-> +    const: 3
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - samsung,s3c6410-rtc
+> +              - samsung,exynos3250-rtc
 > +
-> +  # TODO: Mark interrupt-controller and #interrupt-cells as required, if one is present
+> +    then:
+> +      properties:
+> +        clocks:
+> +          minItems: 2
+> +          maxItems: 2
+> +        clock-names:
+> +          items:
+> +          - const: rtc
+> +          - const: rtc_src
 
-No need, the core schemas handle that dependency. It would be good to
-define for which compatibles the properties are required. You can do
-this with if/then schema. There's several examples in the tree.
+Should be indented 2 more spaces.
 
-> +  # TODO: nodes defining the restart and poweroff syscon children
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - '#clock-cells'
-> +  - clock-names
-> +  - clocks
 > +
 > +examples:
 > +  - |
-> +    pmu_system_controller: system-controller@10040000 {
-> +      compatible = "samsung,exynos5250-pmu", "syscon";
-> +      reg = <0x10040000 0x5000>;
-> +      interrupt-controller;
-> +      #interrupt-cells = <3>;
-> +       interrupt-parent = <&gic>;
-> +      #clock-cells = <1>;
-> +      clock-names = "clkout16";
-> +      clocks = <&clock 0>; // CLK_FIN_PLL
+> +    rtc@10070000 {
+> +      compatible = "samsung,s3c6410-rtc";
+> +      reg = <0x10070000 0x100>;
+> +      interrupts = <0 44 4>, <0 45 4>;
+> +      clocks = <&clock 0>, // CLK_RTC
+> +               <&s2mps11_osc 0>; // S2MPS11_CLK_AP
+> +      clock-names = "rtc", "rtc_src";
 > +    };
 > --
 > 2.17.1

@@ -2,40 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 781E19CBE5
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2019 10:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4DB79CBF9
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2019 10:56:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729327AbfHZIvj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Aug 2019 04:51:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59532 "EHLO mail.kernel.org"
+        id S1729755AbfHZI4W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Aug 2019 04:56:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34034 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726401AbfHZIvj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 26 Aug 2019 04:51:39 -0400
+        id S1727974AbfHZI4V (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 26 Aug 2019 04:56:21 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4426C20874;
-        Mon, 26 Aug 2019 08:51:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 03FCF206BA;
+        Mon, 26 Aug 2019 08:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566809498;
-        bh=OE7zjy04MsoDOM5j2Vdm4Uu5Ja0NJXf0MIYywRR9a3c=;
+        s=default; t=1566809780;
+        bh=tcS8K/s1i8KfMqHuEbwek20gIkSr0U6AsqOiw1H+uGY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HCIMA+yPdFLi0nYKdXiimHKFuqFGD+aM/qcjLur0hFeWblQbM94FwSynEJs2tMbas
-         UDnAX4pW9OxvLBBuc9ZcF6Y8Re02Pz8+4VtsfqWwdnJqkfsz73Rxy262MIpSo36w3C
-         sICO1duOCLw+o8Rnvlq/SAfivFmITUUApsEsUgvg=
-Date:   Mon, 26 Aug 2019 09:51:33 +0100
+        b=FjhT9Fc94rYqwk9XFpiqM7EvmBJ14MhKXbYZXAy49AKT0YGFbcz6B7V/Cq766MYPt
+         yacVsPVF/H3shzb70quG4tuEiaMocKM+yvfF8GQMrACWyYktOsCfcdQ/nRGOzSMKeI
+         K0EVsOnHKqBDreww+hIxm2JHJZaBiquPi+zohLWo=
+Date:   Mon, 26 Aug 2019 09:56:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
+Cc:     gwendal@chromium.org, egranata@chromium.org, kernel@collabora.com,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mboumba Cedric Madianga <cedric.madianga@gmail.com>
-Subject: Re: [PATCH 8/8 v2] ARM: dts: ux500: declare GPADC IIO ADC channels
-Message-ID: <20190826095133.0e21c55b@archlinux>
-In-Reply-To: <20190822145233.18222-9-linus.walleij@linaro.org>
-References: <20190822145233.18222-1-linus.walleij@linaro.org>
-        <20190822145233.18222-9-linus.walleij@linaro.org>
+        Lee Jones <lee.jones@linaro.org>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Nick Vaccaro <nvaccaro@chromium.org>,
+        linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] counter: cros_ec: Add synchronization sensor
+Message-ID: <20190826095612.7455cb05@archlinux>
+In-Reply-To: <d985a8a811996148e8cda78b9fe47bb87b884b56.1566563833.git.fabien.lahoudere@collabora.com>
+References: <cover.1566563833.git.fabien.lahoudere@collabora.com>
+        <d985a8a811996148e8cda78b9fe47bb87b884b56.1566563833.git.fabien.lahoudere@collabora.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,178 +57,374 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 22 Aug 2019 16:52:33 +0200
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Fri, 23 Aug 2019 14:41:27 +0200
+Fabien Lahoudere <fabien.lahoudere@collabora.com> wrote:
 
-> This adds the IIO channels for the GPADC after converting it
-> to using the standard IIO ADC bindings and moving the driver
-> over to the IIO subsystem. We also add IIO hwmon standard
-> driver node to support reading channels in a standard manner.
+> From: Gwendal Grignou <gwendal@chromium.org>
 > 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-
-I'll ask the 'stupid' question. Doesn't this break compatibility
-with old DTs?
-
-One comment inline to do with IIO standardization that occurred in
-the meantime.
-
-Thanks,
-
-Jonathan
-> ---
-> ChangeLog v1->v2:
-> - Rebased on v5.3-rc5
-> ---
->  arch/arm/boot/dts/ste-dbx5x0.dtsi | 102 +++++++++++++++++++++++++++++-
->  1 file changed, 101 insertions(+), 1 deletion(-)
+> EC returns a counter when there is an event on camera vsync.
+> This patch comes from chromeos kernel 4.4
 > 
-> diff --git a/arch/arm/boot/dts/ste-dbx5x0.dtsi b/arch/arm/boot/dts/ste-dbx5x0.dtsi
-> index b1a31134f860..80016521333b 100644
-> --- a/arch/arm/boot/dts/ste-dbx5x0.dtsi
-> +++ b/arch/arm/boot/dts/ste-dbx5x0.dtsi
-> @@ -52,6 +52,20 @@
->  		};
->  	};
->  
-> +	/* Essential housekeeping hardware monitors */
-> +	iio-hwmon {
-> +		compatible = "iio-hwmon";
-> +		io-channels = <&gpadc 0x02>, /* Battery temperature */
-> +			    <&gpadc 0x03>, /* Main charger voltage */
-> +			    <&gpadc 0x08>, /* Main battery voltage */
-> +			    <&gpadc 0x09>, /* VBUS */
-> +			    <&gpadc 0x0a>, /* Main charger current */
-> +			    <&gpadc 0x0b>, /* USB charger current *
-> +			    <&gpadc 0x0c>, /* Backup battery voltage */
-> +			    <&gpadc 0x0d>, /* Die temperature */
-> +			    <&gpadc 0x12>; /* Crystal temperature */
-> +	};
-> +
->  	soc {
->  		#address-cells = <1>;
->  		#size-cells = <1>;
-> @@ -623,12 +637,84 @@
->  					interrupt-names = "60S", "ALARM";
->  				};
->  
-> -				ab8500-gpadc {
-> +				gpadc: ab8500-gpadc {
->  					compatible = "stericsson,ab8500-gpadc";
->  					interrupts = <32 IRQ_TYPE_LEVEL_HIGH
->  						      39 IRQ_TYPE_LEVEL_HIGH>;
->  					interrupt-names = "HW_CONV_END", "SW_CONV_END";
->  					vddadc-supply = <&ab8500_ldo_tvout_reg>;
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +					#io-channel-cells = <1>;
-> +
-> +					/* GPADC channels */
-> +					bat_ctrl: adc-channel@01 {
-> +						reg = <0x01>;
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+> 
+> CROS EC sync sensor was originally designed as an IIO device.
+> Now that the counter subsystem will replace IIO_COUNTER, we
+> have to implement a new way to get sync count.
 
-We standardised recently on just channel@01 etc
-Curiously we didn't document a reg value for that in the shared doc
-but we have used them in drivers so that is fine.
+I'm curious.  What is this counter used for?
 
-> +					};
-> +					btemp_ball: adc-channel@02 {
-> +						reg = <0x02>;
-> +					};
-> +					main_charger_v: adc-channel@03 {
-> +						reg = <0x03>;
-> +					};
-> +					acc_detect1: adc-channel@04 {
-> +						reg = <0x04>;
-> +					};
-> +					acc_detect2: adc-channel@05 {
-> +						reg = <0x05>;
-> +					};
-> +					adc_aux1: adc-channel@06 {
-> +						reg = <0x06>;
-> +					};
-> +					adc_aux2: adc-channel@07 {
-> +						reg = <0x07>;
-> +					};
-> +					main_batt_v: adc-channel@08 {
-> +						reg = <0x08>;
-> +					};
-> +					vbus_v: adc-channel@09 {
-> +						reg = <0x09>;
-> +					};
-> +					main_charger_c: adc-channel@0a {
-> +						reg = <0x0a>;
-> +					};
-> +					usb_charger_c: adc-channel@0b {
-> +						reg = <0x0b>;
-> +					};
-> +					bk_bat_v: adc-channel@0c {
-> +						reg = <0x0c>;
-> +					};
-> +					die_temp: adc-channel@0d {
-> +						reg = <0x0d>;
-> +					};
-> +					usb_id: adc-channel@0e {
-> +						reg = <0x0e>;
-> +					};
-> +					xtal_temp: adc-channel@12 {
-> +						reg = <0x12>;
-> +					};
-> +					vbat_true_meas: adc-channel@13 {
-> +						reg = <0x13>;
-> +					};
-> +					bat_ctrl_and_ibat: adc-channel@1c {
-> +						reg = <0x1c>;
-> +					};
-> +					vbat_meas_and_ibat: adc-channel@1d {
-> +						reg = <0x1d>;
-> +					};
-> +					vbat_true_meas_and_ibat: adc-channel@1e {
-> +						reg = <0x1e>;
-> +					};
-> +					bat_temp_and_ibat: adc-channel@1f {
-> +						reg = <0x1f>;
-> +					};
-> +				};
+This combined counter and iio driver isn't something we would normally
+want to support.  What is the reasoning behind doing both interfaces?
+
+> 
+> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
+> ---
+>  Documentation/driver-api/generic-counter.rst  |   3 +
+>  MAINTAINERS                                   |   7 +
+>  drivers/counter/Kconfig                       |   9 +
+>  drivers/counter/Makefile                      |   1 +
+>  drivers/counter/counter.c                     |   2 +
+>  drivers/counter/cros_ec_sensors_sync.c        | 208 ++++++++++++++++++
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    |   1 +
+>  drivers/mfd/cros_ec_dev.c                     |   3 +
+>  include/linux/counter.h                       |   1 +
+>  9 files changed, 235 insertions(+)
+>  create mode 100644 drivers/counter/cros_ec_sensors_sync.c
+> 
+> diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
+> index 8382f01a53e3..beb80714ac8b 100644
+> --- a/Documentation/driver-api/generic-counter.rst
+> +++ b/Documentation/driver-api/generic-counter.rst
+> @@ -44,6 +44,9 @@ Counter interface provides the following available count data types:
+>  * COUNT_POSITION:
+>    Unsigned integer value representing position.
+>  
+> +* COUNT_TALLY:
+> +  Unsigned integer value representing tally.
 > +
-> +				ab8500_temp {
-> +					compatible = "stericsson,abx500-temp";
-> +					io-channels = <&gpadc 0x06>,
-> +						      <&gpadc 0x07>;
-> +					io-channel-name = "aux1", "aux2";
->  				};
+>  A Count has a count function mode which represents the update behavior
+>  for the count data. The Generic Counter interface provides the following
+>  available count function modes:
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e60f5c361969..83bd291d103e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3902,6 +3902,13 @@ R:	Guenter Roeck <groeck@chromium.org>
+>  F:	Documentation/devicetree/bindings/sound/google,cros-ec-codec.txt
+>  F:	sound/soc/codecs/cros_ec_codec.*
 >  
->  				ab8500_battery: ab8500_battery {
-> @@ -639,17 +725,31 @@
->  				ab8500_fg {
->  					compatible = "stericsson,ab8500-fg";
->  					battery	   = <&ab8500_battery>;
-> +					io-channels = <&gpadc 0x08>;
-> +					io-channel-name = "main_bat_v";
->  				};
+> +CHROMEOS EC COUNTER DRIVER
+> +M:	Fabien Lahoudere <fabien.lahoudere@collabora.com>
+> +M:	William Breathitt Gray <vilhelm.gray@gmail.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Maintained
+> +F:	drivers/counter/cros_ec_sensors_sync.c
+> +
+>  CIRRUS LOGIC AUDIO CODEC DRIVERS
+>  M:	Brian Austin <brian.austin@cirrus.com>
+>  M:	Paul Handrigan <Paul.Handrigan@cirrus.com>
+> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> index 2967d0a9ff91..22287f5715e5 100644
+> --- a/drivers/counter/Kconfig
+> +++ b/drivers/counter/Kconfig
+> @@ -59,4 +59,13 @@ config FTM_QUADDEC
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called ftm-quaddec.
 >  
->  				ab8500_btemp {
->  					compatible = "stericsson,ab8500-btemp";
->  					battery	   = <&ab8500_battery>;
-> +					io-channels = <&gpadc 0x02>,
-> +						      <&gpadc 0x01>;
-> +					io-channel-name = "btemp_ball",
-> +							"bat_ctrl";
->  				};
+> +config IIO_CROS_EC_SENSORS_SYNC
+> +	tristate "ChromeOS EC Counter Sensors"
+> +	depends on IIO_CROS_EC_SENSORS_CORE && IIO
+> +	help
+> +	  Module to handle synchronisation sensors presented by the ChromeOS EC
+> +	  Sensor hub.
+> +	  Synchronisation sensors are counter sensors triggered when events
+> +	  occurs from other subsystems.
+> +
+>  endif # COUNTER
+> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
+> index 40d35522937d..6fe4c98a446f 100644
+> --- a/drivers/counter/Makefile
+> +++ b/drivers/counter/Makefile
+> @@ -9,3 +9,4 @@ obj-$(CONFIG_104_QUAD_8)	+= 104-quad-8.o
+>  obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
+>  obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
+>  obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
+> +obj-$(CONFIG_IIO_CROS_EC_SENSORS_SYNC) += cros_ec_sensors_sync.o
+> diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
+> index 106bc7180cd8..53525b109094 100644
+> --- a/drivers/counter/counter.c
+> +++ b/drivers/counter/counter.c
+> @@ -261,6 +261,7 @@ void counter_count_read_value_set(struct counter_count_read_value *const val,
+>  {
+>  	switch (type) {
+>  	case COUNTER_COUNT_POSITION:
+> +	case COUNTER_COUNT_TALLY:
+>  		val->len = sprintf(val->buf, "%lu\n", *(unsigned long *)data);
+>  		break;
+>  	default:
+> @@ -290,6 +291,7 @@ int counter_count_write_value_get(void *const data,
 >  
->  				ab8500_charger {
->  					compatible	= "stericsson,ab8500-charger";
->  					battery		= <&ab8500_battery>;
->  					vddadc-supply	= <&ab8500_ldo_tvout_reg>;
-> +					io-channels = <&gpadc 0x03>,
-> +						      <&gpadc 0x0a>,
-> +						      <&gpadc 0x09>,
-> +						      <&gpadc 0x0b>;
-> +					io-channel-name = "main_charger_v",
-> +							"main_charger_c",
-> +							"vbus_v",
-> +							"usb_charger_c";
->  				};
+>  	switch (type) {
+>  	case COUNTER_COUNT_POSITION:
+> +	case COUNTER_COUNT_TALLY:
+>  		err = kstrtoul(val->buf, 0, data);
+>  		if (err)
+>  			return err;
+> diff --git a/drivers/counter/cros_ec_sensors_sync.c b/drivers/counter/cros_ec_sensors_sync.c
+> new file mode 100644
+> index 000000000000..b6f5e2c6da9f
+> --- /dev/null
+> +++ b/drivers/counter/cros_ec_sensors_sync.c
+> @@ -0,0 +1,208 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Driver of counter incremented after events on interrupt line in EC.
+> + *
+> + * Copyright 2018 Google, Inc
+> + */
+> +
+> +#include <linux/device.h>
+> +#include <linux/counter.h>
+> +#include <linux/iio/common/cros_ec_sensors_core.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mfd/cros_ec.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +
+> +#define DRV_NAME "cros-ec-sync"
+> +
+> +/*
+> + * One channel for counter, the other for timestamp.
+> + */
+> +#define MAX_CHANNELS (1)
+> +
+> +/* State data for ec_sensors iio driver. */
+> +struct cros_ec_sensors_sync_state {
+> +	/* Shared by all sensors */
+> +	struct cros_ec_sensors_core_state core;
+> +	struct counter_device counter;
+> +	struct iio_chan_spec channels[MAX_CHANNELS];
+> +};
+> +
+> +static int cros_ec_sensors_sync_read(struct iio_dev *indio_dev,
+> +				     struct iio_chan_spec const *chan,
+> +				     int *val, int *val2, long mask)
+> +{
+> +	struct cros_ec_sensors_sync_state *st = iio_priv(indio_dev);
+> +	u16 data;
+> +	int ret;
+> +
+> +	mutex_lock(&st->core.cmd_lock);
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = cros_ec_sensors_read_cmd(indio_dev, BIT(0), &data);
+> +		if (ret < 0)
+> +			break;
+> +		ret = IIO_VAL_INT;
+> +		*val = data;
+> +		break;
+> +	default:
+> +		ret = cros_ec_sensors_core_read(&st->core, chan, val, val2,
+> +						mask);
+> +		break;
+> +	}
+> +	mutex_unlock(&st->core.cmd_lock);
+> +	return ret;
+> +}
+> +
+> +static struct iio_info cros_ec_sensors_sync_info = {
+> +	.read_raw = &cros_ec_sensors_sync_read,
+> +	.read_avail = &cros_ec_sensors_core_read_avail,
+> +};
+> +
+> +static struct counter_count cros_ec_sync_counts = {
+> +	.id = 0,
+> +	.name = "Cros EC sync counter",
+> +};
+> +
+> +static int cros_ec_sync_cnt_read(struct counter_device *counter,
+> +				struct counter_count *count,
+> +				struct counter_count_read_value *val)
+> +{
+> +	s16 cnt;
+> +	int ret;
+> +	struct iio_dev *indio_dev = counter->priv;
+> +	struct cros_ec_sensors_sync_state *const st = iio_priv(indio_dev);
+> +	unsigned long data;
+> +
+> +	mutex_lock(&st->core.cmd_lock);
+> +	ret = cros_ec_sensors_read_cmd(indio_dev, BIT(0), &cnt);
+> +	mutex_unlock(&st->core.cmd_lock);
+> +	if (ret != 0) {
+> +		dev_warn(&indio_dev->dev, "Unable to read sensor data\n");
+> +		return ret;
+> +	}
+> +
+> +	data = (unsigned long) cnt;
+> +	counter_count_read_value_set(val, COUNTER_COUNT_TALLY, &data);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct counter_ops cros_ec_sync_cnt_ops = {
+> +	.count_read = cros_ec_sync_cnt_read,
+> +};
+> +
+> +static char *cros_ec_loc[] = {
+> +	[MOTIONSENSE_LOC_BASE] = "base",
+> +	[MOTIONSENSE_LOC_LID] = "lid",
+> +	[MOTIONSENSE_LOC_CAMERA] = "camera",
+> +	[MOTIONSENSE_LOC_MAX] = "unknown",
+> +};
+> +
+> +static ssize_t cros_ec_sync_id(struct counter_device *counter,
+> +				  void *private, char *buf)
+> +{
+> +	struct iio_dev *indio_dev = counter->priv;
+> +	struct cros_ec_sensors_sync_state *const st = iio_priv(indio_dev);
+> +
+> +	return snprintf(buf, PAGE_SIZE, "%d\n", st->core.param.info.sensor_num);
+> +}
+> +
+> +static ssize_t cros_ec_sync_loc(struct counter_device *counter,
+> +				   void *private, char *buf)
+> +{
+> +	struct iio_dev *indio_dev = counter->priv;
+> +	struct cros_ec_sensors_sync_state *const st = iio_priv(indio_dev);
+> +
+> +	return snprintf(buf, PAGE_SIZE, "%s\n", cros_ec_loc[st->core.loc]);
+> +}
+> +
+> +static struct counter_device_ext cros_ec_sync_cnt_ext[] = {
+> +	{
+> +		.name = "id",
+> +		.read = cros_ec_sync_id
+> +	},
+> +	{
+> +		.name = "location",
+> +		.read = cros_ec_sync_loc
+> +	},
+> +};
+> +
+> +static int cros_ec_sensors_sync_probe(struct platform_device *pdev)
+> +{
+> +	struct cros_ec_sensors_sync_state *state;
+> +	struct device *dev = &pdev->dev;
+> +	struct iio_chan_spec *channel;
+> +	struct iio_dev *indio_dev;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->info = &cros_ec_sensors_sync_info;
+> +	state = iio_priv(indio_dev);
+> +
+> +	if (state->core.type != MOTIONSENSE_TYPE_SYNC)
+> +		return -EINVAL;
+> +
+> +	/* Initialize IIO device */
+> +	channel = state->channels;
+> +	channel->type = IIO_TIMESTAMP;
+> +	channel->channel = -1;
+> +	channel->scan_index = 1;
+> +	channel->scan_type.sign = 's';
+> +	channel->scan_type.realbits = 64;
+> +	channel->scan_type.storagebits = 64;
+> +
+> +	indio_dev->channels = state->channels;
+> +	indio_dev->num_channels = MAX_CHANNELS;
+> +
+> +	state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
+> +
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
+> +					      cros_ec_sensors_capture, NULL);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_iio_device_register(dev, indio_dev);
+
+Hmm. Wasn't expecting to see that here if it's a counter device.
+
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Initialize counter device */
+> +	state->counter.name = dev_name(&pdev->dev);
+> +	state->counter.parent = &pdev->dev;
+> +	state->counter.counts = &cros_ec_sync_counts;
+> +	state->counter.num_counts = 1;
+> +	state->counter.priv = indio_dev;
+> +	state->counter.ops = &cros_ec_sync_cnt_ops;
+> +	state->counter.ext = cros_ec_sync_cnt_ext;
+> +	state->counter.num_ext = ARRAY_SIZE(cros_ec_sync_cnt_ext);
+> +
+> +	return devm_counter_register(&pdev->dev, &state->counter);
+> +}
+> +
+> +static const struct platform_device_id cros_ec_sensors_sync_ids[] = {
+> +	{ .name = DRV_NAME, },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(platform, cros_ec_sensors_sync_ids);
+> +
+> +static struct platform_driver cros_ec_sensors_sync_platform_driver = {
+> +	.driver = {
+> +		.name	= DRV_NAME,
+> +		.pm	= &cros_ec_sensors_pm_ops,
+> +	},
+> +	.probe		= cros_ec_sensors_sync_probe,
+> +	.id_table	= cros_ec_sensors_sync_ids,
+> +};
+> +module_platform_driver(cros_ec_sensors_sync_platform_driver);
+> +
+> +MODULE_DESCRIPTION("ChromeOS EC synchronisation sensor driver");
+> +MODULE_ALIAS("platform:" DRV_NAME);
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 805652250960..2bf183425eaf 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -22,6 +22,7 @@
+>  static char *cros_ec_loc[] = {
+>  	[MOTIONSENSE_LOC_BASE] = "base",
+>  	[MOTIONSENSE_LOC_LID] = "lid",
+> +	[MOTIONSENSE_LOC_CAMERA] = "camera",
+>  	[MOTIONSENSE_LOC_MAX] = "unknown",
+>  };
 >  
->  				ab8500_chargalg {
+> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
+> index 41dccced5026..1c5c2c38af88 100644
+> --- a/drivers/mfd/cros_ec_dev.c
+> +++ b/drivers/mfd/cros_ec_dev.c
+> @@ -332,6 +332,9 @@ static void cros_ec_sensors_register(struct cros_ec_dev *ec)
+>  		case MOTIONSENSE_TYPE_ACTIVITY:
+>  			sensor_cells[id].name = "cros-ec-activity";
+>  			break;
+> +		case MOTIONSENSE_TYPE_SYNC:
+> +			sensor_cells[id].name = "cros-ec-sync";
+> +			break;
+>  		default:
+>  			dev_warn(ec->dev, "unknown type %d\n", resp->info.type);
+>  			continue;
+> diff --git a/include/linux/counter.h b/include/linux/counter.h
+> index a061cdcdef7c..1198e675306f 100644
+> --- a/include/linux/counter.h
+> +++ b/include/linux/counter.h
+> @@ -488,6 +488,7 @@ enum counter_signal_value_type {
+>  
+>  enum counter_count_value_type {
+>  	COUNTER_COUNT_POSITION = 0,
+> +	COUNTER_COUNT_TALLY
+>  };
+>  
+>  void counter_signal_read_value_set(struct counter_signal_read_value *const val,
 

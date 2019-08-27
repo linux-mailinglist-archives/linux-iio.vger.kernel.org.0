@@ -2,37 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE6309F3CE
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2019 22:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 815579F4BE
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2019 23:08:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730621AbfH0UKo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Aug 2019 16:10:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42006 "EHLO mail.kernel.org"
+        id S1727401AbfH0VIs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Aug 2019 17:08:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39686 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726871AbfH0UKo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 27 Aug 2019 16:10:44 -0400
+        id S1726871AbfH0VIs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 27 Aug 2019 17:08:48 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3A9492186A;
-        Tue, 27 Aug 2019 20:10:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A6F4A206BF;
+        Tue, 27 Aug 2019 21:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566936643;
-        bh=KmRThUyd33509gpgyQIb+xwcQlNPC156eqJXJJJj7Ew=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=R7XkO79wNXBmisY9zJl1xvrlaTs8or7Xyv7Orp8PIIlnFImz3aVT57sJGBuL0UChT
-         xTBAscd6vnlnxiJDbVIZe2sALwtjdpFeYWuGOC4q9NpmX1w0T+5Sl+AKUiedjEklz8
-         WqhonDPyw+tqoXV3KmQLqN5fo0v2bTAen2MZSvp8=
-Date:   Tue, 27 Aug 2019 21:10:38 +0100
+        s=default; t=1566940127;
+        bh=iKW8cUpNX1l204vjE1i2E37Lnu6RDtg0YxRbnBOFwmM=;
+        h=Date:From:To:Subject:From;
+        b=Bto6NRm2WWwIqi+nCSIKBO4QY28V1sCsYUnecUV9AlHnlfkTWLjSooUeYwR175cN6
+         ZzKHhhzWJeqhy7sK8/oEmwHfaNfzxi46NsnrBpXzQp6yoAvAn3VLOkrPfVA3XXELyw
+         +XwiNOrLRWqkC0/iR33m/0biYhtEdLSZHXfn7oOA=
+Date:   Tue, 27 Aug 2019 22:08:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org,
-        martin.kepplinger@puri.sm
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: rely on IIO_G_TO_M_S_2 for gain
- definition for LSM9DS1
-Message-ID: <20190827211038.3f821353@archlinux>
-In-Reply-To: <776652415fadc8fc027ca13e74d942d7f45d7e7e.1566894470.git.lorenzo@kernel.org>
-References: <776652415fadc8fc027ca13e74d942d7f45d7e7e.1566894470.git.lorenzo@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] Second set of new device support, cleanups etc for IIO in
+ the 5.4 cycle.
+Message-ID: <20190827220843.4462651e@archlinux>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,41 +38,179 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 27 Aug 2019 10:29:06 +0200
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+The following changes since commit 81e0da703fdba1ee126868bf8350592c79cdba13:
 
-> Rely on IIO_G_TO_M_S_2 macro for LSM9DS1 accelerometer gain definitions
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-One last tidy up for the cycle ;)
+  staging: sm750fb: fix odd license text (2019-08-15 14:43:57 +0200)
 
-Applied to the togreg branch of iio.git.
+are available in the Git repository at:
 
-Thanks,
+  git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.4b
 
-Jonathan
+for you to fetch changes up to 9df0a664e30a8777ba93343f8994090bf4c0d2b4:
 
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index c85c8be3a024..2d3495560136 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -141,10 +141,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x20,
->  					.mask = GENMASK(4, 3),
->  				},
-> -				.fs_avl[0] = {  599, 0x0 },
-> -				.fs_avl[1] = { 1197, 0x2 },
-> -				.fs_avl[2] = { 2394, 0x3 },
-> -				.fs_avl[3] = { 4788, 0x1 },
-> +				.fs_avl[0] = {  IIO_G_TO_M_S_2(61), 0x0 },
-> +				.fs_avl[1] = { IIO_G_TO_M_S_2(122), 0x2 },
-> +				.fs_avl[2] = { IIO_G_TO_M_S_2(244), 0x3 },
-> +				.fs_avl[3] = { IIO_G_TO_M_S_2(732), 0x1 },
->  			},
->  			[ST_LSM6DSX_ID_GYRO] = {
->  				.reg = {
+  iio: imu: st_lsm6dsx: rely on IIO_G_TO_M_S_2 for gain definition for LSM9DS1 (2019-08-27 21:10:15 +0100)
 
+----------------------------------------------------------------
+Second set of new device support, cleanups and features for IIO in the 5.4 cycle
+
+A few fixes in here that could have gone a faster path but aren't quite
+worth the rush for 5.3.
+
+New device support
+* ad7606
+  - Support the ad7606b which adds a software controlled mode alongside
+    the pin controlled only approach of the ad7606. Including dt-bindings.
+* lsm6dsx
+  - Add support for the gyro and accelerometer part of the lsm9ds1 which is
+    a compound device also including a magnetometer (st_sensors driver).
+    Includes bindings and precursor rework of the driver.
+
+Features
+* ad7192
+  - Add support for low pass filter control.
+  - DT binding docs.
+
+Cleanups and minor fixes
+* MAINTAINERS
+  - Fix a typo in a path.
+  - Add entry for ad7606
+* ad5380
+  - Fix a failure to dereference a pointer before atempting to assign the
+    value.
+* ad7192
+  - Drop platform data as not used in mainline and we now have full DT bindings.
+* ad7606
+  - YAML conversion for dt-bindings.
+* adis16240
+  - Rework write_raw to make it more readable using GENMASK.
+* adis16460
+  - Fix and issue with an unsigned variable holding potential negatives.
+* cros_ec
+  - Fix missing default of calibration vector so that we get 'something'
+    before calibration is complete on a given axis.
+* hid-sensors
+  - Use int_pow instead of opencoding.
+* isl29501
+  - rename dt-binding docs to include renesas inline with other renesas parts
+    and general current convention.
+* kxcjk1013
+  - Improve comments on the 'unusual' ACPI ids used to identify which sensor
+    is which in certain laptops.
+* lsm6dsx
+  - Add one bit to the fifo status masks for a number of parts.
+  - Drop a reserved entry from the sensitivity values to tidy up interface.
+  - Use core conversion macro from G to m/s^2 for lsm9ds1 to make it easier
+    to relate to the datasheet and consistent with other parts supported.
+* max1027
+  - Use device managed APIs to avoid manual error handling and cleanup.
+* rfd77402
+  - Typo in Kconfig help.
+* sc27xx
+  - Switch to polling mode from interrupts as interrupt handling typically
+    to slow for very short sleeps.
+* st-sensors
+  - Fix some missing selects for regmap.
+* tools
+  - Add a .gitignore containing the binary outputs.
+
+----------------------------------------------------------------
+Alexandru Ardelean (1):
+      iio: imu: adis16460: fix variable signedness
+
+Andy Shevchenko (1):
+      iio: hid-sensor-attributes: Convert to use int_pow()
+
+Bartosz Golaszewski (1):
+      tools: iio: add .gitignore
+
+Beniamin Bia (3):
+      MAINTAINERS: Add Beniamin Bia for AD7606 driver
+      dt-bindings: iio: adc: Migrate AD7606 documentation to yaml
+      dt-bindings: iio: adc: Add AD7606B ADC documentation
+
+Christophe JAILLET (1):
+      Kconfig: Fix the reference to the RFD77402 ToF sensor in the 'help' section
+
+Chuhong Yuan (1):
+      iio: adc: max1027: Use device-managed APIs
+
+Colin Ian King (1):
+      iio: dac: ad5380: fix incorrect assignment to val
+
+Denis Efremov (1):
+      MAINTAINERS: ftm-quaddec: Fix typo in a filepath
+
+Freeman Liu (1):
+      iio: adc: sc27xx: Change to polling mode to read data
+
+Gwendal Grignou (1):
+      iio: cros_ec: set calibscale for 3d MEMS to unit vector
+
+Hans de Goede (1):
+      iio: accel: kxcjk1013: Improve comments on KIOX010A and KIOX020A ACPI ids
+
+Lorenzo Bianconi (3):
+      iio: imu: st_lsm6dsx: introduce update_fifo function pointer
+      iio: imu: st_lsm6dsx: remove invalid gain value for LSM9DS1
+      iio: imu: st_lsm6dsx: rely on IIO_G_TO_M_S_2 for gain definition for LSM9DS1
+
+Martin Kepplinger (3):
+      iio: imu: st_lsm6dsx: move register definitions to sensor_settings struct
+      iio: imu: st_lsm6dsx: add support for accel/gyro unit of lsm9ds1
+      dt-bindings: iio: imu: st_lsm6dsx: add lsm9ds1 device bindings
+
+Mircea Caprioru (3):
+      staging: iio: adc: ad7192: Remove platform data
+      staging: iio: adc: ad7192: Add low_pass_3db_filter_frequency
+      dt-bindings: iio: adc: ad7192: Add binding documentation for AD7192
+
+Rodrigo Ribeiro (1):
+      staging: iio: accel: adis16240: Improve readability on write_raw function
+
+Simon Horman (1):
+      dt-bindings: iio: light: isl29501: Rename bindings documentation file
+
+Stefan Popa (1):
+      iio: adc: ad7606: Add support for AD7606B ADC
+
+YueHaibing (1):
+      iio: st_sensors: Fix build error
+
+mario tesi (1):
+      iio: imu: st_lsm6dsx: Fix FIFO diff mask for tagged fifo
+
+ .../devicetree/bindings/iio/adc/adi,ad7192.yaml    | 121 +++++++++++++++
+ .../devicetree/bindings/iio/adc/adi,ad7606.txt     |  66 ---------
+ .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 138 +++++++++++++++++
+ .../devicetree/bindings/iio/imu/st_lsm6dsx.txt     |   1 +
+ .../light/{isl29501.txt => renesas,isl29501.txt}   |   0
+ MAINTAINERS                                        |   5 +-
+ drivers/iio/accel/kxcjk-1013.c                     |   4 +-
+ drivers/iio/adc/ad7606.c                           |  13 +-
+ drivers/iio/adc/ad7606.h                           |   4 +
+ drivers/iio/adc/ad7606_spi.c                       | 109 +++++++++++++-
+ drivers/iio/adc/max1027.c                          |  38 +----
+ drivers/iio/adc/sc27xx_adc.c                       |  81 ++++------
+ .../common/cros_ec_sensors/cros_ec_sensors_core.c  |   5 +-
+ .../iio/common/hid-sensors/hid-sensor-attributes.c |  53 +++----
+ drivers/iio/common/st_sensors/Kconfig              |   2 +
+ drivers/iio/dac/ad5380.c                           |   2 +-
+ drivers/iio/imu/adis16460.c                        |   2 +-
+ drivers/iio/imu/st_lsm6dsx/Kconfig                 |   2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h            |  12 ++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c     |  19 ++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c       | 139 ++++++++++++++++--
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c        |   5 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c        |   5 +
+ drivers/iio/proximity/Kconfig                      |   2 +-
+ drivers/staging/iio/accel/adis16240.c              |   5 +-
+ drivers/staging/iio/adc/ad7192.c                   | 163 +++++++++++++++++----
+ drivers/staging/iio/adc/ad7192.h                   |  37 -----
+ tools/iio/.gitignore                               |   4 +
+ 28 files changed, 756 insertions(+), 281 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7606.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+ rename Documentation/devicetree/bindings/iio/light/{isl29501.txt => renesas,isl29501.txt} (100%)
+ delete mode 100644 drivers/staging/iio/adc/ad7192.h
+ create mode 100644 tools/iio/.gitignore

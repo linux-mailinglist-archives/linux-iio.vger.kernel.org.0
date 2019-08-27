@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3F389F3CA
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2019 22:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE6309F3CE
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2019 22:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727484AbfH0UJC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Aug 2019 16:09:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41794 "EHLO mail.kernel.org"
+        id S1730621AbfH0UKo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Aug 2019 16:10:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42006 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726871AbfH0UJC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 27 Aug 2019 16:09:02 -0400
+        id S1726871AbfH0UKo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 27 Aug 2019 16:10:44 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7DB232186A;
-        Tue, 27 Aug 2019 20:09:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3A9492186A;
+        Tue, 27 Aug 2019 20:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566936541;
-        bh=YJ790dnx33Um0ruxeNoQGSZwh6wWiRH2WNlSpN/9A/k=;
+        s=default; t=1566936643;
+        bh=KmRThUyd33509gpgyQIb+xwcQlNPC156eqJXJJJj7Ew=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gdfwQNhFBA7pVjn9ou1M+wVbctk1FZCBSgsQ3xhoWn8+JHXVf2xj3jA8c8gfX+qYC
-         MaKtNCKxdD33QlRAlAQsSdBICQxcWlhkIA2Qs4QW3XAVjkCg+OUvfP10MQeS+Prx4F
-         KmzyJip2bFqsTOUQwlQhDcl7YHOvNQ1cfahXAbko=
-Date:   Tue, 27 Aug 2019 21:08:57 +0100
+        b=R7XkO79wNXBmisY9zJl1xvrlaTs8or7Xyv7Orp8PIIlnFImz3aVT57sJGBuL0UChT
+         xTBAscd6vnlnxiJDbVIZe2sALwtjdpFeYWuGOC4q9NpmX1w0T+5Sl+AKUiedjEklz8
+         WqhonDPyw+tqoXV3KmQLqN5fo0v2bTAen2MZSvp8=
+Date:   Tue, 27 Aug 2019 21:10:38 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org,
         martin.kepplinger@puri.sm
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: remove invalid gain value for
- LSM9DS1
-Message-ID: <20190827210857.718d7f9b@archlinux>
-In-Reply-To: <f2be2f0e064bc7785f9d8f7f6a8598c325b39a45.1566894261.git.lorenzo@kernel.org>
-References: <f2be2f0e064bc7785f9d8f7f6a8598c325b39a45.1566894261.git.lorenzo@kernel.org>
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: rely on IIO_G_TO_M_S_2 for gain
+ definition for LSM9DS1
+Message-ID: <20190827211038.3f821353@archlinux>
+In-Reply-To: <776652415fadc8fc027ca13e74d942d7f45d7e7e.1566894470.git.lorenzo@kernel.org>
+References: <776652415fadc8fc027ca13e74d942d7f45d7e7e.1566894470.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,15 +42,13 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 27 Aug 2019 10:26:35 +0200
+On Tue, 27 Aug 2019 10:29:06 +0200
 Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> Get rid of invalid sensitivity value for LSM9DS1 gyro sensor
+> Rely on IIO_G_TO_M_S_2 macro for LSM9DS1 accelerometer gain definitions
 > 
-> Fixes: 687a60feb9c6 ("iio: imu: st_lsm6dsx: add support for accel/gyro unit of lsm9ds1")
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-The zero degree scale is certainly odd otherwise, so good to tidy
-this up.
+One last tidy up for the cycle ;)
 
 Applied to the togreg branch of iio.git.
 
@@ -59,47 +57,26 @@ Thanks,
 Jonathan
 
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index fd152fff0a8c..c85c8be3a024 100644
+> index c85c8be3a024..2d3495560136 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -151,10 +151,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x10,
+> @@ -141,10 +141,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  					.addr = 0x20,
 >  					.mask = GENMASK(4, 3),
 >  				},
-> -				.fs_avl[0] = { IIO_DEGREE_TO_RAD(245), 0x0 },
-> -				.fs_avl[1] = { IIO_DEGREE_TO_RAD(500), 0x1 },
-> -				.fs_avl[2] = { IIO_DEGREE_TO_RAD(0), 0x2 },
-> -				.fs_avl[3] = { IIO_DEGREE_TO_RAD(2000), 0x3 },
-> +				.fs_avl[0] = {  IIO_DEGREE_TO_RAD(245), 0x0 },
-> +				.fs_avl[1] = {  IIO_DEGREE_TO_RAD(500), 0x1 },
-> +				.fs_avl[2] = { IIO_DEGREE_TO_RAD(2000), 0x3 },
+> -				.fs_avl[0] = {  599, 0x0 },
+> -				.fs_avl[1] = { 1197, 0x2 },
+> -				.fs_avl[2] = { 2394, 0x3 },
+> -				.fs_avl[3] = { 4788, 0x1 },
+> +				.fs_avl[0] = {  IIO_G_TO_M_S_2(61), 0x0 },
+> +				.fs_avl[1] = { IIO_G_TO_M_S_2(122), 0x2 },
+> +				.fs_avl[2] = { IIO_G_TO_M_S_2(244), 0x3 },
+> +				.fs_avl[3] = { IIO_G_TO_M_S_2(732), 0x1 },
 >  			},
->  		},
->  	},
-> @@ -1196,13 +1195,19 @@ static ssize_t st_lsm6dsx_sysfs_scale_avail(struct device *dev,
->  					    char *buf)
->  {
->  	struct st_lsm6dsx_sensor *sensor = iio_priv(dev_get_drvdata(dev));
-> +	const struct st_lsm6dsx_fs_table_entry *fs_table;
->  	enum st_lsm6dsx_sensor_id id = sensor->id;
->  	struct st_lsm6dsx_hw *hw = sensor->hw;
->  	int i, len = 0;
->  
-> -	for (i = 0; i < ST_LSM6DSX_FS_LIST_SIZE; i++)
-> +	fs_table = &hw->settings->fs_table[id];
-> +	for (i = 0; i < ST_LSM6DSX_FS_LIST_SIZE; i++) {
-> +		if (!fs_table->fs_avl[i].gain)
-> +			break;
-> +
->  		len += scnprintf(buf + len, PAGE_SIZE - len, "0.%06u ",
-> -				 hw->settings->fs_table[id].fs_avl[i].gain);
-> +				 fs_table->fs_avl[i].gain);
-> +	}
->  	buf[len - 1] = '\n';
->  
->  	return len;
+>  			[ST_LSM6DSX_ID_GYRO] = {
+>  				.reg = {
 

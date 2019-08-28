@@ -2,215 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 815579F4BE
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2019 23:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 858CF9FA2E
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Aug 2019 08:09:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727401AbfH0VIs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Aug 2019 17:08:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39686 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726871AbfH0VIs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 27 Aug 2019 17:08:48 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A6F4A206BF;
-        Tue, 27 Aug 2019 21:08:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566940127;
-        bh=iKW8cUpNX1l204vjE1i2E37Lnu6RDtg0YxRbnBOFwmM=;
-        h=Date:From:To:Subject:From;
-        b=Bto6NRm2WWwIqi+nCSIKBO4QY28V1sCsYUnecUV9AlHnlfkTWLjSooUeYwR175cN6
-         ZzKHhhzWJeqhy7sK8/oEmwHfaNfzxi46NsnrBpXzQp6yoAvAn3VLOkrPfVA3XXELyw
-         +XwiNOrLRWqkC0/iR33m/0biYhtEdLSZHXfn7oOA=
-Date:   Tue, 27 Aug 2019 22:08:43 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] Second set of new device support, cleanups etc for IIO in
- the 5.4 cycle.
-Message-ID: <20190827220843.4462651e@archlinux>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726052AbfH1GJo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Aug 2019 02:09:44 -0400
+Received: from mail-eopbgr710045.outbound.protection.outlook.com ([40.107.71.45]:31763
+        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725951AbfH1GJn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 28 Aug 2019 02:09:43 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ksD+D9AguQjyofUopBZs62qPZRSLiqadNSXyRtPS+oAXQ9nmtUvE4heU/Z9KQ39C4mymapyWhG5lFwodEvSeBNu1i/uRzjfQSAop+lcDRcKIKGVfplQYoj/+zNb22yh2bOroc41mMWe1HGRDBCD4qjjSTMiuyRxwjxKNS7yKS15ZSEPM2PV454WU28/1/c7CTBs2akqgZH61Rhlg0Vs/u+waQfw/x8Z3u9S8Xak1nv6qphw4BzeOKprbkwPMC/niX8le8PaFXD7q65uYP8e5iPnWlgFEfMpdJxqQ/SDcCq1D6MuPoee4naNTaUY42g8rmgvuBYgTX/Iv5G2lQzVGGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=msJcnTnsJ/ntq0daoKHBzBVoYgdT+SwxBLigDzJ0BO0=;
+ b=AmHk5VsTJS1MV+Nr3tkclZCae9q8OkcnYVJmZkTqt2NK70wPpdk3aObz9eCW0TxA/TE4pI5/RS9lGBFpnVESM58AYVJlxaSdx83dIyG1Vjm4m0Y9yDx41wTmqBKoRj4r1y2bvD7wrqtROQDCgdti7/bVcMTj1sUA8M3CghqdnXSH7MmGeZf0AhC7iOV/FOWTTuHK98i/vMjf0nFgx8iRpYbRPLE/3ibt9qp2wnAQF2uxrkW5AfELSzln/dzymIMqgChPKWjiZZ/ikChG/keuv84Bnl3BXFwQK5ofxQ84A9BDtSe0dL4PwQBQ4d+3KUW4sG25oYXIuartDmgOJeeWMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.100) smtp.rcpttodomain=electromag.com.au smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=msJcnTnsJ/ntq0daoKHBzBVoYgdT+SwxBLigDzJ0BO0=;
+ b=Tf/5/Lc7De9X3Kl6D5OlJz+UsyziujFl9V5a6ONEmvJ4AVvcTebBN3zVxLigr1/HHuiF6rbp4TQ2/Q3pKuIaTevwIw92EG1WKNlR6lP5EyouYPzY78FkrYnh4h4QbRmw469D6XQljHTi/AZ0EDRYt2KTJaEkHXSs+r3Y/C8v0Fk=
+Received: from BL0PR02CA0059.namprd02.prod.outlook.com (2603:10b6:207:3d::36)
+ by BN7PR02MB4036.namprd02.prod.outlook.com (2603:10b6:406:f2::26) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2199.19; Wed, 28 Aug
+ 2019 06:09:40 +0000
+Received: from SN1NAM02FT038.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e44::209) by BL0PR02CA0059.outlook.office365.com
+ (2603:10b6:207:3d::36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2178.16 via Frontend
+ Transport; Wed, 28 Aug 2019 06:09:40 +0000
+Authentication-Results: spf=pass (sender IP is 149.199.60.100)
+ smtp.mailfrom=xilinx.com; electromag.com.au; dkim=none (message not signed)
+ header.d=none;electromag.com.au; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.100 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.100; helo=xsj-pvapsmtpgw02;
+Received: from xsj-pvapsmtpgw02 (149.199.60.100) by
+ SN1NAM02FT038.mail.protection.outlook.com (10.152.72.69) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2199.13
+ via Frontend Transport; Wed, 28 Aug 2019 06:09:38 +0000
+Received: from unknown-38-66.xilinx.com ([149.199.38.66]:58923 helo=xsj-pvapsmtp01)
+        by xsj-pvapsmtpgw02 with esmtp (Exim 4.63)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1i2r9G-0006xL-5a; Tue, 27 Aug 2019 23:09:38 -0700
+Received: from [127.0.0.1] (helo=localhost)
+        by xsj-pvapsmtp01 with smtp (Exim 4.63)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1i2r9B-0007O3-2X; Tue, 27 Aug 2019 23:09:33 -0700
+Received: from xsj-pvapsmtp01 (smtp.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id x7S69MZn016906;
+        Tue, 27 Aug 2019 23:09:22 -0700
+Received: from [172.30.17.116]
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <michals@xilinx.com>)
+        id 1i2r90-0007N6-7H; Tue, 27 Aug 2019 23:09:22 -0700
+Subject: Re: [PATCH 1/2] dt-binding: iio: Add optional label property
+To:     Phil Reid <preid@electromag.com.au>, jic23@kernel.org,
+        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        michal.simek@xilinx.com
+References: <1566876924-63608-1-git-send-email-preid@electromag.com.au>
+ <1566876924-63608-2-git-send-email-preid@electromag.com.au>
+From:   Michal Simek <michal.simek@xilinx.com>
+Message-ID: <a30b6dca-c598-135a-0559-1018dd5f5fde@xilinx.com>
+Date:   Wed, 28 Aug 2019 08:09:19 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <1566876924-63608-2-git-send-email-preid@electromag.com.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-RCIS-Action: ALLOW
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:149.199.60.100;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(136003)(39860400002)(396003)(376002)(346002)(2980300002)(199004)(189003)(186003)(229853002)(6666004)(8676002)(6306002)(70206006)(70586007)(31696002)(230700001)(478600001)(966005)(6246003)(305945005)(106002)(426003)(11346002)(2486003)(52146003)(23676004)(446003)(5660300002)(316002)(81166006)(76176011)(81156014)(8936002)(58126008)(44832011)(9786002)(2616005)(50466002)(2906002)(476003)(126002)(486006)(47776003)(65956001)(65806001)(31686004)(36756003)(26005)(36386004)(356004)(336012)(921003)(5001870100001)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:BN7PR02MB4036;H:xsj-pvapsmtpgw02;FPR:;SPF:Pass;LANG:en;PTR:xapps1.xilinx.com,unknown-60-100.xilinx.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 110ffe61-d628-40a0-d6f6-08d72b7e4f1b
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(4709080)(1401327)(4618075)(2017052603328);SRVR:BN7PR02MB4036;
+X-MS-TrafficTypeDiagnostic: BN7PR02MB4036:
+X-MS-Exchange-PUrlCount: 1
+X-Microsoft-Antispam-PRVS: <BN7PR02MB4036D206383D9A6788A8D64EC6A30@BN7PR02MB4036.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Forefront-PRVS: 014304E855
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: s0uUs/Nn1oIZpcGVgOZbFSpxp5KUK77w96WQ3Z9NSga85b4l/er6SKDuWNHeSFa39MdlFu3KPJWEtpbhIp7VCrzgh0UBw4bIJpJd9VsgCXhIUmhOdiA3qjkQ1Qw0lkC0WSWc6GIIkZX+sLo3fzJ2pMR6BRR/5gwDMLuKUjcCnGwS6jtcb+T8Udk5yhU8IIXEtTbaYt+GqdHlEamEVvlCql7i7AQJ2H37EWZxJpWNZ+KIBEiVDu5LEyK+GBXGWoDOJenIpPnQn6WD02JdOmqlJHEbcqidkq6UDtcurKt1Pd/GEeWIovP+1HyxnJ6EQC/U5lsn+IyqMPwKllBYKpDVSODa8s+e7l61SOecdeePj2wnun1bd9GtNwH/GOscwuR3JKNISvY3Gzrur8N/ptvW9HC8j+Iz9P0pQyoEaAPVmBw=
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2019 06:09:38.5549
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 110ffe61-d628-40a0-d6f6-08d72b7e4f1b
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.100];Helo=[xsj-pvapsmtpgw02]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR02MB4036
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The following changes since commit 81e0da703fdba1ee126868bf8350592c79cdba13:
+On 27. 08. 19 5:35, Phil Reid wrote:
+> This optional property defines a symbolic name for the device.
+> 
+> Signed-off-by: Phil Reid <preid@electromag.com.au>
+> ---
+>  Documentation/devicetree/bindings/iio/iio-bindings.txt | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/iio-bindings.txt b/Documentation/devicetree/bindings/iio/iio-bindings.txt
+> index 68d6f8ce063b..ffeae5aad8b5 100644
+> --- a/Documentation/devicetree/bindings/iio/iio-bindings.txt
+> +++ b/Documentation/devicetree/bindings/iio/iio-bindings.txt
+> @@ -18,12 +18,17 @@ Required properties:
+>  		   with a single IIO output and 1 for nodes with multiple
+>  		   IIO outputs.
+>  
+> +Optional properties:
+> +label:		   A symbolic name for the device.
+> +
+> +
+>  Example for a simple configuration with no trigger:
+>  
+>  	adc: voltage-sensor@35 {
+>  		compatible = "maxim,max1139";
+>  		reg = <0x35>;
+>  		#io-channel-cells = <1>;
+> +		label = "adc_voltage_sensor";
+>  	};
+>  
+>  Example for a configuration with trigger:
+> 
 
-  staging: sm750fb: fix odd license text (2019-08-15 14:43:57 +0200)
+Just for the record. This patch has been created based on initial
+discussion about label property. And Rob had not problem with using
+label in connection to ina226. https://lkml.org/lkml/2019/8/27/1213
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.4b
-
-for you to fetch changes up to 9df0a664e30a8777ba93343f8994090bf4c0d2b4:
-
-  iio: imu: st_lsm6dsx: rely on IIO_G_TO_M_S_2 for gain definition for LSM9DS1 (2019-08-27 21:10:15 +0100)
-
-----------------------------------------------------------------
-Second set of new device support, cleanups and features for IIO in the 5.4 cycle
-
-A few fixes in here that could have gone a faster path but aren't quite
-worth the rush for 5.3.
-
-New device support
-* ad7606
-  - Support the ad7606b which adds a software controlled mode alongside
-    the pin controlled only approach of the ad7606. Including dt-bindings.
-* lsm6dsx
-  - Add support for the gyro and accelerometer part of the lsm9ds1 which is
-    a compound device also including a magnetometer (st_sensors driver).
-    Includes bindings and precursor rework of the driver.
-
-Features
-* ad7192
-  - Add support for low pass filter control.
-  - DT binding docs.
-
-Cleanups and minor fixes
-* MAINTAINERS
-  - Fix a typo in a path.
-  - Add entry for ad7606
-* ad5380
-  - Fix a failure to dereference a pointer before atempting to assign the
-    value.
-* ad7192
-  - Drop platform data as not used in mainline and we now have full DT bindings.
-* ad7606
-  - YAML conversion for dt-bindings.
-* adis16240
-  - Rework write_raw to make it more readable using GENMASK.
-* adis16460
-  - Fix and issue with an unsigned variable holding potential negatives.
-* cros_ec
-  - Fix missing default of calibration vector so that we get 'something'
-    before calibration is complete on a given axis.
-* hid-sensors
-  - Use int_pow instead of opencoding.
-* isl29501
-  - rename dt-binding docs to include renesas inline with other renesas parts
-    and general current convention.
-* kxcjk1013
-  - Improve comments on the 'unusual' ACPI ids used to identify which sensor
-    is which in certain laptops.
-* lsm6dsx
-  - Add one bit to the fifo status masks for a number of parts.
-  - Drop a reserved entry from the sensitivity values to tidy up interface.
-  - Use core conversion macro from G to m/s^2 for lsm9ds1 to make it easier
-    to relate to the datasheet and consistent with other parts supported.
-* max1027
-  - Use device managed APIs to avoid manual error handling and cleanup.
-* rfd77402
-  - Typo in Kconfig help.
-* sc27xx
-  - Switch to polling mode from interrupts as interrupt handling typically
-    to slow for very short sleeps.
-* st-sensors
-  - Fix some missing selects for regmap.
-* tools
-  - Add a .gitignore containing the binary outputs.
-
-----------------------------------------------------------------
-Alexandru Ardelean (1):
-      iio: imu: adis16460: fix variable signedness
-
-Andy Shevchenko (1):
-      iio: hid-sensor-attributes: Convert to use int_pow()
-
-Bartosz Golaszewski (1):
-      tools: iio: add .gitignore
-
-Beniamin Bia (3):
-      MAINTAINERS: Add Beniamin Bia for AD7606 driver
-      dt-bindings: iio: adc: Migrate AD7606 documentation to yaml
-      dt-bindings: iio: adc: Add AD7606B ADC documentation
-
-Christophe JAILLET (1):
-      Kconfig: Fix the reference to the RFD77402 ToF sensor in the 'help' section
-
-Chuhong Yuan (1):
-      iio: adc: max1027: Use device-managed APIs
-
-Colin Ian King (1):
-      iio: dac: ad5380: fix incorrect assignment to val
-
-Denis Efremov (1):
-      MAINTAINERS: ftm-quaddec: Fix typo in a filepath
-
-Freeman Liu (1):
-      iio: adc: sc27xx: Change to polling mode to read data
-
-Gwendal Grignou (1):
-      iio: cros_ec: set calibscale for 3d MEMS to unit vector
-
-Hans de Goede (1):
-      iio: accel: kxcjk1013: Improve comments on KIOX010A and KIOX020A ACPI ids
-
-Lorenzo Bianconi (3):
-      iio: imu: st_lsm6dsx: introduce update_fifo function pointer
-      iio: imu: st_lsm6dsx: remove invalid gain value for LSM9DS1
-      iio: imu: st_lsm6dsx: rely on IIO_G_TO_M_S_2 for gain definition for LSM9DS1
-
-Martin Kepplinger (3):
-      iio: imu: st_lsm6dsx: move register definitions to sensor_settings struct
-      iio: imu: st_lsm6dsx: add support for accel/gyro unit of lsm9ds1
-      dt-bindings: iio: imu: st_lsm6dsx: add lsm9ds1 device bindings
-
-Mircea Caprioru (3):
-      staging: iio: adc: ad7192: Remove platform data
-      staging: iio: adc: ad7192: Add low_pass_3db_filter_frequency
-      dt-bindings: iio: adc: ad7192: Add binding documentation for AD7192
-
-Rodrigo Ribeiro (1):
-      staging: iio: accel: adis16240: Improve readability on write_raw function
-
-Simon Horman (1):
-      dt-bindings: iio: light: isl29501: Rename bindings documentation file
-
-Stefan Popa (1):
-      iio: adc: ad7606: Add support for AD7606B ADC
-
-YueHaibing (1):
-      iio: st_sensors: Fix build error
-
-mario tesi (1):
-      iio: imu: st_lsm6dsx: Fix FIFO diff mask for tagged fifo
-
- .../devicetree/bindings/iio/adc/adi,ad7192.yaml    | 121 +++++++++++++++
- .../devicetree/bindings/iio/adc/adi,ad7606.txt     |  66 ---------
- .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 138 +++++++++++++++++
- .../devicetree/bindings/iio/imu/st_lsm6dsx.txt     |   1 +
- .../light/{isl29501.txt => renesas,isl29501.txt}   |   0
- MAINTAINERS                                        |   5 +-
- drivers/iio/accel/kxcjk-1013.c                     |   4 +-
- drivers/iio/adc/ad7606.c                           |  13 +-
- drivers/iio/adc/ad7606.h                           |   4 +
- drivers/iio/adc/ad7606_spi.c                       | 109 +++++++++++++-
- drivers/iio/adc/max1027.c                          |  38 +----
- drivers/iio/adc/sc27xx_adc.c                       |  81 ++++------
- .../common/cros_ec_sensors/cros_ec_sensors_core.c  |   5 +-
- .../iio/common/hid-sensors/hid-sensor-attributes.c |  53 +++----
- drivers/iio/common/st_sensors/Kconfig              |   2 +
- drivers/iio/dac/ad5380.c                           |   2 +-
- drivers/iio/imu/adis16460.c                        |   2 +-
- drivers/iio/imu/st_lsm6dsx/Kconfig                 |   2 +-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h            |  12 ++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c     |  19 ++-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c       | 139 ++++++++++++++++--
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c        |   5 +
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c        |   5 +
- drivers/iio/proximity/Kconfig                      |   2 +-
- drivers/staging/iio/accel/adis16240.c              |   5 +-
- drivers/staging/iio/adc/ad7192.c                   | 163 +++++++++++++++++----
- drivers/staging/iio/adc/ad7192.h                   |  37 -----
- tools/iio/.gitignore                               |   4 +
- 28 files changed, 756 insertions(+), 281 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7606.txt
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
- rename Documentation/devicetree/bindings/iio/light/{isl29501.txt => renesas,isl29501.txt} (100%)
- delete mode 100644 drivers/staging/iio/adc/ad7192.h
- create mode 100644 tools/iio/.gitignore
+Thanks,
+Michal

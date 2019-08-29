@@ -2,472 +2,230 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 263FAA18C3
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2019 13:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88CCDA1EB8
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2019 17:18:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727189AbfH2LfY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 29 Aug 2019 07:35:24 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:43491 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727073AbfH2LfX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Aug 2019 07:35:23 -0400
-Received: by mail-pf1-f193.google.com with SMTP id v12so1849608pfn.10;
-        Thu, 29 Aug 2019 04:35:23 -0700 (PDT)
+        id S1727022AbfH2PSn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 29 Aug 2019 11:18:43 -0400
+Received: from mx0a-00328301.pphosted.com ([148.163.145.46]:30760 "EHLO
+        mx0a-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726518AbfH2PSn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Aug 2019 11:18:43 -0400
+Received: from pps.filterd (m0156134.ppops.net [127.0.0.1])
+        by mx0a-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x7TF9qr9024048;
+        Thu, 29 Aug 2019 08:18:42 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pfpt1;
+ bh=VyS37ZNowLyKTstbciYHFo2MfPB7Kn/zrUWZHaPMV5g=;
+ b=fHmesJPPCLqVP0crAxQp39oxvbovv686rLhxFz7wR8tfVMNJ0ZfjB8AJCPDaDq8IBEO3
+ LXabNwyaA6QY9XrkQYIvI6Xac7lCJhBAyuF8QWwQpSL4g2d25YFsdC+zHWrHZJ4rTtPF
+ w4IMws/lDHRTNEu9Hb/QJOm5B0jwc0WqjyZ96yAGoilK627dyX02uWq+kRljhnhV6gNz
+ EDp54+rp+5DQmgL205dFkskMZGL77Vw8nXV+wDysDB4mMz1+jIZ0peqnRnffzZe3MkFC
+ vfAuPZXY1MOlAAY9cONpaOYWjUQnY7+arDPnH1GXPOd1HVWvsAgqqh+dpHbIULaWdOkz XQ== 
+Received: from nam05-co1-obe.outbound.protection.outlook.com (mail-co1nam05lp2055.outbound.protection.outlook.com [104.47.48.55])
+        by mx0a-00328301.pphosted.com with ESMTP id 2up71c88kn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 29 Aug 2019 08:18:41 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dNxKBzKEGkn1kEw524iMWpJnGDHbtVZJ2aZXwRiaA4gBVN/Oxr/SToE/3QmZZbR9srldOeJmwf5x6uMr/EQ1wsfzEGIBoKF+GSBJ8N4H4VKCYAgYsUcvqiLTfOvgCYEeQzwJJuEO/+TRLW6EbpugvstOQuyrgRu3JmvLo/1/LUZF6Kquhudy/r7aQEwF7gaJjnnmAqIm/NQcB884geowAs53w389tbPqOFE/hr3cTjSKbCS5/2PGsne8sHqi4PGVQGCJAxdqG/bsJPm9bcoSDw5/XyE3fyqctC2L2DIfdU6kJQw5I6Qr9FNYK43tAiATTx9eeIT8eZRy3cckrjg71w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VyS37ZNowLyKTstbciYHFo2MfPB7Kn/zrUWZHaPMV5g=;
+ b=kePmlOgh8aarJAgXmBa5VAdP9TE8lb33zKuR95ubzCSCaX81z31/Y7DVrZoAo6Z0TY3k3QT87nnVewGSzef0JLRywPcqs0LEyvtVdrmOdNhoDBX6oLMDGzK/MqRKnsoUuKY0VUqEO8UJ33sJD3RaUX6f6kqPOdvASTTYktTRo2/q7coIQgvI7vCXNotQ5TMUw8aPsAXoyTqdXmqn5RYR8LqCGrlk0i0FXYWwUV+e/SuaUAS39Ya2bFw/x7W4HesLPWVVXpzNAv2e0XAcM8SIapVJAmIKH0e2vdAs1pWC75KDUm+LAB2WFx2LHMSc4yEUt8Y0ESKrfPY8RfCLlquy6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=invensense.com; dmarc=pass action=none
+ header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Dyi2ne7Lfc8KHf9mzyhBZNz7d44JXzDPDLL3CQKNFvk=;
-        b=RZVR5v7rSOkQsa7yFexYQdGqGnZTHlZSXxP0kHcCzD2PJNySt541hd+FguyU6itMKN
-         ++EHacmVU78YyjfgXfkWRGJkuFNMAV0sotAgxfZ4CKMjPV9vEpyE48Vq1Qd1xQxLps9J
-         oMsDT8d2GdwmNm1HmvWLfFA4WMNmkb126q92ZdP5Fa4HOhNQYZRHcIMPtynl8t4fkBW8
-         wokO1rOD5BQPa+0hA+6rktpa9OfQ7CD8Nfrox1ThMOYFKktBb24r4jRTaPmdEEZ+Kawg
-         g3C2I0hlqRTPzKrbZPjoC0fb3mL7rKg6iUFMZuZQ9Mu5eBJkPoGYaJgQrfwsHJ657yvh
-         6qAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Dyi2ne7Lfc8KHf9mzyhBZNz7d44JXzDPDLL3CQKNFvk=;
-        b=lmuUfM8d6h4a/A0w5XYJnuHXePZnV8VG5amDb0qJwlL3KKz7o4HknENhSsaZvong4F
-         XD7fTuNRqfEsNhizxYqmHaX925vZoroJmlSl1QGHZBUKeCrZorPAhpR1PLmRdIp3VrIw
-         DuEQcaGy7JKVt4nX8qj9/8pfZCx9TH9TGcMZsMkibRmMALw76oMmc5V6wsoOLZimtTfp
-         ocmBXt6pg5vtXZfp+EC2xxUAr2a+MeHc7svMlZs+KqZNSr2wG5CLEYTUNHahwOrFakqM
-         9JCw6ekJWEMsPlmGvFtELHoo+jBh+JQ/n3MkYykm6rD5DF0o27aNbPyZzPy05DHREGR0
-         VyAA==
-X-Gm-Message-State: APjAAAUZe/C4f83B06MMcCiWWOGtEepynFa2owx4acNST30p/Aa5Q7tP
-        qX4YEJiyz3lRWXD6lCu/dSg=
-X-Google-Smtp-Source: APXvYqxM2u+bso97J5WETFdxfusXaDXkoU6sD8mh7CubOBa4YW5LBoSEjKK+dktqruxWzsNvc7GaIA==
-X-Received: by 2002:a63:1020:: with SMTP id f32mr8173514pgl.203.1567078522618;
-        Thu, 29 Aug 2019 04:35:22 -0700 (PDT)
-Received: from icarus ([2001:268:c144:27ae:e62c:5919:6925:1a01])
-        by smtp.gmail.com with ESMTPSA id b30sm6091623pfr.117.2019.08.29.04.35.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 04:35:21 -0700 (PDT)
-Date:   Thu, 29 Aug 2019 20:34:37 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Cc:     gwendal@chromium.org, egranata@chromium.org, kernel@collabora.com,
-        Jonathan Corbet <corbet@lwn.net>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Nick Vaccaro <nvaccaro@chromium.org>,
-        linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] counter: cros_ec: Add synchronization sensor
-Message-ID: <20190829112001.GA644343@icarus>
-References: <cover.1566563833.git.fabien.lahoudere@collabora.com>
- <d985a8a811996148e8cda78b9fe47bb87b884b56.1566563833.git.fabien.lahoudere@collabora.com>
+ d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VyS37ZNowLyKTstbciYHFo2MfPB7Kn/zrUWZHaPMV5g=;
+ b=WA5LJGjbfuiaKBqzNdQxkiV9WcqWC7uHZGnHuxCc911CTWF+fJiDg082wulPEa+gXa0XJppA2wmzqV8Q3ara82qVnOYUNFcn4iIxjlRZaHjMQOHD+v8HVpYIvZdfJcn6u3Znsfs8+9A10pRz+nQRei6jaLwGtOc06ixStopHMJw=
+Received: from BYAPR12MB3366.namprd12.prod.outlook.com (20.178.55.207) by
+ BYAPR12MB3638.namprd12.prod.outlook.com (20.178.54.87) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2220.16; Thu, 29 Aug 2019 15:18:39 +0000
+Received: from BYAPR12MB3366.namprd12.prod.outlook.com
+ ([fe80::24a1:e93b:cc7:5861]) by BYAPR12MB3366.namprd12.prod.outlook.com
+ ([fe80::24a1:e93b:cc7:5861%7]) with mapi id 15.20.2199.021; Thu, 29 Aug 2019
+ 15:18:38 +0000
+From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+Subject: [PATCH 3/8] iio: imu: inv_mpu6050: add defines for supporting 9-axis
+ chips
+Thread-Topic: [PATCH 3/8] iio: imu: inv_mpu6050: add defines for supporting
+ 9-axis chips
+Thread-Index: AQHVXn0IoHuQuPiY50GrnsE0SJyHHw==
+Date:   Thu, 29 Aug 2019 15:18:38 +0000
+Message-ID: <20190829151801.13014-4-jmaneyrol@invensense.com>
+References: <20190829151801.13014-1-jmaneyrol@invensense.com>
+In-Reply-To: <20190829151801.13014-1-jmaneyrol@invensense.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: PR0P264CA0137.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:100:1a::29) To BYAPR12MB3366.namprd12.prod.outlook.com
+ (2603:10b6:a03:a9::15)
+x-originating-ip: [77.157.193.39]
+x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 2.17.1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 459d75ce-9c8a-4fc9-c54a-08d72c942b14
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BYAPR12MB3638;
+x-ms-traffictypediagnostic: BYAPR12MB3638:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BYAPR12MB363890F1CF672EF58D8BFF91C4A20@BYAPR12MB3638.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2276;
+x-forefront-prvs: 0144B30E41
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(366004)(376002)(346002)(39850400004)(136003)(199004)(189003)(4326008)(6486002)(256004)(14454004)(1076003)(14444005)(316002)(26005)(102836004)(81166006)(66066001)(81156014)(386003)(6506007)(305945005)(86362001)(2351001)(6916009)(186003)(2501003)(80792005)(7736002)(36756003)(50226002)(2616005)(6512007)(8676002)(478600001)(71190400001)(71200400001)(64756008)(54906003)(66946007)(2906002)(66446008)(6116002)(52116002)(76176011)(66476007)(99286004)(66556008)(8936002)(446003)(486006)(107886003)(5640700003)(53936002)(11346002)(476003)(6436002)(5660300002)(3846002)(25786009);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR12MB3638;H:BYAPR12MB3366.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: invensense.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 7kD+MrSZqA9aTOl2a7UcA6mL0CF0qpaQwZK6eQpr9pngYO2gRYf0H3lAgf6FW0Tolxt1iB5+piJxkP4+EyVD8U3pdtIS2kkb2fEwn7AxgA/tEJQDGH213/bfMFKq+1ZTddHY8ZSH090Oywldk7AevRKDFS02oNqi7B3VJ172UOQ6D17HS75kFEcgahjAb36MZpb5tbonTqf8wIqEDcSlyzVaRxgZys1ktG0a2MfYDCAgAt6RtcUt3VYyxWWFPvmyHCSxFBSP/+l99UmrNeFcSWCKz4ShZVuktfYFP2WA9y/zSDTU1yPHulz9yhEVMezDGCmNQ/mnGNkNw2gr/Hzq8l2IzDIEBK3MB5Lz7Q1qwZa3ZZVRgxd95pY4LQIjBNoy6c+n4DgnTCIAItGahWejsPD+MZyP7FU/c4c/Egws2U4=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d985a8a811996148e8cda78b9fe47bb87b884b56.1566563833.git.fabien.lahoudere@collabora.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+X-OriginatorOrg: invensense.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 459d75ce-9c8a-4fc9-c54a-08d72c942b14
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Aug 2019 15:18:38.8286
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: f1kxJ9ch3C1Y9d7O0qBSJyZTYMOKfL1jNGYM/NIRJ41IVVrOC+aF3GX/oM1tLf0rJF8LONmxFKBZH+cxRg+sjz2vsdx7qwLpl9UFWPZHUxY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3638
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-08-29_07:2019-08-29,2019-08-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 impostorscore=0 clxscore=1015
+ malwarescore=0 phishscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1906280000 definitions=main-1908290164
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 23, 2019 at 02:41:27PM +0200, Fabien Lahoudere wrote:
-> From: Gwendal Grignou <gwendal@chromium.org>
-> 
-> EC returns a counter when there is an event on camera vsync.
-> This patch comes from chromeos kernel 4.4
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> 
-> CROS EC sync sensor was originally designed as an IIO device.
-> Now that the counter subsystem will replace IIO_COUNTER, we
-> have to implement a new way to get sync count.
-> 
-> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> ---
->  Documentation/driver-api/generic-counter.rst  |   3 +
->  MAINTAINERS                                   |   7 +
->  drivers/counter/Kconfig                       |   9 +
->  drivers/counter/Makefile                      |   1 +
->  drivers/counter/counter.c                     |   2 +
->  drivers/counter/cros_ec_sensors_sync.c        | 208 ++++++++++++++++++
->  .../cros_ec_sensors/cros_ec_sensors_core.c    |   1 +
->  drivers/mfd/cros_ec_dev.c                     |   3 +
->  include/linux/counter.h                       |   1 +
->  9 files changed, 235 insertions(+)
->  create mode 100644 drivers/counter/cros_ec_sensors_sync.c
-> 
-> diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-> index 8382f01a53e3..beb80714ac8b 100644
-> --- a/Documentation/driver-api/generic-counter.rst
-> +++ b/Documentation/driver-api/generic-counter.rst
-> @@ -44,6 +44,9 @@ Counter interface provides the following available count data types:
->  * COUNT_POSITION:
->    Unsigned integer value representing position.
->  
-> +* COUNT_TALLY:
-> +  Unsigned integer value representing tally.
-> +
->  A Count has a count function mode which represents the update behavior
->  for the count data. The Generic Counter interface provides the following
->  available count function modes:
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e60f5c361969..83bd291d103e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3902,6 +3902,13 @@ R:	Guenter Roeck <groeck@chromium.org>
->  F:	Documentation/devicetree/bindings/sound/google,cros-ec-codec.txt
->  F:	sound/soc/codecs/cros_ec_codec.*
->  
-> +CHROMEOS EC COUNTER DRIVER
-> +M:	Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> +M:	William Breathitt Gray <vilhelm.gray@gmail.com>
+Add registers defines required for driving chip i2c master ip.
+Add MPU9xxx magnetometer scan elements and update data bytes size.
 
-No need to include me here since I'm already listed as the maintainer of
-the Counter subsystem in its respective entry.
+Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h | 65 ++++++++++++++++++++++-
+ 1 file changed, 63 insertions(+), 2 deletions(-)
 
-> +L:	linux-iio@vger.kernel.org
-> +S:	Maintained
-> +F:	drivers/counter/cros_ec_sensors_sync.c
-> +
->  CIRRUS LOGIC AUDIO CODEC DRIVERS
->  M:	Brian Austin <brian.austin@cirrus.com>
->  M:	Paul Handrigan <Paul.Handrigan@cirrus.com>
-> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-> index 2967d0a9ff91..22287f5715e5 100644
-> --- a/drivers/counter/Kconfig
-> +++ b/drivers/counter/Kconfig
-> @@ -59,4 +59,13 @@ config FTM_QUADDEC
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called ftm-quaddec.
->  
-> +config IIO_CROS_EC_SENSORS_SYNC
-> +	tristate "ChromeOS EC Counter Sensors"
-> +	depends on IIO_CROS_EC_SENSORS_CORE && IIO
-> +	help
-> +	  Module to handle synchronisation sensors presented by the ChromeOS EC
-> +	  Sensor hub.
-> +	  Synchronisation sensors are counter sensors triggered when events
-> +	  occurs from other subsystems.
-> +
->  endif # COUNTER
-> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-> index 40d35522937d..6fe4c98a446f 100644
-> --- a/drivers/counter/Makefile
-> +++ b/drivers/counter/Makefile
-> @@ -9,3 +9,4 @@ obj-$(CONFIG_104_QUAD_8)	+= 104-quad-8.o
->  obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
->  obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
->  obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
-> +obj-$(CONFIG_IIO_CROS_EC_SENSORS_SYNC) += cros_ec_sensors_sync.o
-> diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
-> index 106bc7180cd8..53525b109094 100644
-> --- a/drivers/counter/counter.c
-> +++ b/drivers/counter/counter.c
-> @@ -261,6 +261,7 @@ void counter_count_read_value_set(struct counter_count_read_value *const val,
->  {
->  	switch (type) {
->  	case COUNTER_COUNT_POSITION:
-> +	case COUNTER_COUNT_TALLY:
->  		val->len = sprintf(val->buf, "%lu\n", *(unsigned long *)data);
->  		break;
->  	default:
-> @@ -290,6 +291,7 @@ int counter_count_write_value_get(void *const data,
->  
->  	switch (type) {
->  	case COUNTER_COUNT_POSITION:
-> +	case COUNTER_COUNT_TALLY:
->  		err = kstrtoul(val->buf, 0, data);
->  		if (err)
->  			return err;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/in=
+v_mpu6050/inv_mpu_iio.h
+index e64eb978e810..82669ecb4735 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -162,9 +162,41 @@ struct inv_mpu6050_state {
+ #define INV_MPU6050_REG_ACCEL_CONFIG        0x1C
+=20
+ #define INV_MPU6050_REG_FIFO_EN             0x23
++#define INV_MPU6050_BIT_SLAVE_0             0x01
++#define INV_MPU6050_BIT_SLAVE_1             0x02
++#define INV_MPU6050_BIT_SLAVE_2             0x04
+ #define INV_MPU6050_BIT_ACCEL_OUT           0x08
+ #define INV_MPU6050_BITS_GYRO_OUT           0x70
+=20
++#define INV_MPU6050_REG_I2C_MST_CTRL        0x24
++#define INV_MPU6050_BITS_I2C_MST_CLK_400KHZ 0x0D
++#define INV_MPU6050_BIT_I2C_MST_P_NSR       0x10
++#define INV_MPU6050_BIT_SLV3_FIFO_EN        0x20
++#define INV_MPU6050_BIT_WAIT_FOR_ES         0x40
++#define INV_MPU6050_BIT_MULT_MST_EN         0x80
++
++/* control I2C slaves from 0 to 3 */
++#define INV_MPU6050_REG_I2C_SLV_ADDR(_x)    (0x25 + 3 * (_x))
++#define INV_MPU6050_BIT_I2C_SLV_RNW         0x80
++
++#define INV_MPU6050_REG_I2C_SLV_REG(_x)     (0x26 + 3 * (_x))
++
++#define INV_MPU6050_REG_I2C_SLV_CTRL(_x)    (0x27 + 3 * (_x))
++#define INV_MPU6050_BIT_SLV_GRP             0x10
++#define INV_MPU6050_BIT_SLV_REG_DIS         0x20
++#define INV_MPU6050_BIT_SLV_BYTE_SW         0x40
++#define INV_MPU6050_BIT_SLV_EN              0x80
++
++/* I2C master delay register */
++#define INV_MPU6050_REG_I2C_SLV4_CTRL       0x34
++#define INV_MPU6050_BITS_I2C_MST_DLY(_x)    ((_x) & 0x1F)
++
++#define INV_MPU6050_REG_I2C_MST_STATUS      0x36
++#define INV_MPU6050_BIT_I2C_SLV0_NACK       0x01
++#define INV_MPU6050_BIT_I2C_SLV1_NACK       0x02
++#define INV_MPU6050_BIT_I2C_SLV2_NACK       0x04
++#define INV_MPU6050_BIT_I2C_SLV3_NACK       0x08
++
+ #define INV_MPU6050_REG_INT_ENABLE          0x38
+ #define INV_MPU6050_BIT_DATA_RDY_EN         0x01
+ #define INV_MPU6050_BIT_DMP_INT_EN          0x02
+@@ -177,6 +209,18 @@ struct inv_mpu6050_state {
+ #define INV_MPU6050_BIT_FIFO_OVERFLOW_INT   0x10
+ #define INV_MPU6050_BIT_RAW_DATA_RDY_INT    0x01
+=20
++#define INV_MPU6050_REG_EXT_SENS_DATA       0x49
++
++/* I2C slaves data output from 0 to 3 */
++#define INV_MPU6050_REG_I2C_SLV_DO(_x)      (0x63 + (_x))
++
++#define INV_MPU6050_REG_I2C_MST_DELAY_CTRL  0x67
++#define INV_MPU6050_BIT_I2C_SLV0_DLY_EN     0x01
++#define INV_MPU6050_BIT_I2C_SLV1_DLY_EN     0x02
++#define INV_MPU6050_BIT_I2C_SLV2_DLY_EN     0x04
++#define INV_MPU6050_BIT_I2C_SLV3_DLY_EN     0x08
++#define INV_MPU6050_BIT_DELAY_ES_SHADOW     0x80
++
+ #define INV_MPU6050_REG_USER_CTRL           0x6A
+ #define INV_MPU6050_BIT_FIFO_RST            0x04
+ #define INV_MPU6050_BIT_DMP_RST             0x08
+@@ -204,6 +248,9 @@ struct inv_mpu6050_state {
+ #define INV_MPU6050_BYTES_PER_3AXIS_SENSOR   6
+ #define INV_MPU6050_FIFO_COUNT_BYTE          2
+=20
++/* MPU9X50 9-axis magnetometer */
++#define INV_MPU9X50_BYTES_MAGN               7
++
+ /* ICM20602 FIFO samples include temperature readings */
+ #define INV_ICM20602_BYTES_PER_TEMP_SENSOR   2
+=20
+@@ -231,8 +278,8 @@ struct inv_mpu6050_state {
+ #define INV_ICM20602_TEMP_OFFSET	     8170
+ #define INV_ICM20602_TEMP_SCALE		     3060
+=20
+-/* 6 + 6 round up and plus 8 */
+-#define INV_MPU6050_OUTPUT_DATA_SIZE         24
++/* 6 + 6 + 7 (for MPU9x50) round up and plus 8 */
++#define INV_MPU6050_OUTPUT_DATA_SIZE         32
+=20
+ #define INV_MPU6050_REG_INT_PIN_CFG	0x37
+ #define INV_MPU6050_ACTIVE_HIGH		0x00
+@@ -283,6 +330,20 @@ enum inv_mpu6050_scan {
+ 	INV_MPU6050_SCAN_TIMESTAMP,
+ };
+=20
++/* scan element definition for MPU9x50 devices */
++enum inv_mpu9x50_scan {
++	INV_MPU9X50_SCAN_ACCL_X,
++	INV_MPU9X50_SCAN_ACCL_Y,
++	INV_MPU9X50_SCAN_ACCL_Z,
++	INV_MPU9X50_SCAN_GYRO_X,
++	INV_MPU9X50_SCAN_GYRO_Y,
++	INV_MPU9X50_SCAN_GYRO_Z,
++	INV_MPU9X50_SCAN_MAGN_X,
++	INV_MPU9X50_SCAN_MAGN_Y,
++	INV_MPU9X50_SCAN_MAGN_Z,
++	INV_MPU9X50_SCAN_TIMESTAMP,
++};
++
+ /* scan element definition for ICM20602, which includes temperature */
+ enum inv_icm20602_scan {
+ 	INV_ICM20602_SCAN_ACCL_X,
+--=20
+2.17.1
 
-Dedicate the core counter subsystem related changes to their own patch
-so that we can commit them separately. That'll make it easier both to
-evaluate the changes and debug later by keeping the history clear.
-
-> diff --git a/drivers/counter/cros_ec_sensors_sync.c b/drivers/counter/cros_ec_sensors_sync.c
-> new file mode 100644
-> index 000000000000..b6f5e2c6da9f
-> --- /dev/null
-> +++ b/drivers/counter/cros_ec_sensors_sync.c
-> @@ -0,0 +1,208 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Driver of counter incremented after events on interrupt line in EC.
-> + *
-> + * Copyright 2018 Google, Inc
-> + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/counter.h>
-> +#include <linux/iio/common/cros_ec_sensors_core.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mfd/cros_ec.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +
-> +#define DRV_NAME "cros-ec-sync"
-> +
-> +/*
-> + * One channel for counter, the other for timestamp.
-> + */
-> +#define MAX_CHANNELS (1)
-> +
-> +/* State data for ec_sensors iio driver. */
-> +struct cros_ec_sensors_sync_state {
-> +	/* Shared by all sensors */
-> +	struct cros_ec_sensors_core_state core;
-> +	struct counter_device counter;
-> +	struct iio_chan_spec channels[MAX_CHANNELS];
-> +};
-> +
-> +static int cros_ec_sensors_sync_read(struct iio_dev *indio_dev,
-> +				     struct iio_chan_spec const *chan,
-> +				     int *val, int *val2, long mask)
-> +{
-> +	struct cros_ec_sensors_sync_state *st = iio_priv(indio_dev);
-> +	u16 data;
-> +	int ret;
-> +
-> +	mutex_lock(&st->core.cmd_lock);
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = cros_ec_sensors_read_cmd(indio_dev, BIT(0), &data);
-> +		if (ret < 0)
-> +			break;
-> +		ret = IIO_VAL_INT;
-> +		*val = data;
-> +		break;
-> +	default:
-> +		ret = cros_ec_sensors_core_read(&st->core, chan, val, val2,
-> +						mask);
-> +		break;
-> +	}
-> +	mutex_unlock(&st->core.cmd_lock);
-> +	return ret;
-> +}
-> +
-> +static struct iio_info cros_ec_sensors_sync_info = {
-> +	.read_raw = &cros_ec_sensors_sync_read,
-> +	.read_avail = &cros_ec_sensors_core_read_avail,
-> +};
-> +
-> +static struct counter_count cros_ec_sync_counts = {
-> +	.id = 0,
-> +	.name = "Cros EC sync counter",
-> +};
-> +
-> +static int cros_ec_sync_cnt_read(struct counter_device *counter,
-> +				struct counter_count *count,
-> +				struct counter_count_read_value *val)
-> +{
-> +	s16 cnt;
-> +	int ret;
-> +	struct iio_dev *indio_dev = counter->priv;
-> +	struct cros_ec_sensors_sync_state *const st = iio_priv(indio_dev);
-> +	unsigned long data;
-> +
-> +	mutex_lock(&st->core.cmd_lock);
-> +	ret = cros_ec_sensors_read_cmd(indio_dev, BIT(0), &cnt);
-> +	mutex_unlock(&st->core.cmd_lock);
-> +	if (ret != 0) {
-> +		dev_warn(&indio_dev->dev, "Unable to read sensor data\n");
-> +		return ret;
-> +	}
-> +
-> +	data = (unsigned long) cnt;
-
-This cast is not necessary since the data variable is already unsigned
-long; conversion can occur implicitly with a simple set operation.
-
-> +	counter_count_read_value_set(val, COUNTER_COUNT_TALLY, &data);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct counter_ops cros_ec_sync_cnt_ops = {
-> +	.count_read = cros_ec_sync_cnt_read,
-> +};
-
-Like in my previous review: does the hardware allow the counter to be
-reset back to zero, or is it purely read-only? It's okay if you want to
-focus on just reading for this patch, but it'll be good to know the
-capabilities of this hardware if we want support for it in the future.
-
-> +
-> +static char *cros_ec_loc[] = {
-> +	[MOTIONSENSE_LOC_BASE] = "base",
-> +	[MOTIONSENSE_LOC_LID] = "lid",
-> +	[MOTIONSENSE_LOC_CAMERA] = "camera",
-> +	[MOTIONSENSE_LOC_MAX] = "unknown",
-> +};
-> +
-> +static ssize_t cros_ec_sync_id(struct counter_device *counter,
-> +				  void *private, char *buf)
-> +{
-> +	struct iio_dev *indio_dev = counter->priv;
-> +	struct cros_ec_sensors_sync_state *const st = iio_priv(indio_dev);
-> +
-> +	return snprintf(buf, PAGE_SIZE, "%d\n", st->core.param.info.sensor_num);
-> +}
-> +
-> +static ssize_t cros_ec_sync_loc(struct counter_device *counter,
-> +				   void *private, char *buf)
-> +{
-> +	struct iio_dev *indio_dev = counter->priv;
-> +	struct cros_ec_sensors_sync_state *const st = iio_priv(indio_dev);
-> +
-> +	return snprintf(buf, PAGE_SIZE, "%s\n", cros_ec_loc[st->core.loc]);
-> +}
-> +
-> +static struct counter_device_ext cros_ec_sync_cnt_ext[] = {
-> +	{
-> +		.name = "id",
-> +		.read = cros_ec_sync_id
-> +	},
-> +	{
-> +		.name = "location",
-> +		.read = cros_ec_sync_loc
-> +	},
-> +};
-
-Create a corresponding documentation file to describe these attributes:
-Documentation/ABI/testing/sysfs-bus-counter-cros_ec_sensors_sync
-
-> +
-> +static int cros_ec_sensors_sync_probe(struct platform_device *pdev)
-> +{
-> +	struct cros_ec_sensors_sync_state *state;
-> +	struct device *dev = &pdev->dev;
-> +	struct iio_chan_spec *channel;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
-> +	if (ret)
-> +		return ret;
-> +
-> +	indio_dev->info = &cros_ec_sensors_sync_info;
-> +	state = iio_priv(indio_dev);
-> +
-> +	if (state->core.type != MOTIONSENSE_TYPE_SYNC)
-> +		return -EINVAL;
-> +
-> +	/* Initialize IIO device */
-> +	channel = state->channels;
-> +	channel->type = IIO_TIMESTAMP;
-> +	channel->channel = -1;
-> +	channel->scan_index = 1;
-> +	channel->scan_type.sign = 's';
-> +	channel->scan_type.realbits = 64;
-> +	channel->scan_type.storagebits = 64;
-> +
-> +	indio_dev->channels = state->channels;
-> +	indio_dev->num_channels = MAX_CHANNELS;
-> +
-> +	state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
-> +
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> +					      cros_ec_sensors_capture, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Initialize counter device */
-> +	state->counter.name = dev_name(&pdev->dev);
-> +	state->counter.parent = &pdev->dev;
-> +	state->counter.counts = &cros_ec_sync_counts;
-> +	state->counter.num_counts = 1;
-> +	state->counter.priv = indio_dev;
-> +	state->counter.ops = &cros_ec_sync_cnt_ops;
-> +	state->counter.ext = cros_ec_sync_cnt_ext;
-> +	state->counter.num_ext = ARRAY_SIZE(cros_ec_sync_cnt_ext);
-> +
-> +	return devm_counter_register(&pdev->dev, &state->counter);
-> +}
-> +
-> +static const struct platform_device_id cros_ec_sensors_sync_ids[] = {
-> +	{ .name = DRV_NAME, },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(platform, cros_ec_sensors_sync_ids);
-> +
-> +static struct platform_driver cros_ec_sensors_sync_platform_driver = {
-> +	.driver = {
-> +		.name	= DRV_NAME,
-> +		.pm	= &cros_ec_sensors_pm_ops,
-> +	},
-> +	.probe		= cros_ec_sensors_sync_probe,
-> +	.id_table	= cros_ec_sensors_sync_ids,
-> +};
-> +module_platform_driver(cros_ec_sensors_sync_platform_driver);
-> +
-> +MODULE_DESCRIPTION("ChromeOS EC synchronisation sensor driver");
-> +MODULE_ALIAS("platform:" DRV_NAME);
-> +MODULE_LICENSE("GPL v2");
-
-From the email you sent in response to Jonathan Cameron's comments, the
-IIO code in this driver will be removed so that should take care of the
-error message reported by the kbuild test robot. With only the Counter
-subsystem to worry about, this driver should end up a lot simpler in v3.
-I'm looking forward to it. :-)
-
-William Breathitt Gray
-
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> index 805652250960..2bf183425eaf 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> @@ -22,6 +22,7 @@
->  static char *cros_ec_loc[] = {
->  	[MOTIONSENSE_LOC_BASE] = "base",
->  	[MOTIONSENSE_LOC_LID] = "lid",
-> +	[MOTIONSENSE_LOC_CAMERA] = "camera",
->  	[MOTIONSENSE_LOC_MAX] = "unknown",
->  };
->  
-> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
-> index 41dccced5026..1c5c2c38af88 100644
-> --- a/drivers/mfd/cros_ec_dev.c
-> +++ b/drivers/mfd/cros_ec_dev.c
-> @@ -332,6 +332,9 @@ static void cros_ec_sensors_register(struct cros_ec_dev *ec)
->  		case MOTIONSENSE_TYPE_ACTIVITY:
->  			sensor_cells[id].name = "cros-ec-activity";
->  			break;
-> +		case MOTIONSENSE_TYPE_SYNC:
-> +			sensor_cells[id].name = "cros-ec-sync";
-> +			break;
->  		default:
->  			dev_warn(ec->dev, "unknown type %d\n", resp->info.type);
->  			continue;
-> diff --git a/include/linux/counter.h b/include/linux/counter.h
-> index a061cdcdef7c..1198e675306f 100644
-> --- a/include/linux/counter.h
-> +++ b/include/linux/counter.h
-> @@ -488,6 +488,7 @@ enum counter_signal_value_type {
->  
->  enum counter_count_value_type {
->  	COUNTER_COUNT_POSITION = 0,
-> +	COUNTER_COUNT_TALLY
->  };
->  
->  void counter_signal_read_value_set(struct counter_signal_read_value *const val,
-> -- 
-> 2.20.1
-> 

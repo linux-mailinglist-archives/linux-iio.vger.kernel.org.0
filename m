@@ -2,81 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34F30A4B21
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2019 20:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC182A4C9A
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2019 00:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729142AbfIASXC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Sep 2019 14:23:02 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:55189 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729139AbfIASXB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Sep 2019 14:23:01 -0400
-Received: by mail-io1-f69.google.com with SMTP id a20so16124397iok.21
-        for <linux-iio@vger.kernel.org>; Sun, 01 Sep 2019 11:23:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=nuF/NvQUPru9tAlC0mm8ctMiLuI0uuXct3/25gBy3VU=;
-        b=nD6BIkR+N7q6eSgHwOYTOd4XcajJaDXb1rrqtXVrcZG6shnVSjiLYkN05OpkFGPTKR
-         BudNPX0dVpifWHb1CDTFcIAzyMJispUMXkB6gewJ6gjLovbZ2MwvGbo0hD1UC661Krix
-         UjQBpMlZ08xwuGS4vjWiHDvZof6qYnBfpO9Bya6jUvmHAWIR5cDuVYlMF3AA3l7U5jg6
-         5SYXPkL7lhYP8n/oEdGp3Rf8bkMwRB9pgIDYPDj7VBvHftFIsilKN+9UDT5FNt8cag+c
-         tZp55YDWB6D1vTOGzhTNiapwsRvgP6fjOYkwPsV9HtnHBxU0a1qzwrAqsjKaf9sh3rED
-         YCoQ==
-X-Gm-Message-State: APjAAAW7kPMkHng6QSPq4x2tHQyZGf13DzuwjFbpGxc5vn2Hp5uWl2Nq
-        HTVMe20X8njdpSSjq/ElNKY1OzIf7mkjtHEDnJkd/Rq0pHTj
-X-Google-Smtp-Source: APXvYqxx1JUJRFI65w6pHYwBvLIZxZYDddDgdFCblHTcdGM//eA3cmcidNDkcKZhgDPRTq/ohBQfHqUnNU60eqT/NjGvpKx0FZJx
-MIME-Version: 1.0
-X-Received: by 2002:a5d:8599:: with SMTP id f25mr3677451ioj.265.1567362180985;
- Sun, 01 Sep 2019 11:23:00 -0700 (PDT)
-Date:   Sun, 01 Sep 2019 11:23:00 -0700
-In-Reply-To: <000000000000b7a14105913fcca8@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000083a86059181f20b@google.com>
-Subject: Re: WARNING in __mark_chain_precision (2)
-From:   syzbot <syzbot+c8d66267fd2b5955287e@syzkaller.appspotmail.com>
-To:     allison@lohutok.net, arvid.brodin@alten.se, ast@kernel.org,
-        bpf@vger.kernel.org, clang-built-linux@googlegroups.com,
-        daniel@iogearbox.net, davem@davemloft.net,
-        gregkh@linuxfoundation.org, hawk@kernel.org,
-        jakub.kicinski@netronome.com, jic23@kernel.org,
-        john.fastabend@gmail.com, kafai@fb.com, knaack.h@gmx.de,
-        kstewart@linuxfoundation.org, lars@metafoo.de,
-        linus.walleij@linaro.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mchehab+samsung@kernel.org,
-        netdev@vger.kernel.org, nicolas.ferre@microchip.com,
-        paulmck@linux.ibm.com, pmeerw@pmeerw.net, rfontana@redhat.com,
-        songliubraving@fb.com, syzkaller-bugs@googlegroups.com,
-        tglx@linutronix.de, torvalds@linux-foundation.org, yhs@fb.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+        id S1729160AbfIAW6s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Sep 2019 18:58:48 -0400
+Received: from vern.gendns.com ([98.142.107.122]:37370 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729048AbfIAW6r (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Sep 2019 18:58:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Message-Id:Date:Subject:Cc:To:From:Sender:
+        Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=q5I8hNXYUTOVr6qJJGD6VgyFndq2TJGOuDuT4GVouDk=; b=mAzKb4qBMqscx40J8SieYVnJ4w
+        CDyosjONCebl6PiNzSRwIofpGAlYPNofqndaEpMvvk8lvwe1w7fsvH83Tujs96moLqifpQyJnux87
+        wkDWpRnJlKNZKRAlU8KfmigT6KsWTrRXB191TcLia30td2qHcwWP7Kx7ukmkiz0M15VlJFNVc0ULE
+        0i33kJnUTMUabzPKXh/lStK2yp9qJZzXMgkqG5NbNR7IRdZ7K76ic7jvivuq8pxkNa2OBX6iHRWrE
+        8ExsjK/beLyVM8HARyLDpaSa9bEjk8e82W+tGip6D4fkuhu5c2yyjRBihjeei/PfeAmTvYXu6CACe
+        o0IHTW0w==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:58390 helo=freyr.lechnology.com)
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1i4Ynz-000351-RK; Sun, 01 Sep 2019 18:58:43 -0400
+From:   David Lechner <david@lechnology.com>
+To:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org
+Cc:     David Lechner <david@lechnology.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: [PATCH v3 0/6] counter: new TI eQEP driver
+Date:   Sun,  1 Sep 2019 17:58:21 -0500
+Message-Id: <20190901225827.12301-1-david@lechnology.com>
+X-Mailer: git-send-email 2.17.1
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-syzbot has bisected this bug to:
+This series adds device tree bindings and a new counter driver for the Texas
+Instruments Enhanced Quadrature Encoder Pulse (eQEP).
 
-commit e786741ff1b52769b044b7f4407f39cd13ee5d2d
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu Jul 11 22:36:02 2019 +0000
+As mentioned in one of the commit messages, to start with, the driver only
+supports reading the current counter value and setting the min/max values.
+Other features can be added as the counter subsystem gains support for them.
 
-     Merge tag 'staging-5.3-rc1' of  
-git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
+v3 changes:
+- Minor changes to device tree bindings (style and generic node name)
+- Drop action in initializer
+- Fix ordering of pm runtime disable
+v2 changes:
+- New patch to move TI PWMSS driver from drivers/pwm/ to drivers/bus/
+- Device tree bindings converted to .yaml format
+- Device tree clock renamed from "fck" to "sysclkout"
+- Dropped unused index and strobe signals from counter driver
+- Added synapses and actions to counter driver
+- Fixed base in of kstrtouint()
+- Clarifications in commit messages
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=11958f12600000
-start commit:   47ee6e86 selftests/bpf: remove wrong nhoff in flow dissect..
-git tree:       bpf-next
-final crash:    https://syzkaller.appspot.com/x/report.txt?x=13958f12600000
-console output: https://syzkaller.appspot.com/x/log.txt?x=15958f12600000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d4cf1ffb87d590d7
-dashboard link: https://syzkaller.appspot.com/bug?extid=c8d66267fd2b5955287e
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10d26ebc600000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=127805ca600000
+This series has been tested on a BeagleBone Blue with the following script:
 
-Reported-by: syzbot+c8d66267fd2b5955287e@syzkaller.appspotmail.com
-Fixes: e786741ff1b5 ("Merge tag 'staging-5.3-rc1' of  
-git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging")
+#!/usr/bin/env python3
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+from os import path
+from time import sleep
+
+COUNTER_PATH = '/sys/bus/counter/devices'
+COUNTERS = ['counter0', 'counter1', 'counter2']
+COUNT0 = 'count0'
+COUNT = 'count'
+FUNCTION = 'function'
+CEILING = 'ceiling'
+FLOOR = 'floor'
+ENABLE = 'enable'
+
+cnts = []
+
+for c in COUNTERS:
+    function_path = path.join(COUNTER_PATH, c, COUNT0, FUNCTION)
+    with open(function_path, 'w') as f:
+        f.write('quadrature x4')
+    floor_path = path.join(COUNTER_PATH, c, COUNT0, FLOOR)
+    with open(floor_path, 'w') as f:
+        f.write(str(0))
+    ceiling_path = path.join(COUNTER_PATH, c, COUNT0, CEILING)
+    with open(ceiling_path, 'w') as f:
+        f.write(str(0xffffffff))
+    enable_path = path.join(COUNTER_PATH, c, COUNT0, ENABLE)
+    with open(enable_path, 'w') as f:
+        f.write('1')
+
+    cnt_path = path.join(COUNTER_PATH, c, COUNT0, COUNT)
+    cnts.append(open(cnt_path, 'r'))
+
+while True:
+    for c in cnts:
+        c.seek(0)
+        val = int(c.read())
+        if val >= 0x80000000:
+            val -= 0x100000000
+        print(val, end=' ')
+    print()
+    sleep(1)
+
+David Lechner (6):
+  bus/ti-pwmss: move TI PWMSS driver from PWM to bus subsystem
+  dt-bindings: counter: new bindings for TI eQEP
+  counter: new TI eQEP driver
+  ARM: dts: am33xx: Add nodes for eQEP
+  ARM: dts: am335x-boneblue: Enable eQEP
+  ARM: dts: am335x-boneblue: Use of am335x-osd335x-common.dtsi
+
+ .../devicetree/bindings/counter/ti-eqep.yaml  |  50 ++
+ MAINTAINERS                                   |   6 +
+ arch/arm/boot/dts/am335x-boneblue.dts         | 146 +++---
+ arch/arm/boot/dts/am33xx-l4.dtsi              |  27 +
+ drivers/bus/Kconfig                           |   9 +
+ drivers/bus/Makefile                          |   1 +
+ drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} |   0
+ drivers/counter/Kconfig                       |  11 +
+ drivers/counter/Makefile                      |   1 +
+ drivers/counter/ti-eqep.c                     | 473 ++++++++++++++++++
+ drivers/pwm/Kconfig                           |   9 -
+ drivers/pwm/Makefile                          |   1 -
+ 12 files changed, 634 insertions(+), 100 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/counter/ti-eqep.yaml
+ rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)
+ create mode 100644 drivers/counter/ti-eqep.c
+
+-- 
+2.17.1
+

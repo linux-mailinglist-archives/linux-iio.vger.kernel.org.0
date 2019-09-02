@@ -2,121 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE79A52FF
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2019 11:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61EAFA54F8
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2019 13:32:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731225AbfIBJk1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Sep 2019 05:40:27 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:50935 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730065AbfIBJk1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Sep 2019 05:40:27 -0400
-Received: by mail-wm1-f67.google.com with SMTP id c10so1875539wmc.0
-        for <linux-iio@vger.kernel.org>; Mon, 02 Sep 2019 02:40:25 -0700 (PDT)
+        id S1730159AbfIBLbh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Sep 2019 07:31:37 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:39646 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730148AbfIBLbh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Sep 2019 07:31:37 -0400
+Received: by mail-wr1-f67.google.com with SMTP id t16so13657006wra.6;
+        Mon, 02 Sep 2019 04:31:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=iifGZMpQV6Q3Nf2FisGpoD7UwukxL/0AVB68SuFmS0Q=;
-        b=bwA9kUL60mjWtPOOWDrB79uuGqR9VnOx5Yr9aCS44l66Uk/PU4luTGcMgX2j+KMwL9
-         8Cic5YpYp5busLyPMqZkUBYjfRGw+exRs5PZJfsvu/rWyc9tN9LOHeMBXvjwJy85mBji
-         VkydsaCO809MVfGAeYcvB18PU0WlY2gNMHxLl7KaolxXWlkrGpxEnhA8wpBcEnBXSKCF
-         k9qWp5VQQ5qpimO8EnZpBEN4wzYxIQKQmBvNUud8RwQObFJYkJdNpVzLrA+8OWpvFKlm
-         MDipgDzjbhnEwJD2nRoH20SuYf7dfmzFNJVPivn3dtvMzhN4dQJjoHJxKkKLgBlbUtSP
-         RkQA==
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QHQshZLqz/FggXxDxmje655X+GnHpK69OGXj5M8uyac=;
+        b=J2C2vVuf8Yu42uu6VihvzqIBWOKdX9cRNuezLnLHWH+hz5IshNb6DjdloPUKAyyrnz
+         E0qDI5VPXyFybyD7XYDG2zATEqAVnB5PvhMDpbg1HXqCNPt3Bm+qQ53b5EcbkV13DgOZ
+         IIJlNmXD7rhooQnbemL4CZ+j1g2UfhDN0Hguvb9XR3fRy7Xok0Kw/xMbPJ4sCav/lxp+
+         rDe4+/B82LSSDPUDTb6fZkWEIORMrPsuqdtazMh8itIzW39A5TPogTejx3wQSGYzDCkZ
+         TJBakOOyajtRY8YvCWfVHymiMUXtoN//qJ166N2GQKKEWK2YSc8N74kHbP2BaAXjieEM
+         0cxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=iifGZMpQV6Q3Nf2FisGpoD7UwukxL/0AVB68SuFmS0Q=;
-        b=sY4Q+0groVkPS+BIyB+gXt3Z3X/zOj1QpbsO4o1e3jaUYs+Cmv6kOWOh8913J0U3ea
-         ty1EBYneahAcTYilz068BQkpSWjzEqrIlNSAQhwpi5v0rG06xJkcjUFYnbljXMFv5wpw
-         TkdkZQFNlsqfCOmgCLo7qrkbcYtR1qq/ftExgkCYlLeRbraSxEGI8F1dDsyd+9/0TRBZ
-         2oyXJey03Ghp7dkYLkhgNVMCUfauX0hLvPnFfESFjQvaAz+nC3+gfucFI9o6Po/LJjJc
-         /0dRyyUOHzBPMOPgD+QnppyKLqMxZDTXFjgzUHUG5g0RD2ZwJ0BYy51m6+OcG68ar882
-         8JSA==
-X-Gm-Message-State: APjAAAVArzHS4dddA3tkeBz/UKY/3leVj78VVfTdq+hHP+vNWrY3J/qu
-        lcOTDPEbCWanRhiWM3h3WuNtTA==
-X-Google-Smtp-Source: APXvYqxSOUGY9E1wZpKgjkViI6t3D6h4EFwO07OwMRVO+Sk6d4PG7Uu11p4XzMynDLxDlAkEP41+QA==
-X-Received: by 2002:a7b:ca50:: with SMTP id m16mr8080701wml.158.1567417225074;
-        Mon, 02 Sep 2019 02:40:25 -0700 (PDT)
-Received: from dell ([95.147.198.93])
-        by smtp.gmail.com with ESMTPSA id c6sm17020244wrb.60.2019.09.02.02.40.23
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 02 Sep 2019 02:40:24 -0700 (PDT)
-Date:   Mon, 2 Sep 2019 10:40:22 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Cc:     gwendal@chromium.org, egranata@chromium.org, kernel@collabora.com,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=QHQshZLqz/FggXxDxmje655X+GnHpK69OGXj5M8uyac=;
+        b=NZkB5x1QK1Fp4aK8cMxpWVg3WVmUbrwbs0ouAZo+0y3khUMVBtJmjbwaZjgGQrGFxe
+         U69NB5RTjUhUW7hOCNjncm2fhpc7ER/4EFYFkslca7zYZ8KYYygk+kXVzus3GbzwD+LA
+         2vqu3wJ6+FAmOisUr9ZAzmhTuPLoNXnsjsh99mr+Y+VLB43waF/MwSCv3g/T2Qh8Mo1c
+         6gltxrnqPqoKdXNTP54yOuvthLJDLqbWQOxECAYPgll0Mz81Fv5cP6uaIaFyBBYCdG4s
+         vGOjFnNQcOU1fplh+rKoQIaB2465eJSH8PoCkxMuRxHCeKg16Q9+K9/a1e0JBam7dRmI
+         bTAA==
+X-Gm-Message-State: APjAAAXygo8NWKaT+t+LZ8po19R9qGj1+GEMzHAoRBdk4ldf8LG7AGvz
+        aXxy+Yn/8fdb9+sZJZ1+RTs=
+X-Google-Smtp-Source: APXvYqy5OtZrAhEwBuIT/RObZWjPgPjdQeCiqTHc8uJ8WK40EM1UB0FD/5qCTKwUNSP6NE/XGd3scg==
+X-Received: by 2002:a5d:4b83:: with SMTP id b3mr35670087wrt.104.1567423894690;
+        Mon, 02 Sep 2019 04:31:34 -0700 (PDT)
+Received: from localhost.localdomain (ip5b4096c3.dynamic.kabel-deutschland.de. [91.64.150.195])
+        by smtp.gmail.com with ESMTPSA id a18sm18621301wrt.18.2019.09.02.04.31.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2019 04:31:34 -0700 (PDT)
+From:   Krzysztof Wilczynski <kw@linux.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Nick Vaccaro <nvaccaro@chromium.org>,
-        linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] counter: cros_ec: Add synchronization sensor
-Message-ID: <20190902094022.GK32232@dell>
-References: <cover.1566563833.git.fabien.lahoudere@collabora.com>
- <d985a8a811996148e8cda78b9fe47bb87b884b56.1566563833.git.fabien.lahoudere@collabora.com>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: light: bh1750: Move static keyword to the front of declaration
+Date:   Mon,  2 Sep 2019 13:31:32 +0200
+Message-Id: <20190902113132.26658-1-kw@linux.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d985a8a811996148e8cda78b9fe47bb87b884b56.1566563833.git.fabien.lahoudere@collabora.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 23 Aug 2019, Fabien Lahoudere wrote:
+Move the static keyword to the front of declaration of
+bh1750_chip_info_tbl, and resolve the following compiler
+warning that can be seen when building with warnings
+enabled (W=1):
 
-> From: Gwendal Grignou <gwendal@chromium.org>
-> 
-> EC returns a counter when there is an event on camera vsync.
-> This patch comes from chromeos kernel 4.4
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> 
-> CROS EC sync sensor was originally designed as an IIO device.
-> Now that the counter subsystem will replace IIO_COUNTER, we
-> have to implement a new way to get sync count.
-> 
-> Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.com>
-> ---
->  Documentation/driver-api/generic-counter.rst  |   3 +
->  MAINTAINERS                                   |   7 +
->  drivers/counter/Kconfig                       |   9 +
->  drivers/counter/Makefile                      |   1 +
->  drivers/counter/counter.c                     |   2 +
->  drivers/counter/cros_ec_sensors_sync.c        | 208 ++++++++++++++++++
->  .../cros_ec_sensors/cros_ec_sensors_core.c    |   1 +
+drivers/iio/light/bh1750.c:64:1: warning:
+  ‘static’ is not at beginning of declaration [-Wold-style-declaration]
 
->  drivers/mfd/cros_ec_dev.c                     |   3 +
+Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
+---
+Related: https://lore.kernel.org/r/20190827233017.GK9987@google.com
 
-I can't see any reason for this change to be squashed into this patch.
+ drivers/iio/light/bh1750.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Please separate it out.
-
->  include/linux/counter.h                       |   1 +
->  9 files changed, 235 insertions(+)
->  create mode 100644 drivers/counter/cros_ec_sensors_sync.c
-
+diff --git a/drivers/iio/light/bh1750.c b/drivers/iio/light/bh1750.c
+index 28347df78cff..460c0013f1a9 100644
+--- a/drivers/iio/light/bh1750.c
++++ b/drivers/iio/light/bh1750.c
+@@ -42,7 +42,7 @@ struct bh1750_data {
+ 	u16 mtreg;
+ };
+ 
+-struct bh1750_chip_info {
++static const struct bh1750_chip_info {
+ 	u16 mtreg_min;
+ 	u16 mtreg_max;
+ 	u16 mtreg_default;
+@@ -59,9 +59,7 @@ struct bh1750_chip_info {
+ 
+ 	u16 int_time_low_mask;
+ 	u16 int_time_high_mask;
+-}
+-
+-static const bh1750_chip_info_tbl[] = {
++} bh1750_chip_info_tbl[] = {
+ 	[BH1710] = { 140, 1022, 300, 400,  250000000, 2, 0x001F, 0x03E0 },
+ 	[BH1721] = { 140, 1020, 300, 400,  250000000, 2, 0x0010, 0x03E0 },
+ 	[BH1750] = { 31,  254,  69,  1740, 57500000,  1, 0x001F, 0x00E0 },
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.22.1
+

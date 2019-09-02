@@ -2,84 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF111A5911
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2019 16:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE32DA5A16
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2019 17:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731183AbfIBORo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Sep 2019 10:17:44 -0400
-Received: from vern.gendns.com ([98.142.107.122]:47558 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726438AbfIBORo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 2 Sep 2019 10:17:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=6TLPgKGO4e+YChj0k7INLip6MXL7BlzYN8RpVTNGmwE=; b=gCzu6eHLvtHmo74UR0XtZFFNvw
-        lt+v8Xw9aZU0MmjUZRkHT6nR6XBjxZ4HH4EkrPuS09uI2dGSx9ibq/Y0ZNnc7YHABNgQ9+3fTlIfZ
-        QTuVHU3lUfSyYZkk22c9kGePnIeLG2pwvQM/H6TsZL30zq28kdCTwYzSinXYn+OkXK1g+tdWHfinH
-        NDcioOH2VtEPOdO5qOPbp3h9EZhVyVvlrCGWSDpC8613bx0r8KjpHPkybIrxA7tkSzFekVPB36MMp
-        KBlMeNBLDRqK0zVl3KvdrcPc3kA1oS6/O8iHMLtsPxyQUNd4AuHJow82+CIxeNnkUo5VF5B2gKwHX
-        jRtkO5PA==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:49090 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <david@lechnology.com>)
-        id 1i4n9J-0003eo-2X; Mon, 02 Sep 2019 10:17:41 -0400
-Subject: Re: [PATCH v3 0/6] counter: new TI eQEP driver
-To:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
+        id S1731551AbfIBPCl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Sep 2019 11:02:41 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:35573 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726382AbfIBPCl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Sep 2019 11:02:41 -0400
+Received: by mail-wm1-f67.google.com with SMTP id n10so4281192wmj.0;
+        Mon, 02 Sep 2019 08:02:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=826HRnOO9gkPFIbB6Az28aCXDDsohCiv0HYoetjg0Tw=;
+        b=YKK1Dc/t6JefTK6vXu4TYoLNrZTKJMv5Zw6IRA0Fal8fSYaLzlMhLkMyz3jB7oh6WD
+         fBg+ljEgDjHzxjRrBxcLDkN+Px+34uFyxdi3HeZbNMHms9QVbRy7QYUtL92aGlUYXL2P
+         ME6JyI3pQoZPJg4djWuZllVc3NEiAnmpHVcAymDFyWk2SUBXR0W0tKcRnsVhahUQUkYA
+         UpOYhXPgbcc0Q4NbFWGGIaF/I0lxaIMS/rM3R6FMdXyaHKwsAlo5jLVvcZ6YrWsMXVE2
+         YyoLprnor68vN4LqQ8PJ+XcxcKs+bOD5FZ8qg04rnjpW0YezQvwoXMm5M0J0cPz/ZQns
+         Be7w==
+X-Gm-Message-State: APjAAAXWL736BNBexBePCa5eNghoOYHUCXt8ZgqYjiCNVhw4l7giDWnN
+        bs5ecBDJNYcmfXL/QnJCDw==
+X-Google-Smtp-Source: APXvYqwsFN2l5tkC+JBs24eIH7Pw0qd/XKAB/LcbG00xDIV0/3XXEc7ZO1aOKZ92BEnOCqOMH/fXTw==
+X-Received: by 2002:a1c:7513:: with SMTP id o19mr35701342wmc.126.1567436559727;
+        Mon, 02 Sep 2019 08:02:39 -0700 (PDT)
+Received: from localhost ([212.187.182.166])
+        by smtp.gmail.com with ESMTPSA id t22sm11681028wmi.11.2019.09.02.08.02.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2019 08:02:39 -0700 (PDT)
+Date:   Mon, 2 Sep 2019 16:02:38 +0100
+From:   Rob Herring <robh@kernel.org>
+To:     David Lechner <david@lechnology.com>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        David Lechner <david@lechnology.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
         William Breathitt Gray <vilhelm.gray@gmail.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 2/6] dt-bindings: counter: new bindings for TI eQEP
+Message-ID: <20190902150238.GA30757@bogus>
 References: <20190901225827.12301-1-david@lechnology.com>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <68ce4c1a-5098-f6b8-e318-1d86d91a3206@lechnology.com>
-Date:   Mon, 2 Sep 2019 09:17:40 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ <20190901225827.12301-3-david@lechnology.com>
 MIME-Version: 1.0
-In-Reply-To: <20190901225827.12301-1-david@lechnology.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190901225827.12301-3-david@lechnology.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/1/19 5:58 PM, David Lechner wrote:
-> This series adds device tree bindings and a new counter driver for the Texas
-> Instruments Enhanced Quadrature Encoder Pulse (eQEP).
+On Sun,  1 Sep 2019 17:58:23 -0500, David Lechner wrote:
+> This documents device tree binding for the Texas Instruments Enhanced
+> Quadrature Encoder Pulse (eQEP) Module found in various TI SoCs.
+> 
+> Signed-off-by: David Lechner <david@lechnology.com>
+> ---
+> 
+> v3 changes:
+> - fixed style issues
+> - fixed generic node name
+> - (was suggested to drop descriptions since there is only one interrupt and one
+>   clock, but I opted to keep them anyway)
+> v2 changes:
+> - convert to .yaml format
+> - rename clock to "sysclkout"
+> 
+>  .../devicetree/bindings/counter/ti-eqep.yaml  | 50 +++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/counter/ti-eqep.yaml
 > 
 
-...
-
-> David Lechner (6):
->    bus/ti-pwmss: move TI PWMSS driver from PWM to bus subsystem
->    dt-bindings: counter: new bindings for TI eQEP
->    counter: new TI eQEP driver
->    ARM: dts: am33xx: Add nodes for eQEP
->    ARM: dts: am335x-boneblue: Enable eQEP
->    ARM: dts: am335x-boneblue: Use of am335x-osd335x-common.dtsi
-> 
-
-In case anyone notices, this series only has 5 patches, not 6. "ARM: dts:
-am335x-boneblue: Use of am335x-osd335x-common.dtsi" is unrelated and was
-submitted separately.
+Reviewed-by: Rob Herring <robh@kernel.org>

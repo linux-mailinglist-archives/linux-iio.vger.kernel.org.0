@@ -2,105 +2,211 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61EAFA54F8
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2019 13:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 170F9A56A0
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2019 14:49:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730159AbfIBLbh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Sep 2019 07:31:37 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:39646 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730148AbfIBLbh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Sep 2019 07:31:37 -0400
-Received: by mail-wr1-f67.google.com with SMTP id t16so13657006wra.6;
-        Mon, 02 Sep 2019 04:31:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=QHQshZLqz/FggXxDxmje655X+GnHpK69OGXj5M8uyac=;
-        b=J2C2vVuf8Yu42uu6VihvzqIBWOKdX9cRNuezLnLHWH+hz5IshNb6DjdloPUKAyyrnz
-         E0qDI5VPXyFybyD7XYDG2zATEqAVnB5PvhMDpbg1HXqCNPt3Bm+qQ53b5EcbkV13DgOZ
-         IIJlNmXD7rhooQnbemL4CZ+j1g2UfhDN0Hguvb9XR3fRy7Xok0Kw/xMbPJ4sCav/lxp+
-         rDe4+/B82LSSDPUDTb6fZkWEIORMrPsuqdtazMh8itIzW39A5TPogTejx3wQSGYzDCkZ
-         TJBakOOyajtRY8YvCWfVHymiMUXtoN//qJ166N2GQKKEWK2YSc8N74kHbP2BaAXjieEM
-         0cxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=QHQshZLqz/FggXxDxmje655X+GnHpK69OGXj5M8uyac=;
-        b=NZkB5x1QK1Fp4aK8cMxpWVg3WVmUbrwbs0ouAZo+0y3khUMVBtJmjbwaZjgGQrGFxe
-         U69NB5RTjUhUW7hOCNjncm2fhpc7ER/4EFYFkslca7zYZ8KYYygk+kXVzus3GbzwD+LA
-         2vqu3wJ6+FAmOisUr9ZAzmhTuPLoNXnsjsh99mr+Y+VLB43waF/MwSCv3g/T2Qh8Mo1c
-         6gltxrnqPqoKdXNTP54yOuvthLJDLqbWQOxECAYPgll0Mz81Fv5cP6uaIaFyBBYCdG4s
-         vGOjFnNQcOU1fplh+rKoQIaB2465eJSH8PoCkxMuRxHCeKg16Q9+K9/a1e0JBam7dRmI
-         bTAA==
-X-Gm-Message-State: APjAAAXygo8NWKaT+t+LZ8po19R9qGj1+GEMzHAoRBdk4ldf8LG7AGvz
-        aXxy+Yn/8fdb9+sZJZ1+RTs=
-X-Google-Smtp-Source: APXvYqy5OtZrAhEwBuIT/RObZWjPgPjdQeCiqTHc8uJ8WK40EM1UB0FD/5qCTKwUNSP6NE/XGd3scg==
-X-Received: by 2002:a5d:4b83:: with SMTP id b3mr35670087wrt.104.1567423894690;
-        Mon, 02 Sep 2019 04:31:34 -0700 (PDT)
-Received: from localhost.localdomain (ip5b4096c3.dynamic.kabel-deutschland.de. [91.64.150.195])
-        by smtp.gmail.com with ESMTPSA id a18sm18621301wrt.18.2019.09.02.04.31.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2019 04:31:34 -0700 (PDT)
-From:   Krzysztof Wilczynski <kw@linux.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        id S1729962AbfIBMsL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Sep 2019 08:48:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55782 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729707AbfIBMsL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 2 Sep 2019 08:48:11 -0400
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 479D422DBF;
+        Mon,  2 Sep 2019 12:48:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567428489;
+        bh=HRPdP6IoZxIKzVyOlsz8h5aGfiCrnDwoIA8rqSjMhRM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=mojGZV5oAnM90ECPfyUnZxLnQg5FAEU7IHZztlBj52IrmhvAD32oB7WbU888c04pr
+         IfiJXxL9wsE3n37P3IKeLmF3FFfFlEXgVQIyZ//aYhp+A45/EO3Ge14QBTptFUrmtD
+         A4l0D+dHtwqJ7+EC+Ao9ho0yiRBDMhlNHMID1BCM=
+Received: by mail-lj1-f177.google.com with SMTP id d5so1768680lja.10;
+        Mon, 02 Sep 2019 05:48:09 -0700 (PDT)
+X-Gm-Message-State: APjAAAWL3sCXszC7z1xTZR2oHPv6uiXSNY7ogL7GJiwP5Mj+dQEt5lMl
+        4xB9ku5kM3HbKHoZ1/6CVLGvI3D8hO0OmBZFZz0=
+X-Google-Smtp-Source: APXvYqwsQ0jKyySStl5IspgIxl6esl8OcqilEKBAJg/dod6mua7Muq88O0wbce7GxRjmTRa8z4MXHmevjQBq3jJ5+j0=
+X-Received: by 2002:a2e:7818:: with SMTP id t24mr15549999ljc.210.1567428487319;
+ Mon, 02 Sep 2019 05:48:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190823145356.6341-1-krzk@kernel.org> <20190823145356.6341-7-krzk@kernel.org>
+ <CAL_JsqKCpKuc=-4UyWFFv_RenKuSJcr9cdSKjbkL8F1ni+VODw@mail.gmail.com>
+In-Reply-To: <CAL_JsqKCpKuc=-4UyWFFv_RenKuSJcr9cdSKjbkL8F1ni+VODw@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Mon, 2 Sep 2019 14:47:55 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPddVJvpGgd1K_W63eho8tu+X_nr+0PYpjBafp+bw=-70w@mail.gmail.com>
+Message-ID: <CAJKOXPddVJvpGgd1K_W63eho8tu+X_nr+0PYpjBafp+bw=-70w@mail.gmail.com>
+Subject: Re: [RFC 7/9] dt-bindings: rtc: s3c: Convert S3C/Exynos RTC bindings
+ to json-schema
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: light: bh1750: Move static keyword to the front of declaration
-Date:   Mon,  2 Sep 2019 13:31:32 +0200
-Message-Id: <20190902113132.26658-1-kw@linux.com>
-X-Mailer: git-send-email 2.23.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        =?UTF-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        devicetree@vger.kernel.org,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
+        <linux-rtc@vger.kernel.org>, notify@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Move the static keyword to the front of declaration of
-bh1750_chip_info_tbl, and resolve the following compiler
-warning that can be seen when building with warnings
-enabled (W=1):
+On Mon, 26 Aug 2019 at 14:06, Rob Herring <robh+dt@kernel.org> wrote:
+>
+> On Fri, Aug 23, 2019 at 9:54 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >
+> > Convert Samsung S3C/Exynos Real Time Clock bindings to DT schema format
+> > using json-schema.
+> >
+> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > ---
+> >  .../devicetree/bindings/rtc/s3c-rtc.txt       | 31 ------
+> >  .../devicetree/bindings/rtc/s3c-rtc.yaml      | 95 +++++++++++++++++++
+> >  2 files changed, 95 insertions(+), 31 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/rtc/s3c-rtc.txt
+> >  create mode 100644 Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
+>
+>
+> > diff --git a/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
+> > new file mode 100644
+> > index 000000000000..44b021812a83
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
+> > @@ -0,0 +1,95 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/rtc/s3c-rtc.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Samsung S3C, S5P and Exynos Real Time Clock controller
+> > +
+> > +maintainers:
+> > +  - Krzysztof Kozlowski <krzk@kernel.org>
+> > +
+> > +# Select also deprecated compatibles (for finding deprecate usage)
+> > +select:
+> > +  properties:
+> > +    compatible:
+> > +      items:
+> > +        - enum:
+> > +            - samsung,s3c2410-rtc
+> > +            - samsung,s3c2416-rtc
+> > +            - samsung,s3c2443-rtc
+> > +            - samsung,s3c6410-rtc
+> > +            # Deprecated, use samsung,s3c6410-rtc
+> > +            - samsung,exynos3250-rtc
+>
+> We've come up with a better way of doing this that doesn't need a
+> custom 'select'. Add a 'oneOf' to compatible and add another entry:
+>
+> - const: samsung,exynos3250-rtc
+>   deprecated: true
+>
+> It's not implemented yet in the tool, but we'll keep the compatible
+> for 'select' and otherwise drop schema marked deprecated.
 
-drivers/iio/light/bh1750.c:64:1: warning:
-  ‘static’ is not at beginning of declaration [-Wold-style-declaration]
+OK
 
-Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
----
-Related: https://lore.kernel.org/r/20190827233017.GK9987@google.com
+>
+> > +  required:
+> > +    - compatible
+> > +
+> > +properties:
+> > +  compatible:
+> > +    items:
+> > +      - enum:
+>
+> You can drop 'items' when there's only 1 entry.
 
- drivers/iio/light/bh1750.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Indeed.
 
-diff --git a/drivers/iio/light/bh1750.c b/drivers/iio/light/bh1750.c
-index 28347df78cff..460c0013f1a9 100644
---- a/drivers/iio/light/bh1750.c
-+++ b/drivers/iio/light/bh1750.c
-@@ -42,7 +42,7 @@ struct bh1750_data {
- 	u16 mtreg;
- };
- 
--struct bh1750_chip_info {
-+static const struct bh1750_chip_info {
- 	u16 mtreg_min;
- 	u16 mtreg_max;
- 	u16 mtreg_default;
-@@ -59,9 +59,7 @@ struct bh1750_chip_info {
- 
- 	u16 int_time_low_mask;
- 	u16 int_time_high_mask;
--}
--
--static const bh1750_chip_info_tbl[] = {
-+} bh1750_chip_info_tbl[] = {
- 	[BH1710] = { 140, 1022, 300, 400,  250000000, 2, 0x001F, 0x03E0 },
- 	[BH1721] = { 140, 1020, 300, 400,  250000000, 2, 0x0010, 0x03E0 },
- 	[BH1750] = { 31,  254,  69,  1740, 57500000,  1, 0x001F, 0x00E0 },
--- 
-2.22.1
+>
+> > +          - samsung,s3c2410-rtc
+> > +          - samsung,s3c2416-rtc
+> > +          - samsung,s3c2443-rtc
+> > +          - samsung,s3c6410-rtc
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  clocks:
+> > +    description:
+> > +      Must contain a list of phandle and clock specifier for the rtc
+> > +      clock and in the case of a s3c6410 compatible controller, also
+> > +      a source clock.
+> > +    minItems: 1
+> > +    maxItems: 2
+> > +
+> > +  clock-names:
+> > +    description:
+> > +      Must contain "rtc" and for a s3c6410 compatible controller,
+> > +      a "rtc_src" sorted in the same order as the clocks property.
+> > +    oneOf:
+> > +      - items:
+> > +          - const: rtc
+> > +      - items:
+> > +          # TODO: This can be in any order matching clocks, how to express it?
+>
+> It shouldn't be in any order. Fix the dts files.
 
+I see, other schemas also require specific ordering.
+
+>
+> > +          - const: rtc
+> > +          - const: rtc_src
+>
+> You should drop all this and add an else clause below.
+
+Yes
+
+>
+> > +
+> > +  interrupts:
+> > +    description:
+> > +      Two interrupt numbers to the cpu should be specified. First
+> > +      interrupt number is the rtc alarm interrupt and second interrupt number
+> > +      is the rtc tick interrupt. The number of cells representing a interrupt
+> > +      depends on the parent interrupt controller.
+> > +    minItems: 2
+> > +    maxItems: 2
+> > +
+> > +allOf:
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> > +              - samsung,s3c6410-rtc
+> > +              - samsung,exynos3250-rtc
+> > +
+> > +    then:
+> > +      properties:
+> > +        clocks:
+> > +          minItems: 2
+> > +          maxItems: 2
+> > +        clock-names:
+> > +          items:
+> > +          - const: rtc
+> > +          - const: rtc_src
+>
+> Should be indented 2 more spaces.
+
+Thanks for feedback.
+
+Best regards,
+Krzysztof

@@ -2,191 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20704A63D2
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2019 10:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44738A64EC
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2019 11:18:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727078AbfICIZR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Sep 2019 04:25:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56394 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726946AbfICIZR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 3 Sep 2019 04:25:17 -0400
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B4ACB23402;
-        Tue,  3 Sep 2019 08:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567499115;
-        bh=f3ZXaegcsrrqhqRDRKGqx4s4cVnRArE7RmypILYd+g8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=wabHV1k5dEyrX/7adpcLxEwW1MB7sdRxtSAl/Q+ixCo+poiVeI7wlb7c8pmEkomba
-         VUBXX9c9bK4EcJ2Rh1xAjjOW6eeil29NeZmenL+Lv7/KjHckb3WHRxEYYillGkJ9G9
-         qLA7PMTnlMqUtaKofcpPZkOnAPIPUWPD0G9OlK5o=
-Received: by mail-qt1-f174.google.com with SMTP id k10so8458253qth.2;
-        Tue, 03 Sep 2019 01:25:15 -0700 (PDT)
-X-Gm-Message-State: APjAAAXXEucNZGmWiG31cCd8kIkK9e5dmFN6bGl74op4stTEi8jdKATy
-        z+vlJ7//HqgK0Y0xgKL4g/H5E7AvPNScXdbolw==
-X-Google-Smtp-Source: APXvYqwIM9DiXxim6rM127j/POM2TKvL5qYklc3Bu+DdP6aV4fnCf6MCR6CZRi7sMcNn4eza859i00dqzSkL7gf1mNo=
-X-Received: by 2002:ac8:28b6:: with SMTP id i51mr8990758qti.143.1567499114797;
- Tue, 03 Sep 2019 01:25:14 -0700 (PDT)
+        id S1726946AbfICJSx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Sep 2019 05:18:53 -0400
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:53806 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726936AbfICJSx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Sep 2019 05:18:53 -0400
+Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8398Fe8010804;
+        Tue, 3 Sep 2019 05:18:14 -0400
+Received: from nam04-sn1-obe.outbound.protection.outlook.com (mail-sn1nam04lp2055.outbound.protection.outlook.com [104.47.44.55])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2uqnh5cqh4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Tue, 03 Sep 2019 05:18:14 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C24mB7ln/01aRT3jSmT/X2a+01AdNa7pR6tGLaRHehr9NJJ5rMfd8lX2Cau9Ooma8rjbMdnoS5v8AHg0dhZM0wp3Th+s/el+evhojJWzsJIJhQ4wLrZGKNBymA8lb0LPcmByXEAOuQZu4I3EzUKsLRvh1ZWMy6sz3RIP6JiACTsmG9731KrXV85n0xcmWAKLvTtvQ9h+tGMIVR0itbSph3Evaq05bvu4G441j5Od+e3Nw2v2VGRaseQrObjq+18us74hv4QXMeUPuYgncFjpXpH6WB40dVebTCRMyPLmtJlTE1hjFzMiJRHGgmDbxeB+Lmpmq+Y6fFB+Cuz0J3L8iw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U4SbAbb/5ac23tfajDupE2sj7N1q54dXurpgP+cOvos=;
+ b=mSQjUflZaT6ALjyVu08PA6MrY6/W7G+0JuIIdDgvpWdQG3ZKQTx7Go0XEcvgibXldyLVMbXJX1RMI4lAB/h7ZV5AO8LCwu2aO1KgqZq+yiP7YdjxQCPFl2nNlqVhgnF6gx7BBf4nWIXiUmRc4k002HHGmytO/r4f6QUZtIDrXxFfTplxVxaRLgm0JKc0bY/gi7tbY9usUdt6cfysgKWzODluuQHSj2bXW7eKy8lzNeD+58PY/m3fNwrUrsENfSdTJYLBPqe6ogEaDsNoPPkjVrPWteXxU9MN9iniafUEZ5WS65hW+wDSCrFoMTZRPAwXVdSbEreG2YYswtl2LEqzCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 137.71.25.55) smtp.rcpttodomain=gmx.de smtp.mailfrom=analog.com;
+ dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U4SbAbb/5ac23tfajDupE2sj7N1q54dXurpgP+cOvos=;
+ b=UoK2bbD6uWNSG9VA96Y3tPFAsfzdr18DokWYZnFwN84BhdDuGhrrEobIZeCDq/R+FggUxsa2uU9MWrLo2TN+1BL+O77AUiswEtEx3/j8e/1R7Q4xvO6gIXow4e/izO2x+zckiJOfQT1ORZfYAhT18hleRBrSogy3k4jVduqSIro=
+Received: from BN3PR03CA0052.namprd03.prod.outlook.com
+ (2a01:111:e400:7a4d::12) by CY4PR03MB3223.namprd03.prod.outlook.com
+ (2603:10b6:910:51::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2220.21; Tue, 3 Sep
+ 2019 09:18:12 +0000
+Received: from BL2NAM02FT056.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::206) by BN3PR03CA0052.outlook.office365.com
+ (2a01:111:e400:7a4d::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2220.19 via Frontend
+ Transport; Tue, 3 Sep 2019 09:18:12 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
+Received: from nwd2mta1.analog.com (137.71.25.55) by
+ BL2NAM02FT056.mail.protection.outlook.com (10.152.77.221) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2220.16
+ via Frontend Transport; Tue, 3 Sep 2019 09:18:12 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x839I7NB003244
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Tue, 3 Sep 2019 02:18:07 -0700
+Received: from linux.ad.analog.com (10.32.226.41) by NWD2HUBCAS7.ad.analog.com
+ (10.64.69.107) with Microsoft SMTP Server id 14.3.408.0; Tue, 3 Sep 2019
+ 05:18:11 -0400
+From:   Stefan Popa <stefan.popa@analog.com>
+To:     <jic23@kernel.org>
+CC:     <Michael.Hennerich@analog.com>, <knaack.h@gmx.de>,
+        <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <stefan.popa@analog.com>
+Subject: [PATCH 1/3] iio: accel: adxl372: Fix/remove limitation for FIFO samples
+Date:   Tue, 3 Sep 2019 12:18:07 +0300
+Message-ID: <1567502287-10199-1-git-send-email-stefan.popa@analog.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-References: <20190823145356.6341-1-krzk@kernel.org> <20190823145356.6341-5-krzk@kernel.org>
- <CAL_JsqJybT41cEqiTriLMywUQj1BtAG_9muJ4=84OkF23y53CA@mail.gmail.com> <CAJKOXPc0SY_8BHMsWLN=1M3VQh41+bdBiH21L4KQPA+iLPYy+A@mail.gmail.com>
-In-Reply-To: <CAJKOXPc0SY_8BHMsWLN=1M3VQh41+bdBiH21L4KQPA+iLPYy+A@mail.gmail.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 3 Sep 2019 09:25:03 +0100
-X-Gmail-Original-Message-ID: <CAL_JsqKdsABWK9Og_f38T9zf3SCFFdhU8WOJ4uJjREantoYvYQ@mail.gmail.com>
-Message-ID: <CAL_JsqKdsABWK9Og_f38T9zf3SCFFdhU8WOJ4uJjREantoYvYQ@mail.gmail.com>
-Subject: Re: [RFC 5/9] dt-bindings: arm: samsung: Convert Exynos PMU bindings
- to json-schema
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        =?UTF-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
-        devicetree@vger.kernel.org,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
-        <linux-rtc@vger.kernel.org>, notify@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(346002)(136003)(39860400002)(376002)(396003)(2980300002)(189003)(199004)(5660300002)(50466002)(51416003)(486006)(126002)(107886003)(478600001)(70586007)(48376002)(4326008)(70206006)(316002)(336012)(44832011)(186003)(47776003)(7696005)(6916009)(50226002)(356004)(6666004)(16586007)(8936002)(2616005)(476003)(8676002)(54906003)(246002)(36756003)(2906002)(106002)(2351001)(305945005)(426003)(26005)(7636002);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR03MB3223;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;MX:1;A:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 2f12e936-502e-4949-bce6-08d7304fa508
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(4709080)(1401327)(4618075)(2017052603328);SRVR:CY4PR03MB3223;
+X-MS-TrafficTypeDiagnostic: CY4PR03MB3223:
+X-Microsoft-Antispam-PRVS: <CY4PR03MB3223C9134F417A2BEC1ABA409DB90@CY4PR03MB3223.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-Forefront-PRVS: 01494FA7F7
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: x9TH+ypzILRiZ4j5vq263OwwmxZ9H4Yg0J0BG4hNNaHyL2riwElyEZhbPKgz5jqKCyHhZHD6KrcJJ8KLW6Y5Xm7E+/M/1WXX8Z0zpTgc5YQB6XRrBsPRLtXAkjJcqMda22Fp082kuQX2KrbSIje1EggMahtuFkQxRnpm9TO+tQGnbSU/D/Ud3MxFOjoIIgqM5P4hxSCe3Q9dhsS1IFOB8TZ+wWtVIGBSIIguvLdK7la+rq7q+CycLCHvcuUeYeuRNyb6T8vOpWuzMXFTgroqyTj4XBe7D3n86DRmJiePPzx0BBtGU4TNewrtNYmFd4C8aBC2sa0VqzAvM0QCrwrR5Ql3EweOaAXMcMnQEikmOvbYCnBRq2jaZi4fqqzypazCSNd0DzAdvTY5F04qFxRSeJ6Uhs94Mks+EcKXHbPdCK8=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2019 09:18:12.4656
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f12e936-502e-4949-bce6-08d7304fa508
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR03MB3223
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-09-03_01:2019-09-03,2019-09-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 suspectscore=1
+ mlxscore=0 adultscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
+ mlxlogscore=772 spamscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1906280000
+ definitions=main-1909030097
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 3, 2019 at 8:58 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> On Mon, 26 Aug 2019 at 13:54, Rob Herring <robh+dt@kernel.org> wrote:
-> >
-> > On Fri, Aug 23, 2019 at 9:54 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > >
-> > > Convert Samsung Exynos Power Management Unit (PMU) bindings to DT schema
-> > > format using json-schema.
-> > >
-> > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > > ---
-> > >  .../devicetree/bindings/arm/samsung/pmu.txt   | 72 --------------
-> > >  .../devicetree/bindings/arm/samsung/pmu.yaml  | 93 +++++++++++++++++++
-> > >  2 files changed, 93 insertions(+), 72 deletions(-)
-> > >  delete mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.txt
-> > >  create mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.yaml
-> >
-> >
-> > > diff --git a/Documentation/devicetree/bindings/arm/samsung/pmu.yaml b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
-> > > new file mode 100644
-> > > index 000000000000..818c6f3488ef
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
-> > > @@ -0,0 +1,93 @@
-> > > +# SPDX-License-Identifier: GPL-2.0
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/arm/samsung/pmu.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Samsung Exynos SoC series Power Management Unit (PMU)
-> > > +
-> > > +maintainers:
-> > > +  - Krzysztof Kozlowski <krzk@kernel.org>
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    items:
-> > > +      - enum:
-> > > +          - samsung,exynos3250-pmu
-> > > +          - samsung,exynos4210-pmu
-> > > +          - samsung,exynos4412-pmu
-> > > +          - samsung,exynos5250-pmu
-> > > +          - samsung,exynos5260-pmu
-> > > +          - samsung,exynos5410-pmu
-> > > +          - samsung,exynos5420-pmu
-> > > +          - samsung,exynos5433-pmu
-> > > +          - samsung,exynos7-pmu
-> > > +      - const: syscon
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  '#clock-cells':
-> > > +    const: 1
-> > > +
-> > > +  clock-names:
-> > > +    description:
-> > > +      list of clock names for particular CLKOUT mux inputs
-> > > +    # TODO: what is the maximum number of elements (mux inputs)?
-> > > +    minItems: 1
-> > > +    maxItems: 32
-> > > +    items:
-> > > +      - enum:
-> >
-> > This isn't correct as you are only defining possible names for the
-> > first item. Drop the '-' (making items a schema instead of a list) and
-> > then it applies to all. However, doing that will cause a meta-schema
-> > error which I need to fix to allow. Or if there's a small set of
-> > possibilities of number of inputs, you can list them under a 'oneOf'
-> > list.
->
-> Mhmm, I cannot test it or I have an error in the schema. if I
-> understand correctly, this would be:
->
->   clock-names:
->     description:
->       List of clock names for particular CLKOUT mux inputs
->     minItems: 1
->     maxItems: 16
->     items:
->       clkout0
->       clkout1
->       clkout2
->       clkout3
->       clkout4
->       clkout5
->       clkout6
->       clkout7
->       clkout8
->       clkout9
->       clkout10
->       clkout11
->       clkout12
->       clkout13
->       clkout14
->       clkout15
->       clkout16
->
-> Now it produces the error "ignoring, error in schema 'items'" but
-> maybe it is expected with current meta-schema?
+Currently, the driver sets the FIFO_SAMPLES register with the number of
+sample sets (maximum of 170 for 3 axis data, 256 for 2-axis and 512 for
+single axis). However, the FIFO_SAMPLES register should store the number
+of samples, regardless of how the FIFO format is configured.
 
-'make dt_binding_check' will give more detailed errors.
+Signed-off-by: Stefan Popa <stefan.popa@analog.com>
+---
+ drivers/iio/accel/adxl372.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-Are the inputs always contiguous 0-N? If so, you want:
+diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
+index 055227cb..adec37b 100644
+--- a/drivers/iio/accel/adxl372.c
++++ b/drivers/iio/accel/adxl372.c
+@@ -805,15 +805,6 @@ static int adxl372_buffer_postenable(struct iio_dev *indio_dev)
+ 	st->fifo_format = adxl372_axis_lookup_table[i].fifo_format;
+ 	st->fifo_set_size = bitmap_weight(indio_dev->active_scan_mask,
+ 					  indio_dev->masklength);
+-	/*
+-	 * The 512 FIFO samples can be allotted in several ways, such as:
+-	 * 170 sample sets of concurrent 3-axis data
+-	 * 256 sample sets of concurrent 2-axis data (user selectable)
+-	 * 512 sample sets of single-axis data
+-	 */
+-	if ((st->watermark * st->fifo_set_size) > ADXL372_FIFO_SIZE)
+-		st->watermark = (ADXL372_FIFO_SIZE  / st->fifo_set_size);
+-
+ 	st->fifo_mode = ADXL372_FIFO_STREAMED;
+ 
+ 	ret = adxl372_configure_fifo(st);
+-- 
+2.7.4
 
-items:
-  - const: clkout0
-  - const: clkout1
-  - const: clkout2
-  ...
-
-If you want to express any number and order of strings is valid, then you need:
-
-items:
-  enum:
-    - clkout0
-    - clkout1
-    - clkout2
-
-Doing that is discouraged for bindings though. Currently, it will
-generate an error from the meta-schema, but we could change that.
-
-Rob

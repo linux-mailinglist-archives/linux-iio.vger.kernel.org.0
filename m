@@ -2,94 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BF38A5D2A
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2019 22:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD02BA606F
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2019 07:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727281AbfIBUlC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Sep 2019 16:41:02 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:40364 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727183AbfIBUlC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Sep 2019 16:41:02 -0400
-Received: by mail-ed1-f66.google.com with SMTP id v38so10720082edm.7;
-        Mon, 02 Sep 2019 13:41:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/6xZYkgl4ocSqmwrHXLN+0O+x2+BOQMBtBz7Y33HFq8=;
-        b=uSLbfQPDAcBsaxTcXTs7bxHorDIpkF8/bQWuFPf8D0/arS6TmVjKnjoXhcg8cRA0f8
-         e84ZQSgf/VANlfdOsVBJHjNr8GTYlAwOIlrNoa7Ujj92GY1jO/3FbCw7H6r08lzC39et
-         3oyU2ZHjbtg3xZqUU2dqC25754xnGeWSAfBMCXNneHrws0JXyEo91fjTU5flrJj0ufnu
-         zCq1RWVtzQni6KAaIuLpxBRIciIEgQ8hfPJkoqP5vjZvZ7wLs07Et5YfVoGz7Gvct34M
-         V6m9Z6jSXV0YmavIrtBfN333cT6KY4HAmNDWp70k7Xqg8FwZkY/OSJOeN8HN3QPuohtv
-         kzkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/6xZYkgl4ocSqmwrHXLN+0O+x2+BOQMBtBz7Y33HFq8=;
-        b=tfOc5znxCvCEpWBZzo68Mpp40Hizav3MV3g8x82d/6HeyDUgP4s7XV7uwJJBXF1Ln3
-         7g99IjQbcjs4m0ODI0OJ5G/UDeOOydMAfPN26BvNI71CK0k+dHMVNfibmiNo/IRkyKUk
-         U/Kco1IxpktlgqDG24HEd6mZbyexJoehRb7DjPUovzACZdwOR2YzLBnI+nsxXCnPiJiJ
-         3aCsUv111qtGFSsPVJPB8L4Jf0Ebsfku9keuzXPfoJOrL2JtzgoYWvcKtvRDIS8n1lqe
-         cykC3oPrLCoxMh2QPHGWG9sHSEOr20VAXZeGA4spIO1K32wYUag55HMFwPwFs8WU/I4k
-         umUg==
-X-Gm-Message-State: APjAAAVaFqKf/NL3X2GvvHPg9EL4RAy454lnf4mFQE4kDyrroPNOx1Hn
-        1K1CmSDew+jdvEp6LpT2g+xgQo+kgn5KeHCJgbQ=
-X-Google-Smtp-Source: APXvYqzkGpl0pu44qDC0uA4IX121wLLKZE0M+hrRSi3CbuBwKmftDNqCzqy4uvMsNkzIcxWoyGa7h9FxzLr5ayiQOhg=
-X-Received: by 2002:aa7:dcc3:: with SMTP id w3mr26706924edu.202.1567456860910;
- Mon, 02 Sep 2019 13:41:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190901105410.23567-1-repk@triplefau.lt> <CAFBinCD96nJBPnyNgWA6CgwE2kZrkXB3-cgbV9aQLB=JtbrN2w@mail.gmail.com>
-In-Reply-To: <CAFBinCD96nJBPnyNgWA6CgwE2kZrkXB3-cgbV9aQLB=JtbrN2w@mail.gmail.com>
-From:   Elie Roudninski <xademax@gmail.com>
-Date:   Mon, 2 Sep 2019 21:40:49 +0100
-Message-ID: <CAJJ5kavS6RU1tK-BqgWD-VmJzPuG114y+pNApYay=+xwCtAwQg@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: meson_saradc: Fix memory allocation order
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     Remi Pommarel <repk@triplefau.lt>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        id S1725895AbfICFSs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Sep 2019 01:18:48 -0400
+Received: from comms.puri.sm ([159.203.221.185]:57946 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725886AbfICFSr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Sep 2019 01:18:47 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 85016DF845;
+        Mon,  2 Sep 2019 22:18:46 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 7NVHnKCLjrdH; Mon,  2 Sep 2019 22:18:45 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: [PATCH] iio: imu: st_lsm6dsx: replace underscore with hyphen in device name
+Date:   Tue,  3 Sep 2019 07:18:02 +0200
+Message-Id: <20190903051802.22716-1-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Sep 1, 2019 at 12:29 PM Martin Blumenstingl
-<martin.blumenstingl@googlemail.com> wrote:
->
-> On Sun, Sep 1, 2019 at 12:45 PM Remi Pommarel <repk@triplefau.lt> wrote:
-> >
-> > meson_saradc's irq handler uses priv->regmap so make sure that it is
-> > allocated before the irq get enabled.
-> >
-> > This also fixes crash when CONFIG_DEBUG_SHIRQ is enabled, as device
-> > managed resources are freed in the inverted order they had been
-> > allocated, priv->regmap was freed before the spurious fake irq that
-> > CONFIG_DEBUG_SHIRQ adds called the handler.
-> >
->
-> Fixes: 3af109131b7eb8 ("iio: adc: meson-saradc: switch from polling to
-> interrupt mode")
-> > Reported-by: Elie Roudninski <xademax@gmail.com>
-> > Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-> Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->
-> thank you for fixing this!
-The patch fixed the kernel panic I had, i can now successfully boot my
-meson-gxl-s905x-libretech-cc boad using patched linux 5.2.11
+With the underscore character in the lsm9ds1_imu device name, we get the
+following error below, so use a dash, just like the other device names do too.
 
-Tested-by: Elie ROUDNINSKI <xademax@gmail.com>
+[    3.961399] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000018
+[    4.010581] Mem abort info:
+[    4.013838]   ESR = 0x96000004
+[    4.023602]   Exception class = DABT (current EL), IL = 32 bits
+[    4.047993]   SET = 0, FnV = 0
+[    4.052690]   EA = 0, S1PTW = 0
+[    4.056015] Data abort info:
+[    4.059020]   ISV = 0, ISS = 0x00000004
+[    4.080106]   CM = 0, WnR = 0
+[    4.085237] user pgtable: 4k pages, 48-bit VAs, pgdp=00000000e4f61000
+[    4.092194] [0000000000000018] pgd=0000000000000000
+[    4.097474] Internal error: Oops: 96000004 [#1] PREEMPT SMP
+[    4.103286] Modules linked in: tcpci st_sensors st_lsm6dsx_i2c(+) tcpm st_lsm6dsx industrialio_triggered_buffer kfifo_buf vcnl4000 roles typec goodix snd_soc_sgtl5000 bq25890_charger snvs_pwrkey imx_sdma virt_dma qoriq_thermal imx2_wdt snd_soc_fsl_sai aes_ce_blk imx_pcm_dma crypto_simd watchdog crct10dif_ce ghash_ce sha2_ce snd_soc_simple_card snd_soc_gtm601 snd_soc_simple_card_utils sha1_ce snd_soc_core snd_pcm_dmaengine snd_pcm snd_timer snd soundcore gpio_vibra usb_f_acm u_serial usb_f_rndis g_multi usb_f_mass_storage u_ether libcomposite ip_tables x_tables ipv6 nf_defrag_ipv6 xhci_plat_hcd xhci_hcd usbcore dwc3 ulpi udc_core usb_common phy_fsl_imx8mq_usb
+[    4.105389] bq25890-charger 0-006b: Capacity for 3784000 is 86%
+[    4.164061] CPU: 1 PID: 344 Comm: systemd-udevd Tainted: G        W         5.3.0-rc2-g24e3d989d49f-dirty #161
+[    4.164063] Hardware name: Purism Librem 5 devkit (DT)
+[    4.164067] pstate: 80000005 (Nzcv daif -PAN -UAO)
+[    4.164082] pc : st_lsm6dsx_i2c_probe+0x18/0x80 [st_lsm6dsx_i2c]
+[    4.164093] lr : i2c_device_probe+0x1f0/0x2b8
+[    4.164094] sp : ffff8000a499f970
+[    4.164097] x29: ffff8000a499f970 x28: 0000000000000000
+[    4.164100] x27: ffff000010b70000 x26: ffff8000a499fd68
+[    4.164104] x25: ffff000010860000 x24: ffff000008a8b038
+[    4.164108] x23: ffff000008a8b038 x22: ffff000008a8b000
+[    4.164111] x21: ffff8000a55b2400 x20: ffff000008a89000
+[    4.164115] x19: ffff8000a55b2400 x18: ffffffffffffffff
+[    4.164118] x17: 0000000000000000 x16: 0000000000000000
+[    4.164121] x15: 0000000000040000 x14: 00000000fffffff0
+[    4.164125] x13: ffff000010b6c898 x12: 0000000000000030
+[    4.164128] x11: 0000000000000000 x10: 0101010101010101
+[    4.260542] x9 : fffffffffffffffc x8 : 0000000000000008
+[    4.266073] x7 : 0000000000000004 x6 : 1e0e1a00f2ade4ef
+[    4.271605] x5 : 6f642d72001a0e1e x4 : 8080808000000000
+[    4.277136] x3 : 0000000000000000 x2 : ffff000008a8a000
+[    4.282667] x1 : 0000000000000000 x0 : ffff8000a55b2400
+[    4.288199] Call trace:
+[    4.290753]  st_lsm6dsx_i2c_probe+0x18/0x80 [st_lsm6dsx_i2c]
+[    4.296648]  i2c_device_probe+0x1f0/0x2b8
+[    4.300825]  really_probe+0x168/0x368
+[    4.304638]  driver_probe_device.part.2+0x10c/0x128
+[    4.309716]  device_driver_attach+0x74/0xa0
+[    4.314071]  __driver_attach+0x84/0x130
+[    4.318065]  bus_for_each_dev+0x68/0xc8
+[    4.322058]  driver_attach+0x20/0x28
+[    4.325780]  bus_add_driver+0xd4/0x1f8
+[    4.329683]  driver_register+0x60/0x110
+[    4.333677]  i2c_register_driver+0x44/0x98
+[    4.337944]  st_lsm6dsx_driver_init+0x1c/0x1000 [st_lsm6dsx_i2c]
+[    4.344200]  do_one_initcall+0x58/0x1a8
+[    4.348195]  do_init_module+0x54/0x1d4
+[    4.352098]  load_module+0x1998/0x1c40
+[    4.356001]  __se_sys_finit_module+0xc0/0xd8
+[    4.360446]  __arm64_sys_finit_module+0x14/0x20
+[    4.365166]  el0_svc_common.constprop.0+0xb0/0x168
+[    4.370154]  el0_svc_handler+0x18/0x20
+[    4.374056]  el0_svc+0x8/0xc
+[    4.377059] Code: d2800003 910003fd a90153f3 aa0003f3 (f9400c34)
+[    4.383406] ---[ end trace 6dfe010c028e3371 ]---
 
-Elie
->
->
-> Martin
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+---
+
+While this patch fixes my (formerly already mentioned) issue, it's
+a question actually: Why does is this underscore character a problem?
+
+thanks,
+
+                        martin
+
+
+
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 5e3cd96b0059..80e42c7dbcbe 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -24,7 +24,7 @@
+ #define ST_LSM6DSR_DEV_NAME	"lsm6dsr"
+ #define ST_LSM6DS3TRC_DEV_NAME	"lsm6ds3tr-c"
+ #define ST_ISM330DHCX_DEV_NAME	"ism330dhcx"
+-#define ST_LSM9DS1_DEV_NAME	"lsm9ds1_imu"
++#define ST_LSM9DS1_DEV_NAME	"lsm9ds1-imu"
+ 
+ enum st_lsm6dsx_hw_id {
+ 	ST_LSM6DS3_ID,
+-- 
+2.20.1
+

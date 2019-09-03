@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54C8CA6B22
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2019 16:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D69AA6BFA
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2019 16:56:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725782AbfICOTT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Sep 2019 10:19:19 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:37308 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727107AbfICOTT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Sep 2019 10:19:19 -0400
-Received: by mail-lj1-f194.google.com with SMTP id t14so16253524lji.4
-        for <linux-iio@vger.kernel.org>; Tue, 03 Sep 2019 07:19:17 -0700 (PDT)
+        id S1727069AbfICO4G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Sep 2019 10:56:06 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:39671 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729691AbfICO4F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Sep 2019 10:56:05 -0400
+Received: by mail-qk1-f195.google.com with SMTP id 4so16211597qki.6
+        for <linux-iio@vger.kernel.org>; Tue, 03 Sep 2019 07:56:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=wIDS3i5V8/hLhvP5KnwHpdHDL8TaBaqhJaWdCST5U40=;
-        b=gj4xaeodJFFHT5hgdBez3W1LIzH9PM8ASeRUmKMnWB8EDglrbEfrUIUdB1f1o4D35k
-         m9ZOQ6yjp4PGS8VSFX+RCPSsEJ8REk6CQy/FUaLyaise2Fxu6c+1UFnzzH+Un6jyx5N/
-         nAacpkkKrd4zc7Bjv2X36dZY2+O/dQeRavQuCjl8zrl2JqN0ccioAuMFX5QECrK/jxmG
-         P+3xzC2cegcHWQ7W2GMdm3EsC5oYd/s61TUVcbpj0jIFZXF3T/BY+dzxXBsiYDXN/02v
-         ABUd39ZHptpgTI8aJy0ZZ8kJq0a5ZtBGh1utlSgxXM5itBcxPoi0xc5J/R9jtwaOJJNf
-         Emew==
+        bh=Q+9Lj6cBBBL3exZ7mZakN+ZO8p9XERfCaQQWM4gueO0=;
+        b=y9oDUNmHg8whqlJ+7lPVYqa7oky/csN8uq+jOFRia0xKQQ4G1071JJDZ87jslD75V8
+         mIWsTBem2t4J7JZZwH3d7tNLNp+RuThBiatMyUzU0idrjO04gADt/gpM930ebct4/gMG
+         5eHXiZaa7SVs1CrTl9DBAVupbglC5mgoQfzJUYWHeVcPqjh+8aeUX/sULEyhijkac859
+         K1x6on+ijmel1yI83Bv0GoGJo8pVui1HReZ+pGGkWZxkxtnzeSCdqYvstGDXgrb/WPRB
+         9nRNbejcu8MWTXKyTGUAl4tR79bI/eHPq9zBejLN7D+5H8+I4uPI5x/KvhkJyBXNx4cl
+         bpTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=wIDS3i5V8/hLhvP5KnwHpdHDL8TaBaqhJaWdCST5U40=;
-        b=fDakvGlM/PbUMwNY3GNNzEHCQ8Mg28TLRZaCsIk7OzctJwftItDgP5MYsvfrBMpKr3
-         GrhVPTwsuY+Tcc1afp9f7dtuItpdJOaB/wg/IdS4bo+9sOrA3Ca2x1Y3ptXPf4on9IOy
-         DZbEhmUH8jqYTyICMYBolj9Sqv57J8XAba/dt8XxcG5y5NeeV+wc95tLiqimjOfh8Jg/
-         FHAvNZbkxroQuDYUBzTewcc4TigA3FA7+3FqB33cLkCWPeu2dGlm15FU31NuZf8oJoJ8
-         gnZyTAYM55RYzHlD6U2epIRyCvte61lKqvRVCOPdkaDPdVX8GT6l+88M3+DOszAhJnH6
-         veSQ==
-X-Gm-Message-State: APjAAAXPiw3GopU7MULt7ESi5sDvhtUnEMY6aZbq+Dzmr1yiU325Tsdm
-        eZmrHrU/yFiWoaBVMoKMWteN5gfGOSJGp0atZvrP8w==
-X-Google-Smtp-Source: APXvYqybe8aYWIe6XGhy9BUyVfKha69BNmPn6GKwI1uifQK+hDdX35H82E3XQCJzoToEeEnmSA4PTOViYPXeM+Kvv/U=
-X-Received: by 2002:a2e:9903:: with SMTP id v3mr20033602lji.37.1567520357192;
- Tue, 03 Sep 2019 07:19:17 -0700 (PDT)
+        bh=Q+9Lj6cBBBL3exZ7mZakN+ZO8p9XERfCaQQWM4gueO0=;
+        b=s3P6ZAzuOskRWLdq2Do2P6++gKrLiIbL7CWAXsqFOjyTcgAzwm/4ZHCw8Ieg3d20ky
+         K2BNpgg4fzd60JZ5yW29/iCwR1c/WytJ6jfsdncihdK/6EpIyfiR1xg/YUTcbMpIx8hE
+         K0k12zFuutm3Yeu/CPPsFSoPTvKxxuh9pJY10Gc/iwSoFzhZVPNOgwq+EGwmkq85UYcq
+         F5TLaUyggNwHSqlbggqjQiDjV1xI9CFbJD+V5zMyXjsi6pFAimazjifBlMy679AVcaL7
+         knnb9O3Gzb46wmBCzFT5yvDeK5HDMd7YoB8RsstuyLjpUmmHO9OXB7c8gEWy2UWLOvtZ
+         oYdA==
+X-Gm-Message-State: APjAAAXUYw6/c6TTgoGIBnYfiF7fxH6m5KkZG8Mvph60xX28vRjAC9SC
+        3EDmstT34bdblPliVED3pQVqLADwnJsHoYKbbOWKQg==
+X-Google-Smtp-Source: APXvYqwWLNljDiHPpLPGCQkfwq/M7dJWIM1aJg9x/uzdSXIxAylKPrpiEM3ePCr/XBvFdLlKe0HGdCpjEQjqmlmxJns=
+X-Received: by 2002:a37:4747:: with SMTP id u68mr34372233qka.42.1567522563779;
+ Tue, 03 Sep 2019 07:56:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190822145233.18222-1-linus.walleij@linaro.org>
- <20190822145233.18222-6-linus.walleij@linaro.org> <20190902093024.GH32232@dell>
-In-Reply-To: <20190902093024.GH32232@dell>
+ <20190822145233.18222-7-linus.walleij@linaro.org> <20190826094643.6d4f5cfa@archlinux>
+In-Reply-To: <20190826094643.6d4f5cfa@archlinux>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 3 Sep 2019 16:19:05 +0200
-Message-ID: <CACRpkdZfzdFrheihacHUreiSAfC3KLtLr0+o+rHYymaXc-EmvQ@mail.gmail.com>
-Subject: Re: [PATCH 5/8 v2] mfd: ab8500: augment DT bindings
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+Date:   Tue, 3 Sep 2019 16:55:52 +0200
+Message-ID: <CACRpkdZuEMGfrhYX=cgFa2PaAhNmT+RQ8eeu42HAQxOM0c=Mkg@mail.gmail.com>
+Subject: Re: [PATCH 6/8 v2] iio: adc: New driver for the AB8500 GPADC
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
@@ -60,35 +60,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Sep 2, 2019 at 11:30 AM Lee Jones <lee.jones@linaro.org> wrote:
-> On Thu, 22 Aug 2019, Linus Walleij wrote:
+On Mon, Aug 26, 2019 at 10:46 AM Jonathan Cameron <jic23@kernel.org> wrote:
+> Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> > +  ab8500_btemp                : io-channels "btemp_ball" and "bat_ctrl" for measuring the
-> > +                        battery voltage
->
-> Voltage?  Not temperature?
+> Note we have standardized the specification of ADC channels since
+> v1.  See Documentation/devicetree/bindings/iio/adc/adc.txt
+> It's fairly similar to what you have though so easy tweak
+> to bindings. I don't think any change in here is needed.
 
-No it is just named like that, super confusing but is in the datasheet and
-the register description.
+I've aligned it in both the patch to the bindings and my device
+tree patch, thanks!
 
-In drivers/hwmon/ab8500.c, function ab8500_voltage_to_temp() you
-can see how it is converted into an actual temperature.
+> Some minor stuff inline otherwise.
+> Fix those up and you can add
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> > +  ab8500_charger      : io-channels "main_charger_v", "main_charger_c", "vbus_v",
-> > +                        "usb_charger_c" for measuring voltage and current of the
-> > +                        different charging supplies
->
-> Are you not a fan of full stops? :)
+Thanks!
 
-Added some!
+> What is your merge plan for these?
 
-> Besides this, looks okay in general:
->
-> For my own reference:
->   Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
-
-Should I record that as just Acked-by: when I resend or do you want
-me to record the infix when resending for clarity?
+I was planning to rebase them for v5.4-rc1 and merge through Arm SoC,
+but since most of it is ADC-related maybe it makes more sense to merge
+the whole thing through IIO? (Except the DTS patch that I will take through
+the ARM SoC tree anyway.)
 
 Yours,
 Linus Walleij

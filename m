@@ -2,233 +2,201 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F119A7219
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2019 20:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1ED2A725A
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2019 20:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730253AbfICSAk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Sep 2019 14:00:40 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:50191 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730227AbfICSAj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Sep 2019 14:00:39 -0400
-Received: by mail-wm1-f66.google.com with SMTP id c10so476360wmc.0;
-        Tue, 03 Sep 2019 11:00:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=34Xcq7thsxhEYgF6NhsqQGQ1Vrog+b37R3Zc1f/8Qhk=;
-        b=X3bWWPO+u3QPOqwAM+hjVlgL3YQRjgWTB78NeB/Ssnw6T6LduJ6pVVdqJ0GH1evOVX
-         l4qsTP/voqKLJbDQBPcOJFyIsIfhDDSeRVheMOyfAC5cOSuN31jTqbrDMyQeFxfv6st1
-         rnPPw0p8on5usSMQb8o8H1bRj6n3QmzSfVg7zz/UiztaPOh7CPc/c9n85QXqmIMsuJPV
-         pFVHuB2QMtaVE+U/Igvk41fJN9E1tJ5d4+dFJfTf6f9hLAf5rH4PUv0RIF2VGuPuO89F
-         uTKZ7167peLawMt3d5H0o+nhi9OsxNFulKDPe+R5nYhLjXf70WuBlFys7uymh8eYonC2
-         4jxg==
-X-Gm-Message-State: APjAAAWviQ3doY3Ye/vfLA1YdErYFwcQGTbAc8outSKxdKEV4SfiiGyN
-        v9XKS2mdZ5cYwHJwwOLFzA==
-X-Google-Smtp-Source: APXvYqw7VYPZePKNY1HbeRCZaXNu5r0VZkMO0MvHuCpUl6v9gVhDq6OOhA5CRy1D32J8fvPktkIHbg==
-X-Received: by 2002:a1c:2546:: with SMTP id l67mr730944wml.10.1567533636754;
-        Tue, 03 Sep 2019 11:00:36 -0700 (PDT)
-Received: from localhost ([176.12.107.132])
-        by smtp.gmail.com with ESMTPSA id i73sm515711wmg.33.2019.09.03.11.00.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2019 11:00:36 -0700 (PDT)
-Date:   Tue, 3 Sep 2019 19:00:34 +0100
-From:   Rob Herring <robh@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mboumba Cedric Madianga <cedric.madianga@gmail.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 5/7 v3] mfd: ab8500: augment DT bindings
-Message-ID: <20190903180034.GA20595@bogus>
-References: <20190903150612.12246-1-linus.walleij@linaro.org>
+        id S1729499AbfICSNg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Sep 2019 14:13:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42240 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728113AbfICSNg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Sep 2019 14:13:36 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EA06822D6D;
+        Tue,  3 Sep 2019 18:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567534415;
+        bh=gdp5nfVn2oePPyYBqBBwHEYwyqchiRuWWJXoAR0MnhU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=q9KwHX6pOyHlEtpst8uiDZ/AOSUCW2DYvo1Ytp2LpYg0NqW05V1wDUWzJLrb+D71n
+         wobZ4vV01SH1Rws8kMPt7q0fO7hlsJfzX6VY6Skuidap5W1lrFXSbiM5203Aaxev/M
+         FM8yohsdJN3CLnbDvG3f9MKs5pkq9jKkUMhLg94w=
+Date:   Tue, 3 Sep 2019 19:13:30 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     Jonathan Cameron <jonathan.cameron@huawei.com>,
+        lorenzo.bianconi83@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: replace underscore with hyphen in
+ device name
+Message-ID: <20190903191330.609ca6b0@archlinux>
+In-Reply-To: <75fde41c-5ae2-af96-c712-ab5009aa8214@puri.sm>
+References: <20190903051802.22716-1-martin.kepplinger@puri.sm>
+        <20190903134303.000008be@huawei.com>
+        <75fde41c-5ae2-af96-c712-ab5009aa8214@puri.sm>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190903150612.12246-1-linus.walleij@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 03, 2019 at 05:06:12PM +0200, Linus Walleij wrote:
-> As we migrate the AB8500 GPADC driver to use IIO, we need to augment
-> the bindings to account for defining the ADC channels in the device
-> tree.
+On Tue, 3 Sep 2019 14:51:56 +0200
+Martin Kepplinger <martin.kepplinger@puri.sm> wrote:
+
+> On 03.09.19 14:43, Jonathan Cameron wrote:
+> > +CC Greg as fix for a patch in my outstanding pull request.
+> > 
+> > On Tue, 3 Sep 2019 07:18:02 +0200
+> > Martin Kepplinger <martin.kepplinger@puri.sm> wrote:
+> >   
+> >> With the underscore character in the lsm9ds1_imu device name, we get the
+> >> following error below, so use a dash, just like the other device names do too.
+> >>
+> >> [    3.961399] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000018
+> >> [    4.010581] Mem abort info:
+> >> [    4.013838]   ESR = 0x96000004
+> >> [    4.023602]   Exception class = DABT (current EL), IL = 32 bits
+> >> [    4.047993]   SET = 0, FnV = 0
+> >> [    4.052690]   EA = 0, S1PTW = 0
+> >> [    4.056015] Data abort info:
+> >> [    4.059020]   ISV = 0, ISS = 0x00000004
+> >> [    4.080106]   CM = 0, WnR = 0
+> >> [    4.085237] user pgtable: 4k pages, 48-bit VAs, pgdp=00000000e4f61000
+> >> [    4.092194] [0000000000000018] pgd=0000000000000000
+> >> [    4.097474] Internal error: Oops: 96000004 [#1] PREEMPT SMP
+> >> [    4.103286] Modules linked in: tcpci st_sensors st_lsm6dsx_i2c(+) tcpm st_lsm6dsx industrialio_triggered_buffer kfifo_buf vcnl4000 roles typec goodix snd_soc_sgtl5000 bq25890_charger snvs_pwrkey imx_sdma virt_dma qoriq_thermal imx2_wdt snd_soc_fsl_sai aes_ce_blk imx_pcm_dma crypto_simd watchdog crct10dif_ce ghash_ce sha2_ce snd_soc_simple_card snd_soc_gtm601 snd_soc_simple_card_utils sha1_ce snd_soc_core snd_pcm_dmaengine snd_pcm snd_timer snd soundcore gpio_vibra usb_f_acm u_serial usb_f_rndis g_multi usb_f_mass_storage u_ether libcomposite ip_tables x_tables ipv6 nf_defrag_ipv6 xhci_plat_hcd xhci_hcd usbcore dwc3 ulpi udc_core usb_common phy_fsl_imx8mq_usb
+> >> [    4.105389] bq25890-charger 0-006b: Capacity for 3784000 is 86%
+> >> [    4.164061] CPU: 1 PID: 344 Comm: systemd-udevd Tainted: G        W         5.3.0-rc2-g24e3d989d49f-dirty #161
+> >> [    4.164063] Hardware name: Purism Librem 5 devkit (DT)
+> >> [    4.164067] pstate: 80000005 (Nzcv daif -PAN -UAO)
+> >> [    4.164082] pc : st_lsm6dsx_i2c_probe+0x18/0x80 [st_lsm6dsx_i2c]
+> >> [    4.164093] lr : i2c_device_probe+0x1f0/0x2b8
+> >> [    4.164094] sp : ffff8000a499f970
+> >> [    4.164097] x29: ffff8000a499f970 x28: 0000000000000000
+> >> [    4.164100] x27: ffff000010b70000 x26: ffff8000a499fd68
+> >> [    4.164104] x25: ffff000010860000 x24: ffff000008a8b038
+> >> [    4.164108] x23: ffff000008a8b038 x22: ffff000008a8b000
+> >> [    4.164111] x21: ffff8000a55b2400 x20: ffff000008a89000
+> >> [    4.164115] x19: ffff8000a55b2400 x18: ffffffffffffffff
+> >> [    4.164118] x17: 0000000000000000 x16: 0000000000000000
+> >> [    4.164121] x15: 0000000000040000 x14: 00000000fffffff0
+> >> [    4.164125] x13: ffff000010b6c898 x12: 0000000000000030
+> >> [    4.164128] x11: 0000000000000000 x10: 0101010101010101
+> >> [    4.260542] x9 : fffffffffffffffc x8 : 0000000000000008
+> >> [    4.266073] x7 : 0000000000000004 x6 : 1e0e1a00f2ade4ef
+> >> [    4.271605] x5 : 6f642d72001a0e1e x4 : 8080808000000000
+> >> [    4.277136] x3 : 0000000000000000 x2 : ffff000008a8a000
+> >> [    4.282667] x1 : 0000000000000000 x0 : ffff8000a55b2400
+> >> [    4.288199] Call trace:
+> >> [    4.290753]  st_lsm6dsx_i2c_probe+0x18/0x80 [st_lsm6dsx_i2c]
+> >> [    4.296648]  i2c_device_probe+0x1f0/0x2b8
+> >> [    4.300825]  really_probe+0x168/0x368
+> >> [    4.304638]  driver_probe_device.part.2+0x10c/0x128
+> >> [    4.309716]  device_driver_attach+0x74/0xa0
+> >> [    4.314071]  __driver_attach+0x84/0x130
+> >> [    4.318065]  bus_for_each_dev+0x68/0xc8
+> >> [    4.322058]  driver_attach+0x20/0x28
+> >> [    4.325780]  bus_add_driver+0xd4/0x1f8
+> >> [    4.329683]  driver_register+0x60/0x110
+> >> [    4.333677]  i2c_register_driver+0x44/0x98
+> >> [    4.337944]  st_lsm6dsx_driver_init+0x1c/0x1000 [st_lsm6dsx_i2c]
+> >> [    4.344200]  do_one_initcall+0x58/0x1a8
+> >> [    4.348195]  do_init_module+0x54/0x1d4
+> >> [    4.352098]  load_module+0x1998/0x1c40
+> >> [    4.356001]  __se_sys_finit_module+0xc0/0xd8
+> >> [    4.360446]  __arm64_sys_finit_module+0x14/0x20
+> >> [    4.365166]  el0_svc_common.constprop.0+0xb0/0x168
+> >> [    4.370154]  el0_svc_handler+0x18/0x20
+> >> [    4.374056]  el0_svc+0x8/0xc
+> >> [    4.377059] Code: d2800003 910003fd a90153f3 aa0003f3 (f9400c34)
+> >> [    4.383406] ---[ end trace 6dfe010c028e3371 ]---
+> >>  
+> >   
+> >> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>  
+> > Fixes: a106864fd667 ("iio: imu: st_lsm6dsx: add support for accel/gyro unit of lsm9ds1")
+> > 
+> > Thanks Martin.  This one is entirely my fault for messing up tweaking
+> > that naming.  I should have bounced the patch back for another round
+> > rather than thinking "it's trivial, what could possibly go wrong!"  
 > 
-> Cc: devicetree@vger.kernel.org
-> Acked-by: Lee Jones <lee.jones@linaro.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> ChangeLog v2->v3:
-> - Change "adc-channel@" to "channel@" as per preferred notation.
-> - Add some full stops to the end of sentences.
-> - Reference the new ADC-specific documentation for channel specifier
->   etc.
-> - Collect Lee's ACK.
-> ChangeLog v1->v2:
-> - Rebased on v5.3-rc5
+> I wouldn't have thought but even your trivial change would probably have
+> deserved to be a separate commit. That would've saved time.
+True on this occaison, but the converse is that it is common for minor
+tweaks from last minute reviews to be rolled on applying in the interests of
+keeping the history clean.
 
-Must have missed the DT list...
+Just to top that, given I needed to rebase that tree anyway to fix
+a missing sign off I've rolled your patch in a fixup for the original
+patch. So as far as the final history is concerned the issue never
+happened.
 
-> ---
->  .../devicetree/bindings/mfd/ab8500.txt        | 119 ++++++++++++++++++
->  1 file changed, 119 insertions(+)
+Fingers crossed I haven't messed anything else up!
+
+Thanks,
+
+Jonathan
+
 > 
-> diff --git a/Documentation/devicetree/bindings/mfd/ab8500.txt b/Documentation/devicetree/bindings/mfd/ab8500.txt
-> index cd9e90c5d171..ff517e5d7ee0 100644
-> --- a/Documentation/devicetree/bindings/mfd/ab8500.txt
-> +++ b/Documentation/devicetree/bindings/mfd/ab8500.txt
-> @@ -69,6 +69,18 @@ Required child device properties:
->  - compatible             : "stericsson,ab8500-[bm|btemp|charger|fg|gpadc|gpio|ponkey|
->                                                 pwm|regulator|rtc|sysctrl|usb]";
->  
-> +  A few child devices require ADC channels from the GPADC node. Those follow the
-> +  standard bindings from iio/iio-bindings.txt and iio/adc/adc.txt
-> +
-> +  abx500-temp		 : io-channels "aux1" and "aux2" for measuring external
-> +			   temperatures.
-> +  ab8500_fg		 : io-channel "main_bat_v" for measuring main battery voltage,
-> +  ab8500_btemp		 : io-channels "btemp_ball" and "bat_ctrl" for measuring the
-> +			   battery voltage.
-> +  ab8500_charger	 : io-channels "main_charger_v", "main_charger_c", "vbus_v",
-> +			   "usb_charger_c" for measuring voltage and current of the
-> +			   different charging supplies.
-
-s/_/-/ for node names.
-
-> +
->  Optional child device properties:
->  - interrupts             : contains the device IRQ(s) using the 2-cell format (see above)
->  - interrupt-names        : contains names of IRQ resource in the order in which they were
-> @@ -102,8 +114,115 @@ ab8500 {
->                                39 0x4>;
->                  interrupt-names = "HW_CONV_END", "SW_CONV_END";
->                  vddadc-supply = <&ab8500_ldo_tvout_reg>;
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		#io-channel-cells = <1>;
-> +
-> +		/* GPADC channels */
-> +		bat_ctrl: channel@01 {
-
-Drop leading 0s. dtc should give you warnings for this.
-
-> +			reg = <0x01>;
-> +		};
-
-I guess these nodes aren't new, but why do you need them other than 
-defining how many ADC channels.
-
-> +		btemp_ball: channel@02 {
-> +			reg = <0x02>;
-> +		};
-> +		main_charger_v: channel@03 {
-> +			reg = <0x03>;
-> +		};
-> +		acc_detect1: channel@04 {
-> +			reg = <0x04>;
-> +		};
-> +		acc_detect2: channel@05 {
-> +			reg = <0x05>;
-> +		};
-> +		adc_aux1: channel@06 {
-> +			reg = <0x06>;
-> +		};
-> +		adc_aux2: channel@07 {
-> +			reg = <0x07>;
-> +		};
-> +		main_batt_v: channel@08 {
-> +			reg = <0x08>;
-> +		};
-> +		vbus_v: channel@09 {
-> +			reg = <0x09>;
-> +		};
-> +		main_charger_c: channel@0a {
-> +			reg = <0x0a>;
-> +		};
-> +		usb_charger_c: channel@0b {
-> +			reg = <0x0b>;
-> +		};
-> +		bk_bat_v: channel@0c {
-> +			reg = <0x0c>;
-> +		};
-> +		die_temp: channel@0d {
-> +			reg = <0x0d>;
-> +		};
-> +		usb_id: channel@0e {
-> +			reg = <0x0e>;
-> +		};
-> +		xtal_temp: channel@12 {
-> +			reg = <0x12>;
-> +		};
-> +		vbat_true_meas: channel@13 {
-> +			reg = <0x13>;
-> +		};
-> +		bat_ctrl_and_ibat: channel@1c {
-> +			reg = <0x1c>;
-> +		};
-> +		vbat_meas_and_ibat: channel@1d {
-> +			reg = <0x1d>;
-> +		};
-> +		vbat_true_meas_and_ibat: channel@1e {
-> +			reg = <0x1e>;
-> +		};
-> +		bat_temp_and_ibat: channel@1f {
-> +			reg = <0x1f>;
-> +		};
->          };
->  
-> +	ab8500_temp {
-> +		compatible = "stericsson,abx500-temp";
-> +		io-channels = <&gpadc 0x06>,
-> +			      <&gpadc 0x07>;
-> +		io-channel-name = "aux1", "aux2";
-> +	};
-> +
-> +	ab8500_battery: ab8500_battery {
-> +		stericsson,battery-type = "LIPO";
-> +		thermistor-on-batctrl;
-> +	};
-> +
-> +	ab8500_fg {
-> +		compatible = "stericsson,ab8500-fg";
-> +		battery	   = <&ab8500_battery>;
-> +		io-channels = <&gpadc 0x08>;
-> +		io-channel-name = "main_bat_v";
-> +	};
-> +
-> +	ab8500_btemp {
-> +		compatible = "stericsson,ab8500-btemp";
-> +		battery	   = <&ab8500_battery>;
-> +		io-channels = <&gpadc 0x02>,
-> +			      <&gpadc 0x01>;
-> +		io-channel-name = "btemp_ball",
-> +				"bat_ctrl";
-> +	};
-> +
-> +	ab8500_charger {
-> +		compatible	= "stericsson,ab8500-charger";
-> +		battery		= <&ab8500_battery>;
-> +		vddadc-supply	= <&ab8500_ldo_tvout_reg>;
-> +		io-channels = <&gpadc 0x03>,
-> +			      <&gpadc 0x0a>,
-> +			      <&gpadc 0x09>,
-> +			      <&gpadc 0x0b>;
-> +		io-channel-name = "main_charger_v",
-> +				"main_charger_c",
-> +				"vbus_v",
-> +				"usb_charger_c";
-> +	};
-> +
->          ab8500-usb {
->                  compatible = "stericsson,ab8500-usb";
->                  interrupts = < 90 0x4
-> -- 
-> 2.21.0
+> but np. worse things have happened. I'm glad to have it fixed. thanks
+> for the quick response.
 > 
+>                        martin
+> 
+> > 
+> > On basis Greg may prefer to pick this one directly:
+> > 
+> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Convenient lore.kernel.org link.
+> > 
+> > https://lore.kernel.org/linux-iio/20190903051802.22716-1-martin.kepplinger@puri.sm/T/#u
+> > 
+> > 
+> > If not I'll pick it up for first set of fixes post rc1.
+> > 
+> > As for the question below, I've not taken a look yet and certainly seems
+> > an odd result!
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> > 
+> >   
+> >> ---
+> >>
+> >> While this patch fixes my (formerly already mentioned) issue, it's
+> >> a question actually: Why does is this underscore character a problem?
+> >>
+> >> thanks,
+> >>
+> >>                         martin
+> >>
+> >>
+> >>
+> >>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> >> index 5e3cd96b0059..80e42c7dbcbe 100644
+> >> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> >> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> >> @@ -24,7 +24,7 @@
+> >>  #define ST_LSM6DSR_DEV_NAME	"lsm6dsr"
+> >>  #define ST_LSM6DS3TRC_DEV_NAME	"lsm6ds3tr-c"
+> >>  #define ST_ISM330DHCX_DEV_NAME	"ism330dhcx"
+> >> -#define ST_LSM9DS1_DEV_NAME	"lsm9ds1_imu"
+> >> +#define ST_LSM9DS1_DEV_NAME	"lsm9ds1-imu"
+> >>  
+> >>  enum st_lsm6dsx_hw_id {
+> >>  	ST_LSM6DS3_ID,  
+> > 
+> >   
+> 
+

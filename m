@@ -2,132 +2,222 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D2EA64FD
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2019 11:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAB4EA66FB
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2019 13:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728129AbfICJTp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Sep 2019 05:19:45 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:16682 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726452AbfICJTp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Sep 2019 05:19:45 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8398BLd001712;
-        Tue, 3 Sep 2019 05:19:20 -0400
-Received: from nam03-dm3-obe.outbound.protection.outlook.com (mail-dm3nam03lp2055.outbound.protection.outlook.com [104.47.41.55])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2uqjracjjj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Tue, 03 Sep 2019 05:19:20 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jwjNTCSt33aSC2fqAVCMO96h1oD5PUpJFFprofFdkmtgVKlnUqBJdxhYNiZps72I+J6/UsHObgi1oJACOK6XFhKLdJfZf1PRVX/h/2ZGUj4pzXE3eN8lcugUMFm8wr76vnCdqs+FnCZpA6p7gjpq13n558J0z7ByPLOi7ejgLS+o/8VMSPQJFfWd1CN4gVvtmpRFgdR9MxkuZPuzkfZN8EKGWOXCutFLT4EHqI3b2o3pLvZcdtzhier9h43xrJZlpr9PhHcnXy76lkSy60Flx//di++ksfgJscJRRGQyIXq2V/TmjloK+/agJPZ9e7P3GSf4+By16l7OCNvrm6uVOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dBxbXDIOuQXSkj/V107YId0xpDme+WSzPVM0VbmN3TA=;
- b=Va7nIOanZxixUaXr2xO8y5NwCsZ32s8nt0QenYBFFVxZjITyfDyEHBXSmI5lBD6XfuN/x4BEUOSyn4E93//5bZwmYoDSkOgpPPIk1UBuuRcS29wvBwM6hZYhl4ktNjfpRae2fDO5vtpHTvsCVG3tM1JVtbUo5I8RhixmgeItEBnVau8oItcigHsqOqOglmTKR2BNGjGL4t+UCS8ZmcCksh98fp+Mpzcmaljd+1f+pEk7U3WXVNT2Tp75G5pPZvACv7WI8aCxQjsqZfiwLu9O82MZg8NGF6WvwkkGkujE1liVAwCW4VBwni+1NCbGzD6ghNzFkZNrjkYZ5//qm/N7nA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.71.25.55) smtp.rcpttodomain=gmx.de smtp.mailfrom=analog.com;
- dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dBxbXDIOuQXSkj/V107YId0xpDme+WSzPVM0VbmN3TA=;
- b=lBWR0cDZv2y7/sPWL9ivsmrhtIguWPqWHfKYb42li6LNr2Z5Q4cxfvLRCxKGx0nG+lHVy6ts8D5NsJpGSxoP6CVpJ+r3XiHEFxUnrWa1kdqn7q38/fVqd9PjM6epdLH42HTEUp+5EKZwo+NdIFdvQLhFPPDFOd6wJfF3IWuqc6k=
-Received: from CY4PR03CA0105.namprd03.prod.outlook.com (2603:10b6:910:4d::46)
- by MWHPR03MB3040.namprd03.prod.outlook.com (2603:10b6:300:11c::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2220.19; Tue, 3 Sep
- 2019 09:19:17 +0000
-Received: from SN1NAM02FT043.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e44::207) by CY4PR03CA0105.outlook.office365.com
- (2603:10b6:910:4d::46) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2220.19 via Frontend
- Transport; Tue, 3 Sep 2019 09:19:17 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- SN1NAM02FT043.mail.protection.outlook.com (10.152.72.184) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2220.16
- via Frontend Transport; Tue, 3 Sep 2019 09:19:16 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x839JBd4003500
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Tue, 3 Sep 2019 02:19:11 -0700
-Received: from linux.ad.analog.com (10.32.226.41) by NWD2HUBCAS7.ad.analog.com
- (10.64.69.107) with Microsoft SMTP Server id 14.3.408.0; Tue, 3 Sep 2019
- 05:19:15 -0400
-From:   Stefan Popa <stefan.popa@analog.com>
-To:     <jic23@kernel.org>
-CC:     <Michael.Hennerich@analog.com>, <knaack.h@gmx.de>,
-        <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <stefan.popa@analog.com>
-Subject: [PATCH 3/3] iio: accel: adxl372: Make sure interrupts are disabled
-Date:   Tue, 3 Sep 2019 12:19:11 +0300
-Message-ID: <1567502351-10429-1-git-send-email-stefan.popa@analog.com>
-X-Mailer: git-send-email 2.7.4
+        id S1728538AbfICLDb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Sep 2019 07:03:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50732 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727077AbfICLDb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Sep 2019 07:03:31 -0400
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3C3B323431;
+        Tue,  3 Sep 2019 11:03:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567508609;
+        bh=dSw60VTrT8ZizL2EKH0X+I5o/zpqz+2te5KeeEekHbI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=uzTd6T4U+Tkd4n8KJZfUZ9olVCK+fqZXolNXxUwUJrBUsir3ogtElmBagVAL/4uYZ
+         F+78m8TgdsRpaQrVlJ1p8t97yLZ/YqboZ6I8dOjTUL309wm6v7TlnTdmrWHoSTMQx5
+         wHd/On3QCQvzFpIIPLu+hqpW/AQ6m0/EiPPoBwr8=
+Received: by mail-lj1-f180.google.com with SMTP id e17so4563943ljf.13;
+        Tue, 03 Sep 2019 04:03:29 -0700 (PDT)
+X-Gm-Message-State: APjAAAWRikgdLAcFYwGBDCHgwZZ7AZyhxQKgZEcXFXv9afwOz2Iwl1HG
+        7HcSu3//Y7W0odc5qzKJRGvrEjgU4blrxG7AgLI=
+X-Google-Smtp-Source: APXvYqyxHRs9YFFhl8+XZLTud4OWgRTCDnadBxI1NInauI7nndzlvmqFXuAOtRIDnpazy3S3n5w09bq4y/zI/IQu5B8=
+X-Received: by 2002:a2e:9b13:: with SMTP id u19mr19855964lji.40.1567508607223;
+ Tue, 03 Sep 2019 04:03:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(376002)(39860400002)(136003)(346002)(396003)(2980300002)(199004)(189003)(476003)(2616005)(126002)(7636002)(5660300002)(54906003)(486006)(426003)(6916009)(356004)(6666004)(47776003)(107886003)(106002)(44832011)(36756003)(50226002)(316002)(305945005)(186003)(16586007)(70206006)(70586007)(4326008)(8676002)(48376002)(8936002)(4744005)(51416003)(246002)(7696005)(50466002)(26005)(478600001)(336012)(2906002)(2351001);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR03MB3040;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e8c5e0a5-2d60-436c-c05a-08d7304fcb6f
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(4709080)(1401327)(4618075)(2017052603328);SRVR:MWHPR03MB3040;
-X-MS-TrafficTypeDiagnostic: MWHPR03MB3040:
-X-Microsoft-Antispam-PRVS: <MWHPR03MB30404310EB41E8C94BAD021F9DB90@MWHPR03MB3040.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
-X-Forefront-PRVS: 01494FA7F7
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: hqbR+Ld0FiLmVEqOnqs03e/QE8y936wpLLikWwrnijYZZyExkOSx2LqFI3uaJ3FoIT4lpBlpto+vHVfM7YEdzcMJ0ZMssEP15U3NPLd2OwC5NVPhAn25Oh/tDXhBTj2lIep3dWk8F5ZVWAKqLPeIIFh5DikMKQHCKZViP2WkPAb/TsnsgsvClffqesYhJ8h2jSo17W/SB+J/1qeXh2cX1w4zOLGbctyaJDQXMx1udZtBvfKIJwxeHKznwBb2lfAXJsVcf67g6CVgti6ljx7ZD6uSZhYU8c1QiBnXK14Zp16hVAQFH0crVl2na1VYfyVgKSWAzCSjykpHl5nEv59gssLqCPGwTvsFRZYsEPq+zYpHUp773TdRFbYuQ1tNB/qV0oYLJHaf7TT/wdTT5pCCzLkYZT6WmPY1K+ayDuZZKJQ=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2019 09:19:16.6429
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e8c5e0a5-2d60-436c-c05a-08d7304fcb6f
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR03MB3040
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
- definitions=2019-09-03_01:2019-09-03,2019-09-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=651 spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 adultscore=0 mlxscore=0 suspectscore=1
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1906280000 definitions=main-1909030097
+References: <20190823145356.6341-1-krzk@kernel.org> <20190823145356.6341-5-krzk@kernel.org>
+ <CAL_JsqJybT41cEqiTriLMywUQj1BtAG_9muJ4=84OkF23y53CA@mail.gmail.com>
+ <CAJKOXPc0SY_8BHMsWLN=1M3VQh41+bdBiH21L4KQPA+iLPYy+A@mail.gmail.com> <CAL_JsqKdsABWK9Og_f38T9zf3SCFFdhU8WOJ4uJjREantoYvYQ@mail.gmail.com>
+In-Reply-To: <CAL_JsqKdsABWK9Og_f38T9zf3SCFFdhU8WOJ4uJjREantoYvYQ@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Tue, 3 Sep 2019 13:03:15 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPfnvu=c5f6AcOSiQ_9E-C2fMf9qbEpy1Tr3QvH8LgAtpQ@mail.gmail.com>
+Message-ID: <CAJKOXPfnvu=c5f6AcOSiQ_9E-C2fMf9qbEpy1Tr3QvH8LgAtpQ@mail.gmail.com>
+Subject: Re: [RFC 5/9] dt-bindings: arm: samsung: Convert Exynos PMU bindings
+ to json-schema
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        =?UTF-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        devicetree@vger.kernel.org,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
+        <linux-rtc@vger.kernel.org>, notify@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch disables the adxl372 interrupts at setup. The interrupts
-should be enabled together with the iio buffer. Not doing this, might
-cause an unwanted interrupt to trigger without being able to properly
-clear it.
+On Tue, 3 Sep 2019 at 10:25, Rob Herring <robh+dt@kernel.org> wrote:
+>
+> On Tue, Sep 3, 2019 at 8:58 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >
+> > On Mon, 26 Aug 2019 at 13:54, Rob Herring <robh+dt@kernel.org> wrote:
+> > >
+> > > On Fri, Aug 23, 2019 at 9:54 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > > >
+> > > > Convert Samsung Exynos Power Management Unit (PMU) bindings to DT schema
+> > > > format using json-schema.
+> > > >
+> > > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > > > ---
+> > > >  .../devicetree/bindings/arm/samsung/pmu.txt   | 72 --------------
+> > > >  .../devicetree/bindings/arm/samsung/pmu.yaml  | 93 +++++++++++++++++++
+> > > >  2 files changed, 93 insertions(+), 72 deletions(-)
+> > > >  delete mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.txt
+> > > >  create mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.yaml
+> > >
+> > >
+> > > > diff --git a/Documentation/devicetree/bindings/arm/samsung/pmu.yaml b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..818c6f3488ef
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
+> > > > @@ -0,0 +1,93 @@
+> > > > +# SPDX-License-Identifier: GPL-2.0
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/arm/samsung/pmu.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Samsung Exynos SoC series Power Management Unit (PMU)
+> > > > +
+> > > > +maintainers:
+> > > > +  - Krzysztof Kozlowski <krzk@kernel.org>
+> > > > +
+> > > > +properties:
+> > > > +  compatible:
+> > > > +    items:
+> > > > +      - enum:
+> > > > +          - samsung,exynos3250-pmu
+> > > > +          - samsung,exynos4210-pmu
+> > > > +          - samsung,exynos4412-pmu
+> > > > +          - samsung,exynos5250-pmu
+> > > > +          - samsung,exynos5260-pmu
+> > > > +          - samsung,exynos5410-pmu
+> > > > +          - samsung,exynos5420-pmu
+> > > > +          - samsung,exynos5433-pmu
+> > > > +          - samsung,exynos7-pmu
+> > > > +      - const: syscon
+> > > > +
+> > > > +  reg:
+> > > > +    maxItems: 1
+> > > > +
+> > > > +  '#clock-cells':
+> > > > +    const: 1
+> > > > +
+> > > > +  clock-names:
+> > > > +    description:
+> > > > +      list of clock names for particular CLKOUT mux inputs
+> > > > +    # TODO: what is the maximum number of elements (mux inputs)?
+> > > > +    minItems: 1
+> > > > +    maxItems: 32
+> > > > +    items:
+> > > > +      - enum:
+> > >
+> > > This isn't correct as you are only defining possible names for the
+> > > first item. Drop the '-' (making items a schema instead of a list) and
+> > > then it applies to all. However, doing that will cause a meta-schema
+> > > error which I need to fix to allow. Or if there's a small set of
+> > > possibilities of number of inputs, you can list them under a 'oneOf'
+> > > list.
+> >
+> > Mhmm, I cannot test it or I have an error in the schema. if I
+> > understand correctly, this would be:
+> >
+> >   clock-names:
+> >     description:
+> >       List of clock names for particular CLKOUT mux inputs
+> >     minItems: 1
+> >     maxItems: 16
+> >     items:
+> >       clkout0
+> >       clkout1
+> >       clkout2
+> >       clkout3
+> >       clkout4
+> >       clkout5
+> >       clkout6
+> >       clkout7
+> >       clkout8
+> >       clkout9
+> >       clkout10
+> >       clkout11
+> >       clkout12
+> >       clkout13
+> >       clkout14
+> >       clkout15
+> >       clkout16
+> >
+> > Now it produces the error "ignoring, error in schema 'items'" but
+> > maybe it is expected with current meta-schema?
+>
+> 'make dt_binding_check' will give more detailed errors.
+>
+> Are the inputs always contiguous 0-N? If so, you want:
+>
+> items:
+>   - const: clkout0
+>   - const: clkout1
+>   - const: clkout2
+>   ...
+>
+> If you want to express any number and order of strings is valid, then you need:
+>
+> items:
+>   enum:
+>     - clkout0
+>     - clkout1
+>     - clkout2
+>
+> Doing that is discouraged for bindings though. Currently, it will
+> generate an error from the meta-schema, but we could change that.
 
-Signed-off-by: Stefan Popa <stefan.popa@analog.com>
----
- drivers/iio/accel/adxl372.c | 4 ++++
- 1 file changed, 4 insertions(+)
+It's the second case. The inputs are not contiguous. Examples:
 
-diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
-index 72d3f45..77651f4 100644
---- a/drivers/iio/accel/adxl372.c
-+++ b/drivers/iio/accel/adxl372.c
-@@ -609,6 +609,10 @@ static int adxl372_setup(struct adxl372_state *st)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = adxl372_set_interrupts(st, 0, 0);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* Set the mode of operation to full bandwidth measurement mode */
- 	return adxl372_set_op_mode(st, ADXL372_FULL_BW_MEASUREMENT);
- }
--- 
-2.7.4
+system-controller {
+    compatible = "samsung,exynos3250-pmu", "syscon";
+    clock-names = "clkout8";
+    clocks = <&cmu CLK_FIN_PLL>;
+}
 
+system-controller {
+    compatible = "samsung,exynos4412-pmu", "syscon";
+    clock-names = "clkout0", "clkout1", "clkout2", "clkout3",
+                  "clkout4", "clkout8", "clkout9";
+    clocks = <&clock CLK_OUT_DMC>, <&clock CLK_OUT_TOP>,
+             <&clock CLK_OUT_LEFTBUS>, <&clock CLK_OUT_RIGHTBUS>,
+             <&clock CLK_OUT_CPU>, <&clock CLK_XXTI>, <&clock CLK_XUSBXTI>;
+}
+
+The bindings never required any specific ordering. Also the driver
+just go through all indices and parses them.
+
+Your second syntax fails:
+Documentation/devicetree/bindings/arm/samsung/pmu.yaml:
+properties:clock-names:items: {'enum': ['clkout0', 'clkout1',
+'clkout2', 'clkout3', 'clkout4', 'clkout5', 'clkout6', 'clkout7',
+'clkout8', 'clkout9', 'clkout10', 'clkout11', 'clkout12', 'clkout13',
+'clkout14', 'clkout15', 'clkout16']} is not of type 'array'
+
+Best regards,
+Krzysztof

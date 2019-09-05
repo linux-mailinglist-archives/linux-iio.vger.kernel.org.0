@@ -2,92 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 741BFA9E6D
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2019 11:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FECEAA15F
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2019 13:28:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731515AbfIEJcM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Sep 2019 05:32:12 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6683 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731306AbfIEJcM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 5 Sep 2019 05:32:12 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id B84C92026F6A311B2065;
-        Thu,  5 Sep 2019 17:32:09 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Thu, 5 Sep 2019
- 17:32:05 +0800
-Date:   Thu, 5 Sep 2019 10:08:46 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     kbuild test robot <lkp@intel.com>, <kbuild-all@01.org>,
-        <devel@driverdev.osuosl.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [staging:staging-testing 314/401]
- drivers/iio/common/hid-sensors/hid-sensor-attributes.c:312: undefined
- reference to `__udivdi3'
-Message-ID: <20190905100846.000045b4@huawei.com>
-In-Reply-To: <20190904123711.GL2680@smile.fi.intel.com>
-References: <201909041145.dxkxV8cJ%lkp@intel.com>
-        <20190904123711.GL2680@smile.fi.intel.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S2388450AbfIEL2E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Sep 2019 07:28:04 -0400
+Received: from mga11.intel.com ([192.55.52.93]:52846 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726231AbfIEL2E (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 5 Sep 2019 07:28:04 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Sep 2019 04:28:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,470,1559545200"; 
+   d="scan'208";a="199263001"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 05 Sep 2019 04:28:00 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id B19D52731; Thu,  5 Sep 2019 14:27:59 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Nathan Chancellor <natechancellor@gmail.com>,
+        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Srinivas Pandruvada <srinivas.pandruvada@intel.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        kbuild test robot <lkp@intel.com>
+Subject: [PATCH v1] iio: hid-sensor-attributes: Fix divisions for 32-bit platforms
+Date:   Thu,  5 Sep 2019 14:27:59 +0300
+Message-Id: <20190905112759.13035-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.23.0.rc1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 4 Sep 2019 15:37:11 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+The commit 473d12f7638c
 
-> On Wed, Sep 04, 2019 at 11:33:50AM +0800, kbuild test robot wrote:
-> > tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/gregkh/staging.git staging-testing
-> > head:   74eb9c06b1d722468db397595ac6834b9e4ac235
-> > commit: 473d12f7638c93acbd9296a8cd455b203d5eb528 [314/401] iio: hid-sensor-attributes: Convert to use int_pow()
-> > config: i386-randconfig-e004-201935 (attached as .config)
-> > compiler: gcc-7 (Debian 7.4.0-11) 7.4.0
-> > reproduce:
-> >         git checkout 473d12f7638c93acbd9296a8cd455b203d5eb528
-> >         # save the attached .config to linux build tree
-> >         make ARCH=i386 
-> > 
-> > If you fix the issue, kindly add following tag
-> > Reported-by: kbuild test robot <lkp@intel.com>
-> > 
-> > All errors (new ones prefixed by >>):  
-> 
-> So, as far as I understood it wasn't compiled on 32-bit before, so, it's not a
-> new error and thus would (has to?) be fixed separately.
+  ("iio: hid-sensor-attributes: Convert to use int_pow()")
 
-I'm not convinced.  My assumption is this is triggered because the local pow_10
-function was returning int whereas generic int_pow is returning an int64.
-Whilst I would imagine it is fairly easy to fix, I'll not have a chance to do
-so until the weekend.  Perhaps we should just revert this patch and revisit
-in the next cycle?
+converted to use generic int_pow() helper. Though, the generic one returns
+64-bit value and, in cases when it is used as divisor, it compels 64-bit
+division from compiler.
 
-0-day people, any idea why the iio.git/testing branch isn't getting built any
-more?  I got lazy and started relying on your infrastructure and not bothering
-with 32 bit local builds.  Somewhere along the way you stopped building it
-and I'm afraid I didn't really notice.
+In order to fix this, introduce a temporary 32-bit variable to hold the result
+of int_pow() and use it as divisor afterwards.
 
-Thanks for you all your hard work on 0day btw as it used to catch a lot
-of stuff my local few builds didn't!
+In couple of cases, replace int_pow() with a predefined unit factors for time
+and frequency.
 
-Jonathan
+Fixes: 473d12f7638c ("iio: hid-sensor-attributes: Convert to use int_pow()")
+Reported-by: kbuild test robot <lkp@intel.com>
+Reported-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ .../hid-sensors/hid-sensor-attributes.c       | 42 ++++++++++++-------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
-
-
-> 
-> >    ld: drivers/iio/common/hid-sensors/hid-sensor-attributes.o: in function `adjust_exponent_nano':  
-> > >> drivers/iio/common/hid-sensors/hid-sensor-attributes.c:312: undefined reference to `__udivdi3'
-> > >> ld: drivers/iio/common/hid-sensors/hid-sensor-attributes.c:314: undefined reference to `__umoddi3'
-> > >> ld: drivers/iio/common/hid-sensors/hid-sensor-attributes.c:324: undefined reference to `__udivdi3'  
-> >    ld: drivers/iio/common/hid-sensors/hid-sensor-attributes.c:325: undefined reference to `__umoddi3'  
-> 
-> 
-
+diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+index b9dd19b34267..442ff787f7af 100644
+--- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+@@ -10,10 +10,14 @@
+ #include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
++#include <linux/time.h>
++
+ #include <linux/hid-sensor-hub.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ 
++#define HZ_PER_MHZ	1000000L
++
+ static struct {
+ 	u32 usage_id;
+ 	int unit; /* 0 for default others from HID sensor spec */
+@@ -93,8 +97,10 @@ static void simple_div(int dividend, int divisor, int *whole,
+ 
+ static void split_micro_fraction(unsigned int no, int exp, int *val1, int *val2)
+ {
+-	*val1 = no / int_pow(10, exp);
+-	*val2 = no % int_pow(10, exp) * int_pow(10, 6 - exp);
++	int divisor = int_pow(10, exp);
++
++	*val1 = no / divisor;
++	*val2 = no % divisor * int_pow(10, 6 - exp);
+ }
+ 
+ /*
+@@ -129,6 +135,7 @@ static void convert_from_vtf_format(u32 value, int size, int exp,
+ 
+ static u32 convert_to_vtf_format(int size, int exp, int val1, int val2)
+ {
++	int divisor;
+ 	u32 value;
+ 	int sign = 1;
+ 
+@@ -136,10 +143,13 @@ static u32 convert_to_vtf_format(int size, int exp, int val1, int val2)
+ 		sign = -1;
+ 	exp = hid_sensor_convert_exponent(exp);
+ 	if (exp < 0) {
++		divisor = int_pow(10, 6 + exp);
+ 		value = abs(val1) * int_pow(10, -exp);
+-		value += abs(val2) / int_pow(10, 6 + exp);
+-	} else
+-		value = abs(val1) / int_pow(10, exp);
++		value += abs(val2) / divisor;
++	} else {
++		divisor = int_pow(10, exp);
++		value = abs(val1) / divisor;
++	}
+ 	if (sign < 0)
+ 		value =  ((1LL << (size * 8)) - value);
+ 
+@@ -202,12 +212,12 @@ int hid_sensor_write_samp_freq_value(struct hid_sensor_common *st,
+ 	if (val1 < 0 || val2 < 0)
+ 		return -EINVAL;
+ 
+-	value = val1 * int_pow(10, 6) + val2;
++	value = val1 * HZ_PER_MHZ + val2;
+ 	if (value) {
+ 		if (st->poll.units == HID_USAGE_SENSOR_UNITS_MILLISECOND)
+-			value = int_pow(10, 9) / value;
++			value = NSEC_PER_SEC / value;
+ 		else if (st->poll.units == HID_USAGE_SENSOR_UNITS_SECOND)
+-			value = int_pow(10, 6) / value;
++			value = USEC_PER_SEC / value;
+ 		else
+ 			value = 0;
+ 	}
+@@ -296,6 +306,7 @@ EXPORT_SYMBOL(hid_sensor_write_raw_hyst_value);
+ static void adjust_exponent_nano(int *val0, int *val1, int scale0,
+ 				  int scale1, int exp)
+ {
++	int divisor;
+ 	int i;
+ 	int x;
+ 	int res;
+@@ -309,9 +320,10 @@ static void adjust_exponent_nano(int *val0, int *val1, int scale0,
+ 			return;
+ 		}
+ 		for (i = 0; i < exp; ++i) {
+-			x = scale1 / int_pow(10, 8 - i);
++			divisor = int_pow(10, 8 - i);
++			x = scale1 / divisor;
+ 			res += int_pow(10, exp - 1 - i) * x;
+-			scale1 = scale1 % int_pow(10, 8 - i);
++			scale1 = scale1 % divisor;
+ 		}
+ 		*val0 += res;
+ 		*val1 = scale1 * int_pow(10, exp);
+@@ -321,13 +333,15 @@ static void adjust_exponent_nano(int *val0, int *val1, int scale0,
+ 			*val0 = *val1 = 0;
+ 			return;
+ 		}
+-		*val0 = scale0 / int_pow(10, exp);
+-		rem = scale0 % int_pow(10, exp);
++		divisor = int_pow(10, exp);
++		*val0 = scale0 / divisor;
++		rem = scale0 % divisor;
+ 		res = 0;
+ 		for (i = 0; i < (9 - exp); ++i) {
+-			x = scale1 / int_pow(10, 8 - i);
++			divisor = int_pow(10, 8 - i);
++			x = scale1 / divisor;
+ 			res += int_pow(10, 8 - exp - i) * x;
+-			scale1 = scale1 % int_pow(10, 8 - i);
++			scale1 = scale1 % divisor;
+ 		}
+ 		*val1 = rem * int_pow(10, 9 - exp) + res;
+ 	} else {
+-- 
+2.23.0.rc1
 

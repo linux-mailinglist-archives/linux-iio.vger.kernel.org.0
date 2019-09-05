@@ -2,183 +2,176 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FECEAA15F
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2019 13:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5446AA4A9
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2019 15:38:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388450AbfIEL2E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Sep 2019 07:28:04 -0400
-Received: from mga11.intel.com ([192.55.52.93]:52846 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726231AbfIEL2E (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 5 Sep 2019 07:28:04 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Sep 2019 04:28:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,470,1559545200"; 
-   d="scan'208";a="199263001"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 05 Sep 2019 04:28:00 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id B19D52731; Thu,  5 Sep 2019 14:27:59 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Nathan Chancellor <natechancellor@gmail.com>,
-        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Srinivas Pandruvada <srinivas.pandruvada@intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        kbuild test robot <lkp@intel.com>
-Subject: [PATCH v1] iio: hid-sensor-attributes: Fix divisions for 32-bit platforms
-Date:   Thu,  5 Sep 2019 14:27:59 +0300
-Message-Id: <20190905112759.13035-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.23.0.rc1
+        id S1729928AbfIENho (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Sep 2019 09:37:44 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:47014 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727143AbfIENhn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Sep 2019 09:37:43 -0400
+Received: by mail-pf1-f194.google.com with SMTP id q5so1754156pfg.13;
+        Thu, 05 Sep 2019 06:37:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=fi++776ImZEZT48n1qE4d0SlhAt4GD7N11zpq7SBZhM=;
+        b=iZ32udt5Ao+f4A8AcqWMD0UzwlSrvD4qFci1gCSpLs167HXqVYUYi0+M1A9Is/tjrD
+         dSLyGCd0tUG5IE29UZfmw1UIVLGaf3DaSHlaScDW+EX8J6bW6VlfZHdTVtslVlwEPW55
+         AbBtVYL4O7SmjSiyKhKSQ/6e4c3GcOgOm7iYlNwysHhdZs+JeO3YnSH//pWzjkFYoq+Y
+         Wo927FE786DNSu9sHlPoCEaLHphRMla1OzN01QiESJNg9tnViF3DHGe20a0yKaRE9NuT
+         EthsXjvgs5JZK1C99hc4SjQtyBoLqXW1eItvh+J+VIWJxI3QYY9qjmdBMPcXdh1XDjuD
+         gd/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=fi++776ImZEZT48n1qE4d0SlhAt4GD7N11zpq7SBZhM=;
+        b=qxNgG7sY8E4672rhqwam/wjRA9bmeYp0SqKI8i4TLq7Zu4TNilK0yQfkcCYTIE17KA
+         O7hJ8wppVlI2au+UX+lSSAcgL2intL7ap/PXa5N87Tclb7Ev/c/7Qe751MRkRW+gTEvH
+         6dlkFlnrEH1EuEs6LCFwZXTsdQgrDxPTF/l4cyZoD61W4252fP74OvNjG2tRjevd6C/m
+         EFPD/tWhMV1r7AfgtGEajKAbM5z39xlsi/M9CrocaOBnDKrM+3C7qcaKzBIPAGQZwFcG
+         HJslk+sltcqe4GT2KoSX+RJC6qUBuMCDs9eyYFbu5nAOHUdx6oVl+x+fcECrcgIcm10c
+         OeLg==
+X-Gm-Message-State: APjAAAUl6Soyq3HG7wh5e3VOxciTxulW2QoquCEn78jwv/65xMWyYSsP
+        kxh5DR7DRgzCzAU2yh9XVP0=
+X-Google-Smtp-Source: APXvYqwfariauCzmmaTcCfPD/BTxjV8KxWhNia0IPgs/fMJkiUKEcxPoLnijDvxLMAc8xd3e4YgaWg==
+X-Received: by 2002:a17:90a:32c8:: with SMTP id l66mr3979785pjb.44.1567690662640;
+        Thu, 05 Sep 2019 06:37:42 -0700 (PDT)
+Received: from icarus ([2001:268:c145:7cce:aed2:6823:62ef:c22d])
+        by smtp.gmail.com with ESMTPSA id f188sm2268221pfa.170.2019.09.05.06.37.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Sep 2019 06:37:41 -0700 (PDT)
+Date:   Thu, 5 Sep 2019 22:37:21 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     David Lechner <david@lechnology.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 0/6] counter: new TI eQEP driver
+Message-ID: <20190905133721.GA728346@icarus>
+References: <20190901225827.12301-1-david@lechnology.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190901225827.12301-1-david@lechnology.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The commit 473d12f7638c
+On Sun, Sep 01, 2019 at 05:58:21PM -0500, David Lechner wrote:
+> This series adds device tree bindings and a new counter driver for the Texas
+> Instruments Enhanced Quadrature Encoder Pulse (eQEP).
+> 
+> As mentioned in one of the commit messages, to start with, the driver only
+> supports reading the current counter value and setting the min/max values.
+> Other features can be added as the counter subsystem gains support for them.
+> 
+> v3 changes:
+> - Minor changes to device tree bindings (style and generic node name)
+> - Drop action in initializer
+> - Fix ordering of pm runtime disable
+> v2 changes:
+> - New patch to move TI PWMSS driver from drivers/pwm/ to drivers/bus/
+> - Device tree bindings converted to .yaml format
+> - Device tree clock renamed from "fck" to "sysclkout"
+> - Dropped unused index and strobe signals from counter driver
+> - Added synapses and actions to counter driver
+> - Fixed base in of kstrtouint()
+> - Clarifications in commit messages
+> 
+> This series has been tested on a BeagleBone Blue with the following script:
+> 
+> #!/usr/bin/env python3
+> 
+> from os import path
+> from time import sleep
+> 
+> COUNTER_PATH = '/sys/bus/counter/devices'
+> COUNTERS = ['counter0', 'counter1', 'counter2']
+> COUNT0 = 'count0'
+> COUNT = 'count'
+> FUNCTION = 'function'
+> CEILING = 'ceiling'
+> FLOOR = 'floor'
+> ENABLE = 'enable'
+> 
+> cnts = []
+> 
+> for c in COUNTERS:
+>     function_path = path.join(COUNTER_PATH, c, COUNT0, FUNCTION)
+>     with open(function_path, 'w') as f:
+>         f.write('quadrature x4')
+>     floor_path = path.join(COUNTER_PATH, c, COUNT0, FLOOR)
+>     with open(floor_path, 'w') as f:
+>         f.write(str(0))
+>     ceiling_path = path.join(COUNTER_PATH, c, COUNT0, CEILING)
+>     with open(ceiling_path, 'w') as f:
+>         f.write(str(0xffffffff))
+>     enable_path = path.join(COUNTER_PATH, c, COUNT0, ENABLE)
+>     with open(enable_path, 'w') as f:
+>         f.write('1')
+> 
+>     cnt_path = path.join(COUNTER_PATH, c, COUNT0, COUNT)
+>     cnts.append(open(cnt_path, 'r'))
+> 
+> while True:
+>     for c in cnts:
+>         c.seek(0)
+>         val = int(c.read())
+>         if val >= 0x80000000:
+>             val -= 0x100000000
+>         print(val, end=' ')
+>     print()
+>     sleep(1)
+> 
+> David Lechner (6):
+>   bus/ti-pwmss: move TI PWMSS driver from PWM to bus subsystem
+>   dt-bindings: counter: new bindings for TI eQEP
+>   counter: new TI eQEP driver
+>   ARM: dts: am33xx: Add nodes for eQEP
+>   ARM: dts: am335x-boneblue: Enable eQEP
+>   ARM: dts: am335x-boneblue: Use of am335x-osd335x-common.dtsi
+> 
+>  .../devicetree/bindings/counter/ti-eqep.yaml  |  50 ++
+>  MAINTAINERS                                   |   6 +
+>  arch/arm/boot/dts/am335x-boneblue.dts         | 146 +++---
+>  arch/arm/boot/dts/am33xx-l4.dtsi              |  27 +
+>  drivers/bus/Kconfig                           |   9 +
+>  drivers/bus/Makefile                          |   1 +
+>  drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} |   0
+>  drivers/counter/Kconfig                       |  11 +
+>  drivers/counter/Makefile                      |   1 +
+>  drivers/counter/ti-eqep.c                     | 473 ++++++++++++++++++
+>  drivers/pwm/Kconfig                           |   9 -
+>  drivers/pwm/Makefile                          |   1 -
+>  12 files changed, 634 insertions(+), 100 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/counter/ti-eqep.yaml
+>  rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)
+>  create mode 100644 drivers/counter/ti-eqep.c
+> 
+> -- 
+> 2.17.1
 
-  ("iio: hid-sensor-attributes: Convert to use int_pow()")
+I'm satisfied with this version of the patchset.
 
-converted to use generic int_pow() helper. Though, the generic one returns
-64-bit value and, in cases when it is used as divisor, it compels 64-bit
-division from compiler.
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-In order to fix this, introduce a temporary 32-bit variable to hold the result
-of int_pow() and use it as divisor afterwards.
+Jonathan, if you have no objections please pick up this up so that it
+can make it to the 5.4 merge window coming in soon. Alternatively, I can
+merge it into my repository instead and hold it for a while longer
+there, if you prefer that route.
 
-In couple of cases, replace int_pow() with a predefined unit factors for time
-and frequency.
+Thank you,
 
-Fixes: 473d12f7638c ("iio: hid-sensor-attributes: Convert to use int_pow()")
-Reported-by: kbuild test robot <lkp@intel.com>
-Reported-by: Nathan Chancellor <natechancellor@gmail.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- .../hid-sensors/hid-sensor-attributes.c       | 42 ++++++++++++-------
- 1 file changed, 28 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-index b9dd19b34267..442ff787f7af 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-@@ -10,10 +10,14 @@
- #include <linux/irq.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-+#include <linux/time.h>
-+
- #include <linux/hid-sensor-hub.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- 
-+#define HZ_PER_MHZ	1000000L
-+
- static struct {
- 	u32 usage_id;
- 	int unit; /* 0 for default others from HID sensor spec */
-@@ -93,8 +97,10 @@ static void simple_div(int dividend, int divisor, int *whole,
- 
- static void split_micro_fraction(unsigned int no, int exp, int *val1, int *val2)
- {
--	*val1 = no / int_pow(10, exp);
--	*val2 = no % int_pow(10, exp) * int_pow(10, 6 - exp);
-+	int divisor = int_pow(10, exp);
-+
-+	*val1 = no / divisor;
-+	*val2 = no % divisor * int_pow(10, 6 - exp);
- }
- 
- /*
-@@ -129,6 +135,7 @@ static void convert_from_vtf_format(u32 value, int size, int exp,
- 
- static u32 convert_to_vtf_format(int size, int exp, int val1, int val2)
- {
-+	int divisor;
- 	u32 value;
- 	int sign = 1;
- 
-@@ -136,10 +143,13 @@ static u32 convert_to_vtf_format(int size, int exp, int val1, int val2)
- 		sign = -1;
- 	exp = hid_sensor_convert_exponent(exp);
- 	if (exp < 0) {
-+		divisor = int_pow(10, 6 + exp);
- 		value = abs(val1) * int_pow(10, -exp);
--		value += abs(val2) / int_pow(10, 6 + exp);
--	} else
--		value = abs(val1) / int_pow(10, exp);
-+		value += abs(val2) / divisor;
-+	} else {
-+		divisor = int_pow(10, exp);
-+		value = abs(val1) / divisor;
-+	}
- 	if (sign < 0)
- 		value =  ((1LL << (size * 8)) - value);
- 
-@@ -202,12 +212,12 @@ int hid_sensor_write_samp_freq_value(struct hid_sensor_common *st,
- 	if (val1 < 0 || val2 < 0)
- 		return -EINVAL;
- 
--	value = val1 * int_pow(10, 6) + val2;
-+	value = val1 * HZ_PER_MHZ + val2;
- 	if (value) {
- 		if (st->poll.units == HID_USAGE_SENSOR_UNITS_MILLISECOND)
--			value = int_pow(10, 9) / value;
-+			value = NSEC_PER_SEC / value;
- 		else if (st->poll.units == HID_USAGE_SENSOR_UNITS_SECOND)
--			value = int_pow(10, 6) / value;
-+			value = USEC_PER_SEC / value;
- 		else
- 			value = 0;
- 	}
-@@ -296,6 +306,7 @@ EXPORT_SYMBOL(hid_sensor_write_raw_hyst_value);
- static void adjust_exponent_nano(int *val0, int *val1, int scale0,
- 				  int scale1, int exp)
- {
-+	int divisor;
- 	int i;
- 	int x;
- 	int res;
-@@ -309,9 +320,10 @@ static void adjust_exponent_nano(int *val0, int *val1, int scale0,
- 			return;
- 		}
- 		for (i = 0; i < exp; ++i) {
--			x = scale1 / int_pow(10, 8 - i);
-+			divisor = int_pow(10, 8 - i);
-+			x = scale1 / divisor;
- 			res += int_pow(10, exp - 1 - i) * x;
--			scale1 = scale1 % int_pow(10, 8 - i);
-+			scale1 = scale1 % divisor;
- 		}
- 		*val0 += res;
- 		*val1 = scale1 * int_pow(10, exp);
-@@ -321,13 +333,15 @@ static void adjust_exponent_nano(int *val0, int *val1, int scale0,
- 			*val0 = *val1 = 0;
- 			return;
- 		}
--		*val0 = scale0 / int_pow(10, exp);
--		rem = scale0 % int_pow(10, exp);
-+		divisor = int_pow(10, exp);
-+		*val0 = scale0 / divisor;
-+		rem = scale0 % divisor;
- 		res = 0;
- 		for (i = 0; i < (9 - exp); ++i) {
--			x = scale1 / int_pow(10, 8 - i);
-+			divisor = int_pow(10, 8 - i);
-+			x = scale1 / divisor;
- 			res += int_pow(10, 8 - exp - i) * x;
--			scale1 = scale1 % int_pow(10, 8 - i);
-+			scale1 = scale1 % divisor;
- 		}
- 		*val1 = rem * int_pow(10, 9 - exp) + res;
- 	} else {
--- 
-2.23.0.rc1
-
+William Breathitt Gray

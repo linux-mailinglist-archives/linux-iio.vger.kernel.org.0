@@ -2,211 +2,227 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E27ABCE0
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2019 17:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 381E3ABCF1
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2019 17:49:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404907AbfIFPrK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Sep 2019 11:47:10 -0400
-Received: from mout.kundenserver.de ([212.227.126.130]:41265 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394889AbfIFPrK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Sep 2019 11:47:10 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1N1M4p-1iH0lp1SZ9-012o5x; Fri, 06 Sep 2019 17:46:14 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        id S2393080AbfIFPtJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Sep 2019 11:49:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33128 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732456AbfIFPtH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 6 Sep 2019 11:49:07 -0400
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AED7821835;
+        Fri,  6 Sep 2019 15:49:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567784945;
+        bh=Jr5kgXqyWS7nh52NwJvOior0lys98UCdmbOdcfTtNDg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=CWy0XUtdMPK4ldm+ALO4hNc9NhMkC9KZQ0dMR1c4PcYhArloTT5P2R24zCBNE9WW8
+         mBW9uvEmpTGaJ4qOV83YYHyVA4xMuTO9ivrxhgE4dlY0rFEBVv5g9IKT3JyRpI1YW9
+         NhVjc/T1ubb6yDj8dA0KJaL+l37rTDRrAa6opxMo=
+Received: by mail-qt1-f172.google.com with SMTP id l22so7504442qtp.10;
+        Fri, 06 Sep 2019 08:49:05 -0700 (PDT)
+X-Gm-Message-State: APjAAAV0vJIUhvJntZ2ZvXevj3MXhxXkwwrO97Q4vJIgksAAEt2MVbe9
+        4fjSQBuERe/1pdMhADPy00nd/aD0uy7VFgF+xQ==
+X-Google-Smtp-Source: APXvYqzOFUgh8GnB6rG6hXcILzhLec0cs9V0M4FXVh+YnJXdDppWGYwFW7NZzD11jYW/qoY7azAhk18Zu9nuUkLC+F4=
+X-Received: by 2002:ac8:100d:: with SMTP id z13mr3818851qti.224.1567784944824;
+ Fri, 06 Sep 2019 08:49:04 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190823145356.6341-1-krzk@kernel.org> <20190823145356.6341-5-krzk@kernel.org>
+ <CAL_JsqJybT41cEqiTriLMywUQj1BtAG_9muJ4=84OkF23y53CA@mail.gmail.com>
+ <CAJKOXPc0SY_8BHMsWLN=1M3VQh41+bdBiH21L4KQPA+iLPYy+A@mail.gmail.com>
+ <CAL_JsqKdsABWK9Og_f38T9zf3SCFFdhU8WOJ4uJjREantoYvYQ@mail.gmail.com> <CAJKOXPfnvu=c5f6AcOSiQ_9E-C2fMf9qbEpy1Tr3QvH8LgAtpQ@mail.gmail.com>
+In-Reply-To: <CAJKOXPfnvu=c5f6AcOSiQ_9E-C2fMf9qbEpy1Tr3QvH8LgAtpQ@mail.gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Fri, 6 Sep 2019 16:48:53 +0100
+X-Gmail-Original-Message-ID: <CAL_JsqKyj3s-Mn3q_Lna0w38K3DJzvKN5d72WHzqt4CUVf5X4Q@mail.gmail.com>
+Message-ID: <CAL_JsqKyj3s-Mn3q_Lna0w38K3DJzvKN5d72WHzqt4CUVf5X4Q@mail.gmail.com>
+Subject: Re: [RFC 5/9] dt-bindings: arm: samsung: Convert Exynos PMU bindings
+ to json-schema
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] [RFC] Revert "iio: hid-sensor-attributes: Convert to use int_pow()"
-Date:   Fri,  6 Sep 2019 17:45:55 +0200
-Message-Id: <20190906154609.2421410-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:RxAflYvFSgC4AQPKdZewqxKzyuLVpknAeQFNbvbpm4IWXhrJKE5
- ngA/qm5vcdBarsSA3ksUO+wW2JDquIuxHZeBCggIIdMe9ausS26Mr+sls8Fv2q5OKnQfy7t
- 4RORQsBJIifBebjRCcr2jZUzxAt0Y/2sxEfm+xh8c+8nVyP2dud9U97619dGjF/P3I6kJFg
- EVW1oWZ0e5XaSwQuiR32w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9rRET29UyqE=:HHigNeMrYT6DOSZg/T67ZP
- zmPQGlUUEekOSFfotQvcxTShBrC1j6gqX/oZrkGM0528Xk+bVpy3VQ9aEXo4JHpPpiSCNmiwB
- 6b3wyFiGX/spxJvaXlzCQgEq72Oo7LiahyBgz/EilX1dptyMi9X/7LV23aBikB3l/kM8gwsne
- XzzNHWNsNcSXXBfWlsahtcf3xMXk/GPJ7bj8pxqbb12nlXnUID/PlLSdAgCc7S64Pab/8ih4G
- phIEZs4Z1xLJ8P+8QiUOp9iF9s5UpVBtbow7ge07+cmkdQTsWevPLtIkifO3OMZHRXAuNFoav
- ZJI4Thqh5TOleh22pJ8LxjgDB1jvBmR3Am2jjZmGGPEMsWmDIY2M32Iikp1IxnjDsryqB0UIM
- b+AxbPyregLyhPMJam/oYbogTOaFbThCN7DaM2mlkZ81QKbGOXy8PEDF+HbyNvhNccZ5zCSPi
- z53oYZOS8dAjG71gccCv4zUVVdtAQgB1FAEvYwhS6iI+0ghnB/fLMQ3Mwiv4fjmxpeG6+X2tO
- x82N5ByY+0zf2v3pZVKLDLb5Tu9o7ghsYpycY6EVGbqHFDRlHYlj1poScvmHSL+nKYFT14Iet
- 4EURBt2SCAUktCVBDi94UwRvm9geTZWddsQCxXojRhhl0G/z1tAYMaURjpmKsjoeG1r1v6eM5
- NrWBH8UFqy/d2K6uRn4ciC5CQqVq/pMdA49IpfpvXj22VW5MHmYQFv5E/QUiDS73FX27jTyQj
- +gxHhxuyed83f/OG/dYY/1CJfGAw0Vz7g7OiXpvB2ua7fdxP9z84VnusVd1MbnzSxMjZr2/Ay
- hcHh2MyMN/35zwwfzBA03hfg345QABAhe8ISXo49fD4pKiEV20=
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        =?UTF-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        devicetree@vger.kernel.org,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
+        <linux-rtc@vger.kernel.org>, notify@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The change to use the generic int_pow instead of the private version
-caused a number of build issues on 32-bit architectures and makes
-it generally less efficient because of the 64-bit math:
+On Tue, Sep 3, 2019 at 12:03 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>
+> On Tue, 3 Sep 2019 at 10:25, Rob Herring <robh+dt@kernel.org> wrote:
+> >
+> > On Tue, Sep 3, 2019 at 8:58 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > >
+> > > On Mon, 26 Aug 2019 at 13:54, Rob Herring <robh+dt@kernel.org> wrote:
+> > > >
+> > > > On Fri, Aug 23, 2019 at 9:54 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > > > >
+> > > > > Convert Samsung Exynos Power Management Unit (PMU) bindings to DT schema
+> > > > > format using json-schema.
+> > > > >
+> > > > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > > > > ---
+> > > > >  .../devicetree/bindings/arm/samsung/pmu.txt   | 72 --------------
+> > > > >  .../devicetree/bindings/arm/samsung/pmu.yaml  | 93 +++++++++++++++++++
+> > > > >  2 files changed, 93 insertions(+), 72 deletions(-)
+> > > > >  delete mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.txt
+> > > > >  create mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.yaml
+> > > >
+> > > >
+> > > > > diff --git a/Documentation/devicetree/bindings/arm/samsung/pmu.yaml b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
+> > > > > new file mode 100644
+> > > > > index 000000000000..818c6f3488ef
+> > > > > --- /dev/null
+> > > > > +++ b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
+> > > > > @@ -0,0 +1,93 @@
+> > > > > +# SPDX-License-Identifier: GPL-2.0
+> > > > > +%YAML 1.2
+> > > > > +---
+> > > > > +$id: http://devicetree.org/schemas/arm/samsung/pmu.yaml#
+> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > > +
+> > > > > +title: Samsung Exynos SoC series Power Management Unit (PMU)
+> > > > > +
+> > > > > +maintainers:
+> > > > > +  - Krzysztof Kozlowski <krzk@kernel.org>
+> > > > > +
+> > > > > +properties:
+> > > > > +  compatible:
+> > > > > +    items:
+> > > > > +      - enum:
+> > > > > +          - samsung,exynos3250-pmu
+> > > > > +          - samsung,exynos4210-pmu
+> > > > > +          - samsung,exynos4412-pmu
+> > > > > +          - samsung,exynos5250-pmu
+> > > > > +          - samsung,exynos5260-pmu
+> > > > > +          - samsung,exynos5410-pmu
+> > > > > +          - samsung,exynos5420-pmu
+> > > > > +          - samsung,exynos5433-pmu
+> > > > > +          - samsung,exynos7-pmu
+> > > > > +      - const: syscon
+> > > > > +
+> > > > > +  reg:
+> > > > > +    maxItems: 1
+> > > > > +
+> > > > > +  '#clock-cells':
+> > > > > +    const: 1
+> > > > > +
+> > > > > +  clock-names:
+> > > > > +    description:
+> > > > > +      list of clock names for particular CLKOUT mux inputs
+> > > > > +    # TODO: what is the maximum number of elements (mux inputs)?
+> > > > > +    minItems: 1
+> > > > > +    maxItems: 32
+> > > > > +    items:
+> > > > > +      - enum:
+> > > >
+> > > > This isn't correct as you are only defining possible names for the
+> > > > first item. Drop the '-' (making items a schema instead of a list) and
+> > > > then it applies to all. However, doing that will cause a meta-schema
+> > > > error which I need to fix to allow. Or if there's a small set of
+> > > > possibilities of number of inputs, you can list them under a 'oneOf'
+> > > > list.
+> > >
+> > > Mhmm, I cannot test it or I have an error in the schema. if I
+> > > understand correctly, this would be:
+> > >
+> > >   clock-names:
+> > >     description:
+> > >       List of clock names for particular CLKOUT mux inputs
+> > >     minItems: 1
+> > >     maxItems: 16
+> > >     items:
+> > >       clkout0
+> > >       clkout1
+> > >       clkout2
+> > >       clkout3
+> > >       clkout4
+> > >       clkout5
+> > >       clkout6
+> > >       clkout7
+> > >       clkout8
+> > >       clkout9
+> > >       clkout10
+> > >       clkout11
+> > >       clkout12
+> > >       clkout13
+> > >       clkout14
+> > >       clkout15
+> > >       clkout16
+> > >
+> > > Now it produces the error "ignoring, error in schema 'items'" but
+> > > maybe it is expected with current meta-schema?
+> >
+> > 'make dt_binding_check' will give more detailed errors.
+> >
+> > Are the inputs always contiguous 0-N? If so, you want:
+> >
+> > items:
+> >   - const: clkout0
+> >   - const: clkout1
+> >   - const: clkout2
+> >   ...
+> >
+> > If you want to express any number and order of strings is valid, then you need:
+> >
+> > items:
+> >   enum:
+> >     - clkout0
+> >     - clkout1
+> >     - clkout2
+> >
+> > Doing that is discouraged for bindings though. Currently, it will
+> > generate an error from the meta-schema, but we could change that.
+>
+> It's the second case. The inputs are not contiguous. Examples:
+>
+> system-controller {
+>     compatible = "samsung,exynos3250-pmu", "syscon";
+>     clock-names = "clkout8";
+>     clocks = <&cmu CLK_FIN_PLL>;
+> }
+>
+> system-controller {
+>     compatible = "samsung,exynos4412-pmu", "syscon";
+>     clock-names = "clkout0", "clkout1", "clkout2", "clkout3",
+>                   "clkout4", "clkout8", "clkout9";
+>     clocks = <&clock CLK_OUT_DMC>, <&clock CLK_OUT_TOP>,
+>              <&clock CLK_OUT_LEFTBUS>, <&clock CLK_OUT_RIGHTBUS>,
+>              <&clock CLK_OUT_CPU>, <&clock CLK_XXTI>, <&clock CLK_XUSBXTI>;
+> }
+>
+> The bindings never required any specific ordering. Also the driver
+> just go through all indices and parses them.
+>
+> Your second syntax fails:
+> Documentation/devicetree/bindings/arm/samsung/pmu.yaml:
+> properties:clock-names:items: {'enum': ['clkout0', 'clkout1',
+> 'clkout2', 'clkout3', 'clkout4', 'clkout5', 'clkout6', 'clkout7',
+> 'clkout8', 'clkout9', 'clkout10', 'clkout11', 'clkout12', 'clkout13',
+> 'clkout14', 'clkout15', 'clkout16']} is not of type 'array'
 
-drivers/iio/common/hid-sensors/hid-sensor-attributes.o: In function `hid_sensor_write_samp_freq_value':
-hid-sensor-attributes.c:(.text+0x29c): undefined reference to `__aeabi_uldivmod'
-drivers/iio/common/hid-sensors/hid-sensor-attributes.o: In function `hid_sensor_read_raw_hyst_value':
-hid-sensor-attributes.c:(.text+0x420): undefined reference to `__aeabi_uldivmod'
-hid-sensor-attributes.c:(.text+0x448): undefined reference to `__aeabi_uldivmod'
-drivers/iio/common/hid-sensors/hid-sensor-attributes.o: In function `hid_sensor_write_raw_hyst_value':
-hid-sensor-attributes.c:(.text+0x570): undefined reference to `__aeabi_uldivmod'
+Update dt-schema and try again. It should be allowed now. You'll also
+need to define minItems and maxItems though.
 
-There is probably a nicer solution to this, but for the moment,
-the revert makes it compile again.
-
-Fixes: 473d12f7638c ("iio: hid-sensor-attributes: Convert to use int_pow()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- .../hid-sensors/hid-sensor-attributes.c       | 53 +++++++++++--------
- 1 file changed, 31 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-index b9dd19b34267..a8a3fe428d8d 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-@@ -8,7 +8,6 @@
- #include <linux/module.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
--#include <linux/kernel.h>
- #include <linux/slab.h>
- #include <linux/hid-sensor-hub.h>
- #include <linux/iio/iio.h>
-@@ -69,6 +68,16 @@ static struct {
- 	{HID_USAGE_SENSOR_HUMIDITY, 0, 1000, 0},
- };
- 
-+static int pow_10(unsigned power)
-+{
-+	int i;
-+	int ret = 1;
-+	for (i = 0; i < power; ++i)
-+		ret = ret * 10;
-+
-+	return ret;
-+}
-+
- static void simple_div(int dividend, int divisor, int *whole,
- 				int *micro_frac)
- {
-@@ -87,14 +96,14 @@ static void simple_div(int dividend, int divisor, int *whole,
- 			rem *= 10;
- 			exp++;
- 		}
--		*micro_frac = (rem / divisor) * int_pow(10, 6 - exp);
-+		*micro_frac = (rem / divisor) * pow_10(6-exp);
- 	}
- }
- 
- static void split_micro_fraction(unsigned int no, int exp, int *val1, int *val2)
- {
--	*val1 = no / int_pow(10, exp);
--	*val2 = no % int_pow(10, exp) * int_pow(10, 6 - exp);
-+	*val1 = no/pow_10(exp);
-+	*val2 = no%pow_10(exp) * pow_10(6-exp);
- }
- 
- /*
-@@ -116,7 +125,7 @@ static void convert_from_vtf_format(u32 value, int size, int exp,
- 	}
- 	exp = hid_sensor_convert_exponent(exp);
- 	if (exp >= 0) {
--		*val1 = sign * value * int_pow(10, exp);
-+		*val1 = sign * value * pow_10(exp);
- 		*val2 = 0;
- 	} else {
- 		split_micro_fraction(value, -exp, val1, val2);
-@@ -136,10 +145,10 @@ static u32 convert_to_vtf_format(int size, int exp, int val1, int val2)
- 		sign = -1;
- 	exp = hid_sensor_convert_exponent(exp);
- 	if (exp < 0) {
--		value = abs(val1) * int_pow(10, -exp);
--		value += abs(val2) / int_pow(10, 6 + exp);
-+		value = abs(val1) * pow_10(-exp);
-+		value += abs(val2) / pow_10(6+exp);
- 	} else
--		value = abs(val1) / int_pow(10, exp);
-+		value = abs(val1) / pow_10(exp);
- 	if (sign < 0)
- 		value =  ((1LL << (size * 8)) - value);
- 
-@@ -202,12 +211,12 @@ int hid_sensor_write_samp_freq_value(struct hid_sensor_common *st,
- 	if (val1 < 0 || val2 < 0)
- 		return -EINVAL;
- 
--	value = val1 * int_pow(10, 6) + val2;
-+	value = val1 * pow_10(6) + val2;
- 	if (value) {
- 		if (st->poll.units == HID_USAGE_SENSOR_UNITS_MILLISECOND)
--			value = int_pow(10, 9) / value;
-+			value = pow_10(9)/value;
- 		else if (st->poll.units == HID_USAGE_SENSOR_UNITS_SECOND)
--			value = int_pow(10, 6) / value;
-+			value = pow_10(6)/value;
- 		else
- 			value = 0;
- 	}
-@@ -302,34 +311,34 @@ static void adjust_exponent_nano(int *val0, int *val1, int scale0,
- 	int rem;
- 
- 	if (exp > 0) {
--		*val0 = scale0 * int_pow(10, exp);
-+		*val0 = scale0 * pow_10(exp);
- 		res = 0;
- 		if (exp > 9) {
- 			*val1 = 0;
- 			return;
- 		}
- 		for (i = 0; i < exp; ++i) {
--			x = scale1 / int_pow(10, 8 - i);
--			res += int_pow(10, exp - 1 - i) * x;
--			scale1 = scale1 % int_pow(10, 8 - i);
-+			x = scale1 / pow_10(8 - i);
-+			res += (pow_10(exp - 1 - i) * x);
-+			scale1 = scale1 % pow_10(8 - i);
- 		}
- 		*val0 += res;
--		*val1 = scale1 * int_pow(10, exp);
-+		*val1 = scale1 * pow_10(exp);
- 	} else if (exp < 0) {
- 		exp = abs(exp);
- 		if (exp > 9) {
- 			*val0 = *val1 = 0;
- 			return;
- 		}
--		*val0 = scale0 / int_pow(10, exp);
--		rem = scale0 % int_pow(10, exp);
-+		*val0 = scale0 / pow_10(exp);
-+		rem = scale0 % pow_10(exp);
- 		res = 0;
- 		for (i = 0; i < (9 - exp); ++i) {
--			x = scale1 / int_pow(10, 8 - i);
--			res += int_pow(10, 8 - exp - i) * x;
--			scale1 = scale1 % int_pow(10, 8 - i);
-+			x = scale1 / pow_10(8 - i);
-+			res += (pow_10(8 - exp - i) * x);
-+			scale1 = scale1 % pow_10(8 - i);
- 		}
--		*val1 = rem * int_pow(10, 9 - exp) + res;
-+		*val1 = rem * pow_10(9 - exp) + res;
- 	} else {
- 		*val0 = scale0;
- 		*val1 = scale1;
--- 
-2.20.0
-
+Rob

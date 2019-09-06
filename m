@@ -2,82 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D5A0ABDC9
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2019 18:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47168ABE16
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2019 18:55:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390331AbfIFQeE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Sep 2019 12:34:04 -0400
-Received: from mail-io1-f43.google.com ([209.85.166.43]:35863 "EHLO
-        mail-io1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725871AbfIFQeE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Sep 2019 12:34:04 -0400
-Received: by mail-io1-f43.google.com with SMTP id b136so14136846iof.3
-        for <linux-iio@vger.kernel.org>; Fri, 06 Sep 2019 09:34:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=M7M0YtDJtolyjmNX0i1VCSVgrRsfZq7AX2O+rmmHnzg=;
-        b=s61UUkbrOG10zSpB0yOWftLxbgEMv8B/cKoxyB4RTRCcTJWJ6yCF3mQ42FDc18BjGV
-         jSiQDjlumAb4/KBXceOPYBsL6ozdn9ooAww8TAOnnJ5l7wfHLva21rSrNCMXQq8wH88M
-         E+5J/e2X6IKlS/6CDWLME8Rkf5bU8sne5OZMNfmn/ox3fWyRJQ03BoWaI57eMgXh8m5K
-         yfrUtWYEgOW1Be8JX94u+R5YFhFP1u+q9v6CJIRM0D3rg0jVjZNSbRUI1uJPGgh7egsx
-         9VRRAIIUjRxDNhgqu34/MAM/u5h3xC6MRqw7E24wzZg1h+/okxwYqDLEYJbOJcFV6je0
-         /7tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=M7M0YtDJtolyjmNX0i1VCSVgrRsfZq7AX2O+rmmHnzg=;
-        b=C6WMIxa+8Pn+Xt/v+3XQ8kbZlfaFkYJkyv5C440p0EOmJ7dQyNxuzeZqj63bNOap9P
-         OGuCL4p8z+/1XHEQmZTFtpzB0/paP7HU/e9MceW1XtmVzNH8sUot6Zye4I7s01U6k01V
-         mSkGaaE3FecFQWN+5TU+mB0DeUzmC8AhkIY/5o2Bkef7uAUgg/ERydaojgpU+JvTpIC7
-         iHoew2npqLE6j2Hd/CZdYyC1HwY3wbl/mu6pZu1CVOoqVeXsBUeZdINRQl+YGk8Bxt/v
-         IDORKic0T2B851F9WHLE8KSTfJiPixYYRq1XCNAhqJAjLGyB5takRX81Q/oqR15ji6GG
-         jqoA==
-X-Gm-Message-State: APjAAAWapI9lxpqTOTWl2M1XIxRhYOF2iXSmhyH+9hC3ChPq2K0AWB7/
-        ELPupQdI5+dR+kvWvBkBYo76GvRiXcERpqbdgMzVPoXx
-X-Google-Smtp-Source: APXvYqy0Wf+BT4wIAX/kAOE4v8wXPR84bKvYDdYrXhgNDPSup64Htw3A4FfYZmvMCdCtPUoXycqkfnwrboXNpyetjqA=
-X-Received: by 2002:a6b:e919:: with SMTP id u25mr5381190iof.30.1567787643078;
- Fri, 06 Sep 2019 09:34:03 -0700 (PDT)
+        id S2393213AbfIFQzd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Sep 2019 12:55:33 -0400
+Received: from mga02.intel.com ([134.134.136.20]:11171 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2393211AbfIFQzc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 6 Sep 2019 12:55:32 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Sep 2019 09:55:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,473,1559545200"; 
+   d="scan'208";a="267414818"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga001.jf.intel.com with ESMTP; 06 Sep 2019 09:55:28 -0700
+Received: from andy by smile with local (Exim 4.92.1)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1i6HWB-0002Ld-Cm; Fri, 06 Sep 2019 19:55:27 +0300
+Date:   Fri, 6 Sep 2019 19:55:27 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [RFC] Revert "iio: hid-sensor-attributes: Convert to use
+ int_pow()"
+Message-ID: <20190906165527.GW2680@smile.fi.intel.com>
+References: <20190906154609.2421410-1-arnd@arndb.de>
 MIME-Version: 1.0
-From:   rishi gupta <gupt21@gmail.com>
-Date:   Fri, 6 Sep 2019 22:03:52 +0530
-Message-ID: <CALUj-gsjKkiF8vrzgeWkh9wo-qBuJDW+5eLPqHqdj3v3ngk4UA@mail.gmail.com>
-Subject: Custom sysfs entries for persistence, gain & threshold in light sensor
-To:     linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190906154609.2421410-1-arnd@arndb.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi experts,
+On Fri, Sep 06, 2019 at 05:45:55PM +0200, Arnd Bergmann wrote:
+> The change to use the generic int_pow instead of the private version
+> caused a number of build issues on 32-bit architectures and makes
+> it generally less efficient because of the 64-bit math:
+> 
+> drivers/iio/common/hid-sensors/hid-sensor-attributes.o: In function `hid_sensor_write_samp_freq_value':
+> hid-sensor-attributes.c:(.text+0x29c): undefined reference to `__aeabi_uldivmod'
+> drivers/iio/common/hid-sensors/hid-sensor-attributes.o: In function `hid_sensor_read_raw_hyst_value':
+> hid-sensor-attributes.c:(.text+0x420): undefined reference to `__aeabi_uldivmod'
+> hid-sensor-attributes.c:(.text+0x448): undefined reference to `__aeabi_uldivmod'
+> drivers/iio/common/hid-sensors/hid-sensor-attributes.o: In function `hid_sensor_write_raw_hyst_value':
+> hid-sensor-attributes.c:(.text+0x570): undefined reference to `__aeabi_uldivmod'
+> 
+> There is probably a nicer solution to this, but for the moment,
+> the revert makes it compile again.
+> 
+> Fixes: 473d12f7638c ("iio: hid-sensor-attributes: Convert to use int_pow()")
 
-I am writing driver for veml6030 ambient light sensor. Application can
-set persistence, gain & threshold which will in turn update registers
-in sensor.
+Does the fix [1] works for you?
 
-In IIO framework there is no standard constant for this.
+[1]: https://lore.kernel.org/linux-iio/6851830d050ddb2f27d1e6969755ee4f3293d37c.camel@intel.com/
 
-1) Does using sysfs entries will be fine or there is better alternative.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-static IIO_DEVICE_ATTR_WO(gain, 0);
-static IIO_DEVICE_ATTR_WO(threshold, 0);
-static IIO_DEVICE_ATTR_WO(persistence, 0);
-static IIO_CONST_ATTR(persistence_available, "1 2 4 8");
-static IIO_CONST_ATTR(gain_available, "0.125 0.25 1 2");
 
-static struct attribute *veml6030_attributes[] = {
-&iio_const_attr_gain.dev_attr.attr,
-&iio_const_attr_threshold.dev_attr.attr,
-&iio_const_attr_persistence.dev_attr.attr,
-&iio_const_attr_persistence_available.dev_attr.attr,
-NULL
-};
-
-2) Can IIO_CHAN_INFO_HARDWAREGAIN can be used for gain instead of
-custom sysfs file.
-
-Datasheet: https://www.vishay.com/docs/84366/veml6030.pdf
-
-Regards,
-Rishi

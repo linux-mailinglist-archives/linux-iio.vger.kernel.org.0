@@ -2,169 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F2FBAC634
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2019 13:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E51A3AC636
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2019 13:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728215AbfIGLIe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Sep 2019 07:08:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32868 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726012AbfIGLIe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Sep 2019 07:08:34 -0400
+        id S1729036AbfIGLJu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sat, 7 Sep 2019 07:09:50 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:44310 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726012AbfIGLJt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Sep 2019 07:09:49 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 23A902178F;
-        Sat,  7 Sep 2019 11:08:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567854512;
-        bh=13IkZAD3ztk2id+Bm17NkFpIXukI8LTYSjQzMuQRoGE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Nj2SE9bJ5cHKmk/DQuCcKVHcZqnqeir8Q2SPXcKZA5ExiE4823hi9WS6ir+w4kI3G
-         gLAHqVNQv93nr9q0u8NH9cstz05hk6jlcyFmhH2qHJD6osIllsoKl6iTWyX0ggSPIF
-         mnOFC4NyGq8MEEKZLLYscDIGnuXcxBwhag0mgTFw=
-Date:   Sat, 7 Sep 2019 12:08:28 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi83@gmail.com,
-        denis.ciocca@st.com, mario.tesi@st.com, armando.visconti@st.com,
-        martin@geanix.com
-Subject: Re: [PATCH v4 5/6] iio: imu: st_lsm6dsx: add motion report function
- and call from interrupt
-Message-ID: <20190907120828.51834b73@archlinux>
-In-Reply-To: <20190906121716.66194-5-sean@geanix.com>
-References: <20190906121716.66194-1-sean@geanix.com>
-        <20190906121716.66194-5-sean@geanix.com>
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id BBC109E6A6F;
+        Sat,  7 Sep 2019 12:09:47 +0100 (BST)
+Date:   Sat, 7 Sep 2019 12:09:46 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        =?UTF-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.19 066/167] iio: adc: exynos-adc: Add S5PV210
+ variant
+Message-ID: <20190907120946.34c03331@archlinux>
+In-Reply-To: <20190903194654.GI5281@sasha-vm>
+References: <20190903162519.7136-1-sashal@kernel.org>
+        <20190903162519.7136-66-sashal@kernel.org>
+        <20190903185328.74299c4d@archlinux>
+        <20190903194654.GI5281@sasha-vm>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  6 Sep 2019 14:17:15 +0200
-Sean Nyekjaer <sean@geanix.com> wrote:
+On Tue, 3 Sep 2019 15:46:54 -0400
+Sasha Levin <sashal@kernel.org> wrote:
 
-> Report iio motion events to iio subsystem
+> On Tue, Sep 03, 2019 at 06:53:28PM +0100, Jonathan Cameron wrote:
+> >On Tue,  3 Sep 2019 12:23:38 -0400
+> >Sasha Levin <sashal@kernel.org> wrote:
+> >  
+> >> From: Jonathan Bakker <xc-racer2@live.ca>
+> >>
+> >> [ Upstream commit 882bf52fdeab47dbe991cc0e564b0b51c571d0a3 ]
+> >>
+> >> S5PV210's ADC variant is almost the same as v1 except that it has 10
+> >> channels and doesn't require the pmu register
+> >>
+> >> Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
+> >> Signed-off-by: Paweł Chmiel <pawel.mikolaj.chmiel@gmail.com>
+> >> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >> Signed-off-by: Sasha Levin <sashal@kernel.org>  
+> >
+> >I have no particular objection to adding new IDs (which is more
+> >or less what this patch is), but I didn't know autosel was
+> >picking them up.  So a bit of surprise... If intentional
+> >then fine to apply to stable.  
 > 
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> I dragged it in because 103cda6a3b8d2 ("iio: adc: exynos-adc: Use proper
+> number of channels for Exynos4x12") which is tagged for stable depended
+> on this patch, and given it just adds new IDs which is part of what we
+> take for stable I just took it in as is.
+Ah fair enough!  Thanks for the explanation.
 
-I'm confused by a disagreement between the bit mask you have here
-and what I'm understanding from the datasheets..
+Jonathan
 
-> ---
-> Changes since v3:
->  * added wakeup_src_reg and masks to device settings
 > 
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  5 ++
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 51 ++++++++++++++++++++
->  2 files changed, 56 insertions(+)
-> 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> index d04473861fba..015b837f366f 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -186,6 +186,11 @@ struct st_lsm6dsx_shub_settings {
->  struct st_lsm6dsx_event_settings {
->  	struct st_lsm6dsx_reg enable_reg;
->  	struct st_lsm6dsx_reg wakeup_reg;
-> +	u8 wakeup_src_reg;
-> +	u8 wakeup_src_status_mask;
-> +	u8 wakeup_src_z_mask;
-> +	u8 wakeup_src_y_mask;
-> +	u8 wakeup_src_x_mask;
->  };
->  
->  enum st_lsm6dsx_ext_sensor_id {
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index ce467308eadd..470821b54933 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -48,6 +48,7 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/delay.h>
-> +#include <linux/iio/events.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
->  #include <linux/interrupt.h>
-> @@ -520,6 +521,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  				.addr = 0x5B,
->  				.mask = GENMASK(5, 0),
->  			},
-> +			.wakeup_src_reg = 0x1b,
-> +			.wakeup_src_status_mask = BIT(4),
-
-Bit 4?  I just checked the LSM6DS3 data sheet and the
-Wakeup Event Detection status is bit 3.
-Bit 4 is the sleep event status...
-Also checked the LSM6DSL.
-
-> +			.wakeup_src_z_mask = BIT(0),
-> +			.wakeup_src_y_mask = BIT(1),
-> +			.wakeup_src_x_mask = BIT(2),
->  		},
->  	},
->  	{
-> @@ -1612,6 +1618,40 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
->  	return iio_dev;
->  }
->  
-> +void st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw, int data)
-> +{
-> +	s64 timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
-> +
-> +	if (data & hw->settings->event_settings.wakeup_src_z_mask)
-> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-> +						  0,
-> +						  IIO_MOD_Z,
-> +						  IIO_EV_TYPE_THRESH,
-> +						  IIO_EV_DIR_EITHER),
-> +						  timestamp);
-> +
-> +	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-> +						  0,
-> +						  IIO_MOD_Y,
-> +						  IIO_EV_TYPE_THRESH,
-> +						  IIO_EV_DIR_EITHER),
-> +						  timestamp);
-> +
-> +	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-> +						  0,
-> +						  IIO_MOD_X,
-> +						  IIO_EV_TYPE_THRESH,
-> +						  IIO_EV_DIR_EITHER),
-> +						  timestamp);
-> +
-> +	return;
-> +}
-> +
->  static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
->  {
->  	return IRQ_WAKE_THREAD;
-> @@ -1621,6 +1661,17 @@ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
->  {
->  	struct st_lsm6dsx_hw *hw = private;
->  	int count;
-> +	int data, err;
-> +
-> +	if (hw->enable_event) {
-> +		err = regmap_read(hw->regmap,
-> +				  hw->settings->event_settings.wakeup_src_reg, &data);
-> +		if (err < 0)
-> +			return IRQ_NONE;
-> +
-> +		if (data & hw->settings->event_settings.wakeup_src_status_mask)
-> +			st_lsm6dsx_report_motion_event(hw, data);
-> +	}
->  
->  	mutex_lock(&hw->fifo_lock);
->  	count = hw->settings->fifo_ops.read_fifo(hw);
+> --
+> Thanks,
+> Sasha
 

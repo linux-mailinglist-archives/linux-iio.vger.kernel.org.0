@@ -2,67 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67E47AC605
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2019 12:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A09AAC607
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2019 12:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730083AbfIGKR6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Sep 2019 06:17:58 -0400
-Received: from mout.kundenserver.de ([212.227.17.24]:46707 "EHLO
+        id S1731731AbfIGKSa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Sep 2019 06:18:30 -0400
+Received: from mout.kundenserver.de ([217.72.192.75]:36013 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726087AbfIGKR6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Sep 2019 06:17:58 -0400
+        with ESMTP id S1727762AbfIGKSa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Sep 2019 06:18:30 -0400
 Received: from localhost ([46.78.15.232]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1M8hEd-1i1swp20jx-004lQb; Sat, 07 Sep 2019 12:17:34 +0200
-Date:   Sat, 7 Sep 2019 12:17:32 +0200
+ (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MEFrX-1hybiC14Gz-00ADBm; Sat, 07 Sep 2019 12:18:05 +0200
+Date:   Sat, 7 Sep 2019 12:18:00 +0200
 From:   Andreas Klinger <ak@it-klinger.de>
 To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
         pmeerw@pmeerw.net
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] iio: adc: hx711: fix and optimize sampling of data
-Message-ID: <20190907101730.gqzvu65dgsllk6tk@arbad>
+Subject: [PATCH 1/3] iio: adc: hx711: optimize sampling of data
+Message-ID: <20190907101759.kft6xwsqc5lf4acq@arbad>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Provags-ID: V03:K1:PfmnNlLbi9tx2lsqGYAr3ZdfkZ5g8xF5imXpu/Eot35iWeWMMkF
- h4xhzxDf1wkELd3O32gAaeAoiEua3NjZqkHGlFahuQDbLFvYeJYzGRyCidooSa4S3V7woL1
- RWrJjjzPHPXb6Up9vIUZ8zoBrxgtkpLjAfHme64PPgJqov4/DfzwUO6DEOkzyAgDq3PM3S4
- TwNoCMAMI8UeA+/aVQfXQ==
+X-Provags-ID: V03:K1:KJIq9yh7htm3z3TqDQtMtd3hM+vxzSn13L646XIZ12pFA1j0WCL
+ UIXqB9Aj3j4Vc6wOASEHd4xNGoj9Z+g40aCMZmkSaCQumXKi1WYc6suRNBDQHA2r1btulbK
+ FVgojmHPGlFFpLA11eqALXeMEsfoTmLArGj5mwybwvx2idFfZNEFZx27uCg9EXfq5Pytetx
+ K8tyqqmenTMUqws2bkcTw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7s6rw63TDtg=:WoFLCziDNBg7x0mlWJOEbn
- zuuEw01dla1GcVmrpMKDLNRvDID3ZBesjN03ipdpS+oTdkvfciW4wzHwKddeCQ3tg8XH4C9fY
- /kmyGKA4vtf/vlVRV9ACh3IgBG4uOVY9ajqd5duDf6ILbegGitNjmTVfhWezIJeMygZ05XNt1
- H/QuGyNZ6wHkCYCnJTcSI1BWU5MvYcd4RV224TAzR9tVctO1SpE8R+gmlI2GODR15MDb0HC3j
- 4OmGoBd577HaIMi9VerdbhXOmqpzXwepiVwWjJDGlgEwnHJDNkeXUDgIEn4k+CxF13m2XEg+V
- u0ZpNfo01eZIhSTGytxW25QBIfNKEoKN/Rr/9JyQ0BjzUI6xS4+D9s1hLYNY+5/M7QazPufUr
- 4F2R1s/1sAbA+f6AcYodD41d9AVbrKI8xJaMaPGktl6M0vINBi+xgvDnL/Y3DTaG3p8yXTqF8
- RIdDsycXrz9YiAUu+bLezhb/lw75h6sygeVegEsYXBrZFEU9SBegvG/+pAUYjmy+qhOSCYZ+C
- M6Jrt+pAeZUEQ26nxf64iBCSRfCx38gdadRb3UfzhEYGDohJoACBHQN13gdUJuk+7y+Ekjb2p
- lncfs9pcd4Yi1HX1RZGwyAAX4DH2egWFAxsgO+viETDeY6j74EWdKy/HRUHSDXqLAUAd9UHom
- v0igQ4Mh+vh8G6ieso1aqe/FuWlwXJtdwnIs8HbxjbrQPs1J9BqgEMRVEHEkVDfMrIZIekBbv
- bFwKda80fWpXedxAgDAAivBTe9Q6UNaOIhBpbsGMH6aH198Re8jWhlcAePgNRV8CLKaij1CAe
- aZbfcNRhPx/MP0khlG6ifKyPWDuL8jt/nsEKeNRhv8dfXH9edE=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:n8ectdh0A8w=:HVEyY5JTyE/G/SPws61npV
+ x160bt7BxVKOOncg4WjYzOQKKlZzfA8sq3N+uN3JIGrnTCg55oeL/dJBpRt7+xrSlzp43yjdy
+ UCEodjvGkeKRpQFMichcmLx0wRSDqKL5QPYGLoXLWJWE71L98aiS1Nm64Q255biIbi/1f3tfH
+ 03XJLILeCx6y2i31aMU2sL0NbDc6AZSNGpa9PA9tqJp1IOXdDK3WTvTe6ySFgNH56x2wS8l7O
+ uS6gaZ4h5eYMwV7xUFICeveTF00CImdbQ4I5rOdssPh4wLjxRg3m9CacfyTxquWVmnS+QQAvD
+ /vRuPD9GLrvq7uEU0usUy64e8GHe6pdF83LNhfpa4HNYDLlogGmFhIA4HdWuAOBMMONsVBH6+
+ 0pLMzdBKNP2Op/+5sQJZnCt5ODS0lkbELISbl/WWFt2unLagJl84WYdZ6m3VhRb+5Z9SUzOXv
+ fXxLoQlWxGIf78QkWnEBxlINb5FP4q/Ip1YVt1Qw5NmGt5MIAfoZxAp2xgeqXEMLlwzBw+uUT
+ IahPDZlmLbcLOc5dhoiImOIRokbgVuZWvjQ930pJ88cWyRiuuiDchVEzshj0jkvpMpTAION2o
+ ILLBpi1fJLTzvRDfRS1lkPDY8aspU5qw/BNbB4oHgSCpJ5wAanB5kw5XcuCx5xb9MlWsZQ2RW
+ lzYEVlvPuqDAFy8kmUGu3BeAD5VTUkapelE2vI2IMS2YwoMBFiAfWuYuuFEXHhFiarRxYvMb7
+ 26ImWTJkzGap/cALUBuQvSvSReWQVKIdUV09Ct3/n1HgOEWO/kQh3eExAw4wjdTJtci7IEjGH
+ VayIVRLUKLNKfrc8+ule7CCRUp3f4rIDE06ezN0GxmbzedjEIo=
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch set fixes problems in the sampling of data and optimizes driver
-performance.
+Fix bug in sampling function hx711_cycle() when interrupt occures while
+PD_SCK is high. If PD_SCK is high for at least 60 us power down mode of
+the sensor is entered which in turn leads to a wrong measurement.
 
-It was partly suggested privately to me and i got the allowance to use it
-further. But because the person is not answering my emails related to
-the question of mentioning the name for a long time i submit it without a
-Suggested-By or something similar.
+Move query of DOUT at the latest point of time which is at the end of
+PD_SCK low period.
 
-Andreas Klinger (3):
-  iio: adc: hx711: optimize sampling of data
-  iio: adc: hx711: remove unnecessary read cycle
-  iio: adc: hx711: remove unnecessary returns
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+---
+ drivers/iio/adc/hx711.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
- drivers/iio/adc/hx711.c | 40 ++++++++++++----------------------------
- 1 file changed, 12 insertions(+), 28 deletions(-)
-
+diff --git a/drivers/iio/adc/hx711.c b/drivers/iio/adc/hx711.c
+index 88c7fe15003b..0678964dbd21 100644
+--- a/drivers/iio/adc/hx711.c
++++ b/drivers/iio/adc/hx711.c
+@@ -101,13 +101,14 @@ struct hx711_data {
+ static int hx711_cycle(struct hx711_data *hx711_data)
+ {
+ 	int val;
++	unsigned long flags;
+ 
+ 	/*
+ 	 * if preempted for more then 60us while PD_SCK is high:
+ 	 * hx711 is going in reset
+ 	 * ==> measuring is false
+ 	 */
+-	preempt_disable();
++	local_irq_save(flags);
+ 	gpiod_set_value(hx711_data->gpiod_pd_sck, 1);
+ 
+ 	/*
+@@ -117,7 +118,6 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+ 	 */
+ 	ndelay(hx711_data->data_ready_delay_ns);
+ 
+-	val = gpiod_get_value(hx711_data->gpiod_dout);
+ 	/*
+ 	 * here we are not waiting for 0.2 us as suggested by the datasheet,
+ 	 * because the oscilloscope showed in a test scenario
+@@ -125,7 +125,7 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+ 	 * and 0.56 us for PD_SCK low on TI Sitara with 800 MHz
+ 	 */
+ 	gpiod_set_value(hx711_data->gpiod_pd_sck, 0);
+-	preempt_enable();
++	local_irq_restore(flags);
+ 
+ 	/*
+ 	 * make it a square wave for addressing cases with capacitance on
+@@ -133,7 +133,8 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+ 	 */
+ 	ndelay(hx711_data->data_ready_delay_ns);
+ 
+-	return val;
++	/* sample as late as possible */
++	return gpiod_get_value(hx711_data->gpiod_dout);
+ }
+ 
+ static int hx711_read(struct hx711_data *hx711_data)
 -- 
 2.13.3

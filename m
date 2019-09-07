@@ -2,94 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D04D2AC60F
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2019 12:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A46E6AC623
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2019 12:49:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728768AbfIGKTO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Sep 2019 06:19:14 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:58341 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726019AbfIGKTO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Sep 2019 06:19:14 -0400
-Received: from localhost ([46.78.15.232]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MPXlM-1hk5H72K0I-00Mdi2; Sat, 07 Sep 2019 12:18:51 +0200
-Date:   Sat, 7 Sep 2019 12:18:50 +0200
-From:   Andreas Klinger <ak@it-klinger.de>
-To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] iio: adc: hx711: remove unnecessary returns
-Message-ID: <20190907101848.hl4vgaostftr4ddj@arbad>
+        id S2389035AbfIGKtY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sat, 7 Sep 2019 06:49:24 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:44132 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388960AbfIGKtY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Sep 2019 06:49:24 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 5842C9E774F;
+        Sat,  7 Sep 2019 11:49:22 +0100 (BST)
+Date:   Sat, 7 Sep 2019 11:49:19 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     rishi gupta <gupt21@gmail.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: Custom sysfs entries for persistence, gain & threshold in light
+ sensor
+Message-ID: <20190907114919.15d8c638@archlinux>
+In-Reply-To: <CALUj-gsjKkiF8vrzgeWkh9wo-qBuJDW+5eLPqHqdj3v3ngk4UA@mail.gmail.com>
+References: <CALUj-gsjKkiF8vrzgeWkh9wo-qBuJDW+5eLPqHqdj3v3ngk4UA@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Provags-ID: V03:K1:j9n30ghBHU5Pbg82DQrU7DqahcuCtaXSZNag+SbTi+EIN1PZ6kt
- zwz7zg5Hnz3XFjDSE/OHkpmTLTS7Y9STm/wd0Xr+e5DQGIwTuVM7ZdGl8/uLi7Dou00+E++
- FcJSkKK5H8zD67b4bwE38wucxQKAvQQ1jM0rXWggtUSok0lKI4DrTNmhA+rUxdHUyCttG0t
- D64Qn+aFR9XNcT1BIewJw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gtdGpxCIa+s=:G2AsiXA6l0rJtlhNZ2YqbX
- gW8qhWvNWNJrVl5eiPkKSD48IOEr230tb6gptvH4VhsMnM7VqusEXAIga3JsvAEbI8VU3/614
- 3+bvXhD0E8W6iswi5EfraACfByUXPr63px3+xFFP/Rxk4J2roKH3rThcCnd1eN5WyHAiAJu3R
- HTPi1S5rEgSmwrP0FqdK8SGgkrhRpoWvTySZTPbecGVLwzGhv62zKYkLmyayklxl0EWuYYRIp
- UkxygjCt00+S/5+yuv/ozRtcuoZeKIsiCKcywMMuNU/0FCGHPUhqmtpeoIaaYTS8IAfuG+oXG
- avGxQ4NdZLsHndz1UsWI5EzspPr827gnYgoI3b1fE+npOFXkILpEBn3DI586CrdMhxO5HCfre
- dIc+7ZM5nGwzeVCxCU9AnlqEnolEjP2FIlH2V2VhsBYJeRfoJNgJcojzCy5AYSQRF20Ek5MSC
- qFstw1FKRhBpE2U3q225SN2VHwHO42YwdVTzvQ0K/U5Sa/aWwUJAwuR55DE+7uK94R1as3Eoi
- G5A0JEwF7OvZNhm3Lq57Wq6fTqsqymGTXngdpIMotaBvhYMaKcC2olcKEjfl9e4LtM5/up08A
- Uj9rgXSPKxwPrk0UfWo/lwzxKFWc2Sy0MnnO7mdyyEYHkdQIrBv1pxMM3uigMzR9NpVOMN8xM
- vs8AeA5gZz0PZTZ2ylljYfO/AI/rm544kFcfwgC9/CPz7Wwqtud5OwB47lkgSCN7hh1Nu+8LZ
- 4z1qSizFvdJB0iqqCAx+iQY8tW4qesrJv6PWw/bLXN+5h3+5W3lzDlPY78iRkmKaZWTDI1iIb
- iqa2WRiiBlnhuZnOZxxobmeUVPAFv2tbxXUaiJi8iZBXGwGXhc=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8BIT
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Optimize use of return in hx711_set_gain_for_channel().
+On Fri, 6 Sep 2019 22:03:52 +0530
+rishi gupta <gupt21@gmail.com> wrote:
 
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
----
- drivers/iio/adc/hx711.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+> Hi experts,
+Hi Rishi,
 
-diff --git a/drivers/iio/adc/hx711.c b/drivers/iio/adc/hx711.c
-index c8686558429b..20c249f502c0 100644
---- a/drivers/iio/adc/hx711.c
-+++ b/drivers/iio/adc/hx711.c
-@@ -213,7 +213,7 @@ static int hx711_reset(struct hx711_data *hx711_data)
- 
- static int hx711_set_gain_for_channel(struct hx711_data *hx711_data, int chan)
- {
--	int ret;
-+	int ret = 0;
- 
- 	if (chan == 0) {
- 		if (hx711_data->gain_set == 32) {
-@@ -224,8 +224,6 @@ static int hx711_set_gain_for_channel(struct hx711_data *hx711_data, int chan)
- 				return ret;
- 
- 			ret = hx711_wait_for_ready(hx711_data);
--			if (ret)
--				return ret;
- 		}
- 	} else {
- 		if (hx711_data->gain_set != 32) {
-@@ -236,12 +234,10 @@ static int hx711_set_gain_for_channel(struct hx711_data *hx711_data, int chan)
- 				return ret;
- 
- 			ret = hx711_wait_for_ready(hx711_data);
--			if (ret)
--				return ret;
- 		}
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- static int hx711_reset_read(struct hx711_data *hx711_data, int chan)
--- 
-2.13.3
+> 
+> I am writing driver for veml6030 ambient light sensor. Application can
+> set persistence, gain & threshold which will in turn update registers
+> in sensor.
+> 
+> In IIO framework there is no standard constant for this.
+
+So first element here is whether there aren't standard ABI elements for these.
+
+A quick look suggest threshold maps to an IIO event, so look at that ABI.
+
+Persistence - I'm guessing as the datasheet I have doesn't actually explain
+what it is... Probably number of cycles for which the value has to be
+over the threshold for an interrupt to occur?  This maps to period, though
+you'll have to do the magic to convert form cycles to seconds.
+
+Gain maps to 1/Gain == scale in IIO terms.  What userspace cares about is
+what maths it needs to do to get a real world value and that is given
+by scale.  Here you have the complexity of integration time also feeding
+into that value so it's not that straight forward.
+
+Think about what combination makes sense for light sensor uses... 
+Gain typically increases noise, integration time decreases it. Otherwise
+they both effect the scale.  So various options exist:
+
+1) Just provide scale and pick sensible combinations to give low noise
+   and reasonable integration time for a given scale.
+2) Map scale control just to gain, but the values it takes will change
+   as the integration time is changed.
+
+From an IIO ABI point of view either is fine. 
+
+
+> 
+> 1) Does using sysfs entries will be fine or there is better alternative.
+> 
+> static IIO_DEVICE_ATTR_WO(gain, 0);
+> static IIO_DEVICE_ATTR_WO(threshold, 0);
+> static IIO_DEVICE_ATTR_WO(persistence, 0);
+> static IIO_CONST_ATTR(persistence_available, "1 2 4 8");
+> static IIO_CONST_ATTR(gain_available, "0.125 0.25 1 2");
+> 
+> static struct attribute *veml6030_attributes[] = {
+> &iio_const_attr_gain.dev_attr.attr,
+> &iio_const_attr_threshold.dev_attr.attr,
+> &iio_const_attr_persistence.dev_attr.attr,
+> &iio_const_attr_persistence_available.dev_attr.attr,
+> NULL
+> };
+
+If we do need to define things for a particular device that aren't
+generic enough to add to the main ABI then this approach is one
+option.  However, it makes them only available to userspace. May
+be fine for this sort of device, but in general the use of
+iio_chan_spec_ext_info is preferred.  Here however, I think the
+examples all map to existing ABI.
+
+> 
+> 2) Can IIO_CHAN_INFO_HARDWAREGAIN can be used for gain instead of
+> custom sysfs file.
+> 
+> Datasheet: https://www.vishay.com/docs/84366/veml6030.pdf
+
+Nope. Hardware gain is normally used for things like time of
+flight sensors, where it is changing the gain of something that
+is only indirectly connected to the thing being measured. In those
+cases it lets them measure at larger distances but doesn't make
+any difference as long as the measurement is successful.
+
+> 
+> Regards,
+> Rishi
+
+Thanks,
+
+Jonathan

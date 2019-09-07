@@ -2,119 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8BD7AC60A
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2019 12:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D04D2AC60F
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2019 12:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728484AbfIGKSy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Sep 2019 06:18:54 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:46431 "EHLO
+        id S1728768AbfIGKTO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Sep 2019 06:19:14 -0400
+Received: from mout.kundenserver.de ([217.72.192.75]:58341 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727762AbfIGKSy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Sep 2019 06:18:54 -0400
+        with ESMTP id S1726019AbfIGKTO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Sep 2019 06:19:14 -0400
 Received: from localhost ([46.78.15.232]) by mrelayeu.kundenserver.de
  (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MxDck-1iLtp045n6-00xcif; Sat, 07 Sep 2019 12:18:31 +0200
-Date:   Sat, 7 Sep 2019 12:18:30 +0200
+ 1MPXlM-1hk5H72K0I-00Mdi2; Sat, 07 Sep 2019 12:18:51 +0200
+Date:   Sat, 7 Sep 2019 12:18:50 +0200
 From:   Andreas Klinger <ak@it-klinger.de>
 To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
         pmeerw@pmeerw.net
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] iio: adc: hx711: remove unnecessary read cycle
-Message-ID: <20190907101828.42ldoqtqey3py4hg@arbad>
+Subject: [PATCH 3/3] iio: adc: hx711: remove unnecessary returns
+Message-ID: <20190907101848.hl4vgaostftr4ddj@arbad>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Provags-ID: V03:K1:dWRbDw8Lij1NVmMnSoh+BX7cYQhDIQbCEYILwqLxTjUFUGeB6/e
- 55NdYQMy2Ubuor9vQwhK1dzvOf4wgfeE3Z6OgKr9aqWsEgi4jgp44GQrLSWPMvGIMbaZihW
- CAZT3bsaWjGegfp3QLc3KIdqC+s2DoXSnSIJOek3XxOYUmXtL9e/NZT5xGuUZ8fwF5BgNMA
- Gb1rEkOhmCIg76P4fb06w==
+X-Provags-ID: V03:K1:j9n30ghBHU5Pbg82DQrU7DqahcuCtaXSZNag+SbTi+EIN1PZ6kt
+ zwz7zg5Hnz3XFjDSE/OHkpmTLTS7Y9STm/wd0Xr+e5DQGIwTuVM7ZdGl8/uLi7Dou00+E++
+ FcJSkKK5H8zD67b4bwE38wucxQKAvQQ1jM0rXWggtUSok0lKI4DrTNmhA+rUxdHUyCttG0t
+ D64Qn+aFR9XNcT1BIewJw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NfwOsvCBwKs=:xD6gty7sqHXTmzNs3udPKq
- 5ygv0QDrvBI7VpS649xx1SGObccJ2C0xA2UsCVbRyPKLCTX+586vUMAxKCRpcjbVFeCe36+O4
- qYFkxuno7H+EXQAAH1tI4kuazjaz0oIOOlFjTulTbCYY5Wjt0fLyR9Q7S8pF44qaRf2y3gcBo
- vBeI3AW8d41Na6VS5O3bFJufmgtWtSdRF/FLJMS8LP0MHlzb9+UlCLav+pU72A8jeEZ32gXpc
- AdS+ASq7MNcVLHEb8Ip5Wgr1MJkuDOkVl1rwYVH0cltjAI7TVd3k+Usbc+44IR79dkgzv3w+q
- sWHIWhmHI3YDjiU6wSTFzRCwqKOCzUH/aVYVhNYbK5tJHvGRvcbqeGRzr5KU6XFRtiX0nAvkJ
- 1EDmdvOhNBIl3ScMtv9O0TrmsIcopWuTP37VfsRS43X/GG34817y6m89VtTsVeDIYNIMSqrFq
- itFtz7TLX3z0w5a0LCKcWKMjTrTesvR+qBQnremC2laLUGwBZMd1t9K4yox8gEdZpobdr1+ad
- sZknecywjhJnXS0GRPE4G6986Z0B4bx0tlvfcVZH1fVFigvzqNZhewMv9AnUQSK88gQ/8hSGz
- 7QtfkoBCy6Vxe6vAGpmmnnXwaOYdw+Mwif1SYaqq4wXPi2PZZwET8pF/W8j2z1hVgHi2rgJWM
- WaVLeJJkr0b9L6KWGdIZAdW3vDeQxmUP+LN384bbpxG8actvl3G5FvJFXFYHL0DpI6lQEhUhL
- WYWBNKNTVu8jw0BYngLsaIG05WfvEMtrPdaadDhZHEOxz8Du5EmuDN+K0tl+JLyE803bWD2AC
- mJlVHZVDIfsVtojEtedGx63kV1If1clcnxmrmulQvtJXRG3aVs=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:gtdGpxCIa+s=:G2AsiXA6l0rJtlhNZ2YqbX
+ gW8qhWvNWNJrVl5eiPkKSD48IOEr230tb6gptvH4VhsMnM7VqusEXAIga3JsvAEbI8VU3/614
+ 3+bvXhD0E8W6iswi5EfraACfByUXPr63px3+xFFP/Rxk4J2roKH3rThcCnd1eN5WyHAiAJu3R
+ HTPi1S5rEgSmwrP0FqdK8SGgkrhRpoWvTySZTPbecGVLwzGhv62zKYkLmyayklxl0EWuYYRIp
+ UkxygjCt00+S/5+yuv/ozRtcuoZeKIsiCKcywMMuNU/0FCGHPUhqmtpeoIaaYTS8IAfuG+oXG
+ avGxQ4NdZLsHndz1UsWI5EzspPr827gnYgoI3b1fE+npOFXkILpEBn3DI586CrdMhxO5HCfre
+ dIc+7ZM5nGwzeVCxCU9AnlqEnolEjP2FIlH2V2VhsBYJeRfoJNgJcojzCy5AYSQRF20Ek5MSC
+ qFstw1FKRhBpE2U3q225SN2VHwHO42YwdVTzvQ0K/U5Sa/aWwUJAwuR55DE+7uK94R1as3Eoi
+ G5A0JEwF7OvZNhm3Lq57Wq6fTqsqymGTXngdpIMotaBvhYMaKcC2olcKEjfl9e4LtM5/up08A
+ Uj9rgXSPKxwPrk0UfWo/lwzxKFWc2Sy0MnnO7mdyyEYHkdQIrBv1pxMM3uigMzR9NpVOMN8xM
+ vs8AeA5gZz0PZTZ2ylljYfO/AI/rm544kFcfwgC9/CPz7Wwqtud5OwB47lkgSCN7hh1Nu+8LZ
+ 4z1qSizFvdJB0iqqCAx+iQY8tW4qesrJv6PWw/bLXN+5h3+5W3lzDlPY78iRkmKaZWTDI1iIb
+ iqa2WRiiBlnhuZnOZxxobmeUVPAFv2tbxXUaiJi8iZBXGwGXhc=
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Set gain in hx711_reset() to its default value after a reset cycle. This
-omits one precautionary read cycle, because the read is performed in
-hx711_set_gain_for_channel() anyway if gain has changed.
-
-Check for DOUT low and wait some time if it goes down instead of doing a
-blind reset cycle when DOUT is not down.
+Optimize use of return in hx711_set_gain_for_channel().
 
 Signed-off-by: Andreas Klinger <ak@it-klinger.de>
 ---
- drivers/iio/adc/hx711.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ drivers/iio/adc/hx711.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/iio/adc/hx711.c b/drivers/iio/adc/hx711.c
-index 0678964dbd21..c8686558429b 100644
+index c8686558429b..20c249f502c0 100644
 --- a/drivers/iio/adc/hx711.c
 +++ b/drivers/iio/adc/hx711.c
-@@ -23,6 +23,7 @@
+@@ -213,7 +213,7 @@ static int hx711_reset(struct hx711_data *hx711_data)
  
- /* gain to pulse and scale conversion */
- #define HX711_GAIN_MAX		3
-+#define HX711_RESET_GAIN	128
- 
- struct hx711_gain_to_scale {
- 	int			gain;
-@@ -100,7 +101,6 @@ struct hx711_data {
- 
- static int hx711_cycle(struct hx711_data *hx711_data)
- {
--	int val;
- 	unsigned long flags;
- 
- 	/*
-@@ -186,8 +186,7 @@ static int hx711_wait_for_ready(struct hx711_data *hx711_data)
- 
- static int hx711_reset(struct hx711_data *hx711_data)
+ static int hx711_set_gain_for_channel(struct hx711_data *hx711_data, int chan)
  {
 -	int ret;
--	int val = gpiod_get_value(hx711_data->gpiod_dout);
-+	int val = hx711_wait_for_ready(hx711_data);
++	int ret = 0;
  
- 	if (val) {
- 		/*
-@@ -203,22 +202,10 @@ static int hx711_reset(struct hx711_data *hx711_data)
- 		msleep(10);
- 		gpiod_set_value(hx711_data->gpiod_pd_sck, 0);
+ 	if (chan == 0) {
+ 		if (hx711_data->gain_set == 32) {
+@@ -224,8 +224,6 @@ static int hx711_set_gain_for_channel(struct hx711_data *hx711_data, int chan)
+ 				return ret;
  
--		ret = hx711_wait_for_ready(hx711_data);
--		if (ret)
--			return ret;
--		/*
--		 * after a reset the gain is 128 so we do a dummy read
--		 * to set the gain for the next read
--		 */
--		ret = hx711_read(hx711_data);
--		if (ret < 0)
--			return ret;
--
--		/*
--		 * after a dummy read we need to wait vor readiness
--		 * for not mixing gain pulses with the clock
--		 */
- 		val = hx711_wait_for_ready(hx711_data);
-+
-+		/* after a reset the gain is 128 */
-+		hx711_data->gain_set = HX711_RESET_GAIN;
+ 			ret = hx711_wait_for_ready(hx711_data);
+-			if (ret)
+-				return ret;
+ 		}
+ 	} else {
+ 		if (hx711_data->gain_set != 32) {
+@@ -236,12 +234,10 @@ static int hx711_set_gain_for_channel(struct hx711_data *hx711_data, int chan)
+ 				return ret;
+ 
+ 			ret = hx711_wait_for_ready(hx711_data);
+-			if (ret)
+-				return ret;
+ 		}
  	}
  
- 	return val;
+-	return 0;
++	return ret;
+ }
+ 
+ static int hx711_reset_read(struct hx711_data *hx711_data, int chan)
 -- 
 2.13.3

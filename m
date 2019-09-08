@@ -2,41 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C31AFACC77
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2019 13:38:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA294ACC7C
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2019 13:42:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728895AbfIHLi2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Sep 2019 07:38:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60304 "EHLO mail.kernel.org"
+        id S1728908AbfIHLmr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Sep 2019 07:42:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60990 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728862AbfIHLi2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Sep 2019 07:38:28 -0400
+        id S1728684AbfIHLmr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 8 Sep 2019 07:42:47 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2425F206BB;
-        Sun,  8 Sep 2019 11:38:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 97FD5214D9;
+        Sun,  8 Sep 2019 11:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567942707;
-        bh=UACYLLIPEn9E879/MO6pj3oCzTpjS5SHXEfvpF4kCcQ=;
+        s=default; t=1567942967;
+        bh=/HDDJYhRSk5/MEvjwhhL2jDKJvSFeoVaEW86c3UQsao=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dz8/tv8jmzNACaTmoUNcwEVWgFEMWMHLuKrsh+nRlp8xeajjZK5KC0Y0egznEe4hL
-         sIJyD23LVIPiRyzXHhTxJiJR7FxmpHyCXpMggqZRxQ/Fdgiyh+J9//iW0yvdHDgRoj
-         K7H17FVcIImzTgHqVxX7w2/3OI1YFKCr3OpXigZ0=
-Date:   Sun, 8 Sep 2019 12:38:22 +0100
+        b=trNu2x+GkTND6pQualXko8GDyUQkm6id1Vw3REWOJ8dm89t3sInKLttaLjdwxzRzq
+         ZILWTz27pd3ep6hxUqdcnheDtsFhwj7clMlFktPfqoUL1uDnYJqUyObY5MP0LshC2F
+         +HvHDD3gq83s4o6UiyfKnTpZ4kP6tcHcfnPKam58=
+Date:   Sun, 8 Sep 2019 12:42:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Kevin Tsai <ktsai@capellamicro.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: cm36651: redundant assignment to variable
- ret
-Message-ID: <20190908123822.7a17b7cc@archlinux>
-In-Reply-To: <20190901152749.12916-1-colin.king@canonical.com>
-References: <20190901152749.12916-1-colin.king@canonical.com>
+To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 0/8] add magnetometer support for MPU925x
+Message-ID: <20190908124242.21669f1f@archlinux>
+In-Reply-To: <20190829151801.13014-1-jmaneyrol@invensense.com>
+References: <20190829151801.13014-1-jmaneyrol@invensense.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,40 +40,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  1 Sep 2019 16:27:49 +0100
-Colin King <colin.king@canonical.com> wrote:
+On Thu, 29 Aug 2019 15:18:33 +0000
+Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
 
-> From: Colin Ian King <colin.king@canonical.com>
+> This serie of patches adds support of magnetometer inside MPU925x chips.
+> It is using the MPU i2c master to drive the integrated magnetometer and
+> read data into the MPU FIFO.
 > 
-> Variable ret is being assigned a value that is never read and
-> is being re-assigned a little later on. The assignment is redundant
-> and hence can be removed.
-> 
-> Addresses-Coverity: ("Ununsed value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Beware that this is disabling access to the i2c auxiliary bus. Since this
+> can break existing setup, it is an optional feature requiring to enable
+> the corresponding Kconfig option.
 
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to do not much with it.
+That's not great... People will fail to set that correctly for their
+setup even if there is a 'correct' setting.
 
-Thanks,
+So we need more information to risk that breakage + discussions of
+ways to avoid it.  Can we for example check if the auxiliary bus is
+in use? (DT binding for example - check for the i2c-gate node?)
 
 Jonathan
 
-> ---
->  drivers/iio/light/cm36651.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/light/cm36651.c b/drivers/iio/light/cm36651.c
-> index 1019d625adb1..90e38fcc974b 100644
-> --- a/drivers/iio/light/cm36651.c
-> +++ b/drivers/iio/light/cm36651.c
-> @@ -532,7 +532,7 @@ static int cm36651_write_prox_event_config(struct iio_dev *indio_dev,
->  					int state)
->  {
->  	struct cm36651_data *cm36651 = iio_priv(indio_dev);
-> -	int cmd, ret = -EINVAL;
-> +	int cmd, ret;
->  
->  	mutex_lock(&cm36651->lock);
->  
+> Jean-Baptiste Maneyrol (8):
+>   iio: imu: inv_mpu6050: disable i2c mux for 925x under Kconfig
+>   iio: imu: inv_mpu6050: add header include protection macro
+>   iio: imu: inv_mpu6050: add defines for supporting 9-axis chips
+>   iio: imu: inv_mpu6050: fix objects syntax in Makefile
+>   iio: imu: inv_mpu6050: helpers for using i2c master on auxiliary bus
+>   iio: imu: inv_mpu6050: add magnetometer implementation for MPU925x
+>   iio: imu: inv_mpu6050: add magnetometer support inside mpu driver
+>   iio: imu: inv_mpu6050: add fifo support for magnetometer data
+> 
+>  drivers/iio/imu/inv_mpu6050/Kconfig           |   9 +
+>  drivers/iio/imu/inv_mpu6050/Makefile          |   8 +-
+>  .../iio/imu/inv_mpu6050/inv_mpu9250_magn.c    | 239 ++++++++++++++++++
+>  .../iio/imu/inv_mpu6050/inv_mpu9250_magn.h    |  27 ++
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c     | 191 ++++++++++++++
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h     |  46 ++++
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 141 ++++++++++-
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c     |   5 +
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  79 +++++-
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c    | 120 +++++++++
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_magn.h    | 107 ++++++++
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  14 +-
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  90 ++++++-
+>  13 files changed, 1055 insertions(+), 21 deletions(-)
+>  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu9250_magn.c
+>  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu9250_magn.h
+>  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
+>  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h
+>  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c
+>  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_magn.h
+> 
 

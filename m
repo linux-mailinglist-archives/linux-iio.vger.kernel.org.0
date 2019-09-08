@@ -2,50 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2E30ACCB9
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2019 14:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48E21ACF16
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2019 15:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728922AbfIHMbg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Sep 2019 08:31:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52740 "EHLO mail.kernel.org"
+        id S1728650AbfIHNt1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Sep 2019 09:49:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35630 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728667AbfIHMbg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Sep 2019 08:31:36 -0400
+        id S1726462AbfIHNt1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 8 Sep 2019 09:49:27 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8CD2E2081B;
-        Sun,  8 Sep 2019 12:31:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8BB6020854;
+        Sun,  8 Sep 2019 13:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567945894;
-        bh=cj9qbMaSD8MXlVqXVwfmJA/SjgnhVIKx/gTAE+c1dlY=;
+        s=default; t=1567950566;
+        bh=uc60KOZWV5guRBPrvX5cZcJk9hyhbSRiAGv78v+FNz8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=t2RRi7mW+3tu/jy1I2SaOW1JzHCOyPqUO5GBsm25WL58hRJ4RhNbW+rD9XJajrJcX
-         MqCeQ8v59luoDp+hUTwiTZbriCOiKAp0ylWvanNdXzsSNLIEWzNxiDwu1ri7QDYuqt
-         6zyOwYF6aLtfFHe8LUKauJjbZtD+w2UEBUSWs2/I=
-Date:   Sun, 8 Sep 2019 13:31:22 +0100
+        b=H+sDSlQQC6cTC/DJSI2an1gJzM2V0TZrScPZGYOJyd43jn9jn+ovbKGg06cI/qBub
+         dbU9o2OOaRGGZTBvFwLfly1SyETu7UwMFRggWGsH3A9I/C8KWWjc1oFKyzjQ//yrUz
+         UQuVe5foCRNmCNJC+VwnqN87kjzPo+eW4pNO/J84=
+Date:   Sun, 8 Sep 2019 14:49:22 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        =?UTF-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v2 11/11] dt-bindings: iio: adc: exynos: Remove old
- requirement of two register address ranges
-Message-ID: <20190908133122.7080a124@archlinux>
-In-Reply-To: <20190907092007.9946-11-krzk@kernel.org>
-References: <20190907092007.9946-1-krzk@kernel.org>
-        <20190907092007.9946-11-krzk@kernel.org>
+To:     Andreas Klinger <ak@it-klinger.de>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] iio: adc: hx711: optimize sampling of data
+Message-ID: <20190908144922.51ba448e@archlinux>
+In-Reply-To: <20190907101759.kft6xwsqc5lf4acq@arbad>
+References: <20190907101759.kft6xwsqc5lf4acq@arbad>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,78 +41,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  7 Sep 2019 11:20:07 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Sat, 7 Sep 2019 12:18:00 +0200
+Andreas Klinger <ak@it-klinger.de> wrote:
 
-> Commit fafb37cfae6d ("iio: exyno-adc: use syscon for PMU
-> register access") changed the Exynos ADC driver so the PMU syscon
-> phandle is required instead of second register address space.  The
-> bindings were not updated so fix them now.
+> Fix bug in sampling function hx711_cycle() when interrupt occures while
+> PD_SCK is high. If PD_SCK is high for at least 60 us power down mode of
+> the sensor is entered which in turn leads to a wrong measurement.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Move query of DOUT at the latest point of time which is at the end of
+> PD_SCK low period.
+> 
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
 
-Seems sensible. Thanks for cleaning this up.
+Hi Andreas,
 
-As before I'll wait on review from Rob or similar. If they
-are going via another path (fine by me as well).
+One thing I'm not clear on from these is how much a 'fix' they
+are.  That just effects whether we mark them for stable / push them
+out as quickly as possible or not.  So has this been seen in 
+normal operation?
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> for
-both IIO related binding patches.
++ please add fixes tags to the two fixes.
+
+For patch 3, it's in the very low importance category so it may
+well get forgotten if these two go through the fixes tree
+(up to you to remind me!)
 
 Thanks,
 
 Jonathan
 
-> 
 > ---
+>  drivers/iio/adc/hx711.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 > 
-> Changes since v1:
-> 1. New patch.
-> ---
->  .../bindings/iio/adc/samsung,exynos-adc.yaml     | 16 ++--------------
->  1 file changed, 2 insertions(+), 14 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-> index dd58121f25b1..b4c6c26681d9 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-> @@ -25,8 +25,7 @@ properties:
->        - samsung,s5pv210-adc
+> diff --git a/drivers/iio/adc/hx711.c b/drivers/iio/adc/hx711.c
+> index 88c7fe15003b..0678964dbd21 100644
+> --- a/drivers/iio/adc/hx711.c
+> +++ b/drivers/iio/adc/hx711.c
+> @@ -101,13 +101,14 @@ struct hx711_data {
+>  static int hx711_cycle(struct hx711_data *hx711_data)
+>  {
+>  	int val;
+> +	unsigned long flags;
 >  
->    reg:
-> -    minItems: 1
-> -    maxItems: 2
-> +    maxItems: 1
+>  	/*
+>  	 * if preempted for more then 60us while PD_SCK is high:
+>  	 * hx711 is going in reset
+>  	 * ==> measuring is false
+>  	 */
+> -	preempt_disable();
+> +	local_irq_save(flags);
+>  	gpiod_set_value(hx711_data->gpiod_pd_sck, 1);
 >  
->    clocks:
->      description:
-> @@ -55,7 +54,7 @@ properties:
->      $ref: '/schemas/types.yaml#/definitions/phandle'
->      description:
->        Phandle to the PMU system controller node (to access the ADC_PHY
-> -      register on Exynos5250/5420/5800/3250).
-> +      register on Exynos3250/4x12/5250/5420/5800).
+>  	/*
+> @@ -117,7 +118,6 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+>  	 */
+>  	ndelay(hx711_data->data_ready_delay_ns);
 >  
->    has-touchscreen:
->      description:
-> @@ -83,19 +82,8 @@ allOf:
->                - samsung,exynos4212-adc
->                - samsung,s5pv210-adc
->      then:
-> -      properties:
-> -        reg:
-> -          items:
-> -            # For S5P and Exynos
-> -            - description: base registers
-> -            - description: phy registers
->        required:
->          - samsung,syscon-phandle
-> -    else:
-> -      properties:
-> -        reg:
-> -          items:
-> -            - description: base registers
+> -	val = gpiod_get_value(hx711_data->gpiod_dout);
+>  	/*
+>  	 * here we are not waiting for 0.2 us as suggested by the datasheet,
+>  	 * because the oscilloscope showed in a test scenario
+> @@ -125,7 +125,7 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+>  	 * and 0.56 us for PD_SCK low on TI Sitara with 800 MHz
+>  	 */
+>  	gpiod_set_value(hx711_data->gpiod_pd_sck, 0);
+> -	preempt_enable();
+> +	local_irq_restore(flags);
 >  
->    - if:
->        properties:
+>  	/*
+>  	 * make it a square wave for addressing cases with capacitance on
+> @@ -133,7 +133,8 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+>  	 */
+>  	ndelay(hx711_data->data_ready_delay_ns);
+>  
+> -	return val;
+> +	/* sample as late as possible */
+> +	return gpiod_get_value(hx711_data->gpiod_dout);
+>  }
+>  
+>  static int hx711_read(struct hx711_data *hx711_data)
 

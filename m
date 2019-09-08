@@ -2,101 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B71DACF1D
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2019 15:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73C29AD085
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2019 21:44:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728775AbfIHNwP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Sep 2019 09:52:15 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:42123 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728068AbfIHNwP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Sep 2019 09:52:15 -0400
-Received: by mail-wr1-f67.google.com with SMTP id q14so11013631wrm.9;
-        Sun, 08 Sep 2019 06:52:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=LGw90/UVGk+QEa0OVvDfU9BMlKodboT6J/WmPDm8rBg=;
-        b=DjexVd6dz7KQq1XfdAg/oG77YUvvXel7yrm0iiwfoGp0qXQIfveg00d78JiMuC3OZ1
-         ROwc3acSTsoME5EtB5PPKpkjr76BFxzmo4o7NjyGXDC5U0D8LEbh2PD3PUlGEQwX4Uc4
-         UodPmMInKBsCL0LQd8DZK/nVB9YnSL9b7n2YJMNhnsntL8xMFgjhZWrMVwaJ2jXNgaEG
-         8im7OgoHNTyqEtHIJoCmY+cfgws4kH1+rufkClRa8wi3Ffw2/C4gXIEjsH1sOCgLVyr7
-         OAscnqbo2cMEQBeDdSMzE7rRxFmxOOqmbu+uHKMM1+rX6/YjwfOMvhMUR5p9TjoHT9ti
-         EFnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to;
-        bh=LGw90/UVGk+QEa0OVvDfU9BMlKodboT6J/WmPDm8rBg=;
-        b=AjApqOE+90GYugHcv13oW+56EzlNRz+zCIuNTe4phOawLXweD/iSgqZNZYg93RCN6Q
-         a3cOZReSeiGuTiCjcT/PEGzXy0DtP9RwPyDHhjPn6l76chF9OlIsiplG5Y2tugCGtH9S
-         MbV77ngnLPS9hBoPAgLD1RB5R4wtf+bJ0MuhQ9x8W4/FGgYgyYESn/DYYj5BuZ3HGEBW
-         ywjMjhDDdSUY11/xbg+BzoQkU1mXioOylB9LNX+j5fO9Uc/edDZtPnKorA7VsliOW1WM
-         LUDRrYIBoIW8OIwqXgDETOHh8SxMvIuvNgx6YJ304HvFkEZtFYnVowsPMMcqsXCHRtnz
-         soEg==
-X-Gm-Message-State: APjAAAXdKjsBaCKEwSU6RGeUWOBrmAm9rCSmavv1uJL/u9UmW6HfhT6V
-        z/7I3zpYOZzOdqWm/bh2fM4=
-X-Google-Smtp-Source: APXvYqyZOsK+aqWwElzB2LaKFVuHA0OEwoqV7Sx+6abFRm0Y3xDPiiunSMXqYyE63hrScoKhhsu+xA==
-X-Received: by 2002:adf:fa10:: with SMTP id m16mr9858082wrr.322.1567950731822;
-        Sun, 08 Sep 2019 06:52:11 -0700 (PDT)
-Received: from rocinante (ip5b4096c3.dynamic.kabel-deutschland.de. [91.64.150.195])
-        by smtp.gmail.com with ESMTPSA id r28sm16854635wrr.94.2019.09.08.06.52.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Sep 2019 06:52:11 -0700 (PDT)
-Date:   Sun, 8 Sep 2019 15:52:09 +0200
-From:   Krzysztof Wilczynski <kw@linux.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: bh1750: Move static keyword to the front of
- declaration
-Message-ID: <20190908135208.GA29162@rocinante>
-References: <20190902113132.26658-1-kw@linux.com>
- <20190908114944.18bb78e3@archlinux>
+        id S1728822AbfIHTow (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Sep 2019 15:44:52 -0400
+Received: from muru.com ([72.249.23.125]:60324 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728817AbfIHTow (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 8 Sep 2019 15:44:52 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 824B5809B;
+        Sun,  8 Sep 2019 19:45:21 +0000 (UTC)
+Date:   Sun, 8 Sep 2019 12:44:48 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        David Lechner <david@lechnology.com>,
+        linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 1/6] bus/ti-pwmss: move TI PWMSS driver from PWM to
+ bus subsystem
+Message-ID: <20190908194447.GM52127@atomide.com>
+References: <20190901225827.12301-1-david@lechnology.com>
+ <20190901225827.12301-2-david@lechnology.com>
+ <20190902150245.GE1445@ulmo>
+ <20190908121524.49b4874d@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190908114944.18bb78e3@archlinux>
+In-Reply-To: <20190908121524.49b4874d@archlinux>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan,
-
-Thank you for feedback.
-
-[...]
-> > drivers/iio/light/bh1750.c:64:1: warning:
-> >   ‘static’ is not at beginning of declaration [-Wold-style-declaration]
-[...]
-> This one has me confused.  The warning seems to be false as static
-> is at the beginning of the declaration....
+* Jonathan Cameron <jic23@jic23.retrosnub.co.uk> [190908 11:16]:
+> On Mon, 2 Sep 2019 17:02:45 +0200
+> Thierry Reding <thierry.reding@gmail.com> wrote:
 > 
-> Sure we "could" combine the declaration with the definition as you have
-> done here, but that has nothing much to do with the warning.
-[...]
+> > On Sun, Sep 01, 2019 at 05:58:22PM -0500, David Lechner wrote:
+> > > The TI PWMSS driver is a simple bus driver for providing power
+> > > power management for the PWM peripherals on TI AM33xx SoCs, namely
+> > > eCAP, eHRPWM and eQEP. The eQEP is a counter rather than a PWM, so
+> > > it does not make sense to have the bus driver in the PWM subsystem
+> > > since the PWMSS is not exclusive to PWM devices.
+> > > 
+> > > Signed-off-by: David Lechner <david@lechnology.com>
+> > > ---
+> > > 
+> > > v3 changes:
+> > > - none
+> > > v2 changes:
+> > > - new patch
+> > > 
+> > >  drivers/bus/Kconfig                           | 9 +++++++++
+> > >  drivers/bus/Makefile                          | 1 +
+> > >  drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} | 0
+> > >  drivers/pwm/Kconfig                           | 9 ---------
+> > >  drivers/pwm/Makefile                          | 1 -
+> > >  5 files changed, 10 insertions(+), 10 deletions(-)
+> > >  rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)  
+> > 
+> > Acked-by: Thierry Reding <thierry.reding@gmail.com>
+> 
+> Do we need an immutable branch for these precursor patches to the
+> driver addition? It's not going to make 5.4 via my tree as cutting it
+> too fine so we'll be in the position of holding these in a non obvious
+> tree for a whole cycle. 
 
-I only moved the "static const" at the front, I haven't changed the
-code as it's already has been a declaration and definition.  There is
-no semicolon there and the original author put a newline to separate
-things which makes it look as if these were separate.
+Sure an immutable branch would be nice in case of unlikely
+dts file conflicts. And yeah no need to try to rush to v5.4.
 
-Simple example based on the existing code:
+Regards,
 
-  https://godbolt.org/z/hV4HP7
-
-I hope this helps to illustrate the change in the patch.  I apologise
-if my approach was incorrect.
-
-As part of the patch I removed the newline in an aim to make it less
-confusing to anyone who will read the code in the future.  Especially,
-since it makes it a bit awkward to read and when using things like
-grep.
-
-Krzysztof
+Tony

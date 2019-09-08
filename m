@@ -2,93 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F9B4ACC97
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2019 14:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 085A2ACC98
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2019 14:15:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729041AbfIHMOH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Sep 2019 08:14:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40496 "EHLO mail.kernel.org"
+        id S1729044AbfIHMPE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Sep 2019 08:15:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41416 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729003AbfIHMOH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Sep 2019 08:14:07 -0400
+        id S1729003AbfIHMPE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 8 Sep 2019 08:15:04 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1C36A218AC;
-        Sun,  8 Sep 2019 12:14:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DCB00218AC;
+        Sun,  8 Sep 2019 12:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567944847;
-        bh=v0OzorZmln8aLi2yfQxgoh3gpMCfimqxY/nfBfXj2EY=;
+        s=default; t=1567944903;
+        bh=qAUjgP9vKSfXVc1oJY2dKfmG0k3QPENTcsCYoTSPmzY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OT00zRgA+ZKpRU8jZSto/E1vs0hiRk0RXznNu35k5AVy3kVdctBxQMR66cz8j6hpi
-         Pkn9c8i98stkkV0s1StYEUfkvOQ3hInXhs1H6AIXwI8C9C2gSzveNAC09pgn5441mH
-         SmDjIvw1i27Sn3C05cUNodxZ5+EuhZn7DS4ol02o=
-Date:   Sun, 8 Sep 2019 13:13:58 +0100
+        b=we1yc5J6WXdFpqT1UIcCebXXIaCmnevQvh/YB/C6COfRt/aonvPNPlOR7A/GTu0M0
+         GDZO223LrWjlCgsDsYXqHDV5yYHfI12w2Uh5O5jvwWvAem7OuUSc0wpA68GM50Kw9K
+         MimgSXeqZQ4Hsty020c9gpE0AsuS02Dv5MD5tr4o=
+Date:   Sun, 8 Sep 2019 13:14:55 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Pascal Bouwmann <bouwmann@tau-tec.de>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+To:     Phil Reid <preid@electromag.com.au>
+Cc:     Rob Herring <robh@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] iio: fix center temperature of bmc150-accel-core
-Message-ID: <20190908131358.7cedb1bf@archlinux>
-In-Reply-To: <bcb0af95-94d4-eb15-0918-8d35b376da8e@tau-tec.de>
-References: <bcb0af95-94d4-eb15-0918-8d35b376da8e@tau-tec.de>
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-binding: iio: Add optional label property
+Message-ID: <20190908131455.51d1c7a6@archlinux>
+In-Reply-To: <29f831da-d23a-bc9c-151a-885bd526a785@electromag.com.au>
+References: <1566876924-63608-1-git-send-email-preid@electromag.com.au>
+        <1566876924-63608-2-git-send-email-preid@electromag.com.au>
+        <a30b6dca-c598-135a-0559-1018dd5f5fde@xilinx.com>
+        <20190829230207.GA22979@bogus>
+        <b50bce2d-8819-67b1-c55c-8c2b8070a4ac@electromag.com.au>
+        <CAL_JsqKb8cC=4HR7uVHmKt-zw32U_1u62hG4h-TnbPy=a+QZZg@mail.gmail.com>
+        <29f831da-d23a-bc9c-151a-885bd526a785@electromag.com.au>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 29 Aug 2019 07:29:41 +0200
-Pascal Bouwmann <bouwmann@tau-tec.de> wrote:
+On Sat, 31 Aug 2019 18:19:53 +0800
+Phil Reid <preid@electromag.com.au> wrote:
 
-> The center temperature of the supported devices stored in the constant
-> BMC150_ACCEL_TEMP_CENTER_VAL is not 24 degrees but 23 degrees.
->=20
-> Signed-off-by: Pascal Bouwmann <bouwmann@tau-tec.de>
+> On 30/08/2019 20:34, Rob Herring wrote:
+> > On Thu, Aug 29, 2019 at 8:01 PM Phil Reid <preid@electromag.com.au> wrote:  
+> >>
+> >> On 30/08/2019 07:02, Rob Herring wrote:  
+> >>> On Wed, Aug 28, 2019 at 08:09:19AM +0200, Michal Simek wrote:  
+> >>>> On 27. 08. 19 5:35, Phil Reid wrote:  
+> >>>>> This optional property defines a symbolic name for the device.
+> >>>>>
+> >>>>> Signed-off-by: Phil Reid <preid@electromag.com.au>
+> >>>>> ---
+> >>>>>    Documentation/devicetree/bindings/iio/iio-bindings.txt | 5 +++++
+> >>>>>    1 file changed, 5 insertions(+)
+> >>>>>
+> >>>>> diff --git a/Documentation/devicetree/bindings/iio/iio-bindings.txt b/Documentation/devicetree/bindings/iio/iio-bindings.txt
+> >>>>> index 68d6f8ce063b..ffeae5aad8b5 100644
+> >>>>> --- a/Documentation/devicetree/bindings/iio/iio-bindings.txt
+> >>>>> +++ b/Documentation/devicetree/bindings/iio/iio-bindings.txt
+> >>>>> @@ -18,12 +18,17 @@ Required properties:
+> >>>>>                 with a single IIO output and 1 for nodes with multiple
+> >>>>>                 IIO outputs.
+> >>>>>
+> >>>>> +Optional properties:
+> >>>>> +label:                A symbolic name for the device.
+> >>>>> +
+> >>>>> +
+> >>>>>    Example for a simple configuration with no trigger:
+> >>>>>
+> >>>>>      adc: voltage-sensor@35 {
+> >>>>>              compatible = "maxim,max1139";
+> >>>>>              reg = <0x35>;
+> >>>>>              #io-channel-cells = <1>;
+> >>>>> +           label = "adc_voltage_sensor";
+> >>>>>      };
+> >>>>>
+> >>>>>    Example for a configuration with trigger:
+> >>>>>  
+> >>>>
+> >>>> Just for the record. This patch has been created based on initial
+> >>>> discussion about label property. And Rob had not problem with using
+> >>>> label in connection to ina226. https://lkml.org/lkml/2019/8/27/1213  
+> >>>
+> >>> I didn't, but based on the name here I'm less convinced. 'label' is
+> >>> supposed to be for needing to distinguish between more than 1 of
+> >>> something. A name like 'adc_voltage_sensor' doesn't really.
+> >>>
+> >>> Rob
+> >>>
+> >>>  
+> >>
+> >> That's the problem we're try to solve. Having multiple devices and try to
+> >> determine which device is which.
+> >> eg: Mutliple adc's.
+> >> For example I have the same dac chip on multiple boards that do different
+> >> things, it's difficult to id them.
+> >>
+> >> so label examples could be:
+> >> label = "current_control_group1";
+> >> label = "voltage_control_group1";
+> >>
+> >> Are you totally against this or is it a problem with me not being clear
+> >> with the problem and the wording of the commit message or the example?  
+> > 
+> > It's just the example is less than ideal. But it's just an example, so:
+> > 
+> > Reviewed-by: Rob Herring <robh@kernel.org>
+> > 
+> > Feel free to update the example if you respin.
+> >   
+> Thanks Rob,
+> 
+> I'll update the example if the series gets a respin.
 
-Your patch is corrupted, but I've manually applied it.
-
-I haven't marked it for stable because I worry a little that this will give
-people unexpected changes in long term trends.  Better they see that only
-on a major kernel version upgrade.
-
-Applied to the fixes-togreg branch of iio.git.
+Please do respin some more 'example' suited names :)
 
 Thanks,
 
 Jonathan
 
-> ---
-> In the datasheet of the BMC150 device the center temperature is given
-> wrongly.
-> See https://community.bosch-sensortec.com/t5/MEMS-sensors-forum/
-> center-temperature-of-bmc150-device/td-p/9328
->=20
-> diff --git a/drivers/iio/accel/bmc150-accel-core.c=20
-> b/drivers/iio/accel/bmc150-accel-core.c
-> index 807299dd45eb..7e86a5b7ec4e 100644
-> --- a/drivers/iio/accel/bmc150-accel-core.c
-> +++ b/drivers/iio/accel/bmc150-accel-core.c
-> @@ -125,7 +125,7 @@
->  =C2=A0#define BMC150_ACCEL_SLEEP_1_SEC=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
-=A0 0x0F
->=20
->  =C2=A0#define BMC150_ACCEL_REG_TEMP=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=
- =C2=A0=C2=A0=C2=A0 0x08
-> -#define BMC150_ACCEL_TEMP_CENTER_VAL=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
-=A0 24
-> +#define BMC150_ACCEL_TEMP_CENTER_VAL=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
-=A0 23
->=20
->  =C2=A0#define BMC150_ACCEL_AXIS_TO_REG(axis)=C2=A0=C2=A0=C2=A0 (BMC150_A=
-CCEL_REG_XOUT_L +=20
-> (axis * 2))
->  =C2=A0#define BMC150_AUTO_SUSPEND_DELAY_MS=C2=A0=C2=A0=C2=A0 =C2=A0=C2=
-=A0=C2=A0 2000
->=20
+> 
+> 
+> 
 

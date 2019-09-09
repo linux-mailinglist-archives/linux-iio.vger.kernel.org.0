@@ -2,108 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 776D1AD849
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 13:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22C35AD85A
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 13:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730825AbfIILvi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Sep 2019 07:51:38 -0400
-Received: from first.geanix.com ([116.203.34.67]:55064 "EHLO first.geanix.com"
+        id S1730981AbfIILzm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Sep 2019 07:55:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57560 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730794AbfIILvi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 9 Sep 2019 07:51:38 -0400
-Received: from [192.168.100.95] (unknown [95.138.208.137])
-        by first.geanix.com (Postfix) with ESMTPSA id 524DC2D7;
-        Mon,  9 Sep 2019 11:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1568029868; bh=iSmbzEpRX8D/j9V0akorRevVymbTUB4yealXaieclRs=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=ZSpKUPF5us4TTUo2ey84LxAj5XxFizKC+nn+c78tRO2px/i8s99ZIEOM/zy3Mi3HY
-         eGQwByt94ChNfgE4y+MIRqnr1jAhJbHmhllWzfEGJxX1GFNHbEqM6PJAbJWzXGRHOj
-         ZblAT9B67c83cElEBYvugXsz81wKx4osLEucyUck7OyuhztIU4jQyf7T6lf6+vMfOb
-         tBRpOb1kBFNFiwLLYT4q2IcD4CxIbbMFUiUx1Cjn6zTePX4sVw3Pf8ntfuAFuTVpLC
-         6ZpwAo5ehpC0QQZBDAnjcOwz00Hn4Gc8xPWZ4TMpiPjAcmjgqQZaagoPC0jHmOdPCS
-         ZQxl6ElEZPvDg==
-Subject: Re: [PATCH v6 5/6] iio: imu: st_lsm6dsx: add motion report function
- and call from interrupt
-To:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com
-Cc:     denis.ciocca@st.com, mario.tesi@st.com, armando.visconti@st.com,
-        martin@geanix.com
+        id S1730951AbfIILzm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 9 Sep 2019 07:55:42 -0400
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6EDD1218DE;
+        Mon,  9 Sep 2019 11:55:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568030141;
+        bh=pXjmfgtrpj8ykRrx+Seo1MZ8JDzcWGpkJJiP3UY+Ly8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=R/EviCcSLVZ1CXrDW/8re4LDTIou1k6K1OReHKjttnvjniFHgxKdzhfdTGUNcZ7Qt
+         LL9XYOyNOokze3DyWs1uXO7xBKnNfdg5GGQ3mPrEU0+YDfLOZV4VDN5U7/v9HzVt3p
+         P8APw87bQgOZvRP5fqv0QMhvD9yb1dkPoekVJjeM=
+Date:   Mon, 9 Sep 2019 13:55:35 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Sean Nyekjaer <sean@geanix.com>
+Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
+        lorenzo.bianconi83@gmail.com, denis.ciocca@st.com,
+        mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
+Subject: Re: [PATCH v6 6/6] iio: imu: st_lsm6dsx: prohibit the use of events
+ and buffered reads simultaneously
+Message-ID: <20190909115535.GD2990@localhost.localdomain>
 References: <20190909112846.55280-1-sean@geanix.com>
- <20190909112846.55280-5-sean@geanix.com>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <4167d81f-6136-f9f9-cb6b-02b423799762@geanix.com>
-Date:   Mon, 9 Sep 2019 13:51:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+ <20190909112846.55280-6-sean@geanix.com>
 MIME-Version: 1.0
-In-Reply-To: <20190909112846.55280-5-sean@geanix.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US-large
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="a2FkP9tdjPU2nyhF"
+Content-Disposition: inline
+In-Reply-To: <20190909112846.55280-6-sean@geanix.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+--a2FkP9tdjPU2nyhF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 09/09/2019 13.28, Sean Nyekjaer wrote:
-> Report iio motion events to iio subsystem
-> 
+> When events and buffered reads is enabled simultaneously, and the first
+> event accours the interrupt pin stays high.
+>=20
+> This can be reverted when we find a solution to allow events and
+> buffered reads simultaneously.
+>=20
 > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 > ---
 > Changes since v4:
->   * Updated bitmask as pr Jonathans comments
-> 
+>  * Use fifo configuration mutex to prevent a race in hw->enable_event che=
+ck.
+>=20
 > Changes since v5:
->   * None
-> 
->   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  5 ++
->   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 70 ++++++++++++++++++++
->   2 files changed, 75 insertions(+)
-> 
+>  * Updated do not return without unlocking mutexes
+>  * Lock mutex before unlock
+>  * Runtime tested ;-)
+>=20
+
 [...]
->   
-> +void st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw, int data)
-> +{
-> +	s64 timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
-> +
-> +	if (data & hw->settings->event_settings.wakeup_src_z_mask)
-> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-> +						  0,
-> +						  IIO_MOD_Z,
-> +						  IIO_EV_TYPE_THRESH,
-> +						  IIO_EV_DIR_EITHER),
-> +						  timestamp);
-> +
-> +	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-> +						  0,
-> +						  IIO_MOD_Y,
-> +						  IIO_EV_TYPE_THRESH,
-> +						  IIO_EV_DIR_EITHER),
-> +						  timestamp);
-> +
-> +	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-> +						  0,
-> +						  IIO_MOD_X,
-> +						  IIO_EV_TYPE_THRESH,
-> +						  IIO_EV_DIR_EITHER),
-> +						  timestamp);
-> +}
-> +
 
-I was looking at this again, and if the user enables events for channel 
-x, we continue to report events for y, z.
-Is it okay or is it better to filter them out?
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1340,8 +1340,12 @@ static int st_lsm6dsx_write_event_config(struct ii=
+o_dev *iio_dev,
+>  	if (type !=3D IIO_EV_TYPE_THRESH)
+>  		return -EINVAL;
+> =20
+> -	if (hw->fifo_mode !=3D ST_LSM6DSX_FIFO_BYPASS)
+> -		return -EBUSY;
+> +	mutex_lock(&hw->conf_lock);
+> +
+> +	if (hw->fifo_mode !=3D ST_LSM6DSX_FIFO_BYPASS) {
+> +		err =3D -EBUSY;
+> +		goto out;
+> +	}
 
-/Sean
+This patch is still broken!!! Returning in case of error you need to relase=
+ the
+lock.
+
+> =20
+>  	/* do not enable events if they are already enabled */
+>  	if (state && hw->enable_event)
+> @@ -1357,7 +1361,10 @@ static int st_lsm6dsx_write_event_config(struct ii=
+o_dev *iio_dev,
+> =20
+>  	hw->enable_event =3D state;
+> =20
+> -	return 0;
+> +out:
+> +	mutex_unlock(&hw->conf_lock);
+> +
+> +	return err;
+>  }
+> =20
+>  int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
+> --=20
+> 2.23.0
+>=20
+
+--a2FkP9tdjPU2nyhF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXXY9tAAKCRA6cBh0uS2t
+rNIQAQCRjPYpgZSqtFZhNjyjc7G9xTcuMMO9YOV6TZX2eaojNgEAm0twbzc9Ymwa
+r42wNMYMpxKjxNmLFsOoX+W33FiYpgA=
+=XjjF
+-----END PGP SIGNATURE-----
+
+--a2FkP9tdjPU2nyhF--

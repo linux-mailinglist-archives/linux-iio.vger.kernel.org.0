@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1411AD7E9
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 13:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B65AD7EA
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 13:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730138AbfIIL25 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Sep 2019 07:28:57 -0400
-Received: from first.geanix.com ([116.203.34.67]:53528 "EHLO first.geanix.com"
+        id S1730083AbfIIL26 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Sep 2019 07:28:58 -0400
+Received: from first.geanix.com ([116.203.34.67]:53536 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730089AbfIIL24 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 9 Sep 2019 07:28:56 -0400
+        id S1729627AbfIIL25 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 9 Sep 2019 07:28:57 -0400
 Received: from zen.localdomain (unknown [85.184.140.241])
-        by first.geanix.com (Postfix) with ESMTPSA id E5C44641E1;
-        Mon,  9 Sep 2019 11:28:26 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id 09D232D7;
+        Mon,  9 Sep 2019 11:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1568028507; bh=Zi3+HdaMJqAmr+B8TnXJ7Scp42XK7sTqej35Be1cn88=;
+        t=1568028508; bh=29teEpri6Y2QcgLUnF365TOheFzBIzM9fH36842exZg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=ChKlUX4iNbka120MavDw4cw2ZPhXY8IRFx2VY14L7grb6lt39tL9uDdzv+taIs94l
-         DkLC8N7wLC6L/Zt8UroBafmF1B2vfgHR5N2QtF/9RpVUp3Qybtv9vVpFsQgZt80OfK
-         P5c7Oa97LmSc0ED2KYTw/d62AHhhHf7T+z+nKNaSC5OY9Kth+8by8p3hR2Fug2zsjd
-         ZWNCDJS3Tuz5n1ainVWLHwoswkY/x4JUjDEkR6Z+wyd3GaOredH84I5rNl75Yd6QKd
-         o85sviJLXwFKoAGycgxlEczWTVtTEXWnW4JYyliYJ0rJSPfcuQV3WYt7fjrEcj1AnW
-         ck58bOhaH7Mig==
+        b=MyoYZhBpFme2nY8TZCKgMkndxjmA/pm63PdDEiTviNhyuO1psDy2/bFwabtuatr9C
+         5T3wd4E6o+7Wf5FyH1jLewRL76xb0BREDGgTeBlIGDk0IPMUquR8ut4ljfTc0clCm/
+         qbv+ElrUmaSUFmqFMQ9qc0KJX7AL3Rc8dBUelAPovx47u82tUDUhX5fis42kntnwjn
+         o3j32pz7p3NacWt5x6r696LA7ZyLbHa1bIfXcVtUoGXjP7j1KvYUQUn2OewEq8xDMC
+         QRsTK7/vrSW15EgZvgkqx6OikvU30+6E5AdoWchKoQqSo52ALE2cluc3eNWo+XumHh
+         n5HjvxfIE+saw==
 From:   Sean Nyekjaer <sean@geanix.com>
 To:     linux-iio@vger.kernel.org, jic23@kernel.org,
         lorenzo.bianconi83@gmail.com
 Cc:     Sean Nyekjaer <sean@geanix.com>, denis.ciocca@st.com,
         mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
-Subject: [PATCH v6 5/6] iio: imu: st_lsm6dsx: add motion report function and call from interrupt
-Date:   Mon,  9 Sep 2019 13:28:45 +0200
-Message-Id: <20190909112846.55280-5-sean@geanix.com>
+Subject: [PATCH v6 6/6] iio: imu: st_lsm6dsx: prohibit the use of events and buffered reads simultaneously
+Date:   Mon,  9 Sep 2019 13:28:46 +0200
+Message-Id: <20190909112846.55280-6-sean@geanix.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20190909112846.55280-1-sean@geanix.com>
 References: <20190909112846.55280-1-sean@geanix.com>
@@ -45,166 +45,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Report iio motion events to iio subsystem
+When events and buffered reads is enabled simultaneously, and the first
+event accours the interrupt pin stays high.
+
+This can be reverted when we find a solution to allow events and
+buffered reads simultaneously.
 
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
 Changes since v4:
- * Updated bitmask as pr Jonathans comments
+ * Use fifo configuration mutex to prevent a race in hw->enable_event check.
 
 Changes since v5:
- * None
+ * Updated do not return without unlocking mutexes
+ * Lock mutex before unlock
+ * Runtime tested ;-)
 
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  5 ++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 70 ++++++++++++++++++++
- 2 files changed, 75 insertions(+)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |  5 +++++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 13 ++++++++++---
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index d04473861fba..015b837f366f 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -186,6 +186,11 @@ struct st_lsm6dsx_shub_settings {
- struct st_lsm6dsx_event_settings {
- 	struct st_lsm6dsx_reg enable_reg;
- 	struct st_lsm6dsx_reg wakeup_reg;
-+	u8 wakeup_src_reg;
-+	u8 wakeup_src_status_mask;
-+	u8 wakeup_src_z_mask;
-+	u8 wakeup_src_y_mask;
-+	u8 wakeup_src_x_mask;
- };
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+index ef579650fd52..b87a1872bc60 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -603,6 +603,11 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
  
- enum st_lsm6dsx_ext_sensor_id {
+ 	mutex_lock(&hw->conf_lock);
+ 
++	if (hw->enable_event) {
++		err = -EBUSY;
++		goto out;
++	}
++
+ 	if (hw->fifo_mode != ST_LSM6DSX_FIFO_BYPASS) {
+ 		err = st_lsm6dsx_flush_fifo(hw);
+ 		if (err < 0)
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 5b8bcd9cc4d2..bd5c7c65a519 100644
+index 00ba14d15c13..2616036ce953 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -48,6 +48,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/delay.h>
-+#include <linux/iio/events.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- #include <linux/interrupt.h>
-@@ -283,6 +284,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -404,6 +410,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -538,6 +549,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -788,6 +804,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -934,6 +955,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		}
- 	},
- };
-@@ -1659,6 +1685,38 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
- 	return iio_dev;
- }
+@@ -1340,8 +1340,12 @@ static int st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
+ 	if (type != IIO_EV_TYPE_THRESH)
+ 		return -EINVAL;
  
-+void st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw, int data)
-+{
-+	s64 timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+-	if (hw->fifo_mode != ST_LSM6DSX_FIFO_BYPASS)
+-		return -EBUSY;
++	mutex_lock(&hw->conf_lock);
 +
-+	if (data & hw->settings->event_settings.wakeup_src_z_mask)
-+		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-+			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-+						  0,
-+						  IIO_MOD_Z,
-+						  IIO_EV_TYPE_THRESH,
-+						  IIO_EV_DIR_EITHER),
-+						  timestamp);
-+
-+	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-+		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-+			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-+						  0,
-+						  IIO_MOD_Y,
-+						  IIO_EV_TYPE_THRESH,
-+						  IIO_EV_DIR_EITHER),
-+						  timestamp);
-+
-+	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-+		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-+			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-+						  0,
-+						  IIO_MOD_X,
-+						  IIO_EV_TYPE_THRESH,
-+						  IIO_EV_DIR_EITHER),
-+						  timestamp);
-+}
-+
- static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
- {
- 	return IRQ_WAKE_THREAD;
-@@ -1668,6 +1726,18 @@ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
- {
- 	struct st_lsm6dsx_hw *hw = private;
- 	int count;
-+	int data, err;
-+
-+	if (hw->enable_event) {
-+		err = regmap_read(hw->regmap,
-+				  hw->settings->event_settings.wakeup_src_reg,
-+				  &data);
-+		if (err < 0)
-+			return IRQ_NONE;
-+
-+		if (data & hw->settings->event_settings.wakeup_src_status_mask)
-+			st_lsm6dsx_report_motion_event(hw, data);
++	if (hw->fifo_mode != ST_LSM6DSX_FIFO_BYPASS) {
++		err = -EBUSY;
++		goto out;
 +	}
  
- 	mutex_lock(&hw->fifo_lock);
- 	count = hw->settings->fifo_ops.read_fifo(hw);
+ 	/* do not enable events if they are already enabled */
+ 	if (state && hw->enable_event)
+@@ -1357,7 +1361,10 @@ static int st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
+ 
+ 	hw->enable_event = state;
+ 
+-	return 0;
++out:
++	mutex_unlock(&hw->conf_lock);
++
++	return err;
+ }
+ 
+ int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
 -- 
 2.23.0
 

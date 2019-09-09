@@ -2,132 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19C9FAD86A
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 14:02:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FD51AD87A
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 14:05:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404414AbfIIMCU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Sep 2019 08:02:20 -0400
-Received: from first.geanix.com ([116.203.34.67]:55794 "EHLO first.geanix.com"
+        id S2387623AbfIIMFw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Sep 2019 08:05:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35578 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404619AbfIIMCU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 9 Sep 2019 08:02:20 -0400
-Received: from [192.168.100.95] (unknown [95.138.208.137])
-        by first.geanix.com (Postfix) with ESMTPSA id 6DEAF2D7;
-        Mon,  9 Sep 2019 12:01:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1568030510; bh=WmOSXln+5LOQF96iVRXqVHASDzpOwU6aGb3A1AcjUn4=;
-        h=Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=TvZ0mgew4BSm2K7qIz0IlB81zB1N47rBho9XOtd/BbT0VPQMJf6FTAB+4ggHyW7PY
-         snr+HHG5AoDY/oCrIfKUrttyR51qxyIZn1l7ifgK4G3x/QK9CouIx6ImFioEgrLuze
-         ABqgqtadVpC2QguiuKzTNdnYbFhqWicArrz/rUa2FYqPiMFh9VR4WkgVip00yOsqYN
-         jLQu499n79aV4108VZS+H7DCVSTnzbyLFrrYJO5QwxMQMBJM1lrlTOfReip0KSKuoq
-         3zo2N1vK8JRgWaTYdv+ZTlUgDSvcWw2f8iOYKyrzaMPF7KQpS8rh/y9tlLnv3wXckl
-         2sLHzOl7ASOJw==
-Subject: Re: [PATCH v6 6/6] iio: imu: st_lsm6dsx: prohibit the use of events
- and buffered reads simultaneously
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
+        id S2387569AbfIIMFw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 9 Sep 2019 08:05:52 -0400
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 094AB2067B;
+        Mon,  9 Sep 2019 12:05:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568030751;
+        bh=fdigoUTffB/YcRLH0g6Rzk1AueXka0EMM5q4qfh48CE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cqp7l06NRosiKdNNsIgIfLDo148/sRoFsGYz7VpyhLdMIspX9IGGfffhoALCU02Tz
+         d+TP0PyY1DGv++G1u3rmVb9lR4gMNXZK63p619/K2BzhjI+YpuWZaMaB0mg3MLkEFr
+         33BPaNBBnAZ0WuJ6+Du28u2C89+5ebsDtX+OS1P0=
+Date:   Mon, 9 Sep 2019 14:05:46 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Sean Nyekjaer <sean@geanix.com>
 Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
         lorenzo.bianconi83@gmail.com, denis.ciocca@st.com,
         mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
+Subject: Re: [PATCH v6 5/6] iio: imu: st_lsm6dsx: add motion report function
+ and call from interrupt
+Message-ID: <20190909120546.GE2990@localhost.localdomain>
 References: <20190909112846.55280-1-sean@geanix.com>
- <20190909112846.55280-6-sean@geanix.com>
- <20190909115535.GD2990@localhost.localdomain>
- <400fa605-ce9d-bd57-b757-d8875ec1d66b@geanix.com>
-Message-ID: <78b5982a-e769-8c1a-5f13-524fdfd3159e@geanix.com>
-Date:   Mon, 9 Sep 2019 14:01:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+ <20190909112846.55280-5-sean@geanix.com>
 MIME-Version: 1.0
-In-Reply-To: <400fa605-ce9d-bd57-b757-d8875ec1d66b@geanix.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US-large
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="JBi0ZxuS5uaEhkUZ"
+Content-Disposition: inline
+In-Reply-To: <20190909112846.55280-5-sean@geanix.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+--JBi0ZxuS5uaEhkUZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 09/09/2019 13.59, Sean Nyekjaer wrote:
-> 
-> 
-> On 09/09/2019 13.55, Lorenzo Bianconi wrote:
->>> When events and buffered reads is enabled simultaneously, and the first
->>> event accours the interrupt pin stays high.
->>>
->>> This can be reverted when we find a solution to allow events and
->>> buffered reads simultaneously.
->>>
->>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
->>> ---
->>> Changes since v4:
->>>   * Use fifo configuration mutex to prevent a race in 
->>> hw->enable_event check.
->>>
->>> Changes since v5:
->>>   * Updated do not return without unlocking mutexes
->>>   * Lock mutex before unlock
->>>   * Runtime tested ;-)
->>>
->>
->> [...]
->>
->>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
->>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
->>> @@ -1340,8 +1340,12 @@ static int 
->>> st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
->>>       if (type != IIO_EV_TYPE_THRESH)
->>>           return -EINVAL;
->>> -    if (hw->fifo_mode != ST_LSM6DSX_FIFO_BYPASS)
->>> -        return -EBUSY;
->>> +    mutex_lock(&hw->conf_lock);
->>> +
->>> +    if (hw->fifo_mode != ST_LSM6DSX_FIFO_BYPASS) {
->>> +        err = -EBUSY;
->>> +        goto out;
->>> +    }
->>
->> This patch is still broken!!! Returning in case of error you need to 
->> relase the
->> lock.
->>
-> 
-> Hmm,
-> 
-> please read below this:
-> 
-> -    return 0;
-> +out:
-> +    mutex_unlock(&hw->conf_lock);
+> Report iio motion events to iio subsystem
+>=20
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+> Changes since v4:
+>  * Updated bitmask as pr Jonathans comments
+>=20
+> Changes since v5:
+>  * None
+>=20
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  5 ++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 70 ++++++++++++++++++++
+>  2 files changed, 75 insertions(+)
+>=20
+
+[...]
+
+>  static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+>  {
+>  	return IRQ_WAKE_THREAD;
+> @@ -1668,6 +1726,18 @@ static irqreturn_t st_lsm6dsx_handler_thread(int i=
+rq, void *private)
+>  {
+>  	struct st_lsm6dsx_hw *hw =3D private;
+>  	int count;
+> +	int data, err;
 > +
-> +    return err;
-> >
+> +	if (hw->enable_event) {
 
-I see what you mean...
-I will update this function with:
-goto's :-)
 
-/Sean
+Maybe I understood the issue between the buffered reading and event generat=
+ion.
+I guess it is a race here between when the device is generating the interru=
+pt
+and when you set enable_event. I think there are two solutions:
+1- trivial one: always read wakeup_src_reg
+2- set hw->enable_event as first instruction in st_lsm6dsx_write_event_conf=
+ig()
+and roll back in case of error.
 
->>>       /* do not enable events if they are already enabled */
->>>       if (state && hw->enable_event)
->>> @@ -1357,7 +1361,10 @@ static int 
->>> st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
->>>       hw->enable_event = state;
->>> -    return 0;
->>> +out:
->>> +    mutex_unlock(&hw->conf_lock);
->>> +
->>> +    return err;
->>>   }
->>>   int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int 
->>> val)
->>> -- 
->>> 2.23.0
->>>
+Could you please try that changes and double check if you are still able to
+trigger the issue?
+
+Regards,
+Lorenzo
+
+> +		err =3D regmap_read(hw->regmap,
+> +				  hw->settings->event_settings.wakeup_src_reg,
+> +				  &data);
+> +		if (err < 0)
+> +			return IRQ_NONE;
+> +
+> +		if (data & hw->settings->event_settings.wakeup_src_status_mask)
+> +			st_lsm6dsx_report_motion_event(hw, data);
+> +	}
+> =20
+>  	mutex_lock(&hw->fifo_lock);
+>  	count =3D hw->settings->fifo_ops.read_fifo(hw);
+> --=20
+> 2.23.0
+>=20
+
+--JBi0ZxuS5uaEhkUZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXXZAFwAKCRA6cBh0uS2t
+rOiXAQC558sdMcTmFfXvCMFG4l2im3VbjqBLp6ymGEJi/KErHgD+OHLimq/96kGR
+IjNHeUN1LyD7Oc8ToW0V0nc6cnhpHAE=
+=Gofq
+-----END PGP SIGNATURE-----
+
+--JBi0ZxuS5uaEhkUZ--

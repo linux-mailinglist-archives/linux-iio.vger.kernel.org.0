@@ -2,126 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A41BAD950
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 14:45:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 741FFAD97E
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 14:58:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728821AbfIIMpa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Sep 2019 08:45:30 -0400
-Received: from first.geanix.com ([116.203.34.67]:56986 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728733AbfIIMp3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 9 Sep 2019 08:45:29 -0400
-Received: from zen.localdomain (unknown [85.184.140.241])
-        by first.geanix.com (Postfix) with ESMTPSA id B66C56E016;
-        Mon,  9 Sep 2019 12:44:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1568033099; bh=e3MFIztuXnV4YD5HX69NFXAfs1NSofr409kzk5SLCrw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=LsmQ1B9Yh5f3Rt02GmulYaL9x8jcih20JbkLWgCY3z/m0TZMXGBfun9yaGBVs+207
-         Mv3QwZKdA466VAG4JmmX6iiijLLb0mhQk/mcOTsJ/somtxTf8yyoaI6KiWqZEJIXCZ
-         S11Rd3+lGGpxKZfoDxO3I8oDa3gXQfbT74COT4vtZWGRbGV7ilBkfcBTJPqrNlJo9h
-         a53ov1pASFp//uM+WUXUbdtn0KSsBS8IJU8LruTcZdg/uTlxkywsUTkciplr0xDpUZ
-         JPCT8KUHK+agxWHuoZnTCdb+Tq2KMXcTIEHYjweTLFQ+HXFZ4qS07S5pcUy6E0wb2A
-         tN5stxuE4AgSA==
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com
-Cc:     Sean Nyekjaer <sean@geanix.com>, denis.ciocca@st.com,
-        mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
-Subject: [PATCH v6.1 6/6] iio: imu: st_lsm6dsx: prohibit the use of events and buffered reads simultaneously
-Date:   Mon,  9 Sep 2019 14:45:18 +0200
-Message-Id: <20190909124518.84025-1-sean@geanix.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190909112846.55280-6-sean@geanix.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=4.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,UNPARSEABLE_RELAY,URIBL_BLOCKED
-        autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
+        id S1727244AbfIIM60 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Sep 2019 08:58:26 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:36200 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726462AbfIIM6Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Sep 2019 08:58:25 -0400
+Received: by mail-wm1-f67.google.com with SMTP id p13so14590628wmh.1
+        for <linux-iio@vger.kernel.org>; Mon, 09 Sep 2019 05:58:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=SWqvjzW03Sj0Bc8IBNZOEFlg8tVyen3Z5dSXhOfAqDY=;
+        b=ixGLBe7ft3m0iVwf1bRhY5kwUkd33lcsebEXHbG9pA4T+FvKtHZdKXByBHnOYgbFwY
+         DvN6vKoR7bRKxhZhIoltwu23QPxNX4Rvoj1Gj8q9R6SzseOvo9A+jOPpFgjBBSQBmH47
+         9wVs3Sv+VtJFcmWcD2PPtPv7GUXJ7nkHPrvWlaowAaS96FDUWzkYUoRq+/gy5LTLNtNQ
+         GM6+x5xXS8DG722Jncn6hiQGDFRVuo4FqBKzraiNNCXs1f+GO3x8FGljx8gGiPBkj5BA
+         cAvOrznYq9Gmiu8CZ7L5jVK/UPvijhDoukrTf5iilm3rHPuZ2jWpHD1KHX/gT5aYRnHj
+         0neA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=SWqvjzW03Sj0Bc8IBNZOEFlg8tVyen3Z5dSXhOfAqDY=;
+        b=f55NqXa58T2ZVBpNTvgwCezoz3+qEnitDFvA/B5jEVKQG6jubuXSekUL/edOeE1rvD
+         JrH1/1FbHDm5jnwqjCdtzdgz4SJXsotBkkfphzKX8IChJ6syQxqsPzfm2CWJYQQgbZHq
+         6pRoM1Z5cTNrr/Uo+phlHrBHrII6d4aDooq9DvOZH/ALleTTQsTAl9bHuikJtz5pC0mO
+         6NRdutVPotzw4wB+16bf3VGUJyb5+iSLVkeo4E+Zn5XS81mt1AD6FbL/OSlS4WzKoBon
+         sCegNI6SpIcg7+dic9nfPqG8JyUnSRqnBZvSsycXPRYdF7lEEfhw+YgYxXZsKV0sQaVI
+         PQ+A==
+X-Gm-Message-State: APjAAAVejM8AYU+lVdaiCofrCs10GA3zGmMk2CzxGTBwtZwWqdv/MNFy
+        02MeynlW5A9EEa62SR1b7o8=
+X-Google-Smtp-Source: APXvYqydOmS9bM7b5gs9fmkTnWXtle2VE2P68bQTC1Zg+o4nUldAd/x0dcyxQlKWtrSZdYiVa8VjHQ==
+X-Received: by 2002:a1c:d183:: with SMTP id i125mr20203585wmg.1.1568033903700;
+        Mon, 09 Sep 2019 05:58:23 -0700 (PDT)
+Received: from NewMoon.iit.local ([90.147.180.254])
+        by smtp.gmail.com with ESMTPSA id k6sm29953330wrg.0.2019.09.09.05.58.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Sep 2019 05:58:23 -0700 (PDT)
+From:   Andrea Merello <andrea.merello@gmail.com>
+To:     paresh.chaudhary@rockwellcollins.com,
+        patrick.havelange@essensium.com, pmeerw@pmeerw.net,
+        lars@metafoo.de, knaack.h@gmx.de, jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org,
+        Andrea Merello <andrea.merello@gmail.com>
+Subject: [PATCH] iio: max31856: add missing of_node and parent references to iio_dev
+Date:   Mon,  9 Sep 2019 14:58:17 +0200
+Message-Id: <20190909125817.17882-1-andrea.merello@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When events and buffered reads is enabled simultaneously, and the first
-event accours the interrupt pin stays high.
+Adding missing indio_dev->dev.of_node references so that, in case multiple
+max31856 are present, users can get some clues to being able to distinguish
+each of them. While at it, add also the missing parent reference.
 
-This can be reverted when we find a solution to allow events and
-buffered reads simultaneously.
+Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
 
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
-Changes since v4:
- * Use fifo configuration mutex to prevent a race in hw->enable_event check.
-
-Changes since v5:
- * Updated do not return without unlocking mutexes
- * Lock mutex before unlock
- * Runtime tested 
- * Make sure we unlock the mutex in case of failure
-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |  5 +++++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 18 ++++++++++++++----
- 2 files changed, 19 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-index ef579650fd52..b87a1872bc60 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -603,6 +603,11 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
+diff --git a/drivers/iio/temperature/max31856.c b/drivers/iio/temperature/max31856.c
+index f184ba5601d9..73ed550e3fc9 100644
+--- a/drivers/iio/temperature/max31856.c
++++ b/drivers/iio/temperature/max31856.c
+@@ -284,6 +284,8 @@ static int max31856_probe(struct spi_device *spi)
+ 	spi_set_drvdata(spi, indio_dev);
  
- 	mutex_lock(&hw->conf_lock);
- 
-+	if (hw->enable_event) {
-+		err = -EBUSY;
-+		goto out;
-+	}
-+
- 	if (hw->fifo_mode != ST_LSM6DSX_FIFO_BYPASS) {
- 		err = st_lsm6dsx_flush_fifo(hw);
- 		if (err < 0)
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index de6bddd91471..fb658cb69c9d 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -1340,21 +1340,31 @@ static int st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
- 	if (type != IIO_EV_TYPE_THRESH)
- 		return -EINVAL;
- 
-+	mutex_lock(&hw->conf_lock);
-+
-+	if (hw->fifo_mode != ST_LSM6DSX_FIFO_BYPASS) {
-+		err = -EBUSY;
-+		goto out;
-+	}
-+
- 	/* do not enable events if they are already enabled */
- 	if (state && hw->enable_event)
--		return 0;
-+		goto out;
- 
- 	err = st_lsm6dsx_event_setup(hw, state);
- 	if (err < 0)
--		return err;
-+		goto out;
- 
- 	err = st_lsm6dsx_sensor_set_enable(sensor, state);
- 	if (err < 0)
--		return err;
-+		goto out;
- 
- 	hw->enable_event = state;
- 
--	return 0;
-+out:
-+	mutex_unlock(&hw->conf_lock);
-+
-+	return err;
- }
- 
- int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
+ 	indio_dev->info = &max31856_info;
++	indio_dev->dev.parent = &spi->dev;
++	indio_dev->dev.of_node = spi->dev.of_node;
+ 	indio_dev->name = id->name;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = max31856_channels;
 -- 
-2.23.0
+2.17.1
 

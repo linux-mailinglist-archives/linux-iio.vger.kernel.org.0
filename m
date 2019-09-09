@@ -2,65 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 855C7AD6D3
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 12:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB82AD709
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 12:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730372AbfIIK1D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Sep 2019 06:27:03 -0400
-Received: from first.geanix.com ([116.203.34.67]:50660 "EHLO first.geanix.com"
+        id S1729650AbfIIKkm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Sep 2019 06:40:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50298 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728858AbfIIK1D (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 9 Sep 2019 06:27:03 -0400
-Received: from [192.168.100.95] (unknown [95.138.208.137])
-        by first.geanix.com (Postfix) with ESMTPSA id 523F02D7;
-        Mon,  9 Sep 2019 10:26:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1568024793; bh=jFcs1OtpPRoMxPsyjvdnW3gXzs2esSSIG3gAzZUPBVs=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=QvHpHTSVwUMgLvwrvdq64rqOA7HHNmGGS/fpHhlo2p2nlCzvFxWlXDDgsb9izkHNB
-         iHZEpPE8Yd0SC+jsDOykg9/E1kExON2zylleHFiZ7Lie6q5UqYfQwTqLbtD5RNztQV
-         Q+qZS+B0tAbm23Amn1Pj61eimDw7j7Tylg8LbUPfOj6orY6pA/pXqMwvU4RTGlt2NN
-         JWl8xnRtJ+hWQZAu16pq7xNv+JvrJg6Q9n+5jFNenumKCKgmFC7qKh0tVYbJmAO5Kh
-         0quCVGMVJPFhNmP1mKo7tI/qd9NbLp/sV1SPc+N4okzR9CW72Au03IYCia2uVvpwDn
-         7TInmuVe7nI5Q==
-Subject: Re: [PATCH v5 2/6] iio: imu: st_lsm6dsx: add motion events
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
+        id S1726407AbfIIKkm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 9 Sep 2019 06:40:42 -0400
+Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6B20F2086D;
+        Mon,  9 Sep 2019 10:40:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568025641;
+        bh=32c+HNdFGsjT/s/hEv+Ik9zsAW/BsQRzll/yK22hDs8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Jpg2c6QKuSkcP9JvR4ttlQgqraX1e0rr7n9V5yhEycl7hAntFhst4s7qyStosv9tK
+         v3RngL6hWI71iqzeXYebtC4SkD4CjBu+vc1zZ4Ma4+G4oHZkmzd6sJVUqBTFibSUQi
+         YlWkL+iWpctN8u+mJByKkQYeaSyDa7dvIdeqs1fY=
+Date:   Mon, 9 Sep 2019 12:40:35 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Sean Nyekjaer <sean@geanix.com>
 Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
         lorenzo.bianconi83@gmail.com, denis.ciocca@st.com,
         mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
-References: <20190909094506.51792-1-sean@geanix.com>
- <20190909094506.51792-2-sean@geanix.com>
- <20190909102117.GA2990@localhost.localdomain>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <4e87bfae-ea15-a325-b4eb-232e6a370581@geanix.com>
-Date:   Mon, 9 Sep 2019 12:26:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+Subject: Re: [PATCH v5.1 6/6] iio: imu: st_lsm6dsx: prohibit the use of
+ events and buffered reads simultaneously
+Message-ID: <20190909104035.GB2990@localhost.localdomain>
+References: <20190909094506.51792-6-sean@geanix.com>
+ <20190909095618.70801-1-sean@geanix.com>
 MIME-Version: 1.0
-In-Reply-To: <20190909102117.GA2990@localhost.localdomain>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US-large
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="CUfgB8w4ZwR/yMy5"
+Content-Disposition: inline
+In-Reply-To: <20190909095618.70801-1-sean@geanix.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+--CUfgB8w4ZwR/yMy5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 09/09/2019 12.21, Lorenzo Bianconi wrote:
-> You defined wakeup_src_{w,y,z}_mask in patch 5/6 and you are using them here. Please do not do so since you are breaking 'git bisect'
-> 
-> Regards,
-> Lorenzo
+> When events and buffered reads is enabled simultaneously, and the first
+> event accours the interrupt pin stays high.
+>=20
+> This can be reverted when we find a solution to allow events and
+> buffered reads simultaneously.
+>=20
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+> Changes since v4:
+>  * Use fifo configuration mutex to prevent a race in hw->enable_event
+>    check.
+>=20
+> Changes since v5:
+>  * Updated do not return without unlocking mutexes
+>=20
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |  5 +++++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 13 ++++++++++---
+>  2 files changed, 15 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio=
+/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> index ef579650fd52..b87a1872bc60 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> @@ -603,6 +603,11 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor =
+*sensor, bool enable)
+> =20
+>  	mutex_lock(&hw->conf_lock);
+> =20
+> +	if (hw->enable_event) {
+> +		err =3D -EBUSY;
+> +		goto out;
+> +	}
+> +
+>  	if (hw->fifo_mode !=3D ST_LSM6DSX_FIFO_BYPASS) {
+>  		err =3D st_lsm6dsx_flush_fifo(hw);
+>  		if (err < 0)
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 00ba14d15c13..a13d0c154b82 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1340,8 +1340,12 @@ static int st_lsm6dsx_write_event_config(struct ii=
+o_dev *iio_dev,
+>  	if (type !=3D IIO_EV_TYPE_THRESH)
+>  		return -EINVAL;
+> =20
+> -	if (hw->fifo_mode !=3D ST_LSM6DSX_FIFO_BYPASS)
+> -		return -EBUSY;
+> +	mutex_unlock(&hw->conf_lock);
 
-My bad, will update in v6 :)
+I _really_ do not think you are testing these patches since there are plent=
+y of
+errors here:
 
-Will move the device sensor definitions to 5/6, so we avoid
-"warning: variable ‘**’ set but not used"
+1- mutex_unlock instead of mutex_lock
+2- returning without releasing the lock
 
-/Sean
+Please put more attention next time and test you patches
+
+Lorenzo
+
+> +
+> +	if (hw->fifo_mode !=3D ST_LSM6DSX_FIFO_BYPASS) {
+> +		err =3D -EBUSY;
+> +		goto out;
+> +	}
+> =20
+>  	/* do not enable events if they are already enabled */
+>  	if (state && hw->enable_event)
+> @@ -1357,7 +1361,10 @@ static int st_lsm6dsx_write_event_config(struct ii=
+o_dev *iio_dev,
+> =20
+>  	hw->enable_event =3D state;
+> =20
+> -	return 0;
+> +out:
+> +	mutex_unlock(&hw->conf_lock);
+> +
+> +	return err;
+>  }
+> =20
+>  int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
+> --=20
+> 2.23.0
+>=20
+
+--CUfgB8w4ZwR/yMy5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXXYsIQAKCRA6cBh0uS2t
+rDJwAQDohtkoPc1pDOOclCeLyb0iY9BEK0D2XyWWhCnM1j+B8QD+IbEt1HRA3TxE
+nlYcOIw8g+Sg8/H7gy43Ab1amFw8wAA=
+=4sAO
+-----END PGP SIGNATURE-----
+
+--CUfgB8w4ZwR/yMy5--

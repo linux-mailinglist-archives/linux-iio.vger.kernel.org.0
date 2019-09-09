@@ -2,46 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4A10AD7BA
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 13:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 507DBAD7E5
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2019 13:28:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731105AbfIILOJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Sep 2019 07:14:09 -0400
-Received: from first.geanix.com ([116.203.34.67]:53136 "EHLO first.geanix.com"
+        id S1730080AbfIIL2y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Sep 2019 07:28:54 -0400
+Received: from first.geanix.com ([116.203.34.67]:53494 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729483AbfIILOJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 9 Sep 2019 07:14:09 -0400
-Received: from [192.168.100.95] (unknown [95.138.208.137])
-        by first.geanix.com (Postfix) with ESMTPSA id 8CC46641B1;
-        Mon,  9 Sep 2019 11:13:39 +0000 (UTC)
+        id S1728269AbfIIL2y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 9 Sep 2019 07:28:54 -0400
+Received: from zen.localdomain (unknown [85.184.140.241])
+        by first.geanix.com (Postfix) with ESMTPSA id 656682D7;
+        Mon,  9 Sep 2019 11:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1568027619; bh=CK2BTGR5IZV/TUJe6QUjd6PfMTUbBAKIcnujZK1rltE=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=LIn0Z/6qm4b+lbKkLYdsrGiTap/zKxiJ+SC90SAFarIO2oPLI2CeVkhqbtt+Uigrh
-         BrObkzNYdTNxp0YKg4xIFjmrQP7kl3w497DKOWtyqnx+tITIGh9AvyYeY/tIRoQNrG
-         OFSLpgl4cPYRbwyHOnjWxFiChoHNozb3Q6UOTG6jILVbD5Rm7OsJDEuG1V4KJb2oqH
-         Xmzv1S3W3nHu3RcIORAUDvQO5v/IKZLXPG6XvJfj9v04RrTo+f2SUxKtn3zUEm+1/g
-         OAQXULHIZHdTlZtnRHpkvXbP5PoDHybykTz7NGeLqqAdunway426wsbRx+ad7FCKf4
-         5jypPSlah0siA==
-Subject: Re: [PATCH v5 2/6] iio: imu: st_lsm6dsx: add motion events
+        t=1568028502; bh=dPB3z3dF/jhtzWNVHaC2QxhxmxlZzyfVZq0Utq6B1Uo=;
+        h=From:To:Cc:Subject:Date;
+        b=IStapPoHiyeAjuH8OtlAuxh8jsPMJY6sUlDnfDyxPrlSiDrVj8FxEuAoaZCFzCG3K
+         1W12nFYoIHD2V6BNucWKs/Y5NS6uE8Ny6luDp5oQkbQHnBtxw4Pz43vRlbRfq86V8d
+         b6J3xUT2Yu8VqCP0bqTvrL+T1g5UIaB7qydeh4CgZPHY8oCFCWku0NAqnpTwxr2u3T
+         fhEfeaRuM4nlSWaIBvHlGTJAHJ9DRsrpRWkm+1ogK69tYOI1qEo7PEmfmR3g0QN4YX
+         rlQHZmtBsPbbmfwy+OxJ9ejWURjtqp0fhS1wzI+8YxYgwft2DYkhgJtHxAR3q5aUUq
+         O2Eg49wq7qowA==
+From:   Sean Nyekjaer <sean@geanix.com>
 To:     linux-iio@vger.kernel.org, jic23@kernel.org,
         lorenzo.bianconi83@gmail.com
-Cc:     denis.ciocca@st.com, mario.tesi@st.com, armando.visconti@st.com,
-        martin@geanix.com
-References: <20190909094506.51792-1-sean@geanix.com>
- <20190909094506.51792-2-sean@geanix.com>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <e1fcfc59-d06a-8da2-99b2-b987afc4192e@geanix.com>
-Date:   Mon, 9 Sep 2019 13:13:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+Cc:     Sean Nyekjaer <sean@geanix.com>, denis.ciocca@st.com,
+        mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH v6 1/6] iio: imu: st_lsm6dsx: move interrupt thread to core
+Date:   Mon,  9 Sep 2019 13:28:41 +0200
+Message-Id: <20190909112846.55280-1-sean@geanix.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20190909094506.51792-2-sean@geanix.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US-large
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=4.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,UNPARSEABLE_RELAY,URIBL_BLOCKED
         autolearn=disabled version=3.4.2
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
 Sender: linux-iio-owner@vger.kernel.org
@@ -49,56 +44,247 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This prepares the interrupt to be used for other stuff than
+fifo reading + event readings.
 
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 78 +---------------
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 88 +++++++++++++++++++
+ 2 files changed, 89 insertions(+), 77 deletions(-)
 
-On 09/09/2019 11.45, Sean Nyekjaer wrote:
-> +int st_lsm6dsx_event_setup(struct st_lsm6dsx_hw *hw, int state)
-> +{
-> +	int err;
-> +	u8 enable = 0;
-> +
-> +	if (!hw->settings->int1_func_addr)
-> +		return -ENOTSUPP;
-> +
-> +	enable = state ? hw->settings->event_settings.enable_reg.mask : 0;
-> +
-> +	err = regmap_update_bits(hw->regmap,
-> +				 hw->settings->event_settings.enable_reg.addr,
-> +				 hw->settings->event_settings.enable_reg.mask,
-> +				 enable);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	enable = state ? hw->irq_routing.mask : 0;
-> +
-> +	/* Enable wakeup interrupt */
-> +	return regmap_update_bits(hw->regmap, hw->irq_routing.addr,
-> +				  hw->irq_routing.mask,
-> +				  enable);
-> +}
-> +
-> +static int st_lsm6dsx_read_event(struct iio_dev *iio_dev,
-> +				   const struct iio_chan_spec *chan,
-> +				   enum iio_event_type type,
-> +				   enum iio_event_direction dir,
-> +				   enum iio_event_info info,
-> +				   int *val, int *val2)
-> +{
-> +	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
-> +	struct st_lsm6dsx_hw *hw = sensor->hw;
-> +
-> +	if (type != IIO_EV_TYPE_THRESH)
-> +		return -EINVAL;
-> +
-> +	*val2 = 0;
-> +	*val = hw->event_threshold;
-> +
-> +	return IIO_VAL_INT;
-> +}
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+index b0f3da1976e4..ef579650fd52 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -30,8 +30,6 @@
+  * Denis Ciocca <denis.ciocca@st.com>
+  */
+ #include <linux/module.h>
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+ #include <linux/iio/kfifo_buf.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
+@@ -42,10 +40,6 @@
+ 
+ #include "st_lsm6dsx.h"
+ 
+-#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
+-#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
+-#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
+-#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
+ #define ST_LSM6DSX_REG_FIFO_MODE_ADDR		0x0a
+ #define ST_LSM6DSX_FIFO_MODE_MASK		GENMASK(2, 0)
+ #define ST_LSM6DSX_FIFO_ODR_MASK		GENMASK(6, 3)
+@@ -654,25 +648,6 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
+ 	return err;
+ }
+ 
+-static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+-{
+-	struct st_lsm6dsx_hw *hw = private;
+-
+-	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
+-}
+-
+-static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+-{
+-	struct st_lsm6dsx_hw *hw = private;
+-	int count;
+-
+-	mutex_lock(&hw->fifo_lock);
+-	count = hw->settings->fifo_ops.read_fifo(hw);
+-	mutex_unlock(&hw->fifo_lock);
+-
+-	return count ? IRQ_HANDLED : IRQ_NONE;
+-}
+-
+ static int st_lsm6dsx_buffer_preenable(struct iio_dev *iio_dev)
+ {
+ 	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
+@@ -702,59 +677,8 @@ static const struct iio_buffer_setup_ops st_lsm6dsx_buffer_ops = {
+ 
+ int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
+ {
+-	struct device_node *np = hw->dev->of_node;
+-	struct st_sensors_platform_data *pdata;
+ 	struct iio_buffer *buffer;
+-	unsigned long irq_type;
+-	bool irq_active_low;
+-	int i, err;
+-
+-	irq_type = irqd_get_trigger_type(irq_get_irq_data(hw->irq));
+-
+-	switch (irq_type) {
+-	case IRQF_TRIGGER_HIGH:
+-	case IRQF_TRIGGER_RISING:
+-		irq_active_low = false;
+-		break;
+-	case IRQF_TRIGGER_LOW:
+-	case IRQF_TRIGGER_FALLING:
+-		irq_active_low = true;
+-		break;
+-	default:
+-		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
+-		return -EINVAL;
+-	}
+-
+-	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
+-				 ST_LSM6DSX_REG_HLACTIVE_MASK,
+-				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
+-					    irq_active_low));
+-	if (err < 0)
+-		return err;
+-
+-	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
+-	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
+-	    (pdata && pdata->open_drain)) {
+-		err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
+-					 ST_LSM6DSX_REG_PP_OD_MASK,
+-					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
+-						    1));
+-		if (err < 0)
+-			return err;
+-
+-		irq_type |= IRQF_SHARED;
+-	}
+-
+-	err = devm_request_threaded_irq(hw->dev, hw->irq,
+-					st_lsm6dsx_handler_irq,
+-					st_lsm6dsx_handler_thread,
+-					irq_type | IRQF_ONESHOT,
+-					"lsm6dsx", hw);
+-	if (err) {
+-		dev_err(hw->dev, "failed to request trigger irq %d\n",
+-			hw->irq);
+-		return err;
+-	}
++	int i;
+ 
+ 	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+ 		if (!hw->iio_devs[i])
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 2d3495560136..d0bcbbfb6297 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -50,6 +50,8 @@
+ #include <linux/delay.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/pm.h>
+ #include <linux/regmap.h>
+ #include <linux/bitfield.h>
+@@ -65,6 +67,11 @@
+ #define ST_LSM6DSX_REG_BDU_ADDR			0x12
+ #define ST_LSM6DSX_REG_BDU_MASK			BIT(6)
+ 
++#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
++#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
++#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
++#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
++
+ static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
+ 	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
+ 	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
+@@ -1466,6 +1473,83 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+ 	return iio_dev;
+ }
+ 
++static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
++{
++	struct st_lsm6dsx_hw *hw = private;
++
++	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
++}
++
++static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
++{
++	struct st_lsm6dsx_hw *hw = private;
++	int count;
++
++	mutex_lock(&hw->fifo_lock);
++	count = hw->settings->fifo_ops.read_fifo(hw);
++	mutex_unlock(&hw->fifo_lock);
++
++	return count ? IRQ_HANDLED : IRQ_NONE;
++}
++
++static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
++{
++	struct st_sensors_platform_data *pdata;
++	struct device_node *np = hw->dev->of_node;
++	unsigned long irq_type;
++	bool irq_active_low;
++	int err;
++
++	irq_type = irqd_get_trigger_type(irq_get_irq_data(hw->irq));
++
++	switch (irq_type) {
++	case IRQF_TRIGGER_HIGH:
++	case IRQF_TRIGGER_RISING:
++		irq_active_low = false;
++		break;
++	case IRQF_TRIGGER_LOW:
++	case IRQF_TRIGGER_FALLING:
++		irq_active_low = true;
++		break;
++	default:
++		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
++		return -EINVAL;
++	}
++
++	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
++				 ST_LSM6DSX_REG_HLACTIVE_MASK,
++				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
++					    irq_active_low));
++	if (err < 0)
++		return err;
++
++	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
++	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
++	    (pdata && pdata->open_drain)) {
++		err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
++					 ST_LSM6DSX_REG_PP_OD_MASK,
++					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
++						    1));
++		if (err < 0)
++			return err;
++
++		irq_type |= IRQF_SHARED;
++	}
++
++	err = devm_request_threaded_irq(hw->dev, hw->irq,
++					st_lsm6dsx_handler_irq,
++					st_lsm6dsx_handler_thread,
++					irq_type | IRQF_ONESHOT,
++					"lsm6dsx", hw);
++	if (err) {
++		dev_err(hw->dev, "failed to request trigger irq %d\n",
++			hw->irq);
++		return err;
++	}
++
++	return 0;
++}
++
+ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 		     struct regmap *regmap)
+ {
+@@ -1514,6 +1598,10 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 	}
+ 
+ 	if (hw->irq > 0) {
++		err = st_lsm6dsx_irq_setup(hw);
++		if (err < 0)
++			return err;
++
+ 		err = st_lsm6dsx_fifo_setup(hw);
+ 		if (err < 0)
+ 			return err;
+-- 
+2.23.0
 
-For a device that not support wake events the user will get a:
-root@board:/sys/bus/iio/devices/iio:device2# echo 1 > 
-events/in_accel_x_thresh_either_en
--sh: echo: write error: Unknown error 524
-
-/Sean

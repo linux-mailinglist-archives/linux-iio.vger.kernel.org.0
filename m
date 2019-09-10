@@ -2,40 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED2CAEBAC
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Sep 2019 15:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD21BAEBC1
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Sep 2019 15:40:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732640AbfIJNgK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 10 Sep 2019 09:36:10 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:54870 "EHLO huawei.com"
+        id S1729500AbfIJNkC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 10 Sep 2019 09:40:02 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:57790 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732546AbfIJNgK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Sep 2019 09:36:10 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 31875E1C68541BC25C73;
-        Tue, 10 Sep 2019 21:36:05 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Tue, 10 Sep 2019
- 21:36:02 +0800
-Date:   Tue, 10 Sep 2019 14:35:50 +0100
+        id S1727815AbfIJNkC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Sep 2019 09:40:02 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 0879F4319584078F2FDD;
+        Tue, 10 Sep 2019 21:39:58 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Tue, 10 Sep 2019
+ 21:39:54 +0800
+Date:   Tue, 10 Sep 2019 14:39:46 +0100
 From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Krzysztof Wilczynski <kw@linux.com>
+To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
 CC:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: light: bh1750: Move static keyword to the front of
- declaration
-Message-ID: <20190910143550.00000e64@huawei.com>
-In-Reply-To: <20190908135208.GA29162@rocinante>
-References: <20190902113132.26658-1-kw@linux.com>
-        <20190908114944.18bb78e3@archlinux>
-        <20190908135208.GA29162@rocinante>
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 0/8] add magnetometer support for MPU925x
+Message-ID: <20190910143946.00002324@huawei.com>
+In-Reply-To: <MN2PR12MB337376A70BB66E8F7A3997D2C4B70@MN2PR12MB3373.namprd12.prod.outlook.com>
+References: <20190829151801.13014-1-jmaneyrol@invensense.com>
+        <20190908124242.21669f1f@archlinux>
+        <MN2PR12MB337376A70BB66E8F7A3997D2C4B70@MN2PR12MB3373.namprd12.prod.outlook.com>
 Organization: Huawei
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.202.226.61]
 X-CFilter-Loop: Reflected
@@ -44,92 +40,155 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 8 Sep 2019 15:52:09 +0200
-Krzysztof Wilczynski <kw@linux.com> wrote:
+On Mon, 9 Sep 2019 09:55:59 +0000
+Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
 
-> Hello Jonathan,
+> Hi Jonathan,
 > 
-> Thank you for feedback.
+> we could add a check on the DT for i2c-gate node.
+> We also need to add a check on the ACPI configuration used by the ASUS T100TA device.
+
+Great.
+
 > 
-> [...]
-> > > drivers/iio/light/bh1750.c:64:1: warning:
-> > >   â€˜staticâ€™ is not at beginning of declaration [-Wold-style-declaration]  
-> [...]
-> > This one has me confused.  The warning seems to be false as static
-> > is at the beginning of the declaration....
-> > 
-> > Sure we "could" combine the declaration with the definition as you have
-> > done here, but that has nothing much to do with the warning.  
-> [...]
-> 
-> I only moved the "static const" at the front, I haven't changed the
-> code as it's already has been a declaration and definition.  There is
-> no semicolon there and the original author put a newline to separate
-> things which makes it look as if these were separate.
-> 
-> Simple example based on the existing code:
-> 
->   https://godbolt.org/z/hV4HP7
-> 
-> I hope this helps to illustrate the change in the patch.  I apologise
-> if my approach was incorrect.
-> 
-> As part of the patch I removed the newline in an aim to make it less
-> confusing to anyone who will read the code in the future.  Especially,
-> since it makes it a bit awkward to read and when using things like
-> grep.
-> 
-> Krzysztof
+> In this case, do you think it is still valuable to have a Kconfig option? (this can still help to reduce driver footprint)
 
-I get what you are trying to do, the issue is the code is currently:
+It's less painful if the only reason is tinyfication, but then I want
+numbers in the patch to show it makes a significant difference.
 
-struct bh1750_chip_info {
-	u16 mtreg_min;
-	u16 mtreg_max;
-	u16 mtreg_default;
-	int mtreg_to_usec;
-	int mtreg_to_scale;
+Kconfig options are just more things to test so generally prefer
+to avoid them for little additions like this.
 
-	/*
-	 * For BH1710/BH1721 all possible integration time values won't fit
-	 * into one page so displaying is limited to every second one.
-	 * Note, that user can still write proper values which were not
-	 * listed.
-	 */
-	int inc;
-
-	u16 int_time_low_mask;
-	u16 int_time_high_mask;
-}
-
-static const bh1750_chip_info_tbl[] = {
-	[BH1710] = { 140, 1022, 300, 400,  250000000, 2, 0x001F, 0x03E0 },
-	[BH1721] = { 140, 1020, 300, 400,  250000000, 2, 0x0010, 0x03E0 },
-	[BH1750] = { 31,  254,  69,  1740, 57500000,  1, 0x001F, 0x00E0 },
-};
-
-That test is supposed to catch the second block being
-
-const static bh1750_chip_info_tbl[] = {
-...
-
-Which it isn't.  So the issue here was never that the static keyword
-wasn't at the front of the declaration but that we could save a tiny
-bit code by using the pattern
-
-static const struct bh1750_chip_info {
-...
-} bh1750_chip_info_tbl[] {
-	[...] = ...
-};
-
-We can do that of course, but that's nothing to do with moving the static
-keyword to the front of the declaration which is what the patch claims
-to be doing.
+Thanks,
 
 Jonathan
-
-
-
+> 
+> Thanks.
+> JB
+> 
+> 
+> From: Jonathan Cameron <jic23@kernel.org>
+> 
+> Sent: Sunday, September 8, 2019 13:42
+> 
+> To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+> 
+> Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>
+> 
+> Subject: Re: [PATCH 0/8] add magnetometer support for MPU925x
+> 
+>  
+> 
+> 
+>  CAUTION: This email originated from outside of the organization. Please make sure the sender is who they say they are and do not click links or open attachments unless you recognize the sender and know the content is safe.
+> 
+> 
+> 
+> On Thu, 29 Aug 2019 15:18:33 +0000
+> 
+> Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+> 
+> 
+> 
+> > This serie of patches adds support of magnetometer inside MPU925x chips.  
+> 
+> > It is using the MPU i2c master to drive the integrated magnetometer and  
+> 
+> > read data into the MPU FIFO.  
+> 
+> >   
+> 
+> > Beware that this is disabling access to the i2c auxiliary bus. Since this  
+> 
+> > can break existing setup, it is an optional feature requiring to enable  
+> 
+> > the corresponding Kconfig option.  
+> 
+> 
+> 
+> That's not great... People will fail to set that correctly for their
+> 
+> setup even if there is a 'correct' setting.
+> 
+> 
+> 
+> So we need more information to risk that breakage + discussions of
+> 
+> ways to avoid it.  Can we for example check if the auxiliary bus is
+> 
+> in use? (DT binding for example - check for the i2c-gate node?)
+> 
+> 
+> 
+> Jonathan
+> 
+> 
+> 
+> >   
+> 
+> > Jean-Baptiste Maneyrol (8):  
+> 
+> >   iio: imu: inv_mpu6050: disable i2c mux for 925x under Kconfig  
+> 
+> >   iio: imu: inv_mpu6050: add header include protection macro  
+> 
+> >   iio: imu: inv_mpu6050: add defines for supporting 9-axis chips  
+> 
+> >   iio: imu: inv_mpu6050: fix objects syntax in Makefile  
+> 
+> >   iio: imu: inv_mpu6050: helpers for using i2c master on auxiliary bus  
+> 
+> >   iio: imu: inv_mpu6050: add magnetometer implementation for MPU925x  
+> 
+> >   iio: imu: inv_mpu6050: add magnetometer support inside mpu driver  
+> 
+> >   iio: imu: inv_mpu6050: add fifo support for magnetometer data  
+> 
+> >   
+> 
+> >  drivers/iio/imu/inv_mpu6050/Kconfig           |   9 +  
+> 
+> >  drivers/iio/imu/inv_mpu6050/Makefile          |   8 +-  
+> 
+> >  .../iio/imu/inv_mpu6050/inv_mpu9250_magn.c    | 239 ++++++++++++++++++  
+> 
+> >  .../iio/imu/inv_mpu6050/inv_mpu9250_magn.h    |  27 ++  
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c     | 191 ++++++++++++++  
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h     |  46 ++++  
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 141 ++++++++++-  
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c     |   5 +  
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  79 +++++-  
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c    | 120 +++++++++  
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_magn.h    | 107 ++++++++  
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  14 +-  
+> 
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  90 ++++++-  
+> 
+> >  13 files changed, 1055 insertions(+), 21 deletions(-)  
+> 
+> >  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu9250_magn.c  
+> 
+> >  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu9250_magn.h  
+> 
+> >  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c  
+> 
+> >  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h  
+> 
+> >  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c  
+> 
+> >  create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_magn.h  
+> 
+> >   
+> 
+> 
+> 
 
 

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B3E9AF621
+	by mail.lfdr.de (Postfix) with ESMTP id 79D28AF622
 	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2019 08:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726965AbfIKGue (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Sep 2019 02:50:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43124 "EHLO mail.kernel.org"
+        id S1726952AbfIKGuh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Sep 2019 02:50:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43138 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726952AbfIKGue (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 11 Sep 2019 02:50:34 -0400
+        id S1726899AbfIKGug (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 11 Sep 2019 02:50:36 -0400
 Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C795721D79;
-        Wed, 11 Sep 2019 06:50:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9486521A4C;
+        Wed, 11 Sep 2019 06:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568184633;
-        bh=N1XEaQNzfvx6K7xwaJxikVXHz/mtYudkHdSG6tSbo+M=;
+        s=default; t=1568184636;
+        bh=RGeV+WKkRkFn1fkbLOfYy/j9Z7M/qKew358HaObcgDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UtHVYoZiUeOC0ptLogm5IW1ebH3dHDO3sWOD7bL9RxP3UDf6/WqAam91N3589I3Ib
-         ANyRy3DozHKj8evVGdIQ28BbbB2NJvXu0dlpmJmF8Xa4m31gOU9URoxm23led2IPZ0
-         1Hjlrskjdee5xv5zFVyp850zZh8SLqD7TA68Yqug=
+        b=tpPrDo2jhYJEaex7w8SghOCDK/hzJAiHnoR5xUfW/ogVflGXQfGfnLKDy//A5QxqV
+         X4mjZrGWfARaS6VlfOmWpcgW8zA1ucfjuax86Nl6nrhhnSthrQqfKvV3usXdfOavXt
+         cT2WHDCbDnkY2EgdxNDWbz+c5Xf/RpGlTiHr+07E=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     jic23@kernel.org
 Cc:     sean@geanix.com, lorenzo.bianconi@redhat.com,
         linux-iio@vger.kernel.org, mario.tesi@st.com,
         armando.visconti@st.com, denis.ciocca@st.com
-Subject: [PATCH 1/2] iio: imu: st_lsm6dsx: enable LIR for sensor events
-Date:   Wed, 11 Sep 2019 08:50:03 +0200
-Message-Id: <376b8e64aa95f686e46aa760934cd25d9f47833f.1568184231.git.lorenzo@kernel.org>
+Subject: [PATCH 2/2] iio: imu: st_lsm6dsx: enable clear on read for latched interrupts
+Date:   Wed, 11 Sep 2019 08:50:04 +0200
+Message-Id: <d2c9b90f277826a4b3403d44885fff1cd36d9245.1568184231.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <cover.1568184231.git.lorenzo@kernel.org>
 References: <cover.1568184231.git.lorenzo@kernel.org>
@@ -41,122 +41,94 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Enable Latched interrupt by default for sensor events
+Enable clear on read feature for latched interrupts. This bit allows
+immediately clearing the latched interrupts of an event detection upon
+the read of the corresponding status register.
+It must be set to 1 together with LIR.
+This feature is available just on LSM6DS0/LSM6DSR/ASM330LHH
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 ++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 35 ++++++++++++++++++++
- 2 files changed, 37 insertions(+)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 24 ++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 5e3cd96b0059..3ea0dc13d101 100644
+index 3ea0dc13d101..fefd9042590a 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -215,6 +215,7 @@ struct st_lsm6dsx_ext_dev_settings {
-  * @fs_table: Hw sensors gain table (gain + val).
+@@ -216,6 +216,7 @@ struct st_lsm6dsx_ext_dev_settings {
   * @decimator: List of decimator register info (addr + mask).
   * @batch: List of FIFO batching register info (addr + mask).
-+ * @lir: Latched interrupt register info (addr + mask).
+  * @lir: Latched interrupt register info (addr + mask).
++ * @clear_on_read: Clear on read register info (addr + mask).
   * @fifo_ops: Sensor hw FIFO parameters.
   * @ts_settings: Hw timer related settings.
   * @shub_settings: i2c controller related settings.
-@@ -237,6 +238,7 @@ struct st_lsm6dsx_settings {
- 	struct st_lsm6dsx_fs_table_entry fs_table[2];
+@@ -239,6 +240,7 @@ struct st_lsm6dsx_settings {
  	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
  	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
-+	struct st_lsm6dsx_reg lir;
+ 	struct st_lsm6dsx_reg lir;
++	struct st_lsm6dsx_reg clear_on_read;
  	struct st_lsm6dsx_fifo_ops fifo_ops;
  	struct st_lsm6dsx_hw_ts_settings ts_settings;
  	struct st_lsm6dsx_shub_settings shub_settings;
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 2d3495560136..a208da865efe 100644
+index a208da865efe..b65a6ca775e0 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -237,6 +237,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.mask = GENMASK(5, 3),
- 			},
+@@ -601,6 +601,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			.addr = 0x56,
+ 			.mask = BIT(0),
  		},
-+		.lir = {
-+			.addr = 0x58,
-+			.mask = BIT(0),
-+		},
- 		.fifo_ops = {
- 			.update_fifo = st_lsm6dsx_update_fifo,
- 			.read_fifo = st_lsm6dsx_read_fifo,
-@@ -349,6 +353,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.mask = GENMASK(5, 3),
- 			},
- 		},
-+		.lir = {
-+			.addr = 0x58,
-+			.mask = BIT(0),
-+		},
- 		.fifo_ops = {
- 			.update_fifo = st_lsm6dsx_update_fifo,
- 			.read_fifo = st_lsm6dsx_read_fifo,
-@@ -470,6 +478,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.mask = GENMASK(5, 3),
- 			},
- 		},
-+		.lir = {
-+			.addr = 0x58,
-+			.mask = BIT(0),
-+		},
- 		.fifo_ops = {
- 			.update_fifo = st_lsm6dsx_update_fifo,
- 			.read_fifo = st_lsm6dsx_read_fifo,
-@@ -585,6 +597,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.mask = GENMASK(7, 4),
- 			},
- 		},
-+		.lir = {
++		.clear_on_read = {
 +			.addr = 0x56,
-+			.mask = BIT(0),
++			.mask = BIT(6),
 +		},
  		.fifo_ops = {
  			.update_fifo = st_lsm6dsx_update_fifo,
  			.read_fifo = st_lsm6dsx_read_tagged_fifo,
-@@ -715,6 +731,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.mask = GENMASK(7, 4),
- 			},
+@@ -735,6 +739,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			.addr = 0x56,
+ 			.mask = BIT(0),
  		},
-+		.lir = {
++		.clear_on_read = {
 +			.addr = 0x56,
-+			.mask = BIT(0),
++			.mask = BIT(6),
 +		},
  		.fifo_ops = {
  			.update_fifo = st_lsm6dsx_update_fifo,
  			.read_fifo = st_lsm6dsx_read_tagged_fifo,
-@@ -822,6 +842,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.mask = GENMASK(7, 4),
- 			},
+@@ -846,6 +854,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			.addr = 0x56,
+ 			.mask = BIT(0),
  		},
-+		.lir = {
++		.clear_on_read = {
 +			.addr = 0x56,
-+			.mask = BIT(0),
++			.mask = BIT(6),
 +		},
  		.fifo_ops = {
  			.update_fifo = st_lsm6dsx_update_fifo,
  			.read_fifo = st_lsm6dsx_read_tagged_fifo,
-@@ -1416,6 +1440,17 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
- 	if (err < 0)
- 		return err;
+@@ -1449,6 +1461,18 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+ 					 hw->settings->lir.mask, data);
+ 		if (err < 0)
+ 			return err;
++
++		/* enable clear on read for latched interrupts */
++		if (hw->settings->clear_on_read.addr) {
++			data = ST_LSM6DSX_SHIFT_VAL(1,
++					hw->settings->clear_on_read.mask);
++			err = regmap_update_bits(hw->regmap,
++					hw->settings->clear_on_read.addr,
++					hw->settings->clear_on_read.mask,
++					data);
++			if (err < 0)
++				return err;
++		}
+ 	}
  
-+	/* enable Latched interrupts for device events */
-+	if (hw->settings->lir.addr) {
-+		unsigned int data;
-+
-+		data = ST_LSM6DSX_SHIFT_VAL(1, hw->settings->lir.mask);
-+		err = regmap_update_bits(hw->regmap, hw->settings->lir.addr,
-+					 hw->settings->lir.mask, data);
-+		if (err < 0)
-+			return err;
-+	}
-+
  	err = st_lsm6dsx_init_shub(hw);
- 	if (err < 0)
- 		return err;
 -- 
 2.21.0
 

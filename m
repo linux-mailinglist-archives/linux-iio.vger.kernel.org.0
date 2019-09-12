@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1262B115E
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Sep 2019 16:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 388D7B1160
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Sep 2019 16:43:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732784AbfILOnh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Sep 2019 10:43:37 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:45377 "EHLO
+        id S1732799AbfILOnj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Sep 2019 10:43:39 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:46199 "EHLO
         mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732708AbfILOnh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Sep 2019 10:43:37 -0400
-Received: by mail-wr1-f66.google.com with SMTP id l16so28681073wrv.12
-        for <linux-iio@vger.kernel.org>; Thu, 12 Sep 2019 07:43:36 -0700 (PDT)
+        with ESMTP id S1732722AbfILOnj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Sep 2019 10:43:39 -0400
+Received: by mail-wr1-f66.google.com with SMTP id d17so15988261wrq.13
+        for <linux-iio@vger.kernel.org>; Thu, 12 Sep 2019 07:43:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=8qKtktIW48wn6megrwv4Wyp2PCeXeuD2/owEpjgyYCs=;
-        b=hyBMDEUalzb8J7W+9zqEhhCOXYLK8Ca9zLJaXcVgDvPjcCcaDImGPHjKEZcetx5XEA
-         cbhSmkA/jzDD+mtq29QoK2h3fkcQ9MAk514EalyZHlmkmob5eM60y7sGhSlphQU039dI
-         0mnl642tMdwXIESRav0LyB1Qhefb1ypcgbzX98ulRBGnDzCC5u6JofrSntn1zLys/nDj
-         CBuuAgPn4VhIikC7jSjNu7ux9jSUoz6JE709DyxmuuHZM8G7PpRFtW9YClUzUdQcNXsH
-         b6ZlG2vn7SSo9vGXuwtbovAx/cpIuHoCqPTMw/Form4mkL79dv/mVM3JHGH+Ox3Y2Dbq
-         JKuQ==
+        bh=0S5huaYKgRvwr4SWApclRaTXV4uX21BxatCAo87A5Sw=;
+        b=eiw6Ha65281PYedEzUJ6eCGWsRU8vMM9yb2R4gDzPkWQ3PeKZOZPdMEwQKAyvsXD/2
+         F6+H+0eQAlqUTFfy03CcTWXcclPCTGW3Wfhz8nPkuyFRucNjgnUcB6atJg7wYt+VcWam
+         6Kh1dQY014qV2XmUxgfDDodHztwA4kBxRVVnVwV7cH7GO23LuE9D4gn/8DZ/A3U2/T81
+         mpIreyCP/33owO3a0D06RQAgTgCv4TaZc7hZV95MrocYpuNe4zlbi5H1qbuFj70d5LYa
+         LizkVDr76XyJztC50ZH8bHvIF34+zIbP3hUC0m6JUzEEMAVRcXhQ4QPmIKDvkDEleIWz
+         mhWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=8qKtktIW48wn6megrwv4Wyp2PCeXeuD2/owEpjgyYCs=;
-        b=Kd8YE/hA8jp8+L0tmuaQTTYylJCZVvlkAaEcmjVMf2qfTFIarpnp3vT2d4JBDXz8cK
-         gaQ60dt4BQD6fwcwkePyAmZoe0mT4eebxYhRbdbryo653cGl9kR8IsWhK5ALvnmsgfqC
-         xVkwHkuqmPLAHQ/Z++TCwltApYOsEvbjSt+MdGJkRTrRNEX2UwrJ9wsKk9R92PmSsoiF
-         yzYGW5Yuq50QdpoBOJhELJhRYmWkgVnUR7CLQ/U6712feeuImtZLD4TS9bnrvnr1AcqH
-         817LIxLO8Nyk1L9CvliB9rFqj2aTCYku0SX9/lKzc5YFeCVvoX0fLE5QilJ0PYZa3pC4
-         DmiQ==
-X-Gm-Message-State: APjAAAUgIGOstI2OjJy5ycBNhqbvLLzhhtDXQ0YnjUtkJTyDto9YgZDA
-        z7VI3bM7ivo2Q97YeM3xoP0=
-X-Google-Smtp-Source: APXvYqzr1Taq5m0PJ7mYDj3qzajsGPCjCukotrGI+P6LNTTNJh4175oTngnzbfQiHAFb32MEY6TrhQ==
-X-Received: by 2002:adf:cd8e:: with SMTP id q14mr13274195wrj.187.1568299415797;
-        Thu, 12 Sep 2019 07:43:35 -0700 (PDT)
+        bh=0S5huaYKgRvwr4SWApclRaTXV4uX21BxatCAo87A5Sw=;
+        b=n2sGj3/hRwIr+r29pnREUG+kQ1e6DzOZO3nTkJrrXlEqugYks6PmVUv29nyNYDpCUJ
+         MeElIvQ00fWEpldwSSGq5qAr9zF0kwXpa0SxIyzI08W9mIfPAvxksF8qu+32fYm8Ytad
+         CdOey04+/2PbHZUgSqLM8cUr232RFDJhJ5MfESiiqWsNFkoV2gM9FaDEHB88rfUczBk4
+         9OaWF5gZnjCif33jk5NFBXab9Iz0F77HNWuCFUWEfgKkFoErFEZKJTFfcrt7Gb2Vx0O1
+         yJekFnFFWtohKi6+SaKubonNYEO2DPXl0vP8rve3NSewfaFdm3GY3mnAiiWcC7LYfBhs
+         n2DA==
+X-Gm-Message-State: APjAAAWewNPHXMlW1IQF+xrJvyPVplGnH7OF+E50SSLRKZD1tf6zHRqg
+        yhb53RGBA5dxJ7ZyBnGIFU8=
+X-Google-Smtp-Source: APXvYqzOEii8Hz5BW3kZOjyQVBUN/zAP+E7Q7hVE9sHFvH4SPiGHp8dwjVYoeUKwT+H8oRAw2X0zHA==
+X-Received: by 2002:a5d:5281:: with SMTP id c1mr3770078wrv.339.1568299416955;
+        Thu, 12 Sep 2019 07:43:36 -0700 (PDT)
 Received: from NewMoon.iit.local ([90.147.180.254])
-        by smtp.gmail.com with ESMTPSA id q19sm35175256wra.89.2019.09.12.07.43.34
+        by smtp.gmail.com with ESMTPSA id q19sm35175256wra.89.2019.09.12.07.43.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Sep 2019 07:43:35 -0700 (PDT)
+        Thu, 12 Sep 2019 07:43:36 -0700 (PDT)
 From:   Andrea Merello <andrea.merello@gmail.com>
 To:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
         knaack.h@gmx.de, pmeerw@pmeerw.net
 Cc:     linux-iio@vger.kernel.org,
         Andrea Merello <andrea.merello@gmail.com>
-Subject: [PATCH 2/4] iio: ad7949: fix incorrect SPI xfer len
-Date:   Thu, 12 Sep 2019 16:43:08 +0200
-Message-Id: <20190912144310.7458-3-andrea.merello@gmail.com>
+Subject: [PATCH 3/4] iio: ad7949: fix SPI xfer delays
+Date:   Thu, 12 Sep 2019 16:43:09 +0200
+Message-Id: <20190912144310.7458-4-andrea.merello@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190912144310.7458-1-andrea.merello@gmail.com>
 References: <20190912144310.7458-1-andrea.merello@gmail.com>
@@ -59,50 +59,77 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This driver supports 14-bits and 16-bits devices. All of them have a 14-bit
-configuration registers. All SPI trasfers, for reading AD conversion
-results and for writing the configuration register, fit in two bytes.
+The driver calls udelay(2) after each SPI xfer. However, according to
+the specifications, the SPI timing should be as follows:
 
-The driver always uses 4-bytes xfers which seems at least pointless (maybe
-even harmful). This patch trims the SPI xfer len and the buffer size to
-two bytes.
+1- The end of SPI xfer (CNV/CS rising edge) causes the device to initiate
+   the conversion phase, which takes up to 2.2uS.
+
+2- At the end of the conversion phase, the device starts the acquisition
+   phase for the next conversion automatically (regardless to the state of
+   CNV pin); the conversion phase should last at least 1.8 uS
+
+The whole cycle timing is thus 4uS long. The SPI data is read during the
+acquisition phase (RAC mode, no need to worry about "Tdata").
+
+In order to be compliant wrt these timing specifications we should wait
+4uS after each SPI xfer (that is conservative, because there is also the
+SPI xfer duration itself - which at the maximum supported clock should be
+about 320nS).
+
+This patch enlarges the delay up to 4uS and it also removes the explicit
+calls to udelay(), relying on spi_transfer->delay_usecs.
 
 Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
 ---
- drivers/iio/adc/ad7949.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7949.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-index 518044c31a73..5c2b3446fa4a 100644
+index 5c2b3446fa4a..25d1e1b24257 100644
 --- a/drivers/iio/adc/ad7949.c
 +++ b/drivers/iio/adc/ad7949.c
-@@ -54,7 +54,7 @@ struct ad7949_adc_chip {
- 	u8 resolution;
- 	u16 cfg;
- 	unsigned int current_channel;
--	u32 buffer ____cacheline_aligned;
-+	u16 buffer ____cacheline_aligned;
- };
- 
- static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
-@@ -67,7 +67,7 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
- 	struct spi_transfer tx[] = {
- 		{
+@@ -69,6 +69,7 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
  			.tx_buf = &ad7949_adc->buffer,
--			.len = 4,
-+			.len = 2,
+ 			.len = 2,
  			.bits_per_word = bits_per_word,
++			.delay_usecs = 4,
  		},
  	};
-@@ -95,7 +95,7 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
- 	struct spi_transfer tx[] = {
- 		{
+ 
+@@ -77,11 +78,6 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
+ 	spi_message_init_with_transfers(&msg, tx, 1);
+ 	ret = spi_sync(ad7949_adc->spi, &msg);
+ 
+-	/*
+-	 * This delay is to avoid a new request before the required time to
+-	 * send a new command to the device
+-	 */
+-	udelay(2);
+ 	return ret;
+ }
+ 
+@@ -97,6 +93,7 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
  			.rx_buf = &ad7949_adc->buffer,
--			.len = 4,
-+			.len = 2,
+ 			.len = 2,
  			.bits_per_word = bits_per_word,
++			.delay_usecs = 4,
  		},
  	};
+ 
+@@ -112,12 +109,6 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+ 	if (ret)
+ 		return ret;
+ 
+-	/*
+-	 * This delay is to avoid a new request before the required time to
+-	 * send a new command to the device
+-	 */
+-	udelay(2);
+-
+ 	ad7949_adc->current_channel = channel;
+ 
+ 	*val = ad7949_adc->buffer & mask;
 -- 
 2.17.1
 

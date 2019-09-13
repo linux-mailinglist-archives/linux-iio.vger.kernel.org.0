@@ -2,236 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44287B207F
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2019 15:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C03E9B2184
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2019 16:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390403AbfIMNWc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Sep 2019 09:22:32 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:40459 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388828AbfIMNWW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Sep 2019 09:22:22 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8DDGDDQ008470;
-        Fri, 13 Sep 2019 15:21:45 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=XsRDAFdNpZsq68i7jv8FE3dvyRmLYMzu893o05OONls=;
- b=F/KxLIs604mI5tT9XNXLzWVfNZC04NPczB2rKfTrvl8xMvXssmxN5svUaiLe67H9xKIa
- L0nEQ7TtrcaKK/6/sNY/IEVt7WgSnCnhK5UgTUM+tH+H/au1HAvRlineBlxIhHNx6SqC
- P5QHdTRDFE0l5l4IwKSCPDgE/y/AawZCQJtce9h3FCdiOTDrjQBNFCDdI1TU2tsbqJOd
- LRqqWtcGgln1hvj55Ub1xCDl26GMyYHxuPrEKFDw3XEoncS7ou7oH6omH7QYjla5Y/mj
- QOYt+6e2zxX4X5gJ4wd5nvb2eW+lhTI3qMHIlG7H5Z703w9E/mO3vU0sA5ZpaNRlT8Vh IA== 
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2uyte2w3k6-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 13 Sep 2019 15:21:45 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 90BA74B;
-        Fri, 13 Sep 2019 13:21:40 +0000 (GMT)
-Received: from Webmail-eu.st.com (Safex1hubcas21.st.com [10.75.90.44])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E43132C2B99;
-        Fri, 13 Sep 2019 15:21:39 +0200 (CEST)
-Received: from SAFEX1HUBCAS22.st.com (10.75.90.92) by SAFEX1HUBCAS21.st.com
- (10.75.90.44) with Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 13 Sep
- 2019 15:21:39 +0200
-Received: from localhost (10.48.1.232) by Webmail-ga.st.com (10.75.90.48) with
- Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 13 Sep 2019 15:21:38 +0200
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-To:     <jic23@kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
-        <linux-iio@vger.kernel.org>, <lars@metafoo.de>, <knaack.h@gmx.de>,
-        <pmeerw@pmeerw.net>, <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH] iio: adc: stm32-adc: fix a race when using several adcs with dma and irq
-Date:   Fri, 13 Sep 2019 15:21:30 +0200
-Message-ID: <1568380890-313-1-git-send-email-fabrice.gasnier@st.com>
-X-Mailer: git-send-email 2.7.4
+        id S2388542AbfIMOAe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Sep 2019 10:00:34 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:33078 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388610AbfIMOAd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Sep 2019 10:00:33 -0400
+Received: by mail-ed1-f67.google.com with SMTP id o9so27195841edq.0
+        for <linux-iio@vger.kernel.org>; Fri, 13 Sep 2019 07:00:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=essensium-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=wQZMPduMO/AGfff6QWqX5As21nc9QyC0AE0tu1+LlCI=;
+        b=NPvDM7j+PZm2sXotF5svQGUCg4o8IoL59R/ruI3zb9WPKxH+wzbL6TZUk4MzZGyBEF
+         3uI1pNHqrnp5NpuSvqnkDFYu0G9dBdfF2h+MO3VnSCLa3yxwk+p5khPgZpOzIq4BEnO9
+         WCAqaFVz2SpLTE2/O/JX7FM2fQOmGHsO3/5c/SrTpwku4sBPKEu4slTxpDavtbmcmml7
+         74NvbchxJPhISEOYj7MKOUx8CUtOOjkua5MIbKcOD1XEOdXjVSABUlIe4Pe+Fpqp+xDV
+         vOdaGcDIlLBocCJFg2/aQACO05l7x6rAx/2i3fjQlwjioIiS4a8bqF+RTXS3p2MbZAWL
+         GZjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=wQZMPduMO/AGfff6QWqX5As21nc9QyC0AE0tu1+LlCI=;
+        b=MT5MnK41m299/5FYcAYwDfo2zRHrlAY8Bde9+j5/aYQhoKTd6aKuPWs7D/57ZqDPkn
+         jPKFOAVCNo9pbQRuQLsWD41wEiwxeHkcFf0nQrrtN4S4y2keN9KPYtguev8OhvvfTcqb
+         nJA+dITA+JfoENQyNh7IJ/zhkJUQJ/NX/PTOjAB8xL+tkCQQp0jl/H2ZNhv+LpC44L6g
+         AbLjnK4FLu8/T7UU35p511w47XcNka5bSi+8wc2eynZ9Gl+9CgLei/yUAzRQ2/NmTEnI
+         9CyLQS8L0WKNWPFinf/6UyC4KwowNo/uVBn0HM7TIzHlAD68MBqk0TqSTgf+6F3tzZ3D
+         DWWQ==
+X-Gm-Message-State: APjAAAU/IQXAb2ygKdSlmy14cE7eFbEgkLFfwS1MajYYDmUnOwbdtXcE
+        pLFd8yg1hlBLG+n3PrEBL+2vp+x/IQs=
+X-Google-Smtp-Source: APXvYqyxWOAdp49zwOgiVHg16wNgR7r92CJrMbyf3dR+nCwRJE2xOfgwftLaLbfJ6rzpfU3maBxEYQ==
+X-Received: by 2002:a50:fd96:: with SMTP id o22mr43801749edt.218.1568383231349;
+        Fri, 13 Sep 2019 07:00:31 -0700 (PDT)
+Received: from [192.168.1.31] (230.120-247-81.adsl-dyn.isp.belgacom.be. [81.247.120.230])
+        by smtp.gmail.com with ESMTPSA id j10sm5395213ede.59.2019.09.13.07.00.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Sep 2019 07:00:30 -0700 (PDT)
+Subject: Re: [PATCH 0/4] Fixes for ad7949
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "andrea.merello@gmail.com" <andrea.merello@gmail.com>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+References: <20190912144310.7458-1-andrea.merello@gmail.com>
+ <1f13820761bbdb4db685a90e9bcf35a388b246cf.camel@analog.com>
+From:   Couret Charles-Antoine <charles-antoine.couret@essensium.com>
+Message-ID: <2b7ab6c3-6ff6-69b5-bbd4-f8a1966b6b57@essensium.com>
+Date:   Fri, 13 Sep 2019 16:00:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.48.1.232]
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
- definitions=2019-09-13_06:2019-09-11,2019-09-13 signatures=0
+In-Reply-To: <1f13820761bbdb4db685a90e9bcf35a388b246cf.camel@analog.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-GB
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-End of conversion may be handled by using IRQ or DMA. There may be a
-race when two conversions complete at the same time on several ADCs.
-EOC can be read as 'set' for several ADCs, with:
-- an ADC configured to use IRQs. EOCIE bit is set. The handler is normally
-  called in this case.
-- an ADC configured to use DMA. EOCIE bit isn't set. EOC triggers the DMA
-  request instead. It's then automatically cleared by DMA read. But the
-  handler gets called due to status bit is temporarily set (IRQ triggered
-  by the other ADC).
-So both EOC status bit in CSR and EOCIE control bit must be checked
-before invoking the interrupt handler (e.g. call ISR only for
-IRQ-enabled ADCs).
 
-Fixes: 2763ea0585c9 ("iio: adc: stm32: add optional dma support")
+Le 13/09/2019 à 09:24, Ardelean, Alexandru a écrit :
+> On Thu, 2019-09-12 at 16:43 +0200, Andrea Merello wrote:
+>> [External]
+>>
+>> This patch series fixes ad7949 driver incorrectly read data, simplify the
+>> code, and enforces device timing constraints.
+>>
+>> This has been tested on a UltraZed SOM + a custom carrier equipped with
+>> several AD7689 A/Ds. Patches have been developed on a Xilinx upstream
+>> kernel and then rebased on linux-next kernel.
+>>
+> Thanks for the patches.
+> Added Charles-Antoine to also take a look.
+> Apologies for not thinking of adding him sooner.
+>
+> I typically try to review changes for ADI parts, but he wrote it, so he may have more input than I do.
+> Jonathan will likely also take a look.
+>
+> If it's agreed, I would say to at least take the first patch ("iio: ad7949: kill pointless "readback"-handling code")
+> now and see about the rest.
+> The rest are a bit more open to discussion, so a v2 may happen.
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
----
- drivers/iio/adc/stm32-adc-core.c | 43 +++++++++++++++++++++++++++++++++++++---
- drivers/iio/adc/stm32-adc-core.h | 13 ++++++++++++
- drivers/iio/adc/stm32-adc.c      |  6 ------
- 3 files changed, 53 insertions(+), 9 deletions(-)
+Hi,
 
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 9b85fef..7297396 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -71,6 +71,8 @@
-  * @eoc1:	adc1 end of conversion flag in @csr
-  * @eoc2:	adc2 end of conversion flag in @csr
-  * @eoc3:	adc3 end of conversion flag in @csr
-+ * @ier:	interrupt enable register offset for each adc
-+ * @eocie_msk:	end of conversion interrupt enable mask in @ier
-  */
- struct stm32_adc_common_regs {
- 	u32 csr;
-@@ -78,6 +80,8 @@ struct stm32_adc_common_regs {
- 	u32 eoc1_msk;
- 	u32 eoc2_msk;
- 	u32 eoc3_msk;
-+	u32 ier;
-+	u32 eocie_msk;
- };
- 
- struct stm32_adc_priv;
-@@ -303,6 +307,8 @@ static const struct stm32_adc_common_regs stm32f4_adc_common_regs = {
- 	.eoc1_msk = STM32F4_EOC1,
- 	.eoc2_msk = STM32F4_EOC2,
- 	.eoc3_msk = STM32F4_EOC3,
-+	.ier = STM32F4_ADC_CR1,
-+	.eocie_msk = STM32F4_EOCIE,
- };
- 
- /* STM32H7 common registers definitions */
-@@ -311,8 +317,24 @@ static const struct stm32_adc_common_regs stm32h7_adc_common_regs = {
- 	.ccr = STM32H7_ADC_CCR,
- 	.eoc1_msk = STM32H7_EOC_MST,
- 	.eoc2_msk = STM32H7_EOC_SLV,
-+	.ier = STM32H7_ADC_IER,
-+	.eocie_msk = STM32H7_EOCIE,
- };
- 
-+static const unsigned int stm32_adc_offset[STM32_ADC_MAX_ADCS] = {
-+	0, STM32_ADC_OFFSET, STM32_ADC_OFFSET * 2,
-+};
-+
-+static unsigned int stm32_adc_eoc_enabled(struct stm32_adc_priv *priv,
-+					  unsigned int adc)
-+{
-+	u32 ier, offset = stm32_adc_offset[adc];
-+
-+	ier = readl_relaxed(priv->common.base + offset + priv->cfg->regs->ier);
-+
-+	return ier & priv->cfg->regs->eocie_msk;
-+}
-+
- /* ADC common interrupt for all instances */
- static void stm32_adc_irq_handler(struct irq_desc *desc)
- {
-@@ -323,13 +345,28 @@ static void stm32_adc_irq_handler(struct irq_desc *desc)
- 	chained_irq_enter(chip, desc);
- 	status = readl_relaxed(priv->common.base + priv->cfg->regs->csr);
- 
--	if (status & priv->cfg->regs->eoc1_msk)
-+	/*
-+	 * End of conversion may be handled by using IRQ or DMA. There may be a
-+	 * race here when two conversions complete at the same time on several
-+	 * ADCs. EOC may be read 'set' for several ADCs, with:
-+	 * - an ADC configured to use DMA (EOC triggers the DMA request, and
-+	 *   is then automatically cleared by DR read in hardware)
-+	 * - an ADC configured to use IRQs (EOCIE bit is set. The handler must
-+	 *   be called in this case)
-+	 * So both EOC status bit in CSR and EOCIE control bit must be checked
-+	 * before invoking the interrupt handler (e.g. call ISR only for
-+	 * IRQ-enabled ADCs).
-+	 */
-+	if (status & priv->cfg->regs->eoc1_msk &&
-+	    stm32_adc_eoc_enabled(priv, 0))
- 		generic_handle_irq(irq_find_mapping(priv->domain, 0));
- 
--	if (status & priv->cfg->regs->eoc2_msk)
-+	if (status & priv->cfg->regs->eoc2_msk &&
-+	    stm32_adc_eoc_enabled(priv, 1))
- 		generic_handle_irq(irq_find_mapping(priv->domain, 1));
- 
--	if (status & priv->cfg->regs->eoc3_msk)
-+	if (status & priv->cfg->regs->eoc3_msk &&
-+	    stm32_adc_eoc_enabled(priv, 2))
- 		generic_handle_irq(irq_find_mapping(priv->domain, 2));
- 
- 	chained_irq_exit(chip, desc);
-diff --git a/drivers/iio/adc/stm32-adc-core.h b/drivers/iio/adc/stm32-adc-core.h
-index 8af507b..8dc936b 100644
---- a/drivers/iio/adc/stm32-adc-core.h
-+++ b/drivers/iio/adc/stm32-adc-core.h
-@@ -25,8 +25,21 @@
-  * --------------------------------------------------------
-  */
- #define STM32_ADC_MAX_ADCS		3
-+#define STM32_ADC_OFFSET		0x100
- #define STM32_ADCX_COMN_OFFSET		0x300
- 
-+/* STM32F4 - registers for each ADC instance */
-+#define STM32F4_ADC_CR1			0x04
-+
-+/* STM32F4_ADC_CR1 - bit fields */
-+#define STM32F4_EOCIE			BIT(5)
-+
-+/* STM32H7 - registers for each instance */
-+#define STM32H7_ADC_IER			0x04
-+
-+/* STM32H7_ADC_IER - bit fields */
-+#define STM32H7_EOCIE			BIT(2)
-+
- /**
-  * struct stm32_adc_common - stm32 ADC driver common data (for all instances)
-  * @base:		control registers base cpu addr
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index 6a7dd08..3c9f456 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -30,7 +30,6 @@
- 
- /* STM32F4 - Registers for each ADC instance */
- #define STM32F4_ADC_SR			0x00
--#define STM32F4_ADC_CR1			0x04
- #define STM32F4_ADC_CR2			0x08
- #define STM32F4_ADC_SMPR1		0x0C
- #define STM32F4_ADC_SMPR2		0x10
-@@ -54,7 +53,6 @@
- #define STM32F4_RES_SHIFT		24
- #define STM32F4_RES_MASK		GENMASK(25, 24)
- #define STM32F4_SCAN			BIT(8)
--#define STM32F4_EOCIE			BIT(5)
- 
- /* STM32F4_ADC_CR2 - bit fields */
- #define STM32F4_SWSTART			BIT(30)
-@@ -69,7 +67,6 @@
- 
- /* STM32H7 - Registers for each ADC instance */
- #define STM32H7_ADC_ISR			0x00
--#define STM32H7_ADC_IER			0x04
- #define STM32H7_ADC_CR			0x08
- #define STM32H7_ADC_CFGR		0x0C
- #define STM32H7_ADC_SMPR1		0x14
-@@ -89,9 +86,6 @@
- #define STM32H7_EOC			BIT(2)
- #define STM32H7_ADRDY			BIT(0)
- 
--/* STM32H7_ADC_IER - bit fields */
--#define STM32H7_EOCIE			STM32H7_EOC
--
- /* STM32H7_ADC_CR - bit fields */
- #define STM32H7_ADCAL			BIT(31)
- #define STM32H7_ADCALDIF		BIT(30)
--- 
-2.7.4
+Don't worry. Due to the fact I don't have on my mail client access to 
+the whole discussions, I'm making a complete answer there based on the 
+archive of the mailing list. Sorry for that.
+
+
+For the patch 1, I approve it too. This part of code is useless because 
+the feature was removed. RIP my code. :D
+
+For the patch 2, the cache information was added due to comment from 
+Jonathan Cameron when I developed the driver. The comment was:
+
+> Look very carefully at the requirements for a buffer being passed
+> to spi_sync.  It needs to be DMA safe.  This one is not.  The usual
+> way to do that easily is to put a cacheline aligned buffer in your
+> ad7949_adc_chip structure.
+>
+> Lots of examples to copy, but it's also worth making sure you understand
+> why this is necessary.
+
+For the endianess thing, it shouldn't be required to make an explicit 
+conversion into the driver. According to the spi.h documentation:
+
+> * In-memory data values are always in native CPU byte order, translated
+> * from the wire byte order (big-endian except with SPI_LSB_FIRST). So
+> * for example when bits_per_word is sixteen, buffers are 2N bytes long
+> * (@len = 2N) and hold N sixteen bit words in CPU byte order.
+So from my point of view the SPI subsystem always converts to the right 
+endianess. We don't have to take care about it.
+
+
+For patch 3, I didn't use delay_usecs fiels due to the timings 
+definition in the datasheet in "READ/WRITE SPANNING CONVERSION WITHOUT A 
+BUSY INDICATOR" mode. During the delay, the chip select line must be 
+released which is not the case when we use delay_usecs field. So I add 
+the delay instruction after the write step to be compliant with these 
+timings.
+
+
+For patch 4, I explained a bit in the other thread. Maybe we have a 
+difference of behaviour due to the choice of the timings "modes"?
+
+
+BTW, from my point of view the datasheet is not totally clear about the 
+timings and what is mandatory or not in the expected behaviour.
+
+Regards,
+
+Charles-Antoine Couret
 

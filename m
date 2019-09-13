@@ -2,136 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A292B193D
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2019 09:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55C11B198C
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2019 10:23:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727325AbfIMH5L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Sep 2019 03:57:11 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:39257 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725446AbfIMH5L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Sep 2019 03:57:11 -0400
-Received: by mail-wr1-f66.google.com with SMTP id r3so940448wrj.6
-        for <linux-iio@vger.kernel.org>; Fri, 13 Sep 2019 00:57:08 -0700 (PDT)
+        id S2387458AbfIMIXp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Sep 2019 04:23:45 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:46317 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387424AbfIMIXp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Sep 2019 04:23:45 -0400
+Received: by mail-wr1-f65.google.com with SMTP id d17so18374064wrq.13
+        for <linux-iio@vger.kernel.org>; Fri, 13 Sep 2019 01:23:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:reply-to:from:date:message-id
          :subject:to:cc;
-        bh=+/yOZszLKaf9DuLXpXNH++07GcZPakWa5Tih2uKFC7I=;
-        b=ryRgx+jTq3041wljdKgXgmLh1UsyQKTGk4gts6PAdyADs9sB+dhyZEA97wdPT8jGb5
-         8RPKDGV/Gtcz/vDfeCoxbKwz5nlc6+dG6rles+2RKtAkTJrDOwy8Tq463waSWMe+m0uM
-         CsUfRfygEjo6+VWHCLapaEShIQXhePcSdfuV0AbQyzzq2OifMFuae2iIrlctmAtuTv+D
-         HwSlUocDDQl99r0B5xURv2RpoWUBJ25dcypGPjBWbkoD3xtZ9kcVO+/n5edLYawqQx8D
-         ZE9aEPS8QU3wWHViyF4eY/81TpnsR+RhILxcz/EhXO4xxqaODLLkBqVWPB0Hy/7jJtjK
-         XgeQ==
+        bh=+sse2o0oVpVQRokQaERVZ/vj13UyRiej9RTM77KOWVk=;
+        b=vNrWp+5lcujPhuGzv+ZhlIcjbSjuiQL/uTjRCBwIzg5BcodXCz6XuyOhAN1OVLXusq
+         n0fZjUpJJCRGEul7M1/aCd7o1qRs9BdzOA9fsqxjjxmIiYbYG9vOQGjb364iYyAnKYUI
+         KghnTT8jbc1n9viG9SuO0SlpAvaZtoDAyjIuKYucghdFjFIDsKz7kMfnBrH/TtimEfWl
+         awEGucOigbJT0fIjncRBWtRDaJawwe5QbmH5RsWJ0VIcYeyztgykLk2lqdpkgZCoT+3F
+         LOMBVVpm8RikmK1oOc6M+dqpu0PpD0iU2Hds6skl7yobJxtwD5qTboQ9qfXB5IpQn1c7
+         61ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
          :from:date:message-id:subject:to:cc;
-        bh=+/yOZszLKaf9DuLXpXNH++07GcZPakWa5Tih2uKFC7I=;
-        b=GuoRVRosS9BZ2HzfMYH3qNOiCBtoq/O8fYlpPFfumDh2OLENacfyzRRCMRhN+RI3tv
-         61WIKXUqmtFk6YjVK4awKwapylrth3/e7PHQKtwyV5neY2B+oF3fHPuvpwHmYqGGE84q
-         nxS0x5a/Cwo/JmBXNKTmLBP5DkWBa+gNxbXn+GeLaCNNMi60lKj/7B9dkGlZ4kLfIgAM
-         v7K1pFIMOoGbSx6xxfMvik8er01DEiV/eiAryXCqTKaltwiISZrlkj3vEL0mzGl9+C1L
-         nlBSCemgypi+aYCuoMPZ3uuUUN2L/2i/CYtBqcUY+WTeyVfctvjZ84RVCRQjfyjMV0p8
-         cdOQ==
-X-Gm-Message-State: APjAAAU6NPpXZfRe7YpB2xfl/i9s1AvcDm1mMo5GGunMsMs7Hy72AtS2
-        8EjMfYbS5wsRx1dQ0+MMxRzc3kDiYqlsI3NXUIcwsZha
-X-Google-Smtp-Source: APXvYqxrrAYAk8/PrZafTfiWoHjIdZ+L0VJ0eFz3RCQOEsqollJl/6I8p9mBFg3KXXYWWiuRU2VQv4LnpL/kyE+SH+k=
-X-Received: by 2002:a5d:5281:: with SMTP id c1mr6626871wrv.339.1568361427336;
- Fri, 13 Sep 2019 00:57:07 -0700 (PDT)
+        bh=+sse2o0oVpVQRokQaERVZ/vj13UyRiej9RTM77KOWVk=;
+        b=LWGvgttaOTkRGsmHZ2Om6EDA4En16ZFA6JmZ22EsQYdrtffVfE738zEK+GZ0vzkRx1
+         Wkfz/zi/04ZvG/bKz5yzs1Ysipn70qGJ0Bb5H658MTOVKUe/ywcXgkyrsWzNPlQRXgGU
+         QH1I7FFJkrPoVXotTS7amuEjD0JwUXMfEWys64Z4OsMGXyxFYQKALaH4dQAevjr90M9M
+         NrNUKTRA03JeV4TVYGfyOaducgCcEmCNQkEKWqec0UplCwy7ClQuDk4eLJ9P19LSOyOo
+         KeIGHqVGwuLlVwMRGrGBVGT8xKYupKi4qy0teBBIbTYAT1+fdHVH/9dCW8odJuakHl0l
+         eSjQ==
+X-Gm-Message-State: APjAAAXmyGUcULey2etnS/kXNM6UoyUVq0DksV5XtjMoHnUQiry1lnWp
+        d50EUJZdt+YdChqOqu+e5SSWN66/shJ9fiz3HCWsvGQG
+X-Google-Smtp-Source: APXvYqx+0l6yFugEuKI5ffb0bRpix9jqhd0zhQhgbKMN3sED3Ops5kOmC9La/bFPSaC4WHnjjXBDkfSAxCZgAk2I+iQ=
+X-Received: by 2002:a5d:5281:: with SMTP id c1mr6724787wrv.339.1568363022353;
+ Fri, 13 Sep 2019 01:23:42 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190912144310.7458-1-andrea.merello@gmail.com>
- <20190912144310.7458-3-andrea.merello@gmail.com> <3fe869be01ce7c81fd463158c05e0a4a115bdd6a.camel@analog.com>
-In-Reply-To: <3fe869be01ce7c81fd463158c05e0a4a115bdd6a.camel@analog.com>
+ <20190912144310.7458-4-andrea.merello@gmail.com> <794eb574e4bc9cb4f0b2723d72baeb8f63c07283.camel@analog.com>
+In-Reply-To: <794eb574e4bc9cb4f0b2723d72baeb8f63c07283.camel@analog.com>
 Reply-To: andrea.merello@gmail.com
 From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Fri, 13 Sep 2019 09:56:56 +0200
-Message-ID: <CAN8YU5MpLDVEfVBUBe9XsuYT6yohruiHAMQgOVjZs-2JyO=NNQ@mail.gmail.com>
-Subject: Re: [PATCH 2/4] iio: ad7949: fix incorrect SPI xfer len
+Date:   Fri, 13 Sep 2019 10:23:30 +0200
+Message-ID: <CAN8YU5MBKsFyjbpWw5w41kerQwkOois_AU1OuV6aNX1_3LmSBQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] iio: ad7949: fix SPI xfer delays
 To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
 Cc:     "Hennerich, Michael" <Michael.Hennerich@analog.com>,
         "lars@metafoo.de" <lars@metafoo.de>,
         "jic23@kernel.org" <jic23@kernel.org>,
         "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
         "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        antoine.couret@essensium.com
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno ven 13 set 2019 alle ore 08:46 Ardelean, Alexandru
+Il giorno ven 13 set 2019 alle ore 09:00 Ardelean, Alexandru
 <alexandru.Ardelean@analog.com> ha scritto:
 >
 > On Thu, 2019-09-12 at 16:43 +0200, Andrea Merello wrote:
 > > [External]
 > >
-> > This driver supports 14-bits and 16-bits devices. All of them have a 14-bit
-> > configuration registers. All SPI trasfers, for reading AD conversion
-> > results and for writing the configuration register, fit in two bytes.
+> > The driver calls udelay(2) after each SPI xfer. However, according to
+> > the specifications, the SPI timing should be as follows:
 > >
-> > The driver always uses 4-bytes xfers which seems at least pointless (maybe
-> > even harmful). This patch trims the SPI xfer len and the buffer size to
-> > two bytes.
+> > 1- The end of SPI xfer (CNV/CS rising edge) causes the device to initiate
+> >    the conversion phase, which takes up to 2.2uS.
+>
+> Yes, but there does not seem to be a minimum time for conversion.
+> ( 2.2 uS is the max value )
+>
+> This can be confusing a bit (I know).
+> If you do see issues with 2 uS, we can probably try 3 uS (+1 uS which is roughly half the max value).
+> Though, we are already gaining min 200 nS from the fact that the acquisition time is 1.8 uS and the delay is 2 uS.
+>
+> But if there aren't any visible issues, I would leave 2 uS.
+> Increasing this delay can annoy people that would like to have some speed when reading samples.
+
+I admit that I got some hard time trying to fully understand the
+timing specifications; so it's perfectly possible that I've got
+something wrong here.. My interpretation was that the HW takes up to
+2.2uS (thus it's a max value, as you said) and, since we are not using
+the busy indication to check when the HW really finished, I stayed on
+the safe side.
+
+I've done this change while I was searching for the cause of some
+reading issues that turned out to be actually fixed with the last
+patch of the series, so I have no real evidence of  issues caused by
+the 2uS delay. However, if I understood correctly the datasheet, the
+effect of performing an early SPI xfer during the conversion phase -
+specifically if it happens after tDATA and before EndOfConversion -
+might be mild, so not it might be not obvious to notice (maybe affects
+just LSBs) it with my basic testing. Quoting the datasheet: "The time
+between tDATA and tCONV is a safe time when digital activity should
+not occur, or sensitive bit decisions may be corrupted. "..
+
+> I know 1-2 uS isn't much of a performance killer, but if there aren't reasons to change it, I wouldn't.
+
+I guess you know the HW by far better than me, so if you say that 2uS
+is OK then I will not insist anymore here :)
+
+>
+> >
+> > 2- At the end of the conversion phase, the device starts the acquisition
+> >    phase for the next conversion automatically (regardless to the state of
+> >    CNV pin); the conversion phase should last at least 1.8 uS
+> >
+> > The whole cycle timing is thus 4uS long. The SPI data is read during the
+> > acquisition phase (RAC mode, no need to worry about "Tdata").
+> >
+> > In order to be compliant wrt these timing specifications we should wait
+> > 4uS after each SPI xfer (that is conservative, because there is also the
+> > SPI xfer duration itself - which at the maximum supported clock should be
+> > about 320nS).
+> >
+> > This patch enlarges the delay up to 4uS and it also removes the explicit
+> > calls to udelay(), relying on spi_transfer->delay_usecs.
 > >
 >
-> The length reduction proposal is fine.
->
-> But, this patch raises a question about endianess.
-> I'm actually wondering here if we need to see about maybe using a __be16 vs u16.
->
-> I'm not that kernel-savy yet about some of these low-level things to be completely sure here.
-> So, I'd let someone else maybe handle it.
-
-Good point.. It seems that indeed not much care has been taken about
-endianess here.. Probably we need also some le16_to_cpu() and
-firends..
-
-Maybe another separate patch can be made to take care about endianess later on?
-
-BTW Also, the  ____cacheline_aligned is a bit scaring :) I don't know
-what is that for...
-
->
-> Thanks
-> Alex
+> I like the switch from explicit udelay() to spi_transfer->delay_usecs.
+> The code looks cleaner.
 >
 > > Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
 > > ---
-> >  drivers/iio/adc/ad7949.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >  drivers/iio/adc/ad7949.c | 13 ++-----------
+> >  1 file changed, 2 insertions(+), 11 deletions(-)
 > >
 > > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-> > index 518044c31a73..5c2b3446fa4a 100644
+> > index 5c2b3446fa4a..25d1e1b24257 100644
 > > --- a/drivers/iio/adc/ad7949.c
 > > +++ b/drivers/iio/adc/ad7949.c
-> > @@ -54,7 +54,7 @@ struct ad7949_adc_chip {
-> >       u8 resolution;
-> >       u16 cfg;
-> >       unsigned int current_channel;
-> > -     u32 buffer ____cacheline_aligned;
-> > +     u16 buffer ____cacheline_aligned;
-> >  };
-> >
-> >  static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
-> > @@ -67,7 +67,7 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
-> >       struct spi_transfer tx[] = {
-> >               {
+> > @@ -69,6 +69,7 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
 > >                       .tx_buf = &ad7949_adc->buffer,
-> > -                     .len = 4,
-> > +                     .len = 2,
+> >                       .len = 2,
 > >                       .bits_per_word = bits_per_word,
+> > +                     .delay_usecs = 4,
 > >               },
 > >       };
-> > @@ -95,7 +95,7 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
-> >       struct spi_transfer tx[] = {
-> >               {
+> >
+> > @@ -77,11 +78,6 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
+> >       spi_message_init_with_transfers(&msg, tx, 1);
+> >       ret = spi_sync(ad7949_adc->spi, &msg);
+> >
+> > -     /*
+> > -      * This delay is to avoid a new request before the required time to
+> > -      * send a new command to the device
+> > -      */
+> > -     udelay(2);
+> >       return ret;
+> >  }
+> >
+> > @@ -97,6 +93,7 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
 > >                       .rx_buf = &ad7949_adc->buffer,
-> > -                     .len = 4,
-> > +                     .len = 2,
+> >                       .len = 2,
 > >                       .bits_per_word = bits_per_word,
+> > +                     .delay_usecs = 4,
 > >               },
 > >       };
+> >
+> > @@ -112,12 +109,6 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+> >       if (ret)
+> >               return ret;
+> >
+> > -     /*
+> > -      * This delay is to avoid a new request before the required time to
+> > -      * send a new command to the device
+> > -      */
+> > -     udelay(2);
+> > -
+> >       ad7949_adc->current_channel = channel;
+> >
+> >       *val = ad7949_adc->buffer & mask;

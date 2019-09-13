@@ -2,215 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 400F6B1A74
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2019 11:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 533E2B1C2A
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2019 13:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387817AbfIMJH2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Sep 2019 05:07:28 -0400
-Received: from first.geanix.com ([116.203.34.67]:49600 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387819AbfIMJH2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 13 Sep 2019 05:07:28 -0400
-Received: from zen.localdomain (unknown [85.184.140.241])
-        by first.geanix.com (Postfix) with ESMTPSA id CCC67650D8;
-        Fri, 13 Sep 2019 09:06:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1568365601; bh=r6yVAxTUTN+vHLjY4d7Kpt31iINSpu9L3J2wNdMctKo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=Xnz64SnJSnblB6TntNDxGZwFvPqaiA0c3FftktSPeMqog2ulSH11VL0ykuIVmk5g1
-         MtCveEk6LPS6oQ4bUGEWNzVju2Uc8fsInLefKBKP4ZDO21G9BoWkbrmoigZr4V1Ldm
-         TqSnX7whbXB6dj29NBXyZDUrV6dLMIQjRulM5Y8x2qDuS+0B84Iv3UTQpyTPBd0q45
-         8Mo5dgyHHUgfbInq6YwbS9Fy/ysC6LbzYCt3ax8Qx+q9YU61HIMcFU10L2CTKkcWr/
-         OZqYJIdLh96oXcc6IZKMaPuKQ2i5A2gImQQLj9sr0ujEz3lw43P+VDQghu/Oq0oYya
-         tYpnkVHmPJ9Cw==
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com
-Cc:     Sean Nyekjaer <sean@geanix.com>, denis.ciocca@st.com,
-        mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
-Subject: [PATCH v8 5/5] iio: imu: st_lsm6dsx: add motion report function and call from interrupt
-Date:   Fri, 13 Sep 2019 11:07:08 +0200
-Message-Id: <20190913090708.1442057-6-sean@geanix.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190913090708.1442057-1-sean@geanix.com>
-References: <20190913090708.1442057-1-sean@geanix.com>
+        id S2387523AbfIMLau (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Sep 2019 07:30:50 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:42090 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387431AbfIMLau (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Sep 2019 07:30:50 -0400
+Received: by mail-ed1-f66.google.com with SMTP id y91so26718697ede.9
+        for <linux-iio@vger.kernel.org>; Fri, 13 Sep 2019 04:30:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=essensium-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=vQsBFVEKU0Jcdo2igQSvP/k/DLBWnF92dJz9/RfTdhM=;
+        b=ni5Ewj/t288NVFQjFlumHb7i63nve/Va2Omzq1jbQZ7+edaRm9Ci4zBRJa19pQSllx
+         KjhVG0mKomVA8Zme3jtJF5qqsoxxSzMO8hRK6q7TAjsqmE5vHA7qOrFPin1hvhUc5Z9+
+         H4bNSNJIBxVV3viI89ewjZQegPWz2IJOv23fNcpqZloSdfuMpncW2HCrDg1E/JaFpEc9
+         zukHpclcpC9mSdVOAS4uZ6Gk7DZg46Ql8dgw5G7UmqwyAazfTsTIKuLjv7egm2YAaKZG
+         SGu+Pp4j/42t46GJms3A9sqT+Ea1l93e54wqPw901Ubaj4cSK9Xjf/IrGCUBtAnR/lp4
+         Njcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=vQsBFVEKU0Jcdo2igQSvP/k/DLBWnF92dJz9/RfTdhM=;
+        b=B5f6e+ZCBkTrMhTvEhscVZwpd+oXmdgRu/HhG1SVMQTQLc7U5RIYU7rEdD+QwUD+xx
+         hZ5m8zSgMYLKvGIRJ0XMtd45tTgxgpczuLVllIrxsZHjk3SPXMe4Pf7eFBzz/XzcZ0H0
+         Idyv+xTTrXbancVYZmtJcXmGKDwvS8v0lHihVyg5DFW8dQaJJLBOyy/AG5/s2Ea2bTEI
+         3ewNB60Jj2Q8thfzAwDqr6I3xeA1d/GQLhQMKi8dNW8WstVihvsB9uhsnR3uj8HyhNwr
+         COzD5QYGu3yEYFF4ejQetWp+8InxVUKoXKmLBI9gMNjseXGKADUk7TYzH3CvY/d9CfPV
+         C3BA==
+X-Gm-Message-State: APjAAAV8Tq4X836hGxtpmUltPWAtMP/5rb8BPU29BT91epsuDODDxdc9
+        qnNeMAxiYiAD3StzRfHdXtMFtjCCYGE=
+X-Google-Smtp-Source: APXvYqyO/E+gkTXZuErb0VZOiZqDHnDM/MmGtDDTtx9GDhoUVrsptVIf1vyGzBbLBydsNICi1Ia/9Q==
+X-Received: by 2002:a05:6402:1845:: with SMTP id v5mr41683745edy.130.1568374247207;
+        Fri, 13 Sep 2019 04:30:47 -0700 (PDT)
+Received: from [192.168.1.31] (230.120-247-81.adsl-dyn.isp.belgacom.be. [81.247.120.230])
+        by smtp.gmail.com with ESMTPSA id f36sm5210425ede.28.2019.09.13.04.30.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Sep 2019 04:30:46 -0700 (PDT)
+Subject: Re: [PATCH 4/4] iio: ad7949: fix channels mixups
+To:     andrea.merello@gmail.com,
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+References: <20190912144310.7458-1-andrea.merello@gmail.com>
+ <20190912144310.7458-5-andrea.merello@gmail.com>
+ <f91fb6e960dfd67926b6efa44ec7b792fc667468.camel@analog.com>
+ <CAN8YU5NLZhCDaocrQGUnb9TZauT-yPxY7ZQQQeYK=9696jmhCg@mail.gmail.com>
+From:   Couret Charles-Antoine <charles-antoine.couret@essensium.com>
+Message-ID: <4a25469a-9fe6-a560-b1cb-e9b0af7209e9@essensium.com>
+Date:   Fri, 13 Sep 2019 13:30:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <CAN8YU5NLZhCDaocrQGUnb9TZauT-yPxY7ZQQQeYK=9696jmhCg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=4.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,UNPARSEABLE_RELAY,URIBL_BLOCKED
-        autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
+Content-Language: en-GB
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Report iio motion events to iio subsystem
+Hi,
 
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
-Changes since v4:
- * Updated bitmask as pr Jonathans comments
+Le 13/09/2019 à 10:30, Andrea Merello a écrit :
+> Il giorno ven 13 set 2019 alle ore 09:19 Ardelean, Alexandru
+> <alexandru.Ardelean@analog.com> ha scritto:
+>
+>> So, at power-up this chip seems to need 2 dummy reads to discard data.
+>> Which seems to happen in ad7949_spi_init()
+>>
+>> One thing that maybe could be optimized (for the driver), is in `ad7949_spi_read_channel()` to use the current-channel &
+>> not do a SPI write to change the channel if it doesn't change.
+>>
+>> Datasheets (in general) are not always obvious about describing chip behavior for SW (or for writing a driver), but I
+>> would suspect that if you are reading garbage data, it could be that the channel has changed.
+>> This is true for some other ADCs.
+>> And requires testing for this one.
+> Yes, it's exactly what I've seen here. If the channel does not change
+> then the AD is already in acquisition phase on the right channel (I
+> assume it's OK to keep it in such phase indefinitely), then we can
+> just trigger a new conversion (CNV low->high, that is a dummy xfer)
+> and then read the result in following xfer, as the driver already did.
+>
+> I craft a V2 that performs the extra (3rd) spi xfer only if the
+> channel has to change.
 
-Changes since v5:
- * None
+This design should be ok. I didn't implement in that way because not 
+enough time to optimize the driver before release (I don't have access 
+to the chip anymore) and for our workflow it was not relevant (we 
+scanned all channels).
 
-Changes since v6:
- * None
 
-Changes since v7:
- * None
+About your fix to read / write several times before reading the value 
+after channel change seems not relevant. Did you try with the current 
+implementation? Because when I developed the driver, I have always got 
+the expected value for each channel with this design.
 
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  5 ++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 70 ++++++++++++++++++++
- 2 files changed, 75 insertions(+)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 449c2798f7ed..7c50fac7b85c 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -186,6 +186,11 @@ struct st_lsm6dsx_shub_settings {
- struct st_lsm6dsx_event_settings {
- 	struct st_lsm6dsx_reg enable_reg;
- 	struct st_lsm6dsx_reg wakeup_reg;
-+	u8 wakeup_src_reg;
-+	u8 wakeup_src_status_mask;
-+	u8 wakeup_src_z_mask;
-+	u8 wakeup_src_y_mask;
-+	u8 wakeup_src_x_mask;
- };
- 
- enum st_lsm6dsx_ext_sensor_id {
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 80a94335175f..66700c20920d 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -48,6 +48,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/delay.h>
-+#include <linux/iio/events.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- #include <linux/interrupt.h>
-@@ -287,6 +288,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -412,6 +418,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -550,6 +561,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -816,6 +832,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -970,6 +991,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x5B,
- 				.mask = GENMASK(5, 0),
- 			},
-+			.wakeup_src_reg = 0x1b,
-+			.wakeup_src_status_mask = BIT(3),
-+			.wakeup_src_z_mask = BIT(0),
-+			.wakeup_src_y_mask = BIT(1),
-+			.wakeup_src_x_mask = BIT(2),
- 		}
- 	},
- };
-@@ -1715,6 +1741,38 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
- 	return iio_dev;
- }
- 
-+void st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw, int data)
-+{
-+	s64 timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
-+
-+	if (data & hw->settings->event_settings.wakeup_src_z_mask)
-+		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-+			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-+						  0,
-+						  IIO_MOD_Z,
-+						  IIO_EV_TYPE_THRESH,
-+						  IIO_EV_DIR_EITHER),
-+						  timestamp);
-+
-+	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-+		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-+			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-+						  0,
-+						  IIO_MOD_Y,
-+						  IIO_EV_TYPE_THRESH,
-+						  IIO_EV_DIR_EITHER),
-+						  timestamp);
-+
-+	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-+		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-+			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-+						  0,
-+						  IIO_MOD_X,
-+						  IIO_EV_TYPE_THRESH,
-+						  IIO_EV_DIR_EITHER),
-+						  timestamp);
-+}
-+
- static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
- {
- 	return IRQ_WAKE_THREAD;
-@@ -1724,6 +1782,18 @@ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
- {
- 	struct st_lsm6dsx_hw *hw = private;
- 	int count;
-+	int data, err;
-+
-+	if (hw->enable_event) {
-+		err = regmap_read(hw->regmap,
-+				  hw->settings->event_settings.wakeup_src_reg,
-+				  &data);
-+		if (err < 0)
-+			return IRQ_NONE;
-+
-+		if (data & hw->settings->event_settings.wakeup_src_status_mask)
-+			st_lsm6dsx_report_motion_event(hw, data);
-+	}
- 
- 	mutex_lock(&hw->fifo_lock);
- 	count = hw->settings->fifo_ops.read_fifo(hw);
--- 
-2.23.0
+Just to be sure we are not adding useless steps.
+
+>> Added Charles-Antoine, since he wrote the driver.
+>> Shoud have added him on the other patches as well, but I just remembered.
+> I tried on my first answer, but apparently mails to his address bounce
+> back with a failure response..
+
+But now it seems ok. Did you put the right email address?
+
+
+Thank you for the copy.
+
+Regards,
+
+Charles-Antoine Couret
 

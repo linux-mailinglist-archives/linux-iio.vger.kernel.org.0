@@ -2,150 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EED8EB15F2
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Sep 2019 23:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4258B17FF
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2019 08:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726721AbfILVkE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Sep 2019 17:40:04 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:34433 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726718AbfILVkE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Sep 2019 17:40:04 -0400
-Received: by mail-qk1-f194.google.com with SMTP id q203so26062734qke.1;
-        Thu, 12 Sep 2019 14:40:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=L5+jAMtI1CIAC/4kswIhxg+hTT5z+UEj9oJQQaJeISg=;
-        b=c16+RQYnxW6kaB0EHeYyU3adxGtPcgSkk1gXJPAcMW9cWmQKgM6GrLxoyWul4Dpcst
-         W4wNft32yrnZBJ8n/THumcMc7kY6L7JeUHLgC5kBsrU/EmexYRfFzw97nQHjue+PSuoL
-         IaEkXLIMj/NB2NzhtYDMTzautfhL/udKh6ZNQvCE0TCgRxQ8QXmVHD24iZFDTF+EZafA
-         U+JUzkBnrSlbC+lkKHoNX8kzbCS6wFEFpsGQLKfW9e4wTb/90KjU3Igr5O6votzCyMix
-         I2ZDRMlDt4Qj6pnyRrnv50vRit53anrXOvRLzD7UgQ/mdqILJklFBuETzuVzlNhl63mn
-         8zlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=L5+jAMtI1CIAC/4kswIhxg+hTT5z+UEj9oJQQaJeISg=;
-        b=E3WjuIcHbCYtQypN6tWOUTIvZtQef/kUCe63ezkbgaFTKTyc9XI5L55Os9XIg4Aj2r
-         O11tKiFXmGi+XrSWtqBsAcFI2PY30o9vpJ2w7lGnJJWFb5I8ERBm4KCSDmsu1GqOA/Ix
-         SrRKvzNvV1SskOAbx3bC2ZQcYmtoGQBLY00+hE3Lay0y/FFMVwbNQ3sgiLJMZcKSbbPk
-         JNCXJkZfnqatLleW8MYN0007dJBUHuIXiegdKnqXDOjfdQSChHHTTZZtkMXBN/30Wcsk
-         tJCeVDPEx6BdGkXXVTdCDAo9wMKzqiECEgqAzGcR35KBHsvM4WalQ9wxTKSbx4xHeqWM
-         nXCg==
-X-Gm-Message-State: APjAAAVzXJ1938+teze0U90oKZHDU2KZad0q/tnP4KfCJbbXXXJl9caf
-        dtDHSTeTMbQIosEbd9r90L4=
-X-Google-Smtp-Source: APXvYqzKsEsyelFpRkqcom+4qOub5t05/y+CoXTvPvu3De/EusIO+CgjIUrZ5OJPNNgoxn3e3Io2gg==
-X-Received: by 2002:a37:6554:: with SMTP id z81mr13856107qkb.107.1568324402181;
-        Thu, 12 Sep 2019 14:40:02 -0700 (PDT)
-Received: from localhost.localdomain (201-93-93-180.dial-up.telesp.net.br. [201.93.93.180])
-        by smtp.gmail.com with ESMTPSA id v2sm9318509qtv.22.2019.09.12.14.39.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Sep 2019 14:40:01 -0700 (PDT)
-From:   Rodrigo Carvalho <rodrigorsdc@gmail.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org,
-        Rodrigo Carvalho <rodrigorsdc@gmail.com>
-Subject: [PATCH v2] dt-bindings: iio: accel: add binding documentation for ADIS16240
-Date:   Thu, 12 Sep 2019 18:39:29 -0300
-Message-Id: <20190912213929.3664-1-rodrigorsdc@gmail.com>
-X-Mailer: git-send-email 2.23.0.rc1
+        id S1726388AbfIMGId (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Sep 2019 02:08:33 -0400
+Received: from first.geanix.com ([116.203.34.67]:40112 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725775AbfIMGId (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 13 Sep 2019 02:08:33 -0400
+Received: from [192.168.100.95] (unknown [95.138.208.137])
+        by first.geanix.com (Postfix) with ESMTPSA id 9AE156508B;
+        Fri, 13 Sep 2019 06:07:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1568354866; bh=I8wH6lTdnfwAYU6l/FQY0SaxmWqeBXJS9tm2JhgLbI0=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=esptql2biogPx2HRB9VbI9N8JKmVXCnDxGiYN2epNUJmqjyXKt1j4CXci6VVe18++
+         hUfuRxN6mt9MBlP/dt/VzwyS1q37E2ZWX68+WvxuBbz/axUH6tx0B5mIkOSw+c3QUr
+         ZwwadLX0Fq7kEIXIWxI026CbWHYw08GsccNjEr1P7MyR7nNY4piEkOa+R9nQKGRWa0
+         rFuUCZ2fa6TwQU0AtPfC1CUcE5VefOCCtjjsLom0v9GYWl60mkrHWCkdmijjU6bOP0
+         Byn3WKMsTcww4Gck5FdOanfKWGaibJKI8gLgnOUpZNkRHOKtVYJW3MYQ0Mvfp7ZxAw
+         N/6LZgpGs30mg==
+Subject: Re: [PATCH v7 3/5] iio: imu: st_lsm6dsx: add wakeup-source option
+To:     linux-iio@vger.kernel.org, jic23@kernel.org,
+        lorenzo.bianconi83@gmail.com
+Cc:     denis.ciocca@st.com, mario.tesi@st.com, armando.visconti@st.com,
+        martin@geanix.com
+References: <20190912070614.1144169-1-sean@geanix.com>
+ <20190912070614.1144169-4-sean@geanix.com>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <6eb3a60f-0712-4ad7-fe3c-fd76a3ea135f@geanix.com>
+Date:   Fri, 13 Sep 2019 08:08:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190912070614.1144169-4-sean@geanix.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US-large
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch add device tree binding documentation for ADIS16240.
 
-Signed-off-by: Rodrigo Ribeiro Carvalho <rodrigorsdc@gmail.com>
----
-V2:
-  - Remove true constant for spi-cpha and spi-cpol
-  - Add description field for spi-cpha and spi-cpol
-  - Add maxItems field for spi-cpha and spi-cpol
 
- .../bindings/iio/accel/adi,adis16240.yaml     | 61 +++++++++++++++++++
- 1 file changed, 61 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
+On 12/09/2019 09.06, Sean Nyekjaer wrote:
+> This add ways for the SoC to wake from accelerometer wake events.
+> 
+> In the suspend function we skip disabling the sensor if wakeup-source
+> and events are activated.
+> 
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+> Changes since v4:
+>   * More devices supports wakeup
+> 
+> Changes since v5:
+>   * None
+> 
+> Changes since v6:
+>   * None
+> 
+>   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
+> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 4198ba263d03..f79978a2870f 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1858,6 +1858,9 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+>   			return err;
+>   	}
+>   
+> +	if (dev->of_node && of_property_read_bool(dev->of_node, "wakeup-source"))
+> +		device_init_wakeup(dev, true);
+> +
+>   	return 0;
+>   }
+>   EXPORT_SYMBOL(st_lsm6dsx_probe);
+> @@ -1876,6 +1879,12 @@ static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
+>   		if (!(hw->enable_mask & BIT(sensor->id)))
+>   			continue;
+>   
+> +		if (device_may_wakeup(dev) && i == ST_LSM6DSX_ID_ACC) {
+> +			/* Enable wake from IRQ */
+> +			enable_irq_wake(hw->irq);
+> +			continue;
+> +		}
+> +
+>   		if (sensor->id == ST_LSM6DSX_ID_EXT0 ||
+>   		    sensor->id == ST_LSM6DSX_ID_EXT1 ||
+>   		    sensor->id == ST_LSM6DSX_ID_EXT2)
+> @@ -1908,6 +1917,11 @@ static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
+>   		if (!(hw->suspend_mask & BIT(sensor->id)))
+>   			continue;
+>   
+> +		if (device_may_wakeup(dev) && i == ST_LSM6DSX_ID_ACC) {
+> +			disable_irq_wake(hw->irq);
+> +			continue;
+> +		}
+> +
+This section needs to move above:
+ >   		if (!(hw->enable_mask & BIT(sensor->id)))
+In the current configuration it will never be reached in event only mode
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-new file mode 100644
-index 000000000000..4b1bd2419604
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-@@ -0,0 +1,61 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/accel/adi,adis16240.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: ADIS16240 Programmable Impact Sensor and Recorder driver
-+
-+maintainers:
-+  - Alexandru Ardelean <alexandru.ardelean@analog.com>
-+
-+description: |
-+  ADIS16240 Programmable Impact Sensor and Recorder driver that supports
-+  SPI interface.
-+    https://www.analog.com/en/products/adis16240.html
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adis16240
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-cpha:
-+    description: |
-+      See Documentation/devicetree/bindings/spi/spi-controller.yaml
-+    maxItems: 1
-+
-+  spi-cpol: |
-+    description: |
-+      See Documentation/devicetree/bindings/spi/spi-controller.yaml
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        /* Example for a SPI device node */
-+        accelerometer@0 {
-+            compatible = "adi,adis16240";
-+            reg = <0>;
-+            spi-max-frequency = <2500000>;
-+            spi-cpol;
-+            spi-cpha;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
--- 
-2.23.0.rc1
-
+With the bug mentioned above fixed, have tested suspend/wake with and 
+without FIFO enabled.

@@ -2,29 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB86DB3052
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 15:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB50B3058
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 15:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731142AbfIONrD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Sep 2019 09:47:03 -0400
-Received: from saturn.retrosnub.co.uk ([46.235.226.198]:58596 "EHLO
-        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730694AbfIONrD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Sep 2019 09:47:03 -0400
+        id S1726057AbfIONxx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Sep 2019 09:53:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36432 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726024AbfIONxw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Sep 2019 09:53:52 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 923D69E772F;
-        Sun, 15 Sep 2019 14:47:01 +0100 (BST)
-Date:   Sun, 15 Sep 2019 14:47:00 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [RFC 1/4] counter: Simplify the count_read and count_write
- callbacks
-Message-ID: <20190915144700.0f7a361d@archlinux>
-In-Reply-To: <20190915143917.61385369@archlinux>
-References: <20190915055759.408690-1-vilhelm.gray@gmail.com>
-        <20190915055759.408690-2-vilhelm.gray@gmail.com>
-        <20190915143917.61385369@archlinux>
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B4DF2214C6;
+        Sun, 15 Sep 2019 13:53:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568555632;
+        bh=E5UhPrw0VFkzCJ82aQ9YjCuaUvDP6zK97JuAM6sRayo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=AiFCnXaZeUghfuUY5tc6rcL6eg7m9KgAs6LgoIPtg/B0h++7GwxdQNs/skLtTO653
+         CSLRbh8t4qAade2CmGrkR4YrxRwGc79dDkCuQPS7Arcd3AvNlwizdh01m/haunPIvz
+         z+5aKmQ1T4Jk6d51p3CgoCjhBP4sxDPK6Jmx9XfM=
+Date:   Sun, 15 Sep 2019 14:53:47 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Felipe Balbi <felipe.balbi@linux.intel.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: Re: [RFC/PATCH 0/1] Quadrature Encoder Support
+Message-ID: <20190915145347.42bfc393@archlinux>
+In-Reply-To: <20190909121605.92008-1-felipe.balbi@linux.intel.com>
+References: <20190909121605.92008-1-felipe.balbi@linux.intel.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,215 +44,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 15 Sep 2019 14:39:17 +0100
-Jonathan Cameron <jic23@jic23.retrosnub.co.uk> wrote:
+On Mon,  9 Sep 2019 15:16:04 +0300
+Felipe Balbi <felipe.balbi@linux.intel.com> wrote:
 
-> On Sun, 15 Sep 2019 14:57:56 +0900
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+> Hi,
 > 
-> > The count_read and count_write callbacks are simplified to pass val as
-> > unsigned long rather than as an opaque data structure. The opaque
-> > counter_count_read_value and counter_count_write_value structures,
-> > counter_count_value_type enum, and relevant counter_count_read_value_set
-> > and counter_count_write_value_get functions, are removed as they are no
-> > longer used.
-> > 
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>  
+> Here's a simple RFC for Intel's Quadrature Encoder. Let me make it clear
+> that I don't mean we should the following patch as is, rather I'd like
+> to open the discussion to, perhaps, extending Industrial Automation
+> Framework with support for Quadrature Encoders.
 > 
-> Seems like a sensible bit of excessive abstraction removal to me.  I'm not
-> totally sure why these got so complex in the first place though.
-Ah. I should have read the cover letter rather than just diving in the code :)
-All explained there I see.
+> Let me know if you think IIO would be correct place for such devices,
+> then I can start reworking the driver to provide an IIO-compliant
+> interface.
+> 
+> I'm thinking we would need standard sysfs files for configuring the QEP
+> into single-shot QEP mode or buffered Capture mode, configure thresholds
+> and other details.
+
+Hi Felipe,
+
+Fairly recently, similar concerns that IIO didn't really suite these
+devices lead William to create a specific 'counters' subsystem.
++CC William.
+
+It may not address all of your requirements yet, but I would imagine it
+is a better fit than IIO would ever be.  We have moved all the older
+counter drivers out of IIO and across to this new subsystem.
+
+Thanks,
+
+Jonathan
+
 
 > 
-> Can you recall the reason as it might help to judge why we no longer
-> think the same?
+> Cheers
 > 
-> Thanks,
+> Felipe Balbi (1):
+>   misc: introduce intel QEP
 > 
-> Jonathan
-> > ---
-> >  drivers/counter/counter.c | 66 +++++----------------------------------
-> >  include/linux/counter.h   | 43 +++----------------------
-> >  2 files changed, 12 insertions(+), 97 deletions(-)
-> > 
-> > diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
-> > index 106bc7180cd8..1d08f1437b1b 100644
-> > --- a/drivers/counter/counter.c
-> > +++ b/drivers/counter/counter.c
-> > @@ -246,60 +246,6 @@ void counter_signal_read_value_set(struct counter_signal_read_value *const val,
-> >  }
-> >  EXPORT_SYMBOL_GPL(counter_signal_read_value_set);
-> >  
-> > -/**
-> > - * counter_count_read_value_set - set counter_count_read_value data
-> > - * @val:	counter_count_read_value structure to set
-> > - * @type:	property Count data represents
-> > - * @data:	Count data
-> > - *
-> > - * This function sets an opaque counter_count_read_value structure with the
-> > - * provided Count data.
-> > - */
-> > -void counter_count_read_value_set(struct counter_count_read_value *const val,
-> > -				  const enum counter_count_value_type type,
-> > -				  void *const data)
-> > -{
-> > -	switch (type) {
-> > -	case COUNTER_COUNT_POSITION:
-> > -		val->len = sprintf(val->buf, "%lu\n", *(unsigned long *)data);
-> > -		break;
-> > -	default:
-> > -		val->len = 0;
-> > -	}
-> > -}
-> > -EXPORT_SYMBOL_GPL(counter_count_read_value_set);
-> > -
-> > -/**
-> > - * counter_count_write_value_get - get counter_count_write_value data
-> > - * @data:	Count data
-> > - * @type:	property Count data represents
-> > - * @val:	counter_count_write_value structure containing data
-> > - *
-> > - * This function extracts Count data from the provided opaque
-> > - * counter_count_write_value structure and stores it at the address provided by
-> > - * @data.
-> > - *
-> > - * RETURNS:
-> > - * 0 on success, negative error number on failure.
-> > - */
-> > -int counter_count_write_value_get(void *const data,
-> > -				  const enum counter_count_value_type type,
-> > -				  const struct counter_count_write_value *const val)
-> > -{
-> > -	int err;
-> > -
-> > -	switch (type) {
-> > -	case COUNTER_COUNT_POSITION:
-> > -		err = kstrtoul(val->buf, 0, data);
-> > -		if (err)
-> > -			return err;
-> > -		break;
-> > -	}
-> > -
-> > -	return 0;
-> > -}
-> > -EXPORT_SYMBOL_GPL(counter_count_write_value_get);
-> > -
-> >  struct counter_attr_parm {
-> >  	struct counter_device_attr_group *group;
-> >  	const char *prefix;
-> > @@ -788,13 +734,13 @@ static ssize_t counter_count_show(struct device *dev,
-> >  	const struct counter_count_unit *const component = devattr->component;
-> >  	struct counter_count *const count = component->count;
-> >  	int err;
-> > -	struct counter_count_read_value val = { .buf = buf };
-> > +	unsigned long val;
-> >  
-> >  	err = counter->ops->count_read(counter, count, &val);
-> >  	if (err)
-> >  		return err;
-> >  
-> > -	return val.len;
-> > +	return sprintf(buf, "%lu\n", val);
-> >  }
-> >  
-> >  static ssize_t counter_count_store(struct device *dev,
-> > @@ -806,9 +752,13 @@ static ssize_t counter_count_store(struct device *dev,
-> >  	const struct counter_count_unit *const component = devattr->component;
-> >  	struct counter_count *const count = component->count;
-> >  	int err;
-> > -	struct counter_count_write_value val = { .buf = buf };
-> > +	unsigned long val;
-> > +
-> > +	err = kstrtoul(buf, 0, &val);
-> > +	if (err)
-> > +		return err;
-> >  
-> > -	err = counter->ops->count_write(counter, count, &val);
-> > +	err = counter->ops->count_write(counter, count, val);
-> >  	if (err)
-> >  		return err;
-> >  
-> > diff --git a/include/linux/counter.h b/include/linux/counter.h
-> > index a061cdcdef7c..7e40796598a6 100644
-> > --- a/include/linux/counter.h
-> > +++ b/include/linux/counter.h
-> > @@ -300,24 +300,6 @@ struct counter_signal_read_value {
-> >  	size_t len;
-> >  };
-> >  
-> > -/**
-> > - * struct counter_count_read_value - Opaque Count read value
-> > - * @buf:	string representation of Count read value
-> > - * @len:	length of string in @buf
-> > - */
-> > -struct counter_count_read_value {
-> > -	char *buf;
-> > -	size_t len;
-> > -};
-> > -
-> > -/**
-> > - * struct counter_count_write_value - Opaque Count write value
-> > - * @buf:	string representation of Count write value
-> > - */
-> > -struct counter_count_write_value {
-> > -	const char *buf;
-> > -};
-> > -
-> >  /**
-> >   * struct counter_ops - Callbacks from driver
-> >   * @signal_read:	optional read callback for Signal attribute. The read
-> > @@ -328,15 +310,10 @@ struct counter_count_write_value {
-> >   *			signal_read callback.
-> >   * @count_read:		optional read callback for Count attribute. The read
-> >   *			value of the respective Count should be passed back via
-> > - *			the val parameter. val points to an opaque type which
-> > - *			should be set only by calling the
-> > - *			counter_count_read_value_set function from within the
-> > - *			count_read callback.
-> > + *			the val parameter.
-> >   * @count_write:	optional write callback for Count attribute. The write
-> >   *			value for the respective Count is passed in via the val
-> > - *			parameter. val points to an opaque type which should be
-> > - *			accessed only by calling the
-> > - *			counter_count_write_value_get function.
-> > + *			parameter.
-> >   * @function_get:	function to get the current count function mode. Returns
-> >   *			0 on success and negative error code on error. The index
-> >   *			of the respective Count's returned function mode should
-> > @@ -357,11 +334,9 @@ struct counter_ops {
-> >  			   struct counter_signal *signal,
-> >  			   struct counter_signal_read_value *val);
-> >  	int (*count_read)(struct counter_device *counter,
-> > -			  struct counter_count *count,
-> > -			  struct counter_count_read_value *val);
-> > +			  struct counter_count *count, unsigned long *val);
-> >  	int (*count_write)(struct counter_device *counter,
-> > -			   struct counter_count *count,
-> > -			   struct counter_count_write_value *val);
-> > +			   struct counter_count *count, unsigned long val);
-> >  	int (*function_get)(struct counter_device *counter,
-> >  			    struct counter_count *count, size_t *function);
-> >  	int (*function_set)(struct counter_device *counter,
-> > @@ -486,19 +461,9 @@ enum counter_signal_value_type {
-> >  	COUNTER_SIGNAL_LEVEL = 0
-> >  };
-> >  
-> > -enum counter_count_value_type {
-> > -	COUNTER_COUNT_POSITION = 0,
-> > -};
-> > -
-> >  void counter_signal_read_value_set(struct counter_signal_read_value *const val,
-> >  				   const enum counter_signal_value_type type,
-> >  				   void *const data);
-> > -void counter_count_read_value_set(struct counter_count_read_value *const val,
-> > -				  const enum counter_count_value_type type,
-> > -				  void *const data);
-> > -int counter_count_write_value_get(void *const data,
-> > -				  const enum counter_count_value_type type,
-> > -				  const struct counter_count_write_value *const val);
-> >  
-> >  int counter_register(struct counter_device *const counter);
-> >  void counter_unregister(struct counter_device *const counter);  
+>  drivers/misc/Kconfig     |   7 +
+>  drivers/misc/Makefile    |   1 +
+>  drivers/misc/intel-qep.c | 813 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 821 insertions(+)
+>  create mode 100644 drivers/misc/intel-qep.c
 > 
 

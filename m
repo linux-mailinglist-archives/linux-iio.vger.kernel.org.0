@@ -2,106 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 339C0B2F70
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 11:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4496B2F73
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 11:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726299AbfIOJso (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Sep 2019 05:48:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46604 "EHLO mail.kernel.org"
+        id S1725835AbfIOJxH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Sep 2019 05:53:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47994 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725835AbfIOJso (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Sep 2019 05:48:44 -0400
+        id S1725497AbfIOJxG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Sep 2019 05:53:06 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E67C22077C;
-        Sun, 15 Sep 2019 09:48:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EC8F42077C;
+        Sun, 15 Sep 2019 09:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568540923;
-        bh=XZ3E5JBgolhHb2dzMbDcf9pFGV5cWCk2O6sg7TzZLUc=;
+        s=default; t=1568541186;
+        bh=eY/svIwzWeTPEPLCh0a5G9JGZm+IqSfCU4uCCdA91NE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=yM8x+mC7Db+QFnLMbn/4ALY+ood1Uy4G+fH3bw3GLgylFmPlKDaDdr1eUUn31/cFc
-         WYJaQFxVykWviaP4hQ49R8KmGRPXNYvjuxVAIV0zY06jSksLtzhZ7rUHKcag6Cq/sC
-         /JlNZY+lSpafOWYPF2gdi6DGitwBAqRY4w5t3ijQ=
-Date:   Sun, 15 Sep 2019 10:48:38 +0100
+        b=S3NIcyIyIRUhGkWWEzuE2IAuk2NIx7FVAcZfiTht66CwamPfJ3fnV+Jv8Z/Uccw9G
+         G6b0SLa4Jqh8xf1gP07alHNNodK87mirrmaiC/FA8zK2O5OnS31axNpQ4Ojw4+op/m
+         wnMBAzLIYfPfgF+e/0m9TZ9A5c/Po/FHeXCr5og4=
+Date:   Sun, 15 Sep 2019 10:53:00 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Wilczynski <kw@linux.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        gregkh@linuxfoundation.org, Hartmut Knaack <knaack.h@gmx.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Tomasz Duszynski <tduszyns@gmail.com>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3] iio: light: bh1750: Resolve compiler warning and
- make code more readable
-Message-ID: <20190915104838.0776d2a4@archlinux>
-In-Reply-To: <20190913202413.3034-1-kw@linux.com>
-References: <20190910203814.31075-1-kw@linux.com>
-        <20190913202413.3034-1-kw@linux.com>
+        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org,
+        Rodrigo Carvalho <rodrigorsdc@gmail.com>
+Subject: Re: [PATCH] staging: iio: ADIS16240: Remove unused include
+Message-ID: <20190915105300.12cc105f@archlinux>
+In-Reply-To: <20190913203627.GA1320@SARKAR>
+References: <20190913203627.GA1320@SARKAR>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 13 Sep 2019 22:24:13 +0200
-Krzysztof Wilczynski <kw@linux.com> wrote:
+On Sat, 14 Sep 2019 02:06:27 +0530
+Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
 
-> Separate the declaration of struct bh1750_chip_info from definition
-> of bh1750_chip_info_tbl[] in a single statement as it makes the code
-> hard to read, and with the extra newline it makes it look as if the
-> bh1750_chip_info_tbl[] had no explicit type.
->=20
-> This change also resolves the following compiler warning about the
-> unusual position of the static keyword that can be seen when building
-> with warnings enabled (W=3D1):
->=20
-> drivers/iio/light/bh1750.c:64:1: warning:
->   =E2=80=98static=E2=80=99 is not at beginning of declaration [-Wold-styl=
-e-declaration]
->=20
-> Related to commit 3a11fbb037a1 ("iio: light: add support for ROHM
-> BH1710/BH1715/BH1721/BH1750/BH1751 ambient light sensors").
->=20
-> Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
+> Bcc: 
+> Subject: [PATCH] staging: iio: adis16240: remove unused include
+> Reply-To: 
+Something odd happened here with patch formatting.  I fixed it up and
+applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
 
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to play with it.  Added Uwe's Acked-by as well.
-
-Sorry for the confusing advice I gave earlier, I managed to confuse
-myself on what the original code said.
+Thanks,
 
 Jonathan
 
+> 
+> '#include<linux/gpio.h>' isn't being used anywhere. Remove it.
+> 
+> Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
 > ---
-> Changes in v3:
->   Updated wording of the commit message as per the review feedback.
->=20
-> Changes in v2:
->   Made definition of bh1750_chip_info_tbl separate from declaration
->   as per the review feedback.  This also makes the code more readable.
->   Updated wording of the subject and the commit message.
->=20
->  drivers/iio/light/bh1750.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/light/bh1750.c b/drivers/iio/light/bh1750.c
-> index 28347df78cff..adb5ab9e3439 100644
-> --- a/drivers/iio/light/bh1750.c
-> +++ b/drivers/iio/light/bh1750.c
-> @@ -59,9 +59,9 @@ struct bh1750_chip_info {
-> =20
->  	u16 int_time_low_mask;
->  	u16 int_time_high_mask;
-> -}
-> +};
-> =20
-> -static const bh1750_chip_info_tbl[] =3D {
-> +static const struct bh1750_chip_info bh1750_chip_info_tbl[] =3D {
->  	[BH1710] =3D { 140, 1022, 300, 400,  250000000, 2, 0x001F, 0x03E0 },
->  	[BH1721] =3D { 140, 1020, 300, 400,  250000000, 2, 0x0010, 0x03E0 },
->  	[BH1750] =3D { 31,  254,  69,  1740, 57500000,  1, 0x001F, 0x00E0 },
+>  drivers/staging/iio/accel/adis16240.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/accel/adis16240.c
+> index 82099db4bf0c..a480409090c0 100644
+> --- a/drivers/staging/iio/accel/adis16240.c
+> +++ b/drivers/staging/iio/accel/adis16240.c
+> @@ -7,7 +7,6 @@
+>  
+>  #include <linux/interrupt.h>
+>  #include <linux/irq.h>
+> -#include <linux/gpio.h>
+>  #include <linux/delay.h>
+>  #include <linux/device.h>
+>  #include <linux/kernel.h>
 

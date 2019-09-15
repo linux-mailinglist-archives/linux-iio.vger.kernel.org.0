@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 999EDB2E88
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 07:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ECE3B2E89
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 07:59:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbfIOF6r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Sep 2019 01:58:47 -0400
-Received: from mail-pg1-f170.google.com ([209.85.215.170]:34393 "EHLO
-        mail-pg1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726252AbfIOF6q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Sep 2019 01:58:46 -0400
-Received: by mail-pg1-f170.google.com with SMTP id n9so17486253pgc.1;
-        Sat, 14 Sep 2019 22:58:44 -0700 (PDT)
+        id S1726530AbfIOF6v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Sep 2019 01:58:51 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:33159 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726514AbfIOF6s (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Sep 2019 01:58:48 -0400
+Received: by mail-pl1-f195.google.com with SMTP id t11so15088262plo.0;
+        Sat, 14 Sep 2019 22:58:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=X0YlaBg0eWRFmg01LcYcEakBboU2udItKz/WvLmsstE=;
-        b=ImJxU2R0GJ4SvUPU3OFTOmBFH8Vpam8zm/yXtHC20IxUjwM0MLxEJfuiGwZWr7cCsc
-         Ftp7v4GDahPsmeBzLJYSwcOppIQiN7/PE8/cpSzup8pN67YsbCZL95sD1Kz5DAiFlUS9
-         TjwDC5vt4dhTHb/VidMUQM9ETR0cmvR9XuEcUJevtbtK10zHlMR4M7XM2jTfP0NyTx/+
-         7UkUMS9jFCwCF0ynDF6o35WnVYaGoAYSijxQEbr7CtBrK2ynyikR85DPJIne828DffMB
-         /duIRbIeVCg92r8hX/vV3RFnjEXuTOrWHcoVKz6aRM+kNhLkH0LpviTuZng+hgPqWQoF
-         4rkA==
+        bh=LsvbpETHylsMeIUTajAZCGUDIJ8fG7jkQ6/Zagal4f4=;
+        b=g23mLma/2a6TaARGhUpC7gc6bpoYubqK0V9iy2PkfkRtOXM1F5gvrxfIiXhJBme5NI
+         WV0cMLB3tZCevcXhcGXgFfhCz19PeWIau37uiY1B0OEEAyvnn+uVAmCuVZid9Uqqe+A1
+         2MU8ASRmN8yamgq9wotT2olJRnlhRMtwQTl2TyyM79EP0ioLdj3EXiOtlx98xhN2m8H3
+         ICvvZuF6lEhpVZ3b52ZBoBbOe8QeaJR0iws23FIumQKGOqIhznsh+H0K3jxbIVt7AvKd
+         542a81zArZr3+QeGwmOsAGeL8FtdVAHI8iWzT4lzNMJPeIpySFm1aM6EXt5c7q3irRsQ
+         f+yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=X0YlaBg0eWRFmg01LcYcEakBboU2udItKz/WvLmsstE=;
-        b=pmPjdQaD+404kOISXapF79E94siGSN++dcxrJEZZc+XWJpS7cx0a1ymn7WyTD3ciR1
-         7Y2PniQrnBFfScrPRHupy1rK+/CIXIOXKITJ85V/3973oPVb+IbnmYutYx8xYLCc9Cst
-         b+5B7TppBnWkC2+RcRcveTtCW9tBkqbofEhCeVnjCUB9pkmvKDkhp91w+zuNIfAjmfw7
-         ukLocQ1pkGisvO+ffDjhuCwHpFM+RN20tM67EA+8r1aLKzovOMTU5CzqE35O/76sMAXA
-         4mrxJH8drrbAgr24lROcKjvX5vkSIModTFDVt34TaQ/l6H7e8MwZpfdijtFZxmr/TbTf
-         R5dQ==
-X-Gm-Message-State: APjAAAVJ+eGDKYgyt+lJskkel30mgfNJg5O/0oWcIef0tcS953nvxSGq
-        t3jNKaJuW+IDWw9OtM16glI=
-X-Google-Smtp-Source: APXvYqzj5kSNmAivQcPNxvF+89CgdhtEibJZP+YyQc+exlQwth5wjcsgepb95Cx8nx+30MFqZOl6aA==
-X-Received: by 2002:a63:6097:: with SMTP id u145mr51395010pgb.227.1568527124005;
-        Sat, 14 Sep 2019 22:58:44 -0700 (PDT)
+        bh=LsvbpETHylsMeIUTajAZCGUDIJ8fG7jkQ6/Zagal4f4=;
+        b=QEpzJHc6C4R75VrsMqrONnvU37jE8By4XE2+WiSDxA2X1qjHF5HSKLa8ihBL9kcaiA
+         kmSmiMHUnIcltzHP8n88q306hX24LfJuEytzDxw5hWCL5R4v+Hi9Bm63T2tO8l5vqYCB
+         MMA6MP13Kz55gpomYVwA87EPYLVeFAqqW8rWab2VjfMRDQyteMVy/ztwCNCexMPZpdXE
+         5KtBuU7jOY3/4gtnhQrUXosjn9Fp42FApulEprRa21UuuP9ahoBD6SmQ9gTzjamm0LiK
+         wQ8nUpUGW03gyrrQL8F95J45FuS6e/QjnmmAfUunK1s59bg/TC6wN4kGnE/nsmhg6rnF
+         4xzA==
+X-Gm-Message-State: APjAAAXoe6WpOLJxqtYyycvHgl/OyHCsZoEP1MFrHoX2MqYBAdLh7Xj0
+        /we98TBANEg5Q/GKoBMqk44=
+X-Google-Smtp-Source: APXvYqwE0q5NRJrimFW4H90K69yTDrGNMv6VHcHSbTnWP2cDMJiiW65zcneGUxGeO/WAa8Oh297njQ==
+X-Received: by 2002:a17:902:b607:: with SMTP id b7mr54622951pls.38.1568527127485;
+        Sat, 14 Sep 2019 22:58:47 -0700 (PDT)
 Received: from localhost.localdomain ([2001:268:c144:8b8a:e7a2:82ca:6689:77bb])
-        by smtp.gmail.com with ESMTPSA id 22sm3696658pfj.139.2019.09.14.22.58.41
+        by smtp.gmail.com with ESMTPSA id 22sm3696658pfj.139.2019.09.14.22.58.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Sep 2019 22:58:43 -0700 (PDT)
+        Sat, 14 Sep 2019 22:58:46 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@jic23.retrosnub.co.uk
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [RFC 3/4] docs: driver-api: generic-counter: Update Count and Signal data types
-Date:   Sun, 15 Sep 2019 14:57:58 +0900
-Message-Id: <20190915055759.408690-4-vilhelm.gray@gmail.com>
+Subject: [RFC 4/4] counter: 104-quad-8: Update count_read/count_write/signal_read callbacks
+Date:   Sun, 15 Sep 2019 14:57:59 +0900
+Message-Id: <20190915055759.408690-5-vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20190915055759.408690-1-vilhelm.gray@gmail.com>
 References: <20190915055759.408690-1-vilhelm.gray@gmail.com>
@@ -61,57 +61,118 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Count data is now always represented as an unsigned integer, while
-Signal data is either SIGNAL_LOW or SIGNAL_HIGH.
+The count_read and count_write callbacks pass unsigned long now, while
+the signal_read callback passes an enum counter_signal_value.
 
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- Documentation/driver-api/generic-counter.rst | 22 +++++++-------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ drivers/counter/104-quad-8.c | 33 ++++++++++-----------------------
+ 1 file changed, 10 insertions(+), 23 deletions(-)
 
-diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-index 8382f01a53e3..161652fc1025 100644
---- a/Documentation/driver-api/generic-counter.rst
-+++ b/Documentation/driver-api/generic-counter.rst
-@@ -39,10 +39,7 @@ There are three core components to a counter:
- COUNT
- -----
- A Count represents the count data for a set of Signals. The Generic
--Counter interface provides the following available count data types:
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index 00b113f4b958..17e67a84777d 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -562,11 +562,10 @@ static const struct iio_chan_spec quad8_channels[] = {
+ };
+ 
+ static int quad8_signal_read(struct counter_device *counter,
+-	struct counter_signal *signal, struct counter_signal_read_value *val)
++	struct counter_signal *signal, enum counter_signal_value *val)
+ {
+ 	const struct quad8_iio *const priv = counter->priv;
+ 	unsigned int state;
+-	enum counter_signal_level level;
+ 
+ 	/* Only Index signal levels can be read */
+ 	if (signal->id < 16)
+@@ -575,22 +574,19 @@ static int quad8_signal_read(struct counter_device *counter,
+ 	state = inb(priv->base + QUAD8_REG_INDEX_INPUT_LEVELS)
+ 		& BIT(signal->id - 16);
+ 
+-	level = (state) ? COUNTER_SIGNAL_LEVEL_HIGH : COUNTER_SIGNAL_LEVEL_LOW;
 -
--* COUNT_POSITION:
--  Unsigned integer value representing position.
-+Counter interface represents the count data as an unsigned integer.
+-	counter_signal_read_value_set(val, COUNTER_SIGNAL_LEVEL, &level);
++	*val = (state) ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
  
- A Count has a count function mode which represents the update behavior
- for the count data. The Generic Counter interface provides the following
-@@ -93,19 +90,16 @@ SIGNAL
- A Signal represents a counter input data; this is the input data that is
- evaluated by the counter to determine the count data; e.g. a quadrature
- signal output line of a rotary encoder. Not all counter devices provide
--user access to the Signal data.
+ 	return 0;
+ }
+ 
+ static int quad8_count_read(struct counter_device *counter,
+-	struct counter_count *count, struct counter_count_read_value *val)
++	struct counter_count *count, unsigned long *val)
+ {
+ 	const struct quad8_iio *const priv = counter->priv;
+ 	const int base_offset = priv->base + 2 * count->id;
+ 	unsigned int flags;
+ 	unsigned int borrow;
+ 	unsigned int carry;
+-	unsigned long position;
+ 	int i;
+ 
+ 	flags = inb(base_offset + 1);
+@@ -598,36 +594,27 @@ static int quad8_count_read(struct counter_device *counter,
+ 	carry = !!(flags & QUAD8_FLAG_CT);
+ 
+ 	/* Borrow XOR Carry effectively doubles count range */
+-	position = (unsigned long)(borrow ^ carry) << 24;
++	*val = (unsigned long)(borrow ^ carry) << 24;
+ 
+ 	/* Reset Byte Pointer; transfer Counter to Output Latch */
+ 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP | QUAD8_RLD_CNTR_OUT,
+ 	     base_offset + 1);
+ 
+ 	for (i = 0; i < 3; i++)
+-		position |= (unsigned long)inb(base_offset) << (8 * i);
 -
--The Generic Counter interface provides the following available signal
--data types for when the Signal data is available for user access:
-+user access to the Signal data, so exposure is optional for drivers.
+-	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &position);
++		*val |= (unsigned long)inb(base_offset) << (8 * i);
  
--* SIGNAL_LEVEL:
--  Signal line state level. The following states are possible:
-+When the Signal data is available for user access, the Generic Counter
-+interface provides the following available signal values:
+ 	return 0;
+ }
  
--  - SIGNAL_LEVEL_LOW:
--    Signal line is in a low state.
-+* SIGNAL_LOW:
-+  Signal line is in a low state.
+ static int quad8_count_write(struct counter_device *counter,
+-	struct counter_count *count, struct counter_count_write_value *val)
++	struct counter_count *count, unsigned long val)
+ {
+ 	const struct quad8_iio *const priv = counter->priv;
+ 	const int base_offset = priv->base + 2 * count->id;
+-	int err;
+-	unsigned long position;
+ 	int i;
  
--  - SIGNAL_LEVEL_HIGH:
--    Signal line is in a high state.
-+* SIGNAL_HIGH:
-+  Signal line is in a high state.
+-	err = counter_count_write_value_get(&position, COUNTER_COUNT_POSITION,
+-					    val);
+-	if (err)
+-		return err;
+-
+ 	/* Only 24-bit values are supported */
+-	if (position > 0xFFFFFF)
++	if (val > 0xFFFFFF)
+ 		return -EINVAL;
  
- A Signal may be associated with one or more Counts.
+ 	/* Reset Byte Pointer */
+@@ -635,7 +622,7 @@ static int quad8_count_write(struct counter_device *counter,
  
+ 	/* Counter can only be set via Preset Register */
+ 	for (i = 0; i < 3; i++)
+-		outb(position >> (8 * i), base_offset);
++		outb(val >> (8 * i), base_offset);
+ 
+ 	/* Transfer Preset Register to Counter */
+ 	outb(QUAD8_CTR_RLD | QUAD8_RLD_PRESET_CNTR, base_offset + 1);
+@@ -644,9 +631,9 @@ static int quad8_count_write(struct counter_device *counter,
+ 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP, base_offset + 1);
+ 
+ 	/* Set Preset Register back to original value */
+-	position = priv->preset[count->id];
++	val = priv->preset[count->id];
+ 	for (i = 0; i < 3; i++)
+-		outb(position >> (8 * i), base_offset);
++		outb(val >> (8 * i), base_offset);
+ 
+ 	/* Reset Borrow, Carry, Compare, and Sign flags */
+ 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_FLAGS, base_offset + 1);
 -- 
 2.23.0
 

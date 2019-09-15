@@ -2,115 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38765B2FFB
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 14:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81B00B3000
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 14:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726246AbfIOMsr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Sep 2019 08:48:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60914 "EHLO mail.kernel.org"
+        id S1729620AbfIOMxb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Sep 2019 08:53:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33330 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726057AbfIOMsr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Sep 2019 08:48:47 -0400
-Received: from lore-desk-wlan.lan (unknown [151.66.2.116])
+        id S1729570AbfIOMxb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Sep 2019 08:53:31 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 84BAF21479;
-        Sun, 15 Sep 2019 12:48:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 62ADD21479;
+        Sun, 15 Sep 2019 12:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568551726;
-        bh=C5U0OyGCSTYfBbKLZfe1JIzL7YG3T/Vmb+Z4g/z8HG0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yROIBX7y6FsSBXZeqRoGhWdSMJ+rRiUbGONWzTE75YP3Ewlpc7VL61k3a2OeXUr/T
-         L/4qJ0A/aAa/OHuUFK3xP2wX2HBoOkD9w64GwvtwTtya7AN4sxUzHbatahhf3Dhi6l
-         piWofOO6r3Pr5nHgePY3y6mr1fE/KOA/Qlim0Jsk=
-Date:   Sun, 15 Sep 2019 14:48:40 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
-        lorenzo.bianconi83@gmail.com, denis.ciocca@st.com,
-        mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
-Subject: Re: [PATCH v8 4/5] iio: imu: st_lsm6dsx: always enter interrupt
- thread
-Message-ID: <20190915124840.GA15634@lore-desk-wlan.lan>
-References: <20190913090708.1442057-1-sean@geanix.com>
- <20190913090708.1442057-5-sean@geanix.com>
- <20190915133332.3762e860@archlinux>
+        s=default; t=1568552010;
+        bh=j1MhtTL/HDQs+iWSaui+/inPThD5GVkIgBWEhB3l9Wg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=TBpEfH0L/yWtWIwpEqIT85T7Ccsoz+Int2biZ3vy4zgc/WPx6z6ZAZJSrYQ5AQ/DM
+         3KRXyf2v5JlfP5eOcP8ROhfCM2JCHyO6FjPLH3bSBzHy3kXzHydaUfF346DV5EbkX5
+         i5r/ii3GySRU8Y0d93dYnT8CWy/40ByxyFHUCc4M=
+Date:   Sun, 15 Sep 2019 13:53:26 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andreas Klinger <ak@it-klinger.de>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] iio: adc: hx711: fix bug in sampling of data
+Message-ID: <20190915135326.69551618@archlinux>
+In-Reply-To: <20190909123720.qdew2c4evxd6dpyk@arbad>
+References: <20190909123720.qdew2c4evxd6dpyk@arbad>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="XsQoSWH+UP9D9v3l"
-Content-Disposition: inline
-In-Reply-To: <20190915133332.3762e860@archlinux>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 9 Sep 2019 14:37:21 +0200
+Andreas Klinger <ak@it-klinger.de> wrote:
 
---XsQoSWH+UP9D9v3l
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Fix bug in sampling function hx711_cycle() when interrupt occures while
+> PD_SCK is high. If PD_SCK is high for at least 60 us power down mode of
+> the sensor is entered which in turn leads to a wrong measurement.
+> 
+> Switch off interrupts during a PD_SCK high period and move query of DOUT
+> to the latest point of time which is at the end of PD_SCK low period.
+> 
+> This bug exists in the driver since it's initial addition. The more
+> interrupts on the system the higher is the probability that it happens.
+> 
+> Fixes: c3b2fdd0ea7e ("iio: adc: hx711: Add IIO driver for AVIA HX711")
+> 
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
 
-> On Fri, 13 Sep 2019 11:07:07 +0200
-> Sean Nyekjaer <sean@geanix.com> wrote:
->=20
-> > The interrupt source can come from multiple sources,
-> > fifo and wake interrupts.
-> > Enter interrupt thread to check which interrupt that has fired.
-> >=20
-> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> > ---
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio=
-/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > index 810807c52d5f..80a94335175f 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > @@ -1717,9 +1717,7 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(st=
-ruct st_lsm6dsx_hw *hw,
-> > =20
-> >  static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
-> >  {
-> > -	struct st_lsm6dsx_hw *hw =3D private;
-> > -
-> > -	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
-> > +	return IRQ_WAKE_THREAD;
->=20
-> I missed this before.  Isn't this the same as just not providing a top ha=
-lf at all?
->=20
-> I.e. Pass null to request_threaded_irq where this function was.
->=20
-> Thanks,
->=20
-> Jonathan
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-Right, for the moment we do not need it. It will be probably useful adding
-buffering support for sensors that do not support hw timestamping in FIFO
-(e.g. LSM9DS1). I am fine both ways, so up to you.
+Thanks,
 
-Regards,
-Lorenzo
+Jonathan
 
->=20
->=20
-> >  }
-> > =20
-> >  static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
->=20
+> ---
+>  drivers/iio/adc/hx711.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/hx711.c b/drivers/iio/adc/hx711.c
+> index 88c7fe15003b..0678964dbd21 100644
+> --- a/drivers/iio/adc/hx711.c
+> +++ b/drivers/iio/adc/hx711.c
+> @@ -101,13 +101,14 @@ struct hx711_data {
+>  static int hx711_cycle(struct hx711_data *hx711_data)
+>  {
+>  	int val;
+> +	unsigned long flags;
+>  
+>  	/*
+>  	 * if preempted for more then 60us while PD_SCK is high:
+>  	 * hx711 is going in reset
+>  	 * ==> measuring is false
+>  	 */
+> -	preempt_disable();
+> +	local_irq_save(flags);
+>  	gpiod_set_value(hx711_data->gpiod_pd_sck, 1);
+>  
+>  	/*
+> @@ -117,7 +118,6 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+>  	 */
+>  	ndelay(hx711_data->data_ready_delay_ns);
+>  
+> -	val = gpiod_get_value(hx711_data->gpiod_dout);
+>  	/*
+>  	 * here we are not waiting for 0.2 us as suggested by the datasheet,
+>  	 * because the oscilloscope showed in a test scenario
+> @@ -125,7 +125,7 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+>  	 * and 0.56 us for PD_SCK low on TI Sitara with 800 MHz
+>  	 */
+>  	gpiod_set_value(hx711_data->gpiod_pd_sck, 0);
+> -	preempt_enable();
+> +	local_irq_restore(flags);
+>  
+>  	/*
+>  	 * make it a square wave for addressing cases with capacitance on
+> @@ -133,7 +133,8 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+>  	 */
+>  	ndelay(hx711_data->data_ready_delay_ns);
+>  
+> -	return val;
+> +	/* sample as late as possible */
+> +	return gpiod_get_value(hx711_data->gpiod_dout);
+>  }
+>  
+>  static int hx711_read(struct hx711_data *hx711_data)
 
---XsQoSWH+UP9D9v3l
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXX4zIgAKCRA6cBh0uS2t
-rCIHAP0Xb734jkEk7vHS4mGRCDdIuwBdm6/ZR+EO0Xsju6d+OgD/QFbWr3uDDWhV
-GaF0gA834uod/LPlQCEwgm+Q2AOpTgE=
-=L6eA
------END PGP SIGNATURE-----
-
---XsQoSWH+UP9D9v3l--

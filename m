@@ -2,139 +2,247 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 327A0B304E
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 15:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB86DB3052
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 15:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730230AbfIONmo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Sep 2019 09:42:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60374 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726057AbfIONmo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Sep 2019 09:42:44 -0400
-Received: from lore-desk-wlan.lan (unknown [151.66.2.116])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B35BB214C6;
-        Sun, 15 Sep 2019 13:42:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568554962;
-        bh=CSrLwMsBohipC6vBCT84GTYOgUzyu79IrYF0aTvuueQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LtqA5MG/TSG/L05GaiKvA3zgztZENPxbg+BxsYZV/7qEJkdC67gWcU9Xp4Zr0gJJP
-         blKsMuM/866yiPog/x/3Mx80hnewX/bXPkTHv6KZVIbHDNVLykRnPJiW1An6z9pq5Y
-         1vpMC+Dz1E1TruZg51zLot/sxWvRVyzyf9yP/C/Q=
-Date:   Sun, 15 Sep 2019 15:42:37 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com, denis.ciocca@st.com,
-        mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
-Subject: Re: [PATCH v8 3/5] iio: imu: st_lsm6dsx: add wakeup-source option
-Message-ID: <20190915134237.GE15634@lore-desk-wlan.lan>
-References: <20190913090708.1442057-1-sean@geanix.com>
- <20190913090708.1442057-4-sean@geanix.com>
+        id S1731142AbfIONrD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Sep 2019 09:47:03 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:58596 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730694AbfIONrD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Sep 2019 09:47:03 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 923D69E772F;
+        Sun, 15 Sep 2019 14:47:01 +0100 (BST)
+Date:   Sun, 15 Sep 2019 14:47:00 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [RFC 1/4] counter: Simplify the count_read and count_write
+ callbacks
+Message-ID: <20190915144700.0f7a361d@archlinux>
+In-Reply-To: <20190915143917.61385369@archlinux>
+References: <20190915055759.408690-1-vilhelm.gray@gmail.com>
+        <20190915055759.408690-2-vilhelm.gray@gmail.com>
+        <20190915143917.61385369@archlinux>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zaRBsRFn0XYhEU69"
-Content-Disposition: inline
-In-Reply-To: <20190913090708.1442057-4-sean@geanix.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, 15 Sep 2019 14:39:17 +0100
+Jonathan Cameron <jic23@jic23.retrosnub.co.uk> wrote:
 
---zaRBsRFn0XYhEU69
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Sun, 15 Sep 2019 14:57:56 +0900
+> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+> 
+> > The count_read and count_write callbacks are simplified to pass val as
+> > unsigned long rather than as an opaque data structure. The opaque
+> > counter_count_read_value and counter_count_write_value structures,
+> > counter_count_value_type enum, and relevant counter_count_read_value_set
+> > and counter_count_write_value_get functions, are removed as they are no
+> > longer used.
+> > 
+> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>  
+> 
+> Seems like a sensible bit of excessive abstraction removal to me.  I'm not
+> totally sure why these got so complex in the first place though.
+Ah. I should have read the cover letter rather than just diving in the code :)
+All explained there I see.
 
-> This add ways for the SoC to wake from accelerometer wake events.
->=20
-> In the suspend function we skip disabling the sensor if wakeup-source
-> and events are activated.
->=20
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> ---
-> Changes since v4:
->  * More devices supports wakeup
->=20
-> Changes since v5:
->  * None
->=20
-> Changes since v6:
->  * None
->=20
-> Changes since v7:
->  * Add check for hw->enable_event
->  * Moved disable_irq_wake section so it's called
->  * Removed not neeeded continue from disable_irq_wake section
->=20
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 4198ba263d03..810807c52d5f 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -1858,6 +1858,9 @@ int st_lsm6dsx_probe(struct device *dev, int irq, i=
-nt hw_id,
->  			return err;
->  	}
-> =20
-> +	if (dev->of_node && of_property_read_bool(dev->of_node, "wakeup-source"=
-))
-> +		device_init_wakeup(dev, true);
-> +
->  	return 0;
->  }
->  EXPORT_SYMBOL(st_lsm6dsx_probe);
-> @@ -1876,6 +1879,13 @@ static int __maybe_unused st_lsm6dsx_suspend(struc=
-t device *dev)
->  		if (!(hw->enable_mask & BIT(sensor->id)))
->  			continue;
-> =20
-> +		if (device_may_wakeup(dev) && i =3D=3D ST_LSM6DSX_ID_ACC &&
+> 
+> Can you recall the reason as it might help to judge why we no longer
+> think the same?
+> 
+> Thanks,
+> 
+> Jonathan
+> > ---
+> >  drivers/counter/counter.c | 66 +++++----------------------------------
+> >  include/linux/counter.h   | 43 +++----------------------
+> >  2 files changed, 12 insertions(+), 97 deletions(-)
+> > 
+> > diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
+> > index 106bc7180cd8..1d08f1437b1b 100644
+> > --- a/drivers/counter/counter.c
+> > +++ b/drivers/counter/counter.c
+> > @@ -246,60 +246,6 @@ void counter_signal_read_value_set(struct counter_signal_read_value *const val,
+> >  }
+> >  EXPORT_SYMBOL_GPL(counter_signal_read_value_set);
+> >  
+> > -/**
+> > - * counter_count_read_value_set - set counter_count_read_value data
+> > - * @val:	counter_count_read_value structure to set
+> > - * @type:	property Count data represents
+> > - * @data:	Count data
+> > - *
+> > - * This function sets an opaque counter_count_read_value structure with the
+> > - * provided Count data.
+> > - */
+> > -void counter_count_read_value_set(struct counter_count_read_value *const val,
+> > -				  const enum counter_count_value_type type,
+> > -				  void *const data)
+> > -{
+> > -	switch (type) {
+> > -	case COUNTER_COUNT_POSITION:
+> > -		val->len = sprintf(val->buf, "%lu\n", *(unsigned long *)data);
+> > -		break;
+> > -	default:
+> > -		val->len = 0;
+> > -	}
+> > -}
+> > -EXPORT_SYMBOL_GPL(counter_count_read_value_set);
+> > -
+> > -/**
+> > - * counter_count_write_value_get - get counter_count_write_value data
+> > - * @data:	Count data
+> > - * @type:	property Count data represents
+> > - * @val:	counter_count_write_value structure containing data
+> > - *
+> > - * This function extracts Count data from the provided opaque
+> > - * counter_count_write_value structure and stores it at the address provided by
+> > - * @data.
+> > - *
+> > - * RETURNS:
+> > - * 0 on success, negative error number on failure.
+> > - */
+> > -int counter_count_write_value_get(void *const data,
+> > -				  const enum counter_count_value_type type,
+> > -				  const struct counter_count_write_value *const val)
+> > -{
+> > -	int err;
+> > -
+> > -	switch (type) {
+> > -	case COUNTER_COUNT_POSITION:
+> > -		err = kstrtoul(val->buf, 0, data);
+> > -		if (err)
+> > -			return err;
+> > -		break;
+> > -	}
+> > -
+> > -	return 0;
+> > -}
+> > -EXPORT_SYMBOL_GPL(counter_count_write_value_get);
+> > -
+> >  struct counter_attr_parm {
+> >  	struct counter_device_attr_group *group;
+> >  	const char *prefix;
+> > @@ -788,13 +734,13 @@ static ssize_t counter_count_show(struct device *dev,
+> >  	const struct counter_count_unit *const component = devattr->component;
+> >  	struct counter_count *const count = component->count;
+> >  	int err;
+> > -	struct counter_count_read_value val = { .buf = buf };
+> > +	unsigned long val;
+> >  
+> >  	err = counter->ops->count_read(counter, count, &val);
+> >  	if (err)
+> >  		return err;
+> >  
+> > -	return val.len;
+> > +	return sprintf(buf, "%lu\n", val);
+> >  }
+> >  
+> >  static ssize_t counter_count_store(struct device *dev,
+> > @@ -806,9 +752,13 @@ static ssize_t counter_count_store(struct device *dev,
+> >  	const struct counter_count_unit *const component = devattr->component;
+> >  	struct counter_count *const count = component->count;
+> >  	int err;
+> > -	struct counter_count_write_value val = { .buf = buf };
+> > +	unsigned long val;
+> > +
+> > +	err = kstrtoul(buf, 0, &val);
+> > +	if (err)
+> > +		return err;
+> >  
+> > -	err = counter->ops->count_write(counter, count, &val);
+> > +	err = counter->ops->count_write(counter, count, val);
+> >  	if (err)
+> >  		return err;
+> >  
+> > diff --git a/include/linux/counter.h b/include/linux/counter.h
+> > index a061cdcdef7c..7e40796598a6 100644
+> > --- a/include/linux/counter.h
+> > +++ b/include/linux/counter.h
+> > @@ -300,24 +300,6 @@ struct counter_signal_read_value {
+> >  	size_t len;
+> >  };
+> >  
+> > -/**
+> > - * struct counter_count_read_value - Opaque Count read value
+> > - * @buf:	string representation of Count read value
+> > - * @len:	length of string in @buf
+> > - */
+> > -struct counter_count_read_value {
+> > -	char *buf;
+> > -	size_t len;
+> > -};
+> > -
+> > -/**
+> > - * struct counter_count_write_value - Opaque Count write value
+> > - * @buf:	string representation of Count write value
+> > - */
+> > -struct counter_count_write_value {
+> > -	const char *buf;
+> > -};
+> > -
+> >  /**
+> >   * struct counter_ops - Callbacks from driver
+> >   * @signal_read:	optional read callback for Signal attribute. The read
+> > @@ -328,15 +310,10 @@ struct counter_count_write_value {
+> >   *			signal_read callback.
+> >   * @count_read:		optional read callback for Count attribute. The read
+> >   *			value of the respective Count should be passed back via
+> > - *			the val parameter. val points to an opaque type which
+> > - *			should be set only by calling the
+> > - *			counter_count_read_value_set function from within the
+> > - *			count_read callback.
+> > + *			the val parameter.
+> >   * @count_write:	optional write callback for Count attribute. The write
+> >   *			value for the respective Count is passed in via the val
+> > - *			parameter. val points to an opaque type which should be
+> > - *			accessed only by calling the
+> > - *			counter_count_write_value_get function.
+> > + *			parameter.
+> >   * @function_get:	function to get the current count function mode. Returns
+> >   *			0 on success and negative error code on error. The index
+> >   *			of the respective Count's returned function mode should
+> > @@ -357,11 +334,9 @@ struct counter_ops {
+> >  			   struct counter_signal *signal,
+> >  			   struct counter_signal_read_value *val);
+> >  	int (*count_read)(struct counter_device *counter,
+> > -			  struct counter_count *count,
+> > -			  struct counter_count_read_value *val);
+> > +			  struct counter_count *count, unsigned long *val);
+> >  	int (*count_write)(struct counter_device *counter,
+> > -			   struct counter_count *count,
+> > -			   struct counter_count_write_value *val);
+> > +			   struct counter_count *count, unsigned long val);
+> >  	int (*function_get)(struct counter_device *counter,
+> >  			    struct counter_count *count, size_t *function);
+> >  	int (*function_set)(struct counter_device *counter,
+> > @@ -486,19 +461,9 @@ enum counter_signal_value_type {
+> >  	COUNTER_SIGNAL_LEVEL = 0
+> >  };
+> >  
+> > -enum counter_count_value_type {
+> > -	COUNTER_COUNT_POSITION = 0,
+> > -};
+> > -
+> >  void counter_signal_read_value_set(struct counter_signal_read_value *const val,
+> >  				   const enum counter_signal_value_type type,
+> >  				   void *const data);
+> > -void counter_count_read_value_set(struct counter_count_read_value *const val,
+> > -				  const enum counter_count_value_type type,
+> > -				  void *const data);
+> > -int counter_count_write_value_get(void *const data,
+> > -				  const enum counter_count_value_type type,
+> > -				  const struct counter_count_write_value *const val);
+> >  
+> >  int counter_register(struct counter_device *const counter);
+> >  void counter_unregister(struct counter_device *const counter);  
+> 
 
-since you have to send v9...better to use sensor->id instead of i here
-
-
-> +		    hw->enable_event) {
-> +			/* Enable wake from IRQ */
-> +			enable_irq_wake(hw->irq);
-> +			continue;
-> +		}
-> +
->  		if (sensor->id =3D=3D ST_LSM6DSX_ID_EXT0 ||
->  		    sensor->id =3D=3D ST_LSM6DSX_ID_EXT1 ||
->  		    sensor->id =3D=3D ST_LSM6DSX_ID_EXT2)
-> @@ -1904,6 +1914,10 @@ static int __maybe_unused st_lsm6dsx_resume(struct=
- device *dev)
->  		if (!hw->iio_devs[i])
->  			continue;
-> =20
-> +		if (device_may_wakeup(dev) && i =3D=3D ST_LSM6DSX_ID_ACC &&
-> +		    hw->enable_event)
-> +			disable_irq_wake(hw->irq);
-> +
->  		sensor =3D iio_priv(hw->iio_devs[i]);
->  		if (!(hw->suspend_mask & BIT(sensor->id)))
->  			continue;
-> --=20
-> 2.23.0
->=20
-
---zaRBsRFn0XYhEU69
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXX4/ygAKCRA6cBh0uS2t
-rJAXAQC5rf6DxqvylhEji3AS3bwphlPLtTzbhzxXTYqdpV7PfgEAldNaJ5rOf08H
-W2c5tB7AmvTFYn2rRUeoqa9jzCkytw0=
-=3Jfc
------END PGP SIGNATURE-----
-
---zaRBsRFn0XYhEU69--

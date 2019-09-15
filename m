@@ -2,84 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBB8B2FD5
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 14:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A070BB2FD6
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 14:25:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730428AbfIOMZA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Sep 2019 08:25:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53958 "EHLO mail.kernel.org"
+        id S1730435AbfIOMZZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Sep 2019 08:25:25 -0400
+Received: from first.geanix.com ([116.203.34.67]:44802 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730163AbfIOMZA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Sep 2019 08:25:00 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 912882077C;
-        Sun, 15 Sep 2019 12:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568550299;
-        bh=Qmn0YOVP01iFmCMUHAKhcoFugQY4l23EPlhP77n/ctc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QiurHRezetO8qtwZ/9Y+nb/Kk6Va9/i4nzDeRf7T8dSgKuvuKoI8Uc7BiXiGlgCfM
-         II87BBVkq/aPJdnlkeXccwE4uzl05MaX3DXkgwrO30UhGYDGUHMB9Q+imXDYb1i7ap
-         t6nuEqJOUIfbPhAVFdrQLZGihusaGCrloFuthMzo=
-Date:   Sun, 15 Sep 2019 13:24:55 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mircea Caprioru <mircea.caprioru@analog.com>,
-        linux-iio@vger.kernel.org
-Cc:     robh+dt@kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] dt-bindings: fix regulator names to not be constant.
-Message-ID: <20190915132455.66fa344f@archlinux>
-In-Reply-To: <20190908104007.6593-1-jic23@kernel.org>
-References: <20190908104007.6593-1-jic23@kernel.org>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1730163AbfIOMZY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Sep 2019 08:25:24 -0400
+Received: from [192.168.100.95] (unknown [95.138.208.137])
+        by first.geanix.com (Postfix) with ESMTPSA id CD3C96564B;
+        Sun, 15 Sep 2019 12:24:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1568550268; bh=iYyauV8bSoS2bU1s+MJsHZK0wCDmmigNY7LT7v6Fes4=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=cWcM0W0nqtFq2Cp4RUJVzsyJxMRdyKGaxewPqOVkToV8cdzRhjAnDFoKzcv+HrHWY
+         qkXlDBBL4VvPz8OIqo/VMP/S0ZFTQgghzQzatuIktlb5HDT21eJCJzPJICAvpMub5E
+         vDyoqymjeoKZSEc4/jtK64CpbsKZuZaaDoxnmpIuJjs8LEd7SOP3pyLI7xHP7fyAwk
+         ohsBEgLlN4jRiS0O6l7o6f0QpzOdEOUdHqB7r0C/h6jeP14wVV1smO6S9YW23KIH7R
+         zXRrHvpzuoGnClkjiiNAVBcgCEVbfBx6aCRyg/w1NZ0QwkwFz01LBBB7Sfp1mK19bP
+         aKXo0qpwwFdAg==
+Subject: Re: [PATCH v6 5/6] iio: imu: st_lsm6dsx: add motion report function
+ and call from interrupt
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi83@gmail.com,
+        denis.ciocca@st.com, mario.tesi@st.com, armando.visconti@st.com,
+        martin@geanix.com
+References: <20190909112846.55280-1-sean@geanix.com>
+ <20190909112846.55280-5-sean@geanix.com>
+ <4167d81f-6136-f9f9-cb6b-02b423799762@geanix.com>
+ <20190915132038.0ed74957@archlinux>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <c912fbff-8277-cd99-515e-dd4239f8e220@geanix.com>
+Date:   Sun, 15 Sep 2019 14:24:57 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20190915132038.0ed74957@archlinux>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US-large
 Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  8 Sep 2019 11:40:07 +0100
-jic23@kernel.org wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+On 15/09/2019 14.20, Jonathan Cameron wrote:
+> On Mon, 9 Sep 2019 13:51:13 +0200
+> Sean Nyekjaer <sean@geanix.com> wrote:
 > 
-> This was corrected in the V4 patch, but I messed up and had applied
-> the V3 patch.  Hence the need for this fix.
+>> On 09/09/2019 13.28, Sean Nyekjaer wrote:
+>>> Report iio motion events to iio subsystem
+>>>
+>>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+>>> ---
+>>> Changes since v4:
+>>>    * Updated bitmask as pr Jonathans comments
+>>>
+>>> Changes since v5:
+>>>    * None
+>>>
+>>>    drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  5 ++
+>>>    drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 70 ++++++++++++++++++++
+>>>    2 files changed, 75 insertions(+)
+>>>    
+>> [...]
+>>>    
+>>> +void st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw, int data)
+>>> +{
+>>> +	s64 timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+>>> +
+>>> +	if (data & hw->settings->event_settings.wakeup_src_z_mask)
+>>> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
+>>> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
+>>> +						  0,
+>>> +						  IIO_MOD_Z,
+>>> +						  IIO_EV_TYPE_THRESH,
+>>> +						  IIO_EV_DIR_EITHER),
+>>> +						  timestamp);
+>>> +
+>>> +	if (data & hw->settings->event_settings.wakeup_src_x_mask)
+>>> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
+>>> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
+>>> +						  0,
+>>> +						  IIO_MOD_Y,
+>>> +						  IIO_EV_TYPE_THRESH,
+>>> +						  IIO_EV_DIR_EITHER),
+>>> +						  timestamp);
+>>> +
+>>> +	if (data & hw->settings->event_settings.wakeup_src_x_mask)
+>>> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
+>>> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
+>>> +						  0,
+>>> +						  IIO_MOD_X,
+>>> +						  IIO_EV_TYPE_THRESH,
+>>> +						  IIO_EV_DIR_EITHER),
+>>> +						  timestamp);
+>>> +}
+>>> +
+>>
+>> I was looking at this again, and if the user enables events for channel
+>> x, we continue to report events for y, z.
+>> Is it okay or is it better to filter them out?
+> Better to filter them out.  It'll be a bit of a surprise for userspace
+> otherwise.
 > 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Fixes: f7356e47032c ("dt-bindings: iio: adc: ad7192: Add binding documentation for AD7192")
-
-I've take the view this is a simple 'aligning' patch due to
-my mess up so applied to the fixes-togreg branch so we get this
-in after rc1.  If anyone wants to comment that's good though!
-
-Jonathan
-
-> ---
->  Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+> Thanks,
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> index 676ec42e1438..040af0bcc92e 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> @@ -43,13 +43,11 @@ properties:
->  
->    dvdd-supply:
->      description: DVdd voltage supply
-> -    items:
-> -      - const: dvdd
-> +    maxItems: 1
->  
->    avdd-supply:
->      description: AVdd voltage supply
-> -    items:
-> -      - const: avdd
-> +    maxItems: 1
->  
->    adi,rejection-60-Hz-enable:
->      description: |
+> Jonathan
+> 
+Okay, but keep in mind that we can't distinguish which channel we're 
+waking up to. So even if some channel is disabled, we still wake up on 
+it ...
 
+/Sean

@@ -2,43 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB1FB3040
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 15:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B45AFB3047
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2019 15:39:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731486AbfIONfy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Sep 2019 09:35:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57246 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726298AbfIONfy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Sep 2019 09:35:54 -0400
+        id S1726298AbfIONjU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Sep 2019 09:39:20 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:58530 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726247AbfIONjU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Sep 2019 09:39:20 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9ED44214AF;
-        Sun, 15 Sep 2019 13:35:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568554553;
-        bh=seJejuqCoVFluIlHfFOQY1wiPXsTev962AOY5Osb9bE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gPavOKQc5hdCI1RtEzl6L8vRZuhHUUROy1HY9D/5irW3/LPy2zn8hmBfgxcjCtv0a
-         lJUwOVaiaohBxrRMx80peTqPROQB9ubdP5zwKTtlXWP42gQCjiYDWdc5lRgMWhVxIT
-         1Bl5jgAT3qSBn2/g2BRI+UHkPaQuP3mrwXWD9jcg=
-Date:   Sun, 15 Sep 2019 14:35:48 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
-        lorenzo.bianconi83@gmail.com, denis.ciocca@st.com,
-        mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
-Subject: Re: [PATCH v8 5/5] iio: imu: st_lsm6dsx: add motion report function
- and call from interrupt
-Message-ID: <20190915143548.25383eb4@archlinux>
-In-Reply-To: <85c144b0-1e73-9fcf-853a-820a71d86b1a@geanix.com>
-References: <20190913090708.1442057-1-sean@geanix.com>
-        <20190913090708.1442057-6-sean@geanix.com>
-        <20190915133040.0953ef1a@archlinux>
-        <20190915130508.GB15634@lore-desk-wlan.lan>
-        <20190915141808.6ca04f0f@archlinux>
-        <85c144b0-1e73-9fcf-853a-820a71d86b1a@geanix.com>
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id B1D829E79B4;
+        Sun, 15 Sep 2019 14:39:18 +0100 (BST)
+Date:   Sun, 15 Sep 2019 14:39:17 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [RFC 1/4] counter: Simplify the count_read and count_write
+ callbacks
+Message-ID: <20190915143917.61385369@archlinux>
+In-Reply-To: <20190915055759.408690-2-vilhelm.gray@gmail.com>
+References: <20190915055759.408690-1-vilhelm.gray@gmail.com>
+        <20190915055759.408690-2-vilhelm.gray@gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,231 +33,208 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 15 Sep 2019 15:22:44 +0200
-Sean Nyekjaer <sean@geanix.com> wrote:
+On Sun, 15 Sep 2019 14:57:56 +0900
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> On 15/09/2019 15.18, Jonathan Cameron wrote:
-> > On Sun, 15 Sep 2019 15:05:08 +0200
-> > Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-> >   
-> >>> On Fri, 13 Sep 2019 11:07:08 +0200
-> >>> Sean Nyekjaer <sean@geanix.com> wrote:
-> >>>      
-> >>>> Report iio motion events to iio subsystem
-> >>>>
-> >>>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>  
-> >>> I got to the earlier thread rather late so hadn't replied to your
-> >>> question on filtering events that haven't been enabled.  
-> >>
-> >> IIUC, how is possible to filter events? it seems not currently supported in
-> >> hw, right?  
-> > Filter them in software on their way to userspace.  So you'll get an interrupt
-> > either way, but no need to tell userspace about event's it's not interested
-> > in.  
+> The count_read and count_write callbacks are simplified to pass val as
+> unsigned long rather than as an opaque data structure. The opaque
+> counter_count_read_value and counter_count_write_value structures,
+> counter_count_value_type enum, and relevant counter_count_read_value_set
+> and counter_count_write_value_get functions, are removed as they are no
+> longer used.
 > 
-> Fine by me, will submit a V9.
-> 
-> Which one is preferred:
-> in_accel_thresh_(x,y,z)_en -> in_accel_thresh_both_en
-> or keep in_accel_thresh_(x,y,z)_en and filter them in the driver?
-> 
-> We would wake on all events either way
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-I think I slightly prefer filtering in the driver.  Wakeup will
-just have to be a bit strange if someone actually doesn't want to wake
-based on all axis.
+Seems like a sensible bit of excessive abstraction removal to me.  I'm not
+totally sure why these got so complex in the first place though.
+
+Can you recall the reason as it might help to judge why we no longer
+think the same?
 
 Thanks,
 
 Jonathan
-
+> ---
+>  drivers/counter/counter.c | 66 +++++----------------------------------
+>  include/linux/counter.h   | 43 +++----------------------
+>  2 files changed, 12 insertions(+), 97 deletions(-)
 > 
-> /Sean
-> 
-> >>  
-> >>>
-> >>> Hence I think it's just that change outstanding
-> >>> + I want to give Lorenzo time for a final look.  
-> >>
-> >> Jonathan the series seems fine to me now, there are some leftover nitpicks we can
-> >> cover with some follow-up patches.  
-> > 
-> > Acks/Reviewed-bys?  Let's do this formally!
-> > 
-> > Jonathan
-> >   
-> >>
-> >> Regards,
-> >> Lorenzo
-> >>  
-> >>>
-> >>> Thanks,
-> >>>
-> >>> Jonathan
-> >>>      
-> >>>> ---
-> >>>> Changes since v4:
-> >>>>   * Updated bitmask as pr Jonathans comments
-> >>>>
-> >>>> Changes since v5:
-> >>>>   * None
-> >>>>
-> >>>> Changes since v6:
-> >>>>   * None
-> >>>>
-> >>>> Changes since v7:
-> >>>>   * None
-> >>>>
-> >>>>   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  5 ++
-> >>>>   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 70 ++++++++++++++++++++
-> >>>>   2 files changed, 75 insertions(+)
-> >>>>
-> >>>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> >>>> index 449c2798f7ed..7c50fac7b85c 100644
-> >>>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> >>>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> >>>> @@ -186,6 +186,11 @@ struct st_lsm6dsx_shub_settings {
-> >>>>   struct st_lsm6dsx_event_settings {
-> >>>>   	struct st_lsm6dsx_reg enable_reg;
-> >>>>   	struct st_lsm6dsx_reg wakeup_reg;
-> >>>> +	u8 wakeup_src_reg;
-> >>>> +	u8 wakeup_src_status_mask;
-> >>>> +	u8 wakeup_src_z_mask;
-> >>>> +	u8 wakeup_src_y_mask;
-> >>>> +	u8 wakeup_src_x_mask;
-> >>>>   };
-> >>>>   
-> >>>>   enum st_lsm6dsx_ext_sensor_id {
-> >>>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> >>>> index 80a94335175f..66700c20920d 100644
-> >>>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> >>>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> >>>> @@ -48,6 +48,7 @@
-> >>>>   #include <linux/kernel.h>
-> >>>>   #include <linux/module.h>
-> >>>>   #include <linux/delay.h>
-> >>>> +#include <linux/iio/events.h>
-> >>>>   #include <linux/iio/iio.h>
-> >>>>   #include <linux/iio/sysfs.h>
-> >>>>   #include <linux/interrupt.h>
-> >>>> @@ -287,6 +288,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
-> >>>>   				.addr = 0x5B,
-> >>>>   				.mask = GENMASK(5, 0),
-> >>>>   			},
-> >>>> +			.wakeup_src_reg = 0x1b,
-> >>>> +			.wakeup_src_status_mask = BIT(3),
-> >>>> +			.wakeup_src_z_mask = BIT(0),
-> >>>> +			.wakeup_src_y_mask = BIT(1),
-> >>>> +			.wakeup_src_x_mask = BIT(2),
-> >>>>   		},
-> >>>>   	},
-> >>>>   	{
-> >>>> @@ -412,6 +418,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
-> >>>>   				.addr = 0x5B,
-> >>>>   				.mask = GENMASK(5, 0),
-> >>>>   			},
-> >>>> +			.wakeup_src_reg = 0x1b,
-> >>>> +			.wakeup_src_status_mask = BIT(3),
-> >>>> +			.wakeup_src_z_mask = BIT(0),
-> >>>> +			.wakeup_src_y_mask = BIT(1),
-> >>>> +			.wakeup_src_x_mask = BIT(2),
-> >>>>   		},
-> >>>>   	},
-> >>>>   	{
-> >>>> @@ -550,6 +561,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
-> >>>>   				.addr = 0x5B,
-> >>>>   				.mask = GENMASK(5, 0),
-> >>>>   			},
-> >>>> +			.wakeup_src_reg = 0x1b,
-> >>>> +			.wakeup_src_status_mask = BIT(3),
-> >>>> +			.wakeup_src_z_mask = BIT(0),
-> >>>> +			.wakeup_src_y_mask = BIT(1),
-> >>>> +			.wakeup_src_x_mask = BIT(2),
-> >>>>   		},
-> >>>>   	},
-> >>>>   	{
-> >>>> @@ -816,6 +832,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
-> >>>>   				.addr = 0x5B,
-> >>>>   				.mask = GENMASK(5, 0),
-> >>>>   			},
-> >>>> +			.wakeup_src_reg = 0x1b,
-> >>>> +			.wakeup_src_status_mask = BIT(3),
-> >>>> +			.wakeup_src_z_mask = BIT(0),
-> >>>> +			.wakeup_src_y_mask = BIT(1),
-> >>>> +			.wakeup_src_x_mask = BIT(2),
-> >>>>   		},
-> >>>>   	},
-> >>>>   	{
-> >>>> @@ -970,6 +991,11 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
-> >>>>   				.addr = 0x5B,
-> >>>>   				.mask = GENMASK(5, 0),
-> >>>>   			},
-> >>>> +			.wakeup_src_reg = 0x1b,
-> >>>> +			.wakeup_src_status_mask = BIT(3),
-> >>>> +			.wakeup_src_z_mask = BIT(0),
-> >>>> +			.wakeup_src_y_mask = BIT(1),
-> >>>> +			.wakeup_src_x_mask = BIT(2),
-> >>>>   		}
-> >>>>   	},
-> >>>>   };
-> >>>> @@ -1715,6 +1741,38 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
-> >>>>   	return iio_dev;
-> >>>>   }
-> >>>>   
-> >>>> +void st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw, int data)
-> >>>> +{
-> >>>> +	s64 timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
-> >>>> +
-> >>>> +	if (data & hw->settings->event_settings.wakeup_src_z_mask)
-> >>>> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> >>>> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-> >>>> +						  0,
-> >>>> +						  IIO_MOD_Z,
-> >>>> +						  IIO_EV_TYPE_THRESH,
-> >>>> +						  IIO_EV_DIR_EITHER),
-> >>>> +						  timestamp);
-> >>>> +
-> >>>> +	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-> >>>> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> >>>> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-> >>>> +						  0,
-> >>>> +						  IIO_MOD_Y,
-> >>>> +						  IIO_EV_TYPE_THRESH,
-> >>>> +						  IIO_EV_DIR_EITHER),
-> >>>> +						  timestamp);
-> >>>> +
-> >>>> +	if (data & hw->settings->event_settings.wakeup_src_x_mask)
-> >>>> +		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> >>>> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-> >>>> +						  0,
-> >>>> +						  IIO_MOD_X,
-> >>>> +						  IIO_EV_TYPE_THRESH,
-> >>>> +						  IIO_EV_DIR_EITHER),
-> >>>> +						  timestamp);
-> >>>> +}
-> >>>> +
-> >>>>   static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
-> >>>>   {
-> >>>>   	return IRQ_WAKE_THREAD;
-> >>>> @@ -1724,6 +1782,18 @@ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
-> >>>>   {
-> >>>>   	struct st_lsm6dsx_hw *hw = private;
-> >>>>   	int count;
-> >>>> +	int data, err;
-> >>>> +
-> >>>> +	if (hw->enable_event) {
-> >>>> +		err = regmap_read(hw->regmap,
-> >>>> +				  hw->settings->event_settings.wakeup_src_reg,
-> >>>> +				  &data);
-> >>>> +		if (err < 0)
-> >>>> +			return IRQ_NONE;
-> >>>> +
-> >>>> +		if (data & hw->settings->event_settings.wakeup_src_status_mask)
-> >>>> +			st_lsm6dsx_report_motion_event(hw, data);
-> >>>> +	}
-> >>>>   
-> >>>>   	mutex_lock(&hw->fifo_lock);
-> >>>>   	count = hw->settings->fifo_ops.read_fifo(hw);  
-> >>>      
-> >   
+> diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
+> index 106bc7180cd8..1d08f1437b1b 100644
+> --- a/drivers/counter/counter.c
+> +++ b/drivers/counter/counter.c
+> @@ -246,60 +246,6 @@ void counter_signal_read_value_set(struct counter_signal_read_value *const val,
+>  }
+>  EXPORT_SYMBOL_GPL(counter_signal_read_value_set);
+>  
+> -/**
+> - * counter_count_read_value_set - set counter_count_read_value data
+> - * @val:	counter_count_read_value structure to set
+> - * @type:	property Count data represents
+> - * @data:	Count data
+> - *
+> - * This function sets an opaque counter_count_read_value structure with the
+> - * provided Count data.
+> - */
+> -void counter_count_read_value_set(struct counter_count_read_value *const val,
+> -				  const enum counter_count_value_type type,
+> -				  void *const data)
+> -{
+> -	switch (type) {
+> -	case COUNTER_COUNT_POSITION:
+> -		val->len = sprintf(val->buf, "%lu\n", *(unsigned long *)data);
+> -		break;
+> -	default:
+> -		val->len = 0;
+> -	}
+> -}
+> -EXPORT_SYMBOL_GPL(counter_count_read_value_set);
+> -
+> -/**
+> - * counter_count_write_value_get - get counter_count_write_value data
+> - * @data:	Count data
+> - * @type:	property Count data represents
+> - * @val:	counter_count_write_value structure containing data
+> - *
+> - * This function extracts Count data from the provided opaque
+> - * counter_count_write_value structure and stores it at the address provided by
+> - * @data.
+> - *
+> - * RETURNS:
+> - * 0 on success, negative error number on failure.
+> - */
+> -int counter_count_write_value_get(void *const data,
+> -				  const enum counter_count_value_type type,
+> -				  const struct counter_count_write_value *const val)
+> -{
+> -	int err;
+> -
+> -	switch (type) {
+> -	case COUNTER_COUNT_POSITION:
+> -		err = kstrtoul(val->buf, 0, data);
+> -		if (err)
+> -			return err;
+> -		break;
+> -	}
+> -
+> -	return 0;
+> -}
+> -EXPORT_SYMBOL_GPL(counter_count_write_value_get);
+> -
+>  struct counter_attr_parm {
+>  	struct counter_device_attr_group *group;
+>  	const char *prefix;
+> @@ -788,13 +734,13 @@ static ssize_t counter_count_show(struct device *dev,
+>  	const struct counter_count_unit *const component = devattr->component;
+>  	struct counter_count *const count = component->count;
+>  	int err;
+> -	struct counter_count_read_value val = { .buf = buf };
+> +	unsigned long val;
+>  
+>  	err = counter->ops->count_read(counter, count, &val);
+>  	if (err)
+>  		return err;
+>  
+> -	return val.len;
+> +	return sprintf(buf, "%lu\n", val);
+>  }
+>  
+>  static ssize_t counter_count_store(struct device *dev,
+> @@ -806,9 +752,13 @@ static ssize_t counter_count_store(struct device *dev,
+>  	const struct counter_count_unit *const component = devattr->component;
+>  	struct counter_count *const count = component->count;
+>  	int err;
+> -	struct counter_count_write_value val = { .buf = buf };
+> +	unsigned long val;
+> +
+> +	err = kstrtoul(buf, 0, &val);
+> +	if (err)
+> +		return err;
+>  
+> -	err = counter->ops->count_write(counter, count, &val);
+> +	err = counter->ops->count_write(counter, count, val);
+>  	if (err)
+>  		return err;
+>  
+> diff --git a/include/linux/counter.h b/include/linux/counter.h
+> index a061cdcdef7c..7e40796598a6 100644
+> --- a/include/linux/counter.h
+> +++ b/include/linux/counter.h
+> @@ -300,24 +300,6 @@ struct counter_signal_read_value {
+>  	size_t len;
+>  };
+>  
+> -/**
+> - * struct counter_count_read_value - Opaque Count read value
+> - * @buf:	string representation of Count read value
+> - * @len:	length of string in @buf
+> - */
+> -struct counter_count_read_value {
+> -	char *buf;
+> -	size_t len;
+> -};
+> -
+> -/**
+> - * struct counter_count_write_value - Opaque Count write value
+> - * @buf:	string representation of Count write value
+> - */
+> -struct counter_count_write_value {
+> -	const char *buf;
+> -};
+> -
+>  /**
+>   * struct counter_ops - Callbacks from driver
+>   * @signal_read:	optional read callback for Signal attribute. The read
+> @@ -328,15 +310,10 @@ struct counter_count_write_value {
+>   *			signal_read callback.
+>   * @count_read:		optional read callback for Count attribute. The read
+>   *			value of the respective Count should be passed back via
+> - *			the val parameter. val points to an opaque type which
+> - *			should be set only by calling the
+> - *			counter_count_read_value_set function from within the
+> - *			count_read callback.
+> + *			the val parameter.
+>   * @count_write:	optional write callback for Count attribute. The write
+>   *			value for the respective Count is passed in via the val
+> - *			parameter. val points to an opaque type which should be
+> - *			accessed only by calling the
+> - *			counter_count_write_value_get function.
+> + *			parameter.
+>   * @function_get:	function to get the current count function mode. Returns
+>   *			0 on success and negative error code on error. The index
+>   *			of the respective Count's returned function mode should
+> @@ -357,11 +334,9 @@ struct counter_ops {
+>  			   struct counter_signal *signal,
+>  			   struct counter_signal_read_value *val);
+>  	int (*count_read)(struct counter_device *counter,
+> -			  struct counter_count *count,
+> -			  struct counter_count_read_value *val);
+> +			  struct counter_count *count, unsigned long *val);
+>  	int (*count_write)(struct counter_device *counter,
+> -			   struct counter_count *count,
+> -			   struct counter_count_write_value *val);
+> +			   struct counter_count *count, unsigned long val);
+>  	int (*function_get)(struct counter_device *counter,
+>  			    struct counter_count *count, size_t *function);
+>  	int (*function_set)(struct counter_device *counter,
+> @@ -486,19 +461,9 @@ enum counter_signal_value_type {
+>  	COUNTER_SIGNAL_LEVEL = 0
+>  };
+>  
+> -enum counter_count_value_type {
+> -	COUNTER_COUNT_POSITION = 0,
+> -};
+> -
+>  void counter_signal_read_value_set(struct counter_signal_read_value *const val,
+>  				   const enum counter_signal_value_type type,
+>  				   void *const data);
+> -void counter_count_read_value_set(struct counter_count_read_value *const val,
+> -				  const enum counter_count_value_type type,
+> -				  void *const data);
+> -int counter_count_write_value_get(void *const data,
+> -				  const enum counter_count_value_type type,
+> -				  const struct counter_count_write_value *const val);
+>  
+>  int counter_register(struct counter_device *const counter);
+>  void counter_unregister(struct counter_device *const counter);
 

@@ -2,166 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42748B3A2A
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2019 14:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F4FB3A41
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2019 14:25:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727928AbfIPMWU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Sep 2019 08:22:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47670 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727845AbfIPMWU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Sep 2019 08:22:20 -0400
-Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F1007216C8;
-        Mon, 16 Sep 2019 12:22:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568636539;
-        bh=yHOzbpMEcbwauiIBvQWvyLa2ON/RzJ59C6+M1cS66lM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Icn4J+qdTahvsgkyvsvWTs1BvyGizRYrZ1JlD7q6vpZUx7IfEaUWeI0gWBy6Dx5K/
-         lo3v8QOTXBGwuExgp5G8gcQwmaQjEGERVhdhnh6T+Jd1d0MMlHC1SWKTVRs1kJjjXJ
-         ICLrpwferpolBnKTjai5ziZQfGHM4ZH00golXIjw=
-Date:   Mon, 16 Sep 2019 14:22:14 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        lorenzo.bianconi83@gmail.com, denis.ciocca@st.com,
-        mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
-Subject: Re: [RFC PATCH] iio: imu: st_lsm6dsx: filter motion events in driver
-Message-ID: <20190916122214.GD16063@localhost.localdomain>
-References: <20190915143548.25383eb4@archlinux>
- <20190916090222.597444-1-sean@geanix.com>
- <20190916091649.GA16063@localhost.localdomain>
- <07c96bca-f952-71c0-4608-30746fbbc055@geanix.com>
- <20190916115538.GC16063@localhost.localdomain>
- <88815877-abde-8e2a-cb3d-fabb556ad7e5@geanix.com>
+        id S1732546AbfIPMZO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Sep 2019 08:25:14 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:36906 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732490AbfIPMZO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Sep 2019 08:25:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=UpOy94Kk05newuEYV/41V7dmlT4Lz2VFaz56TX7gBF8=; b=CiI6oTAnkt3REl35f0JoiivqZ
+        kci7oVKqLJ+95/kgphayD4VxMZREXsmIpO2lfPpBx4luYpBRmphfZHCn2s5lyfA9ZYo6NTGGfsL8q
+        y7++5JC+uTYHC4FJnWdIrl2xmDTum/rxlQPhcUNPslj9l0Lw/rHL3NUgwyQmW2RmeH7TY=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.co.uk>)
+        id 1i9q43-0004Ai-2f; Mon, 16 Sep 2019 12:25:07 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id 22DA82741A0D; Mon, 16 Sep 2019 13:25:06 +0100 (BST)
+Date:   Mon, 16 Sep 2019 13:25:06 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com, jic23@kernel.org,
+        f.fainelli@gmail.com, linus.walleij@linaro.org,
+        orsonzhai@gmail.com, baolin.wang@linaro.org, zhang.lyra@gmail.com
+Subject: Re: [RFC PATCH 03/15] spi: make `cs_change_delay` the first user of
+ the `spi_delay` logic
+Message-ID: <20190916122505.GC4352@sirena.co.uk>
+References: <20190913114550.956-1-alexandru.ardelean@analog.com>
+ <20190913114550.956-4-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="IDYEmSnFhs3mNXr+"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="7U7nS7UhGMyosb9W"
 Content-Disposition: inline
-In-Reply-To: <88815877-abde-8e2a-cb3d-fabb556ad7e5@geanix.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190913114550.956-4-alexandru.ardelean@analog.com>
+X-Cookie: Man and wife make one fool.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---IDYEmSnFhs3mNXr+
+--7U7nS7UhGMyosb9W
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sep 16, Sean Nyekjaer wrote:
->=20
->=20
-> On 16/09/2019 13.55, Lorenzo Bianconi wrote:
-> > >=20
-> > >=20
-> > > On 16/09/2019 11.16, Lorenzo Bianconi wrote:
-> > > > > +	if (hw->event_en_mask & BIT(chan->channel2))
-> > > > > +		goto out;
-> > > > Why do we need this?
-> > > >=20
-> > >=20
-> > > Guess we need to check if 0 < hw->enable_event before disabling the
-> > > sensor...
-> > > > > +
-> > > > >    	/* do not enable events if they are already enabled */
-> > > > >    	if (state && hw->enable_event)
-> > > > > -		return 0;
-> > > > > +		goto out;
-> > >=20
-> > > static int st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
-> > >                                             const struct iio_chan_spe=
-c *chan,
-> > >                                             enum iio_event_type type,
-> > >                                             enum iio_event_direction =
-dir,
-> > >                                             int state)
-> > > {
-> > >          struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
-> > >          struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> > >          u8 _enable_event;
-> >=20
-> > please use enable_event instead of _enable_event
-> >=20
-> > >          int err =3D 0;
-> > >=20
-> > >          if (type !=3D IIO_EV_TYPE_THRESH)
-> > >                  return -EINVAL;
-> > >=20
-> > >          if (state) {
-> > >                  _enable_event =3D hw->enable_event | BIT(chan->chann=
-el2);
-> > >=20
-> > >                  /* do not enable events if they are already enabled =
-*/
-> > >                  if (0 < hw->enable_event)
-> > >                          goto out;
-> >=20
-> > we do not need this since there is the check:
-> > if (hw->enable_event =3D=3D enable_event)
-> > 	return 0;
->=20
-> I actually think this is needed as if a channel is enabled and another
-> channel is enabled, then 'state' will be 1 and '0 < hw->enable_event' is
-> true. Then we don't want to do the event_setup again.
+On Fri, Sep 13, 2019 at 02:45:38PM +0300, Alexandru Ardelean wrote:
 
-got what you mean here, right..just please do:
+> -	u16		cs_change_delay;
+> -	u8		cs_change_delay_unit;
+> +	struct spi_delay	cs_change_delay;
 
-if (hw->enable_event)
-	goto out;
+This breaks the build as there is a user of this interface.
 
->=20
-> >=20
-> > >          } else {
-> > >                  _enable_event =3D hw->enable_event & ~BIT(chan->chan=
-nel2);
-> > >=20
-> > >                  /* only turn off sensor if no events is enabled */
-> > >=20
-> > >=20
-> > >=20
-> > >=20
-> > >                  if (0 !=3D _enable_event)
-> > >                          goto out;
-
-if (enable_event)
-	goto out;
-
-> >=20
-> > we do not need this as well
-> Like wise here, if we don't have this and to channels is enabled, if you
-> deactivate one of the channels then enable_event indicates that a channel=
- is
-> active but the sensor is disabled.
-> Guess that is not what we want :-)
->=20
-> >=20
-> > >          }
-> > >=20
-> > >          /* stop here if no changes have been made */
-> > >          if (hw->enable_event =3D=3D _enable_event)
-> > >                  return 0;
-> > >=20
-> > >          err =3D st_lsm6dsx_event_setup(hw, state);
-> > >          if (err < 0)
-> > >                  return err;
-> > >=20
->=20
-
---IDYEmSnFhs3mNXr+
+--7U7nS7UhGMyosb9W
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXX9+cwAKCRA6cBh0uS2t
-rORVAQCmz1vWt8gaPNIFgU5Gf0BcqlVbhq4rlSsY6hcLJ/yJtQEA2sa9U3Vbk/HT
-sIAAjWTIahfpmhLfZ3z6elj+WeyApgY=
-=DgQT
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1/fyEACgkQJNaLcl1U
+h9AR2Af8D01ThOEZ5vESTf3rqD3pj7SjkSwmXmtdE8km6WNwCuP/WAlc6Lrgj02m
+yPoEFSxsQq97A47hALIaE3WogYwp5YTeN4rI8yeELVQItYThT8CPHYaQa8RuWtJB
+qIp3h1PlKVmOnSNPtNsW1/rfxxgeJNzX6GZf1UWDHjfkSIexZBrVWgb/YP3p3n2k
+YTyaVloShnXeUA6BXfla9Z05BHc5aCu5KBCfLyJ8uTPIeD6mIP6b3ympe6sn6+Kw
+i1zrIFYvEU/J2ZN0IaZXsKRMgMD2XRPjaDlMyygOm9hr6y2SGEyOt8ml37ISXJ4w
+bFoisz9mWYHBsC9+53nBiKsGV+OrlQ==
+=pg1e
 -----END PGP SIGNATURE-----
 
---IDYEmSnFhs3mNXr+--
+--7U7nS7UhGMyosb9W--

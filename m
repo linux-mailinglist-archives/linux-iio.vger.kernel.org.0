@@ -2,110 +2,289 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD0F6B3BAA
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2019 15:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ED35B3BEC
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2019 15:56:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387955AbfIPNn1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Sep 2019 09:43:27 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:55130 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387912AbfIPNnQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Sep 2019 09:43:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=Z423eE0xltB3vRPrKrPJm5Vb6e31D3Z/WMIdhED2ET0=; b=tvH+odcCIft2As/zfFGQE6S56
-        PH2NK9V+SzVy3MI3204Qje10JQhIAz8/XxDooZRLx63PmOrlm9tTf9JsvcBWzQ02Nq14Cd1mdP96d
-        RgqFstRj6EGLt+sB1pDTD2fvgN4T97KCNVhurDhKGQqX5/8Ga2EENE6VEzFdrbhTNMAX4=;
-Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.co.uk>)
-        id 1i9rHa-0004c7-FY; Mon, 16 Sep 2019 13:43:10 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id F0EF92741A0D; Mon, 16 Sep 2019 14:43:09 +0100 (BST)
-Date:   Mon, 16 Sep 2019 14:43:09 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "baolin.wang@linaro.org" <baolin.wang@linaro.org>,
-        "bcm-kernel-feedback-list@broadcom.com" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
-        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>
-Subject: Re: [RFC PATCH 03/15] spi: make `cs_change_delay` the first user of
- the `spi_delay` logic
-Message-ID: <20190916134309.GH4352@sirena.co.uk>
-References: <20190913114550.956-1-alexandru.ardelean@analog.com>
- <20190913114550.956-4-alexandru.ardelean@analog.com>
- <20190916122505.GC4352@sirena.co.uk>
- <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
- <20190916124707.GD4352@sirena.co.uk>
- <458cbb212fbd04c157c9861501f51c03ea958302.camel@analog.com>
+        id S2388188AbfIPN4g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Sep 2019 09:56:36 -0400
+Received: from first.geanix.com ([116.203.34.67]:36374 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387994AbfIPN4g (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 16 Sep 2019 09:56:36 -0400
+Received: from zen.localdomain (unknown [85.184.140.241])
+        by first.geanix.com (Postfix) with ESMTPSA id E4D7B6E0B4;
+        Mon, 16 Sep 2019 13:55:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1568642135; bh=Bz9Ca0Rtt58kh2tewmWsqVUSZoThbK1Bfh64kCqtW5A=;
+        h=From:To:Cc:Subject:Date;
+        b=MPtPHPlnmnfRwVhTQO7jzA3KXRk6lzWPJRFiMDvrCeYUjYysfatR7S5fU4dDvBE2p
+         Dh8llzCkkWZ8JWywvr8xNmQc/R8+ddjMGePYbvDmck1qeFs2CT2L5HCQ6ZZi+2RcMz
+         uq8CmC1vlcH8MGi2ejxDBIR3j6mewkY/+qVrFZmaNJygW19vB4ZVgBAbOsXWftDIim
+         bKfm0x0jn9e/rY93QO6kibN4E0XBjy3mP1ic9p68enatgWTsuAOpxkV2SH7WvAzyVJ
+         mr9oA4EFPMWdVzFzeMLe4UhyauD4D4RfJ+ETzs1p2GJe/GzB7WAvtvv9ovd4+hmdU4
+         zdscpAo3rjaJg==
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     linux-iio@vger.kernel.org, jic23@kernel.org,
+        lorenzo.bianconi83@gmail.com
+Cc:     Sean Nyekjaer <sean@geanix.com>, denis.ciocca@st.com,
+        mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH v10 1/5] iio: imu: st_lsm6dsx: move interrupt thread to core
+Date:   Mon, 16 Sep 2019 15:56:26 +0200
+Message-Id: <20190916135630.2211714-1-sean@geanix.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="u0lqphHC8S+ob1K0"
-Content-Disposition: inline
-In-Reply-To: <458cbb212fbd04c157c9861501f51c03ea958302.camel@analog.com>
-X-Cookie: Man and wife make one fool.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=4.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=disabled version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on 77834cc0481d
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This prepares the interrupt to be used for other stuff than
+fifo reading + event readings.
 
---u0lqphHC8S+ob1K0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 78 +---------------
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 88 +++++++++++++++++++
+ 2 files changed, 89 insertions(+), 77 deletions(-)
 
-On Mon, Sep 16, 2019 at 01:04:42PM +0000, Ardelean, Alexandru wrote:
-> On Mon, 2019-09-16 at 13:47 +0100, Mark Brown wrote:
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+index b0f3da1976e4..ef579650fd52 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -30,8 +30,6 @@
+  * Denis Ciocca <denis.ciocca@st.com>
+  */
+ #include <linux/module.h>
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+ #include <linux/iio/kfifo_buf.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
+@@ -42,10 +40,6 @@
+ 
+ #include "st_lsm6dsx.h"
+ 
+-#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
+-#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
+-#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
+-#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
+ #define ST_LSM6DSX_REG_FIFO_MODE_ADDR		0x0a
+ #define ST_LSM6DSX_FIFO_MODE_MASK		GENMASK(2, 0)
+ #define ST_LSM6DSX_FIFO_ODR_MASK		GENMASK(6, 3)
+@@ -654,25 +648,6 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
+ 	return err;
+ }
+ 
+-static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+-{
+-	struct st_lsm6dsx_hw *hw = private;
+-
+-	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
+-}
+-
+-static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+-{
+-	struct st_lsm6dsx_hw *hw = private;
+-	int count;
+-
+-	mutex_lock(&hw->fifo_lock);
+-	count = hw->settings->fifo_ops.read_fifo(hw);
+-	mutex_unlock(&hw->fifo_lock);
+-
+-	return count ? IRQ_HANDLED : IRQ_NONE;
+-}
+-
+ static int st_lsm6dsx_buffer_preenable(struct iio_dev *iio_dev)
+ {
+ 	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
+@@ -702,59 +677,8 @@ static const struct iio_buffer_setup_ops st_lsm6dsx_buffer_ops = {
+ 
+ int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
+ {
+-	struct device_node *np = hw->dev->of_node;
+-	struct st_sensors_platform_data *pdata;
+ 	struct iio_buffer *buffer;
+-	unsigned long irq_type;
+-	bool irq_active_low;
+-	int i, err;
+-
+-	irq_type = irqd_get_trigger_type(irq_get_irq_data(hw->irq));
+-
+-	switch (irq_type) {
+-	case IRQF_TRIGGER_HIGH:
+-	case IRQF_TRIGGER_RISING:
+-		irq_active_low = false;
+-		break;
+-	case IRQF_TRIGGER_LOW:
+-	case IRQF_TRIGGER_FALLING:
+-		irq_active_low = true;
+-		break;
+-	default:
+-		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
+-		return -EINVAL;
+-	}
+-
+-	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
+-				 ST_LSM6DSX_REG_HLACTIVE_MASK,
+-				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
+-					    irq_active_low));
+-	if (err < 0)
+-		return err;
+-
+-	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
+-	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
+-	    (pdata && pdata->open_drain)) {
+-		err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
+-					 ST_LSM6DSX_REG_PP_OD_MASK,
+-					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
+-						    1));
+-		if (err < 0)
+-			return err;
+-
+-		irq_type |= IRQF_SHARED;
+-	}
+-
+-	err = devm_request_threaded_irq(hw->dev, hw->irq,
+-					st_lsm6dsx_handler_irq,
+-					st_lsm6dsx_handler_thread,
+-					irq_type | IRQF_ONESHOT,
+-					"lsm6dsx", hw);
+-	if (err) {
+-		dev_err(hw->dev, "failed to request trigger irq %d\n",
+-			hw->irq);
+-		return err;
+-	}
++	int i;
+ 
+ 	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+ 		if (!hw->iio_devs[i])
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index b65a6ca775e0..ef838206b30f 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -50,6 +50,8 @@
+ #include <linux/delay.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/pm.h>
+ #include <linux/regmap.h>
+ #include <linux/bitfield.h>
+@@ -65,6 +67,11 @@
+ #define ST_LSM6DSX_REG_BDU_ADDR			0x12
+ #define ST_LSM6DSX_REG_BDU_MASK			BIT(6)
+ 
++#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
++#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
++#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
++#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
++
+ static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
+ 	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
+ 	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
+@@ -1525,6 +1532,83 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+ 	return iio_dev;
+ }
+ 
++static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
++{
++	struct st_lsm6dsx_hw *hw = private;
++
++	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
++}
++
++static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
++{
++	struct st_lsm6dsx_hw *hw = private;
++	int count;
++
++	mutex_lock(&hw->fifo_lock);
++	count = hw->settings->fifo_ops.read_fifo(hw);
++	mutex_unlock(&hw->fifo_lock);
++
++	return count ? IRQ_HANDLED : IRQ_NONE;
++}
++
++static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
++{
++	struct st_sensors_platform_data *pdata;
++	struct device_node *np = hw->dev->of_node;
++	unsigned long irq_type;
++	bool irq_active_low;
++	int err;
++
++	irq_type = irqd_get_trigger_type(irq_get_irq_data(hw->irq));
++
++	switch (irq_type) {
++	case IRQF_TRIGGER_HIGH:
++	case IRQF_TRIGGER_RISING:
++		irq_active_low = false;
++		break;
++	case IRQF_TRIGGER_LOW:
++	case IRQF_TRIGGER_FALLING:
++		irq_active_low = true;
++		break;
++	default:
++		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
++		return -EINVAL;
++	}
++
++	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
++				 ST_LSM6DSX_REG_HLACTIVE_MASK,
++				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
++					    irq_active_low));
++	if (err < 0)
++		return err;
++
++	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
++	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
++	    (pdata && pdata->open_drain)) {
++		err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
++					 ST_LSM6DSX_REG_PP_OD_MASK,
++					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
++						    1));
++		if (err < 0)
++			return err;
++
++		irq_type |= IRQF_SHARED;
++	}
++
++	err = devm_request_threaded_irq(hw->dev, hw->irq,
++					st_lsm6dsx_handler_irq,
++					st_lsm6dsx_handler_thread,
++					irq_type | IRQF_ONESHOT,
++					"lsm6dsx", hw);
++	if (err) {
++		dev_err(hw->dev, "failed to request trigger irq %d\n",
++			hw->irq);
++		return err;
++	}
++
++	return 0;
++}
++
+ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 		     struct regmap *regmap)
+ {
+@@ -1573,6 +1657,10 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 	}
+ 
+ 	if (hw->irq > 0) {
++		err = st_lsm6dsx_irq_setup(hw);
++		if (err < 0)
++			return err;
++
+ 		err = st_lsm6dsx_fifo_setup(hw);
+ 		if (err < 0)
+ 			return err;
+-- 
+2.23.0
 
-> > That v3 seems to be a small subset of this series?
-
-> Ack.
-> V3 is the first 4 patches from this series.
-> Well, patches 3 & 4 are squashed.
-
-> I am 100% convinced that the entire series is a good idea.
-> In the sense that a `struct spi_delay` may be a good idea, but at the same time, it may be un-needed.
-
-> All I wanted to do, was to add another delay somewhere, and got lost in the rework of current delays.
-> I thought about proposing just the first 4 patches [on their own], but I thought that showing the current series as-is
-> now, may be a good idea as well [to gather some feedback].
-
-I think it makes more sense to review as a whole series rather than only
-a part of the conversion, it doesn't really help to only do part of it.
-
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
-
---u0lqphHC8S+ob1K0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1/kW0ACgkQJNaLcl1U
-h9AhYQf/a5Mv8ax53FhE2w2Iee+bq5bvfdkZRudCki/iqJxBUwCNKGfc62eBUwGY
-qva3K4T6zi4pbX0dWNMojeJ5lQ7Viu2bnR20voTcVJhOmplIgWhH57tVxRU5bnRt
-9205UV5Uc2FNDE1P60lC6Msts6I+8Rzx/a20fZ8pyXlVwOW4n0xxEkiMxYgg5mpo
-BbGVM5rYkasqqmq8KjbIKWYl/XwcWDIKw8mlyAuLAq4Vh8KRGfu+kRUY3IqNzDIj
-puzpCj6MJZW/8pzNfi/z6Lelkhtvmn04gEu0pMN2C1u9ILeUxixwtqQPv64qTR7I
-ySxA++9//Vej3QKiuzfu/u+eDK6+WA==
-=nPuT
------END PGP SIGNATURE-----
-
---u0lqphHC8S+ob1K0--

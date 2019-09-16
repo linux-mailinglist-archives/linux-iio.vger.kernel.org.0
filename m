@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9661EB3BED
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2019 15:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAB94B3BEF
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2019 15:56:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388190AbfIPN4i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Sep 2019 09:56:38 -0400
-Received: from first.geanix.com ([116.203.34.67]:36396 "EHLO first.geanix.com"
+        id S2388106AbfIPN4k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Sep 2019 09:56:40 -0400
+Received: from first.geanix.com ([116.203.34.67]:36404 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387994AbfIPN4i (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Sep 2019 09:56:38 -0400
+        id S2388189AbfIPN4j (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 16 Sep 2019 09:56:39 -0400
 Received: from zen.localdomain (unknown [85.184.140.241])
-        by first.geanix.com (Postfix) with ESMTPSA id 51C1F65693;
-        Mon, 16 Sep 2019 13:55:37 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id 618AF65749;
+        Mon, 16 Sep 2019 13:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1568642137; bh=VuziO2Y+pfrYCU7155vNDxm6gw1BNjzrOvUG9Jy8TQc=;
+        t=1568642138; bh=eC038n6360joDRmxDuCFPLlQaMDh0L2Ih0gpEIy294w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=GWfohSdv/WV5IPvWzdONab40RcfL5UF6OEv2GMFvF02Bj6Ff7Q4K6gBDahMQWViHz
-         qNnkkwYGmBV0jSg3TNJKURy6FyHRQaYLOd3gTnSAoRAI7zQd7Ux0AaICJDgt/b9+te
-         8m0vNpQJc7hr372+beiIZxLF7a3LZLWbegLcazQbD3accoWC6SMks5pUKqapVMEBPz
-         3zSBhxdzWBsgykIg1SQZD8LqvbVpjL+x+Nf1V2YY90t8ZLuvRtZ0eebvAlrEY8m6X4
-         w1ND9/8M+xMAMwnQJqOpxu/MQYEmm9Sv3Gf9RpwJRt2wFfl1h31BpPACKEosf+OM/A
-         geDkSTPMSjTNA==
+        b=YoNZciEzqmcNU59S57i8TtIRwan2O85injpLGNsBaTapdl0WJwKCp0iyzGVBBh068
+         N5GlSw6tuhMvtI4x1420otCcSn4GVvKT6dncRSbDMW4m8YzSyAUle08KKDxr+KshAF
+         o5Wl6Db+8v2L2NzZVNevViYY7lFH68YbEx3Mjz89e654DEwXr2DfTJh0oAoSEe8o8H
+         hZ7L2WSiy33tt3hlcwcrZJukGHcMFkJjEuVHscU3HXlljomAX9nlVJeP/KRsoJL0OF
+         DebwJkgspmyTc4TGQg+XJutYZZxAiP6d8+M7jFAUAG47CNR5VFdb9K6efcE2rdvDE5
+         p9buybMRSSbDw==
 From:   Sean Nyekjaer <sean@geanix.com>
 To:     linux-iio@vger.kernel.org, jic23@kernel.org,
         lorenzo.bianconi83@gmail.com
 Cc:     Sean Nyekjaer <sean@geanix.com>, denis.ciocca@st.com,
         mario.tesi@st.com, armando.visconti@st.com, martin@geanix.com
-Subject: [PATCH v10 3/5] iio: imu: st_lsm6dsx: add wakeup-source option
-Date:   Mon, 16 Sep 2019 15:56:28 +0200
-Message-Id: <20190916135630.2211714-3-sean@geanix.com>
+Subject: [PATCH v10 4/5] iio: imu: st_lsm6dsx: always enter interrupt thread
+Date:   Mon, 16 Sep 2019 15:56:29 +0200
+Message-Id: <20190916135630.2211714-4-sean@geanix.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20190916135630.2211714-1-sean@geanix.com>
 References: <20190916135630.2211714-1-sean@geanix.com>
@@ -45,75 +45,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This add ways for the SoC to wake from accelerometer wake events.
-
-In the suspend function we skip disabling the sensor if wakeup-source
-and events are activated.
+The interrupt source can come from multiple sources,
+fifo and wake interrupts.
+Enter interrupt thread to check which interrupt that has fired.
 
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
-Changes since v4:
- * More devices supports wakeup
-
-Changes since v5:
- * None
-
-Changes since v6:
- * None
-
-Changes since v7:
- * Add check for hw->enable_event
- * Moved disable_irq_wake section so it's called
- * Removed not neeeded continue from disable_irq_wake section
-
 Changes since v8:
- * Using sensor->id instead of i in suspend/resume loops
+ * Remove st_lsm6dsx_handler_irq function to enter interrupt thread
+   at every interrupt
 
 Changes since v9:
  * None
 
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 4198ba263d03..a7f12cf57f11 100644
+index a7f12cf57f11..6b03c50f4732 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -1858,6 +1858,9 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
- 			return err;
+@@ -1715,13 +1715,6 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+ 	return iio_dev;
+ }
+ 
+-static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+-{
+-	struct st_lsm6dsx_hw *hw = private;
+-
+-	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
+-}
+-
+ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+ {
+ 	struct st_lsm6dsx_hw *hw = private;
+@@ -1779,7 +1772,7 @@ static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
  	}
  
-+	if (dev->of_node && of_property_read_bool(dev->of_node, "wakeup-source"))
-+		device_init_wakeup(dev, true);
-+
- 	return 0;
- }
- EXPORT_SYMBOL(st_lsm6dsx_probe);
-@@ -1876,6 +1879,13 @@ static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
- 		if (!(hw->enable_mask & BIT(sensor->id)))
- 			continue;
- 
-+		if (device_may_wakeup(dev) &&
-+		    sensor->id == ST_LSM6DSX_ID_ACC && hw->enable_event) {
-+			/* Enable wake from IRQ */
-+			enable_irq_wake(hw->irq);
-+			continue;
-+		}
-+
- 		if (sensor->id == ST_LSM6DSX_ID_EXT0 ||
- 		    sensor->id == ST_LSM6DSX_ID_EXT1 ||
- 		    sensor->id == ST_LSM6DSX_ID_EXT2)
-@@ -1905,6 +1915,10 @@ static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
- 			continue;
- 
- 		sensor = iio_priv(hw->iio_devs[i]);
-+		if (device_may_wakeup(dev) &&
-+		    sensor->id == ST_LSM6DSX_ID_ACC && hw->enable_event)
-+			disable_irq_wake(hw->irq);
-+
- 		if (!(hw->suspend_mask & BIT(sensor->id)))
- 			continue;
- 
+ 	err = devm_request_threaded_irq(hw->dev, hw->irq,
+-					st_lsm6dsx_handler_irq,
++					NULL,
+ 					st_lsm6dsx_handler_thread,
+ 					irq_type | IRQF_ONESHOT,
+ 					"lsm6dsx", hw);
 -- 
 2.23.0
 

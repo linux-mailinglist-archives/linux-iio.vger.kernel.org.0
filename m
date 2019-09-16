@@ -2,70 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2122FB43B3
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2019 00:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79649B44B5
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2019 01:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732464AbfIPWBh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Sep 2019 18:01:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48386 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730459AbfIPWBh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Sep 2019 18:01:37 -0400
-Received: from lore-desk.lan (unknown [151.66.0.12])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 29A04206C2;
-        Mon, 16 Sep 2019 22:01:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568671297;
-        bh=xqhVNJd5/Z861MxAPNLjsXkZbMQSWQl86jxQ7VGPWeo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=xsoj4pa1KVCM7zRnDRh4S64oIi5VX2G4CqUqa4r+bEaL93LrYTKRaEZpOONu5UIHg
-         cchYoTEH/2dRnKDSuhnRqsd8alXTuuwrCEORYt6+kern+ss1pKEkqMXLZJ0so3+hqp
-         MP/VJDpZ9ZwLDrkkLcbVdjm/aiKRCLQiyL8VYDbA=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org
-Subject: [PATCH] iio: imu: st_lsm6dsx: fix waitime for st_lsm6dsx i2c controller
-Date:   Tue, 17 Sep 2019 00:01:29 +0200
-Message-Id: <46d302e91284908061e0a39e36b9a3122aa6fb1a.1568670658.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726512AbfIPXuR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Sep 2019 19:50:17 -0400
+Received: from mail-vs1-f49.google.com ([209.85.217.49]:39208 "EHLO
+        mail-vs1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726118AbfIPXuQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Sep 2019 19:50:16 -0400
+Received: by mail-vs1-f49.google.com with SMTP id f15so850836vsq.6
+        for <linux-iio@vger.kernel.org>; Mon, 16 Sep 2019 16:50:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ma+t2oG96kl8uQ1K++NN4FHTTV388u5fCCeYc9kdVyE=;
+        b=iDY3f9MMoZKVTiPvMVk70wNXZWpVb3VjhFp6cJDyIxjtlLHQFPzOfi0qnNDZE3/ako
+         1aWK2iNYiq9YbgSBbPaO9x+XJ4bZ0P5BZopLJnHu9m/AFnH7xaLQhd/MX9TSfylJdRxf
+         9Vr0n9YdyQOXq/MLAFNeg2ZYYEDnkx1uZCnsl9i27SX7urYwWJ+/bSXNqOkNVZXZvqNB
+         e7dsGNGqPLXUIF0WT9vbvTqhRodUzFmjStlpu5O7XywF6WmkooerfA63vy+Tvrgbfw0H
+         J3SZHvgvFSso04jq/XSv877G86/HXze2Y5ClenA1WIcCwFu5/WFbICAyp7JEcijHbECu
+         /ivA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ma+t2oG96kl8uQ1K++NN4FHTTV388u5fCCeYc9kdVyE=;
+        b=gI1jLn0jMsXkQPOXDoGQAmO1tY44eJLYXL+4thsn+BoUvWw3T6IFvVcMebf4vGNLfp
+         ULRI+l7S5+Y64k3pIJciqmfXBgY56ZbgAKMp7rezyAUO5s2ltxoJd7gMvSubW39k1rYU
+         ZSW+dvvRhpD5J+HahAA/HUGpQiVOHBFfQStk+EwRMRsDQjWjuZlPF2V8PQYwtP6JQs5t
+         54AVnXDtcGYvVkBgFQEQeEnwwKecLc3vXFBHWhjHbZnqX+5DNhBgo2MKtOwEv/Ff5VqM
+         BTt631rmTnCQQVqHAtpoGPoKdIx6wkFhKq+sdOkfTk+zDJO3DmwQ+2QZUWytVohlTy8y
+         1QBg==
+X-Gm-Message-State: APjAAAXTlrZTxuI/d2x3bDluoD6BeTdAXX+r7cBgd8hyetwtN7sa0hbP
+        pVANNxYmboB0qYSAo+XF3ml6HuC1pFxKZ2A9dZkqog==
+X-Google-Smtp-Source: APXvYqzqlyny79a006qvOr/pry3xIVebzvnPGkGrp+PX7o8RZvEgoqazUBc2RsiEtChgTLxhbVf2qq+tLhJTqJ61QpY=
+X-Received: by 2002:a67:8d08:: with SMTP id p8mr330711vsd.205.1568677815528;
+ Mon, 16 Sep 2019 16:50:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAKxs2cBVnL=6ZNbKgYRppaeUBM3xuog5BHdtmJHRxwttSfjugg@mail.gmail.com>
+In-Reply-To: <CAKxs2cBVnL=6ZNbKgYRppaeUBM3xuog5BHdtmJHRxwttSfjugg@mail.gmail.com>
+From:   Daniel Junho <djunho@gmail.com>
+Date:   Mon, 16 Sep 2019 20:50:04 -0300
+Message-ID: <CAKxs2cC1Bqoc6kyz9Cidf_3MHQA-6ZAQJns2pU2CqJ-pMj9ZKA@mail.gmail.com>
+Subject: Doubts in getting started with the Analog AD7928 driver
+To:     linux-iio@vger.kernel.org
+Cc:     lkcamp@lists.libreplanetbr.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-i2c controller available in st_lsm6dsx series performs i2c slave
-configuration using accel clock as trigger.
-st_lsm6dsx_shub_wait_complete routine is used to wait the controller has
-carried out the requested configuration. However if the accel sensor is not
-enabled we should not use its configured odr to estimate a proper timeout
+Hello everybody.
 
-Fixes: c91c1c844ebd ("iio: imu: st_lsm6dsx: add i2c embedded controller support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I am still learning about kernel developing. I would like to try to
+develop a device driver for the AD7928 [1], from Analog Device.
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-index 66fbcd94642d..4c754a02717b 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-@@ -92,9 +92,11 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm6dsx_ext_dev_table[] = {
- static void st_lsm6dsx_shub_wait_complete(struct st_lsm6dsx_hw *hw)
- {
- 	struct st_lsm6dsx_sensor *sensor;
-+	u16 odr;
- 
- 	sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
--	msleep((2000U / sensor->odr) + 1);
-+	odr = (hw->enable_mask & BIT(ST_LSM6DSX_ID_ACC)) ? sensor->odr : 13;
-+	msleep((2000U / odr) + 1);
- }
- 
- /**
--- 
-2.21.0
+Can someone give some words to guide me?
 
+I was thinking about forking the analog kernel repo [2] but I don't
+know to which branch should I commit to when doing a pull request. Or
+if this is the correct way for the devices from Analog.
+
+[1] https://www.analog.com/en/products/ad7928.html
+[2] https://github.com/analogdevicesinc/linux
+
+Daniel Junho

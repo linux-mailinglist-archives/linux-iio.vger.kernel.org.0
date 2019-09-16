@@ -2,356 +2,573 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 011B8B374F
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2019 11:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C893B381C
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2019 12:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731886AbfIPJmM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Sep 2019 05:42:12 -0400
-Received: from mx0a-00328301.pphosted.com ([148.163.145.46]:46068 "EHLO
-        mx0a-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729494AbfIPJmL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Sep 2019 05:42:11 -0400
-Received: from pps.filterd (m0156134.ppops.net [127.0.0.1])
-        by mx0a-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8G9eoe4021657;
-        Mon, 16 Sep 2019 02:42:11 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt1;
- bh=1+eq/nwvj82vzfIJxXfs/PzE+8W3aPtP5X/lR1mbnGM=;
- b=kCQLrubGy1xeUtedJdU4oZu8ER207vCMULGc0YUbNhpY5fLx4eJAWRMOz917Imh9jUc/
- WmR1b/4BsXZWZTRxt3ruiLQOFzeYBOUdqtkiYRL1Odh/Y3N7RJKJ3ViYOOMkFEc20PYd
- DChrMaeg9NtFPPQ0/HG2iukY00278WiKuW+ffGDK2xcaKHH3B4zdAifsG8xJaWaR9qGr
- ejLnS2y3aq6gZ1mpfbZKgenmimHjGAF474rmncbCk4VhBKUq3J56chdtgO1n1/IPFAg1
- JYezyPhVHVtCWtd8/uXt97MD5crI6dwTkAb4dmjFtIKN4EyB4AG2flPf4tA6l/4QEoOQ mg== 
-Received: from nam01-by2-obe.outbound.protection.outlook.com (mail-by2nam01lp2051.outbound.protection.outlook.com [104.47.34.51])
-        by mx0a-00328301.pphosted.com with ESMTP id 2v0upprngh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Mon, 16 Sep 2019 02:42:10 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lPsCvJIqAVVV/dbbCi1vzREOjy3cJ/ShceHUHBVV0w8RlAUkfFDrxiMwL2UtCiMgWsAzuxeJp4JHjDHkFV0dSLh3Cu5m3lMunh5AsLwQA7UbeJjdWPY1T9ZoempSUofTSnUIN6jxzeFLS5ggyDbOuWtxpEMJ8dQXoJHKYRNH46fCnFmwyrTmfmnQ8wsaXzByTVLZ9dUdIzfsrtyJpqTYTuDSMaf/ft9oaw8YlVtKP/55JZ2VJ9fFjQU5bwEbDZQ+E4JKyjn6r0DxWZjg9ovLwI87IZYq50cVHEwnBi8uXqyF4N2DZj1OJCrylRdmuw83b2uUuso9bA8RgSYlvFFFkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1+eq/nwvj82vzfIJxXfs/PzE+8W3aPtP5X/lR1mbnGM=;
- b=mnFPu0DVznqzXCYEPx6xcjKY/DuxywV10Qc5m9MwBVeGm7y606ech6pWi+Jc2/1lx7qxac4pgTI/ZdGETc9xaF3leYgx+geRz5LiVk94Bwj5OIfm3p5mcNmh1iJvdQjNOpyAwv29I41BjjDPlFkofygRnyNrzYfaktTayAG8xHzsoafUmYqMI5Mty/HD/xfsDcEtC/9TzxfA3MBKzpDXD4kEyMfZpGKiZeMRx4Xenrb5w5JRvz7reQObQcdk9jGWKVYXpztn2cUK3XGtqtggkkotlTA5hULNUiOvFPUW6wt4Uki52+TnzG9Ok42qR1ymFiPEDGKRJMF3Fad8R2psBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1+eq/nwvj82vzfIJxXfs/PzE+8W3aPtP5X/lR1mbnGM=;
- b=Hij4sA7MbraUQcT8sQs4xO7ua3aKOSKJ3RNfW/fGQQCJ80Qx8VFTqx3BldFK9EENhGNwVsUQnpRoS8QYc103EWKVziP8VwO3oqIw1AI8ksTm4aoGPiMRp1WJ54Cg1Mj9jG+aFbEYoOPGTQKrw2oGICRpWqKlh2GlOskjp/Hd5Nw=
-Received: from BYAPR12MB3366.namprd12.prod.outlook.com (20.178.55.207) by
- BYAPR12MB2632.namprd12.prod.outlook.com (20.176.255.21) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2263.15; Mon, 16 Sep 2019 09:42:09 +0000
-Received: from BYAPR12MB3366.namprd12.prod.outlook.com
- ([fe80::1c84:7948:a3:34fa]) by BYAPR12MB3366.namprd12.prod.outlook.com
- ([fe80::1c84:7948:a3:34fa%3]) with mapi id 15.20.2263.023; Mon, 16 Sep 2019
- 09:42:09 +0000
-From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-To:     "jic23@kernel.org" <jic23@kernel.org>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-Subject: [PATCH v3 7/7] iio: imu: inv_mpu6050: add fifo support for
- magnetometer data
-Thread-Topic: [PATCH v3 7/7] iio: imu: inv_mpu6050: add fifo support for
- magnetometer data
-Thread-Index: AQHVbHMCQpk/5dAC+0Sq68NzJIITJg==
-Date:   Mon, 16 Sep 2019 09:42:09 +0000
-Message-ID: <20190916094128.30122-8-jmaneyrol@invensense.com>
-References: <20190916094128.30122-1-jmaneyrol@invensense.com>
-In-Reply-To: <20190916094128.30122-1-jmaneyrol@invensense.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR02CA0050.namprd02.prod.outlook.com
- (2603:10b6:a03:54::27) To BYAPR12MB3366.namprd12.prod.outlook.com
- (2603:10b6:a03:a9::15)
-x-originating-ip: [77.157.193.39]
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.17.1
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b0c1c09c-5fd7-4708-14f8-08d73a8a2496
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:BYAPR12MB2632;
-x-ms-traffictypediagnostic: BYAPR12MB2632:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BYAPR12MB263291B16191E6F7F49ED19DC48C0@BYAPR12MB2632.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2331;
-x-forefront-prvs: 0162ACCC24
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(396003)(39850400004)(346002)(366004)(136003)(189003)(199004)(81166006)(99286004)(3846002)(5660300002)(66066001)(2616005)(54906003)(5640700003)(316002)(6916009)(36756003)(71200400001)(6512007)(11346002)(446003)(102836004)(26005)(6486002)(6506007)(2501003)(71190400001)(386003)(2906002)(6436002)(1076003)(305945005)(4326008)(53936002)(7736002)(186003)(6116002)(81156014)(8676002)(52116002)(107886003)(66476007)(25786009)(66446008)(76176011)(2351001)(66946007)(66556008)(8936002)(64756008)(50226002)(80792005)(256004)(14444005)(14454004)(476003)(486006)(86362001)(478600001);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR12MB2632;H:BYAPR12MB3366.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: invensense.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: MyGPUWCji8+ZY7NvfK203dbXeeATcfqz/slU6Xb1bKMSH6NQ/7mmCEF6D/JVRuHZ6dCqma9UaHcvniLCjjWoR0mxj2VRHUpqS6+8DLv+ywOaA4hu0hdlKt9f+OUwubvVQoQgwxeBS85usTLC2eWCbUyjxQUyCA8Mjr560dc6cDuQwjcGHA+OWFEOxhdC8c5N6z/a7CP/K5j7yLxM07InudWJ/IJ8XcMwpCskS3kBjRmcuoVYgeDTKMt/r+l52s2+kyHjmtMEkcv6tBhOwH3Qtbna1Bb74tJjN7/VhQ4zqAKHYqVw5B1JEEHmLf9j+7LcUa6JeTfem9IKF8h81rDZslEZUnhGUn3b4Pquf3s/H52tN3XaCNK/8E6Zl9W4B1rlMR9X6RyJGvdrpd9V4ngiXAk8NU5NNFCnIzRxBRfyleE=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1730103AbfIPKeF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Sep 2019 06:34:05 -0400
+Received: from mga18.intel.com ([134.134.136.126]:25903 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728736AbfIPKeF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 16 Sep 2019 06:34:05 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Sep 2019 03:34:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,492,1559545200"; 
+   d="scan'208";a="188569925"
+Received: from pipin.fi.intel.com ([10.237.72.175])
+  by orsmga003.jf.intel.com with ESMTP; 16 Sep 2019 03:34:02 -0700
+From:   Felipe Balbi <felipe.balbi@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org,
+        Felipe Balbi <felipe.balbi@linux.intel.com>
+Subject: [PATCH] iio: adc: add support for Intel ADC
+Date:   Mon, 16 Sep 2019 13:34:00 +0300
+Message-Id: <20190916103400.321981-1-felipe.balbi@linux.intel.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0c1c09c-5fd7-4708-14f8-08d73a8a2496
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2019 09:42:09.4205
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: YBoXcyYbzeaMMtGbgMUI2qgdoakNxNC8MueriXwBT1h1Tn9padFD7Hb0eiIOHiUdj4LUCZMErws1/BulHlswkb++JR6gUA7Z+YEIGyYtpsg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB2632
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
- definitions=2019-09-16_05:2019-09-11,2019-09-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
- priorityscore=1501 malwarescore=0 spamscore=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 impostorscore=0 mlxscore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1908290000
- definitions=main-1909160102
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Put read magnetometer data by mpu inside the fifo.
+Recent Intel SoCs have an integrated 14-bit, 4 MS/sec ADC. This patch
+adds support for that controller.
 
-Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    |  1 +
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  2 +
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 11 ++-
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 86 ++++++++++++++++---
- 4 files changed, 88 insertions(+), 12 deletions(-)
+ drivers/iio/adc/Kconfig     |   9 +
+ drivers/iio/adc/Makefile    |   1 +
+ drivers/iio/adc/intel-adc.c | 482 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 492 insertions(+)
+ create mode 100644 drivers/iio/adc/intel-adc.c
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/i=
-nv_mpu6050/inv_mpu_core.c
-index f1c65e0dd1a5..354030e9bed5 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -104,6 +104,7 @@ static const struct inv_mpu6050_chip_config chip_config=
-_6050 =3D {
- 	.divider =3D INV_MPU6050_FIFO_RATE_TO_DIVIDER(INV_MPU6050_INIT_FIFO_RATE)=
-,
- 	.gyro_fifo_enable =3D false,
- 	.accl_fifo_enable =3D false,
-+	.magn_fifo_enable =3D false,
- 	.accl_fs =3D INV_MPU6050_FS_02G,
- 	.user_ctrl =3D 0,
- };
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/in=
-v_mpu6050/inv_mpu_iio.h
-index 953f85618199..52fcf45050a5 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-@@ -86,6 +86,7 @@ enum inv_devices {
-  *  @accl_fs:		accel full scale range.
-  *  @accl_fifo_enable:	enable accel data output
-  *  @gyro_fifo_enable:	enable gyro data output
-+ *  @magn_fifo_enable:	enable magn data output
-  *  @divider:		chip sample rate divider (sample rate divider - 1)
-  */
- struct inv_mpu6050_chip_config {
-@@ -94,6 +95,7 @@ struct inv_mpu6050_chip_config {
- 	unsigned int accl_fs:2;
- 	unsigned int accl_fifo_enable:1;
- 	unsigned int gyro_fifo_enable:1;
-+	unsigned int magn_fifo_enable:1;
- 	u8 divider;
- 	u8 user_ctrl;
- };
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/i=
-nv_mpu6050/inv_mpu_ring.c
-index 5f9a5de0bab4..bbf68b474556 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-@@ -124,7 +124,8 @@ int inv_reset_fifo(struct iio_dev *indio_dev)
-=20
- 	/* enable interrupt */
- 	if (st->chip_config.accl_fifo_enable ||
--	    st->chip_config.gyro_fifo_enable) {
-+	    st->chip_config.gyro_fifo_enable ||
-+	    st->chip_config.magn_fifo_enable) {
- 		result =3D regmap_write(st->map, st->reg->int_enable,
- 				      INV_MPU6050_BIT_DATA_RDY_EN);
- 		if (result)
-@@ -141,6 +142,8 @@ int inv_reset_fifo(struct iio_dev *indio_dev)
- 		d |=3D INV_MPU6050_BITS_GYRO_OUT;
- 	if (st->chip_config.accl_fifo_enable)
- 		d |=3D INV_MPU6050_BIT_ACCEL_OUT;
-+	if (st->chip_config.magn_fifo_enable)
-+		d |=3D INV_MPU6050_BIT_SLAVE_0;
- 	result =3D regmap_write(st->map, st->reg->fifo_en, d);
- 	if (result)
- 		goto reset_fifo_fail;
-@@ -190,7 +193,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
- 	}
-=20
- 	if (!(st->chip_config.accl_fifo_enable |
--		st->chip_config.gyro_fifo_enable))
-+		st->chip_config.gyro_fifo_enable |
-+		st->chip_config.magn_fifo_enable))
- 		goto end_session;
- 	bytes_per_datum =3D 0;
- 	if (st->chip_config.accl_fifo_enable)
-@@ -202,6 +206,9 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
- 	if (st->chip_type =3D=3D INV_ICM20602)
- 		bytes_per_datum +=3D INV_ICM20602_BYTES_PER_TEMP_SENSOR;
-=20
-+	if (st->chip_config.magn_fifo_enable)
-+		bytes_per_datum +=3D INV_MPU9X50_BYTES_MAGN;
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 7e3286265a38..e4810a38b25f 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -432,6 +432,15 @@ config INGENIC_ADC
+ 	  This driver can also be built as a module. If so, the module will be
+ 	  called ingenic_adc.
+ 
++config INTEL_ADC
++	tristate "Intel ADC IIO driver"
++	depends on PCI
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
++	help
++	  Say yes here to build support for Intel ADC available on
++	  recent SoCs.
 +
- 	/*
- 	 * read fifo_count register to know how many bytes are inside the FIFO
- 	 * right now
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/im=
-u/inv_mpu6050/inv_mpu_trigger.c
-index dd55e70b6f77..d7d951927a44 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -5,7 +5,7 @@
-=20
- #include "inv_mpu_iio.h"
-=20
--static void inv_scan_query(struct iio_dev *indio_dev)
-+static void inv_scan_query_mpu6050(struct iio_dev *indio_dev)
- {
- 	struct inv_mpu6050_state  *st =3D iio_priv(indio_dev);
-=20
-@@ -26,6 +26,60 @@ static void inv_scan_query(struct iio_dev *indio_dev)
- 			 indio_dev->active_scan_mask);
- }
-=20
-+static void inv_scan_query_mpu9x50(struct iio_dev *indio_dev)
+ config IMX7D_ADC
+ 	tristate "Freescale IMX7D ADC driver"
+ 	depends on ARCH_MXC || COMPILE_TEST
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index ef9cc485fb67..f04e1bf89826 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -42,6 +42,7 @@ obj-$(CONFIG_HX711) += hx711.o
+ obj-$(CONFIG_IMX7D_ADC) += imx7d_adc.o
+ obj-$(CONFIG_INA2XX_ADC) += ina2xx-adc.o
+ obj-$(CONFIG_INGENIC_ADC) += ingenic-adc.o
++obj-$(CONFIG_INTEL_ADC) += intel-adc.o
+ obj-$(CONFIG_LP8788_ADC) += lp8788_adc.o
+ obj-$(CONFIG_LPC18XX_ADC) += lpc18xx_adc.o
+ obj-$(CONFIG_LPC32XX_ADC) += lpc32xx_adc.o
+diff --git a/drivers/iio/adc/intel-adc.c b/drivers/iio/adc/intel-adc.c
+new file mode 100644
+index 000000000000..381958668563
+--- /dev/null
++++ b/drivers/iio/adc/intel-adc.c
+@@ -0,0 +1,482 @@
++// SPDX-License-Identifier: GPL-2.0
++/**
++ * intel-adc.c - Intel ADC Driver
++ *
++ * Copyright (C) 2018 Intel Corporation
++ *
++ * Author: Felipe Balbi <felipe.balbi@linux.intel.com>
++ */
++
++#include <linux/completion.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/iio/buffer.h>
++#include <linux/iio/iio.h>
++#include <linux/iio/sysfs.h>
++#include <linux/iio/trigger_consumer.h>
++#include <linux/iio/triggered_buffer.h>
++#include <linux/interrupt.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/pci.h>
++#include <linux/pm_runtime.h>
++#include <linux/slab.h>
++#include <linux/sysfs.h>
++
++#define PCI_DEVICE_ID_INTEL_EHLLP	0x4bb8
++
++#define ADC_DMA_CTRL			0x0000
++#define ADC_FIFO_STTS			0x0004
++#define ADC_DMA_DEBUG			0x0008
++#define ADC_PWR_STAT			0x000c
++
++#define ADC_CTRL			0x0400
++#define ADC_LOOP_CTRL			0x0404
++#define ADC_LOOP_SEQ			0x0408
++#define ADC_LOOP_DELAY_0		0x040c
++#define ADC_LOOP_DELAY_1		0x0410
++#define ADC_LOOP_DELAY_2		0x0414
++#define ADC_LOOP_DELAY_3		0x0418
++#define ADC_LOOP_DELAY_4		0x041c
++#define ADC_LOOP_DELAY_5		0x0420
++#define ADC_LOOP_DELAY_6		0x0424
++#define ADC_LOOP_DELAY_7		0x0428
++#define ADC_CAL_CTRL			0x042c
++#define ADC_CONV_CTRL			0x0430
++#define ADC_CONV_DELAY			0x0434
++#define ADC_CONFIG1			0x0438
++#define ADC_CONFIG2			0x043c
++#define ADC_FIFO_CTRL			0x0440
++#define ADC_STAT			0x0444
++#define ADC_FIFO_RD_POINTER		0x0448
++#define ADC_RAW_DATA			0x044c
++#define ADC_DATA_THRESHOLD_0		0x0450
++#define ADC_DATA_THRESHOLD_1		0x0454
++#define ADC_DATA_THRESHOLD_2		0x0458
++#define ADC_DATA_THRESHOLD_3		0x045c
++#define ADC_DATA_THRESHOLD_4		0x0460
++#define ADC_DATA_THRESHOLD_5		0x0464
++#define ADC_DATA_THRESHOLD_6		0x0468
++#define ADC_DATA_THRESHOLD_7		0x046c
++#define ADC_THRESHOLD_CONFIG		0x0470
++#define ADC_RIS				0x0474
++#define ADC_IMSC			0x0478
++#define ADC_MIS				0x047c
++#define ADC_LOOP_CFG_0			0x0480
++#define ADC_LOOP_CFG_1			0x0484
++#define ADC_LOOP_CFG_2			0x0488
++#define ADC_LOOP_CFG_3			0x048c
++#define ADC_LOOP_CFG_4			0x0490
++#define ADC_LOOP_CFG_5			0x0494
++#define ADC_LOOP_CFG_6			0x0498
++#define ADC_LOOP_CFG_7			0x049c
++#define ADC_FIFO_DATA			0x0800
++
++#define ADC_BITS			14
++
++/* ADC DMA Ctrl */
++#define ADC_DMA_CTRL_EN			BIT(0)
++#define ADC_DMA_CTRL_BRST_THRSLD	GENMASK(10, 1)
++
++/* ADC FIFO Status */
++#define ADC_FIFO_STTS_COUNT		GENMASK(9, 0)
++
++/* ADC Ctrl */
++#define ADC_CTRL_EN			BIT(0)
++#define ADC_CTRL_DATA_THRSHLD_MODE(r)	(((r) >> 1) & 3)
++
++/* ADC Conversion Ctrl */
++#define ADC_CONV_CTRL_NUM_SMPL_MASK	GENMASK(17, 8)
++#define ADC_CONV_CTRL_NUM_SMPL(n)	(((n) - 1) << 8)
++#define ADC_CONV_CTRL_CONV_MODE		BIT(4)
++#define ADC_CONV_CTRL_REQ		BIT(0)
++
++/* ADC Config1 */
++#define ADC_CONFIG1_ATTEN_TRIM		GENMASK(31, 30)
++#define ADC_CONFIG1_INBUF_CUR		GENMASK(29, 28)
++#define ADC_CONFIG1_BG_BYPASS		BIT(24)
++#define ADC_CONFIG1_BG_TRIM		GENMASK(23, 19)
++#define ADC_CONFIG1_BG_CTRIM		GENMASK(18, 16)
++#define ADC_CONFIG1_REF_TRIM		GENMASK(15, 8)
++#define ADC_CONFIG1_ADC_RESET		BIT(6)
++#define ADC_CONFIG1_REF_BYPASS_EN	BIT(5)
++#define ADC_CONFIG1_REF_EN		BIT(4)
++#define ADC_CONFIG1_CNL_SEL_MASK	GENMASK(3, 1)
++#define ADC_CONFIG1_CNL_SEL(ch)		((ch) << 1)
++#define ADC_CONFIG1_DIFF_SE_SEL		BIT(0)
++
++/* ADC Interrupt Mask Register */
++#define ADC_INTR_LOOP_DONE_INTR		BIT(22)
++#define ADC_INTR_FIFO_EMPTY_INTR	BIT(21)
++#define ADC_INTR_DMA_DONE_INTR		BIT(20)
++#define ADC_INTR_DATA_THRSHLD_LOW_INTR_7 BIT(19)
++#define ADC_INTR_DATA_THRSHLD_HIGH_INTR_7 BIT(18)
++#define ADC_INTR_DATA_THRSHLD_LOW_INTR_6 BIT(17)
++#define ADC_INTR_DATA_THRSHLD_HIGH_INTR_6 BIT(16)
++#define ADC_INTR_DATA_THRSHLD_LOW_INTR_5 BIT(15)
++#define ADC_INTR_DATA_THRSHLD_HIGH_INTR_5 BIT(14)
++#define ADC_INTR_DATA_THRSHLD_LOW_INTR_4 BIT(13)
++#define ADC_INTR_DATA_THRSHLD_HIGH_INTR_4 BIT(12)
++#define ADC_INTR_DATA_THRSHLD_LOW_INTR_3 BIT(11)
++#define ADC_INTR_DATA_THRSHLD_HIGH_INTR_3 BIT(10)
++#define ADC_INTR_DATA_THRSHLD_LOW_INTR_2 BIT(9)
++#define ADC_INTR_DATA_THRSHLD_HIGH_INTR_2 BIT(8)
++#define ADC_INTR_DATA_THRSHLD_LOW_INTR_1 BIT(7)
++#define ADC_INTR_DATA_THRSHLD_HIGH_INTR_1 BIT(6)
++#define ADC_INTR_DATA_THRSHLD_LOW_INTR_0 BIT(5)
++#define ADC_INTR_DATA_THRSHLD_HIGH_INTR_0 BIT(4)
++#define ADC_INTR_PWR_DWN_EXIT_INTR	BIT(3)
++#define ADC_INTR_FIFO_FULL_INTR		BIT(2)
++#define ADC_INTR_SMPL_DONE_INTR		BIT(0)
++
++#define ADC_INTR_ALL_MASK	(ADC_INTR_LOOP_DONE_INTR |		\
++				ADC_INTR_FIFO_EMPTY_INTR |		\
++				ADC_INTR_DMA_DONE_INTR |		\
++				ADC_INTR_DATA_THRSHLD_LOW_INTR_7 |	\
++				ADC_INTR_DATA_THRSHLD_HIGH_INTR_7 |	\
++				ADC_INTR_DATA_THRSHLD_LOW_INTR_6 |	\
++				ADC_INTR_DATA_THRSHLD_HIGH_INTR_6 |	\
++				ADC_INTR_DATA_THRSHLD_LOW_INTR_5 |	\
++				ADC_INTR_DATA_THRSHLD_HIGH_INTR_5 |	\
++				ADC_INTR_DATA_THRSHLD_LOW_INTR_4 |	\
++				ADC_INTR_DATA_THRSHLD_HIGH_INTR_4 |	\
++				ADC_INTR_DATA_THRSHLD_LOW_INTR_3 |	\
++				ADC_INTR_DATA_THRSHLD_HIGH_INTR_3 |	\
++				ADC_INTR_DATA_THRSHLD_LOW_INTR_2 |	\
++				ADC_INTR_DATA_THRSHLD_HIGH_INTR_2 |	\
++				ADC_INTR_DATA_THRSHLD_LOW_INTR_1 |	\
++				ADC_INTR_DATA_THRSHLD_HIGH_INTR_1 |	\
++				ADC_INTR_DATA_THRSHLD_LOW_INTR_0 |	\
++				ADC_INTR_DATA_THRSHLD_HIGH_INTR_0 |	\
++				ADC_INTR_PWR_DWN_EXIT_INTR |		\
++				ADC_INTR_FIFO_FULL_INTR |		\
++				ADC_INTR_SMPL_DONE_INTR)
++
++#define ADC_VREF_UV		1600000 /* uV */
++#define ADC_DEFAULT_CONVERSION_TIMEOUT 5000 /* ms */
++
++struct intel_adc {
++	struct completion completion;
++	struct pci_dev *pci;
++	struct iio_dev *iio;
++
++	void __iomem *regs;
++
++	u32 value;
++};
++
++static inline void intel_adc_writel(void __iomem *base, u32 offset, u32 value)
 +{
-+	struct inv_mpu6050_state *st =3D iio_priv(indio_dev);
-+
-+	inv_scan_query_mpu6050(indio_dev);
-+
-+	/* no magnetometer if i2c auxiliary bus is used */
-+	if (st->magn_disabled)
-+		return;
-+
-+	st->chip_config.magn_fifo_enable =3D
-+		test_bit(INV_MPU9X50_SCAN_MAGN_X,
-+			 indio_dev->active_scan_mask) ||
-+		test_bit(INV_MPU9X50_SCAN_MAGN_Y,
-+			 indio_dev->active_scan_mask) ||
-+		test_bit(INV_MPU9X50_SCAN_MAGN_Z,
-+			 indio_dev->active_scan_mask);
++	writel(value, base + offset);
 +}
 +
-+static void inv_scan_query(struct iio_dev *indio_dev)
++static inline u32 intel_adc_readl(void __iomem *base, u32 offset)
 +{
-+	struct inv_mpu6050_state *st =3D iio_priv(indio_dev);
-+
-+	switch (st->chip_type) {
-+	case INV_MPU9250:
-+	case INV_MPU9255:
-+		return inv_scan_query_mpu9x50(indio_dev);
-+	default:
-+		return inv_scan_query_mpu6050(indio_dev);
-+	}
++	return readl(base + offset);
 +}
 +
-+static unsigned int inv_compute_skip_samples(const struct inv_mpu6050_stat=
-e *st)
++static void intel_adc_enable(struct intel_adc *adc)
 +{
-+	unsigned int gyro_skip =3D 0;
-+	unsigned int magn_skip =3D 0;
-+	unsigned int skip_samples;
++	u32 ctrl;
++	u32 cfg1;
 +
-+	/* gyro first sample is out of specs, skip it */
-+	if (st->chip_config.gyro_fifo_enable)
-+		gyro_skip =3D 1;
++	cfg1 = intel_adc_readl(adc->regs, ADC_CONFIG1);
++	cfg1 &= ~ADC_CONFIG1_ADC_RESET;
++	intel_adc_writel(adc->regs, ADC_CONFIG1, cfg1);
 +
-+	/* mag first sample is always not ready, skip it */
-+	if (st->chip_config.magn_fifo_enable)
-+		magn_skip =3D 1;
++	ctrl = intel_adc_readl(adc->regs, ADC_CTRL);
++	ctrl |= ADC_CTRL_EN;
++	intel_adc_writel(adc->regs, ADC_CTRL, ctrl);
 +
-+	/* compute first samples to skip */
-+	skip_samples =3D gyro_skip;
-+	if (magn_skip > skip_samples)
-+		skip_samples =3D magn_skip;
++	cfg1 |= ADC_CONFIG1_REF_EN;
++	intel_adc_writel(adc->regs, ADC_CONFIG1, cfg1);
 +
-+	return skip_samples;
++	/* must wait 1ms before allowing any further accesses */
++	usleep_range(1000, 1500);
 +}
 +
- /**
-  *  inv_mpu6050_set_enable() - enable chip functions.
-  *  @indio_dev:	Device driver instance.
-@@ -34,6 +88,7 @@ static void inv_scan_query(struct iio_dev *indio_dev)
- static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
- {
- 	struct inv_mpu6050_state *st =3D iio_priv(indio_dev);
-+	uint8_t d;
- 	int result;
-=20
- 	if (enable) {
-@@ -41,14 +96,11 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio=
-_dev, bool enable)
- 		if (result)
- 			return result;
- 		inv_scan_query(indio_dev);
--		st->skip_samples =3D 0;
- 		if (st->chip_config.gyro_fifo_enable) {
- 			result =3D inv_mpu6050_switch_engine(st, true,
- 					INV_MPU6050_BIT_PWR_GYRO_STBY);
- 			if (result)
- 				goto error_power_off;
--			/* gyro first sample is out of specs, skip it */
--			st->skip_samples =3D 1;
- 		}
- 		if (st->chip_config.accl_fifo_enable) {
- 			result =3D inv_mpu6050_switch_engine(st, true,
-@@ -56,22 +108,32 @@ static int inv_mpu6050_set_enable(struct iio_dev *indi=
-o_dev, bool enable)
- 			if (result)
- 				goto error_gyro_off;
- 		}
-+		if (st->chip_config.magn_fifo_enable) {
-+			d =3D st->chip_config.user_ctrl |
-+					INV_MPU6050_BIT_I2C_MST_EN;
-+			result =3D regmap_write(st->map, st->reg->user_ctrl, d);
-+			if (result)
-+				goto error_accl_off;
-+			st->chip_config.user_ctrl =3D d;
++static void intel_adc_disable(struct intel_adc *adc)
++{
++	u32 ctrl;
++
++	ctrl = intel_adc_readl(adc->regs, ADC_CTRL);
++	ctrl &= ~ADC_CTRL_EN;
++	intel_adc_writel(adc->regs, ADC_CTRL, ctrl);
++}
++
++static int intel_adc_single_channel_conversion(struct intel_adc *adc,
++		struct iio_chan_spec const *channel, int *val)
++{
++	u32 ctrl;
++	u32 reg;
++
++	ctrl = intel_adc_readl(adc->regs, ADC_CONV_CTRL);
++	ctrl |= ADC_CONV_CTRL_CONV_MODE;
++	ctrl &= ~ADC_CONV_CTRL_NUM_SMPL_MASK;
++	ctrl |= ADC_CONV_CTRL_NUM_SMPL(1);
++	intel_adc_writel(adc->regs, ADC_CONV_CTRL, ctrl);
++
++	reg = intel_adc_readl(adc->regs, ADC_CONFIG1);
++	reg &= ~ADC_CONFIG1_CNL_SEL_MASK;
++	reg |= ADC_CONFIG1_CNL_SEL(channel->scan_index);
++
++	if (channel->differential)
++		reg &= ~ADC_CONFIG1_DIFF_SE_SEL;
++	else
++		reg |= ADC_CONFIG1_DIFF_SE_SEL;
++
++	intel_adc_writel(adc->regs, ADC_CONFIG1, reg);
++
++	ctrl |= ADC_CONV_CTRL_REQ;
++	intel_adc_writel(adc->regs, ADC_CONV_CTRL, ctrl);
++
++	/* enable sample done IRQ event */
++	reg = intel_adc_readl(adc->regs, ADC_IMSC);
++	reg &= ~ADC_INTR_SMPL_DONE_INTR;
++	intel_adc_writel(adc->regs, ADC_IMSC, reg);
++
++	usleep_range(1000, 5000);
++	adc->value = intel_adc_readl(adc->regs, ADC_FIFO_DATA);
++
++	return 0;
++}
++
++static int intel_adc_read_raw(struct iio_dev *iio,
++		struct iio_chan_spec const *channel, int *val, int *val2,
++		long mask)
++{
++	struct intel_adc *adc = iio_priv(iio);
++	int shift;
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		shift = channel->scan_type.shift;
++
++		ret = iio_device_claim_direct_mode(iio);
++		if (ret)
++			break;
++
++		intel_adc_enable(adc);
++
++		ret = intel_adc_single_channel_conversion(adc, channel, val);
++		if (ret) {
++			intel_adc_disable(adc);
++			iio_device_release_direct_mode(iio);
++			break;
 +		}
-+		st->skip_samples =3D inv_compute_skip_samples(st);
- 		result =3D inv_reset_fifo(indio_dev);
- 		if (result)
--			goto error_accl_off;
-+			goto error_magn_off;
- 	} else {
- 		result =3D regmap_write(st->map, st->reg->fifo_en, 0);
- 		if (result)
--			goto error_accl_off;
-+			goto error_magn_off;
-=20
- 		result =3D regmap_write(st->map, st->reg->int_enable, 0);
- 		if (result)
--			goto error_accl_off;
-+			goto error_magn_off;
-=20
--		result =3D regmap_write(st->map, st->reg->user_ctrl,
--				      st->chip_config.user_ctrl);
-+		d =3D st->chip_config.user_ctrl & ~INV_MPU6050_BIT_I2C_MST_EN;
-+		result =3D regmap_write(st->map, st->reg->user_ctrl, d);
- 		if (result)
--			goto error_accl_off;
-+			goto error_magn_off;
-+		st->chip_config.user_ctrl =3D d;
-=20
- 		result =3D inv_mpu6050_switch_engine(st, false,
- 					INV_MPU6050_BIT_PWR_ACCL_STBY);
-@@ -90,6 +152,10 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio=
-_dev, bool enable)
-=20
- 	return 0;
-=20
-+error_magn_off:
-+	/* always restore user_ctrl to disable fifo properly */
-+	st->chip_config.user_ctrl &=3D ~INV_MPU6050_BIT_I2C_MST_EN;
-+	regmap_write(st->map, st->reg->user_ctrl, st->chip_config.user_ctrl);
- error_accl_off:
- 	if (st->chip_config.accl_fifo_enable)
- 		inv_mpu6050_switch_engine(st, false,
---=20
-2.17.1
++		intel_adc_disable(adc);
++		ret = IIO_VAL_INT;
++		iio_device_release_direct_mode(iio);
++		break;
++	default:
++		ret = -EINVAL;
++		break;
++	}
++
++	return ret;
++}
++
++static const struct iio_info intel_adc_info = {
++	.read_raw = intel_adc_read_raw,
++};
++
++static const struct iio_event_spec intel_adc_events[] = {
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_RISING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
++			BIT(IIO_EV_INFO_ENABLE),
++	}, {
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_FALLING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE),
++	}, {
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_EITHER,
++		.mask_separate = BIT(IIO_EV_INFO_ENABLE) |
++			BIT(IIO_EV_INFO_PERIOD),
++	},
++};
++
++#define INTEL_ADC_DIFF_CHAN(c1, c2)			\
++{							\
++	.type = IIO_VOLTAGE,				\
++	.differential = true,				\
++	.indexed = 1,					\
++	.channel = (c1),				\
++	.channel2 = (c2),				\
++	.scan_index = (c1),				\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
++	.scan_type = {					\
++		.sign = 's',				\
++		.realbits = 14,				\
++		.storagebits = 32,			\
++		.endianness = IIO_CPU,			\
++	},						\
++	.event_spec = intel_adc_events,			\
++	.num_event_specs = ARRAY_SIZE(intel_adc_events),\
++	.datasheet_name = "ain"#c1"-ain"#c2,		\
++}
++
++#define INTEL_ADC_SINGLE_CHAN(c)			\
++{							\
++	.type = IIO_VOLTAGE,				\
++	.indexed = 1,					\
++	.channel = (c),					\
++	.scan_index = (c),				\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
++	.scan_type = {					\
++		.sign = 's',				\
++		.realbits = 14,				\
++		.storagebits = 32,			\
++		.shift = 0,				\
++		.endianness = IIO_CPU,			\
++	},						\
++	.event_spec = intel_adc_events,			\
++	.num_event_specs = ARRAY_SIZE(intel_adc_events),\
++	.datasheet_name = "ain"#c,			\
++}
++
++static struct iio_chan_spec const intel_adc_channels[] = {
++	INTEL_ADC_DIFF_CHAN(0, 1),
++	INTEL_ADC_DIFF_CHAN(2, 3),
++	INTEL_ADC_DIFF_CHAN(4, 5),
++	INTEL_ADC_DIFF_CHAN(6, 7),
++	INTEL_ADC_SINGLE_CHAN(0),
++	INTEL_ADC_SINGLE_CHAN(1),
++	INTEL_ADC_SINGLE_CHAN(2),
++	INTEL_ADC_SINGLE_CHAN(3),
++	INTEL_ADC_SINGLE_CHAN(4),
++	INTEL_ADC_SINGLE_CHAN(5),
++	INTEL_ADC_SINGLE_CHAN(6),
++	INTEL_ADC_SINGLE_CHAN(7),
++};
++
++static irqreturn_t intel_adc_irq(int irq, void *_adc)
++{
++	struct intel_adc *adc = _adc;
++	u32 status;
++
++	status = intel_adc_readl(adc->regs, ADC_MIS);
++
++	if (!status)
++		return IRQ_NONE;
++
++	intel_adc_writel(adc->regs, ADC_IMSC, ADC_INTR_ALL_MASK);
++	adc->value = intel_adc_readl(adc->regs, ADC_FIFO_DATA);
++	complete(&adc->completion);
++
++	return IRQ_HANDLED;
++}
++
++static int intel_adc_probe(struct pci_dev *pci, const struct pci_device_id *id)
++{
++	struct intel_adc *adc;
++	struct iio_dev *iio;
++	int ret;
++	int irq;
++
++	iio = devm_iio_device_alloc(&pci->dev, sizeof(*adc));
++	if (!iio)
++		return -ENOMEM;
++
++	adc = iio_priv(iio);
++	adc->pci = pci;
++	adc->iio = iio;
++
++	ret = pcim_enable_device(pci);
++	if (ret)
++		return ret;
++
++	pci_set_master(pci);
++
++	ret = pcim_iomap_regions(pci, BIT(0), pci_name(pci));
++	if (ret)
++		return ret;
++
++	adc->regs = pcim_iomap_table(pci)[0];
++	if (!adc->regs) {
++		ret = -EFAULT;
++		return ret;
++	}
++
++	pci_set_drvdata(pci, adc);
++	init_completion(&adc->completion);
++	iio->dev.parent = &pci->dev;
++	iio->name = dev_name(&pci->dev);
++	iio->modes = INDIO_DIRECT_MODE;
++	iio->info = &intel_adc_info;
++	iio->channels = intel_adc_channels;
++	iio->num_channels = ARRAY_SIZE(intel_adc_channels);
++
++	ret = devm_iio_device_register(&pci->dev, iio);
++	if (ret)
++		return ret;
++
++	ret = pci_alloc_irq_vectors(pci, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0)
++		return ret;
++
++	irq = pci_irq_vector(pci, 0);
++	ret = devm_request_irq(&pci->dev, irq, intel_adc_irq,
++			IRQF_ONESHOT | IRQF_SHARED | IRQF_TRIGGER_RISING,
++			"intel-adc", adc);
++	if (ret)
++		goto err;
++
++	pm_runtime_set_autosuspend_delay(&pci->dev, 1000);
++	pm_runtime_use_autosuspend(&pci->dev);
++	pm_runtime_put_autosuspend(&pci->dev);
++	pm_runtime_allow(&pci->dev);
++
++	return 0;
++
++err:
++	pci_free_irq_vectors(pci);
++	return ret;
++}
++
++static void intel_adc_remove(struct pci_dev *pci)
++{
++	pm_runtime_forbid(&pci->dev);
++	pm_runtime_get_noresume(&pci->dev);
++
++	pci_free_irq_vectors(pci);
++}
++
++#ifdef CONFIG_PM_SLEEP
++static int intel_adc_suspend(struct device *dev)
++{
++	return 0;
++}
++
++static int intel_adc_resume(struct device *dev)
++{
++	return 0;
++}
++#endif
++
++static SIMPLE_DEV_PM_OPS(intel_adc_pm_ops, intel_adc_suspend, intel_adc_resume);
++
++static const struct pci_device_id intel_adc_id_table[] = {
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_EHLLP), },
++	{  } /* Terminating Entry */
++};
++MODULE_DEVICE_TABLE(pci, intel_adc_id_table);
++
++static struct pci_driver intel_adc_driver = {
++	.name		= "intel-adc",
++	.probe		= intel_adc_probe,
++	.remove		= intel_adc_remove,
++	.id_table	= intel_adc_id_table,
++	.driver = {
++	.pm = &intel_adc_pm_ops,
++	}
++};
++module_pci_driver(intel_adc_driver);
++
++MODULE_AUTHOR("Felipe Balbi <felipe.balbi@linux.intel.com>");
++MODULE_DESCRIPTION("Intel ADC");
++MODULE_LICENSE("GPL v2");
+-- 
+2.23.0
 

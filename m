@@ -2,286 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDA77B4526
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2019 03:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDF54B4724
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2019 08:05:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732696AbfIQBJd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Sep 2019 21:09:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34944 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728842AbfIQBJc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Sep 2019 21:09:32 -0400
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4C24021670;
-        Tue, 17 Sep 2019 01:09:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568682571;
-        bh=fy/Yj7D0JMYGgR/5cOxmQk+QBj3CjG0LhWKNnbzh91I=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=nGEk+HgKy6+/Xv8qVVw1/uT+4PxoGaT/eWOL/yu/jVbR46o6ovQJH0uPGxm9riV3b
-         gnRe9xfl1WmyEIpNAsK5/zCdVELUc/lxknpkqnXOh7c2Ji3anN7e7frT+ASPsXTXV4
-         SVd8XVhEd9X9djp5aDh5qxLHbva43Z42U0zvcnLA=
-Received: by mail-qk1-f171.google.com with SMTP id 201so2023411qkd.13;
-        Mon, 16 Sep 2019 18:09:31 -0700 (PDT)
-X-Gm-Message-State: APjAAAVuTbvhV84Jjy6BlH+NNlZq9FK1qt+VI88dfTGyCeWR5QGNlHaB
-        3F9V+N8b9aXh2Sf0afy4xZQ234sUrYubstCwBg==
-X-Google-Smtp-Source: APXvYqzBG8t7y7qlLXYIic/a+/x0kVPFJtCRfGBx9Q/SE/qWJeH0V5NGhGa1Vw8JScX43jaJsHA28bIUCqQzSih2acU=
-X-Received: by 2002:a37:682:: with SMTP id 124mr1168784qkg.393.1568682570392;
- Mon, 16 Sep 2019 18:09:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190909144550.164488-1-nuno.sa@analog.com> <20190909144550.164488-2-nuno.sa@analog.com>
- <20190912173046.GA22533@bogus> <20190915120750.7a4d3bcd@archlinux> <1835e5760ad916b44dca9107c7f6f9b33b605769.camel@analog.com>
-In-Reply-To: <1835e5760ad916b44dca9107c7f6f9b33b605769.camel@analog.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Mon, 16 Sep 2019 20:09:18 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJK0UvCsCxxknLRUsx39d_iwGThK9M7ji4a9wvWk_QJiQ@mail.gmail.com>
-Message-ID: <CAL_JsqJK0UvCsCxxknLRUsx39d_iwGThK9M7ji4a9wvWk_QJiQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: iio: Add ltc2983 documentation
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "jic23@kernel.org" <jic23@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        id S2391283AbfIQGF0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Sep 2019 02:05:26 -0400
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:49958 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2390980AbfIQGF0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Sep 2019 02:05:26 -0400
+Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8H63vjT012011;
+        Tue, 17 Sep 2019 02:05:17 -0400
+Received: from nam04-sn1-obe.outbound.protection.outlook.com (mail-sn1nam04lp2055.outbound.protection.outlook.com [104.47.44.55])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2v0sy95h02-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Sep 2019 02:05:17 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eQvhRgt1/iscwPjy4sVo3QjkantTDXoGk/j7jPEmuN6OgcbPCz2m3dLe7OoUWg95G+v1TmXC6DI1haWnVlwJbAE7r3VzxU62nf6cC46uK0r5PJf3qmVeyMXxQXwN5T3JUL7dq+bnBzSfQzis+/7cjrLh9zzOMZp9LBtcbyT2crrPgoesdSQsxT97+1mPJruKSatobrLtgzreURGtHrfF/Jy0hi7sujp/QtWLOZ+qoY+s6PqMVOoZKQgON/3o7SVKmkHArYeZAt6NRyPvhek4JggOC0GXOquW2vfcWUk3pMmmNO6fs5fitCnJPVyhHHxMMbaW4zYJKgh6sEQM0ya6tQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i+6Kej0PWywlbLk7/futs8QlscG0Jq/zavuIB5fyv7Y=;
+ b=jJlDd/b3K5OaBIvCDKAyYsN7Ko2Mp0a8mNchORP1Tm8VxVGNQJSb+aGZmrYz4ZgNYgfnq18WkfKWz/SFOJf7qWpUR0/YT8CyyX7VLEiSNapikRJ53S9XLVFn5N8A0stmJyes+EgoXKof+yRtXOas4CBQqRWt7W0m7lCUnN+zbEQemM8qp2Q+SHkaMPW/0YrvI7dPGucnN3JQX/mXRSWvFzi4RvvVlOCzO/04j+r74an2dgSdcwsStwMqPpiCzBNdDq0GTrmIqihlIWPMg6BGaz0aBGn3TTEx7oEmiVRAkRwhKVg9+MSDIX1BAIrv8dLtWzh5xUaaZZWWzDpN39JSDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i+6Kej0PWywlbLk7/futs8QlscG0Jq/zavuIB5fyv7Y=;
+ b=ktt6MribjegogA/KP3UPkJkGo/2tjjV99GyeCCdoTxB9DE57Q4nNmiFMSu4QDqD+6WDSFZCvDPe7OBiMu1PSitvIk5fBaGZyTMz0aRVA38yfr71WIPsIay9lOVLzm8K6dc0awtA7oxy4uBi20IndD8x4XVMCnrDJm/q7VbydXIs=
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com (20.180.12.152) by
+ CH2PR03MB5271.namprd03.prod.outlook.com (20.180.13.216) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2263.23; Tue, 17 Sep 2019 06:05:16 +0000
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::344d:7f50:49a3:db1b]) by CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::344d:7f50:49a3:db1b%3]) with mapi id 15.20.2284.009; Tue, 17 Sep 2019
+ 06:05:16 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "broonie@kernel.org" <broonie@kernel.org>
+CC:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "baolin.wang@linaro.org" <baolin.wang@linaro.org>,
+        "bcm-kernel-feedback-list@broadcom.com" 
+        <bcm-kernel-feedback-list@broadcom.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "lars@metafoo.de" <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
+        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>
+Subject: Re: [RFC PATCH 03/15] spi: make `cs_change_delay` the first user of
+ the `spi_delay` logic
+Thread-Topic: [RFC PATCH 03/15] spi: make `cs_change_delay` the first user of
+ the `spi_delay` logic
+Thread-Index: AQHVag+8uWmQQq3ExEyRd/qnwNwICqcuP2sAgAADYYCAAALHAIAABOiAgAAKv4CAAUSvAA==
+Date:   Tue, 17 Sep 2019 06:05:15 +0000
+Message-ID: <2ebd680eb38bd3bc46414a5e18e399279946bd9b.camel@analog.com>
+References: <20190913114550.956-1-alexandru.ardelean@analog.com>
+         <20190913114550.956-4-alexandru.ardelean@analog.com>
+         <20190916122505.GC4352@sirena.co.uk>
+         <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
+         <20190916124707.GD4352@sirena.co.uk>
+         <458cbb212fbd04c157c9861501f51c03ea958302.camel@analog.com>
+         <20190916134309.GH4352@sirena.co.uk>
+In-Reply-To: <20190916134309.GH4352@sirena.co.uk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c9bdd46e-9884-4ad4-68e3-08d73b3502b0
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:CH2PR03MB5271;
+x-ms-traffictypediagnostic: CH2PR03MB5271:
+x-microsoft-antispam-prvs: <CH2PR03MB5271501AC8E77D431352B9A0F98F0@CH2PR03MB5271.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 01630974C0
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(39860400002)(366004)(136003)(346002)(396003)(199004)(189003)(478600001)(2501003)(256004)(36756003)(81166006)(5660300002)(6436002)(8676002)(7416002)(99286004)(118296001)(229853002)(26005)(6916009)(6486002)(102836004)(6506007)(81156014)(6246003)(6512007)(5640700003)(64756008)(66946007)(66476007)(446003)(2616005)(6116002)(476003)(3846002)(66066001)(486006)(45080400002)(86362001)(1730700003)(186003)(8936002)(76176011)(76116006)(2906002)(4326008)(66446008)(2351001)(14454004)(66556008)(7736002)(305945005)(71200400001)(71190400001)(316002)(25786009)(11346002)(54906003)(81973001);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5271;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: kZsGlFYYmK0WXjafWp4O0BtMkHbvEAGcueY8IC9IqUoM1X8EZiPcizWsPhD+hz3GHa9wxFdwMzHQYlQ4dxnMi+KA1Ah8y7ntFaJ1EFpbLJspZAYh3KMhcH32UyV6AofgCuFrFjqIEYp17Ql4B/tOSAf53eDCgbcYMnX/av5g54SMNswEh5BkOyA1+My00gzdUx6JJSqoC6E5Atof1nb1o+WzEHfVamXBlR7oeVVOc8tpnk2i4XiLiiEcWTRgBAo2v+gnilMi0ZDa4Dgp8K8jA6bvr7h3dUGAUBLN1iRzIkloBKxafvMvxmIAOYag9Cm3Glgn/O2kVx8SUKsAkRlutWt+DrvcHdA6DrmNhWN1emzB3CxCzdg6vQMjvGF6jHYNtrqnGREom5V3QEKORJkEuTBFnEHJCzf9UJZ1w8eAFSE=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <418F646267A0C44DA315D6E3661E68FC@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9bdd46e-9884-4ad4-68e3-08d73b3502b0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2019 06:05:15.8524
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1xrIj0E0aOd+aqAXisvroVX5E8RXhW1tEliF+YUDg06IR6FvJVAwzJxl/3PwfrHUOo6h4JuiEzP+RSbueEkgX8i6NIOSg4kcocNBg1afswg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5271
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-09-17_03:2019-09-11,2019-09-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 suspectscore=0 mlxlogscore=999 bulkscore=0
+ mlxscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1908290000 definitions=main-1909170068
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Sep 16, 2019 at 10:20 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
->
-> Hi Rob and Jonathan,
->
-> Some comments/questions inline.
->
-> Nuno S=C3=A1
->
-> On Sun, 2019-09-15 at 12:07 +0100, Jonathan Cameron wrote:
-> >
-> > On Fri, 13 Sep 2019 15:36:21 +0100
-> > Rob Herring <robh@kernel.org> wrote:
-> >
-> > > On Mon, Sep 09, 2019 at 04:45:50PM +0200, Nuno S=C3=A1 wrote:
-> > > > Document the LTC2983 temperature sensor devicetree bindings.
-> > > >
-> > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > > ---
-> > > >  .../bindings/iio/temperature/adi,ltc2983.yaml | 442
-> > > > ++++++++++++++++++
-> > > >  MAINTAINERS                                   |   1 +
-> > > >  2 files changed, 443 insertions(+)
-> > > >  create mode 100644
-> > > > Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam
-> > > > l
-> > > >
-> > > > diff --git
-> > > > a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.y
-> > > > aml
-> > > > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.y
-> > > > aml
-> > > > new file mode 100644
-> > > > index 000000000000..2b468b3ed177
-> > > > --- /dev/null
-> > > > +++
-> > > > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.y
-> > > > aml
-> > > > @@ -0,0 +1,442 @@
-> > > > +# SPDX-License-Identifier: GPL-2.0
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id:
-> > > > http://devicetree.org/schemas/iio/temperature/adi,ltc2983.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: Analog Devices LTC2983 Multi-sensor Temperature system
-> > > > +
-> > > > +maintainers:
-> > > > +  - Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > > +
-> > > > +description: |
-> > > > +  Analog Devices LTC2983 Multi-Sensor Digital Temperature
-> > > > Measurement System
-> > > > +
-> > > > https://www.analog.com/media/en/technical-documentation/data-sheets=
-/2983fc.pdf
-> > > > +
-> > > > +properties:
-> > > > +  compatible:
-> > > > +    enum:
-> > > > +      - adi,ltc2983
-> > > > +
-> > > > +  reg:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  interrupts:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  adi,temperature-celcius:
-> > > > +    description:
-> > > > +      If this property is present, the temperature is reported
-> > > > in Celsius.
-> > > > +    type: boolean
-> > > > +    maxItems: 1
-> > >
-> > > It's a boolean, not an array so 'maxItems' doesn't make sense.
-> > >
-> > > Running 'make dt_binding_check' should tell you this. You may need
-> > > to
-> > > update dt-schema install though.
->
-> Rob, I'm having some issues with `make dt_binding_check`. I updated dt-
-> schema and I get this when run it:
->
-> ...
-> "ruamel.yaml.constructor.DuplicateKeyError: while constructing a
-> mapping
->   in "<unicode string>", line 4, column 1
-> found duplicate key "patternProperties" with value "{}" (original
-> value: "{}")
->   in "<unicode string>", line 113, column 1"
-
-Simply drop all but the first 'patternProperties'. You can have
-multiple patterns under one.
-
->
-> If you want, I can paste the complete traceback in a following email.
-> However I could use `dt-doc-validate
-> Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml`
-> directly by doing a manual change in `dt-doc-validate `. I changed the
-> call `testtree =3D dtschema.load(filename, line_number=3Dline_number,
-> duplicate_keys=3DFalse)` to `testtree =3D dtschema.load(filename,
-> line_number=3Dline_number, duplicate_keys=3DTrue)`. Is this something
-> already known? I would not be surprised if it is some problem in my
-> environment. However, I even tried this in a clean docker container
-> based on ubuntu 18.04 and got the same behavior.
-
-[...]
-
-> > > > +patternProperties:
-> > > > +  "^rtd@([2-9]|1[0-9]|20)$":
-> > > > +    type: object
-> > > > +    description: Represents a rtd sensor which is connected to
-> > > > one of the device channels.
-> > > > +
-> > > > +    properties:
-> > > > +      reg:
-> > > > +        description: |
-> > > > +          The channel number. It can be connected to one of the
-> > > > 20 channels of the device.
-> > > > +        minimum: 2
-> > > > +        maximum: 20
-> > > > +        maxItems: 1
-> > >
-> > > As this is pretty much the same for all child nodes, make a pattern
-> > > that
-> > > matches all child nodes and put this there rather than duplicating
-> > > it.
-> > > Then you only need 'minimum: 2' in the cases needing that.
->
-> I'm not sure I'm following your point here. So it's better to clarify
-> it before sending a v2. Do you mean to add something like:
->
-> patternProperties:
->   "^(thermocouple|diode|rtd|thermistor|adc|rsense)@([1-9]|1[0-9]|20)$"
-
-Just ".*@([1-9]|1[0-9]|20)$" is fine.
-
->     type: object
->
->     properties:
->       reg:
->        description: |
->          The channel number. It can be connected to one of the 20
-> channels of the device.
->        minimum: 1
->        maximum: 20
->
-> And then, for instance, for a RTD I would have:
->
-> patternProperties:
->   "^rtd@([2-9]|1[0-9]|20)$"
-
-You've already defined the unit-address format above, so '^rtd@.*'
-would be sufficient here.
-
->
->     ...
->
->     properties:
->       reg:
->        minimum: 2
->
->     ...
->
-> Would this also make sense, or it's not really necessary?
-
-Yes, makes sense.
-
->
-> patternProperties:
->   "^thermocouple@([1-9]|1[0-9]|20)$"
->     type: object
->
->     ...
->
->     properties:
->       reg:
->        description: For differential thermocouples, the minimum is 2.
-
-Why do you have a constraint in free form text here?
-
->
->     ...
->
-> Am I understanding it correctly?
-> > > > +thermistor
-> > > > +      adi,sensor-type:
-> > > > +        description: |
-> > > > +          Identifies the type of RTD connected to the device.
-> > > > +        allOf:
-> > > > +          - $ref: /schemas/types.yaml#/definitions/uint32
-> > > > +          - enum: [10 11 12 13 14 15 16 17]
-> > > > +        maxItems: 1
-> > > > +
-> > > > +      adi,rsense-handle:
-> > > > +        description: |
-> > > > +          Phandle pointing to a rsense object associated with
-> > > > this RTD.
-> > > > +        $ref: "/schemas/types.yaml#/definitions/phandle"
-> > > > +        maxItems: 1
-> > > > +
-> > > > +      adi,sensor-config:
-> > > > +        description: |
-> > > > +          Raw value which set's the sensor configuration. Look
-> > > > at table 28 of the
-> > > > +          datasheet for how to set this value for RTD's.
-> > > > +        allOf:
-> > > > +          - $ref: /schemas/types.yaml#/definitions/uint32
-> > > > +          - enum: [0 1 4 5 8 9 10 12 13 14]
-> > > > +        maxItems: 1
-> > > > +
-> > > > +      adi,excitation-current:
-> > > > +        description: |
-> > > > +          This property controls the magnitude of the excitation
-> > > > current applied
-> > > > +          to the RTD. Look at table 29 of the datasheet for more
-> > > > info.
-> >
-> > Any way we can make this real units?  Can list valid value here.
->
-> For RTD's and diodes, it is possible to have it with real units.
-> However, for thermistors it's not really doable since, for instance,
-> for them we have an "Auto Range" setting. So, I just wanted to be
-> consistent through all sensors having excitation-current configuration.
-> Do you prefer to have it in real units where possible?
-
-That's the preference if it makes sense. I have no idea what an RTD is
-to comment further.
-
-Rob
+T24gTW9uLCAyMDE5LTA5LTE2IGF0IDE0OjQzICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBb
+RXh0ZXJuYWxdDQo+IA0KPiBPbiBNb24sIFNlcCAxNiwgMjAxOSBhdCAwMTowNDo0MlBNICswMDAw
+LCBBcmRlbGVhbiwgQWxleGFuZHJ1IHdyb3RlOg0KPiA+IE9uIE1vbiwgMjAxOS0wOS0xNiBhdCAx
+Mzo0NyArMDEwMCwgTWFyayBCcm93biB3cm90ZToNCj4gPiA+IFRoYXQgdjMgc2VlbXMgdG8gYmUg
+YSBzbWFsbCBzdWJzZXQgb2YgdGhpcyBzZXJpZXM/DQo+ID4gQWNrLg0KPiA+IFYzIGlzIHRoZSBm
+aXJzdCA0IHBhdGNoZXMgZnJvbSB0aGlzIHNlcmllcy4NCj4gPiBXZWxsLCBwYXRjaGVzIDMgJiA0
+IGFyZSBzcXVhc2hlZC4NCj4gPiBJIGFtIDEwMCUgY29udmluY2VkIHRoYXQgdGhlIGVudGlyZSBz
+ZXJpZXMgaXMgYSBnb29kIGlkZWEuDQoNClNvbWV0aGluZyBoYXBwZW5lZCBoZXJlIHRvIHRoZSAi
+bm90IiB3b3JkLg0KUHJvYmFibHkgZ290IGxvc3QgaW4gYW4gYWx0ZXJuYXRlIGRpbWVuc2lvbiAg
+wq9cXyjjg4QpXy/CryAuDQoNCldhcyBzdXBwb3NlZCB0byBiZToNCiJJIGFtIG5vdCAxMDAlIGNv
+bnZpbmNlZCB0aGF0IHRoZSBlbnRpcmUgc2VyaWVzIGlzIGEgZ29vZCBpZGVhLiINCg0KDQo+ID4g
+SW4gdGhlIHNlbnNlIHRoYXQgYSBgc3RydWN0IHNwaV9kZWxheWAgbWF5IGJlIGEgZ29vZCBpZGVh
+LCBidXQgYXQgdGhlDQo+ID4gc2FtZSB0aW1lLCBpdCBtYXkgYmUgdW4tbmVlZGVkLg0KPiA+IEFs
+bCBJIHdhbnRlZCB0byBkbywgd2FzIHRvIGFkZCBhbm90aGVyIGRlbGF5IHNvbWV3aGVyZSwgYW5k
+IGdvdCBsb3N0IGluDQo+ID4gdGhlIHJld29yayBvZiBjdXJyZW50IGRlbGF5cy4NCj4gPiBJIHRo
+b3VnaHQgYWJvdXQgcHJvcG9zaW5nIGp1c3QgdGhlIGZpcnN0IDQgcGF0Y2hlcyBbb24gdGhlaXIg
+b3duXSwgYnV0DQo+ID4gSSB0aG91Z2h0IHRoYXQgc2hvd2luZyB0aGUgY3VycmVudCBzZXJpZXMg
+YXMtaXMNCj4gPiBub3csIG1heSBiZSBhIGdvb2QgaWRlYSBhcyB3ZWxsIFt0byBnYXRoZXIgc29t
+ZSBmZWVkYmFja10uDQo+IA0KPiBJIHRoaW5rIGl0IG1ha2VzIG1vcmUgc2Vuc2UgdG8gcmV2aWV3
+IGFzIGEgd2hvbGUgc2VyaWVzIHJhdGhlciB0aGFuIG9ubHkNCj4gYSBwYXJ0IG9mIHRoZSBjb252
+ZXJzaW9uLCBpdCBkb2Vzbid0IHJlYWxseSBoZWxwIHRvIG9ubHkgZG8gcGFydCBvZiBpdC4NCj4g
+DQo+IFBsZWFzZSBmaXggeW91ciBtYWlsIGNsaWVudCB0byB3b3JkIHdyYXAgd2l0aGluIHBhcmFn
+cmFwaHMgYXQgc29tZXRoaW5nDQo+IHN1YnN0YW50aWFsbHkgbGVzcyB0aGFuIDgwIGNvbHVtbnMu
+ICBEb2luZyB0aGlzIG1ha2VzIHlvdXIgbWVzc2FnZXMgbXVjaA0KPiBlYXNpZXIgdG8gcmVhZCBh
+bmQgcmVwbHkgdG8uDQoNCkFjay4NClByb2JsZW0gaXM6IEkgaGF2ZSB0byByZS1zZXR1cCBteSBl
+bWFpbCBjbGllbnQgZXZlcnkgbm93LW4tdGhlbiBzaW5jZSB0aGUNCndvcmstZW1haWwgc2VydmVy
+IGhhcyBzb21lIGlzc3VlcyB3aXRoIExpbnV4IGVtYWlsIGNsaWVudHMuDQpBbmQgSSBzb21ldGlt
+ZXMgZm9yZ2V0IHRvIGNvbmZpZ3VyZSB0aGlzLg0KWyBFeGNoYW5nZSBkb2VzIG5vdCBhbHdheXMg
+Z2V0IGFsb25nIHdlbGwgd2l0aCBub24tT3V0bG9vayBjbGllbnRzIF0NCg==

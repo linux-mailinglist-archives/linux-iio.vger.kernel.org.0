@@ -2,270 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C53FEB4BA1
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2019 12:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F996B4D25
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2019 13:46:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727171AbfIQKMU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Sep 2019 06:12:20 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2285 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726250AbfIQKMU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 17 Sep 2019 06:12:20 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 4281380F730F3DD69CC1;
-        Tue, 17 Sep 2019 18:12:18 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS404-HUB.china.huawei.com
- (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Tue, 17 Sep 2019
- 18:12:14 +0800
-Date:   Tue, 17 Sep 2019 11:11:59 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>
-CC:     Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
-        <alexandre.torgue@st.com>, <linux-iio@vger.kernel.org>,
-        <pmeerw@pmeerw.net>, <linux-kernel@vger.kernel.org>,
-        <mcoquelin.stm32@gmail.com>, <knaack.h@gmx.de>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH] iio: adc: stm32-adc: fix a race when using several adcs
- with dma and irq
-Message-ID: <20190917111159.00001e9f@huawei.com>
-In-Reply-To: <6c330b1f-ef95-d9bd-3c8b-ccda03148561@st.com>
-References: <1568380890-313-1-git-send-email-fabrice.gasnier@st.com>
-        <20190915110524.2ec1b41d@archlinux>
-        <6c330b1f-ef95-d9bd-3c8b-ccda03148561@st.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726820AbfIQLqg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Sep 2019 07:46:36 -0400
+Received: from mail-pf1-f172.google.com ([209.85.210.172]:37443 "EHLO
+        mail-pf1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726207AbfIQLqg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Sep 2019 07:46:36 -0400
+Received: by mail-pf1-f172.google.com with SMTP id y5so2019686pfo.4
+        for <linux-iio@vger.kernel.org>; Tue, 17 Sep 2019 04:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Vn7f2BvOOWhrCWhje8l+tWrmUWknHTs1DJbtD47MmVg=;
+        b=F8zP3vW+au483SgGQAot1p1wCDJJaI1wZjCDJc7sBhwi+3JeZaygXhryQPVGOizAhT
+         cDvkdGYb6g4QCY5YfuvOe/FDoNw0RESswz9XSJ9bJwU26wwuwMVIANIcavpzs7bHRsUr
+         VbjCzjMbVI6gD5pde2HO5jpj/HoIKOGvFouyMbygSDpQSBeVDeCAN/M27UPhOPh5a9ed
+         RNZN31ChdE0b9cgYcszfCZLgqxqUFCU8TjkHrl+G4IkpL5tz8GE+m+1oQ63e9emr6K7E
+         EWdAHNrr+//1gBVSRcZj7Djo173XOYhEG4uI7F0chB4++Oo7WcUNo93/ywr7fqNTfScO
+         nVgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Vn7f2BvOOWhrCWhje8l+tWrmUWknHTs1DJbtD47MmVg=;
+        b=XdCesDtuKLlUkoSf50cc5GXA2/YQjnxRNuOKrLMkZ2T8rr9RgHd4JGS3lqdhE/HKAY
+         LOpIPHMF1LhuSoZuFJQZWVuFCc2tg+oLaGqaYjjyTrp/QGqnaOhliY/nqFnOMtTGVf5u
+         E8tPGYnHo4vhzrtZQLThia5+yTCT9CQFOsJ0u9QcwF7kRA/FbiynJomacT1O8qdN+dHp
+         NV68663suuZEYeXBs+cZShyvsCeVbo2N/9VQGm6MyQBke/o1mOGXBAppwbztTbDeJ0BX
+         1UxbZyYa2lVDfZ6h6uozC978VheBa9q3ls3wMS6Gc4t+syjG9jqXLi1XgMY/smAbZWFm
+         yozQ==
+X-Gm-Message-State: APjAAAUUBbPROPloOhyoEUHa7SylVnNlCq2ZqdgBnk9Xf6ozMDJFnWBb
+        +mveNvSV6Dvi5L7sjsMM91+5u/oE
+X-Google-Smtp-Source: APXvYqw+SJTO66DKH27c9dfEllecXikarseDe+MaLyBem4WIgSQ3PylD2iXpSm79hGUwrpzil23V1Q==
+X-Received: by 2002:a17:90a:3d03:: with SMTP id h3mr4514134pjc.49.1568720795265;
+        Tue, 17 Sep 2019 04:46:35 -0700 (PDT)
+Received: from icarus ([2001:268:c146:aa9b:3c4d:1cfb:4e0b:ea1])
+        by smtp.gmail.com with ESMTPSA id o11sm1952043pjp.13.2019.09.17.04.46.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Sep 2019 04:46:34 -0700 (PDT)
+Date:   Tue, 17 Sep 2019 20:46:15 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Felipe Balbi <felipe.balbi@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [RFC/PATCH] counter: introduce support for Intel QEP Encoder
+Message-ID: <20190917114403.GA8368@icarus>
+References: <20190916093431.264504-1-felipe.balbi@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190916093431.264504-1-felipe.balbi@linux.intel.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 16 Sep 2019 13:47:34 +0200
-Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
-
-> On 9/15/19 12:05 PM, Jonathan Cameron wrote:
-> > On Fri, 13 Sep 2019 15:21:30 +0200
-> > Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
-> >   
-> >> End of conversion may be handled by using IRQ or DMA. There may be a
-> >> race when two conversions complete at the same time on several ADCs.
-> >> EOC can be read as 'set' for several ADCs, with:
-> >> - an ADC configured to use IRQs. EOCIE bit is set. The handler is normally
-> >>   called in this case.
-> >> - an ADC configured to use DMA. EOCIE bit isn't set. EOC triggers the DMA
-> >>   request instead. It's then automatically cleared by DMA read. But the
-> >>   handler gets called due to status bit is temporarily set (IRQ triggered
-> >>   by the other ADC).
-> >> So both EOC status bit in CSR and EOCIE control bit must be checked
-> >> before invoking the interrupt handler (e.g. call ISR only for
-> >> IRQ-enabled ADCs).
-> >>
-> >> Fixes: 2763ea0585c9 ("iio: adc: stm32: add optional dma support")
-> >>
-> >> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>  
-> > Fix looks fine to me, but I'm not keen on splitting out individual bits from
-> > register defines.  That's a long term readability nightmare.
-> > 
-> > See below,
-> > 
-> > Jonathan
-> >   
-> >> ---
-> >>  drivers/iio/adc/stm32-adc-core.c | 43 +++++++++++++++++++++++++++++++++++++---
-> >>  drivers/iio/adc/stm32-adc-core.h | 13 ++++++++++++
-> >>  drivers/iio/adc/stm32-adc.c      |  6 ------
-> >>  3 files changed, 53 insertions(+), 9 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> >> index 9b85fef..7297396 100644
-> >> --- a/drivers/iio/adc/stm32-adc-core.c
-> >> +++ b/drivers/iio/adc/stm32-adc-core.c
-> >> @@ -71,6 +71,8 @@
-> >>   * @eoc1:	adc1 end of conversion flag in @csr
-> >>   * @eoc2:	adc2 end of conversion flag in @csr
-> >>   * @eoc3:	adc3 end of conversion flag in @csr
-> >> + * @ier:	interrupt enable register offset for each adc
-> >> + * @eocie_msk:	end of conversion interrupt enable mask in @ier
-> >>   */
-> >>  struct stm32_adc_common_regs {
-> >>  	u32 csr;
-> >> @@ -78,6 +80,8 @@ struct stm32_adc_common_regs {
-> >>  	u32 eoc1_msk;
-> >>  	u32 eoc2_msk;
-> >>  	u32 eoc3_msk;
-> >> +	u32 ier;
-> >> +	u32 eocie_msk;
-> >>  };
-> >>  
-> >>  struct stm32_adc_priv;
-> >> @@ -303,6 +307,8 @@ static const struct stm32_adc_common_regs stm32f4_adc_common_regs = {
-> >>  	.eoc1_msk = STM32F4_EOC1,
-> >>  	.eoc2_msk = STM32F4_EOC2,
-> >>  	.eoc3_msk = STM32F4_EOC3,
-> >> +	.ier = STM32F4_ADC_CR1,
-> >> +	.eocie_msk = STM32F4_EOCIE,
-> >>  };
-> >>  
-> >>  /* STM32H7 common registers definitions */
-> >> @@ -311,8 +317,24 @@ static const struct stm32_adc_common_regs stm32h7_adc_common_regs = {
-> >>  	.ccr = STM32H7_ADC_CCR,
-> >>  	.eoc1_msk = STM32H7_EOC_MST,
-> >>  	.eoc2_msk = STM32H7_EOC_SLV,
-> >> +	.ier = STM32H7_ADC_IER,
-> >> +	.eocie_msk = STM32H7_EOCIE,
-> >>  };
-> >>  
-> >> +static const unsigned int stm32_adc_offset[STM32_ADC_MAX_ADCS] = {
-> >> +	0, STM32_ADC_OFFSET, STM32_ADC_OFFSET * 2,
-> >> +};
-> >> +
-> >> +static unsigned int stm32_adc_eoc_enabled(struct stm32_adc_priv *priv,
-> >> +					  unsigned int adc)
-> >> +{
-> >> +	u32 ier, offset = stm32_adc_offset[adc];
-> >> +
-> >> +	ier = readl_relaxed(priv->common.base + offset + priv->cfg->regs->ier);
-> >> +
-> >> +	return ier & priv->cfg->regs->eocie_msk;
-> >> +}
-> >> +
-> >>  /* ADC common interrupt for all instances */
-> >>  static void stm32_adc_irq_handler(struct irq_desc *desc)
-> >>  {
-> >> @@ -323,13 +345,28 @@ static void stm32_adc_irq_handler(struct irq_desc *desc)
-> >>  	chained_irq_enter(chip, desc);
-> >>  	status = readl_relaxed(priv->common.base + priv->cfg->regs->csr);
-> >>  
-> >> -	if (status & priv->cfg->regs->eoc1_msk)
-> >> +	/*
-> >> +	 * End of conversion may be handled by using IRQ or DMA. There may be a
-> >> +	 * race here when two conversions complete at the same time on several
-> >> +	 * ADCs. EOC may be read 'set' for several ADCs, with:
-> >> +	 * - an ADC configured to use DMA (EOC triggers the DMA request, and
-> >> +	 *   is then automatically cleared by DR read in hardware)
-> >> +	 * - an ADC configured to use IRQs (EOCIE bit is set. The handler must
-> >> +	 *   be called in this case)
-> >> +	 * So both EOC status bit in CSR and EOCIE control bit must be checked
-> >> +	 * before invoking the interrupt handler (e.g. call ISR only for
-> >> +	 * IRQ-enabled ADCs).
-> >> +	 */
-> >> +	if (status & priv->cfg->regs->eoc1_msk &&
-> >> +	    stm32_adc_eoc_enabled(priv, 0))
-> >>  		generic_handle_irq(irq_find_mapping(priv->domain, 0));
-> >>  
-> >> -	if (status & priv->cfg->regs->eoc2_msk)
-> >> +	if (status & priv->cfg->regs->eoc2_msk &&
-> >> +	    stm32_adc_eoc_enabled(priv, 1))
-> >>  		generic_handle_irq(irq_find_mapping(priv->domain, 1));
-> >>  
-> >> -	if (status & priv->cfg->regs->eoc3_msk)
-> >> +	if (status & priv->cfg->regs->eoc3_msk &&
-> >> +	    stm32_adc_eoc_enabled(priv, 2))
-> >>  		generic_handle_irq(irq_find_mapping(priv->domain, 2));
-> >>  
-> >>  	chained_irq_exit(chip, desc);
-> >> diff --git a/drivers/iio/adc/stm32-adc-core.h b/drivers/iio/adc/stm32-adc-core.h
-> >> index 8af507b..8dc936b 100644
-> >> --- a/drivers/iio/adc/stm32-adc-core.h
-> >> +++ b/drivers/iio/adc/stm32-adc-core.h
-> >> @@ -25,8 +25,21 @@
-> >>   * --------------------------------------------------------
-> >>   */
-> >>  #define STM32_ADC_MAX_ADCS		3
-> >> +#define STM32_ADC_OFFSET		0x100
-> >>  #define STM32_ADCX_COMN_OFFSET		0x300
-> >>  
-> >> +/* STM32F4 - registers for each ADC instance */
-> >> +#define STM32F4_ADC_CR1			0x04
-> >> +
-> >> +/* STM32F4_ADC_CR1 - bit fields */
-> >> +#define STM32F4_EOCIE			BIT(5)
-> >> +
-> >> +/* STM32H7 - registers for each instance */
-> >> +#define STM32H7_ADC_IER			0x04
-> >> +
-> >> +/* STM32H7_ADC_IER - bit fields */
-> >> +#define STM32H7_EOCIE			BIT(2)
-> >> +
-> >>  /**
-> >>   * struct stm32_adc_common - stm32 ADC driver common data (for all instances)
-> >>   * @base:		control registers base cpu addr
-> >> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> >> index 6a7dd08..3c9f456 100644
-> >> --- a/drivers/iio/adc/stm32-adc.c
-> >> +++ b/drivers/iio/adc/stm32-adc.c
-> >> @@ -30,7 +30,6 @@
-> >>  
-> >>  /* STM32F4 - Registers for each ADC instance */
-> >>  #define STM32F4_ADC_SR			0x00
-> >> -#define STM32F4_ADC_CR1			0x04
-> >>  #define STM32F4_ADC_CR2			0x08
-> >>  #define STM32F4_ADC_SMPR1		0x0C
-> >>  #define STM32F4_ADC_SMPR2		0x10
-> >> @@ -54,7 +53,6 @@
-> >>  #define STM32F4_RES_SHIFT		24
-> >>  #define STM32F4_RES_MASK		GENMASK(25, 24)
-> >>  #define STM32F4_SCAN			BIT(8)
-> >> -#define STM32F4_EOCIE			BIT(5)  
-> > Hmm. This is breaking up the definitions of bits in a single register.
-> > That is rather nasty from a code readability point of view.  
-> > 
-> > I am as keen as the next person on only exposing definitions where
-> > we need to, but in this case we either need to provide an access path
-> > to it here, or we need to move the whole block to the header.  
+On Mon, Sep 16, 2019 at 12:34:31PM +0300, Felipe Balbi wrote:
+> Add support for Intel PSE Quadrature Encoder
 > 
-> Hi Jonathan,
+> Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
+> ---
 > 
-> I think I'll add a precursor patch in v2 to move the whole block to the
-> header file. This way, the access path is easy (e.g. readl).
-> I'm only wondering about the Fixes tag... this will probably not be
-> straight forward to apply the fix on the maintenance releases ?
-> Or do I need to add it to the precursor patch as well ?
-The precursor is a simple move of definitions. Even if it's large, I don't
-think it will be a problem applying it to stable.
-Just make it clear in the patch description why it is needed for the fix.
-
-Thanks,
-
-Jonathan
-
+> Hi William,
 > 
-> Thanks for reviewing,
-> Best regards,
-> Fabrice
-> 
-> >   
-> >>  
-> >>  /* STM32F4_ADC_CR2 - bit fields */
-> >>  #define STM32F4_SWSTART			BIT(30)
-> >> @@ -69,7 +67,6 @@
-> >>  
-> >>  /* STM32H7 - Registers for each ADC instance */
-> >>  #define STM32H7_ADC_ISR			0x00
-> >> -#define STM32H7_ADC_IER			0x04
-> >>  #define STM32H7_ADC_CR			0x08
-> >>  #define STM32H7_ADC_CFGR		0x0C
-> >>  #define STM32H7_ADC_SMPR1		0x14
-> >> @@ -89,9 +86,6 @@
-> >>  #define STM32H7_EOC			BIT(2)
-> >>  #define STM32H7_ADRDY			BIT(0)
-> >>  
-> >> -/* STM32H7_ADC_IER - bit fields */
-> >> -#define STM32H7_EOCIE			STM32H7_EOC
-> >> -
-> >>  /* STM32H7_ADC_CR - bit fields */
-> >>  #define STM32H7_ADCAL			BIT(31)
-> >>  #define STM32H7_ADCALDIF		BIT(30)  
-> >   
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> Here's a first cut of the ported driver. Note that this is really an RFC as
+> there's still quite a bit I don't fully understand. I've left some of my old
+> sysfs files in there just to keep track of which features I'm still missing.
 
+Hi Felipe,
 
+That is understandable since this is an RFC; I expect in your final
+version those sysfs files will be Counter subsystem extension
+attributes.
+
+For reference, the existing Counter subsystem attributes are documented
+in the Documentation/ABI/testing/sysfs-bus-counter file. If you have any
+new attributes specific to the Intel QEP driver, add them as a new
+Documentation/ABI/testing/sysfs-bus-counter-intel-qep file.
+
+> If understood this correctly, I should add noise filtering as a signal
+> extension, right? Same for Input Swap.
+
+Determining the type of extension to create is a matter of scope.
+
+* Signal extensions are attributes which expose information/control
+  specific to a Signal. These types of attributes will exist under a
+  Signal's directory in sysfs.
+
+  For example, if have an invert feature for a Signal, you can have a
+  Signal extension called "invert" that toggles that feature:
+  /sys/bus/counter/devices/counterX/signalY/invert
+
+* Count extensions are attributes which expose information/control
+  specific to a Count. These type of attributes will exist under a
+  Count's directory in sysfs.
+
+  For example, if you want to pause/unpause a Count from updating, you
+  could have a Count extension called "enable" that toggles such:
+  /sys/bus/counter/devices/counterX/countY/enable
+
+* Device extensions are attributes which expose information/control
+  non-specific to a particular Count or Signal. This is where you would
+  put your global features or other miscellanous functionality.
+
+  For example, if your device has an overtemp sensor, you could report
+  the chip overheated via a device extension called "error_overtemp":
+  /sys/bus/counter/devices/counterX/error_overtemp
+
+I'm not very familiar with the Intel QEP features, so I'll need your
+help clarifying some of it for me. I'm assuming "noise filtering" is
+a feature you can enable per individual Signal (is this correct?). If
+so, then it would be implemented as a Signal extension, maybe as a
+/sys/bus/counter/devices/counterX/signalY/noise_filter_enable file.
+Otherwise, it would be a device attribute if it enables noise filtering
+over all Signals.
+
+Is "Input Swap" swapping the Phase A and Phase B signal lines for each
+Count? If so, this would be a Count extension if you can configure it
+per Count; otherwise a device extension if it's globally enabled for all
+Counts.
+
+If you're still having trouble figuring out which type of extension to
+use, give me a simple breakdown of the features you are trying to
+support with these attributes and I should be able to specify which type
+works best for each.
+ 
+> How should we handle the reset mode of the device? And mode of operation?
+
+Is "reset mode" specifying the condition that causes a Count's count to
+be reset back to a value of 0? If so, I assume "index" means an active
+level on the index line will reset the count; does "maximum" mean the
+index line is ignored and the reset operation is simply activated once
+the ceiling is reached? As well, I'm assuming this is a global
+configuration for all counts.
+
+If my assumptions are correct here, then this behavior can be exposed
+by creating two device extensions: "preset" and "preset_enable"; these
+should be based on the existing two same-named Count attributes (see the
+Documentation/ABI/testing/sysfs-bus-counter file).
+
+* /sys/bus/counter/devices/counterX/preset
+  For the Intel QEP, this will be a read-only that always report "0".
+
+* /sys/bus/counter/devices/counterX/preset_enable
+  Assuming "maximum" is just equivalent to ignoring index, preset_enable
+  can toggle between the two modes as a simple boolean: "1" = "index"
+  and "0" = "maximum".
+
+  If I assumed incorrectly, please let me know and we can discuss the
+  possibility of a new attribute (perhaps "preset_mode").
+
+Take a look inside 104-quad-8.c to see how it handles index lines and
+reseting the counts; "preset" and "preset_enable" extensions are
+specified in the quad8_count_ext array.
+
+> If you have any ideas, let me know.
+> 
+> cheers
+
+Since I expect a good amount of this code to change once the extensions
+are added, I'll hold off on a more in-depth code review until we get it
+closer to what it'll actually look like. From skimming the code in this
+RFC, it seems like you have the core Counter subsystem functions and
+structures use correct, so I think it'll be the implementations of the
+extensions that we'll be focusing on.
+
+William Breathitt Gray

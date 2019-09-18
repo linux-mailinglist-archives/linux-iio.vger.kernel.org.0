@@ -2,120 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C71B65FE
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2019 16:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E997FB6680
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2019 16:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731108AbfIROXg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Sep 2019 10:23:36 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:41190 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730594AbfIROXg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Sep 2019 10:23:36 -0400
-Received: by mail-pf1-f196.google.com with SMTP id q7so53138pfh.8;
-        Wed, 18 Sep 2019 07:23:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=X0YlaBg0eWRFmg01LcYcEakBboU2udItKz/WvLmsstE=;
-        b=AQUtfExt8PphIK/V+c+mEJ3tgaUEISxw78DBCeSXeyLH9gYToCX1fyDRsFiqifcLuN
-         c5domyKtQbNk8UW32C/o8pZxeVKctq+eYM2nl/a+mrfcyhODXnb1TWcvL3vFe3MDygUK
-         358nsEwOyj4l+QNqq6/0BFrGmo5RY6rTAIZqbnkTVAqAnMc+ybt1H0p7QnhLAYo0iSGa
-         W/AAiFLjZJoyfi3SME//ZCANuAHVX9bV2/CFWUIAQL4r8biRaX9RplWV0+THsCypl3Gp
-         G+ZgOwie51YPSdJZmnm4/9gLYzpCIxn8HXzoM2hzP3BYjAceYcayoq/G0oXGgCoTG/i3
-         u3EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=X0YlaBg0eWRFmg01LcYcEakBboU2udItKz/WvLmsstE=;
-        b=dS0VCQmttJ0uhvcCDU2xIrMT4XxM7x8ymI0HivUVIywEh/ocoJusZYWlAtIHChIi/P
-         rKnGzxsZYzJ5PzLgEVWN+ZRY3SZC2Om53lorO5KJsXj0GWuwBHSHytK94ntZrM52kZcW
-         dk+gJ9iWBfls1HNoMI/NdqKHnTyE2qjtKFmUSWRE73oXvyJIW+FQj/j8aXr+/fX+JkQ9
-         F1e8NLFUvOXtjy099Vj0e+02WjqhMM/LuGbfaNyuOHsh74etZaX2YowPvrE7QnqYdgct
-         A6ZbY+BlI+M7jmrjg0YnHHAtF67dV29rfCgbs0/c7TrNNCn1Svd8asZAkfgF2XzrFrkc
-         EWrQ==
-X-Gm-Message-State: APjAAAVS7Ts1oksG9FgpUsZ9DOVyvjzjjDCZQzNQ81moVbBlwF8FDmeh
-        9qAHeOZq56bEmvbIG+91LaE=
-X-Google-Smtp-Source: APXvYqwraF/YHqWdOvbISaW0toiHH71DUpkNZY1Cp7PbrQONBy+X5ThJP7vWM980IKlnropOI/g2qw==
-X-Received: by 2002:a17:90a:c8a:: with SMTP id v10mr3943216pja.6.1568816615452;
-        Wed, 18 Sep 2019 07:23:35 -0700 (PDT)
-Received: from localhost.localdomain ([2001:268:c145:8e3a:1c91:3b66:30:c335])
-        by smtp.gmail.com with ESMTPSA id d5sm10996675pfa.180.2019.09.18.07.23.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2019 07:23:34 -0700 (PDT)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     jic23@jic23.retrosnub.co.uk
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, benjamin.gaignard@linaro.org,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v3 2/2] docs: driver-api: generic-counter: Update Count and Signal data types
-Date:   Wed, 18 Sep 2019 23:22:46 +0900
-Message-Id: <e7517c4062cfa186f90dc9e16765bd0745068c0b.1568816248.git.vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <cover.1568816248.git.vilhelm.gray@gmail.com>
-References: <cover.1568816248.git.vilhelm.gray@gmail.com>
+        id S1731423AbfIRO4y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Sep 2019 10:56:54 -0400
+Received: from node.akkea.ca ([192.155.83.177]:52114 "EHLO node.akkea.ca"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731357AbfIRO4x (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 18 Sep 2019 10:56:53 -0400
+X-Greylist: delayed 596 seconds by postgrey-1.27 at vger.kernel.org; Wed, 18 Sep 2019 10:56:53 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by node.akkea.ca (Postfix) with ESMTP id 1668F4E2006;
+        Wed, 18 Sep 2019 14:46:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akkea.ca; s=mail;
+        t=1568818017; bh=aDA9/AHzNVD3j08pDbZWiFUas52ZZ6cyubjFG4eOZiQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=QMuSzKaMBAFHgP/EjDhke0EjAT/xe4CjByAFKWwQkoto/nc3AstiUFT2eXc2J8vxN
+         0nfQa50FOhCyYQ/70pI87wFSiZDc4F3uaJ7q0/twyeCnBix8tFymJwkGngyStSB+oA
+         U6aXVM/kfOv19zM4nmh03AwNklgtBSexYzqjcevc=
+X-Virus-Scanned: Debian amavisd-new at mail.akkea.ca
+Received: from node.akkea.ca ([127.0.0.1])
+        by localhost (mail.akkea.ca [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 2Xjo0-Iayjat; Wed, 18 Sep 2019 14:46:56 +0000 (UTC)
+Received: from www.akkea.ca (node.akkea.ca [192.155.83.177])
+        by node.akkea.ca (Postfix) with ESMTPSA id AAF344E2003;
+        Wed, 18 Sep 2019 14:46:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akkea.ca; s=mail;
+        t=1568818016; bh=aDA9/AHzNVD3j08pDbZWiFUas52ZZ6cyubjFG4eOZiQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=UAziWB98xfvbPtYiuQjrmshWR8B+mj/ubp+ir4O5D5tfM2UxB1sWFhxUC3WYkWRTF
+         Kq0pP91XqHexHmFeZcxJBMFo4rZe34lI+MyrGkgeAWe/yBDgSeP0nKTjossg8zGLa5
+         B0enE7BoWuvAGyCPH14LLd5WgKZtj8/yUpMEmEAE=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 18 Sep 2019 07:46:56 -0700
+From:   Angus Ainslie <angus@akkea.ca>
+To:     Marco Felsch <m.felsch@pengutronix.de>
+Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        tomas@novotny.cz, linux-iio@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH 1/2] iio: light: fix vcnl4000 devicetree hooks
+In-Reply-To: <20190917145637.22605-1-m.felsch@pengutronix.de>
+References: <20190917145637.22605-1-m.felsch@pengutronix.de>
+Message-ID: <2eb045ee57319a3c1981adf90df80325@akkea.ca>
+X-Sender: angus@akkea.ca
+User-Agent: Roundcube Webmail/1.3.6
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Count data is now always represented as an unsigned integer, while
-Signal data is either SIGNAL_LOW or SIGNAL_HIGH.
+On 2019-09-17 07:56, Marco Felsch wrote:
+> Since commit ebd457d55911 ("iio: light: vcnl4000 add devicetree hooks")
+> the of_match_table is supported but the data shouldn't be a string.
+> Instead it shall be one of 'enum vcnl4000_device_ids'. Also the 
+> matching
+> logic for the vcnl4020 was wrong. Since the data retrieve mechanism is
+> still based on the i2c_device_id no failures did appeared till now.
+> 
+> Fixes: ebd457d55911 ("iio: light: vcnl4000 add devicetree hooks")
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
----
- Documentation/driver-api/generic-counter.rst | 22 +++++++-------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+Reviewed-by: Angus Ainslie (Purism) angus@akkea.ca
 
-diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-index 8382f01a53e3..161652fc1025 100644
---- a/Documentation/driver-api/generic-counter.rst
-+++ b/Documentation/driver-api/generic-counter.rst
-@@ -39,10 +39,7 @@ There are three core components to a counter:
- COUNT
- -----
- A Count represents the count data for a set of Signals. The Generic
--Counter interface provides the following available count data types:
--
--* COUNT_POSITION:
--  Unsigned integer value representing position.
-+Counter interface represents the count data as an unsigned integer.
- 
- A Count has a count function mode which represents the update behavior
- for the count data. The Generic Counter interface provides the following
-@@ -93,19 +90,16 @@ SIGNAL
- A Signal represents a counter input data; this is the input data that is
- evaluated by the counter to determine the count data; e.g. a quadrature
- signal output line of a rotary encoder. Not all counter devices provide
--user access to the Signal data.
--
--The Generic Counter interface provides the following available signal
--data types for when the Signal data is available for user access:
-+user access to the Signal data, so exposure is optional for drivers.
- 
--* SIGNAL_LEVEL:
--  Signal line state level. The following states are possible:
-+When the Signal data is available for user access, the Generic Counter
-+interface provides the following available signal values:
- 
--  - SIGNAL_LEVEL_LOW:
--    Signal line is in a low state.
-+* SIGNAL_LOW:
-+  Signal line is in a low state.
- 
--  - SIGNAL_LEVEL_HIGH:
--    Signal line is in a high state.
-+* SIGNAL_HIGH:
-+  Signal line is in a high state.
- 
- A Signal may be associated with one or more Counts.
- 
--- 
-2.23.0
-
+> ---
+>  drivers/iio/light/vcnl4000.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/light/vcnl4000.c 
+> b/drivers/iio/light/vcnl4000.c
+> index 51421ac32517..f522cb863e8c 100644
+> --- a/drivers/iio/light/vcnl4000.c
+> +++ b/drivers/iio/light/vcnl4000.c
+> @@ -398,19 +398,19 @@ static int vcnl4000_probe(struct i2c_client 
+> *client,
+>  static const struct of_device_id vcnl_4000_of_match[] = {
+>  	{
+>  		.compatible = "vishay,vcnl4000",
+> -		.data = "VCNL4000",
+> +		.data = (void *)VCNL4000,
+>  	},
+>  	{
+>  		.compatible = "vishay,vcnl4010",
+> -		.data = "VCNL4010",
+> +		.data = (void *)VCNL4010,
+>  	},
+>  	{
+> -		.compatible = "vishay,vcnl4010",
+> -		.data = "VCNL4020",
+> +		.compatible = "vishay,vcnl4020",
+> +		.data = (void *)VCNL4010,
+>  	},
+>  	{
+>  		.compatible = "vishay,vcnl4200",
+> -		.data = "VCNL4200",
+> +		.data = (void *)VCNL4200,
+>  	},
+>  	{},
+>  };

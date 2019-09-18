@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3294B5E5B
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2019 09:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 411BBB5E5F
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2019 09:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728915AbfIRHxi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Sep 2019 03:53:38 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:38733 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725989AbfIRHxi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Sep 2019 03:53:38 -0400
-Received: by mail-pf1-f194.google.com with SMTP id h195so3829572pfe.5;
-        Wed, 18 Sep 2019 00:53:37 -0700 (PDT)
+        id S1726983AbfIRHxn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Sep 2019 03:53:43 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:39026 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725989AbfIRHxn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Sep 2019 03:53:43 -0400
+Received: by mail-pl1-f195.google.com with SMTP id x6so1249382plv.6;
+        Wed, 18 Sep 2019 00:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=jztD0q/pSM8JUi6mwAcEWzxcgZfTnzpK2xWBV2x6KlU=;
-        b=Um9D2iCr8IeMcdqzFKJCNkI4+H9iquS7B6UFk6cgl4jXkAirxwIuJ95qkKTrUhPsfT
-         gTJcQMEthS4bzi0GfhSAd52gBR5BnadIzveTBTJe5gXEKvFl/zkrZBG1JQAG3wwASiDa
-         INEDf4012fWYH/QZwcG3VHMmcNQaX2TVdkk3ncLyDT9fs5uPELiztes5FG8XMNlvN0fi
-         YM0fnrpbCFQ0TSpfLVRR3SyTJKZH5qDBhLa0bfCyr2euLMqndD+EYffJSPfQ3LI5rTg4
-         VbrNEubms5qPtsWb331YMEQTqHr4o0GWM0hcAlBaJwAVOpVN8q53IHXZBOA7Z1F9Hfxs
-         DeqQ==
+        bh=PJG4R+fWj0sM0gBzRDWpk4Qq46V/CmHI+1H6OVyYxow=;
+        b=LPLquoAAfdRTAHtbCvmLo89FOddl3kLcmoKcvwkZ0Aw07CYrKMn+rFIQ2SMea735AQ
+         AhnhBuxblGpnPuo+csACqsv4/PROmfKoa5EOp8kW373rASStMsZzdD+2vvLXcKZJcyxi
+         2ImXKEAbpcXEmkfMjE0o+4eZnp8Xd6U5kObCj+vhHZLUxNrHqO3Fb2vGNuc4KjPolu9a
+         eNwCsdLN6k8bFLCyXjsqYRR6Fs0KdBq96+GkBgYg897380aPwILuaA9ey3/ifpesPQLU
+         w68JEyzljbnOCXit4ZJLKveLJOqxOvOZIgwQR0ydrTc51rSAGBZehoceinBxXYmxAzwE
+         T+Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=jztD0q/pSM8JUi6mwAcEWzxcgZfTnzpK2xWBV2x6KlU=;
-        b=ZtCzrhVHnFd2IKs7QWEhx/R7k5ImqY47+rM6Wu6GqCtpr1ZwF3y/scYX/eXsHrSZqk
-         dUDBtcQLdF+SMhTMRcKo88Jk2b1nUc0t+qxyeNGS5kR32d2lrvBFYO0jOaa0iB7ghfXc
-         +SLHLAz0RPn6cbfkNjPItToMmLbAf+F+c7kAXnMnDZCRztwSniia3pisKwQYqj45Hvzu
-         e+GD4a00fsPL9xSTg9ue5Oo8OzJO4hQ79OAR2R+z2AfMax42ZxuYVK3ta0YNKB6bN2IY
-         RNkI/AYCdN3Fk88mb808zxG7vk//yBIa5JyR1vZGTUC5iDlRZ6A8O3NpdhHcyOM1akyP
-         i6+Q==
-X-Gm-Message-State: APjAAAWzcpCmjxs8xueY054i5Q4BWCxRKfUpYRZpY5wXQ6ZTbKvGEwZ9
-        29N4HrJ8r5AAqJZoK6bZ3ks=
-X-Google-Smtp-Source: APXvYqxxqPoVDdtGr5+T574vmF9JYrxp2FWnYti4I+/c5S8B3oWrqRqPteeAZ6AyHkDVfV3S2ouo0A==
-X-Received: by 2002:a63:2004:: with SMTP id g4mr2593156pgg.97.1568793217016;
-        Wed, 18 Sep 2019 00:53:37 -0700 (PDT)
+        bh=PJG4R+fWj0sM0gBzRDWpk4Qq46V/CmHI+1H6OVyYxow=;
+        b=ZduD4i692kStDB8WozUCW/CZgMpkrEhojxXQgPgXpS4yCtO3n+KYX1HD7OC/B3Os8M
+         s04ZHxF475Z2wqgMqwrG+mhNu1b/Y9FU39cSshN12CBCPNsiKPbsrcuhVj12E7b3IZEr
+         tfUtJZ/csAxvUaelLOnWlgd7Hp+AUO0bV0o52DlQFCcJD9t2bPMBP9Z78i3C0455fHWe
+         E/dFNQsLhXkLtU632NwQYLXswzEC52wrNzSIy/dS5IjlHh95ZeWcV9iXtS1KlmCSuCX/
+         rDe4nsJ14mVzVcJE3hlm0Xw5bB5wMc1ivBovJV3UGHG7O5tzsLIrYcxXtXblMoL9QRTV
+         iWoQ==
+X-Gm-Message-State: APjAAAV9DFRA3VBxInBe9FHq5RpQPgyGhUY7MYq1wC6V/MRghX5mNMV9
+        prMaNPbZqlhpjs2YJsm2d2I=
+X-Google-Smtp-Source: APXvYqwvA2Z/8K4t3M3bEg5QWzJdOEqfLT2DZsU8W/BmRASwQDwnmEUZ8gxHBxKvOMXGNHlizN8Mqg==
+X-Received: by 2002:a17:902:8d87:: with SMTP id v7mr2716294plo.229.1568793222048;
+        Wed, 18 Sep 2019 00:53:42 -0700 (PDT)
 Received: from localhost.localdomain ([2001:268:c147:d9df:f819:e399:825f:f2dc])
-        by smtp.gmail.com with ESMTPSA id h8sm5580715pfo.64.2019.09.18.00.53.33
+        by smtp.gmail.com with ESMTPSA id h8sm5580715pfo.64.2019.09.18.00.53.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2019 00:53:36 -0700 (PDT)
+        Wed, 18 Sep 2019 00:53:41 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@jic23.retrosnub.co.uk
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -52,9 +52,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v2 5/7] counter: ftm-quaddec: Update count_read and count_write callbacks
-Date:   Wed, 18 Sep 2019 16:52:46 +0900
-Message-Id: <6925fdda26c57ce29d373f8cb01a572cd7b92c0f.1568792697.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v2 6/7] counter: stm32-lptimer-cnt: Update count_read callback
+Date:   Wed, 18 Sep 2019 16:52:47 +0900
+Message-Id: <d8c0acde9e5de3930397cb184fd97c1e1372642a.1568792697.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1568792697.git.vilhelm.gray@gmail.com>
 References: <cover.1568792697.git.vilhelm.gray@gmail.com>
@@ -65,54 +65,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The count_read and count_write callbacks pass unsigned long now.
+The count_read callback passes unsigned long now.
 
-Cc: Patrick Havelange <patrick.havelange@essensium.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@st.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/ftm-quaddec.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/counter/stm32-lptimer-cnt.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
-index 4046aa9f9234..c2b3fdfd8b77 100644
---- a/drivers/counter/ftm-quaddec.c
-+++ b/drivers/counter/ftm-quaddec.c
-@@ -178,31 +178,25 @@ static const enum counter_count_function ftm_quaddec_count_functions[] = {
+diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
+index bbc930a5962c..73bb773f5e6d 100644
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -377,8 +377,7 @@ static enum counter_synapse_action stm32_lptim_cnt_synapse_actions[] = {
+ };
  
- static int ftm_quaddec_count_read(struct counter_device *counter,
- 				  struct counter_count *count,
--				  struct counter_count_read_value *val)
-+				  unsigned long *val)
+ static int stm32_lptim_cnt_read(struct counter_device *counter,
+-				struct counter_count *count,
+-				struct counter_count_read_value *val)
++				struct counter_count *count, unsigned long *val)
  {
- 	struct ftm_quaddec *const ftm = counter->priv;
- 	uint32_t cntval;
+ 	struct stm32_lptim_cnt *const priv = counter->priv;
+ 	u32 cnt;
+@@ -388,7 +387,7 @@ static int stm32_lptim_cnt_read(struct counter_device *counter,
+ 	if (ret)
+ 		return ret;
  
- 	ftm_read(ftm, FTM_CNT, &cntval);
- 
--	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &cntval);
-+	*val = cntval;
+-	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &cnt);
++	*val = cnt;
  
  	return 0;
  }
- 
- static int ftm_quaddec_count_write(struct counter_device *counter,
- 				   struct counter_count *count,
--				   struct counter_count_write_value *val)
-+				   const unsigned long val)
- {
- 	struct ftm_quaddec *const ftm = counter->priv;
--	u32 cnt;
--	int err;
- 
--	err = counter_count_write_value_get(&cnt, COUNTER_COUNT_POSITION, val);
--	if (err)
--		return err;
--
--	if (cnt != 0) {
-+	if (val != 0) {
- 		dev_warn(&ftm->pdev->dev, "Can only accept '0' as new counter value\n");
- 		return -EINVAL;
- 	}
 -- 
 2.23.0
 

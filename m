@@ -2,227 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75D45B6437
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2019 15:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66237B65F1
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2019 16:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729988AbfIRNRt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Sep 2019 09:17:49 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:34118 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726268AbfIRNRt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Sep 2019 09:17:49 -0400
-Received: by mail-wr1-f68.google.com with SMTP id a11so6928673wrx.1;
-        Wed, 18 Sep 2019 06:17:46 -0700 (PDT)
+        id S1728293AbfIROX1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Sep 2019 10:23:27 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:45175 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726484AbfIROX0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Sep 2019 10:23:26 -0400
+Received: by mail-pg1-f196.google.com with SMTP id 4so4192500pgm.12;
+        Wed, 18 Sep 2019 07:23:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hBF1etsivhmKdLkajwW8GHvPk5tP312Rqd082oyW/40=;
+        b=KTcABZbJz2NA0gOeD1Qk+C6NCkIU0co5QvjKv9sapaIiZ/aOcOklr2aph/qPdpteM1
+         f9Crx3hv6rnSCrkcG89lN6CQljYO6GXIcen+1NBAOp3UVFv/GHksaNifgj73/zPtDhj0
+         kS1Ckv3keBIrbasafOfh/gVuWTSMTPlkqgxBlGaZ2PkjjSFRe4/mG9SzFI9tKljz8IoJ
+         n9Z8mOb3e4/09p35VMsBbMRTTU4uZdgxp9ikYxgaHqxsArontVYO2lPSFMHmOR1zzbr4
+         BZBkP/WhVtTospi0W8CPHgAw/PcbuIvbu8x3H4S7lafBwG2FjZ2l3cDjQX0Ow0TRIBQi
+         LR7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=e6a38RN6FN8dThc0RVo5hV5uWnsoTfPqGl5eeZaZimE=;
-        b=pWD5SV5m2YY+DlcWFFBxBnlVgpTdi535GmGMT+3c29ByJPJU1H+uPaXxPtFssiu578
-         iVLYJnAj8HEalXRfcUTYFRtL/HcENGdZwNAITZ85nAeDI1/Jzlss9XmGiZLihNs7YaX5
-         OF+8+4ayb1SzagUfoY5FQMtSGOZSdYxEimmurLj+Qjv6zA8v6Md+7bHKdXwo1mQLhc/H
-         MUpXpGx+6WtxbgID2+BtqGQpKSzeLNPa8AOXV1nXbhGbDjBhjUiLat9bWM8qSQpkDGP6
-         DfK8I+UE+DrclI22hj1Ipzum4w7FRfK/ZdKg7frdEoDAk8emYu1Zj/qX1C11d+1DUnn5
-         wOiw==
-X-Gm-Message-State: APjAAAU0hwIUhIf3OxpCEfRVKskUOSiV+c8w65S8WTkjsmmF1omhhgGz
-        Mu8UqML3yJn+8GMGeiBD6vE=
-X-Google-Smtp-Source: APXvYqxWVPjcF1VpJfpk6Lp6k4HOBxolAT7MHjlWITs7v+8tF1+4yScFg1b7sFVdBQuKIhoXHhpLuA==
-X-Received: by 2002:adf:e3c4:: with SMTP id k4mr3158989wrm.157.1568812665355;
-        Wed, 18 Sep 2019 06:17:45 -0700 (PDT)
-Received: from pi3 ([194.230.155.145])
-        by smtp.googlemail.com with ESMTPSA id 207sm4243477wme.17.2019.09.18.06.17.42
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hBF1etsivhmKdLkajwW8GHvPk5tP312Rqd082oyW/40=;
+        b=iGjfr+VWFHLJJBhG9WCiMlB19qWYzxjBA4MH17Io2HbC/qbI2d11BgFQFQ7L3GIYkC
+         bei8SLxWRSFlXJ31XTuWaqMF9IlnSHyezeBYkrk/xKd4Ebsc1TInEZp6V571s2ayhJAZ
+         mHF3YDrVxABuXmS4Mqtigl9Cr9DZ4Gw0aauADk8w1ecneJ30cVevox3lrv0BRQ6F/1so
+         IWkoB6Chqk8yGlMSIBzwT4zEVjScj8l1XnGkN2tYoICfYrr7xX3Hcw5kgtPeK4B1G8xg
+         vn4m58hJ3Ozx9G6j/r0NfMcgIJfWa6NBoEPk05EGePn3qaZFs1AqGrSj6FJeoEzBgERs
+         QD0g==
+X-Gm-Message-State: APjAAAWIEiB2HWMb8QECZjrphMYmocB0e/l6ZYUURdpp3gsjiBaHfzR8
+        T6NZmwwzgJ1n2lEDHufqeuNNi6Dz
+X-Google-Smtp-Source: APXvYqwDluvBGw1cnbd/MWHtPlAIMe4bMLEDRhdzKzQgVavoWQaUPt4wXe+kCj2DcEFZ303Bu4/vAg==
+X-Received: by 2002:a63:d46:: with SMTP id 6mr4329157pgn.364.1568816605894;
+        Wed, 18 Sep 2019 07:23:25 -0700 (PDT)
+Received: from localhost.localdomain ([2001:268:c145:8e3a:1c91:3b66:30:c335])
+        by smtp.gmail.com with ESMTPSA id d5sm10996675pfa.180.2019.09.18.07.23.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2019 06:17:43 -0700 (PDT)
-Date:   Wed, 18 Sep 2019 15:17:40 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>, Kukjin Kim <kgene@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        =?utf-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v2 07/11] dt-bindings: arm: samsung: Convert Exynos PMU
- bindings to json-schema
-Message-ID: <20190918131740.GA668@pi3>
-References: <20190907092007.9946-1-krzk@kernel.org>
- <20190907092007.9946-7-krzk@kernel.org>
- <20190918124306.GB318@bogus>
+        Wed, 18 Sep 2019 07:23:25 -0700 (PDT)
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     jic23@jic23.retrosnub.co.uk
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, benjamin.gaignard@linaro.org,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: [PATCH v3 0/2] Simplify count_read/count_write/signal_read
+Date:   Wed, 18 Sep 2019 23:22:44 +0900
+Message-Id: <cover.1568816248.git.vilhelm.gray@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190918124306.GB318@bogus>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Sep 18, 2019 at 07:43:06AM -0500, Rob Herring wrote:
-> On Sat, Sep 07, 2019 at 11:20:03AM +0200, Krzysztof Kozlowski wrote:
-> > Convert Samsung Exynos Power Management Unit (PMU) bindings to DT schema
-> > format using json-schema.
-> > 
-> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > 
-> > ---
-> > 
-> > Changes since v1:
-> > 1. Fix clock-names to match all elements against schema (any number of
-> >    any clkoutN values).
-> >    This currently fails:
-> >        properties:clock-names:items: {'enum': ['clkout0', 'clkout1', 'clkout2',
-> >        'clkout3', 'clkout4', 'clkout5', 'clkout6', 'clkout7', 'clkout8',
-> >        'clkout9', 'clkout10', 'clkout11', 'clkout12', 'clkout13', 'clkout14',
-> >        'clkout15', 'clkout16']} is not of type 'array
-> > 
-> > 2. Add syscon reboot and poweroff nodes.
-> > ---
-> >  .../devicetree/bindings/arm/samsung/pmu.txt   |  72 -----------
-> >  .../devicetree/bindings/arm/samsung/pmu.yaml  | 117 ++++++++++++++++++
-> >  2 files changed, 117 insertions(+), 72 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.txt
-> >  create mode 100644 Documentation/devicetree/bindings/arm/samsung/pmu.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/arm/samsung/pmu.txt b/Documentation/devicetree/bindings/arm/samsung/pmu.txt
-> > deleted file mode 100644
-> > index 433bfd7593ac..000000000000
-> > --- a/Documentation/devicetree/bindings/arm/samsung/pmu.txt
-> > +++ /dev/null
-> > @@ -1,72 +0,0 @@
-> > -SAMSUNG Exynos SoC series PMU Registers
-> > -
-> > -Properties:
-> > - - compatible : should contain two values. First value must be one from following list:
-> > -		   - "samsung,exynos3250-pmu" - for Exynos3250 SoC,
-> > -		   - "samsung,exynos4210-pmu" - for Exynos4210 SoC,
-> > -		   - "samsung,exynos4412-pmu" - for Exynos4412 SoC,
-> > -		   - "samsung,exynos5250-pmu" - for Exynos5250 SoC,
-> > -		   - "samsung,exynos5260-pmu" - for Exynos5260 SoC.
-> > -		   - "samsung,exynos5410-pmu" - for Exynos5410 SoC,
-> > -		   - "samsung,exynos5420-pmu" - for Exynos5420 SoC.
-> > -		   - "samsung,exynos5433-pmu" - for Exynos5433 SoC.
-> > -		   - "samsung,exynos7-pmu" - for Exynos7 SoC.
-> > -		second value must be always "syscon".
-> > -
-> > - - reg : offset and length of the register set.
-> > -
-> > - - #clock-cells : must be <1>, since PMU requires once cell as clock specifier.
-> > -		The single specifier cell is used as index to list of clocks
-> > -		provided by PMU, which is currently:
-> > -			0 : SoC clock output (CLKOUT pin)
-> > -
-> > - - clock-names : list of clock names for particular CLKOUT mux inputs in
-> > -		following format:
-> > -			"clkoutN", where N is a decimal number corresponding to
-> > -			CLKOUT mux control bits value for given input, e.g.
-> > -				"clkout0", "clkout7", "clkout15".
-> > -
-> > - - clocks : list of phandles and specifiers to all input clocks listed in
-> > -		clock-names property.
-> > -
-> > -Optional properties:
-> > -
-> > -Some PMUs are capable of behaving as an interrupt controller (mostly
-> > -to wake up a suspended PMU). In which case, they can have the
-> > -following properties:
-> > -
-> > -- interrupt-controller: indicate that said PMU is an interrupt controller
-> > -
-> > -- #interrupt-cells: must be identical to the that of the parent interrupt
-> > -  controller.
-> > -
-> > -
-> > -Optional nodes:
-> > -
-> > -- nodes defining the restart and poweroff syscon children
-> > -
-> > -
-> > -Example :
-> > -pmu_system_controller: system-controller@10040000 {
-> > -	compatible = "samsung,exynos5250-pmu", "syscon";
-> > -	reg = <0x10040000 0x5000>;
-> > -	interrupt-controller;
-> > -	#interrupt-cells = <3>;
-> > -	interrupt-parent = <&gic>;
-> > -	#clock-cells = <1>;
-> > -	clock-names = "clkout0", "clkout1", "clkout2", "clkout3",
-> > -			"clkout4", "clkout8", "clkout9";
-> > -	clocks = <&clock CLK_OUT_DMC>, <&clock CLK_OUT_TOP>,
-> > -		<&clock CLK_OUT_LEFTBUS>, <&clock CLK_OUT_RIGHTBUS>,
-> > -		<&clock CLK_OUT_CPU>, <&clock CLK_XXTI>,
-> > -		<&clock CLK_XUSBXTI>;
-> > -};
-> > -
-> > -Example of clock consumer :
-> > -
-> > -usb3503: usb3503@8 {
-> > -	/* ... */
-> > -	clock-names = "refclk";
-> > -	clocks = <&pmu_system_controller 0>;
-> > -	/* ... */
-> > -};
-> > diff --git a/Documentation/devicetree/bindings/arm/samsung/pmu.yaml b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
-> > new file mode 100644
-> > index 000000000000..a5a02f8237fb
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/arm/samsung/pmu.yaml
-> > @@ -0,0 +1,117 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/arm/samsung/pmu.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Samsung Exynos SoC series Power Management Unit (PMU)
-> > +
-> > +maintainers:
-> > +  - Krzysztof Kozlowski <krzk@kernel.org>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    items:
-> > +      - enum:
-> > +          - samsung,exynos3250-pmu
-> > +          - samsung,exynos4210-pmu
-> > +          - samsung,exynos4412-pmu
-> > +          - samsung,exynos5250-pmu
-> > +          - samsung,exynos5260-pmu
-> > +          - samsung,exynos5410-pmu
-> > +          - samsung,exynos5420-pmu
-> > +          - samsung,exynos5433-pmu
-> > +          - samsung,exynos7-pmu
-> > +      - const: syscon
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  '#clock-cells':
-> > +    const: 1
-> > +
-> > +  clock-names:
-> > +    description:
-> > +      List of clock names for particular CLKOUT mux inputs
-> > +    minItems: 1
-> > +    maxItems: 32
-> > +    items:
-> > +      enum:
-> > +        - clkout0
-> > +        - clkout1
-> 
-> Looking at this again, instead of enum, we can just do:
-> 
-> pattern: '^clkout([0-9]|[12][0-9]|3[0-1])$'
+Changes in v3:
+ - Squash code changes to single patch to avoid compilation error
 
-Indeed looks better.
+The changes in this patchset will not affect the userspace interface.
+Rather, these changes are intended to simplify the kernelspace Counter
+callbacks for counter device driver authors.
 
-Best regards,
-Krzysztof
+The following main changes are proposed:
+
+* Retire the opaque counter_count_read_value/counter_count_write_value
+  structures and simply represent count data as an unsigned integer.
+
+* Retire the opaque counter_signal_read_value structure and represent
+  Signal data as a counter_signal_value enum.
+
+These changes should reduce some complexity and code in the use and
+implementation of the count_read, count_write, and signal_read
+callbacks.
+
+The opaque structures for Count data and Signal data were introduced
+originally in anticipation of supporting various representations of
+counter data (e.g. arbitrary-precision tallies, floating-point spherical
+coordinate positions, etc). However, with the counter device drivers
+that have appeared, it's become apparent that utilizing opaque
+structures in kernelspace is not the best approach to take.
+
+I believe it is best to let userspace applications decide how to
+interpret the count data they receive. There are a couple of reasons why
+it would be good to do so:
+
+* Users use their devices in unexpected ways.
+
+  For example, a quadrature encoder counter device is typically used to
+  keep track of the position of a motor, but a user could set the device
+  in a pulse-direction mode and instead use it to count sporadic rising
+  edges from an arbitrary signal line unrelated to positioning. Users
+  should have the freedom to decide what their data represents.
+
+* Most counter devices represent data as unsigned integers anyway.
+
+  For example, whether the device is a tally counter or position
+  counter, the count data is represented to the user as an unsigned
+  integer value. So specifying that one device is representing tallies
+  while the other specifies positions does not provide much utility from
+  an interface perspective.
+
+For these reasons, the count_read and count_write callbacks have been
+redefined to pass count data directly as unsigned long instead of passed
+via opaque structures:
+
+        count_read(struct counter_device *counter,
+                   struct counter_count *count, unsigned long *val);
+        count_write(struct counter_device *counter,
+                    struct counter_count *count, unsigned long val);
+
+Similarly, the signal_read is redefined to pass Signal data directly as
+a counter_signal_value enum instead of via an opaque structure:
+
+        signal_read(struct counter_device *counter,
+                    struct counter_signal *signal,
+                    enum counter_signal_value *val);
+
+The counter_signal_value enum is simply the counter_signal_level enum
+redefined to remove the references to the Signal data "level" data type.
+
+William Breathitt Gray (2):
+  counter: Simplify the count_read and count_write callbacks
+  docs: driver-api: generic-counter: Update Count and Signal data types
+
+ Documentation/driver-api/generic-counter.rst |  22 ++--
+ drivers/counter/104-quad-8.c                 |  33 ++----
+ drivers/counter/counter.c                    | 101 +++----------------
+ drivers/counter/ftm-quaddec.c                |  14 +--
+ drivers/counter/stm32-lptimer-cnt.c          |   5 +-
+ drivers/counter/stm32-timer-cnt.c            |  17 +---
+ include/linux/counter.h                      |  74 ++------------
+ 7 files changed, 53 insertions(+), 213 deletions(-)
+
+-- 
+2.23.0
 

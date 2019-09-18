@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAAF4B63C9
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2019 14:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E50F2B63CF
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2019 14:58:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730245AbfIRM5q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Sep 2019 08:57:46 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:43783 "EHLO
+        id S1730220AbfIRM6F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Sep 2019 08:58:05 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:42692 "EHLO
         mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730220AbfIRM5q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Sep 2019 08:57:46 -0400
-Received: by mail-ot1-f67.google.com with SMTP id b2so6181576otq.10;
-        Wed, 18 Sep 2019 05:57:45 -0700 (PDT)
+        with ESMTP id S1728258AbfIRM6E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Sep 2019 08:58:04 -0400
+Received: by mail-ot1-f67.google.com with SMTP id c10so6206000otd.9;
+        Wed, 18 Sep 2019 05:58:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=sZlslgtiFxMqojw+XUrTC/HDPQuvlA94agJki/73aPc=;
-        b=Ugciptcrslv0pHh2Ih+r2HjD+BbvTzxBlv9rcfEEN1NT/Te2+f2JoSUjNEhAiT5+C+
-         X8KF0Iojt6vRUYXZsPlH228DMDU3gKzd19TwlkMogLYUJ537kinBHGLNtXZzbyQKADXg
-         7hAB75S3TAX65V2julcfB9r+2cyuijAYJetEcQK1uwR6M12a9kUh9xA/vk3f0ipHK/8y
-         Dqkx8a/3wQMKOCM8QsOZb7j9U6igbJ47rS887vFYFQ40OLPHRYg8QmXH5TdX5/dkww0N
-         G+nGFrDYFXjNhz6W837xhOhECbn2gkqkr9YaZg0fmRSxzOYkxlSe8Y4JTzyKsmWJkgpD
-         MU9A==
-X-Gm-Message-State: APjAAAVA73CYKfSaxlea2acDTki9Dw2+j1NDLQ3SPikDS9Qw84s85BAZ
-        BAq87+CKmjGxFb92/C6Qp4ZHMz0yqQ==
-X-Google-Smtp-Source: APXvYqxAUad55lZRPH+OnFwtM1Ee0BRdn+Zwa1RD0ynMPv4EPCSUXSQNM4bNX8Nhsplcu6KDI8xt5g==
-X-Received: by 2002:a9d:4582:: with SMTP id x2mr2593436ote.159.1568811465379;
-        Wed, 18 Sep 2019 05:57:45 -0700 (PDT)
+        bh=3zFk5MHE8p77ZTvBJ2Ef8rpgfEWBCuHhymRwnVR4wL0=;
+        b=kJbDhljfVSNKzFOOdSK8e6Vm4f2DhOHIp184GClD0qc8tDrZJxM4qHukb8yf9JxuGK
+         0gcvPH0J6XIawYTXT29gNBnrk/b7uHNfFiRHA/7dr4tyPQbhACD4KaiOlK2kmJJdqkGj
+         2uppELmFLfiH9t2PEZzAChvJ3XeG+RNxaG3QjuEc07uepxDu/sCNFnGJq9OwGintxcrY
+         bbUBKQP1PUn9gU6tV+A1lCP8eYM70aV3ud/HdQfLkgFtUM5RJYKmFJ83ok/S7wbezIh2
+         ayUE4e8Aj+h9e4Y5mZsxknE2Up4fEw7oLHBvEJdPf2HCpwX+9+yGlc7qdI5nV3rFEV79
+         FBAA==
+X-Gm-Message-State: APjAAAW+t5H+6fsx73T6fVQlBtsUTvIz1cv8+nYbtHYit+eAfBPhX3+3
+        A/kzS46+mp17abbb6l3ghg==
+X-Google-Smtp-Source: APXvYqxToU8rop07pJTky58dYQp14T/5DaTXWnKAr6A/JtuqsIRZmPTo+yZGDzHd9PTvx9bgAsyScQ==
+X-Received: by 2002:a9d:744c:: with SMTP id p12mr2787957otk.198.1568811483291;
+        Wed, 18 Sep 2019 05:58:03 -0700 (PDT)
 Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 2sm1562037ois.43.2019.09.18.05.57.44
+        by smtp.gmail.com with ESMTPSA id k8sm1704774otl.31.2019.09.18.05.58.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2019 05:57:44 -0700 (PDT)
-Date:   Wed, 18 Sep 2019 07:57:44 -0500
+        Wed, 18 Sep 2019 05:58:02 -0700 (PDT)
+Date:   Wed, 18 Sep 2019 07:58:02 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Alessandro Zummo <a.zummo@towertech.it>,
@@ -43,38 +43,45 @@ Cc:     Alessandro Zummo <a.zummo@towertech.it>,
         linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v2 09/11] dt-bindings: rtc: s3c: Convert S3C/Exynos RTC
- bindings to json-schema
-Message-ID: <20190918125744.GA391@bogus>
+Subject: Re: [PATCH v2 10/11] dt-bindings: iio: adc: exynos: Convert Exynos
+ ADC bindings to json-schema
+Message-ID: <20190918125802.GA1051@bogus>
 References: <20190907092007.9946-1-krzk@kernel.org>
- <20190907092007.9946-9-krzk@kernel.org>
+ <20190907092007.9946-10-krzk@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190907092007.9946-9-krzk@kernel.org>
+In-Reply-To: <20190907092007.9946-10-krzk@kernel.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  7 Sep 2019 11:20:05 +0200, Krzysztof Kozlowski wrote:
-> Convert Samsung S3C/Exynos Real Time Clock bindings to DT schema format
-> using json-schema.
+On Sat,  7 Sep 2019 11:20:06 +0200, Krzysztof Kozlowski wrote:
+> Convert Samsung Exynos Analog to Digital Converter bindings to DT schema
+> format using json-schema.
+> 
+> This is a direct conversion of existing bindings so it also copies the
+> existing error in the bindings regarding the requirement of two register
+> address ranges for certain compatibles.  The inconsistency in binding
+> was caused by commit fafb37cfae6d ("iio: exyno-adc: use syscon for PMU
+> register access").
 > 
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > 
 > ---
 > 
 > Changes since v1:
-> 1. Use deprecated property instead of custom select,
-> 2. Rework clocks and clock-names matching for specific compatibles.
+> 1. Rework reg, clocks and clock-names matching for specific compatibles,
+> 2. Make samsung,syscon-phandle required only on certain compatibles,
+> 3. Fix indentation.
 > ---
->  .../devicetree/bindings/rtc/s3c-rtc.txt       | 31 -------
->  .../devicetree/bindings/rtc/s3c-rtc.yaml      | 85 +++++++++++++++++++
->  2 files changed, 85 insertions(+), 31 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/rtc/s3c-rtc.txt
->  create mode 100644 Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
+>  .../bindings/iio/adc/samsung,exynos-adc.txt   | 107 ------------
+>  .../bindings/iio/adc/samsung,exynos-adc.yaml  | 163 ++++++++++++++++++
+>  2 files changed, 163 insertions(+), 107 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
 > 
 
 Applied, thanks.

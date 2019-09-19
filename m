@@ -2,1007 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A802FB74AE
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Sep 2019 10:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9767CB7587
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Sep 2019 10:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730705AbfISIDM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Sep 2019 04:03:12 -0400
-Received: from mga12.intel.com ([192.55.52.136]:10561 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725320AbfISIDM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 19 Sep 2019 04:03:12 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Sep 2019 01:03:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,522,1559545200"; 
-   d="scan'208";a="387188739"
-Received: from pipin.fi.intel.com ([10.237.72.175])
-  by fmsmga005.fm.intel.com with ESMTP; 19 Sep 2019 01:03:08 -0700
-From:   Felipe Balbi <felipe.balbi@linux.intel.com>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-iio@vger.kernel.org,
-        Felipe Balbi <felipe.balbi@linux.intel.com>
-Subject: [RFC/PATCHv2 2/2] counter: introduce support for Intel QEP Encoder
-Date:   Thu, 19 Sep 2019 11:03:05 +0300
-Message-Id: <20190919080305.960198-2-felipe.balbi@linux.intel.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190919080305.960198-1-felipe.balbi@linux.intel.com>
-References: <20190917114403.GA8368@icarus>
- <20190919080305.960198-1-felipe.balbi@linux.intel.com>
+        id S1731092AbfISI5b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Sep 2019 04:57:31 -0400
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:5826 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730938AbfISI5b (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Sep 2019 04:57:31 -0400
+Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8J8m6lX012683
+        for <linux-iio@vger.kernel.org>; Thu, 19 Sep 2019 04:57:29 -0400
+Received: from nam05-by2-obe.outbound.protection.outlook.com (mail-by2nam05lp2059.outbound.protection.outlook.com [104.47.50.59])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2v3vb29rr2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-iio@vger.kernel.org>; Thu, 19 Sep 2019 04:57:29 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EjtA7yKdReqrWbeXX8kUn3t9ocMVSY9MYLIRCoDPiUp7kITEb7YjD80BwsjjH/OpgSYKgQ+GEj/B/h2YixrLn7oi61JQgzIeCI3oQy8ybS8yQbd9V5wGQRhlirigu+nRHCaPR2VVKnI8WbkCJVMLioyHkoWvLu0pdVs47+2m3y0cM5F2GdyLk/8kMF9odUj/vCoAyKa1DXShLOxXT1YlvoLqHyJP2HZldiQ9zFfhCzaX/8+yu8Va5fYPFod9mbppmhDqUJ5B2SVPM8zc1J+PB1i4bjnGRFf5vkIinaz2aHd2f5/tTmRIKbPQszsq1Nh1QtLi1++12s1jtPwOGco6Bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QHAcJJrgQuyZXJ7jGD46P6LThI61dBbiXkIakgY8AvQ=;
+ b=k/NsJtBIkhPR9Yb5YV9i/yFOnZPyy07Iq02KMC+h8wnzDn58Od0ogg0zfNxtHQpom5zlJ4eJNzJA37JFiNGjzZ++PS41ZhUMagAQEHT8O8OhI22g+FEWCW0fweQu2ev7+qYmeQFVFDmGULJOi5IWjWFiRmojElu89Z2Zf8aj8o0U9pm8T4QQ2Bh3Hyw7adVaJTDmZaK5iIogNUpAQh3ICFNydOoQ+WBtQCVL2PH5WCVQxahOS0MaXCy3ujfa217m9onny5OKYE1cJNuUkJfoa3a6kPsZMRMDc/d02IaJLddvfls9F1SFvo0N4ZaYXqH18V0sPJQpDTCbAEaXmk+FSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 137.71.25.55) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
+ dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QHAcJJrgQuyZXJ7jGD46P6LThI61dBbiXkIakgY8AvQ=;
+ b=xQLUtxaU4l3t6dXahFnNXuURs0eeQJ7FZD68LH5A2N24RibmTUpItilnL6cwNdhxQU5tp4sHQifngZeUNhB9zWajPQCfJeBguvwPCtYdbvchAIKZ7xafi6LFynunrt/lr8nuCEWddKXEkKWQHOijVxgslIkGTK0lsvZmkOoBUJk=
+Received: from MWHPR03CA0018.namprd03.prod.outlook.com (2603:10b6:300:117::28)
+ by MWHPR03MB3408.namprd03.prod.outlook.com (2603:10b6:301:3e::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2241.18; Thu, 19 Sep
+ 2019 08:57:27 +0000
+Received: from BL2NAM02FT043.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::207) by MWHPR03CA0018.outlook.office365.com
+ (2603:10b6:300:117::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2284.20 via Frontend
+ Transport; Thu, 19 Sep 2019 08:57:26 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
+Received: from nwd2mta1.analog.com (137.71.25.55) by
+ BL2NAM02FT043.mail.protection.outlook.com (10.152.77.95) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2284.20
+ via Frontend Transport; Thu, 19 Sep 2019 08:57:26 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x8J8vQp9005263
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK)
+        for <linux-iio@vger.kernel.org>; Thu, 19 Sep 2019 01:57:26 -0700
+Received: from saturn.ad.analog.com (10.48.65.123) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Thu, 19 Sep 2019 04:57:25 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>
+CC:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: gyro: adis16260: remove indio_dev mlock
+Date:   Thu, 19 Sep 2019 14:57:16 +0300
+Message-ID: <20190919115716.25909-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(396003)(346002)(376002)(136003)(39860400002)(189003)(199004)(5660300002)(305945005)(6916009)(246002)(478600001)(50466002)(50226002)(48376002)(486006)(1076003)(2870700001)(6666004)(7636002)(356004)(70586007)(336012)(2906002)(70206006)(106002)(2351001)(2616005)(51416003)(476003)(426003)(8676002)(8936002)(4326008)(7696005)(107886003)(126002)(14444005)(86362001)(26005)(44832011)(47776003)(36756003)(186003)(316002);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR03MB3408;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;MX:1;A:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 472d5561-a1ef-481c-b5fa-08d73cdf64fd
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600167)(711020)(4605104)(4709080)(1401327)(4618075)(2017052603328);SRVR:MWHPR03MB3408;
+X-MS-TrafficTypeDiagnostic: MWHPR03MB3408:
+X-Microsoft-Antispam-PRVS: <MWHPR03MB340899691CB921EEDA3F1748F9890@MWHPR03MB3408.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Forefront-PRVS: 016572D96D
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: fFlo9xHkAhYa9J12BZ2ZGXfnXuHO9mWYW8JB/cUM6ctQXYKGayV/Wts7RpuUZ0/UXKioLwHH8F5FCTSsCs6ceTevgGzrlLr5VrXi+JwkFCIa8PIq21URRAmxviKZL4ZTYRS/bW3X3yAqRLDc+5lzxmSxDUBrYtUEnwAws/uJWt/C+bQw2U2m91uMd25XInti76imzHjQaCoWKbdP0OOzduCW1/78aNWImy/Xoxhj+EY1ZT3LTd1gzKHVvU4pjSpnzWhbH/JH2JI+/7CO+uNIGD33SBJfBA/RW5zK7hlx9l9xPM4r+tJ4vplXrmXKPX5HTy4Wk5RAICnC5egFbAcU1BKU+5zs2sCEOBVmGAicy/ATCQyd+VtJ1oQxbjFE3+38DXyKAPxYoLiKUmvWDiktzd0yP8ihQKg7tQwy4JUtXWA=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2019 08:57:26.5566
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 472d5561-a1ef-481c-b5fa-08d73cdf64fd
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR03MB3408
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-09-19_03:2019-09-18,2019-09-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 bulkscore=0 clxscore=1015
+ mlxscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ mlxlogscore=820 suspectscore=1 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1908290000 definitions=main-1909190085
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for Intel PSE Quadrature Encoder
+The internal lock that is by the ADIS library should be sufficient to keep
+state consistent. There is no need for an extra lock.
 
-Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
+This patch removes it.
+
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
+ drivers/iio/gyro/adis16260.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Changes since v1:
-	- Many more private sysfs files converted over to counter interface
-
-
-How do you want me to model this device's Capture Compare Mode (see
-below)?
-
-For the few features which I couldn't find a matching property in
-counter framework, I still leave them as private sysfs files so we can
-discuss how to model them in the framework.
-
-Do you want Capture Compare to be a new function mode?
-
-BTW, I know I'm missing a Documentation file documenting sysfs files
-introduced by this driver, I'll do that once we agree how to move all
-other sysfs files to the framework. No worries.
-
-
-Details about the controller (do you want this in commit log?):
-
-
-Controller has 2 modes of operation: QEP and Capture. Both modes are
-mutually exclusive. We also have a set of maskable interrupts. Further
-details about each mode below.
-
-
-Quadrature Encoder Mode
-=======================
-
-Used to measure rotational speed, direction and angle of rotation of a
-motor shaft. Feature list:
-
-	- Quadrature decoder providing counter pulses with x4 count
-	  resolution and count direction
-
-	- 32-bit up/down Position Counter for position measurement
-
-	- Two modes of position counter reset:
-		> Maximum Count (ceiling) to reset the position counter
-		> Index pulse to reset the position counter
-
-	- Watchdog timer functionality for detecting ‘stall’ events
-
-Capture Compare Mode
-====================
-
-Used to measure phase input signal Period or Duty Cycle. Feature List:
-
-	- Capture function operates either on phase A or phase B input
-	  and can be configured to operate on lo/hi or hi/lo or both hi
-	  and lo transitions.
-
-	- Free-running 32-bit counter to be configured to run at greater
-          than or equal to 4x input signal frequency
-
-	- Clock post-scaler to derive the counter clock source from the
-	  peripheral clock
-
-	- 32B wide FIFO to capture 32-bit timestamps of up to 8
-	  transition events
-
- drivers/counter/Kconfig     |   6 +
- drivers/counter/Makefile    |   1 +
- drivers/counter/intel-qep.c | 862 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 869 insertions(+)
- create mode 100644 drivers/counter/intel-qep.c
-
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index 2967d0a9ff91..f280cd721350 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -59,4 +59,10 @@ config FTM_QUADDEC
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called ftm-quaddec.
+diff --git a/drivers/iio/gyro/adis16260.c b/drivers/iio/gyro/adis16260.c
+index 207a0ce13439..0fa93d02062a 100644
+--- a/drivers/iio/gyro/adis16260.c
++++ b/drivers/iio/gyro/adis16260.c
+@@ -293,7 +293,6 @@ static int adis16260_write_raw(struct iio_dev *indio_dev,
+ 		addr = adis16260_addresses[chan->scan_index][1];
+ 		return adis_write_reg_16(adis, addr, val);
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		mutex_lock(&indio_dev->mlock);
+ 		if (spi_get_device_id(adis->spi)->driver_data)
+ 			t = 256 / val;
+ 		else
+@@ -310,7 +309,6 @@ static int adis16260_write_raw(struct iio_dev *indio_dev,
+ 			adis->spi->max_speed_hz = ADIS16260_SPI_FAST;
+ 		ret = adis_write_reg_8(adis, ADIS16260_SMPL_PRD, t);
  
-+config INTEL_QEP
-+	tristate "Intel Quadrature Encoder"
-+	depends on PCI
-+	help
-+	  Support for Intel Quadrature Encoder Devices
-+
- endif # COUNTER
-diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-index 40d35522937d..cf291cfd8cf0 100644
---- a/drivers/counter/Makefile
-+++ b/drivers/counter/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_104_QUAD_8)	+= 104-quad-8.o
- obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
- obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
- obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
-+obj-$(CONFIG_INTEL_QEP)		+= intel-qep.o
-diff --git a/drivers/counter/intel-qep.c b/drivers/counter/intel-qep.c
-new file mode 100644
-index 000000000000..8347f9fa8e37
---- /dev/null
-+++ b/drivers/counter/intel-qep.c
-@@ -0,0 +1,862 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * intel-qep.c - Intel Quadrature Encoder Driver
-+ *
-+ * Copyright (C) 2019 Intel Corporation - https://www.intel.com
-+ *
-+ * Author: Felipe Balbi <felipe.balbi@linux.intel.com>
-+ */
-+#include <linux/bitops.h>
-+#include <linux/counter.h>
-+#include <linux/err.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/pci.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/sysfs.h>
-+
-+#define INTEL_QEPCON		0x00
-+#define INTEL_QEPFLT		0x04
-+#define INTEL_QEPCOUNT		0x08
-+#define INTEL_QEPMAX		0x0c
-+#define INTEL_QEPWDT		0x10
-+#define INTEL_QEPCAPDIV		0x14
-+#define INTEL_QEPCNTR		0x18
-+#define INTEL_QEPCAPBUF		0x1c
-+#define INTEL_QEPINT_STAT	0x20
-+#define INTEL_QEPINT_MASK	0x24
-+
-+/* QEPCON */
-+#define INTEL_QEPCON_EN		BIT(0)
-+#define INTEL_QEPCON_FLT_EN	BIT(1)
-+#define INTEL_QEPCON_EDGE_A	BIT(2)
-+#define INTEL_QEPCON_EDGE_B	BIT(3)
-+#define INTEL_QEPCON_EDGE_INDX	BIT(4)
-+#define INTEL_QEPCON_SWPAB	BIT(5)
-+#define INTEL_QEPCON_OP_MODE	BIT(6)
-+#define INTEL_QEPCON_PH_ERR	BIT(7)
-+#define INTEL_QEPCON_COUNT_RST_MODE BIT(8)
-+#define INTEL_QEPCON_INDX_GATING_MASK GENMASK(10, 9)
-+#define INTEL_QEPCON_INDX_GATING(n) (((n) & 3) << 9)
-+#define INTEL_QEPCON_INDX_PAL_PBL INTEL_QEPCON_INDX_GATING(0)
-+#define INTEL_QEPCON_INDX_PAL_PBH INTEL_QEPCON_INDX_GATING(1)
-+#define INTEL_QEPCON_INDX_PAH_PBL INTEL_QEPCON_INDX_GATING(2)
-+#define INTEL_QEPCON_INDX_PAH_PBH INTEL_QEPCON_INDX_GATING(3)
-+#define INTEL_QEPCON_CAP_MODE	BIT(11)
-+#define INTEL_QEPCON_FIFO_THRE_MASK GENMASK(14, 12)
-+#define INTEL_QEPCON_FIFO_THRE(n) ((((n) - 1) & 7) << 12)
-+#define INTEL_QEPCON_FIFO_EMPTY	BIT(15)
-+
-+/* QEPFLT */
-+#define INTEL_QEPFLT_MAX_COUNT(n) ((n) & 0x1fffff)
-+
-+/* QEPINT */
-+#define INTEL_QEPINT_FIFOCRIT	BIT(5)
-+#define INTEL_QEPINT_FIFOENTRY	BIT(4)
-+#define INTEL_QEPINT_QEPDIR	BIT(3)
-+#define INTEL_QEPINT_QEPRST_UP	BIT(2)
-+#define INTEL_QEPINT_QEPRST_DOWN BIT(1)
-+#define INTEL_QEPINT_WDT	BIT(0)
-+
-+#define INTEL_QEP_DIRECTION_FORWARD 1
-+#define INTEL_QEP_DIRECTION_BACKWARD !INTEL_QEP_DIRECTION_FORWARD
-+
-+#define INTEL_QEP_COUNTER_EXT_RW(_name) \
-+{ \
-+	.name = #_name, \
-+	.read = _name##_read, \
-+	.write = _name##_write, \
-+}
-+
-+#define INTEL_QEP_COUNTER_EXT_RO(_name) \
-+{ \
-+	.name = #_name, \
-+	.read = _name##_read, \
-+}
-+
-+#define INTEL_QEP_COUNTER_COUNT_EXT_RW(_name) \
-+{ \
-+	.name = #_name, \
-+	.read = _name##_read, \
-+	.write = _name##_write, \
-+}
-+
-+#define INTEL_QEP_COUNTER_COUNT_EXT_RO(_name) \
-+{ \
-+	.name = #_name, \
-+	.read = _name##_read, \
-+}
-+
-+struct intel_qep {
-+	struct counter_device counter;
-+	struct mutex lock;
-+	struct pci_dev *pci;
-+	struct device *dev;
-+	void __iomem *regs;
-+	u32 interrupt;
-+	int direction;
-+	bool enabled;
-+};
-+
-+#define counter_to_qep(c)	(container_of((c), struct intel_qep, counter))
-+
-+static inline u32 intel_qep_readl(void __iomem *base, u32 offset)
-+{
-+	return readl(base + offset);
-+}
-+
-+static inline void intel_qep_writel(void __iomem *base, u32 offset, u32 value)
-+{
-+	writel(value, base + offset);
-+}
-+
-+static ssize_t phase_error_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct intel_qep *qep = dev_get_drvdata(dev);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	return snprintf(buf, PAGE_SIZE, "%s\n",
-+			reg & INTEL_QEPCON_PH_ERR ? "error" : "okay");
-+}
-+static DEVICE_ATTR_RO(phase_error);
-+
-+static ssize_t fifo_empty_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct intel_qep *qep = dev_get_drvdata(dev);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	return snprintf(buf, PAGE_SIZE, "%s\n",
-+			reg & INTEL_QEPCON_FIFO_EMPTY ? "empty" : "not empty");
-+}
-+static DEVICE_ATTR_RO(fifo_empty);
-+
-+static ssize_t operating_mode_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct intel_qep *qep = dev_get_drvdata(dev);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	return snprintf(buf, PAGE_SIZE, "%s\n",
-+			reg & INTEL_QEPCON_OP_MODE ? "capture" : "quadrature");
-+}
-+
-+static ssize_t operating_mode_store(struct device *dev,
-+		struct device_attribute *attr, const char *buf, size_t count)
-+{
-+	struct intel_qep *qep = dev_get_drvdata(dev);
-+	u32 reg;
-+
-+	if (qep->enabled)
-+		return -EINVAL;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (sysfs_streq(buf, "capture"))
-+		reg |= INTEL_QEPCON_OP_MODE;
-+	else if (sysfs_streq(buf, "quadrature"))
-+		reg &= ~INTEL_QEPCON_OP_MODE;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	return count;
-+}
-+static DEVICE_ATTR_RW(operating_mode);
-+
-+static ssize_t capture_mode_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct intel_qep *qep = dev_get_drvdata(dev);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	return snprintf(buf, PAGE_SIZE, "%s\n",
-+			reg & INTEL_QEPCON_CAP_MODE ? "both" : "single");
-+}
-+
-+static ssize_t capture_mode_store(struct device *dev,
-+		struct device_attribute *attr, const char *buf, size_t count)
-+{
-+	struct intel_qep *qep = dev_get_drvdata(dev);
-+	u32 reg;
-+
-+	if (qep->enabled)
-+		return -EINVAL;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (sysfs_streq(buf, "both"))
-+		reg |= INTEL_QEPCON_CAP_MODE;
-+	else if (sysfs_streq(buf, "single"))
-+		reg &= ~INTEL_QEPCON_CAP_MODE;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	return count;
-+}
-+static DEVICE_ATTR_RW(capture_mode);
-+
-+static const struct attribute *intel_qep_attrs[] = {
-+	&dev_attr_capture_mode.attr,
-+	&dev_attr_fifo_empty.attr,
-+	&dev_attr_operating_mode.attr,
-+	&dev_attr_phase_error.attr,
-+	NULL	/* Terminating Entry */
-+};
-+
-+static ssize_t capture_data_read(struct file *filp, struct kobject *kobj,
-+		struct bin_attribute *attr, char *buf,
-+		loff_t offset, size_t count)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct intel_qep *qep = dev_get_drvdata(dev);
-+	u32 reg;
-+	int i;
-+
-+	mutex_lock(&qep->lock);
-+	for (i = 0; i < count; i += 4) {
-+		reg = intel_qep_readl(qep->regs, INTEL_QEPCAPBUF);
-+
-+		buf[i + 0] = reg & 0xff;
-+		buf[i + 1] = (reg >> 8) & 0xff;
-+		buf[i + 2] = (reg >> 16) & 0xff;
-+		buf[i + 3] = (reg >> 24) & 0xff;
-+	}
-+	mutex_unlock(&qep->lock);
-+
-+	return count;
-+}
-+
-+static BIN_ATTR_RO(capture_data, 4);
-+
-+static struct bin_attribute *intel_qep_bin_attrs[] = {
-+	&bin_attr_capture_data,
-+	NULL	/* Terminating Entry */
-+};
-+
-+static const struct attribute_group intel_qep_device_aattr_group = {
-+	.name = "qep",
-+	.attrs = (struct attribute **) intel_qep_attrs,
-+	.bin_attrs = intel_qep_bin_attrs,
-+};
-+
-+static const struct pci_device_id intel_qep_id_table[] = {
-+	/* EHL */
-+	{ PCI_VDEVICE(INTEL, 0x4bc3), },
-+	{ PCI_VDEVICE(INTEL, 0x4b81), },
-+	{ PCI_VDEVICE(INTEL, 0x4b82), },
-+	{ PCI_VDEVICE(INTEL, 0x4b83), },
-+	{  } /* Terminating Entry */
-+};
-+MODULE_DEVICE_TABLE(pci, intel_qep_id_table);
-+
-+static void intel_qep_init(struct intel_qep *qep, bool reset)
-+{
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+	reg &= ~INTEL_QEPCON_EN;
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	/* make sure periperal is disabled by reading one more time */
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (reset) {
-+		reg &= ~(INTEL_QEPCON_OP_MODE | INTEL_QEPCON_FLT_EN);
-+		reg |= INTEL_QEPCON_EDGE_A | INTEL_QEPCON_EDGE_B |
-+			INTEL_QEPCON_EDGE_INDX | INTEL_QEPCON_COUNT_RST_MODE;
-+	}
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPWDT, 0x1000);
-+	intel_qep_writel(qep->regs, INTEL_QEPINT_MASK, 0x0);
-+
-+	qep->direction = INTEL_QEP_DIRECTION_FORWARD;
-+}
-+
-+static irqreturn_t intel_qep_irq_thread(int irq, void *_qep)
-+{
-+	struct intel_qep	*qep = _qep;
-+	u32			stat;
-+
-+	mutex_lock(&qep->lock);
-+
-+	stat = qep->interrupt;
-+	if (stat & INTEL_QEPINT_FIFOCRIT)
-+		sysfs_notify(&qep->dev->kobj, "qep", "capture_buffer");
-+
-+	if (stat & INTEL_QEPINT_FIFOENTRY)
-+		sysfs_notify(&qep->dev->kobj, "qep", "capture_buffer");
-+
-+	if (stat & INTEL_QEPINT_QEPDIR)
-+		qep->direction = !qep->direction;
-+
-+	if (stat & INTEL_QEPINT_QEPRST_UP)
-+		qep->direction = INTEL_QEP_DIRECTION_FORWARD;
-+
-+	if (stat & INTEL_QEPINT_QEPRST_DOWN)
-+		qep->direction = INTEL_QEP_DIRECTION_BACKWARD;
-+
-+	if (stat & INTEL_QEPINT_WDT)
-+		dev_dbg(qep->dev, "Watchdog\n");
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPINT_MASK, 0x00);
-+	mutex_unlock(&qep->lock);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t intel_qep_irq(int irq, void *_qep)
-+{
-+	struct intel_qep	*qep = _qep;
-+	u32			stat;
-+
-+	stat = intel_qep_readl(qep->regs, INTEL_QEPINT_STAT);
-+	if (stat) {
-+		qep->interrupt = stat;
-+		intel_qep_writel(qep->regs, INTEL_QEPINT_MASK, 0xffffffff);
-+		intel_qep_writel(qep->regs, INTEL_QEPINT_STAT, stat);
-+		return IRQ_WAKE_THREAD;
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+enum intel_qep_synapse_action {
-+	INTEL_QEP_SYNAPSE_ACTION_RISING_EDGE,
-+	INTEL_QEP_SYNAPSE_ACTION_FALLING_EDGE,
-+};
-+
-+static enum counter_synapse_action intel_qep_synapse_actions[] = {
-+	[INTEL_QEP_SYNAPSE_ACTION_RISING_EDGE] =
-+	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
-+	
-+	[INTEL_QEP_SYNAPSE_ACTION_FALLING_EDGE] =
-+	COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
-+};
-+
-+enum intel_qep_count_function {
-+	INTEL_QEP_ENCODER_MODE_NORMAL,
-+	INTEL_QEP_ENCODER_MODE_SWAPPED,
-+};
-+
-+static const enum counter_count_function intel_qep_count_functions[] = {
-+	[INTEL_QEP_ENCODER_MODE_NORMAL] =
-+	COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
-+
-+	[INTEL_QEP_ENCODER_MODE_SWAPPED] =
-+	COUNTER_COUNT_FUNCTION_QUADRATURE_X4_SWAPPED,
-+};
-+
-+static int intel_qep_count_read(struct counter_device *counter,
-+		struct counter_count *count,
-+		struct counter_count_read_value *val)
-+{
-+	struct intel_qep *const qep = counter->priv;
-+	uint32_t cntval;
-+
-+	cntval = intel_qep_readl(qep, INTEL_QEPCOUNT);
-+	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &cntval);
-+
-+	return 0;
-+}
-+
-+static int intel_qep_count_write(struct counter_device *counter,
-+		struct counter_count *count,
-+		struct counter_count_write_value *val)
-+{
-+	struct intel_qep *const qep = counter->priv;
-+	u32 cnt;
-+	int err;
-+
-+	err = counter_count_write_value_get(&cnt, COUNTER_COUNT_POSITION, val);
-+	if (err)
-+		return err;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPMAX, cnt);
-+
-+	return 0;
-+}
-+
-+static int intel_qep_function_get(struct counter_device *counter,
-+		struct counter_count *count, size_t *function)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+	if (req & INTEL_QEPCON_SWPAB)
-+		*function = INTEL_QEP_ENCODER_MODE_SWAPPED;
-+	else
-+		*function = INTEL_QEP_ENCODER_MODE_NORMAL;
-+
-+	return 0;
-+}
-+
-+static int intel_qep_function_set(struct counter_device *counter,
-+		struct counter_count *count, size_t *function)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+	if (*function == INTEL_QEP_ENCODER_MODE_SWAPPED)
-+		reg |= INTEL_QEPCON_SWPAB;
-+	else
-+		reg &= ~INTEL_QEPCON_SWPAB;
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	return 0;
-+}
-+
-+static int intel_qep_action_get(struct counter_device *counter,
-+		struct counter_count *count, struct counter_synapse *synapse,
-+		size_t *action)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	*action = reg & synapse->signal->id ?
-+		INTEL_QEP_SYNAPSE_ACTION_RISING_EDGE :
-+		INTEL_QEP_SYNAPSE_ACTION_FALLING_EDGE;
-+
-+	return 0;
-+}
-+
-+static int intel_qep_action_set(struct counter_device *counter,
-+		struct counter_count *count,
-+		struct counter_synapse *synapse, size_t action)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (action == INTEL_QEP_SYNAPSE_ACTION_RISING_EDGE)
-+		reg |= synapse->signal->id;
-+	else
-+		reg &= ~synapse->signal->id;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	return 0;
-+}
-+
-+static const struct counter_ops intel_qep_counter_ops = {
-+	.count_read = intel_qep_count_read,
-+	.count_write = intel_qep_count_write,
-+
-+	.function_get = intel_qep_function_get,
-+	.function_set = intel_qep_function_set,
-+
-+	.action_get = intel_qep_action_get,
-+	.action_set = intel_qep_action_set,
-+};
-+
-+static struct counter_signal intel_qep_signals[] = {
-+	{
-+		.id = INTEL_QEPCON_EDGE_A,
-+		.name = "Phase A",
-+	},
-+	{
-+		.id = INTEL_QEPCON_EDGE_B,
-+		.name = "Phase B",
-+	},
-+	{
-+		.id = INTEL_QEPCON_EDGE_INDX,
-+		.name = "Index",
-+	},
-+};
-+
-+static struct counter_synapse intel_qep_count_synapses[] = {
-+	{
-+		.actions_list = intel_qep_synapse_actions,
-+		.num_actions = ARRAY_SIZE(intel_qep_synapse_actions),
-+		.signal = &intel_qep_signals[0],
-+	},
-+	{
-+		.actions_list = intel_qep_synapse_actions,
-+		.num_actions = ARRAY_SIZE(intel_qep_synapse_actions),
-+		.signal = &intel_qep_signals[1],
-+	},
-+	{
-+		.actions_list = intel_qep_synapse_actions,
-+		.num_actions = ARRAY_SIZE(intel_qep_synapse_actions),
-+		.signal = &intel_qep_signals[2],
-+	},
-+};
-+
-+static const char * const intel_qep_clock_prescalers[] = {
-+	"1", "2", "4", "8", "16", "32", "64", "128"
-+};
-+
-+static int intel_qep_clock_prescaler_get(struct counter_device *counter,
-+		struct counter_count *count, size_t *mode)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	
-+	*mode = intel_qep_readl(qep->regs, INTEL_QEPCAPDIV);
-+
-+	return 0;
-+}
-+
-+static int intel_qep_clock_prescaler_set(struct counter_device *counter,
-+		struct counter_count *count, size_t mode)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCAPDIV, ffs(mode) - 1);
-+
-+	return 0;
-+}
-+
-+static struct counter_count_enum_ext intel_qep_clock_prescaler_enum = {
-+	.items = intel_qep_clock_prescalers,
-+	.num_items = ARRAY_SIZE(intel_qep_clock_prescalers),
-+	.get = intel_qep_clock_prescaler_get,
-+	.set = intel_qep_clock_prescaler_set,
-+};
-+
-+static ssize_t ceiling_read(struct counter_device *counter,
-+		struct counter_count *count, void *priv, char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPMAX);
-+
-+	return snprintf(buf, PAGE_SIZE, "%d\n", reg);
-+}
-+
-+static ssize_t ceiling_write(struct counter_device *counter,
-+		struct counter_count *count, void *priv, const char *buf,
-+		size_t len)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 max;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &max);
-+	if (ret < 0)
-+		return ret;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPMAX, max);
-+
-+	return len;
-+}
-+
-+static ssize_t enable_read(struct counter_device *counter,
-+		struct counter_count *count, void *priv, char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	return snprintf(buf, PAGE_SIZE, "%d\n", !!(reg & INTEL_QEPCON_EN));
-+}
-+
-+static ssize_t enable_write(struct counter_device *counter,
-+		struct counter_count *count, void *priv, const char *buf,
-+		size_t len)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+	u32 val;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (val)
-+		reg |= INTEL_QEPCON_EN;
-+	else
-+		reg &= ~INTEL_QEPCON_EN;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	return len;
-+}
-+
-+static ssize_t direction_read(struct counter_device *counter,
-+		struct counter_count *count, void *priv, char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+
-+	return snprintf(buf, PAGE_SIZE, "%s\n", qep->direction ?
-+			"forward" : "backward");
-+}
-+
-+static const struct counter_count_ext intel_qep_count_ext[] = {
-+	COUNTER_COUNT_ENUM("prescaler", &intel_qep_clock_prescaler_enum),
-+	COUNTER_COUNT_ENUM_AVAILABLE("prescaler",
-+			&intel_qep_clock_prescaler_enum),
-+
-+	INTEL_QEP_COUNTER_COUNT_EXT_RW(ceiling),
-+	INTEL_QEP_COUNTER_COUNT_EXT_RW(enable),
-+	INTEL_QEP_COUNTER_COUNT_EXT_RO(direction),
-+};
-+
-+static struct counter_count intel_qep_counter_count[] = {
-+	{
-+		.id = 0,
-+		.name = "Channel 1 Count",
-+		.functions_list = intel_qep_count_functions,
-+		.num_functions = ARRAY_SIZE(intel_qep_count_functions),
-+		.synapses = intel_qep_count_synapses,
-+		.num_synapses = ARRAY_SIZE(intel_qep_count_synapses),
-+		.ext = intel_qep_count_ext,
-+		.num_ext = ARRAY_SIZE(intel_qep_count_ext),
-+	},
-+};
-+
-+static ssize_t noise_read(struct counter_device *counter, void *priv, char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (!(reg & INTEL_QEPCON_FLT_EN))
-+		return snprintf(buf, PAGE_SIZE, "0\n");
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPFLT);
-+
-+	return snprintf(buf, PAGE_SIZE, "%d\n", INTEL_QEPFLT_MAX_COUNT(reg));
-+}
-+
-+static ssize_t noise_write(struct counter_device *counter, void *priv,
-+		const char *buf, size_t len)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+	u32 max;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &max);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (max > 0x1fffff)
-+		max = 0x1ffff;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (max == 0) {
-+		reg &= ~INTEL_QEPCON_FLT_EN;
-+	} else {
-+		reg |= INTEL_QEPCON_FLT_EN;
-+		intel_qep_writel(qep->regs, INTEL_QEPFLT, max);
-+	}
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+	
-+	return len;
-+}
-+
-+static ssize_t preset_read(struct counter_device *counter, void *priv, char *buf)
-+{
-+	return snprintf(buf, PAGE_SIZE, "0\n");
-+}
-+
-+static ssize_t preset_enable_read(struct counter_device *counter, void *priv,
-+		char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+	return snprintf(buf, PAGE_SIZE, "%d\n",
-+			!(reg & INTEL_QEPCON_COUNT_RST_MODE));
-+}
-+
-+static ssize_t preset_enable_write(struct counter_device *counter, void *priv,
-+		const char *buf, size_t len)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+	u32 val;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (val)
-+		reg &= ~INTEL_QEPCON_COUNT_RST_MODE;
-+	else
-+		reg |= INTEL_QEPCON_COUNT_RST_MODE;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+	
-+	return len;
-+}
-+
-+static const struct counter_device_ext intel_qep_ext[] = {
-+	INTEL_QEP_COUNTER_EXT_RW(noise),
-+	INTEL_QEP_COUNTER_EXT_RO(preset),
-+	INTEL_QEP_COUNTER_EXT_RW(preset_enable)
-+};
-+
-+static int intel_qep_probe(struct pci_dev *pci, const struct pci_device_id *id)
-+{
-+	struct intel_qep	*qep;
-+	struct device		*dev = &pci->dev;
-+	void __iomem		*regs;
-+	int			ret;
-+	int			irq;
-+
-+	qep = devm_kzalloc(dev, sizeof(*qep), GFP_KERNEL);
-+	if (!qep)
-+		return -ENOMEM;
-+
-+	ret = pcim_enable_device(pci);
-+	if (ret)
-+		return ret;
-+
-+	pci_set_master(pci);
-+
-+	ret = pcim_iomap_regions(pci, BIT(0), pci_name(pci));
-+	if (ret)
-+		return ret;
-+
-+	regs = pcim_iomap_table(pci)[0];
-+	if (!regs)
-+		return -ENOMEM;
-+
-+	qep->pci = pci;
-+	qep->dev = dev;
-+	qep->regs = regs;
-+	mutex_init(&qep->lock);
-+
-+	intel_qep_init(qep, true);
-+	pci_set_drvdata(pci, qep);
-+
-+	qep->counter.name = pci_name(pci);
-+	qep->counter.parent = dev;
-+	qep->counter.ops = &intel_qep_counter_ops;
-+	qep->counter.counts = intel_qep_counter_count;
-+	qep->counter.num_counts = ARRAY_SIZE(intel_qep_counter_count);
-+	qep->counter.signals = intel_qep_signals;
-+	qep->counter.num_signals = ARRAY_SIZE(intel_qep_signals);
-+	qep->counter.ext = intel_qep_ext;
-+	qep->counter.num_ext = ARRAY_SIZE(intel_qep_ext);
-+	qep->counter.priv = qep;
-+
-+	ret = counter_register(&qep->counter);
-+	if (ret)
-+		return ret;
-+
-+	ret = pci_alloc_irq_vectors(pci, 1, 1, PCI_IRQ_ALL_TYPES);
-+	if (ret < 0)
-+		goto err_irq_vectors;
-+
-+	irq = pci_irq_vector(pci, 0);
-+	ret = devm_request_threaded_irq(&pci->dev, irq, intel_qep_irq,
-+			intel_qep_irq_thread, IRQF_SHARED | IRQF_TRIGGER_RISING,
-+			"intel-qep", qep);
-+	if (ret)
-+		goto err_irq;
-+
-+	pm_runtime_set_autosuspend_delay(dev, 1000);
-+	pm_runtime_use_autosuspend(dev);
-+	pm_runtime_put_noidle(dev);
-+	pm_runtime_allow(dev);
-+
-+	return 0;
-+
-+err_irq:
-+	pci_free_irq_vectors(pci);
-+
-+err_irq_vectors:
-+	counter_unregister(&qep->counter);
-+
-+	return ret;
-+}
-+
-+static void intel_qep_remove(struct pci_dev *pci)
-+{
-+	struct intel_qep	*qep = pci_get_drvdata(pci);
-+	struct device		*dev = &pci->dev;
-+
-+	pm_runtime_forbid(dev);
-+	pm_runtime_get_noresume(dev);
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, 0);
-+	pci_free_irq_vectors(pci);
-+	counter_unregister(&qep->counter);
-+}
-+
-+#ifdef CONFIG_PM_SLEEP
-+static int intel_qep_suspend(struct device *dev)
-+{
-+	return 0;
-+}
-+
-+static int intel_qep_resume(struct device *dev)
-+{
-+	struct pci_dev *pdev = container_of(dev, struct pci_dev, dev);
-+	struct intel_qep *qep = pci_get_drvdata(pdev);
-+
-+	intel_qep_init(qep, false);
-+
-+	return 0;
-+}
-+
-+static int intel_qep_runtime_suspend(struct device *dev)
-+{
-+	return 0;
-+}
-+
-+static int intel_qep_runtime_resume(struct device *dev)
-+{
-+	struct pci_dev *pdev = container_of(dev, struct pci_dev, dev);
-+	struct intel_qep *qep = pci_get_drvdata(pdev);
-+
-+	intel_qep_init(qep, false);
-+
-+	return 0;
-+}
-+#endif
-+
-+static const struct dev_pm_ops intel_qep_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(intel_qep_suspend,
-+				intel_qep_resume)
-+	SET_RUNTIME_PM_OPS(intel_qep_runtime_suspend, intel_qep_runtime_resume,
-+				NULL)
-+};
-+
-+static struct pci_driver intel_qep_driver = {
-+	.name		= "intel-qep",
-+	.id_table	= intel_qep_id_table,
-+	.probe		= intel_qep_probe,
-+	.remove		= intel_qep_remove,
-+	.driver = {
-+		.pm = &intel_qep_pm_ops,
-+	}
-+};
-+
-+module_pci_driver(intel_qep_driver);
-+
-+MODULE_AUTHOR("Felipe Balbi <felipe.balbi@linux.intel.com>");
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("Intel Quadrature Encoder Driver");
+-		mutex_unlock(&indio_dev->mlock);
+ 		return ret;
+ 	}
+ 	return -EINVAL;
 -- 
-2.23.0
+2.20.1
 

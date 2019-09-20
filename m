@@ -2,172 +2,231 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA8A3B8CFD
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Sep 2019 10:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67EF6B8F42
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Sep 2019 13:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404899AbfITIff (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Sep 2019 04:35:35 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:62156 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2404617AbfITIfe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Sep 2019 04:35:34 -0400
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8K8XaaA032508;
-        Fri, 20 Sep 2019 04:35:19 -0400
-Received: from nam03-by2-obe.outbound.protection.outlook.com (mail-by2nam03lp2050.outbound.protection.outlook.com [104.47.42.50])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2v3vb5vc1f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Fri, 20 Sep 2019 04:35:19 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ct/+bgeF6Y/zl47EucvPa+3ADrV56fsIcJQVKNtRYHLQU7kDekBPc8vhMyRKuLqCFhxD77ECoBpGnmkMxrbPknYJxzA1+cJacAGN/ki63u79dKxdJk1WoK8SeoJ2lDDpz5irtndNuEd1WMONBM9d25nINXjIrbSngf7VwulnIOohr7aFdTPYvOMXW5d+BNTQ5Jch6JAja0carOGfrXA21fG6KzXbg6/WMDdGlfjOxMOCrbqaEgMkltKd6DPJ053ptBLbn8ErLejxBK/8iw3xOlAqUMxgZk/hi/g1JlcrzUrdzw1pB0ocyQ3iP22wKzhhn1UD3X+H9L5iXg+hRp3aQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F/R/2c9ahkP6PfrZmfkHRTsfx14NLb2il4NBYtzKBwY=;
- b=CTlQbv+/VfhXv0NiG4nSYgarPOB9E2iDxoxz68y4sv53GtAJnZCH5aRfOP9IFuwEIf6TR/MUJ8xe37+Qduicvhkzdx2pClUktRKh5MAqguD12/AbbEsYhCE7JFLREYDd5GrbaWdHK16njytKgnhwQlaFHbWwwbLAREQF0vbm+uDX8RjRDT783JpQaLHI/iSijf53oDIPQunJR5m32JwYrOj3JEFRfU9ger5QA/Dd0QSzmkVJi5ypp4YnQ738UEf0NsSxIJXs3AbBc+Ds5nebYY4CzLWoIWqcLzl+zjSecsyV3MtDI0VSJcsj94izSW39bQDXzOCYDdZ+rDa6CeFm1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.71.25.57) smtp.rcpttodomain=kernel.org smtp.mailfrom=analog.com;
- dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F/R/2c9ahkP6PfrZmfkHRTsfx14NLb2il4NBYtzKBwY=;
- b=hkwX/1EWO+TNSCpKfAPu24RRf/aOXTozhckC2pLSFKFk49H86lhwe2L8QxyRl56HO+P2MAClCGM79oe22PgYb4XUiR338EvAeC6lJj3mfarO4X+Z1mg4GWrgDjJeu0YSaqnAy4rArJgCK2JZViIm5xhtbXkg0q/F5l6rdzOzB5Q=
-Received: from DM6PR03CA0001.namprd03.prod.outlook.com (2603:10b6:5:40::14) by
- CH2PR03MB5317.namprd03.prod.outlook.com (2603:10b6:610:9c::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2284.20; Fri, 20 Sep 2019 08:35:17 +0000
-Received: from CY1NAM02FT056.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e45::207) by DM6PR03CA0001.outlook.office365.com
- (2603:10b6:5:40::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2157.15 via Frontend
- Transport; Fri, 20 Sep 2019 08:35:17 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
-Received: from nwd2mta2.analog.com (137.71.25.57) by
- CY1NAM02FT056.mail.protection.outlook.com (10.152.74.160) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2263.17
- via Frontend Transport; Fri, 20 Sep 2019 08:35:16 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x8K8ZBiu002235
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Fri, 20 Sep 2019 01:35:11 -0700
-Received: from saturn.ad.analog.com (10.48.65.123) by
- NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
- 14.3.408.0; Fri, 20 Sep 2019 04:35:15 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     <jic23@kernel.org>, <vlad.dogaru@intel.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: proximity: sx9500: fix iio_triggered_buffer_{predisable,postenable} positions
-Date:   Fri, 20 Sep 2019 11:35:13 +0300
-Message-ID: <20190920083513.720-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
+        id S2438282AbfITLvV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Sep 2019 07:51:21 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:22252 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2438245AbfITLvV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Sep 2019 07:51:21 -0400
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8KBkIj2017548;
+        Fri, 20 Sep 2019 13:50:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=qUuOTKALdP6xNmW1oAipJOYX3UVnQd9Jlvbx4RkfGQg=;
+ b=RDi/UqUssIhajsuP9V869QvATLwVnCGN4VOHYR63QRaGVj1K4CJdnd02HsMtxlHQ4H29
+ Yfn/VGooOfsQeFUzAKXIUBcUPWeZZ8Mav5hWJtwbuPpFYFeMGk4SzY+BFloOKFhhzkdE
+ LGkJgaNcnUFeQ9if1VAyW19oiw/stPA1c7jN9wkUi1t7DvdS4jyMms0Z1aRzTzrqe0OE
+ 4Ny+s8ZYyBRYwWPVLkpDXHmHZBPI+H2E2La/b5wltRbgx8onco7FjusJvYv9AiyFJVdI
+ uuqAdD94r+9Inj/aRazDX71Gy8F+9hBcku30FAFP9luwWeyZvNmkqQ8GMcVLAox7R0dE yA== 
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2v3va2jg6e-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Fri, 20 Sep 2019 13:50:41 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 2301823;
+        Fri, 20 Sep 2019 11:50:32 +0000 (GMT)
+Received: from Webmail-eu.st.com (Safex1hubcas24.st.com [10.75.90.94])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 57C112BEC43;
+        Fri, 20 Sep 2019 13:50:31 +0200 (CEST)
+Received: from SAFEX1HUBCAS22.st.com (10.75.90.92) by Safex1hubcas24.st.com
+ (10.75.90.94) with Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 20 Sep
+ 2019 13:50:31 +0200
+Received: from localhost (10.48.1.232) by Webmail-ga.st.com (10.75.90.48) with
+ Microsoft SMTP Server (TLS) id 14.3.439.0; Fri, 20 Sep 2019 13:50:30 +0200
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+To:     <jic23@kernel.org>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
+        <linux-iio@vger.kernel.org>, <lars@metafoo.de>, <knaack.h@gmx.de>,
+        <pmeerw@pmeerw.net>, <linux-stm32@st-md-mailman.stormreply.com>
+Subject: [PATCH] iio: adc: stm32-adc: fix kernel-doc warnings
+Date:   Fri, 20 Sep 2019 13:50:06 +0200
+Message-ID: <1568980206-5428-1-git-send-email-fabrice.gasnier@st.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(39860400002)(136003)(376002)(396003)(346002)(189003)(199004)(2906002)(246002)(36756003)(70586007)(70206006)(7636002)(305945005)(5660300002)(26005)(14444005)(51416003)(7696005)(186003)(4326008)(356004)(316002)(48376002)(54906003)(50466002)(336012)(2870700001)(1076003)(107886003)(106002)(2351001)(6916009)(86362001)(8936002)(47776003)(8676002)(50226002)(2616005)(44832011)(486006)(476003)(126002)(426003)(478600001)(142933001);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5317;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;MX:1;A:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 86d5913d-bb06-4673-451d-08d73da576e7
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600167)(711020)(4605104)(4709080)(1401327)(4618075)(2017052603328);SRVR:CH2PR03MB5317;
-X-MS-TrafficTypeDiagnostic: CH2PR03MB5317:
-X-Microsoft-Antispam-PRVS: <CH2PR03MB531722F891753656766D2753F9880@CH2PR03MB5317.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
-X-Forefront-PRVS: 0166B75B74
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: Z4uTWHXCAQUOlX+K+1gFqm+9Sixd34wbGpUSCCA+oRRcAeZP4fqFMt+JYyW3R7UsOUMLXf3XuPYSdZLPlqf9JF//OERuPIgxNHYJMhRSF4wQgPTxg740OP1XGF/pR9JCHLnvX2cLHUFYMmQJY3ioXZJ9L2lcZwnb4mQjLzYGLjjNSUsDx0Ue9vUkYdVRGvN4pGKjCZjA+mGkj8HWcBCPpI7X0v2VLtzsXj8Y2zPeKuqjSnzI+geDn07yugaH2dmjSnuUuSS61DwQBuaJbwPlqLFVkBjqpNYyanvYEUr+ot1x6oW101/eKKBJuacW7EJ6N6cjZHuIDDVqn2uvyadYHSnEpf0JHXyJvFGSSy7OD4S0YyJ+MpT4cDbn2viRE+b7EX+J200en7ijgfNAqZlNj4Lh5kgebAxKv38cPSiyG/g=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2019 08:35:16.8819
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86d5913d-bb06-4673-451d-08d73da576e7
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5317
+X-Originating-IP: [10.48.1.232]
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
- definitions=2019-09-20_02:2019-09-19,2019-09-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=1
- malwarescore=0 adultscore=0 mlxscore=0 mlxlogscore=999 spamscore=0
- phishscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1908290000 definitions=main-1909200082
+ definitions=2019-09-20_03:2019-09-20,2019-09-20 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The iio_triggered_buffer_predisable() should be called last, to detach the
-poll func after the devices has been suspended.
+Fix the following warnings when documentation is built:
+drivers/iio/adc/stm32-adc-core.c:62: warning: cannot understand function
+ prototype: 'struct stm32_adc_common_regs '
+drivers/iio/adc/stm32-adc-core.c:78: warning: cannot understand function
+ prototype: 'struct stm32_adc_priv_cfg '
+drivers/iio/adc/stm32-adc-core.c:123: warning: Function parameter or
+ member 'pdev' not described in 'stm32f4_adc_clk_sel'
+drivers/iio/adc/stm32-adc.c:219: warning: cannot understand function
+ prototype: 'struct stm32_adc_regs '
+drivers/iio/adc/stm32-adc.c:237: warning: cannot understand function
+ prototype: 'struct stm32_adc_regspec '
+drivers/iio/adc/stm32-adc.c:264: warning: cannot understand function
+ prototype: 'struct stm32_adc_cfg '
+drivers/iio/adc/stm32-adc.c:323: warning: Function parameter or member
+ 'difsel' not described in 'N'
+drivers/iio/adc/stm32-adc.c:323: warning: Function parameter or member
+ 'pcsel' not described in 'stm32_adc'
+drivers/iio/adc/stm32-adc.c:371: warning: cannot understand function
+ prototype: 'const struct stm32_adc_regs stm32f4_sq[STM32_ADC_MAX_SQ + 1]
+drivers/iio/adc/stm32-adc.c:417: warning: cannot understand function
+ prototype: 'const struct stm32_adc_regs stm32f4_smp_bits[] = '
+drivers/iio/adc/stm32-adc.c:508: warning: cannot understand function
+ prototype: 'const struct stm32_adc_regs stm32h7_smp_bits[] = '
+drivers/iio/adc/stm32-adc.c:1112: warning: Function parameter or member
+ 'indio_dev' not described in 'stm32_adc_get_trig_extsel'
+drivers/iio/adc/stm32-adc.c:1420: warning: Function parameter or member
+ 'indio_dev' not described in 'stm32_adc_debugfs_reg_access'
+drivers/iio/adc/stm32-adc.c:1420: warning: Function parameter or member
+ 'reg' not described in 'stm32_adc_debugfs_reg_access'
+drivers/iio/adc/stm32-adc.c:1420: warning: Function parameter or member
+ 'writeval' not described in 'stm32_adc_debugfs_reg_access'
+drivers/iio/adc/stm32-adc.c:1420: warning: Function parameter or member
+ 'readval' not described in 'stm32_adc_debugfs_reg_access'
 
-This change re-organizes things a bit so that the postenable & predisable
-are symmetrical. It also converts the preenable() to a postenable().
-
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
 ---
- drivers/iio/proximity/sx9500.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+Note: this applies on top of "iio: adc: stm32-adc: fix a race when using
+several adcs with dma and irq"
+---
+ drivers/iio/adc/stm32-adc-core.c | 11 ++++++-----
+ drivers/iio/adc/stm32-adc.c      | 21 +++++++++++++--------
+ 2 files changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
-index 612f79c53cfc..287d288e40c2 100644
---- a/drivers/iio/proximity/sx9500.c
-+++ b/drivers/iio/proximity/sx9500.c
-@@ -675,11 +675,15 @@ static irqreturn_t sx9500_trigger_handler(int irq, void *private)
- 	return IRQ_HANDLED;
- }
+diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+index 93a096a..20c626c 100644
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -38,12 +38,12 @@
+ #define HAS_ANASWVDD		BIT(1)
  
--static int sx9500_buffer_preenable(struct iio_dev *indio_dev)
-+static int sx9500_buffer_postenable(struct iio_dev *indio_dev)
- {
- 	struct sx9500_data *data = iio_priv(indio_dev);
- 	int ret = 0, i;
+ /**
+- * stm32_adc_common_regs - stm32 common registers, compatible dependent data
++ * struct stm32_adc_common_regs - stm32 common registers
+  * @csr:	common status register offset
+  * @ccr:	common control register offset
+- * @eoc1:	adc1 end of conversion flag in @csr
+- * @eoc2:	adc2 end of conversion flag in @csr
+- * @eoc3:	adc3 end of conversion flag in @csr
++ * @eoc1_msk:	adc1 end of conversion flag in @csr
++ * @eoc2_msk:	adc2 end of conversion flag in @csr
++ * @eoc3_msk:	adc3 end of conversion flag in @csr
+  * @ier:	interrupt enable register offset for each adc
+  * @eocie_msk:	end of conversion interrupt enable mask in @ier
+  */
+@@ -60,7 +60,7 @@ struct stm32_adc_common_regs {
+ struct stm32_adc_priv;
  
-+	ret = iio_triggered_buffer_postenable(indio_dev);
-+	if (ret)
-+		return ret;
-+
- 	mutex_lock(&data->mutex);
+ /**
+- * stm32_adc_priv_cfg - stm32 core compatible configuration data
++ * struct stm32_adc_priv_cfg - stm32 core compatible configuration data
+  * @regs:	common registers for all instances
+  * @clk_sel:	clock selection routine
+  * @max_clk_rate_hz: maximum analog clock rate (Hz, from datasheet)
+@@ -117,6 +117,7 @@ static int stm32f4_pclk_div[] = {2, 4, 6, 8};
  
- 	for (i = 0; i < SX9500_NUM_CHANNELS; i++)
-@@ -696,6 +700,9 @@ static int sx9500_buffer_preenable(struct iio_dev *indio_dev)
- 
- 	mutex_unlock(&data->mutex);
- 
-+	if (ret)
-+		iio_triggered_buffer_predisable(indio_dev);
-+
- 	return ret;
- }
- 
-@@ -704,8 +711,6 @@ static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
- 	struct sx9500_data *data = iio_priv(indio_dev);
- 	int ret = 0, i;
- 
--	iio_triggered_buffer_predisable(indio_dev);
--
- 	mutex_lock(&data->mutex);
- 
- 	for (i = 0; i < SX9500_NUM_CHANNELS; i++)
-@@ -722,12 +727,13 @@ static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
- 
- 	mutex_unlock(&data->mutex);
- 
-+	iio_triggered_buffer_predisable(indio_dev);
-+
- 	return ret;
- }
- 
- static const struct iio_buffer_setup_ops sx9500_buffer_setup_ops = {
--	.preenable = sx9500_buffer_preenable,
--	.postenable = iio_triggered_buffer_postenable,
-+	.postenable = sx9500_buffer_postenable,
- 	.predisable = sx9500_buffer_predisable,
+ /**
+  * stm32f4_adc_clk_sel() - Select stm32f4 ADC common clock prescaler
++ * @pdev: platform device
+  * @priv: stm32 ADC core private data
+  * Select clock prescaler used for analog conversions, before using ADC.
+  */
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index 663f8a5..76a247b 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -102,7 +102,7 @@ struct stm32_adc_calib {
  };
  
+ /**
+- * stm32_adc_regs - stm32 ADC misc registers & bitfield desc
++ * struct stm32_adc_regs - stm32 ADC misc registers & bitfield desc
+  * @reg:		register offset
+  * @mask:		bitfield mask
+  * @shift:		left shift
+@@ -114,7 +114,7 @@ struct stm32_adc_regs {
+ };
+ 
+ /**
+- * stm32_adc_regspec - stm32 registers definition, compatible dependent data
++ * struct stm32_adc_regspec - stm32 registers definition
+  * @dr:			data register offset
+  * @ier_eoc:		interrupt enable register & eocie bitfield
+  * @isr_eoc:		interrupt status register & eoc bitfield
+@@ -140,7 +140,7 @@ struct stm32_adc_regspec {
+ struct stm32_adc;
+ 
+ /**
+- * stm32_adc_cfg - stm32 compatible configuration data
++ * struct stm32_adc_cfg - stm32 compatible configuration data
+  * @regs:		registers descriptions
+  * @adc_info:		per instance input channels definitions
+  * @trigs:		external trigger sources
+@@ -183,8 +183,8 @@ struct stm32_adc_cfg {
+  * @rx_buf:		dma rx buffer cpu address
+  * @rx_dma_buf:		dma rx buffer bus address
+  * @rx_buf_sz:		dma rx buffer size
+- * @difsel		bitmask to set single-ended/differential channel
+- * @pcsel		bitmask to preselect channels on some devices
++ * @difsel:		bitmask to set single-ended/differential channel
++ * @pcsel:		bitmask to preselect channels on some devices
+  * @smpr_val:		sampling time settings (e.g. smpr1 / smpr2)
+  * @cal:		optional calibration data on some devices
+  * @chan_name:		channel name array
+@@ -254,7 +254,7 @@ static const struct stm32_adc_info stm32h7_adc_info = {
+ 	.num_res = ARRAY_SIZE(stm32h7_adc_resolutions),
+ };
+ 
+-/**
++/*
+  * stm32f4_sq - describe regular sequence registers
+  * - L: sequence len (register & bit field)
+  * - SQ1..SQ16: sequence entries (register & bit field)
+@@ -301,7 +301,7 @@ static struct stm32_adc_trig_info stm32f4_adc_trigs[] = {
+ 	{}, /* sentinel */
+ };
+ 
+-/**
++/*
+  * stm32f4_smp_bits[] - describe sampling time register index & bit fields
+  * Sorted so it can be indexed by channel number.
+  */
+@@ -392,7 +392,7 @@ static struct stm32_adc_trig_info stm32h7_adc_trigs[] = {
+ 	{},
+ };
+ 
+-/**
++/*
+  * stm32h7_smp_bits - describe sampling time register index & bit fields
+  * Sorted so it can be indexed by channel number.
+  */
+@@ -994,6 +994,7 @@ static int stm32_adc_conf_scan_seq(struct iio_dev *indio_dev,
+ 
+ /**
+  * stm32_adc_get_trig_extsel() - Get external trigger selection
++ * @indio_dev: IIO device structure
+  * @trig: trigger
+  *
+  * Returns trigger extsel value, if trig matches, -EINVAL otherwise.
+@@ -1297,6 +1298,10 @@ static int stm32_adc_of_xlate(struct iio_dev *indio_dev,
+ 
+ /**
+  * stm32_adc_debugfs_reg_access - read or write register value
++ * @indio_dev: IIO device structure
++ * @reg: register offset
++ * @writeval: value to write
++ * @readval: value to read
+  *
+  * To read a value from an ADC register:
+  *   echo [ADC reg offset] > direct_reg_access
 -- 
-2.20.1
+2.7.4
 

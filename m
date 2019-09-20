@@ -2,174 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE160B8B33
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Sep 2019 08:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E6A1B8B3A
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Sep 2019 08:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437414AbfITGmW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Sep 2019 02:42:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34798 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437394AbfITGmV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 20 Sep 2019 02:42:21 -0400
-Received: from lore-desk-wlan.lan (unknown [151.66.30.34])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 451C72080F;
-        Fri, 20 Sep 2019 06:42:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568961740;
-        bh=Sabga27MBD0jDp1gbmpKNv7xzx4Jo73O+QTIB1fYnT4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=e2dBN9476YP915ampBa6z/aoRQX+fhfS7cnZR4uc+94tjUv0A2Mm6Aes3gFG7nrEN
-         sqx5vfNYu6SJh3zqcU/9ruilH70c0Ji9n1fsvYjVpH3wkrfsT/DmB8rMPSutwBb3Ky
-         dn8tazGfMUCzVOvVD/qu1g2Pl2UxAoiF9l1N79m0=
-Date:   Fri, 20 Sep 2019 08:42:14 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Bobby Jones <rjones@gateworks.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: LSM9DS1 testing with st_lsm6dsx driver
-Message-ID: <20190920064214.GA31900@lore-desk-wlan.lan>
-References: <CALAE=UCTTOhvUofvk1ZrLZ2aNoSMYyFq8dHoaDxRc2aOdbV8jA@mail.gmail.com>
+        id S1730696AbfITGqh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Sep 2019 02:46:37 -0400
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:63332 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730573AbfITGqh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Sep 2019 02:46:37 -0400
+Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8K6gmuq016433;
+        Fri, 20 Sep 2019 02:46:07 -0400
+Received: from nam03-dm3-obe.outbound.protection.outlook.com (mail-dm3nam03lp2056.outbound.protection.outlook.com [104.47.41.56])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2v3vb2c82x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 20 Sep 2019 02:46:07 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mRGdaIpaqxaDHGWBBOibFDi7zblPUaLN+MmAPEK0Is8/ddyrU6i1hhZP22xyK5WGAHHbgM47X4QkdGY3UVWtZq9oah3MIBb5D/OiYq125xCDn3wcH6T8FmBd34ZdoFq/s17jxU5ytMzXogZ6YVbZlj4KdDkBRUAK4GFHJ4kyQ2EJnkR0PAoStx42sUyO1apPHMjwUKPrXPNVGkJsrv0MCKXnln38CF0h0XfpyR0PQUq+xTEBVzgs7pGtu5Sy+tlh5u6P0bFm4fbWUCInaX87jvpGiepgaYcj4kWejB0ZbwUT1wSAvDvqvW7U61sxxQBiT8KRytFdOJgvz3D3wFV3Rg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YeL8hL6PN3ieW05fmC4FesP0QBEFsZ9ug4lVCMvk4U4=;
+ b=Pcq5qanKWG2j5xGW347XmtJ46LosdWkCu71Vyi+I/s4RdI7S13JzmvKDzggc4inYRT+fcTkM8rXwHakkmaIgC5lb86sqU4arFKk7Ak4Lrsy/dzDgIAj43eh0LzFUiVANjTMidJDxVAJp6kiqeMzO3+CrBuzEpXOc/4G5IeAsuzTll03lQQ0StEUxe35b9kSFT2UcPXPzf9jLZiMslbfJEN61MHaCGyb9ekRaqVts6lJo6IU4EZMYX4AX8Czmvdeq9sluTQSXFKOWzd+epI3OR9xmDD3F8hQ2peL0BOcdu8b7wnNXzcLpFeFhILd1mWnnR82jTX8ygRsTIaYOvPzLog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YeL8hL6PN3ieW05fmC4FesP0QBEFsZ9ug4lVCMvk4U4=;
+ b=9kFPmESrOmUrSop25m5o2L8sr86vTZ/eNQTi6mXc3O/17aSxC3qhcRvmii5+HkyCmSgDJIYaw3o0trHUbjHkHvvJSUuUcWJgw/71OocYwAIyMKXsftSa7mTTarZ8tc+oA8tLyKolsGBVau6Z43NG6ijORJI3CHgQILuwyYw6EaE=
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com (20.180.12.152) by
+ CH2PR03MB5352.namprd03.prod.outlook.com (20.180.15.83) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2284.20; Fri, 20 Sep 2019 06:46:05 +0000
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::344d:7f50:49a3:db1b]) by CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::344d:7f50:49a3:db1b%3]) with mapi id 15.20.2284.009; Fri, 20 Sep 2019
+ 06:46:05 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "navid.emamdoost@gmail.com" <navid.emamdoost@gmail.com>
+CC:     "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "emamd001@umn.edu" <emamd001@umn.edu>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "smccaman@umn.edu" <smccaman@umn.edu>,
+        "kjlu@umn.edu" <kjlu@umn.edu>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v2] iio: imu: adis16400: fix memory leak
+Thread-Topic: [PATCH v2] iio: imu: adis16400: fix memory leak
+Thread-Index: AQHVbwLdYHo/yPhdTUGs4+xcCQhutqc0UmaA
+Date:   Fri, 20 Sep 2019 06:46:05 +0000
+Message-ID: <3438e843e2304e22456b4ea83796f1118564b3f4.camel@analog.com>
+References: <76a7c8d43f8c03a0549d157bbf278b515cfbc047.camel@analog.com>
+         <20190919155636.3241-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20190919155636.3241-1-navid.emamdoost@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 22c6e7bc-3f55-4afa-ee21-08d73d9635ef
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600167)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:CH2PR03MB5352;
+x-ms-traffictypediagnostic: CH2PR03MB5352:
+x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <CH2PR03MB53524ABFA9131E6B118DF18AF9880@CH2PR03MB5352.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2449;
+x-forefront-prvs: 0166B75B74
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(366004)(376002)(396003)(136003)(39860400002)(199004)(189003)(186003)(6512007)(5640700003)(476003)(6486002)(486006)(229853002)(71190400001)(71200400001)(6436002)(66446008)(6506007)(66066001)(66476007)(26005)(76116006)(36756003)(478600001)(66556008)(102836004)(64756008)(2616005)(66946007)(25786009)(14444005)(11346002)(99286004)(2351001)(256004)(446003)(7416002)(76176011)(81156014)(6916009)(5660300002)(86362001)(14454004)(316002)(4326008)(4744005)(8676002)(81166006)(1361003)(2501003)(6116002)(3846002)(118296001)(54906003)(8936002)(305945005)(7736002)(2906002)(6246003);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5352;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: jtsyjd5L4xXZZSxkUPQ5fFjDqhSMk9IBg3NqeHJBbP/oKo5VSmFPcX+K7F6nnE8YgiVDTeFr3QV+GU8wrwbmfPsGIiy+J29alFiyLxxvmli1zn/jtL9C7Gp4XALepb5+IeJDyRNdr2qPgWQ2cngAjizvvZKbrQKe7cd2H1+ekLFSRZDkMRlr1/DyvfVq2Od6mPlbXTkHnxK0+plPEMwwR0QnkaU9Z8dKs0H9zpSyrCkxqu7fT/WXqyqJSR5WZhmuk9pp/+8Wdr1srnzDA9p9VMsI0LQOjBEipSG0K40tljM8jOyoJ47347Kungm8cWQZiUpmnaT1nOy6BdmtoQaHVtEbuz+XkYz+jz6Lk1hManY1CjBjgS1AaZzvgwdobFkoCpLHgk8vqYUefAQoWr0miW3Ai+LnRMX8gJFzRyb8RAM=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D91F6B6C70037A438699451BEB461F4E@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Q68bSM7Ycu6FN28Q"
-Content-Disposition: inline
-In-Reply-To: <CALAE=UCTTOhvUofvk1ZrLZ2aNoSMYyFq8dHoaDxRc2aOdbV8jA@mail.gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22c6e7bc-3f55-4afa-ee21-08d73d9635ef
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2019 06:46:05.4348
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mfKxgKFFVLXTwR+xs6Yqhln8HD4Rq3X/6O6Qjg9GJRC8si1v5icW7m+zpQDnMZZVrVV0CZxLcX/aodr3NhmthlMxUxrVsERlXWPCaRAhV4Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5352
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.70,1.0.8
+ definitions=2019-09-20_01:2019-09-19,2019-09-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 bulkscore=0 clxscore=1015
+ mlxscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ mlxlogscore=999 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1908290000 definitions=main-1909200072
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---Q68bSM7Ycu6FN28Q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> Hello Lorenzo and Martin,
-
-Hi Bobby,
-
-LSM9DS1 does not support hw FIFO for the moment. Are you trying to enable
-buffered reading?
-Could you please try if the following patch helps? (just compiled)
-
-Regards,
-Lorenzo
-
-iio: imu: st_lsm6dsx: do not configure the fifo if not supported
-
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu=
-/st_lsm6dsx/st_lsm6dsx_core.c
-index b65a6ca775e0..90a0e5ce44e5 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -1572,7 +1572,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int=
- hw_id,
- 			return err;
- 	}
-=20
--	if (hw->irq > 0) {
-+	if (hw->irq > 0 && hw->settings->fifo_ops.update_fifo) {
- 		err =3D st_lsm6dsx_fifo_setup(hw);
- 		if (err < 0)
- 			return err;
---=20
-2.21.0
-
-
->=20
-> I'm testing the LSM9DS1 support recently added to the st_lsm6dsx
-> iio/imu driver and I'm encountering a device tree problem related to
-> interrupt config.
->=20
-> Here's the exception I'm seeing:
-> [    4.172529] irq 277: nobody cared (try booting with the "irqpoll" opti=
-on)
-> [    4.179341] CPU: 0 PID: 0 Comm: swapper/0 Not tainted
-> 5.3.0-rc5-00322-g792b824-dirty #7
-> [    4.187359] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> [    4.193920] [<c0112750>] (unwind_backtrace) from [<c010d018>]
-> (show_stack+0x10/0x14)
-> [    4.201690] [<c010d018>] (show_stack) from [<c0c2bfc8>]
-> (dump_stack+0xd8/0x10c)
-> [    4.209027] [<c0c2bfc8>] (dump_stack) from [<c01923fc>]
-> (__report_bad_irq+0x24/0xc0)
-> [    4.216793] [<c01923fc>] (__report_bad_irq) from [<c0192820>]
-> (note_interrupt+0x27c/0x2dc)
-> [    4.225078] [<c0192820>] (note_interrupt) from [<c018f174>]
-> (handle_irq_event_percpu+0x54/0x7c)
-> [    4.233793] [<c018f174>] (handle_irq_event_percpu) from
-> [<c018f1d4>] (handle_irq_event+0x38/0x5c)
-> [    4.242681] [<c018f1d4>] (handle_irq_event) from [<c0193664>]
-> (handle_level_irq+0xc8/0x154)
-> [    4.251051] [<c0193664>] (handle_level_irq) from [<c018df58>]
-> (generic_handle_irq+0x20/0x34)
-> [    4.259510] [<c018df58>] (generic_handle_irq) from [<c053c348>]
-> (mxc_gpio_irq_handler+0xc4/0xf8)
-> [    4.268313] [<c053c348>] (mxc_gpio_irq_handler) from [<c053c3e0>]
-> (mx3_gpio_irq_handler+0x64/0xb8)
-> [    4.277287] [<c053c3e0>] (mx3_gpio_irq_handler) from [<c018df58>]
-> (generic_handle_irq+0x20/0x34)
-> [    4.286089] [<c018df58>] (generic_handle_irq) from [<c018e550>]
-> (__handle_domain_irq+0x64/0xe0)
-> [    4.294810] [<c018e550>] (__handle_domain_irq) from [<c0529610>]
-> (gic_handle_irq+0x4c/0xa0)
-> [    4.303181] [<c0529610>] (gic_handle_irq) from [<c0101a70>]
-> (__irq_svc+0x70/0x98)
-> [    4.310675] Exception stack(0xc1301f10 to 0xc1301f58)
-> [    4.315744] 1f00:                                     00000001
-> 00000006 00000000 c130c340
-> [    4.323937] 1f20: c1300000 c1308928 00000001 c1308960 00000000
-> c12b9db0 c1308908 00000000
-> [    4.332128] 1f40: 00000000 c1301f60 c0182010 c0109508 20000013 ffffffff
-> [    4.338762] [<c0101a70>] (__irq_svc) from [<c0109508>]
-> (arch_cpu_idle+0x20/0x3c)
-> [    4.346180] [<c0109508>] (arch_cpu_idle) from [<c015ed70>]
-> (do_idle+0x1bc/0x2bc)
-> [    4.353594] [<c015ed70>] (do_idle) from [<c015f204>]
-> (cpu_startup_entry+0x18/0x1c)
-> [    4.361183] [<c015f204>] (cpu_startup_entry) from [<c1200e68>]
-> (start_kernel+0x440/0x504)
-> [    4.369378] [<c1200e68>] (start_kernel) from [<00000000>] (0x0)
-> [    4.375309] handlers:
-> [    4.377645] [<62052c0d>] st_lsm6dsx_handler_irq threaded
-> [<f2004b92>] st_lsm6dsx_handler_thread
-> [    4.386484] Disabling IRQ #277
->=20
-> Here is the associated device tree node:
-> lsm9ds1_ag@6a {
->     compatible =3D "st,lsm9ds1-imu";
->     reg =3D <0x6a>;
->     st,drdy-int-pin =3D <1>;
->     pinctrl-names =3D "default";
->     pinctrl-0 =3D <&pinctrl_acc_gyro>;
->     interrupt-parent =3D <&gpio7>;
->     interrupts =3D <13 IRQ_TYPE_LEVEL_LOW>;
-> };
->=20
-> Let me know if I can provide any more information.
->=20
-> Thanks,
-> Bobby Jones
-
---Q68bSM7Ycu6FN28Q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXYR0wgAKCRA6cBh0uS2t
-rJt2AQCq5r8yB8qhdDvDPyDdcPN29jIiuhSCUIXh/OlO07oNXQD/bm2QSAkanPUj
-hcMO04cUaRm194/h2e9+2XQptrPvfAo=
-=c0sM
------END PGP SIGNATURE-----
-
---Q68bSM7Ycu6FN28Q--
+T24gVGh1LCAyMDE5LTA5LTE5IGF0IDEwOjU2IC0wNTAwLCBOYXZpZCBFbWFtZG9vc3Qgd3JvdGU6
+DQo+IEluIGFkaXNfdXBkYXRlX3NjYW5fbW9kZV9idXJzdCwgaWYgYWRpcy0+YnVmZmVyIGFsbG9j
+YXRpb24gZmFpbHMgcmVsZWFzZQ0KPiB0aGUgYWRpcy0+eGZlci4NCj4gDQo+IHYyOiBzZXQgYWRp
+cy0+eGZlciA9IE5VTEwgdG8gYXZvaWQgYW55IHBvdGVudGlhbCBkb3VibGUgZnJlZS4NCj4gDQoN
+ClJldmlld2VkLWJ5OiBBbGV4YW5kcnUgQXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFs
+b2cuY29tPg0KDQo+IFNpZ25lZC1vZmYtYnk6IE5hdmlkIEVtYW1kb29zdCA8bmF2aWQuZW1hbWRv
+b3N0QGdtYWlsLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL2lpby9pbXUvYWRpc19idWZmZXIuYyB8
+IDUgKysrKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24o
+LSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9pbXUvYWRpc19idWZmZXIuYw0KPiBi
+L2RyaXZlcnMvaWlvL2ltdS9hZGlzX2J1ZmZlci5jDQo+IGluZGV4IDlhYzgzNTZkOWE5NS4uNzhm
+ZTgzYzFmNGZlIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2lpby9pbXUvYWRpc19idWZmZXIuYw0K
+PiArKysgYi9kcml2ZXJzL2lpby9pbXUvYWRpc19idWZmZXIuYw0KPiBAQCAtMzUsOCArMzUsMTEg
+QEAgc3RhdGljIGludCBhZGlzX3VwZGF0ZV9zY2FuX21vZGVfYnVyc3Qoc3RydWN0IGlpb19kZXYN
+Cj4gKmluZGlvX2RldiwNCj4gIAkJcmV0dXJuIC1FTk9NRU07DQo+ICANCj4gIAlhZGlzLT5idWZm
+ZXIgPSBremFsbG9jKGJ1cnN0X2xlbmd0aCArIHNpemVvZih1MTYpLCBHRlBfS0VSTkVMKTsNCj4g
+LQlpZiAoIWFkaXMtPmJ1ZmZlcikNCj4gKwlpZiAoIWFkaXMtPmJ1ZmZlcikgew0KPiArCQlrZnJl
+ZShhZGlzLT54ZmVyKTsNCj4gKwkJYWRpcy0+eGZlciA9IE5VTEw7DQo+ICAJCXJldHVybiAtRU5P
+TUVNOw0KPiArCX0NCj4gIA0KPiAgCXR4ID0gYWRpcy0+YnVmZmVyICsgYnVyc3RfbGVuZ3RoOw0K
+PiAgCXR4WzBdID0gQURJU19SRUFEX1JFRyhhZGlzLT5idXJzdC0+cmVnX2NtZCk7DQo=

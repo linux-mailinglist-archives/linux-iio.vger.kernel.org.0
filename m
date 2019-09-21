@@ -2,46 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E742B9F1F
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Sep 2019 19:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DC60B9F22
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Sep 2019 19:16:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726983AbfIURM7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Sep 2019 13:12:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45904 "EHLO mail.kernel.org"
+        id S1726290AbfIURQw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Sep 2019 13:16:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47522 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726960AbfIURM6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 21 Sep 2019 13:12:58 -0400
+        id S1726206AbfIURQw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 21 Sep 2019 13:16:52 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 900A520820;
-        Sat, 21 Sep 2019 17:12:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 66188217F5;
+        Sat, 21 Sep 2019 17:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569085978;
-        bh=imNIPRuqDRv+W+vL/c2C0ilGJvaFe6U2kD92EDWxUAo=;
+        s=default; t=1569086211;
+        bh=6uwuyY3BECt4RFZlstdISFftAuM+OMyuwPgnzeUukGg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=J+TkyX5Go267+LYpS6aQ3f+TTSLgfIe32Q6Ba/WueGjpFWnY1tMSc4zk713gSJq2J
-         aQaAlzSf/Fjzx1mY/KxUjiwxd67F31a714Mn+bgifvm+qw4D18lxEiWshAUAvpYt0e
-         bzXznc5+PjhueKtkp0+nCfHSEi7Da++y0jlg/4dU=
-Date:   Sat, 21 Sep 2019 18:12:53 +0100
+        b=AvQfokTX7JJHiH2gjWrAyaxFlK/KiGWrkBSs/hoIOZ+E20QOn3T9Ewud7dNayqXsV
+         45JlCx+iLR9k4p9GLSMXAaL9g4RZDOCxAABrKfAZCgdqu4JEDdoalVk21bW1pk3/Zl
+         n0WgqEQlh7ZeHd6OyExuZZoedor679bTQEwnd00w=
+Date:   Sat, 21 Sep 2019 18:16:46 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andrea Merello <andrea.merello@gmail.com>
-Cc:     Couret Charles-Antoine <charles-antoine.couret@essensium.com>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "andrea.merello@gmail.com" <andrea.merello@gmail.com>,
+        "antoine.couret@essensium.com" <antoine.couret@essensium.com>,
         "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "charles-antoine.couret@essensium.com" 
+        <charles-antoine.couret@essensium.com>,
         "lars@metafoo.de" <lars@metafoo.de>,
         "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 4/4] iio: ad7949: fix channels mixups
-Message-ID: <20190921181253.43fa0071@archlinux>
-In-Reply-To: <CAN8YU5ORoM69GDi4VVGf6iWb3A2S1ZjkiLmcV+_hUbG4446yXQ@mail.gmail.com>
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH 2/4] iio: ad7949: fix incorrect SPI xfer len
+Message-ID: <20190921181646.668008be@archlinux>
+In-Reply-To: <961ddc8a028cb683ba6706e2f8a23fbd7bf68651.camel@analog.com>
 References: <20190912144310.7458-1-andrea.merello@gmail.com>
-        <20190912144310.7458-5-andrea.merello@gmail.com>
-        <f91fb6e960dfd67926b6efa44ec7b792fc667468.camel@analog.com>
-        <CAN8YU5NLZhCDaocrQGUnb9TZauT-yPxY7ZQQQeYK=9696jmhCg@mail.gmail.com>
-        <4a25469a-9fe6-a560-b1cb-e9b0af7209e9@essensium.com>
-        <CAN8YU5ORoM69GDi4VVGf6iWb3A2S1ZjkiLmcV+_hUbG4446yXQ@mail.gmail.com>
+        <20190912144310.7458-3-andrea.merello@gmail.com>
+        <3fe869be01ce7c81fd463158c05e0a4a115bdd6a.camel@analog.com>
+        <CAN8YU5MpLDVEfVBUBe9XsuYT6yohruiHAMQgOVjZs-2JyO=NNQ@mail.gmail.com>
+        <20190915113600.26fe4987@archlinux>
+        <961ddc8a028cb683ba6706e2f8a23fbd7bf68651.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,66 +53,108 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 20 Sep 2019 09:45:21 +0200
-Andrea Merello <andrea.merello@gmail.com> wrote:
+On Mon, 16 Sep 2019 07:51:30 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> Il giorno ven 13 set 2019 alle ore 13:30 Couret Charles-Antoine
-> <charles-antoine.couret@essensium.com> ha scritto:
+> On Sun, 2019-09-15 at 11:36 +0100, Jonathan Cameron wrote:
+> > On Fri, 13 Sep 2019 09:56:56 +0200
+> > Andrea Merello <andrea.merello@gmail.com> wrote:
+> >   
+> > > Il giorno ven 13 set 2019 alle ore 08:46 Ardelean, Alexandru
+> > > <alexandru.Ardelean@analog.com> ha scritto:  
+> > > > On Thu, 2019-09-12 at 16:43 +0200, Andrea Merello wrote:    
+> > > > > [External]
+> > > > > 
+> > > > > This driver supports 14-bits and 16-bits devices. All of them have a 14-bit
+> > > > > configuration registers. All SPI trasfers, for reading AD conversion
+> > > > > results and for writing the configuration register, fit in two bytes.
+> > > > > 
+> > > > > The driver always uses 4-bytes xfers which seems at least pointless (maybe
+> > > > > even harmful). This patch trims the SPI xfer len and the buffer size to
+> > > > > two bytes.
+> > > > >    
+> > > > 
+> > > > The length reduction proposal is fine.
+> > > > 
+> > > > But, this patch raises a question about endianess.
+> > > > I'm actually wondering here if we need to see about maybe using a __be16 vs u16.
+> > > > 
+> > > > I'm not that kernel-savy yet about some of these low-level things to be completely sure here.
+> > > > So, I'd let someone else maybe handle it.    
+> > > 
+> > > Good point.. It seems that indeed not much care has been taken about
+> > > endianess here.. Probably we need also some le16_to_cpu() and
+> > > firends..  
+> > 
+> > More complexity here :)  So a lot of earlier SPI drivers didn't set bits_per_word,
+> > the result of this is that a read had no way to know how to unwind the endian
+> > nature of the data.  If you do a 4 byte read, is that 4x 1 byte, 2x 2 bytes or
+> > 1x 4 bytes.  Thus the SPI subsystem had no way of knowing how to convert from
+> > wire order of big endian to cpu endianness.  This is particularly fun as it
+> > is common to have variable length registers on SPI devices (be it described
+> > on the datasheet as some registers have high and low byte addresses).
+> > 
+> > In drivers where this can be set to one consistent value, then the SPI subsystem
+> > should do the work for us. Hence this one should be fine. ( I think :)
+> >   
 > 
-> > >> One thing that maybe could be optimized (for the driver), is in `ad7949_spi_read_channel()` to use the current-channel &
-> > >> not do a SPI write to change the channel if it doesn't change.
-> > >>
-> > >> Datasheets (in general) are not always obvious about describing chip behavior for SW (or for writing a driver), but I
-> > >> would suspect that if you are reading garbage data, it could be that the channel has changed.
-> > >> This is true for some other ADCs.
-> > >> And requires testing for this one.  
-> > > Yes, it's exactly what I've seen here. If the channel does not change
-> > > then the AD is already in acquisition phase on the right channel (I
-> > > assume it's OK to keep it in such phase indefinitely), then we can
-> > > just trigger a new conversion (CNV low->high, that is a dummy xfer)
-> > > and then read the result in following xfer, as the driver already did.
-> > >
-> > > I craft a V2 that performs the extra (3rd) spi xfer only if the
-> > > channel has to change.  
-> >
-> > This design should be ok. I didn't implement in that way because not
-> > enough time to optimize the driver before release (I don't have access
-> > to the chip anymore) and for our workflow it was not relevant (we
-> > scanned all channels).  
+> Based on other input:
 > 
-> I was in the process of doing this, but, thinking again about it, I'm
-> not completely sure it is really OK:
-> Should we guarantee that the value we return as outcome of a IIO read
-> request (i.e. we access in_voltage_raw) is sampled _after_ the user
-> read request?
-> 
-> For example, the user might setup some other HW for the measure, or
-> somehow wait for the right moment for doing the measure, and then
-> perform the read from IIO, thus it's probably not OK if we convert a
-> value sampled just before the IIO read request.
+> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-Absolutely.  MUX in front of the sensor is a fairly common thing to see.
+I've applied this to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
 
-> 
-> If we skip the configuration rewrite when the channel doesn't change -
-> as discussed above - then we actually _terminate_ the acquisition when
-> the IIO read is triggered, that is we are converting the value sampled
-> right before the IIO read.
-> 
-> If this is OK then I'll go on, otherwise I think that we should always
-> do the three cycles (so that triggering IIO read always waits also for
-> a new acquisition phase)
-An excellent point.  I agree and suspect we may have this wrong in other
-sensors.  The question gets more interesting if running in buffered mode
-as we have had systems using a trigger generated by an external process.
-I suppose in that case we just have to deal with the offset in the fifo
-etc in userspace.
-
-Maybe we should think about adding a note to be careful of that.  Not
-really sure where we would note it though...
+Note, as we don't have a proven case in which it causes actual harm, I haven't
+marked it for stable.
 
 Thanks,
 
 Jonathan
 
+> 
+> > > Maybe another separate patch can be made to take care about endianess later on?
+> > > 
+> > > BTW Also, the  ____cacheline_aligned is a bit scaring :) I don't know
+> > > what is that for...
+> > >   
+> > > > Thanks
+> > > > Alex
+> > > >    
+> > > > > Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
+> > > > > ---
+> > > > >  drivers/iio/adc/ad7949.c | 6 +++---
+> > > > >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > > > > 
+> > > > > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
+> > > > > index 518044c31a73..5c2b3446fa4a 100644
+> > > > > --- a/drivers/iio/adc/ad7949.c
+> > > > > +++ b/drivers/iio/adc/ad7949.c
+> > > > > @@ -54,7 +54,7 @@ struct ad7949_adc_chip {
+> > > > >       u8 resolution;
+> > > > >       u16 cfg;
+> > > > >       unsigned int current_channel;
+> > > > > -     u32 buffer ____cacheline_aligned;
+> > > > > +     u16 buffer ____cacheline_aligned;
+> > > > >  };
+> > > > > 
+> > > > >  static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
+> > > > > @@ -67,7 +67,7 @@ static int ad7949_spi_write_cfg(struct ad7949_adc_chip *ad7949_adc, u16 val,
+> > > > >       struct spi_transfer tx[] = {
+> > > > >               {
+> > > > >                       .tx_buf = &ad7949_adc->buffer,
+> > > > > -                     .len = 4,
+> > > > > +                     .len = 2,
+> > > > >                       .bits_per_word = bits_per_word,
+> > > > >               },
+> > > > >       };
+> > > > > @@ -95,7 +95,7 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
+> > > > >       struct spi_transfer tx[] = {
+> > > > >               {
+> > > > >                       .rx_buf = &ad7949_adc->buffer,
+> > > > > -                     .len = 4,
+> > > > > +                     .len = 2,
+> > > > >                       .bits_per_word = bits_per_word,
+> > > > >               },
+> > > > >       };    
 

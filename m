@@ -2,200 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B426BBA2E2
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2019 16:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4ED5BA36D
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2019 19:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729057AbfIVOYf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Sep 2019 10:24:35 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:36851 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729052AbfIVOYe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Sep 2019 10:24:34 -0400
-Received: by mail-qk1-f196.google.com with SMTP id y189so12657255qkc.3;
-        Sun, 22 Sep 2019 07:24:33 -0700 (PDT)
+        id S2388195AbfIVRvC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Sep 2019 13:51:02 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:37047 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387763AbfIVRvC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Sep 2019 13:51:02 -0400
+Received: by mail-pg1-f196.google.com with SMTP id c17so6563172pgg.4
+        for <linux-iio@vger.kernel.org>; Sun, 22 Sep 2019 10:51:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=nxamFfzGQMxVC3EoWkNOqWdCNC3v4cbH3EQQXhPiNiE=;
-        b=DV3REy4+SHrXWdyEh87oENW6rR5K+oTdjpXgEyuCztS12cFPnnyBGQbGNMknV9/JU+
-         G5Ok+mCTRMf8SKO/fmTum9NX9l4h2Ug9SniKjboSpWVn9UVz+KtRLtiEy0joNTcfayWb
-         9QaDOpF68IyPJ4+1z0JBLj6vLDOL1sYo+UiWHvZvHyGxeWaIoWPLCGR+OkwsKDxvXMsl
-         VZwNuvFIYx1LG+k4Fxkex89EZS3hGecMIib5knXkg3UHlMYePMH7Kfy5k5yylqb3synp
-         v4T3PcBG8/6fJAq2AXBWrhIJfZhOa26XEiS+/TEoqnuqc/1hWZBPpb/kBXdLOqZoxWEp
-         QK2g==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=E9hJK7fyg7Gs3bpoyJzsS+U/mgxQqM+p1WatcscDVEE=;
+        b=aR+tdqTXd7HoN2kKoAqrYMQnvsbRZxgLGddysD5qblRr5owBy4z+YCb+qQGEErn7a7
+         lluVppu5cCoW6vZwOllqDZnv5Knh4jluUpvyFIfZzclA5jCBh1va+/e8GwqVDKnxfl2u
+         ZXryGM9pD875iE7m5P9/Ydj9zFAsazt9Ff/6w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=nxamFfzGQMxVC3EoWkNOqWdCNC3v4cbH3EQQXhPiNiE=;
-        b=hNHHRW9lUCvjZ9khvQpHBixpG20ZvvWDfTLVcVmUDkz7XtAKUsuhbkndkmiLIS49KK
-         vlDOKW83NhYuVcFNxFT87cEY8WHjgUt9DhgE6LcsHuharx221rj/zijv6joedYsnXg8u
-         b3gaCDY8aeRt7R3JW4agPQ6idDr8hfZVqXG08MQZKWRsh9UyYfbHSeLWvKI2IDiibS+7
-         LrDCJo0lHkEWQgltbOOa+70cAqGU1FsZlfMo8s2tFA9YRpPizqrzvR841zZ4kjIewfS4
-         +scUWSHJSB0qb63es2B2I64uRXoOqzL38ljwx+b6qQD1ph3iyu13XuW4PnXDWQheNeqC
-         iDUg==
-X-Gm-Message-State: APjAAAVm8JcCIKK6t6FB4ulsvRHIn6Ipp/7zR7yu9ejZg1Hr0AT+TtW9
-        rfuxDcyNCVfK2ohdjs8jP9Y=
-X-Google-Smtp-Source: APXvYqyAeQ3D9FeXd1t/Nw4Ex4oo7+jyyA2oK+Qa3fWHeTAaH411jn4fGI4DJ2uh25/+IhTyIVAdVA==
-X-Received: by 2002:a37:af02:: with SMTP id y2mr13178890qke.305.1569162273352;
-        Sun, 22 Sep 2019 07:24:33 -0700 (PDT)
-Received: from smtp.gmail.com ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id 63sm1835495qkh.82.2019.09.22.07.24.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2019 07:24:32 -0700 (PDT)
-Date:   Sun, 22 Sep 2019 11:24:27 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "rodrigorsdc@gmail.com" <rodrigorsdc@gmail.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel-usp@googlegroups.com
-Subject: Re: [PATCH v2] dt-bindings: iio: accel: add binding documentation
- for ADIS16240
-Message-ID: <20190922142426.jzodybftlgui3hgx@smtp.gmail.com>
-References: <20190912213929.3664-1-rodrigorsdc@gmail.com>
- <448e180cc41bfc748d729f3269376b14ba6d3ac9.camel@analog.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=E9hJK7fyg7Gs3bpoyJzsS+U/mgxQqM+p1WatcscDVEE=;
+        b=EGL4G3dacPADEpJc19/zL6f/QcGcaDG1bNo5daVYRkAB5A27xh5Hnqb4EySfZ5YU9a
+         FWYt7Iw6ToLDidN3gVobhPU0L/GZdi4uuYmqkd5yCFEzcr9ARisg/NujSBZk4wNyYLP0
+         4L1ittKpod+GsQ9/VOejV6VOfjUjS7LH8KMxYA6KGYedt8FcJRztwwmCUGCDEybWnQYN
+         Re+It6IogaQx6Rk6xtSukK4PE4mGG9VuRlcRjPkJirXT6mV6TplYI2wTWvq/DWWsiwyb
+         UeCdVeQ7X2RYOYOmzvQCAzJsEPa6TGL8cQcbirultQ9t9PoMW0Ppn+9CqZFyBVIySav2
+         BldA==
+X-Gm-Message-State: APjAAAUdLxsSGlLv9wFwAOGamMvLMKMYOj1DPY9goJ0W9VaQ4Yw8TBFA
+        PLivi5cHba1YLZ0lep2n4iQSuQ==
+X-Google-Smtp-Source: APXvYqzzYyMeiwfV+Lu/yawXRncC8IyhxytseRsW7w6m1sGcaLUrYmN6QCuhUbXeu9fo9mdsApNJfQ==
+X-Received: by 2002:a62:4d45:: with SMTP id a66mr29826494pfb.24.1569174661540;
+        Sun, 22 Sep 2019 10:51:01 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:3c8f:512b:3522:dfaf])
+        by smtp.gmail.com with ESMTPSA id u5sm10881646pfl.25.2019.09.22.10.51.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Sep 2019 10:51:00 -0700 (PDT)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, lee.jones@linaro.org, bleung@chromium.org,
+        enric.balletbo@collabora.com, dianders@chromium.org,
+        groeck@chromium.org, fabien.lahoudere@collabora.com
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH 00/13] cros_ec: Add sensorhub driver and FIFO processing
+Date:   Sun, 22 Sep 2019 10:50:08 -0700
+Message-Id: <20190922175021.53449-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.23.0.351.gc4317032e6-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <448e180cc41bfc748d729f3269376b14ba6d3ac9.camel@analog.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+This patchset adds a sensorhub driver for spreading sensor
+events coming from the Embedded controller sensor FIFO:
 
-Could anyone with some experience in devicetree give us a hint on what
-to do here?
+       +---------------+ +--------------+ +----
+       | cros_ec_accel | | cros_ec_gyro | | ...
+       +---------------+ +--------------+ +----
+           id:0       \        id:1 |       / id:..
+                 +------------------------------+
+                 |       cros_ec_sensorhub      |
+                 +------------------------------+
+                 |           cros_ec_dev        |
+                 +------------------------------+
+                 | cros_ec_i2c, cros_ec_lpc, .. |
+                 +------------------------------+
+                                 |
+                                 EC
 
-I have built a binding doc using the same spi-cpha property.
-https://github.com/analogdevicesinc/linux/commit/bb2945e489dfdf2faa0255dd2cf09ae4ee77d826
+When new sensors events are present, the EC raises and interrupt,
+sensorhub reads the FIFO and uses the 'id' field to spread the event to
+the proper IIO sensors. This stack is similar to the HID sensor input
+stack.
 
-On 09/13, Ardelean, Alexandru wrote:
-> On Thu, 2019-09-12 at 18:39 -0300, Rodrigo Carvalho wrote:
-> > This patch add device tree binding documentation for ADIS16240.
-> > 
-> > Signed-off-by: Rodrigo Ribeiro Carvalho <rodrigorsdc@gmail.com>
-> > ---
-> > V2:
-> >   - Remove true constant for spi-cpha and spi-cpol
-> >   - Add description field for spi-cpha and spi-cpol
-> >   - Add maxItems field for spi-cpha and spi-cpol
-> > 
-> >  .../bindings/iio/accel/adi,adis16240.yaml     | 61 +++++++++++++++++++
-> >  1 file changed, 61 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> > b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> > new file mode 100644
-> > index 000000000000..4b1bd2419604
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> > @@ -0,0 +1,61 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/accel/adi,adis16240.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: ADIS16240 Programmable Impact Sensor and Recorder driver
-> > +
-> > +maintainers:
-> > +  - Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > +
-> > +description: |
-> > +  ADIS16240 Programmable Impact Sensor and Recorder driver that supports
-> > +  SPI interface.
-> > +    https://www.analog.com/en/products/adis16240.html
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - adi,adis16240
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  spi-cpha:
-> > +    description: |
-> > +      See Documentation/devicetree/bindings/spi/spi-controller.yaml
-> > +    maxItems: 1
-> 
-> Description for standard properties is not required.
-> 
-> For spi-cpha/cpol just "true" seems sufficient.
-> 
-> So
-> 
->      spi-cpha: true
-> 
->      spi-cpol: true
-> 
-I'm not Rob, but I think it is not necessary to explicitly say the
-property is true. In this case, it should be enough if it is present. If
-needed to know whether some property is "true" or not, one can use the
-of_property_read_bool function. For the AD7292 driver on it was enough
-to just add the property names. The spi-chpa did not need any further
-care. Without the spi-cpha property, the AD7292 vendor ID came as 0x0C
-(one bit shifted to the right).
+The first 3 patches add a primitive cros_ec_sensorhub. MFD just have to
+register this driver if at least one sensor is presented by the EC.
+cros_ec_sensorhub retrieves more information from the EC to find out
+which sensors are actually present:
+  mfd: cros_ec: Add sensor_count and make check_features public
+  platform: cros_ec: Add cros_ec_sensor_hub driver
+  platform/mfd:iio: cros_ec: Register sensor through sensorhub
 
-Rodrigo is participating at FLUSP students group. It would be good if we
-could test whether these properties are really needed. However, I don't
-think we have the ADIS16240 part. Would anyone test it?
+The next 3 patches prepare for FIFO support:
+  platform: chrome: cros-ec: record event timestamp in the hard irq
+  platform: chrome: cros_ec: Do not attempt to register a non-positive
+  platform: chrome: cros_ec: handle MKBP more events flag
 
-> > +
-> > +  spi-cpol: |
-> > +    description: |
-> > +      See Documentation/devicetree/bindings/spi/spi-controller.yaml
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +
-> 
-> If spi-cpha & spi-cpol are true, they should typically be also required.
-> Though, I think Rob would answer things better here.
-> 
-Some feedback about the need (or not) to link to the spi-controller doc
-would also be appreciated.
+The next 4 patches add FIFO support. An interface is added to connect
+the IIO sensors with cros_ec_sensorhub, and filters are needed to spread
+the timestamp when the EC send batches of events and deal with variation
+in interrupt delay.
+  platform: chrome: sensorhub: Add FIFO support
+  platform: chrome: sensorhub: Add code to spread timestmap
+  platform: chrome: sensorhub: Add median filter
+  iio: cros_ec: Use triggered buffer only when EC does not support FIFO
 
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +    spi0 {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        /* Example for a SPI device node */
-> > +        accelerometer@0 {
-> > +            compatible = "adi,adis16240";
-> > +            reg = <0>;
-> > +            spi-max-frequency = <2500000>;
-> > +            spi-cpol;
-> > +            spi-cpha;
-> > +            interrupt-parent = <&gpio0>;
-> > +            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-> > +        };
-> > +    };
+Finally, the last 3 patches present sensor information following the IIO
+ABI:
+-  Configurable EC timeout to allow batch mode in buffer/hwfifo_timeout,
+  in seconds.
+-  Hard coded EC FIFO size in buffer/hwfifo_watermark_max
+-  Sensor sampling frequency in hertz at sampling_frequency:
+  iio: cros_ec: Expose hwfifo_timeout
+  iio: cros_ec: Report hwfifo_watermark_max
+  iio: cros_ec: Use Hertz as unit for sampling frequency
 
-Thanks,
+For testing, libiio test tools can be used:
+A iio device link looks like:
+iio:device1 ->
+...09:00/GOOG0004:00/cros-ec-dev.6.auto/cros-ec-sensorhub.7.auto/
+                     cros-ec-accel.15.auto/iio:device1
 
-Marcelo
+When FIFO is available, no trigger are presented. Once
+sampling_freqeuncy and hwfifo_timeout are set, sensor events flow
+when listening to /dev/iio:device1:
+echo 12 > sampling_frequency   # Set ODR to at least 12Hz
+echo .100 > buffer/hwfifo_timeout  # do not wait more than 100ms to
+                                   # to send samples
+iio_readdev -b 2 -T 1000 -s 2 iio:device1 2>/dev/null| od -x
+0000000 ffd0 2e20 d990 0000 8630 b56c 07ea 0000
+0000020 ffc0 2e10 d970 0000 877e b56c 07ea 0000
+0000040`
+
+When FIFO is not supported by the EC, a trigger is present in the
+directory. After registering a trigger, setting sampling_frequency,
+the latest data collected by the sensor will be retrieved by the host
+when the trigger expires.
+
+When cros_ec_accel_legacy driver is used, no FIFO is supported and the
+sampling frequency for the accelerometers is hard coded at 10Hz.
+
+This set is built upon the master branch of
+git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+
+
+Enrico Granata (2):
+  platform: chrome: cros_ec: Do not attempt to register a non-positive
+    IRQ number
+  platform: chrome: cros_ec: handle MKBP more events flag
+
+Gwendal Grignou (11):
+  mfd: cros_ec: Add sensor_count and make check_features public
+  platform: cros_ec: Add cros_ec_sensor_hub driver
+  platform/mfd:iio: cros_ec: Register sensor through sensorhub
+  platform: chrome: cros-ec: record event timestamp in the hard irq
+  platform: chrome: sensorhub: Add FIFO support
+  platform: chrome: sensorhub: Add code to spread timestmap
+  platform: chrome: sensorhub: Add median filter
+  iio: cros_ec: Use triggered buffer only when EC does not support FIFO
+  iio: cros_ec: Expose hwfifo_timeout
+  iio: cros_ec: Report hwfifo_watermark_max
+  iio: cros_ec: Use Hertz as unit for sampling frequency
+
+ drivers/iio/accel/cros_ec_accel_legacy.c      |  13 +-
+ drivers/iio/common/cros_ec_sensors/Kconfig    |   2 +-
+ .../cros_ec_sensors/cros_ec_lid_angle.c       |   2 +-
+ .../common/cros_ec_sensors/cros_ec_sensors.c  |  14 +-
+ .../cros_ec_sensors/cros_ec_sensors_core.c    | 251 ++++-
+ drivers/iio/light/cros_ec_light_prox.c        |  18 +-
+ drivers/iio/pressure/cros_ec_baro.c           |  12 +-
+ drivers/mfd/cros_ec_dev.c                     | 208 +---
+ drivers/platform/chrome/Kconfig               |  18 +-
+ drivers/platform/chrome/Makefile              |   2 +
+ drivers/platform/chrome/cros_ec.c             |  51 +-
+ drivers/platform/chrome/cros_ec_lpc.c         |   2 +
+ drivers/platform/chrome/cros_ec_proto.c       |  51 +-
+ drivers/platform/chrome/cros_ec_sensorhub.c   | 269 +++++
+ .../platform/chrome/cros_ec_sensorhub_ring.c  | 918 ++++++++++++++++++
+ .../linux/iio/common/cros_ec_sensors_core.h   |  29 +-
+ include/linux/mfd/cros_ec.h                   |  17 +
+ include/linux/platform_data/cros_ec_proto.h   |  30 +-
+ .../linux/platform_data/cros_ec_sensorhub.h   | 173 ++++
+ 19 files changed, 1780 insertions(+), 300 deletions(-)
+ create mode 100644 drivers/platform/chrome/cros_ec_sensorhub.c
+ create mode 100644 drivers/platform/chrome/cros_ec_sensorhub_ring.c
+ create mode 100644 include/linux/platform_data/cros_ec_sensorhub.h
+
+-- 
+2.23.0.351.gc4317032e6-goog
+

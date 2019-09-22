@@ -2,55 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF9ABA385
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2019 19:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33A50BA372
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2019 19:51:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388270AbfIVRvI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Sep 2019 13:51:08 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:39046 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388250AbfIVRvI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Sep 2019 13:51:08 -0400
-Received: by mail-pg1-f196.google.com with SMTP id u17so6558210pgi.6
-        for <linux-iio@vger.kernel.org>; Sun, 22 Sep 2019 10:51:07 -0700 (PDT)
+        id S2388281AbfIVRvK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Sep 2019 13:51:10 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:37053 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388276AbfIVRvJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Sep 2019 13:51:09 -0400
+Received: by mail-pg1-f195.google.com with SMTP id c17so6563274pgg.4
+        for <linux-iio@vger.kernel.org>; Sun, 22 Sep 2019 10:51:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=EVj+zFMTdPZwXDI/loxhUrSHORd+RCorWjZtFz9EupU=;
-        b=Omjcmi4q2+v3lLxhVCBrfAYTkcZ6g0bcDho6Vj2Z7a5Eeq5tyclKgZ1cIMRMkl/nEp
-         xVbMenJcTLplTSDoCAv/e7pmN/xwmjKQFkv6iZnD3I5d+yJoVZTzyxj5tI/tF1CoNM/Z
-         twSLT8zYqm7/q+Aqoa5kZOR4TfmPR2+KPsF08=
+        bh=W0Jvq2gWf/yc3DKxkkbLAZjrOsRcmbm8R0ZFM96m1Ss=;
+        b=CLGyJ8CjvFpO6DQOxgVu42i80iyo6IweyKYwfXgdn3GdBiOj+1DCVFqLwq8ReIOG/E
+         WjJSnaJvrJzyOCM1bguzQT+ObydY8RbjHwfBSR7yaPHPpevZly8hGfu4HbYKJkl0CPZ4
+         pLlVbq7U+4p2liJzXvsUj5ZlrHqrpK0+XkWqk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=EVj+zFMTdPZwXDI/loxhUrSHORd+RCorWjZtFz9EupU=;
-        b=q0JlXKPa7cjCReSTF2Wq6CX+SyDloKH1jLC9vO/A6gzk/GjF0psA58IHqpQd8qxoz1
-         TD9TbQXil8KOVGB8Q2gevyhblb2Sq7B+2Mk5AYegGwPxAQXZjSxvddLe7TMRYd0LQ/v0
-         wf6mmUDmVUpWC50KSSqIY8La9ahE0WFcHpQvDolQcYaZHIi8tAvl8TpLx7xpB7ArMFFw
-         roKOYdFn2nopxhljRinhk8acMvUxsD8vA+cl8YZieM1MOjQ+Hb4i0uwGizciX8Edc8tn
-         iINya/KvZzLvXS2fOrUVfPhp11mcmP2za3v/o2I7So9E94EXS+ya8sjUVjDOCoOuTk2L
-         phuA==
-X-Gm-Message-State: APjAAAVrLsNB6Eupm8UDuLNY6+DDT3rcgJHV8JY7dsvvaZBiIEXqut3w
-        YMWdS2jMo0jEyQLT4i1zA5gIDA==
-X-Google-Smtp-Source: APXvYqzTsqDF4wEcrXpOIT2OwCkFMSdYd+BKzmj0V6tpAzvRKOXLelyj8+L3AP70dLvwcW9u6LNs+A==
-X-Received: by 2002:a63:d343:: with SMTP id u3mr25930794pgi.313.1569174667173;
-        Sun, 22 Sep 2019 10:51:07 -0700 (PDT)
+        bh=W0Jvq2gWf/yc3DKxkkbLAZjrOsRcmbm8R0ZFM96m1Ss=;
+        b=Js2nojFMOn38nPnPhI/Bn3pcqucTo2qYSoksgyAqN8O6u8mqxvHQPsGAdlze1SVh3b
+         lKOJubW5hHDSEfpwtbhgapg09VcmrN080YWhj4b07v8kT05aZa6kf7EQG4Ze38PwFUyL
+         z9DTWTyrb6wYchbozRtZwTK4087ZUTqw8aPJM3Gx7qcyjwlgm7HrT+ZWcayvBT4ZZJld
+         HKRZhHXpgPF+CN5h3tOSoc2u/e6oLHVNBCfNhvGzG+AxNziFGUZAxMh22ZJha1S2ihN/
+         pnRN0qkkQ1ygKNbGGL6VlLdfSRlHtjiCH/4nAetQkl0Bei/khaXNKvFn5CDtmCWNut/O
+         lfjA==
+X-Gm-Message-State: APjAAAWhRgmq8Ts13mrodCUl8y/gCGw+peUR930EaT90KTq1q5hsbDb8
+        EElqBDSa7nr9j6n0kXPQ1oKf3A==
+X-Google-Smtp-Source: APXvYqwOuLPNBcsdGZoO3oSQzFhOCAEKES65yg8cyHFLtPjH+1lmOljfGpO9sgvuIW7MxzRoEqVGyA==
+X-Received: by 2002:a17:90a:8416:: with SMTP id j22mr16513707pjn.39.1569174668730;
+        Sun, 22 Sep 2019 10:51:08 -0700 (PDT)
 Received: from localhost ([2620:15c:202:1:3c8f:512b:3522:dfaf])
-        by smtp.gmail.com with ESMTPSA id o67sm9592486pje.17.2019.09.22.10.51.06
+        by smtp.gmail.com with ESMTPSA id w69sm11726474pgd.91.2019.09.22.10.51.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Sep 2019 10:51:06 -0700 (PDT)
+        Sun, 22 Sep 2019 10:51:08 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
         pmeerw@pmeerw.net, lee.jones@linaro.org, bleung@chromium.org,
         enric.balletbo@collabora.com, dianders@chromium.org,
         groeck@chromium.org, fabien.lahoudere@collabora.com
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Enrico Granata <egranata@chromium.org>,
+        Enrico Granata <egranata@google.com>,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH 04/13] platform: chrome: cros-ec: record event timestamp in the hard irq
-Date:   Sun, 22 Sep 2019 10:50:12 -0700
-Message-Id: <20190922175021.53449-5-gwendal@chromium.org>
+Subject: [PATCH 05/13] platform: chrome: cros_ec: Do not attempt to register a non-positive IRQ number
+Date:   Sun, 22 Sep 2019 10:50:13 -0700
+Message-Id: <20190922175021.53449-6-gwendal@chromium.org>
 X-Mailer: git-send-email 2.23.0.351.gc4317032e6-goog
 In-Reply-To: <20190922175021.53449-1-gwendal@chromium.org>
 References: <20190922175021.53449-1-gwendal@chromium.org>
@@ -61,107 +63,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-To improve sensor timestamp precision, given EC and AP are in
-different time domains, the AP needs to try to record the exact
-moment an event was signalled to the AP by the EC as soon as
-possible after it happens.
+From: Enrico Granata <egranata@chromium.org>
 
-First thing in the hard irq is the best place for this.
+Add a layer of sanity checking to cros_ec_register against attempting to
+register IRQ values that are not strictly greater than 0.
 
+Signed-off-by: Enrico Granata <egranata@google.com>
+Signed-off-by: Enrico Granata <egranata@chromium.org>
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/platform/chrome/cros_ec.c           | 18 +++++++++++++++++-
- drivers/platform/chrome/cros_ec_lpc.c       |  2 ++
- include/linux/platform_data/cros_ec_proto.h | 15 +++++++++++++++
- 3 files changed, 34 insertions(+), 1 deletion(-)
+ drivers/platform/chrome/cros_ec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/platform/chrome/cros_ec.c b/drivers/platform/chrome/cros_ec.c
-index fd77e6fa74c2..f49eb1d1e3cd 100644
+index f49eb1d1e3cd..9c8dc7cdb2b7 100644
 --- a/drivers/platform/chrome/cros_ec.c
 +++ b/drivers/platform/chrome/cros_ec.c
-@@ -31,6 +31,21 @@ static struct cros_ec_platform pd_p = {
- 	.cmd_offset = EC_CMD_PASSTHRU_OFFSET(CROS_EC_DEV_PD_INDEX),
- };
- 
-+s64 cros_ec_get_time_ns(void)
-+{
-+	return ktime_get_boottime_ns();
-+}
-+EXPORT_SYMBOL(cros_ec_get_time_ns);
-+
-+static irqreturn_t ec_irq_handler(int irq, void *data)
-+{
-+	struct cros_ec_device *ec_dev = data;
-+
-+	ec_dev->last_event_time = cros_ec_get_time_ns();
-+
-+	return IRQ_WAKE_THREAD;
-+}
-+
- static irqreturn_t ec_irq_thread(int irq, void *data)
- {
- 	struct cros_ec_device *ec_dev = data;
-@@ -132,7 +147,8 @@ int cros_ec_register(struct cros_ec_device *ec_dev)
+@@ -146,7 +146,7 @@ int cros_ec_register(struct cros_ec_device *ec_dev)
+ 		return err;
  	}
  
- 	if (ec_dev->irq) {
--		err = devm_request_threaded_irq(dev, ec_dev->irq, NULL,
-+		err = devm_request_threaded_irq(
-+				dev, ec_dev->irq, ec_irq_handler,
+-	if (ec_dev->irq) {
++	if (ec_dev->irq > 0) {
+ 		err = devm_request_threaded_irq(
+ 				dev, ec_dev->irq, ec_irq_handler,
  				ec_irq_thread, IRQF_TRIGGER_LOW | IRQF_ONESHOT,
- 				"chromeos-ec", ec_dev);
- 		if (err) {
-diff --git a/drivers/platform/chrome/cros_ec_lpc.c b/drivers/platform/chrome/cros_ec_lpc.c
-index 7d10d909435f..3c77496e164d 100644
---- a/drivers/platform/chrome/cros_ec_lpc.c
-+++ b/drivers/platform/chrome/cros_ec_lpc.c
-@@ -313,6 +313,8 @@ static void cros_ec_lpc_acpi_notify(acpi_handle device, u32 value, void *data)
- {
- 	struct cros_ec_device *ec_dev = data;
- 
-+	ec_dev->last_event_time = cros_ec_get_time_ns();
-+
- 	if (ec_dev->mkbp_event_supported &&
- 	    cros_ec_get_next_event(ec_dev, NULL) > 0)
- 		blocking_notifier_call_chain(&ec_dev->event_notifier, 0,
-diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/platform_data/cros_ec_proto.h
-index e91e3fcb0348..ab12e28f2107 100644
---- a/include/linux/platform_data/cros_ec_proto.h
-+++ b/include/linux/platform_data/cros_ec_proto.h
-@@ -121,6 +121,8 @@ struct cros_ec_command {
-  * @event_data: Raw payload transferred with the MKBP event.
-  * @event_size: Size in bytes of the event data.
-  * @host_event_wake_mask: Mask of host events that cause wake from suspend.
-+ * @last_event_time: exact time from the hard irq when we got notified of
-+ *     a new event.
-  * @ec: The platform_device used by the mfd driver to interface with the
-  *      main EC.
-  * @pd: The platform_device used by the mfd driver to interface with the
-@@ -161,6 +163,7 @@ struct cros_ec_device {
- 	int event_size;
- 	u32 host_event_wake_mask;
- 	u32 last_resume_result;
-+	s64 last_event_time;
- 
- 	/* The platform devices used by the mfd driver */
- 	struct platform_device *ec;
-@@ -308,4 +311,16 @@ int cros_ec_get_next_event(struct cros_ec_device *ec_dev, bool *wake_event);
-  */
- u32 cros_ec_get_host_event(struct cros_ec_device *ec_dev);
- 
-+/**
-+ * cros_ec_get_time_ns - Return time in ns.
-+ *
-+ * This is the function used to record the time for last_event_time in struct
-+ * cros_ec_device during the hard irq.
-+ *
-+ * This function is probably implemented using ktime_get_boot_ns(), but it's
-+ * exposed here to make sure all cros_ec drivers use the same code path to get
-+ * the time.
-+ */
-+s64 cros_ec_get_time_ns(void);
-+
- #endif /* __LINUX_CROS_EC_PROTO_H */
 -- 
 2.23.0.351.gc4317032e6-goog
 

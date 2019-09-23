@@ -2,161 +2,203 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04C3FBBAAF
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Sep 2019 19:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4599FBBEF1
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 01:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394181AbfIWRrD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Sep 2019 13:47:03 -0400
-Received: from mout.kundenserver.de ([212.227.17.24]:35881 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389763AbfIWRrD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Sep 2019 13:47:03 -0400
-Received: from localhost ([46.183.103.8]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MTikV-1ibaZH1myj-00U6mY; Mon, 23 Sep 2019 19:46:38 +0200
-Date:   Mon, 23 Sep 2019 19:46:34 +0200
-From:   Andreas Klinger <ak@it-klinger.de>
-To:     robh+dt@kernel.org, jic23@kernel.org
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        mark.rutland@arm.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: maxbotix,mb1232.yaml: transform to yaml
-Message-ID: <20190923174605.mhrbmdic3ynaw22o@arbad>
+        id S1729283AbfIWXXc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Sep 2019 19:23:32 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:36377 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729276AbfIWXXc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Sep 2019 19:23:32 -0400
+Received: by mail-io1-f65.google.com with SMTP id b136so37808772iof.3
+        for <linux-iio@vger.kernel.org>; Mon, 23 Sep 2019 16:23:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=miQgdg+Cic7f3QbqYHOcqqBSqzEBqukYJOkBJwkZFh8=;
+        b=bD81h+xgpGtgySboQdhw1i0Qqe7VzzKOhwijd6y4IMUWAYA7TM2W3BiU5W0Hg1SLAq
+         yBF8KaA7P28k98Flm1HsvTo1hZLlRJlzjoF0w/HhfnVmSQ4tk6y293cP7vFI1CYW7G+c
+         sDiqb+jzcXfHyFzfzs3SxcnVmO+155u8dwqxIE5/WgjpstpUJlgcrAsqyrr/PATYqJsc
+         oGG9JT/nGV0rwgpeMVd739H74Q2SazWltXzkPUEhZJq5kKqVvaxMca0Ubjm16VqrpZsX
+         TVP26QJRGDPGeF8+ZNqOEYHYx21L1e8Al9By3YUuKwLpHH+0MOo/iF6Mz6cg6v/myKJo
+         pxhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=miQgdg+Cic7f3QbqYHOcqqBSqzEBqukYJOkBJwkZFh8=;
+        b=CMy3AyWTPkOwWLQs4a2Vydy5Q+Q6a6DhX7lIYA9O3DTbLJrpIMC2huO6cXQxPVjeXC
+         E9JHwyBGn94zUQFv+bdHLMGWmKTDANoLgr31OYOZHb70XDd59q08mRsFxinmHJEVL7BT
+         5+jaIvZ2AymnRi3mxXz9jeo5p9Y2Luc7C/zW8roJr5/r0GWUkPMXGRAEMdhcNqrXwJOA
+         YCiUCH61j7UqkKdMQ49PLy0F1+UygikWXUIpe/2j3t3kdTX7MFUEoMGZVxSL5O38WjZj
+         GnYk+ps/ZT3jlc7jRwguIB4h3RNhkONT6m7gmy8LzSt33fHxERd39iPBHdOhjCcBtoJr
+         Z46Q==
+X-Gm-Message-State: APjAAAWW7I2cqLhGU2N3Jvsw8kn6xhAZtG91XBV9PguvNmSaSQ7BsV+V
+        Okob+GY8oai+RsW5ql0B3ppUx1j+ARCBuVkQHoye6A==
+X-Google-Smtp-Source: APXvYqxNpKPGaaMBTDDFW9HcGZJ9t68YgIN54d8W2LvGxJ0VX5vOJNKxKo766lDSyJm8WJH4EQdUYSmstM0/a6Q/8g4=
+X-Received: by 2002:a5e:960a:: with SMTP id a10mr1408388ioq.211.1569281010705;
+ Mon, 23 Sep 2019 16:23:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Provags-ID: V03:K1:Fan6vgtAYstQ9EsYsO6l1PGcJWJzGhm7B7DfBKFUat6EzC703YH
- 8oI9GI5mpy2w07uxgH3pzFOyGA+jyhV+HoSw7qPEGW7lOWrhvP/UtP+qNJ2cHCueZTUGjSe
- uJDuDulVUzUZgi7U+vahnHcKfRFtfGHdvTm4aklSLU4vNVnUrZMFN71YGTGQYFyArKhFvHf
- QLc6PSodvrixVGZYXXVaQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:M0QNqFl7cB0=:DTk2VE7Np88/QhC2VQhDWa
- TThd5wzZs/k5hNPjw13wqTzy+v+OGSPwKQlGC6El92OBefoH1p7gf3Hs2a7J/+PlwMm0J2IgU
- DGSrsg5wBOCHeehn6P/dmrmtef6lwJwXrfJ8P0NGI1WncUOOt3zCT6v3knu78XC9CcP6IzZp8
- BBtdUYdZJwvicScAGtN3/y3iYSvK97SPaMFIKqr4fefdJJNILpiqQqmoTH00xWrGe2bx+IUFa
- 4+QBWD/3TJr2mHsuTwvWgo+TbFrEeuOfGTqE1fD0EfWI8twqd6af7ehh/jQTnGt976eAErXOB
- qxyM/i57Zi+uHavej0IB55r1dYcqgfAMiIWv9CISxmQO9HAEjPKv7iIEI0bAhpsJTd6Ss3IpY
- G4b7pOCQIdYUmmnQRP30VRkIpBmt4Q2A9KM6QMj2T5H5EZpAwbcGEXXFmpIISethKeFepW1vy
- MJNCFDBeaGdSwbNH0LFpQ30nCYnICHjTHsvW4vRK93YPfhAjqMRRnx7XPrZYQNmQgb+7+zueq
- nZ9Y3+yrJpb5WRjoiBWBwfUYr9sgAwErZi39p0zwgKOxqhFMxalxlxfyvx5hc9Uh7XYFiznGh
- ELRdmPttS1Ev9iTCFiBoFfXauxsyBphbFLTDmFtcL7iRHTHRXzghTLsKQqJfBnvImIUQIjI6c
- 0sUO7ELi2VnHPY6FCWW9OYlYyiLLRm+/AJYdXTspWbHWXI1Wxmhakr+UThHmo5XBvEE8fECCu
- JjvYIf5PCPf8uUaRDVb3EoRbncW+mlD15qxFTy7eVzjcNaNGnbcS1E30ygmx9tdINg7yo1y78
- zosmwyF3qN2g3vhx5hbQDeI0IQ5shdPqUp1w19hMCzq3onGFeJ/xSxlkzpJOFi4kc9fZHYldg
- FEpI4H+njx+KH9jLzpGBCsDXP++0IDgpR1zNXc4Zw=
+References: <CALAE=UCTTOhvUofvk1ZrLZ2aNoSMYyFq8dHoaDxRc2aOdbV8jA@mail.gmail.com>
+ <20190920064214.GA31900@lore-desk-wlan.lan> <CALAE=UDmg_+q=zt9Z6D5BrsnpFXi7dVMdTMVdHk2SMXCtxoJTw@mail.gmail.com>
+ <20190920215542.GA16493@localhost.localdomain> <CALAE=UBH8ESTkXzrzK2_Tvt-vzVeOiewJFi_g4g2NsoUqwge1w@mail.gmail.com>
+ <20190921080651.GA15821@localhost.localdomain>
+In-Reply-To: <20190921080651.GA15821@localhost.localdomain>
+From:   Bobby Jones <rjones@gateworks.com>
+Date:   Mon, 23 Sep 2019 16:23:19 -0700
+Message-ID: <CALAE=UBjNKZy=kuGDCuwEQ_-jSY==Bc7_1R9w_gaNmuW_23UqQ@mail.gmail.com>
+Subject: Re: LSM9DS1 testing with st_lsm6dsx driver
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-transform existing documentation of maxbotix,mb1232 ultrasonic ranger
-from text documentation format into yaml.
+> > > > > LSM9DS1 does not support hw FIFO for the moment. Are you trying to enable
+> > > > > buffered reading?
+> > > >
+> > > > I am not manually interacting with the device at all when this
+> > > > exception occurs. This happens during the driver probe.
+> > > >
+> > > > > Could you please try if the following patch helps? (just compiled)
+> > > >
+> > > > I no longer receive the exception with this patch and it makes sense, thanks.
+> > >
+> > > Hi Bobby,
+> > >
+> > > thx a lot for testing. Could you please try to drop the previous patch and
+> > > apply the following one? Does it fix the issue as well?
+> >
+> > No problem, happy to help. I just tested, and unfortunately the issue
+> > is still present with this patch.
+>
+> re-looking at the code this patch will actually does not anything since in the
+> current implementation st_lsm6dsx_handler_irq will return IRQ_NONE and the
+> thread handler will not be run. Anyway since st_lsm6dsx_handler_irq will be
+> removed soon I will respin this patch ontop of Sean series.
+>
+> > I gave the datasheet and the hardware reference manual of the
+> > connected CPU a closer look and suspected a problem with my pin
+> > config. However even after various combinations of pull ups/downs and
+> > IRQ_TYPE_LEVEL_LOW/IRQ_TYPE_LEVEL_HIGH the same exception occurs, so I
+> > don't think that there's an issue with pin config stopping the
+> > interrupt line from being deasserted.
+>
+> are you able to monitor the line activity through an oscilloscope?
+> The issue is the irq line is never asserted and the kernel complains about
+> lot of interrupts not managed
+>
+> Looking at the datasheet, LSM9DS1 does not support IRQ_TYPE_LEVEL_LOW.
+> ST_LSM6DSX_REG_HLACTIVE_ADDR and ST_LSM6DSX_REG_PP_OD_ADDR registers are
+> actually not defined for LSM9DS1 and I will move them in hw_settings map.
 
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
----
- .../bindings/iio/proximity/maxbotix,mb1232.txt     | 29 -----------
- .../bindings/iio/proximity/maxbotix,mb1232.yaml    | 56 ++++++++++++++++++++++
- 2 files changed, 56 insertions(+), 29 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.txt
- create mode 100644 Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.yaml
+The datasheet I have for the LSM9DS1 shows a HLACTIVE bit in the
+CTRL_REG8 (0x22) register, I thought that indicated support for both
+high and low IRQ types.
+Either way, after applying your recent (Sep 22nd) patches to this
+driver and changing my device tree node I have no kernel exception and
+the iio device enumerates as normal. For anyone curious my device tree
+node is now:
 
-diff --git a/Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.txt b/Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.txt
-deleted file mode 100644
-index dd1058fbe9c3..000000000000
---- a/Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.txt
-+++ /dev/null
-@@ -1,29 +0,0 @@
--* MaxBotix I2CXL-MaxSonar ultrasonic distance sensor of type  mb1202,
--  mb1212, mb1222, mb1232, mb1242, mb7040 or mb7137 using the i2c interface
--  for ranging
--
--Required properties:
-- - compatible:		"maxbotix,mb1202",
--			"maxbotix,mb1212",
--			"maxbotix,mb1222",
--			"maxbotix,mb1232",
--			"maxbotix,mb1242",
--			"maxbotix,mb7040" or
--			"maxbotix,mb7137"
--
-- - reg:			i2c address of the device, see also i2c/i2c.txt
--
--Optional properties:
-- - interrupts:		Interrupt used to announce the preceding reading
--			request has finished and that data is available.
--			If no interrupt is specified the device driver
--			falls back to wait a fixed amount of time until
--			data can be retrieved.
--
--Example:
--proximity@70 {
--	compatible = "maxbotix,mb1232";
--	reg = <0x70>;
--	interrupt-parent = <&gpio2>;
--	interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.yaml b/Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.yaml
-new file mode 100644
-index 000000000000..8301a1ad2a47
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.yaml
-@@ -0,0 +1,56 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/proximity/maxbotix,mb1232.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: MaxBotix I2CXL-MaxSonar ultrasonic distance sensor
-+
-+maintainers:
-+  - Andreas Klinger <ak@it-klinger.de>
-+
-+description: |
-+  MaxBotix I2CXL-MaxSonar ultrasonic distance sensor of type  mb1202,
-+  mb1212, mb1222, mb1232, mb1242, mb7040 or mb7137 using the i2c interface
-+  for ranging
-+
-+  Specifications about the devices can be found at:
-+  https://www.maxbotix.com/documents/I2CXL-MaxSonar-EZ_Datasheet.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - maxbotix,mb1202
-+      - maxbotix,mb1212
-+      - maxbotix,mb1222
-+      - maxbotix,mb1232
-+      - maxbotix,mb1242
-+      - maxbotix,mb7040
-+      - maxbotix,mb7137
-+
-+  reg:
-+    description:
-+      i2c address of the device, see also i2c/i2c.txt
-+    maxItems: 1
-+
-+  interrupts:
-+    description:
-+      Interrupt used to announce the preceding reading request has finished
-+      and that data is available.  If no interrupt is specified the device
-+      driver falls back to wait a fixed amount of time until data can be
-+      retrieved.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    proximity@70 {
-+      compatible = "maxbotix,mb1232";
-+      reg = <0x70>;
-+      interrupt-parent = <&gpio2>;
-+      interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
-+    };
--- 
-2.11.0
+lsm9ds1_ag@6a {
+  compatible = "st,lsm9ds1-imu";
+  reg = <0x6a>;
+  st,drdy-int-pin = <1>;
+  pinctrl-names = "default";
+  pinctrl-0 = <&pinctrl_acc_gyro>;
+  interrupt-parent = <&gpio7>;
+  interrupts = <13 IRQ_TYPE_EDGE_RISING>;
+};
+
+>
+> @Jonathan: do you prefer this patch to be ontop of Sean's series?
+>
+> Regards,
+> Lorenzo
+>
+> >
+> > >
+> > > iio: imu: st_lsm6dsx: check read_fifo pointer in st_lsm6dsx_handler_thread
+> > >
+> > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > ---
+> > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > >
+> > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> > > index b0f3da1976e4..f4fd4842bd79 100644
+> > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> > > @@ -666,6 +666,9 @@ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+> > >         struct st_lsm6dsx_hw *hw = private;
+> > >         int count;
+> > >
+> > > +       if (!hw->settings->fifo_ops.read_fifo)
+> > > +               return IRQ_NONE;
+> > > +
+> > >         mutex_lock(&hw->fifo_lock);
+> > >         count = hw->settings->fifo_ops.read_fifo(hw);
+> > >         mutex_unlock(&hw->fifo_lock);
+> > > --
+> > > 2.21.0
+> > >
+> > > >
+> > > > For context I'm working with a board that has every data ready and
+> > > > interrupt signal connected to the LSM9DS1. Could you clarify what the
+> > > > proper usage of the "st,drdy-int-pin" would be in this case and
+> > > > whether or not I need more than one interrupt called out in my device
+> > > > tree node?
+> > > > I'm not really understanding how they're currently being utilized for
+> > > > this device in the driver.
+> > >
+> > > For the moment irq line in lsm9ds1 (acc/gyro) is not used at all,
+> > > so you can omit the "st,drdy-int-pin" property
+> > >
+> > > >
+> > > > Also, I know support for this device was added recently and the combo
+> > > > device hardware FIFO is complex, but is support for this something
+> > > > that's currently being worked on?
+> > >
+> > > It is actually in my ToDo list but I have no this device at the moment, so
+> > > patches are welcome :)
+> > >
+> > > Regards,
+> > > Lorenzo
+> > >
+> > > >
+> > > > Thanks,
+> > > > Bobby Jones
+> > > >
+> > > > > Regards,
+> > > > > Lorenzo
+> > > > >
+> > > > > iio: imu: st_lsm6dsx: do not configure the fifo if not supported
+> > > > >
+> > > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > > > ---
+> > > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
+> > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > >
+> > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > > > > index b65a6ca775e0..90a0e5ce44e5 100644
+> > > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > > > > @@ -1572,7 +1572,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+> > > > >                         return err;
+> > > > >         }
+> > > > >
+> > > > > -       if (hw->irq > 0) {
+> > > > > +       if (hw->irq > 0 && hw->settings->fifo_ops.update_fifo) {
+> > > > >                 err = st_lsm6dsx_fifo_setup(hw);
+> > > > >                 if (err < 0)
+> > > > >                         return err;
+> > > > > --
+> > > > > 2.21.0
+> > > > >
+> > > > >

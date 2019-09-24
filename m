@@ -2,138 +2,252 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B4C3BC613
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 12:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CC69BC6E9
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 13:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395114AbfIXK6O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Sep 2019 06:58:14 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:43987 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388652AbfIXK6O (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Sep 2019 06:58:14 -0400
-Received: by mail-pg1-f195.google.com with SMTP id v27so1103677pgk.10;
-        Tue, 24 Sep 2019 03:58:13 -0700 (PDT)
+        id S2438723AbfIXLdO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Sep 2019 07:33:14 -0400
+Received: from mail-yb1-f195.google.com ([209.85.219.195]:44849 "EHLO
+        mail-yb1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438702AbfIXLdO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Sep 2019 07:33:14 -0400
+Received: by mail-yb1-f195.google.com with SMTP id f1so537955ybq.11
+        for <linux-iio@vger.kernel.org>; Tue, 24 Sep 2019 04:33:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :in-reply-to:references;
-        bh=0d4AYNtRkLfpkDim1W4lc4CifwLMiEr/+iKYtJT4Oxw=;
-        b=SNogPM1q0Frg3ofEOIbzuKjAsn9fM85Ga0XT+07KBQBIsm3ODaiWzScBEJuJSJiUxq
-         pcflkTkN5Km1oZPWwCChI9r3ekxI9KTs+3TxKI3i5UzqGZEBDMkltcAV5V3q5k45aJY3
-         tHnu3U5gNw/K2FpT2lkkz6S06LZ0JUx6sXHyKy7XTIr/M4sVKL1dXq12J55shoWdN23z
-         ESGi6ngX00V9SvtrmdVRL107HJ/0UMCo0//hacU0g+YW1JfP4ZeTSnNsG2h/Cud2RPun
-         oc8JJfE1rf/Qu7XtViNGWvLm6dseO9D/uf3gQ977Jc7ZfBLtbMPqzsZ/VJfU5ayyKe7u
-         22/A==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=lZCfgGP1XyB56VjKXb0vgJCfPG+fbJNE4C9mm4OIDL8=;
+        b=qJBll/QahmBRCUakPx7v0lBYKMIF8Knz86rQuchdSPJ+bmzFl1nVd01XI4TJjegZaR
+         /HiWy9+N460cScBUKjiOzX5uk8qT1Exx/jm7l1T6W4JlXvhWTksMjRfQQE3vNW12SEZF
+         yOfSmMJZoi/5+/3ZJvESTObL352Yl0H2WzBCrAKH20ORL3LKHk9ZYzer475Uvi8MpUkX
+         UH4G7IK9MH//nheoXqs1+Xd1wOHrtpqX00D7BfBo3avsHS7pk2b0GKxyAZxAZ8B2Jh0b
+         G2msAntFLyGoFtn6fP/pMTUUaZufR8AJfilqBH59g4Ssw48DHRITJnYn0qhyePCigG2t
+         ti6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:in-reply-to:references;
-        bh=0d4AYNtRkLfpkDim1W4lc4CifwLMiEr/+iKYtJT4Oxw=;
-        b=nD6Lin5kbo4bGc4g76vO4YOmx0Faec7QTY1/UJFBA35WswDsAJhyDWSR1wxjHa7PHZ
-         1PsqKPkwjy9Lcv7qqdxsRJR2IT/0m29PpS7lI1ZCalyp56k5AhVCGuAGyfbbP4kD6vPz
-         nQ38H0xK04PcS/mtEHcqZUwnLfGm9B9eYKQeFcr5QHUi+fhFOVmszNynYEYxudZ0SdBM
-         UJShdkOe/UHbQ/fP8DdPoDNPL5CpVql3PVk2kActs9gljNCW/htvjJqFgEUVnie9c2hz
-         1I73MAUARC6WQuxbO6NFd3Xb1yrJQt9+xulerRHlAkCDqAtz5TjyPFnSIWxntHtW6qJS
-         ciJQ==
-X-Gm-Message-State: APjAAAULp+j+8X77Eb/g2F1QqpjbCJrq996wwEPnrd8ymf25yAkgd8mB
-        U2MhNDWDViFXRuKol/oWZmw=
-X-Google-Smtp-Source: APXvYqyKHPXFXmai4Q0lnCtL4IQ7IiJNAn+Qr9TTek57cEzbVIRxJFJWcgkNCrBy5aZETYHGsbSYrA==
-X-Received: by 2002:a62:4e0f:: with SMTP id c15mr2689062pfb.42.1569322693271;
-        Tue, 24 Sep 2019 03:58:13 -0700 (PDT)
-Received: from localhost.localdomain ([106.51.110.135])
-        by smtp.gmail.com with ESMTPSA id c125sm1953886pfa.107.2019.09.24.03.58.09
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 24 Sep 2019 03:58:12 -0700 (PDT)
-From:   Rishi Gupta <gupt21@gmail.com>
-To:     jic23@kernel.org
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        gregkh@linuxfoundation.org, tglx@linutronix.de,
-        allison@lohutok.net, alexios.zavras@intel.com, angus@akkea.ca,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        hslester96@gmail.com, wsa+renesas@sang-engineering.com,
-        Rishi Gupta <gupt21@gmail.com>
-Subject: [RESEND PATCH v2 3/3] iio: documentation: light: Add veml6030 sysfs documentation
-Date:   Tue, 24 Sep 2019 16:21:58 +0530
-Message-Id: <35614391cf5e79765a6151ce998a213544562a37.1569321085.git.gupt21@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <cover.1569321085.git.gupt21@gmail.com>
-References: <cover.1569321085.git.gupt21@gmail.com>
-In-Reply-To: <cover.1569321085.git.gupt21@gmail.com>
-References: <cover.1569321085.git.gupt21@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=lZCfgGP1XyB56VjKXb0vgJCfPG+fbJNE4C9mm4OIDL8=;
+        b=Iy1FU1fvUpPPU/PehbjDms0Kz/XN/OIejyaStrsDYlshojancrXaynyElcLZvikn1Y
+         dHaCb3Px+rp+viSG8V2wpfQw/1hyHsxV5YoeAqNvbikW2hpNQ/F4EQf2Q7mtXoUtVSOc
+         XuJijzS+9ZgKdU46Ds8tGlRlJL5HPyDpOOGa660kvFkke1po6fGgDkAYE4IUEDaQvhLN
+         EO820NVanOmm5zmyyiBdHxDlqNZQrO06uunQLbKyTEaoFrmgdoWEEEaUov/tgOgwLai5
+         LEfmNnwjZ7Wsk6Dgm8JXM6LapEaMJ2r3ATiNGxDcDfTFmTfSPZD+jpl0Rfkg8V3Tx65M
+         kenw==
+X-Gm-Message-State: APjAAAWfKaJviDVSFxAzDxxMr15nm4QJ5R/RukD9hs/VO6+xeNukdIXE
+        VZ8MeiE+Y538H+Pm65gR2b8=
+X-Google-Smtp-Source: APXvYqxnvMZs3u397EeqN6pvjmkaHFLtDmgCJGRpqFd/4gJKcPKgIlmRR7V9CkxQrewD3cGMlSxlAg==
+X-Received: by 2002:a25:9cc6:: with SMTP id z6mr1660168ybo.262.1569324792843;
+        Tue, 24 Sep 2019 04:33:12 -0700 (PDT)
+Received: from icarus (072-189-084-142.res.spectrum.com. [72.189.84.142])
+        by smtp.gmail.com with ESMTPSA id k1sm377021ywg.49.2019.09.24.04.33.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Sep 2019 04:33:11 -0700 (PDT)
+Date:   Tue, 24 Sep 2019 20:32:58 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Felipe Balbi <felipe.balbi@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        David Lechner <david@lechnology.com>
+Subject: Re: [RFC/PATCHv2 2/2] counter: introduce support for Intel QEP
+ Encoder
+Message-ID: <20190924113128.GA2727@icarus>
+References: <20190917114403.GA8368@icarus>
+ <20190919080305.960198-1-felipe.balbi@linux.intel.com>
+ <20190919080305.960198-2-felipe.balbi@linux.intel.com>
+ <20190922233538.GA3119@icarus>
+ <87tv92xc00.fsf@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87tv92xc00.fsf@gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The driver for veml6030 light sensor provides custom sysfs entries
-used to know parameters supported by the driver and to configure
-sensor like setting power saving mode and persistence etc. This
-commit document them.
+On Tue, Sep 24, 2019 at 12:46:39PM +0300, Felipe Balbi wrote:
+> 
+> Hi,
+> 
+> William Breathitt Gray <vilhelm.gray@gmail.com> writes:
+> > On Thu, Sep 19, 2019 at 11:03:05AM +0300, Felipe Balbi wrote:
+> >> Add support for Intel PSE Quadrature Encoder
+> >> 
+> >> Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
+> >> ---
+> >> 
+> >> Changes since v1:
+> >> 	- Many more private sysfs files converted over to counter interface
+> >> 
+> >> 
+> >> How do you want me to model this device's Capture Compare Mode (see
+> >> below)?
+> >
+> > Hi Felipe,
+> >
+> > I'm CCing Fabien and David as they may be interested in the timestamps
+> > discussion. See below for some ideas I have on implementing this.
+> >
+> >> For the few features which I couldn't find a matching property in
+> >> counter framework, I still leave them as private sysfs files so we can
+> >> discuss how to model them in the framework.
+> >> 
+> >> Do you want Capture Compare to be a new function mode?
+> >> 
+> >> BTW, I know I'm missing a Documentation file documenting sysfs files
+> >> introduced by this driver, I'll do that once we agree how to move all
+> >> other sysfs files to the framework. No worries.
+> >> 
+> >> 
+> >> Details about the controller (do you want this in commit log?):
+> >> 
+> >> 
+> >> Controller has 2 modes of operation: QEP and Capture. Both modes are
+> >> mutually exclusive. We also have a set of maskable interrupts. Further
+> >> details about each mode below.
+> >
+> > I noticed your interrupt handler takes care of a number of different
+> > scenarios. Would you be able to summarize a bit further here the
+> > conditions for this device that cause an interrupt to be fired (watchdog
+> > timeout, FIFO updates, etc.)?
+> >
+> >> Quadrature Encoder Mode
+> >> =======================
+> >> 
+> >> Used to measure rotational speed, direction and angle of rotation of a
+> >> motor shaft. Feature list:
+> >> 
+> >> 	- Quadrature decoder providing counter pulses with x4 count
+> >> 	  resolution and count direction
+> >> 
+> >> 	- 32-bit up/down Position Counter for position measurement
+> >> 
+> >> 	- Two modes of position counter reset:
+> >> 		> Maximum Count (ceiling) to reset the position counter
+> >> 		> Index pulse to reset the position counter
+> >> 
+> >> 	- Watchdog timer functionality for detecting ‘stall’ events
+> >> 
+> >> Capture Compare Mode
+> >> ====================
+> >> 
+> >> Used to measure phase input signal Period or Duty Cycle. Feature List:
+> >> 
+> >> 	- Capture function operates either on phase A or phase B input
+> >> 	  and can be configured to operate on lo/hi or hi/lo or both hi
+> >> 	  and lo transitions.
+> >> 
+> >> 	- Free-running 32-bit counter to be configured to run at greater
+> >>           than or equal to 4x input signal frequency
+> >
+> > So in "Capture Compare" mode, the counter value is just increasing when
+> > a state condition transition occurs. In that case we won't need a new
+> > function mode to represent this behavior since one already exists:
+> > "increase".
+> >
+> > You can add it to your intel_qep_count_functions array like so:
+> >
+> >         [INTEL_QEP_ENCODER_MODE_CAPTURE] =
+> >         COUNTER_COUNT_FUNCTION_INCREASE,
+> >
+> > The various configurations for this mode are just Synapse action modes.
+> > If you want only Phase A, you would set the action mode for Phase A
+> > ("rising edge", "falling edge", or "both edges") and change the action
+> > mode for Phase B to "none"; vice-versa configuration for Phase B instead
+> > of Phase A.
+> >
+> > One thing to keep in mind is that action_set will need to maintain valid
+> > configurations -- so if the user tries to set the action mode for Phase
+> > A to something other than "none", you need to automatically set Phase
+> > B's action mode to "none" (and vice-versa).
+> 
+> interesting, thanks
+> 
+> >> 	- Clock post-scaler to derive the counter clock source from the
+> >> 	  peripheral clock
+> >
+> > I see you already have a "prescaler" extension in your code. Is this
+> > different from the "post-scaler" you mentioned here?
+> 
+> This was probably a brain-fart on my side. It should be post-scaler, but
+> that's only valid for capture compare mode.
 
-Signed-off-by: Rishi Gupta <gupt21@gmail.com>
----
-Changes in v2:
-* Nothing has changed in this file
+In that case you're implementation seems fine for this; perhaps a more
+generic name for that extension might be better such as "scale", but
+I'll decide later.
+ 
+> >> 	- 32B wide FIFO to capture 32-bit timestamps of up to 8
+> >> 	  transition events
+> >
+> > You can implement this as a Count extension called "timestamps" or
+> > similar. What we can do is have a read on this attribute return the
+> > entire FIFO data buffer as unsigned integers, where each timestamp is
+> > deliminated by a space.
+> >
+> > In addition, it may be useful to have another extension called
+> > "timestamps_layout", or something along those lines, that will report
+> > the ordering of the buffer (i.e. whether it's "fifo", "lifo", etc.).
+> >
+> > Would this design work for your needs?
+> 
+> Perhaps it would be best to have a pollable binary sysfs file (meaning,
+> we need to be able to call sysfs_notify() at will) and userspace just
+> receives POLLIN whenever there's data read. Then a read returns an array
+> of e.g. struct counter_event where struct counter_event could be defined
+> as:
+> 
+> 	struct counter_event {
+>         	uint32_t	event_type;
+> 		struct timespec64 timestamp;
+>                 uint8_t		reserved[32];
+>         };
+> 
+> Userspace would do something along the lines of:
+> 
+> 	fd = open("/sys/bus/counter/foo/capture/timestamps",...);
+> 	pollfd[0].fd = fd;
+>         pollfd[0].events = POLLIN;
+>         poll(pollfd, 1, -1);
+> 
+> 	if (pollfd[0].revents & POLLIN) {
+>         	ret = read(fd, events, sizeof(struct counter_event) * 8);
+> 
+> 		for (i = 0; i < ret / sizeof(struct counter_event); i++)
+> 			process_event(events[i]);
+>         }
+>         
+> Or something like that.
 
- .../ABI/testing/sysfs-bus-iio-light-veml6030       | 49 ++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
+One concern is that returning binary data like that isn't friendly for
+human interaction. However, alternatively printing a human-readable
+array would add latency for userspace software that has to interpret it,
+so that would a problem as well. This is something we'll have to think
+more about then.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-light-veml6030 b/Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
-new file mode 100644
-index 0000000..13589c9
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
-@@ -0,0 +1,49 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_psm_available
-+Date:		September 2019
-+KernelVersion:	5.3.1
-+Contact:	Rishi Gupta <gupt21@gmail.com>
-+Description:
-+		Provides list of valid values that can be used to activate a
-+		particular power saving mode in sensor. For ex; 1 means psm
-+		mode 1 and 2 means psm mode 2.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_psm
-+Date:		September 2019
-+KernelVersion:	5.3.1
-+Contact:	Rishi Gupta <gupt21@gmail.com>
-+Description:
-+		Writing '1' will activate power saving mode 1 in sensor.
-+		Similarly, 2 is to activate psm mode 2 and so on.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_period_available
-+Date:		September 2019
-+KernelVersion:	5.3.1
-+Contact:	Rishi Gupta <gupt21@gmail.com>
-+Description:
-+		List of valid values available in multiples of integration time
-+		for which the light intensity must be above the cutoff level
-+		before interrupt is asserted. This refers to persistence values.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_thresh_either_period
-+Date:		September 2019
-+KernelVersion:	5.3.1
-+Contact:	Rishi Gupta <gupt21@gmail.com>
-+Description:
-+		Value in multiple of integration time for which the light intensity must
-+		be above the cutoff level before interrupt is asserted.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_thresh_rising_value
-+Date:		September 2019
-+KernelVersion:	5.3.1
-+Contact:	Rishi Gupta <gupt21@gmail.com>
-+Description:
-+		Raw threshold value from 0 to 0xffffffff. An interrupt will be asserted whenever
-+		light intensity is above this value.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_thresh_falling_value
-+Date:		September 2019
-+KernelVersion:	5.3.1
-+Contact:	Rishi Gupta <gupt21@gmail.com>
-+Description:
-+		Raw threshold value from 0 to 0xffffffff. An interrupt will be asserted whenever
-+		light intensity is below this value.
--- 
-2.7.4
+> I could, also, remove this part from the driver for now, so we can
+> discuss how the capture-compare buffer read would look like. At least we
+> could get QDP feature merged while we come to a consensus about capture
+> compare.
+> 
+> What do you think?
+> 
+> -- 
+> balbi
 
+That sounds like a good idea. Most of this driver can be implemented
+using the existing Counter subsystem components, so we can do as you
+suggest and focus on just getting this driver merged in with the
+functionality it can for now.
+
+After it's accepted and merged, we can turn our attention to the new
+extension features such as the timestamps buffer return. This will make
+it easier for us to discuss ideas since we won't have to worry about
+merging in nonrelated functionality.
+
+William Breathitt Gray

@@ -2,214 +2,223 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EB73BC1A9
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 08:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE04ABC525
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 11:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440516AbfIXGSO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Sep 2019 02:18:14 -0400
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:39737 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387676AbfIXGSN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Sep 2019 02:18:13 -0400
-Received: by mail-yw1-f67.google.com with SMTP id n11so238813ywn.6
-        for <linux-iio@vger.kernel.org>; Mon, 23 Sep 2019 23:18:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3G5X7xVQ9z26a9D0p2+J0HqtOzGnuzMJPu51RAv6up0=;
-        b=iiRVMU9JjH7vBpMIN8KVNLbiMGlX0pkZg1y9/Tz6a3oOEwmUVSfXtaQCKKO5/CdLQe
-         zNHhcrYVabeQA8vdXsP7cLh8NPvXjM3nIcwXavXeuLATwZIYqB2Nt+xqxYfS8nqe/0KB
-         kdT9EpjLT3bIYQlxQYBuD1Qp51lLkrRztglqLdNhisXmwbOWES+9tjNqVIEDp2ZoEP7l
-         wSrcAZWEy2x3I4v7HR7D2/3HTG4NzyqGXC+RYuCRzg5AX6QllZ06cg8VzgCnr8ay1nn5
-         N/qW40dk6nwa2kaVCziO+pbVussxQgefuQ0hqhGdieZus/Si3WsGsLJaRhbQiVrImx2U
-         1HJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3G5X7xVQ9z26a9D0p2+J0HqtOzGnuzMJPu51RAv6up0=;
-        b=AP+m33usqv66QPT1bJuO9J6StuTTpsbnJiHPikoI+BKJY8aIF0b7X5dGhVZRWaWCqM
-         OBUR2plQMcOnk8kpBWcY1C18R/iLpijvE0PFGGU4yHpPioKiEZX0A3ucUWu52ehjlmA6
-         Mo3ha03UqVAMKzC6JmGid3L3RTNO/uW/hnHGvgieyercbThyu77/tjUYJlz2B/puOHa4
-         ZXykK5I8U8GswZG/FVxA7nQlkUSJoa5PAQOTSPmul7404LiAKS8N5WhNC1t/Bz5E8SiG
-         icQ9qPx3dLpQDJPAnjpjajhm3dxLwTopeioBqkkaApisVCu6zEYb20xxm8yeOTX3ImjW
-         hrmQ==
-X-Gm-Message-State: APjAAAWCk/pi4mfSOCjzpwpc8SlrvHSEWb7piDIWbEHjvd67073iNHrX
-        dpmEbdyuWT8aaEvdGAHsXjnw+YTJB7JFM1vnEE7ui57p
-X-Google-Smtp-Source: APXvYqy9Z3YeU2jFG6tVCYwhtDb2tjueILprRTR0FfOWGhACEvSUlRr+vKCs1MNCOrLYu9T6waSvlGJo+bX6PLA7W6U=
-X-Received: by 2002:a81:a405:: with SMTP id b5mr758142ywh.2.1569305892745;
- Mon, 23 Sep 2019 23:18:12 -0700 (PDT)
+        id S2395278AbfIXJqq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Sep 2019 05:46:46 -0400
+Received: from mga01.intel.com ([192.55.52.88]:63010 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2392592AbfIXJqp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 24 Sep 2019 05:46:45 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2019 02:46:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,543,1559545200"; 
+   d="asc'?scan'208";a="190972164"
+Received: from pipin.fi.intel.com (HELO pipin) ([10.237.72.175])
+  by orsmga003.jf.intel.com with ESMTP; 24 Sep 2019 02:46:43 -0700
+From:   Felipe Balbi <felipe.balbi@linux.intel.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-iio@vger.kernel.org,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        David Lechner <david@lechnology.com>
+Subject: Re: [RFC/PATCHv2 2/2] counter: introduce support for Intel QEP Encoder
+In-Reply-To: <20190922233538.GA3119@icarus>
+References: <20190917114403.GA8368@icarus> <20190919080305.960198-1-felipe.balbi@linux.intel.com> <20190919080305.960198-2-felipe.balbi@linux.intel.com> <20190922233538.GA3119@icarus>
+Date:   Tue, 24 Sep 2019 12:46:39 +0300
+Message-ID: <87tv92xc00.fsf@gmail.com>
 MIME-Version: 1.0
-References: <CALAE=UCTTOhvUofvk1ZrLZ2aNoSMYyFq8dHoaDxRc2aOdbV8jA@mail.gmail.com>
- <20190920064214.GA31900@lore-desk-wlan.lan> <CALAE=UDmg_+q=zt9Z6D5BrsnpFXi7dVMdTMVdHk2SMXCtxoJTw@mail.gmail.com>
- <20190920215542.GA16493@localhost.localdomain> <CALAE=UBH8ESTkXzrzK2_Tvt-vzVeOiewJFi_g4g2NsoUqwge1w@mail.gmail.com>
- <20190921080651.GA15821@localhost.localdomain> <CALAE=UBjNKZy=kuGDCuwEQ_-jSY==Bc7_1R9w_gaNmuW_23UqQ@mail.gmail.com>
-In-Reply-To: <CALAE=UBjNKZy=kuGDCuwEQ_-jSY==Bc7_1R9w_gaNmuW_23UqQ@mail.gmail.com>
-From:   Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Date:   Tue, 24 Sep 2019 08:18:01 +0200
-Message-ID: <CAA2SeNK1qcdxqrK0S4EE0JUmAQYLmFE5JbdeiJHRAhGjJ-qzxg@mail.gmail.com>
-Subject: Re: LSM9DS1 testing with st_lsm6dsx driver
-To:     Bobby Jones <rjones@gateworks.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+
+Hi,
+
+William Breathitt Gray <vilhelm.gray@gmail.com> writes:
+> On Thu, Sep 19, 2019 at 11:03:05AM +0300, Felipe Balbi wrote:
+>> Add support for Intel PSE Quadrature Encoder
+>>=20
+>> Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
+>> ---
+>>=20
+>> Changes since v1:
+>> 	- Many more private sysfs files converted over to counter interface
+>>=20
+>>=20
+>> How do you want me to model this device's Capture Compare Mode (see
+>> below)?
 >
-> > > > > > LSM9DS1 does not support hw FIFO for the moment. Are you trying to enable
-> > > > > > buffered reading?
-> > > > >
-> > > > > I am not manually interacting with the device at all when this
-> > > > > exception occurs. This happens during the driver probe.
-> > > > >
-> > > > > > Could you please try if the following patch helps? (just compiled)
-> > > > >
-> > > > > I no longer receive the exception with this patch and it makes sense, thanks.
-> > > >
-> > > > Hi Bobby,
-> > > >
-> > > > thx a lot for testing. Could you please try to drop the previous patch and
-> > > > apply the following one? Does it fix the issue as well?
-> > >
-> > > No problem, happy to help. I just tested, and unfortunately the issue
-> > > is still present with this patch.
-> >
-> > re-looking at the code this patch will actually does not anything since in the
-> > current implementation st_lsm6dsx_handler_irq will return IRQ_NONE and the
-> > thread handler will not be run. Anyway since st_lsm6dsx_handler_irq will be
-> > removed soon I will respin this patch ontop of Sean series.
-> >
-> > > I gave the datasheet and the hardware reference manual of the
-> > > connected CPU a closer look and suspected a problem with my pin
-> > > config. However even after various combinations of pull ups/downs and
-> > > IRQ_TYPE_LEVEL_LOW/IRQ_TYPE_LEVEL_HIGH the same exception occurs, so I
-> > > don't think that there's an issue with pin config stopping the
-> > > interrupt line from being deasserted.
-> >
-> > are you able to monitor the line activity through an oscilloscope?
-> > The issue is the irq line is never asserted and the kernel complains about
-> > lot of interrupts not managed
-> >
-> > Looking at the datasheet, LSM9DS1 does not support IRQ_TYPE_LEVEL_LOW.
-> > ST_LSM6DSX_REG_HLACTIVE_ADDR and ST_LSM6DSX_REG_PP_OD_ADDR registers are
-> > actually not defined for LSM9DS1 and I will move them in hw_settings map.
+> Hi Felipe,
 >
-> The datasheet I have for the LSM9DS1 shows a HLACTIVE bit in the
-> CTRL_REG8 (0x22) register, I thought that indicated support for both
-> high and low IRQ types.
-
-Yes, right. I will update the series. Looking at the datasheet even
-the BDU register definition seems wrong. I will fix it as well.
-
-> Either way, after applying your recent (Sep 22nd) patches to this
-> driver and changing my device tree node I have no kernel exception and
-> the iio device enumerates as normal. For anyone curious my device tree
-> node is now:
+> I'm CCing Fabien and David as they may be interested in the timestamps
+> discussion. See below for some ideas I have on implementing this.
 >
-
-What happen if you set the irq line active high? Does the issue occur?
-
-Regards,
-Lorenzo
-
-> lsm9ds1_ag@6a {
->   compatible = "st,lsm9ds1-imu";
->   reg = <0x6a>;
->   st,drdy-int-pin = <1>;
->   pinctrl-names = "default";
->   pinctrl-0 = <&pinctrl_acc_gyro>;
->   interrupt-parent = <&gpio7>;
->   interrupts = <13 IRQ_TYPE_EDGE_RISING>;
-> };
+>> For the few features which I couldn't find a matching property in
+>> counter framework, I still leave them as private sysfs files so we can
+>> discuss how to model them in the framework.
+>>=20
+>> Do you want Capture Compare to be a new function mode?
+>>=20
+>> BTW, I know I'm missing a Documentation file documenting sysfs files
+>> introduced by this driver, I'll do that once we agree how to move all
+>> other sysfs files to the framework. No worries.
+>>=20
+>>=20
+>> Details about the controller (do you want this in commit log?):
+>>=20
+>>=20
+>> Controller has 2 modes of operation: QEP and Capture. Both modes are
+>> mutually exclusive. We also have a set of maskable interrupts. Further
+>> details about each mode below.
 >
-> >
-> > @Jonathan: do you prefer this patch to be ontop of Sean's series?
-> >
-> > Regards,
-> > Lorenzo
-> >
-> > >
-> > > >
-> > > > iio: imu: st_lsm6dsx: check read_fifo pointer in st_lsm6dsx_handler_thread
-> > > >
-> > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > ---
-> > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 3 +++
-> > > >  1 file changed, 3 insertions(+)
-> > > >
-> > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > > > index b0f3da1976e4..f4fd4842bd79 100644
-> > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > > > @@ -666,6 +666,9 @@ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
-> > > >         struct st_lsm6dsx_hw *hw = private;
-> > > >         int count;
-> > > >
-> > > > +       if (!hw->settings->fifo_ops.read_fifo)
-> > > > +               return IRQ_NONE;
-> > > > +
-> > > >         mutex_lock(&hw->fifo_lock);
-> > > >         count = hw->settings->fifo_ops.read_fifo(hw);
-> > > >         mutex_unlock(&hw->fifo_lock);
-> > > > --
-> > > > 2.21.0
-> > > >
-> > > > >
-> > > > > For context I'm working with a board that has every data ready and
-> > > > > interrupt signal connected to the LSM9DS1. Could you clarify what the
-> > > > > proper usage of the "st,drdy-int-pin" would be in this case and
-> > > > > whether or not I need more than one interrupt called out in my device
-> > > > > tree node?
-> > > > > I'm not really understanding how they're currently being utilized for
-> > > > > this device in the driver.
-> > > >
-> > > > For the moment irq line in lsm9ds1 (acc/gyro) is not used at all,
-> > > > so you can omit the "st,drdy-int-pin" property
-> > > >
-> > > > >
-> > > > > Also, I know support for this device was added recently and the combo
-> > > > > device hardware FIFO is complex, but is support for this something
-> > > > > that's currently being worked on?
-> > > >
-> > > > It is actually in my ToDo list but I have no this device at the moment, so
-> > > > patches are welcome :)
-> > > >
-> > > > Regards,
-> > > > Lorenzo
-> > > >
-> > > > >
-> > > > > Thanks,
-> > > > > Bobby Jones
-> > > > >
-> > > > > > Regards,
-> > > > > > Lorenzo
-> > > > > >
-> > > > > > iio: imu: st_lsm6dsx: do not configure the fifo if not supported
-> > > > > >
-> > > > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > > > ---
-> > > > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
-> > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > >
-> > > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > > index b65a6ca775e0..90a0e5ce44e5 100644
-> > > > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > > @@ -1572,7 +1572,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
-> > > > > >                         return err;
-> > > > > >         }
-> > > > > >
-> > > > > > -       if (hw->irq > 0) {
-> > > > > > +       if (hw->irq > 0 && hw->settings->fifo_ops.update_fifo) {
-> > > > > >                 err = st_lsm6dsx_fifo_setup(hw);
-> > > > > >                 if (err < 0)
-> > > > > >                         return err;
-> > > > > > --
-> > > > > > 2.21.0
-> > > > > >
-> > > > > >
+> I noticed your interrupt handler takes care of a number of different
+> scenarios. Would you be able to summarize a bit further here the
+> conditions for this device that cause an interrupt to be fired (watchdog
+> timeout, FIFO updates, etc.)?
+>
+>> Quadrature Encoder Mode
+>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>=20
+>> Used to measure rotational speed, direction and angle of rotation of a
+>> motor shaft. Feature list:
+>>=20
+>> 	- Quadrature decoder providing counter pulses with x4 count
+>> 	  resolution and count direction
+>>=20
+>> 	- 32-bit up/down Position Counter for position measurement
+>>=20
+>> 	- Two modes of position counter reset:
+>> 		> Maximum Count (ceiling) to reset the position counter
+>> 		> Index pulse to reset the position counter
+>>=20
+>> 	- Watchdog timer functionality for detecting =E2=80=98stall=E2=80=99 ev=
+ents
+>>=20
+>> Capture Compare Mode
+>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>=20
+>> Used to measure phase input signal Period or Duty Cycle. Feature List:
+>>=20
+>> 	- Capture function operates either on phase A or phase B input
+>> 	  and can be configured to operate on lo/hi or hi/lo or both hi
+>> 	  and lo transitions.
+>>=20
+>> 	- Free-running 32-bit counter to be configured to run at greater
+>>           than or equal to 4x input signal frequency
+>
+> So in "Capture Compare" mode, the counter value is just increasing when
+> a state condition transition occurs. In that case we won't need a new
+> function mode to represent this behavior since one already exists:
+> "increase".
+>
+> You can add it to your intel_qep_count_functions array like so:
+>
+>         [INTEL_QEP_ENCODER_MODE_CAPTURE] =3D
+>         COUNTER_COUNT_FUNCTION_INCREASE,
+>
+> The various configurations for this mode are just Synapse action modes.
+> If you want only Phase A, you would set the action mode for Phase A
+> ("rising edge", "falling edge", or "both edges") and change the action
+> mode for Phase B to "none"; vice-versa configuration for Phase B instead
+> of Phase A.
+>
+> One thing to keep in mind is that action_set will need to maintain valid
+> configurations -- so if the user tries to set the action mode for Phase
+> A to something other than "none", you need to automatically set Phase
+> B's action mode to "none" (and vice-versa).
+
+interesting, thanks
+
+>> 	- Clock post-scaler to derive the counter clock source from the
+>> 	  peripheral clock
+>
+> I see you already have a "prescaler" extension in your code. Is this
+> different from the "post-scaler" you mentioned here?
+
+This was probably a brain-fart on my side. It should be post-scaler, but
+that's only valid for capture compare mode.
+
+>> 	- 32B wide FIFO to capture 32-bit timestamps of up to 8
+>> 	  transition events
+>
+> You can implement this as a Count extension called "timestamps" or
+> similar. What we can do is have a read on this attribute return the
+> entire FIFO data buffer as unsigned integers, where each timestamp is
+> deliminated by a space.
+>
+> In addition, it may be useful to have another extension called
+> "timestamps_layout", or something along those lines, that will report
+> the ordering of the buffer (i.e. whether it's "fifo", "lifo", etc.).
+>
+> Would this design work for your needs?
+
+Perhaps it would be best to have a pollable binary sysfs file (meaning,
+we need to be able to call sysfs_notify() at will) and userspace just
+receives POLLIN whenever there's data read. Then a read returns an array
+of e.g. struct counter_event where struct counter_event could be defined
+as:
+
+	struct counter_event {
+        	uint32_t	event_type;
+		struct timespec64 timestamp;
+                uint8_t		reserved[32];
+        };
+
+Userspace would do something along the lines of:
+
+	fd =3D open("/sys/bus/counter/foo/capture/timestamps",...);
+	pollfd[0].fd =3D fd;
+        pollfd[0].events =3D POLLIN;
+        poll(pollfd, 1, -1);
+
+	if (pollfd[0].revents & POLLIN) {
+        	ret =3D read(fd, events, sizeof(struct counter_event) * 8);
+
+		for (i =3D 0; i < ret / sizeof(struct counter_event); i++)
+			process_event(events[i]);
+        }
+=20=20=20=20=20=20=20=20
+Or something like that.
+
+I could, also, remove this part from the driver for now, so we can
+discuss how the capture-compare buffer read would look like. At least we
+could get QDP feature merged while we come to a consensus about capture
+compare.
+
+What do you think?
+
+=2D-=20
+balbi
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl2J5f8ACgkQzL64meEa
+mQa/QBAAiQFvXgs+yhs7fMe7bL39eb6k+Kh8WggCK+fiPOzqcQaZ0B6h32aBNj6H
+YHMbzR28C0PzSTvAbrH8fyGtPx/Hvw17n645LABc9dNv4J6mIXohqILJWyHyl4iH
+k6i1UGOdqQnjqKi5oKwq7XsD+jqco9SZ+rnTJxIl1jE6CTClLeWYSzRr+1hL0QLt
+Fj+udj2/vXXiAVXcyTArGuR9TTftTP6m2hwPzahgUU/KffR+tQsPdUmSTedaK3FN
+YjVUJ1EOPzwtfpNhpqvumhCBenHiF5XjLM+2mp/8bHhy4Gf3+KF5ccsCBQ47NFDO
+S1Z/8ENCQRo/PLzhLPSstf0X5jOgZz+pU7+98y7cu7XbF90w+UNhsEcJYc1Hig4D
+GcklIWbrGdnMUTKGNBe62PiuNXJBcuERf3Jf/HFAHG5xiKuU2nWWA8SjnxZFDV+t
+GjminllgtLgGqiG/qfAdPu5Id299Hp1BVwUPx4+wLoPniGdoWsY/9ePCLf7Hw25z
+O5EvWbzbPyfeBGq/fGjoIfQBwVpcJHoNinEzOPZ63C5xX5hoF88+PI/efoA2QErS
+8ZnVEBIODxTiB/Es6bnX2GvvYZTmIN9eBWZQPxNN2BT5IkcMcQZxUEJJvWgN5ycV
+6Xy2Dss0ZMLR130G5jNmBzYndg8T6dOb4cVfnl/hEailqfWMDEE=
+=7PGz
+-----END PGP SIGNATURE-----
+--=-=-=--

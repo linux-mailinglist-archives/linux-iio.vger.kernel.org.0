@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9FE5BC610
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 12:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4C3BC613
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 12:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438881AbfIXK6I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Sep 2019 06:58:08 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:38004 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388652AbfIXK6I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Sep 2019 06:58:08 -0400
-Received: by mail-pl1-f195.google.com with SMTP id w10so840883plq.5;
-        Tue, 24 Sep 2019 03:58:07 -0700 (PDT)
+        id S2395114AbfIXK6O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Sep 2019 06:58:14 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:43987 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388652AbfIXK6O (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Sep 2019 06:58:14 -0400
+Received: by mail-pg1-f195.google.com with SMTP id v27so1103677pgk.10;
+        Tue, 24 Sep 2019 03:58:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :in-reply-to:references;
-        bh=1uLcprepoBdWyKW9LylPGoN3ylDuBDWdUhK2CKVWl/8=;
-        b=KknHRWgSeyHKgIKK/bYF+T0DhZkIo92kEM4AP/3AH/tXdMiX6MWqA9TGuLlcRITZB4
-         QUAw1NGBSk0t0HYyxcRVVhwS7vWrawmhQ9/vuLutYi1iG9U8r8huiX26swCB+uKPj+Mh
-         JUMObwMX3ZUcVVYYOnRWI8r8JA6WkbOYkgeq2j2zbKqbZ6XTo2+sZQoeVtMsw6WmdJ1T
-         GqOkbeaUiIAP11xXNOU8JaAsmG7ylR4eAEP0d5Emv4L775n4NbqXUsSbXIa+ns4sHPRt
-         D4xWHHfQI8qgZKoZRG5UfcComUG4sWrbAMo8WexQCWmP3AYarl7/NSqQ3/pS8rB0ASo5
-         f3wQ==
+        bh=0d4AYNtRkLfpkDim1W4lc4CifwLMiEr/+iKYtJT4Oxw=;
+        b=SNogPM1q0Frg3ofEOIbzuKjAsn9fM85Ga0XT+07KBQBIsm3ODaiWzScBEJuJSJiUxq
+         pcflkTkN5Km1oZPWwCChI9r3ekxI9KTs+3TxKI3i5UzqGZEBDMkltcAV5V3q5k45aJY3
+         tHnu3U5gNw/K2FpT2lkkz6S06LZ0JUx6sXHyKy7XTIr/M4sVKL1dXq12J55shoWdN23z
+         ESGi6ngX00V9SvtrmdVRL107HJ/0UMCo0//hacU0g+YW1JfP4ZeTSnNsG2h/Cud2RPun
+         oc8JJfE1rf/Qu7XtViNGWvLm6dseO9D/uf3gQ977Jc7ZfBLtbMPqzsZ/VJfU5ayyKe7u
+         22/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=1uLcprepoBdWyKW9LylPGoN3ylDuBDWdUhK2CKVWl/8=;
-        b=mjfz9TJIWkwle0nhwAnLAXKvHFfVFPAGE/kV5eFw+K+quuehJ3HPOo+ySq7cgvMdGS
-         RkSTQbxmiD3AH8exyiqvZPYAKA1xl/ShlhAq/4/bvW0raFdid+ML0TFMTPQtY/KsrvkU
-         MvSwVf8cTQeEc8wpKZe0o1kj9pnI3Ezm96WFLSMx6hY1QxX78CleP3d8s1zW+m2TMK4k
-         Y4Pe+HlUib4+ic1cPn7OuzS+8nk2W0P4618pSCpvXxwDqvgAlo8xqnln9uDfGJRBrtJ3
-         J6pfytyn+nll91tQPuKCl1hKIaHUSFsVtG/kMp5ILl95OV3VlyMR0WeU/mjOYZ1E/txS
-         8+HQ==
-X-Gm-Message-State: APjAAAXv3mCCg5zS6/XuHtdh9zx83/llI+WwKvzUHfA10sPiEciDi0yr
-        MVhZ75D3a6PKYNdf0GC8bOA=
-X-Google-Smtp-Source: APXvYqxnJrvXqL382NC5KpQCcd7G7BJPv+bDVB4njdI+jp4HRxX9mbXKRETglZ//GrgiJatj/iKN/Q==
-X-Received: by 2002:a17:902:169:: with SMTP id 96mr2150622plb.297.1569322687320;
-        Tue, 24 Sep 2019 03:58:07 -0700 (PDT)
+        bh=0d4AYNtRkLfpkDim1W4lc4CifwLMiEr/+iKYtJT4Oxw=;
+        b=nD6Lin5kbo4bGc4g76vO4YOmx0Faec7QTY1/UJFBA35WswDsAJhyDWSR1wxjHa7PHZ
+         1PsqKPkwjy9Lcv7qqdxsRJR2IT/0m29PpS7lI1ZCalyp56k5AhVCGuAGyfbbP4kD6vPz
+         nQ38H0xK04PcS/mtEHcqZUwnLfGm9B9eYKQeFcr5QHUi+fhFOVmszNynYEYxudZ0SdBM
+         UJShdkOe/UHbQ/fP8DdPoDNPL5CpVql3PVk2kActs9gljNCW/htvjJqFgEUVnie9c2hz
+         1I73MAUARC6WQuxbO6NFd3Xb1yrJQt9+xulerRHlAkCDqAtz5TjyPFnSIWxntHtW6qJS
+         ciJQ==
+X-Gm-Message-State: APjAAAULp+j+8X77Eb/g2F1QqpjbCJrq996wwEPnrd8ymf25yAkgd8mB
+        U2MhNDWDViFXRuKol/oWZmw=
+X-Google-Smtp-Source: APXvYqyKHPXFXmai4Q0lnCtL4IQ7IiJNAn+Qr9TTek57cEzbVIRxJFJWcgkNCrBy5aZETYHGsbSYrA==
+X-Received: by 2002:a62:4e0f:: with SMTP id c15mr2689062pfb.42.1569322693271;
+        Tue, 24 Sep 2019 03:58:13 -0700 (PDT)
 Received: from localhost.localdomain ([106.51.110.135])
-        by smtp.gmail.com with ESMTPSA id c125sm1953886pfa.107.2019.09.24.03.58.03
+        by smtp.gmail.com with ESMTPSA id c125sm1953886pfa.107.2019.09.24.03.58.09
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 24 Sep 2019 03:58:06 -0700 (PDT)
+        Tue, 24 Sep 2019 03:58:12 -0700 (PDT)
 From:   Rishi Gupta <gupt21@gmail.com>
 To:     jic23@kernel.org
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
@@ -52,9 +52,9 @@ Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         hslester96@gmail.com, wsa+renesas@sang-engineering.com,
         Rishi Gupta <gupt21@gmail.com>
-Subject: [RESEND PATCH v2 2/3] dt-bindings: iio: light: add veml6030 ALS bindings
-Date:   Tue, 24 Sep 2019 16:21:57 +0530
-Message-Id: <b9d5cb134c7c2c7351025a0b556148bca23f302f.1569321085.git.gupt21@gmail.com>
+Subject: [RESEND PATCH v2 3/3] iio: documentation: light: Add veml6030 sysfs documentation
+Date:   Tue, 24 Sep 2019 16:21:58 +0530
+Message-Id: <35614391cf5e79765a6151ce998a213544562a37.1569321085.git.gupt21@gmail.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <cover.1569321085.git.gupt21@gmail.com>
 References: <cover.1569321085.git.gupt21@gmail.com>
@@ -65,86 +65,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This commit adds device tree bindings for veml6030 ambient
-light sensor.
+The driver for veml6030 light sensor provides custom sysfs entries
+used to know parameters supported by the driver and to configure
+sensor like setting power saving mode and persistence etc. This
+commit document them.
 
 Signed-off-by: Rishi Gupta <gupt21@gmail.com>
 ---
 Changes in v2:
-* Corrected grammatical mistake from 'is' to 'are' in description of bindings
+* Nothing has changed in this file
 
- .../devicetree/bindings/iio/light/veml6030.yaml    | 62 ++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/light/veml6030.yaml
+ .../ABI/testing/sysfs-bus-iio-light-veml6030       | 49 ++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
 
-diff --git a/Documentation/devicetree/bindings/iio/light/veml6030.yaml b/Documentation/devicetree/bindings/iio/light/veml6030.yaml
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-light-veml6030 b/Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
 new file mode 100644
-index 0000000..969b314
+index 0000000..13589c9
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/light/veml6030.yaml
-@@ -0,0 +1,62 @@
-+# SPDX-License-Identifier: GPL-2.0+
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/light/veml6030.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
+@@ -0,0 +1,49 @@
++What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_psm_available
++Date:		September 2019
++KernelVersion:	5.3.1
++Contact:	Rishi Gupta <gupt21@gmail.com>
++Description:
++		Provides list of valid values that can be used to activate a
++		particular power saving mode in sensor. For ex; 1 means psm
++		mode 1 and 2 means psm mode 2.
 +
-+title: VEML6030 Ambient Light Sensor (ALS)
++What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_psm
++Date:		September 2019
++KernelVersion:	5.3.1
++Contact:	Rishi Gupta <gupt21@gmail.com>
++Description:
++		Writing '1' will activate power saving mode 1 in sensor.
++		Similarly, 2 is to activate psm mode 2 and so on.
 +
-+maintainers:
-+  - Rishi Gupta <gupt21@gmail.com>
++What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_period_available
++Date:		September 2019
++KernelVersion:	5.3.1
++Contact:	Rishi Gupta <gupt21@gmail.com>
++Description:
++		List of valid values available in multiples of integration time
++		for which the light intensity must be above the cutoff level
++		before interrupt is asserted. This refers to persistence values.
 +
-+description: |
-+  Bindings for the ambient light sensor veml6030 from Vishay
-+  Semiconductors over an i2c interface.
++What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_thresh_either_period
++Date:		September 2019
++KernelVersion:	5.3.1
++Contact:	Rishi Gupta <gupt21@gmail.com>
++Description:
++		Value in multiple of integration time for which the light intensity must
++		be above the cutoff level before interrupt is asserted.
 +
-+  Irrespective of whether interrupt is used or not, application
-+  can get the ALS and White channel reading from IIO raw interface.
++What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_thresh_rising_value
++Date:		September 2019
++KernelVersion:	5.3.1
++Contact:	Rishi Gupta <gupt21@gmail.com>
++Description:
++		Raw threshold value from 0 to 0xffffffff. An interrupt will be asserted whenever
++		light intensity is above this value.
 +
-+  If the interrupts are used, application will receive an IIO event
-+  whenever configured threshold is crossed.
-+
-+  Specifications about the sensor can be found at:
-+    https://www.vishay.com/docs/84366/veml6030.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - vishay,veml6030
-+
-+  reg:
-+    description:
-+      I2C address of the device. If the ADDR pin on veml6030
-+      is pulled up, this address is 0x48. If the ADDR pin is
-+      pulled down, this address is 0x10.
-+    maxItems: 1
-+
-+  interrupts:
-+    description:
-+      interrupt mapping for IRQ. Configure with IRQ_TYPE_LEVEL_LOW.
-+      Refer to interrupt-controller/interrupts.txt for generic
-+      interrupt client node bindings.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        light-sensor@10 {
-+                compatible = "vishay,veml6030";
-+                reg = <0x10>;
-+                interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
-+        };
-+    };
-+...
++What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_thresh_falling_value
++Date:		September 2019
++KernelVersion:	5.3.1
++Contact:	Rishi Gupta <gupt21@gmail.com>
++Description:
++		Raw threshold value from 0 to 0xffffffff. An interrupt will be asserted whenever
++		light intensity is below this value.
 -- 
 2.7.4
 

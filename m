@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B45CBBC92E
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 15:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE784BC931
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 15:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406407AbfIXNwS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Sep 2019 09:52:18 -0400
-Received: from comms.puri.sm ([159.203.221.185]:59816 "EHLO comms.puri.sm"
+        id S2391003AbfIXNwq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Sep 2019 09:52:46 -0400
+Received: from comms.puri.sm ([159.203.221.185]:59852 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726915AbfIXNwR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 24 Sep 2019 09:52:17 -0400
+        id S1726915AbfIXNwp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 24 Sep 2019 09:52:45 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 8C22FE0306;
-        Tue, 24 Sep 2019 06:52:16 -0700 (PDT)
+        by comms.puri.sm (Postfix) with ESMTP id 74E1FE030B;
+        Tue, 24 Sep 2019 06:52:45 -0700 (PDT)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id JGJY7xt4D1fQ; Tue, 24 Sep 2019 06:52:15 -0700 (PDT)
-Subject: Re: [PATCH 2/3] iio: imu: st_lsm6dsx: do not access
- active-low/open-drain regs if not supported
+        with ESMTP id Rq9raRg9VLSp; Tue, 24 Sep 2019 06:52:44 -0700 (PDT)
+Subject: Re: [PATCH 3/3] iio: imu: st_lsm6dsx: add sanity check for read_fifo
+ pointer
 To:     Lorenzo Bianconi <lorenzo@kernel.org>, jic23@kernel.org
 Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org,
         rjones@gateworks.com
 References: <cover.1569143551.git.lorenzo@kernel.org>
- <9c8f80bf1b45e0144536220826558ff3b0bc18f7.1569143551.git.lorenzo@kernel.org>
+ <1af639097dd0dd01d991154dba0f3d56e3ed8333.1569143551.git.lorenzo@kernel.org>
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
 Openpgp: preference=signencrypt
 Autocrypt: addr=martin.kepplinger@puri.sm; keydata=
@@ -131,11 +131,11 @@ Autocrypt: addr=martin.kepplinger@puri.sm; keydata=
  4t1RG8Nxma/hJwwu1zRNsFK55Q/8Nlukc1WI1U+iF+EmpjZVfjFl9P9X2ArrX6mZfOgUipiY
  5VqX5Dys8s44RkFWa02WJygLuO9YUb/P+g8eSbmSYAwp2Gpzcdww63kTLv56uk32jnpDLcYD
  WG//KA68tPVBR2xhy7Fp+qAa
-Message-ID: <929830d1-962d-55ea-e5bf-bf0a53f2fc5f@puri.sm>
-Date:   Tue, 24 Sep 2019 15:52:13 +0200
+Message-ID: <6063222b-aaa0-637d-8f1d-d531d0aa064f@puri.sm>
+Date:   Tue, 24 Sep 2019 15:52:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
-In-Reply-To: <9c8f80bf1b45e0144536220826558ff3b0bc18f7.1569143551.git.lorenzo@kernel.org>
+In-Reply-To: <1af639097dd0dd01d991154dba0f3d56e3ed8333.1569143551.git.lorenzo@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -145,19 +145,14 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 22.09.19 11:18, Lorenzo Bianconi wrote:
-> Move active low and open drain register definitions in hw_settings
-> register map in order to avoid to access them if the sensor does not
-> support them
+> Check read_fifo pointer before using it since we can't assume it
+> is always set adding new sensors
 > 
-> Fixes: 52f4b1f19679 ("iio: imu: st_lsm6dsx: add support for accel/gyro unit of lsm9ds1")
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  2 +
->  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 29 ++++++-----
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 48 +++++++++++++++++++
->  3 files changed, 67 insertions(+), 12 deletions(-)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
 
 Tested-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-
 

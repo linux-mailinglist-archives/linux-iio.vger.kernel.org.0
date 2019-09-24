@@ -2,223 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE04ABC525
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 11:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2773BBC607
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 12:57:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395278AbfIXJqq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Sep 2019 05:46:46 -0400
-Received: from mga01.intel.com ([192.55.52.88]:63010 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392592AbfIXJqp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 24 Sep 2019 05:46:45 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Sep 2019 02:46:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,543,1559545200"; 
-   d="asc'?scan'208";a="190972164"
-Received: from pipin.fi.intel.com (HELO pipin) ([10.237.72.175])
-  by orsmga003.jf.intel.com with ESMTP; 24 Sep 2019 02:46:43 -0700
-From:   Felipe Balbi <felipe.balbi@linux.intel.com>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-iio@vger.kernel.org,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        David Lechner <david@lechnology.com>
-Subject: Re: [RFC/PATCHv2 2/2] counter: introduce support for Intel QEP Encoder
-In-Reply-To: <20190922233538.GA3119@icarus>
-References: <20190917114403.GA8368@icarus> <20190919080305.960198-1-felipe.balbi@linux.intel.com> <20190919080305.960198-2-felipe.balbi@linux.intel.com> <20190922233538.GA3119@icarus>
-Date:   Tue, 24 Sep 2019 12:46:39 +0300
-Message-ID: <87tv92xc00.fsf@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+        id S2389971AbfIXK5q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Sep 2019 06:57:46 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:35093 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406623AbfIXK5q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Sep 2019 06:57:46 -0400
+Received: by mail-pf1-f196.google.com with SMTP id 205so1137585pfw.2;
+        Tue, 24 Sep 2019 03:57:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=qlJPjtqwH4SH4+kSPRq33RCq3tnW7zeL3j/StA+vARE=;
+        b=VAqeqQfs5vp8XcbvrzPXOHLl9wsuwAigfKHOkb7U0V2zK7BxUFOcXaPEps0+4Hf7gY
+         ckR+vHTaPFN58C0YhPLLi9BJ7aGmt3IMSbFVt2MKyt7dA6x3U+RNV6AUydLpOksvcAvV
+         hUiuKjMFRtNToW5jMRJUIEaivWgehDkCd/ftgXNa5VbnK7ZyNy/T8aynJ3N5HhPlzeRg
+         u4mh8XwqP7cnPKP1lTz7zR+pN35/4Y/yBVbmDy5Diphwjrkc3TJhMcsXzwIhTnlquw2C
+         DLF5Y03beyk5FVCSyB3qWWHi3qi1eHBCd4pn55fwCNZzc4lBasIetioc6jONHnuOJ53z
+         7zCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=qlJPjtqwH4SH4+kSPRq33RCq3tnW7zeL3j/StA+vARE=;
+        b=Er5qfXvIpVoUqbXDw/dM+JoA2GlHSUZFFY2Gx/NMCH3blPHwnRDHVmpd5dYfQ37T/2
+         msgWNGmQomi6HF1aCNyG0cVB61eqBZKtPrTi/c4V4Fvvki45aMtQwAcdaHdOkkVNhGjc
+         SpaCSkI2m4qrdFTCa27FnBxPNlXlKs2ZYescH8UELCRD3K88LjvLeKz5PGIchLC3Jw/p
+         rRs6X5Q8L6QBWIkSTsYyL8V+XtLkngLiCP42VQSXT9fNkikt7uNBxTQwuP4YnMCejnQv
+         DlPTShRoirz5vxFljksbTtssHcI9JE0nLjhC8OfSntTBWA/jwRfh43iZ4pBncdQTBFJh
+         Y6Eg==
+X-Gm-Message-State: APjAAAXUPZi1bVXSIGA/bxkwrOV+HeTyhjHBUjwCWYDqvmtQ6OiHXRcQ
+        hninxGNpbxKkTWcrSKjDJm8=
+X-Google-Smtp-Source: APXvYqycUMIsr6AV985kDVUj8M6zg9Zv8d9B6Ibt25Nd/KMxcvkkvEp7mqyYzEQ+8DvaQ3ihqSh+8A==
+X-Received: by 2002:a65:5043:: with SMTP id k3mr2559662pgo.406.1569322665098;
+        Tue, 24 Sep 2019 03:57:45 -0700 (PDT)
+Received: from localhost.localdomain ([106.51.110.135])
+        by smtp.gmail.com with ESMTPSA id c125sm1953886pfa.107.2019.09.24.03.57.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 24 Sep 2019 03:57:44 -0700 (PDT)
+From:   Rishi Gupta <gupt21@gmail.com>
+To:     jic23@kernel.org
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        gregkh@linuxfoundation.org, tglx@linutronix.de,
+        allison@lohutok.net, alexios.zavras@intel.com, angus@akkea.ca,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        hslester96@gmail.com, wsa+renesas@sang-engineering.com,
+        Rishi Gupta <gupt21@gmail.com>
+Subject: [RESEND PATCH v2 0/3] Add driver for veml6030 ambient light sensor
+Date:   Tue, 24 Sep 2019 16:21:55 +0530
+Message-Id: <cover.1569321085.git.gupt21@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+The veml6030 is an ambient light sensor from vishay and
+is a different hardware from an existing hardware for which
+driver currently exist, therefore this driver submission.
 
+* All features; ALS, white channel & power management is
+  supported.
 
-Hi,
+* All configurable parameters are supported through standard
+  iio sysfs entries. User space can get valid values of any
+  parameter (xx_available) and then can write to appropriate
+  sysfs entry.
 
-William Breathitt Gray <vilhelm.gray@gmail.com> writes:
-> On Thu, Sep 19, 2019 at 11:03:05AM +0300, Felipe Balbi wrote:
->> Add support for Intel PSE Quadrature Encoder
->>=20
->> Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
->> ---
->>=20
->> Changes since v1:
->> 	- Many more private sysfs files converted over to counter interface
->>=20
->>=20
->> How do you want me to model this device's Capture Compare Mode (see
->> below)?
->
-> Hi Felipe,
->
-> I'm CCing Fabien and David as they may be interested in the timestamps
-> discussion. See below for some ideas I have on implementing this.
->
->> For the few features which I couldn't find a matching property in
->> counter framework, I still leave them as private sysfs files so we can
->> discuss how to model them in the framework.
->>=20
->> Do you want Capture Compare to be a new function mode?
->>=20
->> BTW, I know I'm missing a Documentation file documenting sysfs files
->> introduced by this driver, I'll do that once we agree how to move all
->> other sysfs files to the framework. No worries.
->>=20
->>=20
->> Details about the controller (do you want this in commit log?):
->>=20
->>=20
->> Controller has 2 modes of operation: QEP and Capture. Both modes are
->> mutually exclusive. We also have a set of maskable interrupts. Further
->> details about each mode below.
->
-> I noticed your interrupt handler takes care of a number of different
-> scenarios. Would you be able to summarize a bit further here the
-> conditions for this device that cause an interrupt to be fired (watchdog
-> timeout, FIFO updates, etc.)?
->
->> Quadrature Encoder Mode
->> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>=20
->> Used to measure rotational speed, direction and angle of rotation of a
->> motor shaft. Feature list:
->>=20
->> 	- Quadrature decoder providing counter pulses with x4 count
->> 	  resolution and count direction
->>=20
->> 	- 32-bit up/down Position Counter for position measurement
->>=20
->> 	- Two modes of position counter reset:
->> 		> Maximum Count (ceiling) to reset the position counter
->> 		> Index pulse to reset the position counter
->>=20
->> 	- Watchdog timer functionality for detecting =E2=80=98stall=E2=80=99 ev=
-ents
->>=20
->> Capture Compare Mode
->> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>=20
->> Used to measure phase input signal Period or Duty Cycle. Feature List:
->>=20
->> 	- Capture function operates either on phase A or phase B input
->> 	  and can be configured to operate on lo/hi or hi/lo or both hi
->> 	  and lo transitions.
->>=20
->> 	- Free-running 32-bit counter to be configured to run at greater
->>           than or equal to 4x input signal frequency
->
-> So in "Capture Compare" mode, the counter value is just increasing when
-> a state condition transition occurs. In that case we won't need a new
-> function mode to represent this behavior since one already exists:
-> "increase".
->
-> You can add it to your intel_qep_count_functions array like so:
->
->         [INTEL_QEP_ENCODER_MODE_CAPTURE] =3D
->         COUNTER_COUNT_FUNCTION_INCREASE,
->
-> The various configurations for this mode are just Synapse action modes.
-> If you want only Phase A, you would set the action mode for Phase A
-> ("rising edge", "falling edge", or "both edges") and change the action
-> mode for Phase B to "none"; vice-versa configuration for Phase B instead
-> of Phase A.
->
-> One thing to keep in mind is that action_set will need to maintain valid
-> configurations -- so if the user tries to set the action mode for Phase
-> A to something other than "none", you need to automatically set Phase
-> B's action mode to "none" (and vice-versa).
+* User space can get ALS & White channel readings through RAW
+  IIO interface.
 
-interesting, thanks
+* IIO events are used to notify application whenever threshold
+  is crossed. This uses IRQ pin of veml6030.
 
->> 	- Clock post-scaler to derive the counter clock source from the
->> 	  peripheral clock
->
-> I see you already have a "prescaler" extension in your code. Is this
-> different from the "post-scaler" you mentioned here?
+* Some registers in veml6030 are read only. For these registers
+  read callback returns error to user space.
 
-This was probably a brain-fart on my side. It should be post-scaler, but
-that's only valid for capture compare mode.
+There are 3 patches for this submission:
+[PATCH 1/3] iio: light: add driver for veml6030 ambient light sensor
+[PATCH 2/3] dt-bindings: iio: light: add veml6030 ALS bindings
+[PATCH 3/3] iio: documentation: light: Add veml6030 sysfs documentation
 
->> 	- 32B wide FIFO to capture 32-bit timestamps of up to 8
->> 	  transition events
->
-> You can implement this as a Count extension called "timestamps" or
-> similar. What we can do is have a read on this attribute return the
-> entire FIFO data buffer as unsigned integers, where each timestamp is
-> deliminated by a space.
->
-> In addition, it may be useful to have another extension called
-> "timestamps_layout", or something along those lines, that will report
-> the ordering of the buffer (i.e. whether it's "fifo", "lifo", etc.).
->
-> Would this design work for your needs?
+Rishi Gupta (3):
+  iio: light: add driver for veml6030 ambient light sensor
+  dt-bindings: iio: light: add veml6030 ALS bindings
+  iio: documentation: light: Add veml6030 sysfs documentation
 
-Perhaps it would be best to have a pollable binary sysfs file (meaning,
-we need to be able to call sysfs_notify() at will) and userspace just
-receives POLLIN whenever there's data read. Then a read returns an array
-of e.g. struct counter_event where struct counter_event could be defined
-as:
+ .../ABI/testing/sysfs-bus-iio-light-veml6030       |  49 ++
+ .../devicetree/bindings/iio/light/veml6030.yaml    |  62 ++
+ drivers/iio/light/Kconfig                          |  11 +
+ drivers/iio/light/Makefile                         |   1 +
+ drivers/iio/light/veml6030.c                       | 633 +++++++++++++++++++++
+ 5 files changed, 756 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
+ create mode 100644 Documentation/devicetree/bindings/iio/light/veml6030.yaml
+ create mode 100644 drivers/iio/light/veml6030.c
 
-	struct counter_event {
-        	uint32_t	event_type;
-		struct timespec64 timestamp;
-                uint8_t		reserved[32];
-        };
+-- 
+2.7.4
 
-Userspace would do something along the lines of:
-
-	fd =3D open("/sys/bus/counter/foo/capture/timestamps",...);
-	pollfd[0].fd =3D fd;
-        pollfd[0].events =3D POLLIN;
-        poll(pollfd, 1, -1);
-
-	if (pollfd[0].revents & POLLIN) {
-        	ret =3D read(fd, events, sizeof(struct counter_event) * 8);
-
-		for (i =3D 0; i < ret / sizeof(struct counter_event); i++)
-			process_event(events[i]);
-        }
-=20=20=20=20=20=20=20=20
-Or something like that.
-
-I could, also, remove this part from the driver for now, so we can
-discuss how the capture-compare buffer read would look like. At least we
-could get QDP feature merged while we come to a consensus about capture
-compare.
-
-What do you think?
-
-=2D-=20
-balbi
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl2J5f8ACgkQzL64meEa
-mQa/QBAAiQFvXgs+yhs7fMe7bL39eb6k+Kh8WggCK+fiPOzqcQaZ0B6h32aBNj6H
-YHMbzR28C0PzSTvAbrH8fyGtPx/Hvw17n645LABc9dNv4J6mIXohqILJWyHyl4iH
-k6i1UGOdqQnjqKi5oKwq7XsD+jqco9SZ+rnTJxIl1jE6CTClLeWYSzRr+1hL0QLt
-Fj+udj2/vXXiAVXcyTArGuR9TTftTP6m2hwPzahgUU/KffR+tQsPdUmSTedaK3FN
-YjVUJ1EOPzwtfpNhpqvumhCBenHiF5XjLM+2mp/8bHhy4Gf3+KF5ccsCBQ47NFDO
-S1Z/8ENCQRo/PLzhLPSstf0X5jOgZz+pU7+98y7cu7XbF90w+UNhsEcJYc1Hig4D
-GcklIWbrGdnMUTKGNBe62PiuNXJBcuERf3Jf/HFAHG5xiKuU2nWWA8SjnxZFDV+t
-GjminllgtLgGqiG/qfAdPu5Id299Hp1BVwUPx4+wLoPniGdoWsY/9ePCLf7Hw25z
-O5EvWbzbPyfeBGq/fGjoIfQBwVpcJHoNinEzOPZ63C5xX5hoF88+PI/efoA2QErS
-8ZnVEBIODxTiB/Es6bnX2GvvYZTmIN9eBWZQPxNN2BT5IkcMcQZxUEJJvWgN5ycV
-6Xy2Dss0ZMLR130G5jNmBzYndg8T6dOb4cVfnl/hEailqfWMDEE=
-=7PGz
------END PGP SIGNATURE-----
---=-=-=--

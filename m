@@ -2,94 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF517BD484
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2019 23:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D01D7BD64E
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2019 04:10:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436722AbfIXVrA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Sep 2019 17:47:00 -0400
-Received: from vern.gendns.com ([98.142.107.122]:36022 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2395520AbfIXVrA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 24 Sep 2019 17:47:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Y20jkuyfwNqpSR2V0Kr3ygDPO21LfiHOLBF8Xp06nG0=; b=dwNu2ljbolNZMeRFXjxpTUxAGg
-        jJQNr8we6Gswm5oeJqv0+6jFlFa9+dXIR7v/AoDMJCwQxngHloQ4BQ3Ju8ChdiLMYKvyfIcifswWC
-        a4BiaVROBdCICzw5tEw0bPjRo1fQQD7Vqqw5aCO/8OHpax5BEjX13dZcodQtB3B4A+YRhbI1rOf0U
-        IDc2hBw/VwKwzWTNxTr45io8lP8LR80XoE+1hvb28Dqfmpn+SXclZlHncoiayNc1tW9GCuxMvYbeX
-        xWuc9RNuBzAsoaFTF1mR+RcOQOLrTs3ObpZIp06hFvHrc853jehxKqtDCl61Y60ZgrcbBFPJggDqS
-        mLUlWubg==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:46584 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <david@lechnology.com>)
-        id 1iCse9-0003MA-IJ; Tue, 24 Sep 2019 17:46:57 -0400
-Subject: Re: [RFC/PATCHv2 2/2] counter: introduce support for Intel QEP
- Encoder
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>
-References: <20190917114403.GA8368@icarus>
- <20190919080305.960198-1-felipe.balbi@linux.intel.com>
- <20190919080305.960198-2-felipe.balbi@linux.intel.com>
- <20190922233538.GA3119@icarus>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <e24965be-3b0b-7f5e-bc5b-e2fb09ce6d19@lechnology.com>
-Date:   Tue, 24 Sep 2019 16:46:57 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2633804AbfIYCKQ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 24 Sep 2019 22:10:16 -0400
+Received: from sender4-op-o14.zoho.com ([136.143.188.14]:17474 "EHLO
+        sender4-op-o14.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2633788AbfIYCKQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Sep 2019 22:10:16 -0400
+X-Greylist: delayed 902 seconds by postgrey-1.27 at vger.kernel.org; Tue, 24 Sep 2019 22:10:16 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1569376509; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=gvvW2CGohjW4iFTym+DSCFNzTQnMz3K3RK+nE0aGs58Xr/DSv9b+bfL9cNmmR/b9TB5r1AK0aLSXCHXtkYTvyoQBoLH/PoWwvoE2r6ZqHKsFLS3OULvpecr6GO90YsJRc0hkfaDbQ/jvnarpxMntJyhsM6GeDSrv1oRU8V5dkzk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1569376509; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To:ARC-Authentication-Results; 
+        bh=FMDZK2uFPh5HYZDnaG0EIdhqKhSI/s1mSVh3QP+Aeqo=; 
+        b=Prg/drQ9F0qyQTsnxTORApQ1TYpmb0OpH+06beDfaz2X4JC+XgNAt9MnZfQG8jd1HkvrmfzEeXJhBhpXuKMt1OIZuUedAW30jhZjnS/RoaDHltsqjSt1PMhaE7oKJyxyyXjtgoHVS3ZBaFFtKHVsmMjkuyzKJXSdY9CuUCtM6ag=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=dlrobertson.com;
+        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
+        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
+Received: from nessie.verizon.net (pool-100-15-144-194.washdc.fios.verizon.net [100.15.144.194]) by mx.zohomail.com
+        with SMTPS id 1569376508558374.59192220023306; Tue, 24 Sep 2019 18:55:08 -0700 (PDT)
+From:   Dan Robertson <dan@dlrobertson.com>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Dan Robertson <dan@dlrobertson.com>, linux-kernel@vger.kernel.org
+Message-ID: <20190925013941.20431-1-dan@dlrobertson.com>
+Subject: [PATCH 0/1] iio: add driver for Bosch BMA400 accelerometer
+Date:   Wed, 25 Sep 2019 01:39:40 +0000
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20190922233538.GA3119@icarus>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8BIT
+X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf8
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/22/19 6:35 PM, William Breathitt Gray wrote:
-> On Thu, Sep 19, 2019 at 11:03:05AM +0300, Felipe Balbi wrote:
->> Add support for Intel PSE Quadrature Encoder
->>
->> Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
->> ---
->>
->> Changes since v1:
->> 	- Many more private sysfs files converted over to counter interface
->>
->>
->> How do you want me to model this device's Capture Compare Mode (see
->> below)?
-> 
-> Hi Felipe,
-> 
-> I'm CCing Fabien and David as they may be interested in the timestamps
-> discussion. See below for some ideas I have on implementing this.
-> 
+Add a IIO driver for the Bosch BMA400 3-axes ultra low-power accelerometer.
+The initial implementation of the driver adds read support for the
+acceleration and temperature data registers. The driver also has support for
+reading and writing to the output data rate, oversampling ratio, and scale
+configuration registers.
 
-Could be an interesting read (thread from my first counter driver):
+Comments and feedback are very much welcomed :)
 
-https://lore.kernel.org/linux-iio/1b913919-beb9-34e7-d915-6bcc40eeee1d@lechnology.com/
+Cheers,
 
-What would be useful to me is something like the buffer feature in iio
-where a timestamp is associated with a count and stored in a buffer so that
-we can look at a window of all values recorded in the last 20ms. Being able
-to access this via mmap would be very helpful for performance (running on
-300MHz ARM). Anything to do with timestamps in sysfs is probably not useful
-unless it is a rare event, like a watchdog timeout.
+ - Dan
+
+Dan Robertson (1):
+  iio: (bma400) add driver for the BMA400
+
+ drivers/iio/accel/Kconfig       |  19 +
+ drivers/iio/accel/Makefile      |   2 +
+ drivers/iio/accel/bma400.h      |  74 +++
+ drivers/iio/accel/bma400_core.c | 862 ++++++++++++++++++++++++++++++++
+ drivers/iio/accel/bma400_i2c.c  |  54 ++
+ 5 files changed, 1011 insertions(+)
+ create mode 100644 drivers/iio/accel/bma400.h
+ create mode 100644 drivers/iio/accel/bma400_core.c
+ create mode 100644 drivers/iio/accel/bma400_i2c.c
+
+
+

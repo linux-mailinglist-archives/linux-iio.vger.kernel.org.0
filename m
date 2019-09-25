@@ -2,92 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 315CBBE2E7
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2019 18:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 633B5BE932
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Sep 2019 01:49:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392150AbfIYQyp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Sep 2019 12:54:45 -0400
-Received: from mail-pf1-f174.google.com ([209.85.210.174]:43904 "EHLO
-        mail-pf1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392097AbfIYQyp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Sep 2019 12:54:45 -0400
-Received: by mail-pf1-f174.google.com with SMTP id a2so3865020pfo.10;
-        Wed, 25 Sep 2019 09:54:44 -0700 (PDT)
+        id S1733249AbfIYXtc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Sep 2019 19:49:32 -0400
+Received: from mail-yb1-f194.google.com ([209.85.219.194]:46058 "EHLO
+        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733228AbfIYXtb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Sep 2019 19:49:31 -0400
+Received: by mail-yb1-f194.google.com with SMTP id w125so93375ybg.12;
+        Wed, 25 Sep 2019 16:49:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=sXKkE3u4Gt25Vll7joSYrDNRO6uCZgGWYBpw2Jrfy5k=;
-        b=SD0ltrXBhGjEgN77oTEuFT6vJGiLOs/8mOKzZi0irWBPOAQyzb2Fya8tlSwvrLHMW6
-         whp9B/+NZTj75Y66+QQiarwrGnRChibsPrl+tRSXOamZweX19lvFvZlQCjL2ngPY7CT2
-         2/HA1F6fDqA5SoAtTpc1+mMrW7DGZdJxCspONgCpgiHtE8C9O5cBARGVlpF/zAPD1x4M
-         zOHxjpUi9wnGS2C7FxkzIsybJ+J8WIkND5b3NMez27Qe/9ykW6IVg1dVutowgliCJIBp
-         BTUdlODscdaT67ZmdHmb94QOZ7OBtCIFNrEr6xnXgdjXJ2GegWbdLtn24P8HdYQD0pDL
-         X5ZA==
+        bh=k9mLt3xvBGQYqXgvvuQtbv73TYKlfgFjBjUgVp0qnQw=;
+        b=Mz6cTUt84IXGgN7GfbtlAUT3P8OZ4XIjQsUqjicxykyuBsc/2+eKucFV2n7wBOek5d
+         hDv6yELVsr93aswKiKh6beCWKN8KxGzQBFSz5l96eLf366E8/U5yJgkF2onOLEzYuGpy
+         MmqUd83SpWPMlbOiClqh7uF+xJLtaYqHE9kf9PLonOfFzjLkOqHPrhry9UaKNfh4FKdt
+         UlI1a1E3Jks+g635OnXG/EIMyRUidmRSooforLC0eH4yh1FVK1vwNVh5/1runhUUkqRq
+         d4coagceYif32HrnlJUericT2nGAVxG6WhJHXsT7p2UdxrYY2lxgSMdeBiNs0EUU/RGT
+         ZVUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=sXKkE3u4Gt25Vll7joSYrDNRO6uCZgGWYBpw2Jrfy5k=;
-        b=ToUhwPrlWKcmGa3PwYgEh/DIsYJwqo0q8RXiBpHXYbARx3HgVutRifDwMlK+HcIFvM
-         bLD0ZuTpM77DEEP19/EA2jM8CTNUUjKiPaXy+PSgKeO2QftdSSvPk2sVgD3g4aWD7Ba/
-         /1L+NdEyxGOCz+bkJ9ybp7PItqK8cGbvI6EK/EeHOK6+x5H0pcUtVmRf3ewSCxLaeNhT
-         oiOzCIxoemLKHUIcBn4AeRKfP66LkiMjN7pGlXM87Qj2kG6XyPQqiaBrM1vnqYO74X3W
-         WZr0FZ+Nv+Q9q4BUpNy51M+fv/u4Rmde+f2iEdAY4QvGgLgtoVW77QzFGNcNpzJnVg7S
-         g7Gw==
-X-Gm-Message-State: APjAAAW7/QDxdfBJcrX3vCib8JYGtc4Gh0sAI45hAscxZZwdzzktBwo8
-        cCxbTYs0xuuQecs7QYUcGEk=
-X-Google-Smtp-Source: APXvYqyIBiC1Po73o/eEPNSh26glwKPL/n/W7ckEbniNHmVMvuIJ0GnvXtzza43cS3aMSFo4kiunyg==
-X-Received: by 2002:aa7:9ab5:: with SMTP id x21mr10683550pfi.252.1569430484220;
-        Wed, 25 Sep 2019 09:54:44 -0700 (PDT)
-Received: from SARKAR ([1.186.12.91])
-        by smtp.gmail.com with ESMTPSA id 2sm6268498pfo.91.2019.09.25.09.54.42
+        bh=k9mLt3xvBGQYqXgvvuQtbv73TYKlfgFjBjUgVp0qnQw=;
+        b=donOyxaQiKzfM1zbbVtlxCeYtif8bEqfIvYpDcRrKKywqhhFULA660rIRRS96F+yI3
+         pqfDG36d/vYt51FCjv2U8dl5utoz7Em/Lcp5R775GIbDyUXYV96l7Gs6oGgDu99lv3nn
+         G/aRRsFJ1LQboYHwkxqbkDHS5kVejIeLrgjy+ujFoKmJHwj/p2GUbrYoQMiKOEOjDgDN
+         uYEF5YEHEa/3GZ6bPgCQWMVmRkglAGM2bqGvpXGNcwB6UkughhpgaC5xkySjeaS2C+kN
+         jrezYAkVmXPWLMdSyXCZPiMVES03JMpT52+9z8aCKb3cjGncPnYUE5e84cd4aAQWV6il
+         1zsw==
+X-Gm-Message-State: APjAAAU+sxCFFpaQaoR5iduoeF2i4LAFu4oEjDDnQojECYMeajO8FxOC
+        I14s3EedZFVEz3jxvjyGtQk=
+X-Google-Smtp-Source: APXvYqwR/caITcJ282u+zi2PrD7+FaXW9ELk/UeVSqScZoBfsW21TB7udKc9KZYQBZ1Bf/aHmdEpfw==
+X-Received: by 2002:a25:e0d4:: with SMTP id x203mr157687ybg.131.1569455370860;
+        Wed, 25 Sep 2019 16:49:30 -0700 (PDT)
+Received: from icarus (072-189-084-142.res.spectrum.com. [72.189.84.142])
+        by smtp.gmail.com with ESMTPSA id i14sm56666ywe.107.2019.09.25.16.49.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2019 09:54:43 -0700 (PDT)
-Date:   Wed, 25 Sep 2019 22:24:34 +0530
-From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Linux Iio <linux-iio@vger.kernel.org>,
-        linux-newbie@vger.kernel.org,
-        driverdev-devel@linuxdriverproject.org
-Subject: Re: Hardware prerequisites for driver development
-Message-ID: <20190925165356.GA28917@SARKAR>
-References: <20190925081836.GA22717@SARKAR>
- <CAKv63utZ+JSL=PH10bQdCYbrzoy0XBc_+UrVNFwTS2dkyjjxOw@mail.gmail.com>
+        Wed, 25 Sep 2019 16:49:29 -0700 (PDT)
+Date:   Wed, 25 Sep 2019 19:49:27 -0400
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Fabrice Gasnier <fabrice.gasnier@st.com>,
+        jic23@jic23.retrosnub.co.uk
+Cc:     jic23@kernel.org, alexandre.torgue@st.com,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: stm32-timer-cnt: fix a kernel-doc warning
+Message-ID: <20190925234927.GB14133@icarus>
+References: <1568809323-26079-1-git-send-email-fabrice.gasnier@st.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAKv63utZ+JSL=PH10bQdCYbrzoy0XBc_+UrVNFwTS2dkyjjxOw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <1568809323-26079-1-git-send-email-fabrice.gasnier@st.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Sep 25, 2019 at 10:32:02AM +0200, Crt Mori wrote:
-> Hi Rohit,
-> There are many companies for hobbyists which sell sensors included in
-> IIO subsystem and for sure some electronic component store in your
-> local area. Price of sensor can be from 0.10 USD to 10 USD. Then you
-> plug this sensor to your Linux board (Beaglebone Black is Linux
-> Foundation preferred, although there are others including Raspberry PI
-> - can even be RPI Zero if you are on a budget, Odroid, Linaro, ...)
-> and you will need to provide correct voltage/current for the sensor.
-> Easiests is that you pick sensors which are 3.3V or 5V domains,
-> because you have pins on most Linux boards with this voltages and
-> these pins supply enough current for most iio sensors. Then you just
-> connect (wire) power pin on sensor to power pin on your board, and
-> then communication pins from sensor to board and ground from sensor to
-> board. Some addition into dts will be needed for the Linux to know
-> where your sensor is connected at, but then it should work as
-> plug-and-play.
+On Wed, Sep 18, 2019 at 02:22:03PM +0200, Fabrice Gasnier wrote:
+> Fix the following warning when documentation is built:
+> drivers/counter/stm32-timer-cnt.c:37: warning: cannot understand function
+> prototype: 'enum stm32_count_function'
 > 
-> I hope I did not miss too many steps in between :)
+> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+> ---
+>  drivers/counter/stm32-timer-cnt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Crt
+> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+> index 644ba18..e425dd1 100644
+> --- a/drivers/counter/stm32-timer-cnt.c
+> +++ b/drivers/counter/stm32-timer-cnt.c
+> @@ -28,7 +28,7 @@ struct stm32_timer_cnt {
+>  };
+>  
+>  /**
+> - * stm32_count_function - enumerates stm32 timer counter encoder modes
+> + * enum stm32_count_function - enumerates stm32 timer counter encoder modes
+>   * @STM32_COUNT_SLAVE_MODE_DISABLED: counts on internal clock when CEN=1
+>   * @STM32_COUNT_ENCODER_MODE_1: counts TI1FP1 edges, depending on TI2FP2 level
+>   * @STM32_COUNT_ENCODER_MODE_2: counts TI2FP2 edges, depending on TI1FP1 level
+> -- 
+> 2.7.4
 
-Hi Crt,
-Thanks for replying, your answer was super detailed and helpful.
+Fixes: 597f55e3f36c ("counter: stm32-lptimer: add counter device")
+
+Jonathan, please pick this fix up through IIO.
 
 Thanks,
-Rohit
+
+William Breathitt Gray

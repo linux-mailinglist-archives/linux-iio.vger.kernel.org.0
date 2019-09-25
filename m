@@ -2,71 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B891FBD9AE
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2019 10:18:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96EBBBD9E8
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2019 10:32:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2634043AbfIYISn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Sep 2019 04:18:43 -0400
-Received: from mail-pf1-f180.google.com ([209.85.210.180]:36254 "EHLO
-        mail-pf1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2634040AbfIYISn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Sep 2019 04:18:43 -0400
-Received: by mail-pf1-f180.google.com with SMTP id y22so2944319pfr.3;
-        Wed, 25 Sep 2019 01:18:42 -0700 (PDT)
+        id S2391340AbfIYIcj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Sep 2019 04:32:39 -0400
+Received: from mail-io1-f52.google.com ([209.85.166.52]:38147 "EHLO
+        mail-io1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388045AbfIYIcj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Sep 2019 04:32:39 -0400
+Received: by mail-io1-f52.google.com with SMTP id u8so11622168iom.5
+        for <linux-iio@vger.kernel.org>; Wed, 25 Sep 2019 01:32:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=MBIv4exBMsbFSU5ZS4hQ7aZv5Y8krcLJtoEmNe+3N4A=;
-        b=NJcpkrKl3GW6YHN9/inzdAa5eQvIAG4CgUP37EjpPaxhz/NWcnjzqhxcPXB2lHoqVN
-         7KEzy7w8+WYf8jobfIXPiewuppcLUjHBm6rWtb8u3abR/sPacZLIdrxKAGti0C82NqvA
-         zebEGOT7W6tmw863P75ccsQgwQMR5tt+VQbjtC3b5+qoOt+2HpCVVl0v99MtLliYWpg9
-         70wfP0J+Nd5oTec7dKzTsnvfXODIviXd25SXABfrVRXGFilBLtR/aOT1DPjm3PGczStv
-         23feoeCzP4Dba5qAE4tBuZbgWk6mNMw4Q2bBlizjb65YCfIXr29nbS+qlJ5g9UWWty9y
-         gEpw==
+        d=melexis.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BHSqfET/v0VOqVkRgYfeqgKZdLBryNUUngLfhvTg3eE=;
+        b=Mvn+xFy1fsIUIn4KjRkB1jcDLVNlcbrjMuo777H8U2ogjy7MpktoZN4it0SCulFcjS
+         F4yuMnUZAUpJKWQ5PYDcmJuDWzb+FW1LTIOQjBpdpT3glC3Bhg+o8d9BZVUVfyGOSdhR
+         cidJtOJVwuxL74D6HIiRt+DC+pahQDIoXYDtwVEPYy/DI7IIKoSSm7k5dNq6yghQfKMe
+         1TwMyHHJgemHj6Q4plTMm2od8/ie5IzTHUtfSyknzDPpS5Rg1i76AvJhe75KJiFLlMgt
+         U4dZlVdSKZKF/9NqHs9TSRE93bEQGYMCDg+FkrQ7owqW5i9NVKI0PtqfkswuEosElCv5
+         uVcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=MBIv4exBMsbFSU5ZS4hQ7aZv5Y8krcLJtoEmNe+3N4A=;
-        b=YFCgiI33xxNX4JbPGi1+pmYky93xVipc8oG26OuZRkNcJEVPJCNcvx8q8vJduHnIUJ
-         fu/K16x1duaafO6sn7MhY/Tf6qjGRdITwOmPR0QfE2dY2fiDDvcAoc5Yc2gzxBXVKgwR
-         hpuuhJGMyIxdqWrfdqBkjyrY55m9Sd8VA4KwZPsa1LwKIpyEL5ZfM+VvYXonh0gnSdVs
-         YPXNYghvpHCQ85BdnC9F/KC8qehmQ/Lr91eUWrdWRJ7uyJiB+WrH8vOPmjuVh6BIQBL7
-         QBnOySPxJvEuAXADTaHi2GVNyLHwQlLgRLyRvHlk856qpvEcrVs1j1YbgNdkiuERt/DU
-         rUGg==
-X-Gm-Message-State: APjAAAXC8OGLEONSKezeH8rosMDAHK0pepLkgHMTdYNHDdgKkIZ6gp0v
-        6FBrCT7lDQzSFAOnVuIJh84=
-X-Google-Smtp-Source: APXvYqxDsuIHmJIhwyamewaH/a7m0g1m8Ql6oJRGy8hWgRKodPlhvFNhT3klu7XG9iBpAh9VFAPGFg==
-X-Received: by 2002:a63:d909:: with SMTP id r9mr7522331pgg.381.1569399522114;
-        Wed, 25 Sep 2019 01:18:42 -0700 (PDT)
-Received: from SARKAR ([1.186.12.91])
-        by smtp.gmail.com with ESMTPSA id q132sm4877466pfq.16.2019.09.25.01.18.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2019 01:18:41 -0700 (PDT)
-Date:   Wed, 25 Sep 2019 13:48:37 +0530
-From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     linux-iio@vger.kernel.org
-Cc:     linux-newbie@vger.kernel.org,
-        driverdev-devel@linuxdriverproject.org
-Subject: Hardware prerequisites for driver development
-Message-ID: <20190925081836.GA22717@SARKAR>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BHSqfET/v0VOqVkRgYfeqgKZdLBryNUUngLfhvTg3eE=;
+        b=oA2/lLlnwqCMxUs7vJFiiEqR0VHCqx2+PsEW6ARtx5k+eoiyKO8NxS0u1v5l+V6zE1
+         c1l1N/CbRkusLimFCvp3C1YoJkUkXNzemypPDaakUwUNKfmrejg809CLwr5u+PxivtAN
+         0AhCVYHwimuYS8o5sx8S9czcfK2Osilqp6talB1WDnLx7M1DXviCDqA3oMXvIaqQcZHa
+         pM59d4fEJycySCyhZMKKIaH2ky3ty4+pA8K4a8HSzQ7OyYSSyg+6TM3Z2CBmtHva8Nrk
+         lpAfEVTIGY1V19ZKoZncyAjCNVZtSBH7yBHKTGdyi5axhxl7/YnwLthL1AhkqBqCbfRW
+         iY6A==
+X-Gm-Message-State: APjAAAXCTdQXxRICJxAm2X5AYhw4bvzAWI9tRvSDfHr73GiPrRk2Nzfz
+        +sEv7kM/2ETnz/YRaBrTCUdPSH2YmAgsQVEgDIwxzg==
+X-Google-Smtp-Source: APXvYqwH8uhlqnUXuE3lOBTiowf8S3XZZjuT45gaRADxfhmLKcFmYQiPYbXC5mi1JnmvxHCMyA0/Z8H2D3iLazRE35c=
+X-Received: by 2002:a5e:960f:: with SMTP id a15mr513194ioq.13.1569400358384;
+ Wed, 25 Sep 2019 01:32:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20190925081836.GA22717@SARKAR>
+In-Reply-To: <20190925081836.GA22717@SARKAR>
+From:   Crt Mori <cmo@melexis.com>
+Date:   Wed, 25 Sep 2019 10:32:02 +0200
+Message-ID: <CAKv63utZ+JSL=PH10bQdCYbrzoy0XBc_+UrVNFwTS2dkyjjxOw@mail.gmail.com>
+Subject: Re: Hardware prerequisites for driver development
+To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+Cc:     Linux Iio <linux-iio@vger.kernel.org>,
+        linux-newbie@vger.kernel.org,
+        driverdev-devel@linuxdriverproject.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-This is probably a real rookie question.
-I have been interested in contributing to the driver subsystems such as
-iio. I have submitted some minor patches but nothing substantial.
-I feel that I need some hardware to be able to contribute more.
-What hardware would I need to get started?
-Where would I get this from?
+Hi Rohit,
+There are many companies for hobbyists which sell sensors included in
+IIO subsystem and for sure some electronic component store in your
+local area. Price of sensor can be from 0.10 USD to 10 USD. Then you
+plug this sensor to your Linux board (Beaglebone Black is Linux
+Foundation preferred, although there are others including Raspberry PI
+- can even be RPI Zero if you are on a budget, Odroid, Linaro, ...)
+and you will need to provide correct voltage/current for the sensor.
+Easiests is that you pick sensors which are 3.3V or 5V domains,
+because you have pins on most Linux boards with this voltages and
+these pins supply enough current for most iio sensors. Then you just
+connect (wire) power pin on sensor to power pin on your board, and
+then communication pins from sensor to board and ground from sensor to
+board. Some addition into dts will be needed for the Linux to know
+where your sensor is connected at, but then it should work as
+plug-and-play.
 
-Thanks,
-Rohit
+I hope I did not miss too many steps in between :)
+
+Crt
+
+
+
+On Wed, 25 Sep 2019 at 10:18, Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+>
+> Hi,
+> This is probably a real rookie question.
+> I have been interested in contributing to the driver subsystems such as
+> iio. I have submitted some minor patches but nothing substantial.
+> I feel that I need some hardware to be able to contribute more.
+> What hardware would I need to get started?
+> Where would I get this from?
+>
+> Thanks,
+> Rohit

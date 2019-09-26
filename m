@@ -2,122 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 083E3BF0CF
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Sep 2019 13:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D6DBBF0F6
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Sep 2019 13:18:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725808AbfIZLHH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Sep 2019 07:07:07 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:58976 "EHLO
+        id S1725861AbfIZLSb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Sep 2019 07:18:31 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:22260 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725843AbfIZLHH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Sep 2019 07:07:07 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8QB2uEM031383;
-        Thu, 26 Sep 2019 07:06:41 -0400
-Received: from nam01-sn1-obe.outbound.protection.outlook.com (mail-sn1nam01lp2056.outbound.protection.outlook.com [104.47.32.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2v6hj96sf9-1
+        by vger.kernel.org with ESMTP id S1725280AbfIZLSb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Sep 2019 07:18:31 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x8QBI6OA003191;
+        Thu, 26 Sep 2019 07:18:27 -0400
+Received: from nam04-co1-obe.outbound.protection.outlook.com (mail-co1nam04lp2059.outbound.protection.outlook.com [104.47.45.59])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2v6hjwy9ya-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Thu, 26 Sep 2019 07:06:41 -0400
+        Thu, 26 Sep 2019 07:18:27 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HW0MFpmPzitxxNO3eeOcmbHo47CE/SyGaC7tJoG1wIstcx+7L395XTXVzHpQk4tcBC2yt9hMhx0DVP4W8nDdLue1GgdXLnKx0OUQT3Fozzudf09Jbx1ut0fSpzc9BcEZSyut6P2cJgdZDv8dugYTo7qKIcB0KWS77dhJZs3VObUoZ/0BgbhK+4IYSVDt8K9ctoCyXaAK5W/yu5qVltF3ZdobSlPVzsVIGHEFs10sQgYkE5ofq7+2FSBROwDsc5BEn8+mXjdT9zMFFttVP9/EBs61c+sKp0Nsr6wtUmehCNV7j3TIjXQlEnhUJARvRLcKc8Orae+ziArb7DOtDnTAqQ==
+ b=O37tnlpZQIUfxzUMybOu/OXLUw+nn2FWHr/5xkcjznqOOM1WDMiIgUBW0cSBd8Lu5seArKGxHyBXhJMXUhTqCVWC91dwgqNBejIxeK4wTxB+oyDqImT2ILJm0IDJLHtQ1MTfXjbrBkihKd5mP1tBA9AyeCxTObFVQ5lsZWiP5fnA2xiHKRVxaa9pHDsCQi4UgOhWiXiDUDQb+dr9YVtgKLq36EnS/nHCteK/g1EfmiTI8O/8MrmPmDJ7zFta8hpEToghXgflwSdcfB82lyUcm5Dg3CzocXUMicqrrMbn3UCsEf0bFf543ZczM7fCvcRwXifB3Zv4Q0G2sm9HbwFzHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pgvt+OiduMGDQr9EgLQ10Zn9ODrDtDyB7iE/Fn7IFY4=;
- b=Hlb+/0AHBeYNr3/FmLeM2LjEZumJqRcwu2eifEpOHowiTA/nk8ZuBZ6yG1GdxJaSvpxiorpja+yD3iT5beEmzkDPTue+tX7CkHZBXAXpauQmwmKYcmmmoIBpmHu6i7dwvn8AOb9AILOKMa5pBgDGCEpO1BdV5H+QhJTOoS9vurNDsDgIz9oA3dHiASv3JGZGXCrt5AgmuHPuabmO/D/chikL0ZAqLU4mJXOwBV/ZqkfLoavn5yGlC9+r7FUxHNe2GHtKkPqyUTqTNBqZGdXqFb0QM0TuKcN5hkP9r78lWVGW2nIOTHj1A6uXacJstE/H5sImPM/8UkPNyTExdOe7XQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+ bh=44kEubpywKcZtxOtXDRhhhkTw1kJ8EtnQXmJBoxrOLs=;
+ b=km8MunSVowjEMc8mhTxtIViffgPqdq4B4gLEyfeDL0J+pbcwlbrhMzKIgo2IzfO5kTNF3s1siDZozW+AeMEhky2UfMQRDsGJW5NTHsQY/09qF+HJDDsrK/hW0uN1kw+Rpz3wColN1Zi5WsxNFI6dnOKhYbLj3cclX0TGiADQtHcpB9N+aOd9V3GX6fQbVlLvh4oNclzT0u/4KIfPTEswV6g5euFWYZu0Kw3TDQyZXKXUlFWrjULqa5bauua2IZYEDP9USSR/ozghV81v8QEus6HVNi8oQnBZFvRXHArhOTufdvfa/axoxdvKN9D+heQmaDlkTeajxsTgu112aA8SfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 137.71.25.55) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
+ dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
+ not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pgvt+OiduMGDQr9EgLQ10Zn9ODrDtDyB7iE/Fn7IFY4=;
- b=Cs/A8M/IyeCc1ON2xWXaul44DHjRkKTG276PeaO1E9SeU7dP7iGVRh4CKplMWhs8+fF7zwj9t5foQx2VSkR3OvWZ8ulf9of2dhYYmiEurg98vtjoKVYLITQX99BcFIsq9bsYUjSFejT7qjcJuT4Z+Wy6UUkVtVGNAW52xuWhXA4=
-Received: from CH2PR03MB5192.namprd03.prod.outlook.com (20.180.12.152) by
- CH2PR03MB5207.namprd03.prod.outlook.com (20.180.15.9) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2284.20; Thu, 26 Sep 2019 11:06:39 +0000
-Received: from CH2PR03MB5192.namprd03.prod.outlook.com
- ([fe80::344d:7f50:49a3:db1b]) by CH2PR03MB5192.namprd03.prod.outlook.com
- ([fe80::344d:7f50:49a3:db1b%3]) with mapi id 15.20.2305.017; Thu, 26 Sep 2019
- 11:06:39 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "lars@metafoo.de" <lars@metafoo.de>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>
-Subject: Re: [PATCH] iio: imu: adis16480: clean up a condition
-Thread-Topic: [PATCH] iio: imu: adis16480: clean up a condition
-Thread-Index: AQHVdEI+uKReFAaziESjQBeEHo58sqc9zGoA
-Date:   Thu, 26 Sep 2019 11:06:39 +0000
-Message-ID: <9e40c550310d6f30e6481329e01061beb474bc33.camel@analog.com>
-References: <20190926081016.GA2332@mwanda>
-In-Reply-To: <20190926081016.GA2332@mwanda>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [137.71.226.54]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 53e38fd1-049c-4870-91d2-08d742719b36
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:CH2PR03MB5207;
-x-ms-traffictypediagnostic: CH2PR03MB5207:
-x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CH2PR03MB520770776D5307E6FB36AFD9F9860@CH2PR03MB5207.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-forefront-prvs: 0172F0EF77
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(346002)(366004)(396003)(376002)(39860400002)(189003)(199004)(51914003)(6506007)(25786009)(102836004)(4744005)(26005)(2906002)(66066001)(5660300002)(2501003)(76176011)(6116002)(3846002)(99286004)(6436002)(316002)(54906003)(6486002)(4326008)(110136005)(6246003)(71200400001)(71190400001)(6512007)(14444005)(118296001)(305945005)(7736002)(229853002)(66446008)(64756008)(66556008)(66476007)(256004)(66946007)(2616005)(76116006)(81156014)(446003)(81166006)(8936002)(11346002)(8676002)(14454004)(186003)(486006)(86362001)(476003)(478600001)(36756003);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5207;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: PWNY5UQvONMk8rlE7Hahwh8wxUjOfbOJQEBXJXrmRyvUm8U//3vsH3xEwoiSgndZDtGQYX7ubjAWkjHpEkVZ3CoFILhuXlUWWce/P5hMq1tMiwtOTz3WThamSzyLkAz9PmmJDXXMeuKpvm7t2Yc3kn6am+8wVaktGgsQruuROggedYtHgIYfvmZji7vI0vtkR+JBMd6t3AWulWzQB0W86gvBMZh2l1YvNfDH5MZdPKPUpgi35bqWnylyM1skDyjD0c9QWIF9+HXwzpsDvEKlNCLcEvANkki8uXImO++JtQOSrI1LaX61ljWPmvSCPl+5aveEsIQWhknbYRhDY0NqF9UBSHCid/l3nTMqF+3hmo6NmsaI+tlERHB/dNe09RewoNxDGjk2Rk5/ydVcQb9qtzdOjWquiA6fCMq0XGSYGY4=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9B89F48AD3F5F0409C89AA520500715D@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ bh=44kEubpywKcZtxOtXDRhhhkTw1kJ8EtnQXmJBoxrOLs=;
+ b=n1KCJKJTAAa7vtOf5NU/6dewYm5wJJs4j5Hnq3Mx7OiQEraVI7q0zOZRapyOy3gJ8LMQ3kSySrI1zXt93b78xDao07ruFcGaJT1dlxw+yq9mZmUpxtimJpQDHi0ciGw5u7rw2iDXx+87au1moGjf+baovZJS/ajf4GygomNW0rM=
+Received: from BYAPR03CA0008.namprd03.prod.outlook.com (2603:10b6:a02:a8::21)
+ by DM6PR03MB4891.namprd03.prod.outlook.com (2603:10b6:5:18a::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2284.23; Thu, 26 Sep
+ 2019 11:18:25 +0000
+Received: from BL2NAM02FT004.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::203) by BYAPR03CA0008.outlook.office365.com
+ (2603:10b6:a02:a8::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2199.15 via Frontend
+ Transport; Thu, 26 Sep 2019 11:18:25 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
+Received: from nwd2mta1.analog.com (137.71.25.55) by
+ BL2NAM02FT004.mail.protection.outlook.com (10.152.76.168) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2284.20
+ via Frontend Transport; Thu, 26 Sep 2019 11:18:25 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x8QBIJeS004141
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Thu, 26 Sep 2019 04:18:19 -0700
+Received: from saturn.ad.analog.com (10.48.65.123) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Thu, 26 Sep 2019 07:18:24 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH 00/10] iio: imu: adis: cleanup lock usage
+Date:   Thu, 26 Sep 2019 14:18:02 +0300
+Message-ID: <20190926111812.15957-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(136003)(376002)(39860400002)(346002)(396003)(199004)(189003)(5660300002)(8936002)(186003)(7696005)(48376002)(305945005)(36756003)(336012)(246002)(476003)(47776003)(86362001)(44832011)(356004)(486006)(26005)(50226002)(6666004)(2616005)(50466002)(426003)(14444005)(7636002)(110136005)(2870700001)(4326008)(316002)(126002)(107886003)(8676002)(478600001)(106002)(70206006)(54906003)(1076003)(51416003)(2906002)(70586007);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR03MB4891;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: edafe8f5-d686-4878-e5b7-08d742733f84
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600167)(711020)(4605104)(4709080)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:DM6PR03MB4891;
+X-MS-TrafficTypeDiagnostic: DM6PR03MB4891:
+X-Microsoft-Antispam-PRVS: <DM6PR03MB489130F84203010A7B924097F9860@DM6PR03MB4891.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Forefront-PRVS: 0172F0EF77
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: 4vpi34lh5N1UbyfyUXnHFxXEj9E48T7Gk1utYi5zwvO+SwDm2KAkPJzDZY7PGgm3nzECXlZmTH9bng2WDHimqQUyAkUbXxBqGDQrA6KO9JHhS8lkNBLbH6RRvKS6AFqw4rV4OipsBxbVndOG8PJ6u96vvl5AHXjLS6uZjB81DpKWwRcjLf4aPDmHdYe+8AzN5Xh/cnQQRELeDNqbjCciLBZfmtivEGBN7xXvUKKUaos6T+Marki8bwQVZ1J+veDv5LnhHccMbA+zCMAXfujgLmqPkSefqMt1+p4UUT90TUTge90zAU+LMwS2ajX0RDVV1/zNtNa8V565rvt33J1/9x5KKp2w84PCdKM58SYyrfNu6Lg2X25yWueF/lUrqSZK7I8bpdfjEaKiPjxhpc0SafAQwaurHYrZPJA1OZdqJ7A=
 X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53e38fd1-049c-4870-91d2-08d742719b36
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2019 11:06:39.7525
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2019 11:18:25.0190
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: e5gWr8vtatepAzJRfFOvnpSxirqGCJ6Tr+KsOamRzi9TKpQHk8sixtolwCY7N+MBF2t1RDuVqK004m8KIT0MzR2I+EpIsZCauufjp7U4O8E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5207
+X-MS-Exchange-CrossTenant-Network-Message-Id: edafe8f5-d686-4878-e5b7-08d742733f84
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4891
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
  definitions=2019-09-26_05:2019-09-25,2019-09-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
- phishscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
- mlxscore=0 adultscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1908290000
- definitions=main-1909260105
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 mlxlogscore=999 mlxscore=0 adultscore=0 spamscore=0
+ malwarescore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1908290000 definitions=main-1909260108
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVGh1LCAyMDE5LTA5LTI2IGF0IDExOjEwICswMzAwLCBEYW4gQ2FycGVudGVyIHdyb3RlOg0K
-PiBbRXh0ZXJuYWxdDQo+IA0KPiBUaGUgInQiIHZhcmlhYmxlIGlzIHVuc2lnbmVkIHNvIGl0IGNh
-bid0IGJlIGxlc3MgdGhhbiB6ZXJvLiAgV2UgcmVhbGx5DQo+IGFyZSBqdXN0IHRyeWluZyB0byBw
-cmV2ZW50IGRpdmlkZSBieSB6ZXJvIGJ1Z3Mgc28ganVzdCBjaGVja2luZyBhZ2FpbnN0DQo+IHpl
-cm8gaXMgc3VmZmljaWVudC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IERhbiBDYXJwZW50ZXIgPGRh
-bi5jYXJwZW50ZXJAb3JhY2xlLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL2lpby9pbXUvYWRpczE2
-NDgwLmMgfCAyICstDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRp
-b24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9pbXUvYWRpczE2NDgwLmMgYi9k
-cml2ZXJzL2lpby9pbXUvYWRpczE2NDgwLmMNCj4gaW5kZXggYjk5ZDczODg3YzlmLi5lMTQ0ZTU2
-NzY3NWQgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvaWlvL2ltdS9hZGlzMTY0ODAuYw0KPiArKysg
-Yi9kcml2ZXJzL2lpby9pbXUvYWRpczE2NDgwLmMNCj4gQEAgLTMxOCw3ICszMTgsNyBAQCBzdGF0
-aWMgaW50IGFkaXMxNjQ4MF9zZXRfZnJlcShzdHJ1Y3QgaWlvX2Rldg0KPiAqaW5kaW9fZGV2LCBp
-bnQgdmFsLCBpbnQgdmFsMikNCj4gIAl1bnNpZ25lZCBpbnQgdCwgcmVnOw0KDQpJIHdvdWxkIGp1
-c3QgY2hhbmdlIHRoZSB0eXBlIG9mICJ0IiB0byAiaW50Ii4NCkVzcGVjaWFsbHksIHNpbmNlICJ2
-YWwiICYgInZhbDIiIGFyZSAiaW50Ii4NCg0KVGhhbmtzIGZvciB0aGUgY2F0Y2ggOikNCkFsZXgN
-Cg0KPiAgDQo+ICAJdCA9ICB2YWwgKiAxMDAwICsgdmFsMiAvIDEwMDA7DQo+IC0JaWYgKHQgPD0g
-MCkNCj4gKwlpZiAodCA9PSAwKQ0KPiAgCQlyZXR1cm4gLUVJTlZBTDsNCj4gIA0KPiAgCS8qDQo=
+There is a general effort for cleaning up `indio_dev->mlock` usage in IIO
+drivers. As part of that some ADIS drivers also need to do that.
+
+This changeset does a little more, by reworking the `txrx_lock` from the
+ADIS library to be used as a general `state_lock` to protect state between
+consecutive read/write ops.
+
+As such, all users of the ADIS lib have been verified to have their usage
+of mlock checked. Some just needed the mlock usage removed (as done in
+other patches).
+
+Alexandru Ardelean (10):
+  iio: imu: adis: rename txrx_lock -> state_lock
+  iio: imu: adis: add unlocked read/write function versions
+  iio: imu: adis[16480]: group RW into a single lock in
+    adis_enable_irq()
+  iio: imu: adis: create an unlocked version of adis_check_status()
+  iio: imu: adis: create an unlocked version of adis_reset()
+  iio: imu: adis: protect initial startup routine with state lock
+  iio: imu: adis: group single conversion under a single state lock
+  iio: imu: adis16400: rework locks using ADIS library's state lock
+  iio: gyro: adis16136: rework locks using ADIS library's state lock
+  iio: imu: adis16480: use state lock for filter freq set
+
+ drivers/iio/gyro/adis16136.c  |  31 ++++---
+ drivers/iio/imu/adis.c        |  95 ++++++++++++----------
+ drivers/iio/imu/adis16400.c   |  51 ++++++------
+ drivers/iio/imu/adis16480.c   |  17 ++--
+ drivers/iio/imu/adis_buffer.c |   4 +-
+ include/linux/iio/imu/adis.h  | 148 ++++++++++++++++++++++++++++++++--
+ 6 files changed, 254 insertions(+), 92 deletions(-)
+
+-- 
+2.20.1
+

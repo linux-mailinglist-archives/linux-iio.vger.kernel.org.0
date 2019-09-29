@@ -2,144 +2,225 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EFC9C123C
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2019 23:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A27BBC1658
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2019 18:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728569AbfI1VeE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Sep 2019 17:34:04 -0400
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:47082 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726581AbfI1VeD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Sep 2019 17:34:03 -0400
-Received: by mail-yw1-f67.google.com with SMTP id 201so2141918ywn.13
-        for <linux-iio@vger.kernel.org>; Sat, 28 Sep 2019 14:34:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=klP0d8/IOPN/GKmBdE27iCbNXKnKt8seS+HMeOtEhb8=;
-        b=hJBxU82wBUdQsgVar+wsEtRKctm4XEf7IxNBfpV8GFufSbamPItp0Jem6ED27wAJnS
-         zwgCI1pEpPp1Z7X6s+vuWid6QZnawTKcoMMZloAbItsLJg/uSpTdi4R95lPo4U41+98h
-         G5h9+moLfcswyEgOe1s8nL58Pgv2+i/BMJGFvXNxQomkNbXvu6YWSrgdDHYfhQFjK4F+
-         i7ANhgefYcIT4l4k+XOFuIBZYtxE9MTRm+tP/qoVMCeWzVR1QsB8QhZbN2d9cRYxT6PX
-         6sAPkDK/QlVbi9jY5wmg9NHlXr6/anUA1qNlMC/wgO9UVtEaAxafRY4dFAyp/6sWuU7V
-         9K7g==
+        id S1729057AbfI2QsL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Sep 2019 12:48:11 -0400
+Received: from mx3.ucr.edu ([138.23.248.64]:35224 "EHLO mx3.ucr.edu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725948AbfI2QsL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 29 Sep 2019 12:48:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
+  t=1569775691; x=1601311691;
+  h=from:to:cc:subject:date:message-id;
+  bh=UNKIGMa4Eg+l+IVQcMpLQFIdcsa8oCD4s9qyVCpjIUE=;
+  b=KMl6eBygGNPUmTdGJGcsZ0AFQA+Bz7Dr06c8vFQLg0WEJ1FXlDsVwH+J
+   1nr2KNVkL9jj3xprvGIRfZNNxlsp4N0vYFGKOtIQDV3JhG/IpsVfFLXeI
+   xkKEGkSXOSayWtubuxYRiXr4L8d+7UUHpFP5A9/kMkUfY09V097rGr1Xr
+   pws/4Wqt1fgK2p6wEtju2tbY6DqMDZqYEQr0wp4Sk13kRnqCK8Niw67uR
+   I3LHGxrprPDlIdHLW6bEwC9sZr2DtzrlDauPQPqCBqQCXa0dQITLk7QbC
+   z0SRMHdih8dV+V4D78yV/sx/S2Shn/jCA6XbratSQv9RQ/9zjwNsfjrUo
+   g==;
+IronPort-SDR: 23ZA8QOvmEZt6J7xrjUKRZZQFS6Lt7l0cTkPoA0ZGcTSHQBU45joVAN2txqfPf6YK1iotXN4vN
+ QF6Mo0i6yyOM8pzmZyE+t3DbaGXjSk6lUfVrts6GIvFya0+AEfuADjQiuZV1ky2V7d3l14Epgl
+ 7x9QA5hr4nWi51Joe/rvUhs3bcBcl2uZbAGRYW7o18jsixnav3NS9iUIgC6Y1azi0Agx2O8Qkw
+ v2MeJ3l3/QVDuo+cCXkXtwhOBX51ykkBkbc+D44zOOOhdj7UX8lGYQe45IDjKx9x/bW9isXnMT
+ qmU=
+IronPort-PHdr: =?us-ascii?q?9a23=3Aohyx6BWAjYGOdFLrv424ns7cMXfV8LGtZVwlr6?=
+ =?us-ascii?q?E/grcLSJyIuqrYYxyPt8tkgFKBZ4jH8fUM07OQ7/m7HzBYqs/Z7jgrS99lb1?=
+ =?us-ascii?q?c9k8IYnggtUoauKHbQC7rUVRE8B9lIT1R//nu2YgB/Ecf6YEDO8DXptWZBUh?=
+ =?us-ascii?q?rwOhBoKevrB4Xck9q41/yo+53Ufg5EmCexbal9IRmrowjdrMYbjZdtJqos1h?=
+ =?us-ascii?q?fEo2ZDdvhLy29vOV+dhQv36N2q/J5k/SRQuvYh+NBFXK7nYak2TqFWASo/PW?=
+ =?us-ascii?q?wt68LlqRfMTQ2U5nsBSWoWiQZHAxLE7B7hQJj8tDbxu/dn1ymbOc32Sq00WS?=
+ =?us-ascii?q?in4qx2RhLklDsLOjgk+2zMlMd+kLxUrw6gpxxnwo7bfoeVNOZlfqjAed8WXH?=
+ =?us-ascii?q?dNUtpNWyBEBI68aooPD/EaPeZZqYn9qEYFowWnCwKxCuPvyyFHhnvr0qYn1+?=
+ =?us-ascii?q?gsHx3K0AkmEtkTsnrbsc/1Ob8SX+6r0afGwzbNYfRN1Dvh9ITFaAwtrOuQUb?=
+ =?us-ascii?q?5sd8fa1EkhFxnCjlWVsYHqPTKV1+UNs2iG6OprSOWiim4mqgFxuDevx9sghp?=
+ =?us-ascii?q?XHi48O11DL6T95zJwrKtKlVU52eNipG4ZTuSGCL4Z6XN8uTmVytCs5yrAKo4?=
+ =?us-ascii?q?C3cDUWxJg92hLSb/iKf5CV7h/iUOudOyl0iXxldb6lmRq/8FKsx+/zW8SyzV?=
+ =?us-ascii?q?1EtDBKksPWuXAIzxHT78+HReZj8Uq5wjaP0hzT6vlDIUApiarXM54hzaA0lp?=
+ =?us-ascii?q?oUqUnDGzX5mETyjKOPbkUk9PWk5/3pYrn7opKRM5V4ig75MqQplcy/Bfo3Ph?=
+ =?us-ascii?q?ISUGic/OSwzLzj/UvnT7VWlvA6jLXVvZTAKckYpqO1GRFZ3ps/5xqlEjur1N?=
+ =?us-ascii?q?AVkWECLF1feRKHi4bpO0vJIPD9Ffq+g1WtkDdxyPDHIrHtHpvAI2PekLj9Z7?=
+ =?us-ascii?q?Zx8VBTxxcuzdxH/ZJbFqkBIO7vWk/2rNHYCh45Mwqpw+foEdl914IeWWWUD6?=
+ =?us-ascii?q?+HP6Pdr0WI6vgsI+aSfo8VvijyK/w/6/7pl385lgxVU7Ou2M4maWK4A/Mud1?=
+ =?us-ascii?q?SLYXPt2o9aOXoBpEwzQPG82w7KaiJae3vnB/F03To8Eo/zSNibSw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2EZBQD+3pBdgMfSVdFmHgEGEoFcC4N?=
+ =?us-ascii?q?eTBCNHoVyUQEBBosmgQmFeogxgXsBCAEBAQwBAS0CAQGEQIM6IzQJDgIDCQE?=
+ =?us-ascii?q?BBQEBAQEBBQQBAQIQAQEJDQkIJ4VCgjopgzULFhVSgRUBBQE1IjmCRwGBdhS?=
+ =?us-ascii?q?fO4EDPIwlM4hqAQkNgUgJAQiBIoc1hFmBEIEHgRGDUIdjgkQEgS8BAQGLP4I?=
+ =?us-ascii?q?xhyuWSQEGAoIQFIF4kwcnhDmJPYs/AS2KKJxrAgoHBg8jgS+CEU0lgWwKgUR?=
+ =?us-ascii?q?QEBSBWhcVji0hM4EIkA8B?=
+X-IPAS-Result: =?us-ascii?q?A2EZBQD+3pBdgMfSVdFmHgEGEoFcC4NeTBCNHoVyUQEBB?=
+ =?us-ascii?q?osmgQmFeogxgXsBCAEBAQwBAS0CAQGEQIM6IzQJDgIDCQEBBQEBAQEBBQQBA?=
+ =?us-ascii?q?QIQAQEJDQkIJ4VCgjopgzULFhVSgRUBBQE1IjmCRwGBdhSfO4EDPIwlM4hqA?=
+ =?us-ascii?q?QkNgUgJAQiBIoc1hFmBEIEHgRGDUIdjgkQEgS8BAQGLP4IxhyuWSQEGAoIQF?=
+ =?us-ascii?q?IF4kwcnhDmJPYs/AS2KKJxrAgoHBg8jgS+CEU0lgWwKgURQEBSBWhcVji0hM?=
+ =?us-ascii?q?4EIkA8B?=
+X-IronPort-AV: E=Sophos;i="5.64,563,1559545200"; 
+   d="scan'208";a="83746920"
+Received: from mail-pf1-f199.google.com ([209.85.210.199])
+  by smtp3.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Sep 2019 09:48:08 -0700
+Received: by mail-pf1-f199.google.com with SMTP id z13so6002438pfr.15
+        for <linux-iio@vger.kernel.org>; Sun, 29 Sep 2019 09:48:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=klP0d8/IOPN/GKmBdE27iCbNXKnKt8seS+HMeOtEhb8=;
-        b=aoHNK15s1YNcm12BYGpNbsjU49VabbgzCEvoiKlW/gJvykMjwrftVJoOit4ALgxqw1
-         fYkFRolzzZHOtSzSUBjlfzhusc2Q9pItDTu5g+rEBfgrtA+4OE1SVgI0AcLnk9X90N6X
-         crsJu8XJkoYaT2DwPWFgsat+Sz5RGgDt/+NPE9M/4xii3glKF2kDd2YxY1COWlXqb/36
-         PLHu+apenKaZk7wQKiYmIoNM/nD33BchG0HayTxrCu8IGK9E7eJNH114est87+XfGeYm
-         iJMd9z6ZBZm1akThGXHxSTJmBi4UK23YLsOfytgJZmwFA+uS4t3fLbROnxoQp0eVaLNW
-         djNg==
-X-Gm-Message-State: APjAAAWPAsOq+Z6Ix0Thc+nobIYa9WBWCwt73Zfk97PU5JAEVp6dirOA
-        iyNstcKabXdrVg5/hhDiRl4=
-X-Google-Smtp-Source: APXvYqz5FtnHQF9DYVYd5nOYjphe/EhzdvCdT/xx6ALm/5SxKPQTQ3O2ipa6gs/t0j2L1RsVutHR4g==
-X-Received: by 2002:a81:178f:: with SMTP id 137mr7904983ywx.487.1569706442889;
-        Sat, 28 Sep 2019 14:34:02 -0700 (PDT)
-Received: from icarus (072-189-084-142.res.spectrum.com. [72.189.84.142])
-        by smtp.gmail.com with ESMTPSA id g81sm1544063ywa.46.2019.09.28.14.34.01
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=utdaQ4jWHTttFql8WKqbnsQdQq9GY1vzrMBpLN2a9NQ=;
+        b=CjYMbRjqCs5vwr4KcJJ+27p38mYxRzMHwb3BX3JrSUO2T9qa7W8EMfjZGfx0J5aYV0
+         lrJsXlC9HTc4h1TqQfQocgoWooj/eF3w9koeJxdCDeyaaQgg3dxz1Z9aEwkvYU3/1ZXf
+         iiQbVrmuONrHppCIwHf0UOrUFnvfFIKFB4kEu5tEYJAwBJFymRrwd8yCFkDKuaI8kVZ4
+         oWJhYiE1hzPmrCe7L8h2egJ3dyYFLLG+dXU1uiwKWIAnQ/VKh5KGDHV6P9BmKW7BF2g1
+         HnoCaygVwebzb8H7+2ycVwpeHt5j/7DVJNT2mRfyBJIsqucnAOCH3yog1ORMBdYlnhAL
+         FqgA==
+X-Gm-Message-State: APjAAAVP6e+/+pmCJVYP2IpWVeo36fOxQtEJYFLWFN4z5JtRtKD2Hv1u
+        D4FIXb8a9yHAPi5aEUBPnfJFBHKjV0B2JBwM6BMjWbX432a6inmXIBk/Axl7ObVZKEh4QbU4G+I
+        y4tsPi1RbcADJRR3M3lJbIA==
+X-Received: by 2002:a17:90a:3090:: with SMTP id h16mr22224054pjb.46.1569775687369;
+        Sun, 29 Sep 2019 09:48:07 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxJjjuQpguiCEE+oT8FZ21bOrlaI5ek77fAN6CJVVTks05KOo47tYsfxvPiCR9IDOpmjYNCew==
+X-Received: by 2002:a17:90a:3090:: with SMTP id h16mr22224024pjb.46.1569775687030;
+        Sun, 29 Sep 2019 09:48:07 -0700 (PDT)
+Received: from Yizhuo.cs.ucr.edu (yizhuo.cs.ucr.edu. [169.235.26.74])
+        by smtp.googlemail.com with ESMTPSA id ep10sm26814605pjb.2.2019.09.29.09.48.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Sep 2019 14:34:01 -0700 (PDT)
-Date:   Sat, 28 Sep 2019 17:33:48 -0400
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     Felipe Balbi <felipe.balbi@linux.intel.com>,
-        linux-iio@vger.kernel.org, jic23@jic23.retrosnub.co.uk,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Subject: Re: [RFC/PATCHv2 2/2] counter: introduce support for Intel QEP
- Encoder
-Message-ID: <20190928213348.GA4693@icarus>
-References: <20190917114403.GA8368@icarus>
- <20190919080305.960198-1-felipe.balbi@linux.intel.com>
- <20190919080305.960198-2-felipe.balbi@linux.intel.com>
- <20190922233538.GA3119@icarus>
- <e24965be-3b0b-7f5e-bc5b-e2fb09ce6d19@lechnology.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e24965be-3b0b-7f5e-bc5b-e2fb09ce6d19@lechnology.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+        Sun, 29 Sep 2019 09:48:05 -0700 (PDT)
+From:   Yizhuo <yzhai003@ucr.edu>
+Cc:     csong@cs.ucr.edu, zhiyunq@cs.ucr.edu, Yizhuo <yzhai003@ucr.edu>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nicholas Mc Guire <hofrat@osadl.org>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: meson-saradc: Variables could be uninitalized if regmap_read() fails
+Date:   Sun, 29 Sep 2019 09:48:43 -0700
+Message-Id: <20190929164848.13930-1-yzhai003@ucr.edu>
+X-Mailer: git-send-email 2.17.1
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 24, 2019 at 04:46:57PM -0500, David Lechner wrote:
-> On 9/22/19 6:35 PM, William Breathitt Gray wrote:
-> > On Thu, Sep 19, 2019 at 11:03:05AM +0300, Felipe Balbi wrote:
-> >> Add support for Intel PSE Quadrature Encoder
-> >>
-> >> Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
-> >> ---
-> >>
-> >> Changes since v1:
-> >> 	- Many more private sysfs files converted over to counter interface
-> >>
-> >>
-> >> How do you want me to model this device's Capture Compare Mode (see
-> >> below)?
-> > 
-> > Hi Felipe,
-> > 
-> > I'm CCing Fabien and David as they may be interested in the timestamps
-> > discussion. See below for some ideas I have on implementing this.
-> > 
-> 
-> Could be an interesting read (thread from my first counter driver):
-> 
-> https://lore.kernel.org/linux-iio/1b913919-beb9-34e7-d915-6bcc40eeee1d@lechnology.com/
-> 
-> What would be useful to me is something like the buffer feature in iio
-> where a timestamp is associated with a count and stored in a buffer so that
-> we can look at a window of all values recorded in the last 20ms. Being able
-> to access this via mmap would be very helpful for performance (running on
-> 300MHz ARM). Anything to do with timestamps in sysfs is probably not useful
-> unless it is a rare event, like a watchdog timeout.
+Several functions in this file are trying to use regmap_read() to
+initialize the specific variable, however, if regmap_read() fails,
+the variable could be uninitialized but used directly, which is
+potentially unsafe. The return value of regmap_read() should be
+checked and handled.
 
-I'm CCing Jonathan Cameron since I'm not familiar with how IIO handles
-timestamps and buffers. I don't want to reinvent something that is
-working well, so hopefully we can reuse the IIO timestamp design for the
-Counter subsystem.
+Signed-off-by: Yizhuo <yzhai003@ucr.edu>
+---
+ drivers/iio/adc/meson_saradc.c | 30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-I would argue that a human-readable timestamps printout is useful for
-certain applications (e.g. a tally counter attached to a fault line: a
-human administrator will be able to review previous fault times).
-However as you point out, a low latency operation is necessary for
-performance critical applications.
+diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+index 7b28d045d271..4b6c2983ef39 100644
+--- a/drivers/iio/adc/meson_saradc.c
++++ b/drivers/iio/adc/meson_saradc.c
+@@ -323,6 +323,7 @@ static int meson_sar_adc_wait_busy_clear(struct iio_dev *indio_dev)
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+ 	int regval, timeout = 10000;
++	int ret;
+ 
+ 	/*
+ 	 * NOTE: we need a small delay before reading the status, otherwise
+@@ -331,7 +332,9 @@ static int meson_sar_adc_wait_busy_clear(struct iio_dev *indio_dev)
+ 	 */
+ 	do {
+ 		udelay(1);
+-		regmap_read(priv->regmap, MESON_SAR_ADC_REG0, &regval);
++		ret = regmap_read(priv->regmap, MESON_SAR_ADC_REG0, &regval);
++		if (ret)
++			return ret;
+ 	} while (FIELD_GET(MESON_SAR_ADC_REG0_BUSY_MASK, regval) && timeout--);
+ 
+ 	if (timeout < 0)
+@@ -346,6 +349,7 @@ static int meson_sar_adc_read_raw_sample(struct iio_dev *indio_dev,
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+ 	int regval, fifo_chan, fifo_val, count;
++	int ret;
+ 
+ 	if(!wait_for_completion_timeout(&priv->done,
+ 				msecs_to_jiffies(MESON_SAR_ADC_TIMEOUT)))
+@@ -358,7 +362,10 @@ static int meson_sar_adc_read_raw_sample(struct iio_dev *indio_dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	regmap_read(priv->regmap, MESON_SAR_ADC_FIFO_RD, &regval);
++	ret = regmap_read(priv->regmap, MESON_SAR_ADC_FIFO_RD, &regval);
++	if (ret)
++		return ret;
++
+ 	fifo_chan = FIELD_GET(MESON_SAR_ADC_FIFO_RD_CHAN_ID_MASK, regval);
+ 	if (fifo_chan != chan->address) {
+ 		dev_err(&indio_dev->dev,
+@@ -491,6 +498,7 @@ static int meson_sar_adc_lock(struct iio_dev *indio_dev)
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+ 	int val, timeout = 10000;
++	int ret;
+ 
+ 	mutex_lock(&indio_dev->mlock);
+ 
+@@ -506,7 +514,10 @@ static int meson_sar_adc_lock(struct iio_dev *indio_dev)
+ 		 */
+ 		do {
+ 			udelay(1);
+-			regmap_read(priv->regmap, MESON_SAR_ADC_DELAY, &val);
++			ret = regmap_read(priv->regmap,
++						MESON_SAR_ADC_DELAY, &val);
++			if (ret)
++				return ret;
+ 		} while (val & MESON_SAR_ADC_DELAY_BL30_BUSY && timeout--);
+ 
+ 		if (timeout < 0) {
+@@ -771,7 +782,7 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+ 	int regval, i, ret;
+-
++	int ret;
+ 	/*
+ 	 * make sure we start at CH7 input since the other muxes are only used
+ 	 * for internal calibration.
+@@ -784,7 +795,10 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ 		 * BL30 to make sure BL30 gets the values it expects when
+ 		 * reading the temperature sensor.
+ 		 */
+-		regmap_read(priv->regmap, MESON_SAR_ADC_REG3, &regval);
++		ret = regmap_read(priv->regmap, MESON_SAR_ADC_REG3, &regval);
++		if (ret)
++			return ret;
++
+ 		if (regval & MESON_SAR_ADC_REG3_BL30_INITIALIZED)
+ 			return 0;
+ 	}
+@@ -1013,8 +1027,12 @@ static irqreturn_t meson_sar_adc_irq(int irq, void *data)
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+ 	unsigned int cnt, threshold;
+ 	u32 regval;
++	int ret;
++
++	ret = regmap_read(priv->regmap, MESON_SAR_ADC_REG0, &regval);
++	if (ret)
++		return ret;
+ 
+-	regmap_read(priv->regmap, MESON_SAR_ADC_REG0, &regval);
+ 	cnt = FIELD_GET(MESON_SAR_ADC_REG0_FIFO_COUNT_MASK, regval);
+ 	threshold = FIELD_GET(MESON_SAR_ADC_REG0_FIFO_CNT_IRQ_MASK, regval);
+ 
+-- 
+2.17.1
 
-Although you are correct that mmap is a good low latency operation to
-get access to a timestamp buffer, I'm afraid giving direct access to
-memory like that will lead to many incompatible representations of
-timestamp data (e.g. variations in endianness, signedness, data size,
-etc.). I would like a standardized representation for this data that
-userspace applications can expect to receive and interpret, especially
-when time is widely represented as an unsigned integer.
-
-Felipe suggested the creation of a counter_event structure so that users
-can poll on an attribute. This kind of behavior is useful for notifying
-users of interrupts and other events, but I think we should restrict the
-use of the read call on these sysfs attributes to just human-readable
-data. Instead, perhaps ioctl calls can be used to facilitate binary data
-transfers.
-
-For example, we can define a COUNTER_GET_TIMESTAMPS_IOCTL ioctl request
-that returns a counter_timestamps structure with a timestamps array
-populated:
-
-        struct counter_timestamps{
-                size_t num_timestamps;
-        	unsigned int *timestamps;
-        }
-
-That would allow quick access to the timestamps data, while also
-restricting it to a standard representation that all userspace
-applications can follow and interpret. In addition, this won't interfer
-with polling, so users can still wait for an interrupt and then decide
-whether they want to use the slower human-readable printout (via read)
-or the faster binary data access (via ioctl).
-
-William Breathitt Gray

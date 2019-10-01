@@ -2,779 +2,393 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4D96C3043
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2019 11:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09E74C3175
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2019 12:32:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729409AbfJAJcn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Oct 2019 05:32:43 -0400
-Received: from mga17.intel.com ([192.55.52.151]:18424 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726697AbfJAJcn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 1 Oct 2019 05:32:43 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Oct 2019 02:32:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,570,1559545200"; 
-   d="scan'208";a="191407309"
-Received: from pipin.fi.intel.com ([10.237.72.175])
-  by fmsmga007.fm.intel.com with ESMTP; 01 Oct 2019 02:32:41 -0700
-From:   Felipe Balbi <felipe.balbi@linux.intel.com>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-iio@vger.kernel.org,
-        Felipe Balbi <felipe.balbi@linux.intel.com>
-Subject: [PATCH v3 2/2] counter: introduce support for Intel QEP Encoder
-Date:   Tue,  1 Oct 2019 12:32:37 +0300
-Message-Id: <20191001093237.775608-2-felipe.balbi@linux.intel.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191001093237.775608-1-felipe.balbi@linux.intel.com>
-References: <87o8zax6ya.fsf@gmail.com>
- <20191001093237.775608-1-felipe.balbi@linux.intel.com>
+        id S1730479AbfJAKcD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Oct 2019 06:32:03 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:38760 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725765AbfJAKcD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Oct 2019 06:32:03 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 8896D28E304
+Subject: Re: [PATCH 02/13] platform: cros_ec: Add cros_ec_sensor_hub driver
+To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org,
+        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        lee.jones@linaro.org, bleung@chromium.org, dianders@chromium.org,
+        groeck@chromium.org, fabien.lahoudere@collabora.com
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20190922175021.53449-1-gwendal@chromium.org>
+ <20190922175021.53449-3-gwendal@chromium.org>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <5448d9a0-aac8-07f4-4b32-9c4200255675@collabora.com>
+Date:   Tue, 1 Oct 2019 12:31:56 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190922175021.53449-3-gwendal@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for Intel PSE Quadrature Encoder
+Hi Gwendal,
 
-Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
----
-Changes since v1:
-	- Many more private sysfs files converted over to counter interface
+Some comments below.
 
-Changes since v2:
-	- Completed conversion to counter framework
-	- Removed Capture Compare for now
-	- Removed RFC from subject
+On 22/9/19 19:50, Gwendal Grignou wrote:
+> Similar to HID sensor stack, the new driver sits between cros_ec_dev
+> and the iio device drivers:
+> 
+> EC based iio device topology would be:
+> iio:device1 ->
+> ...0/0000:00:1f.0/PNP0C09:00/GOOG0004:00/cros-ec-dev.6.auto/
+>                                          cros-ec-sensorhub.7.auto/
+>                                          cros-ec-accel.15.auto/
+>                                          iio:device1
+> 
+> It will be expanded to control EC sensor FIFO.
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+>  drivers/iio/common/cros_ec_sensors/Kconfig    |   2 +-
+>  drivers/platform/chrome/Kconfig               |  18 +-
+>  drivers/platform/chrome/Makefile              |   1 +
+>  drivers/platform/chrome/cros_ec_sensorhub.c   | 211 ++++++++++++++++++
+>  .../linux/platform_data/cros_ec_sensorhub.h   |  21 ++
+>  5 files changed, 249 insertions(+), 4 deletions(-)
+>  create mode 100644 drivers/platform/chrome/cros_ec_sensorhub.c
+>  create mode 100644 include/linux/platform_data/cros_ec_sensorhub.h
+> 
+> diff --git a/drivers/iio/common/cros_ec_sensors/Kconfig b/drivers/iio/common/cros_ec_sensors/Kconfig
+> index cdbb29cfb907..fefad9572790 100644
+> --- a/drivers/iio/common/cros_ec_sensors/Kconfig
+> +++ b/drivers/iio/common/cros_ec_sensors/Kconfig
+> @@ -4,7 +4,7 @@
+>  #
+>  config IIO_CROS_EC_SENSORS_CORE
+>  	tristate "ChromeOS EC Sensors Core"
+> -	depends on SYSFS && CROS_EC
+> +	depends on SYSFS && CROS_EC_SENSORHUB
+>  	select IIO_BUFFER
+>  	select IIO_TRIGGERED_BUFFER
+>  	help
+> diff --git a/drivers/platform/chrome/Kconfig b/drivers/platform/chrome/Kconfig
+> index ee5f08ea57b6..add967236cfb 100644
+> --- a/drivers/platform/chrome/Kconfig
+> +++ b/drivers/platform/chrome/Kconfig
+> @@ -132,9 +132,9 @@ config CROS_EC_LPC
+>  	  module will be called cros_ec_lpcs.
+>  
+>  config CROS_EC_PROTO
+> -        bool
+> -        help
+> -          ChromeOS EC communication protocol helpers.
+> +	bool
+> +	help
+> +	  ChromeOS EC communication protocol helpers.
+>  
 
- drivers/counter/Kconfig     |   6 +
- drivers/counter/Makefile    |   1 +
- drivers/counter/intel-qep.c | 689 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 696 insertions(+)
- create mode 100644 drivers/counter/intel-qep.c
+That change is unrelated to the patch.
 
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index 2967d0a9ff91..f280cd721350 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -59,4 +59,10 @@ config FTM_QUADDEC
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called ftm-quaddec.
- 
-+config INTEL_QEP
-+	tristate "Intel Quadrature Encoder"
-+	depends on PCI
-+	help
-+	  Support for Intel Quadrature Encoder Devices
-+
- endif # COUNTER
-diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-index 40d35522937d..cf291cfd8cf0 100644
---- a/drivers/counter/Makefile
-+++ b/drivers/counter/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_104_QUAD_8)	+= 104-quad-8.o
- obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
- obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
- obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
-+obj-$(CONFIG_INTEL_QEP)		+= intel-qep.o
-diff --git a/drivers/counter/intel-qep.c b/drivers/counter/intel-qep.c
-new file mode 100644
-index 000000000000..fa410a333b05
---- /dev/null
-+++ b/drivers/counter/intel-qep.c
-@@ -0,0 +1,689 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * intel-qep.c - Intel Quadrature Encoder Driver
-+ *
-+ * Copyright (C) 2019 Intel Corporation - https://www.intel.com
-+ *
-+ * Author: Felipe Balbi <felipe.balbi@linux.intel.com>
-+ */
-+#include <linux/bitops.h>
-+#include <linux/counter.h>
-+#include <linux/err.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/pci.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/sysfs.h>
-+
-+#define INTEL_QEPCON		0x00
-+#define INTEL_QEPFLT		0x04
-+#define INTEL_QEPCOUNT		0x08
-+#define INTEL_QEPMAX		0x0c
-+#define INTEL_QEPWDT		0x10
-+#define INTEL_QEPCAPDIV		0x14
-+#define INTEL_QEPCNTR		0x18
-+#define INTEL_QEPCAPBUF		0x1c
-+#define INTEL_QEPINT_STAT	0x20
-+#define INTEL_QEPINT_MASK	0x24
-+
-+/* QEPCON */
-+#define INTEL_QEPCON_EN		BIT(0)
-+#define INTEL_QEPCON_FLT_EN	BIT(1)
-+#define INTEL_QEPCON_EDGE_A	BIT(2)
-+#define INTEL_QEPCON_EDGE_B	BIT(3)
-+#define INTEL_QEPCON_EDGE_INDX	BIT(4)
-+#define INTEL_QEPCON_SWPAB	BIT(5)
-+#define INTEL_QEPCON_OP_MODE	BIT(6)
-+#define INTEL_QEPCON_PH_ERR	BIT(7)
-+#define INTEL_QEPCON_COUNT_RST_MODE BIT(8)
-+#define INTEL_QEPCON_INDX_GATING_MASK GENMASK(10, 9)
-+#define INTEL_QEPCON_INDX_GATING(n) (((n) & 3) << 9)
-+#define INTEL_QEPCON_INDX_PAL_PBL INTEL_QEPCON_INDX_GATING(0)
-+#define INTEL_QEPCON_INDX_PAL_PBH INTEL_QEPCON_INDX_GATING(1)
-+#define INTEL_QEPCON_INDX_PAH_PBL INTEL_QEPCON_INDX_GATING(2)
-+#define INTEL_QEPCON_INDX_PAH_PBH INTEL_QEPCON_INDX_GATING(3)
-+#define INTEL_QEPCON_CAP_MODE	BIT(11)
-+#define INTEL_QEPCON_FIFO_THRE_MASK GENMASK(14, 12)
-+#define INTEL_QEPCON_FIFO_THRE(n) ((((n) - 1) & 7) << 12)
-+#define INTEL_QEPCON_FIFO_EMPTY	BIT(15)
-+
-+/* QEPFLT */
-+#define INTEL_QEPFLT_MAX_COUNT(n) ((n) & 0x1fffff)
-+
-+/* QEPINT */
-+#define INTEL_QEPINT_FIFOCRIT	BIT(5)
-+#define INTEL_QEPINT_FIFOENTRY	BIT(4)
-+#define INTEL_QEPINT_QEPDIR	BIT(3)
-+#define INTEL_QEPINT_QEPRST_UP	BIT(2)
-+#define INTEL_QEPINT_QEPRST_DOWN BIT(1)
-+#define INTEL_QEPINT_WDT	BIT(0)
-+
-+#define INTEL_QEP_DIRECTION_FORWARD 1
-+#define INTEL_QEP_DIRECTION_BACKWARD !INTEL_QEP_DIRECTION_FORWARD
-+
-+#define INTEL_QEP_COUNTER_EXT_RW(_name) \
-+{ \
-+	.name = #_name, \
-+	.read = _name##_read, \
-+	.write = _name##_write, \
-+}
-+
-+#define INTEL_QEP_COUNTER_EXT_RO(_name) \
-+{ \
-+	.name = #_name, \
-+	.read = _name##_read, \
-+}
-+
-+#define INTEL_QEP_COUNTER_COUNT_EXT_RW(_name) \
-+{ \
-+	.name = #_name, \
-+	.read = _name##_read, \
-+	.write = _name##_write, \
-+}
-+
-+#define INTEL_QEP_COUNTER_COUNT_EXT_RO(_name) \
-+{ \
-+	.name = #_name, \
-+	.read = _name##_read, \
-+}
-+
-+struct intel_qep {
-+	struct counter_device counter;
-+	struct mutex lock;
-+	struct pci_dev *pci;
-+	struct device *dev;
-+	void __iomem *regs;
-+	u32 interrupt;
-+	int direction;
-+	bool enabled;
-+};
-+
-+#define counter_to_qep(c)	(container_of((c), struct intel_qep, counter))
-+
-+static inline u32 intel_qep_readl(void __iomem *base, u32 offset)
-+{
-+	return readl(base + offset);
-+}
-+
-+static inline void intel_qep_writel(void __iomem *base, u32 offset, u32 value)
-+{
-+	writel(value, base + offset);
-+}
-+
-+static const struct pci_device_id intel_qep_id_table[] = {
-+	/* EHL */
-+	{ PCI_VDEVICE(INTEL, 0x4bc3), },
-+	{ PCI_VDEVICE(INTEL, 0x4b81), },
-+	{ PCI_VDEVICE(INTEL, 0x4b82), },
-+	{ PCI_VDEVICE(INTEL, 0x4b83), },
-+	{  } /* Terminating Entry */
-+};
-+MODULE_DEVICE_TABLE(pci, intel_qep_id_table);
-+
-+static void intel_qep_init(struct intel_qep *qep, bool reset)
-+{
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+	reg &= ~INTEL_QEPCON_EN;
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	/* make sure periperal is disabled by reading one more time */
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (reset) {
-+		reg &= ~(INTEL_QEPCON_OP_MODE | INTEL_QEPCON_FLT_EN);
-+		reg |= INTEL_QEPCON_EDGE_A | INTEL_QEPCON_EDGE_B |
-+			INTEL_QEPCON_EDGE_INDX | INTEL_QEPCON_COUNT_RST_MODE;
-+	}
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPWDT, 0x1000);
-+	intel_qep_writel(qep->regs, INTEL_QEPINT_MASK, 0x0);
-+
-+	qep->direction = INTEL_QEP_DIRECTION_FORWARD;
-+}
-+
-+static irqreturn_t intel_qep_irq_thread(int irq, void *_qep)
-+{
-+	struct intel_qep	*qep = _qep;
-+	u32			stat;
-+
-+	mutex_lock(&qep->lock);
-+
-+	stat = qep->interrupt;
-+	if (stat & INTEL_QEPINT_FIFOCRIT)
-+		dev_dbg(qep->dev, "Fifo Critical\n");
-+
-+	if (stat & INTEL_QEPINT_FIFOENTRY)
-+		dev_dbg(qep->dev, "Fifo Entry\n");
-+
-+	if (stat & INTEL_QEPINT_QEPDIR)
-+		qep->direction = !qep->direction;
-+
-+	if (stat & INTEL_QEPINT_QEPRST_UP)
-+		qep->direction = INTEL_QEP_DIRECTION_FORWARD;
-+
-+	if (stat & INTEL_QEPINT_QEPRST_DOWN)
-+		qep->direction = INTEL_QEP_DIRECTION_BACKWARD;
-+
-+	if (stat & INTEL_QEPINT_WDT)
-+		dev_dbg(qep->dev, "Watchdog\n");
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPINT_MASK, 0x00);
-+	mutex_unlock(&qep->lock);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t intel_qep_irq(int irq, void *_qep)
-+{
-+	struct intel_qep	*qep = _qep;
-+	u32			stat;
-+
-+	stat = intel_qep_readl(qep->regs, INTEL_QEPINT_STAT);
-+	if (stat) {
-+		qep->interrupt = stat;
-+		intel_qep_writel(qep->regs, INTEL_QEPINT_MASK, 0xffffffff);
-+		intel_qep_writel(qep->regs, INTEL_QEPINT_STAT, stat);
-+		return IRQ_WAKE_THREAD;
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+enum intel_qep_synapse_action {
-+	INTEL_QEP_SYNAPSE_ACTION_RISING_EDGE,
-+	INTEL_QEP_SYNAPSE_ACTION_FALLING_EDGE,
-+};
-+
-+static enum counter_synapse_action intel_qep_synapse_actions[] = {
-+	[INTEL_QEP_SYNAPSE_ACTION_RISING_EDGE] =
-+	COUNTER_SYNAPSE_ACTION_RISING_EDGE,
-+	
-+	[INTEL_QEP_SYNAPSE_ACTION_FALLING_EDGE] =
-+	COUNTER_SYNAPSE_ACTION_FALLING_EDGE,
-+};
-+
-+enum intel_qep_count_function {
-+	INTEL_QEP_ENCODER_MODE_NORMAL,
-+	INTEL_QEP_ENCODER_MODE_SWAPPED,
-+};
-+
-+static const enum counter_count_function intel_qep_count_functions[] = {
-+	[INTEL_QEP_ENCODER_MODE_NORMAL] =
-+	COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
-+
-+	[INTEL_QEP_ENCODER_MODE_SWAPPED] =
-+	COUNTER_COUNT_FUNCTION_QUADRATURE_X4_SWAPPED,
-+};
-+
-+static int intel_qep_count_read(struct counter_device *counter,
-+		struct counter_count *count,
-+		struct counter_count_read_value *val)
-+{
-+	struct intel_qep *const qep = counter->priv;
-+	uint32_t cntval;
-+
-+	cntval = intel_qep_readl(qep, INTEL_QEPCOUNT);
-+	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &cntval);
-+
-+	return 0;
-+}
-+
-+static int intel_qep_count_write(struct counter_device *counter,
-+		struct counter_count *count,
-+		struct counter_count_write_value *val)
-+{
-+	struct intel_qep *const qep = counter->priv;
-+	u32 cnt;
-+	int err;
-+
-+	err = counter_count_write_value_get(&cnt, COUNTER_COUNT_POSITION, val);
-+	if (err)
-+		return err;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPMAX, cnt);
-+
-+	return 0;
-+}
-+
-+static int intel_qep_function_get(struct counter_device *counter,
-+		struct counter_count *count, size_t *function)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+	if (reg & INTEL_QEPCON_SWPAB)
-+		*function = INTEL_QEP_ENCODER_MODE_SWAPPED;
-+	else
-+		*function = INTEL_QEP_ENCODER_MODE_NORMAL;
-+
-+	return 0;
-+}
-+
-+static int intel_qep_function_set(struct counter_device *counter,
-+		struct counter_count *count, size_t function)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+	if (function == INTEL_QEP_ENCODER_MODE_SWAPPED)
-+		reg |= INTEL_QEPCON_SWPAB;
-+	else
-+		reg &= ~INTEL_QEPCON_SWPAB;
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	return 0;
-+}
-+
-+static int intel_qep_action_get(struct counter_device *counter,
-+		struct counter_count *count, struct counter_synapse *synapse,
-+		size_t *action)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	*action = reg & synapse->signal->id ?
-+		INTEL_QEP_SYNAPSE_ACTION_RISING_EDGE :
-+		INTEL_QEP_SYNAPSE_ACTION_FALLING_EDGE;
-+
-+	return 0;
-+}
-+
-+static int intel_qep_action_set(struct counter_device *counter,
-+		struct counter_count *count,
-+		struct counter_synapse *synapse, size_t action)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (action == INTEL_QEP_SYNAPSE_ACTION_RISING_EDGE)
-+		reg |= synapse->signal->id;
-+	else
-+		reg &= ~synapse->signal->id;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	return 0;
-+}
-+
-+static const struct counter_ops intel_qep_counter_ops = {
-+	.count_read = intel_qep_count_read,
-+	.count_write = intel_qep_count_write,
-+
-+	.function_get = intel_qep_function_get,
-+	.function_set = intel_qep_function_set,
-+
-+	.action_get = intel_qep_action_get,
-+	.action_set = intel_qep_action_set,
-+};
-+
-+static struct counter_signal intel_qep_signals[] = {
-+	{
-+		.id = INTEL_QEPCON_EDGE_A,
-+		.name = "Phase A",
-+	},
-+	{
-+		.id = INTEL_QEPCON_EDGE_B,
-+		.name = "Phase B",
-+	},
-+	{
-+		.id = INTEL_QEPCON_EDGE_INDX,
-+		.name = "Index",
-+	},
-+};
-+
-+static struct counter_synapse intel_qep_count_synapses[] = {
-+	{
-+		.actions_list = intel_qep_synapse_actions,
-+		.num_actions = ARRAY_SIZE(intel_qep_synapse_actions),
-+		.signal = &intel_qep_signals[0],
-+	},
-+	{
-+		.actions_list = intel_qep_synapse_actions,
-+		.num_actions = ARRAY_SIZE(intel_qep_synapse_actions),
-+		.signal = &intel_qep_signals[1],
-+	},
-+	{
-+		.actions_list = intel_qep_synapse_actions,
-+		.num_actions = ARRAY_SIZE(intel_qep_synapse_actions),
-+		.signal = &intel_qep_signals[2],
-+	},
-+};
-+
-+static ssize_t ceiling_read(struct counter_device *counter,
-+		struct counter_count *count, void *priv, char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPMAX);
-+
-+	return snprintf(buf, PAGE_SIZE, "%d\n", reg);
-+}
-+
-+static ssize_t ceiling_write(struct counter_device *counter,
-+		struct counter_count *count, void *priv, const char *buf,
-+		size_t len)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 max;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &max);
-+	if (ret < 0)
-+		return ret;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPMAX, max);
-+
-+	return len;
-+}
-+
-+static ssize_t enable_read(struct counter_device *counter,
-+		struct counter_count *count, void *priv, char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	return snprintf(buf, PAGE_SIZE, "%d\n", !!(reg & INTEL_QEPCON_EN));
-+}
-+
-+static ssize_t enable_write(struct counter_device *counter,
-+		struct counter_count *count, void *priv, const char *buf,
-+		size_t len)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+	u32 val;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (val)
-+		reg |= INTEL_QEPCON_EN;
-+	else
-+		reg &= ~INTEL_QEPCON_EN;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+
-+	return len;
-+}
-+
-+static ssize_t direction_read(struct counter_device *counter,
-+		struct counter_count *count, void *priv, char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+
-+	return snprintf(buf, PAGE_SIZE, "%s\n", qep->direction ?
-+			"forward" : "backward");
-+}
-+
-+static const struct counter_count_ext intel_qep_count_ext[] = {
-+	INTEL_QEP_COUNTER_COUNT_EXT_RW(ceiling),
-+	INTEL_QEP_COUNTER_COUNT_EXT_RW(enable),
-+	INTEL_QEP_COUNTER_COUNT_EXT_RO(direction),
-+};
-+
-+static struct counter_count intel_qep_counter_count[] = {
-+	{
-+		.id = 0,
-+		.name = "Channel 1 Count",
-+		.functions_list = intel_qep_count_functions,
-+		.num_functions = ARRAY_SIZE(intel_qep_count_functions),
-+		.synapses = intel_qep_count_synapses,
-+		.num_synapses = ARRAY_SIZE(intel_qep_count_synapses),
-+		.ext = intel_qep_count_ext,
-+		.num_ext = ARRAY_SIZE(intel_qep_count_ext),
-+	},
-+};
-+
-+static ssize_t noise_read(struct counter_device *counter, void *priv, char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (!(reg & INTEL_QEPCON_FLT_EN))
-+		return snprintf(buf, PAGE_SIZE, "0\n");
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPFLT);
-+
-+	return snprintf(buf, PAGE_SIZE, "%d\n", INTEL_QEPFLT_MAX_COUNT(reg));
-+}
-+
-+static ssize_t noise_write(struct counter_device *counter, void *priv,
-+		const char *buf, size_t len)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+	u32 max;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &max);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (max > 0x1fffff)
-+		max = 0x1ffff;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (max == 0) {
-+		reg &= ~INTEL_QEPCON_FLT_EN;
-+	} else {
-+		reg |= INTEL_QEPCON_FLT_EN;
-+		intel_qep_writel(qep->regs, INTEL_QEPFLT, max);
-+	}
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+	
-+	return len;
-+}
-+
-+static ssize_t preset_read(struct counter_device *counter, void *priv, char *buf)
-+{
-+	return snprintf(buf, PAGE_SIZE, "0\n");
-+}
-+
-+static ssize_t preset_enable_read(struct counter_device *counter, void *priv,
-+		char *buf)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+	return snprintf(buf, PAGE_SIZE, "%d\n",
-+			!(reg & INTEL_QEPCON_COUNT_RST_MODE));
-+}
-+
-+static ssize_t preset_enable_write(struct counter_device *counter, void *priv,
-+		const char *buf, size_t len)
-+{
-+	struct intel_qep *qep = counter_to_qep(counter);
-+	u32 reg;
-+	u32 val;
-+	int ret;
-+
-+	ret = kstrtou32(buf, 0, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	reg = intel_qep_readl(qep->regs, INTEL_QEPCON);
-+
-+	if (val)
-+		reg &= ~INTEL_QEPCON_COUNT_RST_MODE;
-+	else
-+		reg |= INTEL_QEPCON_COUNT_RST_MODE;
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, reg);
-+	
-+	return len;
-+}
-+
-+static const struct counter_device_ext intel_qep_ext[] = {
-+	INTEL_QEP_COUNTER_EXT_RW(noise),
-+	INTEL_QEP_COUNTER_EXT_RO(preset),
-+	INTEL_QEP_COUNTER_EXT_RW(preset_enable)
-+};
-+
-+static int intel_qep_probe(struct pci_dev *pci, const struct pci_device_id *id)
-+{
-+	struct intel_qep	*qep;
-+	struct device		*dev = &pci->dev;
-+	void __iomem		*regs;
-+	int			ret;
-+	int			irq;
-+
-+	qep = devm_kzalloc(dev, sizeof(*qep), GFP_KERNEL);
-+	if (!qep)
-+		return -ENOMEM;
-+
-+	ret = pcim_enable_device(pci);
-+	if (ret)
-+		return ret;
-+
-+	pci_set_master(pci);
-+
-+	ret = pcim_iomap_regions(pci, BIT(0), pci_name(pci));
-+	if (ret)
-+		return ret;
-+
-+	regs = pcim_iomap_table(pci)[0];
-+	if (!regs)
-+		return -ENOMEM;
-+
-+	qep->pci = pci;
-+	qep->dev = dev;
-+	qep->regs = regs;
-+	mutex_init(&qep->lock);
-+
-+	intel_qep_init(qep, true);
-+	pci_set_drvdata(pci, qep);
-+
-+	qep->counter.name = pci_name(pci);
-+	qep->counter.parent = dev;
-+	qep->counter.ops = &intel_qep_counter_ops;
-+	qep->counter.counts = intel_qep_counter_count;
-+	qep->counter.num_counts = ARRAY_SIZE(intel_qep_counter_count);
-+	qep->counter.signals = intel_qep_signals;
-+	qep->counter.num_signals = ARRAY_SIZE(intel_qep_signals);
-+	qep->counter.ext = intel_qep_ext;
-+	qep->counter.num_ext = ARRAY_SIZE(intel_qep_ext);
-+	qep->counter.priv = qep;
-+
-+	ret = counter_register(&qep->counter);
-+	if (ret)
-+		return ret;
-+
-+	ret = pci_alloc_irq_vectors(pci, 1, 1, PCI_IRQ_ALL_TYPES);
-+	if (ret < 0)
-+		goto err_irq_vectors;
-+
-+	irq = pci_irq_vector(pci, 0);
-+	ret = devm_request_threaded_irq(&pci->dev, irq, intel_qep_irq,
-+			intel_qep_irq_thread, IRQF_SHARED | IRQF_TRIGGER_RISING,
-+			"intel-qep", qep);
-+	if (ret)
-+		goto err_irq;
-+
-+	pm_runtime_set_autosuspend_delay(dev, 1000);
-+	pm_runtime_use_autosuspend(dev);
-+	pm_runtime_put_noidle(dev);
-+	pm_runtime_allow(dev);
-+
-+	return 0;
-+
-+err_irq:
-+	pci_free_irq_vectors(pci);
-+
-+err_irq_vectors:
-+	counter_unregister(&qep->counter);
-+
-+	return ret;
-+}
-+
-+static void intel_qep_remove(struct pci_dev *pci)
-+{
-+	struct intel_qep	*qep = pci_get_drvdata(pci);
-+	struct device		*dev = &pci->dev;
-+
-+	pm_runtime_forbid(dev);
-+	pm_runtime_get_noresume(dev);
-+
-+	intel_qep_writel(qep->regs, INTEL_QEPCON, 0);
-+	pci_free_irq_vectors(pci);
-+	counter_unregister(&qep->counter);
-+}
-+
-+#ifdef CONFIG_PM_SLEEP
-+static int intel_qep_suspend(struct device *dev)
-+{
-+	return 0;
-+}
-+
-+static int intel_qep_resume(struct device *dev)
-+{
-+	struct pci_dev *pdev = container_of(dev, struct pci_dev, dev);
-+	struct intel_qep *qep = pci_get_drvdata(pdev);
-+
-+	intel_qep_init(qep, false);
-+
-+	return 0;
-+}
-+
-+static int intel_qep_runtime_suspend(struct device *dev)
-+{
-+	return 0;
-+}
-+
-+static int intel_qep_runtime_resume(struct device *dev)
-+{
-+	struct pci_dev *pdev = container_of(dev, struct pci_dev, dev);
-+	struct intel_qep *qep = pci_get_drvdata(pdev);
-+
-+	intel_qep_init(qep, false);
-+
-+	return 0;
-+}
-+#endif
-+
-+static const struct dev_pm_ops intel_qep_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(intel_qep_suspend,
-+				intel_qep_resume)
-+	SET_RUNTIME_PM_OPS(intel_qep_runtime_suspend, intel_qep_runtime_resume,
-+				NULL)
-+};
-+
-+static struct pci_driver intel_qep_driver = {
-+	.name		= "intel-qep",
-+	.id_table	= intel_qep_id_table,
-+	.probe		= intel_qep_probe,
-+	.remove		= intel_qep_remove,
-+	.driver = {
-+		.pm = &intel_qep_pm_ops,
-+	}
-+};
-+
-+module_pci_driver(intel_qep_driver);
-+
-+MODULE_AUTHOR("Felipe Balbi <felipe.balbi@linux.intel.com>");
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("Intel Quadrature Encoder Driver");
--- 
-2.23.0
+>  config CROS_KBD_LED_BACKLIGHT
+>  	tristate "Backlight LED support for Chrome OS keyboards"
+> @@ -190,6 +190,18 @@ config CROS_EC_DEBUGFS
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called cros_ec_debugfs.
+>  
+> +config CROS_EC_SENSORHUB
+> +	tristate "ChromeOS EC MEMS Senosr Hub"
 
+Typo: s/Senosr/Sensor/
+
+> +	depends on CROS_EC && IIO
+> +	help
+> +	  Allow loading IIO sensors. This driver is loaded by MFD and will in
+> +	  turn query the EC and register the sensors.
+> +	  It also spreads the sensor data coming from the EC to the IIO sensorr
+
+Typo : s/sensorr/Sensor
+
+> +	  object.
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called cros_ec_sensorhub.
+> +
+>  config CROS_EC_SYSFS
+>  	tristate "ChromeOS EC control and information through sysfs"
+>  	depends on MFD_CROS_EC_DEV && SYSFS
+> diff --git a/drivers/platform/chrome/Makefile b/drivers/platform/chrome/Makefile
+> index 477ec3d1d1c9..a164c40dc099 100644
+> --- a/drivers/platform/chrome/Makefile
+> +++ b/drivers/platform/chrome/Makefile
+> @@ -17,6 +17,7 @@ obj-$(CONFIG_CROS_EC_PROTO)		+= cros_ec_proto.o cros_ec_trace.o
+>  obj-$(CONFIG_CROS_KBD_LED_BACKLIGHT)	+= cros_kbd_led_backlight.o
+>  obj-$(CONFIG_CROS_EC_CHARDEV)		+= cros_ec_chardev.o
+>  obj-$(CONFIG_CROS_EC_LIGHTBAR)		+= cros_ec_lightbar.o
+> +obj-$(CONFIG_CROS_EC_SENSORHUB)		+= cros_ec_sensorhub.o
+>  obj-$(CONFIG_CROS_EC_VBC)		+= cros_ec_vbc.o
+>  obj-$(CONFIG_CROS_EC_DEBUGFS)		+= cros_ec_debugfs.o
+>  obj-$(CONFIG_CROS_EC_SYSFS)		+= cros_ec_sysfs.o
+> diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platform/chrome/cros_ec_sensorhub.c
+> new file mode 100644
+> index 000000000000..80688018ef66
+> --- /dev/null
+> +++ b/drivers/platform/chrome/cros_ec_sensorhub.c
+> @@ -0,0 +1,211 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * SensorHub: driver that discover sensors behind
+> + * a ChromeOS Embedded controller.
+> + *
+> + * Copyright 2019 Google LLC
+> + */
+> +
+> +#include <linux/init.h>
+> +#include <linux/device.h>
+> +#include <linux/fs.h>
+> +#include <linux/miscdevice.h>
+> +#include <linux/module.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/mfd/cros_ec.h>
+> +#include <linux/platform_data/cros_ec_commands.h>
+> +#include <linux/platform_data/cros_ec_proto.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/poll.h>
+> +#include <linux/slab.h>
+> +#include <linux/types.h>
+> +#include <linux/uaccess.h>
+> +
+> +#include <linux/platform_data/cros_ec_sensorhub.h>
+> +
+> +#define DRV_NAME		"cros-ec-sensorhub"
+> +
+> +static int cros_ec_sensors_register(struct device *dev,
+> +		struct cros_ec_dev *ec)
+> +{
+> +	int ret, i, id, sensor_num;
+> +	struct mfd_cell *sensor_cells;
+> +	struct cros_ec_sensor_platform *sensor_platforms;
+> +	int sensor_type[MOTIONSENSE_TYPE_MAX] = { 0 };
+> +	struct ec_params_motion_sense *params;
+> +	struct ec_response_motion_sense *resp;
+> +	struct cros_ec_command *msg;
+> +
+> +	sensor_num = cros_ec_get_sensor_count(ec);
+> +	if (sensor_num < 0) {
+> +		dev_err(dev,
+> +			"Unable to retrieve sensor information (err:%d)\n",
+> +			sensor_num);
+> +		return sensor_num;
+> +	}
+> +
+> +	if (sensor_num == 0) {
+> +		dev_err(dev, "Zero sensors reported.\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	/*
+> +	 * Build an array of sensors driver and register them all.
+> +	 */
+> +	msg = kzalloc(sizeof(struct cros_ec_command) +
+> +		      max(sizeof(*params), sizeof(*resp)), GFP_KERNEL);
+> +	if (msg == NULL) {
+> +		ret = -ENOMEM;
+> +		goto error;
+> +	}
+> +
+> +	msg->version = 1;
+> +	msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
+> +	msg->outsize = sizeof(*params);
+> +	msg->insize = sizeof(*resp);
+> +	params = (struct ec_params_motion_sense *)msg->data;
+> +	resp = (struct ec_response_motion_sense *)msg->data;
+> +
+> +	/*
+> +	 * Allocate 1 extra sensor if lid angle sensor is needed.
+> +	 */
+> +	sensor_cells = kcalloc(sensor_num + 1, sizeof(struct mfd_cell),
+> +			       GFP_KERNEL);
+> +	if (sensor_cells == NULL) {
+> +		ret = -ENOMEM;
+> +		goto error;
+> +	}
+> +
+> +	sensor_platforms = kcalloc(sensor_num,
+> +				   sizeof(struct cros_ec_sensor_platform),
+> +				   GFP_KERNEL);
+> +	if (sensor_platforms == NULL) {
+> +		ret = -ENOMEM;
+> +		goto error_platforms;
+> +	}
+> +
+> +	id = 0;
+> +	for (i = 0; i < sensor_num; i++) {
+> +		params->cmd = MOTIONSENSE_CMD_INFO;
+> +		params->info.sensor_num = i;
+> +		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+> +		if (ret < 0) {
+> +			dev_warn(dev, "no info for EC sensor %d : %d/%d\n",
+> +				 i, ret, msg->result);
+> +			continue;
+> +		}
+> +		switch (resp->info.type) {
+> +		case MOTIONSENSE_TYPE_ACCEL:
+> +			sensor_cells[id].name = "cros-ec-accel";
+> +			break;
+> +		case MOTIONSENSE_TYPE_BARO:
+> +			sensor_cells[id].name = "cros-ec-baro";
+> +			break;
+> +		case MOTIONSENSE_TYPE_GYRO:
+> +			sensor_cells[id].name = "cros-ec-gyro";
+> +			break;
+> +		case MOTIONSENSE_TYPE_MAG:
+> +			sensor_cells[id].name = "cros-ec-mag";
+> +			break;
+> +		case MOTIONSENSE_TYPE_PROX:
+> +			sensor_cells[id].name = "cros-ec-prox";
+> +			break;
+> +		case MOTIONSENSE_TYPE_LIGHT:
+> +			sensor_cells[id].name = "cros-ec-light";
+> +			break;
+> +		case MOTIONSENSE_TYPE_ACTIVITY:
+> +			sensor_cells[id].name = "cros-ec-activity";
+> +			break;
+> +		default:
+> +			dev_warn(dev, "unknown type %d\n", resp->info.type);
+> +			continue;
+> +		}
+> +		sensor_platforms[id].sensor_num = i;
+> +		sensor_cells[id].platform_data = &sensor_platforms[id];
+> +		sensor_cells[id].pdata_size =
+> +			sizeof(struct cros_ec_sensor_platform);
+> +
+> +		sensor_type[resp->info.type]++;
+> +		id++;
+> +	}
+> +
+> +	if (sensor_type[MOTIONSENSE_TYPE_ACCEL] >= 2)
+> +		ec->has_kb_wake_angle = true;
+> +
+> +	if (cros_ec_check_features(ec,
+> +				EC_FEATURE_REFINED_TABLET_MODE_HYSTERESIS)) {
+> +		sensor_cells[id].name = "cros-ec-lid-angle";
+> +		id++;
+> +	}
+> +
+> +	ret = mfd_add_hotplug_devices(dev, sensor_cells, id);
+
+That's problematic.
+
+In general using mfd_* in a !MFD driver is considered a hack. I know that the
+Intel Sensor Hub and few other drivers does this but it's not correct and I know
+Lee won't be happy with this change.
+
+I think we should be using the platform_device_add() API here.
+
+Thanks,
+ Enric
+
+> +	kfree(sensor_platforms);
+> +error_platforms:
+> +	kfree(sensor_cells);
+> +error:
+> +	kfree(msg);
+> +	return ret;
+> +}
+> +
+> +static struct cros_ec_sensor_platform sensor_platforms[] = {
+> +	{ .sensor_num = 0 },
+> +	{ .sensor_num = 1 }
+> +};
+> +
+> +static const struct mfd_cell cros_ec_accel_legacy_cells[] = {
+> +	{
+> +		.name = "cros-ec-accel-legacy",
+> +		.platform_data = &sensor_platforms[0],
+> +		.pdata_size = sizeof(struct cros_ec_sensor_platform),
+> +	},
+> +	{
+> +		.name = "cros-ec-accel-legacy",
+> +		.platform_data = &sensor_platforms[1],
+> +		.pdata_size = sizeof(struct cros_ec_sensor_platform),
+> +	}
+> +};
+> +
+> +
+> +
+> +static int cros_ec_sensorhub_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct cros_ec_dev *ec = dev_get_drvdata(dev->parent);
+> +	int ret;
+> +	struct cros_ec_sensorhub *data =
+> +		kzalloc(sizeof(struct cros_ec_sensorhub), GFP_KERNEL);
+> +
+> +	if (!data)
+> +		return -ENOMEM;
+> +
+> +	data->ec = ec;
+> +	dev_set_drvdata(dev, data);
+> +
+> +	/* check whether this EC is a sensor hub. */
+> +	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE)) {
+> +		ret = cros_ec_sensors_register(dev, ec);
+> +	} else {
+> +		/* Workaroud for older EC firmware */
+> +		ret = mfd_add_hotplug_devices(dev,
+> +				cros_ec_accel_legacy_cells,
+> +				ARRAY_SIZE(cros_ec_accel_legacy_cells));
+> +	}
+> +	if (ret)
+> +		dev_err(dev, "failed to add EC sensors: error %d\n", ret);
+> +	return ret;
+> +}
+> +
+> +static struct platform_driver cros_ec_sensorhub_driver = {
+> +	.driver = {
+> +		.name = DRV_NAME,
+> +	},
+> +	.probe = cros_ec_sensorhub_probe,
+> +};
+> +
+> +module_platform_driver(cros_ec_sensorhub_driver);
+> +
+> +MODULE_ALIAS("platform:" DRV_NAME);
+> +MODULE_AUTHOR("Gwendal Grignou <gwendal@chromium.org>");
+> +MODULE_DESCRIPTION("ChromeOS EC MEMS Sensor Hub Driver");
+> +MODULE_LICENSE("GPL");
+> +
+> diff --git a/include/linux/platform_data/cros_ec_sensorhub.h b/include/linux/platform_data/cros_ec_sensorhub.h
+> new file mode 100644
+> index 000000000000..a8b64ecf5b9b
+> --- /dev/null
+> +++ b/include/linux/platform_data/cros_ec_sensorhub.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * cros_ec_sensorhub- Chrome OS EC MEMS Sensor Hub driver.
+> + *
+> + * Copyright (C) 2019 Google, Inc
+> + *
+> + */
+> +
+> +#ifndef __LINUX_PLATFORM_DATA_CROS_EC_SENSORHUB_H
+> +#define __LINUX_PLATFORM_DATA_CROS_EC_SENSORHUB_H
+> +
+> +#include <linux/platform_data/cros_ec_commands.h>
+> +
+> +/**
+> + * struct cros_ec_sensorhub - Sensor Hub device data.
+> + */
+> +struct cros_ec_sensorhub {
+> +	struct cros_ec_dev *ec;
+> +};
+> +
+> +#endif   /* __LINUX_PLATFORM_DATA_CROS_EC_SENSORHUB_H */
+> 

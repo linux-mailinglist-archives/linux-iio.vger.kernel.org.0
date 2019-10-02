@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F19EAC8DC6
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 18:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2C8AC8DD3
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 18:08:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728119AbfJBQIE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Oct 2019 12:08:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36816 "EHLO mail.kernel.org"
+        id S1729238AbfJBQIJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Oct 2019 12:08:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36940 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728141AbfJBQID (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 2 Oct 2019 12:08:03 -0400
+        id S1728141AbfJBQII (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 2 Oct 2019 12:08:08 -0400
 Received: from localhost.localdomain (unknown [194.230.155.145])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 103BE21A4C;
-        Wed,  2 Oct 2019 16:07:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A88A021D82;
+        Wed,  2 Oct 2019 16:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570032482;
-        bh=J9kAmUOB10/t7fTLkTz1mlbDgiv+TRuGOWFvZUNtgNg=;
-        h=From:To:Subject:Date:From;
-        b=pCgz4GjDBNXPxEehf+0JiRELjoO0FbTJxMmPJGoeWqq0uwlKXSrVEo0uk1y0maNq6
-         oB0K/yIJropauxHqIgq/xXfq7K0uO9QvdhCm76Gm2BgJRehe2xbECsLDYoMyMNeBF6
-         oFgTb3bsqOsURPyCoePxqIscwS7ZmJSBWafG8ZhU=
+        s=default; t=1570032487;
+        bh=aTT+KOPtG7lEZoKFjOcg12k7mYDVzqbZ+kRKqJj+Q/Y=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=yEmU39OEZPdIZkciVrsHxumq0dwlb6xYD984LvdxOpFBegUQbYQWY/kqPJNkQB/S/
+         klHIFe9iE5JLM4gPOXgmmzDpt+3ictm+NdolqN8XcQ+4TvJlyCpK97vjB/H7i3U59c
+         6CWPL8cy4Ul0kVyv78QOfgaINaaEebGmpqnpqAvk=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -39,172 +39,45 @@ To:     Rob Herring <robh+dt@kernel.org>,
         linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-rtc@vger.kernel.org
-Subject: [PATCH 1/4] dt-bindings: samsung: Indent examples with four spaces
-Date:   Wed,  2 Oct 2019 18:07:41 +0200
-Message-Id: <20191002160744.11307-1-krzk@kernel.org>
+Subject: [PATCH 2/4] dt-bindings: rtc: s3c: Use defines instead of clock numbers
+Date:   Wed,  2 Oct 2019 18:07:42 +0200
+Message-Id: <20191002160744.11307-2-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191002160744.11307-1-krzk@kernel.org>
+References: <20191002160744.11307-1-krzk@kernel.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Change the indentation of examples used in json-schema bindings from two
-to four spaces as this makes the code easier to read and seems to be
-preferred in other files.
+Make the examples in S3C RTC bindings more readable and bring them
+closer to real DTS by using defines for clocks.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- .../bindings/arm/samsung/exynos-chipid.yaml   |  4 +-
- .../bindings/iio/adc/samsung,exynos-adc.yaml  | 64 +++++++++----------
- .../bindings/power/reset/syscon-poweroff.yaml |  8 +--
- .../bindings/power/reset/syscon-reboot.yaml   |  8 +--
- .../devicetree/bindings/rtc/s3c-rtc.yaml      | 12 ++--
- 5 files changed, 48 insertions(+), 48 deletions(-)
+ Documentation/devicetree/bindings/rtc/s3c-rtc.yaml | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/arm/samsung/exynos-chipid.yaml b/Documentation/devicetree/bindings/arm/samsung/exynos-chipid.yaml
-index 9c573ad7dc7d..ce40adabb4e8 100644
---- a/Documentation/devicetree/bindings/arm/samsung/exynos-chipid.yaml
-+++ b/Documentation/devicetree/bindings/arm/samsung/exynos-chipid.yaml
-@@ -20,6 +20,6 @@ properties:
- examples:
-   - |
-     chipid@10000000 {
--      compatible = "samsung,exynos4210-chipid";
--      reg = <0x10000000 0x100>;
-+        compatible = "samsung,exynos4210-chipid";
-+        reg = <0x10000000 0x100>;
-     };
-diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-index b4c6c26681d9..a0a9b909ac40 100644
---- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-@@ -112,40 +112,40 @@ allOf:
- examples:
-   - |
-     adc: adc@12d10000 {
--      compatible = "samsung,exynos-adc-v1";
--      reg = <0x12d10000 0x100>;
--      interrupts = <0 106 0>;
--      #io-channel-cells = <1>;
--      io-channel-ranges;
--
--      clocks = <&clock 303>;
--      clock-names = "adc";
--
--      vdd-supply = <&buck5_reg>;
--      samsung,syscon-phandle = <&pmu_system_controller>;
--
--      /* NTC thermistor is a hwmon device */
--      ncp15wb473@0 {
--        compatible = "murata,ncp15wb473";
--        pullup-uv = <1800000>;
--        pullup-ohm = <47000>;
--        pulldown-ohm = <0>;
--        io-channels = <&adc 4>;
--      };
-+        compatible = "samsung,exynos-adc-v1";
-+        reg = <0x12d10000 0x100>;
-+        interrupts = <0 106 0>;
-+        #io-channel-cells = <1>;
-+        io-channel-ranges;
-+
-+        clocks = <&clock 303>;
-+        clock-names = "adc";
-+
-+        vdd-supply = <&buck5_reg>;
-+        samsung,syscon-phandle = <&pmu_system_controller>;
-+
-+        /* NTC thermistor is a hwmon device */
-+        ncp15wb473@0 {
-+            compatible = "murata,ncp15wb473";
-+            pullup-uv = <1800000>;
-+            pullup-ohm = <47000>;
-+            pulldown-ohm = <0>;
-+            io-channels = <&adc 4>;
-+          };
-     };
- 
-   - |
-     adc@126c0000 {
--      compatible = "samsung,exynos3250-adc";
--      reg = <0x126C0000 0x100>;
--      interrupts = <0 137 0>;
--      #io-channel-cells = <1>;
--      io-channel-ranges;
--
--      clocks = <&cmu 0>, // CLK_TSADC
--               <&cmu 1>; // CLK_SCLK_TSADC
--      clock-names = "adc", "sclk";
--
--      vdd-supply = <&buck5_reg>;
--      samsung,syscon-phandle = <&pmu_system_controller>;
-+        compatible = "samsung,exynos3250-adc";
-+        reg = <0x126C0000 0x100>;
-+        interrupts = <0 137 0>;
-+        #io-channel-cells = <1>;
-+        io-channel-ranges;
-+
-+        clocks = <&cmu 0>, // CLK_TSADC
-+                 <&cmu 1>; // CLK_SCLK_TSADC
-+        clock-names = "adc", "sclk";
-+
-+        vdd-supply = <&buck5_reg>;
-+        samsung,syscon-phandle = <&pmu_system_controller>;
-     };
-diff --git a/Documentation/devicetree/bindings/power/reset/syscon-poweroff.yaml b/Documentation/devicetree/bindings/power/reset/syscon-poweroff.yaml
-index fb812937b534..520e07e6f21b 100644
---- a/Documentation/devicetree/bindings/power/reset/syscon-poweroff.yaml
-+++ b/Documentation/devicetree/bindings/power/reset/syscon-poweroff.yaml
-@@ -53,8 +53,8 @@ allOf:
- examples:
-   - |
-     poweroff {
--      compatible = "syscon-poweroff";
--      regmap = <&regmapnode>;
--      offset = <0x0>;
--      mask = <0x7a>;
-+        compatible = "syscon-poweroff";
-+        regmap = <&regmapnode>;
-+        offset = <0x0>;
-+        mask = <0x7a>;
-     };
-diff --git a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
-index a7920f5eef79..d38006b1f1f4 100644
---- a/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
-+++ b/Documentation/devicetree/bindings/power/reset/syscon-reboot.yaml
-@@ -53,8 +53,8 @@ allOf:
- examples:
-   - |
-     reboot {
--      compatible = "syscon-reboot";
--      regmap = <&regmapnode>;
--      offset = <0x0>;
--      mask = <0x1>;
-+        compatible = "syscon-reboot";
-+        regmap = <&regmapnode>;
-+        offset = <0x0>;
-+        mask = <0x1>;
-     };
 diff --git a/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
-index 951a6a485709..95570d7e19eb 100644
+index 95570d7e19eb..4d91cdc9b998 100644
 --- a/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
 +++ b/Documentation/devicetree/bindings/rtc/s3c-rtc.yaml
-@@ -76,10 +76,10 @@ allOf:
+@@ -75,11 +75,14 @@ allOf:
+ 
  examples:
    - |
++    #include <dt-bindings/clock/exynos5420.h>
++    #include <dt-bindings/clock/samsung,s2mps11.h>
++
      rtc@10070000 {
--      compatible = "samsung,s3c6410-rtc";
--      reg = <0x10070000 0x100>;
--      interrupts = <0 44 4>, <0 45 4>;
--      clocks = <&clock 0>, // CLK_RTC
--               <&s2mps11_osc 0>; // S2MPS11_CLK_AP
--      clock-names = "rtc", "rtc_src";
-+        compatible = "samsung,s3c6410-rtc";
-+        reg = <0x10070000 0x100>;
-+        interrupts = <0 44 4>, <0 45 4>;
-+        clocks = <&clock 0>, // CLK_RTC
-+                 <&s2mps11_osc 0>; // S2MPS11_CLK_AP
-+        clock-names = "rtc", "rtc_src";
+         compatible = "samsung,s3c6410-rtc";
+         reg = <0x10070000 0x100>;
+         interrupts = <0 44 4>, <0 45 4>;
+-        clocks = <&clock 0>, // CLK_RTC
+-                 <&s2mps11_osc 0>; // S2MPS11_CLK_AP
++        clocks = <&clock CLK_RTC>,
++                 <&s2mps11_osc S2MPS11_CLK_AP>;
+         clock-names = "rtc", "rtc_src";
      };
 -- 
 2.17.1

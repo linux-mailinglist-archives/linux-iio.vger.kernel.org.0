@@ -2,180 +2,239 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AFC5C4507
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 02:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2760C48EC
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 09:57:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727280AbfJBAe7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Oct 2019 20:34:59 -0400
-Received: from mail-yw1-f65.google.com ([209.85.161.65]:41056 "EHLO
-        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727190AbfJBAe7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Oct 2019 20:34:59 -0400
-Received: by mail-yw1-f65.google.com with SMTP id 129so5507004ywb.8
-        for <linux-iio@vger.kernel.org>; Tue, 01 Oct 2019 17:34:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=RG8vm7hKpSdFgBxD0meJx+orsHILwMpDpi3s7ULpZ9o=;
-        b=YlvXyCn+ttYx6RiWkkm9Oj7fDsZ6MmxjGHj1dRHDkQZzDl1LCTgy8v9U/Q6IxodC4E
-         VxGD4TJ7MsZdbGqYSylgWvp39YsHYZVRpo5S6OuMNmyjc/V3I1TdGH5N3Qfgd1iXgybi
-         h9xn618w6pOQNCRcjiPO1pL8696PwfyZuygQ9N72Pq5Y+drRtg2lEudMTArbMLIvS2Hu
-         Af2iL3dsTevSK4UG0k5bAk8B9DMVEFzkmuK/oUooc8s7ps6w7BXM4yEyU5K4uoJqRgWQ
-         QWlNUsV0eC8TPtAViKv0esgK7ZCiJ7jnV9KHnM6zCtpXPC7VVGKmnpt8dJY56TbMv8Hb
-         fziw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=RG8vm7hKpSdFgBxD0meJx+orsHILwMpDpi3s7ULpZ9o=;
-        b=sbCDb5mFYEgMDIB3iwHxzfbO/Zqdswpr+lKWQyKNwfSfo8A/8Df5NFaGy0+mqesLTa
-         xXJg3yJBIEtbIy0DKcO+oWb4KsXjJbArrYvOzsNWpgKicNLfw6i1WI/0dijRQIt6ZqFF
-         pjdUFlcNgCSsu8ThbvflDXH9GW+ylTftW3O3upxnOCYazCUgOaIA7df/Sm7IyLYGYeHd
-         kEOiCrkoPfUGDRRMOqkwl2Ks+1GwdMdxyPEt1pjLRfHXwwsl5BwFvb+yeWIaJ+Pti97U
-         leSNKLE70n6gXpMjkVzLIX7bbNVlsARkp3aGoQAkpsr7OacW7WpHy7ZbzKl3NSx3fq/B
-         3R5g==
-X-Gm-Message-State: APjAAAXhkOMmbvgILheuXCVj6ATM+sZznYhq/y+ATo8NnjzLgfxc8VD4
-        ZCMsAsgF+imR4Qe9C3swnYEUF0K7
-X-Google-Smtp-Source: APXvYqwTaXlBt8IChK0vdSDfZdl/+j1MuM2I5O6F+Qw5BIFIB2Qer70xByqaJikJv9023pt2cJmXJg==
-X-Received: by 2002:a81:9951:: with SMTP id q78mr914530ywg.332.1569976496725;
-        Tue, 01 Oct 2019 17:34:56 -0700 (PDT)
-Received: from icarus (072-189-084-142.res.spectrum.com. [72.189.84.142])
-        by smtp.gmail.com with ESMTPSA id q2sm3896738ywd.12.2019.10.01.17.34.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2019 17:34:55 -0700 (PDT)
-Date:   Tue, 1 Oct 2019 20:34:42 -0400
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Felipe Balbi <felipe.balbi@linux.intel.com>
-Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
-        jic23@jic23.retrosnub.co.uk,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>
-Subject: Re: [RFC/PATCHv2 2/2] counter: introduce support for Intel QEP
- Encoder
-Message-ID: <20191002003442.GA3364@icarus>
-References: <20190917114403.GA8368@icarus>
- <20190919080305.960198-1-felipe.balbi@linux.intel.com>
- <20190919080305.960198-2-felipe.balbi@linux.intel.com>
- <20190922233538.GA3119@icarus>
- <e24965be-3b0b-7f5e-bc5b-e2fb09ce6d19@lechnology.com>
- <20190928213348.GA4693@icarus>
- <87muemwe74.fsf@gmail.com>
+        id S1727188AbfJBH5N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Oct 2019 03:57:13 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:28180 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726283AbfJBH5N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Oct 2019 03:57:13 -0400
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x927oscW000750;
+        Wed, 2 Oct 2019 09:56:37 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=EBAixOOqXoAYHZaizljPUim/vdoCPa3lNWiXx9YSRHU=;
+ b=uEYG1a06avl8rJoHM54pb3ZIVAgl/cTVls5w7H/RwX+UKwOHmzwOXjXLLLE2fEoU3CLl
+ AUbO8//6wTUqaRJ3ZUlMgLQyKQ00epnzeYEG/5CbRutUkld/ZyrDfA4ir00ZqgvokDur
+ gyhbdcZ3Or6h7dFZ8pN323FlrsUnuo3Zf3YBmYigEqz6yeSSBb7ofpt0dXiwm8BRF2nY
+ IxKVTasbb+oVn2Y/+p0rwgxhE+7LFYpkdgnYXKjEbICH1JXUXTN1UT1yJqyo0wHqlSc9
+ 8atlLuUUSw5xNPmEBXnflPd8R0K2u148Tw3vEPKel64Ug/ld9c4GwIJkt+y5+xV2FfAK UA== 
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2v9vnadmk1-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 02 Oct 2019 09:56:36 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 25BE34C;
+        Wed,  2 Oct 2019 07:56:30 +0000 (GMT)
+Received: from Webmail-eu.st.com (sfhdag3node1.st.com [10.75.127.7])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1980F2AC6FE;
+        Wed,  2 Oct 2019 09:56:30 +0200 (CEST)
+Received: from SFHDAG3NODE3.st.com (10.75.127.9) by SFHDAG3NODE1.st.com
+ (10.75.127.7) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 2 Oct
+ 2019 09:56:29 +0200
+Received: from SFHDAG3NODE3.st.com ([fe80::3507:b372:7648:476]) by
+ SFHDAG3NODE3.st.com ([fe80::3507:b372:7648:476%20]) with mapi id
+ 15.00.1347.000; Wed, 2 Oct 2019 09:56:29 +0200
+From:   Benjamin GAIGNARD <benjamin.gaignard@st.com>
+To:     Jonathan Cameron <jic23@kernel.org>, Yizhuo <yzhai003@ucr.edu>
+CC:     "csong@cs.ucr.edu" <csong@cs.ucr.edu>,
+        "zhiyunq@cs.ucr.edu" <zhiyunq@cs.ucr.edu>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+        Alexandre TORGUE <alexandre.torgue@st.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: trigger: stm32-timer: fix the usage of uninitialized
+ variables
+Thread-Topic: [PATCH] iio: trigger: stm32-timer: fix the usage of
+ uninitialized variables
+Thread-Index: AQHVd8/T1FmtbRWUT0qK58d/WXGWcadFV5CAgAGFFIA=
+Date:   Wed, 2 Oct 2019 07:56:29 +0000
+Message-ID: <040e8500-0c32-97b1-8325-f299011033be@st.com>
+References: <20190930204451.28614-1-yzhai003@ucr.edu>
+ <20191001094355.65d873a3@archlinux>
+In-Reply-To: <20191001094355.65d873a3@archlinux>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.75.127.49]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D0446124834DE342AF683861A83EF3A8@st.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87muemwe74.fsf@gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-02_04:2019-10-01,2019-10-02 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Sep 30, 2019 at 08:22:39AM +0300, Felipe Balbi wrote:
-> 
-> Hi,
-> 
-> William Breathitt Gray <vilhelm.gray@gmail.com> writes:
-> > On Tue, Sep 24, 2019 at 04:46:57PM -0500, David Lechner wrote:
-> >> On 9/22/19 6:35 PM, William Breathitt Gray wrote:
-> >> > On Thu, Sep 19, 2019 at 11:03:05AM +0300, Felipe Balbi wrote:
-> >> >> Add support for Intel PSE Quadrature Encoder
-> >> >>
-> >> >> Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
-> >> >> ---
-> >> >>
-> >> >> Changes since v1:
-> >> >> 	- Many more private sysfs files converted over to counter interface
-> >> >>
-> >> >>
-> >> >> How do you want me to model this device's Capture Compare Mode (see
-> >> >> below)?
-> >> > 
-> >> > Hi Felipe,
-> >> > 
-> >> > I'm CCing Fabien and David as they may be interested in the timestamps
-> >> > discussion. See below for some ideas I have on implementing this.
-> >> > 
-> >> 
-> >> Could be an interesting read (thread from my first counter driver):
-> >> 
-> >> https://lore.kernel.org/linux-iio/1b913919-beb9-34e7-d915-6bcc40eeee1d@lechnology.com/
-> >> 
-> >> What would be useful to me is something like the buffer feature in iio
-> >> where a timestamp is associated with a count and stored in a buffer so that
-> >> we can look at a window of all values recorded in the last 20ms. Being able
-> >> to access this via mmap would be very helpful for performance (running on
-> >> 300MHz ARM). Anything to do with timestamps in sysfs is probably not useful
-> >> unless it is a rare event, like a watchdog timeout.
-> >
-> > I'm CCing Jonathan Cameron since I'm not familiar with how IIO handles
-> > timestamps and buffers. I don't want to reinvent something that is
-> > working well, so hopefully we can reuse the IIO timestamp design for the
-> > Counter subsystem.
-> >
-> > I would argue that a human-readable timestamps printout is useful for
-> > certain applications (e.g. a tally counter attached to a fault line: a
-> > human administrator will be able to review previous fault times).
-> > However as you point out, a low latency operation is necessary for
-> > performance critical applications.
-> >
-> > Although you are correct that mmap is a good low latency operation to
-> > get access to a timestamp buffer, I'm afraid giving direct access to
-> > memory like that will lead to many incompatible representations of
-> > timestamp data (e.g. variations in endianness, signedness, data size,
-> > etc.). I would like a standardized representation for this data that
-> > userspace applications can expect to receive and interpret, especially
-> > when time is widely represented as an unsigned integer.
-> >
-> > Felipe suggested the creation of a counter_event structure so that users
-> > can poll on an attribute. This kind of behavior is useful for notifying
-> > users of interrupts and other events, but I think we should restrict the
-> > use of the read call on these sysfs attributes to just human-readable
-> > data. Instead, perhaps ioctl calls can be used to facilitate binary data
-> > transfers.
-> >
-> > For example, we can define a COUNTER_GET_TIMESTAMPS_IOCTL ioctl request
-> > that returns a counter_timestamps structure with a timestamps array
-> > populated:
-> >
-> >         struct counter_timestamps{
-> >                 size_t num_timestamps;
-> >         	unsigned int *timestamps;
-> >         }
-> >
-> > That would allow quick access to the timestamps data, while also
-> > restricting it to a standard representation that all userspace
-> > applications can follow and interpret. In addition, this won't interfer
-> > with polling, so users can still wait for an interrupt and then decide
-> > whether they want to use the slower human-readable printout (via read)
-> > or the faster binary data access (via ioctl).
-> 
-> Seems like we're starting to build the need for a /dev/counter[0123...]
-> representation of the subsystem. If that's the case, then it may very
-> well be that sysfs becomes somewhat optional.
-> 
-> I think is makes sense to rely more on character devices specially since
-> I know of devices running linux with so little memory that sysfs (and a
-> bunch of other features) are removed from the kernel. Having a character
-> device representation would allow counter subsystem to be used on such
-> devices.
-> 
-> cheers
-> 
-> -- 
-> balbi
-
-A character device node for a counter might be a good idea. If a
-performance critical application can't depend on parsing a sysfs
-printout for timestamps, then it probably doesn't want to do so for the
-other attributes either. I think you are right that certain systems
-would have sysfs disabled for that very reason.
-
-I think latency concerns are the same reason the GPIO subsystem started
-providing character device nodes as well. We can do similar with the
-Counter subsystem: provide character device nodes by default, and
-optionally provide the human-readable sysfs interface as well. This
-would allow applications with latency concerns to use a standard
-interface for the Counter subsystem, while optionally providing a
-simpler sysfs interface for other users.
-
-William Breathitt Gray
+DQpPbiAxMC8xLzE5IDEwOjQzIEFNLCBKb25hdGhhbiBDYW1lcm9uIHdyb3RlOg0KPiBPbiBNb24s
+IDMwIFNlcCAyMDE5IDEzOjQ0OjQ5IC0wNzAwDQo+IFlpemh1byA8eXpoYWkwMDNAdWNyLmVkdT4g
+d3JvdGU6DQo+DQo+PiBTZXZlcmFsIGZ1bmN0aW9ucyBpbiB0aGlzIGZpbGUgYXJlIHRyeWluZyB0
+byB1c2UgcmVnbWFwX3JlYWQoKSB0bw0KPj4gaW5pdGlhbGl6ZSB0aGUgc3BlY2lmaWMgdmFyaWFi
+bGUsIGhvd2V2ZXIsIGlmIHJlZ21hcF9yZWFkKCkgZmFpbHMsDQo+PiB0aGUgdmFyaWFibGUgY291
+bGQgYmUgdW5pbml0aWFsaXplZCBidXQgdXNlZCBkaXJlY3RseSwgd2hpY2ggaXMNCj4+IHBvdGVu
+dGlhbGx5IHVuc2FmZS4gVGhlIHJldHVybiB2YWx1ZSBvZiByZWdtYXBfcmVhZCgpIHNob3VsZCBi
+ZQ0KPj4gY2hlY2tlZCBhbmQgaGFuZGxlZC4gVGhpcyBwYXRjaCBmaXhlcyBtb3N0IG9mIHRoZSB1
+bmluaXRpYWxpemVkDQo+PiB2YXJpYWJsZXMsIGJ1dCB0aG9zZSBpbiBmdW5jdGlvbiBzdG0zMl90
+dF9yZWFkX2ZyZXF1ZW5jeSgpIGFyZQ0KPj4gaGFyZCB0byBoYW5kbGUgYW5kIG5lZWQgZXh0cmEg
+ZWZmb3QuDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogWWl6aHVvIDx5emhhaTAwM0B1Y3IuZWR1Pg0K
+PiBIaSBZaXpodW8sDQo+DQo+IFRoaXMgaXMgYSBzbGlnaHRseSBpbnRlcmVzdGluZyBjYXNlLg0K
+Pg0KPiAgRnJvbSBhbiAnb2J2aW91c2x5JyBjb3JyZWN0IHBvaW50IG9mIHZpZXcsIGl0IG1ha2Vz
+IHNlbnNlIHRvDQo+IGFsd2F5cyBoYW5kbGUgdGhlIGVycm9ycyBhbmQgYXZvaWQgdGhlIHBvdGVu
+dGlhbGx5IHVuaW5pdGlhbGlzZWQNCj4gY2FzZXMuDQo+DQo+ICBGcm9tIHRoZSBwb2ludCBvZiB2
+aWV3IG9mIGEgJ2ZpeCcgd2UgbmVlZCB0byBzaG93IGlmIHRoZXNlIGNhbg0KPiBhY3R1YWxseSBo
+YXBwZW4uICBUaGVzZSBjYWxscyBhcmUgcmVnbWFwLW1taW8gc28gdGhlIGVycm9yDQo+IHBhdGgg
+aXMgaW4gY2xvY2sgZW5hYmxlIC8gZGlzYWJsZSBpZiB0aGVyZSBpcyBhIGNsb2NrIHByb3ZpZGVk
+Lg0KPiBMb29raW5nIGF0IG1mZC9zdG0tdGltZXJzLmMgdGhlcmUgaXMgYSBjbG9jayBjYWxsZWQg
+ImludCIgcHJvdmlkZWQuDQo+IE5vdyBpdCdzIHBvc3NpYmxlIHRoYXQgY2xvY2sgZW5hYmxlIGNh
+biBuZXZlciBmYWlsLCBidXQgdGhhdCBpcw0KPiBnZXR0aW5nIHRvbyBoYXJkIHRvIGNoYXNlIGRv
+d24uDQo+DQo+IEFzIHN1Y2gsIEkgdGhpbmsgdGhpcyBmaXggaXMgd29ydGh3aGlsZSwgYnV0IEkn
+bSBub3QgZ29pbmcgdG8NCj4gbWFyayBpdCBmb3Igc3RhYmxlIHdpdGhvdXQgYSByZXBvcnQgb2Yg
+aXQgYWN0dWFsbHkgYmVpbmcNCj4gcG9zc2libGUgdG8gdHJpZ2dlciBpdC4NCj4NCj4gSSdsbCBs
+ZWF2ZSB0aGlzIG9uIHRoZSBsaXN0IGZvciBhIGxpdHRsZSBsb25nZXIgdGhvdWdoIGFzIEknZCBk
+ZWZpbml0ZWx5DQo+IGxpa2UgYW4gYWNrIGZyb20gQmVuamFtaW4gb3Igc29tZW9uZSBlbHNlIG1v
+cmUgZmFtaWxpYXIgd2l0aCB0aGUgZHJpdmVyDQo+IHRoYW4gSSBhbS4NCj4NCj4gVGhhbmtzLA0K
+Pg0KPiBKb25hdGhhbg0KDQpIaSBZaXpodW8sDQoNClRoZSBvbmx5IHJlYXNvbiB0aGF0IGNvdWxk
+IGxlYWQgYSByZWdtYXBfcmVhZCB0byBmYWlsZWQgaXMgYW4gaXNzdWUgb24gDQp0aGUgY2xvY2sN
+CmJ1dCBpcyB0aGlzIGNhc2Ugd2Ugd2lsbCBiZSBibG9ja2VkIGluIHJlZ21hcF9yZWFkKCkgaXRz
+ZWxmIHNvIHRoZSBlcnJvciANCndpbGwgbmV2ZXINCmJlIGRpc3BsYXllZC4NCkZvciBtZSB0ZXN0
+aW5nIGFsbCByZWdtYXBfcmVhZCgpIHJldHVybiB2YWx1ZXMgb25seSBhZGQgY29kZSBhbmQgbm90
+IA0KYnJpbmcgYWRkaXRpb25hbCBpbmZvcm1hdGlvbnMNCnNvIEkgTkFDSyB0aGlzIHBhdGNoLg0K
+DQpCZW5qYW1pbg0KDQo+PiAtLS0NCj4+ICAgZHJpdmVycy9paW8vdHJpZ2dlci9zdG0zMi10aW1l
+ci10cmlnZ2VyLmMgfCA5OCArKysrKysrKysrKysrKysrKysrKy0tLQ0KPj4gICAxIGZpbGUgY2hh
+bmdlZCwgODUgaW5zZXJ0aW9ucygrKSwgMTMgZGVsZXRpb25zKC0pDQo+Pg0KPj4gZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvaWlvL3RyaWdnZXIvc3RtMzItdGltZXItdHJpZ2dlci5jIGIvZHJpdmVycy9p
+aW8vdHJpZ2dlci9zdG0zMi10aW1lci10cmlnZ2VyLmMNCj4+IGluZGV4IGE1ZGZlNjVjZDliOS4u
+ZjhlYTdiY2JiNzM5IDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9paW8vdHJpZ2dlci9zdG0zMi10
+aW1lci10cmlnZ2VyLmMNCj4+ICsrKyBiL2RyaXZlcnMvaWlvL3RyaWdnZXIvc3RtMzItdGltZXIt
+dHJpZ2dlci5jDQo+PiBAQCAtMTA3LDYgKzEwNyw3IEBAIHN0YXRpYyBpbnQgc3RtMzJfdGltZXJf
+c3RhcnQoc3RydWN0IHN0bTMyX3RpbWVyX3RyaWdnZXIgKnByaXYsDQo+PiAgIAl1bnNpZ25lZCBs
+b25nIGxvbmcgcHJkLCBkaXY7DQo+PiAgIAlpbnQgcHJlc2NhbGVyID0gMDsNCj4+ICAgCXUzMiBj
+Y2VyLCBjcjE7DQo+PiArCWludCByZXQ7DQo+PiAgIA0KPj4gICAJLyogUGVyaW9kIGFuZCBwcmVz
+Y2FsZXIgdmFsdWVzIGRlcGVuZHMgb2YgY2xvY2sgcmF0ZSAqLw0KPj4gICAJZGl2ID0gKHVuc2ln
+bmVkIGxvbmcgbG9uZyljbGtfZ2V0X3JhdGUocHJpdi0+Y2xrKTsNCj4+IEBAIC0xMzIsMTEgKzEz
+MywyMSBAQCBzdGF0aWMgaW50IHN0bTMyX3RpbWVyX3N0YXJ0KHN0cnVjdCBzdG0zMl90aW1lcl90
+cmlnZ2VyICpwcml2LA0KPj4gICAJfQ0KPj4gICANCj4+ICAgCS8qIENoZWNrIGlmIG5vYm9keSBl
+bHNlIHVzZSB0aGUgdGltZXIgKi8NCj4+IC0JcmVnbWFwX3JlYWQocHJpdi0+cmVnbWFwLCBUSU1f
+Q0NFUiwgJmNjZXIpOw0KPj4gKwlyZXQgPSByZWdtYXBfcmVhZChwcml2LT5yZWdtYXAsIFRJTV9D
+Q0VSLCAmY2Nlcik7DQo+PiArCWlmIChyZXQpIHsNCj4+ICsJCWRldl9lcnIocHJpdi0+ZGV2LCAi
+ZmFpbCB0byByZWFkIFRJTV9DQ0VSLlxuIik7DQo+PiArCQlyZXR1cm4gcmV0Ow0KPj4gKwl9DQo+
+PiArDQo+PiAgIAlpZiAoY2NlciAmIFRJTV9DQ0VSX0NDWEUpDQo+PiAgIAkJcmV0dXJuIC1FQlVT
+WTsNCj4+ICAgDQo+PiAtCXJlZ21hcF9yZWFkKHByaXYtPnJlZ21hcCwgVElNX0NSMSwgJmNyMSk7
+DQo+PiArCXJldCA9IHJlZ21hcF9yZWFkKHByaXYtPnJlZ21hcCwgVElNX0NSMSwgJmNyMSk7DQo+
+PiArCWlmIChyZXQpIHsNCj4+ICsJCWRldl9lcnIocHJpdi0+ZGV2LCAiZmFpbCB0byByZWFkIFRJ
+TV9DUjEuXG4iKTsNCj4+ICsJCXJldHVybiByZXQ7DQo+PiArCX0NCj4+ICsNCj4+ICAgCWlmICgh
+KGNyMSAmIFRJTV9DUjFfQ0VOKSkNCj4+ICAgCQljbGtfZW5hYmxlKHByaXYtPmNsayk7DQo+PiAg
+IA0KPj4gQEAgLTE2NCwxMiArMTc1LDIzIEBAIHN0YXRpYyBpbnQgc3RtMzJfdGltZXJfc3RhcnQo
+c3RydWN0IHN0bTMyX3RpbWVyX3RyaWdnZXIgKnByaXYsDQo+PiAgIHN0YXRpYyB2b2lkIHN0bTMy
+X3RpbWVyX3N0b3Aoc3RydWN0IHN0bTMyX3RpbWVyX3RyaWdnZXIgKnByaXYpDQo+PiAgIHsNCj4+
+ICAgCXUzMiBjY2VyLCBjcjE7DQo+PiArCWludCByZXQ7DQo+PiArDQo+PiArCXJldCA9IHJlZ21h
+cF9yZWFkKHByaXYtPnJlZ21hcCwgVElNX0NDRVIsICZjY2VyKTsNCj4+ICsJaWYgKHJldCkgew0K
+Pj4gKwkJZGV2X2Vycihwcml2LT5kZXYsICJGYWlsIHRvIHJlYWQgVElNX0NDRVIuXG4iKTsNCj4+
+ICsJCXJldHVybjsNCj4+ICsJfQ0KPj4gICANCj4+IC0JcmVnbWFwX3JlYWQocHJpdi0+cmVnbWFw
+LCBUSU1fQ0NFUiwgJmNjZXIpOw0KPj4gICAJaWYgKGNjZXIgJiBUSU1fQ0NFUl9DQ1hFKQ0KPj4g
+ICAJCXJldHVybjsNCj4+ICAgDQo+PiAtCXJlZ21hcF9yZWFkKHByaXYtPnJlZ21hcCwgVElNX0NS
+MSwgJmNyMSk7DQo+PiArCXJldCA9IHJlZ21hcF9yZWFkKHByaXYtPnJlZ21hcCwgVElNX0NSMSwg
+JmNyMSk7DQo+PiArCWlmIChyZXQpIHsNCj4+ICsJCWRldl9lcnIocHJpdi0+ZGV2LCAiRmFpbCB0
+byByZWFkIFRJTV9DUjEuXG4iKTsNCj4+ICsJCXJldHVybjsNCj4+ICsJfQ0KPj4gKw0KPj4gICAJ
+aWYgKGNyMSAmIFRJTV9DUjFfQ0VOKQ0KPj4gICAJCWNsa19kaXNhYmxlKHByaXYtPmNsayk7DQo+
+PiAgIA0KPj4gQEAgLTQwMywyMCArNDI1LDM2IEBAIHN0YXRpYyBpbnQgc3RtMzJfY291bnRlcl9y
+ZWFkX3JhdyhzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2LA0KPj4gICB7DQo+PiAgIAlzdHJ1Y3Qg
+c3RtMzJfdGltZXJfdHJpZ2dlciAqcHJpdiA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+PiAgIAl1
+MzIgZGF0Ow0KPj4gKwlpbnQgcmV0Ow0KPj4gICANCj4+ICAgCXN3aXRjaCAobWFzaykgew0KPj4g
+ICAJY2FzZSBJSU9fQ0hBTl9JTkZPX1JBVzoNCj4+IC0JCXJlZ21hcF9yZWFkKHByaXYtPnJlZ21h
+cCwgVElNX0NOVCwgJmRhdCk7DQo+PiArCQlyZXQgPSByZWdtYXBfcmVhZChwcml2LT5yZWdtYXAs
+IFRJTV9DTlQsICZkYXQpOw0KPj4gKwkJaWYgKHJldCkgew0KPj4gKwkJCWRldl9lcnIocHJpdi0+
+ZGV2LCAiZmFpbCB0byByZWFkIFRJTV9DTlQuXG4iKTsNCj4+ICsJCQlyZXR1cm4gcmV0Ow0KPj4g
+KwkJfQ0KPj4gKw0KPj4gICAJCSp2YWwgPSBkYXQ7DQo+PiAgIAkJcmV0dXJuIElJT19WQUxfSU5U
+Ow0KPj4gICANCj4+ICAgCWNhc2UgSUlPX0NIQU5fSU5GT19FTkFCTEU6DQo+PiAtCQlyZWdtYXBf
+cmVhZChwcml2LT5yZWdtYXAsIFRJTV9DUjEsICZkYXQpOw0KPj4gKwkJcmV0ID0gcmVnbWFwX3Jl
+YWQocHJpdi0+cmVnbWFwLCBUSU1fQ1IxLCAmZGF0KTsNCj4+ICsJCWlmIChyZXQpIHsNCj4+ICsJ
+CQlkZXZfZXJyKHByaXYtPmRldiwgImZhaWwgdG8gcmVhZCBUSU1fQ1IxLlxuIik7DQo+PiArCQkJ
+cmV0dXJuIHJldDsNCj4+ICsJCX0NCj4+ICsNCj4+ICAgCQkqdmFsID0gKGRhdCAmIFRJTV9DUjFf
+Q0VOKSA/IDEgOiAwOw0KPj4gICAJCXJldHVybiBJSU9fVkFMX0lOVDsNCj4+ICAgDQo+PiAgIAlj
+YXNlIElJT19DSEFOX0lORk9fU0NBTEU6DQo+PiAtCQlyZWdtYXBfcmVhZChwcml2LT5yZWdtYXAs
+IFRJTV9TTUNSLCAmZGF0KTsNCj4+ICsJCXJldCA9IHJlZ21hcF9yZWFkKHByaXYtPnJlZ21hcCwg
+VElNX1NNQ1IsICZkYXQpOw0KPj4gKwkJaWYgKHJldCkgew0KPj4gKwkJCWRldl9lcnIocHJpdi0+
+ZGV2LCAiZmFpbCB0byByZWFkIFRJTV9TTUNSLlxuIik7DQo+PiArCQkJcmV0dXJuIHJldDsNCj4+
+ICsJCX0NCj4+ICsNCj4+ICAgCQlkYXQgJj0gVElNX1NNQ1JfU01TOw0KPj4gICANCj4+ICAgCQkq
+dmFsID0gMTsNCj4+IEBAIC00MzgsNiArNDc2LDcgQEAgc3RhdGljIGludCBzdG0zMl9jb3VudGVy
+X3dyaXRlX3JhdyhzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2LA0KPj4gICB7DQo+PiAgIAlzdHJ1
+Y3Qgc3RtMzJfdGltZXJfdHJpZ2dlciAqcHJpdiA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+PiAg
+IAl1MzIgZGF0Ow0KPj4gKwlpbnQgcmV0Ow0KPj4gICANCj4+ICAgCXN3aXRjaCAobWFzaykgew0K
+Pj4gICAJY2FzZSBJSU9fQ0hBTl9JTkZPX1JBVzoNCj4+IEBAIC00NDksMTMgKzQ4OCwyMyBAQCBz
+dGF0aWMgaW50IHN0bTMyX2NvdW50ZXJfd3JpdGVfcmF3KHN0cnVjdCBpaW9fZGV2ICppbmRpb19k
+ZXYsDQo+PiAgIA0KPj4gICAJY2FzZSBJSU9fQ0hBTl9JTkZPX0VOQUJMRToNCj4+ICAgCQlpZiAo
+dmFsKSB7DQo+PiAtCQkJcmVnbWFwX3JlYWQocHJpdi0+cmVnbWFwLCBUSU1fQ1IxLCAmZGF0KTsN
+Cj4+ICsJCQlyZXQgPSByZWdtYXBfcmVhZChwcml2LT5yZWdtYXAsIFRJTV9DUjEsICZkYXQpOw0K
+Pj4gKwkJCWlmIChyZXQpIHsNCj4+ICsJCQkJZGV2X2Vycihwcml2LT5kZXYsICJmYWlsIHRvIHJl
+YWQgVElNX0NSMS5cbiIpOw0KPj4gKwkJCQlyZXR1cm4gcmV0Ow0KPj4gKwkJCX0NCj4+ICsNCj4+
+ICAgCQkJaWYgKCEoZGF0ICYgVElNX0NSMV9DRU4pKQ0KPj4gICAJCQkJY2xrX2VuYWJsZShwcml2
+LT5jbGspOw0KPj4gICAJCQlyZWdtYXBfdXBkYXRlX2JpdHMocHJpdi0+cmVnbWFwLCBUSU1fQ1Ix
+LCBUSU1fQ1IxX0NFTiwNCj4+ICAgCQkJCQkgICBUSU1fQ1IxX0NFTik7DQo+PiAgIAkJfSBlbHNl
+IHsNCj4+IC0JCQlyZWdtYXBfcmVhZChwcml2LT5yZWdtYXAsIFRJTV9DUjEsICZkYXQpOw0KPj4g
+KwkJCXJldCA9IHJlZ21hcF9yZWFkKHByaXYtPnJlZ21hcCwgVElNX0NSMSwgJmRhdCk7DQo+PiAr
+CQkJaWYgKHJldCkgew0KPj4gKwkJCQlkZXZfZXJyKHByaXYtPmRldiwgImZhaWwgdG8gcmVhZCBU
+SU1fQ1IxLlxuIik7DQo+PiArCQkJCXJldHVybiByZXQ7DQo+PiArCQkJfQ0KPj4gKw0KPj4gICAJ
+CQlyZWdtYXBfdXBkYXRlX2JpdHMocHJpdi0+cmVnbWFwLCBUSU1fQ1IxLCBUSU1fQ1IxX0NFTiwN
+Cj4+ICAgCQkJCQkgICAwKTsNCj4+ICAgCQkJaWYgKGRhdCAmIFRJTV9DUjFfQ0VOKQ0KPj4gQEAg
+LTUxNyw4ICs1NjYsMTMgQEAgc3RhdGljIGludCBzdG0zMl9nZXRfdHJpZ2dlcl9tb2RlKHN0cnVj
+dCBpaW9fZGV2ICppbmRpb19kZXYsDQo+PiAgIHsNCj4+ICAgCXN0cnVjdCBzdG0zMl90aW1lcl90
+cmlnZ2VyICpwcml2ID0gaWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4+ICAgCXUzMiBzbWNyOw0KPj4g
+KwlpbnQgcmV0Ow0KPj4gICANCj4+IC0JcmVnbWFwX3JlYWQocHJpdi0+cmVnbWFwLCBUSU1fU01D
+UiwgJnNtY3IpOw0KPj4gKwlyZXQgPSByZWdtYXBfcmVhZChwcml2LT5yZWdtYXAsIFRJTV9TTUNS
+LCAmc21jcik7DQo+PiArCWlmIChyZXQpIHsNCj4+ICsJCWRldl9lcnIocHJpdi0+ZGV2LCAiZmFp
+bCB0byByZWFkIFRJTV9TTUNSLlxuIik7DQo+PiArCQlyZXR1cm4gcmV0Ow0KPj4gKwl9DQo+PiAg
+IA0KPj4gICAJcmV0dXJuIChzbWNyICYgVElNX1NNQ1JfU01TKSA9PSBUSU1fU01DUl9TTVMgPyAw
+IDogLUVJTlZBTDsNCj4+ICAgfQ0KPj4gQEAgLTU1Nyw2ICs2MTEsNyBAQCBzdGF0aWMgaW50IHN0
+bTMyX3NldF9lbmFibGVfbW9kZShzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2LA0KPj4gICAJc3Ry
+dWN0IHN0bTMyX3RpbWVyX3RyaWdnZXIgKnByaXYgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0KPj4g
+ICAJaW50IHNtcyA9IHN0bTMyX2VuYWJsZV9tb2RlMnNtcyhtb2RlKTsNCj4+ICAgCXUzMiB2YWw7
+DQo+PiArCWludCByZXQ7DQo+PiAgIA0KPj4gICAJaWYgKHNtcyA8IDApDQo+PiAgIAkJcmV0dXJu
+IHNtczsNCj4+IEBAIC01NjUsNyArNjIwLDEyIEBAIHN0YXRpYyBpbnQgc3RtMzJfc2V0X2VuYWJs
+ZV9tb2RlKHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYsDQo+PiAgIAkgKiBlbmFibGUgY291bnRl
+ciBjbG9jaywgc28gaXQgY2FuIHVzZSBpdC4gS2VlcHMgaXQgaW4gc3luYyB3aXRoIENFTi4NCj4+
+ICAgCSAqLw0KPj4gICAJaWYgKHNtcyA9PSA2KSB7DQo+PiAtCQlyZWdtYXBfcmVhZChwcml2LT5y
+ZWdtYXAsIFRJTV9DUjEsICZ2YWwpOw0KPj4gKwkJcmV0ID0gcmVnbWFwX3JlYWQocHJpdi0+cmVn
+bWFwLCBUSU1fQ1IxLCAmdmFsKTsNCj4+ICsJCWlmIChyZXQpIHsNCj4+ICsJCQlkZXZfZXJyKHBy
+aXYtPmRldiwgImZhaWwgdG8gcmVhZCBUSU1fQ1IxLlxuIik7DQo+PiArCQkJcmV0dXJuIHJldDsN
+Cj4+ICsJCX0NCj4+ICsNCj4+ICAgCQlpZiAoISh2YWwgJiBUSU1fQ1IxX0NFTikpDQo+PiAgIAkJ
+CWNsa19lbmFibGUocHJpdi0+Y2xrKTsNCj4+ICAgCX0NCj4+IEBAIC01OTQsOCArNjU0LDE0IEBA
+IHN0YXRpYyBpbnQgc3RtMzJfZ2V0X2VuYWJsZV9tb2RlKHN0cnVjdCBpaW9fZGV2ICppbmRpb19k
+ZXYsDQo+PiAgIHsNCj4+ICAgCXN0cnVjdCBzdG0zMl90aW1lcl90cmlnZ2VyICpwcml2ID0gaWlv
+X3ByaXYoaW5kaW9fZGV2KTsNCj4+ICAgCXUzMiBzbWNyOw0KPj4gKwlpbnQgcmV0Ow0KPj4gKw0K
+Pj4gKwlyZXQgPSByZWdtYXBfcmVhZChwcml2LT5yZWdtYXAsIFRJTV9TTUNSLCAmc21jcik7DQo+
+PiArCWlmIChyZXQpIHsNCj4+ICsJCWRldl9lcnIocHJpdi0+ZGV2LCAiZmFpbCB0byByZWFkIFRJ
+TV9TTUNSLlxuIik7DQo+PiArCQlyZXR1cm4gcmV0Ow0KPj4gKwl9DQo+PiAgIA0KPj4gLQlyZWdt
+YXBfcmVhZChwcml2LT5yZWdtYXAsIFRJTV9TTUNSLCAmc21jcik7DQo+PiAgIAlzbWNyICY9IFRJ
+TV9TTUNSX1NNUzsNCj4+ICAgDQo+PiAgIAlyZXR1cm4gc3RtMzJfc21zMmVuYWJsZV9tb2RlKHNt
+Y3IpOw0KPj4gQEAgLTcwNiwxMyArNzcyLDE5IEBAIEVYUE9SVF9TWU1CT0woaXNfc3RtMzJfdGlt
+ZXJfdHJpZ2dlcik7DQo+PiAgIHN0YXRpYyB2b2lkIHN0bTMyX3RpbWVyX2RldGVjdF90cmdvMihz
+dHJ1Y3Qgc3RtMzJfdGltZXJfdHJpZ2dlciAqcHJpdikNCj4+ICAgew0KPj4gICAJdTMyIHZhbDsN
+Cj4+ICsJaW50IHJldDsNCj4+ICAgDQo+PiAgIAkvKg0KPj4gICAJICogTWFzdGVyIG1vZGUgc2Vs
+ZWN0aW9uIDIgYml0cyBjYW4gb25seSBiZSB3cml0dGVuIGFuZCByZWFkIGJhY2sgd2hlbg0KPj4g
+ICAJICogdGltZXIgc3VwcG9ydHMgaXQuDQo+PiAgIAkgKi8NCj4+ICAgCXJlZ21hcF91cGRhdGVf
+Yml0cyhwcml2LT5yZWdtYXAsIFRJTV9DUjIsIFRJTV9DUjJfTU1TMiwgVElNX0NSMl9NTVMyKTsN
+Cj4+IC0JcmVnbWFwX3JlYWQocHJpdi0+cmVnbWFwLCBUSU1fQ1IyLCAmdmFsKTsNCj4+ICsJcmV0
+ID0gcmVnbWFwX3JlYWQocHJpdi0+cmVnbWFwLCBUSU1fQ1IyLCAmdmFsKTsNCj4+ICsJaWYgKHJl
+dCkgew0KPj4gKwkJZGV2X2Vycihwcml2LT5kZXYsICJmYWlsIHRvIHJlYWQgVElNX0NSMi5cbiIp
+Ow0KPj4gKwkJcmV0dXJuOw0KPj4gKwl9DQo+PiArDQo+PiAgIAlyZWdtYXBfdXBkYXRlX2JpdHMo
+cHJpdi0+cmVnbWFwLCBUSU1fQ1IyLCBUSU1fQ1IyX01NUzIsIDApOw0KPj4gICAJcHJpdi0+aGFz
+X3RyZ28yID0gISF2YWw7DQo+PiAgIH0=

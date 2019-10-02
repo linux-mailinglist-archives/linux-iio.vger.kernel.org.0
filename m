@@ -2,86 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B423C8DDF
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 18:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77CD2C8E80
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 18:37:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729273AbfJBQIU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Oct 2019 12:08:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37248 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727737AbfJBQIU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 2 Oct 2019 12:08:20 -0400
-Received: from localhost.localdomain (unknown [194.230.155.145])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2D559222C0;
-        Wed,  2 Oct 2019 16:08:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570032499;
-        bh=pcFz/sD7PH4IH6xMAtmOeZNqcSRuozele8JXhvaouMc=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=bYxG6pWcYa6FygTakxRrGwcHOMRAz4V+pzM86VRYTboCOryby7LctXEtGXVNH8jU7
-         cY1CrmkZh4hg5nf4/G1eiD5+nn+tVV+lofSgIxeL9ay2sfjobdylGRVSXNpicp6W31
-         9ouUToHfKBDb8nYx2fTmkWwqZi9P1+jgLnQcyclc=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-rtc@vger.kernel.org
-Subject: [PATCH 4/4] dt-bindings: iio: adc: exynos: Use defines instead of clock numbers
-Date:   Wed,  2 Oct 2019 18:07:44 +0200
-Message-Id: <20191002160744.11307-4-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191002160744.11307-1-krzk@kernel.org>
-References: <20191002160744.11307-1-krzk@kernel.org>
+        id S1726179AbfJBQhZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Oct 2019 12:37:25 -0400
+Received: from mail-yb1-f193.google.com ([209.85.219.193]:34644 "EHLO
+        mail-yb1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725916AbfJBQhZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Oct 2019 12:37:25 -0400
+Received: by mail-yb1-f193.google.com with SMTP id m1so929378ybm.1
+        for <linux-iio@vger.kernel.org>; Wed, 02 Oct 2019 09:37:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=oH9oj3/UqyPOEjpuYbes2FbhL0hGWedPuNlswv/7zBE=;
+        b=KMDbqWypEnuNCmOycgaDBbUbOKypZegy45mycRmYGLHmsAv8kpWCjLh0ub2XR9BH3v
+         8Fjbow94s8lrJqnZ/g2maVieh8XdqE2CWwBr7SIPL1RB9Rlh0/YCTqs4IxCVf+mYxK+6
+         Nv1y+UrMhMl+4quRDRpZPEVTWGUcu1/H7VLBmzec8iXbxXSC/+Xme1BLjlSVU5qLpeHm
+         giNsfTe+XHosqVTwZ0waN0BUcXBbfPs/6ejCKckE23PATkx3zhTzmt2gPyTrjzolZZ9I
+         cFJoeZZkx3CssTs2lQVYb8CoK4Nmmx1xe3pOxSB21UUYcQbdS6aAm8o42mBC09gIsFia
+         lwvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=oH9oj3/UqyPOEjpuYbes2FbhL0hGWedPuNlswv/7zBE=;
+        b=GpED9swTbEwZL9tjArtOOVUJR/F3oFv4f3v1fnCqq8xw4Rrm8a0bDnJW7Wk+LxO0xU
+         vN75wauXAxBl4T/AUP9rc4Au6fASjCBtD9bMV4rPJLcVqCoaUM/xZ8PQTjesYZsw8AAB
+         ASIqeUUxJLY0tWa2k+NCY7uGXq6VIfRiLCZOnMuUOOuyCUqrqltp6FdRIuNMrUx9j7T4
+         0Nbu5rEYFiQ4DCEVAMyG9PGEQ9H0uQc6/CWegDvpJfYdH9l3joQ4EylnnUlmjhaNRWkt
+         K7GWjdg/HW582EZqcAG6QSuthIzGc8WL8BsgQMAWSqhkPE2NWQQJWRhQcWW0A2qUI4QK
+         atlg==
+X-Gm-Message-State: APjAAAXeF1ohPfJFsPzicLaw206u32N4rSZ0eW5QlVbQ6IMiINx9CPR5
+        a9eDHIamm9GNm2e8ZFJBiAA=
+X-Google-Smtp-Source: APXvYqzDj9C0AIPUIqxnoHoG3e/AMfEkPjboj429/OtU2doP44MfNdYsarPtDbCcye6URWk4zZ5Ixw==
+X-Received: by 2002:a5b:5c2:: with SMTP id w2mr2980939ybp.289.1570034244494;
+        Wed, 02 Oct 2019 09:37:24 -0700 (PDT)
+Received: from icarus (072-189-084-142.res.spectrum.com. [72.189.84.142])
+        by smtp.gmail.com with ESMTPSA id f127sm4028468ywe.89.2019.10.02.09.37.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2019 09:37:23 -0700 (PDT)
+Date:   Wed, 2 Oct 2019 12:37:08 -0400
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Felipe Balbi <felipe.balbi@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] counter: add support for Quadrature x4 with
+ swapped inputs
+Message-ID: <20191002163708.GA100041@icarus>
+References: <87o8zax6ya.fsf@gmail.com>
+ <20191001093237.775608-1-felipe.balbi@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191001093237.775608-1-felipe.balbi@linux.intel.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Make the examples in Exynos ADC bindings more readable and bring them
-closer to real DTS by using defines for clocks.
+On Tue, Oct 01, 2019 at 12:32:36PM +0300, Felipe Balbi wrote:
+> Some Quadrature Encoders can swap phase inputs A and B
+> internally. This new function will allow drivers to configure input
+> swap mode.
+> 
+> Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-counter | 4 ++++
+>  drivers/counter/counter.c                   | 3 ++-
+>  include/linux/counter.h                     | 3 ++-
+>  3 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
+> index 566bd99fe0a5..8f1e3de88c77 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-counter
+> +++ b/Documentation/ABI/testing/sysfs-bus-counter
+> @@ -146,6 +146,10 @@ Description:
+>  			updates	the respective count. Quadrature encoding
+>  			determines the direction.
+>  
+> +		quadrature x4 swapped:
+> +			Same as quadrature x4, however Phase A and Phase B
+> +			signals are swapped.
+> +
+>  What:		/sys/bus/counter/devices/counterX/countY/name
+>  KernelVersion:	5.2
+>  Contact:	linux-iio@vger.kernel.org
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- .../devicetree/bindings/iio/adc/samsung,exynos-adc.yaml     | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Thank you for adding an entry for this in the Counter sysfs interface
+documentation file. Make a similar addition to the Counter driver API
+documentation in the Documentation/driver-api/generic-counter.rst file.
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-index a0a9b909ac40..a3010e7ea051 100644
---- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-@@ -135,6 +135,8 @@ examples:
-     };
- 
-   - |
-+    #include <dt-bindings/clock/exynos3250.h>
-+
-     adc@126c0000 {
-         compatible = "samsung,exynos3250-adc";
-         reg = <0x126C0000 0x100>;
-@@ -142,8 +144,8 @@ examples:
-         #io-channel-cells = <1>;
-         io-channel-ranges;
- 
--        clocks = <&cmu 0>, // CLK_TSADC
--                 <&cmu 1>; // CLK_SCLK_TSADC
-+        clocks = <&cmu CLK_TSADC>,
-+                 <&cmu CLK_SCLK_TSADC>;
-         clock-names = "adc", "sclk";
- 
-         vdd-supply = <&buck5_reg>;
--- 
-2.17.1
+> diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
+> index 106bc7180cd8..b818ae9e85f2 100644
+> --- a/drivers/counter/counter.c
+> +++ b/drivers/counter/counter.c
+> @@ -823,7 +823,8 @@ static const char *const counter_count_function_str[] = {
+>  	[COUNTER_COUNT_FUNCTION_QUADRATURE_X1_B] = "quadrature x1 b",
+>  	[COUNTER_COUNT_FUNCTION_QUADRATURE_X2_A] = "quadrature x2 a",
+>  	[COUNTER_COUNT_FUNCTION_QUADRATURE_X2_B] = "quadrature x2 b",
+> -	[COUNTER_COUNT_FUNCTION_QUADRATURE_X4] = "quadrature x4"
+> +	[COUNTER_COUNT_FUNCTION_QUADRATURE_X4] = "quadrature x4",
+> +	[COUNTER_COUNT_FUNCTION_QUADRATURE_X4_SWAPPED] = "quadrature x4 swapped"
 
+Add a comma to the end of this line so that we don't have to change it
+if we add another function mode in the future.
+
+William Breathitt Gray
+
+>  };
+>  
+>  static ssize_t counter_function_show(struct device *dev,
+> diff --git a/include/linux/counter.h b/include/linux/counter.h
+> index a061cdcdef7c..860769250f89 100644
+> --- a/include/linux/counter.h
+> +++ b/include/linux/counter.h
+> @@ -170,7 +170,8 @@ enum counter_count_function {
+>  	COUNTER_COUNT_FUNCTION_QUADRATURE_X1_B,
+>  	COUNTER_COUNT_FUNCTION_QUADRATURE_X2_A,
+>  	COUNTER_COUNT_FUNCTION_QUADRATURE_X2_B,
+> -	COUNTER_COUNT_FUNCTION_QUADRATURE_X4
+> +	COUNTER_COUNT_FUNCTION_QUADRATURE_X4,
+> +	COUNTER_COUNT_FUNCTION_QUADRATURE_X4_SWAPPED,
+>  };
+>  
+>  /**
+> -- 
+> 2.23.0
+> 

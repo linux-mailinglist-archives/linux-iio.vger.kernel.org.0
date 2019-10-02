@@ -2,20 +2,20 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D388AC8884
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 14:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34701C8887
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 14:30:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726069AbfJBMab (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Oct 2019 08:30:31 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:50785 "EHLO
+        id S1726510AbfJBMac (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Oct 2019 08:30:32 -0400
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:49003 "EHLO
         relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725848AbfJBMaa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Oct 2019 08:30:30 -0400
+        with ESMTP id S1725747AbfJBMab (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Oct 2019 08:30:31 -0400
 X-Originating-IP: 86.250.200.211
 Received: from localhost.localdomain (lfbn-1-17395-211.w86-250.abo.wanadoo.fr [86.250.200.211])
         (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id D35FBE0013;
-        Wed,  2 Oct 2019 12:30:26 +0000 (UTC)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 3B7D5E0019;
+        Wed,  2 Oct 2019 12:30:29 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -27,46 +27,46 @@ Cc:     <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 0/7] Introduce max12xx ADC support
-Date:   Wed,  2 Oct 2019 14:30:18 +0200
-Message-Id: <20191002123025.21413-1-miquel.raynal@bootlin.com>
+Subject: [PATCH 1/7] iio: adc: max1027: Add debugfs register read support
+Date:   Wed,  2 Oct 2019 14:30:19 +0200
+Message-Id: <20191002123025.21413-2-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191002123025.21413-1-miquel.raynal@bootlin.com>
+References: <20191002123025.21413-1-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello, here is a patchset updating the existing max1027.c driver (for
-10-bit max1027/29/31 ADCs) with a few corrections/improvements and
-then introducing their 12-bit cousins named max1227/29/31.
+Until now, only write operations were supported. Force two bytes read
+operation when reading from this register (might be wrong when reading
+the temperature, but will work with any other value).
 
-As on my hardware setup the "start conversion" and "end of conversion"
-pin are not wired (which is absolutely fine for this chip), I also
-updated the driver and the bindings to support optional interrupts. In
-this case, triggered buffers are not available and the user must poll
-the value from sysfs.
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
+ drivers/iio/adc/max1027.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Thanks,
-Miquèl
-
-
-Miquel Raynal (7):
-  iio: adc: max1027: Add debugfs register read support
-  iio: adc: max1027: Make it optional to use interrupts
-  iio: adc: max1027: Reset the device at probe time
-  iio: adc: max1027: Prepare the introduction of different resolutions
-  iio: adc: max1027: Introduce 12-bit devices support
-  dt-bindings: iio: adc: max1027: Mark interrupts as optional
-  dt-bindings: iio: adc: max1027: Document max12xx series compatibles
-
- .../bindings/iio/adc/max1027-adc.txt          |  12 +-
- drivers/iio/adc/Kconfig                       |   4 +-
- drivers/iio/adc/max1027.c                     | 190 +++++++++++-------
- 3 files changed, 133 insertions(+), 73 deletions(-)
-
+diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
+index 214883458582..6cdfe9ef73fc 100644
+--- a/drivers/iio/adc/max1027.c
++++ b/drivers/iio/adc/max1027.c
+@@ -309,8 +309,11 @@ static int max1027_debugfs_reg_access(struct iio_dev *indio_dev,
+ 	struct max1027_state *st = iio_priv(indio_dev);
+ 	u8 *val = (u8 *)st->buffer;
+ 
+-	if (readval != NULL)
+-		return -EINVAL;
++	if (readval) {
++		int ret = spi_read(st->spi, val, 2);
++		*readval = be16_to_cpu(st->buffer[0]);
++		return ret;
++	}
+ 
+ 	*val = (u8)writeval;
+ 	return spi_write(st->spi, val, 1);
 -- 
 2.20.1
 

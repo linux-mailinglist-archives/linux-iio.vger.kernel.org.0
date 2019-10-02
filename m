@@ -2,138 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8876C8AF6
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 16:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC095C8B99
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2019 16:45:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728231AbfJBOTa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Oct 2019 10:19:30 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:44112 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728230AbfJBOT0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Oct 2019 10:19:26 -0400
-Received: by mail-qk1-f196.google.com with SMTP id u22so15120787qkk.11;
-        Wed, 02 Oct 2019 07:19:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ohxhS7j8qWWGNPOAmtHqFz2vVoD0+7/SI/0UtR2WuvI=;
-        b=SkpAKRKDBLQKsf1uxaFz7cr4Y7A8v8Ll8bQfrrNkycGcUFc1XnLZX0m7pTRHefH+l5
-         /Nv5juJHYgd5nAAuaO+f955PTqoRu0NjO30NsggdoDaGYz8cwbHTWODLgfwvtlAriIc6
-         9AUMPBJwUc2JNPyZRTmQfDu4pEod/FkokXI70IgprmcGzFksEerYTz5LN2iENlGzAZQA
-         cfhAjLd8qwYCPJnxpKCq7Z0xVWVSGhw5l0EK0sNVDUvEcUa2afqRhkqHskYADWzygKOh
-         fHWeLHgWsOA0z5cEwIuIK8mPRSZ4r/hVt9PMy8xQKiFVfFNv5OZq6dJwFEa7OMzoXoU4
-         5wNA==
-X-Gm-Message-State: APjAAAVd6eqyZa3PceyHmkHR0qPNBoT3N153Xs6/XfWyXvbTdfkVqQBL
-        H+Zk9NKg8IomuP54FjTnTw==
-X-Google-Smtp-Source: APXvYqwWsLlH+FQ6F+eHLBi8M/PJn/BZl+hY+I2v9eAHVo5zIA7RzJv0id08JFiyhXd55o/TfZDPkQ==
-X-Received: by 2002:a37:b702:: with SMTP id h2mr4038210qkf.166.1570025965021;
-        Wed, 02 Oct 2019 07:19:25 -0700 (PDT)
-Received: from localhost ([132.205.230.8])
-        by smtp.gmail.com with ESMTPSA id g45sm10574897qtc.9.2019.10.02.07.19.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2019 07:19:24 -0700 (PDT)
-Message-ID: <5d94b1ec.1c69fb81.bb720.6d97@mx.google.com>
-Date:   Wed, 02 Oct 2019 09:19:21 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Andreas Klinger <ak@it-klinger.de>
-Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, mark.rutland@arm.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: maxbotix,mb1232.yaml: transform to yaml
-References: <20190923174605.mhrbmdic3ynaw22o@arbad>
+        id S1725860AbfJBOoZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Oct 2019 10:44:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50338 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725766AbfJBOoZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 2 Oct 2019 10:44:25 -0400
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 784D721920;
+        Wed,  2 Oct 2019 14:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570027463;
+        bh=DXtCTSlv8DdQz8r7Ra8f1GwoLMAnlT9qlLL5Oq3LgJg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=A/19I8vcFhloBvzKXmq9K5Ho44Zz7GYmbeywp4SJjiLpHUhTsZ93pOKAinuSA3niY
+         gbOvvW4BHXAsX6WuW1K9PaHXUNG88o/gv9hdX/ue5eZQrQh57pGWRuspGTzYEzyg/3
+         ODEnGjDZr8byc6DF8SGcbmuV2s7Z5aI2eGh1ZfzA=
+Received: by mail-qt1-f174.google.com with SMTP id f7so26658872qtq.7;
+        Wed, 02 Oct 2019 07:44:23 -0700 (PDT)
+X-Gm-Message-State: APjAAAWL7ccGLdRn8yoETMEnhHXq8S9rsEts4J6ts1EIrfQLoNRJfXwR
+        cnTKcMqxTzanS+rE9Z8EIsFSFEnI3NbykCPR7w==
+X-Google-Smtp-Source: APXvYqxjkac0l1P0cWY5PT2ReC6IY4k+O7P1hS5EaMIPtTQtakIQ2dNkMmBaJ/TSwnxS/jNiPuUYVSlMYyJqzSxph0E=
+X-Received: by 2002:ac8:444f:: with SMTP id m15mr4392234qtn.110.1570027462655;
+ Wed, 02 Oct 2019 07:44:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190923174605.mhrbmdic3ynaw22o@arbad>
-X-Mutt-References: <20190923174605.mhrbmdic3ynaw22o@arbad>
+References: <20190902130831.23057-1-mircea.caprioru@analog.com>
+ <20190902130831.23057-4-mircea.caprioru@analog.com> <20190903172937.GA15494@bogus>
+ <20190908112907.6d9b8370@archlinux>
+In-Reply-To: <20190908112907.6d9b8370@archlinux>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 2 Oct 2019 09:44:09 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+08qOpx_jpfvEh3LKtU4Bb7nuAdPF3OfvUn4EwZPn4Uw@mail.gmail.com>
+Message-ID: <CAL_Jsq+08qOpx_jpfvEh3LKtU4Bb7nuAdPF3OfvUn4EwZPn4Uw@mail.gmail.com>
+Subject: Re: [PATCH V4 4/4] dt-bindings: iio: adc: ad7192: Add binding
+ documentation for AD7192
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Mircea Caprioru <mircea.caprioru@analog.com>
+Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Sep 23, 2019 at 07:46:34PM +0200, Andreas Klinger wrote:
-> transform existing documentation of maxbotix,mb1232 ultrasonic ranger
-> from text documentation format into yaml.
-> 
-> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-> ---
->  .../bindings/iio/proximity/maxbotix,mb1232.txt     | 29 -----------
->  .../bindings/iio/proximity/maxbotix,mb1232.yaml    | 56 ++++++++++++++++++++++
->  2 files changed, 56 insertions(+), 29 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.txt
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.yaml
+On Sun, Sep 8, 2019 at 5:29 AM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Tue, 3 Sep 2019 18:29:37 +0100
+> Rob Herring <robh@kernel.org> wrote:
+>
+> > On Mon, 2 Sep 2019 16:08:31 +0300, Mircea Caprioru wrote:
+> > > This patch add device tree binding documentation for AD7192 adc in YAML
+> > > format.
+> > >
+> > > Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+> It seems that I messed up before and didn't actually revert the v3 patch.
+>
+> I'll roll a small fix patch to bring the tree inline with this and send out to the
+> list.
+>
+> Sorry about this. One of many things that went wrong in that last pull request!
 
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.yaml b/Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.yaml
-> new file mode 100644
-> index 000000000000..8301a1ad2a47
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/maxbotix,mb1232.yaml
-> @@ -0,0 +1,56 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/proximity/maxbotix,mb1232.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: MaxBotix I2CXL-MaxSonar ultrasonic distance sensor
-> +
-> +maintainers:
-> +  - Andreas Klinger <ak@it-klinger.de>
-> +
-> +description: |
-> +  MaxBotix I2CXL-MaxSonar ultrasonic distance sensor of type  mb1202,
-> +  mb1212, mb1222, mb1232, mb1242, mb7040 or mb7137 using the i2c interface
-> +  for ranging
-> +
-> +  Specifications about the devices can be found at:
-> +  https://www.maxbotix.com/documents/I2CXL-MaxSonar-EZ_Datasheet.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - maxbotix,mb1202
-> +      - maxbotix,mb1212
-> +      - maxbotix,mb1222
-> +      - maxbotix,mb1232
-> +      - maxbotix,mb1242
-> +      - maxbotix,mb7040
-> +      - maxbotix,mb7137
-> +
-> +  reg:
-> +    description:
-> +      i2c address of the device, see also i2c/i2c.txt
+This still has dtc and schema errors:
 
-Drop this.
-
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description:
-> +      Interrupt used to announce the preceding reading request has finished
-> +      and that data is available.  If no interrupt is specified the device
-> +      driver falls back to wait a fixed amount of time until data can be
-> +      retrieved.
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-
-Add a:
-
-additionalProperties: false
-
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    proximity@70 {
-> +      compatible = "maxbotix,mb1232";
-> +      reg = <0x70>;
-> +      interrupt-parent = <&gpio2>;
-> +      interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
-> +    };
-> -- 
-> 2.11.0
-
+ DTC     Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dt.yaml
+Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dts:20.13-23:
+Warning (reg_format): /example-0/spi0/adc@0:reg: property has invalid
+length (4 bytes) (#address-cells == 2, #size-cells == 1)
+Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dt.yaml:
+Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dt.yaml:
+Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dt.yaml:
+Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dts:18.17-36.15:
+Warning (avoid_default_addr_size): /example-0/spi0/adc@0: Relying on
+default #address-cells value
+Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dts:18.17-36.15:
+Warning (avoid_default_addr_size): /example-0/spi0/adc@0: Relying on
+default #size-cells value
+  CHECK   Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dt.yaml
+/builds/robherring/linux-dt-bindings/Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dt.yaml:
+adc@0: avdd-supply:0: 'avdd' was expected
+/builds/robherring/linux-dt-bindings/Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dt.yaml:
+adc@0: dvdd-supply:0: 'dvdd' was expected

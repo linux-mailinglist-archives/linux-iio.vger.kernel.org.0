@@ -2,62 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3643EC9FCD
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2019 15:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0AD7CAD0B
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2019 19:47:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728998AbfJCNsO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Oct 2019 09:48:14 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:51624 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726002AbfJCNsO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 3 Oct 2019 09:48:14 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 137486BB1CDD9FC35C57;
-        Thu,  3 Oct 2019 21:48:12 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS404-HUB.china.huawei.com
- (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Thu, 3 Oct 2019
- 21:48:09 +0800
-Date:   Thu, 3 Oct 2019 14:48:01 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: Patch ping
-Message-ID: <20191003144801.00005858@huawei.com>
-In-Reply-To: <MN2PR12MB337384FCC2C028F7384978E2C49D0@MN2PR12MB3373.namprd12.prod.outlook.com>
-References: <MN2PR12MB337384FCC2C028F7384978E2C49D0@MN2PR12MB3373.namprd12.prod.outlook.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1733181AbfJCReM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Oct 2019 13:34:12 -0400
+Received: from relay9-d.mail.gandi.net ([217.70.183.199]:52859 "EHLO
+        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732907AbfJCReL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Oct 2019 13:34:11 -0400
+X-Originating-IP: 91.224.148.103
+Received: from localhost.localdomain (unknown [91.224.148.103])
+        (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id ADB16FF80E;
+        Thu,  3 Oct 2019 17:34:07 +0000 (UTC)
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v2 0/7] Introduce max12xx ADC support
+Date:   Thu,  3 Oct 2019 19:33:54 +0200
+Message-Id: <20191003173401.16343-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 1 Oct 2019 08:50:08 +0000
-Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+Hello, here is a patchset updating the existing max1027.c driver (for
+10-bit max1027/29/31 ADCs) with a few corrections/improvements and
+then introducing their 12-bit cousins named max1227/29/31.
 
-> Hello Jonathan,
-> 
-> just a kindly remember about my magnetometer support series for inv_mpu6050 still waiting for approval and merge.
-> 
-> Thanks.
-> 
-> Best regards,
-> JB
+As on my hardware setup the "start conversion" and "end of conversion"
+pin are not wired (which is absolutely fine for this chip), I also
+updated the driver and the bindings to support optional interrupts. In
+this case, triggered buffers are not available and the user must poll
+the value from sysfs.
 
-Hi JB,
+Thanks,
+Miquèl
 
-I'm lagging rather a lot currently, but coming out the end of
-a jetlag so should be fine to catch up at the weekend.
 
-I've just been slotting a few random reviews in gaps at work
-this week, but not had a proper catch up session since getting
-back from Linaro connect.
+Changes in v2:
+==============
+* Removed the addition of three compatibles from patch 4 (the
+  preparation patch) to add these lines back in patch 5 (the actual
+  introduction).
 
-Jonathan
+
+Miquel Raynal (7):
+  iio: adc: max1027: Add debugfs register read support
+  iio: adc: max1027: Make it optional to use interrupts
+  iio: adc: max1027: Reset the device at probe time
+  iio: adc: max1027: Prepare the introduction of different resolutions
+  iio: adc: max1027: Introduce 12-bit devices support
+  dt-bindings: iio: adc: max1027: Mark interrupts as optional
+  dt-bindings: iio: adc: max1027: Document max12xx series compatibles
+
+ .../bindings/iio/adc/max1027-adc.txt          |  12 +-
+ drivers/iio/adc/Kconfig                       |   4 +-
+ drivers/iio/adc/max1027.c                     | 190 +++++++++++-------
+ 3 files changed, 133 insertions(+), 73 deletions(-)
+
+-- 
+2.20.1
 

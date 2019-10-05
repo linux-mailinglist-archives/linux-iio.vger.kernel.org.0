@@ -2,41 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA272CCB4D
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 18:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF4EECCB55
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 18:41:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728499AbfJEQjM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Oct 2019 12:39:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44842 "EHLO mail.kernel.org"
+        id S1728499AbfJEQlw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Oct 2019 12:41:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45426 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726114AbfJEQjL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Oct 2019 12:39:11 -0400
+        id S1726285AbfJEQlw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Oct 2019 12:41:52 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2BC7A22475;
-        Sat,  5 Oct 2019 16:39:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1C0FD22475;
+        Sat,  5 Oct 2019 16:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570293550;
-        bh=muOoyHgFkIzawvNdGZkDnH+wc8CSIFaMgkHMDwpdSX0=;
+        s=default; t=1570293711;
+        bh=AwMvo+txXHzmVFqM/xX4gaVSix9svT/NKLkxdiIkruc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=yrib5Ypk20BnayszcdNS5keh+ouauJNLKUBC1KHetj3IALiK+XiKc9MIXFVc2jNXA
-         qes3fUTL+Q5LmahJqdx1VjY93N8QkHXB3WyXZlGNxNM172oEUq+yMnj7z5s5GlAsbb
-         YrzReCIoGqzdgvzribuS1Om9c1HdZ+yTw0LtmEk4=
-Date:   Sat, 5 Oct 2019 17:39:03 +0100
+        b=Y06ZWAprxYidmV2WmdmRL0tJUXsnUzF4T4RDgJRm2L5S9JeiATYHJePEE/967JPU3
+         xOyZ4jV1Ukf38MTihKhXVRvzKRjKmCXO0XaC+v0dxZ/yC1865wvDOIHNISOAdZVkXJ
+         QFHN6kzLP4D2ov5wjlYEKUgk3RftGfMJi/2f1Wmg=
+Date:   Sat, 5 Oct 2019 17:41:46 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        lee.jones@linaro.org, bleung@chromium.org,
-        enric.balletbo@collabora.com, dianders@chromium.org,
-        groeck@chromium.org, fabien.lahoudere@collabora.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 13/13] iio: cros_ec: Use Hertz as unit for sampling
- frequency
-Message-ID: <20191005173903.18de9cdc@archlinux>
-In-Reply-To: <20190922175021.53449-14-gwendal@chromium.org>
-References: <20190922175021.53449-1-gwendal@chromium.org>
-        <20190922175021.53449-14-gwendal@chromium.org>
+To:     zhong jiang <zhongjiang@huawei.com>
+Cc:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: Fix an undefied reference error in noa1305_probe
+Message-ID: <20191005174146.6ae6c528@archlinux>
+In-Reply-To: <1569204272-20365-1-git-send-email-zhongjiang@huawei.com>
+References: <1569204272-20365-1-git-send-email-zhongjiang@huawei.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,137 +41,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Sep 2019 10:50:21 -0700
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Mon, 23 Sep 2019 10:04:32 +0800
+zhong jiang <zhongjiang@huawei.com> wrote:
 
-> To be compliant with other sensors, set and get sensor sampling
-> frequency in Hz, not mHz.
+> I hit the following error when compile the kernel.
 > 
-> Fixes: ae7b02ad2f32 ("iio: common: cros_ec_sensors: Expose
-> cros_ec_sensors frequency range via iio sysfs")
+> drivers/iio/light/noa1305.o: In function `noa1305_probe':
+> noa1305.c:(.text+0x65): undefined reference to `__devm_regmap_init_i2c'
+> make: *** [vmlinux] Error 1
 > 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> Signed-off-by: zhong jiang <zhongjiang@huawei.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-Good catch.
+Thanks,
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Jonathan
 
 > ---
->  .../cros_ec_sensors/cros_ec_sensors_core.c    | 32 +++++++++++--------
->  .../linux/iio/common/cros_ec_sensors_core.h   |  6 ++--
->  2 files changed, 22 insertions(+), 16 deletions(-)
+>  drivers/iio/light/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> index a32260c9bc09..f7e6827bd4cb 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> @@ -227,6 +227,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->  	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
->  	struct iio_buffer *buffer;
->  	u32 ver_mask;
-> +	int frequencies[ARRAY_SIZE(state->frequencies) / 2] = { 0 };
->  	int ret, i;
->  
->  	platform_set_drvdata(pdev, indio_dev);
-> @@ -275,20 +276,22 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->  			state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
->  
->  		/* 0 is a correct value used to stop the device */
-> -		state->frequencies[0] = 0;
->  		if (state->msg->version < 3) {
->  			get_default_min_max_freq(state->resp->info.type,
-> -						 &state->frequencies[1],
-> -						 &state->frequencies[2],
-> +						 &frequencies[1],
-> +						 &frequencies[2],
->  						 &state->fifo_max_event_count);
->  		} else {
-> -			state->frequencies[1] =
-> -			    state->resp->info_3.min_frequency;
-> -			state->frequencies[2] =
-> -			    state->resp->info_3.max_frequency;
-> +			frequencies[1] = state->resp->info_3.min_frequency;
-> +			frequencies[2] = state->resp->info_3.max_frequency;
->  			state->fifo_max_event_count =
->  			    state->resp->info_3.fifo_max_event_count;
->  		}
-> +		for (i = 0; i < ARRAY_SIZE(frequencies); i++) {
-> +			state->frequencies[2 * i] = frequencies[i] / 1000;
-> +			state->frequencies[2 * i + 1] =
-> +				(frequencies[i] % 1000) * 1000;
-> +		}
->  
->  		if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
->  			buffer = devm_iio_kfifo_allocate(dev);
-> @@ -653,7 +656,7 @@ int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
->  			  struct iio_chan_spec const *chan,
->  			  int *val, int *val2, long mask)
->  {
-> -	int ret;
-> +	int ret, frequency;
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> @@ -665,8 +668,10 @@ int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
->  		if (ret)
->  			break;
->  
-> -		*val = st->resp->sensor_odr.ret;
-> -		ret = IIO_VAL_INT;
-> +		frequency = st->resp->sensor_odr.ret;
-> +		*val = frequency / 1000;
-> +		*val2 = (frequency % 1000) * 1000;
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
->  		break;
->  	default:
->  		ret = -EINVAL;
-> @@ -690,7 +695,7 @@ int cros_ec_sensors_core_read_avail(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_SAMP_FREQ:
->  		*length = ARRAY_SIZE(state->frequencies);
->  		*vals = (const int *)&state->frequencies;
-> -		*type = IIO_VAL_INT;
-> +		*type = IIO_VAL_INT_PLUS_MICRO;
->  		return IIO_AVAIL_LIST;
->  	}
->  
-> @@ -702,12 +707,13 @@ int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
->  			       struct iio_chan_spec const *chan,
->  			       int val, int val2, long mask)
->  {
-> -	int ret;
-> +	int ret, frequency;
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		frequency = val * 1000 + val2 / 1000;
->  		st->param.cmd = MOTIONSENSE_CMD_SENSOR_ODR;
-> -		st->param.sensor_odr.data = val;
-> +		st->param.sensor_odr.data = frequency;
->  
->  		/* Always roundup, so caller gets at least what it asks for. */
->  		st->param.sensor_odr.roundup = 1;
-> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-> index 2c6acbde0d02..46d5110b2fe4 100644
-> --- a/include/linux/iio/common/cros_ec_sensors_core.h
-> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
-> @@ -56,6 +56,8 @@ typedef irqreturn_t (*cros_ec_sensors_capture_t)(int irq, void *p);
->   * @read_ec_sensors_data:	function used for accessing sensors values
->   * @curr_sampl_freq:		current sampling period
->   * @fifo_max_event_count:	Size of the EC sensor FIFO
-> + * @frequencies:		Table of known available frequencies:
-> + *				0, Min and Max in mHz.
->   */
->  struct cros_ec_sensors_core_state {
->  	struct cros_ec_device *ec;
-> @@ -80,9 +82,7 @@ struct cros_ec_sensors_core_state {
->  
->  	int curr_sampl_freq;
->  	u32 fifo_max_event_count;
-> -
-> -	/* Table of known available frequencies : 0, Min and Max in mHz */
-> -	int frequencies[3];
-> +	int frequencies[6];
->  };
->  
->  /**
+> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+> index 08d7e1e..4a1a883 100644
+> --- a/drivers/iio/light/Kconfig
+> +++ b/drivers/iio/light/Kconfig
+> @@ -314,6 +314,7 @@ config MAX44009
+>  config NOA1305
+>  	tristate "ON Semiconductor NOA1305 ambient light sensor"
+>  	depends on I2C
+> +	select REGMAP_I2C
+>  	help
+>  	 Say Y here if you want to build support for the ON Semiconductor
+>  	 NOA1305 ambient light sensor.
 

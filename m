@@ -2,43 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8418CCA47
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 16:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6B6CCA72
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 16:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727036AbfJEOON (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Oct 2019 10:14:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59400 "EHLO mail.kernel.org"
+        id S1726167AbfJEO2V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Oct 2019 10:28:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38222 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726269AbfJEOOM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Oct 2019 10:14:12 -0400
+        id S1726086AbfJEO2U (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Oct 2019 10:28:20 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2F8D120862;
-        Sat,  5 Oct 2019 14:14:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4759520867;
+        Sat,  5 Oct 2019 14:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570284851;
-        bh=TuHflHmEutPUZp7LZpISROZKG+shrx1bA5GiMj2kLHA=;
+        s=default; t=1570285700;
+        bh=0HytaZ1Qi8pY6GlOq+DBjycReyqLhaTKhTi+ABILHH0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VciFKt0glXSsiTwp/G8D2YxJNiHTtUbK3rLe3DFTDFDxBWY8NSTbcJx5JahZ3Evn/
-         p3NzfmXg4fJHQ4Mrp5hrnv057OZ5411sWDZ/7fyQclVbepiff0yMBxdfSMSXO2ZNOp
-         Srg4VNhYrD0Au7or1nm4O1ewIAwPW+KWxFR6CBjY=
-Date:   Sat, 5 Oct 2019 15:14:04 +0100
+        b=1vFSC5X6EvPe318HJvAuNvuIcag3zPq2fH5UP82biM+c8M0DRehQvabjwK/gJLTgm
+         mup0Lv5VnlXBVgRXlu87Wd+s148f4hdWuwLVz/o51x5Ebrs1yZeZrigSynKzes/znX
+         JmEwbrVbV2XQE3Q1NaxciA/Wk4W/Y72XY4mDzkQk=
+Date:   Sat, 5 Oct 2019 15:28:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rishi Gupta <gupt21@gmail.com>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        gregkh@linuxfoundation.org, tglx@linutronix.de,
-        allison@lohutok.net, alexios.zavras@intel.com, angus@akkea.ca,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        hslester96@gmail.com, wsa+renesas@sang-engineering.com,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org
-Subject: Re: [RESEND PATCH v2 2/3] dt-bindings: iio: light: add veml6030 ALS
- bindings
-Message-ID: <20191005151404.5fc7386f@archlinux>
-In-Reply-To: <b9d5cb134c7c2c7351025a0b556148bca23f302f.1569321085.git.gupt21@gmail.com>
-References: <cover.1569321085.git.gupt21@gmail.com>
-        <b9d5cb134c7c2c7351025a0b556148bca23f302f.1569321085.git.gupt21@gmail.com>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Fabrice Gasnier <fabrice.gasnier@st.com>, jic23@kernel.org,
+        alexandre.torgue@st.com, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: stm32-timer-cnt: fix a kernel-doc warning
+Message-ID: <20191005152805.49eec3b8@archlinux>
+In-Reply-To: <20190925235310.GD14133@icarus>
+References: <1568809323-26079-1-git-send-email-fabrice.gasnier@st.com>
+        <20190925234927.GB14133@icarus>
+        <20190925235310.GD14133@icarus>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,96 +45,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 24 Sep 2019 16:21:57 +0530
-Rishi Gupta <gupt21@gmail.com> wrote:
+On Wed, 25 Sep 2019 19:53:10 -0400
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> This commit adds device tree bindings for veml6030 ambient
-> light sensor.
+> On Wed, Sep 25, 2019 at 07:49:27PM -0400, William Breathitt Gray wrote:
+> > On Wed, Sep 18, 2019 at 02:22:03PM +0200, Fabrice Gasnier wrote:  
+> > > Fix the following warning when documentation is built:
+> > > drivers/counter/stm32-timer-cnt.c:37: warning: cannot understand function
+> > > prototype: 'enum stm32_count_function'
+> > > 
+> > > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+> > > ---
+> > >  drivers/counter/stm32-timer-cnt.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+> > > index 644ba18..e425dd1 100644
+> > > --- a/drivers/counter/stm32-timer-cnt.c
+> > > +++ b/drivers/counter/stm32-timer-cnt.c
+> > > @@ -28,7 +28,7 @@ struct stm32_timer_cnt {
+> > >  };
+> > >  
+> > >  /**
+> > > - * stm32_count_function - enumerates stm32 timer counter encoder modes
+> > > + * enum stm32_count_function - enumerates stm32 timer counter encoder modes
+> > >   * @STM32_COUNT_SLAVE_MODE_DISABLED: counts on internal clock when CEN=1
+> > >   * @STM32_COUNT_ENCODER_MODE_1: counts TI1FP1 edges, depending on TI2FP2 level
+> > >   * @STM32_COUNT_ENCODER_MODE_2: counts TI2FP2 edges, depending on TI1FP1 level
+> > > -- 
+> > > 2.7.4  
+> > 
+> > Fixes: 597f55e3f36c ("counter: stm32-lptimer: add counter device")
+> > 
+> > Jonathan, please pick this fix up through IIO.
+> > 
+> > Thanks,
+> > 
+> > William Breathitt Gray  
 > 
-> Signed-off-by: Rishi Gupta <gupt21@gmail.com>
-looks fine to me, but...
+> Sorry, that's the wrong Fixes line. Here's the right one:
+> 
+> Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
+> 
+> William Breathitt Gray
+I've picked it up, but please be more formal and also give an
+Acked-by: in future.
 
-DT bindings should always be sent to the DT-bindings maintainers and mailing list
-for review.
+Applied to the togreg branch of iio.git and pushed out as testing though
+I doubt automatic testing of kernel-doc is occurring.
 
-+CC Rob, Mark and devicetree list.
+Thanks,
 
 Jonathan
 
-> ---
-> Changes in v2:
-> * Corrected grammatical mistake from 'is' to 'are' in description of bindings
-> 
->  .../devicetree/bindings/iio/light/veml6030.yaml    | 62 ++++++++++++++++++++++
->  1 file changed, 62 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/veml6030.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/light/veml6030.yaml b/Documentation/devicetree/bindings/iio/light/veml6030.yaml
-> new file mode 100644
-> index 0000000..969b314
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/veml6030.yaml
-> @@ -0,0 +1,62 @@
-> +# SPDX-License-Identifier: GPL-2.0+
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/veml6030.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: VEML6030 Ambient Light Sensor (ALS)
-> +
-> +maintainers:
-> +  - Rishi Gupta <gupt21@gmail.com>
-> +
-> +description: |
-> +  Bindings for the ambient light sensor veml6030 from Vishay
-> +  Semiconductors over an i2c interface.
-> +
-> +  Irrespective of whether interrupt is used or not, application
-> +  can get the ALS and White channel reading from IIO raw interface.
-> +
-> +  If the interrupts are used, application will receive an IIO event
-> +  whenever configured threshold is crossed.
-> +
-> +  Specifications about the sensor can be found at:
-> +    https://www.vishay.com/docs/84366/veml6030.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - vishay,veml6030
-> +
-> +  reg:
-> +    description:
-> +      I2C address of the device. If the ADDR pin on veml6030
-> +      is pulled up, this address is 0x48. If the ADDR pin is
-> +      pulled down, this address is 0x10.
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description:
-> +      interrupt mapping for IRQ. Configure with IRQ_TYPE_LEVEL_LOW.
-> +      Refer to interrupt-controller/interrupts.txt for generic
-> +      interrupt client node bindings.
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        light-sensor@10 {
-> +                compatible = "vishay,veml6030";
-> +                reg = <0x10>;
-> +                interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
-> +        };
-> +    };
-> +...
 

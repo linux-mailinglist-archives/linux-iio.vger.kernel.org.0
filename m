@@ -2,36 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB94CCAB8
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 17:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1507DCCABB
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 17:12:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726069AbfJEPKB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Oct 2019 11:10:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50374 "EHLO mail.kernel.org"
+        id S1725862AbfJEPMF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Oct 2019 11:12:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51080 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725862AbfJEPKA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Oct 2019 11:10:00 -0400
+        id S1725826AbfJEPMF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Oct 2019 11:12:05 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 41CB1222CC;
-        Sat,  5 Oct 2019 15:09:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4377220867;
+        Sat,  5 Oct 2019 15:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570288200;
-        bh=05cXZcOQfviqrT6u4Q3W8u46CwhUF/1aaa02yZbGWRM=;
+        s=default; t=1570288324;
+        bh=S7qIxww7lPt/3fAevCcxLJdZiPnpm3aTVQzilJPTFV0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=K9s1lEdXDjBYwQ7p+PVkkqP/9XiTDQmJMrDKoSMAeWjQ8vxPLt0Hm+f5hYymGTCVw
-         N0dHeVAZDFAaTkCbPeCNLfPRdNo3NQQOCCiem/ej7BcB/1Py2Xbikr8g6T/wZM2LPq
-         gVGZduny9CTx9bJ6xAZbxkyCIjdZ72QjvaMWYDo4=
-Date:   Sat, 5 Oct 2019 16:09:55 +0100
+        b=1dcm2Mxz0YAbkI00OmGR9Xv5GkAOraAQmfAjTPpkJTGvSzPk0gPx9u2OYbF5z9HaX
+         yW29lYTbK47PZm2na4FO5h+KClUk/UAiFG+VSxqNc7sQAT6ZnFksqnI12Udwo+jwdA
+         pA+xIyE5Omk3p03BI2Qyrm19Nx0EnKFcNxvm5CIs=
+Date:   Sat, 5 Oct 2019 16:12:00 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andreas Dannenberg <dannenberg@ti.com>
-Cc:     David Frey <dpfrey@gmail.com>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: light: opt3001: fix mutex unlock race
-Message-ID: <20191005160948.2abb5bcf@archlinux>
-In-Reply-To: <20190920174037.6zfjcx36bejhoa5v@jiji>
-References: <20190919225418.20512-1-dpfrey@gmail.com>
-        <20190920174037.6zfjcx36bejhoa5v@jiji>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "matt.ranostay@konsulko.com" <matt.ranostay@konsulko.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH] iio: chemical: atlas-ph-sensor: fix
+ iio_triggered_buffer_predisable() position
+Message-ID: <20191005161200.0a82943e@archlinux>
+In-Reply-To: <9e05f129826ad4ddc723a655d712bb6ae41a1259.camel@analog.com>
+References: <20190920073122.21713-1-alexandru.ardelean@analog.com>
+        <9e05f129826ad4ddc723a655d712bb6ae41a1259.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,76 +45,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 20 Sep 2019 12:40:37 -0500
-Andreas Dannenberg <dannenberg@ti.com> wrote:
-
-> David,
-> 
-> On Thu, Sep 19, 2019 at 03:54:18PM -0700, David Frey wrote:
-> > When an end-of-conversion interrupt is received after performing a
-> > single-shot reading of the light sensor, the driver was waking up the
-> > result ready queue before checking opt->ok_to_ignore_lock to determine
-> > if it should unlock the mutex. The problem occurred in the case where
-> > the other thread woke up and changed the value of opt->ok_to_ignore_lock
-> > to false prior to the interrupt thread performing its read of the
-> > variable. In this case, the mutex would be unlocked twice.
-> > 
-> > Signed-off-by: David Frey <dpfrey@gmail.com>
-> > ---  
-> 
-> Good find, thanks for the submission.
-> 
-> Reviewed-by: Andreas Dannenberg <dannenberg@ti.com>
-
-I think this goes all the way back to the initial driver so I've added
-a fixes tag for that and marked it for stable.
-
-Applied to the fixes-togreg branch of iio.git.
+Matt! Looking for your input on this one if possible.
 
 Thanks,
 
 Jonathan
 
-> 
-> 
-> --
-> Andreas Dannenberg
-> Texas Instruments Inc
-> 
-> >  drivers/iio/light/opt3001.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
+
+On Fri, 20 Sep 2019 07:37:56 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+
+> On Fri, 2019-09-20 at 10:31 +0300, Alexandru Ardelean wrote:
+> > The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+> > the poll functions.
 > > 
-> > diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-> > index e666879007d2..92004a2563ea 100644
-> > --- a/drivers/iio/light/opt3001.c
-> > +++ b/drivers/iio/light/opt3001.c
-> > @@ -686,6 +686,7 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
-> >  	struct iio_dev *iio = _iio;
-> >  	struct opt3001 *opt = iio_priv(iio);
+> > The iio_triggered_buffer_predisable() should be called last, to detach
+> > the
+> > poll func after the devices has been suspended.
+> >   
+> 
+> I just noticed this is a RESEND.
+> The original is here:
+> https://patchwork.kernel.org/patch/11032569/
+> 
+> I did not think that I probably already sent it before sending it again.
+> 
+> > The position of iio_triggered_buffer_postenable() is correct.
+> > 
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > ---
+> >  drivers/iio/chemical/atlas-ph-sensor.c | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/iio/chemical/atlas-ph-sensor.c
+> > b/drivers/iio/chemical/atlas-ph-sensor.c
+> > index 3a20cb5d9bff..6c175eb1c7a7 100644
+> > --- a/drivers/iio/chemical/atlas-ph-sensor.c
+> > +++ b/drivers/iio/chemical/atlas-ph-sensor.c
+> > @@ -323,16 +323,16 @@ static int atlas_buffer_predisable(struct iio_dev
+> > *indio_dev)
+> >  	struct atlas_data *data = iio_priv(indio_dev);
 > >  	int ret;
-> > +	bool wake_result_ready_queue = false;
 > >  
-> >  	if (!opt->ok_to_ignore_lock)
-> >  		mutex_lock(&opt->lock);
-> > @@ -720,13 +721,16 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
-> >  		}
-> >  		opt->result = ret;
-> >  		opt->result_ready = true;
-> > -		wake_up(&opt->result_ready_queue);
-> > +		wake_result_ready_queue = true;
-> >  	}
+> > -	ret = iio_triggered_buffer_predisable(indio_dev);
+> > +	ret = atlas_set_interrupt(data, false);
+> >  	if (ret)
+> >  		return ret;
 > >  
-> >  out:
-> >  	if (!opt->ok_to_ignore_lock)
-> >  		mutex_unlock(&opt->lock);
+> > -	ret = atlas_set_interrupt(data, false);
+> > +	pm_runtime_mark_last_busy(&data->client->dev);
+> > +	ret = pm_runtime_put_autosuspend(&data->client->dev);
+> >  	if (ret)
+> >  		return ret;
 > >  
-> > +	if (wake_result_ready_queue)
-> > +		wake_up(&opt->result_ready_queue);
-> > +
-> >  	return IRQ_HANDLED;
+> > -	pm_runtime_mark_last_busy(&data->client->dev);
+> > -	return pm_runtime_put_autosuspend(&data->client->dev);
+> > +	return iio_triggered_buffer_predisable(indio_dev);
 > >  }
 > >  
-> > -- 
-> > 2.23.0
-> >   
+> >  static const struct iio_trigger_ops atlas_interrupt_trigger_ops = {  
 

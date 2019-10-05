@@ -2,49 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4E52CC99B
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 13:22:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EB02CC99C
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 13:27:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727033AbfJELWN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Oct 2019 07:22:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34320 "EHLO mail.kernel.org"
+        id S1727719AbfJEL1Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Oct 2019 07:27:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34654 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726902AbfJELWN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Oct 2019 07:22:13 -0400
+        id S1726198AbfJEL1Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Oct 2019 07:27:25 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C422D2084D;
-        Sat,  5 Oct 2019 11:22:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 328162084D;
+        Sat,  5 Oct 2019 11:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570274532;
-        bh=Be0u4KrUQT9H5OGfKt++pxTASnWQHMLtBY744frX9Uo=;
+        s=default; t=1570274843;
+        bh=HAPXcGEBd2W5YuWLs6NLPzyFMjkKzx+OQw2tS/n15ts=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=L4UZzcgdeEud1sT//fz23DIlS+8o8uDz1itp1oxn00WwFv5xP1InMZ78ZEkqGDCDg
-         hIvtE0Z7AlYHVb9WrBKU0kphyZkeLmYk/4Krm4YCvFFv+YJoWdA5g+09uKsVumwV0b
-         Cht4vrCB6h8Wlt6oqBptLd3Eg+XD2kMKViKNO0XA=
-Date:   Sat, 5 Oct 2019 12:22:07 +0100
+        b=2TEoRL1mY1gHEn/A4wbkN2K+xkBMsu1XdHDq9j6eeIof1r/VtEj6ZG+PIYfhc5s7i
+         GH0fjC9mCi9oo8hQsQcE7JzTorF+LsycUhZ5s7RiYRwBeMnS5CCh5DXNUUy7CmI0FU
+         +CAHCsHEKcouctXtqCOfXLZRv0uHA54W46IzMTQo=
+Date:   Sat, 5 Oct 2019 12:27:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Cc:     Bobby Jones <rjones@gateworks.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        linux-iio@vger.kernel.org
-Subject: Re: LSM9DS1 testing with st_lsm6dsx driver
-Message-ID: <20191005122207.5979efd2@archlinux>
-In-Reply-To: <CAA2SeN+QR5sd_WrjOxiPx0JY7fK3W0wenP_RzxfrP9isk9wCXQ@mail.gmail.com>
-References: <CALAE=UCTTOhvUofvk1ZrLZ2aNoSMYyFq8dHoaDxRc2aOdbV8jA@mail.gmail.com>
-        <20190920064214.GA31900@lore-desk-wlan.lan>
-        <CALAE=UDmg_+q=zt9Z6D5BrsnpFXi7dVMdTMVdHk2SMXCtxoJTw@mail.gmail.com>
-        <20190920215542.GA16493@localhost.localdomain>
-        <CALAE=UBH8ESTkXzrzK2_Tvt-vzVeOiewJFi_g4g2NsoUqwge1w@mail.gmail.com>
-        <20190921080651.GA15821@localhost.localdomain>
-        <CALAE=UBjNKZy=kuGDCuwEQ_-jSY==Bc7_1R9w_gaNmuW_23UqQ@mail.gmail.com>
-        <CAA2SeNK1qcdxqrK0S4EE0JUmAQYLmFE5JbdeiJHRAhGjJ-qzxg@mail.gmail.com>
-        <CALAE=UCEODBsUJB8Fb0z=jw2c-XqkR6D9wrX00KHn3GSu8Li-g@mail.gmail.com>
-        <CAA2SeNKO0rH07bYnd_CqsKjArJ+ZqUQ3WCf-07rAOD7N4JBjUA@mail.gmail.com>
-        <CALAE=UCOXgNJQa1+KwLGO01v+JvdtrM=GGMDgV14EZTBh0ox=Q@mail.gmail.com>
-        <CAA2SeN+QR5sd_WrjOxiPx0JY7fK3W0wenP_RzxfrP9isk9wCXQ@mail.gmail.com>
+To:     Sean Nyekjaer <sean@geanix.com>
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi83@gmail.com,
+        denis.ciocca@st.com, mario.tesi@st.com, armando.visconti@st.com,
+        martin@geanix.com, Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: Re: [PATCH v10 1/5] iio: imu: st_lsm6dsx: move interrupt thread to
+ core
+Message-ID: <20191005122718.43d23a5a@archlinux>
+In-Reply-To: <20190916135630.2211714-1-sean@geanix.com>
+References: <20190916135630.2211714-1-sean@geanix.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,214 +43,255 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 24 Sep 2019 20:55:09 +0200
-Lorenzo Bianconi <lorenzo.bianconi83@gmail.com> wrote:
+On Mon, 16 Sep 2019 15:56:26 +0200
+Sean Nyekjaer <sean@geanix.com> wrote:
 
-> >  
-> > > > > > > > > > > LSM9DS1 does not support hw FIFO for the moment. Are you trying to enable
-> > > > > > > > > > > buffered reading?  
-> > > > > > > > > >
-> > > > > > > > > > I am not manually interacting with the device at all when this
-> > > > > > > > > > exception occurs. This happens during the driver probe.
-> > > > > > > > > >  
-> > > > > > > > > > > Could you please try if the following patch helps? (just compiled)  
-> > > > > > > > > >
-> > > > > > > > > > I no longer receive the exception with this patch and it makes sense, thanks.  
-> > > > > > > > >
-> > > > > > > > > Hi Bobby,
-> > > > > > > > >
-> > > > > > > > > thx a lot for testing. Could you please try to drop the previous patch and
-> > > > > > > > > apply the following one? Does it fix the issue as well?  
-> > > > > > > >
-> > > > > > > > No problem, happy to help. I just tested, and unfortunately the issue
-> > > > > > > > is still present with this patch.  
-> > > > > > >
-> > > > > > > re-looking at the code this patch will actually does not anything since in the
-> > > > > > > current implementation st_lsm6dsx_handler_irq will return IRQ_NONE and the
-> > > > > > > thread handler will not be run. Anyway since st_lsm6dsx_handler_irq will be
-> > > > > > > removed soon I will respin this patch ontop of Sean series.
-> > > > > > >  
-> > > > > > > > I gave the datasheet and the hardware reference manual of the
-> > > > > > > > connected CPU a closer look and suspected a problem with my pin
-> > > > > > > > config. However even after various combinations of pull ups/downs and
-> > > > > > > > IRQ_TYPE_LEVEL_LOW/IRQ_TYPE_LEVEL_HIGH the same exception occurs, so I
-> > > > > > > > don't think that there's an issue with pin config stopping the
-> > > > > > > > interrupt line from being deasserted.  
-> > > > > > >
-> > > > > > > are you able to monitor the line activity through an oscilloscope?
-> > > > > > > The issue is the irq line is never asserted and the kernel complains about
-> > > > > > > lot of interrupts not managed
-> > > > > > >
-> > > > > > > Looking at the datasheet, LSM9DS1 does not support IRQ_TYPE_LEVEL_LOW.
-> > > > > > > ST_LSM6DSX_REG_HLACTIVE_ADDR and ST_LSM6DSX_REG_PP_OD_ADDR registers are
-> > > > > > > actually not defined for LSM9DS1 and I will move them in hw_settings map.  
-> > > > > >
-> > > > > > The datasheet I have for the LSM9DS1 shows a HLACTIVE bit in the
-> > > > > > CTRL_REG8 (0x22) register, I thought that indicated support for both
-> > > > > > high and low IRQ types.  
-> > > > >
-> > > > > Yes, right. I will update the series. Looking at the datasheet even
-> > > > > the BDU register definition seems wrong. I will fix it as well.
-> > > > >  
-> > > > > > Either way, after applying your recent (Sep 22nd) patches to this
-> > > > > > driver and changing my device tree node I have no kernel exception and
-> > > > > > the iio device enumerates as normal. For anyone curious my device tree
-> > > > > > node is now:
-> > > > > >  
-> > > > >
-> > > > > What happen if you set the irq line active high? Does the issue occur?  
-> > > >
-> > > > No issue with IRQ_TYPE_LEVEL_HIGH either. Although all I'm doing at
-> > > > this point to test is checking for the exception in the kernel prints
-> > > > and reading the /sys/bus/iio/devices/iio:device*/in*raw of the device.  
-> > >
-> > > Ok, thx a lot for testing. Could you please try to understand which
-> > > patch of the series fix the issue?
-> > > In particular, could you please try to apply just '[PATCH 3/3] iio:
-> > > imu: st_lsm6dsx: add sanity check for read_fifo pointer' and double
-> > > check if the issue occurs?  
-> >
-> > No problem. It looks like that was the one, only having that patch
-> > applied works fine.  
+> This prepares the interrupt to be used for other stuff than
+> fifo reading + event readings.
 > 
-> Ok, cool. Thx a lot for testing.
-> 
-> @Jonathan: how do you prefer to proceed? Push just this patch to
-> 'togreg' branch and rebase the other fixes ontop of Sean's series or
-> merge all the fixes now? (they will conflict with Sean's series)
-Assuming I don't find any issues in Sean's latest, I'll apply that
-first.  Then we put this on top but also look at a backport fix
-to get this into stable after the next merge window.
-
-It's always tricky to deal with these cases when a driver is
-in a state of fairly rapid change.
-
-I'll take a proper look at patch 3 if that is the only one
-'necessary'.  It looks small so we might just push the fix
-along side Sean's patch and let everyone concerned know that
-a merge conflict is expected by trivial.
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Applied to the togreg branch of iio.git and pushed out as testing for the
+autobuilders to play with them.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 78 +---------------
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 88 +++++++++++++++++++
+>  2 files changed, 89 insertions(+), 77 deletions(-)
 > 
-> Regards,
-> Lorenzo
-> 
-> >
-> > Thanks,
-> > Bobby Jones
-> >  
-> > >
-> > > Regards,
-> > > Lorenzo
-> > >  
-> > > >
-> > > > Thanks,
-> > > > Bobby Jones
-> > > >  
-> > > > >
-> > > > > Regards,
-> > > > > Lorenzo
-> > > > >  
-> > > > > > lsm9ds1_ag@6a {
-> > > > > >   compatible = "st,lsm9ds1-imu";
-> > > > > >   reg = <0x6a>;
-> > > > > >   st,drdy-int-pin = <1>;
-> > > > > >   pinctrl-names = "default";
-> > > > > >   pinctrl-0 = <&pinctrl_acc_gyro>;
-> > > > > >   interrupt-parent = <&gpio7>;
-> > > > > >   interrupts = <13 IRQ_TYPE_EDGE_RISING>;
-> > > > > > };
-> > > > > >  
-> > > > > > >
-> > > > > > > @Jonathan: do you prefer this patch to be ontop of Sean's series?
-> > > > > > >
-> > > > > > > Regards,
-> > > > > > > Lorenzo
-> > > > > > >  
-> > > > > > > >  
-> > > > > > > > >
-> > > > > > > > > iio: imu: st_lsm6dsx: check read_fifo pointer in st_lsm6dsx_handler_thread
-> > > > > > > > >
-> > > > > > > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > > > > > > ---
-> > > > > > > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 3 +++
-> > > > > > > > >  1 file changed, 3 insertions(+)
-> > > > > > > > >
-> > > > > > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > > > > > > > > index b0f3da1976e4..f4fd4842bd79 100644
-> > > > > > > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > > > > > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > > > > > > > > @@ -666,6 +666,9 @@ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
-> > > > > > > > >         struct st_lsm6dsx_hw *hw = private;
-> > > > > > > > >         int count;
-> > > > > > > > >
-> > > > > > > > > +       if (!hw->settings->fifo_ops.read_fifo)
-> > > > > > > > > +               return IRQ_NONE;
-> > > > > > > > > +
-> > > > > > > > >         mutex_lock(&hw->fifo_lock);
-> > > > > > > > >         count = hw->settings->fifo_ops.read_fifo(hw);
-> > > > > > > > >         mutex_unlock(&hw->fifo_lock);
-> > > > > > > > > --
-> > > > > > > > > 2.21.0
-> > > > > > > > >  
-> > > > > > > > > >
-> > > > > > > > > > For context I'm working with a board that has every data ready and
-> > > > > > > > > > interrupt signal connected to the LSM9DS1. Could you clarify what the
-> > > > > > > > > > proper usage of the "st,drdy-int-pin" would be in this case and
-> > > > > > > > > > whether or not I need more than one interrupt called out in my device
-> > > > > > > > > > tree node?
-> > > > > > > > > > I'm not really understanding how they're currently being utilized for
-> > > > > > > > > > this device in the driver.  
-> > > > > > > > >
-> > > > > > > > > For the moment irq line in lsm9ds1 (acc/gyro) is not used at all,
-> > > > > > > > > so you can omit the "st,drdy-int-pin" property
-> > > > > > > > >  
-> > > > > > > > > >
-> > > > > > > > > > Also, I know support for this device was added recently and the combo
-> > > > > > > > > > device hardware FIFO is complex, but is support for this something
-> > > > > > > > > > that's currently being worked on?  
-> > > > > > > > >
-> > > > > > > > > It is actually in my ToDo list but I have no this device at the moment, so
-> > > > > > > > > patches are welcome :)
-> > > > > > > > >
-> > > > > > > > > Regards,
-> > > > > > > > > Lorenzo
-> > > > > > > > >  
-> > > > > > > > > >
-> > > > > > > > > > Thanks,
-> > > > > > > > > > Bobby Jones
-> > > > > > > > > >  
-> > > > > > > > > > > Regards,
-> > > > > > > > > > > Lorenzo
-> > > > > > > > > > >
-> > > > > > > > > > > iio: imu: st_lsm6dsx: do not configure the fifo if not supported
-> > > > > > > > > > >
-> > > > > > > > > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > > > > > > > > > ---
-> > > > > > > > > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
-> > > > > > > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > > > > > > >
-> > > > > > > > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > > > > > > > index b65a6ca775e0..90a0e5ce44e5 100644
-> > > > > > > > > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > > > > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > > > > > > > > @@ -1572,7 +1572,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
-> > > > > > > > > > >                         return err;
-> > > > > > > > > > >         }
-> > > > > > > > > > >
-> > > > > > > > > > > -       if (hw->irq > 0) {
-> > > > > > > > > > > +       if (hw->irq > 0 && hw->settings->fifo_ops.update_fifo) {
-> > > > > > > > > > >                 err = st_lsm6dsx_fifo_setup(hw);
-> > > > > > > > > > >                 if (err < 0)
-> > > > > > > > > > >                         return err;
-> > > > > > > > > > > --
-> > > > > > > > > > > 2.21.0
-> > > > > > > > > > >
-> > > > > > > > > > >  
-> 
-> 
-> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> index b0f3da1976e4..ef579650fd52 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> @@ -30,8 +30,6 @@
+>   * Denis Ciocca <denis.ciocca@st.com>
+>   */
+>  #include <linux/module.h>
+> -#include <linux/interrupt.h>
+> -#include <linux/irq.h>
+>  #include <linux/iio/kfifo_buf.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/buffer.h>
+> @@ -42,10 +40,6 @@
+>  
+>  #include "st_lsm6dsx.h"
+>  
+> -#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
+> -#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
+> -#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
+> -#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
+>  #define ST_LSM6DSX_REG_FIFO_MODE_ADDR		0x0a
+>  #define ST_LSM6DSX_FIFO_MODE_MASK		GENMASK(2, 0)
+>  #define ST_LSM6DSX_FIFO_ODR_MASK		GENMASK(6, 3)
+> @@ -654,25 +648,6 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
+>  	return err;
+>  }
+>  
+> -static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+> -{
+> -	struct st_lsm6dsx_hw *hw = private;
+> -
+> -	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
+> -}
+> -
+> -static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+> -{
+> -	struct st_lsm6dsx_hw *hw = private;
+> -	int count;
+> -
+> -	mutex_lock(&hw->fifo_lock);
+> -	count = hw->settings->fifo_ops.read_fifo(hw);
+> -	mutex_unlock(&hw->fifo_lock);
+> -
+> -	return count ? IRQ_HANDLED : IRQ_NONE;
+> -}
+> -
+>  static int st_lsm6dsx_buffer_preenable(struct iio_dev *iio_dev)
+>  {
+>  	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
+> @@ -702,59 +677,8 @@ static const struct iio_buffer_setup_ops st_lsm6dsx_buffer_ops = {
+>  
+>  int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
+>  {
+> -	struct device_node *np = hw->dev->of_node;
+> -	struct st_sensors_platform_data *pdata;
+>  	struct iio_buffer *buffer;
+> -	unsigned long irq_type;
+> -	bool irq_active_low;
+> -	int i, err;
+> -
+> -	irq_type = irqd_get_trigger_type(irq_get_irq_data(hw->irq));
+> -
+> -	switch (irq_type) {
+> -	case IRQF_TRIGGER_HIGH:
+> -	case IRQF_TRIGGER_RISING:
+> -		irq_active_low = false;
+> -		break;
+> -	case IRQF_TRIGGER_LOW:
+> -	case IRQF_TRIGGER_FALLING:
+> -		irq_active_low = true;
+> -		break;
+> -	default:
+> -		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
+> -		return -EINVAL;
+> -	}
+> -
+> -	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
+> -				 ST_LSM6DSX_REG_HLACTIVE_MASK,
+> -				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
+> -					    irq_active_low));
+> -	if (err < 0)
+> -		return err;
+> -
+> -	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
+> -	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
+> -	    (pdata && pdata->open_drain)) {
+> -		err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
+> -					 ST_LSM6DSX_REG_PP_OD_MASK,
+> -					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
+> -						    1));
+> -		if (err < 0)
+> -			return err;
+> -
+> -		irq_type |= IRQF_SHARED;
+> -	}
+> -
+> -	err = devm_request_threaded_irq(hw->dev, hw->irq,
+> -					st_lsm6dsx_handler_irq,
+> -					st_lsm6dsx_handler_thread,
+> -					irq_type | IRQF_ONESHOT,
+> -					"lsm6dsx", hw);
+> -	if (err) {
+> -		dev_err(hw->dev, "failed to request trigger irq %d\n",
+> -			hw->irq);
+> -		return err;
+> -	}
+> +	int i;
+>  
+>  	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+>  		if (!hw->iio_devs[i])
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index b65a6ca775e0..ef838206b30f 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -50,6 +50,8 @@
+>  #include <linux/delay.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+>  #include <linux/pm.h>
+>  #include <linux/regmap.h>
+>  #include <linux/bitfield.h>
+> @@ -65,6 +67,11 @@
+>  #define ST_LSM6DSX_REG_BDU_ADDR			0x12
+>  #define ST_LSM6DSX_REG_BDU_MASK			BIT(6)
+>  
+> +#define ST_LSM6DSX_REG_HLACTIVE_ADDR		0x12
+> +#define ST_LSM6DSX_REG_HLACTIVE_MASK		BIT(5)
+> +#define ST_LSM6DSX_REG_PP_OD_ADDR		0x12
+> +#define ST_LSM6DSX_REG_PP_OD_MASK		BIT(4)
+> +
+>  static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
+>  	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
+>  	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
+> @@ -1525,6 +1532,83 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+>  	return iio_dev;
+>  }
+>  
+> +static irqreturn_t st_lsm6dsx_handler_irq(int irq, void *private)
+> +{
+> +	struct st_lsm6dsx_hw *hw = private;
+> +
+> +	return hw->sip > 0 ? IRQ_WAKE_THREAD : IRQ_NONE;
+> +}
+> +
+> +static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+> +{
+> +	struct st_lsm6dsx_hw *hw = private;
+> +	int count;
+> +
+> +	mutex_lock(&hw->fifo_lock);
+> +	count = hw->settings->fifo_ops.read_fifo(hw);
+> +	mutex_unlock(&hw->fifo_lock);
+> +
+> +	return count ? IRQ_HANDLED : IRQ_NONE;
+> +}
+> +
+> +static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
+> +{
+> +	struct st_sensors_platform_data *pdata;
+> +	struct device_node *np = hw->dev->of_node;
+> +	unsigned long irq_type;
+> +	bool irq_active_low;
+> +	int err;
+> +
+> +	irq_type = irqd_get_trigger_type(irq_get_irq_data(hw->irq));
+> +
+> +	switch (irq_type) {
+> +	case IRQF_TRIGGER_HIGH:
+> +	case IRQF_TRIGGER_RISING:
+> +		irq_active_low = false;
+> +		break;
+> +	case IRQF_TRIGGER_LOW:
+> +	case IRQF_TRIGGER_FALLING:
+> +		irq_active_low = true;
+> +		break;
+> +	default:
+> +		dev_info(hw->dev, "mode %lx unsupported\n", irq_type);
+> +		return -EINVAL;
+> +	}
+> +
+> +	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_HLACTIVE_ADDR,
+> +				 ST_LSM6DSX_REG_HLACTIVE_MASK,
+> +				 FIELD_PREP(ST_LSM6DSX_REG_HLACTIVE_MASK,
+> +					    irq_active_low));
+> +	if (err < 0)
+> +		return err;
+> +
+> +	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
+> +	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
+> +	    (pdata && pdata->open_drain)) {
+> +		err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_PP_OD_ADDR,
+> +					 ST_LSM6DSX_REG_PP_OD_MASK,
+> +					 FIELD_PREP(ST_LSM6DSX_REG_PP_OD_MASK,
+> +						    1));
+> +		if (err < 0)
+> +			return err;
+> +
+> +		irq_type |= IRQF_SHARED;
+> +	}
+> +
+> +	err = devm_request_threaded_irq(hw->dev, hw->irq,
+> +					st_lsm6dsx_handler_irq,
+> +					st_lsm6dsx_handler_thread,
+> +					irq_type | IRQF_ONESHOT,
+> +					"lsm6dsx", hw);
+> +	if (err) {
+> +		dev_err(hw->dev, "failed to request trigger irq %d\n",
+> +			hw->irq);
+> +		return err;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+>  		     struct regmap *regmap)
+>  {
+> @@ -1573,6 +1657,10 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+>  	}
+>  
+>  	if (hw->irq > 0) {
+> +		err = st_lsm6dsx_irq_setup(hw);
+> +		if (err < 0)
+> +			return err;
+> +
+>  		err = st_lsm6dsx_fifo_setup(hw);
+>  		if (err < 0)
+>  			return err;
 

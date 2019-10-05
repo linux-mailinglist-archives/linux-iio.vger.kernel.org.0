@@ -2,143 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA238CC93A
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 12:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05F2CCC97C
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 12:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727033AbfJEKCP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Oct 2019 06:02:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48406 "EHLO mail.kernel.org"
+        id S1726283AbfJEK54 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Oct 2019 06:57:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59652 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726283AbfJEKCP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Oct 2019 06:02:15 -0400
+        id S1726198AbfJEK54 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Oct 2019 06:57:56 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F13112133F;
-        Sat,  5 Oct 2019 10:02:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F0AA72133F;
+        Sat,  5 Oct 2019 10:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570269734;
-        bh=m6LrBg7MJD79UJpB4HucLtlJvJ8+4uAw8KrPnz16hH4=;
+        s=default; t=1570273074;
+        bh=Zp4+5/huVSv7Bo2LCL7NzS3UvtkmsfpfUBYKvbFy1xA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EPZC3YH/iyV3EmrMJLSGYrKUMpzwTd7G2x0SWAkOlMrsb1+2c/WCN1oPIuyiIGJlO
-         QPZ1G2x2FzT4tj2q9v57sisMM/JHradVxCvcGd9jlglk3hbawRo3Fhoz3diypd5mUZ
-         R4yntHyhn7aiRBb8YS9puqp6Blg5CoJjF2BsWmf0=
-Date:   Sat, 5 Oct 2019 11:02:09 +0100
+        b=p0+CTmc1UyIByJ8FC8i88Hk/YXCICLdXDlpaaKO14oM7jsMnTbLAAhWaO9+Dp4V5y
+         vvxcd/t6vrucF7XI6opTqbfiOO58HCazDJxztDtsdPud1KF3dk/p69djMl33XctOy3
+         o74uXSj7sMyzaksFsbqnxA2J+kRnlC+aPaeQ9CVE=
+Date:   Sat, 5 Oct 2019 11:57:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Chen-Yu Tsai <wens@csie.org>, linux-iio@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: axp288: Override TS pin bias current for some
- models
-Message-ID: <20191005110209.16a9041d@archlinux>
-In-Reply-To: <20190915185342.235354-1-hdegoede@redhat.com>
-References: <20190915185342.235354-1-hdegoede@redhat.com>
+To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v3 1/7] iio: imu: inv_mpu6050: disable i2c mux for
+ MPU925x
+Message-ID: <20191005115750.5ba997ce@archlinux>
+In-Reply-To: <20190916094128.30122-2-jmaneyrol@invensense.com>
+References: <20190916094128.30122-1-jmaneyrol@invensense.com>
+        <20190916094128.30122-2-jmaneyrol@invensense.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 15 Sep 2019 20:53:42 +0200
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Mon, 16 Sep 2019 09:41:58 +0000
+Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
 
-> Since commit 9bcf15f75cac ("iio: adc: axp288: Fix TS-pin handling") we
-> preserve the bias current set by the firmware at boot.  This fixes issues
-> we were seeing on various models, but it seems our old hardcoded 80=C5=B3=
-A bias
-> current was working around a firmware bug on at least one model laptop.
->=20
-> In order to both have our cake and eat it, this commit adds a dmi based
-> list of models where we need to override the firmware set bias current and
-> adds the one model we now know needs this to it: The Lenovo Ideapad 100S
-> (11 inch version).
-
-Ouch.
-
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 9bcf15f75cac ("iio: adc: axp288: Fix TS-pin handling")
-> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=3D203829
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Applied to the fixes-togreg branch of iio.git.
+> Disable i2c mux for supported 9xxx chips. This is a
+> pre-requesite for controling 9xxx magnetometer using the
+> i2c master of the chip.
+> 
+> Check in device-tree that there is no i2c-gate device declared
+> for ensuring backward compatibility with existing setups.
+> 
+> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/axp288_adc.c | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
->=20
-> diff --git a/drivers/iio/adc/axp288_adc.c b/drivers/iio/adc/axp288_adc.c
-> index 31d51bcc5f2c..85d08e68b34f 100644
-> --- a/drivers/iio/adc/axp288_adc.c
-> +++ b/drivers/iio/adc/axp288_adc.c
-> @@ -7,6 +7,7 @@
->   * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~~~~
->   */
-> =20
-> +#include <linux/dmi.h>
->  #include <linux/module.h>
->  #include <linux/kernel.h>
->  #include <linux/device.h>
-> @@ -25,6 +26,11 @@
->  #define AXP288_ADC_EN_MASK				0xF0
->  #define AXP288_ADC_TS_ENABLE				0x01
-> =20
-> +#define AXP288_ADC_TS_BIAS_MASK				GENMASK(5, 4)
-> +#define AXP288_ADC_TS_BIAS_20UA				(0 << 4)
-> +#define AXP288_ADC_TS_BIAS_40UA				(1 << 4)
-> +#define AXP288_ADC_TS_BIAS_60UA				(2 << 4)
-> +#define AXP288_ADC_TS_BIAS_80UA				(3 << 4)
->  #define AXP288_ADC_TS_CURRENT_ON_OFF_MASK		GENMASK(1, 0)
->  #define AXP288_ADC_TS_CURRENT_OFF			(0 << 0)
->  #define AXP288_ADC_TS_CURRENT_ON_WHEN_CHARGING		(1 << 0)
-> @@ -177,10 +183,36 @@ static int axp288_adc_read_raw(struct iio_dev *indi=
-o_dev,
->  	return ret;
->  }
-> =20
-> +/*
-> + * We rely on the machine's firmware to correctly setup the TS pin bias =
-current
-> + * at boot. This lists systems with broken fw where we need to set it ou=
-rselves.
-> + */
-> +static const struct dmi_system_id axp288_adc_ts_bias_override[] =3D {
-> +	{
-> +		/* Lenovo Ideapad 100S (11 inch) */
-> +		.matches =3D {
-> +		  DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> +		  DMI_MATCH(DMI_PRODUCT_VERSION, "Lenovo ideapad 100S-11IBY"),
-> +		},
-> +		.driver_data =3D (void *)(uintptr_t)AXP288_ADC_TS_BIAS_80UA,
-> +	},
-> +	{}
-> +};
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c |  7 +--
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c  | 60 +++++++++++++++++++---
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  |  2 +
+>  3 files changed, 58 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> index b17f060b52fc..7b2e4d81bbba 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> @@ -1156,9 +1156,6 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+>  		return result;
+>  	}
+>  
+> -	if (inv_mpu_bus_setup)
+> -		inv_mpu_bus_setup(indio_dev);
+> -
+>  	dev_set_drvdata(dev, indio_dev);
+>  	indio_dev->dev.parent = dev;
+>  	/* name will be NULL when enumerated via ACPI */
+> @@ -1167,6 +1164,10 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+>  	else
+>  		indio_dev->name = dev_name(dev);
+>  
+> +	/* requires parent device set in indio_dev */
+> +	if (inv_mpu_bus_setup)
+> +		inv_mpu_bus_setup(indio_dev);
 > +
->  static int axp288_adc_initialize(struct axp288_adc_info *info)
->  {
-> +	const struct dmi_system_id *bias_override;
->  	int ret, adc_enable_val;
-> =20
-> +	bias_override =3D dmi_first_match(axp288_adc_ts_bias_override);
-> +	if (bias_override) {
-> +		ret =3D regmap_update_bits(info->regmap, AXP288_ADC_TS_PIN_CTRL,
-> +					 AXP288_ADC_TS_BIAS_MASK,
-> +					 (uintptr_t)bias_override->driver_data);
-> +		if (ret)
-> +			return ret;
+>  	if (chip_type == INV_ICM20602) {
+>  		indio_dev->channels = inv_icm20602_channels;
+>  		indio_dev->num_channels = ARRAY_SIZE(inv_icm20602_channels);
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> index 4b8b5a87398c..389cc8505e0e 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> @@ -68,6 +68,56 @@ static const char *inv_mpu_match_acpi_device(struct device *dev,
+>  	return dev_name(dev);
+>  }
+>  
+> +static bool inv_mpu_i2c_aux_bus(struct device *dev)
+> +{
+> +	struct inv_mpu6050_state *st = iio_priv(dev_get_drvdata(dev));
+> +
+> +	switch (st->chip_type) {
+> +	case INV_ICM20608:
+> +	case INV_ICM20602:
+> +		/* no i2c auxiliary bus on the chip */
+> +		return false;
+> +	case INV_MPU9250:
+> +	case INV_MPU9255:
+> +		if (st->magn_disabled)
+> +			return true;
+> +		else
+> +			return false;
+> +	default:
+> +		return true;
+> +	}
+> +}
+> +
+> +/*
+> + * MPU9xxx magnetometer support requires to disable i2c auxiliary bus support.
+> + * To ensure backward compatibility with existing setups, do not disable
+> + * i2c auxiliary bus if it used.
+> + * Check for i2c-gate node in devicetree and set magnetometer disabled.
+> + * Only MPU6500 is supported by ACPI, no need to check.
+> + */
+> +static int inv_mpu_magn_disable(struct iio_dev *indio_dev)
+> +{
+> +	struct inv_mpu6050_state *st = iio_priv(indio_dev);
+> +	struct device *dev = indio_dev->dev.parent;
+> +	struct device_node *mux_node;
+> +
+> +	switch (st->chip_type) {
+> +	case INV_MPU9250:
+> +	case INV_MPU9255:
+> +		mux_node = of_get_child_by_name(dev->of_node, "i2c-gate");
+> +		if (mux_node != NULL) {
+> +			st->magn_disabled = true;
+> +			dev_warn(dev, "disable internal use of magnetometer\n");
+> +		}
+> +		of_node_put(mux_node);
+> +		break;
+> +	default:
+> +		break;
 > +	}
 > +
->  	/*
->  	 * Determine if the TS pin is enabled and set the TS current-source
->  	 * accordingly.
+> +	return 0;
+> +}
+> +
+>  /**
+>   *  inv_mpu_probe() - probe function.
+>   *  @client:          i2c client.
+> @@ -112,17 +162,12 @@ static int inv_mpu_probe(struct i2c_client *client,
+>  	}
+>  
+>  	result = inv_mpu_core_probe(regmap, client->irq, name,
+> -				    NULL, chip_type);
+> +				    inv_mpu_magn_disable, chip_type);
+>  	if (result < 0)
+>  		return result;
+>  
+>  	st = iio_priv(dev_get_drvdata(&client->dev));
+> -	switch (st->chip_type) {
+> -	case INV_ICM20608:
+> -	case INV_ICM20602:
+> -		/* no i2c auxiliary bus on the chip */
+> -		break;
+> -	default:
+> +	if (inv_mpu_i2c_aux_bus(&client->dev)) {
+>  		/* declare i2c auxiliary bus */
+>  		st->muxc = i2c_mux_alloc(client->adapter, &client->dev,
+>  					 1, 0, I2C_MUX_LOCKED | I2C_MUX_GATE,
+> @@ -137,7 +182,6 @@ static int inv_mpu_probe(struct i2c_client *client,
+>  		result = inv_mpu_acpi_create_mux_client(client);
+>  		if (result)
+>  			goto out_del_mux;
+> -		break;
+>  	}
+>  
+>  	return 0;
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> index db1c6904388b..cbbb2fb8949a 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> @@ -125,6 +125,7 @@ struct inv_mpu6050_hw {
+>   *  @it_timestamp:	timestamp from previous interrupt.
+>   *  @data_timestamp:	timestamp for next data sample.
+>   *  @vddio_supply	voltage regulator for the chip.
+> + *  @magn_disabled:     magnetometer disabled for backward compatibility reason.
+>   */
+>  struct inv_mpu6050_state {
+>  	struct mutex lock;
+> @@ -146,6 +147,7 @@ struct inv_mpu6050_state {
+>  	s64 it_timestamp;
+>  	s64 data_timestamp;
+>  	struct regulator *vddio_supply;
+> +	bool magn_disabled;
+>  };
+>  
+>  /*register and associated bit definition*/
 

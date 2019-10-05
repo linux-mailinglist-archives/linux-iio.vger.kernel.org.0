@@ -2,203 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 349FBCC938
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 11:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA238CC93A
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 12:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727033AbfJEJzl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Oct 2019 05:55:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48202 "EHLO mail.kernel.org"
+        id S1727033AbfJEKCP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Oct 2019 06:02:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48406 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726446AbfJEJzk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 5 Oct 2019 05:55:40 -0400
+        id S1726283AbfJEKCP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 5 Oct 2019 06:02:15 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EBA5B222BE;
-        Sat,  5 Oct 2019 09:55:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F13112133F;
+        Sat,  5 Oct 2019 10:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570269339;
-        bh=ipMymIwMCXQGoDXQJBxK9xoR2/ZiYzXc1AXw2YqQK8k=;
+        s=default; t=1570269734;
+        bh=m6LrBg7MJD79UJpB4HucLtlJvJ8+4uAw8KrPnz16hH4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YUu7PMZuvNJkssf+WWeu8qPIAcS6kGYqXi1oNq0vVpJTcwVjBrGxrOTjlUO2VUgEc
-         X18sg8MwYtdOxtju0AF71RYPluqpIDE2yqsoek2k2pfR8qAGtYs7uUlIwrswOxH7p5
-         WQIe25r+0BjC0mH8TyNHCaHevA4Xg3jmLkwBs5p0=
-Date:   Sat, 5 Oct 2019 10:55:34 +0100
+        b=EPZC3YH/iyV3EmrMJLSGYrKUMpzwTd7G2x0SWAkOlMrsb1+2c/WCN1oPIuyiIGJlO
+         QPZ1G2x2FzT4tj2q9v57sisMM/JHradVxCvcGd9jlglk3hbawRo3Fhoz3diypd5mUZ
+         R4yntHyhn7aiRBb8YS9puqp6Blg5CoJjF2BsWmf0=
+Date:   Sat, 5 Oct 2019 11:02:09 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andrea Merello <andrea.merello@gmail.com>
-Cc:     Couret Charles-Antoine <charles-antoine.couret@essensium.com>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 4/4] iio: ad7949: fix channels mixups
-Message-ID: <20191005105534.1a3f077f@archlinux>
-In-Reply-To: <CAN8YU5O5ouLXnpi=f1jHfbbVXGjtFOT00cG+fggWWbxDco111w@mail.gmail.com>
-References: <20190912144310.7458-1-andrea.merello@gmail.com>
-        <20190912144310.7458-5-andrea.merello@gmail.com>
-        <f91fb6e960dfd67926b6efa44ec7b792fc667468.camel@analog.com>
-        <CAN8YU5NLZhCDaocrQGUnb9TZauT-yPxY7ZQQQeYK=9696jmhCg@mail.gmail.com>
-        <4a25469a-9fe6-a560-b1cb-e9b0af7209e9@essensium.com>
-        <CAN8YU5ORoM69GDi4VVGf6iWb3A2S1ZjkiLmcV+_hUbG4446yXQ@mail.gmail.com>
-        <20190921181253.43fa0071@archlinux>
-        <CAN8YU5O5ouLXnpi=f1jHfbbVXGjtFOT00cG+fggWWbxDco111w@mail.gmail.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Chen-Yu Tsai <wens@csie.org>, linux-iio@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: axp288: Override TS pin bias current for some
+ models
+Message-ID: <20191005110209.16a9041d@archlinux>
+In-Reply-To: <20190915185342.235354-1-hdegoede@redhat.com>
+References: <20190915185342.235354-1-hdegoede@redhat.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Sep 2019 10:21:49 +0200
-Andrea Merello <andrea.merello@gmail.com> wrote:
+On Sun, 15 Sep 2019 20:53:42 +0200
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-> Il giorno sab 21 set 2019 alle ore 19:12 Jonathan Cameron
-> <jic23@kernel.org> ha scritto:
-> 
-> > >
-> > > If we skip the configuration rewrite when the channel doesn't change -
-> > > as discussed above - then we actually _terminate_ the acquisition when
-> > > the IIO read is triggered, that is we are converting the value sampled
-> > > right before the IIO read.
-> > >
-> > > If this is OK then I'll go on, otherwise I think that we should always
-> > > do the three cycles (so that triggering IIO read always waits also for
-> > > a new acquisition phase)  
-> 
-> I had a discussion about this with a HW engineer, he said that it's
-> probably not necessary to perform a full extra cycle (i.e. SPI xfer +
-> udelay(2)), rather, since the HW is already in acquisition, it should
-> be enough to perform the udelay(2) to make sure the internal capacitor
-> settles (if we change channel of course we need also the SPI xfer to
-> update the CFG).
-> 
-> So indeed it seems to me that:
-> - if CFG (channel) changes: we need three full SPI xfer (actual SPI
-> xfer + delay(2))
-> - if CFG (channel) doesn't change: we need a delay(2) [*]- to
-> guarantee the user sees a value sampled after the IIO read, as
-> discussed - and two full SPI xfer (actual SPI xfer + delay(2))
-> 
-> .. Indeed I also wonder if it would be enough to cycle the CS, without
-> performing a full SPI xfer, in order to start the conversion.. But
-> given that this whole thing seems to me a bit complicated and unclear,
-> I would stick to the dummy cycle for now..
-> 
-> > An excellent point.  I agree and suspect we may have this wrong in other
-> > sensors.  The question gets more interesting if running in buffered mode
-> > as we have had systems using a trigger generated by an external process.
-> > I suppose in that case we just have to deal with the offset in the fifo
-> > etc in userspace.  
-> 
-> Yes. I'm not familiar with IIO buffered mode, but for a streaming,
-> continuous, read mode I guess that the user would expect some latency
-> anyway (might be due to the ADC or the buffering mechanism itself or
-> whatever).
+> Since commit 9bcf15f75cac ("iio: adc: axp288: Fix TS-pin handling") we
+> preserve the bias current set by the firmware at boot.  This fixes issues
+> we were seeing on various models, but it seems our old hardcoded 80=C5=B3=
+A bias
+> current was working around a firmware bug on at least one model laptop.
+>=20
+> In order to both have our cake and eat it, this commit adds a dmi based
+> list of models where we need to override the firmware set bias current and
+> adds the one model we now know needs this to it: The Lenovo Ideapad 100S
+> (11 inch version).
 
-There are a few ugly corners.
-1) They'd normally expect the timestamp to be as closely aligned as
-possible with the reading in a given scan.  Perhaps we can think about
-how to offset that if we know we are actually looking at the one before
-last...
-2) There are tightly coupled setups where we are switching a mux in
-front of the sensor and driving a trigger off that action.
-                                                _________
- _________           |--------MUX CNTRL--------|         |
-|         |        __|__        ---TRIGGER-----|         |
-| INPUT 1 |-------|     |     __|__            |         |
-|_________|       |     |    |     |           |   HOST  |
- _________        | MUX |----| ADC |-----------|         |
-|         |       |     |    |_____|           |         |
-| INPUT 2 |-------|_____|                      |_________|   
-|_________| 
+Ouch.
 
-This gets represented as a single 'device' that is a consumer
-of the ADC channel, and also provides the trigger and handles
-the mux control.
-
-Once you have stitched it all together the expectation is that
-for each 'scan':
-1. Set MUX
-2. Allow short settling time
-3. Trigger the ADC via gpio or SPI triggered read etc.
-4. ADC result comes back.
-5. Goto 1.
-
-The full set of inputs are sampled to make up one 'scan' in
-the buffer of the container driver.
-
-Now in theory you could interleave the flows so that you know
-the data is coming 2 scan's later, but there isn't currently
-a way for the 'container' driver to know that is happening,
-so the assumption it makes is that everything is 'direct'.
-
-We could add some means of reporting an offset from trigger
-to sample into fifo as that would allow such a container
-driver to adjust it's mux settings to take that into account.
-
-Note that out container driver also often has it's own
-capture trigger coming in so it can get really fiddly as
-we don't have any way of knowing if we are in a round robin
-situation or just taking a single 'scan'. In single scan
-case we want to drop the excess reads from the end, in round robin
-we want to keep them as they are the start of the next scan.
-
-> 
-> I didn't look into this buffered thing to see how it works, but maybe
-> we can skip the first udelay(2) [*] in the driver in case of buffered
-> access?
-> 
-> > Maybe we should think about adding a note to be careful of that.  Not
-> > really sure where we would note it though...  
-> 
-> IMHO clarifying what the API guarantees and what it doesn't in IIO
-> DocBook could be helpful (I didn't see it, but I might have missed
-> it)..
-I agree we should clarify it, but I'm still not totally sure what the
-preferred case is! Perhaps best plan is to put forward a patch to add
-a description of one of the choices as we can push people to review
-that closely as it may mean devices don't comply with the ABI.
-
-There is a 3rd option which is to add the option for devices to describe
-what they are doing via a new sysfs attribute.  That may get us
-around causing potential breakage in drivers that are already doing it
-the 'wrong' way.
-
-> 
-> So, we could state that a single shot read must return a value sampled
-> after the read has been shot, and that on the other hand, when using
-> buffered mode one should expect some latency.. But indeed, since you
-> said that we might have a number of IIO drivers that actually behave
-> in a different way, then I'm not sure that it's a good idea; maybe we
-> could just drop this requirement and allow (and document) that a
-> single shot IIO read could just _terminate_ the sampling and trigger
-> the conversion on the current sampled signal? (so also in this driver
-> we can just not care about this)..
-
-I don't think we need to worry about the difference between a sample
-window stopping vs one starting at the trigger.  Right now we don't
-even say how long that window is, so a naive assumption would be that
-we model it as instantaneous.  For single shot either model is
-fine to my mind. We get the nearest practical signal to the point
-of reading.  The sysfs interface is slow enough that any fine
-grained control of timing is likely to be garbage anyway :)
-The only exception would be really slow sensors such as light sensors
-where we might be talking 100s of msecs.  In those I'd argue
-we do want the capture to start only after we ask.  I think we are
-fine on existing drivers for those.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 9bcf15f75cac ("iio: adc: axp288: Fix TS-pin handling")
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=3D203829
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
-> 
-> > Thanks,
-> >
-> > Jonathan
-> >
-> >  
+> ---
+>  drivers/iio/adc/axp288_adc.c | 32 ++++++++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+>=20
+> diff --git a/drivers/iio/adc/axp288_adc.c b/drivers/iio/adc/axp288_adc.c
+> index 31d51bcc5f2c..85d08e68b34f 100644
+> --- a/drivers/iio/adc/axp288_adc.c
+> +++ b/drivers/iio/adc/axp288_adc.c
+> @@ -7,6 +7,7 @@
+>   * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+>   */
+> =20
+> +#include <linux/dmi.h>
+>  #include <linux/module.h>
+>  #include <linux/kernel.h>
+>  #include <linux/device.h>
+> @@ -25,6 +26,11 @@
+>  #define AXP288_ADC_EN_MASK				0xF0
+>  #define AXP288_ADC_TS_ENABLE				0x01
+> =20
+> +#define AXP288_ADC_TS_BIAS_MASK				GENMASK(5, 4)
+> +#define AXP288_ADC_TS_BIAS_20UA				(0 << 4)
+> +#define AXP288_ADC_TS_BIAS_40UA				(1 << 4)
+> +#define AXP288_ADC_TS_BIAS_60UA				(2 << 4)
+> +#define AXP288_ADC_TS_BIAS_80UA				(3 << 4)
+>  #define AXP288_ADC_TS_CURRENT_ON_OFF_MASK		GENMASK(1, 0)
+>  #define AXP288_ADC_TS_CURRENT_OFF			(0 << 0)
+>  #define AXP288_ADC_TS_CURRENT_ON_WHEN_CHARGING		(1 << 0)
+> @@ -177,10 +183,36 @@ static int axp288_adc_read_raw(struct iio_dev *indi=
+o_dev,
+>  	return ret;
+>  }
+> =20
+> +/*
+> + * We rely on the machine's firmware to correctly setup the TS pin bias =
+current
+> + * at boot. This lists systems with broken fw where we need to set it ou=
+rselves.
+> + */
+> +static const struct dmi_system_id axp288_adc_ts_bias_override[] =3D {
+> +	{
+> +		/* Lenovo Ideapad 100S (11 inch) */
+> +		.matches =3D {
+> +		  DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> +		  DMI_MATCH(DMI_PRODUCT_VERSION, "Lenovo ideapad 100S-11IBY"),
+> +		},
+> +		.driver_data =3D (void *)(uintptr_t)AXP288_ADC_TS_BIAS_80UA,
+> +	},
+> +	{}
+> +};
+> +
+>  static int axp288_adc_initialize(struct axp288_adc_info *info)
+>  {
+> +	const struct dmi_system_id *bias_override;
+>  	int ret, adc_enable_val;
+> =20
+> +	bias_override =3D dmi_first_match(axp288_adc_ts_bias_override);
+> +	if (bias_override) {
+> +		ret =3D regmap_update_bits(info->regmap, AXP288_ADC_TS_PIN_CTRL,
+> +					 AXP288_ADC_TS_BIAS_MASK,
+> +					 (uintptr_t)bias_override->driver_data);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	/*
+>  	 * Determine if the TS pin is enabled and set the TS current-source
+>  	 * accordingly.
 

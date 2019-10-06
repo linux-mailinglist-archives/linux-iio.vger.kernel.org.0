@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FF23CD914
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 22:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D14EECD911
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 22:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726626AbfJFUDc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Oct 2019 16:03:32 -0400
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:41380 "EHLO
-        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725865AbfJFUDc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Oct 2019 16:03:32 -0400
-Received: by mail-yw1-f68.google.com with SMTP id 129so4339725ywb.8;
-        Sun, 06 Oct 2019 13:03:31 -0700 (PDT)
+        id S1726789AbfJFUDd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Oct 2019 16:03:33 -0400
+Received: from mail-yw1-f45.google.com ([209.85.161.45]:46450 "EHLO
+        mail-yw1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726777AbfJFUDd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Oct 2019 16:03:33 -0400
+Received: by mail-yw1-f45.google.com with SMTP id h10so1337518ywm.13;
+        Sun, 06 Oct 2019 13:03:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Eu3bPlCLOrcM88dTtVn+o9Kw7Prt69iCXEQysv2u4Mc=;
-        b=l9dPuxaoUfOhGdewIo/w1xQfpjhAP0Q8hRqT6D6N8rTOzCll5XAEWHYMlayvCMF0MW
-         2oRgmpsWfPz9oTR0Qdd4rv59oWbQNR5x8gfx9pC9hr63mtSvzxE/c2VMRnJV7Oq/zqFF
-         XwtV7zwIcHIgfYU0aU2kStFAiMtMONF5q9WFeFfvRiQHEpsjN45Ahh2QRTpDzlxZo8y6
-         75xZ6liLaECIZeNC5UvJxM7gPjwM+XRSZ1oWLRzc0k084IM91QV9E4amMPSucZ6lQMjh
-         mDAWRf0lnGnbn9kDo5A2cz9Kp/5yjsKNr96naqbSB7wH8Qw5TIg31hYQMRdwrNlYS9fV
-         mI3Q==
+        bh=oi1lDkMlTFONnp6bwWaGnqUvaiX5vepqhjmjsnY4BQc=;
+        b=LBbx5c6oe/DCoJegdyvkhilRsrfMIqU1E1Q/6QHocTi1xd4DvJDg8qxjOgu91Ccd7X
+         IpFtmWi/mtWV2ozmStU60+ocRReTEq6hwuhohf1gODtt8k9IYFNYGW+EkxMq8dvk02bv
+         y8SdobV4fvu1QSDn/FYcCnGV0FvMFdjT/oN4UPm2zEVen9phKHif2qtoHAVTkOc9kW1v
+         ibGVflyXht7pQOoCLpAFbfS7E63yZWS5KYtCiT56ma9BCRdR1zNsDozbirkm4Fi+f6N+
+         F28mr8vQ/dEEy/SobhSt9P8nzh5aRzlM6XQfx88QE0A7MLf1pga0IqiOyPu6KQOTmlwN
+         GkGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Eu3bPlCLOrcM88dTtVn+o9Kw7Prt69iCXEQysv2u4Mc=;
-        b=VGsQ6moFS4OY9dUaE7ZhQhGoBFtQk4fkCfJlOrMs7vuyKHJnulhJXnSIkYWrAHnE/5
-         idWHpjMKWajSU/nkJMh6tcuMH9O6qmOD5u7k8VkGp69I6rfu6WBKQ87tC0skiOr7a72d
-         ufWnmaNHinbdDCeH4bVPO8GlwmG1Ea+RR7W9IR+gf9HYBCChrVxhHCMi6OOLZOG5TTjB
-         E9SWAasi89WClsAdVFAP9Tf+dOxwTL4W6xC60tOlK3GVgCw1EKZ2L4qpESGx7GRCWcUm
-         sYx9TLw+/xXNVXv2qnEIwALCtmL2lN6QvcOy8HCWle66c4t/FoFZQEQ+slOhHwcj5hmn
-         e1jg==
-X-Gm-Message-State: APjAAAWdgLORZNHJbvebKXA1m8peTSTzVFH2hTuvPWp9P2GGSqTrKuOq
-        5GmCaHS4mQfJqSD773iUM4o=
-X-Google-Smtp-Source: APXvYqzFHiSO3ZgF18gj8cBoFfgJ7wKRoRDVxYKV7JVaYeG6TvZ1OOH+9ueldn0a7RhIDCUv8j+OVQ==
-X-Received: by 2002:a0d:dbc4:: with SMTP id d187mr18511214ywe.158.1570392210604;
-        Sun, 06 Oct 2019 13:03:30 -0700 (PDT)
+        bh=oi1lDkMlTFONnp6bwWaGnqUvaiX5vepqhjmjsnY4BQc=;
+        b=sUi4bqIlGfQPJpe70SRSyn8sZYn0pL0+1hKmLcFEO2h+ZQQFS5yA2HicwAZxOK8rnA
+         vssNr/kgAgbf0FNAEbtLEsVUY/cxpFfB6VLv9DeDaZN2gMLImNM2Vkc3uU/KOreh6Lss
+         kVsJjzToDwNGc9NSjnqEUuQjOLS81DqFl74HjL5ZZkei68+I3qTtFB74Z+NwlVWhLyKD
+         wXoJquCKKLlLLQ3cyibKJoKqzuG8WOd0gNKUF5xZ1IqFFMuAtQ4OIMo/UlqRwBlMW6sC
+         qS35WUc3iXSQvvERsGOpfw9X3u9GLSP5yr7S/8JqadNuDHg6z6RrULHj5WqIQN8DPF8H
+         CLkQ==
+X-Gm-Message-State: APjAAAXN5RTOVpunTh1elQ1ZadQFu3FZHVKVKUMwWSyU42IJx+G4BpPD
+        2S3R4qRAVEsvteLfdyxxIcQ=
+X-Google-Smtp-Source: APXvYqyW8RVmQI6J41bkpIKVj8Zd5IiblHuEB0TjHzh3r1P2DVY6tYSPzDgwRTyxamsLWg/zD4eouA==
+X-Received: by 2002:a81:7a02:: with SMTP id v2mr17797467ywc.398.1570392212146;
+        Sun, 06 Oct 2019 13:03:32 -0700 (PDT)
 Received: from localhost.localdomain (072-189-084-142.res.spectrum.com. [72.189.84.142])
-        by smtp.gmail.com with ESMTPSA id x16sm3765266ywx.103.2019.10.06.13.03.29
+        by smtp.gmail.com with ESMTPSA id x16sm3765266ywx.103.2019.10.06.13.03.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Oct 2019 13:03:29 -0700 (PDT)
+        Sun, 06 Oct 2019 13:03:31 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -53,9 +53,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, benjamin.gaignard@linaro.org,
         david@lechnology.com,
         William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v5 1/3] counter: Simplify the count_read and count_write callbacks
-Date:   Sun,  6 Oct 2019 16:03:09 -0400
-Message-Id: <0ddcfa1de2ff2aface81a4fbe8a5a55b10ad23bf.1570391994.git.vilhelm.gray@gmail.com>
+Subject: [PATCH v5 2/3] docs: driver-api: generic-counter: Update Count and Signal data types
+Date:   Sun,  6 Oct 2019 16:03:10 -0400
+Message-Id: <927b67f2c645faab1182229625e93913c2a267ef.1570391994.git.vilhelm.gray@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1570391994.git.vilhelm.gray@gmail.com>
 References: <cover.1570391994.git.vilhelm.gray@gmail.com>
@@ -66,546 +66,216 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The count_read and count_write callbacks are simplified to pass val as
-unsigned long rather than as an opaque data structure. The opaque
-counter_count_read_value and counter_count_write_value structures,
-counter_count_value_type enum, and relevant counter_count_read_value_set
-and counter_count_write_value_get functions, are removed as they are no
-longer used.
+Count data is now always represented as an unsigned integer, while
+Signal data is either SIGNAL_LOW or SIGNAL_HIGH. In addition,
+clarification changes and additions are made to better explain the
+theory of the Generic Counter interface and its use.
 
-Cc: Patrick Havelange <patrick.havelange@essensium.com>
-Acked-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-Acked-by: David Lechner <david@lechnology.com>
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/104-quad-8.c        |  33 +++------
- drivers/counter/counter.c           | 101 +++++-----------------------
- drivers/counter/ftm-quaddec.c       |  14 ++--
- drivers/counter/stm32-lptimer-cnt.c |   5 +-
- drivers/counter/stm32-timer-cnt.c   |  17 ++---
- drivers/counter/ti-eqep.c           |  19 ++----
- include/linux/counter.h             |  74 +++-----------------
- 7 files changed, 51 insertions(+), 212 deletions(-)
+ Documentation/driver-api/generic-counter.rst | 162 +++++++++++--------
+ 1 file changed, 92 insertions(+), 70 deletions(-)
 
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 00b113f4b958..17e67a84777d 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -562,11 +562,10 @@ static const struct iio_chan_spec quad8_channels[] = {
- };
+diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
+index 8382f01a53e3..e622f8f6e56a 100644
+--- a/Documentation/driver-api/generic-counter.rst
++++ b/Documentation/driver-api/generic-counter.rst
+@@ -7,7 +7,7 @@ Generic Counter Interface
+ Introduction
+ ============
  
- static int quad8_signal_read(struct counter_device *counter,
--	struct counter_signal *signal, struct counter_signal_read_value *val)
-+	struct counter_signal *signal, enum counter_signal_value *val)
- {
- 	const struct quad8_iio *const priv = counter->priv;
- 	unsigned int state;
--	enum counter_signal_level level;
+-Counter devices are prevalent within a diverse spectrum of industries.
++Counter devices are prevalent among a diverse spectrum of industries.
+ The ubiquitous presence of these devices necessitates a common interface
+ and standard of interaction and exposure. This driver API attempts to
+ resolve the issue of duplicate code found among existing counter device
+@@ -26,23 +26,72 @@ the Generic Counter interface.
  
- 	/* Only Index signal levels can be read */
- 	if (signal->id < 16)
-@@ -575,22 +574,19 @@ static int quad8_signal_read(struct counter_device *counter,
- 	state = inb(priv->base + QUAD8_REG_INDEX_INPUT_LEVELS)
- 		& BIT(signal->id - 16);
+ There are three core components to a counter:
  
--	level = (state) ? COUNTER_SIGNAL_LEVEL_HIGH : COUNTER_SIGNAL_LEVEL_LOW;
+-* Count:
+-  Count data for a set of Signals.
 -
--	counter_signal_read_value_set(val, COUNTER_SIGNAL_LEVEL, &level);
-+	*val = (state) ? COUNTER_SIGNAL_HIGH : COUNTER_SIGNAL_LOW;
+ * Signal:
+-  Input data that is evaluated by the counter to determine the count
+-  data.
++  Stream of data to be evaluated by the counter.
  
- 	return 0;
- }
- 
- static int quad8_count_read(struct counter_device *counter,
--	struct counter_count *count, struct counter_count_read_value *val)
-+	struct counter_count *count, unsigned long *val)
- {
- 	const struct quad8_iio *const priv = counter->priv;
- 	const int base_offset = priv->base + 2 * count->id;
- 	unsigned int flags;
- 	unsigned int borrow;
- 	unsigned int carry;
--	unsigned long position;
- 	int i;
- 
- 	flags = inb(base_offset + 1);
-@@ -598,36 +594,27 @@ static int quad8_count_read(struct counter_device *counter,
- 	carry = !!(flags & QUAD8_FLAG_CT);
- 
- 	/* Borrow XOR Carry effectively doubles count range */
--	position = (unsigned long)(borrow ^ carry) << 24;
-+	*val = (unsigned long)(borrow ^ carry) << 24;
- 
- 	/* Reset Byte Pointer; transfer Counter to Output Latch */
- 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP | QUAD8_RLD_CNTR_OUT,
- 	     base_offset + 1);
- 
- 	for (i = 0; i < 3; i++)
--		position |= (unsigned long)inb(base_offset) << (8 * i);
--
--	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &position);
-+		*val |= (unsigned long)inb(base_offset) << (8 * i);
- 
- 	return 0;
- }
- 
- static int quad8_count_write(struct counter_device *counter,
--	struct counter_count *count, struct counter_count_write_value *val)
-+	struct counter_count *count, unsigned long val)
- {
- 	const struct quad8_iio *const priv = counter->priv;
- 	const int base_offset = priv->base + 2 * count->id;
--	int err;
--	unsigned long position;
- 	int i;
- 
--	err = counter_count_write_value_get(&position, COUNTER_COUNT_POSITION,
--					    val);
--	if (err)
--		return err;
--
- 	/* Only 24-bit values are supported */
--	if (position > 0xFFFFFF)
-+	if (val > 0xFFFFFF)
- 		return -EINVAL;
- 
- 	/* Reset Byte Pointer */
-@@ -635,7 +622,7 @@ static int quad8_count_write(struct counter_device *counter,
- 
- 	/* Counter can only be set via Preset Register */
- 	for (i = 0; i < 3; i++)
--		outb(position >> (8 * i), base_offset);
-+		outb(val >> (8 * i), base_offset);
- 
- 	/* Transfer Preset Register to Counter */
- 	outb(QUAD8_CTR_RLD | QUAD8_RLD_PRESET_CNTR, base_offset + 1);
-@@ -644,9 +631,9 @@ static int quad8_count_write(struct counter_device *counter,
- 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP, base_offset + 1);
- 
- 	/* Set Preset Register back to original value */
--	position = priv->preset[count->id];
-+	val = priv->preset[count->id];
- 	for (i = 0; i < 3; i++)
--		outb(position >> (8 * i), base_offset);
-+		outb(val >> (8 * i), base_offset);
- 
- 	/* Reset Borrow, Carry, Compare, and Sign flags */
- 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_FLAGS, base_offset + 1);
-diff --git a/drivers/counter/counter.c b/drivers/counter/counter.c
-index 106bc7180cd8..6a683d086008 100644
---- a/drivers/counter/counter.c
-+++ b/drivers/counter/counter.c
-@@ -220,86 +220,6 @@ ssize_t counter_device_enum_available_read(struct counter_device *counter,
- }
- EXPORT_SYMBOL_GPL(counter_device_enum_available_read);
- 
--static const char *const counter_signal_level_str[] = {
--	[COUNTER_SIGNAL_LEVEL_LOW] = "low",
--	[COUNTER_SIGNAL_LEVEL_HIGH] = "high"
--};
--
--/**
-- * counter_signal_read_value_set - set counter_signal_read_value data
-- * @val:	counter_signal_read_value structure to set
-- * @type:	property Signal data represents
-- * @data:	Signal data
-- *
-- * This function sets an opaque counter_signal_read_value structure with the
-- * provided Signal data.
-- */
--void counter_signal_read_value_set(struct counter_signal_read_value *const val,
--				   const enum counter_signal_value_type type,
--				   void *const data)
--{
--	if (type == COUNTER_SIGNAL_LEVEL)
--		val->len = sprintf(val->buf, "%s\n",
--				   counter_signal_level_str[*(enum counter_signal_level *)data]);
--	else
--		val->len = 0;
--}
--EXPORT_SYMBOL_GPL(counter_signal_read_value_set);
--
--/**
-- * counter_count_read_value_set - set counter_count_read_value data
-- * @val:	counter_count_read_value structure to set
-- * @type:	property Count data represents
-- * @data:	Count data
-- *
-- * This function sets an opaque counter_count_read_value structure with the
-- * provided Count data.
-- */
--void counter_count_read_value_set(struct counter_count_read_value *const val,
--				  const enum counter_count_value_type type,
--				  void *const data)
--{
--	switch (type) {
--	case COUNTER_COUNT_POSITION:
--		val->len = sprintf(val->buf, "%lu\n", *(unsigned long *)data);
--		break;
--	default:
--		val->len = 0;
--	}
--}
--EXPORT_SYMBOL_GPL(counter_count_read_value_set);
--
--/**
-- * counter_count_write_value_get - get counter_count_write_value data
-- * @data:	Count data
-- * @type:	property Count data represents
-- * @val:	counter_count_write_value structure containing data
-- *
-- * This function extracts Count data from the provided opaque
-- * counter_count_write_value structure and stores it at the address provided by
-- * @data.
-- *
-- * RETURNS:
-- * 0 on success, negative error number on failure.
-- */
--int counter_count_write_value_get(void *const data,
--				  const enum counter_count_value_type type,
--				  const struct counter_count_write_value *const val)
--{
--	int err;
--
--	switch (type) {
--	case COUNTER_COUNT_POSITION:
--		err = kstrtoul(val->buf, 0, data);
--		if (err)
--			return err;
--		break;
--	}
--
--	return 0;
--}
--EXPORT_SYMBOL_GPL(counter_count_write_value_get);
--
- struct counter_attr_parm {
- 	struct counter_device_attr_group *group;
- 	const char *prefix;
-@@ -369,6 +289,11 @@ struct counter_signal_unit {
- 	struct counter_signal *signal;
- };
- 
-+static const char *const counter_signal_value_str[] = {
-+	[COUNTER_SIGNAL_LOW] = "low",
-+	[COUNTER_SIGNAL_HIGH] = "high"
-+};
+ * Synapse:
+-  The association of a Signal with a respective Count.
++  Association of a Signal, and evaluation trigger, with a Count.
 +
- static ssize_t counter_signal_show(struct device *dev,
- 				   struct device_attribute *attr, char *buf)
- {
-@@ -377,13 +302,13 @@ static ssize_t counter_signal_show(struct device *dev,
- 	const struct counter_signal_unit *const component = devattr->component;
- 	struct counter_signal *const signal = component->signal;
- 	int err;
--	struct counter_signal_read_value val = { .buf = buf };
-+	enum counter_signal_value val;
- 
- 	err = counter->ops->signal_read(counter, signal, &val);
- 	if (err)
- 		return err;
- 
--	return val.len;
-+	return sprintf(buf, "%s\n", counter_signal_value_str[val]);
- }
- 
- struct counter_name_unit {
-@@ -788,13 +713,13 @@ static ssize_t counter_count_show(struct device *dev,
- 	const struct counter_count_unit *const component = devattr->component;
- 	struct counter_count *const count = component->count;
- 	int err;
--	struct counter_count_read_value val = { .buf = buf };
-+	unsigned long val;
- 
- 	err = counter->ops->count_read(counter, count, &val);
- 	if (err)
- 		return err;
- 
--	return val.len;
-+	return sprintf(buf, "%lu\n", val);
- }
- 
- static ssize_t counter_count_store(struct device *dev,
-@@ -806,9 +731,13 @@ static ssize_t counter_count_store(struct device *dev,
- 	const struct counter_count_unit *const component = devattr->component;
- 	struct counter_count *const count = component->count;
- 	int err;
--	struct counter_count_write_value val = { .buf = buf };
-+	unsigned long val;
++* Count:
++  Accumulation of the effects of connected Synapses.
 +
-+	err = kstrtoul(buf, 0, &val);
-+	if (err)
-+		return err;
++SIGNAL
++------
++A Signal represents a stream of data. This is the input data that is
++evaluated by the counter to determine the count data; e.g. a quadrature
++signal output line of a rotary encoder. Not all counter devices provide
++user access to the Signal data, so exposure is optional for drivers.
++
++When the Signal data is available for user access, the Generic Counter
++interface provides the following available signal values:
++
++* SIGNAL_LOW:
++  Signal line is in a low state.
++
++* SIGNAL_HIGH:
++  Signal line is in a high state.
++
++A Signal may be associated with one or more Counts.
++
++SYNAPSE
++-------
++A Synapse represents the association of a Signal with a Count. Signal
++data affects respective Count data, and the Synapse represents this
++relationship.
++
++The Synapse action mode specifies the Signal data condition that
++triggers the respective Count's count function evaluation to update the
++count data. The Generic Counter interface provides the following
++available action modes:
++
++* None:
++  Signal does not trigger the count function. In Pulse-Direction count
++  function mode, this Signal is evaluated as Direction.
++
++* Rising Edge:
++  Low state transitions to high state.
++
++* Falling Edge:
++  High state transitions to low state.
++
++* Both Edges:
++  Any state transition.
++
++A counter is defined as a set of input signals associated with count
++data that are generated by the evaluation of the state of the associated
++input signals as defined by the respective count functions. Within the
++context of the Generic Counter interface, a counter consists of Counts
++each associated with a set of Signals, whose respective Synapse
++instances represent the count function update conditions for the
++associated Counts.
++
++A Synapse associates one Signal with one Count.
  
--	err = counter->ops->count_write(counter, count, &val);
-+	err = counter->ops->count_write(counter, count, val);
- 	if (err)
- 		return err;
- 
-diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
-index 4046aa9f9234..c2b3fdfd8b77 100644
---- a/drivers/counter/ftm-quaddec.c
-+++ b/drivers/counter/ftm-quaddec.c
-@@ -178,31 +178,25 @@ static const enum counter_count_function ftm_quaddec_count_functions[] = {
- 
- static int ftm_quaddec_count_read(struct counter_device *counter,
- 				  struct counter_count *count,
--				  struct counter_count_read_value *val)
-+				  unsigned long *val)
- {
- 	struct ftm_quaddec *const ftm = counter->priv;
- 	uint32_t cntval;
- 
- 	ftm_read(ftm, FTM_CNT, &cntval);
- 
--	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &cntval);
-+	*val = cntval;
- 
- 	return 0;
- }
- 
- static int ftm_quaddec_count_write(struct counter_device *counter,
- 				   struct counter_count *count,
--				   struct counter_count_write_value *val)
-+				   const unsigned long val)
- {
- 	struct ftm_quaddec *const ftm = counter->priv;
--	u32 cnt;
--	int err;
- 
--	err = counter_count_write_value_get(&cnt, COUNTER_COUNT_POSITION, val);
--	if (err)
--		return err;
+ COUNT
+ -----
+-A Count represents the count data for a set of Signals. The Generic
+-Counter interface provides the following available count data types:
 -
--	if (cnt != 0) {
-+	if (val != 0) {
- 		dev_warn(&ftm->pdev->dev, "Can only accept '0' as new counter value\n");
- 		return -EINVAL;
- 	}
-diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
-index 28b63645c411..8e276eb655f5 100644
---- a/drivers/counter/stm32-lptimer-cnt.c
-+++ b/drivers/counter/stm32-lptimer-cnt.c
-@@ -377,8 +377,7 @@ static enum counter_synapse_action stm32_lptim_cnt_synapse_actions[] = {
- };
+-* COUNT_POSITION:
+-  Unsigned integer value representing position.
++A Count represents the accumulation of the effects of connected
++Synapses; i.e. the count data for a set of Signals. The Generic
++Counter interface represents the count data as a natural number.
  
- static int stm32_lptim_cnt_read(struct counter_device *counter,
--				struct counter_count *count,
--				struct counter_count_read_value *val)
-+				struct counter_count *count, unsigned long *val)
- {
- 	struct stm32_lptim_cnt *const priv = counter->priv;
- 	u32 cnt;
-@@ -388,7 +387,7 @@ static int stm32_lptim_cnt_read(struct counter_device *counter,
- 	if (ret)
- 		return ret;
+ A Count has a count function mode which represents the update behavior
+ for the count data. The Generic Counter interface provides the following
+@@ -86,60 +135,7 @@ available count function modes:
+     Any state transition on either quadrature pair signals updates the
+     respective count. Quadrature encoding determines the direction.
  
--	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &cnt);
-+	*val = cnt;
- 
- 	return 0;
- }
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index b61135b63ee8..3eafccec3beb 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -48,34 +48,27 @@ static enum counter_count_function stm32_count_functions[] = {
- };
- 
- static int stm32_count_read(struct counter_device *counter,
--			    struct counter_count *count,
--			    struct counter_count_read_value *val)
-+			    struct counter_count *count, unsigned long *val)
- {
- 	struct stm32_timer_cnt *const priv = counter->priv;
- 	u32 cnt;
- 
- 	regmap_read(priv->regmap, TIM_CNT, &cnt);
--	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &cnt);
-+	*val = cnt;
- 
- 	return 0;
- }
- 
- static int stm32_count_write(struct counter_device *counter,
- 			     struct counter_count *count,
--			     struct counter_count_write_value *val)
-+			     const unsigned long val)
- {
- 	struct stm32_timer_cnt *const priv = counter->priv;
--	u32 cnt;
--	int err;
+-A Count has a set of one or more associated Signals.
 -
--	err = counter_count_write_value_get(&cnt, COUNTER_COUNT_POSITION, val);
--	if (err)
--		return err;
- 
--	if (cnt > priv->ceiling)
-+	if (val > priv->ceiling)
- 		return -EINVAL;
- 
--	return regmap_write(priv->regmap, TIM_CNT, cnt);
-+	return regmap_write(priv->regmap, TIM_CNT, val);
- }
- 
- static int stm32_count_function_get(struct counter_device *counter,
-diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
-index 4b3ef2449c06..1ff07faef27f 100644
---- a/drivers/counter/ti-eqep.c
-+++ b/drivers/counter/ti-eqep.c
-@@ -93,35 +93,28 @@ struct ti_eqep_cnt {
- };
- 
- static int ti_eqep_count_read(struct counter_device *counter,
--			      struct counter_count *count,
--			      struct counter_count_read_value *val)
-+			      struct counter_count *count, unsigned long *val)
- {
- 	struct ti_eqep_cnt *priv = counter->priv;
- 	u32 cnt;
- 
- 	regmap_read(priv->regmap32, QPOSCNT, &cnt);
--	counter_count_read_value_set(val, COUNTER_COUNT_POSITION, &cnt);
-+	*val = cnt;
- 
- 	return 0;
- }
- 
- static int ti_eqep_count_write(struct counter_device *counter,
--			       struct counter_count *count,
--			       struct counter_count_write_value *val)
-+			       struct counter_count *count, unsigned long val)
- {
- 	struct ti_eqep_cnt *priv = counter->priv;
--	u32 cnt, max;
--	int err;
+-SIGNAL
+-------
+-A Signal represents a counter input data; this is the input data that is
+-evaluated by the counter to determine the count data; e.g. a quadrature
+-signal output line of a rotary encoder. Not all counter devices provide
+-user access to the Signal data.
 -
--	err = counter_count_write_value_get(&cnt, COUNTER_COUNT_POSITION, val);
--	if (err)
--		return err;
-+	u32 max;
- 
- 	regmap_read(priv->regmap32, QPOSMAX, &max);
--	if (cnt > max)
-+	if (val > max)
- 		return -EINVAL;
- 
--	return regmap_write(priv->regmap32, QPOSCNT, cnt);
-+	return regmap_write(priv->regmap32, QPOSCNT, val);
- }
- 
- static int ti_eqep_function_get(struct counter_device *counter,
-diff --git a/include/linux/counter.h b/include/linux/counter.h
-index a061cdcdef7c..32fb4d8cc3fd 100644
---- a/include/linux/counter.h
-+++ b/include/linux/counter.h
-@@ -290,53 +290,22 @@ struct counter_device_state {
- 	const struct attribute_group **groups;
- };
- 
--/**
-- * struct counter_signal_read_value - Opaque Signal read value
-- * @buf:	string representation of Signal read value
-- * @len:	length of string in @buf
-- */
--struct counter_signal_read_value {
--	char *buf;
--	size_t len;
--};
+-The Generic Counter interface provides the following available signal
+-data types for when the Signal data is available for user access:
 -
--/**
-- * struct counter_count_read_value - Opaque Count read value
-- * @buf:	string representation of Count read value
-- * @len:	length of string in @buf
-- */
--struct counter_count_read_value {
--	char *buf;
--	size_t len;
--};
+-* SIGNAL_LEVEL:
+-  Signal line state level. The following states are possible:
 -
--/**
-- * struct counter_count_write_value - Opaque Count write value
-- * @buf:	string representation of Count write value
-- */
--struct counter_count_write_value {
--	const char *buf;
-+enum counter_signal_value {
-+	COUNTER_SIGNAL_LOW = 0,
-+	COUNTER_SIGNAL_HIGH
- };
+-  - SIGNAL_LEVEL_LOW:
+-    Signal line is in a low state.
+-
+-  - SIGNAL_LEVEL_HIGH:
+-    Signal line is in a high state.
+-
+-A Signal may be associated with one or more Counts.
+-
+-SYNAPSE
+--------
+-A Synapse represents the association of a Signal with a respective
+-Count. Signal data affects respective Count data, and the Synapse
+-represents this relationship.
+-
+-The Synapse action mode specifies the Signal data condition which
+-triggers the respective Count's count function evaluation to update the
+-count data. The Generic Counter interface provides the following
+-available action modes:
+-
+-* None:
+-  Signal does not trigger the count function. In Pulse-Direction count
+-  function mode, this Signal is evaluated as Direction.
+-
+-* Rising Edge:
+-  Low state transitions to high state.
+-
+-* Falling Edge:
+-  High state transitions to low state.
+-
+-* Both Edges:
+-  Any state transition.
+-
+-A counter is defined as a set of input signals associated with count
+-data that are generated by the evaluation of the state of the associated
+-input signals as defined by the respective count functions. Within the
+-context of the Generic Counter interface, a counter consists of Counts
+-each associated with a set of Signals, whose respective Synapse
+-instances represent the count function update conditions for the
+-associated Counts.
++A Count has a set of one or more associated Synapses.
  
- /**
-  * struct counter_ops - Callbacks from driver
-  * @signal_read:	optional read callback for Signal attribute. The read
-  *			value of the respective Signal should be passed back via
-- *			the val parameter. val points to an opaque type which
-- *			should be set only by calling the
-- *			counter_signal_read_value_set function from within the
-- *			signal_read callback.
-+ *			the val parameter.
-  * @count_read:		optional read callback for Count attribute. The read
-  *			value of the respective Count should be passed back via
-- *			the val parameter. val points to an opaque type which
-- *			should be set only by calling the
-- *			counter_count_read_value_set function from within the
-- *			count_read callback.
-+ *			the val parameter.
-  * @count_write:	optional write callback for Count attribute. The write
-  *			value for the respective Count is passed in via the val
-- *			parameter. val points to an opaque type which should be
-- *			accessed only by calling the
-- *			counter_count_write_value_get function.
-+ *			parameter.
-  * @function_get:	function to get the current count function mode. Returns
-  *			0 on success and negative error code on error. The index
-  *			of the respective Count's returned function mode should
-@@ -355,13 +324,11 @@ struct counter_count_write_value {
- struct counter_ops {
- 	int (*signal_read)(struct counter_device *counter,
- 			   struct counter_signal *signal,
--			   struct counter_signal_read_value *val);
-+			   enum counter_signal_value *val);
- 	int (*count_read)(struct counter_device *counter,
--			  struct counter_count *count,
--			  struct counter_count_read_value *val);
-+			  struct counter_count *count, unsigned long *val);
- 	int (*count_write)(struct counter_device *counter,
--			   struct counter_count *count,
--			   struct counter_count_write_value *val);
-+			   struct counter_count *count, unsigned long val);
- 	int (*function_get)(struct counter_device *counter,
- 			    struct counter_count *count, size_t *function);
- 	int (*function_set)(struct counter_device *counter,
-@@ -477,29 +444,6 @@ struct counter_device {
- 	void *priv;
- };
+ Paradigm
+ ========
+@@ -286,10 +282,36 @@ if device memory-managed registration is desired.
+ Extension sysfs attributes can be created for auxiliary functionality
+ and data by passing in defined counter_device_ext, counter_count_ext,
+ and counter_signal_ext structures. In these cases, the
+-counter_device_ext structure is used for global configuration of the
+-respective Counter device, while the counter_count_ext and
+-counter_signal_ext structures allow for auxiliary exposure and
+-configuration of a specific Count or Signal respectively.
++counter_device_ext structure is used for global/miscellaneous exposure
++and configuration of the respective Counter device, while the
++counter_count_ext and counter_signal_ext structures allow for auxiliary
++exposure and configuration of a specific Count or Signal respectively.
++
++Determining the type of extension to create is a matter of scope.
++
++* Signal extensions are attributes that expose information/control
++  specific to a Signal. These types of attributes will exist under a
++  Signal's directory in sysfs.
++
++  For example, if you have an invert feature for a Signal, you can have
++  a Signal extension called "invert" that toggles that feature:
++  /sys/bus/counter/devices/counterX/signalY/invert
++
++* Count extensions are attributes that expose information/control
++  specific to a Count. These type of attributes will exist under a
++  Count's directory in sysfs.
++
++  For example, if you want to pause/unpause a Count from updating, you
++  can have a Count extension called "enable" that toggles such:
++  /sys/bus/counter/devices/counterX/countY/enable
++
++* Device extensions are attributes that expose information/control
++  non-specific to a particular Count or Signal. This is where you would
++  put your global features or other miscellanous functionality.
++
++  For example, if your device has an overtemp sensor, you can report the
++  chip overheated via a device extension called "error_overtemp":
++  /sys/bus/counter/devices/counterX/error_overtemp
  
--enum counter_signal_level {
--	COUNTER_SIGNAL_LEVEL_LOW = 0,
--	COUNTER_SIGNAL_LEVEL_HIGH
--};
--
--enum counter_signal_value_type {
--	COUNTER_SIGNAL_LEVEL = 0
--};
--
--enum counter_count_value_type {
--	COUNTER_COUNT_POSITION = 0,
--};
--
--void counter_signal_read_value_set(struct counter_signal_read_value *const val,
--				   const enum counter_signal_value_type type,
--				   void *const data);
--void counter_count_read_value_set(struct counter_count_read_value *const val,
--				  const enum counter_count_value_type type,
--				  void *const data);
--int counter_count_write_value_get(void *const data,
--				  const enum counter_count_value_type type,
--				  const struct counter_count_write_value *const val);
--
- int counter_register(struct counter_device *const counter);
- void counter_unregister(struct counter_device *const counter);
- int devm_counter_register(struct device *dev,
+ Architecture
+ ============
 -- 
 2.23.0
 

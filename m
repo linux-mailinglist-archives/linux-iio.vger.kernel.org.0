@@ -2,96 +2,641 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2653ECD05E
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 12:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9A34CD060
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 12:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726317AbfJFK16 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Oct 2019 06:27:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59560 "EHLO mail.kernel.org"
+        id S1726397AbfJFK32 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Oct 2019 06:29:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59670 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726271AbfJFK15 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 6 Oct 2019 06:27:57 -0400
+        id S1726271AbfJFK32 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 6 Oct 2019 06:29:28 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E1D152084B;
-        Sun,  6 Oct 2019 10:27:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9F4EF2084B;
+        Sun,  6 Oct 2019 10:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570357677;
-        bh=TxFhjrm56Pjm6MFAtGv+HR0edZ7F5tj7DSzzc+pDVPY=;
+        s=default; t=1570357766;
+        bh=NzpJuxRn0KqTrLJInb3Ot6skeJWH74RybKPYmx3mIYQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=p5UxAnkVq5U+SIgvfQ0XBXBGLtp7FZbz09lj3vfWHDUMXK2V6oQiuYYoJG6jsyUj9
-         HXE9I3sNN5VfygfYp5Bccnyv1aNak4JZrFI9IsKFABLABfEx+JoFIJmHDQ7YUjSifk
-         49TZeCpdlESCCfpC3va1mM+Xz+gXlV+PCPczoi50=
-Date:   Sun, 6 Oct 2019 11:27:51 +0100
+        b=JUNvKUxuzbsFBpPo7Gxq9Vuo9esQCootV3Hq5GCs6HPWaAX8Gnbs73hruBK4xN+S8
+         S7Kawi5L1HInXSIRamtePkjviR1XJdv5cPq4Z45XB+6QrZwTO9rwVs2gvM86TJXf+S
+         EcwnMGCn3VITs85vP6BJeN+UhjVMpQ2YQkrt/jFM=
+Date:   Sun, 6 Oct 2019 11:29:21 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 7/7] dt-bindings: iio: adc: max1027: Document max12xx
- series compatibles
-Message-ID: <20191006112751.775fc849@archlinux>
-In-Reply-To: <20191003173401.16343-8-miquel.raynal@bootlin.com>
-References: <20191003173401.16343-1-miquel.raynal@bootlin.com>
-        <20191003173401.16343-8-miquel.raynal@bootlin.com>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <robh+dt@kernel.org>, <mark.rutland@arm.com>
+Subject: Re: [PATCH v3 2/2] dt-bindings: iio: Add ltc2983 documentation
+Message-ID: <20191006112921.6c451c2a@archlinux>
+In-Reply-To: <20191004135519.191657-2-nuno.sa@analog.com>
+References: <20191004135519.191657-1-nuno.sa@analog.com>
+        <20191004135519.191657-2-nuno.sa@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  3 Oct 2019 19:34:01 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+On Fri, 4 Oct 2019 15:55:19 +0200
+Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> Update the bindings documentation with new Maxim ADCs compatibles.
-> 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
-Both DT patches look fine to me... 
-
-If you happened to fancy doing the yaml conversion it would be
-appreciated... :) 
-
-If not we'll get to this one one day.
-
-Anyhow, a few trivial bits in the earlier patches so v3 should be
-good to go.
+> Document the LTC2983 temperature sensor devicetree bindings.
+>=20
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+I'm out of my depth on this one so will be relying on Rob or Mark to take
+a look.
 
 Thanks,
 
 Jonathan
 
 > ---
->  .../devicetree/bindings/iio/adc/max1027-adc.txt        | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/max1027-adc.txt b/Documentation/devicetree/bindings/iio/adc/max1027-adc.txt
-> index 7b23d68f655c..1b703a01d882 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/max1027-adc.txt
-> +++ b/Documentation/devicetree/bindings/iio/adc/max1027-adc.txt
-> @@ -1,7 +1,13 @@
-> -* Maxim 1027/1029/1031 Analog to Digital Converter (ADC)
-> +* Maxim 1027/1029/1031/1227/1229/1231 Analog to Digital Converter (ADC)
->  
->  Required properties:
-> -  - compatible: Should be "maxim,max1027" or "maxim,max1029" or "maxim,max1031"
-> +  - compatible: Should be one of:
-> +    * "maxim,max1027"
-> +    * "maxim,max1029"
-> +    * "maxim,max1031"
-> +    * "maxim,max1227"
-> +    * "maxim,max1229"
-> +    * "maxim,max1231"
->    - reg: SPI chip select number for the device
->  
->  Optional properties:
+> Changes in v2:
+>  * Drop maxItems in non-array elements;
+>  * Set adi,mux-delay-config-us instead of adi,mux-delay-config;
+>  * Wrapped lines at 80 char;
+>  * Added comas to enum elements;
+>  * Use real units in adi,excitation-current;
+>  * Moved some enums to minimum and maximum;
+>  * Grouped patternProperties and moved reg property as a generic property.
+>=20
+> Changes in v3:
+>  * Add meaning to adi,sensor-type values which are not const;
+>  * Add meaning to adi,filter-notch-freq values;
+>  * Break up adi,sensor-config into human readable elements;
+>  * Set maxItems/minItems at the same identation as allOf in adi,custom-se=
+nsor;
+>  * Fixed the maximum value for adi,sensor-type for sensors with custom su=
+pport;
+>  * Changed license to GPL-2.0-only as it should be for new bindings;
+>  * Changed spi0 to spi in the dts example;
+>  * Updated the dts example to the new properties.
+>=20
+>  .../bindings/iio/temperature/adi,ltc2983.yaml | 479 ++++++++++++++++++
+>  MAINTAINERS                                   |   1 +
+>  2 files changed, 480 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/adi=
+,ltc2983.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc298=
+3.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> new file mode 100644
+> index 000000000000..b7101a0e84db
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> @@ -0,0 +1,479 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/temperature/adi,ltc2983.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices LTC2983 Multi-sensor Temperature system
+> +
+> +maintainers:
+> +  - Nuno S=C3=A1 <nuno.sa@analog.com>
+> +
+> +description: |
+> +  Analog Devices LTC2983 Multi-Sensor Digital Temperature Measurement Sy=
+stem
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/29=
+83fc.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ltc2983
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  adi,temperature-celcius:
+> +    description:
+> +      If this property is present, the temperature is reported in Celsiu=
+s.
+> +    type: boolean
+> +
+> +  adi,mux-delay-config-us:
+> +    description:
+> +      The LTC2983 performs 2 or 3 internal conversion cycles per tempera=
+ture
+> +      result. Each conversion cycle is performed with different excitati=
+on and
+> +      input multiplexer configurations. Prior to each conversion, these
+> +      excitation circuits and input switch configurations are changed an=
+d an
+> +      internal 1ms delay ensures settling prior to the conversion cycle =
+in most
+> +      cases. An extra delay can be configured using this property. The v=
+alue is
+> +      rounded to nearest 100us.
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> +      - maximum: 255
+> +
+> +  adi,filter-notch-freq:
+> +    description:
+> +      Set's the default setting of the digital filter. The default is
+> +      simultaneous 50/60Hz rejection.
+> +      0 - 50/60Hz rejection
+> +      1 - 60Hz rejection
+> +      2 - 50Hz rejection
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> +      - minimum: 0
+> +      - maximum: 2
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +patternProperties:
+> +  ".*@([1-9]|1[0-9]|20)$":
+> +    type: object
+> +
+> +    properties:
+> +      reg:
+> +        description: |
+> +          The channel number. It can be connected to one of the 20 chann=
+els of
+> +          the device.
+> +        minimum: 1
+> +        maximum: 20
+> +
+> +    required:
+> +      - reg
+> +
+> +    patternProperties:
+> +      "^thermocouple@.*":
+> +        type: object
+> +        description: |
+> +          Represents a thermocouple sensor which is connected to one of =
+the device
+> +          channels.
+> +
+> +        properties:
+> +          adi,sensor-type:
+> +            description: |
+> +              Identifies the type of thermocouple connected to the devic=
+e.
+> +              1 - Type J Thermocouple
+> +              2 - Type K Thermocouple
+> +              3 - Type E Thermocouple
+> +              4 - Type N Thermocouple
+> +              5 - Type R Thermocouple
+> +              6 - Type S Thermocouple
+> +              7 - Type T Thermocouple
+> +              8 - Type B Thermocouple
+> +              9 - Custom Thermocouple
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +              - minimum: 1
+> +              - maximum: 9
+> +
+> +          adi,single-ended:
+> +            description: |
+> +              Boolean property which set's the thermocouple as single-en=
+ded.
+> +            type: boolean
+> +
+> +          adi,sensor-oc-current-microamp:
+> +            description: |
+> +              This property set's the pulsed current value applied during
+> +              open-circuit detect.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +              - enum: [10, 100, 500, 1000]
+> +
+> +          adi,cold-junction-handle:
+> +            description: |
+> +              Phandle which points to a sensor object responsible for me=
+asuring
+> +              the thermocouple cold junction temperature.
+> +            $ref: "/schemas/types.yaml#/definitions/phandle"
+> +
+> +          adi,custom-sensor:
+> +            description: |
+> +              This is a table, where each entry should be a pair of
+> +              voltage(mv)-temperature(K). The entries must be given in n=
+v and uK
+> +              so that, the original values must be multiplied by 1000000=
+. For
+> +              more details look at table 69 and 70.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/int64-array
+> +            minItems: 6
+> +            maxItems: 128
+> +
+> +        required:
+> +          - adi,sensor-type
+> +
+> +      "^diode@.*":
+> +        type: object
+> +        description: |
+> +          Represents a diode sensor which is connected to one of the dev=
+ice
+> +          channels.
+> +
+> +        properties:
+> +          adi,sensor-type:
+> +            description: Identifies the sensor as a diode.
+> +            const: 28
+> +
+> +          adi,single-ended:
+> +            description: Boolean property which set's the diode as singl=
+e-ended.
+> +            type: boolean
+> +
+> +          adi,three-conversion-cycles:
+> +            description: |
+> +              Boolean property which set's three conversion cycles remov=
+ing
+> +              parasitic resistance effects between the LTC2983 and the d=
+iode.
+> +            type: boolean
+> +
+> +          adi,average-on:
+> +            description: |
+> +              Boolean property which enables a running average of the di=
+ode
+> +              temperature reading. This reduces the noise when the diode=
+ is used
+> +              as a cold junction temperature element on an isothermal bl=
+ock
+> +              where temperatures change slowly.
+> +            type: boolean
+> +
+> +          adi,excitation-current-microamp:
+> +            description: |
+> +              This property controls the magnitude of the excitation cur=
+rent
+> +              applied to the diode. Depending on the number of conversio=
+ns
+> +              cycles, this property will assume different predefined val=
+ues on
+> +              each cycle. Just set the value of the first cycle (1l).
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +              - enum: [10, 20, 40, 80]
+> +
+> +          adi,ideal-factor-value:
+> +            description: |
+> +              This property sets the diode ideality factor. The real val=
+ue must
+> +              be multiplied by 1000000 to remove the fractional part. Fo=
+r more
+> +              information look at table 20 of the datasheet.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +        required:
+> +          - adi,sensor-type
+> +
+> +      "^rtd@.*":
+> +        type: object
+> +        description: |
+> +          Represents a rtd sensor which is connected to one of the devic=
+e channels.
+> +
+> +        properties:
+> +          reg:
+> +            minimum: 2
+> +
+> +          adi,sensor-type:
+> +            description: |
+> +              Identifies the type of RTD connected to the device.
+> +              10 - RTD PT-10
+> +              11 - RTD PT-50
+> +              12 - RTD PT-100
+> +              13 - RTD PT-200
+> +              14 - RTD PT-500
+> +              15 - RTD PT-1000
+> +              16 - RTD PT-1000 (0.00375)
+> +              17 - RTD NI-120
+> +              18 - RTD Custom
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +              - minimum: 10
+> +              - maximum: 18
+> +
+> +          adi,rsense-handle:
+> +            description: |
+> +              Phandle pointing to a rsense object associated with this R=
+TD.
+> +            $ref: "/schemas/types.yaml#/definitions/phandle"
+> +
+> +          adi,number-of-wires:
+> +            description: |
+> +              Identifies the number of wires used by the RTD. Setting th=
+is
+> +              property to 5 means 4 wires with Kelvin Rsense.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +              - enum: [2, 3, 4, 5]
+> +
+> +          adi,rsense-share:
+> +            description: |
+> +              Boolean property which enables Rsense sharing, where one s=
+ense
+> +              resistor is used for multiple 2-, 3-, and/or 4-wire RTDs.
+> +            type: boolean
+> +
+> +          adi,current-rotate:
+> +            description: |
+> +              Boolean property which enables excitation current rotation=
+ to
+> +              automatically remove parasitic thermocouple effects. Note =
+that
+> +              this property is not allowed for 2- and 3-wire RTDs.
+> +            type: boolean
+> +
+> +          adi,excitation-current-microamp:
+> +            description: |
+> +              This property controls the magnitude of the excitation cur=
+rent
+> +              applied to the RTD.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +              - enum: [5, 10, 25, 50, 100, 250, 500, 1000]
+> +
+> +          adi,rtd-curve:
+> +            description: |
+> +              This property set the RTD curve used and the corresponding
+> +              Callendar-VanDusen constants. Look at table 30 of the data=
+sheet.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +              - minimum: 0
+> +              - maximum: 3
+> +
+> +          adi,custom-sensor:
+> +            description: |
+> +              This is a table, where each entry should be a pair of
+> +              resistance(ohm)-temperature(K). The entries added here are=
+ in uohm
+> +              and uK. For more details values look at table 74 and 75.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint64-array
+> +            minItems: 6
+> +            maxItems: 128
+> +
+> +        required:
+> +          - adi,sensor-type
+> +          - adi,rsense-handle
+> +
+> +        dependencies:
+> +          adi,current-rotate: [ adi,rsense-share ]
+> +
+> +      "^thermistor@.*":
+> +        type: object
+> +        description: |
+> +          Represents a thermistor sensor which is connected to one of th=
+e device
+> +          channels.
+> +
+> +        properties:
+> +          adi,sensor-type:
+> +            description: |
+> +              Identifies the type of thermistor connected to the
+> +              device.
+> +              19 - Thermistor 44004/44033 2.252kohm at 25=C2=B0C
+> +              20 - Thermistor 44005/44030 3kohm at 25=C2=B0C
+> +              21 - Thermistor 44007/44034 5kohm at 25=C2=B0C
+> +              22 - Thermistor 44006/44031 10kohm at 25=C2=B0C
+> +              23 - Thermistor 44008/44032 30kohm at 25=C2=B0C
+> +              24 - Thermistor YSI 400 2.252kohm at 25=C2=B0C
+> +              25 - Thermistor Spectrum 1003k 1kohm
+> +              26 - Thermistor Custom Steinhart-Hart
+> +              27 - Custom Thermistor
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +              - minimum: 19
+> +              - maximum: 27
+> +
+> +          adi,rsense-handle:
+> +            description: |
+> +              Phandle pointing to a rsense object associated with this
+> +              thermistor.
+> +            $ref: "/schemas/types.yaml#/definitions/phandle"
+> +
+> +          adi,single-ended:
+> +            description: |
+> +              Boolean property which set's the thermistor as single-ende=
+d.
+> +            type: boolean
+> +
+> +          adi,rsense-share:
+> +            description: |
+> +              Boolean property which enables Rsense sharing, where one s=
+ense
+> +              resistor is used for multiple thermistors. Note that this =
+property
+> +              is ignored if adi,single-ended is set.
+> +            type: boolean
+> +
+> +          adi,current-rotate:
+> +            description: |
+> +              Boolean property which enables excitation current rotation=
+ to
+> +              automatically remove parasitic thermocouple effects.
+> +            type: boolean
+> +
+> +          adi,excitation-current-nanoamp:
+> +            description: |
+> +              This property controls the magnitude of the excitation cur=
+rent
+> +              applied to the thermistor. Value 0 set's the sensor in aut=
+o-range
+> +              mode.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint32
+> +              - enum: [0, 250, 500, 1000, 5000, 10000, 25000, 50000, 100=
+000,
+> +                       250000, 500000, 1000000]
+> +
+> +          adi,custom-sensor:
+> +            description: |
+> +              This is a table, where each entry should be a pair of
+> +              resistance(ohm)-temperature(K). The entries added here are=
+ in uohm
+> +              and uK only for custom thermistors. For more details look =
+at table
+> +              78 and 79. Steinhart-Hart coefficients are also supported =
+and can
+> +              be programmed into the device memory using this property. =
+For
+> +              Steinhart sensors, this table has a constant size of 6 ent=
+ries
+> +              (defining the coefficients) and the values are given in th=
+e raw
+> +              format. Look at table 82 for more information.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint64-array
+> +            minItems: 6
+> +            maxItems: 128
+> +
+> +        required:
+> +          - adi,sensor-type
+> +          - adi,rsense-handle
+> +
+> +        dependencies:
+> +          adi,current-rotate: [ adi,rsense-share ]
+> +
+> +      "^adc@.*":
+> +        type: object
+> +        description: Represents a channel which is being used as a direc=
+t adc.
+> +
+> +        properties:
+> +          adi,sensor-type:
+> +            description: Identifies the sensor as a direct adc.
+> +            const: 30
+> +
+> +          adi,single-ended:
+> +            description: Boolean property which set's the adc as single-=
+ended.
+> +            type: boolean
+> +
+> +        required:
+> +          - adi,sensor-type
+> +
+> +      "^rsense@.*":
+> +        type: object
+> +        description: |
+> +          Represents a rsense which is connected to one of the device ch=
+annels.
+> +          Rsense are used by thermistors and RTD's.
+> +
+> +        properties:
+> +          reg:
+> +            minimum: 2
+> +
+> +          adi,sensor-type:
+> +            description: Identifies the sensor as a rsense.
+> +            const: 29
+> +
+> +          adi,rsense-val-micro-ohms:
+> +            description: |
+> +              Sets the value of the sense resistor. Look at table 20 of =
+the
+> +              datasheet for information.
+> +            allOf:
+> +              - $ref: /schemas/types.yaml#/definitions/uint64
+> +
+> +        required:
+> +          - adi,sensor-type
+> +          - adi, rsense-val
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    spi {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        sensor_ltc2983: ltc2983@0 {
+> +                compatible =3D "adi,ltc2983";
+> +                reg =3D <0>;
+> +
+> +                #address-cells =3D <1>;
+> +                #size-cells =3D <0>;
+> +
+> +                adi,temperature-celcius;
+> +                interrupts =3D <20 IRQ_TYPE_EDGE_RISING>;
+> +                interrupt-parent =3D <&gpio>;
+> +
+> +                thermocouple@18 {
+> +                        reg =3D <18>;
+> +                        adi,sensor-type =3D <8>; //Type B
+> +                        adi,sensor-oc-current-microamp =3D <10>;
+> +                        adi,cold-junction-handle =3D <&diode5>;
+> +                };
+> +
+> +                diode5: diode@5 {
+> +                        reg =3D <5>;
+> +                        adi,sensor-type =3D <28>;
+> +                };
+> +
+> +                rsense2: rsense@2 {
+> +                        reg =3D <2>;
+> +                        adi,sensor-type =3D <29>;
+> +                        adi,rsense-val-micro-ohms =3D /bits/ 64 <1200000=
+000>; //1.2Kohms
+> +                };
+> +
+> +                rtd@14 {
+> +                        reg =3D <14>;
+> +                        adi,sensor-type =3D <15>; //PT1000
+> +                        /*2-wire, internal gnd, no current rotation*/
+> +                        adi,number-of-wires =3D <2>;
+> +                        adi,rsense-share;
+> +                        adi,excitation-current-microamp =3D <500>;
+> +                        adi,rsense-handle =3D <&rsense2>;
+> +                };
+> +
+> +                adc@10 {
+> +                        reg =3D <10>;
+> +                        adi,sensor-type =3D <30>;
+> +                        adi,single-ended;
+> +                };
+> +
+> +                thermistor@12 {
+> +                        reg =3D <12>;
+> +                        adi,sensor-type =3D <26>; //Steinhart
+> +                        adi,rsense-handle =3D <&rsense2>;
+> +                        adi,custom-sensor =3D /bits/ 64 <0x00F371EC 0x12=
+345678
+> +                                        0x2C0F8733 0x10018C66 0xA0FEACCD
+> +                                        0x90021D99>; //6 entries
+> +                };
+> +
+> +                thermocouple@20 {
+> +                        reg =3D <20>;
+> +                        adi,sensor-type =3D <9>; //custom thermocouple
+> +                        adi,single-ended;
+> +                        adi,custom-sensor =3D /bits/ 64
+> +                                 <(-50220000) 0
+> +                                  (-30200000) 99100000
+> +                                  (-5300000) 135400000
+> +                                  0 273150000
+> +                                  40200000 361200000
+> +                                  55300000 522100000
+> +                                  88300000 720300000
+> +                                  132200000 811200000
+> +                                  188700000 922500000
+> +                                  460400000 1000000000>; //10 pairs
+> +               };
+> +
+> +        };
+> +    };
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 14a256e785ca..f747a9dc27f5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -9497,6 +9497,7 @@ W:	http://ez.analog.com/community/linux-device-driv=
+ers
+>  L:	linux-iio@vger.kernel.org
+>  S:	Supported
+>  F:	drivers/iio/temperature/ltc2983.c
+> +F:	Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> =20
+>  LTC4261 HARDWARE MONITOR DRIVER
+>  M:	Guenter Roeck <linux@roeck-us.net>
 

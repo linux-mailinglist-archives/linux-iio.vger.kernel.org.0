@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 050F8CD219
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 15:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E03CD21B
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 15:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726508AbfJFNWo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Oct 2019 09:22:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38534 "EHLO mail.kernel.org"
+        id S1726516AbfJFNWq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Oct 2019 09:22:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38556 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726060AbfJFNWo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 6 Oct 2019 09:22:44 -0400
+        id S1726060AbfJFNWp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 6 Oct 2019 09:22:45 -0400
 Received: from lore-desk-wlan.lan (unknown [151.66.37.67])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 70DCE2080F;
-        Sun,  6 Oct 2019 13:22:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 80A922087E;
+        Sun,  6 Oct 2019 13:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570368163;
-        bh=MNWJLwxyI7zRash2vbBuM0IL8Rhccb10ChtBsE6owvU=;
+        s=default; t=1570368165;
+        bh=HWiROyqVHj52scWeZCx9IuF0DfAJWdxDz8Yg11/KS8Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ToFsD2b2QpUPT/YfcGpqYtuFB+p6gkF4E877uQs9/dUskRNm/stQe14oLdnPwDYsS
-         zZ3EaAk9nBrRbsvPh33Ld+6y83AEadrlSdKzRKq+Ins95JNaNZhW0aBGrBmOaLNjBy
-         g4ybbhW1hkEPSMWeRQFh0Pb7wfekdWrzxhhPy+qE=
+        b=M5SNEgu2FEUWbFEvARi3G+1Oz4EVcQRjXkbSFSsvnAo/XczF8NFuCkKniMSEbV28F
+         DZ5yYcjhVZTm4cS6QKUpDJXEaOTUf45fa+C2yBmDg7QulGdyNCadms4qXmNSPg9d6a
+         HGEBNf/EQpy0f3w0GNN8BUNjvswFWAp9fJFys3gw=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     jic23@kernel.org
 Cc:     linux-iio@vger.kernel.org, sean@geanix.com, martin@geanix.com,
         rjones@gateworks.com, lorenzo.bianconi@redhat.com,
         devicetree@vger.kernel.org
-Subject: [PATCH 09/13] iio: imu: st_lsm6dsx: fix checkpatch warning
-Date:   Sun,  6 Oct 2019 15:22:03 +0200
-Message-Id: <7c8a7e5f17befae7ac541cfb155ec7fefa78b10e.1570367532.git.lorenzo@kernel.org>
+Subject: [PATCH 10/13] iio: imu: st_lsm6dsx: add wakeup_source in st_sensors_platform_data
+Date:   Sun,  6 Oct 2019 15:22:04 +0200
+Message-Id: <a237c2406825ff16c5606344420fd566b08525f9.1570367532.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <cover.1570367532.git.lorenzo@kernel.org>
 References: <cover.1570367532.git.lorenzo@kernel.org>
@@ -41,99 +41,59 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix following checkpatch warnings:
-
-CHECK: Alignment should match open parenthesis
-+static int st_lsm6dsx_read_event(struct iio_dev *iio_dev,
-+				   const struct iio_chan_spec *chan,
-
-CHECK: Alignment should match open parenthesis
-+static int st_lsm6dsx_write_event(struct iio_dev *iio_dev,
-+				    const struct iio_chan_spec *chan,
-
-CHECK: Alignment should match open parenthesis
-+static int st_lsm6dsx_read_event_config(struct iio_dev *iio_dev,
-+					  const struct iio_chan_spec *chan,
-
-CHECK: Alignment should match open parenthesis
-+static int st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
-+					   const struct iio_chan_spec *chan,
-
-WARNING: line over 80 characters
-+	if (dev->of_node && of_property_read_bool(dev->of_node, "wakeup-source"))
+Add the possibility to enable/disable wakeup source through
+st_sensors_platform_data and not only through device tree
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 35 +++++++++++---------
- 1 file changed, 19 insertions(+), 16 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 6 ++++--
+ include/linux/platform_data/st_sensors_pdata.h | 2 ++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 04231710ab9c..b0623b837abd 100644
+index b0623b837abd..a2a0ac81e3d3 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -1523,12 +1523,13 @@ static int st_lsm6dsx_read_event(struct iio_dev *iio_dev,
- 	return IIO_VAL_INT;
- }
- 
--static int st_lsm6dsx_write_event(struct iio_dev *iio_dev,
--				    const struct iio_chan_spec *chan,
--				    enum iio_event_type type,
--				    enum iio_event_direction dir,
--				    enum iio_event_info info,
--				    int val, int val2)
-+static int
-+st_lsm6dsx_write_event(struct iio_dev *iio_dev,
-+		       const struct iio_chan_spec *chan,
-+		       enum iio_event_type type,
-+		       enum iio_event_direction dir,
-+		       enum iio_event_info info,
-+		       int val, int val2)
+@@ -2089,7 +2089,9 @@ static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
+ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 		     struct regmap *regmap)
  {
- 	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
- 	struct st_lsm6dsx_hw *hw = sensor->hw;
-@@ -1554,10 +1555,11 @@ static int st_lsm6dsx_write_event(struct iio_dev *iio_dev,
- 	return 0;
- }
- 
--static int st_lsm6dsx_read_event_config(struct iio_dev *iio_dev,
--					  const struct iio_chan_spec *chan,
--					  enum iio_event_type type,
--					  enum iio_event_direction dir)
-+static int
-+st_lsm6dsx_read_event_config(struct iio_dev *iio_dev,
-+			     const struct iio_chan_spec *chan,
-+			     enum iio_event_type type,
-+			     enum iio_event_direction dir)
- {
- 	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
- 	struct st_lsm6dsx_hw *hw = sensor->hw;
-@@ -1568,11 +1570,11 @@ static int st_lsm6dsx_read_event_config(struct iio_dev *iio_dev,
- 	return !!(hw->enable_event & BIT(chan->channel2));
- }
- 
--static int st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
--					   const struct iio_chan_spec *chan,
--					   enum iio_event_type type,
--					   enum iio_event_direction dir,
--					   int state)
-+static int
-+st_lsm6dsx_write_event_config(struct iio_dev *iio_dev,
-+			      const struct iio_chan_spec *chan,
-+			      enum iio_event_type type,
-+			      enum iio_event_direction dir, int state)
- {
- 	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
- 	struct st_lsm6dsx_hw *hw = sensor->hw;
-@@ -2150,7 +2152,8 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
++	struct st_sensors_platform_data *pdata = dev->platform_data;
+ 	const struct st_lsm6dsx_shub_settings *hub_settings;
++	struct device_node *np = dev->of_node;
+ 	struct st_lsm6dsx_hw *hw;
+ 	const char *name = NULL;
+ 	int i, err;
+@@ -2152,8 +2154,8 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
  			return err;
  	}
  
--	if (dev->of_node && of_property_read_bool(dev->of_node, "wakeup-source"))
-+	if (dev->of_node &&
-+	    of_property_read_bool(dev->of_node, "wakeup-source"))
+-	if (dev->of_node &&
+-	    of_property_read_bool(dev->of_node, "wakeup-source"))
++	if ((np && of_property_read_bool(np, "wakeup-source")) ||
++	    (pdata && pdata->wakeup_source))
  		device_init_wakeup(dev, true);
  
  	return 0;
+diff --git a/include/linux/platform_data/st_sensors_pdata.h b/include/linux/platform_data/st_sensors_pdata.h
+index 30929c22227d..e40b28ca892e 100644
+--- a/include/linux/platform_data/st_sensors_pdata.h
++++ b/include/linux/platform_data/st_sensors_pdata.h
+@@ -18,12 +18,14 @@
+  * @open_drain: set the interrupt line to be open drain if possible.
+  * @spi_3wire: enable spi-3wire mode.
+  * @pullups: enable/disable i2c controller pullup resistors.
++ * @wakeup_source: enable/disable device as wakeup generator.
+  */
+ struct st_sensors_platform_data {
+ 	u8 drdy_int_pin;
+ 	bool open_drain;
+ 	bool spi_3wire;
+ 	bool pullups;
++	bool wakeup_source;
+ };
+ 
+ #endif /* ST_SENSORS_PDATA_H */
 -- 
 2.21.0
 

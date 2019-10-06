@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80FB4CD03F
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 12:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5615DCD051
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 12:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726450AbfJFKEa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Oct 2019 06:04:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57928 "EHLO mail.kernel.org"
+        id S1726256AbfJFKSo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Oct 2019 06:18:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59026 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726322AbfJFKEa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 6 Oct 2019 06:04:30 -0400
+        id S1726248AbfJFKSo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 6 Oct 2019 06:18:44 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 832B92087E;
-        Sun,  6 Oct 2019 10:04:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6C1182084B;
+        Sun,  6 Oct 2019 10:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570356269;
-        bh=lykmaPe+GxCheVaEJeVtQ0EuxqBdyMbbEJLKlsjZ0DA=;
+        s=default; t=1570357123;
+        bh=Hs0o7/dBnlcRwvSMzuuAN5/kh1ICB959hgUeMY2CjFE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PS44RYF1Qq0oFLYbZKPHR3YV4dl+UQFsfyj7EPl1iT03fDL8pfufPLdqjJaUxGZdV
-         ShXwljSnO43WCRTRhx5rDF98/VkQxwftIbbxMOrvgtaHSP9owfT3H/78XiFg4DDAzV
-         ChyUQtwn/KHZbzloq3MC4FXLE074EqMd6xPsXnr8=
-Date:   Sun, 6 Oct 2019 11:04:24 +0100
+        b=ais7wBHIGPFz5WZWvZkzghxsi6cnHYcriJXw1KSgkmLJ5nBQFqIgFIe2Z83qz/sma
+         r6vbn438WfnpW5z50m4mfFFIEwAq8ZAS9hz85WQzrCdK6clRwM7u+JBCZbn7yMOkHA
+         o5r33tlMCl4g/OrvR0eub12YCyPQPgWJbiNRTYqk=
+Date:   Sun, 6 Oct 2019 11:18:37 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Hartmut Knaack <knaack.h@gmx.de>,
@@ -34,12 +34,12 @@ Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 1/7] iio: adc: max1027: Add debugfs register read
- support
-Message-ID: <20191006110424.7781d99d@archlinux>
-In-Reply-To: <20191003173401.16343-2-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH v2 2/7] iio: adc: max1027: Make it optional to use
+ interrupts
+Message-ID: <20191006111837.33fdfe25@archlinux>
+In-Reply-To: <20191003173401.16343-3-miquel.raynal@bootlin.com>
 References: <20191003173401.16343-1-miquel.raynal@bootlin.com>
-        <20191003173401.16343-2-miquel.raynal@bootlin.com>
+        <20191003173401.16343-3-miquel.raynal@bootlin.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -49,42 +49,107 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  3 Oct 2019 19:33:55 +0200
+On Thu,  3 Oct 2019 19:33:56 +0200
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Until now, only write operations were supported. Force two bytes read
-> operation when reading from this register (might be wrong when reading
-> the temperature, but will work with any other value).
+> The chip has a 'start conversion' and a 'end of conversion' pair of
+> pins. They can be used but this is absolutely not mandatory as regular
+> polling of the value is totally fine with the current internal
+> clocking setup. Turn the interrupts optional and do not error out if
+> they are not inquired in the device tree. This has the effect to
+> prevent triggered buffers use though.
+> 
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-That's worrying as comments go.  Just return an error on the temperature
-register if it's going to do the wrong thing.
+Hmm. I haven't looked a this in a great deal of depth but if we support
+single channel reads it should be possible to allow the use of a
+trigger from elsewhere.  Looks like a fair bit of new code would be needed
+to support that though.  So perhaps this is a good first step.
+
+It's a bit annoying that the hardware doesn't provide a EOC bit
+anywhere in the registers.  That would have allowed us to be a bit
+cleverer.
+
+Anyhow, this looks fine to me.
 
 Thanks,
 
 Jonathan
 
-> 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 > ---
->  drivers/iio/adc/max1027.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/max1027.c | 57 +++++++++++++++++++++------------------
+>  1 file changed, 31 insertions(+), 26 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-> index 214883458582..6cdfe9ef73fc 100644
+> index 6cdfe9ef73fc..823223b77a70 100644
 > --- a/drivers/iio/adc/max1027.c
 > +++ b/drivers/iio/adc/max1027.c
-> @@ -309,8 +309,11 @@ static int max1027_debugfs_reg_access(struct iio_dev *indio_dev,
->  	struct max1027_state *st = iio_priv(indio_dev);
->  	u8 *val = (u8 *)st->buffer;
+> @@ -430,35 +430,40 @@ static int max1027_probe(struct spi_device *spi)
+>  		return -ENOMEM;
+>  	}
 >  
-> -	if (readval != NULL)
-> -		return -EINVAL;
-> +	if (readval) {
-> +		int ret = spi_read(st->spi, val, 2);
-> +		*readval = be16_to_cpu(st->buffer[0]);
-> +		return ret;
-> +	}
+> -	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> -					&iio_pollfunc_store_time,
+> -					&max1027_trigger_handler, NULL);
+> -	if (ret < 0) {
+> -		dev_err(&indio_dev->dev, "Failed to setup buffer\n");
+> -		return ret;
+> -	}
+
+> +	if (spi->irq) {
+> +		ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> +						      &iio_pollfunc_store_time,
+> +						      &max1027_trigger_handler,
+> +						      NULL);
+> +		if (ret < 0) {
+> +			dev_err(&indio_dev->dev, "Failed to setup buffer\n");
+> +			return ret;
+> +		}
 >  
->  	*val = (u8)writeval;
->  	return spi_write(st->spi, val, 1);
+> -	st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-trigger",
+> -							indio_dev->name);
+> -	if (st->trig == NULL) {
+> -		ret = -ENOMEM;
+> -		dev_err(&indio_dev->dev, "Failed to allocate iio trigger\n");
+> -		return ret;
+> -	}
+> +		st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-trigger",
+> +						  indio_dev->name);
+> +		if (st->trig == NULL) {
+> +			ret = -ENOMEM;
+> +			dev_err(&indio_dev->dev,
+> +				"Failed to allocate iio trigger\n");
+> +			return ret;
+> +		}
+>  
+> -	st->trig->ops = &max1027_trigger_ops;
+> -	st->trig->dev.parent = &spi->dev;
+> -	iio_trigger_set_drvdata(st->trig, indio_dev);
+> -	iio_trigger_register(st->trig);
+> +		st->trig->ops = &max1027_trigger_ops;
+> +		st->trig->dev.parent = &spi->dev;
+> +		iio_trigger_set_drvdata(st->trig, indio_dev);
+> +		iio_trigger_register(st->trig);
+>  
+> -	ret = devm_request_threaded_irq(&spi->dev, spi->irq,
+> -					iio_trigger_generic_data_rdy_poll,
+> -					NULL,
+> -					IRQF_TRIGGER_FALLING,
+> -					spi->dev.driver->name, st->trig);
+> -	if (ret < 0) {
+> -		dev_err(&indio_dev->dev, "Failed to allocate IRQ.\n");
+> -		return ret;
+> +		ret = devm_request_threaded_irq(&spi->dev, spi->irq,
+> +						iio_trigger_generic_data_rdy_poll,
+> +						NULL,
+> +						IRQF_TRIGGER_FALLING,
+> +						spi->dev.driver->name,
+> +						st->trig);
+> +		if (ret < 0) {
+> +			dev_err(&indio_dev->dev, "Failed to allocate IRQ.\n");
+> +			return ret;
+> +		}
+>  	}
+>  
+>  	/* Disable averaging */
 

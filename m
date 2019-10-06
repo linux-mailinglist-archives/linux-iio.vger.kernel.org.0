@@ -2,148 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA869CD248
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 16:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE6C9CD34C
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 18:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726037AbfJFOaN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 6 Oct 2019 10:30:13 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:46003 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725985AbfJFOaN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Oct 2019 10:30:13 -0400
-Received: from localhost ([89.204.130.45]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MNLVU-1iSZav0beM-00OpG8; Sun, 06 Oct 2019 16:29:59 +0200
-Date:   Sun, 6 Oct 2019 16:29:56 +0200
-From:   Andreas Klinger <ak@it-klinger.de>
+        id S1726353AbfJFQDa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Oct 2019 12:03:30 -0400
+Received: from mail-yb1-f196.google.com ([209.85.219.196]:34066 "EHLO
+        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725847AbfJFQDa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Oct 2019 12:03:30 -0400
+Received: by mail-yb1-f196.google.com with SMTP id m1so3851667ybm.1;
+        Sun, 06 Oct 2019 09:03:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dVq3A/TrWA22YphYYB+8No5n6QtHAxN2b6l0mk2+kwE=;
+        b=El+CWmCQb7R1fo1oaYIeiyEHx3GBZV4IoBkFhd03r6gfzUl03znZ2gdd9tCnotz27U
+         qf720XYBzApe7w5zHR9EQ6v6qxaoiJ5P9Fv4DLS63DpPZMaPPr63LQSba6an/X8SQW1F
+         wesEJwGo4JmAzqcHtXkfzFjqWqLwiPIGkfiWAQEEVWIXy0KiwgPiID4CLh8oNGf2QE4L
+         oMnBwWRUXXmq8b/G9vNjukYF3TjiQYfjtZ50CTj7AM+lZKrKH7DPJ32tDdThMa2rkBE4
+         QZ5fEmkYrXC/KK+7mWFL8+mM9dUFjPx2IhQ2uAZKSely5VF+4GYckmZy2jflNlF8iB42
+         qfTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dVq3A/TrWA22YphYYB+8No5n6QtHAxN2b6l0mk2+kwE=;
+        b=fCdyYNU1WeaJfruU+9pX7r9fC+Tn7/U4bGaCIH7MyUKp0WHzUV3OkeIJZC9zqKLRQu
+         1NqUKwfuGaqn6AjKpDaSTGfa2d5cPAFpqXPsaOabS7CQtoWU5fNnQ6DPmBFFIiT4zMD1
+         6U12f+/ZRyxjjn2DthNCxvaSTpbTsoXJ8a5ycmNm7OEHozQXBFs7h7m14aIQ4occH1mV
+         kzc8SOP9RpGGJBVErtGcKhWavTKqAVMR7q6hmFRlgRN5Y3r0BLmn4ZFjLTUShENM1ViM
+         vdmca6o3i1oSJcjY2P/BoS5+PwbearHvsS1rm8BJKCkQiMjlX/+fd3jQdH65LCW7zvd0
+         ihlA==
+X-Gm-Message-State: APjAAAXnl27L9jalkDeg4BUpwa4Ofw60ruKjkDZ1qI1DHMByMKY3Av+V
+        N7Z0VXFjOc/YwTvELSLBLjE=
+X-Google-Smtp-Source: APXvYqyT7gjrdIuAXN+Bwn4RKda6PPR1sKi1ETOlqbj7vb1Sy27HtwuzkOxhz14rXqUdFFOvXtIc3Q==
+X-Received: by 2002:a25:ab21:: with SMTP id u30mr3900549ybi.143.1570377808701;
+        Sun, 06 Oct 2019 09:03:28 -0700 (PDT)
+Received: from localhost.localdomain (072-189-084-142.res.spectrum.com. [72.189.84.142])
+        by smtp.gmail.com with ESMTPSA id y129sm3341816ywy.41.2019.10.06.09.03.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Oct 2019 09:03:27 -0700 (PDT)
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     jic23@kernel.org
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        zbynek.kocur@fel.cvut.cz, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio: srf04: fix wrong limitation in distance measuring
-Message-ID: <20191006142952.hgfg2agypwpf2v55@arbad>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, benjamin.gaignard@linaro.org,
+        david@lechnology.com,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: [PATCH v4 0/2] Simplify count_read/count_write/signal_read
+Date:   Sun,  6 Oct 2019 12:03:09 -0400
+Message-Id: <cover.1570377521.git.vilhelm.gray@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Provags-ID: V03:K1:GUb3m0K463edewsRDr0B7VLz9NqLUELgR6i1MrrydrWzpiXEO+F
- TsQfZOFDBrrBtcjSSL6IlI/X1B9maqeTAC32PiptKQa14+Uy72pupBcoF0vxl9xe2Ec1czc
- cok0oFOy2OodjgReADT6ox1pfVDBVkxlSTo6Yfaqb4HEMc70kzMOnAP7TiRlt43cP3o5MsC
- nXzSN+scMDZliOw5/4iIg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ec2NcWgi04U=:18823FXOelPimO46P/M1O0
- P8XY24fWsVCgSguzBnHdWDwefOl0tp2V1cBKzgt1Xb+RF+RzPZujpFNVLwW6NuzekJDRF3Xcw
- wIFxJi4yYiwxQvTm05x9RKFq8V0puvaniPAM07764QGrezxcqnU5RyGGSmwBcGgZ9+xREBues
- M4decoP9AhSFZLQF3n2n4F+2QQn1Ne5/6A3BTW2vut+uIUqp4slBAtHI+K7aReMp4meR/vG6V
- +pfJ0G0sYD6jxK/JLNCSWVY6E9T5eQ0xm4BDzPOu3t/6ER3NDTQrjWD2cCnxQDKg8HokEOWAh
- J3c60zCLnDU5emH2ZsiZGHwz8bH5WCJ4GD/OGFsaHJGPoYUHjkEl2luWNLnL1BWQuD5AMKJZ1
- wVUMnO94Zrom19Ka+35fGCgYBEnXkDU4rsu3BfnxfOGkJc8NnZ4EylZn5dfIi/WrDekFPtGnl
- v2Z2eaiFKV1MaAXIYtep85K3lN2iO5hQWW8tJuX80+oe9GQYXzbaf3IPa1OnsLHV0qkfZecds
- F4lt1218s2I5qQGUyQdRGXwr1ShxlJGn6VCcXpQTP0NGZLZn/zmS3M5HEdD9+zBZRiPQxHIFd
- ArlBdiKydeQNehMu/KMWZnYEdlBg+AQhWoyJGipNvHK0+s35jMxwWWMOJ4gKJJbGN0eDmVCnc
- Fc2U5MPfP95BU34xzVkkqwDzJGO5520mkRXQI+QAEWwqStIaTiJtaZw0VB+zZn68/GOfWQkAL
- hFTR7nBhJE7YsmBcFwc9CJTH9FZE9w68d6YgqS4Y8pzt8j231wzvusjlj18/f9PvhuE/bQQo1
- Vm5zJzUCIbEZWVMWXsYrG7p9+gEA0z1jmV12UXm83vaEzZxCzht+Obs73vap7oC4SWataBbIq
- 1n18L6QDK4Uz0aek7aHA==
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The measured time value in the driver is limited to the maximum distance
-which can be read by the sensor. This limitation was wrong and is fixed
-by this patch.
+Changes in v4:
+ - Rebase ontop of ti-eqep introduction patches and update ti-eqep
 
-It also takes into account that we are supporting a variety of sensors
-today and that the recently added sensors have a higher maximum
-distance range.
+The changes in this patchset will not affect the userspace interface.
+Rather, these changes are intended to simplify the kernelspace Counter
+callbacks for counter device driver authors.
 
-Changes in v2:
-- Added a Tested-by
+The following main changes are proposed:
 
-Suggested-by: Zbyněk Kocur <zbynek.kocur@fel.cvut.cz>
-Tested-by: Zbyněk Kocur <zbynek.kocur@fel.cvut.cz>
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
----
- drivers/iio/proximity/srf04.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+* Retire the opaque counter_count_read_value/counter_count_write_value
+  structures and simply represent count data as an unsigned integer.
 
-diff --git a/drivers/iio/proximity/srf04.c b/drivers/iio/proximity/srf04.c
-index 8b50d56b0a03..01eb8cc63076 100644
---- a/drivers/iio/proximity/srf04.c
-+++ b/drivers/iio/proximity/srf04.c
-@@ -110,7 +110,7 @@ static int srf04_read(struct srf04_data *data)
- 	udelay(data->cfg->trigger_pulse_us);
- 	gpiod_set_value(data->gpiod_trig, 0);
- 
--	/* it cannot take more than 20 ms */
-+	/* it should not take more than 20 ms until echo is rising */
- 	ret = wait_for_completion_killable_timeout(&data->rising, HZ/50);
- 	if (ret < 0) {
- 		mutex_unlock(&data->lock);
-@@ -120,7 +120,8 @@ static int srf04_read(struct srf04_data *data)
- 		return -ETIMEDOUT;
- 	}
- 
--	ret = wait_for_completion_killable_timeout(&data->falling, HZ/50);
-+	/* it cannot take more than 50 ms until echo is falling */
-+	ret = wait_for_completion_killable_timeout(&data->falling, HZ/20);
- 	if (ret < 0) {
- 		mutex_unlock(&data->lock);
- 		return ret;
-@@ -135,19 +136,19 @@ static int srf04_read(struct srf04_data *data)
- 
- 	dt_ns = ktime_to_ns(ktime_dt);
- 	/*
--	 * measuring more than 3 meters is beyond the capabilities of
--	 * the sensor
-+	 * measuring more than 6,45 meters is beyond the capabilities of
-+	 * the supported sensors
- 	 * ==> filter out invalid results for not measuring echos of
- 	 *     another us sensor
- 	 *
- 	 * formula:
--	 *         distance       3 m
--	 * time = ---------- = --------- = 9404389 ns
--	 *          speed       319 m/s
-+	 *         distance     6,45 * 2 m
-+	 * time = ---------- = ------------ = 40438871 ns
-+	 *          speed         319 m/s
- 	 *
- 	 * using a minimum speed at -20 °C of 319 m/s
- 	 */
--	if (dt_ns > 9404389)
-+	if (dt_ns > 40438871)
- 		return -EIO;
- 
- 	time_ns = dt_ns;
-@@ -159,20 +160,20 @@ static int srf04_read(struct srf04_data *data)
- 	 *   with Temp in °C
- 	 *   and speed in m/s
- 	 *
--	 * use 343 m/s as ultrasonic speed at 20 °C here in absence of the
-+	 * use 343,5 m/s as ultrasonic speed at 20 °C here in absence of the
- 	 * temperature
- 	 *
- 	 * therefore:
--	 *             time     343
--	 * distance = ------ * -----
--	 *             10^6       2
-+	 *             time     343,5     time * 106
-+	 * distance = ------ * ------- = ------------
-+	 *             10^6         2         617176
- 	 *   with time in ns
- 	 *   and distance in mm (one way)
- 	 *
--	 * because we limit to 3 meters the multiplication with 343 just
-+	 * because we limit to 6,45 meters the multiplication with 106 just
- 	 * fits into 32 bit
- 	 */
--	distance_mm = time_ns * 343 / 2000000;
-+	distance_mm = time_ns * 106 / 617176;
- 
- 	return distance_mm;
- }
+* Retire the opaque counter_signal_read_value structure and represent
+  Signal data as a counter_signal_value enum.
+
+These changes should reduce some complexity and code in the use and
+implementation of the count_read, count_write, and signal_read
+callbacks.
+
+The opaque structures for Count data and Signal data were introduced
+originally in anticipation of supporting various representations of
+counter data (e.g. arbitrary-precision tallies, floating-point spherical
+coordinate positions, etc). However, with the counter device drivers
+that have appeared, it's become apparent that utilizing opaque
+structures in kernelspace is not the best approach to take.
+
+I believe it is best to let userspace applications decide how to
+interpret the count data they receive. There are a couple of reasons why
+it would be good to do so:
+
+* Users use their devices in unexpected ways.
+
+  For example, a quadrature encoder counter device is typically used to
+  keep track of the position of a motor, but a user could set the device
+  in a pulse-direction mode and instead use it to count sporadic rising
+  edges from an arbitrary signal line unrelated to positioning. Users
+  should have the freedom to decide what their data represents.
+
+* Most counter devices represent data as unsigned integers anyway.
+
+  For example, whether the device is a tally counter or position
+  counter, the count data is represented to the user as an unsigned
+  integer value. So specifying that one device is representing tallies
+  while the other specifies positions does not provide much utility from
+  an interface perspective.
+
+For these reasons, the count_read and count_write callbacks have been
+redefined to pass count data directly as unsigned long instead of passed
+via opaque structures:
+
+        count_read(struct counter_device *counter,
+                   struct counter_count *count, unsigned long *val);
+        count_write(struct counter_device *counter,
+                    struct counter_count *count, unsigned long val);
+
+Similarly, the signal_read is redefined to pass Signal data directly as
+a counter_signal_value enum instead of via an opaque structure:
+
+        signal_read(struct counter_device *counter,
+                    struct counter_signal *signal,
+                    enum counter_signal_value *val);
+
+The counter_signal_value enum is simply the counter_signal_level enum
+redefined to remove the references to the Signal data "level" data type.
+
+William Breathitt Gray (2):
+  counter: Simplify the count_read and count_write callbacks
+  docs: driver-api: generic-counter: Update Count and Signal data types
+
+ Documentation/driver-api/generic-counter.rst |  22 ++--
+ drivers/counter/104-quad-8.c                 |  33 ++----
+ drivers/counter/counter.c                    | 101 +++----------------
+ drivers/counter/ftm-quaddec.c                |  14 +--
+ drivers/counter/stm32-lptimer-cnt.c          |   5 +-
+ drivers/counter/stm32-timer-cnt.c            |  17 +---
+ drivers/counter/ti-eqep.c                    |  19 ++--
+ include/linux/counter.h                      |  74 ++------------
+ 8 files changed, 59 insertions(+), 226 deletions(-)
+
+
+base-commit: 0c3aa63a842d84990bd02622f2fa50d2bd33c652
+prerequisite-patch-id: ebe284609b3db8d4130ea2915f7f7b185c743a70
+prerequisite-patch-id: cbe857759f10d875690df125d18bc04f585ac7c9
+prerequisite-patch-id: 21f2660dc88627387ee4666d08044c63dd961dae
 -- 
-2.11.0
+2.23.0
+

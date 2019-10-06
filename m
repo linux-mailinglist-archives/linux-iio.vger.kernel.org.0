@@ -2,107 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 294F2CCBAA
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2019 19:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5694BCCDC8
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 03:57:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726318AbfJERa1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Oct 2019 13:30:27 -0400
-Received: from mail-yb1-f194.google.com ([209.85.219.194]:37157 "EHLO
-        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725826AbfJERa1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Oct 2019 13:30:27 -0400
-Received: by mail-yb1-f194.google.com with SMTP id z125so3235338ybc.4;
-        Sat, 05 Oct 2019 10:30:26 -0700 (PDT)
+        id S1725917AbfJFB5A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Oct 2019 21:57:00 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:44557 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725801AbfJFB5A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Oct 2019 21:57:00 -0400
+Received: by mail-io1-f66.google.com with SMTP id w12so21415379iol.11
+        for <linux-iio@vger.kernel.org>; Sat, 05 Oct 2019 18:56:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=SFxd5AapzSICM/6Xgqhe/u9Vw5QC679Bx+c0QdN9hnI=;
-        b=C4StFwvN+lCG1jC5GtRTymuZCkTXZueajmp5oKh8q2nS/QR4Y2Oo9mBbom6a6lMX/v
-         f60G7QcnH8JR/KGokgFN2ry3x3ceJqyt0nyeTAkLqQ7SsSWqzosmkiLWW2dB85RQWaUZ
-         84ubNkcrNehQ4E0ryRIKFRdhvYl+I1a/sJrA/gvfYI/XHD28QUBdpd3oOhyXrN43bQK5
-         q5eNY46ePlOob7dDWUIctgZzkEKPabn+3FopVzptgyXTYfM8jYbTjnBHttfjXTT6iDQk
-         zucn3Ajq0P4wByuR6wWzOPHXuIzhE1ag6cVKPVQBA1dLhD2+UnXqTF4K7mG2A79O+zOM
-         ziPA==
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rfSUEEil4QWABz4sAsJXciZnz4w3PkW8WWsIR/qy9vI=;
+        b=nJtZFFIHOI8yHcmZcvZDr7Sgq580Q3oGqtaFsmXYYvW61XN0v3gd2Abd5SHXzo0Bj5
+         RnB1x2pm62OQ6XshrPsfWcqy2jfiowdayQ7qzbh2cQMcZ/Ty4lSZUwPt+pEJQSVNQVsW
+         UnhrdMmpITS1WGGe75Eu8aSv70+Fmo7jFQJTw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=SFxd5AapzSICM/6Xgqhe/u9Vw5QC679Bx+c0QdN9hnI=;
-        b=J7BlL7nMIjw+3RN71fvDqaEh4cU1FkNodsC/HTY8ifcmh8fZPkiySvaCE6vdaVe0v4
-         e/H+m1C8dxCL14QCMk/WdrLdNLXN7kvBuSUHsPUFkM4M+jp4EWezaOzMzMvpIbDq4vty
-         fVG2Ks/rNdRnsPUTDXrg2f1QuPZot7LEByrThkgKlZogf0uRLtGm8F1b0ps5n2GFfkoQ
-         bTXw1AJKFkgvM9nZgi2vJTaH5nQcvgzvbVnIMO6SYlM/Y0ZLzMRfdoYRp1cnd/mnGY0S
-         oGDMqq1kgjAthy6UYcp+fzYUQS2gzVcVCYbQMM3eZi38GEg95jopHpBjYKvE1lOItA3h
-         VrUw==
-X-Gm-Message-State: APjAAAU1ZK0BVN82X3o+jD1ZCP082pCoyZgqTk9eiRN8YJ7T2TJcUU8S
-        6T9zzyHnT17vjndq4voANOY=
-X-Google-Smtp-Source: APXvYqzmQLtqtYywZioGiUcaIwSMLMNOrMMcyq48VNb2gTooHR+RghLWiW32nmaFQGBN3NvDc+DJ6Q==
-X-Received: by 2002:a25:7701:: with SMTP id s1mr6210156ybc.286.1570296625972;
-        Sat, 05 Oct 2019 10:30:25 -0700 (PDT)
-Received: from icarus (072-189-084-142.res.spectrum.com. [72.189.84.142])
-        by smtp.gmail.com with ESMTPSA id 12sm2546780ywu.59.2019.10.05.10.30.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Oct 2019 10:30:25 -0700 (PDT)
-Date:   Sat, 5 Oct 2019 13:30:04 -0400
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Colin King <colin.king@canonical.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: stm32: clean up indentation issue
-Message-ID: <20191005173004.GA7431@icarus>
-References: <20190925095126.20219-1-colin.king@canonical.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rfSUEEil4QWABz4sAsJXciZnz4w3PkW8WWsIR/qy9vI=;
+        b=FvzoIVWr7Ofh++VIdXDo17oyGmBfDunKYK0l2YbNAfqm0k1fd+pldW7YovPq8X4Gnj
+         Fhp1vkvMU9u3VwurCn1sJ7N1/XhnmaFPtG3bjYXvwNLkwFg//CGJx51WVOP//BfmbkYP
+         yB8j4Ed0QcDuCpX+UG8vCR9lVJWe+btS9YBZc9QMJYCic5ca+UVIAeeCKeWpZ9njA4F2
+         +RDOdO0z6QhzIzB2Kxe0wL4VhN+d0a5yTg1J6Zs0lBF6jRFBhhx0vHsGV1XyxaPKh0VJ
+         6XS6gTQCEc1cDVQblbWNghJ8J3xhuh8txArdZgr+JpOnLUFyhfXStfOwhe4WeRgCdnGv
+         imyw==
+X-Gm-Message-State: APjAAAWA3u06AiazMNQ/gF2OapNFXin/+aVo0WPqqZ6DIEmG2J0UINoU
+        i8kKevRGHyCBUGFq8zR3yFMx84BOsAQ/u1UeQiUeTg==
+X-Google-Smtp-Source: APXvYqzjIDr3VGrYy1tgIRumhuPxoi31jBZnMciu9rDoVIKr9JLHBBhONht/MfXNZ90hE1xKtFLWl0xUsB4IocIBq6U=
+X-Received: by 2002:a6b:bd42:: with SMTP id n63mr7649064iof.53.1570327019078;
+ Sat, 05 Oct 2019 18:56:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190925095126.20219-1-colin.king@canonical.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20190920073122.21713-1-alexandru.ardelean@analog.com>
+In-Reply-To: <20190920073122.21713-1-alexandru.ardelean@analog.com>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Sat, 5 Oct 2019 18:56:48 -0700
+Message-ID: <CAJCx=g=y9xDHHZ06wjGNRVG0hLVSsWQZJJcPVTtAxmYVW8dwxw@mail.gmail.com>
+Subject: Re: [PATCH] iio: chemical: atlas-ph-sensor: fix iio_triggered_buffer_predisable()
+ position
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Sep 25, 2019 at 10:51:26AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is an if statement that is indented one level too deeply,
-> remove the extraneous tabs.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Fri, Sep 20, 2019 at 12:31 AM Alexandru Ardelean
+<alexandru.ardelean@analog.com> wrote:
+>
+> The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+> the poll functions.
+>
+> The iio_triggered_buffer_predisable() should be called last, to detach the
+> poll func after the devices has been suspended.
+>
+> The position of iio_triggered_buffer_postenable() is correct.
+>
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+
+Sorry didn't notice this till now. Looks good to me.
+
+Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+
 > ---
->  drivers/counter/stm32-timer-cnt.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-> index 644ba18a72ad..613dcccf79e1 100644
-> --- a/drivers/counter/stm32-timer-cnt.c
-> +++ b/drivers/counter/stm32-timer-cnt.c
-> @@ -219,8 +219,8 @@ static ssize_t stm32_count_enable_write(struct counter_device *counter,
->  
->  	if (enable) {
->  		regmap_read(priv->regmap, TIM_CR1, &cr1);
-> -			if (!(cr1 & TIM_CR1_CEN))
-> -				clk_enable(priv->clk);
-> +		if (!(cr1 & TIM_CR1_CEN))
-> +			clk_enable(priv->clk);
->  
->  		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
->  				   TIM_CR1_CEN);
-> -- 
+>  drivers/iio/chemical/atlas-ph-sensor.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-ph-sensor.c
+> index 3a20cb5d9bff..6c175eb1c7a7 100644
+> --- a/drivers/iio/chemical/atlas-ph-sensor.c
+> +++ b/drivers/iio/chemical/atlas-ph-sensor.c
+> @@ -323,16 +323,16 @@ static int atlas_buffer_predisable(struct iio_dev *indio_dev)
+>         struct atlas_data *data = iio_priv(indio_dev);
+>         int ret;
+>
+> -       ret = iio_triggered_buffer_predisable(indio_dev);
+> +       ret = atlas_set_interrupt(data, false);
+>         if (ret)
+>                 return ret;
+>
+> -       ret = atlas_set_interrupt(data, false);
+> +       pm_runtime_mark_last_busy(&data->client->dev);
+> +       ret = pm_runtime_put_autosuspend(&data->client->dev);
+>         if (ret)
+>                 return ret;
+>
+> -       pm_runtime_mark_last_busy(&data->client->dev);
+> -       return pm_runtime_put_autosuspend(&data->client->dev);
+> +       return iio_triggered_buffer_predisable(indio_dev);
+>  }
+>
+>  static const struct iio_trigger_ops atlas_interrupt_trigger_ops = {
+> --
 > 2.20.1
-
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-
-Fabrice,
-
-I noticed the TIM_CR1_CEN check is happening before the
-regmap_update_bits call for the enable path, while the disable path does
-the check after. Is this logic is correct.
-
-William Breathitt Gray
+>

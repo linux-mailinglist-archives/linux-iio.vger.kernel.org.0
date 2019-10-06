@@ -2,229 +2,225 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FB89CD118
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 12:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F94DCD17B
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 12:57:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726271AbfJFKhj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Oct 2019 06:37:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34942 "EHLO mail.kernel.org"
+        id S1726261AbfJFK5e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Oct 2019 06:57:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39134 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726248AbfJFKhj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 6 Oct 2019 06:37:39 -0400
+        id S1726224AbfJFK5e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 6 Oct 2019 06:57:34 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2BEEE20867;
-        Sun,  6 Oct 2019 10:37:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7840A2084D;
+        Sun,  6 Oct 2019 10:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570358257;
-        bh=60/zhp9MrbexMgP1J3l5xQ8eQHUrS6Kzp9jGjbsK1rY=;
+        s=default; t=1570359453;
+        bh=n7QM4sLo7An8JpEGyrQcWqrBu9VaS4JLDAsXZTgQJ/w=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=1+KPSxzJWIBq+MaNYKjiamOu0Ur5fHIUhmIsU0tygUAooQcsMnzTDRxcYYXKEVFQN
-         YqK2DqvwGKcHO9n8XHA9fcYuhKaUn1pMLHvJ1KynLAJdgZbSxZ3FoOrHmCTN76cgkr
-         sBtLvj2XQy9cfbTrhNv/HRvovKa/kZGFJ7lFCi3M=
-Date:   Sun, 6 Oct 2019 11:37:32 +0100
+        b=iu+qFbXsokAeEEV5w4Ke2guehbG+TBKw+L9J7JZTXYtocOoS4KJwzPy5PBGjQArIB
+         Ia6tyjE+9csNVeShyQXaLuQZcTbcsELWRAty27UrdViK45g6bg80xixlaMMIAhMtrV
+         Lbc722PQ/IMkEg4Y4jSUr9S4TZfkymp3FujOufPU=
+Date:   Sun, 6 Oct 2019 11:57:27 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <robh+dt@kernel.org>, <mark.rutland@arm.com>
-Subject: Re: [PATCH v3 1/2] iio: temperature: Add support for LTC2983
-Message-ID: <20191006113732.1ffd597c@archlinux>
-In-Reply-To: <20191004135519.191657-1-nuno.sa@analog.com>
-References: <20191004135519.191657-1-nuno.sa@analog.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mboumba Cedric Madianga <cedric.madianga@gmail.com>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 5/7 v3] mfd: ab8500: augment DT bindings
+Message-ID: <20191006115727.7a4175d3@archlinux>
+In-Reply-To: <20191001221356.19317-6-linus.walleij@linaro.org>
+References: <20191001221356.19317-1-linus.walleij@linaro.org>
+        <20191001221356.19317-6-linus.walleij@linaro.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 4 Oct 2019 15:55:18 +0200
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Wed,  2 Oct 2019 00:13:54 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> The LTC2983 is a Multi-Sensor High Accuracy Digital Temperature
-> Measurement System. It measures a wide variety of temperature sensors and
-> digitally outputs the result, in =C2=B0C or =C2=B0F, with 0.1=C2=B0C accu=
-racy and
-> 0.001=C2=B0C resolution. It can measure the temperature of all standard
-> thermocouples (type B,E,J,K,N,S,R,T), standard 2-,3-,4-wire RTDs,
-> thermistors and diodes.
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> As we migrate the AB8500 GPADC driver to use IIO, we need to augment
+> the bindings to account for defining the ADC channels in the device
+> tree.
+> 
+> Cc: devicetree@vger.kernel.org
+> Acked-by: Lee Jones <lee.jones@linaro.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-Two things inline that I'd missed before. Otherwise looks good.
+This looks good now as far as our generic channel bindings go.
+I'd like to leave it a little longer for Rob or Mark to have the chance
+to comment before taking it though.
+
+Good to have these in yaml at some point as well :)
+I know we haven't done many of the older IIO bindings yet though
+so I can't really talk.
 
 Thanks,
 
 Jonathan
 
 > ---
-> Changes in v2:
->  * Added some needed blank lines (for readability);
->  * Allocate iio_chan in the setup() function;
->  * Rename reset to sleep;
->  * Remove unneeded dev_dbg calls;
->  * Remove unneeded line wrapping;
->  * Remove unneeded comments;
->  * Remove extend_names. Use the standard ABI;
->  * Adapt the scales to report in millivolt and milli degrees;
->  * Adapt the of_property readings to the renaming of the properties;
->  * For custom thermistors, excitation-current cannot be set to Auto range.
->=20
-> Changes in v3:
->  * Use normal `devm_request_irq`;
->  * Handle and decode the new devicetree properties for sensor configurati=
-on.
->=20
->  MAINTAINERS                       |    7 +
->  drivers/iio/temperature/Kconfig   |   10 +
->  drivers/iio/temperature/Makefile  |    1 +
->  drivers/iio/temperature/ltc2983.c | 1554 +++++++++++++++++++++++++++++
->  4 files changed, 1572 insertions(+)
->  create mode 100644 drivers/iio/temperature/ltc2983.c
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f0c03740b9fb..14a256e785ca 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -9491,6 +9491,13 @@ S:	Maintained
->  F:	Documentation/devicetree/bindings/iio/dac/ltc1660.txt
->  F:	drivers/iio/dac/ltc1660.c
-> =20
-> +LTC2983 IIO TEMPERATURE DRIVER
-> +M:	Nuno S=C3=A1 <nuno.sa@analog.com>
-> +W:	http://ez.analog.com/community/linux-device-drivers
-> +L:	linux-iio@vger.kernel.org
-> +S:	Supported
-> +F:	drivers/iio/temperature/ltc2983.c
+> ChangeLog v2->v3:
+> - Change "adc-channel@" to "channel@" as per preferred notation.
+> - Add some full stops to the end of sentences.
+> - Reference the new ADC-specific documentation for channel specifier
+>   etc.
+> - Collect Lee's ACK.
+> - Rebased on v5.4-rc1
+> ChangeLog v1->v2:
+> - Rebased on v5.3-rc5
+> ---
+>  .../devicetree/bindings/mfd/ab8500.txt        | 119 ++++++++++++++++++
+>  1 file changed, 119 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/ab8500.txt b/Documentation/devicetree/bindings/mfd/ab8500.txt
+> index cd9e90c5d171..ff517e5d7ee0 100644
+> --- a/Documentation/devicetree/bindings/mfd/ab8500.txt
+> +++ b/Documentation/devicetree/bindings/mfd/ab8500.txt
+> @@ -69,6 +69,18 @@ Required child device properties:
+>  - compatible             : "stericsson,ab8500-[bm|btemp|charger|fg|gpadc|gpio|ponkey|
+>                                                 pwm|regulator|rtc|sysctrl|usb]";
+>  
+> +  A few child devices require ADC channels from the GPADC node. Those follow the
+> +  standard bindings from iio/iio-bindings.txt and iio/adc/adc.txt
 > +
->  LTC4261 HARDWARE MONITOR DRIVER
->  M:	Guenter Roeck <linux@roeck-us.net>
->  L:	linux-hwmon@vger.kernel.org
-> diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kc=
-onfig
-> index 737faa0901fe..04b5a67b593c 100644
-> --- a/drivers/iio/temperature/Kconfig
-> +++ b/drivers/iio/temperature/Kconfig
-> @@ -4,6 +4,16 @@
->  #
->  menu "Temperature sensors"
-> =20
-> +config LTC2983
-> +	tristate "Analog Devices Multi-Sensor Digital Temperature Measurement S=
-ystem"
-> +	depends on SPI
+> +  abx500-temp		 : io-channels "aux1" and "aux2" for measuring external
+> +			   temperatures.
+> +  ab8500_fg		 : io-channel "main_bat_v" for measuring main battery voltage,
+> +  ab8500_btemp		 : io-channels "btemp_ball" and "bat_ctrl" for measuring the
+> +			   battery voltage.
+> +  ab8500_charger	 : io-channels "main_charger_v", "main_charger_c", "vbus_v",
+> +			   "usb_charger_c" for measuring voltage and current of the
+> +			   different charging supplies.
+> +
+>  Optional child device properties:
+>  - interrupts             : contains the device IRQ(s) using the 2-cell format (see above)
+>  - interrupt-names        : contains names of IRQ resource in the order in which they were
+> @@ -102,8 +114,115 @@ ab8500 {
+>                                39 0x4>;
+>                  interrupt-names = "HW_CONV_END", "SW_CONV_END";
+>                  vddadc-supply = <&ab8500_ldo_tvout_reg>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		#io-channel-cells = <1>;
+> +
+> +		/* GPADC channels */
+> +		bat_ctrl: channel@01 {
+> +			reg = <0x01>;
+> +		};
+> +		btemp_ball: channel@02 {
+> +			reg = <0x02>;
+> +		};
+> +		main_charger_v: channel@03 {
+> +			reg = <0x03>;
+> +		};
+> +		acc_detect1: channel@04 {
+> +			reg = <0x04>;
+> +		};
+> +		acc_detect2: channel@05 {
+> +			reg = <0x05>;
+> +		};
+> +		adc_aux1: channel@06 {
+> +			reg = <0x06>;
+> +		};
+> +		adc_aux2: channel@07 {
+> +			reg = <0x07>;
+> +		};
+> +		main_batt_v: channel@08 {
+> +			reg = <0x08>;
+> +		};
+> +		vbus_v: channel@09 {
+> +			reg = <0x09>;
+> +		};
+> +		main_charger_c: channel@0a {
+> +			reg = <0x0a>;
+> +		};
+> +		usb_charger_c: channel@0b {
+> +			reg = <0x0b>;
+> +		};
+> +		bk_bat_v: channel@0c {
+> +			reg = <0x0c>;
+> +		};
+> +		die_temp: channel@0d {
+> +			reg = <0x0d>;
+> +		};
+> +		usb_id: channel@0e {
+> +			reg = <0x0e>;
+> +		};
+> +		xtal_temp: channel@12 {
+> +			reg = <0x12>;
+> +		};
+> +		vbat_true_meas: channel@13 {
+> +			reg = <0x13>;
+> +		};
+> +		bat_ctrl_and_ibat: channel@1c {
+> +			reg = <0x1c>;
+> +		};
+> +		vbat_meas_and_ibat: channel@1d {
+> +			reg = <0x1d>;
+> +		};
+> +		vbat_true_meas_and_ibat: channel@1e {
+> +			reg = <0x1e>;
+> +		};
+> +		bat_temp_and_ibat: channel@1f {
+> +			reg = <0x1f>;
+> +		};
+>          };
+>  
+> +	ab8500_temp {
+> +		compatible = "stericsson,abx500-temp";
+> +		io-channels = <&gpadc 0x06>,
+> +			      <&gpadc 0x07>;
+> +		io-channel-name = "aux1", "aux2";
+> +	};
+> +
+> +	ab8500_battery: ab8500_battery {
+> +		stericsson,battery-type = "LIPO";
+> +		thermistor-on-batctrl;
+> +	};
+> +
+> +	ab8500_fg {
+> +		compatible = "stericsson,ab8500-fg";
+> +		battery	   = <&ab8500_battery>;
+> +		io-channels = <&gpadc 0x08>;
+> +		io-channel-name = "main_bat_v";
+> +	};
+> +
+> +	ab8500_btemp {
+> +		compatible = "stericsson,ab8500-btemp";
+> +		battery	   = <&ab8500_battery>;
+> +		io-channels = <&gpadc 0x02>,
+> +			      <&gpadc 0x01>;
+> +		io-channel-name = "btemp_ball",
+> +				"bat_ctrl";
+> +	};
+> +
+> +	ab8500_charger {
+> +		compatible	= "stericsson,ab8500-charger";
+> +		battery		= <&ab8500_battery>;
+> +		vddadc-supply	= <&ab8500_ldo_tvout_reg>;
+> +		io-channels = <&gpadc 0x03>,
+> +			      <&gpadc 0x0a>,
+> +			      <&gpadc 0x09>,
+> +			      <&gpadc 0x0b>;
+> +		io-channel-name = "main_charger_v",
+> +				"main_charger_c",
+> +				"vbus_v",
+> +				"usb_charger_c";
+> +	};
+> +
+>          ab8500-usb {
+>                  compatible = "stericsson,ab8500-usb";
+>                  interrupts = < 90 0x4
 
-Select REGMAP_SPI needed I think.
-
-> +	help
-> +	  Say yes here to build support for the LTC2983 Multi-Sensor
-> +	  high accuracy digital temperature measurement system.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called ltc2983.
-> +
->  config MAXIM_THERMOCOUPLE
->  	tristate "Maxim thermocouple sensors"
->  	depends on SPI
-> diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/M=
-akefile
-> index baca4776ca0d..d6b850b0cf63 100644
-> --- a/drivers/iio/temperature/Makefile
-> +++ b/drivers/iio/temperature/Makefile
-> @@ -3,6 +3,7 @@
->  # Makefile for industrial I/O temperature drivers
->  #
-> =20
-> +obj-$(CONFIG_LTC2983) +=3D ltc2983.o
->  obj-$(CONFIG_HID_SENSOR_TEMP) +=3D hid-sensor-temperature.o
->  obj-$(CONFIG_MAXIM_THERMOCOUPLE) +=3D maxim_thermocouple.o
->  obj-$(CONFIG_MAX31856) +=3D max31856.o
-> diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/=
-ltc2983.c
-> new file mode 100644
-> index 000000000000..f899c1d75f8a
-> --- /dev/null
-> +++ b/drivers/iio/temperature/ltc2983.c
-> @@ -0,0 +1,1554 @@
-...
-
-> +static int ltc2983_chan_read(struct ltc2983_data *st,
-> +			const struct ltc2983_sensor *sensor, int *val)
-> +{
-> +	u32 start_conversion =3D 0;
-> +	int ret;
-> +	unsigned long time;
-> +	__be32 temp;
-> +
-> +	/*
-> +	 * Do not allow channel readings if device is in sleep state.
-> +	 * A read/write on the spi bus would bring the device prematurely
-> +	 * out of sleep.
-> +	 */
-> +	if (st->sleep)
-> +		return -EPERM;
-> +
-> +	start_conversion =3D LTC2983_STATUS_START(true);
-> +	start_conversion |=3D LTC2983_STATUS_CHAN_SEL(sensor->chan);
-> +	dev_dbg(&st->spi->dev, "Start conversion on chan:%d, status:%02X\n",
-> +		sensor->chan, start_conversion);
-> +	/* start conversion */
-> +	ret =3D regmap_write(st->regmap, LTC2983_STATUS_REG, start_conversion);
-> +	if (ret)
-> +		return ret;
-> +
-> +	reinit_completion(&st->completion);
-> +	/*
-> +	 * wait for conversion to complete.
-> +	 * 300 ms should be more than enough to complete the conversion.
-> +	 * Depending on the sensor configuration, there are 2/3 conversions
-> +	 * cycles of 82ms.
-> +	 */
-> +	time =3D wait_for_completion_timeout(&st->completion,
-> +					   msecs_to_jiffies(300));
-> +	if (!time) {
-> +		dev_warn(&st->spi->dev, "Conversion timed out\n");
-> +		return -ETIMEDOUT;
-> +	}
-> +
-> +	/* read the converted data */
-> +	ret =3D regmap_bulk_read(st->regmap, LTC2983_CHAN_RES_ADDR(sensor->chan=
-),
-> +			       &temp, sizeof(temp));
-
-I'd missed this before.  regmap_bulk_read can directly use the supplied buf=
-fer
-for dma.  Hence it needs to be dma safe.  That means you have to have it
-in it's own cacheline.  There is no way of enforcing that on the stack so
-either allocate it locally from the heap, or put it at the end of the
-data structure and mark it __cacheline_aligned (we make sure those structur=
-es
-are also cacheline aligned and on the heap specifically to allow us to do t=
-hat
-trick).
-
-
-> +	if (ret)
-> +		return ret;
-> +
-> +	*val =3D __be32_to_cpu(temp);
-> +
-> +	if (!(LTC2983_RES_VALID_MASK & *val)) {
-> +		dev_err(&st->spi->dev, "Invalid conversion detected\n");
-> +		return -EIO;
-> +	}
-> +
-> +	ret =3D sensor->fault_handler(st, *val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*val =3D sign_extend32((*val) & LTC2983_DATA_MASK, LTC2983_DATA_SIGN_BI=
-T);
-> +	return 0;
-> +}
-> +
-...

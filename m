@@ -2,121 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E99CCD351
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 18:03:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E87DCD88F
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 20:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726583AbfJFQDd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Oct 2019 12:03:33 -0400
-Received: from mail-yb1-f196.google.com ([209.85.219.196]:40549 "EHLO
-        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725847AbfJFQDc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Oct 2019 12:03:32 -0400
-Received: by mail-yb1-f196.google.com with SMTP id s7so235242ybq.7;
-        Sun, 06 Oct 2019 09:03:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=X0YlaBg0eWRFmg01LcYcEakBboU2udItKz/WvLmsstE=;
-        b=fyQ5xERCIVVSDumVC4ubV58r5dQvmSwwgM1gDnffp4c+23b97gjExIR2w5eKv7/8Jq
-         ziZYQoR+ekNbyGmg5MyCdRKQCpjPl96Gg05vwaXu+bKwftDmAqbbBSH5E6QwSe5Ye+LQ
-         xBUefkUGCXsIWAzl+r81TYehHx4jhYKp4zVdIT8iewLeyrco31I++sQZr0GkvC3qWrAI
-         ySzHJ9fVZA81+D7Pk/jT9oRRn9rbqPtPhS1BPMSDfCtq7jRYvKthUyl4YoB3plYqlI9i
-         4S/8SyDDMH2Wqfnrbl6M9RacL1dX7HAom4on1ZHwAGQZJQp1mHNTFfq/qMP0zFcmFZqo
-         4HYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=X0YlaBg0eWRFmg01LcYcEakBboU2udItKz/WvLmsstE=;
-        b=h2AqfsgfBUduBbMXjwZUowQ3JGqBftwq/eNBjkrrKGQFB1wha9OA6GF53dfWCSO3d+
-         ocKs1IWIb9k28/DsCZVtenLL6H7b0ichuXKmz8OQDOF2kVSh297Nt1JYnx5E+qk/YZ6I
-         OiY/1KN1e4/F1FeY6hQFa4VNL1deB40At1Jd6Vb1Ss/Qj8Jkhqo6TMPHTNn7eSy4kjOe
-         aMom5t2bOnC9PPprZ1vJEuKdebiHW1Y+QVOk8jnqYpoDfJhbU7f6J7JVLEqZ3n05UNv2
-         62ECRyrsGLOHAxdES//c+lMpFrrNDHt8AfZBkZTPm+alXbHxoEHxevyiLoNBMd8snNS+
-         8eCA==
-X-Gm-Message-State: APjAAAXnnZzAIHViLdxPfq/dLuxyd7IRUwoezMkZn4ZimylR+rbJbMLz
-        66jebKUPWUZJ3KYthUai5AY=
-X-Google-Smtp-Source: APXvYqxNW/YNL3A3scV1Qc1+vAzbrjym3yfhoINYZ8xNzXVB83HFsdfnpe2UcuggrPJqmHwKu7egzA==
-X-Received: by 2002:a25:ce08:: with SMTP id x8mr8866430ybe.177.1570377811262;
-        Sun, 06 Oct 2019 09:03:31 -0700 (PDT)
-Received: from localhost.localdomain (072-189-084-142.res.spectrum.com. [72.189.84.142])
-        by smtp.gmail.com with ESMTPSA id y129sm3341816ywy.41.2019.10.06.09.03.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Oct 2019 09:03:30 -0700 (PDT)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     jic23@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, benjamin.gaignard@linaro.org,
-        david@lechnology.com,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH v4 2/2] docs: driver-api: generic-counter: Update Count and Signal data types
-Date:   Sun,  6 Oct 2019 12:03:11 -0400
-Message-Id: <75a9ca9837f4d66cb4912cfa535176e27f7c219a.1570377521.git.vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <cover.1570377521.git.vilhelm.gray@gmail.com>
-References: <cover.1570377521.git.vilhelm.gray@gmail.com>
+        id S1726776AbfJFSPU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Oct 2019 14:15:20 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:34032 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726559AbfJFSPU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Oct 2019 14:15:20 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x96IB51v015859;
+        Sun, 6 Oct 2019 18:14:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=Z/8cilR+SOCZwA8hNy7Ewd1pr7qibxNHXT1a8xzhh0w=;
+ b=DfS1JJHjUEaa4DK8pBL7OP4qvU6ZuGPCIVFpkKL1g2/iK1TMANTHH1cWdqe+A7dVgpT7
+ Q7xeTDvlycAIAXsUr0tSm8n2A9Vi1jDR/vuGQn5FQ79TOSnD3QMuBKaMrTxA4rMXWkAr
+ xtc4ovg9yaNous7DZTQ+TxSBvKKbjpYdooAvychxfrw/W8eMYXWI8WFcIdscC68so9CB
+ 1+tQ31oGelOL+WX5b56D9+DnjEXMllnPdnJim0gEj4oJ2VB1Jgd0ovCfu/63s0jF2I9z
+ x5rz0luXGSnKYtkLBjZHPEwDqCXKZYnKGDwAX/j33Cg4Gh61ilRygyX4f2+3+22YvLss 0g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2vek4q3mdm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 06 Oct 2019 18:14:53 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x96I84Fb004999;
+        Sun, 6 Oct 2019 18:14:53 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2vf4pg684a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 06 Oct 2019 18:14:53 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x96IEmtr016609;
+        Sun, 6 Oct 2019 18:14:48 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 06 Oct 2019 11:14:47 -0700
+Date:   Sun, 6 Oct 2019 21:14:40 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH] iio: imu: adis16480: clean up a condition
+Message-ID: <20191006181439.GU22609@kadam>
+References: <20190926081016.GA2332@mwanda>
+ <9e40c550310d6f30e6481329e01061beb474bc33.camel@analog.com>
+ <20190926113630.GF27389@kadam>
+ <20191006095133.24fb89be@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191006095133.24fb89be@archlinux>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=705
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910060187
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=781 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910060187
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Count data is now always represented as an unsigned integer, while
-Signal data is either SIGNAL_LOW or SIGNAL_HIGH.
+On Sun, Oct 06, 2019 at 09:51:33AM +0100, Jonathan Cameron wrote:
+> On Thu, 26 Sep 2019 14:36:30 +0300
+> Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> 
+> > On Thu, Sep 26, 2019 at 11:06:39AM +0000, Ardelean, Alexandru wrote:
+> > > On Thu, 2019-09-26 at 11:10 +0300, Dan Carpenter wrote:  
+> > > > [External]
+> > > > 
+> > > > The "t" variable is unsigned so it can't be less than zero.  We really
+> > > > are just trying to prevent divide by zero bugs so just checking against
+> > > > zero is sufficient.
+> 
+> I'm not sure that true.  It if were signed we'd be detecting that the
+> input from userspace was negative.
 
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
----
- Documentation/driver-api/generic-counter.rst | 22 +++++++-------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+It does a really bad job of that though so it raises more questions than
+answers.  Maybe just one of the parameters is negative or maybe the
+multiply or the addition overflowed?  Should scenarios those be checked?
 
-diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-index 8382f01a53e3..161652fc1025 100644
---- a/Documentation/driver-api/generic-counter.rst
-+++ b/Documentation/driver-api/generic-counter.rst
-@@ -39,10 +39,7 @@ There are three core components to a counter:
- COUNT
- -----
- A Count represents the count data for a set of Signals. The Generic
--Counter interface provides the following available count data types:
--
--* COUNT_POSITION:
--  Unsigned integer value representing position.
-+Counter interface represents the count data as an unsigned integer.
- 
- A Count has a count function mode which represents the update behavior
- for the count data. The Generic Counter interface provides the following
-@@ -93,19 +90,16 @@ SIGNAL
- A Signal represents a counter input data; this is the input data that is
- evaluated by the counter to determine the count data; e.g. a quadrature
- signal output line of a rotary encoder. Not all counter devices provide
--user access to the Signal data.
--
--The Generic Counter interface provides the following available signal
--data types for when the Signal data is available for user access:
-+user access to the Signal data, so exposure is optional for drivers.
- 
--* SIGNAL_LEVEL:
--  Signal line state level. The following states are possible:
-+When the Signal data is available for user access, the Generic Counter
-+interface provides the following available signal values:
- 
--  - SIGNAL_LEVEL_LOW:
--    Signal line is in a low state.
-+* SIGNAL_LOW:
-+  Signal line is in a low state.
- 
--  - SIGNAL_LEVEL_HIGH:
--    Signal line is in a high state.
-+* SIGNAL_HIGH:
-+  Signal line is in a high state.
- 
- A Signal may be associated with one or more Counts.
- 
--- 
-2.23.0
+It turns out none of those situations matter, only divide by zero needs
+to be checked.
+
+regards,
+dan carpenter
+
+
+
 

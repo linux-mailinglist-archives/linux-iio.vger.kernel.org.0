@@ -2,106 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6936CD8C3
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 21:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C53CECD90A
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2019 22:03:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725900AbfJFTAV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Oct 2019 15:00:21 -0400
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:40173 "EHLO
+        id S1725900AbfJFUDb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Oct 2019 16:03:31 -0400
+Received: from mail-yw1-f68.google.com ([209.85.161.68]:33081 "EHLO
         mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725811AbfJFTAU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Oct 2019 15:00:20 -0400
-Received: by mail-yw1-f68.google.com with SMTP id e205so4310784ywc.7;
-        Sun, 06 Oct 2019 12:00:20 -0700 (PDT)
+        with ESMTP id S1725865AbfJFUDa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Oct 2019 16:03:30 -0400
+Received: by mail-yw1-f68.google.com with SMTP id w140so2698465ywd.0;
+        Sun, 06 Oct 2019 13:03:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Us0YKrblQgRWQeQuWKfageTMytCoGjV6GZJUa8EZKdM=;
-        b=vCBiJc2l54U+LpFa1SuZysYnPwwhlPxepmSDVBJYMdVb6Q7hWJbhJ6eSk63Jnb5TK2
-         7+gUjyeZAjWdiXGXKgcylByeMsqKQVjAGQQeWPN5wsj3o+BkrZd3YceuFfxhWuXlGrdH
-         lOicOIy3jZVhGEe9IrQnww/T38JLbfkVl88LLh/JSwcd5NS+axKNag6QRJEHSa3KsBsc
-         Wny1HAeTld1/jLWNuEgFaR/IyBuCCQd9ahnN4tg398OslAV9sH1rmKfPO/SQOt1pDRbd
-         N44zn8xCkvmaY8LpqKnGP9Hl2ByQ+I8+v0veA3xCahyZPEaBRw+7o0DyV3sU03DcQhmX
-         /wHA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SAD87elW3s517JLI2iTshbAxE2vtTeLTbEEr73+JTTo=;
+        b=b8u9n4PhEviR3wP/yj+0PudSJxU/RYT93LpSALa8ko5AoW/fdnOhLH4/2mPEAfDvAT
+         LHvEgW6OrV4EhOgcB/pPShK15w3OhQrky7AEqW3EY+LTTmGJopYUVXngibHNt2zzZfht
+         XXSkY+gnBjhk0cmctHEciW2t9Ql/5hJW2IAbruDjuPHgTMpmxW4zVImSfzH7Lp4qDu8a
+         5WkgNMbHjtPP1dCrLdtfA44CJV9v+AQi1gV1AJrHa04fuFkzj7x4eYmwcwocemaIAcnV
+         uCshn4YyfgwT1DkAPBy1hYWXAg5KPYFjYoUGQT/X9AVU4QOhvb4JzjS2me3V3wb9H6xr
+         BTEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Us0YKrblQgRWQeQuWKfageTMytCoGjV6GZJUa8EZKdM=;
-        b=cua0dAPYO48WCVH+3aDUZoV7rZokiYbFIVR6J3Ue+o9dXbGpHktC34c7kvLtsQzc39
-         KjiZ/fDvYdIY0LBHZw4LcVhNDXW1z3O1OL/Y3bG3vxErC9GCxjHW8+FLaOnJiEZeHnJP
-         /XrUTfdIh60vRcm6OuN7pNz5cL30HNYFf82lv8KxeA7xZPmmw5sl1OQEQXfiX3Ku/oP8
-         a4uPT7SyMbKc/lD6ijDj8cyvkzi7W1gT4tgARVGv3K04Ew8dNjAej9V4IWT/2aPaMdUF
-         7MmWbnYAzA177VeOFv+XAlrYewNp8bkq6wm7izChMYXUSLR7fUeW4avOBeC/jH/T3rlt
-         VOKw==
-X-Gm-Message-State: APjAAAXsQQFrtWxKTgSjtbPUlFNEh73EZJ4e0nnFVj9vsE1FIzsGQEOE
-        hWu29lvYtK4G93lIL0HiWsg=
-X-Google-Smtp-Source: APXvYqwdTQIpeCuBbpBgsgUkoMbPKwFrUZ55vm0hSSmZPHtZGSP1k/+YTPKGlaAuUOJDEyzp13hpmQ==
-X-Received: by 2002:a81:178f:: with SMTP id 137mr18588158ywx.487.1570388419603;
-        Sun, 06 Oct 2019 12:00:19 -0700 (PDT)
-Received: from icarus (072-189-084-142.res.spectrum.com. [72.189.84.142])
-        by smtp.gmail.com with ESMTPSA id j17sm3315602ywa.71.2019.10.06.12.00.18
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SAD87elW3s517JLI2iTshbAxE2vtTeLTbEEr73+JTTo=;
+        b=eU3Ua4+qeRH7JXzdxhCZGaSlD5tLICyTv8XSM1bCMdNXi6D606fStZBcylbdKL+SRV
+         4pkLupvrrfTAL0fC/hHygVohZhdIUz79y6P8ZnyQk1K9S1CI1AC33BWTNyqot5wkJNpj
+         Ybduh6RFvfoJumSiId3UvIvza1odHkBJvKbFsJby5cRw7etIUdq8bObyyyrpBBn5/pkJ
+         oWEdbbNLef6c6QIphwwD913nQL8l/LNm0KpS+6zw1I795Ja5dXRfO+Y5JXWzxpYm2NIq
+         PHO6+4fa8+9koum3vMUqy7fNtsn84Z/yatCFIC/V06y3etSACxfx7kCGQCnCgwBJzsPc
+         sL1A==
+X-Gm-Message-State: APjAAAVNSNwagCYkN4AbAscPrEa4JdkaegQOxsGkdG0TtMDBCI5T1tt6
+        HDbH6JrKbMN+0/XiREwV9au9uPaS
+X-Google-Smtp-Source: APXvYqyQPcYRjH/0i8mxOghstPu0yUg69Or8AFQkg1v3xcY/ad8RpW1sQgbaxICtMnMxyHWdaKP62w==
+X-Received: by 2002:a81:ee06:: with SMTP id l6mr13525880ywm.357.1570392209362;
+        Sun, 06 Oct 2019 13:03:29 -0700 (PDT)
+Received: from localhost.localdomain (072-189-084-142.res.spectrum.com. [72.189.84.142])
+        by smtp.gmail.com with ESMTPSA id x16sm3765266ywx.103.2019.10.06.13.03.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Oct 2019 12:00:18 -0700 (PDT)
-Date:   Sun, 6 Oct 2019 15:00:04 -0400
+        Sun, 06 Oct 2019 13:03:28 -0700 (PDT)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     jic23@kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, patrick.havelange@essensium.com,
-        fabrice.gasnier@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, benjamin.gaignard@linaro.org
-Subject: Re: [PATCH v4 2/2] docs: driver-api: generic-counter: Update Count
- and Signal data types
-Message-ID: <20191006190004.GA109365@icarus>
-References: <cover.1570377521.git.vilhelm.gray@gmail.com>
- <75a9ca9837f4d66cb4912cfa535176e27f7c219a.1570377521.git.vilhelm.gray@gmail.com>
- <9850a671-2822-24b7-3c22-b4abbd6a6b37@lechnology.com>
+To:     jic23@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, benjamin.gaignard@linaro.org,
+        david@lechnology.com,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: [PATCH v5 0/3] Simplify count_read/count_write/signal_read
+Date:   Sun,  6 Oct 2019 16:03:08 -0400
+Message-Id: <cover.1570391994.git.vilhelm.gray@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9850a671-2822-24b7-3c22-b4abbd6a6b37@lechnology.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 06, 2019 at 01:41:42PM -0500, David Lechner wrote:
-> On 10/6/19 11:03 AM, William Breathitt Gray wrote:
-> > Count data is now always represented as an unsigned integer, while
-> > Signal data is either SIGNAL_LOW or SIGNAL_HIGH.
-> > 
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > ---
-> >   Documentation/driver-api/generic-counter.rst | 22 +++++++-------------
-> >   1 file changed, 8 insertions(+), 14 deletions(-)
-> > 
-> > diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
-> > index 8382f01a53e3..161652fc1025 100644
-> > --- a/Documentation/driver-api/generic-counter.rst
-> > +++ b/Documentation/driver-api/generic-counter.rst
-> > @@ -39,10 +39,7 @@ There are three core components to a counter:
-> >   COUNT
-> >   -----
-> >   A Count represents the count data for a set of Signals. The Generic
-> > -Counter interface provides the following available count data types:
-> > -
-> > -* COUNT_POSITION:
-> > -  Unsigned integer value representing position.
-> > +Counter interface represents the count data as an unsigned integer.
-> 
-> The previous patch looks like it is using unsigned long instead of
-> unsigned integer.
+Changes in v5:
+ - Add changes and additions to generic-counter.rst to clarify theory
+   and use of the Generic Counter interface
+ - Fix typo in counter.h action_get description comment
 
-Thank you for the heads-up. Actually, this section of the
-documentation describes the theoretical representation of counter
-devices, as opposed to the in-kernel implementation of the Generic
-Counter interface. As such, the phrase "unsigned integer" here means a
-natural number and not the C language "unsigned int" data type.
+The changes in this patchset will not affect the userspace interface.
+Rather, these changes are intended to simplify the kernelspace Counter
+callbacks for counter device driver authors.
 
-I'm going to update this line to state that clearer since it can be
-easily confused in the context of the rest of the document.
+The following main changes are proposed:
 
-William Breathitt Gray
+* Retire the opaque counter_count_read_value/counter_count_write_value
+  structures and simply represent count data as an unsigned integer.
+
+* Retire the opaque counter_signal_read_value structure and represent
+  Signal data as a counter_signal_value enum.
+
+These changes should reduce some complexity and code in the use and
+implementation of the count_read, count_write, and signal_read
+callbacks.
+
+The opaque structures for Count data and Signal data were introduced
+originally in anticipation of supporting various representations of
+counter data (e.g. arbitrary-precision tallies, floating-point spherical
+coordinate positions, etc). However, with the counter device drivers
+that have appeared, it's become apparent that utilizing opaque
+structures in kernelspace is not the best approach to take.
+
+I believe it is best to let userspace applications decide how to
+interpret the count data they receive. There are a couple of reasons why
+it would be good to do so:
+
+* Users use their devices in unexpected ways.
+
+  For example, a quadrature encoder counter device is typically used to
+  keep track of the position of a motor, but a user could set the device
+  in a pulse-direction mode and instead use it to count sporadic rising
+  edges from an arbitrary signal line unrelated to positioning. Users
+  should have the freedom to decide what their data represents.
+
+* Most counter devices represent data as unsigned integers anyway.
+
+  For example, whether the device is a tally counter or position
+  counter, the count data is represented to the user as an unsigned
+  integer value. So specifying that one device is representing tallies
+  while the other specifies positions does not provide much utility from
+  an interface perspective.
+
+For these reasons, the count_read and count_write callbacks have been
+redefined to pass count data directly as unsigned long instead of passed
+via opaque structures:
+
+        count_read(struct counter_device *counter,
+                   struct counter_count *count, unsigned long *val);
+        count_write(struct counter_device *counter,
+                    struct counter_count *count, unsigned long val);
+
+Similarly, the signal_read is redefined to pass Signal data directly as
+a counter_signal_value enum instead of via an opaque structure:
+
+        signal_read(struct counter_device *counter,
+                    struct counter_signal *signal,
+                    enum counter_signal_value *val);
+
+The counter_signal_value enum is simply the counter_signal_level enum
+redefined to remove the references to the Signal data "level" data type.
+
+William Breathitt Gray (3):
+  counter: Simplify the count_read and count_write callbacks
+  docs: driver-api: generic-counter: Update Count and Signal data types
+  counter: Fix typo in action_get description
+
+ Documentation/driver-api/generic-counter.rst | 162 +++++++++++--------
+ drivers/counter/104-quad-8.c                 |  33 ++--
+ drivers/counter/counter.c                    | 101 ++----------
+ drivers/counter/ftm-quaddec.c                |  14 +-
+ drivers/counter/stm32-lptimer-cnt.c          |   5 +-
+ drivers/counter/stm32-timer-cnt.c            |  17 +-
+ drivers/counter/ti-eqep.c                    |  19 +--
+ include/linux/counter.h                      |  76 ++-------
+ 8 files changed, 144 insertions(+), 283 deletions(-)
+
+
+base-commit: 0c3aa63a842d84990bd02622f2fa50d2bd33c652
+prerequisite-patch-id: ebe284609b3db8d4130ea2915f7f7b185c743a70
+prerequisite-patch-id: cbe857759f10d875690df125d18bc04f585ac7c9
+prerequisite-patch-id: 21f2660dc88627387ee4666d08044c63dd961dae
+-- 
+2.23.0
+

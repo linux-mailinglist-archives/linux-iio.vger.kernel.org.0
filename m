@@ -2,120 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26E8FCDC65
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 09:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A7DCCDCA1
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 09:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727126AbfJGHb2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Oct 2019 03:31:28 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:37464 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726960AbfJGHb1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Oct 2019 03:31:27 -0400
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x977RFgY014524;
-        Mon, 7 Oct 2019 09:31:14 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=m0wVzPPVZI5zTvNlb362SfLUY82UVnwf8TmB+ThZU2M=;
- b=qA1R/5kuWiNjTVm2AL6IlnTYnyJD3Jpq5RZNMd0yJMMachZ1XA10EeBMVtdcM/t2aI66
- Ou3lY80QKehIIsesQzTdbHF1WCMwSoTGX1wrsppreGXDtT2MroJpcDwGob75bEce9LAm
- HZFHCSyFuTprnfrqMSlhsKd4YYFIF1CC+dPM0X59g8LfSKuxwhj5+t17pyQpMnwQbsDB
- npQB7thmZeJBzSFn3zvSmX36l45BSC57YK7Re1JlWOdiTqfo9k7MYbpLLT4F94+Z5c0S
- qKlHIT0OICM4neM9QAUb1cOy4AdMq+EHg/kJvjxnx7icHimVFuMfpCIdNBPf/VbZiA94 yQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx08-00178001.pphosted.com with ESMTP id 2vej2p0rsb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 07 Oct 2019 09:31:14 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 5D083100038;
-        Mon,  7 Oct 2019 09:31:12 +0200 (CEST)
-Received: from Webmail-eu.st.com (Safex1hubcas24.st.com [10.75.90.94])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4717C2AECA9;
-        Mon,  7 Oct 2019 09:31:12 +0200 (CEST)
-Received: from SAFEX1HUBCAS23.st.com (10.75.90.46) by Safex1hubcas24.st.com
- (10.75.90.94) with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 7 Oct 2019
- 09:31:12 +0200
-Received: from [10.48.0.192] (10.48.0.192) by webmail-ga.st.com (10.75.90.48)
- with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 7 Oct 2019 09:31:11
- +0200
-Subject: Re: [PATCH] counter: stm32: clean up indentation issue
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-CC:     Colin King <colin.king@canonical.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        "Alexandre Torgue" <alexandre.torgue@st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20190925095126.20219-1-colin.king@canonical.com>
- <20191005173004.GA7431@icarus>
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-Message-ID: <792dd11a-ae78-c4a3-834f-b1f67a750a14@st.com>
-Date:   Mon, 7 Oct 2019 09:31:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727262AbfJGHyy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Oct 2019 03:54:54 -0400
+Received: from first.geanix.com ([116.203.34.67]:47774 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727028AbfJGHyy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Oct 2019 03:54:54 -0400
+Received: from [192.168.100.95] (unknown [95.138.208.137])
+        by first.geanix.com (Postfix) with ESMTPSA id 1EA8850530;
+        Mon,  7 Oct 2019 07:53:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1570434810; bh=g5bJGUK8qhU+Z4h6XAfKFU+TWpdB+U4AVeVasLwJgHM=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=M+hgdBKpW1GBNkoKB4b+PlV1y4d9wo+IpLVreCqORE6lGAwJYf7MszEAjfPPR/Inm
+         1TXcAoAV+fHgxhupoMhVrTT92JUyMDMctvGhDykeZsKUArmgcTY/BG4D3+XXpvAcoy
+         m+wloY4QBgS5olHFRxFJhpqguepa7mcRh4oR+ig+jqAqpuOoG6BTWaMd2knoUweTos
+         oH7Nxd8br/IllD2v27Ho1H2VPYHrSejMzc15f8MZb2GUQlKS4Vaw1AEhdANiXk4/Wd
+         OpDi7AEa982zFUoRLYzVvhPyBzcv2hvrAh1uw7FTUBFp4If3vpQLycDd5IxjMQ1k+b
+         23Eu/ubjz6HjQ==
+Subject: Re: [PATCH 01/13] iio: imu: st_lsm6dsx: use st_lsm6dsx_read_locked in
+ st_lsm6dsx_report_motion_event
+To:     Lorenzo Bianconi <lorenzo@kernel.org>, jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, martin@geanix.com, rjones@gateworks.com,
+        lorenzo.bianconi@redhat.com, devicetree@vger.kernel.org
+References: <cover.1570367532.git.lorenzo@kernel.org>
+ <a837aedc32b5726e09b14ae6a883655576184869.1570367532.git.lorenzo@kernel.org>
+From:   Sean Nyekjaer <sean@geanix.com>
+Message-ID: <2d5ff3b9-903e-d258-79e4-cdc2d751319f@geanix.com>
+Date:   Mon, 7 Oct 2019 09:54:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20191005173004.GA7431@icarus>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+In-Reply-To: <a837aedc32b5726e09b14ae6a883655576184869.1570367532.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US-large
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.48.0.192]
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
- definitions=2019-10-07_01:2019-10-03,2019-10-07 signatures=0
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF autolearn=disabled
+        version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on b8b5098bc1bc
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/5/19 7:30 PM, William Breathitt Gray wrote:
-> On Wed, Sep 25, 2019 at 10:51:26AM +0100, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> There is an if statement that is indented one level too deeply,
->> remove the extraneous tabs.
->>
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/counter/stm32-timer-cnt.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
->> index 644ba18a72ad..613dcccf79e1 100644
->> --- a/drivers/counter/stm32-timer-cnt.c
->> +++ b/drivers/counter/stm32-timer-cnt.c
->> @@ -219,8 +219,8 @@ static ssize_t stm32_count_enable_write(struct counter_device *counter,
->>  
->>  	if (enable) {
->>  		regmap_read(priv->regmap, TIM_CR1, &cr1);
->> -			if (!(cr1 & TIM_CR1_CEN))
->> -				clk_enable(priv->clk);
->> +		if (!(cr1 & TIM_CR1_CEN))
->> +			clk_enable(priv->clk);
->>  
->>  		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
->>  				   TIM_CR1_CEN);
->> -- 
->> 2.20.1
-> 
-> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> 
-> Fabrice,
-> 
-> I noticed the TIM_CR1_CEN check is happening before the
-> regmap_update_bits call for the enable path, while the disable path does
-> the check after. Is this logic is correct.
 
-Hi  William,
 
-In the disable path, things are done in the reverse order, purpose is to:
-- enable the clock before enabling the counter (CEN)
-- disable the clock after the counter has been disabled
-Current code also takes care of balancing clock enable/disable calls.
-
-BR,
-Fabrice
+On 06/10/2019 15.21, Lorenzo Bianconi wrote:
+> Rely on st_lsm6dsx_read_locked in st_lsm6dsx_report_motion_event since
+> it can run concurrently with sensor hub configuration. Move event
+> related code in st_lsm6dsx_report_motion_event
 > 
-> William Breathitt Gray
+> Fixes: 1aabad1fb5e9 ("iio: imu: st_lsm6dsx: add motion report function and call from interrupt")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Tested-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+>   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 34 ++++++++++++--------
+>   1 file changed, 20 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 8a813ddba19c..df270905f21d 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1757,10 +1757,23 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+>   	return iio_dev;
+>   }
+>   
+> -static void st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw, int data)
+> +static bool
+> +st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
+>   {
+> -	s64 timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+> +	const struct st_lsm6dsx_event_settings *event_settings;
+> +	int err, data;
+> +	s64 timestamp;
+>   
+> +	if (!hw->enable_event)
+> +		return false;
+> +
+> +	event_settings = &hw->settings->event_settings;
+> +	err = st_lsm6dsx_read_locked(hw, event_settings->wakeup_src_reg,
+> +				     &data, sizeof(data));
+> +	if (err < 0)
+> +		return false;
+> +
+> +	timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+>   	if ((data & hw->settings->event_settings.wakeup_src_z_mask) &&
+>   	    (hw->enable_event & BIT(IIO_MOD_Z)))
+>   		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
+> @@ -1790,30 +1803,23 @@ static void st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw, int data)
+>   						  IIO_EV_TYPE_THRESH,
+>   						  IIO_EV_DIR_EITHER),
+>   						  timestamp);
+> +
+> +	return data & event_settings->wakeup_src_status_mask;
+>   }
+>   
+>   static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+>   {
+>   	struct st_lsm6dsx_hw *hw = private;
+> +	bool event;
+>   	int count;
+> -	int data, err;
+> -
+> -	if (hw->enable_event) {
+> -		err = regmap_read(hw->regmap,
+> -				  hw->settings->event_settings.wakeup_src_reg,
+> -				  &data);
+> -		if (err < 0)
+> -			return IRQ_NONE;
+>   
+> -		if (data & hw->settings->event_settings.wakeup_src_status_mask)
+> -			st_lsm6dsx_report_motion_event(hw, data);
+> -	}
+> +	event = st_lsm6dsx_report_motion_event(hw);
+>   
+>   	mutex_lock(&hw->fifo_lock);
+>   	count = hw->settings->fifo_ops.read_fifo(hw);
+>   	mutex_unlock(&hw->fifo_lock);
+>   
+> -	return count ? IRQ_HANDLED : IRQ_NONE;
+> +	return count || event ? IRQ_HANDLED : IRQ_NONE;
+>   }
+>   
+>   static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
 > 

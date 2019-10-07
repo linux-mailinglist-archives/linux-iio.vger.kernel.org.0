@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EF74CDE8F
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 12:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EA00CDE95
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 12:01:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727290AbfJGKAH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 7 Oct 2019 06:00:07 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:53223 "EHLO
-        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727262AbfJGKAH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Oct 2019 06:00:07 -0400
+        id S1727527AbfJGKB0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 7 Oct 2019 06:01:26 -0400
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:40943 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726010AbfJGKB0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Oct 2019 06:01:26 -0400
 X-Originating-IP: 86.250.200.211
 Received: from xps13 (lfbn-1-17395-211.w86-250.abo.wanadoo.fr [86.250.200.211])
         (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 27EC7E0012;
-        Mon,  7 Oct 2019 10:00:02 +0000 (UTC)
-Date:   Mon, 7 Oct 2019 12:00:01 +0200
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 8621920010;
+        Mon,  7 Oct 2019 10:01:23 +0000 (UTC)
+Date:   Mon, 7 Oct 2019 12:01:22 +0200
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Hartmut Knaack <knaack.h@gmx.de>,
@@ -27,13 +27,13 @@ Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 1/7] iio: adc: max1027: Add debugfs register read
- support
-Message-ID: <20191007120001.61c8ef71@xps13>
-In-Reply-To: <20191006110424.7781d99d@archlinux>
+Subject: Re: [PATCH v2 2/7] iio: adc: max1027: Make it optional to use
+ interrupts
+Message-ID: <20191007120122.6d41532f@xps13>
+In-Reply-To: <20191006111837.33fdfe25@archlinux>
 References: <20191003173401.16343-1-miquel.raynal@bootlin.com>
-        <20191003173401.16343-2-miquel.raynal@bootlin.com>
-        <20191006110424.7781d99d@archlinux>
+        <20191003173401.16343-3-miquel.raynal@bootlin.com>
+        <20191006111837.33fdfe25@archlinux>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -46,42 +46,32 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Jonathan,
 
-Jonathan Cameron <jic23@kernel.org> wrote on Sun, 6 Oct 2019 11:04:24
+Jonathan Cameron <jic23@kernel.org> wrote on Sun, 6 Oct 2019 11:18:37
 +0100:
 
-> On Thu,  3 Oct 2019 19:33:55 +0200
+> On Thu,  3 Oct 2019 19:33:56 +0200
 > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 > 
-> > Until now, only write operations were supported. Force two bytes read
-> > operation when reading from this register (might be wrong when reading
-> > the temperature, but will work with any other value).  
+> > The chip has a 'start conversion' and a 'end of conversion' pair of
+> > pins. They can be used but this is absolutely not mandatory as regular
+> > polling of the value is totally fine with the current internal
+> > clocking setup. Turn the interrupts optional and do not error out if
+> > they are not inquired in the device tree. This has the effect to
+> > prevent triggered buffers use though.
+> > 
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>  
 > 
-> That's worrying as comments go.  Just return an error on the temperature
-> register if it's going to do the wrong thing.
+> Hmm. I haven't looked a this in a great deal of depth but if we support
+> single channel reads it should be possible to allow the use of a
+> trigger from elsewhere.  Looks like a fair bit of new code would be needed
+> to support that though.  So perhaps this is a good first step.
+> 
+> It's a bit annoying that the hardware doesn't provide a EOC bit
+> anywhere in the registers.  That would have allowed us to be a bit
+> cleverer.
 
-Actually the debugfs_reg_access hook is supposedly stateless. When
-reading registers I don't know what I am reading because the "source" is
-selected during the write operation, so I have no reliable way to know
-what I am reading.
-
-I set the read length to 2 bytes because most of the "atomic"reads are
-two bytes and it allows us to test various commands directly from
-userspace and read meaningful values. This is a limitation as:
-* Voltage 'atomic' reads are 2 bytes
-* Temperature 'atomic' reads are 2 bytes but never come alone (usually
-  one voltage input of 2B will follow).
-* Any other 'condensed' input will be more than 2 bytes, ie. several
-  voltage values in one go.
-
-In any case, doing a software reset of the chip will turn it back
-into a working state no matter what was requested/read.
-
-For me, 2-byte reads is a "good enough" solution that will work with
-almost all the simplest ('atomic') SPI operations, but if you think
-limiting to 2-bytes access is a problem (right now there is only write
-access, which is kind of useless on its own) then let's drop the patch.
-But I wanted to contribute it because it really helped me during the
-development. 
+I totally agree. Actually, this chip does not support any 'register
+read', the only things we can read are measures (temperature/voltages).
 
 
 Thanks,

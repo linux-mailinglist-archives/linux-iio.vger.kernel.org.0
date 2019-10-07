@@ -2,85 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06CB5CDFAF
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 12:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B613ACE0C4
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 13:45:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727390AbfJGKwa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Oct 2019 06:52:30 -0400
-Received: from first.geanix.com ([116.203.34.67]:55614 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727345AbfJGKwa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 7 Oct 2019 06:52:30 -0400
-Received: from [192.168.100.95] (unknown [95.138.208.137])
-        by first.geanix.com (Postfix) with ESMTPSA id D3F8A5089E;
-        Mon,  7 Oct 2019 10:51:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1570445466; bh=IY+4RgioQxMyOvxxhDA8uq7gTwXBqdT684jdXdeS/10=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Trdxbg/NIYhujVu8Qst7xYMzRim4RISJI530zUbhgM2UEwcQTF4wm5DpNrSO++oPk
-         ClWSjGTsClx7Z2rNGokPU0LOamEDyaS3LPIXwRUEe6ULIndGTka3DGhkhJ6gxVvTtX
-         TTyzWzTd05ygHafsGID8c0CERyyWjXDJPYE0sPFQEyjdEy0v9NPZHupMsJVhbCi4HF
-         qqbsqPR06Oh23VsVXaR9rdXK6IKWll8jfquezT1ZmyFSLDDSGLYZnnJuBiFocHyDw5
-         uQOeAvVYl62Qf+Hqb6UEXgdejI3q5Gqs7QAaTLReKcX/Ss67+agMMM1qMZ9S1bIW88
-         zzTKM99FGqndA==
-Subject: Re: [BUG] iio: imu: st_lsm6dsx: read error when resuming from suspend
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>
-References: <128e9528-593f-271b-708f-ef197c08f3bb@geanix.com>
- <20191007103409.GB3192@localhost.localdomain>
-From:   Sean Nyekjaer <sean@geanix.com>
-Message-ID: <6c48cab2-f674-7565-ad2d-5467d68ac84b@geanix.com>
-Date:   Mon, 7 Oct 2019 12:51:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1727511AbfJGLo7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 7 Oct 2019 07:44:59 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3263 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727467AbfJGLo7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Oct 2019 07:44:59 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 3237FB0442398126F672;
+        Mon,  7 Oct 2019 19:44:56 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Mon, 7 Oct 2019
+ 19:44:54 +0800
+Date:   Mon, 7 Oct 2019 12:44:43 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        <devicetree@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 2/7] iio: adc: max1027: Make it optional to use
+ interrupts
+Message-ID: <20191007124443.00006082@huawei.com>
+In-Reply-To: <20191007120122.6d41532f@xps13>
+References: <20191003173401.16343-1-miquel.raynal@bootlin.com>
+        <20191003173401.16343-3-miquel.raynal@bootlin.com>
+        <20191006111837.33fdfe25@archlinux>
+        <20191007120122.6d41532f@xps13>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <20191007103409.GB3192@localhost.localdomain>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US-large
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF autolearn=disabled
-        version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on b8b5098bc1bc
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 7 Oct 2019 12:01:22 +0200
+Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+
+> Hi Jonathan,
+> 
+> Jonathan Cameron <jic23@kernel.org> wrote on Sun, 6 Oct 2019 11:18:37
+> +0100:
+> 
+> > On Thu,  3 Oct 2019 19:33:56 +0200
+> > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> >   
+> > > The chip has a 'start conversion' and a 'end of conversion' pair of
+> > > pins. They can be used but this is absolutely not mandatory as regular
+> > > polling of the value is totally fine with the current internal
+> > > clocking setup. Turn the interrupts optional and do not error out if
+> > > they are not inquired in the device tree. This has the effect to
+> > > prevent triggered buffers use though.
+> > > 
+> > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>    
+> > 
+> > Hmm. I haven't looked a this in a great deal of depth but if we support
+> > single channel reads it should be possible to allow the use of a
+> > trigger from elsewhere.  Looks like a fair bit of new code would be needed
+> > to support that though.  So perhaps this is a good first step.
+> > 
+> > It's a bit annoying that the hardware doesn't provide a EOC bit
+> > anywhere in the registers.  That would have allowed us to be a bit
+> > cleverer.  
+> 
+> I totally agree. Actually, this chip does not support any 'register
+> read', the only things we can read are measures (temperature/voltages).
+
+Ah. Good point.  Shall we polled reading of channels which is what
+I meant ;)
+
+Jonathan
+
+> 
+> 
+> Thanks,
+> Miquèl
 
 
-On 07/10/2019 12.34, Lorenzo Bianconi wrote:
->> Hi Lorenzo,
->>
-> 
-> Hi Sean,
-> 
->> I'm seeing this error sometimes when resuming:
->> st_lsm6dsx_i2c 1-006a: failed to read fifo status (err=-13)
-> 
-> it seems the error is directly reported by regmap/i2c driver you are running,
-> it is not related to the last series I sent.
-> 
-No not related :) The same error with or without the series ;)
->>
->> I doesn't matter if it's the ism330 or another wake source.
->> I have not enabled fifo readings.
->>
->> I have tried the "[PATCH 00/13] various st_lsm6dsx fixes and missing bitsâ€‹"
->> same results.
->>
->> The regmap_read in st_lsm6dsx_handler_thread for the event seems to be
->> reading something as the event is reported correctly.
->>
->> Later events are reported correctly...
-> 
-> So IIUC the system just reports a sporadic error sometimes during resume but it
-> is able to recover, right?
-> Yes, it's sporadic and suspend/resume sometimes does this... and we are 
-able to recover.
-I just find it weird that regmap_read goes well and the next call to 
-regmap_bulk_read (st_lsm6dsx_read_locked) gets "permission denied".
-
-So all in all, just a heads up. Maybe we can ignore it for now :)
-
-/Sean

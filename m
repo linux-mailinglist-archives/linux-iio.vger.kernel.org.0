@@ -2,67 +2,180 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DD86CDE0D
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 11:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2033CDE12
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 11:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727402AbfJGJMU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Oct 2019 05:12:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53370 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727376AbfJGJMU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 7 Oct 2019 05:12:20 -0400
-Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CA81B2084D;
-        Mon,  7 Oct 2019 09:12:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570439539;
-        bh=Jjq736VNp6/LpTnoA7jgPOzEiPdMtwd7CFLx0qcGxT4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rOLQ9ggwtFVYIovyGj1+vOqL/kg0CSmyBGyg8FY0uyctUMGoutAiVRpyPTVkubx55
-         kksYlcYscqEmxyk1BQF9PEaXlyugEcoSz+22TAVGPI9Z3EG20TXWa2St77IKqG5Km2
-         CGjGwAQr2lF9UiEmTm/KExAo/kPBkHiyYWzS6aWg=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, martin@geanix.com,
-        lorenzo.bianconi@redhat.com
-Subject: [PATCH] iio: imu: st_lsm6dsx: fix gyro gain definitions for LSM9DS1
-Date:   Mon,  7 Oct 2019 11:12:13 +0200
-Message-Id: <69845a7020f584e07cba80c0a1f2ecddc4268d3a.1570439396.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1727290AbfJGJQM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Oct 2019 05:16:12 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:34998 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727262AbfJGJQM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Oct 2019 05:16:12 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id BF43A33FB8834C0A5477;
+        Mon,  7 Oct 2019 17:16:10 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS412-HUB.china.huawei.com
+ (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Mon, 7 Oct 2019
+ 17:16:05 +0800
+Date:   Mon, 7 Oct 2019 10:15:55 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     Felipe Balbi <felipe.balbi@linux.intel.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: add support for Intel ADC
+Message-ID: <20191007101555.000028e2@huawei.com>
+In-Reply-To: <87wodlqajd.fsf@gmail.com>
+References: <20190916103400.321981-1-felipe.balbi@linux.intel.com>
+        <20190917143800.000046c1@huawei.com>
+        <87lfuaxaz9.fsf@gmail.com>
+        <20191003142309.000062ca@huawei.com>
+        <87wodlqajd.fsf@gmail.com>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix typos in gyro gain definitions for LSM9DS1 sensor
+On Fri, 4 Oct 2019 09:39:34 +0300
+Felipe Balbi <felipe.balbi@linux.intel.com> wrote:
 
-Fixes: 52f4b1f19679 ("iio: imu: st_lsm6dsx: add support for accel/gyro unit of lsm9ds1")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> Hi,
+> 
+> Jonathan Cameron <jonathan.cameron@huawei.com> writes:
+> >> >> +static int intel_adc_read_raw(struct iio_dev *iio,
+> >> >> +		struct iio_chan_spec const *channel, int *val, int *val2,
+> >> >> +		long mask)
+> >> >> +{
+> >> >> +	struct intel_adc *adc = iio_priv(iio);
+> >> >> +	int shift;
+> >> >> +	int ret;
+> >> >> +
+> >> >> +	switch (mask) {
+> >> >> +	case IIO_CHAN_INFO_RAW:
+> >> >> +		shift = channel->scan_type.shift;
+> >> >> +
+> >> >> +		ret = iio_device_claim_direct_mode(iio);
+> >> >> +		if (ret)
+> >> >> +			break;
+> >> >> +
+> >> >> +		intel_adc_enable(adc);
+> >> >> +
+> >> >> +		ret = intel_adc_single_channel_conversion(adc, channel, val);
+> >> >> +		if (ret) {
+> >> >> +			intel_adc_disable(adc);
+> >> >> +			iio_device_release_direct_mode(iio);
+> >> >> +			break;    
+> >> >
+> >> > nitpick (feel free to ignore).
+> >> > It might be nice to pull this case block as a separate function, then you
+> >> > could cleanly use goto to do the unwinding.    
+> >> 
+> >> you mean something like below:
+> >> 
+> >> static int intel_adc_read_info_raw(...)
+> >> {
+> >> 	....
+> >> }
+> >> 
+> >> static int intel_adc_read_raw(...)
+> >> {
+> >> 	switch (mask) {
+> >>         case IIO_CHAN_INFO_RAW:
+> >>         	ret = intel_adc_read_info_raw(...);
+> >>                 break;
+> >>         default:
+> >>         	ret = -EINVAL;
+> >>         }
+> >> }
+> >> 
+> >> ??  
+> >
+> > Yes, exactly that.  
+> 
+> I'll change it, no worries.
+> 
+> >> >> +	ret = pci_alloc_irq_vectors(pci, 1, 1, PCI_IRQ_ALL_TYPES);
+> >> >> +	if (ret < 0)
+> >> >> +		return ret;
+> >> >> +
+> >> >> +	irq = pci_irq_vector(pci, 0);
+> >> >> +	ret = devm_request_irq(&pci->dev, irq, intel_adc_irq,
+> >> >> +			IRQF_ONESHOT | IRQF_SHARED | IRQF_TRIGGER_RISING,
+> >> >> +			"intel-adc", adc);    
+> >> >
+> >> > Requesting the interrupt only after exposing userspace and in kernel
+> >> > interfaces seems liable to cause problem.    
+> >> 
+> >> It goes the other way around, rather. If I request the interrupt before,
+> >> then I could get interrupts before IIO subsystem knows about the device,
+> >> no?  
+> >
+> > Only if your device comes up with interrupts already enabled.  Normally they
+> > only turn on in response to some userspace interaction, such as enabling
+> > a threshold. Unless there is a hardware limitation, then at startup no
+> > such interrupt sources should be enabled.  
+> 
+> We have FW that _may_ use the hardware and leave it at unpredictable
+> state. There is a potential for irq status bits being left over by
+> FW.
+> 
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 876f59cedc8b..e8c3922f1b59 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -158,9 +158,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 					.addr = 0x10,
- 					.mask = GENMASK(4, 3),
- 				},
--				.fs_avl[0] = {  IIO_DEGREE_TO_RAD(245), 0x0 },
--				.fs_avl[1] = {  IIO_DEGREE_TO_RAD(500), 0x1 },
--				.fs_avl[2] = { IIO_DEGREE_TO_RAD(2000), 0x3 },
-+				.fs_avl[0] = {  IIO_DEGREE_TO_RAD(8750), 0x0 },
-+				.fs_avl[1] = { IIO_DEGREE_TO_RAD(17500), 0x1 },
-+				.fs_avl[2] = { IIO_DEGREE_TO_RAD(70000), 0x3 },
- 			},
- 		},
- 		.irq_config = {
--- 
-2.21.0
+If it is only status bits rather than actually leaving the interrupt enabled
+I'd do whatever actions are needed to clear those so you are in a
+clean state when the driver loads (basically do the equivalent of what
+you would get if there was a "soft reset" function.
+
+Unpredictable is nasty! :)
+
+Jonathan
+
+
+> 
+> >> >> +	if (ret)
+> >> >> +		goto err;
+> >> >> +
+> >> >> +	pm_runtime_set_autosuspend_delay(&pci->dev, 1000);
+> >> >> +	pm_runtime_use_autosuspend(&pci->dev);
+> >> >> +	pm_runtime_put_autosuspend(&pci->dev);
+> >> >> +	pm_runtime_allow(&pci->dev);
+> >> >> +
+> >> >> +	return 0;
+> >> >> +
+> >> >> +err:
+> >> >> +	pci_free_irq_vectors(pci);
+> >> >> +	return ret;
+> >> >> +}
+> >> >> +
+> >> >> +static void intel_adc_remove(struct pci_dev *pci)
+> >> >> +{
+> >> >> +	pm_runtime_forbid(&pci->dev);
+> >> >> +	pm_runtime_get_noresume(&pci->dev);
+> >> >> +
+> >> >> +	pci_free_irq_vectors(pci);    
+> >> >
+> >> > There is a theoretical race here.  We have freed the irq vectors
+> >> > before removing the userspace and in kernel interfaces.    
+> >> 
+> >> There's no way to sort this out, though. Is there? Apart from switching
+> >> away from device managed resources.  
+> >
+> > There is the rather helpful,
+> >
+> > devm_add_action_or_reset() that allows you to define additional cleanup
+> > actions to be automatically run.  It's either that, or stop using
+> > device managed resources from the point at which something that isn't
+> > device managed occurs in probe.  
+> 
+> I'll have a look, thanks.
+> 
+
 

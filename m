@@ -2,37 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2033CDE12
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 11:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C9C2CDE23
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 11:21:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727290AbfJGJQM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Oct 2019 05:16:12 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:34998 "EHLO huawei.com"
+        id S1727376AbfJGJVZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Oct 2019 05:21:25 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3214 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727262AbfJGJQM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 7 Oct 2019 05:16:12 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id BF43A33FB8834C0A5477;
-        Mon,  7 Oct 2019 17:16:10 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Mon, 7 Oct 2019
- 17:16:05 +0800
-Date:   Mon, 7 Oct 2019 10:15:55 +0100
+        id S1727278AbfJGJVZ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 7 Oct 2019 05:21:25 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id EE3E5EBCD1E71597C0C;
+        Mon,  7 Oct 2019 17:21:21 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS407-HUB.china.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Mon, 7 Oct 2019
+ 17:21:19 +0800
+Date:   Mon, 7 Oct 2019 10:21:07 +0100
 From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Felipe Balbi <felipe.balbi@linux.intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
 CC:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: adc: add support for Intel ADC
-Message-ID: <20191007101555.000028e2@huawei.com>
-In-Reply-To: <87wodlqajd.fsf@gmail.com>
-References: <20190916103400.321981-1-felipe.balbi@linux.intel.com>
-        <20190917143800.000046c1@huawei.com>
-        <87lfuaxaz9.fsf@gmail.com>
-        <20191003142309.000062ca@huawei.com>
-        <87wodlqajd.fsf@gmail.com>
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH] iio: imu: adis16480: clean up a condition
+Message-ID: <20191007102107.000067b6@huawei.com>
+In-Reply-To: <20191006181439.GU22609@kadam>
+References: <20190926081016.GA2332@mwanda>
+        <9e40c550310d6f30e6481329e01061beb474bc33.camel@analog.com>
+        <20190926113630.GF27389@kadam>
+        <20191006095133.24fb89be@archlinux>
+        <20191006181439.GU22609@kadam>
 Organization: Huawei
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -45,137 +50,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 4 Oct 2019 09:39:34 +0300
-Felipe Balbi <felipe.balbi@linux.intel.com> wrote:
+On Sun, 6 Oct 2019 21:14:40 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> Hi,
+> On Sun, Oct 06, 2019 at 09:51:33AM +0100, Jonathan Cameron wrote:
+> > On Thu, 26 Sep 2019 14:36:30 +0300
+> > Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> >   
+> > > On Thu, Sep 26, 2019 at 11:06:39AM +0000, Ardelean, Alexandru wrote:  
+> > > > On Thu, 2019-09-26 at 11:10 +0300, Dan Carpenter wrote:    
+> > > > > [External]
+> > > > > 
+> > > > > The "t" variable is unsigned so it can't be less than zero.  We really
+> > > > > are just trying to prevent divide by zero bugs so just checking against
+> > > > > zero is sufficient.  
+> > 
+> > I'm not sure that true.  It if were signed we'd be detecting that the
+> > input from userspace was negative.  
 > 
-> Jonathan Cameron <jonathan.cameron@huawei.com> writes:
-> >> >> +static int intel_adc_read_raw(struct iio_dev *iio,
-> >> >> +		struct iio_chan_spec const *channel, int *val, int *val2,
-> >> >> +		long mask)
-> >> >> +{
-> >> >> +	struct intel_adc *adc = iio_priv(iio);
-> >> >> +	int shift;
-> >> >> +	int ret;
-> >> >> +
-> >> >> +	switch (mask) {
-> >> >> +	case IIO_CHAN_INFO_RAW:
-> >> >> +		shift = channel->scan_type.shift;
-> >> >> +
-> >> >> +		ret = iio_device_claim_direct_mode(iio);
-> >> >> +		if (ret)
-> >> >> +			break;
-> >> >> +
-> >> >> +		intel_adc_enable(adc);
-> >> >> +
-> >> >> +		ret = intel_adc_single_channel_conversion(adc, channel, val);
-> >> >> +		if (ret) {
-> >> >> +			intel_adc_disable(adc);
-> >> >> +			iio_device_release_direct_mode(iio);
-> >> >> +			break;    
-> >> >
-> >> > nitpick (feel free to ignore).
-> >> > It might be nice to pull this case block as a separate function, then you
-> >> > could cleanly use goto to do the unwinding.    
-> >> 
-> >> you mean something like below:
-> >> 
-> >> static int intel_adc_read_info_raw(...)
-> >> {
-> >> 	....
-> >> }
-> >> 
-> >> static int intel_adc_read_raw(...)
-> >> {
-> >> 	switch (mask) {
-> >>         case IIO_CHAN_INFO_RAW:
-> >>         	ret = intel_adc_read_info_raw(...);
-> >>                 break;
-> >>         default:
-> >>         	ret = -EINVAL;
-> >>         }
-> >> }
-> >> 
-> >> ??  
-> >
-> > Yes, exactly that.  
+> It does a really bad job of that though so it raises more questions than
+> answers.  Maybe just one of the parameters is negative or maybe the
+> multiply or the addition overflowed?  Should scenarios those be checked?
 > 
-> I'll change it, no worries.
-> 
-> >> >> +	ret = pci_alloc_irq_vectors(pci, 1, 1, PCI_IRQ_ALL_TYPES);
-> >> >> +	if (ret < 0)
-> >> >> +		return ret;
-> >> >> +
-> >> >> +	irq = pci_irq_vector(pci, 0);
-> >> >> +	ret = devm_request_irq(&pci->dev, irq, intel_adc_irq,
-> >> >> +			IRQF_ONESHOT | IRQF_SHARED | IRQF_TRIGGER_RISING,
-> >> >> +			"intel-adc", adc);    
-> >> >
-> >> > Requesting the interrupt only after exposing userspace and in kernel
-> >> > interfaces seems liable to cause problem.    
-> >> 
-> >> It goes the other way around, rather. If I request the interrupt before,
-> >> then I could get interrupts before IIO subsystem knows about the device,
-> >> no?  
-> >
-> > Only if your device comes up with interrupts already enabled.  Normally they
-> > only turn on in response to some userspace interaction, such as enabling
-> > a threshold. Unless there is a hardware limitation, then at startup no
-> > such interrupt sources should be enabled.  
-> 
-> We have FW that _may_ use the hardware and leave it at unpredictable
-> state. There is a potential for irq status bits being left over by
-> FW.
-> 
+> It turns out none of those situations matter, only divide by zero needs
+> to be checked.
 
-If it is only status bits rather than actually leaving the interrupt enabled
-I'd do whatever actions are needed to clear those so you are in a
-clean state when the driver loads (basically do the equivalent of what
-you would get if there was a "soft reset" function.
+It isn't being nearly paranoid enough. Either val or val2 being
+negative is a reason to fault out.  Divide by zero needs handling after
+that.  Obviously divide by zero is the only one that causes a crash but
+negatives are going to cause rather 'unexpected' results.
 
-Unpredictable is nasty! :)
+What fun.
 
 Jonathan
-
-
-> 
-> >> >> +	if (ret)
-> >> >> +		goto err;
-> >> >> +
-> >> >> +	pm_runtime_set_autosuspend_delay(&pci->dev, 1000);
-> >> >> +	pm_runtime_use_autosuspend(&pci->dev);
-> >> >> +	pm_runtime_put_autosuspend(&pci->dev);
-> >> >> +	pm_runtime_allow(&pci->dev);
-> >> >> +
-> >> >> +	return 0;
-> >> >> +
-> >> >> +err:
-> >> >> +	pci_free_irq_vectors(pci);
-> >> >> +	return ret;
-> >> >> +}
-> >> >> +
-> >> >> +static void intel_adc_remove(struct pci_dev *pci)
-> >> >> +{
-> >> >> +	pm_runtime_forbid(&pci->dev);
-> >> >> +	pm_runtime_get_noresume(&pci->dev);
-> >> >> +
-> >> >> +	pci_free_irq_vectors(pci);    
-> >> >
-> >> > There is a theoretical race here.  We have freed the irq vectors
-> >> > before removing the userspace and in kernel interfaces.    
-> >> 
-> >> There's no way to sort this out, though. Is there? Apart from switching
-> >> away from device managed resources.  
-> >
-> > There is the rather helpful,
-> >
-> > devm_add_action_or_reset() that allows you to define additional cleanup
-> > actions to be automatically run.  It's either that, or stop using
-> > device managed resources from the point at which something that isn't
-> > device managed occurs in probe.  
-> 
-> I'll have a look, thanks.
-> 
-
 

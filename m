@@ -2,61 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AA87CDE64
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 11:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EF74CDE8F
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2019 12:00:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727455AbfJGJn4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Oct 2019 05:43:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58992 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727278AbfJGJnz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 7 Oct 2019 05:43:55 -0400
-Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1CE3021655;
-        Mon,  7 Oct 2019 09:43:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570441435;
-        bh=/1BlHJidn6YTk/N3hfexX/eOvjbULORrJ1LWvj8xVis=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2ZJrG4oeTqH5X3IbmKRZr1cNT2yIHgyeMd7R2Rfi46EFUHzavSR3M6nmbGzxa30uO
-         kfaXLBgeS7m/ixKjZD1YVImKyNtb1UpMiCC557XQroXOXPXwDa7JQf6qMjF8F/wFgW
-         jTiG16Zrobo+5vigQOmmtfliYYnHgQkobI/tGFIQ=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, martin@geanix.com,
-        lorenzo.bianconi@redhat.com, devicetree@vger.kernel.org
-Subject: [PATCH 2/2] dt-bindings: iio: imu: st_lsm6dsx: add lsm6ds0 device bindings
-Date:   Mon,  7 Oct 2019 11:43:38 +0200
-Message-Id: <86786d8de65eb1c2b16e8433aa673d217cc27dcd.1570441034.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1570441034.git.lorenzo@kernel.org>
-References: <cover.1570441034.git.lorenzo@kernel.org>
+        id S1727290AbfJGKAH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 7 Oct 2019 06:00:07 -0400
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:53223 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727262AbfJGKAH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Oct 2019 06:00:07 -0400
+X-Originating-IP: 86.250.200.211
+Received: from xps13 (lfbn-1-17395-211.w86-250.abo.wanadoo.fr [86.250.200.211])
+        (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 27EC7E0012;
+        Mon,  7 Oct 2019 10:00:02 +0000 (UTC)
+Date:   Mon, 7 Oct 2019 12:00:01 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 1/7] iio: adc: max1027: Add debugfs register read
+ support
+Message-ID: <20191007120001.61c8ef71@xps13>
+In-Reply-To: <20191006110424.7781d99d@archlinux>
+References: <20191003173401.16343-1-miquel.raynal@bootlin.com>
+        <20191003173401.16343-2-miquel.raynal@bootlin.com>
+        <20191006110424.7781d99d@archlinux>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt | 1 +
- 1 file changed, 1 insertion(+)
+Hi Jonathan,
 
-diff --git a/Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt b/Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt
-index 1a07d38c813f..fc018ecba086 100644
---- a/Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt
-+++ b/Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt
-@@ -14,6 +14,7 @@ Required properties:
-   "st,lsm6ds3tr-c"
-   "st,ism330dhcx"
-   "st,lsm9ds1-imu"
-+  "st,lsm6ds0"
- - reg: i2c address of the sensor / spi cs line
- 
- Optional properties:
--- 
-2.21.0
+Jonathan Cameron <jic23@kernel.org> wrote on Sun, 6 Oct 2019 11:04:24
++0100:
 
+> On Thu,  3 Oct 2019 19:33:55 +0200
+> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> 
+> > Until now, only write operations were supported. Force two bytes read
+> > operation when reading from this register (might be wrong when reading
+> > the temperature, but will work with any other value).  
+> 
+> That's worrying as comments go.  Just return an error on the temperature
+> register if it's going to do the wrong thing.
+
+Actually the debugfs_reg_access hook is supposedly stateless. When
+reading registers I don't know what I am reading because the "source" is
+selected during the write operation, so I have no reliable way to know
+what I am reading.
+
+I set the read length to 2 bytes because most of the "atomic"reads are
+two bytes and it allows us to test various commands directly from
+userspace and read meaningful values. This is a limitation as:
+* Voltage 'atomic' reads are 2 bytes
+* Temperature 'atomic' reads are 2 bytes but never come alone (usually
+  one voltage input of 2B will follow).
+* Any other 'condensed' input will be more than 2 bytes, ie. several
+  voltage values in one go.
+
+In any case, doing a software reset of the chip will turn it back
+into a working state no matter what was requested/read.
+
+For me, 2-byte reads is a "good enough" solution that will work with
+almost all the simplest ('atomic') SPI operations, but if you think
+limiting to 2-bytes access is a problem (right now there is only write
+access, which is kind of useless on its own) then let's drop the patch.
+But I wanted to contribute it because it really helped me during the
+development. 
+
+
+Thanks,
+Miquèl

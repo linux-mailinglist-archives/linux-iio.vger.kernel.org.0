@@ -2,148 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB753CFC1E
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Oct 2019 16:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 977BECFCA6
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Oct 2019 16:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726062AbfJHOPo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Oct 2019 10:15:44 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:55216 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725908AbfJHOPn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Oct 2019 10:15:43 -0400
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x98E7qGB000888;
-        Tue, 8 Oct 2019 10:15:34 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2vemxauuph-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Oct 2019 10:15:34 -0400
-Received: from m0167091.ppops.net (m0167091.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id x98EFXql007781;
-        Tue, 8 Oct 2019 10:15:33 -0400
-Received: from nam01-sn1-obe.outbound.protection.outlook.com (mail-sn1nam01lp2058.outbound.protection.outlook.com [104.47.32.58])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2vemxauupf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Oct 2019 10:15:33 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X27PJhLg2x/TvBLLUMSpg/H/kYskrk+zKJcwu/Q6YHgXR/zYGs9W9rcKM9e8ZnnihyifBijGcjRPAjqD7xhZUvfA3tU6ms8IyHqGK8Tjm7zW1xw9XEeHmT4ULEQ7kghjgbbkjr6VkAJZbGp2vPDEYcvyEiE0lmH9mNvovikHqd8nUcZ5jFL+wtOT6iV9psiCpYJMJe8Bfx2G5+9j/KLf0vLyW03GpC1GA+7hndOVhRNAT1GwSssQkQ+vcYxbMCzcbSL4t6cNTcI8lzpVILwAp25XZq0SmY0zhRrEsGrN0nADQNKoFagX+0CwLYlVfklYcbxKWFatU+4rAQ+XVtVYVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D+j5W4aa8ZIxg6wjrGXoqy1EmUhAiU0qfekwmLejwrE=;
- b=J+1rxG88t9zp7CoSxe6+N/PNKoHqFR4bo8qAy42EKTbhJPbUXsiCGirOETwIdTiPzcfw3QYLXzd1vCTs4TROwa71zH7nm/wislOI0/+oL2ITsENQvW+dVuH/Ng1T43Z6lMgkh62oVvpQLrWFojbdryK4+Ho7Vp/sgCS9Ib0T/TWi2ELlDm2IPxtTUCLlY9hiQD/cA5gr/DkA/XisaNVBUOo34QAlCQHdgWYh/zhmvSnjpaZoum8QNHxZLJoilskQ2fvHk/2Bv6s2r/fion/NGTO2mdNY3n89WUwb6sAIxwvPB4pQ11EGCA4bLpjsmRyM+flZOoYPeFgCWl8Cthv6vA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.71.25.57) smtp.rcpttodomain=kernel.org smtp.mailfrom=analog.com;
- dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D+j5W4aa8ZIxg6wjrGXoqy1EmUhAiU0qfekwmLejwrE=;
- b=SEXPW8vgPGarB+X7mnrwfZFMGEzyPzIyca7PoE0NxeErUL8ISE51AsXkhAjxF3rift3JzEcmJCl9e0VxK6ztsKGcL5WmPUtG6fmp+2IhEGCokql/alGrX41Ve1EL0+HvdZ4WhL2y+vrhooDJPeWu5J79pb32arriRlGIq75EV04=
-Received: from BL0PR03CA0004.namprd03.prod.outlook.com (2603:10b6:208:2d::17)
- by DM6PR03MB5323.namprd03.prod.outlook.com (2603:10b6:5:24b::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2327.23; Tue, 8 Oct
- 2019 14:15:32 +0000
-Received: from SN1NAM02FT062.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e44::208) by BL0PR03CA0004.outlook.office365.com
- (2603:10b6:208:2d::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2327.25 via Frontend
- Transport; Tue, 8 Oct 2019 14:15:32 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
-Received: from nwd2mta2.analog.com (137.71.25.57) by
- SN1NAM02FT062.mail.protection.outlook.com (10.152.72.208) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2284.25
- via Frontend Transport; Tue, 8 Oct 2019 14:15:31 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x98EFUXh013974
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Tue, 8 Oct 2019 07:15:31 -0700
-Received: from saturn.ad.analog.com (10.48.65.130) by
- NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
- 14.3.408.0; Tue, 8 Oct 2019 10:15:30 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <jonathan.cameron@huawei.com>,
-        <dan.carpenter@oracle.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2] iio: imu: adis16480: make sure provided frequency is positive
-Date:   Tue, 8 Oct 2019 17:15:37 +0300
-Message-ID: <20191008141537.31512-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726594AbfJHOoO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Oct 2019 10:44:14 -0400
+Received: from sender4-op-o14.zoho.com ([136.143.188.14]:17478 "EHLO
+        sender4-op-o14.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726057AbfJHOoO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Oct 2019 10:44:14 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1570545850; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=XRrV7pyCThipqclKUM2Ky5bqi/GNdFf7j9T/FxLOeVPVsDVbRQe9gJ99QnAdlOF5ahFAbNMx2wyPiJZt3OWackGod/nhYIO5r4bFJp/7Qm9cucOHXnob5W9fV2kHpu//OF7I/HDTXzYnLI4nZA4GqcVq3jcfO/PXmRRge0LftCU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1570545850; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=/JtGJI/LSl4yi67OOHIZfNwrdK+iHIc6JyX2j7v59Rs=; 
+        b=MVRxIK4yi0PF44rkH4ipNGFNDZTD5y2OU5Wm/ILPID/DENLFJlZc8MmeJSy4lLI+W0dxSHbLLuQar4t9YhIp8+cr6T1I6djRFglvURAAaMROmZ9FThRpDJNLbBYUNxnFUBwvhd7y9uWg1eVp9WgwuE6JC3Yfwj/AGeAxGNbD00c=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=dlrobertson.com;
+        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
+        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
+Received: from nessie (pool-100-15-144-194.washdc.fios.verizon.net [100.15.144.194]) by mx.zohomail.com
+        with SMTPS id 15705458495321015.360847600824; Tue, 8 Oct 2019 07:44:09 -0700 (PDT)
+Date:   Tue, 8 Oct 2019 14:29:46 +0000
+From:   Dan Robertson <dan@dlrobertson.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] iio: (bma400) add driver for the BMA400
+Message-ID: <20191008142946.GA7784@nessie>
+References: <20190925013941.20431-1-dan@dlrobertson.com>
+ <20190925013941.20431-2-dan@dlrobertson.com>
+ <20191006093754.61a12172@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(346002)(136003)(376002)(396003)(39860400002)(189003)(199004)(54534003)(126002)(8936002)(476003)(186003)(486006)(4326008)(50466002)(336012)(70206006)(70586007)(26005)(14444005)(246002)(8676002)(48376002)(106002)(54906003)(110136005)(107886003)(44832011)(50226002)(2616005)(478600001)(426003)(36756003)(316002)(7636002)(7696005)(305945005)(5660300002)(86362001)(47776003)(2870700001)(356004)(51416003)(1076003)(2906002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR03MB5323;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;MX:1;A:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 639f39a1-0b39-4d63-b724-08d74bf9fa9a
-X-MS-TrafficTypeDiagnostic: DM6PR03MB5323:
-X-Microsoft-Antispam-PRVS: <DM6PR03MB532332E4C202889C616EBCAAF99A0@DM6PR03MB5323.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
-X-Forefront-PRVS: 01842C458A
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mEF5UEMNixw3cdfz68yYFokPcpP2NVeeus2nA0Qc0JXSKMzEo5iwryB+uS7TLwyJ8UGrN7MLV6EK/GeLH7NgoDCkcYr9BlavD1gLVrJMEQ5KS6IID/LHafxEqgBjhTmC3OtrBqODR6HgIwUvRrTRsFdpoUGGY6QPmXVnrINnMJ5F/Bwd4gEcFu0jGf9lfudiZtEUFxVxBPjiU0x5KGOFqNmJm1Ee1udlX8yQm0EdoWKseavo+LpFG2qqXpKh7TaIjR7WaLmi4S9whSIJ25Z8OEFj7AToxQ+eOHSkcYs+JEIEofsF8MH7FZOjJBTXes7dOa6KO5W41/9sncZbwith9GXK6w+gQdgvVCsFewWDPdRq264w7x6DMQxPoRrdYJ6a0Dvi+Ke5xNvfEhFhbp8q+FReCfrz2CSt6AO1ECj8MsI=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2019 14:15:31.8296
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 639f39a1-0b39-4d63-b724-08d74bf9fa9a
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5323
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
- definitions=2019-10-08_05:2019-10-08,2019-10-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
- bulkscore=0 phishscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 mlxscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1908290000 definitions=main-1910080132
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="vkogqOf2sHV7VnPd"
+Content-Disposition: inline
+In-Reply-To: <20191006093754.61a12172@archlinux>
+User-Agent: Mutt/1.12.2 (2019-09-21)
+X-Zoho-Virus-Status: 1
+X-ZohoMailClient: External
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-It could happen that either `val` or `val2` [provided from userspace] is
-negative. In that case the computed frequency could get a weird value.
 
-Fix this by checking that neither of the 2 variables is negative, and check
-that the computed result is not-zero.
+--vkogqOf2sHV7VnPd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fixes: e4f959390178 ("iio: imu: adis16480 switch sampling frequency attr to core support")
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
+Jonathan,
 
-Changelog v1 -> v2:
-* also check that val & val2 are not negative (in addition to checking if
- 't' is zero
+Thanks for the review! I _think_ I've made all the changes you mentioned
+locally. I'll run some more tests and clean it up a bit before submitting the
+next patchset version.
 
- drivers/iio/imu/adis16480.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> So my first thought was that Bosch have been moderately good at keeping their
+> interfaces consistent across generations.  Seems not this time from
+> a quick look!
 
-diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
-index 01dae50e985b..0bec1fea823d 100644
---- a/drivers/iio/imu/adis16480.c
-+++ b/drivers/iio/imu/adis16480.c
-@@ -317,8 +317,11 @@ static int adis16480_set_freq(struct iio_dev *indio_dev, int val, int val2)
- 	struct adis16480 *st = iio_priv(indio_dev);
- 	unsigned int t, reg;
- 
-+	if (val < 0 || val2 < 0)
-+		return -EINVAL;
-+
- 	t =  val * 1000 + val2 / 1000;
--	if (t <= 0)
-+	if (t == 0)
- 		return -EINVAL;
- 
- 	/*
--- 
-2.20.1
+Originally I had hoped to extend the bma180 driver, but there did seem to be a
+reasonably large change in the interfaces. I also hope to add support for some
+of the newer features and SPI. I think it would be possible to merge the two
+drivers, but I think it would require pretty close to a complete overhaul of
+the bma180 driver. If this is something you'd like to explore, I can probably
+order a breakout board for the BMA180 and BMA220 and work on a way to create a
+driver that supports all three.
+
+> I'd also expect a modern driver to have DT bindings.  Might let that go if
+> it was being used with ACPI but neither is true here.
+
+Good catch. The DT bindings will be very simple in the initial version of the
+driver. I'll add the bindings and some documentation.
+
+> See the docs for struct iio_info -> read_avail.
+
+Nice! I missed this. This fits exactly what I needed.
+
+Cheers,
+
+Dan
+
+--vkogqOf2sHV7VnPd
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEF5dO2RaKc5C+SCJ9RcSmUsR+QqUFAl2cnVUACgkQRcSmUsR+
+QqXyLA//eu9Q/gGMKF3BqJN9CTa7BhBQaCeEjUJ9R9mD79eaF7uOXJ+wgUZwSFtk
+0VtFigIzrigNGiZX4h21kqGf5zKaYUEgQZXaA4UbRgEwDVGQXqe2p4SidEWRh90K
+KcD/AO4fh3DlXipMH7ZkAzfLDPnHqf27b0W759prlrgYYIYSjZUIk9YKoIVSHFlJ
+i8h6/nsvqMWMeGM7z1W4ZPU3KmSM9jr+mZXPKgdooan2cAKk0FuZwQSLXhnRDi8F
+55MaT1Syr9BwOKTDX8K4h4K9UOwo7cFPqo24Ihwa1vDT2bQLK8e4T8K/GbcybfQd
+cAvI5VOdS3f88DF0cGHNMrPLd25yzahu5SINI7oAqrUtXhKsoxg06AFR4R3UtH+u
+uYtQ37aqbz11awHmA9rJ5MSvoTv6KrA8wsEwu/gk+QGM6Hu5RBX1lCLcGCeNt766
+yfk88E6PtLkEofn1Mggeb+m3+jEHNl2ezy/jFjY2hytn269A0INgfWIz1YeEsmx1
+JJT8MnJvYRWG9X9Sumcss6ExnNqRY6XDtaS/iGQoeS53r+yDjezwdoKhmuFpsnXu
+l2ObWLSmoUN/S/E8jjoo8jWYlgfvB2IBl9P5krUq1U3ZI74DT0Ziwa9GsjwbtM2J
+8JXOFHYJXOAXfOaGsvzfgYC4ZK0UBr7fK9hLvud9r2bDJXn+o+4=
+=hT/h
+-----END PGP SIGNATURE-----
+
+--vkogqOf2sHV7VnPd--
 

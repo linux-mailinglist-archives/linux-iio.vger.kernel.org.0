@@ -2,53 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23648D262D
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2019 11:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FD7BD2AE0
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2019 15:17:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387653AbfJJJVx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Oct 2019 05:21:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43680 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387463AbfJJJVw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 10 Oct 2019 05:21:52 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F16362064A;
-        Thu, 10 Oct 2019 09:21:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570699312;
-        bh=3nYw7DfoHOxoDFq9RSLM6LNENfiiUWo//itoqzQW0wA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=15qrmQtTJjqf51pOD9sX0sWzO3e8bTfRXsS4mcVBpI+hi9kyo5Kgw73Mr80ymSzg3
-         3gNeJKShncwN/SEM7McJz4mH8+GfbLC139o5dmUA199Ot6No10bd+0/qnLtUBKvq1b
-         8IAOFrKTGoyf8/OrBng1MIgrzzvZo8pcc9Fpmx44=
-Date:   Thu, 10 Oct 2019 11:21:50 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PULL] 1st set of IIO fixes for the 5.4 cycle.
-Message-ID: <20191010092150.GA527071@kroah.com>
-References: <20191009193239.694ff6ab@archlinux>
+        id S2388305AbfJJNRt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Oct 2019 09:17:49 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:42719 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388299AbfJJNRp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Oct 2019 09:17:45 -0400
+Received: by mail-ot1-f66.google.com with SMTP id c10so4804847otd.9
+        for <linux-iio@vger.kernel.org>; Thu, 10 Oct 2019 06:17:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ub-ac-id.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=kbDD0ETnfb+9T5ky4afnuU19WL5B3TgSTtrvr8/78l52RfSJ/bD7cjcm8C45XsJ4wr
+         kY8zUv/ms1sLDr56E/0rqAcpldgbTirzVsO1TqrlTRt5AL5IhxusLfWbWkCQZqSDApog
+         xVZixZPZF5pv+wD9wYHHFszyBuRJ0Z0/71+2E/SGgHwnMzv66/86w9uplcX1z0grTv9p
+         1TYZ7MtIagYr+hnMPgyspL8CH18dkY1RexU6NSgr6L6/lGHi7jHNMmmGOoiBuh2azqNd
+         aWHFVXbx5cxjkbX5kJe7PAp4IU2wf06fogqa+YoO9ylF7jna+POCU+xNsHXT6R2wFQg9
+         YqYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=OF9X3JncuT2G6t67jQ9Wy/xyf0lM+dD6hVeqW5BVR2mNZ5hqIgfWYpl0A3Ge+MGomd
+         1nGHbIisVv0lo6A8nVVF92W/zeDNLOVpbR7L07evs528MgICHazzpavZo6m2KlpD0IIJ
+         vh691JTHs/KdI/Sn7WrjtUnxG9FXaFRkx7S7aZ4/+Ra9zgVsD4LdNF9Bdyh74aynwnKP
+         zWmkzPdYbYneVA539AkMw4zsjuJg/bNhiRyvui7dLEcXXRdgwiLpVbz1tkclDzGRPt7/
+         5Vbbcrt9w6w9lfryDuKihf+iCi6ItzxyfABgtdzsbXCLtvXHnfBCQaTt19GrmMAOTGUB
+         mUpg==
+X-Gm-Message-State: APjAAAXjsXVk1lDKrKVT1JvQHHRzAzWG170LSZGtnr6Cg5Iyc4wgSmx+
+        gtfEr65msCBLimhnLXsHl9GzBril6390Rx2pSav1
+X-Google-Smtp-Source: APXvYqwe5B6z/3dUuNDQtQ0n2oQYOsdY3HQR3dkIin1gqVhu0NNteov05tKzv4DhJBBR4bjK2RG7Phnj6WUHoBrkRYc=
+X-Received: by 2002:a05:6830:1103:: with SMTP id w3mr7909437otq.312.1570713462861;
+ Thu, 10 Oct 2019 06:17:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191009193239.694ff6ab@archlinux>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Received: by 2002:a4a:3346:0:0:0:0:0 with HTTP; Thu, 10 Oct 2019 06:17:41
+ -0700 (PDT)
+Reply-To: sunrisefundingltd50@gmail.com
+From:   Valentina Yurina <v_yurina@ub.ac.id>
+Date:   Thu, 10 Oct 2019 14:17:41 +0100
+Message-ID: <CAKoEkvu4vc5Yn9-hzxQ5dYmUL=oO69=GSP0FC7O+CGz9Jni8+Q@mail.gmail.com>
+Subject: Apply For Financial investment at a lower rate 2%
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 07:32:39PM +0100, Jonathan Cameron wrote:
-> The following changes since commit b33f56a1e40588214320926293585f088fb390b0:
-> 
->   staging: rtl8723bs: hal: remove redundant variable n (2019-09-06 18:20:33 +0200)
-> 
-> are available in the Git repository at:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.4a
+-- 
+Hello,
 
-Pulled and pushed out, thanks.
+We are private lenders based in UK.
 
-greg k-h
+Do you need a loan (credit) as soon as possible. Are you in search of
+money to solve your personal needs or finance your business venture,
+then get Your desired loan today! Consult us at Sunrise Funding Ltd.
+
+* We offer personal loan & huge capital loan at 2% interest rate to
+the general public both locally and internationally.
+* Credit amount range from $5,000.00 -- $500,000.00 and above.
+* Special $10,000,000.00 Loan offer for huge project also available.
+* Loan period of 6 months -- 10 years.
+* Loan is granted 24 hours after approval and accredited, directly in
+hand or bank account.
+
+Please note that you are advised to contact us for more details via
+the following e-mail address below;
+
+EMAIL : sunrisefundingltd50@gmail.com
+FIRM : Sunrise Funding Ltd UK.

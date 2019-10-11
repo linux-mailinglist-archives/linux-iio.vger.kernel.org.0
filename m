@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F88FD39E7
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2019 09:18:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B4A6D39E8
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2019 09:18:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727167AbfJKHSV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Oct 2019 03:18:21 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:43055 "EHLO
+        id S1727247AbfJKHSX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Oct 2019 03:18:23 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:38005 "EHLO
         mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726679AbfJKHSU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Oct 2019 03:18:20 -0400
-Received: by mail-lj1-f193.google.com with SMTP id n14so8730102ljj.10
-        for <linux-iio@vger.kernel.org>; Fri, 11 Oct 2019 00:18:19 -0700 (PDT)
+        with ESMTP id S1726679AbfJKHSX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Oct 2019 03:18:23 -0400
+Received: by mail-lj1-f193.google.com with SMTP id b20so8758424ljj.5
+        for <linux-iio@vger.kernel.org>; Fri, 11 Oct 2019 00:18:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9AoOzbTS/I8Z0E4NBWXmSoTz61V4Js94rj8pJKVKWfg=;
-        b=xbV69oJKJ+cupf0HT7FZoZZ6NV7Z6EbkEzDzgCOMtfc2yP5bEpmk98UKJpFUF+QAAb
-         zCn6nDPupdIh6irBOUB9BSn/CTpYYqFN6gSEyXUzRDnf8QjCdsCUqMVS+VEatXKuo0M5
-         LUC2f0yv5VmONyMZw10WdDrq1e6MnaG+R3IhnqPelNWJKlRVAAr2j6xp1usJSB9YacvQ
-         BRCQmYtsyhuIQUx5Lwwe7WpVD+fEVFBAYx/wO6xX79x7zLr/AsMElVVr6eh/RwpcoelA
-         GWSSwO1yDOnBQqWHDJ1r8KhvepguXy2jicBlXk/+h9V1iIAwj6y+sEn2cYuFrOQBQuh9
-         5Txw==
+        bh=ShoW739s4Ja2AA4hkcjDaS267Az/foUrKnHnwbC+WGc=;
+        b=bNTv7EuADlGwk3LD9htpKZcRCrMRT7TQ3cL2dT+FniR9j6sCSuie1B1w+qLYDgdvmz
+         lKvaKjmvow9TYrr3TdAW3wH80dsOVFMgjQyOTYVbsWO0n/nZ2Pq1p4QmLBcVLKO5UaS+
+         sNIRL/hCPPTBHzRLZK8k6tCPN7veSkl/FtyOojBCtyNlP6vImZr7N6Fc5LHt72te7HtC
+         cFqX3VJHeqz57fhEtI1zLAi9y6oTdfH8OGejwZjWQOllKLfLmjZedP7vI15ieuD/uKhy
+         nbW4hGE3tevBHIEMSa+uj8c7cAqkxxgr0Q3q0GiMf7CrCSYcA+P1YZDDuJEm81OBkqv4
+         onIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9AoOzbTS/I8Z0E4NBWXmSoTz61V4Js94rj8pJKVKWfg=;
-        b=fIb8DbhnhBguq3aOe3ljqIxghv0kBgA/SMaP1GUxo2EfrbW7PmxU2q6viVMpMnc7MP
-         beDm2Kxalu/cx4l5YkeD96LlYUEmQ8z580SxKzs6KQQDkWr1rrbWlGG4R2CEM/Ci6wKE
-         6fIeQx9UR6R3oNyAqkx0ILrbou/JD+8bxcIQOEPoCYp+Fmd5ur0NMI/KK5rLfMmESk7G
-         EbNYu5ojU00ejHf94iYZAIWZymlbmdjlM+CMlCiNxDm/Y79ugvFJIQH96cTheMlEe5OS
-         ialcSo9/1uWJaD4mqJn6kGj/t4zER7wb2Fl8VDE5CGhorlphaW5M38MFcVnL2m3pm3mZ
-         6mHg==
-X-Gm-Message-State: APjAAAVIu9BvC+rL9DqIl8cm3MoNuHzJ/V1mcRFBf8FoZWVwRhmhXogG
-        7Gw8lzG+/lJE/wnBmr7A8Up7Vg==
-X-Google-Smtp-Source: APXvYqwYsJXQkW/NEG27jlzH3t1dm91MD1ppwdonQ0/5cca2AGfVEV0cJ7b94zve8Ae0g0NfiV7rJA==
-X-Received: by 2002:a2e:b4f7:: with SMTP id s23mr8045402ljm.111.1570778298644;
-        Fri, 11 Oct 2019 00:18:18 -0700 (PDT)
+        bh=ShoW739s4Ja2AA4hkcjDaS267Az/foUrKnHnwbC+WGc=;
+        b=Bpi/pKZtu66w/GDqFrO7KyAYQptxzV4Q/2I8KTTvZNXANuuROYzdK9Qxx30DTmROxi
+         24lyWv1IFwkyAHNLefZC293YoqRiCO3ROxiGWvtAkWAxXRXGZDBAiuEh5dTm4+VPIDDL
+         MHKZCWkUvDwxIetRTYfSXGVG3LHa/pv7BgM8cl6AkpeExw/vqlN7ehSChKmqilouUkH4
+         TXzaYVgK8MrMpePvzM8OJo7o7OSM7vkswK0gzngTNjXex3UcW+eE7tgjdNmx8QV/JIaH
+         uNVw3qyxrJPDMt9sgu8BlEe7nW5BTw5AaC+4UTyx+9DkvtQ7kvJfY5GKbgg1nAkvcj/n
+         ZgPQ==
+X-Gm-Message-State: APjAAAX9eWp4+DgE5zgFNo49N5yz61vBWpjqfgqJoptq/Mpa0feJVSk5
+        tK1D0gGm5ExpnEZPoFxdIMAoZQ==
+X-Google-Smtp-Source: APXvYqy3IaZ8ceNrXZJMTb3du8F/A9BBp3j/JwxxdaFfT6xT1vU1zYhoY5e2xwtSOhTzzngF5n9MWw==
+X-Received: by 2002:a2e:331a:: with SMTP id d26mr8334795ljc.231.1570778300935;
+        Fri, 11 Oct 2019 00:18:20 -0700 (PDT)
 Received: from genomnajs.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id v26sm2047343lfg.27.2019.10.11.00.18.17
+        by smtp.gmail.com with ESMTPSA id v26sm2047343lfg.27.2019.10.11.00.18.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2019 00:18:17 -0700 (PDT)
+        Fri, 11 Oct 2019 00:18:19 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
@@ -52,10 +52,10 @@ To:     Lee Jones <lee.jones@linaro.org>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>
 Cc:     Mboumba Cedric Madianga <cedric.madianga@gmail.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH 3/7 v4] power: supply: ab8500_fg: convert to IIO ADC
-Date:   Fri, 11 Oct 2019 09:18:01 +0200
-Message-Id: <20191011071805.5554-4-linus.walleij@linaro.org>
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 4/7 v4] hwmon: ab8500: convert to IIO ADC
+Date:   Fri, 11 Oct 2019 09:18:02 +0200
+Message-Id: <20191011071805.5554-5-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191011071805.5554-1-linus.walleij@linaro.org>
 References: <20191011071805.5554-1-linus.walleij@linaro.org>
@@ -66,93 +66,163 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This switches the AB8500 fuel gauge driver to using
+This switches the AB8500 hardware monitor driver to using
 the standard IIO ADC channel lookup and conversion routines.
 
-Acked-by: Sebastian Reichel <sre@kernel.org>
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 Acked-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
 ChangeLog v3->v4:
 - No changes just resending
 ChangeLog v2->v3:
+- Depend on (IIO = y) since we are bool and need it compiled
+  in.
 - Rebased on v5.4-rc1
 ChangeLog v1->v2:
 - Collected ACKs.
 - Rebased on v5.3-rc5
-- Fixed some whitespace issues
+- Add a Kconfig dependency on IIO
+- Fix some whitespace issues
 
-This will be applied along with the other changes in ARM
-SoC and should not be applied to the power tree right now.
+This should not be applied to the hwmon tree right now, it
+will be applied along with the other changes in ARM SoC.
 ---
- drivers/power/supply/ab8500_fg.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ drivers/hwmon/Kconfig  |  3 +-
+ drivers/hwmon/ab8500.c | 65 ++++++++++++++++++++++++++----------------
+ 2 files changed, 43 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/power/supply/ab8500_fg.c b/drivers/power/supply/ab8500_fg.c
-index 6fc4bc30644c..f7909dfd3b61 100644
---- a/drivers/power/supply/ab8500_fg.c
-+++ b/drivers/power/supply/ab8500_fg.c
-@@ -32,7 +32,7 @@
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 13a6b4afb4b3..5308c59d7001 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -40,7 +40,8 @@ comment "Native drivers"
+ 
+ config SENSORS_AB8500
+ 	tristate "AB8500 thermal monitoring"
+-	depends on AB8500_GPADC && AB8500_BM
++	depends on AB8500_GPADC && AB8500_BM && (IIO = y)
++	default n
+ 	help
+ 	  If you say yes here you get support for the thermal sensor part
+ 	  of the AB8500 chip. The driver includes thermal management for
+diff --git a/drivers/hwmon/ab8500.c b/drivers/hwmon/ab8500.c
+index 207f77f85a40..53f3379d799d 100644
+--- a/drivers/hwmon/ab8500.c
++++ b/drivers/hwmon/ab8500.c
+@@ -17,20 +17,24 @@
+ #include <linux/hwmon-sysfs.h>
  #include <linux/mfd/abx500.h>
- #include <linux/mfd/abx500/ab8500.h>
  #include <linux/mfd/abx500/ab8500-bm.h>
 -#include <linux/mfd/abx500/ab8500-gpadc.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/power/ab8500.h>
+ #include <linux/reboot.h>
+ #include <linux/slab.h>
+ #include <linux/sysfs.h>
 +#include <linux/iio/consumer.h>
- #include <linux/kernel.h>
+ #include "abx500.h"
  
- #define MILLI_TO_MICRO			1000
-@@ -182,7 +182,7 @@ struct inst_curr_result_list {
-  * @bat_cap:		Structure for battery capacity specific parameters
-  * @avg_cap:		Average capacity filter
-  * @parent:		Pointer to the struct ab8500
-- * @gpadc:		Pointer to the struct gpadc
-+ * @main_bat_v:		ADC channel for the main battery voltage
-  * @bm:           	Platform specific battery management information
-  * @fg_psy:		Structure that holds the FG specific battery properties
-  * @fg_wq:		Work queue for running the FG algorithm
-@@ -224,7 +224,7 @@ struct ab8500_fg {
- 	struct ab8500_fg_battery_capacity bat_cap;
- 	struct ab8500_fg_avg_cap avg_cap;
- 	struct ab8500 *parent;
--	struct ab8500_gpadc *gpadc;
-+	struct iio_channel *main_bat_v;
- 	struct abx500_bm_data *bm;
- 	struct power_supply *fg_psy;
- 	struct workqueue_struct *fg_wq;
-@@ -829,13 +829,13 @@ static void ab8500_fg_acc_cur_work(struct work_struct *work)
-  */
- static int ab8500_fg_bat_voltage(struct ab8500_fg *di)
- {
--	int vbat;
-+	int vbat, ret;
- 	static int prev;
- 
--	vbat = ab8500_gpadc_convert(di->gpadc, MAIN_BAT_V);
--	if (vbat < 0) {
-+	ret = iio_read_channel_processed(di->main_bat_v, &vbat);
-+	if (ret < 0) {
- 		dev_err(di->dev,
--			"%s gpadc conversion failed, using previous value\n",
-+			"%s ADC conversion failed, using previous value\n",
- 			__func__);
- 		return prev;
- 	}
-@@ -3066,7 +3066,14 @@ static int ab8500_fg_probe(struct platform_device *pdev)
- 	/* get parent data */
- 	di->dev = &pdev->dev;
- 	di->parent = dev_get_drvdata(pdev->dev.parent);
--	di->gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+ #define DEFAULT_POWER_OFF_DELAY	(HZ * 10)
+ #define THERMAL_VCC		1800
+ #define PULL_UP_RESISTOR	47000
+-/* Number of monitored sensors should not greater than NUM_SENSORS */
+-#define NUM_MONITORED_SENSORS	4
 +
-+	di->main_bat_v = devm_iio_channel_get(&pdev->dev, "main_bat_v");
-+	if (IS_ERR(di->main_bat_v)) {
-+		if (PTR_ERR(di->main_bat_v) == -ENODEV)
++#define AB8500_SENSOR_AUX1		0
++#define AB8500_SENSOR_AUX2		1
++#define AB8500_SENSOR_BTEMP_BALL	2
++#define AB8500_SENSOR_BAT_CTRL		3
++#define NUM_MONITORED_SENSORS		4
+ 
+ struct ab8500_gpadc_cfg {
+ 	const struct abx500_res_to_temp *temp_tbl;
+@@ -40,7 +44,8 @@ struct ab8500_gpadc_cfg {
+ };
+ 
+ struct ab8500_temp {
+-	struct ab8500_gpadc *gpadc;
++	struct iio_channel *aux1;
++	struct iio_channel *aux2;
+ 	struct ab8500_btemp *btemp;
+ 	struct delayed_work power_off_work;
+ 	struct ab8500_gpadc_cfg cfg;
+@@ -82,15 +87,21 @@ static int ab8500_read_sensor(struct abx500_temp *data, u8 sensor, int *temp)
+ 	int voltage, ret;
+ 	struct ab8500_temp *ab8500_data = data->plat_data;
+ 
+-	if (sensor == BAT_CTRL) {
+-		*temp = ab8500_btemp_get_batctrl_temp(ab8500_data->btemp);
+-	} else if (sensor == BTEMP_BALL) {
++	if (sensor == AB8500_SENSOR_BTEMP_BALL) {
+ 		*temp = ab8500_btemp_get_temp(ab8500_data->btemp);
+-	} else {
+-		voltage = ab8500_gpadc_convert(ab8500_data->gpadc, sensor);
+-		if (voltage < 0)
+-			return voltage;
+-
++	} else if (sensor == AB8500_SENSOR_BAT_CTRL) {
++		*temp = ab8500_btemp_get_batctrl_temp(ab8500_data->btemp);
++	} else if (sensor == AB8500_SENSOR_AUX1) {
++		ret = iio_read_channel_processed(ab8500_data->aux1, &voltage);
++		if (ret < 0)
++			return ret;
++		ret = ab8500_voltage_to_temp(&ab8500_data->cfg, voltage, temp);
++		if (ret < 0)
++			return ret;
++	} else if (sensor == AB8500_SENSOR_AUX2) {
++		ret = iio_read_channel_processed(ab8500_data->aux2, &voltage);
++		if (ret < 0)
++			return ret;
+ 		ret = ab8500_voltage_to_temp(&ab8500_data->cfg, voltage, temp);
+ 		if (ret < 0)
+ 			return ret;
+@@ -164,10 +175,6 @@ int abx500_hwmon_init(struct abx500_temp *data)
+ 	if (!ab8500_data)
+ 		return -ENOMEM;
+ 
+-	ab8500_data->gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	if (IS_ERR(ab8500_data->gpadc))
+-		return PTR_ERR(ab8500_data->gpadc);
+-
+ 	ab8500_data->btemp = ab8500_btemp_get();
+ 	if (IS_ERR(ab8500_data->btemp))
+ 		return PTR_ERR(ab8500_data->btemp);
+@@ -181,15 +188,25 @@ int abx500_hwmon_init(struct abx500_temp *data)
+ 	ab8500_data->cfg.tbl_sz = ab8500_temp_tbl_a_size;
+ 
+ 	data->plat_data = ab8500_data;
++	ab8500_data->aux1 = devm_iio_channel_get(&data->pdev->dev, "aux1");
++	if (IS_ERR(ab8500_data->aux1)) {
++		if (PTR_ERR(ab8500_data->aux1) == -ENODEV)
 +			return -EPROBE_DEFER;
-+		dev_err(&pdev->dev, "failed to get main battery ADC channel\n");
-+		return PTR_ERR(di->main_bat_v);
++		dev_err(&data->pdev->dev, "failed to get AUX1 ADC channel\n");
++		return PTR_ERR(ab8500_data->aux1);
++	}
++	ab8500_data->aux2 = devm_iio_channel_get(&data->pdev->dev, "aux2");
++	if (IS_ERR(ab8500_data->aux2)) {
++		if (PTR_ERR(ab8500_data->aux2) == -ENODEV)
++			return -EPROBE_DEFER;
++		dev_err(&data->pdev->dev, "failed to get AUX2 ADC channel\n");
++		return PTR_ERR(ab8500_data->aux2);
 +	}
  
- 	psy_cfg.supplied_to = supply_interface;
- 	psy_cfg.num_supplicants = ARRAY_SIZE(supply_interface);
+-	/*
+-	 * ADC_AUX1 and ADC_AUX2, connected to external NTC
+-	 * BTEMP_BALL and BAT_CTRL, fixed usage
+-	 */
+-	data->gpadc_addr[0] = ADC_AUX1;
+-	data->gpadc_addr[1] = ADC_AUX2;
+-	data->gpadc_addr[2] = BTEMP_BALL;
+-	data->gpadc_addr[3] = BAT_CTRL;
++	data->gpadc_addr[0] = AB8500_SENSOR_AUX1;
++	data->gpadc_addr[1] = AB8500_SENSOR_AUX2;
++	data->gpadc_addr[2] = AB8500_SENSOR_BTEMP_BALL;
++	data->gpadc_addr[3] = AB8500_SENSOR_BAT_CTRL;
+ 	data->monitored_sensors = NUM_MONITORED_SENSORS;
+ 
+ 	data->ops.read_sensor = ab8500_read_sensor;
 -- 
 2.21.0
 

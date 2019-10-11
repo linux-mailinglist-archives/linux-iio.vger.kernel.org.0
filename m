@@ -2,2069 +2,1765 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1FA7D39EC
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2019 09:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E765ED3B64
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2019 10:40:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727268AbfJKHSf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Oct 2019 03:18:35 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:35434 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727321AbfJKHSf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Oct 2019 03:18:35 -0400
-Received: by mail-lj1-f193.google.com with SMTP id m7so8780940lji.2
-        for <linux-iio@vger.kernel.org>; Fri, 11 Oct 2019 00:18:30 -0700 (PDT)
+        id S1726555AbfJKIk7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Oct 2019 04:40:59 -0400
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:7220 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726397AbfJKIk6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Oct 2019 04:40:58 -0400
+Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9B8crSU014807;
+        Fri, 11 Oct 2019 04:40:23 -0400
+Received: from nam01-sn1-obe.outbound.protection.outlook.com (mail-sn1nam01lp2051.outbound.protection.outlook.com [104.47.32.51])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2veqt5ke7w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Fri, 11 Oct 2019 04:40:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KecivCMApURGw8fVqAWAc9888atIrWN/AEMdVcdogb3s7SUtCWjUzkyr+H29t7fNuCM09VF8KH5FemSJi1b5ZBOULKJe/46fF2pPjs6xs/Ue+JaybzG4QuPKt6PUQN8X4KzD9P0c5RCrgw4+kwYY7rCktpV9FO25vP0geeMrskCYwQjbZSMZWVFP+Hcy7k4jSCjO1u7lo/VQxZamCUROBP6p9s8w+yr5dBCb3Y8RgjHtU9v/oMejtD9j/S730iQ8dTsp5IVZjaGCTEK6eecRIVcMlJtMMmSKB1c+sQHHiUJBW5Oh9pTjvupGWGstyiBvh7zONLkA6SNHZtcJG0QEtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4Pj6uTGe5Rw4E4Qo++4a3+8E0wYoT4PZg3DxVCRILxo=;
+ b=BICvvkJzw+xZFeK8fEhacp6zJP5le+TtetPvCx575FvWr//TJvdpAf1QPTswhULNZcwtJptgUc2R8kufTOCxocVjst/yDHgLJUtmMottqKjp8RzLKWbFFUXLJMtWVYXk4rmvqccYMnZIv7ry1aYJ3gTaMX4M95z0fvUDf/pKQd8PHwfG6/jSprQdI0lM0JTtE5tnCj5mMIZqVCYO6dBTgjMQZfWV27NHObL2pYQ94aCtwdwVgcjR31xZLYwHZ3Rx1SdwKOYuqwAFshxXUe4caRl8E61T9g09ghYjBgQ7WBw83xmhHcphXagV/w8TlVFnBun91vf1KPla29oW6JVlyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 137.71.25.57) smtp.rcpttodomain=kernel.org smtp.mailfrom=analog.com;
+ dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
+ not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=BgfOd7fhVM795kEQ2B7nrXpqY7dqtQxedYaJzfIq2iM=;
-        b=MnXnZKjd/iM29br7vQ/eR8TJZxXqOhnUuITHIp/DMODcy+r+y8VrVnoROx/nmBzFfi
-         WZkN2Uk6/Q3PX2rF2hMSmQLwQIASFtVTvZZu8wybITdG7tD/B/UWd2D4wqIRZazTmdjC
-         h5zWGZ/vuXufzpNBlQfmMZ6voReiqF8MYuiuOBGC9SOgTscYTiEavVZu7rA2Z39xKhTm
-         SKsFHSb7MrzvXnL+BGNReXbEYtL4bkfc994DFo+w4qZde/CBHTq/wD8kEKraraOmLCyN
-         G0L7X7sOVNvb1JManETzvQPbtg5ggbXhaka8ohko3hLL6ouhu/JGVXZL9N2DSmII+T2S
-         05fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=BgfOd7fhVM795kEQ2B7nrXpqY7dqtQxedYaJzfIq2iM=;
-        b=YxS3pv2cj26n+VFAu7NyzPpQJV4rqMAPj5vx6B8McoYI7TlTOISaGCN+GbzRHn2NY2
-         CRJKN5/3rOFb+TSLxmrRGdIPdPw0OZl2GZsNuwmjKJK/bMWmPCHT2zfxqxb26gzFNUdd
-         WsHEGmdDujC3k2X0onLgKPYqjCJvkkHdRwrs8xfV5aNFZM/SoKV+Cg+8jUpe3++V9Qd3
-         gXzk/RERcfGM7Na4ltybDX0JNhZQ7UTn/9sfQYs8PFHt/fsf5hQpcdMkUwJOG7s/j9Oa
-         KzEF5de4+oVo1JKUYiJ7fBMRDv7ZQdFzO66GereokBY6ZfnnLHZ9CfOoNmX6yrKoucRe
-         Uhsg==
-X-Gm-Message-State: APjAAAUuL6Lkr7BBApn2jn61GIShp3vrbpwOU4g5XhBY/QtOS4HM69zc
-        qiz6GDYf0pNBJPewqoUQBhJ5Cw==
-X-Google-Smtp-Source: APXvYqweLub695TVRYaz82AT4ifBe3Tj6rZVMBTwGFbuD9fOofKoCpCtkj/4brqBATKpoSkQsjUQog==
-X-Received: by 2002:a2e:8204:: with SMTP id w4mr8534883ljg.3.1570778308389;
-        Fri, 11 Oct 2019 00:18:28 -0700 (PDT)
-Received: from genomnajs.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id v26sm2047343lfg.27.2019.10.11.00.18.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2019 00:18:27 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     Mboumba Cedric Madianga <cedric.madianga@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 7/7 v4] mfd: Switch the AB8500 GPADC to IIO
-Date:   Fri, 11 Oct 2019 09:18:05 +0200
-Message-Id: <20191011071805.5554-8-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20191011071805.5554-1-linus.walleij@linaro.org>
-References: <20191011071805.5554-1-linus.walleij@linaro.org>
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4Pj6uTGe5Rw4E4Qo++4a3+8E0wYoT4PZg3DxVCRILxo=;
+ b=6Qji30BLzOCQ4snn7RziB3hwLxkimpJC26TAATum5fj3ky0QmVIip+0TXHDeyn2GFi0p74l3ydWOV8VXk8rl8M61u0SWd79xV63outyy7/SrkDUhmsBg3x8iBXDYkWqFj4kCCNvGn7za0lQ4+ncw227Wwy5dwke5Wypi6yyxiAw=
+Received: from CY4PR03CA0006.namprd03.prod.outlook.com (2603:10b6:903:33::16)
+ by BY5SPR01MB0008.namprd03.prod.outlook.com (2603:10b6:a03:1e2::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2347.16; Fri, 11 Oct
+ 2019 08:40:20 +0000
+Received: from CY1NAM02FT064.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e45::207) by CY4PR03CA0006.outlook.office365.com
+ (2603:10b6:903:33::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2347.16 via Frontend
+ Transport; Fri, 11 Oct 2019 08:40:20 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
+Received: from nwd2mta2.analog.com (137.71.25.57) by
+ CY1NAM02FT064.mail.protection.outlook.com (10.152.74.64) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2347.16
+ via Frontend Transport; Fri, 11 Oct 2019 08:40:19 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x9B8eIN0000680
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Fri, 11 Oct 2019 01:40:19 -0700
+Received: from nsa.sphairon.box (10.44.3.90) by NWD2HUBCAS7.ad.analog.com
+ (10.64.69.107) with Microsoft SMTP Server (TLS) id 14.3.408.0; Fri, 11 Oct
+ 2019 04:40:16 -0400
+From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
+To:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC:     <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
+        <pmeerw@pmeerw.net>, <robh+dt@kernel.org>, <mark.rutland@arm.com>
+Subject: [PATCH v4 1/2] iio: temperature: Add support for LTC2983
+Date:   Fri, 11 Oct 2019 10:40:37 +0200
+Message-ID: <20191011084038.45829-1-nuno.sa@analog.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.44.3.90]
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(39860400002)(136003)(396003)(376002)(346002)(189003)(199004)(85664002)(14444005)(8676002)(53416004)(45776006)(246002)(16526019)(70586007)(70206006)(356004)(8936002)(26005)(50466002)(23676004)(6666004)(5820100001)(86362001)(36756003)(2906002)(7636002)(7736002)(6116002)(305945005)(3846002)(186003)(2870700001)(966005)(50226002)(110136005)(316002)(478600001)(1076003)(486006)(2616005)(4326008)(476003)(126002)(336012)(6306002)(5660300002)(426003)(47776003)(54906003)(106002)(30864003)(60764002)(579004)(559001);DIR:OUT;SFP:1101;SCL:1;SRVR:BY5SPR01MB0008;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;MX:1;A:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a1c4f930-6258-44a9-80e9-08d74e26a62d
+X-MS-TrafficTypeDiagnostic: BY5SPR01MB0008:
+X-MS-Exchange-PUrlCount: 1
+X-Microsoft-Antispam-PRVS: <BY5SPR01MB000805F8BFFFC519411EA15699970@BY5SPR01MB0008.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 0187F3EA14
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 64nKEvU81zAU5lFPIychossvCT4tB6c2KNUB3zbJlO2hKrp/LcfLVGzoozRVFEMpQSxmgZyrNp6zul0+6o8eZdYy7s3zYJZ0EiYO6rW8OuhEISUDp3ZhqEJbdRafBw2xDov4VxMlSyXxTk1XlMdKhaSqVd5O+/P5F1LzVvFWYyAwPJHSGibPT3G9uMnc19WihQ98yC4cjrNuqWP1J8lDO1Mw4ju+5N7QaMA81EKzwpRgH7tRX5397Jn26CxhmjISZCdLYS9Lx9VOnqnCZoK8n0f/NBlZuqv2mJx3IAG4d4XSSOakIn+pPqCgiBh67LAoeYcqnwrEiy4P/bvKk4N1jIRAuTUDgFu9vElpRQTa2drwaU29E1yCQdmEm4+Oo3eiZGmlXpmyJdpd1L87fOcBIgm4T2kIHzTBzFwdqr3DBf5gfaCFuB+r2wHBhfagOKa+bRKIWiPqQQ6wRK6i8j3vfQ==
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2019 08:40:19.8667
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1c4f930-6258-44a9-80e9-08d74e26a62d
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5SPR01MB0008
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-11_06:2019-10-10,2019-10-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ mlxlogscore=999 malwarescore=0 suspectscore=0 lowpriorityscore=0
+ impostorscore=0 priorityscore=1501 clxscore=1015 bulkscore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1908290000 definitions=main-1910110082
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The AB8500 GPADC driver is indeed a "general purpose ADC" driver,
-and while the IIO subsystem did not exist when the driver was
-first merged, it is never too late to clean things up and move it
-to the right place.
+The LTC2983 is a Multi-Sensor High Accuracy Digital Temperature
+Measurement System. It measures a wide variety of temperature sensors and
+digitally outputs the result, in °C or °F, with 0.1°C accuracy and
+0.001°C resolution. It can measure the temperature of all standard
+thermocouples (type B,E,J,K,N,S,R,T), standard 2-,3-,4-wire RTDs,
+thermistors and diodes.
 
-Nowadays IIO provides the right abstractions and interfaces to
-do generic ADC work in the kernel.
-
-We have to cut a bunch of debugfs luggage to make this transition
-swift, but all these files to is read out the raw values of the
-ADC and the IIO subsystem already has a standard sysfs ABI for
-doing exactly this: no debugfs is needed.
-
-Acked-by: Lee Jones <lee.jones@linaro.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
-ChangeLog v3->v4:
-- No changes just resending
-ChangeLog v2->v3:
-- Rebased on v5.4-rc1 (some debugfs business changed)
-ChangeLog v1->v2:
-- Woke up after 2 and a hald year of inactivity and rebased the
-  patch.
-- Split the new IIO driver into its own patch just adding the
-  new driver.
-- Convert an extraneous dev_info() to dev_dbg() to silence the
-  debug log.
+Changes in v2:
+ * Added some needed blank lines (for readability);
+ * Allocate iio_chan in the setup() function;
+ * Rename reset to sleep;
+ * Remove unneeded dev_dbg calls;
+ * Remove unneeded line wrapping;
+ * Remove unneeded comments;
+ * Remove extend_names. Use the standard ABI;
+ * Adapt the scales to report in millivolt and milli degrees;
+ * Adapt the of_property readings to the renaming of the properties;
+ * For custom thermistors, excitation-current cannot be set to Auto range.
 
-This should not be applied to the MFD tree right now, it
-will be applied along with the other changes in ARM SoC.
----
- drivers/mfd/Kconfig                     |    7 -
- drivers/mfd/Makefile                    |    1 -
- drivers/mfd/ab8500-debugfs.c            |  715 ---------------
- drivers/mfd/ab8500-gpadc.c              | 1075 -----------------------
- include/linux/mfd/abx500/ab8500-gpadc.h |   75 --
- 5 files changed, 1873 deletions(-)
- delete mode 100644 drivers/mfd/ab8500-gpadc.c
- delete mode 100644 include/linux/mfd/abx500/ab8500-gpadc.h
+Changes in v3:
+ * Use normal `devm_request_irq`;
+ * Handle and decode the new devicetree properties for sensor configuration.
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index ae24d3ea68ea..420900852166 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -1210,13 +1210,6 @@ config AB8500_DEBUG
- 	  Select this option if you want debug information using the debug
- 	  filesystem, debugfs.
+Changes in v4:
+ * Add 'select REGMAP_SPI';
+ * Use `____cacheline_aligned` for regmap_bulk_read();
+ * Read rsense value as u32 (due to dt bindings change);
+ * __ltc2983_custom_sensor_new(): new argument to identify the property name;
+ * __ltc2983_custom_sensor_new(): uses u32 api to read steinhart values;
+ * Drop sleep flag and calls to mutex_* in suspend/resume;
+ * Add error handling for regmap calls in setup();
+ * Drop temp_farenheit boolean.
+
+ MAINTAINERS                       |    7 +
+ drivers/iio/temperature/Kconfig   |   11 +
+ drivers/iio/temperature/Makefile  |    1 +
+ drivers/iio/temperature/ltc2983.c | 1557 +++++++++++++++++++++++++++++
+ 4 files changed, 1576 insertions(+)
+ create mode 100644 drivers/iio/temperature/ltc2983.c
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f0c03740b9fb..14a256e785ca 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9491,6 +9491,13 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/iio/dac/ltc1660.txt
+ F:	drivers/iio/dac/ltc1660.c
  
--config AB8500_GPADC
--	bool "ST-Ericsson AB8500 GPADC driver"
--	depends on AB8500_CORE && REGULATOR_AB8500
--	default y
--	help
--	  AB8500 GPADC driver used to convert Acc and battery/ac/usb voltage
--
- config MFD_DB8500_PRCMU
- 	bool "ST-Ericsson DB8500 Power Reset Control Management Unit"
- 	depends on UX500_SOC_DB8500
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index c1067ea46204..aed99f08739f 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -177,7 +177,6 @@ obj-$(CONFIG_ABX500_CORE)	+= abx500-core.o
- obj-$(CONFIG_AB3100_CORE)	+= ab3100-core.o
- obj-$(CONFIG_AB3100_OTP)	+= ab3100-otp.o
- obj-$(CONFIG_AB8500_DEBUG)	+= ab8500-debugfs.o
--obj-$(CONFIG_AB8500_GPADC)	+= ab8500-gpadc.o
- obj-$(CONFIG_MFD_DB8500_PRCMU)	+= db8500-prcmu.o
- # ab8500-core need to come after db8500-prcmu (which provides the channel)
- obj-$(CONFIG_AB8500_CORE)	+= ab8500-core.o ab8500-sysctrl.o
-diff --git a/drivers/mfd/ab8500-debugfs.c b/drivers/mfd/ab8500-debugfs.c
-index f4e26b6e5362..1a9a3414d4fa 100644
---- a/drivers/mfd/ab8500-debugfs.c
-+++ b/drivers/mfd/ab8500-debugfs.c
-@@ -84,7 +84,6 @@
++LTC2983 IIO TEMPERATURE DRIVER
++M:	Nuno Sá <nuno.sa@analog.com>
++W:	http://ez.analog.com/community/linux-device-drivers
++L:	linux-iio@vger.kernel.org
++S:	Supported
++F:	drivers/iio/temperature/ltc2983.c
++
+ LTC4261 HARDWARE MONITOR DRIVER
+ M:	Guenter Roeck <linux@roeck-us.net>
+ L:	linux-hwmon@vger.kernel.org
+diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
+index 737faa0901fe..e1ccb4003015 100644
+--- a/drivers/iio/temperature/Kconfig
++++ b/drivers/iio/temperature/Kconfig
+@@ -4,6 +4,17 @@
+ #
+ menu "Temperature sensors"
  
- #include <linux/mfd/abx500.h>
- #include <linux/mfd/abx500/ab8500.h>
--#include <linux/mfd/abx500/ab8500-gpadc.h>
++config LTC2983
++	tristate "Analog Devices Multi-Sensor Digital Temperature Measurement System"
++	depends on SPI
++	select REGMAP_SPI
++	help
++	  Say yes here to build support for the LTC2983 Multi-Sensor
++	  high accuracy digital temperature measurement system.
++
++	  To compile this driver as a module, choose M here: the module
++	  will be called ltc2983.
++
+ config MAXIM_THERMOCOUPLE
+ 	tristate "Maxim thermocouple sensors"
+ 	depends on SPI
+diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
+index baca4776ca0d..d6b850b0cf63 100644
+--- a/drivers/iio/temperature/Makefile
++++ b/drivers/iio/temperature/Makefile
+@@ -3,6 +3,7 @@
+ # Makefile for industrial I/O temperature drivers
+ #
  
- #ifdef CONFIG_DEBUG_FS
- #include <linux/string.h>
-@@ -103,11 +102,6 @@ static int num_irqs;
- static struct device_attribute **dev_attr;
- static char **event_name;
- 
--static u8 avg_sample = SAMPLE_16;
--static u8 trig_edge = RISING_EDGE;
--static u8 conv_type = ADC_SW;
--static u8 trig_timer;
--
- /**
-  * struct ab8500_reg_range
-  * @first: the first address of the range
-@@ -152,7 +146,6 @@ static struct hwreg_cfg hwreg_cfg = {
- };
- 
- #define AB8500_NAME_STRING "ab8500"
--#define AB8500_ADC_NAME_STRING "gpadc"
- #define AB8500_NUM_BANKS AB8500_DEBUG_FIELD_LAST
- 
- #define AB8500_REV_REG 0x80
-@@ -1646,633 +1639,6 @@ static int ab8500_modem_show(struct seq_file *s, void *p)
- 
- DEFINE_SHOW_ATTRIBUTE(ab8500_modem);
- 
--static int ab8500_gpadc_bat_ctrl_show(struct seq_file *s, void *p)
--{
--	int bat_ctrl_raw;
--	int bat_ctrl_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	bat_ctrl_raw = ab8500_gpadc_read_raw(gpadc, BAT_CTRL,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	bat_ctrl_convert = ab8500_gpadc_ad_to_voltage(gpadc,
--		BAT_CTRL, bat_ctrl_raw);
--
--	seq_printf(s, "%d,0x%X\n", bat_ctrl_convert, bat_ctrl_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_bat_ctrl);
--
--static int ab8500_gpadc_btemp_ball_show(struct seq_file *s, void *p)
--{
--	int btemp_ball_raw;
--	int btemp_ball_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	btemp_ball_raw = ab8500_gpadc_read_raw(gpadc, BTEMP_BALL,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	btemp_ball_convert = ab8500_gpadc_ad_to_voltage(gpadc, BTEMP_BALL,
--		btemp_ball_raw);
--
--	seq_printf(s, "%d,0x%X\n", btemp_ball_convert, btemp_ball_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_btemp_ball);
--
--static int ab8500_gpadc_main_charger_v_show(struct seq_file *s, void *p)
--{
--	int main_charger_v_raw;
--	int main_charger_v_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	main_charger_v_raw = ab8500_gpadc_read_raw(gpadc, MAIN_CHARGER_V,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	main_charger_v_convert = ab8500_gpadc_ad_to_voltage(gpadc,
--		MAIN_CHARGER_V, main_charger_v_raw);
--
--	seq_printf(s, "%d,0x%X\n", main_charger_v_convert, main_charger_v_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_main_charger_v);
--
--static int ab8500_gpadc_acc_detect1_show(struct seq_file *s, void *p)
--{
--	int acc_detect1_raw;
--	int acc_detect1_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	acc_detect1_raw = ab8500_gpadc_read_raw(gpadc, ACC_DETECT1,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	acc_detect1_convert = ab8500_gpadc_ad_to_voltage(gpadc, ACC_DETECT1,
--		acc_detect1_raw);
--
--	seq_printf(s, "%d,0x%X\n", acc_detect1_convert, acc_detect1_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_acc_detect1);
--
--static int ab8500_gpadc_acc_detect2_show(struct seq_file *s, void *p)
--{
--	int acc_detect2_raw;
--	int acc_detect2_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	acc_detect2_raw = ab8500_gpadc_read_raw(gpadc, ACC_DETECT2,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	acc_detect2_convert = ab8500_gpadc_ad_to_voltage(gpadc,
--		ACC_DETECT2, acc_detect2_raw);
--
--	seq_printf(s, "%d,0x%X\n", acc_detect2_convert, acc_detect2_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_acc_detect2);
--
--static int ab8500_gpadc_aux1_show(struct seq_file *s, void *p)
--{
--	int aux1_raw;
--	int aux1_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	aux1_raw = ab8500_gpadc_read_raw(gpadc, ADC_AUX1,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	aux1_convert = ab8500_gpadc_ad_to_voltage(gpadc, ADC_AUX1,
--		aux1_raw);
--
--	seq_printf(s, "%d,0x%X\n", aux1_convert, aux1_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_aux1);
--
--static int ab8500_gpadc_aux2_show(struct seq_file *s, void *p)
--{
--	int aux2_raw;
--	int aux2_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	aux2_raw = ab8500_gpadc_read_raw(gpadc, ADC_AUX2,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	aux2_convert = ab8500_gpadc_ad_to_voltage(gpadc, ADC_AUX2,
--		aux2_raw);
--
--	seq_printf(s, "%d,0x%X\n", aux2_convert, aux2_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_aux2);
--
--static int ab8500_gpadc_main_bat_v_show(struct seq_file *s, void *p)
--{
--	int main_bat_v_raw;
--	int main_bat_v_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	main_bat_v_raw = ab8500_gpadc_read_raw(gpadc, MAIN_BAT_V,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	main_bat_v_convert = ab8500_gpadc_ad_to_voltage(gpadc, MAIN_BAT_V,
--		main_bat_v_raw);
--
--	seq_printf(s, "%d,0x%X\n", main_bat_v_convert, main_bat_v_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_main_bat_v);
--
--static int ab8500_gpadc_vbus_v_show(struct seq_file *s, void *p)
--{
--	int vbus_v_raw;
--	int vbus_v_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	vbus_v_raw =  ab8500_gpadc_read_raw(gpadc, VBUS_V,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	vbus_v_convert = ab8500_gpadc_ad_to_voltage(gpadc, VBUS_V,
--		vbus_v_raw);
--
--	seq_printf(s, "%d,0x%X\n", vbus_v_convert, vbus_v_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_vbus_v);
--
--static int ab8500_gpadc_main_charger_c_show(struct seq_file *s, void *p)
--{
--	int main_charger_c_raw;
--	int main_charger_c_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	main_charger_c_raw = ab8500_gpadc_read_raw(gpadc, MAIN_CHARGER_C,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	main_charger_c_convert = ab8500_gpadc_ad_to_voltage(gpadc,
--		MAIN_CHARGER_C, main_charger_c_raw);
--
--	seq_printf(s, "%d,0x%X\n", main_charger_c_convert, main_charger_c_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_main_charger_c);
--
--static int ab8500_gpadc_usb_charger_c_show(struct seq_file *s, void *p)
--{
--	int usb_charger_c_raw;
--	int usb_charger_c_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	usb_charger_c_raw = ab8500_gpadc_read_raw(gpadc, USB_CHARGER_C,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	usb_charger_c_convert = ab8500_gpadc_ad_to_voltage(gpadc,
--		USB_CHARGER_C, usb_charger_c_raw);
--
--	seq_printf(s, "%d,0x%X\n", usb_charger_c_convert, usb_charger_c_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_usb_charger_c);
--
--static int ab8500_gpadc_bk_bat_v_show(struct seq_file *s, void *p)
--{
--	int bk_bat_v_raw;
--	int bk_bat_v_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	bk_bat_v_raw = ab8500_gpadc_read_raw(gpadc, BK_BAT_V,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	bk_bat_v_convert = ab8500_gpadc_ad_to_voltage(gpadc,
--		BK_BAT_V, bk_bat_v_raw);
--
--	seq_printf(s, "%d,0x%X\n", bk_bat_v_convert, bk_bat_v_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_bk_bat_v);
--
--static int ab8500_gpadc_die_temp_show(struct seq_file *s, void *p)
--{
--	int die_temp_raw;
--	int die_temp_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	die_temp_raw = ab8500_gpadc_read_raw(gpadc, DIE_TEMP,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	die_temp_convert = ab8500_gpadc_ad_to_voltage(gpadc, DIE_TEMP,
--		die_temp_raw);
--
--	seq_printf(s, "%d,0x%X\n", die_temp_convert, die_temp_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_die_temp);
--
--static int ab8500_gpadc_usb_id_show(struct seq_file *s, void *p)
--{
--	int usb_id_raw;
--	int usb_id_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	usb_id_raw = ab8500_gpadc_read_raw(gpadc, USB_ID,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	usb_id_convert = ab8500_gpadc_ad_to_voltage(gpadc, USB_ID,
--		usb_id_raw);
--
--	seq_printf(s, "%d,0x%X\n", usb_id_convert, usb_id_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_usb_id);
--
--static int ab8540_gpadc_xtal_temp_show(struct seq_file *s, void *p)
--{
--	int xtal_temp_raw;
--	int xtal_temp_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	xtal_temp_raw = ab8500_gpadc_read_raw(gpadc, XTAL_TEMP,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	xtal_temp_convert = ab8500_gpadc_ad_to_voltage(gpadc, XTAL_TEMP,
--		xtal_temp_raw);
--
--	seq_printf(s, "%d,0x%X\n", xtal_temp_convert, xtal_temp_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_xtal_temp);
--
--static int ab8540_gpadc_vbat_true_meas_show(struct seq_file *s, void *p)
--{
--	int vbat_true_meas_raw;
--	int vbat_true_meas_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	vbat_true_meas_raw = ab8500_gpadc_read_raw(gpadc, VBAT_TRUE_MEAS,
--		avg_sample, trig_edge, trig_timer, conv_type);
--	vbat_true_meas_convert =
--		ab8500_gpadc_ad_to_voltage(gpadc, VBAT_TRUE_MEAS,
--					   vbat_true_meas_raw);
--
--	seq_printf(s, "%d,0x%X\n", vbat_true_meas_convert, vbat_true_meas_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_vbat_true_meas);
--
--static int ab8540_gpadc_bat_ctrl_and_ibat_show(struct seq_file *s, void *p)
--{
--	int bat_ctrl_raw;
--	int bat_ctrl_convert;
--	int ibat_raw;
--	int ibat_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	bat_ctrl_raw = ab8500_gpadc_double_read_raw(gpadc, BAT_CTRL_AND_IBAT,
--		avg_sample, trig_edge, trig_timer, conv_type, &ibat_raw);
--
--	bat_ctrl_convert = ab8500_gpadc_ad_to_voltage(gpadc, BAT_CTRL,
--		bat_ctrl_raw);
--	ibat_convert = ab8500_gpadc_ad_to_voltage(gpadc, IBAT_VIRTUAL_CHANNEL,
--		ibat_raw);
--
--	seq_printf(s,
--		   "%d,0x%X\n"
--		   "%d,0x%X\n",
--		   bat_ctrl_convert, bat_ctrl_raw,
--		   ibat_convert, ibat_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_bat_ctrl_and_ibat);
--
--static int ab8540_gpadc_vbat_meas_and_ibat_show(struct seq_file *s, void *p)
--{
--	int vbat_meas_raw;
--	int vbat_meas_convert;
--	int ibat_raw;
--	int ibat_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	vbat_meas_raw = ab8500_gpadc_double_read_raw(gpadc, VBAT_MEAS_AND_IBAT,
--		avg_sample, trig_edge, trig_timer, conv_type, &ibat_raw);
--	vbat_meas_convert = ab8500_gpadc_ad_to_voltage(gpadc, MAIN_BAT_V,
--		vbat_meas_raw);
--	ibat_convert = ab8500_gpadc_ad_to_voltage(gpadc, IBAT_VIRTUAL_CHANNEL,
--		ibat_raw);
--
--	seq_printf(s,
--		   "%d,0x%X\n"
--		   "%d,0x%X\n",
--		   vbat_meas_convert, vbat_meas_raw,
--		   ibat_convert, ibat_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_vbat_meas_and_ibat);
--
--static int ab8540_gpadc_vbat_true_meas_and_ibat_show(struct seq_file *s, void *p)
--{
--	int vbat_true_meas_raw;
--	int vbat_true_meas_convert;
--	int ibat_raw;
--	int ibat_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	vbat_true_meas_raw = ab8500_gpadc_double_read_raw(gpadc,
--			VBAT_TRUE_MEAS_AND_IBAT, avg_sample, trig_edge,
--			trig_timer, conv_type, &ibat_raw);
--	vbat_true_meas_convert = ab8500_gpadc_ad_to_voltage(gpadc,
--			VBAT_TRUE_MEAS, vbat_true_meas_raw);
--	ibat_convert = ab8500_gpadc_ad_to_voltage(gpadc, IBAT_VIRTUAL_CHANNEL,
--		ibat_raw);
--
--	seq_printf(s,
--		   "%d,0x%X\n"
--		   "%d,0x%X\n",
--		   vbat_true_meas_convert, vbat_true_meas_raw,
--		   ibat_convert, ibat_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_vbat_true_meas_and_ibat);
--
--static int ab8540_gpadc_bat_temp_and_ibat_show(struct seq_file *s, void *p)
--{
--	int bat_temp_raw;
--	int bat_temp_convert;
--	int ibat_raw;
--	int ibat_convert;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	bat_temp_raw = ab8500_gpadc_double_read_raw(gpadc, BAT_TEMP_AND_IBAT,
--		avg_sample, trig_edge, trig_timer, conv_type, &ibat_raw);
--	bat_temp_convert = ab8500_gpadc_ad_to_voltage(gpadc, BTEMP_BALL,
--		bat_temp_raw);
--	ibat_convert = ab8500_gpadc_ad_to_voltage(gpadc, IBAT_VIRTUAL_CHANNEL,
--		ibat_raw);
--
--	seq_printf(s,
--		   "%d,0x%X\n"
--		   "%d,0x%X\n",
--		   bat_temp_convert, bat_temp_raw,
--		   ibat_convert, ibat_raw);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_bat_temp_and_ibat);
--
--static int ab8540_gpadc_otp_calib_show(struct seq_file *s, void *p)
--{
--	struct ab8500_gpadc *gpadc;
--	u16 vmain_l, vmain_h, btemp_l, btemp_h;
--	u16 vbat_l, vbat_h, ibat_l, ibat_h;
--
--	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
--	ab8540_gpadc_get_otp(gpadc, &vmain_l, &vmain_h, &btemp_l, &btemp_h,
--			&vbat_l, &vbat_h, &ibat_l, &ibat_h);
--	seq_printf(s,
--		   "VMAIN_L:0x%X\n"
--		   "VMAIN_H:0x%X\n"
--		   "BTEMP_L:0x%X\n"
--		   "BTEMP_H:0x%X\n"
--		   "VBAT_L:0x%X\n"
--		   "VBAT_H:0x%X\n"
--		   "IBAT_L:0x%X\n"
--		   "IBAT_H:0x%X\n",
--		   vmain_l, vmain_h, btemp_l, btemp_h,
--		   vbat_l, vbat_h, ibat_l, ibat_h);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_otp_calib);
--
--static int ab8500_gpadc_avg_sample_print(struct seq_file *s, void *p)
--{
--	seq_printf(s, "%d\n", avg_sample);
--
--	return 0;
--}
--
--static int ab8500_gpadc_avg_sample_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, ab8500_gpadc_avg_sample_print,
--		inode->i_private);
--}
--
--static ssize_t ab8500_gpadc_avg_sample_write(struct file *file,
--	const char __user *user_buf,
--	size_t count, loff_t *ppos)
--{
--	struct device *dev = ((struct seq_file *)(file->private_data))->private;
--	unsigned long user_avg_sample;
--	int err;
--
--	err = kstrtoul_from_user(user_buf, count, 0, &user_avg_sample);
--	if (err)
--		return err;
--
--	if ((user_avg_sample == SAMPLE_1) || (user_avg_sample == SAMPLE_4)
--			|| (user_avg_sample == SAMPLE_8)
--			|| (user_avg_sample == SAMPLE_16)) {
--		avg_sample = (u8) user_avg_sample;
--	} else {
--		dev_err(dev,
--			"debugfs err input: should be egal to 1, 4, 8 or 16\n");
--		return -EINVAL;
--	}
--
--	return count;
--}
--
--static const struct file_operations ab8500_gpadc_avg_sample_fops = {
--	.open = ab8500_gpadc_avg_sample_open,
--	.read = seq_read,
--	.write = ab8500_gpadc_avg_sample_write,
--	.llseek = seq_lseek,
--	.release = single_release,
--	.owner = THIS_MODULE,
--};
--
--static int ab8500_gpadc_trig_edge_print(struct seq_file *s, void *p)
--{
--	seq_printf(s, "%d\n", trig_edge);
--
--	return 0;
--}
--
--static int ab8500_gpadc_trig_edge_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, ab8500_gpadc_trig_edge_print,
--		inode->i_private);
--}
--
--static ssize_t ab8500_gpadc_trig_edge_write(struct file *file,
--	const char __user *user_buf,
--	size_t count, loff_t *ppos)
--{
--	struct device *dev = ((struct seq_file *)(file->private_data))->private;
--	unsigned long user_trig_edge;
--	int err;
--
--	err = kstrtoul_from_user(user_buf, count, 0, &user_trig_edge);
--	if (err)
--		return err;
--
--	if ((user_trig_edge == RISING_EDGE)
--			|| (user_trig_edge == FALLING_EDGE)) {
--		trig_edge = (u8) user_trig_edge;
--	} else {
--		dev_err(dev, "Wrong input:\n"
--			"Enter 0. Rising edge\n"
--			"Enter 1. Falling edge\n");
--		return -EINVAL;
--	}
--
--	return count;
--}
--
--static const struct file_operations ab8500_gpadc_trig_edge_fops = {
--	.open = ab8500_gpadc_trig_edge_open,
--	.read = seq_read,
--	.write = ab8500_gpadc_trig_edge_write,
--	.llseek = seq_lseek,
--	.release = single_release,
--	.owner = THIS_MODULE,
--};
--
--static int ab8500_gpadc_trig_timer_print(struct seq_file *s, void *p)
--{
--	seq_printf(s, "%d\n", trig_timer);
--
--	return 0;
--}
--
--static int ab8500_gpadc_trig_timer_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, ab8500_gpadc_trig_timer_print,
--		inode->i_private);
--}
--
--static ssize_t ab8500_gpadc_trig_timer_write(struct file *file,
--	const char __user *user_buf,
--	size_t count, loff_t *ppos)
--{
--	struct device *dev = ((struct seq_file *)(file->private_data))->private;
--	unsigned long user_trig_timer;
--	int err;
--
--	err = kstrtoul_from_user(user_buf, count, 0, &user_trig_timer);
--	if (err)
--		return err;
--
--	if (user_trig_timer & ~0xFF) {
--		dev_err(dev,
--			"debugfs error input: should be between 0 to 255\n");
--		return -EINVAL;
--	}
--
--	trig_timer = (u8) user_trig_timer;
--
--	return count;
--}
--
--static const struct file_operations ab8500_gpadc_trig_timer_fops = {
--	.open = ab8500_gpadc_trig_timer_open,
--	.read = seq_read,
--	.write = ab8500_gpadc_trig_timer_write,
--	.llseek = seq_lseek,
--	.release = single_release,
--	.owner = THIS_MODULE,
--};
--
--static int ab8500_gpadc_conv_type_print(struct seq_file *s, void *p)
--{
--	seq_printf(s, "%d\n", conv_type);
--
--	return 0;
--}
--
--static int ab8500_gpadc_conv_type_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, ab8500_gpadc_conv_type_print,
--		inode->i_private);
--}
--
--static ssize_t ab8500_gpadc_conv_type_write(struct file *file,
--	const char __user *user_buf,
--	size_t count, loff_t *ppos)
--{
--	struct device *dev = ((struct seq_file *)(file->private_data))->private;
--	unsigned long user_conv_type;
--	int err;
--
--	err = kstrtoul_from_user(user_buf, count, 0, &user_conv_type);
--	if (err)
--		return err;
--
--	if ((user_conv_type == ADC_SW)
--			|| (user_conv_type == ADC_HW)) {
--		conv_type = (u8) user_conv_type;
--	} else {
--		dev_err(dev, "Wrong input:\n"
--			"Enter 0. ADC SW conversion\n"
--			"Enter 1. ADC HW conversion\n");
--		return -EINVAL;
--	}
--
--	return count;
--}
--
--static const struct file_operations ab8500_gpadc_conv_type_fops = {
--	.open = ab8500_gpadc_conv_type_open,
--	.read = seq_read,
--	.write = ab8500_gpadc_conv_type_write,
--	.llseek = seq_lseek,
--	.release = single_release,
--	.owner = THIS_MODULE,
--};
--
- /*
-  * return length of an ASCII numerical value, 0 is string is not a
-  * numerical value.
-@@ -2647,7 +2013,6 @@ static const struct file_operations ab8500_hwreg_fops = {
- static int ab8500_debug_probe(struct platform_device *plf)
- {
- 	struct dentry *ab8500_dir;
--	struct dentry *ab8500_gpadc_dir;
- 	struct ab8500 *ab8500;
- 	struct resource *res;
- 
-@@ -2689,9 +2054,6 @@ static int ab8500_debug_probe(struct platform_device *plf)
- 
- 	ab8500_dir = debugfs_create_dir(AB8500_NAME_STRING, NULL);
- 
--	ab8500_gpadc_dir = debugfs_create_dir(AB8500_ADC_NAME_STRING,
--					      ab8500_dir);
--
- 	debugfs_create_file("all-bank-registers", S_IRUGO, ab8500_dir,
- 			    &plf->dev, &ab8500_bank_registers_fops);
- 	debugfs_create_file("all-banks", S_IRUGO, ab8500_dir,
-@@ -2727,83 +2089,6 @@ static int ab8500_debug_probe(struct platform_device *plf)
- 			    &plf->dev, &ab8500_hwreg_fops);
- 	debugfs_create_file("all-modem-registers", (S_IRUGO | S_IWUSR | S_IWGRP),
- 			    ab8500_dir, &plf->dev, &ab8500_modem_fops);
--	debugfs_create_file("bat_ctrl", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_bat_ctrl_fops);
--	debugfs_create_file("btemp_ball", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_btemp_ball_fops);
--	debugfs_create_file("main_charger_v", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_main_charger_v_fops);
--	debugfs_create_file("acc_detect1", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_acc_detect1_fops);
--	debugfs_create_file("acc_detect2", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_acc_detect2_fops);
--	debugfs_create_file("adc_aux1", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_aux1_fops);
--	debugfs_create_file("adc_aux2", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_aux2_fops);
--	debugfs_create_file("main_bat_v", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_main_bat_v_fops);
--	debugfs_create_file("vbus_v", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_vbus_v_fops);
--	debugfs_create_file("main_charger_c", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_main_charger_c_fops);
--	debugfs_create_file("usb_charger_c", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_usb_charger_c_fops);
--	debugfs_create_file("bk_bat_v", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_bk_bat_v_fops);
--	debugfs_create_file("die_temp", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_die_temp_fops);
--	debugfs_create_file("usb_id", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_usb_id_fops);
--	if (is_ab8540(ab8500)) {
--		debugfs_create_file("xtal_temp", (S_IRUGO | S_IWUSR | S_IWGRP),
--				    ab8500_gpadc_dir, &plf->dev,
--				    &ab8540_gpadc_xtal_temp_fops);
--		debugfs_create_file("vbattruemeas", (S_IRUGO | S_IWUSR | S_IWGRP),
--				    ab8500_gpadc_dir, &plf->dev,
--				    &ab8540_gpadc_vbat_true_meas_fops);
--		debugfs_create_file("batctrl_and_ibat", (S_IRUGO | S_IWUGO),
--				    ab8500_gpadc_dir, &plf->dev,
--				    &ab8540_gpadc_bat_ctrl_and_ibat_fops);
--		debugfs_create_file("vbatmeas_and_ibat", (S_IRUGO | S_IWUGO),
--				    ab8500_gpadc_dir, &plf->dev,
--				    &ab8540_gpadc_vbat_meas_and_ibat_fops);
--		debugfs_create_file("vbattruemeas_and_ibat", (S_IRUGO | S_IWUGO),
--				    ab8500_gpadc_dir, &plf->dev,
--				    &ab8540_gpadc_vbat_true_meas_and_ibat_fops);
--		debugfs_create_file("battemp_and_ibat", (S_IRUGO | S_IWUGO),
--				    ab8500_gpadc_dir, &plf->dev,
--				    &ab8540_gpadc_bat_temp_and_ibat_fops);
--		debugfs_create_file("otp_calib", (S_IRUGO | S_IWUSR | S_IWGRP),
--				    ab8500_gpadc_dir, &plf->dev,
--				    &ab8540_gpadc_otp_calib_fops);
--	}
--	debugfs_create_file("avg_sample", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_avg_sample_fops);
--	debugfs_create_file("trig_edge", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_trig_edge_fops);
--	debugfs_create_file("trig_timer", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_trig_timer_fops);
--	debugfs_create_file("conv_type", (S_IRUGO | S_IWUSR | S_IWGRP),
--			    ab8500_gpadc_dir, &plf->dev,
--			    &ab8500_gpadc_conv_type_fops);
- 
- 	return 0;
- }
-diff --git a/drivers/mfd/ab8500-gpadc.c b/drivers/mfd/ab8500-gpadc.c
-deleted file mode 100644
-index 005f9ee34cd1..000000000000
---- a/drivers/mfd/ab8500-gpadc.c
-+++ /dev/null
-@@ -1,1075 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) ST-Ericsson SA 2010
-- *
-- * Author: Arun R Murthy <arun.murthy@stericsson.com>
-- * Author: Daniel Willerud <daniel.willerud@stericsson.com>
-- * Author: Johan Palsson <johan.palsson@stericsson.com>
-- * Author: M'boumba Cedric Madianga
-- */
--#include <linux/init.h>
--#include <linux/device.h>
--#include <linux/interrupt.h>
--#include <linux/spinlock.h>
--#include <linux/delay.h>
--#include <linux/pm_runtime.h>
--#include <linux/platform_device.h>
--#include <linux/completion.h>
--#include <linux/regulator/consumer.h>
--#include <linux/err.h>
--#include <linux/slab.h>
--#include <linux/list.h>
--#include <linux/mfd/abx500.h>
--#include <linux/mfd/abx500/ab8500.h>
--#include <linux/mfd/abx500/ab8500-gpadc.h>
--
--/*
-- * GPADC register offsets
-- * Bank : 0x0A
-- */
--#define AB8500_GPADC_CTRL1_REG		0x00
--#define AB8500_GPADC_CTRL2_REG		0x01
--#define AB8500_GPADC_CTRL3_REG		0x02
--#define AB8500_GPADC_AUTO_TIMER_REG	0x03
--#define AB8500_GPADC_STAT_REG		0x04
--#define AB8500_GPADC_MANDATAL_REG	0x05
--#define AB8500_GPADC_MANDATAH_REG	0x06
--#define AB8500_GPADC_AUTODATAL_REG	0x07
--#define AB8500_GPADC_AUTODATAH_REG	0x08
--#define AB8500_GPADC_MUX_CTRL_REG	0x09
--#define AB8540_GPADC_MANDATA2L_REG	0x09
--#define AB8540_GPADC_MANDATA2H_REG	0x0A
--#define AB8540_GPADC_APEAAX_REG		0x10
--#define AB8540_GPADC_APEAAT_REG		0x11
--#define AB8540_GPADC_APEAAM_REG		0x12
--#define AB8540_GPADC_APEAAH_REG		0x13
--#define AB8540_GPADC_APEAAL_REG		0x14
--
--/*
-- * OTP register offsets
-- * Bank : 0x15
-- */
--#define AB8500_GPADC_CAL_1	0x0F
--#define AB8500_GPADC_CAL_2	0x10
--#define AB8500_GPADC_CAL_3	0x11
--#define AB8500_GPADC_CAL_4	0x12
--#define AB8500_GPADC_CAL_5	0x13
--#define AB8500_GPADC_CAL_6	0x14
--#define AB8500_GPADC_CAL_7	0x15
--/* New calibration for 8540 */
--#define AB8540_GPADC_OTP4_REG_7	0x38
--#define AB8540_GPADC_OTP4_REG_6	0x39
--#define AB8540_GPADC_OTP4_REG_5	0x3A
--
--/* gpadc constants */
--#define EN_VINTCORE12		0x04
--#define EN_VTVOUT		0x02
--#define EN_GPADC		0x01
--#define DIS_GPADC		0x00
--#define AVG_1			0x00
--#define AVG_4			0x20
--#define AVG_8			0x40
--#define AVG_16			0x60
--#define ADC_SW_CONV		0x04
--#define EN_ICHAR		0x80
--#define BTEMP_PULL_UP		0x08
--#define EN_BUF			0x40
--#define DIS_ZERO		0x00
--#define GPADC_BUSY		0x01
--#define EN_FALLING		0x10
--#define EN_TRIG_EDGE		0x02
--#define EN_VBIAS_XTAL_TEMP	0x02
--
--/* GPADC constants from AB8500 spec, UM0836 */
--#define ADC_RESOLUTION		1024
--#define ADC_CH_BTEMP_MIN	0
--#define ADC_CH_BTEMP_MAX	1350
--#define ADC_CH_DIETEMP_MIN	0
--#define ADC_CH_DIETEMP_MAX	1350
--#define ADC_CH_CHG_V_MIN	0
--#define ADC_CH_CHG_V_MAX	20030
--#define ADC_CH_ACCDET2_MIN	0
--#define ADC_CH_ACCDET2_MAX	2500
--#define ADC_CH_VBAT_MIN		2300
--#define ADC_CH_VBAT_MAX		4800
--#define ADC_CH_CHG_I_MIN	0
--#define ADC_CH_CHG_I_MAX	1500
--#define ADC_CH_BKBAT_MIN	0
--#define ADC_CH_BKBAT_MAX	3200
--
--/* GPADC constants from AB8540 spec */
--#define ADC_CH_IBAT_MIN		(-6000) /* mA range measured by ADC for ibat */
--#define ADC_CH_IBAT_MAX		6000
--#define ADC_CH_IBAT_MIN_V	(-60)	/* mV range measured by ADC for ibat */
--#define ADC_CH_IBAT_MAX_V	60
--#define IBAT_VDROP_L		(-56)  /* mV */
--#define IBAT_VDROP_H		56
--
--/* This is used to not lose precision when dividing to get gain and offset */
--#define CALIB_SCALE		1000
--/*
-- * Number of bits shift used to not lose precision
-- * when dividing to get ibat gain.
-- */
--#define CALIB_SHIFT_IBAT	20
--
--/* Time in ms before disabling regulator */
--#define GPADC_AUDOSUSPEND_DELAY		1
--
--#define CONVERSION_TIME			500 /* ms */
--
--enum cal_channels {
--	ADC_INPUT_VMAIN = 0,
--	ADC_INPUT_BTEMP,
--	ADC_INPUT_VBAT,
--	ADC_INPUT_IBAT,
--	NBR_CAL_INPUTS,
--};
--
--/**
-- * struct adc_cal_data - Table for storing gain and offset for the calibrated
-- * ADC channels
-- * @gain:		Gain of the ADC channel
-- * @offset:		Offset of the ADC channel
-- */
--struct adc_cal_data {
--	s64 gain;
--	s64 offset;
--	u16 otp_calib_hi;
--	u16 otp_calib_lo;
--};
--
--/**
-- * struct ab8500_gpadc - AB8500 GPADC device information
-- * @dev:			pointer to the struct device
-- * @node:			a list of AB8500 GPADCs, hence prepared for
--				reentrance
-- * @parent:			pointer to the struct ab8500
-- * @ab8500_gpadc_complete:	pointer to the struct completion, to indicate
-- *				the completion of gpadc conversion
-- * @ab8500_gpadc_lock:		structure of type mutex
-- * @regu:			pointer to the struct regulator
-- * @irq_sw:			interrupt number that is used by gpadc for Sw
-- *				conversion
-- * @irq_hw:			interrupt number that is used by gpadc for Hw
-- *				conversion
-- * @cal_data			array of ADC calibration data structs
-- */
--struct ab8500_gpadc {
--	struct device *dev;
--	struct list_head node;
--	struct ab8500 *parent;
--	struct completion ab8500_gpadc_complete;
--	struct mutex ab8500_gpadc_lock;
--	struct regulator *regu;
--	int irq_sw;
--	int irq_hw;
--	struct adc_cal_data cal_data[NBR_CAL_INPUTS];
--};
--
--static LIST_HEAD(ab8500_gpadc_list);
--
--/**
-- * ab8500_gpadc_get() - returns a reference to the primary AB8500 GPADC
-- * (i.e. the first GPADC in the instance list)
-- */
--struct ab8500_gpadc *ab8500_gpadc_get(char *name)
--{
--	struct ab8500_gpadc *gpadc;
--
--	list_for_each_entry(gpadc, &ab8500_gpadc_list, node) {
--		if (!strcmp(name, dev_name(gpadc->dev)))
--			return gpadc;
--	}
--
--	return ERR_PTR(-ENOENT);
--}
--EXPORT_SYMBOL(ab8500_gpadc_get);
--
--/**
-- * ab8500_gpadc_ad_to_voltage() - Convert a raw ADC value to a voltage
-- */
--int ab8500_gpadc_ad_to_voltage(struct ab8500_gpadc *gpadc, u8 channel,
--	int ad_value)
--{
--	int res;
--
--	switch (channel) {
--	case MAIN_CHARGER_V:
--		/* For some reason we don't have calibrated data */
--		if (!gpadc->cal_data[ADC_INPUT_VMAIN].gain) {
--			res = ADC_CH_CHG_V_MIN + (ADC_CH_CHG_V_MAX -
--				ADC_CH_CHG_V_MIN) * ad_value /
--				ADC_RESOLUTION;
--			break;
--		}
--		/* Here we can use the calibrated data */
--		res = (int) (ad_value * gpadc->cal_data[ADC_INPUT_VMAIN].gain +
--			gpadc->cal_data[ADC_INPUT_VMAIN].offset) / CALIB_SCALE;
--		break;
--
--	case XTAL_TEMP:
--	case BAT_CTRL:
--	case BTEMP_BALL:
--	case ACC_DETECT1:
--	case ADC_AUX1:
--	case ADC_AUX2:
--		/* For some reason we don't have calibrated data */
--		if (!gpadc->cal_data[ADC_INPUT_BTEMP].gain) {
--			res = ADC_CH_BTEMP_MIN + (ADC_CH_BTEMP_MAX -
--				ADC_CH_BTEMP_MIN) * ad_value /
--				ADC_RESOLUTION;
--			break;
--		}
--		/* Here we can use the calibrated data */
--		res = (int) (ad_value * gpadc->cal_data[ADC_INPUT_BTEMP].gain +
--			gpadc->cal_data[ADC_INPUT_BTEMP].offset) / CALIB_SCALE;
--		break;
--
--	case MAIN_BAT_V:
--	case VBAT_TRUE_MEAS:
--		/* For some reason we don't have calibrated data */
--		if (!gpadc->cal_data[ADC_INPUT_VBAT].gain) {
--			res = ADC_CH_VBAT_MIN + (ADC_CH_VBAT_MAX -
--				ADC_CH_VBAT_MIN) * ad_value /
--				ADC_RESOLUTION;
--			break;
--		}
--		/* Here we can use the calibrated data */
--		res = (int) (ad_value * gpadc->cal_data[ADC_INPUT_VBAT].gain +
--			gpadc->cal_data[ADC_INPUT_VBAT].offset) / CALIB_SCALE;
--		break;
--
--	case DIE_TEMP:
--		res = ADC_CH_DIETEMP_MIN +
--			(ADC_CH_DIETEMP_MAX - ADC_CH_DIETEMP_MIN) * ad_value /
--			ADC_RESOLUTION;
--		break;
--
--	case ACC_DETECT2:
--		res = ADC_CH_ACCDET2_MIN +
--			(ADC_CH_ACCDET2_MAX - ADC_CH_ACCDET2_MIN) * ad_value /
--			ADC_RESOLUTION;
--		break;
--
--	case VBUS_V:
--		res = ADC_CH_CHG_V_MIN +
--			(ADC_CH_CHG_V_MAX - ADC_CH_CHG_V_MIN) * ad_value /
--			ADC_RESOLUTION;
--		break;
--
--	case MAIN_CHARGER_C:
--	case USB_CHARGER_C:
--		res = ADC_CH_CHG_I_MIN +
--			(ADC_CH_CHG_I_MAX - ADC_CH_CHG_I_MIN) * ad_value /
--			ADC_RESOLUTION;
--		break;
--
--	case BK_BAT_V:
--		res = ADC_CH_BKBAT_MIN +
--			(ADC_CH_BKBAT_MAX - ADC_CH_BKBAT_MIN) * ad_value /
--			ADC_RESOLUTION;
--		break;
--
--	case IBAT_VIRTUAL_CHANNEL:
--		/* For some reason we don't have calibrated data */
--		if (!gpadc->cal_data[ADC_INPUT_IBAT].gain) {
--			res = ADC_CH_IBAT_MIN + (ADC_CH_IBAT_MAX -
--				ADC_CH_IBAT_MIN) * ad_value /
--				ADC_RESOLUTION;
--			break;
--		}
--		/* Here we can use the calibrated data */
--		res = (int) (ad_value * gpadc->cal_data[ADC_INPUT_IBAT].gain +
--				gpadc->cal_data[ADC_INPUT_IBAT].offset)
--				>> CALIB_SHIFT_IBAT;
--		break;
--
--	default:
--		dev_err(gpadc->dev,
--			"unknown channel, not possible to convert\n");
--		res = -EINVAL;
--		break;
--
--	}
--	return res;
--}
--EXPORT_SYMBOL(ab8500_gpadc_ad_to_voltage);
--
--/**
-- * ab8500_gpadc_sw_hw_convert() - gpadc conversion
-- * @channel:	analog channel to be converted to digital data
-- * @avg_sample:  number of ADC sample to average
-- * @trig_egde:  selected ADC trig edge
-- * @trig_timer: selected ADC trigger delay timer
-- * @conv_type: selected conversion type (HW or SW conversion)
-- *
-- * This function converts the selected analog i/p to digital
-- * data.
-- */
--int ab8500_gpadc_sw_hw_convert(struct ab8500_gpadc *gpadc, u8 channel,
--		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type)
--{
--	int ad_value;
--	int voltage;
--
--	ad_value = ab8500_gpadc_read_raw(gpadc, channel, avg_sample,
--			trig_edge, trig_timer, conv_type);
--
--	/* On failure retry a second time */
--	if (ad_value < 0)
--		ad_value = ab8500_gpadc_read_raw(gpadc, channel, avg_sample,
--			trig_edge, trig_timer, conv_type);
--	if (ad_value < 0) {
--		dev_err(gpadc->dev, "GPADC raw value failed ch: %d\n",
--				channel);
--		return ad_value;
--	}
--
--	voltage = ab8500_gpadc_ad_to_voltage(gpadc, channel, ad_value);
--	if (voltage < 0)
--		dev_err(gpadc->dev,
--			"GPADC to voltage conversion failed ch: %d AD: 0x%x\n",
--			channel, ad_value);
--
--	return voltage;
--}
--EXPORT_SYMBOL(ab8500_gpadc_sw_hw_convert);
--
--/**
-- * ab8500_gpadc_read_raw() - gpadc read
-- * @channel:	analog channel to be read
-- * @avg_sample:  number of ADC sample to average
-- * @trig_edge:  selected trig edge
-- * @trig_timer: selected ADC trigger delay timer
-- * @conv_type: selected conversion type (HW or SW conversion)
-- *
-- * This function obtains the raw ADC value for an hardware conversion,
-- * this then needs to be converted by calling ab8500_gpadc_ad_to_voltage()
-- */
--int ab8500_gpadc_read_raw(struct ab8500_gpadc *gpadc, u8 channel,
--		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type)
--{
--	return ab8500_gpadc_double_read_raw(gpadc, channel, avg_sample,
--					    trig_edge, trig_timer, conv_type,
--					    NULL);
--}
--
--int ab8500_gpadc_double_read_raw(struct ab8500_gpadc *gpadc, u8 channel,
--		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type,
--		int *ibat)
--{
--	int ret;
--	int looplimit = 0;
--	unsigned long completion_timeout;
--	u8 val, low_data, high_data, low_data2, high_data2;
--	u8 val_reg1 = 0;
--	unsigned int delay_min = 0;
--	unsigned int delay_max = 0;
--	u8 data_low_addr, data_high_addr;
--
--	if (!gpadc)
--		return -ENODEV;
--
--	/* check if convertion is supported */
--	if ((gpadc->irq_sw < 0) && (conv_type == ADC_SW))
--		return -ENOTSUPP;
--	if ((gpadc->irq_hw < 0) && (conv_type == ADC_HW))
--		return -ENOTSUPP;
--
--	mutex_lock(&gpadc->ab8500_gpadc_lock);
--	/* Enable VTVout LDO this is required for GPADC */
--	pm_runtime_get_sync(gpadc->dev);
--
--	/* Check if ADC is not busy, lock and proceed */
--	do {
--		ret = abx500_get_register_interruptible(gpadc->dev,
--			AB8500_GPADC, AB8500_GPADC_STAT_REG, &val);
--		if (ret < 0)
--			goto out;
--		if (!(val & GPADC_BUSY))
--			break;
--		msleep(20);
--	} while (++looplimit < 10);
--	if (looplimit >= 10 && (val & GPADC_BUSY)) {
--		dev_err(gpadc->dev, "gpadc_conversion: GPADC busy");
--		ret = -EINVAL;
--		goto out;
--	}
--
--	/* Enable GPADC */
--	val_reg1 |= EN_GPADC;
--
--	/* Select the channel source and set average samples */
--	switch (avg_sample) {
--	case SAMPLE_1:
--		val = channel | AVG_1;
--		break;
--	case SAMPLE_4:
--		val = channel | AVG_4;
--		break;
--	case SAMPLE_8:
--		val = channel | AVG_8;
--		break;
--	default:
--		val = channel | AVG_16;
--		break;
--	}
--
--	if (conv_type == ADC_HW) {
--		ret = abx500_set_register_interruptible(gpadc->dev,
--				AB8500_GPADC, AB8500_GPADC_CTRL3_REG, val);
--		val_reg1 |= EN_TRIG_EDGE;
--		if (trig_edge)
--			val_reg1 |= EN_FALLING;
--	} else
--		ret = abx500_set_register_interruptible(gpadc->dev,
--				AB8500_GPADC, AB8500_GPADC_CTRL2_REG, val);
--	if (ret < 0) {
--		dev_err(gpadc->dev,
--			"gpadc_conversion: set avg samples failed\n");
--		goto out;
--	}
--
--	/*
--	 * Enable ADC, buffering, select rising edge and enable ADC path
--	 * charging current sense if it needed, ABB 3.0 needs some special
--	 * treatment too.
--	 */
--	switch (channel) {
--	case MAIN_CHARGER_C:
--	case USB_CHARGER_C:
--		val_reg1 |= EN_BUF | EN_ICHAR;
--		break;
--	case BTEMP_BALL:
--		if (!is_ab8500_2p0_or_earlier(gpadc->parent)) {
--			val_reg1 |= EN_BUF | BTEMP_PULL_UP;
--			/*
--			* Delay might be needed for ABB8500 cut 3.0, if not,
--			* remove when hardware will be availible
--			*/
--			delay_min = 1000; /* Delay in micro seconds */
--			delay_max = 10000; /* large range optimises sleepmode */
--			break;
--		}
--		/* Intentional fallthrough */
--	default:
--		val_reg1 |= EN_BUF;
--		break;
--	}
--
--	/* Write configuration to register */
--	ret = abx500_set_register_interruptible(gpadc->dev,
--		AB8500_GPADC, AB8500_GPADC_CTRL1_REG, val_reg1);
--	if (ret < 0) {
--		dev_err(gpadc->dev,
--			"gpadc_conversion: set Control register failed\n");
--		goto out;
--	}
--
--	if (delay_min != 0)
--		usleep_range(delay_min, delay_max);
--
--	if (conv_type == ADC_HW) {
--		/* Set trigger delay timer */
--		ret = abx500_set_register_interruptible(gpadc->dev,
--			AB8500_GPADC, AB8500_GPADC_AUTO_TIMER_REG, trig_timer);
--		if (ret < 0) {
--			dev_err(gpadc->dev,
--				"gpadc_conversion: trig timer failed\n");
--			goto out;
--		}
--		completion_timeout = 2 * HZ;
--		data_low_addr = AB8500_GPADC_AUTODATAL_REG;
--		data_high_addr = AB8500_GPADC_AUTODATAH_REG;
--	} else {
--		/* Start SW conversion */
--		ret = abx500_mask_and_set_register_interruptible(gpadc->dev,
--			AB8500_GPADC, AB8500_GPADC_CTRL1_REG,
--			ADC_SW_CONV, ADC_SW_CONV);
--		if (ret < 0) {
--			dev_err(gpadc->dev,
--				"gpadc_conversion: start s/w conv failed\n");
--			goto out;
--		}
--		completion_timeout = msecs_to_jiffies(CONVERSION_TIME);
--		data_low_addr = AB8500_GPADC_MANDATAL_REG;
--		data_high_addr = AB8500_GPADC_MANDATAH_REG;
--	}
--
--	/* wait for completion of conversion */
--	if (!wait_for_completion_timeout(&gpadc->ab8500_gpadc_complete,
--			completion_timeout)) {
--		dev_err(gpadc->dev,
--			"timeout didn't receive GPADC conv interrupt\n");
--		ret = -EINVAL;
--		goto out;
--	}
--
--	/* Read the converted RAW data */
--	ret = abx500_get_register_interruptible(gpadc->dev,
--			AB8500_GPADC, data_low_addr, &low_data);
--	if (ret < 0) {
--		dev_err(gpadc->dev, "gpadc_conversion: read low data failed\n");
--		goto out;
--	}
--
--	ret = abx500_get_register_interruptible(gpadc->dev,
--		AB8500_GPADC, data_high_addr, &high_data);
--	if (ret < 0) {
--		dev_err(gpadc->dev, "gpadc_conversion: read high data failed\n");
--		goto out;
--	}
--
--	/* Check if double convertion is required */
--	if ((channel == BAT_CTRL_AND_IBAT) ||
--			(channel == VBAT_MEAS_AND_IBAT) ||
--			(channel == VBAT_TRUE_MEAS_AND_IBAT) ||
--			(channel == BAT_TEMP_AND_IBAT)) {
--
--		if (conv_type == ADC_HW) {
--			/* not supported */
--			ret = -ENOTSUPP;
--			dev_err(gpadc->dev,
--				"gpadc_conversion: only SW double conversion supported\n");
--			goto out;
--		} else {
--			/* Read the converted RAW data 2 */
--			ret = abx500_get_register_interruptible(gpadc->dev,
--				AB8500_GPADC, AB8540_GPADC_MANDATA2L_REG,
--				&low_data2);
--			if (ret < 0) {
--				dev_err(gpadc->dev,
--					"gpadc_conversion: read sw low data 2 failed\n");
--				goto out;
--			}
--
--			ret = abx500_get_register_interruptible(gpadc->dev,
--				AB8500_GPADC, AB8540_GPADC_MANDATA2H_REG,
--				&high_data2);
--			if (ret < 0) {
--				dev_err(gpadc->dev,
--					"gpadc_conversion: read sw high data 2 failed\n");
--				goto out;
--			}
--			if (ibat != NULL) {
--				*ibat = (high_data2 << 8) | low_data2;
--			} else {
--				dev_warn(gpadc->dev,
--					"gpadc_conversion: ibat not stored\n");
--			}
--
--		}
--	}
--
--	/* Disable GPADC */
--	ret = abx500_set_register_interruptible(gpadc->dev, AB8500_GPADC,
--		AB8500_GPADC_CTRL1_REG, DIS_GPADC);
--	if (ret < 0) {
--		dev_err(gpadc->dev, "gpadc_conversion: disable gpadc failed\n");
--		goto out;
--	}
--
--	/* Disable VTVout LDO this is required for GPADC */
--	pm_runtime_mark_last_busy(gpadc->dev);
--	pm_runtime_put_autosuspend(gpadc->dev);
--
--	mutex_unlock(&gpadc->ab8500_gpadc_lock);
--
--	return (high_data << 8) | low_data;
--
--out:
--	/*
--	 * It has shown to be needed to turn off the GPADC if an error occurs,
--	 * otherwise we might have problem when waiting for the busy bit in the
--	 * GPADC status register to go low. In V1.1 there wait_for_completion
--	 * seems to timeout when waiting for an interrupt.. Not seen in V2.0
--	 */
--	(void) abx500_set_register_interruptible(gpadc->dev, AB8500_GPADC,
--		AB8500_GPADC_CTRL1_REG, DIS_GPADC);
--	pm_runtime_put(gpadc->dev);
--	mutex_unlock(&gpadc->ab8500_gpadc_lock);
--	dev_err(gpadc->dev,
--		"gpadc_conversion: Failed to AD convert channel %d\n", channel);
--	return ret;
--}
--EXPORT_SYMBOL(ab8500_gpadc_read_raw);
--
--/**
-- * ab8500_bm_gpadcconvend_handler() - isr for gpadc conversion completion
-- * @irq:	irq number
-- * @data:	pointer to the data passed during request irq
-- *
-- * This is a interrupt service routine for gpadc conversion completion.
-- * Notifies the gpadc completion is completed and the converted raw value
-- * can be read from the registers.
-- * Returns IRQ status(IRQ_HANDLED)
-- */
--static irqreturn_t ab8500_bm_gpadcconvend_handler(int irq, void *_gpadc)
--{
--	struct ab8500_gpadc *gpadc = _gpadc;
--
--	complete(&gpadc->ab8500_gpadc_complete);
--
--	return IRQ_HANDLED;
--}
--
--static int otp_cal_regs[] = {
--	AB8500_GPADC_CAL_1,
--	AB8500_GPADC_CAL_2,
--	AB8500_GPADC_CAL_3,
--	AB8500_GPADC_CAL_4,
--	AB8500_GPADC_CAL_5,
--	AB8500_GPADC_CAL_6,
--	AB8500_GPADC_CAL_7,
--};
--
--static int otp4_cal_regs[] = {
--	AB8540_GPADC_OTP4_REG_7,
--	AB8540_GPADC_OTP4_REG_6,
--	AB8540_GPADC_OTP4_REG_5,
--};
--
--static void ab8500_gpadc_read_calibration_data(struct ab8500_gpadc *gpadc)
--{
--	int i;
--	int ret[ARRAY_SIZE(otp_cal_regs)];
--	u8 gpadc_cal[ARRAY_SIZE(otp_cal_regs)];
--	int ret_otp4[ARRAY_SIZE(otp4_cal_regs)];
--	u8 gpadc_otp4[ARRAY_SIZE(otp4_cal_regs)];
--	int vmain_high, vmain_low;
--	int btemp_high, btemp_low;
--	int vbat_high, vbat_low;
--	int ibat_high, ibat_low;
--	s64 V_gain, V_offset, V2A_gain, V2A_offset;
--	struct ab8500 *ab8500;
--
--	ab8500 = gpadc->parent;
--
--	/* First we read all OTP registers and store the error code */
--	for (i = 0; i < ARRAY_SIZE(otp_cal_regs); i++) {
--		ret[i] = abx500_get_register_interruptible(gpadc->dev,
--			AB8500_OTP_EMUL, otp_cal_regs[i],  &gpadc_cal[i]);
--		if (ret[i] < 0)
--			dev_err(gpadc->dev, "%s: read otp reg 0x%02x failed\n",
--				__func__, otp_cal_regs[i]);
--	}
--
--	/*
--	 * The ADC calibration data is stored in OTP registers.
--	 * The layout of the calibration data is outlined below and a more
--	 * detailed description can be found in UM0836
--	 *
--	 * vm_h/l = vmain_high/low
--	 * bt_h/l = btemp_high/low
--	 * vb_h/l = vbat_high/low
--	 *
--	 * Data bits 8500/9540:
--	 * | 7	   | 6	   | 5	   | 4	   | 3	   | 2	   | 1	   | 0
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * |						   | vm_h9 | vm_h8
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * |		   | vm_h7 | vm_h6 | vm_h5 | vm_h4 | vm_h3 | vm_h2
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | vm_h1 | vm_h0 | vm_l4 | vm_l3 | vm_l2 | vm_l1 | vm_l0 | bt_h9
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | bt_h8 | bt_h7 | bt_h6 | bt_h5 | bt_h4 | bt_h3 | bt_h2 | bt_h1
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | bt_h0 | bt_l4 | bt_l3 | bt_l2 | bt_l1 | bt_l0 | vb_h9 | vb_h8
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | vb_h7 | vb_h6 | vb_h5 | vb_h4 | vb_h3 | vb_h2 | vb_h1 | vb_h0
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | vb_l5 | vb_l4 | vb_l3 | vb_l2 | vb_l1 | vb_l0 |
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 *
--	 * Data bits 8540:
--	 * OTP2
--	 * | 7	   | 6	   | 5	   | 4	   | 3	   | 2	   | 1	   | 0
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * |
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | vm_h9 | vm_h8 | vm_h7 | vm_h6 | vm_h5 | vm_h4 | vm_h3 | vm_h2
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | vm_h1 | vm_h0 | vm_l4 | vm_l3 | vm_l2 | vm_l1 | vm_l0 | bt_h9
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | bt_h8 | bt_h7 | bt_h6 | bt_h5 | bt_h4 | bt_h3 | bt_h2 | bt_h1
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | bt_h0 | bt_l4 | bt_l3 | bt_l2 | bt_l1 | bt_l0 | vb_h9 | vb_h8
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | vb_h7 | vb_h6 | vb_h5 | vb_h4 | vb_h3 | vb_h2 | vb_h1 | vb_h0
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | vb_l5 | vb_l4 | vb_l3 | vb_l2 | vb_l1 | vb_l0 |
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 *
--	 * Data bits 8540:
--	 * OTP4
--	 * | 7	   | 6	   | 5	   | 4	   | 3	   | 2	   | 1	   | 0
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * |					   | ib_h9 | ib_h8 | ib_h7
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | ib_h6 | ib_h5 | ib_h4 | ib_h3 | ib_h2 | ib_h1 | ib_h0 | ib_l5
--	 * |.......|.......|.......|.......|.......|.......|.......|.......
--	 * | ib_l4 | ib_l3 | ib_l2 | ib_l1 | ib_l0 |
--	 *
--	 *
--	 * Ideal output ADC codes corresponding to injected input voltages
--	 * during manufacturing is:
--	 *
--	 * vmain_high: Vin = 19500mV / ADC ideal code = 997
--	 * vmain_low:  Vin = 315mV   / ADC ideal code = 16
--	 * btemp_high: Vin = 1300mV  / ADC ideal code = 985
--	 * btemp_low:  Vin = 21mV    / ADC ideal code = 16
--	 * vbat_high:  Vin = 4700mV  / ADC ideal code = 982
--	 * vbat_low:   Vin = 2380mV  / ADC ideal code = 33
--	 */
--
--	if (is_ab8540(ab8500)) {
--		/* Calculate gain and offset for VMAIN if all reads succeeded*/
--		if (!(ret[1] < 0 || ret[2] < 0)) {
--			vmain_high = (((gpadc_cal[1] & 0xFF) << 2) |
--				((gpadc_cal[2] & 0xC0) >> 6));
--			vmain_low = ((gpadc_cal[2] & 0x3E) >> 1);
--
--			gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_hi =
--				(u16)vmain_high;
--			gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_lo =
--				(u16)vmain_low;
--
--			gpadc->cal_data[ADC_INPUT_VMAIN].gain = CALIB_SCALE *
--				(19500 - 315) / (vmain_high - vmain_low);
--			gpadc->cal_data[ADC_INPUT_VMAIN].offset = CALIB_SCALE *
--				19500 - (CALIB_SCALE * (19500 - 315) /
--				(vmain_high - vmain_low)) * vmain_high;
--		} else {
--		gpadc->cal_data[ADC_INPUT_VMAIN].gain = 0;
--		}
--
--		/* Read IBAT calibration Data */
--		for (i = 0; i < ARRAY_SIZE(otp4_cal_regs); i++) {
--			ret_otp4[i] = abx500_get_register_interruptible(
--					gpadc->dev, AB8500_OTP_EMUL,
--					otp4_cal_regs[i],  &gpadc_otp4[i]);
--			if (ret_otp4[i] < 0)
--				dev_err(gpadc->dev,
--					"%s: read otp4 reg 0x%02x failed\n",
--					__func__, otp4_cal_regs[i]);
--		}
--
--		/* Calculate gain and offset for IBAT if all reads succeeded */
--		if (!(ret_otp4[0] < 0 || ret_otp4[1] < 0 || ret_otp4[2] < 0)) {
--			ibat_high = (((gpadc_otp4[0] & 0x07) << 7) |
--				((gpadc_otp4[1] & 0xFE) >> 1));
--			ibat_low = (((gpadc_otp4[1] & 0x01) << 5) |
--				((gpadc_otp4[2] & 0xF8) >> 3));
--
--			gpadc->cal_data[ADC_INPUT_IBAT].otp_calib_hi =
--				(u16)ibat_high;
--			gpadc->cal_data[ADC_INPUT_IBAT].otp_calib_lo =
--				(u16)ibat_low;
--
--			V_gain = ((IBAT_VDROP_H - IBAT_VDROP_L)
--				<< CALIB_SHIFT_IBAT) / (ibat_high - ibat_low);
--
--			V_offset = (IBAT_VDROP_H << CALIB_SHIFT_IBAT) -
--				(((IBAT_VDROP_H - IBAT_VDROP_L) <<
--				CALIB_SHIFT_IBAT) / (ibat_high - ibat_low))
--				* ibat_high;
--			/*
--			 * Result obtained is in mV (at a scale factor),
--			 * we need to calculate gain and offset to get mA
--			 */
--			V2A_gain = (ADC_CH_IBAT_MAX - ADC_CH_IBAT_MIN)/
--				(ADC_CH_IBAT_MAX_V - ADC_CH_IBAT_MIN_V);
--			V2A_offset = ((ADC_CH_IBAT_MAX_V * ADC_CH_IBAT_MIN -
--				ADC_CH_IBAT_MAX * ADC_CH_IBAT_MIN_V)
--				<< CALIB_SHIFT_IBAT)
--				/ (ADC_CH_IBAT_MAX_V - ADC_CH_IBAT_MIN_V);
--
--			gpadc->cal_data[ADC_INPUT_IBAT].gain =
--				V_gain * V2A_gain;
--			gpadc->cal_data[ADC_INPUT_IBAT].offset =
--				V_offset * V2A_gain + V2A_offset;
--		} else {
--			gpadc->cal_data[ADC_INPUT_IBAT].gain = 0;
--		}
--
--		dev_dbg(gpadc->dev, "IBAT gain %llu offset %llu\n",
--			gpadc->cal_data[ADC_INPUT_IBAT].gain,
--			gpadc->cal_data[ADC_INPUT_IBAT].offset);
--	} else {
--		/* Calculate gain and offset for VMAIN if all reads succeeded */
--		if (!(ret[0] < 0 || ret[1] < 0 || ret[2] < 0)) {
--			vmain_high = (((gpadc_cal[0] & 0x03) << 8) |
--				((gpadc_cal[1] & 0x3F) << 2) |
--				((gpadc_cal[2] & 0xC0) >> 6));
--			vmain_low = ((gpadc_cal[2] & 0x3E) >> 1);
--
--			gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_hi =
--				(u16)vmain_high;
--			gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_lo =
--				(u16)vmain_low;
--
--			gpadc->cal_data[ADC_INPUT_VMAIN].gain = CALIB_SCALE *
--				(19500 - 315) / (vmain_high - vmain_low);
--
--			gpadc->cal_data[ADC_INPUT_VMAIN].offset = CALIB_SCALE *
--				19500 - (CALIB_SCALE * (19500 - 315) /
--				(vmain_high - vmain_low)) * vmain_high;
--		} else {
--			gpadc->cal_data[ADC_INPUT_VMAIN].gain = 0;
--		}
--	}
--
--	/* Calculate gain and offset for BTEMP if all reads succeeded */
--	if (!(ret[2] < 0 || ret[3] < 0 || ret[4] < 0)) {
--		btemp_high = (((gpadc_cal[2] & 0x01) << 9) |
--			(gpadc_cal[3] << 1) | ((gpadc_cal[4] & 0x80) >> 7));
--		btemp_low = ((gpadc_cal[4] & 0x7C) >> 2);
--
--		gpadc->cal_data[ADC_INPUT_BTEMP].otp_calib_hi = (u16)btemp_high;
--		gpadc->cal_data[ADC_INPUT_BTEMP].otp_calib_lo = (u16)btemp_low;
--
--		gpadc->cal_data[ADC_INPUT_BTEMP].gain =
--			CALIB_SCALE * (1300 - 21) / (btemp_high - btemp_low);
--		gpadc->cal_data[ADC_INPUT_BTEMP].offset = CALIB_SCALE * 1300 -
--			(CALIB_SCALE * (1300 - 21) / (btemp_high - btemp_low))
--			* btemp_high;
--	} else {
--		gpadc->cal_data[ADC_INPUT_BTEMP].gain = 0;
--	}
--
--	/* Calculate gain and offset for VBAT if all reads succeeded */
--	if (!(ret[4] < 0 || ret[5] < 0 || ret[6] < 0)) {
--		vbat_high = (((gpadc_cal[4] & 0x03) << 8) | gpadc_cal[5]);
--		vbat_low = ((gpadc_cal[6] & 0xFC) >> 2);
--
--		gpadc->cal_data[ADC_INPUT_VBAT].otp_calib_hi = (u16)vbat_high;
--		gpadc->cal_data[ADC_INPUT_VBAT].otp_calib_lo = (u16)vbat_low;
--
--		gpadc->cal_data[ADC_INPUT_VBAT].gain = CALIB_SCALE *
--			(4700 - 2380) /	(vbat_high - vbat_low);
--		gpadc->cal_data[ADC_INPUT_VBAT].offset = CALIB_SCALE * 4700 -
--			(CALIB_SCALE * (4700 - 2380) /
--			(vbat_high - vbat_low)) * vbat_high;
--	} else {
--		gpadc->cal_data[ADC_INPUT_VBAT].gain = 0;
--	}
--
--	dev_dbg(gpadc->dev, "VMAIN gain %llu offset %llu\n",
--		gpadc->cal_data[ADC_INPUT_VMAIN].gain,
--		gpadc->cal_data[ADC_INPUT_VMAIN].offset);
--
--	dev_dbg(gpadc->dev, "BTEMP gain %llu offset %llu\n",
--		gpadc->cal_data[ADC_INPUT_BTEMP].gain,
--		gpadc->cal_data[ADC_INPUT_BTEMP].offset);
--
--	dev_dbg(gpadc->dev, "VBAT gain %llu offset %llu\n",
--		gpadc->cal_data[ADC_INPUT_VBAT].gain,
--		gpadc->cal_data[ADC_INPUT_VBAT].offset);
--}
--
--#ifdef CONFIG_PM
--static int ab8500_gpadc_runtime_suspend(struct device *dev)
--{
--	struct ab8500_gpadc *gpadc = dev_get_drvdata(dev);
--
--	regulator_disable(gpadc->regu);
--	return 0;
--}
--
--static int ab8500_gpadc_runtime_resume(struct device *dev)
--{
--	struct ab8500_gpadc *gpadc = dev_get_drvdata(dev);
--	int ret;
--
--	ret = regulator_enable(gpadc->regu);
--	if (ret)
--		dev_err(dev, "Failed to enable vtvout LDO: %d\n", ret);
--	return ret;
--}
--#endif
--
--#ifdef CONFIG_PM_SLEEP
--static int ab8500_gpadc_suspend(struct device *dev)
--{
--	struct ab8500_gpadc *gpadc = dev_get_drvdata(dev);
--
--	mutex_lock(&gpadc->ab8500_gpadc_lock);
--
--	pm_runtime_get_sync(dev);
--
--	regulator_disable(gpadc->regu);
--	return 0;
--}
--
--static int ab8500_gpadc_resume(struct device *dev)
--{
--	struct ab8500_gpadc *gpadc = dev_get_drvdata(dev);
--	int ret;
--
--	ret = regulator_enable(gpadc->regu);
--	if (ret)
--		dev_err(dev, "Failed to enable vtvout LDO: %d\n", ret);
--
--	pm_runtime_mark_last_busy(gpadc->dev);
--	pm_runtime_put_autosuspend(gpadc->dev);
--
--	mutex_unlock(&gpadc->ab8500_gpadc_lock);
--	return ret;
--}
--#endif
--
--static int ab8500_gpadc_probe(struct platform_device *pdev)
--{
--	int ret = 0;
--	struct ab8500_gpadc *gpadc;
--
--	gpadc = devm_kzalloc(&pdev->dev,
--			     sizeof(struct ab8500_gpadc), GFP_KERNEL);
--	if (!gpadc)
--		return -ENOMEM;
--
--	gpadc->irq_sw = platform_get_irq_byname(pdev, "SW_CONV_END");
--	if (gpadc->irq_sw < 0)
--		dev_err(gpadc->dev, "failed to get platform sw_conv_end irq\n");
--
--	gpadc->irq_hw = platform_get_irq_byname(pdev, "HW_CONV_END");
--	if (gpadc->irq_hw < 0)
--		dev_err(gpadc->dev, "failed to get platform hw_conv_end irq\n");
--
--	gpadc->dev = &pdev->dev;
--	gpadc->parent = dev_get_drvdata(pdev->dev.parent);
--	mutex_init(&gpadc->ab8500_gpadc_lock);
--
--	/* Initialize completion used to notify completion of conversion */
--	init_completion(&gpadc->ab8500_gpadc_complete);
--
--	/* Register interrupts */
--	if (gpadc->irq_sw >= 0) {
--		ret = request_threaded_irq(gpadc->irq_sw, NULL,
--			ab8500_bm_gpadcconvend_handler,
--			IRQF_NO_SUSPEND | IRQF_SHARED | IRQF_ONESHOT,
--			"ab8500-gpadc-sw",
--			gpadc);
--		if (ret < 0) {
--			dev_err(gpadc->dev,
--				"Failed to register interrupt irq: %d\n",
--				gpadc->irq_sw);
--			goto fail;
--		}
--	}
--
--	if (gpadc->irq_hw >= 0) {
--		ret = request_threaded_irq(gpadc->irq_hw, NULL,
--			ab8500_bm_gpadcconvend_handler,
--			IRQF_NO_SUSPEND | IRQF_SHARED | IRQF_ONESHOT,
--			"ab8500-gpadc-hw",
--			gpadc);
--		if (ret < 0) {
--			dev_err(gpadc->dev,
--				"Failed to register interrupt irq: %d\n",
--				gpadc->irq_hw);
--			goto fail_irq;
--		}
--	}
--
--	/* VTVout LDO used to power up ab8500-GPADC */
--	gpadc->regu = devm_regulator_get(&pdev->dev, "vddadc");
--	if (IS_ERR(gpadc->regu)) {
--		ret = PTR_ERR(gpadc->regu);
--		dev_err(gpadc->dev, "failed to get vtvout LDO\n");
--		goto fail_irq;
--	}
--
--	platform_set_drvdata(pdev, gpadc);
--
--	ret = regulator_enable(gpadc->regu);
--	if (ret) {
--		dev_err(gpadc->dev, "Failed to enable vtvout LDO: %d\n", ret);
--		goto fail_enable;
--	}
--
--	pm_runtime_set_autosuspend_delay(gpadc->dev, GPADC_AUDOSUSPEND_DELAY);
--	pm_runtime_use_autosuspend(gpadc->dev);
--	pm_runtime_set_active(gpadc->dev);
--	pm_runtime_enable(gpadc->dev);
--
--	ab8500_gpadc_read_calibration_data(gpadc);
--	list_add_tail(&gpadc->node, &ab8500_gpadc_list);
--	dev_dbg(gpadc->dev, "probe success\n");
--
--	return 0;
--
--fail_enable:
--fail_irq:
--	free_irq(gpadc->irq_sw, gpadc);
--	free_irq(gpadc->irq_hw, gpadc);
--fail:
--	return ret;
--}
--
--static int ab8500_gpadc_remove(struct platform_device *pdev)
--{
--	struct ab8500_gpadc *gpadc = platform_get_drvdata(pdev);
--
--	/* remove this gpadc entry from the list */
--	list_del(&gpadc->node);
--	/* remove interrupt  - completion of Sw ADC conversion */
--	if (gpadc->irq_sw >= 0)
--		free_irq(gpadc->irq_sw, gpadc);
--	if (gpadc->irq_hw >= 0)
--		free_irq(gpadc->irq_hw, gpadc);
--
--	pm_runtime_get_sync(gpadc->dev);
--	pm_runtime_disable(gpadc->dev);
--
--	regulator_disable(gpadc->regu);
--
--	pm_runtime_set_suspended(gpadc->dev);
--
--	pm_runtime_put_noidle(gpadc->dev);
--
--	return 0;
--}
--
--static const struct dev_pm_ops ab8500_gpadc_pm_ops = {
--	SET_RUNTIME_PM_OPS(ab8500_gpadc_runtime_suspend,
--			   ab8500_gpadc_runtime_resume,
--			   NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(ab8500_gpadc_suspend,
--				ab8500_gpadc_resume)
--
--};
--
--static struct platform_driver ab8500_gpadc_driver = {
--	.probe = ab8500_gpadc_probe,
--	.remove = ab8500_gpadc_remove,
--	.driver = {
--		.name = "ab8500-gpadc",
--		.pm = &ab8500_gpadc_pm_ops,
--	},
--};
--
--static int __init ab8500_gpadc_init(void)
--{
--	return platform_driver_register(&ab8500_gpadc_driver);
--}
--subsys_initcall_sync(ab8500_gpadc_init);
--
--/**
-- * ab8540_gpadc_get_otp() - returns OTP values
-- *
-- */
--void ab8540_gpadc_get_otp(struct ab8500_gpadc *gpadc,
--			u16 *vmain_l, u16 *vmain_h, u16 *btemp_l, u16 *btemp_h,
--			u16 *vbat_l, u16 *vbat_h, u16 *ibat_l, u16 *ibat_h)
--{
--	*vmain_l = gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_lo;
--	*vmain_h = gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_hi;
--	*btemp_l = gpadc->cal_data[ADC_INPUT_BTEMP].otp_calib_lo;
--	*btemp_h = gpadc->cal_data[ADC_INPUT_BTEMP].otp_calib_hi;
--	*vbat_l  = gpadc->cal_data[ADC_INPUT_VBAT].otp_calib_lo;
--	*vbat_h  = gpadc->cal_data[ADC_INPUT_VBAT].otp_calib_hi;
--	*ibat_l  = gpadc->cal_data[ADC_INPUT_IBAT].otp_calib_lo;
--	*ibat_h  = gpadc->cal_data[ADC_INPUT_IBAT].otp_calib_hi;
--}
-diff --git a/include/linux/mfd/abx500/ab8500-gpadc.h b/include/linux/mfd/abx500/ab8500-gpadc.h
-deleted file mode 100644
-index 836c944abe2e..000000000000
---- a/include/linux/mfd/abx500/ab8500-gpadc.h
-+++ /dev/null
-@@ -1,75 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * Copyright (C) 2010 ST-Ericsson SA
-- *
-- * Author: Arun R Murthy <arun.murthy@stericsson.com>
-- * Author: Daniel Willerud <daniel.willerud@stericsson.com>
-- * Author: M'boumba Cedric Madianga <cedric.madianga@stericsson.com>
-- */
--
--#ifndef	_AB8500_GPADC_H
--#define _AB8500_GPADC_H
--
--/* GPADC source: From datasheet(ADCSwSel[4:0] in GPADCCtrl2
-- * and ADCHwSel[4:0] in GPADCCtrl3 ) */
--#define BAT_CTRL		0x01
--#define BTEMP_BALL		0x02
--#define MAIN_CHARGER_V		0x03
--#define ACC_DETECT1		0x04
--#define ACC_DETECT2		0x05
--#define ADC_AUX1		0x06
--#define ADC_AUX2		0x07
--#define MAIN_BAT_V		0x08
--#define VBUS_V			0x09
--#define MAIN_CHARGER_C		0x0A
--#define USB_CHARGER_C		0x0B
--#define BK_BAT_V		0x0C
--#define DIE_TEMP		0x0D
--#define USB_ID			0x0E
--#define XTAL_TEMP		0x12
--#define VBAT_TRUE_MEAS		0x13
--#define BAT_CTRL_AND_IBAT	0x1C
--#define VBAT_MEAS_AND_IBAT	0x1D
--#define VBAT_TRUE_MEAS_AND_IBAT	0x1E
--#define BAT_TEMP_AND_IBAT	0x1F
--
--/* Virtual channel used only for ibat convertion to ampere
-- * Battery current conversion (ibat) cannot be requested as a single conversion
-- *  but it is always in combination with other input requests
-- */
--#define IBAT_VIRTUAL_CHANNEL		0xFF
--
--#define SAMPLE_1        1
--#define SAMPLE_4        4
--#define SAMPLE_8        8
--#define SAMPLE_16       16
--#define RISING_EDGE     0
--#define FALLING_EDGE    1
--
--/* Arbitrary ADC conversion type constants */
--#define ADC_SW				0
--#define ADC_HW				1
--
--struct ab8500_gpadc;
--
--struct ab8500_gpadc *ab8500_gpadc_get(char *name);
--int ab8500_gpadc_sw_hw_convert(struct ab8500_gpadc *gpadc, u8 channel,
--		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type);
--static inline int ab8500_gpadc_convert(struct ab8500_gpadc *gpadc, u8 channel)
--{
--	return ab8500_gpadc_sw_hw_convert(gpadc, channel,
--			SAMPLE_16, 0, 0, ADC_SW);
--}
--
--int ab8500_gpadc_read_raw(struct ab8500_gpadc *gpadc, u8 channel,
--		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type);
--int ab8500_gpadc_double_read_raw(struct ab8500_gpadc *gpadc, u8 channel,
--		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type,
--		int *ibat);
--int ab8500_gpadc_ad_to_voltage(struct ab8500_gpadc *gpadc,
--		u8 channel, int ad_value);
--void ab8540_gpadc_get_otp(struct ab8500_gpadc *gpadc,
--			u16 *vmain_l, u16 *vmain_h, u16 *btemp_l, u16 *btemp_h,
--			u16 *vbat_l, u16 *vbat_h, u16 *ibat_l, u16 *ibat_h);
--
--#endif /* _AB8500_GPADC_H */
++obj-$(CONFIG_LTC2983) += ltc2983.o
+ obj-$(CONFIG_HID_SENSOR_TEMP) += hid-sensor-temperature.o
+ obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
+ obj-$(CONFIG_MAX31856) += max31856.o
+diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
+new file mode 100644
+index 000000000000..9532cbe06574
+--- /dev/null
++++ b/drivers/iio/temperature/ltc2983.c
+@@ -0,0 +1,1557 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Analog Devices LTC2983 Multi-Sensor Digital Temperature Measurement System
++ * driver
++ *
++ * Copyright 2019 Analog Devices Inc.
++ */
++#include <linux/bitfield.h>
++#include <linux/completion.h>
++#include <linux/device.h>
++#include <linux/kernel.h>
++#include <linux/iio/iio.h>
++#include <linux/interrupt.h>
++#include <linux/list.h>
++#include <linux/module.h>
++#include <linux/of_gpio.h>
++#include <linux/regmap.h>
++#include <linux/spi/spi.h>
++
++/* register map */
++#define LTC2983_STATUS_REG			0x0000
++#define LTC2983_TEMP_RES_START_REG		0x0010
++#define LTC2983_TEMP_RES_END_REG		0x005F
++#define LTC2983_GLOBAL_CONFIG_REG		0x00F0
++#define LTC2983_MULT_CHANNEL_START_REG		0x00F4
++#define LTC2983_MULT_CHANNEL_END_REG		0x00F7
++#define LTC2983_MUX_CONFIG_REG			0x00FF
++#define LTC2983_CHAN_ASSIGN_START_REG		0x0200
++#define LTC2983_CHAN_ASSIGN_END_REG		0x024F
++#define LTC2983_CUST_SENS_TBL_START_REG		0x0250
++#define LTC2983_CUST_SENS_TBL_END_REG		0x03CF
++
++#define LTC2983_DIFFERENTIAL_CHAN_MIN		2
++#define LTC2983_MAX_CHANNELS_NR			20
++#define LTC2983_MIN_CHANNELS_NR			1
++#define LTC2983_SLEEP				0x97
++#define LTC2983_CUSTOM_STEINHART_SIZE		24
++#define LTC2983_CUSTOM_SENSOR_ENTRY_SZ		6
++#define LTC2983_CUSTOM_STEINHART_ENTRY_SZ	4
++
++#define LTC2983_CHAN_START_ADDR(chan) \
++			(((chan - 1) * 4) + LTC2983_CHAN_ASSIGN_START_REG)
++#define LTC2983_CHAN_RES_ADDR(chan) \
++			(((chan - 1) * 4) + LTC2983_TEMP_RES_START_REG)
++#define LTC2983_THERMOCOUPLE_DIFF_MASK		BIT(3)
++#define LTC2983_THERMOCOUPLE_SGL(x) \
++				FIELD_PREP(LTC2983_THERMOCOUPLE_DIFF_MASK, x)
++#define LTC2983_THERMOCOUPLE_OC_CURR_MASK	GENMASK(1, 0)
++#define LTC2983_THERMOCOUPLE_OC_CURR(x) \
++				FIELD_PREP(LTC2983_THERMOCOUPLE_OC_CURR_MASK, x)
++#define LTC2983_THERMOCOUPLE_OC_CHECK_MASK	BIT(2)
++#define LTC2983_THERMOCOUPLE_OC_CHECK(x) \
++			FIELD_PREP(LTC2983_THERMOCOUPLE_OC_CHECK_MASK, x)
++
++#define LTC2983_THERMISTOR_DIFF_MASK		BIT(2)
++#define LTC2983_THERMISTOR_SGL(x) \
++				FIELD_PREP(LTC2983_THERMISTOR_DIFF_MASK, x)
++#define LTC2983_THERMISTOR_R_SHARE_MASK		BIT(1)
++#define LTC2983_THERMISTOR_R_SHARE(x) \
++				FIELD_PREP(LTC2983_THERMISTOR_R_SHARE_MASK, x)
++#define LTC2983_THERMISTOR_C_ROTATE_MASK	BIT(0)
++#define LTC2983_THERMISTOR_C_ROTATE(x) \
++				FIELD_PREP(LTC2983_THERMISTOR_C_ROTATE_MASK, x)
++
++#define LTC2983_DIODE_DIFF_MASK			BIT(2)
++#define LTC2983_DIODE_SGL(x) \
++			FIELD_PREP(LTC2983_DIODE_DIFF_MASK, x)
++#define LTC2983_DIODE_3_CONV_CYCLE_MASK		BIT(1)
++#define LTC2983_DIODE_3_CONV_CYCLE(x) \
++				FIELD_PREP(LTC2983_DIODE_3_CONV_CYCLE_MASK, x)
++#define LTC2983_DIODE_AVERAGE_ON_MASK		BIT(0)
++#define LTC2983_DIODE_AVERAGE_ON(x) \
++				FIELD_PREP(LTC2983_DIODE_AVERAGE_ON_MASK, x)
++
++#define LTC2983_RTD_4_WIRE_MASK			BIT(3)
++#define LTC2983_RTD_ROTATION_MASK		BIT(1)
++#define LTC2983_RTD_C_ROTATE(x) \
++			FIELD_PREP(LTC2983_RTD_ROTATION_MASK, x)
++#define LTC2983_RTD_KELVIN_R_SENSE_MASK		GENMASK(3, 2)
++#define LTC2983_RTD_N_WIRES_MASK		GENMASK(3, 2)
++#define LTC2983_RTD_N_WIRES(x) \
++			FIELD_PREP(LTC2983_RTD_N_WIRES_MASK, x)
++#define LTC2983_RTD_R_SHARE_MASK		BIT(0)
++#define LTC2983_RTD_R_SHARE(x) \
++			FIELD_PREP(LTC2983_RTD_R_SHARE_MASK, 1)
++
++#define LTC2983_COMMON_HARD_FAULT_MASK	GENMASK(31, 30)
++#define LTC2983_COMMON_SOFT_FAULT_MASK	GENMASK(27, 25)
++
++#define	LTC2983_STATUS_START_MASK	BIT(7)
++#define	LTC2983_STATUS_START(x)		FIELD_PREP(LTC2983_STATUS_START_MASK, x)
++
++#define	LTC2983_STATUS_CHAN_SEL_MASK	GENMASK(4, 0)
++#define	LTC2983_STATUS_CHAN_SEL(x) \
++				FIELD_PREP(LTC2983_STATUS_CHAN_SEL_MASK, x)
++
++#define LTC2983_TEMP_UNITS_MASK		BIT(2)
++#define LTC2983_TEMP_UNITS(x)		FIELD_PREP(LTC2983_TEMP_UNITS_MASK, x)
++
++#define LTC2983_NOTCH_FREQ_MASK		GENMASK(1, 0)
++#define LTC2983_NOTCH_FREQ(x)		FIELD_PREP(LTC2983_NOTCH_FREQ_MASK, x)
++
++#define LTC2983_RES_VALID_MASK		BIT(24)
++#define LTC2983_DATA_MASK		GENMASK(23, 0)
++#define LTC2983_DATA_SIGN_BIT		23
++
++#define LTC2983_CHAN_TYPE_MASK		GENMASK(31, 27)
++#define LTC2983_CHAN_TYPE(x)		FIELD_PREP(LTC2983_CHAN_TYPE_MASK, x)
++
++/* cold junction for thermocouples and rsense for rtd's and thermistor's */
++#define LTC2983_CHAN_ASSIGN_MASK	GENMASK(26, 22)
++#define LTC2983_CHAN_ASSIGN(x)		FIELD_PREP(LTC2983_CHAN_ASSIGN_MASK, x)
++
++#define LTC2983_CUSTOM_LEN_MASK		GENMASK(5, 0)
++#define LTC2983_CUSTOM_LEN(x)		FIELD_PREP(LTC2983_CUSTOM_LEN_MASK, x)
++
++#define LTC2983_CUSTOM_ADDR_MASK	GENMASK(11, 6)
++#define LTC2983_CUSTOM_ADDR(x)		FIELD_PREP(LTC2983_CUSTOM_ADDR_MASK, x)
++
++#define LTC2983_THERMOCOUPLE_CFG_MASK	GENMASK(21, 18)
++#define LTC2983_THERMOCOUPLE_CFG(x) \
++				FIELD_PREP(LTC2983_THERMOCOUPLE_CFG_MASK, x)
++#define LTC2983_THERMOCOUPLE_HARD_FAULT_MASK	GENMASK(31, 29)
++#define LTC2983_THERMOCOUPLE_SOFT_FAULT_MASK	GENMASK(28, 25)
++
++#define LTC2983_RTD_CFG_MASK		GENMASK(21, 18)
++#define LTC2983_RTD_CFG(x)		FIELD_PREP(LTC2983_RTD_CFG_MASK, x)
++#define LTC2983_RTD_EXC_CURRENT_MASK	GENMASK(17, 14)
++#define LTC2983_RTD_EXC_CURRENT(x) \
++				FIELD_PREP(LTC2983_RTD_EXC_CURRENT_MASK, x)
++#define LTC2983_RTD_CURVE_MASK		GENMASK(13, 12)
++#define LTC2983_RTD_CURVE(x)		FIELD_PREP(LTC2983_RTD_CURVE_MASK, x)
++
++#define LTC2983_THERMISTOR_CFG_MASK	GENMASK(21, 19)
++#define LTC2983_THERMISTOR_CFG(x) \
++				FIELD_PREP(LTC2983_THERMISTOR_CFG_MASK, x)
++#define LTC2983_THERMISTOR_EXC_CURRENT_MASK	GENMASK(18, 15)
++#define LTC2983_THERMISTOR_EXC_CURRENT(x) \
++			FIELD_PREP(LTC2983_THERMISTOR_EXC_CURRENT_MASK, x)
++
++#define LTC2983_DIODE_CFG_MASK		GENMASK(26, 24)
++#define LTC2983_DIODE_CFG(x)		FIELD_PREP(LTC2983_DIODE_CFG_MASK, x)
++#define LTC2983_DIODE_EXC_CURRENT_MASK	GENMASK(23, 22)
++#define LTC2983_DIODE_EXC_CURRENT(x) \
++				FIELD_PREP(LTC2983_DIODE_EXC_CURRENT_MASK, x)
++#define LTC2983_DIODE_IDEAL_FACTOR_MASK	GENMASK(21, 0)
++#define LTC2983_DIODE_IDEAL_FACTOR(x) \
++				FIELD_PREP(LTC2983_DIODE_IDEAL_FACTOR_MASK, x)
++
++#define LTC2983_R_SENSE_VAL_MASK	GENMASK(26, 0)
++#define LTC2983_R_SENSE_VAL(x)		FIELD_PREP(LTC2983_R_SENSE_VAL_MASK, x)
++
++#define LTC2983_ADC_SINGLE_ENDED_MASK	BIT(26)
++#define LTC2983_ADC_SINGLE_ENDED(x) \
++				FIELD_PREP(LTC2983_ADC_SINGLE_ENDED_MASK, x)
++
++enum {
++	LTC2983_SENSOR_THERMOCOUPLE = 1,
++	LTC2983_SENSOR_THERMOCOUPLE_CUSTOM = 9,
++	LTC2983_SENSOR_RTD = 10,
++	LTC2983_SENSOR_RTD_CUSTOM = 18,
++	LTC2983_SENSOR_THERMISTOR = 19,
++	LTC2983_SENSOR_THERMISTOR_STEINHART = 26,
++	LTC2983_SENSOR_THERMISTOR_CUSTOM = 27,
++	LTC2983_SENSOR_DIODE = 28,
++	LTC2983_SENSOR_SENSE_RESISTOR = 29,
++	LTC2983_SENSOR_DIRECT_ADC = 30,
++};
++
++#define to_thermocouple(_sensor) \
++		container_of(_sensor, struct ltc2983_thermocouple, sensor)
++
++#define to_rtd(_sensor) \
++		container_of(_sensor, struct ltc2983_rtd, sensor)
++
++#define to_thermistor(_sensor) \
++		container_of(_sensor, struct ltc2983_thermistor, sensor)
++
++#define to_diode(_sensor) \
++		container_of(_sensor, struct ltc2983_diode, sensor)
++
++#define to_rsense(_sensor) \
++		container_of(_sensor, struct ltc2983_rsense, sensor)
++
++#define to_adc(_sensor) \
++		container_of(_sensor, struct ltc2983_adc, sensor)
++
++struct ltc2983_data {
++	struct regmap *regmap;
++	struct spi_device *spi;
++	struct mutex lock;
++	struct completion completion;
++	struct iio_chan_spec *iio_chan;
++	struct ltc2983_sensor **sensors;
++	u32 mux_delay_config;
++	u32 filter_notch_freq;
++	u16 custom_table_size;
++	u8 num_channels;
++	u8 iio_channels;
++	/*
++	 * DMA (thus cache coherency maintenance) requires the
++	 * transfer buffers to live in their own cache lines.
++	 * Holds the converted temperature
++	 */
++	__be32 temp ____cacheline_aligned;
++};
++
++struct ltc2983_sensor {
++	int (*fault_handler)(const struct ltc2983_data *st, const u32 result);
++	int (*assign_chan)(struct ltc2983_data *st,
++			   const struct ltc2983_sensor *sensor);
++	/* specifies the sensor channel */
++	u32 chan;
++	/* sensor type */
++	u32 type;
++};
++
++struct ltc2983_custom_sensor {
++	/* raw table sensor data */
++	u8 *table;
++	size_t size;
++	/* address offset */
++	s8 offset;
++	bool is_steinhart;
++};
++
++struct ltc2983_thermocouple {
++	struct ltc2983_sensor sensor;
++	struct ltc2983_custom_sensor *custom;
++	u32 sensor_config;
++	u32 cold_junction_chan;
++};
++
++struct ltc2983_rtd {
++	struct ltc2983_sensor sensor;
++	struct ltc2983_custom_sensor *custom;
++	u32 sensor_config;
++	u32 r_sense_chan;
++	u32 excitation_current;
++	u32 rtd_curve;
++};
++
++struct ltc2983_thermistor {
++	struct ltc2983_sensor sensor;
++	struct ltc2983_custom_sensor *custom;
++	u32 sensor_config;
++	u32 r_sense_chan;
++	u32 excitation_current;
++};
++
++struct ltc2983_diode {
++	struct ltc2983_sensor sensor;
++	u32 sensor_config;
++	u32 excitation_current;
++	u32 ideal_factor_value;
++};
++
++struct ltc2983_rsense {
++	struct ltc2983_sensor sensor;
++	u32 r_sense_val;
++};
++
++struct ltc2983_adc {
++	struct ltc2983_sensor sensor;
++	bool single_ended;
++};
++
++/*
++ * Convert to Q format numbers. These number's are integers where
++ * the number of integer and fractional bits are specified. The resolution
++ * is given by 1/@resolution and tell us the number of fractional bits. For
++ * instance a resolution of 2^-10 means we have 10 fractional bits.
++ */
++static u32 __convert_to_raw(const u64 val, const u32 resolution)
++{
++	u64 __res = val * resolution;
++
++	/* all values are multiplied by 1000000 to remove the fraction */
++	do_div(__res, 1000000);
++
++	return __res;
++}
++
++static u32 __convert_to_raw_sign(const u64 val, const u32 resolution)
++{
++	s64 __res = -(s32)val;
++
++	__res = __convert_to_raw(__res, resolution);
++
++	return (u32)-__res;
++}
++
++static int __ltc2983_fault_handler(const struct ltc2983_data *st,
++				   const u32 result, const u32 hard_mask,
++				   const u32 soft_mask)
++{
++	const struct device *dev = &st->spi->dev;
++
++	if (result & hard_mask) {
++		dev_err(dev, "Invalid conversion: Sensor HARD fault\n");
++		return -EIO;
++	} else if (result & soft_mask) {
++		/* just print a warning */
++		dev_warn(dev, "Suspicious conversion: Sensor SOFT fault\n");
++	}
++
++	return 0;
++}
++
++static int __ltc2983_chan_assign_common(const struct ltc2983_data *st,
++					const struct ltc2983_sensor *sensor,
++					u32 chan_val)
++{
++	u32 reg = LTC2983_CHAN_START_ADDR(sensor->chan);
++	__be32 __chan_val;
++
++	chan_val |= LTC2983_CHAN_TYPE(sensor->type);
++	dev_dbg(&st->spi->dev, "Assign reg:0x%04X, val:0x%08X\n", reg,
++								chan_val);
++	__chan_val = cpu_to_be32(chan_val);
++	return regmap_bulk_write(st->regmap, reg, &__chan_val,
++				 sizeof(__chan_val));
++}
++
++static int __ltc2983_chan_custom_sensor_assign(struct ltc2983_data *st,
++					  struct ltc2983_custom_sensor *custom,
++					  u32 *chan_val)
++{
++	u32 reg;
++	u8 mult = custom->is_steinhart ? LTC2983_CUSTOM_STEINHART_ENTRY_SZ :
++		LTC2983_CUSTOM_SENSOR_ENTRY_SZ;
++	const struct device *dev = &st->spi->dev;
++	/*
++	 * custom->size holds the raw size of the table. However, when
++	 * configuring the sensor channel, we must write the number of
++	 * entries of the table minus 1. For steinhart sensors 0 is written
++	 * since the size is constant!
++	 */
++	const u8 len = custom->is_steinhart ? 0 :
++		(custom->size / LTC2983_CUSTOM_SENSOR_ENTRY_SZ) - 1;
++	/*
++	 * Check if the offset was assigned already. It should be for steinhart
++	 * sensors. When coming from sleep, it should be assigned for all.
++	 */
++	if (custom->offset < 0) {
++		/*
++		 * This needs to be done again here because, from the moment
++		 * when this test was done (successfully) for this custom
++		 * sensor, a steinhart sensor might have been added changing
++		 * custom_table_size...
++		 */
++		if (st->custom_table_size + custom->size >
++		    (LTC2983_CUST_SENS_TBL_END_REG -
++		     LTC2983_CUST_SENS_TBL_START_REG) + 1) {
++			dev_err(dev,
++				"Not space left(%d) for new custom sensor(%zu)",
++							st->custom_table_size,
++							custom->size);
++			return -EINVAL;
++		}
++
++		custom->offset = st->custom_table_size /
++					LTC2983_CUSTOM_SENSOR_ENTRY_SZ;
++		st->custom_table_size += custom->size;
++	}
++
++	reg = (custom->offset * mult) + LTC2983_CUST_SENS_TBL_START_REG;
++
++	*chan_val |= LTC2983_CUSTOM_LEN(len);
++	*chan_val |= LTC2983_CUSTOM_ADDR(custom->offset);
++	dev_dbg(dev, "Assign custom sensor, reg:0x%04X, off:%d, sz:%zu",
++							reg, custom->offset,
++							custom->size);
++	/* write custom sensor table */
++	return regmap_bulk_write(st->regmap, reg, custom->table, custom->size);
++}
++
++static struct ltc2983_custom_sensor *__ltc2983_custom_sensor_new(
++						struct ltc2983_data *st,
++						const struct device_node *np,
++						const char *propname,
++						const bool is_steinhart,
++						const u32 resolution,
++						const bool has_signed)
++{
++	struct ltc2983_custom_sensor *new_custom;
++	u8 index, n_entries, tbl = 0;
++	struct device *dev = &st->spi->dev;
++	/*
++	 * For custom steinhart, the full u32 is taken. For all the others
++	 * the MSB is discarded.
++	 */
++	const u8 n_size = (is_steinhart == true) ? 4 : 3;
++	const u8 e_size = (is_steinhart == true) ? sizeof(u32) : sizeof(u64);
++
++	n_entries = of_property_count_elems_of_size(np, propname, e_size);
++	/* n_entries must be an even number */
++	if (!n_entries || (n_entries % 2) != 0) {
++		dev_err(dev, "Number of entries either 0 or not even\n");
++		return ERR_PTR(-EINVAL);
++	}
++
++	new_custom = devm_kzalloc(dev, sizeof(*new_custom), GFP_KERNEL);
++	if (!new_custom)
++		return ERR_PTR(-ENOMEM);
++
++	new_custom->size = n_entries * n_size;
++	/* check Steinhart size */
++	if (is_steinhart && new_custom->size != LTC2983_CUSTOM_STEINHART_SIZE) {
++		dev_err(dev, "Steinhart sensors size(%zu) must be 24",
++							new_custom->size);
++		return ERR_PTR(-EINVAL);
++	}
++	/* Check space on the table. */
++	if (st->custom_table_size + new_custom->size >
++	    (LTC2983_CUST_SENS_TBL_END_REG -
++	     LTC2983_CUST_SENS_TBL_START_REG) + 1) {
++		dev_err(dev, "No space left(%d) for new custom sensor(%zu)",
++				st->custom_table_size, new_custom->size);
++		return ERR_PTR(-EINVAL);
++	}
++
++	/* allocate the table */
++	new_custom->table = devm_kzalloc(dev, new_custom->size, GFP_KERNEL);
++	if (!new_custom->table)
++		return ERR_PTR(-ENOMEM);
++
++	for (index = 0; index < n_entries; index++) {
++		u64 temp = 0, j;
++		/*
++		 * Steinhart sensors are configured with raw values in the
++		 * devicetree. For the other sensors we must convert the
++		 * value to raw. The odd index's correspond to temperarures
++		 * and always have 1/1024 of resolution. Temperatures also
++		 * come in kelvin, so signed values is not possible
++		 */
++		if (!is_steinhart) {
++			of_property_read_u64_index(np, propname, index, &temp);
++
++			if ((index % 2) != 0)
++				temp = __convert_to_raw(temp, 1024);
++			else if (has_signed && (s64)temp < 0)
++				temp = __convert_to_raw_sign(temp, resolution);
++			else
++				temp = __convert_to_raw(temp, resolution);
++		} else {
++			of_property_read_u32_index(np, propname, index,
++						   (u32 *)&temp);
++		}
++
++		for (j = 0; j < n_size; j++)
++			new_custom->table[tbl++] =
++				temp >> (8 * (n_size - j - 1));
++	}
++
++	new_custom->is_steinhart = is_steinhart;
++	/*
++	 * This is done to first add all the steinhart sensors to the table,
++	 * in order to maximize the table usage. If we mix adding steinhart
++	 * with the other sensors, we might have to do some roundup to make
++	 * sure that sensor_addr - 0x250(start address) is a multiple of 4
++	 * (for steinhart), and a multiple of 6 for all the other sensors.
++	 * Since we have const 24 bytes for steinhart sensors and 24 is
++	 * also a multiple of 6, we guarantee that the first non-steinhart
++	 * sensor will sit in a correct address without the need of filling
++	 * addresses.
++	 */
++	if (is_steinhart) {
++		new_custom->offset = st->custom_table_size /
++					LTC2983_CUSTOM_STEINHART_ENTRY_SZ;
++		st->custom_table_size += new_custom->size;
++	} else {
++		/* mark as unset. This is checked later on the assign phase */
++		new_custom->offset = -1;
++	}
++
++	return new_custom;
++}
++
++static int ltc2983_thermocouple_fault_handler(const struct ltc2983_data *st,
++					      const u32 result)
++{
++	return __ltc2983_fault_handler(st, result,
++				       LTC2983_THERMOCOUPLE_HARD_FAULT_MASK,
++				       LTC2983_THERMOCOUPLE_SOFT_FAULT_MASK);
++}
++
++static int ltc2983_common_fault_handler(const struct ltc2983_data *st,
++					const u32 result)
++{
++	return __ltc2983_fault_handler(st, result,
++				       LTC2983_COMMON_HARD_FAULT_MASK,
++				       LTC2983_COMMON_SOFT_FAULT_MASK);
++}
++
++static int ltc2983_thermocouple_assign_chan(struct ltc2983_data *st,
++				const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_thermocouple *thermo = to_thermocouple(sensor);
++	u32 chan_val;
++
++	chan_val = LTC2983_CHAN_ASSIGN(thermo->cold_junction_chan);
++	chan_val |= LTC2983_THERMOCOUPLE_CFG(thermo->sensor_config);
++
++	if (thermo->custom) {
++		int ret;
++
++		ret = __ltc2983_chan_custom_sensor_assign(st, thermo->custom,
++							  &chan_val);
++		if (ret)
++			return ret;
++	}
++	return __ltc2983_chan_assign_common(st, sensor, chan_val);
++}
++
++static int ltc2983_rtd_assign_chan(struct ltc2983_data *st,
++				   const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_rtd *rtd = to_rtd(sensor);
++	u32 chan_val;
++
++	chan_val = LTC2983_CHAN_ASSIGN(rtd->r_sense_chan);
++	chan_val |= LTC2983_RTD_CFG(rtd->sensor_config);
++	chan_val |= LTC2983_RTD_EXC_CURRENT(rtd->excitation_current);
++	chan_val |= LTC2983_RTD_CURVE(rtd->rtd_curve);
++
++	if (rtd->custom) {
++		int ret;
++
++		ret = __ltc2983_chan_custom_sensor_assign(st, rtd->custom,
++							  &chan_val);
++		if (ret)
++			return ret;
++	}
++	return __ltc2983_chan_assign_common(st, sensor, chan_val);
++}
++
++static int ltc2983_thermistor_assign_chan(struct ltc2983_data *st,
++					  const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_thermistor *thermistor = to_thermistor(sensor);
++	u32 chan_val;
++
++	chan_val = LTC2983_CHAN_ASSIGN(thermistor->r_sense_chan);
++	chan_val |= LTC2983_THERMISTOR_CFG(thermistor->sensor_config);
++	chan_val |=
++		LTC2983_THERMISTOR_EXC_CURRENT(thermistor->excitation_current);
++
++	if (thermistor->custom) {
++		int ret;
++
++		ret = __ltc2983_chan_custom_sensor_assign(st,
++							  thermistor->custom,
++							  &chan_val);
++		if (ret)
++			return ret;
++	}
++	return __ltc2983_chan_assign_common(st, sensor, chan_val);
++}
++
++static int ltc2983_diode_assign_chan(struct ltc2983_data *st,
++				     const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_diode *diode = to_diode(sensor);
++	u32 chan_val;
++
++	chan_val = LTC2983_DIODE_CFG(diode->sensor_config);
++	chan_val |= LTC2983_DIODE_EXC_CURRENT(diode->excitation_current);
++	chan_val |= LTC2983_DIODE_IDEAL_FACTOR(diode->ideal_factor_value);
++
++	return __ltc2983_chan_assign_common(st, sensor, chan_val);
++}
++
++static int ltc2983_r_sense_assign_chan(struct ltc2983_data *st,
++				       const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_rsense *rsense = to_rsense(sensor);
++	u32 chan_val;
++
++	chan_val = LTC2983_R_SENSE_VAL(rsense->r_sense_val);
++
++	return __ltc2983_chan_assign_common(st, sensor, chan_val);
++}
++
++static int ltc2983_adc_assign_chan(struct ltc2983_data *st,
++				   const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_adc *adc = to_adc(sensor);
++	u32 chan_val;
++
++	chan_val = LTC2983_ADC_SINGLE_ENDED(adc->single_ended);
++
++	return __ltc2983_chan_assign_common(st, sensor, chan_val);
++}
++
++static struct ltc2983_sensor *ltc2983_thermocouple_new(
++					const struct device_node *child,
++					struct ltc2983_data *st,
++					const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_thermocouple *thermo;
++	struct device_node *phandle;
++	u32 oc_current;
++	int ret;
++
++	thermo = devm_kzalloc(&st->spi->dev, sizeof(*thermo), GFP_KERNEL);
++	if (!thermo)
++		return ERR_PTR(-ENOMEM);
++
++	if (of_property_read_bool(child, "adi,single-ended"))
++		thermo->sensor_config = LTC2983_THERMOCOUPLE_SGL(1);
++
++	ret = of_property_read_u32(child, "adi,sensor-oc-current-microamp",
++				   &oc_current);
++	if (!ret) {
++		switch (oc_current) {
++		case 10:
++			thermo->sensor_config |=
++					LTC2983_THERMOCOUPLE_OC_CURR(0);
++			break;
++		case 100:
++			thermo->sensor_config |=
++					LTC2983_THERMOCOUPLE_OC_CURR(1);
++			break;
++		case 500:
++			thermo->sensor_config |=
++					LTC2983_THERMOCOUPLE_OC_CURR(2);
++			break;
++		case 1000:
++			thermo->sensor_config |=
++					LTC2983_THERMOCOUPLE_OC_CURR(3);
++			break;
++		default:
++			dev_err(&st->spi->dev,
++				"Invalid open circuit current:%u", oc_current);
++			return ERR_PTR(-EINVAL);
++		}
++
++		thermo->sensor_config |= LTC2983_THERMOCOUPLE_OC_CHECK(1);
++	}
++	/* validate channel index */
++	if (!(thermo->sensor_config & LTC2983_THERMOCOUPLE_DIFF_MASK) &&
++	    sensor->chan < LTC2983_DIFFERENTIAL_CHAN_MIN) {
++		dev_err(&st->spi->dev,
++			"Invalid chann:%d for differential thermocouple",
++								sensor->chan);
++		return ERR_PTR(-EINVAL);
++	}
++
++	phandle = of_parse_phandle(child, "adi,cold-junction-handle", 0);
++	if (phandle) {
++		int ret;
++
++		ret = of_property_read_u32(phandle, "reg",
++					   &thermo->cold_junction_chan);
++		if (ret) {
++			/*
++			 * This would be catched later but we can just return
++			 * the error right away.
++			 */
++			dev_err(&st->spi->dev, "Property reg must be given\n");
++			of_node_put(phandle);
++			return ERR_PTR(-EINVAL);
++		}
++	}
++
++	/* check custom sensor */
++	if (sensor->type == LTC2983_SENSOR_THERMOCOUPLE_CUSTOM) {
++		const char *propname = "adi,custom-thermocouple";
++
++		thermo->custom = __ltc2983_custom_sensor_new(st, child,
++							     propname, false,
++							     16384, true);
++		if (IS_ERR(thermo->custom)) {
++			of_node_put(phandle);
++			return ERR_CAST(thermo->custom);
++		}
++	}
++
++	/* set common parameters */
++	thermo->sensor.fault_handler = ltc2983_thermocouple_fault_handler;
++	thermo->sensor.assign_chan = ltc2983_thermocouple_assign_chan;
++
++	of_node_put(phandle);
++	return &thermo->sensor;
++}
++
++static struct ltc2983_sensor *ltc2983_rtd_new(const struct device_node *child,
++					  struct ltc2983_data *st,
++					  const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_rtd *rtd;
++	int ret = 0;
++	struct device *dev = &st->spi->dev;
++	struct device_node *phandle;
++	u32 excitation_current = 0, n_wires = 0;
++
++	rtd = devm_kzalloc(dev, sizeof(*rtd), GFP_KERNEL);
++	if (!rtd)
++		return ERR_PTR(-ENOMEM);
++
++	phandle = of_parse_phandle(child, "adi,rsense-handle", 0);
++	if (!phandle) {
++		dev_err(dev, "Property adi,rsense-handle missing or invalid");
++		return ERR_PTR(-EINVAL);
++	}
++
++	ret = of_property_read_u32(phandle, "reg", &rtd->r_sense_chan);
++	if (ret) {
++		dev_err(dev, "Property reg must be given\n");
++		goto fail;
++	}
++
++	ret = of_property_read_u32(child, "adi,number-of-wires", &n_wires);
++	if (!ret) {
++		switch (n_wires) {
++		case 2:
++			rtd->sensor_config = LTC2983_RTD_N_WIRES(0);
++			break;
++		case 3:
++			rtd->sensor_config = LTC2983_RTD_N_WIRES(1);
++			break;
++		case 4:
++			rtd->sensor_config = LTC2983_RTD_N_WIRES(2);
++			break;
++		case 5:
++			/* 4 wires, Kelvin Rsense */
++			rtd->sensor_config = LTC2983_RTD_N_WIRES(3);
++			break;
++		default:
++			dev_err(dev, "Invalid number of wires:%u\n", n_wires);
++			ret = -EINVAL;
++			goto fail;
++		}
++	}
++
++	if (of_property_read_bool(child, "adi,rsense-share")) {
++		/* Current rotation is only available with rsense sharing */
++		if (of_property_read_bool(child, "adi,current-rotate")) {
++			if (n_wires == 2 || n_wires == 3) {
++				dev_err(dev,
++					"Rotation not allowed for 2/3 Wire RTDs");
++				ret = -EINVAL;
++				goto fail;
++			}
++			rtd->sensor_config |= LTC2983_RTD_C_ROTATE(1);
++		} else {
++			rtd->sensor_config |= LTC2983_RTD_R_SHARE(1);
++		}
++	}
++	/*
++	 * rtd channel indexes are a bit more complicated to validate.
++	 * For 4wire RTD with rotation, the channel selection cannot be
++	 * >=19 since the chann + 1 is used in this configuration.
++	 * For 4wire RTDs with kelvin rsense, the rsense channel cannot be
++	 * <=1 since chanel - 1 and channel - 2 are used.
++	 */
++	if (rtd->sensor_config & LTC2983_RTD_4_WIRE_MASK) {
++		/* 4-wire */
++		u8 min = LTC2983_DIFFERENTIAL_CHAN_MIN,
++			max = LTC2983_MAX_CHANNELS_NR;
++
++		if (rtd->sensor_config & LTC2983_RTD_ROTATION_MASK)
++			max = LTC2983_MAX_CHANNELS_NR - 1;
++
++		if (((rtd->sensor_config & LTC2983_RTD_KELVIN_R_SENSE_MASK)
++		     == LTC2983_RTD_KELVIN_R_SENSE_MASK) &&
++		    (rtd->r_sense_chan <=  min)) {
++			/* kelvin rsense*/
++			dev_err(dev,
++				"Invalid rsense chann:%d to use in kelvin rsense",
++							rtd->r_sense_chan);
++
++			ret = -EINVAL;
++			goto fail;
++		}
++
++		if (sensor->chan < min || sensor->chan > max) {
++			dev_err(dev, "Invalid chann:%d for the rtd config",
++								sensor->chan);
++
++			ret = -EINVAL;
++			goto fail;
++		}
++	} else {
++		/* same as differential case */
++		if (sensor->chan < LTC2983_DIFFERENTIAL_CHAN_MIN) {
++			dev_err(&st->spi->dev,
++				"Invalid chann:%d for RTD", sensor->chan);
++
++			ret = -EINVAL;
++			goto fail;
++		}
++	}
++
++	/* check custom sensor */
++	if (sensor->type == LTC2983_SENSOR_RTD_CUSTOM) {
++		rtd->custom = __ltc2983_custom_sensor_new(st, child,
++							  "adi,custom-rtd",
++							  false, 2048, false);
++		if (IS_ERR(rtd->custom)) {
++			of_node_put(phandle);
++			return ERR_CAST(rtd->custom);
++		}
++	}
++
++	/* set common parameters */
++	rtd->sensor.fault_handler = ltc2983_common_fault_handler;
++	rtd->sensor.assign_chan = ltc2983_rtd_assign_chan;
++
++	ret = of_property_read_u32(child, "adi,excitation-current-microamp",
++				   &excitation_current);
++	if (ret) {
++		/* default to 5uA */
++		rtd->excitation_current = 1;
++	} else {
++		switch (excitation_current) {
++		case 5:
++			rtd->excitation_current = 0x01;
++			break;
++		case 10:
++			rtd->excitation_current = 0x02;
++			break;
++		case 25:
++			rtd->excitation_current = 0x03;
++			break;
++		case 50:
++			rtd->excitation_current = 0x04;
++			break;
++		case 100:
++			rtd->excitation_current = 0x05;
++			break;
++		case 250:
++			rtd->excitation_current = 0x06;
++			break;
++		case 500:
++			rtd->excitation_current = 0x07;
++			break;
++		case 1000:
++			rtd->excitation_current = 0x08;
++			break;
++		default:
++			dev_err(&st->spi->dev,
++				"Invalid value for excitation current(%u)",
++							excitation_current);
++			ret = -EINVAL;
++			goto fail;
++		}
++	}
++
++	of_property_read_u32(child, "adi,rtd-curve", &rtd->rtd_curve);
++
++	of_node_put(phandle);
++	return &rtd->sensor;
++fail:
++	of_node_put(phandle);
++	return ERR_PTR(ret);
++}
++
++static struct ltc2983_sensor *ltc2983_thermistor_new(
++					const struct device_node *child,
++					struct ltc2983_data *st,
++					const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_thermistor *thermistor;
++	struct device *dev = &st->spi->dev;
++	struct device_node *phandle;
++	u32 excitation_current = 0;
++	int ret = 0;
++
++	thermistor = devm_kzalloc(dev, sizeof(*thermistor), GFP_KERNEL);
++	if (!thermistor)
++		return ERR_PTR(-ENOMEM);
++
++	phandle = of_parse_phandle(child, "adi,rsense-handle", 0);
++	if (!phandle) {
++		dev_err(dev, "Property adi,rsense-handle missing or invalid");
++		return ERR_PTR(-EINVAL);
++	}
++
++	ret = of_property_read_u32(phandle, "reg", &thermistor->r_sense_chan);
++	if (ret) {
++		dev_err(dev, "rsense channel must be configured...\n");
++		goto fail;
++	}
++
++	if (of_property_read_bool(child, "adi,single-ended")) {
++		thermistor->sensor_config = LTC2983_THERMISTOR_SGL(1);
++	} else if (of_property_read_bool(child, "adi,rsense-share")) {
++		/* rotation is only possible if sharing rsense */
++		if (of_property_read_bool(child, "adi,current-rotate"))
++			thermistor->sensor_config =
++						LTC2983_THERMISTOR_C_ROTATE(1);
++		else
++			thermistor->sensor_config =
++						LTC2983_THERMISTOR_R_SHARE(1);
++	}
++	/* validate channel index */
++	if (!(thermistor->sensor_config & LTC2983_THERMISTOR_DIFF_MASK) &&
++	    sensor->chan < LTC2983_DIFFERENTIAL_CHAN_MIN) {
++		dev_err(&st->spi->dev,
++			"Invalid chann:%d for differential thermistor",
++								sensor->chan);
++		ret = -EINVAL;
++		goto fail;
++	}
++
++	/* check custom sensor */
++	if (sensor->type >= LTC2983_SENSOR_THERMISTOR_STEINHART) {
++		bool steinhart = false;
++		const char *propname;
++
++		if (sensor->type == LTC2983_SENSOR_THERMISTOR_STEINHART) {
++			steinhart = true;
++			propname = "adi,custom-steinhart";
++		} else {
++			propname = "adi,custom-thermistor";
++		}
++
++		thermistor->custom = __ltc2983_custom_sensor_new(st, child,
++								 propname,
++								 steinhart,
++								 64, false);
++		if (IS_ERR(thermistor->custom)) {
++			of_node_put(phandle);
++			return ERR_CAST(thermistor->custom);
++		}
++	}
++	/* set common parameters */
++	thermistor->sensor.fault_handler = ltc2983_common_fault_handler;
++	thermistor->sensor.assign_chan = ltc2983_thermistor_assign_chan;
++
++	ret = of_property_read_u32(child, "adi,excitation-current-nanoamp",
++				   &excitation_current);
++	if (ret) {
++		/* Auto range is not allowed for custom sensors */
++		if (sensor->type >= LTC2983_SENSOR_THERMISTOR_STEINHART)
++			/* default to 1uA */
++			thermistor->excitation_current = 0x03;
++		else
++			/* default to auto-range */
++			thermistor->excitation_current = 0x0c;
++	} else {
++		switch (excitation_current) {
++		case 0:
++			/* auto range */
++			if (sensor->type >=
++			    LTC2983_SENSOR_THERMISTOR_STEINHART) {
++				dev_err(&st->spi->dev,
++					"Auto Range not allowed for custom sensors\n");
++				ret = -EINVAL;
++				goto fail;
++			}
++			thermistor->excitation_current = 0x0c;
++			break;
++		case 250:
++			thermistor->excitation_current = 0x01;
++			break;
++		case 500:
++			thermistor->excitation_current = 0x02;
++			break;
++		case 1000:
++			thermistor->excitation_current = 0x03;
++			break;
++		case 5000:
++			thermistor->excitation_current = 0x04;
++			break;
++		case 10000:
++			thermistor->excitation_current = 0x05;
++			break;
++		case 25000:
++			thermistor->excitation_current = 0x06;
++			break;
++		case 50000:
++			thermistor->excitation_current = 0x07;
++			break;
++		case 100000:
++			thermistor->excitation_current = 0x08;
++			break;
++		case 250000:
++			thermistor->excitation_current = 0x09;
++			break;
++		case 500000:
++			thermistor->excitation_current = 0x0a;
++			break;
++		case 1000000:
++			thermistor->excitation_current = 0x0b;
++			break;
++		default:
++			dev_err(&st->spi->dev,
++				"Invalid value for excitation current(%u)",
++							excitation_current);
++			ret = -EINVAL;
++			goto fail;
++		}
++	}
++
++	of_node_put(phandle);
++	return &thermistor->sensor;
++fail:
++	of_node_put(phandle);
++	return ERR_PTR(ret);
++}
++
++static struct ltc2983_sensor *ltc2983_diode_new(
++					const struct device_node *child,
++					const struct ltc2983_data *st,
++					const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_diode *diode;
++	u32 temp = 0, excitation_current = 0;
++	int ret;
++
++	diode = devm_kzalloc(&st->spi->dev, sizeof(*diode), GFP_KERNEL);
++	if (!diode)
++		return ERR_PTR(-ENOMEM);
++
++	if (of_property_read_bool(child, "adi,single-ended"))
++		diode->sensor_config = LTC2983_DIODE_SGL(1);
++
++	if (of_property_read_bool(child, "adi,three-conversion-cycles"))
++		diode->sensor_config |= LTC2983_DIODE_3_CONV_CYCLE(1);
++
++	if (of_property_read_bool(child, "adi,average-on"))
++		diode->sensor_config |= LTC2983_DIODE_AVERAGE_ON(1);
++
++	/* validate channel index */
++	if (!(diode->sensor_config & LTC2983_DIODE_DIFF_MASK) &&
++	    sensor->chan < LTC2983_DIFFERENTIAL_CHAN_MIN) {
++		dev_err(&st->spi->dev,
++			"Invalid chann:%d for differential thermistor",
++								sensor->chan);
++		return ERR_PTR(-EINVAL);
++	}
++	/* set common parameters */
++	diode->sensor.fault_handler = ltc2983_common_fault_handler;
++	diode->sensor.assign_chan = ltc2983_diode_assign_chan;
++
++	ret = of_property_read_u32(child, "adi,excitation-current-microamp",
++				   &excitation_current);
++	if (!ret) {
++		switch (excitation_current) {
++		case 10:
++			diode->excitation_current = 0x00;
++			break;
++		case 20:
++			diode->excitation_current = 0x01;
++			break;
++		case 40:
++			diode->excitation_current = 0x02;
++			break;
++		case 80:
++			diode->excitation_current = 0x03;
++			break;
++		default:
++			dev_err(&st->spi->dev,
++				"Invalid value for excitation current(%u)",
++							excitation_current);
++			return ERR_PTR(-EINVAL);
++		}
++	}
++
++	of_property_read_u32(child, "adi,ideal-factor-value", &temp);
++
++	/* 2^20 resolution */
++	diode->ideal_factor_value = __convert_to_raw(temp, 1048576);
++
++	return &diode->sensor;
++}
++
++static struct ltc2983_sensor *ltc2983_r_sense_new(struct device_node *child,
++					struct ltc2983_data *st,
++					const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_rsense *rsense;
++	int ret;
++	u32 temp;
++
++	rsense = devm_kzalloc(&st->spi->dev, sizeof(*rsense), GFP_KERNEL);
++	if (!rsense)
++		return ERR_PTR(-ENOMEM);
++
++	/* validate channel index */
++	if (sensor->chan < LTC2983_DIFFERENTIAL_CHAN_MIN) {
++		dev_err(&st->spi->dev, "Invalid chann:%d for r_sense",
++							sensor->chan);
++		return ERR_PTR(-EINVAL);
++	}
++
++	ret = of_property_read_u32(child, "adi,rsense-val-milli-ohms", &temp);
++	if (ret) {
++		dev_err(&st->spi->dev, "Property adi,rsense-val-milli-ohms missing\n");
++		return ERR_PTR(-EINVAL);
++	}
++	/*
++	 * Times 1000 because we have milli-ohms and __convert_to_raw
++	 * expects scales of 1000000 which are used for all other
++	 * properties.
++	 * 2^10 resolution
++	 */
++	rsense->r_sense_val = __convert_to_raw((u64)temp * 1000, 1024);
++
++	/* set common parameters */
++	rsense->sensor.assign_chan = ltc2983_r_sense_assign_chan;
++
++	return &rsense->sensor;
++}
++
++static struct ltc2983_sensor *ltc2983_adc_new(struct device_node *child,
++					 struct ltc2983_data *st,
++					 const struct ltc2983_sensor *sensor)
++{
++	struct ltc2983_adc *adc;
++
++	adc = devm_kzalloc(&st->spi->dev, sizeof(*adc), GFP_KERNEL);
++	if (!adc)
++		return ERR_PTR(-ENOMEM);
++
++	if (of_property_read_bool(child, "adi,single-ended"))
++		adc->single_ended = true;
++
++	if (!adc->single_ended &&
++	    sensor->chan < LTC2983_DIFFERENTIAL_CHAN_MIN) {
++		dev_err(&st->spi->dev, "Invalid chan:%d for differential adc\n",
++								sensor->chan);
++		return ERR_PTR(-EINVAL);
++	}
++	/* set common parameters */
++	adc->sensor.assign_chan = ltc2983_adc_assign_chan;
++	adc->sensor.fault_handler = ltc2983_common_fault_handler;
++
++	return &adc->sensor;
++}
++
++static int ltc2983_chan_read(struct ltc2983_data *st,
++			const struct ltc2983_sensor *sensor, int *val)
++{
++	u32 start_conversion = 0;
++	int ret;
++	unsigned long time;
++
++	start_conversion = LTC2983_STATUS_START(true);
++	start_conversion |= LTC2983_STATUS_CHAN_SEL(sensor->chan);
++	dev_dbg(&st->spi->dev, "Start conversion on chan:%d, status:%02X\n",
++		sensor->chan, start_conversion);
++	/* start conversion */
++	ret = regmap_write(st->regmap, LTC2983_STATUS_REG, start_conversion);
++	if (ret)
++		return ret;
++
++	reinit_completion(&st->completion);
++	/*
++	 * wait for conversion to complete.
++	 * 300 ms should be more than enough to complete the conversion.
++	 * Depending on the sensor configuration, there are 2/3 conversions
++	 * cycles of 82ms.
++	 */
++	time = wait_for_completion_timeout(&st->completion,
++					   msecs_to_jiffies(300));
++	if (!time) {
++		dev_warn(&st->spi->dev, "Conversion timed out\n");
++		return -ETIMEDOUT;
++	}
++
++	/* read the converted data */
++	ret = regmap_bulk_read(st->regmap, LTC2983_CHAN_RES_ADDR(sensor->chan),
++			       &st->temp, sizeof(st->temp));
++	if (ret)
++		return ret;
++
++	*val = __be32_to_cpu(st->temp);
++
++	if (!(LTC2983_RES_VALID_MASK & *val)) {
++		dev_err(&st->spi->dev, "Invalid conversion detected\n");
++		return -EIO;
++	}
++
++	ret = sensor->fault_handler(st, *val);
++	if (ret)
++		return ret;
++
++	*val = sign_extend32((*val) & LTC2983_DATA_MASK, LTC2983_DATA_SIGN_BIT);
++	return 0;
++}
++
++static int ltc2983_read_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int *val, int *val2, long mask)
++{
++	struct ltc2983_data *st = iio_priv(indio_dev);
++	int ret;
++
++	/* sanity check */
++	if (chan->address >= st->num_channels) {
++		dev_err(&st->spi->dev, "Invalid chan address:%ld",
++							chan->address);
++		return -EINVAL;
++	}
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		mutex_lock(&st->lock);
++		ret = ltc2983_chan_read(st, st->sensors[chan->address], val);
++		mutex_unlock(&st->lock);
++		return ret ?: IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		switch (chan->type) {
++		case IIO_TEMP:
++			/* value in milli degrees */
++			*val = 1000;
++			/* 2^10 */
++			*val2 = 1024;
++			return IIO_VAL_FRACTIONAL;
++		case IIO_VOLTAGE:
++			/* value in millivolt */
++			*val = 1000;
++			/* 2^21 */
++			*val2 = 2097152;
++			return IIO_VAL_FRACTIONAL;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	return -EINVAL;
++}
++
++static int ltc2983_reg_access(struct iio_dev *indio_dev,
++			      unsigned int reg,
++			      unsigned int writeval,
++			      unsigned int *readval)
++{
++	struct ltc2983_data *st = iio_priv(indio_dev);
++
++	if (readval)
++		return regmap_read(st->regmap, reg, readval);
++	else
++		return regmap_write(st->regmap, reg, writeval);
++}
++
++static irqreturn_t ltc2983_irq_handler(int irq, void *data)
++{
++	struct ltc2983_data *st = data;
++
++	complete(&st->completion);
++	return IRQ_HANDLED;
++}
++
++#define LTC2983_CHAN(__type, index, __address) ({ \
++	struct iio_chan_spec __chan = { \
++		.type = __type, \
++		.indexed = 1, \
++		.channel = index, \
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
++		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
++		.address = __address, \
++	}; \
++	__chan; \
++})
++
++static int ltc2983_parse_dt(struct ltc2983_data *st)
++{
++	struct device_node *child;
++	struct device *dev = &st->spi->dev;
++	int ret = 0, chan = 0, channel_avail_mask = 0;
++
++	of_property_read_u32(dev->of_node, "adi,mux-delay-config-us",
++			     &st->mux_delay_config);
++
++	of_property_read_u32(dev->of_node, "adi,filter-notch-freq",
++			     &st->filter_notch_freq);
++
++	st->num_channels = of_get_available_child_count(dev->of_node);
++	st->sensors = devm_kcalloc(dev, st->num_channels, sizeof(*st->sensors),
++				   GFP_KERNEL);
++	if (!st->sensors)
++		return -ENOMEM;
++
++	st->iio_channels = st->num_channels;
++	for_each_available_child_of_node(dev->of_node, child) {
++		struct ltc2983_sensor sensor;
++
++		ret = of_property_read_u32(child, "reg", &sensor.chan);
++		if (ret) {
++			dev_err(dev, "reg property must given for child nodes\n");
++			return ret;
++		}
++
++		/* check if we have a valid channel */
++		if (sensor.chan < LTC2983_MIN_CHANNELS_NR ||
++		    sensor.chan > LTC2983_MAX_CHANNELS_NR) {
++			dev_err(dev,
++				"chan:%d must be from 1 to 20\n", sensor.chan);
++			return -EINVAL;
++		} else if (channel_avail_mask & BIT(sensor.chan)) {
++			dev_err(dev, "chan:%d already in use\n", sensor.chan);
++			return -EINVAL;
++		}
++
++		ret = of_property_read_u32(child, "adi,sensor-type",
++					       &sensor.type);
++		if (ret) {
++			dev_err(dev,
++				"adi,sensor-type property must given for child nodes\n");
++			return ret;
++		}
++
++		dev_dbg(dev, "Create new sensor, type %u, chann %u",
++								sensor.type,
++								sensor.chan);
++
++		if (sensor.type >= LTC2983_SENSOR_THERMOCOUPLE &&
++		    sensor.type <= LTC2983_SENSOR_THERMOCOUPLE_CUSTOM) {
++			st->sensors[chan] = ltc2983_thermocouple_new(child, st,
++								     &sensor);
++		} else if (sensor.type >= LTC2983_SENSOR_RTD &&
++			   sensor.type <= LTC2983_SENSOR_RTD_CUSTOM) {
++			st->sensors[chan] = ltc2983_rtd_new(child, st, &sensor);
++		} else if (sensor.type >= LTC2983_SENSOR_THERMISTOR &&
++			   sensor.type <= LTC2983_SENSOR_THERMISTOR_CUSTOM) {
++			st->sensors[chan] = ltc2983_thermistor_new(child, st,
++								   &sensor);
++		} else if (sensor.type == LTC2983_SENSOR_DIODE) {
++			st->sensors[chan] = ltc2983_diode_new(child, st,
++							      &sensor);
++		} else if (sensor.type == LTC2983_SENSOR_SENSE_RESISTOR) {
++			st->sensors[chan] = ltc2983_r_sense_new(child, st,
++								&sensor);
++			/* don't add rsense to iio */
++			st->iio_channels--;
++		} else if (sensor.type == LTC2983_SENSOR_DIRECT_ADC) {
++			st->sensors[chan] = ltc2983_adc_new(child, st, &sensor);
++		} else {
++			dev_err(dev, "Unknown sensor type %d\n", sensor.type);
++			return -EINVAL;
++		}
++
++		if (IS_ERR(st->sensors[chan])) {
++			dev_err(dev, "Failed to create sensor %ld",
++						PTR_ERR(st->sensors[chan]));
++			return PTR_ERR(st->sensors[chan]);
++		}
++		/* set generic sensor parameters */
++		st->sensors[chan]->chan = sensor.chan;
++		st->sensors[chan]->type = sensor.type;
++
++		channel_avail_mask |= BIT(sensor.chan);
++		chan++;
++	}
++
++	return 0;
++}
++
++static int ltc2983_setup(struct ltc2983_data *st, bool assign_iio)
++{
++	u32 iio_chan_t = 0, iio_chan_v = 0, chan, iio_idx = 0;
++	int ret;
++	unsigned long time;
++
++	/* make sure the device is up */
++	time = wait_for_completion_timeout(&st->completion,
++					    msecs_to_jiffies(250));
++
++	if (!time) {
++		dev_err(&st->spi->dev, "Device startup timed out\n");
++		return -ETIMEDOUT;
++	}
++
++	st->iio_chan = devm_kzalloc(&st->spi->dev,
++				    st->iio_channels * sizeof(*st->iio_chan),
++				    GFP_KERNEL);
++
++	if (!st->iio_chan)
++		return -ENOMEM;
++
++	ret = regmap_update_bits(st->regmap, LTC2983_GLOBAL_CONFIG_REG,
++				 LTC2983_NOTCH_FREQ_MASK,
++				 LTC2983_NOTCH_FREQ(st->filter_notch_freq));
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, LTC2983_MUX_CONFIG_REG,
++			   st->mux_delay_config);
++	if (ret)
++		return ret;
++
++	for (chan = 0; chan < st->num_channels; chan++) {
++		u32 chan_type = 0, *iio_chan;
++
++		ret = st->sensors[chan]->assign_chan(st, st->sensors[chan]);
++		if (ret)
++			return ret;
++		/*
++		 * The assign_iio flag is necessary for when the device is
++		 * coming out of sleep. In that case, we just need to
++		 * re-configure the device channels.
++		 * We also don't assign iio channels for rsense.
++		 */
++		if (st->sensors[chan]->type == LTC2983_SENSOR_SENSE_RESISTOR ||
++		    !assign_iio)
++			continue;
++
++		/* assign iio channel */
++		if (st->sensors[chan]->type != LTC2983_SENSOR_DIRECT_ADC) {
++			chan_type = IIO_TEMP;
++			iio_chan = &iio_chan_t;
++		} else {
++			chan_type = IIO_VOLTAGE;
++			iio_chan = &iio_chan_v;
++		}
++
++		/*
++		 * add chan as the iio .address so that, we can directly
++		 * reference the sensor given the iio_chan_spec
++		 */
++		st->iio_chan[iio_idx++] = LTC2983_CHAN(chan_type, (*iio_chan)++,
++						       chan);
++	}
++
++	return 0;
++}
++
++static const struct regmap_range ltc2983_reg_ranges[] = {
++	regmap_reg_range(LTC2983_STATUS_REG, LTC2983_STATUS_REG),
++	regmap_reg_range(LTC2983_TEMP_RES_START_REG, LTC2983_TEMP_RES_END_REG),
++	regmap_reg_range(LTC2983_GLOBAL_CONFIG_REG, LTC2983_GLOBAL_CONFIG_REG),
++	regmap_reg_range(LTC2983_MULT_CHANNEL_START_REG,
++			 LTC2983_MULT_CHANNEL_END_REG),
++	regmap_reg_range(LTC2983_MUX_CONFIG_REG, LTC2983_MUX_CONFIG_REG),
++	regmap_reg_range(LTC2983_CHAN_ASSIGN_START_REG,
++			 LTC2983_CHAN_ASSIGN_END_REG),
++	regmap_reg_range(LTC2983_CUST_SENS_TBL_START_REG,
++			 LTC2983_CUST_SENS_TBL_END_REG),
++};
++
++static const struct regmap_access_table ltc2983_reg_table = {
++	.yes_ranges = ltc2983_reg_ranges,
++	.n_yes_ranges = ARRAY_SIZE(ltc2983_reg_ranges),
++};
++
++/*
++ *  The reg_bits are actually 12 but the device needs the first *complete*
++ *  byte for the command (R/W).
++ */
++static const struct regmap_config ltc2983_regmap_config = {
++	.reg_bits = 24,
++	.val_bits = 8,
++	.wr_table = &ltc2983_reg_table,
++	.rd_table = &ltc2983_reg_table,
++	.read_flag_mask = GENMASK(1, 0),
++	.write_flag_mask = BIT(1),
++};
++
++static const struct  iio_info ltc2983_iio_info = {
++	.read_raw = ltc2983_read_raw,
++	.debugfs_reg_access = ltc2983_reg_access,
++};
++
++static int ltc2983_probe(struct spi_device *spi)
++{
++	struct ltc2983_data *st;
++	struct iio_dev *indio_dev;
++	const char *name = spi_get_device_id(spi)->name;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++
++	st->regmap = devm_regmap_init_spi(spi, &ltc2983_regmap_config);
++	if (IS_ERR(st->regmap)) {
++		dev_err(&spi->dev, "Failed to initialize regmap\n");
++		return PTR_ERR(st->regmap);
++	}
++
++	mutex_init(&st->lock);
++	init_completion(&st->completion);
++	st->spi = spi;
++	spi_set_drvdata(spi, st);
++
++	ret = ltc2983_parse_dt(st);
++	if (ret)
++		return ret;
++	/*
++	 * let's request the irq now so it is used to sync the device
++	 * startup in ltc2983_setup()
++	 */
++	ret = devm_request_irq(&spi->dev, spi->irq, ltc2983_irq_handler,
++			       IRQF_TRIGGER_RISING, name, st);
++	if (ret) {
++		dev_err(&spi->dev, "failed to request an irq, %d", ret);
++		return ret;
++	}
++
++	ret = ltc2983_setup(st, true);
++	if (ret)
++		return ret;
++
++	indio_dev->dev.parent = &spi->dev;
++	indio_dev->name = name;
++	indio_dev->num_channels = st->iio_channels;
++	indio_dev->channels = st->iio_chan;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->info = &ltc2983_iio_info;
++
++	return devm_iio_device_register(&spi->dev, indio_dev);
++}
++
++static int __maybe_unused ltc2983_resume(struct device *dev)
++{
++	struct ltc2983_data *st = spi_get_drvdata(to_spi_device(dev));
++	int dummy;
++
++	/* dummy read to bring the device out of sleep */
++	regmap_read(st->regmap, LTC2983_STATUS_REG, &dummy);
++	/* we need to re-assign the channels */
++	return ltc2983_setup(st, false);
++}
++
++static int __maybe_unused ltc2983_suspend(struct device *dev)
++{
++	struct ltc2983_data *st = spi_get_drvdata(to_spi_device(dev));
++
++	return regmap_write(st->regmap, LTC2983_STATUS_REG, LTC2983_SLEEP);
++}
++
++static SIMPLE_DEV_PM_OPS(ltc2983_pm_ops, ltc2983_suspend, ltc2983_resume);
++
++static const struct spi_device_id ltc2983_id_table[] = {
++	{ "ltc2983" },
++	{},
++};
++MODULE_DEVICE_TABLE(spi, ltc2983_id_table);
++
++static const struct of_device_id ltc2983_of_match[] = {
++	{ .compatible = "adi,ltc2983" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, ltc2983_id_table);
++
++static struct spi_driver ltc2983_driver = {
++	.driver = {
++		.name = "ltc2983",
++		.of_match_table = ltc2983_of_match,
++		.pm = &ltc2983_pm_ops,
++	},
++	.probe = ltc2983_probe,
++	.id_table = ltc2983_id_table,
++};
++
++module_spi_driver(ltc2983_driver);
++
++MODULE_AUTHOR("Nuno Sa <nuno.sa@analog.com>");
++MODULE_DESCRIPTION("Analog Devices LTC2983 SPI Temperature sensors");
++MODULE_LICENSE("GPL");
 -- 
-2.21.0
+2.23.0
 

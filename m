@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DED86D39EB
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2019 09:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1FA7D39EC
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2019 09:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727340AbfJKHSc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Oct 2019 03:18:32 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:45937 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727268AbfJKHSc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Oct 2019 03:18:32 -0400
-Received: by mail-lj1-f194.google.com with SMTP id q64so8715805ljb.12
-        for <linux-iio@vger.kernel.org>; Fri, 11 Oct 2019 00:18:27 -0700 (PDT)
+        id S1727268AbfJKHSf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Oct 2019 03:18:35 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:35434 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727321AbfJKHSf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Oct 2019 03:18:35 -0400
+Received: by mail-lj1-f193.google.com with SMTP id m7so8780940lji.2
+        for <linux-iio@vger.kernel.org>; Fri, 11 Oct 2019 00:18:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=VKw2TL+wjlZQWFHGU/IoEfQEWRQh4GtZCGusVteJ/us=;
-        b=kwrjbmkumIvhUw5bUdcKQzG8AQQzZx823CZ2ox1WlKJd8VhlKUs1zfQXPJZllCbOSs
-         /YFS4Ya+rWL0J+MU+yf0iR4eimdOURRosjdEpDAZ0l+7sPNYXznhta9w9lomwlsRpnWl
-         h8lat9fRlNXDHLZ9RobqRdppI06GGk9XK2CEigVFHlLG/tCXaBGsvEKhf90W74Ar6WRj
-         gY/vfpDDi7gew7tNCTF5KczyhxjbQUnP6BEryEQyVsC/sEy1GsVISsZK1w7h99V5Dv4U
-         jJRvk9vzAYWQygzGi4oT7j32zO9w21Ey/13OG9ssY9z4CFRrl0kG2ozWImce66k1I1el
-         bmIQ==
+        bh=BgfOd7fhVM795kEQ2B7nrXpqY7dqtQxedYaJzfIq2iM=;
+        b=MnXnZKjd/iM29br7vQ/eR8TJZxXqOhnUuITHIp/DMODcy+r+y8VrVnoROx/nmBzFfi
+         WZkN2Uk6/Q3PX2rF2hMSmQLwQIASFtVTvZZu8wybITdG7tD/B/UWd2D4wqIRZazTmdjC
+         h5zWGZ/vuXufzpNBlQfmMZ6voReiqF8MYuiuOBGC9SOgTscYTiEavVZu7rA2Z39xKhTm
+         SKsFHSb7MrzvXnL+BGNReXbEYtL4bkfc994DFo+w4qZde/CBHTq/wD8kEKraraOmLCyN
+         G0L7X7sOVNvb1JManETzvQPbtg5ggbXhaka8ohko3hLL6ouhu/JGVXZL9N2DSmII+T2S
+         05fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=VKw2TL+wjlZQWFHGU/IoEfQEWRQh4GtZCGusVteJ/us=;
-        b=OWDZXtxcCEX4zaZvJndCXl3vMcCfL2w/wOjhw2eUsxS0EKw7n6/gP+2vLNjqfqozgS
-         3yKghwNz1hEL3tACS/bRJ2ezArK0HvvyHxdHTgfh9mHCqcCHrABhIEIoKq3X5rzwbfq9
-         EpRqQ9DmAYgX4W7cxJvVKCpNq2kaS8x10+Uny6IhsVsewoUcnV/uRJwRcprv0seXo+zn
-         W5UtOrJ5EGA6t4T4cA3id28vBGaWHimrceLRwvLDX6U/zKWl00OdgZMAzhN1ef8GdHVV
-         2lnAnKXFsOIfyaw2J0KyHfWwuVjZnNE6l2IXmq7YA6ldfyzy6xKl6Ondk4+WCby1juyO
-         3sDQ==
-X-Gm-Message-State: APjAAAVVkrllTPQOe1RY6r0gMNm8C61HP6MDiw3Aujihim40jMXJDndU
-        5Za66GljX+Ok5+Y2MMLEXjEDIg==
-X-Google-Smtp-Source: APXvYqxjdxcAhLwVybyhspH2+zugw3ivP5/29RUEXYpArUVrwS2VXvmYqguobp5alBnprWgoZn5tKA==
-X-Received: by 2002:a05:651c:150:: with SMTP id c16mr8575727ljd.157.1570778305799;
-        Fri, 11 Oct 2019 00:18:25 -0700 (PDT)
+        bh=BgfOd7fhVM795kEQ2B7nrXpqY7dqtQxedYaJzfIq2iM=;
+        b=YxS3pv2cj26n+VFAu7NyzPpQJV4rqMAPj5vx6B8McoYI7TlTOISaGCN+GbzRHn2NY2
+         CRJKN5/3rOFb+TSLxmrRGdIPdPw0OZl2GZsNuwmjKJK/bMWmPCHT2zfxqxb26gzFNUdd
+         WsHEGmdDujC3k2X0onLgKPYqjCJvkkHdRwrs8xfV5aNFZM/SoKV+Cg+8jUpe3++V9Qd3
+         gXzk/RERcfGM7Na4ltybDX0JNhZQ7UTn/9sfQYs8PFHt/fsf5hQpcdMkUwJOG7s/j9Oa
+         KzEF5de4+oVo1JKUYiJ7fBMRDv7ZQdFzO66GereokBY6ZfnnLHZ9CfOoNmX6yrKoucRe
+         Uhsg==
+X-Gm-Message-State: APjAAAUuL6Lkr7BBApn2jn61GIShp3vrbpwOU4g5XhBY/QtOS4HM69zc
+        qiz6GDYf0pNBJPewqoUQBhJ5Cw==
+X-Google-Smtp-Source: APXvYqweLub695TVRYaz82AT4ifBe3Tj6rZVMBTwGFbuD9fOofKoCpCtkj/4brqBATKpoSkQsjUQog==
+X-Received: by 2002:a2e:8204:: with SMTP id w4mr8534883ljg.3.1570778308389;
+        Fri, 11 Oct 2019 00:18:28 -0700 (PDT)
 Received: from genomnajs.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id v26sm2047343lfg.27.2019.10.11.00.18.23
+        by smtp.gmail.com with ESMTPSA id v26sm2047343lfg.27.2019.10.11.00.18.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2019 00:18:24 -0700 (PDT)
+        Fri, 11 Oct 2019 00:18:27 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
@@ -51,11 +51,10 @@ To:     Lee Jones <lee.jones@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>
 Cc:     Mboumba Cedric Madianga <cedric.madianga@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6/7 v4] iio: adc: New driver for the AB8500 GPADC
-Date:   Fri, 11 Oct 2019 09:18:04 +0200
-Message-Id: <20191011071805.5554-7-linus.walleij@linaro.org>
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 7/7 v4] mfd: Switch the AB8500 GPADC to IIO
+Date:   Fri, 11 Oct 2019 09:18:05 +0200
+Message-Id: <20191011071805.5554-8-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20191011071805.5554-1-linus.walleij@linaro.org>
 References: <20191011071805.5554-1-linus.walleij@linaro.org>
@@ -66,1344 +65,2006 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is a new driver for the ST-Ericsson AB8500 GPADC, which
-replaces the old driver in drivers/mfd/ab8500-gpadc.c and
-thus gets rid of another necessarily different custom driver
-from the times before IIO existed.
+The AB8500 GPADC driver is indeed a "general purpose ADC" driver,
+and while the IIO subsystem did not exist when the driver was
+first merged, it is never too late to clean things up and move it
+to the right place.
 
-The AB8500 GPADC can convert 10 different channels and these
-are used for monitoring voltages in the U8500 chipset, some
-are used for battery charging, some for temperature
-monitoring.
+Nowadays IIO provides the right abstractions and interfaces to
+do generic ADC work in the kernel.
 
-As this is very core functionality that a lot of drivers
-depend on and was formerly compiled in with the AB8500 core
-driver, we deafault it to 'y' in Kconfig: it can be compiled
-out but it is really not advisible: the platform can
-for example overheat if we do.
+We have to cut a bunch of debugfs luggage to make this transition
+swift, but all these files to is read out the raw values of the
+ADC and the IIO subsystem already has a standard sysfs ABI for
+doing exactly this: no debugfs is needed.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Lee Jones <lee.jones@linaro.org>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
 ChangeLog v3->v4:
 - No changes just resending
-ChangeLog v2 -> v3:
-- Add AB8500_GPADC_* prefixes to a few more defines to make them
-  unambigous.
-- Fix up a kerneldoc header for raw to processed conversion.
-- Drop some dev_dbg() things, not much use for these.
-- Do not initialized ret to 0 in probe()
-- Compress some irq request calls to 80 cols.
-- Drop pointless dev_info() at end of probe.
-- With the new longer prefixes a lot of lines with especially
-  interpolation goes over 80 cols. I chose not to care for
-  reasonable readability. We can create a (generic) interpolation
-  function/macro but that should be a separate patch.
-- Rebased on v5.4-rc1
-ChangeLog v1 -> v2:
-- Break out the IIO driver into a separate patch just adding
-  it instead of moving it in the same patch, this makes it
-  easier for the IIO maintainers to review the patch.
-- Rename a slew of variables and fix up comment syntax etc.
-- Drop the enums for sample numbers 1, 4, 8, 16 just use numerals.
-- Use a bool to indicate trigger on falling edge rather than a number.
-- Use a bool to indicate hardware conversion on a channel.
-- Use an enum for the channels.
-- Pass a pointer to the channel config struct instead of overly
-  talkative function prototype.
-- Use devm_iio_device_register()
-- Push the channels into the IIO device, do not keep a separate
-  copy of the IIO channels inside the driver state container.
-- Do not mark interrupts as shared. They are not shared.
-- Remove comments commenting the obvious.
-- Add prefixed to definitions and enums to avoid clashes with
-  other namespaces and make it obvious where things are coming
-  from.
-- Drop surplus local variable.
-- Drop unused OTP retrieveal function for AB8540.
-- Use runtime PM for system PM callbacks.
-- Use builtin_platform_driver() for initializing the driver as
-  this is a bool menuconfig.
-- Fix up processed reads from the ADC: I mistakedly dropped the
-  flag indicating we can do processed reads, falling us back to
-  just raw reads.
----
- MAINTAINERS                    |    1 +
- drivers/iio/adc/Kconfig        |   10 +
- drivers/iio/adc/Makefile       |    1 +
- drivers/iio/adc/ab8500-gpadc.c | 1218 ++++++++++++++++++++++++++++++++
- 4 files changed, 1230 insertions(+)
- create mode 100644 drivers/iio/adc/ab8500-gpadc.c
+ChangeLog v2->v3:
+- Rebased on v5.4-rc1 (some debugfs business changed)
+ChangeLog v1->v2:
+- Woke up after 2 and a hald year of inactivity and rebased the
+  patch.
+- Split the new IIO driver into its own patch just adding the
+  new driver.
+- Convert an extraneous dev_info() to dev_dbg() to silence the
+  debug log.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 296de2b51c83..19993e872f26 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2005,6 +2005,7 @@ F:	drivers/dma/ste_dma40*
- F:	drivers/hwspinlock/u8500_hsem.c
- F:	drivers/i2c/busses/i2c-nomadik.c
- F:	drivers/i2c/busses/i2c-stu300.c
-+F:	drivers/iio/adc/ab8500-gpadc.c
- F:	drivers/mfd/ab3100*
- F:	drivers/mfd/ab8500*
- F:	drivers/mfd/abx500*
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index f0af3a42f53c..0b21dd405dd5 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -6,6 +6,16 @@
+This should not be applied to the MFD tree right now, it
+will be applied along with the other changes in ARM SoC.
+---
+ drivers/mfd/Kconfig                     |    7 -
+ drivers/mfd/Makefile                    |    1 -
+ drivers/mfd/ab8500-debugfs.c            |  715 ---------------
+ drivers/mfd/ab8500-gpadc.c              | 1075 -----------------------
+ include/linux/mfd/abx500/ab8500-gpadc.h |   75 --
+ 5 files changed, 1873 deletions(-)
+ delete mode 100644 drivers/mfd/ab8500-gpadc.c
+ delete mode 100644 include/linux/mfd/abx500/ab8500-gpadc.h
+
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index ae24d3ea68ea..420900852166 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -1210,13 +1210,6 @@ config AB8500_DEBUG
+ 	  Select this option if you want debug information using the debug
+ 	  filesystem, debugfs.
  
- menu "Analog to digital converters"
+-config AB8500_GPADC
+-	bool "ST-Ericsson AB8500 GPADC driver"
+-	depends on AB8500_CORE && REGULATOR_AB8500
+-	default y
+-	help
+-	  AB8500 GPADC driver used to convert Acc and battery/ac/usb voltage
+-
+ config MFD_DB8500_PRCMU
+ 	bool "ST-Ericsson DB8500 Power Reset Control Management Unit"
+ 	depends on UX500_SOC_DB8500
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index c1067ea46204..aed99f08739f 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -177,7 +177,6 @@ obj-$(CONFIG_ABX500_CORE)	+= abx500-core.o
+ obj-$(CONFIG_AB3100_CORE)	+= ab3100-core.o
+ obj-$(CONFIG_AB3100_OTP)	+= ab3100-otp.o
+ obj-$(CONFIG_AB8500_DEBUG)	+= ab8500-debugfs.o
+-obj-$(CONFIG_AB8500_GPADC)	+= ab8500-gpadc.o
+ obj-$(CONFIG_MFD_DB8500_PRCMU)	+= db8500-prcmu.o
+ # ab8500-core need to come after db8500-prcmu (which provides the channel)
+ obj-$(CONFIG_AB8500_CORE)	+= ab8500-core.o ab8500-sysctrl.o
+diff --git a/drivers/mfd/ab8500-debugfs.c b/drivers/mfd/ab8500-debugfs.c
+index f4e26b6e5362..1a9a3414d4fa 100644
+--- a/drivers/mfd/ab8500-debugfs.c
++++ b/drivers/mfd/ab8500-debugfs.c
+@@ -84,7 +84,6 @@
  
-+config AB8500_GPADC
-+	bool "ST-Ericsson AB8500 GPADC driver"
-+	depends on AB8500_CORE && REGULATOR_AB8500
-+	default y
-+	help
-+	  AB8500 Analog Baseband, mixed signal integrated circuit GPADC
-+	  (General Purpose Analog to Digital Converter) driver used to monitor
-+	  internal voltages, convert accessory and battery, AC (charger, mains)
-+	  and USB voltages integral to the U8500 platform.
-+
- config AD_SIGMA_DELTA
- 	tristate
- 	select IIO_BUFFER
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index ef9cc485fb67..fc1b6ebb0cde 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -4,6 +4,7 @@
- #
+ #include <linux/mfd/abx500.h>
+ #include <linux/mfd/abx500/ab8500.h>
+-#include <linux/mfd/abx500/ab8500-gpadc.h>
  
- # When adding new entries keep the list in alphabetical order
-+obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
- obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
- obj-$(CONFIG_AD7124) += ad7124.o
- obj-$(CONFIG_AD7266) += ad7266.o
-diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
-new file mode 100644
-index 000000000000..fd5b18d7f0c2
---- /dev/null
-+++ b/drivers/iio/adc/ab8500-gpadc.c
-@@ -0,0 +1,1218 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) ST-Ericsson SA 2010
-+ *
-+ * Author: Arun R Murthy <arun.murthy@stericsson.com>
-+ * Author: Daniel Willerud <daniel.willerud@stericsson.com>
-+ * Author: Johan Palsson <johan.palsson@stericsson.com>
-+ * Author: M'boumba Cedric Madianga
-+ * Author: Linus Walleij <linus.walleij@linaro.org>
-+ *
-+ * AB8500 General Purpose ADC driver. The AB8500 uses reference voltages:
-+ * VinVADC, and VADC relative to GND to do its job. It monitors main and backup
-+ * battery voltages, AC (mains) voltage, USB cable voltage, as well as voltages
-+ * representing the temperature of the chip die and battery, accessory
-+ * detection by resistance measurements using relative voltages and GSM burst
-+ * information.
-+ *
-+ * Some of the voltages are measured on external pins on the IC, such as
-+ * battery temperature or "ADC aux" 1 and 2. Other voltages are internal rails
-+ * from other parts of the ASIC such as main charger voltage, main and battery
-+ * backup voltage or USB VBUS voltage. For this reason drivers for other
-+ * parts of the system are required to obtain handles to the ADC to do work
-+ * for them and the IIO driver provides arbitration among these consumers.
-+ */
-+#include <linux/init.h>
-+#include <linux/bits.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/device.h>
-+#include <linux/interrupt.h>
-+#include <linux/spinlock.h>
-+#include <linux/delay.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/platform_device.h>
-+#include <linux/completion.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/random.h>
-+#include <linux/err.h>
-+#include <linux/slab.h>
-+#include <linux/mfd/abx500.h>
-+#include <linux/mfd/abx500/ab8500.h>
-+
-+/* GPADC register offsets and bit definitions */
-+
-+#define AB8500_GPADC_CTRL1_REG		0x00
-+/* GPADC control register 1 bits */
-+#define AB8500_GPADC_CTRL1_DISABLE		0x00
-+#define AB8500_GPADC_CTRL1_ENABLE		BIT(0)
-+#define AB8500_GPADC_CTRL1_TRIG_ENA		BIT(1)
-+#define AB8500_GPADC_CTRL1_START_SW_CONV	BIT(2)
-+#define AB8500_GPADC_CTRL1_BTEMP_PULL_UP	BIT(3)
-+/* 0 = use rising edge, 1 = use falling edge */
-+#define AB8500_GPADC_CTRL1_TRIG_EDGE		BIT(4)
-+/* 0 = use VTVOUT, 1 = use VRTC as pull-up supply for battery temp NTC */
-+#define AB8500_GPADC_CTRL1_PUPSUPSEL		BIT(5)
-+#define AB8500_GPADC_CTRL1_BUF_ENA		BIT(6)
-+#define AB8500_GPADC_CTRL1_ICHAR_ENA		BIT(7)
-+
-+#define AB8500_GPADC_CTRL2_REG		0x01
-+#define AB8500_GPADC_CTRL3_REG		0x02
-+/*
-+ * GPADC control register 2 and 3 bits
-+ * the bit layout is the same for SW and HW conversion set-up
-+ */
-+#define AB8500_GPADC_CTRL2_AVG_1		0x00
-+#define AB8500_GPADC_CTRL2_AVG_4		BIT(5)
-+#define AB8500_GPADC_CTRL2_AVG_8		BIT(6)
-+#define AB8500_GPADC_CTRL2_AVG_16		(BIT(5) | BIT(6))
-+
-+enum ab8500_gpadc_channel {
-+	AB8500_GPADC_CHAN_UNUSED = 0x00,
-+	AB8500_GPADC_CHAN_BAT_CTRL = 0x01,
-+	AB8500_GPADC_CHAN_BAT_TEMP = 0x02,
-+	/* This is not used on AB8505 */
-+	AB8500_GPADC_CHAN_MAIN_CHARGER = 0x03,
-+	AB8500_GPADC_CHAN_ACC_DET_1 = 0x04,
-+	AB8500_GPADC_CHAN_ACC_DET_2 = 0x05,
-+	AB8500_GPADC_CHAN_ADC_AUX_1 = 0x06,
-+	AB8500_GPADC_CHAN_ADC_AUX_2 = 0x07,
-+	AB8500_GPADC_CHAN_VBAT_A = 0x08,
-+	AB8500_GPADC_CHAN_VBUS = 0x09,
-+	AB8500_GPADC_CHAN_MAIN_CHARGER_CURRENT = 0x0a,
-+	AB8500_GPADC_CHAN_USB_CHARGER_CURRENT = 0x0b,
-+	AB8500_GPADC_CHAN_BACKUP_BAT = 0x0c,
-+	/* Only on AB8505 */
-+	AB8505_GPADC_CHAN_DIE_TEMP = 0x0d,
-+	AB8500_GPADC_CHAN_ID = 0x0e,
-+	AB8500_GPADC_CHAN_INTERNAL_TEST_1 = 0x0f,
-+	AB8500_GPADC_CHAN_INTERNAL_TEST_2 = 0x10,
-+	AB8500_GPADC_CHAN_INTERNAL_TEST_3 = 0x11,
-+	/* FIXME: Applicable to all ASIC variants? */
-+	AB8500_GPADC_CHAN_XTAL_TEMP = 0x12,
-+	AB8500_GPADC_CHAN_VBAT_TRUE_MEAS = 0x13,
-+	/* FIXME: Doesn't seem to work with pure AB8500 */
-+	AB8500_GPADC_CHAN_BAT_CTRL_AND_IBAT = 0x1c,
-+	AB8500_GPADC_CHAN_VBAT_MEAS_AND_IBAT = 0x1d,
-+	AB8500_GPADC_CHAN_VBAT_TRUE_MEAS_AND_IBAT = 0x1e,
-+	AB8500_GPADC_CHAN_BAT_TEMP_AND_IBAT = 0x1f,
-+	/*
-+	 * Virtual channel used only for ibat conversion to ampere.
-+	 * Battery current conversion (ibat) cannot be requested as a
-+	 * single conversion but it is always requested in combination
-+	 * with other input requests.
-+	 */
-+	AB8500_GPADC_CHAN_IBAT_VIRTUAL = 0xFF,
-+};
-+
-+#define AB8500_GPADC_AUTO_TIMER_REG	0x03
-+
-+#define AB8500_GPADC_STAT_REG		0x04
-+#define AB8500_GPADC_STAT_BUSY		BIT(0)
-+
-+#define AB8500_GPADC_MANDATAL_REG	0x05
-+#define AB8500_GPADC_MANDATAH_REG	0x06
-+#define AB8500_GPADC_AUTODATAL_REG	0x07
-+#define AB8500_GPADC_AUTODATAH_REG	0x08
-+#define AB8500_GPADC_MUX_CTRL_REG	0x09
-+#define AB8540_GPADC_MANDATA2L_REG	0x09
-+#define AB8540_GPADC_MANDATA2H_REG	0x0A
-+#define AB8540_GPADC_APEAAX_REG		0x10
-+#define AB8540_GPADC_APEAAT_REG		0x11
-+#define AB8540_GPADC_APEAAM_REG		0x12
-+#define AB8540_GPADC_APEAAH_REG		0x13
-+#define AB8540_GPADC_APEAAL_REG		0x14
-+
-+/*
-+ * OTP register offsets
-+ * Bank : 0x15
-+ */
-+#define AB8500_GPADC_CAL_1	0x0F
-+#define AB8500_GPADC_CAL_2	0x10
-+#define AB8500_GPADC_CAL_3	0x11
-+#define AB8500_GPADC_CAL_4	0x12
-+#define AB8500_GPADC_CAL_5	0x13
-+#define AB8500_GPADC_CAL_6	0x14
-+#define AB8500_GPADC_CAL_7	0x15
-+/* New calibration for 8540 */
-+#define AB8540_GPADC_OTP4_REG_7	0x38
-+#define AB8540_GPADC_OTP4_REG_6	0x39
-+#define AB8540_GPADC_OTP4_REG_5	0x3A
-+
-+#define AB8540_GPADC_DIS_ZERO	0x00
-+#define AB8540_GPADC_EN_VBIAS_XTAL_TEMP	0x02
-+
-+/* GPADC constants from AB8500 spec, UM0836 */
-+#define AB8500_ADC_RESOLUTION		1024
-+#define AB8500_ADC_CH_BTEMP_MIN		0
-+#define AB8500_ADC_CH_BTEMP_MAX		1350
-+#define AB8500_ADC_CH_DIETEMP_MIN	0
-+#define AB8500_ADC_CH_DIETEMP_MAX	1350
-+#define AB8500_ADC_CH_CHG_V_MIN		0
-+#define AB8500_ADC_CH_CHG_V_MAX		20030
-+#define AB8500_ADC_CH_ACCDET2_MIN	0
-+#define AB8500_ADC_CH_ACCDET2_MAX	2500
-+#define AB8500_ADC_CH_VBAT_MIN		2300
-+#define AB8500_ADC_CH_VBAT_MAX		4800
-+#define AB8500_ADC_CH_CHG_I_MIN		0
-+#define AB8500_ADC_CH_CHG_I_MAX		1500
-+#define AB8500_ADC_CH_BKBAT_MIN		0
-+#define AB8500_ADC_CH_BKBAT_MAX		3200
-+
-+/* GPADC constants from AB8540 spec */
-+#define AB8500_ADC_CH_IBAT_MIN		(-6000) /* mA range measured by ADC for ibat */
-+#define AB8500_ADC_CH_IBAT_MAX		6000
-+#define AB8500_ADC_CH_IBAT_MIN_V	(-60)	/* mV range measured by ADC for ibat */
-+#define AB8500_ADC_CH_IBAT_MAX_V	60
-+#define AB8500_GPADC_IBAT_VDROP_L	(-56)  /* mV */
-+#define AB8500_GPADC_IBAT_VDROP_H	56
-+
-+/* This is used to not lose precision when dividing to get gain and offset */
-+#define AB8500_GPADC_CALIB_SCALE	1000
-+/*
-+ * Number of bits shift used to not lose precision
-+ * when dividing to get ibat gain.
-+ */
-+#define AB8500_GPADC_CALIB_SHIFT_IBAT	20
-+
-+/* Time in ms before disabling regulator */
-+#define AB8500_GPADC_AUTOSUSPEND_DELAY	1
-+
-+#define AB8500_GPADC_CONVERSION_TIME	500 /* ms */
-+
-+enum ab8500_cal_channels {
-+	AB8500_CAL_VMAIN = 0,
-+	AB8500_CAL_BTEMP,
-+	AB8500_CAL_VBAT,
-+	AB8500_CAL_IBAT,
-+	AB8500_CAL_NR,
-+};
-+
-+/**
-+ * struct ab8500_adc_cal_data - Table for storing gain and offset for the
-+ * calibrated ADC channels
-+ * @gain: Gain of the ADC channel
-+ * @offset: Offset of the ADC channel
-+ * @otp_calib_hi: Calibration from OTP
-+ * @otp_calib_lo: Calibration from OTP
-+ */
-+struct ab8500_adc_cal_data {
-+	s64 gain;
-+	s64 offset;
-+	u16 otp_calib_hi;
-+	u16 otp_calib_lo;
-+};
-+
-+/**
-+ * struct ab8500_gpadc_chan_info - per-channel GPADC info
-+ * @name: name of the channel
-+ * @id: the internal AB8500 ID number for the channel
-+ * @hardware_control: indicate that we want to use hardware ADC control
-+ * on this channel, the default is software ADC control. Hardware control
-+ * is normally only used to test the battery voltage during GSM bursts
-+ * and needs a hardware trigger on the GPADCTrig pin of the ASIC.
-+ * @falling_edge: indicate that we want to trigger on falling edge
-+ * rather than rising edge, rising edge is the default
-+ * @avg_sample: how many samples to average: must be 1, 4, 8 or 16.
-+ * @trig_timer: how long to wait for the trigger, in 32kHz periods:
-+ * 0 .. 255 periods
-+ */
-+struct ab8500_gpadc_chan_info {
-+	const char *name;
-+	u8 id;
-+	bool hardware_control;
-+	bool falling_edge;
-+	u8 avg_sample;
-+	u8 trig_timer;
-+};
-+
-+/**
-+ * struct ab8500_gpadc - AB8500 GPADC device information
-+ * @dev: pointer to the containing device
-+ * @ab8500: pointer to the parent AB8500 device
-+ * @chans: internal per-channel information container
-+ * @nchans: number of channels
-+ * @complete: pointer to the completion that indicates
-+ * the completion of an gpadc conversion cycle
-+ * @vddadc: pointer to the regulator supplying VDDADC
-+ * @irq_sw: interrupt number that is used by gpadc for software ADC conversion
-+ * @irq_hw: interrupt number that is used by gpadc for hardware ADC conversion
-+ * @cal_data: array of ADC calibration data structs
-+ */
-+struct ab8500_gpadc {
-+	struct device *dev;
-+	struct ab8500 *ab8500;
-+	struct ab8500_gpadc_chan_info *chans;
-+	unsigned int nchans;
-+	struct completion complete;
-+	struct regulator *vddadc;
-+	int irq_sw;
-+	int irq_hw;
-+	struct ab8500_adc_cal_data cal_data[AB8500_CAL_NR];
-+};
-+
-+static struct ab8500_gpadc_chan_info *
-+ab8500_gpadc_get_channel(struct ab8500_gpadc *gpadc, u8 chan)
-+{
-+	struct ab8500_gpadc_chan_info *ch;
-+	int i;
-+
-+	for (i = 0; i < gpadc->nchans; i++) {
-+		ch = &gpadc->chans[i];
-+		if (ch->id == chan)
-+			break;
-+	}
-+	if (i == gpadc->nchans)
-+		return NULL;
-+
-+	return ch;
-+}
-+
-+/**
-+ * ab8500_gpadc_ad_to_voltage() - Convert a raw ADC value to a voltage
-+ * @gpadc: GPADC instance
-+ * @ch: the sampled channel this raw value is coming from
-+ * @ad_value: the raw value
-+ */
-+static int ab8500_gpadc_ad_to_voltage(struct ab8500_gpadc *gpadc,
-+				      enum ab8500_gpadc_channel ch,
-+				      int ad_value)
-+{
-+	int res;
-+
-+	switch (ch) {
-+	case AB8500_GPADC_CHAN_MAIN_CHARGER:
-+		/* No calibration data available: just interpolate */
-+		if (!gpadc->cal_data[AB8500_CAL_VMAIN].gain) {
-+			res = AB8500_ADC_CH_CHG_V_MIN + (AB8500_ADC_CH_CHG_V_MAX -
-+				AB8500_ADC_CH_CHG_V_MIN) * ad_value /
-+				AB8500_ADC_RESOLUTION;
-+			break;
-+		}
-+		/* Here we can use calibration */
-+		res = (int) (ad_value * gpadc->cal_data[AB8500_CAL_VMAIN].gain +
-+			gpadc->cal_data[AB8500_CAL_VMAIN].offset) / AB8500_GPADC_CALIB_SCALE;
-+		break;
-+
-+	case AB8500_GPADC_CHAN_BAT_CTRL:
-+	case AB8500_GPADC_CHAN_BAT_TEMP:
-+	case AB8500_GPADC_CHAN_ACC_DET_1:
-+	case AB8500_GPADC_CHAN_ADC_AUX_1:
-+	case AB8500_GPADC_CHAN_ADC_AUX_2:
-+	case AB8500_GPADC_CHAN_XTAL_TEMP:
-+		/* No calibration data available: just interpolate */
-+		if (!gpadc->cal_data[AB8500_CAL_BTEMP].gain) {
-+			res = AB8500_ADC_CH_BTEMP_MIN + (AB8500_ADC_CH_BTEMP_MAX -
-+				AB8500_ADC_CH_BTEMP_MIN) * ad_value /
-+				AB8500_ADC_RESOLUTION;
-+			break;
-+		}
-+		/* Here we can use calibration */
-+		res = (int) (ad_value * gpadc->cal_data[AB8500_CAL_BTEMP].gain +
-+			gpadc->cal_data[AB8500_CAL_BTEMP].offset) / AB8500_GPADC_CALIB_SCALE;
-+		break;
-+
-+	case AB8500_GPADC_CHAN_VBAT_A:
-+	case AB8500_GPADC_CHAN_VBAT_TRUE_MEAS:
-+		/* No calibration data available: just interpolate */
-+		if (!gpadc->cal_data[AB8500_CAL_VBAT].gain) {
-+			res = AB8500_ADC_CH_VBAT_MIN + (AB8500_ADC_CH_VBAT_MAX -
-+				AB8500_ADC_CH_VBAT_MIN) * ad_value /
-+				AB8500_ADC_RESOLUTION;
-+			break;
-+		}
-+		/* Here we can use calibration */
-+		res = (int) (ad_value * gpadc->cal_data[AB8500_CAL_VBAT].gain +
-+			gpadc->cal_data[AB8500_CAL_VBAT].offset) / AB8500_GPADC_CALIB_SCALE;
-+		break;
-+
-+	case AB8505_GPADC_CHAN_DIE_TEMP:
-+		res = AB8500_ADC_CH_DIETEMP_MIN +
-+			(AB8500_ADC_CH_DIETEMP_MAX - AB8500_ADC_CH_DIETEMP_MIN) * ad_value /
-+			AB8500_ADC_RESOLUTION;
-+		break;
-+
-+	case AB8500_GPADC_CHAN_ACC_DET_2:
-+		res = AB8500_ADC_CH_ACCDET2_MIN +
-+			(AB8500_ADC_CH_ACCDET2_MAX - AB8500_ADC_CH_ACCDET2_MIN) * ad_value /
-+			AB8500_ADC_RESOLUTION;
-+		break;
-+
-+	case AB8500_GPADC_CHAN_VBUS:
-+		res = AB8500_ADC_CH_CHG_V_MIN +
-+			(AB8500_ADC_CH_CHG_V_MAX - AB8500_ADC_CH_CHG_V_MIN) * ad_value /
-+			AB8500_ADC_RESOLUTION;
-+		break;
-+
-+	case AB8500_GPADC_CHAN_MAIN_CHARGER_CURRENT:
-+	case AB8500_GPADC_CHAN_USB_CHARGER_CURRENT:
-+		res = AB8500_ADC_CH_CHG_I_MIN +
-+			(AB8500_ADC_CH_CHG_I_MAX - AB8500_ADC_CH_CHG_I_MIN) * ad_value /
-+			AB8500_ADC_RESOLUTION;
-+		break;
-+
-+	case AB8500_GPADC_CHAN_BACKUP_BAT:
-+		res = AB8500_ADC_CH_BKBAT_MIN +
-+			(AB8500_ADC_CH_BKBAT_MAX - AB8500_ADC_CH_BKBAT_MIN) * ad_value /
-+			AB8500_ADC_RESOLUTION;
-+		break;
-+
-+	case AB8500_GPADC_CHAN_IBAT_VIRTUAL:
-+		/* No calibration data available: just interpolate */
-+		if (!gpadc->cal_data[AB8500_CAL_IBAT].gain) {
-+			res = AB8500_ADC_CH_IBAT_MIN + (AB8500_ADC_CH_IBAT_MAX -
-+				AB8500_ADC_CH_IBAT_MIN) * ad_value /
-+				AB8500_ADC_RESOLUTION;
-+			break;
-+		}
-+		/* Here we can use calibration */
-+		res = (int) (ad_value * gpadc->cal_data[AB8500_CAL_IBAT].gain +
-+				gpadc->cal_data[AB8500_CAL_IBAT].offset)
-+				>> AB8500_GPADC_CALIB_SHIFT_IBAT;
-+		break;
-+
-+	default:
-+		dev_err(gpadc->dev,
-+			"unknown channel ID: %d, not possible to convert\n",
-+			ch);
-+		res = -EINVAL;
-+		break;
-+
-+	}
-+
-+	return res;
-+}
-+
-+static int ab8500_gpadc_read(struct ab8500_gpadc *gpadc,
-+			     const struct ab8500_gpadc_chan_info *ch,
-+			     int *ibat)
-+{
-+	int ret;
-+	int looplimit = 0;
-+	unsigned long completion_timeout;
-+	u8 val;
-+	u8 low_data, high_data, low_data2, high_data2;
-+	u8 ctrl1;
-+	u8 ctrl23;
-+	unsigned int delay_min = 0;
-+	unsigned int delay_max = 0;
-+	u8 data_low_addr, data_high_addr;
-+
-+	if (!gpadc)
-+		return -ENODEV;
-+
-+	/* check if conversion is supported */
-+	if ((gpadc->irq_sw <= 0) && !ch->hardware_control)
-+		return -ENOTSUPP;
-+	if ((gpadc->irq_hw <= 0) && ch->hardware_control)
-+		return -ENOTSUPP;
-+
-+	/* Enable vddadc by grabbing PM runtime */
-+	pm_runtime_get_sync(gpadc->dev);
-+
-+	/* Check if ADC is not busy, lock and proceed */
-+	do {
-+		ret = abx500_get_register_interruptible(gpadc->dev,
-+			AB8500_GPADC, AB8500_GPADC_STAT_REG, &val);
-+		if (ret < 0)
-+			goto out;
-+		if (!(val & AB8500_GPADC_STAT_BUSY))
-+			break;
-+		msleep(20);
-+	} while (++looplimit < 10);
-+	if (looplimit >= 10 && (val & AB8500_GPADC_STAT_BUSY)) {
-+		dev_err(gpadc->dev, "gpadc_conversion: GPADC busy");
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	/* Enable GPADC */
-+	ctrl1 = AB8500_GPADC_CTRL1_ENABLE;
-+
-+	/* Select the channel source and set average samples */
-+	switch (ch->avg_sample) {
-+	case 1:
-+		ctrl23 = ch->id | AB8500_GPADC_CTRL2_AVG_1;
-+		break;
-+	case 4:
-+		ctrl23 = ch->id | AB8500_GPADC_CTRL2_AVG_4;
-+		break;
-+	case 8:
-+		ctrl23 = ch->id | AB8500_GPADC_CTRL2_AVG_8;
-+		break;
-+	default:
-+		ctrl23 = ch->id | AB8500_GPADC_CTRL2_AVG_16;
-+		break;
-+	}
-+
-+	if (ch->hardware_control) {
-+		ret = abx500_set_register_interruptible(gpadc->dev,
-+				AB8500_GPADC, AB8500_GPADC_CTRL3_REG, ctrl23);
-+		ctrl1 |= AB8500_GPADC_CTRL1_TRIG_ENA;
-+		if (ch->falling_edge)
-+			ctrl1 |= AB8500_GPADC_CTRL1_TRIG_EDGE;
-+	} else {
-+		ret = abx500_set_register_interruptible(gpadc->dev,
-+				AB8500_GPADC, AB8500_GPADC_CTRL2_REG, ctrl23);
-+	}
-+	if (ret < 0) {
-+		dev_err(gpadc->dev,
-+			"gpadc_conversion: set avg samples failed\n");
-+		goto out;
-+	}
-+
-+	/*
-+	 * Enable ADC, buffering, select rising edge and enable ADC path
-+	 * charging current sense if it needed, ABB 3.0 needs some special
-+	 * treatment too.
-+	 */
-+	switch (ch->id) {
-+	case AB8500_GPADC_CHAN_MAIN_CHARGER_CURRENT:
-+	case AB8500_GPADC_CHAN_USB_CHARGER_CURRENT:
-+		ctrl1 |= AB8500_GPADC_CTRL1_BUF_ENA |
-+			AB8500_GPADC_CTRL1_ICHAR_ENA;
-+		break;
-+	case AB8500_GPADC_CHAN_BAT_TEMP:
-+		if (!is_ab8500_2p0_or_earlier(gpadc->ab8500)) {
-+			ctrl1 |= AB8500_GPADC_CTRL1_BUF_ENA |
-+				AB8500_GPADC_CTRL1_BTEMP_PULL_UP;
-+			/*
-+			 * Delay might be needed for ABB8500 cut 3.0, if not,
-+			 * remove when hardware will be available
-+			 */
-+			delay_min = 1000; /* Delay in micro seconds */
-+			delay_max = 10000; /* large range optimises sleepmode */
-+			break;
-+		}
-+		/* Fall through */
-+	default:
-+		ctrl1 |= AB8500_GPADC_CTRL1_BUF_ENA;
-+		break;
-+	}
-+
-+	/* Write configuration to control register 1 */
-+	ret = abx500_set_register_interruptible(gpadc->dev,
-+		AB8500_GPADC, AB8500_GPADC_CTRL1_REG, ctrl1);
-+	if (ret < 0) {
-+		dev_err(gpadc->dev,
-+			"gpadc_conversion: set Control register failed\n");
-+		goto out;
-+	}
-+
-+	if (delay_min != 0)
-+		usleep_range(delay_min, delay_max);
-+
-+	if (ch->hardware_control) {
-+		/* Set trigger delay timer */
-+		ret = abx500_set_register_interruptible(gpadc->dev,
-+			AB8500_GPADC, AB8500_GPADC_AUTO_TIMER_REG,
-+			ch->trig_timer);
-+		if (ret < 0) {
-+			dev_err(gpadc->dev,
-+				"gpadc_conversion: trig timer failed\n");
-+			goto out;
-+		}
-+		completion_timeout = 2 * HZ;
-+		data_low_addr = AB8500_GPADC_AUTODATAL_REG;
-+		data_high_addr = AB8500_GPADC_AUTODATAH_REG;
-+	} else {
-+		/* Start SW conversion */
-+		ret = abx500_mask_and_set_register_interruptible(gpadc->dev,
-+			AB8500_GPADC, AB8500_GPADC_CTRL1_REG,
-+			AB8500_GPADC_CTRL1_START_SW_CONV,
-+			AB8500_GPADC_CTRL1_START_SW_CONV);
-+		if (ret < 0) {
-+			dev_err(gpadc->dev,
-+				"gpadc_conversion: start s/w conv failed\n");
-+			goto out;
-+		}
-+		completion_timeout = msecs_to_jiffies(AB8500_GPADC_CONVERSION_TIME);
-+		data_low_addr = AB8500_GPADC_MANDATAL_REG;
-+		data_high_addr = AB8500_GPADC_MANDATAH_REG;
-+	}
-+
-+	/* Wait for completion of conversion */
-+	if (!wait_for_completion_timeout(&gpadc->complete,
-+			completion_timeout)) {
-+		dev_err(gpadc->dev,
-+			"timeout didn't receive GPADC conv interrupt\n");
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	/* Read the converted RAW data */
-+	ret = abx500_get_register_interruptible(gpadc->dev,
-+			AB8500_GPADC, data_low_addr, &low_data);
-+	if (ret < 0) {
-+		dev_err(gpadc->dev,
-+			"gpadc_conversion: read low data failed\n");
-+		goto out;
-+	}
-+
-+	ret = abx500_get_register_interruptible(gpadc->dev,
-+		AB8500_GPADC, data_high_addr, &high_data);
-+	if (ret < 0) {
-+		dev_err(gpadc->dev,
-+			"gpadc_conversion: read high data failed\n");
-+		goto out;
-+	}
-+
-+	/* Check if double conversion is required */
-+	if ((ch->id == AB8500_GPADC_CHAN_BAT_CTRL_AND_IBAT) ||
-+	    (ch->id == AB8500_GPADC_CHAN_VBAT_MEAS_AND_IBAT) ||
-+	    (ch->id == AB8500_GPADC_CHAN_VBAT_TRUE_MEAS_AND_IBAT) ||
-+	    (ch->id == AB8500_GPADC_CHAN_BAT_TEMP_AND_IBAT)) {
-+
-+		if (ch->hardware_control) {
-+			/* not supported */
-+			ret = -ENOTSUPP;
-+			dev_err(gpadc->dev,
-+				"gpadc_conversion: only SW double conversion supported\n");
-+			goto out;
-+		} else {
-+			/* Read the converted RAW data 2 */
-+			ret = abx500_get_register_interruptible(gpadc->dev,
-+				AB8500_GPADC, AB8540_GPADC_MANDATA2L_REG,
-+				&low_data2);
-+			if (ret < 0) {
-+				dev_err(gpadc->dev,
-+					"gpadc_conversion: read sw low data 2 failed\n");
-+				goto out;
-+			}
-+
-+			ret = abx500_get_register_interruptible(gpadc->dev,
-+				AB8500_GPADC, AB8540_GPADC_MANDATA2H_REG,
-+				&high_data2);
-+			if (ret < 0) {
-+				dev_err(gpadc->dev,
-+					"gpadc_conversion: read sw high data 2 failed\n");
-+				goto out;
-+			}
-+			if (ibat != NULL) {
-+				*ibat = (high_data2 << 8) | low_data2;
-+			} else {
-+				dev_warn(gpadc->dev,
-+					"gpadc_conversion: ibat not stored\n");
-+			}
-+
-+		}
-+	}
-+
-+	/* Disable GPADC */
-+	ret = abx500_set_register_interruptible(gpadc->dev, AB8500_GPADC,
-+		AB8500_GPADC_CTRL1_REG, AB8500_GPADC_CTRL1_DISABLE);
-+	if (ret < 0) {
-+		dev_err(gpadc->dev, "gpadc_conversion: disable gpadc failed\n");
-+		goto out;
-+	}
-+
-+	/* This eventually drops the regulator */
-+	pm_runtime_mark_last_busy(gpadc->dev);
-+	pm_runtime_put_autosuspend(gpadc->dev);
-+
-+	return (high_data << 8) | low_data;
-+
-+out:
-+	/*
-+	 * It has shown to be needed to turn off the GPADC if an error occurs,
-+	 * otherwise we might have problem when waiting for the busy bit in the
-+	 * GPADC status register to go low. In V1.1 there wait_for_completion
-+	 * seems to timeout when waiting for an interrupt.. Not seen in V2.0
-+	 */
-+	(void) abx500_set_register_interruptible(gpadc->dev, AB8500_GPADC,
-+		AB8500_GPADC_CTRL1_REG, AB8500_GPADC_CTRL1_DISABLE);
-+	pm_runtime_put(gpadc->dev);
-+	dev_err(gpadc->dev,
-+		"gpadc_conversion: Failed to AD convert channel %d\n", ch->id);
-+
-+	return ret;
-+}
-+
-+/**
-+ * ab8500_bm_gpadcconvend_handler() - isr for gpadc conversion completion
-+ * @irq: irq number
-+ * @data: pointer to the data passed during request irq
-+ *
-+ * This is a interrupt service routine for gpadc conversion completion.
-+ * Notifies the gpadc completion is completed and the converted raw value
-+ * can be read from the registers.
-+ * Returns IRQ status(IRQ_HANDLED)
-+ */
-+static irqreturn_t ab8500_bm_gpadcconvend_handler(int irq, void *data)
-+{
-+	struct ab8500_gpadc *gpadc = data;
-+
-+	complete(&gpadc->complete);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int otp_cal_regs[] = {
-+	AB8500_GPADC_CAL_1,
-+	AB8500_GPADC_CAL_2,
-+	AB8500_GPADC_CAL_3,
-+	AB8500_GPADC_CAL_4,
-+	AB8500_GPADC_CAL_5,
-+	AB8500_GPADC_CAL_6,
-+	AB8500_GPADC_CAL_7,
-+};
-+
-+static int otp4_cal_regs[] = {
-+	AB8540_GPADC_OTP4_REG_7,
-+	AB8540_GPADC_OTP4_REG_6,
-+	AB8540_GPADC_OTP4_REG_5,
-+};
-+
-+static void ab8500_gpadc_read_calibration_data(struct ab8500_gpadc *gpadc)
-+{
-+	int i;
-+	int ret[ARRAY_SIZE(otp_cal_regs)];
-+	u8 gpadc_cal[ARRAY_SIZE(otp_cal_regs)];
-+	int ret_otp4[ARRAY_SIZE(otp4_cal_regs)];
-+	u8 gpadc_otp4[ARRAY_SIZE(otp4_cal_regs)];
-+	int vmain_high, vmain_low;
-+	int btemp_high, btemp_low;
-+	int vbat_high, vbat_low;
-+	int ibat_high, ibat_low;
-+	s64 V_gain, V_offset, V2A_gain, V2A_offset;
-+
-+	/* First we read all OTP registers and store the error code */
-+	for (i = 0; i < ARRAY_SIZE(otp_cal_regs); i++) {
-+		ret[i] = abx500_get_register_interruptible(gpadc->dev,
-+			AB8500_OTP_EMUL, otp_cal_regs[i],  &gpadc_cal[i]);
-+		if (ret[i] < 0) {
-+			/* Continue anyway: maybe the other registers are OK */
-+			dev_err(gpadc->dev, "%s: read otp reg 0x%02x failed\n",
-+				__func__, otp_cal_regs[i]);
-+		} else {
-+			/* Put this in the entropy pool as device-unique */
-+			add_device_randomness(&ret[i], sizeof(ret[i]));
-+		}
-+	}
-+
-+	/*
-+	 * The ADC calibration data is stored in OTP registers.
-+	 * The layout of the calibration data is outlined below and a more
-+	 * detailed description can be found in UM0836
-+	 *
-+	 * vm_h/l = vmain_high/low
-+	 * bt_h/l = btemp_high/low
-+	 * vb_h/l = vbat_high/low
-+	 *
-+	 * Data bits 8500/9540:
-+	 * | 7	   | 6	   | 5	   | 4	   | 3	   | 2	   | 1	   | 0
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * |						   | vm_h9 | vm_h8
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * |		   | vm_h7 | vm_h6 | vm_h5 | vm_h4 | vm_h3 | vm_h2
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | vm_h1 | vm_h0 | vm_l4 | vm_l3 | vm_l2 | vm_l1 | vm_l0 | bt_h9
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | bt_h8 | bt_h7 | bt_h6 | bt_h5 | bt_h4 | bt_h3 | bt_h2 | bt_h1
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | bt_h0 | bt_l4 | bt_l3 | bt_l2 | bt_l1 | bt_l0 | vb_h9 | vb_h8
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | vb_h7 | vb_h6 | vb_h5 | vb_h4 | vb_h3 | vb_h2 | vb_h1 | vb_h0
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | vb_l5 | vb_l4 | vb_l3 | vb_l2 | vb_l1 | vb_l0 |
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 *
-+	 * Data bits 8540:
-+	 * OTP2
-+	 * | 7	   | 6	   | 5	   | 4	   | 3	   | 2	   | 1	   | 0
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * |
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | vm_h9 | vm_h8 | vm_h7 | vm_h6 | vm_h5 | vm_h4 | vm_h3 | vm_h2
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | vm_h1 | vm_h0 | vm_l4 | vm_l3 | vm_l2 | vm_l1 | vm_l0 | bt_h9
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | bt_h8 | bt_h7 | bt_h6 | bt_h5 | bt_h4 | bt_h3 | bt_h2 | bt_h1
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | bt_h0 | bt_l4 | bt_l3 | bt_l2 | bt_l1 | bt_l0 | vb_h9 | vb_h8
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | vb_h7 | vb_h6 | vb_h5 | vb_h4 | vb_h3 | vb_h2 | vb_h1 | vb_h0
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | vb_l5 | vb_l4 | vb_l3 | vb_l2 | vb_l1 | vb_l0 |
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 *
-+	 * Data bits 8540:
-+	 * OTP4
-+	 * | 7	   | 6	   | 5	   | 4	   | 3	   | 2	   | 1	   | 0
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * |					   | ib_h9 | ib_h8 | ib_h7
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | ib_h6 | ib_h5 | ib_h4 | ib_h3 | ib_h2 | ib_h1 | ib_h0 | ib_l5
-+	 * |.......|.......|.......|.......|.......|.......|.......|.......
-+	 * | ib_l4 | ib_l3 | ib_l2 | ib_l1 | ib_l0 |
-+	 *
-+	 *
-+	 * Ideal output ADC codes corresponding to injected input voltages
-+	 * during manufacturing is:
-+	 *
-+	 * vmain_high: Vin = 19500mV / ADC ideal code = 997
-+	 * vmain_low:  Vin = 315mV   / ADC ideal code = 16
-+	 * btemp_high: Vin = 1300mV  / ADC ideal code = 985
-+	 * btemp_low:  Vin = 21mV    / ADC ideal code = 16
-+	 * vbat_high:  Vin = 4700mV  / ADC ideal code = 982
-+	 * vbat_low:   Vin = 2380mV  / ADC ideal code = 33
-+	 */
-+
-+	if (is_ab8540(gpadc->ab8500)) {
-+		/* Calculate gain and offset for VMAIN if all reads succeeded*/
-+		if (!(ret[1] < 0 || ret[2] < 0)) {
-+			vmain_high = (((gpadc_cal[1] & 0xFF) << 2) |
-+				((gpadc_cal[2] & 0xC0) >> 6));
-+			vmain_low = ((gpadc_cal[2] & 0x3E) >> 1);
-+
-+			gpadc->cal_data[AB8500_CAL_VMAIN].otp_calib_hi =
-+				(u16)vmain_high;
-+			gpadc->cal_data[AB8500_CAL_VMAIN].otp_calib_lo =
-+				(u16)vmain_low;
-+
-+			gpadc->cal_data[AB8500_CAL_VMAIN].gain = AB8500_GPADC_CALIB_SCALE *
-+				(19500 - 315) / (vmain_high - vmain_low);
-+			gpadc->cal_data[AB8500_CAL_VMAIN].offset = AB8500_GPADC_CALIB_SCALE *
-+				19500 - (AB8500_GPADC_CALIB_SCALE * (19500 - 315) /
-+				(vmain_high - vmain_low)) * vmain_high;
-+		} else {
-+			gpadc->cal_data[AB8500_CAL_VMAIN].gain = 0;
-+		}
-+
-+		/* Read IBAT calibration Data */
-+		for (i = 0; i < ARRAY_SIZE(otp4_cal_regs); i++) {
-+			ret_otp4[i] = abx500_get_register_interruptible(
-+					gpadc->dev, AB8500_OTP_EMUL,
-+					otp4_cal_regs[i],  &gpadc_otp4[i]);
-+			if (ret_otp4[i] < 0)
-+				dev_err(gpadc->dev,
-+					"%s: read otp4 reg 0x%02x failed\n",
-+					__func__, otp4_cal_regs[i]);
-+		}
-+
-+		/* Calculate gain and offset for IBAT if all reads succeeded */
-+		if (!(ret_otp4[0] < 0 || ret_otp4[1] < 0 || ret_otp4[2] < 0)) {
-+			ibat_high = (((gpadc_otp4[0] & 0x07) << 7) |
-+				((gpadc_otp4[1] & 0xFE) >> 1));
-+			ibat_low = (((gpadc_otp4[1] & 0x01) << 5) |
-+				((gpadc_otp4[2] & 0xF8) >> 3));
-+
-+			gpadc->cal_data[AB8500_CAL_IBAT].otp_calib_hi =
-+				(u16)ibat_high;
-+			gpadc->cal_data[AB8500_CAL_IBAT].otp_calib_lo =
-+				(u16)ibat_low;
-+
-+			V_gain = ((AB8500_GPADC_IBAT_VDROP_H - AB8500_GPADC_IBAT_VDROP_L)
-+				<< AB8500_GPADC_CALIB_SHIFT_IBAT) / (ibat_high - ibat_low);
-+
-+			V_offset = (AB8500_GPADC_IBAT_VDROP_H << AB8500_GPADC_CALIB_SHIFT_IBAT) -
-+				(((AB8500_GPADC_IBAT_VDROP_H - AB8500_GPADC_IBAT_VDROP_L) <<
-+				AB8500_GPADC_CALIB_SHIFT_IBAT) / (ibat_high - ibat_low))
-+				* ibat_high;
-+			/*
-+			 * Result obtained is in mV (at a scale factor),
-+			 * we need to calculate gain and offset to get mA
-+			 */
-+			V2A_gain = (AB8500_ADC_CH_IBAT_MAX - AB8500_ADC_CH_IBAT_MIN)/
-+				(AB8500_ADC_CH_IBAT_MAX_V - AB8500_ADC_CH_IBAT_MIN_V);
-+			V2A_offset = ((AB8500_ADC_CH_IBAT_MAX_V * AB8500_ADC_CH_IBAT_MIN -
-+				AB8500_ADC_CH_IBAT_MAX * AB8500_ADC_CH_IBAT_MIN_V)
-+				<< AB8500_GPADC_CALIB_SHIFT_IBAT)
-+				/ (AB8500_ADC_CH_IBAT_MAX_V - AB8500_ADC_CH_IBAT_MIN_V);
-+
-+			gpadc->cal_data[AB8500_CAL_IBAT].gain =
-+				V_gain * V2A_gain;
-+			gpadc->cal_data[AB8500_CAL_IBAT].offset =
-+				V_offset * V2A_gain + V2A_offset;
-+		} else {
-+			gpadc->cal_data[AB8500_CAL_IBAT].gain = 0;
-+		}
-+	} else {
-+		/* Calculate gain and offset for VMAIN if all reads succeeded */
-+		if (!(ret[0] < 0 || ret[1] < 0 || ret[2] < 0)) {
-+			vmain_high = (((gpadc_cal[0] & 0x03) << 8) |
-+				((gpadc_cal[1] & 0x3F) << 2) |
-+				((gpadc_cal[2] & 0xC0) >> 6));
-+			vmain_low = ((gpadc_cal[2] & 0x3E) >> 1);
-+
-+			gpadc->cal_data[AB8500_CAL_VMAIN].otp_calib_hi =
-+				(u16)vmain_high;
-+			gpadc->cal_data[AB8500_CAL_VMAIN].otp_calib_lo =
-+				(u16)vmain_low;
-+
-+			gpadc->cal_data[AB8500_CAL_VMAIN].gain = AB8500_GPADC_CALIB_SCALE *
-+				(19500 - 315) / (vmain_high - vmain_low);
-+
-+			gpadc->cal_data[AB8500_CAL_VMAIN].offset = AB8500_GPADC_CALIB_SCALE *
-+				19500 - (AB8500_GPADC_CALIB_SCALE * (19500 - 315) /
-+				(vmain_high - vmain_low)) * vmain_high;
-+		} else {
-+			gpadc->cal_data[AB8500_CAL_VMAIN].gain = 0;
-+		}
-+	}
-+
-+	/* Calculate gain and offset for BTEMP if all reads succeeded */
-+	if (!(ret[2] < 0 || ret[3] < 0 || ret[4] < 0)) {
-+		btemp_high = (((gpadc_cal[2] & 0x01) << 9) |
-+			(gpadc_cal[3] << 1) | ((gpadc_cal[4] & 0x80) >> 7));
-+		btemp_low = ((gpadc_cal[4] & 0x7C) >> 2);
-+
-+		gpadc->cal_data[AB8500_CAL_BTEMP].otp_calib_hi = (u16)btemp_high;
-+		gpadc->cal_data[AB8500_CAL_BTEMP].otp_calib_lo = (u16)btemp_low;
-+
-+		gpadc->cal_data[AB8500_CAL_BTEMP].gain =
-+			AB8500_GPADC_CALIB_SCALE * (1300 - 21) / (btemp_high - btemp_low);
-+		gpadc->cal_data[AB8500_CAL_BTEMP].offset = AB8500_GPADC_CALIB_SCALE * 1300 -
-+			(AB8500_GPADC_CALIB_SCALE * (1300 - 21) / (btemp_high - btemp_low))
-+			* btemp_high;
-+	} else {
-+		gpadc->cal_data[AB8500_CAL_BTEMP].gain = 0;
-+	}
-+
-+	/* Calculate gain and offset for VBAT if all reads succeeded */
-+	if (!(ret[4] < 0 || ret[5] < 0 || ret[6] < 0)) {
-+		vbat_high = (((gpadc_cal[4] & 0x03) << 8) | gpadc_cal[5]);
-+		vbat_low = ((gpadc_cal[6] & 0xFC) >> 2);
-+
-+		gpadc->cal_data[AB8500_CAL_VBAT].otp_calib_hi = (u16)vbat_high;
-+		gpadc->cal_data[AB8500_CAL_VBAT].otp_calib_lo = (u16)vbat_low;
-+
-+		gpadc->cal_data[AB8500_CAL_VBAT].gain = AB8500_GPADC_CALIB_SCALE *
-+			(4700 - 2380) /	(vbat_high - vbat_low);
-+		gpadc->cal_data[AB8500_CAL_VBAT].offset = AB8500_GPADC_CALIB_SCALE * 4700 -
-+			(AB8500_GPADC_CALIB_SCALE * (4700 - 2380) /
-+			(vbat_high - vbat_low)) * vbat_high;
-+	} else {
-+		gpadc->cal_data[AB8500_CAL_VBAT].gain = 0;
-+	}
-+}
-+
-+static int ab8500_gpadc_read_raw(struct iio_dev *indio_dev,
-+				 struct iio_chan_spec const *chan,
-+				 int *val, int *val2, long mask)
-+{
-+	struct ab8500_gpadc *gpadc = iio_priv(indio_dev);
-+	const struct ab8500_gpadc_chan_info *ch;
-+	int raw_val;
-+	int processed;
-+
-+	ch = ab8500_gpadc_get_channel(gpadc, chan->address);
-+	if (!ch) {
-+		dev_err(gpadc->dev, "no such channel %lu\n",
-+			chan->address);
-+		return -EINVAL;
-+	}
-+
-+	raw_val = ab8500_gpadc_read(gpadc, ch, NULL);
-+	if (raw_val < 0)
-+		return raw_val;
-+
-+	if (mask == IIO_CHAN_INFO_RAW) {
-+		*val = raw_val;
-+		return IIO_VAL_INT;
-+	}
-+
-+	if (mask == IIO_CHAN_INFO_PROCESSED) {
-+		processed = ab8500_gpadc_ad_to_voltage(gpadc, ch->id, raw_val);
-+		if (processed < 0)
-+			return processed;
-+
-+		/* Return millivolt or milliamps or millicentigrades */
-+		*val = processed * 1000;
-+		return IIO_VAL_INT;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int ab8500_gpadc_of_xlate(struct iio_dev *indio_dev,
-+				 const struct of_phandle_args *iiospec)
-+{
-+	int i;
-+
-+	for (i = 0; i < indio_dev->num_channels; i++)
-+		if (indio_dev->channels[i].channel == iiospec->args[0])
-+			return i;
-+
-+	return -EINVAL;
-+}
-+
-+static const struct iio_info ab8500_gpadc_info = {
-+	.of_xlate = ab8500_gpadc_of_xlate,
-+	.read_raw = ab8500_gpadc_read_raw,
-+};
-+
-+#ifdef CONFIG_PM
-+static int ab8500_gpadc_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct ab8500_gpadc *gpadc = iio_priv(indio_dev);
-+
-+	regulator_disable(gpadc->vddadc);
-+
-+	return 0;
-+}
-+
-+static int ab8500_gpadc_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct ab8500_gpadc *gpadc = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regulator_enable(gpadc->vddadc);
-+	if (ret)
-+		dev_err(dev, "Failed to enable vddadc: %d\n", ret);
-+
-+	return ret;
-+}
-+#endif
-+
-+/**
-+ * ab8500_gpadc_parse_channel() - process devicetree channel configuration
-+ * @dev: pointer to containing device
-+ * @np: device tree node for the channel to configure
-+ * @ch: channel info to fill in
-+ * @iio_chan: IIO channel specification to fill in
-+ *
-+ * The devicetree will set up the channel for use with the specific device,
-+ * and define usage for things like AUX GPADC inputs more precisely.
-+ */
-+static int ab8500_gpadc_parse_channel(struct device *dev,
-+				      struct device_node *np,
-+				      struct ab8500_gpadc_chan_info *ch,
-+				      struct iio_chan_spec *iio_chan)
-+{
-+	const char *name = np->name;
-+	u32 chan;
-+	int ret;
-+
-+	ret = of_property_read_u32(np, "reg", &chan);
-+	if (ret) {
-+		dev_err(dev, "invalid channel number %s\n", name);
-+		return ret;
-+	}
-+	if (chan > AB8500_GPADC_CHAN_BAT_TEMP_AND_IBAT) {
-+		dev_err(dev, "%s channel number out of range %d\n", name, chan);
-+		return -EINVAL;
-+	}
-+
-+	iio_chan->channel = chan;
-+	iio_chan->datasheet_name = name;
-+	iio_chan->indexed = 1;
-+	iio_chan->address = chan;
-+	iio_chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+		BIT(IIO_CHAN_INFO_PROCESSED);
-+	/* Most are voltages (also temperatures), some are currents */
-+	if ((chan == AB8500_GPADC_CHAN_MAIN_CHARGER_CURRENT) ||
-+	    (chan == AB8500_GPADC_CHAN_USB_CHARGER_CURRENT))
-+		iio_chan->type = IIO_CURRENT;
-+	else
-+		iio_chan->type = IIO_VOLTAGE;
-+
-+	ch->id = chan;
-+
-+	/* Sensible defaults */
-+	ch->avg_sample = 16;
-+	ch->hardware_control = false;
-+	ch->falling_edge = false;
-+	ch->trig_timer = 0;
-+
-+	return 0;
-+}
-+
-+/**
-+ * ab8500_gpadc_parse_channels() - Parse the GPADC channels from DT
-+ * @gpadc: the GPADC to configure the channels for
-+ * @np: device tree node containing the channel configurations
-+ * @chans: the IIO channels we parsed
-+ * @nchans: the number of IIO channels we parsed
-+ */
-+static int ab8500_gpadc_parse_channels(struct ab8500_gpadc *gpadc,
-+				       struct device_node *np,
-+				       struct iio_chan_spec **chans_parsed,
-+				       unsigned int *nchans_parsed)
-+{
-+	struct device_node *child;
-+	struct ab8500_gpadc_chan_info *ch;
-+	struct iio_chan_spec *iio_chans;
-+	unsigned int nchans;
-+	int i;
-+
-+	nchans = of_get_available_child_count(np);
-+	if (!nchans) {
-+		dev_err(gpadc->dev, "no channel children\n");
-+		return -ENODEV;
-+	}
-+	dev_info(gpadc->dev, "found %d ADC channels\n", nchans);
-+
-+	iio_chans = devm_kcalloc(gpadc->dev, nchans,
-+				 sizeof(*iio_chans), GFP_KERNEL);
-+	if (!iio_chans)
-+		return -ENOMEM;
-+
-+	gpadc->chans = devm_kcalloc(gpadc->dev, nchans,
-+				    sizeof(*gpadc->chans), GFP_KERNEL);
-+	if (!gpadc->chans)
-+		return -ENOMEM;
-+
-+	i = 0;
-+	for_each_available_child_of_node(np, child) {
-+		struct iio_chan_spec *iio_chan;
-+		int ret;
-+
-+		ch = &gpadc->chans[i];
-+		iio_chan = &iio_chans[i];
-+
-+		ret = ab8500_gpadc_parse_channel(gpadc->dev, child, ch,
-+						 iio_chan);
-+		if (ret) {
-+			of_node_put(child);
-+			return ret;
-+		}
-+		i++;
-+	}
-+	gpadc->nchans = nchans;
-+	*chans_parsed = iio_chans;
-+	*nchans_parsed = nchans;
-+
-+	return 0;
-+}
-+
-+static int ab8500_gpadc_probe(struct platform_device *pdev)
-+{
-+	struct ab8500_gpadc *gpadc;
-+	struct iio_dev *indio_dev;
-+	struct device *dev = &pdev->dev;
-+	struct device_node *np = pdev->dev.of_node;
-+	struct iio_chan_spec *iio_chans;
-+	unsigned int n_iio_chans;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*gpadc));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, indio_dev);
-+	gpadc = iio_priv(indio_dev);
-+
-+	gpadc->dev = dev;
-+	gpadc->ab8500 = dev_get_drvdata(dev->parent);
-+
-+	ret = ab8500_gpadc_parse_channels(gpadc, np, &iio_chans, &n_iio_chans);
-+	if (ret)
-+		return ret;
-+
-+	gpadc->irq_sw = platform_get_irq_byname(pdev, "SW_CONV_END");
-+	if (gpadc->irq_sw < 0) {
-+		dev_err(dev, "failed to get platform sw_conv_end irq\n");
-+		return gpadc->irq_sw;
-+	}
-+
-+	gpadc->irq_hw = platform_get_irq_byname(pdev, "HW_CONV_END");
-+	if (gpadc->irq_hw < 0) {
-+		dev_err(dev, "failed to get platform hw_conv_end irq\n");
-+		return gpadc->irq_hw;
-+	}
-+
-+	/* Initialize completion used to notify completion of conversion */
-+	init_completion(&gpadc->complete);
-+
-+	/* Request interrupts */
-+	ret = devm_request_threaded_irq(dev, gpadc->irq_sw, NULL,
-+		ab8500_bm_gpadcconvend_handler,	IRQF_NO_SUSPEND | IRQF_ONESHOT,
-+		"ab8500-gpadc-sw", gpadc);
-+	if (ret < 0) {
-+		dev_err(dev,
-+			"failed to request sw conversion irq %d\n",
-+			gpadc->irq_sw);
-+		return ret;
-+	}
-+
-+	ret = devm_request_threaded_irq(dev, gpadc->irq_hw, NULL,
-+		ab8500_bm_gpadcconvend_handler,	IRQF_NO_SUSPEND | IRQF_ONESHOT,
-+		"ab8500-gpadc-hw", gpadc);
-+	if (ret < 0) {
-+		dev_err(dev,
-+			"Failed to request hw conversion irq: %d\n",
-+			gpadc->irq_hw);
-+		return ret;
-+	}
-+
-+	/* The VTVout LDO used to power the AB8500 GPADC */
-+	gpadc->vddadc = devm_regulator_get(dev, "vddadc");
-+	if (IS_ERR(gpadc->vddadc)) {
-+		ret = PTR_ERR(gpadc->vddadc);
-+		dev_err(dev, "failed to get vddadc\n");
-+		return ret;
-+	}
-+
-+	ret = regulator_enable(gpadc->vddadc);
-+	if (ret) {
-+		dev_err(dev, "failed to enable vddadc: %d\n", ret);
-+		return ret;
-+	}
-+
-+	/* Enable runtime PM */
-+	pm_runtime_get_noresume(dev);
-+	pm_runtime_set_active(dev);
-+	pm_runtime_enable(dev);
-+	pm_runtime_set_autosuspend_delay(dev, AB8500_GPADC_AUTOSUSPEND_DELAY);
-+	pm_runtime_use_autosuspend(dev);
-+
-+	ab8500_gpadc_read_calibration_data(gpadc);
-+
-+	pm_runtime_put(dev);
-+
-+	indio_dev->dev.parent = dev;
-+	indio_dev->dev.of_node = np;
-+	indio_dev->name = "ab8500-gpadc";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &ab8500_gpadc_info;
-+	indio_dev->channels = iio_chans;
-+	indio_dev->num_channels = n_iio_chans;
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret)
-+		goto out_dis_pm;
-+
-+	return 0;
-+
-+out_dis_pm:
-+	pm_runtime_get_sync(dev);
-+	pm_runtime_put_noidle(dev);
-+	pm_runtime_disable(dev);
-+	regulator_disable(gpadc->vddadc);
-+
-+	return ret;
-+}
-+
-+static int ab8500_gpadc_remove(struct platform_device *pdev)
-+{
-+	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-+	struct ab8500_gpadc *gpadc = iio_priv(indio_dev);
-+
-+	pm_runtime_get_sync(gpadc->dev);
-+	pm_runtime_put_noidle(gpadc->dev);
-+	pm_runtime_disable(gpadc->dev);
-+	regulator_disable(gpadc->vddadc);
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops ab8500_gpadc_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-+				pm_runtime_force_resume)
-+	SET_RUNTIME_PM_OPS(ab8500_gpadc_runtime_suspend,
-+			   ab8500_gpadc_runtime_resume,
-+			   NULL)
-+};
-+
-+static struct platform_driver ab8500_gpadc_driver = {
-+	.probe = ab8500_gpadc_probe,
-+	.remove = ab8500_gpadc_remove,
-+	.driver = {
-+		.name = "ab8500-gpadc",
-+		.pm = &ab8500_gpadc_pm_ops,
-+	},
-+};
-+builtin_platform_driver(ab8500_gpadc_driver);
+ #ifdef CONFIG_DEBUG_FS
+ #include <linux/string.h>
+@@ -103,11 +102,6 @@ static int num_irqs;
+ static struct device_attribute **dev_attr;
+ static char **event_name;
+ 
+-static u8 avg_sample = SAMPLE_16;
+-static u8 trig_edge = RISING_EDGE;
+-static u8 conv_type = ADC_SW;
+-static u8 trig_timer;
+-
+ /**
+  * struct ab8500_reg_range
+  * @first: the first address of the range
+@@ -152,7 +146,6 @@ static struct hwreg_cfg hwreg_cfg = {
+ };
+ 
+ #define AB8500_NAME_STRING "ab8500"
+-#define AB8500_ADC_NAME_STRING "gpadc"
+ #define AB8500_NUM_BANKS AB8500_DEBUG_FIELD_LAST
+ 
+ #define AB8500_REV_REG 0x80
+@@ -1646,633 +1639,6 @@ static int ab8500_modem_show(struct seq_file *s, void *p)
+ 
+ DEFINE_SHOW_ATTRIBUTE(ab8500_modem);
+ 
+-static int ab8500_gpadc_bat_ctrl_show(struct seq_file *s, void *p)
+-{
+-	int bat_ctrl_raw;
+-	int bat_ctrl_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	bat_ctrl_raw = ab8500_gpadc_read_raw(gpadc, BAT_CTRL,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	bat_ctrl_convert = ab8500_gpadc_ad_to_voltage(gpadc,
+-		BAT_CTRL, bat_ctrl_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", bat_ctrl_convert, bat_ctrl_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_bat_ctrl);
+-
+-static int ab8500_gpadc_btemp_ball_show(struct seq_file *s, void *p)
+-{
+-	int btemp_ball_raw;
+-	int btemp_ball_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	btemp_ball_raw = ab8500_gpadc_read_raw(gpadc, BTEMP_BALL,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	btemp_ball_convert = ab8500_gpadc_ad_to_voltage(gpadc, BTEMP_BALL,
+-		btemp_ball_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", btemp_ball_convert, btemp_ball_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_btemp_ball);
+-
+-static int ab8500_gpadc_main_charger_v_show(struct seq_file *s, void *p)
+-{
+-	int main_charger_v_raw;
+-	int main_charger_v_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	main_charger_v_raw = ab8500_gpadc_read_raw(gpadc, MAIN_CHARGER_V,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	main_charger_v_convert = ab8500_gpadc_ad_to_voltage(gpadc,
+-		MAIN_CHARGER_V, main_charger_v_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", main_charger_v_convert, main_charger_v_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_main_charger_v);
+-
+-static int ab8500_gpadc_acc_detect1_show(struct seq_file *s, void *p)
+-{
+-	int acc_detect1_raw;
+-	int acc_detect1_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	acc_detect1_raw = ab8500_gpadc_read_raw(gpadc, ACC_DETECT1,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	acc_detect1_convert = ab8500_gpadc_ad_to_voltage(gpadc, ACC_DETECT1,
+-		acc_detect1_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", acc_detect1_convert, acc_detect1_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_acc_detect1);
+-
+-static int ab8500_gpadc_acc_detect2_show(struct seq_file *s, void *p)
+-{
+-	int acc_detect2_raw;
+-	int acc_detect2_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	acc_detect2_raw = ab8500_gpadc_read_raw(gpadc, ACC_DETECT2,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	acc_detect2_convert = ab8500_gpadc_ad_to_voltage(gpadc,
+-		ACC_DETECT2, acc_detect2_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", acc_detect2_convert, acc_detect2_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_acc_detect2);
+-
+-static int ab8500_gpadc_aux1_show(struct seq_file *s, void *p)
+-{
+-	int aux1_raw;
+-	int aux1_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	aux1_raw = ab8500_gpadc_read_raw(gpadc, ADC_AUX1,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	aux1_convert = ab8500_gpadc_ad_to_voltage(gpadc, ADC_AUX1,
+-		aux1_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", aux1_convert, aux1_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_aux1);
+-
+-static int ab8500_gpadc_aux2_show(struct seq_file *s, void *p)
+-{
+-	int aux2_raw;
+-	int aux2_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	aux2_raw = ab8500_gpadc_read_raw(gpadc, ADC_AUX2,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	aux2_convert = ab8500_gpadc_ad_to_voltage(gpadc, ADC_AUX2,
+-		aux2_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", aux2_convert, aux2_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_aux2);
+-
+-static int ab8500_gpadc_main_bat_v_show(struct seq_file *s, void *p)
+-{
+-	int main_bat_v_raw;
+-	int main_bat_v_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	main_bat_v_raw = ab8500_gpadc_read_raw(gpadc, MAIN_BAT_V,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	main_bat_v_convert = ab8500_gpadc_ad_to_voltage(gpadc, MAIN_BAT_V,
+-		main_bat_v_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", main_bat_v_convert, main_bat_v_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_main_bat_v);
+-
+-static int ab8500_gpadc_vbus_v_show(struct seq_file *s, void *p)
+-{
+-	int vbus_v_raw;
+-	int vbus_v_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	vbus_v_raw =  ab8500_gpadc_read_raw(gpadc, VBUS_V,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	vbus_v_convert = ab8500_gpadc_ad_to_voltage(gpadc, VBUS_V,
+-		vbus_v_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", vbus_v_convert, vbus_v_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_vbus_v);
+-
+-static int ab8500_gpadc_main_charger_c_show(struct seq_file *s, void *p)
+-{
+-	int main_charger_c_raw;
+-	int main_charger_c_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	main_charger_c_raw = ab8500_gpadc_read_raw(gpadc, MAIN_CHARGER_C,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	main_charger_c_convert = ab8500_gpadc_ad_to_voltage(gpadc,
+-		MAIN_CHARGER_C, main_charger_c_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", main_charger_c_convert, main_charger_c_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_main_charger_c);
+-
+-static int ab8500_gpadc_usb_charger_c_show(struct seq_file *s, void *p)
+-{
+-	int usb_charger_c_raw;
+-	int usb_charger_c_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	usb_charger_c_raw = ab8500_gpadc_read_raw(gpadc, USB_CHARGER_C,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	usb_charger_c_convert = ab8500_gpadc_ad_to_voltage(gpadc,
+-		USB_CHARGER_C, usb_charger_c_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", usb_charger_c_convert, usb_charger_c_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_usb_charger_c);
+-
+-static int ab8500_gpadc_bk_bat_v_show(struct seq_file *s, void *p)
+-{
+-	int bk_bat_v_raw;
+-	int bk_bat_v_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	bk_bat_v_raw = ab8500_gpadc_read_raw(gpadc, BK_BAT_V,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	bk_bat_v_convert = ab8500_gpadc_ad_to_voltage(gpadc,
+-		BK_BAT_V, bk_bat_v_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", bk_bat_v_convert, bk_bat_v_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_bk_bat_v);
+-
+-static int ab8500_gpadc_die_temp_show(struct seq_file *s, void *p)
+-{
+-	int die_temp_raw;
+-	int die_temp_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	die_temp_raw = ab8500_gpadc_read_raw(gpadc, DIE_TEMP,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	die_temp_convert = ab8500_gpadc_ad_to_voltage(gpadc, DIE_TEMP,
+-		die_temp_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", die_temp_convert, die_temp_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_die_temp);
+-
+-static int ab8500_gpadc_usb_id_show(struct seq_file *s, void *p)
+-{
+-	int usb_id_raw;
+-	int usb_id_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	usb_id_raw = ab8500_gpadc_read_raw(gpadc, USB_ID,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	usb_id_convert = ab8500_gpadc_ad_to_voltage(gpadc, USB_ID,
+-		usb_id_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", usb_id_convert, usb_id_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8500_gpadc_usb_id);
+-
+-static int ab8540_gpadc_xtal_temp_show(struct seq_file *s, void *p)
+-{
+-	int xtal_temp_raw;
+-	int xtal_temp_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	xtal_temp_raw = ab8500_gpadc_read_raw(gpadc, XTAL_TEMP,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	xtal_temp_convert = ab8500_gpadc_ad_to_voltage(gpadc, XTAL_TEMP,
+-		xtal_temp_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", xtal_temp_convert, xtal_temp_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_xtal_temp);
+-
+-static int ab8540_gpadc_vbat_true_meas_show(struct seq_file *s, void *p)
+-{
+-	int vbat_true_meas_raw;
+-	int vbat_true_meas_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	vbat_true_meas_raw = ab8500_gpadc_read_raw(gpadc, VBAT_TRUE_MEAS,
+-		avg_sample, trig_edge, trig_timer, conv_type);
+-	vbat_true_meas_convert =
+-		ab8500_gpadc_ad_to_voltage(gpadc, VBAT_TRUE_MEAS,
+-					   vbat_true_meas_raw);
+-
+-	seq_printf(s, "%d,0x%X\n", vbat_true_meas_convert, vbat_true_meas_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_vbat_true_meas);
+-
+-static int ab8540_gpadc_bat_ctrl_and_ibat_show(struct seq_file *s, void *p)
+-{
+-	int bat_ctrl_raw;
+-	int bat_ctrl_convert;
+-	int ibat_raw;
+-	int ibat_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	bat_ctrl_raw = ab8500_gpadc_double_read_raw(gpadc, BAT_CTRL_AND_IBAT,
+-		avg_sample, trig_edge, trig_timer, conv_type, &ibat_raw);
+-
+-	bat_ctrl_convert = ab8500_gpadc_ad_to_voltage(gpadc, BAT_CTRL,
+-		bat_ctrl_raw);
+-	ibat_convert = ab8500_gpadc_ad_to_voltage(gpadc, IBAT_VIRTUAL_CHANNEL,
+-		ibat_raw);
+-
+-	seq_printf(s,
+-		   "%d,0x%X\n"
+-		   "%d,0x%X\n",
+-		   bat_ctrl_convert, bat_ctrl_raw,
+-		   ibat_convert, ibat_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_bat_ctrl_and_ibat);
+-
+-static int ab8540_gpadc_vbat_meas_and_ibat_show(struct seq_file *s, void *p)
+-{
+-	int vbat_meas_raw;
+-	int vbat_meas_convert;
+-	int ibat_raw;
+-	int ibat_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	vbat_meas_raw = ab8500_gpadc_double_read_raw(gpadc, VBAT_MEAS_AND_IBAT,
+-		avg_sample, trig_edge, trig_timer, conv_type, &ibat_raw);
+-	vbat_meas_convert = ab8500_gpadc_ad_to_voltage(gpadc, MAIN_BAT_V,
+-		vbat_meas_raw);
+-	ibat_convert = ab8500_gpadc_ad_to_voltage(gpadc, IBAT_VIRTUAL_CHANNEL,
+-		ibat_raw);
+-
+-	seq_printf(s,
+-		   "%d,0x%X\n"
+-		   "%d,0x%X\n",
+-		   vbat_meas_convert, vbat_meas_raw,
+-		   ibat_convert, ibat_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_vbat_meas_and_ibat);
+-
+-static int ab8540_gpadc_vbat_true_meas_and_ibat_show(struct seq_file *s, void *p)
+-{
+-	int vbat_true_meas_raw;
+-	int vbat_true_meas_convert;
+-	int ibat_raw;
+-	int ibat_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	vbat_true_meas_raw = ab8500_gpadc_double_read_raw(gpadc,
+-			VBAT_TRUE_MEAS_AND_IBAT, avg_sample, trig_edge,
+-			trig_timer, conv_type, &ibat_raw);
+-	vbat_true_meas_convert = ab8500_gpadc_ad_to_voltage(gpadc,
+-			VBAT_TRUE_MEAS, vbat_true_meas_raw);
+-	ibat_convert = ab8500_gpadc_ad_to_voltage(gpadc, IBAT_VIRTUAL_CHANNEL,
+-		ibat_raw);
+-
+-	seq_printf(s,
+-		   "%d,0x%X\n"
+-		   "%d,0x%X\n",
+-		   vbat_true_meas_convert, vbat_true_meas_raw,
+-		   ibat_convert, ibat_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_vbat_true_meas_and_ibat);
+-
+-static int ab8540_gpadc_bat_temp_and_ibat_show(struct seq_file *s, void *p)
+-{
+-	int bat_temp_raw;
+-	int bat_temp_convert;
+-	int ibat_raw;
+-	int ibat_convert;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	bat_temp_raw = ab8500_gpadc_double_read_raw(gpadc, BAT_TEMP_AND_IBAT,
+-		avg_sample, trig_edge, trig_timer, conv_type, &ibat_raw);
+-	bat_temp_convert = ab8500_gpadc_ad_to_voltage(gpadc, BTEMP_BALL,
+-		bat_temp_raw);
+-	ibat_convert = ab8500_gpadc_ad_to_voltage(gpadc, IBAT_VIRTUAL_CHANNEL,
+-		ibat_raw);
+-
+-	seq_printf(s,
+-		   "%d,0x%X\n"
+-		   "%d,0x%X\n",
+-		   bat_temp_convert, bat_temp_raw,
+-		   ibat_convert, ibat_raw);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_bat_temp_and_ibat);
+-
+-static int ab8540_gpadc_otp_calib_show(struct seq_file *s, void *p)
+-{
+-	struct ab8500_gpadc *gpadc;
+-	u16 vmain_l, vmain_h, btemp_l, btemp_h;
+-	u16 vbat_l, vbat_h, ibat_l, ibat_h;
+-
+-	gpadc = ab8500_gpadc_get("ab8500-gpadc.0");
+-	ab8540_gpadc_get_otp(gpadc, &vmain_l, &vmain_h, &btemp_l, &btemp_h,
+-			&vbat_l, &vbat_h, &ibat_l, &ibat_h);
+-	seq_printf(s,
+-		   "VMAIN_L:0x%X\n"
+-		   "VMAIN_H:0x%X\n"
+-		   "BTEMP_L:0x%X\n"
+-		   "BTEMP_H:0x%X\n"
+-		   "VBAT_L:0x%X\n"
+-		   "VBAT_H:0x%X\n"
+-		   "IBAT_L:0x%X\n"
+-		   "IBAT_H:0x%X\n",
+-		   vmain_l, vmain_h, btemp_l, btemp_h,
+-		   vbat_l, vbat_h, ibat_l, ibat_h);
+-
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(ab8540_gpadc_otp_calib);
+-
+-static int ab8500_gpadc_avg_sample_print(struct seq_file *s, void *p)
+-{
+-	seq_printf(s, "%d\n", avg_sample);
+-
+-	return 0;
+-}
+-
+-static int ab8500_gpadc_avg_sample_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, ab8500_gpadc_avg_sample_print,
+-		inode->i_private);
+-}
+-
+-static ssize_t ab8500_gpadc_avg_sample_write(struct file *file,
+-	const char __user *user_buf,
+-	size_t count, loff_t *ppos)
+-{
+-	struct device *dev = ((struct seq_file *)(file->private_data))->private;
+-	unsigned long user_avg_sample;
+-	int err;
+-
+-	err = kstrtoul_from_user(user_buf, count, 0, &user_avg_sample);
+-	if (err)
+-		return err;
+-
+-	if ((user_avg_sample == SAMPLE_1) || (user_avg_sample == SAMPLE_4)
+-			|| (user_avg_sample == SAMPLE_8)
+-			|| (user_avg_sample == SAMPLE_16)) {
+-		avg_sample = (u8) user_avg_sample;
+-	} else {
+-		dev_err(dev,
+-			"debugfs err input: should be egal to 1, 4, 8 or 16\n");
+-		return -EINVAL;
+-	}
+-
+-	return count;
+-}
+-
+-static const struct file_operations ab8500_gpadc_avg_sample_fops = {
+-	.open = ab8500_gpadc_avg_sample_open,
+-	.read = seq_read,
+-	.write = ab8500_gpadc_avg_sample_write,
+-	.llseek = seq_lseek,
+-	.release = single_release,
+-	.owner = THIS_MODULE,
+-};
+-
+-static int ab8500_gpadc_trig_edge_print(struct seq_file *s, void *p)
+-{
+-	seq_printf(s, "%d\n", trig_edge);
+-
+-	return 0;
+-}
+-
+-static int ab8500_gpadc_trig_edge_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, ab8500_gpadc_trig_edge_print,
+-		inode->i_private);
+-}
+-
+-static ssize_t ab8500_gpadc_trig_edge_write(struct file *file,
+-	const char __user *user_buf,
+-	size_t count, loff_t *ppos)
+-{
+-	struct device *dev = ((struct seq_file *)(file->private_data))->private;
+-	unsigned long user_trig_edge;
+-	int err;
+-
+-	err = kstrtoul_from_user(user_buf, count, 0, &user_trig_edge);
+-	if (err)
+-		return err;
+-
+-	if ((user_trig_edge == RISING_EDGE)
+-			|| (user_trig_edge == FALLING_EDGE)) {
+-		trig_edge = (u8) user_trig_edge;
+-	} else {
+-		dev_err(dev, "Wrong input:\n"
+-			"Enter 0. Rising edge\n"
+-			"Enter 1. Falling edge\n");
+-		return -EINVAL;
+-	}
+-
+-	return count;
+-}
+-
+-static const struct file_operations ab8500_gpadc_trig_edge_fops = {
+-	.open = ab8500_gpadc_trig_edge_open,
+-	.read = seq_read,
+-	.write = ab8500_gpadc_trig_edge_write,
+-	.llseek = seq_lseek,
+-	.release = single_release,
+-	.owner = THIS_MODULE,
+-};
+-
+-static int ab8500_gpadc_trig_timer_print(struct seq_file *s, void *p)
+-{
+-	seq_printf(s, "%d\n", trig_timer);
+-
+-	return 0;
+-}
+-
+-static int ab8500_gpadc_trig_timer_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, ab8500_gpadc_trig_timer_print,
+-		inode->i_private);
+-}
+-
+-static ssize_t ab8500_gpadc_trig_timer_write(struct file *file,
+-	const char __user *user_buf,
+-	size_t count, loff_t *ppos)
+-{
+-	struct device *dev = ((struct seq_file *)(file->private_data))->private;
+-	unsigned long user_trig_timer;
+-	int err;
+-
+-	err = kstrtoul_from_user(user_buf, count, 0, &user_trig_timer);
+-	if (err)
+-		return err;
+-
+-	if (user_trig_timer & ~0xFF) {
+-		dev_err(dev,
+-			"debugfs error input: should be between 0 to 255\n");
+-		return -EINVAL;
+-	}
+-
+-	trig_timer = (u8) user_trig_timer;
+-
+-	return count;
+-}
+-
+-static const struct file_operations ab8500_gpadc_trig_timer_fops = {
+-	.open = ab8500_gpadc_trig_timer_open,
+-	.read = seq_read,
+-	.write = ab8500_gpadc_trig_timer_write,
+-	.llseek = seq_lseek,
+-	.release = single_release,
+-	.owner = THIS_MODULE,
+-};
+-
+-static int ab8500_gpadc_conv_type_print(struct seq_file *s, void *p)
+-{
+-	seq_printf(s, "%d\n", conv_type);
+-
+-	return 0;
+-}
+-
+-static int ab8500_gpadc_conv_type_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, ab8500_gpadc_conv_type_print,
+-		inode->i_private);
+-}
+-
+-static ssize_t ab8500_gpadc_conv_type_write(struct file *file,
+-	const char __user *user_buf,
+-	size_t count, loff_t *ppos)
+-{
+-	struct device *dev = ((struct seq_file *)(file->private_data))->private;
+-	unsigned long user_conv_type;
+-	int err;
+-
+-	err = kstrtoul_from_user(user_buf, count, 0, &user_conv_type);
+-	if (err)
+-		return err;
+-
+-	if ((user_conv_type == ADC_SW)
+-			|| (user_conv_type == ADC_HW)) {
+-		conv_type = (u8) user_conv_type;
+-	} else {
+-		dev_err(dev, "Wrong input:\n"
+-			"Enter 0. ADC SW conversion\n"
+-			"Enter 1. ADC HW conversion\n");
+-		return -EINVAL;
+-	}
+-
+-	return count;
+-}
+-
+-static const struct file_operations ab8500_gpadc_conv_type_fops = {
+-	.open = ab8500_gpadc_conv_type_open,
+-	.read = seq_read,
+-	.write = ab8500_gpadc_conv_type_write,
+-	.llseek = seq_lseek,
+-	.release = single_release,
+-	.owner = THIS_MODULE,
+-};
+-
+ /*
+  * return length of an ASCII numerical value, 0 is string is not a
+  * numerical value.
+@@ -2647,7 +2013,6 @@ static const struct file_operations ab8500_hwreg_fops = {
+ static int ab8500_debug_probe(struct platform_device *plf)
+ {
+ 	struct dentry *ab8500_dir;
+-	struct dentry *ab8500_gpadc_dir;
+ 	struct ab8500 *ab8500;
+ 	struct resource *res;
+ 
+@@ -2689,9 +2054,6 @@ static int ab8500_debug_probe(struct platform_device *plf)
+ 
+ 	ab8500_dir = debugfs_create_dir(AB8500_NAME_STRING, NULL);
+ 
+-	ab8500_gpadc_dir = debugfs_create_dir(AB8500_ADC_NAME_STRING,
+-					      ab8500_dir);
+-
+ 	debugfs_create_file("all-bank-registers", S_IRUGO, ab8500_dir,
+ 			    &plf->dev, &ab8500_bank_registers_fops);
+ 	debugfs_create_file("all-banks", S_IRUGO, ab8500_dir,
+@@ -2727,83 +2089,6 @@ static int ab8500_debug_probe(struct platform_device *plf)
+ 			    &plf->dev, &ab8500_hwreg_fops);
+ 	debugfs_create_file("all-modem-registers", (S_IRUGO | S_IWUSR | S_IWGRP),
+ 			    ab8500_dir, &plf->dev, &ab8500_modem_fops);
+-	debugfs_create_file("bat_ctrl", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_bat_ctrl_fops);
+-	debugfs_create_file("btemp_ball", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_btemp_ball_fops);
+-	debugfs_create_file("main_charger_v", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_main_charger_v_fops);
+-	debugfs_create_file("acc_detect1", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_acc_detect1_fops);
+-	debugfs_create_file("acc_detect2", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_acc_detect2_fops);
+-	debugfs_create_file("adc_aux1", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_aux1_fops);
+-	debugfs_create_file("adc_aux2", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_aux2_fops);
+-	debugfs_create_file("main_bat_v", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_main_bat_v_fops);
+-	debugfs_create_file("vbus_v", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_vbus_v_fops);
+-	debugfs_create_file("main_charger_c", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_main_charger_c_fops);
+-	debugfs_create_file("usb_charger_c", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_usb_charger_c_fops);
+-	debugfs_create_file("bk_bat_v", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_bk_bat_v_fops);
+-	debugfs_create_file("die_temp", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_die_temp_fops);
+-	debugfs_create_file("usb_id", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_usb_id_fops);
+-	if (is_ab8540(ab8500)) {
+-		debugfs_create_file("xtal_temp", (S_IRUGO | S_IWUSR | S_IWGRP),
+-				    ab8500_gpadc_dir, &plf->dev,
+-				    &ab8540_gpadc_xtal_temp_fops);
+-		debugfs_create_file("vbattruemeas", (S_IRUGO | S_IWUSR | S_IWGRP),
+-				    ab8500_gpadc_dir, &plf->dev,
+-				    &ab8540_gpadc_vbat_true_meas_fops);
+-		debugfs_create_file("batctrl_and_ibat", (S_IRUGO | S_IWUGO),
+-				    ab8500_gpadc_dir, &plf->dev,
+-				    &ab8540_gpadc_bat_ctrl_and_ibat_fops);
+-		debugfs_create_file("vbatmeas_and_ibat", (S_IRUGO | S_IWUGO),
+-				    ab8500_gpadc_dir, &plf->dev,
+-				    &ab8540_gpadc_vbat_meas_and_ibat_fops);
+-		debugfs_create_file("vbattruemeas_and_ibat", (S_IRUGO | S_IWUGO),
+-				    ab8500_gpadc_dir, &plf->dev,
+-				    &ab8540_gpadc_vbat_true_meas_and_ibat_fops);
+-		debugfs_create_file("battemp_and_ibat", (S_IRUGO | S_IWUGO),
+-				    ab8500_gpadc_dir, &plf->dev,
+-				    &ab8540_gpadc_bat_temp_and_ibat_fops);
+-		debugfs_create_file("otp_calib", (S_IRUGO | S_IWUSR | S_IWGRP),
+-				    ab8500_gpadc_dir, &plf->dev,
+-				    &ab8540_gpadc_otp_calib_fops);
+-	}
+-	debugfs_create_file("avg_sample", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_avg_sample_fops);
+-	debugfs_create_file("trig_edge", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_trig_edge_fops);
+-	debugfs_create_file("trig_timer", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_trig_timer_fops);
+-	debugfs_create_file("conv_type", (S_IRUGO | S_IWUSR | S_IWGRP),
+-			    ab8500_gpadc_dir, &plf->dev,
+-			    &ab8500_gpadc_conv_type_fops);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/mfd/ab8500-gpadc.c b/drivers/mfd/ab8500-gpadc.c
+deleted file mode 100644
+index 005f9ee34cd1..000000000000
+--- a/drivers/mfd/ab8500-gpadc.c
++++ /dev/null
+@@ -1,1075 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (C) ST-Ericsson SA 2010
+- *
+- * Author: Arun R Murthy <arun.murthy@stericsson.com>
+- * Author: Daniel Willerud <daniel.willerud@stericsson.com>
+- * Author: Johan Palsson <johan.palsson@stericsson.com>
+- * Author: M'boumba Cedric Madianga
+- */
+-#include <linux/init.h>
+-#include <linux/device.h>
+-#include <linux/interrupt.h>
+-#include <linux/spinlock.h>
+-#include <linux/delay.h>
+-#include <linux/pm_runtime.h>
+-#include <linux/platform_device.h>
+-#include <linux/completion.h>
+-#include <linux/regulator/consumer.h>
+-#include <linux/err.h>
+-#include <linux/slab.h>
+-#include <linux/list.h>
+-#include <linux/mfd/abx500.h>
+-#include <linux/mfd/abx500/ab8500.h>
+-#include <linux/mfd/abx500/ab8500-gpadc.h>
+-
+-/*
+- * GPADC register offsets
+- * Bank : 0x0A
+- */
+-#define AB8500_GPADC_CTRL1_REG		0x00
+-#define AB8500_GPADC_CTRL2_REG		0x01
+-#define AB8500_GPADC_CTRL3_REG		0x02
+-#define AB8500_GPADC_AUTO_TIMER_REG	0x03
+-#define AB8500_GPADC_STAT_REG		0x04
+-#define AB8500_GPADC_MANDATAL_REG	0x05
+-#define AB8500_GPADC_MANDATAH_REG	0x06
+-#define AB8500_GPADC_AUTODATAL_REG	0x07
+-#define AB8500_GPADC_AUTODATAH_REG	0x08
+-#define AB8500_GPADC_MUX_CTRL_REG	0x09
+-#define AB8540_GPADC_MANDATA2L_REG	0x09
+-#define AB8540_GPADC_MANDATA2H_REG	0x0A
+-#define AB8540_GPADC_APEAAX_REG		0x10
+-#define AB8540_GPADC_APEAAT_REG		0x11
+-#define AB8540_GPADC_APEAAM_REG		0x12
+-#define AB8540_GPADC_APEAAH_REG		0x13
+-#define AB8540_GPADC_APEAAL_REG		0x14
+-
+-/*
+- * OTP register offsets
+- * Bank : 0x15
+- */
+-#define AB8500_GPADC_CAL_1	0x0F
+-#define AB8500_GPADC_CAL_2	0x10
+-#define AB8500_GPADC_CAL_3	0x11
+-#define AB8500_GPADC_CAL_4	0x12
+-#define AB8500_GPADC_CAL_5	0x13
+-#define AB8500_GPADC_CAL_6	0x14
+-#define AB8500_GPADC_CAL_7	0x15
+-/* New calibration for 8540 */
+-#define AB8540_GPADC_OTP4_REG_7	0x38
+-#define AB8540_GPADC_OTP4_REG_6	0x39
+-#define AB8540_GPADC_OTP4_REG_5	0x3A
+-
+-/* gpadc constants */
+-#define EN_VINTCORE12		0x04
+-#define EN_VTVOUT		0x02
+-#define EN_GPADC		0x01
+-#define DIS_GPADC		0x00
+-#define AVG_1			0x00
+-#define AVG_4			0x20
+-#define AVG_8			0x40
+-#define AVG_16			0x60
+-#define ADC_SW_CONV		0x04
+-#define EN_ICHAR		0x80
+-#define BTEMP_PULL_UP		0x08
+-#define EN_BUF			0x40
+-#define DIS_ZERO		0x00
+-#define GPADC_BUSY		0x01
+-#define EN_FALLING		0x10
+-#define EN_TRIG_EDGE		0x02
+-#define EN_VBIAS_XTAL_TEMP	0x02
+-
+-/* GPADC constants from AB8500 spec, UM0836 */
+-#define ADC_RESOLUTION		1024
+-#define ADC_CH_BTEMP_MIN	0
+-#define ADC_CH_BTEMP_MAX	1350
+-#define ADC_CH_DIETEMP_MIN	0
+-#define ADC_CH_DIETEMP_MAX	1350
+-#define ADC_CH_CHG_V_MIN	0
+-#define ADC_CH_CHG_V_MAX	20030
+-#define ADC_CH_ACCDET2_MIN	0
+-#define ADC_CH_ACCDET2_MAX	2500
+-#define ADC_CH_VBAT_MIN		2300
+-#define ADC_CH_VBAT_MAX		4800
+-#define ADC_CH_CHG_I_MIN	0
+-#define ADC_CH_CHG_I_MAX	1500
+-#define ADC_CH_BKBAT_MIN	0
+-#define ADC_CH_BKBAT_MAX	3200
+-
+-/* GPADC constants from AB8540 spec */
+-#define ADC_CH_IBAT_MIN		(-6000) /* mA range measured by ADC for ibat */
+-#define ADC_CH_IBAT_MAX		6000
+-#define ADC_CH_IBAT_MIN_V	(-60)	/* mV range measured by ADC for ibat */
+-#define ADC_CH_IBAT_MAX_V	60
+-#define IBAT_VDROP_L		(-56)  /* mV */
+-#define IBAT_VDROP_H		56
+-
+-/* This is used to not lose precision when dividing to get gain and offset */
+-#define CALIB_SCALE		1000
+-/*
+- * Number of bits shift used to not lose precision
+- * when dividing to get ibat gain.
+- */
+-#define CALIB_SHIFT_IBAT	20
+-
+-/* Time in ms before disabling regulator */
+-#define GPADC_AUDOSUSPEND_DELAY		1
+-
+-#define CONVERSION_TIME			500 /* ms */
+-
+-enum cal_channels {
+-	ADC_INPUT_VMAIN = 0,
+-	ADC_INPUT_BTEMP,
+-	ADC_INPUT_VBAT,
+-	ADC_INPUT_IBAT,
+-	NBR_CAL_INPUTS,
+-};
+-
+-/**
+- * struct adc_cal_data - Table for storing gain and offset for the calibrated
+- * ADC channels
+- * @gain:		Gain of the ADC channel
+- * @offset:		Offset of the ADC channel
+- */
+-struct adc_cal_data {
+-	s64 gain;
+-	s64 offset;
+-	u16 otp_calib_hi;
+-	u16 otp_calib_lo;
+-};
+-
+-/**
+- * struct ab8500_gpadc - AB8500 GPADC device information
+- * @dev:			pointer to the struct device
+- * @node:			a list of AB8500 GPADCs, hence prepared for
+-				reentrance
+- * @parent:			pointer to the struct ab8500
+- * @ab8500_gpadc_complete:	pointer to the struct completion, to indicate
+- *				the completion of gpadc conversion
+- * @ab8500_gpadc_lock:		structure of type mutex
+- * @regu:			pointer to the struct regulator
+- * @irq_sw:			interrupt number that is used by gpadc for Sw
+- *				conversion
+- * @irq_hw:			interrupt number that is used by gpadc for Hw
+- *				conversion
+- * @cal_data			array of ADC calibration data structs
+- */
+-struct ab8500_gpadc {
+-	struct device *dev;
+-	struct list_head node;
+-	struct ab8500 *parent;
+-	struct completion ab8500_gpadc_complete;
+-	struct mutex ab8500_gpadc_lock;
+-	struct regulator *regu;
+-	int irq_sw;
+-	int irq_hw;
+-	struct adc_cal_data cal_data[NBR_CAL_INPUTS];
+-};
+-
+-static LIST_HEAD(ab8500_gpadc_list);
+-
+-/**
+- * ab8500_gpadc_get() - returns a reference to the primary AB8500 GPADC
+- * (i.e. the first GPADC in the instance list)
+- */
+-struct ab8500_gpadc *ab8500_gpadc_get(char *name)
+-{
+-	struct ab8500_gpadc *gpadc;
+-
+-	list_for_each_entry(gpadc, &ab8500_gpadc_list, node) {
+-		if (!strcmp(name, dev_name(gpadc->dev)))
+-			return gpadc;
+-	}
+-
+-	return ERR_PTR(-ENOENT);
+-}
+-EXPORT_SYMBOL(ab8500_gpadc_get);
+-
+-/**
+- * ab8500_gpadc_ad_to_voltage() - Convert a raw ADC value to a voltage
+- */
+-int ab8500_gpadc_ad_to_voltage(struct ab8500_gpadc *gpadc, u8 channel,
+-	int ad_value)
+-{
+-	int res;
+-
+-	switch (channel) {
+-	case MAIN_CHARGER_V:
+-		/* For some reason we don't have calibrated data */
+-		if (!gpadc->cal_data[ADC_INPUT_VMAIN].gain) {
+-			res = ADC_CH_CHG_V_MIN + (ADC_CH_CHG_V_MAX -
+-				ADC_CH_CHG_V_MIN) * ad_value /
+-				ADC_RESOLUTION;
+-			break;
+-		}
+-		/* Here we can use the calibrated data */
+-		res = (int) (ad_value * gpadc->cal_data[ADC_INPUT_VMAIN].gain +
+-			gpadc->cal_data[ADC_INPUT_VMAIN].offset) / CALIB_SCALE;
+-		break;
+-
+-	case XTAL_TEMP:
+-	case BAT_CTRL:
+-	case BTEMP_BALL:
+-	case ACC_DETECT1:
+-	case ADC_AUX1:
+-	case ADC_AUX2:
+-		/* For some reason we don't have calibrated data */
+-		if (!gpadc->cal_data[ADC_INPUT_BTEMP].gain) {
+-			res = ADC_CH_BTEMP_MIN + (ADC_CH_BTEMP_MAX -
+-				ADC_CH_BTEMP_MIN) * ad_value /
+-				ADC_RESOLUTION;
+-			break;
+-		}
+-		/* Here we can use the calibrated data */
+-		res = (int) (ad_value * gpadc->cal_data[ADC_INPUT_BTEMP].gain +
+-			gpadc->cal_data[ADC_INPUT_BTEMP].offset) / CALIB_SCALE;
+-		break;
+-
+-	case MAIN_BAT_V:
+-	case VBAT_TRUE_MEAS:
+-		/* For some reason we don't have calibrated data */
+-		if (!gpadc->cal_data[ADC_INPUT_VBAT].gain) {
+-			res = ADC_CH_VBAT_MIN + (ADC_CH_VBAT_MAX -
+-				ADC_CH_VBAT_MIN) * ad_value /
+-				ADC_RESOLUTION;
+-			break;
+-		}
+-		/* Here we can use the calibrated data */
+-		res = (int) (ad_value * gpadc->cal_data[ADC_INPUT_VBAT].gain +
+-			gpadc->cal_data[ADC_INPUT_VBAT].offset) / CALIB_SCALE;
+-		break;
+-
+-	case DIE_TEMP:
+-		res = ADC_CH_DIETEMP_MIN +
+-			(ADC_CH_DIETEMP_MAX - ADC_CH_DIETEMP_MIN) * ad_value /
+-			ADC_RESOLUTION;
+-		break;
+-
+-	case ACC_DETECT2:
+-		res = ADC_CH_ACCDET2_MIN +
+-			(ADC_CH_ACCDET2_MAX - ADC_CH_ACCDET2_MIN) * ad_value /
+-			ADC_RESOLUTION;
+-		break;
+-
+-	case VBUS_V:
+-		res = ADC_CH_CHG_V_MIN +
+-			(ADC_CH_CHG_V_MAX - ADC_CH_CHG_V_MIN) * ad_value /
+-			ADC_RESOLUTION;
+-		break;
+-
+-	case MAIN_CHARGER_C:
+-	case USB_CHARGER_C:
+-		res = ADC_CH_CHG_I_MIN +
+-			(ADC_CH_CHG_I_MAX - ADC_CH_CHG_I_MIN) * ad_value /
+-			ADC_RESOLUTION;
+-		break;
+-
+-	case BK_BAT_V:
+-		res = ADC_CH_BKBAT_MIN +
+-			(ADC_CH_BKBAT_MAX - ADC_CH_BKBAT_MIN) * ad_value /
+-			ADC_RESOLUTION;
+-		break;
+-
+-	case IBAT_VIRTUAL_CHANNEL:
+-		/* For some reason we don't have calibrated data */
+-		if (!gpadc->cal_data[ADC_INPUT_IBAT].gain) {
+-			res = ADC_CH_IBAT_MIN + (ADC_CH_IBAT_MAX -
+-				ADC_CH_IBAT_MIN) * ad_value /
+-				ADC_RESOLUTION;
+-			break;
+-		}
+-		/* Here we can use the calibrated data */
+-		res = (int) (ad_value * gpadc->cal_data[ADC_INPUT_IBAT].gain +
+-				gpadc->cal_data[ADC_INPUT_IBAT].offset)
+-				>> CALIB_SHIFT_IBAT;
+-		break;
+-
+-	default:
+-		dev_err(gpadc->dev,
+-			"unknown channel, not possible to convert\n");
+-		res = -EINVAL;
+-		break;
+-
+-	}
+-	return res;
+-}
+-EXPORT_SYMBOL(ab8500_gpadc_ad_to_voltage);
+-
+-/**
+- * ab8500_gpadc_sw_hw_convert() - gpadc conversion
+- * @channel:	analog channel to be converted to digital data
+- * @avg_sample:  number of ADC sample to average
+- * @trig_egde:  selected ADC trig edge
+- * @trig_timer: selected ADC trigger delay timer
+- * @conv_type: selected conversion type (HW or SW conversion)
+- *
+- * This function converts the selected analog i/p to digital
+- * data.
+- */
+-int ab8500_gpadc_sw_hw_convert(struct ab8500_gpadc *gpadc, u8 channel,
+-		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type)
+-{
+-	int ad_value;
+-	int voltage;
+-
+-	ad_value = ab8500_gpadc_read_raw(gpadc, channel, avg_sample,
+-			trig_edge, trig_timer, conv_type);
+-
+-	/* On failure retry a second time */
+-	if (ad_value < 0)
+-		ad_value = ab8500_gpadc_read_raw(gpadc, channel, avg_sample,
+-			trig_edge, trig_timer, conv_type);
+-	if (ad_value < 0) {
+-		dev_err(gpadc->dev, "GPADC raw value failed ch: %d\n",
+-				channel);
+-		return ad_value;
+-	}
+-
+-	voltage = ab8500_gpadc_ad_to_voltage(gpadc, channel, ad_value);
+-	if (voltage < 0)
+-		dev_err(gpadc->dev,
+-			"GPADC to voltage conversion failed ch: %d AD: 0x%x\n",
+-			channel, ad_value);
+-
+-	return voltage;
+-}
+-EXPORT_SYMBOL(ab8500_gpadc_sw_hw_convert);
+-
+-/**
+- * ab8500_gpadc_read_raw() - gpadc read
+- * @channel:	analog channel to be read
+- * @avg_sample:  number of ADC sample to average
+- * @trig_edge:  selected trig edge
+- * @trig_timer: selected ADC trigger delay timer
+- * @conv_type: selected conversion type (HW or SW conversion)
+- *
+- * This function obtains the raw ADC value for an hardware conversion,
+- * this then needs to be converted by calling ab8500_gpadc_ad_to_voltage()
+- */
+-int ab8500_gpadc_read_raw(struct ab8500_gpadc *gpadc, u8 channel,
+-		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type)
+-{
+-	return ab8500_gpadc_double_read_raw(gpadc, channel, avg_sample,
+-					    trig_edge, trig_timer, conv_type,
+-					    NULL);
+-}
+-
+-int ab8500_gpadc_double_read_raw(struct ab8500_gpadc *gpadc, u8 channel,
+-		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type,
+-		int *ibat)
+-{
+-	int ret;
+-	int looplimit = 0;
+-	unsigned long completion_timeout;
+-	u8 val, low_data, high_data, low_data2, high_data2;
+-	u8 val_reg1 = 0;
+-	unsigned int delay_min = 0;
+-	unsigned int delay_max = 0;
+-	u8 data_low_addr, data_high_addr;
+-
+-	if (!gpadc)
+-		return -ENODEV;
+-
+-	/* check if convertion is supported */
+-	if ((gpadc->irq_sw < 0) && (conv_type == ADC_SW))
+-		return -ENOTSUPP;
+-	if ((gpadc->irq_hw < 0) && (conv_type == ADC_HW))
+-		return -ENOTSUPP;
+-
+-	mutex_lock(&gpadc->ab8500_gpadc_lock);
+-	/* Enable VTVout LDO this is required for GPADC */
+-	pm_runtime_get_sync(gpadc->dev);
+-
+-	/* Check if ADC is not busy, lock and proceed */
+-	do {
+-		ret = abx500_get_register_interruptible(gpadc->dev,
+-			AB8500_GPADC, AB8500_GPADC_STAT_REG, &val);
+-		if (ret < 0)
+-			goto out;
+-		if (!(val & GPADC_BUSY))
+-			break;
+-		msleep(20);
+-	} while (++looplimit < 10);
+-	if (looplimit >= 10 && (val & GPADC_BUSY)) {
+-		dev_err(gpadc->dev, "gpadc_conversion: GPADC busy");
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+-	/* Enable GPADC */
+-	val_reg1 |= EN_GPADC;
+-
+-	/* Select the channel source and set average samples */
+-	switch (avg_sample) {
+-	case SAMPLE_1:
+-		val = channel | AVG_1;
+-		break;
+-	case SAMPLE_4:
+-		val = channel | AVG_4;
+-		break;
+-	case SAMPLE_8:
+-		val = channel | AVG_8;
+-		break;
+-	default:
+-		val = channel | AVG_16;
+-		break;
+-	}
+-
+-	if (conv_type == ADC_HW) {
+-		ret = abx500_set_register_interruptible(gpadc->dev,
+-				AB8500_GPADC, AB8500_GPADC_CTRL3_REG, val);
+-		val_reg1 |= EN_TRIG_EDGE;
+-		if (trig_edge)
+-			val_reg1 |= EN_FALLING;
+-	} else
+-		ret = abx500_set_register_interruptible(gpadc->dev,
+-				AB8500_GPADC, AB8500_GPADC_CTRL2_REG, val);
+-	if (ret < 0) {
+-		dev_err(gpadc->dev,
+-			"gpadc_conversion: set avg samples failed\n");
+-		goto out;
+-	}
+-
+-	/*
+-	 * Enable ADC, buffering, select rising edge and enable ADC path
+-	 * charging current sense if it needed, ABB 3.0 needs some special
+-	 * treatment too.
+-	 */
+-	switch (channel) {
+-	case MAIN_CHARGER_C:
+-	case USB_CHARGER_C:
+-		val_reg1 |= EN_BUF | EN_ICHAR;
+-		break;
+-	case BTEMP_BALL:
+-		if (!is_ab8500_2p0_or_earlier(gpadc->parent)) {
+-			val_reg1 |= EN_BUF | BTEMP_PULL_UP;
+-			/*
+-			* Delay might be needed for ABB8500 cut 3.0, if not,
+-			* remove when hardware will be availible
+-			*/
+-			delay_min = 1000; /* Delay in micro seconds */
+-			delay_max = 10000; /* large range optimises sleepmode */
+-			break;
+-		}
+-		/* Intentional fallthrough */
+-	default:
+-		val_reg1 |= EN_BUF;
+-		break;
+-	}
+-
+-	/* Write configuration to register */
+-	ret = abx500_set_register_interruptible(gpadc->dev,
+-		AB8500_GPADC, AB8500_GPADC_CTRL1_REG, val_reg1);
+-	if (ret < 0) {
+-		dev_err(gpadc->dev,
+-			"gpadc_conversion: set Control register failed\n");
+-		goto out;
+-	}
+-
+-	if (delay_min != 0)
+-		usleep_range(delay_min, delay_max);
+-
+-	if (conv_type == ADC_HW) {
+-		/* Set trigger delay timer */
+-		ret = abx500_set_register_interruptible(gpadc->dev,
+-			AB8500_GPADC, AB8500_GPADC_AUTO_TIMER_REG, trig_timer);
+-		if (ret < 0) {
+-			dev_err(gpadc->dev,
+-				"gpadc_conversion: trig timer failed\n");
+-			goto out;
+-		}
+-		completion_timeout = 2 * HZ;
+-		data_low_addr = AB8500_GPADC_AUTODATAL_REG;
+-		data_high_addr = AB8500_GPADC_AUTODATAH_REG;
+-	} else {
+-		/* Start SW conversion */
+-		ret = abx500_mask_and_set_register_interruptible(gpadc->dev,
+-			AB8500_GPADC, AB8500_GPADC_CTRL1_REG,
+-			ADC_SW_CONV, ADC_SW_CONV);
+-		if (ret < 0) {
+-			dev_err(gpadc->dev,
+-				"gpadc_conversion: start s/w conv failed\n");
+-			goto out;
+-		}
+-		completion_timeout = msecs_to_jiffies(CONVERSION_TIME);
+-		data_low_addr = AB8500_GPADC_MANDATAL_REG;
+-		data_high_addr = AB8500_GPADC_MANDATAH_REG;
+-	}
+-
+-	/* wait for completion of conversion */
+-	if (!wait_for_completion_timeout(&gpadc->ab8500_gpadc_complete,
+-			completion_timeout)) {
+-		dev_err(gpadc->dev,
+-			"timeout didn't receive GPADC conv interrupt\n");
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+-	/* Read the converted RAW data */
+-	ret = abx500_get_register_interruptible(gpadc->dev,
+-			AB8500_GPADC, data_low_addr, &low_data);
+-	if (ret < 0) {
+-		dev_err(gpadc->dev, "gpadc_conversion: read low data failed\n");
+-		goto out;
+-	}
+-
+-	ret = abx500_get_register_interruptible(gpadc->dev,
+-		AB8500_GPADC, data_high_addr, &high_data);
+-	if (ret < 0) {
+-		dev_err(gpadc->dev, "gpadc_conversion: read high data failed\n");
+-		goto out;
+-	}
+-
+-	/* Check if double convertion is required */
+-	if ((channel == BAT_CTRL_AND_IBAT) ||
+-			(channel == VBAT_MEAS_AND_IBAT) ||
+-			(channel == VBAT_TRUE_MEAS_AND_IBAT) ||
+-			(channel == BAT_TEMP_AND_IBAT)) {
+-
+-		if (conv_type == ADC_HW) {
+-			/* not supported */
+-			ret = -ENOTSUPP;
+-			dev_err(gpadc->dev,
+-				"gpadc_conversion: only SW double conversion supported\n");
+-			goto out;
+-		} else {
+-			/* Read the converted RAW data 2 */
+-			ret = abx500_get_register_interruptible(gpadc->dev,
+-				AB8500_GPADC, AB8540_GPADC_MANDATA2L_REG,
+-				&low_data2);
+-			if (ret < 0) {
+-				dev_err(gpadc->dev,
+-					"gpadc_conversion: read sw low data 2 failed\n");
+-				goto out;
+-			}
+-
+-			ret = abx500_get_register_interruptible(gpadc->dev,
+-				AB8500_GPADC, AB8540_GPADC_MANDATA2H_REG,
+-				&high_data2);
+-			if (ret < 0) {
+-				dev_err(gpadc->dev,
+-					"gpadc_conversion: read sw high data 2 failed\n");
+-				goto out;
+-			}
+-			if (ibat != NULL) {
+-				*ibat = (high_data2 << 8) | low_data2;
+-			} else {
+-				dev_warn(gpadc->dev,
+-					"gpadc_conversion: ibat not stored\n");
+-			}
+-
+-		}
+-	}
+-
+-	/* Disable GPADC */
+-	ret = abx500_set_register_interruptible(gpadc->dev, AB8500_GPADC,
+-		AB8500_GPADC_CTRL1_REG, DIS_GPADC);
+-	if (ret < 0) {
+-		dev_err(gpadc->dev, "gpadc_conversion: disable gpadc failed\n");
+-		goto out;
+-	}
+-
+-	/* Disable VTVout LDO this is required for GPADC */
+-	pm_runtime_mark_last_busy(gpadc->dev);
+-	pm_runtime_put_autosuspend(gpadc->dev);
+-
+-	mutex_unlock(&gpadc->ab8500_gpadc_lock);
+-
+-	return (high_data << 8) | low_data;
+-
+-out:
+-	/*
+-	 * It has shown to be needed to turn off the GPADC if an error occurs,
+-	 * otherwise we might have problem when waiting for the busy bit in the
+-	 * GPADC status register to go low. In V1.1 there wait_for_completion
+-	 * seems to timeout when waiting for an interrupt.. Not seen in V2.0
+-	 */
+-	(void) abx500_set_register_interruptible(gpadc->dev, AB8500_GPADC,
+-		AB8500_GPADC_CTRL1_REG, DIS_GPADC);
+-	pm_runtime_put(gpadc->dev);
+-	mutex_unlock(&gpadc->ab8500_gpadc_lock);
+-	dev_err(gpadc->dev,
+-		"gpadc_conversion: Failed to AD convert channel %d\n", channel);
+-	return ret;
+-}
+-EXPORT_SYMBOL(ab8500_gpadc_read_raw);
+-
+-/**
+- * ab8500_bm_gpadcconvend_handler() - isr for gpadc conversion completion
+- * @irq:	irq number
+- * @data:	pointer to the data passed during request irq
+- *
+- * This is a interrupt service routine for gpadc conversion completion.
+- * Notifies the gpadc completion is completed and the converted raw value
+- * can be read from the registers.
+- * Returns IRQ status(IRQ_HANDLED)
+- */
+-static irqreturn_t ab8500_bm_gpadcconvend_handler(int irq, void *_gpadc)
+-{
+-	struct ab8500_gpadc *gpadc = _gpadc;
+-
+-	complete(&gpadc->ab8500_gpadc_complete);
+-
+-	return IRQ_HANDLED;
+-}
+-
+-static int otp_cal_regs[] = {
+-	AB8500_GPADC_CAL_1,
+-	AB8500_GPADC_CAL_2,
+-	AB8500_GPADC_CAL_3,
+-	AB8500_GPADC_CAL_4,
+-	AB8500_GPADC_CAL_5,
+-	AB8500_GPADC_CAL_6,
+-	AB8500_GPADC_CAL_7,
+-};
+-
+-static int otp4_cal_regs[] = {
+-	AB8540_GPADC_OTP4_REG_7,
+-	AB8540_GPADC_OTP4_REG_6,
+-	AB8540_GPADC_OTP4_REG_5,
+-};
+-
+-static void ab8500_gpadc_read_calibration_data(struct ab8500_gpadc *gpadc)
+-{
+-	int i;
+-	int ret[ARRAY_SIZE(otp_cal_regs)];
+-	u8 gpadc_cal[ARRAY_SIZE(otp_cal_regs)];
+-	int ret_otp4[ARRAY_SIZE(otp4_cal_regs)];
+-	u8 gpadc_otp4[ARRAY_SIZE(otp4_cal_regs)];
+-	int vmain_high, vmain_low;
+-	int btemp_high, btemp_low;
+-	int vbat_high, vbat_low;
+-	int ibat_high, ibat_low;
+-	s64 V_gain, V_offset, V2A_gain, V2A_offset;
+-	struct ab8500 *ab8500;
+-
+-	ab8500 = gpadc->parent;
+-
+-	/* First we read all OTP registers and store the error code */
+-	for (i = 0; i < ARRAY_SIZE(otp_cal_regs); i++) {
+-		ret[i] = abx500_get_register_interruptible(gpadc->dev,
+-			AB8500_OTP_EMUL, otp_cal_regs[i],  &gpadc_cal[i]);
+-		if (ret[i] < 0)
+-			dev_err(gpadc->dev, "%s: read otp reg 0x%02x failed\n",
+-				__func__, otp_cal_regs[i]);
+-	}
+-
+-	/*
+-	 * The ADC calibration data is stored in OTP registers.
+-	 * The layout of the calibration data is outlined below and a more
+-	 * detailed description can be found in UM0836
+-	 *
+-	 * vm_h/l = vmain_high/low
+-	 * bt_h/l = btemp_high/low
+-	 * vb_h/l = vbat_high/low
+-	 *
+-	 * Data bits 8500/9540:
+-	 * | 7	   | 6	   | 5	   | 4	   | 3	   | 2	   | 1	   | 0
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * |						   | vm_h9 | vm_h8
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * |		   | vm_h7 | vm_h6 | vm_h5 | vm_h4 | vm_h3 | vm_h2
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | vm_h1 | vm_h0 | vm_l4 | vm_l3 | vm_l2 | vm_l1 | vm_l0 | bt_h9
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | bt_h8 | bt_h7 | bt_h6 | bt_h5 | bt_h4 | bt_h3 | bt_h2 | bt_h1
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | bt_h0 | bt_l4 | bt_l3 | bt_l2 | bt_l1 | bt_l0 | vb_h9 | vb_h8
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | vb_h7 | vb_h6 | vb_h5 | vb_h4 | vb_h3 | vb_h2 | vb_h1 | vb_h0
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | vb_l5 | vb_l4 | vb_l3 | vb_l2 | vb_l1 | vb_l0 |
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 *
+-	 * Data bits 8540:
+-	 * OTP2
+-	 * | 7	   | 6	   | 5	   | 4	   | 3	   | 2	   | 1	   | 0
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * |
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | vm_h9 | vm_h8 | vm_h7 | vm_h6 | vm_h5 | vm_h4 | vm_h3 | vm_h2
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | vm_h1 | vm_h0 | vm_l4 | vm_l3 | vm_l2 | vm_l1 | vm_l0 | bt_h9
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | bt_h8 | bt_h7 | bt_h6 | bt_h5 | bt_h4 | bt_h3 | bt_h2 | bt_h1
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | bt_h0 | bt_l4 | bt_l3 | bt_l2 | bt_l1 | bt_l0 | vb_h9 | vb_h8
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | vb_h7 | vb_h6 | vb_h5 | vb_h4 | vb_h3 | vb_h2 | vb_h1 | vb_h0
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | vb_l5 | vb_l4 | vb_l3 | vb_l2 | vb_l1 | vb_l0 |
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 *
+-	 * Data bits 8540:
+-	 * OTP4
+-	 * | 7	   | 6	   | 5	   | 4	   | 3	   | 2	   | 1	   | 0
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * |					   | ib_h9 | ib_h8 | ib_h7
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | ib_h6 | ib_h5 | ib_h4 | ib_h3 | ib_h2 | ib_h1 | ib_h0 | ib_l5
+-	 * |.......|.......|.......|.......|.......|.......|.......|.......
+-	 * | ib_l4 | ib_l3 | ib_l2 | ib_l1 | ib_l0 |
+-	 *
+-	 *
+-	 * Ideal output ADC codes corresponding to injected input voltages
+-	 * during manufacturing is:
+-	 *
+-	 * vmain_high: Vin = 19500mV / ADC ideal code = 997
+-	 * vmain_low:  Vin = 315mV   / ADC ideal code = 16
+-	 * btemp_high: Vin = 1300mV  / ADC ideal code = 985
+-	 * btemp_low:  Vin = 21mV    / ADC ideal code = 16
+-	 * vbat_high:  Vin = 4700mV  / ADC ideal code = 982
+-	 * vbat_low:   Vin = 2380mV  / ADC ideal code = 33
+-	 */
+-
+-	if (is_ab8540(ab8500)) {
+-		/* Calculate gain and offset for VMAIN if all reads succeeded*/
+-		if (!(ret[1] < 0 || ret[2] < 0)) {
+-			vmain_high = (((gpadc_cal[1] & 0xFF) << 2) |
+-				((gpadc_cal[2] & 0xC0) >> 6));
+-			vmain_low = ((gpadc_cal[2] & 0x3E) >> 1);
+-
+-			gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_hi =
+-				(u16)vmain_high;
+-			gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_lo =
+-				(u16)vmain_low;
+-
+-			gpadc->cal_data[ADC_INPUT_VMAIN].gain = CALIB_SCALE *
+-				(19500 - 315) / (vmain_high - vmain_low);
+-			gpadc->cal_data[ADC_INPUT_VMAIN].offset = CALIB_SCALE *
+-				19500 - (CALIB_SCALE * (19500 - 315) /
+-				(vmain_high - vmain_low)) * vmain_high;
+-		} else {
+-		gpadc->cal_data[ADC_INPUT_VMAIN].gain = 0;
+-		}
+-
+-		/* Read IBAT calibration Data */
+-		for (i = 0; i < ARRAY_SIZE(otp4_cal_regs); i++) {
+-			ret_otp4[i] = abx500_get_register_interruptible(
+-					gpadc->dev, AB8500_OTP_EMUL,
+-					otp4_cal_regs[i],  &gpadc_otp4[i]);
+-			if (ret_otp4[i] < 0)
+-				dev_err(gpadc->dev,
+-					"%s: read otp4 reg 0x%02x failed\n",
+-					__func__, otp4_cal_regs[i]);
+-		}
+-
+-		/* Calculate gain and offset for IBAT if all reads succeeded */
+-		if (!(ret_otp4[0] < 0 || ret_otp4[1] < 0 || ret_otp4[2] < 0)) {
+-			ibat_high = (((gpadc_otp4[0] & 0x07) << 7) |
+-				((gpadc_otp4[1] & 0xFE) >> 1));
+-			ibat_low = (((gpadc_otp4[1] & 0x01) << 5) |
+-				((gpadc_otp4[2] & 0xF8) >> 3));
+-
+-			gpadc->cal_data[ADC_INPUT_IBAT].otp_calib_hi =
+-				(u16)ibat_high;
+-			gpadc->cal_data[ADC_INPUT_IBAT].otp_calib_lo =
+-				(u16)ibat_low;
+-
+-			V_gain = ((IBAT_VDROP_H - IBAT_VDROP_L)
+-				<< CALIB_SHIFT_IBAT) / (ibat_high - ibat_low);
+-
+-			V_offset = (IBAT_VDROP_H << CALIB_SHIFT_IBAT) -
+-				(((IBAT_VDROP_H - IBAT_VDROP_L) <<
+-				CALIB_SHIFT_IBAT) / (ibat_high - ibat_low))
+-				* ibat_high;
+-			/*
+-			 * Result obtained is in mV (at a scale factor),
+-			 * we need to calculate gain and offset to get mA
+-			 */
+-			V2A_gain = (ADC_CH_IBAT_MAX - ADC_CH_IBAT_MIN)/
+-				(ADC_CH_IBAT_MAX_V - ADC_CH_IBAT_MIN_V);
+-			V2A_offset = ((ADC_CH_IBAT_MAX_V * ADC_CH_IBAT_MIN -
+-				ADC_CH_IBAT_MAX * ADC_CH_IBAT_MIN_V)
+-				<< CALIB_SHIFT_IBAT)
+-				/ (ADC_CH_IBAT_MAX_V - ADC_CH_IBAT_MIN_V);
+-
+-			gpadc->cal_data[ADC_INPUT_IBAT].gain =
+-				V_gain * V2A_gain;
+-			gpadc->cal_data[ADC_INPUT_IBAT].offset =
+-				V_offset * V2A_gain + V2A_offset;
+-		} else {
+-			gpadc->cal_data[ADC_INPUT_IBAT].gain = 0;
+-		}
+-
+-		dev_dbg(gpadc->dev, "IBAT gain %llu offset %llu\n",
+-			gpadc->cal_data[ADC_INPUT_IBAT].gain,
+-			gpadc->cal_data[ADC_INPUT_IBAT].offset);
+-	} else {
+-		/* Calculate gain and offset for VMAIN if all reads succeeded */
+-		if (!(ret[0] < 0 || ret[1] < 0 || ret[2] < 0)) {
+-			vmain_high = (((gpadc_cal[0] & 0x03) << 8) |
+-				((gpadc_cal[1] & 0x3F) << 2) |
+-				((gpadc_cal[2] & 0xC0) >> 6));
+-			vmain_low = ((gpadc_cal[2] & 0x3E) >> 1);
+-
+-			gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_hi =
+-				(u16)vmain_high;
+-			gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_lo =
+-				(u16)vmain_low;
+-
+-			gpadc->cal_data[ADC_INPUT_VMAIN].gain = CALIB_SCALE *
+-				(19500 - 315) / (vmain_high - vmain_low);
+-
+-			gpadc->cal_data[ADC_INPUT_VMAIN].offset = CALIB_SCALE *
+-				19500 - (CALIB_SCALE * (19500 - 315) /
+-				(vmain_high - vmain_low)) * vmain_high;
+-		} else {
+-			gpadc->cal_data[ADC_INPUT_VMAIN].gain = 0;
+-		}
+-	}
+-
+-	/* Calculate gain and offset for BTEMP if all reads succeeded */
+-	if (!(ret[2] < 0 || ret[3] < 0 || ret[4] < 0)) {
+-		btemp_high = (((gpadc_cal[2] & 0x01) << 9) |
+-			(gpadc_cal[3] << 1) | ((gpadc_cal[4] & 0x80) >> 7));
+-		btemp_low = ((gpadc_cal[4] & 0x7C) >> 2);
+-
+-		gpadc->cal_data[ADC_INPUT_BTEMP].otp_calib_hi = (u16)btemp_high;
+-		gpadc->cal_data[ADC_INPUT_BTEMP].otp_calib_lo = (u16)btemp_low;
+-
+-		gpadc->cal_data[ADC_INPUT_BTEMP].gain =
+-			CALIB_SCALE * (1300 - 21) / (btemp_high - btemp_low);
+-		gpadc->cal_data[ADC_INPUT_BTEMP].offset = CALIB_SCALE * 1300 -
+-			(CALIB_SCALE * (1300 - 21) / (btemp_high - btemp_low))
+-			* btemp_high;
+-	} else {
+-		gpadc->cal_data[ADC_INPUT_BTEMP].gain = 0;
+-	}
+-
+-	/* Calculate gain and offset for VBAT if all reads succeeded */
+-	if (!(ret[4] < 0 || ret[5] < 0 || ret[6] < 0)) {
+-		vbat_high = (((gpadc_cal[4] & 0x03) << 8) | gpadc_cal[5]);
+-		vbat_low = ((gpadc_cal[6] & 0xFC) >> 2);
+-
+-		gpadc->cal_data[ADC_INPUT_VBAT].otp_calib_hi = (u16)vbat_high;
+-		gpadc->cal_data[ADC_INPUT_VBAT].otp_calib_lo = (u16)vbat_low;
+-
+-		gpadc->cal_data[ADC_INPUT_VBAT].gain = CALIB_SCALE *
+-			(4700 - 2380) /	(vbat_high - vbat_low);
+-		gpadc->cal_data[ADC_INPUT_VBAT].offset = CALIB_SCALE * 4700 -
+-			(CALIB_SCALE * (4700 - 2380) /
+-			(vbat_high - vbat_low)) * vbat_high;
+-	} else {
+-		gpadc->cal_data[ADC_INPUT_VBAT].gain = 0;
+-	}
+-
+-	dev_dbg(gpadc->dev, "VMAIN gain %llu offset %llu\n",
+-		gpadc->cal_data[ADC_INPUT_VMAIN].gain,
+-		gpadc->cal_data[ADC_INPUT_VMAIN].offset);
+-
+-	dev_dbg(gpadc->dev, "BTEMP gain %llu offset %llu\n",
+-		gpadc->cal_data[ADC_INPUT_BTEMP].gain,
+-		gpadc->cal_data[ADC_INPUT_BTEMP].offset);
+-
+-	dev_dbg(gpadc->dev, "VBAT gain %llu offset %llu\n",
+-		gpadc->cal_data[ADC_INPUT_VBAT].gain,
+-		gpadc->cal_data[ADC_INPUT_VBAT].offset);
+-}
+-
+-#ifdef CONFIG_PM
+-static int ab8500_gpadc_runtime_suspend(struct device *dev)
+-{
+-	struct ab8500_gpadc *gpadc = dev_get_drvdata(dev);
+-
+-	regulator_disable(gpadc->regu);
+-	return 0;
+-}
+-
+-static int ab8500_gpadc_runtime_resume(struct device *dev)
+-{
+-	struct ab8500_gpadc *gpadc = dev_get_drvdata(dev);
+-	int ret;
+-
+-	ret = regulator_enable(gpadc->regu);
+-	if (ret)
+-		dev_err(dev, "Failed to enable vtvout LDO: %d\n", ret);
+-	return ret;
+-}
+-#endif
+-
+-#ifdef CONFIG_PM_SLEEP
+-static int ab8500_gpadc_suspend(struct device *dev)
+-{
+-	struct ab8500_gpadc *gpadc = dev_get_drvdata(dev);
+-
+-	mutex_lock(&gpadc->ab8500_gpadc_lock);
+-
+-	pm_runtime_get_sync(dev);
+-
+-	regulator_disable(gpadc->regu);
+-	return 0;
+-}
+-
+-static int ab8500_gpadc_resume(struct device *dev)
+-{
+-	struct ab8500_gpadc *gpadc = dev_get_drvdata(dev);
+-	int ret;
+-
+-	ret = regulator_enable(gpadc->regu);
+-	if (ret)
+-		dev_err(dev, "Failed to enable vtvout LDO: %d\n", ret);
+-
+-	pm_runtime_mark_last_busy(gpadc->dev);
+-	pm_runtime_put_autosuspend(gpadc->dev);
+-
+-	mutex_unlock(&gpadc->ab8500_gpadc_lock);
+-	return ret;
+-}
+-#endif
+-
+-static int ab8500_gpadc_probe(struct platform_device *pdev)
+-{
+-	int ret = 0;
+-	struct ab8500_gpadc *gpadc;
+-
+-	gpadc = devm_kzalloc(&pdev->dev,
+-			     sizeof(struct ab8500_gpadc), GFP_KERNEL);
+-	if (!gpadc)
+-		return -ENOMEM;
+-
+-	gpadc->irq_sw = platform_get_irq_byname(pdev, "SW_CONV_END");
+-	if (gpadc->irq_sw < 0)
+-		dev_err(gpadc->dev, "failed to get platform sw_conv_end irq\n");
+-
+-	gpadc->irq_hw = platform_get_irq_byname(pdev, "HW_CONV_END");
+-	if (gpadc->irq_hw < 0)
+-		dev_err(gpadc->dev, "failed to get platform hw_conv_end irq\n");
+-
+-	gpadc->dev = &pdev->dev;
+-	gpadc->parent = dev_get_drvdata(pdev->dev.parent);
+-	mutex_init(&gpadc->ab8500_gpadc_lock);
+-
+-	/* Initialize completion used to notify completion of conversion */
+-	init_completion(&gpadc->ab8500_gpadc_complete);
+-
+-	/* Register interrupts */
+-	if (gpadc->irq_sw >= 0) {
+-		ret = request_threaded_irq(gpadc->irq_sw, NULL,
+-			ab8500_bm_gpadcconvend_handler,
+-			IRQF_NO_SUSPEND | IRQF_SHARED | IRQF_ONESHOT,
+-			"ab8500-gpadc-sw",
+-			gpadc);
+-		if (ret < 0) {
+-			dev_err(gpadc->dev,
+-				"Failed to register interrupt irq: %d\n",
+-				gpadc->irq_sw);
+-			goto fail;
+-		}
+-	}
+-
+-	if (gpadc->irq_hw >= 0) {
+-		ret = request_threaded_irq(gpadc->irq_hw, NULL,
+-			ab8500_bm_gpadcconvend_handler,
+-			IRQF_NO_SUSPEND | IRQF_SHARED | IRQF_ONESHOT,
+-			"ab8500-gpadc-hw",
+-			gpadc);
+-		if (ret < 0) {
+-			dev_err(gpadc->dev,
+-				"Failed to register interrupt irq: %d\n",
+-				gpadc->irq_hw);
+-			goto fail_irq;
+-		}
+-	}
+-
+-	/* VTVout LDO used to power up ab8500-GPADC */
+-	gpadc->regu = devm_regulator_get(&pdev->dev, "vddadc");
+-	if (IS_ERR(gpadc->regu)) {
+-		ret = PTR_ERR(gpadc->regu);
+-		dev_err(gpadc->dev, "failed to get vtvout LDO\n");
+-		goto fail_irq;
+-	}
+-
+-	platform_set_drvdata(pdev, gpadc);
+-
+-	ret = regulator_enable(gpadc->regu);
+-	if (ret) {
+-		dev_err(gpadc->dev, "Failed to enable vtvout LDO: %d\n", ret);
+-		goto fail_enable;
+-	}
+-
+-	pm_runtime_set_autosuspend_delay(gpadc->dev, GPADC_AUDOSUSPEND_DELAY);
+-	pm_runtime_use_autosuspend(gpadc->dev);
+-	pm_runtime_set_active(gpadc->dev);
+-	pm_runtime_enable(gpadc->dev);
+-
+-	ab8500_gpadc_read_calibration_data(gpadc);
+-	list_add_tail(&gpadc->node, &ab8500_gpadc_list);
+-	dev_dbg(gpadc->dev, "probe success\n");
+-
+-	return 0;
+-
+-fail_enable:
+-fail_irq:
+-	free_irq(gpadc->irq_sw, gpadc);
+-	free_irq(gpadc->irq_hw, gpadc);
+-fail:
+-	return ret;
+-}
+-
+-static int ab8500_gpadc_remove(struct platform_device *pdev)
+-{
+-	struct ab8500_gpadc *gpadc = platform_get_drvdata(pdev);
+-
+-	/* remove this gpadc entry from the list */
+-	list_del(&gpadc->node);
+-	/* remove interrupt  - completion of Sw ADC conversion */
+-	if (gpadc->irq_sw >= 0)
+-		free_irq(gpadc->irq_sw, gpadc);
+-	if (gpadc->irq_hw >= 0)
+-		free_irq(gpadc->irq_hw, gpadc);
+-
+-	pm_runtime_get_sync(gpadc->dev);
+-	pm_runtime_disable(gpadc->dev);
+-
+-	regulator_disable(gpadc->regu);
+-
+-	pm_runtime_set_suspended(gpadc->dev);
+-
+-	pm_runtime_put_noidle(gpadc->dev);
+-
+-	return 0;
+-}
+-
+-static const struct dev_pm_ops ab8500_gpadc_pm_ops = {
+-	SET_RUNTIME_PM_OPS(ab8500_gpadc_runtime_suspend,
+-			   ab8500_gpadc_runtime_resume,
+-			   NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(ab8500_gpadc_suspend,
+-				ab8500_gpadc_resume)
+-
+-};
+-
+-static struct platform_driver ab8500_gpadc_driver = {
+-	.probe = ab8500_gpadc_probe,
+-	.remove = ab8500_gpadc_remove,
+-	.driver = {
+-		.name = "ab8500-gpadc",
+-		.pm = &ab8500_gpadc_pm_ops,
+-	},
+-};
+-
+-static int __init ab8500_gpadc_init(void)
+-{
+-	return platform_driver_register(&ab8500_gpadc_driver);
+-}
+-subsys_initcall_sync(ab8500_gpadc_init);
+-
+-/**
+- * ab8540_gpadc_get_otp() - returns OTP values
+- *
+- */
+-void ab8540_gpadc_get_otp(struct ab8500_gpadc *gpadc,
+-			u16 *vmain_l, u16 *vmain_h, u16 *btemp_l, u16 *btemp_h,
+-			u16 *vbat_l, u16 *vbat_h, u16 *ibat_l, u16 *ibat_h)
+-{
+-	*vmain_l = gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_lo;
+-	*vmain_h = gpadc->cal_data[ADC_INPUT_VMAIN].otp_calib_hi;
+-	*btemp_l = gpadc->cal_data[ADC_INPUT_BTEMP].otp_calib_lo;
+-	*btemp_h = gpadc->cal_data[ADC_INPUT_BTEMP].otp_calib_hi;
+-	*vbat_l  = gpadc->cal_data[ADC_INPUT_VBAT].otp_calib_lo;
+-	*vbat_h  = gpadc->cal_data[ADC_INPUT_VBAT].otp_calib_hi;
+-	*ibat_l  = gpadc->cal_data[ADC_INPUT_IBAT].otp_calib_lo;
+-	*ibat_h  = gpadc->cal_data[ADC_INPUT_IBAT].otp_calib_hi;
+-}
+diff --git a/include/linux/mfd/abx500/ab8500-gpadc.h b/include/linux/mfd/abx500/ab8500-gpadc.h
+deleted file mode 100644
+index 836c944abe2e..000000000000
+--- a/include/linux/mfd/abx500/ab8500-gpadc.h
++++ /dev/null
+@@ -1,75 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * Copyright (C) 2010 ST-Ericsson SA
+- *
+- * Author: Arun R Murthy <arun.murthy@stericsson.com>
+- * Author: Daniel Willerud <daniel.willerud@stericsson.com>
+- * Author: M'boumba Cedric Madianga <cedric.madianga@stericsson.com>
+- */
+-
+-#ifndef	_AB8500_GPADC_H
+-#define _AB8500_GPADC_H
+-
+-/* GPADC source: From datasheet(ADCSwSel[4:0] in GPADCCtrl2
+- * and ADCHwSel[4:0] in GPADCCtrl3 ) */
+-#define BAT_CTRL		0x01
+-#define BTEMP_BALL		0x02
+-#define MAIN_CHARGER_V		0x03
+-#define ACC_DETECT1		0x04
+-#define ACC_DETECT2		0x05
+-#define ADC_AUX1		0x06
+-#define ADC_AUX2		0x07
+-#define MAIN_BAT_V		0x08
+-#define VBUS_V			0x09
+-#define MAIN_CHARGER_C		0x0A
+-#define USB_CHARGER_C		0x0B
+-#define BK_BAT_V		0x0C
+-#define DIE_TEMP		0x0D
+-#define USB_ID			0x0E
+-#define XTAL_TEMP		0x12
+-#define VBAT_TRUE_MEAS		0x13
+-#define BAT_CTRL_AND_IBAT	0x1C
+-#define VBAT_MEAS_AND_IBAT	0x1D
+-#define VBAT_TRUE_MEAS_AND_IBAT	0x1E
+-#define BAT_TEMP_AND_IBAT	0x1F
+-
+-/* Virtual channel used only for ibat convertion to ampere
+- * Battery current conversion (ibat) cannot be requested as a single conversion
+- *  but it is always in combination with other input requests
+- */
+-#define IBAT_VIRTUAL_CHANNEL		0xFF
+-
+-#define SAMPLE_1        1
+-#define SAMPLE_4        4
+-#define SAMPLE_8        8
+-#define SAMPLE_16       16
+-#define RISING_EDGE     0
+-#define FALLING_EDGE    1
+-
+-/* Arbitrary ADC conversion type constants */
+-#define ADC_SW				0
+-#define ADC_HW				1
+-
+-struct ab8500_gpadc;
+-
+-struct ab8500_gpadc *ab8500_gpadc_get(char *name);
+-int ab8500_gpadc_sw_hw_convert(struct ab8500_gpadc *gpadc, u8 channel,
+-		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type);
+-static inline int ab8500_gpadc_convert(struct ab8500_gpadc *gpadc, u8 channel)
+-{
+-	return ab8500_gpadc_sw_hw_convert(gpadc, channel,
+-			SAMPLE_16, 0, 0, ADC_SW);
+-}
+-
+-int ab8500_gpadc_read_raw(struct ab8500_gpadc *gpadc, u8 channel,
+-		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type);
+-int ab8500_gpadc_double_read_raw(struct ab8500_gpadc *gpadc, u8 channel,
+-		u8 avg_sample, u8 trig_edge, u8 trig_timer, u8 conv_type,
+-		int *ibat);
+-int ab8500_gpadc_ad_to_voltage(struct ab8500_gpadc *gpadc,
+-		u8 channel, int ad_value);
+-void ab8540_gpadc_get_otp(struct ab8500_gpadc *gpadc,
+-			u16 *vmain_l, u16 *vmain_h, u16 *btemp_l, u16 *btemp_h,
+-			u16 *vbat_l, u16 *vbat_h, u16 *ibat_l, u16 *ibat_h);
+-
+-#endif /* _AB8500_GPADC_H */
 -- 
 2.21.0
 

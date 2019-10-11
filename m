@@ -2,162 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F93D41F0
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2019 15:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0070CD4341
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2019 16:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728169AbfJKN6N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Oct 2019 09:58:13 -0400
-Received: from mail-oi1-f180.google.com ([209.85.167.180]:39180 "EHLO
-        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728068AbfJKN6N (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Oct 2019 09:58:13 -0400
-Received: by mail-oi1-f180.google.com with SMTP id w144so8049219oia.6;
-        Fri, 11 Oct 2019 06:58:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=AytY9RaOFMiuMeVFAdexpGbO16/DhiD2ofdUEPgBF1Q=;
-        b=ak2YGPjEYnLMwwk9zxuwNsKeKkxITIISTJdqdgfyKPKMLn00u4WUp/JWhvZJ+5Cw3o
-         UVW8hRQornFDMnQSnJgkNmzAmfd3XYOnGNdFVmUMkogKQUxu/zI35uQj7cycifwl0O6y
-         tKstrO9H4XLpdRvFaXKPohrm0c6ubxN9gq+aMfpz8WZgr9S/naEQDSyQidzz5DujGEvA
-         E7bvlLxRAeeHPO9IMoZCgKe4WQm1Qxjh/3Q0ycr5+jqmNkRA83Xfb/f8oCUXhRcQXgQV
-         qVuVTUpeKT0PqZrSVOi8MUkMr7e2ds+lFk0h7BBAh4eX5/Fp3597W93w5QiedfbZX8Re
-         FArw==
-X-Gm-Message-State: APjAAAWX1RUjQaHWc4UZgnbzyDp8hhqQQwaXrHLENFQrF5SNIK/MWEr3
-        qvoCFEOCvD7lKy4adjb2eQ==
-X-Google-Smtp-Source: APXvYqxtffR8czl1U1RQTq/Ohz0EN84FPMWZcjMCNUDER4Ji+4PpCT0VJCpJkyTf8rMV7jHoi6aPLw==
-X-Received: by 2002:a54:438f:: with SMTP id u15mr5181880oiv.40.1570802292421;
-        Fri, 11 Oct 2019 06:58:12 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id l9sm2581820otn.44.2019.10.11.06.58.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2019 06:58:11 -0700 (PDT)
-Date:   Fri, 11 Oct 2019 08:58:11 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Robert Jones <rjones@gateworks.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S1727262AbfJKOnw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Oct 2019 10:43:52 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:44439 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726551AbfJKOnw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Oct 2019 10:43:52 -0400
+Received: from xps13.stephanxp.local (lfbn-1-17395-211.w86-250.abo.wanadoo.fr [86.250.200.211])
+        (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 167AE240008;
+        Fri, 11 Oct 2019 14:43:48 +0000 (UTC)
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: imu: add fxos8700 imu binding
-Message-ID: <20191011135811.GA23962@bogus>
-References: <20191010012523.14426-1-rjones@gateworks.com>
- <20191010175648.10830-1-rjones@gateworks.com>
- <20191010175648.10830-2-rjones@gateworks.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v4 0/8] Introduce max12xx ADC support
+Date:   Fri, 11 Oct 2019 16:43:39 +0200
+Message-Id: <20191011144347.19146-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191010175648.10830-2-rjones@gateworks.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Oct 10, 2019 at 10:56:47AM -0700, Robert Jones wrote:
-> This adds documentation for the Freescale FXOS8700 Inertial Measurement Unit
-> device-tree bindings.
-> 
-> Signed-off-by: Robert Jones <rjones@gateworks.com>
-> ---
->  .../devicetree/bindings/iio/imu/nxp,fxos8700.yaml  | 69 ++++++++++++++++++++++
->  1 file changed, 69 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/nxp,fxos8700.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/imu/nxp,fxos8700.yaml b/Documentation/devicetree/bindings/iio/imu/nxp,fxos8700.yaml
-> new file mode 100644
-> index 0000000..d33a1cc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/imu/nxp,fxos8700.yaml
-> @@ -0,0 +1,69 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/imu/fxos8700.yaml#
+Hello, here is a patchset updating the existing max1027.c driver (for
+10-bit max1027/29/31 ADCs) with a few corrections/improvements and
+then introducing their 12-bit cousins named max1227/29/31.
 
-Documentation/devicetree/bindings/iio/imu/nxp,fxos8700.yaml: $id: 
-path/filename 'iio/imu/fxos8700.yaml' doesn't match actual filename
+As on my hardware setup the "start conversion" and "end of conversion"
+pin are not wired (which is absolutely fine for this chip), I also
+updated the driver and the bindings to support optional interrupts. In
+this case, triggered buffers are not available and the user must poll
+the value from sysfs.
 
-Test your binding with 'make dt_binding_check'.
+Thanks,
+Miquèl
 
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale FXOS8700 Inertial Measurement Unit
-> +
-> +maintainers:
-> +  - Robert Jones <rjones@gateworks.com>
-> +
-> +description: |
-> +  Accelerometer and magnetometer combo device with an i2c and SPI interface.
-> +  https://www.nxp.com/products/sensors/motion-sensors/6-axis/digital-motion-sensor-3d-accelerometer-2g-4g-8g-plus-3d-magnetometer:FXOS8700CQ
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,fxos8700
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 2
-> +
-> +  interrupt-names:
-> +    maxItems: 2
-> +    items:
-> +      - const: INT1
-> +      - const: INT2
 
-This doesn't match the example now. You need 'minItems: 1' if you need
-to support 1 or 2 interrupts. If it can be either one, then you need:
+Changes in v4:
+==============
+* In the v3, I removed the bindings documentation for the max10xx
+  devices, in favor of the trivial devices bindings. Unfortunately, I
+  didn't spot that in the following patch adding support for the
+  max12xx series, I was adding the compatibles to the trivial devices
+  list but also re-introducing the bindings documentation with the
+  three new compatibles. Just drop this part of the last patch to only
+  have the trivial devices file, not the specific bindings. All the
+  rest is the same.
 
-items:
-  enum: [ INT1, INT2 ]
+Changes in v3:
+==============
+* Updated the commit message of the patch adding debugfs read access
+  to better explain why I decided to limit the number of bytes read to
+  two.
+* Updated the macros to define the number of channels per device as
+  proposed by Jonathan.
+* Re-used the realbits entry instead of adding my own (called .depth).
+* Started doing DT-bindings yaml conversion, but realized that after
+  the first patch offering the interrupt as optional, the
+  documentation was fitting pretty well the trivial devices
+  representation. Dropped the specific bindings files and updated the
+  trivial devices list instead.
 
-> +
-> +  drive-open-drain:
-> +    type: boolean
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        fxos8700@1e {
-> +          compatible = "nxp,fxos8700";
-> +          reg = <0x1e>;
-> +
-> +          interrupt-parent = <&gpio2>;
-> +          interrupts = <7 IRQ_TYPE_EDGE_RISING>;
-> +          interrupt-names = "INT1";
-> +        };
-> +    };
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        fxos8700@1e {
-> +          compatible = "nxp,fxos8700";
-> +          reg = <0x1e>;
+Changes in v2:
+==============
+* Removed the addition of three compatibles from patch 4 (the
+  preparation patch) to add these lines back in patch 5 (the actual
+  introduction).
 
-I guess you could have SPI chip select # 30...
 
-> +
-> +          interrupt-parent = <&gpio2>;
-> +          spi-max-frequency = <1000000>
-> +          interrupts = <7 IRQ_TYPE_EDGE_RISING>;
-> +          interrupt-names = "INT1";
-> +        };
-> +    };
-> -- 
-> 2.9.2
-> 
+Miquel Raynal (8):
+  iio: adc: max1027: Add debugfs register read support
+  iio: adc: max1027: Make it optional to use interrupts
+  iio: adc: max1027: Reset the device at probe time
+  iio: adc: max1027: Prepare the introduction of different resolutions
+  iio: adc: max1027: Introduce 12-bit devices support
+  dt-bindings: iio: adc: max1027: Mark interrupts as optional
+  dt-bindings: Add 1027/1029/1031 SPI ADCs as trivial devices
+  dt-bindings: Add max12xx SPI ADC series as trivial devices
+
+ .../bindings/iio/adc/max1027-adc.txt          |  20 --
+ .../devicetree/bindings/trivial-devices.yaml  |  12 ++
+ drivers/iio/adc/Kconfig                       |   4 +-
+ drivers/iio/adc/max1027.c                     | 180 +++++++++++-------
+ 4 files changed, 125 insertions(+), 91 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/adc/max1027-adc.txt
+
+-- 
+2.20.1
+

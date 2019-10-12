@@ -2,15 +2,15 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5174D5131
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 18:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10BBDD512B
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 18:55:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729499AbfJLQ5O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Oct 2019 12:57:14 -0400
-Received: from sender4-op-o14.zoho.com ([136.143.188.14]:17460 "EHLO
+        id S1729220AbfJLQzM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Oct 2019 12:55:12 -0400
+Received: from sender4-op-o14.zoho.com ([136.143.188.14]:17421 "EHLO
         sender4-op-o14.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729495AbfJLQzN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Oct 2019 12:55:13 -0400
+        with ESMTP id S1727115AbfJLQxM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Oct 2019 12:53:12 -0400
 ARC-Seal: i=1; a=rsa-sha256; t=1570899183; cv=none; 
         d=zoho.com; s=zohoarc; 
         b=K+1e2/BFHXnRReb+f3XBc3FGfdWHDXmhlOtSs5lRq1CFVXB+4RA2tuFOL1yG6VSYp7CrRinIFMlqsvYSlPoptLpSmGz/J0/6JnoERQ3OH1M2klMHvYKJWLHs4VEbAIgnpk4xhWI5QiXysomDxyTnEVSDJGMjx+lNrt26mn3zsR4=

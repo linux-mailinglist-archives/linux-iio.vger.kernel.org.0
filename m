@@ -2,170 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 458ECD51B6
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 20:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23139D51B4
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 20:44:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729195AbfJLSre (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Oct 2019 14:47:34 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:37631 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728111AbfJLSre (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Oct 2019 14:47:34 -0400
-Received: by mail-oi1-f194.google.com with SMTP id i16so10723245oie.4
-        for <linux-iio@vger.kernel.org>; Sat, 12 Oct 2019 11:47:33 -0700 (PDT)
+        id S1728636AbfJLSod (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Oct 2019 14:44:33 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:41962 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728111AbfJLSod (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Oct 2019 14:44:33 -0400
+Received: by mail-oi1-f193.google.com with SMTP id w65so10691650oiw.8
+        for <linux-iio@vger.kernel.org>; Sat, 12 Oct 2019 11:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=M4hviIaYBakjq3wyzuCK4M7g9B6CKEUn9YNNsq0+fnU=;
-        b=uP3OraWlzSy2PZJRBaCPb5+3g/+y7Jo1TY8r/m4F5F6EQLG5VarvkiafjsLmocQEsa
-         5UUhhyUMjlSu2WxD1WMYDrEbon7JZYqQkrwx2kWKU64FTumhfd1+gpQodzGuIh+paRQL
-         OkGOhkeZxurd+5cvWLklWsltYSnl3FB4cx/2BgInI1ok+nucdhc2G2dr0sn66Zbh5A78
-         bL2wMUjWZZWQI5rzoRqwCOEv7KP7sk6EO5kxD22o8Wegq8ixK5b36GFJhRkGBe9u+Kfc
-         rPNRhNxqsUun60nyg0UeWEj3A3gGOK8ZgTRT0+LcAdWCFh1LTncZtwIqtyVhHN4VAh16
-         tK+g==
+         :cc;
+        bh=tt7EwK0Ub05bYLQcTiSuwkmJDE/NFbm7qXnc4dJJNYc=;
+        b=iSJyreRxKiKXWLf9IM46ccwUxLb3tfVcWV5KufPfHxSv6l49GI0OZoJ10mchXpXEoe
+         hJEP2bYlvsG//5j/BOjMZhfAiRQXtZ3mHQQ+R+pXeJE63NIUBh9entfIjgHn8prmgcCG
+         zByjOVlTPCV1kAunsfAm8+dwbC/cL+x1vne/f432AxEZC12p2dvrt4RAKX8f8Edat2oe
+         Yb4yi+6SNpT0rNbSILElHIP77u+ITAI7D5DdvPGcIgLRFWmFhmJFTxKT/9sIai061uTx
+         hdcyXyczTsW6MTW9OYdVedo+6Lzpdw5yRS6mtDxwfDz5ydMH4qoVKyyIDVkHbJ1JnKW1
+         mAAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=M4hviIaYBakjq3wyzuCK4M7g9B6CKEUn9YNNsq0+fnU=;
-        b=dsGS8JKcSAbCNbVtogN66uYXjn/8mRxZmf0uhxhD0PrQW2fAlUJiTYvM8vgrnpFSrx
-         /rlmSXOrMNrOqtdidjUsXKCF0P1lQVaJ637fbuUjCvG9jHL9mzhHaEEdcxcmuJO+3UEU
-         HXGL3IQ/XAX6pPcTdFIVKEuS7GtIIq+NGPAPbiuyY4Q0OCYqxNzAbGvVFZwex0hI3Jgd
-         Wo25yK0U1ezNEy9cDhEiNy/fOmo96BWiPpBJ++eEwf4XWSeiRaOlX7JK8gzQ/MfXoKHP
-         qZoNIWzVaLlQk9+rovxLUpjXa/aHKze5v1shgR4PiA+Lt3o1gbwpfbY6p/BVChu24cj4
-         S72w==
-X-Gm-Message-State: APjAAAWypPmUoacZKqIAmp4manZIVxQjdzHiudO0WkpECegdvHCKADGc
-        uc4QLgdAeDoPP6Qjon/YsOzGhF3TH23aIP7xuJRxZPuU
-X-Google-Smtp-Source: APXvYqzYWF3HcEMnPRW56ohU4zZN/W+gIK366v5hGFlEHSmi9eSw8OYO0bZxJ/v9YzO4vGxWAkPH/iQ+AgUnAPuxksA=
-X-Received: by 2002:aca:4794:: with SMTP id u142mr18195555oia.159.1570905716989;
- Sat, 12 Oct 2019 11:41:56 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=tt7EwK0Ub05bYLQcTiSuwkmJDE/NFbm7qXnc4dJJNYc=;
+        b=Y+C+BqFpTB4sGbPcBlmjB9LPPmgrg32wBpOApZAoqT1tiOw8fpuxo/K9FOvY9cxAwv
+         dScKaxxYY/ciorAJnjNKClbdF5Fwj2mucDiZqgi+kJR3/VDOV5bfnpR3rQLdX3I+G4RF
+         nQb4EJi4F5MKTNedlSGaMzOSbDl0ebn3BEGpTtpuuom0APgTBjkRRRaJqk1WJTu0EKkq
+         PGMPYPBYgtNCG1UrsCoZTKhK5RhvFA4wJfKIiSnW9lbaxdOJGWFmL6RJKOSVZovU1Hqb
+         HHTlxOuC0aBHOlCky9QU1HMaGfMtUbd7SYlKVpE3rSVJ5J+xvZlVDXoz4224I7Nx7ZYa
+         /QPQ==
+X-Gm-Message-State: APjAAAV+dR78TXotn5Fznb24+LV5wfQYptIyMd+uh67ZlmxXJCX9UuQ0
+        vOj2MBf5E0WmSLwkiAK32JnsuW5d+ERLbmn7hLmojQ==
+X-Google-Smtp-Source: APXvYqztFgRYweMlTqW1WULS88/8rbPWheT+71FQkjwWdUFy1jn6UCtm2P5CTQuWh0WshLLbJtDaIdqNxlHLhEUj+xI=
+X-Received: by 2002:a05:6808:155:: with SMTP id h21mr17135074oie.117.1570905872612;
+ Sat, 12 Oct 2019 11:44:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191012121946.051b646f@archlinux> <20191012152744.GA2142233@kroah.com>
- <20191012152841.GB2142233@kroah.com> <20191012170615.01546a96@archlinux>
-In-Reply-To: <20191012170615.01546a96@archlinux>
+References: <20191012162808.1196470-1-jic23@kernel.org>
+In-Reply-To: <20191012162808.1196470-1-jic23@kernel.org>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Sat, 12 Oct 2019 21:41:45 +0300
-Message-ID: <CA+U=DspmQcUZU3q-ntJEVaqtkkK=gk0GCCu06ntYf_kvnpnLZw@mail.gmail.com>
-Subject: Re: [PULL v2] First set of iio new device support etc for the 5.5 cycle
+Date:   Sat, 12 Oct 2019 21:44:21 +0300
+Message-ID: <CA+U=DspSueLQjD9bkW63xEJ8+fpE8M=H0hK=M-m0Oab5f-O8Rg@mail.gmail.com>
+Subject: Re: [RFC] iio: adis: Fix build warnings due to disagreement on
+ whether ret can be > 0
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 12, 2019 at 7:18 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat, Oct 12, 2019 at 7:32 PM <jic23@kernel.org> wrote:
 >
-> On Sat, 12 Oct 2019 17:28:41 +0200
-> Greg KH <gregkh@linuxfoundation.org> wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> > On Sat, Oct 12, 2019 at 05:27:44PM +0200, Greg KH wrote:
-> > > On Sat, Oct 12, 2019 at 12:19:46PM +0100, Jonathan Cameron wrote:
-> > > > The following changes since commit b73b93a2af3392b9b7b8ba7e818ee767=
-499f9655:
-> > > >
-> > > >   iio: adc: ad7192: Add sysfs ABI documentation (2019-09-08 10:34:4=
-9 +0100)
-> > > >
-> > > > are available in the Git repository at:
-> > > >
-> > > >   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tag=
-s/iio-for-5.5a-take2
-> > >
-> > > Better, but I see this now:
-> > >
-> > > drivers/iio/imu/adis.c: In function =E2=80=98__adis_check_status=E2=
-=80=99:
-> > > drivers/iio/imu/adis.c:295:9: warning: =E2=80=98status=E2=80=99 may b=
-e used uninitialized in this function [-Wmaybe-uninitialized]
-> > >   295 |  status &=3D adis->data->status_error_mask;
-> > >       |         ^~
-> > >
-> > >
-> > > I'll take this, can you just send a follow-on patch for this?
-> >
-> > Also I see:
-> >
-> > drivers/iio/imu/adis16480.c: In function =E2=80=98adis16480_enable_irq=
-=E2=80=99:
-> > drivers/iio/imu/adis16480.c:950:6: warning: =E2=80=98val=E2=80=99 may b=
-e used uninitialized in this function [-Wmaybe-uninitialized]
-> >   950 |  val &=3D ~ADIS16480_DRDY_EN_MSK;
-> >       |      ^~
-> >   CC [M]  drivers/iio/magnetometer/hmc5843_i2c.o
-> > drivers/iio/imu/adis16480.c: In function =E2=80=98adis16480_write_raw=
-=E2=80=99:
-> > drivers/iio/imu/adis16480.c:571:7: warning: =E2=80=98val=E2=80=99 may b=
-e used uninitialized in this function [-Wmaybe-uninitialized]
-> >   571 |   val &=3D ~enable_mask;
-> >       |       ^~
-> > drivers/iio/imu/adis16480.c:557:11: note: =E2=80=98val=E2=80=99 was dec=
-lared here
-> >   557 |  uint16_t val;
-> >       |           ^~~
-> >
-> >
-> > So did you really fix anything here?
-> >
-> > I'll drop this pull again.
-> >
-> > What version of gcc are you using?  Might I suggest a newer one (i.e. a
-> > modern one?)
+> I added a check to the inline functions in the header that provide
+> the specific sized versions of __adis_read_reg_* to check if
+> they were returning 0 before setting the value.   This was
+> needed to solve a 0-day report which I was unable to replicate.
 >
-> Ah. This is my mistake.  I did see all of these, but still thought we wer=
-e
-> in the category of tidying up some compiler version caused issues.
+> Unfortunately it caused some build warnings because the drivers
+> check for ret is not negative before using the value, leaving the
+> positive range where flow continues, but the value is unset.
 >
-> The adis16400 came up in my local tests, so I previously pinged Alex on
-> basis it was something to do in a follow up. The other two showed up, but
-> again I still thought these were compiler version issues, particularly
-> as 0-day didn't highlight them (there were several other issues it
-> did highlight this week). Hence again I requested a follow up to tidy
-> it up.
->
-> Anyhow, did some digging.  The issue here was a 'fix' I put in to an init=
-ial
-> 0-day issue in the inline functions that Alex added.  Note that one
-> appears to be compiler version dependent as it didn't turn up in my
-> local builds. There are now inline functions that check if (ret)
-> and don't set the value if ret is non 0.
->
-> Out in the drivers, the check is the more specific (unnecessarily)
-> if (ret < 0) and hence the compiler is concluded that there might be a pa=
-th to
-> val not being set.  Previously it was giving up figuring this out.
-> So reality is they are a false positive (sort of as in reality ret
-> is never positive) but the compiler has made a reasonable point
-> that it can't see that.
->
-> Never mind, I'll do a new pull request once fixes are in place.
-> Given there are two obvious ways of suppressing this and it's Alex's
-> driver I'll wait until he has time to take a look.
->
-> Sorry for wasting your time.
+> This is one of several possible fixes, hence the RFC.
 >
 
-If it helps, let's drop the ADIS patches for this round, and I can
-take a closer look as well.
-The cleanup does seem to have revealed a few gaps in our CI in
-relation to upstreaming things.
+I'll take a closer look at this patch on Monday.
+But I'll also want to look at the whole series again for ADIS.
 
-We use Travis-CI for our stuff and stuff is public:
-https://travis-ci.org/analogdevicesinc/linux
+It looks to me that the rework (though it looked credible at review),
+did expose some subtleties that the compiler complains about.
+I'll probably use this issue as a test-bed for the CI improvements
+I'll do on our end.
 
-So, if anyone sees anything we should do better, I'm open to
-improvements/suggestions.
-I am in the process of adding sparse-builds, maybe some build
-hardening is next (stronger compile/build flags), adding our patches
-on top of a newer kernel (that's partially done).
-That should help us catch things a bit earlier.
-
-Sorry for the noise from my side as-well.
+Thanks
 Alex
 
-
-> Jonathan
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/iio/gyro/adis16136.c | 4 ++--
+>  drivers/iio/imu/adis.c       | 2 +-
+>  drivers/iio/imu/adis16480.c  | 4 ++--
+>  3 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/iio/gyro/adis16136.c b/drivers/iio/gyro/adis16136.c
+> index 2d2c48f0b996..223c42ef6f86 100644
+> --- a/drivers/iio/gyro/adis16136.c
+> +++ b/drivers/iio/gyro/adis16136.c
+> @@ -191,7 +191,7 @@ static int __adis16136_get_freq(struct adis16136 *adis16136, unsigned int *freq)
+>         int ret;
+>
+>         ret = __adis_read_reg_16(&adis16136->adis, ADIS16136_REG_SMPL_PRD, &t);
+> -       if (ret < 0)
+> +       if (ret)
+>                 return ret;
+>
+>         *freq = 32768 / (t + 1);
+> @@ -288,7 +288,7 @@ static int adis16136_get_filter(struct iio_dev *indio_dev, int *val)
+>
+>         ret = __adis_read_reg_16(&adis16136->adis, ADIS16136_REG_AVG_CNT,
+>                                  &val16);
+> -       if (ret < 0)
+> +       if (ret)
+>                 goto err_unlock;
+>
+>         ret = __adis16136_get_freq(adis16136, &freq);
+> diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
+> index 5e28464ea05b..6ee54996609a 100644
+> --- a/drivers/iio/imu/adis.c
+> +++ b/drivers/iio/imu/adis.c
+> @@ -289,7 +289,7 @@ int __adis_check_status(struct adis *adis)
+>         int i;
+>
+>         ret = __adis_read_reg_16(adis, adis->data->diag_stat_reg, &status);
+> -       if (ret < 0)
+> +       if (ret)
+>                 return ret;
+>
+>         status &= adis->data->status_error_mask;
+> diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
+> index 01dae50e985b..ed3e52651003 100644
+> --- a/drivers/iio/imu/adis16480.c
+> +++ b/drivers/iio/imu/adis16480.c
+> @@ -564,7 +564,7 @@ static int adis16480_set_filter_freq(struct iio_dev *indio_dev,
+>         mutex_lock(slock);
+>
+>         ret = __adis_read_reg_16(&st->adis, reg, &val);
+> -       if (ret < 0)
+> +       if (ret)
+>                 goto out_unlock;
+>
+>         if (freq == 0) {
+> @@ -944,7 +944,7 @@ static int adis16480_enable_irq(struct adis *adis, bool enable)
+>         int ret;
+>
+>         ret = __adis_read_reg_16(adis, ADIS16480_REG_FNCTIO_CTRL, &val);
+> -       if (ret < 0)
+> +       if (ret)
+>                 return ret;
+>
+>         val &= ~ADIS16480_DRDY_EN_MSK;
+> --
+> 2.23.0
+>

@@ -2,120 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BE64D500E
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 15:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A82FD5011
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 15:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727642AbfJLN0j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Oct 2019 09:26:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52126 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726839AbfJLN0j (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 12 Oct 2019 09:26:39 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CA99F2087E;
-        Sat, 12 Oct 2019 13:26:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570886798;
-        bh=myoBeJNgQsjA19Q2j38acNQ3q6hFHppo2dmPzTjetvo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FH7qxaGk2/qUrmLNcPPcwt+HBeIkkc8gK7YaHbj2u+62FolR+6J2v+enyXcoXOehI
-         eAj03qQac3aw9g9JE9QNIVyvStDKP3RaGTrt5LYe0iiiGLuaAxmbWzI7WpsZ1/114p
-         KeD+5SN/WuMucspP68HUwXE7y07FNy/0y6Z0+BNQ=
-Date:   Sat, 12 Oct 2019 14:26:33 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
-        Sean Nyekjaer <sean@geanix.com>, martin@geanix.com,
-        Bobby Jones <rjones@gateworks.com>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 00/13] various st_lsm6dsx fixes and missing bits
-Message-ID: <20191012142633.162e832f@archlinux>
-In-Reply-To: <CAA2SeNLEG9kMxW_XrGeyaORXdY5xjdxqqU9BPsdiWcr9J_ruYA@mail.gmail.com>
-References: <cover.1570367532.git.lorenzo@kernel.org>
-        <20191012132020.412e9595@archlinux>
-        <CAA2SeNLEG9kMxW_XrGeyaORXdY5xjdxqqU9BPsdiWcr9J_ruYA@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1729279AbfJLN1Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Oct 2019 09:27:25 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:43439 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726839AbfJLN1Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Oct 2019 09:27:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1570886843;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5mSmPn95dTxbtFsZXKmT9oca57QOpbVGLKuCe650iKI=;
+        b=fWE67QqzljKIbX/QrFPm3LHDN6RpEBjTt8S4zHdTLIJjT7kDX9bOc+YpGehAnYQAFeT37t
+        YVfMqRwidvhGSwpYZvwAHwLI9WZ59Lm1T8TN2dlqlhvs0sO+TLOAcpjxmtebFO4BG92QRS
+        KRSmokNeXEIun3LLi8EBr0staPJORSU=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-109-BSO12Vu9NVaeFADQK-nLrA-1; Sat, 12 Oct 2019 09:27:20 -0400
+Received: by mail-io1-f72.google.com with SMTP id g126so18906151iof.3
+        for <linux-iio@vger.kernel.org>; Sat, 12 Oct 2019 06:27:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IvVdxBfFUUUiOCeYZkI7sUgaHb9GpTpgfIXV0H/TVvU=;
+        b=C3Hc+zqO5cX4a+VYGBzSaIq4Y9UNVkf3EGPFoRTbrZwb5Ewqe0IgEZXgliVL+hnNC/
+         lay4OCK62TaS6N23Kf+Ko97lgyBp4se1/Kfg5g7cagnPkNl5PMwpsd1AKClU7COd1KtP
+         dS2najTRNeaZX1vB5Jif3fzyrA2xewh+W5XxYjZXmIuqCE+ViVQlU4jCglfANfQfPYU4
+         2pdyNp4tIhuK8OCrlKlZkhcktm4/VEny5zMQekhDF58LTufh93ZoDCdghqXOziy1xS/G
+         atRIkm8iUihggb/lcCOED57tmWXgZx/MXy09IMwJv5Ic2sjiiP2sB6S59Kf4YPLUsXYk
+         D0ig==
+X-Gm-Message-State: APjAAAXCi6H8My7D0wEP2V/v/Shoz8Jwng4Hh4FFFrslRW43ei+bSBmR
+        jHMkO/qhnvgiKkwO7WXWPKu2SrYwxHIeY481LRTIWe4jXoyEiQswAj4XiHL5hLCPirIDcplz+up
+        5HACJAveKU85Ld9WG5Qp0Sx6oNjYC3KSGGtv1
+X-Received: by 2002:a6b:7945:: with SMTP id j5mr22021428iop.12.1570886839576;
+        Sat, 12 Oct 2019 06:27:19 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzgpgrEeqnvKdFHhkx7Vc1+XTMTSh0dg1Nsb5SMO7ICwsdL5kf9s522ME74bjGBWvo/qJbvoJmzmcivV5UWb18=
+X-Received: by 2002:a6b:7945:: with SMTP id j5mr22021392iop.12.1570886839188;
+ Sat, 12 Oct 2019 06:27:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <cover.1570441034.git.lorenzo@kernel.org> <20191012134023.1b0238ce@archlinux>
+In-Reply-To: <20191012134023.1b0238ce@archlinux>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Sat, 12 Oct 2019 15:27:08 +0200
+Message-ID: <CAJ0CqmVt5+QMYZoFAOr9pnQDHwvEfu=asPxWP25jTqh7pXM7jg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] add support to STM LSM6DS0 6-axis Mems sensor
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
+        martin@geanix.com, devicetree@vger.kernel.org
+X-MC-Unique: BSO12Vu9NVaeFADQK-nLrA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 12 Oct 2019 14:26:24 +0200
-Lorenzo Bianconi <lorenzo.bianconi83@gmail.com> wrote:
+>
+> On Mon,  7 Oct 2019 11:43:36 +0200
+> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+>
+> > Add support to STM LSM6DS0 6-axis sensor. Just compiled, but LSM6DS0 re=
+lies on
+> > the same register map used by LSM9DS1
+> I'm feeling paranoid. Is this definitely different form the
+> LSM6DSO which is already supported?
+>
+> If so ST loose for stupid part naming.
 
-> >
-> > On Sun,  6 Oct 2019 15:21:54 +0200
-> > Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-> >  
-> > > This series fixes some corner cases introduced with LSM9DS1 support and with
-> > > the one that has added wake-up event support. In particular it fixes a crash
-> > > due to missing HW FIFO support for LSM9DS1.
-> > > Moreover I introduced the missing wake-up event support for LSM6DSO/LSM6DSOX
-> > > sensor
-> > > Add missing dts documentation for wake-up event and the capability to enable it
-> > > through platformdata.
-> > > Code cleanup.  
-> >
-> > Hmm. This is going to be very messy.  In theory quite a few of these apply
-> > to stuff in 5.4 but I assume won't cleanly apply given other changes.  You
-> > may want to think about doing backports of the important parts to 5.4.
-> >
-> > I'll apply the lot for 5.5.  
-> 
-> AFAIU just LSM9DS1 support will go in 5.4 (correct? Sean's series will
-> go in 5.5) so I will backport just LSM9DS1 fixes to 5.4 (I guess 3-4
-> patches).
-> 
-That is what I'd expect.
+Yes, it is very different..AFAIK LSM6DSO is last IMU sensor from ST
+while LSM6DS0 is very old (it has the same register map used in
+LSM9DS1 imu).
 
-Thanks,
+Regards,
+Lorenzo
 
-Jonathan
-
-> Regards,
-> Lorenzo
-> 
+>
+> Jonathan
+>
 > >
-> > Thanks,
+> > Lorenzo Bianconi (2):
+> >   iio: imu: st_lsm6dsx: add support to LSM6DS0
+> >   dt-bindings: iio: imu: st_lsm6dsx: add lsm6ds0 device bindings
 > >
-> > Jonathan
-> >  
-> > >
-> > > Lorenzo Bianconi (13):
-> > >   iio: imu: st_lsm6dsx: use st_lsm6dsx_read_locked in
-> > >     st_lsm6dsx_report_motion_event
-> > >   iio: imu: st_lsm6dsx: add sanity check for read_fifo pointer
-> > >   iio: imu: st_lsm6dsx: move irq related definitions in irq_config
-> > >   iio: imu: st_lsm6dsx: do not access active-low/open-drain regs if not
-> > >     supported
-> > >   iio: imu: st_lsm6dsx: move bdu/boot and reset register info in
-> > >     hw_settings
-> > >   iio: imu: st_lsm6dsx: always check enable_reg in
-> > >     st_lsm6dsx_event_setup
-> > >   iio: imu: st_lsm6dsx: rely on st_lsm6dsx_update_bits_locked
-> > >     configuring events
-> > >   iio: imu: st_lsm6dsx: grab conf mutex in st_lsm6dsx_write_event_config
-> > >   iio: imu: st_lsm6dsx: fix checkpatch warning
-> > >   iio: imu: st_lsm6dsx: add wakeup_source in st_sensors_platform_data
-> > >   iio: imu: st_lsm6dsx: add missing kernel documenation
-> > >   dt-bindings: iio: imu: st_lsm6dsx: document missing wakeup-source
-> > >     property
-> > >   iio: imu: st_lsm6dsx: enable wake-up event for LSM6DSO
-> > >
-> > >  .../bindings/iio/imu/st_lsm6dsx.txt           |   1 +
-> > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  35 +-
-> > >  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    |   3 +
-> > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 588 ++++++++++++------
-> > >  .../linux/platform_data/st_sensors_pdata.h    |   2 +
-> > >  5 files changed, 440 insertions(+), 189 deletions(-)
-> > >  
-> >  
-> 
-> 
+> >  Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt | 1 +
+> >  drivers/iio/imu/st_lsm6dsx/Kconfig                       | 2 +-
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h                  | 2 ++
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c             | 5 ++++-
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c              | 5 +++++
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c              | 5 +++++
+> >  6 files changed, 18 insertions(+), 2 deletions(-)
+> >
+>
 

@@ -2,44 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 617E1D4F5D
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 13:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A898FD4F67
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 13:44:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729002AbfJLLfB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Oct 2019 07:35:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42116 "EHLO mail.kernel.org"
+        id S1727083AbfJLLok (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Oct 2019 07:44:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43280 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728636AbfJLLfA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 12 Oct 2019 07:35:00 -0400
+        id S1727265AbfJLLmk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 12 Oct 2019 07:42:40 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 299462089C;
-        Sat, 12 Oct 2019 11:34:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 37A3F2089C;
+        Sat, 12 Oct 2019 11:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570880100;
-        bh=M8pIuI3N9q6O19inwH7iwVRpRXidMZc87RjRVHszNGA=;
+        s=default; t=1570880559;
+        bh=v57pBOuT7ianiXPyK8eblRNxhJWFvLsxxNWM4rdk4o4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Agu+IATAylmCBlT5b/EgQcCruhFS4xRBrIagE47BvVsQdvK2+f01Klj3luzu7i7H5
-         vfdtPY3aTojd4PoJSU/pvuDiXL8MigMgKGIpVYpO5mykAJhjZzBXNKoygiqR6hH/XK
-         WTbaksUlStkjqZqm5ILC1KCZx4DZ+lI0zfL65Sbc=
-Date:   Sat, 12 Oct 2019 12:34:55 +0100
+        b=clRMAt8IMeIFnzWbQZRtZAgrDPj+V2NUBjn0cRlTdnMRpcr6/2wCcG7E7dYzNhIFe
+         Eh5tlSHqBSZUVB6UunRbWCEoXIJtXpN4U4tYSSHesedACFEC3j2Ur32W3GUcWM0tgy
+         DK272l2OBqUVpnze9KFyydy5shae8EbzxwhD0xSA=
+Date:   Sat, 12 Oct 2019 12:42:36 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 2/8] iio: adc: max1027: Make it optional to use
- interrupts
-Message-ID: <20191012123455.7317c298@archlinux>
-In-Reply-To: <20191011144347.19146-3-miquel.raynal@bootlin.com>
-References: <20191011144347.19146-1-miquel.raynal@bootlin.com>
-        <20191011144347.19146-3-miquel.raynal@bootlin.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 1/3] iio: imu: adis: add doc-string for `adis` struct
+Message-ID: <20191012124236.2f381154@archlinux>
+In-Reply-To: <20191008080239.23239-1-alexandru.ardelean@analog.com>
+References: <20191008080239.23239-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -49,94 +40,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Oct 2019 16:43:41 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+On Tue, 8 Oct 2019 11:02:37 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> The chip has a 'start conversion' and a 'end of conversion' pair of
-> pins. They can be used but this is absolutely not mandatory as regular
-> polling of the value is totally fine with the current internal
-> clocking setup. Turn the interrupts optional and do not error out if
-> they are not inquired in the device tree. This has the effect to
-> prevent triggered buffers use though.
+> This change adds a doc-string for the `adis` struct. It details the fields
+> and their roles.
 > 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Applied.
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> ---
+>  include/linux/iio/imu/adis.h | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+> index 48444f28b003..dbdf421d35dd 100644
+> --- a/include/linux/iio/imu/adis.h
+> +++ b/include/linux/iio/imu/adis.h
+> @@ -54,6 +54,20 @@ struct adis_data {
+>  	bool has_paging;
+>  };
+>  
+> +/**
+> + * struct adis - ADIS device instance data
+> + * @spi: Reference to SPI device which owns this ADIS IIO device
+> + * @trig: IIO trigger object data
+> + * @data: ADIS chip variant specific data
+> + * @burst: ADIS burst transfer information
+> + * @state_lock: Lock used by the device to protect state
+> + * @msg: SPI message object
+> + * @xfer: SPI transfer objects to be used for a @msg
+> + * @current_page: Some ADIS devices have registers, this selects current page
+> + * @buffer: Data buffer for information read from the device
+> + * @tx: Cacheline aligned TX buffer for SPI transfers
+> + * @rx: Cacheline aligned RX buffer for SPI transfers
+That one is ever so slightly untrue.  It's in the same cacheline as the
+tx and so safe (device transfers can only cause trouble for themselves).
+
+I'll tweak to just...
+	RX buffer for SPI transfers. May share cacheline with tx.
+
+Hope you don't mind as don't want to waste your time on a v2 for just that.
+
+Applied to the togreg branch of iio.git and pushed out as testing for the
+autobuilders to play with it.
 
 Thanks,
 
-> ---
->  drivers/iio/adc/max1027.c | 57 +++++++++++++++++++++------------------
->  1 file changed, 31 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-> index 6cdfe9ef73fc..823223b77a70 100644
-> --- a/drivers/iio/adc/max1027.c
-> +++ b/drivers/iio/adc/max1027.c
-> @@ -430,35 +430,40 @@ static int max1027_probe(struct spi_device *spi)
->  		return -ENOMEM;
->  	}
->  
-> -	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> -					&iio_pollfunc_store_time,
-> -					&max1027_trigger_handler, NULL);
-> -	if (ret < 0) {
-> -		dev_err(&indio_dev->dev, "Failed to setup buffer\n");
-> -		return ret;
-> -	}
-> +	if (spi->irq) {
-> +		ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> +						      &iio_pollfunc_store_time,
-> +						      &max1027_trigger_handler,
-> +						      NULL);
-> +		if (ret < 0) {
-> +			dev_err(&indio_dev->dev, "Failed to setup buffer\n");
-> +			return ret;
-> +		}
->  
-> -	st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-trigger",
-> -							indio_dev->name);
-> -	if (st->trig == NULL) {
-> -		ret = -ENOMEM;
-> -		dev_err(&indio_dev->dev, "Failed to allocate iio trigger\n");
-> -		return ret;
-> -	}
-> +		st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-trigger",
-> +						  indio_dev->name);
-> +		if (st->trig == NULL) {
-> +			ret = -ENOMEM;
-> +			dev_err(&indio_dev->dev,
-> +				"Failed to allocate iio trigger\n");
-> +			return ret;
-> +		}
->  
-> -	st->trig->ops = &max1027_trigger_ops;
-> -	st->trig->dev.parent = &spi->dev;
-> -	iio_trigger_set_drvdata(st->trig, indio_dev);
-> -	iio_trigger_register(st->trig);
-> +		st->trig->ops = &max1027_trigger_ops;
-> +		st->trig->dev.parent = &spi->dev;
-> +		iio_trigger_set_drvdata(st->trig, indio_dev);
-> +		iio_trigger_register(st->trig);
->  
-> -	ret = devm_request_threaded_irq(&spi->dev, spi->irq,
-> -					iio_trigger_generic_data_rdy_poll,
-> -					NULL,
-> -					IRQF_TRIGGER_FALLING,
-> -					spi->dev.driver->name, st->trig);
-> -	if (ret < 0) {
-> -		dev_err(&indio_dev->dev, "Failed to allocate IRQ.\n");
-> -		return ret;
-> +		ret = devm_request_threaded_irq(&spi->dev, spi->irq,
-> +						iio_trigger_generic_data_rdy_poll,
-> +						NULL,
-> +						IRQF_TRIGGER_FALLING,
-> +						spi->dev.driver->name,
-> +						st->trig);
-> +		if (ret < 0) {
-> +			dev_err(&indio_dev->dev, "Failed to allocate IRQ.\n");
-> +			return ret;
-> +		}
->  	}
->  
->  	/* Disable averaging */
+Jonathan
+
+
+> + */
+>  struct adis {
+>  	struct spi_device	*spi;
+>  	struct iio_trigger	*trig;
 

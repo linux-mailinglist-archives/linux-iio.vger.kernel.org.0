@@ -2,111 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14290D4FAC
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 14:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F040D4FAE
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 14:28:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728636AbfJLM1e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Oct 2019 08:27:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47056 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726793AbfJLMZe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 12 Oct 2019 08:25:34 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4C9C921850;
-        Sat, 12 Oct 2019 12:25:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570883133;
-        bh=dOmMGPZcz4SFD3WuVU+3mZjK8K1NyzQtl/S7u6nKy3k=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jMrTQrS2itFva2VZ7+zQ8K0TzTnZpYq/b4wqeqoAwqR56s/Vd0HaCj45lAccYj5c6
-         3Ip6L9mxFWfs1vGsTbgwH5f8RHhnKSM/QEImYXx+foHufMX8ICbzHvcEkOrxKTJ5C2
-         pF29iwswxCFjGw57xS7tD21E7ZBf0zpet0b6X9eg=
-Date:   Sat, 12 Oct 2019 13:25:29 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio@vger.kernel.org, sean@geanix.com, martin@geanix.com,
-        rjones@gateworks.com, lorenzo.bianconi@redhat.com,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 10/13] iio: imu: st_lsm6dsx: add wakeup_source in
- st_sensors_platform_data
-Message-ID: <20191012132529.3f1a3b9c@archlinux>
-In-Reply-To: <a237c2406825ff16c5606344420fd566b08525f9.1570367532.git.lorenzo@kernel.org>
-References: <cover.1570367532.git.lorenzo@kernel.org>
-        <a237c2406825ff16c5606344420fd566b08525f9.1570367532.git.lorenzo@kernel.org>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1729005AbfJLM2g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Oct 2019 08:28:36 -0400
+Received: from mail-yb1-f195.google.com ([209.85.219.195]:46304 "EHLO
+        mail-yb1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727083AbfJLM0g (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Oct 2019 08:26:36 -0400
+Received: by mail-yb1-f195.google.com with SMTP id h202so3963062ybg.13;
+        Sat, 12 Oct 2019 05:26:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1wodRE/YtF7iSQoHJk6KK34t4IYEOMzQmZdFvHyQkiI=;
+        b=f59egIQ23z8pXc8c6JaN4wv/TZ1dRdkwR3HYlf0yi+GMhf6ktqwTvFtzgCxt8APoGT
+         MKnKTPHPNbuz9V92jMYFeW3X/JVRFWbG+jO4xU4aYQzoEhN16vTHHYFF086H+R2f7I3j
+         IMhYwcRt7QnQHf2XzjJcSrQ1FY1gdXTwJrOZc8aU0tp8kjDYNU5o0YPGEl9uXvcIBVOu
+         b1YDdM9hw0HmNqpdx6W2THwbwXEwkyIJ1MeVl4FPw1rJ98kqryVuv4RYKRBj+UowJxGY
+         b+xIQtaaDbdKKz9p7yIH91cQfDi5Y/8e8Onkjsl+h0GC4NbTgElLKligis/13ZPbe9Va
+         XtYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1wodRE/YtF7iSQoHJk6KK34t4IYEOMzQmZdFvHyQkiI=;
+        b=hVPlG0ghgouGA04dDEH1qQ22pDXdH4aTtXwvhGElghr3vN3+nEDWsSqNGBMcM++Ozo
+         7p7PRHmS+OgyrnYjUjftNYHLvtRq9iHW71Vn2TPoArCxtCWWSjIqjJDT2CaBr1XESXSU
+         pOetmKwy04C9ABJJN4eXPOfGoeAFixcdG3WtTIuZwaneVy4qFm+Ulay9pOm4M9e4ZGGC
+         0VEUOtCq0YrDdc7U9VF+bV0dQ6gh0ffazAurHR34B6xFK/eUBmBIrvvyJSaKTRPHvGNJ
+         x0q0pBO2nOX0UZFzOj82HX10Ku2Z87U7ceWnbSAqBOVTh7jNMtW9KXulKt6CSehj71j9
+         MJfg==
+X-Gm-Message-State: APjAAAUvk/xf+OtY2AhX8sREz6jjW4EcSptZphHRGnI0cBYf/D3Sjts0
+        L9X/bO72LiXaNGkXPOssHfqHnmNnqZ8S49Gd+Q8=
+X-Google-Smtp-Source: APXvYqy5YyuE5uVRMFavxhLGXGMvYs3LDJWXaMZJaBnFjkr8+diY/4XStJw/FpvNq/u6M52E5bW5oc2h/mppPIfm/oA=
+X-Received: by 2002:a25:8308:: with SMTP id s8mr13700664ybk.130.1570883195447;
+ Sat, 12 Oct 2019 05:26:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <cover.1570367532.git.lorenzo@kernel.org> <20191012132020.412e9595@archlinux>
+In-Reply-To: <20191012132020.412e9595@archlinux>
+From:   Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+Date:   Sat, 12 Oct 2019 14:26:24 +0200
+Message-ID: <CAA2SeNLEG9kMxW_XrGeyaORXdY5xjdxqqU9BPsdiWcr9J_ruYA@mail.gmail.com>
+Subject: Re: [PATCH 00/13] various st_lsm6dsx fixes and missing bits
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
+        Sean Nyekjaer <sean@geanix.com>, martin@geanix.com,
+        Bobby Jones <rjones@gateworks.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  6 Oct 2019 15:22:04 +0200
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+>
+> On Sun,  6 Oct 2019 15:21:54 +0200
+> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+>
+> > This series fixes some corner cases introduced with LSM9DS1 support and with
+> > the one that has added wake-up event support. In particular it fixes a crash
+> > due to missing HW FIFO support for LSM9DS1.
+> > Moreover I introduced the missing wake-up event support for LSM6DSO/LSM6DSOX
+> > sensor
+> > Add missing dts documentation for wake-up event and the capability to enable it
+> > through platformdata.
+> > Code cleanup.
+>
+> Hmm. This is going to be very messy.  In theory quite a few of these apply
+> to stuff in 5.4 but I assume won't cleanly apply given other changes.  You
+> may want to think about doing backports of the important parts to 5.4.
+>
+> I'll apply the lot for 5.5.
 
-> Add the possibility to enable/disable wakeup source through
-> st_sensors_platform_data and not only through device tree
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-I'm going to assume you need this for something... In general
-I'm not that keen on expanding platform data support.
+AFAIU just LSM9DS1 support will go in 5.4 (correct? Sean's series will
+go in 5.5) so I will backport just LSM9DS1 fixes to 5.4 (I guess 3-4
+patches).
 
-Applied,
+Regards,
+Lorenzo
 
-Thanks,
+>
+> Thanks,
+>
+> Jonathan
+>
+> >
+> > Lorenzo Bianconi (13):
+> >   iio: imu: st_lsm6dsx: use st_lsm6dsx_read_locked in
+> >     st_lsm6dsx_report_motion_event
+> >   iio: imu: st_lsm6dsx: add sanity check for read_fifo pointer
+> >   iio: imu: st_lsm6dsx: move irq related definitions in irq_config
+> >   iio: imu: st_lsm6dsx: do not access active-low/open-drain regs if not
+> >     supported
+> >   iio: imu: st_lsm6dsx: move bdu/boot and reset register info in
+> >     hw_settings
+> >   iio: imu: st_lsm6dsx: always check enable_reg in
+> >     st_lsm6dsx_event_setup
+> >   iio: imu: st_lsm6dsx: rely on st_lsm6dsx_update_bits_locked
+> >     configuring events
+> >   iio: imu: st_lsm6dsx: grab conf mutex in st_lsm6dsx_write_event_config
+> >   iio: imu: st_lsm6dsx: fix checkpatch warning
+> >   iio: imu: st_lsm6dsx: add wakeup_source in st_sensors_platform_data
+> >   iio: imu: st_lsm6dsx: add missing kernel documenation
+> >   dt-bindings: iio: imu: st_lsm6dsx: document missing wakeup-source
+> >     property
+> >   iio: imu: st_lsm6dsx: enable wake-up event for LSM6DSO
+> >
+> >  .../bindings/iio/imu/st_lsm6dsx.txt           |   1 +
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  35 +-
+> >  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    |   3 +
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 588 ++++++++++++------
+> >  .../linux/platform_data/st_sensors_pdata.h    |   2 +
+> >  5 files changed, 440 insertions(+), 189 deletions(-)
+> >
+>
 
-Jonathan
 
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 6 ++++--
->  include/linux/platform_data/st_sensors_pdata.h | 2 ++
->  2 files changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index b0623b837abd..a2a0ac81e3d3 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -2089,7 +2089,9 @@ static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
->  int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
->  		     struct regmap *regmap)
->  {
-> +	struct st_sensors_platform_data *pdata = dev->platform_data;
->  	const struct st_lsm6dsx_shub_settings *hub_settings;
-> +	struct device_node *np = dev->of_node;
->  	struct st_lsm6dsx_hw *hw;
->  	const char *name = NULL;
->  	int i, err;
-> @@ -2152,8 +2154,8 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
->  			return err;
->  	}
->  
-> -	if (dev->of_node &&
-> -	    of_property_read_bool(dev->of_node, "wakeup-source"))
-> +	if ((np && of_property_read_bool(np, "wakeup-source")) ||
-> +	    (pdata && pdata->wakeup_source))
->  		device_init_wakeup(dev, true);
->  
->  	return 0;
-> diff --git a/include/linux/platform_data/st_sensors_pdata.h b/include/linux/platform_data/st_sensors_pdata.h
-> index 30929c22227d..e40b28ca892e 100644
-> --- a/include/linux/platform_data/st_sensors_pdata.h
-> +++ b/include/linux/platform_data/st_sensors_pdata.h
-> @@ -18,12 +18,14 @@
->   * @open_drain: set the interrupt line to be open drain if possible.
->   * @spi_3wire: enable spi-3wire mode.
->   * @pullups: enable/disable i2c controller pullup resistors.
-> + * @wakeup_source: enable/disable device as wakeup generator.
->   */
->  struct st_sensors_platform_data {
->  	u8 drdy_int_pin;
->  	bool open_drain;
->  	bool spi_3wire;
->  	bool pullups;
-> +	bool wakeup_source;
->  };
->  
->  #endif /* ST_SENSORS_PDATA_H */
-
+-- 
+UNIX is Sexy: who | grep -i blonde | talk; cd ~; wine; talk; touch;
+unzip; touch; strip; gasp; finger; gasp; mount; fsck; more; yes; gasp;
+umount; make clean; sleep

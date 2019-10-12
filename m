@@ -2,41 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72DFFD4E5C
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 10:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01845D4E97
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 11:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728885AbfJLI7y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Oct 2019 04:59:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47052 "EHLO mail.kernel.org"
+        id S1727115AbfJLJ0l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Oct 2019 05:26:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51998 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726821AbfJLI5y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 12 Oct 2019 04:57:54 -0400
+        id S1728882AbfJLJYl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 12 Oct 2019 05:24:41 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A07F72087E;
-        Sat, 12 Oct 2019 08:57:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0966921850;
+        Sat, 12 Oct 2019 09:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570870673;
-        bh=RipfHWEIkpJnWKib5xTZIXJ4ltV45KJyDOOq5i6WXYI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kE80NsZp3Qh2HX060okbKBFlCpOuRbMfdC8w9N5gFd1SkkIhi44aL3IofPGP/zM+X
-         qf85aFaZ2WOR/GQ6Gmg3BDSaD+pzwmfBfeoqjkeB+A9QjMV0amkvO/3nYz5xVB1LyZ
-         ZsL50oNyO2WVqiXHokANhgx13JveFtxeJ28zMtPM=
-Date:   Sat, 12 Oct 2019 09:57:47 +0100
+        s=default; t=1570872280;
+        bh=qcmm1GArhCxKnKjlOl9dxqvKI1/nr5A9J9zwxQ2j2M8=;
+        h=Date:From:To:Subject:From;
+        b=xa3ZvJpzhCutcbFVXwm/dekryf1BRx/qzic/fxN0Ni4hKeZ+SJUzLB1YxAX+S0w0M
+         xP7UBj56Rh2QIILMkXj6CUWp+15GsCuGLhvCfnHIhaGmtCKvPOyAEL1Okn748B/coG
+         ulSo5ZFOyM9QEmtn1CxuWY2JySpXsiOjM3m/vDIE=
+Date:   Sat, 12 Oct 2019 10:24:36 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Olivier Moysan <olivier.moysan@st.com>
-Cc:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>,
-        <fabrice.gasnier@st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <benjamin.gaignard@st.com>
-Subject: Re: [PATCH][RFC] iio: core: add a class hierarchy on iio device
- lock
-Message-ID: <20191012095747.3acd95e6@archlinux>
-In-Reply-To: <20191011151314.5365-1-olivier.moysan@st.com>
-References: <20191011151314.5365-1-olivier.moysan@st.com>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] First set of IIO new device support etc for the 5.5 cycle.
+Message-ID: <20191012102436.752a861d@archlinux>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,213 +37,226 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Oct 2019 17:13:14 +0200
-Olivier Moysan <olivier.moysan@st.com> wrote:
+The following changes since commit b73b93a2af3392b9b7b8ba7e818ee767499f9655:
 
-> The aim of this patch is to correct a recursive locking warning,
-> detected when setting CONFIG_PROVE_LOCKING flag (as shown in message below).
-> This message was initially triggered by the following call sequence
-> in stm32-dfsdm-adc.c driver, when using IIO hardware consumer interface.
-> 
-> in stm32_dfsdm_read_raw()
-> 	iio_device_claim_direct_mode
-> 		mutex_lock(&indio_dev->mlock);			-> lock on dfsdm device
-> 	iio_hw_consumer_enable
-> 		iio_update_buffers
-> 			mutex_lock(&indio_dev->mlock);		-> lock on hw consumer device
-Hmm.  I'm not sure I follow the logic.  That lock is
-for one thing and one thing only, preventing access
-to the iio device that are unsafe when it is running
-in a buffered mode.  We shouldn't be in a position where
-we both say don't do this if we are in buffered mode, + enter
-buffered mode whilst doing this, or we need special functions
-for entering buffering mode if in this state.  We are in
-some sense combining internal driver logic with overall
-IIO states.  IIO shouldn't care that the device is using
-the same methods under the hood for buffered and non
-buffered operations.
+  iio: adc: ad7192: Add sysfs ABI documentation (2019-09-08 10:34:49 +0100)
 
-I can't really recall how this driver works.   Is it actually
-possible to have multiple hw_consumers at the same time?
+are available in the Git repository at:
 
-So do we end up with multiple buffers registered and have
-to demux out to the read_raw + the actual buffered path?
-Given we have a bit of code saying grab one sample, I'm
-going to guess we don't...
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.5a
 
-If so, the vast majority of the buffer setup code in IIO
-is irrelevant here and we just need to call a few of
-the callbacks from this driver directly... (I think
-though I haven't chased through every corner.
+for you to fetch changes up to 181bea8c04479f8132010146af525957648c70a1:
 
-I'd rather avoid introducing this nesting for a corner
-case that makes no 'semantic' sense in IIO as it leaves us
-in two separate states at the same time that the driver
-is trying to make mutually exclusive.  We can't both
-not be in buffered mode, and in buffered mode.
+  iio: pressure: bmp280: remove stray newline (2019-10-07 22:13:51 +0100)
 
-Thanks and good luck with this nasty corner!
+----------------------------------------------------------------
+First set of IIO new device support, cleanups and features for the 5.5 cycle
 
-Jonathan
+The usual mixed backs of new device support being added to drivers,
+long term reworks continuing and little per driver cleanups and
+features.
 
+Also a few trivial counter subsystem tidy ups on behalf of William.
 
+Core new feature
+* Device label support.  A long requested feature no one got around to
+  implementing before.  Allows DT based provision of a 'label' that
+  identifies a device uniquely within a system.  This differs from existing
+  'name' which is meant to be the part number.
+New device support
+* ingenic-adc
+  - Support for the JZ4770 SoC ADC including bindings.
+* inv_mpu6050
+  - Add support for magnetometer in MPU925x parts.
+    Fiddly to do as this is actually a separate device sitting inside the
+    package, but with the master device being able to schedule reads etc.
+    Will only run if the auxiliary bus is not in use for any other devices.
 
-> 
-> Here two instances of the same lock class are requested
-> on two different objects.
-> The locking validator needs to be informed of the nesting level
-> of each lock to avoid a false positive.
-> 
-> This patch introduces a class hierarchy in iio device lock,
-> assuming that hardware consumer is at a lower level than iio device.
-> 
-> [   52.086174]
-> [   52.086223] ============================================
-> [   52.091516] WARNING: possible recursive locking detected
-> [   52.096825] 4.19.49 #162 Not tainted
-> [   52.100384] --------------------------------------------
-> [   52.105691] cat/823 is trying to acquire lock:
-> [   52.110132] 37acb703 (&dev->mlock){+.+.}, at: iio_update_buffers+0x3c/0xd0
-> [   52.116995]
-> [   52.116995] but task is already holding lock:
-> [   52.122821] 368bb908 (&dev->mlock){+.+.}, at: iio_device_claim_direct_mode+0x18/0x34
-> [   52.130560]
-> [   52.130560] other info that might help us debug this:
-> [   52.137083]  Possible unsafe locking scenario:
-> [   52.137083]
-> [   52.142995]        CPU0
-> [   52.145430]        ----
-> [   52.147864]   lock(&dev->mlock);
-> [   52.151082]   lock(&dev->mlock);
-> [   52.154301]
-> [   52.154301]  * DEADLOCK *
-> [   52.154301]
-> [   52.160215]  May be due to missing lock nesting notation
-> [   52.160215]
-> [   52.167000] 5 locks held by cat/823:
-> [   52.170563]  #0: 96d6554b (&p->lock){+.+.}, at: seq_read+0x34/0x51c
-> [   52.176824]  #1: 3cf6739a (&of->mutex){+.+.}, at: kernfs_seq_start+0x1c/0x8c
-> [   52.183866]  #2: a6090e0a (kn->count#29){.+.+}, at: kernfs_seq_start+0x24/0x8c
-> [   52.191083]  #3: 368bb908 (&dev->mlock){+.+.}, at: iio_device_claim_direct_mode+0x18/0x34
-> [   52.199257]  #4: 77e2bcfe (&dev->info_exist_lock){+.+.}, at: iio_update_buffers+0x30/0xd0
-> [   52.207431]
-> [   52.207431] stack backtrace:
-> [   52.211787] CPU: 0 PID: 823 Comm: cat Not tainted 4.19.49 #162
-> [   52.217606] Hardware name: STM32 (Device Tree Support)
-> [   52.222756] [<c0112420>] (unwind_backtrace) from [<c010df5c>] (show_stack+0x10/0x14)
-> [   52.230487] [<c010df5c>] (show_stack) from [<c0af5c88>] (dump_stack+0xc4/0xf0)
-> [   52.237703] [<c0af5c88>] (dump_stack) from [<c01865bc>] (__lock_acquire+0x874/0x1344)
-> [   52.245525] [<c01865bc>] (__lock_acquire) from [<c0187be8>] (lock_acquire+0xd8/0x268)
-> [   52.253353] [<c0187be8>] (lock_acquire) from [<c0b0dcf8>] (__mutex_lock+0x70/0xab0)
-> [   52.261005] [<c0b0dcf8>] (__mutex_lock) from [<c0b0e754>] (mutex_lock_nested+0x1c/0x24)
-> [   52.269001] [<c0b0e754>] (mutex_lock_nested) from [<c09282b8>] (iio_update_buffers+0x3c/0xd0)
-> [   52.277523] [<c09282b8>] (iio_update_buffers) from [<c09329cc>] (iio_hw_consumer_enable+0x34/0x70)
-> [   52.286476] [<c09329cc>] (iio_hw_consumer_enable) from [<c0932134>] (stm32_dfsdm_read_raw+0xf4/0x3fc)
-> [   52.295695] [<c0932134>] (stm32_dfsdm_read_raw) from [<c0922eb4>] (iio_read_channel_info+0xa8/0xb0)
-> [   52.304738] [<c0922eb4>] (iio_read_channel_info) from [<c067a7fc>] (dev_attr_show+0x1c/0x48)
-> [   52.313170] [<c067a7fc>] (dev_attr_show) from [<c03724a4>] (sysfs_kf_seq_show+0x84/0xec)
-> [   52.321256] [<c03724a4>] (sysfs_kf_seq_show) from [<c0312afc>] (seq_read+0x154/0x51c)
-> [   52.329082] [<c0312afc>] (seq_read) from [<c02e7a00>] (__vfs_read+0x2c/0x15c)
-> [   52.336209] [<c02e7a00>] (__vfs_read) from [<c02e7bc0>] (vfs_read+0x90/0x15c)
-> [   52.343339] [<c02e7bc0>] (vfs_read) from [<c02e81ac>] (ksys_read+0x5c/0xdc)
-> [   52.350296] [<c02e81ac>] (ksys_read) from [<c0101000>] (ret_fast_syscall+0x0/0x28)
-> [   52.357852] Exception stack(0xe5761fa8 to 0xe5761ff0)
-> [   52.362904] 1fa0:                   0000006c 7ff00000 00000003 b6e06000 00020000 00000000
-> [   52.371077] 1fc0: 0000006c 7ff00000 00020000 00000003 00000003 00000000 00020000 00000000
-> [   52.379245] 1fe0: 00000003 beb6e790 b6eb17b7 b6e3e6c6
-> 
-> Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
-> ---
->  drivers/iio/buffer/industrialio-hw-consumer.c | 9 ++++++++-
->  drivers/iio/industrialio-buffer.c             | 2 +-
->  drivers/iio/industrialio-core.c               | 3 ++-
->  include/linux/iio/iio.h                       | 6 ++++++
->  4 files changed, 17 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/buffer/industrialio-hw-consumer.c b/drivers/iio/buffer/industrialio-hw-consumer.c
-> index 95165697d8ae..652ce31b4b5f 100644
-> --- a/drivers/iio/buffer/industrialio-hw-consumer.c
-> +++ b/drivers/iio/buffer/industrialio-hw-consumer.c
-> @@ -101,6 +101,7 @@ struct iio_hw_consumer *iio_hw_consumer_alloc(struct device *dev)
->  
->  	chan = &hwc->channels[0];
->  	while (chan->indio_dev) {
-> +		chan->indio_dev->mutex_class = IIO_MUTEX_HWC;
->  		buf = iio_hw_consumer_get_buffer(hwc, chan->indio_dev);
->  		if (!buf) {
->  			ret = -ENOMEM;
-> @@ -129,8 +130,14 @@ EXPORT_SYMBOL_GPL(iio_hw_consumer_alloc);
->  void iio_hw_consumer_free(struct iio_hw_consumer *hwc)
->  {
->  	struct hw_consumer_buffer *buf, *n;
-> +	struct iio_channel *chan = &hwc->channels[0];
-> +
-> +	while (chan->indio_dev) {
-> +		chan->indio_dev->mutex_class = IIO_MUTEX_NORMAL;
-> +		iio_channel_release(chan);
-> +		chan++;
-> +	}
->  
-> -	iio_channel_release_all(hwc->channels);
->  	list_for_each_entry_safe(buf, n, &hwc->buffers, head)
->  		iio_buffer_put(&buf->buffer);
->  	kfree(hwc);
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index c193d64e5217..d1df04167978 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -1077,7 +1077,7 @@ int iio_update_buffers(struct iio_dev *indio_dev,
->  		return 0;
->  
->  	mutex_lock(&indio_dev->info_exist_lock);
-> -	mutex_lock(&indio_dev->mlock);
-> +	mutex_lock_nested(&indio_dev->mlock, indio_dev->mutex_class);
->  
->  	if (insert_buffer && iio_buffer_is_active(insert_buffer))
->  		insert_buffer = NULL;
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index f72c2dc5f703..b14ba42559a3 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1454,6 +1454,7 @@ struct iio_dev *iio_device_alloc(int sizeof_priv)
->  		dev->dev.groups = dev->groups;
->  		dev->dev.type = &iio_device_type;
->  		dev->dev.bus = &iio_bus_type;
-> +		dev->mutex_class = IIO_MUTEX_NORMAL;
->  		device_initialize(&dev->dev);
->  		dev_set_drvdata(&dev->dev, (void *)dev);
->  		mutex_init(&dev->mlock);
-> @@ -1805,7 +1806,7 @@ EXPORT_SYMBOL_GPL(devm_iio_device_unregister);
->   */
->  int iio_device_claim_direct_mode(struct iio_dev *indio_dev)
->  {
-> -	mutex_lock(&indio_dev->mlock);
-> +	mutex_lock_nested(&indio_dev->mlock, indio_dev->mutex_class);
->  
->  	if (iio_buffer_enabled(indio_dev)) {
->  		mutex_unlock(&indio_dev->mlock);
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 862ce0019eba..1192eca124f4 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -17,6 +17,11 @@
->   * Currently assumes nano seconds.
->   */
->  
-> +enum iio_mutex_lock_class {
-> +	IIO_MUTEX_NORMAL,
-> +	IIO_MUTEX_HWC,
-> +};
-> +
->  enum iio_shared_by {
->  	IIO_SEPARATE,
->  	IIO_SHARED_BY_TYPE,
-> @@ -537,6 +542,7 @@ struct iio_dev {
->  	struct list_head		buffer_list;
->  	int				scan_bytes;
->  	struct mutex			mlock;
-> +	int				mutex_class;
->  
->  	const unsigned long		*available_scan_masks;
->  	unsigned			masklength;
+Features
+* ad7192
+  - Userspace calibration controls to do zero and full scale.
+* st_lsm6dsx
+  - Enable latched interrupts by default for sensors events with related clear.
+  - Motion events and related wakeup source.  This needed quite a bit of
+    refactoring as well.
 
+Cleanups and minor features
+* ad7192
+  - sysfs ABI docs
+* ad7949
+  - Remove code to readback configuration word as driver never actually enabled
+    it.
+  - Fix incorrect xfer length.  Not actually known to cause problems other
+    than wasted bus usage.
+* adis library and drivers
+  - Locking rework to simplify locking in general and avoid using the
+    core mlock except for it's intending use to protect IIO state changes.
+* adis16080
+  - Replace core mlock usage with local lock with more appropriate scope.
+* adis16130
+  - Remove pointless mlock usage.
+* adis16240
+  - Remove include of gpio.h as no gpio usage.
+* atlas-ph-sensor
+  - Improve logical ordering of buffer predisable / postenable functions.
+    This is part of a longer term rework Alexandru is driving towards.
+* bh1750
+  - Fix up a static compiler warning and make the code more readable.
+  - yaml conversion of binding + MAINTAINERS entry.
+* bmp280
+  - Drop a stray newline.
+* cm36651
+  - Drop a redundant assignment
+* itg3200
+  - Alignment cleanup.
+* max31856
+  - Add missing of_node and parent references, useful to identify the device.
+* sc27xx_adc
+  - Use devm_hwspin_lock_request_specific rather than local rolled version.
+* stm32-lptimer counter
+  - kernel-doc warning.
+* stm32-timer counter
+  - kernel-doc warning.
+  - Alignment cleanup.
+* sx9500
+  - Improve logical ordering of buffer predisable / postenable functions.
+    This is part of a longer term rework Alexandru is driving towards.
+* tcs3414
+  - Improve logical ordering of buffer predisable / postenable functions.
+    This is part of a longer term rework Alexandru is driving towards.
+
+----------------------------------------------------------------
+Alexandru Ardelean (15):
+      iio: tcs3414: fix iio_triggered_buffer_{pre,post}enable positions
+      iio: gyro: adis16130: remove mlock usage
+      iio: gyro: adis16080: replace mlock with own lock
+      iio: proximity: sx9500: fix iio_triggered_buffer_{predisable,postenable} positions
+      iio: imu: adis: rename txrx_lock -> state_lock
+      iio: imu: adis: add unlocked read/write function versions
+      iio: imu: adis[16480]: group RW into a single lock in adis_enable_irq()
+      iio: imu: adis: create an unlocked version of adis_check_status()
+      iio: imu: adis: create an unlocked version of adis_reset()
+      iio: imu: adis: protect initial startup routine with state lock
+      iio: imu: adis: group single conversion under a single state lock
+      iio: imu: adis16400: rework locks using ADIS library's state lock
+      iio: gyro: adis16136: rework locks using ADIS library's state lock
+      iio: imu: adis16480: use state lock for filter freq set
+      iio: chemical: atlas-ph-sensor: fix iio_triggered_buffer_predisable() position
+
+Andrea Merello (3):
+      iio: ad7949: kill pointless "readback"-handling code
+      iio: max31856: add missing of_node and parent references to iio_dev
+      iio: ad7949: fix incorrect SPI xfer len
+
+Artur Rojek (3):
+      dt-bindings: iio/adc: Add a compatible string for JZ4770 SoC ADC
+      dt-bindings: iio/adc: Add AUX2 channel idx for JZ4770 SoC ADC
+      IIO: Ingenic JZ47xx: Add support for JZ4770 SoC ADC.
+
+Baolin Wang (1):
+      iio: adc: sc27xx: Use devm_hwspin_lock_request_specific() to simplify code
+
+Bartosz Golaszewski (1):
+      iio: pressure: bmp280: remove stray newline
+
+Colin Ian King (3):
+      iio: light: cm36651: redundant assignment to variable ret
+      counter: stm32: clean up indentation issue
+      iio: gyro: clean up indentation issue
+
+Fabrice Gasnier (2):
+      counter: stm32-timer-cnt: fix a kernel-doc warning
+      counter: stm32-lptimer-cnt: fix a kernel-doc warning
+
+Jean-Baptiste Maneyrol (7):
+      iio: imu: inv_mpu6050: disable i2c mux for MPU925x
+      iio: imu: inv_mpu6050: add header include protection macro
+      iio: imu: inv_mpu6050: add defines for supporting 9-axis chips
+      iio: imu: inv_mpu6050: fix objects syntax in Makefile
+      iio: imu: inv_mpu6050: helpers for using i2c master on auxiliary bus
+      iio: imu: inv_mpu6050: add MPU925x magnetometer support
+      iio: imu: inv_mpu6050: add fifo support for magnetometer data
+
+Krzysztof Wilczynski (1):
+      iio: light: bh1750: Resolve compiler warning and make code more readable
+
+Lorenzo Bianconi (2):
+      iio: imu: st_lsm6dsx: enable LIR for sensor events
+      iio: imu: st_lsm6dsx: enable clear on read for latched interrupts
+
+Mircea Caprioru (2):
+      iio: adc: ad_sigma_delta: Export ad_sd_calibrate
+      staging: iio: adc: ad7192: Add system calibration support
+
+Phil Reid (2):
+      dt-binding: iio: Add optional label property
+      iio: core: Add optional symbolic label to device attributes
+
+Rohit Sarkar (1):
+      staging: iio: ADIS16240: Remove unused include
+
+Sean Nyekjaer (5):
+      iio: imu: st_lsm6dsx: move interrupt thread to core
+      iio: imu: st_lsm6dsx: add motion events
+      iio: imu: st_lsm6dsx: add wakeup-source option
+      iio: imu: st_lsm6dsx: always enter interrupt thread
+      iio: imu: st_lsm6dsx: add motion report function and call from interrupt
+
+Tomasz Duszynski (2):
+      dt-bindings: iio: light: bh1750: convert bindings to yaml
+      MAINTAINERS: add entry for ROHM BH1750 driver
+
+ Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192 |  24 ++
+ .../devicetree/bindings/iio/adc/ingenic,adc.txt    |   1 +
+ .../devicetree/bindings/iio/iio-bindings.txt       |   5 +
+ .../devicetree/bindings/iio/light/bh1750.txt       |  18 -
+ .../devicetree/bindings/iio/light/bh1750.yaml      |  43 ++
+ MAINTAINERS                                        |   6 +
+ drivers/counter/stm32-lptimer-cnt.c                |   2 +-
+ drivers/counter/stm32-timer-cnt.c                  |   6 +-
+ drivers/iio/adc/ad7949.c                           |  33 +-
+ drivers/iio/adc/ad_sigma_delta.c                   |   3 +-
+ drivers/iio/adc/ingenic-adc.c                      | 149 +++++--
+ drivers/iio/adc/sc27xx_adc.c                       |  16 +-
+ drivers/iio/chemical/atlas-ph-sensor.c             |   8 +-
+ drivers/iio/gyro/adis16080.c                       |   8 +-
+ drivers/iio/gyro/adis16130.c                       |   2 -
+ drivers/iio/gyro/adis16136.c                       |  31 +-
+ drivers/iio/gyro/itg3200_core.c                    |   2 +-
+ drivers/iio/imu/adis.c                             |  95 ++---
+ drivers/iio/imu/adis16400.c                        |  51 ++-
+ drivers/iio/imu/adis16480.c                        |  17 +-
+ drivers/iio/imu/adis_buffer.c                      |   4 +-
+ drivers/iio/imu/inv_mpu6050/Makefile               |   7 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c          | 204 ++++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h          |  19 +
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c         | 152 +++++++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c          |  60 ++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h          |  70 +++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c         | 356 +++++++++++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_magn.h         |  36 ++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c         |  11 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c      |  86 +++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h            |  50 +++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c     |  78 +---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c       | 434 ++++++++++++++++++++-
+ drivers/iio/industrialio-core.c                    |  17 +
+ drivers/iio/light/bh1750.c                         |   4 +-
+ drivers/iio/light/cm36651.c                        |   2 +-
+ drivers/iio/light/tcs3414.c                        |  30 +-
+ drivers/iio/pressure/bmp280-core.c                 |   1 -
+ drivers/iio/proximity/sx9500.c                     |  16 +-
+ drivers/iio/temperature/max31856.c                 |   2 +
+ drivers/staging/iio/accel/adis16240.c              |   1 -
+ drivers/staging/iio/adc/ad7192.c                   |  79 +++-
+ include/dt-bindings/iio/adc/ingenic,adc.h          |   1 +
+ include/linux/iio/adc/ad_sigma_delta.h             |   2 +
+ include/linux/iio/iio.h                            |   2 +
+ include/linux/iio/imu/adis.h                       | 154 +++++++-
+ 47 files changed, 2077 insertions(+), 321 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/light/bh1750.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/light/bh1750.yaml
+ create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
+ create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h
+ create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c
+ create mode 100644 drivers/iio/imu/inv_mpu6050/inv_mpu_magn.h

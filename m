@@ -2,125 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 568E0D514E
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 19:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 458ECD51B6
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 20:47:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728888AbfJLRQR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Oct 2019 13:16:17 -0400
-Received: from sender4-op-o14.zoho.com ([136.143.188.14]:17407 "EHLO
-        sender4-op-o14.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727115AbfJLRQR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Oct 2019 13:16:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1570899183; cv=none; 
-        d=zoho.com; s=zohoarc; 
-        b=K+1e2/BFHXnRReb+f3XBc3FGfdWHDXmhlOtSs5lRq1CFVXB+4RA2tuFOL1yG6VSYp7CrRinIFMlqsvYSlPoptLpSmGz/J0/6JnoERQ3OH1M2klMHvYKJWLHs4VEbAIgnpk4xhWI5QiXysomDxyTnEVSDJGMjx+lNrt26mn3zsR4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
-        t=1570899183; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=H490T33NOXsNv5uW2IbnnmW85uAQoogCvlGuJzkeYHg=; 
-        b=HQtCAaVnSdO0rh2dh99uiPOqQR4dskSaQCfd2LmK/0VtKLYycoKarAIS8YJo++5RKqHUrlW4gTZpFsFZbReaRdh4wU+9wntR7Oo0ev7xCYQuSLFtH18IduOwPtgVIgoj7nR26o6gOwCP/OfoX4IxrXlfsPf7pPiAGxhxBXSBjdA=
-ARC-Authentication-Results: i=1; mx.zoho.com;
-        dkim=pass  header.i=dlrobertson.com;
-        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
-        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
-Received: from nessie (pool-100-15-144-194.washdc.fios.verizon.net [100.15.144.194]) by mx.zohomail.com
-        with SMTPS id 157089918141952.24960803847944; Sat, 12 Oct 2019 09:53:01 -0700 (PDT)
-Date:   Sat, 12 Oct 2019 16:38:39 +0000
-From:   Dan Robertson <dan@dlrobertson.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: (bma400) add driver for the BMA400
-Message-ID: <20191012163839.GB15972@nessie>
-References: <20191012035420.13904-1-dan@dlrobertson.com>
- <20191012035420.13904-3-dan@dlrobertson.com>
- <20191012104033.006b33f9@archlinux>
- <20191012153556.GA15972@nessie>
- <20191012173344.7d25fd02@archlinux>
+        id S1729195AbfJLSre (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Oct 2019 14:47:34 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:37631 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728111AbfJLSre (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Oct 2019 14:47:34 -0400
+Received: by mail-oi1-f194.google.com with SMTP id i16so10723245oie.4
+        for <linux-iio@vger.kernel.org>; Sat, 12 Oct 2019 11:47:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=M4hviIaYBakjq3wyzuCK4M7g9B6CKEUn9YNNsq0+fnU=;
+        b=uP3OraWlzSy2PZJRBaCPb5+3g/+y7Jo1TY8r/m4F5F6EQLG5VarvkiafjsLmocQEsa
+         5UUhhyUMjlSu2WxD1WMYDrEbon7JZYqQkrwx2kWKU64FTumhfd1+gpQodzGuIh+paRQL
+         OkGOhkeZxurd+5cvWLklWsltYSnl3FB4cx/2BgInI1ok+nucdhc2G2dr0sn66Zbh5A78
+         bL2wMUjWZZWQI5rzoRqwCOEv7KP7sk6EO5kxD22o8Wegq8ixK5b36GFJhRkGBe9u+Kfc
+         rPNRhNxqsUun60nyg0UeWEj3A3gGOK8ZgTRT0+LcAdWCFh1LTncZtwIqtyVhHN4VAh16
+         tK+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=M4hviIaYBakjq3wyzuCK4M7g9B6CKEUn9YNNsq0+fnU=;
+        b=dsGS8JKcSAbCNbVtogN66uYXjn/8mRxZmf0uhxhD0PrQW2fAlUJiTYvM8vgrnpFSrx
+         /rlmSXOrMNrOqtdidjUsXKCF0P1lQVaJ637fbuUjCvG9jHL9mzhHaEEdcxcmuJO+3UEU
+         HXGL3IQ/XAX6pPcTdFIVKEuS7GtIIq+NGPAPbiuyY4Q0OCYqxNzAbGvVFZwex0hI3Jgd
+         Wo25yK0U1ezNEy9cDhEiNy/fOmo96BWiPpBJ++eEwf4XWSeiRaOlX7JK8gzQ/MfXoKHP
+         qZoNIWzVaLlQk9+rovxLUpjXa/aHKze5v1shgR4PiA+Lt3o1gbwpfbY6p/BVChu24cj4
+         S72w==
+X-Gm-Message-State: APjAAAWypPmUoacZKqIAmp4manZIVxQjdzHiudO0WkpECegdvHCKADGc
+        uc4QLgdAeDoPP6Qjon/YsOzGhF3TH23aIP7xuJRxZPuU
+X-Google-Smtp-Source: APXvYqzYWF3HcEMnPRW56ohU4zZN/W+gIK366v5hGFlEHSmi9eSw8OYO0bZxJ/v9YzO4vGxWAkPH/iQ+AgUnAPuxksA=
+X-Received: by 2002:aca:4794:: with SMTP id u142mr18195555oia.159.1570905716989;
+ Sat, 12 Oct 2019 11:41:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ZfOjI3PrQbgiZnxM"
-Content-Disposition: inline
-In-Reply-To: <20191012173344.7d25fd02@archlinux>
-User-Agent: Mutt/1.12.2 (2019-09-21)
-X-Zoho-Virus-Status: 1
-X-ZohoMailClient: External
+References: <20191012121946.051b646f@archlinux> <20191012152744.GA2142233@kroah.com>
+ <20191012152841.GB2142233@kroah.com> <20191012170615.01546a96@archlinux>
+In-Reply-To: <20191012170615.01546a96@archlinux>
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+Date:   Sat, 12 Oct 2019 21:41:45 +0300
+Message-ID: <CA+U=DspmQcUZU3q-ntJEVaqtkkK=gk0GCCu06ntYf_kvnpnLZw@mail.gmail.com>
+Subject: Re: [PULL v2] First set of iio new device support etc for the 5.5 cycle
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---ZfOjI3PrQbgiZnxM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Oct 12, 2019 at 05:33:44PM +0100, Jonathan Cameron wrote:
-> On Sat, 12 Oct 2019 15:35:56 +0000
-> Dan Robertson <dan@dlrobertson.com> wrote:
-> > On Sat, Oct 12, 2019 at 10:40:33AM +0100, Jonathan Cameron wrote:
+On Sat, Oct 12, 2019 at 7:18 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Sat, 12 Oct 2019 17:28:41 +0200
+> Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> > On Sat, Oct 12, 2019 at 05:27:44PM +0200, Greg KH wrote:
+> > > On Sat, Oct 12, 2019 at 12:19:46PM +0100, Jonathan Cameron wrote:
+> > > > The following changes since commit b73b93a2af3392b9b7b8ba7e818ee767=
+499f9655:
+> > > >
+> > > >   iio: adc: ad7192: Add sysfs ABI documentation (2019-09-08 10:34:4=
+9 +0100)
+> > > >
+> > > > are available in the Git repository at:
+> > > >
+> > > >   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tag=
+s/iio-for-5.5a-take2
 > > >
-> > > Silly question.  Why is soft_reset preferred to sleep mode? =20
-> >=20
-> > Not a silly question. I actually debated this when initially implementi=
-ng the
-> > driver. The datasheet describes soft-reset behavior in section 4.9, the
-> > following snippet from the datasheet is particularly relevant:
-> >=20
-> > > The softreset performs a fundamental reset to the device which is lar=
-gely
-> > > equivalent to a power cycle. Following a delay, all user configuration
-> > > settings are overwritten with their default state... =20
-> >=20
-> > Sleep mode is the default power-mode, so the only real difference would=
- be that
-> > the oversampling ratio, sampling frequency, and scale would all be rese=
-t to
-> > their defaults with a soft-reset. If we just set the power-mode to slee=
-p mode,
-> > the user configuration registers would be preserved.
-> >=20
-> > I can add a comment about the behavior of a softreset in bma400_remove.
-> I'd just not do it.  That way there is only the putting it to sleep path.
-> We normally assume that we don't know the state during startup and aren't
-> as careful on remove to make sure things are in a default state.
->=20
-> That way you only need a single path in the remove function. If sleep mode
-> fails you are probably broken anyway.
+> > > Better, but I see this now:
+> > >
+> > > drivers/iio/imu/adis.c: In function =E2=80=98__adis_check_status=E2=
+=80=99:
+> > > drivers/iio/imu/adis.c:295:9: warning: =E2=80=98status=E2=80=99 may b=
+e used uninitialized in this function [-Wmaybe-uninitialized]
+> > >   295 |  status &=3D adis->data->status_error_mask;
+> > >       |         ^~
+> > >
+> > >
+> > > I'll take this, can you just send a follow-on patch for this?
+> >
+> > Also I see:
+> >
+> > drivers/iio/imu/adis16480.c: In function =E2=80=98adis16480_enable_irq=
+=E2=80=99:
+> > drivers/iio/imu/adis16480.c:950:6: warning: =E2=80=98val=E2=80=99 may b=
+e used uninitialized in this function [-Wmaybe-uninitialized]
+> >   950 |  val &=3D ~ADIS16480_DRDY_EN_MSK;
+> >       |      ^~
+> >   CC [M]  drivers/iio/magnetometer/hmc5843_i2c.o
+> > drivers/iio/imu/adis16480.c: In function =E2=80=98adis16480_write_raw=
+=E2=80=99:
+> > drivers/iio/imu/adis16480.c:571:7: warning: =E2=80=98val=E2=80=99 may b=
+e used uninitialized in this function [-Wmaybe-uninitialized]
+> >   571 |   val &=3D ~enable_mask;
+> >       |       ^~
+> > drivers/iio/imu/adis16480.c:557:11: note: =E2=80=98val=E2=80=99 was dec=
+lared here
+> >   557 |  uint16_t val;
+> >       |           ^~~
+> >
+> >
+> > So did you really fix anything here?
+> >
+> > I'll drop this pull again.
+> >
+> > What version of gcc are you using?  Might I suggest a newer one (i.e. a
+> > modern one?)
+>
+> Ah. This is my mistake.  I did see all of these, but still thought we wer=
+e
+> in the category of tidying up some compiler version caused issues.
+>
+> The adis16400 came up in my local tests, so I previously pinged Alex on
+> basis it was something to do in a follow up. The other two showed up, but
+> again I still thought these were compiler version issues, particularly
+> as 0-day didn't highlight them (there were several other issues it
+> did highlight this week). Hence again I requested a follow up to tidy
+> it up.
+>
+> Anyhow, did some digging.  The issue here was a 'fix' I put in to an init=
+ial
+> 0-day issue in the inline functions that Alex added.  Note that one
+> appears to be compiler version dependent as it didn't turn up in my
+> local builds. There are now inline functions that check if (ret)
+> and don't set the value if ret is non 0.
+>
+> Out in the drivers, the check is the more specific (unnecessarily)
+> if (ret < 0) and hence the compiler is concluded that there might be a pa=
+th to
+> val not being set.  Previously it was giving up figuring this out.
+> So reality is they are a false positive (sort of as in reality ret
+> is never positive) but the compiler has made a reasonable point
+> that it can't see that.
+>
+> Never mind, I'll do a new pull request once fixes are in place.
+> Given there are two obvious ways of suppressing this and it's Alex's
+> driver I'll wait until he has time to take a look.
+>
+> Sorry for wasting your time.
+>
 
-Sounds good. That does make remove much easier if the device is not ready f=
-or a
-command. I'll remove this in the next patchset version.
+If it helps, let's drop the ADIS patches for this round, and I can
+take a closer look as well.
+The cleanup does seem to have revealed a few gaps in our CI in
+relation to upstreaming things.
 
-Cheers,
+We use Travis-CI for our stuff and stuff is public:
+https://travis-ci.org/analogdevicesinc/linux
 
- - Dan
+So, if anyone sees anything we should do better, I'm open to
+improvements/suggestions.
+I am in the process of adding sparse-builds, maybe some build
+hardening is next (stronger compile/build flags), adding our patches
+on top of a newer kernel (that's partially done).
+That should help us catch things a bit earlier.
 
---ZfOjI3PrQbgiZnxM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Sorry for the noise from my side as-well.
+Alex
 
------BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEF5dO2RaKc5C+SCJ9RcSmUsR+QqUFAl2iAYYACgkQRcSmUsR+
-QqWfehAApr+GUxN8hPr6rvlGNCYOUAsH0xR5O1yDbOBeJ+KNTRu4yqOci19XXRvu
-oZh7eexWE+Jg3cqomkO4MBTqFbcE8fSMVsRS1g/dBSmIjP8t7elUXkyo0+u8BKhM
-BrPP/W9WnGQmj0m9crH9GYmAUh00KG1eG8JfPV/iO4Nj25FzyjidDgVdUb7+pieK
-EE85HRYLxc4EjbgiR5aFfHrHS7gFv0k/JZYGpTseL93VmHkRWEXYGemvEMJeu/GY
-+ZdHTL5kSyrQDsWOsc12B3uWxDbaVT0t6afEiaS0wHC5FeWg/axvldCO/SXaMSVy
-FUUH9+kIbS1CofTosjTsEopz8gEvmfM+Gn2n4PoP3R8GPzQJYDB1JSanJBwJlUKX
-70+27TdX1HQq7iapt5QvjeQfarCGCrcWX7fQs3Z8uJxeGX2+WgElE1K58Cy1pe+c
-Z9DgLY1Baqb+njAWe5WAuLXaIBMsrbuJyu4jmanYdLD5OEkokbSdhht0Gcm2rRnp
-jErnlJHmQNZ9U9fv87nM6hAbHorj1ABasLvc2nyCAlQyGUaYnzXvYEXMLqBGAmie
-7Cjv2gd53aoLyfFq1F4Yy6ETWmo/0lzRPS9+Lv/jgPyr4z7Lch3tZEFAmQMRHz8P
-WEza1Op588Do/vFarcCzQgHlPNfY1HS7P3J6ae2oFIB33cil8hc=
-=0oSI
------END PGP SIGNATURE-----
-
---ZfOjI3PrQbgiZnxM--
-
+> Jonathan

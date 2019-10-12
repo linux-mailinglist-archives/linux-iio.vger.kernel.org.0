@@ -2,47 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FE9FD4F7E
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 14:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40BBED4F83
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 14:06:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728979AbfJLMB2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Oct 2019 08:01:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44920 "EHLO mail.kernel.org"
+        id S1728111AbfJLMGE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Oct 2019 08:06:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45514 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727265AbfJLL72 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 12 Oct 2019 07:59:28 -0400
+        id S1727083AbfJLMGE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 12 Oct 2019 08:06:04 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C043420673;
-        Sat, 12 Oct 2019 11:59:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 47E002190F;
+        Sat, 12 Oct 2019 12:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570881566;
-        bh=9exQG7nr3/lBFBoQlVSUc3OlNg8VsRMGFm1wTu5IZlA=;
+        s=default; t=1570881963;
+        bh=LVkrxayQJjtcang1+k8tEY2/NIS79iAYHhs7xf231nY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MB1IHdrhZiJ1u2/UEUf/EsywsbLh1XeaHjt/hDbdw9ic3Ndz11qNvzyV9nzfaI2YW
-         vHBptnfNuIrlEtqM2OnaorTbnBj0KHlwmwGqLtZL3SdjdZqG1PUgqqPiYTWCaM3nNH
-         gchu3XELBmGNWy3KZrpzjapsm8QFzbuiyXFrvsSc=
-Date:   Sat, 12 Oct 2019 12:59:21 +0100
+        b=WMez4spJpHTJphFVBBcK39XoGcCzwCOf1ji1iZm8h6S2H7ShRLNpgC9yvjf7sDjd6
+         jNa7Zm2Sn1HJac3cgGj1p9JB7uvUk+s2b/X4LffjrXr/VpT/F3b2yN+lRclExDgd/f
+         jX9xx/az03KBoNPvQw0uoqzVMitlJMaTBan2HpTo=
+Date:   Sat, 12 Oct 2019 13:06:00 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>
-Subject: Re: [PATCH 2/2] iio: light: Add support for ADUX1020 sensor
-Message-ID: <20191012125921.4cf04474@archlinux>
-In-Reply-To: <391446566afd59da7d94e8af5c7ecd13b57e1540.camel@analog.com>
-References: <20191007101027.8383-1-manivannan.sadhasivam@linaro.org>
-        <20191007101027.8383-3-manivannan.sadhasivam@linaro.org>
-        <30c4a0f9aff5a40879d6839ad8a5ce40565f0923.camel@analog.com>
-        <20191009094524.GA17962@Mani-XPS-13-9360>
-        <391446566afd59da7d94e8af5c7ecd13b57e1540.camel@analog.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: imu: adis16400: fix compiler warnings
+Message-ID: <20191012130552.306adb91@archlinux>
+In-Reply-To: <20191012124830.49a0e3c7@archlinux>
+References: <20191008085156.6255-1-alexandru.ardelean@analog.com>
+        <20191012124830.49a0e3c7@archlinux>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -52,79 +41,83 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 9 Oct 2019 10:21:27 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Sat, 12 Oct 2019 12:48:30 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Wed, 2019-10-09 at 15:15 +0530, Manivannan Sadhasivam wrote:
-> > [External]
+> On Tue, 8 Oct 2019 11:51:56 +0300
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> 
+> > GCC 8 complains about plenty of 'maybe-uninitialized' warnings.
+> > This patch fixes all of them.
 > > 
-> > Hi Ardelean,
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
+> Applied in a bit of a hurry as Greg ran into these as well.
+> 
+> Pull request already gone out.
+> 
+Note there are similar issues in adis.c, adis16480 and adis16136 that
+could do with similar patches!
 
-For some reason, my email client decided not to filter this thread
-correctly so I didn't realise so much discussion had gone on when
-I applied the newer version earlier today.  Oops.  Hopefully
-there was nothing major outstanding.  Let me know if there was
-as it's not yet in a non rebasing tree...
+Thanks,
 
-I've cropped to just where my name got mentioned ;)
+Jonathan
 
-..
-
-> >   
-> > > - Just curios here: there is gesture mode as well; will that be
-> > > implemented
-> > > later? Or will there be other modes implemented?  
+> Thanks,
+> 
+> Jonathan
+> 
+> > ---
+> >  drivers/iio/imu/adis16400.c | 10 +++++-----
+> >  1 file changed, 5 insertions(+), 5 deletions(-)
 > > 
-> > Currently only proximity mode is implemented. There are gesture and
-> > sample
-> > modes and I left those as a TODO. But I'm not sure whether IIO is
-> > supporting
-> > gesture mode properly or not.  
+> > diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
+> > index e042a2aabf6b..d0b7dce798f4 100644
+> > --- a/drivers/iio/imu/adis16400.c
+> > +++ b/drivers/iio/imu/adis16400.c
+> > @@ -325,7 +325,7 @@ static struct adis_burst adis16400_burst = {
+> >  static int adis16334_get_freq(struct adis16400_state *st)
+> >  {
+> >  	int ret;
+> > -	uint16_t t;
+> > +	uint16_t t = 0;
+> >  
+> >  	ret = __adis_read_reg_16(&st->adis, ADIS16400_SMPL_PRD, &t);
+> >  	if (ret < 0)
+> > @@ -338,7 +338,7 @@ static int adis16334_get_freq(struct adis16400_state *st)
+> >  
+> >  static int adis16334_set_freq(struct adis16400_state *st, unsigned int freq)
+> >  {
+> > -	unsigned int t;
+> > +	unsigned int t = 0;
+> >  
+> >  	if (freq < 819200)
+> >  		t = ilog2(819200 / freq);
+> > @@ -357,7 +357,7 @@ static int adis16334_set_freq(struct adis16400_state *st, unsigned int freq)
+> >  static int adis16400_get_freq(struct adis16400_state *st)
+> >  {
+> >  	int sps, ret;
+> > -	uint16_t t;
+> > +	uint16_t t = 0;
+> >  
+> >  	ret = __adis_read_reg_16(&st->adis, ADIS16400_SMPL_PRD, &t);
+> >  	if (ret < 0)
+> > @@ -408,7 +408,7 @@ static const unsigned int adis16400_3db_divisors[] = {
+> >  static int __adis16400_set_filter(struct iio_dev *indio_dev, int sps, int val)
+> >  {
+> >  	struct adis16400_state *st = iio_priv(indio_dev);
+> > -	uint16_t val16;
+> > +	uint16_t val16 = 0;
+> >  	int i, ret;
+> >  
+> >  	for (i = ARRAY_SIZE(adis16400_3db_divisors) - 1; i >= 1; i--) {
+> > @@ -554,7 +554,7 @@ static int adis16400_read_raw(struct iio_dev *indio_dev,
+> >  {
+> >  	struct adis16400_state *st = iio_priv(indio_dev);
+> >  	struct mutex *slock = &st->adis.state_lock;
+> > -	int16_t val16;
+> > +	int16_t val16 = 0;
+> >  	int ret;
+> >  
+> >  	switch (info) {  
 > 
-> I don't have any input on this at the moment [about gesture support & IIO].
-> I'd have to investigate.
-> Maybe Jonathan has some thoughts.
-
-Properly is a hard term for gesture support.  The issue has always
-been that every device does it slightly differently.  There are
-way too many types of gesture that a device 'might' use.
-
-We do have some drivers (IIRC) doing some gesture sensing, but you may
-well find places where things need to expand!
-
-...
-> > > > +static int adux1020_read_raw(struct iio_dev *indio_dev,
-> > > > +			     struct iio_chan_spec const *chan,
-> > > > +			     int *val, int *val2, long mask)
-> > > > +{
-> > > > +	struct adux1020_data *data = iio_priv(indio_dev);
-> > > > +	u16 buf[3];  
-> > > 
-> > > This buffer looks a bit weird. [8]
-> > > It's 3 elements-wide and passed without any information about size.
-> > > And only the first element is used.
-> > > So, maybe just convert u16 buf[3] -> u16 buf?
-> > >   
-> > 
-> > The buffer declaration is based on the hardware buffer available. It
-> > is 3 elements wide since the remaining 2 elements will be used by other
-> > modes. The idea here is to reuse the adux1020_measure() API for all 3
-> > modes (which has varying buffer sizes).  
-> 
-> The only thought I have left about this buffer [and forgot to mention it
-> earlier], is whether this should be cacheline aligned [or not].
-> If it has to be, then maybe it shouldn't be stored on the stack and moved
-> to a malloc-ed buffer [on "struct adux1020_data"].
-> Cacheline aligned stuff typically deals with potential DMA issues. The DMA
-> issues [in this case] could be coming from i2c controllers that can do DMA.
-> 
-> Jonathan may have more input here.
-> 
-The i2c subsystem in general doesn't assume that buffers are dma safe
-though it would like to ;)
-
-Wolfram did a good presentation on his efforts to sort that out at
-ELCE 2018
-
-https://www.youtube.com/watch?v=JDwaMClvV-s
 

@@ -2,106 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE501D5035
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 15:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BC21D503A
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2019 16:00:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729355AbfJLN41 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Oct 2019 09:56:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54664 "EHLO mail.kernel.org"
+        id S1727402AbfJLOAT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Oct 2019 10:00:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54988 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726751AbfJLN41 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 12 Oct 2019 09:56:27 -0400
+        id S1726821AbfJLOAT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 12 Oct 2019 10:00:19 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6CC672089C;
-        Sat, 12 Oct 2019 13:56:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C42602089C;
+        Sat, 12 Oct 2019 14:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570888586;
-        bh=0HvqvFwfwCQoraeKnSparcBfChLwzNFxZYU8txEdt2Q=;
+        s=default; t=1570888817;
+        bh=Mz0BL3/C+OrOXXcjjKTuqtWi5Ny6ZYS0L4vIH8ltkfE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UecdelPXpFk8H7muOCmZSBT6DH0LU3oM4xjYOlFu4DAWS3r6hwJLfbVdpj76vjyK4
-         MWglcnHyUzd7ZEp+XgK8uztgJ0ngoou0jxKVXyDGLW8gfAD9LGjKp/jcZLeoEDyTEG
-         5WcFUPXIwBPlzlYCTuYFOzbxHxFniLmcq4ghE/R4=
-Date:   Sat, 12 Oct 2019 14:56:21 +0100
+        b=bipuAx3KMl+7dalmmCW/eKNVAhz7kU3AXJhnZJBdnEjXNPfkwuz455QiBKVrPhfmd
+         PfIJViUdRtB9otkEn2Fzk7E4EhojB23oxtPUci/AhSdup6Tbzg7/FBu9jwLdiMeABm
+         ZedXiIlxroMXFMHZfbWTaPplcVGqZuxfUEmQ1JdI=
+Date:   Sat, 12 Oct 2019 15:00:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        <devicetree@vger.kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 1/7] iio: adc: max1027: Add debugfs register read
- support
-Message-ID: <20191012145621.228d4efc@archlinux>
-In-Reply-To: <20191007120001.61c8ef71@xps13>
-References: <20191003173401.16343-1-miquel.raynal@bootlin.com>
-        <20191003173401.16343-2-miquel.raynal@bootlin.com>
-        <20191006110424.7781d99d@archlinux>
-        <20191007120001.61c8ef71@xps13>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, benjamin.gaignard@linaro.org,
+        david@lechnology.com
+Subject: Re: [PATCH v5 0/3] Simplify count_read/count_write/signal_read
+Message-ID: <20191012150012.5e3399f1@archlinux>
+In-Reply-To: <cover.1570391994.git.vilhelm.gray@gmail.com>
+References: <cover.1570391994.git.vilhelm.gray@gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 7 Oct 2019 12:00:01 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+Hi William
 
-> Hi Jonathan,
->=20
-> Jonathan Cameron <jic23@kernel.org> wrote on Sun, 6 Oct 2019 11:04:24
-> +0100:
->=20
-> > On Thu,  3 Oct 2019 19:33:55 +0200
-> > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> >  =20
-> > > Until now, only write operations were supported. Force two bytes read
-> > > operation when reading from this register (might be wrong when reading
-> > > the temperature, but will work with any other value).   =20
-> >=20
-> > That's worrying as comments go.  Just return an error on the temperature
-> > register if it's going to do the wrong thing. =20
->=20
-> Actually the debugfs_reg_access hook is supposedly stateless. When
-> reading registers I don't know what I am reading because the "source" is
-> selected during the write operation, so I have no reliable way to know
-> what I am reading.
->=20
-> I set the read length to 2 bytes because most of the "atomic"reads are
-> two bytes and it allows us to test various commands directly from
-> userspace and read meaningful values. This is a limitation as:
-> * Voltage 'atomic' reads are 2 bytes
-> * Temperature 'atomic' reads are 2 bytes but never come alone (usually
->   one voltage input of 2B will follow).
-> * Any other 'condensed' input will be more than 2 bytes, ie. several
->   voltage values in one go.
->=20
-> In any case, doing a software reset of the chip will turn it back
-> into a working state no matter what was requested/read.
->=20
-> For me, 2-byte reads is a "good enough" solution that will work with
-> almost all the simplest ('atomic') SPI operations, but if you think
-> limiting to 2-bytes access is a problem (right now there is only write
-> access, which is kind of useless on its own) then let's drop the patch.
-> But I wanted to contribute it because it really helped me during the
-> development.=20
+What's the status on these? If you are happy that reviews and
+testing is complete enough, do you want me to take them after
+I pick up the eqep driver (hopefully shortly dependent on
+the pull request Greg has from me being fine).
 
-This is fine as is.  Comment was worrying so could perhaps have given
-more detail.  Still it's a debug interface, people get to look at the
-datasheet if they are using this :)
+Thanks,
 
 Jonathan
 
+On Sun,  6 Oct 2019 16:03:08 -0400
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
->=20
->=20
-> Thanks,
-> Miqu=C3=A8l
+> Changes in v5:
+>  - Add changes and additions to generic-counter.rst to clarify theory
+>    and use of the Generic Counter interface
+>  - Fix typo in counter.h action_get description comment
+> 
+> The changes in this patchset will not affect the userspace interface.
+> Rather, these changes are intended to simplify the kernelspace Counter
+> callbacks for counter device driver authors.
+> 
+> The following main changes are proposed:
+> 
+> * Retire the opaque counter_count_read_value/counter_count_write_value
+>   structures and simply represent count data as an unsigned integer.
+> 
+> * Retire the opaque counter_signal_read_value structure and represent
+>   Signal data as a counter_signal_value enum.
+> 
+> These changes should reduce some complexity and code in the use and
+> implementation of the count_read, count_write, and signal_read
+> callbacks.
+> 
+> The opaque structures for Count data and Signal data were introduced
+> originally in anticipation of supporting various representations of
+> counter data (e.g. arbitrary-precision tallies, floating-point spherical
+> coordinate positions, etc). However, with the counter device drivers
+> that have appeared, it's become apparent that utilizing opaque
+> structures in kernelspace is not the best approach to take.
+> 
+> I believe it is best to let userspace applications decide how to
+> interpret the count data they receive. There are a couple of reasons why
+> it would be good to do so:
+> 
+> * Users use their devices in unexpected ways.
+> 
+>   For example, a quadrature encoder counter device is typically used to
+>   keep track of the position of a motor, but a user could set the device
+>   in a pulse-direction mode and instead use it to count sporadic rising
+>   edges from an arbitrary signal line unrelated to positioning. Users
+>   should have the freedom to decide what their data represents.
+> 
+> * Most counter devices represent data as unsigned integers anyway.
+> 
+>   For example, whether the device is a tally counter or position
+>   counter, the count data is represented to the user as an unsigned
+>   integer value. So specifying that one device is representing tallies
+>   while the other specifies positions does not provide much utility from
+>   an interface perspective.
+> 
+> For these reasons, the count_read and count_write callbacks have been
+> redefined to pass count data directly as unsigned long instead of passed
+> via opaque structures:
+> 
+>         count_read(struct counter_device *counter,
+>                    struct counter_count *count, unsigned long *val);
+>         count_write(struct counter_device *counter,
+>                     struct counter_count *count, unsigned long val);
+> 
+> Similarly, the signal_read is redefined to pass Signal data directly as
+> a counter_signal_value enum instead of via an opaque structure:
+> 
+>         signal_read(struct counter_device *counter,
+>                     struct counter_signal *signal,
+>                     enum counter_signal_value *val);
+> 
+> The counter_signal_value enum is simply the counter_signal_level enum
+> redefined to remove the references to the Signal data "level" data type.
+> 
+> William Breathitt Gray (3):
+>   counter: Simplify the count_read and count_write callbacks
+>   docs: driver-api: generic-counter: Update Count and Signal data types
+>   counter: Fix typo in action_get description
+> 
+>  Documentation/driver-api/generic-counter.rst | 162 +++++++++++--------
+>  drivers/counter/104-quad-8.c                 |  33 ++--
+>  drivers/counter/counter.c                    | 101 ++----------
+>  drivers/counter/ftm-quaddec.c                |  14 +-
+>  drivers/counter/stm32-lptimer-cnt.c          |   5 +-
+>  drivers/counter/stm32-timer-cnt.c            |  17 +-
+>  drivers/counter/ti-eqep.c                    |  19 +--
+>  include/linux/counter.h                      |  76 ++-------
+>  8 files changed, 144 insertions(+), 283 deletions(-)
+> 
+> 
+> base-commit: 0c3aa63a842d84990bd02622f2fa50d2bd33c652
+> prerequisite-patch-id: ebe284609b3db8d4130ea2915f7f7b185c743a70
+> prerequisite-patch-id: cbe857759f10d875690df125d18bc04f585ac7c9
+> prerequisite-patch-id: 21f2660dc88627387ee4666d08044c63dd961dae
 

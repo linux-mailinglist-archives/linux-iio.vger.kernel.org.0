@@ -2,77 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7B6ED5636
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 14:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54913D5671
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 16:13:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728977AbfJMMhc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Oct 2019 08:37:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49578 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728932AbfJMMhc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Oct 2019 08:37:32 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F2267206B7;
-        Sun, 13 Oct 2019 12:37:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570970251;
-        bh=0qXAw18/gOLPuTDIo/e3SEu7vxFj3QkKxpPSAiIDzhY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kL/kw+wIY4ERj8u0xR6/UjJgBTvBioNdKQ0mh2nmc0XlicbbAAi1XD5d38T7O43Ch
-         SpuLaZb/ILPByGC7Zplcedt4HLZ94N6DWAXSMLouoOt1aIHiIA18Z/heDa3UGECgoP
-         sL/gfGGEWXsDB/9Y0cMjKjgXCvwDtmZW2fesChCQ=
-From:   jic23@kernel.org
-To:     linux-iio@vger.kernel.org
-Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 2/2] iio: adc: exynos: use devm_platform_ioremap_resource
-Date:   Sun, 13 Oct 2019 13:35:24 +0100
-Message-Id: <20191013123524.1821390-2-jic23@kernel.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191013123524.1821390-1-jic23@kernel.org>
-References: <20191013123524.1821390-1-jic23@kernel.org>
+        id S1729039AbfJMONB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Oct 2019 10:13:01 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:39882 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729005AbfJMONB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Oct 2019 10:13:01 -0400
+Received: by mail-qt1-f194.google.com with SMTP id n7so21409812qtb.6;
+        Sun, 13 Oct 2019 07:13:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=6zLct8pBwKTifz+F0/uvdV8XqD7tdVQ+bTWtwz5Y/Tw=;
+        b=fBT65KzNR7rNYopsyxFn3m7ULNKz1Pr/snP9UlIf8LvaAY1AHPh0Rf6i7K65bvD+fv
+         SOMfzVEOxkdJnUoyLwZXq1/2EWSp0VJG7G9SqFkK3O9t7PlbgvQYs+Y3jA/CnAh/LGjA
+         Jj1lU/pIrCTEmXMuELTBCiM6SaCgU9qVSZ53vBExTDqYe92QxPUw0cwuKsdZMbSyMyLg
+         2RDMLDNE03McLFMzqBoAk6aRsJHWhyJvIZ/3uHgwJYF4+hd175L7GT4MJsKhJHAGeZPj
+         Ngvf51IQAJ4oJLgm+RHRox53BKMbl4wT1G4QJx5jApRSKkzF8wUzqQx7pJXOs9+N6ZMw
+         TUFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=6zLct8pBwKTifz+F0/uvdV8XqD7tdVQ+bTWtwz5Y/Tw=;
+        b=mOHGAgs6o1AB6OlCaMTY0DTrvBXG28RBN2v1cjh4lLT3G1PutG9dnMDjXo20BkgLwz
+         JUJTXLegIusJzDXPoCDXd6M4NCEHbRhMZaW39eogW1KHAWk3H6zzfZzqm3tQ6TjvGbXS
+         v6to5Fd8CGyO9tYIV0xz07nkEgLZprChXqzeuHxB4TJYYrTQekWmangSdzutNlbKfefk
+         9sJICubCUEE+RnGdVkQmE9ft3kxRfsY8XYD1lHEokdrYyURbu4wZfifUSzoOeiG+F6xW
+         8EAQ+cbJACfqG5TVXNo2XdPT0cKaUJP2dW9OwAcza2XE/l4xPNkUgRNYhkRS+RvrXSv8
+         EHvA==
+X-Gm-Message-State: APjAAAUGTxHfy7doiT5ijvLdbycddzbfytDSPUdoKzM72tAKCMqVlQ7l
+        1dNah4XTKNHvkmeLN0nsYd4=
+X-Google-Smtp-Source: APXvYqyr3w9S8yTN0lOVNAbo5M61F7ZM4Z9oJXqfLyz72JwESsPk9DDUmej480MH2J/aManJyXb32w==
+X-Received: by 2002:a0c:8964:: with SMTP id 33mr23592138qvq.241.1570975980268;
+        Sun, 13 Oct 2019 07:13:00 -0700 (PDT)
+Received: from smtp.gmail.com ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id p36sm9805447qtc.0.2019.10.13.07.12.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Oct 2019 07:12:59 -0700 (PDT)
+Date:   Sun, 13 Oct 2019 11:12:56 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     jic23@kernel.org
+Cc:     dragos.bogdan@analog.com, alexandru.ardelean@analog.com,
+        stefan.popa@analog.com, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: [PATCH 0/2] iio: adc: Add driver support for AD7292
+Message-ID: <20191013141252.4ogu4sur5jea54ow@smtp.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This patchset adds a basic driver for the AD7292 ADC/DAC system along
+with device tree binding documentation.
 
-Reduce local boilerplate.
-Identified by coccinelle
-drivers/iio/adc/exynos_adc.c:792:1-11: WARNING: Use devm_platform_ioremap_resource for info -> regs
+Marcelo Schmitt (2):
+  iio: adc: Add driver support for AD7292
+  dt-bindings: iio: adc: Add DT docs for AD7292
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/exynos_adc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ .../bindings/iio/adc/adi,ad7292.yaml          |  71 ++++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/ad7292.c                      | 350 ++++++++++++++++++
+ 5 files changed, 440 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+ create mode 100644 drivers/iio/adc/ad7292.c
 
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index b5a497381452..2df7d057b249 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -769,7 +769,6 @@ static int exynos_adc_probe(struct platform_device *pdev)
- 	struct device_node *np = pdev->dev.of_node;
- 	struct s3c2410_ts_mach_info *pdata = dev_get_platdata(&pdev->dev);
- 	struct iio_dev *indio_dev = NULL;
--	struct resource	*mem;
- 	bool has_ts = false;
- 	int ret = -ENODEV;
- 	int irq;
-@@ -788,8 +787,7 @@ static int exynos_adc_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
--	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	info->regs = devm_ioremap_resource(&pdev->dev, mem);
-+	info->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(info->regs))
- 		return PTR_ERR(info->regs);
- 
 -- 
 2.23.0
 

@@ -2,55 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B381D5561
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 11:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0B1D5569
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 11:07:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728408AbfJMJCn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Oct 2019 05:02:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43884 "EHLO mail.kernel.org"
+        id S1728579AbfJMJHw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Oct 2019 05:07:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44542 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728080AbfJMJCn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Oct 2019 05:02:43 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1728496AbfJMJHw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Oct 2019 05:07:52 -0400
+Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 486112064A;
-        Sun, 13 Oct 2019 09:02:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 45FE620673;
+        Sun, 13 Oct 2019 09:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570957362;
-        bh=cvmrXPfNXUCKqFDI0ZAh2mmlgZMhfdiVH0nCpuylLDs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bKN3rts3NnXpFRFtBiv4SNxCaC2a136teKWrqj3Rs6ANh8wq+dEluyLlyVLdY1kWR
-         50Znfgsx6IbMBXxIeu3YP6OzAGmXKkhsOat49kLfM/Vlta+w6cyXGLMUijCs8rG1RK
-         iOv+1xXjf2AbyXfGR7sq6VodMqQR2t8tObs1G1q4=
-Date:   Sun, 13 Oct 2019 11:01:23 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Alexandru Ardelean <ardeleanalex@gmail.com>
-Subject: Re: [PULL v3] First set of iio new device support etc for the 5.5
- cycle
-Message-ID: <20191013090123.GA2409479@kroah.com>
-References: <20191013091859.25344d8f@archlinux>
+        s=default; t=1570957672;
+        bh=GnAbmRqSltmFgVAtWkr1ppMMBXyYUykDifDjgp/IOns=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UHqztY9rxZK8c44qCWisY2COK3m3GkngqaAfv5vpBM3rSzWFhYwVntY6CCAjbAVYW
+         +Y+reDoy6/7hRI78yblXHE2W5xUL8Y3lMlGyFklxJkT9lZsxmtVqde1gG4KdvK6Dwx
+         ucElB2Uvv/5Ce2Ccklfol3ENtd/3PL545ZHn6yvI=
+From:   jic23@kernel.org
+To:     linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH] iio:adc:mcp320x: Tidy up endian types in type cast.
+Date:   Sun, 13 Oct 2019 10:05:42 +0100
+Message-Id: <20191013090542.1375572-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191013091859.25344d8f@archlinux>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 13, 2019 at 09:18:59AM +0100, Jonathan Cameron wrote:
-> The following changes since commit b73b93a2af3392b9b7b8ba7e818ee767499f9655:
-> 
->   iio: adc: ad7192: Add sysfs ABI documentation (2019-09-08 10:34:49 +0100)
-> 
-> are available in the Git repository at:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.5a-take3
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Much better, thanks!  Now pulled and pushed out.
+Fixes the sparse warning:
+drivers/iio/adc/mcp320x.c:167:41: warning: incorrect type in argument 1 (different base types)
+drivers/iio/adc/mcp320x.c:167:41:    expected restricted __be32 const [usertype] *p
+drivers/iio/adc/mcp320x.c:167:41:    got unsigned int [usertype] *<noident>
 
-greg k-h
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Lukas Wunner <lukas@wunner.de>
+---
+ drivers/iio/adc/mcp320x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/mcp320x.c b/drivers/iio/adc/mcp320x.c
+index 38bf10085696..465c7625a55a 100644
+--- a/drivers/iio/adc/mcp320x.c
++++ b/drivers/iio/adc/mcp320x.c
+@@ -164,7 +164,7 @@ static int mcp320x_adc_conversion(struct mcp320x *adc, u8 channel,
+ 	case mcp3550_60:
+ 	case mcp3551:
+ 	case mcp3553: {
+-		u32 raw = be32_to_cpup((u32 *)adc->rx_buf);
++		u32 raw = be32_to_cpup((__be32 *)adc->rx_buf);
+ 
+ 		if (!(adc->spi->mode & SPI_CPOL))
+ 			raw <<= 1; /* strip Data Ready bit in SPI mode 0,0 */
+-- 
+2.23.0
+

@@ -2,80 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 453F7D55A6
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 12:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0057ED55B1
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 12:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728689AbfJMK2F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Oct 2019 06:28:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53392 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728528AbfJMK2F (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Oct 2019 06:28:05 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 97FA720679;
-        Sun, 13 Oct 2019 10:28:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570962484;
-        bh=Sqp2HVU2D7BdNWavcfc8KAWJAgvvPZNb28iBUjb/Ur0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=2Y47o3eZeFRPLOTGTtXD7bsbvBL87prVhrHeMnwyNR+5toXwelxKX5/uutpLsrNnA
-         2vLz1WGhbxMwqgtbrIQxzuaFG1OYRMCE49lp4+YM3kXKMHLa8zZ6MC+Z5tnh8IHomt
-         G7GHyMFZV3AEpp9gKu2z8KlapZ4b2xGb/4aTAHsk=
-From:   jic23@kernel.org
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH] iio: proximity: pulsedlight v2: Tidy up an endian issue
-Date:   Sun, 13 Oct 2019 11:26:00 +0100
-Message-Id: <20191013102600.1463679-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.23.0
+        id S1728686AbfJMKwE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Oct 2019 06:52:04 -0400
+Received: from bmailout1.hostsharing.net ([83.223.95.100]:42879 "EHLO
+        bmailout1.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728620AbfJMKwD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Oct 2019 06:52:03 -0400
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id A8ED430000CC7;
+        Sun, 13 Oct 2019 12:52:01 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 7EDD22E7DAE; Sun, 13 Oct 2019 12:52:01 +0200 (CEST)
+Date:   Sun, 13 Oct 2019 12:52:01 +0200
+From:   Lukas Wunner <lukas@wunner.de>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio:adc:mcp320x: Tidy up endian types in type cast.
+Message-ID: <20191013105201.waluu7myfn7bcmmn@wunner.de>
+References: <20191013090542.1375572-1-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191013090542.1375572-1-jic23@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sun, Oct 13, 2019 at 10:05:42AM +0100, jic23@kernel.org wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Fixes the sparse warning:
+> drivers/iio/adc/mcp320x.c:167:41: warning: incorrect type in argument 1 (different base types)
+> drivers/iio/adc/mcp320x.c:167:41:    expected restricted __be32 const [usertype] *p
+> drivers/iio/adc/mcp320x.c:167:41:    got unsigned int [usertype] *<noident>
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Sparse identified the following
-CHECK   drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-drivers/iio/proximity/pulsedlight-lidar-lite-v2.c:144:24: warning: cast to restricted __be16
-drivers/iio/proximity/pulsedlight-lidar-lite-v2.c:144:24: warning: cast to restricted __be16
-drivers/iio/proximity/pulsedlight-lidar-lite-v2.c:144:24: warning: cast to restricted __be16
-drivers/iio/proximity/pulsedlight-lidar-lite-v2.c:144:24: warning: cast to restricted __be16
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 
-This cleans up by adding a local variable to hold the value whilst
-it is __be16 before applying endian converstion into eventual destination.
+Thanks,
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Matt Ranostay <matt.ranostay@konsulko.com>
----
- drivers/iio/proximity/pulsedlight-lidar-lite-v2.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Lukas
 
-diff --git a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-index 47af54f14756..5b369645ef49 100644
---- a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-+++ b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-@@ -136,12 +136,13 @@ static inline int lidar_write_power(struct lidar_data *data, int val)
- 
- static int lidar_read_measurement(struct lidar_data *data, u16 *reg)
- {
-+	__be16 value;
- 	int ret = data->xfer(data, LIDAR_REG_DATA_HBYTE |
- 			(data->i2c_enabled ? LIDAR_REG_DATA_WORD_READ : 0),
--			(u8 *) reg, 2);
-+			(u8 *) &value, 2);
- 
- 	if (!ret)
--		*reg = be16_to_cpu(*reg);
-+		*reg = be16_to_cpu(value);
- 
- 	return ret;
- }
--- 
-2.23.0
 
+> ---
+>  drivers/iio/adc/mcp320x.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/mcp320x.c b/drivers/iio/adc/mcp320x.c
+> index 38bf10085696..465c7625a55a 100644
+> --- a/drivers/iio/adc/mcp320x.c
+> +++ b/drivers/iio/adc/mcp320x.c
+> @@ -164,7 +164,7 @@ static int mcp320x_adc_conversion(struct mcp320x *adc, u8 channel,
+>  	case mcp3550_60:
+>  	case mcp3551:
+>  	case mcp3553: {
+> -		u32 raw = be32_to_cpup((u32 *)adc->rx_buf);
+> +		u32 raw = be32_to_cpup((__be32 *)adc->rx_buf);
+>  
+>  		if (!(adc->spi->mode & SPI_CPOL))
+>  			raw <<= 1; /* strip Data Ready bit in SPI mode 0,0 */
+> -- 
+> 2.23.0

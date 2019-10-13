@@ -2,78 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 989EDD555F
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 10:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B381D5561
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 11:02:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728311AbfJMI7y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Oct 2019 04:59:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43036 "EHLO mail.kernel.org"
+        id S1728408AbfJMJCn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Oct 2019 05:02:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43884 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728080AbfJMI7y (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Oct 2019 04:59:54 -0400
-Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1728080AbfJMJCn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Oct 2019 05:02:43 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5BDDA206B7;
-        Sun, 13 Oct 2019 08:59:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 486112064A;
+        Sun, 13 Oct 2019 09:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570957194;
-        bh=pn8hSh8Fe79AwCHNy+N56x9s85BACA/JfjKLjRPEA4k=;
-        h=From:To:Cc:Subject:Date:From;
-        b=QsP7AbYPJ8Fmcl2C+tpxgieIxXQbwsq2sNSy19lMqG7KjxVE7V0lWSJMvWn/bVyhv
-         DuOx1pSzEEQz/7jI66oO+vrjn3AxNYXXr2fnQ4FbQGh37R6T/M81pwSieOC/N4cBih
-         EGBS8yhdAhARxyl8duhv3/62/it6daoq6Y8L/zoY=
-From:   jic23@kernel.org
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>
-Subject: [PATCH] iio:adc:at91-sama5d2: Replace 0 with NULL when clearing some pointers.
-Date:   Sun, 13 Oct 2019 09:57:23 +0100
-Message-Id: <20191013085723.1366012-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.23.0
+        s=default; t=1570957362;
+        bh=cvmrXPfNXUCKqFDI0ZAh2mmlgZMhfdiVH0nCpuylLDs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bKN3rts3NnXpFRFtBiv4SNxCaC2a136teKWrqj3Rs6ANh8wq+dEluyLlyVLdY1kWR
+         50Znfgsx6IbMBXxIeu3YP6OzAGmXKkhsOat49kLfM/Vlta+w6cyXGLMUijCs8rG1RK
+         iOv+1xXjf2AbyXfGR7sq6VodMqQR2t8tObs1G1q4=
+Date:   Sun, 13 Oct 2019 11:01:23 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Alexandru Ardelean <ardeleanalex@gmail.com>
+Subject: Re: [PULL v3] First set of iio new device support etc for the 5.5
+ cycle
+Message-ID: <20191013090123.GA2409479@kroah.com>
+References: <20191013091859.25344d8f@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191013091859.25344d8f@archlinux>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sun, Oct 13, 2019 at 09:18:59AM +0100, Jonathan Cameron wrote:
+> The following changes since commit b73b93a2af3392b9b7b8ba7e818ee767499f9655:
+> 
+>   iio: adc: ad7192: Add sysfs ABI documentation (2019-09-08 10:34:49 +0100)
+> 
+> are available in the Git repository at:
+> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.5a-take3
 
-Cleans up the sparse warning:
+Much better, thanks!  Now pulled and pushed out.
 
-CHECK   drivers/iio/adc/at91-sama5d2_adc.c
-drivers/iio/adc/at91-sama5d2_adc.c:1486:31: warning: Using plain integer as NULL pointer
-drivers/iio/adc/at91-sama5d2_adc.c:1509:31: warning: Using plain integer as NULL pointer
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Eugen Hristev <eugen.hristev@microchip.com>
----
- drivers/iio/adc/at91-sama5d2_adc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index a2837a0e7cba..e1850f3d5cf3 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -1483,7 +1483,7 @@ static void at91_adc_dma_init(struct platform_device *pdev)
- 			  st->dma_st.rx_buf, st->dma_st.rx_dma_buf);
- dma_chan_disable:
- 	dma_release_channel(st->dma_st.dma_chan);
--	st->dma_st.dma_chan = 0;
-+	st->dma_st.dma_chan = NULL;
- dma_exit:
- 	dev_info(&pdev->dev, "continuing without DMA support\n");
- }
-@@ -1506,7 +1506,7 @@ static void at91_adc_dma_disable(struct platform_device *pdev)
- 	dma_free_coherent(st->dma_st.dma_chan->device->dev, pages * PAGE_SIZE,
- 			  st->dma_st.rx_buf, st->dma_st.rx_dma_buf);
- 	dma_release_channel(st->dma_st.dma_chan);
--	st->dma_st.dma_chan = 0;
-+	st->dma_st.dma_chan = NULL;
- 
- 	dev_info(&pdev->dev, "continuing without DMA support\n");
- }
--- 
-2.23.0
-
+greg k-h

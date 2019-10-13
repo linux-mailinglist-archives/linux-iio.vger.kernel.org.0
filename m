@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ECCED56CC
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 18:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B99F4D56D4
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2019 18:40:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727632AbfJMQXi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Oct 2019 12:23:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60248 "EHLO mail.kernel.org"
+        id S1728239AbfJMQkA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Oct 2019 12:40:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60762 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726085AbfJMQXh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 13 Oct 2019 12:23:37 -0400
+        id S1727386AbfJMQkA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 13 Oct 2019 12:40:00 -0400
 Received: from localhost.localdomain (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 98A8A20659;
-        Sun, 13 Oct 2019 16:23:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E29572067B;
+        Sun, 13 Oct 2019 16:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570983817;
-        bh=/Gr9s0H0SajSm538jOlYy2EWQD9xiEdZP3Nkix/Np/M=;
+        s=default; t=1570984799;
+        bh=ynKn+r6ziysDeNRqhU2nqUi7IkBO/3U52Tq2S+QM0d4=;
         h=From:To:Cc:Subject:Date:From;
-        b=vmWC5RC+20gVLMrGu0JhR20jytli0dqW8Bw9AkUKAdSL2e0z3PQXReEXhCqiipHyc
-         wI0hoSe95u3eisKKnnDSZbJoGK5IMEeYCeSluehSCcn779QsIwWwCuemBvOFS5BsQB
-         aZIdmlFr3PGZl9pgfU0msFT/i+w3gHYfPE6M+H2Y=
+        b=iHI1dxFNv7s1mWK98QBxbD5vLYT/WY5vXT30/5WM1GJtiRtezGePmK0hqfrsCWJTo
+         SY22dXPtBh3w07ZdUYxYvmbIwD05c43vv22rrJARy8MKSbxCGWetlvRC+IVPLyWl38
+         IbNlhr57Za90TVF5K+ikYetRENdwSlnV3NbdfTDo=
 From:   jic23@kernel.org
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Tony Lindgren <tony@atomide.com>
-Subject: [PATCH] iio: adc: cpcap-adc: Fix missing IRQF_ONESHOT as only threaded handler.
-Date:   Sun, 13 Oct 2019 17:21:33 +0100
-Message-Id: <20191013162133.1999362-1-jic23@kernel.org>
+        Sebastian Reichel <sre@kernel.org>
+Subject: [PATCH] iio: adc: tsl4030: Use false / true instead of 0 / 1 with booleans
+Date:   Sun, 13 Oct 2019 17:37:54 +0100
+Message-Id: <20191013163754.2044672-1-jic23@kernel.org>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,32 +40,88 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Coccinelle noticed:
-CHECK   drivers/iio/adc/cpcap-adc.c
-drivers/iio/adc/cpcap-adc.c:1009:9-34: ERROR: Threaded IRQ with no primary handler requested without IRQF_ONESHOT
+Suggestion from coccinelle / coccicheck
 
-As far as I can see this is a simple case of it should be specified
-but isn't.
+CHECK   drivers/iio/adc/twl4030-madc.c
+drivers/iio/adc/twl4030-madc.c:524:6-15: WARNING: Comparison of 0/1 to bool variable
+drivers/iio/adc/twl4030-madc.c:655:1-43: WARNING: Assignment of 0/1 to bool variable
+drivers/iio/adc/twl4030-madc.c:659:2-44: WARNING: Assignment of 0/1 to bool variable
+drivers/iio/adc/twl4030-madc.c:664:1-43: WARNING: Assignment of 0/1 to bool variable
+drivers/iio/adc/twl4030-madc.c:498:2-34: WARNING: Assignment of 0/1 to bool variable
+drivers/iio/adc/twl4030-madc.c:510:2-19: WARNING: Assignment of 0/1 to bool variable
+drivers/iio/adc/twl4030-madc.c:511:2-11: WARNING: Assignment of 0/1 to bool variable
+drivers/iio/adc/twl4030-madc.c:531:2-19: WARNING: Assignment of 0/1 to bool variable
+drivers/iio/adc/twl4030-madc.c:532:2-11: WARNING: Assignment of 0/1 to bool variable
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Tony Lindgren <tony@atomide.com>
+Cc: Sebastian Reichel <sre@kernel.org>
 ---
- drivers/iio/adc/cpcap-adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/twl4030-madc.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/adc/cpcap-adc.c b/drivers/iio/adc/cpcap-adc.c
-index 2d616cafe75f..5086a337f4c9 100644
---- a/drivers/iio/adc/cpcap-adc.c
-+++ b/drivers/iio/adc/cpcap-adc.c
-@@ -1008,7 +1008,7 @@ static int cpcap_adc_probe(struct platform_device *pdev)
+diff --git a/drivers/iio/adc/twl4030-madc.c b/drivers/iio/adc/twl4030-madc.c
+index 55c5119fe575..472b08f37fea 100644
+--- a/drivers/iio/adc/twl4030-madc.c
++++ b/drivers/iio/adc/twl4030-madc.c
+@@ -495,7 +495,7 @@ static irqreturn_t twl4030_madc_threaded_irq_handler(int irq, void *_madc)
+ 		ret = twl4030_madc_disable_irq(madc, i);
+ 		if (ret < 0)
+ 			dev_dbg(madc->dev, "Disable interrupt failed %d\n", i);
+-		madc->requests[i].result_pending = 1;
++		madc->requests[i].result_pending = true;
+ 	}
+ 	for (i = 0; i < TWL4030_MADC_NUM_METHODS; i++) {
+ 		r = &madc->requests[i];
+@@ -507,8 +507,8 @@ static irqreturn_t twl4030_madc_threaded_irq_handler(int irq, void *_madc)
+ 		len = twl4030_madc_read_channels(madc, method->rbase,
+ 						 r->channels, r->rbuf, r->raw);
+ 		/* Free request */
+-		r->result_pending = 0;
+-		r->active = 0;
++		r->result_pending = false;
++		r->active = false;
+ 	}
+ 	mutex_unlock(&madc->lock);
  
- 	error = devm_request_threaded_irq(&pdev->dev, ddata->irq, NULL,
- 					  cpcap_adc_irq_thread,
--					  IRQF_TRIGGER_NONE,
-+					  IRQF_TRIGGER_NONE | IRQF_ONESHOT,
- 					  "cpcap-adc", indio_dev);
- 	if (error) {
- 		dev_err(&pdev->dev, "could not get irq: %i\n",
+@@ -521,15 +521,15 @@ static irqreturn_t twl4030_madc_threaded_irq_handler(int irq, void *_madc)
+ 	 */
+ 	for (i = 0; i < TWL4030_MADC_NUM_METHODS; i++) {
+ 		r = &madc->requests[i];
+-		if (r->active == 0)
++		if (!r->active)
+ 			continue;
+ 		method = &twl4030_conversion_methods[r->method];
+ 		/* Read results */
+ 		len = twl4030_madc_read_channels(madc, method->rbase,
+ 						 r->channels, r->rbuf, r->raw);
+ 		/* Free request */
+-		r->result_pending = 0;
+-		r->active = 0;
++		r->result_pending = false;
++		r->active = false;
+ 	}
+ 	mutex_unlock(&madc->lock);
+ 
+@@ -652,16 +652,16 @@ static int twl4030_madc_conversion(struct twl4030_madc_request *req)
+ 	ret = twl4030_madc_start_conversion(twl4030_madc, req->method);
+ 	if (ret < 0)
+ 		goto out;
+-	twl4030_madc->requests[req->method].active = 1;
++	twl4030_madc->requests[req->method].active = true;
+ 	/* Wait until conversion is ready (ctrl register returns EOC) */
+ 	ret = twl4030_madc_wait_conversion_ready(twl4030_madc, 5, method->ctrl);
+ 	if (ret) {
+-		twl4030_madc->requests[req->method].active = 0;
++		twl4030_madc->requests[req->method].active = false;
+ 		goto out;
+ 	}
+ 	ret = twl4030_madc_read_channels(twl4030_madc, method->rbase,
+ 					 req->channels, req->rbuf, req->raw);
+-	twl4030_madc->requests[req->method].active = 0;
++	twl4030_madc->requests[req->method].active = false;
+ 
+ out:
+ 	mutex_unlock(&twl4030_madc->lock);
 -- 
 2.23.0
 

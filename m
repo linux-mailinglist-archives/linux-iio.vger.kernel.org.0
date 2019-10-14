@@ -2,109 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9123CD5CA1
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2019 09:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD6ADD61A8
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2019 13:48:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729876AbfJNHuk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Oct 2019 03:50:40 -0400
-Received: from mail-eopbgr20129.outbound.protection.outlook.com ([40.107.2.129]:63179
-        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
+        id S1730885AbfJNLsz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Oct 2019 07:48:55 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3750 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729234AbfJNHuk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 14 Oct 2019 03:50:40 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BpXKPfH4r10DgBWZW0SelJOH4jMA+FbDwBO+BtFMqZhwGWzZC1hMng8U00np3ffukyeQKPsj4AsYgiHRFdCsuiCe6HqSTEz8CkPFykPN26C5dkeRLKO5BdcOroWzxGJs3q9jW4jGyMTM1/N/bQ26W1KbpE7FL3AD31UYtQk/RYqjt5Vz9v1FyBo6D/GcbXP1DMClCbMWWJjhEE88wcTv0jIvK0cdfLs2ofVd1c/d9ToMmJ56EP/vIMH8dhRagnsQyeFbiPci0vMuOsIrqB5iHA85iNbIQdMuchl4xnr3RPXSsEhfp/X4CVbc7HT0T+M5l0gT2oQEDTahVnuEvXrk7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3WBVmYjsOu9FLRwgo4QIHPks1HVa2JcnFv2o3JigGZ4=;
- b=OARPhpJIeRiu99feHcoDPkJSrBSCVBweJIF6DPK/7jFRX1qN6eo1tQn3I2RywHO8mcfhZGO7Laih4Is4BRFFSGvsV2ZdsF3hnVxRow2uHCOc/hBNhM8ejfWhrpsSAhXK2lmFtCkgL6GNOqEHrtI/5fGJPWjn7hM0dXxzHDfCmPAfMBFTkxAESmKSVvcdXd+gLdwNs358DOaD2K+au2y4BGl06QTCzHbRHrGQglHOv4tfe0Zi28AWDTN4mhD344gpBkHhMj5JdLuGStpBn2nq6003CZyFAzl4mRJ45DLsF6t82nrQGb8d8hQotm8wx2Hl93e4Xm0U5tVSE4e2O0NyjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=toradex.com; dmarc=pass action=none header.from=toradex.com;
- dkim=pass header.d=toradex.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3WBVmYjsOu9FLRwgo4QIHPks1HVa2JcnFv2o3JigGZ4=;
- b=oB5DTAra4EcQFTOKvdKq2JvthGPKUR73HICxPgOecvyyh2rlmYcadTZ69H8Fj7FR+kUXvU4gQ+RLcSx6nmBhZvSMTUdhLrZNW4HfuyJWTu9ITQ2xf5Ly9zWhjqpj5WFbUGrbk/okq39B4FPmhnDAFXjzuTXBtCxGMq0cOHVl9jc=
-Received: from VI1PR0502MB3965.eurprd05.prod.outlook.com (52.134.19.20) by
- VI1PR0502MB3968.eurprd05.prod.outlook.com (52.134.17.160) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2347.16; Mon, 14 Oct 2019 07:50:33 +0000
-Received: from VI1PR0502MB3965.eurprd05.prod.outlook.com
- ([fe80::f427:26bb:85cf:abad]) by VI1PR0502MB3965.eurprd05.prod.outlook.com
- ([fe80::f427:26bb:85cf:abad%7]) with mapi id 15.20.2347.021; Mon, 14 Oct 2019
- 07:50:33 +0000
-From:   Philippe Schenker <philippe.schenker@toradex.com>
-To:     "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-CC:     "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] iio:adc:stmpe-adc: Cleanup endian type of local variable
-Thread-Topic: [PATCH] iio:adc:stmpe-adc: Cleanup endian type of local variable
-Thread-Index: AQHVgacZS+BiyquXjUitaUpMn4+RkKdZxM0A
-Date:   Mon, 14 Oct 2019 07:50:33 +0000
-Message-ID: <28f616a36507f0473aa37857fe58f3763bee4f5e.camel@toradex.com>
-References: <20191013091541.1382009-1-jic23@kernel.org>
-In-Reply-To: <20191013091541.1382009-1-jic23@kernel.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=philippe.schenker@toradex.com; 
-x-originating-ip: [46.140.72.82]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: e59fcf42-bef6-4403-104f-08d7507b312e
-x-ms-traffictypediagnostic: VI1PR0502MB3968:
-x-microsoft-antispam-prvs: <VI1PR0502MB3968CE24FD15D193150361F6F4900@VI1PR0502MB3968.eurprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:212;
-x-forefront-prvs: 01901B3451
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(39840400004)(376002)(346002)(366004)(396003)(199004)(189003)(6436002)(3846002)(305945005)(81166006)(118296001)(86362001)(4326008)(7736002)(8936002)(76176011)(110136005)(81156014)(6116002)(99286004)(6512007)(6246003)(6486002)(229853002)(8676002)(316002)(76116006)(6506007)(66946007)(66476007)(446003)(11346002)(66446008)(64756008)(66556008)(14454004)(102836004)(186003)(26005)(36756003)(71200400001)(4001150100001)(486006)(476003)(2616005)(91956017)(2906002)(5660300002)(256004)(25786009)(14444005)(71190400001)(44832011)(2501003)(66066001)(478600001);DIR:OUT;SFP:1102;SCL:1;SRVR:VI1PR0502MB3968;H:VI1PR0502MB3965.eurprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: toradex.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: lPg92MiwVP5qCRM/v5zH6y6CzYKc1P2FD+KklEX6sDCq1pkAFgLljFgXbQ2D03DUIiMdTWJWkgykAl+HTNtorVOfhBnvKmfkaPf+xOX6f/vqPs5JvHPTeY2eXnhvB0Rsg2zEaC3nn0SSi8VJ0r6e/yEDb3DLX6u+Tx15XSBrlPLGs+wZYx226JMg4eAnRKdPGoU9Iv5P6FpvjZdnkdtPmGDRJHCiiZJeERvTDcKlL/4ZpeUyRUPAyiIcbuNG2OWfAishv5PIsZr2OYz50iEmXXkwbZq0QPujnYtgDBbxRalio49IMLFz4qpgbWW+YnfrWhZbTnyesb/UAqA5mpTY2pBdd+xY2wi/zp59S0bmIOGApUteau+B9GopXm4BA4X3SnYjKd96KuB7ooOHKO4eZGm9CBFbX2o856Gt4cIqC4s=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B0EAAE2680D50A42BE9BEF145C1E551C@eurprd05.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1730300AbfJNLsz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 14 Oct 2019 07:48:55 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id BFCF8377902FCE19D856;
+        Mon, 14 Oct 2019 19:48:50 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Mon, 14 Oct 2019
+ 19:48:47 +0800
+Date:   Mon, 14 Oct 2019 12:48:35 +0100
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+CC:     <jic23@kernel.org>, <dragos.bogdan@analog.com>,
+        <alexandru.ardelean@analog.com>, <stefan.popa@analog.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: Add DT docs for AD7292
+Message-ID: <20191014124835.00005645@huawei.com>
+In-Reply-To: <20191013141345.uctcutryo7pmdkem@smtp.gmail.com>
+References: <20191013141345.uctcutryo7pmdkem@smtp.gmail.com>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-X-OriginatorOrg: toradex.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e59fcf42-bef6-4403-104f-08d7507b312e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2019 07:50:33.1487
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d9995866-0d9b-4251-8315-093f062abab4
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: faM+nyxHg4hTyATGMXPHFcAvwY9uaTcTrSXyY7tfNliLINC9iQuUFwOm6SmS1fmxAslWhZ0jsefG4ElofZsJhUjp3MptrBkyzzLOG/ibOW0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0502MB3968
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gU3VuLCAyMDE5LTEwLTEzIGF0IDEwOjE1ICswMTAwLCBqaWMyM0BrZXJuZWwub3JnIHdyb3Rl
-Og0KPiBGcm9tOiBKb25hdGhhbiBDYW1lcm9uIDxKb25hdGhhbi5DYW1lcm9uQGh1YXdlaS5jb20+
-DQo+IA0KPiBOb3RoaW5nIHN0b3BzIGRhdGEgYmVpbmcgb2YgdHlwZSBfX2JlMTYsIHdoaWNoIGZp
-eGVzIHRoZSB3YXJuaW5nOg0KPiANCj4gQ0hFQ0sgICBkcml2ZXJzL2lpby9hZGMvc3RtcGUtYWRj
-LmMNCj4gZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jOjIwMjoyOTogd2FybmluZzogY2FzdCB0
-byByZXN0cmljdGVkIF9fYmUxNg0KPiBkcml2ZXJzL2lpby9hZGMvc3RtcGUtYWRjLmM6MjAyOjI5
-OiB3YXJuaW5nOiBjYXN0IHRvIHJlc3RyaWN0ZWQgX19iZTE2DQo+IGRyaXZlcnMvaWlvL2FkYy9z
-dG1wZS1hZGMuYzoyMDI6Mjk6IHdhcm5pbmc6IGNhc3QgdG8gcmVzdHJpY3RlZCBfX2JlMTYNCj4g
-ZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jOjIwMjoyOTogd2FybmluZzogY2FzdCB0byByZXN0
-cmljdGVkIF9fYmUxNg0KPiANCj4gU2lnbmVkLW9mZi1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9u
-YXRoYW4uQ2FtZXJvbkBodWF3ZWkuY29tPg0KPiBDYzogUGhpbGlwcGUgU2NoZW5rZXIgPHBoaWxp
-cHBlLnNjaGVua2VyQHRvcmFkZXguY29tPg0KDQpUaGFua3MgZm9yIGZpeGluZyB0aGF0Lg0KDQpS
-ZXZpZXdlZC1ieTogPHBoaWxpcHBlLnNjaGVua2VyQHRvcmFkZXguY29tPg0KDQo+IC0tLQ0KPiAg
-ZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEg
-aW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9p
-aW8vYWRjL3N0bXBlLWFkYy5jIGIvZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jDQo+IGluZGV4
-IGJkNzI3MjdmYzQxNy4uMGY4ODA0OGVhNDhmIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2lpby9h
-ZGMvc3RtcGUtYWRjLmMNCj4gKysrIGIvZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jDQo+IEBA
-IC0xNzUsNyArMTc1LDcgQEAgc3RhdGljIGludCBzdG1wZV9yZWFkX3JhdyhzdHJ1Y3QgaWlvX2Rl
-dg0KPiAqaW5kaW9fZGV2LA0KPiAgc3RhdGljIGlycXJldHVybl90IHN0bXBlX2FkY19pc3IoaW50
-IGlycSwgdm9pZCAqZGV2X2lkKQ0KPiAgew0KPiAgCXN0cnVjdCBzdG1wZV9hZGMgKmluZm8gPSAo
-c3RydWN0IHN0bXBlX2FkYyAqKWRldl9pZDsNCj4gLQl1MTYgZGF0YTsNCj4gKwlfX2JlMTYgZGF0
-YTsNCj4gIA0KPiAgCWlmIChpbmZvLT5jaGFubmVsIDw9IFNUTVBFX0FEQ19MQVNUX05SKSB7DQo+
-ICAJCWludCBpbnRfc3RhOw0K
+On Sun, 13 Oct 2019 11:13:47 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+
+> Add a device tree binding doc for AD7292 monitor and control system.
+> 
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> ---
+>  .../bindings/iio/adc/adi,ad7292.yaml          | 71 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 72 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+> new file mode 100644
+> index 000000000000..16be9ea4194d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+> @@ -0,0 +1,71 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7292.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD7292 10-Bit Monitor and Control System
+> +
+> +maintainers:
+> +  - Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> +
+> +description: |
+> +  Analog Devices AD7292 10-Bit Monitor and Control System with ADC, DACs,
+> +  Temperature Sensor, and GPIOs
+> +
+> +  Specifications about the part can be found at:
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7292.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7292
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vref-supply:
+> +    description: |
+> +      The regulator supply for ADC and DAC reference voltage.
+> +    maxItems: 1
+> +
+> +  spi-cpha:
+> +    description: |
+> +      See Documentation/devicetree/bindings/spi/spi-controller.yaml
+> +    maxItems: 1
+> +
+> +  diff-channels:
+> +    description: |
+> +      Empty property to tell whether VIN0 and VIN1 shall work as differential
+> +      inputs.
+> +    maxItems: 1
+
+This looks like a nice general interface, but really isn't as it only applies
+to the first two channels.
+
+Can you use the standard channel defintions
+Documentation/devicetree/bindings/iio/adc.txt
+to specify this?
+
+It may seem overly complex, but it has the benefit of being generic.
+
+Would be something like:
+
+channel@0 {
+	diff-channels = < 0 1 >
+};
+channel@2 {
+};
+vs all the channels being present, none set as diff.
+
+Thanks,
+
+Jonathan
+
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    spi0 {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      ad7292: ad7292@0 {
+> +        compatible = "adi,ad7292";
+> +        reg = <0>;
+> +
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        spi-max-frequency = <25000000>;
+> +        vref-supply = <&adc_vref>;
+> +        spi-cpha;
+> +        diff-channels;
+> +      };
+> +    }
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e78317a5f4f1..5941cfc0d6f7 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -819,6 +819,7 @@ L:	linux-iio@vger.kernel.org
+>  W:	http://ez.analog.com/community/linux-device-drivers
+>  S:	Supported
+>  F:	drivers/iio/adc/ad7292.c
+> +F:	Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+>  
+>  ANALOG DEVICES INC AD7606 DRIVER
+>  M:	Stefan Popa <stefan.popa@analog.com>
+
+

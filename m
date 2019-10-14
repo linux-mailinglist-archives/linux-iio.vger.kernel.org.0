@@ -2,134 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CD36D5BE5
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2019 09:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9123CD5CA1
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2019 09:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730274AbfJNHIW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Oct 2019 03:08:22 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:60420 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730263AbfJNHIV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Oct 2019 03:08:21 -0400
-Received-SPF: Pass (esa3.microchip.iphmx.com: domain of
-  Eugen.Hristev@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Eugen.Hristev@microchip.com";
-  x-sender="Eugen.Hristev@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa3.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Eugen.Hristev@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa3.microchip.iphmx.com; spf=Pass smtp.mailfrom=Eugen.Hristev@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: J+4SCdY1k2D8Hjvtd+33w+5EWzkwqhTQt7sZDYjS6s7Skml2wKAD69Q+hH9hlYd1vPYbfhu1sA
- jh1dQW1gKpkkYemSYXQZLT/CGeMacbMEGFZ6IMimAWVasqvnRsSzmipWl4XdpAN4Og1xNPO5zZ
- SxWL/mYu3HsZKjIplcesFCra+HY2kiDP4SOmXZ5jZFa4WQLM9/FtIVD8B7Sgu9RUicAjpLPgMu
- Y2ZFfGaQ9aVaZYlMYy4j7S83NhS2SI75ukKs1/ZPKoEonm1MCYzf9/A8wjwe8V8eQR81vCId08
- p/8=
-X-IronPort-AV: E=Sophos;i="5.67,295,1566889200"; 
-   d="scan'208";a="52818443"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 14 Oct 2019 00:08:20 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 14 Oct 2019 00:08:20 -0700
-Received: from NAM01-BN3-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
- via Frontend Transport; Mon, 14 Oct 2019 00:08:20 -0700
+        id S1729876AbfJNHuk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Oct 2019 03:50:40 -0400
+Received: from mail-eopbgr20129.outbound.protection.outlook.com ([40.107.2.129]:63179
+        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729234AbfJNHuk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 14 Oct 2019 03:50:40 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=B/ePu37spm1N/XXUgcT2yYwbvuK5ItyMlyUfc5gJUIqCqJ83XteUwGPn3sRXPc05cSCe5CuG9+grfBoZiB3X5o0l74K2+wlIHALwk4vdpGO5TkScVsIRCuU4q6sU4wQ6ZK8p3bqVlwnJps/BilxzH3Og50DJb6L29UZ7KwGuCWwQQN81mfOr+Eiep5Vi3jdKUb1o3s6ntIvMaz3nGWVres+xtNqFfubQaNU9f3bzWek5ckuYtFeQ8gNgWdTno/cdQShcRiQMTTjUY/RMUaNEHK6iV3v7kd7ucrc9ygZEC2ICkRMkF/0LnqYcdhzvJy4iA85znkAciq/5hYIXjOZgWQ==
+ b=BpXKPfH4r10DgBWZW0SelJOH4jMA+FbDwBO+BtFMqZhwGWzZC1hMng8U00np3ffukyeQKPsj4AsYgiHRFdCsuiCe6HqSTEz8CkPFykPN26C5dkeRLKO5BdcOroWzxGJs3q9jW4jGyMTM1/N/bQ26W1KbpE7FL3AD31UYtQk/RYqjt5Vz9v1FyBo6D/GcbXP1DMClCbMWWJjhEE88wcTv0jIvK0cdfLs2ofVd1c/d9ToMmJ56EP/vIMH8dhRagnsQyeFbiPci0vMuOsIrqB5iHA85iNbIQdMuchl4xnr3RPXSsEhfp/X4CVbc7HT0T+M5l0gT2oQEDTahVnuEvXrk7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a/TLglJapcCnMfkJDPf/xlp6a68he5zkqnQyXKV50uw=;
- b=hScMd0hvGd9lipflFiiQV6Je+t6BLUJIY145YQQRwzeEFLgycyd2k9Vsov4csENEMeVkqIOVETOyAzjXyp2W9tsOXOMowQ0BcRIqhMfsjtySur9GUTwQfCi0OAQwpesOQPEdsU5TAEtKxrtbaG+Hl6j0+ChFnDnueuAWGd6CsUtYrlcTndiHBN/M6ieykE6ajrZUbz4QxijNc0NzNCd1EZ/vb4QN1jpvbjK7i8Ll1gDqgrAyKnCpncDDHh/bWq/xdEJ6wGPuC8lRjrN5/i2VsTj/+OF8u+ufu/AX123AGPVvMFo00Utf5EtVFgsWPgtYO1zOLGBOI8zoG2A1UJbcQA==
+ bh=3WBVmYjsOu9FLRwgo4QIHPks1HVa2JcnFv2o3JigGZ4=;
+ b=OARPhpJIeRiu99feHcoDPkJSrBSCVBweJIF6DPK/7jFRX1qN6eo1tQn3I2RywHO8mcfhZGO7Laih4Is4BRFFSGvsV2ZdsF3hnVxRow2uHCOc/hBNhM8ejfWhrpsSAhXK2lmFtCkgL6GNOqEHrtI/5fGJPWjn7hM0dXxzHDfCmPAfMBFTkxAESmKSVvcdXd+gLdwNs358DOaD2K+au2y4BGl06QTCzHbRHrGQglHOv4tfe0Zi28AWDTN4mhD344gpBkHhMj5JdLuGStpBn2nq6003CZyFAzl4mRJ45DLsF6t82nrQGb8d8hQotm8wx2Hl93e4Xm0U5tVSE4e2O0NyjQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
+ smtp.mailfrom=toradex.com; dmarc=pass action=none header.from=toradex.com;
+ dkim=pass header.d=toradex.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a/TLglJapcCnMfkJDPf/xlp6a68he5zkqnQyXKV50uw=;
- b=dT+7ajprYE4iUa6sHm6pbSDd8uJLLO+KuVIphNa4Q68I/TDYExzdAGSGTtCaayrqVcv10jgBDEP9wCxSpd78vJHTubm3yq/oJzXoF47JcPsNNabTcq0fgInnRTKZEMZMXr3LzVzqEetPGoOlfgCwvappzF9MAdWUJyYQhUPLnRM=
-Received: from DM5PR11MB1242.namprd11.prod.outlook.com (10.168.108.8) by
- DM5PR11MB0009.namprd11.prod.outlook.com (10.164.155.27) with Microsoft SMTP
+ bh=3WBVmYjsOu9FLRwgo4QIHPks1HVa2JcnFv2o3JigGZ4=;
+ b=oB5DTAra4EcQFTOKvdKq2JvthGPKUR73HICxPgOecvyyh2rlmYcadTZ69H8Fj7FR+kUXvU4gQ+RLcSx6nmBhZvSMTUdhLrZNW4HfuyJWTu9ITQ2xf5Ly9zWhjqpj5WFbUGrbk/okq39B4FPmhnDAFXjzuTXBtCxGMq0cOHVl9jc=
+Received: from VI1PR0502MB3965.eurprd05.prod.outlook.com (52.134.19.20) by
+ VI1PR0502MB3968.eurprd05.prod.outlook.com (52.134.17.160) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2347.16; Mon, 14 Oct 2019 07:08:15 +0000
-Received: from DM5PR11MB1242.namprd11.prod.outlook.com
- ([fe80::b125:76c1:c9b1:34f4]) by DM5PR11MB1242.namprd11.prod.outlook.com
- ([fe80::b125:76c1:c9b1:34f4%10]) with mapi id 15.20.2347.021; Mon, 14 Oct
- 2019 07:08:15 +0000
-From:   <Eugen.Hristev@microchip.com>
-To:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>
-CC:     <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] iio:adc:at91-sama5d2: Replace 0 with NULL when clearing
- some pointers.
-Thread-Topic: [PATCH] iio:adc:at91-sama5d2: Replace 0 with NULL when clearing
- some pointers.
-Thread-Index: AQHVgaScXsuc4bhqvk+DxRwF8D6j/qdZt3MA
-Date:   Mon, 14 Oct 2019 07:08:15 +0000
-Message-ID: <a5c95788-25fd-1efa-2eef-9172d84242db@microchip.com>
-References: <20191013085723.1366012-1-jic23@kernel.org>
-In-Reply-To: <20191013085723.1366012-1-jic23@kernel.org>
-Accept-Language: en-US, ro-RO
+ 15.20.2347.16; Mon, 14 Oct 2019 07:50:33 +0000
+Received: from VI1PR0502MB3965.eurprd05.prod.outlook.com
+ ([fe80::f427:26bb:85cf:abad]) by VI1PR0502MB3965.eurprd05.prod.outlook.com
+ ([fe80::f427:26bb:85cf:abad%7]) with mapi id 15.20.2347.021; Mon, 14 Oct 2019
+ 07:50:33 +0000
+From:   Philippe Schenker <philippe.schenker@toradex.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC:     "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio:adc:stmpe-adc: Cleanup endian type of local variable
+Thread-Topic: [PATCH] iio:adc:stmpe-adc: Cleanup endian type of local variable
+Thread-Index: AQHVgacZS+BiyquXjUitaUpMn4+RkKdZxM0A
+Date:   Mon, 14 Oct 2019 07:50:33 +0000
+Message-ID: <28f616a36507f0473aa37857fe58f3763bee4f5e.camel@toradex.com>
+References: <20191013091541.1382009-1-jic23@kernel.org>
+In-Reply-To: <20191013091541.1382009-1-jic23@kernel.org>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: VI1PR02CA0044.eurprd02.prod.outlook.com
- (2603:10a6:802:14::15) To DM5PR11MB1242.namprd11.prod.outlook.com
- (2603:10b6:3:14::8)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tagtoolbar-keys: D20191014100239968
-x-originating-ip: [94.177.32.156]
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=philippe.schenker@toradex.com; 
+x-originating-ip: [46.140.72.82]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6297d23e-76f2-4557-5e6c-08d75075487c
-x-ms-traffictypediagnostic: DM5PR11MB0009:
-x-microsoft-antispam-prvs: <DM5PR11MB0009980EDEDBE5176C308680E8900@DM5PR11MB0009.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:47;
+x-ms-office365-filtering-correlation-id: e59fcf42-bef6-4403-104f-08d7507b312e
+x-ms-traffictypediagnostic: VI1PR0502MB3968:
+x-microsoft-antispam-prvs: <VI1PR0502MB3968CE24FD15D193150361F6F4900@VI1PR0502MB3968.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:212;
 x-forefront-prvs: 01901B3451
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(346002)(396003)(39860400002)(366004)(136003)(199004)(189003)(6246003)(66946007)(316002)(229853002)(6486002)(8676002)(4744005)(6512007)(6436002)(2906002)(4326008)(110136005)(478600001)(5660300002)(86362001)(14454004)(31696002)(305945005)(7736002)(486006)(36756003)(66066001)(256004)(71190400001)(71200400001)(3846002)(81156014)(6116002)(14444005)(99286004)(76176011)(26005)(31686004)(386003)(6506007)(53546011)(102836004)(186003)(446003)(11346002)(476003)(2616005)(52116002)(8936002)(66556008)(81166006)(66476007)(66446008)(2501003)(64756008)(25786009);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR11MB0009;H:DM5PR11MB1242.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: microchip.com does not designate
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(39840400004)(376002)(346002)(366004)(396003)(199004)(189003)(6436002)(3846002)(305945005)(81166006)(118296001)(86362001)(4326008)(7736002)(8936002)(76176011)(110136005)(81156014)(6116002)(99286004)(6512007)(6246003)(6486002)(229853002)(8676002)(316002)(76116006)(6506007)(66946007)(66476007)(446003)(11346002)(66446008)(64756008)(66556008)(14454004)(102836004)(186003)(26005)(36756003)(71200400001)(4001150100001)(486006)(476003)(2616005)(91956017)(2906002)(5660300002)(256004)(25786009)(14444005)(71190400001)(44832011)(2501003)(66066001)(478600001);DIR:OUT;SFP:1102;SCL:1;SRVR:VI1PR0502MB3968;H:VI1PR0502MB3965.eurprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: toradex.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: EyCD1cW5JAMZvQcH5wt8QYmdoEgDroOn4WhUXzZx7f8NflNGXdulH5EgkEPn/Jr/TP0nzRM7sC+Q4zIap/qJbIwaHfk5JxzaNg3vRCy/Z7amqWRJRoVCvHheIUTjIkufLhySh269ZaN0f4A5/a566HA9e5EmXftknpTxz2Xq1+enQZSQUVvK/cioiPr6fsCrJZPd2lJD26L6JVsLM1f53XV2krCRJz8tgkt5vNImV1PE6FtqKJS7xtr0UHhxezsqGwtC0nKNh5ph2SWf3VtI7mIi0cKE8Q9bIjvq5z8XlaoVAYiVBN494b9x0rPdlUC/ZT0NOP2aWjFatXCX5ZlduP2WB2vG2ZdHDCwzgKCL3wtNGd8PZTWQFMMujDlhEKDWmMcTnxYla22TTzptH/+xFOpI7UypxbZXLRI09S/rd+c=
+x-microsoft-antispam-message-info: lPg92MiwVP5qCRM/v5zH6y6CzYKc1P2FD+KklEX6sDCq1pkAFgLljFgXbQ2D03DUIiMdTWJWkgykAl+HTNtorVOfhBnvKmfkaPf+xOX6f/vqPs5JvHPTeY2eXnhvB0Rsg2zEaC3nn0SSi8VJ0r6e/yEDb3DLX6u+Tx15XSBrlPLGs+wZYx226JMg4eAnRKdPGoU9Iv5P6FpvjZdnkdtPmGDRJHCiiZJeERvTDcKlL/4ZpeUyRUPAyiIcbuNG2OWfAishv5PIsZr2OYz50iEmXXkwbZq0QPujnYtgDBbxRalio49IMLFz4qpgbWW+YnfrWhZbTnyesb/UAqA5mpTY2pBdd+xY2wi/zp59S0bmIOGApUteau+B9GopXm4BA4X3SnYjKd96KuB7ooOHKO4eZGm9CBFbX2o856Gt4cIqC4s=
 x-ms-exchange-transport-forked: True
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <6D1E65684993D5479609384568A724C5@namprd11.prod.outlook.com>
+Content-ID: <B0EAAE2680D50A42BE9BEF145C1E551C@eurprd05.prod.outlook.com>
 Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6297d23e-76f2-4557-5e6c-08d75075487c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2019 07:08:15.6519
+X-OriginatorOrg: toradex.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e59fcf42-bef6-4403-104f-08d7507b312e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2019 07:50:33.1487
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-id: d9995866-0d9b-4251-8315-093f062abab4
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: TGuHQ1J63StQMd9rrjo0mOfvo1IR3dSVuRKROscyVbP6KpNd7eb+a78RHLBdo0iWai6dIWwRgIElVfafA6qWa92Ut1WuFRrm60lioQ0h/SY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR11MB0009
+X-MS-Exchange-CrossTenant-userprincipalname: faM+nyxHg4hTyATGMXPHFcAvwY9uaTcTrSXyY7tfNliLINC9iQuUFwOm6SmS1fmxAslWhZ0jsefG4ElofZsJhUjp3MptrBkyzzLOG/ibOW0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0502MB3968
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DQoNCk9uIDEzLjEwLjIwMTkgMTE6NTcsIGppYzIzQGtlcm5lbC5vcmcgd3JvdGU6DQo+IEZyb206
-IEpvbmF0aGFuIENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4NCj4gDQo+IENs
-ZWFucyB1cCB0aGUgc3BhcnNlIHdhcm5pbmc6DQo+IA0KPiBDSEVDSyAgIGRyaXZlcnMvaWlvL2Fk
-Yy9hdDkxLXNhbWE1ZDJfYWRjLmMNCj4gZHJpdmVycy9paW8vYWRjL2F0OTEtc2FtYTVkMl9hZGMu
-YzoxNDg2OjMxOiB3YXJuaW5nOiBVc2luZyBwbGFpbiBpbnRlZ2VyIGFzIE5VTEwgcG9pbnRlcg0K
-PiBkcml2ZXJzL2lpby9hZGMvYXQ5MS1zYW1hNWQyX2FkYy5jOjE1MDk6MzE6IHdhcm5pbmc6IFVz
-aW5nIHBsYWluIGludGVnZXIgYXMgTlVMTCBwb2ludGVyDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBK
-b25hdGhhbiBDYW1lcm9uIDxKb25hdGhhbi5DYW1lcm9uQGh1YXdlaS5jb20+DQo+IENjOiBFdWdl
-biBIcmlzdGV2IDxldWdlbi5ocmlzdGV2QG1pY3JvY2hpcC5jb20+DQo+IC0tLQ0KDQpSZXZpZXdl
-ZC1ieTogRXVnZW4gSHJpc3RldiA8ZXVnZW4uaHJpc3RldkBtaWNyb2NoaXAuY29tPg0K
+T24gU3VuLCAyMDE5LTEwLTEzIGF0IDEwOjE1ICswMTAwLCBqaWMyM0BrZXJuZWwub3JnIHdyb3Rl
+Og0KPiBGcm9tOiBKb25hdGhhbiBDYW1lcm9uIDxKb25hdGhhbi5DYW1lcm9uQGh1YXdlaS5jb20+
+DQo+IA0KPiBOb3RoaW5nIHN0b3BzIGRhdGEgYmVpbmcgb2YgdHlwZSBfX2JlMTYsIHdoaWNoIGZp
+eGVzIHRoZSB3YXJuaW5nOg0KPiANCj4gQ0hFQ0sgICBkcml2ZXJzL2lpby9hZGMvc3RtcGUtYWRj
+LmMNCj4gZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jOjIwMjoyOTogd2FybmluZzogY2FzdCB0
+byByZXN0cmljdGVkIF9fYmUxNg0KPiBkcml2ZXJzL2lpby9hZGMvc3RtcGUtYWRjLmM6MjAyOjI5
+OiB3YXJuaW5nOiBjYXN0IHRvIHJlc3RyaWN0ZWQgX19iZTE2DQo+IGRyaXZlcnMvaWlvL2FkYy9z
+dG1wZS1hZGMuYzoyMDI6Mjk6IHdhcm5pbmc6IGNhc3QgdG8gcmVzdHJpY3RlZCBfX2JlMTYNCj4g
+ZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jOjIwMjoyOTogd2FybmluZzogY2FzdCB0byByZXN0
+cmljdGVkIF9fYmUxNg0KPiANCj4gU2lnbmVkLW9mZi1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9u
+YXRoYW4uQ2FtZXJvbkBodWF3ZWkuY29tPg0KPiBDYzogUGhpbGlwcGUgU2NoZW5rZXIgPHBoaWxp
+cHBlLnNjaGVua2VyQHRvcmFkZXguY29tPg0KDQpUaGFua3MgZm9yIGZpeGluZyB0aGF0Lg0KDQpS
+ZXZpZXdlZC1ieTogPHBoaWxpcHBlLnNjaGVua2VyQHRvcmFkZXguY29tPg0KDQo+IC0tLQ0KPiAg
+ZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEg
+aW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9p
+aW8vYWRjL3N0bXBlLWFkYy5jIGIvZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jDQo+IGluZGV4
+IGJkNzI3MjdmYzQxNy4uMGY4ODA0OGVhNDhmIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2lpby9h
+ZGMvc3RtcGUtYWRjLmMNCj4gKysrIGIvZHJpdmVycy9paW8vYWRjL3N0bXBlLWFkYy5jDQo+IEBA
+IC0xNzUsNyArMTc1LDcgQEAgc3RhdGljIGludCBzdG1wZV9yZWFkX3JhdyhzdHJ1Y3QgaWlvX2Rl
+dg0KPiAqaW5kaW9fZGV2LA0KPiAgc3RhdGljIGlycXJldHVybl90IHN0bXBlX2FkY19pc3IoaW50
+IGlycSwgdm9pZCAqZGV2X2lkKQ0KPiAgew0KPiAgCXN0cnVjdCBzdG1wZV9hZGMgKmluZm8gPSAo
+c3RydWN0IHN0bXBlX2FkYyAqKWRldl9pZDsNCj4gLQl1MTYgZGF0YTsNCj4gKwlfX2JlMTYgZGF0
+YTsNCj4gIA0KPiAgCWlmIChpbmZvLT5jaGFubmVsIDw9IFNUTVBFX0FEQ19MQVNUX05SKSB7DQo+
+ICAJCWludCBpbnRfc3RhOw0K

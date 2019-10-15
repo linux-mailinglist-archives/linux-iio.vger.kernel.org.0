@@ -2,77 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF8F2D6A6E
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2019 21:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B210ED6CEB
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 03:32:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730655AbfJNT4s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Oct 2019 15:56:48 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:36595 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730134AbfJNT4s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Oct 2019 15:56:48 -0400
-Received: by mail-oi1-f193.google.com with SMTP id k20so14781068oih.3
-        for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2019 12:56:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=n9AZffw7ycKMcnNT4mxSNcyF9oJzwsLMXj04hF+yMcY=;
-        b=qU5HKYAIBgPW/s43hrbvsNMjInhO3x72ZX80bqYe14vol2eF4gn2FCmvbC+acnc5GN
-         rtFA+wPuGPSNu3rZz6eBWGLgYnujI3C1b2DhjG+C2FOBl72b34GKU+tOV8Eph223uCi8
-         egN4GjNhGuP4zkWYL33m2MK1qZlFs5IVDekSb77Cz3X6VWrpI13RxxkvOhoNICJopU8S
-         +iEXAYVrBs25k+CmJiSVa8mBUQdO8oLzbw692ZaStOJJ8Ev4YZeQI63RPyJNaX0Oj26X
-         oI6j4FpZvTPEFQ38zkn6DxLjyCyx32C0b8bgVfWl8ozJzG9sZ/7MqU0s6V5mXaVjhuZX
-         /yug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=n9AZffw7ycKMcnNT4mxSNcyF9oJzwsLMXj04hF+yMcY=;
-        b=cFrLQKKz3YzFWCqTUq8RQ7TUR7BfDGnFrRwVbg2YQd1KH8Ma9w8IyqfWhhFOycm0o5
-         +f0Qn6jX78Q4lNDxV5YYpiw/Dsnjv9eziaZoNcYTM6PzLNNtbwgoZKmoy6NfMy61eq2Z
-         4pziLUHwncaTqlyqooGeSw8QTHel3gUd9USLJsPxfU2J5LQYXQqliSnqPI60f3uqz8pw
-         rsHD/emaeuJyBt6InPGjayb4SHypgVvF2d3iuNfllxeUBnArItFXambM4OhEqVd7OnLU
-         9PK80YSN1kxfn37UGSWQhldGH/+x1OZ3CdzNt09QIBFvMvm/u+M3qlKh/EgPQ3Lou7yN
-         qj7A==
-X-Gm-Message-State: APjAAAVXGexqVuqgkhoe8m/TQ7h2aVTyRTD18mWzGYogRPju3IOX7TsV
-        onFpcdgThjoThHDEeN9YDrnOBMKf+7dmMpTqAeI=
-X-Google-Smtp-Source: APXvYqz0VbiSdTv+C+Bxg3IWuEOdWB4KNi7Kmug6UYBbANcncf6DHh1272GQWQb5Mk5UjXcqlM+KhgDa9FammakS14M=
-X-Received: by 2002:aca:4155:: with SMTP id o82mr26320755oia.103.1571083007415;
- Mon, 14 Oct 2019 12:56:47 -0700 (PDT)
+        id S1727310AbfJOBcf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Oct 2019 21:32:35 -0400
+Received: from sender4-op-o14.zoho.com ([136.143.188.14]:17480 "EHLO
+        sender4-op-o14.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726320AbfJOBcf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Oct 2019 21:32:35 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1571103143; cv=none; 
+        d=zoho.com; s=zohoarc; 
+        b=fQe3SUtVLWyArmDxIaOgAZ87/LpCghdwOqhkrdv9USl0bckrWy/iD+w+AhTdNSwmT3ns81f1COzo1/dfyQ/P0ts7h+QJIPNB+dCk9ZntCcAa94lLDXZRp7KxVrqGzTKTj5W/Fg/WUe+KQ+f4+NH3ShZbYK0QsDGNVDk4ikrPsTM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
+        t=1571103143; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=1XGFFlKtZ9jhKURStoDOqZlNX+HfNJjwr20EIbnsVo4=; 
+        b=M0OZHeoJz4dUmwFqSI8fHIx9itwyxYUQUPvH2AXp5B2aspHHinovG3K1iMO36ZheJsPFLUlD6s8EMx5mwP2Q3V50hT84VAMKJ4feKuF+ifyLp8/am/i7qaqlakOS6dcD4gRaGi2HwVfQYH0SKijBQgod2d4Ldhs8zGMD6jSByXA=
+ARC-Authentication-Results: i=1; mx.zoho.com;
+        dkim=pass  header.i=dlrobertson.com;
+        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
+        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
+Received: from nessie (pool-100-15-144-194.washdc.fios.verizon.net [100.15.144.194]) by mx.zohomail.com
+        with SMTPS id 1571103141913682.352444499071; Mon, 14 Oct 2019 18:32:21 -0700 (PDT)
+Date:   Tue, 15 Oct 2019 01:17:50 +0000
+From:   Dan Robertson <dan@dlrobertson.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: accel: bma400: add bindings
+Message-ID: <20191015011750.GA20979@nessie>
+References: <20191012192525.21040-1-dan@dlrobertson.com>
+ <20191012192525.21040-2-dan@dlrobertson.com>
+ <20191014171521.GA29335@bogus>
+ <20191014172731.GA30646@nessie>
 MIME-Version: 1.0
-References: <20191013164848.2069381-1-jic23@kernel.org>
-In-Reply-To: <20191013164848.2069381-1-jic23@kernel.org>
-From:   Sven Van Asbroeck <thesven73@gmail.com>
-Date:   Mon, 14 Oct 2019 15:56:36 -0400
-Message-ID: <CAGngYiVPbgt1YTemHuBJ_oggd8RvfcmyUE5kapfSYCwTzNJmDw@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: xilinix-xadc: use devm_platform_ioremap_resource
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Manish Narani <manish.narani@xilinx.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="CE+1k2dSO48ffgeK"
+Content-Disposition: inline
+In-Reply-To: <20191014172731.GA30646@nessie>
+User-Agent: Mutt/1.12.2 (2019-09-21)
+X-Zoho-Virus-Status: 1
+X-ZohoMailClient: External
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 13, 2019 at 12:50 PM <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Reduces local boilerplate.
-> Suggested by coccinelle.
->  CHECK   drivers/iio/adc/xilinx-xadc-core.c
-> drivers/iio/adc/xilinx-xadc-core.c:1184:1-11: WARNING: Use devm_platform_ioremap_resource for xadc -> base
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Manish Narani <manish.narani@xilinx.com>
-> Cc: Sven Van Asbroeck <thesven73@gmail.com>
-> ---
->  drivers/iio/adc/xilinx-xadc-core.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
 
-Looks good to me:
+--CE+1k2dSO48ffgeK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Sven Van Asbroeck <TheSven73@gmail.com>
+> Thanks for the note. Should running `make dt_binding_check` be added to
+> `Documentation/devicetree/bindings/submitting-patches.rst`?
+
+Sorry, I missed the `writing-schema.rst` documentation.
+
+Cheers,
+
+ - Dan
+
+--CE+1k2dSO48ffgeK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEF5dO2RaKc5C+SCJ9RcSmUsR+QqUFAl2lHj4ACgkQRcSmUsR+
+QqWOQw/9Eo1Q10BBXWVyP1OId54T7pXJDI7zFU0zyKjpPZblkcIr8j1zY9xcW21l
+X8A7bUZ0X4cMh/f56jhjnnp0bHZNS8mNbvqUeWM5Z2ntPq7uKmd6ag+bUYuraxrK
+smqbPYai8RrVMtTtGrJQvsZIZyvQ1Upppa1XIctOFbBxXot6Mvp9lYWiaOp6jeHe
+RNIhWCWVHyztekQGbdrHU499aF2xIVvuU0torqaJC8UVbdDDBitpxA2cOFkuOuQi
+RzruAEOywfxx9oR076KstPtgGBKT768NF/BFstdGqMxKBac7aqWU/kOvyBUE/wkw
+AMEyWBBuNmSgWRw/kFBtB8OkVkOt2qDbN+085SgzgqNgil0tBfeBQ0jtgN2tdPy6
+G2zfwD7RjpxAadyJ7TiA989sbvA1GMmzbjBTCdhwUHUFGnhHi24mVKCWw0og9xdJ
+/TRxYjGisSz5Qsk14vmMBw1bE73giKghMq+gDdHWtqERDvbEY0h2sf+omVkDWC0P
+q0R/yjsqETT/ALGwI9IM2M9tgCy4OYm+mxHLKcWGWzW0G+jkT76Xf+ITXrEMoesT
+WWUNgGYe8dvgIohbtOVVNmzeNgBa7+WKMhdvQfjcPu8hlgwgwkh0VimP9ugiA/D0
+XGIoQrL6jldP6QGvIIkvhtiFcCkfGfANhy8J2HU5AbIbgM8g0OQ=
+=ANkC
+-----END PGP SIGNATURE-----
+
+--CE+1k2dSO48ffgeK--
+

@@ -2,63 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4309D811F
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 22:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07341D813A
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 22:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388016AbfJOUeD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Oct 2019 16:34:03 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:32848 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387777AbfJOUeD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Oct 2019 16:34:03 -0400
-Received: by mail-oi1-f196.google.com with SMTP id a15so18062851oic.0;
-        Tue, 15 Oct 2019 13:34:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=momjIFO0lgXJzooic5QXjfuW8VzSzlu4LDVeHEPwLxo=;
-        b=SS7uQYLEYz3DPasdqjtmdeAKobOkqRR8oOs/G6O0DiLmoG+Q3LXsiL0YF8mhI6KVeW
-         gcouwqjoP+0HtVA5nz00NUfSsHGp+rR0reN4zJ1mfs3FrOyEhb5qEo8xxYQF/R19ty6e
-         YhQb+p9ft4vD3bzrZo2/TgBFCbM9tNyGFnZ4w8FeqXzbktD6MiyWffjMSY05jmMpUW8v
-         qwZODCRUDcibjBBn2Uqf2P8k5yXq1AulbcXbHLC3ODgrT+D9+oDLIO9DoB+VWastZsgX
-         B1+rW40R/QdLjUK/bmEweIb78OtNsnJE2tUlyf2/QsfEt3Ga25Zg2+GmGmsm+WcR6QUQ
-         KlrQ==
-X-Gm-Message-State: APjAAAVNL/qdOstVE6gbgLzRqW3YDHSAAb4y/aKQRMAAuMNqwu7edNHi
-        Z8W4f3faaR2Y2No8pmBexA==
-X-Google-Smtp-Source: APXvYqyE5ATjyR1hAAcfQBPHThRHVE7/AYHhZqIFJo6QhyfXn4nmNjwKd/lbWDyKfK7lWt3avWGRvw==
-X-Received: by 2002:aca:48d8:: with SMTP id v207mr362654oia.113.1571171642164;
-        Tue, 15 Oct 2019 13:34:02 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id w20sm6884877otk.73.2019.10.15.13.34.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2019 13:34:01 -0700 (PDT)
-Date:   Tue, 15 Oct 2019 15:34:00 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     jic23@kernel.org, linux-iio@vger.kernel.org, sean@geanix.com,
-        martin@geanix.com, rjones@gateworks.com,
-        lorenzo.bianconi@redhat.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH 12/13] dt-bindings: iio: imu: st_lsm6dsx: document
- missing wakeup-source property
-Message-ID: <20191015203400.GA6162@bogus>
-References: <cover.1570367532.git.lorenzo@kernel.org>
- <b0521798dfc8a64780349876fe00a2664bc1b926.1570367532.git.lorenzo@kernel.org>
+        id S2388405AbfJOUol (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Oct 2019 16:44:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45688 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727673AbfJOUol (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 15 Oct 2019 16:44:41 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B8B7220854;
+        Tue, 15 Oct 2019 20:44:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571172280;
+        bh=96tbnK3YSsVZWln/vAFBqJf1uNUVlq2DthHzGkzBeqc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=GfA8DuiPz6JCtEQdAkJch9QJsgoefCt8NLYdcPKYzrHkv/Zo2llpYAGwxmu/H614R
+         S7yYjYZOewW+F7BhbagPtge0UhNNYymyptZBs8M/8BAznmTUrrn5LZTqBzuyz1kOIg
+         dXrj8EJXvN2BXWcaHRr0GTOXjuFeiVmBh09C6NMw=
+Date:   Tue, 15 Oct 2019 21:44:35 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v4 2/2] dt-bindings: iio: Add ltc2983 documentation
+Message-ID: <20191015214435.5d51835a@archlinux>
+In-Reply-To: <CAL_Jsq+Hju1KtvfjEJNGsS9maC3LDn0FcQJe6Wp+y-YgiAP=+w@mail.gmail.com>
+References: <20191011084038.45829-1-nuno.sa@analog.com>
+        <20191011084038.45829-2-nuno.sa@analog.com>
+        <20191012115745.069119b0@archlinux>
+        <20191014143950.GA6163@bogus>
+        <CAL_Jsq+Hju1KtvfjEJNGsS9maC3LDn0FcQJe6Wp+y-YgiAP=+w@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b0521798dfc8a64780349876fe00a2664bc1b926.1570367532.git.lorenzo@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  6 Oct 2019 15:22:06 +0200, Lorenzo Bianconi wrote:
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
+On Tue, 15 Oct 2019 09:19:10 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-Acked-by: Rob Herring <robh@kernel.org>
+> On Mon, Oct 14, 2019 at 9:39 AM Rob Herring <robh@kernel.org> wrote:
+> >
+> > On Sat, Oct 12, 2019 at 11:57:45AM +0100, Jonathan Cameron wrote: =20
+> > > On Fri, 11 Oct 2019 10:40:38 +0200
+> > > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+> > > =20
+> > > > Document the LTC2983 temperature sensor devicetree bindings.
+> > > >
+> > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
+> > >
+> > > I'm happy with this, but will be waiting for Rob to have a chance
+> > > for a final look before applying. =20
+> >
+> > LGTM, but I need to add the int64-matrix type to the core schema first
+> > or this will give you errors. I should get to that in the next day or
+> > so. =20
+>=20
+> Now added, so please update dtschema and check.
+>=20
+> Reviewed-by: Rob Herring <robh@kernel.org>
+
+/home/jic23/src/kernel/iio/Documentation/devicetree/bindings/iio/temperatur=
+e/adi,ltc2983.example.dt.yaml: ltc2983@0: thermocouple@20:adi,custom-thermo=
+couple:0:0: 18446744073659331616 is greater than the maximum of 92233720368=
+54775807
+/home/jic23/src/kernel/iio/Documentation/devicetree/bindings/iio/temperatur=
+e/adi,ltc2983.example.dt.yaml: ltc2983@0: thermocouple@20:adi,custom-thermo=
+couple:0:2: 18446744073679351616 is greater than the maximum of 92233720368=
+54775807
+/home/jic23/src/kernel/iio/Documentation/devicetree/bindings/iio/temperatur=
+e/adi,ltc2983.example.dt.yaml: ltc2983@0: thermocouple@20:adi,custom-thermo=
+couple:0:4: 18446744073704251616 is greater than the maximum of 92233720368=
+54775807
+
+Which is odd.  I haven't looked into it beyond testing and reverting the
+patch as out of time for today.
+
+Thanks,
+
+Jonathan
+
+

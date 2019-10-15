@@ -2,95 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07341D813A
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 22:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9A43D824A
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 23:39:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388405AbfJOUol (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Oct 2019 16:44:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45688 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727673AbfJOUol (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 15 Oct 2019 16:44:41 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B8B7220854;
-        Tue, 15 Oct 2019 20:44:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571172280;
-        bh=96tbnK3YSsVZWln/vAFBqJf1uNUVlq2DthHzGkzBeqc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GfA8DuiPz6JCtEQdAkJch9QJsgoefCt8NLYdcPKYzrHkv/Zo2llpYAGwxmu/H614R
-         S7yYjYZOewW+F7BhbagPtge0UhNNYymyptZBs8M/8BAznmTUrrn5LZTqBzuyz1kOIg
-         dXrj8EJXvN2BXWcaHRr0GTOXjuFeiVmBh09C6NMw=
-Date:   Tue, 15 Oct 2019 21:44:35 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: Add ltc2983 documentation
-Message-ID: <20191015214435.5d51835a@archlinux>
-In-Reply-To: <CAL_Jsq+Hju1KtvfjEJNGsS9maC3LDn0FcQJe6Wp+y-YgiAP=+w@mail.gmail.com>
-References: <20191011084038.45829-1-nuno.sa@analog.com>
-        <20191011084038.45829-2-nuno.sa@analog.com>
-        <20191012115745.069119b0@archlinux>
-        <20191014143950.GA6163@bogus>
-        <CAL_Jsq+Hju1KtvfjEJNGsS9maC3LDn0FcQJe6Wp+y-YgiAP=+w@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1730030AbfJOVjQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Oct 2019 17:39:16 -0400
+Received: from www381.your-server.de ([78.46.137.84]:49540 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728174AbfJOVjP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Oct 2019 17:39:15 -0400
+X-Greylist: delayed 1643 seconds by postgrey-1.27 at vger.kernel.org; Tue, 15 Oct 2019 17:39:13 EDT
+Received: from sslproxy01.your-server.de ([88.198.220.130])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1iKU6b-0007VH-CM; Tue, 15 Oct 2019 23:11:45 +0200
+Received: from [93.104.114.34] (helo=[192.168.178.20])
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <lars@metafoo.de>)
+        id 1iKU6a-0002ns-Tt; Tue, 15 Oct 2019 23:11:45 +0200
+Subject: Re: [PATCH][RFC] iio: core: add a class hierarchy on iio device lock
+To:     Olivier MOYSAN <olivier.moysan@st.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
+        Alexandre TORGUE <alexandre.torgue@st.com>,
+        Fabrice GASNIER <fabrice.gasnier@st.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Benjamin GAIGNARD <benjamin.gaignard@st.com>
+References: <20191011151314.5365-1-olivier.moysan@st.com>
+ <20191012095747.3acd95e6@archlinux>
+ <db362ddf-390e-0847-1269-f3cd0c757d2a@st.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <9ddc41c4-3d84-cc94-5494-a5ef06697ce8@metafoo.de>
+Date:   Tue, 15 Oct 2019 23:11:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <db362ddf-390e-0847-1269-f3cd0c757d2a@st.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.101.4/25603/Tue Oct 15 10:57:00 2019)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 15 Oct 2019 09:19:10 -0500
-Rob Herring <robh@kernel.org> wrote:
+On 10/14/19 5:59 PM, Olivier MOYSAN wrote:
+> Hello Jonathan,
+> 
+> Thanks for your comment.
+> 
+> On 10/12/19 10:57 AM, Jonathan Cameron wrote:
+>> On Fri, 11 Oct 2019 17:13:14 +0200
+>> Olivier Moysan <olivier.moysan@st.com> wrote:
+>>
+>>> The aim of this patch is to correct a recursive locking warning,
+>>> detected when setting CONFIG_PROVE_LOCKING flag (as shown in message below).
+>>> This message was initially triggered by the following call sequence
+>>> in stm32-dfsdm-adc.c driver, when using IIO hardware consumer interface.
+>>>
+>>> in stm32_dfsdm_read_raw()
+>>> 	iio_device_claim_direct_mode
+>>> 		mutex_lock(&indio_dev->mlock);			-> lock on dfsdm device
+>>> 	iio_hw_consumer_enable
+>>> 		iio_update_buffers
+>>> 			mutex_lock(&indio_dev->mlock);		-> lock on hw consumer device
+>> Hmm.  I'm not sure I follow the logic.  That lock is
+>> for one thing and one thing only, preventing access
+>> to the iio device that are unsafe when it is running
+>> in a buffered mode.  We shouldn't be in a position where
+>> we both say don't do this if we are in buffered mode, + enter
+>> buffered mode whilst doing this, or we need special functions
+>> for entering buffering mode if in this state.  We are in
+>> some sense combining internal driver logic with overall
+>> IIO states.  IIO shouldn't care that the device is using
+>> the same methods under the hood for buffered and non
+>> buffered operations.
+>>
+>> I can't really recall how this driver works.   Is it actually
+>> possible to have multiple hw_consumers at the same time?
+>>
+>> So do we end up with multiple buffers registered and have
+>> to demux out to the read_raw + the actual buffered path?
+>> Given we have a bit of code saying grab one sample, I'm
+>> going to guess we don't...
+>>
+>> If so, the vast majority of the buffer setup code in IIO
+>> is irrelevant here and we just need to call a few of
+>> the callbacks from this driver directly... (I think
+>> though I haven't chased through every corner.
+>>
+>> I'd rather avoid introducing this nesting for a corner
+>> case that makes no 'semantic' sense in IIO as it leaves us
+>> in two separate states at the same time that the driver
+>> is trying to make mutually exclusive.  We can't both
+>> not be in buffered mode, and in buffered mode.
+>>
+>> Thanks and good luck with this nasty corner!
+>>
+>> Jonathan
+>>
+> Here I consider the following use case:
+> A single conversion is performed. The dfsdm (filter) is chained with a 
+> front-end, which can be an ADC or a sensor. So we have two IIO devices, 
+> the dfsdm and its front-end handled through the hw consumer interface.
+> 
+> You are right. There is something wrong here, in buffered/non-buffered 
+> mode mixing.
+> iio_hw_consumer_enable() call is used to enable the front-end device. 
+> But this interface is intended for buffered mode.
+> So this is not coherent with the expected single conversion mode, 
+> indeed. Another interface is required to manage the front-end device. I 
+> have a poor knowledge of iio framework, but it seems to me that there is 
+> no interface to manage this.
+> 
+> My understanding regarding mlock, is that it is used to protect the 
+> state of the iio device.
+> I we want to do a conversion from the chained devices, I think we need 
+> to activate the first device
+> and keep it performing conversion, as long as the second device has done 
+> its conversion.
+> We need to protect both devices, and we should have to do it in a nested 
+> way.
+> So, I guess that anyway, nested mutexes would be required in this case.
+>
 
-> On Mon, Oct 14, 2019 at 9:39 AM Rob Herring <robh@kernel.org> wrote:
-> >
-> > On Sat, Oct 12, 2019 at 11:57:45AM +0100, Jonathan Cameron wrote: =20
-> > > On Fri, 11 Oct 2019 10:40:38 +0200
-> > > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-> > > =20
-> > > > Document the LTC2983 temperature sensor devicetree bindings.
-> > > >
-> > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
-> > >
-> > > I'm happy with this, but will be waiting for Rob to have a chance
-> > > for a final look before applying. =20
-> >
-> > LGTM, but I need to add the int64-matrix type to the core schema first
-> > or this will give you errors. I should get to that in the next day or
-> > so. =20
->=20
-> Now added, so please update dtschema and check.
->=20
-> Reviewed-by: Rob Herring <robh@kernel.org>
+Others like regmap have solved this by having a lockclass per instance.
+Although that is not ideal either since it will slow down lockdep.
 
-/home/jic23/src/kernel/iio/Documentation/devicetree/bindings/iio/temperatur=
-e/adi,ltc2983.example.dt.yaml: ltc2983@0: thermocouple@20:adi,custom-thermo=
-couple:0:0: 18446744073659331616 is greater than the maximum of 92233720368=
-54775807
-/home/jic23/src/kernel/iio/Documentation/devicetree/bindings/iio/temperatur=
-e/adi,ltc2983.example.dt.yaml: ltc2983@0: thermocouple@20:adi,custom-thermo=
-couple:0:2: 18446744073679351616 is greater than the maximum of 92233720368=
-54775807
-/home/jic23/src/kernel/iio/Documentation/devicetree/bindings/iio/temperatur=
-e/adi,ltc2983.example.dt.yaml: ltc2983@0: thermocouple@20:adi,custom-thermo=
-couple:0:4: 18446744073704251616 is greater than the maximum of 92233720368=
-54775807
-
-Which is odd.  I haven't looked into it beyond testing and reverting the
-patch as out of time for today.
-
-Thanks,
-
-Jonathan
-
-
+See
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/regmap.h#n629

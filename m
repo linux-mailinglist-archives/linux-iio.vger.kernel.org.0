@@ -2,32 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33615D746F
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 13:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 215A7D74A0
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 13:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731900AbfJOLMj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Oct 2019 07:12:39 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:50692 "EHLO
+        id S1729160AbfJOLNc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Oct 2019 07:13:32 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:50450 "EHLO
         heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731866AbfJOLMf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Oct 2019 07:12:35 -0400
+        with ESMTP id S1728769AbfJOLM2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Oct 2019 07:12:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
         Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
         List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=XCG6nXMGLYQhVpZyzuReMuwYH4A65umGWgOZuO0RXAo=; b=ffme7iF5Ra6w
-        6h7DVHdA2T9b4sS225fPXOlD4FCRb0nxCGP+SCFCkfVTukpRnWCdaHAwOpvxY+r74L8zTbdt15Qlz
-        E96ZCiw9zJlbabXCFJlzIafub6qVaakYc8BQYC71qO+w33ROIZvQBaYCXu88D/ziYmHMaqYhxvO1r
-        TmH40=;
+        List-Archive; bh=MgY4bxFY17PHIsD8EZBTx9xqaC4wci+W07NNCCTrDxg=; b=VwP6mNLys83T
+        EwBLJHsdCOVbIVn37RACoo2clg2uiG8A75BZCWyB8SkdNmik8S3qKBqyu9p3lifRyVwlk5El3NuqH
+        j7ZLSxWvsmkOvsrkqJClQ25fp6J8yTQ43dk/RHxMcwvzByv3WmEbGcMZky64KIeD/4jvJUw83VMXe
+        RJgEI=;
 Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
         by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <broonie@sirena.co.uk>)
-        id 1iKKka-00021J-Hd; Tue, 15 Oct 2019 11:12:24 +0000
+        id 1iKKka-00021B-7B; Tue, 15 Oct 2019 11:12:24 +0000
 Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 0F45627419E4; Tue, 15 Oct 2019 12:12:23 +0100 (BST)
+        id A18602741CD7; Tue, 15 Oct 2019 12:12:23 +0100 (BST)
 From:   Mark Brown <broonie@kernel.org>
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
 Cc:     baolin.wang@linaro.org, bcm-kernel-feedback-list@broadcom.com,
@@ -37,10 +37,10 @@ Cc:     baolin.wang@linaro.org, bcm-kernel-feedback-list@broadcom.com,
         linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
         Mark Brown <broonie@kernel.org>, orsonzhai@gmail.com,
         zhang.lyra@gmail.com
-Subject: Applied "spi: spi-loopback-test: use new `delay` field" to the spi tree
-In-Reply-To: <20190926105147.7839-13-alexandru.ardelean@analog.com>
+Subject: Applied "spi: spidev: use new `delay` field for spi transfers" to the spi tree
+In-Reply-To: <20190926105147.7839-14-alexandru.ardelean@analog.com>
 X-Patchwork-Hint: ignore
-Message-Id: <20191015111224.0F45627419E4@ypsilon.sirena.org.uk>
+Message-Id: <20191015111223.A18602741CD7@ypsilon.sirena.org.uk>
 Date:   Tue, 15 Oct 2019 12:12:23 +0100 (BST)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -49,7 +49,7 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 The patch
 
-   spi: spi-loopback-test: use new `delay` field
+   spi: spidev: use new `delay` field for spi transfers
 
 has been applied to the spi tree at
 
@@ -74,56 +74,42 @@ to this mail.
 Thanks,
 Mark
 
-From 867bd8868bbd16e17bbd26c5959abc3118902218 Mon Sep 17 00:00:00 2001
+From 8e319dd5f1ebbc1fffa9e550b2a643cbce7515b1 Mon Sep 17 00:00:00 2001
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Date: Thu, 26 Sep 2019 13:51:40 +0300
-Subject: [PATCH] spi: spi-loopback-test: use new `delay` field
+Date: Thu, 26 Sep 2019 13:51:41 +0300
+Subject: [PATCH] spi: spidev: use new `delay` field for spi transfers
 
-This change replaces the use of the `delay_usecs` field with the new
-`delay` field. The code/test still uses micro-seconds, but they are now
-configured and used via the `struct spi_delay` format of the `delay` field.
+The `delay` field has type `struct spi_delay`.
+This allows users to specify nano-second or clock-cycle delays (if needed).
+
+Converting to use `delay` is straightforward: it's just assigning the
+value to `delay.value` and hard-coding the `delay.unit` to
+`SPI_DELAY_UNIT_USECS`.
+
+This keeps the uapi for spidev un-changed. Changing it can be part of
+another changeset and discussion.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Link: https://lore.kernel.org/r/20190926105147.7839-13-alexandru.ardelean@analog.com
+Link: https://lore.kernel.org/r/20190926105147.7839-14-alexandru.ardelean@analog.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-loopback-test.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/spi/spidev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 6f18d4952767..b6d79cd156fb 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -298,12 +298,18 @@ static struct spi_test spi_tests[] = {
- 			{
- 				.tx_buf = TX(0),
- 				.rx_buf = RX(0),
--				.delay_usecs = 1000,
-+				.delay = {
-+					.value = 1000,
-+					.unit = SPI_DELAY_UNIT_USECS,
-+				},
- 			},
- 			{
- 				.tx_buf = TX(0),
- 				.rx_buf = RX(0),
--				.delay_usecs = 1000,
-+				.delay = {
-+					.value = 1000,
-+					.unit = SPI_DELAY_UNIT_USECS,
-+				},
- 			},
- 		},
- 	},
-@@ -537,7 +543,7 @@ static int spi_test_check_elapsed_time(struct spi_device *spi,
- 		unsigned long long nbits = (unsigned long long)BITS_PER_BYTE *
- 					   xfer->len;
- 
--		delay_usecs += xfer->delay_usecs;
-+		delay_usecs += xfer->delay.value;
- 		if (!xfer->speed_hz)
- 			continue;
- 		estimated_time += div_u64(nbits * NSEC_PER_SEC, xfer->speed_hz);
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index d63235dcb231..1e217e3e9486 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -265,7 +265,8 @@ static int spidev_message(struct spidev_data *spidev,
+ 		k_tmp->tx_nbits = u_tmp->tx_nbits;
+ 		k_tmp->rx_nbits = u_tmp->rx_nbits;
+ 		k_tmp->bits_per_word = u_tmp->bits_per_word;
+-		k_tmp->delay_usecs = u_tmp->delay_usecs;
++		k_tmp->delay.value = u_tmp->delay_usecs;
++		k_tmp->delay.unit = SPI_DELAY_UNIT_USECS;
+ 		k_tmp->speed_hz = u_tmp->speed_hz;
+ 		k_tmp->word_delay.value = u_tmp->word_delay_usecs;
+ 		k_tmp->word_delay.unit = SPI_DELAY_UNIT_USECS;
 -- 
 2.20.1
 

@@ -2,90 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B210ED6CEB
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 03:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9C7D73B1
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 12:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727310AbfJOBcf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Oct 2019 21:32:35 -0400
-Received: from sender4-op-o14.zoho.com ([136.143.188.14]:17480 "EHLO
-        sender4-op-o14.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726320AbfJOBcf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Oct 2019 21:32:35 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1571103143; cv=none; 
-        d=zoho.com; s=zohoarc; 
-        b=fQe3SUtVLWyArmDxIaOgAZ87/LpCghdwOqhkrdv9USl0bckrWy/iD+w+AhTdNSwmT3ns81f1COzo1/dfyQ/P0ts7h+QJIPNB+dCk9ZntCcAa94lLDXZRp7KxVrqGzTKTj5W/Fg/WUe+KQ+f4+NH3ShZbYK0QsDGNVDk4ikrPsTM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com; s=zohoarc; 
-        t=1571103143; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=1XGFFlKtZ9jhKURStoDOqZlNX+HfNJjwr20EIbnsVo4=; 
-        b=M0OZHeoJz4dUmwFqSI8fHIx9itwyxYUQUPvH2AXp5B2aspHHinovG3K1iMO36ZheJsPFLUlD6s8EMx5mwP2Q3V50hT84VAMKJ4feKuF+ifyLp8/am/i7qaqlakOS6dcD4gRaGi2HwVfQYH0SKijBQgod2d4Ldhs8zGMD6jSByXA=
-ARC-Authentication-Results: i=1; mx.zoho.com;
-        dkim=pass  header.i=dlrobertson.com;
-        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
-        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
-Received: from nessie (pool-100-15-144-194.washdc.fios.verizon.net [100.15.144.194]) by mx.zohomail.com
-        with SMTPS id 1571103141913682.352444499071; Mon, 14 Oct 2019 18:32:21 -0700 (PDT)
-Date:   Tue, 15 Oct 2019 01:17:50 +0000
-From:   Dan Robertson <dan@dlrobertson.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        id S1727675AbfJOKpj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Oct 2019 06:45:39 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:23344
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726653AbfJOKpj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Oct 2019 06:45:39 -0400
+X-IronPort-AV: E=Sophos;i="5.67,299,1566856800"; 
+   d="scan'208";a="322757829"
+Received: from portablejulia.rsr.lip6.fr ([132.227.76.63])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 12:45:06 +0200
+Date:   Tue, 15 Oct 2019 12:45:06 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: julia@hadrien
+To:     Dan Robertson <dan@dlrobertson.com>
+cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: accel: bma400: add bindings
-Message-ID: <20191015011750.GA20979@nessie>
-References: <20191012192525.21040-1-dan@dlrobertson.com>
- <20191012192525.21040-2-dan@dlrobertson.com>
- <20191014171521.GA29335@bogus>
- <20191014172731.GA30646@nessie>
+        linux-kernel@vger.kernel.org, Dan Robertson <dan@dlrobertson.com>,
+        kbuild-all@lists.01.org
+Subject: Re: [PATCH v3 2/2] iio: (bma400) add driver for the BMA400 (fwd)
+Message-ID: <alpine.DEB.2.21.1910151243270.2818@hadrien>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="CE+1k2dSO48ffgeK"
-Content-Disposition: inline
-In-Reply-To: <20191014172731.GA30646@nessie>
-User-Agent: Mutt/1.12.2 (2019-09-21)
-X-Zoho-Virus-Status: 1
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+acc_config is unsigned, so it won't be negative (line 390).
 
---CE+1k2dSO48ffgeK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+julia
 
-> Thanks for the note. Should running `make dt_binding_check` be added to
-> `Documentation/devicetree/bindings/submitting-patches.rst`?
+---------- Forwarded message ----------
+Date: Mon, 14 Oct 2019 07:23:53 +0800
+From: kbuild test robot <lkp@intel.com>
+To: kbuild@lists.01.org
+Cc: Julia Lawall <julia.lawall@lip6.fr>
+Subject: Re: [PATCH v3 2/2] iio: (bma400) add driver for the BMA400
 
-Sorry, I missed the `writing-schema.rst` documentation.
+Hi Dan,
 
-Cheers,
+Thank you for the patch! Perhaps something to improve:
 
- - Dan
+[auto build test WARNING on iio/togreg]
+[cannot apply to v5.4-rc2 next-20191011]
+[if your patch is applied to the wrong git tree, please drop us a note to help
+improve the system. BTW, we also suggest to use '--base' option to specify the
+base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
---CE+1k2dSO48ffgeK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+url:    https://github.com/0day-ci/linux/commits/Dan-Robertson/iio-add-driver-for-Bosch-BMA400-accelerometer/20191014-035631
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+:::::: branch date: 3 hours ago
+:::::: commit date: 3 hours ago
 
------BEGIN PGP SIGNATURE-----
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
+Reported-by: Julia Lawall <julia.lawall@lip6.fr>
 
-iQIzBAEBCAAdFiEEF5dO2RaKc5C+SCJ9RcSmUsR+QqUFAl2lHj4ACgkQRcSmUsR+
-QqWOQw/9Eo1Q10BBXWVyP1OId54T7pXJDI7zFU0zyKjpPZblkcIr8j1zY9xcW21l
-X8A7bUZ0X4cMh/f56jhjnnp0bHZNS8mNbvqUeWM5Z2ntPq7uKmd6ag+bUYuraxrK
-smqbPYai8RrVMtTtGrJQvsZIZyvQ1Upppa1XIctOFbBxXot6Mvp9lYWiaOp6jeHe
-RNIhWCWVHyztekQGbdrHU499aF2xIVvuU0torqaJC8UVbdDDBitpxA2cOFkuOuQi
-RzruAEOywfxx9oR076KstPtgGBKT768NF/BFstdGqMxKBac7aqWU/kOvyBUE/wkw
-AMEyWBBuNmSgWRw/kFBtB8OkVkOt2qDbN+085SgzgqNgil0tBfeBQ0jtgN2tdPy6
-G2zfwD7RjpxAadyJ7TiA989sbvA1GMmzbjBTCdhwUHUFGnhHi24mVKCWw0og9xdJ
-/TRxYjGisSz5Qsk14vmMBw1bE73giKghMq+gDdHWtqERDvbEY0h2sf+omVkDWC0P
-q0R/yjsqETT/ALGwI9IM2M9tgCy4OYm+mxHLKcWGWzW0G+jkT76Xf+ITXrEMoesT
-WWUNgGYe8dvgIohbtOVVNmzeNgBa7+WKMhdvQfjcPu8hlgwgwkh0VimP9ugiA/D0
-XGIoQrL6jldP6QGvIIkvhtiFcCkfGfANhy8J2HU5AbIbgM8g0OQ=
-=ANkC
------END PGP SIGNATURE-----
+>> drivers/iio/accel/bma400_core.c:390:6-16: WARNING: Unsigned expression compared with zero: acc_config < 0
 
---CE+1k2dSO48ffgeK--
+# https://github.com/0day-ci/linux/commit/76b89222e99357a9fdbcfb61982e10d2fe74a409
+git remote add linux-review https://github.com/0day-ci/linux
+git remote update linux-review
+git checkout 76b89222e99357a9fdbcfb61982e10d2fe74a409
+vim +390 drivers/iio/accel/bma400_core.c
 
+76b89222e99357 Dan Robertson 2019-10-12  372
+76b89222e99357 Dan Robertson 2019-10-12  373  static int bma400_set_accel_oversampling_ratio(struct bma400_data *data,
+76b89222e99357 Dan Robertson 2019-10-12  374  					       int val)
+76b89222e99357 Dan Robertson 2019-10-12  375  {
+76b89222e99357 Dan Robertson 2019-10-12  376  	int ret;
+76b89222e99357 Dan Robertson 2019-10-12  377  	unsigned int acc_config;
+76b89222e99357 Dan Robertson 2019-10-12  378
+76b89222e99357 Dan Robertson 2019-10-12  379  	if (val & ~BMA400_TWO_BITS_MASK)
+76b89222e99357 Dan Robertson 2019-10-12  380  		return -EINVAL;
+76b89222e99357 Dan Robertson 2019-10-12  381
+76b89222e99357 Dan Robertson 2019-10-12  382  	/*
+76b89222e99357 Dan Robertson 2019-10-12  383  	 * The oversampling ratio is stored in a different register
+76b89222e99357 Dan Robertson 2019-10-12  384  	 * based on the power-mode.
+76b89222e99357 Dan Robertson 2019-10-12  385  	 */
+76b89222e99357 Dan Robertson 2019-10-12  386  	switch (data->power_mode) {
+76b89222e99357 Dan Robertson 2019-10-12  387  	case POWER_MODE_LOW:
+76b89222e99357 Dan Robertson 2019-10-12  388  		ret = regmap_read(data->regmap, BMA400_ACC_CONFIG0_REG,
+76b89222e99357 Dan Robertson 2019-10-12  389  				  &acc_config);
+76b89222e99357 Dan Robertson 2019-10-12 @390  		if (acc_config < 0)
+76b89222e99357 Dan Robertson 2019-10-12  391  			return acc_config;
+76b89222e99357 Dan Robertson 2019-10-12  392
+76b89222e99357 Dan Robertson 2019-10-12  393  		ret = regmap_write(data->regmap, BMA400_ACC_CONFIG0_REG,
+76b89222e99357 Dan Robertson 2019-10-12  394  				   (acc_config & ~BMA400_LP_OSR_MASK) |
+76b89222e99357 Dan Robertson 2019-10-12  395  				   (val << BMA400_LP_OSR_SHIFT));
+76b89222e99357 Dan Robertson 2019-10-12  396  		if (ret < 0) {
+76b89222e99357 Dan Robertson 2019-10-12  397  			dev_err(data->dev, "Failed to write out OSR");
+76b89222e99357 Dan Robertson 2019-10-12  398  			return ret;
+76b89222e99357 Dan Robertson 2019-10-12  399  		}
+76b89222e99357 Dan Robertson 2019-10-12  400
+76b89222e99357 Dan Robertson 2019-10-12  401  		data->oversampling_ratio = val;
+76b89222e99357 Dan Robertson 2019-10-12  402  		return 0;
+76b89222e99357 Dan Robertson 2019-10-12  403  	case POWER_MODE_NORMAL:
+76b89222e99357 Dan Robertson 2019-10-12  404  		ret = regmap_read(data->regmap, BMA400_ACC_CONFIG1_REG,
+76b89222e99357 Dan Robertson 2019-10-12  405  				  &acc_config);
+76b89222e99357 Dan Robertson 2019-10-12  406  		if (ret < 0)
+76b89222e99357 Dan Robertson 2019-10-12  407  			return ret;
+76b89222e99357 Dan Robertson 2019-10-12  408
+76b89222e99357 Dan Robertson 2019-10-12  409  		ret = regmap_write(data->regmap, BMA400_ACC_CONFIG1_REG,
+76b89222e99357 Dan Robertson 2019-10-12  410  				   (acc_config & ~BMA400_NP_OSR_MASK) |
+76b89222e99357 Dan Robertson 2019-10-12  411  				   (val << BMA400_NP_OSR_SHIFT));
+76b89222e99357 Dan Robertson 2019-10-12  412  		if (ret < 0) {
+76b89222e99357 Dan Robertson 2019-10-12  413  			dev_err(data->dev, "Failed to write out OSR");
+76b89222e99357 Dan Robertson 2019-10-12  414  			return ret;
+76b89222e99357 Dan Robertson 2019-10-12  415  		}
+76b89222e99357 Dan Robertson 2019-10-12  416
+76b89222e99357 Dan Robertson 2019-10-12  417  		data->oversampling_ratio = val;
+76b89222e99357 Dan Robertson 2019-10-12  418  		return 0;
+76b89222e99357 Dan Robertson 2019-10-12  419  	default:
+76b89222e99357 Dan Robertson 2019-10-12  420  		return -EINVAL;
+76b89222e99357 Dan Robertson 2019-10-12  421  	}
+76b89222e99357 Dan Robertson 2019-10-12  422  	return ret;
+76b89222e99357 Dan Robertson 2019-10-12  423  }
+76b89222e99357 Dan Robertson 2019-10-12  424
+
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation

@@ -2,74 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CFD8D7841
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 16:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07641D7987
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2019 17:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732532AbfJOOTX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Oct 2019 10:19:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43512 "EHLO mail.kernel.org"
+        id S1726523AbfJOPOy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Oct 2019 11:14:54 -0400
+Received: from mga02.intel.com ([134.134.136.20]:31153 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730697AbfJOOTX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 15 Oct 2019 10:19:23 -0400
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6CBF0217F9;
-        Tue, 15 Oct 2019 14:19:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571149162;
-        bh=Ps0eVSE3aMchJwYapXACrAHQ9Tmc1Lh7EYWSYguTwBA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HIK35ngSo4Li0KqJZlOqvirQyspBko7DXZKdH3ChhzuQXO7/epjncUWQEP1NYWNOE
-         AF2IJuNMz2Iydy97zQzBGSOEkMVmTuq8VykpzDqlLcNAbe1xxBPd/g2eSjfZ+T4Lgd
-         mi/zGwLqtapm7ByglyKaAeSU60Jto76LHbWKEq2w=
-Received: by mail-qk1-f181.google.com with SMTP id y144so19293467qkb.7;
-        Tue, 15 Oct 2019 07:19:22 -0700 (PDT)
-X-Gm-Message-State: APjAAAUekkVbRrAwFZDfSP90BWgfV/2PxzAdJCRZOoyTWnhT6KqFqisq
-        mQiJARPmSNJbSpC6YI9zNLjUGRpDEwJ04js65g==
-X-Google-Smtp-Source: APXvYqx4iwG3Lr908rg6R/yv30scCvd74KmrGR5b6l5MNAkXclssKVsoLMwBSzvuitj3CZilrUVQjD7Mz5MUKZ4MkzM=
-X-Received: by 2002:a05:620a:12f1:: with SMTP id f17mr4387238qkl.152.1571149161548;
- Tue, 15 Oct 2019 07:19:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191011084038.45829-1-nuno.sa@analog.com> <20191011084038.45829-2-nuno.sa@analog.com>
- <20191012115745.069119b0@archlinux> <20191014143950.GA6163@bogus>
-In-Reply-To: <20191014143950.GA6163@bogus>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 15 Oct 2019 09:19:10 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+Hju1KtvfjEJNGsS9maC3LDn0FcQJe6Wp+y-YgiAP=+w@mail.gmail.com>
-Message-ID: <CAL_Jsq+Hju1KtvfjEJNGsS9maC3LDn0FcQJe6Wp+y-YgiAP=+w@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: Add ltc2983 documentation
+        id S1725991AbfJOPOy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 15 Oct 2019 11:14:54 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 08:14:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,300,1566889200"; 
+   d="scan'208";a="198637451"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga003.jf.intel.com with ESMTP; 15 Oct 2019 08:14:51 -0700
+Received: from andy by smile with local (Exim 4.92.2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1iKOXC-0002I3-7d; Tue, 15 Oct 2019 18:14:50 +0300
+Date:   Tue, 15 Oct 2019 18:14:50 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org,
+        Vincent Pelletier <plr.vincent@gmail.com>,
+        Tomasz Duszynski <tduszyns@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v2] iio: adc: intel_mrfld_adc: Add Basin Cove ADC driver
+Message-ID: <20191015151450.GL32742@smile.fi.intel.com>
+References: <20190326145138.19717-1-andriy.shevchenko@linux.intel.com>
+ <20190330153140.7bfecadf@archlinux>
+ <20190902131301.GI2680@smile.fi.intel.com>
+ <20190903185119.2328cf86@archlinux>
+ <20191001081933.GD32742@smile.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191001081933.GD32742@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 14, 2019 at 9:39 AM Rob Herring <robh@kernel.org> wrote:
->
-> On Sat, Oct 12, 2019 at 11:57:45AM +0100, Jonathan Cameron wrote:
-> > On Fri, 11 Oct 2019 10:40:38 +0200
-> > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-> >
-> > > Document the LTC2983 temperature sensor devicetree bindings.
-> > >
-> > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> >
-> > I'm happy with this, but will be waiting for Rob to have a chance
-> > for a final look before applying.
->
-> LGTM, but I need to add the int64-matrix type to the core schema first
-> or this will give you errors. I should get to that in the next day or
-> so.
+On Tue, Oct 01, 2019 at 11:19:33AM +0300, Andy Shevchenko wrote:
+> On Tue, Sep 03, 2019 at 06:51:19PM +0100, Jonathan Cameron wrote:
+> > On Mon, 2 Sep 2019 16:13:01 +0300
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > > On Sat, Mar 30, 2019 at 03:31:40PM +0000, Jonathan Cameron wrote:
+> > > > On Tue, 26 Mar 2019 16:51:38 +0200
+> > > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> > > > Give me a poke if I seem to have forgotten it.  
+> 
+> > > Lee applied the main driver to his tree [1].
+> > > Should I do anything for this one or is it applicable clean?
+> > > 
+> > > [1]: https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git/commit/?id=b9a801dfa591
+> > > 
+> > Hmm. It's very late in the cycle and Lee doesn't have that in an immutable
+> > branch (presumably because it's very late or it wasn't clear there was
+> > a need to do so).  In theory I've done my last pull request to Greg
+> > (though I messed it up so that's not quite true).
+> > 
+> > Will have to pick this up towards the start of the next cycle now I think.
+> 
+> Now everything needed is in v5.4-rc1. Your move!
 
-Now added, so please update dtschema and check.
+Jonathan, anything I can do to make this accepted?
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

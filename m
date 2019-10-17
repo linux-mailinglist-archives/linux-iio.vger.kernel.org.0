@@ -2,194 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 341E7DAC69
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2019 14:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2F48DAD8C
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2019 14:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502451AbfJQMgL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Oct 2019 08:36:11 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4240 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2502412AbfJQMgJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Oct 2019 08:36:09 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 15C4B7370270985C51A3;
-        Thu, 17 Oct 2019 20:35:55 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Thu, 17 Oct 2019
- 20:35:53 +0800
-Date:   Thu, 17 Oct 2019 13:35:43 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Andrea Merello <andrea.merello@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        <patrick.havelange@essensium.com>,
-        <paresh.chaudhary@rockwellcollins.com>, <pmeerw@pmeerw.net>,
-        <lars@metafoo.de>, <knaack.h@gmx.de>,
-        Matthew Weber <matthew.weber@rockwellcollins.com>,
-        Colin King <colin.king@canonical.com>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 3/3] iio: max31856: add support for runtime-configuring
- the thermocouple type
-Message-ID: <20191017133543.00005418@huawei.com>
-In-Reply-To: <CAN8YU5PxgjwoLyxqMTuQJDGfo7MYAb0A54pFcFV5_cPeJ=H7Ng@mail.gmail.com>
-References: <20190923121714.13672-1-andrea.merello@gmail.com>
-        <20190923121714.13672-4-andrea.merello@gmail.com>
-        <20191006085825.1efc1d7a@archlinux>
-        <CAN8YU5PxgjwoLyxqMTuQJDGfo7MYAb0A54pFcFV5_cPeJ=H7Ng@mail.gmail.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1731055AbfJQM4M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Oct 2019 08:56:12 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:34814 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729124AbfJQM4L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Oct 2019 08:56:11 -0400
+Received: by mail-oi1-f194.google.com with SMTP id 83so2065618oii.1;
+        Thu, 17 Oct 2019 05:56:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jCmtCgtBiiFJU5hn3NT2kzh4dnuPiZZINwubQDKuTj8=;
+        b=mzCNJtiF0wM7R/HS7yfby24LFO8AfqmXB166VUbWYuqW1gbKUB2L5gXYO2ka76MxPa
+         3V8PBywtIfRmMVYN9no9UcdwAFKZn5e2XkPOKufaoRkB9MFJ8+dUsk8WGz+OptUQaY1i
+         aXRECxrAJv0Tun77j/0D0iAevFAYF2o6Y+cLrcIMJIRxu7gwzLOoGbbBYOYJZdH10EBx
+         y0q05ZlQ+MjdGeBa2BX0dkR8OKGTmZJiNKZVMFzlOTdZjmBuuMHPEA+I2E9LvDSA5CC4
+         Kp9zEFKF3NBMWTN8zdq5J7xWI8DaUIuzgenZNRa/slD7USPXyG2/sCFrUD+ryczNDefr
+         dEfg==
+X-Gm-Message-State: APjAAAUcoI07zU2TaTRB1FZSumS7BfZqfK0B5RlmVZ4ZISS2uC3f+C9M
+        ii/NTBfK54m3RpQ/p8VwBEV0JiWRyxT9kZAXCy6yOjbj
+X-Google-Smtp-Source: APXvYqy5RDhqMEfVOwJ6hvWU5q92MMw+x2vGvUbDRvxE2qxwk2Nmdc/1GS9R+iCxoIJcSopADXhaQZ5hycAFP/rqBpo=
+X-Received: by 2002:aca:230c:: with SMTP id e12mr2893076oie.153.1571316970585;
+ Thu, 17 Oct 2019 05:56:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+References: <20191016102520.124370-1-jacopo+renesas@jmondi.org>
+In-Reply-To: <20191016102520.124370-1-jacopo+renesas@jmondi.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 17 Oct 2019 14:55:58 +0200
+Message-ID: <CAMuHMdUH0LrZ6iEuN1aWCTt_-jpgp=EjxubMAVdp11HLL=ayyQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: max9611: Defer probe on POR read
+To:     Jacopo Mondi <jacopo+renesas@jmondi.org>
+Cc:     linux-iio@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Linux I2C <linux-i2c@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 16 Oct 2019 15:43:18 +0200
-Andrea Merello <andrea.merello@gmail.com> wrote:
+Hi Jacopo,
 
-> Il giorno dom 6 ott 2019 alle ore 09:58 Jonathan Cameron
-> <jic23@kernel.org> ha scritto:
-> >
-> > On Mon, 23 Sep 2019 14:17:14 +0200
-> > Andrea Merello <andrea.merello@gmail.com> wrote:
-> >  
-> > > The sensor support various thermocouple types (e.g. J, K, N, ...). The
-> > > driver allows to configure this parameter using a DT property.
-> > >
-> > > This is useful when i.e. the thermocouple is physically tied to the sensor
-> > > and it is usually not removed, or when it is at least known in advace  
-> >
-> > advance  
-> 
-> OK
-> 
-> > > which sensor will be connected to the circuit.
-> > >
-> > > However, if the user can randomly connect any kind of thermocouples (i.e.
-> > > the device exposes a connector, and the user is free to connect its own
-> > > sensors), it would be more appropriate to provide a mechanism to
-> > > dynamically switch from one thermocouple type to another. This can be i.e.
-> > > handled in userspace by a GUI, a configuration file or a program that
-> > > detects the thermocouple type by reading a GPIO, or a eeprom on the probe,
-> > > or whatever.
-> > >
-> > > This patch adds a IIO attribute that can be used to override, at run-time,
-> > > the DT-provided setting (which serves as default).
-> > >
-> > > Signed-off-by: Andrea Merello <andrea.merello@gmail.com>  
-> > For now this is device specific ABI so you need to have an entry in
-> > Documentation/ABI/testing/sysfs-bus-iio-max31856  
-> 
-> OK
-> 
-> > Or we could consider this generic enough to put it in a file
-> > covering other thermocouple to digital sensors.  
-> 
-> Yes, theoretically thermocouple-type is a generic thing that isn't
-> bound to this specific driver/chip. Currently the others IIO
-> thermocouple drivers don't need this because they supports chips that
-> handle just a specific thermocouple type, but if you want to make this
-> API generic for the future then I can go this way.. It seems
-> reasonable to me indeed.
-> 
+CC i2c
 
-Lets do it then ;)  We might want to add a read only attrs to the
-other drivers to make them self describing.
+On Wed, Oct 16, 2019 at 12:23 PM Jacopo Mondi <jacopo+renesas@jmondi.org> wrote:
+> The max9611 driver tests communications with the chip by reading the die
+> temperature during the probe function. If the temperature register
+> POR (power-on reset) value is returned from the test read, defer probe to
+> give the chip a bit more time to properly exit from reset.
+>
+> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
 
-Thanks,
+Thanks for your patch!
 
-Jonathan
+> Geert,
+>   I've not been able to reproduce the issue on my boards (M3-N
+> Salvator-XS and M3-W Salvator-X). As you reported the issue you might be
+> able to reproduce it, could you please test this?
 
-> > Thanks,
-> >
-> > Jonathan
-> >  
-> > > ---
-> > >  drivers/iio/temperature/max31856.c | 44 ++++++++++++++++++++++++++++++
-> > >  1 file changed, 44 insertions(+)
-> > >
-> > > diff --git a/drivers/iio/temperature/max31856.c b/drivers/iio/temperature/max31856.c
-> > > index 8b2e0102fa5c..588e791c79a3 100644
-> > > --- a/drivers/iio/temperature/max31856.c
-> > > +++ b/drivers/iio/temperature/max31856.c
-> > > @@ -6,6 +6,7 @@
-> > >   * Copyright (C) 2018-2019 Rockwell Collins
-> > >   */
-> > >
-> > > +#include <linux/ctype.h>
-> > >  #include <linux/module.h>
-> > >  #include <linux/init.h>
-> > >  #include <linux/err.h>
-> > > @@ -70,6 +71,10 @@ struct max31856_data {
-> > >       int averaging;
-> > >  };
-> > >
-> > > +const char max31856_tc_types[] = {
-> > > +     'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
-> > > +};
-> > > +
-> > >  static int max31856_read(struct max31856_data *data, u8 reg,
-> > >                        u8 val[], unsigned int read_size)
-> > >  {
-> > > @@ -336,16 +341,55 @@ static ssize_t set_averaging(struct device *dev,
-> > >       return len;
-> > >  }
-> > >
-> > > +static ssize_t show_tc_type(struct device *dev,
-> > > +                         struct device_attribute *attr,
-> > > +                         char *buf)
-> > > +{
-> > > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > +     struct max31856_data *data = iio_priv(indio_dev);
-> > > +
-> > > +     return sprintf(buf, "%c\n", max31856_tc_types[data->thermocouple_type]);
-> > > +}
-> > > +
-> > > +static ssize_t set_tc_type(struct device *dev,
-> > > +                        struct device_attribute *attr,
-> > > +                        const char *buf,
-> > > +                        size_t len)
-> > > +{
-> > > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > +     struct max31856_data *data = iio_priv(indio_dev);
-> > > +     char tmp;
-> > > +     int tc_type = -1;
-> > > +     int i;
-> > > +
-> > > +     if (sscanf(buf, "%c\n", &tmp) != 1)
-> > > +             return -EINVAL;
-> > > +
-> > > +     for (i = 0; i < ARRAY_SIZE(max31856_tc_types); i++) {
-> > > +             if (max31856_tc_types[i] == toupper(tmp)) {
-> > > +                     tc_type = i;
-> > > +                     break;
-> > > +             }
-> > > +     }
-> > > +     if (tc_type < 0)
-> > > +             return -EINVAL;
-> > > +     data->thermocouple_type = tc_type;
-> > > +     max31856_init(data);
-> > > +     return len;
-> > > +}
-> > > +
-> > >  static IIO_DEVICE_ATTR(fault_ovuv, 0444, show_fault_ovuv, NULL, 0);
-> > >  static IIO_DEVICE_ATTR(fault_oc, 0444, show_fault_oc, NULL, 0);
-> > >  static IIO_DEVICE_ATTR(filter, 0644, show_filter, set_filter, 0);
-> > >  static IIO_DEVICE_ATTR(averaging, 0644, show_averaging, set_averaging, 0);
-> > > +static IIO_DEVICE_ATTR(thermocouple_type, 0644, show_tc_type, set_tc_type, 0);
-> > >
-> > >  static struct attribute *max31856_attributes[] = {
-> > >       &iio_dev_attr_fault_ovuv.dev_attr.attr,
-> > >       &iio_dev_attr_fault_oc.dev_attr.attr,
-> > >       &iio_dev_attr_filter.dev_attr.attr,
-> > >       &iio_dev_attr_averaging.dev_attr.attr,
-> > > +     &iio_dev_attr_thermocouple_type.dev_attr.attr,
-> > >       NULL,
-> > >  };
-> > >  
-> >  
+I can reproduce it on Salvator-XS with R-Car H3 ES2.0.
+According to my logs, I've seen the issue on all Salvator-X(S) boards,
+but not with the same frequency.  Probability is highest on H3 ES2.0
+(ca. 5% of the boots since I first saw the issue), followed by H3 ES1.0,
+M3-W, and M3-N.
 
+After more investigation, my findings are:
+  1. I cannot reproduce the issue if the max9611 driver is modular.
+     Is it related to using max9611 "too soon" after i2c bus init?
+     How can "i2c bus init" impact a slave device?
+     Perhaps due to pin configuration, e.g. changing from another pin
+     function or GPIO to function i2c4?
+  2. Adding a delay at the top of max9611_init() fixes the issue.
+     This would explain why the issue is less likely to happy on slower
+     SoCs like M3-N.
+  3. Disabling all other i2c slaves on i2c4 in DTS fixes the issue.
+     Before, max9611 was initialized last, so this moves init earlier,
+     contradicting theory #1.
+  4. Just disabling the adv7482 (which registers 11 dummies i2c slaves)
+     in DTS does not fix the issue.
 
+Unfortunately i2c4 is exposed on a 60-pin Samtec QSH connector only,
+for which I have no breakout adapter.
+
+Wolfram: do you have any clues?
+
+> Also, I opted for deferring probe instead of arbitrary repeat the
+> temperature read. What's your opinion?
+
+While this is probably OK if the max9611 driver is built-in, I'm afraid
+this may lead to unbounded delays for a reprobe in case the driver
+is modular.
+
+> --- a/drivers/iio/adc/max9611.c
+> +++ b/drivers/iio/adc/max9611.c
+> @@ -80,6 +80,7 @@
+>   * The complete formula to calculate temperature is:
+>   *     ((adc_read >> 7) * 1000) / (1 / 480 * 1000)
+>   */
+> +#define MAX9611_TEMP_POR               0x8000
+>  #define MAX9611_TEMP_MAX_POS           0x7f80
+>  #define MAX9611_TEMP_MAX_NEG           0xff80
+>  #define MAX9611_TEMP_MIN_NEG           0xd980
+> @@ -480,8 +481,10 @@ static int max9611_init(struct max9611_dev *max9611)
+>         if (ret)
+>                 return ret;
+>
+> -       regval &= MAX9611_TEMP_MASK;
+> +       if (regval == MAX9611_TEMP_POR)
+> +               return -EPROBE_DEFER;
+>
+> +       regval &= MAX9611_TEMP_MASK;
+>         if ((regval > MAX9611_TEMP_MAX_POS &&
+>              regval < MAX9611_TEMP_MIN_NEG) ||
+>              regval > MAX9611_TEMP_MAX_NEG) {
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -2,39 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDED0DB8F2
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2019 23:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1324DB928
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2019 23:41:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729795AbfJQV1L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Oct 2019 17:27:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40580 "EHLO mail.kernel.org"
+        id S2441561AbfJQVl5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Oct 2019 17:41:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42938 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2503221AbfJQV1J (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Oct 2019 17:27:09 -0400
+        id S2441334AbfJQVl4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 17 Oct 2019 17:41:56 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0FF8921A49;
-        Thu, 17 Oct 2019 21:27:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6431C2067B;
+        Thu, 17 Oct 2019 21:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571347628;
-        bh=IoGi9ekuXMWW2fH3sM1nTllHy+sYRyEqFShiQUEON4U=;
+        s=default; t=1571348515;
+        bh=nL5RyYEfnCQ/xMkhILlMFuPBby2mRFtC95ZvlIcD5DM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OlQFUgl+cHI6VGh5mG+JI3tXeCslF5ML7p74NuWuOqhbeLyS425SuWvN6urEm+bol
-         hXTjXu4gkyqBskoNZt5jZillzErIBvBUnHGCLK0h6HkQMYEqjGsV18Mlqn/YaGbI9U
-         tBd4StICiSs4ov10vU5kCtNNHYCfkgZ+FaCLynMQ=
-Date:   Thu, 17 Oct 2019 22:27:03 +0100
+        b=L9h5G71ITKBOg+OObh19mJhCP2z0YPE5UKzQe1SOZIAWGWrU+4TMMmjQfoVben1Ji
+         g06sKHmFk6jCgAXJ8GZpMVge6OEz+4J2FuxElTVe3b9Cqq/jW+qHX3M7n1BcOCQHRU
+         CBbACUUL/kIJWOsSl/GrZglY/tLRGceGOXrqPXRs=
+Date:   Thu, 17 Oct 2019 22:41:48 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mboumba Cedric Madianga <cedric.madianga@gmail.com>
-Subject: Re: [PATCH 0/7 v4] AB8500 GPADC MFD to IIO conversion
-Message-ID: <20191017222703.4e213db4@archlinux>
-In-Reply-To: <20191011071805.5554-1-linus.walleij@linaro.org>
-References: <20191011071805.5554-1-linus.walleij@linaro.org>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        patrick.havelange@essensium.com, fabrice.gasnier@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@st.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, benjamin.gaignard@linaro.org,
+        david@lechnology.com
+Subject: Re: [PATCH v5 0/3] Simplify count_read/count_write/signal_read
+Message-ID: <20191017224148.5f7edae2@archlinux>
+In-Reply-To: <20191012145101.GA3463@icarus>
+References: <cover.1570391994.git.vilhelm.gray@gmail.com>
+        <20191012150012.5e3399f1@archlinux>
+        <20191012145101.GA3463@icarus>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,66 +47,126 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Oct 2019 09:17:58 +0200
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Sat, 12 Oct 2019 10:51:19 -0400
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> This version should cover Jonathans comments on v2,
-> and Rob's comments on missing DT changes in v3 and
-> be ripe for early merge for v5.5.
+> On Sat, Oct 12, 2019 at 03:00:12PM +0100, Jonathan Cameron wrote:
+> > Hi William
+> > 
+> > What's the status on these? If you are happy that reviews and
+> > testing is complete enough, do you want me to take them after
+> > I pick up the eqep driver (hopefully shortly dependent on
+> > the pull request Greg has from me being fine).
+> > 
+> > Thanks,
+> > 
+> > Jonathan  
 > 
-> Jonathan, do you want to queue them in your tree?
+> Yes, this is ready for you to take. So after the eqep driver is picked
+> up you can apply this patchset.
 
-For reference immutable branch created at:
-
-Immutable branch created based on 5.4-rc1 at:
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=ib-ab8500-5.4-rc1
-
-Now pulled into the togreg branch of iio.git which I'll push out in a moment
-as testing for the autobuilders to see if they can managed to build this.
-
-There is the small tweak to the DT examples that will need to be a followup
-patch for.  That can go through mfd or myself depending on what Lee would
-prefer.
+Series applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
 > 
-> When Lee applies series like this he usually puts them
-> on an isolated immutable branch that he then pulls
-> into his own tree and offer to other subsystems.
-> It's a good idea I think but maybe you have other
-> ways of working.
+> Thanks,
 > 
-> Linus Walleij (7):
->   power: supply: ab8500_btemp: convert to IIO ADC
->   power: supply: ab8500_charger: convert to IIO ADC
->   power: supply: ab8500_fg: convert to IIO ADC
->   hwmon: ab8500: convert to IIO ADC
->   mfd: ab8500: augment DT bindings
->   iio: adc: New driver for the AB8500 GPADC
->   mfd: Switch the AB8500 GPADC to IIO
+> William Breathitt Gray
 > 
->  .../devicetree/bindings/mfd/ab8500.txt        |  119 ++
->  MAINTAINERS                                   |    1 +
->  drivers/hwmon/Kconfig                         |    3 +-
->  drivers/hwmon/ab8500.c                        |   65 +-
->  drivers/iio/adc/Kconfig                       |   10 +
->  drivers/iio/adc/Makefile                      |    1 +
->  drivers/iio/adc/ab8500-gpadc.c                | 1218 +++++++++++++++++
->  drivers/mfd/Kconfig                           |    7 -
->  drivers/mfd/Makefile                          |    1 -
->  drivers/mfd/ab8500-debugfs.c                  |  715 ----------
->  drivers/mfd/ab8500-gpadc.c                    | 1075 ---------------
->  drivers/power/supply/Kconfig                  |    2 +-
->  drivers/power/supply/ab8500_btemp.c           |   41 +-
->  drivers/power/supply/ab8500_charger.c         |   78 +-
->  drivers/power/supply/ab8500_fg.c              |   23 +-
->  include/linux/mfd/abx500/ab8500-gpadc.h       |   75 -
->  16 files changed, 1495 insertions(+), 1939 deletions(-)
->  create mode 100644 drivers/iio/adc/ab8500-gpadc.c
->  delete mode 100644 drivers/mfd/ab8500-gpadc.c
->  delete mode 100644 include/linux/mfd/abx500/ab8500-gpadc.h
-> 
+> > 
+> > On Sun,  6 Oct 2019 16:03:08 -0400
+> > William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+> >   
+> > > Changes in v5:
+> > >  - Add changes and additions to generic-counter.rst to clarify theory
+> > >    and use of the Generic Counter interface
+> > >  - Fix typo in counter.h action_get description comment
+> > > 
+> > > The changes in this patchset will not affect the userspace interface.
+> > > Rather, these changes are intended to simplify the kernelspace Counter
+> > > callbacks for counter device driver authors.
+> > > 
+> > > The following main changes are proposed:
+> > > 
+> > > * Retire the opaque counter_count_read_value/counter_count_write_value
+> > >   structures and simply represent count data as an unsigned integer.
+> > > 
+> > > * Retire the opaque counter_signal_read_value structure and represent
+> > >   Signal data as a counter_signal_value enum.
+> > > 
+> > > These changes should reduce some complexity and code in the use and
+> > > implementation of the count_read, count_write, and signal_read
+> > > callbacks.
+> > > 
+> > > The opaque structures for Count data and Signal data were introduced
+> > > originally in anticipation of supporting various representations of
+> > > counter data (e.g. arbitrary-precision tallies, floating-point spherical
+> > > coordinate positions, etc). However, with the counter device drivers
+> > > that have appeared, it's become apparent that utilizing opaque
+> > > structures in kernelspace is not the best approach to take.
+> > > 
+> > > I believe it is best to let userspace applications decide how to
+> > > interpret the count data they receive. There are a couple of reasons why
+> > > it would be good to do so:
+> > > 
+> > > * Users use their devices in unexpected ways.
+> > > 
+> > >   For example, a quadrature encoder counter device is typically used to
+> > >   keep track of the position of a motor, but a user could set the device
+> > >   in a pulse-direction mode and instead use it to count sporadic rising
+> > >   edges from an arbitrary signal line unrelated to positioning. Users
+> > >   should have the freedom to decide what their data represents.
+> > > 
+> > > * Most counter devices represent data as unsigned integers anyway.
+> > > 
+> > >   For example, whether the device is a tally counter or position
+> > >   counter, the count data is represented to the user as an unsigned
+> > >   integer value. So specifying that one device is representing tallies
+> > >   while the other specifies positions does not provide much utility from
+> > >   an interface perspective.
+> > > 
+> > > For these reasons, the count_read and count_write callbacks have been
+> > > redefined to pass count data directly as unsigned long instead of passed
+> > > via opaque structures:
+> > > 
+> > >         count_read(struct counter_device *counter,
+> > >                    struct counter_count *count, unsigned long *val);
+> > >         count_write(struct counter_device *counter,
+> > >                     struct counter_count *count, unsigned long val);
+> > > 
+> > > Similarly, the signal_read is redefined to pass Signal data directly as
+> > > a counter_signal_value enum instead of via an opaque structure:
+> > > 
+> > >         signal_read(struct counter_device *counter,
+> > >                     struct counter_signal *signal,
+> > >                     enum counter_signal_value *val);
+> > > 
+> > > The counter_signal_value enum is simply the counter_signal_level enum
+> > > redefined to remove the references to the Signal data "level" data type.
+> > > 
+> > > William Breathitt Gray (3):
+> > >   counter: Simplify the count_read and count_write callbacks
+> > >   docs: driver-api: generic-counter: Update Count and Signal data types
+> > >   counter: Fix typo in action_get description
+> > > 
+> > >  Documentation/driver-api/generic-counter.rst | 162 +++++++++++--------
+> > >  drivers/counter/104-quad-8.c                 |  33 ++--
+> > >  drivers/counter/counter.c                    | 101 ++----------
+> > >  drivers/counter/ftm-quaddec.c                |  14 +-
+> > >  drivers/counter/stm32-lptimer-cnt.c          |   5 +-
+> > >  drivers/counter/stm32-timer-cnt.c            |  17 +-
+> > >  drivers/counter/ti-eqep.c                    |  19 +--
+> > >  include/linux/counter.h                      |  76 ++-------
+> > >  8 files changed, 144 insertions(+), 283 deletions(-)
+> > > 
+> > > 
+> > > base-commit: 0c3aa63a842d84990bd02622f2fa50d2bd33c652
+> > > prerequisite-patch-id: ebe284609b3db8d4130ea2915f7f7b185c743a70
+> > > prerequisite-patch-id: cbe857759f10d875690df125d18bc04f585ac7c9
+> > > prerequisite-patch-id: 21f2660dc88627387ee4666d08044c63dd961dae  
+> >   
 

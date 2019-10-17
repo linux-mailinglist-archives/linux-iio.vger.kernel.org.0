@@ -2,78 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCB09DBEB5
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2019 09:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA43EDBEE5
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2019 09:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504655AbfJRHtE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Oct 2019 03:49:04 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:45338 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2504686AbfJRHtE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Oct 2019 03:49:04 -0400
-Received: by mail-lf1-f65.google.com with SMTP id v8so3357858lfa.12
-        for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2019 00:49:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GWv2DXhpUZsQEN5stqt6YqBuhWFLoKxaG6XaaNvgSao=;
-        b=V+5KGG+m5VgNboOLDq4qe8tVig5EKVF/mTSl/YcwRJMIxP2S7/jNz29jMy0YAs69V1
-         SwED1tWdOHqkmGkX3gRGodJrtOe0O4yf1hddhYZ2ADP+LONtG5PYLyYQfFtQZvIe6yXc
-         k96p3Rl/TizMjYRdVU6pFjR4vwXUGplH/KnmNUFannsCFWdt2A3//h/xHD22v+Y1Tj2q
-         ImKtcH8c2smOdFqM5S3kkD53fQsfSshbOMWnxFmhescWC/Y/+IHOLlOqEaufOIbofHDd
-         EujL9cheANF1cvpPuFRvw6EJB6MxWoPRbzSPTcLbmgut2LFq/D/pdXlb67lsOkkmiPgu
-         RFcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GWv2DXhpUZsQEN5stqt6YqBuhWFLoKxaG6XaaNvgSao=;
-        b=Ya/9ktQk9N9CzKXpFLYM19xDkuSefp2EfN3Z5WBLfEE+t8W6wBp2l/QfC/jErlJJ5e
-         Rd+3n3m9Z9aD2Jdo+z831wyM0bWX6g3ZmSJRwrMohJ+LwK1VDoh02UirIpZ0gf5JFk7z
-         /XiJBWv2natFMrtEbJhzRa9MfTkIon0EApkxmnBYlXgvMEAwfsScILIkKpy43XeHEhVx
-         oIHZ4owViGYl9Te8ufCkkFrQKIvQNoMc2zoQFicb3jhhhhW/lnKApTlXFLvTlFwaYzqN
-         aQAF7Hy12aIgY5plmCYUVTBycT291UGS3KVSIpNyU2ROARFPl1QJHjHIT4t7qu5KBj7a
-         UWwA==
-X-Gm-Message-State: APjAAAWrGRtQCGXDGW+fS5huh952jGDwW9gNV4qoMWlcsCVzfrvK7O/8
-        8A7ymytSVssPuYAalFeOrMX6pr2QwR4MYdIbCkQNhQ==
-X-Google-Smtp-Source: APXvYqycIYm7gsfXjoF/75lGPYCl0UvFq4VrQ7oYhESMONziwYhWB3dOl13SRxlMjVldQZapAtess9+LraZ2pYF1e5Y=
-X-Received: by 2002:ac2:4345:: with SMTP id o5mr5256449lfl.60.1571384940653;
- Fri, 18 Oct 2019 00:49:00 -0700 (PDT)
+        id S2504898AbfJRHwX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Oct 2019 03:52:23 -0400
+Received: from zaovasilisa.ru ([88.200.194.99]:46823 "EHLO usrv.lan"
+        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2504820AbfJRHwP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 18 Oct 2019 03:52:15 -0400
+X-Greylist: delayed 39671 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Oct 2019 03:51:51 EDT
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+        by usrv.lan (Postfix) with SMTP id CC3F818647F;
+        Thu, 17 Oct 2019 17:04:03 +0400 (MSD)
+Received: from [72.215.151.127] by 127.0.0.1 with ESMTP id 72A686FDC7F; Thu, 17 Oct 2019 18:59:02 +0600
+Message-ID: <735ui-$$-55e3--c$i$-l0-18w85$-6@8d6h1006syk>
+From:   "Mr Ekrem Bayraktar" <dave@dbsoundfactory.com>
+Reply-To: "Mr Ekrem Bayraktar" <dave@dbsoundfactory.com>
+To:     links@q.vu
+Subject: MOTHERLESS CHILDREN IN YOUR CITY !!
+Date:   Thu, 17 Oct 19 18:59:02 GMT
+X-Mailer: AOL 7.0 for Windows US sub 118
 MIME-Version: 1.0
-References: <20191011071805.5554-1-linus.walleij@linaro.org>
- <20191011071805.5554-6-linus.walleij@linaro.org> <20191011134449.GA12969@bogus>
- <20191017222238.673cd60b@archlinux> <20191018072959.GS4365@dell>
-In-Reply-To: <20191018072959.GS4365@dell>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 18 Oct 2019 09:48:49 +0200
-Message-ID: <CACRpkdZBWK5BHi7TcPVrF1j3Fg4CgeMxLisn2JB-mPPA+uKS7w@mail.gmail.com>
-Subject: Re: [PATCH 5/7 v4] mfd: ab8500: augment DT bindings
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-        linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mboumba Cedric Madianga <cedric.madianga@gmail.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/alternative;
+        boundary="EFA7_FB09FAD2"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Oct 18, 2019 at 9:30 AM Lee Jones <lee.jones@linaro.org> wrote:
-> On Thu, 17 Oct 2019, Jonathan Cameron wrote:
 
-> Can you change the subject line to start with an uppercase char.
->
-> Else my OCD sense will go into overdrive! ;)
+--EFA7_FB09FAD2
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-Jonathan: it's fine to rebase the immutable branch for this as long as no-one
-has pulled it in I suppose.
+Dear Sir / Madam
 
-Working on a binding example cleanup.
 
-Yours,
-Linus Walleij
+
+Since ever we left your country back to Canada , we have gotten Government=
+ approval and we have been busying planning for the less privilege Childre=
+n projects.
+
+We are planning to release first batch of the funds $2,990,000.00 within 1=
+4 days for building an estate for motherless children in your city.
+
+I want you to use my mother;s company name to register this charity projec=
+t in your country after receiving the project funds.
+
+It must be registered as { Bayraktar Group Homeless Children Ltd }.
+
+
+Can you handle and supervise this big project ?
+Can you manager all the workers as a senior supervisor ?
+We want to be sure you can handle it before we proceed with this project.
+
+
+Please call me if you want to hear from us + 1-917 580 4919.
+Please can you manage such project please Kindly reply for further details=
+.
+
+Your full names-----------
+
+
+
+Ekrem Bayraktar.
+Bayraktar Shipping Group
+
+--EFA7_FB09FAD2--
+

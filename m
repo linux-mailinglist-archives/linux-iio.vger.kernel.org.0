@@ -2,48 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80D10DB8B7
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2019 22:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D9A5DB8CA
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2019 23:08:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502293AbfJQU6I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Oct 2019 16:58:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60774 "EHLO mail.kernel.org"
+        id S2440994AbfJQVIO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Oct 2019 17:08:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35546 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2502112AbfJQU6I (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Oct 2019 16:58:08 -0400
+        id S2394814AbfJQVIO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 17 Oct 2019 17:08:14 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 20FC021D7C;
-        Thu, 17 Oct 2019 20:58:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 395EC21A4C;
+        Thu, 17 Oct 2019 21:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571345887;
-        bh=ywi2EpqPucJm9ZZBw+AB50L0TzlMJToc3qwSE+LhbPY=;
+        s=default; t=1571346493;
+        bh=ddM+TqhEtWRfr29CbPhNibEcfNOB8CVV1mBkVDeMVH8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NSbA2lObggeWzo7orpBJZuEDbJoBePoyCuk7fdcpdksuvCAdILLv7G9ToI5VFarmN
-         5CPING3o/snHI5gZUPhkzXx5ZsYwRvZ0IJSot0ZSUjUf73H+rRmhfCzV/j6U+5nnQd
-         aVx4DeST9p4L4pIna3E6KyBbmdvse8tApQFUoSLE=
-Date:   Thu, 17 Oct 2019 21:58:01 +0100
+        b=vYUFL78uKZXFHbUtBPFajxMMtiw3buWIsT3eGHY3DG08q0wZagEpvN1xjhSSbnm7O
+         JiNVzp8KILf9DJE60cD5t9fDpLniidtN0g6BCbO1RcieBQ6GeulVBLvkHDAhQyfO7f
+         Vi6NHYyB1oeGMpqHgzKmZlk0rZoTCKGbBdCL0Hgc=
+Date:   Thu, 17 Oct 2019 22:08:09 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        David Lechner <david@lechnology.com>,
-        linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] bus/ti-pwmss: move TI PWMSS driver from PWM to
- bus subsystem
-Message-ID: <20191017215751.7d05170c@archlinux>
-In-Reply-To: <20190908194447.GM52127@atomide.com>
-References: <20190901225827.12301-1-david@lechnology.com>
-        <20190901225827.12301-2-david@lechnology.com>
-        <20190902150245.GE1445@ulmo>
-        <20190908121524.49b4874d@archlinux>
-        <20190908194447.GM52127@atomide.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mboumba Cedric Madianga <cedric.madianga@gmail.com>
+Subject: Re: [PATCH 4/7 v4] hwmon: ab8500: convert to IIO ADC
+Message-ID: <20191017220809.464deea1@archlinux>
+In-Reply-To: <CACRpkdbZA6kDWWP0_HCwMH1nFSwAFWjiFhaQXBi3cDgZ0ahapA@mail.gmail.com>
+References: <20191011071805.5554-1-linus.walleij@linaro.org>
+        <20191011071805.5554-5-linus.walleij@linaro.org>
+        <b192d50a-3bcf-6d4b-f2f5-2d6276601cf4@roeck-us.net>
+        <CACRpkdbZA6kDWWP0_HCwMH1nFSwAFWjiFhaQXBi3cDgZ0ahapA@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,56 +48,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 8 Sep 2019 12:44:48 -0700
-Tony Lindgren <tony@atomide.com> wrote:
+On Fri, 11 Oct 2019 22:48:24 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> * Jonathan Cameron <jic23@jic23.retrosnub.co.uk> [190908 11:16]:
-> > On Mon, 2 Sep 2019 17:02:45 +0200
-> > Thierry Reding <thierry.reding@gmail.com> wrote:
-> >   
-> > > On Sun, Sep 01, 2019 at 05:58:22PM -0500, David Lechner wrote:  
-> > > > The TI PWMSS driver is a simple bus driver for providing power
-> > > > power management for the PWM peripherals on TI AM33xx SoCs, namely
-> > > > eCAP, eHRPWM and eQEP. The eQEP is a counter rather than a PWM, so
-> > > > it does not make sense to have the bus driver in the PWM subsystem
-> > > > since the PWMSS is not exclusive to PWM devices.
-> > > > 
-> > > > Signed-off-by: David Lechner <david@lechnology.com>
-> > > > ---
-> > > > 
-> > > > v3 changes:
-> > > > - none
-> > > > v2 changes:
-> > > > - new patch
-> > > > 
-> > > >  drivers/bus/Kconfig                           | 9 +++++++++
-> > > >  drivers/bus/Makefile                          | 1 +
-> > > >  drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} | 0
-> > > >  drivers/pwm/Kconfig                           | 9 ---------
-> > > >  drivers/pwm/Makefile                          | 1 -
-> > > >  5 files changed, 10 insertions(+), 10 deletions(-)
-> > > >  rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)    
-> > > 
-> > > Acked-by: Thierry Reding <thierry.reding@gmail.com>  
-> > 
-> > Do we need an immutable branch for these precursor patches to the
-> > driver addition? It's not going to make 5.4 via my tree as cutting it
-> > too fine so we'll be in the position of holding these in a non obvious
-> > tree for a whole cycle.   
+> On Fri, Oct 11, 2019 at 3:13 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > On 10/11/19 12:18 AM, Linus Walleij wrote:  
 > 
-> Sure an immutable branch would be nice in case of unlikely
-> dts file conflicts. And yeah no need to try to rush to v5.4.
+> > > This should not be applied to the hwmon tree right now, it
+> > > will be applied along with the other changes in ARM SoC.  
+> >
+> > I assume this is still true ?  
 > 
-> Regards,
-> 
-> Tony
-immutable branch created based on 5.4-rc1 at:
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=ib-ti-eqep-5.4-rc1
+> Yeah the plan is to merge all patches through the IIO tree.
 
-I'll pull it into IIO in a few minutes as have one more of these
-to do at the same time.  Includes patches 1-4 of this series.
+Immutable branch created based on 5.4-rc1 at:
+https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=ib-ab8500-5.4-rc1
+
+This is an overly fiddly set to actually build so Linus if you could
+do a quick sanity check that would be great.  Even better if you could
+take a look at relaxing some of the build constraints so this
+gets some decent build coverage from the various autobuilders.
+
+I plan on pulling this into my togreg branch in a few minutes, which will
+then be pushed out as testing for the autobuilders to maybe figure out
+how to build this.
 
 Thanks,
 
 Jonathan
+
+> 
+> Thanks,
+> Linus Walleij
 

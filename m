@@ -2,97 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CD02DCF15
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2019 21:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FD08DCF97
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2019 21:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2443281AbfJRTKX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Oct 2019 15:10:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59490 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2443280AbfJRTKX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 18 Oct 2019 15:10:23 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 137B62070B;
-        Fri, 18 Oct 2019 19:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571425822;
-        bh=SV8Vv5FvDe2SpzdgeslYgVDRdktvHpA3+HZ2ioDyY+k=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=swhyE8aXu2rhXWjbH/OHfscJsQ35cA/seBvUbMpUNbtKhE6uEg+ooPdTHIn/fqOm9
-         akfk2pq6oEpcUrKZ2+HIEo42KVYyLI9KfAOgia7b9WcPt74QZDAq6gEldz8FbJVEp+
-         TRLMggQbp7cGYYbX3I+sQSHRXpapijDGul+f6OMc=
-Date:   Fri, 18 Oct 2019 20:10:16 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "hslester96@gmail.com" <hslester96@gmail.com>,
-        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] staging: iio: ad9834: add a check for devm_clk_get
-Message-ID: <20191018201016.0a7fde4f@archlinux>
-In-Reply-To: <3acc69aceb04667ba34200f54c59b3d160ab2f5d.camel@analog.com>
-References: <20191016142540.26450-1-hslester96@gmail.com>
-        <3acc69aceb04667ba34200f54c59b3d160ab2f5d.camel@analog.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S2440164AbfJRTuv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Oct 2019 15:50:51 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:49954 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730242AbfJRTuu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Oct 2019 15:50:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=5W2MZ6xOjT3rUmNYohhNKwwhH+vTrvp3RdgWLAsapxU=; b=B9aHtsFqHcDxVJCQRjc78gGyf
+        UGwcbGcDV30yNqjArxM6/YO6cPJcHJ2paHdLXtcUqrCjKyibY124mVSNDlztlzCLbuZvCcvGd7bW1
+        FEwcBkvqhJ9eQ7WJ7sGvQ1O978SsnqGXmIAMa+sjL5hlFbplXeAobCXfOmetiWX7T3xqk=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.co.uk>)
+        id 1iLYGs-0004XJ-F9; Fri, 18 Oct 2019 19:50:46 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id E6D372741DEA; Fri, 18 Oct 2019 20:50:45 +0100 (BST)
+Date:   Fri, 18 Oct 2019 20:50:45 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Liam Girdwood <lgirdwood@gmail.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Clean-up regulator '-supply' schemas
+Message-ID: <20191018195045.GG4828@sirena.co.uk>
+References: <20191011190231.9779-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="BzCohdixPhurzSK4"
+Content-Disposition: inline
+In-Reply-To: <20191011190231.9779-1-robh@kernel.org>
+X-Cookie: Smear the road with a runner!!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 17 Oct 2019 12:56:33 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> On Wed, 2019-10-16 at 22:25 +0800, Chuhong Yuan wrote:
-> > ad9834_probe misses a check for devm_clk_get and may cause problems.
-> > Add a check like what ad9832 does to fix it.
-> >   
-> 
-> This could also use a Fixes tag, but not a big deal.
-> 
-> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+--BzCohdixPhurzSK4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+On Fri, Oct 11, 2019 at 02:02:31PM -0500, Rob Herring wrote:
+> Regulator '*-supply' properties are always a single phandle, so
+> 'maxItems: 1' or a $ref is not necessary. All that's needed is either
+> 'true' or an optional 'description'. Following this clean-up, the
+> meta-schema will enforce this pattern.
 
-As a general point though, the fact that a devm error handler
-actually has things to do suggests this code doesn't pass
-the obviously correct test.
+Acked-by: Mark Brown <broonie@kernel.org>
 
-Nothing to do with this patch mind you!
+--BzCohdixPhurzSK4
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Jonathan
+-----BEGIN PGP SIGNATURE-----
 
-> 
-> > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> > ---
-> >  drivers/staging/iio/frequency/ad9834.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/drivers/staging/iio/frequency/ad9834.c
-> > b/drivers/staging/iio/frequency/ad9834.c
-> > index 038d6732c3fd..23026978a5a5 100644
-> > --- a/drivers/staging/iio/frequency/ad9834.c
-> > +++ b/drivers/staging/iio/frequency/ad9834.c
-> > @@ -417,6 +417,10 @@ static int ad9834_probe(struct spi_device *spi)
-> >  	st = iio_priv(indio_dev);
-> >  	mutex_init(&st->lock);
-> >  	st->mclk = devm_clk_get(&spi->dev, NULL);
-> > +	if (IS_ERR(st->mclk)) {
-> > +		ret = PTR_ERR(st->mclk);
-> > +		goto error_disable_reg;
-> > +	}
-> >  
-> >  	ret = clk_prepare_enable(st->mclk);
-> >  	if (ret) {  
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2qF5UACgkQJNaLcl1U
+h9Du1Af+NWqdLU69yR6U/BWWRm08fd7klsWRrk2gHbJrdNnxMkHrmzuAZI/Gi6de
+janR9xwD+hN52sz7oRmPOP9dcUazmbEmLi0KH6OhLNoiHgKlmp2BbTlKbcj4pzza
+nqBAdr1w0fMhaYp1UalQIwZK/5x6k5a9nA/NeMlIsEfgsTxFGTweMPoB+xHtss5m
+30RuaeOxfcXPPByIYpc21X9mAngtSCUKkcm8E51mtl5oQlKzTA6S1MwAeSThJXKD
+NqZUGWgIxbeQILNbvlluEvikoYYcnpZ+pKMhe533fqJZtViYd9BStL52h8MUcYJ5
+Z+BxfShFXYmVxbTC6fR4jgTqffoqww==
+=TAPa
+-----END PGP SIGNATURE-----
 
+--BzCohdixPhurzSK4--

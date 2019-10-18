@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FFBDD4E8
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2019 00:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B85FDD461
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2019 00:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726764AbfJRWD3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Oct 2019 18:03:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34776 "EHLO mail.kernel.org"
+        id S1729028AbfJRWFB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Oct 2019 18:05:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36736 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726604AbfJRWD2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 18 Oct 2019 18:03:28 -0400
+        id S1728978AbfJRWE6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 18 Oct 2019 18:04:58 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 170202089C;
-        Fri, 18 Oct 2019 22:03:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 047F52245D;
+        Fri, 18 Oct 2019 22:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571436207;
-        bh=9NnODbZOz4a/iwhi9I2k4MwlKVQmuVTUJBtV1kF9jBM=;
+        s=default; t=1571436297;
+        bh=wcM6TwOsJEJ4ba0dvvFQxuCQYRTD52M8/Wbqdh7BNoY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AzKb7Ig2N8M34g01lZJThxhgziwR7IqJ/oLWsgWCzAKIyR3V/QQyK7POIZEJBrmkj
-         H+YCaOyr6wjpY1euOJ6rwJLdGAmz0Q+2yJ4iTcX1ZnQ/SvfV+BKJQvecUQfPUyqP6t
-         wP7fNfh55GZxP7t8fFfrAFTacd1ZlJ+0NzfxINZc=
+        b=HR8nzIqIF8eH9WXTVTSNWVVj/up/FCqg2SsdY7mvZ56CmAC2/DoFVt1KaKgRPCWKN
+         Zhss8wWmhvK8v6t0S+4zhllmDed8GJ5GNntnzeveWNQmEr93NSbl5vti8jPIoajqiI
+         KEbt0UOOCx09PPi9wc8juG2nGs/s3hRtAMQZ7Cy4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Pascal Bouwmann <bouwmann@tau-tec.de>,
+Cc:     Andreas Klinger <ak@it-klinger.de>, Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 02/89] iio: fix center temperature of bmc150-accel-core
-Date:   Fri, 18 Oct 2019 18:01:57 -0400
-Message-Id: <20191018220324.8165-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 69/89] iio: adc: hx711: fix bug in sampling of data
+Date:   Fri, 18 Oct 2019 18:03:04 -0400
+Message-Id: <20191018220324.8165-69-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191018220324.8165-1-sashal@kernel.org>
 References: <20191018220324.8165-1-sashal@kernel.org>
@@ -43,37 +43,77 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Pascal Bouwmann <bouwmann@tau-tec.de>
+From: Andreas Klinger <ak@it-klinger.de>
 
-[ Upstream commit 6c59a962e081df6d8fe43325bbfabec57e0d4751 ]
+[ Upstream commit 4043ecfb5fc4355a090111e14faf7945ff0fdbd5 ]
 
-The center temperature of the supported devices stored in the constant
-BMC150_ACCEL_TEMP_CENTER_VAL is not 24 degrees but 23 degrees.
+Fix bug in sampling function hx711_cycle() when interrupt occures while
+PD_SCK is high. If PD_SCK is high for at least 60 us power down mode of
+the sensor is entered which in turn leads to a wrong measurement.
 
-It seems that some datasheets were inconsistent on this value leading
-to the error.  For most usecases will only make minor difference so
-not queued for stable.
+Switch off interrupts during a PD_SCK high period and move query of DOUT
+to the latest point of time which is at the end of PD_SCK low period.
 
-Signed-off-by: Pascal Bouwmann <bouwmann@tau-tec.de>
+This bug exists in the driver since it's initial addition. The more
+interrupts on the system the higher is the probability that it happens.
+
+Fixes: c3b2fdd0ea7e ("iio: adc: hx711: Add IIO driver for AVIA HX711")
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/bmc150-accel-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/hx711.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index cf6c0e3a83d38..121b4e89f038c 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -117,7 +117,7 @@
- #define BMC150_ACCEL_SLEEP_1_SEC		0x0F
+diff --git a/drivers/iio/adc/hx711.c b/drivers/iio/adc/hx711.c
+index 88c7fe15003b7..62e6c8badd22a 100644
+--- a/drivers/iio/adc/hx711.c
++++ b/drivers/iio/adc/hx711.c
+@@ -100,14 +100,14 @@ struct hx711_data {
  
- #define BMC150_ACCEL_REG_TEMP			0x08
--#define BMC150_ACCEL_TEMP_CENTER_VAL		24
-+#define BMC150_ACCEL_TEMP_CENTER_VAL		23
+ static int hx711_cycle(struct hx711_data *hx711_data)
+ {
+-	int val;
++	unsigned long flags;
  
- #define BMC150_ACCEL_AXIS_TO_REG(axis)	(BMC150_ACCEL_REG_XOUT_L + (axis * 2))
- #define BMC150_AUTO_SUSPEND_DELAY_MS		2000
+ 	/*
+ 	 * if preempted for more then 60us while PD_SCK is high:
+ 	 * hx711 is going in reset
+ 	 * ==> measuring is false
+ 	 */
+-	preempt_disable();
++	local_irq_save(flags);
+ 	gpiod_set_value(hx711_data->gpiod_pd_sck, 1);
+ 
+ 	/*
+@@ -117,7 +117,6 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+ 	 */
+ 	ndelay(hx711_data->data_ready_delay_ns);
+ 
+-	val = gpiod_get_value(hx711_data->gpiod_dout);
+ 	/*
+ 	 * here we are not waiting for 0.2 us as suggested by the datasheet,
+ 	 * because the oscilloscope showed in a test scenario
+@@ -125,7 +124,7 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+ 	 * and 0.56 us for PD_SCK low on TI Sitara with 800 MHz
+ 	 */
+ 	gpiod_set_value(hx711_data->gpiod_pd_sck, 0);
+-	preempt_enable();
++	local_irq_restore(flags);
+ 
+ 	/*
+ 	 * make it a square wave for addressing cases with capacitance on
+@@ -133,7 +132,8 @@ static int hx711_cycle(struct hx711_data *hx711_data)
+ 	 */
+ 	ndelay(hx711_data->data_ready_delay_ns);
+ 
+-	return val;
++	/* sample as late as possible */
++	return gpiod_get_value(hx711_data->gpiod_dout);
+ }
+ 
+ static int hx711_read(struct hx711_data *hx711_data)
 -- 
 2.20.1
 

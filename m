@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 169C9DD469
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2019 00:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C372DD452
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2019 00:24:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405540AbfJRWYG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Oct 2019 18:24:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36874 "EHLO mail.kernel.org"
+        id S1729179AbfJRWFH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Oct 2019 18:05:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36910 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729130AbfJRWFF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 18 Oct 2019 18:05:05 -0400
+        id S1729169AbfJRWFG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 18 Oct 2019 18:05:06 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BADA5222CD;
-        Fri, 18 Oct 2019 22:05:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E5569222D2;
+        Fri, 18 Oct 2019 22:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571436304;
-        bh=Z1qQ8+UxlcQJijWJfUxbC1ce0XHXMOMUHXD/QovTDxA=;
+        s=default; t=1571436305;
+        bh=y6VryHO5+naC1eaHPBvno9Wffqz7+nBh++FjpxSa67Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XVvYgOivY2mCGPyTKIYE1TFCqoPzaNbmr66DVwfxOQI36T8phq82bnIUj8R99ByNM
-         g+uIceyy07HCm1ALyEMjH6zb4K1IVkhZI8pj+EMoHnWR2M/DbM+3AWCs6koGD3hYr3
-         l1CFg6tREAfvQg2UFbRWxiIaluweuTGvZymUyMwU=
+        b=JwpBaNbOXEpNc+c0mmctL7h6iyjkjGVXDPSuUZl6rrQGfyMbDFtMAgMzwuqEAgGiJ
+         ydss04adYbsZsJPMJ8wGWyxiTc+Rc4GAmGAPGsrZ7QX2OWGGrEGrQ3SXsifiOzoSIv
+         LOV3ynvaadJpirrRdLgw2ra5rLtN0jNKbnmQYiaU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+Cc:     Marco Felsch <m.felsch@pengutronix.de>, Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 75/89] iio: imu: st_lsm6dsx: fix waitime for st_lsm6dsx i2c controller
-Date:   Fri, 18 Oct 2019 18:03:10 -0400
-Message-Id: <20191018220324.8165-75-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 76/89] iio: light: fix vcnl4000 devicetree hooks
+Date:   Fri, 18 Oct 2019 18:03:11 -0400
+Message-Id: <20191018220324.8165-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191018220324.8165-1-sashal@kernel.org>
 References: <20191018220324.8165-1-sashal@kernel.org>
@@ -43,41 +43,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit fdb828e2c71a09bb9e865f41b015597c5f671705 ]
+[ Upstream commit 1436a78c63495dd94c8d4f84a76d78d5317d481b ]
 
-i2c controller available in st_lsm6dsx series performs i2c slave
-configuration using accel clock as trigger.
-st_lsm6dsx_shub_wait_complete routine is used to wait the controller has
-carried out the requested configuration. However if the accel sensor is not
-enabled we should not use its configured odr to estimate a proper timeout
+Since commit ebd457d55911 ("iio: light: vcnl4000 add devicetree hooks")
+the of_match_table is supported but the data shouldn't be a string.
+Instead it shall be one of 'enum vcnl4000_device_ids'. Also the matching
+logic for the vcnl4020 was wrong. Since the data retrieve mechanism is
+still based on the i2c_device_id no failures did appeared till now.
 
-Fixes: c91c1c844ebd ("iio: imu: st_lsm6dsx: add i2c embedded controller support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Fixes: ebd457d55911 ("iio: light: vcnl4000 add devicetree hooks")
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Angus Ainslie (Purism) angus@akkea.ca
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/light/vcnl4000.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-index 66fbcd94642d4..4c754a02717b3 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-@@ -92,9 +92,11 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm6dsx_ext_dev_table[] = {
- static void st_lsm6dsx_shub_wait_complete(struct st_lsm6dsx_hw *hw)
- {
- 	struct st_lsm6dsx_sensor *sensor;
-+	u16 odr;
- 
- 	sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
--	msleep((2000U / sensor->odr) + 1);
-+	odr = (hw->enable_mask & BIT(ST_LSM6DSX_ID_ACC)) ? sensor->odr : 13;
-+	msleep((2000U / odr) + 1);
- }
- 
- /**
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index 51421ac325177..f522cb863e8c8 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -398,19 +398,19 @@ static int vcnl4000_probe(struct i2c_client *client,
+ static const struct of_device_id vcnl_4000_of_match[] = {
+ 	{
+ 		.compatible = "vishay,vcnl4000",
+-		.data = "VCNL4000",
++		.data = (void *)VCNL4000,
+ 	},
+ 	{
+ 		.compatible = "vishay,vcnl4010",
+-		.data = "VCNL4010",
++		.data = (void *)VCNL4010,
+ 	},
+ 	{
+-		.compatible = "vishay,vcnl4010",
+-		.data = "VCNL4020",
++		.compatible = "vishay,vcnl4020",
++		.data = (void *)VCNL4010,
+ 	},
+ 	{
+ 		.compatible = "vishay,vcnl4200",
+-		.data = "VCNL4200",
++		.data = (void *)VCNL4200,
+ 	},
+ 	{},
+ };
 -- 
 2.20.1
 

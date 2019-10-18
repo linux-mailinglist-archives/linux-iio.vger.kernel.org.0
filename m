@@ -2,89 +2,216 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD4A2DB947
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2019 23:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FC7BDBC09
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2019 06:54:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406209AbfJQVsc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Oct 2019 17:48:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43980 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391375AbfJQVsc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 17 Oct 2019 17:48:32 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 26BAB20872;
-        Thu, 17 Oct 2019 21:48:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571348912;
-        bh=d/nJw7fU1+wRNnvr2hQLLC8xfixudL9qQDrX2pfZKPs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dnzFilSnDnkRzX5e/36JOvouXWceJDuvsOSllorPBhIwoiuqHPazMqZBm1PYjs2SK
-         H25T/DVF3a7A1/aIf7PetMIgNoXChfGlJgu2xZHyjda3eWwysTC4BqPPfbullSipwh
-         fTSMF54R1Kg74L4d97z4CphPGwZyskiSsJWjbPx8=
-Date:   Thu, 17 Oct 2019 22:48:24 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] iio:adc:mcp320x: Tidy up endian types in type cast.
-Message-ID: <20191017224824.1541b5d3@archlinux>
-In-Reply-To: <20191013105201.waluu7myfn7bcmmn@wunner.de>
-References: <20191013090542.1375572-1-jic23@kernel.org>
-        <20191013105201.waluu7myfn7bcmmn@wunner.de>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S2441887AbfJREyZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Oct 2019 00:54:25 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:37000 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725995AbfJREyY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Oct 2019 00:54:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=+gmJFwPTLJnUh/WDPO0VF7a4d47hpgmMAOiP9M55Zeg=; b=LMn5Lir/3N/LryNFA6ICA1zrV
+        FWVCnM95mEduMlCsXkkLjjwC5ps8TjttTYNwbjogDo73VgiqSSI/3irCgsT818J4S4tsPyNQ2CU2Z
+        7WTjF778dM6svp/5Pq+xHtZB2v+CnyBHC1CGbTT92hL6q61q77HPRuO7YTFGI0G+roa01DAvGqdo9
+        ZvNTjVDJlIm1nzxRJQeB0ypxI+rMchwbplGpIouuwS3dtABbrWISYHG4mcxqn6dSuWVuV+/DRDR+e
+        DgOkFxuc63Jt/jP2rKeTG35bPyK0JENMFWECC1LBJgZTS/5uZbUY3j4G5tK8OE2CDgbANGYsA5PyO
+        +ltEZYi9Q==;
+Received: from [2601:1c0:6280:3f0::9ef4]
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1iLJpa-0000XQ-JC; Fri, 18 Oct 2019 04:25:38 +0000
+Subject: Re: [PATCH v4 2/2] iio: (bma400) add driver for the BMA400
+To:     Dan Robertson <dan@dlrobertson.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-kernel@vger.kernel.org
+References: <20191018031848.18538-1-dan@dlrobertson.com>
+ <20191018031848.18538-3-dan@dlrobertson.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <487efd2c-b453-6c8b-eaac-7ba168bb4d77@infradead.org>
+Date:   Thu, 17 Oct 2019 21:25:37 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20191018031848.18538-3-dan@dlrobertson.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 13 Oct 2019 12:52:01 +0200
-Lukas Wunner <lukas@wunner.de> wrote:
+On 10/17/19 8:18 PM, Dan Robertson wrote:
+> Add a IIO driver for the Bosch BMA400 3-axes ultra-low power accelerometer.
+> The driver supports reading from the acceleration and temperature
+> registers. The driver also supports reading and configuring the output data
+> rate, oversampling ratio, and scale.
+> 
+> Signed-off-by: Dan Robertson <dan@dlrobertson.com>
 
-> On Sun, Oct 13, 2019 at 10:05:42AM +0100, jic23@kernel.org wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Fixes the sparse warning:
-> > drivers/iio/adc/mcp320x.c:167:41: warning: incorrect type in argument 1 (different base types)
-> > drivers/iio/adc/mcp320x.c:167:41:    expected restricted __be32 const [usertype] *p
-> > drivers/iio/adc/mcp320x.c:167:41:    got unsigned int [usertype] *<noident>
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> 
-> Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Applied.
+Hi,
+I'm repeating some comments from my V2 review.
 
-Thanks,
+> ---
+>  drivers/iio/accel/Kconfig       |  18 +
+>  drivers/iio/accel/Makefile      |   2 +
+>  drivers/iio/accel/bma400.h      |  85 ++++
+>  drivers/iio/accel/bma400_core.c | 796 ++++++++++++++++++++++++++++++++
+>  drivers/iio/accel/bma400_i2c.c  |  60 +++
+>  5 files changed, 961 insertions(+)
+>  create mode 100644 drivers/iio/accel/bma400.h
+>  create mode 100644 drivers/iio/accel/bma400_core.c
+>  create mode 100644 drivers/iio/accel/bma400_i2c.c
+> 
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index 9b9656ce37e6..a1081b902d16 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -112,6 +112,24 @@ config BMA220
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called bma220_spi.
+>  
+> +config BMA400
+> +	tristate "Bosch BMA400 3-Axis Accelerometer Driver"
+> +	depends on I2C
+> +	select REGMAP
+> +	select BMA400_I2C if (I2C)
 
-Jonathan
+Since BMA400 already depends on I2C, the "if (I2C)" above is
+redundant so it's not needed.
 
-> 
-> Thanks,
-> 
-> Lukas
-> 
-> 
-> > ---
-> >  drivers/iio/adc/mcp320x.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/adc/mcp320x.c b/drivers/iio/adc/mcp320x.c
-> > index 38bf10085696..465c7625a55a 100644
-> > --- a/drivers/iio/adc/mcp320x.c
-> > +++ b/drivers/iio/adc/mcp320x.c
-> > @@ -164,7 +164,7 @@ static int mcp320x_adc_conversion(struct mcp320x *adc, u8 channel,
-> >  	case mcp3550_60:
-> >  	case mcp3551:
-> >  	case mcp3553: {
-> > -		u32 raw = be32_to_cpup((u32 *)adc->rx_buf);
-> > +		u32 raw = be32_to_cpup((__be32 *)adc->rx_buf);
-> >  
-> >  		if (!(adc->spi->mode & SPI_CPOL))
-> >  			raw <<= 1; /* strip Data Ready bit in SPI mode 0,0 */
-> > -- 
-> > 2.23.0  
+> +	help
+> +	  Say Y here if you want to build a driver for the Bosch BMA400
+> +	  triaxial acceleration sensor.
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called bma400_core and you will also get
+> +	  bma400_i2c for I2C.
+> +
+> +config BMA400_I2C
+> +	tristate
+> +	depends on BMA400
+> +	select REGMAP_I2C
+> +
+>  config BMC150_ACCEL
+>  	tristate "Bosch BMC150 Accelerometer Driver"
+>  	select IIO_BUFFER
+
+
+> diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+> new file mode 100644
+> index 000000000000..80f1ee6713fa
+> --- /dev/null
+> +++ b/drivers/iio/accel/bma400_core.c
+> @@ -0,0 +1,796 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * bma400_core.c - Core IIO driver for Bosch BMA400 triaxial acceleration
+> + *                 sensor. Used by bma400-i2c.
+> + *
+> + * Copyright 2019 Dan Robertson <dan@dlrobertson.com>
+> + *
+> + * TODO:
+> + *  - Support for power management
+> + *  - Support events and interrupts
+> + *  - Create channel the step count
+> + *  - Create channel for sensor time
+> + */
+> +
+> +#include <linux/device.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/bitops.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +
+> +#include "bma400.h"
+> +
+> +/*
+> + * The G-range selection may be one of 2g, 4g, 8, or 16g. The scale may
+> + * be selected with the acc_range bits of the ACC_CONFIG1 register.
+> + */
+> +static const int bma400_scale_table[] = {
+> +	0, 38344,
+> +	0, 76590,
+> +	0, 153277,
+> +	0, 306457
+> +};
+> +
+> +static const int bma400_osr_table[] = { 0, 1, 3 };
+> +
+> +/* See the ACC_CONFIG1 section of the datasheet */
+> +static const int bma400_sample_freqs[] = {
+> +	12,  500000,
+> +	25,  0,
+> +	50,  0,
+> +	100, 0,
+> +	200, 0,
+> +	400, 0,
+> +	800, 0,
+> +};
+> +
+> +/* See the ACC_CONFIG0 section of the datasheet */
+> +enum bma400_power_mode {
+> +	POWER_MODE_SLEEP   = 0x00,
+> +	POWER_MODE_LOW     = 0x01,
+> +	POWER_MODE_NORMAL  = 0x02,
+> +	POWER_MODE_INVALID = 0x03,
+> +};
+> +
+> +struct bma400_sample_freq {
+> +	int hz;
+> +	int uhz;
+> +};
+> +
+> +struct bma400_data {
+> +	struct device *dev;
+> +	struct mutex mutex; /* data register lock */
+
+needs #include <linux/mutex.h>
+
+> +	struct iio_mount_matrix orientation;
+> +	struct regmap *regmap;
+> +	enum bma400_power_mode power_mode;
+> +	struct bma400_sample_freq sample_freq;
+> +	int oversampling_ratio;
+> +	int scale;
+> +};
+> +
+
+[snip]
+
+> +static int bma400_get_accel_scale_idx(struct bma400_data *data, int val)
+> +{
+> +	int i;
+> +
+> +	for (i = 1; i < ARRAY_SIZE(bma400_scale_table); i += 2) {
+
+needs #include <linux/kernel.h>
+for ARRAY_SIZE()
+
+> +		if (bma400_scale_table[i] == val)
+> +			return i - 1;
+> +	}
+> +	return -EINVAL;
+> +}
+
+[snip]
+
+Thanks.
+
+-- 
+~Randy
+See Documentation/process/submit-checklist.rst, especially Rule #1.
 

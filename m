@@ -2,39 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A4EDD245
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2019 00:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9D24DD296
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2019 00:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389597AbfJRWKC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Oct 2019 18:10:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42818 "EHLO mail.kernel.org"
+        id S2391683AbfJRWMm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Oct 2019 18:12:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43188 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389589AbfJRWKB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 18 Oct 2019 18:10:01 -0400
+        id S2389897AbfJRWKR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 18 Oct 2019 18:10:17 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4A79C222D1;
-        Fri, 18 Oct 2019 22:10:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 513712245C;
+        Fri, 18 Oct 2019 22:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571436601;
-        bh=MND4XA/zdatSx8Pwf3w+LUrvVxf3bYfvOmWc5lqG2+g=;
+        s=default; t=1571436617;
+        bh=NbW4pyrujrDlr8pQUBXCEo4GhfvTIkKR090Vqwr3XBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SswravvvDo75wQKRlaHgp1tlHfb1uW9Mwy+mXJPOPwNTJsxm/mUUJDfUtv58zgBV6
-         WNjsiFaEEXc3wD2hT0pTWK1vX83IBaZkb7V9PjVEWod16B0frSSOny7JO2dyw6ad9q
-         zKcnVpu5hDOZ+P5mL6nIBpDywAHBoil2Ahw1j5d4=
+        b=pv2k2u2N0cyqAjVKPOVcjCXHeB3ELBzCrJI6MIGfwHlF53aH4yf6nmX0bfys9u5m+
+         vriRWxjEyre/oOFmcbjEirDRKkv18OrMcpGgw0bCQ0dlzkZEoXLulrBtco2xG/bFtv
+         +JPD44+EKXY/EyWxwP1+IimfTHRedsSWHzsCuJYY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     David Frey <dpfrey@gmail.com>,
-        Andreas Dannenberg <dannenberg@ti.com>, Stable@vger.kernel.org,
+Cc:     Pascal Bouwmann <bouwmann@tau-tec.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 24/29] iio: light: opt3001: fix mutex unlock race
-Date:   Fri, 18 Oct 2019 18:09:15 -0400
-Message-Id: <20191018220920.10545-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 06/21] iio: fix center temperature of bmc150-accel-core
+Date:   Fri, 18 Oct 2019 18:09:52 -0400
+Message-Id: <20191018221007.10851-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191018220920.10545-1-sashal@kernel.org>
-References: <20191018220920.10545-1-sashal@kernel.org>
+In-Reply-To: <20191018221007.10851-1-sashal@kernel.org>
+References: <20191018221007.10851-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,58 +43,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: David Frey <dpfrey@gmail.com>
+From: Pascal Bouwmann <bouwmann@tau-tec.de>
 
-[ Upstream commit 82f3015635249a8c8c45bac303fd84905066f04f ]
+[ Upstream commit 6c59a962e081df6d8fe43325bbfabec57e0d4751 ]
 
-When an end-of-conversion interrupt is received after performing a
-single-shot reading of the light sensor, the driver was waking up the
-result ready queue before checking opt->ok_to_ignore_lock to determine
-if it should unlock the mutex. The problem occurred in the case where
-the other thread woke up and changed the value of opt->ok_to_ignore_lock
-to false prior to the interrupt thread performing its read of the
-variable. In this case, the mutex would be unlocked twice.
+The center temperature of the supported devices stored in the constant
+BMC150_ACCEL_TEMP_CENTER_VAL is not 24 degrees but 23 degrees.
 
-Signed-off-by: David Frey <dpfrey@gmail.com>
-Reviewed-by: Andreas Dannenberg <dannenberg@ti.com>
-Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
-Cc: <Stable@vger.kernel.org>
+It seems that some datasheets were inconsistent on this value leading
+to the error.  For most usecases will only make minor difference so
+not queued for stable.
+
+Signed-off-by: Pascal Bouwmann <bouwmann@tau-tec.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/opt3001.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iio/accel/bmc150-accel-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-index 78c9b3a6453ae..be55477de2acc 100644
---- a/drivers/iio/light/opt3001.c
-+++ b/drivers/iio/light/opt3001.c
-@@ -695,6 +695,7 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
- 	struct iio_dev *iio = _iio;
- 	struct opt3001 *opt = iio_priv(iio);
- 	int ret;
-+	bool wake_result_ready_queue = false;
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index c7122919a8c0e..ec7ddf8673497 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -126,7 +126,7 @@
+ #define BMC150_ACCEL_SLEEP_1_SEC		0x0F
  
- 	if (!opt->ok_to_ignore_lock)
- 		mutex_lock(&opt->lock);
-@@ -729,13 +730,16 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
- 		}
- 		opt->result = ret;
- 		opt->result_ready = true;
--		wake_up(&opt->result_ready_queue);
-+		wake_result_ready_queue = true;
- 	}
+ #define BMC150_ACCEL_REG_TEMP			0x08
+-#define BMC150_ACCEL_TEMP_CENTER_VAL		24
++#define BMC150_ACCEL_TEMP_CENTER_VAL		23
  
- out:
- 	if (!opt->ok_to_ignore_lock)
- 		mutex_unlock(&opt->lock);
- 
-+	if (wake_result_ready_queue)
-+		wake_up(&opt->result_ready_queue);
-+
- 	return IRQ_HANDLED;
- }
- 
+ #define BMC150_ACCEL_AXIS_TO_REG(axis)	(BMC150_ACCEL_REG_XOUT_L + (axis * 2))
+ #define BMC150_AUTO_SUSPEND_DELAY_MS		2000
 -- 
 2.20.1
 

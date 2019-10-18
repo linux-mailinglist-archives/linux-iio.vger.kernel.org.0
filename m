@@ -2,218 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A5DDC672
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2019 15:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88770DCCCE
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2019 19:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393970AbfJRNs1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Oct 2019 09:48:27 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:41116 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392604AbfJRNs1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Oct 2019 09:48:27 -0400
-Received: by mail-wr1-f67.google.com with SMTP id p4so6342621wrm.8
-        for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2019 06:48:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=almAVUIBCsLeuMKYMAhEW/2mp47gAO0dXlbkkPjsIPk=;
-        b=JwKSPRUvAdV+NtNQ29mUuYj1lM45QYtTrDh9U1PdD59FJyll4KtnpMOhPhkXxuAxfJ
-         pbAX/fYjQhGX3xwpdXY8Udze8TET9GKa6vvdqqyDkXddUgm3t4tU6oGxwL9nNoYNtZlZ
-         2NwnTFGbkRp98s/e80opPzqHDV/007bDUDewzbQWT14MNtXe0ZqgIEYvNKRpg5IA5Gg5
-         cqKrXZzUv6Zgf9KEhZHbAezTXIYI+DG9/pV6GeVbggTtbL901wVMLGA3K4A/qjEpbsXl
-         RmWyOB4akt6S1qFYlv7OW0yWZmdQrCqqH6XugLz0SNDZp1hDcqSjarIk16Ja1ACGa/oB
-         mFhA==
+        id S2502437AbfJRR3N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Oct 2019 13:29:13 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:26827 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2406251AbfJRR3N (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 18 Oct 2019 13:29:13 -0400
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 0C35AC05AA6F
+        for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2019 17:29:13 +0000 (UTC)
+Received: by mail-qt1-f198.google.com with SMTP id z21so6547042qtq.21
+        for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2019 10:29:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=almAVUIBCsLeuMKYMAhEW/2mp47gAO0dXlbkkPjsIPk=;
-        b=q3g50HKwXItl2B83DDgwrSvFWOcpyOAsSd9OnJVtPQTMeN9rsfBgrV0ZQD923Dzzwj
-         p+C92SMbOoDHXZDkrs5zRlNFEtuit9gFtkZ5Koor6IrECwaCMaCCyjkwcZ0IlqpBfkoy
-         QA5AnOFVgrBoukwBLJdiNC/hTtBBz+7JqEU6Ve+Gm1az5peKY/2fYFDq+k3llmp1ng4A
-         9cB6ADzZSe6OwlUpoh29ts0GhmwbXYUG7FKX34nQ1Apsy5AEf6OhrxgMqLnPzjl/2QBy
-         8NxUTjELXYEj6UDpyoDwzl42SVkddOnQxyT05Kx4erCMPbrf+66vMRugJvtae1tMueqk
-         /xBA==
-X-Gm-Message-State: APjAAAWU1qb/gJG4iRaMwbtRLPBjnmjjoBVwHJk+5TvH4FxZ32mZhHGU
-        l6GqFMlS3EGsIb2lWtZJhv+HjhyFFsky09yHt10=
-X-Google-Smtp-Source: APXvYqx6lvgqDDKcSWLxWwBvVbf/clDlMDphkhGu7xWVQhH7Qp71dWJjS6LWWcLtJg5h087rNNfCUPr/6EDoEr5PxFk=
-X-Received: by 2002:a5d:678e:: with SMTP id v14mr778987wru.393.1571406504575;
- Fri, 18 Oct 2019 06:48:24 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2oj75l9QzVi3O8swsxVYBJiXU84Ws6wegO8SmVESxbQ=;
+        b=kQU4MUswN38VhKm9Xp7n0t9Rjh8MVEZVHIdR5R28FNZitx+89+LgzaZyPfa/YfRK3f
+         4k3HvguO88a9zfTmupRsBTI9qmDYsT0oXC8oHOZHaZxZSAGaWDpr1V/VJYXKXcdGkqSS
+         HioYiw6DJhjMC0EYgCETWIGMyTBKlP3q1c5PtlkJ/pgr1H0zjklTUwTPy4jQtWJq6BJD
+         Dc/NpKpDerdiuaqBHCEJsYSkEzIrzF0eUOzXB3dhorpdEI36eD5jhKSnPL6FUGaY1oai
+         OyS8jO0H4Uhl1t+KYU3sHB9ihkY72Nc8ZzAY5/o3zsRVuTjd6CtvMBTeUnppbkrctx2x
+         OZ2g==
+X-Gm-Message-State: APjAAAWb6ssw6XF7xgMm/AWHAabJg9M0mzGIITeQfV13zTNPrh8IagK3
+        MUapfIWhzLz8+eii4e8yBn6Eise0qz2SbANvsB8st7tKZEVGG8diuiyo3rSpdOB5pckEf0+1fq3
+        2TltA6r72KcIoIj/JMY3k
+X-Received: by 2002:ac8:70ce:: with SMTP id g14mr10793086qtp.215.1571419752217;
+        Fri, 18 Oct 2019 10:29:12 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzfDp1Xn2DKDFOFHm9+c+k6Z7LtK3Pq8ebJ45zwI0obsNiJa/TYKBH4+5c+1bVr1cSveoWwKg==
+X-Received: by 2002:ac8:70ce:: with SMTP id g14mr10793054qtp.215.1571419751848;
+        Fri, 18 Oct 2019 10:29:11 -0700 (PDT)
+Received: from labbott-redhat.redhat.com (pool-96-235-39-235.pitbpa.fios.verizon.net. [96.235.39.235])
+        by smtp.gmail.com with ESMTPSA id a15sm2798852qkn.134.2019.10.18.10.29.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2019 10:29:11 -0700 (PDT)
+From:   Laura Abbott <labbott@redhat.com>
+To:     Jonathan Cameron <jic23@kernel.org>, Jiri Olsa <jolsa@kernel.org>
+Cc:     Laura Abbott <labbott@redhat.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: [PATCH] tools: iio: Correctly add make dependency for iio_utils
+Date:   Fri, 18 Oct 2019 13:29:08 -0400
+Message-Id: <20191018172908.3761-1-labbott@redhat.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190923121714.13672-1-andrea.merello@gmail.com>
- <20190923121714.13672-4-andrea.merello@gmail.com> <20191006085825.1efc1d7a@archlinux>
- <CAN8YU5PxgjwoLyxqMTuQJDGfo7MYAb0A54pFcFV5_cPeJ=H7Ng@mail.gmail.com> <20191017133543.00005418@huawei.com>
-In-Reply-To: <20191017133543.00005418@huawei.com>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Fri, 18 Oct 2019 15:48:13 +0200
-Message-ID: <CAN8YU5OsNKazOFU0XK4RM_btQb_1GpAXsaxcSN5joT3-cUgwTQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] iio: max31856: add support for runtime-configuring
- the thermocouple type
-To:     Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        patrick.havelange@essensium.com,
-        paresh.chaudhary@rockwellcollins.com, pmeerw@pmeerw.net,
-        lars@metafoo.de, knaack.h@gmx.de,
-        Matthew Weber <matthew.weber@rockwellcollins.com>,
-        Colin King <colin.king@canonical.com>,
-        linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno gio 17 ott 2019 alle ore 14:36 Jonathan Cameron
-<jonathan.cameron@huawei.com> ha scritto:
->
-> On Wed, 16 Oct 2019 15:43:18 +0200
-> Andrea Merello <andrea.merello@gmail.com> wrote:
->
-> > Il giorno dom 6 ott 2019 alle ore 09:58 Jonathan Cameron
-> > <jic23@kernel.org> ha scritto:
-> > >
-> > > On Mon, 23 Sep 2019 14:17:14 +0200
-> > > Andrea Merello <andrea.merello@gmail.com> wrote:
-> > >
-> > > > The sensor support various thermocouple types (e.g. J, K, N, ...). The
-> > > > driver allows to configure this parameter using a DT property.
-> > > >
-> > > > This is useful when i.e. the thermocouple is physically tied to the sensor
-> > > > and it is usually not removed, or when it is at least known in advace
-> > >
-> > > advance
-> >
-> > OK
-> >
-> > > > which sensor will be connected to the circuit.
-> > > >
-> > > > However, if the user can randomly connect any kind of thermocouples (i.e.
-> > > > the device exposes a connector, and the user is free to connect its own
-> > > > sensors), it would be more appropriate to provide a mechanism to
-> > > > dynamically switch from one thermocouple type to another. This can be i.e.
-> > > > handled in userspace by a GUI, a configuration file or a program that
-> > > > detects the thermocouple type by reading a GPIO, or a eeprom on the probe,
-> > > > or whatever.
-> > > >
-> > > > This patch adds a IIO attribute that can be used to override, at run-time,
-> > > > the DT-provided setting (which serves as default).
-> > > >
-> > > > Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
-> > > For now this is device specific ABI so you need to have an entry in
-> > > Documentation/ABI/testing/sysfs-bus-iio-max31856
-> >
-> > OK
-> >
-> > > Or we could consider this generic enough to put it in a file
-> > > covering other thermocouple to digital sensors.
-> >
-> > Yes, theoretically thermocouple-type is a generic thing that isn't
-> > bound to this specific driver/chip. Currently the others IIO
-> > thermocouple drivers don't need this because they supports chips that
-> > handle just a specific thermocouple type, but if you want to make this
-> > API generic for the future then I can go this way.. It seems
-> > reasonable to me indeed.
-> >
->
-> Lets do it then ;)  We might want to add a read only attrs to the
-> other drivers to make them self describing.
+iio tools fail to build correctly with make parallelization:
 
-Seems good!
-Will do.
+$ make -s -j24
+fixdep: error opening depfile: ./.iio_utils.o.d: No such file or directory
+make[1]: *** [/home/labbott/linux_upstream/tools/build/Makefile.build:96: iio_utils.o] Error 2
+make: *** [Makefile:43: iio_event_monitor-in.o] Error 2
+make: *** Waiting for unfinished jobs....
 
-> Thanks,
->
-> Jonathan
->
-> > > Thanks,
-> > >
-> > > Jonathan
-> > >
-> > > > ---
-> > > >  drivers/iio/temperature/max31856.c | 44 ++++++++++++++++++++++++++++++
-> > > >  1 file changed, 44 insertions(+)
-> > > >
-> > > > diff --git a/drivers/iio/temperature/max31856.c b/drivers/iio/temperature/max31856.c
-> > > > index 8b2e0102fa5c..588e791c79a3 100644
-> > > > --- a/drivers/iio/temperature/max31856.c
-> > > > +++ b/drivers/iio/temperature/max31856.c
-> > > > @@ -6,6 +6,7 @@
-> > > >   * Copyright (C) 2018-2019 Rockwell Collins
-> > > >   */
-> > > >
-> > > > +#include <linux/ctype.h>
-> > > >  #include <linux/module.h>
-> > > >  #include <linux/init.h>
-> > > >  #include <linux/err.h>
-> > > > @@ -70,6 +71,10 @@ struct max31856_data {
-> > > >       int averaging;
-> > > >  };
-> > > >
-> > > > +const char max31856_tc_types[] = {
-> > > > +     'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
-> > > > +};
-> > > > +
-> > > >  static int max31856_read(struct max31856_data *data, u8 reg,
-> > > >                        u8 val[], unsigned int read_size)
-> > > >  {
-> > > > @@ -336,16 +341,55 @@ static ssize_t set_averaging(struct device *dev,
-> > > >       return len;
-> > > >  }
-> > > >
-> > > > +static ssize_t show_tc_type(struct device *dev,
-> > > > +                         struct device_attribute *attr,
-> > > > +                         char *buf)
-> > > > +{
-> > > > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > +     struct max31856_data *data = iio_priv(indio_dev);
-> > > > +
-> > > > +     return sprintf(buf, "%c\n", max31856_tc_types[data->thermocouple_type]);
-> > > > +}
-> > > > +
-> > > > +static ssize_t set_tc_type(struct device *dev,
-> > > > +                        struct device_attribute *attr,
-> > > > +                        const char *buf,
-> > > > +                        size_t len)
-> > > > +{
-> > > > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > +     struct max31856_data *data = iio_priv(indio_dev);
-> > > > +     char tmp;
-> > > > +     int tc_type = -1;
-> > > > +     int i;
-> > > > +
-> > > > +     if (sscanf(buf, "%c\n", &tmp) != 1)
-> > > > +             return -EINVAL;
-> > > > +
-> > > > +     for (i = 0; i < ARRAY_SIZE(max31856_tc_types); i++) {
-> > > > +             if (max31856_tc_types[i] == toupper(tmp)) {
-> > > > +                     tc_type = i;
-> > > > +                     break;
-> > > > +             }
-> > > > +     }
-> > > > +     if (tc_type < 0)
-> > > > +             return -EINVAL;
-> > > > +     data->thermocouple_type = tc_type;
-> > > > +     max31856_init(data);
-> > > > +     return len;
-> > > > +}
-> > > > +
-> > > >  static IIO_DEVICE_ATTR(fault_ovuv, 0444, show_fault_ovuv, NULL, 0);
-> > > >  static IIO_DEVICE_ATTR(fault_oc, 0444, show_fault_oc, NULL, 0);
-> > > >  static IIO_DEVICE_ATTR(filter, 0644, show_filter, set_filter, 0);
-> > > >  static IIO_DEVICE_ATTR(averaging, 0644, show_averaging, set_averaging, 0);
-> > > > +static IIO_DEVICE_ATTR(thermocouple_type, 0644, show_tc_type, set_tc_type, 0);
-> > > >
-> > > >  static struct attribute *max31856_attributes[] = {
-> > > >       &iio_dev_attr_fault_ovuv.dev_attr.attr,
-> > > >       &iio_dev_attr_fault_oc.dev_attr.attr,
-> > > >       &iio_dev_attr_filter.dev_attr.attr,
-> > > >       &iio_dev_attr_averaging.dev_attr.attr,
-> > > > +     &iio_dev_attr_thermocouple_type.dev_attr.attr,
-> > > >       NULL,
-> > > >  };
-> > > >
-> > >
->
->
+This is because iio_utils.o is used across multiple targets.
+Fix this by making iio_utils.o a proper dependency.
+
+Signed-off-by: Laura Abbott <labbott@redhat.com>
+---
+I realize that we don't really need the parallelization for tools
+because it's so small but when building with the distro we want to use
+the same make command and -j wherever possible.
+
+This same issue also appears in the gpio tools so if this looks like an
+okay approach I'll fix it there as well.
+---
+ tools/iio/Build    |  1 +
+ tools/iio/Makefile | 10 +++++++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/tools/iio/Build b/tools/iio/Build
+index f74cbda64710..8d0f3af3723f 100644
+--- a/tools/iio/Build
++++ b/tools/iio/Build
+@@ -1,3 +1,4 @@
++iio_utils-y += iio_utils.o
+ lsiio-y += lsiio.o iio_utils.o
+ iio_event_monitor-y += iio_event_monitor.o iio_utils.o
+ iio_generic_buffer-y += iio_generic_buffer.o iio_utils.o
+diff --git a/tools/iio/Makefile b/tools/iio/Makefile
+index e22378dba244..3de763d9ab70 100644
+--- a/tools/iio/Makefile
++++ b/tools/iio/Makefile
+@@ -32,20 +32,24 @@ $(OUTPUT)include/linux/iio: ../../include/uapi/linux/iio
+ 
+ prepare: $(OUTPUT)include/linux/iio
+ 
++IIO_UTILS_IN := $(OUTPUT)iio_utils-in.o
++$(IIO_UTILS_IN): prepare FORCE
++	$(Q)$(MAKE) $(build)=iio_utils
++
+ LSIIO_IN := $(OUTPUT)lsiio-in.o
+-$(LSIIO_IN): prepare FORCE
++$(LSIIO_IN): prepare FORCE $(OUTPUT)iio_utils-in.o
+ 	$(Q)$(MAKE) $(build)=lsiio
+ $(OUTPUT)lsiio: $(LSIIO_IN)
+ 	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+ 
+ IIO_EVENT_MONITOR_IN := $(OUTPUT)iio_event_monitor-in.o
+-$(IIO_EVENT_MONITOR_IN): prepare FORCE
++$(IIO_EVENT_MONITOR_IN): prepare FORCE $(OUTPUT)iio_utils-in.o
+ 	$(Q)$(MAKE) $(build)=iio_event_monitor
+ $(OUTPUT)iio_event_monitor: $(IIO_EVENT_MONITOR_IN)
+ 	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+ 
+ IIO_GENERIC_BUFFER_IN := $(OUTPUT)iio_generic_buffer-in.o
+-$(IIO_GENERIC_BUFFER_IN): prepare FORCE
++$(IIO_GENERIC_BUFFER_IN): prepare FORCE $(OUTPUT)iio_utils-in.o
+ 	$(Q)$(MAKE) $(build)=iio_generic_buffer
+ $(OUTPUT)iio_generic_buffer: $(IIO_GENERIC_BUFFER_IN)
+ 	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+-- 
+2.21.0
+

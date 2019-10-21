@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21203DE423
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 07:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 982B3DE421
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 07:54:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727315AbfJUFyf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Oct 2019 01:54:35 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:34873 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727307AbfJUFyf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Oct 2019 01:54:35 -0400
-Received: by mail-pl1-f193.google.com with SMTP id c3so6080163plo.2
-        for <linux-iio@vger.kernel.org>; Sun, 20 Oct 2019 22:54:34 -0700 (PDT)
+        id S1727339AbfJUFyi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Oct 2019 01:54:38 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:33601 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727329AbfJUFyi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Oct 2019 01:54:38 -0400
+Received: by mail-pl1-f196.google.com with SMTP id d22so6084022pls.0
+        for <linux-iio@vger.kernel.org>; Sun, 20 Oct 2019 22:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=/S7uG+di49uMPvOgcSRYYqyni8kI/2um7+75z2ze7EY=;
-        b=VS1NUdeE1rjAVyLQedmXw05r3lRRUCT5pHH1J7iDxWLMne7iBSdK/zBrGc5//H/twr
-         bVpOkj7/cCsufgvaRwrkdBt/I6RWubQvBWxLhA8+yT9zm3DRSw5FKwCIqfWkpQ6VxECx
-         12K97LOZO3VuQ5jFdiB8GcsidtZH+LKe+oEiw=
+        bh=0VdDH0oiiJrSkc0zfZlLZPe7HDYCACJthi66MKbNDC8=;
+        b=VESvtTcv2DeGmwubIKZAZZMJFC7evaOHf35UgBrRK8OvMQRAo1EAb5N5RbyD6UhdN0
+         ccHnOmwKLdm28vxymnPaIYWEKGNZiuVT85evQhKayVtpCcFs4vOjk8zxNzI4GBUDbsOv
+         ldCTrsfkM3uEq5Ewar1DxCH0WjdlkX0nqXpvo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=/S7uG+di49uMPvOgcSRYYqyni8kI/2um7+75z2ze7EY=;
-        b=DKnasH0z6gVpkPOsyZJzpO/PGvJCpk2tVEuWfW/gl+BUBCo8hss55sjXbE7MfhwKhK
-         1cDE38l8rHOdjYDfMBLLQj7k9Ft66dwSZffYtcPbFpAhgodhcKODHUxuqWxCXToeK4Ll
-         Q4kGICQNom3twr+2R0iX0h3KF5URCJWdnwxLsdHeHPfmviACeq+KcsH73yp92i7U7Qiy
-         vmv+8QQA34k9fpY/rrzXkvT4qwP/Z/9SR1MCFAqSLHF7v7vaKRQby0lP8qQTMexSRWBB
-         LsParc5QKb72fkANdRcGeqY+Cj4dwomtSIgi/4Cik9BtPxBkGXIwCC8Kg1UZGz/EV6IV
-         PWOQ==
-X-Gm-Message-State: APjAAAVPnteofJ1b8lqj3m5P3bsS/5ps65CF7orRb1xx5JrUM1cVS1R6
-        xHy1YHgDODMWvKipv/Niw4gVBw==
-X-Google-Smtp-Source: APXvYqw5S8nqbkIKX+b4p1M98ZBDewBoSytKdsUdOY4S5XmVdraHSf0rpR9Nn2yoAoPDDS+YS9bnMQ==
-X-Received: by 2002:a17:902:9308:: with SMTP id bc8mr22485990plb.178.1571637274014;
-        Sun, 20 Oct 2019 22:54:34 -0700 (PDT)
+        bh=0VdDH0oiiJrSkc0zfZlLZPe7HDYCACJthi66MKbNDC8=;
+        b=bdR/mVlgeZjPzuu5t1tAylRz3I/7wz+tMul7glgYZ3F209luABPwzlOF1YO6zb/dkA
+         9GzzK5dMhj/X94PGQtYJY6Iw335sOLKpOjyRPc4XUeG55ryt9Ya4QS+FhwXFag9h6dRm
+         qmU3xBzdJiHPxwBD181JQ2yzNTUIxTawAsv6RV0CmITamtEnKtuywST3EgMWCYWkvjz0
+         Yup84TopzjY8USk1VrVJihJX0zVxqQwJx2fieMBJ7OPyysXrWIAnbfG6o+8G8Emhk0i7
+         f+jt9YC3I1PrRzc7HAV1dJgoglPimL3bAQETfAH/naDxS23Ez8N4rd7OxcoTETabOujD
+         Weuw==
+X-Gm-Message-State: APjAAAUVllpAOoUaYbBzKZuA+4zfc84O7OKmGhzCqE+SQ/7QRCo+R+x5
+        MPeQcyEkxnVAXLT6EtvCi+8V3A==
+X-Google-Smtp-Source: APXvYqxD6A6wu+IXtcNCvi1hGS7KVWrz3NngNRwVUv6hnug1LqXcpLl2Xr8zexZuGhHz/NvlNIbSwg==
+X-Received: by 2002:a17:902:ab82:: with SMTP id f2mr23379055plr.39.1571637275558;
+        Sun, 20 Oct 2019 22:54:35 -0700 (PDT)
 Received: from localhost ([2620:15c:202:1:3c8f:512b:3522:dfaf])
-        by smtp.gmail.com with ESMTPSA id u7sm14322508pfn.61.2019.10.20.22.54.33
+        by smtp.gmail.com with ESMTPSA id c64sm16902207pfc.19.2019.10.20.22.54.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Oct 2019 22:54:33 -0700 (PDT)
+        Sun, 20 Oct 2019 22:54:35 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     briannorris@chromium.org, jic23@kernel.org, knaack.h@gmx.de,
         lars@metafoo.de, pmeerw@pmeerw.net, lee.jones@linaro.org,
@@ -49,9 +49,9 @@ To:     briannorris@chromium.org, jic23@kernel.org, knaack.h@gmx.de,
         fabien.lahoudere@collabora.com
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 14/18] iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO
-Date:   Sun, 20 Oct 2019 22:53:59 -0700
-Message-Id: <20191021055403.67849-15-gwendal@chromium.org>
+Subject: [PATCH v2 15/18] iio: cros_ec: Remove pm function
+Date:   Sun, 20 Oct 2019 22:54:00 -0700
+Message-Id: <20191021055403.67849-16-gwendal@chromium.org>
 X-Mailer: git-send-email 2.23.0.866.gb869b98d4c-goog
 In-Reply-To: <20191021055403.67849-1-gwendal@chromium.org>
 References: <20191021055403.67849-1-gwendal@chromium.org>
@@ -62,317 +62,138 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When EC supports FIFO, each IIO device registers a callback, to put
-samples in the buffer when they arrives from the FIFO.
-We can still use a trigger to collect samples, but there may be some
-duplications in the buffer: EC has a single FIFO, so once one sensor is
-using it, all sensors event will be in the FIFO.
-To be sure events generated by cros_ec_sensorhub or the trigger uses the
-same time domain, current_timestamp_clock must be set to "boottime".
-
-When no FIFO, the user space app needs to call trigger_new, or better
-register a high precision timer.
+Since cros_ec_sensorhub is shutting down the FIFO when the device
+suspends, no need to slow down the EC sampling period rate.
+It was necesseary to do that before command CMD_FIFO_INT_ENABLE was
+introduced, but now all supported chromebooks have it.
 
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
-Change in v2 from "Use triggered buffer only when EC does not support
-FIFO":
-- Keep trigger all the time.
-- Add  devm_add_action to cleanup callback registration.
-- EC that "reports" legacy sensors do not have FIFO.
-- Use iiio_is_buffer_enabled instead of checking the scan_mask
-  before sending samples to buffer.
-- Add empty lines for visibility.
+New in v2.
 
- drivers/iio/accel/cros_ec_accel_legacy.c      |  8 +-
- .../cros_ec_sensors/cros_ec_lid_angle.c       |  2 +-
- .../common/cros_ec_sensors/cros_ec_sensors.c  |  8 +-
- .../cros_ec_sensors/cros_ec_sensors_core.c    | 80 ++++++++++++++++++-
- drivers/iio/light/cros_ec_light_prox.c        |  8 +-
- drivers/iio/pressure/cros_ec_baro.c           |  8 +-
- .../linux/iio/common/cros_ec_sensors_core.h   | 12 ++-
- 7 files changed, 96 insertions(+), 30 deletions(-)
+ .../cros_ec_sensors/cros_ec_lid_angle.c       |  1 -
+ .../common/cros_ec_sensors/cros_ec_sensors.c  |  1 -
+ .../cros_ec_sensors/cros_ec_sensors_core.c    | 47 -------------------
+ drivers/iio/light/cros_ec_light_prox.c        |  1 -
+ .../linux/iio/common/cros_ec_sensors_core.h   |  5 --
+ 5 files changed, 55 deletions(-)
 
-diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-index 65f85faf6f31d..66683df9fc433 100644
---- a/drivers/iio/accel/cros_ec_accel_legacy.c
-+++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-@@ -171,7 +171,8 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
-+	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-+			cros_ec_sensors_capture, NULL);
- 	if (ret)
- 		return ret;
- 
-@@ -191,11 +192,6 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
- 		state->sign[CROS_EC_SENSOR_Z] = -1;
- 	}
- 
--	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
--			cros_ec_sensors_capture, NULL);
--	if (ret)
--		return ret;
--
- 	return devm_iio_device_register(dev, indio_dev);
- }
- 
 diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-index 1dcc2a16ab2dd..e30a59fcf0f95 100644
+index e30a59fcf0f95..af801e203623e 100644
 --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
 +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-@@ -97,7 +97,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	ret = cros_ec_sensors_core_init(pdev, indio_dev, false);
-+	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
- 	if (ret)
- 		return ret;
- 
+@@ -127,7 +127,6 @@ MODULE_DEVICE_TABLE(platform, cros_ec_lid_angle_ids);
+ static struct platform_driver cros_ec_lid_angle_platform_driver = {
+ 	.driver = {
+ 		.name	= DRV_NAME,
+-		.pm	= &cros_ec_sensors_pm_ops,
+ 	},
+ 	.probe		= cros_ec_lid_angle_probe,
+ 	.id_table	= cros_ec_lid_angle_ids,
 diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-index 7dce044734678..9e7903ff99f80 100644
+index 9e7903ff99f80..2eb4bb254fbde 100644
 --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
 +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-@@ -231,7 +231,8 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
-+	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-+			cros_ec_sensors_capture, cros_ec_sensors_push_data);
- 	if (ret)
- 		return ret;
- 
-@@ -293,11 +294,6 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
- 	else
- 		state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
- 
--	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
--			cros_ec_sensors_capture, NULL);
--	if (ret)
--		return ret;
--
- 	return devm_iio_device_register(dev, indio_dev);
- }
- 
+@@ -314,7 +314,6 @@ MODULE_DEVICE_TABLE(platform, cros_ec_sensors_ids);
+ static struct platform_driver cros_ec_sensors_platform_driver = {
+ 	.driver = {
+ 		.name	= "cros-ec-sensors",
+-		.pm	= &cros_ec_sensors_pm_ops,
+ 	},
+ 	.probe		= cros_ec_sensors_probe,
+ 	.id_table	= cros_ec_sensors_ids,
 diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index 4acb8b7310d43..3d2e17093c75a 100644
+index 3d2e17093c75a..e89c355bb4b35 100644
 --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
 +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -12,6 +12,7 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/kfifo_buf.h>
- #include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
- #include <linux/kernel.h>
- #include <linux/mfd/cros_ec.h>
- #include <linux/module.h>
-@@ -83,17 +84,72 @@ static void get_default_min_max_freq(enum motionsensor_type type,
- 	}
+@@ -716,52 +716,5 @@ int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
  }
+ EXPORT_SYMBOL_GPL(cros_ec_sensors_core_write);
  
-+int cros_ec_sensors_push_data(
-+		struct iio_dev *indio_dev,
-+		s16 *data,
-+		s64 timestamp)
-+{
-+	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
-+	s16 *out;
-+	unsigned int i;
-+
-+	/*
-+	 * It can happen if we get a samples before the iio device is fully
-+	 * registered.
-+	 */
-+	if (!st)
-+		return 0;
-+
-+	/*
-+	 * Ignore samples if the buffer is not set: it is needed if the ODR is
-+	 * set but the buffer is not enabled yet.
-+	 */
-+	if (!iio_buffer_enabled(indio_dev))
-+		return 0;
-+
-+	out = (s16 *)st->samples;
-+	for_each_set_bit(i,
-+			 indio_dev->active_scan_mask,
-+			 indio_dev->masklength) {
-+		*out = data[i];
-+		out++;
-+	}
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, st->samples, timestamp);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(cros_ec_sensors_push_data);
-+
-+static void cros_ec_sensors_core_clean(void *arg)
-+{
-+	struct platform_device *pdev = (struct platform_device *)arg;
-+	struct cros_ec_sensorhub *sensor_hub =
-+		dev_get_drvdata(pdev->dev.parent);
-+	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-+	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
-+	u8 sensor_num = st->param.info.sensor_num;
-+
-+	cros_ec_sensorhub_unregister_push_data(sensor_hub, sensor_num);
-+}
-+
- /**
-  * cros_ec_sensors_core_init() - basic initialization of the core structure
-  * @pdev:		platform device created for the sensors
-  * @indio_dev:		iio device structure of the device
-  * @physical_device:	true if the device refers to a physical device
-+ * @trigger_capture:    function pointer to call buffer is triggered,
-+ *    for backward compatibility.
-+ * @push_data:          function to call when cros_ec_sensorhub receives
-+ *    a sample for that sensor.
-  *
-  * Return: 0 on success, -errno on failure.
-  */
- int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			      struct iio_dev *indio_dev,
--			      bool physical_device)
-+			      bool physical_device,
-+			      cros_ec_sensors_capture_t trigger_capture,
-+			      cros_ec_sensorhub_push_data_cb_t push_data)
- {
- 	struct device *dev = &pdev->dev;
- 	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
-@@ -132,8 +188,6 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 	indio_dev->name = pdev->name;
- 
- 	if (physical_device) {
--		indio_dev->modes = INDIO_DIRECT_MODE;
+-static int __maybe_unused cros_ec_sensors_prepare(struct device *dev)
+-{
+-	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+-	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
 -
- 		state->param.cmd = MOTIONSENSE_CMD_INFO;
- 		state->param.info.sensor_num = sensor_platform->sensor_num;
- 		ret = cros_ec_motion_send_host_cmd(state, 0);
-@@ -162,9 +216,27 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			state->frequencies[2] =
- 			    state->resp->info_3.max_frequency;
- 		}
-+
-+		ret = devm_iio_triggered_buffer_setup(
-+				dev, indio_dev, NULL,
-+				trigger_capture, NULL);
-+		if (ret)
-+			return ret;
-+
-+		if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
-+			ret = cros_ec_sensorhub_register_push_data(
-+					sensor_hub,
-+					sensor_platform->sensor_num,
-+					indio_dev, push_data);
-+			if (ret)
-+				return ret;
-+
-+			ret = devm_add_action_or_reset(
-+					dev, cros_ec_sensors_core_clean, pdev);
-+		}
- 	}
- 
+-	if (st->curr_sampl_freq == 0)
+-		return 0;
+-
+-	/*
+-	 * If the sensors are sampled at high frequency, we will not be able to
+-	 * sleep. Set sampling to a long period if necessary.
+-	 */
+-	if (st->curr_sampl_freq < CROS_EC_MIN_SUSPEND_SAMPLING_FREQUENCY) {
+-		mutex_lock(&st->cmd_lock);
+-		st->param.cmd = MOTIONSENSE_CMD_EC_RATE;
+-		st->param.ec_rate.data = CROS_EC_MIN_SUSPEND_SAMPLING_FREQUENCY;
+-		cros_ec_motion_send_host_cmd(st, 0);
+-		mutex_unlock(&st->cmd_lock);
+-	}
 -	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(cros_ec_sensors_core_init);
- 
+-}
+-
+-static void __maybe_unused cros_ec_sensors_complete(struct device *dev)
+-{
+-	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+-	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
+-
+-	if (st->curr_sampl_freq == 0)
+-		return;
+-
+-	if (st->curr_sampl_freq < CROS_EC_MIN_SUSPEND_SAMPLING_FREQUENCY) {
+-		mutex_lock(&st->cmd_lock);
+-		st->param.cmd = MOTIONSENSE_CMD_EC_RATE;
+-		st->param.ec_rate.data = st->curr_sampl_freq;
+-		cros_ec_motion_send_host_cmd(st, 0);
+-		mutex_unlock(&st->cmd_lock);
+-	}
+-}
+-
+-const struct dev_pm_ops cros_ec_sensors_pm_ops = {
+-#ifdef CONFIG_PM_SLEEP
+-	.prepare = cros_ec_sensors_prepare,
+-	.complete = cros_ec_sensors_complete
+-#endif
+-};
+-EXPORT_SYMBOL_GPL(cros_ec_sensors_pm_ops);
+-
+ MODULE_DESCRIPTION("ChromeOS EC sensor hub core functions");
+ MODULE_LICENSE("GPL v2");
 diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
-index d85a391e50c59..da40c38370965 100644
+index da40c38370965..6bac02cdd898a 100644
 --- a/drivers/iio/light/cros_ec_light_prox.c
 +++ b/drivers/iio/light/cros_ec_light_prox.c
-@@ -178,7 +178,8 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
-+	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-+			cros_ec_sensors_capture, cros_ec_sensors_push_data);
- 	if (ret)
- 		return ret;
- 
-@@ -237,11 +238,6 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
- 
- 	state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
- 
--	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
--					      cros_ec_sensors_capture, NULL);
--	if (ret)
--		return ret;
--
- 	return devm_iio_device_register(dev, indio_dev);
- }
- 
-diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
-index 2354302375dee..fb7daeb4b29f9 100644
---- a/drivers/iio/pressure/cros_ec_baro.c
-+++ b/drivers/iio/pressure/cros_ec_baro.c
-@@ -134,7 +134,8 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	ret = cros_ec_sensors_core_init(pdev, indio_dev, true);
-+	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
-+			cros_ec_sensors_capture, cros_ec_sensors_push_data);
- 	if (ret)
- 		return ret;
- 
-@@ -180,11 +181,6 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
- 
- 	state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
- 
--	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
--					      cros_ec_sensors_capture, NULL);
--	if (ret)
--		return ret;
--
- 	return devm_iio_device_register(dev, indio_dev);
- }
- 
+@@ -255,7 +255,6 @@ MODULE_DEVICE_TABLE(platform, cros_ec_light_prox_ids);
+ static struct platform_driver cros_ec_light_prox_platform_driver = {
+ 	.driver = {
+ 		.name	= "cros-ec-light-prox",
+-		.pm	= &cros_ec_sensors_pm_ops,
+ 	},
+ 	.probe		= cros_ec_light_prox_probe,
+ 	.id_table	= cros_ec_light_prox_ids,
 diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-index 0af918978f975..b4eb3790cde11 100644
+index b4eb3790cde11..db3da7ffcc376 100644
 --- a/include/linux/iio/common/cros_ec_sensors_core.h
 +++ b/include/linux/iio/common/cros_ec_sensors_core.h
-@@ -12,6 +12,7 @@
- #include <linux/irqreturn.h>
- #include <linux/platform_data/cros_ec_commands.h>
- #include <linux/platform_data/cros_ec_proto.h>
-+#include <linux/platform_data/cros_ec_sensorhub.h>
+@@ -30,9 +30,6 @@ enum {
+  */
+ #define CROS_EC_SAMPLE_SIZE  (sizeof(s64) * 2)
  
- enum {
- 	CROS_EC_SENSOR_X,
-@@ -32,6 +33,9 @@ enum {
- /* Minimum sampling period to use when device is suspending */
- #define CROS_EC_MIN_SUSPEND_SAMPLING_FREQUENCY 1000  /* 1 second */
+-/* Minimum sampling period to use when device is suspending */
+-#define CROS_EC_MIN_SUSPEND_SAMPLING_FREQUENCY 1000  /* 1 second */
+-
+ typedef irqreturn_t (*cros_ec_sensors_capture_t)(int irq, void *p);
  
-+typedef irqreturn_t (*cros_ec_sensors_capture_t)(int irq, void *p);
-+
-+
- /**
-  * struct cros_ec_sensors_core_state - state data for EC sensors IIO driver
-  * @ec:				cros EC device structure
-@@ -87,9 +91,15 @@ int cros_ec_sensors_read_cmd(struct iio_dev *indio_dev, unsigned long scan_mask,
  
- struct platform_device;
- int cros_ec_sensors_core_init(struct platform_device *pdev,
--			      struct iio_dev *indio_dev, bool physical_device);
-+			      struct iio_dev *indio_dev, bool physical_device,
-+			      cros_ec_sensors_capture_t trigger_capture,
-+			      cros_ec_sensorhub_push_data_cb_t push_data);
+@@ -119,8 +116,6 @@ int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
+ 			       struct iio_chan_spec const *chan,
+ 			       int val, int val2, long mask);
  
- irqreturn_t cros_ec_sensors_capture(int irq, void *p);
-+int cros_ec_sensors_push_data(
-+		struct iio_dev *indio_dev,
-+		s16 *data,
-+		s64 timestamp);
+-extern const struct dev_pm_ops cros_ec_sensors_pm_ops;
+-
+ /* List of extended channel specification for all sensors */
+ extern const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[];
  
- int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *st,
- 				 u16 opt_length);
 -- 
 2.23.0.866.gb869b98d4c-goog
 

@@ -2,245 +2,303 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B955DF1B7
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 17:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7783DF207
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 17:49:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727344AbfJUPia (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Oct 2019 11:38:30 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:34413 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726289AbfJUPia (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Oct 2019 11:38:30 -0400
-Received: by mail-pg1-f193.google.com with SMTP id k20so8053962pgi.1;
-        Mon, 21 Oct 2019 08:38:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=mneNdGWjVVKo8B+zdhy64uwhIH/0K1XV0srlpATT8LE=;
-        b=ZrhVxJGchkE7C02M03rRvYxTu5UfWNWNiYKO98tOD87iwgjKPh2sJQxjXwOv6xrU5o
-         c1Zor46UCsdpSO0zZaCsvEiyJd7FOxe9Fc6Du0WqA0//pwqahy8pi5bkFJiG2pp4bo64
-         NTjUYHrDV52gBtEvJX+uZNNP6tzYF1jsY8PsWRihZFJeFO5GBV7kQaCK+t/ESx/4neki
-         9tcDxjvtglasVbZf5TxieKULnwExW07dk3U+GlTV62vW3hJJOM8sgWD9oETdHT1+OqB2
-         ynf8LuQKk6OXgfsEc/9iTtqdedZMkT2oY+t4Xqz2Qwl18z9erJZOYS41q7t/fhlifnpf
-         dbIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=mneNdGWjVVKo8B+zdhy64uwhIH/0K1XV0srlpATT8LE=;
-        b=jvIBUHMU7usAosGB9RuadscjGQake9sJIrm3Ywhk50DDlvJNrJRAAgKjzqXFzQFe0N
-         LJzKVV1o6Vg4QAgVziFtL+TqVqTBkhWEBX28hNexSDVvnw0JzrdFjGwCN5qNRtPIbw51
-         GnskEkc8iQHEDn2Qq/+VehO+qiDmRpmFLbWMEL7T6vlmP+k289XSH8iPsuTzVt0m1KNK
-         Oi6AmqGsSjzTCMFR1/xM8hENkUi+bRuBp/5b3/DY41kDnhAVdFBCwP5tRRW+sI/2H6to
-         pB/NXbvb8TJ87ZeZCKsb+6m1amnFSFuIdHd2hSyjwBSXy96DwUg2wKAmvX/YrXIIYLV7
-         yZ8w==
-X-Gm-Message-State: APjAAAVQMaJ3EOZ8D0Z5JXWCeBgZhR1Y8eS6+YQxTAFCZ/CgNlJu4yZQ
-        l/rB9Vnynp77EZ2Xt9L/w14=
-X-Google-Smtp-Source: APXvYqwVzWa+4lrH4hhsxVRP4M887b9OhSnZeuc0KxOfOfDMeGuLfw9V56cNc8S0MamFn3aK50BZfg==
-X-Received: by 2002:a63:77cc:: with SMTP id s195mr13982330pgc.293.1571672308362;
-        Mon, 21 Oct 2019 08:38:28 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j11sm5954568pgk.3.2019.10.21.08.38.26
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 21 Oct 2019 08:38:27 -0700 (PDT)
-Date:   Mon, 21 Oct 2019 08:38:25 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     lee.jones@linaro.org, dmitry.torokhov@gmail.com, jdelvare@suse.com,
-        thierry.reding@gmail.com, jic23@kernel.org,
-        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, u.kleine-koenig@pengutronix.de,
-        linux-pwm@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com
-Subject: Re: [PATCH 4/8] hwmon: Add support for Azoteq IQS620AT temperature
- sensor
-Message-ID: <20191021153825.GA15359@roeck-us.net>
-References: <1571631083-4962-1-git-send-email-jeff@labundy.com>
- <1571631083-4962-5-git-send-email-jeff@labundy.com>
+        id S1729321AbfJUPt7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Oct 2019 11:49:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55772 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727607AbfJUPt7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 21 Oct 2019 11:49:59 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DDF2C20873;
+        Mon, 21 Oct 2019 15:49:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571672997;
+        bh=ZdbTJMpphz2DyRdVeSaDcLbx4qWNr119tOqnk+bZl0E=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=WdnPJiHLB69q+zppMU3QoyxfUvnxsinUH4fT2socqL3lRo+uLTklVMr2BQXGew/df
+         ODQzdCFhmiHCYadmmoUnO060nWXaMP9+t+4GNMVRVXNSrF/XnZmlvHsdkV4WzIlwj0
+         N5ua87fXnyCghwVU9NfA/uq2nf1+WbLkA9aRaR/M=
+Date:   Mon, 21 Oct 2019 16:49:51 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     briannorris@chromium.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, lee.jones@linaro.org, bleung@chromium.org,
+        enric.balletbo@collabora.com, dianders@chromium.org,
+        groeck@chromium.org, fabien.lahoudere@collabora.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 02/18] mfd: cros_ec: Add sensor_count and make
+ check_features public
+Message-ID: <20191021164951.0abfaa85@archlinux>
+In-Reply-To: <20191021055403.67849-3-gwendal@chromium.org>
+References: <20191021055403.67849-1-gwendal@chromium.org>
+        <20191021055403.67849-3-gwendal@chromium.org>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1571631083-4962-5-git-send-email-jeff@labundy.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 20, 2019 at 11:11:19PM -0500, Jeff LaBundy wrote:
-> This patch adds support for the Azoteq IQS620AT temperature sensor,
-> capable of reporting its absolute die temperature.
-> 
-> Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+On Sun, 20 Oct 2019 22:53:47 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-Seems to me this might be more feasible as iio driver.
-Jonathan, what do you think ?
+> Add a new function to return the number of MEMS sensors available in a
+> ChromeOS Embedded Controller.
+> It uses MOTIONSENSE_CMD_DUMP if available or a specific memory map ACPI
+> registers to find out.
+> 
+> Also, make check_features public as it can be useful for other drivers
+> to know what the Embedded Controller supports.
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+One refactoring suggestion, though up to you whether you bother.
++ one kernel-doc formatting issue.
+
+Otherwise seems sane to me, but I don't know the hardware well enough
+to give detailed comments.
+
+Thanks,
+
+Jonathan
 
 > ---
->  drivers/hwmon/Kconfig         | 12 +++++-
->  drivers/hwmon/Makefile        |  1 +
->  drivers/hwmon/iqs620at-temp.c | 96 +++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 108 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/hwmon/iqs620at-temp.c
+> Changes in v2:
+>   Fix spelling in commit message.
+>   Cleanup the case where DUMP command is not supported.
+>   Move code from mfd to platform/chrome/
 > 
-> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-> index 13a6b4a..3e56be6 100644
-> --- a/drivers/hwmon/Kconfig
-> +++ b/drivers/hwmon/Kconfig
-> @@ -385,6 +385,16 @@ config SENSORS_ATXP1
->  	  This driver can also be built as a module. If so, the module
->  	  will be called atxp1.
+>  drivers/mfd/cros_ec_dev.c                   |  32 ------
+>  drivers/platform/chrome/cros_ec_proto.c     | 116 ++++++++++++++++++++
+>  include/linux/platform_data/cros_ec_proto.h |   5 +
+>  3 files changed, 121 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
+> index 6e6dfd6c18711..a35104e35cb4e 100644
+> --- a/drivers/mfd/cros_ec_dev.c
+> +++ b/drivers/mfd/cros_ec_dev.c
+> @@ -112,38 +112,6 @@ static const struct mfd_cell cros_ec_vbc_cells[] = {
+>  	{ .name = "cros-ec-vbc", }
+>  };
 >  
-> +config SENSORS_IQS620AT
-> +	tristate "Azoteq IQS620AT temperature sensor"
-> +	depends on MFD_IQS62X
-> +	help
-> +	  Say Y here if you want to build support for the Azoteq IQS620AT
-> +	  temperature sensor.
+> -static int cros_ec_check_features(struct cros_ec_dev *ec, int feature)
+> -{
+> -	struct cros_ec_command *msg;
+> -	int ret;
+> -
+> -	if (ec->features[0] == -1U && ec->features[1] == -1U) {
+> -		/* features bitmap not read yet */
+> -		msg = kzalloc(sizeof(*msg) + sizeof(ec->features), GFP_KERNEL);
+> -		if (!msg)
+> -			return -ENOMEM;
+> -
+> -		msg->command = EC_CMD_GET_FEATURES + ec->cmd_offset;
+> -		msg->insize = sizeof(ec->features);
+> -
+> -		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+> -		if (ret < 0) {
+> -			dev_warn(ec->dev, "cannot get EC features: %d/%d\n",
+> -				 ret, msg->result);
+> -			memset(ec->features, 0, sizeof(ec->features));
+> -		} else {
+> -			memcpy(ec->features, msg->data, sizeof(ec->features));
+> -		}
+> -
+> -		dev_dbg(ec->dev, "EC features %08x %08x\n",
+> -			ec->features[0], ec->features[1]);
+> -
+> -		kfree(msg);
+> -	}
+> -
+> -	return ec->features[feature / 32] & EC_FEATURE_MASK_0(feature);
+> -}
+> -
+>  static void cros_ec_class_release(struct device *dev)
+>  {
+>  	kfree(to_cros_ec_dev(dev));
+> diff --git a/drivers/platform/chrome/cros_ec_proto.c b/drivers/platform/chrome/cros_ec_proto.c
+> index 7db58771ec77c..2357c717399ad 100644
+> --- a/drivers/platform/chrome/cros_ec_proto.c
+> +++ b/drivers/platform/chrome/cros_ec_proto.c
+> @@ -717,3 +717,119 @@ u32 cros_ec_get_host_event(struct cros_ec_device *ec_dev)
+>  	return host_event;
+>  }
+>  EXPORT_SYMBOL(cros_ec_get_host_event);
 > +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called iqs620at-temp.
-> +
->  config SENSORS_DS620
->  	tristate "Dallas Semiconductor DS620"
->  	depends on I2C
-> @@ -1593,7 +1603,7 @@ config SENSORS_ADS7871
->  
->  config SENSORS_AMC6821
->  	tristate "Texas Instruments AMC6821"
-> -	depends on I2C 
-> +	depends on I2C
-
-No unrelated changes, please, and most definitely no
-unrelated whitespace changes.
-
->  	help
->  	  If you say yes here you get support for the Texas Instruments
->  	  AMC6821 hardware monitoring chips.
-> diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-> index 40c036e..2360add 100644
-> --- a/drivers/hwmon/Makefile
-> +++ b/drivers/hwmon/Makefile
-> @@ -83,6 +83,7 @@ obj-$(CONFIG_SENSORS_IIO_HWMON) += iio_hwmon.o
->  obj-$(CONFIG_SENSORS_INA209)	+= ina209.o
->  obj-$(CONFIG_SENSORS_INA2XX)	+= ina2xx.o
->  obj-$(CONFIG_SENSORS_INA3221)	+= ina3221.o
-> +obj-$(CONFIG_SENSORS_IQS620AT)	+= iqs620at-temp.o
->  obj-$(CONFIG_SENSORS_IT87)	+= it87.o
->  obj-$(CONFIG_SENSORS_JC42)	+= jc42.o
->  obj-$(CONFIG_SENSORS_K8TEMP)	+= k8temp.o
-> diff --git a/drivers/hwmon/iqs620at-temp.c b/drivers/hwmon/iqs620at-temp.c
-> new file mode 100644
-> index 0000000..0af49b6
-> --- /dev/null
-> +++ b/drivers/hwmon/iqs620at-temp.c
-> @@ -0,0 +1,96 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Azoteq IQS620AT Temperature Sensor
+> +/**
+> + * cros_ec_check_features - Test for the presence of EC features
 > + *
-> + * Copyright (C) 2019
-> + * Author: Jeff LaBundy <jeff@labundy.com>
+> + * Call this function to test whether the ChromeOS EC supports a feature.
+
+I'm fairly sure that's not correct kernel-doc.  Longer description should come
+after the parameters.
+
+> + *
+> + * @ec_dev: EC device: does not have to be connected directly to the AP,
+> + *          can be daisy chained through another device.
+> + * @feature: One of ec_feature_code bit.
+> + * @return: 1 if supported, 0 if not
 > + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/hwmon.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mfd/iqs62x.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +
-> +#define IQS620_TEMP_UI_OUT			0x1A
-> +
-> +static umode_t iqs620_temp_is_visible(const void *drvdata,
-> +				      enum hwmon_sensor_types type,
-> +				      u32 attr, int channel)
+> +int cros_ec_check_features(struct cros_ec_dev *ec, int feature)
 > +{
-> +	if (type != hwmon_temp || attr != hwmon_temp_input)
-> +		return 0;
+> +	struct cros_ec_command *msg;
+> +	int ret;
 > +
-> +	return 0444;
-> +}
+> +	if (ec->features[0] == -1U && ec->features[1] == -1U) {
+> +		/* features bitmap not read yet */
+> +		msg = kzalloc(sizeof(*msg) + sizeof(ec->features), GFP_KERNEL);
+> +		if (!msg)
+> +			return -ENOMEM;
 > +
-> +static int iqs620_temp_read(struct device *dev, enum hwmon_sensor_types type,
-> +			    u32 attr, int channel, long *val)
-> +{
-> +	struct iqs62x_core *iqs62x = dev_get_drvdata(dev);
-> +	int error;
-> +	__le16 val_buf;
+> +		msg->command = EC_CMD_GET_FEATURES + ec->cmd_offset;
+> +		msg->insize = sizeof(ec->features);
 > +
-> +	if (type != hwmon_temp || attr != hwmon_temp_input)
-> +		return -EINVAL;
-
-			-EOPNOTSUPP
+> +		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+> +		if (ret < 0) {
+> +			dev_warn(ec->dev, "cannot get EC features: %d/%d\n",
+> +				 ret, msg->result);
+> +			memset(ec->features, 0, sizeof(ec->features));
+> +		} else {
+> +			memcpy(ec->features, msg->data, sizeof(ec->features));
+> +		}
 > +
-> +	error = regmap_raw_read(iqs62x->map, IQS620_TEMP_UI_OUT, &val_buf,
-> +				sizeof(val_buf));
-> +	if (error)
-> +		return error;
+> +		dev_dbg(ec->dev, "EC features %08x %08x\n",
+> +			ec->features[0], ec->features[1]);
 > +
-> +	*val = (le16_to_cpu(val_buf) - 100) * 1000;
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct hwmon_ops iqs620_temp_ops = {
-> +	.is_visible = iqs620_temp_is_visible,
-> +	.read = iqs620_temp_read,
-> +};
-> +
-> +static const struct hwmon_channel_info *iqs620_temp_channel_info[] = {
-> +	HWMON_CHANNEL_INFO(chip, HWMON_C_REGISTER_TZ),
-> +	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT),
-> +	NULL
-> +};
-> +
-> +static const struct hwmon_chip_info iqs620_temp_chip_info = {
-> +	.ops = &iqs620_temp_ops,
-> +	.info = iqs620_temp_channel_info,
-> +};
-> +
-> +static int iqs620_temp_probe(struct platform_device *pdev)
-> +{
-> +	struct iqs62x_core *iqs62x = dev_get_drvdata(pdev->dev.parent);
-> +	struct device *hdev;
-> +	int error = 0;
-> +
-> +	hdev = devm_hwmon_device_register_with_info(&pdev->dev,
-> +						    iqs62x->dev_desc->dev_name,
-> +						    iqs62x,
-> +						    &iqs620_temp_chip_info,
-> +						    NULL);
-> +	if (IS_ERR(hdev)) {
-> +		error = PTR_ERR(hdev);
-> +		dev_err(&pdev->dev, "Failed to register device: %d\n", error);
-
-Such an error would either be static, caused by bad attributes,
-or a bad name, which is already logged, or a memory allocation
-failure, which is also already logged. The error message does
-therefore not add any value.
-
+> +		kfree(msg);
 > +	}
 > +
-> +	return error;
+> +	return ec->features[feature / 32] & EC_FEATURE_MASK_0(feature);
 > +}
+> +EXPORT_SYMBOL_GPL(cros_ec_check_features);
 > +
-> +static struct platform_driver iqs620_temp_platform_driver = {
-> +	.driver = {
-> +		.name	= IQS620_DRV_NAME_TEMP,
-> +	},
-> +	.probe		= iqs620_temp_probe,
-> +};
-> +module_platform_driver(iqs620_temp_platform_driver);
+> +/**
+> + * Return the number of MEMS sensors supported.
+> + *
+> + * @ec_dev: EC device: does not have to be connected directly to the AP,
+> + *          can be daisy chained through another device.
+> + * Return < 0 in case of error.
+> + */
+> +int cros_ec_get_sensor_count(struct cros_ec_dev *ec)
+> +{
+> +	/*
+> +	 * Issue a command to get the number of sensor reported.
+> +	 * If not supported, check for legacy mode.
+> +	 */
+> +	int ret, sensor_count;
+> +	struct ec_params_motion_sense *params;
+> +	struct ec_response_motion_sense *resp;
+> +	struct cros_ec_command *msg;
+> +	struct cros_ec_device *ec_dev = ec->ec_dev;
+> +	u8 status;
 > +
-> +MODULE_AUTHOR("Jeff LaBundy <jeff@labundy.com>");
-> +MODULE_DESCRIPTION("Azoteq IQS620AT Temperature Sensor");
-> +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS("platform:" IQS620_DRV_NAME_TEMP);
-> -- 
-> 2.7.4
-> 
+> +	msg = kzalloc(sizeof(struct cros_ec_command) +
+> +			max(sizeof(*params), sizeof(*resp)), GFP_KERNEL);
+> +	if (!msg)
+> +		return -ENOMEM;
+> +
+> +	msg->version = 1;
+> +	msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
+> +	msg->outsize = sizeof(*params);
+> +	msg->insize = sizeof(*resp);
+> +
+> +	params = (struct ec_params_motion_sense *)msg->data;
+> +	params->cmd = MOTIONSENSE_CMD_DUMP;
+> +
+> +	ret = cros_ec_cmd_xfer(ec->ec_dev, msg);
+> +	if (ret < 0) {
+> +		sensor_count = ret;
+> +	} else if (msg->result != EC_RES_SUCCESS) {
+> +		sensor_count = -EPROTO;
+> +	} else {
+> +		resp = (struct ec_response_motion_sense *)msg->data;
+> +		sensor_count = resp->dump.sensor_count;
+> +	}
+> +	kfree(msg);
+> +
+
+Can we simplify the following flow?  I think the following is the same and
+breaks the individual paths out more clearly to my eyes.
+
+I'm not totally sure this helps unwinding the fairly complex flow here,
+so up to you.
+
+
+	/* could break this up into the good path, and the bad but not EPROTO path... */
+	if (sensor_count != -EPROTO)
+		return sensor_count;
+
+	if (ec->cmd_offset != 0 || ec_dev->cmd_readmem == NULL) {
+		/* EC responded, but does not understand DUMP command. */
+		return 0;
+
+	ret = ec_dev->cmd_readmem(ec_dev, EC_MEMMAP_ACC_STATUS,
+				1, &status);
+	if (ret < 0)
+		return 0;
+
+	if (status & EC_MEMMAP_ACC_STATUS_PRESENCE_BIT)
+		/* 2 sensors, one in the lid, one in the base. */
+		return 2;
+
+	else
+		/* EC uses LPC interface and no sensors are presented. */
+		return 0;
+}
+
+> +	/*
+> +	 * Check legacy mode: Let's find out if sensors are accessible
+> +	 * via LPC interface.
+> +	 */
+> +	if (sensor_count == -EPROTO &&
+> +	    ec->cmd_offset == 0 &&
+> +	    ec_dev->cmd_readmem) {
+> +		ret = ec_dev->cmd_readmem(ec_dev, EC_MEMMAP_ACC_STATUS,
+> +				1, &status);
+> +		if ((ret >= 0) &&
+> +		    (status & EC_MEMMAP_ACC_STATUS_PRESENCE_BIT)) {
+> +			/*
+> +			 * We have 2 sensors, one in the lid, one in the base.
+> +			 */
+> +			sensor_count = 2;
+> +		} else {
+> +			/*
+> +			 * EC uses LPC interface and no sensors are presented.
+> +			 */
+> +			sensor_count = 0;
+> +		}
+> +	} else if (sensor_count == -EPROTO) {
+> +		/* EC responded, but does not understand DUMP command. */
+> +		sensor_count = 0;
+> +	}
+> +	return sensor_count;
+> +}
+> +EXPORT_SYMBOL_GPL(cros_ec_get_sensor_count);
+> diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/platform_data/cros_ec_proto.h
+> index 0d4e4aaed37af..f3de0662135d5 100644
+> --- a/include/linux/platform_data/cros_ec_proto.h
+> +++ b/include/linux/platform_data/cros_ec_proto.h
+> @@ -12,6 +12,7 @@
+>  #include <linux/mutex.h>
+>  #include <linux/notifier.h>
+>  
+> +#include <linux/mfd/cros_ec.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  
+>  #define CROS_EC_DEV_NAME	"cros_ec"
+> @@ -213,4 +214,8 @@ int cros_ec_get_next_event(struct cros_ec_device *ec_dev, bool *wake_event);
+>  
+>  u32 cros_ec_get_host_event(struct cros_ec_device *ec_dev);
+>  
+> +int cros_ec_check_features(struct cros_ec_dev *ec, int feature);
+> +
+> +int cros_ec_get_sensor_count(struct cros_ec_dev *ec);
+> +
+>  #endif /* __LINUX_CROS_EC_PROTO_H */
+

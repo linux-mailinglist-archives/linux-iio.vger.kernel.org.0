@@ -2,217 +2,293 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0A0DF08D
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 16:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D85EDF0F7
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 17:12:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727960AbfJUOy7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Oct 2019 10:54:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49144 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727111AbfJUOy6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 21 Oct 2019 10:54:58 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 12E1520656;
-        Mon, 21 Oct 2019 14:54:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571669697;
-        bh=Ae8OHG6lZmDDwOM3SPPGHZv5YZXmtKO6eyJM3Lg9gCc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=yVdUxHn0ayRtWCZgG2r4z6BF9YxO67CgUU/O5YziuEIz/2b4fLTzjX4STw//Gb9gZ
-         dowPKbMZQWZHC6ohCe9xAjDoYFk9qMuAhGAI9WmWVU6bqgDPiVtDwNedmIU/nqX99b
-         rhYuCZ5XiFF3N1gxV8wRDkuenIuMGMjWP0cJZqlY=
-Date:   Mon, 21 Oct 2019 15:54:50 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Beniamin Bia <beniamin.bia@analog.com>
-Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
-        <gregkh@linuxfoundation.org>, <linux-iio@vger.kernel.org>,
-        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
-        <mark.rutland@arm.com>, <robh+dt@kernel.org>,
-        <devicetree@vger.kernel.org>, <paulmck@linux.ibm.com>,
-        <mchehab+samsung@kernel.org>, <linus.walleij@linaro.org>,
-        <nicolas.ferre@microchip.com>, <biabeniamin@outlook.com>,
-        Paul Cercueil <paul.cercueil@analog.com>
-Subject: Re: [PATCH 2/4] iio: adc: ad7091r5: Add scale and external VREF
- support
-Message-ID: <20191021155450.0ac9d380@archlinux>
-In-Reply-To: <20191021170608.26412-2-beniamin.bia@analog.com>
-References: <20191021170608.26412-1-beniamin.bia@analog.com>
-        <20191021170608.26412-2-beniamin.bia@analog.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727406AbfJUPMu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Oct 2019 11:12:50 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:36752 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726847AbfJUPMu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Oct 2019 11:12:50 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 1B6BA28B012
+Subject: Re: [PATCH v2 02/18] mfd: cros_ec: Add sensor_count and make
+ check_features public
+To:     Gwendal Grignou <gwendal@chromium.org>, briannorris@chromium.org,
+        jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, lee.jones@linaro.org, bleung@chromium.org,
+        dianders@chromium.org, groeck@chromium.org,
+        fabien.lahoudere@collabora.com
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20191021055403.67849-1-gwendal@chromium.org>
+ <20191021055403.67849-3-gwendal@chromium.org>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <fe819ee5-d3ec-ef0e-521e-c2f2fb48b980@collabora.com>
+Date:   Mon, 21 Oct 2019 17:12:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20191021055403.67849-3-gwendal@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Oct 2019 20:06:06 +0300
-Beniamin Bia <beniamin.bia@analog.com> wrote:
+Hi Gwendal,
 
-> From: Paul Cercueil <paul.cercueil@analog.com>
-> 
-> The scale can now be obtained with the "in_voltage_scale" file.
-> By default, the scale returned corresponds to the internal VREF of 2.5V.
-> 
-> It is possible to use an external VREF (through the REFIN/REFOUT pin of
-> the chip), by passing a regulator to the driver. The scale will then be
-> calculated according to the voltage reported by the regulator.
-> 
-> Signed-off-by: Paul Cercueil <paul.cercueil@analog.com>
-> Co-developed-by: Beniamin Bia <beniamin.bia@analog.com>
-> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-My only comment on this one is that you could use devm_add_action_or_reset
-to deal with the regulator clean up.
+Many thanks for the patches, some few comments below.
 
+On 21/10/19 7:53, Gwendal Grignou wrote:
+> Add a new function to return the number of MEMS sensors available in a
+> ChromeOS Embedded Controller.
+> It uses MOTIONSENSE_CMD_DUMP if available or a specific memory map ACPI
+> registers to find out.
+> 
+> Also, make check_features public as it can be useful for other drivers
+> to know what the Embedded Controller supports.
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > ---
->  drivers/iio/adc/ad7091r-base.c | 42 +++++++++++++++++++++++++++++++++-
->  drivers/iio/adc/ad7091r-base.h |  1 +
->  drivers/iio/adc/ad7091r5.c     |  5 ++++
->  3 files changed, 47 insertions(+), 1 deletion(-)
+> Changes in v2:
+>   Fix spelling in commit message.
+>   Cleanup the case where DUMP command is not supported.
+>   Move code from mfd to platform/chrome/
 > 
-> diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-> index 140413329754..d416f0912531 100644
-> --- a/drivers/iio/adc/ad7091r-base.c
-> +++ b/drivers/iio/adc/ad7091r-base.c
-> @@ -14,6 +14,7 @@
->  #include <linux/interrupt.h>
->  #include <linux/module.h>
->  #include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
->  
->  #define AD7091R_REG_RESULT  0
->  #define AD7091R_REG_CHANNEL 1
-> @@ -42,6 +43,7 @@ enum ad7091r_mode {
->  struct ad7091r_state {
->  	struct device *dev;
->  	struct regmap *map;
-> +	struct regulator *reg;
->  	const struct ad7091r_chip_info *chip_info;
->  	enum ad7091r_mode mode;
+>  drivers/mfd/cros_ec_dev.c                   |  32 ------
+>  drivers/platform/chrome/cros_ec_proto.c     | 116 ++++++++++++++++++++
+>  include/linux/platform_data/cros_ec_proto.h |   5 +
+>  3 files changed, 121 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
+> index 6e6dfd6c18711..a35104e35cb4e 100644
+> --- a/drivers/mfd/cros_ec_dev.c
+> +++ b/drivers/mfd/cros_ec_dev.c
+> @@ -112,38 +112,6 @@ static const struct mfd_cell cros_ec_vbc_cells[] = {
+>  	{ .name = "cros-ec-vbc", }
 >  };
-> @@ -139,6 +141,21 @@ static int ad7091r_read_raw(struct iio_dev *iio_dev,
->  		ret = IIO_VAL_INT;
->  		break;
 >  
-> +	case IIO_CHAN_INFO_SCALE:
-> +		if (st->reg) {
-> +			ret = regulator_get_voltage(st->reg);
-> +			if (ret < 0)
-> +				goto unlock;
+> -static int cros_ec_check_features(struct cros_ec_dev *ec, int feature)
+> -{
+> -	struct cros_ec_command *msg;
+> -	int ret;
+> -
+> -	if (ec->features[0] == -1U && ec->features[1] == -1U) {
+> -		/* features bitmap not read yet */
+> -		msg = kzalloc(sizeof(*msg) + sizeof(ec->features), GFP_KERNEL);
+> -		if (!msg)
+> -			return -ENOMEM;
+> -
+> -		msg->command = EC_CMD_GET_FEATURES + ec->cmd_offset;
+> -		msg->insize = sizeof(ec->features);
+> -
+> -		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+> -		if (ret < 0) {
+> -			dev_warn(ec->dev, "cannot get EC features: %d/%d\n",
+> -				 ret, msg->result);
+> -			memset(ec->features, 0, sizeof(ec->features));
+> -		} else {
+> -			memcpy(ec->features, msg->data, sizeof(ec->features));
+> -		}
+> -
+> -		dev_dbg(ec->dev, "EC features %08x %08x\n",
+> -			ec->features[0], ec->features[1]);
+> -
+> -		kfree(msg);
+> -	}
+> -
+> -	return ec->features[feature / 32] & EC_FEATURE_MASK_0(feature);
+> -}
+> -
+>  static void cros_ec_class_release(struct device *dev)
+>  {
+>  	kfree(to_cros_ec_dev(dev));
+> diff --git a/drivers/platform/chrome/cros_ec_proto.c b/drivers/platform/chrome/cros_ec_proto.c
+> index 7db58771ec77c..2357c717399ad 100644
+> --- a/drivers/platform/chrome/cros_ec_proto.c
+> +++ b/drivers/platform/chrome/cros_ec_proto.c
+> @@ -717,3 +717,119 @@ u32 cros_ec_get_host_event(struct cros_ec_device *ec_dev)
+>  	return host_event;
+>  }
+>  EXPORT_SYMBOL(cros_ec_get_host_event);
 > +
-> +			*val = ret / 1000;
+> +/**
+> + * cros_ec_check_features - Test for the presence of EC features
+> + *
+> + * Call this function to test whether the ChromeOS EC supports a feature.
+> + *
+> + * @ec_dev: EC device: does not have to be connected directly to the AP,
+> + *          can be daisy chained through another device.
+> + * @feature: One of ec_feature_code bit.
+> + * @return: 1 if supported, 0 if not
+
+This is not kernel-doc compliant, check with kernel-doc script.
+
+> + */
+> +int cros_ec_check_features(struct cros_ec_dev *ec, int feature)
+> +{
+> +	struct cros_ec_command *msg;
+> +	int ret;
+> +
+> +	if (ec->features[0] == -1U && ec->features[1] == -1U) {
+> +		/* features bitmap not read yet */
+> +		msg = kzalloc(sizeof(*msg) + sizeof(ec->features), GFP_KERNEL);
+> +		if (!msg)
+> +			return -ENOMEM;
+> +
+> +		msg->command = EC_CMD_GET_FEATURES + ec->cmd_offset;
+> +		msg->insize = sizeof(ec->features);
+> +
+> +		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+> +		if (ret < 0) {
+> +			dev_warn(ec->dev, "cannot get EC features: %d/%d\n",
+> +				 ret, msg->result);
+> +			memset(ec->features, 0, sizeof(ec->features));
 > +		} else {
-> +			*val = st->chip_info->vref_mV;
+> +			memcpy(ec->features, msg->data, sizeof(ec->features));
 > +		}
 > +
-> +		*val2 = chan->scan_type.realbits;
-> +		ret = IIO_VAL_FRACTIONAL_LOG2;
-> +		break;
+> +		dev_dbg(ec->dev, "EC features %08x %08x\n",
+> +			ec->features[0], ec->features[1]);
 > +
->  	default:
->  		ret = -EINVAL;
->  		break;
-> @@ -215,6 +232,18 @@ int ad7091r_probe(struct device *dev, const char *name,
->  			return ret;
->  	}
->  
-> +	st->reg = devm_regulator_get_optional(dev, "vref");
-> +	if (IS_ERR(st->reg)) {
-> +		if (PTR_ERR(st->reg) == EPROBE_DEFER)
-> +			return -EPROBE_DEFER;
-> +
-> +		st->reg = NULL;
-> +	} else {
-> +		ret = regulator_enable(st->reg);
-> +		if (ret)
-> +			return ret;
-
-I would use devm_add_action_or_reset with appropriate wrapper
-around disabling the regulator. That will get rid of the
-need to manually deal with errors or remove path.
-
+> +		kfree(msg);
 > +	}
 > +
->  	/* Use command mode by default */
->  	ret = ad7091r_set_mode(st, AD7091R_MODE_COMMAND);
->  	if (ret < 0)
-> @@ -222,18 +251,29 @@ int ad7091r_probe(struct device *dev, const char *name,
->  
->  	ret = iio_device_register(iio_dev);
->  	if (ret)
-> -		return ret;
-> +		goto err_disable_reg;
->  
->  	dev_dbg(dev, "Probed\n");
->  	return 0;
+> +	return ec->features[feature / 32] & EC_FEATURE_MASK_0(feature);
+> +}
+> +EXPORT_SYMBOL_GPL(cros_ec_check_features);
 > +
-> +err_disable_reg:
-> +	if (st->reg)
-> +		regulator_disable(st->reg);
-> +
-> +	return ret;
->  }
->  EXPORT_SYMBOL_GPL(ad7091r_probe);
->  
->  int ad7091r_remove(struct device *dev)
->  {
->  	struct iio_dev *iio_dev = dev_get_drvdata(dev);
-> +	struct ad7091r_state *st = iio_priv(iio_dev);
->  
->  	iio_device_unregister(iio_dev);
-> +
-> +	if (st->reg)
-> +		regulator_disable(st->reg);
-> +
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(ad7091r_remove);
-> diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
-> index 7a29f86ea82b..cec4fb75fecc 100644
-> --- a/drivers/iio/adc/ad7091r-base.h
-> +++ b/drivers/iio/adc/ad7091r-base.h
-> @@ -18,6 +18,7 @@ struct ad7091r_state;
->  struct ad7091r_chip_info {
->  	unsigned int num_channels;
->  	const struct iio_chan_spec *channels;
-> +	unsigned int vref_mV;
->  };
->  
->  extern const struct regmap_config ad7091r_regmap_config;
-> diff --git a/drivers/iio/adc/ad7091r5.c b/drivers/iio/adc/ad7091r5.c
-> index 1ba838c58c31..65bcd8bb692a 100644
-> --- a/drivers/iio/adc/ad7091r5.c
-> +++ b/drivers/iio/adc/ad7091r5.c
-> @@ -35,10 +35,13 @@ static const struct iio_event_spec ad7091r5_events[] = {
->  #define AD7091R_CHANNEL(idx, bits, ev, num_ev) { \
->  	.type = IIO_VOLTAGE, \
->  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
->  	.indexed = 1, \
->  	.channel = idx, \
->  	.event_spec = ev, \
->  	.num_event_specs = num_ev, \
-> +	.scan_type.storagebits = 16, \
-> +	.scan_type.realbits = bits, \
->  }
->  static const struct iio_chan_spec ad7091r5_channels_irq[] = {
->  	AD7091R_CHANNEL(0, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
-> @@ -58,11 +61,13 @@ static const struct iio_chan_spec ad7091r5_channels_noirq[] = {
->  static const struct ad7091r_chip_info ad7091r5_chip_info_irq = {
->  	.channels = ad7091r5_channels_irq,
->  	.num_channels = ARRAY_SIZE(ad7091r5_channels_irq),
-> +	.vref_mV = 2500,
->  };
->  
->  static const struct ad7091r_chip_info ad7091r5_chip_info_noirq = {
->  	.channels = ad7091r5_channels_noirq,
->  	.num_channels = ARRAY_SIZE(ad7091r5_channels_noirq),
-> +	.vref_mV = 2500,
->  };
->  
->  static int ad7091r5_i2c_probe(struct i2c_client *i2c,
+> +/**
+> + * Return the number of MEMS sensors supported.
+> + *
+> + * @ec_dev: EC device: does not have to be connected directly to the AP,
+> + *          can be daisy chained through another device.
+> + * Return < 0 in case of error.
 
+Same, this is not kernel-doc compliant, check with kernel-doc script.
+
+> + */
+> +int cros_ec_get_sensor_count(struct cros_ec_dev *ec)
+> +{
+> +	/*
+> +	 * Issue a command to get the number of sensor reported.
+> +	 * If not supported, check for legacy mode.
+> +	 */
+
+I'd prefer have this in the function documentation.
+
+> +	int ret, sensor_count;
+> +	struct ec_params_motion_sense *params;
+> +	struct ec_response_motion_sense *resp;
+> +	struct cros_ec_command *msg;
+> +	struct cros_ec_device *ec_dev = ec->ec_dev;
+> +	u8 status;
+> +
+
+nit: Reverse Christmas tree local variable ordering here please.
+
+> +	msg = kzalloc(sizeof(struct cros_ec_command) +
+
+Better sizeof(*msg)?
+
+> +			max(sizeof(*params), sizeof(*resp)), GFP_KERNEL);
+> +	if (!msg)
+> +		return -ENOMEM;
+> +
+> +	msg->version = 1;
+> +	msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
+> +	msg->outsize = sizeof(*params);
+> +	msg->insize = sizeof(*resp);
+> +
+> +	params = (struct ec_params_motion_sense *)msg->data;
+> +	params->cmd = MOTIONSENSE_CMD_DUMP;
+> +
+
+
+> +	ret = cros_ec_cmd_xfer(ec->ec_dev, msg);
+> +	if (ret < 0) {
+> +		sensor_count = ret;
+> +	} else if (msg->result != EC_RES_SUCCESS) {
+> +		sensor_count = -EPROTO;
+> +	} else {
+> +		resp = (struct ec_response_motion_sense *)msg->data;
+> +		sensor_count = resp->dump.sensor_count;
+> +	}
+
+Can this be rewritten to?
+
+        sensor_count = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+        if (sensor_count >= 0) {
+		resp = (struct ec_response_motion_sense *)msg->data;
+		sensor_count = resp->dump.sensor_count;
+        }
+
+> +	kfree(msg);
+> +
+> +	/*
+> +	 * Check legacy mode: Let's find out if sensors are accessible
+> +	 * via LPC interface.
+> +	 */
+> +	if (sensor_count == -EPROTO &&
+> +	    ec->cmd_offset == 0 &&
+> +	    ec_dev->cmd_readmem) {
+> +		ret = ec_dev->cmd_readmem(ec_dev, EC_MEMMAP_ACC_STATUS,
+> +				1, &status);
+> +		if ((ret >= 0) &&
+
+Unnecessary parentheses around 'ret >= 0'
+
+> +		    (status & EC_MEMMAP_ACC_STATUS_PRESENCE_BIT)) {
+
+Unnecessary brackets
+
+> +			/*
+> +			 * We have 2 sensors, one in the lid, one in the base.
+> +			 */
+> +			sensor_count = 2;
+> +		} else {
+> +			/*
+> +			 * EC uses LPC interface and no sensors are presented.
+> +			 */
+> +			sensor_count = 0;
+> +		}
+> +	} else if (sensor_count == -EPROTO) {
+> +		/* EC responded, but does not understand DUMP command. */
+> +		sensor_count = 0;
+> +	}
+> +	return sensor_count;
+> +}
+> +EXPORT_SYMBOL_GPL(cros_ec_get_sensor_count);
+> diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/platform_data/cros_ec_proto.h
+> index 0d4e4aaed37af..f3de0662135d5 100644
+> --- a/include/linux/platform_data/cros_ec_proto.h
+> +++ b/include/linux/platform_data/cros_ec_proto.h
+> @@ -12,6 +12,7 @@
+>  #include <linux/mutex.h>
+>  #include <linux/notifier.h>
+>  
+> +#include <linux/mfd/cros_ec.h>
+
+I am wondering if makes sense move 'struct cros_ec_dev' to cros_ec_proto.h and
+remove definitely include/mfd/cros_ec.h. However this could be a follow up patch.
+
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  
+>  #define CROS_EC_DEV_NAME	"cros_ec"
+> @@ -213,4 +214,8 @@ int cros_ec_get_next_event(struct cros_ec_device *ec_dev, bool *wake_event);
+>  
+>  u32 cros_ec_get_host_event(struct cros_ec_device *ec_dev);
+>  
+> +int cros_ec_check_features(struct cros_ec_dev *ec, int feature);
+> +
+> +int cros_ec_get_sensor_count(struct cros_ec_dev *ec);
+> +
+>  #endif /* __LINUX_CROS_EC_PROTO_H */
+> 
+
+Thanks,
+ Enric

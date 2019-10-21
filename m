@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C99A5DE432
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 07:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BDDFDE434
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 07:55:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727096AbfJUFyP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1726981AbfJUFyP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Mon, 21 Oct 2019 01:54:15 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:38781 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726190AbfJUFyP (ORCPT
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:41224 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726394AbfJUFyP (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Oct 2019 01:54:15 -0400
-Received: by mail-pl1-f194.google.com with SMTP id w8so6071736plq.5
-        for <linux-iio@vger.kernel.org>; Sun, 20 Oct 2019 22:54:13 -0700 (PDT)
+Received: by mail-pf1-f194.google.com with SMTP id q7so7692414pfh.8
+        for <linux-iio@vger.kernel.org>; Sun, 20 Oct 2019 22:54:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RmuwxAhHny5Bxddl2wSh3/iRStUxUdgRz5ebQs0ffAs=;
-        b=bgj6Wo5YqV9LZUQ+dZT40Ds92N7Je9E19ECQFwZfcHqLQ8JG2U8OWYloBldX+l11Ex
-         1ArQUOoCkx2ccjp+b1RspxwTQ6V7RaaWhs1+09gXus3NRF4kYuMnTJK8qjCSSJMSnUGD
-         tfTvrQ72gC7j8ZGHE1QQH1+hzhaOHh+Curxfc=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=AdBSi2rqFh7Vdpb3I3tVfeX5I0nWB5o7fC6PgNP0NjU=;
+        b=Jfgl+xH0G/cVghEax9U0ejV4Qz+iIqyt7gM1hlBK0LFNFDRPnlVHyI4q3tT3DZ3qOL
+         R9/5C2fJvS/BVkjKIgmmJEwKwteYO8/vzFminOt8z4RwgWXIxamA3ui+XRvzhewznDop
+         M3MqA6XcKdlkewEmo6UhyRbtTr3WkBOWokoto=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RmuwxAhHny5Bxddl2wSh3/iRStUxUdgRz5ebQs0ffAs=;
-        b=nTVEbIQe0VWUmDVYfnaHQmF77jlyPyCenC3s0USX67s6nazMPhUwaLMoKjI/kMrp+R
-         mwVSTgGy4djbflxHkRIILElSZK/KW4lPu8FZ53tnkuVR/j6UDxRdGeMUIRuHkc5Vm/m4
-         EN8ia9S3F8/Yy3dkXiMa0+U3/5MEeX31CM6vfkgrzuanzkU7swUWTbsmFsaC9Ax2vlUe
-         Gm9BKLZsDUYIF7SCTcnWExH+kE8RR7OmoYxvn4FAzBcCZrjUqwwA/zRF4YW78irbGz3+
-         3uBiSTKomu49+3VQfO6IhX/T4xosovY7ZUOqpGE+5PbPcanoHJniGb3C1b2yQGnBSgmM
-         V14A==
-X-Gm-Message-State: APjAAAV8+i8/PcruaqKRUYuDk2KDE9Y0Mryv4tjHLHew6Y7SjnRaxJ1S
-        5vDLwflTdD06NldghG0PAcB4Uw==
-X-Google-Smtp-Source: APXvYqww+wuJMWctkjZd9ig8aBIyKel5rJnB1sOEFVxbXEVSynRio4At5dT6RRCpIm0K+SZ4TgLHwQ==
-X-Received: by 2002:a17:902:9b83:: with SMTP id y3mr22541831plp.179.1571637252943;
-        Sun, 20 Oct 2019 22:54:12 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=AdBSi2rqFh7Vdpb3I3tVfeX5I0nWB5o7fC6PgNP0NjU=;
+        b=lyJIInfIiCd6kQ1NqNktkkugPyWs1kweyPqq5lhtxJGd6fpqBrkVzQf7zTvCQEuPK4
+         L/cVBa6zyFc47gz9aDeLsB7CakLO1ImwoLMCIyt58JbIRxeOGOj+DA0dLfUF5HbcqBUM
+         ue006Ql1U/clTEKiHPl0Vf9ec9uhkmDEYPz/tqD9Nzd6t/EY0EsSFWNFN/Y2QEjwpczx
+         NKWKP/c0vCil7LngPM8+Nl4TGyRuVp5L32DsqXFTW1LG8fcGQqICDmnA/dx1c8Vu4Gti
+         9RqXAxtVDUGUp814z2mr9mJI7O82FbbfhWZMMlvpEEQmNvjJiVpAxqKYytdDhXEm2KCX
+         fW2g==
+X-Gm-Message-State: APjAAAUKx0Uq4aFpZdFdJk0LlKBienbZu66YLWySyz5muoLLLMNIJ3w9
+        CFN9QmaHX4+PeiyGJBOaChdmrg==
+X-Google-Smtp-Source: APXvYqwUpQlnenFnhvRw/qIE5AaExdM9R6F2kRHa5O0ipwLqN8BtCpDqTHM0fETGit7+IYggXgyJjg==
+X-Received: by 2002:a17:90a:bf8d:: with SMTP id d13mr27307999pjs.89.1571637254353;
+        Sun, 20 Oct 2019 22:54:14 -0700 (PDT)
 Received: from localhost ([2620:15c:202:1:3c8f:512b:3522:dfaf])
-        by smtp.gmail.com with ESMTPSA id w2sm12870614pgr.78.2019.10.20.22.54.11
+        by smtp.gmail.com with ESMTPSA id s141sm15976909pfs.13.2019.10.20.22.54.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Oct 2019 22:54:12 -0700 (PDT)
+        Sun, 20 Oct 2019 22:54:13 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     briannorris@chromium.org, jic23@kernel.org, knaack.h@gmx.de,
         lars@metafoo.de, pmeerw@pmeerw.net, lee.jones@linaro.org,
@@ -49,10 +49,12 @@ To:     briannorris@chromium.org, jic23@kernel.org, knaack.h@gmx.de,
         fabien.lahoudere@collabora.com
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 00/18] cros_ec: Add sensorhub driver and FIFO processing*** SUBJECT HERE
-Date:   Sun, 20 Oct 2019 22:53:45 -0700
-Message-Id: <20191021055403.67849-1-gwendal@chromium.org>
+Subject: [PATCH v2 01/18] platform: chrome: Put docs with the code
+Date:   Sun, 20 Oct 2019 22:53:46 -0700
+Message-Id: <20191021055403.67849-2-gwendal@chromium.org>
 X-Mailer: git-send-email 2.23.0.866.gb869b98d4c-goog
+In-Reply-To: <20191021055403.67849-1-gwendal@chromium.org>
+References: <20191021055403.67849-1-gwendal@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -60,152 +62,344 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patchset adds a sensorhub driver for spreading sensor
-events coming from the Embedded controller sensor FIFO:
+To avoid doc rot, put function documentations with code, not header.
+Use kernel-doc style comments for exported functions.
 
-       +---------------+ +--------------+ +----
-       | cros_ec_accel | | cros_ec_gyro | | ...
-       +---------------+ +--------------+ +----
-           id:0       \        id:1 |       / id:..
-                 +------------------------------+
-                 |       cros_ec_sensorhub      |
-                 +------------------------------+
-                 |           cros_ec_dev        |
-                 +------------------------------+
-                 | cros_ec_i2c, cros_ec_lpc, .. |
-                 +------------------------------+
-                                 |
-                                 EC
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+---
+New in v2.
 
-When new sensors events are present, the EC raises and interrupt,
-sensorhub reads the FIFO and uses the 'id' field to spread the event to
-the proper IIO sensors. This stack is similar to the HID sensor input
-stack.
+ drivers/platform/chrome/cros_ec.c           |  33 +++++++
+ drivers/platform/chrome/cros_ec_proto.c     |  70 +++++++++++++
+ include/linux/platform_data/cros_ec_proto.h | 103 --------------------
+ 3 files changed, 103 insertions(+), 103 deletions(-)
 
-The first patch move cros_ec_proto functions documentations into the
-code to prevent rot.
-
-The inext 3 patches add a primitive cros_ec_sensorhub. MFD just have to
-register this driver if at least one sensor is presented by the EC.
-cros_ec_sensorhub retrieves more information from the EC to find out
-which sensors are actually present:
-  mfd: cros_ec: Add sensor_count and make check_features public
-  platform: cros_ec: Add cros_ec_sensor_hub driver
-  platform/mfd:iio: cros_ec: Register sensor through sensorhub
-
-The next 3 patches prepare for FIFO support:
-  platform: chrome: cros-ec: record event timestamp in the hard irq
-  platform: chrome: cros_ec: Do not attempt to register a non-positive
-  platform: chrome: cros_ec: handle MKBP more events flag
-
-That last patch fixes a regression that changes event processing.
-Revert the patches that fixed that regression.
-
-The next 3 patches add FIFO support. An interface is added to connect
-the IIO sensors with cros_ec_sensorhub, and filters are needed to spread
-the timestamp when the EC send batches of events and deal with variation
-in interrupt delay.
-  platform: chrome: sensorhub: Add FIFO support
-  platform: chrome: sensorhub: Add code to spread timestmap
-  platform: chrome: sensorhub: Add median filter
-
-The remaining patches update IIO cros_ec drivers:
-The first patch moves cros_ec_sensor_core functions documentation into
-the .c file.
-Then we can use the FIFO function exposed by cros_ec_sensorhub:
-  iio: cros_ec: Use triggered buffer only when EC does not support FIFO
-
-The power management functions are not necessary anymore, since we
-shutoff the FIFO from cros_ec_sensorhub:
-  iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO
-
-Finally, the last 3 patches present sensor information following the IIO
-ABI:
--  Configurable EC timeout to allow batch mode in buffer/hwfifo_timeout,
-  in seconds.
--  Hard coded EC FIFO size in buffer/hwfifo_watermark_max
--  Sensor sampling frequency in hertz at sampling_frequency:
-  iio: cros_ec: Expose hwfifo_timeout
-  iio: cros_ec: Report hwfifo_watermark_max
-  iio: cros_ec: Use Hertz as unit for sampling frequency
-
-For testing, libiio test tools can be used:
-A iio device link looks like:
-iio:device1 ->
-...09:00/GOOG0004:00/cros-ec-dev.6.auto/cros-ec-sensorhub.7.auto/
-                     cros-ec-accel.15.auto/iio:device1
-
-When FIFO is available, no trigger are presented. Once
-sampling_freqeuncy and hwfifo_timeout are set, sensor events flow
-when listening to /dev/iio:device1:
-echo 12 > sampling_frequency   # Set ODR to at least 12Hz
-echo .100 > buffer/hwfifo_timeout  # do not wait more than 100ms to
-                                   # to send samples
-iio_readdev -b 2 -T 1000 -s 2 iio:device1 2>/dev/null| od -x
-0000000 ffd0 2e20 d990 0000 8630 b56c 07ea 0000
-0000020 ffc0 2e10 d970 0000 877e b56c 07ea 0000
-0000040`
-
-When FIFO is not supported by the EC, a trigger is present in the
-directory. After registering a trigger, setting sampling_frequency,
-the latest data collected by the sensor will be retrieved by the host
-when the trigger expires.
-
-When cros_ec_accel_legacy driver is used, no FIFO is supported and the
-sampling frequency for the accelerometers is hard coded at 10Hz.
-
-This set is built upon the master branch of
-git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-
-Enrico Granata (2):
-  platform: chrome: cros_ec: Do not attempt to register a non-positive
-    IRQ number
-  platform: chrome: cros_ec: handle MKBP more events flag
-
-Gwendal Grignou (16):
-  platform: chrome: Put docs with the code
-  mfd: cros_ec: Add sensor_count and make check_features public
-  platform: cros_ec: Add cros_ec_sensor_hub driver
-  platform/mfd:iio: cros_ec: Register sensor through sensorhub
-  platform: chrome: cros-ec: record event timestamp in the hard irq
-  Revert "Input: cros_ec_keyb - add back missing mask for event_type"
-  Revert "Input: cros_ec_keyb: mask out extra flags in event_type"
-  platform: chrome: sensorhub: Add FIFO support
-  platform: chrome: sensorhub: Add code to spread timestmap
-  platform: chrome: sensorhub: Add median filter
-  iio: cros_ec: Move function description to .c file
-  iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO
-  iio: cros_ec: Remove pm function
-  iio: cros_ec: Expose hwfifo_timeout
-  iio: cros_ec: Report hwfifo_watermark_max
-  iio: cros_ec: Use Hertz as unit for sampling frequency
-
- drivers/iio/accel/cros_ec_accel_legacy.c      |  14 +-
- drivers/iio/common/cros_ec_sensors/Kconfig    |   2 +-
- .../cros_ec_sensors/cros_ec_lid_angle.c       |   3 +-
- .../common/cros_ec_sensors/cros_ec_sensors.c  |  19 +-
- .../cros_ec_sensors/cros_ec_sensors_core.c    | 359 +++++--
- drivers/iio/light/cros_ec_light_prox.c        |  21 +-
- drivers/iio/pressure/cros_ec_baro.c           |  14 +-
- drivers/input/keyboard/cros_ec_keyb.c         |   6 +-
- drivers/mfd/cros_ec_dev.c                     | 235 +----
- drivers/platform/chrome/Kconfig               |  12 +
- drivers/platform/chrome/Makefile              |   2 +
- drivers/platform/chrome/cros_ec.c             |  80 +-
- drivers/platform/chrome/cros_ec_ishtp.c       |  25 +-
- drivers/platform/chrome/cros_ec_lpc.c         |  17 +-
- drivers/platform/chrome/cros_ec_proto.c       | 267 ++++-
- drivers/platform/chrome/cros_ec_rpmsg.c       |  23 +-
- drivers/platform/chrome/cros_ec_sensorhub.c   | 263 +++++
- .../platform/chrome/cros_ec_sensorhub_ring.c  | 973 ++++++++++++++++++
- .../linux/iio/common/cros_ec_sensors_core.h   | 106 +-
- include/linux/platform_data/cros_ec_proto.h   | 138 +--
- .../linux/platform_data/cros_ec_sensorhub.h   | 171 +++
- 21 files changed, 2118 insertions(+), 632 deletions(-)
- create mode 100644 drivers/platform/chrome/cros_ec_sensorhub.c
- create mode 100644 drivers/platform/chrome/cros_ec_sensorhub_ring.c
- create mode 100644 include/linux/platform_data/cros_ec_sensorhub.h
-
+diff --git a/drivers/platform/chrome/cros_ec.c b/drivers/platform/chrome/cros_ec.c
+index fd77e6fa74c2c..9b2d07422e175 100644
+--- a/drivers/platform/chrome/cros_ec.c
++++ b/drivers/platform/chrome/cros_ec.c
+@@ -104,6 +104,15 @@ static int cros_ec_sleep_event(struct cros_ec_device *ec_dev, u8 sleep_event)
+ 	return ret;
+ }
+ 
++/**
++ * cros_ec_register() - Register a new ChromeOS EC, using the provided info.
++ * @ec_dev: Device to register.
++ *
++ * Before calling this, allocate a pointer to a new device and then fill
++ * in all the fields up to the --private-- marker.
++ *
++ * Return: 0 on success or negative error code.
++ */
+ int cros_ec_register(struct cros_ec_device *ec_dev)
+ {
+ 	struct device *dev = ec_dev->dev;
+@@ -198,6 +207,14 @@ int cros_ec_register(struct cros_ec_device *ec_dev)
+ }
+ EXPORT_SYMBOL(cros_ec_register);
+ 
++/**
++ * cros_ec_unregister() - Remove a ChromeOS EC.
++ * @ec_dev: Device to unregister.
++ *
++ * Call this to deregister a ChromeOS EC, then clean up any private data.
++ *
++ * Return: 0 on success or negative error code.
++ */
+ int cros_ec_unregister(struct cros_ec_device *ec_dev)
+ {
+ 	if (ec_dev->pd)
+@@ -209,6 +226,14 @@ int cros_ec_unregister(struct cros_ec_device *ec_dev)
+ EXPORT_SYMBOL(cros_ec_unregister);
+ 
+ #ifdef CONFIG_PM_SLEEP
++/**
++ * cros_ec_suspend() - Handle a suspend operation for the ChromeOS EC device.
++ * @ec_dev: Device to suspend.
++ *
++ * This can be called by drivers to handle a suspend event.
++ *
++ * Return: 0 on success or negative error code.
++ */
+ int cros_ec_suspend(struct cros_ec_device *ec_dev)
+ {
+ 	struct device *dev = ec_dev->dev;
+@@ -243,6 +268,14 @@ static void cros_ec_report_events_during_suspend(struct cros_ec_device *ec_dev)
+ 					     1, ec_dev);
+ }
+ 
++/**
++ * cros_ec_resume() - Handle a resume operation for the ChromeOS EC device.
++ * @ec_dev: Device to resume.
++ *
++ * This can be called by drivers to handle a resume event.
++ *
++ * Return: 0 on success or negative error code.
++ */
+ int cros_ec_resume(struct cros_ec_device *ec_dev)
+ {
+ 	int ret;
+diff --git a/drivers/platform/chrome/cros_ec_proto.c b/drivers/platform/chrome/cros_ec_proto.c
+index f659f96bda128..7db58771ec77c 100644
+--- a/drivers/platform/chrome/cros_ec_proto.c
++++ b/drivers/platform/chrome/cros_ec_proto.c
+@@ -117,6 +117,17 @@ static int send_command(struct cros_ec_device *ec_dev,
+ 	return ret;
+ }
+ 
++/**
++ * cros_ec_prepare_tx() - Prepare an outgoing message in the output buffer.
++ * @ec_dev: Device to register.
++ * @msg: Message to write.
++ *
++ * This is intended to be used by all ChromeOS EC drivers, but at present
++ * only SPI uses it. Once LPC uses the same protocol it can start using it.
++ * I2C could use it now, with a refactor of the existing code.
++ *
++ * Return: 0 on success or negative error code.
++ */
+ int cros_ec_prepare_tx(struct cros_ec_device *ec_dev,
+ 		       struct cros_ec_command *msg)
+ {
+@@ -141,6 +152,16 @@ int cros_ec_prepare_tx(struct cros_ec_device *ec_dev,
+ }
+ EXPORT_SYMBOL(cros_ec_prepare_tx);
+ 
++/**
++ * cros_ec_check_result() - Check ec_msg->result.
++ * @ec_dev: EC device.
++ * @msg: Message to check.
++ *
++ * This is used by ChromeOS EC drivers to check the ec_msg->result for
++ * errors and to warn about them.
++ *
++ * Return: 0 on success or negative error code.
++ */
+ int cros_ec_check_result(struct cros_ec_device *ec_dev,
+ 			 struct cros_ec_command *msg)
+ {
+@@ -326,6 +347,13 @@ static int cros_ec_get_host_command_version_mask(struct cros_ec_device *ec_dev,
+ 	return ret;
+ }
+ 
++/**
++ * cros_ec_query_all() -  Query the protocol version supported by the
++ *         ChromeOS EC.
++ * @ec_dev: Device to register.
++ *
++ * Return: 0 on success or negative error code.
++ */
+ int cros_ec_query_all(struct cros_ec_device *ec_dev)
+ {
+ 	struct device *dev = ec_dev->dev;
+@@ -453,6 +481,16 @@ int cros_ec_query_all(struct cros_ec_device *ec_dev)
+ }
+ EXPORT_SYMBOL(cros_ec_query_all);
+ 
++/**
++ * cros_ec_cmd_xfer() - Send a command to the ChromeOS EC.
++ * @ec_dev: EC device.
++ * @msg: Message to write.
++ *
++ * Call this to send a command to the ChromeOS EC.  This should be used
++ * instead of calling the EC's cmd_xfer() callback directly.
++ *
++ * Return: 0 on success or negative error code.
++ */
+ int cros_ec_cmd_xfer(struct cros_ec_device *ec_dev,
+ 		     struct cros_ec_command *msg)
+ {
+@@ -500,6 +538,18 @@ int cros_ec_cmd_xfer(struct cros_ec_device *ec_dev,
+ }
+ EXPORT_SYMBOL(cros_ec_cmd_xfer);
+ 
++/**
++ * cros_ec_cmd_xfer_status() - Send a command to the ChromeOS EC.
++ * @ec_dev: EC device.
++ * @msg: Message to write.
++ *
++ * This function is identical to cros_ec_cmd_xfer, except it returns success
++ * status only if both the command was transmitted successfully and the EC
++ * replied with success status. It's not necessary to check msg->result when
++ * using this function.
++ *
++ * Return: The number of bytes transferred on success or negative error code.
++ */
+ int cros_ec_cmd_xfer_status(struct cros_ec_device *ec_dev,
+ 			    struct cros_ec_command *msg)
+ {
+@@ -584,6 +634,16 @@ static int get_keyboard_state_event(struct cros_ec_device *ec_dev)
+ 	return ec_dev->event_size;
+ }
+ 
++/**
++ * cros_ec_get_next_event() - Fetch next event from the ChromeOS EC.
++ * @ec_dev: Device to fetch event from.
++ * @wake_event: Pointer to a bool set to true upon return if the event might be
++ *              treated as a wake event. Ignored if null.
++ *
++ * Return: negative error code on errors; 0 for no data; or else number of
++ * bytes received (i.e., an event was retrieved successfully). Event types are
++ * written out to @ec_dev->event_data.event_type on success.
++ */
+ int cros_ec_get_next_event(struct cros_ec_device *ec_dev, bool *wake_event)
+ {
+ 	u8 event_type;
+@@ -628,6 +688,16 @@ int cros_ec_get_next_event(struct cros_ec_device *ec_dev, bool *wake_event)
+ }
+ EXPORT_SYMBOL(cros_ec_get_next_event);
+ 
++/**
++ * cros_ec_get_host_event() - Return a mask of event set by the ChromeOS EC.
++ * @ec_dev: Device to fetch event from.
++ *
++ * When MKBP is supported, when the EC raises an interrupt, we collect the
++ * events raised and call the functions in the ec notifier. This function
++ * is a helper to know which events are raised.
++ *
++ * Return: 0 on error or non-zero bitmask of one or more EC_HOST_EVENT_*.
++ */
+ u32 cros_ec_get_host_event(struct cros_ec_device *ec_dev)
+ {
+ 	u32 host_event;
+diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/platform_data/cros_ec_proto.h
+index eab7036cda090..0d4e4aaed37af 100644
+--- a/include/linux/platform_data/cros_ec_proto.h
++++ b/include/linux/platform_data/cros_ec_proto.h
+@@ -187,133 +187,30 @@ struct cros_ec_platform {
+ 	u16 cmd_offset;
+ };
+ 
+-/**
+- * cros_ec_suspend() - Handle a suspend operation for the ChromeOS EC device.
+- * @ec_dev: Device to suspend.
+- *
+- * This can be called by drivers to handle a suspend event.
+- *
+- * Return: 0 on success or negative error code.
+- */
+ int cros_ec_suspend(struct cros_ec_device *ec_dev);
+ 
+-/**
+- * cros_ec_resume() - Handle a resume operation for the ChromeOS EC device.
+- * @ec_dev: Device to resume.
+- *
+- * This can be called by drivers to handle a resume event.
+- *
+- * Return: 0 on success or negative error code.
+- */
+ int cros_ec_resume(struct cros_ec_device *ec_dev);
+ 
+-/**
+- * cros_ec_prepare_tx() - Prepare an outgoing message in the output buffer.
+- * @ec_dev: Device to register.
+- * @msg: Message to write.
+- *
+- * This is intended to be used by all ChromeOS EC drivers, but at present
+- * only SPI uses it. Once LPC uses the same protocol it can start using it.
+- * I2C could use it now, with a refactor of the existing code.
+- *
+- * Return: 0 on success or negative error code.
+- */
+ int cros_ec_prepare_tx(struct cros_ec_device *ec_dev,
+ 		       struct cros_ec_command *msg);
+ 
+-/**
+- * cros_ec_check_result() - Check ec_msg->result.
+- * @ec_dev: EC device.
+- * @msg: Message to check.
+- *
+- * This is used by ChromeOS EC drivers to check the ec_msg->result for
+- * errors and to warn about them.
+- *
+- * Return: 0 on success or negative error code.
+- */
+ int cros_ec_check_result(struct cros_ec_device *ec_dev,
+ 			 struct cros_ec_command *msg);
+ 
+-/**
+- * cros_ec_cmd_xfer() - Send a command to the ChromeOS EC.
+- * @ec_dev: EC device.
+- * @msg: Message to write.
+- *
+- * Call this to send a command to the ChromeOS EC.  This should be used
+- * instead of calling the EC's cmd_xfer() callback directly.
+- *
+- * Return: 0 on success or negative error code.
+- */
+ int cros_ec_cmd_xfer(struct cros_ec_device *ec_dev,
+ 		     struct cros_ec_command *msg);
+ 
+-/**
+- * cros_ec_cmd_xfer_status() - Send a command to the ChromeOS EC.
+- * @ec_dev: EC device.
+- * @msg: Message to write.
+- *
+- * This function is identical to cros_ec_cmd_xfer, except it returns success
+- * status only if both the command was transmitted successfully and the EC
+- * replied with success status. It's not necessary to check msg->result when
+- * using this function.
+- *
+- * Return: The number of bytes transferred on success or negative error code.
+- */
+ int cros_ec_cmd_xfer_status(struct cros_ec_device *ec_dev,
+ 			    struct cros_ec_command *msg);
+ 
+-/**
+- * cros_ec_register() - Register a new ChromeOS EC, using the provided info.
+- * @ec_dev: Device to register.
+- *
+- * Before calling this, allocate a pointer to a new device and then fill
+- * in all the fields up to the --private-- marker.
+- *
+- * Return: 0 on success or negative error code.
+- */
+ int cros_ec_register(struct cros_ec_device *ec_dev);
+ 
+-/**
+- * cros_ec_unregister() - Remove a ChromeOS EC.
+- * @ec_dev: Device to unregister.
+- *
+- * Call this to deregister a ChromeOS EC, then clean up any private data.
+- *
+- * Return: 0 on success or negative error code.
+- */
+ int cros_ec_unregister(struct cros_ec_device *ec_dev);
+ 
+-/**
+- * cros_ec_query_all() -  Query the protocol version supported by the
+- *         ChromeOS EC.
+- * @ec_dev: Device to register.
+- *
+- * Return: 0 on success or negative error code.
+- */
+ int cros_ec_query_all(struct cros_ec_device *ec_dev);
+ 
+-/**
+- * cros_ec_get_next_event() - Fetch next event from the ChromeOS EC.
+- * @ec_dev: Device to fetch event from.
+- * @wake_event: Pointer to a bool set to true upon return if the event might be
+- *              treated as a wake event. Ignored if null.
+- *
+- * Return: negative error code on errors; 0 for no data; or else number of
+- * bytes received (i.e., an event was retrieved successfully). Event types are
+- * written out to @ec_dev->event_data.event_type on success.
+- */
+ int cros_ec_get_next_event(struct cros_ec_device *ec_dev, bool *wake_event);
+ 
+-/**
+- * cros_ec_get_host_event() - Return a mask of event set by the ChromeOS EC.
+- * @ec_dev: Device to fetch event from.
+- *
+- * When MKBP is supported, when the EC raises an interrupt, we collect the
+- * events raised and call the functions in the ec notifier. This function
+- * is a helper to know which events are raised.
+- *
+- * Return: 0 on error or non-zero bitmask of one or more EC_HOST_EVENT_*.
+- */
+ u32 cros_ec_get_host_event(struct cros_ec_device *ec_dev);
+ 
+ #endif /* __LINUX_CROS_EC_PROTO_H */
 -- 
 2.23.0.866.gb869b98d4c-goog
 

@@ -2,193 +2,323 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1CEEDE41F
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 07:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 235F4DE55F
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2019 09:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727397AbfJUFyq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Oct 2019 01:54:46 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:42218 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727341AbfJUFyk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Oct 2019 01:54:40 -0400
-Received: by mail-pf1-f193.google.com with SMTP id q12so7689530pff.9
-        for <linux-iio@vger.kernel.org>; Sun, 20 Oct 2019 22:54:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=7qM0INxFAaQNiMRb7wUF5tXn3Vp3+wTj0LnbR6ZyE/Y=;
-        b=JWw77FZCCgw9YMLZ962GN2ViHYWlECdUlu/nHHxYn24wfZa/tGvxW4dT1MhU+eq1YK
-         PEDnU8MbXqNlsiw2HqjnuRl6po5hzMkxNDVO1Q2XTWuk0ZM1QlWKgTh/YlsUnE0EtGiO
-         GGKdWR19zADEohM382sAw/snKb2AATugWB9js=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=7qM0INxFAaQNiMRb7wUF5tXn3Vp3+wTj0LnbR6ZyE/Y=;
-        b=M9QcdYLv7jTUWhmsmTQgLiYji4DJYMPXW3OyUgOm8D+YwzQuvULcZ+YrvxnJVq94Ak
-         vgltgYihWtAd/KsALUqMC8zkVTbpjdfzCgd82IgukhzGgibGSFLXoUL6L1D3/LKgNaLW
-         cQp4LKd+0pDdsneza26vKT1C34GFTrkpl8VjS5VGXf0XiedpvWEIf7k9zXL1QdvsMQwM
-         NQg8+MP7gyWykO0Yx8f7ptOsWDCIbsWXYlXR1YkKGRgdAGPLRt0cy/5IqYU8SXTP+s2S
-         s+DiLg3wmwz7XwY70qQxpOECSNw6m3xj+Zyew6ILjv/Vw3QzHq7366ngypMW7dbNb690
-         /82A==
-X-Gm-Message-State: APjAAAXIM0uZfqNQ5VsfNbiHA9md8U7sZYQFMx89ZeczvcrVNNctuBht
-        lxVq1ZSDN4q4Ul12n2K/gQod+w==
-X-Google-Smtp-Source: APXvYqyG3qpMge7NE3llGhFUegOMLLRrvzpwhlN0fGWuEykOP9u2aFiWJvMLJuUBAfhtz8q/dXLFLA==
-X-Received: by 2002:a63:2f47:: with SMTP id v68mr19033909pgv.318.1571637279955;
-        Sun, 20 Oct 2019 22:54:39 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:3c8f:512b:3522:dfaf])
-        by smtp.gmail.com with ESMTPSA id r24sm14718031pfh.69.2019.10.20.22.54.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Oct 2019 22:54:39 -0700 (PDT)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     briannorris@chromium.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, lee.jones@linaro.org,
-        bleung@chromium.org, enric.balletbo@collabora.com,
-        dianders@chromium.org, groeck@chromium.org,
-        fabien.lahoudere@collabora.com
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 18/18] iio: cros_ec: Use Hertz as unit for sampling frequency
-Date:   Sun, 20 Oct 2019 22:54:03 -0700
-Message-Id: <20191021055403.67849-19-gwendal@chromium.org>
-X-Mailer: git-send-email 2.23.0.866.gb869b98d4c-goog
-In-Reply-To: <20191021055403.67849-1-gwendal@chromium.org>
-References: <20191021055403.67849-1-gwendal@chromium.org>
+        id S1727300AbfJUHel (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Oct 2019 03:34:41 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:59057 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726480AbfJUHel (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Oct 2019 03:34:41 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iMSCs-0004Nz-0r; Mon, 21 Oct 2019 09:34:22 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iMSCp-00056Q-OM; Mon, 21 Oct 2019 09:34:19 +0200
+Date:   Mon, 21 Oct 2019 09:34:19 +0200
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     lee.jones@linaro.org, dmitry.torokhov@gmail.com, jdelvare@suse.com,
+        linux@roeck-us.net, thierry.reding@gmail.com, jic23@kernel.org,
+        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org,
+        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
+Subject: Re: [PATCH 5/8] pwm: Add support for Azoteq IQS620A PWM generator
+Message-ID: <20191021073419.27r4xjqpz2wswerj@pengutronix.de>
+References: <1571631083-4962-1-git-send-email-jeff@labundy.com>
+ <1571631083-4962-6-git-send-email-jeff@labundy.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1571631083-4962-6-git-send-email-jeff@labundy.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-To be compliant with other sensors, set and get sensor sampling
-frequency in Hz, not mHz.
+Hello Jeff,
 
-Fixes: ae7b02ad2f32 ("iio: common: cros_ec_sensors: Expose
-cros_ec_sensors frequency range via iio sysfs")
+On Sun, Oct 20, 2019 at 11:11:20PM -0500, Jeff LaBundy wrote:
+> This patch adds support for the Azoteq IQS620A, capable of generating
+> a 1-kHz PWM output with duty cycle between 0.4% and 100% (inclusive).
+> 
+> Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+> ---
+>  drivers/pwm/Kconfig       |  10 +++
+>  drivers/pwm/Makefile      |   1 +
+>  drivers/pwm/pwm-iqs620a.c | 167 ++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 178 insertions(+)
+>  create mode 100644 drivers/pwm/pwm-iqs620a.c
+> 
+> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+> index e3a2518..712445e 100644
+> --- a/drivers/pwm/Kconfig
+> +++ b/drivers/pwm/Kconfig
+> @@ -222,6 +222,16 @@ config PWM_IMX_TPM
+>  	  To compile this driver as a module, choose M here: the module
+>  	  will be called pwm-imx-tpm.
+>  
+> +config PWM_IQS620A
+> +	tristate "Azoteq IQS620A PWM support"
+> +	depends on MFD_IQS62X
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
-No changes in v2.
+This is only a runtime dependency if I'm not mistaken, so it would be
+great to have
 
- .../cros_ec_sensors/cros_ec_sensors_core.c    | 32 +++++++++++--------
- .../linux/iio/common/cros_ec_sensors_core.h   |  6 ++--
- 2 files changed, 22 insertions(+), 16 deletions(-)
+	depends on MFD_IQS62X || COMPILE_TEST
+	depends on REGMAP
 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index f50e239f9a1e9..76dc8cad1b4b5 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -256,6 +256,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 	struct cros_ec_dev *ec = sensor_hub->ec;
- 	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
- 	u32 ver_mask;
-+	int frequencies[ARRAY_SIZE(state->frequencies) / 2] = { 0 };
- 	int ret, i;
- 
- 	platform_set_drvdata(pdev, indio_dev);
-@@ -304,20 +305,22 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
- 
- 		/* 0 is a correct value used to stop the device */
--		state->frequencies[0] = 0;
- 		if (state->msg->version < 3) {
- 			get_default_min_max_freq(state->resp->info.type,
--						 &state->frequencies[1],
--						 &state->frequencies[2],
-+						 &frequencies[1],
-+						 &frequencies[2],
- 						 &state->fifo_max_event_count);
- 		} else {
--			state->frequencies[1] =
--			    state->resp->info_3.min_frequency;
--			state->frequencies[2] =
--			    state->resp->info_3.max_frequency;
-+			frequencies[1] = state->resp->info_3.min_frequency;
-+			frequencies[2] = state->resp->info_3.max_frequency;
- 			state->fifo_max_event_count =
- 			    state->resp->info_3.fifo_max_event_count;
- 		}
-+		for (i = 0; i < ARRAY_SIZE(frequencies); i++) {
-+			state->frequencies[2 * i] = frequencies[i] / 1000;
-+			state->frequencies[2 * i + 1] =
-+				(frequencies[i] % 1000) * 1000;
-+		}
- 
- 		ret = devm_iio_triggered_buffer_setup(
- 				dev, indio_dev, NULL,
-@@ -707,7 +710,7 @@ int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
- 			  struct iio_chan_spec const *chan,
- 			  int *val, int *val2, long mask)
- {
--	int ret;
-+	int ret, frequency;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
-@@ -719,8 +722,10 @@ int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
- 		if (ret)
- 			break;
- 
--		*val = st->resp->sensor_odr.ret;
--		ret = IIO_VAL_INT;
-+		frequency = st->resp->sensor_odr.ret;
-+		*val = frequency / 1000;
-+		*val2 = (frequency % 1000) * 1000;
-+		ret = IIO_VAL_INT_PLUS_MICRO;
- 		break;
- 	default:
- 		ret = -EINVAL;
-@@ -755,7 +760,7 @@ int cros_ec_sensors_core_read_avail(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		*length = ARRAY_SIZE(state->frequencies);
- 		*vals = (const int *)&state->frequencies;
--		*type = IIO_VAL_INT;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
- 		return IIO_AVAIL_LIST;
- 	}
- 
-@@ -777,12 +782,13 @@ int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
- 			       struct iio_chan_spec const *chan,
- 			       int val, int val2, long mask)
- {
--	int ret;
-+	int ret, frequency;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
-+		frequency = val * 1000 + val2 / 1000;
- 		st->param.cmd = MOTIONSENSE_CMD_SENSOR_ODR;
--		st->param.sensor_odr.data = val;
-+		st->param.sensor_odr.data = frequency;
- 
- 		/* Always roundup, so caller gets at least what it asks for. */
- 		st->param.sensor_odr.roundup = 1;
-diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-index 4df3abd151fbf..256447b136296 100644
---- a/include/linux/iio/common/cros_ec_sensors_core.h
-+++ b/include/linux/iio/common/cros_ec_sensors_core.h
-@@ -52,6 +52,8 @@ typedef irqreturn_t (*cros_ec_sensors_capture_t)(int irq, void *p);
-  *				is always 8-byte aligned.
-  * @read_ec_sensors_data:	function used for accessing sensors values
-  * @fifo_max_event_count:	Size of the EC sensor FIFO
-+ * @frequencies:		Table of known available frequencies:
-+ *				0, Min and Max in mHz.
-  */
- struct cros_ec_sensors_core_state {
- 	struct cros_ec_device *ec;
-@@ -75,9 +77,7 @@ struct cros_ec_sensors_core_state {
- 				    unsigned long scan_mask, s16 *data);
- 
- 	u32 fifo_max_event_count;
--
--	/* Table of known available frequencies : 0, Min and Max in mHz */
--	int frequencies[3];
-+	int frequencies[6];
- };
- 
- int cros_ec_sensors_read_lpc(struct iio_dev *indio_dev, unsigned long scan_mask,
+here.
+
+> +	help
+> +	  Generic PWM framework driver for the Azoteq IQS620A multi-function
+> +	  sensor.
+> +
+> +	  To compile this driver as a module, choose M here: the module will
+> +	  be called pwm-iqs620a.
+> +
+>  config PWM_JZ4740
+>  	tristate "Ingenic JZ47xx PWM support"
+>  	depends on MACH_INGENIC
+> diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
+> index 26326ad..27c9bfa 100644
+> --- a/drivers/pwm/Makefile
+> +++ b/drivers/pwm/Makefile
+> @@ -20,6 +20,7 @@ obj-$(CONFIG_PWM_IMG)		+= pwm-img.o
+>  obj-$(CONFIG_PWM_IMX1)		+= pwm-imx1.o
+>  obj-$(CONFIG_PWM_IMX27)		+= pwm-imx27.o
+>  obj-$(CONFIG_PWM_IMX_TPM)	+= pwm-imx-tpm.o
+> +obj-$(CONFIG_PWM_IQS620A)	+= pwm-iqs620a.o
+>  obj-$(CONFIG_PWM_JZ4740)	+= pwm-jz4740.o
+>  obj-$(CONFIG_PWM_LP3943)	+= pwm-lp3943.o
+>  obj-$(CONFIG_PWM_LPC18XX_SCT)	+= pwm-lpc18xx-sct.o
+> diff --git a/drivers/pwm/pwm-iqs620a.c b/drivers/pwm/pwm-iqs620a.c
+> new file mode 100644
+> index 0000000..6451eb1
+> --- /dev/null
+> +++ b/drivers/pwm/pwm-iqs620a.c
+> @@ -0,0 +1,167 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Azoteq IQS620A PWM Generator
+> + *
+> + * Copyright (C) 2019
+> + * Author: Jeff LaBundy <jeff@labundy.com>
+> + */
+> +
+> +#include <linux/device.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mfd/iqs62x.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pwm.h>
+> +#include <linux/regmap.h>
+> +#include <linux/slab.h>
+> +
+> +#define IQS620_PWR_SETTINGS			0xD2
+> +#define IQS620_PWR_SETTINGS_PWM_OUT		BIT(7)
+> +
+> +#define IQS620_PWM_DUTY_CYCLE			0xD8
+> +
+> +#define IQS620_PWM_PERIOD_NS			1000000
+> +
+> +struct iqs620_pwm_private {
+> +	struct iqs62x_core *iqs62x;
+> +	struct pwm_chip chip;
+> +	struct notifier_block notifier;
+> +	bool ready;
+
+This is always true, so you can drop it.
+
+> +};
+> +
+> +static int iqs620_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+> +			    struct pwm_state *state)
+
+Since
+
+	71523d1812ac ("pwm: Ensure pwm_apply_state() doesn't modify the state argument")
+
+this isn't the right prototype.
+
+> +{
+> +	struct iqs620_pwm_private *iqs620_pwm;
+> +	struct iqs62x_core *iqs62x;
+> +	int error;
+> +	int duty_calc = state->duty_cycle * 256 / IQS620_PWM_PERIOD_NS - 1;
+> +	u8 duty_clamp = clamp(duty_calc, 0, 0xFF);
+> +
+> +	iqs620_pwm = container_of(chip, struct iqs620_pwm_private, chip);
+> +	iqs62x = iqs620_pwm->iqs62x;
+> +
+> +	error = regmap_write(iqs62x->map, IQS620_PWM_DUTY_CYCLE, duty_clamp);
+> +	if (error)
+> +		return error;
+> +
+> +	state->period = IQS620_PWM_PERIOD_NS;
+> +	state->duty_cycle = (duty_clamp + 1) * IQS620_PWM_PERIOD_NS / 256;
+
+This suggests that if the value in the IQS620_PWM_DUTY_CYCLE is 0 the
+duty cycle is 1/256 ms with a period of 1 ms and the output cannot be
+constant inactive. If this is right please add a paragraph in the
+driver's comment at the top:
+
+	* Limitations:
+	* - The hardware cannot generate a 0% duty cycle
+
+(Please stick to this format, other drivers use it, too.)
+
+How does the hardware behave on changes? For example you're first
+committing the duty cycle and then on/off. Can it happen that between
+
+	pwm_apply_state(pwm, { .duty_cycle = 3900, .period = 1000000, .enabled = true)
+	...
+	pwm_apply_state(pwm, { .duty_cycle = 1000000, .period = 1000000, .enabled = false)
+
+the output is active for longer than 4 µs because the iqs620_pwm_apply
+function is preempted between the two register writes and so we already
+have .duty_cycle = 1000000 but still .enabled = true in the hardware?
+
+Does a change complete the currently running period? Does disabling
+complete the currently running period? If so, does regmap_update_bits
+block until the new setting is active?
+
+The .apply function fails to check for .pwm_polarity. You want something
+like:
+
+	if (state->polarity != PWM_POLARITY_NORMAL)
+		return -ENOTSUPP;
+
+(That's what pwm-rcar and the core (in the absence of .set_polarity for
+old-style drivers) are using. @Thierry: It would be great to fix the
+vaule that should be returned in this case. pwm-lpss and sifive use
+-EINVAL.)
+
+> +	return regmap_update_bits(iqs62x->map, IQS620_PWR_SETTINGS,
+> +				  IQS620_PWR_SETTINGS_PWM_OUT,
+> +				  state->enabled ? 0xFF : 0);
+> +}
+> +
+> +static int iqs620_pwm_notifier(struct notifier_block *notifier,
+> +			       unsigned long event_flags, void *context)
+> +{
+> +	struct iqs620_pwm_private *iqs620_pwm;
+> +	struct pwm_state state;
+> +	int error;
+> +
+> +	iqs620_pwm = container_of(notifier, struct iqs620_pwm_private,
+> +				  notifier);
+> +
+> +	if (!iqs620_pwm->ready || !(event_flags & BIT(IQS62X_EVENT_SYS_RESET)))
+> +		return NOTIFY_DONE;
+> +
+> +	pwm_get_state(&iqs620_pwm->chip.pwms[0], &state);
+> +
+> +	error = iqs620_pwm_apply(&iqs620_pwm->chip,
+> +				 &iqs620_pwm->chip.pwms[0], &state);
+> +	if (error) {
+> +		dev_err(iqs620_pwm->chip.dev,
+> +			"Failed to re-initialize device: %d\n", error);
+> +		return NOTIFY_BAD;
+> +	}
+> +
+> +	return NOTIFY_OK;
+
+So the PWM can loose it's state sometimes? When does that happen?
+
+> +}
+> +
+> +static void iqs620_pwm_notifier_unregister(void *context)
+> +{
+> +	struct iqs620_pwm_private *iqs620_pwm = context;
+> +	int error;
+> +
+> +	error = blocking_notifier_chain_unregister(&iqs620_pwm->iqs62x->nh,
+> +						   &iqs620_pwm->notifier);
+> +	if (error)
+> +		dev_err(iqs620_pwm->chip.dev,
+> +			"Failed to unregister notifier: %d\n", error);
+> +}
+> +
+> +static const struct pwm_ops iqs620_pwm_ops = {
+> +	.apply	= iqs620_pwm_apply,
+
+Please implement a .get_state callback.
+
+> +	.owner	= THIS_MODULE,
+> +};
+> +
+> +static int iqs620_pwm_probe(struct platform_device *pdev)
+> +{
+> +	struct iqs620_pwm_private *iqs620_pwm;
+> +	int error;
+> +
+> +	iqs620_pwm = devm_kzalloc(&pdev->dev, sizeof(*iqs620_pwm), GFP_KERNEL);
+> +	if (!iqs620_pwm)
+> +		return -ENOMEM;
+> +
+> +	platform_set_drvdata(pdev, iqs620_pwm);
+> +	iqs620_pwm->iqs62x = dev_get_drvdata(pdev->dev.parent);
+> +
+> +	iqs620_pwm->chip.dev = &pdev->dev;
+> +	iqs620_pwm->chip.ops = &iqs620_pwm_ops;
+> +	iqs620_pwm->chip.base = -1;
+> +	iqs620_pwm->chip.npwm = 1;
+> +
+> +	iqs620_pwm->notifier.notifier_call = iqs620_pwm_notifier;
+> +	error = blocking_notifier_chain_register(&iqs620_pwm->iqs62x->nh,
+> +						 &iqs620_pwm->notifier);
+> +	if (error) {
+> +		dev_err(&pdev->dev, "Failed to register notifier: %d\n", error);
+> +		return error;
+> +	}
+> +
+> +	error = devm_add_action_or_reset(&pdev->dev,
+> +					 iqs620_pwm_notifier_unregister,
+> +					 iqs620_pwm);
+
+I wonder if this is safe. If in iqs620_pwm_notifier_unregister()
+unregistering of the notifier goes wrong (not sure when this can happen)
+the memory behind iqs620_pwm goes away. Then later iqs620_pwm_notifier
+might be called trying to use *iqs620_pwm ...
+
+> +	if (error) {
+> +		dev_err(&pdev->dev, "Failed to add action: %d\n", error);
+> +		return error;
+> [...]
+> 
+> +static struct platform_driver iqs620_pwm_platform_driver = {
+> +	.driver = {
+> +		.name	= IQS620_DRV_NAME_PWM,
+> +	},
+> +	.probe		= iqs620_pwm_probe,
+> +	.remove		= iqs620_pwm_remove,
+> +};
+
+I'm not a big fan of aligning the = in struct initializers. The downside
+is that if you later add
+
+	.prevent_deferred_probe = true,
+
+you either have to touch all (otherwise unrelated) lines to realign
+which adds churn, or the structure is only partially aligned which looks
+ugly. That's why I stick to a single space before the =.
+
+Best regards
+Uwe
+
 -- 
-2.23.0.866.gb869b98d4c-goog
-
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

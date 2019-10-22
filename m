@@ -2,129 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 842FEE01F8
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 12:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9E51E0207
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 12:26:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730076AbfJVKXx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 06:23:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45368 "EHLO mail.kernel.org"
+        id S1727582AbfJVK0S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 06:26:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46044 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727582AbfJVKXw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Oct 2019 06:23:52 -0400
+        id S1727101AbfJVK0S (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Oct 2019 06:26:18 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CF57A21783;
-        Tue, 22 Oct 2019 10:23:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 33372207FC;
+        Tue, 22 Oct 2019 10:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571739831;
-        bh=lj1xDu2d7HyT+htIIh0laut/HwTqamtxfwIV/3EMPOc=;
+        s=default; t=1571739976;
+        bh=R3whxNOQMkAakpvysXSpP00HzyZ6LNM/fohXNc0m1CE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Fp4nf5R0ZkD1m+Wps2id7kxQEty1smFenzQKHUjZmM2exR3Ldi7roNbt+jTHwsaua
-         51PPWj09dR+fin0Wpbvv5y06P0KDudIL7Ruri9kKt/nbOWxH3L6bFiGOQlRFQPORPS
-         nPan3/4fUXojhW+WYXvN7LnR0KEjt8A7kRxthU9s=
-Date:   Tue, 22 Oct 2019 11:23:46 +0100
+        b=jXWqncx9cPzrBa9cB1elcKwCQ16RgBm8KdXVjtqTOZqiajf1QfbJObWqnuFUbvfdV
+         2WBEiTxIBgzJz/kssmW7Nm/2WzCia1Px4e+Ga6ubdzB9bXEtL+UgK33WK3H2Go/8ay
+         aIxW3AlrNhbkpM22udgK4AJydZ75m5VxQogjGMUQ=
+Date:   Tue, 22 Oct 2019 11:26:13 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: Add ltc2983 documentation
-Message-ID: <20191022112346.5b9180f0@archlinux>
-In-Reply-To: <CAL_Jsq+5SYOPDOJJJ8+OuGpQ=PKB2JmbQ=yGN1fyuZnuQnAJ2Q@mail.gmail.com>
-References: <20191011084038.45829-1-nuno.sa@analog.com>
-        <20191011084038.45829-2-nuno.sa@analog.com>
-        <20191012115745.069119b0@archlinux>
-        <20191014143950.GA6163@bogus>
-        <CAL_Jsq+Hju1KtvfjEJNGsS9maC3LDn0FcQJe6Wp+y-YgiAP=+w@mail.gmail.com>
-        <20191015214435.5d51835a@archlinux>
-        <20191021162736.7409baa7@archlinux>
-        <CAL_Jsq+5SYOPDOJJJ8+OuGpQ=PKB2JmbQ=yGN1fyuZnuQnAJ2Q@mail.gmail.com>
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio: adc: tsl4030: Use false / true instead of 0 / 1
+ with booleans
+Message-ID: <20191022112613.4d90f2a0@archlinux>
+In-Reply-To: <20191020130644.jyd3zdnmxcgksdbs@earth.universe>
+References: <20191013163754.2044672-1-jic23@kernel.org>
+        <20191020130644.jyd3zdnmxcgksdbs@earth.universe>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Oct 2019 12:21:41 -0500
-Rob Herring <robh@kernel.org> wrote:
+On Sun, 20 Oct 2019 15:06:44 +0200
+Sebastian Reichel <sre@kernel.org> wrote:
 
-> On Mon, Oct 21, 2019 at 10:27 AM Jonathan Cameron <jic23@kernel.org> wrot=
-e:
-> >
-> > On Tue, 15 Oct 2019 21:44:35 +0100
-> > Jonathan Cameron <jic23@kernel.org> wrote:
-> > =20
-> > > On Tue, 15 Oct 2019 09:19:10 -0500
-> > > Rob Herring <robh@kernel.org> wrote:
-> > > =20
-> > > > On Mon, Oct 14, 2019 at 9:39 AM Rob Herring <robh@kernel.org> wrote=
-: =20
-> > > > >
-> > > > > On Sat, Oct 12, 2019 at 11:57:45AM +0100, Jonathan Cameron wrote:=
- =20
-> > > > > > On Fri, 11 Oct 2019 10:40:38 +0200
-> > > > > > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-> > > > > > =20
-> > > > > > > Document the LTC2983 temperature sensor devicetree bindings.
-> > > > > > >
-> > > > > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
-> > > > > >
-> > > > > > I'm happy with this, but will be waiting for Rob to have a chan=
-ce
-> > > > > > for a final look before applying. =20
-> > > > >
-> > > > > LGTM, but I need to add the int64-matrix type to the core schema =
-first
-> > > > > or this will give you errors. I should get to that in the next da=
-y or
-> > > > > so. =20
-> > > >
-> > > > Now added, so please update dtschema and check.
-> > > >
-> > > > Reviewed-by: Rob Herring <robh@kernel.org> =20
-> > >
-> > > /home/jic23/src/kernel/iio/Documentation/devicetree/bindings/iio/temp=
-erature/adi,ltc2983.example.dt.yaml: ltc2983@0: thermocouple@20:adi,custom-=
-thermocouple:0:0: 18446744073659331616 is greater than the maximum of 92233=
-72036854775807
-> > > /home/jic23/src/kernel/iio/Documentation/devicetree/bindings/iio/temp=
-erature/adi,ltc2983.example.dt.yaml: ltc2983@0: thermocouple@20:adi,custom-=
-thermocouple:0:2: 18446744073679351616 is greater than the maximum of 92233=
-72036854775807
-> > > /home/jic23/src/kernel/iio/Documentation/devicetree/bindings/iio/temp=
-erature/adi,ltc2983.example.dt.yaml: ltc2983@0: thermocouple@20:adi,custom-=
-thermocouple:0:4: 18446744073704251616 is greater than the maximum of 92233=
-72036854775807
-> > >
-> > > Which is odd.  I haven't looked into it beyond testing and reverting =
-the
-> > > patch as out of time for today. =20
-> >
-> > I'm still getting this and not sure why.  Rob? =20
->=20
-> Just realized I failed to send my draft...
->=20
-> This is dtc yaml output not maintaining the sign, so everything is
-> unsigned. (I had mentioned this and then promptly forgot.) I'll need
-> to figure out how to plumb this thru dtc. For now, its probably
-> easiest to just change to uint64-matrix with a comment that it should
-> be signed.
->=20
-> Rob
-Thanks.  Made the change and added the note to the docs.
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+> Hi,
+> 
+> On Sun, Oct 13, 2019 at 05:37:54PM +0100, jic23@kernel.org wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Suggestion from coccinelle / coccicheck
+> > 
+> > CHECK   drivers/iio/adc/twl4030-madc.c
+> > drivers/iio/adc/twl4030-madc.c:524:6-15: WARNING: Comparison of 0/1 to bool variable
+> > drivers/iio/adc/twl4030-madc.c:655:1-43: WARNING: Assignment of 0/1 to bool variable
+> > drivers/iio/adc/twl4030-madc.c:659:2-44: WARNING: Assignment of 0/1 to bool variable
+> > drivers/iio/adc/twl4030-madc.c:664:1-43: WARNING: Assignment of 0/1 to bool variable
+> > drivers/iio/adc/twl4030-madc.c:498:2-34: WARNING: Assignment of 0/1 to bool variable
+> > drivers/iio/adc/twl4030-madc.c:510:2-19: WARNING: Assignment of 0/1 to bool variable
+> > drivers/iio/adc/twl4030-madc.c:511:2-11: WARNING: Assignment of 0/1 to bool variable
+> > drivers/iio/adc/twl4030-madc.c:531:2-19: WARNING: Assignment of 0/1 to bool variable
+> > drivers/iio/adc/twl4030-madc.c:532:2-11: WARNING: Assignment of 0/1 to bool variable
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Sebastian Reichel <sre@kernel.org>
+> > ---  
+> 
+> Apart from the typo in the patch subject (tsl4030 vs twl4030):
+> 
+Fixed :)
+> Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Applied to the togreg branch of iio.git and pushed out as testing for the
+autobuilders to poke at it.
 
 Thanks,
 
 Jonathan
 
+> 
+> -- Sebastian
+> 
+> >  drivers/iio/adc/twl4030-madc.c | 18 +++++++++---------
+> >  1 file changed, 9 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/twl4030-madc.c b/drivers/iio/adc/twl4030-madc.c
+> > index 55c5119fe575..472b08f37fea 100644
+> > --- a/drivers/iio/adc/twl4030-madc.c
+> > +++ b/drivers/iio/adc/twl4030-madc.c
+> > @@ -495,7 +495,7 @@ static irqreturn_t twl4030_madc_threaded_irq_handler(int irq, void *_madc)
+> >  		ret = twl4030_madc_disable_irq(madc, i);
+> >  		if (ret < 0)
+> >  			dev_dbg(madc->dev, "Disable interrupt failed %d\n", i);
+> > -		madc->requests[i].result_pending = 1;
+> > +		madc->requests[i].result_pending = true;
+> >  	}
+> >  	for (i = 0; i < TWL4030_MADC_NUM_METHODS; i++) {
+> >  		r = &madc->requests[i];
+> > @@ -507,8 +507,8 @@ static irqreturn_t twl4030_madc_threaded_irq_handler(int irq, void *_madc)
+> >  		len = twl4030_madc_read_channels(madc, method->rbase,
+> >  						 r->channels, r->rbuf, r->raw);
+> >  		/* Free request */
+> > -		r->result_pending = 0;
+> > -		r->active = 0;
+> > +		r->result_pending = false;
+> > +		r->active = false;
+> >  	}
+> >  	mutex_unlock(&madc->lock);
+> >  
+> > @@ -521,15 +521,15 @@ static irqreturn_t twl4030_madc_threaded_irq_handler(int irq, void *_madc)
+> >  	 */
+> >  	for (i = 0; i < TWL4030_MADC_NUM_METHODS; i++) {
+> >  		r = &madc->requests[i];
+> > -		if (r->active == 0)
+> > +		if (!r->active)
+> >  			continue;
+> >  		method = &twl4030_conversion_methods[r->method];
+> >  		/* Read results */
+> >  		len = twl4030_madc_read_channels(madc, method->rbase,
+> >  						 r->channels, r->rbuf, r->raw);
+> >  		/* Free request */
+> > -		r->result_pending = 0;
+> > -		r->active = 0;
+> > +		r->result_pending = false;
+> > +		r->active = false;
+> >  	}
+> >  	mutex_unlock(&madc->lock);
+> >  
+> > @@ -652,16 +652,16 @@ static int twl4030_madc_conversion(struct twl4030_madc_request *req)
+> >  	ret = twl4030_madc_start_conversion(twl4030_madc, req->method);
+> >  	if (ret < 0)
+> >  		goto out;
+> > -	twl4030_madc->requests[req->method].active = 1;
+> > +	twl4030_madc->requests[req->method].active = true;
+> >  	/* Wait until conversion is ready (ctrl register returns EOC) */
+> >  	ret = twl4030_madc_wait_conversion_ready(twl4030_madc, 5, method->ctrl);
+> >  	if (ret) {
+> > -		twl4030_madc->requests[req->method].active = 0;
+> > +		twl4030_madc->requests[req->method].active = false;
+> >  		goto out;
+> >  	}
+> >  	ret = twl4030_madc_read_channels(twl4030_madc, method->rbase,
+> >  					 req->channels, req->rbuf, req->raw);
+> > -	twl4030_madc->requests[req->method].active = 0;
+> > +	twl4030_madc->requests[req->method].active = false;
+> >  
+> >  out:
+> >  	mutex_unlock(&twl4030_madc->lock);
+> > -- 
+> > 2.23.0
+> >   
 

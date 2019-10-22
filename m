@@ -2,46 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1F1DE0317
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 13:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9930E0334
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 13:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388698AbfJVLiq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 07:38:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33248 "EHLO mail.kernel.org"
+        id S1731060AbfJVLlu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 07:41:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34758 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387871AbfJVLip (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Oct 2019 07:38:45 -0400
+        id S1730515AbfJVLlu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Oct 2019 07:41:50 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CB038207FC;
-        Tue, 22 Oct 2019 11:38:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A64E3207FC;
+        Tue, 22 Oct 2019 11:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571744324;
-        bh=aVhV8SXUfakeMnO83FUK3yRAfke9knQB8SLYn7IKA1s=;
+        s=default; t=1571744509;
+        bh=XHVq6IxuiT8pWTrmGBnGNAyevVR++yH0jKbzxaPazmg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=L4xojqsZuVDh1hRZGbe1mITUqgcXeXKcLI2WCBSLS8RRcaE8dOkg2hBJNsETLBAo+
-         Y/QJ70gfq8LuS6UDNffzwAsdH4Z8hZz5niDqM/oV60Y9qgBT906m9hug/lUKXNlYdg
-         tLjRWD0oONt9ZR/DLr5Dx+EsHdkO2bi8Rn2i8bZg=
-Date:   Tue, 22 Oct 2019 12:38:38 +0100
+        b=tcOp/mhwTQB0OwGM54t1qrtd2BnR3pwF4jB7QiWDUjgA/+byIqQdhO1q1vDA30vuH
+         ouxP8kZt0tRFgBlxmGjpRCa5DNO47gC+/hWx+yv1DOnU+aH7h1O18xOs8jF1p3c9Va
+         4iaHzeA2gWciOm/zBkdHwvpu1DFFAo43jmmVC5G0=
+Date:   Tue, 22 Oct 2019 12:41:45 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Jeff LaBundy <jeff@labundy.com>, lee.jones@linaro.org,
-        dmitry.torokhov@gmail.com, jdelvare@suse.com,
-        thierry.reding@gmail.com, devicetree@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        u.kleine-koenig@pengutronix.de, linux-pwm@vger.kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-iio@vger.kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
-Subject: Re: [PATCH 4/8] hwmon: Add support for Azoteq IQS620AT temperature
- sensor
-Message-ID: <20191022123838.5a9e2b26@archlinux>
-In-Reply-To: <f9610e3d-d923-1ffe-233f-e94cace41f64@roeck-us.net>
-References: <1571631083-4962-1-git-send-email-jeff@labundy.com>
-        <1571631083-4962-5-git-send-email-jeff@labundy.com>
-        <20191021153825.GA15359@roeck-us.net>
-        <20191022022611.GA2091@labundy.com>
-        <f9610e3d-d923-1ffe-233f-e94cace41f64@roeck-us.net>
+To:     Andreas Brauchli <a.brauchli@elementarea.net>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio: chemical: sgp30: drop excess semicolon
+Message-ID: <20191022124145.333998a0@archlinux>
+In-Reply-To: <f7b5a222c49f82f0555eed514a95a0720f01caf1.camel@elementarea.net>
+References: <20191013165412.2090798-1-jic23@kernel.org>
+        <f7b5a222c49f82f0555eed514a95a0720f01caf1.camel@elementarea.net>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,83 +42,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Oct 2019 20:22:44 -0700
-Guenter Roeck <linux@roeck-us.net> wrote:
+On Mon, 21 Oct 2019 10:51:35 +0200
+Andreas Brauchli <a.brauchli@elementarea.net> wrote:
 
-> On 10/21/19 7:26 PM, Jeff LaBundy wrote:
-> > Hi Guenter,
-> > 
-> > Thank you for your prompt review.
-> > 
-> > On Mon, Oct 21, 2019 at 08:38:25AM -0700, Guenter Roeck wrote:  
-> >> On Sun, Oct 20, 2019 at 11:11:19PM -0500, Jeff LaBundy wrote:  
-> >>> This patch adds support for the Azoteq IQS620AT temperature sensor,
-> >>> capable of reporting its absolute die temperature.
-> >>>
-> >>> Signed-off-by: Jeff LaBundy <jeff@labundy.com>  
-> >>
-> >> Seems to me this might be more feasible as iio driver.
-> >> Jonathan, what do you think ?
-> >>  
-> > 
-> > Interestingly enough, this actually started as an iio driver; however the
-> > "When to Use" slide of [0] made me suspect that conventional devices with
-> > the temperature sensing element integrated on the die belong in hwmon.
-> > 
-> > I then found the highly similar ad7314, which Jonathan himself appears to
-> > have converted from iio to hwmon. Therefore, I placed this where existing
-> > drivers seemed to match the most, especially since the temperature sensors
-> > in iio generally use IR or a thermocouple.
-> > 
-> > That being said, I would be happy to move this into iio so long as Jonathan
-> > does not mind, as it would limit the blast radius of this patch series.
-> >   
+> ACK, lgtm. Thanks for forwarding.
 > 
-> I don't recall why the ad7314 driver was moved. With a conversion time of 40uS
-> it is most definitely not a typical use case for a hwmon sensor.
-
-I'll be honest, I can't remember either ;)
 > 
-> Anyway, not worth arguing about. Just don't complain later. There is an
-> iio->hwmon bridge, but no hwmon->iio bridge, so the decision does have some
-> impact. Specifically, userspace will have to implement both hwmon and iio
-> access to handle the chip.
-
-So I had a very quick look at one of the data sheets.  The temperature sensor
-here is described as: 
-
-"The IQS620(A) provides temperature monitoring capabilities which can be used for temperature
-change detection in order to ensure the integrity of other sensing technology".
-
-Superficially this sounds like it's probably inappropriate for any sort
-of system temperature monitoring.  It's really just there to allow
-for clever compensation algorithms for the other bits on this chip
-(much like the temperature sensors we almost always get on a decent
-IMU).
-
-Normally we'd just tack an extra channel for the temperature sensor on
-to the the the sensor it is integrated with.  This is a bit more
-complex though as we have 3 different IIO sensors that are present
-in particular part numbers and for some cases we have no IIO device
-at all, but do have a temperature sensor.
-
-So if people are going to actually use this to compensate outputs
-(not sure which ones are actually temperature sensitive btw ;)
-then if those are IIO supported devices, then probably makes sense
-for this to be an IIO device.  It may make sense anyway if there
-is any chance of adding temperature compensation to the drivers
-in kernel.  I suspect the only use that would actually be made
-is as a trip point if something has gone horribly wrong, but
-I might be wrong!
-
-Conclusion. I also don't feel strongly on this one as it kind of
-sits between IIO and hwmon, but probably ever so slightly on the
-IIO side as monitoring a sensor chip, not some other device.
+> On Sun, 2019-10-13 at 17:54 +0100, jic23@kernel.org wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Suggested by coccinelle / coccicheck.
+> > 
+> > CHECK   drivers/iio/chemical/sgp30.c
+> > drivers/iio/chemical/sgp30.c:486:2-3: Unneeded semicolon
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Andreas Brauchli <a.brauchli@elementarea.net>  
+> 
+> Signed-off-by: Andreas Brauchli <a.brauchli@elementarea.net>
+Applied.
 
 Thanks,
 
 Jonathan
 
 > 
-> Guenter
+> > ---
+> >  drivers/iio/chemical/sgp30.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/chemical/sgp30.c
+> > b/drivers/iio/chemical/sgp30.c
+> > index 8cc8fe5e356d..403e8803471a 100644
+> > --- a/drivers/iio/chemical/sgp30.c
+> > +++ b/drivers/iio/chemical/sgp30.c
+> > @@ -483,7 +483,7 @@ static void sgp_init(struct sgp_data *data)
+> >  		data->iaq_defval_skip_jiffies =
+> >  			43 * data->measure_interval_jiffies;
+> >  		break;
+> > -	};
+> > +	}
+> >  }
+> >  
+> >  static const struct iio_info sgp_info = {  
+> 
 

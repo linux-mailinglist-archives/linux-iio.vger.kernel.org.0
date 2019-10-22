@@ -2,432 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9857E00E5
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 11:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E5ACE0114
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 11:48:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731420AbfJVJjf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 05:39:35 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:46566 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730619AbfJVJjc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 05:39:32 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 2479828CFD0
-Subject: Re: [PATCH v2 04/18] platform/mfd:iio: cros_ec: Register sensor
- through sensorhub
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Gwendal Grignou <gwendal@chromium.org>
-Cc:     briannorris@chromium.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, lee.jones@linaro.org, bleung@chromium.org,
-        dianders@chromium.org, groeck@chromium.org,
-        fabien.lahoudere@collabora.com, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <20191021055403.67849-1-gwendal@chromium.org>
- <20191021055403.67849-5-gwendal@chromium.org>
- <20191021170055.448c7f32@archlinux>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <21b32ac3-7cb1-743b-5aa2-9a07c7b61800@collabora.com>
-Date:   Tue, 22 Oct 2019 11:39:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1731149AbfJVJsT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 05:48:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36432 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730619AbfJVJsS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Oct 2019 05:48:18 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 846EC2089E;
+        Tue, 22 Oct 2019 09:48:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571737697;
+        bh=R5RgAstKCexZymJeVqVBt1NYcMVXUggrxCKFiFdo9v0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=keeDlu/bLtQEpPt1yTUzC9G2rd2mPZ3lqVgc8MH6op6C/e0oEXnlkXX7utRDb6ufB
+         +DU284PwEpnxf1l7ssgf2rs91JZVpdBNsBvZElUe6LNXmFMY4BEDshcuH+2/lRBD2E
+         QUyjTlc0xPg0IQ4WyYjvVF2xHEbz+ZUz/By5CXBM=
+Date:   Tue, 22 Oct 2019 10:48:12 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Rishi Gupta <gupt21@gmail.com>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        gregkh@linuxfoundation.org, tglx@linutronix.de,
+        allison@lohutok.net, alexios.zavras@intel.com, angus@akkea.ca,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] iio: documentation: light: Add veml6030 sysfs
+ documentation
+Message-ID: <20191022104812.7f71b726@archlinux>
+In-Reply-To: <1571716705-23113-1-git-send-email-gupt21@gmail.com>
+References: <1571664705-7123-1-git-send-email-gupt21@gmail.com>
+        <1571716705-23113-1-git-send-email-gupt21@gmail.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20191021170055.448c7f32@archlinux>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Gwendal,
+On Tue, 22 Oct 2019 09:28:25 +0530
+Rishi Gupta <gupt21@gmail.com> wrote:
 
-On 21/10/19 18:00, Jonathan Cameron wrote:
-> On Sun, 20 Oct 2019 22:53:49 -0700
-> Gwendal Grignou <gwendal@chromium.org> wrote:
+> The driver for veml6030 light sensor provides custom sysfs entries
+> used to know parameters supported by the driver and to configure
+> sensor like setting power saving mode and persistence etc. This
+> commit document them.
 > 
->> - Remove duplicate code in mfd, since mfd just register
->>   cros_ec_sensorhub if at least one sensor is present
->> - Change iio cros_ec driver to get the pointer to the cros_ec_dev
->>   through cros_ec_sensorhub.
->>
->> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> FWIW given I don't known the driver that well.
-> Looks good to me.
-> 
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
+> Signed-off-by: Rishi Gupta <gupt21@gmail.com>
+Hi Rishi,
 
-The same from my side
+Main issue here is that a lot of this is standard ABI.  Only ABI that
+is non standard should be documented in a per device file.  If we don't
+do this ever driver drifts off in it's own direction!
 
-Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+For PSM you run into the normal problem of custom ABI.  Reality is that
+generic userspace will have no idea what to do with it.  Hence try
+if at all possible to avoid custom ABI.  The PSM control appears to
+be a control on the 'refresh rate' which corresponds to the maximum
+possible sampling_frequency.  Hence use the standard ABI for sampling
+frequency.  More info inline.
 
->> ---
->> Changes in v2:
->> - Remove unerelated changes.
->> - Remove ec presence test in iio driver, done in cros_ec_sensorhub.
->>
->>  drivers/iio/accel/cros_ec_accel_legacy.c      |   6 -
->>  .../common/cros_ec_sensors/cros_ec_sensors.c  |   6 -
->>  .../cros_ec_sensors/cros_ec_sensors_core.c    |   4 +-
->>  drivers/iio/light/cros_ec_light_prox.c        |   6 -
->>  drivers/mfd/cros_ec_dev.c                     | 203 ++----------------
->>  include/linux/platform_data/cros_ec_proto.h   |   8 -
->>  .../linux/platform_data/cros_ec_sensorhub.h   |   8 +
->>  7 files changed, 23 insertions(+), 218 deletions(-)
->>
->> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
->> index fcc3f999e4827..65f85faf6f31d 100644
->> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
->> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
->> @@ -163,16 +163,10 @@ static const struct iio_chan_spec cros_ec_accel_legacy_channels[] = {
->>  static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
->>  {
->>  	struct device *dev = &pdev->dev;
->> -	struct cros_ec_dev *ec = dev_get_drvdata(dev->parent);
->>  	struct iio_dev *indio_dev;
->>  	struct cros_ec_sensors_core_state *state;
->>  	int ret;
->>  
->> -	if (!ec || !ec->ec_dev) {
->> -		dev_warn(&pdev->dev, "No EC device found.\n");
->> -		return -EINVAL;
->> -	}
->> -
->>  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*state));
->>  	if (!indio_dev)
->>  		return -ENOMEM;
->> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
->> index a6987726eeb8a..7dce044734678 100644
->> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
->> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
->> @@ -222,17 +222,11 @@ static const struct iio_info ec_sensors_info = {
->>  static int cros_ec_sensors_probe(struct platform_device *pdev)
->>  {
->>  	struct device *dev = &pdev->dev;
->> -	struct cros_ec_dev *ec_dev = dev_get_drvdata(dev->parent);
->>  	struct iio_dev *indio_dev;
->>  	struct cros_ec_sensors_state *state;
->>  	struct iio_chan_spec *channel;
->>  	int ret, i;
->>  
->> -	if (!ec_dev || !ec_dev->ec_dev) {
->> -		dev_warn(&pdev->dev, "No CROS EC device found.\n");
->> -		return -EINVAL;
->> -	}
->> -
->>  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*state));
->>  	if (!indio_dev)
->>  		return -ENOMEM;
->> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
->> index d2609e6feda4d..81a7f692de2f3 100644
->> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
->> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
->> @@ -18,6 +18,7 @@
->>  #include <linux/slab.h>
->>  #include <linux/platform_data/cros_ec_commands.h>
->>  #include <linux/platform_data/cros_ec_proto.h>
->> +#include <linux/platform_data/cros_ec_sensorhub.h>
->>  #include <linux/platform_device.h>
->>  
->>  static char *cros_ec_loc[] = {
->> @@ -88,7 +89,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
->>  {
->>  	struct device *dev = &pdev->dev;
->>  	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
->> -	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
->> +	struct cros_ec_sensorhub *sensor_hub = dev_get_drvdata(dev->parent);
->> +	struct cros_ec_dev *ec = sensor_hub->ec;
->>  	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
->>  	u32 ver_mask;
->>  	int ret, i;
->> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
->> index c5263b563fc19..d85a391e50c59 100644
->> --- a/drivers/iio/light/cros_ec_light_prox.c
->> +++ b/drivers/iio/light/cros_ec_light_prox.c
->> @@ -169,17 +169,11 @@ static const struct iio_info cros_ec_light_prox_info = {
->>  static int cros_ec_light_prox_probe(struct platform_device *pdev)
->>  {
->>  	struct device *dev = &pdev->dev;
->> -	struct cros_ec_dev *ec_dev = dev_get_drvdata(dev->parent);
->>  	struct iio_dev *indio_dev;
->>  	struct cros_ec_light_prox_state *state;
->>  	struct iio_chan_spec *channel;
->>  	int ret;
->>  
->> -	if (!ec_dev || !ec_dev->ec_dev) {
->> -		dev_warn(dev, "No CROS EC device found.\n");
->> -		return -EINVAL;
->> -	}
->> -
->>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
->>  	if (!indio_dev)
->>  		return -ENOMEM;
->> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
->> index a35104e35cb4e..c4b977a5dd966 100644
->> --- a/drivers/mfd/cros_ec_dev.c
->> +++ b/drivers/mfd/cros_ec_dev.c
->> @@ -78,6 +78,10 @@ static const struct mfd_cell cros_ec_rtc_cells[] = {
->>  	{ .name = "cros-ec-rtc", },
->>  };
->>  
->> +static const struct mfd_cell cros_ec_sensorhub_cells[] = {
->> +	{ .name = "cros-ec-sensorhub", },
->> +};
->> +
->>  static const struct mfd_cell cros_usbpd_charger_cells[] = {
->>  	{ .name = "cros-usbpd-charger", },
->>  	{ .name = "cros-usbpd-logger", },
->> @@ -117,192 +121,6 @@ static void cros_ec_class_release(struct device *dev)
->>  	kfree(to_cros_ec_dev(dev));
->>  }
->>  
->> -static void cros_ec_sensors_register(struct cros_ec_dev *ec)
->> -{
->> -	/*
->> -	 * Issue a command to get the number of sensor reported.
->> -	 * Build an array of sensors driver and register them all.
->> -	 */
->> -	int ret, i, id, sensor_num;
->> -	struct mfd_cell *sensor_cells;
->> -	struct cros_ec_sensor_platform *sensor_platforms;
->> -	int sensor_type[MOTIONSENSE_TYPE_MAX];
->> -	struct ec_params_motion_sense *params;
->> -	struct ec_response_motion_sense *resp;
->> -	struct cros_ec_command *msg;
->> -
->> -	msg = kzalloc(sizeof(struct cros_ec_command) +
->> -		      max(sizeof(*params), sizeof(*resp)), GFP_KERNEL);
->> -	if (msg == NULL)
->> -		return;
->> -
->> -	msg->version = 2;
->> -	msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
->> -	msg->outsize = sizeof(*params);
->> -	msg->insize = sizeof(*resp);
->> -
->> -	params = (struct ec_params_motion_sense *)msg->data;
->> -	params->cmd = MOTIONSENSE_CMD_DUMP;
->> -
->> -	ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
->> -	if (ret < 0) {
->> -		dev_warn(ec->dev, "cannot get EC sensor information: %d/%d\n",
->> -			 ret, msg->result);
->> -		goto error;
->> -	}
->> -
->> -	resp = (struct ec_response_motion_sense *)msg->data;
->> -	sensor_num = resp->dump.sensor_count;
->> -	/*
->> -	 * Allocate 2 extra sensors if lid angle sensor and/or FIFO are needed.
->> -	 */
->> -	sensor_cells = kcalloc(sensor_num + 2, sizeof(struct mfd_cell),
->> -			       GFP_KERNEL);
->> -	if (sensor_cells == NULL)
->> -		goto error;
->> -
->> -	sensor_platforms = kcalloc(sensor_num,
->> -				   sizeof(struct cros_ec_sensor_platform),
->> -				   GFP_KERNEL);
->> -	if (sensor_platforms == NULL)
->> -		goto error_platforms;
->> -
->> -	memset(sensor_type, 0, sizeof(sensor_type));
->> -	id = 0;
->> -	for (i = 0; i < sensor_num; i++) {
->> -		params->cmd = MOTIONSENSE_CMD_INFO;
->> -		params->info.sensor_num = i;
->> -		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
->> -		if (ret < 0) {
->> -			dev_warn(ec->dev, "no info for EC sensor %d : %d/%d\n",
->> -				 i, ret, msg->result);
->> -			continue;
->> -		}
->> -		switch (resp->info.type) {
->> -		case MOTIONSENSE_TYPE_ACCEL:
->> -			sensor_cells[id].name = "cros-ec-accel";
->> -			break;
->> -		case MOTIONSENSE_TYPE_BARO:
->> -			sensor_cells[id].name = "cros-ec-baro";
->> -			break;
->> -		case MOTIONSENSE_TYPE_GYRO:
->> -			sensor_cells[id].name = "cros-ec-gyro";
->> -			break;
->> -		case MOTIONSENSE_TYPE_MAG:
->> -			sensor_cells[id].name = "cros-ec-mag";
->> -			break;
->> -		case MOTIONSENSE_TYPE_PROX:
->> -			sensor_cells[id].name = "cros-ec-prox";
->> -			break;
->> -		case MOTIONSENSE_TYPE_LIGHT:
->> -			sensor_cells[id].name = "cros-ec-light";
->> -			break;
->> -		case MOTIONSENSE_TYPE_ACTIVITY:
->> -			sensor_cells[id].name = "cros-ec-activity";
->> -			break;
->> -		default:
->> -			dev_warn(ec->dev, "unknown type %d\n", resp->info.type);
->> -			continue;
->> -		}
->> -		sensor_platforms[id].sensor_num = i;
->> -		sensor_cells[id].id = sensor_type[resp->info.type];
->> -		sensor_cells[id].platform_data = &sensor_platforms[id];
->> -		sensor_cells[id].pdata_size =
->> -			sizeof(struct cros_ec_sensor_platform);
->> -
->> -		sensor_type[resp->info.type]++;
->> -		id++;
->> -	}
->> -
->> -	if (sensor_type[MOTIONSENSE_TYPE_ACCEL] >= 2)
->> -		ec->has_kb_wake_angle = true;
->> -
->> -	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
->> -		sensor_cells[id].name = "cros-ec-ring";
->> -		id++;
->> -	}
->> -	if (cros_ec_check_features(ec,
->> -				EC_FEATURE_REFINED_TABLET_MODE_HYSTERESIS)) {
->> -		sensor_cells[id].name = "cros-ec-lid-angle";
->> -		id++;
->> -	}
->> -
->> -	ret = mfd_add_devices(ec->dev, 0, sensor_cells, id,
->> -			      NULL, 0, NULL);
->> -	if (ret)
->> -		dev_err(ec->dev, "failed to add EC sensors\n");
->> -
->> -	kfree(sensor_platforms);
->> -error_platforms:
->> -	kfree(sensor_cells);
->> -error:
->> -	kfree(msg);
->> -}
->> -
->> -static struct cros_ec_sensor_platform sensor_platforms[] = {
->> -	{ .sensor_num = 0 },
->> -	{ .sensor_num = 1 }
->> -};
->> -
->> -static const struct mfd_cell cros_ec_accel_legacy_cells[] = {
->> -	{
->> -		.name = "cros-ec-accel-legacy",
->> -		.platform_data = &sensor_platforms[0],
->> -		.pdata_size = sizeof(struct cros_ec_sensor_platform),
->> -	},
->> -	{
->> -		.name = "cros-ec-accel-legacy",
->> -		.platform_data = &sensor_platforms[1],
->> -		.pdata_size = sizeof(struct cros_ec_sensor_platform),
->> -	}
->> -};
->> -
->> -static void cros_ec_accel_legacy_register(struct cros_ec_dev *ec)
->> -{
->> -	struct cros_ec_device *ec_dev = ec->ec_dev;
->> -	u8 status;
->> -	int ret;
->> -
->> -	/*
->> -	 * ECs that need legacy support are the main EC, directly connected to
->> -	 * the AP.
->> -	 */
->> -	if (ec->cmd_offset != 0)
->> -		return;
->> -
->> -	/*
->> -	 * Check if EC supports direct memory reads and if EC has
->> -	 * accelerometers.
->> -	 */
->> -	if (ec_dev->cmd_readmem) {
->> -		ret = ec_dev->cmd_readmem(ec_dev, EC_MEMMAP_ACC_STATUS, 1,
->> -					  &status);
->> -		if (ret < 0) {
->> -			dev_warn(ec->dev, "EC direct read error.\n");
->> -			return;
->> -		}
->> -
->> -		/* Check if EC has accelerometers. */
->> -		if (!(status & EC_MEMMAP_ACC_STATUS_PRESENCE_BIT)) {
->> -			dev_info(ec->dev, "EC does not have accelerometers.\n");
->> -			return;
->> -		}
->> -	}
->> -
->> -	/*
->> -	 * The device may still support accelerometers:
->> -	 * it would be an older ARM based device that do not suppor the
->> -	 * EC_CMD_GET_FEATURES command.
->> -	 *
->> -	 * Register 2 accelerometers, we will fail in the IIO driver if there
->> -	 * are no sensors.
->> -	 */
->> -	ret = mfd_add_hotplug_devices(ec->dev, cros_ec_accel_legacy_cells,
->> -				      ARRAY_SIZE(cros_ec_accel_legacy_cells));
->> -	if (ret)
->> -		dev_err(ec_dev->dev, "failed to add EC sensors\n");
->> -}
->> -
->>  static int ec_device_probe(struct platform_device *pdev)
->>  {
->>  	int retval = -ENOMEM;
->> @@ -358,11 +176,14 @@ static int ec_device_probe(struct platform_device *pdev)
->>  		goto failed;
->>  
->>  	/* check whether this EC is a sensor hub. */
->> -	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE))
->> -		cros_ec_sensors_register(ec);
->> -	else
->> -		/* Workaroud for older EC firmware */
->> -		cros_ec_accel_legacy_register(ec);
->> +	if (cros_ec_get_sensor_count(ec) > 0) {
->> +		retval = mfd_add_hotplug_devices(ec->dev,
->> +				cros_ec_sensorhub_cells,
->> +				ARRAY_SIZE(cros_ec_sensorhub_cells));
->> +		if (retval)
->> +			dev_err(ec->dev, "failed to add %s subdevice: %d\n",
->> +				cros_ec_sensorhub_cells->name, retval);
->> +	}
->>  
->>  	/*
->>  	 * The following subdevices can be detected by sending the
->> diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/platform_data/cros_ec_proto.h
->> index f3de0662135d5..691f9e953a96a 100644
->> --- a/include/linux/platform_data/cros_ec_proto.h
->> +++ b/include/linux/platform_data/cros_ec_proto.h
->> @@ -168,14 +168,6 @@ struct cros_ec_device {
->>  	struct platform_device *pd;
->>  };
->>  
->> -/**
->> - * struct cros_ec_sensor_platform - ChromeOS EC sensor platform information.
->> - * @sensor_num: Id of the sensor, as reported by the EC.
->> - */
->> -struct cros_ec_sensor_platform {
->> -	u8 sensor_num;
->> -};
->> -
->>  /**
->>   * struct cros_ec_platform - ChromeOS EC platform information.
->>   * @ec_name: Name of EC device (e.g. 'cros-ec', 'cros-pd', ...)
->> diff --git a/include/linux/platform_data/cros_ec_sensorhub.h b/include/linux/platform_data/cros_ec_sensorhub.h
->> index 7737685591ad3..c18fba660bb62 100644
->> --- a/include/linux/platform_data/cros_ec_sensorhub.h
->> +++ b/include/linux/platform_data/cros_ec_sensorhub.h
->> @@ -10,6 +10,14 @@
->>  
->>  #include <linux/platform_data/cros_ec_commands.h>
->>  
->> +/**
->> + * struct cros_ec_sensor_platform - ChromeOS EC sensor platform information.
->> + * @sensor_num: Id of the sensor, as reported by the EC.
->> + */
->> +struct cros_ec_sensor_platform {
->> +	u8 sensor_num;
->> +};
->> +
->>  /*
->>   * struct cros_ec_sensorhub - Sensor Hub device data.
->>   */
+> ---
+> Changes in v4:
+> * None
 > 
+> Changes in v3:
+> * Updated Date from September to October
+> * Updated KernelVersion from 5.3.1 to 5.4
+> * in_illuminance_period_available is now in events directory
+> 
+> Changes in v2:
+> * None
+> 
+>  .../ABI/testing/sysfs-bus-iio-light-veml6030       | 49 ++++++++++++++++++++++
+>  1 file changed, 49 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-light-veml6030 b/Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
+> new file mode 100644
+> index 0000000..13cd321
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-light-veml6030
+> @@ -0,0 +1,49 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_psm_available
+> +Date:		October 2019
+> +KernelVersion:	5.4
+> +Contact:	Rishi Gupta <gupt21@gmail.com>
+> +Description:
+> +		Provides list of valid values that can be used to activate a
+> +		particular power saving mode in sensor. For ex; 1 means psm
+> +		mode 1 and 2 means psm mode 2 and so on.
+To a user of this device these modes are meaningless.  A user should not
+need to open the datasheet to find out.
+
+One thing to note is we very rarely let in power mode stuff in userspace interfaces
+because it's very hard for userspace to know what to do with the them.
+
+If there is a reason to switch modes it should be wrapped up in the driver.
+We have things like runtime power management with timing based suspend etc
+to magically deal with this stuff for us.
+
+Superficially this effect of these seems to be on the 'refresh time', suggesting
+that these are actually trading off potential sampling frequency for power
+saving?  If that is the case, please handle this as a sampling_frequency control.
+Userspace will set that as low as possible to meet it's requirements, as that
+saves power in almost any device.  Clearly this value is interlinked with the
+integration time.   That's fine. Integration time takes priority as that is what
+a user actually 'needs' to control (to avoid saturation).  So when integration
+time changes, the available and current sampling_frequency will change.
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_illuminance_psm
+> +Date:		October 2019
+> +KernelVersion:	5.4
+> +Contact:	Rishi Gupta <gupt21@gmail.com>
+> +Description:
+> +		Writing '1' will activate power saving mode 1 in sensor.
+> +		Similarly, 2 is to activate psm mode 2 and so on.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_period_available
+
+This is standard ABI so should either already be documented, or should be added to the
+main ABI file
+ABI/testing/sysfs-bus-iio
+
+I think this is true for all the others below as well.
+
+
+> +Date:		October 2019
+> +KernelVersion:	5.4
+> +Contact:	Rishi Gupta <gupt21@gmail.com>
+> +Description:
+> +		List of valid values available in multiples of integration time
+> +		for which the light intensity must be above the cutoff level
+> +		before interrupt is asserted. This refers to persistence values.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_thresh_either_period
+> +Date:		October 2019
+> +KernelVersion:	5.4
+> +Contact:	Rishi Gupta <gupt21@gmail.com>
+> +Description:
+> +		Value in multiple of integration time for which the light intensity must
+> +		be above the cutoff level before interrupt is asserted.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_thresh_rising_value
+> +Date:		October 2019
+> +KernelVersion:	5.4
+> +Contact:	Rishi Gupta <gupt21@gmail.com>
+> +Description:
+> +		Raw threshold value from 0 to 0xffffffff. An interrupt will be asserted whenever
+> +		light intensity is above this value.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/events/in_illuminance_thresh_falling_value
+
+
+> +Date:		October 2019
+> +KernelVersion:	5.4
+> +Contact:	Rishi Gupta <gupt21@gmail.com>
+> +Description:
+> +		Raw threshold value from 0 to 0xffffffff. An interrupt will be asserted whenever
+> +		light intensity is below this value.
+

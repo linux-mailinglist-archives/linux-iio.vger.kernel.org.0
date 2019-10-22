@@ -2,125 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48426E0641
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 16:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 385FFE0662
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 16:28:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727831AbfJVOTb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 10:19:31 -0400
-Received: from mail-il1-f195.google.com ([209.85.166.195]:40222 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727582AbfJVOTb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 10:19:31 -0400
-Received: by mail-il1-f195.google.com with SMTP id d83so7098204ilk.7;
-        Tue, 22 Oct 2019 07:19:31 -0700 (PDT)
+        id S1730121AbfJVO1o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 10:27:44 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:35177 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727323AbfJVO1n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 10:27:43 -0400
+Received: by mail-qk1-f193.google.com with SMTP id w2so16411980qkf.2;
+        Tue, 22 Oct 2019 07:27:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+f3+Xe6vGoRY1MkZlLrpomXTPs0/tCl2G1ZKWZtIxAo=;
-        b=YAwJ3bV/qfhkrwx/pD8NNAOcp8lyAcKZAf0rVGAEA3R+ynDUDgag6Su0pYLScEACaF
-         VdbEM+ccOLQhxi9UHidkOrvDJPqXKGP62aEowqoJ8AWPBqdNFCJmKMzEqZXhpq5Z9P0s
-         h8grN0Ol4cUzSo0r9ZMic6r13EiSk96l/8poQAFEotOMkSrOxXwIbz3nalNS0aN2U7CO
-         zQhZNTYOGlJm1PzXy/JXyk+2P+pSs4WwYMsvx0S2hwQfhNz3xxQjC+UNb9EURlBtsQix
-         6nlfNdHiulpRhMRli6vXbQY/Fmp/xdFt7dANhI9eImDClqjNY+EZmYEkwBuz4WZI7OtN
-         L1RQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=X0ZOGYsSTOrqAuUJQSbLUK9pxP5SaCYK2GX9ZXRXpGo=;
+        b=buFDSpnktDPCZOnBms8qhalNZimgAYSLbVNQ08D23fWAEr8Amk28tWNY7kQrcLSKYX
+         LLNIQU13CSzasXYCEmisROuDbWG4K9DilKBU7R7n8luUguLxMsy04Ky6L2KPh/n8PDHT
+         ylk1MLCdbtCnrHbu8wwBUOJUrnENaxHvyOcfhP01bl4SkovkcesoK98SGOvZOZdDEtK5
+         sS4rtifd2yyyLy3aVYojExK/aaQDXD0CW7r0hdfYwnkSNQNVYaICjioD9pihR7Al5zeM
+         E3IjnFA0NV2BspGqs/LX5ub01djtBsefxTQkc8G6SiGf8dQZj+qaRYq0Er3icg7c9Acs
+         35Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+f3+Xe6vGoRY1MkZlLrpomXTPs0/tCl2G1ZKWZtIxAo=;
-        b=OgQoDv0WwkukYUjcisPhthKZz43ppQbv3rfulGPW4g/Bazo2eozBSicGSxURF7IBFQ
-         pyO3Nq0ghve0KhlfCYQrbf8sXs9hf0QTJkfEZvzGOkvH/U/E3nxXK24AtLr2vhBpXSic
-         OMW311+uZkTPyjpD/8+j+H2qzyUiIUumY+hfhrSro2afKiLCDAtC3lPRYjGLEfberAQZ
-         kkPXkY8OnKTyIrHwoJnh7Mog/aE+0GDNhIuOiMf21x6KgdS83MPkGRgqF8hr6K4esuos
-         MIyU1dbDW+863DRP3LvDnYYV2//7BrlNz1mTlpvLCQLHuJREcoBJ7CazNDT4MnusK37d
-         bN0g==
-X-Gm-Message-State: APjAAAUfpNBlfcbap9iYUnf7I3zy7wrPD5LRavN1+na/Ui7x7mZbBqsK
-        VOV4K6BlrxvLQykxn+OEWf4JHLbOtfgH9hfI1M0=
-X-Google-Smtp-Source: APXvYqzYgoObKadQNqP9/pOBBZSO8nRSPoX0xvkFOCE5TKS5+426FdTSaMvdKNMXLC9KHJtsRM3Xeaiu0SFDiXeY/qA=
-X-Received: by 2002:a92:1d51:: with SMTP id d78mr10157573ild.166.1571753970497;
- Tue, 22 Oct 2019 07:19:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <1571749887-9054-1-git-send-email-gupt21@gmail.com>
-In-Reply-To: <1571749887-9054-1-git-send-email-gupt21@gmail.com>
-From:   rishi gupta <gupt21@gmail.com>
-Date:   Tue, 22 Oct 2019 19:49:19 +0530
-Message-ID: <CALUj-gtADUhcUPmtOyjxwJCKhBcUOJaSdQd0H0J+JuSZ-yZEDQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/3] iio: documentation: light: Add veml6030 sysfs documentation
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=X0ZOGYsSTOrqAuUJQSbLUK9pxP5SaCYK2GX9ZXRXpGo=;
+        b=IgqPSbOeJ6PJQwJKoOJCTD6OWuzb9KdlURXdEjYK0tgJ1EeFeTX9Dubf7Ke4rmp3UR
+         KkdvYV/HNvsRx6WTPD3nRLdolCwV0njq1EiRXMB2eduET8zf0fBxg6KwsKctxhkt1xJL
+         leEwqn8UgVQ/PKBl+pD28lYa8rLllccoEA/a3tqbsGRU6O4NdXdXdnCozEbtrReMr/jo
+         dBZz5wLIi8070WrHnEnd06Pp77lJaed39JW0/IV2sfOQ7Hd9vtM6fdqNgGfTEvo6B87N
+         Rb/tIqOkGbQZeJzAa38jjhTIHsPfv2WBvWk6Zm62YIU4CcqxDUoV3tzGb9wRZFhhFm24
+         SNaA==
+X-Gm-Message-State: APjAAAW9x74UX1HAnwRnuMgolDSD4cKq+xSV6TWitsz4oSo7DxD2V6Re
+        vcdwRF2HlZ004sWfabEW+n7CoJL4V/k=
+X-Google-Smtp-Source: APXvYqxNL03HGLClVr1AH7C8sRxH8TcjK0Dkh8gIZmURmo0hIogq04ewNWkBtNqsKIOZASOCvveTbw==
+X-Received: by 2002:a37:9202:: with SMTP id u2mr3291112qkd.8.1571754462621;
+        Tue, 22 Oct 2019 07:27:42 -0700 (PDT)
+Received: from smtp.gmail.com (gwcrusp.semfio.usp.br. [143.107.150.86])
+        by smtp.gmail.com with ESMTPSA id k29sm9824775qtu.70.2019.10.22.07.27.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Oct 2019 07:27:41 -0700 (PDT)
+Date:   Tue, 22 Oct 2019 11:27:37 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     knaack.h@gmx.de, lars@metafoo.de,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        gregkh@linuxfoundation.org, tglx@linutronix.de,
-        allison@lohutok.net, alexios.zavras@intel.com, angus@akkea.ca,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     dragos.bogdan@analog.com, alexandru.ardelean@analog.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        kernel-usp@googlegroups.com
+Subject: Re: [PATCH v2 1/2] iio: adc: Add driver support for AD7292
+Message-ID: <20191022142736.ztch3mzqpv6jcvhm@smtp.gmail.com>
+References: <20191016025119.53fclzngzt5qwlmk@smtp.gmail.com>
+ <20191021180644.3a260af2@archlinux>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191021180644.3a260af2@archlinux>
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Forget to capture in change log:
-removed PSM sysfs completely.
+Hi Jonathan,
 
-On Tue, Oct 22, 2019 at 6:41 PM Rishi Gupta <gupt21@gmail.com> wrote:
->
-> The driver for veml6030 light sensor provides sysfs
-> entries like configuring cutoff for interrupt. This
-> commit document them.
->
-> Signed-off-by: Rishi Gupta <gupt21@gmail.com>
-> ---
-> Changes in v5:
-> * Use ABI/testing/sysfs-bus-iio to document sysfs files for veml6030
->
-> Changes in v4:
-> * None
->
-> Changes in v3:
-> * Updated Date from September to October
-> * Updated KernelVersion from 5.3.1 to 5.4
-> * in_illuminance_period_available is now in events directory
->
-> Changes in v2:
-> * None
->
->  Documentation/ABI/testing/sysfs-bus-iio | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index 6804516..a26d532 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -753,6 +753,8 @@ What:               /sys/.../events/in_illuminance0_thresh_falling_value
->  what:          /sys/.../events/in_illuminance0_thresh_rising_value
->  what:          /sys/.../events/in_proximity0_thresh_falling_value
->  what:          /sys/.../events/in_proximity0_thresh_rising_value
-> +What:          /sys/.../events/in_illuminance_thresh_rising_value
-> +What:          /sys/.../events/in_illuminance_thresh_falling_value
->  KernelVersion: 2.6.37
->  Contact:       linux-iio@vger.kernel.org
->  Description:
-> @@ -972,6 +974,7 @@ What:               /sys/.../events/in_activity_jogging_thresh_rising_period
->  What:          /sys/.../events/in_activity_jogging_thresh_falling_period
->  What:          /sys/.../events/in_activity_running_thresh_rising_period
->  What:          /sys/.../events/in_activity_running_thresh_falling_period
-> +What:          /sys/.../events/in_illuminance_thresh_either_period
->  KernelVersion: 2.6.37
->  Contact:       linux-iio@vger.kernel.org
->  Description:
-> @@ -1715,3 +1718,12 @@ Description:
->                 Mass concentration reading of particulate matter in ug / m3.
->                 pmX consists of particles with aerodynamic diameter less or
->                 equal to X micrometers.
-> +
-> +What:          /sys/bus/iio/devices/iio:deviceX/events/in_illuminance_period_available
-> +Date:          October 2019
-> +KernelVersion: 5.4
-> +Contact:       linux-iio@vger.kernel.org
-> +Description:
-> +               List of valid values available in multiples of integration time
-> +               for which the light intensity must be above the threshold level
-> +               before interrupt is asserted. This refers to persistence values.
-> --
-> 2.7.4
->
+Should I send a V3 for the whole patchset or just for the DT binding patch?
+
+Thanks,
+
+Marcelo
+
+On 10/21, Jonathan Cameron wrote:
+> On Tue, 15 Oct 2019 23:51:22 -0300
+> Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+> 
+> > The AD7292 is a 10-bit monitor and control system with ADC, DACs,
+> > temperature sensor, and GPIOs.
+> > 
+> > Configure AD7292 devices in direct access mode, enabling single-ended
+> > ADC readings.
+> > 
+> > Datasheet:
+> > Link: https://www.analog.com/media/en/technical-documentation/data-sheets/ad7292.pdf
+> > 
+> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> This looks fine to me.
+> 
+> Assuming nothing else comes up, I'll pick this up once the binding was tidied up.
+> 
+> Thanks,
+> 
+> Jonathan
+> 

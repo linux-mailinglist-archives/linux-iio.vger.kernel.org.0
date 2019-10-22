@@ -2,271 +2,432 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91688DFDE3
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 08:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E5D7DFF75
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 10:33:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387868AbfJVGyl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 02:54:41 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:54425 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387614AbfJVGyl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 02:54:41 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iMo3e-0006b9-7z; Tue, 22 Oct 2019 08:54:18 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iMo3b-0000Jn-91; Tue, 22 Oct 2019 08:54:15 +0200
-Date:   Tue, 22 Oct 2019 08:54:15 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     lee.jones@linaro.org, dmitry.torokhov@gmail.com, jdelvare@suse.com,
-        linux@roeck-us.net, thierry.reding@gmail.com, jic23@kernel.org,
-        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-iio@vger.kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
-Subject: Re: [PATCH 5/8] pwm: Add support for Azoteq IQS620A PWM generator
-Message-ID: <20191022065415.2zxmpbsmogvgul7x@pengutronix.de>
-References: <1571631083-4962-1-git-send-email-jeff@labundy.com>
- <1571631083-4962-6-git-send-email-jeff@labundy.com>
- <20191021073419.27r4xjqpz2wswerj@pengutronix.de>
- <20191022043649.GB2091@labundy.com>
+        id S2388335AbfJVIcs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 04:32:48 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:45488 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388329AbfJVIcs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 04:32:48 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id E420F28CF33
+Subject: Re: [PATCH v2 03/18] platform: cros_ec: Add cros_ec_sensor_hub driver
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>
+Cc:     briannorris@chromium.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, lee.jones@linaro.org, bleung@chromium.org,
+        dianders@chromium.org, groeck@chromium.org,
+        fabien.lahoudere@collabora.com, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, Nick Crews <ncrews@chromium.org>
+References: <20191021055403.67849-1-gwendal@chromium.org>
+ <20191021055403.67849-4-gwendal@chromium.org>
+ <20191021165911.22011c08@archlinux>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <44ff8e33-3300-4753-ea40-fa26d21cdd46@collabora.com>
+Date:   Tue, 22 Oct 2019 10:32:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191022043649.GB2091@labundy.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <20191021165911.22011c08@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jeff,
+Hi Gwendal,
 
-On Mon, Oct 21, 2019 at 11:36:49PM -0500, Jeff LaBundy wrote:
-> On Mon, Oct 21, 2019 at 09:34:19AM +0200, Uwe Kleine-König wrote:
-> > > +struct iqs620_pwm_private {
-> > > +	struct iqs62x_core *iqs62x;
-> > > +	struct pwm_chip chip;
-> > > +	struct notifier_block notifier;
-> > > +	bool ready;
-> > 
-> > This is always true, so you can drop it.
-> > 
+Complementing the Jonathan's review, few bits more.
+
+On 21/10/19 17:59, Jonathan Cameron wrote:
+> On Sun, 20 Oct 2019 22:53:48 -0700
+> Gwendal Grignou <gwendal@chromium.org> wrote:
 > 
-> This is here because iqs620_pwm_notifier references chip.pwms, which is
-> not allocated until after the notifier is registered and pwmchip_add is
-> called. So it protects against this (albeit unlikely) race condition:
+>> Similar to HID sensor stack, the new driver sits between cros_ec_dev
+>> and the iio device drivers:
+>>
+>> EC based iio device topology would be:
+>> iio:device1 ->
+>> ...0/0000:00:1f.0/PNP0C09:00/GOOG0004:00/cros-ec-dev.6.auto/
+>>                                          cros-ec-sensorhub.7.auto/
+>>                                          cros-ec-accel.15.auto/
+>>                                          iio:device1
+>>
+>> It will be expanded to control EC sensor FIFO.
+>>
+>> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > 
-> 1. iqs620_pwm_notifier is registered
-> 2. Device immediately suffers an asynchronous reset and notifier chain
->    is called (more on that in a bit)
-> 3. iqs620_pwm_notifier evaluates chips.pwms (NULL)
+> A few bits and pieces inline.
 > 
-> I felt this was simpler than calling pwmchip_add before registering the
-> notifier and adding an error/tear-down path in iqs620_pwm_probe in case
-> of failure. I would be happy to add a comment or two to explain the not-
-> so-obvious purpose of this flag.
-
-Ah, understood. A comment is definitively necessary here.
-
-> > > +};
-> > > +
-> > > +static int iqs620_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
-> > > +			    struct pwm_state *state)
-> > 
-> > Since
-> > 
-> > 	71523d1812ac ("pwm: Ensure pwm_apply_state() doesn't modify the state argument")
-> > 
-> > this isn't the right prototype.
-> > 
+> Thanks,
 > 
-> Sure thing; I will add the 'const' qualifier and remove the two changes
-> to the state argument.
+> Jonathan
 > 
-> > > +{
-> > > +	struct iqs620_pwm_private *iqs620_pwm;
-> > > +	struct iqs62x_core *iqs62x;
-> > > +	int error;
-> > > +	int duty_calc = state->duty_cycle * 256 / IQS620_PWM_PERIOD_NS - 1;
-> > > +	u8 duty_clamp = clamp(duty_calc, 0, 0xFF);
-
-Another problem that we have here is that the period is fixed to 1 ms
-and if a consumer requests for example:
-
-	.period = 5000000,
-	.duty_cycle = 1000000,
-
-the hardware is actually configured for
-
-	.period = 1000000,
-	.duty_cycle = 1000000,
-
-. I don't have a good suggestion how to fix this. We'd need to
-draw a line somewhere and decline a request that is too far from the
-result. But where this line should be is not obvious, it should
-definitively not be implemented in the driver itself IMHO.
-
-(The only halfway sane approach would be to let lowlevel drivers
-implement a .round_state callback and then let the framework judge. But
-we're a long way from having that, so that's not a solution for today.)
-
-> > > +	iqs620_pwm = container_of(chip, struct iqs620_pwm_private, chip);
-> > > +	iqs62x = iqs620_pwm->iqs62x;
-> > > +
-> > > +	error = regmap_write(iqs62x->map, IQS620_PWM_DUTY_CYCLE, duty_clamp);
-> > > +	if (error)
-> > > +		return error;
-> > > +
-> > > +	state->period = IQS620_PWM_PERIOD_NS;
-> > > +	state->duty_cycle = (duty_clamp + 1) * IQS620_PWM_PERIOD_NS / 256;
-> > 
-> > This suggests that if the value in the IQS620_PWM_DUTY_CYCLE is 0 the
-> > duty cycle is 1/256 ms with a period of 1 ms and the output cannot be
-> > constant inactive. If this is right please add a paragraph in the
-> > driver's comment at the top:
-> > 
-> > 	* Limitations:
-> > 	* - The hardware cannot generate a 0% duty cycle
-> > 
-> > (Please stick to this format, other drivers use it, too.)
 > 
-> That's correct; the lowest duty cycle that can be achieved using only the
-> IQS620_PWM_DUTY_CYCLE register is 0.4%. We can, however, generate 0% duty
-> cycle by disabling the output altogether using a separate register. Would
-> that be better than flat-out saying it's impossible?
+>> ---
+>> Changes in v2:
+>> - Remove unerelated changes.
+>> - Fix spelling.
+>> - Use !x instead of x == NULL
+>> - Use platform_ API directly to register IIO sensors from
+>>   cros_ec_sensorhub.
+>>
+>>  drivers/iio/common/cros_ec_sensors/Kconfig    |   2 +-
+>>  drivers/platform/chrome/Kconfig               |  12 ++
+>>  drivers/platform/chrome/Makefile              |   1 +
+>>  drivers/platform/chrome/cros_ec_sensorhub.c   | 202 ++++++++++++++++++
+>>  .../linux/platform_data/cros_ec_sensorhub.h   |  21 ++
+>>  5 files changed, 237 insertions(+), 1 deletion(-)
+>>  create mode 100644 drivers/platform/chrome/cros_ec_sensorhub.c
+>>  create mode 100644 include/linux/platform_data/cros_ec_sensorhub.h
+>>
+>> diff --git a/drivers/iio/common/cros_ec_sensors/Kconfig b/drivers/iio/common/cros_ec_sensors/Kconfig
+>> index cdbb29cfb9076..fefad95727907 100644
+>> --- a/drivers/iio/common/cros_ec_sensors/Kconfig
+>> +++ b/drivers/iio/common/cros_ec_sensors/Kconfig
+>> @@ -4,7 +4,7 @@
+>>  #
+>>  config IIO_CROS_EC_SENSORS_CORE
+>>  	tristate "ChromeOS EC Sensors Core"
+>> -	depends on SYSFS && CROS_EC
+>> +	depends on SYSFS && CROS_EC_SENSORHUB
+>>  	select IIO_BUFFER
+>>  	select IIO_TRIGGERED_BUFFER
+>>  	help
+>> diff --git a/drivers/platform/chrome/Kconfig b/drivers/platform/chrome/Kconfig
+>> index ee5f08ea57b6c..56a25317a6bee 100644
+>> --- a/drivers/platform/chrome/Kconfig
+>> +++ b/drivers/platform/chrome/Kconfig
+>> @@ -190,6 +190,18 @@ config CROS_EC_DEBUGFS
+>>  	  To compile this driver as a module, choose M here: the
+>>  	  module will be called cros_ec_debugfs.
+>>  
+>> +config CROS_EC_SENSORHUB
+>> +	tristate "ChromeOS EC MEMS Sensor Hub"
+>> +	depends on CROS_EC && IIO
+>> +	help
+>> +	  Allow loading IIO sensors. This driver is loaded by MFD and will in
+>> +	  turn query the EC and register the sensors.
+>> +	  It also spreads the sensor data coming from the EC to the IIO sensor
+>> +	  object.
+>> +
+>> +	  To compile this driver as a module, choose M here: the
+>> +	  module will be called cros_ec_sensorhub.
+>> +
+>>  config CROS_EC_SYSFS
+>>  	tristate "ChromeOS EC control and information through sysfs"
+>>  	depends on MFD_CROS_EC_DEV && SYSFS
+>> diff --git a/drivers/platform/chrome/Makefile b/drivers/platform/chrome/Makefile
+>> index 477ec3d1d1c98..a164c40dc0996 100644
+>> --- a/drivers/platform/chrome/Makefile
+>> +++ b/drivers/platform/chrome/Makefile
+>> @@ -17,6 +17,7 @@ obj-$(CONFIG_CROS_EC_PROTO)		+= cros_ec_proto.o cros_ec_trace.o
+>>  obj-$(CONFIG_CROS_KBD_LED_BACKLIGHT)	+= cros_kbd_led_backlight.o
+>>  obj-$(CONFIG_CROS_EC_CHARDEV)		+= cros_ec_chardev.o
+>>  obj-$(CONFIG_CROS_EC_LIGHTBAR)		+= cros_ec_lightbar.o
+>> +obj-$(CONFIG_CROS_EC_SENSORHUB)		+= cros_ec_sensorhub.o
+>>  obj-$(CONFIG_CROS_EC_VBC)		+= cros_ec_vbc.o
+>>  obj-$(CONFIG_CROS_EC_DEBUGFS)		+= cros_ec_debugfs.o
+>>  obj-$(CONFIG_CROS_EC_SYSFS)		+= cros_ec_sysfs.o
+>> diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platform/chrome/cros_ec_sensorhub.c
+>> new file mode 100644
+>> index 0000000000000..5fea4c28c5c95
+>> --- /dev/null
+>> +++ b/drivers/platform/chrome/cros_ec_sensorhub.c
+>> @@ -0,0 +1,202 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * SensorHub: driver that discover sensors behind
+>> + * a ChromeOS Embedded controller.
+>> + *
+>> + * Copyright 2019 Google LLC
+>> + */
+>> +
+>> +#include <linux/init.h>
+>> +#include <linux/device.h>
+>> +#include <linux/fs.h>
+>> +#include <linux/miscdevice.h>
 
-There is (maybe) a small difference between disabled and 0% duty cycle,
-at least from the framework's POV: If you do:
+The two includes above are not needed.
 
-	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
-	pwm_apply_state(pwm, { .enabled = false, .period = $DC, .duty_cycle = $DC, });
-	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
+>> +#include <linux/module.h>
+>> +#include <linux/mfd/cros_ec.h>
+>> +#include <linux/platform_data/cros_ec_commands.h>
+>> +#include <linux/platform_data/cros_ec_proto.h>
+>> +#include <linux/platform_device.h>
 
-and compare it to the expected result of
+>> +#include <linux/poll.h>
 
-	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
-	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 0, });
-	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
+Not needed.
 
-the difference is that the duration of the inactive phase in the latter
-case is a multiple of 1 ms.
+>> +#include <linux/slab.h>
 
-There is no policy for lowlevel drivers what to do, but disabling when
-0% is requested is at least not unseen and probably more what consumers
-expect.
+>> +#include <linux/types.h>
+>> +#include <linux/uaccess.h>
 
-> > How does the hardware behave on changes? For example you're first
-> > committing the duty cycle and then on/off. Can it happen that between
-> > 
-> > 	pwm_apply_state(pwm, { .duty_cycle = 3900, .period = 1000000, .enabled = true)
-> > 	...
-> > 	pwm_apply_state(pwm, { .duty_cycle = 1000000, .period = 1000000, .enabled = false)
-> > 
-> > the output is active for longer than 4 µs because the iqs620_pwm_apply
-> > function is preempted between the two register writes and so we already
-> > have .duty_cycle = 1000000 but still .enabled = true in the hardware?
-> > 
+Also, these two are not needed.
+
+>> +
+>> +#include <linux/platform_data/cros_ec_sensorhub.h>
+>> +
+>> +#define DRV_NAME		"cros-ec-sensorhub"
+>> +
+>> +
+
+Please don't use multiple blank lines
+
+For new files introduced in chrome/platform I'd like if you can fix the issues
+reported by checkpatch with the --strict option for v3. I'm not going to report
+these issues below (also, is my preference but optional)
+
+>> +static struct device_type cros_ec_sensorhub_dev_type = {
+>> +	.name	= "cros_ec_iio_sensor",
+>> +};
+>> +
+>> +static int cros_ec_sensorhub_allocate_single_sensor(
+>> +		struct device *parent,
+>> +		char *sensor_name,
+>> +		int sensor_num)
+>> +{
+>> +	struct platform_device *pdev;
+>> +	struct cros_ec_sensor_platform sensor_platforms = {
+>> +		.sensor_num = sensor_num,
+>> +	};
+>> +	int ret;
+>> +
+>> +	pdev = platform_device_alloc(sensor_name, PLATFORM_DEVID_AUTO);
+>> +	if (!pdev)
+>> +		return -ENOMEM;
+>> +
+>> +	pdev->dev.parent = parent;
+>> +	pdev->dev.type = &cros_ec_sensorhub_dev_type;
+>> +
+>> +	ret = platform_device_add_data(pdev, &sensor_platforms,
+>> +			sizeof(sensor_platforms));
+>> +	if (ret)
+>> +		goto fail_device;
+>> +
+>> +	ret = platform_device_add(pdev);
+>> +	if (ret)
+>> +		goto fail_device;
+>> +
+>> +	return 0;
+>> +
+>> +fail_device:
+>> +	platform_device_put(pdev);
+>> +	return ret;
+
+Instead of doing alloc, add_data, device_add, can we just do a single step with
+platform_device_register_data ? Similar to what we did in
+drivers/platform/chrome/wilco_ec/core.c should work I guess (cc'ing Nick)
+
+Also, we need to store the created devices and free on remove. I think this is
+not implemented.
+
+
+>> +}
+>> +
+>> +static int cros_ec_sensorhub_register(struct device *dev,
+>> +		struct cros_ec_dev *ec)
+>> +{
+>> +	int ret, i, id, sensor_num;
+>> +	int sensor_type[MOTIONSENSE_TYPE_MAX] = { 0 };
+>> +	struct ec_params_motion_sense *params;
+>> +	struct ec_response_motion_sense *resp;
+>> +	struct cros_ec_command *msg;
+>> +	char *name;
+>> +
+>> +	sensor_num = cros_ec_get_sensor_count(ec);
+>> +	if (sensor_num < 0) {
+>> +		dev_err(dev,
+>> +			"Unable to retrieve sensor information (err:%d)\n",
+>> +			sensor_num);
+>> +		return sensor_num;
+>> +	}
+>> +
+>> +	if (sensor_num == 0) {
+>> +		dev_err(dev, "Zero sensors reported.\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	/* Prepare a message to send INFO command to each sensor. */
+>> +	msg = kzalloc(sizeof(struct cros_ec_command) +
+>> +		      max(sizeof(*params), sizeof(*resp)), GFP_KERNEL);
+>> +	if (!msg) {
+>> +		ret = -ENOMEM;
+>> +		goto error;
 > 
-> My results show that it is possible to generate up to two irregular periods
-> by changing the duty cycle while the output is active.
+> If you get here, the kzalloc failed, so there is nothing to free.
+> Hence should just be a return -ENOMEM I think.
 > 
-> Depending on the ratio of old-to-new duty cycle and the position of the I2C
-> write relative to the asynchronous output, the device may produce one pulse
-> for which the width represents neither the old nor the new duty cycle.
+>> +	}
+>> +
+>> +	msg->version = 1;
+>> +	msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
+>> +	msg->outsize = sizeof(*params);
+>> +	msg->insize = sizeof(*resp);
+>> +	params = (struct ec_params_motion_sense *)msg->data;
+>> +	resp = (struct ec_response_motion_sense *)msg->data;
+>> +
+>> +	id = 0;
+>> +	for (i = 0; i < sensor_num; i++) {
+>> +		params->cmd = MOTIONSENSE_CMD_INFO;
+>> +		params->info.sensor_num = i;
+>> +		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+>> +		if (ret < 0) {
+>> +			dev_warn(dev, "no info for EC sensor %d : %d/%d\n",
+>> +				 i, ret, msg->result);
+>> +			continue;
+>> +		}
+>> +		switch (resp->info.type) {
+>> +		case MOTIONSENSE_TYPE_ACCEL:
+>> +			name = "cros-ec-accel";
+>> +			break;
+>> +		case MOTIONSENSE_TYPE_BARO:
+>> +			name = "cros-ec-baro";
+>> +			break;
+>> +		case MOTIONSENSE_TYPE_GYRO:
+>> +			name = "cros-ec-gyro";
+>> +			break;
+>> +		case MOTIONSENSE_TYPE_MAG:
+>> +			name = "cros-ec-mag";
+>> +			break;
+>> +		case MOTIONSENSE_TYPE_PROX:
+>> +			name = "cros-ec-prox";
+>> +			break;
+>> +		case MOTIONSENSE_TYPE_LIGHT:
+>> +			name = "cros-ec-light";
+>> +			break;
+>> +		case MOTIONSENSE_TYPE_ACTIVITY:
+>> +			name = "cros-ec-activity";
+>> +			break;
+>> +		default:
+>> +			dev_warn(dev, "unknown type %d\n", resp->info.type);
+>> +			continue;
+>> +		}
+>> +		ret = cros_ec_sensorhub_allocate_single_sensor(dev, name, i);
+>> +		if (ret)
+>> +			goto error;
+>> +
+>> +		sensor_type[resp->info.type]++;
+>> +	}
+>> +
+>> +	if (sensor_type[MOTIONSENSE_TYPE_ACCEL] >= 2)
+>> +		ec->has_kb_wake_angle = true;
+>> +
+>> +	if (cros_ec_check_features(ec,
+>> +				EC_FEATURE_REFINED_TABLET_MODE_HYSTERESIS)) {
+>> +		ret = cros_ec_sensorhub_allocate_single_sensor(
+>> +				dev, "cros-ec-lid-angle", 0);
+>> +	}
+>> +
+>> +error:
+>> +	kfree(msg);
+>> +	return ret;
+>> +}
+>> +
+>> +static int cros_ec_sensorhub_probe(struct platform_device *pdev)
+>> +{
+>> +	struct device *dev = &pdev->dev;
+>> +	struct cros_ec_dev *ec = dev_get_drvdata(dev->parent);
+>> +	int ret;
+>> +	struct cros_ec_sensorhub *data =
+>> +		kzalloc(sizeof(struct cros_ec_sensorhub), GFP_KERNEL);
+>> +
+>> +	if (!data)
+>> +		return -ENOMEM;
+>> +
+>> +	data->ec = ec;
+>> +	dev_set_drvdata(dev, data);
 > 
-> > Does a change complete the currently running period? Does disabling
-> > complete the currently running period? If so, does regmap_update_bits
-> > block until the new setting is active?
-> > 
+> Superficially this doesn't seem to be used.
 > 
-> A quick test reveals the following:
+>> +
+>> +	/* Check whether this EC is a sensor hub. */
+>> +	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE)) {
+>> +		ret = cros_ec_sensorhub_register(dev, ec);
+>> +	} else {
+>> +		ret = cros_ec_sensorhub_allocate_single_sensor(
+>> +				dev, "cros-ec-accel-legacy", 0);
+>> +		ret |= cros_ec_sensorhub_allocate_single_sensor(
+>> +				dev, "cros-ec-accel-legacy", 1);
 > 
-> * Duty cycle changes may interrupt a running period, i.e., the output may
->   transition in the middle of the period to accommodate the new duty cycle.
-> * Disabling the output drives it to zero immediately, i.e., the period does
->   does not run to completion.
+> Doing an |= with a return value is a good way to get some really
+> odd bugs in the future.  Please report only the first error and
+> cleanly.  If the first one failed we are going to fail to probe
+> anyway so don't call the second.
 > 
-> I will add a 'Limitations' section at the top as other drivers do, and call
-> these points out specifically.
+> 
+>> +	}
+>> +	if (ret)
+>> +		dev_err(dev, "failed to add EC sensors: error %d\n", ret);
+> 
+> Is this particular error useful?  I'd be more tempted to report
+> and error for each of the two types of registration above with
+> more information on what actually failed.
+> 
+>> +	return ret;
+>> +}
+>> +
+>> +static struct platform_driver cros_ec_sensorhub_driver = {
+>> +	.driver = {
+>> +		.name = DRV_NAME,
+>> +	},
+>> +	.probe = cros_ec_sensorhub_probe,
 
-Great. Thanks.
+        .remove?
 
-> > > +static int iqs620_pwm_notifier(struct notifier_block *notifier,
-> > > +			       unsigned long event_flags, void *context)
-> > > +{
-> > > +	struct iqs620_pwm_private *iqs620_pwm;
-> > > +	struct pwm_state state;
-> > > +	int error;
-> > > +
-> > > +	iqs620_pwm = container_of(notifier, struct iqs620_pwm_private,
-> > > +				  notifier);
-> > > +
-> > > +	if (!iqs620_pwm->ready || !(event_flags & BIT(IQS62X_EVENT_SYS_RESET)))
-> > > +		return NOTIFY_DONE;
-> > > +
-> > > +	pwm_get_state(&iqs620_pwm->chip.pwms[0], &state);
-> > > +
-> > > +	error = iqs620_pwm_apply(&iqs620_pwm->chip,
-> > > +				 &iqs620_pwm->chip.pwms[0], &state);
-> > > +	if (error) {
-> > > +		dev_err(iqs620_pwm->chip.dev,
-> > > +			"Failed to re-initialize device: %d\n", error);
-> > > +		return NOTIFY_BAD;
-> > > +	}
-> > > +
-> > > +	return NOTIFY_OK;
-> > 
-> > So the PWM can loose it's state sometimes? When does that happen?
+>> +};
+>> +
+>> +module_platform_driver(cros_ec_sensorhub_driver);
+>> +
+>> +MODULE_ALIAS("platform:" DRV_NAME);
+>> +MODULE_AUTHOR("Gwendal Grignou <gwendal@chromium.org>");
+>> +MODULE_DESCRIPTION("ChromeOS EC MEMS Sensor Hub Driver");
+>> +MODULE_LICENSE("GPL");
+>> +
+>> diff --git a/include/linux/platform_data/cros_ec_sensorhub.h b/include/linux/platform_data/cros_ec_sensorhub.h
+>> new file mode 100644
+>> index 0000000000000..7737685591ad3
+>> --- /dev/null
+>> +++ b/include/linux/platform_data/cros_ec_sensorhub.h
+>> @@ -0,0 +1,21 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/*
+>> + * cros_ec_sensorhub- Chrome OS EC MEMS Sensor Hub driver.
+
+Remove the cros_ec_sensorhub prefix. If for some weird reason the file changes
+his name is easy to forget to update the 'cros_ec_sensorhub-' text. So just
+remove as doesn't really apport anything.
+
+>> + *
+>> + * Copyright (C) 2019 Google, Inc
+
+I think that actually current copyright used by Google is
+   'Copyright 2019 Google LLC'
+
+>> + */
+>> +
+>> +#ifndef __LINUX_PLATFORM_DATA_CROS_EC_SENSORHUB_H
+>> +#define __LINUX_PLATFORM_DATA_CROS_EC_SENSORHUB_H
+>> +
+>> +#include <linux/platform_data/cros_ec_commands.h>
+>> +
+>> +/*
+>> + * struct cros_ec_sensorhub - Sensor Hub device data.
+>> + */
+
+Can we document this in kernel-doc format?
+
+>> +struct cros_ec_sensorhub {
+>> +	/* Embedded Controller where the hub is located. */
+>> +	struct cros_ec_dev *ec;
+>> +};
+>> +
+>> +#endif   /* __LINUX_PLATFORM_DATA_CROS_EC_SENSORHUB_H */
 > 
-> That's correct. The device performs an internal soft reset in the presence
-> of what it considers to be an I2C timeout error; in this case all registers
-> are restored to their default values.
-
-Is this a theoretic problem or does that happen from time to time?
- 
-> The data sheet goes so far as to recommend monitoring for this interrupt and
-> restoring the device on-the-fly. I have added some comments in iqs62x_irq in
-> patch [2/8] which provides some further detail.
-
-Monitoring that interrupt seems reasonable.
- 
-> > > +	error = devm_add_action_or_reset(&pdev->dev,
-> > > +					 iqs620_pwm_notifier_unregister,
-> > > +					 iqs620_pwm);
-> > 
-> > I wonder if this is safe. If in iqs620_pwm_notifier_unregister()
-> > unregistering of the notifier goes wrong (not sure when this can happen)
-> > the memory behind iqs620_pwm goes away. Then later iqs620_pwm_notifier
-> > might be called trying to use *iqs620_pwm ...
-> 
-> I think this is purely theoretical, as blocking_notifier_chain_unregister
-> only fails if the notifier is not found in the chain. If for some reason
-> blocking_notifier_chain_register fails (which currently cannot happen, as
-> it always returns zero), the driver will fail to probe before the action
-> could be added.
-> 
-> This of course means the error message in iqs620_pwm_notifier_unregister
-> is unnecessary; it is simply provided for debug/visibility.
-
-I'd suggest to do the unregister call in the remove callback which you
-have for pwm unregistration anyhow. Or alternatively implement a devm_
-variant of the notifier registration that explains in the comments that
-it is safe.
-
-Best regards
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |

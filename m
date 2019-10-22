@@ -2,278 +2,432 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF921E00D7
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 11:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9857E00E5
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 11:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730312AbfJVJfF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 05:35:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32830 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730247AbfJVJfE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Oct 2019 05:35:04 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 792BC20679;
-        Tue, 22 Oct 2019 09:35:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571736903;
-        bh=VZgqPtWa34Q/Fy1JG7lVK4c7SupOaSY+KLgU+PRBV0I=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dFtLbZpYTWlXldjBRXJFnQ4KXsK7Qtz1gl/5zgauKtQ+pVqsb9gmViJ1cSnbaTc5o
-         fdgPYqgJx4ZC8wqcJDA1DF6ml7Yx1HdsV/EpoByojRFz0lTqFvRVgMChRQExYpYEPc
-         /b+KVafl7MRASCRnwJ7nEq90letW6MwHUFqCszyY=
-Date:   Tue, 22 Oct 2019 10:34:58 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andrea Merello <andrea.merello@gmail.com>
-Cc:     Jonathan Cameron <jonathan.cameron@huawei.com>,
-        patrick.havelange@essensium.com,
-        paresh.chaudhary@rockwellcollins.com, pmeerw@pmeerw.net,
-        lars@metafoo.de, knaack.h@gmx.de,
-        Matthew Weber <matthew.weber@rockwellcollins.com>,
-        Colin King <colin.king@canonical.com>,
+        id S1731420AbfJVJjf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 05:39:35 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:46566 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730619AbfJVJjc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 05:39:32 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 2479828CFD0
+Subject: Re: [PATCH v2 04/18] platform/mfd:iio: cros_ec: Register sensor
+ through sensorhub
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>
+Cc:     briannorris@chromium.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, lee.jones@linaro.org, bleung@chromium.org,
+        dianders@chromium.org, groeck@chromium.org,
+        fabien.lahoudere@collabora.com, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/3] iio: max31856: add option for setting mains filter
- rejection frequency
-Message-ID: <20191022103458.3a112511@archlinux>
-In-Reply-To: <CAN8YU5Nxrv8q4LjCCrHH-qR6kj=PjNLBANgrTkYdX1b1OP+gkA@mail.gmail.com>
-References: <20190923121714.13672-1-andrea.merello@gmail.com>
-        <20190923121714.13672-2-andrea.merello@gmail.com>
-        <20191006085423.68bcecfd@archlinux>
-        <CAN8YU5Ogcp8ERkxntTVQH3EoJF7h61VCONPXEaP-kvpx8EmS+g@mail.gmail.com>
-        <20191017133210.00002799@huawei.com>
-        <CAN8YU5Nxrv8q4LjCCrHH-qR6kj=PjNLBANgrTkYdX1b1OP+gkA@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+References: <20191021055403.67849-1-gwendal@chromium.org>
+ <20191021055403.67849-5-gwendal@chromium.org>
+ <20191021170055.448c7f32@archlinux>
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Message-ID: <21b32ac3-7cb1-743b-5aa2-9a07c7b61800@collabora.com>
+Date:   Tue, 22 Oct 2019 11:39:26 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20191021170055.448c7f32@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Oct 2019 15:46:32 +0200
-Andrea Merello <andrea.merello@gmail.com> wrote:
+Hi Gwendal,
 
-> Il giorno gio 17 ott 2019 alle ore 14:32 Jonathan Cameron
-> <jonathan.cameron@huawei.com> ha scritto:
-> >
-> > On Wed, 16 Oct 2019 15:14:20 +0200
-> > Andrea Merello <andrea.merello@gmail.com> wrote:
-> >  
-> > > Il giorno dom 6 ott 2019 alle ore 09:54 Jonathan Cameron
-> > > <jic23@kernel.org> ha scritto:  
-> > > >
-> > > > On Mon, 23 Sep 2019 14:17:12 +0200
-> > > > Andrea Merello <andrea.merello@gmail.com> wrote:
-> > > >  
-> > > > > This sensor has an embedded notch filter for reducing interferences caused
-> > > > > by the power mains. This filter can be tuned to reject either 50Hz or 60Hz
-> > > > > (and harmonics).
-> > > > >
-> > > > > Currently the said setting is left alone (the sensor defaults to 60Hz).
-> > > > > This patch introduces a IIO attribute that allows the user to set the said
-> > > > > filter to the desired frequency.
-> > > > >
-> > > > > NOTE: this has been intentionally not tied to any DT property to allow
-> > > > > the configuration of this setting from userspace, e.g. with a GUI or by
-> > > > > reading a configuration file, or maybe reading a GPIO tied to a physical
-> > > > > switch or accessing some device that can autodetect the line frequency.
-> > > > >
-> > > > > Signed-off-by: Andrea Merello <andrea.merello@gmail.com>  
-> > > > This one is not something that can be expect to be known from the setup
-> > > > of the device as it will depend on local mains frequency.
-> > > >
-> > > > So fine, to have it as a userspace control, but the name is too generic.
-> > > > We already have a number of filter attributes and we should try to
-> > > > work out how to bring it inline with them.  
-> > >
-> > > Sure
-> > >  
-> > > > in_X_filter_low_pass_3db_frequency
-> > > > in_X_filter_high_pass_3db_frequency
-> > > >
-> > > > So would,
-> > > > in_X_filter_notch_center_frequency work?
-> > > > ( I suppose we should use the American spelling ;)  
-> > >
-> > > Yes, it seems OK in this case. I will produce a V2 with this modification.
-> > >  
-> > > > This kind of ignores the harmonics aspect but at least documents the
-> > > > main frequency being blocked.  
-> > >
-> > > I think this is perfectly fine: the user wants to set the notch filter
-> > > center frequency to either 60Hz or 50Hz to match the line frequency,
-> > > then she/he expects the filter to simply "work" somehow; IMO the
-> > > harmonic thing does not needed to be explicit.
-> > >  
-> > > > There is a slight complexity that we have devices that have dual
-> > > > notchfilters (50 and 60Hz) and ones where you can turn it off entirely.
-> > > >
-> > > > I suppose no value would count as off and we could perhaps use a list
-> > > > for both on at the same time (though that's a bit horrible).  
-> > >
-> > > IMHO it seems reasonable. Maybe for all-off and both-on conditions we
-> > > could also use magic strings like i.e. "all" and "off".  
-> >
-> > I go with 'maybe' on that one.  Need to think about whether that is just
-> > a partial solution as we will probably find a device with 3 options that only
-> > supports any 2 at one time.  That would still need a more complex interface.
-> >
-> > Will think on this.  
+On 21/10/19 18:00, Jonathan Cameron wrote:
+> On Sun, 20 Oct 2019 22:53:49 -0700
+> Gwendal Grignou <gwendal@chromium.org> wrote:
 > 
-> I'll keep this patch on hold, waiting for your thoughts. Take the time
-> you need :)
+>> - Remove duplicate code in mfd, since mfd just register
+>>   cros_ec_sensorhub if at least one sensor is present
+>> - Change iio cros_ec driver to get the pointer to the cros_ec_dev
+>>   through cros_ec_sensorhub.
+>>
+>> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> FWIW given I don't known the driver that well.
+> Looks good to me.
 > 
-> BTW IMHO:
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> If we want to address the most possible generic case, then we may
-> standardize a set of possible attributes for filters (like "enable",
-> "center_frequency", "width",  "Q" , etc). Of course most filters will
-> not allow for setting most of those attributes.
 
-Absolutely.  We currently have a few defined for low and high pass
-filters, but if there are more complex features to define we should
-do so.
+The same from my side
 
+Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+
+>> ---
+>> Changes in v2:
+>> - Remove unerelated changes.
+>> - Remove ec presence test in iio driver, done in cros_ec_sensorhub.
+>>
+>>  drivers/iio/accel/cros_ec_accel_legacy.c      |   6 -
+>>  .../common/cros_ec_sensors/cros_ec_sensors.c  |   6 -
+>>  .../cros_ec_sensors/cros_ec_sensors_core.c    |   4 +-
+>>  drivers/iio/light/cros_ec_light_prox.c        |   6 -
+>>  drivers/mfd/cros_ec_dev.c                     | 203 ++----------------
+>>  include/linux/platform_data/cros_ec_proto.h   |   8 -
+>>  .../linux/platform_data/cros_ec_sensorhub.h   |   8 +
+>>  7 files changed, 23 insertions(+), 218 deletions(-)
+>>
+>> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+>> index fcc3f999e4827..65f85faf6f31d 100644
+>> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+>> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+>> @@ -163,16 +163,10 @@ static const struct iio_chan_spec cros_ec_accel_legacy_channels[] = {
+>>  static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+>>  {
+>>  	struct device *dev = &pdev->dev;
+>> -	struct cros_ec_dev *ec = dev_get_drvdata(dev->parent);
+>>  	struct iio_dev *indio_dev;
+>>  	struct cros_ec_sensors_core_state *state;
+>>  	int ret;
+>>  
+>> -	if (!ec || !ec->ec_dev) {
+>> -		dev_warn(&pdev->dev, "No EC device found.\n");
+>> -		return -EINVAL;
+>> -	}
+>> -
+>>  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*state));
+>>  	if (!indio_dev)
+>>  		return -ENOMEM;
+>> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+>> index a6987726eeb8a..7dce044734678 100644
+>> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+>> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+>> @@ -222,17 +222,11 @@ static const struct iio_info ec_sensors_info = {
+>>  static int cros_ec_sensors_probe(struct platform_device *pdev)
+>>  {
+>>  	struct device *dev = &pdev->dev;
+>> -	struct cros_ec_dev *ec_dev = dev_get_drvdata(dev->parent);
+>>  	struct iio_dev *indio_dev;
+>>  	struct cros_ec_sensors_state *state;
+>>  	struct iio_chan_spec *channel;
+>>  	int ret, i;
+>>  
+>> -	if (!ec_dev || !ec_dev->ec_dev) {
+>> -		dev_warn(&pdev->dev, "No CROS EC device found.\n");
+>> -		return -EINVAL;
+>> -	}
+>> -
+>>  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*state));
+>>  	if (!indio_dev)
+>>  		return -ENOMEM;
+>> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+>> index d2609e6feda4d..81a7f692de2f3 100644
+>> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+>> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+>> @@ -18,6 +18,7 @@
+>>  #include <linux/slab.h>
+>>  #include <linux/platform_data/cros_ec_commands.h>
+>>  #include <linux/platform_data/cros_ec_proto.h>
+>> +#include <linux/platform_data/cros_ec_sensorhub.h>
+>>  #include <linux/platform_device.h>
+>>  
+>>  static char *cros_ec_loc[] = {
+>> @@ -88,7 +89,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>>  {
+>>  	struct device *dev = &pdev->dev;
+>>  	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
+>> -	struct cros_ec_dev *ec = dev_get_drvdata(pdev->dev.parent);
+>> +	struct cros_ec_sensorhub *sensor_hub = dev_get_drvdata(dev->parent);
+>> +	struct cros_ec_dev *ec = sensor_hub->ec;
+>>  	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+>>  	u32 ver_mask;
+>>  	int ret, i;
+>> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
+>> index c5263b563fc19..d85a391e50c59 100644
+>> --- a/drivers/iio/light/cros_ec_light_prox.c
+>> +++ b/drivers/iio/light/cros_ec_light_prox.c
+>> @@ -169,17 +169,11 @@ static const struct iio_info cros_ec_light_prox_info = {
+>>  static int cros_ec_light_prox_probe(struct platform_device *pdev)
+>>  {
+>>  	struct device *dev = &pdev->dev;
+>> -	struct cros_ec_dev *ec_dev = dev_get_drvdata(dev->parent);
+>>  	struct iio_dev *indio_dev;
+>>  	struct cros_ec_light_prox_state *state;
+>>  	struct iio_chan_spec *channel;
+>>  	int ret;
+>>  
+>> -	if (!ec_dev || !ec_dev->ec_dev) {
+>> -		dev_warn(dev, "No CROS EC device found.\n");
+>> -		return -EINVAL;
+>> -	}
+>> -
+>>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
+>>  	if (!indio_dev)
+>>  		return -ENOMEM;
+>> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
+>> index a35104e35cb4e..c4b977a5dd966 100644
+>> --- a/drivers/mfd/cros_ec_dev.c
+>> +++ b/drivers/mfd/cros_ec_dev.c
+>> @@ -78,6 +78,10 @@ static const struct mfd_cell cros_ec_rtc_cells[] = {
+>>  	{ .name = "cros-ec-rtc", },
+>>  };
+>>  
+>> +static const struct mfd_cell cros_ec_sensorhub_cells[] = {
+>> +	{ .name = "cros-ec-sensorhub", },
+>> +};
+>> +
+>>  static const struct mfd_cell cros_usbpd_charger_cells[] = {
+>>  	{ .name = "cros-usbpd-charger", },
+>>  	{ .name = "cros-usbpd-logger", },
+>> @@ -117,192 +121,6 @@ static void cros_ec_class_release(struct device *dev)
+>>  	kfree(to_cros_ec_dev(dev));
+>>  }
+>>  
+>> -static void cros_ec_sensors_register(struct cros_ec_dev *ec)
+>> -{
+>> -	/*
+>> -	 * Issue a command to get the number of sensor reported.
+>> -	 * Build an array of sensors driver and register them all.
+>> -	 */
+>> -	int ret, i, id, sensor_num;
+>> -	struct mfd_cell *sensor_cells;
+>> -	struct cros_ec_sensor_platform *sensor_platforms;
+>> -	int sensor_type[MOTIONSENSE_TYPE_MAX];
+>> -	struct ec_params_motion_sense *params;
+>> -	struct ec_response_motion_sense *resp;
+>> -	struct cros_ec_command *msg;
+>> -
+>> -	msg = kzalloc(sizeof(struct cros_ec_command) +
+>> -		      max(sizeof(*params), sizeof(*resp)), GFP_KERNEL);
+>> -	if (msg == NULL)
+>> -		return;
+>> -
+>> -	msg->version = 2;
+>> -	msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
+>> -	msg->outsize = sizeof(*params);
+>> -	msg->insize = sizeof(*resp);
+>> -
+>> -	params = (struct ec_params_motion_sense *)msg->data;
+>> -	params->cmd = MOTIONSENSE_CMD_DUMP;
+>> -
+>> -	ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+>> -	if (ret < 0) {
+>> -		dev_warn(ec->dev, "cannot get EC sensor information: %d/%d\n",
+>> -			 ret, msg->result);
+>> -		goto error;
+>> -	}
+>> -
+>> -	resp = (struct ec_response_motion_sense *)msg->data;
+>> -	sensor_num = resp->dump.sensor_count;
+>> -	/*
+>> -	 * Allocate 2 extra sensors if lid angle sensor and/or FIFO are needed.
+>> -	 */
+>> -	sensor_cells = kcalloc(sensor_num + 2, sizeof(struct mfd_cell),
+>> -			       GFP_KERNEL);
+>> -	if (sensor_cells == NULL)
+>> -		goto error;
+>> -
+>> -	sensor_platforms = kcalloc(sensor_num,
+>> -				   sizeof(struct cros_ec_sensor_platform),
+>> -				   GFP_KERNEL);
+>> -	if (sensor_platforms == NULL)
+>> -		goto error_platforms;
+>> -
+>> -	memset(sensor_type, 0, sizeof(sensor_type));
+>> -	id = 0;
+>> -	for (i = 0; i < sensor_num; i++) {
+>> -		params->cmd = MOTIONSENSE_CMD_INFO;
+>> -		params->info.sensor_num = i;
+>> -		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+>> -		if (ret < 0) {
+>> -			dev_warn(ec->dev, "no info for EC sensor %d : %d/%d\n",
+>> -				 i, ret, msg->result);
+>> -			continue;
+>> -		}
+>> -		switch (resp->info.type) {
+>> -		case MOTIONSENSE_TYPE_ACCEL:
+>> -			sensor_cells[id].name = "cros-ec-accel";
+>> -			break;
+>> -		case MOTIONSENSE_TYPE_BARO:
+>> -			sensor_cells[id].name = "cros-ec-baro";
+>> -			break;
+>> -		case MOTIONSENSE_TYPE_GYRO:
+>> -			sensor_cells[id].name = "cros-ec-gyro";
+>> -			break;
+>> -		case MOTIONSENSE_TYPE_MAG:
+>> -			sensor_cells[id].name = "cros-ec-mag";
+>> -			break;
+>> -		case MOTIONSENSE_TYPE_PROX:
+>> -			sensor_cells[id].name = "cros-ec-prox";
+>> -			break;
+>> -		case MOTIONSENSE_TYPE_LIGHT:
+>> -			sensor_cells[id].name = "cros-ec-light";
+>> -			break;
+>> -		case MOTIONSENSE_TYPE_ACTIVITY:
+>> -			sensor_cells[id].name = "cros-ec-activity";
+>> -			break;
+>> -		default:
+>> -			dev_warn(ec->dev, "unknown type %d\n", resp->info.type);
+>> -			continue;
+>> -		}
+>> -		sensor_platforms[id].sensor_num = i;
+>> -		sensor_cells[id].id = sensor_type[resp->info.type];
+>> -		sensor_cells[id].platform_data = &sensor_platforms[id];
+>> -		sensor_cells[id].pdata_size =
+>> -			sizeof(struct cros_ec_sensor_platform);
+>> -
+>> -		sensor_type[resp->info.type]++;
+>> -		id++;
+>> -	}
+>> -
+>> -	if (sensor_type[MOTIONSENSE_TYPE_ACCEL] >= 2)
+>> -		ec->has_kb_wake_angle = true;
+>> -
+>> -	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
+>> -		sensor_cells[id].name = "cros-ec-ring";
+>> -		id++;
+>> -	}
+>> -	if (cros_ec_check_features(ec,
+>> -				EC_FEATURE_REFINED_TABLET_MODE_HYSTERESIS)) {
+>> -		sensor_cells[id].name = "cros-ec-lid-angle";
+>> -		id++;
+>> -	}
+>> -
+>> -	ret = mfd_add_devices(ec->dev, 0, sensor_cells, id,
+>> -			      NULL, 0, NULL);
+>> -	if (ret)
+>> -		dev_err(ec->dev, "failed to add EC sensors\n");
+>> -
+>> -	kfree(sensor_platforms);
+>> -error_platforms:
+>> -	kfree(sensor_cells);
+>> -error:
+>> -	kfree(msg);
+>> -}
+>> -
+>> -static struct cros_ec_sensor_platform sensor_platforms[] = {
+>> -	{ .sensor_num = 0 },
+>> -	{ .sensor_num = 1 }
+>> -};
+>> -
+>> -static const struct mfd_cell cros_ec_accel_legacy_cells[] = {
+>> -	{
+>> -		.name = "cros-ec-accel-legacy",
+>> -		.platform_data = &sensor_platforms[0],
+>> -		.pdata_size = sizeof(struct cros_ec_sensor_platform),
+>> -	},
+>> -	{
+>> -		.name = "cros-ec-accel-legacy",
+>> -		.platform_data = &sensor_platforms[1],
+>> -		.pdata_size = sizeof(struct cros_ec_sensor_platform),
+>> -	}
+>> -};
+>> -
+>> -static void cros_ec_accel_legacy_register(struct cros_ec_dev *ec)
+>> -{
+>> -	struct cros_ec_device *ec_dev = ec->ec_dev;
+>> -	u8 status;
+>> -	int ret;
+>> -
+>> -	/*
+>> -	 * ECs that need legacy support are the main EC, directly connected to
+>> -	 * the AP.
+>> -	 */
+>> -	if (ec->cmd_offset != 0)
+>> -		return;
+>> -
+>> -	/*
+>> -	 * Check if EC supports direct memory reads and if EC has
+>> -	 * accelerometers.
+>> -	 */
+>> -	if (ec_dev->cmd_readmem) {
+>> -		ret = ec_dev->cmd_readmem(ec_dev, EC_MEMMAP_ACC_STATUS, 1,
+>> -					  &status);
+>> -		if (ret < 0) {
+>> -			dev_warn(ec->dev, "EC direct read error.\n");
+>> -			return;
+>> -		}
+>> -
+>> -		/* Check if EC has accelerometers. */
+>> -		if (!(status & EC_MEMMAP_ACC_STATUS_PRESENCE_BIT)) {
+>> -			dev_info(ec->dev, "EC does not have accelerometers.\n");
+>> -			return;
+>> -		}
+>> -	}
+>> -
+>> -	/*
+>> -	 * The device may still support accelerometers:
+>> -	 * it would be an older ARM based device that do not suppor the
+>> -	 * EC_CMD_GET_FEATURES command.
+>> -	 *
+>> -	 * Register 2 accelerometers, we will fail in the IIO driver if there
+>> -	 * are no sensors.
+>> -	 */
+>> -	ret = mfd_add_hotplug_devices(ec->dev, cros_ec_accel_legacy_cells,
+>> -				      ARRAY_SIZE(cros_ec_accel_legacy_cells));
+>> -	if (ret)
+>> -		dev_err(ec_dev->dev, "failed to add EC sensors\n");
+>> -}
+>> -
+>>  static int ec_device_probe(struct platform_device *pdev)
+>>  {
+>>  	int retval = -ENOMEM;
+>> @@ -358,11 +176,14 @@ static int ec_device_probe(struct platform_device *pdev)
+>>  		goto failed;
+>>  
+>>  	/* check whether this EC is a sensor hub. */
+>> -	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE))
+>> -		cros_ec_sensors_register(ec);
+>> -	else
+>> -		/* Workaroud for older EC firmware */
+>> -		cros_ec_accel_legacy_register(ec);
+>> +	if (cros_ec_get_sensor_count(ec) > 0) {
+>> +		retval = mfd_add_hotplug_devices(ec->dev,
+>> +				cros_ec_sensorhub_cells,
+>> +				ARRAY_SIZE(cros_ec_sensorhub_cells));
+>> +		if (retval)
+>> +			dev_err(ec->dev, "failed to add %s subdevice: %d\n",
+>> +				cros_ec_sensorhub_cells->name, retval);
+>> +	}
+>>  
+>>  	/*
+>>  	 * The following subdevices can be detected by sending the
+>> diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/platform_data/cros_ec_proto.h
+>> index f3de0662135d5..691f9e953a96a 100644
+>> --- a/include/linux/platform_data/cros_ec_proto.h
+>> +++ b/include/linux/platform_data/cros_ec_proto.h
+>> @@ -168,14 +168,6 @@ struct cros_ec_device {
+>>  	struct platform_device *pd;
+>>  };
+>>  
+>> -/**
+>> - * struct cros_ec_sensor_platform - ChromeOS EC sensor platform information.
+>> - * @sensor_num: Id of the sensor, as reported by the EC.
+>> - */
+>> -struct cros_ec_sensor_platform {
+>> -	u8 sensor_num;
+>> -};
+>> -
+>>  /**
+>>   * struct cros_ec_platform - ChromeOS EC platform information.
+>>   * @ec_name: Name of EC device (e.g. 'cros-ec', 'cros-pd', ...)
+>> diff --git a/include/linux/platform_data/cros_ec_sensorhub.h b/include/linux/platform_data/cros_ec_sensorhub.h
+>> index 7737685591ad3..c18fba660bb62 100644
+>> --- a/include/linux/platform_data/cros_ec_sensorhub.h
+>> +++ b/include/linux/platform_data/cros_ec_sensorhub.h
+>> @@ -10,6 +10,14 @@
+>>  
+>>  #include <linux/platform_data/cros_ec_commands.h>
+>>  
+>> +/**
+>> + * struct cros_ec_sensor_platform - ChromeOS EC sensor platform information.
+>> + * @sensor_num: Id of the sensor, as reported by the EC.
+>> + */
+>> +struct cros_ec_sensor_platform {
+>> +	u8 sensor_num;
+>> +};
+>> +
+>>  /*
+>>   * struct cros_ec_sensorhub - Sensor Hub device data.
+>>   */
 > 
-> Then i.e.  in our case we could have one single filter that allows for
-> setting the frequency to either 50hz or 60hz; in other cases we could
-> have i.e. two filters (with 50hz and 60hz center freq respectively),
-> and they would allow to set only the "enable" attribute; in case you
-> can i.e. enable only two of three filters, when you try to enable the
-> 3rd it just refuse that. In this scenario probably "center_frequency"
-> could be just a regular value (not a list).
-
-Agreed.  The question is whether to index filters.  So allow more
-than one of a given type on a given channel. So far we have
-only had the one and there isn't a nice way to support multiple
-as we currently don't have any indexed parameters of a single channel.
-
-I haven't seen parts that actually do have this level of sophisticated
-filtering built in, with the exception of mains filters like this one.
-
-I think we have to allow for the possibility so if you are happy to do
-so please propose the ABI additions to support multiple filters of
-a type. I would suggest keeping them per type though
-
-e.g.
-
-in_X_filter_low_passY_3db_frequency etc
-with Y as the optional index.
-
-For now, lets just implement then using extended attributes rather
-than trying to extend the core to generate these automatically.
-
-If this turns out not to be a corner case we can try to figure
-out a sane way of generating the multiple indexed versions.
-
-
-> 
-> >
-> >
-> > Jonathan
-> >  
-> > >  
-> > > > > ---
-> > > > >  drivers/iio/temperature/max31856.c | 49 ++++++++++++++++++++++++++++++
-> > > > >  1 file changed, 49 insertions(+)
-> > > > >
-> > > > > diff --git a/drivers/iio/temperature/max31856.c b/drivers/iio/temperature/max31856.c
-> > > > > index 73ed550e3fc9..d12613f7ba3c 100644
-> > > > > --- a/drivers/iio/temperature/max31856.c
-> > > > > +++ b/drivers/iio/temperature/max31856.c
-> > > > > @@ -23,6 +23,7 @@
-> > > > >  #define MAX31856_CR0_1SHOT         BIT(6)
-> > > > >  #define MAX31856_CR0_OCFAULT       BIT(4)
-> > > > >  #define MAX31856_CR0_OCFAULT_MASK  GENMASK(5, 4)
-> > > > > +#define MAX31856_CR0_FILTER_50HZ   BIT(0)
-> > > > >  #define MAX31856_TC_TYPE_MASK      GENMASK(3, 0)
-> > > > >  #define MAX31856_FAULT_OVUV        BIT(1)
-> > > > >  #define MAX31856_FAULT_OPEN        BIT(0)
-> > > > > @@ -63,6 +64,7 @@ static const struct iio_chan_spec max31856_channels[] = {
-> > > > >  struct max31856_data {
-> > > > >       struct spi_device *spi;
-> > > > >       u32 thermocouple_type;
-> > > > > +     bool filter_50hz;
-> > > > >  };
-> > > > >
-> > > > >  static int max31856_read(struct max31856_data *data, u8 reg,
-> > > > > @@ -123,6 +125,11 @@ static int max31856_init(struct max31856_data *data)
-> > > > >       reg_cr0_val &= ~MAX31856_CR0_1SHOT;
-> > > > >       reg_cr0_val |= MAX31856_CR0_AUTOCONVERT;
-> > > > >
-> > > > > +     if (data->filter_50hz)
-> > > > > +             reg_cr0_val |= MAX31856_CR0_FILTER_50HZ;
-> > > > > +     else
-> > > > > +             reg_cr0_val &= ~MAX31856_CR0_FILTER_50HZ;
-> > > > > +
-> > > > >       return max31856_write(data, MAX31856_CR0_REG, reg_cr0_val);
-> > > > >  }
-> > > > >
-> > > > > @@ -249,12 +256,53 @@ static ssize_t show_fault_oc(struct device *dev,
-> > > > >       return show_fault(dev, MAX31856_FAULT_OPEN, buf);
-> > > > >  }
-> > > > >
-> > > > > +static ssize_t show_filter(struct device *dev,
-> > > > > +                        struct device_attribute *attr,
-> > > > > +                        char *buf)
-> > > > > +{
-> > > > > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > > +     struct max31856_data *data = iio_priv(indio_dev);
-> > > > > +
-> > > > > +     return sprintf(buf, "%d\n", data->filter_50hz ? 50 : 60);
-> > > > > +}
-> > > > > +
-> > > > > +static ssize_t set_filter(struct device *dev,
-> > > > > +                       struct device_attribute *attr,
-> > > > > +                       const char *buf,
-> > > > > +                       size_t len)
-> > > > > +{
-> > > > > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > > > > +     struct max31856_data *data = iio_priv(indio_dev);
-> > > > > +     unsigned int freq;
-> > > > > +     int ret;
-> > > > > +
-> > > > > +     ret = kstrtouint(buf, 10, &freq);
-> > > > > +     if (ret)
-> > > > > +             return ret;
-> > > > > +
-> > > > > +     switch (freq) {
-> > > > > +     case 50:
-> > > > > +             data->filter_50hz = true;
-> > > > > +             break;
-> > > > > +     case 60:
-> > > > > +             data->filter_50hz = false;
-> > > > > +             break;
-> > > > > +     default:
-> > > > > +             return -EINVAL;
-> > > > > +     }
-> > > > > +
-> > > > > +     max31856_init(data);
-> > > > > +     return len;
-> > > > > +}
-> > > > > +
-> > > > >  static IIO_DEVICE_ATTR(fault_ovuv, 0444, show_fault_ovuv, NULL, 0);
-> > > > >  static IIO_DEVICE_ATTR(fault_oc, 0444, show_fault_oc, NULL, 0);
-> > > > > +static IIO_DEVICE_ATTR(filter, 0644, show_filter, set_filter, 0);
-> > > > >
-> > > > >  static struct attribute *max31856_attributes[] = {
-> > > > >       &iio_dev_attr_fault_ovuv.dev_attr.attr,
-> > > > >       &iio_dev_attr_fault_oc.dev_attr.attr,
-> > > > > +     &iio_dev_attr_filter.dev_attr.attr,
-> > > > >       NULL,
-> > > > >  };
-> > > > >
-> > > > > @@ -280,6 +328,7 @@ static int max31856_probe(struct spi_device *spi)
-> > > > >
-> > > > >       data = iio_priv(indio_dev);
-> > > > >       data->spi = spi;
-> > > > > +     data->filter_50hz = false;
-> > > > >
-> > > > >       spi_set_drvdata(spi, indio_dev);
-> > > > >  
-> > > >  
-> >
-> >  
-

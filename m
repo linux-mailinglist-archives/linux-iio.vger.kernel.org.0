@@ -2,37 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A9930E0334
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 13:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05E6FE0346
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 13:45:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731060AbfJVLlu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 07:41:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34758 "EHLO mail.kernel.org"
+        id S2388773AbfJVLov (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 07:44:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35430 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730515AbfJVLlu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Oct 2019 07:41:50 -0400
+        id S2388689AbfJVLov (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Oct 2019 07:44:51 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A64E3207FC;
-        Tue, 22 Oct 2019 11:41:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 959C2207FC;
+        Tue, 22 Oct 2019 11:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571744509;
-        bh=XHVq6IxuiT8pWTrmGBnGNAyevVR++yH0jKbzxaPazmg=;
+        s=default; t=1571744690;
+        bh=Ocg4gJYWLSPlASVvZP7w0Vv9HGn/kHUlwwAOpQ+M/f8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tcOp/mhwTQB0OwGM54t1qrtd2BnR3pwF4jB7QiWDUjgA/+byIqQdhO1q1vDA30vuH
-         ouxP8kZt0tRFgBlxmGjpRCa5DNO47gC+/hWx+yv1DOnU+aH7h1O18xOs8jF1p3c9Va
-         4iaHzeA2gWciOm/zBkdHwvpu1DFFAo43jmmVC5G0=
-Date:   Tue, 22 Oct 2019 12:41:45 +0100
+        b=gldl0GnsRIXEOXTVg+jzHW4p18xos0sPbFW+BB6V0+InEsyR3taFRAWSfaK5RbAFn
+         t36QzeLk2slsDrKYrEH39DQ21zRB4ywbSHsws0EyBbY0yC+UCL8ps8BPbuGC6tDhnO
+         dlQ3c99cEl2xxhdwMPm+G2dw9y0d0/kbUJIF5aEQ=
+Date:   Tue, 22 Oct 2019 12:44:46 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andreas Brauchli <a.brauchli@elementarea.net>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] iio: chemical: sgp30: drop excess semicolon
-Message-ID: <20191022124145.333998a0@archlinux>
-In-Reply-To: <f7b5a222c49f82f0555eed514a95a0720f01caf1.camel@elementarea.net>
-References: <20191013165412.2090798-1-jic23@kernel.org>
-        <f7b5a222c49f82f0555eed514a95a0720f01caf1.camel@elementarea.net>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] iio: imu: inv_mpu6050: fix no data on MPU6050
+Message-ID: <20191022124446.217b1697@archlinux>
+In-Reply-To: <20191017181128.GX31224@sasha-vm>
+References: <20191016144253.24554-1-jmaneyrol@invensense.com>
+        <20191017143142.489CF21848@mail.kernel.org>
+        <MN2PR12MB3373BC1DE5152A4546940EB3C46D0@MN2PR12MB3373.namprd12.prod.outlook.com>
+        <20191017181128.GX31224@sasha-vm>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,48 +45,26 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Oct 2019 10:51:35 +0200
-Andreas Brauchli <a.brauchli@elementarea.net> wrote:
+On Thu, 17 Oct 2019 14:11:28 -0400
+Sasha Levin <sashal@kernel.org> wrote:
 
-> ACK, lgtm. Thanks for forwarding.
+> On Thu, Oct 17, 2019 at 02:43:55PM +0000, Jean-Baptiste Maneyrol wrote:
+> >Hello Sacha,
+> >
+> >I can do a specific patch for backporting to kernel 4.19 and older ones if needed.
+> >This is really simple.
+> >
+> >Tell me if this is OK for you and how to proceed.  
 > 
+> If you do end up doing a backport, just send it either as a reply to
+> this mail, or add a "4.19" tag and send it over to
+> stable@vger.kernel.org.
 > 
-> On Sun, 2019-10-13 at 17:54 +0100, jic23@kernel.org wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Suggested by coccinelle / coccicheck.
-> > 
-> > CHECK   drivers/iio/chemical/sgp30.c
-> > drivers/iio/chemical/sgp30.c:486:2-3: Unneeded semicolon
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Andreas Brauchli <a.brauchli@elementarea.net>  
-> 
-> Signed-off-by: Andreas Brauchli <a.brauchli@elementarea.net>
-Applied.
+
+I've applied this to the fixes-togreg branch of iio.git.  Hopefully
+will a pull request out to Greg sometime in the next few days and
+from him it'll work it's way into Linus' tree.
 
 Thanks,
 
 Jonathan
-
-> 
-> > ---
-> >  drivers/iio/chemical/sgp30.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/chemical/sgp30.c
-> > b/drivers/iio/chemical/sgp30.c
-> > index 8cc8fe5e356d..403e8803471a 100644
-> > --- a/drivers/iio/chemical/sgp30.c
-> > +++ b/drivers/iio/chemical/sgp30.c
-> > @@ -483,7 +483,7 @@ static void sgp_init(struct sgp_data *data)
-> >  		data->iaq_defval_skip_jiffies =
-> >  			43 * data->measure_interval_jiffies;
-> >  		break;
-> > -	};
-> > +	}
-> >  }
-> >  
-> >  static const struct iio_info sgp_info = {  
-> 
-

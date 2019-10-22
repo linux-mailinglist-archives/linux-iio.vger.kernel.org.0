@@ -2,37 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE8A2E037A
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 13:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BC76E037D
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 13:56:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388306AbfJVLy4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 07:54:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38188 "EHLO mail.kernel.org"
+        id S2388801AbfJVL4I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 07:56:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38512 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388843AbfJVLy4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Oct 2019 07:54:56 -0400
+        id S2387868AbfJVL4I (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Oct 2019 07:56:08 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7308521783;
-        Tue, 22 Oct 2019 11:54:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A0B7F205ED;
+        Tue, 22 Oct 2019 11:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571745295;
-        bh=tXU8Vkg6ihJuxdFUihT8VGsq1CiZVWpb9qmWWLwa9Ic=;
+        s=default; t=1571745366;
+        bh=ETAanlSY0IZUrOZD+HrgkzaGk/d9J7zxDqf6hOqnApE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=o/4bYOjRgJ6/qv+8jnD00fIXPoCCfyT2sihYspsJFsrD+/h+hcTUCi1aaeJQ5eg1B
-         JeFpum8I+mk2toKcuHNBPFoW7M/jebXM8pmqOGNqdvZOiMjmKLQY2EWvdb4OfhSgOo
-         FB8+FEN5z3O3K2lmWW/SGv7I6wyjB3SfEFxxJyKM=
-Date:   Tue, 22 Oct 2019 12:54:51 +0100
+        b=RJICUMtnyRROc1L5lb3axiAWhhLx4jeffo37m1KPtt8shGC3YcortKk5q9KMJJKIE
+         FUiaZb1e8YJuHg10Vqy3xZKFNvLoq/cA9wOxuTDc6b4zSywSMYtoRniJwdVJ3SUw4p
+         gHC5f2c99b9l6M4XfmWdFbFY6/cgFOyEtqlwDUsQ=
+Date:   Tue, 22 Oct 2019 12:56:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <gregor.boirie@parrot.com>
-Subject: Re: [PATCH] iio: pressure: zpa2326: fix
- iio_triggered_buffer_postenable position
-Message-ID: <20191022125451.79feacdd@archlinux>
-In-Reply-To: <20191005161420.34c17eea@archlinux>
-References: <20190920080348.29995-1-alexandru.ardelean@analog.com>
-        <20191005161420.34c17eea@archlinux>
+To:     Fabrice Gasnier <fabrice.gasnier@st.com>
+Cc:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: Re: [PATCH] iio: adc: stm32-adc: fix kernel-doc warnings
+Message-ID: <20191022125601.24653506@archlinux>
+In-Reply-To: <20190921190357.7dc08c2d@archlinux>
+References: <1568980206-5428-1-git-send-email-fabrice.gasnier@st.com>
+        <20190921190357.7dc08c2d@archlinux>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,34 +45,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 5 Oct 2019 16:14:20 +0100
+On Sat, 21 Sep 2019 19:03:57 +0100
 Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Fri, 20 Sep 2019 11:03:48 +0300
-> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> On Fri, 20 Sep 2019 13:50:06 +0200
+> Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
 > 
-> > The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-> > the poll functions.
+> > Fix the following warnings when documentation is built:
+> > drivers/iio/adc/stm32-adc-core.c:62: warning: cannot understand function
+> >  prototype: 'struct stm32_adc_common_regs '
+> > drivers/iio/adc/stm32-adc-core.c:78: warning: cannot understand function
+> >  prototype: 'struct stm32_adc_priv_cfg '
+> > drivers/iio/adc/stm32-adc-core.c:123: warning: Function parameter or
+> >  member 'pdev' not described in 'stm32f4_adc_clk_sel'
+> > drivers/iio/adc/stm32-adc.c:219: warning: cannot understand function
+> >  prototype: 'struct stm32_adc_regs '
+> > drivers/iio/adc/stm32-adc.c:237: warning: cannot understand function
+> >  prototype: 'struct stm32_adc_regspec '
+> > drivers/iio/adc/stm32-adc.c:264: warning: cannot understand function
+> >  prototype: 'struct stm32_adc_cfg '
+> > drivers/iio/adc/stm32-adc.c:323: warning: Function parameter or member
+> >  'difsel' not described in 'N'
+> > drivers/iio/adc/stm32-adc.c:323: warning: Function parameter or member
+> >  'pcsel' not described in 'stm32_adc'
+> > drivers/iio/adc/stm32-adc.c:371: warning: cannot understand function
+> >  prototype: 'const struct stm32_adc_regs stm32f4_sq[STM32_ADC_MAX_SQ + 1]
+> > drivers/iio/adc/stm32-adc.c:417: warning: cannot understand function
+> >  prototype: 'const struct stm32_adc_regs stm32f4_smp_bits[] = '
+> > drivers/iio/adc/stm32-adc.c:508: warning: cannot understand function
+> >  prototype: 'const struct stm32_adc_regs stm32h7_smp_bits[] = '
+> > drivers/iio/adc/stm32-adc.c:1112: warning: Function parameter or member
+> >  'indio_dev' not described in 'stm32_adc_get_trig_extsel'
+> > drivers/iio/adc/stm32-adc.c:1420: warning: Function parameter or member
+> >  'indio_dev' not described in 'stm32_adc_debugfs_reg_access'
+> > drivers/iio/adc/stm32-adc.c:1420: warning: Function parameter or member
+> >  'reg' not described in 'stm32_adc_debugfs_reg_access'
+> > drivers/iio/adc/stm32-adc.c:1420: warning: Function parameter or member
+> >  'writeval' not described in 'stm32_adc_debugfs_reg_access'
+> > drivers/iio/adc/stm32-adc.c:1420: warning: Function parameter or member
+> >  'readval' not described in 'stm32_adc_debugfs_reg_access'
 > > 
-> > The iio_triggered_buffer_postenable() should be called before (to attach
-> > the poll func) and then the
-> > 
-> > The iio_triggered_buffer_predisable() function is hooked directly without
-> > anything, which is probably fine, as the postenable() version seems to also
-> > do some reset/wake-up of the device.
-> > This will mean it will be easier when removing it; i.e. it just gets
-> > removed.
-> > 
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> Seems straight forward but I've often been wrong before.
-> Not heard from Gregor for a while, but we should give him a little more
-> time to spot this one.  If nothing for another week I'll just take a
-> gamble and apply it.  If I seem to have forgotten any of these give
-> me a bump.
-Long enough. Time to gamble :) 
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+> > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>  
+> 
+> As I don't think we build these particular docs by default, I'm not going
+> to take this as a fix.  Hence it'll have to wait for the below to be
+> upstream of my togreg branch.
+> 
+> Give me a poke if that's true and I seem to have missed it.
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to play with it.
 
 Thanks,
 
@@ -81,53 +105,138 @@ Jonathan
 > Jonathan
 > 
 > > ---
-> >  drivers/iio/pressure/zpa2326.c | 16 +++++++++-------
-> >  1 file changed, 9 insertions(+), 7 deletions(-)
+> > Note: this applies on top of "iio: adc: stm32-adc: fix a race when using
+> > several adcs with dma and irq"
+> > ---
+> >  drivers/iio/adc/stm32-adc-core.c | 11 ++++++-----
+> >  drivers/iio/adc/stm32-adc.c      | 21 +++++++++++++--------
+> >  2 files changed, 19 insertions(+), 13 deletions(-)
 > > 
-> > diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
-> > index 9d0d07930236..99dfe33ee402 100644
-> > --- a/drivers/iio/pressure/zpa2326.c
-> > +++ b/drivers/iio/pressure/zpa2326.c
-> > @@ -1243,6 +1243,11 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
-> >  	const struct zpa2326_private *priv = iio_priv(indio_dev);
-> >  	int                           err;
+> > diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+> > index 93a096a..20c626c 100644
+> > --- a/drivers/iio/adc/stm32-adc-core.c
+> > +++ b/drivers/iio/adc/stm32-adc-core.c
+> > @@ -38,12 +38,12 @@
+> >  #define HAS_ANASWVDD		BIT(1)
 > >  
-> > +	/* Plug our own trigger event handler. */
-> > +	err = iio_triggered_buffer_postenable(indio_dev);
-> > +	if (err)
-> > +		goto err;
-> > +
-> >  	if (!priv->waken) {
-> >  		/*
-> >  		 * We were already power supplied. Just clear hardware FIFO to
-> > @@ -1250,7 +1255,7 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
-> >  		 */
-> >  		err = zpa2326_clear_fifo(indio_dev, 0);
-> >  		if (err)
-> > -			goto err;
-> > +			goto err_buffer_predisable;
-> >  	}
+> >  /**
+> > - * stm32_adc_common_regs - stm32 common registers, compatible dependent data
+> > + * struct stm32_adc_common_regs - stm32 common registers
+> >   * @csr:	common status register offset
+> >   * @ccr:	common control register offset
+> > - * @eoc1:	adc1 end of conversion flag in @csr
+> > - * @eoc2:	adc2 end of conversion flag in @csr
+> > - * @eoc3:	adc3 end of conversion flag in @csr
+> > + * @eoc1_msk:	adc1 end of conversion flag in @csr
+> > + * @eoc2_msk:	adc2 end of conversion flag in @csr
+> > + * @eoc3_msk:	adc3 end of conversion flag in @csr
+> >   * @ier:	interrupt enable register offset for each adc
+> >   * @eocie_msk:	end of conversion interrupt enable mask in @ier
+> >   */
+> > @@ -60,7 +60,7 @@ struct stm32_adc_common_regs {
+> >  struct stm32_adc_priv;
 > >  
-> >  	if (!iio_trigger_using_own(indio_dev) && priv->waken) {
-> > @@ -1260,16 +1265,13 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
-> >  		 */
-> >  		err = zpa2326_config_oneshot(indio_dev, priv->irq);
-> >  		if (err)
-> > -			goto err;
-> > +			goto err_buffer_predisable;
-> >  	}
+> >  /**
+> > - * stm32_adc_priv_cfg - stm32 core compatible configuration data
+> > + * struct stm32_adc_priv_cfg - stm32 core compatible configuration data
+> >   * @regs:	common registers for all instances
+> >   * @clk_sel:	clock selection routine
+> >   * @max_clk_rate_hz: maximum analog clock rate (Hz, from datasheet)
+> > @@ -117,6 +117,7 @@ static int stm32f4_pclk_div[] = {2, 4, 6, 8};
 > >  
-> > -	/* Plug our own trigger event handler. */
-> > -	err = iio_triggered_buffer_postenable(indio_dev);
-> > -	if (err)
-> > -		goto err;
-> > -
-> >  	return 0;
+> >  /**
+> >   * stm32f4_adc_clk_sel() - Select stm32f4 ADC common clock prescaler
+> > + * @pdev: platform device
+> >   * @priv: stm32 ADC core private data
+> >   * Select clock prescaler used for analog conversions, before using ADC.
+> >   */
+> > diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> > index 663f8a5..76a247b 100644
+> > --- a/drivers/iio/adc/stm32-adc.c
+> > +++ b/drivers/iio/adc/stm32-adc.c
+> > @@ -102,7 +102,7 @@ struct stm32_adc_calib {
+> >  };
 > >  
-> > +err_buffer_predisable:
-> > +	iio_triggered_buffer_predisable(indio_dev);
-> >  err:
-> >  	zpa2326_err(indio_dev, "failed to enable buffering (%d)", err);
-> >    
+> >  /**
+> > - * stm32_adc_regs - stm32 ADC misc registers & bitfield desc
+> > + * struct stm32_adc_regs - stm32 ADC misc registers & bitfield desc
+> >   * @reg:		register offset
+> >   * @mask:		bitfield mask
+> >   * @shift:		left shift
+> > @@ -114,7 +114,7 @@ struct stm32_adc_regs {
+> >  };
+> >  
+> >  /**
+> > - * stm32_adc_regspec - stm32 registers definition, compatible dependent data
+> > + * struct stm32_adc_regspec - stm32 registers definition
+> >   * @dr:			data register offset
+> >   * @ier_eoc:		interrupt enable register & eocie bitfield
+> >   * @isr_eoc:		interrupt status register & eoc bitfield
+> > @@ -140,7 +140,7 @@ struct stm32_adc_regspec {
+> >  struct stm32_adc;
+> >  
+> >  /**
+> > - * stm32_adc_cfg - stm32 compatible configuration data
+> > + * struct stm32_adc_cfg - stm32 compatible configuration data
+> >   * @regs:		registers descriptions
+> >   * @adc_info:		per instance input channels definitions
+> >   * @trigs:		external trigger sources
+> > @@ -183,8 +183,8 @@ struct stm32_adc_cfg {
+> >   * @rx_buf:		dma rx buffer cpu address
+> >   * @rx_dma_buf:		dma rx buffer bus address
+> >   * @rx_buf_sz:		dma rx buffer size
+> > - * @difsel		bitmask to set single-ended/differential channel
+> > - * @pcsel		bitmask to preselect channels on some devices
+> > + * @difsel:		bitmask to set single-ended/differential channel
+> > + * @pcsel:		bitmask to preselect channels on some devices
+> >   * @smpr_val:		sampling time settings (e.g. smpr1 / smpr2)
+> >   * @cal:		optional calibration data on some devices
+> >   * @chan_name:		channel name array
+> > @@ -254,7 +254,7 @@ static const struct stm32_adc_info stm32h7_adc_info = {
+> >  	.num_res = ARRAY_SIZE(stm32h7_adc_resolutions),
+> >  };
+> >  
+> > -/**
+> > +/*
+> >   * stm32f4_sq - describe regular sequence registers
+> >   * - L: sequence len (register & bit field)
+> >   * - SQ1..SQ16: sequence entries (register & bit field)
+> > @@ -301,7 +301,7 @@ static struct stm32_adc_trig_info stm32f4_adc_trigs[] = {
+> >  	{}, /* sentinel */
+> >  };
+> >  
+> > -/**
+> > +/*
+> >   * stm32f4_smp_bits[] - describe sampling time register index & bit fields
+> >   * Sorted so it can be indexed by channel number.
+> >   */
+> > @@ -392,7 +392,7 @@ static struct stm32_adc_trig_info stm32h7_adc_trigs[] = {
+> >  	{},
+> >  };
+> >  
+> > -/**
+> > +/*
+> >   * stm32h7_smp_bits - describe sampling time register index & bit fields
+> >   * Sorted so it can be indexed by channel number.
+> >   */
+> > @@ -994,6 +994,7 @@ static int stm32_adc_conf_scan_seq(struct iio_dev *indio_dev,
+> >  
+> >  /**
+> >   * stm32_adc_get_trig_extsel() - Get external trigger selection
+> > + * @indio_dev: IIO device structure
+> >   * @trig: trigger
+> >   *
+> >   * Returns trigger extsel value, if trig matches, -EINVAL otherwise.
+> > @@ -1297,6 +1298,10 @@ static int stm32_adc_of_xlate(struct iio_dev *indio_dev,
+> >  
+> >  /**
+> >   * stm32_adc_debugfs_reg_access - read or write register value
+> > + * @indio_dev: IIO device structure
+> > + * @reg: register offset
+> > + * @writeval: value to write
+> > + * @readval: value to read
+> >   *
+> >   * To read a value from an ADC register:
+> >   *   echo [ADC reg offset] > direct_reg_access  
 > 
 

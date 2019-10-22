@@ -2,106 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01CF9E0833
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 18:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B81E6E0C47
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 21:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389099AbfJVQD4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 12:03:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50406 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387746AbfJVQD4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Oct 2019 12:03:56 -0400
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7E39F21906;
-        Tue, 22 Oct 2019 16:03:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571760235;
-        bh=wZqpmahqkdwN8bSUWflCybWpGAN6ZEbtQZB3qCoZljg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=kfdQNIrvB/s9H8KQC7rO59/l3ydNVyU/ihPEcbQgqHc8iYlLgPGNP53znI1XGkZbp
-         zKp9BNTuVAovRoYJsjf0ve98p9jxSW+o5aOdHl3RUA2eSeb5OZHAVyfbDGCyhl2YOe
-         swTrBGgRroC8KtsMuhpKGF8CHBPraGYjLhOee4NY=
-Received: by mail-qt1-f174.google.com with SMTP id c21so27497198qtj.12;
-        Tue, 22 Oct 2019 09:03:55 -0700 (PDT)
-X-Gm-Message-State: APjAAAUiRov13Q4nl311SaYm+NmPw+IsM68HfJdrep2TI4MIJE9HtocR
-        N6y9j05t/isX8pmBUPOcEbPa5te3nymJcMoqGg==
-X-Google-Smtp-Source: APXvYqyyB49iT/626fOA+V3xooxxBwy9dN/zE/XUizKQfbN9LeELAEH0K+nxf/XITvR19bMhVI+BTk4qKYDqfrxtpdo=
-X-Received: by 2002:ac8:44d9:: with SMTP id b25mr4261906qto.300.1571760234567;
- Tue, 22 Oct 2019 09:03:54 -0700 (PDT)
+        id S1732502AbfJVTMA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 15:12:00 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:34030 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388383AbfJVTL7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 15:11:59 -0400
+Received: by mail-io1-f68.google.com with SMTP id q1so21869034ion.1
+        for <linux-iio@vger.kernel.org>; Tue, 22 Oct 2019 12:11:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1NHtPh4u0L8QVXYys5QROgY5jF0c09zMbCARC3Eso3Y=;
+        b=ZxF6HwklCzy9IWAEyEpcK31IiIW6ew5mvQR46lHXZl5+csTZjLiTRtVlziCz68Y3My
+         ASQi7smv8mNDZ/01nwtl5Jr6uo+Y2izVrKFK+coneLuSe7RdYdtn3iWGdYmoj321XytJ
+         t/MafQxNk0M045HZU4DO2BQwtTgPq+7Ki5l/c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1NHtPh4u0L8QVXYys5QROgY5jF0c09zMbCARC3Eso3Y=;
+        b=bEUGNWWTYvtf9fc1iWCSvpFBvxBXo6TfYLbI1kWcJDVvHkj8PeJ+ij7zPkXzjNu/HG
+         hYnq44kfMpc2jTKYyaiGjms45RUYknENX8w6eSDiJrEEX7eoLE1xxIcOT0pD8eDS68f3
+         l8XflhSEJCVPz2l5z/wxrrPXUO2raKRyqRCpy/13CdTiB5hPguMPevFchd+J2wfhV+EO
+         h7RkQAUFx30HI0/6bOT0Ia6D+Wh1zYoJr9z++TjexzGzxkftaMgeemdzmdQh6JTQasQI
+         fYNSC9o0Mi6DOURBSmCK06lRKKQizuehhVtHJsR5mP6zFZ/7MFFT+c00LrMMnZtJ4ALc
+         hwxQ==
+X-Gm-Message-State: APjAAAUFgWgmYP5I/TDu4TzotQsw8NiZaHMDJFr2RIYcxh/OY0RTokpR
+        mx8mPC+P+v1WKFyV1rOalByxqxPxxi/5XMDa8Mt0EA==
+X-Google-Smtp-Source: APXvYqwRBcd0pRoD8yN66nc1o46MyDYhVpP6e0fSUX5xk6wMsfjP23Qk/Aar4DEoVIVJHMlVzIQEx056IQU5moVVkNI=
+X-Received: by 2002:a02:334e:: with SMTP id k14mr5245939jak.19.1571771516684;
+ Tue, 22 Oct 2019 12:11:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191016025220.td3xb7oxlfkznxl6@smtp.gmail.com>
- <20191017191152.GA11222@bogus> <20191019150652.h6bkfz2w2ohemvwy@smtp.gmail.com>
- <CAL_JsqKqgko02KstmytNNUUF0-QR7rpMF4dV=X55N=TnDahd+Q@mail.gmail.com> <20191022140604.ovmooly47qax2sms@smtp.gmail.com>
-In-Reply-To: <20191022140604.ovmooly47qax2sms@smtp.gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 22 Oct 2019 11:03:43 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLf8kpOu0MQN-TAhQkiZCGfMKWmztnHNo+2BAVqfX8yGQ@mail.gmail.com>
-Message-ID: <CAL_JsqLf8kpOu0MQN-TAhQkiZCGfMKWmztnHNo+2BAVqfX8yGQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: Add DT docs for AD7292
-To:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org, kernel-usp@googlegroups.com
+References: <20191021055403.67849-1-gwendal@chromium.org> <20191021055403.67849-19-gwendal@chromium.org>
+ <20191021174507.72f2b777@archlinux>
+In-Reply-To: <20191021174507.72f2b777@archlinux>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Tue, 22 Oct 2019 12:11:45 -0700
+Message-ID: <CAPUE2uvu6jMPkF=oX4hyaiLHti9_YjOJ=Nq+GWQp9cgqUNjs9Q@mail.gmail.com>
+Subject: Re: [PATCH v2 18/18] iio: cros_ec: Use Hertz as unit for sampling frequency
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Lee Jones <lee.jones@linaro.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Oct 22, 2019 at 9:06 AM Marcelo Schmitt
-<marcelo.schmitt1@gmail.com> wrote:
+On Mon, Oct 21, 2019 at 9:45 AM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> Hi,
+> On Sun, 20 Oct 2019 22:54:03 -0700
+> Gwendal Grignou <gwendal@chromium.org> wrote:
 >
-> I ran the DTC and CHECK for AD7292 schema however, the target '__build'
-> did not run due to errors found in regulator/fixed-regulator.yaml and
-> arm/allwinner,sun4i-a10-csi.yaml.
-
-Fixes for those are still pending in -next. Use 'make -k' and ignore those.
+> > To be compliant with other sensors, set and get sensor sampling
+> > frequency in Hz, not mHz.
+> >
+> > Fixes: ae7b02ad2f32 ("iio: common: cros_ec_sensors: Expose
+> > cros_ec_sensors frequency range via iio sysfs")
+> >
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+>
+> Do we need to look at back porting this?
+>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Not sure which path this set will take in, hence I've given
+> acks for various patches incase it's not via me.
+>
+> Whole set is in general good to have, but I do worry a bit about
+> people noticing ABI breakage. *crosses fingers*
+I am planning to backport the sysfs change to older kernel.
+I am adding some code to the clients that use the sysfs interface: if
+frequency is absent, assume sample_frequency is the new frequency.
+Clients should be able to handle both ABI, the code has been around
+since 3.14.
 
 >
-> I recall seeing something about the maxItems requirement over regulator
-> supplies being changed on the iio mailing list, so I updated my repo
-> locally, cloned and reinstalled the dt-schema toolset. However, I still
-> can't make it go through the '__build' target.
+> Jonathan
 >
-> Python 3.7.5rc1 is my default python and I got the following pip3
-> packages installed:
+> > ---
+> > No changes in v2.
+> >
+> >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 32 +++++++++++--------
+> >  .../linux/iio/common/cros_ec_sensors_core.h   |  6 ++--
+> >  2 files changed, 22 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > index f50e239f9a1e9..76dc8cad1b4b5 100644
+> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > @@ -256,6 +256,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+> >       struct cros_ec_dev *ec = sensor_hub->ec;
+> >       struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+> >       u32 ver_mask;
+> > +     int frequencies[ARRAY_SIZE(state->frequencies) / 2] = { 0 };
+> >       int ret, i;
+> >
+> >       platform_set_drvdata(pdev, indio_dev);
+> > @@ -304,20 +305,22 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+> >                       state->calib[i].scale = MOTION_SENSE_DEFAULT_SCALE;
+> >
+> >               /* 0 is a correct value used to stop the device */
+> > -             state->frequencies[0] = 0;
+> >               if (state->msg->version < 3) {
+> >                       get_default_min_max_freq(state->resp->info.type,
+> > -                                              &state->frequencies[1],
+> > -                                              &state->frequencies[2],
+> > +                                              &frequencies[1],
+> > +                                              &frequencies[2],
+> >                                                &state->fifo_max_event_count);
+> >               } else {
+> > -                     state->frequencies[1] =
+> > -                         state->resp->info_3.min_frequency;
+> > -                     state->frequencies[2] =
+> > -                         state->resp->info_3.max_frequency;
+> > +                     frequencies[1] = state->resp->info_3.min_frequency;
+> > +                     frequencies[2] = state->resp->info_3.max_frequency;
+> >                       state->fifo_max_event_count =
+> >                           state->resp->info_3.fifo_max_event_count;
+> >               }
+> > +             for (i = 0; i < ARRAY_SIZE(frequencies); i++) {
+> > +                     state->frequencies[2 * i] = frequencies[i] / 1000;
+> > +                     state->frequencies[2 * i + 1] =
+> > +                             (frequencies[i] % 1000) * 1000;
+> > +             }
+> >
+> >               ret = devm_iio_triggered_buffer_setup(
+> >                               dev, indio_dev, NULL,
+> > @@ -707,7 +710,7 @@ int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
+> >                         struct iio_chan_spec const *chan,
+> >                         int *val, int *val2, long mask)
+> >  {
+> > -     int ret;
+> > +     int ret, frequency;
+> >
+> >       switch (mask) {
+> >       case IIO_CHAN_INFO_SAMP_FREQ:
+> > @@ -719,8 +722,10 @@ int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
+> >               if (ret)
+> >                       break;
+> >
+> > -             *val = st->resp->sensor_odr.ret;
+> > -             ret = IIO_VAL_INT;
+> > +             frequency = st->resp->sensor_odr.ret;
+> > +             *val = frequency / 1000;
+> > +             *val2 = (frequency % 1000) * 1000;
+> > +             ret = IIO_VAL_INT_PLUS_MICRO;
+> >               break;
+> >       default:
+> >               ret = -EINVAL;
+> > @@ -755,7 +760,7 @@ int cros_ec_sensors_core_read_avail(struct iio_dev *indio_dev,
+> >       case IIO_CHAN_INFO_SAMP_FREQ:
+> >               *length = ARRAY_SIZE(state->frequencies);
+> >               *vals = (const int *)&state->frequencies;
+> > -             *type = IIO_VAL_INT;
+> > +             *type = IIO_VAL_INT_PLUS_MICRO;
+> >               return IIO_AVAIL_LIST;
+> >       }
+> >
+> > @@ -777,12 +782,13 @@ int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
+> >                              struct iio_chan_spec const *chan,
+> >                              int val, int val2, long mask)
+> >  {
+> > -     int ret;
+> > +     int ret, frequency;
+> >
+> >       switch (mask) {
+> >       case IIO_CHAN_INFO_SAMP_FREQ:
+> > +             frequency = val * 1000 + val2 / 1000;
+> >               st->param.cmd = MOTIONSENSE_CMD_SENSOR_ODR;
+> > -             st->param.sensor_odr.data = val;
+> > +             st->param.sensor_odr.data = frequency;
+> >
+> >               /* Always roundup, so caller gets at least what it asks for. */
+> >               st->param.sensor_odr.roundup = 1;
+> > diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+> > index 4df3abd151fbf..256447b136296 100644
+> > --- a/include/linux/iio/common/cros_ec_sensors_core.h
+> > +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+> > @@ -52,6 +52,8 @@ typedef irqreturn_t (*cros_ec_sensors_capture_t)(int irq, void *p);
+> >   *                           is always 8-byte aligned.
+> >   * @read_ec_sensors_data:    function used for accessing sensors values
+> >   * @fifo_max_event_count:    Size of the EC sensor FIFO
+> > + * @frequencies:             Table of known available frequencies:
+> > + *                           0, Min and Max in mHz.
+> >   */
+> >  struct cros_ec_sensors_core_state {
+> >       struct cros_ec_device *ec;
+> > @@ -75,9 +77,7 @@ struct cros_ec_sensors_core_state {
+> >                                   unsigned long scan_mask, s16 *data);
+> >
+> >       u32 fifo_max_event_count;
+> > -
+> > -     /* Table of known available frequencies : 0, Min and Max in mHz */
+> > -     int frequencies[3];
+> > +     int frequencies[6];
+> >  };
+> >
+> >  int cros_ec_sensors_read_lpc(struct iio_dev *indio_dev, unsigned long scan_mask,
 >
-> ruamel.yaml        0.16.5
-> ruamel.yaml.clib   0.2.0
-> rfc3987            1.3.8
-> jsonschema         3.0.1
-> dtschema           0.0.1  at $HOME/<iio repo dir>/dt-schema
->
-> Debian Bullseye packages installed:
-> python3-yaml/testing,now 5.1.2-1
-> libyaml-dev/testing,now 0.2.2-1
->
-> I was only able to run DTC after installing the libyaml-dev package, so
-> I think it might be worth to add it to the project dependencies at
-> https://github.com/robherring/dt-schema.
-
-Strictly speaking, it's not a dependency for dt-schema. It's
-documented in Documentation/devicetree/writing-schema.rst. I've added
-a pointer to that in bindings/submitting-patches.txt. I'm not sure how
-else to make it more obvious.
-
-BTW, You will get a useful error message if libyaml is missing when
-building 'make dtbs_check'. I need to make that work for
-dt_binding_check.
-
-> apt-get install libyaml-dev
-
-You need the lib too, but that tends to already be installed. IIRC,
-installing the headers doesn't install the lib automatically.
-
-In any case, I wanted to avoid putting in distro specific instructions
-in the kernel.
-
-Rob

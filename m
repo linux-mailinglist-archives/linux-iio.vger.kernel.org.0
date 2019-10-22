@@ -2,432 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E5D7DFF75
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 10:33:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3365FDFFFA
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 10:50:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388335AbfJVIcs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 04:32:48 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:45488 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388329AbfJVIcs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 04:32:48 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id E420F28CF33
-Subject: Re: [PATCH v2 03/18] platform: cros_ec: Add cros_ec_sensor_hub driver
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Gwendal Grignou <gwendal@chromium.org>
-Cc:     briannorris@chromium.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, lee.jones@linaro.org, bleung@chromium.org,
-        dianders@chromium.org, groeck@chromium.org,
-        fabien.lahoudere@collabora.com, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Nick Crews <ncrews@chromium.org>
-References: <20191021055403.67849-1-gwendal@chromium.org>
- <20191021055403.67849-4-gwendal@chromium.org>
- <20191021165911.22011c08@archlinux>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <44ff8e33-3300-4753-ea40-fa26d21cdd46@collabora.com>
-Date:   Tue, 22 Oct 2019 10:32:43 +0200
+        id S1731193AbfJVIuT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 04:50:19 -0400
+Received: from mout02.posteo.de ([185.67.36.66]:43263 "EHLO mout02.posteo.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731178AbfJVIuT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Oct 2019 04:50:19 -0400
+Received: from submission (posteo.de [89.146.220.130]) 
+        by mout02.posteo.de (Postfix) with ESMTPS id CCEFF240103
+        for <linux-iio@vger.kernel.org>; Tue, 22 Oct 2019 10:43:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+        t=1571733790; bh=d7ljr2KXEchtO4eaUj9aJnzgDAtIamCjSvrcjvTlHgc=;
+        h=Subject:To:Cc:From:Openpgp:Autocrypt:Date:From;
+        b=I1yriIhielZarY2gAYculDOCoorKztv6Wz+v08f2L6Jbc+TRN13GHPiA9ATWy3p+8
+         QkzU6HRrA2mUvh2EgFIA76o2AOuFtx3MuRAsNCgF6DV8GGAwUdVl/Nrw88XKTwL3vL
+         9/E+SwpfXWEWy8AtrNiLIqKtIN8aoVO8dOX5TZ+T4qx7xizqaPiKOaAdeT8Ab69rkW
+         6hoCPIGq496oyWu2zRREyk2KuIZ0IMdcjYFR23NLL0o2TMJLtkK7AVJJSKzbwWggKo
+         TkieDjjqERumJSN0RugxIdq31TB4jem02AQowPwkgSD9x/ikqaSeTCCYKCvlq2pwzn
+         2UKcaGUcmANng==
+Received: from customer (localhost [127.0.0.1])
+        by submission (posteo.de) with ESMTPSA id 46y6Tn74Zyz9rxM;
+        Tue, 22 Oct 2019 10:43:09 +0200 (CEST)
+Subject: Re: [PATCH] dt-bindings: mma8452: Re-word 'interrupt-names'
+ description
+To:     Andrey Smirnov <andrew.smirnov@gmail.com>,
+        linux-iio@vger.kernel.org
+Cc:     Chris Healy <cphealy@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191022035626.13002-1-andrew.smirnov@gmail.com>
+From:   Martin Kepplinger <martink@posteo.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=martink@posteo.de; keydata=
+ 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
+Message-ID: <1a1bdf10-2505-6baf-8030-ce5e0e2b55a9@posteo.de>
+Date:   Tue, 22 Oct 2019 10:43:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191021165911.22011c08@archlinux>
+In-Reply-To: <20191022035626.13002-1-andrew.smirnov@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Gwendal,
-
-Complementing the Jonathan's review, few bits more.
-
-On 21/10/19 17:59, Jonathan Cameron wrote:
-> On Sun, 20 Oct 2019 22:53:48 -0700
-> Gwendal Grignou <gwendal@chromium.org> wrote:
+On 22.10.19 05:56, Andrey Smirnov wrote:
+> Current wording in the binding documentation doesn't make it 100%
+> clear that only one of "INT1" and "INT2" will ever be used by the
+> driver and that specifying both has no advantages. Re-word it to make
+> this aspect a bit more explicit.
 > 
->> Similar to HID sensor stack, the new driver sits between cros_ec_dev
->> and the iio device drivers:
->>
->> EC based iio device topology would be:
->> iio:device1 ->
->> ...0/0000:00:1f.0/PNP0C09:00/GOOG0004:00/cros-ec-dev.6.auto/
->>                                          cros-ec-sensorhub.7.auto/
->>                                          cros-ec-accel.15.auto/
->>                                          iio:device1
->>
->> It will be expanded to control EC sensor FIFO.
->>
->> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Cc: Chris Healy <cphealy@gmail.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Hartmut Knaack <knaack.h@gmx.de>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> Cc: linux-iio@vger.kernel.org
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  Documentation/devicetree/bindings/iio/accel/mma8452.txt | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> A few bits and pieces inline.
+> diff --git a/Documentation/devicetree/bindings/iio/accel/mma8452.txt b/Documentation/devicetree/bindings/iio/accel/mma8452.txt
+> index e132394375a1..b27b6bee9eb6 100644
+> --- a/Documentation/devicetree/bindings/iio/accel/mma8452.txt
+> +++ b/Documentation/devicetree/bindings/iio/accel/mma8452.txt
+> @@ -17,7 +17,7 @@ Optional properties:
+>  
+>    - interrupts: interrupt mapping for GPIO IRQ
+>  
+> -  - interrupt-names: should contain "INT1" and/or "INT2", the accelerometer's
+> +  - interrupt-names: should contain "INT1" or "INT2", the accelerometer's
+>  		     interrupt line in use.
+>  
+>    - vdd-supply: phandle to the regulator that provides vdd power to the accelerometer.
 > 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
->> ---
->> Changes in v2:
->> - Remove unerelated changes.
->> - Fix spelling.
->> - Use !x instead of x == NULL
->> - Use platform_ API directly to register IIO sensors from
->>   cros_ec_sensorhub.
->>
->>  drivers/iio/common/cros_ec_sensors/Kconfig    |   2 +-
->>  drivers/platform/chrome/Kconfig               |  12 ++
->>  drivers/platform/chrome/Makefile              |   1 +
->>  drivers/platform/chrome/cros_ec_sensorhub.c   | 202 ++++++++++++++++++
->>  .../linux/platform_data/cros_ec_sensorhub.h   |  21 ++
->>  5 files changed, 237 insertions(+), 1 deletion(-)
->>  create mode 100644 drivers/platform/chrome/cros_ec_sensorhub.c
->>  create mode 100644 include/linux/platform_data/cros_ec_sensorhub.h
->>
->> diff --git a/drivers/iio/common/cros_ec_sensors/Kconfig b/drivers/iio/common/cros_ec_sensors/Kconfig
->> index cdbb29cfb9076..fefad95727907 100644
->> --- a/drivers/iio/common/cros_ec_sensors/Kconfig
->> +++ b/drivers/iio/common/cros_ec_sensors/Kconfig
->> @@ -4,7 +4,7 @@
->>  #
->>  config IIO_CROS_EC_SENSORS_CORE
->>  	tristate "ChromeOS EC Sensors Core"
->> -	depends on SYSFS && CROS_EC
->> +	depends on SYSFS && CROS_EC_SENSORHUB
->>  	select IIO_BUFFER
->>  	select IIO_TRIGGERED_BUFFER
->>  	help
->> diff --git a/drivers/platform/chrome/Kconfig b/drivers/platform/chrome/Kconfig
->> index ee5f08ea57b6c..56a25317a6bee 100644
->> --- a/drivers/platform/chrome/Kconfig
->> +++ b/drivers/platform/chrome/Kconfig
->> @@ -190,6 +190,18 @@ config CROS_EC_DEBUGFS
->>  	  To compile this driver as a module, choose M here: the
->>  	  module will be called cros_ec_debugfs.
->>  
->> +config CROS_EC_SENSORHUB
->> +	tristate "ChromeOS EC MEMS Sensor Hub"
->> +	depends on CROS_EC && IIO
->> +	help
->> +	  Allow loading IIO sensors. This driver is loaded by MFD and will in
->> +	  turn query the EC and register the sensors.
->> +	  It also spreads the sensor data coming from the EC to the IIO sensor
->> +	  object.
->> +
->> +	  To compile this driver as a module, choose M here: the
->> +	  module will be called cros_ec_sensorhub.
->> +
->>  config CROS_EC_SYSFS
->>  	tristate "ChromeOS EC control and information through sysfs"
->>  	depends on MFD_CROS_EC_DEV && SYSFS
->> diff --git a/drivers/platform/chrome/Makefile b/drivers/platform/chrome/Makefile
->> index 477ec3d1d1c98..a164c40dc0996 100644
->> --- a/drivers/platform/chrome/Makefile
->> +++ b/drivers/platform/chrome/Makefile
->> @@ -17,6 +17,7 @@ obj-$(CONFIG_CROS_EC_PROTO)		+= cros_ec_proto.o cros_ec_trace.o
->>  obj-$(CONFIG_CROS_KBD_LED_BACKLIGHT)	+= cros_kbd_led_backlight.o
->>  obj-$(CONFIG_CROS_EC_CHARDEV)		+= cros_ec_chardev.o
->>  obj-$(CONFIG_CROS_EC_LIGHTBAR)		+= cros_ec_lightbar.o
->> +obj-$(CONFIG_CROS_EC_SENSORHUB)		+= cros_ec_sensorhub.o
->>  obj-$(CONFIG_CROS_EC_VBC)		+= cros_ec_vbc.o
->>  obj-$(CONFIG_CROS_EC_DEBUGFS)		+= cros_ec_debugfs.o
->>  obj-$(CONFIG_CROS_EC_SYSFS)		+= cros_ec_sysfs.o
->> diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platform/chrome/cros_ec_sensorhub.c
->> new file mode 100644
->> index 0000000000000..5fea4c28c5c95
->> --- /dev/null
->> +++ b/drivers/platform/chrome/cros_ec_sensorhub.c
->> @@ -0,0 +1,202 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * SensorHub: driver that discover sensors behind
->> + * a ChromeOS Embedded controller.
->> + *
->> + * Copyright 2019 Google LLC
->> + */
->> +
->> +#include <linux/init.h>
->> +#include <linux/device.h>
->> +#include <linux/fs.h>
->> +#include <linux/miscdevice.h>
 
-The two includes above are not needed.
+Acked-by: Martin Kepplinger <martink@posteo.de>
 
->> +#include <linux/module.h>
->> +#include <linux/mfd/cros_ec.h>
->> +#include <linux/platform_data/cros_ec_commands.h>
->> +#include <linux/platform_data/cros_ec_proto.h>
->> +#include <linux/platform_device.h>
+thanks,
 
->> +#include <linux/poll.h>
+                           martin
 
-Not needed.
-
->> +#include <linux/slab.h>
-
->> +#include <linux/types.h>
->> +#include <linux/uaccess.h>
-
-Also, these two are not needed.
-
->> +
->> +#include <linux/platform_data/cros_ec_sensorhub.h>
->> +
->> +#define DRV_NAME		"cros-ec-sensorhub"
->> +
->> +
-
-Please don't use multiple blank lines
-
-For new files introduced in chrome/platform I'd like if you can fix the issues
-reported by checkpatch with the --strict option for v3. I'm not going to report
-these issues below (also, is my preference but optional)
-
->> +static struct device_type cros_ec_sensorhub_dev_type = {
->> +	.name	= "cros_ec_iio_sensor",
->> +};
->> +
->> +static int cros_ec_sensorhub_allocate_single_sensor(
->> +		struct device *parent,
->> +		char *sensor_name,
->> +		int sensor_num)
->> +{
->> +	struct platform_device *pdev;
->> +	struct cros_ec_sensor_platform sensor_platforms = {
->> +		.sensor_num = sensor_num,
->> +	};
->> +	int ret;
->> +
->> +	pdev = platform_device_alloc(sensor_name, PLATFORM_DEVID_AUTO);
->> +	if (!pdev)
->> +		return -ENOMEM;
->> +
->> +	pdev->dev.parent = parent;
->> +	pdev->dev.type = &cros_ec_sensorhub_dev_type;
->> +
->> +	ret = platform_device_add_data(pdev, &sensor_platforms,
->> +			sizeof(sensor_platforms));
->> +	if (ret)
->> +		goto fail_device;
->> +
->> +	ret = platform_device_add(pdev);
->> +	if (ret)
->> +		goto fail_device;
->> +
->> +	return 0;
->> +
->> +fail_device:
->> +	platform_device_put(pdev);
->> +	return ret;
-
-Instead of doing alloc, add_data, device_add, can we just do a single step with
-platform_device_register_data ? Similar to what we did in
-drivers/platform/chrome/wilco_ec/core.c should work I guess (cc'ing Nick)
-
-Also, we need to store the created devices and free on remove. I think this is
-not implemented.
-
-
->> +}
->> +
->> +static int cros_ec_sensorhub_register(struct device *dev,
->> +		struct cros_ec_dev *ec)
->> +{
->> +	int ret, i, id, sensor_num;
->> +	int sensor_type[MOTIONSENSE_TYPE_MAX] = { 0 };
->> +	struct ec_params_motion_sense *params;
->> +	struct ec_response_motion_sense *resp;
->> +	struct cros_ec_command *msg;
->> +	char *name;
->> +
->> +	sensor_num = cros_ec_get_sensor_count(ec);
->> +	if (sensor_num < 0) {
->> +		dev_err(dev,
->> +			"Unable to retrieve sensor information (err:%d)\n",
->> +			sensor_num);
->> +		return sensor_num;
->> +	}
->> +
->> +	if (sensor_num == 0) {
->> +		dev_err(dev, "Zero sensors reported.\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	/* Prepare a message to send INFO command to each sensor. */
->> +	msg = kzalloc(sizeof(struct cros_ec_command) +
->> +		      max(sizeof(*params), sizeof(*resp)), GFP_KERNEL);
->> +	if (!msg) {
->> +		ret = -ENOMEM;
->> +		goto error;
-> 
-> If you get here, the kzalloc failed, so there is nothing to free.
-> Hence should just be a return -ENOMEM I think.
-> 
->> +	}
->> +
->> +	msg->version = 1;
->> +	msg->command = EC_CMD_MOTION_SENSE_CMD + ec->cmd_offset;
->> +	msg->outsize = sizeof(*params);
->> +	msg->insize = sizeof(*resp);
->> +	params = (struct ec_params_motion_sense *)msg->data;
->> +	resp = (struct ec_response_motion_sense *)msg->data;
->> +
->> +	id = 0;
->> +	for (i = 0; i < sensor_num; i++) {
->> +		params->cmd = MOTIONSENSE_CMD_INFO;
->> +		params->info.sensor_num = i;
->> +		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
->> +		if (ret < 0) {
->> +			dev_warn(dev, "no info for EC sensor %d : %d/%d\n",
->> +				 i, ret, msg->result);
->> +			continue;
->> +		}
->> +		switch (resp->info.type) {
->> +		case MOTIONSENSE_TYPE_ACCEL:
->> +			name = "cros-ec-accel";
->> +			break;
->> +		case MOTIONSENSE_TYPE_BARO:
->> +			name = "cros-ec-baro";
->> +			break;
->> +		case MOTIONSENSE_TYPE_GYRO:
->> +			name = "cros-ec-gyro";
->> +			break;
->> +		case MOTIONSENSE_TYPE_MAG:
->> +			name = "cros-ec-mag";
->> +			break;
->> +		case MOTIONSENSE_TYPE_PROX:
->> +			name = "cros-ec-prox";
->> +			break;
->> +		case MOTIONSENSE_TYPE_LIGHT:
->> +			name = "cros-ec-light";
->> +			break;
->> +		case MOTIONSENSE_TYPE_ACTIVITY:
->> +			name = "cros-ec-activity";
->> +			break;
->> +		default:
->> +			dev_warn(dev, "unknown type %d\n", resp->info.type);
->> +			continue;
->> +		}
->> +		ret = cros_ec_sensorhub_allocate_single_sensor(dev, name, i);
->> +		if (ret)
->> +			goto error;
->> +
->> +		sensor_type[resp->info.type]++;
->> +	}
->> +
->> +	if (sensor_type[MOTIONSENSE_TYPE_ACCEL] >= 2)
->> +		ec->has_kb_wake_angle = true;
->> +
->> +	if (cros_ec_check_features(ec,
->> +				EC_FEATURE_REFINED_TABLET_MODE_HYSTERESIS)) {
->> +		ret = cros_ec_sensorhub_allocate_single_sensor(
->> +				dev, "cros-ec-lid-angle", 0);
->> +	}
->> +
->> +error:
->> +	kfree(msg);
->> +	return ret;
->> +}
->> +
->> +static int cros_ec_sensorhub_probe(struct platform_device *pdev)
->> +{
->> +	struct device *dev = &pdev->dev;
->> +	struct cros_ec_dev *ec = dev_get_drvdata(dev->parent);
->> +	int ret;
->> +	struct cros_ec_sensorhub *data =
->> +		kzalloc(sizeof(struct cros_ec_sensorhub), GFP_KERNEL);
->> +
->> +	if (!data)
->> +		return -ENOMEM;
->> +
->> +	data->ec = ec;
->> +	dev_set_drvdata(dev, data);
-> 
-> Superficially this doesn't seem to be used.
-> 
->> +
->> +	/* Check whether this EC is a sensor hub. */
->> +	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE)) {
->> +		ret = cros_ec_sensorhub_register(dev, ec);
->> +	} else {
->> +		ret = cros_ec_sensorhub_allocate_single_sensor(
->> +				dev, "cros-ec-accel-legacy", 0);
->> +		ret |= cros_ec_sensorhub_allocate_single_sensor(
->> +				dev, "cros-ec-accel-legacy", 1);
-> 
-> Doing an |= with a return value is a good way to get some really
-> odd bugs in the future.  Please report only the first error and
-> cleanly.  If the first one failed we are going to fail to probe
-> anyway so don't call the second.
-> 
-> 
->> +	}
->> +	if (ret)
->> +		dev_err(dev, "failed to add EC sensors: error %d\n", ret);
-> 
-> Is this particular error useful?  I'd be more tempted to report
-> and error for each of the two types of registration above with
-> more information on what actually failed.
-> 
->> +	return ret;
->> +}
->> +
->> +static struct platform_driver cros_ec_sensorhub_driver = {
->> +	.driver = {
->> +		.name = DRV_NAME,
->> +	},
->> +	.probe = cros_ec_sensorhub_probe,
-
-        .remove?
-
->> +};
->> +
->> +module_platform_driver(cros_ec_sensorhub_driver);
->> +
->> +MODULE_ALIAS("platform:" DRV_NAME);
->> +MODULE_AUTHOR("Gwendal Grignou <gwendal@chromium.org>");
->> +MODULE_DESCRIPTION("ChromeOS EC MEMS Sensor Hub Driver");
->> +MODULE_LICENSE("GPL");
->> +
->> diff --git a/include/linux/platform_data/cros_ec_sensorhub.h b/include/linux/platform_data/cros_ec_sensorhub.h
->> new file mode 100644
->> index 0000000000000..7737685591ad3
->> --- /dev/null
->> +++ b/include/linux/platform_data/cros_ec_sensorhub.h
->> @@ -0,0 +1,21 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * cros_ec_sensorhub- Chrome OS EC MEMS Sensor Hub driver.
-
-Remove the cros_ec_sensorhub prefix. If for some weird reason the file changes
-his name is easy to forget to update the 'cros_ec_sensorhub-' text. So just
-remove as doesn't really apport anything.
-
->> + *
->> + * Copyright (C) 2019 Google, Inc
-
-I think that actually current copyright used by Google is
-   'Copyright 2019 Google LLC'
-
->> + */
->> +
->> +#ifndef __LINUX_PLATFORM_DATA_CROS_EC_SENSORHUB_H
->> +#define __LINUX_PLATFORM_DATA_CROS_EC_SENSORHUB_H
->> +
->> +#include <linux/platform_data/cros_ec_commands.h>
->> +
->> +/*
->> + * struct cros_ec_sensorhub - Sensor Hub device data.
->> + */
-
-Can we document this in kernel-doc format?
-
->> +struct cros_ec_sensorhub {
->> +	/* Embedded Controller where the hub is located. */
->> +	struct cros_ec_dev *ec;
->> +};
->> +
->> +#endif   /* __LINUX_PLATFORM_DATA_CROS_EC_SENSORHUB_H */
-> 

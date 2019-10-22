@@ -2,167 +2,326 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3365FDFFFA
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 10:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77FF7E0014
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 10:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731193AbfJVIuT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 04:50:19 -0400
-Received: from mout02.posteo.de ([185.67.36.66]:43263 "EHLO mout02.posteo.de"
+        id S2388011AbfJVI43 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 04:56:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50046 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731178AbfJVIuT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 22 Oct 2019 04:50:19 -0400
-Received: from submission (posteo.de [89.146.220.130]) 
-        by mout02.posteo.de (Postfix) with ESMTPS id CCEFF240103
-        for <linux-iio@vger.kernel.org>; Tue, 22 Oct 2019 10:43:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-        t=1571733790; bh=d7ljr2KXEchtO4eaUj9aJnzgDAtIamCjSvrcjvTlHgc=;
-        h=Subject:To:Cc:From:Openpgp:Autocrypt:Date:From;
-        b=I1yriIhielZarY2gAYculDOCoorKztv6Wz+v08f2L6Jbc+TRN13GHPiA9ATWy3p+8
-         QkzU6HRrA2mUvh2EgFIA76o2AOuFtx3MuRAsNCgF6DV8GGAwUdVl/Nrw88XKTwL3vL
-         9/E+SwpfXWEWy8AtrNiLIqKtIN8aoVO8dOX5TZ+T4qx7xizqaPiKOaAdeT8Ab69rkW
-         6hoCPIGq496oyWu2zRREyk2KuIZ0IMdcjYFR23NLL0o2TMJLtkK7AVJJSKzbwWggKo
-         TkieDjjqERumJSN0RugxIdq31TB4jem02AQowPwkgSD9x/ikqaSeTCCYKCvlq2pwzn
-         2UKcaGUcmANng==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 46y6Tn74Zyz9rxM;
-        Tue, 22 Oct 2019 10:43:09 +0200 (CEST)
-Subject: Re: [PATCH] dt-bindings: mma8452: Re-word 'interrupt-names'
- description
-To:     Andrey Smirnov <andrew.smirnov@gmail.com>,
-        linux-iio@vger.kernel.org
-Cc:     Chris Healy <cphealy@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191022035626.13002-1-andrew.smirnov@gmail.com>
-From:   Martin Kepplinger <martink@posteo.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=martink@posteo.de; keydata=
- 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
-Message-ID: <1a1bdf10-2505-6baf-8030-ce5e0e2b55a9@posteo.de>
-Date:   Tue, 22 Oct 2019 10:43:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726978AbfJVI42 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Oct 2019 04:56:28 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5421F20640;
+        Tue, 22 Oct 2019 08:56:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571734587;
+        bh=P/dilP3SRnCMsXOdAaslAg3D3//pXIg0lYl+dEifUEk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=zT+qeJilCi/WKVoFtvQSWXiv2UJiPuHb/pzDmmfOeyCLpcprZP3EfwSXUvbFCXHTn
+         2niKgakty11o645Ym7za14/o4js+0css16SucM2tPcRxyej+/YXi5LcWrmVtJYjadL
+         LStXWZEUKBZyMiqDBeb4j9bTltgoLOjKDZsDD+Bg=
+Date:   Tue, 22 Oct 2019 09:56:21 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andrea Merello <andrea.merello@gmail.com>
+Cc:     Couret Charles-Antoine <charles-antoine.couret@essensium.com>,
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 4/4] iio: ad7949: fix channels mixups
+Message-ID: <20191022095621.6b4c550e@archlinux>
+In-Reply-To: <CAN8YU5PRO5Y5EeEj2SZGm5XfuKSB1rtS7nKdu6wWxXYDOfexqw@mail.gmail.com>
+References: <20190912144310.7458-1-andrea.merello@gmail.com>
+        <20190912144310.7458-5-andrea.merello@gmail.com>
+        <f91fb6e960dfd67926b6efa44ec7b792fc667468.camel@analog.com>
+        <CAN8YU5NLZhCDaocrQGUnb9TZauT-yPxY7ZQQQeYK=9696jmhCg@mail.gmail.com>
+        <4a25469a-9fe6-a560-b1cb-e9b0af7209e9@essensium.com>
+        <CAN8YU5ORoM69GDi4VVGf6iWb3A2S1ZjkiLmcV+_hUbG4446yXQ@mail.gmail.com>
+        <20190921181253.43fa0071@archlinux>
+        <CAN8YU5O5ouLXnpi=f1jHfbbVXGjtFOT00cG+fggWWbxDco111w@mail.gmail.com>
+        <20191005105534.1a3f077f@archlinux>
+        <CAN8YU5PRO5Y5EeEj2SZGm5XfuKSB1rtS7nKdu6wWxXYDOfexqw@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20191022035626.13002-1-andrew.smirnov@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 22.10.19 05:56, Andrey Smirnov wrote:
-> Current wording in the binding documentation doesn't make it 100%
-> clear that only one of "INT1" and "INT2" will ever be used by the
-> driver and that specifying both has no advantages. Re-word it to make
-> this aspect a bit more explicit.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> Cc: Chris Healy <cphealy@gmail.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Hartmut Knaack <knaack.h@gmx.de>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> Cc: linux-iio@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  Documentation/devicetree/bindings/iio/accel/mma8452.txt | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/mma8452.txt b/Documentation/devicetree/bindings/iio/accel/mma8452.txt
-> index e132394375a1..b27b6bee9eb6 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/mma8452.txt
-> +++ b/Documentation/devicetree/bindings/iio/accel/mma8452.txt
-> @@ -17,7 +17,7 @@ Optional properties:
->  
->    - interrupts: interrupt mapping for GPIO IRQ
->  
-> -  - interrupt-names: should contain "INT1" and/or "INT2", the accelerometer's
-> +  - interrupt-names: should contain "INT1" or "INT2", the accelerometer's
->  		     interrupt line in use.
->  
->    - vdd-supply: phandle to the regulator that provides vdd power to the accelerometer.
-> 
+On Fri, 18 Oct 2019 15:30:17 +0200
+Andrea Merello <andrea.merello@gmail.com> wrote:
 
-Acked-by: Martin Kepplinger <martink@posteo.de>
+> Il giorno sab 5 ott 2019 alle ore 11:55 Jonathan Cameron <jic23@kernel.org>
+> ha scritto:
+> >
+> > On Mon, 23 Sep 2019 10:21:49 +0200
+> > Andrea Merello <andrea.merello@gmail.com> wrote:
+> >  
+> > > Il giorno sab 21 set 2019 alle ore 19:12 Jonathan Cameron
+> > > <jic23@kernel.org> ha scritto:
+> > >  
+> > > > >
+> > > > > If we skip the configuration rewrite when the channel doesn't  
+> change -
+> > > > > as discussed above - then we actually _terminate_ the acquisition  
+> when
+> > > > > the IIO read is triggered, that is we are converting the value  
+> sampled
+> > > > > right before the IIO read.
+> > > > >
+> > > > > If this is OK then I'll go on, otherwise I think that we should  
+> always
+> > > > > do the three cycles (so that triggering IIO read always waits also  
+> for
+> > > > > a new acquisition phase)  
+> > >
+> > > I had a discussion about this with a HW engineer, he said that it's
+> > > probably not necessary to perform a full extra cycle (i.e. SPI xfer +
+> > > udelay(2)), rather, since the HW is already in acquisition, it should
+> > > be enough to perform the udelay(2) to make sure the internal capacitor
+> > > settles (if we change channel of course we need also the SPI xfer to
+> > > update the CFG).
+> > >
+> > > So indeed it seems to me that:
+> > > - if CFG (channel) changes: we need three full SPI xfer (actual SPI
+> > > xfer + delay(2))
+> > > - if CFG (channel) doesn't change: we need a delay(2) [*]- to
+> > > guarantee the user sees a value sampled after the IIO read, as
+> > > discussed - and two full SPI xfer (actual SPI xfer + delay(2))
+> > >
+> > > .. Indeed I also wonder if it would be enough to cycle the CS, without
+> > > performing a full SPI xfer, in order to start the conversion.. But
+> > > given that this whole thing seems to me a bit complicated and unclear,
+> > > I would stick to the dummy cycle for now..
+> > >  
+> > > > An excellent point.  I agree and suspect we may have this wrong in  
+> other
+> > > > sensors.  The question gets more interesting if running in buffered  
+> mode
+> > > > as we have had systems using a trigger generated by an external  
+> process.
+> > > > I suppose in that case we just have to deal with the offset in the  
+> fifo
+> > > > etc in userspace.  
+> > >
+> > > Yes. I'm not familiar with IIO buffered mode, but for a streaming,
+> > > continuous, read mode I guess that the user would expect some latency
+> > > anyway (might be due to the ADC or the buffering mechanism itself or
+> > > whatever).  
+> >
+> > There are a few ugly corners.
+> > 1) They'd normally expect the timestamp to be as closely aligned as
+> > possible with the reading in a given scan.  Perhaps we can think about
+> > how to offset that if we know we are actually looking at the one before
+> > last...  
+> 
+> Maybe we could sample the timestamp whenever we start a conversion (end of
+> SPI XFER), then we use this information for timestamping the value we'll
+> read at the next SPI xfer (that is the outcome of the said conversion).
+> Maybe we can also subtract, say, half of the acquisition time to each
+> timestemp to better center it on the actual acquisition window..
 
-thanks,
+I originally had a plan to 'accurately' describe time offsets so that
+we could deal with the difference between devices that are self clocked
+(the interrupt is after the samples are done) and devices that are
+capture on demand.  It never got implemented though as it seems no one
+ever cared :)
 
-                           martin
+As for shifting the timestamp to reflect and earlier triggered capture
+(so running a small fifo for the timestamps), that seems like a
+sensible approach to keeping timestamp and sample together.
+
+> 
+> > 2) There are tightly coupled setups where we are switching a mux in
+> > front of the sensor and driving a trigger off that action.
+> >                                                 _________
+> >  _________           |--------MUX CNTRL--------|         |
+> > |         |        __|__        ---TRIGGER-----|         |
+> > | INPUT 1 |-------|     |     __|__            |         |
+> > |_________|       |     |    |     |           |   HOST  |
+> >  _________        | MUX |----| ADC |-----------|         |
+> > |         |       |     |    |_____|           |         |
+> > | INPUT 2 |-------|_____|                      |_________|
+> > |_________|
+> >
+> > This gets represented as a single 'device' that is a consumer
+> > of the ADC channel, and also provides the trigger and handles
+> > the mux control.
+> >
+> > Once you have stitched it all together the expectation is that
+> > for each 'scan':
+> > 1. Set MUX
+> > 2. Allow short settling time  
+> 
+> Indeed my concern about begin vs end of acquisition window wrt switching
+> time of the external mux could possibly be worked-around by just increasing
+> settling time here. I also indeed agree wrt what you say below about sysfs
+> [*].
+> 
+> So probably we don't need to worry about this at all in the chip driver.
+> 
+> > 3. Trigger the ADC via gpio or SPI triggered read etc.
+> > 4. ADC result comes back.
+> > 5. Goto 1.
+> >
+> > The full set of inputs are sampled to make up one 'scan' in
+> > the buffer of the container driver.
+> >
+> > Now in theory you could interleave the flows so that you know
+> > the data is coming 2 scan's later, but there isn't currently
+> > a way for the 'container' driver to know that is happening,
+> > so the assumption it makes is that everything is 'direct'.
+> >
+> > We could add some means of reporting an offset from trigger
+> > to sample into fifo as that would allow such a container
+> > driver to adjust it's mux settings to take that into account.
+> >
+> > Note that out container driver also often has it's own
+> > capture trigger coming in so it can get really fiddly as
+> > we don't have any way of knowing if we are in a round robin
+> > situation or just taking a single 'scan'. In single scan
+> > case we want to drop the excess reads from the end, in round robin
+> > we want to keep them as they are the start of the next scan.  
+> 
+> Yes, that's what we want. But it seems we cannot easily distinguish the two
+> cases.
+> 
+> The only thing I can think about to handle this is to take into account the
+> samples ageing, and use excess samples for the next scan vs throwing them
+> away depending on that. But there's the problem of choosing a threshold..
+> 
+> BTW Maybe if this is handled in the ADC driver then it may also adjust
+> things so that all is transparent to upper layers, even getting rid of the
+> offset.
+
+It could be done in the ADC driver, but the cost would be that it would
+have to run sufficient samples to ensure we are always 'fresh'.  That
+is going to kill the sampling rate.   As things stand we have no way
+of letting the ADC driver know that this is even desired.
+
+> 
+> > >
+> > > I didn't look into this buffered thing to see how it works, but maybe
+> > > we can skip the first udelay(2) [*] in the driver in case of buffered
+> > > access?
+> > >  
+> > > > Maybe we should think about adding a note to be careful of that.  Not
+> > > > really sure where we would note it though...  
+> > >
+> > > IMHO clarifying what the API guarantees and what it doesn't in IIO
+> > > DocBook could be helpful (I didn't see it, but I might have missed
+> > > it)..  
+> > I agree we should clarify it, but I'm still not totally sure what the
+> > preferred case is! Perhaps best plan is to put forward a patch to add
+> > a description of one of the choices as we can push people to review
+> > that closely as it may mean devices don't comply with the ABI.
+> >
+> > There is a 3rd option which is to add the option for devices to describe
+> > what they are doing via a new sysfs attribute.  That may get us
+> > around causing potential breakage in drivers that are already doing it
+> > the 'wrong' way.  
+> 
+> This would be implicit if we make them reporting the offset: a zero offset
+> means they behave in the simple, plain, way..
+> 
+> We might also want to be able to set it, so that if we do sparse single-shot
+> scans we can ask the driver to provide data in the way we expect it.
+
+Certainly a fiddly corner case.  If this had always been present we could
+just have made it up to the consumer to deal with the offset.  If it wants
+a single shot reading, it would just have to do N repeated readings to
+flush out the ADC pipeline.   Too late for that though.  So we would have
+to default to handling in the driver, and allow for it to be set to 
+an offset for high sampling rate users who know how to handle it.
+(new userspace).
+
+
+> 
+> > >
+> > > So, we could state that a single shot read must return a value sampled
+> > > after the read has been shot, and that on the other hand, when using
+> > > buffered mode one should expect some latency.. But indeed, since you
+> > > said that we might have a number of IIO drivers that actually behave
+> > > in a different way, then I'm not sure that it's a good idea; maybe we
+> > > could just drop this requirement and allow (and document) that a
+> > > single shot IIO read could just _terminate_ the sampling and trigger
+> > > the conversion on the current sampled signal? (so also in this driver
+> > > we can just not care about this)..  
+> >
+> > I don't think we need to worry about the difference between a sample
+> > window stopping vs one starting at the trigger.  Right now we don't
+> > even say how long that window is, so a naive assumption would be that
+> > we model it as instantaneous.  For single shot either model is
+> > fine to my mind. We get the nearest practical signal to the point
+> > of reading.  The sysfs interface is slow enough that any fine
+> > grained control of timing is likely to be garbage anyway :)  
+> 
+> [*]
+> 
+> > The only exception would be really slow sensors such as light sensors
+> > where we might be talking 100s of msecs.  In those I'd argue
+> > we do want the capture to start only after we ask.  I think we are
+> > fine on existing drivers for those.  
+> 
+> BTW Indeed the original patch tried to cover also another aspect of the
+> thing: when I read e.g. in_voltage2_raw from sysfs, I guess I really want
+> to be sure that I'm reading (rasonably fresh) data from channel number 2. I
+> guess
+> that if another process did read in_voltage3_raw before me, I still want to
+> be sure I'm getting data from ch 2, not 3.
+> 
+> IMO the offset thing make sense only on scans performed by buffered reads,
+> in which you configure a scan sequence and you are somehow interested in
+> getting data from all those channels (note: the driver targeted by the patch
+> does support only raw_read()).
+
+Absolutely agree.  This stuff only applies to more complex drivers doing
+buffered mode in which we have some assumptions of 'continuous' sampling.
+
+> 
+> Also, getting back to the former example, I don't know how the container
+> driver accesses the ADC driver (buffered vs raw_read), but I bet that, as a
+> consumer of one ADC channel, it really wants samples from the said channel
+> (internal MUX), and not from another.
+
+Uses buffered mode, which is why triggers are involved. However, if it had
+the information, the consumer could basically pass through the delay to
+userspace.  So if it gets the data 2 samples late, it would tell userspace that
+it will provide it two samples late as well.
+> 
+> So making sure the internal MUX is adjusted at every raw_read() IMO seems
+> still the right thing to do.. Still, I'm unsure if the whole thing of
+> excess reads makes sense here, or if we can just optimize only buffered
+> reads.
+
+Definitely only optimize buffered reads.  The sysfs ones are slow anyway
+so no need to be clever!  We just burn samples to get the right thing.
+
+I'm now completely lost on where we got to with the actual change in this
+driver.  Seem's Charles wasn't convinced yet (or lost track of the thread).
+Perhaps a repost with the example that you gave of the sequence you were
+seeing?
+
+Definitely went down a rabbit hole here! :)
+
+Jonathan
+> 
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> > >  
+> > > > Thanks,
+> > > >
+> > > > Jonathan
+> > > >
+> > > >  
+> >  
 

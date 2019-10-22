@@ -2,1089 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47E39E03E2
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 14:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BD4E048D
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2019 15:09:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388172AbfJVMdG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 08:33:06 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:42244 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388095AbfJVMdG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 08:33:06 -0400
-Received: by mail-io1-f65.google.com with SMTP id i26so10833447iog.9;
-        Tue, 22 Oct 2019 05:33:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=s3i9S2GktTeaow0uQBd6X2py7arElAFNUKXwjYuBqMc=;
-        b=bP1FSV+ozocExg49dKH69mdA7rwYhG5vwCfQmeIgmj55v80QKkB2MmFFwvlXEUlTDH
-         7uVkncz7AvpQeMVp4+azuDqUCSZ5Pu19AdnOcUpkpHatUyrizIzfnLZmtUxskTyJ4Wz5
-         gx26IeigzMsle7bC6PCr2YqriHa/3HejgD2z7EYTEw9ASqRPIw0rtPBMz3V32RuV1lw8
-         xAYcgJiw4IF8Ig0xC7kyW3DYd/aE+LRSpvzOt6Vh/G2XphfVmMyMriL+5NTF1iMdTpZP
-         sLRyZrgpCFKAsclJv+6oHwyDwGE1y5tCBN7/796NpKm52Yz6kPwTQZApHqsy5l2m/iLr
-         SoEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=s3i9S2GktTeaow0uQBd6X2py7arElAFNUKXwjYuBqMc=;
-        b=nYkiCVpE/lTU3RTXW8reTF4TUez6JrRF+fKFdyyQF0DBVBvW/lk0AdvIIeHQczMmtv
-         oBLiYySG0VURItP1qbONUGDuNqGTjjPmkr1ONAp1UpFU3dyLhY2s9P8Dgim1kC0m+dWl
-         DhGhrgA2+CJj/J9GoM/tI3EkwkVaomJNyA1pxcldqfBVEQyUKlQmKomYEvWI+iMMsw0B
-         hF2WU/cDvtTsg5O5MORw296myLqiz1MtVojaIgWOZ8YaxrU2E6/nGleNCOwDtvoJ+LCv
-         qW7KuDUZQ+SvZ3Zctev3Li6m+lZlUoFes9dy3kqqB+veJwC3YShr6qmh0AMTXfN6lWVI
-         xMoA==
-X-Gm-Message-State: APjAAAXN+PYOLOmtDZQbYKyTOsIfZpyvvRHzwxVHG6LnS9MKzN4x+wJA
-        05SURfqwpAW0DeVNOQxUpo3DX+weBS5pbRld4fI=
-X-Google-Smtp-Source: APXvYqwAQOyfgdgQ1Ko6Z3S61KtQV9lzE84BWAgfrv6SF5NsFLaXlli6wljXF2kDR0ubyGmrb6mOI1hjOZj9Q9YoNaQ=
-X-Received: by 2002:a02:ac1a:: with SMTP id a26mr3605919jao.22.1571747583675;
- Tue, 22 Oct 2019 05:33:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <1571664496-6392-1-git-send-email-gupt21@gmail.com>
- <1571716635-22830-1-git-send-email-gupt21@gmail.com> <20191022110000.28b7d2c5@archlinux>
-In-Reply-To: <20191022110000.28b7d2c5@archlinux>
-From:   rishi gupta <gupt21@gmail.com>
-Date:   Tue, 22 Oct 2019 18:02:51 +0530
-Message-ID: <CALUj-guR0XBGLCx2WnTSGiaVPpKbPcSKNVhbb+N8VfS449_NJg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] iio: light: add driver for veml6030 ambient light sensor
+        id S1728448AbfJVNIq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Oct 2019 09:08:46 -0400
+Received: from mout01.posteo.de ([185.67.36.65]:33193 "EHLO mout01.posteo.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727805AbfJVNIq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 22 Oct 2019 09:08:46 -0400
+Received: from submission (posteo.de [89.146.220.130]) 
+        by mout01.posteo.de (Postfix) with ESMTPS id E775B160075
+        for <linux-iio@vger.kernel.org>; Tue, 22 Oct 2019 15:08:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+        t=1571749720; bh=yZ7wkG5/nTFz2HWgD0QS+01R6jUGKtQkz4Yu6HL4NZE=;
+        h=Subject:To:Cc:From:Openpgp:Autocrypt:Date:From;
+        b=fvHI1RN9P3xoDhX78fw+fQHj3rn09Z4Irp18rrvkrNFlro26Rn2i9WQvgODOa+XCp
+         HZBV7qels2lyBIL5J9G/v/lliHY23UjJhAtBaym8QixvhfT1xcl2SOGOeBsl4ctnWk
+         XVAuBHrQldKQEjAJf4JWT7Yks6NcRxlqt0eskCAAHkIfncjhkzYEsYc/0aIDVAp80b
+         IRsvE+FP+Neb3EmpqZv5t6bJGA+6aoxqIW0hkXNDzjjAnO8tIYRhhTIVpSyziIjtGn
+         zLUmrQES9gpvqCafaFT9WLIhlVtndKkVRtI4irhiVBrWuDLyq+QxU6pPHefLa3FIvA
+         ARt1/IHOfhK7A==
+Received: from customer (localhost [127.0.0.1])
+        by submission (posteo.de) with ESMTPSA id 46yDN56YYYz6tm6;
+        Tue, 22 Oct 2019 15:08:37 +0200 (CEST)
+Subject: Re: [PATCH] dt-bindings: mma8452: Re-word 'interrupt-names'
+ description
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     knaack.h@gmx.de, lars@metafoo.de,
+Cc:     Andrey Smirnov <andrew.smirnov@gmail.com>,
+        linux-iio@vger.kernel.org, Chris Healy <cphealy@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        gregkh@linuxfoundation.org, tglx@linutronix.de,
-        allison@lohutok.net, alexios.zavras@intel.com, angus@akkea.ca,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191022035626.13002-1-andrew.smirnov@gmail.com>
+ <1a1bdf10-2505-6baf-8030-ce5e0e2b55a9@posteo.de>
+ <20191022115010.7957744e@archlinux>
+From:   Martin Kepplinger <martink@posteo.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=martink@posteo.de; keydata=
+ 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
+Message-ID: <8cf84d9f-e9d9-4c18-ac0b-e568a34f2608@posteo.de>
+Date:   Tue, 22 Oct 2019 15:08:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <20191022115010.7957744e@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Thanks Jonathan, sorry for deep thread, learnt will keep in mind.
+On 22.10.19 12:50, Jonathan Cameron wrote:
+> On Tue, 22 Oct 2019 10:43:09 +0200
+> Martin Kepplinger <martink@posteo.de> wrote:
+> 
+>> On 22.10.19 05:56, Andrey Smirnov wrote:
+>>> Current wording in the binding documentation doesn't make it 100%
+>>> clear that only one of "INT1" and "INT2" will ever be used by the
+>>> driver and that specifying both has no advantages. Re-word it to make
+>>> this aspect a bit more explicit.
+> 
+> From a quick glance at the datasheet, it appears that the hardware
+> is capable of routing different interrupts to different pins, even
+> if the driver does not do so.
+> 
+> CTRL_REG5 has 6 different bits to set whether particular blocks have
+> their interrupt routed to INT1 or INT2, so it appears to be possible
+> to send some each way.
+>  
+> A binding is for the hardware not the driver, so if I'm right about this
+> the current text is correct and should be left alone.
 
-All suggested changes done except re-ordering devm_add_action_or_reset.
-Please see inline and suggest if I missed something.
+right, please ignore my "acked-by". Thanks a lot for taking a look.
 
-On Tue, Oct 22, 2019 at 3:30 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Tue, 22 Oct 2019 09:27:15 +0530
-> Rishi Gupta <gupt21@gmail.com> wrote:
->
-> > veml6030 is an ambient light sensor from Vishay semiconductors.
-> > It has 16-bit resolution, supports both ambient light measurement
-> > and white channel which is more responsive to wider wavelength
-> > spectrum. It has flexible power saving, integration time and
-> > gain options. Communication with host is over I2C.
-> >
-> > Signed-off-by: Rishi Gupta <gupt21@gmail.com>
->
-> Please avoid this complex nested replies to old patches.
-> New version of a series should be a new thread.
->
-> It's much easier for myself or others to be sure they have the latest version
-> than when they are interleaved like this.
->
-> I've raised ABI concerns in patch 3, so won't repeat that here
->
-> Various minor other things inline.
->
-> Jonathan
->
-> > ---
-> > Changes in v4:
-> > * None
-> >
-> > Changes in v3:
-> > * Added appnote link in topmost comments section
-> > * Dropped 'return ret' statements wherever not needed
-> > * Removed .scan_index from channel specifications, not needed
-> > * If irq is not enabled, events interfaces are not exposed now
-> > * Return IRQ_NONE for spurious interrupt
-> > * Removed CONFIG_PM, added __maybe_unused in power routines
-> > * Removed of_match_ptr when specifying DT device id to match
-> > * Corrected & documented sequence in veml6030_write_interrupt_config()
-> > * Removed veml6030_remove() & added devm_add_action_or_reset functionality
-> > * Added support to read integration time, gain, thresholds, period
-> > * Removed including mutex.h not needed
-> > * Set 100 ms integration & 1/8 gain during probe for better accuracy
-> > * Used IIO_CONST_ATTR to create sysfs entries "_available"
-> > * Minor cosmetics like everything in lower case
-> >
-> > Changes in v2:
-> > * Added comma after CH_WHITE in enum veml6030_chan so it can be extended
-> > * Removed .scan_type as driver doesn't use buffered mode
-> > * Removed iio_device_unregister() as kernel will take care of cleaning
-> >
-> >  drivers/iio/light/Kconfig    |  11 +
-> >  drivers/iio/light/Makefile   |   1 +
-> >  drivers/iio/light/veml6030.c | 903 +++++++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 915 insertions(+)
-> >  create mode 100644 drivers/iio/light/veml6030.c
-> >
-> > diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> > index 4a1a883..f9d27ef 100644
-> > --- a/drivers/iio/light/Kconfig
-> > +++ b/drivers/iio/light/Kconfig
-> > @@ -496,6 +496,17 @@ config VCNL4035
-> >         To compile this driver as a module, choose M here: the
-> >         module will be called vcnl4035.
-> >
-> > +config VEML6030
-> > +     tristate "VEML6030 ambient light sensor"
-> > +     select REGMAP_I2C
-> > +     depends on I2C
-> > +     help
-> > +       Say Y here if you want to build a driver for the Vishay VEML6030
-> > +       ambient light sensor (ALS).
-> > +
-> > +       To compile this driver as a module, choose M here: the
-> > +       module will be called veml6030.
-> > +
-> >  config VEML6070
-> >       tristate "VEML6070 UV A light sensor"
-> >       depends on I2C
-> > diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-> > index 00d1f9b..5e0c40b 100644
-> > --- a/drivers/iio/light/Makefile
-> > +++ b/drivers/iio/light/Makefile
-> > @@ -48,6 +48,7 @@ obj-$(CONFIG_TSL4531)               += tsl4531.o
-> >  obj-$(CONFIG_US5182D)                += us5182d.o
-> >  obj-$(CONFIG_VCNL4000)               += vcnl4000.o
-> >  obj-$(CONFIG_VCNL4035)               += vcnl4035.o
-> > +obj-$(CONFIG_VEML6030)               += veml6030.o
-> >  obj-$(CONFIG_VEML6070)               += veml6070.o
-> >  obj-$(CONFIG_VL6180)         += vl6180.o
-> >  obj-$(CONFIG_ZOPT2201)               += zopt2201.o
-> > diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> > new file mode 100644
-> > index 0000000..d0d4e42
-> > --- /dev/null
-> > +++ b/drivers/iio/light/veml6030.c
-> > @@ -0,0 +1,903 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +/*
-> > + * VEML6030 Ambient Light Sensor
-> > + *
-> > + * Copyright (c) 2019, Rishi Gupta <gupt21@gmail.com>
-> > + *
-> > + * Datasheet: https://www.vishay.com/docs/84366/veml6030.pdf
-> > + * Appnote-84367: https://www.vishay.com/docs/84367/designingveml6030.pdf
-> > + */
-> > +
-> > +#include <linux/module.h>
-> > +#include <linux/i2c.h>
-> > +#include <linux/err.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/interrupt.h>
-> > +#include <linux/pm_runtime.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
-> > +#include <linux/iio/events.h>
-> > +
-> > +/* Device registers */
-> > +#define VEML6030_REG_ALS_CONF   0x00
-> > +#define VEML6030_REG_ALS_WH     0x01
-> > +#define VEML6030_REG_ALS_WL     0x02
-> > +#define VEML6030_REG_ALS_PSM    0x03
-> > +#define VEML6030_REG_ALS_DATA   0x04
-> > +#define VEML6030_REG_WH_DATA    0x05
-> > +#define VEML6030_REG_ALS_INT    0x06
-> > +
-> > +/* Bit masks for specific functionality */
-> > +#define VEML6030_ALS_IT       GENMASK(9, 6)
-> > +#define VEML6030_PSM          GENMASK(2, 1)
-> > +#define VEML6030_ALS_PERS     GENMASK(5, 4)
-> > +#define VEML6030_ALS_GAIN     GENMASK(12, 11)
-> > +#define VEML6030_PSM_EN       BIT(0)
-> > +#define VEML6030_INT_TH_LOW   BIT(15)
-> > +#define VEML6030_INT_TH_HIGH  BIT(14)
-> > +#define VEML6030_ALS_INT_EN   BIT(1)
-> > +#define VEML6030_ALS_SD       BIT(0)
-> > +
-> > +/*
-> > + * The resolution depends on both gain and integration time. The
-> > + * cur_resolution stores one of the resolution mentioned in the
-> > + * table during startup and gets updated whenever integration time
-> > + * or gain is changed.
-> > + *
-> > + * Table 'resolution and maximum detection range' in appnote 84367
-> > + * is visualized as a 2D array. The cur_gain stores index of gain
-> > + * in this table (0-3) while the cur_integration_time holds index
-> > + * of integration time (0-5).
-> > + */
-> > +struct veml6030_data {
-> > +     struct i2c_client *client;
-> > +     struct regmap *regmap;
-> > +     int cur_resolution;
-> > +     int cur_gain;
-> > +     int cur_integration_time;
-> > +};
-> > +
-> > +/* Integration time available in seconds */
-> > +static IIO_CONST_ATTR(in_illuminance_integration_time_available,
-> > +                             "0.025 0.05 0.1 0.2 0.4 0.8");
-> > +
-> > +/*
-> > + * Scale is 1/gain. Value 0.125 is ALS gain x (1/8), 0.25 is
-> > + * ALS gain x (1/4), 1.0 = ALS gain x 1 and 2.0 is ALS gain x 2.
-> > + */
-> > +static IIO_CONST_ATTR(in_illuminance_scale_available,
-> > +                             "0.125 0.25 1.0 2.0");
-> > +
-> > +/*
-> > + * Power saving modes 1/2/3/4.
-> > + * Products can achieve a trade-off between power savings and
-> > + * frequency of als latest readings available through psm.
-> > + */
-> > +static IIO_CONST_ATTR(in_illuminance_psm_available,
-> > +                             "1 2 3 4");
-> > +
-> > +static ssize_t in_illuminance_psm_store(struct device *dev,
-> > +                                             struct device_attribute *attr,
-> > +                                             const char *buf, size_t len)
-> > +{
-> > +     int ret;
-> > +     unsigned int val;
-> > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     if (kstrtouint(buf, 0, &val))
-> > +             return -EINVAL;
-> > +
-> > +     if (val < 1 || val > 4)
-> > +             return -EINVAL;
-> > +
-> > +     /* update bits 1-2 */
-> > +     val = ((val - 1) << 1);
-> > +
-> > +     ret = regmap_update_bits(data->regmap, VEML6030_REG_ALS_PSM,
-> > +                                     VEML6030_PSM, val);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't update psm value %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     return len;
-> > +}
-> > +
-> > +static ssize_t in_illuminance_psm_show(struct device *dev,
-> > +                             struct device_attribute *attr, char *buf)
-> > +{
-> > +     int ret, reg;
-> > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     ret = regmap_read(data->regmap, VEML6030_REG_ALS_PSM, &reg);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't read psm register %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     return sprintf(buf, "%d\n", (((reg >> 1) & 0x03) + 1));
-> > +}
-> > +
-> > +static IIO_DEVICE_ATTR_RW(in_illuminance_psm, 0);
-> > +
-> > +static struct attribute *veml6030_attributes[] = {
-> > +     &iio_const_attr_in_illuminance_integration_time_available.dev_attr.attr,
-> > +     &iio_const_attr_in_illuminance_scale_available.dev_attr.attr,
-> > +     &iio_const_attr_in_illuminance_psm_available.dev_attr.attr,
-> > +     &iio_dev_attr_in_illuminance_psm.dev_attr.attr,
-> > +     NULL
-> > +};
-> > +
-> > +static const struct attribute_group veml6030_attr_group = {
-> > +     .attrs = veml6030_attributes,
-> > +};
-> > +
-> > +/*
-> > + * Persistence = 1/2/4/8 x integration time
-> > + * Minimum time for which light readings must stay above configured
-> > + * threshold to assert interrupt.
-> > + */
-> > +static IIO_CONST_ATTR(in_illuminance_period_available,
-> > +                             "1 2 4 8");
-> > +
-> > +static struct attribute *veml6030_event_attributes[] = {
-> > +     &iio_const_attr_in_illuminance_period_available.dev_attr.attr,
-> > +     NULL
-> > +};
-> > +
-> > +static const struct attribute_group veml6030_event_attr_group = {
-> > +     .attrs = veml6030_event_attributes,
-> > +};
-> > +
-> > +static int veml6030_als_pwr_on(struct veml6030_data *data)
-> > +{
-> > +     return regmap_update_bits(data->regmap, VEML6030_REG_ALS_CONF,
-> > +                              VEML6030_ALS_SD, 0);
-> > +}
-> > +
-> > +static int veml6030_als_shut_down(struct veml6030_data *data)
-> > +{
-> > +     return regmap_update_bits(data->regmap, VEML6030_REG_ALS_CONF,
-> > +                              VEML6030_ALS_SD, 1);
-> > +}
-> > +
-> > +static void veml6030_als_shut_down_action(void *data)
-> > +{
-> > +     veml6030_als_shut_down(data);
-> > +}
-> > +
-> > +static const struct iio_event_spec veml6030_event_spec[] = {
-> > +     {
-> > +             .type = IIO_EV_TYPE_THRESH,
-> > +             .dir = IIO_EV_DIR_RISING,
-> > +             .mask_separate = BIT(IIO_EV_INFO_VALUE),
-> > +     }, {
-> > +             .type = IIO_EV_TYPE_THRESH,
-> > +             .dir = IIO_EV_DIR_FALLING,
-> > +             .mask_separate = BIT(IIO_EV_INFO_VALUE),
-> > +     }, {
-> > +             .type = IIO_EV_TYPE_THRESH,
-> > +             .dir = IIO_EV_DIR_EITHER,
-> > +             .mask_separate = BIT(IIO_EV_INFO_PERIOD),
-> > +     }, {
-> > +             .type = IIO_EV_TYPE_THRESH,
-> > +             .dir = IIO_EV_DIR_EITHER,
-> > +             .mask_separate = BIT(IIO_EV_INFO_ENABLE),
-> > +     },
-> > +};
-> > +
-> > +/* Channel number */
-> > +enum veml6030_chan {
-> > +     CH_ALS,
-> > +     CH_WHITE,
-> > +};
-> > +
-> > +static const struct iio_chan_spec veml6030_channels[] = {
-> > +     {
-> > +             .type = IIO_LIGHT,
-> > +             .channel = CH_ALS,
-> > +             .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> > +                             BIT(IIO_CHAN_INFO_PROCESSED) |
-> > +                             BIT(IIO_CHAN_INFO_INT_TIME) |
-> > +                             BIT(IIO_CHAN_INFO_SCALE),
-> > +             .event_spec = veml6030_event_spec,
-> > +             .num_event_specs = ARRAY_SIZE(veml6030_event_spec),
-> > +     },
-> > +     {
-> > +             .type = IIO_INTENSITY,
-> > +             .channel = CH_WHITE,
-> > +             .modified = 1,
-> > +             .channel2 = IIO_MOD_LIGHT_BOTH,
-> > +             .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> > +                             BIT(IIO_CHAN_INFO_PROCESSED),
-> > +     },
-> > +};
-> > +
-> > +static const struct regmap_config veml6030_regmap_config = {
-> > +     .name = "veml6030_regmap",
-> > +     .reg_bits = 8,
-> > +     .val_bits = 16,
-> > +     .max_register = VEML6030_REG_ALS_INT,
-> > +     .val_format_endian = REGMAP_ENDIAN_LITTLE,
-> > +};
-> > +
-> > +static int veml6030_read_persistence(struct iio_dev *indio_dev,
-> > +                                             int *val, int *val2)
-> > +{
-> > +     int ret, reg;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't als configuration register %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     *val = 1 << ((reg >> 3) & 0x03);
-> > +     *val2 = 0;
-> > +     return IIO_VAL_INT;
-> > +}
-> > +
-> > +static int veml6030_write_persistence(struct iio_dev *indio_dev,
-> > +                                             int val, int val2)
-> > +{
-> > +     int ret;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     if (val < 0 || val > 8 || hweight8(val) != 1 || val2)
-> > +             return -EINVAL;
-> > +
-> > +     ret = regmap_update_bits(data->regmap, VEML6030_REG_ALS_CONF,
-> > +                                     VEML6030_ALS_PERS, val << 4);
-> > +     if (ret)
-> > +             dev_err(&data->client->dev,
-> > +                             "can't set persistence value %d\n", ret);
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static int veml6030_set_als_gain(struct iio_dev *indio_dev,
-> > +                                             int val, int val2)
-> > +{
-> > +     int ret, new_gain, gain_idx;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     if (val == 0 && val2 == 125000) {
-> > +             new_gain = 0x1000; /* 0x02 << 11 */
-> > +             gain_idx = 3;
-> > +     } else if (val == 0 && val2 == 250000) {
-> > +             new_gain = 0x1800;
-> > +             gain_idx = 2;
-> > +     } else if (val == 1 && val2 == 0) {
-> > +             new_gain = 0x00;
-> > +             gain_idx = 1;
-> > +     } else if (val == 2 && val2 == 0) {
-> > +             new_gain = 0x800;
-> > +             gain_idx = 0;
-> > +     } else {
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     ret = regmap_update_bits(data->regmap, VEML6030_REG_ALS_CONF,
-> > +                                     VEML6030_ALS_GAIN, new_gain);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't set als gain %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     /*
-> > +      * Cache currently set gain & update resolution. For every
-> > +      * increase in the gain to next level, resolution is halved
-> > +      * and vice-versa.
-> > +      */
-> > +     if (data->cur_gain < gain_idx)
-> > +             data->cur_resolution <<= gain_idx - data->cur_gain;
-> > +     else if (data->cur_gain > gain_idx)
-> > +             data->cur_resolution >>= data->cur_gain - gain_idx;
-> > +
-> > +     data->cur_gain = gain_idx;
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static int veml6030_get_als_gain(struct iio_dev *indio_dev,
-> > +                                             int *val, int *val2)
-> > +{
-> > +     int ret, reg;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't als configuration register %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     switch ((reg >> 11) & 0x03) {
-> > +     case 0:
-> > +             *val = 1;
-> > +             *val2 = 0;
-> > +             break;
-> > +     case 1:
-> > +             *val = 2;
-> > +             *val2 = 0;
-> > +             break;
-> > +     case 2:
-> > +             *val = 0;
-> > +             *val2 = 125000;
-> > +             break;
-> > +     case 3:
-> > +             *val = 0;
-> > +             *val2 = 250000;
-> > +             break;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     return IIO_VAL_INT_PLUS_MICRO;
-> > +}
-> > +
-> > +static int veml6030_read_thresh(struct iio_dev *indio_dev,
-> > +                                             int *val, int *val2, int dir)
-> > +{
-> > +     int ret, reg;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     if (dir == IIO_EV_DIR_RISING)
-> > +             ret = regmap_read(data->regmap, VEML6030_REG_ALS_WH, &reg);
-> > +     else
-> > +             ret = regmap_read(data->regmap, VEML6030_REG_ALS_WL, &reg);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't read als threshold value %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     *val = reg & 0xffff;
-> > +     *val2 = 0;
-> > +     return IIO_VAL_INT;
-> > +}
-> > +
-> > +static int veml6030_write_thresh(struct iio_dev *indio_dev,
-> > +                                             int val, int val2, int dir)
-> > +{
-> > +     int ret;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     if (val > 0xFFFF || val < 0 || val2)
-> > +             return -EINVAL;
-> > +
-> > +     if (dir == IIO_EV_DIR_RISING) {
-> > +             ret = regmap_write(data->regmap, VEML6030_REG_ALS_WH, val);
-> > +             if (ret)
-> > +                     dev_err(&data->client->dev,
-> > +                                     "can't set high threshold %d\n", ret);
-> > +     } else {
-> > +             ret = regmap_write(data->regmap, VEML6030_REG_ALS_WL, val);
-> > +             if (ret)
-> > +                     dev_err(&data->client->dev,
-> > +                                     "can't set low threshold %d\n", ret);
-> > +     }
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static int veml6030_get_intgrn_tm(struct iio_dev *indio_dev,
-> > +                                             int *val, int *val2)
-> > +{
-> > +     int ret, reg;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't als configuration register %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     switch ((reg >> 6) & 0xF) {
-> > +     case 0:
-> > +             *val2 = 100000;
-> > +             break;
-> > +     case 1:
-> > +             *val2 = 200000;
-> > +             break;
-> > +     case 2:
-> > +             *val2 = 400000;
-> > +             break;
-> > +     case 3:
-> > +             *val2 = 800000;
-> > +             break;
-> > +     case 8:
-> > +             *val2 = 50000;
-> > +             break;
-> > +     case 12:
-> > +             *val2 = 25000;
-> > +             break;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     *val = 0;
-> > +     return IIO_VAL_INT_PLUS_MICRO;
-> > +}
-> > +
-> > +static int veml6030_set_intgrn_tm(struct iio_dev *indio_dev,
-> > +                                             int val, int val2)
-> > +{
-> > +     int ret, new_int_time, int_idx;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     if (val)
-> > +             return -EINVAL;
-> > +
-> > +     switch (val2) {
-> > +     case 25000:
-> > +             new_int_time = 0x300;
-> > +             int_idx = 5;
-> > +             break;
-> > +     case 50000:
-> > +             new_int_time = 0x200;
-> > +             int_idx = 4;
-> > +             break;
-> > +     case 100000:
-> > +             new_int_time = 0x00;
-> > +             int_idx = 3;
-> > +             break;
-> > +     case 200000:
-> > +             new_int_time = 0x40;
-> > +             int_idx = 2;
-> > +             break;
-> > +     case 400000:
-> > +             new_int_time = 0x80;
-> > +             int_idx = 1;
-> > +             break;
-> > +     case 800000:
-> > +             new_int_time = 0xC0;
-> > +             int_idx = 0;
-> > +             break;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     ret = regmap_update_bits(data->regmap, VEML6030_REG_ALS_CONF,
-> > +                                     VEML6030_ALS_IT, new_int_time);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't update als integration time %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     /*
-> > +      * Cache current integration time and update resolution. For every
-> > +      * increase in integration time to next level, resolution is halved
-> > +      * and vice-versa.
-> > +      */
-> > +     if (data->cur_integration_time < int_idx)
-> > +             data->cur_resolution <<= int_idx - data->cur_integration_time;
-> > +     else if (data->cur_integration_time > int_idx)
-> > +             data->cur_resolution >>= data->cur_integration_time - int_idx;
-> > +
-> > +     data->cur_integration_time = int_idx;
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +/*
-> > + * Provide both raw as well as light reading in lux.
-> > + * light (in lux) = resolution * raw reading
-> > + */
-> > +static int veml6030_read_raw(struct iio_dev *indio_dev,
-> > +                         struct iio_chan_spec const *chan, int *val,
-> > +                         int *val2, long mask)
-> > +{
-> > +     int ret, reg;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +     struct regmap *regmap = data->regmap;
-> > +     struct device *dev = &data->client->dev;
-> > +
-> > +     switch (mask) {
-> > +     case IIO_CHAN_INFO_RAW:
-> > +     case IIO_CHAN_INFO_PROCESSED:
-> > +             switch (chan->type) {
-> > +             case IIO_LIGHT:
-> > +                     ret = regmap_read(regmap, VEML6030_REG_ALS_DATA, &reg);
-> > +                     if (ret < 0) {
-> > +                             dev_err(dev, "can't read als data %d\n", ret);
-> > +                             return ret;
-> > +                     }
-> > +                     if (mask == IIO_CHAN_INFO_PROCESSED) {
-> > +                             *val = (reg * data->cur_resolution) / 10000;
-> > +                             *val2 = (reg * data->cur_resolution) % 10000;
-> > +                             return IIO_VAL_INT_PLUS_MICRO;
-> > +                     }
-> > +                     *val = reg;
-> > +                     *val2 = 0;
-> > +                     return IIO_VAL_INT;
-> > +             case IIO_INTENSITY:
-> > +                     ret = regmap_read(regmap, VEML6030_REG_WH_DATA, &reg);
-> > +                     if (ret < 0) {
-> > +                             dev_err(dev, "can't read white data %d\n", ret);
-> > +                             return ret;
-> > +                     }
-> > +                     if (mask == IIO_CHAN_INFO_PROCESSED) {
-> > +                             *val = (reg * data->cur_resolution) / 10000;
-> > +                             *val2 = (reg * data->cur_resolution) % 10000;
-> > +                             return IIO_VAL_INT_PLUS_MICRO;
-> > +                     }
-> > +                     *val = reg;
-> > +                     *val2 = 0;
->
-> No need to set val2 if returning IIO_VAL_INT, it's not read.
->
-> > +                     return IIO_VAL_INT;
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> > +     case IIO_CHAN_INFO_INT_TIME:
-> > +             if (chan->type == IIO_LIGHT)
-> > +                     return veml6030_get_intgrn_tm(indio_dev, val, val2);
-> > +             return -EINVAL;
-> > +     case IIO_CHAN_INFO_SCALE:
-> > +             if (chan->type == IIO_LIGHT)
-> > +                     return veml6030_get_als_gain(indio_dev, val, val2);
-> > +             return -EINVAL;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +}
-> > +
-> > +static int veml6030_write_raw(struct iio_dev *indio_dev,
-> > +                             struct iio_chan_spec const *chan,
-> > +                             int val, int val2, long mask)
-> > +{
-> > +     switch (mask) {
-> > +     case IIO_CHAN_INFO_INT_TIME:
-> > +             switch (chan->type) {
-> > +             case IIO_LIGHT:
-> > +                     return veml6030_set_intgrn_tm(indio_dev, val, val2);
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> > +     case IIO_CHAN_INFO_SCALE:
-> > +             switch (chan->type) {
-> > +             case IIO_LIGHT:
-> > +                     return veml6030_set_als_gain(indio_dev, val, val2);
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +}
-> > +
-> > +static int veml6030_read_event_val(struct iio_dev *indio_dev,
-> > +             const struct iio_chan_spec *chan, enum iio_event_type type,
-> > +             enum iio_event_direction dir, enum iio_event_info info,
-> > +             int *val, int *val2)
-> > +{
-> > +     switch (info) {
-> > +     case IIO_EV_INFO_VALUE:
-> > +             switch (dir) {
-> > +             case IIO_EV_DIR_RISING:
-> > +             case IIO_EV_DIR_FALLING:
-> > +                     return veml6030_read_thresh(indio_dev, val, val2, dir);
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> > +             break;
-> > +     case IIO_EV_INFO_PERIOD:
-> > +             return veml6030_read_persistence(indio_dev, val, val2);
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +}
-> > +
-> > +static int veml6030_write_event_val(struct iio_dev *indio_dev,
-> > +             const struct iio_chan_spec *chan, enum iio_event_type type,
-> > +             enum iio_event_direction dir, enum iio_event_info info,
-> > +             int val, int val2)
-> > +{
-> > +     switch (info) {
-> > +     case IIO_EV_INFO_VALUE:
-> > +             return veml6030_write_thresh(indio_dev, val, val2, dir);
-> > +     case IIO_EV_INFO_PERIOD:
-> > +             return veml6030_write_persistence(indio_dev, val, val2);
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> You can't get here, so loose this final return.
-> > +     return -EINVAL;
-> > +}
-> > +
-> > +static int veml6030_read_interrupt_config(struct iio_dev *indio_dev,
-> > +             const struct iio_chan_spec *chan, enum iio_event_type type,
-> > +             enum iio_event_direction dir)
-> > +{
-> > +     int ret, reg;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't read als conf register %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     if (reg & VEML6030_ALS_INT_EN)
-> > +             return 1;
-> > +     else
-> > +             return 0;
-> > +}
-> > +
-> > +/*
-> > + * Sensor should not be measuring light when interrupt is configured.
-> > + * Therefore correct sequence to configure interrupt functionality is:
-> > + * shut down -> enable/disable interrupt -> power on
-> > + *
-> > + * state = 1 enables interrupt, state = 0 disables interrupt
-> > + */
-> > +static int veml6030_write_interrupt_config(struct iio_dev *indio_dev,
-> > +             const struct iio_chan_spec *chan, enum iio_event_type type,
-> > +             enum iio_event_direction dir, int state)
-> > +{
-> > +     int ret;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     if (state < 0 || state > 1)
-> > +             return -EINVAL;
-> > +
-> > +     ret = veml6030_als_shut_down(data);
-> > +     if (ret < 0) {
-> > +             dev_err(&data->client->dev,
-> > +                     "can't disable als to configure interrupt %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     /* enable interrupt + power on */
-> > +     ret = regmap_update_bits(data->regmap, VEML6030_REG_ALS_CONF,
-> > +                     VEML6030_ALS_INT_EN | VEML6030_ALS_SD, state << 1);
-> > +     if (ret)
-> > +             dev_err(&data->client->dev,
-> > +                     "can't enable interrupt & poweron als %d\n", ret);
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static const struct iio_info veml6030_info = {
-> > +     .read_raw  = veml6030_read_raw,
-> > +     .write_raw = veml6030_write_raw,
-> > +     .read_event_value = veml6030_read_event_val,
-> > +     .write_event_value      = veml6030_write_event_val,
-> > +     .read_event_config = veml6030_read_interrupt_config,
-> > +     .write_event_config     = veml6030_write_interrupt_config,
-> > +     .attrs = &veml6030_attr_group,
-> > +     .event_attrs = &veml6030_event_attr_group,
-> > +};
-> > +
-> > +static const struct iio_info veml6030_info_no_irq = {
-> > +     .read_raw  = veml6030_read_raw,
-> > +     .write_raw = veml6030_write_raw,
-> > +     .attrs = &veml6030_attr_group,
-> > +};
-> > +
-> > +static irqreturn_t veml6030_event_handler(int irq, void *private)
-> > +{
-> > +     int ret, reg, evtdir;
-> > +     struct iio_dev *indio_dev = private;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     ret = regmap_read(data->regmap, VEML6030_REG_ALS_INT, &reg);
-> > +     if (ret) {
-> > +             dev_err(&data->client->dev,
-> > +                             "can't read als interrupt register %d\n", ret);
-> > +             return IRQ_HANDLED;
-> > +     }
-> > +
-> > +     /* Spurious interrupt handling */
-> > +     if (!(reg & (VEML6030_INT_TH_HIGH | VEML6030_INT_TH_LOW)))
-> > +             return IRQ_NONE;
-> > +
-> > +     if (reg & VEML6030_INT_TH_HIGH)
-> > +             evtdir = IIO_EV_DIR_RISING;
-> > +     else
-> > +             evtdir = IIO_EV_DIR_FALLING;
-> > +
-> > +     iio_push_event(indio_dev, IIO_UNMOD_EVENT_CODE(IIO_INTENSITY,
-> > +                                     0, IIO_EV_TYPE_THRESH, evtdir),
-> > +                                     iio_get_time_ns(indio_dev));
-> > +
-> > +     return IRQ_HANDLED;
-> > +}
-> > +
-> > +/*
-> > + * Set ALS gain to 1/8, integration time to 100 ms, PSM to mode 2,
-> > + * persistence to 1 x integration time and the threshold
-> > + * interrupt disabled by default. First shutdown the sensor,
-> > + * update registers and then power on the sensor.
-> > + */
-> > +static int veml6030_hw_init(struct iio_dev *indio_dev)
-> > +{
-> > +     int ret, val;
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +     struct i2c_client *client = data->client;
-> > +
-> > +     ret = veml6030_als_shut_down(data);
-> > +     if (ret) {
-> > +             dev_err(&client->dev, "can't shutdown als %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     ret = regmap_write(data->regmap, VEML6030_REG_ALS_CONF, 0x1001);
-> > +     if (ret) {
-> > +             dev_err(&client->dev, "can't setup als configs %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     ret = regmap_update_bits(data->regmap, VEML6030_REG_ALS_PSM,
-> > +                              VEML6030_PSM | VEML6030_PSM_EN, 0x03);
-> > +     if (ret) {
-> > +             dev_err(&client->dev, "can't setup default PSM %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     ret = regmap_write(data->regmap, VEML6030_REG_ALS_WH, 0xFFFF);
-> > +     if (ret) {
-> > +             dev_err(&client->dev, "can't setup high threshold %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     ret = regmap_write(data->regmap, VEML6030_REG_ALS_WL, 0x0000);
-> > +     if (ret) {
-> > +             dev_err(&client->dev, "can't setup low threshold %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     ret = veml6030_als_pwr_on(data);
-> > +     if (ret) {
-> > +             dev_err(&client->dev, "can't poweron als %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     /* Wait 4 ms to let processor & oscillator start correctly */
-> > +     usleep_range(3990, 4000);
->
-> I you need to sleep 4msecs then the smallest value needs to be 4msecs.
->
-> > +
-> > +     /* Clear stale interrupt status bits if any during start */
-> > +     ret = regmap_read(data->regmap, VEML6030_REG_ALS_INT, &val);
-> > +     if (ret < 0) {
-> > +             dev_err(&client->dev,
-> > +                     "can't clear als interrupt status %d\n", ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     /* Cache currently active measurement parameters */
-> > +     data->cur_gain = 3;
-> > +     data->cur_resolution = 4608;
-> > +     data->cur_integration_time = 3;
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static int veml6030_probe(struct i2c_client *client,
-> > +                       const struct i2c_device_id *id)
-> > +{
-> > +     int ret;
-> > +     struct veml6030_data *data;
-> > +     struct iio_dev *indio_dev;
-> > +     struct regmap *regmap;
-> > +
-> > +     if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
-> > +             dev_err(&client->dev, "i2c adapter doesn't support plain i2c\n");
-> > +             return -EOPNOTSUPP;
-> > +     }
-> > +
-> > +     regmap = devm_regmap_init_i2c(client, &veml6030_regmap_config);
-> > +     if (IS_ERR(regmap)) {
-> > +             dev_err(&client->dev, "can't setup regmap\n");
-> > +             return PTR_ERR(regmap);
-> > +     }
-> > +
-> > +     indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> > +     if (!indio_dev)
-> > +             return -ENOMEM;
-> > +
-> > +     data = iio_priv(indio_dev);
-> > +     i2c_set_clientdata(client, indio_dev);
-> > +     data->client = client;
-> > +     data->regmap = regmap;
-> > +
-> > +     indio_dev->dev.parent = &client->dev;
-> > +     indio_dev->name = "veml6030";
-> > +     indio_dev->channels = veml6030_channels;
-> > +     indio_dev->num_channels = ARRAY_SIZE(veml6030_channels);
-> > +     indio_dev->modes = INDIO_DIRECT_MODE;
-> > +
-> > +     if (client->irq) {
-> > +             ret = devm_request_threaded_irq(&client->dev, client->irq,
-> > +                                             NULL, veml6030_event_handler,
-> > +                                             IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-> > +                                             "veml6030", indio_dev);
-> > +             if (ret < 0) {
-> > +                     dev_err(&client->dev,
-> > +                                     "irq %d request failed\n", client->irq);
-> > +                     return ret;
-> > +             }
-> > +             indio_dev->info = &veml6030_info;
-> > +     } else {
-> > +             indio_dev->info = &veml6030_info_no_irq;
-> > +     }
-> > +
-> > +     ret = devm_add_action_or_reset(&client->dev,
-> > +                                     veml6030_als_shut_down_action, data);
->
-> What is this reversing?  It should be immediately after whatever that is, thus
-> ensuring we only undo whatever we need to on failure and the ordering is correct
-> for remove.  I am guessing it should be after hw_init.
->
-This just disables active measurements (this is the only thing we need
-to do when failure happens).
+                            martin
 
-Suppose hw initialisation succeeds but call to
-devm_add_action_or_reset() fails. In this case sensor will be left
-turned on as veml6030_als_shut_down_action() will never be executed.
-Therefore I kept it before veml6030_hw_init().
-Does this sounds correct to you ?
-
-> > +     if (ret < 0)
-> > +             return ret;
-> > +
-> > +     ret = veml6030_hw_init(indio_dev);
-> > +     if (ret < 0)
-> > +             return ret;
-> > +
-> > +     return devm_iio_device_register(&client->dev, indio_dev);
-> > +}
-> > +
-> > +static int __maybe_unused veml6030_runtime_suspend(struct device *dev)
-> > +{
-> > +     int ret;
-> > +     struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     ret = veml6030_als_shut_down(data);
-> > +     if (ret < 0)
-> > +             dev_err(&data->client->dev, "can't suspend als %d\n", ret);
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static int __maybe_unused veml6030_runtime_resume(struct device *dev)
-> > +{
-> > +     int ret;
-> > +     struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> > +     struct veml6030_data *data = iio_priv(indio_dev);
-> > +
-> > +     ret = veml6030_als_pwr_on(data);
-> > +     if (ret < 0)
-> > +             dev_err(&data->client->dev, "can't resume als %d\n", ret);
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static const struct dev_pm_ops veml6030_pm_ops = {
-> > +     SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> > +                             pm_runtime_force_resume)
-> > +     SET_RUNTIME_PM_OPS(veml6030_runtime_suspend,
-> > +                             veml6030_runtime_resume, NULL)
-> > +};
-> > +
-> > +static const struct of_device_id veml6030_of_match[] = {
-> > +     { .compatible = "vishay,veml6030" },
-> > +     { }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, veml6030_of_match);
-> > +
-> > +static const struct i2c_device_id veml6030_id[] = {
-> > +     { "veml6030", 0 },
-> > +     { }
-> > +};
-> > +MODULE_DEVICE_TABLE(i2c, veml6030_id);
-> > +
-> > +static struct i2c_driver veml6030_driver = {
-> > +     .driver = {
-> > +             .name = "veml6030",
-> > +             .of_match_table = veml6030_of_match,
-> > +             .pm = &veml6030_pm_ops,
-> > +     },
-> > +     .probe = veml6030_probe,
-> > +     .id_table = veml6030_id,
-> > +};
-> > +module_i2c_driver(veml6030_driver);
-> > +
-> > +MODULE_AUTHOR("Rishi Gupta <gupt21@gmail.com>");
-> > +MODULE_DESCRIPTION("VEML6030 Ambient Light Sensor");
-> > +MODULE_LICENSE("GPL v2");
->

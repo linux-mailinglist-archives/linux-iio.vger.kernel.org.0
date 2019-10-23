@@ -2,165 +2,328 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C458BE1424
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2019 10:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E43A1E1433
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2019 10:29:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732361AbfJWI0x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Oct 2019 04:26:53 -0400
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:40062 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727574AbfJWI0x (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Oct 2019 04:26:53 -0400
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9N8MxPv029131;
-        Wed, 23 Oct 2019 04:26:50 -0400
-Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2051.outbound.protection.outlook.com [104.47.37.51])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2vt9t21hrs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Oct 2019 04:26:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L7q7jrilikLxUQvgkifhVvtvrlwvSQ5kyGU1+s+CNRpN0kR2wzs4bcK7OtT0JUdVCSgtcENqoqqDhrJ13aXDPmOv/OG24B0Z6sXRNmimfv+KkXCGdHs0SKk9kvsRXf0i3qYkY7vlRpAumXTS5ajx3GyN3ZxTSKUk9e25Q1evUkaY4KBhgxPU7Zijjh82sgz0BgRuzMwP3ylv2WCTC33rxphG9REAG0g4BcmEqP6M4jqQbeNgIkvqcwyT4K2++uiYepMxi/o3z4aZroEqL8OIzaZnPcNfIzcVPEpbBERF3K9UNtD/CtuaxrkSFLhZPxjAcf/KkpT8A0t422PbnTEO/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zic5/NIo81qQGHwCDs5FOCVbB/OBxV+6dWSx5pDhZRY=;
- b=NA5OqC3c0GZ7/1D8VOvD8QK4xV4vg9BgOa43TyrQP+YKWVCw1eWBV+AUPHL0dneCfLzycelT6cFJyzHSgBmGDJeL+nT/EvjD6FD+32fWyhF/gDhmhzBaUTCjz7SxChxmAwEY1pAGISmrNEvHhMCp8xcGdLoetY8m6droCocbcXtrJC97ZA8xbel5fYFL8Wxpj8we5QsgYeHEO5UB2hV+hofrfiddxTyR5v1gr+GdZEtPU4C8wisE2vgvprzfG3iT8Vk2xVCerf7iZeNJHEosjRVTCBOVnnDPLl2gQkIvqvVYyUcWzTwVJfi/wrB4lFR2n+o3aByq9MdJMsJAZbBQkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.71.25.57) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
- dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
- not signed); arc=none
+        id S2390342AbfJWI3X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Oct 2019 04:29:23 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:52159 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390034AbfJWI3W (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Oct 2019 04:29:22 -0400
+Received: by mail-wm1-f68.google.com with SMTP id q70so13009926wme.1
+        for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2019 01:29:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zic5/NIo81qQGHwCDs5FOCVbB/OBxV+6dWSx5pDhZRY=;
- b=9RGXWQ4T4VCbwPU1mYr9T+Yke/o5S/qaT54vDZ86ZkN+hXK7DGO98eLS2xhMGWxcE3FoP6CbnADPQE4iePjgNpbHaJoAieJcfQcX7bb2JUe5JAfz4XJ1WSChdp3q9fpPWLvj0V5QiuEhugCOrElob5kVwJ7AyBhUMV5E1QnuWt0=
-Received: from MWHPR03CA0007.namprd03.prod.outlook.com (2603:10b6:300:117::17)
- by DM5PR03MB3274.namprd03.prod.outlook.com (2603:10b6:4:40::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2367.20; Wed, 23 Oct
- 2019 08:26:48 +0000
-Received: from BL2NAM02FT032.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e46::209) by MWHPR03CA0007.outlook.office365.com
- (2603:10b6:300:117::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2387.20 via Frontend
- Transport; Wed, 23 Oct 2019 08:26:48 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
-Received: from nwd2mta2.analog.com (137.71.25.57) by
- BL2NAM02FT032.mail.protection.outlook.com (10.152.77.169) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2367.14
- via Frontend Transport; Wed, 23 Oct 2019 08:26:48 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x9N8QfEk012565
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Wed, 23 Oct 2019 01:26:41 -0700
-Received: from saturn.ad.analog.com (10.48.65.116) by
- NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
- 14.3.408.0; Wed, 23 Oct 2019 04:26:47 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: hdc100x: fix iio_triggered_buffer_{predisable,postenable} positions
-Date:   Wed, 23 Oct 2019 11:27:14 +0300
-Message-ID: <20191023082714.18681-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=w2cL/CFBRsdyFeAM/fHbqVBQRKXzjGSKjh0EndpzomQ=;
+        b=nfChyeHRhDv6T3OgM+bBAOY4rODJcdH64FljdGcXDFXO0aa9SHe3hwdspAakpgdoWK
+         xGuaIBhaZru3sAteQ1aaDjRk2sPzYtYyLs3xvsfizO61uVIHyL2u5GzwCRrXwIE+9ne0
+         T26fkTdSoa1i3T+EqHlABGHZNvTb3OQvNZ97bCw6mJNPnE49/ESWgk1Y8dwXyXohLD1X
+         iKrQ0uWDWEWa3mIT6GRx2fqcWFyxI1T8l1xlkYYXEsnkptYJxsNR7gbfnqL5Wcc096kJ
+         SMxqAW3Kg5iTghTpD/UBmKSc001cWjfClAdLhEfZfV8y/M6yv6P6lgu11JMnrhhzt+V0
+         /Qbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=w2cL/CFBRsdyFeAM/fHbqVBQRKXzjGSKjh0EndpzomQ=;
+        b=fMTxa1/is3qiGZmyC313iqnCfFVb3G1/YMz3saUFblh/I+IZPjP1LEZtIbOu0YVEp1
+         ofZfYTGO/IXkWHhPWVlYiuAA5PoEaAr+Emm/dW3WkyekQF5l697/ytoOthpcQD4IqIAO
+         ITvOTc/I5cNS9iPea/mVxsBn7Ic7GdY9GEzztYJNtxXT1Q1to0m2eDKEfRIkohMDT+y3
+         er9IO2FVhFw8/1RL8vwk2hzTp4vFbOzFHMSDSY1C7WhTRtEpl6mJ2nftsX/JUGA4ogRq
+         EOLxanhBMf9u0wFT3zy4bQ68IBOZq03m0clHnKsqZPvsadLpHf7Iqp0uI2l3u/ppjEqK
+         rDwg==
+X-Gm-Message-State: APjAAAUqgdcqE0/IHZRyWFlsPuSt1r52leTFXK6wgJDQHtCRw2MLLczH
+        WmXvWWCerJVPFo0KViftwabxY/M07T0fQ0ba9OQ=
+X-Google-Smtp-Source: APXvYqx5Ly3lhT3c3ZsRdS/Jim+yjkyEwYz70Rs6WDh05EgSvsINVofNsAa1pbNoL7MBfgY72C/fokl+Qy2Ax9GZ2ms=
+X-Received: by 2002:a1c:9a8d:: with SMTP id c135mr6520070wme.82.1571819359512;
+ Wed, 23 Oct 2019 01:29:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(136003)(376002)(39860400002)(346002)(396003)(189003)(199004)(107886003)(126002)(8676002)(336012)(36756003)(186003)(26005)(70586007)(70206006)(4326008)(106002)(50466002)(50226002)(316002)(305945005)(246002)(5660300002)(426003)(7636002)(110136005)(476003)(54906003)(86362001)(8936002)(48376002)(51416003)(7696005)(2616005)(47776003)(6666004)(356004)(2870700001)(486006)(2906002)(44832011)(14444005)(478600001)(5024004)(1076003)(142933001);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR03MB3274;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;MX:1;A:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d5b18cbb-e8c5-4dbf-55e1-08d75792bf70
-X-MS-TrafficTypeDiagnostic: DM5PR03MB3274:
-X-Microsoft-Antispam-PRVS: <DM5PR03MB3274D46F3A4E97A38A27AB1FF96B0@DM5PR03MB3274.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
-X-Forefront-PRVS: 019919A9E4
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: BIZfUiSvyrFWnfsLloqDohdhJ8iM9qObHgPGRvHfC4QpAjmCoyCO/Xs2samxcGEi801IGQh3Tx1lmgpg7OiL2dHI5kyLQe1wjoVBXVcGsXvI4PaoKgRpM6R/0MTVXr1qmHvgcK92wHL56fYmKGe3Tc378P7xVyuehmY3Qrk2QE/hUGLPA+68G8Byl/tVmUQ9wqwCMN4+MumiAODTdLrvt8yTnsUCfOZMhORAzSzaVjeyW5gfX7y5fQ1GWc+t5FOtcmT7V09tazivLk050txKKr0gMIhrx61PzRDaeftDTNhsBhjqLpwUuCmZuOeMpd5mEa2a2/2T82/qoqK1GnmTdxkKTVBZfIg5W8+K24yaBkRJRqMRouWGJE53wDpU4F5fLYJeaxyPXp1qWB4NpESMIl86S+2SA/mgOLvEOWYETtltQVn01SiJgJw2yH8WW++U
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2019 08:26:48.4236
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5b18cbb-e8c5-4dbf-55e1-08d75792bf70
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR03MB3274
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
- definitions=2019-10-23_02:2019-10-22,2019-10-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 suspectscore=0 mlxlogscore=999 phishscore=0
- impostorscore=0 clxscore=1015 malwarescore=0 spamscore=0 bulkscore=0
- mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1908290000 definitions=main-1910230083
+References: <20190923121714.13672-1-andrea.merello@gmail.com>
+ <20190923121714.13672-2-andrea.merello@gmail.com> <20191006085423.68bcecfd@archlinux>
+ <CAN8YU5Ogcp8ERkxntTVQH3EoJF7h61VCONPXEaP-kvpx8EmS+g@mail.gmail.com>
+ <20191017133210.00002799@huawei.com> <CAN8YU5Nxrv8q4LjCCrHH-qR6kj=PjNLBANgrTkYdX1b1OP+gkA@mail.gmail.com>
+ <20191022103458.3a112511@archlinux>
+In-Reply-To: <20191022103458.3a112511@archlinux>
+Reply-To: andrea.merello@gmail.com
+From:   Andrea Merello <andrea.merello@gmail.com>
+Date:   Wed, 23 Oct 2019 10:29:07 +0200
+Message-ID: <CAN8YU5OxU+DTeNzczdKPsM42BGwCY9SVpzPGvfH=e-wqU4sgjQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] iio: max31856: add option for setting mains filter
+ rejection frequency
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jonathan Cameron <jonathan.cameron@huawei.com>,
+        patrick.havelange@essensium.com,
+        paresh.chaudhary@rockwellcollins.com, pmeerw@pmeerw.net,
+        lars@metafoo.de, knaack.h@gmx.de,
+        Matthew Weber <matthew.weber@rockwellcollins.com>,
+        Colin King <colin.king@canonical.com>,
+        linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The iio_triggered_buffer_postenable() hook should be called first to
-attach the poll function and the iio_triggered_buffer_predisable() hook
-should be called last in the predisable hook.
+Il giorno mar 22 ott 2019 alle ore 11:35 Jonathan Cameron
+<jic23@kernel.org> ha scritto:
+>
+> On Fri, 18 Oct 2019 15:46:32 +0200
+> Andrea Merello <andrea.merello@gmail.com> wrote:
+>
+> > Il giorno gio 17 ott 2019 alle ore 14:32 Jonathan Cameron
+> > <jonathan.cameron@huawei.com> ha scritto:
+> > >
+> > > On Wed, 16 Oct 2019 15:14:20 +0200
+> > > Andrea Merello <andrea.merello@gmail.com> wrote:
+> > >
+> > > > Il giorno dom 6 ott 2019 alle ore 09:54 Jonathan Cameron
+> > > > <jic23@kernel.org> ha scritto:
+> > > > >
+> > > > > On Mon, 23 Sep 2019 14:17:12 +0200
+> > > > > Andrea Merello <andrea.merello@gmail.com> wrote:
+> > > > >
+> > > > > > This sensor has an embedded notch filter for reducing interferences caused
+> > > > > > by the power mains. This filter can be tuned to reject either 50Hz or 60Hz
+> > > > > > (and harmonics).
+> > > > > >
+> > > > > > Currently the said setting is left alone (the sensor defaults to 60Hz).
+> > > > > > This patch introduces a IIO attribute that allows the user to set the said
+> > > > > > filter to the desired frequency.
+> > > > > >
+> > > > > > NOTE: this has been intentionally not tied to any DT property to allow
+> > > > > > the configuration of this setting from userspace, e.g. with a GUI or by
+> > > > > > reading a configuration file, or maybe reading a GPIO tied to a physical
+> > > > > > switch or accessing some device that can autodetect the line frequency.
+> > > > > >
+> > > > > > Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
+> > > > > This one is not something that can be expect to be known from the setup
+> > > > > of the device as it will depend on local mains frequency.
+> > > > >
+> > > > > So fine, to have it as a userspace control, but the name is too generic.
+> > > > > We already have a number of filter attributes and we should try to
+> > > > > work out how to bring it inline with them.
+> > > >
+> > > > Sure
+> > > >
+> > > > > in_X_filter_low_pass_3db_frequency
+> > > > > in_X_filter_high_pass_3db_frequency
+> > > > >
+> > > > > So would,
+> > > > > in_X_filter_notch_center_frequency work?
+> > > > > ( I suppose we should use the American spelling ;)
+> > > >
+> > > > Yes, it seems OK in this case. I will produce a V2 with this modification.
+> > > >
+> > > > > This kind of ignores the harmonics aspect but at least documents the
+> > > > > main frequency being blocked.
+> > > >
+> > > > I think this is perfectly fine: the user wants to set the notch filter
+> > > > center frequency to either 60Hz or 50Hz to match the line frequency,
+> > > > then she/he expects the filter to simply "work" somehow; IMO the
+> > > > harmonic thing does not needed to be explicit.
+> > > >
+> > > > > There is a slight complexity that we have devices that have dual
+> > > > > notchfilters (50 and 60Hz) and ones where you can turn it off entirely.
+> > > > >
+> > > > > I suppose no value would count as off and we could perhaps use a list
+> > > > > for both on at the same time (though that's a bit horrible).
+> > > >
+> > > > IMHO it seems reasonable. Maybe for all-off and both-on conditions we
+> > > > could also use magic strings like i.e. "all" and "off".
+> > >
+> > > I go with 'maybe' on that one.  Need to think about whether that is just
+> > > a partial solution as we will probably find a device with 3 options that only
+> > > supports any 2 at one time.  That would still need a more complex interface.
+> > >
+> > > Will think on this.
+> >
+> > I'll keep this patch on hold, waiting for your thoughts. Take the time
+> > you need :)
+> >
+> > BTW IMHO:
+> >
+> > If we want to address the most possible generic case, then we may
+> > standardize a set of possible attributes for filters (like "enable",
+> > "center_frequency", "width",  "Q" , etc). Of course most filters will
+> > not allow for setting most of those attributes.
+>
+> Absolutely.  We currently have a few defined for low and high pass
+> filters, but if there are more complex features to define we should
+> do so.
+>
+> >
+> > Then i.e.  in our case we could have one single filter that allows for
+> > setting the frequency to either 50hz or 60hz; in other cases we could
+> > have i.e. two filters (with 50hz and 60hz center freq respectively),
+> > and they would allow to set only the "enable" attribute; in case you
+> > can i.e. enable only two of three filters, when you try to enable the
+> > 3rd it just refuse that. In this scenario probably "center_frequency"
+> > could be just a regular value (not a list).
+>
+> Agreed.  The question is whether to index filters.  So allow more
+> than one of a given type on a given channel. So far we have
+> only had the one and there isn't a nice way to support multiple
+> as we currently don't have any indexed parameters of a single channel.
 
-This change updates the driver to attach/detach the poll func in the
-correct order.
+Yes, being able to indexing filters was the underlying assumption..
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/humidity/hdc100x.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+> I haven't seen parts that actually do have this level of sophisticated
+> filtering built in, with the exception of mains filters like this one.
 
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index bfe1cdb16846..963ff043eecf 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -278,31 +278,34 @@ static int hdc100x_buffer_postenable(struct iio_dev *indio_dev)
- 	struct hdc100x_data *data = iio_priv(indio_dev);
- 	int ret;
- 
-+	ret = iio_triggered_buffer_postenable(indio_dev);
-+	if (ret)
-+		return ret;
-+
- 	/* Buffer is enabled. First set ACQ Mode, then attach poll func */
- 	mutex_lock(&data->lock);
- 	ret = hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE,
- 				    HDC100X_REG_CONFIG_ACQ_MODE);
- 	mutex_unlock(&data->lock);
- 	if (ret)
--		return ret;
-+		iio_triggered_buffer_predisable(indio_dev);
- 
--	return iio_triggered_buffer_postenable(indio_dev);
-+	return ret;
- }
- 
- static int hdc100x_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	struct hdc100x_data *data = iio_priv(indio_dev);
--	int ret;
--
--	/* First detach poll func, then reset ACQ mode. OK to disable buffer */
--	ret = iio_triggered_buffer_predisable(indio_dev);
--	if (ret)
--		return ret;
-+	int ret, ret2;
- 
- 	mutex_lock(&data->lock);
- 	ret = hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE, 0);
- 	mutex_unlock(&data->lock);
- 
-+	ret2 = iio_triggered_buffer_predisable(indio_dev);
-+	if (ret == 0)
-+		ret = ret2;
-+
- 	return ret;
- }
- 
--- 
-2.20.1
+Yes, I didn't too indeed.
 
+> I think we have to allow for the possibility so if you are happy to do
+> so please propose the ABI additions to support multiple filters of
+> a type. I would suggest keeping them per type though
+>
+> e.g.
+>
+> in_X_filter_low_passY_3db_frequency etc
+> with Y as the optional index.
+
+Seems reasonable.
+
+Well the idea is the one you've just explained here, that is adding an
+optional index for filters (per type and per ch); I'm not getting what
+do you mean about proposing it..
+
+> For now, lets just implement then using extended attributes rather
+> than trying to extend the core to generate these automatically.
+>
+> If this turns out not to be a corner case we can try to figure
+> out a sane way of generating the multiple indexed versions.
+
+OK. Let's try not to over-complicate things until it's really needed -
+Also, maybe if we'll hit other weird devices that need something like
+this, then they could have some exotic features that we haven't in
+mind yet now; it might turn out that we need something even more
+different, so maybe it's better to wait for real "users" of the ABI
+before deciding how to change it..
+
+But indeed, getting back to the patch originally discussed in this
+thread: if you are OK whit this, then I'll go with a
+"in_temp_filter_notch_center_frequency" attribute.
+
+I may use a specific IIO_DEVIC_ATTR or add it to the core (without
+addressing the index thing), as you prefer.
+
+BTW: Looking at other drivers, it seems that for other attributes
+(e.g. oversampling_ratio, discussed in 2/3) they tend to round
+required values to the closest allowed value, instead of returning an
+error. In this specific case, do you want to apply the same logic? For
+consistency reasons I would do that, but at the practical side,
+requiring a line filter frequency which is not either 50Hz or 60Hz
+seems really an error to me..
+
+>
+> >
+> > >
+> > >
+> > > Jonathan
+> > >
+> > > >
+> > > > > > ---
+> > > > > >  drivers/iio/temperature/max31856.c | 49 ++++++++++++++++++++++++++++++
+> > > > > >  1 file changed, 49 insertions(+)
+> > > > > >
+> > > > > > diff --git a/drivers/iio/temperature/max31856.c b/drivers/iio/temperature/max31856.c
+> > > > > > index 73ed550e3fc9..d12613f7ba3c 100644
+> > > > > > --- a/drivers/iio/temperature/max31856.c
+> > > > > > +++ b/drivers/iio/temperature/max31856.c
+> > > > > > @@ -23,6 +23,7 @@
+> > > > > >  #define MAX31856_CR0_1SHOT         BIT(6)
+> > > > > >  #define MAX31856_CR0_OCFAULT       BIT(4)
+> > > > > >  #define MAX31856_CR0_OCFAULT_MASK  GENMASK(5, 4)
+> > > > > > +#define MAX31856_CR0_FILTER_50HZ   BIT(0)
+> > > > > >  #define MAX31856_TC_TYPE_MASK      GENMASK(3, 0)
+> > > > > >  #define MAX31856_FAULT_OVUV        BIT(1)
+> > > > > >  #define MAX31856_FAULT_OPEN        BIT(0)
+> > > > > > @@ -63,6 +64,7 @@ static const struct iio_chan_spec max31856_channels[] = {
+> > > > > >  struct max31856_data {
+> > > > > >       struct spi_device *spi;
+> > > > > >       u32 thermocouple_type;
+> > > > > > +     bool filter_50hz;
+> > > > > >  };
+> > > > > >
+> > > > > >  static int max31856_read(struct max31856_data *data, u8 reg,
+> > > > > > @@ -123,6 +125,11 @@ static int max31856_init(struct max31856_data *data)
+> > > > > >       reg_cr0_val &= ~MAX31856_CR0_1SHOT;
+> > > > > >       reg_cr0_val |= MAX31856_CR0_AUTOCONVERT;
+> > > > > >
+> > > > > > +     if (data->filter_50hz)
+> > > > > > +             reg_cr0_val |= MAX31856_CR0_FILTER_50HZ;
+> > > > > > +     else
+> > > > > > +             reg_cr0_val &= ~MAX31856_CR0_FILTER_50HZ;
+> > > > > > +
+> > > > > >       return max31856_write(data, MAX31856_CR0_REG, reg_cr0_val);
+> > > > > >  }
+> > > > > >
+> > > > > > @@ -249,12 +256,53 @@ static ssize_t show_fault_oc(struct device *dev,
+> > > > > >       return show_fault(dev, MAX31856_FAULT_OPEN, buf);
+> > > > > >  }
+> > > > > >
+> > > > > > +static ssize_t show_filter(struct device *dev,
+> > > > > > +                        struct device_attribute *attr,
+> > > > > > +                        char *buf)
+> > > > > > +{
+> > > > > > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > > > > +     struct max31856_data *data = iio_priv(indio_dev);
+> > > > > > +
+> > > > > > +     return sprintf(buf, "%d\n", data->filter_50hz ? 50 : 60);
+> > > > > > +}
+> > > > > > +
+> > > > > > +static ssize_t set_filter(struct device *dev,
+> > > > > > +                       struct device_attribute *attr,
+> > > > > > +                       const char *buf,
+> > > > > > +                       size_t len)
+> > > > > > +{
+> > > > > > +     struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > > > > > +     struct max31856_data *data = iio_priv(indio_dev);
+> > > > > > +     unsigned int freq;
+> > > > > > +     int ret;
+> > > > > > +
+> > > > > > +     ret = kstrtouint(buf, 10, &freq);
+> > > > > > +     if (ret)
+> > > > > > +             return ret;
+> > > > > > +
+> > > > > > +     switch (freq) {
+> > > > > > +     case 50:
+> > > > > > +             data->filter_50hz = true;
+> > > > > > +             break;
+> > > > > > +     case 60:
+> > > > > > +             data->filter_50hz = false;
+> > > > > > +             break;
+> > > > > > +     default:
+> > > > > > +             return -EINVAL;
+> > > > > > +     }
+> > > > > > +
+> > > > > > +     max31856_init(data);
+> > > > > > +     return len;
+> > > > > > +}
+> > > > > > +
+> > > > > >  static IIO_DEVICE_ATTR(fault_ovuv, 0444, show_fault_ovuv, NULL, 0);
+> > > > > >  static IIO_DEVICE_ATTR(fault_oc, 0444, show_fault_oc, NULL, 0);
+> > > > > > +static IIO_DEVICE_ATTR(filter, 0644, show_filter, set_filter, 0);
+> > > > > >
+> > > > > >  static struct attribute *max31856_attributes[] = {
+> > > > > >       &iio_dev_attr_fault_ovuv.dev_attr.attr,
+> > > > > >       &iio_dev_attr_fault_oc.dev_attr.attr,
+> > > > > > +     &iio_dev_attr_filter.dev_attr.attr,
+> > > > > >       NULL,
+> > > > > >  };
+> > > > > >
+> > > > > > @@ -280,6 +328,7 @@ static int max31856_probe(struct spi_device *spi)
+> > > > > >
+> > > > > >       data = iio_priv(indio_dev);
+> > > > > >       data->spi = spi;
+> > > > > > +     data->filter_50hz = false;
+> > > > > >
+> > > > > >       spi_set_drvdata(spi, indio_dev);
+> > > > > >
+> > > > >
+> > >
+> > >
+>

@@ -2,199 +2,186 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1F38E12FF
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2019 09:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 638DDE141D
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2019 10:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389777AbfJWHX3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Oct 2019 03:23:29 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:58415 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731524AbfJWHX3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Oct 2019 03:23:29 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iNAz5-0007Ds-RB; Wed, 23 Oct 2019 09:23:07 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iNAz2-0004MW-TD; Wed, 23 Oct 2019 09:23:04 +0200
-Date:   Wed, 23 Oct 2019 09:23:04 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     lee.jones@linaro.org, dmitry.torokhov@gmail.com, jdelvare@suse.com,
-        linux@roeck-us.net, thierry.reding@gmail.com, jic23@kernel.org,
-        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-iio@vger.kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
-Subject: Re: [PATCH 5/8] pwm: Add support for Azoteq IQS620A PWM generator
-Message-ID: <20191023072304.7qmw4skssfm7iykm@pengutronix.de>
-References: <1571631083-4962-1-git-send-email-jeff@labundy.com>
- <1571631083-4962-6-git-send-email-jeff@labundy.com>
- <20191021073419.27r4xjqpz2wswerj@pengutronix.de>
- <20191022043649.GB2091@labundy.com>
- <20191022065415.2zxmpbsmogvgul7x@pengutronix.de>
- <20191023024525.GC3233@labundy.com>
+        id S2389913AbfJWIZe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Oct 2019 04:25:34 -0400
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:59030 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727574AbfJWIZe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Oct 2019 04:25:34 -0400
+Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9N8MukP020880;
+        Wed, 23 Oct 2019 04:25:04 -0400
+Received: from nam01-sn1-obe.outbound.protection.outlook.com (mail-sn1nam01lp2058.outbound.protection.outlook.com [104.47.32.58])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2vt9t5shuu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 23 Oct 2019 04:25:04 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iB/hBKX9+oy16Fxrg6kkVeScTvJkTw1FE+v0Nz75e4aQ9gbvaQQhHIyhpNV3Q/ttgSh/xth+XOdU1doj6Wsn3Gb3rXMuaPLRCg2hUVQ1F7yj4LyG+4k47q8W+uSniR4fiPIjA6ttg2zDrVehJHLF4xqohdN45nfxUyLKXOg21oxijpn+2joYH0CS0gKQ5UwXo0L2tAJVLG7qGHS4SVVL/v//POChM10IO0hm3TTRz1M9o4vzIv2C/TaD7TG5isGwmlfFQGeoL7O0sB53J8z9UDdqPuBeqEX5V/LZxRHe3oiuE0JzSbmM5RD0l4WMCD2mk4qw6ICcE5a+8k8LyJwhDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YryXgmMF7Et2pKEPYdw5ueu47oSmn94ihj836DrvTG4=;
+ b=lLwRPP9xmpD7ODrrphCBFKXO8qleavqRr25D+XjQdNx9ogcCQZTWVo7+76abN4dLfWb3Xw7ZU1vwWGFeegzMcYkw3ZK90esFnOyzPDjGgAvXTDiwlWp/Ht1RfckHiLIlpwR8cgB1jgEB7z0QPVwxallDaX09MjcpGAiJWKqbGcLjUVvSdmQW9OkemudXXUneC5GZ9cUeecNGSytKNLMkdTForuNCyC60LkKRYTaJIvl3Kc7GmxMH9JQSN5iqNBk8A1gE4zAHsXPbQLJceQfhuFsXWdZHZmpF2JbwPtZqfq+zMb+1FMHB4+FNrnmgEaWoFJuQnKYKwGaTF85NJfXcYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 137.71.25.57) smtp.rcpttodomain=microchip.com smtp.mailfrom=analog.com;
+ dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YryXgmMF7Et2pKEPYdw5ueu47oSmn94ihj836DrvTG4=;
+ b=Br2ZDNSwlf8ufeb+Q+IG81vnqHoyg9GTyVsuWtzrgI3ky9OTM+dlUPafBFn2MXaVUhqkLonp9imRotXYDX0iE/v5qvGd9VjrRVha6DkGNhNgd9uEXoOlPydrTzvt7zoIyCZltsViCo6nLHEV8J1IubPh0HxZbpqsrcDIguoTv8Q=
+Received: from BYAPR03CA0003.namprd03.prod.outlook.com (2603:10b6:a02:a8::16)
+ by MWHPR03MB3101.namprd03.prod.outlook.com (2603:10b6:301:3c::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2347.28; Wed, 23 Oct
+ 2019 08:25:00 +0000
+Received: from BL2NAM02FT004.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::206) by BYAPR03CA0003.outlook.office365.com
+ (2603:10b6:a02:a8::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2387.22 via Frontend
+ Transport; Wed, 23 Oct 2019 08:25:00 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
+Received: from nwd2mta2.analog.com (137.71.25.57) by
+ BL2NAM02FT004.mail.protection.outlook.com (10.152.76.168) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2367.14
+ via Frontend Transport; Wed, 23 Oct 2019 08:25:00 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x9N8OoQA012195
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Wed, 23 Oct 2019 01:24:51 -0700
+Received: from saturn.ad.analog.com (10.48.65.116) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Wed, 23 Oct 2019 04:24:57 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <ludovic.desroches@microchip.com>, <jic23@kernel.org>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: at91-sama5d2_adc: fix iio_triggered_buffer_{predisable,postenable} positions
+Date:   Wed, 23 Oct 2019 11:25:08 +0300
+Message-ID: <20191023082508.17583-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191023024525.GC3233@labundy.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(396003)(39860400002)(136003)(376002)(346002)(199004)(189003)(336012)(478600001)(486006)(2616005)(26005)(5024004)(14444005)(44832011)(5660300002)(476003)(186003)(426003)(4326008)(126002)(7696005)(6666004)(7416002)(356004)(107886003)(51416003)(316002)(305945005)(7636002)(47776003)(54906003)(106002)(86362001)(70586007)(48376002)(110136005)(2201001)(36756003)(8676002)(2870700001)(8936002)(50226002)(50466002)(1076003)(2906002)(246002)(70206006)(142933001)(2101003);DIR:OUT;SFP:1101;SCL:1;SRVR:MWHPR03MB3101;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: fdfbc7cd-6c7a-47eb-7a12-08d757927f11
+X-MS-TrafficTypeDiagnostic: MWHPR03MB3101:
+X-Microsoft-Antispam-PRVS: <MWHPR03MB31015E7D62E5D78911F2DE14F96B0@MWHPR03MB3101.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-Forefront-PRVS: 019919A9E4
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: u/ONxHq0E8SBU9eD+sPYE+xoUPiXMSGGvulwHo5Ro3V8pJQ8aGJ8ifV+TLesTVohY9q9/bvF6aExNjwHmM/SW3T3c+Zyf6qJEriwJzgk3DPLYXB2WIiJty4j+i6pSa6W0ACxHKEpvWwt+rF8wSoNxI4egvR7nE1+q4OdJqvrqvgI470IM5XAUDRg32FHLdS2C8VIZpQTRnRAOeG8meH4xMe+sl5ZhWQwyev0/gQcU8nHe/jzDbWD3FMxKzofudmvJsHP2BZTOfjnA5/iupptKDf4UrbDtCTabcGA3IL5SWg09SjF7pBUBEVHRdhiRlK85X8bIskc/WZQxbLAWL6aJkHVLzWdApERL2CT09yN7c/LGR/NsTYg30Nj4XIjvIKyVAf8mhhHAfpz67PF9m3Fk36KCKfgqhQpSdeWDLGD1mM=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2019 08:25:00.4347
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fdfbc7cd-6c7a-47eb-7a12-08d757927f11
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR03MB3101
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-23_02:2019-10-22,2019-10-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ malwarescore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501
+ spamscore=0 suspectscore=0 clxscore=1011 impostorscore=0 mlxscore=0
+ phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1908290000 definitions=main-1910230083
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jeff,
+The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+poll functions.
 
-On Tue, Oct 22, 2019 at 09:45:25PM -0500, Jeff LaBundy wrote:
-> On Tue, Oct 22, 2019 at 08:54:15AM +0200, Uwe Kleine-König wrote:
-> > On Mon, Oct 21, 2019 at 11:36:49PM -0500, Jeff LaBundy wrote:
-> > > On Mon, Oct 21, 2019 at 09:34:19AM +0200, Uwe Kleine-König wrote:
-> > > > > +{
-> > > > > +	struct iqs620_pwm_private *iqs620_pwm;
-> > > > > +	struct iqs62x_core *iqs62x;
-> > > > > +	int error;
-> > > > > +	int duty_calc = state->duty_cycle * 256 / IQS620_PWM_PERIOD_NS - 1;
-> > > > > +	u8 duty_clamp = clamp(duty_calc, 0, 0xFF);
-> > 
-> > Another problem that we have here is that the period is fixed to 1 ms
-> > and if a consumer requests for example:
-> > 
-> > 	.period = 5000000,
-> > 	.duty_cycle = 1000000,
-> > 
-> > the hardware is actually configured for
-> > 
-> > 	.period = 1000000,
-> > 	.duty_cycle = 1000000,
-> > 
-> > . I don't have a good suggestion how to fix this. We'd need to
-> > draw a line somewhere and decline a request that is too far from the
-> > result. But where this line should be is not obvious, it should
-> > definitively not be implemented in the driver itself IMHO.
-> > 
-> > (The only halfway sane approach would be to let lowlevel drivers
-> > implement a .round_state callback and then let the framework judge. But
-> > we're a long way from having that, so that's not a solution for today.)
-> > 
-> 
-> Agreed on all counts. For now, I will mention in the 'Limitations' heading that
-> the period cannot be adjusted.
+The iio_triggered_buffer_postenable() should be called first to attach the
+poll function, and then the driver can init the data to be triggered.
 
-Ack. My longterm plan is to require .apply_state() to round down both
-.period and .duty_cycle. This isn't wrong already today, so I suggest
-you decline a request to set the period to something smaller than 1 ms
-with an error code. (I think most drivers use -EINVAL here, conceptually
--EDOM might be sensible. I'd stick to EINVAL for now.)
+Similarly, iio_triggered_buffer_predisable() should be called last to first
+disable the data (to be triggered) and then the poll function should be
+detached.
 
-> > > > > +	iqs620_pwm = container_of(chip, struct iqs620_pwm_private, chip);
-> > > > > +	iqs62x = iqs620_pwm->iqs62x;
-> > > > > +
-> > > > > +	error = regmap_write(iqs62x->map, IQS620_PWM_DUTY_CYCLE, duty_clamp);
-> > > > > +	if (error)
-> > > > > +		return error;
-> > > > > +
-> > > > > +	state->period = IQS620_PWM_PERIOD_NS;
-> > > > > +	state->duty_cycle = (duty_clamp + 1) * IQS620_PWM_PERIOD_NS / 256;
-> > > > 
-> > > > This suggests that if the value in the IQS620_PWM_DUTY_CYCLE is 0 the
-> > > > duty cycle is 1/256 ms with a period of 1 ms and the output cannot be
-> > > > constant inactive. If this is right please add a paragraph in the
-> > > > driver's comment at the top:
-> > > > 
-> > > > 	* Limitations:
-> > > > 	* - The hardware cannot generate a 0% duty cycle
-> > > > 
-> > > > (Please stick to this format, other drivers use it, too.)
-> > > 
-> > > That's correct; the lowest duty cycle that can be achieved using only the
-> > > IQS620_PWM_DUTY_CYCLE register is 0.4%. We can, however, generate 0% duty
-> > > cycle by disabling the output altogether using a separate register. Would
-> > > that be better than flat-out saying it's impossible?
-> > 
-> > There is (maybe) a small difference between disabled and 0% duty cycle,
-> > at least from the framework's POV: If you do:
-> > 
-> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
-> > 	pwm_apply_state(pwm, { .enabled = false, .period = $DC, .duty_cycle = $DC, });
-> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
-> > 
-> > and compare it to the expected result of
-> > 
-> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
-> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 0, });
-> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
-> > 
-> > the difference is that the duration of the inactive phase in the latter
-> > case is a multiple of 1 ms.
-> > 
-> > There is no policy for lowlevel drivers what to do, but disabling when
-> > 0% is requested is at least not unseen and probably more what consumers
-> > expect.
-> > 
-> 
-> With the change I am proposing, the output will be driven to zero if enabled = false
-> OR duty_cycle < 4000 ns. Stated another way:
-> 
-> enable duty_cycle IQS620_PWR_SETTINGS[7] IQS620_PWM_DUTY_CYCLE
-> ------ ---------- ---------------------- ---------------------
->   0    don't care           0                  don't care
->   1    0 ... 3999           0                  don't care
->   1    4000 ... x           1                      0
->   1    x+1  ... y           1                      1
-> 
-> ...and so on. For context, if IQS620_PWR_SETTINGS[7] = 0 then the output is held to
-> zero. If IQS620_PWR_SETTINGS[7] = 1 then the output toggles at a duty cycle between
-> 0.4% and 100% as a function of IQS620_PWM_DUTY_CYCLE.
+For this driver, the predisable & postenable hooks are also need to take
+into consideration the touchscreen, so the hooks need to be put in places
+that avoid the code for that cares about it.
 
-Your table isn't accurate. IQS620_PWM_DUTY_CYCLE=0 results in a
-duty_cycle of 3906.25 ns so the table should look as follows:
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/adc/at91-sama5d2_adc.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-enable  duty_cycle  IQS620_PWR_SETTINGS[7] IQS620_PWM_DUTY_CYCLE
------- ------------ ---------------------- ---------------------
-  0     don't care           0                  don't care
-  1       [0, 3906]          0                  don't care
-  1    [3907, 7812]          1                      0
-  1    [7813,11718]          1                      1
-
-In general:
-
-	dc = state->duty_cycle * 256 / 1000000
-	if state->enabled == false or dc == 0:
-	    IQS620_PWR_SETTINGS[7] = 0
-
-	else:
-	    IQS620_PWM_DUTY_CYCLE = min(dc - 1, 0xff)
-	    IQS620_PWR_SETTINGS[7] = 1
-
-> Based on how the device behaves in response to its two available
-> registers, I think your two examples will appear equal, but please let
-> me know if I have understood.
-
-Yeah, that's the expectation.
-
-With the rounding as I suggested above this yields strange effects like
-if
-
-	.period = 1 s, .duty_cycle = 0.5 s
-
-is requested you end up in
-
-	.period = 1 ms, .duty_cycle = 1 ms
-
-but I think there is nothing we can reasonably do about this.
-
-Best regards
-Uwe
-
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index e1850f3d5cf3..ac3e5c4c9840 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -889,20 +889,24 @@ static int at91_adc_buffer_postenable(struct iio_dev *indio_dev)
+ 	if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
+ 		return -EINVAL;
+ 
++	ret = iio_triggered_buffer_postenable(indio_dev);
++	if (ret)
++		return ret;
++
+ 	/* we continue with the triggered buffer */
+ 	ret = at91_adc_dma_start(indio_dev);
+ 	if (ret) {
+ 		dev_err(&indio_dev->dev, "buffer postenable failed\n");
++		iio_triggered_buffer_predisable(indio_dev);
+ 		return ret;
+ 	}
+ 
+-	return iio_triggered_buffer_postenable(indio_dev);
++	return 0;
+ }
+ 
+ static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
+-	int ret;
+ 	u8 bit;
+ 
+ 	/* check if we are disabling triggered buffer or the touchscreen */
+@@ -916,13 +920,8 @@ static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
+ 	if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
+ 		return -EINVAL;
+ 
+-	/* continue with the triggered buffer */
+-	ret = iio_triggered_buffer_predisable(indio_dev);
+-	if (ret < 0)
+-		dev_err(&indio_dev->dev, "buffer predisable failed\n");
+-
+ 	if (!st->dma_st.dma_chan)
+-		return ret;
++		goto out;
+ 
+ 	/* if we are using DMA we must clear registers and end DMA */
+ 	dmaengine_terminate_sync(st->dma_st.dma_chan);
+@@ -949,7 +948,9 @@ static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	/* read overflow register to clear possible overflow status */
+ 	at91_adc_readl(st, AT91_SAMA5D2_OVER);
+-	return ret;
++
++out:
++	return iio_triggered_buffer_predisable(indio_dev);
+ }
+ 
+ static const struct iio_buffer_setup_ops at91_buffer_setup_ops = {
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+2.20.1
+

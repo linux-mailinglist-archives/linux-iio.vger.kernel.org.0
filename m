@@ -2,146 +2,199 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9F04E10A7
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2019 05:43:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F38E12FF
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2019 09:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732066AbfJWDnO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Oct 2019 23:43:14 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:43959 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730808AbfJWDnO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Oct 2019 23:43:14 -0400
-Received: by mail-qk1-f195.google.com with SMTP id a194so14436443qkg.10;
-        Tue, 22 Oct 2019 20:43:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=1VLjmkD3Rwi0EmWCkc7vL9OT1uRUJflAVuUFK1TCUfs=;
-        b=jBkAkT8KEpSceUnUT5D05nwe+iUUaw4Z2mTUBn3UmLbvelJfBJ0apbdnjAvMT5YvY3
-         ntlBx/J1kfkGuRuxJfFxXJf2vGgCVZTHEIHO57WyPJwTDbFtfIHT+ZKaN/KMYhlFvbZg
-         l5uHyObZQT100bTkbf22/rl6axphYwccnbaGlNbtA7ZHNCnG5G+uK+fKnMQcl0zxeKhy
-         OjEkXlm2lczwehiMu+tWksfrRrrhUMMho7Ws55ENPgLgFzE/p/4SpSz1sJWyxxny2pCR
-         I84UJUFwbPpDwBAgMSF7HEay+FmmXN2jMIRe5bgfbKXigapMT68B3xN3ohWxw4Xv9+yv
-         6X3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=1VLjmkD3Rwi0EmWCkc7vL9OT1uRUJflAVuUFK1TCUfs=;
-        b=ClIVLf5A/lh41Z4zexUPHGBx4y87X1oWdoUcY48xVnwq/m5ywxPqqB8yzGxTHfkvxE
-         BB40oYAQcN2UmESTZullRmDqKSzySBma9/JBcj7/ZA5PIgE3VQxXu/EsU3m4FmyJetah
-         4us3ClohzwsqdkXDAcPYOQcXL7LbTe7ZXxzyFokge9LshpWSTodH4K4l0Whg62y1P7+i
-         UVuWpu18A+FLWK1VnzoakdB6+h5UsZpdMm6QQFUZOroZkIIoYtds0eBcklxG3Rp7xTUn
-         /NmmwrGOVUeaoKkffCFM1omcS3b96ZTJNi88v1rn1DvqeF5KkDzpaQT3nxRVIICXvKbO
-         fQeQ==
-X-Gm-Message-State: APjAAAW4KF0I6+UiKmotqvdVAkHXTM+nTWIYMPNq8rtfv9Ml1pnRlg9T
-        SiF3NWgFVzJ5fFKRZ52Hz6rinSVbuGc=
-X-Google-Smtp-Source: APXvYqyfwugcAWTEZOsrSK/23d7kNjtNUgsTU3k7oaizdL5WSdU/HGKgK5xsqWdRyhpv5GrVnl6Udw==
-X-Received: by 2002:a37:9a8a:: with SMTP id c132mr6452527qke.92.1571802192882;
-        Tue, 22 Oct 2019 20:43:12 -0700 (PDT)
-Received: from smtp.gmail.com (gwcrusp.semfio.usp.br. [143.107.150.86])
-        by smtp.gmail.com with ESMTPSA id c15sm146qkc.101.2019.10.22.20.43.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2019 20:43:12 -0700 (PDT)
-Date:   Wed, 23 Oct 2019 00:43:07 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org, kernel-usp@googlegroups.com
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: Add DT docs for AD7292
-Message-ID: <20191023034305.f6zm6hyvh3nlltas@smtp.gmail.com>
-References: <20191016025220.td3xb7oxlfkznxl6@smtp.gmail.com>
- <20191017191152.GA11222@bogus>
- <20191019150652.h6bkfz2w2ohemvwy@smtp.gmail.com>
- <CAL_JsqKqgko02KstmytNNUUF0-QR7rpMF4dV=X55N=TnDahd+Q@mail.gmail.com>
- <20191022140604.ovmooly47qax2sms@smtp.gmail.com>
- <CAL_JsqLf8kpOu0MQN-TAhQkiZCGfMKWmztnHNo+2BAVqfX8yGQ@mail.gmail.com>
+        id S2389777AbfJWHX3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Oct 2019 03:23:29 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:58415 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731524AbfJWHX3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Oct 2019 03:23:29 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iNAz5-0007Ds-RB; Wed, 23 Oct 2019 09:23:07 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iNAz2-0004MW-TD; Wed, 23 Oct 2019 09:23:04 +0200
+Date:   Wed, 23 Oct 2019 09:23:04 +0200
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     lee.jones@linaro.org, dmitry.torokhov@gmail.com, jdelvare@suse.com,
+        linux@roeck-us.net, thierry.reding@gmail.com, jic23@kernel.org,
+        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org,
+        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
+Subject: Re: [PATCH 5/8] pwm: Add support for Azoteq IQS620A PWM generator
+Message-ID: <20191023072304.7qmw4skssfm7iykm@pengutronix.de>
+References: <1571631083-4962-1-git-send-email-jeff@labundy.com>
+ <1571631083-4962-6-git-send-email-jeff@labundy.com>
+ <20191021073419.27r4xjqpz2wswerj@pengutronix.de>
+ <20191022043649.GB2091@labundy.com>
+ <20191022065415.2zxmpbsmogvgul7x@pengutronix.de>
+ <20191023024525.GC3233@labundy.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqLf8kpOu0MQN-TAhQkiZCGfMKWmztnHNo+2BAVqfX8yGQ@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191023024525.GC3233@labundy.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Rob,
+Hello Jeff,
 
-OK, thanks for the explanation.
+On Tue, Oct 22, 2019 at 09:45:25PM -0500, Jeff LaBundy wrote:
+> On Tue, Oct 22, 2019 at 08:54:15AM +0200, Uwe Kleine-König wrote:
+> > On Mon, Oct 21, 2019 at 11:36:49PM -0500, Jeff LaBundy wrote:
+> > > On Mon, Oct 21, 2019 at 09:34:19AM +0200, Uwe Kleine-König wrote:
+> > > > > +{
+> > > > > +	struct iqs620_pwm_private *iqs620_pwm;
+> > > > > +	struct iqs62x_core *iqs62x;
+> > > > > +	int error;
+> > > > > +	int duty_calc = state->duty_cycle * 256 / IQS620_PWM_PERIOD_NS - 1;
+> > > > > +	u8 duty_clamp = clamp(duty_calc, 0, 0xFF);
+> > 
+> > Another problem that we have here is that the period is fixed to 1 ms
+> > and if a consumer requests for example:
+> > 
+> > 	.period = 5000000,
+> > 	.duty_cycle = 1000000,
+> > 
+> > the hardware is actually configured for
+> > 
+> > 	.period = 1000000,
+> > 	.duty_cycle = 1000000,
+> > 
+> > . I don't have a good suggestion how to fix this. We'd need to
+> > draw a line somewhere and decline a request that is too far from the
+> > result. But where this line should be is not obvious, it should
+> > definitively not be implemented in the driver itself IMHO.
+> > 
+> > (The only halfway sane approach would be to let lowlevel drivers
+> > implement a .round_state callback and then let the framework judge. But
+> > we're a long way from having that, so that's not a solution for today.)
+> > 
+> 
+> Agreed on all counts. For now, I will mention in the 'Limitations' heading that
+> the period cannot be adjusted.
 
-I indeed missed some details from the documentation. I will be more
-careful on my next readings.
+Ack. My longterm plan is to require .apply_state() to round down both
+.period and .duty_cycle. This isn't wrong already today, so I suggest
+you decline a request to set the period to something smaller than 1 ms
+with an error code. (I think most drivers use -EINVAL here, conceptually
+-EDOM might be sensible. I'd stick to EINVAL for now.)
 
-I see there are other documentation files at Documentation/devicetree/
-and Documentation/devicetree/bindings/. Besides these, would you
-recommend other documentation and/or material for those who want to
-write dt-bindings that validate with dt-schema?
+> > > > > +	iqs620_pwm = container_of(chip, struct iqs620_pwm_private, chip);
+> > > > > +	iqs62x = iqs620_pwm->iqs62x;
+> > > > > +
+> > > > > +	error = regmap_write(iqs62x->map, IQS620_PWM_DUTY_CYCLE, duty_clamp);
+> > > > > +	if (error)
+> > > > > +		return error;
+> > > > > +
+> > > > > +	state->period = IQS620_PWM_PERIOD_NS;
+> > > > > +	state->duty_cycle = (duty_clamp + 1) * IQS620_PWM_PERIOD_NS / 256;
+> > > > 
+> > > > This suggests that if the value in the IQS620_PWM_DUTY_CYCLE is 0 the
+> > > > duty cycle is 1/256 ms with a period of 1 ms and the output cannot be
+> > > > constant inactive. If this is right please add a paragraph in the
+> > > > driver's comment at the top:
+> > > > 
+> > > > 	* Limitations:
+> > > > 	* - The hardware cannot generate a 0% duty cycle
+> > > > 
+> > > > (Please stick to this format, other drivers use it, too.)
+> > > 
+> > > That's correct; the lowest duty cycle that can be achieved using only the
+> > > IQS620_PWM_DUTY_CYCLE register is 0.4%. We can, however, generate 0% duty
+> > > cycle by disabling the output altogether using a separate register. Would
+> > > that be better than flat-out saying it's impossible?
+> > 
+> > There is (maybe) a small difference between disabled and 0% duty cycle,
+> > at least from the framework's POV: If you do:
+> > 
+> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
+> > 	pwm_apply_state(pwm, { .enabled = false, .period = $DC, .duty_cycle = $DC, });
+> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
+> > 
+> > and compare it to the expected result of
+> > 
+> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
+> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 0, });
+> > 	pwm_apply_state(pwm, { .enabled = true, .period = 1000000, .duty_cycle = 1000000, });
+> > 
+> > the difference is that the duration of the inactive phase in the latter
+> > case is a multiple of 1 ms.
+> > 
+> > There is no policy for lowlevel drivers what to do, but disabling when
+> > 0% is requested is at least not unseen and probably more what consumers
+> > expect.
+> > 
+> 
+> With the change I am proposing, the output will be driven to zero if enabled = false
+> OR duty_cycle < 4000 ns. Stated another way:
+> 
+> enable duty_cycle IQS620_PWR_SETTINGS[7] IQS620_PWM_DUTY_CYCLE
+> ------ ---------- ---------------------- ---------------------
+>   0    don't care           0                  don't care
+>   1    0 ... 3999           0                  don't care
+>   1    4000 ... x           1                      0
+>   1    x+1  ... y           1                      1
+> 
+> ...and so on. For context, if IQS620_PWR_SETTINGS[7] = 0 then the output is held to
+> zero. If IQS620_PWR_SETTINGS[7] = 1 then the output toggles at a duty cycle between
+> 0.4% and 100% as a function of IQS620_PWM_DUTY_CYCLE.
 
-Thanks in advance,
+Your table isn't accurate. IQS620_PWM_DUTY_CYCLE=0 results in a
+duty_cycle of 3906.25 ns so the table should look as follows:
 
-Marcelo
+enable  duty_cycle  IQS620_PWR_SETTINGS[7] IQS620_PWM_DUTY_CYCLE
+------ ------------ ---------------------- ---------------------
+  0     don't care           0                  don't care
+  1       [0, 3906]          0                  don't care
+  1    [3907, 7812]          1                      0
+  1    [7813,11718]          1                      1
 
-On 10/22, Rob Herring wrote:
-> On Tue, Oct 22, 2019 at 9:06 AM Marcelo Schmitt
-> <marcelo.schmitt1@gmail.com> wrote:
-> >
-> > Hi,
-> >
-> > I ran the DTC and CHECK for AD7292 schema however, the target '__build'
-> > did not run due to errors found in regulator/fixed-regulator.yaml and
-> > arm/allwinner,sun4i-a10-csi.yaml.
-> 
-> Fixes for those are still pending in -next. Use 'make -k' and ignore those.
-> 
-> >
-> > I recall seeing something about the maxItems requirement over regulator
-> > supplies being changed on the iio mailing list, so I updated my repo
-> > locally, cloned and reinstalled the dt-schema toolset. However, I still
-> > can't make it go through the '__build' target.
-> >
-> > Python 3.7.5rc1 is my default python and I got the following pip3
-> > packages installed:
-> >
-> > ruamel.yaml        0.16.5
-> > ruamel.yaml.clib   0.2.0
-> > rfc3987            1.3.8
-> > jsonschema         3.0.1
-> > dtschema           0.0.1  at $HOME/<iio repo dir>/dt-schema
-> >
-> > Debian Bullseye packages installed:
-> > python3-yaml/testing,now 5.1.2-1
-> > libyaml-dev/testing,now 0.2.2-1
-> >
-> > I was only able to run DTC after installing the libyaml-dev package, so
-> > I think it might be worth to add it to the project dependencies at
-> > https://github.com/robherring/dt-schema.
-> 
-> Strictly speaking, it's not a dependency for dt-schema. It's
-> documented in Documentation/devicetree/writing-schema.rst. I've added
-> a pointer to that in bindings/submitting-patches.txt. I'm not sure how
-> else to make it more obvious.
-> 
-> BTW, You will get a useful error message if libyaml is missing when
-> building 'make dtbs_check'. I need to make that work for
-> dt_binding_check.
-> 
-> > apt-get install libyaml-dev
-> 
-> You need the lib too, but that tends to already be installed. IIRC,
-> installing the headers doesn't install the lib automatically.
-> 
-> In any case, I wanted to avoid putting in distro specific instructions
-> in the kernel.
-> 
-> Rob
-> 
-> -- 
-> You received this message because you are subscribed to the Google Groups "Kernel USP" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to kernel-usp+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/kernel-usp/CAL_JsqLf8kpOu0MQN-TAhQkiZCGfMKWmztnHNo%2B2BAVqfX8yGQ%40mail.gmail.com.
+In general:
+
+	dc = state->duty_cycle * 256 / 1000000
+	if state->enabled == false or dc == 0:
+	    IQS620_PWR_SETTINGS[7] = 0
+
+	else:
+	    IQS620_PWM_DUTY_CYCLE = min(dc - 1, 0xff)
+	    IQS620_PWR_SETTINGS[7] = 1
+
+> Based on how the device behaves in response to its two available
+> registers, I think your two examples will appear equal, but please let
+> me know if I have understood.
+
+Yeah, that's the expectation.
+
+With the rounding as I suggested above this yields strange effects like
+if
+
+	.period = 1 s, .duty_cycle = 0.5 s
+
+is requested you end up in
+
+	.period = 1 ms, .duty_cycle = 1 ms
+
+but I think there is nothing we can reasonably do about this.
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

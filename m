@@ -2,58 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECC70E1CBA
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2019 15:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 378A9E21AA
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2019 19:22:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405885AbfJWNfy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Oct 2019 09:35:54 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:38638 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405892AbfJWNfy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Oct 2019 09:35:54 -0400
-Received: by mail-wr1-f67.google.com with SMTP id v9so10865810wrq.5
-        for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2019 06:35:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=dVgB2gHwyu9BrwAHrTVrhxxTLMnU+GjkCtVmW3QXNgU=;
-        b=A1sd8nVHR9uQiD6rSXLgHcb6vg4kFg7r/FfCmaHMEeG2j1uzf1nh3DYJkiiBVZu2qj
-         bsmAtgviGlo3pT0ngfbu6AAf5yZLtRcexjFysB1x6NNudh6B2YXeL+JCmYe/Pdd/lSjT
-         XcRLLOZ0SG7LIUiBtxeOJRj3C1Ezj0PI+9bklCPVqfih7jgRZdAGtb6QTKoSvtV/1BDE
-         mb+p6NjTDDmrbU0EYA+SCru29kjbvnnWyMiXfeIBQ729+AfSfPbTdwz1KpdmVfOwgDzm
-         dl2OpmhcdldHP3izLtWZ0bxyOVJelURFhyDtu0OXmdHX06VPzu+XdFJ8OHbuIlou9yln
-         zNrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=dVgB2gHwyu9BrwAHrTVrhxxTLMnU+GjkCtVmW3QXNgU=;
-        b=MDbI49mPLZSVgEcVcotGaUlJPzIhEfjHIxsIg7VVSVY7DNfj+vF0pReQcjJDlL08Rx
-         qTAxWpCjKxQBuYmT6q0Ztdp4/1JdYamaHs6Hx+UMcNvbuyQx3cvHl/OqLaOc3ZBLqDrY
-         U6S74Wi1YlJJzOBmNaXmcH8VPEfWL6pY8BtP4T9Kq0CBH6mL3FU0hXZGmgzB/CpE3+6I
-         /++EIphsrNdDWsuhBeMk5kXUGXQ0h1xMo9Lr15R9GnWcDWsMlwV5V9UdHdc+5pD9RhUs
-         H2p/4lRH4m3oNe4ljJ0W9GMz6X+sSHgo9zZ9VE3CLRtA+o87rBDBHSUlBhLldh3CZzBE
-         qn+A==
-X-Gm-Message-State: APjAAAUF0/sKVA9+M5lmmsJBSMf34s1nOD6KUaj95dTyU3cnnLkk8MYb
-        GqMDJ3gho0UnifJVdACfQJb2YVnaoWsOe+IGrn4=
-X-Google-Smtp-Source: APXvYqwlaomCfDlYbNNF8YV7bmOiA+RBcC2Lj4IMuUuRMpLg0+bmLmxHgplYSxfX9KJ2jH/5Utbw4xrv7YTsiZGNk50=
-X-Received: by 2002:adf:dbc4:: with SMTP id e4mr8432672wrj.354.1571837752639;
- Wed, 23 Oct 2019 06:35:52 -0700 (PDT)
+        id S1729127AbfJWRWZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Oct 2019 13:22:25 -0400
+Received: from mail.ylsh.ilc.edu.tw ([120.101.80.11]:41786 "EHLO
+        mail.ylsh.ilc.edu.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728553AbfJWRWZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Oct 2019 13:22:25 -0400
+X-Greylist: delayed 21545 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Oct 2019 13:22:24 EDT
+Received: from ylsh.ilc.edu.tw (localhost.localdomain [127.0.0.1])
+        by mail.ylsh.ilc.edu.tw (8.13.8/8.13.8) with ESMTP id x9NBMf3K010523;
+        Wed, 23 Oct 2019 19:22:41 +0800
+From:   "Mrs. Luiza Godooi" <abuse@ylsh.ilc.edu.tw>
+Reply-To: msluizagodoi45@yahoo.com
+Subject: Good day
+Date:   Wed, 23 Oct 2019 19:22:41 +0800
+Message-Id: <20191023112154.M94982@ylsh.ilc.edu.tw>
+X-Mailer: OpenWebMail 2.53 
+X-OriginatingIP: 41.138.102.149 (abuse)
 MIME-Version: 1.0
-Received: by 2002:a5d:400a:0:0:0:0:0 with HTTP; Wed, 23 Oct 2019 06:35:51
- -0700 (PDT)
-Reply-To: mrs.lisarobinson746@gmail.com
-From:   "Mrs. Lisa" <helpdesk.eit.ac.nz@gmail.com>
-Date:   Wed, 23 Oct 2019 06:35:51 -0700
-Message-ID: <CAK7Er8ZGwF5nM0uBJxWx9uuPAN=Bbc0y8Jfd5b0stynKODG32g@mail.gmail.com>
-Subject: Mrs. Lisa Charity Donation
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset=utf-8
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
--- 
-I am Lisa Robinson, you have a donation of $1,200,000.00 USD. Contact
-me now for more information.
+Only Faithful Believe.
+
+How are you? Hope everything goes well.
+
+Although I am not comfortable to send this proposal to you because of increase in SCAM and FRAUD especially in Africa. It's my pleasure to brief you with this. I am writing this mail to you with heavy tears In my eyes and great sorrow in my heart, I want to tell you this because I don't have any other option than to tell you as I was touched to open up to you, I married to Mr.Sangoule Godooi who was exporter of Gold from Burkina Faso mining to worldwide for ten years before he died in the year 2010.We were married for 16 years without a child. He died after a brief illness that lasted for only six days. Since his death I decided not to remarry, when my late husband was alive he deposited the sum of US$ 8.5M (eight million five hundred united dollars) in bank and presently this money is still in bank, He made this money available for exportation of Gold from Burkina Faso mining to worldwide.
+
+Recently, I suffer from throat cancer terminally ill. My Doctor told me that I am condemned to certain death due to cancer problem. The one that disturbs me most is my stroke sickness .Having known my condition I decided to hand you over this money to take care of the less-privileged people, you will utilize this money the way I am going to instruct herein.
+
+As soon a s I receive your reply I will instruct the Bank Manger to immediately transfer you the fund.
+I await your prompt reply.Please send the following: Reply To This E-mail Address msluizagodoi99@yahoo.com
+
+Yours sincerely.
+
+Mrs. Luiza Godooi

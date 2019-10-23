@@ -2,46 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 378A9E21AA
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2019 19:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA4D0E26E3
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2019 01:08:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729127AbfJWRWZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Oct 2019 13:22:25 -0400
-Received: from mail.ylsh.ilc.edu.tw ([120.101.80.11]:41786 "EHLO
-        mail.ylsh.ilc.edu.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728553AbfJWRWZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Oct 2019 13:22:25 -0400
-X-Greylist: delayed 21545 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Oct 2019 13:22:24 EDT
-Received: from ylsh.ilc.edu.tw (localhost.localdomain [127.0.0.1])
-        by mail.ylsh.ilc.edu.tw (8.13.8/8.13.8) with ESMTP id x9NBMf3K010523;
-        Wed, 23 Oct 2019 19:22:41 +0800
-From:   "Mrs. Luiza Godooi" <abuse@ylsh.ilc.edu.tw>
-Reply-To: msluizagodoi45@yahoo.com
-Subject: Good day
-Date:   Wed, 23 Oct 2019 19:22:41 +0800
-Message-Id: <20191023112154.M94982@ylsh.ilc.edu.tw>
-X-Mailer: OpenWebMail 2.53 
-X-OriginatingIP: 41.138.102.149 (abuse)
+        id S2407880AbfJWXI6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Oct 2019 19:08:58 -0400
+Received: from mail-pl1-f173.google.com ([209.85.214.173]:34392 "EHLO
+        mail-pl1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728773AbfJWXI5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Oct 2019 19:08:57 -0400
+Received: by mail-pl1-f173.google.com with SMTP id k7so10860142pll.1;
+        Wed, 23 Oct 2019 16:08:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=QxDr+e6+5QdQzyCN6NaD0cQCCfsuFPgUpkpn762LbCY=;
+        b=Bp4Q67s74UcB2h4To3GUb4bxX5cdnjSsAdYj4JFcXpIT1HEAI87HRAsD2nB29jxrd2
+         vIkwH16XY+uUPjU0fDSqzMZey8SAbAR/mCS/GzV5eibEJDilwceCXlB6++2GcFcYu5iX
+         diVQmUb2lI3ZOndtT1fSZdxndVXsW44qUid4v7X/Sspsy5uN4qpOH89t2Ir+tvILvHbV
+         rloY1MH0q048K378e5hXc6g9CQYeltPBJ0r7U4OXYkQ6m/Hrlrc1JYYDjIj+NHJtAm9Y
+         5s0GYTiTKYfoqH9usNTvxwujFyEdJb81yaF3Q/9Saj15wEQZ8JWpeEew77wRKdbKlgW5
+         V3kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=QxDr+e6+5QdQzyCN6NaD0cQCCfsuFPgUpkpn762LbCY=;
+        b=tI4Ozhm2I3IqKJ87z4EiFcIy/DCSVUk+QWApQ3/kquDz9TMeKMGb5V/bkOfTWc9KAq
+         do6VEAdZh/H7tYlBwZSbpAFI1aWil5F30KvW9851a7tM3WduaZRLv7JN6c7ddGX6CXIJ
+         qQwa0JqUXf3K4ZB60/XrGfJ612e4jBX5v3BDLk6+7Vo2Pqj86ZocIKJqwXd56q+mvcsy
+         ORDwy1dk4b9KHnmuILvXM/BVYdYNbimpxiBoF9vhPYYmztmszh5TpKiH0uQT4WqvMENy
+         tsVk7uZJYaPaZ1q0Uyl6+rY4vU1K9HkXMrAU652aFbnCY/nMDLOkkOqlsMdNzNKl1juU
+         uUNg==
+X-Gm-Message-State: APjAAAXQlDUTrvwJ8iF18YpFD/cB8hcvm884h75ieMiq95CXH5eYd6pU
+        deqbwRXyMZNzCJYfxfzXxQg=
+X-Google-Smtp-Source: APXvYqyUSrOsqTEVS/KFil0C4ircSVPx3Y670+4lzr4ms8Rlx8BKye/k/4pDNTv6EatZDUf/FITCUQ==
+X-Received: by 2002:a17:902:fe88:: with SMTP id x8mr8185982plm.266.1571872136538;
+        Wed, 23 Oct 2019 16:08:56 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id b18sm24620716pfi.157.2019.10.23.16.08.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2019 16:08:55 -0700 (PDT)
+Date:   Wed, 23 Oct 2019 16:08:52 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     lee.jones@linaro.org, jdelvare@suse.com, linux@roeck-us.net,
+        thierry.reding@gmail.com, jic23@kernel.org,
+        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, u.kleine-koenig@pengutronix.de,
+        linux-pwm@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com
+Subject: Re: [PATCH 3/8] input: keyboard: Add support for Azoteq
+ IQS620A/621/622/624/625
+Message-ID: <20191023230852.GB35946@dtor-ws>
+References: <1571631083-4962-1-git-send-email-jeff@labundy.com>
+ <1571631083-4962-4-git-send-email-jeff@labundy.com>
+ <20191023002254.GW35946@dtor-ws>
+ <20191023012913.GA3233@labundy.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset=utf-8
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191023012913.GA3233@labundy.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Only Faithful Believe.
+On Tue, Oct 22, 2019 at 08:29:13PM -0500, Jeff LaBundy wrote:
+> Hi Dmitry,
+> 
+> Thank you for your prompt review.
+> 
+> On Tue, Oct 22, 2019 at 05:22:54PM -0700, Dmitry Torokhov wrote:
+> > Hi Jeff,
+> > 
+> > On Sun, Oct 20, 2019 at 11:11:18PM -0500, Jeff LaBundy wrote:
+> > > +	/*
+> > > +	 * Each frame contains at most one wheel event (up or down), in which
+> > > +	 * case a full keystroke is emulated.
+> > > +	 */
+> > > +	if (event_flags & BIT(IQS62X_EVENT_WHEEL_UP)) {
+> > > +		input_report_key(iqs62x_keys->input,
+> > > +				 iqs62x_keys->keycode[IQS62X_EVENT_WHEEL_UP],
+> > > +				 0);
+> > > +		input_sync(iqs62x_keys->input);
+> > > +	} else if (event_flags & BIT(IQS62X_EVENT_WHEEL_DN)) {
+> > > +		input_report_key(iqs62x_keys->input,
+> > > +				 iqs62x_keys->keycode[IQS62X_EVENT_WHEEL_DN],
+> > > +				 0);
+> > 
+> > Not '1'?
+> > 
+> 
+> We pick up the '1' in the first of the two for loops above so long as the wheel
+> moved "enough." In this case (and this case only), a subsequent '0' is sent to
+> emulate a full press/release cycle (2 * {EV_KEY + EV_SYN}) for wheel "ticks."
+> 
+> I will update the comment to say "...in which case a complementary release cycle
+> is emulated." If I have misunderstood your concern, please let me know.
 
-How are you? Hope everything goes well.
+Ah, sorry, no, I misread the code.
 
-Although I am not comfortable to send this proposal to you because of increase in SCAM and FRAUD especially in Africa. It's my pleasure to brief you with this. I am writing this mail to you with heavy tears In my eyes and great sorrow in my heart, I want to tell you this because I don't have any other option than to tell you as I was touched to open up to you, I married to Mr.Sangoule Godooi who was exporter of Gold from Burkina Faso mining to worldwide for ten years before he died in the year 2010.We were married for 16 years without a child. He died after a brief illness that lasted for only six days. Since his death I decided not to remarry, when my late husband was alive he deposited the sum of US$ 8.5M (eight million five hundred united dollars) in bank and presently this money is still in bank, He made this money available for exportation of Gold from Burkina Faso mining to worldwide.
+Thanks.
 
-Recently, I suffer from throat cancer terminally ill. My Doctor told me that I am condemned to certain death due to cancer problem. The one that disturbs me most is my stroke sickness .Having known my condition I decided to hand you over this money to take care of the less-privileged people, you will utilize this money the way I am going to instruct herein.
-
-As soon a s I receive your reply I will instruct the Bank Manger to immediately transfer you the fund.
-I await your prompt reply.Please send the following: Reply To This E-mail Address msluizagodoi99@yahoo.com
-
-Yours sincerely.
-
-Mrs. Luiza Godooi
+-- 
+Dmitry

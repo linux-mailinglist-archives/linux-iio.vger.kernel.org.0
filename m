@@ -2,104 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BD7FE645B
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2019 17:57:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58501E645D
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2019 17:58:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727504AbfJ0Q5e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Oct 2019 12:57:34 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:48489 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727237AbfJ0Q5e (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Oct 2019 12:57:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572195452;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=a0UgV3lT7kjp68nqTUQLv1IWHForOi5FfkcspwLJWPQ=;
-        b=KVkdp4qxCEozM27kHO63NYZWseTN5YgGfB4Qe6CeAAugFY927qIsDWBAVmZPp+oJZRlZRV
-        jR0FfrMt7YRYyUtQniLST5WloDfvAx7H76SSRB3YjZOo2A1yG/7uRmq+3casQAVPcrLwIg
-        FbPffa37SV7QqS+M0XBiXa109KVmxAg=
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-96-Ekd01tsIOs2-PsjkC9Vb7A-1; Sun, 27 Oct 2019 12:57:31 -0400
-Received: by mail-io1-f72.google.com with SMTP id g24so5779625ioc.2
-        for <linux-iio@vger.kernel.org>; Sun, 27 Oct 2019 09:57:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uiyGHBoRq5Dv8+7cLKe9dCEaHNIIIeUJ6r+ZGsY4CZw=;
-        b=aZS0l5A9mz0C4bd7Qp9jGH164QRDT7uR/sePtGBh0PKJwxUJNsJBs5Qt3q3N57XWvt
-         qoxVNbBh+gmA2j0/ETjOOms+fX0o8B6aR9XdmWCyluJso/RimTadRTyoXg4o0gSORH3Z
-         py0zoFF7kTU6NcqZAxMIDa97AnP+mfEfUQwk+f1cuq4vG3PcKOQaUIvLYWhpzb3uBkP7
-         Jc0rRhhszn1Cnxcd3SzdiawUHTdby2jHXI6vFruu/CAYxUup/jN1LnYZxwXaPc2NAO5R
-         2+ECyjEaH6w5XWV/8MkBbhuvl5xT7V2nMl7S0KKMnpQkEWSdxfBtOodQAEnCnfwr26SN
-         y4/Q==
-X-Gm-Message-State: APjAAAVwvqVCslPe+nRKi0vnGg6ZLYelq1a+W4Pl6SxQ10bX4Aq1BMhk
-        1tsPp3jxin8q4kkK+m5Mm+TC13rr2WdYVso9T1ccsuQMORL+QDf8DbB5PNS1lWrnaqHaj+zAPVk
-        6jaOnjyEfmMdMGtUbwi9fIh82ZVfI95zwJzF0
-X-Received: by 2002:a05:6638:23b:: with SMTP id f27mr4267244jaq.55.1572195450875;
-        Sun, 27 Oct 2019 09:57:30 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqx5CLYZpxKjYU/Dulf+5fc0vZxxdn46JVSt0bEdgtord9iYUnQmyhJkuYYJr+Su4agJmXOKWN843O0zpcrsu9A=
-X-Received: by 2002:a05:6638:23b:: with SMTP id f27mr4267231jaq.55.1572195450562;
- Sun, 27 Oct 2019 09:57:30 -0700 (PDT)
+        id S1727126AbfJ0Q6R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Oct 2019 12:58:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52082 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727077AbfJ0Q6R (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 27 Oct 2019 12:58:17 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D6EB20679;
+        Sun, 27 Oct 2019 16:58:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572195496;
+        bh=pll53aE69hNh/m9+0yjyt0oK8R/ifUVvZeFh6O6x0ZU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=CoJhD2lx+d2js2/l6XApHESbsgX4LN5CwSVt831hukm+28D3BUBwVmoY15WJh3DpI
+         5suwFYnGxih1+pV0XT7UNiHbgB8SJ5/1+ERw6ggd0UVH86QZ7MqXk2zV6+mfkTTvPy
+         o51pcTVLJHQbePIQDUomgD4SjhkhSvUzH8BzB/qs=
+Date:   Sun, 27 Oct 2019 16:58:13 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: Re: [PATCH] iio: hdc100x: fix
+ iio_triggered_buffer_{predisable,postenable} positions
+Message-ID: <20191027165813.5a5b0519@archlinux>
+In-Reply-To: <20191023082714.18681-1-alexandru.ardelean@analog.com>
+References: <20191023082714.18681-1-alexandru.ardelean@analog.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <cover.1571931470.git.lorenzo@kernel.org> <1e96ac17ca6819cf8f35c757a63e11e815455225.1571931470.git.lorenzo@kernel.org>
- <20191027164024.685c1ced@archlinux>
-In-Reply-To: <20191027164024.685c1ced@archlinux>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Sun, 27 Oct 2019 17:57:22 +0100
-Message-ID: <CAJ0CqmWRVcd=VwBpVsbDVsqiQetVULtgHJG3KxQJA7aQZ4EJKQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: iio: imu: st_lsm6dsx: add lsm6dsrx
- device bindings
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-X-MC-Unique: Ekd01tsIOs2-PsjkC9Vb7A-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
->
-> On Thu, 24 Oct 2019 17:42:34 +0200
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Applied.  If you get bored and feel like converting this over
-> to yaml at somepoint that would be great ;)
->
-> Thanks,
+On Wed, 23 Oct 2019 11:27:14 +0300
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-ack, added to my ToDo list :)
+> The iio_triggered_buffer_postenable() hook should be called first to
+> attach the poll function and the iio_triggered_buffer_predisable() hook
+> should be called last in the predisable hook.
+> 
+> This change updates the driver to attach/detach the poll func in the
+> correct order.
+> 
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Seems fine, but should have cc'd Matt and I'd like to give him time
+to take a quick look.
 
-Regards,
-Lorenzo
++CC Matt.
 
->
-> Jonathan
->
-> > ---
-> >  Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt b=
-/Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt
-> > index fc018ecba086..cef4bc16fce1 100644
-> > --- a/Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt
-> > +++ b/Documentation/devicetree/bindings/iio/imu/st_lsm6dsx.txt
-> > @@ -15,6 +15,7 @@ Required properties:
-> >    "st,ism330dhcx"
-> >    "st,lsm9ds1-imu"
-> >    "st,lsm6ds0"
-> > +  "st,lsm6dsrx"
-> >  - reg: i2c address of the sensor / spi cs line
-> >
-> >  Optional properties:
->
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/humidity/hdc100x.c | 19 +++++++++++--------
+>  1 file changed, 11 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+> index bfe1cdb16846..963ff043eecf 100644
+> --- a/drivers/iio/humidity/hdc100x.c
+> +++ b/drivers/iio/humidity/hdc100x.c
+> @@ -278,31 +278,34 @@ static int hdc100x_buffer_postenable(struct iio_dev *indio_dev)
+>  	struct hdc100x_data *data = iio_priv(indio_dev);
+>  	int ret;
+>  
+> +	ret = iio_triggered_buffer_postenable(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	/* Buffer is enabled. First set ACQ Mode, then attach poll func */
+>  	mutex_lock(&data->lock);
+>  	ret = hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE,
+>  				    HDC100X_REG_CONFIG_ACQ_MODE);
+>  	mutex_unlock(&data->lock);
+>  	if (ret)
+> -		return ret;
+> +		iio_triggered_buffer_predisable(indio_dev);
+>  
+> -	return iio_triggered_buffer_postenable(indio_dev);
+> +	return ret;
+>  }
+>  
+>  static int hdc100x_buffer_predisable(struct iio_dev *indio_dev)
+>  {
+>  	struct hdc100x_data *data = iio_priv(indio_dev);
+> -	int ret;
+> -
+> -	/* First detach poll func, then reset ACQ mode. OK to disable buffer */
+> -	ret = iio_triggered_buffer_predisable(indio_dev);
+> -	if (ret)
+> -		return ret;
+> +	int ret, ret2;
+>  
+>  	mutex_lock(&data->lock);
+>  	ret = hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE, 0);
+>  	mutex_unlock(&data->lock);
+>  
+> +	ret2 = iio_triggered_buffer_predisable(indio_dev);
+> +	if (ret == 0)
+> +		ret = ret2;
+> +
+>  	return ret;
+>  }
+>  
 

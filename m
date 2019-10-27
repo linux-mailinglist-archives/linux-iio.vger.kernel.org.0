@@ -2,39 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EA86E61D2
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2019 10:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22203E63D7
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2019 16:56:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726689AbfJ0J2u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Oct 2019 05:28:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36892 "EHLO mail.kernel.org"
+        id S1727105AbfJ0P4I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Oct 2019 11:56:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44178 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726106AbfJ0J2u (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 27 Oct 2019 05:28:50 -0400
+        id S1727111AbfJ0P4I (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 27 Oct 2019 11:56:08 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7A56220717;
-        Sun, 27 Oct 2019 09:28:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B25D220873;
+        Sun, 27 Oct 2019 15:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572168529;
-        bh=PZM3D1GXhdG5lOJWfQbsfdy1YZDVQmsqvBbU6UgwVDA=;
+        s=default; t=1572191767;
+        bh=Pgz2qi0WgZfVfbFx8PUgtXYuCY6X49z/ckhZKod0qMU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Gat9zT3OSoJCzLKmGVRnwnnjkfZmqFXk85LnSE7kyda0t/6oRLTJHsCpQhMEu6MPZ
-         EuMQn+l6Ta4b+GJCqCaNSyaYMZQ2u9sz8o8suL4m1lCgJeV9pSWnc1TulPLpK0sqip
-         REdZUZRhFTTqCP0qJ5HFVl7giZQP1RieIhTORewo=
-Date:   Sun, 27 Oct 2019 09:28:45 +0000
+        b=JFoiMzyoBsKgj1EwwoSEnclXuVlDOty2A3/vnZpGWnC466KZhZr0sX/V+cOOE59/Z
+         9as0h2t6FBlEpwGoDiYBXy3vUWWuSUeNlDqzfDIWJiRnyB8jlrmHz0YkGnFgSfoZF0
+         uXszHWJYgP45JF2w4XnPidnIcgvafTLvXvmXnXVU=
+Date:   Sun, 27 Oct 2019 15:56:00 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc:     dragos.bogdan@analog.com, alexandru.ardelean@analog.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        kernel-usp@googlegroups.com
-Subject: Re: [PATCH v2 1/2] iio: adc: Add driver support for AD7292
-Message-ID: <20191027092845.5a1269f5@archlinux>
-In-Reply-To: <20191022142736.ztch3mzqpv6jcvhm@smtp.gmail.com>
-References: <20191016025119.53fclzngzt5qwlmk@smtp.gmail.com>
-        <20191021180644.3a260af2@archlinux>
-        <20191022142736.ztch3mzqpv6jcvhm@smtp.gmail.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH] iio: st: Drop GPIO include
+Message-ID: <20191027155600.6869be8a@archlinux>
+In-Reply-To: <20191023084702.22969-1-linus.walleij@linaro.org>
+References: <20191023084702.22969-1-linus.walleij@linaro.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,45 +42,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Oct 2019 11:27:37 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Wed, 23 Oct 2019 10:47:02 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> Hi Jonathan,
+> None of the ST sensor drivers use any symbols from
+> <linux/gpio.h>, just drop the include from all of them.
 > 
-> Should I send a V3 for the whole patchset or just for the DT binding patch?
-
-Always send whole patch sets.  It's far too fiddly to track down parts
-from different versions.
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Applied.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/accel/st_accel_core.c       | 1 -
+>  drivers/iio/gyro/st_gyro_core.c         | 1 -
+>  drivers/iio/magnetometer/st_magn_core.c | 1 -
+>  drivers/iio/pressure/st_pressure_core.c | 1 -
+>  4 files changed, 4 deletions(-)
 > 
-> Thanks,
-> 
-> Marcelo
-> 
-> On 10/21, Jonathan Cameron wrote:
-> > On Tue, 15 Oct 2019 23:51:22 -0300
-> > Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
-> >   
-> > > The AD7292 is a 10-bit monitor and control system with ADC, DACs,
-> > > temperature sensor, and GPIOs.
-> > > 
-> > > Configure AD7292 devices in direct access mode, enabling single-ended
-> > > ADC readings.
-> > > 
-> > > Datasheet:
-> > > Link: https://www.analog.com/media/en/technical-documentation/data-sheets/ad7292.pdf
-> > > 
-> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>  
-> > This looks fine to me.
-> > 
-> > Assuming nothing else comes up, I'll pick this up once the binding was tidied up.
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> >   
+> diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
+> index 2e37f8a6d8cf..7b837641f166 100644
+> --- a/drivers/iio/accel/st_accel_core.c
+> +++ b/drivers/iio/accel/st_accel_core.c
+> @@ -15,7 +15,6 @@
+>  #include <linux/types.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/i2c.h>
+> -#include <linux/gpio.h>
+>  #include <linux/irq.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> diff --git a/drivers/iio/gyro/st_gyro_core.c b/drivers/iio/gyro/st_gyro_core.c
+> index c0acbb5d2ffb..57be68b291fa 100644
+> --- a/drivers/iio/gyro/st_gyro_core.c
+> +++ b/drivers/iio/gyro/st_gyro_core.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/types.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/i2c.h>
+> -#include <linux/gpio.h>
+>  #include <linux/irq.h>
+>  #include <linux/delay.h>
+>  #include <linux/iio/iio.h>
+> diff --git a/drivers/iio/magnetometer/st_magn_core.c b/drivers/iio/magnetometer/st_magn_core.c
+> index a3a268ee2896..e68184a93a6d 100644
+> --- a/drivers/iio/magnetometer/st_magn_core.c
+> +++ b/drivers/iio/magnetometer/st_magn_core.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/types.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/i2c.h>
+> -#include <linux/gpio.h>
+>  #include <linux/irq.h>
+>  #include <linux/delay.h>
+>  #include <linux/iio/iio.h>
+> diff --git a/drivers/iio/pressure/st_pressure_core.c b/drivers/iio/pressure/st_pressure_core.c
+> index ca6863b32a5f..bd972cec4830 100644
+> --- a/drivers/iio/pressure/st_pressure_core.c
+> +++ b/drivers/iio/pressure/st_pressure_core.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/types.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/i2c.h>
+> -#include <linux/gpio.h>
+>  #include <linux/irq.h>
+>  #include <linux/delay.h>
+>  #include <linux/iio/iio.h>
 

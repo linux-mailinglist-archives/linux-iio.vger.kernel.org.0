@@ -2,41 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26B09E75DD
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2019 17:12:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1294E75D9
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2019 17:12:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730436AbfJ1QM3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Oct 2019 12:12:29 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:23722 "EHLO
+        id S2390832AbfJ1QMa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Oct 2019 12:12:30 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:61586 "EHLO
         mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2390826AbfJ1QM3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Oct 2019 12:12:29 -0400
+        by vger.kernel.org with ESMTP id S2390825AbfJ1QM2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Oct 2019 12:12:28 -0400
 Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9SFuCiJ007143;
-        Mon, 28 Oct 2019 17:11:54 +0100
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9SFuC3Q007135;
+        Mon, 28 Oct 2019 17:11:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=ULIF3nGXJmIbXhgf4TYuqp1B8PHksrpUdhfUfjdzh7g=;
- b=YvEIq1+R8QzfF3ZFSdqiEMZX5FrHw2X+7+YPzgc9tTFY2FuXcwz3ozfzfA0wMqYfKNrT
- yDXuz+PuKy6P1IovkdYg/RMR8KR24EQGPic+HwDMidiEuLNnmEol7uu53+eZleYtC/9y
- pcTflqj3KFuQXrLiNU2jXzWQiOJ7dEh2SxnGSl4/1gnuax95aindMURTem4nW0jvgpP0
- XTn6uJNpbgoEUQne6XbNfLMqyMOMM0si86/10jNd+QaBSZ4nvSd4dV5JyleBOrgOZfd5
- 2gDrAvgKwWZAPANlNpKDnLzywIcUuq8x+NiBIkGrMhTuyROVH6mNGjQ58owoSlGOwU5r 7Q== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=STMicroelectronics;
+ bh=hs9ioC3FUJXhQf7N0szd3cgJObNevzhxvfuz9gmEXh8=;
+ b=Wpap3FJf02ByLfmEWx9FQx24YE+6nbvxX+EN3K5zctz/trU6NDbryNX/JyB1H3gE2ek0
+ dMPzjXS5+0UNs5glJx6oenf+5J2GngjIF6W6FNzEJHcle1jkF9Ou/9pP9DX6fnXqaUYw
+ cvHq1pbCilG4b42kPTIpNmd9tirQPM+Uxet39c04osMVx9YetBlsVzXcjJan65YtInrB
+ puMnJYmDkQNXGguQ0/Wtx3MKsDpFBdeVGj7TjsLV0v9/R4ozcTZlE/3HwDKFTanm1Ynq
+ IewwaAMIjqBxe0P4LmeDTNrMXB9P55iufz7iZEUGxEKxtlzQ3Cj1eBtOU7GKLXkzXwFU QQ== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2vvbm0b68c-1
+        by mx07-00178001.pphosted.com with ESMTP id 2vvbm0b68j-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 28 Oct 2019 17:11:54 +0100
+        Mon, 28 Oct 2019 17:11:55 +0100
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 00E0D100038;
-        Mon, 28 Oct 2019 17:11:54 +0100 (CET)
-Received: from Webmail-eu.st.com (Safex1hubcas24.st.com [10.75.90.94])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E0C252B1E73;
-        Mon, 28 Oct 2019 17:11:53 +0100 (CET)
-Received: from SAFEX1HUBCAS22.st.com (10.75.90.93) by Safex1hubcas24.st.com
- (10.75.90.94) with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 28 Oct
- 2019 17:11:53 +0100
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 861EB100038;
+        Mon, 28 Oct 2019 17:11:55 +0100 (CET)
+Received: from Webmail-eu.st.com (Safex1hubcas21.st.com [10.75.90.44])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 713B32B1E79;
+        Mon, 28 Oct 2019 17:11:55 +0100 (CET)
+Received: from SAFEX1HUBCAS22.st.com (10.75.90.93) by SAFEX1HUBCAS21.st.com
+ (10.75.90.44) with Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 28 Oct
+ 2019 17:11:55 +0100
 Received: from localhost (10.48.0.192) by Webmail-ga.st.com (10.75.90.48) with
- Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 28 Oct 2019 17:11:53 +0100
+ Microsoft SMTP Server (TLS) id 14.3.439.0; Mon, 28 Oct 2019 17:11:54 +0100
 From:   Fabrice Gasnier <fabrice.gasnier@st.com>
 To:     <jic23@kernel.org>, <robh+dt@kernel.org>
 CC:     <alexandre.torgue@st.com>, <mark.rutland@arm.com>,
@@ -46,10 +47,12 @@ CC:     <alexandre.torgue@st.com>, <mark.rutland@arm.com>,
         <linux-stm32@st-md-mailman.stormreply.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH 0/2] iio: adc: stm32: add max clock rate
-Date:   Mon, 28 Oct 2019 17:11:46 +0100
-Message-ID: <1572279108-25916-1-git-send-email-fabrice.gasnier@st.com>
+Subject: [PATCH 1/2] dt-bindings: iio: stm32-adc: add max clock rate property
+Date:   Mon, 28 Oct 2019 17:11:47 +0100
+Message-ID: <1572279108-25916-2-git-send-email-fabrice.gasnier@st.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1572279108-25916-1-git-send-email-fabrice.gasnier@st.com>
+References: <1572279108-25916-1-git-send-email-fabrice.gasnier@st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.48.0.192]
@@ -62,14 +65,24 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Add optional dt property to tune maximum desired analog clock rate.
 
-Fabrice Gasnier (2):
-  dt-bindings: iio: stm32-adc: add max clock rate property
-  iio: adc: stm32: allow to tune analog clock
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+---
+ Documentation/devicetree/bindings/iio/adc/st,stm32-adc.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
- .../devicetree/bindings/iio/adc/st,stm32-adc.txt         |  2 ++
- drivers/iio/adc/stm32-adc-core.c                         | 16 +++++++++++++---
- 2 files changed, 15 insertions(+), 3 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.txt b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.txt
+index 4c0da8c..8de9331 100644
+--- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.txt
++++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.txt
+@@ -53,6 +53,8 @@ Optional properties:
+   analog input switches on stm32mp1.
+ - st,syscfg: Phandle to system configuration controller. It can be used to
+   control the analog circuitry on stm32mp1.
++- st,max-clk-rate-hz: Allow to specify desired max clock rate used by analog
++  circuitry.
+ 
+ Contents of a stm32 adc child node:
+ -----------------------------------
 -- 
 2.7.4
 

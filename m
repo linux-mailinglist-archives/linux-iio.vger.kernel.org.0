@@ -2,46 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27F8CEA45A
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2019 20:43:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B9CEA4A3
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2019 21:16:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726269AbfJ3Tne (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Oct 2019 15:43:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35244 "EHLO mail.kernel.org"
+        id S1726612AbfJ3UQz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Oct 2019 16:16:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56522 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726261AbfJ3Tne (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 30 Oct 2019 15:43:34 -0400
+        id S1726261AbfJ3UQz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 30 Oct 2019 16:16:55 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E6997205C9;
-        Wed, 30 Oct 2019 19:43:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 27BDA2083E;
+        Wed, 30 Oct 2019 20:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572464613;
-        bh=SvrbAEw49Plnafe/VzNSWq8FLiN2PZsNxZj5PIYPCAQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qhMfLygR9U7KoGtM2N9i/dXW6g1ijNGhj7Oz//aFnrSyQHID47A0Xju37huThLgpU
-         h2ojTqe8N+JdKsUkmDhwMG6UVR57UeaIW3J+7nW8m+arNodehDgUpxDiZMAUYkY6hF
-         qhqdix6PJKUna/ZSbL6CNrR4Cu4Vn9z04ds/n3uw=
-Date:   Wed, 30 Oct 2019 19:43:25 +0000
+        s=default; t=1572466614;
+        bh=h08FDjrUws98ud7q3JrCPndvrtAkjCTeznWjw2wPvxc=;
+        h=Date:From:To:Subject:From;
+        b=t4yam5dsUESpfZtt2nPWrblWVDxKXel9i79R/jGKCYYPCaGZ0c3i3gtQct4aMF9se
+         s7DB8Cgak6VsPRuoVLIIa6L+y/EoE5bSsK+c9M75q8SMR9ah20NY7zlFKoPiLBLntc
+         npiJ/O+9po/eM2FOn2Q0b7NwYFDuNYo5kAgzujTc=
+Date:   Wed, 30 Oct 2019 20:16:51 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Bart Van Assche <bvanassche@acm.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Christoph Hellwig <hch@lst.de>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 4/9] drivers/iio: Sign extend without triggering
- implementation-defined behavior
-Message-ID: <20191030194325.2ad20a8e@archlinux>
-In-Reply-To: <20191028200700.213753-5-bvanassche@acm.org>
-References: <20191028200700.213753-1-bvanassche@acm.org>
-        <20191028200700.213753-5-bvanassche@acm.org>
+To:     linux-iio@vger.kernel.org, gregkh@linuxfoundation.org
+Subject: [PULL] 2nd set of IIO fixes for the 5.4 cycle.
+Message-ID: <20191030201651.0f9b5237@archlinux>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,52 +37,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Oct 2019 13:06:55 -0700
-Bart Van Assche <bvanassche@acm.org> wrote:
+The following changes since commit 3f3d31622a2c18b644328965925110dd7638b376:
 
-> From the C standard: "The result of E1 >> E2 is E1 right-shifted E2 bit
-> positions. If E1 has an unsigned type or if E1 has a signed type and a
-> nonnegative value, the value of the result is the integral part of the
-> quotient of E1 / 2E2 . If E1 has a signed type and a negative value, the
-> resulting value is implementation-defined."
-> 
-> Hence use sign_extend_24_to_32() instead of "<< 8 >> 8".
+  Merge tag 'iio-fixes-for-5.4a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into staging-linus (2019-10-10 11:18:37 +0200)
 
-+CC linux-iio
+are available in the Git repository at:
 
-> 
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Hartmut Knaack <knaack.h@gmx.de>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> ---
->  drivers/iio/common/st_sensors/st_sensors_core.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
-> 
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-> index 4a3064fb6cd9..94a9cec69cd7 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_core.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-> @@ -21,11 +21,6 @@
->  
->  #include "st_sensors_core.h"
->  
-> -static inline u32 st_sensors_get_unaligned_le24(const u8 *p)
-> -{
-> -	return (s32)((p[0] | p[1] << 8 | p[2] << 16) << 8) >> 8;
-> -}
-> -
->  int st_sensors_write_data_with_mask(struct iio_dev *indio_dev,
->  				    u8 reg_addr, u8 mask, u8 data)
->  {
-> @@ -556,7 +551,7 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
->  	else if (byte_for_channel == 2)
->  		*data = (s16)get_unaligned_le16(outdata);
->  	else if (byte_for_channel == 3)
-> -		*data = (s32)st_sensors_get_unaligned_le24(outdata);
-> +		*data = get_unaligned_signed_le24(outdata);
->  
->  st_sensors_free_memory:
->  	kfree(outdata);
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.4b
 
+for you to fetch changes up to e6afcf6c598d6f3a0c9c408bfeddb3f5730608b0:
+
+  iio: adc: stm32-adc: fix stopping dma (2019-10-27 15:57:19 +0000)
+
+----------------------------------------------------------------
+Second set of IIO fixes for the 5.4 cycle.
+
+* adis16480
+  - Prevent negative numbers being accepted for sampling frequency.
+* inv_mpu6050
+  - Fix an issue where fifo overflow bits don't actually work as expected,
+    by checking the fifo count instead.
+* srf04
+  - Allow more time for echo to signal as some sensors supported have
+    a higher range.
+* stm32-adc
+  - Fix a potential race in dma disable by ensuring all transfers are done.
+
+----------------------------------------------------------------
+Alexandru Ardelean (1):
+      iio: imu: adis16480: make sure provided frequency is positive
+
+Andreas Klinger (1):
+      iio: srf04: fix wrong limitation in distance measuring
+
+Fabrice Gasnier (1):
+      iio: adc: stm32-adc: fix stopping dma
+
+Jean-Baptiste Maneyrol (1):
+      iio: imu: inv_mpu6050: fix no data on MPU6050
+
+ drivers/iio/adc/stm32-adc.c                |  4 ++--
+ drivers/iio/imu/adis16480.c                |  5 ++++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c |  9 +++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  |  2 ++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 15 ++++++++++++---
+ drivers/iio/proximity/srf04.c              | 29 +++++++++++++++--------------
+ 6 files changed, 44 insertions(+), 20 deletions(-)

@@ -2,70 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8061BEC406
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2019 14:49:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA81FEC5FF
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2019 16:55:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727538AbfKANt0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Nov 2019 09:49:26 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5691 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726622AbfKANt0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 1 Nov 2019 09:49:26 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id A904FF0927A7025CDCA6;
-        Fri,  1 Nov 2019 21:49:10 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Fri, 1 Nov 2019
- 21:49:04 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
-        <pmeerw@pmeerw.net>, <denis.ciocca@st.com>,
-        <yuehaibing@huawei.com>, <rfontana@redhat.com>,
-        <tglx@linutronix.de>, <heiko.stuebner@bq.com>,
-        <rjones@gateworks.com>, <drake@endlessm.com>,
-        <colin.king@canonical.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next] iio: st_accel: Fix unused variable warning
-Date:   Fri, 1 Nov 2019 21:47:41 +0800
-Message-ID: <20191101134741.25108-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1729213AbfKAPzx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Nov 2019 11:55:53 -0400
+Received: from mail-il1-f195.google.com ([209.85.166.195]:33965 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729229AbfKAPzu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Nov 2019 11:55:50 -0400
+Received: by mail-il1-f195.google.com with SMTP id a13so9103103ilp.1
+        for <linux-iio@vger.kernel.org>; Fri, 01 Nov 2019 08:55:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
+        b=pUJIzGj/MPv1EKc2k3aNehKVojTiwbi36zg1sckIL11PdqXfau1yGsXj1t9CSJeyKL
+         3i/jp/TX/JDBG+iju9GRvxcye9SA9yiSTdccj7/EyUgYmTSSLRFNkcsvQASN37kQDgQc
+         jnResb6aJSg07Bq5suGRVdOqTkrlyY1YMgTmHgQc7tz+apzSU8zlfJ8cqPEt/z1Bd3OE
+         3WNB6qm/Pkg8xI5aHgZ1XzvGw6eZK1PwDo4winMpdBi8I/fqM1G/oYqHCv2wNxwHhj5m
+         N0Nph5NSOfE5c8csPVkAAUkUAiHHdFA9X2wHOboX58ouCDBOqdL9C38hXp5o3eU3+tNB
+         N8dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
+        b=nIC2oINsqbUsPMKkdqOldrOrl9Bp8Pz0L/OtDO+XtbzX0Ing07xH2hSp0b5+xDYiSW
+         61bNGTy3P8cVP3eYI4cE+ub4R1hPZukYRJtNYaEFN8k+SgkUtppGQfZeH4rC/vYOHRvK
+         e0GDTc0djoAn68rpbqN7byjBwjivNS1I9olepV+RPyocxCK2bnQRELpiZ5UbeKL6Q1o/
+         I7MK2ua4qc4epYRWAIPi49b2PCunhVU/EI1SXAX3nd4O79AGH7y0Sg6IvKcjXcwgA6Bw
+         gKyBCNe9StPuh71NiH+ObeAl+ad9nrO8cSHduzaesRmv/bkcJCtR3aEsNUlywc72GIQi
+         CFCA==
+X-Gm-Message-State: APjAAAXnLagFkf+1q833HeBlvBzl9YagTogmHE5xpFgYsESPdW4WQKAx
+        +NDWFf3RkmhW/G8YB3CzpNem2sVPJlqXUjmSLg==
+X-Google-Smtp-Source: APXvYqwNtyKjT0pXbrd92BXP7Yur4/d12tLIQphfDkWOJF9bZR6SLYcfNyjCPNgVxkpA0mTQo/BiL8Zaftdd9XRgWqY=
+X-Received: by 2002:a92:1d8d:: with SMTP id g13mr8826976ile.35.1572623748630;
+ Fri, 01 Nov 2019 08:55:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:55:48 -0700 (PDT)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Mary Coster, I.M.F director-Benin" 
+        <info.zennitbankplcnigerian@gmail.com>
+Date:   Fri, 1 Nov 2019 16:55:48 +0100
+Message-ID: <CABHzvrmPdjgy_vBxQMfJ2YwGwj1RyCvQt1Oy5GJczarHTQb=pg@mail.gmail.com>
+Subject: Contact Money Gram international service-Benin to receive your
+ payment funds US$2.500,000 Million
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-drivers/iio/accel/st_accel_core.c:1005:44: warning:
- mount_matrix_ext_info defined but not used [-Wunused-const-variable=]
-
-Move it to ifdef to mute this warning.
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/iio/accel/st_accel_core.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-index 2e37f8a..bba0717 100644
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1002,10 +1002,12 @@ get_mount_matrix(const struct iio_dev *indio_dev,
- 	return adata->mount_matrix;
- }
- 
-+#ifdef CONFIG_ACPI
- static const struct iio_chan_spec_ext_info mount_matrix_ext_info[] = {
- 	IIO_MOUNT_MATRIX(IIO_SHARED_BY_ALL, get_mount_matrix),
- 	{ },
- };
-+#endif
- 
- /* Read ST-specific _ONT orientation data from ACPI and generate an
-  * appropriate mount matrix.
--- 
-2.7.4
-
-
+Attn Dear,Funds Beneficiary.
+Contact Money Gram international service-Benin to receive your payment
+funds US$2.500,000 Million approved this morning through the UN
+payment settlement organization.
+Contact Person, Mr. John Dave.
+Official Director.Money Gram-Benin
+Email: moneygram.1820@outlook.fr
+Telephone +229 62619517
+Once you get intouch with Mr. John Dave, Money Gram Director, send to
+him your address including your phone numbers. He will be sending the
+transfer to you  $5000.00 USD daily until you received your complete
+payment $2.5m from the office.
+Note,I have paid the whole service fees for you but only small money
+you been required to send to this office is $23.00 only via Money Gram
+transfer.
+God bless
+Mary Coster, I.M.F director-Benin
+m.coster@aol.com

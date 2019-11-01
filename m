@@ -2,101 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42F13EC02E
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2019 10:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C84AEEC04B
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2019 10:11:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725904AbfKAJAK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Nov 2019 05:00:10 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:38513 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726555AbfKAJAK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Nov 2019 05:00:10 -0400
-Received: by mail-wm1-f65.google.com with SMTP id z19so4233983wmk.3
-        for <linux-iio@vger.kernel.org>; Fri, 01 Nov 2019 02:00:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=z6VIallazyVW2gnaDH0dlgNEJHptgWdXOaqvgfmB32A=;
-        b=V95yI61YpqLnaov22fsDZlcPX6FzYrjNU5v/MzYOrYhrPUZmX4Ywqs5SFxl6LY+Ap7
-         erhMI26+MpwlhxrZAs4NOTKSLlIxpRMJOpMcXJVzbTi75KV+h2xk9VUmuX84ap4nKVnL
-         oDW3LUfjaorx/E7gqsh3ItFTYdquNRrcqZ+fjnxDtcJz7qvaPFaE8ayb9GX3I3Mtzd2I
-         zITDdIpSXeBl70dmO6Pyiv9YYpe5lcO/o8vcqpJcS5M2mfUSffyE9XCQASai6XNL0hdY
-         opjXFr3mBteogYUHjR3n73kNAue3ioX68PQFVhMdRt8euhfsEaBQcEXkq4Zoj3sKLtJW
-         brbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=z6VIallazyVW2gnaDH0dlgNEJHptgWdXOaqvgfmB32A=;
-        b=SjNQnI2MboJj5A8g3FKJHOvjc8omv8Nk157GS8HWBaFDI+hHiXIthAKtlzwLMTcTDh
-         WimjqRrHfOw7Or9QxTQFgeu6tqmhoGEuGYQDX9sl9y0AOYEI+G1SrZ4bZnLZjalkPpC1
-         xp4CI84hwtIF55JckhitcpCLYaoprR8nqpFSSkpwdVJBsQbIhVb6rSJJpSCkel1patcC
-         JfePL//cfCsNIRQlAb3MMK8kYs6HRpmgGWY21qsvoryYC7A8/5xRKN7P8/1zQkzEB0c5
-         KLEH9uuw1gcACXiCwJlxp53qXCtCChxaxoq0ZSICHnREFxMuIRNfA6R7KyD31ln+GfdP
-         ArCg==
-X-Gm-Message-State: APjAAAX4s4fURcQVI8dQQlwQf1J1hjXLGCpPcdOiz4AzQHziX6bkIwUw
-        eSg+oCUPcnt/nKKJJIH3YpHo6Q==
-X-Google-Smtp-Source: APXvYqw5xpkWweDsElT5oorj6ZqZwyiP5jmbGdBy2KGR6B9RaT1x4myrBMtVs6piCQ2/e6+4ilEtjg==
-X-Received: by 2002:a05:600c:2909:: with SMTP id i9mr378855wmd.39.1572598807344;
-        Fri, 01 Nov 2019 02:00:07 -0700 (PDT)
-Received: from dell ([2.31.163.64])
-        by smtp.gmail.com with ESMTPSA id v128sm8370576wmb.14.2019.11.01.02.00.06
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 01 Nov 2019 02:00:06 -0700 (PDT)
-Date:   Fri, 1 Nov 2019 09:00:04 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     briannorris@chromium.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, bleung@chromium.org,
-        enric.balletbo@collabora.com, dianders@chromium.org,
-        groeck@chromium.org, fabien.lahoudere@collabora.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 02/18] mfd: cros_ec: Add sensor_count and make
- check_features public
-Message-ID: <20191101090004.GF5700@dell>
-References: <20191021055403.67849-1-gwendal@chromium.org>
- <20191021055403.67849-3-gwendal@chromium.org>
+        id S1727072AbfKAJLw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Nov 2019 05:11:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59144 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726979AbfKAJLw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 1 Nov 2019 05:11:52 -0400
+Received: from localhost (unknown [84.241.195.165])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 68B96217D9;
+        Fri,  1 Nov 2019 09:11:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572599512;
+        bh=rMnCPZ3p5jg/OxDvBv+SJxYYzIhIXR4u6rTS6ipd7Sg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=A/qMCqw7RC1IW749SuOr6hUzkSF8oDdNMcNtxftAiThjRi4PsIXEjCB/eCFS1WRK7
+         yl4msgtlvcwrU+Y5VHp2RAHFQeTbMMljZncS6UUOoSOvprXEoSTDpANQ55P4Z5pxd1
+         5YzKMQWFPjPOb446egXZKh2igoQMNJV4UHZAlJig=
+Date:   Fri, 1 Nov 2019 10:11:44 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PULL] 2nd set of IIO + counter new device support, features etc
+ for the 5.5 cycle.
+Message-ID: <20191101091144.GA2727629@kroah.com>
+References: <20191031204557.1ed83e95@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191021055403.67849-3-gwendal@chromium.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20191031204557.1ed83e95@archlinux>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 20 Oct 2019, Gwendal Grignou wrote:
-
-> Add a new function to return the number of MEMS sensors available in a
-> ChromeOS Embedded Controller.
-> It uses MOTIONSENSE_CMD_DUMP if available or a specific memory map ACPI
-> registers to find out.
+On Thu, Oct 31, 2019 at 08:45:57PM +0000, Jonathan Cameron wrote:
+> The following changes since commit 88d0facf186c6c652c2203536fecd77089b43a4e:
 > 
-> Also, make check_features public as it can be useful for other drivers
-> to know what the Embedded Controller supports.
+>   staging: wfx: fix potential vulnerability to spectre (2019-10-14 15:37:19 +0200)
 > 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> ---
-> Changes in v2:
->   Fix spelling in commit message.
->   Cleanup the case where DUMP command is not supported.
->   Move code from mfd to platform/chrome/
+> are available in the Git repository at:
 > 
->  drivers/mfd/cros_ec_dev.c                   |  32 ------
->  drivers/platform/chrome/cros_ec_proto.c     | 116 ++++++++++++++++++++
->  include/linux/platform_data/cros_ec_proto.h |   5 +
->  3 files changed, 121 insertions(+), 32 deletions(-)
+>   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.5b
 
-For my own reference:
-  Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+Pulled and pushed out, thanks.
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+greg k-h

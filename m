@@ -2,489 +2,326 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA0E9EC6A4
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2019 17:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4180CECCEB
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2019 03:49:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727947AbfKAQYb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Nov 2019 12:24:31 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:36348 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726701AbfKAQYb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Nov 2019 12:24:31 -0400
-Received: by mail-qk1-f195.google.com with SMTP id d13so11227209qko.3;
-        Fri, 01 Nov 2019 09:24:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=D/u7vvBKrO78nl6cTsypZyw2hu64SQuE+nIkgTCiHPM=;
-        b=cqlra85jdcJ8PTmzi849mlRHrmk25SYiOVkwNh8Z0G6kwfg+6rpX5yFIHNyECpqVbc
-         f2ZPrTb6zEawq41Cx97o6e7NJ11QYsqy8WKFlawJnnQD2EzKaYyC1tJXt/bi0B392cwd
-         NXloJvA2/Xc3uYMRK6Of1Y6LEGqYmeZenGuOI1WbBkaS4cFCXJncadb6MZp80ZMFxQ3N
-         Fo9xDSpdq+8Hue/LWHupWmi9zrjfntE2TKv4TDvV/TdseUACqzN9crokXbHCQ8nhBnjn
-         3LjdyjCeA0KLI8hzhk2dMk9wq31J59evdIpMqSKXJZ3tIMwt1O3/W1eCmwQ+ALt8q6re
-         SohQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=D/u7vvBKrO78nl6cTsypZyw2hu64SQuE+nIkgTCiHPM=;
-        b=Twgu0Sd83YzcTe+d43RiS1lsMW8m5g9h5+gvdWrdYNrhLZxPbgEE71lbDP6k/2V68H
-         r3p6uit+y2uwNV34BvdTBz50qhoHI8/YBv7bx/l+aIO7JU0VxDs9S169nAwSThUFWyLB
-         F0JYFhlVp9NhKyaCWmnTDSy75Y82UI1NjD/xDs/m0AP1oEM94cjvZNNsaaBRL8YWgzeF
-         3/MVMFsMIiMG7XfbOL5ihb5pcqQPX0R7Z1yCulP3q60iQ62ekrFWsd3eGu7Mk7SgQsVT
-         W456qBPpWtJNkv0dhKhmGFleBDpzEMOlZP4dUF0pjSyPQwrAvaPl3XSNJK4clEsgVhxg
-         D4DQ==
-X-Gm-Message-State: APjAAAXa9zz+Ak6QXDMWwc0j4VJnwwIDUzIToVRUasR1ngnXH558vMx1
-        wDzdECUUaJoUE6QggvkumnM=
-X-Google-Smtp-Source: APXvYqxf+Lhy49tP+ZEh4M/9SnGDqb3JE60q7IB1k0dn2kYT5Ty9sdzFmpE4/fWmsCr5ojAorw/XkA==
-X-Received: by 2002:a37:d02:: with SMTP id 2mr6626927qkn.307.1572625470276;
-        Fri, 01 Nov 2019 09:24:30 -0700 (PDT)
-Received: from smtp.gmail.com ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id l14sm1107234qkj.61.2019.11.01.09.24.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2019 09:24:29 -0700 (PDT)
-Date:   Fri, 1 Nov 2019 13:24:26 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     jic23@kernel.org, robh@kernel.org
-Cc:     dragos.bogdan@analog.com, alexandru.ardelean@analog.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel-usp@googlegroups.com
-Subject: [PATCH v3 2/2] iio: adc: Add driver support for AD7292
-Message-ID: <9f8eccec804b398c73450911f97a4b250f6067da.1572614297.git.marcelo.schmitt1@gmail.com>
-References: <cover.1572614297.git.marcelo.schmitt1@gmail.com>
+        id S1727188AbfKBCt0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Nov 2019 22:49:26 -0400
+Received: from p3plsmtpa06-04.prod.phx3.secureserver.net ([173.201.192.105]:60778
+        "EHLO p3plsmtpa06-04.prod.phx3.secureserver.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727184AbfKBCtZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Nov 2019 22:49:25 -0400
+Received: from labundy.com ([136.49.227.119])
+        by :SMTPAUTH: with ESMTPSA
+        id QjTdi7Nabr3FgQjTfibaYy; Fri, 01 Nov 2019 19:49:24 -0700
+Date:   Fri, 1 Nov 2019 21:49:21 -0500
+From:   Jeff LaBundy <jeff@labundy.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     dmitry.torokhov@gmail.com, jdelvare@suse.com, linux@roeck-us.net,
+        thierry.reding@gmail.com, jic23@kernel.org,
+        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, u.kleine-koenig@pengutronix.de,
+        linux-pwm@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com
+Subject: Re: [PATCH 2/8] mfd: Add support for Azoteq IQS620A/621/622/624/625
+Message-ID: <20191102024921.GA3934@labundy.com>
+References: <1571631083-4962-1-git-send-email-jeff@labundy.com>
+ <1571631083-4962-3-git-send-email-jeff@labundy.com>
+ <20191031134410.GB5700@dell>
+ <20191101045924.GA2119@labundy.com>
+ <20191101085612.GC5700@dell>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1572614297.git.marcelo.schmitt1@gmail.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191101085612.GC5700@dell>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-CMAE-Envelope: MS4wfFJQkmkyvSzGy/O6+RXc/VORw+PteHc/+gFqr4u3rG9oON5vuW6OvDiVUCRP4vVI3wkQQH3NrXL9Uq8+4eWe/K7C8+qbvEk8OMOglRRV9P+pX1+p5JiF
+ 6k2LhoiGoThaRTsjdXv4ZYu5JAMhB0pxsEZfTFkLtuzpLdpzc8K/RLBdKMAUoIwLMv9hrbKUrGIik0WGsBSbiYE2iaBicld8vrrZnTVKt+kbURV+P+sZnEGV
+ Rim9sXPJEcgvZpgzgEQl+rdsNXBoQsIkrhtZhOSxdZDd94HIy/2gFACv0NH+gDgyw1eSGmNDRN64s4b3VBUzmBLWBCCG1pNORwXuZoVSvjJ1OkLUKIUgxaU4
+ 3REv1pL1vyz3vVd+XfMEoJP8wuly15TQz3H1QIZYMboSUORFvjWqyywOl6g8z0bvTpiO6arKyHblvlI8Tr6NCrWm0EyRBeieW83EenLlT0XTwmRvDZ4SHAk3
+ loXyZKINW/su1nRLkVHRf8g4YjBOvgmdhvri+kLS6SaogMnyNh4FWxd19/ZSwkWLKab0fQiANEc2soe5E0uoS2sEJXEl99iyPk6Fn+2NXFbym6NUNdJniKRD
+ NIlWXwJHU7WcwbnGOukC2RXseEAc3ViiU6i+WP/hjnUG9RavWSeZX89WKF1PbMIpzM4bd2exf10QUfUdDcme8IQoOWU+FB+yVaBqDoWYdovoLDr49q4C9gBX
+ 3zR65FraGuc=
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The AD7292 is a 10-bit monitor and control system with ADC, DACs,
-temperature sensor, and GPIOs.
+Hi Lee,
 
-Configure AD7292 devices in direct access mode, enabling single-ended
-ADC readings.
+On Fri, Nov 01, 2019 at 08:56:12AM +0000, Lee Jones wrote:
+> On Thu, 31 Oct 2019, Jeff LaBundy wrote:
+> > On Thu, Oct 31, 2019 at 01:44:10PM +0000, Lee Jones wrote:
+> > > On Sun, 20 Oct 2019, Jeff LaBundy wrote:
+> > > 
+> > > > This patch adds support for core functions common to all six-channel
+> > > > members of the Azoteq ProxFusion family of sensor devices.
+> > > > 
+> > > > Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+> > > > ---
+> > > >  drivers/mfd/Kconfig         |  13 +
+> > > >  drivers/mfd/Makefile        |   2 +
+> > > >  drivers/mfd/iqs62x-core.c   | 638 ++++++++++++++++++++++++++++++++++++++++++++
+> > > >  drivers/mfd/iqs62x-tables.c | 424 +++++++++++++++++++++++++++++
+> > > >  include/linux/mfd/iqs62x.h  | 148 ++++++++++
+> > > >  5 files changed, 1225 insertions(+)
+> > > >  create mode 100644 drivers/mfd/iqs62x-core.c
+> > > >  create mode 100644 drivers/mfd/iqs62x-tables.c
+> > > >  create mode 100644 include/linux/mfd/iqs62x.h
+> > > > 
+> > > > diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> > > > index ae24d3e..df391f7 100644
+> > > > --- a/drivers/mfd/Kconfig
+> > > > +++ b/drivers/mfd/Kconfig
+> > > > @@ -642,6 +642,19 @@ config MFD_IPAQ_MICRO
+> > > >  	  AT90LS8535 microcontroller flashed with a special iPAQ
+> > > >  	  firmware using the custom protocol implemented in this driver.
+> 
+> [...]
+> 
+> > > What is preventing a very naughty person from providing their own
+> > > register map (firmware) in order to read/write unsuitable registers
+> > > from kernel context for their own gains; simply by swapping out a file
+> > > contained in userspace?
+> > 
+> > I would argue that if someone is willing to go that length, they likely understand
+> > that their dock switch sensitivity may change or their ambient light sensor may no
+> > longer function properly.
+> > 
+> > > It would probably be a better idea to compile the register definitions
+> > > with the kernel/module to be safe. You can use Device Tree for
+> > > run-time configuration changes.
+> > 
+> > Taking the IQS620A as an example, there are over 100 individual fields that need
+> > configured. Forcing customers to manually transfer the values derived within the
+> > GUI to a corresponding collection of device tree bindings would be prohibitively
+> > complex.
+> > 
+> > To complicate matters, many registers change meaning or restrict their available
+> > values based on the values stored in other registers. Duplicating all of the de-
+> > pendencies and restrictions comprehended by the vendor's tool in the driver and/
+> > or the bindings document would not be practical.
+> > 
+> > Just to clarify, we're not storing register definitions (i.e. addresses) in this
+> > "firmware"; rather, we're storing application-specific register values that don't
+> > belong in the driver source.
+> 
+> Okay, this allays my fears. I was under the impression that you could
+> manipulate addresses in the firmware in order to read/write from
+> non-expected registers in kernel context.
+> 
 
-Datasheet:
-Link: https://www.analog.com/media/en/technical-documentation/data-sheets/ad7292.pdf
+My apologies, as my response was misleading. We're not defining register addresses in
+this firmware the way a driver might (e.g. #define IQS62X_SYS_FLAGS 0x10). But we are
+in fact storing the address to which the vendor's GUI requests that one or more data
+bytes be written.
 
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
----
-Changelog V2 -> V3:
-- fix up a typo in channel macros
+The firmware in this case is largely based off Intel hex format, with some extensions
+to handle the device family's specific calibration needs. Specifically, in some cases
+a field within a register is populated by OTP memory and the remaining fields must be
+modified using a R/M/W operation. The tool comprehends all such registers.
 
- MAINTAINERS              |   1 +
- drivers/iio/adc/Kconfig  |  10 ++
- drivers/iio/adc/Makefile |   1 +
- drivers/iio/adc/ad7292.c | 350 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 362 insertions(+)
- create mode 100644 drivers/iio/adc/ad7292.c
+And just like Intel hex, if a user _really_ wanted to be ornery, that user could edit
+the address field of a record and re-route the record's data to an unused or reserved
+register address. This is also the case for the aforementioned wm_adsp framework that
+stores register address offsets in a .bin file which is also handled as "firmware."
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5d00e871c4c6..5941cfc0d6f7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -818,6 +818,7 @@ M:	Marcelo Schmitt <marcelo.schmitt1@gmail.com>
- L:	linux-iio@vger.kernel.org
- W:	http://ez.analog.com/community/linux-device-drivers
- S:	Supported
-+F:	drivers/iio/adc/ad7292.c
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
- 
- ANALOG DEVICES INC AD7606 DRIVER
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 632b331429c6..02587c990cb5 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -59,6 +59,16 @@ config AD7291
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called ad7291.
- 
-+config AD7292
-+	tristate "Analog Devices AD7292 ADC driver"
-+	depends on SPI
-+	help
-+	  Say yes here to build support for Analog Devices AD7292
-+	  8 Channel ADC with temperature sensor.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called ad7292.
-+
- config AD7298
- 	tristate "Analog Devices AD7298 ADC driver"
- 	depends on SPI
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 4779ab3ff8fb..1818f2f66566 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_AD7124) += ad7124.o
- obj-$(CONFIG_AD7173) += ad7173.o
- obj-$(CONFIG_AD7266) += ad7266.o
- obj-$(CONFIG_AD7291) += ad7291.o
-+obj-$(CONFIG_AD7292) += ad7292.o
- obj-$(CONFIG_AD7298) += ad7298.o
- obj-$(CONFIG_AD738X) += ad738x.o
- obj-$(CONFIG_AD7768) += ad7768-1.o
-diff --git a/drivers/iio/adc/ad7292.c b/drivers/iio/adc/ad7292.c
-new file mode 100644
-index 000000000000..e2badf6ac10d
---- /dev/null
-+++ b/drivers/iio/adc/ad7292.c
-@@ -0,0 +1,350 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Analog Devices AD7292 SPI ADC driver
-+ *
-+ * Copyright 2019 Analog Devices Inc.
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/spi/spi.h>
-+
-+#include <linux/iio/iio.h>
-+
-+#define ADI_VENDOR_ID 0x0018
-+
-+/* AD7292 registers definition */
-+#define AD7292_REG_VENDOR_ID		0x00
-+#define AD7292_REG_CONF_BANK		0x05
-+#define AD7292_REG_CONV_COMM		0x0E
-+#define AD7292_REG_ADC_CH(x)		(0x10 + (x))
-+
-+/* AD7292 configuration bank subregisters definition */
-+#define AD7292_BANK_REG_VIN_RNG0	0x10
-+#define AD7292_BANK_REG_VIN_RNG1	0x11
-+#define AD7292_BANK_REG_SAMP_MODE	0x12
-+
-+#define AD7292_RD_FLAG_MSK(x)		(BIT(7) | ((x) & 0x3F))
-+
-+/* AD7292_REG_ADC_CONVERSION */
-+#define AD7292_ADC_DATA_MASK		GENMASK(15, 6)
-+#define AD7292_ADC_DATA(x)		FIELD_GET(AD7292_ADC_DATA_MASK, x)
-+
-+/* AD7292_CHANNEL_SAMPLING_MODE */
-+#define AD7292_CH_SAMP_MODE(reg, ch)	((reg >> 8) & BIT(ch))
-+
-+/* AD7292_CHANNEL_VIN_RANGE */
-+#define AD7292_CH_VIN_RANGE(reg, ch)	(reg & BIT(ch))
-+
-+#define AD7292_VOLTAGE_CHAN(_chan)					\
-+{									\
-+	.type = IIO_VOLTAGE,						\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
-+			      BIT(IIO_CHAN_INFO_SCALE),			\
-+	.indexed = 1,							\
-+	.channel = _chan,						\
-+}
-+
-+static const struct iio_chan_spec ad7292_channels[] = {
-+	AD7292_VOLTAGE_CHAN(0),
-+	AD7292_VOLTAGE_CHAN(1),
-+	AD7292_VOLTAGE_CHAN(2),
-+	AD7292_VOLTAGE_CHAN(3),
-+	AD7292_VOLTAGE_CHAN(4),
-+	AD7292_VOLTAGE_CHAN(5),
-+	AD7292_VOLTAGE_CHAN(6),
-+	AD7292_VOLTAGE_CHAN(7)
-+};
-+
-+static const struct iio_chan_spec ad7292_channels_diff[] = {
-+	{
-+		.type = IIO_VOLTAGE,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.indexed = 1,
-+		.differential = 1,
-+		.channel = 0,
-+		.channel2 = 1,
-+	},
-+	AD7292_VOLTAGE_CHAN(2),
-+	AD7292_VOLTAGE_CHAN(3),
-+	AD7292_VOLTAGE_CHAN(4),
-+	AD7292_VOLTAGE_CHAN(5),
-+	AD7292_VOLTAGE_CHAN(6),
-+	AD7292_VOLTAGE_CHAN(7)
-+};
-+
-+struct ad7292_state {
-+	struct spi_device *spi;
-+	struct regulator *reg;
-+	unsigned short vref_mv;
-+
-+	__be16 d16 ____cacheline_aligned;
-+	u8 d8[2];
-+};
-+
-+static int ad7292_spi_reg_read(struct ad7292_state *st, unsigned int addr)
-+{
-+	int ret;
-+
-+	st->d8[0] = AD7292_RD_FLAG_MSK(addr);
-+
-+	ret = spi_write_then_read(st->spi, st->d8, 1, &st->d16, 2);
-+	if (ret < 0)
-+		return ret;
-+
-+	return be16_to_cpu(st->d16);
-+}
-+
-+static int ad7292_spi_subreg_read(struct ad7292_state *st, unsigned int addr,
-+				  unsigned int sub_addr, unsigned int len)
-+{
-+	unsigned int shift = 16 - (8 * len);
-+	int ret;
-+
-+	st->d8[0] = AD7292_RD_FLAG_MSK(addr);
-+	st->d8[1] = sub_addr;
-+
-+	ret = spi_write_then_read(st->spi, st->d8, 2, &st->d16, len);
-+	if (ret < 0)
-+		return ret;
-+
-+	return (be16_to_cpu(st->d16) >> shift);
-+}
-+
-+static int ad7292_single_conversion(struct ad7292_state *st,
-+				    unsigned int chan_addr)
-+{
-+	int ret;
-+
-+	struct spi_transfer t[] = {
-+		{
-+			.tx_buf = &st->d8,
-+			.len = 4,
-+			.delay_usecs = 6,
-+		}, {
-+			.rx_buf = &st->d16,
-+			.len = 2,
-+		},
-+	};
-+
-+	st->d8[0] = chan_addr;
-+	st->d8[1] = AD7292_RD_FLAG_MSK(AD7292_REG_CONV_COMM);
-+
-+	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	return be16_to_cpu(st->d16);
-+}
-+
-+static int ad7292_vin_range_multiplier(struct ad7292_state *st, int channel)
-+{
-+	int samp_mode, range0, range1, factor = 1;
-+
-+	/*
-+	 * Every AD7292 ADC channel may have its input range adjusted according
-+	 * to the settings at the ADC sampling mode and VIN range subregisters.
-+	 * For a given channel, the minimum input range is equal to Vref, and it
-+	 * may be increased by a multiplier factor of 2 or 4 according to the
-+	 * following rule:
-+	 * If channel is being sampled with respect to AGND:
-+	 *	factor = 4 if VIN range0 and VIN range1 equal 0
-+	 *	factor = 2 if only one of VIN ranges equal 1
-+	 *	factor = 1 if both VIN range0 and VIN range1 equal 1
-+	 * If channel is being sampled with respect to AVDD:
-+	 *	factor = 4 if VIN range0 and VIN range1 equal 0
-+	 *	Behavior is undefined if any of VIN range doesn't equal 0
-+	 */
-+
-+	samp_mode = ad7292_spi_subreg_read(st, AD7292_REG_CONF_BANK,
-+					   AD7292_BANK_REG_SAMP_MODE, 2);
-+
-+	if (samp_mode < 0)
-+		return samp_mode;
-+
-+	range0 = ad7292_spi_subreg_read(st, AD7292_REG_CONF_BANK,
-+					AD7292_BANK_REG_VIN_RNG0, 2);
-+
-+	if (range0 < 0)
-+		return range0;
-+
-+	range1 = ad7292_spi_subreg_read(st, AD7292_REG_CONF_BANK,
-+					AD7292_BANK_REG_VIN_RNG1, 2);
-+
-+	if (range1 < 0)
-+		return range1;
-+
-+	if (AD7292_CH_SAMP_MODE(samp_mode, channel)) {
-+		/* Sampling with respect to AGND */
-+		if (!AD7292_CH_VIN_RANGE(range0, channel))
-+			factor *= 2;
-+
-+		if (!AD7292_CH_VIN_RANGE(range1, channel))
-+			factor *= 2;
-+
-+	} else {
-+		/* Sampling with respect to AVDD */
-+		if (AD7292_CH_VIN_RANGE(range0, channel) ||
-+		    AD7292_CH_VIN_RANGE(range1, channel))
-+			return -EPERM;
-+
-+		factor = 4;
-+	}
-+
-+	return factor;
-+}
-+
-+static int ad7292_read_raw(struct iio_dev *indio_dev,
-+			   const struct iio_chan_spec *chan,
-+			   int *val, int *val2, long info)
-+{
-+	struct ad7292_state *st = iio_priv(indio_dev);
-+	unsigned int ch_addr;
-+	int ret;
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_RAW:
-+		ch_addr = AD7292_REG_ADC_CH(chan->channel);
-+		ret = ad7292_single_conversion(st, ch_addr);
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = AD7292_ADC_DATA(ret);
-+
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		/*
-+		 * To convert a raw value to standard units, the IIO defines
-+		 * this formula: Scaled value = (raw + offset) * scale.
-+		 * For the scale to be a correct multiplier for (raw + offset),
-+		 * it must be calculated as the input range divided by the
-+		 * number of possible distinct input values. Given the ADC data
-+		 * is 10 bit long, it may assume 2^10 distinct values.
-+		 * Hence, scale = range / 2^10. The IIO_VAL_FRACTIONAL_LOG2
-+		 * return type indicates to the IIO API to divide *val by 2 to
-+		 * the power of *val2 when returning from read_raw.
-+		 */
-+
-+		ret = ad7292_vin_range_multiplier(st, chan->channel);
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = st->vref_mv * ret;
-+		*val2 = 10;
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	default:
-+		break;
-+	}
-+	return -EINVAL;
-+}
-+
-+static const struct iio_info ad7292_info = {
-+	.read_raw = ad7292_read_raw,
-+};
-+
-+static void ad7292_regulator_disable(void *data)
-+{
-+	struct ad7292_state *st = data;
-+
-+	regulator_disable(st->reg);
-+}
-+
-+static int ad7292_probe(struct spi_device *spi)
-+{
-+	struct ad7292_state *st;
-+	struct iio_dev *indio_dev;
-+	struct device_node *child;
-+	bool diff_channels = 0;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+	st->spi = spi;
-+
-+	ret = ad7292_spi_reg_read(st, AD7292_REG_VENDOR_ID);
-+	if (ret != ADI_VENDOR_ID) {
-+		dev_err(&spi->dev, "Wrong vendor id 0x%x\n", ret);
-+		return -EINVAL;
-+	}
-+
-+	spi_set_drvdata(spi, indio_dev);
-+
-+	st->reg = devm_regulator_get_optional(&spi->dev, "vref");
-+	if (!IS_ERR(st->reg)) {
-+		ret = regulator_enable(st->reg);
-+		if (ret) {
-+			dev_err(&spi->dev,
-+				"Failed to enable external vref supply\n");
-+			return ret;
-+		}
-+
-+		ret = devm_add_action_or_reset(&spi->dev,
-+					       ad7292_regulator_disable, st);
-+		if (ret) {
-+			regulator_disable(st->reg);
-+			return ret;
-+		}
-+
-+		ret = regulator_get_voltage(st->reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		st->vref_mv = ret / 1000;
-+	} else {
-+		/* Use the internal voltage reference. */
-+		st->vref_mv = 1250;
-+	}
-+
-+	indio_dev->dev.parent = &spi->dev;
-+	indio_dev->name = spi_get_device_id(spi)->name;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &ad7292_info;
-+
-+	for_each_available_child_of_node(spi->dev.of_node, child) {
-+		diff_channels = of_property_read_bool(child, "diff-channels");
-+		if (diff_channels)
-+			break;
-+	}
-+
-+	if (diff_channels) {
-+		indio_dev->num_channels = ARRAY_SIZE(ad7292_channels_diff);
-+		indio_dev->channels = ad7292_channels_diff;
-+	} else {
-+		indio_dev->num_channels = ARRAY_SIZE(ad7292_channels);
-+		indio_dev->channels = ad7292_channels;
-+	}
-+
-+	return devm_iio_device_register(&spi->dev, indio_dev);
-+}
-+
-+static const struct spi_device_id ad7292_id_table[] = {
-+	{ "ad7292", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, ad7292_id_table);
-+
-+static const struct of_device_id ad7292_of_match[] = {
-+	{ .compatible = "adi,ad7292" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, ad7292_of_match);
-+
-+static struct spi_driver ad7292_driver = {
-+	.driver = {
-+		.name = "ad7292",
-+		.of_match_table = ad7292_of_match,
-+	},
-+	.probe = ad7292_probe,
-+	.id_table = ad7292_id_table,
-+};
-+module_spi_driver(ad7292_driver);
-+
-+MODULE_AUTHOR("Marcelo Schmitt <marcelo.schmitt1@gmail.com>");
-+MODULE_DESCRIPTION("Analog Devices AD7292 ADC driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.23.0
+Any any rate--I only clarify this to be transparent, and to point out that we're not
+doing anything new. If there is any further information I can provide, please let me
+know.
 
+> [...]
+> 
+> > > > +	/*
+> > > > +	 * The device resets itself in response to the I2C master stalling
+> > > > +	 * communication beyond a timeout. In this case, all registers are
+> > > > +	 * restored and any interested sub-device drivers are notified.
+> > > > +	 */
+> > > > +	if (event_flags & BIT(IQS62X_EVENT_SYS_RESET)) {
+> > > > +		dev_err(&iqs62x->client->dev, "Unexpected device reset\n");
+> > > > +
+> > > > +		error = iqs62x_dev_init(iqs62x);
+> > > 
+> > > Is it safe to re-initialise the entire device in IRQ context?
+> > > 
+> > 
+> > Here, we are simply re-writing several registers from memory. This is a threaded
+> > interrupt handler, so it should be safe to do so. But if I've misunderstood your
+> > concern, please let me know.
+> 
+> My intent here is to ensure it's been thought about. I see that you
+> are in a threaded handler, so it should be save to read/write register
+> and sleep.
+> 
+> > > > +		if (error) {
+> > > > +			dev_err(&iqs62x->client->dev,
+> > > > +				"Failed to re-initialize device: %d\n", error);
+> > > > +			return IRQ_NONE;
+> > > > +		}
+> > > > +	}
+> > > > +
+> > > > +	error = blocking_notifier_call_chain(&iqs62x->nh, event_flags,
+> > > > +					     &event_data);
+> > > > +	if (error & NOTIFY_STOP_MASK)
+> > > > +		return IRQ_NONE;
+> > > > +
+> > > > +	/*
+> > > > +	 * Once the communication window is closed, a small delay is added to
+> > > > +	 * ensure the device's RDY output has been deasserted by the time the
+> > > > +	 * interrupt handler returns.
+> > > > +	 */
+> > > > +	usleep_range(50, 100);
+> > > > +
+> > > > +	return IRQ_HANDLED;
+> > > > +}
+> > > 
+> > > [...]
+> > > 
+> > > > +static int iqs62x_probe(struct i2c_client *client,
+> > > > +			const struct i2c_device_id *id)
+> > > > +{
+> > > > +	struct iqs62x_core *iqs62x;
+> > > > +	struct iqs62x_info info;
+> > > > +	unsigned int val;
+> > > > +	int error, i, j;
+> > > 
+> > > Nit: It's more common to use 'ret' or 'err' - my preference is 'ret'.
+> > > 
+> > 
+> > I think there are valid arguments both ways, but in my experience, the preference
+> > is not consistent across the audience of this patch series. Unless this is a deal
+> > breaker, I'd like to leave it as 'error' simply for consistency.
+> 
+> The difference is *very* significant, more than an order of magnitude:
+> 
+> $ git grep "int.* ret[;\|,]" | wc -l
+> 40549
+> $ git grep "int.* err[;\|,]" | wc -l
+> 18558
+> $ git grep "int.* error[;\|,]" | wc -l
+> 3381
+> 
+> [...]
+> 
+
+I'm happy to change to 'ret' here; I'd simply like to remain consistent within this
+patch series.
+
+@Dmitry: I know that 'error' tends to be preferred in input and the reasoning makes
+sense to me, but I'd like to change 'error' to 'ret' in patch [3/8] as well. If you
+have any objection, please let me know.
+
+> > > > +		for (j = 0; j < iqs62x->dev_desc->num_cal_regs; j++) {
+> > > 
+> > > What are you doing here? Please provide a comment.
+> > 
+> > The search process here is as follows:
+> > 
+> > 1. Check if the product number (device ID) is recognized, and if so:
+> > 2. Check that the software number (FW revision) is valid, and if so:
+> > 3. Check that the device's calibration (OTP) registers are non-zero (i.e.
+> >    programmed) in which case some additional functionality is awarded, or
+> >    the device is bad.
+> > 
+> > For example, the IQS620A device can report its absolute die temperature if
+> > its scale/offset registers (0xC2 through 0xC4) have been programmed at the
+> > factory. In that case, we're actually talking to an IQS620AT device and we
+> > load an additional hwmon (soon to be iio) driver. However if they're blank,
+> > we're talking to a plain IQS620A device and stick to input and pwm drivers.
+> > 
+> > In another example, the IQS621 (which includes an ambient light sensor) is
+> > _only_ sold in a calibrated version. If we happen to come across a device
+> > with empty calibration registers, its lux output will be garbage. In this
+> > case we don't register the device at all.
+> > 
+> > I would be happy to add some comments here to explain what's happening.
+> 
+> Please.
+> 
+> > > > +			error = regmap_read(iqs62x->map,
+> > > > +					    iqs62x->dev_desc->cal_regs[j],
+> > > > +					    &val);
+> > > > +			if (error)
+> > > > +				return error;
+> > > > +
+> > > > +			if (!val)
+> > > > +				break;
+> > > > +		}
+> > > > +
+> > > > +		if (j == iqs62x->dev_desc->num_cal_regs)
+> > > > +			break;
+> > > 
+> > > Is there a reason not to break here? If the product number matched
+> > > once, can it match for a second time?
+> > > 
+> > 
+> > It can in the case of the aforementioned IQS620A (no 'T') device. The driver
+> > first looks for the IQS620AT which defines 3 calibration registers. If we're
+> > talking to an IQS620A, the first pass of the loop (i = 0) will find 0xC2 = 0,
+> > then j < num_cal_regs and the outer loop will wind forward (i = 1).
+> > 
+> > At that point, the second pass of the outer loop will check for an IQS620A,
+> > which has the same product number but defines num_cal_regs as zero. In that
+> > case, j = num_cal_regs = 0 and the outer loop will break.
+> > 
+> > After the outer loop finishes, if i < NUM_DEV then we know the following:
+> > 
+> > 1. The product number is recognized, and:
+> > 2. The software number is valid, and:
+> > 3. All calibration registers, if any, are nonzero.
+> > 
+> > Again, this process warrants some comments and I would be happy to add some.
+> 
+> Great, thanks.
+> 
+> [...]
+> 
+> > > > +static const struct mfd_cell iqs625_sub_devs[] = {
+> > > > +	{
+> > > > +		.name = IQS62X_DRV_NAME_KEYS,
+> > > > +		.of_compatible = "azoteq,iqs625-keys",
+> > > > +	},
+> > > > +	{
+> > > > +		.name = IQS624_DRV_NAME_POS,
+> > > > +	},
+> > > > +};
+> > > 
+> > > These should be moved into the core driver.
+> > > 
+> > 
+> > The reason they're placed here is because they're referenced in the iqs62x_devs
+> > array, members of which are then referenced by devm_mfd_add_devices in the core
+> > driver.
+> > 
+> > If the mfd_cell arrays move to the core driver (where they're not used directly),
+> > I think I'd have to make them extern. I think it's cleaner to limit the scope of
+> > any given element to the minimum level that is necessary.
+> > 
+> > However if I have misunderstood or I could possibly make this more clear with a
+> > comment or two, please let me know.
+> 
+> Leave them where they are for now. I still need to do a review of this
+> file. It's strange to see such an odd weave of; registers, masks,
+> files, values and names bundled up in structure arrays like this. It
+> may take a little time.
+> 
+
+Sure thing; will do. The reason for this arrangement is that this family of devices
+exposes status bits at (mostly) the same bit locations within a given register, but
+the addresses of those particular registers may vary per device. The structures and
+arrays in this file help keep common functions simple and generic, with all device-
+specific details in a separate location that's easy to maintain.
+
+> [...]
+> 
+> -- 
+> Lee Jones [李琼斯]
+> Linaro Services Technical Lead
+> Linaro.org │ Open source software for ARM SoCs
+> Follow Linaro: Facebook | Twitter | Blog
+> 
+
+Kind regards,
+Jeff LaBundy

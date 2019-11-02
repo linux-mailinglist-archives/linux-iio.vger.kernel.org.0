@@ -2,298 +2,347 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C38BECF19
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2019 15:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F563ECF21
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2019 15:22:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726749AbfKBORi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Nov 2019 10:17:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39628 "EHLO mail.kernel.org"
+        id S1726437AbfKBOWw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Nov 2019 10:22:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40848 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726406AbfKBORi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 2 Nov 2019 10:17:38 -0400
+        id S1726430AbfKBOWw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 2 Nov 2019 10:22:52 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 798BD21726;
-        Sat,  2 Nov 2019 14:17:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4633921726;
+        Sat,  2 Nov 2019 14:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572704256;
-        bh=k14iEwM6RKdBcCO+Po3E+Sj5THJj0pyUJkmEsBnTEos=;
+        s=default; t=1572704570;
+        bh=kO/q3qIR5TnGlmOd0Wgwn4ImJ5Qb9IvuZktTvipwaWU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ddwABK1o1SXh4zDgL50BBdXEtsduB+shgFyJb0J3JREF0/rhcOArgkKPwzU4xm1Tc
-         NP15sjRFToL4JDBKNAbMBI6muPNaOEFlQEXS2ZJaXmZN+MMLkA4IHk2LXOFBenVMTe
-         d1VWJbz1RGTVPJ9Ils658qCFJKzb6mNqokqdiFNo=
-Date:   Sat, 2 Nov 2019 14:17:25 +0000
+        b=HNVHR2uAJ0ywCQYYd3VMwweQ7nhM5J/Mj63pi5u8nDDvevm7Sv7fEMtxRJz3awNAc
+         jZ6VSnnFdTB+7Rtl+CTbALhBup6PG3TibF1UvhGQyDlida535kcvhlh8bdk0rsPHGj
+         fmqQG2Dy4nZs3JJKCLZKnLGTg1hKl8oxWD/5flrE=
+Date:   Sat, 2 Nov 2019 14:22:45 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andrea Merello <andrea.merello@gmail.com>
-Cc:     Jonathan Cameron <jonathan.cameron@huawei.com>,
-        patrick.havelange@essensium.com,
-        paresh.chaudhary@rockwellcollins.com, pmeerw@pmeerw.net,
-        lars@metafoo.de, knaack.h@gmx.de,
-        Matthew Weber <matthew.weber@rockwellcollins.com>,
-        Colin King <colin.king@canonical.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/3] iio: max31856: add option for setting mains filter
- rejection frequency
-Message-ID: <20191102141725.04437533@archlinux>
-In-Reply-To: <CAN8YU5P4vUWOTSJWiL-cPDmQ3aJLe0Z-E3TK5Pmzg1kkxptY-w@mail.gmail.com>
-References: <20190923121714.13672-1-andrea.merello@gmail.com>
-        <20190923121714.13672-2-andrea.merello@gmail.com>
-        <20191006085423.68bcecfd@archlinux>
-        <CAN8YU5Ogcp8ERkxntTVQH3EoJF7h61VCONPXEaP-kvpx8EmS+g@mail.gmail.com>
-        <20191017133210.00002799@huawei.com>
-        <CAN8YU5Nxrv8q4LjCCrHH-qR6kj=PjNLBANgrTkYdX1b1OP+gkA@mail.gmail.com>
-        <20191022103458.3a112511@archlinux>
-        <CAN8YU5OxU+DTeNzczdKPsM42BGwCY9SVpzPGvfH=e-wqU4sgjQ@mail.gmail.com>
-        <20191027092254.35a4c151@archlinux>
-        <CAN8YU5P4vUWOTSJWiL-cPDmQ3aJLe0Z-E3TK5Pmzg1kkxptY-w@mail.gmail.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v2] iio: pressure: bmp280: use devm action and remove
+ labels from probe
+Message-ID: <20191102142245.57bb5812@archlinux>
+In-Reply-To: <CAMRc=Me=d9MmMPTmwMk-5mYkgrFS5+3y4RNj6CQinWG8N2YntA@mail.gmail.com>
+References: <20191007024131.22708-1-brgl@bgdev.pl>
+        <20191012143722.7cb7015d@archlinux>
+        <CAMRc=MekOWGKo4eJ69ifV+MG5==PetPpb87Amrqm_x95sjFiGQ@mail.gmail.com>
+        <20191022111502.5097190e@archlinux>
+        <CAMRc=Me=d9MmMPTmwMk-5mYkgrFS5+3y4RNj6CQinWG8N2YntA@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Oct 2019 08:32:48 +0100
-Andrea Merello <andrea.merello@gmail.com> wrote:
+On Thu, 31 Oct 2019 07:46:51 +0100
+Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 
-> Il giorno dom 27 ott 2019 alle ore 10:23 Jonathan Cameron
-> <jic23@kernel.org> ha scritto:
+> wt., 22 pa=C5=BA 2019 o 12:15 Jonathan Cameron <jic23@kernel.org> napisa=
+=C5=82(a):
 > >
-> > On Wed, 23 Oct 2019 10:29:07 +0200
-> > Andrea Merello <andrea.merello@gmail.com> wrote:
-> >  
-> > > Il giorno mar 22 ott 2019 alle ore 11:35 Jonathan Cameron
-> > > <jic23@kernel.org> ha scritto:  
+> > On Mon, 21 Oct 2019 14:47:18 +0200
+> > Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> > =20
+> > > sob., 12 pa=C5=BA 2019 o 15:37 Jonathan Cameron <jic23@kernel.org> na=
+pisa=C5=82(a): =20
 > > > >
-> > > > On Fri, 18 Oct 2019 15:46:32 +0200
-> > > > Andrea Merello <andrea.merello@gmail.com> wrote:
-> > > >  
-> > > > > Il giorno gio 17 ott 2019 alle ore 14:32 Jonathan Cameron
-> > > > > <jonathan.cameron@huawei.com> ha scritto:  
-> > > > > >
-> > > > > > On Wed, 16 Oct 2019 15:14:20 +0200
-> > > > > > Andrea Merello <andrea.merello@gmail.com> wrote:
-> > > > > >  
-> > > > > > > Il giorno dom 6 ott 2019 alle ore 09:54 Jonathan Cameron
-> > > > > > > <jic23@kernel.org> ha scritto:  
-> > > > > > > >
-> > > > > > > > On Mon, 23 Sep 2019 14:17:12 +0200
-> > > > > > > > Andrea Merello <andrea.merello@gmail.com> wrote:
-> > > > > > > >  
-> > > > > > > > > This sensor has an embedded notch filter for reducing interferences caused
-> > > > > > > > > by the power mains. This filter can be tuned to reject either 50Hz or 60Hz
-> > > > > > > > > (and harmonics).
-> > > > > > > > >
-> > > > > > > > > Currently the said setting is left alone (the sensor defaults to 60Hz).
-> > > > > > > > > This patch introduces a IIO attribute that allows the user to set the said
-> > > > > > > > > filter to the desired frequency.
-> > > > > > > > >
-> > > > > > > > > NOTE: this has been intentionally not tied to any DT property to allow
-> > > > > > > > > the configuration of this setting from userspace, e.g. with a GUI or by
-> > > > > > > > > reading a configuration file, or maybe reading a GPIO tied to a physical
-> > > > > > > > > switch or accessing some device that can autodetect the line frequency.
-> > > > > > > > >
-> > > > > > > > > Signed-off-by: Andrea Merello <andrea.merello@gmail.com>  
-> > > > > > > > This one is not something that can be expect to be known from the setup
-> > > > > > > > of the device as it will depend on local mains frequency.
-> > > > > > > >
-> > > > > > > > So fine, to have it as a userspace control, but the name is too generic.
-> > > > > > > > We already have a number of filter attributes and we should try to
-> > > > > > > > work out how to bring it inline with them.  
-> > > > > > >
-> > > > > > > Sure
-> > > > > > >  
-> > > > > > > > in_X_filter_low_pass_3db_frequency
-> > > > > > > > in_X_filter_high_pass_3db_frequency
-> > > > > > > >
-> > > > > > > > So would,
-> > > > > > > > in_X_filter_notch_center_frequency work?
-> > > > > > > > ( I suppose we should use the American spelling ;)  
-> > > > > > >
-> > > > > > > Yes, it seems OK in this case. I will produce a V2 with this modification.
-> > > > > > >  
-> > > > > > > > This kind of ignores the harmonics aspect but at least documents the
-> > > > > > > > main frequency being blocked.  
-> > > > > > >
-> > > > > > > I think this is perfectly fine: the user wants to set the notch filter
-> > > > > > > center frequency to either 60Hz or 50Hz to match the line frequency,
-> > > > > > > then she/he expects the filter to simply "work" somehow; IMO the
-> > > > > > > harmonic thing does not needed to be explicit.
-> > > > > > >  
-> > > > > > > > There is a slight complexity that we have devices that have dual
-> > > > > > > > notchfilters (50 and 60Hz) and ones where you can turn it off entirely.
-> > > > > > > >
-> > > > > > > > I suppose no value would count as off and we could perhaps use a list
-> > > > > > > > for both on at the same time (though that's a bit horrible).  
-> > > > > > >
-> > > > > > > IMHO it seems reasonable. Maybe for all-off and both-on conditions we
-> > > > > > > could also use magic strings like i.e. "all" and "off".  
-> > > > > >
-> > > > > > I go with 'maybe' on that one.  Need to think about whether that is just
-> > > > > > a partial solution as we will probably find a device with 3 options that only
-> > > > > > supports any 2 at one time.  That would still need a more complex interface.
-> > > > > >
-> > > > > > Will think on this.  
+> > > > On Mon,  7 Oct 2019 04:41:31 +0200
+> > > > Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> > > > =20
+> > > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > > > > >
-> > > > > I'll keep this patch on hold, waiting for your thoughts. Take the time
-> > > > > you need :)
+> > > > > We can drop some duplicate code if we use devm_action for disabli=
+ng
+> > > > > regulators and pm and the managed variant of iio_device_register(=
+).
 > > > > >
-> > > > > BTW IMHO:
+> > > > > This allows us to completely remove all remove() callbacks from b=
+oth
+> > > > > i2c and spi code.
 > > > > >
-> > > > > If we want to address the most possible generic case, then we may
-> > > > > standardize a set of possible attributes for filters (like "enable",
-> > > > > "center_frequency", "width",  "Q" , etc). Of course most filters will
-> > > > > not allow for setting most of those attributes.  
+> > > > > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com> =20
+> > > > This is on top of the bulk regulator patch which is awaiting precus=
+ors
+> > > > getting to my upstream.  I'll hold this one as well on that.
 > > > >
-> > > > Absolutely.  We currently have a few defined for low and high pass
-> > > > filters, but if there are more complex features to define we should
-> > > > do so.
-> > > >  
-> > > > >
-> > > > > Then i.e.  in our case we could have one single filter that allows for
-> > > > > setting the frequency to either 50hz or 60hz; in other cases we could
-> > > > > have i.e. two filters (with 50hz and 60hz center freq respectively),
-> > > > > and they would allow to set only the "enable" attribute; in case you
-> > > > > can i.e. enable only two of three filters, when you try to enable the
-> > > > > 3rd it just refuse that. In this scenario probably "center_frequency"
-> > > > > could be just a regular value (not a list).  
-> > > >
-> > > > Agreed.  The question is whether to index filters.  So allow more
-> > > > than one of a given type on a given channel. So far we have
-> > > > only had the one and there isn't a nice way to support multiple
-> > > > as we currently don't have any indexed parameters of a single channel.  
+> > > > If it looks like I've forgotten it then give me a poke.
+> > > > =20
 > > >
-> > > Yes, being able to indexing filters was the underlying assumption..
-> > >  
-> > > > I haven't seen parts that actually do have this level of sophisticated
-> > > > filtering built in, with the exception of mains filters like this one.  
+> > > Hi Jonathan,
 > > >
-> > > Yes, I didn't too indeed.
-> > >  
-> > > > I think we have to allow for the possibility so if you are happy to do
-> > > > so please propose the ABI additions to support multiple filters of
-> > > > a type. I would suggest keeping them per type though
-> > > >
-> > > > e.g.
-> > > >
-> > > > in_X_filter_low_passY_3db_frequency etc
-> > > > with Y as the optional index.  
-> > >
-> > > Seems reasonable.
-> > >
-> > > Well the idea is the one you've just explained here, that is adding an
-> > > optional index for filters (per type and per ch); I'm not getting what
-> > > do you mean about proposing it..  
-> > Like all new ABI, needs a formal documentation patch.  Sometimes
-> > we get more review on those than on discussions deep in a thread like
-> > this.  
-> 
-> OK, this is honestly a bit out of my scope, but - if this is OK for
-> you - I may try to do that after getting to some end with those
-> in-flight patches..
-
-That is fine, but we will need docs for anything that is added
-even if it's the version without an index.
-
-Don't have to be detailed etc, just a couple of lines for
-Documentation/ABI/testing/sysfs-bus-iio to define what it is and
-what it's units are.
-
-> 
-> > >  
-> > > > For now, lets just implement then using extended attributes rather
-> > > > than trying to extend the core to generate these automatically.
-> > > >
-> > > > If this turns out not to be a corner case we can try to figure
-> > > > out a sane way of generating the multiple indexed versions.  
-> > >
-> > > OK. Let's try not to over-complicate things until it's really needed -
-> > > Also, maybe if we'll hit other weird devices that need something like
-> > > this, then they could have some exotic features that we haven't in
-> > > mind yet now; it might turn out that we need something even more
-> > > different, so maybe it's better to wait for real "users" of the ABI
-> > > before deciding how to change it..
-> > >
-> > > But indeed, getting back to the patch originally discussed in this
-> > > thread: if you are OK whit this, then I'll go with a
-> > > "in_temp_filter_notch_center_frequency" attribute.
-> > >
-> > > I may use a specific IIO_DEVIC_ATTR or add it to the core (without
-> > > addressing the index thing), as you prefer.  
+> > > gentle poke after v5.4-rc4. Only one of the three patches is in next
+> > > so far, the one using bulk regulators is missing too besides this one=
+. =20
+> > Thanks for the reminder.
 > >
-> > Which ever makes most sense to you. Either is fine for a new
-> > attribute, though here don't we need the indexed filters?  
-> 
-> This specific device has only the option to choose either 50Hz
-> filtering or 60Hz filtering; no option to disable filtering or enable
-> both frequency. So I would say that here we can expose just one filter
-> for which the center frequency can be set to either 50Hz or 60Hz (like
-> the original patch did - but with proper name this time). I would say
-> that we don't need indexed filters here. Or have I missed something ?
-> 
-> (So I would start with a IIO_DEVICE_ATTR for now then).
+> > Applied to the togreg branch of iio.git and pushed out as testing for t=
+he
+> > autobuilders to play with it.
+> > =20
+>=20
+> Hi,
+>=20
+> I don't see it in the togreg branch of the iio tree - did something go
+> wrong with testing?
+I tend to only get to my laptop ever few days + 0-day has taken to timing
+out half the time at the moment (which means you end up waiting another day
+for late running tests to complete).  So can be a week or more before things
+make it to the togreg branch.   Sometimes I forget entirely and it only
+happens when I get a pull request ready.
 
-That's fine.  I'd somehow gotten it into my head that the part
-had two filters :)
+Anyhow, should be in Greg's tree and linux-next by now.
 
-> 
-> > >
-> > > BTW: Looking at other drivers, it seems that for other attributes
-> > > (e.g. oversampling_ratio, discussed in 2/3) they tend to round
-> > > required values to the closest allowed value, instead of returning an
-> > > error. In this specific case, do you want to apply the same logic? For
-> > > consistency reasons I would do that, but at the practical side,
-> > > requiring a line filter frequency which is not either 50Hz or 60Hz
-> > > seems really an error to me..  
-> >
-> > It can be a bit of a tricky decision but for something like this
-> > where the precise value works, it should reject incorrect ones.  
-> 
-> OK
-> 
-> > Oversampling is an odd one.  It should probably always round up
-> > as it's usually not a problem to average more results, it just
-> > wastes power.  That only applies if the oversampling_ratio
-> > is independent of other attributes such as sampling frequency.  
-> 
-> It actually affects also the sampling rate; the more samples you
-> average, the slowest output rate you achieve. But actually there is no
-> attribute for setting the sampling frequency.. it is internally
-> adjusted by the chip depending by averaging and filter line frequency
-> (don't know why).
-> 
-> (if we want also this attribute, then I can craft another patch for
-> adding it; it may be usefult to report the actual sample rate, I'm not
-> sure if it makes sense to let the user set it, because we can
-> basically just switch the averaging to one of the few possible values
-> to get the sample rate to change as a side effect - assuming that one
-> doesn't want to change the line frequency filter).
-
-OK.  There are no hard rules on which attributes are the 'dominant'
-ones so it would be fine to either not expose it or to have it read
-only.  It can certainly be useful for fast devices as it lets you
-size the buffers, but for a temperature sensor like this one
-sampling_frequency probably doesn't matter to anyone.
-
-> 
-> BTW What about to round the requested oversampling_ratio to the
-> closest allowed value (instead of rounding up)?
-
-If a user has requested a value for oversampling ratio, it will
-be to achieve a particular improvement in noise rejection.
-
-As such I'd assume round up was most appropriate, or error on any
-value that isn't a precise value.
-> 
-> > Still, we have traditionally been relaxed on this as long
-> > as writing the the 'correct' value always works as that's what
-> > userspace ABI should be doing.
-> >
-> > Jonathan
-> >  
 Thanks,
 
 Jonathan
+
+>=20
+> Bart
+>=20
+> > Thanks,
+> >
+> > Jonathan =20
+> > >
+> > > Best regards,
+> > > Bartosz Golaszewski
+> > > =20
+> > > > Thanks,
+> > > >
+> > > > Jonathan
+> > > > =20
+> > > > > ---
+> > > > > v1 -> v2:
+> > > > > - squash the patches using devm_iio_device_register() and devm_ac=
+tion
+> > > > >   to keep the changes bisectable
+> > > > >
+> > > > >  drivers/iio/pressure/bmp280-core.c | 62 +++++++++++++++---------=
+------
+> > > > >  drivers/iio/pressure/bmp280-i2c.c  |  6 ---
+> > > > >  drivers/iio/pressure/bmp280-spi.c  |  6 ---
+> > > > >  drivers/iio/pressure/bmp280.h      |  1 -
+> > > > >  4 files changed, 30 insertions(+), 45 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pre=
+ssure/bmp280-core.c
+> > > > > index c2988dbdb1a7..79254dd26dfd 100644
+> > > > > --- a/drivers/iio/pressure/bmp280-core.c
+> > > > > +++ b/drivers/iio/pressure/bmp280-core.c
+> > > > > @@ -984,6 +984,22 @@ static int bmp085_fetch_eoc_irq(struct devic=
+e *dev,
+> > > > >       return 0;
+> > > > >  }
+> > > > >
+> > > > > +static void bmp280_pm_disable(void *data)
+> > > > > +{
+> > > > > +     struct device *dev =3D data;
+> > > > > +
+> > > > > +     pm_runtime_get_sync(dev);
+> > > > > +     pm_runtime_put_noidle(dev);
+> > > > > +     pm_runtime_disable(dev);
+> > > > > +}
+> > > > > +
+> > > > > +static void bmp280_regulators_disable(void *data)
+> > > > > +{
+> > > > > +     struct regulator_bulk_data *supplies =3D data;
+> > > > > +
+> > > > > +     regulator_bulk_disable(BMP280_NUM_SUPPLIES, supplies);
+> > > > > +}
+> > > > > +
+> > > > >  int bmp280_common_probe(struct device *dev,
+> > > > >                       struct regmap *regmap,
+> > > > >                       unsigned int chip,
+> > > > > @@ -1055,6 +1071,11 @@ int bmp280_common_probe(struct device *dev,
+> > > > >               return ret;
+> > > > >       }
+> > > > >
+> > > > > +     ret =3D devm_add_action_or_reset(dev, bmp280_regulators_dis=
+able,
+> > > > > +                                    data->supplies);
+> > > > > +     if (ret)
+> > > > > +             return ret;
+> > > > > +
+> > > > >       /* Wait to make sure we started up properly */
+> > > > >       usleep_range(data->start_up_time, data->start_up_time + 100=
+);
+> > > > >
+> > > > > @@ -1069,17 +1090,16 @@ int bmp280_common_probe(struct device *de=
+v,
+> > > > >       data->regmap =3D regmap;
+> > > > >       ret =3D regmap_read(regmap, BMP280_REG_ID, &chip_id);
+> > > > >       if (ret < 0)
+> > > > > -             goto out_disable_regulators;
+> > > > > +             return ret;
+> > > > >       if (chip_id !=3D chip) {
+> > > > >               dev_err(dev, "bad chip id: expected %x got %x\n",
+> > > > >                       chip, chip_id);
+> > > > > -             ret =3D -EINVAL;
+> > > > > -             goto out_disable_regulators;
+> > > > > +             return -EINVAL;
+> > > > >       }
+> > > > >
+> > > > >       ret =3D data->chip_info->chip_config(data);
+> > > > >       if (ret < 0)
+> > > > > -             goto out_disable_regulators;
+> > > > > +             return ret;
+> > > > >
+> > > > >       dev_set_drvdata(dev, indio_dev);
+> > > > >
+> > > > > @@ -1093,14 +1113,14 @@ int bmp280_common_probe(struct device *de=
+v,
+> > > > >               if (ret < 0) {
+> > > > >                       dev_err(data->dev,
+> > > > >                               "failed to read calibration coeffic=
+ients\n");
+> > > > > -                     goto out_disable_regulators;
+> > > > > +                     return ret;
+> > > > >               }
+> > > > >       } else if (chip_id =3D=3D BMP280_CHIP_ID || chip_id =3D=3D =
+BME280_CHIP_ID) {
+> > > > >               ret =3D bmp280_read_calib(data, &data->calib.bmp280=
+, chip_id);
+> > > > >               if (ret < 0) {
+> > > > >                       dev_err(data->dev,
+> > > > >                               "failed to read calibration coeffic=
+ients\n");
+> > > > > -                     goto out_disable_regulators;
+> > > > > +                     return ret;
+> > > > >               }
+> > > > >       }
+> > > > >
+> > > > > @@ -1112,7 +1132,7 @@ int bmp280_common_probe(struct device *dev,
+> > > > >       if (irq > 0 || (chip_id  =3D=3D BMP180_CHIP_ID)) {
+> > > > >               ret =3D bmp085_fetch_eoc_irq(dev, name, irq, data);
+> > > > >               if (ret)
+> > > > > -                     goto out_disable_regulators;
+> > > > > +                     return ret;
+> > > > >       }
+> > > > >
+> > > > >       /* Enable runtime PM */
+> > > > > @@ -1127,36 +1147,14 @@ int bmp280_common_probe(struct device *de=
+v,
+> > > > >       pm_runtime_use_autosuspend(dev);
+> > > > >       pm_runtime_put(dev);
+> > > > >
+> > > > > -     ret =3D iio_device_register(indio_dev);
+> > > > > +     ret =3D devm_add_action_or_reset(dev, bmp280_pm_disable, de=
+v);
+> > > > >       if (ret)
+> > > > > -             goto out_runtime_pm_disable;
+> > > > > -
+> > > > > -     return 0;
+> > > > > +             return ret;
+> > > > >
+> > > > > -out_runtime_pm_disable:
+> > > > > -     pm_runtime_get_sync(data->dev);
+> > > > > -     pm_runtime_put_noidle(data->dev);
+> > > > > -     pm_runtime_disable(data->dev);
+> > > > > -out_disable_regulators:
+> > > > > -     regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
+> > > > > -     return ret;
+> > > > > +     return devm_iio_device_register(dev, indio_dev);
+> > > > >  }
+> > > > >  EXPORT_SYMBOL(bmp280_common_probe);
+> > > > >
+> > > > > -int bmp280_common_remove(struct device *dev)
+> > > > > -{
+> > > > > -     struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
+> > > > > -     struct bmp280_data *data =3D iio_priv(indio_dev);
+> > > > > -
+> > > > > -     iio_device_unregister(indio_dev);
+> > > > > -     pm_runtime_get_sync(data->dev);
+> > > > > -     pm_runtime_put_noidle(data->dev);
+> > > > > -     pm_runtime_disable(data->dev);
+> > > > > -     regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
+> > > > > -     return 0;
+> > > > > -}
+> > > > > -EXPORT_SYMBOL(bmp280_common_remove);
+> > > > > -
+> > > > >  #ifdef CONFIG_PM
+> > > > >  static int bmp280_runtime_suspend(struct device *dev)
+> > > > >  {
+> > > > > diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pres=
+sure/bmp280-i2c.c
+> > > > > index acd9a3784fb4..3109c8e2cc11 100644
+> > > > > --- a/drivers/iio/pressure/bmp280-i2c.c
+> > > > > +++ b/drivers/iio/pressure/bmp280-i2c.c
+> > > > > @@ -38,11 +38,6 @@ static int bmp280_i2c_probe(struct i2c_client =
+*client,
+> > > > >                                  client->irq);
+> > > > >  }
+> > > > >
+> > > > > -static int bmp280_i2c_remove(struct i2c_client *client)
+> > > > > -{
+> > > > > -     return bmp280_common_remove(&client->dev);
+> > > > > -}
+> > > > > -
+> > > > >  static const struct acpi_device_id bmp280_acpi_i2c_match[] =3D {
+> > > > >       {"BMP0280", BMP280_CHIP_ID },
+> > > > >       {"BMP0180", BMP180_CHIP_ID },
+> > > > > @@ -82,7 +77,6 @@ static struct i2c_driver bmp280_i2c_driver =3D {
+> > > > >               .pm =3D &bmp280_dev_pm_ops,
+> > > > >       },
+> > > > >       .probe          =3D bmp280_i2c_probe,
+> > > > > -     .remove         =3D bmp280_i2c_remove,
+> > > > >       .id_table       =3D bmp280_i2c_id,
+> > > > >  };
+> > > > >  module_i2c_driver(bmp280_i2c_driver);
+> > > > > diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pres=
+sure/bmp280-spi.c
+> > > > > index 9d57b7a3b134..625b86878ad8 100644
+> > > > > --- a/drivers/iio/pressure/bmp280-spi.c
+> > > > > +++ b/drivers/iio/pressure/bmp280-spi.c
+> > > > > @@ -86,11 +86,6 @@ static int bmp280_spi_probe(struct spi_device =
+*spi)
+> > > > >                                  spi->irq);
+> > > > >  }
+> > > > >
+> > > > > -static int bmp280_spi_remove(struct spi_device *spi)
+> > > > > -{
+> > > > > -     return bmp280_common_remove(&spi->dev);
+> > > > > -}
+> > > > > -
+> > > > >  static const struct of_device_id bmp280_of_spi_match[] =3D {
+> > > > >       { .compatible =3D "bosch,bmp085", },
+> > > > >       { .compatible =3D "bosch,bmp180", },
+> > > > > @@ -118,7 +113,6 @@ static struct spi_driver bmp280_spi_driver =
+=3D {
+> > > > >       },
+> > > > >       .id_table =3D bmp280_spi_id,
+> > > > >       .probe =3D bmp280_spi_probe,
+> > > > > -     .remove =3D bmp280_spi_remove,
+> > > > >  };
+> > > > >  module_spi_driver(bmp280_spi_driver);
+> > > > >
+> > > > > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure=
+/bmp280.h
+> > > > > index eda50ef65706..57ba0e85db91 100644
+> > > > > --- a/drivers/iio/pressure/bmp280.h
+> > > > > +++ b/drivers/iio/pressure/bmp280.h
+> > > > > @@ -112,7 +112,6 @@ int bmp280_common_probe(struct device *dev,
+> > > > >                       unsigned int chip,
+> > > > >                       const char *name,
+> > > > >                       int irq);
+> > > > > -int bmp280_common_remove(struct device *dev);
+> > > > >
+> > > > >  /* PM ops */
+> > > > >  extern const struct dev_pm_ops bmp280_dev_pm_ops; =20
+> > > > =20
+> > =20
+

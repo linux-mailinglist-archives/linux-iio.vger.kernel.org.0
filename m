@@ -2,94 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E2EDECF9E
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2019 16:58:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 164E5ED084
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2019 21:15:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbfKBP6Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Nov 2019 11:58:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44798 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726454AbfKBP6Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 2 Nov 2019 11:58:25 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 17D1C217D9;
-        Sat,  2 Nov 2019 15:58:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572710304;
-        bh=T6m1UkajXitnwCXENVIC9e6Xgw0SuI7lqN1Ew+w8kV4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tGX14JAkjfRQ3aQlh/eDZDewPG7T9R3IL3MzWycM9IQ5fxo6duIi6NSpygJm++ZKz
-         SpblczQTHX+rrybyc35bpLnay5lxgMOsaZzStN/mkyNtI4JWZtshL/daI21KkcOk1n
-         ycxRHiUm7te7fyH74m6OFGsa0XrFtI09wHmkyrfw=
-Date:   Sat, 2 Nov 2019 15:58:20 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: fix ODR check in
- st_lsm6dsx_write_raw
-Message-ID: <20191102155820.7186f1f6@archlinux>
-In-Reply-To: <eda7fb795fb47c41b6c6d617255cb8eec486c355.1572199100.git.lorenzo@kernel.org>
-References: <eda7fb795fb47c41b6c6d617255cb8eec486c355.1572199100.git.lorenzo@kernel.org>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726687AbfKBUPr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Nov 2019 16:15:47 -0400
+Received: from eddie.linux-mips.org ([148.251.95.138]:35242 "EHLO
+        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726523AbfKBUPr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Nov 2019 16:15:47 -0400
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+        (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+        id S23992926AbfKBUPibe3l0 (ORCPT
+        <rfc822;linux-kernel@vger.kernel.org> + 1 other);
+        Sat, 2 Nov 2019 21:15:38 +0100
+Date:   Sat, 2 Nov 2019 21:15:35 +0100
+From:   Ladislav Michl <ladis@linux-mips.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     YueHaibing <yuehaibing@huawei.com>, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, denis.ciocca@st.com,
+        rfontana@redhat.com, tglx@linutronix.de, heiko.stuebner@bq.com,
+        rjones@gateworks.com, drake@endlessm.com, colin.king@canonical.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] iio: st_accel: Fix unused variable warning
+Message-ID: <20191102201535.GA30346@lenoch>
+References: <20191101134741.25108-1-yuehaibing@huawei.com>
+ <20191102104125.GA22015@lenoch>
+ <20191102140810.3d756294@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191102140810.3d756294@archlinux>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 27 Oct 2019 19:02:30 +0100
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-
-> Since st_lsm6dsx i2c master controller relies on accel device as trigger
-> and slave devices can run at different ODRs we must select an accel_odr >=
-> slave_odr. Report real accel ODR in st_lsm6dsx_check_odr() in order to
-> properly set sensor frequency in st_lsm6dsx_write_raw and avoid to
-> report unsupported frequency
+On Sat, Nov 02, 2019 at 02:08:10PM +0000, Jonathan Cameron wrote:
+> On Sat, 2 Nov 2019 11:41:25 +0100
+> Ladislav Michl <ladis@linux-mips.org> wrote:
 > 
-> Fixes: 6ffb55e5009ff ("iio: imu: st_lsm6dsx: introduce ST_LSM6DSX_ID_EXT sensor ids")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-Given time in cycle I 'might' shift this into togreg to go in during the
-merge window. 
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+> > On Fri, Nov 01, 2019 at 09:47:41PM +0800, YueHaibing wrote:
+> > > drivers/iio/accel/st_accel_core.c:1005:44: warning:
+> > >  mount_matrix_ext_info defined but not used [-Wunused-const-variable=]
+> > > 
+> > > Move it to ifdef to mute this warning.
+> > > 
+> > > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> > > ---
+> > >  drivers/iio/accel/st_accel_core.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
+> > > index 2e37f8a..bba0717 100644
+> > > --- a/drivers/iio/accel/st_accel_core.c
+> > > +++ b/drivers/iio/accel/st_accel_core.c
+> > > @@ -1002,10 +1002,12 @@ get_mount_matrix(const struct iio_dev *indio_dev,
+> > >  	return adata->mount_matrix;
+> > >  }
+> > >  
+> > > +#ifdef CONFIG_ACPI
+> > >  static const struct iio_chan_spec_ext_info mount_matrix_ext_info[] = {
+> > >  	IIO_MOUNT_MATRIX(IIO_SHARED_BY_ALL, get_mount_matrix),  
+> > 
+> > So now you do not get any warning for unused get_mount_matrix?
+> > (Then it would make more sense to put all that stuff under one ifdef
+> > and provide empty apply_acpi_orientation for non ACPI case)
 > 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 1f28a7733fc0..c53c03ec2423 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -1362,8 +1362,7 @@ int st_lsm6dsx_check_odr(struct st_lsm6dsx_sensor *sensor, u16 odr, u8 *val)
->  		return -EINVAL;
->  
->  	*val = odr_table->odr_avl[i].val;
-> -
-> -	return 0;
-> +	return odr_table->odr_avl[i].hz;
->  }
->  
->  static u16 st_lsm6dsx_check_odr_dependency(struct st_lsm6dsx_hw *hw, u16 odr,
-> @@ -1527,8 +1526,10 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
->  	case IIO_CHAN_INFO_SAMP_FREQ: {
->  		u8 data;
->  
-> -		err = st_lsm6dsx_check_odr(sensor, val, &data);
-> -		if (!err)
-> +		val = st_lsm6dsx_check_odr(sensor, val, &data);
-> +		if (val < 0)
-> +			err = val;
-> +		else
->  			sensor->odr = val;
->  		break;
->  	}
+> Does the __maybe_unused marking make this go away?
+> 
+> I'd assume that the compiler will manage to drop this either way
+> but I guess we should check that.
+> 
+> ifdef magic is always harder to read and potentially fragile in the
+> long run.  Here we simply want to indicate that in some build
+> configurations we might not use this.
 
+This suggestion implies we'll get rid of CONFIG_ACPI completely, which
+seems inapproriate looking at size of apply_acpi_orientation function.
+And having both CONFIG_ACPI and __maybe_unused does not make much
+sense. I had something like that in mind (+COMPILE_TEST perhaps):
+
+diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
+index 2e37f8a6d8cf..0e7eac62d618 100644
+--- a/drivers/iio/accel/st_accel_core.c
++++ b/drivers/iio/accel/st_accel_core.c
+@@ -993,6 +993,7 @@ static const struct iio_trigger_ops st_accel_trigger_ops = {
+ #define ST_ACCEL_TRIGGER_OPS NULL
+ #endif
+ 
++#ifdef CONFIG_ACPI
+ static const struct iio_mount_matrix *
+ get_mount_matrix(const struct iio_dev *indio_dev,
+ 		 const struct iio_chan_spec *chan)
+@@ -1013,7 +1014,6 @@ static const struct iio_chan_spec_ext_info mount_matrix_ext_info[] = {
+ static int apply_acpi_orientation(struct iio_dev *indio_dev,
+ 				  struct iio_chan_spec *channels)
+ {
+-#ifdef CONFIG_ACPI
+ 	struct st_sensor_data *adata = iio_priv(indio_dev);
+ 	struct acpi_buffer buffer = {ACPI_ALLOCATE_BUFFER, NULL};
+ 	struct acpi_device *adev;
+@@ -1141,10 +1141,14 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev,
+ out:
+ 	kfree(buffer.pointer);
+ 	return ret;
+-#else /* !CONFIG_ACPI */
++}
++#else
++static int apply_acpi_orientation(struct iio_dev *indio_dev,
++				  struct iio_chan_spec *channels)
++{
+ 	return 0;
+-#endif
+ }
++#endif
+ 
+ /*
+  * st_accel_get_settings() - get sensor settings from device name
+> Thanks,
+> 
+> Jonathan
+> 
+> 
+> > 
+> > >  	{ },
+> > >  };
+> > > +#endif
+> > >  
+> > >  /* Read ST-specific _ONT orientation data from ACPI and generate an
+> > >   * appropriate mount matrix.
+> > > -- 
+> > > 2.7.4
+> > >   

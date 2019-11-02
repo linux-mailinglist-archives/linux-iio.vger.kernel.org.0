@@ -2,347 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F563ECF21
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2019 15:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A078EECF31
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2019 15:37:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726437AbfKBOWw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Nov 2019 10:22:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40848 "EHLO mail.kernel.org"
+        id S1726574AbfKBOh4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Nov 2019 10:37:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45578 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726430AbfKBOWw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 2 Nov 2019 10:22:52 -0400
+        id S1726430AbfKBOh4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 2 Nov 2019 10:37:56 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4633921726;
-        Sat,  2 Nov 2019 14:22:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E42FF20862;
+        Sat,  2 Nov 2019 14:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572704570;
-        bh=kO/q3qIR5TnGlmOd0Wgwn4ImJ5Qb9IvuZktTvipwaWU=;
+        s=default; t=1572705474;
+        bh=4aKFoWXZC1vBWmdZBlN+4gGl3ioFIQxorsLJ/K+QKgk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HNVHR2uAJ0ywCQYYd3VMwweQ7nhM5J/Mj63pi5u8nDDvevm7Sv7fEMtxRJz3awNAc
-         jZ6VSnnFdTB+7Rtl+CTbALhBup6PG3TibF1UvhGQyDlida535kcvhlh8bdk0rsPHGj
-         fmqQG2Dy4nZs3JJKCLZKnLGTg1hKl8oxWD/5flrE=
-Date:   Sat, 2 Nov 2019 14:22:45 +0000
+        b=1/w6ds4HNlKHGvY2ce7ceUj/K7rOCWW6SdHN1y1fCUjckmfhh97cNX+U6IkUzgMY3
+         Lvfe8F42cjeZHh+//BQjwPoEOivxfDcwxbkoFY2pFAiuLqtlZ+o5xuZD9XOa5FhmvU
+         qdmsVxotGna/1NwT9Z0NHx1R9YCnMCUzlsJmya+Y=
+Date:   Sat, 2 Nov 2019 14:37:50 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v2] iio: pressure: bmp280: use devm action and remove
- labels from probe
-Message-ID: <20191102142245.57bb5812@archlinux>
-In-Reply-To: <CAMRc=Me=d9MmMPTmwMk-5mYkgrFS5+3y4RNj6CQinWG8N2YntA@mail.gmail.com>
-References: <20191007024131.22708-1-brgl@bgdev.pl>
-        <20191012143722.7cb7015d@archlinux>
-        <CAMRc=MekOWGKo4eJ69ifV+MG5==PetPpb87Amrqm_x95sjFiGQ@mail.gmail.com>
-        <20191022111502.5097190e@archlinux>
-        <CAMRc=Me=d9MmMPTmwMk-5mYkgrFS5+3y4RNj6CQinWG8N2YntA@mail.gmail.com>
+To:     Jack Andersen <jackoalan@gmail.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: dln2-adc: fix iio_triggered_buffer_postenable()
+ position
+Message-ID: <20191102143750.17beeb16@archlinux>
+In-Reply-To: <CAPHBK3a-EQVZzF-LZC-jNCinF3i09PRG7ZA+hporMr5JvFpDtQ@mail.gmail.com>
+References: <20191023082634.18195-1-alexandru.ardelean@analog.com>
+        <20191027165651.1da18263@archlinux>
+        <CAPHBK3a-EQVZzF-LZC-jNCinF3i09PRG7ZA+hporMr5JvFpDtQ@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 31 Oct 2019 07:46:51 +0100
-Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+On Tue, 29 Oct 2019 11:58:16 -1000
+Jack Andersen <jackoalan@gmail.com> wrote:
 
-> wt., 22 pa=C5=BA 2019 o 12:15 Jonathan Cameron <jic23@kernel.org> napisa=
-=C5=82(a):
-> >
-> > On Mon, 21 Oct 2019 14:47:18 +0200
-> > Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > =20
-> > > sob., 12 pa=C5=BA 2019 o 15:37 Jonathan Cameron <jic23@kernel.org> na=
-pisa=C5=82(a): =20
-> > > >
-> > > > On Mon,  7 Oct 2019 04:41:31 +0200
-> > > > Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > > > =20
-> > > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > > >
-> > > > > We can drop some duplicate code if we use devm_action for disabli=
-ng
-> > > > > regulators and pm and the managed variant of iio_device_register(=
-).
-> > > > >
-> > > > > This allows us to completely remove all remove() callbacks from b=
-oth
-> > > > > i2c and spi code.
-> > > > >
-> > > > > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com> =20
-> > > > This is on top of the bulk regulator patch which is awaiting precus=
-ors
-> > > > getting to my upstream.  I'll hold this one as well on that.
-> > > >
-> > > > If it looks like I've forgotten it then give me a poke.
-> > > > =20
-> > >
-> > > Hi Jonathan,
-> > >
-> > > gentle poke after v5.4-rc4. Only one of the three patches is in next
-> > > so far, the one using bulk regulators is missing too besides this one=
-. =20
-> > Thanks for the reminder.
-> >
-> > Applied to the togreg branch of iio.git and pushed out as testing for t=
-he
-> > autobuilders to play with it.
-> > =20
->=20
-> Hi,
->=20
-> I don't see it in the togreg branch of the iio tree - did something go
-> wrong with testing?
-I tend to only get to my laptop ever few days + 0-day has taken to timing
-out half the time at the moment (which means you end up waiting another day
-for late running tests to complete).  So can be a week or more before things
-make it to the togreg branch.   Sometimes I forget entirely and it only
-happens when I get a pull request ready.
+> These changes look fine to me as well.
+> 
+> I no longer have access to a DLN2 for empirical testing, but since this is
+> mainly integration improvements with the IIO side of things, it shouldn't make
+> a difference for the hardware.
 
-Anyhow, should be in Greg's tree and linux-next by now.
+Whilst I have one of these, it'll will be a while before I'm in any position
+to test it.  Hence let's gamble a tiny bit.
+
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
->=20
-> Bart
->=20
+> 
+> 
+> 
+> On Sun, 27 Oct 2019 at 06:56, Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Wed, 23 Oct 2019 11:26:34 +0300
+> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> >  
+> > > The iio_triggered_buffer_postenable() hook should be called first to
+> > > attach the poll function. The iio_triggered_buffer_predisable() hook is
+> > > called last (as is it should).
+> > >
+> > > This change moves iio_triggered_buffer_postenable() to be called first. It
+> > > adds iio_triggered_buffer_predisable() on the error paths of the postenable
+> > > hook.
+> > > For the predisable hook, some code-paths have been changed to make sure
+> > > that the iio_triggered_buffer_predisable() hook gets called in case there
+> > > is an error before it.
+> > >
+> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
+> > +CC Jack who wrote the driver.
+> >
+> > Looks fine to me, but I always like these to sit for a while and ideally get
+> > review from the authors / maintainers of the drivers.
+> >
 > > Thanks,
 > >
-> > Jonathan =20
+> > Jonathan
+> >  
+> > > ---
+> > >  drivers/iio/adc/dln2-adc.c | 20 ++++++++++++++------
+> > >  1 file changed, 14 insertions(+), 6 deletions(-)
 > > >
-> > > Best regards,
-> > > Bartosz Golaszewski
-> > > =20
-> > > > Thanks,
-> > > >
-> > > > Jonathan
-> > > > =20
-> > > > > ---
-> > > > > v1 -> v2:
-> > > > > - squash the patches using devm_iio_device_register() and devm_ac=
-tion
-> > > > >   to keep the changes bisectable
-> > > > >
-> > > > >  drivers/iio/pressure/bmp280-core.c | 62 +++++++++++++++---------=
-------
-> > > > >  drivers/iio/pressure/bmp280-i2c.c  |  6 ---
-> > > > >  drivers/iio/pressure/bmp280-spi.c  |  6 ---
-> > > > >  drivers/iio/pressure/bmp280.h      |  1 -
-> > > > >  4 files changed, 30 insertions(+), 45 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pre=
-ssure/bmp280-core.c
-> > > > > index c2988dbdb1a7..79254dd26dfd 100644
-> > > > > --- a/drivers/iio/pressure/bmp280-core.c
-> > > > > +++ b/drivers/iio/pressure/bmp280-core.c
-> > > > > @@ -984,6 +984,22 @@ static int bmp085_fetch_eoc_irq(struct devic=
-e *dev,
-> > > > >       return 0;
-> > > > >  }
-> > > > >
-> > > > > +static void bmp280_pm_disable(void *data)
-> > > > > +{
-> > > > > +     struct device *dev =3D data;
-> > > > > +
-> > > > > +     pm_runtime_get_sync(dev);
-> > > > > +     pm_runtime_put_noidle(dev);
-> > > > > +     pm_runtime_disable(dev);
-> > > > > +}
-> > > > > +
-> > > > > +static void bmp280_regulators_disable(void *data)
-> > > > > +{
-> > > > > +     struct regulator_bulk_data *supplies =3D data;
-> > > > > +
-> > > > > +     regulator_bulk_disable(BMP280_NUM_SUPPLIES, supplies);
-> > > > > +}
-> > > > > +
-> > > > >  int bmp280_common_probe(struct device *dev,
-> > > > >                       struct regmap *regmap,
-> > > > >                       unsigned int chip,
-> > > > > @@ -1055,6 +1071,11 @@ int bmp280_common_probe(struct device *dev,
-> > > > >               return ret;
-> > > > >       }
-> > > > >
-> > > > > +     ret =3D devm_add_action_or_reset(dev, bmp280_regulators_dis=
-able,
-> > > > > +                                    data->supplies);
-> > > > > +     if (ret)
-> > > > > +             return ret;
-> > > > > +
-> > > > >       /* Wait to make sure we started up properly */
-> > > > >       usleep_range(data->start_up_time, data->start_up_time + 100=
-);
-> > > > >
-> > > > > @@ -1069,17 +1090,16 @@ int bmp280_common_probe(struct device *de=
-v,
-> > > > >       data->regmap =3D regmap;
-> > > > >       ret =3D regmap_read(regmap, BMP280_REG_ID, &chip_id);
-> > > > >       if (ret < 0)
-> > > > > -             goto out_disable_regulators;
-> > > > > +             return ret;
-> > > > >       if (chip_id !=3D chip) {
-> > > > >               dev_err(dev, "bad chip id: expected %x got %x\n",
-> > > > >                       chip, chip_id);
-> > > > > -             ret =3D -EINVAL;
-> > > > > -             goto out_disable_regulators;
-> > > > > +             return -EINVAL;
-> > > > >       }
-> > > > >
-> > > > >       ret =3D data->chip_info->chip_config(data);
-> > > > >       if (ret < 0)
-> > > > > -             goto out_disable_regulators;
-> > > > > +             return ret;
-> > > > >
-> > > > >       dev_set_drvdata(dev, indio_dev);
-> > > > >
-> > > > > @@ -1093,14 +1113,14 @@ int bmp280_common_probe(struct device *de=
-v,
-> > > > >               if (ret < 0) {
-> > > > >                       dev_err(data->dev,
-> > > > >                               "failed to read calibration coeffic=
-ients\n");
-> > > > > -                     goto out_disable_regulators;
-> > > > > +                     return ret;
-> > > > >               }
-> > > > >       } else if (chip_id =3D=3D BMP280_CHIP_ID || chip_id =3D=3D =
-BME280_CHIP_ID) {
-> > > > >               ret =3D bmp280_read_calib(data, &data->calib.bmp280=
-, chip_id);
-> > > > >               if (ret < 0) {
-> > > > >                       dev_err(data->dev,
-> > > > >                               "failed to read calibration coeffic=
-ients\n");
-> > > > > -                     goto out_disable_regulators;
-> > > > > +                     return ret;
-> > > > >               }
-> > > > >       }
-> > > > >
-> > > > > @@ -1112,7 +1132,7 @@ int bmp280_common_probe(struct device *dev,
-> > > > >       if (irq > 0 || (chip_id  =3D=3D BMP180_CHIP_ID)) {
-> > > > >               ret =3D bmp085_fetch_eoc_irq(dev, name, irq, data);
-> > > > >               if (ret)
-> > > > > -                     goto out_disable_regulators;
-> > > > > +                     return ret;
-> > > > >       }
-> > > > >
-> > > > >       /* Enable runtime PM */
-> > > > > @@ -1127,36 +1147,14 @@ int bmp280_common_probe(struct device *de=
-v,
-> > > > >       pm_runtime_use_autosuspend(dev);
-> > > > >       pm_runtime_put(dev);
-> > > > >
-> > > > > -     ret =3D iio_device_register(indio_dev);
-> > > > > +     ret =3D devm_add_action_or_reset(dev, bmp280_pm_disable, de=
-v);
-> > > > >       if (ret)
-> > > > > -             goto out_runtime_pm_disable;
-> > > > > -
-> > > > > -     return 0;
-> > > > > +             return ret;
-> > > > >
-> > > > > -out_runtime_pm_disable:
-> > > > > -     pm_runtime_get_sync(data->dev);
-> > > > > -     pm_runtime_put_noidle(data->dev);
-> > > > > -     pm_runtime_disable(data->dev);
-> > > > > -out_disable_regulators:
-> > > > > -     regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
-> > > > > -     return ret;
-> > > > > +     return devm_iio_device_register(dev, indio_dev);
-> > > > >  }
-> > > > >  EXPORT_SYMBOL(bmp280_common_probe);
-> > > > >
-> > > > > -int bmp280_common_remove(struct device *dev)
-> > > > > -{
-> > > > > -     struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
-> > > > > -     struct bmp280_data *data =3D iio_priv(indio_dev);
-> > > > > -
-> > > > > -     iio_device_unregister(indio_dev);
-> > > > > -     pm_runtime_get_sync(data->dev);
-> > > > > -     pm_runtime_put_noidle(data->dev);
-> > > > > -     pm_runtime_disable(data->dev);
-> > > > > -     regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
-> > > > > -     return 0;
-> > > > > -}
-> > > > > -EXPORT_SYMBOL(bmp280_common_remove);
-> > > > > -
-> > > > >  #ifdef CONFIG_PM
-> > > > >  static int bmp280_runtime_suspend(struct device *dev)
-> > > > >  {
-> > > > > diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pres=
-sure/bmp280-i2c.c
-> > > > > index acd9a3784fb4..3109c8e2cc11 100644
-> > > > > --- a/drivers/iio/pressure/bmp280-i2c.c
-> > > > > +++ b/drivers/iio/pressure/bmp280-i2c.c
-> > > > > @@ -38,11 +38,6 @@ static int bmp280_i2c_probe(struct i2c_client =
-*client,
-> > > > >                                  client->irq);
-> > > > >  }
-> > > > >
-> > > > > -static int bmp280_i2c_remove(struct i2c_client *client)
-> > > > > -{
-> > > > > -     return bmp280_common_remove(&client->dev);
-> > > > > -}
-> > > > > -
-> > > > >  static const struct acpi_device_id bmp280_acpi_i2c_match[] =3D {
-> > > > >       {"BMP0280", BMP280_CHIP_ID },
-> > > > >       {"BMP0180", BMP180_CHIP_ID },
-> > > > > @@ -82,7 +77,6 @@ static struct i2c_driver bmp280_i2c_driver =3D {
-> > > > >               .pm =3D &bmp280_dev_pm_ops,
-> > > > >       },
-> > > > >       .probe          =3D bmp280_i2c_probe,
-> > > > > -     .remove         =3D bmp280_i2c_remove,
-> > > > >       .id_table       =3D bmp280_i2c_id,
-> > > > >  };
-> > > > >  module_i2c_driver(bmp280_i2c_driver);
-> > > > > diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pres=
-sure/bmp280-spi.c
-> > > > > index 9d57b7a3b134..625b86878ad8 100644
-> > > > > --- a/drivers/iio/pressure/bmp280-spi.c
-> > > > > +++ b/drivers/iio/pressure/bmp280-spi.c
-> > > > > @@ -86,11 +86,6 @@ static int bmp280_spi_probe(struct spi_device =
-*spi)
-> > > > >                                  spi->irq);
-> > > > >  }
-> > > > >
-> > > > > -static int bmp280_spi_remove(struct spi_device *spi)
-> > > > > -{
-> > > > > -     return bmp280_common_remove(&spi->dev);
-> > > > > -}
-> > > > > -
-> > > > >  static const struct of_device_id bmp280_of_spi_match[] =3D {
-> > > > >       { .compatible =3D "bosch,bmp085", },
-> > > > >       { .compatible =3D "bosch,bmp180", },
-> > > > > @@ -118,7 +113,6 @@ static struct spi_driver bmp280_spi_driver =
-=3D {
-> > > > >       },
-> > > > >       .id_table =3D bmp280_spi_id,
-> > > > >       .probe =3D bmp280_spi_probe,
-> > > > > -     .remove =3D bmp280_spi_remove,
-> > > > >  };
-> > > > >  module_spi_driver(bmp280_spi_driver);
-> > > > >
-> > > > > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure=
-/bmp280.h
-> > > > > index eda50ef65706..57ba0e85db91 100644
-> > > > > --- a/drivers/iio/pressure/bmp280.h
-> > > > > +++ b/drivers/iio/pressure/bmp280.h
-> > > > > @@ -112,7 +112,6 @@ int bmp280_common_probe(struct device *dev,
-> > > > >                       unsigned int chip,
-> > > > >                       const char *name,
-> > > > >                       int irq);
-> > > > > -int bmp280_common_remove(struct device *dev);
-> > > > >
-> > > > >  /* PM ops */
-> > > > >  extern const struct dev_pm_ops bmp280_dev_pm_ops; =20
-> > > > =20
-> > =20
+> > > diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+> > > index 5fa78c273a25..65c7c9329b1c 100644
+> > > --- a/drivers/iio/adc/dln2-adc.c
+> > > +++ b/drivers/iio/adc/dln2-adc.c
+> > > @@ -524,6 +524,10 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+> > >       u16 conflict;
+> > >       unsigned int trigger_chan;
+> > >
+> > > +     ret = iio_triggered_buffer_postenable(indio_dev);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > >       mutex_lock(&dln2->mutex);
+> > >
+> > >       /* Enable ADC */
+> > > @@ -537,6 +541,7 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+> > >                               (int)conflict);
+> > >                       ret = -EBUSY;
+> > >               }
+> > > +             iio_triggered_buffer_predisable(indio_dev);
+> > >               return ret;
+> > >       }
+> > >
+> > > @@ -550,6 +555,7 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+> > >               mutex_unlock(&dln2->mutex);
+> > >               if (ret < 0) {
+> > >                       dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
+> > > +                     iio_triggered_buffer_predisable(indio_dev);
+> > >                       return ret;
+> > >               }
+> > >       } else {
+> > > @@ -557,12 +563,12 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+> > >               mutex_unlock(&dln2->mutex);
+> > >       }
+> > >
+> > > -     return iio_triggered_buffer_postenable(indio_dev);
+> > > +     return 0;
+> > >  }
+> > >
+> > >  static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
+> > >  {
+> > > -     int ret;
+> > > +     int ret, ret2;
+> > >       struct dln2_adc *dln2 = iio_priv(indio_dev);
+> > >
+> > >       mutex_lock(&dln2->mutex);
+> > > @@ -577,12 +583,14 @@ static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
+> > >       ret = dln2_adc_set_port_enabled(dln2, false, NULL);
+> > >
+> > >       mutex_unlock(&dln2->mutex);
+> > > -     if (ret < 0) {
+> > > +     if (ret < 0)
+> > >               dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
+> > > -             return ret;
+> > > -     }
+> > >
+> > > -     return iio_triggered_buffer_predisable(indio_dev);
+> > > +     ret2 = iio_triggered_buffer_predisable(indio_dev);
+> > > +     if (ret == 0)
+> > > +             ret = ret2;
+> > > +
+> > > +     return ret;
+> > >  }
+> > >
+> > >  static const struct iio_buffer_setup_ops dln2_adc_buffer_setup_ops = {  
+> >  
 

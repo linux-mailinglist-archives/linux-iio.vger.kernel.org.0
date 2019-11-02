@@ -2,41 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E195ECF33
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2019 15:40:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E2EDECF9E
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2019 16:58:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726437AbfKBOkq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Nov 2019 10:40:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46850 "EHLO mail.kernel.org"
+        id S1726523AbfKBP6Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Nov 2019 11:58:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44798 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726430AbfKBOkq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 2 Nov 2019 10:40:46 -0400
+        id S1726454AbfKBP6Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 2 Nov 2019 11:58:25 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 56AFE20862;
-        Sat,  2 Nov 2019 14:40:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 17D1C217D9;
+        Sat,  2 Nov 2019 15:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572705645;
-        bh=pkm9tdn2nbnZk9K6vYRlSU4X9Ut4KEpxn0BjOdLIpYE=;
+        s=default; t=1572710304;
+        bh=T6m1UkajXitnwCXENVIC9e6Xgw0SuI7lqN1Ew+w8kV4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=yOcBL8AI0u6vxlRIaoqOu8P9AkF9C90A5LmK/uMz8Q8YUr3Yh36eK/sDh9ZvMmEK4
-         vCg3MYJVC9nuAUwR/OiuvVzNg7DmREunI33ncXY9CAgC2WB5WP0jiA6t9HaEzeEufQ
-         MiPG7JuMGJpV2mHFVeHzdMnsLHy+LoTurYZwOpK4=
-Date:   Sat, 2 Nov 2019 14:40:41 +0000
+        b=tGX14JAkjfRQ3aQlh/eDZDewPG7T9R3IL3MzWycM9IQ5fxo6duIi6NSpygJm++ZKz
+         SpblczQTHX+rrybyc35bpLnay5lxgMOsaZzStN/mkyNtI4JWZtshL/daI21KkcOk1n
+         ycxRHiUm7te7fyH74m6OFGsa0XrFtI09wHmkyrfw=
+Date:   Sat, 2 Nov 2019 15:58:20 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "matt.ranostay@konsulko.com" <matt.ranostay@konsulko.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: hdc100x: fix
- iio_triggered_buffer_{predisable,postenable} positions
-Message-ID: <20191102144041.2c8bc85d@archlinux>
-In-Reply-To: <46d418bd0546c98e22a0d331741c053274c2170f.camel@analog.com>
-References: <20191023082714.18681-1-alexandru.ardelean@analog.com>
-        <20191027165813.5a5b0519@archlinux>
-        <CAJCx=gnCaqKHuZkRoCyHXR4ewwmqFCsRTiUty=CH0KB8PS+YCQ@mail.gmail.com>
-        <46d418bd0546c98e22a0d331741c053274c2170f.camel@analog.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: fix ODR check in
+ st_lsm6dsx_write_raw
+Message-ID: <20191102155820.7186f1f6@archlinux>
+In-Reply-To: <eda7fb795fb47c41b6c6d617255cb8eec486c355.1572199100.git.lorenzo@kernel.org>
+References: <eda7fb795fb47c41b6c6d617255cb8eec486c355.1572199100.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,107 +41,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Oct 2019 07:11:51 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Sun, 27 Oct 2019 19:02:30 +0100
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> On Sun, 2019-10-27 at 20:37 +0200, Matt Ranostay wrote:
-> > [External]
-> > 
-> > On Sun, Oct 27, 2019 at 6:58 PM Jonathan Cameron <jic23@kernel.org>
-> > wrote:  
-> > > On Wed, 23 Oct 2019 11:27:14 +0300
-> > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> > >   
-> > > > The iio_triggered_buffer_postenable() hook should be called first to
-> > > > attach the poll function and the iio_triggered_buffer_predisable()
-> > > > hook
-> > > > should be called last in the predisable hook.
-> > > > 
-> > > > This change updates the driver to attach/detach the poll func in the
-> > > > correct order.
-> > > > 
-> > > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> > > Seems fine, but should have cc'd Matt and I'd like to give him time
-> > > to take a quick look.
-> > >   
-> > 
-> > Reviewed-by: Matt Ranostay <matt.ranostay@konsulko.com>  
+> Since st_lsm6dsx i2c master controller relies on accel device as trigger
+> and slave devices can run at different ODRs we must select an accel_odr >=
+> slave_odr. Report real accel ODR in st_lsm6dsx_check_odr() in order to
+> properly set sensor frequency in st_lsm6dsx_write_raw and avoid to
+> report unsupported frequency
 > 
-> Apologies for not CC-ing Matt.
-> I guess I wasn't paying [close enough] attention to the output of
-> get_maintainers.pl
-> 
-> Thanks
-> Alex
-> 
-Applied to the togreg branch of iio.git and pushed out as testing for the
-autobuilders to play with it.
+> Fixes: 6ffb55e5009ff ("iio: imu: st_lsm6dsx: introduce ST_LSM6DSX_ID_EXT sensor ids")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+Applied to the fixes-togreg branch of iio.git and marked for stable.
+Given time in cycle I 'might' shift this into togreg to go in during the
+merge window. 
 
 Thanks,
 
 Jonathan
 
-> >   
-> > > +CC Matt.
-> > > 
-> > > Thanks,
-> > > 
-> > > Jonathan
-> > >   
-> > > > ---
-> > > >  drivers/iio/humidity/hdc100x.c | 19 +++++++++++--------
-> > > >  1 file changed, 11 insertions(+), 8 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/iio/humidity/hdc100x.c
-> > > > b/drivers/iio/humidity/hdc100x.c
-> > > > index bfe1cdb16846..963ff043eecf 100644
-> > > > --- a/drivers/iio/humidity/hdc100x.c
-> > > > +++ b/drivers/iio/humidity/hdc100x.c
-> > > > @@ -278,31 +278,34 @@ static int hdc100x_buffer_postenable(struct
-> > > > iio_dev *indio_dev)
-> > > >       struct hdc100x_data *data = iio_priv(indio_dev);
-> > > >       int ret;
-> > > > 
-> > > > +     ret = iio_triggered_buffer_postenable(indio_dev);
-> > > > +     if (ret)
-> > > > +             return ret;
-> > > > +
-> > > >       /* Buffer is enabled. First set ACQ Mode, then attach poll func
-> > > > */
-> > > >       mutex_lock(&data->lock);
-> > > >       ret = hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE,
-> > > >                                   HDC100X_REG_CONFIG_ACQ_MODE);
-> > > >       mutex_unlock(&data->lock);
-> > > >       if (ret)
-> > > > -             return ret;
-> > > > +             iio_triggered_buffer_predisable(indio_dev);
-> > > > 
-> > > > -     return iio_triggered_buffer_postenable(indio_dev);
-> > > > +     return ret;
-> > > >  }
-> > > > 
-> > > >  static int hdc100x_buffer_predisable(struct iio_dev *indio_dev)
-> > > >  {
-> > > >       struct hdc100x_data *data = iio_priv(indio_dev);
-> > > > -     int ret;
-> > > > -
-> > > > -     /* First detach poll func, then reset ACQ mode. OK to disable
-> > > > buffer */
-> > > > -     ret = iio_triggered_buffer_predisable(indio_dev);
-> > > > -     if (ret)
-> > > > -             return ret;
-> > > > +     int ret, ret2;
-> > > > 
-> > > >       mutex_lock(&data->lock);
-> > > >       ret = hdc100x_update_config(data, HDC100X_REG_CONFIG_ACQ_MODE,
-> > > > 0);
-> > > >       mutex_unlock(&data->lock);
-> > > > 
-> > > > +     ret2 = iio_triggered_buffer_predisable(indio_dev);
-> > > > +     if (ret == 0)
-> > > > +             ret = ret2;
-> > > > +
-> > > >       return ret;
-> > > >  }
-> > > >   
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 1f28a7733fc0..c53c03ec2423 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1362,8 +1362,7 @@ int st_lsm6dsx_check_odr(struct st_lsm6dsx_sensor *sensor, u16 odr, u8 *val)
+>  		return -EINVAL;
+>  
+>  	*val = odr_table->odr_avl[i].val;
+> -
+> -	return 0;
+> +	return odr_table->odr_avl[i].hz;
+>  }
+>  
+>  static u16 st_lsm6dsx_check_odr_dependency(struct st_lsm6dsx_hw *hw, u16 odr,
+> @@ -1527,8 +1526,10 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
+>  	case IIO_CHAN_INFO_SAMP_FREQ: {
+>  		u8 data;
+>  
+> -		err = st_lsm6dsx_check_odr(sensor, val, &data);
+> -		if (!err)
+> +		val = st_lsm6dsx_check_odr(sensor, val, &data);
+> +		if (val < 0)
+> +			err = val;
+> +		else
+>  			sensor->odr = val;
+>  		break;
+>  	}
 

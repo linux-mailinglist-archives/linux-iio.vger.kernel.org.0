@@ -2,36 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02BA2ED2CC
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2019 11:13:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78BB4ED2CD
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2019 11:15:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727156AbfKCKNJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Nov 2019 05:13:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51310 "EHLO mail.kernel.org"
+        id S1726998AbfKCKPw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Nov 2019 05:15:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51498 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726998AbfKCKNJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Nov 2019 05:13:09 -0500
+        id S1726408AbfKCKPw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 Nov 2019 05:15:52 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C618820842;
-        Sun,  3 Nov 2019 10:13:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C74AB20842;
+        Sun,  3 Nov 2019 10:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572775987;
-        bh=J4wBsM3eSDsMDOuqrFSpeG6P2vpUG/5POfTgraUVniw=;
+        s=default; t=1572776151;
+        bh=AImPUpJvwDFBOvPVzXsfaYHwUgChmpKojFhSxQwfKCs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=2IOGEn2ebvgE/UnxLeyG0I78TlrKY+qOQodi3qzRJUjdE4+ii3KD3ahG5ghPfw5Rm
-         TEok1uQx2uJCfILE2O0OhBsZDr7JtCpRDQb80MFXdVRwdAF+VtkpPnHl0gWe23/vAb
-         6tebtqf4/ua/SjIKqZsV5Q+6n5pNTPGliBlTjV1g=
-Date:   Sun, 3 Nov 2019 10:13:02 +0000
+        b=TquEUuaFHXng+9+cD/1iOKKo0tW5wYg2iHWue5MIVp1DheKD95CAt0twJG8K6pNEn
+         rbIHvpOaDdgmcCcYS6tYXFvfpm9jrshKTj5O+EkfuO7tl0T+FKyHcerK8lF9Ieeruc
+         SLgBXFCqqu5P21I2Nxlc/2plieqqePRDANrGQdNo=
+Date:   Sun, 3 Nov 2019 10:15:46 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: imu: st_lsm6dsx: express odr in HZ / 10
-Message-ID: <20191103101302.59356d9e@archlinux>
-In-Reply-To: <3d1ffc5fd083dcbd007872e5e8f5261faac69503.1572203759.git.lorenzo@kernel.org>
-References: <cover.1572203759.git.lorenzo@kernel.org>
-        <3d1ffc5fd083dcbd007872e5e8f5261faac69503.1572203759.git.lorenzo@kernel.org>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <dragos.bogdan@analog.com>
+Subject: Re: [PATCH 01/10] iio: gyro: adis16136: check ret val for non-zero
+ vs less-than-zero
+Message-ID: <20191103101546.47ceb7a2@archlinux>
+In-Reply-To: <20191101093505.9408-2-alexandru.ardelean@analog.com>
+References: <20191101093505.9408-1-alexandru.ardelean@analog.com>
+        <20191101093505.9408-2-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,418 +44,124 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 27 Oct 2019 20:21:24 +0100
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+On Fri, 1 Nov 2019 11:34:56 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> Express available frequencies in HZ / 10 in order to support even
-> rational ODRs. This patch is need to fix an Android CTS failure
+> The ADIS library functions return zero on success, and negative values for
+> error. Positive values aren't returned, but we only care about the success
+> value (which is zero).
 > 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |   2 +-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 181 ++++++++++---------
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c |  23 ++-
->  3 files changed, 106 insertions(+), 100 deletions(-)
+> This change is mostly needed so that the compiler won't make any inferences
+> about some about values being potentially un-initialized. This only
+> triggers after making some functions inline, because the compiler can
+> better follow return paths.
 > 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> index 9ffc8e06f73d..b32c6389f47b 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -106,7 +106,7 @@ struct st_lsm6dsx_sensor;
->  struct st_lsm6dsx_hw;
->  
->  struct st_lsm6dsx_odr {
-> -	u16 hz;
-> +	u16 hz; /* expressed in HZ / 10 */
-
-That is in the non obvious category.  Maybe best bet
-is to switch to millihz and make the type bigger if needed?
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to work their magic.
 
 Thanks,
 
 Jonathan
 
->  	u8 val;
->  };
+> ---
+>  drivers/iio/gyro/adis16136.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/iio/gyro/adis16136.c b/drivers/iio/gyro/adis16136.c
+> index 5bec7ad53d8b..d637d52d051a 100644
+> --- a/drivers/iio/gyro/adis16136.c
+> +++ b/drivers/iio/gyro/adis16136.c
+> @@ -80,19 +80,19 @@ static ssize_t adis16136_show_serial(struct file *file,
 >  
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 2f9396745bc8..63e113725499 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -127,12 +127,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x20,
->  					.mask = GENMASK(7, 5),
->  				},
-> -				.odr_avl[0] = {  10, 0x01 },
-> -				.odr_avl[1] = {  50, 0x02 },
-> -				.odr_avl[2] = { 119, 0x03 },
-> -				.odr_avl[3] = { 238, 0x04 },
-> -				.odr_avl[4] = { 476, 0x05 },
-> -				.odr_avl[5] = { 952, 0x06 },
-> +				.odr_avl[0] = {  100, 0x01 },
-> +				.odr_avl[1] = {  500, 0x02 },
-> +				.odr_avl[2] = { 1190, 0x03 },
-> +				.odr_avl[3] = { 2380, 0x04 },
-> +				.odr_avl[4] = { 4760, 0x05 },
-> +				.odr_avl[5] = { 9520, 0x06 },
->  				.odr_len = 6,
->  			},
->  			[ST_LSM6DSX_ID_GYRO] = {
-> @@ -140,12 +140,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x10,
->  					.mask = GENMASK(7, 5),
->  				},
-> -				.odr_avl[0] = {  15, 0x01 },
-> -				.odr_avl[1] = {  60, 0x02 },
-> -				.odr_avl[2] = { 119, 0x03 },
-> -				.odr_avl[3] = { 238, 0x04 },
-> -				.odr_avl[4] = { 476, 0x05 },
-> -				.odr_avl[5] = { 952, 0x06 },
-> +				.odr_avl[0] = {  149, 0x01 },
-> +				.odr_avl[1] = {  595, 0x02 },
-> +				.odr_avl[2] = { 1190, 0x03 },
-> +				.odr_avl[3] = { 2380, 0x04 },
-> +				.odr_avl[4] = { 4760, 0x05 },
-> +				.odr_avl[5] = { 9520, 0x06 },
->  				.odr_len = 6,
->  			},
->  		},
-> @@ -229,12 +229,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x10,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  			[ST_LSM6DSX_ID_GYRO] = {
-> @@ -242,12 +242,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x11,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  		},
-> @@ -395,12 +395,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x10,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  			[ST_LSM6DSX_ID_GYRO] = {
-> @@ -408,12 +408,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x11,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  		},
-> @@ -570,12 +570,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x10,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  			[ST_LSM6DSX_ID_GYRO] = {
-> @@ -583,12 +583,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x11,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  		},
-> @@ -747,12 +747,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x10,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  			[ST_LSM6DSX_ID_GYRO] = {
-> @@ -760,12 +760,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x11,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  		},
-> @@ -944,12 +944,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x10,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  			[ST_LSM6DSX_ID_GYRO] = {
-> @@ -957,12 +957,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x11,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  		},
-> @@ -1121,12 +1121,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x10,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  			[ST_LSM6DSX_ID_GYRO] = {
-> @@ -1134,12 +1134,12 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  					.addr = 0x11,
->  					.mask = GENMASK(7, 4),
->  				},
-> -				.odr_avl[0] = {  13, 0x01 },
-> -				.odr_avl[1] = {  26, 0x02 },
-> -				.odr_avl[2] = {  52, 0x03 },
-> -				.odr_avl[3] = { 104, 0x04 },
-> -				.odr_avl[4] = { 208, 0x05 },
-> -				.odr_avl[5] = { 416, 0x06 },
-> +				.odr_avl[0] = {  125, 0x01 },
-> +				.odr_avl[1] = {  260, 0x02 },
-> +				.odr_avl[2] = {  520, 0x03 },
-> +				.odr_avl[3] = { 1040, 0x04 },
-> +				.odr_avl[4] = { 2080, 0x05 },
-> +				.odr_avl[5] = { 4160, 0x06 },
->  				.odr_len = 6,
->  			},
->  		},
-> @@ -1475,7 +1475,7 @@ static int st_lsm6dsx_read_oneshot(struct st_lsm6dsx_sensor *sensor,
->  	if (err < 0)
->  		return err;
+>  	ret = adis_read_reg_16(&adis16136->adis, ADIS16136_REG_SERIAL_NUM,
+>  		&serial);
+> -	if (ret < 0)
+> +	if (ret)
+>  		return ret;
 >  
-> -	delay = 1000000 / sensor->odr;
-> +	delay = 10000000 / sensor->odr;
->  	usleep_range(delay, 2 * delay);
+>  	ret = adis_read_reg_16(&adis16136->adis, ADIS16136_REG_LOT1, &lot1);
+> -	if (ret < 0)
+> +	if (ret)
+>  		return ret;
 >  
->  	err = st_lsm6dsx_read_locked(hw, addr, &data, sizeof(data));
-> @@ -1507,8 +1507,9 @@ static int st_lsm6dsx_read_raw(struct iio_dev *iio_dev,
->  		iio_device_release_direct_mode(iio_dev);
->  		break;
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		*val = sensor->odr;
-> -		ret = IIO_VAL_INT;
-> +		*val = sensor->odr / 10;
-> +		*val2 = (sensor->odr % 10) * 100000;
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
->  		break;
->  	case IIO_CHAN_INFO_SCALE:
->  		*val = 0;
-> @@ -1541,6 +1542,7 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
->  	case IIO_CHAN_INFO_SAMP_FREQ: {
->  		u8 data;
+>  	ret = adis_read_reg_16(&adis16136->adis, ADIS16136_REG_LOT2, &lot2);
+> -	if (ret < 0)
+> +	if (ret)
+>  		return ret;
 >  
-> +		val = val * 10 + val2 / 100000;
->  		val = st_lsm6dsx_check_odr(sensor, val, &data);
->  		if (val < 0)
->  			err = val;
-> @@ -1730,8 +1732,9 @@ st_lsm6dsx_sysfs_sampling_frequency_avail(struct device *dev,
+>  	ret = adis_read_reg_16(&adis16136->adis, ADIS16136_REG_LOT3, &lot3);
+> -	if (ret < 0)
+> +	if (ret)
+>  		return ret;
 >  
->  	odr_table = &sensor->hw->settings->odr_table[sensor->id];
->  	for (i = 0; i < odr_table->odr_len; i++)
-> -		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ",
-> -				 odr_table->odr_avl[i].hz);
-> +		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%d ",
-> +				 odr_table->odr_avl[i].hz / 10,
-> +				 odr_table->odr_avl[i].hz % 10);
->  	buf[len - 1] = '\n';
+>  	len = snprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
+> @@ -116,7 +116,7 @@ static int adis16136_show_product_id(void *arg, u64 *val)
 >  
->  	return len;
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> index e029cc05a17f..c3b124a73815 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> @@ -51,10 +51,10 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm6dsx_ext_dev_table[] = {
->  				.addr = 0x60,
->  				.mask = GENMASK(3, 2),
->  			},
-> -			.odr_avl[0] = {  10, 0x0 },
-> -			.odr_avl[1] = {  20, 0x1 },
-> -			.odr_avl[2] = {  50, 0x2 },
-> -			.odr_avl[3] = { 100, 0x3 },
-> +			.odr_avl[0] = {  100, 0x0 },
-> +			.odr_avl[1] = {  200, 0x1 },
-> +			.odr_avl[2] = {  500, 0x2 },
-> +			.odr_avl[3] = { 1000, 0x3 },
->  			.odr_len = 4,
->  		},
->  		.fs_table = {
-> @@ -97,8 +97,8 @@ static void st_lsm6dsx_shub_wait_complete(struct st_lsm6dsx_hw *hw)
->  	u16 odr;
+>  	ret = adis_read_reg_16(&adis16136->adis, ADIS16136_REG_PROD_ID,
+>  		&prod_id);
+> -	if (ret < 0)
+> +	if (ret)
+>  		return ret;
 >  
->  	sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
-> -	odr = (hw->enable_mask & BIT(ST_LSM6DSX_ID_ACC)) ? sensor->odr : 13;
-> -	msleep((2000U / odr) + 1);
-> +	odr = (hw->enable_mask & BIT(ST_LSM6DSX_ID_ACC)) ? sensor->odr : 125;
-> +	msleep((20000U / odr) + 1);
->  }
+>  	*val = prod_id;
+> @@ -134,7 +134,7 @@ static int adis16136_show_flash_count(void *arg, u64 *val)
 >  
->  /**
-> @@ -442,7 +442,7 @@ st_lsm6dsx_shub_read_oneshot(struct st_lsm6dsx_sensor *sensor,
->  	if (err < 0)
->  		return err;
+>  	ret = adis_read_reg_16(&adis16136->adis, ADIS16136_REG_FLASH_CNT,
+>  		&flash_count);
+> -	if (ret < 0)
+> +	if (ret)
+>  		return ret;
 >  
-> -	delay = 1000000 / sensor->odr;
-> +	delay = 10000000 / sensor->odr;
->  	usleep_range(delay, 2 * delay);
+>  	*val = flash_count;
+> @@ -191,7 +191,7 @@ static int adis16136_get_freq(struct adis16136 *adis16136, unsigned int *freq)
+>  	int ret;
 >  
->  	len = min_t(int, sizeof(data), ch->scan_type.realbits >> 3);
-> @@ -482,8 +482,9 @@ st_lsm6dsx_shub_read_raw(struct iio_dev *iio_dev,
->  		iio_device_release_direct_mode(iio_dev);
->  		break;
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		*val = sensor->odr;
-> -		ret = IIO_VAL_INT;
-> +		*val = sensor->odr / 10;
-> +		*val2 = (sensor->odr % 10) * 100000;
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
->  		break;
->  	case IIO_CHAN_INFO_SCALE:
->  		*val = 0;
-> @@ -514,6 +515,7 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
->  	case IIO_CHAN_INFO_SAMP_FREQ: {
->  		u16 data;
+>  	ret = adis_read_reg_16(&adis16136->adis, ADIS16136_REG_SMPL_PRD, &t);
+> -	if (ret < 0)
+> +	if (ret)
+>  		return ret;
 >  
-> +		val = val * 10 + val2 / 100000;
->  		err = st_lsm6dsx_shub_get_odr_val(sensor, val, &data);
->  		if (!err)
->  			sensor->odr = val;
-> @@ -542,7 +544,8 @@ st_lsm6dsx_shub_sampling_freq_avail(struct device *dev,
->  	for (i = 0; i < settings->odr_table.odr_len; i++) {
->  		u16 val = settings->odr_table.odr_avl[i].hz;
+>  	*freq = 32768 / (t + 1);
+> @@ -228,7 +228,7 @@ static ssize_t adis16136_read_frequency(struct device *dev,
+>  	int ret;
 >  
-> -		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ", val);
-> +		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%d ",
-> +				 val / 10, val % 10);
->  	}
->  	buf[len - 1] = '\n';
+>  	ret = adis16136_get_freq(adis16136, &freq);
+> -	if (ret < 0)
+> +	if (ret)
+>  		return ret;
 >  
+>  	return sprintf(buf, "%d\n", freq);
+> @@ -256,7 +256,7 @@ static int adis16136_set_filter(struct iio_dev *indio_dev, int val)
+>  	int i, ret;
+>  
+>  	ret = adis16136_get_freq(adis16136, &freq);
+> -	if (ret < 0)
+> +	if (ret)
+>  		return ret;
+>  
+>  	for (i = ARRAY_SIZE(adis16136_3db_divisors) - 1; i >= 1; i--) {
+> @@ -277,11 +277,11 @@ static int adis16136_get_filter(struct iio_dev *indio_dev, int *val)
+>  	mutex_lock(&indio_dev->mlock);
+>  
+>  	ret = adis_read_reg_16(&adis16136->adis, ADIS16136_REG_AVG_CNT, &val16);
+> -	if (ret < 0)
+> +	if (ret)
+>  		goto err_unlock;
+>  
+>  	ret = adis16136_get_freq(adis16136, &freq);
+> -	if (ret < 0)
+> +	if (ret)
+>  		goto err_unlock;
+>  
+>  	*val = freq / adis16136_3db_divisors[val16 & 0x07];
+> @@ -318,7 +318,7 @@ static int adis16136_read_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_CALIBBIAS:
+>  		ret = adis_read_reg_32(&adis16136->adis,
+>  			ADIS16136_REG_GYRO_OFF2, &val32);
+> -		if (ret < 0)
+> +		if (ret)
+>  			return ret;
+>  
+>  		*val = sign_extend32(val32, 31);
 

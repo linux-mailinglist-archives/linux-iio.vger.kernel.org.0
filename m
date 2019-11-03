@@ -2,45 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0E3EED303
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2019 12:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 983F1ED309
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2019 12:13:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727429AbfKCLIt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Nov 2019 06:08:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59936 "EHLO mail.kernel.org"
+        id S1727156AbfKCLNh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Nov 2019 06:13:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33214 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726676AbfKCLIt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Nov 2019 06:08:49 -0500
+        id S1726998AbfKCLNg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 Nov 2019 06:13:36 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9974820842;
-        Sun,  3 Nov 2019 11:08:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F26F220842;
+        Sun,  3 Nov 2019 11:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572779327;
-        bh=FbaoVaWioLqr0Z7FxL6DKXeAOHtNY6YOT3zMnzdc8eU=;
+        s=default; t=1572779615;
+        bh=5rXKrFWms57tsDlaloxvuxolTmE2fGPLi6afJVoTdWI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aD6PQEf1YtBiqkJF3yrAS2+/Z6KUwhqc68hNZX6/JK6K79E/SC6l/MJJK/XPvHMVo
-         FKFtMgi5uMvstFpoEvL8wAOJ/0IAUtx1un5J0bwBbMya+o7K3qc6EBB8uSXwD0/x9c
-         +PTJWqhrPJrpGPKRQQy4w5Ow7wodiZeOSRK/hR54=
-Date:   Sun, 3 Nov 2019 11:08:41 +0000
+        b=WhzUkQi9JZHbgkmSDYOS6dzOEMoa52bTajaVpFq2nJXxFlv+RgEpBsX2tbmFYd1R+
+         DBEdRJxu2EbA74EMIrvc3mIilXKdrdAm69i7n4zJ+EWAdBDGw+PggfPXBEYKkG5fcL
+         cTJSEPotk+Np4pWw+N8HfD9Ep/iS1YCoIR1ZRAlQ=
+Date:   Sun, 3 Nov 2019 11:13:31 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Benjamin Gaignard <benjamin.gaignard@st.com>
-Cc:     <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
-        <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <lee.jones@linaro.org>, <thierry.reding@gmail.com>,
-        <u.kleine-koenig@pengutronix.de>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH 2/4] dt-bindings: iio: timer: Convert stm32 IIO trigger
- bindings to json-schema
-Message-ID: <20191103110841.3ad3ecfb@archlinux>
-In-Reply-To: <20191031123040.26316-3-benjamin.gaignard@st.com>
-References: <20191031123040.26316-1-benjamin.gaignard@st.com>
-        <20191031123040.26316-3-benjamin.gaignard@st.com>
+To:     Andreas Klinger <ak@it-klinger.de>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [RFC] iio: srf04: add parallax ping sensors
+Message-ID: <20191103111331.33b80698@archlinux>
+In-Reply-To: <20191031121317.vojiwnijmuq5jxap@arbad>
+References: <20191031121317.vojiwnijmuq5jxap@arbad>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -50,115 +40,273 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 31 Oct 2019 13:30:38 +0100
-Benjamin Gaignard <benjamin.gaignard@st.com> wrote:
+On Thu, 31 Oct 2019 13:13:19 +0100
+Andreas Klinger <ak@it-klinger.de> wrote:
 
-> Convert the STM32 IIO trigger binding to DT schema format using json-schema
+> Hi Jonathan,
 > 
-> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
-I'm far from great on these as still haven't taken the time I should to learn
-the yaml syntax properly.  A few comments inline however based mostly on this
-doesn't quite look like other ones I've seen recently.
+> i added support for parallax ping and laser ping sensors with just one pin
+> for trigger and echo signal.
+> 
+> After implementing it turned out that this one pin sensor requires a lot of
+> conditions and special treatment. But the calculation is still the same as
+> for srf04.
+> 
+> Should it be integrated into the existing srf04 driver or should i create a
+> new one for those single pin us sensors? Maybe together with a C module for
+> the calculations they have in common.
 
-Thanks,
+Ultimately it's your choice but I agree this seems like a lot of extra
+code on a very small driver.  Might be more maintainable to separate them.
+
+Looking at the code the calculation code seems fairly small. I'd just cut
+and paste it to avoid the fiddly nature of a shared module.
 
 Jonathan
 
-> ---
->  .../bindings/iio/timer/st,stm32-timer-trigger.yaml | 44 ++++++++++++++++++++++
->  .../bindings/iio/timer/stm32-timer-trigger.txt     | 25 ------------
->  2 files changed, 44 insertions(+), 25 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/timer/st,stm32-timer-trigger.yaml
->  delete mode 100644 Documentation/devicetree/bindings/iio/timer/stm32-timer-trigger.txt
+
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/timer/st,stm32-timer-trigger.yaml b/Documentation/devicetree/bindings/iio/timer/st,stm32-timer-trigger.yaml
-> new file mode 100644
-> index 000000000000..1c8c8b55e8cd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/timer/st,stm32-timer-trigger.yaml
-> @@ -0,0 +1,44 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/timer/st,stm32-timer-trigger.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> Regards,
+> 
+> Andreas
+> 
+> ---
+>  drivers/iio/proximity/srf04.c | 151 ++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 122 insertions(+), 29 deletions(-)
+> 
+> diff --git a/drivers/iio/proximity/srf04.c b/drivers/iio/proximity/srf04.c
+> index 01eb8cc63076..8bcc77a45965 100644
+> --- a/drivers/iio/proximity/srf04.c
+> +++ b/drivers/iio/proximity/srf04.c
+> @@ -49,7 +49,12 @@
+>  #include <linux/iio/sysfs.h>
+>  
+>  struct srf04_cfg {
+> -	unsigned long trigger_pulse_us;
+> +	unsigned long	trigger_pulse_us;	/* length of trigger pulse */
+> +	int		single_pin_mode;	/* just one pin for trigger */
+> +						/*   and echo */
+> +	int		laserping_error;	/* support error code in */
+> +						/*   pulse width of laser */
+> +						/*   ping sensors */
+>  };
+>  
+>  struct srf04_data {
+> @@ -67,10 +72,26 @@ struct srf04_data {
+>  
+>  static const struct srf04_cfg srf04_cfg = {
+>  	.trigger_pulse_us = 10,
+> +	.single_pin_mode = 0,
+> +	.laserping_error = 0,
+>  };
+>  
+>  static const struct srf04_cfg mb_lv_cfg = {
+>  	.trigger_pulse_us = 20,
+> +	.single_pin_mode = 0,
+> +	.laserping_error = 0,
+> +};
 > +
-> +title: STMicroelectronics STM32 Timers IIO timer bindings
+> +static const struct srf04_cfg pa_ping_cfg = {
+> +	.trigger_pulse_us = 5,
+> +	.single_pin_mode = 1,
+> +	.laserping_error = 0,
+> +};
 > +
-> +maintainers:
-> +  - Benjamin Gaignard <benjamin.gaignard@st.com>
-> +  - Fabrice Gasnier <fabrice.gasnier@st.com>
+> +static const struct srf04_cfg pa_laser_ping_cfg = {
+> +	.trigger_pulse_us = 5,
+> +	.single_pin_mode = 1,
+> +	.laserping_error = 1,
+>  };
+>  
+>  static irqreturn_t srf04_handle_irq(int irq, void *dev_id)
+> @@ -96,6 +117,9 @@ static int srf04_read(struct srf04_data *data)
+>  	ktime_t ktime_dt;
+>  	u64 dt_ns;
+>  	u32 time_ns, distance_mm;
+> +	struct platform_device *pdev = container_of(data->dev,
+> +						struct platform_device, dev);
+> +	struct iio_dev *indio_dev = iio_priv_to_dev(data);
+>  
+>  	/*
+>  	 * just one read-echo-cycle can take place at a time
+> @@ -110,30 +134,58 @@ static int srf04_read(struct srf04_data *data)
+>  	udelay(data->cfg->trigger_pulse_us);
+>  	gpiod_set_value(data->gpiod_trig, 0);
+>  
+> +	if (data->cfg->single_pin_mode) {
+> +		ret = gpiod_direction_input(data->gpiod_trig);
+> +		if (ret < 0) {
+> +			mutex_unlock(&data->lock);
+> +			return ret;
+> +		}
 > +
-> +properties:
-> +  $nodemane:
-
-nodename?
-
-> +    pattern: "^timer@[0-9]+$"
-> +    type: object
+> +		data->irqnr = gpiod_to_irq(data->gpiod_echo);
+> +		if (data->irqnr < 0) {
+> +			dev_err(data->dev, "gpiod_to_irq: %d\n", data->irqnr);
+> +			return data->irqnr;
+> +		}
 > +
-> +    description:
-> +      must be a sub-node of an STM32 Timer device tree node
+> +		ret = devm_request_irq(data->dev, data->irqnr, srf04_handle_irq,
+> +				IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
+> +				pdev->name, indio_dev);
+> +		if (ret < 0) {
+> +			dev_err(data->dev, "request_irq: %d\n", ret);
+> +			return ret;
+> +		}
+> +	}
 > +
-> +    properties:
-> +      compatible:
-> +        oneOf:
-
-enum is I think preferred for these.
-
-> +          - const: st,stm32-timer-trigger
-> +          - const: st,stm32h7-timer-trigger
-> +            
-> +      reg: true
-
-Normally some info for what the reg value is..
-
+>  	/* it should not take more than 20 ms until echo is rising */
+>  	ret = wait_for_completion_killable_timeout(&data->rising, HZ/50);
+> -	if (ret < 0) {
+> -		mutex_unlock(&data->lock);
+> -		return ret;
+> -	} else if (ret == 0) {
+> -		mutex_unlock(&data->lock);
+> -		return -ETIMEDOUT;
+> +	if (ret < 0)
+> +		goto err_reset_direction;
+> +	else if (ret == 0) {
+> +		ret = -ETIMEDOUT;
+> +		goto err_reset_direction;
+>  	}
+>  
+>  	/* it cannot take more than 50 ms until echo is falling */
+>  	ret = wait_for_completion_killable_timeout(&data->falling, HZ/20);
+> -	if (ret < 0) {
+> -		mutex_unlock(&data->lock);
+> -		return ret;
+> -	} else if (ret == 0) {
+> -		mutex_unlock(&data->lock);
+> -		return -ETIMEDOUT;
+> +	if (ret < 0)
+> +		goto err_reset_direction;
+> +	else if (ret == 0) {
+> +		ret = -ETIMEDOUT;
+> +		goto err_reset_direction;
+>  	}
+>  
+>  	ktime_dt = ktime_sub(data->ts_falling, data->ts_rising);
+>  
+>  	mutex_unlock(&data->lock);
+>  
+> +	if (data->cfg->single_pin_mode) {
+> +		free_irq(data->irqnr, indio_dev);
 > +
-> +    required:
-> +      - compatible
-> +      - reg
+> +		ret = gpiod_direction_output(data->gpiod_trig, GPIOD_OUT_LOW);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
 > +
-> +examples:
-> +  - |
-> +    timers2: timer@40000000 {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +      timer@0 {
-> +        compatible = "st,stm32-timer-trigger";
-> +        reg = <0>;
-> +      };
-> +    };
-> +    
-> +...
-> diff --git a/Documentation/devicetree/bindings/iio/timer/stm32-timer-trigger.txt b/Documentation/devicetree/bindings/iio/timer/stm32-timer-trigger.txt
-> deleted file mode 100644
-> index b8e8c769d434..000000000000
-> --- a/Documentation/devicetree/bindings/iio/timer/stm32-timer-trigger.txt
-> +++ /dev/null
-> @@ -1,25 +0,0 @@
-> -STMicroelectronics STM32 Timers IIO timer bindings
+>  	dt_ns = ktime_to_ns(ktime_dt);
+>  	/*
+>  	 * measuring more than 6,45 meters is beyond the capabilities of
+> @@ -154,6 +206,25 @@ static int srf04_read(struct srf04_data *data)
+>  	time_ns = dt_ns;
+>  
+>  	/*
+> +	 * read error code of laser ping sensor and give users chance to
+> +	 * figure out error by using dynamic debuggging
+> +	 */
+> +	if (data->cfg->laserping_error) {
+> +		if ((time_ns >= 12500000) && (time_ns < 13500000)) {
+> +			dev_dbg(data->dev, "target too close or to far\n");
+> +			return -EIO;
+> +		}
+> +		if ((time_ns >= 13500000) && (time_ns < 14500000)) {
+> +			dev_dbg(data->dev, "internal sensor error\n");
+> +			return -EIO;
+> +		}
+> +		if ((time_ns >= 14500000) && (time_ns < 15500000)) {
+> +			dev_dbg(data->dev, "internal sensor timeout\n");
+> +			return -EIO;
+> +		}
+> +	}
+> +
+> +	/*
+>  	 * the speed as function of the temperature is approximately:
+>  	 *
+>  	 * speed = 331,5 + 0,6 * Temp
+> @@ -176,6 +247,16 @@ static int srf04_read(struct srf04_data *data)
+>  	distance_mm = time_ns * 106 / 617176;
+>  
+>  	return distance_mm;
+> +
+> +err_reset_direction:
+> +	mutex_unlock(&data->lock);
+> +	if (data->cfg->single_pin_mode) {
+> +		free_irq(data->irqnr, indio_dev);
+> +
+> +		if (gpiod_direction_output(data->gpiod_trig, GPIOD_OUT_LOW))
+> +			dev_dbg(data->dev, "error in gpiod_direction_output\n");
+> +	}
+> +	return ret;
+>  }
+>  
+>  static int srf04_read_raw(struct iio_dev *indio_dev,
+> @@ -228,6 +309,8 @@ static const struct of_device_id of_srf04_match[] = {
+>  	{ .compatible = "maxbotix,mb1020", .data = &mb_lv_cfg},
+>  	{ .compatible = "maxbotix,mb1030", .data = &mb_lv_cfg},
+>  	{ .compatible = "maxbotix,mb1040", .data = &mb_lv_cfg},
+> +	{ .compatible = "parallax,ping", .data = &pa_ping_cfg},
+> +	{ .compatible = "parallax,laserping", .data = &pa_ping_cfg},
+>  	{},
+>  };
+>  
+> @@ -261,11 +344,19 @@ static int srf04_probe(struct platform_device *pdev)
+>  		return PTR_ERR(data->gpiod_trig);
+>  	}
+>  
+> -	data->gpiod_echo = devm_gpiod_get(dev, "echo", GPIOD_IN);
+> -	if (IS_ERR(data->gpiod_echo)) {
+> -		dev_err(dev, "failed to get echo-gpios: err=%ld\n",
+> +	/*
+> +	 * some sensors come along with just one pin for triggering and the
+> +	 * echo
+> +	 */
+> +	if (data->cfg->single_pin_mode)
+> +		data->gpiod_echo = data->gpiod_trig;
+> +	else {
+> +		data->gpiod_echo = devm_gpiod_get(dev, "echo", GPIOD_IN);
+> +		if (IS_ERR(data->gpiod_echo)) {
+> +			dev_err(dev, "failed to get echo-gpios: err=%ld\n",
+>  					PTR_ERR(data->gpiod_echo));
+> -		return PTR_ERR(data->gpiod_echo);
+> +			return PTR_ERR(data->gpiod_echo);
+> +		}
+>  	}
+>  
+>  	if (gpiod_cansleep(data->gpiod_echo)) {
+> @@ -273,18 +364,20 @@ static int srf04_probe(struct platform_device *pdev)
+>  		return -ENODEV;
+>  	}
+>  
+> -	data->irqnr = gpiod_to_irq(data->gpiod_echo);
+> -	if (data->irqnr < 0) {
+> -		dev_err(data->dev, "gpiod_to_irq: %d\n", data->irqnr);
+> -		return data->irqnr;
+> -	}
 > -
-> -Must be a sub-node of an STM32 Timers device tree node.
-> -See ../mfd/stm32-timers.txt for details about the parent node.
-> -
-> -Required parameters:
-> -- compatible:	Must be one of:
-> -		"st,stm32-timer-trigger"
-> -		"st,stm32h7-timer-trigger"
-> -- reg:		Identify trigger hardware block.
-> -
-> -Example:
-> -	timers@40010000 {
-> -		#address-cells = <1>;
-> -		#size-cells = <0>;
-> -		compatible = "st,stm32-timers";
-> -		reg = <0x40010000 0x400>;
-> -		clocks = <&rcc 0 160>;
-> -		clock-names = "int";
-> -
-> -		timer@0 {
-> -			compatible = "st,stm32-timer-trigger";
-> -			reg = <0>;
-> -		};
-> -	};
+> -	ret = devm_request_irq(dev, data->irqnr, srf04_handle_irq,
+> -			IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
+> -			pdev->name, indio_dev);
+> -	if (ret < 0) {
+> -		dev_err(data->dev, "request_irq: %d\n", ret);
+> -		return ret;
+> +	if (!data->cfg->single_pin_mode) {
+> +		data->irqnr = gpiod_to_irq(data->gpiod_echo);
+> +		if (data->irqnr < 0) {
+> +			dev_err(data->dev, "gpiod_to_irq: %d\n", data->irqnr);
+> +			return data->irqnr;
+> +		}
+> +
+> +		ret = devm_request_irq(dev, data->irqnr, srf04_handle_irq,
+> +				IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
+> +				pdev->name, indio_dev);
+> +		if (ret < 0) {
+> +			dev_err(data->dev, "request_irq: %d\n", ret);
+> +			return ret;
+> +		}
+>  	}
+>  
+>  	platform_set_drvdata(pdev, indio_dev);
 

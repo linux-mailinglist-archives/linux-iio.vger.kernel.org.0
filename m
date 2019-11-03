@@ -2,35 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80213ED469
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2019 20:47:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A06ED46A
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2019 20:47:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727913AbfKCTrm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Nov 2019 14:47:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55958 "EHLO mail.kernel.org"
+        id S1727930AbfKCTrp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Nov 2019 14:47:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55984 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727343AbfKCTrm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 3 Nov 2019 14:47:42 -0500
+        id S1727343AbfKCTrp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 3 Nov 2019 14:47:45 -0500
 Received: from localhost.localdomain (unknown [151.66.0.231])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E50E821929;
-        Sun,  3 Nov 2019 19:47:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A174621D56;
+        Sun,  3 Nov 2019 19:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572810462;
-        bh=7z0ukquQ36ZywYWolkCTnwbMFv38A643nAtzIcbVu+M=;
-        h=From:To:Cc:Subject:Date:From;
-        b=A8YLIlx4DDSlAq9paU+aV/ZWcmn6MtiIukZ65yKTll78wKXhtPOQ4HtppCUQsitl1
-         MBhrGGYgTI57n+RlmCDdo3U1sIFD1i5DvpDgoYOM0miBwNN5G1cpAwL46xErrPuc/1
-         gLQFgLpOmt/GLJwq7OvtCfO34GxkSqPTWp3/Voqs=
+        s=default; t=1572810464;
+        bh=01fpVACNnPSHlfFrq2Ce2QeapSgaDQ8QpuD1mdnTv3o=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=OVbPynGpa3wAQu08XQ2nmyxXoacNiM46eefv85sGLMfQ94sOgY1mkBBLWqwjsfMtK
+         c1UNiAdnYbn72wZwqeUVsvuV2cPWCOIBy/ZEqvBtESd4iH1f+vvD4Nnj+cuUK8ltMx
+         +p4Y6jApZj9dRWqJcy01Pznbp/lMHYEEGNDneJ1s=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     jic23@kernel.org
 Cc:     lorenzo.bianconi@redhat.com, mario.tesi@st.com,
         linux-iio@vger.kernel.org
-Subject: [PATCH v2 0/2] support rational ODRs in st_lsm6dsx
-Date:   Sun,  3 Nov 2019 20:47:16 +0100
-Message-Id: <cover.1572810064.git.lorenzo@kernel.org>
+Subject: [PATCH v2 1/2] iio: imu: st_lsm6dsx: explicitly define odr table size
+Date:   Sun,  3 Nov 2019 20:47:17 +0100
+Message-Id: <e0fa435a4aca723e320357fc8be8ac27627a8880.1572810064.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <cover.1572810064.git.lorenzo@kernel.org>
+References: <cover.1572810064.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -38,27 +40,226 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Express ODRs in mHZ in order to support rational ODRs (e.g. 12.5Hz).
-This series will fix an Android CTS failure.
-Use u32 for ODR variables.
-Explicitly define odr table size.
-This series is based on 'iio: imu: st_lsm6dsx: fix ODR check in
-st_lsm6dsx_write_raw'
-https://patchwork.kernel.org/patch/11214281/
+Introduce odr_len in st_lsm6dsx_odr_table_entry data structure in order
+to explicitly define odr table size and support devices with different
+odr table map
 
-Changes since v1:
-- express ODRs in mHZ and not in HZ / 10
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 ++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 27 +++++++++++++++-----
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 12 ++++-----
+ 3 files changed, 29 insertions(+), 12 deletions(-)
 
-Lorenzo Bianconi (2):
-  iio: imu: st_lsm6dsx: explicitly define odr table size
-  iio: imu: st_lsm6dsx: express odr in mHZ
-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |   8 +-
- .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    |   9 +-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 222 ++++++++++--------
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c  |  41 ++--
- 4 files changed, 153 insertions(+), 127 deletions(-)
-
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 37e499fe6bcf..9ffc8e06f73d 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -113,7 +113,9 @@ struct st_lsm6dsx_odr {
+ #define ST_LSM6DSX_ODR_LIST_SIZE	6
+ struct st_lsm6dsx_odr_table_entry {
+ 	struct st_lsm6dsx_reg reg;
++
+ 	struct st_lsm6dsx_odr odr_avl[ST_LSM6DSX_ODR_LIST_SIZE];
++	int odr_len;
+ };
+ 
+ struct st_lsm6dsx_fs {
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index c53c03ec2423..2f9396745bc8 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -133,6 +133,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 238, 0x04 },
+ 				.odr_avl[4] = { 476, 0x05 },
+ 				.odr_avl[5] = { 952, 0x06 },
++				.odr_len = 6,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -145,6 +146,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 238, 0x04 },
+ 				.odr_avl[4] = { 476, 0x05 },
+ 				.odr_avl[5] = { 952, 0x06 },
++				.odr_len = 6,
+ 			},
+ 		},
+ 		.fs_table = {
+@@ -233,6 +235,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -245,6 +248,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 		},
+ 		.fs_table = {
+@@ -397,6 +401,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -409,6 +414,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 		},
+ 		.fs_table = {
+@@ -570,6 +576,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -582,6 +589,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 		},
+ 		.fs_table = {
+@@ -745,6 +753,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -757,6 +766,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 		},
+ 		.fs_table = {
+@@ -940,6 +950,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -952,6 +963,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 		},
+ 		.fs_table = {
+@@ -1115,6 +1127,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.reg = {
+@@ -1127,6 +1140,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.odr_avl[3] = { 104, 0x04 },
+ 				.odr_avl[4] = { 208, 0x05 },
+ 				.odr_avl[5] = { 416, 0x06 },
++				.odr_len = 6,
+ 			},
+ 		},
+ 		.fs_table = {
+@@ -1350,15 +1364,16 @@ int st_lsm6dsx_check_odr(struct st_lsm6dsx_sensor *sensor, u16 odr, u8 *val)
+ 	int i;
+ 
+ 	odr_table = &sensor->hw->settings->odr_table[sensor->id];
+-	for (i = 0; i < ST_LSM6DSX_ODR_LIST_SIZE; i++)
++	for (i = 0; i < odr_table->odr_len; i++) {
+ 		/*
+ 		 * ext devices can run at different odr respect to
+ 		 * accel sensor
+ 		 */
+ 		if (odr_table->odr_avl[i].hz >= odr)
+ 			break;
++	}
+ 
+-	if (i == ST_LSM6DSX_ODR_LIST_SIZE)
++	if (i == odr_table->odr_len)
+ 		return -EINVAL;
+ 
+ 	*val = odr_table->odr_avl[i].val;
+@@ -1710,13 +1725,13 @@ st_lsm6dsx_sysfs_sampling_frequency_avail(struct device *dev,
+ 					  char *buf)
+ {
+ 	struct st_lsm6dsx_sensor *sensor = iio_priv(dev_get_drvdata(dev));
+-	enum st_lsm6dsx_sensor_id id = sensor->id;
+-	struct st_lsm6dsx_hw *hw = sensor->hw;
++	const struct st_lsm6dsx_odr_table_entry *odr_table;
+ 	int i, len = 0;
+ 
+-	for (i = 0; i < ST_LSM6DSX_ODR_LIST_SIZE; i++)
++	odr_table = &sensor->hw->settings->odr_table[sensor->id];
++	for (i = 0; i < odr_table->odr_len; i++)
+ 		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ",
+-				 hw->settings->odr_table[id].odr_avl[i].hz);
++				 odr_table->odr_avl[i].hz);
+ 	buf[len - 1] = '\n';
+ 
+ 	return len;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+index ea472cf6db7b..e029cc05a17f 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+@@ -55,6 +55,7 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm6dsx_ext_dev_table[] = {
+ 			.odr_avl[1] = {  20, 0x1 },
+ 			.odr_avl[2] = {  50, 0x2 },
+ 			.odr_avl[3] = { 100, 0x3 },
++			.odr_len = 4,
+ 		},
+ 		.fs_table = {
+ 			.fs_avl[0] = {
+@@ -323,11 +324,12 @@ st_lsm6dsx_shub_get_odr_val(struct st_lsm6dsx_sensor *sensor,
+ 	int i;
+ 
+ 	settings = sensor->ext_info.settings;
+-	for (i = 0; i < ST_LSM6DSX_ODR_LIST_SIZE; i++)
++	for (i = 0; i < settings->odr_table.odr_len; i++) {
+ 		if (settings->odr_table.odr_avl[i].hz == odr)
+ 			break;
++	}
+ 
+-	if (i == ST_LSM6DSX_ODR_LIST_SIZE)
++	if (i == settings->odr_table.odr_len)
+ 		return -EINVAL;
+ 
+ 	*val = settings->odr_table.odr_avl[i].val;
+@@ -537,12 +539,10 @@ st_lsm6dsx_shub_sampling_freq_avail(struct device *dev,
+ 	int i, len = 0;
+ 
+ 	settings = sensor->ext_info.settings;
+-	for (i = 0; i < ST_LSM6DSX_ODR_LIST_SIZE; i++) {
++	for (i = 0; i < settings->odr_table.odr_len; i++) {
+ 		u16 val = settings->odr_table.odr_avl[i].hz;
+ 
+-		if (val > 0)
+-			len += scnprintf(buf + len, PAGE_SIZE - len, "%d ",
+-					 val);
++		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ", val);
+ 	}
+ 	buf[len - 1] = '\n';
+ 
 -- 
 2.21.0
 

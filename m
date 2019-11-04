@@ -2,325 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 004C8EE186
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2019 14:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C01EE1D9
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2019 15:06:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728413AbfKDNvX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Nov 2019 08:51:23 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:38300 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727663AbfKDNvX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Nov 2019 08:51:23 -0500
-Received: by mail-wm1-f66.google.com with SMTP id z19so11975419wmk.3
-        for <linux-iio@vger.kernel.org>; Mon, 04 Nov 2019 05:51:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=qaOVsKj7Aed+cUkpAJK47W3QRcflZSDnEMh6awYa/Pc=;
-        b=YYGE8YKqpsykdCGgo09ZR6t2dQWMi/wv5lvOPZXZRo8DJv/UC8UezW6XIGq6PT+fk3
-         ghkITO5AKMfAgzRehS7yycrqB9bxHYNDVrzakNOO+pSRuuxtbUqOVXJQuTOQbt3pCGlv
-         WzEnjoP9QzrN24WNWW15cc0KG4f9+n0PpVAH0RSPA271CQpzU4jmrqmj2L5VF/nfgN9n
-         enPXIa3t6OAN4761W45sXwnmwHQICYTNqkVvewxkEEwQhzEGzIN3mS94EZddA9QTZIAm
-         9KIaI5TyLo5cqHZOYV2mUl6MUgxWLlFgPWXX5vUuqrr+lnULTHxOBDATmpV36dmBLkvf
-         SXDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=qaOVsKj7Aed+cUkpAJK47W3QRcflZSDnEMh6awYa/Pc=;
-        b=P5jPPGZAxXafkzcBNGeqjph2LWecFFABsAML/BwUAkQ1CBwOD+WgK2aGKHtkE51vAc
-         ODf3bnFBEFbWoGhvbJPqF2bxK9MAZXNystibf4NeEYZgLX3axqhKgbheiWhlG8sZawwn
-         0+99VUdTizC5vlCVhTzlAG9NcOtN+YD82GdrIAzfMBiilBgzCqFk0eGW/UoZrqra726T
-         wY0VbUp6M+91CyBZk4Q5ZkKmBsN14FDOAcanrk49dchT68JquFZmYwgEa0ki8q1L9O3s
-         MTqARzYB3mvwGN9SDrpXYspst8VziIuFY3EFn5RLLqIQaB2Z6WvsjPm3csTN1/BoFpds
-         cWUw==
-X-Gm-Message-State: APjAAAWlO3xrqPjUG9K2PC0mFCd14zUjeUiqS/r2ViNhSgJyAAnihAsx
-        vPV5Jxn8JXndZfSd3HPgLUuJHPCry5GpbmeqrPw=
-X-Google-Smtp-Source: APXvYqxakAG8fL2xvQpGrxVLpxTRHrIF/XjRfcXfuWFeFRMZUieUPEXKFdDnajb5J9cdv2Yj8eICP01wLMSxXX1YRgc=
-X-Received: by 2002:a1c:6a1a:: with SMTP id f26mr16280748wmc.19.1572875478998;
- Mon, 04 Nov 2019 05:51:18 -0800 (PST)
-MIME-Version: 1.0
-References: <20190923121714.13672-1-andrea.merello@gmail.com>
- <20190923121714.13672-2-andrea.merello@gmail.com> <20191006085423.68bcecfd@archlinux>
- <CAN8YU5Ogcp8ERkxntTVQH3EoJF7h61VCONPXEaP-kvpx8EmS+g@mail.gmail.com>
- <20191017133210.00002799@huawei.com> <CAN8YU5Nxrv8q4LjCCrHH-qR6kj=PjNLBANgrTkYdX1b1OP+gkA@mail.gmail.com>
- <20191022103458.3a112511@archlinux> <CAN8YU5OxU+DTeNzczdKPsM42BGwCY9SVpzPGvfH=e-wqU4sgjQ@mail.gmail.com>
- <20191027092254.35a4c151@archlinux> <CAN8YU5P4vUWOTSJWiL-cPDmQ3aJLe0Z-E3TK5Pmzg1kkxptY-w@mail.gmail.com>
- <20191102141725.04437533@archlinux>
-In-Reply-To: <20191102141725.04437533@archlinux>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Mon, 4 Nov 2019 14:51:07 +0100
-Message-ID: <CAN8YU5N9-izG=AhrjPLbxWP1a+SUfaYFHqJzwM=yiEPL8MnVpQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] iio: max31856: add option for setting mains filter
- rejection frequency
+        id S1728188AbfKDOGs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Nov 2019 09:06:48 -0500
+Received: from smtp.domeneshop.no ([194.63.252.55]:48669 "EHLO
+        smtp.domeneshop.no" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727891AbfKDOGs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Nov 2019 09:06:48 -0500
+Received: from 122.62-97-226.bkkb.no ([62.97.226.122]:10220 helo=[10.0.1.54])
+        by smtp.domeneshop.no with esmtpa (Exim 4.92)
+        (envelope-from <eugene.zaikonnikov@norphonic.com>)
+        id 1iRd0H-00084X-T1; Mon, 04 Nov 2019 15:06:45 +0100
+Subject: Re: [PATCH 0/1] Add support for TI HDC200x humidity and temperature
+ sensors
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Jonathan Cameron <jonathan.cameron@huawei.com>,
-        patrick.havelange@essensium.com,
-        paresh.chaudhary@rockwellcollins.com, pmeerw@pmeerw.net,
-        lars@metafoo.de, knaack.h@gmx.de,
-        Matthew Weber <matthew.weber@rockwellcollins.com>,
-        Colin King <colin.king@canonical.com>,
-        linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        development@norphonic.com, linux-iio@vger.kernel.org
+References: <71176abd-4997-70f8-8132-137fadda7768@norphonic.com>
+ <20191103121921.5b1d0b02@archlinux>
+From:   Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
+Organization: Norphonic AS
+Message-ID: <11967ef7-7d25-de92-5e73-2c35b69e8454@norphonic.com>
+Date:   Mon, 4 Nov 2019 15:06:44 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <20191103121921.5b1d0b02@archlinux>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno sab 2 nov 2019 alle ore 15:17 Jonathan Cameron
-<jic23@kernel.org> ha scritto:
+On 03.11.2019 13:19, Jonathan Cameron wrote:
 >
-> On Mon, 28 Oct 2019 08:32:48 +0100
-> Andrea Merello <andrea.merello@gmail.com> wrote:
->
-> > Il giorno dom 27 ott 2019 alle ore 10:23 Jonathan Cameron
-> > <jic23@kernel.org> ha scritto:
-> > >
-> > > On Wed, 23 Oct 2019 10:29:07 +0200
-> > > Andrea Merello <andrea.merello@gmail.com> wrote:
-> > >
-> > > > Il giorno mar 22 ott 2019 alle ore 11:35 Jonathan Cameron
-> > > > <jic23@kernel.org> ha scritto:
-> > > > >
-> > > > > On Fri, 18 Oct 2019 15:46:32 +0200
-> > > > > Andrea Merello <andrea.merello@gmail.com> wrote:
-> > > > >
-> > > > > > Il giorno gio 17 ott 2019 alle ore 14:32 Jonathan Cameron
-> > > > > > <jonathan.cameron@huawei.com> ha scritto:
-> > > > > > >
-> > > > > > > On Wed, 16 Oct 2019 15:14:20 +0200
-> > > > > > > Andrea Merello <andrea.merello@gmail.com> wrote:
-> > > > > > >
-> > > > > > > > Il giorno dom 6 ott 2019 alle ore 09:54 Jonathan Cameron
-> > > > > > > > <jic23@kernel.org> ha scritto:
-> > > > > > > > >
-> > > > > > > > > On Mon, 23 Sep 2019 14:17:12 +0200
-> > > > > > > > > Andrea Merello <andrea.merello@gmail.com> wrote:
-> > > > > > > > >
-> > > > > > > > > > This sensor has an embedded notch filter for reducing interferences caused
-> > > > > > > > > > by the power mains. This filter can be tuned to reject either 50Hz or 60Hz
-> > > > > > > > > > (and harmonics).
-> > > > > > > > > >
-> > > > > > > > > > Currently the said setting is left alone (the sensor defaults to 60Hz).
-> > > > > > > > > > This patch introduces a IIO attribute that allows the user to set the said
-> > > > > > > > > > filter to the desired frequency.
-> > > > > > > > > >
-> > > > > > > > > > NOTE: this has been intentionally not tied to any DT property to allow
-> > > > > > > > > > the configuration of this setting from userspace, e.g. with a GUI or by
-> > > > > > > > > > reading a configuration file, or maybe reading a GPIO tied to a physical
-> > > > > > > > > > switch or accessing some device that can autodetect the line frequency.
-> > > > > > > > > >
-> > > > > > > > > > Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
-> > > > > > > > > This one is not something that can be expect to be known from the setup
-> > > > > > > > > of the device as it will depend on local mains frequency.
-> > > > > > > > >
-> > > > > > > > > So fine, to have it as a userspace control, but the name is too generic.
-> > > > > > > > > We already have a number of filter attributes and we should try to
-> > > > > > > > > work out how to bring it inline with them.
-> > > > > > > >
-> > > > > > > > Sure
-> > > > > > > >
-> > > > > > > > > in_X_filter_low_pass_3db_frequency
-> > > > > > > > > in_X_filter_high_pass_3db_frequency
-> > > > > > > > >
-> > > > > > > > > So would,
-> > > > > > > > > in_X_filter_notch_center_frequency work?
-> > > > > > > > > ( I suppose we should use the American spelling ;)
-> > > > > > > >
-> > > > > > > > Yes, it seems OK in this case. I will produce a V2 with this modification.
-> > > > > > > >
-> > > > > > > > > This kind of ignores the harmonics aspect but at least documents the
-> > > > > > > > > main frequency being blocked.
-> > > > > > > >
-> > > > > > > > I think this is perfectly fine: the user wants to set the notch filter
-> > > > > > > > center frequency to either 60Hz or 50Hz to match the line frequency,
-> > > > > > > > then she/he expects the filter to simply "work" somehow; IMO the
-> > > > > > > > harmonic thing does not needed to be explicit.
-> > > > > > > >
-> > > > > > > > > There is a slight complexity that we have devices that have dual
-> > > > > > > > > notchfilters (50 and 60Hz) and ones where you can turn it off entirely.
-> > > > > > > > >
-> > > > > > > > > I suppose no value would count as off and we could perhaps use a list
-> > > > > > > > > for both on at the same time (though that's a bit horrible).
-> > > > > > > >
-> > > > > > > > IMHO it seems reasonable. Maybe for all-off and both-on conditions we
-> > > > > > > > could also use magic strings like i.e. "all" and "off".
-> > > > > > >
-> > > > > > > I go with 'maybe' on that one.  Need to think about whether that is just
-> > > > > > > a partial solution as we will probably find a device with 3 options that only
-> > > > > > > supports any 2 at one time.  That would still need a more complex interface.
-> > > > > > >
-> > > > > > > Will think on this.
-> > > > > >
-> > > > > > I'll keep this patch on hold, waiting for your thoughts. Take the time
-> > > > > > you need :)
-> > > > > >
-> > > > > > BTW IMHO:
-> > > > > >
-> > > > > > If we want to address the most possible generic case, then we may
-> > > > > > standardize a set of possible attributes for filters (like "enable",
-> > > > > > "center_frequency", "width",  "Q" , etc). Of course most filters will
-> > > > > > not allow for setting most of those attributes.
-> > > > >
-> > > > > Absolutely.  We currently have a few defined for low and high pass
-> > > > > filters, but if there are more complex features to define we should
-> > > > > do so.
-> > > > >
-> > > > > >
-> > > > > > Then i.e.  in our case we could have one single filter that allows for
-> > > > > > setting the frequency to either 50hz or 60hz; in other cases we could
-> > > > > > have i.e. two filters (with 50hz and 60hz center freq respectively),
-> > > > > > and they would allow to set only the "enable" attribute; in case you
-> > > > > > can i.e. enable only two of three filters, when you try to enable the
-> > > > > > 3rd it just refuse that. In this scenario probably "center_frequency"
-> > > > > > could be just a regular value (not a list).
-> > > > >
-> > > > > Agreed.  The question is whether to index filters.  So allow more
-> > > > > than one of a given type on a given channel. So far we have
-> > > > > only had the one and there isn't a nice way to support multiple
-> > > > > as we currently don't have any indexed parameters of a single channel.
-> > > >
-> > > > Yes, being able to indexing filters was the underlying assumption..
-> > > >
-> > > > > I haven't seen parts that actually do have this level of sophisticated
-> > > > > filtering built in, with the exception of mains filters like this one.
-> > > >
-> > > > Yes, I didn't too indeed.
-> > > >
-> > > > > I think we have to allow for the possibility so if you are happy to do
-> > > > > so please propose the ABI additions to support multiple filters of
-> > > > > a type. I would suggest keeping them per type though
-> > > > >
-> > > > > e.g.
-> > > > >
-> > > > > in_X_filter_low_passY_3db_frequency etc
-> > > > > with Y as the optional index.
-> > > >
-> > > > Seems reasonable.
-> > > >
-> > > > Well the idea is the one you've just explained here, that is adding an
-> > > > optional index for filters (per type and per ch); I'm not getting what
-> > > > do you mean about proposing it..
-> > > Like all new ABI, needs a formal documentation patch.  Sometimes
-> > > we get more review on those than on discussions deep in a thread like
-> > > this.
-> >
-> > OK, this is honestly a bit out of my scope, but - if this is OK for
-> > you - I may try to do that after getting to some end with those
-> > in-flight patches..
->
-> That is fine, but we will need docs for anything that is added
-> even if it's the version without an index.
->
-> Don't have to be detailed etc, just a couple of lines for
-> Documentation/ABI/testing/sysfs-bus-iio to define what it is and
-> what it's units are.
+> Various comments inline. 
 
-OK
+Thanks for these. The driver was developed in our internal older branch so has some idiosyncrasies due to that, plus certain beginnings for the chip features that we haven't come around to add full support yet. Will clean up those and re-submit.
 
-> >
-> > > >
-> > > > > For now, lets just implement then using extended attributes rather
-> > > > > than trying to extend the core to generate these automatically.
-> > > > >
-> > > > > If this turns out not to be a corner case we can try to figure
-> > > > > out a sane way of generating the multiple indexed versions.
-> > > >
-> > > > OK. Let's try not to over-complicate things until it's really needed -
-> > > > Also, maybe if we'll hit other weird devices that need something like
-> > > > this, then they could have some exotic features that we haven't in
-> > > > mind yet now; it might turn out that we need something even more
-> > > > different, so maybe it's better to wait for real "users" of the ABI
-> > > > before deciding how to change it..
-> > > >
-> > > > But indeed, getting back to the patch originally discussed in this
-> > > > thread: if you are OK whit this, then I'll go with a
-> > > > "in_temp_filter_notch_center_frequency" attribute.
-> > > >
-> > > > I may use a specific IIO_DEVIC_ATTR or add it to the core (without
-> > > > addressing the index thing), as you prefer.
-> > >
-> > > Which ever makes most sense to you. Either is fine for a new
-> > > attribute, though here don't we need the indexed filters?
-> >
-> > This specific device has only the option to choose either 50Hz
-> > filtering or 60Hz filtering; no option to disable filtering or enable
-> > both frequency. So I would say that here we can expose just one filter
-> > for which the center frequency can be set to either 50Hz or 60Hz (like
-> > the original patch did - but with proper name this time). I would say
-> > that we don't need indexed filters here. Or have I missed something ?
-> >
-> > (So I would start with a IIO_DEVICE_ATTR for now then).
->
-> That's fine.  I'd somehow gotten it into my head that the part
-> had two filters :)
 
-OK :)
-
-> >
-> > > >
-> > > > BTW: Looking at other drivers, it seems that for other attributes
-> > > > (e.g. oversampling_ratio, discussed in 2/3) they tend to round
-> > > > required values to the closest allowed value, instead of returning an
-> > > > error. In this specific case, do you want to apply the same logic? For
-> > > > consistency reasons I would do that, but at the practical side,
-> > > > requiring a line filter frequency which is not either 50Hz or 60Hz
-> > > > seems really an error to me..
-> > >
-> > > It can be a bit of a tricky decision but for something like this
-> > > where the precise value works, it should reject incorrect ones.
-> >
-> > OK
-> >
-> > > Oversampling is an odd one.  It should probably always round up
-> > > as it's usually not a problem to average more results, it just
-> > > wastes power.  That only applies if the oversampling_ratio
-> > > is independent of other attributes such as sampling frequency.
-> >
-> > It actually affects also the sampling rate; the more samples you
-> > average, the slowest output rate you achieve. But actually there is no
-> > attribute for setting the sampling frequency.. it is internally
-> > adjusted by the chip depending by averaging and filter line frequency
-> > (don't know why).
-> >
-> > (if we want also this attribute, then I can craft another patch for
-> > adding it; it may be usefult to report the actual sample rate, I'm not
-> > sure if it makes sense to let the user set it, because we can
-> > basically just switch the averaging to one of the few possible values
-> > to get the sample rate to change as a side effect - assuming that one
-> > doesn't want to change the line frequency filter).
->
-> OK.  There are no hard rules on which attributes are the 'dominant'
-> ones so it would be fine to either not expose it or to have it read
-> only.  It can certainly be useful for fast devices as it lets you
-> size the buffers, but for a temperature sensor like this one
-> sampling_frequency probably doesn't matter to anyone.
-
-Ok, I will sitck with just adding the filter attribute.
-
-> >
-> > BTW What about to round the requested oversampling_ratio to the
-> > closest allowed value (instead of rounding up)?
->
-> If a user has requested a value for oversampling ratio, it will
-> be to achieve a particular improvement in noise rejection.
->
-> As such I'd assume round up was most appropriate, or error on any
-> value that isn't a precise value.
-
-Both seem reasonable to me. I will think to it a bit more then I'll
-make a choice :) .. and then I'll go with a V2 series with all changes
-we discussed.
-
-> >
-> > > Still, we have traditionally been relaxed on this as long
-> > > as writing the the 'correct' value always works as that's what
-> > > userspace ABI should be doing.
-> > >
-> > > Jonathan
-> > >
-> Thanks,
->
-> Jonathan
+--
+  Eugene.

@@ -2,69 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4698EEFA73
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2019 11:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58BD3F04B6
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2019 19:07:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730724AbfKEKH3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Nov 2019 05:07:29 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:39981 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730718AbfKEKH3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Nov 2019 05:07:29 -0500
-Received: by mail-qk1-f196.google.com with SMTP id a18so2931129qkk.7
-        for <linux-iio@vger.kernel.org>; Tue, 05 Nov 2019 02:07:28 -0800 (PST)
+        id S2390592AbfKESHh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Nov 2019 13:07:37 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:42819 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390594AbfKESHh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Nov 2019 13:07:37 -0500
+Received: by mail-lj1-f193.google.com with SMTP id n5so11937822ljc.9
+        for <linux-iio@vger.kernel.org>; Tue, 05 Nov 2019 10:07:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=CNinsozng4H5Ktf3rvHjg3jRh9c0NmbS8rmNz478Pe8=;
-        b=VEO755CMkWYZ+HZKjDSD2H8hkfHFILjBODJuUT7dyLJ2VacVXn30QPaKiB2aJr3dFj
-         UUfvdFj6N0LnOAXPpkBIo09s0N5k2JqZAjoxblyCjvylpwFmN2gB0t7J2CGgbJNVhTmU
-         Xcr/1pKIJxSCw64FjFq0CtKjgFgTUfNVSSd9U2EvGxP5Nf0q3JVy0Cb5eF45Tr0S+WOE
-         0zKyddIay8ulBTDwkAa9yHfkd+eUs/9amxlaNsSWxZ5fur+Ya/bxWYGvrXrX0FWTo8vt
-         H4Dh97ZxjUuuKm7+8LrgGpf1cTXIb42yHnSZIPyQugGcQMUmFsLEOAZC5E/3rGykiu40
-         5mcA==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=MJv6I57WxylS6CeVH2HZp8R81qnloFhtV0boAtJeagg=;
+        b=p868yPo8/4xDHbSfWTQAWm2XY16dP6NSuOF0j7Kyct9XiAG8X63PTwPBh1nqs61Nkk
+         pnDAmEMupaxupjWT40+kTCjBkI5zVk6of/hr82n55ZoVg+D3zmCHbQpoD0hd4tY/FxlA
+         QaBUU++lcSxcJUC87lZdd0wiNO7W0Q+DnWi4D9iATU3l2w5pxFAWJxBJ06hSJARRYaag
+         OnQ6dNc+87Ufy9fKwaholknVCTBs2nuZJM7Bz3yAqBH3mntvVuc0Leo2J19P5BVgqADG
+         SULaq7iBKv22SfOztwMsMYgRTdwycUkrzt5Uohln0aJOLw+o/dZPzyiwL5mDALo7PhlP
+         06eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=CNinsozng4H5Ktf3rvHjg3jRh9c0NmbS8rmNz478Pe8=;
-        b=qHZYy25nMs6TwxobdPKxBX0kfUIK2wj8vO4Tq5lwn4IQ66YRLm9RlTuljTTr08Bhql
-         B0mBmNqO+/8epJ6dit+TiysMWCrULC+8pRMVBm7XYyvXq7D3+VBDnhDjIy5/Ha+Ox0oA
-         M4ysUuj0iRzCGp2JSQimZfFMTeQE9B4McbWVlZiomJB/EiOkEm33qSeECCnXdVr67Xhj
-         Fu8iyR7FFqtdVAIScnmsxNxNfjRCcvvi21iXGh7OHd4QcoUUpzlc3kSFXFa5+3X67sKW
-         jHQu4wJdei9IQ4EIdxr7+dXxnwY3jCFUFdPFf3ANjeSmdQ1bj+l42O1CyjhDz6p3e+Ue
-         dW+A==
-X-Gm-Message-State: APjAAAUlaot82b8/qM3i8kUms3s+AlikNLXOsUh9tbOA9w/3Lex6WZxg
-        rSIGjftv40KiZwUNsAawWaKve39YB872w67qNZjESA==
-X-Google-Smtp-Source: APXvYqw9bNDchC8BBBpEdelYeypgmRQMVHiuZm+RJGKYBw6ulBdYAA7iNafLNDZB2gz23179UM0YXlSw8t9Sm2JcFdA=
-X-Received: by 2002:ae9:eb07:: with SMTP id b7mr7705763qkg.104.1572948447803;
- Tue, 05 Nov 2019 02:07:27 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=MJv6I57WxylS6CeVH2HZp8R81qnloFhtV0boAtJeagg=;
+        b=FPPSpN1LDfcJmUlMn02gP7V+L2DxUFxO63TCICYFq45g8o+8NuJZdXoubzUx093voX
+         7fEumYgTs1KudEi6pEJtUPoxPwjvOQj7WXbU0Ncmt+fNaKkIQNGomU7vvm32wy8oNG/H
+         a5usJwbElFuaDjCNA5w2VJVuJde/iDs55LKyjQfAqA1TlmScCdiJrwh3FrFvV1H2TBi+
+         Qk/KvBdd0pt5jeDfyGazc4FfuitbjYX3mdRA8fP46qTGA8Z/2H6GTku+eF1smy4IgsFI
+         IykqHbZ6eBwnQwUQrYEQxZoXjztZcmdHjnGs8UCiYPwKUR4bTVUtLN0uFPseGpVuMTyn
+         IgSw==
+X-Gm-Message-State: APjAAAX+YqtKXj32riHmufWG8v1hfX5lV6C/xRUUG3ahINDBWjGYAr5U
+        MaceeQDgUG+DT5UyM3ifeWpkxFnW5FzpSudNOhc=
+X-Google-Smtp-Source: APXvYqzOvULTT6ay+relToDJZgAEZK+sYMmJSuQXJgIPR8fxD7gXqVJ2Fv6l3HozH7m95LrbK1fEQm64eKyC6S3Tbx4=
+X-Received: by 2002:a2e:547:: with SMTP id 68mr23912157ljf.150.1572977255180;
+ Tue, 05 Nov 2019 10:07:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20191031123040.26316-1-benjamin.gaignard@st.com>
- <20191031123040.26316-3-benjamin.gaignard@st.com> <20191103110841.3ad3ecfb@archlinux>
-In-Reply-To: <20191103110841.3ad3ecfb@archlinux>
-From:   Benjamin Gaignard <benjamin.gaignard@linaro.org>
-Date:   Tue, 5 Nov 2019 11:07:16 +0100
-Message-ID: <CA+M3ks5sZ6wwV-V+HCLC8OLdeLqrxK0Ga-pXTsdktQErbMOk4g@mail.gmail.com>
-Subject: Re: [PATCH 2/4] dt-bindings: iio: timer: Convert stm32 IIO trigger
- bindings to json-schema
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Benjamin Gaignard <benjamin.gaignard@st.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        linux-iio@vger.kernel.org, u.kleine-koenig@pengutronix.de,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Received: by 2002:ac2:4c84:0:0:0:0:0 with HTTP; Tue, 5 Nov 2019 10:07:34 -0800 (PST)
+Reply-To: eddywilliam0002@gmail.com
+From:   eddy william <barristerlevi@gmail.com>
+Date:   Tue, 5 Nov 2019 19:07:34 +0100
+Message-ID: <CAEJ6Chd1Ady=0nH1h+qzfgMVtFg8pHR-bxvuqVuu6AmbnOwD4A@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
@@ -72,148 +55,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le dim. 3 nov. 2019 =C3=A0 12:08, Jonathan Cameron <jic23@kernel.org> a =C3=
-=A9crit :
->
-> On Thu, 31 Oct 2019 13:30:38 +0100
-> Benjamin Gaignard <benjamin.gaignard@st.com> wrote:
->
-> > Convert the STM32 IIO trigger binding to DT schema format using json-sc=
-hema
-> >
-> > Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
-> I'm far from great on these as still haven't taken the time I should to l=
-earn
-> the yaml syntax properly.  A few comments inline however based mostly on =
-this
-> doesn't quite look like other ones I've seen recently.
->
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  .../bindings/iio/timer/st,stm32-timer-trigger.yaml | 44 ++++++++++++++=
-++++++++
-> >  .../bindings/iio/timer/stm32-timer-trigger.txt     | 25 ------------
-> >  2 files changed, 44 insertions(+), 25 deletions(-)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/timer/st,stm3=
-2-timer-trigger.yaml
-> >  delete mode 100644 Documentation/devicetree/bindings/iio/timer/stm32-t=
-imer-trigger.txt
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/timer/st,stm32-timer=
--trigger.yaml b/Documentation/devicetree/bindings/iio/timer/st,stm32-timer-=
-trigger.yaml
-> > new file mode 100644
-> > index 000000000000..1c8c8b55e8cd
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/timer/st,stm32-timer-trigge=
-r.yaml
-> > @@ -0,0 +1,44 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/timer/st,stm32-timer-trigger.ya=
-ml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: STMicroelectronics STM32 Timers IIO timer bindings
-> > +
-> > +maintainers:
-> > +  - Benjamin Gaignard <benjamin.gaignard@st.com>
-> > +  - Fabrice Gasnier <fabrice.gasnier@st.com>
-> > +
-> > +properties:
-> > +  $nodemane:
->
-> nodename?
+Hello
 
-That will be in v2
+My name is Joe Akaba I am a lawyer by profession. I wish to offer you
+the next of kin to my client. You will inherit the sum of ($8.5 Million)
+dollars my client left in the bank before his death.
 
->
-> > +    pattern: "^timer@[0-9]+$"
-> > +    type: object
-> > +
-> > +    description:
-> > +      must be a sub-node of an STM32 Timer device tree node
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        oneOf:
->
-> enum is I think preferred for these.
+My client is a citizen of your country who died in auto crash with his wife
+and only son. I will be entitled with 50% of the total fund while 50% will
+be for you.
+Please contact my private email here for more details:joeakaba00@gmail.com
 
-as you like it will be in v2
+Many thanks in advance,
+Mr.Joe Akaba
 
->
-> > +          - const: st,stm32-timer-trigger
-> > +          - const: st,stm32h7-timer-trigger
-> > +
-> > +      reg: true
->
-> Normally some info for what the reg value is..
-I can't put "description" on this field because the syntax doesn't allow it=
-.
-I will add a comment in v2 to explain what reg is.
 
-Thanks for your review.
-Benjamin
->
-> > +
-> > +    required:
-> > +      - compatible
-> > +      - reg
-> > +
-> > +examples:
-> > +  - |
-> > +    timers2: timer@40000000 {
-> > +      #address-cells =3D <1>;
-> > +      #size-cells =3D <0>;
-> > +      timer@0 {
-> > +        compatible =3D "st,stm32-timer-trigger";
-> > +        reg =3D <0>;
-> > +      };
-> > +    };
-> > +
-> > +...
-> > diff --git a/Documentation/devicetree/bindings/iio/timer/stm32-timer-tr=
-igger.txt b/Documentation/devicetree/bindings/iio/timer/stm32-timer-trigger=
-.txt
-> > deleted file mode 100644
-> > index b8e8c769d434..000000000000
-> > --- a/Documentation/devicetree/bindings/iio/timer/stm32-timer-trigger.t=
-xt
-> > +++ /dev/null
-> > @@ -1,25 +0,0 @@
-> > -STMicroelectronics STM32 Timers IIO timer bindings
-> > -
-> > -Must be a sub-node of an STM32 Timers device tree node.
-> > -See ../mfd/stm32-timers.txt for details about the parent node.
-> > -
-> > -Required parameters:
-> > -- compatible:        Must be one of:
-> > -             "st,stm32-timer-trigger"
-> > -             "st,stm32h7-timer-trigger"
-> > -- reg:               Identify trigger hardware block.
-> > -
-> > -Example:
-> > -     timers@40010000 {
-> > -             #address-cells =3D <1>;
-> > -             #size-cells =3D <0>;
-> > -             compatible =3D "st,stm32-timers";
-> > -             reg =3D <0x40010000 0x400>;
-> > -             clocks =3D <&rcc 0 160>;
-> > -             clock-names =3D "int";
-> > -
-> > -             timer@0 {
-> > -                     compatible =3D "st,stm32-timer-trigger";
-> > -                     reg =3D <0>;
-> > -             };
-> > -     };
->
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Hallo
+
+Mein Name ist Joe Akaba . Ich bin von Beruf Rechtsanwalt. Ich m=C3=B6chte
+Ihnen anbieten
+die n=C3=A4chsten Verwandten zu meinem Klienten. Sie erben die Summe von
+($8.5 Millionen US-Dollar)
+Dollar, die mein Kunde vor seinem Tod in der Bank gelassen hat.
+
+Mein Mandant ist ein Staatsb=C3=BCrger Ihres Landes, der mit seiner Frau
+bei einem Autounfall ums Leben gekommen ist
+und nur Sohn. Ich werde mit 50% des Gesamtfonds berechtigt sein, w=C3=A4hre=
+nd 50%
+sein f=C3=BCr dich.
+Bitte kontaktieren Sie meine private E-Mail hier f=C3=BCr weitere
+Informationen: joeakaba00@gmail.com
+
+Vielen Dank im Voraus,
+Mr.Joe Akaba

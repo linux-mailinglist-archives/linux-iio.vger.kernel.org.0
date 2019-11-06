@@ -2,161 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A97F1DC5
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 19:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 455DCF1F4F
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 20:52:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727341AbfKFSts (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Nov 2019 13:49:48 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.80]:10139 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727208AbfKFSts (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Nov 2019 13:49:48 -0500
-X-Greylist: delayed 535 seconds by postgrey-1.27 at vger.kernel.org; Wed, 06 Nov 2019 13:49:46 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573066185;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=PBzDxbv5y8LCYgRpYy8Thw+tCvRv0ESWr1IvbIjPMj4=;
-        b=NVvUj9mQGGeTsWRKrMeNcs54peE6qd4bHfIFrPUWIWsugJi+4otLmIDz6bRXom/fS5
-        YLR3R5lfCjLJrK2H9a77wL6kx1R7/Y+JuHYwjqFZdczTBO3u9nETL6Hj2eQYdstNfb06
-        Df0CU/D2PTndpOAjkMCnUdEI86Z55bGfZqCuwmCzBNbsgxIEcspXHEsRf38CfULn47V5
-        ewQvP2dTEpvDA5HliSYSsnQFHdfKr/3ph0ccfRtGfcDgOO+g7nlMMYi69zqBo6WnYlXx
-        2EpPdYN8VKgcYqkzM8/RJNUCKqy/Wi2OxoaOOaKfmToS2hHCeDifFNeOC0KPDoPBSWJX
-        BxUw==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXQrEOHTIXs8PvtBNfIQ=="
-X-RZG-CLASS-ID: mo00
-Received: from localhost.localdomain
-        by smtp.strato.de (RZmta 44.29.0 AUTH)
-        with ESMTPSA id e07688vA6IbkhoV
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Wed, 6 Nov 2019 19:37:46 +0100 (CET)
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S1731781AbfKFTw3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Nov 2019 14:52:29 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:34790 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727143AbfKFTw2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Nov 2019 14:52:28 -0500
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xA6JpwtI006207;
+        Wed, 6 Nov 2019 20:51:58 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=dXWQhy/QZEcGaBhSm66JXjcU12XRc8OvLvAzH4r41mg=;
+ b=oXEuQU4S3LfBHVDUf3lnpLWDhxs5Hb8uYs8V0tVEKxlMQs9coghHmU+r/W2Vo6KlURK9
+ pCe9dGrTEtHM2dAenD4IGpDlV2ShZURN9ieLyVA0ow6ZA4gP7hinFmBuSBcBBluGuOV8
+ vdrv4A04m2sobVgVwMkgkD0UD57KKx4J1Bt85r0rgQpf1kjj0ZlfQ8z2qmM1K7t5u9YS
+ C8+ZzuEcBm2V3Lz2NAarxLWtaL1apkPby8aFaUIf7rvUFYJ7a/XZv4axUvv7LcVG1qYT
+ iDXO60vXVrI4q/nhQk98kJp6ILppi13xl3fpNTLLO+jewsQcKDCS7jk6E/xc9PkBcAft eA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2w41vgrrfn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Nov 2019 20:51:58 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 331D710002A;
+        Wed,  6 Nov 2019 20:51:57 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id EADAA2B59BA;
+        Wed,  6 Nov 2019 20:51:56 +0100 (CET)
+Received: from SFHDAG3NODE3.st.com (10.75.127.9) by SFHDAG5NODE3.st.com
+ (10.75.127.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 6 Nov
+ 2019 20:51:56 +0100
+Received: from SFHDAG3NODE3.st.com ([fe80::3507:b372:7648:476]) by
+ SFHDAG3NODE3.st.com ([fe80::3507:b372:7648:476%20]) with mapi id
+ 15.00.1347.000; Wed, 6 Nov 2019 20:51:56 +0100
+From:   Benjamin GAIGNARD <benjamin.gaignard@st.com>
+To:     Rob Herring <robh@kernel.org>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Brian Masney <masneyb@onstation.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Jean-Baptiste Maneyrol <JManeyrol@invensense.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 2/2] iio: imu: mpu6050: Add support for vdd-supply regulator
-Date:   Wed,  6 Nov 2019 19:35:36 +0100
-Message-Id: <20191106183536.123070-2-stephan@gerhold.net>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191106183536.123070-1-stephan@gerhold.net>
-References: <20191106183536.123070-1-stephan@gerhold.net>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandre TORGUE <alexandre.torgue@st.com>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Fabrice GASNIER <fabrice.gasnier@st.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 2/4] dt-bindings: iio: timer: Convert stm32 IIO trigger
+ bindings to json-schema
+Thread-Topic: [PATCH 2/4] dt-bindings: iio: timer: Convert stm32 IIO trigger
+ bindings to json-schema
+Thread-Index: AQHVj+cJH/57OeJDpUmui1hejwyMnqd5PYeAgAMTgQCAAS2pgIABCAWA
+Date:   Wed, 6 Nov 2019 19:51:56 +0000
+Message-ID: <d0196570-9140-c775-742c-89092056e651@st.com>
+References: <20191031123040.26316-1-benjamin.gaignard@st.com>
+ <20191031123040.26316-3-benjamin.gaignard@st.com>
+ <20191103110841.3ad3ecfb@archlinux>
+ <CA+M3ks5sZ6wwV-V+HCLC8OLdeLqrxK0Ga-pXTsdktQErbMOk4g@mail.gmail.com>
+ <20191106040657.GA5294@bogus>
+In-Reply-To: <20191106040657.GA5294@bogus>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.75.127.44]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <24C3780FC5D0044A86C0AFBAA270E024@st.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-06_07:2019-11-06,2019-11-06 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-MPU6050 has two power supply pins: VDD and VLOGIC, but the mpu6050
-only supports enabling one of them at the moment. In some cases,
-they may need to be enabled separately.
-
-Add an additional "vdd-supply", but keep the code simple by making
-the driver use the regulator bulk API. This actually allows further
-simplifying the code since regulator_bulk_* already logs the errors
-for us.
-
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
----
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 30 +++++++---------------
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  |  5 ++--
- 2 files changed, 12 insertions(+), 23 deletions(-)
-
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 354030e9bed5..8e50dbcd730b 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -1144,11 +1144,8 @@ static int inv_mpu_core_enable_regulator(struct inv_mpu6050_state *st)
- {
- 	int result;
- 
--	result = regulator_enable(st->vddio_supply);
--	if (result) {
--		dev_err(regmap_get_device(st->map),
--			"Failed to enable regulator: %d\n", result);
--	} else {
-+	result = regulator_bulk_enable(ARRAY_SIZE(st->supplies), st->supplies);
-+	if (result == 0) {
- 		/* Give the device a little bit of time to start up. */
- 		usleep_range(35000, 70000);
- 	}
-@@ -1158,14 +1155,7 @@ static int inv_mpu_core_enable_regulator(struct inv_mpu6050_state *st)
- 
- static int inv_mpu_core_disable_regulator(struct inv_mpu6050_state *st)
- {
--	int result;
--
--	result = regulator_disable(st->vddio_supply);
--	if (result)
--		dev_err(regmap_get_device(st->map),
--			"Failed to disable regulator: %d\n", result);
--
--	return result;
-+	return regulator_bulk_disable(ARRAY_SIZE(st->supplies), st->supplies);
- }
- 
- static void inv_mpu_core_disable_regulator_action(void *_data)
-@@ -1239,14 +1229,12 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 		return -EINVAL;
- 	}
- 
--	st->vddio_supply = devm_regulator_get(dev, "vddio");
--	if (IS_ERR(st->vddio_supply)) {
--		if (PTR_ERR(st->vddio_supply) != -EPROBE_DEFER)
--			dev_err(dev, "Failed to get vddio regulator %d\n",
--				(int)PTR_ERR(st->vddio_supply));
--
--		return PTR_ERR(st->vddio_supply);
--	}
-+	st->supplies[0].supply = "vdd";
-+	st->supplies[1].supply = "vddio";
-+	result = devm_regulator_bulk_get(dev, ARRAY_SIZE(st->supplies),
-+					 st->supplies);
-+	if (result)
-+		return result;
- 
- 	result = inv_mpu_core_enable_regulator(st);
- 	if (result)
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-index 52fcf45050a5..96cbd7f2b4b3 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-@@ -12,6 +12,7 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/buffer.h>
- #include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
- #include <linux/iio/sysfs.h>
- #include <linux/iio/kfifo_buf.h>
- #include <linux/iio/trigger.h>
-@@ -130,7 +131,7 @@ struct inv_mpu6050_hw {
-  *  @chip_period:	chip internal period estimation (~1kHz).
-  *  @it_timestamp:	timestamp from previous interrupt.
-  *  @data_timestamp:	timestamp for next data sample.
-- *  @vddio_supply	voltage regulator for the chip.
-+ *  @supplies:		voltage regulators for the chip.
-  *  @magn_disabled:     magnetometer disabled for backward compatibility reason.
-  *  @magn_raw_to_gauss:	coefficient to convert mag raw value to Gauss.
-  *  @magn_orient:       magnetometer sensor chip orientation if available.
-@@ -154,7 +155,7 @@ struct inv_mpu6050_state {
- 	s64 chip_period;
- 	s64 it_timestamp;
- 	s64 data_timestamp;
--	struct regulator *vddio_supply;
-+	struct regulator_bulk_data supplies[2];
- 	bool magn_disabled;
- 	s32 magn_raw_to_gauss[3];
- 	struct iio_mount_matrix magn_orient;
--- 
-2.23.0
-
+DQpPbiAxMS82LzE5IDU6MDYgQU0sIFJvYiBIZXJyaW5nIHdyb3RlOg0KPiBPbiBUdWUsIE5vdiAw
+NSwgMjAxOSBhdCAxMTowNzoxNkFNICswMTAwLCBCZW5qYW1pbiBHYWlnbmFyZCB3cm90ZToNCj4+
+IExlIGRpbS4gMyBub3YuIDIwMTkgw6AgMTI6MDgsIEpvbmF0aGFuIENhbWVyb24gPGppYzIzQGtl
+cm5lbC5vcmc+IGEgw6ljcml0IDoNCj4+PiBPbiBUaHUsIDMxIE9jdCAyMDE5IDEzOjMwOjM4ICsw
+MTAwDQo+Pj4gQmVuamFtaW4gR2FpZ25hcmQgPGJlbmphbWluLmdhaWduYXJkQHN0LmNvbT4gd3Jv
+dGU6DQo+Pj4NCj4+Pj4gQ29udmVydCB0aGUgU1RNMzIgSUlPIHRyaWdnZXIgYmluZGluZyB0byBE
+VCBzY2hlbWEgZm9ybWF0IHVzaW5nIGpzb24tc2NoZW1hDQo+Pj4+DQo+Pj4+IFNpZ25lZC1vZmYt
+Ynk6IEJlbmphbWluIEdhaWduYXJkIDxiZW5qYW1pbi5nYWlnbmFyZEBzdC5jb20+DQo+Pj4gSSdt
+IGZhciBmcm9tIGdyZWF0IG9uIHRoZXNlIGFzIHN0aWxsIGhhdmVuJ3QgdGFrZW4gdGhlIHRpbWUg
+SSBzaG91bGQgdG8gbGVhcm4NCj4+PiB0aGUgeWFtbCBzeW50YXggcHJvcGVybHkuICBBIGZldyBj
+b21tZW50cyBpbmxpbmUgaG93ZXZlciBiYXNlZCBtb3N0bHkgb24gdGhpcw0KPj4+IGRvZXNuJ3Qg
+cXVpdGUgbG9vayBsaWtlIG90aGVyIG9uZXMgSSd2ZSBzZWVuIHJlY2VudGx5Lg0KPj4+DQo+Pj4g
+VGhhbmtzLA0KPj4+DQo+Pj4gSm9uYXRoYW4NCj4+Pg0KPj4+PiAtLS0NCj4+Pj4gICAuLi4vYmlu
+ZGluZ3MvaWlvL3RpbWVyL3N0LHN0bTMyLXRpbWVyLXRyaWdnZXIueWFtbCB8IDQ0ICsrKysrKysr
+KysrKysrKysrKysrKysNCj4+Pj4gICAuLi4vYmluZGluZ3MvaWlvL3RpbWVyL3N0bTMyLXRpbWVy
+LXRyaWdnZXIudHh0ICAgICB8IDI1IC0tLS0tLS0tLS0tLQ0KPj4+PiAgIDIgZmlsZXMgY2hhbmdl
+ZCwgNDQgaW5zZXJ0aW9ucygrKSwgMjUgZGVsZXRpb25zKC0pDQo+Pj4+ICAgY3JlYXRlIG1vZGUg
+MTAwNjQ0IERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vdGltZXIvc3Qsc3Rt
+MzItdGltZXItdHJpZ2dlci55YW1sDQo+Pj4+ICAgZGVsZXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50
+YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vdGltZXIvc3RtMzItdGltZXItdHJpZ2dlci50
+eHQNCj4+Pj4NCj4+Pj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5k
+aW5ncy9paW8vdGltZXIvc3Qsc3RtMzItdGltZXItdHJpZ2dlci55YW1sIGIvRG9jdW1lbnRhdGlv
+bi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby90aW1lci9zdCxzdG0zMi10aW1lci10cmlnZ2VyLnlh
+bWwNCj4+Pj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4+Pj4gaW5kZXggMDAwMDAwMDAwMDAwLi4x
+YzhjOGI1NWU4Y2QNCj4+Pj4gLS0tIC9kZXYvbnVsbA0KPj4+PiArKysgYi9Eb2N1bWVudGF0aW9u
+L2RldmljZXRyZWUvYmluZGluZ3MvaWlvL3RpbWVyL3N0LHN0bTMyLXRpbWVyLXRyaWdnZXIueWFt
+bA0KPj4+PiBAQCAtMCwwICsxLDQ0IEBADQo+Pj4+ICsjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVy
+OiAoR1BMLTIuMC1vbmx5IE9SIEJTRC0yLUNsYXVzZSkNCj4+Pj4gKyVZQU1MIDEuMg0KPj4+PiAr
+LS0tDQo+Pj4+ICskaWQ6IGh0dHA6Ly9kZXZpY2V0cmVlLm9yZy9zY2hlbWFzL2lpby90aW1lci9z
+dCxzdG0zMi10aW1lci10cmlnZ2VyLnlhbWwjDQo+Pj4+ICskc2NoZW1hOiBodHRwOi8vZGV2aWNl
+dHJlZS5vcmcvbWV0YS1zY2hlbWFzL2NvcmUueWFtbCMNCj4+Pj4gKw0KPj4+PiArdGl0bGU6IFNU
+TWljcm9lbGVjdHJvbmljcyBTVE0zMiBUaW1lcnMgSUlPIHRpbWVyIGJpbmRpbmdzDQo+Pj4+ICsN
+Cj4+Pj4gK21haW50YWluZXJzOg0KPj4+PiArICAtIEJlbmphbWluIEdhaWduYXJkIDxiZW5qYW1p
+bi5nYWlnbmFyZEBzdC5jb20+DQo+Pj4+ICsgIC0gRmFicmljZSBHYXNuaWVyIDxmYWJyaWNlLmdh
+c25pZXJAc3QuY29tPg0KPj4+PiArDQo+Pj4+ICtwcm9wZXJ0aWVzOg0KPj4+PiArICAkbm9kZW1h
+bmU6DQo+Pj4gbm9kZW5hbWU/DQo+PiBUaGF0IHdpbGwgYmUgaW4gdjINCj4gTm8sICRub2RlbmFt
+ZSBpcyBjb3JyZWN0LiBUaGUgJyQnIHNpZ25pZmllcyBzb21ldGhpbmcgd2UgZ2VuZXJhdGUgYW5k
+DQo+IGFkZCBpbi4gSU9XLCBub3QgYSByZWFsIHByb3BlcnR5LiBJIGd1ZXNzIHdlIGNvdWxkIGhh
+dmUgdXNlZCAnbmFtZScgaGVyZQ0KPiBhbmQgc3R1Y2sgd2l0aCB0cmFkaXRpb25hbCBPcGVuRmly
+bXdhcmUuDQpsZXQncyBnbyBmb3IgJG5hbWUNCj4+Pj4gKyAgICBwYXR0ZXJuOiAiXnRpbWVyQFsw
+LTldKyQiDQo+Pj4+ICsgICAgdHlwZTogb2JqZWN0DQo+Pj4+ICsNCj4+Pj4gKyAgICBkZXNjcmlw
+dGlvbjoNCj4+Pj4gKyAgICAgIG11c3QgYmUgYSBzdWItbm9kZSBvZiBhbiBTVE0zMiBUaW1lciBk
+ZXZpY2UgdHJlZSBub2RlDQo+Pj4+ICsNCj4+Pj4gKyAgICBwcm9wZXJ0aWVzOg0KPj4+PiArICAg
+ICAgY29tcGF0aWJsZToNCj4+Pj4gKyAgICAgICAgb25lT2Y6DQo+Pj4gZW51bSBpcyBJIHRoaW5r
+IHByZWZlcnJlZCBmb3IgdGhlc2UuDQo+PiBhcyB5b3UgbGlrZSBpdCB3aWxsIGJlIGluIHYyDQo+
+Pg0KPj4+PiArICAgICAgICAgIC0gY29uc3Q6IHN0LHN0bTMyLXRpbWVyLXRyaWdnZXINCj4+Pj4g
+KyAgICAgICAgICAtIGNvbnN0OiBzdCxzdG0zMmg3LXRpbWVyLXRyaWdnZXINCj4+Pj4gKw0KPj4+
+PiArICAgICAgcmVnOiB0cnVlDQo+Pj4gTm9ybWFsbHkgc29tZSBpbmZvIGZvciB3aGF0IHRoZSBy
+ZWcgdmFsdWUgaXMuLg0KPj4gSSBjYW4ndCBwdXQgImRlc2NyaXB0aW9uIiBvbiB0aGlzIGZpZWxk
+IGJlY2F1c2UgdGhlIHN5bnRheCBkb2Vzbid0IGFsbG93IGl0Lg0KPj4gSSB3aWxsIGFkZCBhIGNv
+bW1lbnQgaW4gdjIgdG8gZXhwbGFpbiB3aGF0IHJlZyBpcy4NCj4gaXRlbXM6DQo+ICAgIC0gbWF4
+aW11bTogPG1heCB0aW1lciBudW1iZXI+DQoNCnJlZyBpcyBhbiBpbmRleCBmcm9tIDAgdXAgdG8g
+WCwgSSB3aWxsIHRyeSB3aXRoIHlvdXIgc3ludGF4Lg0KDQpUaGFua3MsDQoNCkJlbmphbWluDQoN
+Cj4NCj4gUm9i

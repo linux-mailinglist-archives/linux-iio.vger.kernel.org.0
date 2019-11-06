@@ -2,171 +2,218 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CDB4F12A4
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 10:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F22F14A4
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 12:09:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726192AbfKFJrh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Nov 2019 04:47:37 -0500
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:25388 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725868AbfKFJrg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Nov 2019 04:47:36 -0500
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xA69h3dh002926;
-        Wed, 6 Nov 2019 04:47:33 -0500
-Received: from nam02-sn1-obe.outbound.protection.outlook.com (mail-sn1nam02lp2050.outbound.protection.outlook.com [104.47.36.50])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2w2a75qp7x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Wed, 06 Nov 2019 04:47:33 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ft4H2V9lOlGjlQ/QYcRug439wwiZXhwkUTKxWpOUvvDwzFFxR3uVCs1ls/eQp7lCjDQh/S05ZwxITWvqziVqgItxCrLhf0tnbf+TGp5/mKmh4Wd727LXAA8kY/AaETuyOXza9RlcX/8l2bbZ/qQ4qDggS3B+p7rEu1JzIs4Hw+4Z1LYUiOT215pCTTgwbdoLVo/TUF42/sCESacDvOZDAh6RO6I2FKwScnn3ViXyNkvhRIZtzhFDlDhQ9bqqqESRewTsl+kCD4t+BuMy3ZLO9POVzVG+wFVQZ0QkqEM+x7BXgzaHuV3BgkD9CqebF2+9ZwhaNmeCvB8/FA0nyF+01g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2iOwyXyizmEB62CU3JrgkKXqAO1nW5dMKnlkgeG/jhw=;
- b=Ikd2ISIpyqzttn9CoaeveONPOyUKPiXCRE5h54NhsxZzvN6dwJv3KDqOBa8nlRuYaM8KgXxLWS1LWP2OBz50+VSE4akgDXOVl2ndxduPRmBhP9/RjZQaF2mcNlLFn1u3JLn8JQi5adx+s4vDfgsK2HcPAqEsEjK4pWrORNiRsB3fCF73dQkF6jgVCRxF8VvhU5nzAIeicSwFonjA9EcTWPv+W8FjiZjJfwrAZdr5+iDGYFmMfWNJaYWZEf+UM5HRmdU5t7K5ZyadQYgSwITgSCGc+MTXNUdfoRvb6gPIvtCaOS+lxchGs02vTtCrRN0WeMKfAFGPx9IOE/I8mNP/hw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.71.25.55) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
- dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
- not signed); arc=none
+        id S1728140AbfKFLJt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Nov 2019 06:09:49 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:46345 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726402AbfKFLJt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Nov 2019 06:09:49 -0500
+Received: by mail-lj1-f193.google.com with SMTP id e9so12287101ljp.13;
+        Wed, 06 Nov 2019 03:09:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2iOwyXyizmEB62CU3JrgkKXqAO1nW5dMKnlkgeG/jhw=;
- b=FlSZ9bMAieh28wHEkNuOm8brqHqegKWqX1xqB8A4WHMjwLm41K2c+hgN79eUUlFk+Yxh8EwmO55rLGXTlcYtU9NUpRlyWfz3s0VCK6R0pKO4PoIBU8UU0KCuxxekNG74Z84m14bV9yr2gch+Yb/D2GXnHVdkEJRNQah5ExuvXTU=
-Received: from BN8PR03CA0003.namprd03.prod.outlook.com (2603:10b6:408:94::16)
- by DM5PR03MB2650.namprd03.prod.outlook.com (2603:10b6:3:40::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2408.24; Wed, 6 Nov
- 2019 09:47:30 +0000
-Received: from CY1NAM02FT039.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e45::201) by BN8PR03CA0003.outlook.office365.com
- (2603:10b6:408:94::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2430.20 via Frontend
- Transport; Wed, 6 Nov 2019 09:47:30 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- CY1NAM02FT039.mail.protection.outlook.com (10.152.75.140) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2387.20
- via Frontend Transport; Wed, 6 Nov 2019 09:47:30 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id xA69lT9F013052
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Wed, 6 Nov 2019 01:47:29 -0800
-Received: from saturn.ad.analog.com (10.48.65.117) by
- NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
- 14.3.408.0; Wed, 6 Nov 2019 04:47:29 -0500
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, Stefan Popa <stefan.popa@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: dac: ad5446: Add support for new AD5600 DAC
-Date:   Wed, 6 Nov 2019 11:47:21 +0200
-Message-ID: <20191106094721.25575-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wBiQq0cp0ZT17akB6/sC+lRSuUfl0nsB/5VzUqPd+T8=;
+        b=R/Fi+NoL82h7Q2vavAWzrwWakTmTnXksFiilzkGHuMb9a+zZdeHx1Q8I7OlK59el7z
+         J37KsE/7uYwciOJglybMK0YjHaxJFdsXzfTFgoXbCECLIQs2Cz4wyfNkjRbY8mbDcfFe
+         dpKSqs2LH2noWsvAPLDGTK1o7Vt5rPi15MOkv7wa/zWQTTJQV5WtQSjw/YyBRfeplUky
+         1aZTcuokxb3z4fad7OsOal0DhiD42gUMv5sciG0ps+1VroxZIp2iwLgbnPxVkhTzl6oz
+         Uk9V45TbbwR2M5eoivnCiVtkr4KG56bUW4OUljG03J5YO5OnI1n5L6jPD1dDId1/sQDu
+         wMlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wBiQq0cp0ZT17akB6/sC+lRSuUfl0nsB/5VzUqPd+T8=;
+        b=UHKCd0CFnQACSFGY6u67tjBCe54QULXf/8DcB8Ar5UG7w9e31u4hYHINiaV3D1l4O4
+         o2I+oE+HIzT1M5/IzcLx+NLBaXC38ReeLDYUJIjQSAp2wgZC1WIhcKV2Imq7dImiLq9E
+         2oLXFVCYBoHxHrXxgfzU9gMRXpZtXwDxC3Yy2EphJ1b3kKKj1+YwUEAfZg5e6/iSoX8C
+         Or9oEJGMfvsyvbT7ei7BClMhaj7VZUhfRgLko9g1jvRUo0/ldRN3/PI7xOfyMdqMyo8Y
+         Nk7/eIdEg8nv08/cvrrRmcFOvCrOMmxtnKGRwfaNa3ouy1hd3F/1O1jiOlWVORN8WpuQ
+         jLHA==
+X-Gm-Message-State: APjAAAVe1XMVDMcVVmN0MCsqdjQpKLQWY4r9K/FoOhLVCwZlvMXThrLw
+        51VPSxs6lVFajWfoP5i564Y=
+X-Google-Smtp-Source: APXvYqyDXDYNhpVNsYp9jqZengWs5rk612UYI/+JvjbanNu8z0v/fvEZOxcu2YeMIlzWy+q2giq70g==
+X-Received: by 2002:a2e:7d17:: with SMTP id y23mr1534664ljc.228.1573038586060;
+        Wed, 06 Nov 2019 03:09:46 -0800 (PST)
+Received: from localhost.localdomain ([94.234.51.156])
+        by smtp.gmail.com with ESMTPSA id i128sm12667229lfd.6.2019.11.06.03.09.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2019 03:09:45 -0800 (PST)
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Paul E . McKenney" <paulmck@linux.ibm.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] dt-bindings: iio: adc: Migrate MCP3911 documentation to yaml
+Date:   Wed,  6 Nov 2019 12:12:10 +0100
+Message-Id: <20191106111210.6825-1-marcus.folkesson@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(396003)(39860400002)(346002)(136003)(376002)(199004)(189003)(47776003)(26005)(44832011)(486006)(356004)(36756003)(6666004)(106002)(7696005)(50466002)(110136005)(336012)(186003)(51416003)(2616005)(476003)(126002)(54906003)(70206006)(70586007)(48376002)(316002)(426003)(478600001)(966005)(6306002)(2906002)(107886003)(305945005)(4326008)(7636002)(246002)(8936002)(8676002)(50226002)(1076003)(86362001)(2870700001)(5660300002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR03MB2650;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;A:1;MX:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5fd840b6-2c88-434c-8c9f-08d7629e572c
-X-MS-TrafficTypeDiagnostic: DM5PR03MB2650:
-X-MS-Exchange-PUrlCount: 1
-X-Microsoft-Antispam-PRVS: <DM5PR03MB26508C02DACF89968E3D2A46F9790@DM5PR03MB2650.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
-X-Forefront-PRVS: 02135EB356
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 8B3JXw/PbItTJC3LsTCjojo8Dq6cMGqyohgDPINgLWMg90F7ofnkshkoPVPjXflFPPkjuJhBz0XRab9cSaY1uraMRs1neM7HdC1oZ4g2icplXHHc3xNzeQN/uSnTN37+qsNMYbWZxMmdCY6S41BqnIrmRrv+CUxXIo14wLm1BLXhq4f4ETvxib0zo5rfOiYDw06PirPCM03fYN687bp5QfuHnFBNmYNuoDuvol7GJl59NGV9kequmK11n10Ay9E2XcrAhTTwtG6Sh2UXXK9W/aE9+4zWevuYnoel6X5XbaPAEr4ypLobOaec0pbKlHpko5ZuH/fwgJPMVdU4zRDhvmjoch4MulJX50yMIpbOaixkUCmqNL7oxAqxFBwqsiICdamg4SJo+R2Owq1fS8ZX1zUiIEsiQ1bQLUUUqzdKOKTajnDal4qDhz18vslDnIJ0U0R5ptFQT3VTNyQT0ihfgKZwdHwv0ViLgty7VRnsiYM=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2019 09:47:30.1975
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5fd840b6-2c88-434c-8c9f-08d7629e572c
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR03MB2650
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-06_02:2019-11-06,2019-11-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 spamscore=0 suspectscore=0
- clxscore=1015 phishscore=0 lowpriorityscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1908290000 definitions=main-1911060100
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Stefan Popa <stefan.popa@analog.com>
+Rewrite bindings to use json-schema vocabulary.
 
-The AD5600 is a single channel, 16-bit resolution, voltage output digital
-to analog converter (DAC). The AD5600 uses a 3-wire SPI interface. It is
-part of the AD5541 family of DACs.
-
-The ad5446 IIO driver implements support for some of these DACs (in the
-AD5441 family), so the change is a simple entry in this driver.
-
-Link: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5600.pdf
-
-Signed-off-by: Stefan Popa <stefan.popa@analog.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
- drivers/iio/dac/Kconfig  | 4 ++--
- drivers/iio/dac/ad5446.c | 6 ++++++
- 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index cc42219a64f7..979070196da9 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -60,8 +60,8 @@ config AD5446
- 	help
- 	  Say yes here to build support for Analog Devices AD5300, AD5301, AD5310,
- 	  AD5311, AD5320, AD5321, AD5444, AD5446, AD5450, AD5451, AD5452, AD5453,
--	  AD5512A, AD5541A, AD5542A, AD5543, AD5553, AD5601, AD5602, AD5611, AD5612,
--	  AD5620, AD5621, AD5622, AD5640, AD5641, AD5660, AD5662 DACs
-+	  AD5512A, AD5541A, AD5542A, AD5543, AD5553, AD5600, AD5601, AD5602, AD5611,
-+	  AD5612, AD5620, AD5621, AD5622, AD5640, AD5641, AD5660, AD5662 DACs
- 	  as well as Texas Instruments DAC081S101, DAC101S101, DAC121S101.
+Notes:
+    v2:
+    	- Remove descriptor for reg and spi-max-frequency (Rob)
+    	- Write better description for clocks and vref-supply (Rob)
+    	- Remove max-items for vref-supply
+
+ .../devicetree/bindings/iio/adc/mcp3911.txt   | 30 --------
+ .../bindings/iio/adc/microchip,mcp3911.yaml   | 71 +++++++++++++++++++
+ MAINTAINERS                                   |  2 +-
+ 3 files changed, 72 insertions(+), 31 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/adc/mcp3911.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/mcp3911.txt b/Documentation/devicetree/bindings/iio/adc/mcp3911.txt
+deleted file mode 100644
+index 3071f48fb30b..000000000000
+--- a/Documentation/devicetree/bindings/iio/adc/mcp3911.txt
++++ /dev/null
+@@ -1,30 +0,0 @@
+-* Microchip MCP3911 Dual channel analog front end (ADC)
+-
+-Required properties:
+- - compatible: Should be "microchip,mcp3911"
+- - reg: SPI chip select number for the device
+-
+-Recommended properties:
+- - spi-max-frequency: Definition as per
+-	 Documentation/devicetree/bindings/spi/spi-bus.txt.
+-	 Max frequency for this chip is 20MHz.
+-
+-Optional properties:
+- - clocks: Phandle and clock identifier for sampling clock
+- - interrupt-parent: Phandle to the parent interrupt controller
+- - interrupts: IRQ line for the ADC
+- - microchip,device-addr: Device address when multiple MCP3911 chips are present on the
+-	same SPI bus. Valid values are 0-3. Defaults to 0.
+- - vref-supply: Phandle to the external reference voltage supply.
+-
+-Example:
+-adc@0 {
+-	compatible = "microchip,mcp3911";
+-	reg = <0>;
+-	interrupt-parent = <&gpio5>;
+-	interrupts = <15 IRQ_TYPE_EDGE_RISING>;
+-	spi-max-frequency = <20000000>;
+-	microchip,device-addr = <0>;
+-	vref-supply = <&vref_reg>;
+-	clocks = <&xtal>;
+-};
+diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+new file mode 100644
+index 000000000000..c73a374e614a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+@@ -0,0 +1,71 @@
++# SPDX-License-Identifier: GPL-2.0
++# Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/bindings/iio/adc/microchip,mcp3911.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: Microchip MCP3911 Dual channel analog front end (ADC)
++
++maintainers:
++  - Marcus Folkesson <marcus.folkesson@gmail.com>
++  - Kent Gustavsson <nedo80@gmail.com>
++
++description: |
++  Bindings for the Microchip MCP3911 Dual channel ADC device. Datasheet can be
++  found here: https://ww1.microchip.com/downloads/en/DeviceDoc/20002286C.pdf
++
++properties:
++  compatible:
++    enum:
++      - microchip,mcp3911
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 20000000
++
++  clocks:
++    description: |
++      Phandle and clock identifier for external sampling clock.
++      If not specified, the internal crystal oscillator will be used.
++    maxItems: 1
++
++  interrupts:
++    description: IRQ line of the ADC
++    maxItems: 1
++
++  microchip,device-addr:
++    description: Device address when multiple MCP3911 chips are present on the same SPI bus.
++    allOf:
++      - $ref: /schemas/types.yaml#/definitions/uint32
++      - enum: [0, 1, 2, 3]
++      - default: 0
++
++  vref-supply:
++    description: |
++      Phandle to the external reference voltage supply.
++      If not specified, the internal voltage reference (1.2V) will be used.
++
++required:
++  - compatible
++  - reg
++
++examples:
++  - |
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      adc@0 {
++        compatible = "microchip,mcp3911";
++        reg = <0>;
++        interrupt-parent = <&gpio5>;
++        interrupts = <15 2>;
++        spi-max-frequency = <20000000>;
++        microchip,device-addr = <0>;
++        vref-supply = <&vref_reg>;
++        clocks = <&xtal>;
++      };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e51a68bf8ca8..fbccc9d450ff 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10723,7 +10723,7 @@ M:	Kent Gustavsson <kent@minoris.se>
+ L:	linux-iio@vger.kernel.org
+ S:	Supported
+ F:	drivers/iio/adc/mcp3911.c
+-F:	Documentation/devicetree/bindings/iio/adc/mcp3911.txt
++F:	Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
  
- 	  To compile this driver as a module, choose M here: the
-diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
-index 7df8b4cc295d..61c670f7fc5f 100644
---- a/drivers/iio/dac/ad5446.c
-+++ b/drivers/iio/dac/ad5446.c
-@@ -327,6 +327,7 @@ enum ad5446_supported_spi_device_ids {
- 	ID_AD5541A,
- 	ID_AD5512A,
- 	ID_AD5553,
-+	ID_AD5600,
- 	ID_AD5601,
- 	ID_AD5611,
- 	ID_AD5621,
-@@ -381,6 +382,10 @@ static const struct ad5446_chip_info ad5446_spi_chip_info[] = {
- 		.channel = AD5446_CHANNEL(14, 16, 0),
- 		.write = ad5446_write,
- 	},
-+	[ID_AD5600] = {
-+		.channel = AD5446_CHANNEL(16, 16, 0),
-+		.write = ad5446_write,
-+	},
- 	[ID_AD5601] = {
- 		.channel = AD5446_CHANNEL_POWERDOWN(8, 16, 6),
- 		.write = ad5446_write,
-@@ -448,6 +453,7 @@ static const struct spi_device_id ad5446_spi_ids[] = {
- 	{"ad5542a", ID_AD5541A}, /* ad5541a and ad5542a are compatible */
- 	{"ad5543", ID_AD5541A}, /* ad5541a and ad5543 are compatible */
- 	{"ad5553", ID_AD5553},
-+	{"ad5600", ID_AD5600},
- 	{"ad5601", ID_AD5601},
- 	{"ad5611", ID_AD5611},
- 	{"ad5621", ID_AD5621},
+ MICROCHIP NAND DRIVER
+ M:	Tudor Ambarus <tudor.ambarus@microchip.com>
 -- 
-2.20.1
+2.23.0
 

@@ -2,186 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFA20F14A9
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 12:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EE60F1855
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 15:20:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727652AbfKFLKC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Nov 2019 06:10:02 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:35007 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726402AbfKFLKC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Nov 2019 06:10:02 -0500
-Received: by mail-lf1-f66.google.com with SMTP id y6so17730870lfj.2;
-        Wed, 06 Nov 2019 03:10:00 -0800 (PST)
+        id S1727958AbfKFOUW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Nov 2019 09:20:22 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:35724 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727645AbfKFOUW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Nov 2019 09:20:22 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xA6EIWST004750;
+        Wed, 6 Nov 2019 09:19:54 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2w2a4e7rx7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Nov 2019 09:19:54 -0500
+Received: from m0167088.ppops.net (m0167088.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xA6EJrmp005932;
+        Wed, 6 Nov 2019 09:19:54 -0500
+Received: from nam01-sn1-obe.outbound.protection.outlook.com (mail-sn1nam01lp2058.outbound.protection.outlook.com [104.47.32.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2w2a4e7rx4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Nov 2019 09:19:53 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=a87tPT+Xr830c4J7Xxvx43QDKSqDbZ2Cl2Vqn6gfaapVSfMJt9L6v8xDMXo7VHfloJGfwbL7Fom0rnLw/nEJEEg0h4Rjlm5NKMH3+pem4hzqZtFHgL6ji7AMYwyPRcxOQBou1l+8OYmGBhLUK4gJ8ScISrR2zCOkH2TSUz9l8yQiHnGDp4jxyY0QvfZ4DwaC4Fzi7zKMB5ZV9vhv/Xly2LayOkwutA/gwyTQkBGa2khQ/QC/C9vTTBbnAWkOYA5UwBxAPkhcAF9UXr4BYSheoxYsdjaCgFspo7LfezvCuJUcaHGlFT3upbMvolpBLB9bYUP1wxnAZrmbp94VpQdeBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dTP+vvW97yGMLf03k8H9jXrPhdEkHwitzxLrE2PjqQ0=;
+ b=Hoc18nA2YdkUX4L8DLX/LGk6bPvGIkS5w21CEd84bLr8juORC3YAOAy8xqXrd70iktNbd+V/Bg5Svi2iqcW/wk/SfgvgsJYYaNGynjm3ISm8+sX5a+q5SXmlLqQPD2lkwquR3rGvWsfoQ6MVlOLGY5cr5/KOp/XTr2eBg9xEEb3uK+7Y4HbsVUld9yb6gJoTxkT5NivU58fVTiSzrfhZTvfNTiohpYHVIQhaSL19AlPXXZ+zmHq2ROgcQMBW1sRapfBwz4OmPz0izzAoDFHup+3ykkz8JEQNtcdK2CWeHY0IDQkxB80CNBmiDdLhZlB/4gz9Uu0UvIFHvMnlmfOcOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bnwVsjbNiFuh5JOeo4upmlnPXVCJtlYPqMTxNS+DiLI=;
-        b=cJUWstEO1+yXWrupneRMJq4VR/toW3Xn6XKBkK8AFQk3KovnnsTne6c7yoxHJfzAAJ
-         mSZDlDpUPFKDZX75azo7tTmfn1KD79reG+D0kjqTKcWpYpBnj9a8yZAM+V27nwRLcLsi
-         Ap7V3VQOx1fiLTjfx+D41QBSoYmGDUSXOaDFc0t9iu5/A0dUU/sl1ULFkWkehL52uKQC
-         ujueJS8KncjrAaS+Q8JmPegGh0BuEgEad957GuRTSpQRIqVH2TSYtSMQ7JAzSK+K8sDD
-         Pq+X+SnOGEhP/XiMng+HDbdSBKo4hgj6jixGLbNJnzV8z+DWdsmU2CKb4EJYVvI1AH9C
-         v0ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bnwVsjbNiFuh5JOeo4upmlnPXVCJtlYPqMTxNS+DiLI=;
-        b=m3ujWBOsX64ZrHjj8tt2qyPxBG0ykcFdq0050zRp/JBSXWvomqIcH8DSWD088D0WFf
-         fu1xg69cJR8nGQuW6g3iiwnniHxJzKWP01qWMB2SXJ9Pm6uaKiwGInGINWMmff12vpwM
-         7O1Ago/nMcctHCMS0Q2i5/+oabmv/Ae7aWqFJPh2GboBOUj1jbR/mSmrB9xdEvhxM89o
-         YcTIhKiAs26Xt4O5eQkuKf5zjr1I92ONWN22bBVm0jj1I/tc6IVOqbiesVV1eTtc7ejQ
-         w7Z/tBkpSzQ2VLhqvP2EUMJb/XW7FJl70nEX3u//BxuZWv0lB0LvFRtnK0k5uOrupmQw
-         IUKw==
-X-Gm-Message-State: APjAAAVmzj6HO9fEsHa2KVpfyQ3dfABAwnANSPwaCsf3lhTmeESmYYE+
-        XtxsVAFduBoqdiLGlZEbOFY=
-X-Google-Smtp-Source: APXvYqyDAZlkhUC0it716Vc74H5Yhm1zXCS8linsSxcwyIkPeH3AM/teWSo+RcUkqCBTSrnOY7ThEQ==
-X-Received: by 2002:ac2:4856:: with SMTP id 22mr23327083lfy.131.1573038599923;
-        Wed, 06 Nov 2019 03:09:59 -0800 (PST)
-Received: from localhost.localdomain ([94.234.51.156])
-        by smtp.gmail.com with ESMTPSA id 28sm9888753lfy.38.2019.11.06.03.09.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2019 03:09:59 -0800 (PST)
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Paul E . McKenney" <paulmck@linux.ibm.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] dt-bindings: iio: dac: Migrate LTC1660 documentation to yaml
-Date:   Wed,  6 Nov 2019 12:12:33 +0100
-Message-Id: <20191106111233.6905-1-marcus.folkesson@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dTP+vvW97yGMLf03k8H9jXrPhdEkHwitzxLrE2PjqQ0=;
+ b=xDVucej4oyGEi5l0xzeNFsPaJz+xk02d15PSjK/vdysjRYp6P83jJUWXmW4cBRnsPtYcMEarxyVKOsZ/F9FkFI51fef7v1GSO6t0QMcHMrXCszrzZEaM9R3Rr9kA3kdxJ/dRzu0GQELIooGiOc0ZVJH+xDOvBU2jgzp6Jtxy2CQ=
+Received: from MN2PR03MB5117.namprd03.prod.outlook.com (52.132.169.145) by
+ MN2PR03MB5022.namprd03.prod.outlook.com (52.132.170.139) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2430.22; Wed, 6 Nov 2019 14:19:52 +0000
+Received: from MN2PR03MB5117.namprd03.prod.outlook.com
+ ([fe80::9d35:c43f:1cdd:4c7d]) by MN2PR03MB5117.namprd03.prod.outlook.com
+ ([fe80::9d35:c43f:1cdd:4c7d%6]) with mapi id 15.20.2430.020; Wed, 6 Nov 2019
+ 14:19:52 +0000
+From:   "Sa, Nuno" <Nuno.Sa@analog.com>
+To:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "lars@metafoo.de" <lars@metafoo.de>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: temperature: ltc2983: fix u32 read into a unsigned
+ long long
+Thread-Topic: [PATCH] iio: temperature: ltc2983: fix u32 read into a unsigned
+ long long
+Thread-Index: AQHVlBeUdoPWrASrBUa+bZTQPdnd2ad+MnkA
+Date:   Wed, 6 Nov 2019 14:19:52 +0000
+Message-ID: <dab9cfd93e6affa5d94f078154c3e181303bbf47.camel@analog.com>
+References: <20191105202818.90065-1-colin.king@canonical.com>
+In-Reply-To: <20191105202818.90065-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: bb6fea16-2a3b-4ec2-fa05-08d762c463ca
+x-ms-traffictypediagnostic: MN2PR03MB5022:
+x-microsoft-antispam-prvs: <MN2PR03MB5022D44CBF60F55DB366667299790@MN2PR03MB5022.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-forefront-prvs: 02135EB356
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(376002)(136003)(39860400002)(366004)(396003)(189003)(199004)(486006)(26005)(6506007)(76176011)(256004)(476003)(186003)(14454004)(25786009)(305945005)(7736002)(11346002)(66066001)(446003)(2616005)(6486002)(2201001)(229853002)(2906002)(99286004)(76116006)(110136005)(6436002)(66946007)(6116002)(71190400001)(6512007)(86362001)(102836004)(71200400001)(316002)(5660300002)(2501003)(6246003)(8676002)(478600001)(118296001)(91956017)(66476007)(81156014)(66556008)(66446008)(81166006)(64756008)(36756003)(4326008)(3846002)(8936002)(54906003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR03MB5022;H:MN2PR03MB5117.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: oB8sBeanAIB/CfnTedIMj+NCXeTtDQeFVKsBNfMCyk18iN6uV7NiICSlzHHd8RTD8TlUUbx83LVLp9vv7sGvx+Hq+bvVPqT4MhE/OpCVXz8pV2ewCVF/W4f7ZZjICV93UfFk7Oe3dsV9CD95V/vgohEdojiWvYk5tKhOQU7WIijUTxwGmiXqieDUqvcsIC9oz9eY3OSD4qqlBW9Z1fYQVGAPSRNYdBpqbkKRs55nqIM5BJ/4cQfr3Uc6jShTKNTZkzVKcONtG5L4HzAajvxeLsVXjHiI3r+7iey9Oxl3Sr7nr3041gbaQgMV5B/hsTNXaMWBQ9Zjx45JOmnM7bBEEVQUHCU6a13ZU0gziJe0BvJTQa9OsJFnMvFK1Q7N940WiBbvgnseyVcgPYhvOQzM0T8xw52EREDxjFKFpovlLRVXH1O234E5uIvTT+7PRWEm
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5AED64D5BA055E40A111120D232609E3@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb6fea16-2a3b-4ec2-fa05-08d762c463ca
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2019 14:19:52.3075
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PKW82vXST8ze9sc1QPx3Wnxw+kQE+BJ/S5+rlTCu6ZBGiv2pDcIxGqa3V7k9wYtF/+XJjU0qOetBNxI4MjqbJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR03MB5022
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-06_04:2019-11-06,2019-11-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxlogscore=999 priorityscore=1501
+ malwarescore=0 clxscore=1011 adultscore=0 impostorscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1908290000
+ definitions=main-1911060141
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Rewrite bindings to use json-schema vocabulary.
-
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
----
-
-Notes:
-    v2:
-    	- Remove description for reg and spi-max-frequency (Rob & Alexa)
-    	- Drop maxItems for vref-supply
-
- .../bindings/iio/dac/lltc,ltc1660.yaml        | 49 +++++++++++++++++++
- .../devicetree/bindings/iio/dac/ltc1660.txt   | 21 --------
- MAINTAINERS                                   |  2 +-
- 3 files changed, 50 insertions(+), 22 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
- delete mode 100644 Documentation/devicetree/bindings/iio/dac/ltc1660.txt
-
-diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
-new file mode 100644
-index 000000000000..505b3d54b81c
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
-@@ -0,0 +1,49 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/bindings/iio/dac/lltc,ltc1660.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Linear Technology Micropower octal 8-Bit and 10-Bit DACs
-+
-+maintainers:
-+  - Marcus Folkesson <marcus.folkesson@gmail.com>
-+
-+description: |
-+  Bindings for the Linear Technology Micropower octal 8-Bit and 10-Bit DAC.
-+  Datasheet can be found here: https://www.analog.com/media/en/technical-documentation/data-sheets/166560fa.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - lltc,ltc1660
-+      - lltc,ltc1665
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 5000000
-+
-+  vref-supply:
-+    description: Phandle to the external reference voltage supply.
-+
-+required:
-+  - compatible
-+  - reg
-+  - vref-supply
-+
-+examples:
-+  - |
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+  
-+      dac@0 {
-+        compatible = "lltc,ltc1660";
-+        reg = <0>;
-+        spi-max-frequency = <5000000>;
-+        vref-supply = <&vref_reg>;
-+      };
-+    };
-diff --git a/Documentation/devicetree/bindings/iio/dac/ltc1660.txt b/Documentation/devicetree/bindings/iio/dac/ltc1660.txt
-deleted file mode 100644
-index c5b5f22d6c64..000000000000
---- a/Documentation/devicetree/bindings/iio/dac/ltc1660.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--* Linear Technology Micropower octal 8-Bit and 10-Bit DACs
--
--Required properties:
-- - compatible: Must be one of the following:
--		"lltc,ltc1660"
--		"lltc,ltc1665"
-- - reg: SPI chip select number for the device
-- - vref-supply: Phandle to the voltage reference supply
--
--Recommended properties:
-- - spi-max-frequency: Definition as per
--	 Documentation/devicetree/bindings/spi/spi-bus.txt.
--	 Max frequency for this chip is 5 MHz.
--
--Example:
--dac@0 {
--	compatible = "lltc,ltc1660";
--	reg = <0>;
--	spi-max-frequency = <5000000>;
--	vref-supply = <&vref_reg>;
--};
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fbccc9d450ff..23497d713298 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9619,7 +9619,7 @@ LTC1660 DAC DRIVER
- M:	Marcus Folkesson <marcus.folkesson@gmail.com>
- L:	linux-iio@vger.kernel.org
- S:	Maintained
--F:	Documentation/devicetree/bindings/iio/dac/ltc1660.txt
-+F:	Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
- F:	drivers/iio/dac/ltc1660.c
- 
- LTC4261 HARDWARE MONITOR DRIVER
--- 
-2.23.0
-
+T24gVHVlLCAyMDE5LTExLTA1IGF0IDIwOjI4ICswMDAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiAN
+Cj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4gDQo+
+IEN1cnJlbnRseSB0aGUgcmVhZCBvZiB0ZW1wIHVzaW5nIG9mX3Byb3BlcnR5X3JlYWRfdTMyX2lu
+ZGV4IGlzDQo+IHJlYWRpbmcNCj4gYSB1MzIgdmFsdWUgaW50byBhIHVuc2lnbmVkIGxvbmcgbG9u
+Zy4gIFRoaXMgcmVsaWVzIG9uIG1hY2hpbmUNCj4gZW5kaWFubmVzcw0KPiB0byB3b3JrIGNvcnJl
+Y3RseSwgc28gZml4IHRoaXMgYnkgcmVhZGluZyBhIHUzMiB2YWx1ZSBhbmQgc2V0dGluZw0KPiB0
+ZW1wDQo+IHRvIHRoaXMgdmFsdWUuDQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiUmVsaWFu
+Y2Ugb24gaW50ZWdlciBlbmRpYW5uZXNzIikNCj4gRml4ZXM6IGYxMTBmMzE4OGU1NiAoImlpbzog
+dGVtcGVyYXR1cmU6IEFkZCBzdXBwb3J0IGZvciBMVEMyOTgzIikNCj4gU2lnbmVkLW9mZi1ieTog
+Q29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4gLS0tDQo+ICBkcml2
+ZXJzL2lpby90ZW1wZXJhdHVyZS9sdGMyOTgzLmMgfCA2ICsrKystLQ0KPiAgMSBmaWxlIGNoYW5n
+ZWQsIDQgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9k
+cml2ZXJzL2lpby90ZW1wZXJhdHVyZS9sdGMyOTgzLmMNCj4gYi9kcml2ZXJzL2lpby90ZW1wZXJh
+dHVyZS9sdGMyOTgzLmMNCj4gaW5kZXggZGRmNDcwMjMzNjRiLi5kMzljMGQ2Yjc3ZjEgMTAwNjQ0
+DQo+IC0tLSBhL2RyaXZlcnMvaWlvL3RlbXBlcmF0dXJlL2x0YzI5ODMuYw0KPiArKysgYi9kcml2
+ZXJzL2lpby90ZW1wZXJhdHVyZS9sdGMyOTgzLmMNCj4gQEAgLTQ0NCw4ICs0NDQsMTAgQEAgc3Rh
+dGljIHN0cnVjdCBsdGMyOTgzX2N1c3RvbV9zZW5zb3INCj4gKl9fbHRjMjk4M19jdXN0b21fc2Vu
+c29yX25ldygNCj4gIAkJCWVsc2UNCj4gIAkJCQl0ZW1wID0gX19jb252ZXJ0X3RvX3Jhdyh0ZW1w
+LA0KPiByZXNvbHV0aW9uKTsNCj4gIAkJfSBlbHNlIHsNCj4gLQkJCW9mX3Byb3BlcnR5X3JlYWRf
+dTMyX2luZGV4KG5wLCBwcm9wbmFtZSwgaW5kZXgsDQo+IC0JCQkJCQkgICAodTMyICopJnRlbXAp
+Ow0KPiArCQkJdTMyIHQzMjsNCj4gKw0KPiArCQkJb2ZfcHJvcGVydHlfcmVhZF91MzJfaW5kZXgo
+bnAsIHByb3BuYW1lLCBpbmRleCwNCj4gJnQzMik7DQo+ICsJCQl0ZW1wID0gdDMyOw0KPiAgCQl9
+DQo+ICANCj4gIAkJZm9yIChqID0gMDsgaiA8IG5fc2l6ZTsgaisrKQ0KDQpBY2tlZC1ieTogTnVu
+byBTw6EgPG51bm8uc2FAYW5hbG9nLmNvbT4NCg0KVGhhbmtzLA0KTnVubyBTw6ENCg==

@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11F22F14A4
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 12:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFA20F14A9
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 12:10:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728140AbfKFLJt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Nov 2019 06:09:49 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:46345 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726402AbfKFLJt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Nov 2019 06:09:49 -0500
-Received: by mail-lj1-f193.google.com with SMTP id e9so12287101ljp.13;
-        Wed, 06 Nov 2019 03:09:46 -0800 (PST)
+        id S1727652AbfKFLKC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Nov 2019 06:10:02 -0500
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:35007 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726402AbfKFLKC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Nov 2019 06:10:02 -0500
+Received: by mail-lf1-f66.google.com with SMTP id y6so17730870lfj.2;
+        Wed, 06 Nov 2019 03:10:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=wBiQq0cp0ZT17akB6/sC+lRSuUfl0nsB/5VzUqPd+T8=;
-        b=R/Fi+NoL82h7Q2vavAWzrwWakTmTnXksFiilzkGHuMb9a+zZdeHx1Q8I7OlK59el7z
-         J37KsE/7uYwciOJglybMK0YjHaxJFdsXzfTFgoXbCECLIQs2Cz4wyfNkjRbY8mbDcfFe
-         dpKSqs2LH2noWsvAPLDGTK1o7Vt5rPi15MOkv7wa/zWQTTJQV5WtQSjw/YyBRfeplUky
-         1aZTcuokxb3z4fad7OsOal0DhiD42gUMv5sciG0ps+1VroxZIp2iwLgbnPxVkhTzl6oz
-         Uk9V45TbbwR2M5eoivnCiVtkr4KG56bUW4OUljG03J5YO5OnI1n5L6jPD1dDId1/sQDu
-         wMlQ==
+        bh=bnwVsjbNiFuh5JOeo4upmlnPXVCJtlYPqMTxNS+DiLI=;
+        b=cJUWstEO1+yXWrupneRMJq4VR/toW3Xn6XKBkK8AFQk3KovnnsTne6c7yoxHJfzAAJ
+         mSZDlDpUPFKDZX75azo7tTmfn1KD79reG+D0kjqTKcWpYpBnj9a8yZAM+V27nwRLcLsi
+         Ap7V3VQOx1fiLTjfx+D41QBSoYmGDUSXOaDFc0t9iu5/A0dUU/sl1ULFkWkehL52uKQC
+         ujueJS8KncjrAaS+Q8JmPegGh0BuEgEad957GuRTSpQRIqVH2TSYtSMQ7JAzSK+K8sDD
+         Pq+X+SnOGEhP/XiMng+HDbdSBKo4hgj6jixGLbNJnzV8z+DWdsmU2CKb4EJYVvI1AH9C
+         v0ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=wBiQq0cp0ZT17akB6/sC+lRSuUfl0nsB/5VzUqPd+T8=;
-        b=UHKCd0CFnQACSFGY6u67tjBCe54QULXf/8DcB8Ar5UG7w9e31u4hYHINiaV3D1l4O4
-         o2I+oE+HIzT1M5/IzcLx+NLBaXC38ReeLDYUJIjQSAp2wgZC1WIhcKV2Imq7dImiLq9E
-         2oLXFVCYBoHxHrXxgfzU9gMRXpZtXwDxC3Yy2EphJ1b3kKKj1+YwUEAfZg5e6/iSoX8C
-         Or9oEJGMfvsyvbT7ei7BClMhaj7VZUhfRgLko9g1jvRUo0/ldRN3/PI7xOfyMdqMyo8Y
-         Nk7/eIdEg8nv08/cvrrRmcFOvCrOMmxtnKGRwfaNa3ouy1hd3F/1O1jiOlWVORN8WpuQ
-         jLHA==
-X-Gm-Message-State: APjAAAVe1XMVDMcVVmN0MCsqdjQpKLQWY4r9K/FoOhLVCwZlvMXThrLw
-        51VPSxs6lVFajWfoP5i564Y=
-X-Google-Smtp-Source: APXvYqyDXDYNhpVNsYp9jqZengWs5rk612UYI/+JvjbanNu8z0v/fvEZOxcu2YeMIlzWy+q2giq70g==
-X-Received: by 2002:a2e:7d17:: with SMTP id y23mr1534664ljc.228.1573038586060;
-        Wed, 06 Nov 2019 03:09:46 -0800 (PST)
+        bh=bnwVsjbNiFuh5JOeo4upmlnPXVCJtlYPqMTxNS+DiLI=;
+        b=m3ujWBOsX64ZrHjj8tt2qyPxBG0ykcFdq0050zRp/JBSXWvomqIcH8DSWD088D0WFf
+         fu1xg69cJR8nGQuW6g3iiwnniHxJzKWP01qWMB2SXJ9Pm6uaKiwGInGINWMmff12vpwM
+         7O1Ago/nMcctHCMS0Q2i5/+oabmv/Ae7aWqFJPh2GboBOUj1jbR/mSmrB9xdEvhxM89o
+         YcTIhKiAs26Xt4O5eQkuKf5zjr1I92ONWN22bBVm0jj1I/tc6IVOqbiesVV1eTtc7ejQ
+         w7Z/tBkpSzQ2VLhqvP2EUMJb/XW7FJl70nEX3u//BxuZWv0lB0LvFRtnK0k5uOrupmQw
+         IUKw==
+X-Gm-Message-State: APjAAAVmzj6HO9fEsHa2KVpfyQ3dfABAwnANSPwaCsf3lhTmeESmYYE+
+        XtxsVAFduBoqdiLGlZEbOFY=
+X-Google-Smtp-Source: APXvYqyDAZlkhUC0it716Vc74H5Yhm1zXCS8linsSxcwyIkPeH3AM/teWSo+RcUkqCBTSrnOY7ThEQ==
+X-Received: by 2002:ac2:4856:: with SMTP id 22mr23327083lfy.131.1573038599923;
+        Wed, 06 Nov 2019 03:09:59 -0800 (PST)
 Received: from localhost.localdomain ([94.234.51.156])
-        by smtp.gmail.com with ESMTPSA id i128sm12667229lfd.6.2019.11.06.03.09.43
+        by smtp.gmail.com with ESMTPSA id 28sm9888753lfy.38.2019.11.06.03.09.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2019 03:09:45 -0800 (PST)
+        Wed, 06 Nov 2019 03:09:59 -0800 (PST)
 From:   Marcus Folkesson <marcus.folkesson@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -59,9 +59,9 @@ To:     Jonathan Cameron <jic23@kernel.org>,
         "Paul E . McKenney" <paulmck@linux.ibm.com>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2] dt-bindings: iio: adc: Migrate MCP3911 documentation to yaml
-Date:   Wed,  6 Nov 2019 12:12:10 +0100
-Message-Id: <20191106111210.6825-1-marcus.folkesson@gmail.com>
+Subject: [PATCH v2] dt-bindings: iio: dac: Migrate LTC1660 documentation to yaml
+Date:   Wed,  6 Nov 2019 12:12:33 +0100
+Message-Id: <20191106111233.6905-1-marcus.folkesson@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -77,143 +77,111 @@ Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 
 Notes:
     v2:
-    	- Remove descriptor for reg and spi-max-frequency (Rob)
-    	- Write better description for clocks and vref-supply (Rob)
-    	- Remove max-items for vref-supply
+    	- Remove description for reg and spi-max-frequency (Rob & Alexa)
+    	- Drop maxItems for vref-supply
 
- .../devicetree/bindings/iio/adc/mcp3911.txt   | 30 --------
- .../bindings/iio/adc/microchip,mcp3911.yaml   | 71 +++++++++++++++++++
+ .../bindings/iio/dac/lltc,ltc1660.yaml        | 49 +++++++++++++++++++
+ .../devicetree/bindings/iio/dac/ltc1660.txt   | 21 --------
  MAINTAINERS                                   |  2 +-
- 3 files changed, 72 insertions(+), 31 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/adc/mcp3911.txt
- create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+ 3 files changed, 50 insertions(+), 22 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+ delete mode 100644 Documentation/devicetree/bindings/iio/dac/ltc1660.txt
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/mcp3911.txt b/Documentation/devicetree/bindings/iio/adc/mcp3911.txt
-deleted file mode 100644
-index 3071f48fb30b..000000000000
---- a/Documentation/devicetree/bindings/iio/adc/mcp3911.txt
-+++ /dev/null
-@@ -1,30 +0,0 @@
--* Microchip MCP3911 Dual channel analog front end (ADC)
--
--Required properties:
-- - compatible: Should be "microchip,mcp3911"
-- - reg: SPI chip select number for the device
--
--Recommended properties:
-- - spi-max-frequency: Definition as per
--	 Documentation/devicetree/bindings/spi/spi-bus.txt.
--	 Max frequency for this chip is 20MHz.
--
--Optional properties:
-- - clocks: Phandle and clock identifier for sampling clock
-- - interrupt-parent: Phandle to the parent interrupt controller
-- - interrupts: IRQ line for the ADC
-- - microchip,device-addr: Device address when multiple MCP3911 chips are present on the
--	same SPI bus. Valid values are 0-3. Defaults to 0.
-- - vref-supply: Phandle to the external reference voltage supply.
--
--Example:
--adc@0 {
--	compatible = "microchip,mcp3911";
--	reg = <0>;
--	interrupt-parent = <&gpio5>;
--	interrupts = <15 IRQ_TYPE_EDGE_RISING>;
--	spi-max-frequency = <20000000>;
--	microchip,device-addr = <0>;
--	vref-supply = <&vref_reg>;
--	clocks = <&xtal>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
 new file mode 100644
-index 000000000000..c73a374e614a
+index 000000000000..505b3d54b81c
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-@@ -0,0 +1,71 @@
++++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+@@ -0,0 +1,49 @@
 +# SPDX-License-Identifier: GPL-2.0
 +# Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
 +%YAML 1.2
 +---
-+$id: "http://devicetree.org/schemas/bindings/iio/adc/microchip,mcp3911.yaml#"
++$id: "http://devicetree.org/schemas/bindings/iio/dac/lltc,ltc1660.yaml#"
 +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
 +
-+title: Microchip MCP3911 Dual channel analog front end (ADC)
++title: Linear Technology Micropower octal 8-Bit and 10-Bit DACs
 +
 +maintainers:
 +  - Marcus Folkesson <marcus.folkesson@gmail.com>
-+  - Kent Gustavsson <nedo80@gmail.com>
 +
 +description: |
-+  Bindings for the Microchip MCP3911 Dual channel ADC device. Datasheet can be
-+  found here: https://ww1.microchip.com/downloads/en/DeviceDoc/20002286C.pdf
++  Bindings for the Linear Technology Micropower octal 8-Bit and 10-Bit DAC.
++  Datasheet can be found here: https://www.analog.com/media/en/technical-documentation/data-sheets/166560fa.pdf
 +
 +properties:
 +  compatible:
 +    enum:
-+      - microchip,mcp3911
++      - lltc,ltc1660
++      - lltc,ltc1665
 +
 +  reg:
 +    maxItems: 1
 +
 +  spi-max-frequency:
-+    maximum: 20000000
-+
-+  clocks:
-+    description: |
-+      Phandle and clock identifier for external sampling clock.
-+      If not specified, the internal crystal oscillator will be used.
-+    maxItems: 1
-+
-+  interrupts:
-+    description: IRQ line of the ADC
-+    maxItems: 1
-+
-+  microchip,device-addr:
-+    description: Device address when multiple MCP3911 chips are present on the same SPI bus.
-+    allOf:
-+      - $ref: /schemas/types.yaml#/definitions/uint32
-+      - enum: [0, 1, 2, 3]
-+      - default: 0
++    maximum: 5000000
 +
 +  vref-supply:
-+    description: |
-+      Phandle to the external reference voltage supply.
-+      If not specified, the internal voltage reference (1.2V) will be used.
++    description: Phandle to the external reference voltage supply.
 +
 +required:
 +  - compatible
 +  - reg
++  - vref-supply
 +
 +examples:
 +  - |
 +    spi {
 +      #address-cells = <1>;
 +      #size-cells = <0>;
-+
-+      adc@0 {
-+        compatible = "microchip,mcp3911";
++  
++      dac@0 {
++        compatible = "lltc,ltc1660";
 +        reg = <0>;
-+        interrupt-parent = <&gpio5>;
-+        interrupts = <15 2>;
-+        spi-max-frequency = <20000000>;
-+        microchip,device-addr = <0>;
++        spi-max-frequency = <5000000>;
 +        vref-supply = <&vref_reg>;
-+        clocks = <&xtal>;
 +      };
 +    };
+diff --git a/Documentation/devicetree/bindings/iio/dac/ltc1660.txt b/Documentation/devicetree/bindings/iio/dac/ltc1660.txt
+deleted file mode 100644
+index c5b5f22d6c64..000000000000
+--- a/Documentation/devicetree/bindings/iio/dac/ltc1660.txt
++++ /dev/null
+@@ -1,21 +0,0 @@
+-* Linear Technology Micropower octal 8-Bit and 10-Bit DACs
+-
+-Required properties:
+- - compatible: Must be one of the following:
+-		"lltc,ltc1660"
+-		"lltc,ltc1665"
+- - reg: SPI chip select number for the device
+- - vref-supply: Phandle to the voltage reference supply
+-
+-Recommended properties:
+- - spi-max-frequency: Definition as per
+-	 Documentation/devicetree/bindings/spi/spi-bus.txt.
+-	 Max frequency for this chip is 5 MHz.
+-
+-Example:
+-dac@0 {
+-	compatible = "lltc,ltc1660";
+-	reg = <0>;
+-	spi-max-frequency = <5000000>;
+-	vref-supply = <&vref_reg>;
+-};
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e51a68bf8ca8..fbccc9d450ff 100644
+index fbccc9d450ff..23497d713298 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -10723,7 +10723,7 @@ M:	Kent Gustavsson <kent@minoris.se>
+@@ -9619,7 +9619,7 @@ LTC1660 DAC DRIVER
+ M:	Marcus Folkesson <marcus.folkesson@gmail.com>
  L:	linux-iio@vger.kernel.org
- S:	Supported
- F:	drivers/iio/adc/mcp3911.c
--F:	Documentation/devicetree/bindings/iio/adc/mcp3911.txt
-+F:	Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/iio/dac/ltc1660.txt
++F:	Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+ F:	drivers/iio/dac/ltc1660.c
  
- MICROCHIP NAND DRIVER
- M:	Tudor Ambarus <tudor.ambarus@microchip.com>
+ LTC4261 HARDWARE MONITOR DRIVER
 -- 
 2.23.0
 

@@ -2,221 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21550F0D4B
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 04:49:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78A09F0D90
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2019 05:07:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727266AbfKFDtX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Nov 2019 22:49:23 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:40527 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725768AbfKFDtW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Nov 2019 22:49:22 -0500
-Received: by mail-oi1-f194.google.com with SMTP id 22so1607703oip.7;
-        Tue, 05 Nov 2019 19:49:22 -0800 (PST)
+        id S1731095AbfKFEHA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Nov 2019 23:07:00 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:45954 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725768AbfKFEHA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Nov 2019 23:07:00 -0500
+Received: by mail-oi1-f195.google.com with SMTP id k2so19721544oij.12;
+        Tue, 05 Nov 2019 20:06:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BYRy2kU11mjJOqDThkKH567jR3x8F3FqGXpmcAaLlOo=;
-        b=F+Z7/hJZiqLIEezcoGg3lTIp28cO4/7kNLRNTu6FKs9XKWd6ogMDNRamLohBrXXgpt
-         ZNKKNS/GegUKG0huchmm7w3YfvGCWF/wKtsVgOE8LIXSTuKhJ+ZfxphcKtyb6Z+O3PQ+
-         GkJzIilUf+P8Gp8TRRhbWFdQROYxZPPAWe9Jv7pDc0/TZszOwT/eW6ljwYnjeUIiWOSN
-         JSgBy3Zl7Os07mnJIziRRlVfz53BtoDmRSjK/Akl4cJsVqDJEceOO44vKYzYQnAw3jbv
-         YNZ2GVZdB8t+Cqxuguitzn55CwShG8zCTY/7+J49Yy6N+MiWK5TNeQC7ua5Eai59SG59
-         T/Ew==
-X-Gm-Message-State: APjAAAW90eEId3KJmGBW4KzJ9djA6o5jZQWLYg8Ab0lPXYpqiPRX0LXQ
-        xKbaL7KLtvsGpRPcVejxEg==
-X-Google-Smtp-Source: APXvYqyArk7cjiKQPNiUtt/ZJP0XyerEm6RMmGQgcHosA8r7K975fgj1X6RbwQlU05L0p4gxByX+MA==
-X-Received: by 2002:aca:39d7:: with SMTP id g206mr325373oia.101.1573012161814;
-        Tue, 05 Nov 2019 19:49:21 -0800 (PST)
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=pbXWYeEjjc1tNeD8Va0Rn7W5q8WImyzirMTHLiEKYGY=;
+        b=HDvT0r1O4hYvec9HRTLyyiRoRCgRpMUAnN8NYp3qonrng2HCXN05NI8IF//H6UzyTz
+         s37E6T15SEV+ZNYj4JbFAvNUzQ2njM88WrhHTmWiv2VI/tmYa/GkJYl3fBPghGLjRap7
+         TCc6L2ixyel0KqCdeHQaW8MP5faYkPGaNoxdyNQJMbnIdiVoIGr+XxJSIs3+8LSxEZy/
+         UhhiL++TWq+rig8o3KvXasRs1axFUSltBNfM5aUZk4uPxbQD9zi5MJ8YMXkTZdyaJTsq
+         XrjXuetjq/Kcd+fGjcyCJ6kuZLfd2D+mSCt4hG/lVpagelMVrD1F0IoTJzXR/W67mI93
+         KqIA==
+X-Gm-Message-State: APjAAAWxQyuhT2AoHxUH1Uqccj9rF26Efe3IdILIKmorCJAh1t8/RZYH
+        RZR/QMpzTz8HNSkW/g/R0iBxHjk=
+X-Google-Smtp-Source: APXvYqwe0beNgeLE8gya+f9XdJ7ynxnQMAtyk6u+v0005b8KLbqtym2m20lGy9EYFxREtXyxePD27Q==
+X-Received: by 2002:aca:f18b:: with SMTP id p133mr406122oih.22.1573013219216;
+        Tue, 05 Nov 2019 20:06:59 -0800 (PST)
 Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id l4sm6486980oia.51.2019.11.05.19.49.20
+        by smtp.gmail.com with ESMTPSA id k93sm6726958otc.30.2019.11.05.20.06.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Nov 2019 19:49:21 -0800 (PST)
-Date:   Tue, 5 Nov 2019 21:49:20 -0600
+        Tue, 05 Nov 2019 20:06:58 -0800 (PST)
+Date:   Tue, 5 Nov 2019 22:06:57 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Benjamin Gaignard <benjamin.gaignard@linaro.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benjamin Gaignard <benjamin.gaignard@st.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Paul E . McKenney" <paulmck@linux.ibm.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: Migrate MCP3911 documentation to
- yaml
-Message-ID: <20191106034920.GA15882@bogus>
-References: <20191029211142.14650-1-marcus.folkesson@gmail.com>
+        devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        linux-iio@vger.kernel.org, u.kleine-koenig@pengutronix.de,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 2/4] dt-bindings: iio: timer: Convert stm32 IIO trigger
+ bindings to json-schema
+Message-ID: <20191106040657.GA5294@bogus>
+References: <20191031123040.26316-1-benjamin.gaignard@st.com>
+ <20191031123040.26316-3-benjamin.gaignard@st.com>
+ <20191103110841.3ad3ecfb@archlinux>
+ <CA+M3ks5sZ6wwV-V+HCLC8OLdeLqrxK0Ga-pXTsdktQErbMOk4g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20191029211142.14650-1-marcus.folkesson@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+M3ks5sZ6wwV-V+HCLC8OLdeLqrxK0Ga-pXTsdktQErbMOk4g@mail.gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Oct 29, 2019 at 10:11:42PM +0100, Marcus Folkesson wrote:
-> Rewrite bindings to use json-schema vocabulary.
+On Tue, Nov 05, 2019 at 11:07:16AM +0100, Benjamin Gaignard wrote:
+> Le dim. 3 nov. 2019 à 12:08, Jonathan Cameron <jic23@kernel.org> a écrit :
+> >
+> > On Thu, 31 Oct 2019 13:30:38 +0100
+> > Benjamin Gaignard <benjamin.gaignard@st.com> wrote:
+> >
+> > > Convert the STM32 IIO trigger binding to DT schema format using json-schema
+> > >
+> > > Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
+> > I'm far from great on these as still haven't taken the time I should to learn
+> > the yaml syntax properly.  A few comments inline however based mostly on this
+> > doesn't quite look like other ones I've seen recently.
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >
+> > > ---
+> > >  .../bindings/iio/timer/st,stm32-timer-trigger.yaml | 44 ++++++++++++++++++++++
+> > >  .../bindings/iio/timer/stm32-timer-trigger.txt     | 25 ------------
+> > >  2 files changed, 44 insertions(+), 25 deletions(-)
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/timer/st,stm32-timer-trigger.yaml
+> > >  delete mode 100644 Documentation/devicetree/bindings/iio/timer/stm32-timer-trigger.txt
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/timer/st,stm32-timer-trigger.yaml b/Documentation/devicetree/bindings/iio/timer/st,stm32-timer-trigger.yaml
+> > > new file mode 100644
+> > > index 000000000000..1c8c8b55e8cd
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/timer/st,stm32-timer-trigger.yaml
+> > > @@ -0,0 +1,44 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/timer/st,stm32-timer-trigger.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: STMicroelectronics STM32 Timers IIO timer bindings
+> > > +
+> > > +maintainers:
+> > > +  - Benjamin Gaignard <benjamin.gaignard@st.com>
+> > > +  - Fabrice Gasnier <fabrice.gasnier@st.com>
+> > > +
+> > > +properties:
+> > > +  $nodemane:
+> >
+> > nodename?
 > 
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-> ---
->  .../devicetree/bindings/iio/adc/mcp3911.txt   | 30 --------
->  .../bindings/iio/adc/microchip,mcp3911.yaml   | 72 +++++++++++++++++++
->  MAINTAINERS                                   |  2 +-
->  3 files changed, 73 insertions(+), 31 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/iio/adc/mcp3911.txt
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> That will be in v2
+
+No, $nodename is correct. The '$' signifies something we generate and 
+add in. IOW, not a real property. I guess we could have used 'name' here 
+and stuck with traditional OpenFirmware.
+
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/mcp3911.txt b/Documentation/devicetree/bindings/iio/adc/mcp3911.txt
-> deleted file mode 100644
-> index 3071f48fb30b..000000000000
-> --- a/Documentation/devicetree/bindings/iio/adc/mcp3911.txt
-> +++ /dev/null
-> @@ -1,30 +0,0 @@
-> -* Microchip MCP3911 Dual channel analog front end (ADC)
-> -
-> -Required properties:
-> - - compatible: Should be "microchip,mcp3911"
-> - - reg: SPI chip select number for the device
-> -
-> -Recommended properties:
-> - - spi-max-frequency: Definition as per
-> -	 Documentation/devicetree/bindings/spi/spi-bus.txt.
-> -	 Max frequency for this chip is 20MHz.
-> -
-> -Optional properties:
-> - - clocks: Phandle and clock identifier for sampling clock
-> - - interrupt-parent: Phandle to the parent interrupt controller
-> - - interrupts: IRQ line for the ADC
-> - - microchip,device-addr: Device address when multiple MCP3911 chips are present on the
-> -	same SPI bus. Valid values are 0-3. Defaults to 0.
-> - - vref-supply: Phandle to the external reference voltage supply.
-> -
-> -Example:
-> -adc@0 {
-> -	compatible = "microchip,mcp3911";
-> -	reg = <0>;
-> -	interrupt-parent = <&gpio5>;
-> -	interrupts = <15 IRQ_TYPE_EDGE_RISING>;
-> -	spi-max-frequency = <20000000>;
-> -	microchip,device-addr = <0>;
-> -	vref-supply = <&vref_reg>;
-> -	clocks = <&xtal>;
-> -};
-> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-> new file mode 100644
-> index 000000000000..bfcf6a5fb44e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-> @@ -0,0 +1,72 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +# Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/bindings/iio/adc/microchip,mcp3911.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
-> +title: Microchip MCP3911 Dual channel analog front end (ADC)
-> +
-> +maintainers:
-> +  - Marcus Folkesson <marcus.folkesson@gmail.com>
-> +  - Kent Gustavsson <nedo80@gmail.com>
-> +
-> +description: |
-> +  Bindings for the Microchip MCP3911 Dual channel ADC device. Datasheet can be
-> +  found here: https://ww1.microchip.com/downloads/en/DeviceDoc/20002286C.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - microchip,mcp3911
-> +
-> +  reg:
-> +    description: SPI chip select number for the device
-
-No need to describe common properties if you have nothing special for 
-this device to say.
-
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    description: |
-> +      Definition as per Documentation/devicetree/bindings/spi/spi-bus.txt.
-
-Same here.
-
-> +    maximum: 20000000
-> +    maxItems: 1
-
-Not an array, so drop.
-
-> +
-> +  clocks:
-> +    description: Phandle and clock identifier for sampling clock
-
-Same comment on descriptions.
-
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description: IRQ line of the ADC
-> +    maxItems: 1
-> +
-> +  microchip,device-addr:
-> +    description: Device address when multiple MCP3911 chips are present on the same SPI bus.
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - enum: [0, 1, 2, 3]
-> +      - default: 0
-> +
-> +  vref-supply:
-> +    description: Phandle to the external reference voltage supply.
-> +    maxItems: 1
-
-Drop this *-supply is always 1 item.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      adc@0 {
-> +        compatible = "microchip,mcp3911";
-> +        reg = <0>;
-> +        interrupt-parent = <&gpio5>;
-> +        interrupts = <15 2>;
-> +        spi-max-frequency = <20000000>;
-> +        microchip,device-addr = <0>;
-> +        vref-supply = <&vref_reg>;
-> +        clocks = <&xtal>;
-> +      };
-> +    };
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e51a68bf8ca8..fbccc9d450ff 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -10723,7 +10723,7 @@ M:	Kent Gustavsson <kent@minoris.se>
->  L:	linux-iio@vger.kernel.org
->  S:	Supported
->  F:	drivers/iio/adc/mcp3911.c
-> -F:	Documentation/devicetree/bindings/iio/adc/mcp3911.txt
-> +F:	Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
->  
->  MICROCHIP NAND DRIVER
->  M:	Tudor Ambarus <tudor.ambarus@microchip.com>
-> -- 
-> 2.23.0
+> >
+> > > +    pattern: "^timer@[0-9]+$"
+> > > +    type: object
+> > > +
+> > > +    description:
+> > > +      must be a sub-node of an STM32 Timer device tree node
+> > > +
+> > > +    properties:
+> > > +      compatible:
+> > > +        oneOf:
+> >
+> > enum is I think preferred for these.
 > 
+> as you like it will be in v2
+> 
+> >
+> > > +          - const: st,stm32-timer-trigger
+> > > +          - const: st,stm32h7-timer-trigger
+> > > +
+> > > +      reg: true
+> >
+> > Normally some info for what the reg value is..
+> I can't put "description" on this field because the syntax doesn't allow it.
+> I will add a comment in v2 to explain what reg is.
+
+items:
+  - maximum: <max timer number>
+
+Rob

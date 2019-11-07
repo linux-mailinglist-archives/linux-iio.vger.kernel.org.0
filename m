@@ -2,19 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33592F2EBF
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2019 14:02:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40892F2EB2
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2019 14:01:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388442AbfKGNCN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 Nov 2019 08:02:13 -0500
-Received: from mout.kundenserver.de ([212.227.17.24]:58211 "EHLO
+        id S2388796AbfKGNBO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 Nov 2019 08:01:14 -0500
+Received: from mout.kundenserver.de ([212.227.17.24]:54703 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726873AbfKGNCM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Nov 2019 08:02:12 -0500
+        with ESMTP id S1726873AbfKGNBO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Nov 2019 08:01:14 -0500
 Received: from localhost ([46.78.193.225]) by mrelayeu.kundenserver.de
  (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1M3DBb-1iU4q23Lif-003eaF; Thu, 07 Nov 2019 14:00:08 +0100
-Date:   Thu, 7 Nov 2019 14:00:05 +0100
+ 1MAfQk-1idk0d0Uye-00B74F; Thu, 07 Nov 2019 14:00:31 +0100
+Date:   Thu, 7 Nov 2019 14:00:29 +0100
 From:   Andreas Klinger <ak@it-klinger.de>
 To:     robh+dt@kernel.org, jic23@kernel.org, mark.rutland@arm.com
 Cc:     mripard@kernel.org, shawnguo@kernel.org, heiko@sntech.de,
@@ -25,55 +25,101 @@ Cc:     mripard@kernel.org, shawnguo@kernel.org, heiko@sntech.de,
         davem@davemloft.net, paulmck@linux.ibm.com,
         devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 1/5] dt-bindings: add vendor prefix parallax
-Message-ID: <20191107130003.m6ul3klzmv2g2sbd@arbad>
+Subject: [PATCH 2/5] dt-bindings: add parallax ping sensors
+Message-ID: <20191107130027.k2uo547xrfiuxgb7@arbad>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Provags-ID: V03:K1:C8IX4KdRmZEk6Z1ftKghKP5WhDeC1HAho2hptIwhg03itfX28K5
- lc5HmJpLEkeM6YsYzsdC+yQbqlHpPqsnG52s/6txbNzsFteh96kfsJ9xthD+ey6/ykNbwSu
- QzDqp92HVmdqOPiXaJR22TewJPtzaY7EIOAIpm7B6e+62n9CJv+LXUNtxHyUb8cH4sJtEWW
- /elcDwQ70aljywhAYF+1g==
+X-Provags-ID: V03:K1:U8Bhu4Vf+4KzVDN7o7hwZXPSjh260AOQqJZxXo1LOYq9R7wx45l
+ qnicUAjmKFHfet4tBWVuSROasrooJ/jiN46LNHswEIXeLVnUN7glkp4VpgR/Sn1RYDC7kD9
+ TevZhF2xS/c0uONj+wFOiWRBuZWSs9TUpXBGGkeNEXqBDONi2jliQKZWPdxalt3+TgYcb39
+ +0EOWafbZeC+SJC4ELJ9Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ITQGoTZy2B4=:tzABNfQqv5gz/B7DJ+4lOn
- IQKJwWy2x3whNLzk0E+i3VTumuWdeA6FYk17ZHZj4NYGC0M1v6CYu5OvitKJvGj2AwLkA3xEG
- 7TjsNwvNfUdK1/4YFoTrZ/wGeleqZv84LVZZEBhICgdEdOJzLxTaUgxGZS9QEmlTP49yHoY05
- swSKIp4vGYeJvJxOI5XPunIVFNnENMM71cPh6xo9flo1/dPDLZWRrynsT543mvw1XJqlz02Hw
- K1QTDfUVfcIPP7LsVqRvZiLEEOB62nWGyxaf60wBZx2FOtwr+8c/kRIMMqHWk/zXZqF//zipc
- jKB5kE4MkR3zEMCZidBqlI0nAfNhu7EzomO9mliH9XgxREi6mT+4ACrymsEevtEctrIpIdlxP
- b9++PCKLXa2p4WeWs76emn0bo42SeiRz/pUvGMt1FfUsVE/dEt/ypWDPkn2N4zAhsgc3sEoBO
- yEhLOXgvAfxjjRemm3LR/kuNfWHwvbjRR8o5XBpbtm+TxXPdbVsJlGovLSrRcanjIVJvWOa3I
- Zadh3DPHz6QL1a+5artch818Gify7IuLyduZAD/NHBU9MJwd/w5ZAld220/mqjeyNHWc55yhx
- 2vWn6DHMobtlMeThS31PErW+BPC0PmcqTAeZ1XjyqvRpvEv9ywKUEpr6e46PIMd0WcjrI/QiF
- XHctthFnuIxVz8qyhKboNgiP3qTou5wXaXn51llPkBMXh70aDHpo3a37UcXKzoRFOAeWNOcpb
- KL4JvNiFLkoQRq52sZw44mHGYFB0wAPCboBoOWDG7e3gzWg2K1yH0Wj8HmXnxYg9nschN8rtM
- ykbJ+MPdvEtLTyHGHQ5iqAHYeplO07NEbPkx577jkwEEMijIwJ2zdNg5aAyHHYcjeAtzLfifx
- Za3OoghaosvGOrkEV7lA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7uSPIhWC6ns=:eGFlqo4N96XxVf0BxSzsKM
+ 9S48F5JPNhf2Zqu1arX8XktQ2tg688u1oGwiLzTZWQPSiUR1s1mre/Zfb0BhbSq5HxTNaiRH2
+ iOwE4P713IPTnNujXHS7Tvyy+JATPfl8vGZj2N4PKFe0QUE9sCmla7gDWEhx6pwHJzj7HpxJF
+ 4ePuKHdm7oKT5l2uZ+xGBdbbLXRSspZcQ4k1KaXd1hTUcj2it8LgnQAakp3tPIBSFjjM3IIWI
+ jmfcpenTyhMpSc/ofkcEsN94qOxPOTGf04+4UMj1Qimch9QPHsZoOhu4oDFXkcjvHSs6JyLxl
+ Km3oY0UdoNe5Hk9DWOAp4kPwHU/IWEncMUwU53i4uUsPEAJXfrHBX7JIgOl2p7UEAHnFCFayP
+ iaCLi7AMI8YStH/Mr/z+A3f2vT+pDbDAsDIYOrg8SH/SzBFF606CYXkn8SdnG5XiGQxzst5JJ
+ CWGg8YAWmYHloaPhRPGv6z9oaK8s5IZkEUkTrI/Bn/dWa9/8rvndZMLWAEd9RGr/71iuRkThy
+ D2kNS1PkFBGkoTJ+L21/SVtIx3dcOfGBWKU0rUUGx/CJnDsPxA9Ct4JccU2AGeQ4Wl7nggegh
+ ExUzzlyGyqk9DdHi+JK1HsMQHzqfyeMwPenI2T3Y0IdVpQo7T07rF/Zdtx3gTJyBUxos04mxf
+ 3P32st9l0vLARle1URYRjJ5btNRR85j48MZPEVrlSeSoeNktplCPMcNpXL3K3/XZ3e92TxNqk
+ gEAcEBmh8dstwu84DiejN3hM+O+lht7Jlenmlp1ZGKjg5rENWLlp4cTRlzDsSdxMAkvMtTCDx
+ ghKQPadixhSaUSjWzovcPQw3eMTGUsZ4bK6wtapZ2PfLz3fBBt+USdaY0vAi4jF21ZlEE+aBf
+ vSSlAcyCaq0IkZX6fI8g==
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add new vendor prefix parallax for newly created ping iio sensors.
+Add dt-bindings for parallax PING))) and LaserPING iio sensors, which
+are used for measuring distances.
 
 Signed-off-by: Andreas Klinger <ak@it-klinger.de>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ .../bindings/iio/proximity/parallax-ping.yaml      | 51 ++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 967e78c5ec0a..d3f9690e1e4b 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -713,6 +713,8 @@ patternProperties:
-     description: Panasonic Corporation
-   "^parade,.*":
-     description: Parade Technologies Inc.
-+  "^parallax,.*":
-+    description: Parallax Inc.
-   "^pda,.*":
-     description: Precision Design Associates, Inc.
-   "^pericom,.*":
+diff --git a/Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml b/Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml
+new file mode 100644
+index 000000000000..ab8dbdf4f04a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml
+@@ -0,0 +1,51 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/proximity/parallax-ping.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Parallax PING))) and LaserPING range finder
++
++maintainers:
++  - Andreas Klinger <ak@it-klinger.de>
++
++description: |
++  Bit-banging driver using one GPIO:
++  - ping-gpio is raised by the driver to start measurement
++  - direction of ping-gpio is then switched into input with an interrupt
++    for receiving distance value as PWM signal
++
++  Specifications about the devices can be found at:
++  http://parallax.com/sites/default/files/downloads/28041-LaserPING-2m-Rangefinder-Guide.pdf
++  http://parallax.com/sites/default/files/downloads/28015-PING-Documentation-v1.6.pdf
++
++properties:
++  compatible:
++    enum:
++      - parallax,ping
++      - parallax,laserping
++
++  ping-gpios:
++    description:
++      Definition of the GPIO for the triggering and echo (output and input)
++      This GPIO is set for about 5 us by the driver to tell the device it
++      should initiate the measurement cycle. Afterwards the GPIO is switched
++      to input direction with an interrupt. The device sets it and the
++      length of the input signal corresponds to the measured distance.
++      It needs to be an GPIO which is able to deliver an interrupt because
++      the time between two interrupts is measured in the driver.
++      See Documentation/devicetree/bindings/gpio/gpio.txt for information
++      on how to specify a consumer gpio.
++    maxItems: 1
++
++required:
++  - compatible
++  - ping-gpios
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    proximity {
++        compatible = "parallax,laserping";
++        ping-gpios = <&gpio0 26 GPIO_ACTIVE_HIGH>;
++    };
 -- 
 2.11.0

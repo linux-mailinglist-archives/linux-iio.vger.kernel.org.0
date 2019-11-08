@@ -2,83 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F5CEF4172
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2019 08:38:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A800F4516
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2019 11:56:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727421AbfKHHiP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Nov 2019 02:38:15 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:36496 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725900AbfKHHiP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Nov 2019 02:38:15 -0500
-Received: by mail-lf1-f66.google.com with SMTP id m6so3685747lfl.3;
-        Thu, 07 Nov 2019 23:38:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=4AAshBfjoQEiO2K81TTl19q6wDqPj9DyhYRACRdMs3w=;
-        b=thAdKuiC0wO/s/dzfd35oK1GLK0UZJV8qIfjuAlCTDFrwax8TpzR2jLJgp7aJEJ32c
-         gscAOPI//t5kvDsvDzzD44w78rUcp2aHYnUqH3z8Hv8IF2kkTf1T+6wbTrP9eNil0vwz
-         iuI+Sgm4kkmbpBCtGRvFm6XCtm7QRZhmECAk4zqy5mJ00uEojoWdLiITO9VJoUSby15Y
-         h9IbKBMSJU2LmpWA5pCNNOL/pYAq8ZHCt1ADi7ay9HVOVXMXqtby2/22vvRz4/U47DHm
-         uHhSZ5ucvKkE5MqRD+ZxVdr8KLCOf8AtnPZdXTZGvkSRZrFiykPE164rxEQa9i1pqIxg
-         OcpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=4AAshBfjoQEiO2K81TTl19q6wDqPj9DyhYRACRdMs3w=;
-        b=RaNBXCkav3eXzM85ouDSDfZl1DzhzTF4DOHnKBGPQVtdjUBYAIRfth3LAHEyo4gh4S
-         oyvOuJVRhoIoprfgDUAUSOJ2C3iyTLt8aopBkjCrVvvM2FnCnZz82QvlZ//233X1SJuw
-         coIcf1vczT4v8bL9wyHax4lAI8hxfLF05dK2TX+FP5zuQXxsSpuM9BJghv0XF8eYeKOL
-         /mReDgTQL9LrdfmCulIvjsR4tNoIVYtkN7o9f16Z22w/K2jvmEQjkUXa0U47rjAm3pEJ
-         5iCSsVJRC5Ew/0Arc14EleLRnHSBFVrfBG5CBtNy7Bj9jn71J6iH35yUBrqbTEuljR4l
-         o/Sw==
-X-Gm-Message-State: APjAAAUF9ZnxvTnbKUjurxtf/qKmmpIhRQPw8LnXlMz/O/tgSNO0JCuN
-        /A7rBohB+zZmIcXPJJTvsi4=
-X-Google-Smtp-Source: APXvYqzPdzmBLpJ23sspWX2PodL6cjACgfmwn+Rd10hJoaJ05t9jm3xetETKMt53TFUrI4lpJtCAAw==
-X-Received: by 2002:ac2:5195:: with SMTP id u21mr5409224lfi.97.1573198693605;
-        Thu, 07 Nov 2019 23:38:13 -0800 (PST)
-Received: from gmail.com (c-5eea30e8-74736162.cust.telenor.se. [94.234.48.232])
-        by smtp.gmail.com with ESMTPSA id p18sm2376857lfh.24.2019.11.07.23.38.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2019 23:38:13 -0800 (PST)
-Date:   Fri, 8 Nov 2019 08:40:56 +0100
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Paul E . McKenney" <paulmck@linux.ibm.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] dt-bindings: iio: adc: Migrate MCP3911 documentation
- to yaml
-Message-ID: <20191108074020.GB3844@gmail.com>
-References: <20191108072530.3499-1-marcus.folkesson@gmail.com>
+        id S1727459AbfKHK4R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Nov 2019 05:56:17 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:34218 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726149AbfKHK4R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Nov 2019 05:56:17 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA8AsJnj040693;
+        Fri, 8 Nov 2019 10:55:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=0I56CIW7IhXRaus+/lFEaLNLK2HcD+ZbLGBqaX03oow=;
+ b=YKYbNwzHPGwYQKugCt3krp4d5TQuvtnjyTDpbPlThK+DwTTQMtHmyYUhfqWaNnt2vJjo
+ o27GQXCkZDhk6l5Nh7UxnoYujhRSLKKRVBYhpJSoviMDq0bsiuykMDh59XU2dU+zB33Q
+ h5wARrMa3mAAVxJir+y+l9puABXvVtYZ60470aRece3urOAHZmPLdnnkXQSnZX+8zsPh
+ yxCd/3oVMvsiwucC60Cd4uMFen1ersUdjYABo0zJg+eCfVeXIpgWE3UBms7PgRlRDRZb
+ GuN45k0zDufiDNYfVcAyR6pwrPav5I7F3xuy1Jj6QqLOv6p8i+Dz8Ir7ZAYMaUXvtcgR 5Q== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2w41w14jyf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 Nov 2019 10:55:47 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA8AsVQK023409;
+        Fri, 8 Nov 2019 10:55:46 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2w4k31jj1y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 Nov 2019 10:55:46 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xA8ArXJ0021477;
+        Fri, 8 Nov 2019 10:53:33 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 08 Nov 2019 02:53:33 -0800
+Date:   Fri, 8 Nov 2019 13:53:19 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Beniamin Bia <beniamin.bia@analog.com>
+Cc:     jic23@kernel.org, devel@driverdev.osuosl.org, mark.rutland@arm.com,
+        lars@metafoo.de, biabeniamin@outlook.com,
+        Michael.Hennerich@analog.com, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, gregkh@linuxfoundation.org,
+        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
+        nicolas.ferre@microchip.com, robh+dt@kernel.org, pmeerw@pmeerw.net,
+        mchehab+samsung@kernel.org, paulmck@linux.ibm.com,
+        Paul Cercueil <paul.cercueil@analog.com>
+Subject: Re: [PATCH v3 1/4] iio: adc: Add support for AD7091R5 ADC
+Message-ID: <20191108105213.GR10409@kadam>
+References: <20191107150759.5937-1-beniamin.bia@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191108072530.3499-1-marcus.folkesson@gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20191107150759.5937-1-beniamin.bia@analog.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9434 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1910280000 definitions=main-1911080107
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9434 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1910280000
+ definitions=main-1911080107
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Nov 08, 2019 at 08:25:30AM +0100, Marcus Folkesson wrote:
-> Rewrite bindings to use json-schema vocabulary.
-> 
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+On Thu, Nov 07, 2019 at 05:07:56PM +0200, Beniamin Bia wrote:
+> +static int ad7091r_set_mode(struct ad7091r_state *st, enum ad7091r_mode mode)
+> +{
+> +	int ret, conf;
+> +
+> +	switch (mode) {
+> +	case AD7091R_MODE_SAMPLE:
+> +		conf = 0;
+> +		break;
+> +	case AD7091R_MODE_COMMAND:
+> +		conf = AD7091R_REG_CONF_CMD;
+> +		break;
+> +	case AD7091R_MODE_AUTOCYCLE:
+> +		conf = AD7091R_REG_CONF_AUTO;
+> +		break;
+> +	default:
+> +		ret = -EINVAL;
+> +		break;
 
-Forgot Robs tag from v2
+return -EINVAL;
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+> +	}
+> +
+> +	ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
+> +				 AD7091R_REG_CONF_MODE_MASK, conf);
 
+
+otherwise conf is uninitialized.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->mode = mode;
+> +
+> +	return ret;
+
+return 0;
+
+> +}
+> +
+> +static int ad7091r_set_channel(struct ad7091r_state *st, unsigned int channel)
+> +{
+> +	unsigned int foo;
+
+Use unsigned int dummy.
+
+> +	int ret;
+> +
+
+Otherwise it looks ok to me.  (Not a domain expert).
+
+regards,
+dan carpenter

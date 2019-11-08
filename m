@@ -2,270 +2,378 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B051F4B5E
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2019 13:23:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28A24F4CB6
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2019 14:09:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732141AbfKHMXJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Nov 2019 07:23:09 -0500
-Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:39966 "EHLO
-        mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732087AbfKHMXJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Nov 2019 07:23:09 -0500
-X-Greylist: delayed 649 seconds by postgrey-1.27 at vger.kernel.org; Fri, 08 Nov 2019 07:23:08 EST
-Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
-        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xA8C8T02007914;
-        Fri, 8 Nov 2019 04:11:48 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt1;
- bh=wkI8cH/jniv5ALj2FXj1K1Gx5TA77V/F3NP+QuIDmwc=;
- b=KxGr5TAcL9Vou3gPWV6NkqchrvfVNa7YPqofRSbhM2uE/ECLf6y4pQjs9zJJUGW/GPzv
- JYRYpiWSKOgfl5Nt9fRbJLxlLt4RB/wEgPZDwBrE4K+dFB1CnwFup4Cm+uA2+hd76rpT
- JJOnZ9LvQY/rzD+s1Ne4HbmJxIMCI9j2RERD1Y6jmexXf63up62MdHliAiCf+77tcqni
- 762wbl7ClBrw0mB1NBpNItaRR7DR1laKp95TKeaYAcyO5skLb/mCUV54cilUEzNM/Cup
- EZn9gNViGiINiMWsXkA9EdlsG1GDJKTp+s6uSZv8TUu6fq5xzx2pzWs3ll7NkxkOdFLq 9Q== 
-Received: from nam02-bl2-obe.outbound.protection.outlook.com (mail-bl2nam02lp2055.outbound.protection.outlook.com [104.47.38.55])
-        by mx0b-00328301.pphosted.com with ESMTP id 2w50g1g5x3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 08 Nov 2019 04:11:48 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k/bnMkK4jF9L3DILPOkqD9Bz+mRXUDDhnVOFqzB1cEnuBX2KCgkXXKsgewECvyd9lddXvoOLcDy4mqmSRLvrf+U+EWqptUFtmKt1rFRdW79MBJOZT6QUT+/X22cOpWxQ+89jL7bwylZrcAWe/z/LtJHUScR/zIqUmYBS32T/gMqJdkGz/MvifB/lK8MrGEGa7jnYuc1199IETHD43cjEvr6xPfH5JWWYsVFeycNrNl+LMmzkRRpdAJ4EiRHQq+yvaKyt3bgqyb6rcLrrqmVKo53kY+J/1GnSiVpvgNLosf/UUiFa2wW6wxwNkrmOYfwku6F8dnbd1hTDhwZFHhTgXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wkI8cH/jniv5ALj2FXj1K1Gx5TA77V/F3NP+QuIDmwc=;
- b=QdKu/TLwcyT4Hkey3hC5aOusyhQ3VPLBLMOplnNQYKBhz+yOiB4CA+357w7igYjUVj1apUPPhFyaueobbhwuSqymWpB33x3ly7lsGfzbxOTtC6+L1zI7dwQjD5bJzt46Mqr5AVRGQjTtfuwb0FlfzJv3EIs2KZDFJ8qAyXYrdSAm/1CwzNhRtjsAlD35k2hcPiG/08YLqvPa/fEEy4rZwrikR+3PejbQKcsukxjo72LLTX44NK1AvRAvR4laqXdwfgCNsAgnRfN5YzWuPl2s4z5Y2iJGq06/L67eP19uMBKwjUvJ5Ob6dulstc0pdXWIloMkJeaNl+9Omofx2LFkDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
+        id S1727559AbfKHNJz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Nov 2019 08:09:55 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:34367 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726879AbfKHNJz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Nov 2019 08:09:55 -0500
+Received: by mail-pg1-f196.google.com with SMTP id e4so3951436pgs.1;
+        Fri, 08 Nov 2019 05:09:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wkI8cH/jniv5ALj2FXj1K1Gx5TA77V/F3NP+QuIDmwc=;
- b=DaqaOGMUnD71m8KCYH0Cc0rRJ41YKg7/uyBDPkilCWOA7qZU0HAFHFNM+ExWG2RtkmSgbxgpbZVcwbwAghE1bTtJgqDPUDw+D2gqpt0n8NvNPounujJg3o4DJoK/Z9XSEm4umYfgAYcRa9WGKO8x238M50cmuJg2113KHfveQEk=
-Received: from MN2PR12MB3373.namprd12.prod.outlook.com (20.178.242.33) by
- MN2PR12MB3871.namprd12.prod.outlook.com (10.255.238.81) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2430.20; Fri, 8 Nov 2019 12:11:46 +0000
-Received: from MN2PR12MB3373.namprd12.prod.outlook.com
- ([fe80::95a9:35cd:3e40:8ed3]) by MN2PR12MB3373.namprd12.prod.outlook.com
- ([fe80::95a9:35cd:3e40:8ed3%3]) with mapi id 15.20.2430.023; Fri, 8 Nov 2019
- 12:11:46 +0000
-From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-To:     Stephan Gerhold <stephan@gerhold.net>,
-        Jonathan Cameron <jic23@kernel.org>
-CC:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Brian Masney <masneyb@onstation.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imo: mpu6050: add vdd-supply
-Thread-Topic: [PATCH v2 1/2] dt-bindings: iio: imo: mpu6050: add vdd-supply
-Thread-Index: AQHVlZuj3hjZAXfriEOOlDXmX+bcQ6eBL+la
-Date:   Fri, 8 Nov 2019 12:11:46 +0000
-Message-ID: <MN2PR12MB33733917812945D0293D9D27C47B0@MN2PR12MB3373.namprd12.prod.outlook.com>
-References: <20191107184342.20361-1-stephan@gerhold.net>
-In-Reply-To: <20191107184342.20361-1-stephan@gerhold.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [77.157.193.39]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 27f4ff27-4062-4b00-db6a-08d76444d38c
-x-ms-traffictypediagnostic: MN2PR12MB3871:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <MN2PR12MB38719631BEA0881C5626663AC47B0@MN2PR12MB3871.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1775;
-x-forefront-prvs: 0215D7173F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(346002)(376002)(136003)(39850400004)(366004)(189003)(199004)(6306002)(11346002)(91956017)(76116006)(86362001)(3846002)(66446008)(64756008)(66476007)(71190400001)(71200400001)(6116002)(229853002)(8676002)(186003)(6436002)(66946007)(66556008)(7696005)(52536014)(76176011)(81156014)(81166006)(2906002)(53546011)(6506007)(6246003)(26005)(102836004)(316002)(8936002)(80792005)(66066001)(110136005)(54906003)(5660300002)(99286004)(256004)(7416002)(7736002)(14454004)(74316002)(966005)(478600001)(4326008)(55016002)(9686003)(446003)(486006)(33656002)(476003)(5024004)(305945005)(25786009);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB3871;H:MN2PR12MB3373.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: invensense.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Qs/1/3C0lNDMG7fvLGDphMWlT5jzW+2B2EeW2T9npxwsTD7uAQjeEmjyUM7uqKNjpKWwo9COZVNoNKaTtbKsWh/cYXeMi6/BniayE6aOvAo2IF0CIin+4CclRcIjpHDjXal0mmSzW+coJw29ACE8DOfOhiRsJu/MV96Zju27XBik/GlomuRb/xbZOwt24bRTgJywRfRwcY1CF96Mt/4FwVv+dlkNwi+ut4zi0SLUXsmJ7y31NSQ/TqyZK9U2cKaV26hXsZkwaf9NyjMHHZc4sN/IXeT1HtG7s6xXjiPhNOrqlqXH5spYoyxOb3i/IuVKPXVtlbHpjyBsmAGYdG39jfz8PgLsGxf04jAu9Fsjucl7P6DVl4QbGc8J7RA6pyUDm9TqZQstGUeFRUlanQ38ExufCe8EDMvAwIt/+R+RTAj0i2QgiJ07uwbRZQpcKEz4ahLJf3Cqo8wxWJRkUOWOeENeb/Rh4A/y8m4poVHHg0k=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27f4ff27-4062-4b00-db6a-08d76444d38c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Nov 2019 12:11:46.4362
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1qnhqEprJJcer3KI429k0r6Cl+zz1Vu8WqKA9kxHCCwaKIeE7PT9rW5T5wcy8kqglQDEvNAjlLBO9nqPJ8QHj2OoakKWAuDOYNMPRX8Lo0o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3871
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-08_03:2019-11-08,2019-11-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- impostorscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
- bulkscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 spamscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911080120
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=GcSRBv+6yTz1aWV2wpvc++0ONMW5Gc651FnwYD+LCXY=;
+        b=AgNwXhZjuQufrlApx1Jt4Pc0HtcVyvwwVSLlsT0Y0iUejJKTiLItU0kX2vW9nbTulQ
+         y8oUnlCp/keIMjsp4eE1qOqq6FaCFY7BpYN2GaPGHicCpYe02HrCmJt+Pyou5zsntIlq
+         hvN+AXnd4MMjA1DvaTIrq1RRnkizwggFpRaFwKqgyAjlHPFlWecpJAWNmK9MS0000bkL
+         ZoI9CRzQM75ObTfSPARlY7juiBvzzdVnTqGyqv9X/Qg1P/QzI2sgijADyR9bZcD/dJed
+         +7BqyiqP2gyi2g2T4qbg0sO2jCexf6NG2a4XdjWEcxim3ikpt8X2b46p/MCKk5jCgK+Z
+         wrJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=GcSRBv+6yTz1aWV2wpvc++0ONMW5Gc651FnwYD+LCXY=;
+        b=pGiBRXEAWVxDmWOIx4UN0l5lIR44rcZj7fU0OIzjXVBpQsUmuLrxXKGnErl73u0+mO
+         CAAEyGfakU7uwL4SIPlTCx0f+oF3/x37xE64wyEYIJ1WKvKYQoz5iHUSEbJah/WhQGnP
+         ZhAVxbW8EAeNvgFcrbdHoH0rVMZFc2egEJAxOmOcl3hD1cbG7VDtECsScth2aF0g/v4k
+         mMOYTiVUUwj+ynYv6lFU4ssH4pUyOhZ+qlEW/uvG03bExUmkWoMIXqzmpUJd4isPb9jT
+         ePimt8cIUF1mO6eTttKgyGa61+ZXWcK9wt0Kf5nP3swSMNSUqNDXISfGA4nslJcRm/fG
+         ExFw==
+X-Gm-Message-State: APjAAAXumxfSIguNUAq/QHN6LAUsJ0ra7ESkJri4PPssK6jWzzGdL4Qr
+        gBH8c3n/DoCWQA3xo/GFC1I=
+X-Google-Smtp-Source: APXvYqxxrcn6kFUEnC0t1jD0cIy6EM9JE3qdhbm9La/8uN+duByFOP1K8RDli97qPAJSimst4cYNSA==
+X-Received: by 2002:a63:f94e:: with SMTP id q14mr7489585pgk.411.1573218593385;
+        Fri, 08 Nov 2019 05:09:53 -0800 (PST)
+Received: from localhost (97.64.17.87.16clouds.com. [97.64.17.87])
+        by smtp.gmail.com with ESMTPSA id n21sm3384316pjq.13.2019.11.08.05.09.51
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 08 Nov 2019 05:09:52 -0800 (PST)
+From:   Song Qiang <songqiang1304521@gmail.com>
+To:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        stefan.popa@analog.com, jic23@kernel.org, knaack.h@gmx.de,
+        pmeerw@pmeerw.net, lgirdwood@gmail.com, broonie@kernel.org,
+        robh+dt@kernel.org, mark.rutland@arm.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Song Qiang <songqiang1304521@gmail.com>
+Subject: [PATCH 1/3] dt-bindings: iio: adc: add support for AD5940
+Date:   Fri,  8 Nov 2019 21:09:44 +0800
+Message-Id: <20191108130946.14740-1-songqiang1304521@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Reviewed-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>=0A=
-=0A=
-Best regards,=0A=
-JB=0A=
-=0A=
-From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> on =
-behalf of Stephan Gerhold <stephan@gerhold.net>=0A=
-=0A=
-Sent: Thursday, November 7, 2019 19:43=0A=
-=0A=
-To: Jonathan Cameron <jic23@kernel.org>=0A=
-=0A=
-Cc: Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen <lars@metafoo.de>;=
- Peter Meerwald-Stadler <pmeerw@pmeerw.net>; Rob Herring <robh+dt@kernel.or=
-g>; Mark Rutland <mark.rutland@arm.com>; Linus Walleij <linus.walleij@linar=
-o.org>; Brian Masney <masneyb@onstation.org>;=0A=
- Jonathan Marek <jonathan@marek.ca>; Jean-Baptiste Maneyrol <JManeyrol@inve=
-nsense.com>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; devicet=
-ree@vger.kernel.org <devicetree@vger.kernel.org>; linux-kernel@vger.kernel.=
-org <linux-kernel@vger.kernel.org>;=0A=
- Stephan Gerhold <stephan@gerhold.net>=0A=
-=0A=
-Subject: [PATCH v2 1/2] dt-bindings: iio: imo: mpu6050: add vdd-supply=0A=
-=0A=
-=A0=0A=
-=0A=
-=0A=
-=A0CAUTION: This email originated from outside of the organization. Please =
-make sure the sender is who they say they are and do not click links or ope=
-n attachments unless you recognize the sender and know the content is safe.=
-=0A=
-=0A=
-=0A=
-=0A=
-inv_mpu6050 now supports an additional vdd-supply; document it.=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>=0A=
-=0A=
-=0A=
-=0A=
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>=0A=
-=0A=
-=0A=
-=0A=
----=0A=
-=0A=
-=0A=
-=0A=
-Changes in v2:=0A=
-=0A=
-=0A=
-=0A=
-=A0 - Add Reviewed-by from Linus Walleij=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-v1: =0A=
-https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lore.kernel.org_linu=
-x-2Diio_20191106183536.123070-2D1-2Dstephan-40gerhold.net_&d=3DDwIDAg&c=3DW=
-oJWtq5JV8YrKnzRxvD8NxmTP_1wxfE0prPmo0NeZwg&r=3D4jiDX_1brsSWfCjfA6Ovj1d4h9MF=
-8q7Xk5aBwG28mVk&m=3DO82MQPnLTvlD0nxDzFW1KS3aZpWiI3qYUZwJUy_qqxc&s=3Dddvzqy0=
-PywWDCnge7xbJIhpqN9NltbLrzi4EBVdeA_o&e=3D=0A=
-=0A=
-=0A=
-=0A=
-=0A=
----=0A=
-=0A=
-=0A=
-=0A=
-=A0Documentation/devicetree/bindings/iio/imu/inv_mpu6050.txt | 1 +=0A=
-=0A=
-=0A=
-=0A=
-=A01 file changed, 1 insertion(+)=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-diff --git a/Documentation/devicetree/bindings/iio/imu/inv_mpu6050.txt b/Do=
-cumentation/devicetree/bindings/iio/imu/inv_mpu6050.txt=0A=
-=0A=
-=0A=
-=0A=
-index 268bf7568e19..c5ee8a20af9f 100644=0A=
-=0A=
-=0A=
-=0A=
---- a/Documentation/devicetree/bindings/iio/imu/inv_mpu6050.txt=0A=
-=0A=
-=0A=
-=0A=
-+++ b/Documentation/devicetree/bindings/iio/imu/inv_mpu6050.txt=0A=
-=0A=
-=0A=
-=0A=
-@@ -21,6 +21,7 @@ Required properties:=0A=
-=0A=
-=0A=
-=0A=
-=A0=A0 bindings.=0A=
-=0A=
-=0A=
-=0A=
-=A0=0A=
-=0A=
-=0A=
-=0A=
-=A0Optional properties:=0A=
-=0A=
-=0A=
-=0A=
-+ - vdd-supply: regulator phandle for VDD supply=0A=
-=0A=
-=0A=
-=0A=
-=A0 - vddio-supply: regulator phandle for VDDIO supply=0A=
-=0A=
-=0A=
-=0A=
-=A0 - mount-matrix: an optional 3x3 mounting rotation matrix=0A=
-=0A=
-=0A=
-=0A=
-=A0 - i2c-gate node.=A0 These devices also support an auxiliary i2c bus.=A0=
- This is=0A=
-=0A=
-=0A=
-=0A=
--- =0A=
-=0A=
-=0A=
-=0A=
-2.23.0=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
+Add yaml devicetree description file and a header file for
+helping configure positive and negtive input of AD5940.
+
+Signed-off-by: Song Qiang <songqiang1304521@gmail.com>
+---
+ .../bindings/iio/adc/adi,ad5940.yaml          | 240 ++++++++++++++++++
+ include/dt-bindings/iio/adc/adi,ad5940.h      |  52 ++++
+ 2 files changed, 292 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad5940.yaml
+ create mode 100644 include/dt-bindings/iio/adc/adi,ad5940.h
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad5940.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad5940.yaml
+new file mode 100644
+index 000000000000..f7f034fdd8ec
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad5940.yaml
+@@ -0,0 +1,240 @@
++# SPDX-License-Identifier: GPL-2.0
++# Copyright 2019 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/bindings/iio/adc/adi,ad5940.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD5940 Device Tree Bindings
++
++maintainers:
++  - Song Qiang <songqiang1304521@gmail.com>
++
++description: |
++  Analog Devices AD5940 High Precision, Impedance, and Electrochemical Front End.
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD5940.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,ad5940
++
++  reg:
++    maxItems: 1
++
++  vref-supply:
++    description:
++      The regulator to be used to supply the reference voltage.
++    maxItems: 1
++
++  adi,interrupt-io:
++    description:
++      Output GPIO index of interrupt controller of AD5940.
++    maxItems: 1
++    allOf:
++      - $ref: /schemas/types.yaml#/definitions/uint32
++      - enum: [0, 3, 6, 7]
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - adi,interrupt-io
++
++patternProperties:
++  # 'channel@0-255'
++  "^channel@([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$":
++    type: object
++    description: |
++      Represents the external channels which are connected to the ADC.
++      See Documentation/devicetree/bindings/iio/adc/adc.txt.
++    properties:
++      reg:
++        description:
++          Index of this channel, must be starting from 0.
++        maxItems: 1
++
++      diff-channels:
++        description:
++          Positive input and negtive input of the ADC buffer of this channel.
++          Input candidates are defined in include/dt-bindings/iio/adc/adi,ad5940.h.
++        minItems: 2
++        maxItems: 2
++        items:
++          - description: Positive input channel
++          - enum:
++            - AD5940_ADC_INPUTP_EXCITATION
++            - AD5940_ADC_INPUTP_FLOATING
++            - AD5940_ADC_INPUTP_HSTIA
++            - AD5940_ADC_INPUTP_LPTIA_LP
++            - AD5940_ADC_INPUTP_AIN0
++            - AD5940_ADC_INPUTP_AIN1
++            - AD5940_ADC_INPUTP_AIN2
++            - AD5940_ADC_INPUTP_AIN3
++            - AD5940_ADC_INPUTP_AVDD_2
++            - AD5940_ADC_INPUTP_DVDD_2
++            - AD5940_ADC_INPUTP_AVDD_REG_2
++            - AD5940_ADC_INPUTP_TEMP
++            - AD5940_ADC_INPUTP_VBIAS_CAP
++            - AD5940_ADC_INPUTP_DE0
++            - AD5940_ADC_INPUTP_SE0
++            - AD5940_ADC_INPUTP_VREF_2V5_2
++            - AD5940_ADC_INPUTP_VREF_1V82
++            - AD5940_ADC_INPUTP_P_TEMP_N
++            - AD5940_ADC_INPUTP_AIN4
++            - AD5940_ADC_INPUTP_AIN6
++            - AD5940_ADC_INPUTP_VZERO
++            - AD5940_ADC_INPUTP_VBIAS0
++            - AD5940_ADC_INPUTP_VCE0
++            - AD5940_ADC_INPUTP_VRE0
++            - AD5940_ADC_INPUTP_VCE0_2
++            - AD5940_ADC_INPUTP_LPTIA
++            - AD5940_ADC_INPUTP_AGND_REF
++
++          - description: Negtive input channel
++          - enum:
++              # Negtive input candidates
++              - AD5940_ADC_INPUTN_FLOATING
++              - AD5940_ADC_INPUTN_HSTIA
++              - AD5940_ADC_INPUTN_LPTIA
++              - AD5940_ADC_INPUTN_AIN0
++              - AD5940_ADC_INPUTN_AIN1
++              - AD5940_ADC_INPUTN_AIN2
++              - AD5940_ADC_INPUTN_AIN3
++              - AD5940_ADC_INPUTN_VBIAS_CA8
++              - AD5940_ADC_INPUTN_TEMP_N
++              - AD5940_ADC_INPUTN_AIN4
++              - AD5940_ADC_INPUTN_AIN6
++              - AD5940_ADC_INPUTN_VZERO
++              - AD5940_ADC_INPUTN_VBIAS0
++              - AD5940_ADC_INPUTN_EXCITATION
++
++      channel-name:
++        description:
++          Any string format name you would like to assign to this channel.
++        maxItems: 1
++
++    required:
++      - reg
++      - diff-channels
++      - channel-name
++
++examples:
++  - |
++    ad5940: ad5940@0 {
++      compatible = "adi,ad5940";
++      reg = <0>;
++      spi-max-frequency = <16000000>;
++      vref-supply = <&adc_vref>;
++      interrupt-parent = <&gpio>;
++      interrupts = <24 2>;
++
++      adi,interrupt-io = <0>;
++
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      channel@0 {
++        reg = <0>;
++        diff-channels = <AD5940_ADC_INPUTP_VCE0
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "Vce-Vbias";
++      };
++
++      channel@1 {
++        reg = <1>;
++        diff-channels = <AD5940_ADC_INPUTP_VRE0
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "Vre-Vbias";
++      };
++
++      channel@2 {
++        reg = <2>;
++        diff-channels = <AD5940_ADC_INPUTP_SE0
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "Vse-Vbias";
++      };
++
++      channel@3 {
++        reg = <3>;
++        diff-channels = <AD5940_ADC_INPUTP_DE0
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "Vde-Vbias";
++      };
++
++      channel@4 {
++        reg = <4>;
++        diff-channels = <AD5940_ADC_INPUTP_AIN0
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "ain0-Vbias";
++      };
++
++      channel@5 {
++        reg = <5>;
++        diff-channels = <AD5940_ADC_INPUTP_AIN1
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "ain1-Vbias";
++      };
++
++      channel@6 {
++        reg = <6>;
++        diff-channels = <AD5940_ADC_INPUTP_AIN2
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "ain2-Vbias";
++      };
++
++      channel@7 {
++        reg = <7>;
++        diff-channels = <AD5940_ADC_INPUTP_AIN3
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "ain3-Vbias";
++      };
++
++      channel@8 {
++        reg = <8>;
++        diff-channels = <AD5940_ADC_INPUTP_AIN4
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "ain4-Vbias";
++      };
++
++      channel@9 {
++        reg = <9>;
++        diff-channels = <AD5940_ADC_INPUTP_AIN6
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "ain6-Vbias";
++      };
++
++      channel@10 {
++        reg = <10>;
++        diff-channels = <AD5940_ADC_INPUTP_LPTIA_LP
++                         AD5940_ADC_INPUTN_LPTIA>;
++        channel-name = "Low power TIA DC";
++      };
++
++      channel@11 {
++        reg = <11>;
++        diff-channels = <AD5940_ADC_INPUTP_LPTIA
++                         AD5940_ADC_INPUTN_LPTIA>;
++        channel-name = "Low power TIA AC";
++      };
++
++      channel@12 {
++        reg = <12>;
++        diff-channels = <AD5940_ADC_INPUTP_HSTIA
++                         AD5940_ADC_INPUTN_HSTIA>;
++        channel-name = "High Speed TIA";
++      };
++
++      channel@13 {
++        reg = <13>;
++        diff-channels = <AD5940_ADC_INPUTP_TEMP
++                         AD5940_ADC_INPUTN_VBIAS0>;
++        channel-name = "Temperature";
++      };
++    };
+diff --git a/include/dt-bindings/iio/adc/adi,ad5940.h b/include/dt-bindings/iio/adc/adi,ad5940.h
+new file mode 100644
+index 000000000000..c17826f2f654
+--- /dev/null
++++ b/include/dt-bindings/iio/adc/adi,ad5940.h
+@@ -0,0 +1,52 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * This header provides constants for configuring the AD5940 AFE
++ */
++
++#ifndef _DT_BINDINGS_IIO_ADC_AD5940_H
++#define _DT_BINDINGS_IIO_ADC_AD5940_H
++
++#define AD5940_ADC_INPUTN_FLOATING	0
++#define AD5940_ADC_INPUTN_HSTIA		1
++#define AD5940_ADC_INPUTN_LPTIA		2
++#define AD5940_ADC_INPUTN_AIN0		4
++#define AD5940_ADC_INPUTN_AIN1		5
++#define AD5940_ADC_INPUTN_AIN2		6
++#define AD5940_ADC_INPUTN_AIN3		7
++#define AD5940_ADC_INPUTN_VBIAS_CA8	10
++#define AD5940_ADC_INPUTN_TEMP_N	11
++#define AD5940_ADC_INPUTN_AIN4		12
++#define AD5940_ADC_INPUTN_AIN6		14
++#define AD5940_ADC_INPUTN_VZERO		16
++#define AD5940_ADC_INPUTN_VBIAS0	17
++#define AD5940_ADC_INPUTN_EXCITATION	20
++
++#define AD5940_ADC_INPUTP_FLOATING	0
++#define AD5940_ADC_INPUTP_HSTIA		1
++#define AD5940_ADC_INPUTP_LPTIA_LP	2
++#define AD5940_ADC_INPUTP_AIN0		4
++#define AD5940_ADC_INPUTP_AIN1		5
++#define AD5940_ADC_INPUTP_AIN2		6
++#define AD5940_ADC_INPUTP_AIN3		7
++#define AD5940_ADC_INPUTP_AVDD_2	8
++#define AD5940_ADC_INPUTP_DVDD_2	9
++#define AD5940_ADC_INPUTP_AVDD_REG_2	10
++#define AD5940_ADC_INPUTP_TEMP		11
++#define AD5940_ADC_INPUTP_VBIAS_CAP	12
++#define AD5940_ADC_INPUTP_DE0		13
++#define AD5940_ADC_INPUTP_SE0		14
++#define AD5940_ADC_INPUTP_VREF_2V5_2	16
++#define AD5940_ADC_INPUTP_VREF_1V82	18
++#define AD5940_ADC_INPUTP_P_TEMP_N	19
++#define AD5940_ADC_INPUTP_AIN4		20
++#define AD5940_ADC_INPUTP_AIN6		22
++#define AD5940_ADC_INPUTP_VZERO		23
++#define AD5940_ADC_INPUTP_VBIAS0	24
++#define AD5940_ADC_INPUTP_VCE0		25
++#define AD5940_ADC_INPUTP_VRE0		26
++#define AD5940_ADC_INPUTP_VCE0_2	31
++#define AD5940_ADC_INPUTP_LPTIA		33
++#define AD5940_ADC_INPUTP_AGND_REF	35
++#define AD5940_ADC_INPUTP_EXCITATION	36
++
++#endif /* _DT_BINDINGS_IIO_ADC_AD5940 */
+-- 
+2.17.1
+

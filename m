@@ -2,95 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFA18F4CBE
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2019 14:10:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 884A5F4D93
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2019 14:55:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727399AbfKHNKK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Nov 2019 08:10:10 -0500
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:35852 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726879AbfKHNKK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Nov 2019 08:10:10 -0500
-Received: by mail-pf1-f193.google.com with SMTP id v19so4557577pfm.3;
-        Fri, 08 Nov 2019 05:10:09 -0800 (PST)
+        id S1727700AbfKHNze (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Nov 2019 08:55:34 -0500
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:36003 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726650AbfKHNze (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Nov 2019 08:55:34 -0500
+Received: by mail-qt1-f194.google.com with SMTP id y10so6578069qto.3;
+        Fri, 08 Nov 2019 05:55:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=XBz1Jc3/FiwJIp4RboH8VljgUQ6jRhtm1XzbxHXczBI=;
-        b=a6qI6CoPQOIV7/MjWLHdMwLEEOsLElkRa+bh/kFYUUDZhpO10RT3wZy9SwZT8GgF7H
-         OiMkj6uihW0+/a5mxow+4Q/Lyd5pWHtKrvHSaNa+oQ7nAajMp+nNGrFLL8ActfNNnT6Y
-         q6MoQc/Aop4wwwOjWKb8EH2w8OwHvHyfLSbL/QS3AfU1Nntx7lN+FrirQ5rYnS91TQ+e
-         agHArMGlnXYf8/tZa7uCdyxljSSppplS6M0Em4Q9dG1yas8ShFFq+9ePF7p+kI8G8gDV
-         1yY2WnCNG15wIDMYfbBbcfT7szvaVzCzAt4azod2PCjJQaur2MHFTNS+LjfnKI2IivIM
-         uMTw==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=1ikag6bSZ0eCN7wwCHRChu0lBnRPoED7I4M1hqoKUdY=;
+        b=s4ZzLVYOMJCoTlwZHpe25JMCQ2NRQND8JzH25vfMDoIdZBdPiHD61LpltjVedeN4fW
+         j5EUfP6vyPWBQffboP+AIj18SzxULI9kBIMRxhjDCKS8kXHRGynMIT8By6sSiiz2zxaG
+         5vHTW9gnC1WJU0305YNyiHbwtqLzi3f36V8U5/C5uJZItGyWPc+NwKtqB7K5w6vl0P72
+         we8fB+y7WbZFfx0BEjAEs5Vd6gqQYtQbums4g9r96tuH2MdjRspqcMMSFVbq3lbxaUQ6
+         XiVxeNhy1CdABBfXaMje0kkXkf4UerFmN+C4eTA6gAkfAiGP6LxyFd1sSKgcugwFWsbv
+         tTYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=XBz1Jc3/FiwJIp4RboH8VljgUQ6jRhtm1XzbxHXczBI=;
-        b=Xu+KFalfilVT2afJ2i1XoKHL3XzamyzQW/Qco0ql5/zBzBHGV+j/20AakFfnqWGxBT
-         7fOQ4m3YfnvGuoLWr7MIyeXatyIApb/iOiVw4/lT7Mfvlat+uHv1pQ8g09fU9nRtdB52
-         6XSjRpbabcSTdulAiQkBegZXxah/zi/O6P6jN8a2H4cNNnlP7ip9wirvMFZLTjZNfevh
-         ecwtfNCWC4KKWL1EYUcI+Y8A70gs55av18rxckSnVD64DQmY4NPz1LHRh6yQxN4QLu8E
-         Ai0wwhIxR6ohovn+d7G+KWdDmWe89zO65HHvNlYCSKH0o3I5stb7PL71mPTJCLyiRbMQ
-         54/A==
-X-Gm-Message-State: APjAAAU/6ebKzd7IDd1csBmlQjwV3pBjoxNwV/W2LGXKZkWf+xeqsTp0
-        OREZYy/UP9Uc+xSZyZO+GKo=
-X-Google-Smtp-Source: APXvYqzciQpQ70/OMBDo8jUhaVkvkwXj9G7b/PcEjqu9pt+ztWVa3y/7I7nwrrrScoSE/7G9eokeFA==
-X-Received: by 2002:a63:ae02:: with SMTP id q2mr12144703pgf.210.1573218609219;
-        Fri, 08 Nov 2019 05:10:09 -0800 (PST)
-Received: from localhost (97.64.17.87.16clouds.com. [97.64.17.87])
-        by smtp.gmail.com with ESMTPSA id x20sm6749679pfa.186.2019.11.08.05.10.07
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 08 Nov 2019 05:10:08 -0800 (PST)
-From:   Song Qiang <songqiang1304521@gmail.com>
-To:     lars@metafoo.de, Michael.Hennerich@analog.com,
-        stefan.popa@analog.com, jic23@kernel.org, knaack.h@gmx.de,
-        pmeerw@pmeerw.net, lgirdwood@gmail.com, broonie@kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Song Qiang <songqiang1304521@gmail.com>
-Subject: [PATCH 3/3] MAINTAINERS: add maintainer for AD5940
-Date:   Fri,  8 Nov 2019 21:09:46 +0800
-Message-Id: <20191108130946.14740-3-songqiang1304521@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191108130946.14740-1-songqiang1304521@gmail.com>
-References: <20191108130946.14740-1-songqiang1304521@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=1ikag6bSZ0eCN7wwCHRChu0lBnRPoED7I4M1hqoKUdY=;
+        b=iqyBY8hYXq8nNASv+T7zsoJurm4AZbJ8xIyLp5HHPJTOv7/iZmj5TcZYYrt2JsUHDJ
+         zcMvIVkpfyZk/D3fDvsOpUBjEF+yyFgrakmawF/YlyyPDqtk64/ocuuKW4bppoZKorV3
+         S7WQrN60WiuRofrEKFzIlSs2pa1q7lYgg0w4XMH5GpnjvvPOhDXaOoUT0QhAi/PerIoD
+         sqT8L75SZQuvROZ29kb8k4EDZXIVbZw0OI0TgM7IDxhjl6dANb3fqL7LeNsdmaa8HJQu
+         ry7e5Bqt3nY8aut0A3kIlT27il0ey/sb4dbiFGyhgTPVcmjUrbSliyVb5VOpv21to/27
+         IAzw==
+X-Gm-Message-State: APjAAAWHIhKXP7fTiCBshVqCLca1kcNpAfguen1V0/l+wqQh6MiZIBP+
+        SXEtuaRkN2zNFVjYxwFQ44Q=
+X-Google-Smtp-Source: APXvYqw/GH6PiCQFOfz/yT3uVIv0OGRs4v0gq7Kk0f61TESAAuUMLjQnqAFQEEqTTh4MPX0folAOQA==
+X-Received: by 2002:ac8:6f57:: with SMTP id n23mr10539690qtv.46.1573221333396;
+        Fri, 08 Nov 2019 05:55:33 -0800 (PST)
+Received: from smtp.gmail.com ([2804:d43:422:3955:b4df:7a81:96e1:236e])
+        by smtp.gmail.com with ESMTPSA id f39sm3047208qtb.26.2019.11.08.05.55.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2019 05:55:33 -0800 (PST)
+Date:   Fri, 8 Nov 2019 10:55:27 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     jic23@kernel.org, robh@kernel.org
+Cc:     dragos.bogdan@analog.com, alexandru.ardelean@analog.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel-usp@googlegroups.com
+Subject: [PATCH v4 0/2] iio: adc: Add support for AD7292
+Message-ID: <cover.1573145089.git.marcelo.schmitt1@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add myself as the maintainer of the driver of AD5940 and it's
-docs.
+This patchset adds a basic driver for the AD7292 ADC/DAC system along
+with devicetree binding documentation.
 
-Signed-off-by: Song Qiang <songqiang1304521@gmail.com>
----
- MAINTAINERS | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Changelog V4:
+- dt-binding: updated SPDX identifier to GPL-2.0-only
+- dt-binding: changed maxitems constraint on channel property
+- ad7292: added brackets to shield macro parameters
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2a427d1e9f01..c3d29dcc50ad 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -431,6 +431,16 @@ W:	http://ez.analog.com/community/linux-device-drivers
- S:	Supported
- F:	drivers/regulator/ad5398.c
- 
-+AD5940 ANALOG FRONT END DRIVER
-+M:	Song Qiang <songqiang1304521@gmail.com>
-+W:	https://wiki.analog.com/resources/eval/user-guides/ad5940
-+W:	http://ez.analog.com/community/linux-device-drivers
-+S:	Supported
-+F:	drivers/iio/adc/ad5940.c
-+F:	Documentation/devicetree/bindings/iio/adc/adi,ad5940.yaml
-+F:	arch/arm/boot/dts/overlays/rpi-ad5940-overlay.dts
-+F:	Documentation/ABI/testing/sysfs-bus-iio-adc-ad594
-+
- AD714X CAPACITANCE TOUCH SENSOR DRIVER (AD7142/3/7/8/7A)
- M:	Michael Hennerich <michael.hennerich@analog.com>
- W:	http://wiki.analog.com/AD7142
+Marcelo Schmitt (2):
+  dt-bindings: iio: adc: Add dt-schema for AD7292
+  iio: adc: Add driver support for AD7292
+
+ .../bindings/iio/adc/adi,ad7292.yaml          | 104 ++++++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/ad7292.c                      | 350 ++++++++++++++++++
+ 5 files changed, 473 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+ create mode 100644 drivers/iio/adc/ad7292.c
+
 -- 
-2.17.1
+2.23.0
 

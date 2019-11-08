@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4045DF4691
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2019 12:43:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5144F484C
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2019 12:56:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390409AbfKHLnS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Nov 2019 06:43:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57658 "EHLO mail.kernel.org"
+        id S2403783AbfKHLpv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Nov 2019 06:45:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33194 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732512AbfKHLnR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 8 Nov 2019 06:43:17 -0500
+        id S2391194AbfKHLpu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 8 Nov 2019 06:45:50 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3EA9F222C6;
-        Fri,  8 Nov 2019 11:43:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CA37C2084D;
+        Fri,  8 Nov 2019 11:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573213396;
+        s=default; t=1573213549;
         bh=WiBksml3Di1WYFYiOQH1mulf+M8x8gaNtPvMG683ctI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BJtUccS+wycD1sGcCmgxVr6eLQSiD0Tmr544nUw5+2t8z1gGD3AhW9y3mGmqDOI1R
-         hwUr8e9IcleR5gdQp9+9FQPzgQMif5xqO2VWsf+s73LJK/eGiNfOb6uavKnuPKcibC
-         wIv2smdvijn4Iz3qolVmp9rd4Kk76+rFVSf58Tcw=
+        b=OIIgK7S86uDeuSsDAXKaNeN0e91ePIxo7E0pAsruPmRVio9azhuN075lzwma575Ot
+         XJl5/X3nLaEXaoPBNgyIlnxQeYxGmVq5RXiMFBQz3SLIupB6Njg3BF2UzxiLsOh12t
+         S0F14tfKWfMsCQ9nHwG0021hKHZn8K4hHUFbShGU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Marcus Folkesson <marcus.folkesson@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 004/103] iio: dac: mcp4922: fix error handling in mcp4922_write_raw
-Date:   Fri,  8 Nov 2019 06:41:29 -0500
-Message-Id: <20191108114310.14363-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 02/64] iio: dac: mcp4922: fix error handling in mcp4922_write_raw
+Date:   Fri,  8 Nov 2019 06:44:43 -0500
+Message-Id: <20191108114545.15351-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191108114310.14363-1-sashal@kernel.org>
-References: <20191108114310.14363-1-sashal@kernel.org>
+In-Reply-To: <20191108114545.15351-1-sashal@kernel.org>
+References: <20191108114545.15351-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

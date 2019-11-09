@@ -2,158 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE5FAF5F21
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2019 13:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDB01F5F2A
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2019 13:43:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbfKIMiK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 9 Nov 2019 07:38:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44636 "EHLO mail.kernel.org"
+        id S1726282AbfKIMnJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 9 Nov 2019 07:43:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46008 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726301AbfKIMiK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 9 Nov 2019 07:38:10 -0500
+        id S1726252AbfKIMnI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 9 Nov 2019 07:43:08 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 06D64207FF;
-        Sat,  9 Nov 2019 12:38:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id ABD5C21019;
+        Sat,  9 Nov 2019 12:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573303088;
-        bh=XVnSugf5yeS7ju3H3HrhT5xXtiTNx1q/s0jgoUAsGv4=;
+        s=default; t=1573303388;
+        bh=lfLddIGQZu8yh7JyCypDgx5/iez6bEwoAQmO+JsUsHM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tFShlZ+MHSIVtUdT/SQsfFhOLvjUaLYC7RK2W+lkTkUSFHnZKDgN5BkhXbb4zm/vC
-         KlWym7bieROGF/+wAlY0jO6KGCaLezuUph1781ZrIq2YCngy2YHPAcDwFNCXLiyHYq
-         GuwZKBAM3s9CwEVBj/yeAmqpx4P9gr8C0O/VW7FU=
-Date:   Sat, 9 Nov 2019 12:38:03 +0000
+        b=iKEBM0GXOAc+4G624Fx5/UrFhOnzogFtFG+AqARetI+MonQAAGcQcTbFP/rVRnb65
+         smwY4/Rp2Tk5MjL76tvIUotNH4eheT4KQ/1Hu5Ti5e7qI5rC9Kf1QLGCEITeLcMsud
+         IaUcqUjRkj77/7ggShqYTMw3Whj03WlUxB/j93t8=
+Date:   Sat, 9 Nov 2019 12:43:01 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc:     <robh+dt@kernel.org>, <alexandre.torgue@st.com>,
-        <mark.rutland@arm.com>, <mcoquelin.stm32@gmail.com>,
-        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+To:     Rob Herring <robh@kernel.org>
+Cc:     Benjamin GAIGNARD <benjamin.gaignard@st.com>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandre TORGUE <alexandre.torgue@st.com>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Fabrice GASNIER <fabrice.gasnier@st.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
         <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: adc: stm32: allow to tune analog clock
-Message-ID: <20191109123803.3c002877@archlinux>
-In-Reply-To: <20191103123042.54c82559@archlinux>
-References: <1572279108-25916-1-git-send-email-fabrice.gasnier@st.com>
-        <1572279108-25916-3-git-send-email-fabrice.gasnier@st.com>
-        <20191103123042.54c82559@archlinux>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 2/4] dt-bindings: iio: timer: Convert stm32 IIO trigger
+ bindings to json-schema
+Message-ID: <20191109124301.5ffda04b@archlinux>
+In-Reply-To: <CAL_Jsq+b_e1MbXx6918+iKfrTgqoozxOZ2rEYgogChZDWR_+iQ@mail.gmail.com>
+References: <20191031123040.26316-1-benjamin.gaignard@st.com>
+        <20191031123040.26316-3-benjamin.gaignard@st.com>
+        <20191103110841.3ad3ecfb@archlinux>
+        <CA+M3ks5sZ6wwV-V+HCLC8OLdeLqrxK0Ga-pXTsdktQErbMOk4g@mail.gmail.com>
+        <20191106040657.GA5294@bogus>
+        <d0196570-9140-c775-742c-89092056e651@st.com>
+        <CAL_Jsq+b_e1MbXx6918+iKfrTgqoozxOZ2rEYgogChZDWR_+iQ@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 3 Nov 2019 12:30:42 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, 6 Nov 2019 17:35:20 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> On Mon, 28 Oct 2019 17:11:48 +0100
-> Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
-> 
-> > Add new optional dt property to tune analog clock prescaler.
-> > Driver looks for optional "st,max-clk-rate-hz", then computes
-> > best approximation below that rate, using ADC internal prescaler.
-> > 
-> > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>  
-> If the previous email I wrote on this got to anyone before I hit
-> cancel, please ignore. Had completely failed to read the code correctly.
-> 
-> Anyhow this seems fine to me, but given there are a lot of existing
-> clk related bindings I'd like to give a little longer for Rob to
-> have a chance to take a look at the binding.
-> 
-> Give me a poke if I seem to have lost this in a week or so.
+> On Wed, Nov 6, 2019 at 1:52 PM Benjamin GAIGNARD
+> <benjamin.gaignard@st.com> wrote:
+> >
+> >
+> > On 11/6/19 5:06 AM, Rob Herring wrote: =20
+> > > On Tue, Nov 05, 2019 at 11:07:16AM +0100, Benjamin Gaignard wrote: =20
+> > >> Le dim. 3 nov. 2019 =C3=A0 12:08, Jonathan Cameron <jic23@kernel.org=
+> a =C3=A9crit : =20
+> > >>> On Thu, 31 Oct 2019 13:30:38 +0100
+> > >>> Benjamin Gaignard <benjamin.gaignard@st.com> wrote:
+> > >>> =20
+> > >>>> Convert the STM32 IIO trigger binding to DT schema format using js=
+on-schema
+> > >>>>
+> > >>>> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com> =20
+> > >>> I'm far from great on these as still haven't taken the time I shoul=
+d to learn
+> > >>> the yaml syntax properly.  A few comments inline however based most=
+ly on this
+> > >>> doesn't quite look like other ones I've seen recently.
+> > >>>
+> > >>> Thanks,
+> > >>>
+> > >>> Jonathan
+> > >>> =20
+> > >>>> ---
+> > >>>>   .../bindings/iio/timer/st,stm32-timer-trigger.yaml | 44 ++++++++=
+++++++++++++++
+> > >>>>   .../bindings/iio/timer/stm32-timer-trigger.txt     | 25 --------=
+----
+> > >>>>   2 files changed, 44 insertions(+), 25 deletions(-)
+> > >>>>   create mode 100644 Documentation/devicetree/bindings/iio/timer/s=
+t,stm32-timer-trigger.yaml
+> > >>>>   delete mode 100644 Documentation/devicetree/bindings/iio/timer/s=
+tm32-timer-trigger.txt
+> > >>>>
+> > >>>> diff --git a/Documentation/devicetree/bindings/iio/timer/st,stm32-=
+timer-trigger.yaml b/Documentation/devicetree/bindings/iio/timer/st,stm32-t=
+imer-trigger.yaml
+> > >>>> new file mode 100644
+> > >>>> index 000000000000..1c8c8b55e8cd
+> > >>>> --- /dev/null
+> > >>>> +++ b/Documentation/devicetree/bindings/iio/timer/st,stm32-timer-t=
+rigger.yaml
+> > >>>> @@ -0,0 +1,44 @@
+> > >>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > >>>> +%YAML 1.2
+> > >>>> +---
+> > >>>> +$id: http://devicetree.org/schemas/iio/timer/st,stm32-timer-trigg=
+er.yaml#
+> > >>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > >>>> +
+> > >>>> +title: STMicroelectronics STM32 Timers IIO timer bindings
+> > >>>> +
+> > >>>> +maintainers:
+> > >>>> +  - Benjamin Gaignard <benjamin.gaignard@st.com>
+> > >>>> +  - Fabrice Gasnier <fabrice.gasnier@st.com>
+> > >>>> +
+> > >>>> +properties:
+> > >>>> +  $nodemane: =20
+> > >>> nodename? =20
+> > >> That will be in v2 =20
+> > > No, $nodename is correct. The '$' signifies something we generate and
+> > > add in. IOW, not a real property. I guess we could have used 'name' h=
+ere
+> > > and stuck with traditional OpenFirmware. =20
+> > let's go for $name =20
+>=20
+> No, $nodename is correct. You don't have a choice. That is what the
+> tooling generates.
 
-Applied to the togreg branch of iio.git. Shortly to be pushed out
-as testing for the autobuilders to poke at it.
+Sorry all, I caused confusion here.  Was just trying to point out the typo!
+$node_m_ane
 
-Thanks,
+:)
 
-Jonathan
-
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
-> 
-> > ---
-> >  drivers/iio/adc/stm32-adc-core.c | 16 +++++++++++++---
-> >  1 file changed, 13 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> > index 20c626c..6537f4f 100644
-> > --- a/drivers/iio/adc/stm32-adc-core.c
-> > +++ b/drivers/iio/adc/stm32-adc-core.c
-> > @@ -79,6 +79,7 @@ struct stm32_adc_priv_cfg {
-> >   * @domain:		irq domain reference
-> >   * @aclk:		clock reference for the analog circuitry
-> >   * @bclk:		bus clock common for all ADCs, depends on part used
-> > + * @max_clk_rate:	desired maximum clock rate
-> >   * @booster:		booster supply reference
-> >   * @vdd:		vdd supply reference
-> >   * @vdda:		vdda analog supply reference
-> > @@ -95,6 +96,7 @@ struct stm32_adc_priv {
-> >  	struct irq_domain		*domain;
-> >  	struct clk			*aclk;
-> >  	struct clk			*bclk;
-> > +	u32				max_clk_rate;
-> >  	struct regulator		*booster;
-> >  	struct regulator		*vdd;
-> >  	struct regulator		*vdda;
-> > @@ -141,7 +143,7 @@ static int stm32f4_adc_clk_sel(struct platform_device *pdev,
-> >  	}
-> >  
-> >  	for (i = 0; i < ARRAY_SIZE(stm32f4_pclk_div); i++) {
-> > -		if ((rate / stm32f4_pclk_div[i]) <= priv->cfg->max_clk_rate_hz)
-> > +		if ((rate / stm32f4_pclk_div[i]) <= priv->max_clk_rate)
-> >  			break;
-> >  	}
-> >  	if (i >= ARRAY_SIZE(stm32f4_pclk_div)) {
-> > @@ -230,7 +232,7 @@ static int stm32h7_adc_clk_sel(struct platform_device *pdev,
-> >  			if (ckmode)
-> >  				continue;
-> >  
-> > -			if ((rate / div) <= priv->cfg->max_clk_rate_hz)
-> > +			if ((rate / div) <= priv->max_clk_rate)
-> >  				goto out;
-> >  		}
-> >  	}
-> > @@ -250,7 +252,7 @@ static int stm32h7_adc_clk_sel(struct platform_device *pdev,
-> >  		if (!ckmode)
-> >  			continue;
-> >  
-> > -		if ((rate / div) <= priv->cfg->max_clk_rate_hz)
-> > +		if ((rate / div) <= priv->max_clk_rate)
-> >  			goto out;
-> >  	}
-> >  
-> > @@ -655,6 +657,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
-> >  	struct device *dev = &pdev->dev;
-> >  	struct device_node *np = pdev->dev.of_node;
-> >  	struct resource *res;
-> > +	u32 max_rate;
-> >  	int ret;
-> >  
-> >  	if (!pdev->dev.of_node)
-> > @@ -731,6 +734,13 @@ static int stm32_adc_probe(struct platform_device *pdev)
-> >  	priv->common.vref_mv = ret / 1000;
-> >  	dev_dbg(&pdev->dev, "vref+=%dmV\n", priv->common.vref_mv);
-> >  
-> > +	ret = of_property_read_u32(pdev->dev.of_node, "st,max-clk-rate-hz",
-> > +				   &max_rate);
-> > +	if (!ret)
-> > +		priv->max_clk_rate = min(max_rate, priv->cfg->max_clk_rate_hz);
-> > +	else
-> > +		priv->max_clk_rate = priv->cfg->max_clk_rate_hz;
-> > +
-> >  	ret = priv->cfg->clk_sel(pdev, priv);
-> >  	if (ret < 0)
-> >  		goto err_hw_stop;  
-> 
+>=20
+> Rob
 

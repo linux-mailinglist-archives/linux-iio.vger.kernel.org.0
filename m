@@ -2,38 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4582CF5EE9
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2019 13:13:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 024BDF5EEB
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2019 13:15:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726381AbfKIMN5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 9 Nov 2019 07:13:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40672 "EHLO mail.kernel.org"
+        id S1726383AbfKIMPM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 9 Nov 2019 07:15:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41006 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726374AbfKIMN5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 9 Nov 2019 07:13:57 -0500
+        id S1726374AbfKIMPM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 9 Nov 2019 07:15:12 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6B2CC21882;
-        Sat,  9 Nov 2019 12:13:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7E9E721882;
+        Sat,  9 Nov 2019 12:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573301636;
-        bh=zipVPQPBvrpco5hpaAip5FMLLWEIza7+aFjlQJNwk9s=;
+        s=default; t=1573301711;
+        bh=PrWZknVDB5BsrZM0ZI+7Zy0Sfy4iHLW6Iu9LQdkYymw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JAXV/FiM2iwft27bcT/knkguHqWpfZEkSTxWYqJktSNUkWxPkvfOtwr2H6K/w7Fid
-         UiQ7P9r6UBUDXpcw1FqHLx8725pVVkMdOe1ZiFgd3SutSBsuK9rzFZTFxZsKucqYX4
-         CW93knQGYR8ORaicUVZU8tvHcp/rhMeRz5Oouf0w=
-Date:   Sat, 9 Nov 2019 12:13:50 +0000
+        b=aZXn2qBuJcLqOT8HusIGwir1f3b3KDyHNFwXxh7mgb9Jy6UnUUMYO3FnfVfMM+BAM
+         31f1FcTQyq14cWAcQGql6hHXwM5fewMsSQjdxx1zaquXvPkzowVVegDT2Qog1daeY5
+         uusAUdAMs3bb3jok8ip+GOwmlpnTnwro1OfAjBBY=
+Date:   Sat, 9 Nov 2019 12:15:07 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
 Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-        "raltherr@google.com" <raltherr@google.com>
-Subject: Re: [PATCH] iio: adc: aspeed: use devm_platform_ioremap_resource
-Message-ID: <20191109121350.6db10b02@archlinux>
-In-Reply-To: <1be83f4fa8c1c87d41f17c9180651bc0ced625e7.camel@analog.com>
-References: <20191013113705.1721011-1-jic23@kernel.org>
-        <1be83f4fa8c1c87d41f17c9180651bc0ced625e7.camel@analog.com>
+        "zhiyong.tao@mediatek.com" <zhiyong.tao@mediatek.com>,
+        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio: adc: mt6577_auxdac: use
+ devm_platform_ioremap_resource
+Message-ID: <20191109121507.5a25e6ed@archlinux>
+In-Reply-To: <15c54a7c16eda55700e5e073db5650eece76d9f1.camel@analog.com>
+References: <20191013121538.1782436-1-jic23@kernel.org>
+        <15c54a7c16eda55700e5e073db5650eece76d9f1.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,55 +44,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 4 Nov 2019 15:12:58 +0000
+On Mon, 4 Nov 2019 15:14:32 +0000
 "Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> On Sun, 2019-10-13 at 12:37 +0100, jic23@kernel.org wrote:
+> On Sun, 2019-10-13 at 13:15 +0100, jic23@kernel.org wrote:
 > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > 
-> > Reduces boilerplate.
+> > Reduces boilerplate.  Identified by coccinelle
 > > 
-> > Identified by: Coccinelle / coccicheck
-> > 
-> > CHECK   drivers/iio/adc/aspeed_adc.c
-> > drivers/iio/adc/aspeed_adc.c:189:1-11: WARNING: Use
-> > devm_platform_ioremap_resource for data -> base
+> > CHECK   drivers/iio/adc/mt6577_auxadc.c
+> > drivers/iio/adc/mt6577_auxadc.c:257:1-18: WARNING: Use
+> > devm_platform_ioremap_resource for adc_dev -> reg_base
 > >   
 > 
 > Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Applied. Thanks,
+Applied.
+
+Thanks,
 
 Jonathan
 
 > 
+> 
 > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Rick Altherr <raltherr@google.com>
+> > Cc: Zhiyong Tao <zhiyong.tao@mediatek.com>
 > > ---
-> >  drivers/iio/adc/aspeed_adc.c | 4 +---
+> >  drivers/iio/adc/mt6577_auxadc.c | 4 +---
 > >  1 file changed, 1 insertion(+), 3 deletions(-)
 > > 
-> > diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-> > index d3fc39df535d..1e5375235cfe 100644
-> > --- a/drivers/iio/adc/aspeed_adc.c
-> > +++ b/drivers/iio/adc/aspeed_adc.c
-> > @@ -173,7 +173,6 @@ static int aspeed_adc_probe(struct platform_device
+> > diff --git a/drivers/iio/adc/mt6577_auxadc.c
+> > b/drivers/iio/adc/mt6577_auxadc.c
+> > index 7bbb64ca3b32..a4776d924f3a 100644
+> > --- a/drivers/iio/adc/mt6577_auxadc.c
+> > +++ b/drivers/iio/adc/mt6577_auxadc.c
+> > @@ -237,7 +237,6 @@ static int mt6577_auxadc_probe(struct platform_device
 > > *pdev)
-> >  	struct iio_dev *indio_dev;
-> >  	struct aspeed_adc_data *data;
-> >  	const struct aspeed_adc_model_data *model_data;
+> >  {
+> >  	struct mt6577_auxadc_device *adc_dev;
+> >  	unsigned long adc_clk_rate;
 > > -	struct resource *res;
-> >  	const char *clk_parent_name;
+> >  	struct iio_dev *indio_dev;
 > >  	int ret;
-> >  	u32 adc_engine_control_reg_val;
-> > @@ -185,8 +184,7 @@ static int aspeed_adc_probe(struct platform_device
+> >  
+> > @@ -253,8 +252,7 @@ static int mt6577_auxadc_probe(struct platform_device
 > > *pdev)
-> >  	data = iio_priv(indio_dev);
-> >  	data->dev = &pdev->dev;
+> >  	indio_dev->channels = mt6577_auxadc_iio_channels;
+> >  	indio_dev->num_channels = ARRAY_SIZE(mt6577_auxadc_iio_channels);
 > >  
 > > -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > -	data->base = devm_ioremap_resource(&pdev->dev, res);
-> > +	data->base = devm_platform_ioremap_resource(pdev, 0);
-> >  	if (IS_ERR(data->base))
-> >  		return PTR_ERR(data->base);
-> >    
+> > -	adc_dev->reg_base = devm_ioremap_resource(&pdev->dev, res);
+> > +	adc_dev->reg_base = devm_platform_ioremap_resource(pdev, 0);
+> >  	if (IS_ERR(adc_dev->reg_base)) {
+> >  		dev_err(&pdev->dev, "failed to get auxadc base address\n");
+> >  		return PTR_ERR(adc_dev->reg_base);  
 

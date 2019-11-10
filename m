@@ -2,121 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15D82F698F
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Nov 2019 16:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E1BEF6993
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Nov 2019 16:16:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726906AbfKJPON (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Nov 2019 10:14:13 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:35943 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726789AbfKJPON (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Nov 2019 10:14:13 -0500
-Received: by mail-oi1-f193.google.com with SMTP id j7so9397670oib.3;
-        Sun, 10 Nov 2019 07:14:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=e3b1KNrJoF7hiZ9f5QB0CwtZdtDXpaOtcJztE2+Em/I=;
-        b=GS5A/gJq9PfTy+ldfS/E8RU4kDfHgdBc6VXLWnBC5R5MW9CS3yRP13Sv9CDsJJoBQw
-         0X56lE7y79QDjB9GZp0Whvx4PwMnWdB7VmvowneLpBuCf3SOuyMe5p1RlfH8J8bRwTTK
-         m0NB1mlyPC7yPJWHowUvJ2uleq4wqmqTjvT+Fo9ay2ZUScB1YzNNmVVJ0kJmF74n5nsN
-         yzLGMNBfQ4vLfS24+u2+5GMpedo+YNbkZyBOZAu5l1eU0D+Vh9bUOQcsCKwSgpFgdGol
-         nk1ieRUB7P9MlrOB0xNDtzIXGSfVXPFd0csddnYgkCVzrYb2yB8r18o7ddb9sbhLYvQH
-         FZ/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=e3b1KNrJoF7hiZ9f5QB0CwtZdtDXpaOtcJztE2+Em/I=;
-        b=UK1SYf9bx/3oYvujoPOTZvVU45bI6wf3cLF/mHV9sTt1ofzOvBA06aD9+eTHnwGhUW
-         6u8lvRMg9EnkFyDuXSLiIAN3m9Wy1g7uv45wJmXWwqwLSCUh1rfkv5AeRelNtamqeNxG
-         vwCIaFFlBGbjaA35EwVkk4UV5H2kQtN16sqZDJDP7zhpIifJRQg325AdPKt+SyWn07MQ
-         jvCF6wbM5pBR/krd1F6LKyZoLc61YUITnsMN+FXHF02nQEnJy7mGJt2g6DGCDg5v9irf
-         TbPJfXw7bwkVTXt84wyZQBrZvHyUbugohj7hlJQnVAA/oinYPT4ZyssMC5+bLfmBjQLS
-         wXDw==
-X-Gm-Message-State: APjAAAWuwwB+dSWvXKl4ROZzqKDdldBUxjmHeAHmcnFqL96fIs8TLKtU
-        bdqD0jS69hMgQjtGf+QemJ4=
-X-Google-Smtp-Source: APXvYqwSsj4htI0kfSz1zjPmqcSnDIZPqvPVxAOvSaMBenRous+uk6xrLI/PcCkj0Y1nPTS/q4SFqA==
-X-Received: by 2002:a05:6808:ab4:: with SMTP id r20mr20634682oij.166.1573398852415;
-        Sun, 10 Nov 2019 07:14:12 -0800 (PST)
-Received: from icarus (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id m4sm3996959otf.0.2019.11.10.07.14.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Nov 2019 07:14:11 -0800 (PST)
-Date:   Sun, 10 Nov 2019 10:14:08 -0500
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        gwendal@chromium.org, egranata@chromium.org, kernel@collabora.com,
-        Jonathan Corbet <corbet@lwn.net>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Nick Vaccaro <nvaccaro@chromium.org>,
-        linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] counter: cros_ec: Add synchronization sensor
-Message-ID: <20191110151408.GB3984@icarus>
-References: <cover.1566563833.git.fabien.lahoudere@collabora.com>
- <d985a8a811996148e8cda78b9fe47bb87b884b56.1566563833.git.fabien.lahoudere@collabora.com>
- <20190826095612.7455cb05@archlinux>
- <8abbe9360938ab851d16c2c1494ba56034775823.camel@collabora.com>
- <6b50bdff184e6af664b7a61e0a8a2cddc5718f0a.camel@collabora.com>
+        id S1726733AbfKJPQC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Nov 2019 10:16:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49888 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726726AbfKJPQB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 10 Nov 2019 10:16:01 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 11AB820869;
+        Sun, 10 Nov 2019 15:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573398960;
+        bh=nOYnLsFrGyMmeJR4IIF0o6mJyW/v1EWL9wkBIouF9h0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=C/6ruit22RchvVWXdzE/uT7AOJJjoMTreXDHFRgv07PUQGgGNF+cNLp+KsVQnpUEc
+         eIkmmqs5WMobBNLangJ1S398XBD0XcRnZVc7LQxqDvDBeEDuofmhMqBbFfDYSPqmuh
+         cEtzU3+9mIs7LCrksUQMESw0oOnfkeqJLlKbl5/Q=
+Date:   Sun, 10 Nov 2019 15:15:55 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Stefan Popa <stefan.popa@analog.com>
+Subject: Re: [PATCH] iio: dac: ad5446: Add support for new AD5600 DAC
+Message-ID: <20191110151555.38a0bb37@archlinux>
+In-Reply-To: <20191106094721.25575-1-alexandru.ardelean@analog.com>
+References: <20191106094721.25575-1-alexandru.ardelean@analog.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6b50bdff184e6af664b7a61e0a8a2cddc5718f0a.camel@collabora.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 24, 2019 at 04:20:51PM +0200, Fabien Lahoudere wrote:
-> Hi all,
-> 
-> After some discussions and investigation, the timestamp is very
-> important for that sync driver.
-> Google team uses that timestamp to compare with gyroscope timestamp.
-> 
-> So the important data is timestamp and counter value is useless.
-> Just the event of counter increment is important to get a timestamp.
-> 
-> In that case, my idea was to just use an IIO driver with a single
-> channel with IIO_TIMESTAMP. We discuss this here and it seems
-> controversial.
-> 
-> So my question to Jonathan is if we have a timestamp coming from the EC
-> itself, can we consider this timestamp as a good IIO driver?
-> 
-> Any other idea is welcome, however Google team would like to manage
-> only IIO drivers if possible.
-> 
-> Thanks
+On Wed, 6 Nov 2019 11:47:21 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-Jonathan,
+> From: Stefan Popa <stefan.popa@analog.com>
+> 
+> The AD5600 is a single channel, 16-bit resolution, voltage output digital
+> to analog converter (DAC). The AD5600 uses a 3-wire SPI interface. It is
+> part of the AD5541 family of DACs.
+> 
+> The ad5446 IIO driver implements support for some of these DACs (in the
+> AD5441 family), so the change is a simple entry in this driver.
+> 
+> Link: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5600.pdf
+> 
+> Signed-off-by: Stefan Popa <stefan.popa@analog.com>
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing
 
-Should the the timestamp from the EC be introduced as an IIO driver
-using IIO_TIMESTAMP?
+Thanks,
 
-Since there is no corresponding EC Counter driver in the baseline right
-now we don't have a conflict yet. If the EC timestamp is introduced as
-an IIO driver then we should make any future EC Counter driver mutually
-exclusive with the IIO driver in order to prevent any memory space
-conflict. At that point we may deprecate the IIO driver and move the
-timestamp functionality to the corresponding Counter driver.
+Jonathan
 
-That's assuming someone is interested in the Count component enough to
-implement an EC Counter driver; otherwise, the IIO driver will serve
-just fine if timestamp is the only data desired from this device.
+> ---
+>  drivers/iio/dac/Kconfig  | 4 ++--
+>  drivers/iio/dac/ad5446.c | 6 ++++++
+>  2 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index cc42219a64f7..979070196da9 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -60,8 +60,8 @@ config AD5446
+>  	help
+>  	  Say yes here to build support for Analog Devices AD5300, AD5301, AD5310,
+>  	  AD5311, AD5320, AD5321, AD5444, AD5446, AD5450, AD5451, AD5452, AD5453,
+> -	  AD5512A, AD5541A, AD5542A, AD5543, AD5553, AD5601, AD5602, AD5611, AD5612,
+> -	  AD5620, AD5621, AD5622, AD5640, AD5641, AD5660, AD5662 DACs
+> +	  AD5512A, AD5541A, AD5542A, AD5543, AD5553, AD5600, AD5601, AD5602, AD5611,
+> +	  AD5612, AD5620, AD5621, AD5622, AD5640, AD5641, AD5660, AD5662 DACs
+>  	  as well as Texas Instruments DAC081S101, DAC101S101, DAC121S101.
+>  
+>  	  To compile this driver as a module, choose M here: the
+> diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+> index 7df8b4cc295d..61c670f7fc5f 100644
+> --- a/drivers/iio/dac/ad5446.c
+> +++ b/drivers/iio/dac/ad5446.c
+> @@ -327,6 +327,7 @@ enum ad5446_supported_spi_device_ids {
+>  	ID_AD5541A,
+>  	ID_AD5512A,
+>  	ID_AD5553,
+> +	ID_AD5600,
+>  	ID_AD5601,
+>  	ID_AD5611,
+>  	ID_AD5621,
+> @@ -381,6 +382,10 @@ static const struct ad5446_chip_info ad5446_spi_chip_info[] = {
+>  		.channel = AD5446_CHANNEL(14, 16, 0),
+>  		.write = ad5446_write,
+>  	},
+> +	[ID_AD5600] = {
+> +		.channel = AD5446_CHANNEL(16, 16, 0),
+> +		.write = ad5446_write,
+> +	},
+>  	[ID_AD5601] = {
+>  		.channel = AD5446_CHANNEL_POWERDOWN(8, 16, 6),
+>  		.write = ad5446_write,
+> @@ -448,6 +453,7 @@ static const struct spi_device_id ad5446_spi_ids[] = {
+>  	{"ad5542a", ID_AD5541A}, /* ad5541a and ad5542a are compatible */
+>  	{"ad5543", ID_AD5541A}, /* ad5541a and ad5543 are compatible */
+>  	{"ad5553", ID_AD5553},
+> +	{"ad5600", ID_AD5600},
+>  	{"ad5601", ID_AD5601},
+>  	{"ad5611", ID_AD5611},
+>  	{"ad5621", ID_AD5621},
 
-William Breathitt Gray

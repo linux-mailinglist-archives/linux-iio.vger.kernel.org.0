@@ -2,141 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93D68F6ABA
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Nov 2019 19:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77EEBF6ADC
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Nov 2019 19:45:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbfKJSUN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Nov 2019 13:20:13 -0500
-Received: from mout.gmx.net ([212.227.15.18]:34599 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726684AbfKJSUN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 10 Nov 2019 13:20:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1573409992;
-        bh=T62clJ7TWd59U0C/7J6xbgVZifeNADs/HOl/H6t3fUE=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=a8O39flUaNfJzbuouJ5nnyA3+PRA9eubRd29Zpc7ZunGhvSabXYHCr5NpbU6lb6Tp
-         qBJ1R/tO0fZ2JwutADPYA+ALppQ9zygSPTyWG0ISJqKMafoS7TBWE+T6RWJglz8H1p
-         F9WrCflMkEX4l8f2RAiFBa/e0AZSr/xG5uWwZz3Q=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ubuntu ([79.150.153.135]) by mail.gmx.com (mrgmx005
- [212.227.17.184]) with ESMTPSA (Nemesis) id 1M7b2d-1iXQio3ISb-0082vF; Sun, 10
- Nov 2019 19:19:51 +0100
-Date:   Sun, 10 Nov 2019 19:19:35 +0100
-From:   Pedro Ortega <portega.kernel@gmx.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: adc: ad7280: Add spaces around math
- operator
-Message-ID: <20191110181935.GA3378@ubuntu>
-References: <20191109151729.3792-1-portega.kernel@gmx.com>
- <20191110132710.0e9300dc@archlinux>
+        id S1726835AbfKJSpt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Nov 2019 13:45:49 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:40290 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726778AbfKJSps (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Nov 2019 13:45:48 -0500
+Received: by mail-ot1-f65.google.com with SMTP id m15so9477561otq.7;
+        Sun, 10 Nov 2019 10:45:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=X7RxE/BazI2gRsZmHHf8yqp4EBp/qq8k5WFLD1WnxYw=;
+        b=CjO6WcTn0ntAxWwXuQOmGtSbfA68inrxD1O9JHFAFrX/WEbjg3otkaOKB/2A0XeOre
+         obK/v64PBxeKshaIzLLhBe4nCUOssZRvLdf4az5n4XGQsxBP9Y1ePzwfK3KQns5RsPdC
+         1u7yogXJqcFZaHYNXfg4vG0u4cQA2aNa3gRUU/v7Rk/bSngUXVjHMey97uG1KqmOcg6q
+         gMPg+vgK1XCynplyMEkaKgDWKi4L1noZGrmQHAbZpbRV1Kc5TCQlKT9mGFmXZPMKUGZG
+         fWGCO1JqRBcBd12HyNZEIpdmRPqoin458dEH4Jsal4Av82NzhfwDP2ZQM5+5UUvrM2HW
+         mqJA==
+X-Gm-Message-State: APjAAAXsPqO5YF22TisPawoa5HdQK0EiGi46S32Xky3fKnNMoTiAji5F
+        A4v/ulHKs7uHTcbqXr0mamiI1qAm7LY5I2EtHQzv/P84
+X-Google-Smtp-Source: APXvYqzLP8LcuTja0Clj3td6JbemJKYcwEC0kjAJD/jSW1ZL2lUYItqjqe1rcP4GsTtZADBzqsEQwcwF/4KfuHKFckc=
+X-Received: by 2002:a9d:191e:: with SMTP id j30mr16528977ota.297.1573411547410;
+ Sun, 10 Nov 2019 10:45:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191110132710.0e9300dc@archlinux>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Provags-ID: V03:K1:SfKbQloHdW9MEqjlgG/XSX7dq1PBfp9P9YLBpahOovHPUXmK/lV
- P5zYqOlKTJhSQgG4/DE6qyB8buk6EVxiSWShg9bWzl3em2iA0Ga/7oWbXUKrL8RVzv6dCUs
- mutd50Ws4YTNTNCbROp3DuZ2Vbm9dTaZ+LfQJglty5S+6xhp0gR7HrrnSL+XjLrpb4zQYmf
- B+09anY5WhXZS+TnPygZg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0DvFw5ZFExk=:8YZbfk4fmRhKscQRQvekoe
- oPML4/7UXvcwvj4dShA/pnjTXlCV2kc7bwXbgFdXjBIQM1ncUwV308iN8p+rJhVMyg30dO52L
- YdGwRm7DDKq/tCXuZFVMe4m/lzDt+ADiJby0oeEwagznyxHjP3iitrkXyr5H8OYilVmA7kBoa
- UOUGehZRC4ZIyOtDhfX5dkFyer+TtokSZxR5lox24e1C7r5wcBgdtiADWvQFgdvgoFJ9ptg56
- lecEI/RnYUyZ+buui3+XyaILHNYhsBKFuSBONvwmRYlp4wx+LuHciHOm6phtqB+9SpISHv0kK
- 4t8cC+iNcBft8MCWZ9i+LAx3I/zGFIKS+aP0cxY+Px+hvbayxKqpoXvoD9cAbK+IsZbA6+ThU
- ZBOeFk0djMiIBkedar6dTByYEc4NN+t8XeVKqdr5OC5mO2bFA5MOpKNWBGNBvfwQtL0uNSmOH
- aaQ1307mFSjjXToSGndGIGLXrDOfeLAI0lVMokBLHee0n3XmTVYG9i0KysXV2WdBxhDtf6cAx
- BaK1BHRh6nCvFwkBeW8YEfSw02VWz4HIZChh7ST8uDzfE3qONKHS7gUBXVWYyadmoJ5O904zZ
- SBavzX0UejwwqmKgy9ByYzvCCrm1DVdle+xLrBTWcN0Tpx+/sI71W5Ng3VqL6PXxmkovCA6uw
- Vhzm84BhJ0Gxkdudm0mEkXWMIKANsOtYMSr6pWwmMPEHN8/O+mElpU6TieFG4N3NZ1bKbQNT+
- Xu/FUX7cD7DXVduquA6aVDtIO6oyeHyuewFYfM0nE8HXDHkHJ/UVw1qrhdtPaOPtG0IlFJ2lO
- NSh7qjSiZhtuV1EKR8o4UYfguUQjZUQuLk1QsCPEZzK1OoY0FHVF4lPkdXpVquHiMGI4xJptU
- bOQ7jWNotpecqA6f/OXw/rCzOpbXQmsVjRtUXKs3GT444UsPlKsDhtEgCnzfBcjPKrfW4gOeh
- Wim9HSTporFWzCh7wjxWdPh/iXrjw2bRIsocEQ1PFAOdlPxN5QgyLzW+DzlgtihrMC9Kg3mtQ
- r1ZsLvixayb9lCXhFY49icrhd0WQNGIdL32x2pp9iUn1qECMTBhLI201zsoQDnweg3h+/hBFK
- oCX6izBizBEzzAWax5bIhf0G8c/1wAxwJ/xnbR8Y9V9ru1OJfkGfOgI7dp+DhhdX9g/Q0NpfG
- qmrZECO9/4sl69DHwkcXujxO1nB/Ar9uLwXYotvO79uCxHyF6OOV9AQQmiIQ5JZ3igNDSkCr4
- SAkyA52bwRSZaeCjca9vISI0Kea7xw8pfyD5bdilG1Tdae7qvdHmZOcG0ffw=
-Content-Transfer-Encoding: quoted-printable
+References: <20191016102520.124370-1-jacopo+renesas@jmondi.org> <CAMuHMdUH0LrZ6iEuN1aWCTt_-jpgp=EjxubMAVdp11HLL=ayyQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdUH0LrZ6iEuN1aWCTt_-jpgp=EjxubMAVdp11HLL=ayyQ@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Sun, 10 Nov 2019 19:45:36 +0100
+Message-ID: <CAMuHMdULSOOmcoKrQ40TJaNVOAuBsCA=bgC3pMB8jOGpRCAMhg@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: max9611: Defer probe on POR read
+To:     Jacopo Mondi <jacopo+renesas@jmondi.org>
+Cc:     linux-iio@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Linux I2C <linux-i2c@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Nov 10, 2019 at 01:27:10PM +0000, Jonathan Cameron wrote:
-> On Sat,  9 Nov 2019 16:17:28 +0100
-> Pedro Ortega <portega.kernel@gmx.com> wrote:
->
-> > Add spaces around the minus math operator to increase readability.
+On Thu, Oct 17, 2019 at 2:55 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Wed, Oct 16, 2019 at 12:23 PM Jacopo Mondi <jacopo+renesas@jmondi.org> wrote:
+> > The max9611 driver tests communications with the chip by reading the die
+> > temperature during the probe function. If the temperature register
+> > POR (power-on reset) value is returned from the test read, defer probe to
+> > give the chip a bit more time to properly exit from reset.
 > >
-> > Signed-off-by: Pedro Ortega <portega.kernel@gmx.com>
-> Hi Pedro,
+> > Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > Signed-off-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
 >
-> Afraid not.  Look at what that macro is actually doing.  That's not a ma=
-ths
-> operator at all.  I'm fairly sure we had a plan to actually hide these
-> examples away as we get a few people suggesting this 'fix' ever year.
-> Not sure what happened to them though, I'll have to check back.
+> Thanks for your patch!
+>
+> > Geert,
+> >   I've not been able to reproduce the issue on my boards (M3-N
+> > Salvator-XS and M3-W Salvator-X). As you reported the issue you might be
+> > able to reproduce it, could you please test this?
+>
+> I can reproduce it on Salvator-XS with R-Car H3 ES2.0.
+> According to my logs, I've seen the issue on all Salvator-X(S) boards,
+> but not with the same frequency.  Probability is highest on H3 ES2.0
+> (ca. 5% of the boots since I first saw the issue), followed by H3 ES1.0,
+> M3-W, and M3-N.
+>
+> After more investigation, my findings are:
+>   1. I cannot reproduce the issue if the max9611 driver is modular.
+>      Is it related to using max9611 "too soon" after i2c bus init?
+>      How can "i2c bus init" impact a slave device?
+>      Perhaps due to pin configuration, e.g. changing from another pin
+>      function or GPIO to function i2c4?
+>   2. Adding a delay at the top of max9611_init() fixes the issue.
+>      This would explain why the issue is less likely to happy on slower
+>      SoCs like M3-N.
+>   3. Disabling all other i2c slaves on i2c4 in DTS fixes the issue.
+>      Before, max9611 was initialized last, so this moves init earlier,
+>      contradicting theory #1.
+>   4. Just disabling the adv7482 (which registers 11 dummies i2c slaves)
+>      in DTS does not fix the issue.
+>
+> Unfortunately i2c4 is exposed on a 60-pin Samtec QSH connector only,
+> for which I have no breakout adapter.
 
-I'm sorry. Next time I will review the code much more carefully. The macro
-IIO_DEVICE_ATTR_NAMED expand the second parameter to a string. So, the hyp=
-hen
-is not a maths operator.
+Some soldering fixed that. Still investigating.
+Here's a status update:
 
->
-> Sorry about this, but it is a good lesson in making sure you check
-> that the suggestion from checkpatch is actually correct.  It's a
-> pattern matcher, it can't always know enough to be able to tell what
-> is going on.
+  A. I can reproduce the issue at 100 kHz instead of 400 kHz.
+  B. 3 above doesn't seem to be true: I can reproduce it with all other
+     slaves disabled.
+  C. The code says:
 
-First lesson learned.
->
-> Thanks,
->
-> Jonathan
+        /*
+         * need a delay here to make register configuration
+         * stabilize. 1 msec at least, from empirical testing.
+         */
+        usleep_range(1000, 2000);
 
-Thanks,
+     However, the datasheet says:
 
-Pedro
->
-> > ---
-> >  drivers/staging/iio/adc/ad7280a.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/staging/iio/adc/ad7280a.c b/drivers/staging/iio/a=
-dc/ad7280a.c
-> > index 19a5f244dcae..34ca0d09db85 100644
-> > --- a/drivers/staging/iio/adc/ad7280a.c
-> > +++ b/drivers/staging/iio/adc/ad7280a.c
-> > @@ -825,14 +825,14 @@ static irqreturn_t ad7280_event_handler(int irq,=
- void *private)
-> >  }
-> >
-> >  static IIO_DEVICE_ATTR_NAMED(in_thresh_low_value,
-> > -			     in_voltage-voltage_thresh_low_value,
-> > +			     in_voltage - voltage_thresh_low_value,
-> >  			     0644,
-> >  			     ad7280_read_channel_config,
-> >  			     ad7280_write_channel_config,
-> >  			     AD7280A_CELL_UNDERVOLTAGE);
-> >
-> >  static IIO_DEVICE_ATTR_NAMED(in_thresh_high_value,
-> > -			     in_voltage-voltage_thresh_high_value,
-> > +			     in_voltage - voltage_thresh_high_value,
-> >  			     0644,
-> >  			     ad7280_read_channel_config,
-> >  			     ad7280_write_channel_config,
-> > --
-> > 2.17.1
-> >
->
+        Parameter            MIN     TYP     MAX
+        Conversion Time      -       2 ms    -
+
+     So 1 ms is definitely too short.
+     Unfortunately the datasheet has no maximum value.
+
+  D. For 2: msleep(1) is sufficient, usleep_range(200, 500) is not.
+     And this is still not explained by C.
+     I also don't know yet who's resetting the chip on reboot, as it
+     does not have a reset line, but all registers are zeroed (except
+     for the POR temperature value).
+
+To be investigated more...
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

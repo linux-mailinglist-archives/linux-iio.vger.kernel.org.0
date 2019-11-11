@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F27A4F77CC
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2019 16:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A30B7F77CF
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2019 16:35:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727046AbfKKPfk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Nov 2019 10:35:40 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:55151 "EHLO
+        id S1726889AbfKKPfm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Nov 2019 10:35:42 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:55701 "EHLO
         mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726988AbfKKPfk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Nov 2019 10:35:40 -0500
-Received: by mail-wm1-f65.google.com with SMTP id z26so13790475wmi.4
-        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2019 07:35:38 -0800 (PST)
+        with ESMTP id S1727040AbfKKPfl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Nov 2019 10:35:41 -0500
+Received: by mail-wm1-f65.google.com with SMTP id b11so13775600wmb.5
+        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2019 07:35:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=c4UaxyvklkVUid1A0WwdmyjZMCmwAFkWblBVGXHBIG4=;
-        b=kIOrsFjScJCngxyWvA3HUU+Ko2BUMp9vKgM47xy5iBhnJhuaZOV2Nxf/zqWizLncj/
-         5qdAQkRJHvp5FAsI7ofGUJTR5DcNX1ZnXycOHKjaq9Rm5qE7tlA04v4KLULAFDXfl25C
-         juPoHzgm2vWDm6LX+X7+h2k076zc2jGWD2NCohaZlJ9eJHhkE5GiyCvSKOC+2VrAyJqq
-         uHUhIBriEOwYgSoiDN5/C8tIk9e2s2bvXBVcvJ5Lk/VuglVbEu+03yOSz/xh1gOr49RD
-         Bj7jLogUqSNu+/eZNNPvjtygVG4pYbZe5NKq3lO7gqFK5W+0X59HXCI5WMt+kcd+sxrk
-         rR/Q==
+        bh=TlAES4qzhyzzXCjCC1cceNgc3QMqW/GMvwOBs7FohH8=;
+        b=pnBRLuovZ+uQzhGbB1klowspj8dvYwwu1u56e2KddtXNw2poWY5CqDZnYfEeo/5M6A
+         sg67+AvWLL9llhip3L+SDnYfvPh6Xgua1hDTUNl2pCKehXu4HEh6ZBG1BrhTJygLwSKi
+         fb+uq/LkO3KZ3E+MVWOxB1t3ZB1OOtMCMov1wQap+aOFZOD8VKLOenQuUY/zfPJAIhFE
+         euwmwyfTM0P2PAloKGdP/pToxHHCXf5C6a+owYFO80OMi55DhCpiTyzXd9D6ZB+aOtgZ
+         TuuypMcyxGThh3Pbh4gmXjmCmgQ4tMuJKrz9Pzb5fLJrpTIqryNQwvNr7F2G4tqNI8XE
+         kGuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=c4UaxyvklkVUid1A0WwdmyjZMCmwAFkWblBVGXHBIG4=;
-        b=qIoavex+7FY8PXP+gynKvuYwCiTa2xkMNQJ3/1zjNSc6VoyH7sRCwWX4Na/HLlMAhQ
-         TBsoJJvnEItGUOV44AoM3i8YjJ0VL0eH2/inq2Foffr3w7GK5kkQ+AFO3uItZjujvGi5
-         PG8yI67ldyFW+xgn5eqLswSZ/dHE3u78jJ5KROnbuR4luY9BsiUTaDPhJ6z50/KucKcr
-         CK6B/hUIJxZpa/56xE+abuocvXR33TAP+MS4f/aV5QHFOgTNikU2VDfK14+KNFFzYzY3
-         9yg7CXeSSqbtUuEIzkKXqnSj92+AsvzxTSJle/EZYFPyx69k+aWF8AFDPYxhMEKTAS1/
-         O99A==
-X-Gm-Message-State: APjAAAVa5yo2wcDNt654Xpzwp9ZC+01a9oP5JVtL04LRi9mo2MXcR4ov
-        qwkFVRAP/d68MqUu4lg350o=
-X-Google-Smtp-Source: APXvYqw2fRzpHSbD4K4Gsekt9z3gbEqd1FZRpCmBgMU8tADa/phjC+xHthMwhlsSRsUnv6N8q6tD3Q==
-X-Received: by 2002:a1c:e915:: with SMTP id q21mr10218235wmc.164.1573486538315;
-        Mon, 11 Nov 2019 07:35:38 -0800 (PST)
+        bh=TlAES4qzhyzzXCjCC1cceNgc3QMqW/GMvwOBs7FohH8=;
+        b=bAmfoT9TOUzq9FCLPgB0LIz9doMze3WAbNiMNzDHhZLwl5FO1tbAXG7P7jSNtn9fzZ
+         7IvMgr9Bea4nnL0wWWFZnbrWHHvkUTX+/JANwsweDT+JEfMiiqxYSHGBGcOOcrcxhBzS
+         1My26netIt7W9cA/tPSq/WL6wOMoADLPGRaOmvnOtupDxGd+i9kKCCdyQQWLGyZdGgrc
+         rInts1xs4ZZAh8oZU4ystUi0zRJVj0dNDIbp/93h34I/iT7gnBXejcY0aijfWx3BC3Yv
+         TC25zHYAln6fotWHTrT59ZaO19yfUQBNSMVG0PzWQG4uJOZkkADfPnLui0TtGgYiXO/L
+         PQhg==
+X-Gm-Message-State: APjAAAXtxVY6Hqp1TueNn1sJXvTvN2abAjDjsdxzFmtg7BtAl9pV/ni+
+        dAnETKLRg8/gsIZXsWD1/X8=
+X-Google-Smtp-Source: APXvYqzdOjOlEG8ROkJtBr7x1bpCudNKpccQvizYYiVnzSVrZR0X+zV1TtbgBAJFnePP9AQcId7NtQ==
+X-Received: by 2002:a7b:c858:: with SMTP id c24mr22120745wml.174.1573486539365;
+        Mon, 11 Nov 2019 07:35:39 -0800 (PST)
 Received: from NewMoon.iit.local ([90.147.180.254])
-        by smtp.gmail.com with ESMTPSA id w81sm23965657wmg.5.2019.11.11.07.35.36
+        by smtp.gmail.com with ESMTPSA id w81sm23965657wmg.5.2019.11.11.07.35.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2019 07:35:37 -0800 (PST)
+        Mon, 11 Nov 2019 07:35:38 -0800 (PST)
 From:   Andrea Merello <andrea.merello@gmail.com>
 To:     jic23@kernel.org
 Cc:     Andrea Merello <andrea.merello@gmail.com>,
@@ -56,9 +56,9 @@ Cc:     Andrea Merello <andrea.merello@gmail.com>,
         Matt Ranostay <matt.ranostay@konsulko.com>,
         Chuhong Yuan <hslester96@gmail.com>,
         Daniel Gomez <dagmcr@gmail.com>, linux-iio@vger.kernel.org
-Subject: [v2 6/9] Documentation: ABI: document IIO thermocouple_type file
-Date:   Mon, 11 Nov 2019 16:35:14 +0100
-Message-Id: <20191111153517.13862-7-andrea.merello@gmail.com>
+Subject: [v2 7/9] iio: max31856: add support for runtime-configuring the thermocouple type
+Date:   Mon, 11 Nov 2019 16:35:15 +0100
+Message-Id: <20191111153517.13862-8-andrea.merello@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191111153517.13862-1-andrea.merello@gmail.com>
 References: <20190923121714.13672-1-andrea.merello@gmail.com>
@@ -68,8 +68,23 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-IIO core layer gained a new sysfs standard attribute "thermocouple_type".
-This patch adds it to the list of documented ABI for sysfs-bus-iio
+The sensor support various thermocouple types (e.g. J, K, N, ...). The
+driver allows to configure this parameter using a DT property.
+
+This is useful when i.e. the thermocouple is physically tied to the sensor
+and it is usually not removed, or when it is at least known in advance
+which sensor will be connected to the circuit.
+
+However, if the user can randomly connect any kind of thermocouples (i.e.
+the device exposes a connector, and the user is free to connect its own
+sensors), it would be more appropriate to provide a mechanism to
+dynamically switch from one thermocouple type to another. This can be i.e.
+handled in userspace by a GUI, a configuration file or a program that
+detects the thermocouple type by reading a GPIO, or a eeprom on the probe,
+or whatever.
+
+This patch adds a IIO attribute that can be used to override, at run-time,
+the DT-provided setting (which serves as default).
 
 Cc: Hartmut Knaack <knaack.h@gmx.de>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
@@ -84,23 +99,102 @@ Cc: Daniel Gomez <dagmcr@gmail.com>
 Cc: linux-iio@vger.kernel.org
 Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
 ---
- Documentation/ABI/testing/sysfs-bus-iio | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/temperature/max31856.c | 39 +++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 94f7eb675108..2cf2c800dba2 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -1733,3 +1733,9 @@ Contact:	linux-iio@vger.kernel.org
- Description:
- 		Center frequency in Hz for a notch filter. Used i.e. for line
- 		noise suppression.
+diff --git a/drivers/iio/temperature/max31856.c b/drivers/iio/temperature/max31856.c
+index 9f0f4f65dccd..6689eab174df 100644
+--- a/drivers/iio/temperature/max31856.c
++++ b/drivers/iio/temperature/max31856.c
+@@ -6,6 +6,7 @@
+  * Copyright (C) 2018-2019 Rockwell Collins
+  */
+ 
++#include <linux/ctype.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/err.h>
+@@ -76,6 +77,10 @@ struct max31856_data {
+ 	int averaging;
+ };
+ 
++const char max31856_tc_types[] = {
++	'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
++};
 +
-+What:		/sys/bus/iio/devices/iio:deviceX/in_temp_thermocouple_type
-+KernelVersion:	5.5
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Thermocouple type i.e. J, K, R, ...
+ static int max31856_read(struct max31856_data *data, u8 reg,
+ 			 u8 val[], unsigned int read_size)
+ {
+@@ -233,6 +238,9 @@ static int max31856_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+ 		*val = 1 << data->averaging;
+ 		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
++		*val = max31856_tc_types[data->thermocouple_type];
++		return IIO_VAL_CHAR;
+ 	default:
+ 		ret = -EINVAL;
+ 		break;
+@@ -241,6 +249,18 @@ static int max31856_read_raw(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
++static int max31856_write_raw_get_fmt(struct iio_dev *indio_dev,
++				      struct iio_chan_spec const *chan,
++				      long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
++		return IIO_VAL_CHAR;
++	default:
++		return IIO_VAL_INT;
++	}
++}
++
+ static int max31856_write_raw(struct iio_dev *indio_dev,
+ 			      struct iio_chan_spec const *chan,
+ 			      int val, int val2, long mask)
+@@ -260,7 +280,24 @@ static int max31856_write_raw(struct iio_dev *indio_dev,
+ 		data->averaging = msb;
+ 		max31856_init(data);
+ 		break;
++	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
++	{
++		int tc_type = -1;
++		int i;
++
++		for (i = 0; i < ARRAY_SIZE(max31856_tc_types); i++) {
++			if (max31856_tc_types[i] == toupper(val)) {
++				tc_type = i;
++				break;
++			}
++		}
++		if (tc_type < 0)
++			return -EINVAL;
+ 
++		data->thermocouple_type = tc_type;
++		max31856_init(data);
++		break;
++	}
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -333,7 +370,6 @@ static ssize_t set_filter(struct device *dev,
+ 	default:
+ 		return -EINVAL;
+ 	}
+-
+ 	max31856_init(data);
+ 	return len;
+ }
+@@ -357,6 +393,7 @@ static const struct attribute_group max31856_group = {
+ static const struct iio_info max31856_info = {
+ 	.read_raw = max31856_read_raw,
+ 	.write_raw = max31856_write_raw,
++	.write_raw_get_fmt = max31856_write_raw_get_fmt,
+ 	.attrs = &max31856_group,
+ };
+ 
 -- 
 2.17.1
 

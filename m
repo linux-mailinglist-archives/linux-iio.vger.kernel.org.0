@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BF71F77CA
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2019 16:35:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F27A4F77CC
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2019 16:35:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727032AbfKKPfi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Nov 2019 10:35:38 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:55151 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726988AbfKKPfi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Nov 2019 10:35:38 -0500
-Received: by mail-wm1-f68.google.com with SMTP id z26so13790370wmi.4
-        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2019 07:35:37 -0800 (PST)
+        id S1727046AbfKKPfk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Nov 2019 10:35:40 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:55151 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726988AbfKKPfk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Nov 2019 10:35:40 -0500
+Received: by mail-wm1-f65.google.com with SMTP id z26so13790475wmi.4
+        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2019 07:35:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=/FQlNKVcxb71DgL7lhZKnTFvgXDTr4/CG+zCoXM2wAk=;
-        b=RyqjkVHFb0vxcP5YXMvMLGjBn0GUvaYygxcfbTD9vCbWSEMb/krEhjefgV5bR/svG+
-         46obvSFbPTqLy8KAGxM5IbtRAVBf53UNqHnhoPT9Q0hD9oNulvcozBNy0eW8w6Klnjbf
-         tWICT80ey1QSdFiMBw2Wy9ZyXzu0jHndxuKCVZOVHs3F45H0A0qElEopyw3A4BCN1ouw
-         PJFxvvzElGOJQPmB3iyJYwmeIEilWb/TDLEe3re3WyZS0rx+JDx0tV5T4W+rPW6ZFH9j
-         x2On46M4mPYG0EROC1bWFD2EZIbEQ4I6pj7+e5Z4GlsHrjTP+ncbBhWtGBn8rBnOVzTa
-         aI0A==
+        bh=c4UaxyvklkVUid1A0WwdmyjZMCmwAFkWblBVGXHBIG4=;
+        b=kIOrsFjScJCngxyWvA3HUU+Ko2BUMp9vKgM47xy5iBhnJhuaZOV2Nxf/zqWizLncj/
+         5qdAQkRJHvp5FAsI7ofGUJTR5DcNX1ZnXycOHKjaq9Rm5qE7tlA04v4KLULAFDXfl25C
+         juPoHzgm2vWDm6LX+X7+h2k076zc2jGWD2NCohaZlJ9eJHhkE5GiyCvSKOC+2VrAyJqq
+         uHUhIBriEOwYgSoiDN5/C8tIk9e2s2bvXBVcvJ5Lk/VuglVbEu+03yOSz/xh1gOr49RD
+         Bj7jLogUqSNu+/eZNNPvjtygVG4pYbZe5NKq3lO7gqFK5W+0X59HXCI5WMt+kcd+sxrk
+         rR/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=/FQlNKVcxb71DgL7lhZKnTFvgXDTr4/CG+zCoXM2wAk=;
-        b=dKDMfXUHIXmZ1ME/H08LmweqeeDqObEjL4zFPvqsL/S8RGSLN95xIOteAyucl1FV8O
-         Cg8RkhQiYpuxuGMO9xq8uGQYcbHI7jso5UsC3dmXtT9XKr9kIABaQeYfK/uwHwaGYrPV
-         XTItMt0pVvfWrPYTPgDrcdWZ5fgXQpwXrjCiUP0VezuYYzcFHhAycyjjmXOlqt6RJs4b
-         huBtFs8QuJmJbzNotHpPvBy5YEghl0wMSEWKMVaaV/y0aAVa6WdauetFSFHU2XdL911w
-         Oh8M+bFU09UF4960ODGMwawfsr92GWakOeKd18FC/IWoi2S3PHJXFQN8VZtCH5j/ynAs
-         YTRg==
-X-Gm-Message-State: APjAAAWPWvUOOFeNabEaEvBV4MKNZp4SurLCLolAM0jxLEWPKan4W0mR
-        xjRGPfqQRkNAV+8ZDv3oLtM=
-X-Google-Smtp-Source: APXvYqzAjHd8YK2Lgh3vAVZcAxvQhw/ikvHfe7vifAFcDYM6urooyukzOWFQb3xlSkyOTbDTs3HACA==
-X-Received: by 2002:a1c:6542:: with SMTP id z63mr21432814wmb.29.1573486536926;
-        Mon, 11 Nov 2019 07:35:36 -0800 (PST)
+        bh=c4UaxyvklkVUid1A0WwdmyjZMCmwAFkWblBVGXHBIG4=;
+        b=qIoavex+7FY8PXP+gynKvuYwCiTa2xkMNQJ3/1zjNSc6VoyH7sRCwWX4Na/HLlMAhQ
+         TBsoJJvnEItGUOV44AoM3i8YjJ0VL0eH2/inq2Foffr3w7GK5kkQ+AFO3uItZjujvGi5
+         PG8yI67ldyFW+xgn5eqLswSZ/dHE3u78jJ5KROnbuR4luY9BsiUTaDPhJ6z50/KucKcr
+         CK6B/hUIJxZpa/56xE+abuocvXR33TAP+MS4f/aV5QHFOgTNikU2VDfK14+KNFFzYzY3
+         9yg7CXeSSqbtUuEIzkKXqnSj92+AsvzxTSJle/EZYFPyx69k+aWF8AFDPYxhMEKTAS1/
+         O99A==
+X-Gm-Message-State: APjAAAVa5yo2wcDNt654Xpzwp9ZC+01a9oP5JVtL04LRi9mo2MXcR4ov
+        qwkFVRAP/d68MqUu4lg350o=
+X-Google-Smtp-Source: APXvYqw2fRzpHSbD4K4Gsekt9z3gbEqd1FZRpCmBgMU8tADa/phjC+xHthMwhlsSRsUnv6N8q6tD3Q==
+X-Received: by 2002:a1c:e915:: with SMTP id q21mr10218235wmc.164.1573486538315;
+        Mon, 11 Nov 2019 07:35:38 -0800 (PST)
 Received: from NewMoon.iit.local ([90.147.180.254])
-        by smtp.gmail.com with ESMTPSA id w81sm23965657wmg.5.2019.11.11.07.35.35
+        by smtp.gmail.com with ESMTPSA id w81sm23965657wmg.5.2019.11.11.07.35.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2019 07:35:36 -0800 (PST)
+        Mon, 11 Nov 2019 07:35:37 -0800 (PST)
 From:   Andrea Merello <andrea.merello@gmail.com>
 To:     jic23@kernel.org
 Cc:     Andrea Merello <andrea.merello@gmail.com>,
@@ -56,9 +56,9 @@ Cc:     Andrea Merello <andrea.merello@gmail.com>,
         Matt Ranostay <matt.ranostay@konsulko.com>,
         Chuhong Yuan <hslester96@gmail.com>,
         Daniel Gomez <dagmcr@gmail.com>, linux-iio@vger.kernel.org
-Subject: [v2 5/9] iio: core: add thermocouple_type standard attribute
-Date:   Mon, 11 Nov 2019 16:35:13 +0100
-Message-Id: <20191111153517.13862-6-andrea.merello@gmail.com>
+Subject: [v2 6/9] Documentation: ABI: document IIO thermocouple_type file
+Date:   Mon, 11 Nov 2019 16:35:14 +0100
+Message-Id: <20191111153517.13862-7-andrea.merello@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191111153517.13862-1-andrea.merello@gmail.com>
 References: <20190923121714.13672-1-andrea.merello@gmail.com>
@@ -68,17 +68,8 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-We have a couple of thermocouple IIO drivers, supporting several chips.
-Some of them support only one specific thermocouple type (e.g. "K", "J"),
-one of them can be configured to work with several different thermocouple
-types.
-
-In certain applications thermocouples could be externally connected to the
-chip by the user.
-
-This patch introduces a new IIO standard attribute to report the supported
-thermocouple type and, where applicable, to allow it to be dynamically set
-using sysfs.
+IIO core layer gained a new sysfs standard attribute "thermocouple_type".
+This patch adds it to the list of documented ABI for sysfs-bus-iio
 
 Cc: Hartmut Knaack <knaack.h@gmx.de>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
@@ -93,34 +84,23 @@ Cc: Daniel Gomez <dagmcr@gmail.com>
 Cc: linux-iio@vger.kernel.org
 Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
 ---
- drivers/iio/industrialio-core.c | 1 +
- include/linux/iio/types.h       | 1 +
- 2 files changed, 2 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-iio | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 958b5c48a86f..fa2c3b321bfd 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -161,6 +161,7 @@ static const char * const iio_chan_info_postfix[] = {
- 	[IIO_CHAN_INFO_DEBOUNCE_TIME] = "debounce_time",
- 	[IIO_CHAN_INFO_CALIBEMISSIVITY] = "calibemissivity",
- 	[IIO_CHAN_INFO_OVERSAMPLING_RATIO] = "oversampling_ratio",
-+	[IIO_CHAN_INFO_THERMOCOUPLE_TYPE] = "thermocouple_type",
- };
- 
- /**
-diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
-index 8e0026da38c9..e6fd3645963c 100644
---- a/include/linux/iio/types.h
-+++ b/include/linux/iio/types.h
-@@ -58,6 +58,7 @@ enum iio_chan_info_enum {
- 	IIO_CHAN_INFO_DEBOUNCE_TIME,
- 	IIO_CHAN_INFO_CALIBEMISSIVITY,
- 	IIO_CHAN_INFO_OVERSAMPLING_RATIO,
-+	IIO_CHAN_INFO_THERMOCOUPLE_TYPE,
- };
- 
- #endif /* _IIO_TYPES_H_ */
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+index 94f7eb675108..2cf2c800dba2 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio
++++ b/Documentation/ABI/testing/sysfs-bus-iio
+@@ -1733,3 +1733,9 @@ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		Center frequency in Hz for a notch filter. Used i.e. for line
+ 		noise suppression.
++
++What:		/sys/bus/iio/devices/iio:deviceX/in_temp_thermocouple_type
++KernelVersion:	5.5
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Thermocouple type i.e. J, K, R, ...
 -- 
 2.17.1
 

@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C63EF70BF
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2019 10:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2596F70E4
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2019 10:35:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbfKKJbE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Nov 2019 04:31:04 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:60630 "EHLO
+        id S1726810AbfKKJfh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Nov 2019 04:35:37 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:60706 "EHLO
         bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726768AbfKKJbE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Nov 2019 04:31:04 -0500
+        with ESMTP id S1726770AbfKKJfh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Nov 2019 04:35:37 -0500
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: eballetbo)
-        with ESMTPSA id BBE4C28EE17
-Subject: Re: [PATCH v4 06/17] platform: chrome: cros_ec: handle MKBP more
- events flag
+        with ESMTPSA id 2B640283D30
+Subject: Re: [PATCH v4 12/17] iio: cros_ec: Move function description to .c
+ file
 To:     Jonathan Cameron <jic23@kernel.org>,
         Gwendal Grignou <gwendal@chromium.org>
 Cc:     briannorris@chromium.org, knaack.h@gmx.de, lars@metafoo.de,
         pmeerw@pmeerw.net, lee.jones@linaro.org, bleung@chromium.org,
         dianders@chromium.org, groeck@chromium.org,
         fabien.lahoudere@collabora.com, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Enrico Granata <egranata@chromium.org>
+        linux-iio@vger.kernel.org
 References: <20191105222652.70226-1-gwendal@chromium.org>
- <20191105222652.70226-7-gwendal@chromium.org>
- <20191110122800.356e0bd0@archlinux>
+ <20191105222652.70226-13-gwendal@chromium.org>
+ <20191110130827.12583c30@archlinux>
 From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <d9639d95-ed97-fbea-7283-036329942888@collabora.com>
-Date:   Mon, 11 Nov 2019 10:30:58 +0100
+Message-ID: <9af7416b-d324-8401-5137-d5dcc37277f3@collabora.com>
+Date:   Mon, 11 Nov 2019 10:35:29 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191110122800.356e0bd0@archlinux>
+In-Reply-To: <20191110130827.12583c30@archlinux>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -43,407 +43,271 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-On 10/11/19 13:28, Jonathan Cameron wrote:
-> On Tue,  5 Nov 2019 14:26:41 -0800
+On 10/11/19 14:08, Jonathan Cameron wrote:
+> On Tue,  5 Nov 2019 14:26:47 -0800
 > Gwendal Grignou <gwendal@chromium.org> wrote:
 > 
->> From: Enrico Granata <egranata@chromium.org>
+>> To prevent comment rot, move function description to
+>> cros_ec_sensors_core.c.
 >>
->> The ChromeOS EC has support for signaling to the host that
->> a single IRQ can serve multiple MKBP (Matrix KeyBoard Protocol)
->> events.
->>
->> Doing this serves an optimization purpose, as it minimizes the
->> number of round-trips into the interrupt handling machinery, and
->> it proves beneficial to sensor timestamping as it keeps the desired
->> synchronization of event times between the two processors.
->>
->> This patch adds kernel support for this EC feature, allowing the
->> ec_irq to loop until all events have been served.
->>
->> Signed-off-by: Enrico Granata <egranata@chromium.org>
 >> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> A couple of trivial things inline.  
-> I just checked with the script and it doesn't seem to warn on the ()
-> but the documentation for kernel-doc suggests it should be there...
+> Thanks for tidying this up.
 > 
-> I guess things are more relaxed than I though.. Fix them if you are
-> doing another spin perhaps but don't bother otherwise.
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-
-Looks good to me, please fix the above comments and:
 
 Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 
 Thanks,
  Enric
 
-
 >> ---
->> Changes in v4:
->> - Check patch with --strict option
->>     Alignement
+>> No changes in v4.
 >> Changes in v3:
->>   Fix indentation.
->> Changes in v2:
->>   Process flag inside cros_ec_get_next_event, clean flag from event.
->>   Introduce public function cros_ec_handle_event(), use it in rpmsg and
->>     ishtp transport layer.
->>   Remplace dev_info with dev_dbg, call only once.
+>>   fix spelling.
+>> New in v2.
 >>
->>  drivers/platform/chrome/cros_ec.c           | 34 +++++++--
->>  drivers/platform/chrome/cros_ec_ishtp.c     |  8 +-
->>  drivers/platform/chrome/cros_ec_lpc.c       | 15 +++-
->>  drivers/platform/chrome/cros_ec_proto.c     | 81 +++++++++++++--------
->>  drivers/platform/chrome/cros_ec_rpmsg.c     | 19 +----
->>  include/linux/platform_data/cros_ec_proto.h | 12 ++-
->>  6 files changed, 107 insertions(+), 62 deletions(-)
+>>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 69 ++++++++++++++++
+>>  .../linux/iio/common/cros_ec_sensors_core.h   | 80 -------------------
+>>  2 files changed, 69 insertions(+), 80 deletions(-)
 >>
->> diff --git a/drivers/platform/chrome/cros_ec.c b/drivers/platform/chrome/cros_ec.c
->> index d3dfa27171e6..c9f0b9ebcbc1 100644
->> --- a/drivers/platform/chrome/cros_ec.c
->> +++ b/drivers/platform/chrome/cros_ec.c
->> @@ -40,13 +40,23 @@ static irqreturn_t ec_irq_handler(int irq, void *data)
->>  	return IRQ_WAKE_THREAD;
+>> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+>> index 81a7f692de2f..b47da497a3c3 100644
+>> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+>> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+>> @@ -83,6 +83,14 @@ static void get_default_min_max_freq(enum motionsensor_type type,
+>>  	}
 >>  }
 >>  
->> -static irqreturn_t ec_irq_thread(int irq, void *data)
 >> +/**
->> + * cros_ec_handle_event - process and forward pending events on EC
-> 
-> cros_ec_handle_event() - 
-> 
->> + * @ec_dev: Device with events to process.
+>> + * cros_ec_sensors_core_init() - basic initialization of the core structure
+>> + * @pdev:		platform device created for the sensors
+>> + * @indio_dev:		iio device structure of the device
+>> + * @physical_device:	true if the device refers to a physical device
 >> + *
->> + * Call this function in a loop when the kernel is notified that the EC has
->> + * pending events.
->> + *
->> + * Return: true if more events are still pending and this function should be
->> + * called again.
+>> + * Return: 0 on success, -errno on failure.
 >> + */
->> +bool cros_ec_handle_event(struct cros_ec_device *ec_dev)
->>  {
->> -	struct cros_ec_device *ec_dev = data;
->> -	bool wake_event = true;
->> +	bool wake_event;
->> +	bool ec_has_more_events;
->>  	int ret;
->>  
->> -	ret = cros_ec_get_next_event(ec_dev, &wake_event);
->> +	ret = cros_ec_get_next_event(ec_dev, &wake_event, &ec_has_more_events);
->>  
->>  	/*
->>  	 * Signal only if wake host events or any interrupt if
->> @@ -59,6 +69,20 @@ static irqreturn_t ec_irq_thread(int irq, void *data)
->>  	if (ret > 0)
->>  		blocking_notifier_call_chain(&ec_dev->event_notifier,
->>  					     0, ec_dev);
->> +
->> +	return ec_has_more_events;
->> +}
->> +EXPORT_SYMBOL(cros_ec_handle_event);
->> +
->> +static irqreturn_t ec_irq_thread(int irq, void *data)
->> +{
->> +	struct cros_ec_device *ec_dev = data;
->> +	bool ec_has_more_events;
->> +
->> +	do {
->> +		ec_has_more_events = cros_ec_handle_event(ec_dev);
->> +	} while (ec_has_more_events);
->> +
->>  	return IRQ_HANDLED;
+>>  int cros_ec_sensors_core_init(struct platform_device *pdev,
+>>  			      struct iio_dev *indio_dev,
+>>  			      bool physical_device)
+>> @@ -160,6 +168,16 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
 >>  }
+>>  EXPORT_SYMBOL_GPL(cros_ec_sensors_core_init);
 >>  
->> @@ -274,7 +298,7 @@ EXPORT_SYMBOL(cros_ec_suspend);
->>  static void cros_ec_report_events_during_suspend(struct cros_ec_device *ec_dev)
+>> +/**
+>> + * cros_ec_motion_send_host_cmd() - send motion sense host command
+>> + * @state:		pointer to state information for device
+>> + * @opt_length:	optional length to reduce the response size, useful on the data
+>> + *		path. Otherwise, the maximal allowed response size is used
+>> + *
+>> + * When called, the sub-command is assumed to be set in param->cmd.
+>> + *
+>> + * Return: 0 on success, -errno on failure.
+>> + */
+>>  int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
+>>  				 u16 opt_length)
 >>  {
->>  	while (ec_dev->mkbp_event_supported &&
->> -	       cros_ec_get_next_event(ec_dev, NULL) > 0)
->> +	       cros_ec_get_next_event(ec_dev, NULL, NULL) > 0)
->>  		blocking_notifier_call_chain(&ec_dev->event_notifier,
->>  					     1, ec_dev);
+>> @@ -422,6 +440,14 @@ int cros_ec_sensors_read_lpc(struct iio_dev *indio_dev,
 >>  }
->> diff --git a/drivers/platform/chrome/cros_ec_ishtp.c b/drivers/platform/chrome/cros_ec_ishtp.c
->> index 5c848f22b44b..e5996821d08b 100644
->> --- a/drivers/platform/chrome/cros_ec_ishtp.c
->> +++ b/drivers/platform/chrome/cros_ec_ishtp.c
->> @@ -136,11 +136,11 @@ static void ish_evt_handler(struct work_struct *work)
->>  	struct ishtp_cl_data *client_data =
->>  		container_of(work, struct ishtp_cl_data, work_ec_evt);
->>  	struct cros_ec_device *ec_dev = client_data->ec_dev;
->> +	bool ec_has_more_events;
+>>  EXPORT_SYMBOL_GPL(cros_ec_sensors_read_lpc);
 >>  
->> -	if (cros_ec_get_next_event(ec_dev, NULL) > 0) {
->> -		blocking_notifier_call_chain(&ec_dev->event_notifier,
->> -					     0, ec_dev);
->> -	}
->> +	do {
->> +		ec_has_more_events = cros_ec_handle_event(ec_dev);
->> +	} while (ec_has_more_events);
->>  }
->>  
->>  /**
->> diff --git a/drivers/platform/chrome/cros_ec_lpc.c b/drivers/platform/chrome/cros_ec_lpc.c
->> index 3c77496e164d..dccf479c6625 100644
->> --- a/drivers/platform/chrome/cros_ec_lpc.c
->> +++ b/drivers/platform/chrome/cros_ec_lpc.c
->> @@ -312,13 +312,20 @@ static int cros_ec_lpc_readmem(struct cros_ec_device *ec, unsigned int offset,
->>  static void cros_ec_lpc_acpi_notify(acpi_handle device, u32 value, void *data)
+>> +/**
+>> + * cros_ec_sensors_read_cmd() - retrieve data using the EC command protocol
+>> + * @indio_dev:	pointer to IIO device
+>> + * @scan_mask:	bitmap of the sensor indices to scan
+>> + * @data:	location to store data
+>> + *
+>> + * Return: 0 on success, -errno on failure.
+>> + */
+>>  int cros_ec_sensors_read_cmd(struct iio_dev *indio_dev,
+>>  			     unsigned long scan_mask, s16 *data)
 >>  {
->>  	struct cros_ec_device *ec_dev = data;
->> +	bool ec_has_more_events;
->> +	int ret;
->>  
->>  	ec_dev->last_event_time = cros_ec_get_time_ns();
->>  
->> -	if (ec_dev->mkbp_event_supported &&
->> -	    cros_ec_get_next_event(ec_dev, NULL) > 0)
->> -		blocking_notifier_call_chain(&ec_dev->event_notifier, 0,
->> -					     ec_dev);
->> +	if (ec_dev->mkbp_event_supported)
->> +		do {
->> +			ret = cros_ec_get_next_event(ec_dev, NULL,
->> +						     &ec_has_more_events);
->> +			if (ret > 0)
->> +				blocking_notifier_call_chain(
->> +						&ec_dev->event_notifier, 0,
->> +						ec_dev);
->> +		} while (ec_has_more_events);
->>  
->>  	if (value == ACPI_NOTIFY_DEVICE_WAKE)
->>  		pm_system_wakeup();
->> diff --git a/drivers/platform/chrome/cros_ec_proto.c b/drivers/platform/chrome/cros_ec_proto.c
->> index b502933e911b..03173ca66b1b 100644
->> --- a/drivers/platform/chrome/cros_ec_proto.c
->> +++ b/drivers/platform/chrome/cros_ec_proto.c
->> @@ -456,7 +456,10 @@ int cros_ec_query_all(struct cros_ec_device *ec_dev)
->>  	if (ret < 0 || ver_mask == 0)
->>  		ec_dev->mkbp_event_supported = 0;
->>  	else
->> -		ec_dev->mkbp_event_supported = 1;
->> +		ec_dev->mkbp_event_supported = fls(ver_mask);
->> +
->> +	dev_dbg(ec_dev->dev, "MKBP support version %u\n",
->> +		ec_dev->mkbp_event_supported - 1);
->>  
->>  	/* Probe if host sleep v1 is supported for S0ix failure detection. */
->>  	ret = cros_ec_get_host_command_version_mask(ec_dev,
->> @@ -569,6 +572,7 @@ EXPORT_SYMBOL(cros_ec_cmd_xfer_status);
->>  
->>  static int get_next_event_xfer(struct cros_ec_device *ec_dev,
->>  			       struct cros_ec_command *msg,
->> +			       struct ec_response_get_next_event_v1 *event,
->>  			       int version, uint32_t size)
->>  {
->>  	int ret;
->> @@ -581,7 +585,7 @@ static int get_next_event_xfer(struct cros_ec_device *ec_dev,
->>  	ret = cros_ec_cmd_xfer(ec_dev, msg);
->>  	if (ret > 0) {
->>  		ec_dev->event_size = ret - 1;
->> -		memcpy(&ec_dev->event_data, msg->data, ret);
->> +		ec_dev->event_data = *event;
->>  	}
->>  
->>  	return ret;
->> @@ -589,30 +593,26 @@ static int get_next_event_xfer(struct cros_ec_device *ec_dev,
->>  
->>  static int get_next_event(struct cros_ec_device *ec_dev)
->>  {
->> -	u8 buffer[sizeof(struct cros_ec_command) + sizeof(ec_dev->event_data)];
->> -	struct cros_ec_command *msg = (struct cros_ec_command *)&buffer;
->> -	static int cmd_version = 1;
->> -	int ret;
->> +	struct {
->> +		struct cros_ec_command msg;
->> +		struct ec_response_get_next_event_v1 event;
->> +	} __packed buf;
->> +	struct cros_ec_command *msg = &buf.msg;
->> +	struct ec_response_get_next_event_v1 *event = &buf.event;
->> +	const int cmd_version = ec_dev->mkbp_event_supported - 1;
->>  
->> +	memset(msg, 0, sizeof(*msg));
->>  	if (ec_dev->suspended) {
->>  		dev_dbg(ec_dev->dev, "Device suspended.\n");
->>  		return -EHOSTDOWN;
->>  	}
->>  
->> -	if (cmd_version == 1) {
->> -		ret = get_next_event_xfer(ec_dev, msg, cmd_version,
->> -				sizeof(struct ec_response_get_next_event_v1));
->> -		if (ret < 0 || msg->result != EC_RES_INVALID_VERSION)
->> -			return ret;
->> -
->> -		/* Fallback to version 0 for future send attempts */
->> -		cmd_version = 0;
->> -	}
->> -
->> -	ret = get_next_event_xfer(ec_dev, msg, cmd_version,
->> +	if (cmd_version == 0)
->> +		return get_next_event_xfer(ec_dev, msg, event, 0,
->>  				  sizeof(struct ec_response_get_next_event));
->>  
->> -	return ret;
->> +	return get_next_event_xfer(ec_dev, msg, event, cmd_version,
->> +				sizeof(struct ec_response_get_next_event_v1));
+>> @@ -446,6 +472,18 @@ int cros_ec_sensors_read_cmd(struct iio_dev *indio_dev,
 >>  }
+>>  EXPORT_SYMBOL_GPL(cros_ec_sensors_read_cmd);
 >>  
->>  static int get_keyboard_state_event(struct cros_ec_device *ec_dev)
->> @@ -639,32 +639,55 @@ static int get_keyboard_state_event(struct cros_ec_device *ec_dev)
->>   * @ec_dev: Device to fetch event from.
->>   * @wake_event: Pointer to a bool set to true upon return if the event might be
->>   *              treated as a wake event. Ignored if null.
->> + * @has_more_events: Pointer to bool set to true if more than one event is
->> + *              pending.
->> + *              Some EC will set this flag to indicate cros_ec_get_next_event()
->> + *              can be called multiple times in a row.
->> + *              It is an optimization to prevent issuing a EC command for
->> + *              nothing or wait for another interrupt from the EC to process
->> + *              the next message.
->> + *              Ignored if null.
->>   *
->>   * Return: negative error code on errors; 0 for no data; or else number of
->>   * bytes received (i.e., an event was retrieved successfully). Event types are
->>   * written out to @ec_dev->event_data.event_type on success.
->>   */
->> -int cros_ec_get_next_event(struct cros_ec_device *ec_dev, bool *wake_event)
->> +int cros_ec_get_next_event(struct cros_ec_device *ec_dev,
->> +			   bool *wake_event,
->> +			   bool *has_more_events)
+>> +/**
+>> + * cros_ec_sensors_capture() - the trigger handler function
+>> + * @irq:	the interrupt number.
+>> + * @p:		a pointer to the poll function.
+>> + *
+>> + * On a trigger event occurring, if the pollfunc is attached then this
+>> + * handler is called as a threaded interrupt (and hence may sleep). It
+>> + * is responsible for grabbing data from the device and pushing it into
+>> + * the associated buffer.
+>> + *
+>> + * Return: IRQ_HANDLED
+>> + */
+>>  irqreturn_t cros_ec_sensors_capture(int irq, void *p)
 >>  {
->>  	u8 event_type;
->>  	u32 host_event;
->>  	int ret;
->>  
->> -	if (!ec_dev->mkbp_event_supported) {
->> -		ret = get_keyboard_state_event(ec_dev);
->> -		if (ret <= 0)
->> -			return ret;
->> +	/*
->> +	 * Default value for wake_event.
->> +	 * Wake up on keyboard event, wake up for spurious interrupt or link
->> +	 * error to the EC.
->> +	 */
->> +	if (wake_event)
->> +		*wake_event = true;
->>  
->> -		if (wake_event)
->> -			*wake_event = true;
->> +	/*
->> +	 * Default value for has_more_events.
->> +	 * EC will raise another interrupt if AP does not process all events
->> +	 * anyway.
->> +	 */
->> +	if (has_more_events)
->> +		*has_more_events = false;
->>  
->> -		return ret;
->> -	}
->> +	if (!ec_dev->mkbp_event_supported)
->> +		return get_keyboard_state_event(ec_dev);
->>  
->>  	ret = get_next_event(ec_dev);
->>  	if (ret <= 0)
->>  		return ret;
->>  
->> +	if (has_more_events)
->> +		*has_more_events = ec_dev->event_data.event_type &
->> +			EC_MKBP_HAS_MORE_EVENTS;
->> +	ec_dev->event_data.event_type &= EC_MKBP_EVENT_TYPE_MASK;
->> +
->>  	if (wake_event) {
->>  		event_type = ec_dev->event_data.event_type;
->>  		host_event = cros_ec_get_host_event(ec_dev);
->> @@ -679,11 +702,7 @@ int cros_ec_get_next_event(struct cros_ec_device *ec_dev, bool *wake_event)
->>  		else if (host_event &&
->>  			 !(host_event & ec_dev->host_event_wake_mask))
->>  			*wake_event = false;
->> -		/* Consider all other events as wake events. */
->> -		else
->> -			*wake_event = true;
->>  	}
->> -
-> 
-> Nitpick. Unrelated whitespace change ;)
-> 
->>  	return ret;
+>>  	struct iio_poll_func *pf = p;
+>> @@ -481,6 +519,16 @@ irqreturn_t cros_ec_sensors_capture(int irq, void *p)
 >>  }
->>  EXPORT_SYMBOL(cros_ec_get_next_event);
->> diff --git a/drivers/platform/chrome/cros_ec_rpmsg.c b/drivers/platform/chrome/cros_ec_rpmsg.c
->> index 0c3738c3244d..bd068afe43b5 100644
->> --- a/drivers/platform/chrome/cros_ec_rpmsg.c
->> +++ b/drivers/platform/chrome/cros_ec_rpmsg.c
->> @@ -143,22 +143,11 @@ cros_ec_rpmsg_host_event_function(struct work_struct *host_event_work)
->>  						      struct cros_ec_rpmsg,
->>  						      host_event_work);
->>  	struct cros_ec_device *ec_dev = dev_get_drvdata(&ec_rpmsg->rpdev->dev);
->> -	bool wake_event = true;
->> -	int ret;
->> -
->> -	ret = cros_ec_get_next_event(ec_dev, &wake_event);
->> -
->> -	/*
->> -	 * Signal only if wake host events or any interrupt if
->> -	 * cros_ec_get_next_event() returned an error (default value for
->> -	 * wake_event is true)
->> -	 */
->> -	if (wake_event && device_may_wakeup(ec_dev->dev))
->> -		pm_wakeup_event(ec_dev->dev, 0);
->> +	bool ec_has_more_events;
+>>  EXPORT_SYMBOL_GPL(cros_ec_sensors_capture);
 >>  
->> -	if (ret > 0)
->> -		blocking_notifier_call_chain(&ec_dev->event_notifier,
->> -					     0, ec_dev);
->> +	do {
->> +		ec_has_more_events = cros_ec_handle_event(ec_dev);
->> +	} while (ec_has_more_events);
+>> +/**
+>> + * cros_ec_sensors_core_read() - function to request a value from the sensor
+>> + * @st:		pointer to state information for device
+>> + * @chan:	channel specification structure table
+>> + * @val:	will contain one element making up the returned value
+>> + * @val2:	will contain another element making up the returned value
+>> + * @mask:	specifies which values to be requested
+>> + *
+>> + * Return:	the type of value returned by the device
+>> + */
+>>  int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
+>>  			  struct iio_chan_spec const *chan,
+>>  			  int *val, int *val2, long mask)
+>> @@ -521,6 +569,17 @@ int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
 >>  }
+>>  EXPORT_SYMBOL_GPL(cros_ec_sensors_core_read);
 >>  
->>  static int cros_ec_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
->> diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/platform_data/cros_ec_proto.h
->> index b183024fef1f..e238930ae967 100644
->> --- a/include/linux/platform_data/cros_ec_proto.h
->> +++ b/include/linux/platform_data/cros_ec_proto.h
->> @@ -116,7 +116,9 @@ struct cros_ec_command {
->>   *            code.
->>   * @pkt_xfer: Send packet to EC and get response.
->>   * @lock: One transaction at a time.
->> - * @mkbp_event_supported: True if this EC supports the MKBP event protocol.
->> + * @mkbp_event_supported: 0 if MKBP not supported. Otherwise its value is
->> + *                        the maximum supported version of the MKBP host event
->> + *                        command + 1.
->>   * @host_sleep_v1: True if this EC supports the sleep v1 command.
->>   * @event_notifier: Interrupt event notifier for transport devices.
->>   * @event_data: Raw payload transferred with the MKBP event.
->> @@ -156,7 +158,7 @@ struct cros_ec_device {
->>  	int (*pkt_xfer)(struct cros_ec_device *ec,
->>  			struct cros_ec_command *msg);
->>  	struct mutex lock;
->> -	bool mkbp_event_supported;
->> +	u8 mkbp_event_supported;
->>  	bool host_sleep_v1;
->>  	struct blocking_notifier_head event_notifier;
+>> +/**
+>> + * cros_ec_sensors_core_read_avail() - get available values
+>> + * @indio_dev:		pointer to state information for device
+>> + * @chan:	channel specification structure table
+>> + * @vals:	list of available values
+>> + * @type:	type of data returned
+>> + * @length:	number of data returned in the array
+>> + * @mask:	specifies which values to be requested
+>> + *
+>> + * Return:	an error code, IIO_AVAIL_RANGE or IIO_AVAIL_LIST
+>> + */
+>>  int cros_ec_sensors_core_read_avail(struct iio_dev *indio_dev,
+>>  				    struct iio_chan_spec const *chan,
+>>  				    const int **vals,
+>> @@ -542,6 +601,16 @@ int cros_ec_sensors_core_read_avail(struct iio_dev *indio_dev,
+>>  }
+>>  EXPORT_SYMBOL_GPL(cros_ec_sensors_core_read_avail);
 >>  
->> @@ -205,7 +207,9 @@ int cros_ec_unregister(struct cros_ec_device *ec_dev);
+>> +/**
+>> + * cros_ec_sensors_core_write() - function to write a value to the sensor
+>> + * @st:		pointer to state information for device
+>> + * @chan:	channel specification structure table
+>> + * @val:	first part of value to write
+>> + * @val2:	second part of value to write
+>> + * @mask:	specifies which values to write
+>> + *
+>> + * Return:	the type of value returned by the device
+>> + */
+>>  int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
+>>  			       struct iio_chan_spec const *chan,
+>>  			       int val, int val2, long mask)
+>> diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
+>> index bb331e6356a9..0af918978f97 100644
+>> --- a/include/linux/iio/common/cros_ec_sensors_core.h
+>> +++ b/include/linux/iio/common/cros_ec_sensors_core.h
+>> @@ -79,95 +79,25 @@ struct cros_ec_sensors_core_state {
+>>  	int frequencies[3];
+>>  };
 >>  
->>  int cros_ec_query_all(struct cros_ec_device *ec_dev);
+>> -/**
+>> - * cros_ec_sensors_read_lpc() - retrieve data from EC shared memory
+>> - * @indio_dev:	pointer to IIO device
+>> - * @scan_mask:	bitmap of the sensor indices to scan
+>> - * @data:	location to store data
+>> - *
+>> - * This is the safe function for reading the EC data. It guarantees that the
+>> - * data sampled was not modified by the EC while being read.
+>> - *
+>> - * Return: 0 on success, -errno on failure.
+>> - */
+>>  int cros_ec_sensors_read_lpc(struct iio_dev *indio_dev, unsigned long scan_mask,
+>>  			     s16 *data);
 >>  
->> -int cros_ec_get_next_event(struct cros_ec_device *ec_dev, bool *wake_event);
->> +int cros_ec_get_next_event(struct cros_ec_device *ec_dev,
->> +			   bool *wake_event,
->> +			   bool *has_more_events);
+>> -/**
+>> - * cros_ec_sensors_read_cmd() - retrieve data using the EC command protocol
+>> - * @indio_dev:	pointer to IIO device
+>> - * @scan_mask:	bitmap of the sensor indices to scan
+>> - * @data:	location to store data
+>> - *
+>> - * Return: 0 on success, -errno on failure.
+>> - */
+>>  int cros_ec_sensors_read_cmd(struct iio_dev *indio_dev, unsigned long scan_mask,
+>>  			     s16 *data);
 >>  
->>  u32 cros_ec_get_host_event(struct cros_ec_device *ec_dev);
+>>  struct platform_device;
+>> -/**
+>> - * cros_ec_sensors_core_init() - basic initialization of the core structure
+>> - * @pdev:		platform device created for the sensors
+>> - * @indio_dev:		iio device structure of the device
+>> - * @physical_device:	true if the device refers to a physical device
+>> - *
+>> - * Return: 0 on success, -errno on failure.
+>> - */
+>>  int cros_ec_sensors_core_init(struct platform_device *pdev,
+>>  			      struct iio_dev *indio_dev, bool physical_device);
 >>  
->> @@ -213,6 +217,8 @@ int cros_ec_check_features(struct cros_ec_dev *ec, int feature);
+>> -/**
+>> - * cros_ec_sensors_capture() - the trigger handler function
+>> - * @irq:	the interrupt number.
+>> - * @p:		a pointer to the poll function.
+>> - *
+>> - * On a trigger event occurring, if the pollfunc is attached then this
+>> - * handler is called as a threaded interrupt (and hence may sleep). It
+>> - * is responsible for grabbing data from the device and pushing it into
+>> - * the associated buffer.
+>> - *
+>> - * Return: IRQ_HANDLED
+>> - */
+>>  irqreturn_t cros_ec_sensors_capture(int irq, void *p);
 >>  
->>  int cros_ec_get_sensor_count(struct cros_ec_dev *ec);
+>> -/**
+>> - * cros_ec_motion_send_host_cmd() - send motion sense host command
+>> - * @st:		pointer to state information for device
+>> - * @opt_length:	optional length to reduce the response size, useful on the data
+>> - *		path. Otherwise, the maximal allowed response size is used
+>> - *
+>> - * When called, the sub-command is assumed to be set in param->cmd.
+>> - *
+>> - * Return: 0 on success, -errno on failure.
+>> - */
+>>  int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *st,
+>>  				 u16 opt_length);
 >>  
->> +bool cros_ec_handle_event(struct cros_ec_device *ec_dev);
->> +
->>  /**
->>   * cros_ec_get_time_ns - Return time in ns.
->>   *
+>> -/**
+>> - * cros_ec_sensors_core_read() - function to request a value from the sensor
+>> - * @st:		pointer to state information for device
+>> - * @chan:	channel specification structure table
+>> - * @val:	will contain one element making up the returned value
+>> - * @val2:	will contain another element making up the returned value
+>> - * @mask:	specifies which values to be requested
+>> - *
+>> - * Return:	the type of value returned by the device
+>> - */
+>>  int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
+>>  			      struct iio_chan_spec const *chan,
+>>  			      int *val, int *val2, long mask);
+>>  
+>> -/**
+>> - * cros_ec_sensors_core_read_avail() - get available values
+>> - * @indio_dev:		pointer to state information for device
+>> - * @chan:	channel specification structure table
+>> - * @vals:	list of available values
+>> - * @type:	type of data returned
+>> - * @length:	number of data returned in the array
+>> - * @mask:	specifies which values to be requested
+>> - *
+>> - * Return:	an error code, IIO_AVAIL_RANGE or IIO_AVAIL_LIST
+>> - */
+>>  int cros_ec_sensors_core_read_avail(struct iio_dev *indio_dev,
+>>  				    struct iio_chan_spec const *chan,
+>>  				    const int **vals,
+>> @@ -175,16 +105,6 @@ int cros_ec_sensors_core_read_avail(struct iio_dev *indio_dev,
+>>  				    int *length,
+>>  				    long mask);
+>>  
+>> -/**
+>> - * cros_ec_sensors_core_write() - function to write a value to the sensor
+>> - * @st:		pointer to state information for device
+>> - * @chan:	channel specification structure table
+>> - * @val:	first part of value to write
+>> - * @val2:	second part of value to write
+>> - * @mask:	specifies which values to write
+>> - *
+>> - * Return:	the type of value returned by the device
+>> - */
+>>  int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
+>>  			       struct iio_chan_spec const *chan,
+>>  			       int val, int val2, long mask);
 > 

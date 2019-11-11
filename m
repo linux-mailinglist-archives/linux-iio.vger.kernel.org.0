@@ -2,95 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BB8AF7357
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2019 12:43:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D82FF7359
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2019 12:44:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726811AbfKKLnm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Nov 2019 06:43:42 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:46660 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726823AbfKKLnj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Nov 2019 06:43:39 -0500
-Received: by mail-wr1-f65.google.com with SMTP id b3so14225903wrs.13
-        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2019 03:43:38 -0800 (PST)
+        id S1726903AbfKKLod (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Nov 2019 06:44:33 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:38394 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726889AbfKKLod (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Nov 2019 06:44:33 -0500
+Received: by mail-wm1-f65.google.com with SMTP id z19so12860700wmk.3
+        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2019 03:44:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to
          :user-agent;
-        bh=btwpyE4DKhSXy4FwJ2ZD9A7dltuQxSGv5JHsll8DI20=;
-        b=lmKD+5OS0vjqFt56pnvwLZFFro7OfkevToyeur/XuWHxeJ0Vk+XDK5YjVCvmrD615p
-         gWflCdfIAN2jW4H6Y1kMf1wEiOQjzReY1Bd1YX8tUr+Lq8c0vMiDgavy+vGKdet/qXBn
-         rZe0PDn9ELo3/RXuNhxhBpR+Q5TgjV8TLFpWQX/a/6xueaBHXGj0fVM2ujqg8m02PwB2
-         b+/vWx+ilnjUisD0BXGtA++yPVLfSDAv07zuEn4ZCS6k0R5a3+33/iH0OoUmWgPozECI
-         czwHujbbNUYtlVbolr32G/KAIWgUf3gnkZoREabNFo6xsQq/hhjpFNTHa5Sh5Zdma/W5
-         z2mA==
+        bh=pBYMKGdeC8uxl71BEDu8lTDLVYM52moP2vRHyLhP634=;
+        b=tCmCH4ONJBtSz9KrLfPrqlbp5ENanTkQ9MPa6Ot4BeWo7hY9H99dPFyqc2z9D79lvP
+         GJ4VcXKtSQQ/jB5R+tmw1JcOjgzoOeqx6x/c1VTFv1z3vTSU/Vh06PxSBPeYyXyoLkq1
+         ABCiQBbM8ybqJYcm5S2O8oa+xuraqiN6oOl9Ubao+mI/qNyaZ5p5CGDyppkysz1d7n/z
+         4ehlopU/doGFmsr8Z079zaZLxgvTIUeanbw8le0m2Hj4GIUwlTOFv5+JJtNUvTThCg5T
+         oDAnpOcLOv8/ZGXLa1YLNcOvBzekfqoidcJW5s/qT4o2Bt+HfZQl20Qr7DAt6Kshv0ez
+         C/Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to:user-agent;
-        bh=btwpyE4DKhSXy4FwJ2ZD9A7dltuQxSGv5JHsll8DI20=;
-        b=c9v6GGYJmBmyb/lHyy6dCnH6t/nJ0KpmNZ7mJW1qWj/xblaBPcxNhPM5EIQ5K3v2GQ
-         strjf/BFmcHAWqlWceKIgoMkI5wUIfKhm5SMxfFRXc003O0XCbPMx2oWHViJK/zKe9yj
-         mkBSWX1Q+jUng/QZq+IWmEljdrEjfOjf0L+ozUfnne/A86g5ia22qavbMafQmzpjWMvU
-         1tDg6wSi0XaUC+Z1FwurRwEbOPwX6RjAJozKh5a8Zy/J+IvT7LSNW3A0pT60nqub1iHd
-         82M7tAckqsgKunz1gUxm1e8RIYZk1LGWEIckODUDOcXkeJywsac0D6NEX6OJ6rpLsr3d
-         vVlg==
-X-Gm-Message-State: APjAAAXuE0OHseiJE3ftrV0gaWNFY1t9FZh4zKQ0PPUGMgWFWTskC7PU
-        eqO0hqyh94+8+Ef79Q289voWag==
-X-Google-Smtp-Source: APXvYqxe0V7wxbe9LxXQ7Boi59XGm4VrGwzmHV65LvzGKaVJcLUW13/9tnDcvZeFl8ZE8L2l2442Yg==
-X-Received: by 2002:a5d:678c:: with SMTP id v12mr8778108wru.116.1573472617414;
-        Mon, 11 Nov 2019 03:43:37 -0800 (PST)
+        bh=pBYMKGdeC8uxl71BEDu8lTDLVYM52moP2vRHyLhP634=;
+        b=gKUleYkKoSZXiajC1ZtPdBrNzdnE3xLezqb0gTYsSXWhgQicEcS++ZMWvmT2IDXpdY
+         4AfyNMogUyroNQt1DBigU0t0l2klNQdNOgZrwQLQCcuC1gPsvbryNA/hlyoiG6JqkfYf
+         36LH+DZSkT390XMhFq10xTspS0CiiP2+hp5rT1OIPT6JZ0P7SSRpZq0PLEKlVxAiZUhr
+         vSOX5aaSD93nFy/A58TxvMy0CrxQHo/qCZyIrfX8SxWuaSdGMFUQCr+N5ktc37i1oO85
+         7OR+w0LhAztw9wpJbnskZmy8PFW7YVbH01aP6RRDg9wMQDfEJ2K3ws+atkRJGtdYQY6l
+         yqgg==
+X-Gm-Message-State: APjAAAW2Wyka3/DB1zjbkBb7wHiC+Zd33ArwK7ZomAVxKzsQPSwONpX2
+        MkVgqcgzbynWFfGS9kXrmEKXFg==
+X-Google-Smtp-Source: APXvYqy3cV3J5+lGnGuLIWLtIACVWtH8IVzsbXMXLJ4UquBRUy44658weOkpodyltvzp44m/Zo1PXw==
+X-Received: by 2002:a1c:a791:: with SMTP id q139mr19589497wme.155.1573472670996;
+        Mon, 11 Nov 2019 03:44:30 -0800 (PST)
 Received: from dell ([95.147.198.88])
-        by smtp.gmail.com with ESMTPSA id 4sm17320362wmd.33.2019.11.11.03.43.36
+        by smtp.gmail.com with ESMTPSA id q15sm6929500wrs.91.2019.11.11.03.44.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2019 03:43:36 -0800 (PST)
-Date:   Mon, 11 Nov 2019 11:43:29 +0000
+        Mon, 11 Nov 2019 03:44:30 -0800 (PST)
+Date:   Mon, 11 Nov 2019 11:44:23 +0000
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     briannorris@chromium.org, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, bleung@chromium.org,
-        enric.balletbo@collabora.com, dianders@chromium.org,
-        groeck@chromium.org, fabien.lahoudere@collabora.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 03/17] platform/mfd:iio: cros_ec: Register sensor
- through sensorhub
-Message-ID: <20191111114329.GM3218@dell>
+To:     Enric Balletbo Serra <eballetbo@gmail.com>
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Doug Anderson <dianders@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v4 01/17] mfd: cros_ec: Add sensor_count and make
+ check_features public
+Message-ID: <20191111114423.GN3218@dell>
 References: <20191105222652.70226-1-gwendal@chromium.org>
- <20191105222652.70226-4-gwendal@chromium.org>
+ <20191105222652.70226-2-gwendal@chromium.org>
+ <CAFqH_50q7y-sL0SyA3BDkZ9_YBX_FL90smtXt7v0Z+BW8nrw3A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191105222652.70226-4-gwendal@chromium.org>
+In-Reply-To: <CAFqH_50q7y-sL0SyA3BDkZ9_YBX_FL90smtXt7v0Z+BW8nrw3A@mail.gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 05 Nov 2019, Gwendal Grignou wrote:
+On Fri, 08 Nov 2019, Enric Balletbo Serra wrote:
 
-> - Remove duplicate code in mfd, since mfd just register
->   cros_ec_sensorhub if at least one sensor is present
-> - Change iio cros_ec driver to get the pointer to the cros_ec_dev
->   through cros_ec_sensorhub.
+> Missatge de Gwendal Grignou <gwendal@chromium.org> del dia dt., 5 de
+> nov. 2019 a les 23:28:
+> >
+> > Add a new function to return the number of MEMS sensors available in a
+> > ChromeOS Embedded Controller.
+> > It uses MOTIONSENSE_CMD_DUMP if available or a specific memory map ACPI
+> > registers to find out.
+> >
+> > Also, make check_features public as it can be useful for other drivers
+> > to know what the Embedded Controller supports.
+> >
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> ---
-> No changes in v4, v3.
-> Changes in v2:
-> - Remove unerelated changes.
-> - Remove ec presence test in iio driver, done in cros_ec_sensorhub.
+> Version 3 was acked and I think we can maintain his ack, so:
 > 
->  drivers/iio/accel/cros_ec_accel_legacy.c      |   6 -
->  .../common/cros_ec_sensors/cros_ec_sensors.c  |   6 -
->  .../cros_ec_sensors/cros_ec_sensors_core.c    |   4 +-
->  drivers/iio/light/cros_ec_light_prox.c        |   6 -
->  drivers/mfd/cros_ec_dev.c                     | 203 ++----------------
+> Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+> 
+> Also,
+> 
+> Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> 
+> Lee, how you would like to handle this? I think will be safe for
+> patches 1/2/3 go through the platform-chrome tree without an immutable
+> branch. Patch 3 thought still needs and Ack from you if is fine.
 
-Acked-by: Lee Jones <lee.jones@linaro.org>
+Please take the entire set, converting:
+
+  s/Acked-for-MFD-by/Acked-by/
+
+... and send me a pull-request to an immutable branch.
 
 -- 
 Lee Jones [李琼斯]

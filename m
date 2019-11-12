@@ -2,215 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1402CF99EB
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2019 20:39:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11035F9AB8
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2019 21:32:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726977AbfKLTjp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Nov 2019 14:39:45 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:43352 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726959AbfKLTjo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Nov 2019 14:39:44 -0500
-Received: by mail-oi1-f193.google.com with SMTP id l20so15917093oie.10;
-        Tue, 12 Nov 2019 11:39:43 -0800 (PST)
+        id S1727208AbfKLUbh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Nov 2019 15:31:37 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:38615 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726388AbfKLUbg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Nov 2019 15:31:36 -0500
+Received: by mail-pf1-f196.google.com with SMTP id c13so14159550pfp.5;
+        Tue, 12 Nov 2019 12:31:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2WU8r6NpH8n/CAS7MCMpaG3QRhluQOgBbEqgwxXZR2E=;
+        b=Us+JxrYyd+rY75W/J9AIM4yuTXlc0JbmG5DVkC1peMShddlgvcBQ+TtsEwwQreFGei
+         Akp3nnqEhYSZ8Pd3qpGb7GnNfaISvZQGlq5ZoE84GzeytmLnXQngF7NX4/maqFkRg3TU
+         sSJooTtqEPzyjeABXL9Gip+xaSbzM8StiPMP/Y/5ebEBjyhk2ia4l7IZ5h1v4wv9dD25
+         U/QM4DjQaR3H+eQDxi7LxoWgOi4R3Fe2IzIYYXiRq4zqO51ahBVbcOu/1fSF9m1eg66N
+         jjve6icUXHklXyJqpWp8u7AiCQBElHtjuLx1uFtfevhego5TE/tJ1xhpJTkdgACtOpHR
+         Vc1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=2OeV1TEjg5DUl+fuWBn8Jfdeie+nCeDPsRLgvJFEBFg=;
-        b=GGhtCMHG4Nnq0mcudZ2vskjnPB/INf9fYZG7qn+y5YjOF39UD5h3LVHwf9oVmq7t0t
-         q+c8ZbVGw1vdyA/mxsbwD3gnN0xe6jryI6sCZmgmvQ3BoNByls09WG1J1ZIhWMO+GgZ0
-         4NCiUJBpF4NlGty+GY0KniDlbDVEJ5N99M7BvNIeNZDOxaHfwR1XIv0M81Hy+rB9I6+d
-         DuKMeRy7gQDn6JVxZuEg2b0lF3dsZsfCtVE3S3iQfe4AggY/i0Zn4YLSxQAwxYT1hdoe
-         UF32KEX0MQ0rCoymdJmAtIvmVswpLSPgYWNgR5h7A/BwyqBsNMd7x2TzvU/OF8VpRGw5
-         s96g==
-X-Gm-Message-State: APjAAAXEBHP5JI79uZRIFdoaTKkarxmp3/cad7VR3pbyCYIW8QbJctoS
-        mT9WlsvRSMX1P/6GIQQHyA==
-X-Google-Smtp-Source: APXvYqxnOqQm37cKu+NMagKIQidyM/CvP2y92s3RL4Lfv0Gxm8Qyd0vtW8Jg61doTgsADBWXFsSO3Q==
-X-Received: by 2002:aca:7285:: with SMTP id p127mr589107oic.120.1573587583113;
-        Tue, 12 Nov 2019 11:39:43 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id l32sm6543738otl.74.2019.11.12.11.39.42
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2WU8r6NpH8n/CAS7MCMpaG3QRhluQOgBbEqgwxXZR2E=;
+        b=H9NOxzblVmmrgeie+zzIQ50aOX6bl1bLbgZqXWpAMfzKEktcXNlXViVkDuCizzI+T9
+         ya69mwU4VRisWpFj2r/cEbG5k6FNlHNQ0rtxnP2MA2uv4LMyqtLNXD2oyU5ZAE2gN8gM
+         3BalD8nKUIboOfg7HeqmY7rsp7ws0ulRT86z0Ia+DpcT7E/np4aoVSbhZKOfRURuoDrs
+         keX0ZdxYhm9yxAebrErAOU+TH9VE5TcWvQVAac9cQY8aQv0j94UU1ZNDIbuEE4G13s2s
+         eB0yS5+98NU/W2YD6zo9qrDe+OFHGT3SewHtmctImviVH/R2ycg+yEZwuSTyKcGvH23B
+         8Ljw==
+X-Gm-Message-State: APjAAAV6Ol5CRen7oJ3AZUXYVRLzdibLx2u+j9+MguYg6KGr2FGHyP1n
+        LXvlBvDi8FIun6MHdtwN4kg=
+X-Google-Smtp-Source: APXvYqzVLDHrf3+auWD9Zfwn7HuZakoXwALGy5b2yZuKAYku2zY5xND/HTO7WI3MKhV1doF14qehEA==
+X-Received: by 2002:a62:7c52:: with SMTP id x79mr38241350pfc.18.1573590695493;
+        Tue, 12 Nov 2019 12:31:35 -0800 (PST)
+Received: from dtor-ws.mtv.corp.google.com ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id h13sm23264084pfr.98.2019.11.12.12.31.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2019 11:39:42 -0800 (PST)
-Date:   Tue, 12 Nov 2019 13:39:42 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc:     jic23@kernel.org, dragos.bogdan@analog.com,
-        alexandru.ardelean@analog.com, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        kernel-usp@googlegroups.com
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: Add dt-schema for AD7292
-Message-ID: <20191112193942.GA27334@bogus>
-References: <cover.1573145089.git.marcelo.schmitt1@gmail.com>
- <a8c614894252bb139a213b8c0219f3f46210b136.1573145089.git.marcelo.schmitt1@gmail.com>
+        Tue, 12 Nov 2019 12:31:34 -0800 (PST)
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Wolfram Sang <wsa@the-dreams.de>
+Cc:     linux-iio@vger.kernel.orgi, Luca Ceresoli <luca@lucaceresoli.net>,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v3 0/3] Use void pointers instead of char in I2C transfer APIs
+Date:   Tue, 12 Nov 2019 12:31:29 -0800
+Message-Id: <20191112203132.163306-1-dmitry.torokhov@gmail.com>
+X-Mailer: git-send-email 2.24.0.rc1.363.gb1bccd3e3d-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a8c614894252bb139a213b8c0219f3f46210b136.1573145089.git.marcelo.schmitt1@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Nov 08, 2019 at 10:56:09AM -0300, Marcelo Schmitt wrote:
-> Add a devicetree schema for AD7292 monitor and control system.
-> 
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> ---
-> Changelog V3 -> V4:
-> - updated SPDX identifier to GPL-2.0-only
-> - changed maxitems constraint on channel property
-> 
->  .../bindings/iio/adc/adi,ad7292.yaml          | 104 ++++++++++++++++++
->  MAINTAINERS                                   |   7 ++
->  2 files changed, 111 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-> new file mode 100644
-> index 000000000000..b68be3aaf587
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-> @@ -0,0 +1,104 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
+While we indeed often deal with a stream of bytes when executing a
+transfer, at the higher layers we usually work with more structured
+data, and there is not really a reason to require casts to u8 * form the
+callers. These series change I2C APIs to accept [const] void pointers,
+and also adjust SMBUS implementation to use get/put_unaligned_16() and
+memcpy() for moving data around.
 
-Sigh, I gave you the exact line to use:
+Changes in v3:
+- addressed Luca's comments
+- added Jonathan's Acked-by
+- split put_unaligned_le16 into a separate patch
+- more call sites converted to get/put_unaligned_le16
+- new patch using memcpy() for moving data around
 
-# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+Changes in v2:
+- adjusted max1363 to the new i2c_master_send/recv signatures
 
-I've said to dual license with (GPL-2.0-only OR BSD-2-Clause) and people 
-think I mean to pick one. So now I just give the whole line. I don't 
-know how to be clearer.
+Dmitry Torokhov (3):
+  i2c: use void pointers for supplying data for reads and writes
+  i2c: smbus: use get/put_unaligned_le16 when working with word data
+  i2c: smbus: switch from loops to memcpy
 
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7292.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD7292 10-Bit Monitor and Control System
-> +
-> +maintainers:
-> +  - Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> +
-> +description: |
-> +  Analog Devices AD7292 10-Bit Monitor and Control System with ADC, DACs,
-> +  Temperature Sensor, and GPIOs
-> +
-> +  Specifications about the part can be found at:
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7292.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad7292
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vref-supply:
-> +    description: |
-> +      The regulator supply for ADC and DAC reference voltage.
-> +
-> +  spi-cpha: true
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - spi-cpha
-> +
-> +patternProperties:
-> +  "^channel@[0-7]$":
-> +    type: object
-> +    description: |
-> +      Represents the external channels which are connected to the ADC.
-> +      See Documentation/devicetree/bindings/iio/adc/adc.txt.
-> +
-> +    properties:
-> +      reg:
-> +        description: |
-> +          The channel number. It can have up to 8 channels numbered from 0 to 7.
-> +        items:
-> +          maximum: 7
+ drivers/i2c/i2c-core-base.c  |  2 +-
+ drivers/i2c/i2c-core-smbus.c | 40 +++++++++++++++---------------------
+ drivers/iio/adc/max1363.c    | 14 +++++++------
+ include/linux/i2c.h          | 28 +++++++++++++------------
+ 4 files changed, 41 insertions(+), 43 deletions(-)
 
-Not what I said either. A slight but important difference in that you 
-are missing a '-' to make 'items' a list rather than a schema/dict.
+-- 
+2.24.0.rc1.363.gb1bccd3e3d-goog
 
-Update dt-schema. This should give a warning now.
-
-> +
-> +      diff-channels:
-> +        description: see Documentation/devicetree/bindings/iio/adc/adc.txt
-> +        maxItems: 1
-> +
-> +    required:
-> +      - reg
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      ad7292: adc@0 {
-> +        compatible = "adi,ad7292";
-> +        reg = <0>;
-> +        spi-max-frequency = <25000000>;
-> +        vref-supply = <&adc_vref>;
-> +        spi-cpha;
-> +
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        channel@0 {
-> +          reg = <0>;
-> +          diff-channels = <0 1>;
-> +        };
-> +        channel@2 {
-> +          reg = <2>;
-> +        };
-> +        channel@3 {
-> +          reg = <3>;
-> +        };
-> +        channel@4 {
-> +          reg = <4>;
-> +        };
-> +        channel@5 {
-> +          reg = <5>;
-> +        };
-> +        channel@6 {
-> +          reg = <6>;
-> +        };
-> +        channel@7 {
-> +          reg = <7>;
-> +        };
-> +      };
-> +    };
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 32bf5f8116d0..5d00e871c4c6 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -813,6 +813,13 @@ S:	Supported
->  F:	drivers/iio/adc/ad7124.c
->  F:	Documentation/devicetree/bindings/iio/adc/adi,ad7124.txt
->  
-> +ANALOG DEVICES INC AD7292 DRIVER
-> +M:	Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> +L:	linux-iio@vger.kernel.org
-> +W:	http://ez.analog.com/community/linux-device-drivers
-> +S:	Supported
-> +F:	Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-> +
->  ANALOG DEVICES INC AD7606 DRIVER
->  M:	Stefan Popa <stefan.popa@analog.com>
->  L:	linux-iio@vger.kernel.org
-> -- 
-> 2.23.0
-> 

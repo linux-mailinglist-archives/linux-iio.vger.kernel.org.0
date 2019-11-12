@@ -2,60 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34B1DF8B73
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2019 10:13:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D3AF8D68
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2019 11:59:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727059AbfKLJNO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Nov 2019 04:13:14 -0500
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:52818 "EHLO
-        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725874AbfKLJNO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Nov 2019 04:13:14 -0500
-X-Greylist: delayed 1634 seconds by postgrey-1.27 at vger.kernel.org; Tue, 12 Nov 2019 04:13:12 EST
-Received: from [109.168.11.45] (port=49434 helo=[192.168.101.73])
-        by hostingweb31.netsons.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <luca@lucaceresoli.net>)
-        id 1iURoC-001OEo-QE; Tue, 12 Nov 2019 09:45:56 +0100
-Subject: Re: [PATCH v2] i2c: use void pointers for supplying data for reads
- and writes
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Wolfram Sang <wsa@the-dreams.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S1725997AbfKLK7n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Nov 2019 05:59:43 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:34170 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725887AbfKLK7n (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 12 Nov 2019 05:59:43 -0500
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id DE34055BB9C1E56D07BD;
+        Tue, 12 Nov 2019 18:59:39 +0800 (CST)
+Received: from localhost (10.202.226.61) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Tue, 12 Nov 2019
+ 18:59:37 +0800
+Date:   Tue, 12 Nov 2019 10:59:30 +0000
+From:   Jonathan Cameron <jonathan.cameron@huawei.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+CC:     Wolfram Sang <wsa@the-dreams.de>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <20191112005826.GA96746@dtor-ws>
-From:   Luca Ceresoli <luca@lucaceresoli.net>
-Message-ID: <f1bda5eb-b3ad-e7e1-f832-54a62e708d9c@lucaceresoli.net>
-Date:   Tue, 12 Nov 2019 09:45:56 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
+        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
+        <linux-i2c@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2] i2c: use void pointers for supplying data for reads
+ and writes
+Message-ID: <20191112105930.000059e3@huawei.com>
 In-Reply-To: <20191112005826.GA96746@dtor-ws>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+References: <20191112005826.GA96746@dtor-ws>
+Organization: Huawei
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca+lucaceresoli.net/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-Originating-IP: [10.202.226.61]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Dmitry,
+On Mon, 11 Nov 2019 16:58:26 -0800
+Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
 
-On 12/11/19 01:58, Dmitry Torokhov wrote:
 > There is no need to force users of i2c_master_send()/i2c_master_recv()
 > and other i2c read/write bulk data API to cast everything into u8
 > pointers.  While everything can be considered byte stream, the drivers
@@ -66,9 +57,92 @@ On 12/11/19 01:58, Dmitry Torokhov wrote:
 > 
 > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-I agree on the principle, but I have a question, see below.
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[...]
+> ---
+> 
+> Changes in v2:
+> 
+> - adjusted max1363 to the new i2c_master_send/recv signatures
+> 
+> I sent the previous version of this patch 04/01/17 and kbuild promptly
+> noticed that it broke max1363. And it took me only 2.5 years to get back
+> to it ;)
+> 
+> Given that it is only one IIO driver that is affected I hope it can go
+> through Wolfram's tree and we do not need to go through staged API
+> rollout.
+> 
+>  drivers/i2c/i2c-core-base.c  |  2 +-
+>  drivers/i2c/i2c-core-smbus.c | 16 ++++++++--------
+>  drivers/iio/adc/max1363.c    | 14 ++++++++------
+>  include/linux/i2c.h          | 28 +++++++++++++++-------------
+>  4 files changed, 32 insertions(+), 28 deletions(-)
+> 
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index 6a5183cffdfc3..aeb4201ef55e4 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -2065,7 +2065,7 @@ EXPORT_SYMBOL(i2c_transfer);
+>   *
+>   * Returns negative errno, or else the number of bytes transferred.
+>   */
+> -int i2c_transfer_buffer_flags(const struct i2c_client *client, char *buf,
+> +int i2c_transfer_buffer_flags(const struct i2c_client *client, void *buf,
+>  			      int count, u16 flags)
+>  {
+>  	int ret;
+> diff --git a/drivers/i2c/i2c-core-smbus.c b/drivers/i2c/i2c-core-smbus.c
+> index 3ac426a8ab5ab..4172f8e647f81 100644
+> --- a/drivers/i2c/i2c-core-smbus.c
+> +++ b/drivers/i2c/i2c-core-smbus.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/i2c.h>
+>  #include <linux/i2c-smbus.h>
+>  #include <linux/slab.h>
+> +#include <asm/unaligned.h>
+>  
+>  #include "i2c-core.h"
+>  
+> @@ -213,7 +214,7 @@ EXPORT_SYMBOL(i2c_smbus_write_word_data);
+>   * mechanism (I2C_M_RECV_LEN) which may not be implemented.
+>   */
+>  s32 i2c_smbus_read_block_data(const struct i2c_client *client, u8 command,
+> -			      u8 *values)
+> +			      void *values)
+>  {
+>  	union i2c_smbus_data data;
+>  	int status;
+> @@ -240,7 +241,7 @@ EXPORT_SYMBOL(i2c_smbus_read_block_data);
+>   * else zero on success.
+>   */
+>  s32 i2c_smbus_write_block_data(const struct i2c_client *client, u8 command,
+> -			       u8 length, const u8 *values)
+> +			       u8 length, const void *values)
+>  {
+>  	union i2c_smbus_data data;
+>  
+> @@ -256,7 +257,7 @@ EXPORT_SYMBOL(i2c_smbus_write_block_data);
+>  
+>  /* Returns the number of read bytes */
+>  s32 i2c_smbus_read_i2c_block_data(const struct i2c_client *client, u8 command,
+> -				  u8 length, u8 *values)
+> +				  u8 length, void *values)
+>  {
+>  	union i2c_smbus_data data;
+>  	int status;
+> @@ -276,7 +277,7 @@ s32 i2c_smbus_read_i2c_block_data(const struct i2c_client *client, u8 command,
+>  EXPORT_SYMBOL(i2c_smbus_read_i2c_block_data);
+>  
+>  s32 i2c_smbus_write_i2c_block_data(const struct i2c_client *client, u8 command,
+> -				   u8 length, const u8 *values)
+> +				   u8 length, const void *values)
+>  {
+>  	union i2c_smbus_data data;
+>  
+> @@ -628,7 +629,7 @@ EXPORT_SYMBOL(__i2c_smbus_xfer);
+>   * transfer.
+>   */
 >  s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
 > -					      u8 command, u8 length, u8 *values)
 > +					      u8 command, u8 length, void *values)
@@ -82,9 +156,6 @@ I agree on the principle, but I have a question, see below.
 > -			values[i] = status & 0xff;
 > -			values[i + 1] = status >> 8;
 > +			put_unaligned_le16(status, values + i);
-
-The switch to put_unaligned_le16() looks unrelated, is it?
-
 >  			i += 2;
 >  		}
 >  	}
@@ -94,24 +165,9 @@ The switch to put_unaligned_le16() looks unrelated, is it?
 >  			return status;
 > -		values[i] = status;
 > +		*(u8 *)(values + i) = status;
-
-My preference is to use an u8* helper variable in these cases:
-
-s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client
-*client,
--			      u8 command, u8 length, u8 *values)
-+			      u8 command, u8 length, void *buf)
- {
-+	u8 *bytes = buf;
-@@
--		values[i] = status;
-+		bytes[i] = status;
-
-This clarifies we are accessing the raw bytes, avoids typecasts in the
-middle of code for readability and avoids void pointer math.
-
-PS: look, it's exactly what you do in the max1363.c file below! :)
-
+>  		i++;
+>  	}
+>  
 > diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
 > index 5c2cc61b666e7..48ed76a0e83d4 100644
 > --- a/drivers/iio/adc/max1363.c
@@ -137,8 +193,113 @@ PS: look, it's exactly what you do in the max1363.c file below! :)
 >  		int count)
 >  {
 > +	const u8 *data = buf;
+>  	int i, err;
+>  
+>  	for (i = err = 0; err == 0 && i < count; ++i)
+> -		err = i2c_smbus_write_byte(client, buf[i]);
+> +		err = i2c_smbus_write_byte(client, data[i]);
+>  
+>  	return err ? err : count;
+>  }
+>  
+> -static int max1363_smbus_recv(const struct i2c_client *client, char *buf,
+> +static int max1363_smbus_recv(const struct i2c_client *client, void *buf,
+>  		int count)
+>  {
+> +	u8 *data = buf;
+>  	int i, ret;
+>  
+>  	for (i = 0; i < count; ++i) {
+>  		ret = i2c_smbus_read_byte(client);
+>  		if (ret < 0)
+>  			return ret;
+> -		buf[i] = ret;
+> +		data[i] = ret;
+>  	}
+>  
+>  	return count;
+> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+> index aaf57d9b41dbb..64cf92e191aa8 100644
+> --- a/include/linux/i2c.h
+> +++ b/include/linux/i2c.h
+> @@ -51,7 +51,7 @@ struct property_entry;
+>   * @count must be be less than 64k since msg.len is u16.
+>   */
+>  extern int i2c_transfer_buffer_flags(const struct i2c_client *client,
+> -				     char *buf, int count, u16 flags);
+> +				     void *buf, int count, u16 flags);
+>  
+>  /**
+>   * i2c_master_recv - issue a single I2C message in master receive mode
+> @@ -62,7 +62,7 @@ extern int i2c_transfer_buffer_flags(const struct i2c_client *client,
+>   * Returns negative errno, or else the number of bytes read.
+>   */
+>  static inline int i2c_master_recv(const struct i2c_client *client,
+> -				  char *buf, int count)
+> +				  void *buf, int count)
+>  {
+>  	return i2c_transfer_buffer_flags(client, buf, count, I2C_M_RD);
+>  };
+> @@ -77,7 +77,7 @@ static inline int i2c_master_recv(const struct i2c_client *client,
+>   * Returns negative errno, or else the number of bytes read.
+>   */
+>  static inline int i2c_master_recv_dmasafe(const struct i2c_client *client,
+> -					  char *buf, int count)
+> +					  void *buf, int count)
+>  {
+>  	return i2c_transfer_buffer_flags(client, buf, count,
+>  					 I2C_M_RD | I2C_M_DMA_SAFE);
+> @@ -92,9 +92,10 @@ static inline int i2c_master_recv_dmasafe(const struct i2c_client *client,
+>   * Returns negative errno, or else the number of bytes written.
+>   */
+>  static inline int i2c_master_send(const struct i2c_client *client,
+> -				  const char *buf, int count)
+> +				  const void *buf, int count)
+>  {
+> -	return i2c_transfer_buffer_flags(client, (char *)buf, count, 0);
+> +	return i2c_transfer_buffer_flags(client, (void *)buf /* const cast */,
+> +					 count, 0);
+>  };
+>  
+>  /**
+> @@ -107,10 +108,10 @@ static inline int i2c_master_send(const struct i2c_client *client,
+>   * Returns negative errno, or else the number of bytes written.
+>   */
+>  static inline int i2c_master_send_dmasafe(const struct i2c_client *client,
+> -					  const char *buf, int count)
+> +					  const void *buf, int count)
+>  {
+> -	return i2c_transfer_buffer_flags(client, (char *)buf, count,
+> -					 I2C_M_DMA_SAFE);
+> +	return i2c_transfer_buffer_flags(client, (void *)buf /* const cast */,
+> +					 count, I2C_M_DMA_SAFE);
+>  };
+>  
+>  /* Transfer num messages.
+> @@ -166,18 +167,19 @@ i2c_smbus_write_word_swapped(const struct i2c_client *client,
+>  
+>  /* Returns the number of read bytes */
+>  extern s32 i2c_smbus_read_block_data(const struct i2c_client *client,
+> -				     u8 command, u8 *values);
+> +				     u8 command, void *values);
+>  extern s32 i2c_smbus_write_block_data(const struct i2c_client *client,
+> -				      u8 command, u8 length, const u8 *values);
+> +				      u8 command, u8 length,
+> +				      const void *values);
+>  /* Returns the number of read bytes */
+>  extern s32 i2c_smbus_read_i2c_block_data(const struct i2c_client *client,
+> -					 u8 command, u8 length, u8 *values);
+> +					 u8 command, u8 length, void *values);
+>  extern s32 i2c_smbus_write_i2c_block_data(const struct i2c_client *client,
+>  					  u8 command, u8 length,
+> -					  const u8 *values);
+> +					  const void *values);
+>  extern s32
+>  i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
+> -					  u8 command, u8 length, u8 *values);
+> +					  u8 command, u8 length, void *values);
+>  int i2c_get_device_id(const struct i2c_client *client,
+>  		      struct i2c_device_identity *id);
+>  #endif /* I2C */
 
-Here it is! ^
 
--- 
-Luca

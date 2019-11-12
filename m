@@ -2,448 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE1F1F985C
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2019 19:17:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88DD7F996D
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2019 20:11:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727021AbfKLSRh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Nov 2019 13:17:37 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:39856 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727015AbfKLSRh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Nov 2019 13:17:37 -0500
-Received: by mail-pf1-f195.google.com with SMTP id x28so13922177pfo.6;
-        Tue, 12 Nov 2019 10:17:37 -0800 (PST)
+        id S1727100AbfKLTLy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Nov 2019 14:11:54 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:46910 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727050AbfKLTLx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Nov 2019 14:11:53 -0500
+Received: by mail-pl1-f194.google.com with SMTP id l4so9773681plt.13;
+        Tue, 12 Nov 2019 11:11:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+        h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=qMsQt0jcDhpztgofcGsc5bCoKZDYwQPkmUyjgoLGTTY=;
-        b=UsorXKwFTDchu+rJDaooN1/flhg3fQm1zt3MLjVuCwJrMc/E1PNVL+CbbX0rvQQvTn
-         IQP03tY5FZtUJT0uqNRTD3nrjIQ2b2ghTVzKMESvxcuMMf3RGlm6xdSGB80chSvpgWHy
-         nku96ThKfF4R7ud3KftdrlH9yVtBXGE22WMnKRLaSsucPm0Uw0ICD9CyxFGCdBvHoD1V
-         zxUcyhUEv5AvldPYpmzmZQV35bAJWF+HDY0D92XJNQZhBwt1FSbS2CdbIe7xjK6sIPUb
-         9B9F4QQqHe6//h3yX+mnhzoDl5nef2RL79NcU8Kh3760uf7lOopIsXSamd440mS07SbL
-         CCAg==
+        bh=6wnjVJNiNGBNCKbfitQ8nRvbfeqLmiziqmbiztt6dMw=;
+        b=uF05IGneF7eiHDEZxLay3N0hu8BhaVbmG/Djg5RBwPJehPiZvNfXTGxA8T5IYC16Oq
+         khs5DDzR9A14HBDqQpsVl+FmSASQLlHMexb7TpG8GAcMbZbHzh+DRKc3Ay57bGSqn2zv
+         T+xS4dr+4xXEvMbUSb3g/8HLUj/EJXTeFUx3n+xKv4EkfJDCkEAld+vMEnRnU/ZLpuBN
+         THzCcdE46Ko4eGcnWcjwwMQFRCJrW7sY/FsoDcA3L3OzmlvVgQrb4xIrAODTmknwkavA
+         2gu2IQAldUU/kJlSETXZrNUSAg809NTIawbqx+7fu0HZr2GDpiZAPSrVOkcnR5aVckKS
+         Bf3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=qMsQt0jcDhpztgofcGsc5bCoKZDYwQPkmUyjgoLGTTY=;
-        b=EtKAv4c472iZKyWSTX8tqyFaz8fTMDC8n3aWRtk0DLBQ9Al1r0z5xMxEp8PQ1U4Gbc
-         5XywgGL6RhnVK5caTx+pnC5MJD1znzS9XeicZE8c57Y1Mtr+VjKVONoa/xx+XyLLRdeM
-         khoIYqrananJhqsqME36RjkJ/GFb35Bljkw2rt9tta2f5vxaijfvkcMooRFw96mQcj6r
-         YO3ND0Y9/hpwSe/MBGC+W1WusXnUtlnYqqb21kiNfxHIR5UQkLchfUWZziuDYcLmiKP9
-         /icC1jyRg94I7myYrOBSwXif1ldTByHMRmyQSUJFz/wp1QiBO2ebVeHsl5HUJkFiOWA2
-         qwwA==
-X-Gm-Message-State: APjAAAXybVGyXUzceFNZ1zSndiSNDnMkzcGWKi4y7kQ5hG9YTwXdtN7F
-        dMK8URIZUY2Rar85+OXiW+Q=
-X-Google-Smtp-Source: APXvYqzWFl0fwfnP5V9iELX1LF8mgG8uUdjNjfApZBKEYqpEHOJNl1I3aU34lWcuJ3CDwogqiU5SKw==
-X-Received: by 2002:a62:7b0e:: with SMTP id w14mr33280676pfc.177.1573582656395;
-        Tue, 12 Nov 2019 10:17:36 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j126sm22387615pfg.4.2019.11.12.10.17.35
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 12 Nov 2019 10:17:35 -0800 (PST)
-Date:   Tue, 12 Nov 2019 10:17:34 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc:     Beniamin Bia <beniamin.bia@analog.com>, jic23@kernel.org,
-        lars@metafoo.de, Michael.Hennerich@analog.com, pmeerw@pmeerw.net,
-        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        mark.rutland@arm.com, robh+dt@kernel.org,
-        devicetree@vger.kernel.org, paulmck@linux.ibm.com,
-        mchehab+samsung@kernel.org, linus.walleij@linaro.org,
-        nicolas.ferre@microchip.com, biabeniamin@outlook.com,
-        Jean Delvare <jdelvare@suse.com>
-Subject: Re: [PATCH 1/3] iio: Add ADM1177 Hot Swap Controller and Digital
- Power Monitor driver
-Message-ID: <20191112181734.GA30127@roeck-us.net>
-References: <20191112153552.27431-1-beniamin.bia@analog.com>
- <20191112173757.0000075b@huawei.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=6wnjVJNiNGBNCKbfitQ8nRvbfeqLmiziqmbiztt6dMw=;
+        b=VKJ1Nux/lXP9OuyXM4qKwQHDJH1ZJgFKVXwkVSH128eCflhyV1vx0Hwd671KjUIWdm
+         Cy40VOs9J6eL98w51MgbcxMbsYQ5LwTjylZwliTueeECDA4oZvfXTKcB3cFmk8cSWEEj
+         +NaeVj500Verib81yg0bRi0PQThN0nQxfGVQOqMsJWuW7MvyDH7En7slyYo6smz4tWVG
+         DGHBBbJRTHCL/u3N+LGitmaToVTCWi+77laag6IQmtpzKRqPzCV/Y9SW8P0C0ivQnzSL
+         GnLJkCGTyHO05j8bVkST0boBLMYDSDpV/VqYdjNSZgDfVffJPPyWnhaywHGRUZWuXJwR
+         ctcA==
+X-Gm-Message-State: APjAAAXvaJ3xTjM2I1mym/tKItp7ukKYVuLRuuR/PZUU4cYm7JUSbqGz
+        OBNBS9bM53Ib6vUEazL5Y3c=
+X-Google-Smtp-Source: APXvYqzSf8BGpB1lxzu/3YDxbHRq1CfqCvB2TqJ6On+ESkU3Sdbfee2ZAfwEQTRQj0gyMaub/201gA==
+X-Received: by 2002:a17:902:8f94:: with SMTP id z20mr33283511plo.21.1573585912467;
+        Tue, 12 Nov 2019 11:11:52 -0800 (PST)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id s3sm3309141pjr.13.2019.11.12.11.11.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2019 11:11:51 -0800 (PST)
+Date:   Tue, 12 Nov 2019 11:11:49 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Luca Ceresoli <luca@lucaceresoli.net>
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: use void pointers for supplying data for reads
+ and writes
+Message-ID: <20191112191149.GA13374@dtor-ws>
+References: <20191112005826.GA96746@dtor-ws>
+ <f1bda5eb-b3ad-e7e1-f832-54a62e708d9c@lucaceresoli.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191112173757.0000075b@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <f1bda5eb-b3ad-e7e1-f832-54a62e708d9c@lucaceresoli.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Nov 12, 2019 at 05:37:57PM +0000, Jonathan Cameron wrote:
-> On Tue, 12 Nov 2019 17:35:50 +0200
-> Beniamin Bia <beniamin.bia@analog.com> wrote:
+On Tue, Nov 12, 2019 at 09:45:56AM +0100, Luca Ceresoli wrote:
+> Hi Dmitry,
 > 
-> > From: Michael Hennerich <michael.hennerich@analog.com>
+> On 12/11/19 01:58, Dmitry Torokhov wrote:
+> > There is no need to force users of i2c_master_send()/i2c_master_recv()
+> > and other i2c read/write bulk data API to cast everything into u8
+> > pointers.  While everything can be considered byte stream, the drivers
+> > are usually work with more structured data.
 > > 
-> > ADM1177 is a Hot Swap Controller and Digital Power Monitor with
-> > Soft Start Pin.
+> > Let's switch the APIs to accept [const] void pointers to cut amount of
+> > casting needed.
 > > 
-> > Datasheet:
-> > Link: https://www.analog.com/media/en/technical-documentation/data-sheets/ADM1177.pdf
-> > 
-> > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> > Co-developed-by: Beniamin Bia <beniamin.bia@analog.com>
-> > Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+> > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 > 
-> Hi Beniamin,
+> I agree on the principle, but I have a question, see below.
 > 
-> A couple immediate thoughts.
+> [...]
+> >  s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
+> > -					      u8 command, u8 length, u8 *values)
+> > +					      u8 command, u8 length, void *values)
+> >  {
+> >  	u8 i = 0;
+> >  	int status;
+> > @@ -647,8 +648,7 @@ s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
+> >  			status = i2c_smbus_read_word_data(client, command + i);
+> >  			if (status < 0)
+> >  				return status;
+> > -			values[i] = status & 0xff;
+> > -			values[i + 1] = status >> 8;
+> > +			put_unaligned_le16(status, values + i);
 > 
-> 1. That cc list has some rather non obvious people on it.  Unless something
->    fairly surprising is going on, probably better to cut it back a bit.
-> 
-> 2. Why IIO?  Not entirely obvious to me.  From first glance this is definitely
->    doing hardware monitoring.  If there is a reason there should be a clear
->    statement here on why.
-> 
+> The switch to put_unaligned_le16() looks unrelated, is it?
 
-I don't see why this is implemented as iio driver. I think it should be implemented
-as hardware monitoring driver.
+Yeah, I'll split it out.
 
-Some more comments below.
-
-Guenter
-
-> +CC Guenter and Jean as hwmon maintainers.
 > 
-> Whilst I'm here, a very quick review below.
+> >  			i += 2;
+> >  		}
+> >  	}
+> > @@ -657,7 +657,7 @@ s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
+> >  		status = i2c_smbus_read_byte_data(client, command + i);
+> >  		if (status < 0)
+> >  			return status;
+> > -		values[i] = status;
+> > +		*(u8 *)(values + i) = status;
 > 
-> > ---
-> >  drivers/iio/adc/Kconfig   |  12 ++
-> >  drivers/iio/adc/Makefile  |   1 +
-> >  drivers/iio/adc/adm1177.c | 257 ++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 270 insertions(+)
-> >  create mode 100644 drivers/iio/adc/adm1177.c
-> > 
-> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > index 9554890a3200..4db8c6dcb595 100644
-> > --- a/drivers/iio/adc/Kconfig
-> > +++ b/drivers/iio/adc/Kconfig
-> > @@ -228,6 +228,18 @@ config ASPEED_ADC
-> >  	  To compile this driver as a module, choose M here: the module will be
-> >  	  called aspeed_adc.
+> My preference is to use an u8* helper variable in these cases:
+
+Sure, I can do this.
+
+> 
+> s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client
+> *client,
+> -			      u8 command, u8 length, u8 *values)
+> +			      u8 command, u8 length, void *buf)
+>  {
+> +	u8 *bytes = buf;
+> @@
+> -		values[i] = status;
+> +		bytes[i] = status;
+> 
+> This clarifies we are accessing the raw bytes, avoids typecasts in the
+> middle of code for readability and avoids void pointer math.
+> 
+> PS: look, it's exactly what you do in the max1363.c file below! :)
+> 
+> > diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+> > index 5c2cc61b666e7..48ed76a0e83d4 100644
+> > --- a/drivers/iio/adc/max1363.c
+> > +++ b/drivers/iio/adc/max1363.c
+> > @@ -182,9 +182,9 @@ struct max1363_state {
+> >  	struct regulator		*vref;
+> >  	u32				vref_uv;
+> >  	int				(*send)(const struct i2c_client *client,
+> > -						const char *buf, int count);
+> > +						const void *buf, int count);
+> >  	int				(*recv)(const struct i2c_client *client,
+> > -						char *buf, int count);
+> > +						void *buf, int count);
+> >  };
 > >  
-> > +config ADM1177
-> > +	tristate "Analog Devices ADM1177 Digital Power Monitor driver"
-> > +	depends on I2C
-> > +	help
-> > +	  Say yes here to build support for Analog Devices:
-> > +	  ADM1177 Hot Swap Controller and Digital Power Monitor
-> > +	  with Soft Start Pin. Provides direct access
-> > +	  via sysfs.
-> > +
-> > +	  To compile this driver as a module, choose M here: the
-> > +	  module will be called adm1177.
-> > +
-> >  config AT91_ADC
-> >  	tristate "Atmel AT91 ADC"
-> >  	depends on ARCH_AT91
-> > diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> > index 5ecc481c2967..7899d6a158f3 100644
-> > --- a/drivers/iio/adc/Makefile
-> > +++ b/drivers/iio/adc/Makefile
-> > @@ -24,6 +24,7 @@ obj-$(CONFIG_AD7887) += ad7887.o
-> >  obj-$(CONFIG_AD7949) += ad7949.o
-> >  obj-$(CONFIG_AD799X) += ad799x.o
-> >  obj-$(CONFIG_ASPEED_ADC) += aspeed_adc.o
-> > +obj-$(CONFIG_ADM1177) += adm1177.o
-> >  obj-$(CONFIG_AT91_ADC) += at91_adc.o
-> >  obj-$(CONFIG_AT91_SAMA5D2_ADC) += at91-sama5d2_adc.o
-> >  obj-$(CONFIG_AXP20X_ADC) += axp20x_adc.o
-> > diff --git a/drivers/iio/adc/adm1177.c b/drivers/iio/adc/adm1177.c
-> > new file mode 100644
-> > index 000000000000..daec34566a65
-> > --- /dev/null
-> > +++ b/drivers/iio/adc/adm1177.c
-> > @@ -0,0 +1,257 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * ADM1177 Hot Swap Controller and Digital Power Monitor with Soft Start Pin
-> > + *
-> > + * Copyright 2015-2019 Analog Devices Inc.
-> > + */
-> > +
-> > +#include <linux/device.h>
-> > +#include <linux/err.h>
-> > +#include <linux/i2c.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/module.h>
-> > +#include <linux/mutex.h>
-> > +#include <linux/regulator/consumer.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/sysfs.h>
-> > +
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
-> > +#include <linux/iio/events.h>
-> > +
-> > +/*  Command Byte Operations */
-> > +#define ADM1177_CMD_V_CONT	BIT(0)
-> > +#define ADM1177_CMD_V_ONCE	BIT(1)
-> > +#define ADM1177_CMD_I_CONT	BIT(2)
-> > +#define ADM1177_CMD_I_ONCE	BIT(3)
-> > +#define ADM1177_CMD_VRANGE	BIT(4)
-> > +#define ADM1177_CMD_STATUS_RD	BIT(6)
-> > +
-> > +/* Extended Register */
-> > +#define ADM1177_REG_ALERT_EN	1
-> > +#define ADM1177_REG_ALERT_TH	2
-> > +#define ADM1177_REG_CONTROL	3
-> > +
-> > +/* ADM1177_REG_ALERT_EN */
-> > +#define ADM1177_EN_ADC_OC1	BIT(0)
-> > +#define ADM1177_EN_ADC_OC4	BIT(1)
-> > +#define ADM1177_EN_HS_ALERT	BIT(2)
-> > +#define ADM1177_EN_OFF_ALERT	BIT(3)
-> > +#define ADM1177_CLEAR		BIT(4)
-> > +
-> > +/* ADM1177_REG_CONTROL */
-> > +#define ADM1177_SWOFF		BIT(0)
-> > +
-> > +#define ADM1177_BITS		12
-> > +
-> > +/**
-> > + * struct adm1177_state - driver instance specific data
-> > + * @client		pointer to i2c client
-> > + * @reg			regulator info for the the power supply of the device
-> > + * @command		internal control register
-> > + * @r_sense_uohm	current sense resistor value
-> > + * @alert_threshold_ua	current limit for shutdown
-> > + * @vrange_high		internal voltage divider
-> > + */
-> > +struct adm1177_state {
-> > +	struct i2c_client	*client;
-> > +	struct regulator	*reg;
-> > +	u8			command;
-> > +	u32			r_sense_uohm;
-> > +	u32			alert_threshold_ua;
-> > +	bool			vrange_high;
-> > +};
-> > +
-> > +static int adm1177_read(struct adm1177_state *st, u8 num, u8 *data)
-> > +{
-> > +	struct i2c_client *client = st->client;
-> > +	int ret = 0;
-> > +
-> > +	ret = i2c_master_recv(client, data, num);
-> > +	if (ret < 0) {
-> > +		dev_err(&client->dev, "I2C read error\n");
+> >  #define MAX1363_MODE_SINGLE(_num, _mask) {				\
+> > @@ -310,27 +310,29 @@ static const struct max1363_mode
+> >  	return NULL;
+> >  }
+> >  
+> > -static int max1363_smbus_send(const struct i2c_client *client, const char *buf,
+> > +static int max1363_smbus_send(const struct i2c_client *client, const void *buf,
+> >  		int count)
+> >  {
+> > +	const u8 *data = buf;
+> 
+> Here it is! ^
+>
 
-Seems a bit noisy (and inconsistent). It would make much more sense to
-report the error to userspace instead of ignoring it and reporting a random
-value (ie the stack content).
+Thanks for the review!
 
-> > +		return ret;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int adm1177_write_cmd(struct adm1177_state *st, u8 cmd)
-> > +{
-> > +	st->command = cmd;
-> > +	return i2c_smbus_write_byte(st->client, cmd);
-> > +}
-> > +
-> > +static int adm1177_write_reg(struct adm1177_state *st, u8 reg, u8 val)
-> > +{
-> > +	return i2c_smbus_write_byte_data(st->client, reg, val);
-> 
-> These wrappers don't really add anything.  I'd just make the i2c
-> calls directly inline. They will be self explanatory.
-> 
-
-Plus, their return value is never checked.
-
-> > +}
-> > +
-> > +static int adm1177_read_raw(struct iio_dev *indio_dev,
-> > +			   struct iio_chan_spec const *chan,
-> > +			   int *val,
-> > +			   int *val2,
-> > +			   long mask)
-> > +{
-> > +	struct adm1177_state *st = iio_priv(indio_dev);
-> > +	u8 data[3];
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_RAW:
-> > +		adm1177_read(st, 3, data);
-> > +		switch (chan->type) {
-> > +		case IIO_VOLTAGE:
-> > +			*val = (data[0] << 4) | (data[2] >> 4);
-> > +			return IIO_VAL_INT;
-> > +		case IIO_CURRENT:
-> > +			*val = (data[1] << 4) | (data[2] & 0xF);
-> > +			return IIO_VAL_INT;
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +
-> > +	case IIO_CHAN_INFO_SCALE:
-> > +		switch (chan->type) {
-> > +		case IIO_VOLTAGE:
-> > +			if (st->command & ADM1177_CMD_VRANGE)
-> > +				*val = 6650;
-> > +			else
-> > +				*val = 26350;
-> > +
-> > +			*val2 = ADM1177_BITS;
-> > +			return IIO_VAL_FRACTIONAL_LOG2;
-> > +		case IIO_CURRENT:
-> > +			*val = 105840 / st->r_sense_uohm;
-> > +
-> > +			*val2 = ADM1177_BITS;
-> > +			return IIO_VAL_FRACTIONAL_LOG2;
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +static const struct iio_chan_spec adm1177_channels[] = {
-> > +	{
-> > +		.type = IIO_VOLTAGE,
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> > +				      BIT(IIO_CHAN_INFO_SCALE),
-> > +		.indexed = 1,
-> > +		.channel = 0,
-> > +	},
-> > +	{
-> > +		.type = IIO_CURRENT,
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> > +				      BIT(IIO_CHAN_INFO_SCALE),
-> > +		.indexed = 1,
-> > +		.channel = 0,
-> > +	},
-> > +};
-> > +
-> > +static const struct iio_info adm1177_info = {
-> > +	.read_raw = &adm1177_read_raw,
-> > +};
-> 
-> blank line here.
-> 
-> > +static void adm1177_remove(void *data)
-> > +{
-> > +	struct adm1177_state *st = data;
-> > +
-> > +	if (st->reg)
-> > +		regulator_disable(st->reg);
-> 
-> Probe and remove should be mirror images of each other.
-> As you have a mixture of managed and non managed calls that
-> isn't the case here.
-> 
-> devm_add_action_or_reset will sort this out for you if
-> used to turn off the regulator at the right point on removal.
-> 
-
-On top of that, this function is added with devm_add_action_or_reset(),
-and it is only ever called if st->reg is not NULL.
-
-> > +}
-> > +
-> > +static int adm1177_probe(struct i2c_client *client,
-> > +			 const struct i2c_device_id *id)
-> > +{
-> > +	int ret;
-> > +	struct device_node *np;
-> > +	struct adm1177_state *st;
-> > +	struct iio_dev *indio_dev;
-> > +
-> > +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*st));
-> > +	if (!indio_dev)
-> > +		return -ENOMEM;
-> > +
-> > +	st = iio_priv(indio_dev);
-> > +	i2c_set_clientdata(client, indio_dev);
-> > +	st->client = client;
-> > +
-> > +	np = client->dev.of_node;
-> > +
-> > +	st->reg = devm_regulator_get_optional(&client->dev, "vref");
-> > +	if (IS_ERR(st->reg)) {
-> > +		if (PTR_ERR(st->reg) == EPROBE_DEFER)
-> > +			return -EPROBE_DEFER;
-> > +
-> > +		st->reg = NULL;
-> > +	} else {
-> > +		ret = regulator_enable(st->reg);
-> > +		if (ret)
-> > +			return ret;
-> > +		ret = devm_add_action_or_reset(&client->dev, adm1177_remove,
-> > +					       st);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> > +	of_property_read_u32(np, "adi,r-sense-micro-ohms", &st->r_sense_uohm);
-
-shunt-resistor-micro-ohms
-
-> > +	of_property_read_u32(np, "adi,shutdown-threshold-microamp",
-> > +			     &st->alert_threshold_ua);
-> > +	st->vrange_high = of_property_read_bool(np,
-> > +				"adi,vrange-high-enable");
-> > +	if (st->alert_threshold_ua) {
-> > +		unsigned int val;
-> > +
-> > +		val = (st->alert_threshold_ua * st->r_sense_uohm * 0xFF);
-> > +		val /= 105840000U;
-> > +		if (val > 0xFF) {
-> > +			dev_err(&client->dev,
-> > +				"Requested shutdown current %d uA above limit\n",
-> > +				st->alert_threshold_ua);
-> > +
-> > +			val = 0xFF;
-> > +		}
-> > +		adm1177_write_reg(st, ADM1177_REG_ALERT_TH, val);
-> > +	}
-> > +
-> > +	adm1177_write_cmd(st, ADM1177_CMD_V_CONT |
-> > +			      ADM1177_CMD_I_CONT |
-> > +			      (st->vrange_high ? 0 : ADM1177_CMD_VRANGE));
-> > +
-> > +	indio_dev->name = id->name;
-> > +	indio_dev->channels = adm1177_channels;
-> > +	indio_dev->num_channels = ARRAY_SIZE(adm1177_channels);
-> > +
-> > +	indio_dev->dev.parent = &client->dev;
-> > +	indio_dev->info = &adm1177_info;
-> > +	indio_dev->modes = INDIO_DIRECT_MODE;
-> > +
-> > +	return devm_iio_device_register(&client->dev, indio_dev);
-> > +}
-> > +
-> > +static const struct i2c_device_id adm1177_ids[] = {
-> > +	{ "adm1177", 0 },
-> > +	{}
-> > +};
-> > +MODULE_DEVICE_TABLE(i2c, adm1177_ids);
-> > +
-> > +static const struct of_device_id adm1177_dt_ids[] = {
-> > +	{ .compatible = "adi,adm1177" },
-> > +	{},
-> > +};
-> > +MODULE_DEVICE_TABLE(of, adm1177_dt_ids);
-> > +
-> > +static struct i2c_driver adm1177_driver = {
-> > +	.driver = {
-> > +		.name = "adm1177",
-> > +		.of_match_table = adm1177_dt_ids,
-> > +	},
-> > +	.probe = adm1177_probe,
-> > +	.id_table = adm1177_ids,
-> > +};
-> > +module_i2c_driver(adm1177_driver);
-> > +
-> > +MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
-> > +MODULE_DESCRIPTION("Analog Devices ADM1177 ADC driver");
-> > +MODULE_LICENSE("GPL v2");
-> 
-> 
+-- 
+Dmitry

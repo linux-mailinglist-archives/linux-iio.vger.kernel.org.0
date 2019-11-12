@@ -2,304 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D3AF8D68
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2019 11:59:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91BF4F8F08
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2019 12:57:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725997AbfKLK7n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Nov 2019 05:59:43 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:34170 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725887AbfKLK7n (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 12 Nov 2019 05:59:43 -0500
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id DE34055BB9C1E56D07BD;
-        Tue, 12 Nov 2019 18:59:39 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Tue, 12 Nov 2019
- 18:59:37 +0800
-Date:   Tue, 12 Nov 2019 10:59:30 +0000
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-CC:     Wolfram Sang <wsa@the-dreams.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
-        <linux-i2c@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2] i2c: use void pointers for supplying data for reads
- and writes
-Message-ID: <20191112105930.000059e3@huawei.com>
-In-Reply-To: <20191112005826.GA96746@dtor-ws>
-References: <20191112005826.GA96746@dtor-ws>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726738AbfKLL5c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Nov 2019 06:57:32 -0500
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:6998 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725947AbfKLL5c (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Nov 2019 06:57:32 -0500
+Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xACBqrj3028336;
+        Tue, 12 Nov 2019 06:56:54 -0500
+Received: from nam03-co1-obe.outbound.protection.outlook.com (mail-co1nam03lp2053.outbound.protection.outlook.com [104.47.40.53])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2w7pr6gkea-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 Nov 2019 06:56:54 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fLTEZA4A65tofanCU63Ox3tEsswDCyLd9nRJ42a72OoSJEc3wJXhbekvWzd3DTq0k7vXZ1kS8TVpY+EnawVcSZ3WiWS+vdco83aG6RubgDeEA+sKzjhwU3u08FvwbhDixYMq5mW0QGVgdSi7lrZECYz6uTMyhgVpllbhctPVZG/mn1UnR4yfX9RSZDxVs1yAlcR5aXmlJPhp8iUgnZB4ONYS0yM87KynZT2DN3QAYFqXIpzgzpQMflxXQ5cCwCHLuAFV0awaBBqMp2ZgW/nNFpCkgIcTSQZFOG0mjyhA9gD/lkDykSs0LaYa128r8GVV9KtA77lmdE3tdfzIegveSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ByZkVSi4IstnbMIQ0yZAYwgblfvEeedlnENDiCoHH/A=;
+ b=GYCZ5talcxje/ls9z254rYdc77LN132YMLZXwt1TBfmIVRHTb0BNcnh6iLi+YdYxpdIvEk//plvFEyhP2I1K5ZJ5vzNPn4PmL0jbSX0V7z+tz4qXXf88KobdQglatlaWJy4sKFcHJDeMQ6t+SaSwy/82pTR7ZcAsrXl72iiE91QSq/Q5RCNgezNrLAnT0b2muWgRoVz62E98v6O+TaPFdoDREa/gQrIHr18/jZpruBEgBe25wToP4bQSGwulXkseT04M4JC2YyOCfxTgNDPKZ9zt30VUtkYzM7Ae9U7OWOJa4DCO0U4soTAPoGy6RE5JzgBwKkBG1USPq/WpiEe+hw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ByZkVSi4IstnbMIQ0yZAYwgblfvEeedlnENDiCoHH/A=;
+ b=K50V4wn/hXn/vmR6fj322XB2y5ZPr7CcYNQGtk2cuJW2yUsAF14+4J6Ofhs8+A08vvWGwjG6jOa3zckIwoPe/RwhH6bGmIVWN9xPIULXaeMCldmCqeAHTvaj9huoW7fLNXSjo7At2f5trm2fkDelb+NFLlQbMdzIB9ozn4IcLUw=
+Received: from MN2PR03MB5200.namprd03.prod.outlook.com (10.186.146.8) by
+ MN2PR03MB5056.namprd03.prod.outlook.com (10.255.232.210) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2430.22; Tue, 12 Nov 2019 11:56:52 +0000
+Received: from MN2PR03MB5200.namprd03.prod.outlook.com
+ ([fe80::5aa:4121:999c:c8f0]) by MN2PR03MB5200.namprd03.prod.outlook.com
+ ([fe80::5aa:4121:999c:c8f0%3]) with mapi id 15.20.2430.027; Tue, 12 Nov 2019
+ 11:56:52 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>
+CC:     "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>
+Subject: Re: [PATCH 1/3] iio: adc: ltc2496: provide device tree binding
+ document
+Thread-Topic: [PATCH 1/3] iio: adc: ltc2496: provide device tree binding
+ document
+Thread-Index: AQHVmNs1F8/40KLd8kC0t9/fsa+nz6eHG4MAgAABhICAAFIKgA==
+Date:   Tue, 12 Nov 2019 11:56:52 +0000
+Message-ID: <1e1a148095d2ea6c49c62e5fb2e5e741faa9d5f4.camel@analog.com>
+References: <20191111214025.18310-1-u.kleine-koenig@pengutronix.de>
+         <b6ed43afbfb0128301f11198eb83a8f72b7661e9.camel@analog.com>
+         <20191112070405.zinuqnfb3wqbehvw@pengutronix.de>
+In-Reply-To: <20191112070405.zinuqnfb3wqbehvw@pengutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 60f25fb0-6ea2-43e8-6e38-08d76767687c
+x-ms-traffictypediagnostic: MN2PR03MB5056:
+x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MN2PR03MB5056B2DB6878248327B16B3BF9770@MN2PR03MB5056.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6108;
+x-forefront-prvs: 021975AE46
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(366004)(396003)(39860400002)(346002)(136003)(189003)(199004)(36756003)(66446008)(8676002)(54906003)(8936002)(316002)(2351001)(305945005)(229853002)(7736002)(6916009)(118296001)(81156014)(6486002)(256004)(81166006)(6436002)(5640700003)(25786009)(4744005)(5660300002)(64756008)(66556008)(4001150100001)(2616005)(102836004)(6506007)(476003)(486006)(6246003)(76176011)(11346002)(446003)(66476007)(186003)(71190400001)(6512007)(26005)(2906002)(14454004)(478600001)(76116006)(66946007)(3846002)(91956017)(2501003)(86362001)(66066001)(7416002)(71200400001)(99286004)(6116002)(4326008);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR03MB5056;H:MN2PR03MB5200.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: JcMh/RzcUQ+lzo2Tsaj55YgDs2Tht5OIThGBuhb8B0GPfJgFLSavhmrpwj3IrIazq9KnQ3kyO/6qgYIH5YnhvMPp+mXHD84NS6ZsC05q2NsnGO3PQ5b0x4jjkPWRxvTntrsaqCAd4Mf0ohfsSAUaYApyBI9CmqOASZcJqwsIu4F2H8J/sr30cGbbLqdzrPYmVQIAvgCyz8PQ6++jnmhESIKUZo0IXNESe/o1nazhQp8ymVkRBlgRSEe+kVWrI+XsHH9Fn/9z5rjJk3MQ9DyCgEWCKZ3/d/cjvO0uC7fSJcP+GIsdqEBY5DTBz4kTX++ntybn+rIB/hhMyk7QdztLyeouJSFZdAVl0L0lexK4oXZB8L6FOlypUuoa4rBubp+vCm2VaRMsXvrQW1oncdUjE2SeWwruE1+Nz1FQAJ0KynyyLZJkADdjlKDXltQ2g02k
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <AD8621DC3BBC374FBBE865EB3CAF82F4@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60f25fb0-6ea2-43e8-6e38-08d76767687c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2019 11:56:52.7456
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UXpu8k8OIi2zCCguQT3YSH/0Y/uKeBD2cZPfsj2zW9E9x144QpI7EhpMd7aRyUeJpacfqh13LohdbeGNpnRifi8cWyPVnVeGZK7Eny5trkg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR03MB5056
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-12_03:2019-11-11,2019-11-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=769 malwarescore=0 adultscore=0
+ impostorscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-1910280000 definitions=main-1911120109
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 11 Nov 2019 16:58:26 -0800
-Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
-
-> There is no need to force users of i2c_master_send()/i2c_master_recv()
-> and other i2c read/write bulk data API to cast everything into u8
-> pointers.  While everything can be considered byte stream, the drivers
-> are usually work with more structured data.
-> 
-> Let's switch the APIs to accept [const] void pointers to cut amount of
-> casting needed.
-> 
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-> ---
-> 
-> Changes in v2:
-> 
-> - adjusted max1363 to the new i2c_master_send/recv signatures
-> 
-> I sent the previous version of this patch 04/01/17 and kbuild promptly
-> noticed that it broke max1363. And it took me only 2.5 years to get back
-> to it ;)
-> 
-> Given that it is only one IIO driver that is affected I hope it can go
-> through Wolfram's tree and we do not need to go through staged API
-> rollout.
-> 
->  drivers/i2c/i2c-core-base.c  |  2 +-
->  drivers/i2c/i2c-core-smbus.c | 16 ++++++++--------
->  drivers/iio/adc/max1363.c    | 14 ++++++++------
->  include/linux/i2c.h          | 28 +++++++++++++++-------------
->  4 files changed, 32 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> index 6a5183cffdfc3..aeb4201ef55e4 100644
-> --- a/drivers/i2c/i2c-core-base.c
-> +++ b/drivers/i2c/i2c-core-base.c
-> @@ -2065,7 +2065,7 @@ EXPORT_SYMBOL(i2c_transfer);
->   *
->   * Returns negative errno, or else the number of bytes transferred.
->   */
-> -int i2c_transfer_buffer_flags(const struct i2c_client *client, char *buf,
-> +int i2c_transfer_buffer_flags(const struct i2c_client *client, void *buf,
->  			      int count, u16 flags)
->  {
->  	int ret;
-> diff --git a/drivers/i2c/i2c-core-smbus.c b/drivers/i2c/i2c-core-smbus.c
-> index 3ac426a8ab5ab..4172f8e647f81 100644
-> --- a/drivers/i2c/i2c-core-smbus.c
-> +++ b/drivers/i2c/i2c-core-smbus.c
-> @@ -15,6 +15,7 @@
->  #include <linux/i2c.h>
->  #include <linux/i2c-smbus.h>
->  #include <linux/slab.h>
-> +#include <asm/unaligned.h>
->  
->  #include "i2c-core.h"
->  
-> @@ -213,7 +214,7 @@ EXPORT_SYMBOL(i2c_smbus_write_word_data);
->   * mechanism (I2C_M_RECV_LEN) which may not be implemented.
->   */
->  s32 i2c_smbus_read_block_data(const struct i2c_client *client, u8 command,
-> -			      u8 *values)
-> +			      void *values)
->  {
->  	union i2c_smbus_data data;
->  	int status;
-> @@ -240,7 +241,7 @@ EXPORT_SYMBOL(i2c_smbus_read_block_data);
->   * else zero on success.
->   */
->  s32 i2c_smbus_write_block_data(const struct i2c_client *client, u8 command,
-> -			       u8 length, const u8 *values)
-> +			       u8 length, const void *values)
->  {
->  	union i2c_smbus_data data;
->  
-> @@ -256,7 +257,7 @@ EXPORT_SYMBOL(i2c_smbus_write_block_data);
->  
->  /* Returns the number of read bytes */
->  s32 i2c_smbus_read_i2c_block_data(const struct i2c_client *client, u8 command,
-> -				  u8 length, u8 *values)
-> +				  u8 length, void *values)
->  {
->  	union i2c_smbus_data data;
->  	int status;
-> @@ -276,7 +277,7 @@ s32 i2c_smbus_read_i2c_block_data(const struct i2c_client *client, u8 command,
->  EXPORT_SYMBOL(i2c_smbus_read_i2c_block_data);
->  
->  s32 i2c_smbus_write_i2c_block_data(const struct i2c_client *client, u8 command,
-> -				   u8 length, const u8 *values)
-> +				   u8 length, const void *values)
->  {
->  	union i2c_smbus_data data;
->  
-> @@ -628,7 +629,7 @@ EXPORT_SYMBOL(__i2c_smbus_xfer);
->   * transfer.
->   */
->  s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
-> -					      u8 command, u8 length, u8 *values)
-> +					      u8 command, u8 length, void *values)
->  {
->  	u8 i = 0;
->  	int status;
-> @@ -647,8 +648,7 @@ s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
->  			status = i2c_smbus_read_word_data(client, command + i);
->  			if (status < 0)
->  				return status;
-> -			values[i] = status & 0xff;
-> -			values[i + 1] = status >> 8;
-> +			put_unaligned_le16(status, values + i);
->  			i += 2;
->  		}
->  	}
-> @@ -657,7 +657,7 @@ s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
->  		status = i2c_smbus_read_byte_data(client, command + i);
->  		if (status < 0)
->  			return status;
-> -		values[i] = status;
-> +		*(u8 *)(values + i) = status;
->  		i++;
->  	}
->  
-> diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-> index 5c2cc61b666e7..48ed76a0e83d4 100644
-> --- a/drivers/iio/adc/max1363.c
-> +++ b/drivers/iio/adc/max1363.c
-> @@ -182,9 +182,9 @@ struct max1363_state {
->  	struct regulator		*vref;
->  	u32				vref_uv;
->  	int				(*send)(const struct i2c_client *client,
-> -						const char *buf, int count);
-> +						const void *buf, int count);
->  	int				(*recv)(const struct i2c_client *client,
-> -						char *buf, int count);
-> +						void *buf, int count);
->  };
->  
->  #define MAX1363_MODE_SINGLE(_num, _mask) {				\
-> @@ -310,27 +310,29 @@ static const struct max1363_mode
->  	return NULL;
->  }
->  
-> -static int max1363_smbus_send(const struct i2c_client *client, const char *buf,
-> +static int max1363_smbus_send(const struct i2c_client *client, const void *buf,
->  		int count)
->  {
-> +	const u8 *data = buf;
->  	int i, err;
->  
->  	for (i = err = 0; err == 0 && i < count; ++i)
-> -		err = i2c_smbus_write_byte(client, buf[i]);
-> +		err = i2c_smbus_write_byte(client, data[i]);
->  
->  	return err ? err : count;
->  }
->  
-> -static int max1363_smbus_recv(const struct i2c_client *client, char *buf,
-> +static int max1363_smbus_recv(const struct i2c_client *client, void *buf,
->  		int count)
->  {
-> +	u8 *data = buf;
->  	int i, ret;
->  
->  	for (i = 0; i < count; ++i) {
->  		ret = i2c_smbus_read_byte(client);
->  		if (ret < 0)
->  			return ret;
-> -		buf[i] = ret;
-> +		data[i] = ret;
->  	}
->  
->  	return count;
-> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-> index aaf57d9b41dbb..64cf92e191aa8 100644
-> --- a/include/linux/i2c.h
-> +++ b/include/linux/i2c.h
-> @@ -51,7 +51,7 @@ struct property_entry;
->   * @count must be be less than 64k since msg.len is u16.
->   */
->  extern int i2c_transfer_buffer_flags(const struct i2c_client *client,
-> -				     char *buf, int count, u16 flags);
-> +				     void *buf, int count, u16 flags);
->  
->  /**
->   * i2c_master_recv - issue a single I2C message in master receive mode
-> @@ -62,7 +62,7 @@ extern int i2c_transfer_buffer_flags(const struct i2c_client *client,
->   * Returns negative errno, or else the number of bytes read.
->   */
->  static inline int i2c_master_recv(const struct i2c_client *client,
-> -				  char *buf, int count)
-> +				  void *buf, int count)
->  {
->  	return i2c_transfer_buffer_flags(client, buf, count, I2C_M_RD);
->  };
-> @@ -77,7 +77,7 @@ static inline int i2c_master_recv(const struct i2c_client *client,
->   * Returns negative errno, or else the number of bytes read.
->   */
->  static inline int i2c_master_recv_dmasafe(const struct i2c_client *client,
-> -					  char *buf, int count)
-> +					  void *buf, int count)
->  {
->  	return i2c_transfer_buffer_flags(client, buf, count,
->  					 I2C_M_RD | I2C_M_DMA_SAFE);
-> @@ -92,9 +92,10 @@ static inline int i2c_master_recv_dmasafe(const struct i2c_client *client,
->   * Returns negative errno, or else the number of bytes written.
->   */
->  static inline int i2c_master_send(const struct i2c_client *client,
-> -				  const char *buf, int count)
-> +				  const void *buf, int count)
->  {
-> -	return i2c_transfer_buffer_flags(client, (char *)buf, count, 0);
-> +	return i2c_transfer_buffer_flags(client, (void *)buf /* const cast */,
-> +					 count, 0);
->  };
->  
->  /**
-> @@ -107,10 +108,10 @@ static inline int i2c_master_send(const struct i2c_client *client,
->   * Returns negative errno, or else the number of bytes written.
->   */
->  static inline int i2c_master_send_dmasafe(const struct i2c_client *client,
-> -					  const char *buf, int count)
-> +					  const void *buf, int count)
->  {
-> -	return i2c_transfer_buffer_flags(client, (char *)buf, count,
-> -					 I2C_M_DMA_SAFE);
-> +	return i2c_transfer_buffer_flags(client, (void *)buf /* const cast */,
-> +					 count, I2C_M_DMA_SAFE);
->  };
->  
->  /* Transfer num messages.
-> @@ -166,18 +167,19 @@ i2c_smbus_write_word_swapped(const struct i2c_client *client,
->  
->  /* Returns the number of read bytes */
->  extern s32 i2c_smbus_read_block_data(const struct i2c_client *client,
-> -				     u8 command, u8 *values);
-> +				     u8 command, void *values);
->  extern s32 i2c_smbus_write_block_data(const struct i2c_client *client,
-> -				      u8 command, u8 length, const u8 *values);
-> +				      u8 command, u8 length,
-> +				      const void *values);
->  /* Returns the number of read bytes */
->  extern s32 i2c_smbus_read_i2c_block_data(const struct i2c_client *client,
-> -					 u8 command, u8 length, u8 *values);
-> +					 u8 command, u8 length, void *values);
->  extern s32 i2c_smbus_write_i2c_block_data(const struct i2c_client *client,
->  					  u8 command, u8 length,
-> -					  const u8 *values);
-> +					  const void *values);
->  extern s32
->  i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
-> -					  u8 command, u8 length, u8 *values);
-> +					  u8 command, u8 length, void *values);
->  int i2c_get_device_id(const struct i2c_client *client,
->  		      struct i2c_device_identity *id);
->  #endif /* I2C */
-
-
+T24gVHVlLCAyMDE5LTExLTEyIGF0IDA4OjA0ICswMTAwLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90
+ZToNCj4gW0V4dGVybmFsXQ0KPiANCj4gSGVsbG8gQWxleGFuZHJ1LA0KPiANCj4gT24gVHVlLCBO
+b3YgMTIsIDIwMTkgYXQgMDY6NTc6NDlBTSArMDAwMCwgQXJkZWxlYW4sIEFsZXhhbmRydSB3cm90
+ZToNCj4gPiBPbiBNb24sIDIwMTktMTEtMTEgYXQgMjI6NDAgKzAxMDAsIFV3ZSBLbGVpbmUtS8O2
+bmlnIHdyb3RlOg0KPiA+ID4gVGhlIEFEQyBvbmx5IHJlcXVpcmVzIHRoZSBzdGFuZGFyZCBzdHVm
+ZiBmb3Igc3BpIGRldmljZXMgYW5kIGENCj4gPiA+IHJlZmVyZW5jZQ0KPiA+ID4gdm9sdGFnZS4N
+Cj4gPiANCj4gPiBEVCBiaW5kaW5ncyBtdXN0IGJlIGluIFlBTUwgZm9ybWF0Lg0KPiANCj4gWWVh
+aCwgSSBub3RpY2VkIHRoaXMgdHJlbmQuIEJ1dCBnaXZlbiB0aGF0IEkgb25seSBzYXcgLnR4dCBm
+aWxlcyBmb3INCj4gaWlvLCBJIHRob3VnaHQgSSdkIHN0aWNrIHRvIHRoYXQuDQo+IA0KPiA+IEJ1
+dCBpbiB0aGlzIGNhc2UsIHlvdSBjYW4gcHJvYmFibHkgZXh0ZW5kIHRoZSBleGlzdGluZw0KPiA+
+ICJEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9sdGMyNDk3LnR4dCIu
+DQo+IA0KPiBJIGNvbnNpZGVyZWQgdGhhdCBzaG9ydGx5LCBidXQgYXMgdGhlIGx0YzI0OTcgaXMg
+YW4gaTJjIGRldmljZSBhbmQgdGhlDQo+IGx0YzI0OTYgdXNlcyBzcGkgSSBjaG9zZSB0byBjcmVh
+dGUgYW5vdGhlciBzaW1wbGUgZG9jdW1lbnQgaW5zdGVhZCBvZg0KPiBjb21wbGljYXRpbmcgdGhl
+IGV4aXN0aW5nIG9uZSBieSBkZXNjcmliaW5nIHR3byBuZWFybHkgb3J0aG9nb25hbCBzZXRzDQo+
+IG9mIHByb3BlcnRpZXMuDQoNClRoZXJlIGFyZSBkdC1iaW5kaW5ncyB0aGF0IGNvdmVyIGJvdGgg
+U1BJICYgSTJDLg0KSSB0aGluayBBRFhMMzcyIGRvZXMgdGhhdCB0b28uDQoNCg0KPiANCj4gQmVz
+dCByZWdhcmRzDQo+IFV3ZQ0KPiANCg==

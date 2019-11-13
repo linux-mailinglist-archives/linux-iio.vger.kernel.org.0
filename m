@@ -2,100 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B4A6FAF5A
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2019 12:09:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C345AFAFAF
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2019 12:27:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727171AbfKMLJr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Nov 2019 06:09:47 -0500
-Received: from uho.ysoft.cz ([81.19.3.130]:42176 "EHLO uho.ysoft.cz"
+        id S1727937AbfKML1h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Nov 2019 06:27:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34986 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726339AbfKMLJr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 13 Nov 2019 06:09:47 -0500
-Received: from [10.1.8.111] (unknown [10.1.8.111])
-        by uho.ysoft.cz (Postfix) with ESMTP id F3E16A36F6;
-        Wed, 13 Nov 2019 12:09:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
-        s=20160406-ysoft-com; t=1573643384;
-        bh=9wU6KxqnR0Kw42lkPxAxiBvKKDA/fl3xWaNuzyFDdRA=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=q7O49WJ9UPTuSY8FWNuY1DbYfGo+E3Td6y5HLBlXCQo6DkcVhhXmEapuYzX4hLyr8
-         E38aa7uBq8U5sRsYzpw0LKlNZLV9T8fM+6j1DbX5CS2Xt/ixvEdkEKOKz3jzfOU7bs
-         oC3A+0dKkyyLxPEl0mX8opeUKNjgUyEI1+eD4YD0=
-Subject: Re: [PATCH 3/5] iio: ping: add parallax ping sensors
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>
-Cc:     robh+dt@kernel.org, mark.rutland@arm.com, mripard@kernel.org,
-        shawnguo@kernel.org, heiko@sntech.de, icenowy@aosc.io,
-        laurent.pinchart@ideasonboard.com, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
-        christophe.jaillet@wanadoo.fr, tglx@linutronix.de,
-        mchehab+samsung@kernel.org, davem@davemloft.net,
-        paulmck@linux.ibm.com, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191107130045.rt3ix2atyjd3gekr@arbad>
- <20191110170650.00527b8b@archlinux>
-From:   =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
-Message-ID: <196ba1f0-9d9f-9f46-c86e-2c41a7835c59@ysoft.com>
-Date:   Wed, 13 Nov 2019 12:09:43 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727733AbfKML1h (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 13 Nov 2019 06:27:37 -0500
+Received: from localhost (unknown [61.58.47.46])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B288422459;
+        Wed, 13 Nov 2019 11:27:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573644457;
+        bh=UD1TGBUiL8sT9Pva3BAU4rTt4YkwLnXvLAA0k4IK55s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ebI6tcixHTcfV8QoLctvTCZVN9OtZFnbqTKvUbn9/KYWxOotHSdOVUFL4GI8j9RCA
+         aaIFf4sF4Atg4mGHZiD985vYgIXrkDSJdg2/GeexFHxOqsqS1Ptc0R1hTAxa4bXOpr
+         9mCpC3N0+RJIztMTOqYGQiY79yMVfXfPYA+vVZKU=
+Date:   Wed, 13 Nov 2019 19:26:08 +0800
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PULL] 3rd set of new device support, cleanups etc for IIO in
+ the 5.5 cycle.
+Message-ID: <20191113112608.GA2265082@kroah.com>
+References: <20191111193735.6c0e9472@archlinux>
+ <20191111194249.5eb84282@archlinux>
 MIME-Version: 1.0
-In-Reply-To: <20191110170650.00527b8b@archlinux>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191111194249.5eb84282@archlinux>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10. 11. 19 18:06, Jonathan Cameron wrote:
-> On Thu, 7 Nov 2019 14:00:47 +0100
-> Andreas Klinger <ak@it-klinger.de> wrote:
-  
-[snip]
-
->> + *
->> + *          +---+            +------------------------+
->> + * GPIO     |   |            |                        |
->> + * ping:  --+   +------------+                        +----------------
->> + *          ^   ^            ^                        ^
->> + *          |<->|            interrupt                interrupt
->> + *         udelay(5)         (ts_rising)              (ts_falling)
->> + *                           |<---------------------->|
->> + *                           .  pulse time measured
->> + *                           .  --> one round trip of ultra sonic waves
->> + *                           .                        .
->> + * ultra           +-+ +-+ +-+                        .
->> + * sonic           | | | | | |                        .
->> + * burst: ---------+ +-+ +-+ +-----------------------------------------
->> + *                                                    .
->> + * ultra                                    +-+ +-+ +-+
->> + * sonic                                    | | | | | |
->> + * echo:  ----------------------------------+ +-+ +-+ +----------------
+On Mon, Nov 11, 2019 at 07:42:58PM +0000, Jonathan Cameron wrote:
+> Hi Greg,
 > 
-> Nice diagram ;)
+> Clearly this one is a bit late, but it seemed a shame to hold it given
+> Linus has been hinting at this cycle going a week longer than normal.
+> 
+> There are a few fixes in here, so if you decide its too late or something
+> else is wrong I'll pull them back out again for after the merge window.
+> None of them are urgent enough to be worth rushing in before the
+> merge window opens.
 
-Using the '+' characters at the edges and '-' characters for levels makes it
-not easily readable in some cases. Especially for the short subsequent bursts.
-What about this?
+Looks good, I've merged it all now, thanks.
 
-      * GPIO      ___              ________________________
-      * ping:  __/   \____________/                        \_________________
-      *          ^   ^            ^                        ^
-      *          |<->|            interrupt                interrupt
-      *         udelay(5)         (ts_rising)              (ts_falling)
-      *                           |<---------------------->|
-      *                           .  pulse time measured
-      *                           .  --> one round trip of ultra sonic waves
-      *                           .                        .
-      * ultra                     .                        .
-      * sonic            _   _   _.                        .
-      * burst:  ________/ \_/ \_/ \_________________________________________
-      *                                                    .
-      * ultra                                              .
-      * sonic                                     _   _   _.
-      * echo:   _________________________________/ \_/ \_/ \_________________
-      */
-
-Michal
+greg k-h

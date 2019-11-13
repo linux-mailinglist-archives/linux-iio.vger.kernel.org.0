@@ -2,197 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC067FB5F0
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2019 18:07:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 824DBFB6F5
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2019 19:01:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728249AbfKMRG7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Nov 2019 12:06:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35934 "EHLO mail.kernel.org"
+        id S1727779AbfKMSBC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Nov 2019 13:01:02 -0500
+Received: from sauhun.de ([88.99.104.3]:59180 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727638AbfKMRG7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 13 Nov 2019 12:06:59 -0500
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 30DCB206D9;
-        Wed, 13 Nov 2019 17:06:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573664817;
-        bh=3pA/KHI5sE+m79lcOcQ98rIbIxyybLCXDOI9joKhQfs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=TwOWVIvSoknGvfV8g68WQy7A/iminy0BlIzADGjPqtO1Wy1PopzGyTjMWGo2UpuPM
-         TmbRo1ddgr08OXsgScXLTJZm3P5bLeFm7O32ywjUErxrEelMmpfSUUFMP+nK6X2uif
-         I8SQPZP3KOwo2gSIb2hB/R9g7ZcEK5w1uwOSy4Eg=
-Received: by mail-qk1-f171.google.com with SMTP id e2so2386357qkn.5;
-        Wed, 13 Nov 2019 09:06:58 -0800 (PST)
-X-Gm-Message-State: APjAAAVkYNLmGOdLwtjxADfDqE9uMU6ay53VbYXg/23x+gR5R9F6qfgd
-        q8NmJ7xyd18ivHuNKFIfDrAep9Ky7j99CvxlzA==
-X-Google-Smtp-Source: APXvYqzRlmF9TeJ9hDMYOQGNIdfY5VhEdyxfYQraKHmCjaj33WSKpBhDL2bHJvGdOc3QzkjC5v8NL/rqmH6i8piI88A=
-X-Received: by 2002:a37:4904:: with SMTP id w4mr3196213qka.119.1573664817154;
- Wed, 13 Nov 2019 09:06:57 -0800 (PST)
+        id S1726120AbfKMSBC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 13 Nov 2019 13:01:02 -0500
+Received: from localhost (p54B337BB.dip0.t-ipconnect.de [84.179.55.187])
+        by pokefinder.org (Postfix) with ESMTPSA id 6D8812C040C;
+        Wed, 13 Nov 2019 19:01:00 +0100 (CET)
+Date:   Wed, 13 Nov 2019 19:00:57 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: max9611: Fix too short conversion time delay
+Message-ID: <20191113180057.GA2764@ninjato>
+References: <20191113092133.23723-1-geert+renesas@glider.be>
 MIME-Version: 1.0
-References: <cover.1573145089.git.marcelo.schmitt1@gmail.com>
- <a8c614894252bb139a213b8c0219f3f46210b136.1573145089.git.marcelo.schmitt1@gmail.com>
- <20191112193942.GA27334@bogus> <20191113145159.vw7icflfve7dnefm@smtp.gmail.com>
-In-Reply-To: <20191113145159.vw7icflfve7dnefm@smtp.gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 13 Nov 2019 11:06:45 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJY6YMC2ba4DNFnsq=XESOoUTDA6Q+Y7gutMT0VN--DNw@mail.gmail.com>
-Message-ID: <CAL_JsqJY6YMC2ba4DNFnsq=XESOoUTDA6Q+Y7gutMT0VN--DNw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: Add dt-schema for AD7292
-To:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree@vger.kernel.org, kernel-usp@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="7AUc2qLy4jB3hD7Z"
+Content-Disposition: inline
+In-Reply-To: <20191113092133.23723-1-geert+renesas@glider.be>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Nov 13, 2019 at 8:52 AM Marcelo Schmitt
-<marcelo.schmitt1@gmail.com> wrote:
->
-> Hi Rob,
->
-> Thanks for reviewing the binding doc again.
-> Aparently, this patch was added to Greg KH's staging tree.
-> What is the right procedure in this case? Should I send a v5 patchset or
-> just send a patch for this doc?
 
-You need to do an incremental patch. Greg doesn't rebase.
+--7AUc2qLy4jB3hD7Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> In any case, I still have some doubts about the maximum constraint of
-> the channel property. Comments inline.
->
->
-> Thanks
->
-> Marcelo
->
-> On 11/12, Rob Herring wrote:
-> > On Fri, Nov 08, 2019 at 10:56:09AM -0300, Marcelo Schmitt wrote:
-> > > Add a devicetree schema for AD7292 monitor and control system.
-> > >
-> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> > > ---
-> > > Changelog V3 -> V4:
-> > > - updated SPDX identifier to GPL-2.0-only
-> > > - changed maxitems constraint on channel property
-> > >
-> > >  .../bindings/iio/adc/adi,ad7292.yaml          | 104 ++++++++++++++++++
-> > >  MAINTAINERS                                   |   7 ++
-> > >  2 files changed, 111 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-> > > new file mode 100644
-> > > index 000000000000..b68be3aaf587
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-> > > @@ -0,0 +1,104 @@
-> > > +# SPDX-License-Identifier: GPL-2.0-only
-> >
-> > Sigh, I gave you the exact line to use:
-> >
-> > # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >
-> > I've said to dual license with (GPL-2.0-only OR BSD-2-Clause) and people
-> > think I mean to pick one. So now I just give the whole line. I don't
-> > know how to be clearer.
->
-> I thought I could use just GPL-2.0 since the driver code is GPL-2.0.
-> Anyway, I'll use the above line to specify the dt-binding license.
->
-> >
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7292.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Analog Devices AD7292 10-Bit Monitor and Control System
-> > > +
-> > > +maintainers:
-> > > +  - Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> > > +
-> > > +description: |
-> > > +  Analog Devices AD7292 10-Bit Monitor and Control System with ADC, DACs,
-> > > +  Temperature Sensor, and GPIOs
-> > > +
-> > > +  Specifications about the part can be found at:
-> > > +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7292.pdf
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - adi,ad7292
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  vref-supply:
-> > > +    description: |
-> > > +      The regulator supply for ADC and DAC reference voltage.
-> > > +
-> > > +  spi-cpha: true
-> > > +
-> > > +  '#address-cells':
-> > > +    const: 1
-> > > +
-> > > +  '#size-cells':
-> > > +    const: 0
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +  - reg
-> > > +  - spi-cpha
-> > > +
-> > > +patternProperties:
-> > > +  "^channel@[0-7]$":
-> > > +    type: object
-> > > +    description: |
-> > > +      Represents the external channels which are connected to the ADC.
-> > > +      See Documentation/devicetree/bindings/iio/adc/adc.txt.
-> > > +
-> > > +    properties:
-> > > +      reg:
-> > > +        description: |
-> > > +          The channel number. It can have up to 8 channels numbered from 0 to 7.
-> > > +        items:
-> > > +          maximum: 7
-> >
-> > Not what I said either. A slight but important difference in that you
-> > are missing a '-' to make 'items' a list rather than a schema/dict.
-> >
-> > Update dt-schema. This should give a warning now.
->
-> I'm confused, I don't know how to make this doc the way you want.
-> I pulled the updates from the master branch of dt-schema repo and
-> reinstalled it.
-> Then I tried
->         items:
->           - maximum: 7
-> I've tried
->         - items:
->             maximum: 7
-> I also tried
->         - items:
->           maximum: 7
-> all gave me parsing errors when processing the ad7292 schema with
-> 'make dt_binding_check' and also with 'make -k dt_binding_check'.
-> Am I using the right branch? Should I pull from a branch other than the
-> master?
 
-Sorry, my fault there. The meta-schema requires 'minimum' if you give
-'maximum'. So:
+> According to the datasheet, the typical ADC conversion time is 2 ms, but
+> no minimum or maximum values are provided.
 
-        items:
-          - minimum: 0
-            maximum: 7
+That sentence makes me want to increase the delay to 4ms.
 
-The error message was less than useful, but I think I have a fix for that too.
+Maybe we can ask someone at Analog in parallel? I recently found this
+patch from an Analog developer in my inbox "[RESEND PATCH] drm: bridge:
+adv7511: Fix low refresh rate register for ADV7533/5" Or do you guys
+know a better contact?
 
-Rob
+
+--7AUc2qLy4jB3hD7Z
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl3MRNUACgkQFA3kzBSg
+KbYvLA//QC2khOniuIXDDEiySNx0++QypYnYPbaNT1FsIp8gPDnwhbhC/WAf/3qY
+6Nbb3lWwkcILTs8seOJ2VBKLGYM97cFU0dFCv/YJiU2l/JAftQ5ZKwtnkaxBjyVX
+KA4CId2zw4c9pGgBXhFdqBazd4gDThNtGgLVz1adactW7+7eU3PWFKv6HXxXM2W4
+Rs1tjtYEmFRA5TVn8n5Rozn//chlgoYKPTCEv1igdW87U/AeLh4zrZY5Y3qDjSLg
+Pp43uiOZa1bZ9+3KQw8bSbV1T64fxhzQGE4ARUb0OQym5LhL4ARjHUYY/HBHU5CH
+0U7RHGoA3rowtSI7t8wn9Y71MeZB6kbXdJhdHL1OyTJkqxKLFm4wxJYAKdOsHRfk
+U1vqvrmODrwz51yoCxzXGum9OV2bDnc1K2fESWAvJe2oNAJGbDJgDIsP1J+nFbqn
+CCugzMdpPIH0vFrqmZCSKHd1588o4YdNL+LiP+eRGqzPFPFJhpkdP5ABI6qEg5sL
+dQPUbA21wQFYF1Lvmxz06/oRVJ9lpjJiGKRQtpjuju4Zk7x7TAw+DE0KdioVuyDn
+bKhIew+2Dq6fLY143Ulk6I5xJ4stfdjX5kEKoOyf29xvI0pZDwL3VmysN/dGU+bd
+xpYu3BkMP4VhQwvlKOe4OAlzTbb8y+V9EJabXgSfJi3ZDO9rM0Y=
+=W4r0
+-----END PGP SIGNATURE-----
+
+--7AUc2qLy4jB3hD7Z--

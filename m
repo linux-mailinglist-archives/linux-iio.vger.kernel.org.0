@@ -2,145 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C42CFAD2C
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2019 10:41:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0706FAD75
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2019 10:46:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727324AbfKMJlg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Nov 2019 04:41:36 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:45099 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725996AbfKMJlf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Nov 2019 04:41:35 -0500
-Received: by mail-oi1-f195.google.com with SMTP id 14so1164752oir.12;
-        Wed, 13 Nov 2019 01:41:35 -0800 (PST)
+        id S1727229AbfKMJqe convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 13 Nov 2019 04:46:34 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:37799 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725996AbfKMJqd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Nov 2019 04:46:33 -0500
+Received: by mail-oi1-f193.google.com with SMTP id y194so1218427oie.4;
+        Wed, 13 Nov 2019 01:46:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WpBUEUBVKUMrmcqnABn9MPFYPLG9SgUt3u7vOCoq0EM=;
-        b=bJn8niws5L+KieiYZLeYzh/6fCSy3qY/oHIU/knjUNgBWMAHDR+uSf7GHGAb3PCYvT
-         ipKSc5fx5OKUMHbUP9AW0kiKCAWL68kQaKNlAWI+ZCSGzGbYacPyjEfbfhhA2vXVw7TY
-         3bsoMPQ/lBiNiGx4pW+zrlOsK4EO8ZeJzA9EnNdAUCj5BTtXBSNI8KOz7qwqUevEa3kt
-         cVVEkiTgsd5xWnKYdsJWEdZX+nDzav7592vkc5U5Ai97F/MGQArmLlK3yVzAwwJjNvYn
-         HkhWkypXBHek3CpO1PkiQaEpHNmReRUV7k/ZON+oGPeE/DWDKK5sSZ+7nfSXmQAWtdNa
-         LW0g==
-X-Gm-Message-State: APjAAAXpkd37aesU08U6+WG5pbPb12noyLRDHyXYIRH2JmeACDwQfRj6
-        g5woPupmuIknYwCTI9620D1YoC8EqfamBY48lUWQSEth
-X-Google-Smtp-Source: APXvYqygt+jAkVMXIy1Y8Cc5KnSFwrB99LY5QF0AvTrf6I/kMuLjX3TrGiw/76HCT6D9UFGap58M9iapfsdAn19OYMI=
-X-Received: by 2002:aca:3a86:: with SMTP id h128mr2082054oia.131.1573638094532;
- Wed, 13 Nov 2019 01:41:34 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=grATdiINrLQEcjShNKetMHR+1iFUrTj1Oa6wxu6nBC8=;
+        b=eydRv2+RcZ1p3E04nROAsIM4JJmmCQ9CXgB9ztszZ70YtViFy9cHtParOFLhV0wlrO
+         ba/CVyibzzKKn645L0PqCU7e1n9ZFUcv3jXFLivq4UnVZ/clf5ofMKWt60OikSUrjzuG
+         8+kRTpQlAlnvNKpIwNqji/crBB4bZtD0s/J13aBJg4tqY55MI6laN1I8Jqyu/CvfBWkE
+         VWT3l8VJ4rl3Uglwc9bf2phs+oR/hUmhMPED/a4lipEhm/W8Ggr5nUC+3T9VTJngeKeM
+         en5kQ0ZlrOlzmjvf/NK/yi+0C97rvvmrBy38TuHnBrLjMF/s70FCq96T4svMyCrIH7Fp
+         Pphw==
+X-Gm-Message-State: APjAAAUngXhpigi/usK03BVN1WwUdq5ayGwbM2L5cF6HthcIaUbUOQXI
+        JRTBrCQc1mqBHqyWxth+S2HH2iTGIqj+pzZvpsU=
+X-Google-Smtp-Source: APXvYqw+WwVtEe652SidlkvEW7B6vqqkKKweJ/P/bvZDfiZHNkn+wQC3h+/WzUWedgTHJtP2cYCoaHreFx44nnvn/Uk=
+X-Received: by 2002:aca:3a86:: with SMTP id h128mr2099125oia.131.1573638392868;
+ Wed, 13 Nov 2019 01:46:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20191016102520.124370-1-jacopo+renesas@jmondi.org>
- <CAMuHMdUH0LrZ6iEuN1aWCTt_-jpgp=EjxubMAVdp11HLL=ayyQ@mail.gmail.com> <CAMuHMdULSOOmcoKrQ40TJaNVOAuBsCA=bgC3pMB8jOGpRCAMhg@mail.gmail.com>
-In-Reply-To: <CAMuHMdULSOOmcoKrQ40TJaNVOAuBsCA=bgC3pMB8jOGpRCAMhg@mail.gmail.com>
+References: <20191113092133.23723-1-geert+renesas@glider.be> <20191113093828.vk5qqtlr7bs5z5fb@uno.localdomain>
+In-Reply-To: <20191113093828.vk5qqtlr7bs5z5fb@uno.localdomain>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 13 Nov 2019 10:41:23 +0100
-Message-ID: <CAMuHMdWdr_Popu7=ywYGxikpYEcN4oF50+QwOwAyjpj87GLnHQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: max9611: Defer probe on POR read
-To:     Jacopo Mondi <jacopo+renesas@jmondi.org>
-Cc:     linux-iio@vger.kernel.org,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Wed, 13 Nov 2019 10:46:21 +0100
+Message-ID: <CAMuHMdUeY62SBvzgHCMxjeDO6f_c3isbw82FKJatzny=qiDULQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: max9611: Fix too short conversion time delay
+To:     Jacopo Mondi <jacopo@jmondi.org>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Linux I2C <linux-i2c@vger.kernel.org>
+        linux-iio@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Nov 10, 2019 at 7:45 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Thu, Oct 17, 2019 at 2:55 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Wed, Oct 16, 2019 at 12:23 PM Jacopo Mondi <jacopo+renesas@jmondi.org> wrote:
-> > > The max9611 driver tests communications with the chip by reading the die
-> > > temperature during the probe function. If the temperature register
-> > > POR (power-on reset) value is returned from the test read, defer probe to
-> > > give the chip a bit more time to properly exit from reset.
-> > >
-> > > Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > > Signed-off-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
+Hi Jacopo,
+
+On Wed, Nov 13, 2019 at 10:36 AM Jacopo Mondi <jacopo@jmondi.org> wrote:
+> On Wed, Nov 13, 2019 at 10:21:33AM +0100, Geert Uytterhoeven wrote:
+> > As of commit b9ddd5091160793e ("iio: adc: max9611: Fix temperature
+> > reading in probe"), max9611 initialization sometimes fails on the
+> > Salvator-X(S) development board with:
 > >
-> > >   I've not been able to reproduce the issue on my boards (M3-N
-> > > Salvator-XS and M3-W Salvator-X). As you reported the issue you might be
-> > > able to reproduce it, could you please test this?
+> >     max9611 4-007f: Invalid value received from ADC 0x8000: aborting
+> >     max9611: probe of 4-007f failed with error -5
 > >
-> > I can reproduce it on Salvator-XS with R-Car H3 ES2.0.
-> > According to my logs, I've seen the issue on all Salvator-X(S) boards,
-> > but not with the same frequency.  Probability is highest on H3 ES2.0
-> > (ca. 5% of the boots since I first saw the issue), followed by H3 ES1.0,
-> > M3-W, and M3-N.
+> > The max9611 driver tests communications with the chip by reading the die
+> > temperature during the probe function, which returns an invalid value.
 > >
-> > After more investigation, my findings are:
-> >   1. I cannot reproduce the issue if the max9611 driver is modular.
-> >      Is it related to using max9611 "too soon" after i2c bus init?
-> >      How can "i2c bus init" impact a slave device?
-> >      Perhaps due to pin configuration, e.g. changing from another pin
-> >      function or GPIO to function i2c4?
-
-Not true: I managed to reproduce it with a modular driver.
-
-> >   2. Adding a delay at the top of max9611_init() fixes the issue.
-> >      This would explain why the issue is less likely to happy on slower
-> >      SoCs like M3-N.
-> >   3. Disabling all other i2c slaves on i2c4 in DTS fixes the issue.
-> >      Before, max9611 was initialized last, so this moves init earlier,
-> >      contradicting theory #1.
-> >   4. Just disabling the adv7482 (which registers 11 dummies i2c slaves)
-> >      in DTS does not fix the issue.
+> > According to the datasheet, the typical ADC conversion time is 2 ms, but
+> > no minimum or maximum values are provided.  However, the driver assumes
+> > a 1 ms conversion time.  Usually the usleep_range() call returns after
+> > more than 1.8 ms, hence it succeeds.  When it returns earlier, the data
+> > register may be read too early, and the previous measurement value will
+> > be returned.  After boot, this is the temperature POR (power-on reset)
+> > value, causing the failure above.
 > >
-> > Unfortunately i2c4 is exposed on a 60-pin Samtec QSH connector only,
-> > for which I have no breakout adapter.
+> > Fix this by increasing the delay from 1000-2000 µs to 2000-2200 µs.
+> >
+> > Note that this issue has always been present, but it was exposed by the
+> > aformentioned commit.
+> >
+> > Fixes: 69780a3bbc0b1e7e ("iio: adc: Add Maxim max9611 ADC driver")
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > ---
+> > This problem was exposed in v5.3.
+> >
+> > After this patch, probing of the two max9611 sensors succeeded during
+> > ca. 3000 boot cycles on Salvator-X(S) boards, equipped with various
+> > R-Car H3/M3-W/M3-N SoCs.
+> > ---
+> >  drivers/iio/adc/max9611.c | 11 ++++++++---
+> >  1 file changed, 8 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
+> > index da073d72f649f829..b0755f25356d700d 100644
+> > --- a/drivers/iio/adc/max9611.c
+> > +++ b/drivers/iio/adc/max9611.c
+> > @@ -89,6 +89,11 @@
+> >  #define MAX9611_TEMP_SCALE_NUM               1000000
+> >  #define MAX9611_TEMP_SCALE_DIV               2083
+> >
+> > +/*
+> > + * Conversion time is 2 ms (typically)
+> > + */
+> > +#define MAX9611_CONV_TIME_US_RANGE   2000, 2200
+> > +
 >
-> Some soldering fixed that. Still investigating.
-> Here's a status update:
+> Is a 20% sleep range enough or should it be slightly lengthen ?
+
+10%?
+
+This only impacts the variation, so what really happens depends on the
+rate of the hrtimer (if present).
+On R-Car Gen3, I think that uses the ARM Architectured Timer (cp15),
+which has a period of 120 ns.
+
+> Apart from this, thanks a lot for finding the issue root cause!
 >
->   A. I can reproduce the issue at 100 kHz instead of 400 kHz.
->   B. 3 above doesn't seem to be true: I can reproduce it with all other
->      slaves disabled.
->   C. The code says:
->
->         /*
->          * need a delay here to make register configuration
->          * stabilize. 1 msec at least, from empirical testing.
->          */
->         usleep_range(1000, 2000);
->
->      However, the datasheet says:
->
->         Parameter            MIN     TYP     MAX
->         Conversion Time      -       2 ms    -
->
->      So 1 ms is definitely too short.
->      Unfortunately the datasheet has no maximum value.
+> Reviewed-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
 
-usleep_range(1000, 2000) usually results in a sleep time of 2.0 ms: OK
-It may take longer: I saw 4.8 -- 7.7 ms (nothing in between 2.0 -- 4.8!): OK
-It may take shorter:
-  - 1.2 -- 1.7 ms: FAIL
-  - 1.8 ms - 2 ms: OK
-
-So a minimum delay of 2 ms seems like a good value.
-
->   D. For 2: msleep(1) is sufficient, usleep_range(200, 500) is not.
->      And this is still not explained by C.
-
-Without adding an msleep() call to max9611_init(), the usleep_range()
-call in max9611_read_single() happens at an arbitrary moment.
-After adding an msleep() call to max9611_init(), the code becomes
-synchronized to the jiffies clock, and the usleep_range() call in
-max9611_read_single() never completes in less than 2 ms, thus avoiding
-the issue.
-
->      I also don't know yet who's resetting the chip on reboot, as it
->      does not have a reset line, but all registers are zeroed (except
->      for the POR temperature value).
-
-Looks like the PMIC powers down the +3.3V rail for ca. 25 ms when PSCI
-initiates a system reboot.
-
-Patch sent: "[PATCH] iio: adc: max9611: Fix too short conversion time
-delay"
-(https://lore.kernel.org/lkml/20191113092133.23723-1-geert+renesas@glider.be/).
+Thanks!
 
 Gr{oetje,eeting}s,
 

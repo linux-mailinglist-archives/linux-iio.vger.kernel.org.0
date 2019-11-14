@@ -2,355 +2,470 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1AE5FC84F
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2019 15:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 982F0FC861
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2019 15:06:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726962AbfKNOCK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Nov 2019 09:02:10 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:35596 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726410AbfKNOCJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Nov 2019 09:02:09 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAEDvlci022744;
-        Thu, 14 Nov 2019 09:01:39 -0500
-Received: from nam04-bn3-obe.outbound.protection.outlook.com (mail-bn3nam04lp2052.outbound.protection.outlook.com [104.47.46.52])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2w7prkecd7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Nov 2019 09:01:39 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RgnLY96zJ07YPcQ3Ohhoe/mszZR3vgcxsu9AV33iL/P7dmEn68a7Dkr8PNLmgs0cdP6yvDpT3Qh7uDHWFfETfWum4tAmD72w2QYiv+Sru6Vo1JBttfbiTtMRE14WO0E9dEnMqhRRvr7cb8PbPiYwMKI96fE7KMHp2R8TpSaAVD7qCs20znmshHOhZeH64v86XhF3hdzttWhdf1ab0zh4ce021JV9bBhuT/xMgWqrTmkvnejzoK4VIXiNdQ0et6Qq7STavZRPZw4HXVcGD6dIC694IQOqaPPRcY2xBv3OgOuhWdh/n9Ivp/YGtqldwqIOQ1qShFL/bGCtMKYRNLy2rQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=22lzL/dUnHhvqjNvl8bbPkqPAfP2WGhBBd3pjIDufk4=;
- b=ElIobd5hC58+OCuyhO2rw3TlyfgGd/iB1LhmFUYDcYxgbyRsYutxDnBelfz0zaI44xpyGo5bgfMGfI4SQQflzaiOxjT3KQLJmIn8/CdrnfHVZNmlGB2REPdDB5xJr2qWY8OQ7SEBTejakprvBzL7asGPxFMSKuzwVMcFRLYLybk234dvV09I3nQW1I9afDlE3xqHUxYq86hVAweLARXFCPw/inF2lQQsKJwdcR4QJ5Xz/Hv8WC7DJUNWfsmu6emWNrqCelfUxiafgD2jvkOv3ZtijuTMmLSk1/1+vb+Y6WXOc3WJHdV89SuvI7SxeSzlUCxLJVz1Pc2t3/evdxc+EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        id S1726865AbfKNOGK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Nov 2019 09:06:10 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:39448 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726327AbfKNOGK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Nov 2019 09:06:10 -0500
+Received: by mail-pl1-f194.google.com with SMTP id o9so2682982plk.6;
+        Thu, 14 Nov 2019 06:06:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=22lzL/dUnHhvqjNvl8bbPkqPAfP2WGhBBd3pjIDufk4=;
- b=EgYxovhAdO7ztDwb/JiNdJxNvRmaOnYBM4kXAiI1vxTMTG+Qk+fQ3DzXmM7d2luKeUfgxIMID1nUkNld8rKZ18u9bd6jRRwM/J5JMNXPXxLnELGRgL1r4crM33Yfxw7xnh4n6GLxdWp4IbkdU8oaBwxKfGfTTVsZwLooix4KWag=
-Received: from CH2PR03MB5192.namprd03.prod.outlook.com (20.180.12.152) by
- CH2PR03MB5319.namprd03.prod.outlook.com (20.180.13.76) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2451.23; Thu, 14 Nov 2019 14:01:37 +0000
-Received: from CH2PR03MB5192.namprd03.prod.outlook.com
- ([fe80::38e7:c7c5:75cc:682c]) by CH2PR03MB5192.namprd03.prod.outlook.com
- ([fe80::38e7:c7c5:75cc:682c%5]) with mapi id 15.20.2451.027; Thu, 14 Nov 2019
- 14:01:37 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "jic23@kernel.org" <jic23@kernel.org>,
-        "songqiang1304521@gmail.com" <songqiang1304521@gmail.com>
-CC:     "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: iio: adc: add support for AD5940
-Thread-Topic: [PATCH 1/3] dt-bindings: iio: adc: add support for AD5940
-Thread-Index: AQHVljXcN4vO3IroXEOtS97F2YrL5KeEmrEAgAYYswCAAAh+AA==
-Date:   Thu, 14 Nov 2019 14:01:36 +0000
-Message-ID: <ecb64628224c2f6534c45785683fcac8c7459901.camel@analog.com>
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=H1vdrZflopLKHMkXUH0I+ULeg9UjV+kbPCLSECUJ7Zo=;
+        b=pjOrbA7MxBTkeNmk2Sb7rIs16MsQaqt4ovBEblMIlrH8yj2ShtwnWPRmVlAWJsfQyV
+         WPcw62MT99lkjFMt4F+f7WUsOkuUIVRThvM3kbhDSsBkUsCgf3rvBIy8wIP2sWoZdJV7
+         vS06k9eR8OZDouXwCFgfZ2k2fNobi6uRJqKxCcouJfi7biN7Yk625mTxxX2oCtLSLjqw
+         WLtN2rnyTF4mmHtsxkd2cisqmjZ1GhxnZ5tnq+MFIbZye/YOVLu/IwAbezwuT4ndFiEM
+         LkuU1M9AfgZnIwCH+dnWKg7J5Ghq9mk+/OHrRHV+6GD2i1E3JFQ7VtnXx+jkZGDA/S/c
+         pO2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=H1vdrZflopLKHMkXUH0I+ULeg9UjV+kbPCLSECUJ7Zo=;
+        b=nolIo/H7EnvFGALCGZ3N3yYTvZ1TcwZ60KWK9BLS0Bt9B0Tpq+zD6giwl5Q+xdB1bD
+         5eKGbKzAPFv91N+cTZP2BaBbrtz7nfM6ex44tnbd7GFpDO1URYJDraCeHAYrwuQiogRW
+         ITOW7L3/FgQbJpLJQajB46LTEniJ04x+gXBQA8Cd83QslRdTwZu1sAZert2UhcNnIePZ
+         /4vGmoWeVWZ3Q7WSr74OGbZytP/tdpaPVPKV+wXcjtMOs8XhFw2+vHpoKaRfQ+WdtyDr
+         2FT6bfqIj/1r4yMWmd6MqrK0uZSIO6XkKUAPdeUpHA0gPvRwWK/MLf1ly3U87f+t41Ne
+         6Fmw==
+X-Gm-Message-State: APjAAAUZOkFdwYArMd9YDOuWA+qIOdpVqzHzm5D+J9HXClKMGQnSQoOq
+        Dzo3QNifu83k2wvOnYqjpxLcfylCZGo=
+X-Google-Smtp-Source: APXvYqzTVZwfetl+5lRajHoSzOW9dsJwbMGD1taTrhltnGtOOwVAGsLE1xRY2+oA5T0lFyMDyOca1w==
+X-Received: by 2002:a17:902:b584:: with SMTP id a4mr9550970pls.246.1573740367767;
+        Thu, 14 Nov 2019 06:06:07 -0800 (PST)
+Received: from [0.0.0.0] ([97.64.17.87])
+        by smtp.gmail.com with ESMTPSA id s66sm9534427pfb.38.2019.11.14.06.05.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 14 Nov 2019 06:06:07 -0800 (PST)
+Subject: Re: [PATCH 2/3] iio: adc: add driver support for AD5940
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        stefan.popa@analog.com, knaack.h@gmx.de, pmeerw@pmeerw.net,
+        lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20191108130946.14740-1-songqiang1304521@gmail.com>
-         <20191110162608.21b40714@archlinux>
-         <7ac0ec98-b405-6450-fc38-ac6a47fd6d3e@gmail.com>
-In-Reply-To: <7ac0ec98-b405-6450-fc38-ac6a47fd6d3e@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [137.71.226.54]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 787a82b5-9319-4665-c6ea-08d7690b2a36
-x-ms-traffictypediagnostic: CH2PR03MB5319:
-x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CH2PR03MB5319ACA32222FDFC392EFD7CF9710@CH2PR03MB5319.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 02213C82F8
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39860400002)(376002)(346002)(366004)(136003)(396003)(199004)(189003)(7416002)(2616005)(71200400001)(71190400001)(4326008)(476003)(446003)(36756003)(76116006)(4001150100001)(118296001)(6512007)(2501003)(6246003)(6306002)(486006)(66476007)(66446008)(64756008)(66556008)(66946007)(6486002)(6506007)(76176011)(86362001)(2906002)(53546011)(256004)(14454004)(30864003)(26005)(229853002)(5660300002)(102836004)(11346002)(6116002)(6436002)(3846002)(8936002)(54906003)(478600001)(81166006)(8676002)(966005)(81156014)(186003)(305945005)(99286004)(110136005)(7736002)(25786009)(66066001)(14444005)(316002);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5319;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: RYW9jwOMQC4OZ+7L/5eyXdMqZq9hU0HLQKWvNFBLL27fK1pGA+boWQ0jRqSChT4pm/XU5heJ1zREYpmFnVIMes4nGQbxG+VYeRzKGM4JlFrar4y5r6dE2qh47mRZw95JykqG0qMoW8J8nrLdT2KhsRkDa8zsqRpL9deLW8HI1aEwe8+kzVFfGtMkP5IOKOklO3QHhFjVQQLta0m3Gmxz+WwTukD54JqLGaRt+MEykCXPZ8A0fISuFW5LV9PlVUkX+Px0EiWP6dtHcZoM1Fjk+rwPJ1rmigCRPsxGMSxy7JSRUNe0RpsirJvf10QwpvhHK6hlBUk63pOSjSAV5Iu8dRFUBvLrycH8U44AlhPTG8VJW2PCqa1MfT70mbrYnmq21UqzBa32adTNV/MYn2CSf1RDP7jItqjbsa7yT01hRqqv6WBLGjl28XCRR3QWXyU+
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C9C17BC9630A0F4DB5A3DE9813975446@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <20191108130946.14740-2-songqiang1304521@gmail.com>
+ <20191110165529.78a4714a@archlinux>
+From:   Song Qiang <songqiang1304521@gmail.com>
+Message-ID: <58ef4da3-7640-767d-5f6b-c2c5c680cddb@gmail.com>
+Date:   Thu, 14 Nov 2019 22:05:54 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 787a82b5-9319-4665-c6ea-08d7690b2a36
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2019 14:01:36.8072
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: T6PHbX6f+8pJMcZOWVWA6qNivCWPHcro/fVuOMNNEgduznXi0AC+n0baTwuOMcirVfIlC7mXWppR4FGmB7nlWN1GkBpsfrP9pmWeyfv4iYE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5319
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-14_03:2019-11-14,2019-11-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- adultscore=0 mlxlogscore=999 phishscore=0 lowpriorityscore=0
- impostorscore=0 mlxscore=0 suspectscore=0 malwarescore=0 clxscore=1011
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911140130
+In-Reply-To: <20191110165529.78a4714a@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVGh1LCAyMDE5LTExLTE0IGF0IDIxOjMyICswODAwLCBTb25nIFFpYW5nIHdyb3RlOg0KPiBb
-RXh0ZXJuYWxdDQo+IA0KPiANCj4gDQo+IE9uIDExLzExLzE5IDEyOjI2IEFNLCBKb25hdGhhbiBD
-YW1lcm9uIHdyb3RlOg0KPiA+IE9uIEZyaSwgIDggTm92IDIwMTkgMjE6MDk6NDQgKzA4MDANCj4g
-PiBTb25nIFFpYW5nIDxzb25ncWlhbmcxMzA0NTIxQGdtYWlsLmNvbT4gd3JvdGU6DQo+ID4gDQo+
-ID4gPiBBZGQgeWFtbCBkZXZpY2V0cmVlIGRlc2NyaXB0aW9uIGZpbGUgYW5kIGEgaGVhZGVyIGZp
-bGUgZm9yDQo+ID4gPiBoZWxwaW5nIGNvbmZpZ3VyZSBwb3NpdGl2ZSBhbmQgbmVndGl2ZSBpbnB1
-dCBvZiBBRDU5NDAuDQo+ID4gPiANCj4gPiA+IFNpZ25lZC1vZmYtYnk6IFNvbmcgUWlhbmcgPHNv
-bmdxaWFuZzEzMDQ1MjFAZ21haWwuY29tPg0KPiA+IE91Y2guIFRoaXMgaXMgYSB2ZXJ5IGNvbXBs
-ZXggZGV2aWNlLCBzbyBJJ20gZ3Vlc3NpbmcgdGhpcyBpcyB0aGUgdGlwDQo+ID4gb2YgdGhlIGlj
-ZWJlcmcgd2hlbiBpdCBjb21lcyB0byB0aGUgZXZlbnR1YWwgYmluZGluZy4NCj4gPiBGb3IgcmVm
-ZXJlbmNlIG9mIG90aGVycyB0aGlzIGhhcyBhIHNpbWlsYXJseSBjb21wbGV4IERBQyBhbmQNCj4g
-PiBUSUEgKyBzb21lIGV4Y2l0YXRpb24gdm9sdGFnZSBnZW5lcmF0b3JzIChERFMpLg0KPiA+IA0K
-PiA+IEFueWhvdywgYSBmZXcgY29tbWVudHMgaW5saW5lIGJ1dCBJJ2xsIGRlZmluaXRlbHkgYmUg
-bG9va2luZyBmb3INCj4gPiBhIGR0IG1haW50YWluZXIgaW5wdXQgb24gdGhpcyBvbmUuDQo+ID4g
-DQo+ID4gVGhhbmtzLA0KPiA+IA0KPiA+IEpvbmF0aGFuDQo+ID4gDQo+IA0KPiBUaGFua3MsIHRo
-aXMgaXMgdGhlIGZpcnN0IHBhcnQgc3VwcG9ydCBvZiB0aGUgZHJpdmVyLg0KPiANCj4gPiA+IC0t
-LQ0KPiA+ID4gIC4uLi9iaW5kaW5ncy9paW8vYWRjL2FkaSxhZDU5NDAueWFtbCAgICAgICAgICB8
-IDI0MA0KPiA+ID4gKysrKysrKysrKysrKysrKysrDQo+ID4gPiAgaW5jbHVkZS9kdC1iaW5kaW5n
-cy9paW8vYWRjL2FkaSxhZDU5NDAuaCAgICAgIHwgIDUyICsrKysNCj4gPiA+ICAyIGZpbGVzIGNo
-YW5nZWQsIDI5MiBpbnNlcnRpb25zKCspDQo+ID4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0DQo+ID4g
-PiBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9hZGksYWQ1OTQwLnlh
-bWwNCj4gPiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgaW5jbHVkZS9kdC1iaW5kaW5ncy9paW8vYWRj
-L2FkaSxhZDU5NDAuaA0KPiA+ID4gDQo+ID4gPiBkaWZmIC0tZ2l0DQo+ID4gPiBhL0RvY3VtZW50
-YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vYWRjL2FkaSxhZDU5NDAueWFtbA0KPiA+ID4g
-Yi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9hZGksYWQ1OTQwLnlh
-bWwNCj4gPiA+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+ID4gPiBpbmRleCAwMDAwMDAwMDAwMDAu
-LmY3ZjAzNGZkZDhlYw0KPiA+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ID4gKysrIGIvRG9jdW1lbnRh
-dGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9hZGMvYWRpLGFkNTk0MC55YW1sDQo+ID4gPiBA
-QCAtMCwwICsxLDI0MCBAQA0KPiA+ID4gKyMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0y
-LjANCj4gPiBGb3IgbmV3IGJpbmRpbmdzLCBwcmVmZXJlbmNlIGlzIHRvIGluY2x1ZGUgYSBkdWFs
-IGxpY2Vuc2UNCj4gPiAoR1BMLTIuMC1vbmx5IE9SIEJTRC0yLUNsYXVzZSkNCj4gPiANCj4gPiBJ
-ZiBBbmFsb2cgaXMgZmluZSBkb2luZyB0aGlzIHRoYXQgd291bGQgYmUgZ3JlYXQuDQoNCkZvciB0
-aGUgbGljZW5zZToNCg0KQWNrZWQtYnk6IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFy
-ZGVsZWFuQGFuYWxvZy5jb20+DQoNCj4gPiANCj4gDQo+IEknbGwgY29uc3VsdCBteSBtZW50b3Ig
-YWJvdXQgdGhpcy4NCj4gDQo+ID4gPiArIyBDb3B5cmlnaHQgMjAxOSBBbmFsb2cgRGV2aWNlcyBJ
-bmMuDQo+ID4gPiArJVlBTUwgMS4yDQo+ID4gPiArLS0tDQo+ID4gPiArJGlkOiBodHRwOi8vZGV2
-aWNldHJlZS5vcmcvc2NoZW1hcy9iaW5kaW5ncy9paW8vYWRjL2FkaSxhZDU5NDAueWFtbCMNCj4g
-PiA+ICskc2NoZW1hOiBodHRwOi8vZGV2aWNldHJlZS5vcmcvbWV0YS1zY2hlbWFzL2NvcmUueWFt
-bCMNCj4gPiA+ICsNCj4gPiA+ICt0aXRsZTogQW5hbG9nIERldmljZXMgQUQ1OTQwIERldmljZSBU
-cmVlIEJpbmRpbmdzDQo+ID4gPiArDQo+ID4gPiArbWFpbnRhaW5lcnM6DQo+ID4gPiArICAtIFNv
-bmcgUWlhbmcgPHNvbmdxaWFuZzEzMDQ1MjFAZ21haWwuY29tPg0KPiA+ID4gKw0KPiA+ID4gK2Rl
-c2NyaXB0aW9uOiB8DQo+ID4gPiArICBBbmFsb2cgRGV2aWNlcyBBRDU5NDAgSGlnaCBQcmVjaXNp
-b24sIEltcGVkYW5jZSwgYW5kDQo+ID4gPiBFbGVjdHJvY2hlbWljYWwgRnJvbnQgRW5kLg0KPiA+
-ID4gKyAgICANCj4gPiA+IGh0dHBzOi8vd3d3LmFuYWxvZy5jb20vbWVkaWEvZW4vdGVjaG5pY2Fs
-LWRvY3VtZW50YXRpb24vZGF0YS1zaGVldHMvQUQ1OTQwLnBkZg0KPiA+ID4gKw0KPiA+ID4gK3By
-b3BlcnRpZXM6DQo+ID4gPiArICBjb21wYXRpYmxlOg0KPiA+ID4gKyAgICBlbnVtOg0KPiA+ID4g
-KyAgICAgIC0gYWRpLGFkNTk0MA0KPiA+ID4gKw0KPiA+ID4gKyAgcmVnOg0KPiA+ID4gKyAgICBt
-YXhJdGVtczogMQ0KPiA+ID4gKw0KPiA+ID4gKyAgdnJlZi1zdXBwbHk6DQo+ID4gPiArICAgIGRl
-c2NyaXB0aW9uOg0KPiA+ID4gKyAgICAgIFRoZSByZWd1bGF0b3IgdG8gYmUgdXNlZCB0byBzdXBw
-bHkgdGhlIHJlZmVyZW5jZSB2b2x0YWdlLg0KPiA+ID4gKyAgICBtYXhJdGVtczogMQ0KPiA+IA0K
-PiA+IEl0J3Mgd29ydGggdGFraW5nIGEgbG9vayBhdCBzaW1pbGFyIHBhdGNoIHJldmlld3MgdG8g
-cGljayB1cCBvbiB0aGluZ3MNCj4gPiB0aGF0IGFyZSBjb21tb24gaXNzdWVzLiAgUm9iIGhhcyBw
-b2ludGVkIG91dCBhIGZldyB0aW1lcyByZWNlbnRseSB0aGF0DQo+ID4gdnJlZi1zdXBwbHkgY2Fu
-IG9ubHkgZXZlciBoYXZlIG9uZSBpdGVtLCBzbyBubyBuZWVkIGZvciBtYXhJdGVtcy4NCj4gPiAN
-Cj4gDQo+IFRoYXQncyByaWdodCwgdGhhbmtzLg0KPiANCj4gPiA+ICsNCj4gPiA+ICsgIGFkaSxp
-bnRlcnJ1cHQtaW86DQo+ID4gPiArICAgIGRlc2NyaXB0aW9uOg0KPiA+ID4gKyAgICAgIE91dHB1
-dCBHUElPIGluZGV4IG9mIGludGVycnVwdCBjb250cm9sbGVyIG9mIEFENTk0MC4NCj4gPiA+ICsg
-ICAgbWF4SXRlbXM6IDENCj4gPiANCj4gPiBJJ20gZmFpcmx5IHN1cmUgYW4gZW51bSBjYW4gb25s
-eSBoYXZlIG9uZSBlbnRyeSBzbyBkb24ndCB0aGluayB0aGlzIGlzDQo+ID4gbmVlZGVkLg0KPiA+
-IA0KPiA+ID4gKyAgICBhbGxPZjoNCj4gPiA+ICsgICAgICAtICRyZWY6IC9zY2hlbWFzL3R5cGVz
-LnlhbWwjL2RlZmluaXRpb25zL3VpbnQzMg0KPiA+ID4gKyAgICAgIC0gZW51bTogWzAsIDMsIDYs
-IDddDQo+ID4gPiArDQo+ID4gPiArICAnI2FkZHJlc3MtY2VsbHMnOg0KPiA+ID4gKyAgICBjb25z
-dDogMQ0KPiA+ID4gKw0KPiA+ID4gKyAgJyNzaXplLWNlbGxzJzoNCj4gPiA+ICsgICAgY29uc3Q6
-IDANCj4gPiA+ICsNCj4gPiA+ICtyZXF1aXJlZDoNCj4gPiA+ICsgIC0gY29tcGF0aWJsZQ0KPiA+
-ID4gKyAgLSByZWcNCj4gPiA+ICsgIC0gaW50ZXJydXB0cw0KPiA+ID4gKyAgLSBhZGksaW50ZXJy
-dXB0LWlvDQo+ID4gPiArDQo+ID4gPiArcGF0dGVyblByb3BlcnRpZXM6DQo+ID4gPiArICAjICdj
-aGFubmVsQDAtMjU1Jw0KPiA+IA0KPiA+IFJlYWxseT8gIFRoYXQgaXMgYSBsb3Qgb2YgY2hhbm5l
-bHMuICBTdXBlcmZpY2lhbGx5IGl0IGxvb2tzIGxpa2UgYSBtdWNoDQo+ID4gc21hbGxlciBudW1i
-ZXIgb2YgcG9zc2liaWxpdGllcyBmcm9tIHRoZSBkYXRhc2hlZXQuDQo+ID4gDQo+IA0KPiBUaGlz
-IGRldmljZSBoYXMgc29tZSBwb3NpdGl2ZSBpbnB1dHMgYW5kIHNvbWUgbmVnYXRpdmUgaW5wdXRz
-LiBBIGNoYW5uZWwNCj4gaGVyZSBpcyBhIGNvbWJpbmF0aW9uIG9mIG9uZSBwb3NpdGl2ZSBpbnB1
-dCBhbmQgb25lIG5lZ2F0aXZlIGlucHV0Lg0KPiBUaGVzZSBjaGFubmVscyBJIGxpc3RlZCBpbiBl
-eGFtcGxlcyBhcmUgb25seSBzdWdnZXN0ZWQgY29tYmluYXRpb25zIGluDQo+IHRoZSBkYXRhc2hl
-ZXQsIHdoaWxlIG90aGVyIGNvbWJpbmF0aW9ucyBhcmUgYWxsIHBvc3NpYmxlLiBTbyBJIHdhcw0K
-PiB0aGlua2luZyB0byBub3QgbGltaXQgdGhlIHRvdGFsIGNvdW50IG9mIGNoYW5uZWxzIGhlcmUu
-IEkgZmFpbGVkIHRvIGZpbmQNCj4gZXhhbXBsZXMgb2YgZG9pbmcgdGhpcyBraW5kIG9mIHN0dWZm
-IGluIHRoZSB0cmVlLg0KPiANCj4geW91cnMsDQo+IFNvbmcgUWlhbmcNCj4gDQo+ID4gPiArICAi
-XmNoYW5uZWxAKFswLTldfFsxLTldWzAtOV18MVswLTldWzAtOV18MlswLTRdWzAtOV18MjVbMC01
-XSkkIjoNCj4gPiA+ICsgICAgdHlwZTogb2JqZWN0DQo+ID4gPiArICAgIGRlc2NyaXB0aW9uOiB8
-DQo+ID4gPiArICAgICAgUmVwcmVzZW50cyB0aGUgZXh0ZXJuYWwgY2hhbm5lbHMgd2hpY2ggYXJl
-IGNvbm5lY3RlZCB0byB0aGUNCj4gPiA+IEFEQy4NCj4gPiA+ICsgICAgICBTZWUgRG9jdW1lbnRh
-dGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9hZGMvYWRjLnR4dC4NCj4gPiA+ICsgICAgcHJv
-cGVydGllczoNCj4gPiA+ICsgICAgICByZWc6DQo+ID4gPiArICAgICAgICBkZXNjcmlwdGlvbjoN
-Cj4gPiA+ICsgICAgICAgICAgSW5kZXggb2YgdGhpcyBjaGFubmVsLCBtdXN0IGJlIHN0YXJ0aW5n
-IGZyb20gMC4NCj4gPiA+ICsgICAgICAgIG1heEl0ZW1zOiAxDQo+ID4gPiArDQo+ID4gPiArICAg
-ICAgZGlmZi1jaGFubmVsczoNCj4gPiA+ICsgICAgICAgIGRlc2NyaXB0aW9uOg0KPiA+ID4gKyAg
-ICAgICAgICBQb3NpdGl2ZSBpbnB1dCBhbmQgbmVndGl2ZSBpbnB1dCBvZiB0aGUgQURDIGJ1ZmZl
-ciBvZiB0aGlzDQo+ID4gPiBjaGFubmVsLg0KPiA+ID4gKyAgICAgICAgICBJbnB1dCBjYW5kaWRh
-dGVzIGFyZSBkZWZpbmVkIGluIGluY2x1ZGUvZHQtDQo+ID4gPiBiaW5kaW5ncy9paW8vYWRjL2Fk
-aSxhZDU5NDAuaC4NCj4gPiA+ICsgICAgICAgIG1pbkl0ZW1zOiAyDQo+ID4gPiArICAgICAgICBt
-YXhJdGVtczogMg0KPiA+ID4gKyAgICAgICAgaXRlbXM6DQo+ID4gPiArICAgICAgICAgIC0gZGVz
-Y3JpcHRpb246IFBvc2l0aXZlIGlucHV0IGNoYW5uZWwNCj4gPiA+ICsgICAgICAgICAgLSBlbnVt
-Og0KPiA+ID4gKyAgICAgICAgICAgIC0gQUQ1OTQwX0FEQ19JTlBVVFBfRVhDSVRBVElPTg0KPiA+
-ID4gKyAgICAgICAgICAgIC0gQUQ1OTQwX0FEQ19JTlBVVFBfRkxPQVRJTkcNCj4gPiA+ICsgICAg
-ICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX0hTVElBDQo+ID4gPiArICAgICAgICAgICAgLSBB
-RDU5NDBfQURDX0lOUFVUUF9MUFRJQV9MUA0KPiA+ID4gKyAgICAgICAgICAgIC0gQUQ1OTQwX0FE
-Q19JTlBVVFBfQUlOMA0KPiA+ID4gKyAgICAgICAgICAgIC0gQUQ1OTQwX0FEQ19JTlBVVFBfQUlO
-MQ0KPiA+ID4gKyAgICAgICAgICAgIC0gQUQ1OTQwX0FEQ19JTlBVVFBfQUlOMg0KPiA+ID4gKyAg
-ICAgICAgICAgIC0gQUQ1OTQwX0FEQ19JTlBVVFBfQUlOMw0KPiA+ID4gKyAgICAgICAgICAgIC0g
-QUQ1OTQwX0FEQ19JTlBVVFBfQVZERF8yDQo+ID4gPiArICAgICAgICAgICAgLSBBRDU5NDBfQURD
-X0lOUFVUUF9EVkREXzINCj4gPiA+ICsgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX0FW
-RERfUkVHXzINCj4gPiA+ICsgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX1RFTVANCj4g
-PiA+ICsgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX1ZCSUFTX0NBUA0KPiA+ID4gKyAg
-ICAgICAgICAgIC0gQUQ1OTQwX0FEQ19JTlBVVFBfREUwDQo+ID4gPiArICAgICAgICAgICAgLSBB
-RDU5NDBfQURDX0lOUFVUUF9TRTANCj4gPiA+ICsgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5Q
-VVRQX1ZSRUZfMlY1XzINCj4gPiA+ICsgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX1ZS
-RUZfMVY4Mg0KPiA+ID4gKyAgICAgICAgICAgIC0gQUQ1OTQwX0FEQ19JTlBVVFBfUF9URU1QX04N
-Cj4gPiA+ICsgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX0FJTjQNCj4gPiA+ICsgICAg
-ICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX0FJTjYNCj4gPiA+ICsgICAgICAgICAgICAtIEFE
-NTk0MF9BRENfSU5QVVRQX1ZaRVJPDQo+ID4gPiArICAgICAgICAgICAgLSBBRDU5NDBfQURDX0lO
-UFVUUF9WQklBUzANCj4gPiA+ICsgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX1ZDRTAN
-Cj4gPiA+ICsgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX1ZSRTANCj4gPiA+ICsgICAg
-ICAgICAgICAtIEFENTk0MF9BRENfSU5QVVRQX1ZDRTBfMg0KPiA+ID4gKyAgICAgICAgICAgIC0g
-QUQ1OTQwX0FEQ19JTlBVVFBfTFBUSUENCj4gPiA+ICsgICAgICAgICAgICAtIEFENTk0MF9BRENf
-SU5QVVRQX0FHTkRfUkVGDQo+ID4gPiArDQo+ID4gPiArICAgICAgICAgIC0gZGVzY3JpcHRpb246
-IE5lZ3RpdmUgaW5wdXQgY2hhbm5lbA0KPiA+ID4gKyAgICAgICAgICAtIGVudW06DQo+ID4gPiAr
-ICAgICAgICAgICAgICAjIE5lZ3RpdmUgaW5wdXQgY2FuZGlkYXRlcw0KPiA+ID4gKyAgICAgICAg
-ICAgICAgLSBBRDU5NDBfQURDX0lOUFVUTl9GTE9BVElORw0KPiA+ID4gKyAgICAgICAgICAgICAg
-LSBBRDU5NDBfQURDX0lOUFVUTl9IU1RJQQ0KPiA+ID4gKyAgICAgICAgICAgICAgLSBBRDU5NDBf
-QURDX0lOUFVUTl9MUFRJQQ0KPiA+ID4gKyAgICAgICAgICAgICAgLSBBRDU5NDBfQURDX0lOUFVU
-Tl9BSU4wDQo+ID4gPiArICAgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVROX0FJTjENCj4g
-PiA+ICsgICAgICAgICAgICAgIC0gQUQ1OTQwX0FEQ19JTlBVVE5fQUlOMg0KPiA+ID4gKyAgICAg
-ICAgICAgICAgLSBBRDU5NDBfQURDX0lOUFVUTl9BSU4zDQo+ID4gPiArICAgICAgICAgICAgICAt
-IEFENTk0MF9BRENfSU5QVVROX1ZCSUFTX0NBOA0KPiA+ID4gKyAgICAgICAgICAgICAgLSBBRDU5
-NDBfQURDX0lOUFVUTl9URU1QX04NCj4gPiA+ICsgICAgICAgICAgICAgIC0gQUQ1OTQwX0FEQ19J
-TlBVVE5fQUlONA0KPiA+ID4gKyAgICAgICAgICAgICAgLSBBRDU5NDBfQURDX0lOUFVUTl9BSU42
-DQo+ID4gPiArICAgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVROX1ZaRVJPDQo+ID4gPiAr
-ICAgICAgICAgICAgICAtIEFENTk0MF9BRENfSU5QVVROX1ZCSUFTMA0KPiA+ID4gKyAgICAgICAg
-ICAgICAgLSBBRDU5NDBfQURDX0lOUFVUTl9FWENJVEFUSU9ODQo+ID4gPiArDQo+ID4gPiArICAg
-ICAgY2hhbm5lbC1uYW1lOg0KPiA+ID4gKyAgICAgICAgZGVzY3JpcHRpb246DQo+ID4gPiArICAg
-ICAgICAgIEFueSBzdHJpbmcgZm9ybWF0IG5hbWUgeW91IHdvdWxkIGxpa2UgdG8gYXNzaWduIHRv
-IHRoaXMNCj4gPiA+IGNoYW5uZWwuDQo+ID4gPiArICAgICAgICBtYXhJdGVtczogMQ0KPiA+ID4g
-Kw0KPiA+ID4gKyAgICByZXF1aXJlZDoNCj4gPiA+ICsgICAgICAtIHJlZw0KPiA+ID4gKyAgICAg
-IC0gZGlmZi1jaGFubmVscw0KPiA+ID4gKyAgICAgIC0gY2hhbm5lbC1uYW1lDQo+ID4gPiArDQo+
-ID4gPiArZXhhbXBsZXM6DQo+ID4gPiArICAtIHwNCj4gPiA+ICsgICAgYWQ1OTQwOiBhZDU5NDBA
-MCB7DQo+ID4gPiArICAgICAgY29tcGF0aWJsZSA9ICJhZGksYWQ1OTQwIjsNCj4gPiA+ICsgICAg
-ICByZWcgPSA8MD47DQo+ID4gPiArICAgICAgc3BpLW1heC1mcmVxdWVuY3kgPSA8MTYwMDAwMDA+
-Ow0KPiA+ID4gKyAgICAgIHZyZWYtc3VwcGx5ID0gPCZhZGNfdnJlZj47DQo+ID4gPiArICAgICAg
-aW50ZXJydXB0LXBhcmVudCA9IDwmZ3Bpbz47DQo+ID4gPiArICAgICAgaW50ZXJydXB0cyA9IDwy
-NCAyPjsNCj4gPiA+ICsNCj4gPiA+ICsgICAgICBhZGksaW50ZXJydXB0LWlvID0gPDA+Ow0KPiA+
-ID4gKw0KPiA+ID4gKyAgICAgICNhZGRyZXNzLWNlbGxzID0gPDE+Ow0KPiA+ID4gKyAgICAgICNz
-aXplLWNlbGxzID0gPDA+Ow0KPiA+ID4gKw0KPiA+ID4gKyAgICAgIGNoYW5uZWxAMCB7DQo+ID4g
-PiArICAgICAgICByZWcgPSA8MD47DQo+ID4gPiArICAgICAgICBkaWZmLWNoYW5uZWxzID0gPEFE
-NTk0MF9BRENfSU5QVVRQX1ZDRTANCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgQUQ1
-OTQwX0FEQ19JTlBVVE5fVkJJQVMwPjsNCj4gPiA+ICsgICAgICAgIGNoYW5uZWwtbmFtZSA9ICJW
-Y2UtVmJpYXMiOw0KPiA+ID4gKyAgICAgIH07DQo+ID4gPiArDQo+ID4gPiArICAgICAgY2hhbm5l
-bEAxIHsNCj4gPiA+ICsgICAgICAgIHJlZyA9IDwxPjsNCj4gPiA+ICsgICAgICAgIGRpZmYtY2hh
-bm5lbHMgPSA8QUQ1OTQwX0FEQ19JTlBVVFBfVlJFMA0KPiA+ID4gKyAgICAgICAgICAgICAgICAg
-ICAgICAgICBBRDU5NDBfQURDX0lOUFVUTl9WQklBUzA+Ow0KPiA+ID4gKyAgICAgICAgY2hhbm5l
-bC1uYW1lID0gIlZyZS1WYmlhcyI7DQo+ID4gPiArICAgICAgfTsNCj4gPiA+ICsNCj4gPiA+ICsg
-ICAgICBjaGFubmVsQDIgew0KPiA+ID4gKyAgICAgICAgcmVnID0gPDI+Ow0KPiA+ID4gKyAgICAg
-ICAgZGlmZi1jaGFubmVscyA9IDxBRDU5NDBfQURDX0lOUFVUUF9TRTANCj4gPiA+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgQUQ1OTQwX0FEQ19JTlBVVE5fVkJJQVMwPjsNCj4gPiA+ICsgICAg
-ICAgIGNoYW5uZWwtbmFtZSA9ICJWc2UtVmJpYXMiOw0KPiA+ID4gKyAgICAgIH07DQo+ID4gPiAr
-DQo+ID4gPiArICAgICAgY2hhbm5lbEAzIHsNCj4gPiA+ICsgICAgICAgIHJlZyA9IDwzPjsNCj4g
-PiA+ICsgICAgICAgIGRpZmYtY2hhbm5lbHMgPSA8QUQ1OTQwX0FEQ19JTlBVVFBfREUwDQo+ID4g
-PiArICAgICAgICAgICAgICAgICAgICAgICAgIEFENTk0MF9BRENfSU5QVVROX1ZCSUFTMD47DQo+
-ID4gPiArICAgICAgICBjaGFubmVsLW5hbWUgPSAiVmRlLVZiaWFzIjsNCj4gPiA+ICsgICAgICB9
-Ow0KPiA+ID4gKw0KPiA+ID4gKyAgICAgIGNoYW5uZWxANCB7DQo+ID4gPiArICAgICAgICByZWcg
-PSA8ND47DQo+ID4gPiArICAgICAgICBkaWZmLWNoYW5uZWxzID0gPEFENTk0MF9BRENfSU5QVVRQ
-X0FJTjANCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgQUQ1OTQwX0FEQ19JTlBVVE5f
-VkJJQVMwPjsNCj4gPiA+ICsgICAgICAgIGNoYW5uZWwtbmFtZSA9ICJhaW4wLVZiaWFzIjsNCj4g
-PiA+ICsgICAgICB9Ow0KPiA+ID4gKw0KPiA+ID4gKyAgICAgIGNoYW5uZWxANSB7DQo+ID4gPiAr
-ICAgICAgICByZWcgPSA8NT47DQo+ID4gPiArICAgICAgICBkaWZmLWNoYW5uZWxzID0gPEFENTk0
-MF9BRENfSU5QVVRQX0FJTjENCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgQUQ1OTQw
-X0FEQ19JTlBVVE5fVkJJQVMwPjsNCj4gPiA+ICsgICAgICAgIGNoYW5uZWwtbmFtZSA9ICJhaW4x
-LVZiaWFzIjsNCj4gPiA+ICsgICAgICB9Ow0KPiA+ID4gKw0KPiA+ID4gKyAgICAgIGNoYW5uZWxA
-NiB7DQo+ID4gPiArICAgICAgICByZWcgPSA8Nj47DQo+ID4gPiArICAgICAgICBkaWZmLWNoYW5u
-ZWxzID0gPEFENTk0MF9BRENfSU5QVVRQX0FJTjINCj4gPiA+ICsgICAgICAgICAgICAgICAgICAg
-ICAgICAgQUQ1OTQwX0FEQ19JTlBVVE5fVkJJQVMwPjsNCj4gPiA+ICsgICAgICAgIGNoYW5uZWwt
-bmFtZSA9ICJhaW4yLVZiaWFzIjsNCj4gPiA+ICsgICAgICB9Ow0KPiA+ID4gKw0KPiA+ID4gKyAg
-ICAgIGNoYW5uZWxANyB7DQo+ID4gPiArICAgICAgICByZWcgPSA8Nz47DQo+ID4gPiArICAgICAg
-ICBkaWZmLWNoYW5uZWxzID0gPEFENTk0MF9BRENfSU5QVVRQX0FJTjMNCj4gPiA+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgQUQ1OTQwX0FEQ19JTlBVVE5fVkJJQVMwPjsNCj4gPiA+ICsgICAg
-ICAgIGNoYW5uZWwtbmFtZSA9ICJhaW4zLVZiaWFzIjsNCj4gPiA+ICsgICAgICB9Ow0KPiA+ID4g
-Kw0KPiA+ID4gKyAgICAgIGNoYW5uZWxAOCB7DQo+ID4gPiArICAgICAgICByZWcgPSA8OD47DQo+
-ID4gPiArICAgICAgICBkaWZmLWNoYW5uZWxzID0gPEFENTk0MF9BRENfSU5QVVRQX0FJTjQNCj4g
-PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgQUQ1OTQwX0FEQ19JTlBVVE5fVkJJQVMwPjsN
-Cj4gPiA+ICsgICAgICAgIGNoYW5uZWwtbmFtZSA9ICJhaW40LVZiaWFzIjsNCj4gPiA+ICsgICAg
-ICB9Ow0KPiA+ID4gKw0KPiA+ID4gKyAgICAgIGNoYW5uZWxAOSB7DQo+ID4gPiArICAgICAgICBy
-ZWcgPSA8OT47DQo+ID4gPiArICAgICAgICBkaWZmLWNoYW5uZWxzID0gPEFENTk0MF9BRENfSU5Q
-VVRQX0FJTjYNCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgQUQ1OTQwX0FEQ19JTlBV
-VE5fVkJJQVMwPjsNCj4gPiA+ICsgICAgICAgIGNoYW5uZWwtbmFtZSA9ICJhaW42LVZiaWFzIjsN
-Cj4gPiA+ICsgICAgICB9Ow0KPiA+ID4gKw0KPiA+ID4gKyAgICAgIGNoYW5uZWxAMTAgew0KPiA+
-ID4gKyAgICAgICAgcmVnID0gPDEwPjsNCj4gPiA+ICsgICAgICAgIGRpZmYtY2hhbm5lbHMgPSA8
-QUQ1OTQwX0FEQ19JTlBVVFBfTFBUSUFfTFANCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAg
-ICAgQUQ1OTQwX0FEQ19JTlBVVE5fTFBUSUE+Ow0KPiA+ID4gKyAgICAgICAgY2hhbm5lbC1uYW1l
-ID0gIkxvdyBwb3dlciBUSUEgREMiOw0KPiA+ID4gKyAgICAgIH07DQo+ID4gPiArDQo+ID4gPiAr
-ICAgICAgY2hhbm5lbEAxMSB7DQo+ID4gPiArICAgICAgICByZWcgPSA8MTE+Ow0KPiA+ID4gKyAg
-ICAgICAgZGlmZi1jaGFubmVscyA9IDxBRDU5NDBfQURDX0lOUFVUUF9MUFRJQQ0KPiA+ID4gKyAg
-ICAgICAgICAgICAgICAgICAgICAgICBBRDU5NDBfQURDX0lOUFVUTl9MUFRJQT47DQo+ID4gPiAr
-ICAgICAgICBjaGFubmVsLW5hbWUgPSAiTG93IHBvd2VyIFRJQSBBQyI7DQo+ID4gPiArICAgICAg
-fTsNCj4gPiA+ICsNCj4gPiA+ICsgICAgICBjaGFubmVsQDEyIHsNCj4gPiA+ICsgICAgICAgIHJl
-ZyA9IDwxMj47DQo+ID4gPiArICAgICAgICBkaWZmLWNoYW5uZWxzID0gPEFENTk0MF9BRENfSU5Q
-VVRQX0hTVElBDQo+ID4gPiArICAgICAgICAgICAgICAgICAgICAgICAgIEFENTk0MF9BRENfSU5Q
-VVROX0hTVElBPjsNCj4gPiA+ICsgICAgICAgIGNoYW5uZWwtbmFtZSA9ICJIaWdoIFNwZWVkIFRJ
-QSI7DQo+ID4gPiArICAgICAgfTsNCj4gPiA+ICsNCj4gPiA+ICsgICAgICBjaGFubmVsQDEzIHsN
-Cj4gPiA+ICsgICAgICAgIHJlZyA9IDwxMz47DQo+ID4gPiArICAgICAgICBkaWZmLWNoYW5uZWxz
-ID0gPEFENTk0MF9BRENfSU5QVVRQX1RFTVANCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAg
-ICAgQUQ1OTQwX0FEQ19JTlBVVE5fVkJJQVMwPjsNCj4gPiA+ICsgICAgICAgIGNoYW5uZWwtbmFt
-ZSA9ICJUZW1wZXJhdHVyZSI7DQo+ID4gPiArICAgICAgfTsNCj4gPiA+ICsgICAgfTsNCj4gPiA+
-IGRpZmYgLS1naXQgYS9pbmNsdWRlL2R0LWJpbmRpbmdzL2lpby9hZGMvYWRpLGFkNTk0MC5oIGIv
-aW5jbHVkZS9kdC0NCj4gPiA+IGJpbmRpbmdzL2lpby9hZGMvYWRpLGFkNTk0MC5oDQo+ID4gPiBu
-ZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+ID4gaW5kZXggMDAwMDAwMDAwMDAwLi5jMTc4MjZmMmY2
-NTQNCj4gPiA+IC0tLSAvZGV2L251bGwNCj4gPiA+ICsrKyBiL2luY2x1ZGUvZHQtYmluZGluZ3Mv
-aWlvL2FkYy9hZGksYWQ1OTQwLmgNCj4gPiA+IEBAIC0wLDAgKzEsNTIgQEANCj4gPiA+ICsvKiBT
-UERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCAqLw0KPiA+ID4gKy8qDQo+ID4gPiArICog
-VGhpcyBoZWFkZXIgcHJvdmlkZXMgY29uc3RhbnRzIGZvciBjb25maWd1cmluZyB0aGUgQUQ1OTQw
-IEFGRQ0KPiA+ID4gKyAqLw0KPiA+ID4gKw0KPiA+ID4gKyNpZm5kZWYgX0RUX0JJTkRJTkdTX0lJ
-T19BRENfQUQ1OTQwX0gNCj4gPiA+ICsjZGVmaW5lIF9EVF9CSU5ESU5HU19JSU9fQURDX0FENTk0
-MF9IDQo+ID4gPiArDQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUTl9GTE9BVElORwkw
-DQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUTl9IU1RJQQkJMQ0KPiA+ID4gKyNkZWZp
-bmUgQUQ1OTQwX0FEQ19JTlBVVE5fTFBUSUEJCTINCj4gPiA+ICsjZGVmaW5lIEFENTk0MF9BRENf
-SU5QVVROX0FJTjAJCTQNCj4gPiA+ICsjZGVmaW5lIEFENTk0MF9BRENfSU5QVVROX0FJTjEJCTUN
-Cj4gPiA+ICsjZGVmaW5lIEFENTk0MF9BRENfSU5QVVROX0FJTjIJCTYNCj4gPiA+ICsjZGVmaW5l
-IEFENTk0MF9BRENfSU5QVVROX0FJTjMJCTcNCj4gPiA+ICsjZGVmaW5lIEFENTk0MF9BRENfSU5Q
-VVROX1ZCSUFTX0NBOAkxMA0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19JTlBVVE5fVEVNUF9O
-CTExDQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUTl9BSU40CQkxMg0KPiA+ID4gKyNk
-ZWZpbmUgQUQ1OTQwX0FEQ19JTlBVVE5fQUlONgkJMTQNCj4gPiA+ICsjZGVmaW5lIEFENTk0MF9B
-RENfSU5QVVROX1ZaRVJPCQkxNg0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19JTlBVVE5fVkJJ
-QVMwCTE3DQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUTl9FWENJVEFUSU9OCTIwDQo+
-ID4gPiArDQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUUF9GTE9BVElORwkwDQo+ID4g
-PiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUUF9IU1RJQQkJMQ0KPiA+ID4gKyNkZWZpbmUgQUQ1
-OTQwX0FEQ19JTlBVVFBfTFBUSUFfTFAJMg0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19JTlBV
-VFBfQUlOMAkJNA0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19JTlBVVFBfQUlOMQkJNQ0KPiA+
-ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19JTlBVVFBfQUlOMgkJNg0KPiA+ID4gKyNkZWZpbmUgQUQ1
-OTQwX0FEQ19JTlBVVFBfQUlOMwkJNw0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19JTlBVVFBf
-QVZERF8yCTgNCj4gPiA+ICsjZGVmaW5lIEFENTk0MF9BRENfSU5QVVRQX0RWRERfMgk5DQo+ID4g
-PiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUUF9BVkREX1JFR18yCTEwDQo+ID4gPiArI2RlZmlu
-ZSBBRDU5NDBfQURDX0lOUFVUUF9URU1QCQkxMQ0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19J
-TlBVVFBfVkJJQVNfQ0FQCTEyDQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUUF9ERTAJ
-CTEzDQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUUF9TRTAJCTE0DQo+ID4gPiArI2Rl
-ZmluZSBBRDU5NDBfQURDX0lOUFVUUF9WUkVGXzJWNV8yCTE2DQo+ID4gPiArI2RlZmluZSBBRDU5
-NDBfQURDX0lOUFVUUF9WUkVGXzFWODIJMTgNCj4gPiA+ICsjZGVmaW5lIEFENTk0MF9BRENfSU5Q
-VVRQX1BfVEVNUF9OCTE5DQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUUF9BSU40CQky
-MA0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19JTlBVVFBfQUlONgkJMjINCj4gPiA+ICsjZGVm
-aW5lIEFENTk0MF9BRENfSU5QVVRQX1ZaRVJPCQkyMw0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FE
-Q19JTlBVVFBfVkJJQVMwCTI0DQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUUF9WQ0Uw
-CQkyNQ0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19JTlBVVFBfVlJFMAkJMjYNCj4gPiA+ICsj
-ZGVmaW5lIEFENTk0MF9BRENfSU5QVVRQX1ZDRTBfMgkzMQ0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQw
-X0FEQ19JTlBVVFBfTFBUSUEJCTMzDQo+ID4gPiArI2RlZmluZSBBRDU5NDBfQURDX0lOUFVUUF9B
-R05EX1JFRgkzNQ0KPiA+ID4gKyNkZWZpbmUgQUQ1OTQwX0FEQ19JTlBVVFBfRVhDSVRBVElPTgkz
-Ng0KPiA+ID4gKw0KPiA+ID4gKyNlbmRpZiAvKiBfRFRfQklORElOR1NfSUlPX0FEQ19BRDU5NDAg
-Ki8NCg==
+
+
+On 11/11/19 12:55 AM, Jonathan Cameron wrote:
+> On Fri,  8 Nov 2019 21:09:45 +0800
+> Song Qiang <songqiang1304521@gmail.com> wrote:
+> 
+>> The AD5940 is a high precision, low power analog front end (AFE)
+>> designed for portable applications that require high precision,
+>> electrochemical-based measurement techniques, such as amper-
+>> ometric, voltammetric, or impedance measurements.
+>>
+>> Datasheet:
+>> Link: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5940.pdf
+>>
+>> Signed-off-by: Song Qiang <songqiang1304521@gmail.com>
+> 
+> Nice little driver on the whole.  I'm guessing this is very much the 'first of
+> many' patches to support this complex part.  Makes sense and keeps it manageable
+> from a review point of view.
+> 
+> A few comments inline.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+>> ---
+>>  .../ABI/testing/sysfs-bus-iio-adc-ad5940      |   7 +
+>>  drivers/iio/adc/Kconfig                       |  10 +
+>>  drivers/iio/adc/Makefile                      |   1 +
+>>  drivers/iio/adc/ad5940.c                      | 679 ++++++++++++++++++
+>>  4 files changed, 697 insertions(+)
+>>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad5940
+>>  create mode 100644 drivers/iio/adc/ad5940.c
+>>
+
+...
+
+>> +static int ad5940_write_reg_mask(struct ad5940_state *st, u16 addr,
+>> +				 u32 mask, u32 data)
+>> +{
+>> +	u32 temp;
+>> +	int ret;
+>> +
+>> +	ret = ad5940_read_reg(st, addr, &temp);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	temp &= ~mask;
+>> +	temp |= data;
+>> +
+>> +	return ad5940_write_reg(st, addr, temp);
+>> +}
+>> +
+>> +static ssize_t ad5940_read_info(struct iio_dev *indio_dev,
+>> +				uintptr_t private,
+>> +				const struct iio_chan_spec *chan,
+>> +				char *buf)
+>> +{
+>> +	struct ad5940_state *st = iio_priv(indio_dev);
+>> +
+>> +	switch ((u32)private) {
+>> +	case AD5940_CHANNEL_NAME:
+> 
+> What is the logic here in this magic define?
+> 
+
+Do you mean this is not necessary? In this driver, 'ad5940_read_info' is
+only used in name reading, but I was thinking maybe there will be some
+other stuff to be reading from this in the future.
+
+>> +		return sprintf(buf, "%s\n",
+>> +			st->channel_config[chan->address].channel_name);
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +static const struct iio_chan_spec_ext_info ad4590_ext_info[] = {
+>> +	{
+>> +		.name = "name",
+> 
+> This is defining new ABI.  I'm not necessarily against doing so but
+> it needs a separate documentation patch so that it's easy to discuss.
+> Documentation/ABI/testing/sysfs-bus-iio
+> 
+> We might want to think of a similar naming to the label we recently
+> added for the device itself.
+> 
+
+I'll look into this and see if I can use 'label' instead.
+
+>> +		.read = ad5940_read_info,
+>> +		.private = AD5940_CHANNEL_NAME,
+>> +		.shared = IIO_SEPARATE,
+>> +	},
+>> +	{ },
+>> +};
+>> +
+>> +static const struct iio_chan_spec ad5940_channel_template = {
+>> +	.type = IIO_VOLTAGE,
+>> +	.differential = 1,
+>> +	.indexed = 1,
+>> +	.ext_info = ad4590_ext_info,
+>> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+>> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
+>> +};
+>> +
+>> +static int ad5940_clear_ready(struct ad5940_state *st)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = ad5940_write_reg_mask(st, AD5940_REG_AFECON,
+>> +				    AD5940_AFECON_ADCCONV_MSK,
+>> +				    AD5940_AFECON_ADCCONV_DIS);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	return ad5940_write_reg(st, AD5940_REG_INTCLR, AD5940_INTC_ADC);
+>> +}
+>> +
+>> +static irqreturn_t ad5940_irq_handler(int irq, void *private)
+>> +{
+>> +	struct ad5940_state *st = private;
+>> +	int ret;
+>> +
+>> +	ret = ad5940_clear_ready(st);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	complete(&st->complete);
+>> +
+>> +	return IRQ_HANDLED;
+>> +}
+>> +
+>> +static int ad5940_scan_direct(struct ad5940_state *st, u32 mux, int *val)
+>> +{
+>> +	int ret;
+>> +	u32 result;
+>> +
+>> +	mutex_lock(&st->lock);
+>> +	ret = ad5940_write_reg_mask(st, AD5940_REG_ADCCON,
+>> +				    AD5940_ADCCON_MUX_MSK, mux);
+>> +	if (ret < 0)
+>> +		goto unlock_return;
+>> +
+>> +	reinit_completion(&st->complete);
+>> +	ret = ad5940_write_reg_mask(st, AD5940_REG_AFECON,
+>> +				    AD5940_AFECON_ADCCONV_MSK,
+>> +				    AD5940_AFECON_ADCCONV_EN);
+>> +	if (ret < 0)
+>> +		goto unlock_return;
+>> +
+>> +	ret = wait_for_completion_timeout(&st->complete,
+>> +					  msecs_to_jiffies(1000));
+>> +	if (!ret) {
+>> +		ad5940_clear_ready(st);
+>> +		ret = -ETIMEDOUT;
+>> +		goto unlock_return;
+>> +	}
+>> +
+>> +	ret = ad5940_read_reg(st, AD5940_REG_ADCDAT, &result);
+>> +	mutex_unlock(&st->lock);
+>> +	if (ret < 0)
+>> +		return ret;
+> 
+> As you already have the unlock_return below on this occasion I would
+> move the if (ret) inside the lock so all similar errors take a simpler
+> exit path.  If this was the only case and you didn't have the handling
+> I would agree with how you have done it.
+> 
+>> +	*val = result & 0xffff;
+>> +
+>> +	return 0;
+>> +
+>> +unlock_return:
+>> +	mutex_unlock(&st->lock);
+>> +	return ret;
+>> +}
+>> +
+>> +static int ad5940_read_raw(struct iio_dev *indio_dev,
+>> +	const struct iio_chan_spec *chan, int *val, int *val2, long info)
+>> +{
+>> +	struct ad5940_state *st = iio_priv(indio_dev);
+>> +	int ret;
+>> +
+>> +	switch (info) {
+>> +	case IIO_CHAN_INFO_RAW:
+>> +		ret = ad5940_scan_direct(st,
+>> +				st->channel_config[chan->address].ain,
+>> +				val);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +		else
+>> +			return IIO_VAL_INT;
+> 		return IIO_VAL_INT;
+> 
+> 		Cleaner to only have the error path indented.
+> 		if / else kind of implies some 'equality' of the two
+> 		options.
+> 
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		*val = st->vref_mv;
+>> +		*val2 = 16;
+>> +		return IIO_VAL_FRACTIONAL_LOG2;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +static const struct iio_info ad5940_info = {
+>> +	.read_raw = &ad5940_read_raw,
+>> +};
+>> +
+>> +int cmp_u8(const void *a, const void *b)
+>> +{
+>> +	return (*(u8 *)a - *(u8 *)b);
+>> +}
+>> +
+>> +static int ad5940_check_channel_indexes(struct device *dev, u32 *ain)
+>> +{
+>> +	const u8 channel_p[] = {
+>> +		0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 19,
+>> +		20, 22, 23, 24, 25, 26, 31, 33, 35, 36
+>> +	};
+>> +	const u8 channel_n[] = {
+>> +		0, 1, 2, 4, 5, 6, 7, 10, 11, 12, 14, 16, 17, 20
+>> +	};
+>> +	u8 *index;
+>> +
+>> +	index = (u8 *) bsearch(&ain[0], channel_p, ARRAY_SIZE(channel_p),
+>> +				sizeof(u8), cmp_u8);
+>> +	if (!index) {
+>> +		dev_err(dev, "Positive input index not found.\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	index = (u8 *) bsearch(&ain[1], channel_n, ARRAY_SIZE(channel_n),
+>> +				sizeof(u8), cmp_u8);
+>> +	if (!index) {
+>> +		dev_err(dev, "negtive input index not found.\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int ad5940_of_parse_channel_config(struct iio_dev *indio_dev,
+>> +					  struct device_node *np)
+>> +{
+>> +	struct ad5940_state *st = iio_priv(indio_dev);
+>> +	struct iio_chan_spec *chan;
+>> +	struct device_node *child;
+>> +	u32 channel, ain[2];
+>> +	int ret;
+>> +
+>> +	st->num_channels = of_get_available_child_count(np);
+>> +	if (!st->num_channels) {
+>> +		dev_err(indio_dev->dev.parent, "no channel children\n");
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	chan = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
+>> +			    sizeof(*chan), GFP_KERNEL);
+>> +	if (!chan)
+>> +		return -ENOMEM;
+>> +
+>> +	st->channel_config = devm_kcalloc(indio_dev->dev.parent,
+>> +					  st->num_channels,
+>> +					  sizeof(*st->channel_config),
+>> +					  GFP_KERNEL);
+>> +	if (!st->channel_config)
+>> +		return -ENOMEM;
+>> +
+>> +	indio_dev->channels = chan;
+>> +	indio_dev->num_channels = st->num_channels;
+>> +
+>> +	for_each_available_child_of_node(np, child) {
+>> +		ret = of_property_read_u32(child, "reg", &channel);
+>> +		if (ret)
+>> +			goto err;
+>> +
+>> +		ret = of_property_read_u32_array(child, "diff-channels",
+>> +						 ain, 2);
+>> +		if (ret)
+>> +			goto err;
+>> +
+>> +		ret = of_property_read_string(child, "channel-name",
+>> +				&st->channel_config[channel].channel_name);
+>> +		if (ret)
+>> +			st->channel_config[channel].channel_name = "none-name";
+> 
+> You have this as required I think in the dt properties.  If that is the case then
+> enforce it and refuse to load the driver if not supplied. Otherwise change
+> the dt docs to make it optional (which is probably better)
+> 
+
+I prefer to have name required because a channel here is a combination
+of some input and some output. Without name, we will have to look into
+dt to see which input and which output is used in this channel.
+
+>> +
+>> +		ret = ad5940_check_channel_indexes(indio_dev->dev.parent, ain);
+>> +		if (ret) {
+>> +			dev_err(indio_dev->dev.parent,
+>> +				"some input channel index does not exist: %d, %d, %d",
+>> +				channel, ain[0], ain[1]);
+>> +			goto err;
+>> +		}
+>> +
+>> +		st->channel_config[channel].ain = AD5940_CHANNEL_AINP(ain[0]) |
+>> +						  AD5940_CHANNEL_AINN(ain[1]);
+>> +
+>> +		*chan = ad5940_channel_template;
+>> +		chan->address = channel;
+>> +		chan->scan_index = channel;
+>> +		chan->channel = ain[0];
+>> +		chan->channel2 = ain[1];
+>> +
+>> +		chan++;
+>> +	}
+>> +
+>> +	return 0;
+>> +err:
+>> +	of_node_put(child);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int ad5940_config_polarity(struct ad5940_state *st, u32 polarity)
+>> +{
+>> +	u32 val;
+>> +
+>> +	if (polarity == IRQF_TRIGGER_RISING)
+>> +		val = AD5940_INTCPOL_POS;
+>> +	else
+>> +		val = AD5940_INTCPOL_NEG;
+>> +
+>> +	return ad5940_write_reg_mask(st, AD5940_REG_INTCPOL,
+>> +				     AD5940_INTCPOL_MSK, val);
+>> +}
+>> +
+>> +static int ad5940_config_int_io(struct ad5940_state *st, u8 int_io)
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	if (int_io == 3)
+> 
+> Switch statement preferred for matches like this.
+> 
+>> +		ret = ad5940_write_reg_mask(st, AD5940_REG_GP0CON,
+>> +					    AD5940_GP0CON_3_MSK,
+>> +					    AD5940_GP0CON_3_INT);
+>> +	else if (int_io == 6)
+>> +		ret = ad5940_write_reg_mask(st, AD5940_REG_GP0CON,
+>> +					    AD5940_GP0CON_6_MSK,
+>> +					    AD5940_GP0CON_6_INT);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	return  ad5940_write_reg(st, AD5940_REG_GP0OEN, BIT(int_io));
+>> +}
+>> +
+>> +static const u32 ad5940_powerup_setting[][2] = {
+> 
+> Hmm. This is not good practice when we have docs for the values.
+> If we can provide a breakdown into what is being set that would be
+> great.  I can't find docs immediately for some of these however...
+> 
+
+We have docs for some of them, but not for all. I got some of the init
+register values from Analog's example code, which didn't explain much.
+I'll add comment to these values as much as I can.
+
+yours,
+Song Qiang
+
+>> +	{ 0x0908, 0x02c9 },
+>> +	{ 0x0c08, 0x206c },
+>> +	{ 0x21f0, 0x0010 },
+> 
+> This one is is simply saying only 1 repeat conversion for example.
+> Add some defines and you can make that clear.
+> 
+>> +	{ 0x0410, 0x02c9 },
+>> +	{ 0x0a28, 0x0009 },
+>> +	{ 0x238c, 0x0104 },
+>> +	{ 0x0a04, 0x4859 },
+>> +	{ 0x0a04, 0xf27b },
+>> +	{ 0x0a00, 0x8009 },
+>> +	{ 0x22f0, 0x0000 },
+>> +	{ 0x2230, 0xde87a5af },
+>> +	{ 0x2250, 0x103f },
+>> +	{ 0x22b0, 0x203c },
+>> +	{ 0x2230, 0xde87a5a0 },
+>> +};
+>> +
+
+...

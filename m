@@ -2,19 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DA16FD732
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2019 08:44:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA9AFFD737
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2019 08:44:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727080AbfKOHoP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Nov 2019 02:44:15 -0500
-Received: from mout.kundenserver.de ([212.227.17.10]:47219 "EHLO
+        id S1727315AbfKOHoj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Nov 2019 02:44:39 -0500
+Received: from mout.kundenserver.de ([217.72.192.75]:50171 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726182AbfKOHoO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Nov 2019 02:44:14 -0500
+        with ESMTP id S1726196AbfKOHoi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Nov 2019 02:44:38 -0500
 Received: from localhost ([46.78.193.225]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MJW18-1iBf1w0gRM-00JsdN; Fri, 15 Nov 2019 08:43:40 +0100
-Date:   Fri, 15 Nov 2019 08:43:35 +0100
+ (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MMGZM-1iCCAc11Da-00JFS9; Fri, 15 Nov 2019 08:44:04 +0100
+Date:   Fri, 15 Nov 2019 08:43:56 +0100
 From:   Andreas Klinger <ak@it-klinger.de>
 To:     robh+dt@kernel.org, jic23@kernel.org, mark.rutland@arm.com
 Cc:     mripard@kernel.org, shawnguo@kernel.org, heiko@sntech.de,
@@ -25,64 +25,56 @@ Cc:     mripard@kernel.org, shawnguo@kernel.org, heiko@sntech.de,
         davem@davemloft.net, paulmck@linux.ibm.com,
         devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/4] iio: add driver for ping))) and laserping sensors
-Message-ID: <20191115074333.ria34nl64ehglalm@arbad>
+Subject: [PATCH v2 1/4] dt-bindings: add vendor prefix parallax
+Message-ID: <20191115074354.uanova4tomgwofgg@arbad>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Provags-ID: V03:K1:yi4wfJ1D0RO5zi4BC9BWjFJSWGZ1tCn16r5KjQCvokZQI7gAm/w
- nO+So/Kh0Z+H5nropCBZJert0CMmxL6irxZHH35aw/yiyHH8zSoipM9GRKlC2e+Ktd9Uw2Q
- HxuzEX03Hge+KHsWCq1dnN8dQKcuAFsExRhNT+lZRos2IelKh0T5c+4gJlyzTUtc+766Yy9
- p64wouzM6qfHE0oKLBA9Q==
+X-Provags-ID: V03:K1:BANQnTLmM11JdWuHk+f2usdySofhmleBOZBH9+B0lRvU48xl4v+
+ tDXrArYElBLOxl7kePqOuNA/F3W6TDXwUv5Gs4MnkgZrTkxvLbOeAyaWP5hglvM2U7gA7IM
+ dqCCWw5DellDtPg4MBLLf3UyJ9ug868NQoEHnt1g7mWb/1iuea2XmjbuCJUV8kZBr4f1+xs
+ RktH1OV0q0y/EVZ/rJGAA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:PR6qVSVfGMw=:M8ZrZ0qb7fwzaniaJOb4U+
- TbvBo0upRwU0QiYrpDknQXnWukozqMXOqKh1CxV9jB5HgU/Zv1JtisZ5M4bFHtyxuBMOLxCZX
- gy45lxo7CwE4OxIQxe9lZHfG9poQh35XATkPBt6PnoBvRlbecNj+NQ+uV5HXGdLz30d6Jlytk
- TSlUapKtsNk3vFBRpInHwLzplxbglqcijxzE+h/25iu89z5ruS3HOzp5zIfHzsh2Kt/jsnSSt
- vlS2ZLTdcToouPum40yj/k0ImbLXAgzc1QyTmXDuQ6yDvjfLwtEhkKPhBCjYaCUk2lfP7PPQm
- RwhN0NhLcK+LfSytcojXd86s/QyXM5/y8qdVNynPKBfrQXjKuhaPa3ebWP/SCcXlb+2BTQCwU
- HUm/OKxSUBZjHqEV/X2l2o7W05zqhucXxFpFKFJQM8Z7MQOPnDiffFiYwnPTYMTO7jWcEZle6
- AREHM4va0xI60TnVP7nAn9ynKSZ0TJtzl8YqYJZ8aImRd7P7WIRXlsXoS0XQGSWM2kLPrZ5w9
- 9e9UJ+qWKJFjvC0AmqFs1bST8WRWA7OUr+5BKSWEfhuxEIU3U5DrZFJOZ327eZoU7Qr8nEGNT
- pOVoUuunPsEcfLBbzeBItWl35GD/UcJAzLU9fE7RrKTGm3Rmqug7dq1V/hLC7jmDXP5zK5/R8
- aOUaWMyCNLbjl3MknpJ1Jv/3jSlg9w+4ntTBGTI+lb4IO7qVgQW2+d3J19sfblUajIzFOlaaY
- sjMvvxbY230ySsLkSWpJMBaycGoGiNDjMHxVkm8R+/sKCnpOLpmggmoWj60qz8V0Gwcwfmxt0
- XaQjrlUetT5YPjBsSingPP1QHv6LAHBvdGoIYdYICxsaZ6II7qIbjfaxCaHGG3LT/UZe7gW0y
- JMtk0RJ2aBrqXrUVyGBQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:bwnKK+5gh/0=:oHmi3tRaf4n+GDTBk1ivpp
+ ZU0X9mRPWtYoOtFzvOTJFUmOAEPsboWv9qB0uqrJXanYzgg0nHswNJe1jlUSQ4EJ8ZNnz4JUI
+ 5TNvTYJ9wIpglvXGaBOkF//djz4vQHXQ76hkdC07TkL7QCWVRj9f0cmJ+bN2IikSvp1GR5NhC
+ pG7+Wf0BeehhtW5tX4vtUdq0QLNaixkxhtDq/qab5Fauig6dQYyXOEQZdJJvMypBElYtvd48H
+ ipGnjNfmvCc05Jd+PCU0bFxxqMB+Ozd7LOJPl/zZgvTGbDCYIiy4VrLHTR8hnYYfJjUV6cq/S
+ 2f62N595Wvj8yR6opLS9gZZ+RiZUb1c9DL6ZQqRuHoDIWU3yg8yV7fXN1uQIJC79OPXsN19J7
+ G4rGYh9BYeBvy4qZi33edxdfd+iUhjVWj30nmHh7A/CcHBDBsw5OE9ylAZCtU4YgLFHVE3APT
+ 5xiJxnP8oLakLc1uq0A3llRKN3pRLDP94oX8BeZZtbI8zuVHzwzxMDZjb/7c9F4b546OogVs2
+ mv9TmEZEgeDN3zOH/r3WFiQBApmuYLpG7ReTXhWLsyiF3VGhcLz2wCKS+ss2LAr1tGMkbnLBk
+ 8E6pXNvyUru11GH57hIDSKe+kybIjn5B9IGm7hRmPmIHpfrG8sYazpucEmZKJYlhRZAWDmpG2
+ tjKGJ54CNCja6x4rDQuj4u9msWuubcxKBcaJZrFUpuS4G71/5cQ3ujeWHcGCzK926Pz7qD1M0
+ Ako1NCcB9L5GPwExG6XcibNJw8LmwtO58I2Y3f3UVyWnvpW4L7iB1zGOb6UOWLNjEFCMj6lEb
+ +8CAN2whjEI/55XrvRld6fyRk0YPB0GyQNgD6+aKIbOhU8Q/7LBHrX/LbxBEbS/YtnKoT1Mpe
+ MpYGQ6AWPTraRBl2r8Tw==
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patchset adds support for parallax PING))) and LaserPING sensors as
-iio driver. The driver is derived from srf04 but the device is using only
-one GPIO for both triggering and the echo.
+Add new vendor prefix parallax for newly created ping iio sensors.
 
-Changes in v2:
-Thanks to the reviews of Jonathan, Rob and Michel there are some
-improvements:
-- optimize use of macros with to_platform_device() and
-  of_device_get_match_data()
-- change spacing and typos
-- simplify ascii art timing diagram
-- merge patch for driver and corresponding Kconfig and Makefile
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+Acked-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Andreas Klinger (4):
-  dt-bindings: add vendor prefix parallax
-  dt-bindings: add parallax ping sensors
-  iio: ping: add parallax ping sensors
-  MAINTAINERS: add maintainer for ping iio sensors
-
- .../bindings/iio/proximity/parallax-ping.yaml      |  51 ++++
- .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
- MAINTAINERS                                        |   7 +
- drivers/iio/proximity/Kconfig                      |  15 +
- drivers/iio/proximity/Makefile                     |   1 +
- drivers/iio/proximity/ping.c                       | 333 +++++++++++++++++++++
- 6 files changed, 409 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml
- create mode 100644 drivers/iio/proximity/ping.c
-
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 967e78c5ec0a..d3f9690e1e4b 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -713,6 +713,8 @@ patternProperties:
+     description: Panasonic Corporation
+   "^parade,.*":
+     description: Parade Technologies Inc.
++  "^parallax,.*":
++    description: Parallax Inc.
+   "^pda,.*":
+     description: Precision Design Associates, Inc.
+   "^pericom,.*":
 -- 
 2.11.0

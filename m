@@ -2,77 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31782FE0C3
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2019 16:00:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFF6EFE1FA
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2019 16:50:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727472AbfKOPAm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Nov 2019 10:00:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58174 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727406AbfKOPAm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 15 Nov 2019 10:00:42 -0500
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2FE192075E;
-        Fri, 15 Nov 2019 15:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573830041;
-        bh=e6AqUu0tvIsjZpg7MkGAdgpO+2f9FFqD80mC49I3A1w=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=FiDx/Atpmvy/JB5JQSBRXq+jhgF8zuiC9eeQVLUPzR08zTEenqcITIvRgkedeZccJ
-         yG1bwrhRau/BG55Ld5/t7pUpCKiiWf+LNRVj4FjfTuVo9ZDnviNHaucxSRF0kDtEVs
-         P1wNqDWuHGMG5xk6Vuz8FRWktfom61G+ImoDQcVw=
-Received: by mail-qt1-f178.google.com with SMTP id r20so11043745qtp.13;
-        Fri, 15 Nov 2019 07:00:41 -0800 (PST)
-X-Gm-Message-State: APjAAAV7L/AqO+FaEVOz6+k/53q8kFzJK9JlycKgp2J3Y+RktzQ9dc1K
-        PYIes+OffAiohkb71H24iEbLSD/mVpNOXHRl7Q==
-X-Google-Smtp-Source: APXvYqya8dDmgqMXFYG+B2TXV92bU4T/lbXrVVmBGbEe9H1TzMG+IxXMhC9StqYyWHztu8gou6AA7UkUXzPHvR3099w=
-X-Received: by 2002:ac8:7612:: with SMTP id t18mr14221857qtq.143.1573830040314;
- Fri, 15 Nov 2019 07:00:40 -0800 (PST)
+        id S1727662AbfKOPt4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Nov 2019 10:49:56 -0500
+Received: from mail-io1-f66.google.com ([209.85.166.66]:36220 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727674AbfKOPtn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Nov 2019 10:49:43 -0500
+Received: by mail-io1-f66.google.com with SMTP id s3so10930854ioe.3
+        for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2019 07:49:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
+        b=T96mBsWswYjsm0w7ecYkWpV509ib/ulk9bHbI0Xwo0rzkePegh7rSfOcmzGbyf8vTc
+         lns/HOXyf4/6jOYDVIgZ/CZyIfN2m2y88qVdmXSABhNsP0MXDIRsHGSOOd7wWkwuGiQx
+         ehcoBpFXp6INIFq3jwmveina1L3fsWjpzHRhMvlhwo8OJ8Dy4xuFXwCrYZiL/Ja/dmiU
+         sEvBblBcC09ww5H/W1Li3rJXBc1TYjMn46kjeboNwYGUiqFeNnjz46iJxarBlBzUTpau
+         7EU4w1MkRxjhgPFrJ2/ipVqnuE4IawmENFYcW1JVUg9OFLrEKZvfb77T8+3XayPV4Zd+
+         KrHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
+        b=FHm7C9nKlY/4KdskVOilssYtmAA2+nBZEmp6ApQzUkSosR3k/HjJogPaB1GLvyXn4n
+         VYLcukIFVqmM1wWSs6vpmdygkD9qLQvD3+aWyO68Ud11Asc1GGq4VnVRp7j1MEkZia3F
+         q06ZqbT+/SnPOkoX6uKCX6tU7q/J/RI+/wq/4WvdT6C5LfQzjfLAuo6z4q5lvqPF4SX9
+         gH05cqi7MzmaLB0rISCoXID8VPmg/W93tA+qrE5zThkJDjyouv6RwYQwBRvXEWHflpm3
+         FLhzQ1xlHkQXC8l4QEZfK9q9Vud20yWuDqHcy3GQ7wQtIgfVCJssIq1CWEavqy9dEnN6
+         d+iw==
+X-Gm-Message-State: APjAAAXVxx1kiUkTuQFMBFE3Z+1xgzj0WZo1dMozCONgyAUZGfzymG4x
+        /uipiWbH9Pla0V2a/+LOn3l9AwH2NQcVXmnHbQ==
+X-Google-Smtp-Source: APXvYqxEj1beLI6zhjihT/lmX2Dk324PGcIr8veC5c+0F/PFQKT7AeNYgljOGh72OwNqCMMZvqGkvMbSAqCkDjgGkjg=
+X-Received: by 2002:a5e:8e02:: with SMTP id a2mr1343031ion.269.1573832982053;
+ Fri, 15 Nov 2019 07:49:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20191115074424.cnk3xleobvusfuci@arbad>
-In-Reply-To: <20191115074424.cnk3xleobvusfuci@arbad>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 15 Nov 2019 09:00:27 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJHAGoBwwrLZezVNrZbUwKmS=+xVw_6h9R_=uGea+YDEA@mail.gmail.com>
-Message-ID: <CAL_JsqJHAGoBwwrLZezVNrZbUwKmS=+xVw_6h9R_=uGea+YDEA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] dt-bindings: add parallax ping sensors
-To:     Andreas Klinger <ak@it-klinger.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        "heiko@sntech.de" <heiko@sntech.de>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        "Paul E. McKenney" <paulmck@linux.ibm.com>,
-        devicetree@vger.kernel.org,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 15 Nov 2019 07:49:41
+ -0800 (PST)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Ms.Mary Coster" <info.zennitbankplcnigerian@gmail.com>
+Date:   Fri, 15 Nov 2019 16:49:41 +0100
+Message-ID: <CABHzvrkUQbbmg0Gr7foD3OjAJiY7Fd37=SW3mU=fnOPOcOyNdQ@mail.gmail.com>
+Subject: Goodnews, I have deposited your transfer total amount US$4.8million
+ Dollars with Money Gram this morning. we agreed you will be receiving it
+ $5000.00 daily.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Nov 15, 2019 at 1:44 AM Andreas Klinger <ak@it-klinger.de> wrote:
->
-> Add dt-bindings for parallax PING))) and LaserPING iio sensors, which
-> are used for measuring distances.
->
-> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-> ---
->  .../bindings/iio/proximity/parallax-ping.yaml      | 51 ++++++++++++++++++++++
->  1 file changed, 51 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml
-
-Reviewed-by: Rob Herring <robh@kernel.org>
+Attn, Dear
+Goodnews, I have deposited your transfer total amount US$4.8million
+Dollars with Money Gram this morning. we agreed you will be receiving
+it $5000.00 daily.
+Contact Mr. John Dave Director, Money Gram to pick up your first Money
+Gram payment $5000.00 today.
+Contact Person; Mr. John Dave Director, Money Gram,International
+Remittance-Benin
+Email; moneygram.1820@outlook.fr
+Telephone; +229 62619517
+Please re-confirm your address to him once again such as listed below.
+1.Your Full Name..............................
+2.Address.........................
+3.Country....................
+4.Sex.........................................
+5.Your telephone numbers..........................
+6. Copy of your ID...........................
+This is to avoid sending your funds to wrong person, He is waiting to
+hear from you urgent today.
+Let me know once you pick up your transfer $5000.00 today.
+Finally, Note I have paid for the service fees, but only money will
+send to him is $90.00 transfer fee before you can pick up the transfer
+today.
+Ask, Mr. John Dave Director, Money Gram to give you direction where to
+send your transfer fee $90.00 only to Him Immediately so that you can
+pick up $5000.00 us dollars today.
+Thanks for undrstanding.
+Mary Coster
+m.coster@aol.com

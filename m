@@ -2,188 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8341FF460
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Nov 2019 18:32:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4F5CFF596
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Nov 2019 21:50:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727695AbfKPRcp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Nov 2019 12:32:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37722 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727642AbfKPRcp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 16 Nov 2019 12:32:45 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7CAAB216F4;
-        Sat, 16 Nov 2019 17:32:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573925564;
-        bh=mpNFsfEeInlH3gh4xKrQMyoGDIZbQFulbhHFQfnpjw0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kKWTAlz2Tx1YpKBdjcGZKlvPHsOOZH1COF8qrC4uewTjgaztbbjmQ+yOBrIIqmNxj
-         ehVqdLmz2dsSI7muNyh9ESDFXUyOq/GEvmZVTGk+HebhlRQWhbrFXr8pJQVF665inh
-         FCpiYAv/PMb5IxnQkJuke6VbHtKcpvGRKrDRjYBA=
-Date:   Sat, 16 Nov 2019 17:32:39 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     Niklas =?UTF-8?B?U8O2ZGVybHVuZA==?= 
-        <niklas.soderlund@ragnatech.se>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: max9611: Make enum relations more future
- proof
-Message-ID: <20191116173239.120b9783@archlinux>
-In-Reply-To: <20191116165444.4fsqfrzimachyal3@uno.localdomain>
-References: <20191113100938.27604-1-geert+renesas@glider.be>
-        <20191114072803.GC26902@bigcity.dyn.berto.se>
-        <20191116162522.1e68243c@archlinux>
-        <20191116165444.4fsqfrzimachyal3@uno.localdomain>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727273AbfKPUuf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Nov 2019 15:50:35 -0500
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:33328 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727195AbfKPUuf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Nov 2019 15:50:35 -0500
+Received: by mail-qt1-f194.google.com with SMTP id y39so15238707qty.0;
+        Sat, 16 Nov 2019 12:50:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=IgR9yFlnkTLp2xXRay8i5nzS1cYkIa5/QSxH05dSlL0=;
+        b=juUv8+t1CWRILYNBB5Fz5/VRKcZaRnyzIrsi3B4aVrl4+jCRyeM/ZnJYXeUqJPOn+k
+         AAsqNvjC2UkNcL4gGkIbMxAHPbUvYyX5aeQyC4S0Ewz4xgn82IY9cXNpXKCzDGip/2eb
+         H3OJCQ7vfq3sLbewDurmUKfQ//e6grKxTr3oV108zAacEl5OT8e6mOaR8Kh323UBxTuw
+         kr1tfFaiSgb+A50n/8gbzrvaXXEBJU3ptcmfYsB/rqvVAnmCTI/flXow+GrLRr7fG0z1
+         J/bTSzHgVd38Hl5ymqgxkX1sD75tQOKNNZJUCZFRFBQTkZGAm45iUvDG6FSgx7zMOqbt
+         hpPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=IgR9yFlnkTLp2xXRay8i5nzS1cYkIa5/QSxH05dSlL0=;
+        b=X1Sy0NmFui31kX05l4ZEgTvXUdyS1Hev9bApp50yRF2df1mFUazRJYyL3pMpK9hG0n
+         nhf7+nGbr8RJ0sceOALYm4FAPY7dTDADqFxrGEDJYRX4m18VQQVygLUD1McKDewuBY6x
+         o51heOit1jypHn6um+ejFtBwa4UZ9Kwg+3LPNxj8zmpQ4+oiMZV8Cy1cCmBQoKZ2v7QX
+         d6/fgLgBwpXjnqKfO05Gds9FBHRMShlBA6dKAQiqJhp9uYkQYx9i/hpfdmg0cFYx1RsF
+         z4eKsBTZu77qJz4Xlp89KwgYUD30+rA83SXCMaW1e3uQsnfcwpTPQvJStK5+wSXk10W/
+         mQMg==
+X-Gm-Message-State: APjAAAVNqFkbgkKFhr9UsBhqP0AohV8ZD9nD3Y0DhDfGNMhOVnR6zKAu
+        rXKKoquovdtXOtiSuNAotVg=
+X-Google-Smtp-Source: APXvYqxQM0WInjnJ/eVmD8Bz8e0hfDGxTooPflY7Hfz3KHFu1WROasjqDKOBroco3HFuM9aSEtS7yQ==
+X-Received: by 2002:aed:3baf:: with SMTP id r44mr20358974qte.30.1573937433338;
+        Sat, 16 Nov 2019 12:50:33 -0800 (PST)
+Received: from smtp.gmail.com ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id n55sm7416978qta.24.2019.11.16.12.50.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Nov 2019 12:50:32 -0800 (PST)
+Date:   Sat, 16 Nov 2019 17:50:29 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     jic23@kernel.org, robh@kernel.org
+Cc:     dragos.bogdan@analog.com, alexandru.ardelean@analog.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel-usp@googlegroups.com
+Subject: [PATCH 1/2] dt-bindings: iio: adc: ad7292: Update SPDX identifier
+Message-ID: <20191116205026.dvlevawj5obq7weh@smtp.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 16 Nov 2019 17:54:44 +0100
-Jacopo Mondi <jacopo@jmondi.org> wrote:
+Update SPDX identifier to the preferred dual GPL-2.0 OR BSD-2-Clause
+licensing.
 
-> Hello,
->=20
-> On Sat, Nov 16, 2019 at 04:25:22PM +0000, Jonathan Cameron wrote:
-> > On Thu, 14 Nov 2019 08:28:03 +0100
-> > Niklas S=C3=B6derlund <niklas.soderlund@ragnatech.se> wrote:
-> > =20
-> > > Hi Geert,
-> > >
-> > > Looks good.
-> > >
-> > > On 2019-11-13 11:09:38 +0100, Geert Uytterhoeven wrote: =20
-> > > > The relations between enum values and array indices values are curr=
-ently
-> > > > not enforced by the code, which makes them fragile w.r.t. future
-> > > > changes.
-> > > >
-> > > > Fix this by:
-> > > >   1. Using designated array initializers, to make sure array indice=
-s and
-> > > >      enums values match,
-> > > >   2. Linking max9611_csa_gain enum values to the corresponding
-> > > >      max9611_conf_ids enum values, as the latter is cast to the for=
-mer
-> > > >      in max9611_read_csa_voltage().
-> > > >
-> > > > No change in generated code.
-> > > >
-> > > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be> =20
-> > >
-> > > Reviewed-by: Niklas S=C3=B6derlund <niklas.soderlund+renesas@ragnatec=
-h.se> =20
-> >
-> > Looks good to me, but I'd like to leave a little longer for any
-> > feedback from Jacopo as author of the driver. =20
->=20
-> yeah, sorry I've been sloppy.. I meant to give the patches a run, but
-> it seems there are only syntactic changes here, which indeed make the
-> code more robust.
->=20
-> Even if not tested, please add
-> Acked-by: Jacopo Mondi <jacopo@jmondi.org>
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+---
+I split the changes into 2 different patches since they are about
+different issues.
 
-Thanks!
+ Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to poke at it.
-
-Thanks,
-
-J
->=20
-> Thanks
->   j
->=20
-> >
-> > Thanks,
-> >
-> > Jonathan =20
-> > > =20
-> > > > ---
-> > > >  drivers/iio/adc/max9611.c | 36 +++++++++++-------------------------
-> > > >  1 file changed, 11 insertions(+), 25 deletions(-)
-> > > >
-> > > > diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
-> > > > index b0755f25356d700d..cb306ff1a5d6a0b2 100644
-> > > > --- a/drivers/iio/adc/max9611.c
-> > > > +++ b/drivers/iio/adc/max9611.c
-> > > > @@ -114,22 +114,17 @@ enum max9611_conf_ids {
-> > > >   *		      where data shall be read from
-> > > >   */
-> > > >  static const unsigned int max9611_mux_conf[][2] =3D {
-> > > > -	/* CONF_SENSE_1x */
-> > > > -	{ MAX9611_MUX_SENSE_1x, MAX9611_REG_CSA_DATA },
-> > > > -	/* CONF_SENSE_4x */
-> > > > -	{ MAX9611_MUX_SENSE_4x, MAX9611_REG_CSA_DATA },
-> > > > -	/* CONF_SENSE_8x */
-> > > > -	{ MAX9611_MUX_SENSE_8x, MAX9611_REG_CSA_DATA },
-> > > > -	/* CONF_IN_VOLT */
-> > > > -	{ MAX9611_INPUT_VOLT, MAX9611_REG_RS_DATA },
-> > > > -	/* CONF_TEMP */
-> > > > -	{ MAX9611_MUX_TEMP, MAX9611_REG_TEMP_DATA },
-> > > > +	[CONF_SENSE_1x]	=3D { MAX9611_MUX_SENSE_1x, MAX9611_REG_CSA_DATA =
-},
-> > > > +	[CONF_SENSE_4x]	=3D { MAX9611_MUX_SENSE_4x, MAX9611_REG_CSA_DATA =
-},
-> > > > +	[CONF_SENSE_8x]	=3D { MAX9611_MUX_SENSE_8x, MAX9611_REG_CSA_DATA =
-},
-> > > > +	[CONF_IN_VOLT]	=3D { MAX9611_INPUT_VOLT, MAX9611_REG_RS_DATA },
-> > > > +	[CONF_TEMP]	=3D { MAX9611_MUX_TEMP, MAX9611_REG_TEMP_DATA },
-> > > >  };
-> > > >
-> > > >  enum max9611_csa_gain {
-> > > > -	CSA_GAIN_1x,
-> > > > -	CSA_GAIN_4x,
-> > > > -	CSA_GAIN_8x,
-> > > > +	CSA_GAIN_1x =3D CONF_SENSE_1x,
-> > > > +	CSA_GAIN_4x =3D CONF_SENSE_4x,
-> > > > +	CSA_GAIN_8x =3D CONF_SENSE_8x,
-> > > >  };
-> > > >
-> > > >  enum max9611_csa_gain_params {
-> > > > @@ -147,18 +142,9 @@ enum max9611_csa_gain_params {
-> > > >   * value; use this structure to retrieve the correct LSB and offse=
-t values.
-> > > >   */
-> > > >  static const unsigned int max9611_gain_conf[][2] =3D {
-> > > > -	{ /* [0] CSA_GAIN_1x */
-> > > > -		MAX9611_CSA_1X_LSB_nV,
-> > > > -		MAX9611_CSA_1X_OFFS_RAW,
-> > > > -	},
-> > > > -	{ /* [1] CSA_GAIN_4x */
-> > > > -		MAX9611_CSA_4X_LSB_nV,
-> > > > -		MAX9611_CSA_4X_OFFS_RAW,
-> > > > -	},
-> > > > -	{ /* [2] CSA_GAIN_8x */
-> > > > -		MAX9611_CSA_8X_LSB_nV,
-> > > > -		MAX9611_CSA_8X_OFFS_RAW,
-> > > > -	},
-> > > > +	[CSA_GAIN_1x] =3D { MAX9611_CSA_1X_LSB_nV, MAX9611_CSA_1X_OFFS_RA=
-W, },
-> > > > +	[CSA_GAIN_4x] =3D { MAX9611_CSA_4X_LSB_nV, MAX9611_CSA_4X_OFFS_RA=
-W, },
-> > > > +	[CSA_GAIN_8x] =3D { MAX9611_CSA_8X_LSB_nV, MAX9611_CSA_8X_OFFS_RA=
-W, },
-> > > >  };
-> > > >
-> > > >  enum max9611_chan_addrs {
-> > > > --
-> > > > 2.17.1
-> > > > =20
-> > > =20
-> > =20
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+index b68be3aaf587..5770f63dd511 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: GPL-2.0-only
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/iio/adc/adi,ad7292.yaml#
+-- 
+2.23.0
 

@@ -2,103 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EE1BFECC2
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Nov 2019 15:58:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A2DAFECDA
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Nov 2019 16:15:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727673AbfKPO62 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Nov 2019 09:58:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38256 "EHLO mail.kernel.org"
+        id S1727721AbfKPPPc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Nov 2019 10:15:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45246 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727123AbfKPO61 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 16 Nov 2019 09:58:27 -0500
+        id S1727691AbfKPPPc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 16 Nov 2019 10:15:32 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B6810206E1;
-        Sat, 16 Nov 2019 14:58:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EC92820723;
+        Sat, 16 Nov 2019 15:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573916306;
-        bh=nqj7UgNe0Y4TorqsN/gXEjpreuWHhGzDviu/NK0eTGY=;
+        s=default; t=1573917331;
+        bh=sfswPkLkh/RNYHt16XH+PrtY9jP4ASLZcJsAC/YIzwA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QVmsY/9yc7WAqHURPRvwYQp9if/HCsbC7uuA8wgiI30LncE8VOxnkm81x4xlLGGMS
-         +u0DVtmTf24lRld1uMYn7vx1KUwqI+pVEdpEJJ25KN1rPP4fpUZSmChFREr0EAshUh
-         CsS4GbWha/LIQQfZe3mLqufeUIq3dN8oxL681T1Q=
-Date:   Sat, 16 Nov 2019 14:58:21 +0000
+        b=ZKJyUylVCN+a9iXLtHG8+ZWDhyNIvfOY8eNyWefAn1vTJiJ7+0AEXw0LW7gEaOPNV
+         hFK++8da/MVnZQjEU+SjYrim4yrndm0TtaxZ7aqbjL9HyJCTt4JadQD/uNR4ElTVTF
+         grVEIrpVmkAFOLQLPJ0aIo6IqNTXTfLCf1rIVOAo=
+Date:   Sat, 16 Nov 2019 15:15:25 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <denis.ciocca@st.com>, <tglx@linutronix.de>,
-        <alexios.zavras@intel.com>, <allison@lohutok.net>,
-        <linus.walleij@linaro.org>, <ladis@linux-mips.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 -next] iio: st_accel: Fix unused variable warning
-Message-ID: <20191116145821.1ac46310@archlinux>
-In-Reply-To: <20191111032115.3008-1-yuehaibing@huawei.com>
-References: <20191101134741.25108-1-yuehaibing@huawei.com>
-        <20191111032115.3008-1-yuehaibing@huawei.com>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: temperature: ltc2983: fix u32 read into a unsigned
+ long long
+Message-ID: <20191116151516.5c7a7555@archlinux>
+In-Reply-To: <20191110114823.2bbe87b0@archlinux>
+References: <20191105202818.90065-1-colin.king@canonical.com>
+        <dab9cfd93e6affa5d94f078154c3e181303bbf47.camel@analog.com>
+        <20191110114823.2bbe87b0@archlinux>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 11 Nov 2019 11:21:15 +0800
-YueHaibing <yuehaibing@huawei.com> wrote:
+On Sun, 10 Nov 2019 11:48:23 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> drivers/iio/accel/st_accel_core.c:1005:44: warning:
->  mount_matrix_ext_info defined but not used [-Wunused-const-variable=]
-> 
-> Using stub helper while CONFIG_ACPI is disabled to fix it.
-> 
-> Suggested-by: Ladislav Michl <ladis@linux-mips.org>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Applied to the fixes-togreg branch of iio.git as I've now closed for new
-things for the coming merge window.  This will go upstream after the merge
-window closes and probably hit around rc2.  Thanks for cleaning this up.
+> On Wed, 6 Nov 2019 14:19:52 +0000
+> "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+>=20
+> > On Tue, 2019-11-05 at 20:28 +0000, Colin King wrote: =20
+> > >=20
+> > > From: Colin Ian King <colin.king@canonical.com>
+> > >=20
+> > > Currently the read of temp using of_property_read_u32_index is
+> > > reading
+> > > a u32 value into a unsigned long long.  This relies on machine
+> > > endianness
+> > > to work correctly, so fix this by reading a u32 value and setting
+> > > temp
+> > > to this value.
+> > >=20
+> > > Addresses-Coverity: ("Reliance on integer endianness")
+> > > Fixes: f110f3188e56 ("iio: temperature: Add support for LTC2983")
+> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > ---
+> > >  drivers/iio/temperature/ltc2983.c | 6 ++++--
+> > >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/temperature/ltc2983.c
+> > > b/drivers/iio/temperature/ltc2983.c
+> > > index ddf47023364b..d39c0d6b77f1 100644
+> > > --- a/drivers/iio/temperature/ltc2983.c
+> > > +++ b/drivers/iio/temperature/ltc2983.c
+> > > @@ -444,8 +444,10 @@ static struct ltc2983_custom_sensor
+> > > *__ltc2983_custom_sensor_new(
+> > >  			else
+> > >  				temp =3D __convert_to_raw(temp,
+> > > resolution);
+> > >  		} else {
+> > > -			of_property_read_u32_index(np, propname, index,
+> > > -						   (u32 *)&temp);
+> > > +			u32 t32;
+> > > +
+> > > +			of_property_read_u32_index(np, propname, index,
+> > > &t32);
+> > > +			temp =3D t32;
+> > >  		}
+> > > =20
+> > >  		for (j =3D 0; j < n_size; j++)   =20
+> >=20
+> > Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> >  =20
+>=20
+> A slight complexity around this one. I'm not sure I'll have time for a pu=
+ll
+> before the merge window (as Greg will only take them to about 1 week befo=
+re
+> that opens so we get some exposure in Linux next).
+>=20
+> As a result I'll have to sit on this one until Linus comments on rc7, pro=
+bably
+> later today.  Otherwise it'll be material for stable post release.
+>=20
+> If I seem to have lost it give me a poke and we'll make sure it goes into=
+=20
+> an early rc instead of at the merge window.
+I forgot about it when I sent the final pull request out.  Sorry about that,
+will have to wait for post merge window.
+
+Applied to the fixes-togreg branch of iio.git.
+
+Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/accel/st_accel_core.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-> index 7b83764..7320275 100644
-> --- a/drivers/iio/accel/st_accel_core.c
-> +++ b/drivers/iio/accel/st_accel_core.c
-> @@ -992,6 +992,7 @@ static const struct iio_trigger_ops st_accel_trigger_ops = {
->  #define ST_ACCEL_TRIGGER_OPS NULL
->  #endif
->  
-> +#ifdef CONFIG_ACPI
->  static const struct iio_mount_matrix *
->  get_mount_matrix(const struct iio_dev *indio_dev,
->  		 const struct iio_chan_spec *chan)
-> @@ -1012,7 +1013,6 @@ static const struct iio_chan_spec_ext_info mount_matrix_ext_info[] = {
->  static int apply_acpi_orientation(struct iio_dev *indio_dev,
->  				  struct iio_chan_spec *channels)
->  {
-> -#ifdef CONFIG_ACPI
->  	struct st_sensor_data *adata = iio_priv(indio_dev);
->  	struct acpi_buffer buffer = {ACPI_ALLOCATE_BUFFER, NULL};
->  	struct acpi_device *adev;
-> @@ -1140,10 +1140,14 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev,
->  out:
->  	kfree(buffer.pointer);
->  	return ret;
-> +}
->  #else /* !CONFIG_ACPI */
-> +static int apply_acpi_orientation(struct iio_dev *indio_dev,
-> +				  struct iio_chan_spec *channels)
-> +{
->  	return 0;
-> -#endif
->  }
-> +#endif
->  
->  /*
->   * st_accel_get_settings() - get sensor settings from device name
+>=20
+> Thanks,
+>=20
+> Jonathan
+>=20
+> > Thanks,
+> > Nuno S=C3=A1 =20
+>=20
 

@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A9BAFEC98
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Nov 2019 15:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07747FEC9F
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Nov 2019 15:15:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727577AbfKPOIx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Nov 2019 09:08:53 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55560 "EHLO mail.kernel.org"
+        id S1727698AbfKPOPP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Nov 2019 09:15:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56030 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727551AbfKPOIx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 16 Nov 2019 09:08:53 -0500
+        id S1727672AbfKPOPP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 16 Nov 2019 09:15:15 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B77CB20700;
-        Sat, 16 Nov 2019 14:08:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8A70E20700;
+        Sat, 16 Nov 2019 14:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573913332;
-        bh=K6jJzmy2TrOILsCo2E/gp9oUFsW+m5/GXOwqD9PYOy4=;
+        s=default; t=1573913714;
+        bh=piyV77lXMMoB+wdksSwNS9KwJ6eaq68JWcgO3MjhNH8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eALBD7t9e87iDstSGl72jIs0OU//eufReQhcCV5DVyH8Q3vSzEBcoKeLjhpqjSpt3
-         4qquQBHUWXShqxlDBSLJrox2uqylhc1bU52Uok+t5P/IYnMlh433/wJAm6DIbLxcxf
-         9hbwzkibx8/0l6SLmCEYEv5C9qtq8tdDCvj+SctY=
-Date:   Sat, 16 Nov 2019 14:08:46 +0000
+        b=T6CeaixqBvhbyXRdR+1jYP4dX+8xt88hVL0bjW1r88vC1+AElgj+AYY1ojhwCcNeG
+         iFA3glibDLFLFk3He6EbC0hHdvuiHmtmKU3ax5VqqYCNO1RfHu78WO4Fept7PAAxR5
+         yFBeGy5OfrUYsU0AKO6mchTX/o3WlW0ABPh2LIwo=
+Date:   Sat, 16 Nov 2019 14:15:08 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Song Qiang <songqiang1304521@gmail.com>
 Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
@@ -31,13 +31,12 @@ Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
         lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
         mark.rutland@arm.com, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] iio: adc: add driver support for AD5940
-Message-ID: <20191116140846.1b094dc6@archlinux>
-In-Reply-To: <58ef4da3-7640-767d-5f6b-c2c5c680cddb@gmail.com>
+Subject: Re: [PATCH 1/3] dt-bindings: iio: adc: add support for AD5940
+Message-ID: <20191116141508.6b78969d@archlinux>
+In-Reply-To: <7ac0ec98-b405-6450-fc38-ac6a47fd6d3e@gmail.com>
 References: <20191108130946.14740-1-songqiang1304521@gmail.com>
-        <20191108130946.14740-2-songqiang1304521@gmail.com>
-        <20191110165529.78a4714a@archlinux>
-        <58ef4da3-7640-767d-5f6b-c2c5c680cddb@gmail.com>
+        <20191110162608.21b40714@archlinux>
+        <7ac0ec98-b405-6450-fc38-ac6a47fd6d3e@gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,200 +46,394 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 14 Nov 2019 22:05:54 +0800
+On Thu, 14 Nov 2019 21:32:06 +0800
 Song Qiang <songqiang1304521@gmail.com> wrote:
 
-
-> >> +static ssize_t ad5940_read_info(struct iio_dev *indio_dev,
-> >> +				uintptr_t private,
-> >> +				const struct iio_chan_spec *chan,
-> >> +				char *buf)
-> >> +{
-> >> +	struct ad5940_state *st = iio_priv(indio_dev);
-> >> +
-> >> +	switch ((u32)private) {
-> >> +	case AD5940_CHANNEL_NAME:  
+> On 11/11/19 12:26 AM, Jonathan Cameron wrote:
+> > On Fri,  8 Nov 2019 21:09:44 +0800
+> > Song Qiang <songqiang1304521@gmail.com> wrote:
+> >   
+> >> Add yaml devicetree description file and a header file for
+> >> helping configure positive and negtive input of AD5940.
+> >>
+> >> Signed-off-by: Song Qiang <songqiang1304521@gmail.com>  
+> > Ouch. This is a very complex device, so I'm guessing this is the tip
+> > of the iceberg when it comes to the eventual binding.
+> > For reference of others this has a similarly complex DAC and
+> > TIA + some excitation voltage generators (DDS).
 > > 
-> > What is the logic here in this magic define?
+> > Anyhow, a few comments inline but I'll definitely be looking for
+> > a dt maintainer input on this one.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
 > >   
 > 
-> Do you mean this is not necessary? In this driver, 'ad5940_read_info' is
-> only used in name reading, but I was thinking maybe there will be some
-> other stuff to be reading from this in the future.
-
-That might happen, but you may also extend this by providing more
-callbacks.  Certainly don't put code in place to support things
-that might be added.  Keep it simple.
-
+> Thanks, this is the first part support of the driver.
 > 
-> >> +		return sprintf(buf, "%s\n",
-> >> +			st->channel_config[chan->address].channel_name);
-> >> +	default:
-> >> +		return -EINVAL;
-> >> +	}
-> >> +}
-> >> +
-
-...
-
-> >> +static int ad5940_of_parse_channel_config(struct iio_dev *indio_dev,
-> >> +					  struct device_node *np)
-> >> +{
-> >> +	struct ad5940_state *st = iio_priv(indio_dev);
-> >> +	struct iio_chan_spec *chan;
-> >> +	struct device_node *child;
-> >> +	u32 channel, ain[2];
-> >> +	int ret;
-> >> +
-> >> +	st->num_channels = of_get_available_child_count(np);
-> >> +	if (!st->num_channels) {
-> >> +		dev_err(indio_dev->dev.parent, "no channel children\n");
-> >> +		return -ENODEV;
-> >> +	}
-> >> +
-> >> +	chan = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
-> >> +			    sizeof(*chan), GFP_KERNEL);
-> >> +	if (!chan)
-> >> +		return -ENOMEM;
-> >> +
-> >> +	st->channel_config = devm_kcalloc(indio_dev->dev.parent,
-> >> +					  st->num_channels,
-> >> +					  sizeof(*st->channel_config),
-> >> +					  GFP_KERNEL);
-> >> +	if (!st->channel_config)
-> >> +		return -ENOMEM;
-> >> +
-> >> +	indio_dev->channels = chan;
-> >> +	indio_dev->num_channels = st->num_channels;
-> >> +
-> >> +	for_each_available_child_of_node(np, child) {
-> >> +		ret = of_property_read_u32(child, "reg", &channel);
-> >> +		if (ret)
-> >> +			goto err;
-> >> +
-> >> +		ret = of_property_read_u32_array(child, "diff-channels",
-> >> +						 ain, 2);
-> >> +		if (ret)
-> >> +			goto err;
-> >> +
-> >> +		ret = of_property_read_string(child, "channel-name",
-> >> +				&st->channel_config[channel].channel_name);
-> >> +		if (ret)
-> >> +			st->channel_config[channel].channel_name = "none-name";  
+> >> ---
+> >>  .../bindings/iio/adc/adi,ad5940.yaml          | 240 ++++++++++++++++++
+> >>  include/dt-bindings/iio/adc/adi,ad5940.h      |  52 ++++
+> >>  2 files changed, 292 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad5940.yaml
+> >>  create mode 100644 include/dt-bindings/iio/adc/adi,ad5940.h
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad5940.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad5940.yaml
+> >> new file mode 100644
+> >> index 000000000000..f7f034fdd8ec
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad5940.yaml
+> >> @@ -0,0 +1,240 @@
+> >> +# SPDX-License-Identifier: GPL-2.0  
+> > For new bindings, preference is to include a dual license
+> > (GPL-2.0-only OR BSD-2-Clause)
 > > 
-> > You have this as required I think in the dt properties.  If that is the case then
-> > enforce it and refuse to load the driver if not supplied. Otherwise change
-> > the dt docs to make it optional (which is probably better)
+> > If Analog is fine doing this that would be great.
 > >   
 > 
-> I prefer to have name required because a channel here is a combination
-> of some input and some output. Without name, we will have to look into
-> dt to see which input and which output is used in this channel.
-
-Then don't make it optional.
-
+> I'll consult my mentor about this.
 > 
+> >> +# Copyright 2019 Analog Devices Inc.
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: http://devicetree.org/schemas/bindings/iio/adc/adi,ad5940.yaml#
+> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > >> +
-> >> +		ret = ad5940_check_channel_indexes(indio_dev->dev.parent, ain);
-> >> +		if (ret) {
-> >> +			dev_err(indio_dev->dev.parent,
-> >> +				"some input channel index does not exist: %d, %d, %d",
-> >> +				channel, ain[0], ain[1]);
-> >> +			goto err;
-> >> +		}
+> >> +title: Analog Devices AD5940 Device Tree Bindings
 > >> +
-> >> +		st->channel_config[channel].ain = AD5940_CHANNEL_AINP(ain[0]) |
-> >> +						  AD5940_CHANNEL_AINN(ain[1]);
+> >> +maintainers:
+> >> +  - Song Qiang <songqiang1304521@gmail.com>
 > >> +
-> >> +		*chan = ad5940_channel_template;
-> >> +		chan->address = channel;
-> >> +		chan->scan_index = channel;
-> >> +		chan->channel = ain[0];
-> >> +		chan->channel2 = ain[1];
+> >> +description: |
+> >> +  Analog Devices AD5940 High Precision, Impedance, and Electrochemical Front End.
+> >> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD5940.pdf
 > >> +
-> >> +		chan++;
-> >> +	}
+> >> +properties:
+> >> +  compatible:
+> >> +    enum:
+> >> +      - adi,ad5940
 > >> +
-> >> +	return 0;
-> >> +err:
-> >> +	of_node_put(child);
+> >> +  reg:
+> >> +    maxItems: 1
 > >> +
-> >> +	return ret;
-> >> +}
-> >> +
-> >> +static int ad5940_config_polarity(struct ad5940_state *st, u32 polarity)
-> >> +{
-> >> +	u32 val;
-> >> +
-> >> +	if (polarity == IRQF_TRIGGER_RISING)
-> >> +		val = AD5940_INTCPOL_POS;
-> >> +	else
-> >> +		val = AD5940_INTCPOL_NEG;
-> >> +
-> >> +	return ad5940_write_reg_mask(st, AD5940_REG_INTCPOL,
-> >> +				     AD5940_INTCPOL_MSK, val);
-> >> +}
-> >> +
-> >> +static int ad5940_config_int_io(struct ad5940_state *st, u8 int_io)
-> >> +{
-> >> +	int ret = 0;
-> >> +
-> >> +	if (int_io == 3)  
+> >> +  vref-supply:
+> >> +    description:
+> >> +      The regulator to be used to supply the reference voltage.
+> >> +    maxItems: 1  
 > > 
-> > Switch statement preferred for matches like this.
-> >   
-> >> +		ret = ad5940_write_reg_mask(st, AD5940_REG_GP0CON,
-> >> +					    AD5940_GP0CON_3_MSK,
-> >> +					    AD5940_GP0CON_3_INT);
-> >> +	else if (int_io == 6)
-> >> +		ret = ad5940_write_reg_mask(st, AD5940_REG_GP0CON,
-> >> +					    AD5940_GP0CON_6_MSK,
-> >> +					    AD5940_GP0CON_6_INT);
-> >> +	if (ret < 0)
-> >> +		return ret;
-> >> +
-> >> +	return  ad5940_write_reg(st, AD5940_REG_GP0OEN, BIT(int_io));
-> >> +}
-> >> +
-> >> +static const u32 ad5940_powerup_setting[][2] = {  
-> > 
-> > Hmm. This is not good practice when we have docs for the values.
-> > If we can provide a breakdown into what is being set that would be
-> > great.  I can't find docs immediately for some of these however...
+> > It's worth taking a look at similar patch reviews to pick up on things
+> > that are common issues.  Rob has pointed out a few times recently that
+> > vref-supply can only ever have one item, so no need for maxItems.
 > >   
 > 
-> We have docs for some of them, but not for all. I got some of the init
-> register values from Analog's example code, which didn't explain much.
-> I'll add comment to these values as much as I can.
+> That's right, thanks.
+> 
+> >> +
+> >> +  adi,interrupt-io:
+> >> +    description:
+> >> +      Output GPIO index of interrupt controller of AD5940.
+> >> +    maxItems: 1  
+> > 
+> > I'm fairly sure an enum can only have one entry so don't think this is
+> > needed.
+> >   
+> >> +    allOf:
+> >> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> >> +      - enum: [0, 3, 6, 7]
+> >> +
+> >> +  '#address-cells':
+> >> +    const: 1
+> >> +
+> >> +  '#size-cells':
+> >> +    const: 0
+> >> +
+> >> +required:
+> >> +  - compatible
+> >> +  - reg
+> >> +  - interrupts
+> >> +  - adi,interrupt-io
+> >> +
+> >> +patternProperties:
+> >> +  # 'channel@0-255'  
+> > 
+> > Really?  That is a lot of channels.  Superficially it looks like a much
+> > smaller number of possibilities from the datasheet.
+> >   
+> 
+> This device has some positive inputs and some negative inputs. A channel
+> here is a combination of one positive input and one negative input.
+> These channels I listed in examples are only suggested combinations in
+> the datasheet, while other combinations are all possible. So I was
+> thinking to not limit the total count of channels here. I failed to find
+> examples of doing this kind of stuff in the tree.
 
-Great.
+As we are putting the controls for these in DT, we are making the claim
+that they are inherently part of the 'hardware'.   The fully flexibility
+probably doesn't make sense even if the hardware supports it.
+
+I'd be tempted to just not specify a limit at all, but rely on the type
+of 'reg' to provide an ultimate limit.  That gets rid of a lot
+of the complexity in the binding.
+
+Reality is that for a device like this you aren't going to have more
+channels than postive inputs because the vast majority of the time
+there is little reason to measure a given input against multiple
+references.
+
+Thanks,
 
 Jonathan
-
 > 
 > yours,
 > Song Qiang
 > 
-> >> +	{ 0x0908, 0x02c9 },
-> >> +	{ 0x0c08, 0x206c },
-> >> +	{ 0x21f0, 0x0010 },  
-> > 
-> > This one is is simply saying only 1 repeat conversion for example.
-> > Add some defines and you can make that clear.
+> >> +  "^channel@([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$":
+> >> +    type: object
+> >> +    description: |
+> >> +      Represents the external channels which are connected to the ADC.
+> >> +      See Documentation/devicetree/bindings/iio/adc/adc.txt.
+> >> +    properties:
+> >> +      reg:
+> >> +        description:
+> >> +          Index of this channel, must be starting from 0.
+> >> +        maxItems: 1
+> >> +
+> >> +      diff-channels:
+> >> +        description:
+> >> +          Positive input and negtive input of the ADC buffer of this channel.
+> >> +          Input candidates are defined in include/dt-bindings/iio/adc/adi,ad5940.h.
+> >> +        minItems: 2
+> >> +        maxItems: 2
+> >> +        items:
+> >> +          - description: Positive input channel
+> >> +          - enum:
+> >> +            - AD5940_ADC_INPUTP_EXCITATION
+> >> +            - AD5940_ADC_INPUTP_FLOATING
+> >> +            - AD5940_ADC_INPUTP_HSTIA
+> >> +            - AD5940_ADC_INPUTP_LPTIA_LP
+> >> +            - AD5940_ADC_INPUTP_AIN0
+> >> +            - AD5940_ADC_INPUTP_AIN1
+> >> +            - AD5940_ADC_INPUTP_AIN2
+> >> +            - AD5940_ADC_INPUTP_AIN3
+> >> +            - AD5940_ADC_INPUTP_AVDD_2
+> >> +            - AD5940_ADC_INPUTP_DVDD_2
+> >> +            - AD5940_ADC_INPUTP_AVDD_REG_2
+> >> +            - AD5940_ADC_INPUTP_TEMP
+> >> +            - AD5940_ADC_INPUTP_VBIAS_CAP
+> >> +            - AD5940_ADC_INPUTP_DE0
+> >> +            - AD5940_ADC_INPUTP_SE0
+> >> +            - AD5940_ADC_INPUTP_VREF_2V5_2
+> >> +            - AD5940_ADC_INPUTP_VREF_1V82
+> >> +            - AD5940_ADC_INPUTP_P_TEMP_N
+> >> +            - AD5940_ADC_INPUTP_AIN4
+> >> +            - AD5940_ADC_INPUTP_AIN6
+> >> +            - AD5940_ADC_INPUTP_VZERO
+> >> +            - AD5940_ADC_INPUTP_VBIAS0
+> >> +            - AD5940_ADC_INPUTP_VCE0
+> >> +            - AD5940_ADC_INPUTP_VRE0
+> >> +            - AD5940_ADC_INPUTP_VCE0_2
+> >> +            - AD5940_ADC_INPUTP_LPTIA
+> >> +            - AD5940_ADC_INPUTP_AGND_REF
+> >> +
+> >> +          - description: Negtive input channel
+> >> +          - enum:
+> >> +              # Negtive input candidates
+> >> +              - AD5940_ADC_INPUTN_FLOATING
+> >> +              - AD5940_ADC_INPUTN_HSTIA
+> >> +              - AD5940_ADC_INPUTN_LPTIA
+> >> +              - AD5940_ADC_INPUTN_AIN0
+> >> +              - AD5940_ADC_INPUTN_AIN1
+> >> +              - AD5940_ADC_INPUTN_AIN2
+> >> +              - AD5940_ADC_INPUTN_AIN3
+> >> +              - AD5940_ADC_INPUTN_VBIAS_CA8
+> >> +              - AD5940_ADC_INPUTN_TEMP_N
+> >> +              - AD5940_ADC_INPUTN_AIN4
+> >> +              - AD5940_ADC_INPUTN_AIN6
+> >> +              - AD5940_ADC_INPUTN_VZERO
+> >> +              - AD5940_ADC_INPUTN_VBIAS0
+> >> +              - AD5940_ADC_INPUTN_EXCITATION
+> >> +
+> >> +      channel-name:
+> >> +        description:
+> >> +          Any string format name you would like to assign to this channel.
+> >> +        maxItems: 1
+> >> +
+> >> +    required:
+> >> +      - reg
+> >> +      - diff-channels
+> >> +      - channel-name
+> >> +
+> >> +examples:
+> >> +  - |
+> >> +    ad5940: ad5940@0 {
+> >> +      compatible = "adi,ad5940";
+> >> +      reg = <0>;
+> >> +      spi-max-frequency = <16000000>;
+> >> +      vref-supply = <&adc_vref>;
+> >> +      interrupt-parent = <&gpio>;
+> >> +      interrupts = <24 2>;
+> >> +
+> >> +      adi,interrupt-io = <0>;
+> >> +
+> >> +      #address-cells = <1>;
+> >> +      #size-cells = <0>;
+> >> +
+> >> +      channel@0 {
+> >> +        reg = <0>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_VCE0
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "Vce-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@1 {
+> >> +        reg = <1>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_VRE0
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "Vre-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@2 {
+> >> +        reg = <2>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_SE0
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "Vse-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@3 {
+> >> +        reg = <3>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_DE0
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "Vde-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@4 {
+> >> +        reg = <4>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_AIN0
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "ain0-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@5 {
+> >> +        reg = <5>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_AIN1
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "ain1-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@6 {
+> >> +        reg = <6>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_AIN2
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "ain2-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@7 {
+> >> +        reg = <7>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_AIN3
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "ain3-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@8 {
+> >> +        reg = <8>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_AIN4
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "ain4-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@9 {
+> >> +        reg = <9>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_AIN6
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "ain6-Vbias";
+> >> +      };
+> >> +
+> >> +      channel@10 {
+> >> +        reg = <10>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_LPTIA_LP
+> >> +                         AD5940_ADC_INPUTN_LPTIA>;
+> >> +        channel-name = "Low power TIA DC";
+> >> +      };
+> >> +
+> >> +      channel@11 {
+> >> +        reg = <11>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_LPTIA
+> >> +                         AD5940_ADC_INPUTN_LPTIA>;
+> >> +        channel-name = "Low power TIA AC";
+> >> +      };
+> >> +
+> >> +      channel@12 {
+> >> +        reg = <12>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_HSTIA
+> >> +                         AD5940_ADC_INPUTN_HSTIA>;
+> >> +        channel-name = "High Speed TIA";
+> >> +      };
+> >> +
+> >> +      channel@13 {
+> >> +        reg = <13>;
+> >> +        diff-channels = <AD5940_ADC_INPUTP_TEMP
+> >> +                         AD5940_ADC_INPUTN_VBIAS0>;
+> >> +        channel-name = "Temperature";
+> >> +      };
+> >> +    };
+> >> diff --git a/include/dt-bindings/iio/adc/adi,ad5940.h b/include/dt-bindings/iio/adc/adi,ad5940.h
+> >> new file mode 100644
+> >> index 000000000000..c17826f2f654
+> >> --- /dev/null
+> >> +++ b/include/dt-bindings/iio/adc/adi,ad5940.h
+> >> @@ -0,0 +1,52 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0 */
+> >> +/*
+> >> + * This header provides constants for configuring the AD5940 AFE
+> >> + */
+> >> +
+> >> +#ifndef _DT_BINDINGS_IIO_ADC_AD5940_H
+> >> +#define _DT_BINDINGS_IIO_ADC_AD5940_H
+> >> +
+> >> +#define AD5940_ADC_INPUTN_FLOATING	0
+> >> +#define AD5940_ADC_INPUTN_HSTIA		1
+> >> +#define AD5940_ADC_INPUTN_LPTIA		2
+> >> +#define AD5940_ADC_INPUTN_AIN0		4
+> >> +#define AD5940_ADC_INPUTN_AIN1		5
+> >> +#define AD5940_ADC_INPUTN_AIN2		6
+> >> +#define AD5940_ADC_INPUTN_AIN3		7
+> >> +#define AD5940_ADC_INPUTN_VBIAS_CA8	10
+> >> +#define AD5940_ADC_INPUTN_TEMP_N	11
+> >> +#define AD5940_ADC_INPUTN_AIN4		12
+> >> +#define AD5940_ADC_INPUTN_AIN6		14
+> >> +#define AD5940_ADC_INPUTN_VZERO		16
+> >> +#define AD5940_ADC_INPUTN_VBIAS0	17
+> >> +#define AD5940_ADC_INPUTN_EXCITATION	20
+> >> +
+> >> +#define AD5940_ADC_INPUTP_FLOATING	0
+> >> +#define AD5940_ADC_INPUTP_HSTIA		1
+> >> +#define AD5940_ADC_INPUTP_LPTIA_LP	2
+> >> +#define AD5940_ADC_INPUTP_AIN0		4
+> >> +#define AD5940_ADC_INPUTP_AIN1		5
+> >> +#define AD5940_ADC_INPUTP_AIN2		6
+> >> +#define AD5940_ADC_INPUTP_AIN3		7
+> >> +#define AD5940_ADC_INPUTP_AVDD_2	8
+> >> +#define AD5940_ADC_INPUTP_DVDD_2	9
+> >> +#define AD5940_ADC_INPUTP_AVDD_REG_2	10
+> >> +#define AD5940_ADC_INPUTP_TEMP		11
+> >> +#define AD5940_ADC_INPUTP_VBIAS_CAP	12
+> >> +#define AD5940_ADC_INPUTP_DE0		13
+> >> +#define AD5940_ADC_INPUTP_SE0		14
+> >> +#define AD5940_ADC_INPUTP_VREF_2V5_2	16
+> >> +#define AD5940_ADC_INPUTP_VREF_1V82	18
+> >> +#define AD5940_ADC_INPUTP_P_TEMP_N	19
+> >> +#define AD5940_ADC_INPUTP_AIN4		20
+> >> +#define AD5940_ADC_INPUTP_AIN6		22
+> >> +#define AD5940_ADC_INPUTP_VZERO		23
+> >> +#define AD5940_ADC_INPUTP_VBIAS0	24
+> >> +#define AD5940_ADC_INPUTP_VCE0		25
+> >> +#define AD5940_ADC_INPUTP_VRE0		26
+> >> +#define AD5940_ADC_INPUTP_VCE0_2	31
+> >> +#define AD5940_ADC_INPUTP_LPTIA		33
+> >> +#define AD5940_ADC_INPUTP_AGND_REF	35
+> >> +#define AD5940_ADC_INPUTP_EXCITATION	36
+> >> +
+> >> +#endif /* _DT_BINDINGS_IIO_ADC_AD5940 */  
 > >   
-> >> +	{ 0x0410, 0x02c9 },
-> >> +	{ 0x0a28, 0x0009 },
-> >> +	{ 0x238c, 0x0104 },
-> >> +	{ 0x0a04, 0x4859 },
-> >> +	{ 0x0a04, 0xf27b },
-> >> +	{ 0x0a00, 0x8009 },
-> >> +	{ 0x22f0, 0x0000 },
-> >> +	{ 0x2230, 0xde87a5af },
-> >> +	{ 0x2250, 0x103f },
-> >> +	{ 0x22b0, 0x203c },
-> >> +	{ 0x2230, 0xde87a5a0 },
-> >> +};
-> >> +  
-> 
-> ...
 

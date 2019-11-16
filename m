@@ -2,56 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4F5CFF596
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Nov 2019 21:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B559FF59A
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Nov 2019 21:51:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727273AbfKPUuf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Nov 2019 15:50:35 -0500
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:33328 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727195AbfKPUuf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Nov 2019 15:50:35 -0500
-Received: by mail-qt1-f194.google.com with SMTP id y39so15238707qty.0;
-        Sat, 16 Nov 2019 12:50:34 -0800 (PST)
+        id S1727791AbfKPUvV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Nov 2019 15:51:21 -0500
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:36463 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727195AbfKPUvS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Nov 2019 15:51:18 -0500
+Received: by mail-qt1-f195.google.com with SMTP id y10so15198343qto.3;
+        Sat, 16 Nov 2019 12:51:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:mime-version:content-disposition
          :user-agent;
-        bh=IgR9yFlnkTLp2xXRay8i5nzS1cYkIa5/QSxH05dSlL0=;
-        b=juUv8+t1CWRILYNBB5Fz5/VRKcZaRnyzIrsi3B4aVrl4+jCRyeM/ZnJYXeUqJPOn+k
-         AAsqNvjC2UkNcL4gGkIbMxAHPbUvYyX5aeQyC4S0Ewz4xgn82IY9cXNpXKCzDGip/2eb
-         H3OJCQ7vfq3sLbewDurmUKfQ//e6grKxTr3oV108zAacEl5OT8e6mOaR8Kh323UBxTuw
-         kr1tfFaiSgb+A50n/8gbzrvaXXEBJU3ptcmfYsB/rqvVAnmCTI/flXow+GrLRr7fG0z1
-         J/bTSzHgVd38Hl5ymqgxkX1sD75tQOKNNZJUCZFRFBQTkZGAm45iUvDG6FSgx7zMOqbt
-         hpPw==
+        bh=d20wT0cl7XgbwKLLYIFQXwUjPZkC30E2izyCFJ7mTnY=;
+        b=QBIuhlxfj5Ty9/Pg1M7p1H+GFJf8dXW1rgRCfzDqhbyyI1EP/wDXeh5xcM10BAEBNE
+         uV5ZZmOcTv2UsQLMOvr1nZEn3j4BuErWw3OLJTQmAdmPjT5Bvdojcv+ENK5zjVgcqu04
+         lMmVkgyA7WxoMTQOTx+d4qYUaTGw9v19e36iEoHhN0YUtAb7q00F3Z4hrCmtHaxsf7BN
+         aG1Ygd7qGYNMj9CJDLy1wheKzq4YBm/0wi5o3b2MBS/POylCJLfD2TliPNwymBF4RCNC
+         ImqOFbarbZFdy97A4Tf+QgZ655Rd/lQuxU3bnJz6LGoR4FUpGPtrKc5PC0p+6nvPe3il
+         kCqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
          :content-disposition:user-agent;
-        bh=IgR9yFlnkTLp2xXRay8i5nzS1cYkIa5/QSxH05dSlL0=;
-        b=X1Sy0NmFui31kX05l4ZEgTvXUdyS1Hev9bApp50yRF2df1mFUazRJYyL3pMpK9hG0n
-         nhf7+nGbr8RJ0sceOALYm4FAPY7dTDADqFxrGEDJYRX4m18VQQVygLUD1McKDewuBY6x
-         o51heOit1jypHn6um+ejFtBwa4UZ9Kwg+3LPNxj8zmpQ4+oiMZV8Cy1cCmBQoKZ2v7QX
-         d6/fgLgBwpXjnqKfO05Gds9FBHRMShlBA6dKAQiqJhp9uYkQYx9i/hpfdmg0cFYx1RsF
-         z4eKsBTZu77qJz4Xlp89KwgYUD30+rA83SXCMaW1e3uQsnfcwpTPQvJStK5+wSXk10W/
-         mQMg==
-X-Gm-Message-State: APjAAAVNqFkbgkKFhr9UsBhqP0AohV8ZD9nD3Y0DhDfGNMhOVnR6zKAu
-        rXKKoquovdtXOtiSuNAotVg=
-X-Google-Smtp-Source: APXvYqxQM0WInjnJ/eVmD8Bz8e0hfDGxTooPflY7Hfz3KHFu1WROasjqDKOBroco3HFuM9aSEtS7yQ==
-X-Received: by 2002:aed:3baf:: with SMTP id r44mr20358974qte.30.1573937433338;
-        Sat, 16 Nov 2019 12:50:33 -0800 (PST)
+        bh=d20wT0cl7XgbwKLLYIFQXwUjPZkC30E2izyCFJ7mTnY=;
+        b=K/BYHjU/3i9cGN+BupkM551jZPaWhWBjZK92THWIi6BODOxEG1ZVhocrUcdJKt957H
+         dkyemR6Cj+i5MTuyoEkkWzRbYDsPm2oOwfUdIsr3dNd4mPIaSmw/so7lTOVZMLHDjcYZ
+         njTu5StUDOCZe7tGP5q25Ym18jTNDIJgNY449UdMOsLsYf4i40A4aMc7F1I4jDc8BFQO
+         BDYmpuyLwJt88bTOuZZf2FOBNo0ek5TdTIAWuxaDd/+gVupDeuY8Zi9ugyf0sH4BQhST
+         CgoBO2J2vjkCn8otI3ddZxWpahNH0cg3r3JdPJvkSGBMpZapaeg4QeMtYJA05IcxBh96
+         FU3g==
+X-Gm-Message-State: APjAAAV0U51OzJt+GifmKTNv1UBv9iMx31S+qzm2jDZ290hxkf0OM+Rd
+        PUfg4A1dVoa+Rsrrs1RsIK8=
+X-Google-Smtp-Source: APXvYqyIMK5pNhn+/b0UG7IpGqDwo1UGwwZf1w16A//jV2cen+QvGxurE6/H0rN8/YC6Q4+m0J+rCQ==
+X-Received: by 2002:ac8:7103:: with SMTP id z3mr20706819qto.387.1573937477031;
+        Sat, 16 Nov 2019 12:51:17 -0800 (PST)
 Received: from smtp.gmail.com ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id n55sm7416978qta.24.2019.11.16.12.50.31
+        by smtp.gmail.com with ESMTPSA id n3sm6999136qtv.17.2019.11.16.12.51.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Nov 2019 12:50:32 -0800 (PST)
-Date:   Sat, 16 Nov 2019 17:50:29 -0300
+        Sat, 16 Nov 2019 12:51:16 -0800 (PST)
+Date:   Sat, 16 Nov 2019 17:51:13 -0300
 From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To:     jic23@kernel.org, robh@kernel.org
 Cc:     dragos.bogdan@analog.com, alexandru.ardelean@analog.com,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, kernel-usp@googlegroups.com
-Subject: [PATCH 1/2] dt-bindings: iio: adc: ad7292: Update SPDX identifier
-Message-ID: <20191116205026.dvlevawj5obq7weh@smtp.gmail.com>
+Subject: [PATCH 2/2] dt-bindings: iio: adc: ad7292: fix constraint over
+ channel quantity
+Message-ID: <20191116205110.vvqkmujecc6u5fvi@smtp.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -61,27 +62,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Update SPDX identifier to the preferred dual GPL-2.0 OR BSD-2-Clause
-licensing.
+Change items property of AD7292 channels to correctly constrain their
+quantity.
 
 Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 ---
-I split the changes into 2 different patches since they are about
-different issues.
-
- Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-index b68be3aaf587..5770f63dd511 100644
+index 5770f63dd511..e1f6d64bdccd 100644
 --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- %YAML 1.2
- ---
- $id: http://devicetree.org/schemas/iio/adc/adi,ad7292.yaml#
+@@ -53,7 +53,8 @@ patternProperties:
+         description: |
+           The channel number. It can have up to 8 channels numbered from 0 to 7.
+         items:
+-          maximum: 7
++          - minimum: 0
++            maximum: 7
+ 
+       diff-channels:
+         description: see Documentation/devicetree/bindings/iio/adc/adc.txt
 -- 
 2.23.0
 

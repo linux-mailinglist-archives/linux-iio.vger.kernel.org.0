@@ -2,97 +2,367 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CDFF1000A8
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2019 09:47:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEFE01001A8
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2019 10:49:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726626AbfKRIrU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Nov 2019 03:47:20 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:55723 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726552AbfKRIrU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Nov 2019 03:47:20 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iWcgo-0004FT-A3; Mon, 18 Nov 2019 09:47:18 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iWcgn-0001PK-VT; Mon, 18 Nov 2019 09:47:17 +0100
-Date:   Mon, 18 Nov 2019 09:47:17 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-iio@vger.kernel.org,
-        Luca Ceresoli <luca@lucaceresoli.net>,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: Re: [PATCH v3 3/3] i2c: smbus: switch from loops to memcpy
-Message-ID: <20191118084717.rv2f24fg523gq6dr@pengutronix.de>
-References: <20191112203132.163306-1-dmitry.torokhov@gmail.com>
- <20191112203132.163306-4-dmitry.torokhov@gmail.com>
- <20191118074757.edyfvz5s3pqnu67y@pengutronix.de>
- <20191118080939.GC251795@dtor-ws>
+        id S1726511AbfKRJtS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Nov 2019 04:49:18 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:17614 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726464AbfKRJtR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Nov 2019 04:49:17 -0500
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAI9gpsV030847;
+        Mon, 18 Nov 2019 10:48:45 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=zQW5SxfGKJ8t6I2JdL4XBTUzCtw9M6ZarVVFFakyxKk=;
+ b=bMJKhOFbqI9bZ7qO1E+sc/PRvNXMDsp2+CtZvU75ezbyi0FVaZHENUA1XpbZscEtv45q
+ QhPDu8VMH/v/krP8ONTFxxxsSp/47jQIEfOwdGnVguVDEcqT44qi1Cll5lD4I4Ss/w4F
+ qmCFHiEEk9OeXdeOmfNJ990ngdRDaAMZDrM1VFLl21DQ4YNzjNn5Q7UwOxdk+woW5JVu
+ fCz/h2x8wjxhoXF4l6TLxikT7nDv21hUbe/lu2YgrxC12YayoaShLalCvmAC+6RoEfBh
+ TSUgJmLgwRoEjaFhVNEA4oCvbNIFl+UgV3TLg8P9PuDUYKoVitUJSIFLk++h3zza2nnp rQ== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2wa9unrn34-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 18 Nov 2019 10:48:45 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0D50D10003B;
+        Mon, 18 Nov 2019 10:48:45 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag3node3.st.com [10.75.127.9])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E60FA2BC7D6;
+        Mon, 18 Nov 2019 10:48:44 +0100 (CET)
+Received: from localhost (10.75.127.47) by SFHDAG3NODE3.st.com (10.75.127.9)
+ with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon, 18 Nov 2019 10:48:44
+ +0100
+From:   Benjamin Gaignard <benjamin.gaignard@st.com>
+To:     <fabrice.gasnier@st.com>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <alexandre.torgue@st.com>,
+        <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
+        <pmeerw@pmeerw.net>, <lee.jones@linaro.org>,
+        <thierry.reding@gmail.com>, <u.kleine-koenig@pengutronix.de>
+CC:     <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-pwm@vger.kernel.org>,
+        Benjamin Gaignard <benjamin.gaignard@st.com>
+Subject: [PATCH v2] dt-bindings: mfd: Convert stm32 low power timers bindings to json-schema
+Date:   Mon, 18 Nov 2019 10:48:42 +0100
+Message-ID: <20191118094842.20171-1-benjamin.gaignard@st.com>
+X-Mailer: git-send-email 2.15.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191118080939.GC251795@dtor-ws>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.47]
+X-ClientProxiedBy: SFHDAG1NODE1.st.com (10.75.127.1) To SFHDAG3NODE3.st.com
+ (10.75.127.9)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-18_01:2019-11-15,2019-11-17 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Nov 18, 2019 at 12:09:39AM -0800, Dmitry Torokhov wrote:
-> On Mon, Nov 18, 2019 at 08:47:57AM +0100, Uwe Kleine-König wrote:
-> > Hello Dmitry,
-> > 
-> > On Tue, Nov 12, 2019 at 12:31:32PM -0800, Dmitry Torokhov wrote:
-> > > When copying memory from one buffer to another, instead of open-coding
-> > > loops with byte-by-byte copies let's use memcpy() which might be a bit
-> > > faster and makes intent more clear.
-> > > 
-> > > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > > 
-> > > ---
-> > > 
-> > > Changes in v3:
-> > > - new patch using memcpy() for moving data around
-> > > 
-> > >  drivers/i2c/i2c-core-smbus.c | 15 +++++----------
-> > >  1 file changed, 5 insertions(+), 10 deletions(-)
-> > > 
-> > > diff --git a/drivers/i2c/i2c-core-smbus.c b/drivers/i2c/i2c-core-smbus.c
-> > > index 7b4e2270eeda1..bbafdd3b1b114 100644
-> > > --- a/drivers/i2c/i2c-core-smbus.c
-> > > +++ b/drivers/i2c/i2c-core-smbus.c
-> > > @@ -397,8 +397,7 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
-> > >  			}
-> > >  
-> > >  			i2c_smbus_try_get_dmabuf(&msg[0], command);
-> > > -			for (i = 1; i < msg[0].len; i++)
-> > > -				msg[0].buf[i] = data->block[i - 1];
-> > > +			memcpy(msg[0].buf + 1, data->block, msg[0].len - 1);
-> > 
-> > Can it happen that msg[0].len is zero?
-> 
-> No, it can not, because of the "msg[0].len = data->block[0] + 2;" line
-> above.
+Convert the STM32 low power timers binding to DT schema format using json-schema
 
-OK, and as passing data with data->block[0] = 254 also makes the code do
-strange things already without your patch. I now also checked the other
-conversions for similar problems and didn't find any. So:
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
+---
+changes in version 2:
+- improve counter function description
+- set reg maximum to 2 instead of 3
 
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+ .../bindings/counter/stm32-lptimer-cnt.txt         |  29 -----
+ .../bindings/iio/timer/stm32-lptimer-trigger.txt   |  23 ----
+ .../devicetree/bindings/mfd/st,stm32-lptimer.yaml  | 120 +++++++++++++++++++++
+ .../devicetree/bindings/mfd/stm32-lptimer.txt      |  48 ---------
+ .../devicetree/bindings/pwm/pwm-stm32-lp.txt       |  30 ------
+ 5 files changed, 120 insertions(+), 130 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/counter/stm32-lptimer-cnt.txt
+ delete mode 100644 Documentation/devicetree/bindings/iio/timer/stm32-lptimer-trigger.txt
+ create mode 100644 Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mfd/stm32-lptimer.txt
+ delete mode 100644 Documentation/devicetree/bindings/pwm/pwm-stm32-lp.txt
 
-Best regards
-Uwe
-
+diff --git a/Documentation/devicetree/bindings/counter/stm32-lptimer-cnt.txt b/Documentation/devicetree/bindings/counter/stm32-lptimer-cnt.txt
+deleted file mode 100644
+index e90bc47f752a..000000000000
+--- a/Documentation/devicetree/bindings/counter/stm32-lptimer-cnt.txt
++++ /dev/null
+@@ -1,29 +0,0 @@
+-STMicroelectronics STM32 Low-Power Timer quadrature encoder and counter
+-
+-STM32 Low-Power Timer provides several counter modes. It can be used as:
+-- quadrature encoder to detect angular position and direction of rotary
+-  elements, from IN1 and IN2 input signals.
+-- simple counter from IN1 input signal.
+-
+-Must be a sub-node of an STM32 Low-Power Timer device tree node.
+-See ../mfd/stm32-lptimer.txt for details about the parent node.
+-
+-Required properties:
+-- compatible:		Must be "st,stm32-lptimer-counter".
+-- pinctrl-names: 	Set to "default". An additional "sleep" state can be
+-			defined to set pins in sleep state.
+-- pinctrl-n: 		List of phandles pointing to pin configuration nodes,
+-			to set IN1/IN2 pins in mode of operation for Low-Power
+-			Timer input on external pin.
+-
+-Example:
+-	timer@40002400 {
+-		compatible = "st,stm32-lptimer";
+-		...
+-		counter {
+-			compatible = "st,stm32-lptimer-counter";
+-			pinctrl-names = "default", "sleep";
+-			pinctrl-0 = <&lptim1_in_pins>;
+-			pinctrl-1 = <&lptim1_sleep_in_pins>;
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/iio/timer/stm32-lptimer-trigger.txt b/Documentation/devicetree/bindings/iio/timer/stm32-lptimer-trigger.txt
+deleted file mode 100644
+index 85e6806b17d7..000000000000
+--- a/Documentation/devicetree/bindings/iio/timer/stm32-lptimer-trigger.txt
++++ /dev/null
+@@ -1,23 +0,0 @@
+-STMicroelectronics STM32 Low-Power Timer Trigger
+-
+-STM32 Low-Power Timer provides trigger source (LPTIM output) that can be used
+-by STM32 internal ADC and/or DAC.
+-
+-Must be a sub-node of an STM32 Low-Power Timer device tree node.
+-See ../mfd/stm32-lptimer.txt for details about the parent node.
+-
+-Required properties:
+-- compatible:		Must be "st,stm32-lptimer-trigger".
+-- reg:			Identify trigger hardware block. Must be 0, 1 or 2
+-			respectively for lptimer1, lptimer2 or lptimer3
+-			trigger output.
+-
+-Example:
+-	timer@40002400 {
+-		compatible = "st,stm32-lptimer";
+-		...
+-		trigger@0 {
+-			compatible = "st,stm32-lptimer-trigger";
+-			reg = <0>;
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml b/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
+new file mode 100644
+index 000000000000..1a4cc5f3fb33
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
+@@ -0,0 +1,120 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mfd/st,stm32-lptimer.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: STMicroelectronics STM32 Low-Power Timers bindings
++
++description: |
++  The STM32 Low-Power Timer (LPTIM) is a 16-bit timer that provides several
++  functions
++   - PWM output (with programmable prescaler, configurable polarity)
++   - Trigger source for STM32 ADC/DAC (LPTIM_OUT)
++   - Several counter modes:
++     - quadrature encoder to detect angular position and direction of rotary
++       elements, from IN1 and IN2 input signals.
++     - simple counter from IN1 input signal.
++
++maintainers:
++  - Fabrice Gasnier <fabrice.gasnier@st.com>
++
++properties:
++  compatible:
++    const: st,stm32-lptimer
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    items:
++      - const: mux
++
++  "#address-cells":
++    const: 1
++
++  "#size-cells":
++    const: 0
++
++  pwm:
++    type: object
++
++    properties:
++      compatible:
++        const: st,stm32-pwm-lp
++
++      "#pwm-cells":
++        const: 3
++
++    required:
++      - "#pwm-cells"
++      - compatible
++
++patternProperties:
++  "^trigger@[0-9]+$":
++    type: object
++
++    properties:
++      compatible:
++        const: st,stm32-lptimer-trigger
++
++      reg:
++        description: Identify trigger hardware block.
++        items:
++         minimum: 0
++         maximum: 2
++
++    required:
++      - compatible
++      - reg
++
++  counter:
++    type: object
++
++    properties:
++      compatible:
++        const: st,stm32-lptimer-counter
++
++    required:
++      - compatible
++
++required:
++  - "#address-cells"
++  - "#size-cells"
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/stm32mp1-clks.h>
++    timer@40002400 {
++      compatible = "st,stm32-lptimer";
++      reg = <0x40002400 0x400>;
++      clocks = <&timer_clk>;
++      clock-names = "mux";
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      pwm {
++        compatible = "st,stm32-pwm-lp";
++        #pwm-cells = <3>;
++      };
++
++      trigger@0 {
++        compatible = "st,stm32-lptimer-trigger";
++        reg = <0>;
++      };
++
++      counter {
++        compatible = "st,stm32-lptimer-counter";
++      };
++    };
++
++...
+diff --git a/Documentation/devicetree/bindings/mfd/stm32-lptimer.txt b/Documentation/devicetree/bindings/mfd/stm32-lptimer.txt
+deleted file mode 100644
+index fb54e4dad5b3..000000000000
+--- a/Documentation/devicetree/bindings/mfd/stm32-lptimer.txt
++++ /dev/null
+@@ -1,48 +0,0 @@
+-STMicroelectronics STM32 Low-Power Timer
+-
+-The STM32 Low-Power Timer (LPTIM) is a 16-bit timer that provides several
+-functions:
+-- PWM output (with programmable prescaler, configurable polarity)
+-- Quadrature encoder, counter
+-- Trigger source for STM32 ADC/DAC (LPTIM_OUT)
+-
+-Required properties:
+-- compatible:		Must be "st,stm32-lptimer".
+-- reg:			Offset and length of the device's register set.
+-- clocks:		Phandle to the clock used by the LP Timer module.
+-- clock-names:		Must be "mux".
+-- #address-cells:	Should be '<1>'.
+-- #size-cells:		Should be '<0>'.
+-
+-Optional subnodes:
+-- pwm:			See ../pwm/pwm-stm32-lp.txt
+-- counter:		See ../counter/stm32-lptimer-cnt.txt
+-- trigger:		See ../iio/timer/stm32-lptimer-trigger.txt
+-
+-Example:
+-
+-	timer@40002400 {
+-		compatible = "st,stm32-lptimer";
+-		reg = <0x40002400 0x400>;
+-		clocks = <&timer_clk>;
+-		clock-names = "mux";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		pwm {
+-			compatible = "st,stm32-pwm-lp";
+-			pinctrl-names = "default";
+-			pinctrl-0 = <&lppwm1_pins>;
+-		};
+-
+-		trigger@0 {
+-			compatible = "st,stm32-lptimer-trigger";
+-			reg = <0>;
+-		};
+-
+-		counter {
+-			compatible = "st,stm32-lptimer-counter";
+-			pinctrl-names = "default";
+-			pinctrl-0 = <&lptim1_in_pins>;
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/pwm/pwm-stm32-lp.txt b/Documentation/devicetree/bindings/pwm/pwm-stm32-lp.txt
+deleted file mode 100644
+index 6521bc44a74e..000000000000
+--- a/Documentation/devicetree/bindings/pwm/pwm-stm32-lp.txt
++++ /dev/null
+@@ -1,30 +0,0 @@
+-STMicroelectronics STM32 Low-Power Timer PWM
+-
+-STM32 Low-Power Timer provides single channel PWM.
+-
+-Must be a sub-node of an STM32 Low-Power Timer device tree node.
+-See ../mfd/stm32-lptimer.txt for details about the parent node.
+-
+-Required parameters:
+-- compatible:		Must be "st,stm32-pwm-lp".
+-- #pwm-cells:		Should be set to 3. This PWM chip uses the default 3 cells
+-			bindings defined in pwm.txt.
+-
+-Optional properties:
+-- pinctrl-names: 	Set to "default". An additional "sleep" state can be
+-			defined to set pins in sleep state when in low power.
+-- pinctrl-n: 		Phandle(s) pointing to pin configuration node for PWM,
+-			respectively for "default" and "sleep" states.
+-
+-Example:
+-	timer@40002400 {
+-		compatible = "st,stm32-lptimer";
+-		...
+-		pwm {
+-			compatible = "st,stm32-pwm-lp";
+-			#pwm-cells = <3>;
+-			pinctrl-names = "default", "sleep";
+-			pinctrl-0 = <&lppwm1_pins>;
+-			pinctrl-1 = <&lppwm1_sleep_pins>;
+-		};
+-	};
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+2.15.0
+

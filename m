@@ -2,83 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81679FFF9E
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2019 08:37:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37110FFFB8
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2019 08:44:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726595AbfKRHh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Nov 2019 02:37:26 -0500
-Received: from mout.kundenserver.de ([212.227.126.131]:38567 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726460AbfKRHhZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Nov 2019 02:37:25 -0500
-Received: from localhost ([185.35.208.129]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N9dg5-1hli4Z3cEH-015WVh; Mon, 18 Nov 2019 08:36:54 +0100
-Date:   Mon, 18 Nov 2019 08:36:50 +0100
-From:   Andreas Klinger <ak@it-klinger.de>
-To:     robh+dt@kernel.org, jic23@kernel.org, mark.rutland@arm.com
-Cc:     mripard@kernel.org, shawnguo@kernel.org, heiko@sntech.de,
-        icenowy@aosc.io, laurent.pinchart@ideasonboard.com,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        gregkh@linuxfoundation.org, christophe.jaillet@wanadoo.fr,
-        tglx@linutronix.de, mchehab+samsung@kernel.org,
-        davem@davemloft.net, paulmck@linux.ibm.com,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/4] MAINTAINERS: add maintainer for ping iio sensors
-Message-ID: <20191118073648.tk4otab6alsiuzt7@arbad>
+        id S1726869AbfKRHoQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Nov 2019 02:44:16 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:34505 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726814AbfKRHoQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Nov 2019 02:44:16 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iWbhR-0006Ng-Ks; Mon, 18 Nov 2019 08:43:53 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iWbhN-0006X4-QV; Mon, 18 Nov 2019 08:43:49 +0100
+Date:   Mon, 18 Nov 2019 08:43:49 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Wolfram Sang <wsa@the-dreams.de>, linux-iio@vger.kernel.orgi,
+        Luca Ceresoli <luca@lucaceresoli.net>,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] i2c: use void pointers for supplying data for
+ reads and writes
+Message-ID: <20191118074349.ags3c4tmvapguqcp@pengutronix.de>
+References: <20191112203132.163306-1-dmitry.torokhov@gmail.com>
+ <20191112203132.163306-2-dmitry.torokhov@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191112203132.163306-2-dmitry.torokhov@gmail.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Provags-ID: V03:K1:ZISP8DP7LxxcjVaKcb0HRurcDIs/0YQTEspXlzOeNUD09UpU21I
- A8MfWMOlgmmvZwYxEVYwbPSQsxW7yxgfzqZdQCxtLfO/MgWG2IqPZMRQR+ZzfvL9TV8tknA
- gJpZuVuMirJ5Dk2t49/AmA/SKYp5VCeCRO1xCWcWn+i79CdlQOeLjKt/bQLFSW8nwsS4xKP
- EHfM7FqfJrwlgsCGPfjzQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:pzWtpX5zhZA=:uAPKewFawR4cgNWUdCnfrh
- TKb2ODE7kL5lG4bjmgtm/SMhHhx/6z7AWNU0kO0TTrbrtWe/mGBhHzw6v4VeztTj1wdC7+IJd
- zPXNvZ4S/5LK+u4dAflENtx6btQ41SHOEGxfOZKdkhbCtpOh5Pk4pwiYmuW/IuHHMK7MRynEB
- mCbyrd1q1B1pLmlTkhO0jMvFoWvjBCSJDejDP9B/rRGO9d4/UxOWDhyJAXzUQ1zKdeAoFmTUd
- 6oQMPQXVMR/YG9ed9q9gGHN4uuYvCK5hRULjaSlMF6p0nSTUYXMOeFb3mc11wC54M84KSLJ7N
- 03OVQygOfpdHXEwYLJmcPdjteyFBIvFbwGqyn7U3o3sEMCBeeQoXTaNWXK+Yzkx55P0hX7eMF
- pl/g+auPT/EPhh6WAbyl3CGPlkJ8UOhm8csfemYYdcKGQWci7KzvtIhMhS81f5adabVCIVrNQ
- yQGI9HvlQ0xlagOiRgCJwJoOlZJJiQV6kxDRbXccBFdf5eXG85Up9GAdabbjhCrCEe8mRUKdG
- iINAa9dIkQS36Ugm4xXsQFH0riCfkvLQhjMTms1HW3+0w+N9zZXqT2hWZJw3McmJr+g4PFGm3
- CrPB2jE4wd1kbIfyI1y3FiL1gp1a7qBtYNMHwhFwu9w+ocos8pn254b9Vr5Vg0aaGnbEgJFz5
- e7T1xwEAYbGk0albCkSO/QWAIMNX/8YUqka0KfylCv//nf5+DY7mlWgiPzA2ZbP3kAPXpE4ry
- MHbYBLBWCCJvBdIvdpxvOwDCta/quArlCp9CtIrivJXfZiWVKRtn6SHAm1/OR6S2/DRYU9gDM
- nmP4gUGy0BSXxWSHClGa+VJ5WfsFBdGiYizWTk5YBvT/cr+KtSXKuT/6qvdBkZNk+0QLJOmbE
- 0N0MLkHejM1mychbQr5z9VBDKKf/oY5Ld4CKzAJ1Y=
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a maintainer for the new parallax PING))) and LaserPING IIO sensors
+Hello Dmitry,
 
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+On Tue, Nov 12, 2019 at 12:31:30PM -0800, Dmitry Torokhov wrote:
+> There is no need to force users of i2c_master_send()/i2c_master_recv()
+> and other i2c read/write bulk data API to cast everything into u8 pointers.
+> While everything can be considered byte stream, the drivers are usually
+> work with more structured data.
+> 
+> Let's switch the APIs to accept [const] void pointers to cut amount of
+> casting needed.
+> 
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c6c34d04ce95..ad469adffb99 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12264,6 +12264,13 @@ L:	platform-driver-x86@vger.kernel.org
- S:	Maintained
- F:	drivers/platform/x86/panasonic-laptop.c
+Can you give an example where you save some casts? Given that i2c is a
+byte oriented protocol (as opposed to for example spi) I think it's a
+good idea to expose this in the API.
+
+> diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+> index 5c2cc61b666e7..48ed76a0e83d4 100644
+> --- a/drivers/iio/adc/max1363.c
+> +++ b/drivers/iio/adc/max1363.c
+
+This change isn't motivated in the commit log. Is this here by mistake?
+
+> @@ -182,9 +182,9 @@ struct max1363_state {
+>  	struct regulator		*vref;
+>  	u32				vref_uv;
+>  	int				(*send)(const struct i2c_client *client,
+> -						const char *buf, int count);
+> +						const void *buf, int count);
+>  	int				(*recv)(const struct i2c_client *client,
+> -						char *buf, int count);
+> +						void *buf, int count);
+>  };
+>  
+>  #define MAX1363_MODE_SINGLE(_num, _mask) {				\
+> @@ -310,27 +310,29 @@ static const struct max1363_mode
+>  	return NULL;
+>  }
+>  
+> -static int max1363_smbus_send(const struct i2c_client *client, const char *buf,
+> +static int max1363_smbus_send(const struct i2c_client *client, const void *buf,
+>  		int count)
+>  {
+> +	const u8 *data = buf;
+>  	int i, err;
+>  
+>  	for (i = err = 0; err == 0 && i < count; ++i)
+> -		err = i2c_smbus_write_byte(client, buf[i]);
+> +		err = i2c_smbus_write_byte(client, data[i]);
+
+Isn't this hunk an indicator that keeping char (or u8) as type of the
+members of buf is a good idea?
  
-+PARALLAX PING IIO SENSOR DRIVER
-+M:	Andreas Klinger <ak@it-klinger.de>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml
-+F:	drivers/iio/proximity/ping.c
-+
- PARALLEL LCD/KEYPAD PANEL DRIVER
- M:	Willy Tarreau <willy@haproxy.com>
- M:	Ksenija Stanojevic <ksenija.stanojevic@gmail.com>
+>  	return err ? err : count;
+>  }
+>  
+> -static int max1363_smbus_recv(const struct i2c_client *client, char *buf,
+> +static int max1363_smbus_recv(const struct i2c_client *client, void *buf,
+>  		int count)
+>  {
+> +	u8 *data = buf;
+>  	int i, ret;
+>  
+>  	for (i = 0; i < count; ++i) {
+>  		ret = i2c_smbus_read_byte(client);
+>  		if (ret < 0)
+>  			return ret;
+> -		buf[i] = ret;
+> +		data[i] = ret;
+>  	}
+>  
+>  	return count;
+
+Best regards
+Uwe
+
 -- 
-2.11.0
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

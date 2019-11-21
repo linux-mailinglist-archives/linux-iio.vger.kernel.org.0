@@ -2,116 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4496105B3F
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2019 21:39:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D5E2105B86
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2019 22:01:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727125AbfKUUjs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Nov 2019 15:39:48 -0500
-Received: from mail-eopbgr740095.outbound.protection.outlook.com ([40.107.74.95]:23452
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726541AbfKUUjs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 21 Nov 2019 15:39:48 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fNUZXffy7IumjmUFM7I00rqKa2quaIofdfZVr6pKWQ4YRMg4STUxztH6yyzvmMQMWBjgrWysAggKTNq3gLCUYaNAITcs6ksXGL4E3GftvmzKMDCcqJiOtTdimG72YN9decxhkLDF90QV5Jv3VUNXRnywY15x59enQp4/v912IQg0clBm5hsmnTEX7DP7pGnZkXy9m3gxAsa6oeXb212Sq/fUsCIHTZJ5JBkFk7ArznXw8XmIzu3MO3+ikuhHuArfTDQFNH1d2yjV6/mqEor7mMimSg3Bu8RXocIdZjXlkDgaOc5Ynrck2htUcFWEHoGqZ6AsbQnU2ZXmRTm/7oWbSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oaYaGRC24jAO6w0z9E0KfXR3F+Z63XvgvkLt3FBPsE0=;
- b=YYvLGCM+5QoD2c50PGMVAIWR37iJP8hVL5tJYbel68W0UNQLdQ85G94tJ6HACrWd2Koww4NBWfmp1dt0HixDWzsI2J50yeXTcaV782bOSjgDeKE5ydpJieX/FWpA2jVGC5Mtt3Hjgkm1jQRzz5+c0WZYZIMT7tJIdd3Oc6sWH8wxQadsa+QJeQu8vib83H8YyGEDR8w9ntooP7PeLdARcKpVRIRFjM4bdefc6nvxkcSTFHHJ64S3V4WkkO+LGgKYgJXyOqghwB0rretoFV5+i+cx7yRWInWxXboDIq3ewhRXpAqv5w6BCAge869lpBxJEZzjnRbydg1dbjYZWMLxJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=licor.com; dmarc=pass action=none header.from=licor.com;
- dkim=pass header.d=licor.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=licor.onmicrosoft.com;
- s=selector2-licor-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oaYaGRC24jAO6w0z9E0KfXR3F+Z63XvgvkLt3FBPsE0=;
- b=EwCSUfBgxo7bV/BuKDdyzqGfSmGfKHAVyl5jyZZfWNy27C4JA0Ye9BPySnF/s1EdzIOV+B6kkpdmQGKs7uZ+l8osbeHZtttMWDgZMGevD5lZ9wXXc9cfllQgCHqlnWMK17T8595HorVnEhAP/z/rJXZ2pvnleY85+YbfSc3JEls=
-Received: from SN6PR08MB4768.namprd08.prod.outlook.com (52.135.102.13) by
- SN6PR08MB3933.namprd08.prod.outlook.com (52.132.127.28) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2474.16; Thu, 21 Nov 2019 20:39:42 +0000
-Received: from SN6PR08MB4768.namprd08.prod.outlook.com
- ([fe80::21af:88a:148d:b2d2]) by SN6PR08MB4768.namprd08.prod.outlook.com
- ([fe80::21af:88a:148d:b2d2%7]) with mapi id 15.20.2474.018; Thu, 21 Nov 2019
- 20:39:42 +0000
-From:   Chris Lesiak <chris.lesiak@licor.com>
-To:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Matt Ranostay <mranostay@gmail.com>
-CC:     Chris Lesiak <chris.lesiak@licor.com>
-Subject: [PATCH] iio: humidity: hdc100x: fix IIO_HUMIDITYRELATIVE channel
- reporting
-Thread-Topic: [PATCH] iio: humidity: hdc100x: fix IIO_HUMIDITYRELATIVE channel
- reporting
-Thread-Index: AQHVoKvNhSpV1Ujz/UWh3pIZuD3RkA==
-Date:   Thu, 21 Nov 2019 20:39:42 +0000
-Message-ID: <20191121203932.17249-1-chris.lesiak@licor.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [2607:da00:300:7::2]
-x-clientproxiedby: CH2PR17CA0019.namprd17.prod.outlook.com
- (2603:10b6:610:53::29) To SN6PR08MB4768.namprd08.prod.outlook.com
- (2603:10b6:805:6d::13)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=chris.lesiak@licor.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.21.0
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d6e61c5b-7a5f-452b-956e-08d76ec2f001
-x-ms-traffictypediagnostic: SN6PR08MB3933:|SN6PR08MB3933:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SN6PR08MB39338C728DFEED08C0A96B539A4E0@SN6PR08MB3933.namprd08.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1388;
-x-forefront-prvs: 0228DDDDD7
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(396003)(366004)(376002)(39850400004)(346002)(136003)(199004)(189003)(386003)(186003)(86362001)(6116002)(36756003)(46003)(478600001)(6506007)(5660300002)(305945005)(2616005)(7736002)(14444005)(52116002)(4326008)(44832011)(256004)(8676002)(6512007)(107886003)(81166006)(81156014)(66556008)(64756008)(8936002)(66946007)(14454004)(66446008)(6486002)(66476007)(2906002)(4744005)(99286004)(25786009)(316002)(71190400001)(71200400001)(102836004)(6436002)(2501003)(1076003)(50226002)(110136005);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR08MB3933;H:SN6PR08MB4768.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: licor.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 7UeoxvEGk8WSHz5/I1tHmP3IdRbzwxiVWk69YEyxiHCLDPmCEi47xbUJgZyePOtrzFIKtZ/OcIfDBA5nIyCrbFj2f9JWssI71vZn0Vv2XRvsSmABkP9rTrgFty/BTcznsQPfDZGUvXWiha8BsC4iaxFPfk//kcqO/oYrpov9yAAe8LV8EI2AjzY/FoepjUesRVMEDK4iLLXhFdy/KocM3pB2nKwmNsuvpo/L3OnNJkBPvkVF2FBB4MqHXbFn2umpwqga6jokGJcuObN+dP+tvj+iI1gIANCrxHEuEaQgiULTv3SetVX6MGcem2h6O3k9r3AbHC/doBTdx8IRzToPGDFaSZkkFCV+3Rot+PAYOp2lXxLGNgY4Q1nSVUxlvqcXSSjh8tVcHktZ1hDJhk9w57xfriFBqz/+K/YfIuZhhtkM1oUVBn02HQA8vhohyZNj
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1726546AbfKUVB0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Nov 2019 16:01:26 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:40325 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727072AbfKUVB0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Nov 2019 16:01:26 -0500
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iXtZV-0006Ob-12; Thu, 21 Nov 2019 22:01:01 +0100
+Received: from ukl by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iXtZS-0006yq-RH; Thu, 21 Nov 2019 22:00:58 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Alexandru Ardelean <alexandru.Ardelean@analog.com>
+Cc:     linux-iio@vger.kernel.org, kernel@pengutronix.de
+Subject: [PATCH v3 0/3] iio: adc: add support for ltc2496
+Date:   Thu, 21 Nov 2019 22:00:04 +0100
+Message-Id: <20191121210007.25646-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-X-OriginatorOrg: licor.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d6e61c5b-7a5f-452b-956e-08d76ec2f001
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2019 20:39:42.7719
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 48c70abd-da5a-4c6c-86cb-5e003ca01574
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fCYb8wIK/bJ5Gz5qU4rNKHcq4DHfK0tKZiuEMkLjAAY2h1ASEYwgo3OtBDCxaPUKetOGMA0YbPhWatLNUaUPQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB3933
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The IIO_HUMIDITYRELATIVE channel was being incorrectly reported back
-as percent when it should have been milli percent. This is via an
-incorrect scale value being returned to userspace.
+Hello,
 
-Signed-off-by: Chris Lesiak <chris.lesiak@licor.com>
----
- drivers/iio/humidity/hdc100x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+this is v3 of a series generalizing the driver of the ltc2497 (an i2c
+ADC) to be able to reuse most of the code for the ltc2496 (an spi
+variant of the ltc2497).
 
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.=
-c
-index 066e05f92081..ff6666ac5d68 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -229,7 +229,7 @@ static int hdc100x_read_raw(struct iio_dev *indio_dev,
- 			*val2 =3D 65536;
- 			return IIO_VAL_FRACTIONAL;
- 		} else {
--			*val =3D 100;
-+			*val =3D 100000;
- 			*val2 =3D 65536;
- 			return IIO_VAL_FRACTIONAL;
- 		}
---=20
-2.21.0
+Iteration v2 started with Message-Id:
+20191114105159.14195-1-u.kleine-koenig@pengutronix.de.
+
+The changes since v2 are based on feedback by Jonathan Cameron:
+
+ - rename common file to ltc2497-core.c (from ltc249x.c), also don't use
+   ltc249x in names for cpp symbols, functions and variables.
+ - properly align spi and i2c transfer buffers for DMA maintenance
+ - improve dt binding to mention spi specific properties
+
+Best regards
+Uwe
+
+Uwe Kleine-König (3):
+  iio: adc: ltc2496: provide device tree binding document
+  iio: adc: ltc2497: split protocol independent part in a separate
+    module
+  iio: adc: new driver to support Linear technology's ltc2496
+
+ .../bindings/iio/adc/lltc,ltc2496.yaml        |  37 +++
+ MAINTAINERS                                   |   2 +-
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   3 +-
+ drivers/iio/adc/ltc2496.c                     | 108 ++++++++
+ drivers/iio/adc/ltc2497-core.c                | 243 ++++++++++++++++++
+ drivers/iio/adc/ltc2497.c                     | 234 ++---------------
+ drivers/iio/adc/ltc2497.h                     |  18 ++
+ 8 files changed, 445 insertions(+), 210 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
+ create mode 100644 drivers/iio/adc/ltc2496.c
+ create mode 100644 drivers/iio/adc/ltc2497-core.c
+ create mode 100644 drivers/iio/adc/ltc2497.h
+
+-- 
+2.24.0
 

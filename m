@@ -2,29 +2,29 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A78DE10732E
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2019 14:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D50E107339
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2019 14:30:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727958AbfKVNaK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Nov 2019 08:30:10 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:21230 "EHLO
+        id S1727967AbfKVNaL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Nov 2019 08:30:11 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:24100 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727923AbfKVNaI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Nov 2019 08:30:08 -0500
+        by vger.kernel.org with ESMTP id S1727959AbfKVNaK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Nov 2019 08:30:10 -0500
 Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAMDN7Hl006075;
-        Fri, 22 Nov 2019 08:30:03 -0500
-Received: from nam02-bl2-obe.outbound.protection.outlook.com (mail-bl2nam02lp2057.outbound.protection.outlook.com [104.47.38.57])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2wabu7myus-1
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAMDN8Vf006098;
+        Fri, 22 Nov 2019 08:30:07 -0500
+Received: from nam04-bn3-obe.outbound.protection.outlook.com (mail-bn3nam04lp2052.outbound.protection.outlook.com [104.47.46.52])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2wabu7myuv-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Nov 2019 08:30:03 -0500
+        Fri, 22 Nov 2019 08:30:06 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=at9Su0sX3/Cj+Md9l9J/u9ePWd7jaudTzoCUHXPgpKP2IBRRTfAtb5A396vG5nSFcdQseeXaVJS4YEsDEHUA3W4lY6cO+yoOTfD4UWWC6WmE8T+WkoMysWAAIBCQum2JJwVbyVf6c5kH5xoOeBbIYWoX2p3srIu5hFuX5NFqf1BJgYuM3/0yUBq3T6XMUJLpBfMxLJYm+xM0bzkPl/0781ehAuzFPGdN96FRZPTH3GXrbCwbzjRajgEQZShhELlSqH19TqByt80T0G1Q+dJq2ywnB0rh7cvqy5DurjMn0qwhfPCb7To9wZcn0eL8JBrI99uLtQfFSTW9gtyM5EMEag==
+ b=js/jrLQ4YCXZbFjhXXjBuSDd/Ii5h/f/g8cqpMTQNgx6YuJGYCFpPtTWMibWnZK6RJSC2AmbsVyhWUcVEO0CuX+2qYyvp2gYxQuUTREx2OE+x0AUnZMxnxHZKFXsZzIPp8VyQ9QlPUhf/x7Krvwd7X+LzvArzkU0c/F4SvHjmNpoXuB9hleZmGyDD4+rlDQ2DUIAVn2BMw1yde34iaE4GmT18Fuos9PfCOdG4L/IbpkNEYRwv6J0YnYLoy8IRwZlqXeg0S5iw58wQPVthj63aDKGOJQ782qGHUhbAGYrdDqT/oIPTbGeDPtG2VeI3yNyETEzOaXz4/kkJyOdxc80NQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sCigMqdzLvelihWxd/GXOmnpQ9Vuu4vaJn3a7PqBLTw=;
- b=FtCY3Y82Wa1E0e1mKenf69DMvGEMdjgSI6P+I15NrOyMgsY3RILdyyJK7mPWEsOw+zB0w/tFIb6mWBBYEb1VdY2M5BURVd2M42GyNULCPqNgckx/RpKiep5S2RgyjGePb46dR1FJr2f2lGeiBHuPzwDBzi9u3w4qLXjwMCVt5t8fRfyjjevt3zC5PXvbgtw6XJmHiDaAS1tGhHhlOdgHtABzRbnEuP7WcuuuiHbc3FVTqmwEJqg9j+7oc80rHY8Xns0GjILT0fynqycyvoL6DwFMKWCw1KGChb8czlsv+JkT8qk2lpPwwkiC9j30e9dINu0PQAnm84nAbuouweBfLw==
+ bh=1yOwAaQjdU112y4txRQ75SDbU1oDb3E940kZ7t80gEo=;
+ b=ArK5LZ4wtAqfS8F3PkO6eBSy8MNkP82aNnzJciLvXyosrySC0iuSPlW2lp1W4RRQFypVfEFypn2FG3bGirR4fpHTQPxVe53bTsaCVB2Em8ArInq4PnQ316ub4Jv4fvN+L214NFrW5nXNivnkMDOCiyceZKJeDgRVXs1rL580Jww+HaokBeJcSihxjREm1h9QHgduBMXgQaEB35Olee9HH2Mpt0oT/2WxFUgmEPqcfYNzxnXsSMYUNMyWllwKF/ePuoj/4Cp8QhCno+bUlOEVfI5X8mN0C6K3cGwHsczo+9Ug+hlSUAW4ccvg+O98Q0PKq7uJtsAwy4eoINnrHPe57w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  137.71.25.57) smtp.rcpttodomain=kernel.org smtp.mailfrom=analog.com;
  dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
@@ -32,40 +32,40 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sCigMqdzLvelihWxd/GXOmnpQ9Vuu4vaJn3a7PqBLTw=;
- b=0ecMlG22G3GmAQSuA7EhCUt3z1lXTYoEJjT8xIQdrtENrt/9mbIbSZ850ap2KnoneExOM++MNAqd2wNdXNMTtfesQ9Q7rIOsyO0D698Llth6HuQ+67SDK8vAMIN1SbYeYqh6YwMxfYwAv0hilFgfTXL2mJCEESXbco9VvQin8Ds=
-Received: from CH2PR03CA0007.namprd03.prod.outlook.com (2603:10b6:610:59::17)
- by DM5PR03MB2554.namprd03.prod.outlook.com (2603:10b6:3:44::11) with
+ bh=1yOwAaQjdU112y4txRQ75SDbU1oDb3E940kZ7t80gEo=;
+ b=6OqBkMyljXzJLQKvcyCkOL/iQlDWDdP7glP5njfIXyrorLp5EiedmRrSgiPB7g2nBkigeXs8TM0gLNeq6QbSPbbX7xFr6gxAma/ZaVu1dqDIdWbgl+ij8IsSBNUwcFsedgxjE0V1QTmZTEezFO913/jBhF4ZX1dGQJqN8KI9goA=
+Received: from BN6PR03CA0115.namprd03.prod.outlook.com (2603:10b6:404:10::29)
+ by SN6PR03MB4590.namprd03.prod.outlook.com (2603:10b6:805:fe::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2474.17; Fri, 22 Nov
- 2019 13:30:01 +0000
-Received: from BL2NAM02FT029.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e46::206) by CH2PR03CA0007.outlook.office365.com
- (2603:10b6:610:59::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2474.16; Fri, 22 Nov
+ 2019 13:30:02 +0000
+Received: from BL2NAM02FT014.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::206) by BN6PR03CA0115.outlook.office365.com
+ (2603:10b6:404:10::29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2474.16 via Frontend
- Transport; Fri, 22 Nov 2019 13:30:01 +0000
+ Transport; Fri, 22 Nov 2019 13:30:02 +0000
 Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
  137.71.25.57 as permitted sender) receiver=protection.outlook.com;
  client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
 Received: from nwd2mta2.analog.com (137.71.25.57) by
- BL2NAM02FT029.mail.protection.outlook.com (10.152.77.100) with Microsoft SMTP
+ BL2NAM02FT014.mail.protection.outlook.com (10.152.76.154) with Microsoft SMTP
  Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2474.17
- via Frontend Transport; Fri, 22 Nov 2019 13:30:00 +0000
+ via Frontend Transport; Fri, 22 Nov 2019 13:30:02 +0000
 Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
-        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id xAMDTpCe015795
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id xAMDTrug015814
         (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
-        Fri, 22 Nov 2019 05:29:51 -0800
+        Fri, 22 Nov 2019 05:29:53 -0800
 Received: from saturn.ad.analog.com (10.48.65.119) by
  NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
- 14.3.408.0; Fri, 22 Nov 2019 08:30:00 -0500
+ 14.3.408.0; Fri, 22 Nov 2019 08:30:01 -0500
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC:     <jic23@kernel.org>, <nuno.sa@analog.com>,
         <Michael.Hennerich@analog.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2 06/11] iio: imu: adis: protect initial startup routine with state lock
-Date:   Fri, 22 Nov 2019 15:24:16 +0200
-Message-ID: <20191122132421.5500-7-alexandru.ardelean@analog.com>
+Subject: [PATCH v2 07/11] iio: imu: adis: group single conversion under a single state lock
+Date:   Fri, 22 Nov 2019 15:24:17 +0200
+Message-ID: <20191122132421.5500-8-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122132421.5500-1-alexandru.ardelean@analog.com>
 References: <20191122132421.5500-1-alexandru.ardelean@analog.com>
@@ -75,24 +75,48 @@ Content-Type: text/plain
 X-ADIRoutedOnPrem: True
 X-EOPAttributedMessage: 0
 X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(346002)(396003)(376002)(136003)(39860400002)(199004)(189003)(51416003)(446003)(2870700001)(7636002)(305945005)(70206006)(1076003)(246002)(4326008)(11346002)(426003)(70586007)(44832011)(2616005)(2906002)(8936002)(14444005)(48376002)(50466002)(47776003)(8676002)(36756003)(336012)(50226002)(106002)(107886003)(478600001)(186003)(86362001)(26005)(5660300002)(76176011)(54906003)(7696005)(110136005)(6666004)(356004)(316002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR03MB2554;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(346002)(39860400002)(136003)(376002)(396003)(199004)(189003)(7696005)(8676002)(51416003)(8936002)(2906002)(26005)(305945005)(86362001)(246002)(76176011)(47776003)(70206006)(6666004)(356004)(14444005)(107886003)(186003)(50226002)(1076003)(70586007)(2870700001)(336012)(2616005)(48376002)(478600001)(11346002)(446003)(106002)(426003)(4326008)(7636002)(5660300002)(316002)(54906003)(44832011)(36756003)(110136005)(50466002);DIR:OUT;SFP:1101;SCL:1;SRVR:SN6PR03MB4590;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 58929f6e-4486-4926-fcd1-08d76f50135f
-X-MS-TrafficTypeDiagnostic: DM5PR03MB2554:
-X-Microsoft-Antispam-PRVS: <DM5PR03MB25549CC1109692002AA90D27F9490@DM5PR03MB2554.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-MS-Office365-Filtering-Correlation-Id: b05cefba-75cb-42e3-fa30-08d76f501475
+X-MS-TrafficTypeDiagnostic: SN6PR03MB4590:
+X-Microsoft-Antispam-PRVS: <SN6PR03MB4590872ACA1F80837E0C3CA8F9490@SN6PR03MB4590.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
 X-Forefront-PRVS: 02296943FF
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SJg74/FCFiezYZF8tHCitjNhY2i6PV5a1KPeWkxM1bo9VfulB7qq2lXL5gEeXRK8y8gmhu5AOjqSwPIGPYaxUBr6zFBtcrh7pdrjHKGu0nAJsaaYL5CK6NLulHdMQXAIJ8Lhxyji35hxL0/Kh6cpHgi9pTKWxshuy7hc3pit2Np1d9+N/AuZgCgQlDDRMH9gSilv2NtGT0NkLJOIBALwNIkjMFD5dfZODRoh9n0tH5ULhtIMv4pK4prtY6sOW9a7tiO3Fx45ptQgpii4gUeCKQgWmWh1pFcP7mYWDrDvYgrTdcXteBdGh6kIjc7LvRMpt6X3SMUShDEVT01cCiUN4q/bseiNPnsLrVnrOAZDjIsCj0feXPZIwnQLL7o93MZFX5Da9S5rs0kABOG93eLG+2qu1Gsb9wCfS7LZXUgiWZ1oY/h0Cv4P+0uA7lXE8zLA
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?aC6zPktTZzbFqlXj2cXcPqp6um9O/OQU8uh/Mr9zrFx8NFITaQj4WpA7sMAg?=
+ =?us-ascii?Q?2WoqbKTQUOFzoBxlJRCIOrqEPySt+SLE49Hpl10b8/yGOUlDq0qXB6kxiZGe?=
+ =?us-ascii?Q?nnjqBZ5IhSMaoXtrKbeEt+Z5Y1WzM83VS1nSTVhdaSvcZ5dXpYbuVlo1+oIQ?=
+ =?us-ascii?Q?z1PiFgimT8LC1eYGWORJ7rWPZpbxNkUE/HharXujXH9lou8cPtDB8gpLpT+T?=
+ =?us-ascii?Q?Kg9EDQDVupN0vbjo5uekwurN6AGBWg/I3/7faP9TzmUrfeRhu6y+93HK8xVg?=
+ =?us-ascii?Q?l4kAUwZDCnFF1JGktBo61dnGmN+FGoXRhX+crFQio90sFS4gjXyyYWx0eqlL?=
+ =?us-ascii?Q?LY+dnRSMbXwhU2z2i56GGoxqZFJJFCETH7iiFuh/DMbL3SIj5zvxFEY3WfjD?=
+ =?us-ascii?Q?rCYuqzusV648H+0rU47rDV7UwPa5o075VIpNM9xEaPzwhxneQTM89CT+fD03?=
+ =?us-ascii?Q?gjJNa2winhiR3YFepAKWdU1LK48RANrjOGp3IhUPstwcom/mvF/1nlQnvmH2?=
+ =?us-ascii?Q?ZqFb6sW8euUgMfXkoMvAV3CAx0spy4qg37+k1NLc7PqohsnuFXv5PbyOg0tA?=
+ =?us-ascii?Q?ihoeDlxkXRAV9RxFto4PAr3gDVhOiiVItDBu1u0uOfo/oolrpBdyQgZB33Aa?=
+ =?us-ascii?Q?XGHQkwTUd24in3DXBHuyZdSsXyQVSyIG1hnChDmZRw40L4wNaFdivmf0nQkn?=
+ =?us-ascii?Q?Iax+B44JLdw2MzK1YRx3EzG1LPsx0jP2jB7L9okAYuNRS7GX1577GSPyPRK7?=
+ =?us-ascii?Q?5UveJvLVOkq8qXXEINNkEJMtjHeLDTwYft0W1Nl5SDY3pvw7QgQQ4LNAr3fY?=
+ =?us-ascii?Q?BIZZ/jkCynGBfTLmGGoplZrgOF2B15+KSIWfg2qHotqfYaNwpkAmdiSstNHh?=
+ =?us-ascii?Q?k/X8eLJ0gZYE6Qw38YQG1dTFmnefIdAmUu89BnB4QbJ4bor9q1i5mKaNFQZk?=
+ =?us-ascii?Q?m+duz1mxHvN0xi17MyWhvZbJb/sXuLQ9Xu4YxUTEIVI3woo5kZBw6Wlr3YoU?=
+ =?us-ascii?Q?vwhkBxkzBOmDh7UWgbQprRDFGJZ2fnXGgPDlzBCwv28nTCK9vfCSLcQaL2A7?=
+ =?us-ascii?Q?1ALmx9rS5Esihj8Wad87joEaGnf6+PqCPtkBqv7yda53AKb/pzgKgKld2pLu?=
+ =?us-ascii?Q?Jlqr/7wvL07ThrcCKNzhD6vFbRs1sPoye3IsSh02ztcGhd813ZEe8+L34zJx?=
+ =?us-ascii?Q?cp9Zku3qgEd5BJ5tJwtSM2G1/TyIB4wzL/mOLtX8XEMeRwbsh2jqxO2xW6aN?=
+ =?us-ascii?Q?o/Wsp84wRxNAr88ReKxXSxUG7s1uaKZkFlzW66d9ioqesuJGB8cu9Q/fMBDI?=
+ =?us-ascii?Q?cprVK58wsF/8AtBgjMALTFylIIXiddcLFc9QmA3dVtnAPCqfwKqvQ8+OYCT9?=
+ =?us-ascii?Q?dgJfHj9yQDcArByjJSvg9UR1eSwzF7Yhz4mfRYcFL3N61o8izEj/Jnd3x1UY?=
+ =?us-ascii?Q?8OrGMqo0biS5vD7jwEZqg7SRzoXJart2?=
 X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2019 13:30:00.8918
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2019 13:30:02.7147
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 58929f6e-4486-4926-fcd1-08d76f50135f
+X-MS-Exchange-CrossTenant-Network-Message-Id: b05cefba-75cb-42e3-fa30-08d76f501475
 X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR03MB2554
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR03MB4590
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-11-22_02:2019-11-21,2019-11-22 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
@@ -105,72 +129,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The initial startup routine is called by some ADIS drivers during probe,
-and before registering with IIO. Normally, userspace should not be able to
-do any access to the device (as there shouldn't be any available).
-
-This change extends the state lock to the entire initial-startup routine.
-Behaviourally nothing should change, but this should make the library
-function a bit more robust.
+The single conversion function does a series of reads + writes. This change
+extends the use of the state_lock for the entire set of operations.
+Previously, indio_dev's mlock was used. This change also removes the use of
+this lock.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/imu/adis.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/iio/imu/adis.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-index 615f174f0e6e..10b8922fd51b 100644
+index 10b8922fd51b..c53f3ed3cb97 100644
 --- a/drivers/iio/imu/adis.c
 +++ b/drivers/iio/imu/adis.c
-@@ -331,7 +331,7 @@ static int adis_self_test(struct adis *adis)
- {
+@@ -404,15 +404,15 @@ int adis_single_conversion(struct iio_dev *indio_dev,
+ 	unsigned int uval;
  	int ret;
  
--	ret = adis_write_reg_16(adis, adis->data->msc_ctrl_reg,
-+	ret = __adis_write_reg_16(adis, adis->data->msc_ctrl_reg,
- 			adis->data->self_test_mask);
- 	if (ret) {
- 		dev_err(&adis->spi->dev, "Failed to initiate self test: %d\n",
-@@ -341,10 +341,10 @@ static int adis_self_test(struct adis *adis)
+-	mutex_lock(&indio_dev->mlock);
++	mutex_lock(&adis->state_lock);
  
- 	msleep(adis->data->startup_delay);
+-	ret = adis_read_reg(adis, chan->address, &uval,
++	ret = __adis_read_reg(adis, chan->address, &uval,
+ 			chan->scan_type.storagebits / 8);
+ 	if (ret)
+ 		goto err_unlock;
  
--	ret = adis_check_status(adis);
-+	ret = __adis_check_status(adis);
+ 	if (uval & error_mask) {
+-		ret = adis_check_status(adis);
++		ret = __adis_check_status(adis);
+ 		if (ret)
+ 			goto err_unlock;
+ 	}
+@@ -424,7 +424,7 @@ int adis_single_conversion(struct iio_dev *indio_dev,
  
- 	if (adis->data->self_test_no_autoclear)
--		adis_write_reg_16(adis, adis->data->msc_ctrl_reg, 0x00);
-+		__adis_write_reg_16(adis, adis->data->msc_ctrl_reg, 0x00);
- 
+ 	ret = IIO_VAL_INT;
+ err_unlock:
+-	mutex_unlock(&indio_dev->mlock);
++	mutex_unlock(&adis->state_lock);
  	return ret;
  }
-@@ -362,19 +362,23 @@ int adis_initial_startup(struct adis *adis)
- {
- 	int ret;
- 
-+	mutex_lock(&adis->state_lock);
-+
- 	ret = adis_self_test(adis);
- 	if (ret) {
- 		dev_err(&adis->spi->dev, "Self-test failed, trying reset.\n");
--		adis_reset(adis);
-+		__adis_reset(adis);
- 		msleep(adis->data->startup_delay);
- 		ret = adis_self_test(adis);
- 		if (ret) {
- 			dev_err(&adis->spi->dev, "Second self-test failed, giving up.\n");
--			return ret;
-+			goto out_unlock;
- 		}
- 	}
- 
--	return 0;
-+out_unlock:
-+	mutex_unlock(&adis->state_lock);
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(adis_initial_startup);
- 
+ EXPORT_SYMBOL_GPL(adis_single_conversion);
 -- 
 2.20.1
 

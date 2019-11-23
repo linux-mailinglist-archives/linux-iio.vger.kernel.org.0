@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83DEE107EDA
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2019 15:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DCD9107EDB
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2019 15:35:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726634AbfKWOdF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 Nov 2019 09:33:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36974 "EHLO mail.kernel.org"
+        id S1726751AbfKWOfB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Nov 2019 09:35:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42312 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726487AbfKWOdE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 23 Nov 2019 09:33:04 -0500
+        id S1726487AbfKWOfB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 23 Nov 2019 09:35:01 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8D10A20714;
-        Sat, 23 Nov 2019 14:33:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 013AC20714;
+        Sat, 23 Nov 2019 14:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574519583;
-        bh=rQPJJal/2iBJDhq/LDs/90IOhlu3NQ4BVGSZaUY01cQ=;
+        s=default; t=1574519700;
+        bh=tMb6Fqc9xzJcCZ2un0CHrkqxaQOzOTMvgdm/ie6o1yU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eszpuZFDprg294+1ZnY80aO/rrBAvAfM1gKd7CKItwCO6AcD/GCIDuYd2HAw7LJ/e
-         PjH47LPGtCBgexv8GjkN5e8CKRmOl5Er2/lWJiMl2tkwxcf7WSoz9UIBSE10ojHkXa
-         QItnMQCvkLTzuIAgyFUdyVrEv8z4LRJTKq/b25GY=
-Date:   Sat, 23 Nov 2019 14:32:57 +0000
+        b=VzgnSkj7a6C6pzsJpkDNt7I2bmRSvaTSBqFlw0zZAHNTfwJVAdKgJR3BEKp/7AxRv
+         llGRYC5iO6dhLOZGMcgtDooUxojOogAcNPd20Q45z7Smf3xJm8jX/GCBH0X10+v4Xv
+         4I8j0W1qv0UEM1ffSgeCi0S2L1ai6E8OstTS1IbQ=
+Date:   Sat, 23 Nov 2019 14:34:54 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andreas Klinger <ak@it-klinger.de>
 Cc:     robh+dt@kernel.org, mark.rutland@arm.com, mripard@kernel.org,
@@ -34,10 +34,10 @@ Cc:     robh+dt@kernel.org, mark.rutland@arm.com, mripard@kernel.org,
         mchehab+samsung@kernel.org, davem@davemloft.net,
         paulmck@linux.ibm.com, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] dt-bindings: add vendor prefix parallax
-Message-ID: <20191123143257.1a8b4006@archlinux>
-In-Reply-To: <20191118073553.2df736if7xk65e3y@arbad>
-References: <20191118073553.2df736if7xk65e3y@arbad>
+Subject: Re: [PATCH v3 2/4] dt-bindings: add parallax ping sensors
+Message-ID: <20191123143454.68f4d4a5@archlinux>
+In-Reply-To: <20191118073611.pvge47kgupu6omrf@arbad>
+References: <20191118073611.pvge47kgupu6omrf@arbad>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,35 +47,80 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 18 Nov 2019 08:35:55 +0100
+On Mon, 18 Nov 2019 08:36:12 +0100
 Andreas Klinger <ak@it-klinger.de> wrote:
 
-> Add new vendor prefix parallax for newly created ping iio sensors.
+> Add dt-bindings for parallax PING))) and LaserPING iio sensors, which
+> are used for measuring distances.
 > 
 > Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-> Acked-by: Rob Herring <robh@kernel.org>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at it.
+> Reviewed-by: Rob Herring <robh@kernel.org>
+Applied to the togreg branch of iio.git and pushed out as testing.
 
 Thanks,
 
 Jonathan
 
 > ---
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+>  .../bindings/iio/proximity/parallax-ping.yaml      | 51 ++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> index 967e78c5ec0a..d3f9690e1e4b 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -713,6 +713,8 @@ patternProperties:
->      description: Panasonic Corporation
->    "^parade,.*":
->      description: Parade Technologies Inc.
-> +  "^parallax,.*":
-> +    description: Parallax Inc.
->    "^pda,.*":
->      description: Precision Design Associates, Inc.
->    "^pericom,.*":
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml b/Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml
+> new file mode 100644
+> index 000000000000..a079c9921af6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/proximity/parallax-ping.yaml
+> @@ -0,0 +1,51 @@
+> +# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/proximity/parallax-ping.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Parallax PING))) and LaserPING range finder
+> +
+> +maintainers:
+> +  - Andreas Klinger <ak@it-klinger.de>
+> +
+> +description: |
+> +  Bit-banging driver using one GPIO:
+> +  - ping-gpios is raised by the driver to start measurement
+> +  - direction of ping-gpio is then switched into input with an interrupt
+> +    for receiving distance value as PWM signal
+> +
+> +  Specifications about the devices can be found at:
+> +  http://parallax.com/sites/default/files/downloads/28041-LaserPING-2m-Rangefinder-Guide.pdf
+> +  http://parallax.com/sites/default/files/downloads/28015-PING-Documentation-v1.6.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - parallax,ping
+> +      - parallax,laserping
+> +
+> +  ping-gpios:
+> +    description:
+> +      Definition of the GPIO for the triggering and echo (output and input)
+> +      This GPIO is set for about 5 us by the driver to tell the device it
+> +      should initiate the measurement cycle. Afterwards the GPIO is switched
+> +      to input direction with an interrupt. The device sets it and the
+> +      length of the input signal corresponds to the measured distance.
+> +      It needs to be an GPIO which is able to deliver an interrupt because
+> +      the time between two interrupts is measured in the driver.
+> +      See Documentation/devicetree/bindings/gpio/gpio.txt for information
+> +      on how to specify a consumer gpio.
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - ping-gpios
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    proximity {
+> +        compatible = "parallax,laserping";
+> +        ping-gpios = <&gpio0 26 GPIO_ACTIVE_HIGH>;
+> +    };
 

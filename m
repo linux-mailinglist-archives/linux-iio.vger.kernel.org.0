@@ -2,38 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A23E8107ECF
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2019 15:23:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83DEE107EDA
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2019 15:33:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726676AbfKWOXA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 Nov 2019 09:23:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57218 "EHLO mail.kernel.org"
+        id S1726634AbfKWOdF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Nov 2019 09:33:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36974 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726524AbfKWOXA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 23 Nov 2019 09:23:00 -0500
+        id S1726487AbfKWOdE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 23 Nov 2019 09:33:04 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 21A7B20714;
-        Sat, 23 Nov 2019 14:22:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D10A20714;
+        Sat, 23 Nov 2019 14:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574518979;
-        bh=CZvS75BTOSHfse9UoNY85eRZLojSKzzLceJhQNi3lU4=;
+        s=default; t=1574519583;
+        bh=rQPJJal/2iBJDhq/LDs/90IOhlu3NQ4BVGSZaUY01cQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=A6Ippmz2d3E68AOQsSoys5lqbZlioeIlRhuxapgKiNq1Q74irynbSQScrCqmePs1O
-         TIVOzB5v/3RjP5Rx6PtQY9uv4B5XICzhE5EHPfV1PTUVy1NX2pDGuUqw4j9ykJ3b8A
-         EePqyTFHI5PmN7YPY/uaBLzjkmdxX9pY13NMFrIY=
-Date:   Sat, 23 Nov 2019 14:22:56 +0000
+        b=eszpuZFDprg294+1ZnY80aO/rrBAvAfM1gKd7CKItwCO6AcD/GCIDuYd2HAw7LJ/e
+         PjH47LPGtCBgexv8GjkN5e8CKRmOl5Er2/lWJiMl2tkwxcf7WSoz9UIBSE10ojHkXa
+         QItnMQCvkLTzuIAgyFUdyVrEv8z4LRJTKq/b25GY=
+Date:   Sat, 23 Nov 2019 14:32:57 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Tachici <alexandru.tachici@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>
-Subject: Re: [PATCH v2] iio: dac: ad7303: use regulator get optional to
- check for ext supply
-Message-ID: <20191123142256.7bdcee03@archlinux>
-In-Reply-To: <20191118105807.6842-1-alexandru.tachici@analog.com>
-References: <20191113083303.2229-1-alexandru.tachici@analog.com>
-        <20191118105807.6842-1-alexandru.tachici@analog.com>
+To:     Andreas Klinger <ak@it-klinger.de>
+Cc:     robh+dt@kernel.org, mark.rutland@arm.com, mripard@kernel.org,
+        shawnguo@kernel.org, heiko@sntech.de, icenowy@aosc.io,
+        laurent.pinchart@ideasonboard.com, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
+        christophe.jaillet@wanadoo.fr, tglx@linutronix.de,
+        mchehab+samsung@kernel.org, davem@davemloft.net,
+        paulmck@linux.ibm.com, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] dt-bindings: add vendor prefix parallax
+Message-ID: <20191123143257.1a8b4006@archlinux>
+In-Reply-To: <20191118073553.2df736if7xk65e3y@arbad>
+References: <20191118073553.2df736if7xk65e3y@arbad>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,80 +47,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 18 Nov 2019 12:58:07 +0200
-Alexandru Tachici <alexandru.tachici@analog.com> wrote:
+On Mon, 18 Nov 2019 08:35:55 +0100
+Andreas Klinger <ak@it-klinger.de> wrote:
 
-> Previously, the code was using the of_read_property_bool() to check if
-> an external regulator was provided. However, this is redundant, as it's
-> more simple/direct to just ask the regulator is provided, via a
-> `devm_regulator_get_optional()` call.
+> Add new vendor prefix parallax for newly created ping iio sensors.
 > 
-> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> Acked-by: Rob Herring <robh@kernel.org>
 Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to see if we missed anything.
+the autobuilders to poke at it.
 
 Thanks,
 
 Jonathan
 
 > ---
-> Changelog v1 -> v2:
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> - check for -ENODEV error for devm_regulator_get_optional() call
-> 
->  drivers/iio/dac/ad7303.c | 25 +++++++------------------
->  1 file changed, 7 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/iio/dac/ad7303.c b/drivers/iio/dac/ad7303.c
-> index 14bbac6bee98..15af8a1cce3e 100644
-> --- a/drivers/iio/dac/ad7303.c
-> +++ b/drivers/iio/dac/ad7303.c
-> @@ -12,7 +12,6 @@
->  #include <linux/slab.h>
->  #include <linux/sysfs.h>
->  #include <linux/regulator/consumer.h>
-> -#include <linux/of.h>
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -202,7 +201,6 @@ static int ad7303_probe(struct spi_device *spi)
->  	const struct spi_device_id *id = spi_get_device_id(spi);
->  	struct iio_dev *indio_dev;
->  	struct ad7303_state *st;
-> -	bool ext_ref;
->  	int ret;
->  
->  	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> @@ -224,24 +222,15 @@ static int ad7303_probe(struct spi_device *spi)
->  	if (ret)
->  		return ret;
->  
-> -	if (spi->dev.of_node) {
-> -		ext_ref = of_property_read_bool(spi->dev.of_node,
-> -				"REF-supply");
-> -	} else {
-> -		struct ad7303_platform_data *pdata = spi->dev.platform_data;
-> -		if (pdata && pdata->use_external_ref)
-> -			ext_ref = true;
-> -		else
-> -		    ext_ref = false;
-> -	}
-> -
-> -	if (ext_ref) {
-> -		st->vref_reg = devm_regulator_get(&spi->dev, "REF");
-> -		if (IS_ERR(st->vref_reg)) {
-> -			ret = PTR_ERR(st->vref_reg);
-> +	st->vref_reg = devm_regulator_get_optional(&spi->dev, "REF");
-> +	if (IS_ERR(st->vref_reg)) {
-> +		ret = PTR_ERR(st->vref_reg);
-> +		if (ret != -ENODEV)
->  			goto err_disable_vdd_reg;
-> -		}
-> +		st->vref_reg = NULL;
-> +	}
->  
-> +	if (st->vref_reg) {
->  		ret = regulator_enable(st->vref_reg);
->  		if (ret)
->  			goto err_disable_vdd_reg;
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> index 967e78c5ec0a..d3f9690e1e4b 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> @@ -713,6 +713,8 @@ patternProperties:
+>      description: Panasonic Corporation
+>    "^parade,.*":
+>      description: Parade Technologies Inc.
+> +  "^parallax,.*":
+> +    description: Parallax Inc.
+>    "^pda,.*":
+>      description: Precision Design Associates, Inc.
+>    "^pericom,.*":
 

@@ -2,135 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA858107EBD
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2019 15:15:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A23E8107ECF
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2019 15:23:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726620AbfKWOPU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 Nov 2019 09:15:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55502 "EHLO mail.kernel.org"
+        id S1726676AbfKWOXA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Nov 2019 09:23:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57218 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726524AbfKWOPU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 23 Nov 2019 09:15:20 -0500
+        id S1726524AbfKWOXA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 23 Nov 2019 09:23:00 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1B8A6205C9;
-        Sat, 23 Nov 2019 14:15:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 21A7B20714;
+        Sat, 23 Nov 2019 14:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574518519;
-        bh=uI4rimQXWPAfHwLl1iypdUeaUk/AsqK7GNtaATN05/4=;
+        s=default; t=1574518979;
+        bh=CZvS75BTOSHfse9UoNY85eRZLojSKzzLceJhQNi3lU4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Kf0tuNuPBqTxBz2ySYJ1qRYpqRRNVL5K4Tm/+yCmiRe59J9YWZ/SFAgjdNq/hem3Z
-         H8leyO1C08rM5cNiNlrlM91zaYhsHt4+aNiNmT5LykUH9yF7HrNeISpLm+Lpddgh3L
-         +M34+DDnzD0IGX5VpN2ZAd/7LKmYwNElOg0/Gkq4=
-Date:   Sat, 23 Nov 2019 14:15:15 +0000
+        b=A6Ippmz2d3E68AOQsSoys5lqbZlioeIlRhuxapgKiNq1Q74irynbSQScrCqmePs1O
+         TIVOzB5v/3RjP5Rx6PtQY9uv4B5XICzhE5EHPfV1PTUVy1NX2pDGuUqw4j9ykJ3b8A
+         EePqyTFHI5PmN7YPY/uaBLzjkmdxX9pY13NMFrIY=
+Date:   Sat, 23 Nov 2019 14:22:56 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        development@norphonic.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 0/1] Add support for TI HDC200x humidity and temperature
- sensors
-Message-ID: <20191123141515.55d9eebc@archlinux>
-In-Reply-To: <996dd531-cbc6-9ecc-0a67-0a9b8e686c0c@norphonic.com>
-References: <71176abd-4997-70f8-8132-137fadda7768@norphonic.com>
-        <20191103121921.5b1d0b02@archlinux>
-        <996dd531-cbc6-9ecc-0a67-0a9b8e686c0c@norphonic.com>
+To:     Alexandru Tachici <alexandru.tachici@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lars@metafoo.de>
+Subject: Re: [PATCH v2] iio: dac: ad7303: use regulator get optional to
+ check for ext supply
+Message-ID: <20191123142256.7bdcee03@archlinux>
+In-Reply-To: <20191118105807.6842-1-alexandru.tachici@analog.com>
+References: <20191113083303.2229-1-alexandru.tachici@analog.com>
+        <20191118105807.6842-1-alexandru.tachici@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 Nov 2019 15:50:43 +0100
-Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com> wrote:
+On Mon, 18 Nov 2019 12:58:07 +0200
+Alexandru Tachici <alexandru.tachici@analog.com> wrote:
 
-> Jonathan,
->=20
-> Just got back to fixing most of the issues you pointed out, excepting the=
-se:
->=20
-> On 03.11.2019 13:19, Jonathan Cameron wrote:
->=20
-> > + =20
-> >> +static const struct iio_chan_spec hdc200x_channels[] =3D {
-> >> +=C2=A0=C2=A0=C2=A0 {
-> >> +=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 .type =3D IIO_TEMP,
-> >> +=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 .extend_name =3D "Temperature",=
- =20
-> > Any use of extend_name changes the ABI and should be done extremely
-> > carefully.  It basically means that generic userspace code cannot
-> > use your driver.
-> >
-> > Here I can't see any advantage in doing so at all so drop it. =20
->=20
-> If I have two temperature channels and provide no extend_name to at least=
- one of them, they fail to register.
-This only worked on the assumption that you could use PEAK below so only
-have one channel for both.
+> Previously, the code was using the of_read_property_bool() to check if
+> an external regulator was provided. However, this is redundant, as it's
+> more simple/direct to just ask the regulator is provided, via a
+> `devm_regulator_get_optional()` call.
+> 
+> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to see if we missed anything.
 
-Alternative would be to index them, but that doesn't make much sense here e=
-ither.
-
->=20
-> > =20
-> >> +=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 },
-> >> +=C2=A0=C2=A0=C2=A0 },
-> >> +=C2=A0=C2=A0=C2=A0 {
-> >> +=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 .type =3D IIO_TEMP,
-> >> +=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 .extend_name =3D "Temperature_M=
-AX", =20
-> > Could we use the IIO_CHAN_INFO_PEAK element for this?  Given
-> > the different scale, we'd need to do some work to make it
-> > have the same scale as temp. =20
->=20
-> Started looking into this.
-> Are there any examples or docs of using IIO_CHAN_INFO_PEAK? Couldn't find=
- much in the IIO subtree.
-> Is it used together with INFO_RAW? And temp&max temp channels have differ=
-ent scales already.
-
-ah. I missed they had different scale values.  That's unfortunate.
-A simple work around for this might be to just multiply the output in the _=
-MAX
-case by 256.  That way the two would have the same scale which is assumed i=
-f using
-the IIO_RAW and IIO_PEAK together.
-
->=20
-> >> +{
-> >> +=C2=A0=C2=A0=C2=A0 char tmp =3D (~mask & data->drdy_config) | val;
-> >> +=C2=A0=C2=A0=C2=A0 int ret;
-> >> +
-> >> +=C2=A0=C2=A0=C2=A0 ret =3D i2c_smbus_write_byte_data(data->client,
-> >> +=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=
-=C2=A0 =C2=A0=C2=A0=C2=A0 HDC200X_REG_RESET_DRDY_INT_CONF, tmp);
-> >> +=C2=A0=C2=A0=C2=A0 if (!ret)
-> >> +=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 data->drdy_config =3D tmp;
-> >> +
-> >> +=C2=A0=C2=A0=C2=A0 return ret;
-> >> +}
-> >> +
-> >> +static int hdc200x_get_measurement_word(struct hdc200x_data *data,
-> >> +=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=
-=C2=A0 =C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan) =20
-> > These wrappers add relatively little.  I'd prefer that you just call
-> > the i2c calls directly instead.  Less code and ultimately a tiny
-> > bit easier to review. =20
->=20
-> Removed wrappers that are called once. Leaving the wrapper called in diff=
-erent places, makes intent more clear IMO.
-Hmm. It's always a trade off.  Will see what the result looks
-like!
+Thanks,
 
 Jonathan
 
->=20
-> --
->=20
-> =C2=A0 Eugene
->=20
+> ---
+> Changelog v1 -> v2:
+> 
+> - check for -ENODEV error for devm_regulator_get_optional() call
+> 
+>  drivers/iio/dac/ad7303.c | 25 +++++++------------------
+>  1 file changed, 7 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/iio/dac/ad7303.c b/drivers/iio/dac/ad7303.c
+> index 14bbac6bee98..15af8a1cce3e 100644
+> --- a/drivers/iio/dac/ad7303.c
+> +++ b/drivers/iio/dac/ad7303.c
+> @@ -12,7 +12,6 @@
+>  #include <linux/slab.h>
+>  #include <linux/sysfs.h>
+>  #include <linux/regulator/consumer.h>
+> -#include <linux/of.h>
+>  
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> @@ -202,7 +201,6 @@ static int ad7303_probe(struct spi_device *spi)
+>  	const struct spi_device_id *id = spi_get_device_id(spi);
+>  	struct iio_dev *indio_dev;
+>  	struct ad7303_state *st;
+> -	bool ext_ref;
+>  	int ret;
+>  
+>  	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> @@ -224,24 +222,15 @@ static int ad7303_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (spi->dev.of_node) {
+> -		ext_ref = of_property_read_bool(spi->dev.of_node,
+> -				"REF-supply");
+> -	} else {
+> -		struct ad7303_platform_data *pdata = spi->dev.platform_data;
+> -		if (pdata && pdata->use_external_ref)
+> -			ext_ref = true;
+> -		else
+> -		    ext_ref = false;
+> -	}
+> -
+> -	if (ext_ref) {
+> -		st->vref_reg = devm_regulator_get(&spi->dev, "REF");
+> -		if (IS_ERR(st->vref_reg)) {
+> -			ret = PTR_ERR(st->vref_reg);
+> +	st->vref_reg = devm_regulator_get_optional(&spi->dev, "REF");
+> +	if (IS_ERR(st->vref_reg)) {
+> +		ret = PTR_ERR(st->vref_reg);
+> +		if (ret != -ENODEV)
+>  			goto err_disable_vdd_reg;
+> -		}
+> +		st->vref_reg = NULL;
+> +	}
+>  
+> +	if (st->vref_reg) {
+>  		ret = regulator_enable(st->vref_reg);
+>  		if (ret)
+>  			goto err_disable_vdd_reg;
 

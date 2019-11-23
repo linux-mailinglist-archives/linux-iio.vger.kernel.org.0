@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8092A10810A
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2019 00:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F30F108113
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2019 00:36:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbfKWXfq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 Nov 2019 18:35:46 -0500
-Received: from mail-qv1-f65.google.com ([209.85.219.65]:34538 "EHLO
-        mail-qv1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726759AbfKWXfq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Nov 2019 18:35:46 -0500
-Received: by mail-qv1-f65.google.com with SMTP id n12so4349660qvt.1;
-        Sat, 23 Nov 2019 15:35:45 -0800 (PST)
+        id S1726977AbfKWXgF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Nov 2019 18:36:05 -0500
+Received: from mail-qt1-f182.google.com ([209.85.160.182]:42351 "EHLO
+        mail-qt1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726939AbfKWXgC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Nov 2019 18:36:02 -0500
+Received: by mail-qt1-f182.google.com with SMTP id t20so12545502qtn.9;
+        Sat, 23 Nov 2019 15:36:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/KpiDb9LR0UFpghJdn3NvgOOMBws5emrYI70pah9SfY=;
-        b=f3ggcmI44cx3NLECHundIyvAQ0XLc08hmfpoX7Au0CpO56N6MVVkVa97Y4FcHNqEXD
-         //b/7NxTpdf+1clYwHoPAklouhwB3sa5DFP/YR6CXp/Ukq1fKFO4Y5/c1FSTWCJ4/wei
-         8PrhjAm32y0Js15GcWjJw5h04+4+lgeRBTiepaX2vbjpDrRrC8AB8UtESWP2+o/CcT8f
-         gNnQkZK/C7IpBedcwkU+GdINcB6dzg36d7QS2mM1O1isCOqwrAsux4ZstIueFvuYBUAn
-         DC/wMBKmtEt0VCthf58yQV0Ua0Ao9l4WDhcGdE2pXke9ifjzrhmylE30Tr3X50F0jfKL
-         ESKQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=2od3CCfgH/wIJisYHutA7VGKvbA/ioFGgCw20B9AbCQ=;
+        b=aVRPkvGbxERhDbAG8Ocv8JoY/lx7E3zCK+HMvmy0zK/T+ZOHuhS5Bjgd6h1wXmkVbP
+         JYq7hmz23+kDhPYYJpZpLIXdCyBrb2E+kw5BJGyBxfgmTZRSIaJHFZ0CrDMxg50kmHsp
+         6TnrKhZbTFV9i0J+Hp8Ln7IQhM4oDmtodv6LnY9VYg+7iJzcCr4l+gUhVscdOz48vwRP
+         GLKHjawSPd5dJfwlw3tTIb49UWFWKYPvHqLoDznjCaFFAVZoMrRHfGNwtT2qZEcEV04m
+         7fDjZOjf9+Ra8YcjpSXVxycuR7s4FrUNiZSCJBIAcVN7uxF3SXyF2hM/H3SoiiiUNYOy
+         HvaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/KpiDb9LR0UFpghJdn3NvgOOMBws5emrYI70pah9SfY=;
-        b=QBHR31EyhvSi5i9/v9laOImFTE3yq6ofhAgrqLxGaqFCnNc6e+Hn1rpITgUeE/+nWh
-         SFIGfNswFH2JuIAWFTwh/Yhkte/fkEedgCgphqxw+L9m7jIgvITGkHpa1aUG9/Rro3na
-         dMad2EVkX3HyHuzUHosvPo/sezpNBNgteH4E5KdXr5EgUeKqfuj8Ieafjjx4pO1XTP2O
-         MJZYtqmh3Sngl9De+56cPmiDyEmDM8Rzzzn+7iPYfkSmo32mEGePOK9rWm/CKJpqXQGt
-         5NNizm2R8KUWTQcs0Adcc9mooB+tWXy6IsMFEncP0B5gg8uXFwUnxWPqqTbaysy/BhrQ
-         rI2A==
-X-Gm-Message-State: APjAAAVV3M8LJPgAonP6djd0rHQ1WFjqvPchKb1dtHmzQiO0PrOsuSN4
-        ZWPi8PsGjPok/4EX/4bfT2s=
-X-Google-Smtp-Source: APXvYqw9TpLPbz1zzVNV8wmdFnaYLtygT/vtf9cwyg/y9otvK/BsCF5EpMbEOrlyS3x2gJqdHA4RNA==
-X-Received: by 2002:a0c:cdc3:: with SMTP id a3mr4014117qvn.216.1574552145134;
-        Sat, 23 Nov 2019 15:35:45 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=2od3CCfgH/wIJisYHutA7VGKvbA/ioFGgCw20B9AbCQ=;
+        b=bcXchlhavyhX6WlkTqjTRj4fhBZn1FnFmZy3ccUndq0Jat+EXc7m79Hp4S3HlcthIJ
+         jkE8AYp0l5odjfObLKhn70D65jSzTV0m8SkeXKqLL2Ca10WxfT+Z5MO3XjXHq4RkWzNz
+         ur3WLZM/n0w1gzIDE4xV16uJLhvqt9stjp5tayyTUdphdpe2yVyZOLFGytTM8llRYI8w
+         /kG+9FMbqbCw7QovEJfjL7S2eXzK3GAQ8L1LyiuMdEbsx/inwQKGoxkV1UFxRhzcNx9F
+         yYsyGYZTMNoqYdhHf8nLznVFXcKoQABMNQ9Ub6Abr0sXhKngsYPLu/pduDFJ4/x5Kuqn
+         x6rg==
+X-Gm-Message-State: APjAAAUV6V/3z/ru1AmtJAltTx1zbscscMwioLpvSmEHo34WR2RLLu33
+        b1QcOQJr6dYl5Obqkht1fRM=
+X-Google-Smtp-Source: APXvYqwiW5oPSsRKtf1m5y8Vp4pPXQoOpP371XN7h1l7Y0p0ha1FctguEtstT6uIp6HcajHDmWmkVg==
+X-Received: by 2002:ac8:424e:: with SMTP id r14mr4386591qtm.193.1574552161525;
+        Sat, 23 Nov 2019 15:36:01 -0800 (PST)
 Received: from localhost.localdomain ([177.76.215.166])
-        by smtp.gmail.com with ESMTPSA id f22sm1357518qtc.43.2019.11.23.15.35.40
+        by smtp.gmail.com with ESMTPSA id f22sm1357518qtc.43.2019.11.23.15.35.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Nov 2019 15:35:44 -0800 (PST)
+        Sat, 23 Nov 2019 15:36:01 -0800 (PST)
 From:   Rodrigo Carvalho <rodrigorsdc@gmail.com>
 To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -57,10 +57,12 @@ Cc:     linux-iio@vger.kernel.org, devel@driverdev.osuosl.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         kernel-usp@googlegroups.com,
         Rodrigo Carvalho <rodrigorsdc@gmail.com>
-Subject: [PATCH v5 1/2] staging: iio: accel: adis16240: enforce SPI mode on probe function
-Date:   Sat, 23 Nov 2019 20:35:09 -0300
-Message-Id: <20191123233510.4890-1-rodrigorsdc@gmail.com>
+Subject: [PATCH v5 2/2] dt-bindings: iio: accel: add binding documentation for ADIS16240
+Date:   Sat, 23 Nov 2019 20:35:10 -0300
+Message-Id: <20191123233510.4890-2-rodrigorsdc@gmail.com>
 X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20191123233510.4890-1-rodrigorsdc@gmail.com>
+References: <20191123233510.4890-1-rodrigorsdc@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -68,35 +70,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-According to the datasheet, this driver supports only SPI mode 3,
-so we should enforce it and call spi_setup() on probe function.
+This patch add device tree binding documentation for ADIS16240.
 
 Signed-off-by: Rodrigo Ribeiro Carvalho <rodrigorsdc@gmail.com>
 ---
 V5:
-  - Add this patch to the patchset
+  - None 
 
- drivers/staging/iio/accel/adis16240.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../bindings/iio/accel/adi,adis16240.yaml     | 49 +++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
 
-diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/accel/adis16240.c
-index 82099db4bf0c..77b6b81767b9 100644
---- a/drivers/staging/iio/accel/adis16240.c
-+++ b/drivers/staging/iio/accel/adis16240.c
-@@ -400,6 +400,13 @@ static int adis16240_probe(struct spi_device *spi)
- 	indio_dev->num_channels = ARRAY_SIZE(adis16240_channels);
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
-+	spi->mode = SPI_MODE_3;
-+	ret = spi_setup(spi);
-+	if (ret) {
-+		dev_err(&spi->dev, "spi_setup failed!\n");
-+		return ret;
-+	}
+diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
+new file mode 100644
+index 000000000000..8e902f7c49e6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
+@@ -0,0 +1,49 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/accel/adi,adis16240.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 	ret = adis_init(st, indio_dev, spi, &adis16240_data);
- 	if (ret)
- 		return ret;
++title: ADIS16240 Programmable Impact Sensor and Recorder driver
++
++maintainers:
++  - Alexandru Ardelean <alexandru.ardelean@analog.com>
++
++description: |
++  ADIS16240 Programmable Impact Sensor and Recorder driver that supports
++  SPI interface.
++    https://www.analog.com/en/products/adis16240.html
++
++properties:
++  compatible:
++    enum:
++      - adi,adis16240
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi0 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        /* Example for a SPI device node */
++        accelerometer@0 {
++            compatible = "adi,adis16240";
++            reg = <0>;
++            spi-max-frequency = <2500000>;
++            interrupt-parent = <&gpio0>;
++            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
++        };
++    };
 -- 
 2.24.0
 

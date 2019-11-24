@@ -2,80 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12BD01083C4
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2019 15:15:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1084C1084B0
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2019 20:11:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726867AbfKXOPv convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 24 Nov 2019 09:15:51 -0500
-Received: from customer-187-141-72-141-sta.uninet-ide.com.mx ([187.141.72.141]:40802
-        "EHLO correo.opb.gob.mx" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1726779AbfKXOPv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Nov 2019 09:15:51 -0500
-X-Greylist: delayed 4888 seconds by postgrey-1.27 at vger.kernel.org; Sun, 24 Nov 2019 09:15:49 EST
-Received: from localhost (localhost [127.0.0.1])
-        by correo.opb.gob.mx (Postfix) with ESMTP id E583C1A322D;
-        Sun, 24 Nov 2019 06:57:37 -0500 (EST)
-Received: from correo.opb.gob.mx ([127.0.0.1])
-        by localhost (correo.opb.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id dNCeQ6LoFeWR; Sun, 24 Nov 2019 06:57:37 -0500 (EST)
-Received: from localhost (localhost [127.0.0.1])
-        by correo.opb.gob.mx (Postfix) with ESMTP id 1BCE41A3223;
-        Sun, 24 Nov 2019 06:57:35 -0500 (EST)
-X-Virus-Scanned: amavisd-new at opb.gob.mx
-Received: from correo.opb.gob.mx ([127.0.0.1])
-        by localhost (correo.opb.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id odZvaJKm3JFG; Sun, 24 Nov 2019 06:57:34 -0500 (EST)
-Received: from correo.opb.gob.mx (correo.opb.gob.mx [172.16.254.57])
-        by correo.opb.gob.mx (Postfix) with ESMTP id 476171A3205;
-        Sun, 24 Nov 2019 06:57:30 -0500 (EST)
-Date:   Sun, 24 Nov 2019 05:57:30 -0600 (CST)
-From:   "Mr.WEHNER DAVID M." <jesus.valencia@opb.gob.mx>
-Reply-To: "Mr.WEHNER DAVID M." <info@zbukgroupltd.info>
-Message-ID: <1105698182.24559.1574596650210.JavaMail.zimbra@opb.gob.mx>
-In-Reply-To: <1063337394.24307.1574596445839.JavaMail.zimbra@opb.gob.mx>
-Subject: =?utf-8?Q?Pengar_=C3=B6verf=C3=B6rs?=
+        id S1726910AbfKXTLW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Nov 2019 14:11:22 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:55949 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726840AbfKXTLW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Nov 2019 14:11:22 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iYxHk-0004i4-LW; Sun, 24 Nov 2019 20:11:04 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iYxHh-0006Zd-QY; Sun, 24 Nov 2019 20:11:01 +0100
+Date:   Sun, 24 Nov 2019 20:11:01 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
+        linux-iio@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH v3 3/3] iio: adc: new driver to support Linear
+ technology's ltc2496
+Message-ID: <20191124191101.duh646kbrlackget@pengutronix.de>
+References: <20191121210007.25646-1-u.kleine-koenig@pengutronix.de>
+ <20191121210007.25646-4-u.kleine-koenig@pengutronix.de>
+ <20191123171204.3a714322@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [198.199.76.158]
-X-Mailer: Zimbra 8.0.7_GA_6021 (ZimbraWebClient - GC75 (Win)/8.0.7_GA_6021)
-Thread-Topic: Pengar =?utf-8?B?w7Z2ZXJmw7Zycw==?=
-Thread-Index: Wlue1ObLHW28G6QK4CR7qvueCy2AHA==
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191123171204.3a714322@archlinux>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Office Of The Head
-Internationell överföring
-Operation Zenith Bank
-(UK) Ltd LONDON United
-Storbritannien och Irland
-Tel: +44 203 389 5674
-Fax: +44 704 307 1539
+On Sat, Nov 23, 2019 at 05:12:04PM +0000, Jonathan Cameron wrote:
+> On Thu, 21 Nov 2019 22:00:07 +0100
+> Uwe Kleine-K�nig <u.kleine-koenig@pengutronix.de> wrote:
+> 
+> > This chip is similar to the LTC2497 ADC, it just uses SPI instead of I2C
+> > and so has a slightly different protocol. Only the actual hardware
+> > access is different. The spi protocol is different enough to not be able
+> > to map the differences via a regmap.
+> > 
+> > Also generalize the entry in MAINTAINER to cover the newly introduced
+> > file.
+> > 
+> > Signed-off-by: Uwe Kleine-K�nig <u.kleine-koenig@pengutronix.de>
+> looks good with the exception of the now overly protected DMA buffers.
+> 
+> See inline.  As that's all I'm seeing that needs fixing I'll just
+> fix this up whilst applying.
+> 
+> I'd like the series to sit a little longer on the list though to give
+> devicetree maintainers time to look at the bindings.
 
-Hälsning,
+ok.
 
-Din e-postadress kom upp i ett slumpmässigt drag som genomfördes i Zenith Banks huvudkontor, International Transfer Operation i London, Storbritannien.
+> > +struct ltc2496_driverdata {
+> > +	/* this must be the first member */
+> > +	struct ltc2497core_driverdata common_ddata;
+> > +	struct spi_device *spi;
+> > +
+> > +	/*
+> > +	 * DMA (thus cache coherency maintenance) requires the
+> > +	 * transfer buffers to live in their own cache lines.
+> > +	 */
+> > +	unsigned char rxbuf[3] ____cacheline_aligned;
+> > +	unsigned char txbuf[3] ____cacheline_aligned;
+> Ah.  I've not explained this clearly enough.  Upshot is you only need
+> to ensure that the buffers used for dma are not shared with any other
+> usage.  the __cacheline_aligned marker pads the structure to ensure
+> the element so marked is at the start of a new cacheline.  This means
+> there is no sharing with non DMA related elements which may be accidentally
+> reset when the DMA transfer ends.
+> 
+> Imagine we had:
+> struct bob {
+> 	int a; //used for all sorts of fun things not related to dma and not
+>        	       //protected from happening concurrently with dma.
+> 	unsigned char rx_buf[3];
+> 	unsigned char tx_buf[3]
+> };
+> 
+> The buffers are used for DMA.  The DMA engine takes a copy of the cacheline
+> to start doing it's magic.
+> 
+> Along comes other activity and writes to 'a'.
+> 
+> DMA completes, then engine pushes the cacheline back to the memory including
+> writing back what it had as a copy of a.  Thus the update to 'a' is lost.
+> 
+> Now the guarantee we make use of is that DMA engines are not allowed to
+> copy cachelines that do not contain the buffers they are using (all sorts
+> of things would break if they were).
+> 
+> However, there is no need to separate rx_buf and tx_buf as they are being
+> used by the same DMA engine and nothing else is going to update them whilst
+> they are in use.
 
-Jag är Mr.WEHNER DAVID M.A personlig bokföring till avdöd Michael Blair som arbetade med Shell British Petroleum. Mr.Michael Blair, en välkänd filantropist, innan han dog, gjorde en testamente i ett advokatbyrå om att 12,5 miljoner US dollar (tolv miljoner femhundra tusen amerikanska dollar) bör doneras till någon lycklig individuell filantrop eller välgörenhetsorganisation utomlands.
+Yeah, I thought about that when adding the second annotation but then
+forgot to mention that in my cover letter.
 
-Zenith Bank Abp är en överenskommelse med sena Michael Blair om att donera fonden till alla lyckliga individer i Amerika, Europa, Asien och Afrika i andra för att förbättra liv och företag
+So I assume you will just drop the 2nd ____cacheline_aligned? That's
+fine for me; thanks.
 
-Vi har gjort vårt slumpmässiga drag och din e-postadress valdes för att ta emot denna fond som mottagare av hans testament. Vänligen snälla tillbaka till mig
-så snart du har fått vårt e-postmeddelande för att aktivera överföringen
-Operationen riktar dig till vad du ska göra för att få denna fond lagligen.
+Best regards
+Uwe
 
-Du rekommenderas att ta med följande nedan:
-
-FULLSTÄNDIGA NAMN:
-
-FULL KONTAKTADRESS:
-
-TELEFON- OCH FAXNUMMER:
-
-Med vänliga hälsningar,
-Mr.WEHNER DAVID M.
-Chef, internationell överföringsoperation
-Zenith Bank (UK) Abp
+-- 
+Pengutronix e.K.                           | Uwe Kleine-K�nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

@@ -2,131 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1084C1084B0
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2019 20:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D23E5108565
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2019 23:53:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726910AbfKXTLW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Nov 2019 14:11:22 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:55949 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726840AbfKXTLW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Nov 2019 14:11:22 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iYxHk-0004i4-LW; Sun, 24 Nov 2019 20:11:04 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iYxHh-0006Zd-QY; Sun, 24 Nov 2019 20:11:01 +0100
-Date:   Sun, 24 Nov 2019 20:11:01 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
+        id S1726931AbfKXWw7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Nov 2019 17:52:59 -0500
+Received: from sender4-op-o14.zoho.com ([136.143.188.14]:17478 "EHLO
+        sender4-op-o14.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726855AbfKXWw7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Nov 2019 17:52:59 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1574635958; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=nkhEXIzF9+0eSVEWhcQyoV6RJb7cH7U8Gr2gkLFCjEeuJUg2huMqkHX0csaHlKyVgttBtlmDlKmWemY0aVu/zthNq2k2KSD+DscGEN05VjaeiZ11vK7T5saX6/nN7xxYjPFNNrByvVz3HcsxcsCB6lL+rDvDFh2aEdoqoFfBLCM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1574635958; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=VBlCIOBlmhYT1nXzZeusUrp2ZE5E5KFbCpOclqk1oRI=; 
+        b=H9LIerKIxFLVX+a3CgdMu5BaAD8LkvS1IfTDtU6XBlJ4JhB/Ve3h8gklOB/hfWRDtUAJb9qdkBJOPSTTLVegEd5k5y/ffGTLwnlkWiUVFkDnLjLmFmxuOc7sgFNdTxiYP+cIQzzj6yyU8q8xgptetWnCe8uBeJ8shM+4enZtpTc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=dlrobertson.com;
+        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
+        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
+Received: from nessie (pool-173-73-58-202.washdc.fios.verizon.net [173.73.58.202]) by mx.zohomail.com
+        with SMTPS id 1574635957113882.9905876044394; Sun, 24 Nov 2019 14:52:37 -0800 (PST)
+Date:   Sun, 24 Nov 2019 22:37:34 +0000
+From:   Dan Robertson <dan@dlrobertson.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        devicetree <devicetree@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        linux-iio@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH v3 3/3] iio: adc: new driver to support Linear
- technology's ltc2496
-Message-ID: <20191124191101.duh646kbrlackget@pengutronix.de>
-References: <20191121210007.25646-1-u.kleine-koenig@pengutronix.de>
- <20191121210007.25646-4-u.kleine-koenig@pengutronix.de>
- <20191123171204.3a714322@archlinux>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH v4 2/2] iio: (bma400) add driver for the BMA400
+Message-ID: <20191124223734.GA13261@nessie>
+References: <20191018031848.18538-1-dan@dlrobertson.com>
+ <20191018031848.18538-3-dan@dlrobertson.com>
+ <CAHp75VfMW0fvmO9jGTnQumJ9Sm-SgNL0ohjSR4qRQY365aeMBw@mail.gmail.com>
+ <20191019024351.GB8593@nessie>
+ <20191021162016.531e6a2e@archlinux>
+ <20191118002504.GA29469@nessie>
+ <20191123125135.4c7efcb0@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191123171204.3a714322@archlinux>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <20191123125135.4c7efcb0@archlinux>
+User-Agent: Mutt/1.12.2 (2019-09-21)
+X-ZohoMailClient: External
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Nov 23, 2019 at 05:12:04PM +0000, Jonathan Cameron wrote:
-> On Thu, 21 Nov 2019 22:00:07 +0100
-> Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
-> 
-> > This chip is similar to the LTC2497 ADC, it just uses SPI instead of I2C
-> > and so has a slightly different protocol. Only the actual hardware
-> > access is different. The spi protocol is different enough to not be able
-> > to map the differences via a regmap.
-> > 
-> > Also generalize the entry in MAINTAINER to cover the newly introduced
-> > file.
-> > 
-> > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> looks good with the exception of the now overly protected DMA buffers.
-> 
-> See inline.  As that's all I'm seeing that needs fixing I'll just
-> fix this up whilst applying.
-> 
-> I'd like the series to sit a little longer on the list though to give
-> devicetree maintainers time to look at the bindings.
+On Sat, Nov 23, 2019 at 12:51:35PM +0000, Jonathan Cameron wrote:
+> If a function is your preferred route you could also just use it to compute
+> the values for the available table at startup?
 
-ok.
+Yeah that makes sense. I'll add that in the next patchset version.
 
-> > +struct ltc2496_driverdata {
-> > +	/* this must be the first member */
-> > +	struct ltc2497core_driverdata common_ddata;
-> > +	struct spi_device *spi;
-> > +
-> > +	/*
-> > +	 * DMA (thus cache coherency maintenance) requires the
-> > +	 * transfer buffers to live in their own cache lines.
-> > +	 */
-> > +	unsigned char rxbuf[3] ____cacheline_aligned;
-> > +	unsigned char txbuf[3] ____cacheline_aligned;
-> Ah.  I've not explained this clearly enough.  Upshot is you only need
-> to ensure that the buffers used for dma are not shared with any other
-> usage.  the __cacheline_aligned marker pads the structure to ensure
-> the element so marked is at the start of a new cacheline.  This means
-> there is no sharing with non DMA related elements which may be accidentally
-> reset when the DMA transfer ends.
+> > The sampling ratio, frequency, etc code seems to be the most complicated part
+> > of the driver. Is it typically recommended to upstream a more minimal driver
+> > that might assume the defaults?
 > 
-> Imagine we had:
-> struct bob {
-> 	int a; //used for all sorts of fun things not related to dma and not
->        	       //protected from happening concurrently with dma.
-> 	unsigned char rx_buf[3];
-> 	unsigned char tx_buf[3]
-> };
+> Often people upstream a first version that just uses defaults, then follow
+> up (if they care) with later series adding the more fiddly elements.
 > 
-> The buffers are used for DMA.  The DMA engine takes a copy of the cacheline
-> to start doing it's magic.
-> 
-> Along comes other activity and writes to 'a'.
-> 
-> DMA completes, then engine pushes the cacheline back to the memory including
-> writing back what it had as a copy of a.  Thus the update to 'a' is lost.
-> 
-> Now the guarantee we make use of is that DMA engines are not allowed to
-> copy cachelines that do not contain the buffers they are using (all sorts
-> of things would break if they were).
-> 
-> However, there is no need to separate rx_buf and tx_buf as they are being
-> used by the same DMA engine and nothing else is going to update them whilst
-> they are in use.
+> Sometimes those more fiddly bits never come as a particular author
+> never needed them.  That's absolutely fine.  It's a rare driver
+> that supports all the features on a non trivial device!
 
-Yeah, I thought about that when adding the second annotation but then
-forgot to mention that in my cover letter.
+Makes sense. I'll likely add some extra bits in a follow-up patchset, so I can
+learn a bit more.
 
-So I assume you will just drop the 2nd ____cacheline_aligned? That's
-fine for me; thanks.
+Cheers,
 
-Best regards
-Uwe
+ - Dan
 
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |

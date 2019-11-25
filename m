@@ -2,458 +2,345 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A5C91089AB
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2019 09:05:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4059F108A34
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2019 09:42:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726694AbfKYIFp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 25 Nov 2019 03:05:45 -0500
-Received: from mout.kundenserver.de ([212.227.126.133]:50977 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725992AbfKYIFp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Nov 2019 03:05:45 -0500
-Received: from localhost ([212.237.170.26]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N1Oo7-1ho5BV1tXP-012oLe; Mon, 25 Nov 2019 09:05:11 +0100
-Date:   Mon, 25 Nov 2019 09:05:02 +0100
-From:   Andreas Klinger <ak@it-klinger.de>
-To:     robh+dt@kernel.org, jic23@kernel.org, mark.rutland@arm.com
-Cc:     mripard@kernel.org, shawnguo@kernel.org, heiko@sntech.de,
-        icenowy@aosc.io, laurent.pinchart@ideasonboard.com,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        gregkh@linuxfoundation.org, christophe.jaillet@wanadoo.fr,
-        tglx@linutronix.de, mchehab+samsung@kernel.org,
-        davem@davemloft.net, paulmck@linux.ibm.com,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/4] iio: ping: add parallax ping sensors
-Message-ID: <20191125080458.cdwl2d6zqftjwf22@arbad>
+        id S1727072AbfKYImc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Nov 2019 03:42:32 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:9504 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725875AbfKYImb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Nov 2019 03:42:31 -0500
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAP8bA7h011022;
+        Mon, 25 Nov 2019 09:42:04 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=EafslY8YsETLB5AmrkJSNzWY8s1BqdoQi39PbGZb70E=;
+ b=Z72oFzzVV05gKzl2AuR/fZooIf5gTmP3TtFfSJSQADmrXRj+USD/avpMGNwhT/CEMNsb
+ b9hXktd/CdR0ub70ziZseKpaQB4jvciMalCMY/Sl6+gEAkPjmI0rNRrXxZI3J2BqL7ag
+ Ie4JVyPPj4YWvw/wHwxd2JdVUSBBWxzx0bi7JnzYq4uJKIf5DJ+vKpK/HHwI/yv4Xn1s
+ +UJLlo3LIDy5hr329HQwyfQq/AtHYXAmlpQPNfnsIihB1jI06OC5JOvu9K4dUWSbkK4o
+ yNAZFIHC5bfLWNT1uQg8/rF1ean6z3tTYQBq4bzHY6BckGn9E1hAjTng+Z5GqLXVoK4R bQ== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2wets9g0dr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Nov 2019 09:42:04 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DB85310002A;
+        Mon, 25 Nov 2019 09:42:03 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C82DA2AD9E7;
+        Mon, 25 Nov 2019 09:42:03 +0100 (CET)
+Received: from [10.48.0.192] (10.75.127.44) by SFHDAG5NODE3.st.com
+ (10.75.127.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 25 Nov
+ 2019 09:42:02 +0100
+Subject: Re: [PATCH] iio: adc: stm32-adc: Add check on overrun interrupt
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+References: <1574435294-19510-1-git-send-email-fabrice.gasnier@st.com>
+ <20191123113623.3e58b2d1@archlinux>
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+Message-ID: <999ccf66-1184-7b9e-309c-8130ad643c82@st.com>
+Date:   Mon, 25 Nov 2019 09:42:01 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Provags-ID: V03:K1:uo4dm0Pv0ClxZ/dz6WgacqSM1x3vKJdxDg1Zrn7VIxXyIn5odIC
- xs0PZXgfauy0VNIyixjnH5DiqbIUn36HSRTFOS6c72Etvb2wJObhGCcttLr20XX0slcixuM
- y7UbUthqVD0UyA6dzduPRJ4JA84ZUU0/0/ARsEg0sUjwQ4/V5eWhJmXc08Wn7avwTVt8Mt+
- QI48+WXRYhpAAFH8beQYA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gzHWjcffnyU=:7ICAxNi+6P8QoLTIzxWvIi
- gbZB1Od6fS/jzc3nY2LdvIxd+W5dbZQHPbjv4gyPoej6/Sk3Kobg723BcgFpezCZvU3E/QX+P
- rqJalC2p4GZNqY/bWUoEsOX+XNLpzx4EnWj3O9lgr/yvRgGiJ8iH97wnRBLa72tx0m2NYpmuB
- ObmFhL1TxDF+ivIReQUc4RtNEw4fOc5Z78ZUTpQYggsp51jeI1SKy8dUGlFxGE6d9vGQx/lIE
- 8ac47vEt+jszLw9Csoex1CMWtZM2GhjL8/ytWfJWFzmrxRMM8wJKX1WXVKT8zhnOVXaG2aV9s
- X4U/kHCMPVhMUooY8OHoQ82rp/7Qe+cJDXYFFbl3+xS6mTwu0iUQmhWlIaku3zgygdT3NjGfO
- QJIbqkC6ko5buR/Z2Q+Z4WHfMi5xXiMAIu/bvsYpSpFwCWclFLikENlWgbuDemZ5maTwpYCg0
- jBXboyCEyWU7s7+8A5nPgoHre8Fyf9HVP3gk4jy4J6VheI4OFSJdHcv9mzbK/Lt2zEq/Vzl/O
- Nyq8zC28sOX/Txb3s1mgexxzTfLuoyuqwtYu83J79UTpDbCs270/1gi61mYAOJEBHjsJXoHBL
- Einw1/CkdAHphSfUr3w0cEkwiadzFHBUukNUGOTclkpkuJ5xpOzl9Ii8BOk3nSMP87t4JdLlQ
- G0J2NynU11DISKb+pFpfnKoVcF/bxyUdRIBSbakB+J6RKuspk1iaDGCnK5uJDDxpy9erHAZpy
- r39oGF3Rj+EG8bu/SHQ33D+8MHHE/e2jKs7jgpNWJ5jTjcMzO6tL8feHXYxdyBd9PuSCOR03v
- 6yCnIx3exdmsXdi+Ahk92mgYBOnynugn3DtO1ZOy6hGhGJxFrwdxtZPQs3HWJ5eSPXGk0U4dA
- qtga4AMXr5ETHpPntzNQ==
+In-Reply-To: <20191123113623.3e58b2d1@archlinux>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.44]
+X-ClientProxiedBy: SFHDAG5NODE1.st.com (10.75.127.13) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-11-25_02:2019-11-21,2019-11-25 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for parallax ping and laser ping sensors with just one pin
-for trigger and echo signal.
+On 11/23/19 12:36 PM, Jonathan Cameron wrote:
+> On Fri, 22 Nov 2019 16:08:14 +0100
+> Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
+> 
+>> Enable overrun interrupt on STM32 ADC. In case data register hasn't been
+>> read (by CPU or DMA), overrun condition is detected when there's new
+>> conversion data available. Stop grabbing data and log an error message.
+>> Use a threaded irq to avoid printing the error message from hard irq
+>> context.
+>>
+>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+> 
+> Absolutely makes sense to notify the user this occurred and to stop
+> the current process.  It may be useful to give a hint on how
+> to restart capture?
 
-This driver is based on srf04. In contrast to it it's necessary to
-change direction of the pin and to request the irq just for the period
-when the echo is rising and falling. Because this adds a lot of cases
-there is this individual driver for handling this type of sensors.
+Hi Jonathan,
 
-Add a new configuration variable CONFIG_PING to Kconfig and Makefile.
+Restarting the capture can simply be done by disabling/re-enabling, e.g.
+from userland:
+cd /sys/bus/iio/devices/iio:deviceX
+echo 0 > buffer/enable
+echo 1 > buffer/enable
 
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-Reported-by: kbuild test robot <lkp@intel.com>
-Reported-by: Julia Lawall <julia.lawall@lip6.fr>
----
- drivers/iio/proximity/Kconfig  |  15 ++
- drivers/iio/proximity/Makefile |   1 +
- drivers/iio/proximity/ping.c   | 335 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 351 insertions(+)
- create mode 100644 drivers/iio/proximity/ping.c
+Do you think such a hint should be added somewhere? (in the commit
+message or in a comment...) ?
 
-diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
-index d53601447da4..37606d400805 100644
---- a/drivers/iio/proximity/Kconfig
-+++ b/drivers/iio/proximity/Kconfig
-@@ -58,6 +58,21 @@ config MB1232
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called mb1232.
- 
-+config PING
-+	tristate "Parallax GPIO bitbanged ranger sensors"
-+	depends on GPIOLIB
-+	help
-+	  Say Y here to build a driver for GPIO bitbanged ranger sensors
-+	  with just one GPIO for the trigger and echo. This driver can be
-+	  used to measure the distance of objects.
-+
-+	  Actually supported are:
-+	  - Parallax PING))) (ultrasonic)
-+	  - Parallax LaserPING (time-of-flight)
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called ping.
-+
- config RFD77402
- 	tristate "RFD77402 ToF sensor"
- 	depends on I2C
-diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Makefile
-index 0bb5f9de13d6..c591b019304e 100644
---- a/drivers/iio/proximity/Makefile
-+++ b/drivers/iio/proximity/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_AS3935)		+= as3935.o
- obj-$(CONFIG_ISL29501)		+= isl29501.o
- obj-$(CONFIG_LIDAR_LITE_V2)	+= pulsedlight-lidar-lite-v2.o
- obj-$(CONFIG_MB1232)		+= mb1232.o
-+obj-$(CONFIG_PING)		+= ping.o
- obj-$(CONFIG_RFD77402)		+= rfd77402.o
- obj-$(CONFIG_SRF04)		+= srf04.o
- obj-$(CONFIG_SRF08)		+= srf08.o
-diff --git a/drivers/iio/proximity/ping.c b/drivers/iio/proximity/ping.c
-new file mode 100644
-index 000000000000..34aff108dff5
---- /dev/null
-+++ b/drivers/iio/proximity/ping.c
-@@ -0,0 +1,335 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * PING: ultrasonic sensor for distance measuring by using only one GPIOs
-+ *
-+ * Copyright (c) 2019 Andreas Klinger <ak@it-klinger.de>
-+ *
-+ * For details about the devices see:
-+ * http://parallax.com/sites/default/files/downloads/28041-LaserPING-2m-Rangefinder-Guide.pdf
-+ * http://parallax.com/sites/default/files/downloads/28015-PING-Documentation-v1.6.pdf
-+ *
-+ * the measurement cycle as timing diagram looks like:
-+ *
-+ * GPIO      ___              ________________________
-+ * ping:  __/   \____________/                        \________________
-+ *          ^   ^            ^                        ^
-+ *          |<->|            interrupt                interrupt
-+ *         udelay(5)         (ts_rising)              (ts_falling)
-+ *                           |<---------------------->|
-+ *                           .  pulse time measured   .
-+ *                           .  --> one round trip of ultra sonic waves
-+ * ultra                     .                        .
-+ * sonic            _   _   _.                        .
-+ * burst: _________/ \_/ \_/ \_________________________________________
-+ *                                                    .
-+ * ultra                                              .
-+ * sonic                                     _   _   _.
-+ * echo:  __________________________________/ \_/ \_/ \________________
-+ */
-+#include <linux/err.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/sched.h>
-+#include <linux/interrupt.h>
-+#include <linux/delay.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+
-+struct ping_cfg {
-+	unsigned long	trigger_pulse_us;	/* length of trigger pulse */
-+	int		laserping_error;	/* support error code in */
-+						/*   pulse width of laser */
-+						/*   ping sensors */
-+	s64		timeout_ns;		/* timeout in ns */
-+};
-+
-+struct ping_data {
-+	struct device		*dev;
-+	struct gpio_desc	*gpiod_ping;
-+	struct mutex		lock;
-+	int			irqnr;
-+	ktime_t			ts_rising;
-+	ktime_t			ts_falling;
-+	struct completion	rising;
-+	struct completion	falling;
-+	const struct ping_cfg	*cfg;
-+};
-+
-+static const struct ping_cfg pa_ping_cfg = {
-+	.trigger_pulse_us	= 5,
-+	.laserping_error	= 0,
-+	.timeout_ns		= 18500000,	/* 3 meters */
-+};
-+
-+static const struct ping_cfg pa_laser_ping_cfg = {
-+	.trigger_pulse_us	= 5,
-+	.laserping_error	= 1,
-+	.timeout_ns		= 15500000,	/* 2 meters plus error codes */
-+};
-+
-+static irqreturn_t ping_handle_irq(int irq, void *dev_id)
-+{
-+	struct iio_dev *indio_dev = dev_id;
-+	struct ping_data *data = iio_priv(indio_dev);
-+	ktime_t now = ktime_get();
-+
-+	if (gpiod_get_value(data->gpiod_ping)) {
-+		data->ts_rising = now;
-+		complete(&data->rising);
-+	} else {
-+		data->ts_falling = now;
-+		complete(&data->falling);
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int ping_read(struct ping_data *data)
-+{
-+	int ret;
-+	ktime_t ktime_dt;
-+	s64 dt_ns;
-+	u32 time_ns, distance_mm;
-+	struct platform_device *pdev = to_platform_device(data->dev);
-+	struct iio_dev *indio_dev = iio_priv_to_dev(data);
-+
-+	/*
-+	 * just one read-echo-cycle can take place at a time
-+	 * ==> lock against concurrent reading calls
-+	 */
-+	mutex_lock(&data->lock);
-+
-+	reinit_completion(&data->rising);
-+	reinit_completion(&data->falling);
-+
-+	gpiod_set_value(data->gpiod_ping, 1);
-+	udelay(data->cfg->trigger_pulse_us);
-+	gpiod_set_value(data->gpiod_ping, 0);
-+
-+	ret = gpiod_direction_input(data->gpiod_ping);
-+	if (ret < 0) {
-+		mutex_unlock(&data->lock);
-+		return ret;
-+	}
-+
-+	data->irqnr = gpiod_to_irq(data->gpiod_ping);
-+	if (data->irqnr < 0) {
-+		dev_err(data->dev, "gpiod_to_irq: %d\n", data->irqnr);
-+		mutex_unlock(&data->lock);
-+		return data->irqnr;
-+	}
-+
-+	ret = request_irq(data->irqnr, ping_handle_irq,
-+				IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
-+							pdev->name, indio_dev);
-+	if (ret < 0) {
-+		dev_err(data->dev, "request_irq: %d\n", ret);
-+		mutex_unlock(&data->lock);
-+		return ret;
-+	}
-+
-+	/* it should not take more than 20 ms until echo is rising */
-+	ret = wait_for_completion_killable_timeout(&data->rising, HZ/50);
-+	if (ret < 0)
-+		goto err_reset_direction;
-+	else if (ret == 0) {
-+		ret = -ETIMEDOUT;
-+		goto err_reset_direction;
-+	}
-+
-+	/* it cannot take more than 50 ms until echo is falling */
-+	ret = wait_for_completion_killable_timeout(&data->falling, HZ/20);
-+	if (ret < 0)
-+		goto err_reset_direction;
-+	else if (ret == 0) {
-+		ret = -ETIMEDOUT;
-+		goto err_reset_direction;
-+	}
-+
-+	ktime_dt = ktime_sub(data->ts_falling, data->ts_rising);
-+
-+	free_irq(data->irqnr, indio_dev);
-+
-+	ret = gpiod_direction_output(data->gpiod_ping, GPIOD_OUT_LOW);
-+	if (ret < 0) {
-+		mutex_unlock(&data->lock);
-+		return ret;
-+	}
-+
-+	mutex_unlock(&data->lock);
-+
-+	dt_ns = ktime_to_ns(ktime_dt);
-+	if (dt_ns > data->cfg->timeout_ns) {
-+		dev_dbg(data->dev, "distance out of range: dt=%lldns\n",
-+								dt_ns);
-+		return -EIO;
-+	}
-+
-+	time_ns = dt_ns;
-+
-+	/*
-+	 * read error code of laser ping sensor and give users chance to
-+	 * figure out error by using dynamic debuggging
-+	 */
-+	if (data->cfg->laserping_error) {
-+		if ((time_ns > 12500000) && (time_ns <= 13500000)) {
-+			dev_dbg(data->dev, "target too close or to far\n");
-+			return -EIO;
-+		}
-+		if ((time_ns > 13500000) && (time_ns <= 14500000)) {
-+			dev_dbg(data->dev, "internal sensor error\n");
-+			return -EIO;
-+		}
-+		if ((time_ns > 14500000) && (time_ns <= 15500000)) {
-+			dev_dbg(data->dev, "internal sensor timeout\n");
-+			return -EIO;
-+		}
-+	}
-+
-+	/*
-+	 * the speed as function of the temperature is approximately:
-+	 *
-+	 * speed = 331,5 + 0,6 * Temp
-+	 *   with Temp in °C
-+	 *   and speed in m/s
-+	 *
-+	 * use 343,5 m/s as ultrasonic speed at 20 °C here in absence of the
-+	 * temperature
-+	 *
-+	 * therefore:
-+	 *             time     343,5     time * 232
-+	 * distance = ------ * ------- = ------------
-+	 *             10^6         2        1350800
-+	 *   with time in ns
-+	 *   and distance in mm (one way)
-+	 *
-+	 * because we limit to 3 meters the multiplication with 232 just
-+	 * fits into 32 bit
-+	 */
-+	distance_mm = time_ns * 232 / 1350800;
-+
-+	return distance_mm;
-+
-+err_reset_direction:
-+	free_irq(data->irqnr, indio_dev);
-+	mutex_unlock(&data->lock);
-+
-+	if (gpiod_direction_output(data->gpiod_ping, GPIOD_OUT_LOW))
-+		dev_dbg(data->dev, "error in gpiod_direction_output\n");
-+	return ret;
-+}
-+
-+static int ping_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *channel, int *val,
-+			    int *val2, long info)
-+{
-+	struct ping_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	if (channel->type != IIO_DISTANCE)
-+		return -EINVAL;
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = ping_read(data);
-+		if (ret < 0)
-+			return ret;
-+		*val = ret;
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		/*
-+		 * maximum resolution in datasheet is 1 mm
-+		 * 1 LSB is 1 mm
-+		 */
-+		*val = 0;
-+		*val2 = 1000;
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info ping_iio_info = {
-+	.read_raw		= ping_read_raw,
-+};
-+
-+static const struct iio_chan_spec ping_chan_spec[] = {
-+	{
-+		.type = IIO_DISTANCE,
-+		.info_mask_separate =
-+				BIT(IIO_CHAN_INFO_RAW) |
-+				BIT(IIO_CHAN_INFO_SCALE),
-+	},
-+};
-+
-+static const struct of_device_id of_ping_match[] = {
-+	{ .compatible = "parallax,ping", .data = &pa_ping_cfg},
-+	{ .compatible = "parallax,laserping", .data = &pa_ping_cfg},
-+	{},
-+};
-+
-+MODULE_DEVICE_TABLE(of, of_ping_match);
-+
-+static int ping_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct ping_data *data;
-+	struct iio_dev *indio_dev;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(struct ping_data));
-+	if (!indio_dev) {
-+		dev_err(dev, "failed to allocate IIO device\n");
-+		return -ENOMEM;
-+	}
-+
-+	data = iio_priv(indio_dev);
-+	data->dev = dev;
-+	data->cfg = of_device_get_match_data(dev);
-+
-+	mutex_init(&data->lock);
-+	init_completion(&data->rising);
-+	init_completion(&data->falling);
-+
-+	data->gpiod_ping = devm_gpiod_get(dev, "ping", GPIOD_OUT_LOW);
-+	if (IS_ERR(data->gpiod_ping)) {
-+		dev_err(dev, "failed to get ping-gpios: err=%ld\n",
-+						PTR_ERR(data->gpiod_ping));
-+		return PTR_ERR(data->gpiod_ping);
-+	}
-+
-+	if (gpiod_cansleep(data->gpiod_ping)) {
-+		dev_err(data->dev, "cansleep-GPIOs not supported\n");
-+		return -ENODEV;
-+	}
-+
-+	platform_set_drvdata(pdev, indio_dev);
-+
-+	indio_dev->name = "ping";
-+	indio_dev->dev.parent = &pdev->dev;
-+	indio_dev->info = &ping_iio_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = ping_chan_spec;
-+	indio_dev->num_channels = ARRAY_SIZE(ping_chan_spec);
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static struct platform_driver ping_driver = {
-+	.probe		= ping_probe,
-+	.driver		= {
-+		.name		= "ping-gpio",
-+		.of_match_table	= of_ping_match,
-+	},
-+};
-+
-+module_platform_driver(ping_driver);
-+
-+MODULE_AUTHOR("Andreas Klinger <ak@it-klinger.de>");
-+MODULE_DESCRIPTION("PING sensors for distance measuring using one GPIOs");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:ping");
--- 
-2.11.0
+> 
+> Is this a condition that can occur under 'normal conditions' such
+> as something else grabbing the CPU for too long?
+
+Indeed, this may happen for instance when DMA isn't used (e.g. no DMA
+channel as been assigned to the ADC, so using CPU/interrupts), and CPU
+is busy for too long... I don't expect this may happen otherwise.
+
+> 
+> I'd just like to understand if we are dealing with a 'fault'
+> case of just one where things go wrong under weird conditions.
+
+Of course something weird, wrong, faulty... happening on the DMA side
+for example, may cause overrun. But it's quite unlikely.
+
+> 
+> Patch itself looks fine.
+
+Please let me know if I need to improve description.
+
+Thanks for reviewing,
+Fabrice
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
+>> ---
+>>  drivers/iio/adc/stm32-adc-core.c | 14 +++++------
+>>  drivers/iio/adc/stm32-adc-core.h |  9 +++++++
+>>  drivers/iio/adc/stm32-adc.c      | 53 ++++++++++++++++++++++++++++++++++++++--
+>>  3 files changed, 67 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+>> index 6537f4f..97655d7 100644
+>> --- a/drivers/iio/adc/stm32-adc-core.c
+>> +++ b/drivers/iio/adc/stm32-adc-core.c
+>> @@ -280,21 +280,21 @@ static int stm32h7_adc_clk_sel(struct platform_device *pdev,
+>>  static const struct stm32_adc_common_regs stm32f4_adc_common_regs = {
+>>  	.csr = STM32F4_ADC_CSR,
+>>  	.ccr = STM32F4_ADC_CCR,
+>> -	.eoc1_msk = STM32F4_EOC1,
+>> -	.eoc2_msk = STM32F4_EOC2,
+>> -	.eoc3_msk = STM32F4_EOC3,
+>> +	.eoc1_msk = STM32F4_EOC1 | STM32F4_OVR1,
+>> +	.eoc2_msk = STM32F4_EOC2 | STM32F4_OVR2,
+>> +	.eoc3_msk = STM32F4_EOC3 | STM32F4_OVR3,
+>>  	.ier = STM32F4_ADC_CR1,
+>> -	.eocie_msk = STM32F4_EOCIE,
+>> +	.eocie_msk = STM32F4_EOCIE | STM32F4_OVRIE,
+>>  };
+>>  
+>>  /* STM32H7 common registers definitions */
+>>  static const struct stm32_adc_common_regs stm32h7_adc_common_regs = {
+>>  	.csr = STM32H7_ADC_CSR,
+>>  	.ccr = STM32H7_ADC_CCR,
+>> -	.eoc1_msk = STM32H7_EOC_MST,
+>> -	.eoc2_msk = STM32H7_EOC_SLV,
+>> +	.eoc1_msk = STM32H7_EOC_MST | STM32H7_OVR_MST,
+>> +	.eoc2_msk = STM32H7_EOC_SLV | STM32H7_OVR_SLV,
+>>  	.ier = STM32H7_ADC_IER,
+>> -	.eocie_msk = STM32H7_EOCIE,
+>> +	.eocie_msk = STM32H7_EOCIE | STM32H7_OVRIE,
+>>  };
+>>  
+>>  static const unsigned int stm32_adc_offset[STM32_ADC_MAX_ADCS] = {
+>> diff --git a/drivers/iio/adc/stm32-adc-core.h b/drivers/iio/adc/stm32-adc-core.h
+>> index 2579d51..2322809 100644
+>> --- a/drivers/iio/adc/stm32-adc-core.h
+>> +++ b/drivers/iio/adc/stm32-adc-core.h
+>> @@ -51,10 +51,12 @@
+>>  #define STM32F4_ADC_CCR			(STM32_ADCX_COMN_OFFSET + 0x04)
+>>  
+>>  /* STM32F4_ADC_SR - bit fields */
+>> +#define STM32F4_OVR			BIT(5)
+>>  #define STM32F4_STRT			BIT(4)
+>>  #define STM32F4_EOC			BIT(1)
+>>  
+>>  /* STM32F4_ADC_CR1 - bit fields */
+>> +#define STM32F4_OVRIE			BIT(26)
+>>  #define STM32F4_RES_SHIFT		24
+>>  #define STM32F4_RES_MASK		GENMASK(25, 24)
+>>  #define STM32F4_SCAN			BIT(8)
+>> @@ -72,8 +74,11 @@
+>>  #define STM32F4_ADON			BIT(0)
+>>  
+>>  /* STM32F4_ADC_CSR - bit fields */
+>> +#define STM32F4_OVR3			BIT(21)
+>>  #define STM32F4_EOC3			BIT(17)
+>> +#define STM32F4_OVR2			BIT(13)
+>>  #define STM32F4_EOC2			BIT(9)
+>> +#define STM32F4_OVR1			BIT(5)
+>>  #define STM32F4_EOC1			BIT(1)
+>>  
+>>  /* STM32F4_ADC_CCR - bit fields */
+>> @@ -103,10 +108,12 @@
+>>  
+>>  /* STM32H7_ADC_ISR - bit fields */
+>>  #define STM32MP1_VREGREADY		BIT(12)
+>> +#define STM32H7_OVR			BIT(4)
+>>  #define STM32H7_EOC			BIT(2)
+>>  #define STM32H7_ADRDY			BIT(0)
+>>  
+>>  /* STM32H7_ADC_IER - bit fields */
+>> +#define STM32H7_OVRIE			STM32H7_OVR
+>>  #define STM32H7_EOCIE			STM32H7_EOC
+>>  
+>>  /* STM32H7_ADC_CR - bit fields */
+>> @@ -155,7 +162,9 @@ enum stm32h7_adc_dmngt {
+>>  #define STM32H7_LINCALFACT_MASK		GENMASK(29, 0)
+>>  
+>>  /* STM32H7_ADC_CSR - bit fields */
+>> +#define STM32H7_OVR_SLV			BIT(20)
+>>  #define STM32H7_EOC_SLV			BIT(18)
+>> +#define STM32H7_OVR_MST			BIT(4)
+>>  #define STM32H7_EOC_MST			BIT(2)
+>>  
+>>  /* STM32H7_ADC_CCR - bit fields */
+>> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+>> index 3b291d7..9361f92 100644
+>> --- a/drivers/iio/adc/stm32-adc.c
+>> +++ b/drivers/iio/adc/stm32-adc.c
+>> @@ -117,7 +117,9 @@ struct stm32_adc_regs {
+>>   * struct stm32_adc_regspec - stm32 registers definition
+>>   * @dr:			data register offset
+>>   * @ier_eoc:		interrupt enable register & eocie bitfield
+>> + * @ier_ovr:		interrupt enable register & overrun bitfield
+>>   * @isr_eoc:		interrupt status register & eoc bitfield
+>> + * @isr_ovr:		interrupt status register & overrun bitfield
+>>   * @sqr:		reference to sequence registers array
+>>   * @exten:		trigger control register & bitfield
+>>   * @extsel:		trigger selection register & bitfield
+>> @@ -128,7 +130,9 @@ struct stm32_adc_regs {
+>>  struct stm32_adc_regspec {
+>>  	const u32 dr;
+>>  	const struct stm32_adc_regs ier_eoc;
+>> +	const struct stm32_adc_regs ier_ovr;
+>>  	const struct stm32_adc_regs isr_eoc;
+>> +	const struct stm32_adc_regs isr_ovr;
+>>  	const struct stm32_adc_regs *sqr;
+>>  	const struct stm32_adc_regs exten;
+>>  	const struct stm32_adc_regs extsel;
+>> @@ -337,7 +341,9 @@ static const unsigned int stm32f4_adc_smp_cycles[STM32_ADC_MAX_SMP + 1] = {
+>>  static const struct stm32_adc_regspec stm32f4_adc_regspec = {
+>>  	.dr = STM32F4_ADC_DR,
+>>  	.ier_eoc = { STM32F4_ADC_CR1, STM32F4_EOCIE },
+>> +	.ier_ovr = { STM32F4_ADC_CR1, STM32F4_OVRIE },
+>>  	.isr_eoc = { STM32F4_ADC_SR, STM32F4_EOC },
+>> +	.isr_ovr = { STM32F4_ADC_SR, STM32F4_OVR },
+>>  	.sqr = stm32f4_sq,
+>>  	.exten = { STM32F4_ADC_CR2, STM32F4_EXTEN_MASK, STM32F4_EXTEN_SHIFT },
+>>  	.extsel = { STM32F4_ADC_CR2, STM32F4_EXTSEL_MASK,
+>> @@ -429,7 +435,9 @@ static const unsigned int stm32h7_adc_smp_cycles[STM32_ADC_MAX_SMP + 1] = {
+>>  static const struct stm32_adc_regspec stm32h7_adc_regspec = {
+>>  	.dr = STM32H7_ADC_DR,
+>>  	.ier_eoc = { STM32H7_ADC_IER, STM32H7_EOCIE },
+>> +	.ier_ovr = { STM32H7_ADC_IER, STM32H7_OVRIE },
+>>  	.isr_eoc = { STM32H7_ADC_ISR, STM32H7_EOC },
+>> +	.isr_ovr = { STM32H7_ADC_ISR, STM32H7_OVR },
+>>  	.sqr = stm32h7_sq,
+>>  	.exten = { STM32H7_ADC_CFGR, STM32H7_EXTEN_MASK, STM32H7_EXTEN_SHIFT },
+>>  	.extsel = { STM32H7_ADC_CFGR, STM32H7_EXTSEL_MASK,
+>> @@ -506,6 +514,18 @@ static void stm32_adc_conv_irq_disable(struct stm32_adc *adc)
+>>  			   adc->cfg->regs->ier_eoc.mask);
+>>  }
+>>  
+>> +static void stm32_adc_ovr_irq_enable(struct stm32_adc *adc)
+>> +{
+>> +	stm32_adc_set_bits(adc, adc->cfg->regs->ier_ovr.reg,
+>> +			   adc->cfg->regs->ier_ovr.mask);
+>> +}
+>> +
+>> +static void stm32_adc_ovr_irq_disable(struct stm32_adc *adc)
+>> +{
+>> +	stm32_adc_clr_bits(adc, adc->cfg->regs->ier_ovr.reg,
+>> +			   adc->cfg->regs->ier_ovr.mask);
+>> +}
+>> +
+>>  static void stm32_adc_set_res(struct stm32_adc *adc)
+>>  {
+>>  	const struct stm32_adc_regs *res = &adc->cfg->regs->res;
+>> @@ -1205,6 +1225,19 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
+>>  	}
+>>  }
+>>  
+>> +static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
+>> +{
+>> +	struct stm32_adc *adc = data;
+>> +	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
+>> +	const struct stm32_adc_regspec *regs = adc->cfg->regs;
+>> +	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
+>> +
+>> +	if (status & regs->isr_ovr.mask)
+>> +		dev_err(&indio_dev->dev, "Overrun interrupt, stopping.\n");
+>> +
+>> +	return IRQ_HANDLED;
+>> +}
+>> +
+>>  static irqreturn_t stm32_adc_isr(int irq, void *data)
+>>  {
+>>  	struct stm32_adc *adc = data;
+>> @@ -1212,6 +1245,17 @@ static irqreturn_t stm32_adc_isr(int irq, void *data)
+>>  	const struct stm32_adc_regspec *regs = adc->cfg->regs;
+>>  	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
+>>  
+>> +	if (status & regs->isr_ovr.mask) {
+>> +		/*
+>> +		 * Overrun occurred on regular conversions: data for wrong
+>> +		 * channel may be read. Unconditionally disable interrupts
+>> +		 * to stop processing data and print error message.
+>> +		 */
+>> +		stm32_adc_ovr_irq_disable(adc);
+>> +		stm32_adc_conv_irq_disable(adc);
+>> +		return IRQ_WAKE_THREAD;
+>> +	}
+>> +
+>>  	if (status & regs->isr_eoc.mask) {
+>>  		/* Reading DR also clears EOC status flag */
+>>  		adc->buffer[adc->bufi] = stm32_adc_readw(adc, regs->dr);
+>> @@ -1441,6 +1485,8 @@ static int __stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
+>>  	/* Reset adc buffer index */
+>>  	adc->bufi = 0;
+>>  
+>> +	stm32_adc_ovr_irq_enable(adc);
+>> +
+>>  	if (!adc->dma_chan)
+>>  		stm32_adc_conv_irq_enable(adc);
+>>  
+>> @@ -1481,6 +1527,8 @@ static void __stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
+>>  	if (!adc->dma_chan)
+>>  		stm32_adc_conv_irq_disable(adc);
+>>  
+>> +	stm32_adc_ovr_irq_disable(adc);
+>> +
+>>  	if (adc->dma_chan)
+>>  		dmaengine_terminate_sync(adc->dma_chan);
+>>  
+>> @@ -1818,8 +1866,9 @@ static int stm32_adc_probe(struct platform_device *pdev)
+>>  	if (adc->irq < 0)
+>>  		return adc->irq;
+>>  
+>> -	ret = devm_request_irq(&pdev->dev, adc->irq, stm32_adc_isr,
+>> -			       0, pdev->name, adc);
+>> +	ret = devm_request_threaded_irq(&pdev->dev, adc->irq, stm32_adc_isr,
+>> +					stm32_adc_threaded_isr,
+>> +					0, pdev->name, adc);
+>>  	if (ret) {
+>>  		dev_err(&pdev->dev, "failed to request IRQ\n");
+>>  		return ret;
+> 

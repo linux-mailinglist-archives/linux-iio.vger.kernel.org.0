@@ -2,220 +2,195 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 616FD10C627
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2019 10:48:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5332710CB72
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2019 16:14:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726227AbfK1JsA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Nov 2019 04:48:00 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:38583 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726133AbfK1JsA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Nov 2019 04:48:00 -0500
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1iaGOq-0008AB-1G; Thu, 28 Nov 2019 10:47:48 +0100
-Received: from mfe by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1iaGOo-0006fx-F8; Thu, 28 Nov 2019 10:47:46 +0100
-Date:   Thu, 28 Nov 2019 10:47:46 +0100
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: adc: ad799x: add pm_ops to disable the device
- completely
-Message-ID: <20191128094746.4a57vaqcex26lwpq@pengutronix.de>
-References: <20191127114857.11862-1-m.felsch@pengutronix.de>
- <f54935dbda9df19f0301208f34132bf8a27aa55c.camel@analog.com>
+        id S1726556AbfK1POH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Nov 2019 10:14:07 -0500
+Received: from mail-ua1-f66.google.com ([209.85.222.66]:46129 "EHLO
+        mail-ua1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726401AbfK1POG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Nov 2019 10:14:06 -0500
+Received: by mail-ua1-f66.google.com with SMTP id i31so8270462uae.13
+        for <linux-iio@vger.kernel.org>; Thu, 28 Nov 2019 07:14:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Zy5uF93qK7TsStsu2k6NBdy7JOya0iOQZuXD1Iujcb0=;
+        b=FgU8RBDillVl+/sMKUnVfTCyoZ6ovuHCJ3RYXZVdc8DkktX+sOespBa63SRYWG4dnl
+         iBmxqUPDLRcgTyJ6LaY51B+vJRo4OVSxqm9KGbGhsCfAm++HvUEzqZZbf9rSFXQX8xnZ
+         8a3/IAVcQmIRdQkhiZ+RIMYIfOZIVESGhwA6DAYYVFarja6wWf5D+ZcVpyyKXjkksPTS
+         j9amkeksnenw65cj5BPfp1QZih0IaGNGX17IiSydMPgs08LyFBevpKzAosNnuZbtem3q
+         DQPoYh0okaQLeYry/mb8rLyQ6Igx8MV3z5+e+PEDCYcnSUEl443b6vSeuaLY2FU1qKaz
+         RT9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Zy5uF93qK7TsStsu2k6NBdy7JOya0iOQZuXD1Iujcb0=;
+        b=VdfttTbbqUR8CeTEF43FUrqFE5MgTY7qIF0MOlwrrRSUG9FuFsjgFKhqkcXh9m6CkF
+         XNtCnooBCXGuUwDoxSljpho+H0CL98cpqK5NZdg3BjGA89ltjCx/78zLpixEkaGEWEVy
+         6MiKKBh9W6F1ot7jQ7E3AcLtOYFAfg5ldAtI2ZXA6paWKgTi9Zfj+xwDKTfQhNaHlNEE
+         lyPN/artrosZlhgEQsyht6AnDcpmT6gr+D9U33NHDOc31koqzMLBPPmV4L8LjoQS82Ta
+         EulWpuYdVYSi6aSFMdnE4cH56iW5AsbkpDjjDa4By8O4fzLwDTwyx1dJclxqtQAQtOEZ
+         Q4+A==
+X-Gm-Message-State: APjAAAVfmzdJ8uFfLQ9yp3JnsuEct0uIXYuNc09kDOKMsSRbh4m6xgk/
+        OqBerwyTbhVV1bMw1CzwBV8TLPbFtbqC7+7eOoc=
+X-Google-Smtp-Source: APXvYqwAGy+gTV/SLPvtYrl7dXWczaEJcV2ETOiaEioT0LRv9xRcivVVU3hysirSDPYjAnOHgKIM0hhsApxY+szl1jg=
+X-Received: by 2002:ab0:2551:: with SMTP id l17mr6571105uan.54.1574954044923;
+ Thu, 28 Nov 2019 07:14:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f54935dbda9df19f0301208f34132bf8a27aa55c.camel@analog.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:46:10 up 13 days,  1:04, 23 users,  load average: 0.13, 0.11,
- 0.04
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+References: <CAKxs2cBVnL=6ZNbKgYRppaeUBM3xuog5BHdtmJHRxwttSfjugg@mail.gmail.com>
+ <CAKxs2cC1Bqoc6kyz9Cidf_3MHQA-6ZAQJns2pU2CqJ-pMj9ZKA@mail.gmail.com>
+ <e2db511fcaad2d1d08180995e836c22791b9e3b6.camel@analog.com>
+ <CAKxs2cDzm+3WJSp=tHpHy31M5qQaQ=ddKvwoQuP=wzawWKZd6A@mail.gmail.com> <74bff1fe1eab887d3d19f3cff3fc02afbc52a12d.camel@analog.com>
+In-Reply-To: <74bff1fe1eab887d3d19f3cff3fc02afbc52a12d.camel@analog.com>
+From:   Daniel Junho <djunho@gmail.com>
+Date:   Thu, 28 Nov 2019 12:13:56 -0300
+Message-ID: <CAKxs2cBRC1Mkx5+jtW+BNqA_53GL1K2C8Hppf7wuY6SMPiMi+Q@mail.gmail.com>
+Subject: Re: Doubts in getting started with the Analog AD7928 driver
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "lkcamp@lists.libreplanetbr.org" <lkcamp@lists.libreplanetbr.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hey Ardelean,
+Hello.
 
-On 19-11-28 07:46, Ardelean, Alexandru wrote:
-> On Wed, 2019-11-27 at 12:48 +0100, Marco Felsch wrote:
-> > 
-> > The device is always in a low-power state due to the hardware design. It
-> > wakes up upon a conversion request and goes back into the low-power
-> > state. The pm ops are added to disable the device completely and to free
-> > the regulator. Disbaling the device completely should be not that
-> > notable but freeing the regulator is important. Because if it is a shared
-> > power-rail the regulator won't be disabled during suspend-to-ram/disk
-> > and so all devices connected to that rail keeps on.
-> > 
-> 
-> Hey,
-> 
-> Just one comment.
-> Sorry for not catching this earlier.
-> I sometimes miss things on review.
+After some effort to extend the AD7923 to include the AD7928, I got
+stuck because it won't work.
 
-No worries.
+After several days trying to figure out, I could use an oscilloscope
+to analyze and, it seems that the cs_change does not affect the
+driver.
 
-> Thanks
-> Alex
-> 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> > Hi,
-> > 
-> > this v2 contains the comments made on [1].
-> > 
-> > [1] https://patchwork.kernel.org/cover/11149119/
-> > 
-> > v2:
-> > - squash patch 2 & 3
-> > - call regulator_disable() unconditional during suspend()
-> > - drop dev_err() messages during suspend
-> > - fix error path within resume()
-> > ---
-> >  drivers/iio/adc/ad799x.c | 60 ++++++++++++++++++++++++++++++++++++----
-> >  1 file changed, 54 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
-> > index f658012baad8..89e673423e47 100644
-> > --- a/drivers/iio/adc/ad799x.c
-> > +++ b/drivers/iio/adc/ad799x.c
-> > @@ -167,6 +167,21 @@ static int ad799x_read_config(struct ad799x_state
-> > *st)
-> >  	}
-> >  }
-> >  
-> > +static int ad799x_update_config(struct ad799x_state *st, u16 config)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret = ad799x_write_config(st, config);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	ret = ad799x_read_config(st);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	st->config = ret;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  /**
-> >   * ad799x_trigger_handler() bh of trigger launched polling to ring
-> > buffer
-> >   *
-> > @@ -808,13 +823,9 @@ static int ad799x_probe(struct i2c_client *client,
-> >  	indio_dev->channels = st->chip_config->channel;
-> >  	indio_dev->num_channels = chip_info->num_channels;
-> >  
-> > -	ret = ad799x_write_config(st, st->chip_config->default_config);
-> > -	if (ret < 0)
-> > -		goto error_disable_vref;
-> > -	ret = ad799x_read_config(st);
-> > -	if (ret < 0)
-> > +	ret = ad799x_update_config(st, st->chip_config->default_config);
-> > +	if (ret)
-> >  		goto error_disable_vref;
-> > -	st->config = ret;
-> >  
-> >  	ret = iio_triggered_buffer_setup(indio_dev, NULL,
-> >  		&ad799x_trigger_handler, NULL);
-> > @@ -864,6 +875,42 @@ static int ad799x_remove(struct i2c_client *client)
-> >  	return 0;
-> >  }
-> >  
-> > +static int __maybe_unused ad799x_suspend(struct device *dev)
-> > +{
-> > +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> > +	struct ad799x_state *st = iio_priv(indio_dev);
-> > +
-> > +	regulator_disable(st->vref);
-> > +	regulator_disable(st->reg);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int __maybe_unused ad799x_resume(struct device *dev)
-> > +{
-> > +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> > +	struct ad799x_state *st = iio_priv(indio_dev);
-> > +	int ret;
-> > +
-> > +	ret = regulator_enable(st->reg);
-> > +	if (ret) {
-> > +		dev_err(dev, "Unable to enable vcc regulator\n");
-> > +		return ret;
-> > +	}
-> > +	ret = regulator_enable(st->vref);
-> > +	if (ret) {
-> > +		regulator_disable(st->reg);
-> > +		dev_err(dev, "Unable to enable vref regulator\n");
-> > +		return ret;
-> > +	}
-> > +	/* resync config */
-> > +	ad799x_update_config(st, st->config);
-> > +
-> 
-> [Again] Sorry for not catching this earlier.
-> 
-> Is it worth doing an error check here?
-> Maybe
-> 
-> ret = ad799x_update_config(st, st->config);
-> if (ret < 0) {
->    regulator_disable(st->vref);
->    regulator_disable(st->reg);
->    return ret;
-> }
+```
+  struct spi_transfer t[] = {
+           {
+                   .tx_buf = &st->tx_buf[0],
+                   .len = 2,
+                   .cs_change = 1,
+           }, {
+                   .rx_buf = &st->rx_buf[0],
+                   .len = 2,
+           },
+   };
+   ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
+```
 
-Good point, I will change that.
+The code above sends the first cmd and does not deselect the cs to get
+the answer.
 
-Regards,
-  Marco 
+I am using kernel 4.4.107 from Toradex to deploy the driver. That is
+the version used on the project of the board.
 
-> 
-> 
-> > +	return 0;
-> > +}
-> > +
-> > +static SIMPLE_DEV_PM_OPS(ad799x_pm_ops, ad799x_suspend, ad799x_resume);
-> > +
-> >  static const struct i2c_device_id ad799x_id[] = {
-> >  	{ "ad7991", ad7991 },
-> >  	{ "ad7995", ad7995 },
-> > @@ -881,6 +928,7 @@ MODULE_DEVICE_TABLE(i2c, ad799x_id);
-> >  static struct i2c_driver ad799x_driver = {
-> >  	.driver = {
-> >  		.name = "ad799x",
-> > +		.pm = &ad799x_pm_ops,
-> >  	},
-> >  	.probe = ad799x_probe,
-> >  	.remove = ad799x_remove,
+Does anyone have any idea what I am doing wrong? Should I update the
+kernel, or it should work as well in this version? Or any ideas of how
+to debug it?
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Daniel E. M. Junho
+
+
+On Wed, Sep 18, 2019 at 3:13 AM Ardelean, Alexandru
+<alexandru.Ardelean@analog.com> wrote:
+>
+> On Tue, 2019-09-17 at 21:47 -0300, Daniel Junho wrote:
+> > On Tue, Sep 17, 2019 at 3:24 AM Ardelean, Alexandru
+> > <alexandru.Ardelean@analog.com> wrote:
+> > > On Mon, 2019-09-16 at 20:50 -0300, Daniel Junho wrote:
+> > > > [External]
+> > > >
+> > > > Hello everybody.
+> > > >
+> > > > I am still learning about kernel developing. I would like to try to
+> > > > develop a device driver for the AD7928 [1], from Analog Device.
+> > > >
+> > > > Can someone give some words to guide me?
+> > > >
+> > > > I was thinking about forking the analog kernel repo [2] but I don't
+> > > > know to which branch should I commit to when doing a pull request. Or
+> > > > if this is the correct way for the devices from Analog.
+> > > >
+> > >
+> > > Hey,
+> > >
+> > > Thanks for the interest in writing the driver for this.
+> > >
+> > > In some cases, some new parts may have an existing driver available
+> > > already
+> > > that can be re-used partially or completely.
+> > >
+> > > You're in luck.
+> > > There is driver seems to be partially implemented via
+> > > drivers/iio/adc/ad7923.c
+> > >
+> > > I've done only a minor/quick check but the control register bits are
+> > > compatible for the AD7928 as well.
+> > >
+> > > Typically, you can extend that driver and add the new parts and test
+> > > them.
+> > >
+> > > So, my suggestion would be:
+> > > 1. Get an eval-board or a AD7928 part; depending on the case we could
+> > > help
+> > > with this
+> > > 2. Try to set it up with a Raspberry Pi with the eval board
+> > >    a. it looks to me that you need a 7V-9V power-supply
+> > >    b. you can hook the SPI to the test-points on the eval board
+> > > 3. Write a basic device-tree overlay ; you can adapt something from
+> > > other
+> > > examples.
+> > > Look here:
+> > > https://github.com/analogdevicesinc/linux/blob/rpi-4.19.y/arch/arm/boot/dts/overlays/Makefile
+> > > Usually  rpi-adXXX.dts  are ADI parts.
+> > > 4. Enable the driver for the kernel.
+> > > If using the ADI kernel, there's a guide here for RPi.
+> > > https://wiki.analog.com/resources/tools-software/linux-build/generic/raspberrypi
+> > > Check the branch that matches your Raspbian image (rpi-4.19.y is the
+> > > latest)
+> > > 5. Build the kernel
+> > > 6. Write it to the SD-card image
+> > > 7. Test
+> > > 8. Modify & repeat
+> > >
+> > > Thanks
+> > > Alex
+> > >
+> > > > [1] https://www.analog.com/en/products/ad7928.html
+> > > > [2] https://github.com/analogdevicesinc/linux
+> > > >
+> > > > Daniel Junho
+> >
+> > Hi Alex.
+> >
+> > It seems that using AD7923 will be the best choice. They are very
+> > similar.
+> >
+> > Thank you for your reply and suggestion.
+> > I don't have an EVB, but at work, we have a board with the AD7928
+>
+> If you have the chip already connected, then it's even better.
+> You don't need to go through the trouble of interfacing it anymore.
+>
+> > using a user driver. So I will try to use it for this development, at
+>
+> And if you've already validated with a user-driver, it's again better, as
+> the connections have been validated.
+>
+> > least for now.
+> >
+> > I believe that will be fun =)
+>
+> Should be.
+> If this whole thing is new to you, it's always easier to start with a
+> base/existing driver and extend than go through the process of writing it
+> from scratch.
+> It's mostly how I learn(ed) things: taking things apart, seeing what people
+> have done, and then using the best ideas in my future processes.
+>
+> >
+> > Daniel Junho

@@ -2,171 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62E8810D8B5
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2019 17:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFED010D8DB
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2019 18:23:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726909AbfK2Qx1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 Nov 2019 11:53:27 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:45063 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726926AbfK2Qx1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Nov 2019 11:53:27 -0500
-Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28] helo=dude02.lab.pengutronix.de)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        id S1726926AbfK2RXl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 Nov 2019 12:23:41 -0500
+Received: from www381.your-server.de ([78.46.137.84]:47880 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726909AbfK2RXk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Nov 2019 12:23:40 -0500
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1iajzW-00039E-MN; Fri, 29 Nov 2019 18:23:38 +0100
+Received: from [93.104.121.45] (helo=[192.168.178.20])
+        by sslproxy02.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256)
         (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1iajW9-0000cU-Va; Fri, 29 Nov 2019 17:53:17 +0100
-Received: from mfe by dude02.lab.pengutronix.de with local (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1iajW8-0004ur-By; Fri, 29 Nov 2019 17:53:16 +0100
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     alexandru.Ardelean@analog.com, StefanSerban.Popa@analog.com,
-        Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org,
-        pmeerw@pmeerw.net, knaack.h@gmx.de
-Cc:     linux-iio@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH v3] iio: adc: ad799x: add pm_ops to disable the device completely
-Date:   Fri, 29 Nov 2019 17:53:14 +0100
-Message-Id: <20191129165314.18829-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.20.1
+        (envelope-from <lars@metafoo.de>)
+        id 1iajzW-0006Ai-FQ; Fri, 29 Nov 2019 18:23:38 +0100
+Subject: Re: iio_compute_scan_bytes does not seem to account for alignment if
+ first channel uses more storagebits than its successors
+To:     =?UTF-8?Q?Lars_M=c3=b6llendorf?= <lars.moellendorf@plating.de>,
+        linux-iio@vger.kernel.org
+References: <ff5a3ea4-4d15-5be3-9cb8-9fd7c716e2e6@plating.de>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <fef18238-85cc-00e7-ee7d-a52c62509c22@metafoo.de>
+Date:   Fri, 29 Nov 2019 18:23:37 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
+In-Reply-To: <ff5a3ea4-4d15-5be3-9cb8-9fd7c716e2e6@plating.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::28
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.101.4/25648/Fri Nov 29 10:44:54 2019)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The device is always in a low-power state due to the hardware design. It
-wakes up upon a conversion request and goes back into the low-power
-state. The pm ops are added to disable the device completely and to free
-the regulator. Disbaling the device completely should be not that
-notable but freeing the regulator is important. Because if it is a shared
-power-rail the regulator won't be disabled during suspend-to-ram/disk
-and so all devices connected to that rail keeps on.
+On 11/29/19 3:30 PM, Lars Möllendorf wrote:
+> Hi,
+> 
+> I have written a custom kernel module implementing the IIO device API
+> backed by an IIO triggered buffer.
+> 
+> My IIO device provides 3 channels + timestamp. The sizes of the channels are
+> 
+> index  | iio_chan_spec.scan_type.storagebits
+> -------|------------------------------------------------
+>    0   |  32
+>    1   |  16
+>    2   |  16
+> 
+> If I select channel 0 (32bit) and one of channel 1 or 2 (16bit)
+> indio_dev.scan_bytes and iio_buffer.bytes_per_datum have a value of 6
+> Byte which does not account for any alignment.
+> 
+> 
+> After having a closer look at  `iio_compute_scan_bytes` which is
+> responsible for calculating both, `indio_dev.scan_bytes` and
+> `iio_buffer.bytes_per_datum` it seems to me that the order of channels
+> matter:
+> 
+> ```c
+> 	/* How much space will the demuxed element take? */
+> 	for_each_set_bit(i, mask,
+> 			 indio_dev->masklength) {
+> 		length = iio_storage_bytes_for_si(indio_dev, i);
+> 		bytes = ALIGN(bytes, length);
+> 		bytes += length;
+> 	}
+> ```
+> 
+> I understand that in case the length of each scan element is smaller
+> then the length of the successive scan elements, this algorithm works
+> because it aligns the current element to its own length. But if, as in
+> my case, the length of channel 0's scan elements  is greater then the
+> size of the samples of the consecutive channels no alignment seems to be
+> taken into account. Do I miss something here?
+[...]
+> But in my case the latter would bloat the buffer from 16 Byte to 4*16 =
+> 64 Byte per scan if all channels are selected and timestamp is active.
+> 
+> For now, I will work around this by using 32 storagebits for all my
+> channels. This gives my 4 Bytes of overhead per scan if all elements are
+> selected and additional 2 Byte if timestamp is active.
+> 
+> In "Why do you align the buffer pointer to a multiple of the size of the
+> current scan element in iio_buffer_foreach_sample()?" on
+> https://github.com/analogdevicesinc/libiio/issues/324 I have been
+> pointed to this mailing list.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
-Hi,
+Hi Lars,
 
-this v3 contains the comments made on [1].
+The way this is supposed to work is that each element is aligned to its
+own natural alignment. What seems to be missing at the moment is that
+the total length is also aligned to the size of the first element, so
+that alignment is preserved for multiple consecutive samples. I feel
+like we had that at some point, but maybe I'm misremembering.
 
-[1] https://www.spinics.net/lists/linux-iio/msg48135.html
+E.g. putting something like
 
-Changelog:
-v3:
-- add resync error check during resume
+ unsigned int first_index = find_first_bit(mask, indio_dev->masklength);
+ length = iio_storage_bytes_for_si(indio_dev, first_index);
+ bytes = ALIGN(bytes, length);
 
-v2:
-- squash patch 2 & 3
-- call regulator_disable() unconditional during suspend()
-- drop dev_err() messages during suspend
-- fix error path within resume()
----
- drivers/iio/adc/ad799x.c | 66 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 60 insertions(+), 6 deletions(-)
+below the loop should do the trick I believe.
 
-diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
-index f658012baad8..ef013af1aec0 100644
---- a/drivers/iio/adc/ad799x.c
-+++ b/drivers/iio/adc/ad799x.c
-@@ -167,6 +167,21 @@ static int ad799x_read_config(struct ad799x_state *st)
- 	}
- }
- 
-+static int ad799x_update_config(struct ad799x_state *st, u16 config)
-+{
-+	int ret;
-+
-+	ret = ad799x_write_config(st, config);
-+	if (ret < 0)
-+		return ret;
-+	ret = ad799x_read_config(st);
-+	if (ret < 0)
-+		return ret;
-+	st->config = ret;
-+
-+	return 0;
-+}
-+
- /**
-  * ad799x_trigger_handler() bh of trigger launched polling to ring buffer
-  *
-@@ -808,13 +823,9 @@ static int ad799x_probe(struct i2c_client *client,
- 	indio_dev->channels = st->chip_config->channel;
- 	indio_dev->num_channels = chip_info->num_channels;
- 
--	ret = ad799x_write_config(st, st->chip_config->default_config);
--	if (ret < 0)
--		goto error_disable_vref;
--	ret = ad799x_read_config(st);
--	if (ret < 0)
-+	ret = ad799x_update_config(st, st->chip_config->default_config);
-+	if (ret)
- 		goto error_disable_vref;
--	st->config = ret;
- 
- 	ret = iio_triggered_buffer_setup(indio_dev, NULL,
- 		&ad799x_trigger_handler, NULL);
-@@ -864,6 +875,48 @@ static int ad799x_remove(struct i2c_client *client)
- 	return 0;
- }
- 
-+static int __maybe_unused ad799x_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct ad799x_state *st = iio_priv(indio_dev);
-+
-+	regulator_disable(st->vref);
-+	regulator_disable(st->reg);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused ad799x_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct ad799x_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regulator_enable(st->reg);
-+	if (ret) {
-+		dev_err(dev, "Unable to enable vcc regulator\n");
-+		return ret;
-+	}
-+	ret = regulator_enable(st->vref);
-+	if (ret) {
-+		regulator_disable(st->reg);
-+		dev_err(dev, "Unable to enable vref regulator\n");
-+		return ret;
-+	}
-+
-+	/* resync config */
-+	ret = ad799x_update_config(st, st->config);
-+	if (ret) {
-+		regulator_disable(st->vref);
-+		regulator_disable(st->reg);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static SIMPLE_DEV_PM_OPS(ad799x_pm_ops, ad799x_suspend, ad799x_resume);
-+
- static const struct i2c_device_id ad799x_id[] = {
- 	{ "ad7991", ad7991 },
- 	{ "ad7995", ad7995 },
-@@ -881,6 +934,7 @@ MODULE_DEVICE_TABLE(i2c, ad799x_id);
- static struct i2c_driver ad799x_driver = {
- 	.driver = {
- 		.name = "ad799x",
-+		.pm = &ad799x_pm_ops,
- 	},
- 	.probe = ad799x_probe,
- 	.remove = ad799x_remove,
--- 
-2.20.1
+- Lars
 

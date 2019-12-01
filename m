@@ -2,107 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7F2810E1E9
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2019 13:38:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E321B10E313
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2019 19:28:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726340AbfLAMiL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Dec 2019 07:38:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56670 "EHLO mail.kernel.org"
+        id S1727231AbfLAS2L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Dec 2019 13:28:11 -0500
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:12185 "EHLO mtax.cdmx.gob.mx"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726162AbfLAMiL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Dec 2019 07:38:11 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3702A20748;
-        Sun,  1 Dec 2019 12:38:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575203891;
-        bh=YUHmSOBJj4OlC3XLzBTmwmeHkMj4d/d8XPF3I7BpMYo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ioEEbEcOwBo8ayfmnn1rQLkTa1VYnnC+jGBEPgszUFNS6/16DejeR7esmYF68WJ/F
-         TiSbv2A+q1DRYhCQPyNTNYPhpcb4kK+o1bZ39se7Ip2ka6/LcfnMJpfL74mfua9FnS
-         R9Ajpx+RHx4o8b61iWq+VUvr8wMDX1ImPpYT5boU=
-Date:   Sun, 1 Dec 2019 12:38:07 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Eugene Zalkonnikov <ez@norphonic.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "development@norphonic.com" <development@norphonic.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] Driver for TI HDC20x0 humidity and temperature
- sensors
-Message-ID: <20191201123807.41f62181@archlinux>
-In-Reply-To: <E9781938-9BFB-4978-83AB-B17B0BE01BC3@norphonic.com>
-References: <1FA22019-2D01-45B2-9C6B-0F6720F1B4A2@norphonic.com>
-        <E9781938-9BFB-4978-83AB-B17B0BE01BC3@norphonic.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727167AbfLAS2L (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Dec 2019 13:28:11 -0500
+X-Greylist: delayed 7027 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:28:10 EST
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1575217637; h=DKIM-Filter:X-Virus-Scanned:
+         Content-Type:MIME-Version:Content-Transfer-Encoding:
+         Content-Description:Subject:To:From:Date:Message-Id:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
+         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
+         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
+        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
+        8=; b=eATuliaEaQ6rYekDLNrrP7MShB6+0R9nInzGSDdJ2FTn
+        XtMs8+aBqrEH59QbM9HRq8wiV/1qhmKj1T45tsuQwODHbUsyGB
+        rGH9ct4bJ1M1XIKssAQFNnAbARpiX36o3RgdyuAcN99CB4Iv8V
+        1rCuqNc1syJGjh4oIDl4tGhKAvM=
+Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
+        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
+         id 217f_6408_cf3e6a65_d79d_47c4_963e_d7f23cb6c62e;
+        Sun, 01 Dec 2019 10:27:16 -0600
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id CB1D01E2F22;
+        Sun,  1 Dec 2019 10:18:50 -0600 (CST)
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id h7FwA7bQ6L6M; Sun,  1 Dec 2019 10:18:50 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id C85361E2FAC;
+        Sun,  1 Dec 2019 10:14:17 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx C85361E2FAC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
+        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216857;
+        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Message-Id;
+        b=pUuMct7VppL8FK4nt17S2ahiLhex4IHA9B5zDRAYuGh1zqkNGGUTpyiacv/kMcd+Y
+         E0Q8+7v2cCl+ifSnGsNEoDMiRwuK8dxgBaYgQaqPRifRWjeIp3dyS3PofK4pwfJANB
+         YFI0B20mSBI/z/m1bYnQKAjVnoLv4bW/7O4JdZFg=
+X-Virus-Scanned: amavisd-new at cdmx.gob.mx
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 0nVNS1L9chzX; Sun,  1 Dec 2019 10:14:17 -0600 (CST)
+Received: from [192.168.0.104] (unknown [188.125.168.160])
+        by cdmx.gob.mx (Postfix) with ESMTPSA id 4EC051E31D6;
+        Sun,  1 Dec 2019 10:05:22 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Congratulations
+To:     Recipients <aac-styfe@cdmx.gob.mx>
+From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
+Date:   Sun, 01 Dec 2019 17:05:14 +0100
+Message-Id: <20191201160522.4EC051E31D6@cdmx.gob.mx>
+X-AnalysisOut: [v=2.2 cv=a6RAzQaF c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
+X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
+X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
+X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
+X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
+X-SAAS-TrackingID: 3e9e3ed5.0.105166135.00-2319.176789505.s12p02m014.mxlogic.net
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
+ <1840193> : uri <2949750>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Nov 2019 20:12:17 +0000
-Eugene Zalkonnikov <ez@norphonic.com> wrote:
+Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
+ them with this email for more information =
 
-> Device tree bindings for HDC2010/HDC2080 driver.
-> 
-> Signed-off-by: Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
-> 
-> diff -uprN linux-5.3.8/Documentation/devicetree/bindings/iio/humidity/hdc2010.yaml linux-5.3.8_docs/Documentation/devicetree/bindings/iio/humidity/hdc2010.yaml
-> --- linux-5.3.8/Documentation/devicetree/bindings/iio/humidity/hdc2010.yaml	1970-01-01 01:00:00.000000000 +0100
-> +++ linux-5.3.8_docs/Documentation/devicetree/bindings/iio/humidity/hdc2010.yaml	2019-11-28 15:35:17.874477013 +0100
-> @@ -0,0 +1,43 @@
-> +# SPDX-License-Identifier: GPL-2.0
-Rob has been asking for new bindings to be dual licensed
-# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
 
-If you are happy to do so that would be great.
-
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/humidity/hdc2010.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: HDC2010/HDC2080 humidity and temperature iio sensors
-> +
-> +maintainers:
-> +  - Eugene Zaikonnikov <eugene.zaikonnikov@norophonic.com>
-> +
-> +description: |
-> +  Relative humidity and tempereature sensors on I2C bus
-> +
-> +  Datasheets are available at:
-> +    http://www.ti.com/product/HDC2010/datasheet
-> +    http://www.ti.com/product/HDC2080/datasheet
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,hdc2010
-> +      - ti,hdc2080
-> +
-> +  interrupts:
-> +    description:
-> +      interrupt mapping for IRQ
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +
-> +examples:
-> +  - |
-> +    i2c0 {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      hdc200x@40 {
-> +          compatible = "ti,hdc2010";
-> +          reg = <0x40>;
-> +      };
-> +    };
-> 
-
+EMail: allenandvioletlargeaward@gmail.com

@@ -2,214 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A0FA10E1C4
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2019 12:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 360AF10E1C8
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2019 13:10:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbfLALuN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Dec 2019 06:50:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45100 "EHLO mail.kernel.org"
+        id S1726186AbfLAMKe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Dec 2019 07:10:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50580 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726138AbfLALuM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Dec 2019 06:50:12 -0500
+        id S1726162AbfLAMKe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Dec 2019 07:10:34 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B975B20705;
-        Sun,  1 Dec 2019 11:50:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C46E620725;
+        Sun,  1 Dec 2019 12:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575201011;
-        bh=CACwWWsQae5Kq5mmdUkxrGZUADTKSm/usDVq4yPdedQ=;
+        s=default; t=1575202233;
+        bh=TCN3a70UHSC4otm7f4c00Voc64ZxXYntmJgLHPKRQPQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SAnoW2qCpHbVqWp/xKzc3OlWmnsD85waoVW6H66CHUycWYrYTrrxaNruXPBWFS3dR
-         9a9rYYt9SihJNtl0/pLO8BlnQJ+DV4pURR/0Nrg3hwH4ICbDZ3k6u1EFwkUwYUCigB
-         dPLMjzYzKOCdkDoE3FJ1WSQYqQEYby6mqhkWoXPU=
-Date:   Sun, 1 Dec 2019 11:50:02 +0000
+        b=CsGk9D9b5kB2P3LNLE4LR2AZcnDCIkgpBEUhMT6lMTepIWSAh4XlKm40AM4T4Ijvd
+         DnOtOWurXKFN7jFkUxjw0BeDV0VrBffDD9gyi5IqrjY6FAolWj5sjIFVLyO6lyp4Wn
+         maJ/QXol0aewOV7tMOR6+nTIn8zrJJjThw4J9kzk=
+Date:   Sun, 1 Dec 2019 12:10:29 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Cc:     linux-iio@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: imu: inv_mpu6050: fix temperature reporting
- using bad unit
-Message-ID: <20191201115002.2ad15d1b@archlinux>
-In-Reply-To: <20191126161912.24683-1-jmaneyrol@invensense.com>
-References: <20191126161912.24683-1-jmaneyrol@invensense.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Lars =?UTF-8?B?TcO2bGxlbmRvcmY=?= <lars.moellendorf@plating.de>,
+        linux-iio@vger.kernel.org
+Subject: Re: iio_compute_scan_bytes does not seem to account for alignment
+ if first channel uses more storagebits than its successors
+Message-ID: <20191201121029.6addd974@archlinux>
+In-Reply-To: <fef18238-85cc-00e7-ee7d-a52c62509c22@metafoo.de>
+References: <ff5a3ea4-4d15-5be3-9cb8-9fd7c716e2e6@plating.de>
+        <fef18238-85cc-00e7-ee7d-a52c62509c22@metafoo.de>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 26 Nov 2019 17:19:12 +0100
-Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
+On Fri, 29 Nov 2019 18:23:37 +0100
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> Temperature should be reported in milli-degrees, not degrees. Fix
-> scale and offset values to use the correct unit.
-> 
-> Fixes: 1615fe41a195 ("iio: imu: mpu6050: Fix FIFO layout for ICM20602")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Applied to the fixes-togreg branch of iio.git with a note added that the
-fixes tag marks the point to which this patch can be applied. Additional
-backports may be needed to fix the issue before that point.
+> On 11/29/19 3:30 PM, Lars M=C3=B6llendorf wrote:
+> > Hi,
+> >=20
+> > I have written a custom kernel module implementing the IIO device API
+> > backed by an IIO triggered buffer.
+> >=20
+> > My IIO device provides 3 channels + timestamp. The sizes of the channel=
+s are
+> >=20
+> > index  | iio_chan_spec.scan_type.storagebits
+> > -------|------------------------------------------------
+> >    0   |  32
+> >    1   |  16
+> >    2   |  16
+> >=20
+> > If I select channel 0 (32bit) and one of channel 1 or 2 (16bit)
+> > indio_dev.scan_bytes and iio_buffer.bytes_per_datum have a value of 6
+> > Byte which does not account for any alignment.
+> >=20
+> >=20
+> > After having a closer look at  `iio_compute_scan_bytes` which is
+> > responsible for calculating both, `indio_dev.scan_bytes` and
+> > `iio_buffer.bytes_per_datum` it seems to me that the order of channels
+> > matter:
+> >=20
+> > ```c
+> > 	/* How much space will the demuxed element take? */
+> > 	for_each_set_bit(i, mask,
+> > 			 indio_dev->masklength) {
+> > 		length =3D iio_storage_bytes_for_si(indio_dev, i);
+> > 		bytes =3D ALIGN(bytes, length);
+> > 		bytes +=3D length;
+> > 	}
+> > ```
+> >=20
+> > I understand that in case the length of each scan element is smaller
+> > then the length of the successive scan elements, this algorithm works
+> > because it aligns the current element to its own length. But if, as in
+> > my case, the length of channel 0's scan elements  is greater then the
+> > size of the samples of the consecutive channels no alignment seems to be
+> > taken into account. Do I miss something here? =20
+> [...]
+> > But in my case the latter would bloat the buffer from 16 Byte to 4*16 =
+=3D
+> > 64 Byte per scan if all channels are selected and timestamp is active.
+> >=20
+> > For now, I will work around this by using 32 storagebits for all my
+> > channels. This gives my 4 Bytes of overhead per scan if all elements are
+> > selected and additional 2 Byte if timestamp is active.
+> >=20
+> > In "Why do you align the buffer pointer to a multiple of the size of the
+> > current scan element in iio_buffer_foreach_sample()?" on
+> > https://github.com/analogdevicesinc/libiio/issues/324 I have been
+> > pointed to this mailing list. =20
+>=20
+> Hi Lars,
+I managed to crash my email client whilst sending a first reply to this
+so no idea if anyone got it!
+>=20
+> The way this is supposed to work is that each element is aligned to its
+> own natural alignment. What seems to be missing at the moment is that
+> the total length is also aligned to the size of the first element, so
+> that alignment is preserved for multiple consecutive samples. I feel
+> like we had that at some point, but maybe I'm misremembering.
+
+It's more than possible we broke this in a cleanup at some stage
+and a bit surprising it hasn't caused problems before as we definitely
+have other sensors with similar channel patterns. I guess maybe they
+always have the timestamp enabled.
+
+Good spot by the way.
+
+>=20
+> E.g. putting something like
+>=20
+>  unsigned int first_index =3D find_first_bit(mask, indio_dev->masklength);
+>  length =3D iio_storage_bytes_for_si(indio_dev, first_index);
+>  bytes =3D ALIGN(bytes, length);
+>=20
+> below the loop should do the trick I believe.
+It would work for Lars case, but I think a combination of both approaches
+is needed to handle cases like
+
+u16
+u16 (may be padding)
+u32
+u16
+
+We need to realign to the largest sized element whereever it occurs in the
+channels list.  So find that whilst computing the individual alignments,
+and apply it only once at the end.
+
+Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 23 +++++++++++-----------
->  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  | 16 +++++++++++----
->  2 files changed, 24 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> index 23c0557891a0..268240644adf 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> @@ -117,6 +117,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
->  		.reg = &reg_set_6050,
->  		.config = &chip_config_6050,
->  		.fifo_size = 1024,
-> +		.temp = {INV_MPU6050_TEMP_OFFSET, INV_MPU6050_TEMP_SCALE},
->  	},
->  	{
->  		.whoami = INV_MPU6500_WHOAMI_VALUE,
-> @@ -124,6 +125,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
->  		.reg = &reg_set_6500,
->  		.config = &chip_config_6050,
->  		.fifo_size = 512,
-> +		.temp = {INV_MPU6500_TEMP_OFFSET, INV_MPU6500_TEMP_SCALE},
->  	},
->  	{
->  		.whoami = INV_MPU6515_WHOAMI_VALUE,
-> @@ -131,6 +133,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
->  		.reg = &reg_set_6500,
->  		.config = &chip_config_6050,
->  		.fifo_size = 512,
-> +		.temp = {INV_MPU6500_TEMP_OFFSET, INV_MPU6500_TEMP_SCALE},
->  	},
->  	{
->  		.whoami = INV_MPU6000_WHOAMI_VALUE,
-> @@ -138,6 +141,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
->  		.reg = &reg_set_6050,
->  		.config = &chip_config_6050,
->  		.fifo_size = 1024,
-> +		.temp = {INV_MPU6050_TEMP_OFFSET, INV_MPU6050_TEMP_SCALE},
->  	},
->  	{
->  		.whoami = INV_MPU9150_WHOAMI_VALUE,
-> @@ -145,6 +149,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
->  		.reg = &reg_set_6050,
->  		.config = &chip_config_6050,
->  		.fifo_size = 1024,
-> +		.temp = {INV_MPU6050_TEMP_OFFSET, INV_MPU6050_TEMP_SCALE},
->  	},
->  	{
->  		.whoami = INV_MPU9250_WHOAMI_VALUE,
-> @@ -152,6 +157,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
->  		.reg = &reg_set_6500,
->  		.config = &chip_config_6050,
->  		.fifo_size = 512,
-> +		.temp = {INV_MPU6500_TEMP_OFFSET, INV_MPU6500_TEMP_SCALE},
->  	},
->  	{
->  		.whoami = INV_MPU9255_WHOAMI_VALUE,
-> @@ -159,6 +165,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
->  		.reg = &reg_set_6500,
->  		.config = &chip_config_6050,
->  		.fifo_size = 512,
-> +		.temp = {INV_MPU6500_TEMP_OFFSET, INV_MPU6500_TEMP_SCALE},
->  	},
->  	{
->  		.whoami = INV_ICM20608_WHOAMI_VALUE,
-> @@ -166,6 +173,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
->  		.reg = &reg_set_6500,
->  		.config = &chip_config_6050,
->  		.fifo_size = 512,
-> +		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
->  	},
->  	{
->  		.whoami = INV_ICM20602_WHOAMI_VALUE,
-> @@ -173,6 +181,7 @@ static const struct inv_mpu6050_hw hw_info[] = {
->  		.reg = &reg_set_icm20602,
->  		.config = &chip_config_6050,
->  		.fifo_size = 1008,
-> +		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
->  	},
->  };
->  
-> @@ -481,12 +490,8 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
->  
->  			return IIO_VAL_INT_PLUS_MICRO;
->  		case IIO_TEMP:
-> -			*val = 0;
-> -			if (st->chip_type == INV_ICM20602)
-> -				*val2 = INV_ICM20602_TEMP_SCALE;
-> -			else
-> -				*val2 = INV_MPU6050_TEMP_SCALE;
-> -
-> +			*val = st->hw->temp.scale / 1000000;
-> +			*val2 = st->hw->temp.scale % 1000000;
->  			return IIO_VAL_INT_PLUS_MICRO;
->  		case IIO_MAGN:
->  			return inv_mpu_magn_get_scale(st, chan, val, val2);
-> @@ -496,11 +501,7 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_OFFSET:
->  		switch (chan->type) {
->  		case IIO_TEMP:
-> -			if (st->chip_type == INV_ICM20602)
-> -				*val = INV_ICM20602_TEMP_OFFSET;
-> -			else
-> -				*val = INV_MPU6050_TEMP_OFFSET;
-> -
-> +			*val = st->hw->temp.offset;
->  			return IIO_VAL_INT;
->  		default:
->  			return -EINVAL;
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> index f1fb7b6bdab1..b096e010d4ee 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> @@ -107,6 +107,7 @@ struct inv_mpu6050_chip_config {
->   *  @reg:   register map of the chip.
->   *  @config:    configuration of the chip.
->   *  @fifo_size:	size of the FIFO in bytes.
-> + *  @temp:	offset and scale to apply to raw temperature.
->   */
->  struct inv_mpu6050_hw {
->  	u8 whoami;
-> @@ -114,6 +115,10 @@ struct inv_mpu6050_hw {
->  	const struct inv_mpu6050_reg_map *reg;
->  	const struct inv_mpu6050_chip_config *config;
->  	size_t fifo_size;
-> +	struct {
-> +		int offset;
-> +		int scale;
-> +	} temp;
->  };
->  
->  /*
-> @@ -279,16 +284,19 @@ struct inv_mpu6050_state {
->  #define INV_MPU6050_REG_UP_TIME_MIN          5000
->  #define INV_MPU6050_REG_UP_TIME_MAX          10000
->  
-> -#define INV_MPU6050_TEMP_OFFSET	             12421
-> -#define INV_MPU6050_TEMP_SCALE               2941
-> +#define INV_MPU6050_TEMP_OFFSET	             12420
-> +#define INV_MPU6050_TEMP_SCALE               2941176
->  #define INV_MPU6050_MAX_GYRO_FS_PARAM        3
->  #define INV_MPU6050_MAX_ACCL_FS_PARAM        3
->  #define INV_MPU6050_THREE_AXIS               3
->  #define INV_MPU6050_GYRO_CONFIG_FSR_SHIFT    3
->  #define INV_MPU6050_ACCL_CONFIG_FSR_SHIFT    3
->  
-> -#define INV_ICM20602_TEMP_OFFSET	     8170
-> -#define INV_ICM20602_TEMP_SCALE		     3060
-> +#define INV_MPU6500_TEMP_OFFSET              7011
-> +#define INV_MPU6500_TEMP_SCALE               2995178
-> +
-> +#define INV_ICM20608_TEMP_OFFSET	     8170
-> +#define INV_ICM20608_TEMP_SCALE		     3059976
->  
->  /* 6 + 6 + 7 (for MPU9x50) = 19 round up to 24 and plus 8 */
->  #define INV_MPU6050_OUTPUT_DATA_SIZE         32
+>=20
+> - Lars
+>=20
 

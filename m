@@ -2,172 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06E9C10E1CA
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2019 13:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37EA510E1E3
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2019 13:29:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbfLAMON (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Dec 2019 07:14:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54192 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725993AbfLAMOM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Dec 2019 07:14:12 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BB5442073C;
-        Sun,  1 Dec 2019 12:14:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575202452;
-        bh=0DT97Pdc2IEdIY6+Kqy0mhRB383vS+CNOyOsbAQPpWU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JhZZ7qIf2fDLKLD0CyxaOlY1t0byOzB5wO9BAYYbm17XApvpFqMKgBjgKamZTTpcl
-         L74jy3cyR3V9rytezwipQS6Dfyg3FtOoLb6BeGT6fjaeGNGW6si8GmU3JBWJSmwX/k
-         eDuyJYxmWf+IGR5B7MhqL46UsorU4dCpO3ZEotJ0=
-Date:   Sun, 1 Dec 2019 12:14:03 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Richard Weinberger <richard@nod.at>,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: Select I2C_MUX again
-Message-ID: <20191201121403.454c67b2@archlinux>
-In-Reply-To: <MN2PR12MB3373EF36E242B4F463D6BF71C4470@MN2PR12MB3373.namprd12.prod.outlook.com>
-References: <20191127201738.1234-1-linus.walleij@linaro.org>
-        <MN2PR12MB3373EF36E242B4F463D6BF71C4470@MN2PR12MB3373.namprd12.prod.outlook.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1725996AbfLAM3Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Dec 2019 07:29:24 -0500
+Received: from www381.your-server.de ([78.46.137.84]:36676 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725993AbfLAM3Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Dec 2019 07:29:24 -0500
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1ibOLp-0000dB-Li; Sun, 01 Dec 2019 13:29:21 +0100
+Received: from [93.104.96.105] (helo=[192.168.178.20])
+        by sslproxy02.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1ibOLo-00093e-PF; Sun, 01 Dec 2019 13:29:21 +0100
+Subject: Re: iio_compute_scan_bytes does not seem to account for alignment if
+ first channel uses more storagebits than its successors
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     =?UTF-8?Q?Lars_M=c3=b6llendorf?= <lars.moellendorf@plating.de>,
+        linux-iio@vger.kernel.org
+References: <ff5a3ea4-4d15-5be3-9cb8-9fd7c716e2e6@plating.de>
+ <fef18238-85cc-00e7-ee7d-a52c62509c22@metafoo.de>
+ <20191201121029.6addd974@archlinux>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <810ab64f-31bf-c4af-a655-7bddf364dae4@metafoo.de>
+Date:   Sun, 1 Dec 2019 13:29:18 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191201121029.6addd974@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.101.4/25650/Sun Dec  1 11:04:04 2019)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Nov 2019 08:46:28 +0000
-Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:
+On 12/1/19 1:10 PM, Jonathan Cameron wrote:
+>>
+>> E.g. putting something like
+>>
+>>  unsigned int first_index = find_first_bit(mask, indio_dev->masklength);
+>>  length = iio_storage_bytes_for_si(indio_dev, first_index);
+>>  bytes = ALIGN(bytes, length);
+>>
+>> below the loop should do the trick I believe.
+> It would work for Lars case, but I think a combination of both approaches
+> is needed to handle cases like
+> 
+> u16
+> u16 (may be padding)
+> u32
+> u16
+> 
+> We need to realign to the largest sized element whereever it occurs in the
+> channels list.  So find that whilst computing the individual alignments,
+> and apply it only once at the end.
+> 
 
-> Hello,
->=20
-> very good idea, I was thinking about it recently.
->=20
-> Thanks,
-> JB
->=20
-> Acked-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Applied to the togreg branch of iio.git and pushed out as testing
-to let the autobuilders have a good poke at it.
-
-Thanks,
-
-Jonathan
-
->=20
->=20
-> From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> o=
-n behalf of Linus Walleij <linus.walleij@linaro.org>
->=20
-> Sent: Wednesday, November 27, 2019 21:17
->=20
-> To: Jonathan Cameron <jic23@kernel.org>; linux-iio@vger.kernel.org <linux=
--iio@vger.kernel.org>
->=20
-> Cc: Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen <lars@metafoo.de=
->; Peter Meerwald-Stadler <pmeerw@pmeerw.net>; Linus Walleij <linus.walleij=
-@linaro.org>; Richard Weinberger <richard@nod.at>; Stephan Gerhold <stephan=
-@gerhold.net>
->=20
-> Subject: [PATCH v2] iio: imu: inv_mpu6050: Select I2C_MUX again
->=20
-> =C2=A0
->=20
->=20
-> =C2=A0CAUTION: This email originated from outside of the organization. Pl=
-ease make sure the sender is who they say they are and do not click links o=
-r open attachments unless you recognize the sender and know the content is =
-safe.
->=20
->=20
->=20
-> commit f7072198f217 ("iio: imu: Fix inv_mpu6050 dependencies")
->=20
-> undid the explicit selection of I2C_MUX previously
->=20
-> done by the driver, because I2C_MUX implicitly depended
->=20
-> on HAS_IOMEM.
->=20
->=20
->=20
-> However commit 93d710a65ef0 ("i2c: mux: fix up dependencies")
->=20
-> cleared up the situation properly and drivers that need
->=20
-> to select I2C_MUX can now do so again.
->=20
->=20
->=20
-> It makes a lot of sense for a driver to select the driver
->=20
-> infrastructure it needs so restore the natural order of
->=20
-> things.
->=20
->=20
->=20
-> Cc: Richard Weinberger <richard@nod.at>
->=20
-> Cc: Stephan Gerhold <stephan@gerhold.net>
->=20
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
->=20
-> ---
->=20
-> ChangeLog v1->v2:
->=20
-> - Depend on I2C instead of I2C_MUX, it's necessary to
->=20
-> =C2=A0 at least have the I2C infrastructure...
->=20
-> ---
->=20
-> =C2=A0drivers/iio/imu/inv_mpu6050/Kconfig | 3 ++-
->=20
-> =C2=A01 file changed, 2 insertions(+), 1 deletion(-)
->=20
->=20
->=20
-> diff --git a/drivers/iio/imu/inv_mpu6050/Kconfig b/drivers/iio/imu/inv_mp=
-u6050/Kconfig
->=20
-> index e4c4c12236a7..d9dba6b8abf6 100644
->=20
-> --- a/drivers/iio/imu/inv_mpu6050/Kconfig
->=20
-> +++ b/drivers/iio/imu/inv_mpu6050/Kconfig
->=20
-> @@ -10,7 +10,8 @@ config INV_MPU6050_IIO
->=20
-> =C2=A0
->=20
-> =C2=A0config INV_MPU6050_I2C
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "Invensense MPU=
-6050 devices (I2C)"
->=20
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on I2C_MUX
->=20
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on I2C
->=20
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select I2C_MUX
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select INV_MPU6050_IIO
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select REGMAP_I2C
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 help
->=20
+Ah, yes. We need the same rules as for the alignment or padding of a
+struct, which mean align the size to size of the largest element.
 

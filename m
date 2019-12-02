@@ -2,59 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FF6F10E7C0
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2019 10:38:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 841A010E8B1
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2019 11:23:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbfLBJiP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Dec 2019 04:38:15 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:46724 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726210AbfLBJiP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Dec 2019 04:38:15 -0500
-Received: by mail-lj1-f195.google.com with SMTP id z17so2442106ljk.13
-        for <linux-iio@vger.kernel.org>; Mon, 02 Dec 2019 01:38:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=4LUV27ugeTFPT/CkEZrKm21nKauJGQudNvFvpteUdJQ=;
-        b=AyGEFVHhttBEqAsg7YGvv6dy9+lDTszJ6tEMUse1tvTAEB34SikN4LBZ8ODWOWbCuA
-         j21UTP0oPSYWCyRc98dLRXSJ4uMLYkiKqL+HrKLcXxYdVIRhgMCrb3D7uCmi8riKKQMu
-         0IZAdv0gGOTb8ZtehKtz1THFhfafNgXuR5ukRFCnW5YN/nPt4xRzvwuzg0XCxS7eWRce
-         jIm5SNEim6Jp4iS0Fjm3hxOfV9jtCheBKjyf7QvqCSnwuZpZUh3A5/dFHo+bC0tFBJv0
-         DE62sPWK8/m0iciRf4LaV4l+gVxtgmK3TAHeVcBTYAFVoaX0Vha0NS0DYzmj9JxQuTnu
-         7GTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=4LUV27ugeTFPT/CkEZrKm21nKauJGQudNvFvpteUdJQ=;
-        b=FOV2aIfm1GJhhzQr2MDx7ErnSvkysMvcJPuECJWPyMQgLafVo745uNPPHdQskzd7S/
-         1wsQhkO+T76xPETr0mVGI97FNagOkpSDmaDemF/ScIdqwm4iZD44XXh49RwplDgsUwJn
-         dzfc+K3Gex/VbwWSEqrzhyjZccAvAO4RoGsGflxHU0SyKzU5Vvcr+BCXlNPIPWC3723q
-         ynfRxU1bS27BAaKOzDjb5LDDO8lF7ViNFI8NoLz+KEDL7N+ZtBc/8lSZgFppkQrE4Vfd
-         gRpHWJmuDQwLFu3eA9SZTRASK+361kO8myUGvitzZWq49LpqQtskAlsHwyXPQCl1sGOq
-         hC/A==
-X-Gm-Message-State: APjAAAVBP8bH5NDAeXCUcZS8nHWUaGnTuMRUqXdkyjgUOdyywu8lR/e7
-        KAquB6Qzxg6T9Dw3ki/IgYYnxw==
-X-Google-Smtp-Source: APXvYqylJWPp3H0LrtFCaE1RAydBcex2JF6mZbZUtY55AoYWketuKzpZY0dP4+5ShZKou5XQkIHhAQ==
-X-Received: by 2002:a2e:83c7:: with SMTP id s7mr4896073ljh.145.1575279491447;
-        Mon, 02 Dec 2019 01:38:11 -0800 (PST)
-Received: from genomnajs.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id a11sm6927439lfg.17.2019.12.02.01.38.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2019 01:38:10 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alison Schofield <amsfield22@gmail.com>
-Subject: [PATCH] iio: ad7266: Convert to use GPIO descriptors
-Date:   Mon,  2 Dec 2019 10:38:06 +0100
-Message-Id: <20191202093806.93632-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.23.0
+        id S1727362AbfLBKXr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Dec 2019 05:23:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35472 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726276AbfLBKXr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 2 Dec 2019 05:23:47 -0500
+Received: from localhost.localdomain.com (unknown [77.139.212.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7DFEE20718;
+        Mon,  2 Dec 2019 10:23:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1575282227;
+        bh=7OuRMcOp4neJOXBLaLHvtMU1QZciFoKQjluB0unWmTc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DJixzijji25QFpCZm+ndhPUrNKYzsC0OSudsVtiNcSK6lwVMqy6mSOS2xvg1rDMSb
+         ho4YWRCF92aWqRWsxv/GwSVr9SzgULVTNm56qgPo2DuEDfZMi1yi862fhPd+9GJvrx
+         s7gMY+lAT+yY5RkjpwfLMZpi78+r4edLbFvUePOo=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     jic23@kernel.org
+Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org
+Subject: [PATCH] iio: humidity: hts221: move register definitions to sensor structs
+Date:   Mon,  2 Dec 2019 12:23:28 +0200
+Message-Id: <0e49f52be057a14f0885dfaf496e8274c8107f60.1575282133.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -62,137 +37,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The AD7266 have no in-tree users making use of the platform
-data mechanism to pass address GPIO lines when not using
-a fixed address, so we can easily convert this to use
-GPIO descriptors instead of the platform data integers
-currently passed.
+Move some register definitions to hts221_avg_list, hts221_avg_list and
+hts221_channels since they are used only there and simplify driver code
 
-Lowercase the labels "ad0".."ad2" as this will make a better
-fit for platform descriptions like device tree that prefer
-lowercase names such as "ad0-gpios" rather than "AD0-gpios".
-
-Board files and other static users of this device can pass
-the same GPIO descriptors using machine descriptor
-tables if need be.
-
-Cc: Alison Schofield <amsfield22@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/iio/adc/ad7266.c             | 29 ++++++++++++----------------
- include/linux/platform_data/ad7266.h |  3 ---
- 2 files changed, 12 insertions(+), 20 deletions(-)
+ drivers/iio/humidity/hts221_core.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-index c31b8eabb894..c8524f098883 100644
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -11,7 +11,7 @@
- #include <linux/spi/spi.h>
- #include <linux/regulator/consumer.h>
- #include <linux/err.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/module.h>
+diff --git a/drivers/iio/humidity/hts221_core.c b/drivers/iio/humidity/hts221_core.c
+index 4922444771c6..9003671f14fb 100644
+--- a/drivers/iio/humidity/hts221_core.c
++++ b/drivers/iio/humidity/hts221_core.c
+@@ -24,13 +24,6 @@
+ #define HTS221_REG_CNTRL1_ADDR		0x20
+ #define HTS221_REG_CNTRL2_ADDR		0x21
  
- #include <linux/interrupt.h>
-@@ -34,7 +34,7 @@ struct ad7266_state {
- 	enum ad7266_range	range;
- 	enum ad7266_mode	mode;
- 	bool			fixed_addr;
--	struct gpio		gpios[3];
-+	struct gpio_desc	*gpios[3];
+-#define HTS221_REG_AVG_ADDR		0x10
+-#define HTS221_REG_H_OUT_L		0x28
+-#define HTS221_REG_T_OUT_L		0x2a
+-
+-#define HTS221_HUMIDITY_AVG_MASK	0x07
+-#define HTS221_TEMP_AVG_MASK		0x38
+-
+ #define HTS221_ODR_MASK			0x03
+ #define HTS221_BDU_MASK			BIT(2)
+ #define HTS221_ENABLE_MASK		BIT(7)
+@@ -66,8 +59,8 @@ static const struct hts221_odr hts221_odr_table[] = {
  
- 	/*
- 	 * DMA (thus cache coherency maintenance) requires the
-@@ -117,7 +117,7 @@ static void ad7266_select_input(struct ad7266_state *st, unsigned int nr)
- 	}
- 
- 	for (i = 0; i < 3; ++i)
--		gpio_set_value(st->gpios[i].gpio, (bool)(nr & BIT(i)));
-+		gpiod_set_value(st->gpios[i], (bool)(nr & BIT(i)));
- }
- 
- static int ad7266_update_scan_mode(struct iio_dev *indio_dev,
-@@ -376,7 +376,7 @@ static void ad7266_init_channels(struct iio_dev *indio_dev)
- }
- 
- static const char * const ad7266_gpio_labels[] = {
--	"AD0", "AD1", "AD2",
-+	"ad0", "ad1", "ad2",
- };
- 
- static int ad7266_probe(struct spi_device *spi)
-@@ -419,14 +419,14 @@ static int ad7266_probe(struct spi_device *spi)
- 
- 		if (!st->fixed_addr) {
- 			for (i = 0; i < ARRAY_SIZE(st->gpios); ++i) {
--				st->gpios[i].gpio = pdata->addr_gpios[i];
--				st->gpios[i].flags = GPIOF_OUT_INIT_LOW;
--				st->gpios[i].label = ad7266_gpio_labels[i];
-+				st->gpios[i] = devm_gpiod_get(&spi->dev,
-+						      ad7266_gpio_labels[i],
-+						      GPIOD_OUT_LOW);
-+				if (IS_ERR(st->gpios[i])) {
-+					ret = PTR_ERR(st->gpios[i]);
-+					goto error_disable_reg;
-+				}
- 			}
--			ret = gpio_request_array(st->gpios,
--				ARRAY_SIZE(st->gpios));
--			if (ret)
--				goto error_disable_reg;
- 		}
- 	} else {
- 		st->fixed_addr = true;
-@@ -465,7 +465,7 @@ static int ad7266_probe(struct spi_device *spi)
- 	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
- 		&ad7266_trigger_handler, &iio_triggered_buffer_setup_ops);
- 	if (ret)
--		goto error_free_gpios;
-+		goto error_disable_reg;
- 
- 	ret = iio_device_register(indio_dev);
- 	if (ret)
-@@ -475,9 +475,6 @@ static int ad7266_probe(struct spi_device *spi)
- 
- error_buffer_cleanup:
- 	iio_triggered_buffer_cleanup(indio_dev);
--error_free_gpios:
--	if (!st->fixed_addr)
--		gpio_free_array(st->gpios, ARRAY_SIZE(st->gpios));
- error_disable_reg:
- 	if (!IS_ERR(st->reg))
- 		regulator_disable(st->reg);
-@@ -492,8 +489,6 @@ static int ad7266_remove(struct spi_device *spi)
- 
- 	iio_device_unregister(indio_dev);
- 	iio_triggered_buffer_cleanup(indio_dev);
--	if (!st->fixed_addr)
--		gpio_free_array(st->gpios, ARRAY_SIZE(st->gpios));
- 	if (!IS_ERR(st->reg))
- 		regulator_disable(st->reg);
- 
-diff --git a/include/linux/platform_data/ad7266.h b/include/linux/platform_data/ad7266.h
-index 7de6c16122df..f0652567afba 100644
---- a/include/linux/platform_data/ad7266.h
-+++ b/include/linux/platform_data/ad7266.h
-@@ -40,14 +40,11 @@ enum ad7266_mode {
-  * @range: Reference voltage range the device is configured for
-  * @mode: Sample mode the device is configured for
-  * @fixed_addr: Whether the address pins are hard-wired
-- * @addr_gpios: GPIOs used for controlling the address pins, only used if
-- *		fixed_addr is set to false.
-  */
- struct ad7266_platform_data {
- 	enum ad7266_range range;
- 	enum ad7266_mode mode;
- 	bool fixed_addr;
--	unsigned int addr_gpios[3];
- };
- 
- #endif
+ static const struct hts221_avg hts221_avg_list[] = {
+ 	{
+-		.addr = HTS221_REG_AVG_ADDR,
+-		.mask = HTS221_HUMIDITY_AVG_MASK,
++		.addr = 0x10,
++		.mask = 0x07,
+ 		.avg_avl = {
+ 			4, /* 0.4 %RH */
+ 			8, /* 0.3 %RH */
+@@ -80,8 +73,8 @@ static const struct hts221_avg hts221_avg_list[] = {
+ 		},
+ 	},
+ 	{
+-		.addr = HTS221_REG_AVG_ADDR,
+-		.mask = HTS221_TEMP_AVG_MASK,
++		.addr = 0x10,
++		.mask = 0x38,
+ 		.avg_avl = {
+ 			2, /* 0.08 degC */
+ 			4, /* 0.05 degC */
+@@ -98,7 +91,7 @@ static const struct hts221_avg hts221_avg_list[] = {
+ static const struct iio_chan_spec hts221_channels[] = {
+ 	{
+ 		.type = IIO_HUMIDITYRELATIVE,
+-		.address = HTS221_REG_H_OUT_L,
++		.address = 0x28,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_OFFSET) |
+ 				      BIT(IIO_CHAN_INFO_SCALE) |
+@@ -114,7 +107,7 @@ static const struct iio_chan_spec hts221_channels[] = {
+ 	},
+ 	{
+ 		.type = IIO_TEMP,
+-		.address = HTS221_REG_T_OUT_L,
++		.address = 0x2a,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_OFFSET) |
+ 				      BIT(IIO_CHAN_INFO_SCALE) |
 -- 
-2.23.0
+2.21.0
 

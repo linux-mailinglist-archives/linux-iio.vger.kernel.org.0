@@ -2,194 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7242610EB67
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2019 15:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE7D10EB92
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2019 15:34:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727401AbfLBON4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Dec 2019 09:13:56 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:42778 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727362AbfLBON4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Dec 2019 09:13:56 -0500
-Received: by mail-wr1-f66.google.com with SMTP id a15so44471815wrf.9
-        for <linux-iio@vger.kernel.org>; Mon, 02 Dec 2019 06:13:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=R1PMrn96rWUDDLi+Sy35n1PlzATfRqb610uo6W4mQjk=;
-        b=X93yvQf21gMXFErsiS5HDL2vbn1oEpe8LRufvzTKW8aWCnduTqrKdSkF/7GyETqM+a
-         KFTM/xJWFfU9hHVJhD+9TSqvEVIWEomTBW31YYMZea6tAlqkJJ39V1VTk4Injbn+fcS5
-         dGfRx/qk2x0IchbEhY7M4KaIanwsfTaYAexkIlM9VMqmC3HqoSXJoCsnoPBDkLJ1ukp/
-         n+y67nOfmn5JnW03ZmGLGiUx4HyS2yieZ4uQSXwCAZtvlv84Zc0aItfvDc9bae50Fpv/
-         SAXnONzPZVpO/VapvzpsOSQ+uQTlz6TFniynLwA04KLy7EXQsCQ/to6U143YfmB+q0O9
-         xF1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=R1PMrn96rWUDDLi+Sy35n1PlzATfRqb610uo6W4mQjk=;
-        b=RnDm5DryBkXb8201ZS/3kLy31HVgBpdqv7z7CWbIuPTQgtx+e0G91BgEJDlqx9GtNL
-         BTpikTuQEpbQt9bGIX3HBy4gHIThPL0oVfxzFR30kOKuQ0VIWCL2lQ9SCdi+WpkySlGz
-         xrvwdlALIgnRdWEqOX88RM+Q3Ixxf00SL2Vm3zHs9u48iCKH6Mnw+2co1bbCrKuByjEF
-         PkjPNw+TwC3vQ6fb4uH7Trc+i1VHv1uvPBbYz60XuwV2xmXJ9wb4nebbAuYdjrZaGBQt
-         /opcMymlJzxqi8pibldP/RmX7tn4OHr0ALMzyYioKZtVXW94Po7P+iJ/DVrfG1DYFaUR
-         bw9w==
-X-Gm-Message-State: APjAAAVGVubdLp8FGh+qxRn+gHjn7DCEqyVAhicFnTi0Ukodqm6s7W26
-        vD+LT90errVJXpcS+kk4IEk=
-X-Google-Smtp-Source: APXvYqzKoIE5mfPevYomt2naubgZqT2GtDspxpp1/J5FBavRzZ9N57+18MhHTmmJQTPEMkxqbTUP+w==
-X-Received: by 2002:adf:db41:: with SMTP id f1mr8150114wrj.392.1575296032267;
-        Mon, 02 Dec 2019 06:13:52 -0800 (PST)
-Received: from NewMoon.iit.local ([90.147.180.254])
-        by smtp.googlemail.com with ESMTPSA id x17sm18286010wrt.74.2019.12.02.06.13.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2019 06:13:51 -0800 (PST)
-From:   Andrea Merello <andrea.merello@gmail.com>
-To:     jic23@kernel.org
-Cc:     Andrea Merello <andrea.merello@gmail.com>,
-        Couret Charles-Antoine <charles-antoine.couret@essensium.com>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stefan Popa <stefan.popa@analog.com>,
+        id S1727401AbfLBOeC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Dec 2019 09:34:02 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.166]:26870 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727362AbfLBOeC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Dec 2019 09:34:02 -0500
+X-Greylist: delayed 361 seconds by postgrey-1.27 at vger.kernel.org; Mon, 02 Dec 2019 09:34:00 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1575297239;
+        s=strato-dkim-0002; d=plating.de;
+        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=zvdNi3Ok7fddwEefkPFZZWgaMN09dK5U0z/nnKEfTRU=;
+        b=c66ZM8Gz8GGGbf7hHkoOVG3uiDBrOCq6lZoXwHNHC+o/Dkby4mPaV6KR8EDbLUDPlo
+        rOVDMfGSQiYKFekqhpDdZVV13pZD2fBnXELRyNr8QMoMsaMrL5lZ6yS2ksoqDBH/1o5M
+        c90YkfUgzF4u9DwGTpNGQZE1Ej6UrRx2Rca9Dq3RRHQopgk7wevXwjKhHNEUED9LPHNW
+        c5eoPrl22fvemHg7FuSNUl2YXSbyQ5vtLlYpOsrXhFoja9MDXBfNzhSQwVmY0qqXFIwj
+        8vfC/T0bPcxBOGNntjSmENAAO30xWn5vhOWCWF3BvH8WCcUbBb4QfIdUlaVw11axkIeA
+        tPUA==
+X-RZG-AUTH: ":P2EQZVataeyI5jZ/YFVerR/NeEUpp/1ZEi4FSKT8sA3i0IzVhLiw6JgrUzaKN77axfKEX18="
+X-RZG-CLASS-ID: mo00
+Received: from mail.dl.plating.de
+        by smtp.strato.de (RZmta 46.0.2 AUTH)
+        with ESMTPSA id n0aa50vB2ERw09a
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Mon, 2 Dec 2019 15:27:58 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.dl.plating.de (Postfix) with ESMTP id 68B8A12221B;
+        Mon,  2 Dec 2019 15:27:58 +0100 (CET)
+X-Virus-Scanned: amavisd-new at dl.plating.de
+Received: from mail.dl.plating.de ([127.0.0.1])
+        by localhost (mail.dl.plating.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id cEANVX3Wy4jk; Mon,  2 Dec 2019 15:27:53 +0100 (CET)
+Received: from localhost (unknown [172.16.4.186])
+        by mail.dl.plating.de (Postfix) with ESMTPSA id 5D06F120446;
+        Mon,  2 Dec 2019 15:27:52 +0100 (CET)
+From:   =?UTF-8?q?Lars=20M=C3=B6llendorf?= <lars.moellendorf@plating.de>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio@vger.kernel.org
-Subject: [v2] iio: ad7949: fix channels mixups
-Date:   Mon,  2 Dec 2019 15:13:36 +0100
-Message-Id: <20191202141336.4507-1-andrea.merello@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <9ea595fc-d53b-3cd4-a511-db2b09726606@essensium.com>
-References: <9ea595fc-d53b-3cd4-a511-db2b09726606@essensium.com>
+Cc:     =?UTF-8?q?Lars=20M=C3=B6llendorf?= <lars.moellendorf@plating.de>
+Subject: [PATCH] iio: buffer: align the size of scan bytes to size of the largest element
+Date:   Mon,  2 Dec 2019 15:27:14 +0100
+Message-Id: <20191202142714.12030-1-lars.moellendorf@plating.de>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <531d08db4d758cb8ab9f7e1955c7b918ff2b0c69.camel@analog.com>
+References: <531d08db4d758cb8ab9f7e1955c7b918ff2b0c69.camel@analog.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Each time we need to read a sample (from the sysfs interface, since the
-driver supports only it) the driver writes the configuration register
-with the proper settings needed to perform the said read, then it runs
-another xfer to actually read the resulting value. Most notably the
-configuration register is updated to set the ADC internal MUX depending by
-which channel the read targets.
+Previous versions of `iio_compute_scan_bytes` only aligned the current
+element to its own length (i.e. its own natural alignment). This worked
+in case the length of each channel's scan elements had been smaller then
+the length of the successive channel's scan elements.
 
-Unfortunately this seems not enough to ensure correct operation because
-the ADC works in a pipelined-like fashion and the new configuration isn't
-applied in time.
+E.g.
 
-The ADC alternates two phases: acquisition and conversion. During the
-acquisition phase the ADC samples the analog signal in an internal
-capacitor; in the conversion phase the ADC performs the actual analog to
-digital conversion of the stored voltage. Note that of course the MUX
-needs to be set to the proper channel when the acquisition phase is
-performed.
+u16
+u32 <- aligned to its natural alignment
 
-Once the conversion phase has been completed, the device automatically
-switches back to a new acquisition; on the other hand the device switches
-from acquisition to conversion on the rising edge of SPI cs signal (that
-is when the xfer finishes).
+But if the length of a channel's scan elements is greater then the
+length of scan elements of the consecutive channel no alignment had
+been taken into account. This is however needed to preserve the
+alignment for multiple consecutive sets of scan elements.
 
-Only after both two phases have been completed (with the proper settings
-already written in the configuration register since the beginning) it is
-possible to read the outcome from SPI bus.
+u32 <- alignment is off by two byte for the second set of scan elements
+u16 <- no alignment takes place
 
-With the current driver implementation, we end up in the following
-situation:
+This commit fixes this by aligning the scan bytes to the size of the
+largest scan element.
 
-        _______  1st xfer ____________  2nd xfer ___________________
-SPI cs..       \_________/            \_________/
-SPI rd.. idle  |(val N-2)+    idle    | val N-1 +   idle ...
-SPI wr.. idle  |  cfg N  +    idle    |   (X)   +   idle ...
------------------------- + -------------------- + ------------------
-  AD  ..   acq  N-1      + cnv N-1 |  acq N     +  cnv N  | acq N+1
-
-As shown in the diagram above, the value we read in the Nth read belongs
-to configuration setting N-1.
-
-In case the configuration is not changed (config[N] == config[N-1]), then
-we still get correct data, but in case the configuration changes (i.e.
-switching the MUX on another channel), we get wrong data (data from the
-previously selected channel).
-
-This patch fixes this by performing one more "dummy" transfer in order to
-ending up in reading the data when it's really ready, as per the following
-timing diagram.
-
-        _______  1st xfer ____________  2nd xfer ___________  3rd xfer ___
-SPI cs..       \_________/            \_________/           \_________/
-SPI rd.. idle  |(val N-2)+    idle    |(val N-1)+    idle   |  val N  + ..
-SPI wr.. idle  |  cfg N  +    idle    |   (X)   +    idle   |   (X)   + ..
------------------------- + -------------------- + ------------------- + --
-  AD  ..   acq  N-1      + cnv N-1 |  acq N     +  cnv N  | acq N+1   | ..
-
-NOTE: in the latter case (cfg changes), the acquisition phase for the
-value to be read begins after the 1st xfer, that is after the read request
-has been issued on sysfs. On the other hand, if the cfg doesn't change,
-then we can refer to the fist diagram assuming N == (N - 1); the
-acquisition phase _begins_ before the 1st xfer (potentially a lot of time
-before the read has been issued via sysfs, but it _ends_ after the 1st
-xfer, that is _after_ the read has started. This should guarantee a
-reasonably fresh data, which value represents the voltage that the sampled
-signal has after the read start or maybe just around it.
-
- Changes in V2
-- Reword, with more detailed explanation
-- Make the 3rd xfer conditional (only if prev cfg != new cfg)
-- Clarify code comments
-
-Cc: Couret Charles-Antoine <charles-antoine.couret@essensium.com>
-Cc: Alexandru Ardelean <alexandru.Ardelean@analog.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Stefan Popa <stefan.popa@analog.com>
-Cc: Hartmut Knaack <knaack.h@gmx.de>
-Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc: linux-iio@vger.kernel.org
-Signed-off-by: Andrea Merello <andrea.merello@gmail.com>
+Signed-off-by: Lars Möllendorf <lars.moellendorf@plating.de>
 ---
- drivers/iio/adc/ad7949.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/iio/industrialio-buffer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-index 5c2b3446fa4a..2c6f60edb7ce 100644
---- a/drivers/iio/adc/ad7949.c
-+++ b/drivers/iio/adc/ad7949.c
-@@ -89,6 +89,7 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
- 				   unsigned int channel)
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index 5d05c38c4ba9..2f037cd59d53 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -546,7 +546,7 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
+ 				const unsigned long *mask, bool timestamp)
  {
- 	int ret;
-+	int i;
- 	int bits_per_word = ad7949_adc->resolution;
- 	int mask = GENMASK(ad7949_adc->resolution, 0);
- 	struct spi_message msg;
-@@ -100,12 +101,23 @@ static int ad7949_spi_read_channel(struct ad7949_adc_chip *ad7949_adc, int *val,
- 		},
- 	};
+ 	unsigned bytes = 0;
+-	int length, i;
++	int length, i, largest = 0;
  
--	ret = ad7949_spi_write_cfg(ad7949_adc,
--				   channel << AD7949_OFFSET_CHANNEL_SEL,
--				   AD7949_MASK_CHANNEL_SEL);
--	if (ret)
--		return ret;
-+	/*
-+	 * 1: write CFG for sample N and read old data (sample N-2)
-+	 * 2: if CFG was not changed since sample N-1 then we'll get good data
-+	 *    at the next xfer, so we bail out now, otherwise we write something
-+	 *    and we read garbage (sample N-1 configuration).
-+	 */
-+	for (i = 0; i < 2; i++) {
-+		ret = ad7949_spi_write_cfg(ad7949_adc,
-+					   channel << AD7949_OFFSET_CHANNEL_SEL,
-+					   AD7949_MASK_CHANNEL_SEL);
-+		if (ret)
-+			return ret;
-+		if (channel == ad7949_adc->current_channel)
-+			break;
-+	}
+ 	/* How much space will the demuxed element take? */
+ 	for_each_set_bit(i, mask,
+@@ -554,13 +554,17 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
+ 		length = iio_storage_bytes_for_si(indio_dev, i);
+ 		bytes = ALIGN(bytes, length);
+ 		bytes += length;
++		largest = max(largest, length);
+ 	}
  
-+	/* 3: write something and read actual data */
- 	ad7949_adc->buffer = 0;
- 	spi_message_init_with_transfers(&msg, tx, 1);
- 	ret = spi_sync(ad7949_adc->spi, &msg);
+ 	if (timestamp) {
+ 		length = iio_storage_bytes_for_timestamp(indio_dev);
+ 		bytes = ALIGN(bytes, length);
+ 		bytes += length;
++		largest = max(largest, length);
+ 	}
++
++	bytes = ALIGN(bytes, largest);
+ 	return bytes;
+ }
+ 
 -- 
-2.17.1
+2.23.0
 

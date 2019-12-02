@@ -2,85 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E39010E789
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2019 10:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0081F10E791
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2019 10:23:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727332AbfLBJSo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Dec 2019 04:18:44 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:35589 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725977AbfLBJSo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Dec 2019 04:18:44 -0500
-Received: by mail-lf1-f66.google.com with SMTP id r15so24393556lff.2
-        for <linux-iio@vger.kernel.org>; Mon, 02 Dec 2019 01:18:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=wXQpm62OdNe8S6jM4uDDEjsuAbyudOulu0Fnf3UJZ4U=;
-        b=ly4odl5/AX4KqoSvifwgS4VdZF2BGwq0wsO0t3tlld1gV+u/9B+FNvktaaV7PIN6Gt
-         5hMZkNom9B3xSl4mn7U+QGWH63VmrKCGsGUdpz2FZbSPGD/kfuZ8rNtxsmE6rcbdk+d6
-         7A9BScKoJqLu+daadN5G7titkraa0NDwnaQoX7FQMZKZs7iJWEkk8pOgDn+jG8j21lMW
-         it7JwMr6NWdq9hudhKJZpMX5qkZ4whs9DukEZ+z895PbPbFi7VHGZTZtazJXHGcXpfJ2
-         K5P/Fgn86uKu2eaOJgu276pqwK+htFAZOfzMBvwiBxE7Sf9+Af8M7BRtY6UDq2deXyWu
-         N95w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=wXQpm62OdNe8S6jM4uDDEjsuAbyudOulu0Fnf3UJZ4U=;
-        b=RqeY3aZ/WDyXxz/LaMHXNLzG56bLJ/kPb8Wg/ig6DgvVg2/iIN6QNvIjT8pb/2IrWd
-         kwq4vCKVY00a1g3QkJfdhwUBkPmEDhiLtxR+5/ekDiXqkE8Hchlx3qt6YkZhFYZGUpN7
-         9T3k++/E7az8Q6JlDZH9Ve8bhBwMBzxB/h63/uskYcvlI3+xWo7OxhQUDMydzRjvwmjZ
-         TU/dAf1AxSnMXacXMJ2PswNrX20qqEAufTU/8OV0m8+Ilo0ewdrGhSjzrz39SMNfM5FJ
-         8alR6zip/9TkrL3/vSo2DPHKKZwH5n3R0hT4XMc1Zx3e4+hXLrmSv/Wu+Ov7OxVLWN9Y
-         AfZQ==
-X-Gm-Message-State: APjAAAWDhIVCzMmpZYZaXwBc00czT06wbB2n9ICvwJSXSUS6YpZh/5Wu
-        IRbr08UAx86Il1JBKiQmTg7Bwg==
-X-Google-Smtp-Source: APXvYqxR1gARqvLOnJxaoUwyL5Go8zfNwqFRYi9rOz5HQFMn0+M/WDbTSJRtIuDbZceOgFCFByvUeg==
-X-Received: by 2002:a05:6512:518:: with SMTP id o24mr42698644lfb.134.1575278321590;
-        Mon, 02 Dec 2019 01:18:41 -0800 (PST)
-Received: from genomnajs.ideon.se ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id u3sm889191lfb.68.2019.12.02.01.18.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2019 01:18:40 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        id S1726318AbfLBJXc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 Dec 2019 04:23:32 -0500
+Received: from sauhun.de ([88.99.104.3]:42296 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726254AbfLBJXc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 2 Dec 2019 04:23:32 -0500
+Received: from localhost (p54B3363C.dip0.t-ipconnect.de [84.179.54.60])
+        by pokefinder.org (Postfix) with ESMTPSA id 737A92C04A3;
+        Mon,  2 Dec 2019 10:23:29 +0100 (CET)
+Date:   Mon, 2 Dec 2019 10:23:29 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] iio: atlas-ph-sensor: Drop GPIO include
-Date:   Mon,  2 Dec 2019 10:18:37 +0100
-Message-Id: <20191202091837.82150-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.23.0
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc: max9611: Fix too short conversion time delay
+Message-ID: <20191202092328.GE1266@kunai>
+References: <20191202085546.21655-1-geert+renesas@glider.be>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="a1QUDc0q7S3U7/Jg"
+Content-Disposition: inline
+In-Reply-To: <20191202085546.21655-1-geert+renesas@glider.be>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The driver includes <linux/gpio.h> yet fails to use symbols
-from any the header so drop the include.
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/iio/chemical/atlas-ph-sensor.c | 1 -
- 1 file changed, 1 deletion(-)
+--a1QUDc0q7S3U7/Jg
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-ph-sensor.c
-index 6c175eb1c7a7..b7c20c74239b 100644
---- a/drivers/iio/chemical/atlas-ph-sensor.c
-+++ b/drivers/iio/chemical/atlas-ph-sensor.c
-@@ -14,7 +14,6 @@
- #include <linux/err.h>
- #include <linux/irq.h>
- #include <linux/irq_work.h>
--#include <linux/gpio.h>
- #include <linux/i2c.h>
- #include <linux/of_device.h>
- #include <linux/regmap.h>
--- 
-2.23.0
+On Mon, Dec 02, 2019 at 09:55:46AM +0100, Geert Uytterhoeven wrote:
+> As of commit b9ddd5091160793e ("iio: adc: max9611: Fix temperature
+> reading in probe"), max9611 initialization sometimes fails on the
+> Salvator-X(S) development board with:
+>=20
+>     max9611 4-007f: Invalid value received from ADC 0x8000: aborting
+>     max9611: probe of 4-007f failed with error -5
+>=20
+> The max9611 driver tests communications with the chip by reading the die
+> temperature during the probe function, which returns an invalid value.
+>=20
+> According to the datasheet, the typical ADC conversion time is 2 ms, but
+> no minimum or maximum values are provided.  Maxim Technical Support
+> confirmed this was tested with temperature Ta=3D25 degreeC, and promised
+> to inform me if a maximum/minimum value is available (they didn't get
+> back to me, so I assume it is not).
+>=20
+> However, the driver assumes a 1 ms conversion time.  Usually the
+> usleep_range() call returns after more than 1.8 ms, hence it succeeds.
+> When it returns earlier, the data register may be read too early, and
+> the previous measurement value will be returned.  After boot, this is
+> the temperature POR (power-on reset) value, causing the failure above.
+>=20
+> Fix this by increasing the delay from 1000-2000 =C2=B5s to 3000-3300 =C2=
+=B5s.
+>=20
+> Note that this issue has always been present, but it was exposed by the
+> aformentioned commit.
+>=20
+> Fixes: 69780a3bbc0b1e7e ("iio: adc: Add Maxim max9611 ADC driver")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Reviewed-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
 
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+
+One minor nit, though:
+
+>  	/*
+>  	 * need a delay here to make register configuration
+> -	 * stabilize. 1 msec at least, from empirical testing.
+> +	 * stabilize.
+
+This could be a one line comment now?
+
+
+--a1QUDc0q7S3U7/Jg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl3k2AwACgkQFA3kzBSg
+KbYq0Q/+Il7PVUqvCgQtgmQ4xQh7vOIyBSHMrRk/xrEKta+veYjdWAjzKxhOuSKk
+Vqo3/mRePBeyeYvlOb4eLa9adhbyJdEfcKHsG4DMYUe8ZJbgefvKsTNUSw/JqD+0
+xVc3bwHZfbYA6EbsYe8okHvzfayJ5froXtVSwyuHrj4ihgXAuQQq3sj6hDTeNYYf
+ho3Z9FhmDd8ggGaMo21GYBRVXmxC4y1WnbXV7ZcrVEdQ5nrBZVwsxLVPYoc+WWDE
+yHVEnWf76DiesnoEedpE+ePx1kEvVFrS16lCpehRxYnvr4KW+8s/TLiwuJifV0/X
+P155awtC15gZO8L/ylWtpwSglpkTNCnGpX62ZGdWWbM//yLCo8QTRsaOdcsHzwqz
+aglQlT/6rfmstBOAcYAZgkLK+AoaCUri/5FOrl+ycCkdhJYgrXdF9VfaCqXNxn+Q
+FV3RCAl43qhabVPb277IVDHR8nrHp1SboTEjJcAZ7CIQihb5ghEdp0pS/Q61Saj5
+KmOHvhPPf5IFdYZt9W7cpxXfL7Q0xvdrGpTVzu2OWYxbM98ObLiVdwcKzJ4j5Ptx
+nL154/0j9Lz/sd9vlBHQlbr9j9JzZarEqtccMl9Kj7YeFn354G7ifaKKrPmDX3uR
+zlW2UFqD8eApf0dE+95Q4gIld76pyGwJcTpqN3oYx+n/6Ku3Qhs=
+=KodC
+-----END PGP SIGNATURE-----
+
+--a1QUDc0q7S3U7/Jg--

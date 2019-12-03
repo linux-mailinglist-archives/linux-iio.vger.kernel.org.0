@@ -2,35 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A061110277
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2019 17:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A28FD1102E5
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2019 17:52:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726395AbfLCQjE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Dec 2019 11:39:04 -0500
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:51634 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726186AbfLCQjE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Dec 2019 11:39:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=7Kcuy/fn6cSz/SJB4bZWplLo8InyBESqnNDB0HH+CV8=; b=su4IqbsC0yREzmmrtcBG8C4NJ
-        jwHmKeSMVKlOq7kOKOB6G4d6NJpXJO5ZFZIYz5JpTgyikZR9Y9xQIqAK2Hc8hiI8azARrelzowpyb
-        VYvG+AQ0HD9EuV0UESrOcdBACQFiWJC5Fuyz/H10BlOsHdtazC3MxKaVLcsJv4ju1mAAg=;
-Received: from fw-tnat-cam1.arm.com ([217.140.106.49] helo=fitzroy.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1icBCN-0003Hr-DU; Tue, 03 Dec 2019 16:38:51 +0000
-Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
-        id E42A5D003B4; Tue,  3 Dec 2019 16:38:50 +0000 (GMT)
-Date:   Tue, 3 Dec 2019 16:38:50 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        id S1726492AbfLCQwA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Dec 2019 11:52:00 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2152 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726473AbfLCQv7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Dec 2019 11:51:59 -0500
+Received: from lhreml705-cah.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id D941CE4FB6CFD69213C3;
+        Tue,  3 Dec 2019 16:51:57 +0000 (GMT)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ lhreml705-cah.china.huawei.com (10.201.108.46) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Tue, 3 Dec 2019 16:51:57 +0000
+Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 3 Dec 2019
+ 16:51:57 +0000
+Date:   Tue, 3 Dec 2019 16:51:54 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
         "rodrigorsdc@gmail.com" <rodrigorsdc@gmail.com>,
         "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
         "kernel-usp@googlegroups.com" <kernel-usp@googlegroups.com>,
@@ -45,56 +40,71 @@ Cc:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
         "knaack.h@gmx.de" <knaack.h@gmx.de>
 Subject: Re: [PATCH v4] dt-bindings: iio: accel: add binding documentation
  for ADIS16240
-Message-ID: <20191203163850.GN1998@sirena.org.uk>
+Message-ID: <20191203165154.00005793@Huawei.com>
+In-Reply-To: <20191203163850.GN1998@sirena.org.uk>
 References: <20191123051927.5016-1-rodrigorsdc@gmail.com>
- <20191123114119.7b0c3447@archlinux>
- <a55b9c576eded8c91a985aabbba89180561ab156.camel@analog.com>
- <20191201114032.1a972dda@archlinux>
+        <20191123114119.7b0c3447@archlinux>
+        <a55b9c576eded8c91a985aabbba89180561ab156.camel@analog.com>
+        <20191201114032.1a972dda@archlinux>
+        <20191203163850.GN1998@sirena.org.uk>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Ll0BBk1HBk/f94B0"
-Content-Disposition: inline
-In-Reply-To: <20191201114032.1a972dda@archlinux>
-X-Cookie: Cleanliness is next to impossible.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.57]
+X-ClientProxiedBy: lhreml718-chm.china.huawei.com (10.201.108.69) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, 3 Dec 2019 16:38:50 +0000
+Mark Brown <broonie@kernel.org> wrote:
 
---Ll0BBk1HBk/f94B0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Sun, Dec 01, 2019 at 11:40:32AM +0000, Jonathan Cameron wrote:
+> 
+> > +CC Mark as we probably need a more general view point on
+> > the question of whether SPI mode should be enforced by binding
+> > or in the driver.  
+> 
+> Not sure I see the question here, I think I was missing a bit of
+> the conversation?  It's perfectly fine for a driver to specify a
+> mode, if the hardware always uses some unusual mode then there's
+> no sense in forcing every single DT to set the same mode.  On the
+> other hand if there's some configuration for the driver that was
+> handling some board specific configuration that there's already
+> some generic SPI support for setting then it seems odd to have a
+> custom driver specific configuration mechanism.
+> 
 
-On Sun, Dec 01, 2019 at 11:40:32AM +0000, Jonathan Cameron wrote:
+If the driver picks a mode because that's what it says on the datasheet
+it prevents odd board configurations from working.  The question
+becomes whether it makes sense in general to assume those odd board
+conditions don't exist until we actually have one, or to assume that
+they might and push the burden on to all DT files.
 
-> +CC Mark as we probably need a more general view point on
-> the question of whether SPI mode should be enforced by binding
-> or in the driver.
+Traditionally in IIO at least we've mostly taken the view the DT
+should be right and complete and had bindings state what normal
+parameters must be for it to work (assuming no inverters etc)
 
-Not sure I see the question here, I think I was missing a bit of
-the conversation?  It's perfectly fine for a driver to specify a
-mode, if the hardware always uses some unusual mode then there's
-no sense in forcing every single DT to set the same mode.  On the
-other hand if there's some configuration for the driver that was
-handling some board specific configuration that there's already
-some generic SPI support for setting then it seems odd to have a
-custom driver specific configuration mechanism.
+If we encode it in the driver, and we later meet such a board we
+end up with a custom dance to query the DT parameters again and
+only override if present.
 
---Ll0BBk1HBk/f94B0
-Content-Type: application/pgp-signature; name="signature.asc"
+We can't rely on the core SPI handling because I don't think
+there is any means of specifying a default.
 
------BEGIN PGP SIGNATURE-----
+We can adopt the view that in general these weird boards with inverters
+are weird and just handle them when they occur.  Sounds like that is your
+preference, at least for new parts.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3mj5oACgkQJNaLcl1U
-h9C/sgf/QxvazMVP9zm49jfiS4yHBJmRZeuDac6ZLwJIaSFBBjGWId42DRoQBXU+
-1gZ9GH+tgeT7lGT1w+JXAky7yrNuwA0ERHAOQ1TzT0VF9DKqY+omAYwzBNC1P3A/
-pldGP1I/5VsTcsJLVQemowwMzsNo4i3QTDDr07ENM5HAM4IvGVmCwJEfcCy9/q/8
-fCpigQGTQRkfA12KD+KnN/87eUKwV93DB3mQ/Hgo9HvE3/BWF7Ra8TvfPCt0EKlV
-NZQ4ohTyRRkuu8mwQnwJj5XhEAOa2+ueFH2WLhODhGDz58smKbv3cNASdq+t3Jg7
-skZw6qsqmI38m+TAhRr33Kps+gZ8+g==
-=JKhy
------END PGP SIGNATURE-----
+For old ones we have no idea if there are boards out there using
+them with inverters so easiest is probably to just carry on putting them
+in the DT bindings.
 
---Ll0BBk1HBk/f94B0--
+Jonathan
+
+

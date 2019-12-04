@@ -2,83 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F38C112F39
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2019 17:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E4C3113060
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2019 18:01:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728823AbfLDQAN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Dec 2019 11:00:13 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:42435 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728810AbfLDQAL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Dec 2019 11:00:11 -0500
-Received: by mail-qk1-f196.google.com with SMTP id a10so333900qko.9;
-        Wed, 04 Dec 2019 08:00:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=RNz52JVd2PldFAmDCRZ+28AiJhexA3viR29eVizBV9k=;
-        b=Mgb13NeUGIn+5JewsQnVhmo5hptOuzgWsDb5OmdcmwcXr7RnRiZQOa15taSqy27rM3
-         2TXYzCSyCrfNHSffFxtb9HIW9H7SA06YBkaJZiJeXiRUIhdcacL1EEWSy45kfRBTXyO/
-         p4eIUZ3yApFafRFkj8ksvSns438ZeInVgKmGEseci8lqcyhyA1VUqQoaJ3hBMK4XQ6qO
-         rmEVQE5Wz17LNSo8O2P26BcWTYaj4L5+QKibQWp1Rf0OtkkAT2oFliw308oEpL7rFZKP
-         HB0Ojwv7QYXW6D1K8cfNFi+xUBGP93GROmV9uQ3V6AnXPdiq7vaCP9e2V3GjBBTvQK5s
-         kjlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=RNz52JVd2PldFAmDCRZ+28AiJhexA3viR29eVizBV9k=;
-        b=GfbC6AlZ5/+2Q50ppjIMlbqy/1WN5owGlTBiCPGZpdlR0ylVXlrzednYugtsLW4OUq
-         WvctuNOV+d0muBspMNelQIR0xeCwihKv+z/RjT16P0HPYtNqSJQLOnX/ziIb0/zDpapW
-         j16mvBhcZNa16FZhnrc9Bc881/nUiEeTdjKXnZDGzunkeOsN+/Je5rPG+Cm147llJMrP
-         MZHrIH0oNJqkJJnTi4NxQJe0jlT9OAO7kJ7OJD9zbuVe0zZqVqZSo9QxLBO086vufW61
-         /mNx6hF5OD6if/OW6gkrknbbmzQReK0iJnobAQoO49byv+An2KEVHLdFznStZSsNdle3
-         ZrFA==
-X-Gm-Message-State: APjAAAXjoOYOvI4LmDSD4c0ysHu3r3TcILGq69NB1q4Elm+1U/0E8QVH
-        xOtoDGEAMlt6YxO0UUSgFuA=
-X-Google-Smtp-Source: APXvYqwcvpVzypBVrEg3Qi5GxTRsTH+k0FxqIrYNNFNtTZmLtXzoFthBD00Mh8z9uaWR7gLRZx0C1Q==
-X-Received: by 2002:a37:c244:: with SMTP id j4mr3538920qkm.433.1575475210703;
-        Wed, 04 Dec 2019 08:00:10 -0800 (PST)
-Received: from smtp.gmail.com (gwcrusp.semfio.usp.br. [143.107.150.86])
-        by smtp.gmail.com with ESMTPSA id x57sm4083387qtk.58.2019.12.04.08.00.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2019 08:00:10 -0800 (PST)
-Date:   Wed, 4 Dec 2019 13:00:05 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     jic23@kernel.org, robh@kernel.org
-Cc:     dragos.bogdan@analog.com, alexandru.ardelean@analog.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel-usp@googlegroups.com
-Subject: [PATCH v2 2/2] dt-bindings: iio: adc: ad7292: Update SPDX identifier
-Message-ID: <20191204160000.7x4isja36kn24ovw@smtp.gmail.com>
+        id S1728735AbfLDRBS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Dec 2019 12:01:18 -0500
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:52300 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726934AbfLDRBS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Dec 2019 12:01:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=asdcy8EJ6DybeaXz0S+Y5PU/41Q6cNiuOXJn7dxF4fs=; b=RMkJ8v/vMPBYXFddlJ8CE2112
+        o4Fd/fPh6+Bw1xmhc1H9D6wwiNrIo4vGlB2SeEGjk4i6KbYGYqJpgHwwX+jFkI3ixAcjn8Tf09h8M
+        r9RbqBnpf/UjAoT445k1I5a5JqzzncUtD3rIGyt4GsgN3r6ohV1Qen6+tMoStISjfOUP8=;
+Received: from 92.40.248.27.threembb.co.uk ([92.40.248.27] helo=fitzroy.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1icY1P-0001Kc-QP; Wed, 04 Dec 2019 17:01:03 +0000
+Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
+        id 5DE17D0046D; Wed,  4 Dec 2019 17:00:59 +0000 (GMT)
+Date:   Wed, 4 Dec 2019 17:00:59 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+        "kernel-usp@googlegroups.com" <kernel-usp@googlegroups.com>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "rodrigorsdc@gmail.com" <rodrigorsdc@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH v4] dt-bindings: iio: accel: add binding documentation
+ for ADIS16240
+Message-ID: <20191204170059.GX1998@sirena.org.uk>
+References: <20191123051927.5016-1-rodrigorsdc@gmail.com>
+ <20191123114119.7b0c3447@archlinux>
+ <a55b9c576eded8c91a985aabbba89180561ab156.camel@analog.com>
+ <20191201114032.1a972dda@archlinux>
+ <20191203163850.GN1998@sirena.org.uk>
+ <20191203165154.00005793@Huawei.com>
+ <c725b1b1475148ded6168667fa0227bc18de0854.camel@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="z3PcgjD2qOzdkXVS"
 Content-Disposition: inline
-User-Agent: NeoMutt/20180716
+In-Reply-To: <c725b1b1475148ded6168667fa0227bc18de0854.camel@analog.com>
+X-Cookie: Cleanliness is next to impossible.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Update SPDX identifier to the preferred dual GPL-2.0 OR BSD-2-Clause
-licensing.
 
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
----
- Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--z3PcgjD2qOzdkXVS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-index 18f1032b86f3..e1f6d64bdccd 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-@@ -1,4 +1,4 @@
--# SPDX-License-Identifier: GPL-2.0-only
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- %YAML 1.2
- ---
- $id: http://devicetree.org/schemas/iio/adc/adi,ad7292.yaml#
--- 
-2.23.0
+On Wed, Dec 04, 2019 at 07:18:15AM +0000, Ardelean, Alexandru wrote:
 
+> One example (for spi-cpha):
+>         if (of_property_read_u32(nc, "spi-cpha", &tmp) == 0) {
+>                 spi->mode |= SPI_CPHA_OVERRIDE;
+>                 if (tmp)
+>                     spi->mode |= SPI_CPHA;
+
+We could also do this with a separate flag saying that the wire
+format is forced from DT rather than having one per setting.
+
+> Or maybe, a more complete solution would be an "spi-mode-conv" driver.
+> Similar to the fixed-factor-clock clk driver, which just does a computation
+> based on values from the DT.
+
+> To tell the truth, this would be a great idea, because we have something
+> like a passive 3-wire-to-4-wire HDL converter. This requires that the
+> driver be configured in 3-wire mode, the SPI controller in normal 4-wire.
+> That's because the SPI framework does a validation of the supported modes
+> (for the SPI controller) and invalidates what the device wants (which is
+> very reasonable).
+
+This is harder to achieve here because we don't have drivers for
+random bits of the wire format...
+
+--z3PcgjD2qOzdkXVS
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3n5koACgkQJNaLcl1U
+h9DYmAf+LJFYyW1Y0Lbiqs9/Nt03tZeA+6ImdccknWsoJohuCVeKHXZWA7YFquKx
+5WeuRir2eKQQGpCiv5W95qcwpv/QUVpYMTGevZECSnOQHym1pgTknVFIc51RzD/m
+OEG8gVZ1zeSVoGg/2/DvipOFUuj2QToLRFP26tGIIaceY6MGpCDrMg4cLYuGr2ir
+ro5NXmvHrLyD6Yic6GWpwCwSegaX7hFQrQ46Bbvzi1fRFdQOixFqXS8AdtRupmK5
+7Aw1laczA+/C3Ceox6s8UfkOVwJAEt0KAy/afe6tTREtRVtB9rAoT6HmECHk7xgd
+VDDIhbiunTvPZZEsyIlXg1/WZYn4+g==
+=a7mZ
+-----END PGP SIGNATURE-----
+
+--z3PcgjD2qOzdkXVS--

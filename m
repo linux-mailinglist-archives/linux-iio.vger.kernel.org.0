@@ -2,110 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64FD8112BAE
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2019 13:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ABAE112F24
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2019 16:59:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727816AbfLDMnB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Dec 2019 07:43:01 -0500
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:41140 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727859AbfLDMm7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Dec 2019 07:42:59 -0500
-Received: by mail-qt1-f194.google.com with SMTP id v2so7552992qtv.8
-        for <linux-iio@vger.kernel.org>; Wed, 04 Dec 2019 04:42:59 -0800 (PST)
+        id S1728631AbfLDP7e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Dec 2019 10:59:34 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:40151 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728621AbfLDP7d (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Dec 2019 10:59:33 -0500
+Received: by mail-qk1-f193.google.com with SMTP id a137so344971qkc.7;
+        Wed, 04 Dec 2019 07:59:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=AkbuvF8WWOeGkFuNbpEiUPeHs0D9XYCrvYJnn3sJBPk0l/N+bAJ+lU7by52a8c0/XL
-         X5y/+uJVi5SRPzgKpD7LZp2RSO63H/dWhNB+Sgv8CnTmnW6HnNvEkrD3pvFKiHue+ji0
-         Cyct4Vs7hozR5hYKDh8cJJMkT72K9aPHj93bK1Ew++bIIM698i5hGwNXpwVN8RyOlTlg
-         ekVZP06isuUhwZwFxkLwU0Sye3HMnEDkq9yUmWZzxA1JTm8RzibEufZxYTJilauyHwzc
-         pKJFDkaXtzzvkeOyU7ajhljX9QykaA8Ur2FHYJunK1Sxosbxld4ODKAYs9j7AB06Aipc
-         jW5w==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=yRIWo7lKKgqJCu/aBUPmRsLV0Wkkk5/DYmont9tq1qI=;
+        b=rk5spJZk1saeoY744UNyx+wXqmmNfCrwihWJBMslEhpdRoRXMOEL/weiPQc+ZajJfI
+         nIv2riK0GB72szsbYLQZbOdoE3KqvkEO+c9yvtS1s70+mXQ3A/wQoZyYfG6x2zP3AnCk
+         k5dwdXNyuRDyTqmI0V7qpvZgwhbZexcldeZEyOdHYqF+J45z00RZD7eZI+UL1lMdWbPV
+         Vn4wzxXB84/vPmNHM2qnuUnRcFs/YZLW32es3UCXvBi1zcL3ftsu2c/nmeNEvjrv2o+N
+         9Usucm3+1n5m/eJzYWQIEAfRdpwg2QfFyplmuat1byjjOZ1a5PegX7i3fmaWMH4LHGsJ
+         ShyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=gbvkqeczalatZ1zeGN9B0WqSY7d2ey8k8pHb1zJ+NuO0wPeu2mi3b6CmpRJNEfLii2
-         kPzKdCZK81oxwwaNgyeZf5dD7NulV0q4fbABnO1/xaBHb5shilwKrGsAWSblxAtsSoo5
-         nyeznNocz5jS2GKRB4KEvL8j3cXMDHSh/GJQmKA0qRBQID5mQ7pCENpgAfsDdWn447hi
-         N31VhWm8ER3wuGJA6Pjm2z8c3lqKK51HSRs9RzU2X5B7Ee5MC6SLr111tFE50as6t5Qk
-         uEHV8LHRaUl0HqUin0zZc30gLVSEoIaNcza7JS/gY96QixPhpeWA7TiapQyQb5cUuh1g
-         MhkA==
-X-Gm-Message-State: APjAAAUp0Bxfyb3vntwNRPEA7fWwjL5wj1b0KU09I3zJ+vtOyTucljSB
-        Iv40KL6vaBABByJDBLjXb38lS7N4R4O7eWoojf0=
-X-Google-Smtp-Source: APXvYqzw3gCG5cnmI6368TWfhjS/+LLSHd6b95oZCOsPTpsAjIN23auDStB1pQ1PTnMah1qk6gl8uYsnTPaZ7k01uH0=
-X-Received: by 2002:ac8:4a81:: with SMTP id l1mr2434940qtq.357.1575463377714;
- Wed, 04 Dec 2019 04:42:57 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=yRIWo7lKKgqJCu/aBUPmRsLV0Wkkk5/DYmont9tq1qI=;
+        b=X4Q5kk9bkehYWGbGpxOdaCP8t3eR3A7xibV1HlhmRhDiOtpkayxs9Q83cA3ZhZAqpW
+         aASUtyzB73EbuKfIGjzbDd9qg3ancbmHbDmXXaubBYB1E7/yVtA57Ls2AM9styCYhrKa
+         6fhcva+Io/9TtS0rRJjaPCLs1E7Og0XZ8QcN3T8uFRym1jUSgN65mSpH0UflICc1UIBI
+         qgP9z7uhT1Z5r1laeTv8qGypK1QHJmd01DL4aCXwXlezhhfrLfauE1cn/+3MQgOD2xQM
+         k+CgsbN1nILxyqSo8Yt3Xs7d+0ARs+h1cAhIcvrIhX203ZFAzYQzTsxst98XPXW6agnd
+         JEBg==
+X-Gm-Message-State: APjAAAWpA0A9R6x0kRzJBh1KQYGxVOjgfUCn/8G5GnsuR9yPAOtNUffz
+        Altyk/99uoVAa/Fu3qJ0KzA=
+X-Google-Smtp-Source: APXvYqw6YVY5BvKuYFjKrTa10B9ON4/0NJEdCx3hp8wekexd4CoYPvPrdFofnV0kKgvQRFItAs68eg==
+X-Received: by 2002:a37:7bc7:: with SMTP id w190mr3680024qkc.132.1575475172496;
+        Wed, 04 Dec 2019 07:59:32 -0800 (PST)
+Received: from smtp.gmail.com (gwcrusp.semfio.usp.br. [143.107.150.86])
+        by smtp.gmail.com with ESMTPSA id c16sm4002902qtm.48.2019.12.04.07.59.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2019 07:59:31 -0800 (PST)
+Date:   Wed, 4 Dec 2019 12:59:23 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     jic23@kernel.org, robh@kernel.org
+Cc:     dragos.bogdan@analog.com, alexandru.ardelean@analog.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel-usp@googlegroups.com
+Subject: [PATCH v2 1/2] dt-bindings: iio: adc: ad7292: fix channel constraint
+Message-ID: <20191204155918.5ot4tplceqjeul6a@smtp.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:ac8:2f0c:0:0:0:0:0 with HTTP; Wed, 4 Dec 2019 04:42:57 -0800 (PST)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
-        <westernunion.benin982@gmail.com>
-Date:   Wed, 4 Dec 2019 13:42:57 +0100
-Message-ID: <CAP=nHBJXiPmPL21x=_0BHWRk_3N3Yax+tTxcFi=t=AhN7g==1Q@mail.gmail.com>
-Subject: God has remembered your prayers I have already sent you Money Gram
- payment of $5000.00 today, MG 1029-8096
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Attn, dear Beneficiary.
+Change items property of AD7292 channels to correctly constrain their
+quantity.
 
-God has remembered your prayers
-I have already sent you Money Gram payment of $5000.00 today, MG 1029-8096
-This is because we have finally concluded to effect your transfer
-funds of $4.8,000.000usd
-through MONEY GRAM International Fund transfer Service
-Each payment will be sending to you by $5000.00 daily until the
-($4.8,000.000usd) is completely transferred
-we have this morning sent  MONEY GRAM payment of $5,000.00 in your name today
-So contact the MONEY GRAM Agent to pick up this first payment of $5000 now
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+---
+Changelog V2
+- Shortened the message to make it closer to 50 columns.
 
-Contact person Mrs. Alan Ude
-Dir. MONEY GRAM Service,Benin
-Phone number: +229 98856728
-E-mail: moneygram.1820@outlook.fr
+ Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Ask him to give you the complete mtcn, sender name, question and
-answer to enable you
-pick up the $5000.00 sent today,
-Also you are instructed to re-confirm your information's
-to Mrs.Alan Ude as listed below to avoid wrong transactions.
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+index b68be3aaf587..18f1032b86f3 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+@@ -53,7 +53,8 @@ patternProperties:
+         description: |
+           The channel number. It can have up to 8 channels numbered from 0 to 7.
+         items:
+-          maximum: 7
++          - minimum: 0
++            maximum: 7
+ 
+       diff-channels:
+         description: see Documentation/devicetree/bindings/iio/adc/adc.txt
+-- 
+2.23.0
 
-(1Your Full name:............................................
-(2 Phone number.....................................................
-(3 Contact address:.....................................
-(4 Age:..................................................................
-(5 Country..............................................
-(6) Sex .................................................................
-(7) your occupation...........................................
-
-(8)Passport/By Attach or Drivers License Number:
-Contact Mrs. Alan Ude for your MONEY GRAM payment of $4.8,000.000usd
-Note please: I have paid service fees for you but the only money you
-are required
-to send to Mrs. Alan Ude is $90.00 only Transfer fee before you can
-pick up your transfer today.
-
-Send it to via Money Gram
-Receiver's Name-----Alan Ude
-Country----------Benin
-Address-----------Cotonou
-Quest--------Honest
-Ans-----------Trust
-
-I done all my best for you to receive your transfer now ok.
-We need your urgent reply
-Best Regards
-Rev.Dr Emmanuel Okoye
-CEO Ecobank-benin
-
-If we did not receive it urgent from you today,
-I will go ahead and release you funds to Mrs. Lyndia Ppaulson as your
-representative.

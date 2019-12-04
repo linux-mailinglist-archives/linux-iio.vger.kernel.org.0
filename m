@@ -2,363 +2,211 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90A3D1123AD
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2019 08:52:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D75AE112428
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2019 09:08:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726632AbfLDHwj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Dec 2019 02:52:39 -0500
-Received: from esa5.microchip.iphmx.com ([216.71.150.166]:52083 "EHLO
-        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725839AbfLDHwi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Dec 2019 02:52:38 -0500
-Received-SPF: Pass (esa5.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com -exists:%{i}.spf.microchip.iphmx.com
-  include:servers.mcsv.net include:mktomail.com
-  include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa5.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa5.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: 9NC35zFt21PzVeS4bE6r9ZbexP0O69LzC+xvIUbQvu6rav1muERQSEUywBCHDXwtzktp1jmNzJ
- CxrkbzX5MOcwupTwAEIHlGrXdGFbg5pj6ahkM/w7/Hit+a1T68Vz5VWGEVh6wJCsampkui8eQZ
- r5hAkn0xND/3v6VQ9OrF+SMKAJfQ+vQQ0k6LBgGA/yZ7tkKgcy3DBWM81B/tR60NCdyILfjiRB
- 1KO8ws77NuK5TtO10kCCOZ3QN0361Qft8opU0S736sU2isDdRUsVX8Nbj50KPFQ5W7MZZb5OJl
- 4Ag=
-X-IronPort-AV: E=Sophos;i="5.69,276,1571727600"; 
-   d="scan'208";a="57740022"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 04 Dec 2019 00:52:37 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 4 Dec 2019 00:52:37 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Wed, 4 Dec 2019 00:52:37 -0700
-Date:   Wed, 4 Dec 2019 08:52:26 +0100
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Eugen Hristev - M18282 <Eugen.Hristev@microchip.com>
-CC:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "jic23@kernel.org" <jic23@kernel.org>
-Subject: Re: [PATCH] iio: at91-sama5d2_adc: fix
- iio_triggered_buffer_{predisable,postenable} positions
-Message-ID: <20191204075226.bpgd6d6o72lcjbpi@M43218.corp.atmel.com>
-Mail-Followup-To: Eugen Hristev - M18282 <Eugen.Hristev@microchip.com>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "jic23@kernel.org" <jic23@kernel.org>
-References: <20191023082508.17583-1-alexandru.ardelean@analog.com>
- <17cf55869cc418795d0013c0594ed8fc04381d46.camel@analog.com>
- <9df3d999-0ec6-a282-d24b-8f7df5f14f6d@microchip.com>
- <e43bf58f-223c-0b12-2912-6f353d866ec3@microchip.com>
- <74aabb41107ab162660f21e726c88a9dd40ecc5e.camel@analog.com>
- <60ce6ff9-ba06-2522-e9a0-55e6fd2731ec@microchip.com>
+        id S1726166AbfLDIIB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Dec 2019 03:08:01 -0500
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:18478 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725951AbfLDIIA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Dec 2019 03:08:00 -0500
+Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB483CCk010923;
+        Wed, 4 Dec 2019 03:07:57 -0500
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2170.outbound.protection.outlook.com [104.47.56.170])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2wkk2c35hp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Wed, 04 Dec 2019 03:07:57 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BA3uI6VxT3rzQlCfl+nXTDtOF/mJYxWL3uLltpxiKRIz4mPrqbhme85p5qRCDd1C26oEFELMqOYHQHR3qNxYtx4ZV7Ee0LcdcJ7ELk38UA3EVq9YZ9iB1VljsMDLKVyDV3G2m1HtuB0rgYGyjqO1C7MFuoPM6uE/T77YZPNJ4FBO1Lh9kFGn3qFndYaCsCcqkSdHjN6xI8aMLv74vYF2Cx7kQAO3WQlx/yQRkWTihReRBkRdY8eKgqUHFuuTqtBDKANybwIKGGZ1GOb5xn3JKQYBpy3ZrI2k1xi7QEAuHBmUit1ZEWsrJtmN6iA36kOFxW1giAgnWqEGOBJiaYK3TQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OTjuKytSgvOPCZNfbtdpCZmFP8CqZjkODaDIuxSbPv4=;
+ b=Tv0v72f5WqPgayyyDdD9wUVaLUM781Aa4JIXdAQN/rrdMgJd4ZdmPcKOPEd38+yK4KjgGRPxjp2qB35zdgPaCmt+zNeSqQGUmRb4Pt+qdet38OEuyC5ixNlBLELERKPDnUKrapNHw2d6Du2KzbXlgAfnxbfghckvfpaH3WHfGHeHqs1dD0vEj2/MTzGL6/wLDi2sgyOQ/jhrATkHG54W4/1QfLKyMVRjbtT5twzWGpjGdDmSL57FVq0u9FmD9kjAdBOGexI6wYOLYZimjTzFWSCwmq+xkCMks3p4ye+WYtn/E5jjoDrAucW6XVHV0ctW68We4oeTf0h0wGckAHvPpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 137.71.25.57) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
+ dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OTjuKytSgvOPCZNfbtdpCZmFP8CqZjkODaDIuxSbPv4=;
+ b=9iFIUxYY/sTnhKjBGgRJaNH2k9H6hDB0mimxR45lrvh1s2h2C2cQBZCj+dJefY1KkRVT/oWuhyAcWdYWXQZyos9TKvPqau6RUlJble4//P7gAP+bG38iwnls7n65nwMcSxYSH7/W+1vWP2QPRmFbzHvpWsaZg1AWhu9hVDplhjU=
+Received: from BN6PR03CA0082.namprd03.prod.outlook.com (2603:10b6:405:6f::20)
+ by BYAPR03MB4280.namprd03.prod.outlook.com (2603:10b6:a03:75::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2495.18; Wed, 4 Dec
+ 2019 08:07:55 +0000
+Received: from CY1NAM02FT045.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e45::204) by BN6PR03CA0082.outlook.office365.com
+ (2603:10b6:405:6f::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2516.12 via Frontend
+ Transport; Wed, 4 Dec 2019 08:07:54 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
+Received: from nwd2mta2.analog.com (137.71.25.57) by
+ CY1NAM02FT045.mail.protection.outlook.com (10.152.75.111) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2474.17
+ via Frontend Transport; Wed, 4 Dec 2019 08:07:54 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id xB487i0F014425
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Wed, 4 Dec 2019 00:07:44 -0800
+Received: from saturn.ad.analog.com (10.48.65.119) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Wed, 4 Dec 2019 03:07:53 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] iio: imu: adis: use new `delay` structure for SPI transfer delays
+Date:   Wed, 4 Dec 2019 10:09:04 +0200
+Message-ID: <20191204080904.2557-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <60ce6ff9-ba06-2522-e9a0-55e6fd2731ec@microchip.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(136003)(39860400002)(346002)(376002)(396003)(199004)(189003)(110136005)(51416003)(8936002)(36756003)(8676002)(106002)(107886003)(1076003)(54906003)(316002)(7636002)(70586007)(70206006)(14444005)(50226002)(5660300002)(4326008)(246002)(2616005)(2870700001)(2906002)(478600001)(86362001)(44832011)(186003)(7696005)(6666004)(356004)(50466002)(336012)(48376002)(26005)(305945005)(426003)(81973001);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR03MB4280;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 03a44bfe-beca-41b1-20f7-08d7789110d0
+X-MS-TrafficTypeDiagnostic: BYAPR03MB4280:
+X-Microsoft-Antispam-PRVS: <BYAPR03MB42802C4638261F0F37726765F95D0@BYAPR03MB4280.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:632;
+X-Forefront-PRVS: 0241D5F98C
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: BLVcqM2mhi+Dl9qyijmoLzmSkNBurG51H0I1spel2Q07yjcPbt8o15ffEkf/rYUD882Lib8VX3xEh5K8Zt0dPk1igvJiG3tQb7u4zFKSLZgOESo1o2yQziHlXJZHI6V3FdcM3u809i3T0KgZcurU6LDREnAlZatffSx26MRRpFtdGSTYgx6PNQdSkNtjugnKInetVIgb3j+Ru8KKOglMTCVpYK/j7G3sVMirDWWMouz44vLJD2LJPrgVR5R2q83fM2e+wzQwdq//XQ+orJNxKg351J4UxIAj8tauGJv2JLKuZF9sifxZw4lo98KfyGFoaLYFV0KU157edCpWa3QD2vSvrlQ3n7t6qQGt3vxU8tpAHM8hbpm8CRUq7R+2ZFb9zHYY5VNvqg2aBEFSo/SJ6YDRgqoAtZcbbgRh6DcTFM+m7N4EdxMhdhJEiep1+xi1pBj64fRuZOkE2vOvUDHWWSDMXe1Rnqh60rYlMH8VhW8PeK2ISryJ4fmU7h1pPM3L
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2019 08:07:54.2549
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03a44bfe-beca-41b1-20f7-08d7789110d0
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR03MB4280
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-04_01:2019-12-04,2019-12-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=999 mlxscore=0
+ spamscore=0 bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912040059
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Dec 03, 2019 at 10:49:58AM +0100, Eugen Hristev - M18282 wrote:
-> 
-> 
-> On 29.11.2019 09:02, Ardelean, Alexandru wrote:
-> 
-> > On Thu, 2019-11-28 at 15:19 +0000, Eugen.Hristev@microchip.com wrote:
-> >>
-> > 
-> > Hey,
-> > 
-> > Sorry for the late reply.
-> > I'm also juggling a few things.
-> > 
-> >>
-> >> On 28.11.2019 10:36, Eugen.Hristev@microchip.com wrote:
-> >>
-> >>> On 25.11.2019 17:03, Ardelean, Alexandru wrote:
-> >>>> On Wed, 2019-10-23 at 11:25 +0300, Alexandru Ardelean wrote:
-> >>>>> The iio_triggered_buffer_{predisable,postenable} functions
-> >>>>> attach/detach
-> >>>>> poll functions.
-> >>>>>
-> >>>>> The iio_triggered_buffer_postenable() should be called first to
-> >>>>> attach
-> >>>>> the
-> >>>>> poll function, and then the driver can init the data to be
-> >>>>> triggered.
-> >>>>>
-> >>>>> Similarly, iio_triggered_buffer_predisable() should be called last
-> >>>>> to
-> >>>>> first
-> >>>>> disable the data (to be triggered) and then the poll function
-> >>>>> should be
-> >>>>> detached.
-> >>>
-> >>> Hi Alexandru,
-> >>>
-> >>> Sorry for this late reply,
-> >>>
-> >>> I remember that by adding specific at91_adc code for
-> >>> predisable/postenable , I was replacing the existing standard callback
-> >>> with my own, and have my specific at91 code before postenable and then
-> >>> calling the subsystem postenable,
-> >>> and in similar way, for predisable, first call the subsystem predisable
-> >>> then doing my predisable code (in reverse order as in postenable)
-> >>>
-> >>> If you say the order should be reversed (basically have the
-> >>> pollfunction
-> >>> first), how is current code working ?
-> >>> Should current code fail if the poll function is not attached in time ?
-> >>> Or there is a race between triggered data and the attachment of the
-> >>> pollfunc ?
-> >>>
-> >>> I am thinking that attaching the pollfunc later makes it work because
-> >>> the DMA is not started yet. What happens if we have the pollfunc
-> >>> attached but DMA is not started (basically the trigger is not started)
-> >>> ,
-> >>> can this lead to unexpected behavior ? Like the pollfunc polling but no
-> >>> trigger started/no DMA started.
-> >>
-> >> I looked a bit more into the code and in DMA case, using postenable
-> >> first will lead to calling attach pollfunc, which will also enable the
-> >> trigger, but the DMA is not yet started.
-> >> Is this the desired effect ?
-> > 
-> > Yes.
-> 
-> How is this correct ? We start the trigger but have no buffer to carry 
-> to... what happens with the data ? -> I think we both have an answer to 
-> that, as you state below
-> 
-> > 
-> >> Normally when using DMA I would say we
-> >> would need to enable DMA first to be ready to carry data (and coherent
-> >> area etc.) and then enable the trigger.
-> > 
-> > So, there is a change in our tree [from some time ago].
-> > See here:
-> > https://github.com/analogdevicesinc/linux/commit/eee97d12665fef8cf429a1e5035b23ae969705b8
-> > 
-> > Particularly, what's interesting is around line:
-> > https://github.com/analogdevicesinc/linux/commit/eee97d12665fef8cf429a1e5035b23ae969705b8#diff-0a87744ce945d2c1c89ea19f21fb35bbR722
-> > And you may need to expand some stuff to see more of the function-body.
-> > And some things may have changed in upstream IIO since that change.
-> > 
-> > The change is to make the pollfunc attach/detach become part of the IIO
-> > framework, because plenty of drivers just call
-> > iio_triggered_buffer_postenable() & iio_triggered_buffer_predisable() to
-> > manually attach/detach the pollfunc for triggered buffers.
-> 
-> Okay, I understand this. at91-sama5d2_adc does not manually 
-> attach/detach the pollfunc. So why do we need to change anything here ?
-> 
-> 
-> > 
-> > That change is from 2015, and since then, some drivers were added that just
-> > manually attach/detach the pollfunc [and do nothing more with the
-> > postenable/predisable hooks].
-> > 
-> > I tried to upstream a more complete version of that patch a while ago [u1].
-> > https://patchwork.kernel.org/patch/10482167/
-> > https://patchwork.kernel.org/patch/10737291/
-> > 
-> > The conclusion was to first fix the attach/detach pollfunc order in all IIO
-> > drivers, so that when patch [u1] is applied, there is no more discussion
-> > about the correct order for attach/detach pollfunc.
-> 
-> Allright, what is required to be fixed regarding the order, in this 
-> specific case? We enable the DMA, and then we do the normal 'postenable' 
-> that was called anyway if we did not override the 'postenable' in the 
-> ops. Do you want to move this code to 'preenable' and keep 'postenable' 
-> to the standard subsystem one ?
-> 
-> The same applies to the predisable, we first call the subsystem 
-> 'predisable' then do the specific at91 stuff. You want to move this to 
-> the 'postdisable' ?
-> 
-> I think reverting the order inside the functions themselves is not good 
-> as we replace the order of starting trigger/DMA setup.
-> So, coming to your question below...
-> 
-> > 
-> > Coming back here [and to your question], my answer is: I don't know if the
-> > at91 DMA needs to be enabled/disabled before/after the pollfunc
-> > attach/detach.
-> > This sounds like specific stuff for at91 [which is fine].
-> > 
-> > It could be that some other hooks may need to used to enable DMA
-> > before/after the attach/detach pollfunc. Maybe preenable()/postdisable() ?
-> > 
-> > In any case, what I would like [with this discussion], is to resolve a
-> > situation where we can get closer to moving the attach/pollfunc code to IIO
-> > core. So, if AT91 requires a different ordering, I think you would be more
-> > appropriate to tell me, and propose an alternative to this patch.
-> 
-> ... yes, this looks more appropriate, to move things to 
-> 'preenable/postdisable', if you feel like 'postenable/predisable' is not 
-> the proper place to put them.
-> But the order itself, first enable DMA then trigger, and disable in 
-> reverse order, I do not think there is anything wrong with that? Am I 
-> misunderstanding ?
-> 
-> If Jonathan or Ludovic have a different idea, please let me know.
-> 
+In a recent change to the SPI subsystem [1], a new `delay` struct was added
+to replace the `delay_usecs`. This change replaces the current `delay_secs`
+with `delay` for this driver.
 
-I didn't chime in because I am not sure that I really get the issue. I see
-the order of the sequence which enables the DMA first and for me it's safe
-in this way and I also have doubt it works well if DMA is enabled after
-but I didn't do the test.
+The `spi_transfer_delay_exec()` function [in the SPI framework] makes sure
+that both `delay_usecs` & `delay` are used (in this order to preserve
+backwards compatibility).
 
-Regards
+[1] commit bebcfd272df6485 ("spi: introduce `delay` field for
+`spi_transfer` + spi_transfer_delay_exec()")
 
-Ludovic
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/imu/adis.c | 27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-> Also, I can test your patch to see if everything is fine.
-> 
-> Thanks,
-> Eugen
-> 
-> > 
-> > Thanks :)
-> > Alex
-> > 
-> >>
-> >>>>> For this driver, the predisable & postenable hooks are also need to
-> >>>>> take
-> >>>>> into consideration the touchscreen, so the hooks need to be put in
-> >>>>> places
-> >>>>> that avoid the code for that cares about it.
-> >>>>>
-> >>>>
-> >>>> ping here
-> >>>>
-> >>>>> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> >>>>> ---
-> >>>>>     drivers/iio/adc/at91-sama5d2_adc.c | 19 ++++++++++---------
-> >>>>>     1 file changed, 10 insertions(+), 9 deletions(-)
-> >>>>>
-> >>>>> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c
-> >>>>> b/drivers/iio/adc/at91-
-> >>>>> sama5d2_adc.c
-> >>>>> index e1850f3d5cf3..ac3e5c4c9840 100644
-> >>>>> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> >>>>> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> >>>>> @@ -889,20 +889,24 @@ static int at91_adc_buffer_postenable(struct
-> >>>>> iio_dev *indio_dev)
-> >>>>>          if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
-> >>>>>                  return -EINVAL;
-> >>>>>
-> >>>>> +     ret = iio_triggered_buffer_postenable(indio_dev);
-> >>>>> +     if (ret)
-> >>>>> +             return ret;
-> >>>>> +
-> >>>>>          /* we continue with the triggered buffer */
-> >>>>>          ret = at91_adc_dma_start(indio_dev);
-> >>>>>          if (ret) {
-> >>>>>                  dev_err(&indio_dev->dev, "buffer postenable
-> >>>>> failed\n");
-> >>>>> +             iio_triggered_buffer_predisable(indio_dev);
-> >>>>>                  return ret;
-> >>>>>          }
-> >>>>>
-> >>>>> -     return iio_triggered_buffer_postenable(indio_dev);
-> >>>>> +     return 0;
-> >>>>>     }
-> >>>>>
-> >>>>>     static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
-> >>>>>     {
-> >>>>>          struct at91_adc_state *st = iio_priv(indio_dev);
-> >>>>> -     int ret;
-> >>>>>          u8 bit;
-> >>>>>
-> >>>>>          /* check if we are disabling triggered buffer or the
-> >>>>> touchscreen */
-> >>>>> @@ -916,13 +920,8 @@ static int at91_adc_buffer_predisable(struct
-> >>>>> iio_dev
-> >>>>> *indio_dev)
-> >>>>>          if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
-> >>>>>                  return -EINVAL;
-> >>>>>
-> >>>>> -     /* continue with the triggered buffer */
-> >>>>> -     ret = iio_triggered_buffer_predisable(indio_dev);
-> >>>>> -     if (ret < 0)
-> >>>>> -             dev_err(&indio_dev->dev, "buffer predisable
-> >>>>> failed\n");
-> >>>>> -
-> >>>>>          if (!st->dma_st.dma_chan)
-> >>>>> -             return ret;
-> >>>>> +             goto out;
-> >>>>>
-> >>>>>          /* if we are using DMA we must clear registers and end DMA
-> >>>>> */
-> >>>>>          dmaengine_terminate_sync(st->dma_st.dma_chan);
-> >>>>> @@ -949,7 +948,9 @@ static int at91_adc_buffer_predisable(struct
-> >>>>> iio_dev
-> >>>>> *indio_dev)
-> >>>>>
-> >>>>>          /* read overflow register to clear possible overflow status
-> >>>>> */
-> >>>>>          at91_adc_readl(st, AT91_SAMA5D2_OVER);
-> >>>>> -     return ret;
-> >>>>> +
-> >>>>> +out:
-> >>>
-> >>> I would prefer if this label is named with a function name prefix,
-> >>> otherwise 'out' is pretty generic and can collide with other things in
-> >>> the file... I want to avoid having an out2 , out3 later if code
-> >>> changes.
-> >>>
-> > 
-> > Sure.
-> > Will do that.
-> > 
-> > I did not bother much with these labels, because after applying [u1], some
-> > of them [maybe all] should go away.
-> > 
-> > 
-> >>> Thanks for the patch,
-> >>> Eugen
-> >>>
-> >>>>> +     return iio_triggered_buffer_predisable(indio_dev);
-> >>>>>     }
-> >>>>>
-> >>>>>     static const struct iio_buffer_setup_ops at91_buffer_setup_ops =
-> >>>>> {
-> >>>> _______________________________________________
-> >>>> linux-arm-kernel mailing list
-> >>>> linux-arm-kernel@lists.infradead.org
-> >>>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> >>>>
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> > 
+diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
+index 2cd2cc2316c6..95af67470668 100644
+--- a/drivers/iio/imu/adis.c
++++ b/drivers/iio/imu/adis.c
+@@ -38,7 +38,8 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+-			.delay_usecs = adis->data->write_delay,
++			.delay.value = adis->data->write_delay,
++			.delay.unit = SPI_DELAY_UNIT_USECS,
+ 			.cs_change_delay.value = adis->data->cs_change_delay,
+ 			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+@@ -46,7 +47,8 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+-			.delay_usecs = adis->data->write_delay,
++			.delay.value = adis->data->write_delay,
++			.delay.unit = SPI_DELAY_UNIT_USECS,
+ 			.cs_change_delay.value = adis->data->cs_change_delay,
+ 			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+@@ -54,19 +56,22 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+-			.delay_usecs = adis->data->write_delay,
++			.delay.value = adis->data->write_delay,
++			.delay.unit = SPI_DELAY_UNIT_USECS,
+ 			.cs_change_delay.value = adis->data->cs_change_delay,
+ 			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+ 			.tx_buf = adis->tx + 6,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+-			.delay_usecs = adis->data->write_delay,
++			.delay.value = adis->data->write_delay,
++			.delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+ 			.tx_buf = adis->tx + 8,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+-			.delay_usecs = adis->data->write_delay,
++			.delay.value = adis->data->write_delay,
++			.delay.unit = SPI_DELAY_UNIT_USECS,
+ 		},
+ 	};
+ 
+@@ -138,7 +143,8 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+-			.delay_usecs = adis->data->write_delay,
++			.delay.value = adis->data->write_delay,
++			.delay.unit = SPI_DELAY_UNIT_USECS,
+ 			.cs_change_delay.value = adis->data->cs_change_delay,
+ 			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+@@ -146,7 +152,8 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+-			.delay_usecs = adis->data->read_delay,
++			.delay.value = adis->data->read_delay,
++			.delay.unit = SPI_DELAY_UNIT_USECS,
+ 			.cs_change_delay.value = adis->data->cs_change_delay,
+ 			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+@@ -155,14 +162,16 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+-			.delay_usecs = adis->data->read_delay,
++			.delay.value = adis->data->read_delay,
++			.delay.unit = SPI_DELAY_UNIT_USECS,
+ 			.cs_change_delay.value = adis->data->cs_change_delay,
+ 			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+ 			.rx_buf = adis->rx + 2,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+-			.delay_usecs = adis->data->read_delay,
++			.delay.value = adis->data->read_delay,
++			.delay.unit = SPI_DELAY_UNIT_USECS,
+ 		},
+ 	};
+ 
+-- 
+2.20.1
+

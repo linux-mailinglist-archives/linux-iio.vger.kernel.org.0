@@ -2,198 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E74111462C
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2019 18:46:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5C7A114672
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2019 19:00:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730093AbfLERql (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Dec 2019 12:46:41 -0500
-Received: from mga14.intel.com ([192.55.52.115]:9395 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729396AbfLERql (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 5 Dec 2019 12:46:41 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Dec 2019 09:46:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,282,1571727600"; 
-   d="scan'208";a="214248300"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 05 Dec 2019 09:46:39 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 7C05176; Thu,  5 Dec 2019 19:46:38 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v3 2/2] iio: adc: ti-ads1015: Make use of device property API
-Date:   Thu,  5 Dec 2019 19:46:37 +0200
-Message-Id: <20191205174637.47610-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191205174637.47610-1-andriy.shevchenko@linux.intel.com>
-References: <20191205174637.47610-1-andriy.shevchenko@linux.intel.com>
+        id S1729535AbfLESAd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Dec 2019 13:00:33 -0500
+Received: from sonic301-3.consmr.mail.bf2.yahoo.com ([74.6.129.42]:42734 "EHLO
+        sonic301-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729892AbfLESAd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Dec 2019 13:00:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1575568831; bh=zPC9p8T5S06DA73PD5F75wViZ/EpBpeYylTS7OqjCU4=; h=Date:From:Reply-To:Subject:From:Subject; b=lkLM6V6mUH7CUUGUxB6VNBoIyR9CwL2baaJG1X3YweaYMCX5sx2UnHoL68PMpF0KmZBXCQg9yIPV3KZo+9f1m+G4kZ+b73ZxKn2NNh0l5aBkjDVkTeejk9SCci/gcmGKCNDiJtkyzn9RBaoa96HJ94sz2xFXh0H1XaQXKUwMh3pX9cAHfEG/Fj5Hi17R29WhfWvHU8f8CJvUxCyIyYuEaC8G+rZC0HnmoxV135OaslFNlHc9rdSlszF0QC++Sn55s6Z/VOCN+Lti1DqF5q/MWZGZv7hY71iTi4YM4DUgfRYUHfVkxP40LydtgTWbJ7lw7ehMlk35lSb12Vf2WNquCw==
+X-YMail-OSG: KNsbVJcVM1mEMPfKtZmaTgmYqEa0kn4p4upKvdSBGfZO0x3ALUBHdMAtniXc_s8
+ 7vNWjkeJmlpj0NNhwphjb2wgxDH4Banl94mDFO.T6muSVgSfLsNtF2aG59e3aJ.44kNnUrrlA6AW
+ 1qWrDJTwr2qqjPj7X0rByNM_BdXLdPhc6xNCmKK6uj5OJU6ZLWNQW5_ga.hM6i1otip_qPyyYvtQ
+ h3xI1C0k0OK68b9.Dd4eWGgzngMIckaOHeXaRcUtzaCqONwhc0TpchBAzk.QtVdBhGzfH8AtdDRs
+ 41JhvBzJIqycJjM2UkRpIouYKct2YW4aXJfnu67WgsalBNfm5xKlHFeL6VJAyim0L0tuQZy.f6sw
+ 9QL.2YWNC6dQzRWskd70lPcn0bNTfvujKceShzb_2p.4rCCHlaU5N7k9o5iyBFmErnoEtHJVflk4
+ 6FAsdlBumVNcRlrc47zTX1cEy1ccZn0PtJJuvnPNTvgbxNNvJrlcXgvreiiLdFRwJfGzaNQ8tvmZ
+ CotB3FPbVVrDjw0cEv2KJUKOfxzqw.T9xTl.7GVK7utSA0pkTBFIWWo1NJe3.EbGzowSiRsO7unQ
+ DX.jHP1HFGcOFWFBwMoAUKhcCVL4HD00zcAMq8iIQT6DAVbSucIGEE4J2TVa.7aoeSspzD4kGiIX
+ shpGkZqojcrDu16uHkTV3MHSgBJbCce8j379zymQcqD45KXfDYD7ieZvUKLhxW1IwAgjQzZgO.nf
+ mvC7zpDchFd9StHI4EtDQDHo7LBEFwwWMmtEOYo6BQcscKBsXUQtgvsmC5HC1D0yO8ZW8cp86Ak2
+ EJNg_Qhz8urYESTJo21esubGwjBHpLwe5UF8dH2c6hT3uZrx4xFKTlEFRltjGjGU3NwlxOv0n4Ua
+ OtkI3Ok9vk7IBMIll_TLE3Ty_KtrTStdCnz5bzEu5u_auB.lKx5KkhaB2.NS5HmQQQNL3wlM_SQ9
+ 3.mdcpOqqzFC7J6kNyjyBXQdCwftFiFdg4TdCqqlJg9dwEMbht.eWAUR_fzLs72kdLW8AB0JyN7W
+ X4KjXaL.66bBvn1CKolNFq0zfYe7cVWcVyr46aFRlOBmjmDUl4mLNxFZHXA3esD_3x9zb72Ct.tP
+ 5tNfgIinWI2crXrKKmK.2TdBkRS3fDkAHEuJvZx4NWhkHMkTAYvGvuHWTyqpqwMYarn6bsmWZZ5B
+ rrHk8tXCH4b.fKteXlRUFy_0dS85B1pDy1kTLWa1dBXnGd2jFrS..hM4BqI2v4qKrA7ia6RLDiur
+ vcbeA.4N3UQwm8hBc0.y5Gz4BslbpHXfFIXSABvIKCzEh3drvYX2nJwBggxMbvr9FY5WGf8Mxqiy
+ IBr7LJaEbog--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Thu, 5 Dec 2019 18:00:31 +0000
+Date:   Thu, 5 Dec 2019 18:00:27 +0000 (UTC)
+From:   Ms Lisa Hugh <lisa.hugh222@gmail.com>
+Reply-To: ms.lisahugh000@gmail.com
+Message-ID: <691108676.6159901.1575568827372@mail.yahoo.com>
+Subject: I NEED YOUR HELP FOR THIS TRANSFER.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Make use of device property API in this driver so that both OF based
-system and ACPI based system can use this driver.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v2:
-- use device_for_each_child_node()
-- leave 'node' variable name (reduce churn)
- drivers/iio/adc/ti-ads1015.c | 57 ++++++++++++++++--------------------
- 1 file changed, 26 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-index 3b123b4f0b99..5ea4f45d6bad 100644
---- a/drivers/iio/adc/ti-ads1015.c
-+++ b/drivers/iio/adc/ti-ads1015.c
-@@ -12,10 +12,10 @@
-  */
- 
- #include <linux/module.h>
--#include <linux/of_device.h>
- #include <linux/init.h>
- #include <linux/irq.h>
- #include <linux/i2c.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/pm_runtime.h>
- #include <linux/mutex.h>
-@@ -77,6 +77,7 @@
- #define ADS1015_DEFAULT_CHAN		0
- 
- enum chip_ids {
-+	ADSXXXX = 0,
- 	ADS1015,
- 	ADS1115,
- };
-@@ -843,65 +844,58 @@ static const struct iio_info ads1115_info = {
- 	.attrs          = &ads1115_attribute_group,
- };
- 
--#ifdef CONFIG_OF
--static int ads1015_get_channels_config_of(struct i2c_client *client)
-+static int ads1015_client_get_channels_config(struct i2c_client *client)
- {
- 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
- 	struct ads1015_data *data = iio_priv(indio_dev);
--	struct device_node *node;
-+	struct device *dev = &client->dev;
-+	struct fwnode_handle *node;
-+	int i = -1;
- 
--	if (!client->dev.of_node ||
--	    !of_get_next_child(client->dev.of_node, NULL))
--		return -EINVAL;
--
--	for_each_child_of_node(client->dev.of_node, node) {
-+	device_for_each_child_node(dev, node) {
- 		u32 pval;
- 		unsigned int channel;
- 		unsigned int pga = ADS1015_DEFAULT_PGA;
- 		unsigned int data_rate = ADS1015_DEFAULT_DATA_RATE;
- 
--		if (of_property_read_u32(node, "reg", &pval)) {
--			dev_err(&client->dev, "invalid reg on %pOF\n",
--				node);
-+		if (fwnode_property_read_u32(node, "reg", &pval)) {
-+			dev_err(dev, "invalid reg on %pfw\n", node);
- 			continue;
- 		}
- 
- 		channel = pval;
- 		if (channel >= ADS1015_CHANNELS) {
--			dev_err(&client->dev,
--				"invalid channel index %d on %pOF\n",
-+			dev_err(dev, "invalid channel index %d on %pfw\n",
- 				channel, node);
- 			continue;
- 		}
- 
--		if (!of_property_read_u32(node, "ti,gain", &pval)) {
-+		if (!fwnode_property_read_u32(node, "ti,gain", &pval)) {
- 			pga = pval;
- 			if (pga > 6) {
--				dev_err(&client->dev, "invalid gain on %pOF\n",
--					node);
--				of_node_put(node);
-+				dev_err(dev, "invalid gain on %pfw\n", node);
-+				fwnode_handle_put(node);
- 				return -EINVAL;
- 			}
- 		}
- 
--		if (!of_property_read_u32(node, "ti,datarate", &pval)) {
-+		if (!fwnode_property_read_u32(node, "ti,datarate", &pval)) {
- 			data_rate = pval;
- 			if (data_rate > 7) {
--				dev_err(&client->dev,
--					"invalid data_rate on %pOF\n",
--					node);
--				of_node_put(node);
-+				dev_err(dev, "invalid data_rate on %pfw\n", node);
-+				fwnode_handle_put(node);
- 				return -EINVAL;
- 			}
- 		}
- 
- 		data->channel_data[channel].pga = pga;
- 		data->channel_data[channel].data_rate = data_rate;
-+
-+		i++;
- 	}
- 
--	return 0;
-+	return i < 0 ? -EINVAL : 0;
- }
--#endif
- 
- static void ads1015_get_channels_config(struct i2c_client *client)
- {
-@@ -910,10 +904,9 @@ static void ads1015_get_channels_config(struct i2c_client *client)
- 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
- 	struct ads1015_data *data = iio_priv(indio_dev);
- 
--#ifdef CONFIG_OF
--	if (!ads1015_get_channels_config_of(client))
-+	if (!ads1015_client_get_channels_config(client))
- 		return;
--#endif
-+
- 	/* fallback on default configuration */
- 	for (k = 0; k < ADS1015_CHANNELS; ++k) {
- 		data->channel_data[k].pga = ADS1015_DEFAULT_PGA;
-@@ -951,9 +944,8 @@ static int ads1015_probe(struct i2c_client *client,
- 	indio_dev->name = ADS1015_DRV_NAME;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
--	if (client->dev.of_node)
--		chip = (enum chip_ids)of_device_get_match_data(&client->dev);
--	else
-+	chip = (enum chip_ids)device_get_match_data(&client->dev);
-+	if (chip == ADSXXXX)
- 		chip = id->driver_data;
- 	switch (chip) {
- 	case ADS1015:
-@@ -968,6 +960,9 @@ static int ads1015_probe(struct i2c_client *client,
- 		indio_dev->info = &ads1115_info;
- 		data->data_rate = (unsigned int *) &ads1115_data_rate;
- 		break;
-+	default:
-+		dev_err(&client->dev, "Unknown chip %d\n", chip);
-+		return -EINVAL;
- 	}
- 
- 	data->event_channel = ADS1015_CHANNELS;
--- 
-2.24.0
+Dear Friend,
 
+I am Ms Lisa Hugh work with the department of Audit and accounting manager here in the Bank(B.O.A).
+
+Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
+
+I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me forsuccess.
+
+Note/ 50% for you why 50% for me after success of the transfer to your bank
+account.
+
+Below information is what i need from you so will can be reaching each
+other
+
+1)Full name ...
+2)Private telephone number...
+3)Age...
+4)Nationality...
+5)Occupation ...
+
+
+Thanks.
+
+Ms Lisa Hugh

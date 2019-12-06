@@ -2,127 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF3A115640
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2019 18:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 749CE11564F
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2019 18:20:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbfLFROP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Dec 2019 12:14:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55978 "EHLO mail.kernel.org"
+        id S1726287AbfLFRUi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Dec 2019 12:20:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58150 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726284AbfLFROO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 6 Dec 2019 12:14:14 -0500
+        id S1726284AbfLFRUi (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 6 Dec 2019 12:20:38 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3426321835;
-        Fri,  6 Dec 2019 17:14:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C862321835;
+        Fri,  6 Dec 2019 17:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575652454;
-        bh=9JpTaDgIVyzU2wRzhv291fihCdjvrJVjxLn/vHo0e1I=;
+        s=default; t=1575652837;
+        bh=Pr+trFdFnGgbjsEI7TeElonAO3+mOvXNYagprnJOKE8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MXsAw+PmsM6gEdwyT9WQx0yeTvmUo6VjSnujVqfGOpmB6GZzAoqsl3NymIfrlsp6Y
-         trIDQeen3yM4WINOVBL8KbC3rzXecveLfEIbxkTIkfTTmT1SNbyHeIVd0zAg6y6JNC
-         FvXXAWPXSiUOLO7H+iQQW3WT3haLKoee7jkIFjzc=
-Date:   Fri, 6 Dec 2019 17:14:09 +0000
+        b=kf4H8SAr1/PJx313ybaar132FRdEKhCCg9zWi+/8Wb0R5jbWwx8rQfxp05B9qIel6
+         o0spE/Ki0Xz/OkPlC1PQbWukpcSueHFL7019hqdF0TrPOv1nTFGlJ8YjlomOvp88FO
+         1baUGKRPjrId6oEg3kjTMwCw2L3+jmdf3Bqo1aKU=
+Date:   Fri, 6 Dec 2019 17:20:33 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Eugene Zalkonnikov <ez@norphonic.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+To:     Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
+Cc:     Eugene Zalkonnikov <ez@norphonic.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         "development@norphonic.com" <development@norphonic.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] Driver for TI HDC20x0 humidity and temperature
+Subject: Re: [PATCH v2 1/2] Driver for TI HDC20x0 humidity and temperature
  sensors
-Message-ID: <20191206171409.35f7f776@archlinux>
-In-Reply-To: <76F5F343-49E1-4D7D-9A7C-FB5A3C1C5862@norphonic.com>
+Message-ID: <20191206172033.278503b6@archlinux>
+In-Reply-To: <221cc09d-340c-b5b5-7af6-0608588598a1@norphonic.com>
 References: <1FA22019-2D01-45B2-9C6B-0F6720F1B4A2@norphonic.com>
-        <E9781938-9BFB-4978-83AB-B17B0BE01BC3@norphonic.com>
-        <20191201123807.41f62181@archlinux>
-        <EF648C3D-28B1-4509-AE3D-F24668A6849B@norphonic.com>
-        <76F5F343-49E1-4D7D-9A7C-FB5A3C1C5862@norphonic.com>
+        <20191201123606.1db0d5b1@archlinux>
+        <221cc09d-340c-b5b5-7af6-0608588598a1@norphonic.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 3 Dec 2019 11:41:20 +0000
-Eugene Zalkonnikov <ez@norphonic.com> wrote:
+On Tue, 3 Dec 2019 09:10:49 +0000
+Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com> wrote:
 
-> The previous was mis-formatted, sorry for that.
-> 
-> Signed-off-by: Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
+> On 01.12.2019 13:36, Jonathan Cameron wrote:
+> > =20
+> >> Heater out has been converted to IIO_CHAN_INFO_ENABLE, hope it is
+> >> idiomatic use. =20
+> > Hmm. This is one of those cases where we are probably better off
+> > matching existing drivers even if they are a bit illogical.
+> >
+> > The enable element is mainly used for counting type sensors (start
+> > counting steps etc) where there is a clear difference between it
+> > being on and taking a measurement. =20
+> OK, will revert that to prior.
+> > +static const struct iio_chan_spec hdc2010_channels[] =3D { =20
+> >> +	{
+> >> +		.type =3D IIO_TEMP,
+> >> +		.address =3D HDC2010_REG_TEMP_LOW,
+> >> +		.info_mask_shared_by_type =3D
+> >> BIT(IIO_CHAN_INFO_OFFSET) |
+> >> +			BIT(IIO_CHAN_INFO_SCALE),
+> >> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),
+> >> +	},
+> >> +	{
+> >> +		.type =3D IIO_TEMP,
+> >> +		.address =3D HDC2010_REG_TEMP_MAX,
+> >> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_PEAK), =20
+> > Not sure I like this approach of a separate channel.  The intent of
+> > my previous review as to suggest we used a single channel. Here
+> > we are really just adding one to get an address.  Whilst it works
+> > today, this sort of unusual structure can make it harder to refactor
+> > core elements of the code in the future.
+> >
+> > I'd rather see a bit of indirection where address actually gives
+> > an enum value from which the data and _MAX registers can be
+> > established via a lookup in an associated array. =20
+>=20
+> I see what you mean now. Was taking the name of .address field
+> literally, but if anything goes there, sure.
+>=20
 
-Please resend as a separate thread. It should not be in reply to the
-previous one or have a title that makes no sense for this patch.
+> While we are at it, there are four r/w threshold registers on the
+> device for rh/temp. Should one implement them in the future, are they
+> going to be also mixed into these somehow or can they be own event
+> channels?
 
-Otherwise looks fine to me.
+Look at the datasheet, that is one high and one low for each of
+rh and temp?  Initially I thought you meant 2 in each direction for
+each channel which we don't support (there is no means of
+encoding it in the event code to userspace).
+
+That can be handled just fine using the event setup for each channel
+as one channel can have multiple event specs.
 
 Thanks,
 
 Jonathan
-> 
-> diff -uprN linux-5.3.8/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010 linux-5.3.8_docs/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010
-> --- linux-5.3.8/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010	1970-01-01 01:00:00.000000000 +0100
-> +++ linux-5.3.8_docs/Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010	2019-12-02 11:09:25.803326999 +0100
-> @@ -0,0 +1,9 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_current_heater_raw
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_current_heater_raw_available
-> +KernelVersion:	5.3.8
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Controls the heater device within the humidity sensor to get
-> +		rid of excess condensation.
-> +
-> +		Valid control values are 0 = OFF, and 1 = ON.
-> diff -uprN linux-5.3.8/Documentation/devicetree/bindings/iio/humidity/hdc2010.yaml linux-5.3.8_docs/Documentation/devicetree/bindings/iio/humidity/hdc2010.yaml
-> --- linux-5.3.8/Documentation/devicetree/bindings/iio/humidity/hdc2010.yaml	1970-01-01 01:00:00.000000000 +0100
-> +++ linux-5.3.8_docs/Documentation/devicetree/bindings/iio/humidity/hdc2010.yaml	2019-12-02 08:43:32.508277082 +0100
-> @@ -0,0 +1,43 @@
-> +# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/humidity/hdc2010.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: HDC2010/HDC2080 humidity and temperature iio sensors
-> +
-> +maintainers:
-> +  - Eugene Zaikonnikov <eugene.zaikonnikov@norophonic.com>
-> +
-> +description: |
-> +  Relative humidity and tempereature sensors on I2C bus
-> +
-> +  Datasheets are available at:
-> +    http://www.ti.com/product/HDC2010/datasheet
-> +    http://www.ti.com/product/HDC2080/datasheet
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,hdc2010
-> +      - ti,hdc2080
-> +
-> +  interrupts:
-> +    description:
-> +      interrupt mapping for IRQ
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +
-> +examples:
-> +  - |
-> +    i2c0 {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      hdc200x@40 {
-> +          compatible = "ti,hdc2010";
-> +          reg = <0x40>;
-> +      };
-> +    };
-> 
+
+
+
+>=20
+>=20
+> --
+>=20
+> =C2=A0 Eugene
+>=20
 

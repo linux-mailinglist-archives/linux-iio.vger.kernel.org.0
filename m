@@ -2,208 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E9A115BF4
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 12:09:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 977CA115BF5
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 12:12:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726185AbfLGLJo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Dec 2019 06:09:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44282 "EHLO mail.kernel.org"
+        id S1726263AbfLGLMD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Dec 2019 06:12:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44748 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726025AbfLGLJo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Dec 2019 06:09:44 -0500
+        id S1726025AbfLGLMC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 7 Dec 2019 06:12:02 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EF00E24673;
-        Sat,  7 Dec 2019 11:09:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE3C524673;
+        Sat,  7 Dec 2019 11:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575716982;
-        bh=GpLI3dhwJXFUbKDyW39bXo8iROVT6YGtHtvoF1FXUGE=;
+        s=default; t=1575717121;
+        bh=WI+LemDcpYVITCWDtrnmlI0yhoN0fnrcBkkObYh83kQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rTWdFPphDnYHCeGqAoZeBakiloIa7/nO3/F8pqYSBpbSuN976yEQJnqmZENI24l9o
-         UaynhB+5GSRN7wpWP8KB+f0gVU5IwaNr/KvWx0SSy+wTmJDM6GjqynZSSAIxkBWxiD
-         JVkpRDk6lyoOBFCiDFO5lAGP5pFAaxZlN3xLt+qo=
-Date:   Sat, 7 Dec 2019 11:09:37 +0000
+        b=v80aqitChL36LevYdO7d+JONlcxEKJPjcmWF0Cjc0C9sXcZbAZAhfcP1FLz791ha6
+         hYPVBOpBpEMX5eUfuD10pg5oUoN90523xjSdVPxOCgb6a1oGbhAs0M9oOBEWTOHJzN
+         MW4KsiF/ojmy63bpbCiq71N0ZbVA5LCf8dvwnXcY=
+Date:   Sat, 7 Dec 2019 11:11:56 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v3 2/2] iio: adc: ti-ads1015: Make use of device
- property API
-Message-ID: <20191207110937.6a0c1229@archlinux>
-In-Reply-To: <20191205174637.47610-2-andriy.shevchenko@linux.intel.com>
-References: <20191205174637.47610-1-andriy.shevchenko@linux.intel.com>
-        <20191205174637.47610-2-andriy.shevchenko@linux.intel.com>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] iio: adc: max9611: Fix too short conversion time
+ delay
+Message-ID: <20191207111156.7e5139f0@archlinux>
+In-Reply-To: <20191206131944.28707-1-geert+renesas@glider.be>
+References: <20191206131944.28707-1-geert+renesas@glider.be>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  5 Dec 2019 19:46:37 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Fri,  6 Dec 2019 14:19:44 +0100
+Geert Uytterhoeven <geert+renesas@glider.be> wrote:
 
-> Make use of device property API in this driver so that both OF based
-> system and ACPI based system can use this driver.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Applied.
-
-Thanks,
+> As of commit b9ddd5091160793e ("iio: adc: max9611: Fix temperature
+> reading in probe"), max9611 initialization sometimes fails on the
+> Salvator-X(S) development board with:
+>=20
+>     max9611 4-007f: Invalid value received from ADC 0x8000: aborting
+>     max9611: probe of 4-007f failed with error -5
+>=20
+> The max9611 driver tests communications with the chip by reading the die
+> temperature during the probe function, which returns an invalid value.
+>=20
+> According to the datasheet, the typical ADC conversion time is 2 ms, but
+> no minimum or maximum values are provided.  Maxim Technical Support
+> confirmed this was tested with temperature Ta=3D25 degreeC, and promised
+> to inform me if a maximum/minimum value is available (they didn't get
+> back to me, so I assume it is not).
+>=20
+> However, the driver assumes a 1 ms conversion time.  Usually the
+> usleep_range() call returns after more than 1.8 ms, hence it succeeds.
+> When it returns earlier, the data register may be read too early, and
+> the previous measurement value will be returned.  After boot, this is
+> the temperature POR (power-on reset) value, causing the failure above.
+>=20
+> Fix this by increasing the delay from 1000-2000 =C2=B5s to 3000-3300 =C2=
+=B5s.
+>=20
+> Note that this issue has always been present, but it was exposed by the
+> aformentioned commit.
+>=20
+> Fixes: 69780a3bbc0b1e7e ("iio: adc: Add Maxim max9611 ADC driver")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Reviewed-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
+> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Ah. I picked up v2 and did the tidy up.  Oh well, same result ;)
 
 Jonathan
 
 > ---
+> After this patch, probing of the two max9611 sensors succeeded during
+> ca. 3000 boot cycles on Salvator-X(S) boards, equipped with various
+> R-Car H3/M3-W/M3-N SoCs.
+>=20
+> v3:
+>   - Add Reviewed-by,
+>   - Join split comment line,
+>=20
 > v2:
-> - use device_for_each_child_node()
-> - leave 'node' variable name (reduce churn)
->  drivers/iio/adc/ti-ads1015.c | 57 ++++++++++++++++--------------------
->  1 file changed, 26 insertions(+), 31 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-> index 3b123b4f0b99..5ea4f45d6bad 100644
-> --- a/drivers/iio/adc/ti-ads1015.c
-> +++ b/drivers/iio/adc/ti-ads1015.c
-> @@ -12,10 +12,10 @@
->   */
->  
->  #include <linux/module.h>
-> -#include <linux/of_device.h>
->  #include <linux/init.h>
->  #include <linux/irq.h>
->  #include <linux/i2c.h>
-> +#include <linux/property.h>
->  #include <linux/regmap.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/mutex.h>
-> @@ -77,6 +77,7 @@
->  #define ADS1015_DEFAULT_CHAN		0
->  
->  enum chip_ids {
-> +	ADSXXXX = 0,
->  	ADS1015,
->  	ADS1115,
->  };
-> @@ -843,65 +844,58 @@ static const struct iio_info ads1115_info = {
->  	.attrs          = &ads1115_attribute_group,
->  };
->  
-> -#ifdef CONFIG_OF
-> -static int ads1015_get_channels_config_of(struct i2c_client *client)
-> +static int ads1015_client_get_channels_config(struct i2c_client *client)
->  {
->  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
->  	struct ads1015_data *data = iio_priv(indio_dev);
-> -	struct device_node *node;
-> +	struct device *dev = &client->dev;
-> +	struct fwnode_handle *node;
-> +	int i = -1;
->  
-> -	if (!client->dev.of_node ||
-> -	    !of_get_next_child(client->dev.of_node, NULL))
-> -		return -EINVAL;
-> -
-> -	for_each_child_of_node(client->dev.of_node, node) {
-> +	device_for_each_child_node(dev, node) {
->  		u32 pval;
->  		unsigned int channel;
->  		unsigned int pga = ADS1015_DEFAULT_PGA;
->  		unsigned int data_rate = ADS1015_DEFAULT_DATA_RATE;
->  
-> -		if (of_property_read_u32(node, "reg", &pval)) {
-> -			dev_err(&client->dev, "invalid reg on %pOF\n",
-> -				node);
-> +		if (fwnode_property_read_u32(node, "reg", &pval)) {
-> +			dev_err(dev, "invalid reg on %pfw\n", node);
->  			continue;
->  		}
->  
->  		channel = pval;
->  		if (channel >= ADS1015_CHANNELS) {
-> -			dev_err(&client->dev,
-> -				"invalid channel index %d on %pOF\n",
-> +			dev_err(dev, "invalid channel index %d on %pfw\n",
->  				channel, node);
->  			continue;
->  		}
->  
-> -		if (!of_property_read_u32(node, "ti,gain", &pval)) {
-> +		if (!fwnode_property_read_u32(node, "ti,gain", &pval)) {
->  			pga = pval;
->  			if (pga > 6) {
-> -				dev_err(&client->dev, "invalid gain on %pOF\n",
-> -					node);
-> -				of_node_put(node);
-> +				dev_err(dev, "invalid gain on %pfw\n", node);
-> +				fwnode_handle_put(node);
->  				return -EINVAL;
->  			}
->  		}
->  
-> -		if (!of_property_read_u32(node, "ti,datarate", &pval)) {
-> +		if (!fwnode_property_read_u32(node, "ti,datarate", &pval)) {
->  			data_rate = pval;
->  			if (data_rate > 7) {
-> -				dev_err(&client->dev,
-> -					"invalid data_rate on %pOF\n",
-> -					node);
-> -				of_node_put(node);
-> +				dev_err(dev, "invalid data_rate on %pfw\n", node);
-> +				fwnode_handle_put(node);
->  				return -EINVAL;
->  			}
->  		}
->  
->  		data->channel_data[channel].pga = pga;
->  		data->channel_data[channel].data_rate = data_rate;
+>   - Add Reviewed-by,
+>   - Add feedback from Maxim Technical Support,
+>   - Increase delay from 2000-2200 =C2=B5s to 3000-3300 =C2=B5s to play sa=
+fe.
+> ---
+>  drivers/iio/adc/max9611.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
+> index bf76dfb3f2c9530b..6250d4bf46dc9642 100644
+> --- a/drivers/iio/adc/max9611.c
+> +++ b/drivers/iio/adc/max9611.c
+> @@ -89,6 +89,12 @@
+>  #define MAX9611_TEMP_SCALE_NUM		1000000
+>  #define MAX9611_TEMP_SCALE_DIV		2083
+> =20
+> +/*
+> + * Conversion time is 2 ms (typically) at Ta=3D25 degreeC
+> + * No maximum value is known, so play it safe
+> + */
+> +#define MAX9611_CONV_TIME_US_RANGE	3000, 3300
 > +
-> +		i++;
+>  struct max9611_dev {
+>  	struct device *dev;
+>  	struct i2c_client *i2c_client;
+> @@ -223,10 +229,9 @@ static int max9611_read_single(struct max9611_dev *m=
+ax9611,
 >  	}
->  
-> -	return 0;
-> +	return i < 0 ? -EINVAL : 0;
+> =20
+>  	/*
+> -	 * need a delay here to make register configuration
+> -	 * stabilize. 1 msec at least, from empirical testing.
+> +	 * need a delay here to make register configuration stabilize.
+>  	 */
+> -	usleep_range(1000, 2000);
+> +	usleep_range(MAX9611_CONV_TIME_US_RANGE);
+> =20
+>  	ret =3D i2c_smbus_read_word_swapped(max9611->i2c_client, reg_addr);
+>  	if (ret < 0) {
+> @@ -493,7 +498,7 @@ static int max9611_init(struct max9611_dev *max9611)
+>  			MAX9611_REG_CTRL2, 0);
+>  		return ret;
+>  	}
+> -	usleep_range(1000, 2000);
+> +	usleep_range(MAX9611_CONV_TIME_US_RANGE);
+> =20
+>  	return 0;
 >  }
-> -#endif
->  
->  static void ads1015_get_channels_config(struct i2c_client *client)
->  {
-> @@ -910,10 +904,9 @@ static void ads1015_get_channels_config(struct i2c_client *client)
->  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
->  	struct ads1015_data *data = iio_priv(indio_dev);
->  
-> -#ifdef CONFIG_OF
-> -	if (!ads1015_get_channels_config_of(client))
-> +	if (!ads1015_client_get_channels_config(client))
->  		return;
-> -#endif
-> +
->  	/* fallback on default configuration */
->  	for (k = 0; k < ADS1015_CHANNELS; ++k) {
->  		data->channel_data[k].pga = ADS1015_DEFAULT_PGA;
-> @@ -951,9 +944,8 @@ static int ads1015_probe(struct i2c_client *client,
->  	indio_dev->name = ADS1015_DRV_NAME;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  
-> -	if (client->dev.of_node)
-> -		chip = (enum chip_ids)of_device_get_match_data(&client->dev);
-> -	else
-> +	chip = (enum chip_ids)device_get_match_data(&client->dev);
-> +	if (chip == ADSXXXX)
->  		chip = id->driver_data;
->  	switch (chip) {
->  	case ADS1015:
-> @@ -968,6 +960,9 @@ static int ads1015_probe(struct i2c_client *client,
->  		indio_dev->info = &ads1115_info;
->  		data->data_rate = (unsigned int *) &ads1115_data_rate;
->  		break;
-> +	default:
-> +		dev_err(&client->dev, "Unknown chip %d\n", chip);
-> +		return -EINVAL;
->  	}
->  
->  	data->event_channel = ADS1015_CHANNELS;
 

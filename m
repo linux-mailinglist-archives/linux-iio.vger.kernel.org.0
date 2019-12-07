@@ -2,73 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AA361156BA
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2019 18:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18BB3115A46
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 01:30:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726353AbfLFRsT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Dec 2019 12:48:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37354 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726298AbfLFRsT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 6 Dec 2019 12:48:19 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 71AE524670;
-        Fri,  6 Dec 2019 17:48:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575654498;
-        bh=eMse2k/BQ/bmieQOECywIK5kP7R5h5NRESYh+mz6IC8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mYZy6kre31WjBgxKyu+oFJiPoUyVDROpYn8ueb8NCO5efQxoomf2fZ276qK4SjYcb
-         ykSXdbkt/M2AS9kpu2uSAXkWbsn7eOltCriRXaS5jbcQSabGzi9aFPjSNmU/vSr4fH
-         Stg+m5lcnjKCuAlwcuPNt6Nn8zIaNwcNtibTEtNY=
-Date:   Fri, 6 Dec 2019 17:48:14 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: si1145: Drop GPIO include
-Message-ID: <20191206174814.5c0786c3@archlinux>
-In-Reply-To: <20191202082123.62350-1-linus.walleij@linaro.org>
-References: <20191202082123.62350-1-linus.walleij@linaro.org>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726707AbfLGAaA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Dec 2019 19:30:00 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:45630 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726665AbfLGA34 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Dec 2019 19:29:56 -0500
+Received: by mail-wr1-f67.google.com with SMTP id j42so9587673wrj.12
+        for <linux-iio@vger.kernel.org>; Fri, 06 Dec 2019 16:29:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=S7m9By4/eRnSy0vxdfJ6TocT5eJ8gcKLceyHvlHTn3o=;
+        b=LXxoS6Ed7of6jWaofmDfQc8/u3Mg9Maolmr3Vpf9Rmy6M9EqjFAuvGQ8h9p7LhnwAL
+         J2FbblgdkGgZHafRFxx28eRdV2u28AyUlEZcVvHuYvVm3rtf1quwzUCMSvqmMRhzvXWg
+         Lr2BVgHFftpJuxoM6FIG7HwvD6NJoH8mvEjpjvV8POe7OxPQSgcaMvRkWz9Uiu2DLDQI
+         zLbCM6eF/2UqhYCC9SzqWLAqDFWNhNPH2Mzqdx7SMOIQYQVzi+r4mUYfVbZ4zkg6G/Rf
+         GMyYZz2zxEAODyOdyEtKF6h6LvlYj6nQy3cPNK/qqQ+yOafhqpdxqfrrNrKMk4+XdZU4
+         ueNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=S7m9By4/eRnSy0vxdfJ6TocT5eJ8gcKLceyHvlHTn3o=;
+        b=EKzsSkDtGmzF6NEOw2N79CC2DEL4JvvoDA639ANsut1ZBccRSnmmSE2uroNVOftVbO
+         5hmM1//HgYpe20ncV8DjlRBNrA67pK6OEueCH6+M3vjboVBLSusAtYQe/CRLlOrLRWXt
+         wMRaggk+fcAbuRSt9NbWsC6nGWVIfd001nQUHZSNdGogRRwD/oDAIPlSQLq5uKys2gP3
+         OEj7pZoBQzz1bO0QWwq5p4FnYUbU9vy2HgPuDxTBlvqDZxTNupDApkslwgssv/qgvWpZ
+         ooyXGsDw6eP0oqYP+6OwQeNvIdTlGjmsfCbR7sn6dHcrdRcdFavZjuF/21mrWAnxXM2s
+         1FeA==
+X-Gm-Message-State: APjAAAWdLT07CewtaJ4q8U7T0XcDyFNO03BrDSxSpUrELJq+NZzoUa1/
+        lEJq+KtX6lQensDz6xxyITdJzosp2RA/VgZ+phyCg/W5
+X-Google-Smtp-Source: APXvYqwrh3pZjAB0r+TmXxbhmAM/apODdHlIT+82DMPTCRz8CUTTqPzcZB7T3FAp1SOvDrWQKKNsT0CStxod+O7hBLs=
+X-Received: by 2002:adf:e591:: with SMTP id l17mr16654604wrm.139.1575678594023;
+ Fri, 06 Dec 2019 16:29:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a5d:678e:0:0:0:0:0 with HTTP; Fri, 6 Dec 2019 16:29:53 -0800 (PST)
+Reply-To: mrs.aalia.ahmed@gmail.com
+From:   "Mrs.Aalia.Ahmed" <adamhana1907@gmail.com>
+Date:   Sat, 7 Dec 2019 00:29:53 +0000
+Message-ID: <CAOGreO=8t36s1Mau26bRqTQErHsnOf5ki10AJ6EA4tNedNUo8g@mail.gmail.com>
+Subject: OK
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  2 Dec 2019 09:21:23 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+Greetings My Dearest One.
 
-> The driver include <linux/gpio.h> yet does not use any
-> of the symbols from the header, so drop the include.
-> 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Applied.
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/light/si1145.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/iio/light/si1145.c b/drivers/iio/light/si1145.c
-> index 982bba0c54e7..0476c2bc8138 100644
-> --- a/drivers/iio/light/si1145.c
-> +++ b/drivers/iio/light/si1145.c
-> @@ -17,7 +17,6 @@
->  #include <linux/slab.h>
->  #include <linux/delay.h>
->  #include <linux/irq.h>
-> -#include <linux/gpio.h>
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-
+My name is Mrs.Aalia.Ahmed, i saw your profile and became interested
+in you, please contact me through my email address
+(mrs.aalia.ahmed@gmail.com) to know each other and i have something
+very important to tell you, i wait for your response to my email ID.
+(mrs.aalia.ahmed@gmail.com

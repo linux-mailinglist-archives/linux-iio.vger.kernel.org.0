@@ -2,38 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08D5E115BCF
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 11:17:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F836115BD1
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 11:18:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726025AbfLGKQ7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Dec 2019 05:16:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59144 "EHLO mail.kernel.org"
+        id S1726263AbfLGKST (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Dec 2019 05:18:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59226 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725992AbfLGKQ7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Dec 2019 05:16:59 -0500
+        id S1726106AbfLGKST (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 7 Dec 2019 05:18:19 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BD5BF217BA;
-        Sat,  7 Dec 2019 10:16:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D030217BA;
+        Sat,  7 Dec 2019 10:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575713818;
-        bh=pUFQAu+qRh8xlQWteenzQT6oi7k9uNrR7iKBLQfQ3Rc=;
+        s=default; t=1575713898;
+        bh=XCnQaeIuMoHrpbfaG5HFaQYHcBgU5OVXNIk5bCkD72k=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bJ9QlfDsizvVHA1ZDJqUm3iiIbU9pZpJbTw88UlkpL4aQKhA9b9u0VYfRTYU2epm+
-         aBjNdkR+qpufiTciXEKibKI0Mz95+creq4/q3dy86+IhHFSSS3jbZVqDz86fp25KmI
-         ghR/7DqlqRT1GENAryyt7m7qziVD2uUDjdm1RhBc=
-Date:   Sat, 7 Dec 2019 10:16:54 +0000
+        b=1q3FgpsjA/3UaWMEEGbTT0Lq5Ln2/6eCrwbn3Bc5PrYCCatVTGqK0/Y/R3WXuAgKy
+         6JukkPj9W1V3fRdef4sDsbQHLzwfST+bHTCjZAkm31RxvWdvv8HUckgfHOZ5oxf7dq
+         vc10Y1e+XJD2DGgsw4J7t3pxfw9Km01Jj0RHCf6s=
+Date:   Sat, 7 Dec 2019 10:18:14 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: Re: [PATCH] iio: atlas-ph-sensor: Drop GPIO include
-Message-ID: <20191207101654.66c807cf@archlinux>
-In-Reply-To: <20191202091837.82150-1-linus.walleij@linaro.org>
-References: <20191202091837.82150-1-linus.walleij@linaro.org>
+To:     Beniamin Bia <beniamin.bia@analog.com>
+Cc:     <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <knaack.h@gmx.de>, <fabrice.gasnier@st.com>,
+        <biabeniamin@outlook.com>
+Subject: Re: [PATCH] iio: adc: Move AD7091R5 entry in a alphabetical order
+ in Makefile
+Message-ID: <20191207101814.2c7aad79@archlinux>
+In-Reply-To: <20191203101713.22888-1-beniamin.bia@analog.com>
+References: <20191203101713.22888-1-beniamin.bia@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,36 +44,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  2 Dec 2019 10:18:37 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Tue, 3 Dec 2019 12:17:13 +0200
+Beniamin Bia <beniamin.bia@analog.com> wrote:
 
-> The driver includes <linux/gpio.h> yet fails to use symbols
-> from any the header so drop the include.
+> Ad7091R5 was added in a non alphabetical order after AD7124 in Makefile and
+> KConfig. This patch fixes that and place Ad7091R5 before AD7124.
 > 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-+CC Matt
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to do something or other.
-
-Thanks,
+> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing to
+make not difference (hopefully :)
 
 Jonathan
 
 > ---
->  drivers/iio/chemical/atlas-ph-sensor.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/iio/adc/Kconfig  | 14 +++++++-------
+>  drivers/iio/adc/Makefile |  2 +-
+>  2 files changed, 8 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-ph-sensor.c
-> index 6c175eb1c7a7..b7c20c74239b 100644
-> --- a/drivers/iio/chemical/atlas-ph-sensor.c
-> +++ b/drivers/iio/chemical/atlas-ph-sensor.c
-> @@ -14,7 +14,6 @@
->  #include <linux/err.h>
->  #include <linux/irq.h>
->  #include <linux/irq_work.h>
-> -#include <linux/gpio.h>
->  #include <linux/i2c.h>
->  #include <linux/of_device.h>
->  #include <linux/regmap.h>
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 976567d4dbef..27bb4e56eaea 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -21,6 +21,13 @@ config AD_SIGMA_DELTA
+>  	select IIO_BUFFER
+>  	select IIO_TRIGGERED_BUFFER
+>  
+> +config AD7091R5
+> +	tristate "Analog Devices AD7091R5 ADC Driver"
+> +	depends on I2C
+> +	select REGMAP_I2C
+> +	help
+> +	  Say yes here to build support for Analog Devices AD7091R-5 ADC.
+> +
+>  config AD7124
+>  	tristate "Analog Devices AD7124 and similar sigma-delta ADCs driver"
+>  	depends on SPI_MASTER
+> @@ -32,13 +39,6 @@ config AD7124
+>  	  To compile this driver as a module, choose M here: the module will be
+>  	  called ad7124.
+>  
+> -config AD7091R5
+> -	tristate "Analog Devices AD7091R5 ADC Driver"
+> -	depends on I2C
+> -	select REGMAP_I2C
+> -	help
+> -	  Say yes here to build support for Analog Devices AD7091R-5 ADC.
+> -
+>  config AD7266
+>  	tristate "Analog Devices AD7265/AD7266 ADC driver"
+>  	depends on SPI_MASTER
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index 84936ec24411..bf8354cdbc34 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -6,8 +6,8 @@
+>  # When adding new entries keep the list in alphabetical order
+>  obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
+>  obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
+> -obj-$(CONFIG_AD7124) += ad7124.o
+>  obj-$(CONFIG_AD7091R5) += ad7091r5.o ad7091r-base.o
+> +obj-$(CONFIG_AD7124) += ad7124.o
+>  obj-$(CONFIG_AD7266) += ad7266.o
+>  obj-$(CONFIG_AD7291) += ad7291.o
+>  obj-$(CONFIG_AD7292) += ad7292.o
 

@@ -2,161 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5515115C41
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 13:47:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 046C4115EE1
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 23:05:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726397AbfLGMrX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Dec 2019 07:47:23 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:47825 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726371AbfLGMrW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Dec 2019 07:47:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1575722840;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=yBvyIcHAnGjy/2QtjaV5U7/bDvZIZCOB7/IQNIOy9qU=;
-        b=fyw5F1t+8YqXrabj2+Cu/AayxhgOuEUMd5+MjEmRShO3EKNJYAz1pCXaDVe1WcFU/J0Hbd
-        DHv+yN3ACKbsiPhc+GKPDQwhv97JPsq1WcQ9WWeJRlZ7Q2fhDJ3wGdDzt8aqk4WJ+5Atay
-        F6YlSaLoGSD6CZM4DETClODV9atU93s=
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
- [209.85.166.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-29-P47FfugPPZ-_bgwDe1UWow-1; Sat, 07 Dec 2019 07:47:19 -0500
-Received: by mail-io1-f70.google.com with SMTP id p5so6872998iob.23
-        for <linux-iio@vger.kernel.org>; Sat, 07 Dec 2019 04:47:19 -0800 (PST)
+        id S1726416AbfLGWFj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Dec 2019 17:05:39 -0500
+Received: from mail-il1-f194.google.com ([209.85.166.194]:44980 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726415AbfLGWFj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Dec 2019 17:05:39 -0500
+Received: by mail-il1-f194.google.com with SMTP id z12so9391134iln.11
+        for <linux-iio@vger.kernel.org>; Sat, 07 Dec 2019 14:05:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ha1rPLXByHjbI/Rdv0mMvBd3I0OoxBgZeMc8cwP1z58=;
+        b=UpxQvWlXUxNkhbbJheb3kG2NEZ8BPS2ACPvEs56e8KwY1WUkgIVGwavLJPXSKgWf7p
+         NrC0LS/lbEKA5PKLTZkoVTe3FoUhS8KRXHikVt2yAVt9+HE9GYjlIGi/MfGXUfziMyb+
+         me3TtasKUFXER5XH97mO4KA9ZMRHzZx1YYUZw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/X0EWaLMy1+4rqn9rDUZTuxbtgnd193KN5JXmEayvWs=;
-        b=jGWhoV/ObiLbsOJl8AjTaOrGdCnihYm88pLOU1Exbigq2yCB/zGjLGOeJB4EOyQMA3
-         onTfnhbmU51Kl3y41OjehGbRNhcoFLy01LxxZZYOg029HKgHirJL68v1MAIbb8x9C/6y
-         Qks5ITLXce4PZ4WQl5a9gs8b834C5ZK7n3vKN6ZIb0kmEwxS/h52DIVL4/8wzRodRoPh
-         wLJXaYcaRervl0X6kaJHr8PAGyHO2hdTrwA9uYwIZjIsfMnuXB9z22eJogL4xufYZsoq
-         aEFXI8i9c4S7kD86wEk5UBrQsz4IlvcHsEo04XL+do0B0oDQQ+AYRwTnfUjyNKCO2Zrf
-         AwSw==
-X-Gm-Message-State: APjAAAVxmJlVYMu/T8KPJmAeAUXiULAl9iclKD22lWi4yeuPaXqpHfU4
-        4kSiMUsUNab/ffwnPfxIoCuyass2FCyROvhvL6fritzOzC4PpnYHJhBTKGP+n3hjyGDwd+aoyCd
-        JcSKAQDa6l5y6ApfzNSIadN+Wea0sVLtuTggZ
-X-Received: by 2002:a02:2404:: with SMTP id f4mr18348452jaa.50.1575722838647;
-        Sat, 07 Dec 2019 04:47:18 -0800 (PST)
-X-Google-Smtp-Source: APXvYqx06IBVsjp5k85J2tqFE1p4I9kZ18/aeKygj84okLKivR/5VcdaqKGUerZtHY1nl/HapqoVF0tVL8eswE9b9tQ=
-X-Received: by 2002:a02:2404:: with SMTP id f4mr18348436jaa.50.1575722838324;
- Sat, 07 Dec 2019 04:47:18 -0800 (PST)
+        bh=Ha1rPLXByHjbI/Rdv0mMvBd3I0OoxBgZeMc8cwP1z58=;
+        b=nWYFdQkm5QZjK58lKmvjQPvHFcyAJv88w8Cwihb+Be9stZrax9TqN+3SSKdFz4cC+/
+         pL+SGCF2p6SAULw6SEA8msEuhByR9yLbWC+cAoZTX4OwuyM4w41QfAPw2n8UFCPTBXmw
+         jd6NlfLD+HZHf+p1BumPhBDxHGnTV8uQ2+f9+CBVJ2PLJdmVBK23tPPak9wIF9wLASsF
+         DFt+BaNk92SCvKyXGswPTB76NWISYUhfiqIheyKUgxDU4qfxDiOb8+oWIGr4SAnFs6Bv
+         jAZ2bpmC+hfX/GzmJFErpJ96udl8tM/d1gd5ZKJFBrYgcH9F4GuyQnMt0CLqbHgplYyL
+         BWhA==
+X-Gm-Message-State: APjAAAWHjnG08qJ0TkhXgR7/rCV0iwzVT/zcq36SX7B/FRYPMZdLLULQ
+        dbMvCfRF7N8VMq7OteEukOKi9WAEBTiRsGnjGDeT7w==
+X-Google-Smtp-Source: APXvYqxrdiX1mc5vjyeJIkpnBUbJJue/nlHm8xiM7aEzDyndQzG4xO7clLvalAWpF921eoiwPdixDPJ2or1Cj2JFy/g=
+X-Received: by 2002:a92:bf10:: with SMTP id z16mr2269459ilh.87.1575756337693;
+ Sat, 07 Dec 2019 14:05:37 -0800 (PST)
 MIME-Version: 1.0
-References: <0e49f52be057a14f0885dfaf496e8274c8107f60.1575282133.git.lorenzo@kernel.org>
- <20191207103927.035eda2a@archlinux>
-In-Reply-To: <20191207103927.035eda2a@archlinux>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Sat, 7 Dec 2019 14:47:07 +0200
-Message-ID: <CAJ0CqmX-e0tC3x-Bfgb3i1qcQSHurt-g6uO7wkrDQ1T8B3DrOg@mail.gmail.com>
-Subject: Re: [PATCH] iio: humidity: hts221: move register definitions to
- sensor structs
+References: <20191202091837.82150-1-linus.walleij@linaro.org> <20191207101654.66c807cf@archlinux>
+In-Reply-To: <20191207101654.66c807cf@archlinux>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Sat, 7 Dec 2019 14:05:26 -0800
+Message-ID: <CAJCx=gm-tYWVyudUjhY6eqJnCf9XPmv22MGuDMk=_ct-6nhu6w@mail.gmail.com>
+Subject: Re: [PATCH] iio: atlas-ph-sensor: Drop GPIO include
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org
-X-MC-Unique: P47FfugPPZ-_bgwDe1UWow-1
-X-Mimecast-Spam-Score: 0
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sat, Dec 7, 2019 at 2:16 AM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> On Mon,  2 Dec 2019 12:23:28 +0200
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+> On Mon,  2 Dec 2019 10:18:37 +0100
+> Linus Walleij <linus.walleij@linaro.org> wrote:
 >
-> > Move some register definitions to hts221_avg_list, hts221_avg_list and
-> > hts221_channels since they are used only there and simplify driver code
+> > The driver includes <linux/gpio.h> yet fails to use symbols
+> > from any the header so drop the include.
 > >
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> You could potentially switch this to GENMASK for the masks, but that can
-> be a follow up patch if you want to do so.
-
-Hi Jonathan,
-
-ack, fine. I will post a patch.
-
-Regards,
-Lorenzo
-
+> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> +CC Matt
 >
 > Applied to the togreg branch of iio.git and pushed out as testing for
-> the autobuilders to play with it.
+> the autobuilders to do something or other.
 >
+
+Looks good to me. Probably too late for a Reviewed-by, but here it is anyway
+
+Reviewed-by: Matt Ranostay <matt.ranostay@konsulko.com>
+
 > Thanks,
 >
 > Jonathan
 >
 > > ---
-> >  drivers/iio/humidity/hts221_core.c | 19 ++++++-------------
-> >  1 file changed, 6 insertions(+), 13 deletions(-)
+> >  drivers/iio/chemical/atlas-ph-sensor.c | 1 -
+> >  1 file changed, 1 deletion(-)
 > >
-> > diff --git a/drivers/iio/humidity/hts221_core.c b/drivers/iio/humidity/=
-hts221_core.c
-> > index 4922444771c6..9003671f14fb 100644
-> > --- a/drivers/iio/humidity/hts221_core.c
-> > +++ b/drivers/iio/humidity/hts221_core.c
-> > @@ -24,13 +24,6 @@
-> >  #define HTS221_REG_CNTRL1_ADDR               0x20
-> >  #define HTS221_REG_CNTRL2_ADDR               0x21
-> >
-> > -#define HTS221_REG_AVG_ADDR          0x10
-> > -#define HTS221_REG_H_OUT_L           0x28
-> > -#define HTS221_REG_T_OUT_L           0x2a
-> > -
-> > -#define HTS221_HUMIDITY_AVG_MASK     0x07
-> > -#define HTS221_TEMP_AVG_MASK         0x38
-> > -
-> >  #define HTS221_ODR_MASK                      0x03
-> >  #define HTS221_BDU_MASK                      BIT(2)
-> >  #define HTS221_ENABLE_MASK           BIT(7)
-> > @@ -66,8 +59,8 @@ static const struct hts221_odr hts221_odr_table[] =3D=
- {
-> >
-> >  static const struct hts221_avg hts221_avg_list[] =3D {
-> >       {
-> > -             .addr =3D HTS221_REG_AVG_ADDR,
-> > -             .mask =3D HTS221_HUMIDITY_AVG_MASK,
-> > +             .addr =3D 0x10,
-> > +             .mask =3D 0x07,
-> >               .avg_avl =3D {
-> >                       4, /* 0.4 %RH */
-> >                       8, /* 0.3 %RH */
-> > @@ -80,8 +73,8 @@ static const struct hts221_avg hts221_avg_list[] =3D =
-{
-> >               },
-> >       },
-> >       {
-> > -             .addr =3D HTS221_REG_AVG_ADDR,
-> > -             .mask =3D HTS221_TEMP_AVG_MASK,
-> > +             .addr =3D 0x10,
-> > +             .mask =3D 0x38,
-> >               .avg_avl =3D {
-> >                       2, /* 0.08 degC */
-> >                       4, /* 0.05 degC */
-> > @@ -98,7 +91,7 @@ static const struct hts221_avg hts221_avg_list[] =3D =
-{
-> >  static const struct iio_chan_spec hts221_channels[] =3D {
-> >       {
-> >               .type =3D IIO_HUMIDITYRELATIVE,
-> > -             .address =3D HTS221_REG_H_OUT_L,
-> > +             .address =3D 0x28,
-> >               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> >                                     BIT(IIO_CHAN_INFO_OFFSET) |
-> >                                     BIT(IIO_CHAN_INFO_SCALE) |
-> > @@ -114,7 +107,7 @@ static const struct iio_chan_spec hts221_channels[]=
- =3D {
-> >       },
-> >       {
-> >               .type =3D IIO_TEMP,
-> > -             .address =3D HTS221_REG_T_OUT_L,
-> > +             .address =3D 0x2a,
-> >               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> >                                     BIT(IIO_CHAN_INFO_OFFSET) |
-> >                                     BIT(IIO_CHAN_INFO_SCALE) |
+> > diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-ph-sensor.c
+> > index 6c175eb1c7a7..b7c20c74239b 100644
+> > --- a/drivers/iio/chemical/atlas-ph-sensor.c
+> > +++ b/drivers/iio/chemical/atlas-ph-sensor.c
+> > @@ -14,7 +14,6 @@
+> >  #include <linux/err.h>
+> >  #include <linux/irq.h>
+> >  #include <linux/irq_work.h>
+> > -#include <linux/gpio.h>
+> >  #include <linux/i2c.h>
+> >  #include <linux/of_device.h>
+> >  #include <linux/regmap.h>
 >
-

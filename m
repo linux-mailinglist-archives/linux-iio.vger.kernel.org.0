@@ -2,42 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C49115BFD
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 12:26:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77E41115C01
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 12:34:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726307AbfLGL0a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Dec 2019 06:26:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49568 "EHLO mail.kernel.org"
+        id S1726378AbfLGLes (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Dec 2019 06:34:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52722 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726196AbfLGL03 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Dec 2019 06:26:29 -0500
+        id S1726025AbfLGLes (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 7 Dec 2019 06:34:48 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8130B217BA;
-        Sat,  7 Dec 2019 11:26:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 313D2217BA;
+        Sat,  7 Dec 2019 11:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575717988;
-        bh=Zm08PD4zdOSomqsRlTsW/jt8Y78oLu7fBwAGsb+5Bm4=;
+        s=default; t=1575718486;
+        bh=mOcyDJWP84k6dhuMY0q6bLO+9ex/EeEYT3DzubbKTWA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gcqsYWjODQ5R296fq+SyTaK533l4ZwNZw7UxQFB5GiX8rxmFyy64VQGTI4R6d0apQ
-         /mCUi5HdwJNvXZAcDlgFWGUPzWrZVgfu8AVkRQkyqLsKmxK3go6VktgIc3FI9jiRGh
-         +FPviYaZEEuKQYspUaKj63N4dLANhVtzRiVcvRL8=
-Date:   Sat, 7 Dec 2019 11:26:23 +0000
+        b=iDPOeiMOFELXv9I1C0O7P0O40TCWz4rShaSqsTIVMkQBMdgAVx/7lb5tLLpiekzWx
+         +RFedee4cc2wooia7j69G0oR9ZXkAgbF7R9hRhpbTxIGWvNsqm/I2CW8MHi0YsoHAf
+         A6tvS8LBgLOCTWETeCcYqP2UWbrg9USYZ3C/m9Y4=
+Date:   Sat, 7 Dec 2019 11:34:42 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Daniel Junho <djunho@gmail.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lkcamp@lists.libreplanetbr.org
-Subject: Re: [PATCH] iio:adc:ad7923: Add support for the
- ad7908/ad7918/ad7928
-Message-ID: <20191207112623.31ac5288@archlinux>
-In-Reply-To: <20191205155821.7441-1-djunho@gmail.com>
-References: <20191205155821.7441-1-djunho@gmail.com>
+To:     <tomislav.denis@avl.com>
+Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 3/3] bindings: iio: pressure: Add dlh-i2c
+ documentation
+Message-ID: <20191207113442.08260820@archlinux>
+In-Reply-To: <20191204100354.16652-4-tomislav.denis@avl.com>
+References: <20191204100354.16652-1-tomislav.denis@avl.com>
+        <20191204100354.16652-4-tomislav.denis@avl.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -47,269 +43,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  5 Dec 2019 12:58:21 -0300
-Daniel Junho <djunho@gmail.com> wrote:
+On Wed, 4 Dec 2019 11:03:54 +0100
+<tomislav.denis@avl.com> wrote:
 
-> The ad7928 is software compatible with the ad7923. The ad7908 and ad7918 are the
-> 8 and 10 bit version of the ad7928.
+> From: Tomislav Denis <tomislav.denis@avl.com>
 > 
-> Signed-off-by: Daniel Junho <djunho@gmail.com>
-Hi Daniel,
+> Add a device tree binding documentation for DLH series pressure
+> sensors.
+> 
+> Signed-off-by: Tomislav Denis <tomislav.denis@avl.com>
 
-Code itself looks good to me, but please be very careful to separate out 
-non function cleanup from a patch adding something new.  It makes
-reviewing harder.  We'd much rather see a series with the cleanup all clearly
-marked as such (and getting a most a few seconds review) and the real code
-being just that.
+One question for DT maintainers.  
+
+Should the file be named after a specific part of is a generic
+name for the parts covered acceptable?  I would assume it should
+be a part number, but not sure what precedence there is.
+
+Otherwise looks good to me, but I will let it sit to give time
+for DT review.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/Kconfig  |  3 +-
->  drivers/iio/adc/ad7923.c | 96 +++++++++++++++++++++++++++++++---------
->  2 files changed, 78 insertions(+), 21 deletions(-)
+>  .../bindings/iio/pressure/asc,dlh-i2c.yaml         | 51 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  1 +
+>  2 files changed, 52 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/asc,dlh-i2c.yaml
 > 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 976567d4dbef..40aa05fbf85e 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -205,7 +205,8 @@ config AD7923
->  	select IIO_TRIGGERED_BUFFER
->  	help
->  	  Say yes here to build support for Analog Devices
-> -	  AD7904, AD7914, AD7923, AD7924 4 Channel ADCs.
-> +	  AD7904, AD7914, AD7923, AD7924 4 Channel ADCs, and
-> +	  AD7908, AD7918, AD7928 8 Channels ADCs.
->  
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called ad7923.
-> diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
-> index 3212eb4c0f25..f08a5218dad1 100644
-> --- a/drivers/iio/adc/ad7923.c
-> +++ b/drivers/iio/adc/ad7923.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
-> - * AD7904/AD7914/AD7923/AD7924 SPI ADC driver
-> + * AD7904/AD7914/AD7923/AD7924/AD7908/AD7918/AD7928 SPI ADC driver
->   *
->   * Copyright 2011 Analog Devices Inc (from AD7923 Driver)
->   * Copyright 2012 CS Systemes d'Information
-> @@ -26,23 +26,32 @@
->  #define AD7923_WRITE_CR		BIT(11)		/* write control register */
->  #define AD7923_RANGE		BIT(1)		/* range to REFin */
->  #define AD7923_CODING		BIT(0)		/* coding is straight binary */
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/asc,dlh-i2c.yaml b/Documentation/devicetree/bindings/iio/pressure/asc,dlh-i2c.yaml
+> new file mode 100644
+> index 0000000..5de2277
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/pressure/asc,dlh-i2c.yaml
+> @@ -0,0 +1,51 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/dlh-i2c.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-
-No white space changes in a patch doing real changes to the driver.
-
->  #define AD7923_PM_MODE_AS	(1)		/* auto shutdown */
->  #define AD7923_PM_MODE_FS	(2)		/* full shutdown */
->  #define AD7923_PM_MODE_OPS	(3)		/* normal operation */
+> +title: All Sensors DLH series low voltage digital pressure sensors
 > +
->  #define AD7923_CHANNEL_0	(0)		/* analog input 0 */
->  #define AD7923_CHANNEL_1	(1)		/* analog input 1 */
->  #define AD7923_CHANNEL_2	(2)		/* analog input 2 */
->  #define AD7923_CHANNEL_3	(3)		/* analog input 3 */
-> -#define AD7923_SEQUENCE_OFF	(0)		/* no sequence fonction */
-> -#define AD7923_SEQUENCE_PROTECT	(2)		/* no interrupt write cycle */
-> -#define AD7923_SEQUENCE_ON	(3)		/* continuous sequence */
-> -
-> -#define AD7923_MAX_CHAN		4
-> +#define AD7923_CHANNEL_4	(4)		/* analog input 4 */
-> +#define AD7923_CHANNEL_5	(5)		/* analog input 5 */
-> +#define AD7923_CHANNEL_6	(6)		/* analog input 6 */
-> +#define AD7923_CHANNEL_7	(7)		/* analog input 7 */
-These made me wonder.  Seems they aren't actually used in the driver anyway.
-Ideally add a precursor to your main patch just dropping these particular
-defines entirely.
-
-
+> +maintainers:
+> +  - Tomislav Denis <tomislav.denis@avl.com>
 > +
-> +#define AD7923_SEQUENCE_OFF	(0x00)		/* no sequence function */
-> +#define AD7923_SEQUENCE_SHADOW	(0x01)		/* use the shadow register
-> +						 * for programming
-> +						 * (only AD7908/7918/7928)
-> +						 */
-> +#define AD7923_SEQUENCE_PROTECT	(0x10)		/* no interrupt write cycle */
-> +#define AD7923_SEQUENCE_ON	(0x11)		/* continuous sequence */
->  
->  #define AD7923_PM_MODE_WRITE(mode)	((mode) << 4)	 /* write mode */
->  #define AD7923_CHANNEL_WRITE(channel)	((channel) << 6) /* write channel */
-> -#define AD7923_SEQUENCE_WRITE(sequence)	((((sequence) & 1) << 3) \
-> -					+ (((sequence) & 2) << 9))
-> +#define AD7923_SEQUENCE_WRITE(sequence)	((((sequence) & 0x01) << 3) \
-> +					+ (((sequence) & 0x10) << 9))
-
-This change is interesting.  Was original code just buggy? we were masking
-against 2nd bit, and now we are masking against the 4th?
-
->  						/* write sequence fonction */
->  /* left shift for CR : bit 11 transmit in first */
->  #define AD7923_SHIFT_REGISTER	4
-> @@ -78,6 +87,9 @@ enum ad7923_id {
->  	AD7904,
->  	AD7914,
->  	AD7924,
-> +	AD7908,
-> +	AD7918,
-> +	AD7928
->  };
->  
->  #define AD7923_V_CHAN(index, bits)					\
-> @@ -97,7 +109,7 @@ enum ad7923_id {
->  		},							\
->  	}
->  
-> -#define DECLARE_AD7923_CHANNELS(name, bits) \
-> +#define DECLARE_AD7923_4CHANNELS(name, bits) \
->  const struct iio_chan_spec name ## _channels[] = { \
->  	AD7923_V_CHAN(0, bits), \
->  	AD7923_V_CHAN(1, bits), \
-> @@ -106,9 +118,25 @@ const struct iio_chan_spec name ## _channels[] = { \
->  	IIO_CHAN_SOFT_TIMESTAMP(4), \
->  }
->  
-> -static DECLARE_AD7923_CHANNELS(ad7904, 8);
-> -static DECLARE_AD7923_CHANNELS(ad7914, 10);
-> -static DECLARE_AD7923_CHANNELS(ad7924, 12);
-> +#define DECLARE_AD7923_8CHANNELS(name, bits) \
-> +const struct iio_chan_spec name ## _channels[] = { \
-> +	AD7923_V_CHAN(0, bits), \
-> +	AD7923_V_CHAN(1, bits), \
-> +	AD7923_V_CHAN(2, bits), \
-> +	AD7923_V_CHAN(3, bits), \
-> +	AD7923_V_CHAN(4, bits), \
-> +	AD7923_V_CHAN(5, bits), \
-> +	AD7923_V_CHAN(6, bits), \
-> +	AD7923_V_CHAN(7, bits), \
-> +	IIO_CHAN_SOFT_TIMESTAMP(8), \
-> +}
+> +description: |
+> +  Bindings for the All Sensors DLH series pressure sensors.
 > +
-> +static DECLARE_AD7923_4CHANNELS(ad7904, 8);
-> +static DECLARE_AD7923_4CHANNELS(ad7914, 10);
-> +static DECLARE_AD7923_4CHANNELS(ad7924, 12);
-> +static DECLARE_AD7923_8CHANNELS(ad7908, 8);
-> +static DECLARE_AD7923_8CHANNELS(ad7918, 10);
-> +static DECLARE_AD7923_8CHANNELS(ad7928, 12);
->  
->  static const struct ad7923_chip_info ad7923_chip_info[] = {
->  	[AD7904] = {
-> @@ -123,6 +151,18 @@ static const struct ad7923_chip_info ad7923_chip_info[] = {
->  		.channels = ad7924_channels,
->  		.num_channels = ARRAY_SIZE(ad7924_channels),
->  	},
-> +	[AD7908] = {
-> +		.channels = ad7908_channels,
-> +		.num_channels = ARRAY_SIZE(ad7908_channels),
-> +	},
-> +	[AD7918] = {
-> +		.channels = ad7918_channels,
-> +		.num_channels = ARRAY_SIZE(ad7918_channels),
-> +	},
-> +	[AD7928] = {
-> +		.channels = ad7928_channels,
-> +		.num_channels = ARRAY_SIZE(ad7928_channels),
-> +	},
->  };
->  
->  /**
-> @@ -135,10 +175,10 @@ static int ad7923_update_scan_mode(struct iio_dev *indio_dev,
->  	int i, cmd, len;
->  
->  	len = 0;
-> -	for_each_set_bit(i, active_scan_mask, AD7923_MAX_CHAN) {
-> +	for_each_set_bit(i, active_scan_mask, indio_dev->num_channels - 1) {
->  		cmd = AD7923_WRITE_CR | AD7923_CHANNEL_WRITE(i) |
-> -			AD7923_SEQUENCE_WRITE(AD7923_SEQUENCE_OFF) |
-> -			st->settings;
-> +		      AD7923_SEQUENCE_WRITE(AD7923_SEQUENCE_OFF) |
-> +		      st->settings;
->  		cmd <<= AD7923_SHIFT_REGISTER;
->  		st->tx_buf[len++] = cpu_to_be16(cmd);
->  	}
-> @@ -188,13 +228,13 @@ static irqreturn_t ad7923_trigger_handler(int irq, void *p)
->  	return IRQ_HANDLED;
->  }
->  
-> -static int ad7923_scan_direct(struct ad7923_state *st, unsigned ch)
-> +static int ad7923_scan_direct(struct ad7923_state *st, unsigned int ch)
-
-Should be in a precursor patch tidying this up.   Never mix new features
-with cleanup as it's harder to review.
-
->  {
->  	int ret, cmd;
->  
->  	cmd = AD7923_WRITE_CR | AD7923_CHANNEL_WRITE(ch) |
-> -		AD7923_SEQUENCE_WRITE(AD7923_SEQUENCE_OFF) |
-> -		st->settings;
-> +	      AD7923_SEQUENCE_WRITE(AD7923_SEQUENCE_OFF) |
-> +	      st->settings;
-
-Clean out this noise from the patch.  We just want to see
-the new stuff rather than stare at a line to figure if it
-is just whitespace, or if there is a real change ;)
-
->  	cmd <<= AD7923_SHIFT_REGISTER;
->  	st->tx_buf[0] = cpu_to_be16(cmd);
->  
-> @@ -280,7 +320,7 @@ static int ad7923_probe(struct spi_device *spi)
->  
->  	st->spi = spi;
->  	st->settings = AD7923_CODING | AD7923_RANGE |
-> -			AD7923_PM_MODE_WRITE(AD7923_PM_MODE_OPS);
-> +		       AD7923_PM_MODE_WRITE(AD7923_PM_MODE_OPS);
-
-Please clean out an noise like this bit of realignment.
-
->  
->  	info = &ad7923_chip_info[spi_get_device_id(spi)->driver_data];
->  
-> @@ -348,13 +388,29 @@ static const struct spi_device_id ad7923_id[] = {
->  	{"ad7914", AD7914},
->  	{"ad7923", AD7924},
->  	{"ad7924", AD7924},
-> +	{"ad7908", AD7908},
-> +	{"ad7918", AD7918},
-> +	{"ad7928", AD7928},
->  	{}
->  };
->  MODULE_DEVICE_TABLE(spi, ad7923_id);
->  
-> +static const struct of_device_id ad7923_of_match[] = {
-> +	{ .compatible = "adi,ad7904", },
-> +	{ .compatible = "adi,ad7914", },
-> +	{ .compatible = "adi,ad7923", },
-> +	{ .compatible = "adi,ad7924", },
-> +	{ .compatible = "adi,ad7908", },
-> +	{ .compatible = "adi,ad7918", },
-> +	{ .compatible = "adi,ad7928", },
-> +	{ },
-Really minor but I would have preferred a precursor patch
-adding the of_device_id table for existing parts.
-
-Makes a clear separation between new device support and tidying
-up the fact that table should be there to allow the specific
-adi,* matching.
-
-> +};
-> +MODULE_DEVICE_TABLE(of, ad7923_of_match);
+> +  Specifications about the sensors can be found at:
+> +    http://www.allsensors.com/cad/DS-0355_Rev_B.PDF
 > +
->  static struct spi_driver ad7923_driver = {
->  	.driver = {
->  		.name	= "ad7923",
-> +		.of_match_table = ad7923_of_match,
->  	},
->  	.probe		= ad7923_probe,
->  	.remove		= ad7923_remove,
-> @@ -364,5 +420,5 @@ module_spi_driver(ad7923_driver);
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - asc,dlhl60d
+> +      - asc,dlhl60g
+> +
+> +  reg:
+> +    description: I2C device address
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    description: interrupt mapping for EOC(data ready) pin
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c0 {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      pressure@29 {
+> +          compatible = "asc,dlhl60d";
+> +          reg = <0x29>;
+> +          interrupt-parent = <&gpio0>;
+> +          interrupts = <10 IRQ_TYPE_EDGE_RISING>;
+> +      };
+> +    };
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 39d6f0f..8f0eab0 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -674,6 +674,7 @@ W:	http://www.allsensors.com/
+>  S:	Maintained
+>  L:	linux-iio@vger.kernel.org
+>  F:	drivers/iio/pressure/dlh-i2c.c
+> +F:	Documentation/devicetree/bindings/iio/pressure/dlh-i2c.yaml
 >  
->  MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
->  MODULE_AUTHOR("Patrick Vasseur <patrick.vasseur@c-s.fr>");
-> -MODULE_DESCRIPTION("Analog Devices AD7904/AD7914/AD7923/AD7924 ADC");
-> +MODULE_DESCRIPTION("Analog Devices AD7904/AD7914/AD7923/AD7924/AD7908/AD7918/AD7928 ADC");
->  MODULE_LICENSE("GPL v2");
+>  ALLEGRO DVT VIDEO IP CORE DRIVER
+>  M:	Michael Tretter <m.tretter@pengutronix.de>
 

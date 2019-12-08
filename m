@@ -2,97 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 046C4115EE1
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2019 23:05:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5154C116359
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2019 19:10:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726416AbfLGWFj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Dec 2019 17:05:39 -0500
-Received: from mail-il1-f194.google.com ([209.85.166.194]:44980 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726415AbfLGWFj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Dec 2019 17:05:39 -0500
-Received: by mail-il1-f194.google.com with SMTP id z12so9391134iln.11
-        for <linux-iio@vger.kernel.org>; Sat, 07 Dec 2019 14:05:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Ha1rPLXByHjbI/Rdv0mMvBd3I0OoxBgZeMc8cwP1z58=;
-        b=UpxQvWlXUxNkhbbJheb3kG2NEZ8BPS2ACPvEs56e8KwY1WUkgIVGwavLJPXSKgWf7p
-         NrC0LS/lbEKA5PKLTZkoVTe3FoUhS8KRXHikVt2yAVt9+HE9GYjlIGi/MfGXUfziMyb+
-         me3TtasKUFXER5XH97mO4KA9ZMRHzZx1YYUZw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ha1rPLXByHjbI/Rdv0mMvBd3I0OoxBgZeMc8cwP1z58=;
-        b=nWYFdQkm5QZjK58lKmvjQPvHFcyAJv88w8Cwihb+Be9stZrax9TqN+3SSKdFz4cC+/
-         pL+SGCF2p6SAULw6SEA8msEuhByR9yLbWC+cAoZTX4OwuyM4w41QfAPw2n8UFCPTBXmw
-         jd6NlfLD+HZHf+p1BumPhBDxHGnTV8uQ2+f9+CBVJ2PLJdmVBK23tPPak9wIF9wLASsF
-         DFt+BaNk92SCvKyXGswPTB76NWISYUhfiqIheyKUgxDU4qfxDiOb8+oWIGr4SAnFs6Bv
-         jAZ2bpmC+hfX/GzmJFErpJ96udl8tM/d1gd5ZKJFBrYgcH9F4GuyQnMt0CLqbHgplYyL
-         BWhA==
-X-Gm-Message-State: APjAAAWHjnG08qJ0TkhXgR7/rCV0iwzVT/zcq36SX7B/FRYPMZdLLULQ
-        dbMvCfRF7N8VMq7OteEukOKi9WAEBTiRsGnjGDeT7w==
-X-Google-Smtp-Source: APXvYqxrdiX1mc5vjyeJIkpnBUbJJue/nlHm8xiM7aEzDyndQzG4xO7clLvalAWpF921eoiwPdixDPJ2or1Cj2JFy/g=
-X-Received: by 2002:a92:bf10:: with SMTP id z16mr2269459ilh.87.1575756337693;
- Sat, 07 Dec 2019 14:05:37 -0800 (PST)
+        id S1726475AbfLHSK0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 8 Dec 2019 13:10:26 -0500
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:33392 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726220AbfLHSK0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Dec 2019 13:10:26 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id BD8129E74D9;
+        Sun,  8 Dec 2019 18:10:22 +0000 (GMT)
+Date:   Sun, 8 Dec 2019 18:10:20 +0000
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Beniamin Bia <beniamin.bia@analog.com>
+Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <biabeniamin@outlook.com>,
+        <rwoerle@mibtec.de>
+Subject: Re: [PATCH] iio: adc: ad7606: fix reading unnecessary data from
+ device
+Message-ID: <20191208181020.26c165de@archlinux>
+In-Reply-To: <20191110104625.346152de@archlinux>
+References: <20191104162634.5394-1-beniamin.bia@analog.com>
+        <20191110104625.346152de@archlinux>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20191202091837.82150-1-linus.walleij@linaro.org> <20191207101654.66c807cf@archlinux>
-In-Reply-To: <20191207101654.66c807cf@archlinux>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Sat, 7 Dec 2019 14:05:26 -0800
-Message-ID: <CAJCx=gm-tYWVyudUjhY6eqJnCf9XPmv22MGuDMk=_ct-6nhu6w@mail.gmail.com>
-Subject: Re: [PATCH] iio: atlas-ph-sensor: Drop GPIO include
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Dec 7, 2019 at 2:16 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Mon,  2 Dec 2019 10:18:37 +0100
-> Linus Walleij <linus.walleij@linaro.org> wrote:
->
-> > The driver includes <linux/gpio.h> yet fails to use symbols
-> > from any the header so drop the include.
-> >
-> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> +CC Matt
->
-> Applied to the togreg branch of iio.git and pushed out as testing for
-> the autobuilders to do something or other.
->
+On Sun, 10 Nov 2019 10:46:25 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-Looks good to me. Probably too late for a Reviewed-by, but here it is anyway
+> On Mon, 4 Nov 2019 18:26:34 +0200
+> Beniamin Bia <beniamin.bia@analog.com> wrote:
+> 
+> > When a conversion result is being read from ADC, the driver reads the
+> > number of channels + 1 because it thinks that IIO_CHAN_SOFT_TIMESTAMP
+> > is also a physical channel. This patch fixes this issue.
+> > 
+> > Fixes: 552a21f35477 ("staging: iio: adc: ad7606: Move out of staging")
+> > Reported-by: Robert Wörle <rwoerle@mibtec.de>
+> > Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>  
+> Applied to the fixes-togreg branch of iio.git and marked for stable.
+I was just about to send the pull including this and was checking the
+fixes tags.  The commit you have here doesn't seem to exist.
 
-Reviewed-by: Matt Ranostay <matt.ranostay@konsulko.com>
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/iio/adc/ad7606.c?id=2985a5d88455a3edd51358fc77f61b684d0e9265
+Seems to be the right one.
 
+I've fixed it up.
+
+Jonathan
+
+> 
+> We are at that point in the cycle where I 'might' move this into
+> the togreg branch for the merge window.  All depends on what Linus
+> says in his rc7 email that'll probably be out later today.
+> Previously he hinted we'd have an rc8 this time. If that happens
+> I'll do one last pull request and hence take the queued up fixes
+> in with that for the merge window.  I don't have anything critical
+> enough to do a fixes pull this later in the cycle.
+> 
 > Thanks,
->
+> 
 > Jonathan
->
+> 
 > > ---
-> >  drivers/iio/chemical/atlas-ph-sensor.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-ph-sensor.c
-> > index 6c175eb1c7a7..b7c20c74239b 100644
-> > --- a/drivers/iio/chemical/atlas-ph-sensor.c
-> > +++ b/drivers/iio/chemical/atlas-ph-sensor.c
-> > @@ -14,7 +14,6 @@
-> >  #include <linux/err.h>
-> >  #include <linux/irq.h>
-> >  #include <linux/irq_work.h>
-> > -#include <linux/gpio.h>
-> >  #include <linux/i2c.h>
-> >  #include <linux/of_device.h>
-> >  #include <linux/regmap.h>
->
+> >  drivers/iio/adc/ad7606.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> > index f5ba94c03a8d..e4683a68522a 100644
+> > --- a/drivers/iio/adc/ad7606.c
+> > +++ b/drivers/iio/adc/ad7606.c
+> > @@ -85,7 +85,7 @@ static int ad7606_reg_access(struct iio_dev *indio_dev,
+> >  
+> >  static int ad7606_read_samples(struct ad7606_state *st)
+> >  {
+> > -	unsigned int num = st->chip_info->num_channels;
+> > +	unsigned int num = st->chip_info->num_channels - 1;
+> >  	u16 *data = st->data;
+> >  	int ret;
+> >    
+> 
+

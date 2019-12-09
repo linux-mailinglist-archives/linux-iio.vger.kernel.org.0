@@ -2,87 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E8FE11726E
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2019 18:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F820117427
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2019 19:27:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726598AbfLIRG7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Dec 2019 12:06:59 -0500
-Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.218]:11812 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726290AbfLIRG7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Dec 2019 12:06:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1575911213;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
-        Subject:Sender;
-        bh=JdkRoHb8ohXQr2AuBM9cBMAwARTg6r0YWd5KTgyUZW0=;
-        b=gzOpMqKBO3Sqx8L37AlneH3xyB9O+4NfH6T0VCDvz7CFNouiMt+/EgLYwgSP4jPs1a
-        NMjtJRGcYSmneywjGyJUbB5UEnMmj44RfcyWBwG3+XGWaHVNL1mlt9PEb80hPtCWOYo+
-        EqyUr2cBE6rz0Kr5D09bgyYAsYnz3qXuCbMd7/k/IGXTAJQRiMt+wm1k0sw5xVKRzxyE
-        vlu2+2FEXfcC4Glthlc1AlMmcGlpScJIxIJeiva0g+zIdg49jpGBvElfuzvm/rTc3ZAx
-        t7jA9/Rd9d8AIet3M69MnhOThh96eVfss1cBUz9XcO+Saw9gjwZFqaCQrEvvzn8CODPE
-        OIxA==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXQr4OGUPX+1JiWAnI+L0="
-X-RZG-CLASS-ID: mo00
-Received: from localhost.localdomain
-        by smtp.strato.de (RZmta 46.0.2 DYNA|AUTH)
-        with ESMTPSA id R01a59vB9H6rb2E
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Mon, 9 Dec 2019 18:06:53 +0100 (CET)
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        id S1726354AbfLIS10 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Dec 2019 13:27:26 -0500
+Received: from sender4-op-o18.zoho.com ([136.143.188.18]:17863 "EHLO
+        sender4-op-o18.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726342AbfLIS10 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Dec 2019 13:27:26 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1575916033; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=Uqeax3GWXw+lN2aiuuJ2WAdj6XJgf83shDkh4o75FqkeAl5csykPMHKyW4TQgimjl7U/UDhVIoUSh4vziZCAakMLOIYaF0zvEpDrlgJDyKMdpbVvsvDRYXVGyTNBr9NHYrPtnoNCCLelDAQvT5W7l89MYQdTzvP1nSfu2R9JMJg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1575916033; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=qST48LGbEeti0hVqrKe4JVhTVDhvY4DFmAgNm3h8veo=; 
+        b=E9VH1LQn7SoUzRt1ikBlGnECa3C35ZQVKcifJtkVMROrNZO1tS7iu2OcZS2NBXd+AMClI7pBPvL1ZmX/z8iZmu4r8HfBJHjxKc6/xJUy6uq8qlBEgFBNzoilmDcVVRtcmIGSxIFjD8agU+C8AOFZxqv4IE1x/hnnqDMcyFQynAw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=dlrobertson.com;
+        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
+        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
+Received: from nessie (pool-173-73-58-202.washdc.fios.verizon.net [173.73.58.202]) by mx.zohomail.com
+        with SMTPS id 1575916032260346.62116454289855; Mon, 9 Dec 2019 10:27:12 -0800 (PST)
+Date:   Mon, 9 Dec 2019 18:11:53 +0000
+From:   Dan Robertson <dan@dlrobertson.com>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH] iio: imu: st_lsm6dsx: Fix selection of ST_LSM6DS3_ID
-Date:   Mon,  9 Dec 2019 18:05:41 +0100
-Message-Id: <20191209170541.198206-1-stephan@gerhold.net>
-X-Mailer: git-send-email 2.24.0
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-kernel@vger.kernel.org, Joe Perches <joe@perches.com>
+Subject: Re: [PATCH v5 2/2] iio: (bma400) add driver for the BMA400
+Message-ID: <20191209181153.GA13304@nessie>
+References: <20191209014320.13149-1-dan@dlrobertson.com>
+ <20191209014320.13149-3-dan@dlrobertson.com>
+ <cf3f2297-dc01-b2c9-657b-933f24b15594@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cf3f2297-dc01-b2c9-657b-933f24b15594@infradead.org>
+X-ZohoMailClient: External
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-At the moment, attempting to probe a device with ST_LSM6DS3_ID
-(e.g. using the st,lsm6ds3 compatible) fails with:
+On Sun, Dec 08, 2019 at 06:54:44PM -0800, Randy Dunlap wrote:
+> On 12/8/19 5:43 PM, Dan Robertson wrote:
+> > diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> > index d4ef35aeb579..dc9bc646d403 100644
+> > --- a/drivers/iio/accel/Kconfig
+> > +++ b/drivers/iio/accel/Kconfig
+> > @@ -112,6 +112,22 @@ config BMA220
+> >  	  To compile this driver as a module, choose M here: the
+> >  	  module will be called bma220_spi.
+> >  
+> > +config BMA400
+> > +	tristate "Bosch BMA400 3-Axis Accelerometer Driver"
+> > +	select REGMAP
+> > +	select BMA400_I2C if (I2C)
+> 
+> What's with the parentheses?  I see that there are roughly 2700
+> "select ... if X" without parens and around 95 like
+> "select ... if ("  [using rough grep expressions].
+> The parens are unnecessary.  They are often used on complex
+> expressions, but certainly not on simple ones (except in iio).
 
-    st_lsm6dsx_i2c 1-006b: unsupported whoami [69]
+Good point. I'll remove it. I'll need the parentheses if/when SPI support is
+added, but I'll add it when it is needed.
 
-... even though 0x69 is the whoami listed for ST_LSM6DS3_ID.
+> > +	help
+> > +	  Say Y here if you want to build a driver for the Bosch BMA400
+> > +	  triaxial acceleration sensor.
+> > +
+> > +	  To compile this driver as a module, choose M here: the
+> > +	  module will be called bma400_core and you will also get
+> > +	  bma400_i2c for I2C.
+> 
+> iff I2C is set/enabled, so could be confusing.
 
-This happens because st_lsm6dsx_check_whoami() also attempts
-to match unspecified (zero-initialized) entries in the "id" array.
-ST_LSM6DS3_ID = 0 will therefore match any entry in
-st_lsm6dsx_sensor_settings (here: the first), because none of them
-actually have all 12 entries listed in the "id" array.
+Good catch.
 
-Avoid this by additionally checking if "name" is set,
-which is only set for valid entries in the "id" array.
+Cheers,
 
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index a7d40c02ce6b..b921dd9e108f 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -1301,7 +1301,8 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
- 
- 	for (i = 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
- 		for (j = 0; j < ST_LSM6DSX_MAX_ID; j++) {
--			if (id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
-+			if (st_lsm6dsx_sensor_settings[i].id[j].name &&
-+			    id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
- 				break;
- 		}
- 		if (j < ST_LSM6DSX_MAX_ID)
--- 
-2.24.0
+ - Dan
 

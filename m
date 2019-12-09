@@ -2,115 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C80FF1178D3
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2019 22:49:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 269AF117A8E
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2019 23:56:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726532AbfLIVs6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Dec 2019 16:48:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33050 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726230AbfLIVs6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 9 Dec 2019 16:48:58 -0500
-Received: from localhost.localdomain (unknown [66.187.232.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 670A1205C9;
-        Mon,  9 Dec 2019 21:48:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575928138;
-        bh=9gyMGCpUfK0Z2nH5lmis/XJn1df0ZkjTJ8u3LzW7ht4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=z8TXP/UK+Ia3jwN75ugXmLIBe9iFqd2l3M/ebMy4aX7+X/CELQheqSis4WHFVhZuU
-         yr4Uq9XkQ6oHNKsjtGgzgcq6rwN6y/UQjh3moTzcyJduyUsa0/DphIId9dfz96KEVH
-         JIovK5PMuI8QGr+lpbB0pZ95NRLNK+qgJhf0oiHY=
-Date:   Mon, 9 Dec 2019 22:48:52 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: Fix selection of ST_LSM6DS3_ID
-Message-ID: <20191209214852.GA2485@localhost.localdomain>
-References: <20191209170541.198206-1-stephan@gerhold.net>
+        id S1727553AbfLIW4g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Dec 2019 17:56:36 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:37414 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727700AbfLIW4e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Dec 2019 17:56:34 -0500
+Received: by mail-pj1-f68.google.com with SMTP id ep17so6524635pjb.4
+        for <linux-iio@vger.kernel.org>; Mon, 09 Dec 2019 14:56:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=A4KHxg3gak/AwtAzed2CDRcu2q9WfrU2oLQqZp0iE2c=;
+        b=JgkAL/tQtnHUIJMXDnJ5JRXCF1Z71qc3TDDuhsTpEFP3RllanM9RKF62rKGTwwyE/r
+         3F+sOGcm/Qoo6PW/gV1WjGbEzl/FeQLN+9Cq8B6o/Q5lXLaIFwTagn+oFLmSHZSxT5wq
+         b6JzhAPMN4dgoOvUd1T3L/akyP5q6rTfPhBp8ysDtUbavt46I8knRWQ1TyRgkUNuONAt
+         qVaaz5V4bS8bcd0C+ZgUiZqe9VyiD+g9s7SdS3JyZKfqnWVaMR7XIgdMTaMdsMH6huO/
+         MRbO40lHiN8iUZ5O6HRQubJqB+jrkEfqlDhDNoF58bhwN74s2mubGrtzDOFQSagWQg9K
+         07zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=A4KHxg3gak/AwtAzed2CDRcu2q9WfrU2oLQqZp0iE2c=;
+        b=UtRCdEKA9eCxP9pt+Vph548N5zlb69vKOrokGskvkqNxF6861TX4up+r4cMgFuiZO8
+         cLeNYKiE8tM42sf4qcCmOaq0QkVzrHh8DQACsoI9qlwqeq3hBg3qquPWl7pa1lcCrCs9
+         vAKhODxIj2LiahDFKCiciVtlihSoCNPCY79q+URCnHVQLIThx/gpYBRSIsMdtIwZydWe
+         fQcfsOgZCMVMy1gHHgOetqDwj95Y5xdYsLqdaaxREfGmcl0vChQFtfSZeX9d6ZBRdyVU
+         vgbh2aoIGItz9PNuYvAO5pfz1K9KvKBNcIW6wnVrRrN8TI+fSNQeNnI6LVktaXKiF/Oh
+         b5lw==
+X-Gm-Message-State: APjAAAXwLfJtDYNjo/HjdJ3mWOZam+1D5RBUPXUNkA/jF+kAm7ykVEQK
+        HvXhEXzWuRNHwg360bcLBWY1XQ==
+X-Google-Smtp-Source: APXvYqwfy57KUmDE1VA2LS08T92dACffdsdnOJYy9Qvwq4eLq3TN5C71lFIUbtBnAecTSV5jsNQ1Bg==
+X-Received: by 2002:a17:902:7884:: with SMTP id q4mr30505852pll.285.1575932193897;
+        Mon, 09 Dec 2019 14:56:33 -0800 (PST)
+Received: from localhost (c-71-197-186-152.hsd1.wa.comcast.net. [71.197.186.152])
+        by smtp.gmail.com with ESMTPSA id g19sm504235pfh.134.2019.12.09.14.56.33
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 09 Dec 2019 14:56:33 -0800 (PST)
+From:   Kevin Hilman <khilman@baylibre.com>
+To:     Xingyu Chen <xingyu.chen@amlogic.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     Xingyu Chen <xingyu.chen@amlogic.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Qianggui Song <qianggui.song@amlogic.com>,
+        Jianxin Pan <jianxin.pan@amlogic.com>,
+        Jian Hu <jian.hu@amlogic.com>, linux-iio@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: a1: add saradc controller
+In-Reply-To: <1575358332-44866-1-git-send-email-xingyu.chen@amlogic.com>
+References: <1575358332-44866-1-git-send-email-xingyu.chen@amlogic.com>
+Date:   Mon, 09 Dec 2019 14:56:32 -0800
+Message-ID: <7hpngxqfa7.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="M9NhX3UHpAaciwkO"
-Content-Disposition: inline
-In-Reply-To: <20191209170541.198206-1-stephan@gerhold.net>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Xingyu Chen <xingyu.chen@amlogic.com> writes:
 
---M9NhX3UHpAaciwkO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> At the moment, attempting to probe a device with ST_LSM6DS3_ID
-> (e.g. using the st,lsm6ds3 compatible) fails with:
->=20
->     st_lsm6dsx_i2c 1-006b: unsupported whoami [69]
->=20
-> ... even though 0x69 is the whoami listed for ST_LSM6DS3_ID.
->=20
-
-Hi Stephan,
-
-thx for working on this. I guess we can skip 'void' iterations defining the
-array real size, do you agree?
-
-Regards,
-Lorenzo
-
-> This happens because st_lsm6dsx_check_whoami() also attempts
-> to match unspecified (zero-initialized) entries in the "id" array.
-> ST_LSM6DS3_ID =3D 0 will therefore match any entry in
-> st_lsm6dsx_sensor_settings (here: the first), because none of them
-> actually have all 12 entries listed in the "id" array.
->=20
-> Avoid this by additionally checking if "name" is set,
-> which is only set for valid entries in the "id" array.
->=20
-> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> The saradc controller in Meson-A1 is the same as the Meson-G12 series SoCs,
+> so we use the same compatible string.
+>
+> Signed-off-by: Xingyu Chen <xingyu.chen@amlogic.com>
+>
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index a7d40c02ce6b..b921dd9e108f 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -1301,7 +1301,8 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6ds=
-x_hw *hw, int id,
-> =20
->  	for (i =3D 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
->  		for (j =3D 0; j < ST_LSM6DSX_MAX_ID; j++) {
-> -			if (id =3D=3D st_lsm6dsx_sensor_settings[i].id[j].hw_id)
-> +			if (st_lsm6dsx_sensor_settings[i].id[j].name &&
-> +			    id =3D=3D st_lsm6dsx_sensor_settings[i].id[j].hw_id)
->  				break;
->  		}
->  		if (j < ST_LSM6DSX_MAX_ID)
-> --=20
-> 2.24.0
->=20
+> This patch is based on A1 clock patchset at [0].
+>
+> [0] https://lore.kernel.org/linux-amlogic/20191129144605.182774-1-jian.hu@amlogic.com
+> ---
+>  arch/arm64/boot/dts/amlogic/meson-a1.dtsi | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/amlogic/meson-a1.dtsi b/arch/arm64/boot/dts/amlogic/meson-a1.dtsi
+> index 7210ad0..cad1756 100644
+> --- a/arch/arm64/boot/dts/amlogic/meson-a1.dtsi
+> +++ b/arch/arm64/boot/dts/amlogic/meson-a1.dtsi
+> @@ -93,6 +93,21 @@
+>  				clock-names = "xtal", "pclk", "baud";
+>  				status = "disabled";
+>  			};
+> +
+> +			saradc: adc@2c00 {
+> +				compatible = "amlogic,meson-g12a-saradc",
+> +					     "amlogic,meson-saradc";
+> +				reg = <0x0 0x2c00 0x0 0x48>;
 
---M9NhX3UHpAaciwkO
-Content-Type: application/pgp-signature; name="signature.asc"
+Why 0x48 here?  AXG uses 0x38 and you're not adding any more registers
+to this driver.
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXe7BQQAKCRA6cBh0uS2t
-rGbZAQD9aJzFBRQPLrP0yRNxHaxmdFcGIHsFFBbhgHNeV4Ip1QD/RgfUJKxuV74S
-5qYpMmK/hwqXeBMzhdvQBTaEf41GjQk=
-=5yLa
------END PGP SIGNATURE-----
-
---M9NhX3UHpAaciwkO--
+Kevin

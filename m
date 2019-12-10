@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04183119C14
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 23:19:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C16E119BEC
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 23:12:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727217AbfLJWDI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Dec 2019 17:03:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33014 "EHLO mail.kernel.org"
+        id S1728503AbfLJWMT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Dec 2019 17:12:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33928 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727197AbfLJWDI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Dec 2019 17:03:08 -0500
+        id S1727956AbfLJWDj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Dec 2019 17:03:39 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C147021D7D;
-        Tue, 10 Dec 2019 22:03:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1571E24653;
+        Tue, 10 Dec 2019 22:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576015387;
-        bh=abgahavQ5SwoxyCcLIir3wWNWk56AQB8IQ+J/HqMmSY=;
+        s=default; t=1576015418;
+        bh=gD1W76kL8X7UVNMDJci8laqVu1XV2u7VpXQq0xu/VwA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rqFCNi01xJuad20ND+kVJ9z0MCZ5ZXY9BiKio2/ni8CSQnDIGLqK/fbPXjW5FWXil
-         6OurkAn0vaILGgFk5H2pfNV8dchvWATexRqiVLTflVjtlnhEdoxa59eiE0VX3o7Bd2
-         Nc/ynwOFleWpLpBLcfNXvmNmksBfJPC1EnJ3MjWQ=
+        b=Z5EVC1oz98RYaacm3QDpN16JiIA8kwwgirm6m0NroQt74A178wldDvvH+LEvLUi2r
+         3EJt/24a5wpKiVY5VRpsLSFCg/GhjxF6E2W2/12lg7VyJGJLGCdqcD0ZK0JwYlwZNl
+         UjVFPUucDnNuZUkITTSkvjceT93ao3ACCFmsNzqc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 004/130] iio: tcs3414: fix iio_triggered_buffer_{pre,post}enable positions
-Date:   Tue, 10 Dec 2019 17:00:55 -0500
-Message-Id: <20191210220301.13262-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 031/130] iio: proximity: sx9500: fix iio_triggered_buffer_{predisable,postenable} positions
+Date:   Tue, 10 Dec 2019 17:01:22 -0500
+Message-Id: <20191210220301.13262-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
 References: <20191210220301.13262-1-sashal@kernel.org>
@@ -45,80 +45,79 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-[ Upstream commit 0fe2f2b789190661df24bb8bf62294145729a1fe ]
+[ Upstream commit 3cfd6464fe23deb45bb688df66184b3f32fefc16 ]
 
-The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-the poll functions.
+The iio_triggered_buffer_predisable() should be called last, to detach the
+poll func after the devices has been suspended.
 
-For the predisable hook, the disable code should occur before detaching
-the poll func, and for the postenable hook, the poll func should be
-attached before the enable code.
+This change re-organizes things a bit so that the postenable & predisable
+are symmetrical. It also converts the preenable() to a postenable().
 
-The driver was slightly reworked. The preenable hook was moved to the
-postenable, to add some symmetry to the postenable/predisable part.
+Not stable material as there is no known problem with the current
+code, it's just not consistent with the form we would like all the
+IIO drivers to adopt so as to allow subsystem wide changes.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/tcs3414.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/iio/proximity/sx9500.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/light/tcs3414.c b/drivers/iio/light/tcs3414.c
-index a795afb7667bd..b5a35c7b6b7f4 100644
---- a/drivers/iio/light/tcs3414.c
-+++ b/drivers/iio/light/tcs3414.c
-@@ -244,32 +244,42 @@ static const struct iio_info tcs3414_info = {
- 	.driver_module = THIS_MODULE,
- };
+diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
+index dba796c06ba6c..ac25a0c2e99d7 100644
+--- a/drivers/iio/proximity/sx9500.c
++++ b/drivers/iio/proximity/sx9500.c
+@@ -683,11 +683,15 @@ static irqreturn_t sx9500_trigger_handler(int irq, void *private)
+ 	return IRQ_HANDLED;
+ }
  
--static int tcs3414_buffer_preenable(struct iio_dev *indio_dev)
-+static int tcs3414_buffer_postenable(struct iio_dev *indio_dev)
+-static int sx9500_buffer_preenable(struct iio_dev *indio_dev)
++static int sx9500_buffer_postenable(struct iio_dev *indio_dev)
  {
- 	struct tcs3414_data *data = iio_priv(indio_dev);
-+	int ret;
-+
+ 	struct sx9500_data *data = iio_priv(indio_dev);
+ 	int ret = 0, i;
+ 
 +	ret = iio_triggered_buffer_postenable(indio_dev);
 +	if (ret)
 +		return ret;
++
+ 	mutex_lock(&data->mutex);
  
- 	data->control |= TCS3414_CONTROL_ADC_EN;
--	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
-+	ret = i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
- 		data->control);
+ 	for (i = 0; i < SX9500_NUM_CHANNELS; i++)
+@@ -704,6 +708,9 @@ static int sx9500_buffer_preenable(struct iio_dev *indio_dev)
+ 
+ 	mutex_unlock(&data->mutex);
+ 
 +	if (ret)
 +		iio_triggered_buffer_predisable(indio_dev);
 +
-+	return ret;
+ 	return ret;
  }
  
- static int tcs3414_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	struct tcs3414_data *data = iio_priv(indio_dev);
--	int ret;
+@@ -712,8 +719,6 @@ static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
+ 	struct sx9500_data *data = iio_priv(indio_dev);
+ 	int ret = 0, i;
+ 
+-	iio_triggered_buffer_predisable(indio_dev);
 -
--	ret = iio_triggered_buffer_predisable(indio_dev);
--	if (ret < 0)
--		return ret;
-+	int ret, ret2;
+ 	mutex_lock(&data->mutex);
  
- 	data->control &= ~TCS3414_CONTROL_ADC_EN;
--	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
-+	ret = i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
- 		data->control);
+ 	for (i = 0; i < SX9500_NUM_CHANNELS; i++)
+@@ -730,12 +735,13 @@ static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	mutex_unlock(&data->mutex);
+ 
++	iio_triggered_buffer_predisable(indio_dev);
 +
-+	ret2 = iio_triggered_buffer_predisable(indio_dev);
-+	if (!ret)
-+		ret = ret2;
-+
-+	return ret;
+ 	return ret;
  }
  
- static const struct iio_buffer_setup_ops tcs3414_buffer_setup_ops = {
--	.preenable = tcs3414_buffer_preenable,
--	.postenable = &iio_triggered_buffer_postenable,
-+	.postenable = tcs3414_buffer_postenable,
- 	.predisable = tcs3414_buffer_predisable,
+ static const struct iio_buffer_setup_ops sx9500_buffer_setup_ops = {
+-	.preenable = sx9500_buffer_preenable,
+-	.postenable = iio_triggered_buffer_postenable,
++	.postenable = sx9500_buffer_postenable,
+ 	.predisable = sx9500_buffer_predisable,
  };
  
 -- 

@@ -2,42 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FB741192CB
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 22:07:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 473AB1192AF
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 22:04:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727145AbfLJVET (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Dec 2019 16:04:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49172 "EHLO mail.kernel.org"
+        id S1727269AbfLJVE2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Dec 2019 16:04:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49434 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727133AbfLJVET (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:04:19 -0500
+        id S1727257AbfLJVE1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:04:27 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AB701214AF;
-        Tue, 10 Dec 2019 21:04:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EE4EA24654;
+        Tue, 10 Dec 2019 21:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576011858;
-        bh=Uox/MUlOxAcA9VC8+NstKQ1ozhs/1ymmQvDGzA/Jz60=;
+        s=default; t=1576011866;
+        bh=8sQZi92LYMSGs3wG0gKqFzU+WlXbbH0AzH5Aku7580E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AKFx/ejUEw+XR5d6yJH78LcF4TNL00BmvvWR6NfdNoH8sS3cItjq1XhFdygcEvAE8
-         vL2KQR9wVxGWb5ef6fkVIE05rk9QFTYG9hdB6bdTreo4tWf+acPfF69rFtNMLrrXqr
-         sUkiLWxsE4lf4R1Afh0rQjKR/WV2u1K4Z4ncITNg=
+        b=GYWzKvMmotEGSTwHac1rIRFATAANTKlw+VfCRxwecWiuGmROSbdnqBsHEPtkIlBQ4
+         /uATLyNi+Lp9qvXJiHH+Wi/eudEfEeoRkiUGa6NRFW23ZKZH+a6JiuorH0qv0c2+sl
+         QgbtwrWej8gZK9ia0R+ZNIODkHcs9XDNA9DvZ4rk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Krzysztof Wilczynski <kw@linux.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 012/350] iio: light: bh1750: Resolve compiler warning and make code more readable
-Date:   Tue, 10 Dec 2019 15:58:24 -0500
-Message-Id: <20191210210402.8367-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 019/350] iio: tcs3414: fix iio_triggered_buffer_{pre,post}enable positions
+Date:   Tue, 10 Dec 2019 15:58:31 -0500
+Message-Id: <20191210210402.8367-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210210402.8367-1-sashal@kernel.org>
 References: <20191210210402.8367-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -46,49 +43,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Krzysztof Wilczynski <kw@linux.com>
+From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-[ Upstream commit f552fde983d378e7339f9ea74a25f918563bf0d3 ]
+[ Upstream commit 0fe2f2b789190661df24bb8bf62294145729a1fe ]
 
-Separate the declaration of struct bh1750_chip_info from definition
-of bh1750_chip_info_tbl[] in a single statement as it makes the code
-hard to read, and with the extra newline it makes it look as if the
-bh1750_chip_info_tbl[] had no explicit type.
+The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+the poll functions.
 
-This change also resolves the following compiler warning about the
-unusual position of the static keyword that can be seen when building
-with warnings enabled (W=1):
+For the predisable hook, the disable code should occur before detaching
+the poll func, and for the postenable hook, the poll func should be
+attached before the enable code.
 
-drivers/iio/light/bh1750.c:64:1: warning:
-  ‘static’ is not at beginning of declaration [-Wold-style-declaration]
+The driver was slightly reworked. The preenable hook was moved to the
+postenable, to add some symmetry to the postenable/predisable part.
 
-Related to commit 3a11fbb037a1 ("iio: light: add support for ROHM
-BH1710/BH1715/BH1721/BH1750/BH1751 ambient light sensors").
-
-Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/bh1750.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/light/tcs3414.c | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/light/bh1750.c b/drivers/iio/light/bh1750.c
-index 28347df78cff6..adb5ab9e34390 100644
---- a/drivers/iio/light/bh1750.c
-+++ b/drivers/iio/light/bh1750.c
-@@ -59,9 +59,9 @@ struct bh1750_chip_info {
+diff --git a/drivers/iio/light/tcs3414.c b/drivers/iio/light/tcs3414.c
+index 7c0291c5fe76e..b542e5619ead8 100644
+--- a/drivers/iio/light/tcs3414.c
++++ b/drivers/iio/light/tcs3414.c
+@@ -240,32 +240,42 @@ static const struct iio_info tcs3414_info = {
+ 	.attrs = &tcs3414_attribute_group,
+ };
  
- 	u16 int_time_low_mask;
- 	u16 int_time_high_mask;
--}
-+};
+-static int tcs3414_buffer_preenable(struct iio_dev *indio_dev)
++static int tcs3414_buffer_postenable(struct iio_dev *indio_dev)
+ {
+ 	struct tcs3414_data *data = iio_priv(indio_dev);
++	int ret;
++
++	ret = iio_triggered_buffer_postenable(indio_dev);
++	if (ret)
++		return ret;
  
--static const bh1750_chip_info_tbl[] = {
-+static const struct bh1750_chip_info bh1750_chip_info_tbl[] = {
- 	[BH1710] = { 140, 1022, 300, 400,  250000000, 2, 0x001F, 0x03E0 },
- 	[BH1721] = { 140, 1020, 300, 400,  250000000, 2, 0x0010, 0x03E0 },
- 	[BH1750] = { 31,  254,  69,  1740, 57500000,  1, 0x001F, 0x00E0 },
+ 	data->control |= TCS3414_CONTROL_ADC_EN;
+-	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
++	ret = i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
+ 		data->control);
++	if (ret)
++		iio_triggered_buffer_predisable(indio_dev);
++
++	return ret;
+ }
+ 
+ static int tcs3414_buffer_predisable(struct iio_dev *indio_dev)
+ {
+ 	struct tcs3414_data *data = iio_priv(indio_dev);
+-	int ret;
+-
+-	ret = iio_triggered_buffer_predisable(indio_dev);
+-	if (ret < 0)
+-		return ret;
++	int ret, ret2;
+ 
+ 	data->control &= ~TCS3414_CONTROL_ADC_EN;
+-	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
++	ret = i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
+ 		data->control);
++
++	ret2 = iio_triggered_buffer_predisable(indio_dev);
++	if (!ret)
++		ret = ret2;
++
++	return ret;
+ }
+ 
+ static const struct iio_buffer_setup_ops tcs3414_buffer_setup_ops = {
+-	.preenable = tcs3414_buffer_preenable,
+-	.postenable = &iio_triggered_buffer_postenable,
++	.postenable = tcs3414_buffer_postenable,
+ 	.predisable = tcs3414_buffer_predisable,
+ };
+ 
 -- 
 2.20.1
 

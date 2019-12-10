@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0480C119894
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 22:45:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 617BE119929
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 22:46:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729721AbfLJVd1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Dec 2019 16:33:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37784 "EHLO mail.kernel.org"
+        id S1727604AbfLJVnj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Dec 2019 16:43:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38058 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729718AbfLJVd1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:33:27 -0500
+        id S1727677AbfLJVdf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:33:35 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E553420836;
-        Tue, 10 Dec 2019 21:33:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9070E206D5;
+        Tue, 10 Dec 2019 21:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576013606;
-        bh=PX5vOMAe3WelCDyOsnCu/L2YTS9HO4Ui6SNmnp+WoH4=;
+        s=default; t=1576013615;
+        bh=IqSHiwzJG93tt7Lx1FKTOFNoh5baUghQmp+8/Sn/Vh0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W2qWnHq+4pk44tibcnlDCcWOsjAfYy1qvTX+aRMExUXxxX5ttY1Y7R8TRqJu+0mAN
-         0avnsoQLlYgs1A69LzNHumsUeqqToz3/xUk6S9E6hyMNgA1WxJltTuio9Hi/kAbiwd
-         Kr6rLRm/frj3OvIA91wG/42TjSLSNpR2x90lYBrs=
+        b=imwiaKGujk+jbHmBNNlNwDcJbEAHlOj/RONVdDq3YCXYawYG61KNBJ/afShsZOnnn
+         F3+sBAZjWS9cEWkjrk1YNAEea3ER4PXG9jDYQ7ZndEvaLi5xWBVFJ++ouSVmxsuX1b
+         zjWRgW1A991vKl0o6jeAb/+PBT6Na0K6QJMAmKuc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 053/177] iio: chemical: atlas-ph-sensor: fix iio_triggered_buffer_predisable() position
-Date:   Tue, 10 Dec 2019 16:30:17 -0500
-Message-Id: <20191210213221.11921-53-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 060/177] iio: adc: max1027: Reset the device at probe time
+Date:   Tue, 10 Dec 2019 16:30:24 -0500
+Message-Id: <20191210213221.11921-60-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
 References: <20191210213221.11921-1-sashal@kernel.org>
@@ -44,56 +43,40 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 0c8a6e72f3c04bfe92a64e5e0791bfe006aabe08 ]
+[ Upstream commit db033831b4f5589f9fcbadb837614a7c4eac0308 ]
 
-The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-the poll functions.
+All the registers are configured by the driver, let's reset the chip
+at probe time, avoiding any conflict with a possible earlier
+configuration.
 
-The iio_triggered_buffer_predisable() should be called last, to detach the
-poll func after the devices has been suspended.
-
-The position of iio_triggered_buffer_postenable() is correct.
-
-Note this is not stable material. It's a fix in the logical
-model rather fixing an actual bug.  These are being tidied up
-throughout the subsystem to allow more substantial rework that
-was blocked by variations in how things were done.
-
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/atlas-ph-sensor.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/adc/max1027.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-ph-sensor.c
-index 3a20cb5d9bffc..6c175eb1c7a7f 100644
---- a/drivers/iio/chemical/atlas-ph-sensor.c
-+++ b/drivers/iio/chemical/atlas-ph-sensor.c
-@@ -323,16 +323,16 @@ static int atlas_buffer_predisable(struct iio_dev *indio_dev)
- 	struct atlas_data *data = iio_priv(indio_dev);
- 	int ret;
+diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
+index 311c1a89c329e..0939eb0384f1c 100644
+--- a/drivers/iio/adc/max1027.c
++++ b/drivers/iio/adc/max1027.c
+@@ -460,6 +460,14 @@ static int max1027_probe(struct spi_device *spi)
+ 		goto fail_dev_register;
+ 	}
  
--	ret = iio_triggered_buffer_predisable(indio_dev);
-+	ret = atlas_set_interrupt(data, false);
- 	if (ret)
- 		return ret;
- 
--	ret = atlas_set_interrupt(data, false);
-+	pm_runtime_mark_last_busy(&data->client->dev);
-+	ret = pm_runtime_put_autosuspend(&data->client->dev);
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_mark_last_busy(&data->client->dev);
--	return pm_runtime_put_autosuspend(&data->client->dev);
-+	return iio_triggered_buffer_predisable(indio_dev);
- }
- 
- static const struct iio_trigger_ops atlas_interrupt_trigger_ops = {
++	/* Internal reset */
++	st->reg = MAX1027_RST_REG;
++	ret = spi_write(st->spi, &st->reg, 1);
++	if (ret < 0) {
++		dev_err(&indio_dev->dev, "Failed to reset the ADC\n");
++		return ret;
++	}
++
+ 	/* Disable averaging */
+ 	st->reg = MAX1027_AVG_REG;
+ 	ret = spi_write(st->spi, &st->reg, 1);
 -- 
 2.20.1
 

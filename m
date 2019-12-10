@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D39119619
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 22:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE901193F5
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 22:15:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728282AbfLJVY7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Dec 2019 16:24:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60954 "EHLO mail.kernel.org"
+        id S1728898AbfLJVME (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Dec 2019 16:12:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35424 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727081AbfLJVKo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:10:44 -0500
+        id S1728496AbfLJVMD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:12:03 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 61751246AF;
-        Tue, 10 Dec 2019 21:10:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6F2C7246A8;
+        Tue, 10 Dec 2019 21:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576012244;
-        bh=zSqE42JyAS+kAssgLSdJJ9gq6wzq3ZS2rsSKxFgJUDQ=;
+        s=default; t=1576012323;
+        bh=IwXQYZBTdOEeyTpQWl5WVVtM3dvJFv3nmjOMAVyAIzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pbhO+tlI7NDjY+W9d+KLUpggrz5jdQar3MLRPXMmdum0xvaYCvDwElbYk12kbFli7
-         p5KFo49w+C5SKQnEN1P9WAbndQfRR8bGXbT+BroTa/7MwwdVn6Vhg9z7aK+AareeDc
-         0vuNwS3HcGoplAGpxWm2UufTywBGr1SZG9aV2Eoc=
+        b=tMNoo1dO1X1KMrFP9/nE3j6Dbip6oL4E8OMzTyg7y5Ixifo81t4ErvWJBkaiJMTNq
+         lnmtSIbMojfAYzcsq/6OKXcmSGIacxh93mvKhLEXspLyyGXLyNjwa/jUa/9KqxO4ud
+         c80M4HohDRfyrTrCH8Gj6qGOu4KUhpS9AKqbcmPw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 192/350] iio: dln2-adc: fix iio_triggered_buffer_postenable() position
-Date:   Tue, 10 Dec 2019 16:04:57 -0500
-Message-Id: <20191210210735.9077-153-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 256/350] iio: imu: st_lsm6dsx: fix ODR check in st_lsm6dsx_write_raw
+Date:   Tue, 10 Dec 2019 16:06:01 -0500
+Message-Id: <20191210210735.9077-217-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
 References: <20191210210735.9077-1-sashal@kernel.org>
@@ -43,93 +43,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit a7bddfe2dfce1d8859422124abe1964e0ecd386e ]
+[ Upstream commit fc3f6ad7f5dc6c899fbda0255865737bac88c2e0 ]
 
-The iio_triggered_buffer_postenable() hook should be called first to
-attach the poll function. The iio_triggered_buffer_predisable() hook is
-called last (as is it should).
+Since st_lsm6dsx i2c master controller relies on accel device as trigger
+and slave devices can run at different ODRs we must select an accel_odr >=
+slave_odr. Report real accel ODR in st_lsm6dsx_check_odr() in order to
+properly set sensor frequency in st_lsm6dsx_write_raw and avoid to
+report unsupported frequency
 
-This change moves iio_triggered_buffer_postenable() to be called first. It
-adds iio_triggered_buffer_predisable() on the error paths of the postenable
-hook.
-For the predisable hook, some code-paths have been changed to make sure
-that the iio_triggered_buffer_predisable() hook gets called in case there
-is an error before it.
-
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Fixes: 6ffb55e5009ff ("iio: imu: st_lsm6dsx: introduce ST_LSM6DSX_ID_EXT sensor ids")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/dln2-adc.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
-index 5fa78c273a258..65c7c9329b1c3 100644
---- a/drivers/iio/adc/dln2-adc.c
-+++ b/drivers/iio/adc/dln2-adc.c
-@@ -524,6 +524,10 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
- 	u16 conflict;
- 	unsigned int trigger_chan;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index fd5ebe1e1594f..28e011b35f21b 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -985,8 +985,7 @@ int st_lsm6dsx_check_odr(struct st_lsm6dsx_sensor *sensor, u16 odr, u8 *val)
+ 		return -EINVAL;
  
-+	ret = iio_triggered_buffer_postenable(indio_dev);
-+	if (ret)
-+		return ret;
-+
- 	mutex_lock(&dln2->mutex);
- 
- 	/* Enable ADC */
-@@ -537,6 +541,7 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
- 				(int)conflict);
- 			ret = -EBUSY;
- 		}
-+		iio_triggered_buffer_predisable(indio_dev);
- 		return ret;
- 	}
- 
-@@ -550,6 +555,7 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
- 		mutex_unlock(&dln2->mutex);
- 		if (ret < 0) {
- 			dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
-+			iio_triggered_buffer_predisable(indio_dev);
- 			return ret;
- 		}
- 	} else {
-@@ -557,12 +563,12 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
- 		mutex_unlock(&dln2->mutex);
- 	}
- 
--	return iio_triggered_buffer_postenable(indio_dev);
-+	return 0;
+ 	*val = odr_table->odr_avl[i].val;
+-
+-	return 0;
++	return odr_table->odr_avl[i].hz;
  }
  
- static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
- {
--	int ret;
-+	int ret, ret2;
- 	struct dln2_adc *dln2 = iio_priv(indio_dev);
+ static u16 st_lsm6dsx_check_odr_dependency(struct st_lsm6dsx_hw *hw, u16 odr,
+@@ -1149,8 +1148,10 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
+ 	case IIO_CHAN_INFO_SAMP_FREQ: {
+ 		u8 data;
  
- 	mutex_lock(&dln2->mutex);
-@@ -577,12 +583,14 @@ static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
- 	ret = dln2_adc_set_port_enabled(dln2, false, NULL);
- 
- 	mutex_unlock(&dln2->mutex);
--	if (ret < 0) {
-+	if (ret < 0)
- 		dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
--		return ret;
--	}
- 
--	return iio_triggered_buffer_predisable(indio_dev);
-+	ret2 = iio_triggered_buffer_predisable(indio_dev);
-+	if (ret == 0)
-+		ret = ret2;
-+
-+	return ret;
- }
- 
- static const struct iio_buffer_setup_ops dln2_adc_buffer_setup_ops = {
+-		err = st_lsm6dsx_check_odr(sensor, val, &data);
+-		if (!err)
++		val = st_lsm6dsx_check_odr(sensor, val, &data);
++		if (val < 0)
++			err = val;
++		else
+ 			sensor->odr = val;
+ 		break;
+ 	}
 -- 
 2.20.1
 

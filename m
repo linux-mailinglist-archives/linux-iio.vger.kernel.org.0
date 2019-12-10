@@ -2,39 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A8111970A
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 22:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45A2111999E
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 22:47:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727524AbfLJVaw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Dec 2019 16:30:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58506 "EHLO mail.kernel.org"
+        id S1728799AbfLJVrU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Dec 2019 16:47:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35998 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727892AbfLJVJk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:09:40 -0500
+        id S1727541AbfLJVc2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:32:28 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 10F252077B;
-        Tue, 10 Dec 2019 21:09:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B97A6207FF;
+        Tue, 10 Dec 2019 21:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576012179;
-        bh=bEkRQMpQvd4EfqHnUl/S8Zj4dUSGUvPCaLdi5gR09UA=;
+        s=default; t=1576013547;
+        bh=yIqkzB+gHP2XigPlyjN1hLGGMzXrtEGp3PcIkbDipU0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G6fB6cvpADxtzwvvI1aZJOHECNKgl1qZhphXSLp+3rvURdPhkeenNAIJ6MzdZA986
-         UKGiOrtRgdxmqnrUwH00ygtcBZCEsVqa5oiEQIaFP2ud1SQJx34D8VCKS4gTgIkc1B
-         CFhuzwUNk6s5v3bH2o1kYKX8lKED+hjEXkdEyhsw=
+        b=NxrkOu4lAwwTmx8syQ+4bRE0tgXYDDunypYu7W5ZYxulbtJkY6my391qTE+fznmfY
+         /jOmeHE39tMM9/dMq+EVYW7dTl2hXD/o5B7sWT/bFSTYC3MELNSap58/yOYrUxF3Jy
+         jMkB7kgYvb2gFmF5PFuUDmFXYm9ynMauA6Cjrfbk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+Cc:     Krzysztof Wilczynski <kw@linux.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 137/350] iio: pressure: zpa2326: fix iio_triggered_buffer_postenable position
-Date:   Tue, 10 Dec 2019 16:04:02 -0500
-Message-Id: <20191210210735.9077-98-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 004/177] iio: light: bh1750: Resolve compiler warning and make code more readable
+Date:   Tue, 10 Dec 2019 16:29:28 -0500
+Message-Id: <20191210213221.11921-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
-References: <20191210210735.9077-1-sashal@kernel.org>
+In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
+References: <20191210213221.11921-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -43,74 +46,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+From: Krzysztof Wilczynski <kw@linux.com>
 
-[ Upstream commit fe2392c67db9730d46f11fc4fadfa7bffa8843fa ]
+[ Upstream commit f552fde983d378e7339f9ea74a25f918563bf0d3 ]
 
-The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-the poll functions.
+Separate the declaration of struct bh1750_chip_info from definition
+of bh1750_chip_info_tbl[] in a single statement as it makes the code
+hard to read, and with the extra newline it makes it look as if the
+bh1750_chip_info_tbl[] had no explicit type.
 
-The iio_triggered_buffer_postenable() should be called before (to attach
-the poll func) and then the
+This change also resolves the following compiler warning about the
+unusual position of the static keyword that can be seen when building
+with warnings enabled (W=1):
 
-The iio_triggered_buffer_predisable() function is hooked directly without
-anything, which is probably fine, as the postenable() version seems to also
-do some reset/wake-up of the device.
-This will mean it will be easier when removing it; i.e. it just gets
-removed.
+drivers/iio/light/bh1750.c:64:1: warning:
+  ‘static’ is not at beginning of declaration [-Wold-style-declaration]
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Related to commit 3a11fbb037a1 ("iio: light: add support for ROHM
+BH1710/BH1715/BH1721/BH1750/BH1751 ambient light sensors").
+
+Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/zpa2326.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/iio/light/bh1750.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
-index 9d0d07930236e..99dfe33ee402f 100644
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -1243,6 +1243,11 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
- 	const struct zpa2326_private *priv = iio_priv(indio_dev);
- 	int                           err;
+diff --git a/drivers/iio/light/bh1750.c b/drivers/iio/light/bh1750.c
+index a814828e69f5c..5f5d54ce882b0 100644
+--- a/drivers/iio/light/bh1750.c
++++ b/drivers/iio/light/bh1750.c
+@@ -62,9 +62,9 @@ struct bh1750_chip_info {
  
-+	/* Plug our own trigger event handler. */
-+	err = iio_triggered_buffer_postenable(indio_dev);
-+	if (err)
-+		goto err;
-+
- 	if (!priv->waken) {
- 		/*
- 		 * We were already power supplied. Just clear hardware FIFO to
-@@ -1250,7 +1255,7 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
- 		 */
- 		err = zpa2326_clear_fifo(indio_dev, 0);
- 		if (err)
--			goto err;
-+			goto err_buffer_predisable;
- 	}
+ 	u16 int_time_low_mask;
+ 	u16 int_time_high_mask;
+-}
++};
  
- 	if (!iio_trigger_using_own(indio_dev) && priv->waken) {
-@@ -1260,16 +1265,13 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
- 		 */
- 		err = zpa2326_config_oneshot(indio_dev, priv->irq);
- 		if (err)
--			goto err;
-+			goto err_buffer_predisable;
- 	}
- 
--	/* Plug our own trigger event handler. */
--	err = iio_triggered_buffer_postenable(indio_dev);
--	if (err)
--		goto err;
--
- 	return 0;
- 
-+err_buffer_predisable:
-+	iio_triggered_buffer_predisable(indio_dev);
- err:
- 	zpa2326_err(indio_dev, "failed to enable buffering (%d)", err);
- 
+-static const bh1750_chip_info_tbl[] = {
++static const struct bh1750_chip_info bh1750_chip_info_tbl[] = {
+ 	[BH1710] = { 140, 1022, 300, 400,  250000000, 2, 0x001F, 0x03E0 },
+ 	[BH1721] = { 140, 1020, 300, 400,  250000000, 2, 0x0010, 0x03E0 },
+ 	[BH1750] = { 31,  254,  69,  1740, 57500000,  1, 0x001F, 0x00E0 },
 -- 
 2.20.1
 

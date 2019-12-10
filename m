@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15D82119BA9
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 23:12:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0A51119B93
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 23:12:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730056AbfLJWK1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Dec 2019 17:10:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34728 "EHLO mail.kernel.org"
+        id S1727895AbfLJWJj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Dec 2019 17:09:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35272 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728519AbfLJWEI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Dec 2019 17:04:08 -0500
+        id S1728775AbfLJWE0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Dec 2019 17:04:26 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0F93220838;
-        Tue, 10 Dec 2019 22:04:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B478C2073B;
+        Tue, 10 Dec 2019 22:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576015447;
-        bh=zPctY8+3us3rg4lt69IF2T0GLa/mbYJ8eSz0Agf7hpc=;
+        s=default; t=1576015465;
+        bh=0q2ZS5XWFRQBLJiC/t0ud3YAaQaPf8ZUZp8Sad2KK40=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1/dqv1eCnu/kGSxABd3Rvw/DtDD8ISOV3AEe4LeirKAJ2y6DbN6X0GAXULlvIZT9T
-         G/0vZZcfV9nuN+WeIzqcARNoweDd3gObhrxWEziQlsVD039J6yAOrVNBHsjZG2jwUo
-         gQWbn+1waWy/K4jZdpkSHchtPTsVenLWrz02img4=
+        b=WV1EQpaaM1n3/T/e/NpeClFV1KKgyvywqyv/2d9qhntmIhb1YFEKr5v2XkBQSExWI
+         JHlCyyqY9v2tOoj2jsItsa98wxmY856TQ0mchCB1bCfKhDF9V2/swJ/huMk9HiYYss
+         WhmSE07NyN+fMZigh5gy0Rr8rfV3cqn8g5UfDeGs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 055/130] iio: pressure: zpa2326: fix iio_triggered_buffer_postenable position
-Date:   Tue, 10 Dec 2019 17:01:46 -0500
-Message-Id: <20191210220301.13262-55-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 071/130] iio: dln2-adc: fix iio_triggered_buffer_postenable() position
+Date:   Tue, 10 Dec 2019 17:02:02 -0500
+Message-Id: <20191210220301.13262-71-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
 References: <20191210220301.13262-1-sashal@kernel.org>
@@ -45,72 +45,91 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-[ Upstream commit fe2392c67db9730d46f11fc4fadfa7bffa8843fa ]
+[ Upstream commit a7bddfe2dfce1d8859422124abe1964e0ecd386e ]
 
-The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-the poll functions.
+The iio_triggered_buffer_postenable() hook should be called first to
+attach the poll function. The iio_triggered_buffer_predisable() hook is
+called last (as is it should).
 
-The iio_triggered_buffer_postenable() should be called before (to attach
-the poll func) and then the
-
-The iio_triggered_buffer_predisable() function is hooked directly without
-anything, which is probably fine, as the postenable() version seems to also
-do some reset/wake-up of the device.
-This will mean it will be easier when removing it; i.e. it just gets
-removed.
+This change moves iio_triggered_buffer_postenable() to be called first. It
+adds iio_triggered_buffer_predisable() on the error paths of the postenable
+hook.
+For the predisable hook, some code-paths have been changed to make sure
+that the iio_triggered_buffer_predisable() hook gets called in case there
+is an error before it.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/zpa2326.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/iio/adc/dln2-adc.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
-index 91431454eb85d..10bd5e56aacbb 100644
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -1251,6 +1251,11 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
- 	const struct zpa2326_private *priv = iio_priv(indio_dev);
- 	int                           err;
+diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+index ab8d6aed5085e..2a299bbd6acf3 100644
+--- a/drivers/iio/adc/dln2-adc.c
++++ b/drivers/iio/adc/dln2-adc.c
+@@ -528,6 +528,10 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+ 	u16 conflict;
+ 	unsigned int trigger_chan;
  
-+	/* Plug our own trigger event handler. */
-+	err = iio_triggered_buffer_postenable(indio_dev);
-+	if (err)
-+		goto err;
++	ret = iio_triggered_buffer_postenable(indio_dev);
++	if (ret)
++		return ret;
 +
- 	if (!priv->waken) {
- 		/*
- 		 * We were already power supplied. Just clear hardware FIFO to
-@@ -1258,7 +1263,7 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
- 		 */
- 		err = zpa2326_clear_fifo(indio_dev, 0);
- 		if (err)
--			goto err;
-+			goto err_buffer_predisable;
+ 	mutex_lock(&dln2->mutex);
+ 
+ 	/* Enable ADC */
+@@ -541,6 +545,7 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+ 				(int)conflict);
+ 			ret = -EBUSY;
+ 		}
++		iio_triggered_buffer_predisable(indio_dev);
+ 		return ret;
  	}
  
- 	if (!iio_trigger_using_own(indio_dev) && priv->waken) {
-@@ -1268,16 +1273,13 @@ static int zpa2326_postenable_buffer(struct iio_dev *indio_dev)
- 		 */
- 		err = zpa2326_config_oneshot(indio_dev, priv->irq);
- 		if (err)
--			goto err;
-+			goto err_buffer_predisable;
+@@ -554,6 +559,7 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+ 		mutex_unlock(&dln2->mutex);
+ 		if (ret < 0) {
+ 			dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
++			iio_triggered_buffer_predisable(indio_dev);
+ 			return ret;
+ 		}
+ 	} else {
+@@ -561,12 +567,12 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
+ 		mutex_unlock(&dln2->mutex);
  	}
  
--	/* Plug our own trigger event handler. */
--	err = iio_triggered_buffer_postenable(indio_dev);
--	if (err)
--		goto err;
--
- 	return 0;
+-	return iio_triggered_buffer_postenable(indio_dev);
++	return 0;
+ }
  
-+err_buffer_predisable:
-+	iio_triggered_buffer_predisable(indio_dev);
- err:
- 	zpa2326_err(indio_dev, "failed to enable buffering (%d)", err);
+ static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
+ {
+-	int ret;
++	int ret, ret2;
+ 	struct dln2_adc *dln2 = iio_priv(indio_dev);
  
+ 	mutex_lock(&dln2->mutex);
+@@ -581,12 +587,14 @@ static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
+ 	ret = dln2_adc_set_port_enabled(dln2, false, NULL);
+ 
+ 	mutex_unlock(&dln2->mutex);
+-	if (ret < 0) {
++	if (ret < 0)
+ 		dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
+-		return ret;
+-	}
+ 
+-	return iio_triggered_buffer_predisable(indio_dev);
++	ret2 = iio_triggered_buffer_predisable(indio_dev);
++	if (ret == 0)
++		ret = ret2;
++
++	return ret;
+ }
+ 
+ static const struct iio_buffer_setup_ops dln2_adc_buffer_setup_ops = {
 -- 
 2.20.1
 

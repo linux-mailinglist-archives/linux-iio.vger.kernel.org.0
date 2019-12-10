@@ -2,39 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A51119B93
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 23:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5847C119E79
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 23:45:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727895AbfLJWJj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Dec 2019 17:09:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35272 "EHLO mail.kernel.org"
+        id S1726986AbfLJWam (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Dec 2019 17:30:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50336 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728775AbfLJWE0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Dec 2019 17:04:26 -0500
+        id S1726841AbfLJWak (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Dec 2019 17:30:40 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B478C2073B;
-        Tue, 10 Dec 2019 22:04:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 65C9820838;
+        Tue, 10 Dec 2019 22:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576015465;
-        bh=0q2ZS5XWFRQBLJiC/t0ud3YAaQaPf8ZUZp8Sad2KK40=;
+        s=default; t=1576017040;
+        bh=LFOAkg9kscunvVIpl231DkBrnvdPxs3A18yFFNInxJc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WV1EQpaaM1n3/T/e/NpeClFV1KKgyvywqyv/2d9qhntmIhb1YFEKr5v2XkBQSExWI
-         JHlCyyqY9v2tOoj2jsItsa98wxmY856TQ0mchCB1bCfKhDF9V2/swJ/huMk9HiYYss
-         WhmSE07NyN+fMZigh5gy0Rr8rfV3cqn8g5UfDeGs=
+        b=uGCCqTA2uo6HvJE6hFAemESCXxlIYEiTNxx/sxk+Yu5/ATn5QhmusewT2zJxc5eM7
+         LSRPXqKJ+kZe/+m7n/jvoSHaztvr5Acnh5h8KIMasasILRcvAWtjFtZ/E9YLn9Wvvg
+         i+CjCZaHggx6OZvsBPvhFGHw0Yrs9WgdRVXbnaL0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+Cc:     Krzysztof Wilczynski <kw@linux.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 071/130] iio: dln2-adc: fix iio_triggered_buffer_postenable() position
-Date:   Tue, 10 Dec 2019 17:02:02 -0500
-Message-Id: <20191210220301.13262-71-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 03/91] iio: light: bh1750: Resolve compiler warning and make code more readable
+Date:   Tue, 10 Dec 2019 17:29:07 -0500
+Message-Id: <20191210223035.14270-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
-References: <20191210220301.13262-1-sashal@kernel.org>
+In-Reply-To: <20191210223035.14270-1-sashal@kernel.org>
+References: <20191210223035.14270-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -43,93 +46,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+From: Krzysztof Wilczynski <kw@linux.com>
 
-[ Upstream commit a7bddfe2dfce1d8859422124abe1964e0ecd386e ]
+[ Upstream commit f552fde983d378e7339f9ea74a25f918563bf0d3 ]
 
-The iio_triggered_buffer_postenable() hook should be called first to
-attach the poll function. The iio_triggered_buffer_predisable() hook is
-called last (as is it should).
+Separate the declaration of struct bh1750_chip_info from definition
+of bh1750_chip_info_tbl[] in a single statement as it makes the code
+hard to read, and with the extra newline it makes it look as if the
+bh1750_chip_info_tbl[] had no explicit type.
 
-This change moves iio_triggered_buffer_postenable() to be called first. It
-adds iio_triggered_buffer_predisable() on the error paths of the postenable
-hook.
-For the predisable hook, some code-paths have been changed to make sure
-that the iio_triggered_buffer_predisable() hook gets called in case there
-is an error before it.
+This change also resolves the following compiler warning about the
+unusual position of the static keyword that can be seen when building
+with warnings enabled (W=1):
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+drivers/iio/light/bh1750.c:64:1: warning:
+  ‘static’ is not at beginning of declaration [-Wold-style-declaration]
+
+Related to commit 3a11fbb037a1 ("iio: light: add support for ROHM
+BH1710/BH1715/BH1721/BH1750/BH1751 ambient light sensors").
+
+Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/dln2-adc.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/iio/light/bh1750.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
-index ab8d6aed5085e..2a299bbd6acf3 100644
---- a/drivers/iio/adc/dln2-adc.c
-+++ b/drivers/iio/adc/dln2-adc.c
-@@ -528,6 +528,10 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
- 	u16 conflict;
- 	unsigned int trigger_chan;
+diff --git a/drivers/iio/light/bh1750.c b/drivers/iio/light/bh1750.c
+index b05946604f804..6d5bb11594dc1 100644
+--- a/drivers/iio/light/bh1750.c
++++ b/drivers/iio/light/bh1750.c
+@@ -62,9 +62,9 @@ struct bh1750_chip_info {
  
-+	ret = iio_triggered_buffer_postenable(indio_dev);
-+	if (ret)
-+		return ret;
-+
- 	mutex_lock(&dln2->mutex);
+ 	u16 int_time_low_mask;
+ 	u16 int_time_high_mask;
+-}
++};
  
- 	/* Enable ADC */
-@@ -541,6 +545,7 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
- 				(int)conflict);
- 			ret = -EBUSY;
- 		}
-+		iio_triggered_buffer_predisable(indio_dev);
- 		return ret;
- 	}
- 
-@@ -554,6 +559,7 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
- 		mutex_unlock(&dln2->mutex);
- 		if (ret < 0) {
- 			dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
-+			iio_triggered_buffer_predisable(indio_dev);
- 			return ret;
- 		}
- 	} else {
-@@ -561,12 +567,12 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
- 		mutex_unlock(&dln2->mutex);
- 	}
- 
--	return iio_triggered_buffer_postenable(indio_dev);
-+	return 0;
- }
- 
- static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
- {
--	int ret;
-+	int ret, ret2;
- 	struct dln2_adc *dln2 = iio_priv(indio_dev);
- 
- 	mutex_lock(&dln2->mutex);
-@@ -581,12 +587,14 @@ static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
- 	ret = dln2_adc_set_port_enabled(dln2, false, NULL);
- 
- 	mutex_unlock(&dln2->mutex);
--	if (ret < 0) {
-+	if (ret < 0)
- 		dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
--		return ret;
--	}
- 
--	return iio_triggered_buffer_predisable(indio_dev);
-+	ret2 = iio_triggered_buffer_predisable(indio_dev);
-+	if (ret == 0)
-+		ret = ret2;
-+
-+	return ret;
- }
- 
- static const struct iio_buffer_setup_ops dln2_adc_buffer_setup_ops = {
+-static const bh1750_chip_info_tbl[] = {
++static const struct bh1750_chip_info bh1750_chip_info_tbl[] = {
+ 	[BH1710] = { 140, 1022, 300, 400,  250000000, 2, 0x001F, 0x03E0 },
+ 	[BH1721] = { 140, 1020, 300, 400,  250000000, 2, 0x0010, 0x03E0 },
+ 	[BH1750] = { 31,  254,  69,  1740, 57500000,  1, 0x001F, 0x00E0 },
 -- 
 2.20.1
 

@@ -2,40 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0095E119855
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 22:39:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A11119C38
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 23:19:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730192AbfLJVfL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Dec 2019 16:35:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40740 "EHLO mail.kernel.org"
+        id S1727299AbfLJWOH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Dec 2019 17:14:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:32976 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729781AbfLJVfJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:35:09 -0500
+        id S1727024AbfLJWDG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Dec 2019 17:03:06 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7CCC3214AF;
-        Tue, 10 Dec 2019 21:35:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9B3D220838;
+        Tue, 10 Dec 2019 22:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576013709;
-        bh=P2+H/mNFkPxMa3vOFEINwrWiU5sbnq8adCuZsANTxDo=;
+        s=default; t=1576015386;
+        bh=jbwwk+VHwZfTjVJwwsWLT/LpWmWodrRusElp14fvbWM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0fZzC72YTAb9sqfzYGsxY0MWrTFkujVujgiY58MeqN3HXheL+yxPQyQBTXEFc9/WJ
-         z5hPXd9wivvROESIIAcg1FDIJ7aFchypAT01XvFwBBAtsOMj/ybrOxp/HNFKJZ6DCa
-         LJilbClMW3oqkorxcb1cj/TUt40VFPQGpTkJLt8U=
+        b=LNrp9m868eSXD3ebqkFBjDsLehwfzzufiC5Ifegy12ue6xXecOdJ3TyX9olmU5/7i
+         AAXjotZkF6OHCLm1xnhfG64rDmqHQAXApQFZSFeHjqiQJCYMMlmcgMu2wMKKrlBNmC
+         xXOVrpAS4iMgL9s6/TK1cNG/cJWeFE6rAJc3igL4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Stefan Popa <stefan.popa@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+Cc:     Krzysztof Wilczynski <kw@linux.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 137/177] iio: dac: ad5446: Add support for new AD5600 DAC
-Date:   Tue, 10 Dec 2019 16:31:41 -0500
-Message-Id: <20191210213221.11921-137-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 003/130] iio: light: bh1750: Resolve compiler warning and make code more readable
+Date:   Tue, 10 Dec 2019 17:00:54 -0500
+Message-Id: <20191210220301.13262-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
-References: <20191210213221.11921-1-sashal@kernel.org>
+In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
+References: <20191210220301.13262-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -44,74 +46,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Stefan Popa <stefan.popa@analog.com>
+From: Krzysztof Wilczynski <kw@linux.com>
 
-[ Upstream commit 6376cbe549fffb378403cee78efd26b8a2c8e450 ]
+[ Upstream commit f552fde983d378e7339f9ea74a25f918563bf0d3 ]
 
-The AD5600 is a single channel, 16-bit resolution, voltage output digital
-to analog converter (DAC). The AD5600 uses a 3-wire SPI interface. It is
-part of the AD5541 family of DACs.
+Separate the declaration of struct bh1750_chip_info from definition
+of bh1750_chip_info_tbl[] in a single statement as it makes the code
+hard to read, and with the extra newline it makes it look as if the
+bh1750_chip_info_tbl[] had no explicit type.
 
-The ad5446 IIO driver implements support for some of these DACs (in the
-AD5441 family), so the change is a simple entry in this driver.
+This change also resolves the following compiler warning about the
+unusual position of the static keyword that can be seen when building
+with warnings enabled (W=1):
 
-Link: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5600.pdf
+drivers/iio/light/bh1750.c:64:1: warning:
+  ‘static’ is not at beginning of declaration [-Wold-style-declaration]
 
-Signed-off-by: Stefan Popa <stefan.popa@analog.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Related to commit 3a11fbb037a1 ("iio: light: add support for ROHM
+BH1710/BH1715/BH1721/BH1750/BH1751 ambient light sensors").
+
+Signed-off-by: Krzysztof Wilczynski <kw@linux.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dac/Kconfig  | 4 ++--
- drivers/iio/dac/ad5446.c | 6 ++++++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/iio/light/bh1750.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index 80beb64e9e0c6..69f4cfa6494b5 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -59,8 +59,8 @@ config AD5446
- 	help
- 	  Say yes here to build support for Analog Devices AD5300, AD5301, AD5310,
- 	  AD5311, AD5320, AD5321, AD5444, AD5446, AD5450, AD5451, AD5452, AD5453,
--	  AD5512A, AD5541A, AD5542A, AD5543, AD5553, AD5601, AD5602, AD5611, AD5612,
--	  AD5620, AD5621, AD5622, AD5640, AD5641, AD5660, AD5662 DACs
-+	  AD5512A, AD5541A, AD5542A, AD5543, AD5553, AD5600, AD5601, AD5602, AD5611,
-+	  AD5612, AD5620, AD5621, AD5622, AD5640, AD5641, AD5660, AD5662 DACs
- 	  as well as Texas Instruments DAC081S101, DAC101S101, DAC121S101.
+diff --git a/drivers/iio/light/bh1750.c b/drivers/iio/light/bh1750.c
+index 6c61187e630fd..0b7ba02c8d166 100644
+--- a/drivers/iio/light/bh1750.c
++++ b/drivers/iio/light/bh1750.c
+@@ -62,9 +62,9 @@ struct bh1750_chip_info {
  
- 	  To compile this driver as a module, choose M here: the
-diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
-index fd26a4272fc5b..d3ce5def4f659 100644
---- a/drivers/iio/dac/ad5446.c
-+++ b/drivers/iio/dac/ad5446.c
-@@ -328,6 +328,7 @@ enum ad5446_supported_spi_device_ids {
- 	ID_AD5541A,
- 	ID_AD5512A,
- 	ID_AD5553,
-+	ID_AD5600,
- 	ID_AD5601,
- 	ID_AD5611,
- 	ID_AD5621,
-@@ -382,6 +383,10 @@ static const struct ad5446_chip_info ad5446_spi_chip_info[] = {
- 		.channel = AD5446_CHANNEL(14, 16, 0),
- 		.write = ad5446_write,
- 	},
-+	[ID_AD5600] = {
-+		.channel = AD5446_CHANNEL(16, 16, 0),
-+		.write = ad5446_write,
-+	},
- 	[ID_AD5601] = {
- 		.channel = AD5446_CHANNEL_POWERDOWN(8, 16, 6),
- 		.write = ad5446_write,
-@@ -449,6 +454,7 @@ static const struct spi_device_id ad5446_spi_ids[] = {
- 	{"ad5542a", ID_AD5541A}, /* ad5541a and ad5542a are compatible */
- 	{"ad5543", ID_AD5541A}, /* ad5541a and ad5543 are compatible */
- 	{"ad5553", ID_AD5553},
-+	{"ad5600", ID_AD5600},
- 	{"ad5601", ID_AD5601},
- 	{"ad5611", ID_AD5611},
- 	{"ad5621", ID_AD5621},
+ 	u16 int_time_low_mask;
+ 	u16 int_time_high_mask;
+-}
++};
+ 
+-static const bh1750_chip_info_tbl[] = {
++static const struct bh1750_chip_info bh1750_chip_info_tbl[] = {
+ 	[BH1710] = { 140, 1022, 300, 400,  250000000, 2, 0x001F, 0x03E0 },
+ 	[BH1721] = { 140, 1020, 300, 400,  250000000, 2, 0x0010, 0x03E0 },
+ 	[BH1750] = { 31,  254,  69,  1740, 57500000,  1, 0x001F, 0x00E0 },
 -- 
 2.20.1
 

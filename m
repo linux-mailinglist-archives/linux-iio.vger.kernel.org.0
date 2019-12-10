@@ -2,491 +2,370 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC59A117C06
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 01:04:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AEFA117CA1
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 01:47:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727425AbfLJADR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Dec 2019 19:03:17 -0500
-Received: from mail-eopbgr680063.outbound.protection.outlook.com ([40.107.68.63]:54094
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727286AbfLJADR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 9 Dec 2019 19:03:17 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YZfUDAnh9Q+mAPiv9b1M1TEpvtDnOFBX+GNTiXAZQumLzPcNXnt8eCZfg2snmULLH4TExxcsf7q3sdCdKySeIdyNcTv0EZ7J2MAUxsi8oa3vTCI1LdwgOhmXaGbFsR80mgUpBXG8+cQ9y0Unrnl+CgxSc1viAQmJLWQqrmbiZXrCzgIlECq0So8terZ/94Ry/uBeWOfibqS2bKX0/BX13a5+IZL+4x9zFtQ9UFJedrQr9tcUkCw4QIJjFeJbprxD3ts+K0QatL/dgnx5msX4C62esLQS1QqcUlz0ooFASA2PmaeR5DSmGmdWVK+JWkDTIPYBZsZX8/vHRm/wHOmkCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4TH+Sxc7Ugx9S37ZYZhG79e6JTikyl4x1528n/mcIEU=;
- b=BBIS4G4sqd2kHOGBaJrgoapfEWWs53V0jnWpSYfwPaQghdg5qIwPQANmGxTRY7/t0rvrZf59JFpo8/egDLixzF/KT1w2gnkV9aaCqCIl6gAmzSmeFXkFXBzLYBe6mKY9Vnx4Xm68gWAW3H/hrkwgmZzUeA5/JAjStK+0eOH10IsMddDo4I066ouxQND5bjy9+qDBLn6C2v0b9qhRLR1kBY0Igifh80EZVw/wxSaJflL3ZyFLLZnuFfno8UJpWijxc782hNdqhbrHARcBYSPxWUtVcgUuFCVkm5hXX24GDDt2GtKKF4Jjqb7gbN+a8Q7E1tUkx0mS8AVrVsct7+EBFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=labundy.com; dmarc=pass action=none header.from=labundy.com;
- dkim=pass header.d=labundy.com; arc=none
+        id S1727306AbfLJArZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Dec 2019 19:47:25 -0500
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:37057 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727304AbfLJArY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Dec 2019 19:47:24 -0500
+Received: by mail-ua1-f68.google.com with SMTP id f9so6189610ual.4;
+        Mon, 09 Dec 2019 16:47:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=NETORG5796793.onmicrosoft.com; s=selector1-NETORG5796793-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4TH+Sxc7Ugx9S37ZYZhG79e6JTikyl4x1528n/mcIEU=;
- b=sZTOQwEuN4hDIH7krCdsAi/OH1Hus5RcN192uTY1li3uVojvNizrpvwqoBv9LFGGqo1mTpnMZ3K/gBBtks5ExzBKhxnK6htmN29cxayo++UexN7kSXMQ/jtUW7cOntjc2jjzK2JxhpYkI7Bg4aFtrlAbUXIvHC0zmJT7rW74JV0=
-Received: from BN7PR08MB5042.namprd08.prod.outlook.com (20.176.177.14) by
- BN7PR08MB4884.namprd08.prod.outlook.com (20.176.27.142) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2516.14; Tue, 10 Dec 2019 00:03:03 +0000
-Received: from BN7PR08MB5042.namprd08.prod.outlook.com
- ([fe80::48de:9418:73ef:d7c1]) by BN7PR08MB5042.namprd08.prod.outlook.com
- ([fe80::48de:9418:73ef:d7c1%6]) with mapi id 15.20.2516.018; Tue, 10 Dec 2019
- 00:03:03 +0000
-From:   Jeff LaBundy <jeff@labundy.com>
-To:     =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-CC:     "lee.jones@linaro.org" <lee.jones@linaro.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: [PATCH v2 4/7] pwm: Add support for Azoteq IQS620A PWM generator
-Thread-Topic: [PATCH v2 4/7] pwm: Add support for Azoteq IQS620A PWM generator
-Thread-Index: AQHVrij+8yO8xEtV+ECzt9/U9i+G6qexaTEAgAEU0QA=
-Date:   Tue, 10 Dec 2019 00:03:02 +0000
-Message-ID: <20191210000252.GA6361@labundy.com>
-References: <1575851866-18919-1-git-send-email-jeff@labundy.com>
- <1575851866-18919-5-git-send-email-jeff@labundy.com>
- <20191209073206.6pftsak5v25jdepz@pengutronix.de>
-In-Reply-To: <20191209073206.6pftsak5v25jdepz@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: SN1PR12CA0103.namprd12.prod.outlook.com
- (2603:10b6:802:21::38) To BN7PR08MB5042.namprd08.prod.outlook.com
- (2603:10b6:408:2c::14)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=jeff@labundy.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [136.49.227.119]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2ac041fb-1f02-49a7-bd7d-08d77d045320
-x-ms-traffictypediagnostic: BN7PR08MB4884:
-x-microsoft-antispam-prvs: <BN7PR08MB4884F9D02E8023A770569900D35B0@BN7PR08MB4884.namprd08.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 02475B2A01
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39830400003)(136003)(346002)(34096005)(366004)(376002)(396003)(501634003)(199004)(189003)(6506007)(6512007)(4326008)(2616005)(305945005)(186003)(26005)(229853002)(6916009)(8936002)(81166006)(8676002)(71190400001)(81156014)(71200400001)(36756003)(1076003)(2906002)(66574012)(66946007)(54906003)(33656002)(66446008)(5660300002)(66476007)(52116002)(6486002)(30864003)(38610400001)(586005)(7416002)(66556008)(498600001)(86362001)(966005)(64756008);DIR:OUT;SFP:1101;SCL:1;SRVR:BN7PR08MB4884;H:BN7PR08MB5042.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: labundy.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: DkghDTWw2adpDius7Wyxs2/+I1ewXpTReGuOVGoqQj1mb2A/+XB78frzjRa/SLfDytmHp9BK1fhFI8w534mMlfmoC1HQwd6fmwFJL2W7I3f5Mv7xLu+rCXl37AxXrbmZFFNRaG6vQwqUUkZJgNlcj2IY49QUSjacDnu+783mCs5dhcKzoeH2uW0DqqHM5fzMrzBrggcjFcBTFsMFCWC8Et8AEkc/vp3yWnP4teiyalck3muP2utnX0LHntzIGn8KSGs/rXB6i6d1ulq5e1NRrfpzb+HOkpIQe9yx1em4im6NXl4K0snOQ3E8WDtGGAYXeGRr2FWnqbd5uOm42RfnfJx6HhxlMi2Y+xGvfSwtuRGmHlQKHdXt726l9eoXVR3+xus34ru2EyYmUYtGxfscGF8chRsy/GqrqFcwbaeKsDpsU42LeKrmBvAieegIO0uSOuDG7BfOBHUk/ZXoIgkqEsbvs+UovxrYv5fbTbbSDyUzTfRbmKEoi1irc2ZXUk2oXB0jm2+Yuj2Yrk9r8kUTLkr0upR09ACGlBLmFuClz7w=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <2C206301E7CC524A9910495803F7A961@namprd08.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=khbHSwCwrOHqwBO/YAwlLCEdaLJd1mtH0WmHbgzv+p4=;
+        b=keicZ8Cgcx69v/YQkJWe8VneQh4qjr+CSGSqgm6qw0LHg+rhiu95krg2IW5IrVvM5o
+         2v54s1bZXa116ljHB7hsA0JxswN5a2HaIy6ZpkWNNScMqbbMYTpJT7UVUx3ZxP7Aa7z6
+         /YYjMLuALaRkgRIGZCOx0q+pKifg1XMEcKVFDBGEiV8dD/MH5WJx0AvLjc1qVXu9EEeR
+         wNZFoU3LoIJCoT3wCGhDpwe/RI6Mhb0I4K8r+YrxjSIKArbOZQSInP2RdVxr8zY42ctR
+         +pQDx9y1x1unH37aDxA+2RxSE+Hzgm2BVyEY7tWUKzTGfNGk1cDDZ15CoGthj6ZX3Fan
+         8szw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=khbHSwCwrOHqwBO/YAwlLCEdaLJd1mtH0WmHbgzv+p4=;
+        b=CgEIxrCgDkvu0m30SbfjIHyOb1ksRvdt5Y8cfVOc2p/0hhL5vP4Trod3K+KIQkQ5xS
+         YslY25e6f635ovuC7NFzPYWQoXQDO2OZ3kPl2p6nL9xKk/PXY5Z1CPdGzyflJqd/offE
+         BeMdRqupGoD/EDDJ3CUkPdiGCOdZCMXhfD2JBJHD25wfWY2seC2E+zUmbcvnCJdxTh9P
+         oLU3ZaBpL4Imr236AKALGudsXZw1OQ0MP/9KOeMomdLullh+PExgV8iPME4yPJxgKxyp
+         cuZLGR3AcxblGWwA9kLn6VdmTvtNIhPumr+BPXcKWmS6HfX+vKSzw1011TNNLf3rkSbe
+         yJcg==
+X-Gm-Message-State: APjAAAX1ynqlWjheqkp94DS4HRjr4PeQ72vErn/r3bXNLVGa7HWSHXSW
+        rSbcZ99mqiSXch4VkjtuhtxdYBbZEfSAnrHtv1Y=
+X-Google-Smtp-Source: APXvYqzmgLriHTh2Mb7xymnJYYcDDzyk/rXqlKbLRRP+YJWBP2PhGTOzh7Aum5lcHuZiluFsS0ipbKp2v7w2ruoItk4=
+X-Received: by 2002:ab0:1492:: with SMTP id d18mr26447521uae.0.1575938842930;
+ Mon, 09 Dec 2019 16:47:22 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: labundy.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ac041fb-1f02-49a7-bd7d-08d77d045320
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Dec 2019 00:03:02.6615
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 00b69d09-acab-4585-aca7-8fb7c6323e6f
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: nnqKdMy1gZnrUzuigcOkMDzOKcQqkG1dBcEf1JPeWKeaII0JD2MvFf3p9nVMR8SAnYJXKGqht0ohaD0e5CkYPA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR08MB4884
+References: <20191205155821.7441-1-djunho@gmail.com> <20191207112623.31ac5288@archlinux>
+ <CAKxs2cDmycwOD6CE2UiSb18GkLgmRK=m7jkBq2+rBc8UGosStw@mail.gmail.com>
+In-Reply-To: <CAKxs2cDmycwOD6CE2UiSb18GkLgmRK=m7jkBq2+rBc8UGosStw@mail.gmail.com>
+From:   Daniel Junho <djunho@gmail.com>
+Date:   Mon, 9 Dec 2019 21:47:11 -0300
+Message-ID: <CAKxs2cA=HYb3OUHMRrXqA=SeN30PwuoO1b1L=LcGk9EcBqbDLw@mail.gmail.com>
+Subject: Re: [PATCH] iio:adc:ad7923: Add support for the ad7908/ad7918/ad7928
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lkcamp@lists.libreplanetbr.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Uwe,
+Hi Jonathan,
 
-Thank you for your continued support on this project.
+First of all, thank you so much for the feedback and the time spent.
 
-On Mon, Dec 09, 2019 at 08:32:06AM +0100, Uwe Kleine-K=F6nig wrote:
-> On Mon, Dec 09, 2019 at 12:38:36AM +0000, Jeff LaBundy wrote:
-> > This patch adds support for the Azoteq IQS620A, capable of generating
-> > a 1-kHz PWM output with duty cycle between 0.4% and 100% (inclusive).
-> >=20
-> > Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+On Sat, Dec 7, 2019 at 8:26 AM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Thu,  5 Dec 2019 12:58:21 -0300
+> Daniel Junho <djunho@gmail.com> wrote:
+>
+> > The ad7928 is software compatible with the ad7923. The ad7908 and ad7918 are the
+> > 8 and 10 bit version of the ad7928.
+> >
+> > Signed-off-by: Daniel Junho <djunho@gmail.com>
+> Hi Daniel,
+>
+> Code itself looks good to me, but please be very careful to separate out
+> non function cleanup from a patch adding something new.  It makes
+> reviewing harder.  We'd much rather see a series with the cleanup all clearly
+> marked as such (and getting a most a few seconds review) and the real code
+> being just that.
+
+Ok. I understand and I will make these changes in a v2 patch.
+
+>
+> Thanks,
+>
+> Jonathan
+>
 > > ---
-> > Changes in v2:
-> >   - Merged 'Copyright' and 'Author' lines into one in introductory comm=
-ents
-> >   - Added 'Limitations' section to introductory comments
-> >   - Replaced 'error' with 'ret' throughout
-> >   - Added const qualifier to state argument of iqs620_pwm_apply and rem=
-oved all
-> >     modifications to the variable's contents
-> >   - Updated iqs620_pwm_apply to return -ENOTSUPP or -EINVAL if the requ=
-ested
-> >     polarity is inverted or the requested period is below 1 ms, respect=
-ively
-> >   - Updated iqs620_pwm_apply to disable the PWM output if duty cycle is=
- zero
-> >   - Added iqs620_pwm_get_state
-> >   - Eliminated tabbed alignment of pwm_ops and platform_driver struct m=
-embers
-> >   - Moved notifier unregistration to already present iqs620_pwm_remove,=
- which
-> >     eliminated the need for a device-managed action and ready flag
-> >   - Added a comment in iqs620_pwm_probe to explain the order of operati=
-ons
-> >   - Changed Kconfig "depends on" logic to MFD_IQS62X || COMPILE_TEST
-> >=20
-> >  drivers/pwm/Kconfig       |  10 +++
-> >  drivers/pwm/Makefile      |   1 +
-> >  drivers/pwm/pwm-iqs620a.c | 206 ++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  3 files changed, 217 insertions(+)
-> >  create mode 100644 drivers/pwm/pwm-iqs620a.c
-> >=20
-> > diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-> > index bd21655..60bcf6c 100644
-> > --- a/drivers/pwm/Kconfig
-> > +++ b/drivers/pwm/Kconfig
-> > @@ -222,6 +222,16 @@ config PWM_IMX_TPM
-> >  	  To compile this driver as a module, choose M here: the module
-> >  	  will be called pwm-imx-tpm.
-> >=20
-> > +config PWM_IQS620A
-> > +	tristate "Azoteq IQS620A PWM support"
-> > +	depends on MFD_IQS62X || COMPILE_TEST
-> > +	help
-> > +	  Generic PWM framework driver for the Azoteq IQS620A multi-function
-> > +	  sensor.
+> >  drivers/iio/adc/Kconfig  |  3 +-
+> >  drivers/iio/adc/ad7923.c | 96 +++++++++++++++++++++++++++++++---------
+> >  2 files changed, 78 insertions(+), 21 deletions(-)
+> >
+> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > index 976567d4dbef..40aa05fbf85e 100644
+> > --- a/drivers/iio/adc/Kconfig
+> > +++ b/drivers/iio/adc/Kconfig
+> > @@ -205,7 +205,8 @@ config AD7923
+> >       select IIO_TRIGGERED_BUFFER
+> >       help
+> >         Say yes here to build support for Analog Devices
+> > -       AD7904, AD7914, AD7923, AD7924 4 Channel ADCs.
+> > +       AD7904, AD7914, AD7923, AD7924 4 Channel ADCs, and
+> > +       AD7908, AD7918, AD7928 8 Channels ADCs.
+> >
+> >         To compile this driver as a module, choose M here: the
+> >         module will be called ad7923.
+> > diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
+> > index 3212eb4c0f25..f08a5218dad1 100644
+> > --- a/drivers/iio/adc/ad7923.c
+> > +++ b/drivers/iio/adc/ad7923.c
+> > @@ -1,6 +1,6 @@
+> >  // SPDX-License-Identifier: GPL-2.0-only
+> >  /*
+> > - * AD7904/AD7914/AD7923/AD7924 SPI ADC driver
+> > + * AD7904/AD7914/AD7923/AD7924/AD7908/AD7918/AD7928 SPI ADC driver
+> >   *
+> >   * Copyright 2011 Analog Devices Inc (from AD7923 Driver)
+> >   * Copyright 2012 CS Systemes d'Information
+> > @@ -26,23 +26,32 @@
+> >  #define AD7923_WRITE_CR              BIT(11)         /* write control register */
+> >  #define AD7923_RANGE         BIT(1)          /* range to REFin */
+> >  #define AD7923_CODING                BIT(0)          /* coding is straight binary */
 > > +
-> > +	  To compile this driver as a module, choose M here: the module will
-> > +	  be called pwm-iqs620a.
+>
+> No white space changes in a patch doing real changes to the driver.
+
+Ok
+
+>
+> >  #define AD7923_PM_MODE_AS    (1)             /* auto shutdown */
+> >  #define AD7923_PM_MODE_FS    (2)             /* full shutdown */
+> >  #define AD7923_PM_MODE_OPS   (3)             /* normal operation */
 > > +
-> >  config PWM_JZ4740
-> >  	tristate "Ingenic JZ47xx PWM support"
-> >  	depends on MACH_INGENIC
-> > diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
-> > index 9a47507..a59c710 100644
-> > --- a/drivers/pwm/Makefile
-> > +++ b/drivers/pwm/Makefile
-> > @@ -20,6 +20,7 @@ obj-$(CONFIG_PWM_IMG)		+=3D pwm-img.o
-> >  obj-$(CONFIG_PWM_IMX1)		+=3D pwm-imx1.o
-> >  obj-$(CONFIG_PWM_IMX27)		+=3D pwm-imx27.o
-> >  obj-$(CONFIG_PWM_IMX_TPM)	+=3D pwm-imx-tpm.o
-> > +obj-$(CONFIG_PWM_IQS620A)	+=3D pwm-iqs620a.o
-> >  obj-$(CONFIG_PWM_JZ4740)	+=3D pwm-jz4740.o
-> >  obj-$(CONFIG_PWM_LP3943)	+=3D pwm-lp3943.o
-> >  obj-$(CONFIG_PWM_LPC18XX_SCT)	+=3D pwm-lpc18xx-sct.o
-> > diff --git a/drivers/pwm/pwm-iqs620a.c b/drivers/pwm/pwm-iqs620a.c
-> > new file mode 100644
-> > index 0000000..1ea11b9
-> > --- /dev/null
-> > +++ b/drivers/pwm/pwm-iqs620a.c
-> > @@ -0,0 +1,206 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +/*
-> > + * Azoteq IQS620A PWM Generator
-> > + *
-> > + * Copyright (C) 2019 Jeff LaBundy <jeff@labundy.com>
-> > + *
-> > + * Limitations:
-> > + * - The period is not guaranteed to run to completion when the duty c=
-ycle is
-> > + *   changed or the output is disabled.
->=20
-> Do you know more details here? "not guaranteed" means that the new
-> period starts immediately when duty_cycle or the enabled bit is written?
->=20
+> >  #define AD7923_CHANNEL_0     (0)             /* analog input 0 */
+> >  #define AD7923_CHANNEL_1     (1)             /* analog input 1 */
+> >  #define AD7923_CHANNEL_2     (2)             /* analog input 2 */
+> >  #define AD7923_CHANNEL_3     (3)             /* analog input 3 */
+> > -#define AD7923_SEQUENCE_OFF  (0)             /* no sequence fonction */
+> > -#define AD7923_SEQUENCE_PROTECT      (2)             /* no interrupt write cycle */
+> > -#define AD7923_SEQUENCE_ON   (3)             /* continuous sequence */
+> > -
+> > -#define AD7923_MAX_CHAN              4
+> > +#define AD7923_CHANNEL_4     (4)             /* analog input 4 */
+> > +#define AD7923_CHANNEL_5     (5)             /* analog input 5 */
+> > +#define AD7923_CHANNEL_6     (6)             /* analog input 6 */
+> > +#define AD7923_CHANNEL_7     (7)             /* analog input 7 */
+> These made me wonder.  Seems they aren't actually used in the driver anyway.
+> Ideally add a precursor to your main patch just dropping these particular
+> defines entirely.
 
-Increasing the duty cycle on-the-fly (e.g. 25% to 75%) results in the
-following behavior (depending on where the I2C write falls):
+Ok. I will remove them on a cleanup commit.
 
-                       I2C write
-   __        __        __  V_    ______    ______    ______    __
-__|  |______|  |______|  |_|x|__|      |__|      |__|      |__|
-  ^---1ms---^---1ms---^---1ms---^---1ms---^---1ms---^---1ms---^
-
-The PWM continues to tick at 1 ms, but the currently running period suffers
-an extraneous pulse as the output is abruptly set high to "catch up" to the
-new duty cycle.
-
-A similar behavior can occur if the duty cycle is decreased, meaning the
-output is abruptly set low if the I2C transaction completes in what has
-suddenly become the inactive region of the currently running period.
-
-The PWM seems to be a simple counter that rolls over at a period of 1 ms.
-Both the counter and the IQS620_PWM_DUTY_CYCLE register effectively go to
-a comparator whose output is ANDed with IQS620_PWR_SETTINGS_PWM_OUT which
-then drives the PWM output.
-
-As such, if either IQS620_PWM_DUTY_CYCLE or IQS620_PWR_SETTINGS_PWM_OUT
-change, so may the PWM output state depending on the counter's value at
-the time the I2C write is completed within the 1-ms continuous loop.
-
-For v3 I will update the note as follows:
-
-- Changes in duty cycle or enable/disable state are immediately reflected
-  by the PWM output and are not aligned to the start of any period.
-
-> > + * - The period is fixed to 1 ms.
-> > + */
+>
+>
 > > +
-> > +#include <linux/device.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/mfd/iqs62x.h>
-> > +#include <linux/module.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/pwm.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/slab.h>
+> > +#define AD7923_SEQUENCE_OFF  (0x00)          /* no sequence function */
+> > +#define AD7923_SEQUENCE_SHADOW       (0x01)          /* use the shadow register
+> > +                                              * for programming
+> > +                                              * (only AD7908/7918/7928)
+> > +                                              */
+> > +#define AD7923_SEQUENCE_PROTECT      (0x10)          /* no interrupt write cycle */
+> > +#define AD7923_SEQUENCE_ON   (0x11)          /* continuous sequence */
+> >
+> >  #define AD7923_PM_MODE_WRITE(mode)   ((mode) << 4)    /* write mode */
+> >  #define AD7923_CHANNEL_WRITE(channel)        ((channel) << 6) /* write channel */
+> > -#define AD7923_SEQUENCE_WRITE(sequence)      ((((sequence) & 1) << 3) \
+> > -                                     + (((sequence) & 2) << 9))
+> > +#define AD7923_SEQUENCE_WRITE(sequence)      ((((sequence) & 0x01) << 3) \
+> > +                                     + (((sequence) & 0x10) << 9))
+>
+> This change is interesting.  Was original code just buggy? we were masking
+> against 2nd bit, and now we are masking against the 4th?
+
+Sorry about that. My bad. I will return to 2.
+It was just a quick test I did, and commit it unintentionally =(
+
+>
+> >                                               /* write sequence fonction */
+> >  /* left shift for CR : bit 11 transmit in first */
+> >  #define AD7923_SHIFT_REGISTER        4
+> > @@ -78,6 +87,9 @@ enum ad7923_id {
+> >       AD7904,
+> >       AD7914,
+> >       AD7924,
+> > +     AD7908,
+> > +     AD7918,
+> > +     AD7928
+> >  };
+> >
+> >  #define AD7923_V_CHAN(index, bits)                                   \
+> > @@ -97,7 +109,7 @@ enum ad7923_id {
+> >               },                                                      \
+> >       }
+> >
+> > -#define DECLARE_AD7923_CHANNELS(name, bits) \
+> > +#define DECLARE_AD7923_4CHANNELS(name, bits) \
+> >  const struct iio_chan_spec name ## _channels[] = { \
+> >       AD7923_V_CHAN(0, bits), \
+> >       AD7923_V_CHAN(1, bits), \
+> > @@ -106,9 +118,25 @@ const struct iio_chan_spec name ## _channels[] = { \
+> >       IIO_CHAN_SOFT_TIMESTAMP(4), \
+> >  }
+> >
+> > -static DECLARE_AD7923_CHANNELS(ad7904, 8);
+> > -static DECLARE_AD7923_CHANNELS(ad7914, 10);
+> > -static DECLARE_AD7923_CHANNELS(ad7924, 12);
+> > +#define DECLARE_AD7923_8CHANNELS(name, bits) \
+> > +const struct iio_chan_spec name ## _channels[] = { \
+> > +     AD7923_V_CHAN(0, bits), \
+> > +     AD7923_V_CHAN(1, bits), \
+> > +     AD7923_V_CHAN(2, bits), \
+> > +     AD7923_V_CHAN(3, bits), \
+> > +     AD7923_V_CHAN(4, bits), \
+> > +     AD7923_V_CHAN(5, bits), \
+> > +     AD7923_V_CHAN(6, bits), \
+> > +     AD7923_V_CHAN(7, bits), \
+> > +     IIO_CHAN_SOFT_TIMESTAMP(8), \
+> > +}
 > > +
-> > +#define IQS620_PWR_SETTINGS			0xD2
-> > +#define IQS620_PWR_SETTINGS_PWM_OUT		BIT(7)
-> > +
-> > +#define IQS620_PWM_DUTY_CYCLE			0xD8
-> > +
-> > +#define IQS620_PWM_PERIOD_NS			1000000
-> > +
-> > +struct iqs620_pwm_private {
-> > +	struct iqs62x_core *iqs62x;
-> > +	struct pwm_chip chip;
-> > +	struct notifier_block notifier;
+> > +static DECLARE_AD7923_4CHANNELS(ad7904, 8);
+> > +static DECLARE_AD7923_4CHANNELS(ad7914, 10);
+> > +static DECLARE_AD7923_4CHANNELS(ad7924, 12);
+> > +static DECLARE_AD7923_8CHANNELS(ad7908, 8);
+> > +static DECLARE_AD7923_8CHANNELS(ad7918, 10);
+> > +static DECLARE_AD7923_8CHANNELS(ad7928, 12);
+> >
+> >  static const struct ad7923_chip_info ad7923_chip_info[] = {
+> >       [AD7904] = {
+> > @@ -123,6 +151,18 @@ static const struct ad7923_chip_info ad7923_chip_info[] = {
+> >               .channels = ad7924_channels,
+> >               .num_channels = ARRAY_SIZE(ad7924_channels),
+> >       },
+> > +     [AD7908] = {
+> > +             .channels = ad7908_channels,
+> > +             .num_channels = ARRAY_SIZE(ad7908_channels),
+> > +     },
+> > +     [AD7918] = {
+> > +             .channels = ad7918_channels,
+> > +             .num_channels = ARRAY_SIZE(ad7918_channels),
+> > +     },
+> > +     [AD7928] = {
+> > +             .channels = ad7928_channels,
+> > +             .num_channels = ARRAY_SIZE(ad7928_channels),
+> > +     },
+> >  };
+> >
+> >  /**
+> > @@ -135,10 +175,10 @@ static int ad7923_update_scan_mode(struct iio_dev *indio_dev,
+> >       int i, cmd, len;
+> >
+> >       len = 0;
+> > -     for_each_set_bit(i, active_scan_mask, AD7923_MAX_CHAN) {
+> > +     for_each_set_bit(i, active_scan_mask, indio_dev->num_channels - 1) {
+> >               cmd = AD7923_WRITE_CR | AD7923_CHANNEL_WRITE(i) |
+> > -                     AD7923_SEQUENCE_WRITE(AD7923_SEQUENCE_OFF) |
+> > -                     st->settings;
+> > +                   AD7923_SEQUENCE_WRITE(AD7923_SEQUENCE_OFF) |
+> > +                   st->settings;
+> >               cmd <<= AD7923_SHIFT_REGISTER;
+> >               st->tx_buf[len++] = cpu_to_be16(cmd);
+> >       }
+> > @@ -188,13 +228,13 @@ static irqreturn_t ad7923_trigger_handler(int irq, void *p)
+> >       return IRQ_HANDLED;
+> >  }
+> >
+> > -static int ad7923_scan_direct(struct ad7923_state *st, unsigned ch)
+> > +static int ad7923_scan_direct(struct ad7923_state *st, unsigned int ch)
+>
+> Should be in a precursor patch tidying this up.   Never mix new features
+> with cleanup as it's harder to review.
+
+Ok.
+
+>
+> >  {
+> >       int ret, cmd;
+> >
+> >       cmd = AD7923_WRITE_CR | AD7923_CHANNEL_WRITE(ch) |
+> > -             AD7923_SEQUENCE_WRITE(AD7923_SEQUENCE_OFF) |
+> > -             st->settings;
+> > +           AD7923_SEQUENCE_WRITE(AD7923_SEQUENCE_OFF) |
+> > +           st->settings;
+>
+> Clean out this noise from the patch.  We just want to see
+> the new stuff rather than stare at a line to figure if it
+> is just whitespace, or if there is a real change ;)
+
+Ok
+
+>
+> >       cmd <<= AD7923_SHIFT_REGISTER;
+> >       st->tx_buf[0] = cpu_to_be16(cmd);
+> >
+> > @@ -280,7 +320,7 @@ static int ad7923_probe(struct spi_device *spi)
+> >
+> >       st->spi = spi;
+> >       st->settings = AD7923_CODING | AD7923_RANGE |
+> > -                     AD7923_PM_MODE_WRITE(AD7923_PM_MODE_OPS);
+> > +                    AD7923_PM_MODE_WRITE(AD7923_PM_MODE_OPS);
+>
+> Please clean out an noise like this bit of realignment.
+
+Ok
+
+>
+> >
+> >       info = &ad7923_chip_info[spi_get_device_id(spi)->driver_data];
+> >
+> > @@ -348,13 +388,29 @@ static const struct spi_device_id ad7923_id[] = {
+> >       {"ad7914", AD7914},
+> >       {"ad7923", AD7924},
+> >       {"ad7924", AD7924},
+> > +     {"ad7908", AD7908},
+> > +     {"ad7918", AD7918},
+> > +     {"ad7928", AD7928},
+> >       {}
+> >  };
+> >  MODULE_DEVICE_TABLE(spi, ad7923_id);
+> >
+> > +static const struct of_device_id ad7923_of_match[] = {
+> > +     { .compatible = "adi,ad7904", },
+> > +     { .compatible = "adi,ad7914", },
+> > +     { .compatible = "adi,ad7923", },
+> > +     { .compatible = "adi,ad7924", },
+> > +     { .compatible = "adi,ad7908", },
+> > +     { .compatible = "adi,ad7918", },
+> > +     { .compatible = "adi,ad7928", },
+> > +     { },
+> Really minor but I would have preferred a precursor patch
+> adding the of_device_id table for existing parts.
+>
+> Makes a clear separation between new device support and tidying
+> up the fact that table should be there to allow the specific
+> adi,* matching.
+
+OK.
+
+>
 > > +};
+> > +MODULE_DEVICE_TABLE(of, ad7923_of_match);
 > > +
-> > +static int iqs620_pwm_apply(struct pwm_chip *chip, struct pwm_device *=
-pwm,
-> > +			    const struct pwm_state *state)
-> > +{
-> > +	struct iqs620_pwm_private *iqs620_pwm;
-> > +	struct iqs62x_core *iqs62x;
-> > +	unsigned int pwm_out =3D 0;
-> > +	int duty_scale, ret;
-> > +
-> > +	if (state->polarity !=3D PWM_POLARITY_NORMAL)
-> > +		return -ENOTSUPP;
-> > +
-> > +	if (state->period < IQS620_PWM_PERIOD_NS)
-> > +		return -EINVAL;
-> > +
-> > +	iqs620_pwm =3D container_of(chip, struct iqs620_pwm_private, chip);
-> > +	iqs62x =3D iqs620_pwm->iqs62x;
-> > +
-> > +	duty_scale =3D DIV_ROUND_CLOSEST(state->duty_cycle * 256,
-> > +				       IQS620_PWM_PERIOD_NS);
-> > +
-> > +	if (duty_scale) {
-> > +		ret =3D regmap_write(iqs62x->map, IQS620_PWM_DUTY_CYCLE,
-> > +				   min(duty_scale - 1, 0xFF));
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		if (state->enabled)
-> > +			pwm_out =3D IQS620_PWR_SETTINGS_PWM_OUT;
-> > +	}
-> > +
-> > +	return regmap_update_bits(iqs62x->map, IQS620_PWR_SETTINGS,
-> > +				  IQS620_PWR_SETTINGS_PWM_OUT, pwm_out);
->=20
-> A comment explaining the semantic here would be good. I assume
-> IQS620_PWM_DUTY_CYCLE takes a value between 0 and 255 and the resulting
-> duty cycle is:
->=20
-> 	(IQS620_PWM_DUTY_CYCLE + 1) / 256 * 1 ms
->=20
-> .
->=20
-> If this is right, please use:
->=20
-> 	duty_scale =3D (state->duty_cycle * 256) / IQS620_PWM_PERIOD_NS
->=20
+> >  static struct spi_driver ad7923_driver = {
+> >       .driver = {
+> >               .name   = "ad7923",
+> > +             .of_match_table = ad7923_of_match,
+> >       },
+> >       .probe          = ad7923_probe,
+> >       .remove         = ad7923_remove,
+> > @@ -364,5 +420,5 @@ module_spi_driver(ad7923_driver);
+> >
+> >  MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
+> >  MODULE_AUTHOR("Patrick Vasseur <patrick.vasseur@c-s.fr>");
+> > -MODULE_DESCRIPTION("Analog Devices AD7904/AD7914/AD7923/AD7924 ADC");
+> > +MODULE_DESCRIPTION("Analog Devices AD7904/AD7914/AD7923/AD7924/AD7908/AD7918/AD7928 ADC");
+> >  MODULE_LICENSE("GPL v2");
+>
 
-Sure thing, will do. I'll add a comment and round down. Your assumption is
-correct as well.
+I will split this commit into 4.
 
-> Also, when the hardware is running at
->=20
-> 	.enabled =3D 1, .duty_cycle =3D 1/256 ms, .period =3D 1ms
->=20
-> and you reconfigure to
->=20
-> 	.enabled =3D 0, .duty_cycle =3D 1ms, .period =3D 1ms
->=20
-> the output might be active for > 1/256 ms if the process is preempted
-> between writing IQS620_PWM_DUTY_CYCLE and IQS620_PWR_SETTINGS_PWM_OUT.
->=20
+- Remove the unused defines (AD7923_CHANNEL_x);
+- Fix checkpatch warning using 'unsigned int' instead of 'unsigned';
+- Add of_device_id table;
+- Add support for the ad7908/ad7918/ad7928.
 
-Good catch. I think we can solve this by writing IQS620_PWM_DUTY_CYCLE
-first followed by IQS620_PWR_SETTINGS_PWM_OUT when the PWM is going to
-be enabled, and the reverse when the PWM is going to be disabled (i.e.
-turn OFF to prevent a stale duty cycle from being temporarily driven).
-
-> > +}
-> > +
-> > +static void iqs620_pwm_get_state(struct pwm_chip *chip, struct pwm_dev=
-ice *pwm,
-> > +				 struct pwm_state *state)
-> > +{
-> > +	struct iqs620_pwm_private *iqs620_pwm;
-> > +	struct iqs62x_core *iqs62x;
-> > +	unsigned int val;
-> > +	int ret;
-> > +
-> > +	iqs620_pwm =3D container_of(chip, struct iqs620_pwm_private, chip);
-> > +	iqs62x =3D iqs620_pwm->iqs62x;
-> > +
-> > +	ret =3D regmap_read(iqs62x->map, IQS620_PWR_SETTINGS, &val);
-> > +	if (ret)
-> > +		goto err_out;
-> > +	state->enabled =3D val & IQS620_PWR_SETTINGS_PWM_OUT;
-> > +
-> > +	ret =3D regmap_read(iqs62x->map, IQS620_PWM_DUTY_CYCLE, &val);
-> > +	if (ret)
-> > +		goto err_out;
-> > +	state->duty_cycle =3D DIV_ROUND_CLOSEST((val + 1) * IQS620_PWM_PERIOD=
-_NS,
-> > +					      256);
->=20
-> Please round up.
->=20
-
-Sure thing, will do.
-
-> > +	state->period =3D IQS620_PWM_PERIOD_NS;
-> > +
-> > +err_out:
-> > +	if (ret)
-> > +		dev_err(iqs620_pwm->chip.dev, "Failed to get state: %d\n", ret);
-> > +}
-> > +
-> > +static int iqs620_pwm_notifier(struct notifier_block *notifier,
-> > +			       unsigned long event_flags, void *context)
-> > +{
-> > +	struct iqs620_pwm_private *iqs620_pwm;
-> > +	struct pwm_state state;
-> > +	int ret;
-> > +
-> > +	if (!(event_flags & BIT(IQS62X_EVENT_SYS_RESET)))
-> > +		return NOTIFY_DONE;
-> > +
-> > +	iqs620_pwm =3D container_of(notifier, struct iqs620_pwm_private,
-> > +				  notifier);
-> > +	pwm_get_state(&iqs620_pwm->chip.pwms[0], &state);
->=20
-> Please don't call pwm API functions in callbacks. I assume you rely on
-> pwm_get_state returning the previously set state and that
-> iqs620_pwm_get_state isn't called. Please use pwm->state for that.
->=20
-
-Sure thing, will do. Your assumption is correct. If pwm_get_state called
-chip->ops->get_state instead of return pwm->state as it does today, this
-function would break because it would restore the hardware using default
-register values (since this function follows a reset).
-
-Just for my own understanding, are you saying the PWM framework reserves
-the right to update pwm_get_state to call chip->ops->get_state some time
-in the future? In any event I will refer to pwm->state as that is what I
-ultimately need here.
-
-FWIW, I borrowed the idea from the resume callback of [0] which possibly
-suffers the same fate if I have understood the concern correctly.
-
-This discussion also made me realize that we need a lock around back-to-
-back access to IQS620_PWR_SETTINGS_PWM_OUT and IQS620_PWM_DUTY_CYCLE in
-case iqs620_pwm_get_state is called while iqs620_pwm_apply restores them
-on behalf of iqs620_pwm_notifier. I will add that in v3.
-
-> > +	ret =3D iqs620_pwm_apply(&iqs620_pwm->chip,
-> > +			       &iqs620_pwm->chip.pwms[0], &state);
-> > +	if (ret) {
-> > +		dev_err(iqs620_pwm->chip.dev,
-> > +			"Failed to re-initialize device: %d\n", ret);
-> > +		return NOTIFY_BAD;
-> > +	}
-> > +
-> > +	return NOTIFY_OK;
-> > +}
-> > +
-> > +static const struct pwm_ops iqs620_pwm_ops =3D {
-> > +	.apply =3D iqs620_pwm_apply,
-> > +	.get_state =3D iqs620_pwm_get_state,
-> > +	.owner =3D THIS_MODULE,
-> > +};
-> > +
-> > +static int iqs620_pwm_probe(struct platform_device *pdev)
-> > +{
-> > +	struct iqs620_pwm_private *iqs620_pwm;
-> > +	int ret1, ret2;
-> > +
-> > +	iqs620_pwm =3D devm_kzalloc(&pdev->dev, sizeof(*iqs620_pwm), GFP_KERN=
-EL);
-> > +	if (!iqs620_pwm)
-> > +		return -ENOMEM;
-> > +
-> > +	platform_set_drvdata(pdev, iqs620_pwm);
-> > +	iqs620_pwm->iqs62x =3D dev_get_drvdata(pdev->dev.parent);
-> > +
-> > +	iqs620_pwm->chip.dev =3D &pdev->dev;
-> > +	iqs620_pwm->chip.ops =3D &iqs620_pwm_ops;
-> > +	iqs620_pwm->chip.base =3D -1;
-> > +	iqs620_pwm->chip.npwm =3D 1;
-> > +
-> > +	ret1 =3D pwmchip_add(&iqs620_pwm->chip);
-> > +	if (ret1) {
-> > +		dev_err(&pdev->dev, "Failed to add device: %d\n", ret1);
-> > +		return ret1;
-> > +	}
-> > +
-> > +	/*
-> > +	 * Since iqs620_pwm_notifier uses iqs620_pwm->chip.pwms[], the notifi=
-er
-> > +	 * is not registered until pwmchip_add (which allocates that array) h=
-as
-> > +	 * been called. If registration fails, the newly added device has to =
-be
-> > +	 * removed because the driver fails to probe and iqs620_pwm_remove wi=
-ll
-> > +	 * never be called.
-> > +	 */
-> > +	iqs620_pwm->notifier.notifier_call =3D iqs620_pwm_notifier;
-> > +	ret1 =3D blocking_notifier_chain_register(&iqs620_pwm->iqs62x->nh,
-> > +						&iqs620_pwm->notifier);
-> > +	if (ret1) {
-> > +		dev_err(&pdev->dev, "Failed to register notifier: %d\n", ret1);
-> > +
-> > +		ret2 =3D pwmchip_remove(&iqs620_pwm->chip);
-> > +		if (ret2) {
-> > +			dev_err(&pdev->dev, "Failed to remove device: %d\n",
-> > +				ret2);
-> > +			return ret2;
->=20
-> This exitpoint is bad. The PWM driver is active but the module gets
-> unloaded. I liked the approach from v1 better.
->=20
-
-Sure thing, I'll revert the behavior to that of v1.
-
-> ret2 could be local to this block.
->=20
-
-This will go away automatically.
-
-> > +		}
-> > +	}
-> > +
-> > +	return ret1;
-> > +}
->=20
-> Best regards
-> Uwe
->=20
-> --=20
-> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
-  |
-> Industrial Linux Solutions                 | https://www.pengutronix.de/ =
-|
-
-[0] drivers/pwm/pwm-atmel-hlcdc.c
-
-Kind regards,
-Jeff LaBundy
+Thanks,
+Daniel Junho

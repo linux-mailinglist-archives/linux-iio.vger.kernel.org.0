@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41181119E42
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 23:43:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE92B119E2E
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2019 23:43:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727855AbfLJWbE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Dec 2019 17:31:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50898 "EHLO mail.kernel.org"
+        id S1728141AbfLJWbN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Dec 2019 17:31:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51140 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727668AbfLJWbE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 10 Dec 2019 17:31:04 -0500
+        id S1728107AbfLJWbM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 10 Dec 2019 17:31:12 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 779BB214AF;
-        Tue, 10 Dec 2019 22:31:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2872B2073D;
+        Tue, 10 Dec 2019 22:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576017063;
-        bh=iurVc/ItTeczwTRe+6d4cB16/xmHVvOblSfQtO2a6Ow=;
+        s=default; t=1576017071;
+        bh=B1QIwygrLOhokb6wIsVKv19GcVnKSWWMr+sjIqDHfZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SV+kwQoOy69fFr5+mQsaraKptIbcEzQi73r2vXuqKWu9+93H/IHZkRUv1dYWZuMgC
-         0RBVV7NwSow4E+tTjdDUv49ZEECK0oUnWFgM93OIEvqWT3QjfyOxiCX1o1IRnTD0gb
-         T94lCA5C9wCouD6+a0J/ihTrhiwADEFWqnR2mj+8=
+        b=aS5ih6bHImVN+LpAodVrPU7Vwym2QLfb4LyusboWsVsnVzWORyhH+QZLeQO6SXC7W
+         cetolBhGfhbBvDdqg9GFDlfEO9cK6sN36HLCAFfKJg9/yK5ziq52B/Ol/ySOFfESxy
+         dg90+vgrJHKPaUnPuT3YTV7i0oejwU3oNcslU/nA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 23/91] iio: proximity: sx9500: fix iio_triggered_buffer_{predisable,postenable} positions
-Date:   Tue, 10 Dec 2019 17:29:27 -0500
-Message-Id: <20191210223035.14270-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 30/91] iio: chemical: atlas-ph-sensor: fix iio_triggered_buffer_predisable() position
+Date:   Tue, 10 Dec 2019 17:29:34 -0500
+Message-Id: <20191210223035.14270-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210223035.14270-1-sashal@kernel.org>
 References: <20191210223035.14270-1-sashal@kernel.org>
@@ -45,81 +46,54 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-[ Upstream commit 3cfd6464fe23deb45bb688df66184b3f32fefc16 ]
+[ Upstream commit 0c8a6e72f3c04bfe92a64e5e0791bfe006aabe08 ]
+
+The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+the poll functions.
 
 The iio_triggered_buffer_predisable() should be called last, to detach the
 poll func after the devices has been suspended.
 
-This change re-organizes things a bit so that the postenable & predisable
-are symmetrical. It also converts the preenable() to a postenable().
+The position of iio_triggered_buffer_postenable() is correct.
 
-Not stable material as there is no known problem with the current
-code, it's just not consistent with the form we would like all the
-IIO drivers to adopt so as to allow subsystem wide changes.
+Note this is not stable material. It's a fix in the logical
+model rather fixing an actual bug.  These are being tidied up
+throughout the subsystem to allow more substantial rework that
+was blocked by variations in how things were done.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/proximity/sx9500.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/iio/chemical/atlas-ph-sensor.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
-index 9ea147f1a50d1..c6128aa4974d7 100644
---- a/drivers/iio/proximity/sx9500.c
-+++ b/drivers/iio/proximity/sx9500.c
-@@ -683,11 +683,15 @@ static irqreturn_t sx9500_trigger_handler(int irq, void *private)
- 	return IRQ_HANDLED;
+diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-ph-sensor.c
+index dad2a8be68308..f5859c118a44a 100644
+--- a/drivers/iio/chemical/atlas-ph-sensor.c
++++ b/drivers/iio/chemical/atlas-ph-sensor.c
+@@ -331,16 +331,16 @@ static int atlas_buffer_predisable(struct iio_dev *indio_dev)
+ 	struct atlas_data *data = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	ret = iio_triggered_buffer_predisable(indio_dev);
++	ret = atlas_set_interrupt(data, false);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = atlas_set_interrupt(data, false);
++	pm_runtime_mark_last_busy(&data->client->dev);
++	ret = pm_runtime_put_autosuspend(&data->client->dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	pm_runtime_mark_last_busy(&data->client->dev);
+-	return pm_runtime_put_autosuspend(&data->client->dev);
++	return iio_triggered_buffer_predisable(indio_dev);
  }
  
--static int sx9500_buffer_preenable(struct iio_dev *indio_dev)
-+static int sx9500_buffer_postenable(struct iio_dev *indio_dev)
- {
- 	struct sx9500_data *data = iio_priv(indio_dev);
- 	int ret = 0, i;
- 
-+	ret = iio_triggered_buffer_postenable(indio_dev);
-+	if (ret)
-+		return ret;
-+
- 	mutex_lock(&data->mutex);
- 
- 	for (i = 0; i < SX9500_NUM_CHANNELS; i++)
-@@ -704,6 +708,9 @@ static int sx9500_buffer_preenable(struct iio_dev *indio_dev)
- 
- 	mutex_unlock(&data->mutex);
- 
-+	if (ret)
-+		iio_triggered_buffer_predisable(indio_dev);
-+
- 	return ret;
- }
- 
-@@ -712,8 +719,6 @@ static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
- 	struct sx9500_data *data = iio_priv(indio_dev);
- 	int ret = 0, i;
- 
--	iio_triggered_buffer_predisable(indio_dev);
--
- 	mutex_lock(&data->mutex);
- 
- 	for (i = 0; i < SX9500_NUM_CHANNELS; i++)
-@@ -730,12 +735,13 @@ static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
- 
- 	mutex_unlock(&data->mutex);
- 
-+	iio_triggered_buffer_predisable(indio_dev);
-+
- 	return ret;
- }
- 
- static const struct iio_buffer_setup_ops sx9500_buffer_setup_ops = {
--	.preenable = sx9500_buffer_preenable,
--	.postenable = iio_triggered_buffer_postenable,
-+	.postenable = sx9500_buffer_postenable,
- 	.predisable = sx9500_buffer_predisable,
- };
- 
+ static const struct iio_trigger_ops atlas_interrupt_trigger_ops = {
 -- 
 2.20.1
 

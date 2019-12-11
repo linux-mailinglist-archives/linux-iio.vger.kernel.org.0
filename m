@@ -2,202 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78AD611ABF9
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2019 14:22:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0CDF11AD12
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2019 15:10:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729406AbfLKNWH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Dec 2019 08:22:07 -0500
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:41326 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729132AbfLKNWH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Dec 2019 08:22:07 -0500
-Received: by mail-pl1-f195.google.com with SMTP id bd4so1422577plb.8;
-        Wed, 11 Dec 2019 05:22:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wL3VegZeG6jSDZ1lQ26BJg9kkfIICZ20YiNfjrSGi9I=;
-        b=WYtttMhYD3mso0o2sHaeizx0l2vT34aK1v7JOPL/YmqWSgy6FDqkP4/s39v4rdZBIO
-         +DCIhh1L+9GAMtrZ83NQvwXttHyABVJckxAe1HWTHuI2U7+WhM3a/J+cq+zQxZmc8Vzh
-         nCVc333eRYkkHYrkCW/709kjB4eR9SNCQxBmn9vfTxeMKsBetUzruJqIkg2mErv9Y46y
-         qFyy9i0RaBL7+kC7smxX3l8ZlNC3foUZbUtEAG9Tb2ZnxUvLCtyZp5DgWeqsr4bePPpW
-         R5jEy9DAO10joTuB3niFo1VcZzxqCLkRm0mI3+eWlZsS2QfG5tSmovAhFYNQeH1EFZcx
-         Vgrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wL3VegZeG6jSDZ1lQ26BJg9kkfIICZ20YiNfjrSGi9I=;
-        b=ifCBg8mqyt8l7H2H6uBaZgAPqRxAjE3xKcq3CbcojIT78L7UHKeMxrzWTyc9t8H1Dk
-         SfH/0lOl0sTyTRxqvMsdvtoph2JEzeXtv8w5M8W8/htpSRc6IRLI5LBh8kcP82WM93XN
-         OJZvo5VnWOjaoU1kABLEq3adOpvQjNFgS7WlNT8sQ8E9fbVsTWs4kvGDO1RRXRqZUT4e
-         ij61Fus6wVZBIVhRyL2PLsZZOQDJMx6nre0o92WHyqLo6dpLlXPcz3ULS5v6GJg/T4gs
-         nEe91fWjFvmjYtwRCYhUoKZ4kjDD9xFiTP8JviCptbVLJEdixDNdleSAzU/jogQKzu+P
-         fCgQ==
-X-Gm-Message-State: APjAAAWLK5/tydDOvZ9L9cV/JqYleCB69zvEIQ/drHPflNCc7eKOMdz7
-        Dc6tOdUpwobb5FWRKK3Kcno8MWACr2Q1OfU6bOVBnCcNsGc=
-X-Google-Smtp-Source: APXvYqwC8BI6qwyH+dGs9Gu3TdTluWXkwRuBt4B2QdBTOVLqQE4/BDTxe1J81h7lkPFcSLFykPDw6CZEDBM0j61z8rA=
-X-Received: by 2002:a17:90a:b10b:: with SMTP id z11mr3591149pjq.132.1576070526864;
- Wed, 11 Dec 2019 05:22:06 -0800 (PST)
-MIME-Version: 1.0
-References: <20191211010308.1525-1-dan@dlrobertson.com> <20191211010308.1525-3-dan@dlrobertson.com>
-In-Reply-To: <20191211010308.1525-3-dan@dlrobertson.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 11 Dec 2019 15:21:56 +0200
-Message-ID: <CAHp75VdAJwMkPZQLLQrOk4HABjG-parEOmH8S-6kU+zyYnnfww@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] iio: (bma400) add driver for the BMA400
-To:     Dan Robertson <dan@dlrobertson.com>
+        id S1729664AbfLKOKK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Dec 2019 09:10:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53612 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729513AbfLKOKK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 11 Dec 2019 09:10:10 -0500
+Received: from localhost.localdomain (unknown [66.187.232.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D7CBF214AF;
+        Wed, 11 Dec 2019 14:10:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576073409;
+        bh=tFcLqDQ+66duBKfGDT2fvei57EUZv7U5MiDnvVO01W0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=U2p1Kij+l9/yXQ1rh/ckqSEaeod0iMpSqPEDUICMgeBQpG6bfNZE0lC87MHzg1hK3
+         Nf+sJe5m0jtmv6XWk8C0LDn/lR5I06M6jsJ582BaYSbUaFnRBREMgz3FQlAWSxLA1j
+         VWXgfIyfDLGdf7TDQ2fRYIxuREuUTiLGvLssegDE=
+Date:   Wed, 11 Dec 2019 15:10:06 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        devicetree <devicetree@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Joe Perches <joe@perches.com>
-Content-Type: text/plain; charset="UTF-8"
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: Fix selection of ST_LSM6DS3_ID
+Message-ID: <20191211141006.GA3779@localhost.localdomain>
+References: <20191209170541.198206-1-stephan@gerhold.net>
+ <20191209214852.GA2485@localhost.localdomain>
+ <20191210082253.GA867@gerhold.net>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="zYM0uCDKw75PZbzx"
+Content-Disposition: inline
+In-Reply-To: <20191210082253.GA867@gerhold.net>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 11, 2019 at 3:20 AM Dan Robertson <dan@dlrobertson.com> wrote:
->
-> Add a IIO driver for the Bosch BMA400 3-axes ultra-low power accelerometer.
-> The driver supports reading from the acceleration and temperature
-> registers. The driver also supports reading and configuring the output data
-> rate, oversampling ratio, and scale.
 
-> +#define BMA400_LP_OSR_SHIFT         0x05
-> +#define BMA400_NP_OSR_SHIFT         0x04
-> +#define BMA400_SCALE_SHIFT          0x06
+--zYM0uCDKw75PZbzx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'm not sure why this is being defined as hex number instead of plain decimal...
+> On Mon, Dec 09, 2019 at 10:48:52PM +0100, Lorenzo Bianconi wrote:
+> > > At the moment, attempting to probe a device with ST_LSM6DS3_ID
+> > > (e.g. using the st,lsm6ds3 compatible) fails with:
+> > >=20
+> > >     st_lsm6dsx_i2c 1-006b: unsupported whoami [69]
+> > >=20
+> > > ... even though 0x69 is the whoami listed for ST_LSM6DS3_ID.
+> > >=20
+> >=20
+> > Hi Stephan,
+> >=20
+> > thx for working on this. I guess we can skip 'void' iterations defining=
+ the
+> > array real size, do you agree?
+> >=20
+>=20
+> I'm not sure I understand you correctly.
+> Do you mean having something like:
+>=20
+> struct st_lsm6dsx_settings {
+> 	u8 wai;
+> 	/* ... */
+> 	struct {
+> 		enum st_lsm6dsx_hw_id hw_id;
+> 		const char *name;
+> 	} id[ST_LSM6DSX_MAX_ID];
+> 	int id_num; /* Add this field */
+> 	/* ... */
+> };
+>=20
+> And then change the loop to use .id_num instead?
+>=20
+> I think it is pretty easy to forget to update "id_num"
+> when adding new entries. Right now there is no need to worry about that.
 
-> +#define BMA400_TWO_BITS_MASK        GENMASK(1, 0)
-> +#define BMA400_LP_OSR_MASK          GENMASK(6, BMA400_LP_OSR_SHIFT)
-> +#define BMA400_NP_OSR_MASK          GENMASK(5, BMA400_NP_OSR_SHIFT)
-> +#define BMA400_ACC_ODR_MASK         GENMASK(3, 0)
-> +#define BMA400_ACC_SCALE_MASK       GENMASK(7, BMA400_SCALE_SHIFT)
+Uhm..this approach is even more safe if someone forgets to set name for a g=
+iven
+device. So for the patch:
 
-And here simple better to put same numbers. It will help to read.
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-...
+Regards,
+Lorenzo
 
-> +extern const struct regmap_config bma400_regmap_config;
+>=20
+> Thanks,
+> Stephan
+>=20
+> > Regards,
+> > Lorenzo
+> >=20
+> > > This happens because st_lsm6dsx_check_whoami() also attempts
+> > > to match unspecified (zero-initialized) entries in the "id" array.
+> > > ST_LSM6DS3_ID =3D 0 will therefore match any entry in
+> > > st_lsm6dsx_sensor_settings (here: the first), because none of them
+> > > actually have all 12 entries listed in the "id" array.
+> > >=20
+> > > Avoid this by additionally checking if "name" is set,
+> > > which is only set for valid entries in the "id" array.
+> > >=20
+> > > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> > > ---
+> > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 3 ++-
+> > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/i=
+io/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > > index a7d40c02ce6b..b921dd9e108f 100644
+> > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > > @@ -1301,7 +1301,8 @@ static int st_lsm6dsx_check_whoami(struct st_ls=
+m6dsx_hw *hw, int id,
+> > > =20
+> > >  	for (i =3D 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
+> > >  		for (j =3D 0; j < ST_LSM6DSX_MAX_ID; j++) {
+> > > -			if (id =3D=3D st_lsm6dsx_sensor_settings[i].id[j].hw_id)
+> > > +			if (st_lsm6dsx_sensor_settings[i].id[j].name &&
+> > > +			    id =3D=3D st_lsm6dsx_sensor_settings[i].id[j].hw_id)
+> > >  				break;
+> > >  		}
+> > >  		if (j < ST_LSM6DSX_MAX_ID)
+> > > --=20
+> > > 2.24.0
+> > >=20
+>=20
+>=20
 
-> +const struct regmap_config bma400_regmap_config = {
-> +       .reg_bits = 8,
-> +       .val_bits = 8,
-> +       .max_register = BMA400_CMD_REG,
-> +       .cache_type = REGCACHE_RBTREE,
-> +       .writeable_reg = bma400_is_writable_reg,
-> +       .volatile_reg = bma400_is_volatile_reg,
-> +};
-> +EXPORT_SYMBOL(bma400_regmap_config);
+--zYM0uCDKw75PZbzx
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I'm not sure I got the idea why this one is being exported.
+-----BEGIN PGP SIGNATURE-----
 
-...
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXfD4uwAKCRA6cBh0uS2t
+rLVgAQCg4H3E6AhGwuXapLfEqTRrMDk4Jasyn0qvPUmDsKOoygD/TImhsmqF3bLU
+RlRUUI62+wm5K12qetW7KDA6DkUm+g0=
+=kk1/
+-----END PGP SIGNATURE-----
 
-> +               if (odr < BMA400_ACC_ODR_MIN_RAW ||
-> +                   odr > BMA400_ACC_ODR_MAX_RAW) {
-
-One line?
-
-> +                       ret = -EINVAL;
-> +                       goto error;
-> +               }
-
-...
-
-> +               if (uhz || hz % BMA400_ACC_ODR_MIN_WHOLE_HZ)
-> +                       return -EINVAL;
-> +
-> +               val = hz / BMA400_ACC_ODR_MIN_WHOLE_HZ;
-> +               idx = __ffs(val);
-> +
-
-> +               if (val ^ BIT(idx))
-
-Seems like funny way of checking is_power_of_2(). But it's up to maintainers.
-And your variant may even be better here (in code generation perspective)...
-
-However, the whole idea here is, IIUC, to have something like
-
-  hz = 2^idx * BMA400_ACC_ODR_MIN_WHOLE_HZ
-
-I think you may do it without divisions, i.e. call __ffs() first and then do
-   idx = __ffs(...);
-   val = hz >> idx;
-   if (val != BMA400_ACC_ODR_MIN_WHOLE_HZ)
-    return -EINVAL;
-
-or something like above.
-
-> +                       return -EINVAL;
-
-...
-
-> +       odr = (~BMA400_ACC_ODR_MASK & val) | idx;
-
-I'm wondering why Yoda style is being used here.
-
-...
-
-> +static void bma400_accel_scale_from_raw(int raw, unsigned int *val)
-> +{
-> +       *val = BMA400_SCALE_MIN * (1 << raw);
-
-Isn't it the same as
-    *val = BMA400_SCALE_MIN << raw;
-?
-
-> +}
-
-...
-
-> +       if (val % BMA400_SCALE_MIN || scale ^ BIT(raw))
-
-Similar comment as above about divisions, is_power_of_2(), etc.
-
-> +               return -EINVAL;
-
-...
-
-> +       ret = regmap_read(data->regmap, BMA400_ACC_CONFIG0_REG, &val);
-> +       if (ret < 0)
-
-I'm wondering if in all of these regmap_read()...
-
-> +               return ret;
-
-> +       ret = regmap_write(data->regmap, BMA400_ACC_CONFIG0_REG,
-> +                          mode | (val & ~BMA400_TWO_BITS_MASK));
-> +       if (ret < 0) {
-
-...and regmap_write() calls you ever can get a positive returned code.
-
-> +               dev_err(data->dev, "Failed to write to power-mode\n");
-> +               return ret;
-> +       }
-
-...
-
-> +       regmap = devm_regmap_init_i2c(client, &bma400_regmap_config);
-
-> +
-
-Redundant blank line.
-
-> +       if (IS_ERR(regmap)) {
-> +               dev_err(&client->dev, "failed to create regmap\n");
-> +               return PTR_ERR(regmap);
-> +       }
-
--- 
-With Best Regards,
-Andy Shevchenko
+--zYM0uCDKw75PZbzx--

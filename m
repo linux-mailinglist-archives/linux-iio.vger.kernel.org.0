@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B5FB11ADCB
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2019 15:40:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B0F11ADCF
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2019 15:40:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730097AbfLKOjY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Dec 2019 09:39:24 -0500
-Received: from mail-pj1-f65.google.com ([209.85.216.65]:33631 "EHLO
-        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729686AbfLKOjX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Dec 2019 09:39:23 -0500
-Received: by mail-pj1-f65.google.com with SMTP id r67so9022996pjb.0;
-        Wed, 11 Dec 2019 06:39:23 -0800 (PST)
+        id S1730112AbfLKOja (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Dec 2019 09:39:30 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:37527 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729686AbfLKOj3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Dec 2019 09:39:29 -0500
+Received: by mail-pf1-f193.google.com with SMTP id p14so1916118pfn.4;
+        Wed, 11 Dec 2019 06:39:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=30ClsBWVMQFbgwDIq9w8WCwwNMvj/q4ymjJp8oUF1J0=;
-        b=iPTNp0EdadO4y2qivxFKBUpzEsaPwhGKdyaPxOlJenJBVxrjZDK77cuy1xm8y3/vwo
-         XAU33lFCH4T/3DEpnMyPFn6xvlTZdCX8Y/G3vVNDBizKWUagtzlppvbFHBKxI8/Qzgli
-         056XNDvIhN4ii1itJlKwXt80wjd295T2EeFmuKxHDcesF1kjQH1DUsdulYHgs8J8gmp8
-         InGX15hisePqvBdSawpSkTi5rAQXLdhUlmEHERSnfwz5Z3FiZ+nZFa1WP1exJSLOjypP
-         wqQIAcTsATodjUx32eYVG4H6IPzbyD7WHdjJLcss5z7w5GHfOtNx7Sjbyizgieki1RVz
-         OCDw==
+        bh=G8HIqSOZSM7ZlLEzj0GZfcJL15LCKkAAkMEEiYP0HJ8=;
+        b=EoL2MEKylC7MRqf5P3y3JFnFsr/PlSKtVjomV2dX1/7ZSkV2+sxGzrxZgEuNx091fk
+         BKawpY7SEcgPihrYuDNS8X4ilRtwzzhvRNz/AIAys5SXt6tk57NEE4iu7lnfD69q1MaW
+         lM+ROlYqmBV7vWcGEdg+EBFfrBzoG9BnscbToBGTv0UUqVM6tRuIYW9y0G9yUItH0IDI
+         78hDdjc9KWP8qvsmAJWrfJQaJT2vvOr/fukTIe3fuetky7ZWaSF0Tm9w6MNghRv5gt0H
+         CFFT98TRV57WRqjS6Teyv1JeMDWtMguVNnparclOk16OHVcOW1sbOMoEhNquGUAmPP7k
+         A6+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=30ClsBWVMQFbgwDIq9w8WCwwNMvj/q4ymjJp8oUF1J0=;
-        b=XEnL7GaPaeT21ukAOLDLbrJCEIffd1/pPBntbnnXFAx4vEYN2D/vWSwyFzBOHJ4WjQ
-         yumsvPYHa4/Ts8WVryCkexOC7coPFEj1nn27uPMIgXV1JJtlLTX0yt/gp/ckkHBMTZdv
-         2OX+34wjKinNvqzUHQhv3BivkieG+B5hVM6Vd2XjYCvJI9/hsNOKQDyTizrwH+BTceDu
-         a8EfZAWzNKywDBaSAQbWhmNAxUsu+4OKJXcgWJ411txVWq9YuAOUQupG5W0eTEIkQhyG
-         TCFR00OxBaB0ZRE1XxmWCYahGzsTzR61u1ReDF44ZAKQsbQLv5CK4xJeyxBLqaWqPRHM
-         Z44A==
-X-Gm-Message-State: APjAAAUr1L3avFoJiqi83vC+lHapLRatgs+dzI2/CzW/13krHTeRuJoc
-        p7rOo/LKCBJtJ5sIMteceXDfmWQatkc=
-X-Google-Smtp-Source: APXvYqyPc4UFSiMgsD4yZYd76DuxU8U2qOWD+TGrVH0/E0V5787xpYx4yK1YXlYV7OTuxTKh7/rsHg==
-X-Received: by 2002:a17:902:8507:: with SMTP id bj7mr3489251plb.69.1576075163124;
-        Wed, 11 Dec 2019 06:39:23 -0800 (PST)
+        bh=G8HIqSOZSM7ZlLEzj0GZfcJL15LCKkAAkMEEiYP0HJ8=;
+        b=h+fjDRRZOS8kdz1D0mifxJx+LorQGbU8YcWYRxv3lb6uRH2ibrzkZ9UdxzFaJJEJpM
+         odAqH6ZPeK1LhKEVEzzoINCW2v5h1hDbNGdxvbjzQxIIZdn60QhzONdDkDcsRgzkxK8w
+         3kxbvYgB4c9Ymo3hUfXnhizKFvHmI7l27bPAfJCMy6/60J0W97I8tWfp+w4aRbgdC/NL
+         eOQ41eL7CT/WEoixu0Vf76l5nMAZ0aXvWACRd6Imx3L/FCFK5Gfp3xfrk4OrtZC8r3We
+         T49oy7Urkza7szc6d8WX4EIIaOaNZUxkriqIllXRxKq1cgbP6LIL1FIcAJFmZeiXW+YG
+         bQFQ==
+X-Gm-Message-State: APjAAAVvLrtd+P8p61wQmLpwAZpw63Xe517N4UpJH88SYqjrYqqL8vIJ
+        yRp+oVmzGD2yav0DXJNfDRM=
+X-Google-Smtp-Source: APXvYqzLIbq4qGAJSSgC9xZ/3+iluFA3br6Tz1ZQ92AYrpH9YCceKsABt6khTNhi4u+9CunGqaDYTg==
+X-Received: by 2002:a63:6507:: with SMTP id z7mr4631816pgb.322.1576075169052;
+        Wed, 11 Dec 2019 06:39:29 -0800 (PST)
 Received: from localhost.localdomain ([240f:34:212d:1:368e:e048:68f1:84e7])
-        by smtp.gmail.com with ESMTPSA id q11sm3444239pff.111.2019.12.11.06.39.18
+        by smtp.gmail.com with ESMTPSA id q11sm3444239pff.111.2019.12.11.06.39.23
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 11 Dec 2019 06:39:22 -0800 (PST)
+        Wed, 11 Dec 2019 06:39:28 -0800 (PST)
 From:   Akinobu Mita <akinobu.mita@gmail.com>
 To:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
@@ -59,9 +59,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
         Christoph Hellwig <hch@lst.de>,
         Sagi Grimberg <sagi@grimberg.me>
-Subject: [PATCH v3 06/12] thermal: intel_pch: switch to use <linux/units.h> helpers
-Date:   Wed, 11 Dec 2019 23:38:13 +0900
-Message-Id: <1576075099-3441-7-git-send-email-akinobu.mita@gmail.com>
+Subject: [PATCH v3 07/12] nvme: hwmon: switch to use <linux/units.h> helpers
+Date:   Wed, 11 Dec 2019 23:38:14 +0900
+Message-Id: <1576075099-3441-8-git-send-email-akinobu.mita@gmail.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
 References: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
@@ -70,12 +70,8 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This switches the intel pch thermal driver to use
-deci_kelvin_to_millicelsius() in <linux/units.h> instead of helpers in
-<linux/thermal.h>.
-
-This is preparation for centralizing the kelvin to/from Celsius conversion
-helpers in <linux/units.h>.
+This switches the nvme driver to use kelvin_to_millicelsius() and
+millicelsius_to_kelvin() in <linux/units.h>.
 
 Cc: Sujith Thomas <sujith.thomas@intel.com>
 Cc: Darren Hart <dvhart@infradead.org>
@@ -89,35 +85,72 @@ Cc: Keith Busch <kbusch@kernel.org>
 Cc: Jens Axboe <axboe@fb.com>
 Cc: Christoph Hellwig <hch@lst.de>
 Cc: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
 ---
 * v3
 - rename new header name from <linux/temperature.h> to <linux/units.h>
 
- drivers/thermal/intel/intel_pch_thermal.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/host/hwmon.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/thermal/intel/intel_pch_thermal.c b/drivers/thermal/intel/intel_pch_thermal.c
-index 4f0bb8f..b118611 100644
---- a/drivers/thermal/intel/intel_pch_thermal.c
-+++ b/drivers/thermal/intel/intel_pch_thermal.c
-@@ -13,6 +13,7 @@
- #include <linux/pci.h>
- #include <linux/acpi.h>
- #include <linux/thermal.h>
+diff --git a/drivers/nvme/host/hwmon.c b/drivers/nvme/host/hwmon.c
+index a5af21f..2e6477e 100644
+--- a/drivers/nvme/host/hwmon.c
++++ b/drivers/nvme/host/hwmon.c
+@@ -5,14 +5,11 @@
+  */
+ 
+ #include <linux/hwmon.h>
 +#include <linux/units.h>
- #include <linux/pm.h>
+ #include <asm/unaligned.h>
  
- /* Intel PCH thermal Device IDs */
-@@ -92,7 +93,7 @@ static void pch_wpt_add_acpi_psv_trip(struct pch_thermal_device *ptd,
- 		if (ACPI_SUCCESS(status)) {
- 			unsigned long trip_temp;
+ #include "nvme.h"
  
--			trip_temp = DECI_KELVIN_TO_MILLICELSIUS(r);
-+			trip_temp = deci_kelvin_to_millicelsius(r);
- 			if (trip_temp) {
- 				ptd->psv_temp = trip_temp;
- 				ptd->psv_trip_id = *nr_trips;
+-/* These macros should be moved to linux/temperature.h */
+-#define MILLICELSIUS_TO_KELVIN(t) DIV_ROUND_CLOSEST((t) + 273150, 1000)
+-#define KELVIN_TO_MILLICELSIUS(t) ((t) * 1000L - 273150)
+-
+ struct nvme_hwmon_data {
+ 	struct nvme_ctrl *ctrl;
+ 	struct nvme_smart_log log;
+@@ -35,7 +32,7 @@ static int nvme_get_temp_thresh(struct nvme_ctrl *ctrl, int sensor, bool under,
+ 		return -EIO;
+ 	if (ret < 0)
+ 		return ret;
+-	*temp = KELVIN_TO_MILLICELSIUS(status & NVME_TEMP_THRESH_MASK);
++	*temp = kelvin_to_millicelsius(status & NVME_TEMP_THRESH_MASK);
+ 
+ 	return 0;
+ }
+@@ -46,7 +43,7 @@ static int nvme_set_temp_thresh(struct nvme_ctrl *ctrl, int sensor, bool under,
+ 	unsigned int threshold = sensor << NVME_TEMP_THRESH_SELECT_SHIFT;
+ 	int ret;
+ 
+-	temp = MILLICELSIUS_TO_KELVIN(temp);
++	temp = millicelsius_to_kelvin(temp);
+ 	threshold |= clamp_val(temp, 0, NVME_TEMP_THRESH_MASK);
+ 
+ 	if (under)
+@@ -88,7 +85,7 @@ static int nvme_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
+ 	case hwmon_temp_min:
+ 		return nvme_get_temp_thresh(data->ctrl, channel, true, val);
+ 	case hwmon_temp_crit:
+-		*val = KELVIN_TO_MILLICELSIUS(data->ctrl->cctemp);
++		*val = kelvin_to_millicelsius(data->ctrl->cctemp);
+ 		return 0;
+ 	default:
+ 		break;
+@@ -105,7 +102,7 @@ static int nvme_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
+ 			temp = get_unaligned_le16(log->temperature);
+ 		else
+ 			temp = le16_to_cpu(log->temp_sensor[channel - 1]);
+-		*val = KELVIN_TO_MILLICELSIUS(temp);
++		*val = kelvin_to_millicelsius(temp);
+ 		break;
+ 	case hwmon_temp_alarm:
+ 		*val = !!(log->critical_warning & NVME_SMART_CRIT_TEMPERATURE);
 -- 
 2.7.4
 

@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E22B11CA63
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2019 11:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6087711CAAD
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2019 11:27:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728523AbfLLKRG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Dec 2019 05:17:06 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:47069 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728435AbfLLKRA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Dec 2019 05:17:00 -0500
-Received: by mail-lf1-f66.google.com with SMTP id f15so1229005lfl.13
-        for <linux-iio@vger.kernel.org>; Thu, 12 Dec 2019 02:16:59 -0800 (PST)
+        id S1728615AbfLLK12 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Dec 2019 05:27:28 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:35372 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728461AbfLLK11 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Dec 2019 05:27:27 -0500
+Received: by mail-lj1-f193.google.com with SMTP id j6so1686849lja.2
+        for <linux-iio@vger.kernel.org>; Thu, 12 Dec 2019 02:27:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Nsjxm/xsVTVDpo/VXg1VeJFF1h4DkTUUCH1h89G0Zd0=;
-        b=brj8PL4uRioYXwXT/Qsa2ut7sivw5CPbNF/C1uVPOiQJ6SVBIruISlsjUZylmX0qYs
-         nbs/TBXflqGc/q74nsX+LLqBffC0+NZdPRePM0euTQHeD0D/eVnLzpREh198aPS6FO7w
-         PS4jtzJmeLnG8W+zoIkFBUU8+051+GehMsdKfTSEN5ncf4CuxUfSmmt5k09DlH7OKkT2
-         AtGZrMcwbDhTitJ+eT9wV7R/oKPPTYz02xDt75vVU5LX9u0k4j+hWzCesZU1SYOSf1Lc
-         ElDBwABojO+pYTEFhmAl8b2Y+vH2kGkr5bUk6kYM0LWGndflpvw6O0eDAGV5HW+levmy
-         uBfg==
+        bh=X1IjxJJxDMWAlUZ4WjR8vfjxD9i7QeZnQLbWau+hr2w=;
+        b=zKrVndDfMw5glaHDvVVAERCr6kNERWEAEMaXnAn6XjQp1Dz/ANs2Bs7QXF0mQR/Cz2
+         nJq0uiTRUI3KdAfk94Snpeb5sFuFc/+MjT+xGMz7lVSrbWVIMg1wk0Bo7Vdx6zRT0Nwp
+         jLhzeS9MJVDq/XIfd9aBvnCKoN9Py6x7OHzWKLGzROylVGLJIa1F9LbGhaOyzkSWLlNg
+         PMmv5RSR22LOqjofX27f+enAaGR/ruNw47HlU9/dwmk4sPOTsPo1DNXe0IZH3BS1hDMp
+         v5HpUjV3QdTya4PFNm84l69+yY6Rl07fkHSbD4ILn9bLvr3w5FD75QFUCNLLK0adbwu1
+         bUzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Nsjxm/xsVTVDpo/VXg1VeJFF1h4DkTUUCH1h89G0Zd0=;
-        b=jVZ1LRqkdwHalsqDVH70MaTEIEyO2HDc/vqYdmeeP1uSfs7NEE36fBZ3SkNToDak3H
-         T507RHxho+Io4jxKSR2wtZJx/Y/qU2HWjTq15Da2vN6887vVXXBf26zNhLGSKZP0SD7a
-         7mOu6RI5ZzY1PPhJVyiJzjzDBsqcLw6uKTQWP3i8UVAnzSVFRvkjx7gk25L2TYjnHJTg
-         1QvBLKz8kM/mw2L6HooN+4mPuifp48aMacn4ISRg6Ao0VDefz2ISB7U6Sev96UMuKVsk
-         pM2/ddTTa71MKsAH7O2XUsxr7xmGfAkVOPcYgFAYhiWGgPXb9c/BDsGG/tXzu3rh8CV2
-         vf8Q==
-X-Gm-Message-State: APjAAAV11prS49B2bq+LEUdrKWchxXfi3cradoFIGMsgtj3hbd2GgK2B
-        mq6i3zByZOHFG+6iPvpg89FfqrJ+SBFYpC0Ex5kLcQ==
-X-Google-Smtp-Source: APXvYqxyRNskvKt1YiIx2AO3iz21aIKpjYS1talkzQKvdDQ0CGu70+tqdA0tq0OfwohHhZzmsdo2c9dCihGvRXhHfMw=
-X-Received: by 2002:a19:8a41:: with SMTP id m62mr5125013lfd.5.1576145819071;
- Thu, 12 Dec 2019 02:16:59 -0800 (PST)
+        bh=X1IjxJJxDMWAlUZ4WjR8vfjxD9i7QeZnQLbWau+hr2w=;
+        b=ueuG6xvznBvNOWXTmtA5lRBI7kQjmhmjn5W6HTMB0sBwO6AfLfWn5R0CyDZFK0DQVL
+         YjaQFwxmYFeiEB/SZogp+zqNRGJPooY+kAyH+2oUdxhmKkVsundsYZA6VtQ8GQo8FDpT
+         5unxDmCX9YycjePQ7cX35TDM+keH3iTHjLe4qVjwXok3OebdIrUsYPOSzUGPWBXBLppS
+         tgWkv2SVdSHH+oW09SZsEWHYUQv3losGKisHdcRiBUWQ0BoUAX9j06MIAOLsey9fzaih
+         1v6Clh0fMzXX+quc2cNHlsVFXiXGp13sf161pqDpJPBBUPACqUdJ7UlicAbHVehve5vu
+         na1A==
+X-Gm-Message-State: APjAAAV4/CLHofmW2T8v6Cxf8wmCIct+n2oUzPGafjGZd+UFx4Cktg47
+        YOLinciIuRXNmx17UTgB2OUXIkvF8UyVeED4CLaOpA==
+X-Google-Smtp-Source: APXvYqwyACjvGWNGgkwPrufrCiow0rWiDwCg8ObQ7/eGrZqpX1fin/kDROJF3DYdo4KqAwmTuqVW6FWtIZ4Mh9qKk0M=
+X-Received: by 2002:a2e:844e:: with SMTP id u14mr5340967ljh.183.1576146445650;
+ Thu, 12 Dec 2019 02:27:25 -0800 (PST)
 MIME-Version: 1.0
-References: <20191211010308.1525-1-dan@dlrobertson.com> <20191211010308.1525-2-dan@dlrobertson.com>
-In-Reply-To: <20191211010308.1525-2-dan@dlrobertson.com>
+References: <20191211010308.1525-1-dan@dlrobertson.com> <20191211010308.1525-3-dan@dlrobertson.com>
+In-Reply-To: <20191211010308.1525-3-dan@dlrobertson.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 12 Dec 2019 11:16:47 +0100
-Message-ID: <CACRpkdb9O7RjpXdUPCtN1M+PLC+2hPomhsw2Q5Ehhg4pEVOStQ@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] dt-bindings: iio: accel: bma400: add bindings
+Date:   Thu, 12 Dec 2019 11:27:13 +0100
+Message-ID: <CACRpkdaTfA1+Wj--cqCGWDOQGMWnupSYRhQeGL2i7917mN8pEw@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] iio: (bma400) add driver for the BMA400
 To:     Dan Robertson <dan@dlrobertson.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
@@ -68,22 +68,38 @@ Hi Dan,
 
 thanks for your patch!
 
+Inspired by my recent work to revive the BMA180/BMA250 driver
+for BMA254 I have some comments:
+
 On Wed, Dec 11, 2019 at 2:20 AM Dan Robertson <dan@dlrobertson.com> wrote:
 
-> Add devicetree binding for the Bosch BMA400 3-axes ultra-low power
-> accelerometer sensor.
+> Add a IIO driver for the Bosch BMA400 3-axes ultra-low power accelerometer.
+> The driver supports reading from the acceleration and temperature
+> registers. The driver also supports reading and configuring the output data
+> rate, oversampling ratio, and scale.
 >
 > Signed-off-by: Dan Robertson <dan@dlrobertson.com>
 (...)
+> +#include <linux/bitops.h>
+> +#include <linux/device.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/regmap.h>
 
-> +  Specifications about the sensor can be found at:
-> +    https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMA400-DS000.pdf
+#include <linux/regulator/consumer.h>
 
-As can be seen in page 113 in the manual this component
-has VDD and VDDIO supplies and sooner or later someone
-is going to have to model that so I'd say add vdd-supply and
-vddio-supply regulator phandles as optional to the component
-already from start.
+> +int bma400_probe(struct device *dev, struct regmap *regmap, const char *name)
 
-Thanks!
+Even if the component is always powered on in your design
+please add regulator handling already from start so that we
+don't have to go in and add it later. I've added regulator support
+to sooo many IIO drivers by now.
+
+You can pretty much just copy/paste my code for BMA180/BMA250:
+https://lore.kernel.org/linux-iio/20191211213819.14024-2-linus.walleij@linaro.org/T/#u
+
+Yours,
 Linus Walleij

@@ -2,52 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC93A11DCBB
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2019 05:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C177911DCC2
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2019 05:06:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731684AbfLMEDe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Dec 2019 23:03:34 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:33306 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727778AbfLMEDe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Dec 2019 23:03:34 -0500
-Received: by mail-lj1-f193.google.com with SMTP id 21so1110732ljr.0;
-        Thu, 12 Dec 2019 20:03:32 -0800 (PST)
+        id S1731436AbfLMEGQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Dec 2019 23:06:16 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:34997 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727778AbfLMEGQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Dec 2019 23:06:16 -0500
+Received: by mail-lj1-f195.google.com with SMTP id j6so1098893lja.2;
+        Thu, 12 Dec 2019 20:06:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=L5uQwSQlRWVR2cnkqQftE5urW2BObiyzOTOXDSJ+kFg=;
-        b=vBHRZju2P7wqsFDu1I1BrVyl+TSGW35FeBwccHGI55Ahuh9KF8JP9UfIsjVabDT7nn
-         nujCbqKj1GAKOvoOd7SKsrlGZsmvp7L/egqhgp95a1uWh0lZDyEZi107UHEVlU47UIA6
-         BgiLT6CGjfAHTlFKfefaQ2CGduDv992dpZuu1PE4LnXPOGepgDswA+bzQyWxBfEm5a8o
-         d0hZAPnC1UIZ6toRqaiWvJi5Rct5Ky/ofx1UZ8CtMmqzigDliaNhSW4Figad2GmHimo1
-         7KUBJf1qydJXa2Ml3/Z586FTYUw1VeemQkwx9SJBVJSxGC7/97fZUwow82uvGjez+AzZ
-         yNkg==
+        bh=URwD2kqbKtqHBmAr97llX1pKhl7DZxsGfB/7E5QLYGE=;
+        b=ni2xtTjM+9tiMdl0vEVZN6oCJYd5JkmqYneP9rmdFfxSNkEaRNTnpDtUAPxhg/WkG2
+         bkcQ+xCwU3likRm558tmzXfAvt+hvoTytoPU3MIOrbdLtLvmidkGbTvIm04/n6ZeT85X
+         3xEf/wk45HDrPEj5DMysxfiNMrEZYPAFSya2j9VTgoc0bJQdq+P2lCsPoSKFd01V881b
+         ooCAS1DF8X1cCO4GwWMohtH8hHF+7K4mJYFktzDdsPSii+EjZNaSc37bMgU6z0B9h8/g
+         opfpUHJgMg/y+kTWNMp4tMhMGLKNOljlpF9vXqLJUYmQZWhYxz+dEuOyH2zld1Xq3CeY
+         fzKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=L5uQwSQlRWVR2cnkqQftE5urW2BObiyzOTOXDSJ+kFg=;
-        b=bZlX8zxjBG8qcV99Eod31tBadDJX5fwWoQ1o4zIV1jibuFqj3xvBnI5oK2UIHpZN5B
-         j7iVS0OVClZqJ9Jfb6jJg5ImLeJ5n0wNDR/MYLDcceolDkFtEmCaiPDJDouPwwxceQnc
-         xFwB4GjhPByuJKfM/VW4a5YFymehIWgkAIwduHz86ZN5M3uBuphPZitSpXu4TXaOF9Wb
-         B5WfdkqysW4R376Bareo+laabeuWygqSYviRja1QVHvrbr/Xcmm87eKXnrZksEqYOke9
-         QDRAEfiizw6wPgnnBPwMH6nXIeX4zjk22z+Cr+HmLTVdlNTRLHSKbwv/4lMs7A+8kqN2
-         vboA==
-X-Gm-Message-State: APjAAAViePkNoyGUFkYIofYDY2z4ZVnYxMmZz/Sjty3UeE4SH/feDNbh
-        9zG55ZKTY6/jNse1k1oswvfOxl4trIXpj6Qa6rw=
-X-Google-Smtp-Source: APXvYqyT8v8iAkBDf8j+50bdcZNss1V7LWKa6r0wn8vjpJJcFL0sE3pcZPl7nzaBuH2jdvozf4gysX5sLdUJRv/KSFs=
-X-Received: by 2002:a05:651c:29b:: with SMTP id b27mr7973573ljo.31.1576209811384;
- Thu, 12 Dec 2019 20:03:31 -0800 (PST)
+        bh=URwD2kqbKtqHBmAr97llX1pKhl7DZxsGfB/7E5QLYGE=;
+        b=RI+RkoFoVwbWcolwHDsExSSkZkgyLgz3HSu8I6McYQQlhsFEMlGLQOEPBS86bVrcZE
+         nSPOc/iUPi9ZuM0gi23BwuGkJ2I3Y6oTnV+7R1OhCkG0ebVFesih3koyX4/Qo3CELqkD
+         PnHgbPteFwTC4SlgF1iN9OdSAFckEiX5+lJWkqxAzjFWP8UuK+QKAI7m7C2MlrqgQobi
+         AhDFv3MbUwfL+qJi98foh/jjxHPRE8WPU6eu203RKv7S5V0hXYtyXsumRwB7Yf4LLoVg
+         t/s7W4D0diu4/s3dvB415mMaDA1Ic6P/WGdKIv24/QzV1iICuuZ/LnUV1DK/1WWqoVUN
+         KtYA==
+X-Gm-Message-State: APjAAAXUQQTcD32/H+ewfWQ2jFvRs5msok1PZIN+7RGPPoCb0MqOH4Jk
+        G6IzZuskwsLQCLj2UPNd8rltaoLi07CkxCtOOiM=
+X-Google-Smtp-Source: APXvYqzu65JNr8Zns5VVeks/iQ8D6CeQ4H0T8PGRqqD+u82N39Gk52MLphGw89g9L21cri/7kJtnKuJByOQxugJm9Ls=
+X-Received: by 2002:a2e:6f19:: with SMTP id k25mr7997476ljc.84.1576209973389;
+ Thu, 12 Dec 2019 20:06:13 -0800 (PST)
 MIME-Version: 1.0
 References: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
- <1576075099-3441-3-git-send-email-akinobu.mita@gmail.com> <CAHp75Vfq4KqNAGY4ivveR7D0Z1fA1EOFT+oL9+f+Ak2jikCTVg@mail.gmail.com>
-In-Reply-To: <CAHp75Vfq4KqNAGY4ivveR7D0Z1fA1EOFT+oL9+f+Ak2jikCTVg@mail.gmail.com>
+ <1576075099-3441-4-git-send-email-akinobu.mita@gmail.com> <CAHp75VfSUafrg82WcfUA4LhSFaNQSgZp39oVQGD=M124urC=xA@mail.gmail.com>
+In-Reply-To: <CAHp75VfSUafrg82WcfUA4LhSFaNQSgZp39oVQGD=M124urC=xA@mail.gmail.com>
 From:   Akinobu Mita <akinobu.mita@gmail.com>
-Date:   Fri, 13 Dec 2019 13:03:19 +0900
-Message-ID: <CAC5umyiMZLM6rObaKc25+5nFg2rug69zJMF-jPUH6NAgX8-qPw@mail.gmail.com>
-Subject: Re: [PATCH v3 02/12] ACPI: thermal: switch to use <linux/units.h> helpers
+Date:   Fri, 13 Dec 2019 13:06:02 +0900
+Message-ID: <CAC5umygGZqWh2rRGMLvPhWFvD9Mv-5u6stY3c+5Z9_QC6OrNvA@mail.gmail.com>
+Subject: Re: [PATCH v3 03/12] platform/x86: asus-wmi: switch to use
+ <linux/units.h> helpers
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Linux NVMe Mailinglist <linux-nvme@lists.infradead.org>,
         linux-hwmon@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
@@ -72,53 +73,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-2019=E5=B9=B412=E6=9C=8812=E6=97=A5(=E6=9C=A8) 0:29 Andy Shevchenko <andy.s=
+2019=E5=B9=B412=E6=9C=8812=E6=97=A5(=E6=9C=A8) 0:32 Andy Shevchenko <andy.s=
 hevchenko@gmail.com>:
+
 >
 > On Wed, Dec 11, 2019 at 4:39 PM Akinobu Mita <akinobu.mita@gmail.com> wro=
 te:
 > >
-> > This switches the ACPI thermal zone driver to use celsius_to_deci_kelvi=
-n(),
-> > deci_kelvin_to_celsius(), and deci_kelvin_to_millicelsius_with_offset()=
- in
-> > <linux/units.h> instead of helpers in <linux/thermal.h>.
+> > The asus-wmi driver doesn't implement the thermal device functionality
+> > directly, so including <linux/thermal.h> just for DECI_KELVIN_TO_CELSIU=
+S()
+> > is a bit odd.
 > >
-> > This is preparation for centralizing the kelvin to/from Celsius convers=
-ion
-> > helpers in <linux/units.h>.
+> > This switches the asus-wmi driver to use deci_kelvin_to_millicelsius() =
+in
+> > <linux/units.h>.
 >
-> >  #include <linux/reboot.h>
-> >  #include <linux/device.h>
-> >  #include <linux/thermal.h>
->
+> > @@ -33,7 +33,7 @@
+> >  #include <linux/seq_file.h>
+> >  #include <linux/platform_data/x86/asus-wmi.h>
+> >  #include <linux/platform_device.h>
+> > -#include <linux/thermal.h>
 > > +#include <linux/units.h>
+> >  #include <linux/acpi.h>
+> >  #include <linux/dmi.h>
 >
-> Can we try to keep *some* order, i.e. put this after acpi.h below?
+> Similar comment about ordering. Can we move it to the end after dmi.h?
 
 OK.
 
-> >  #include <linux/acpi.h>
-> >  #include <linux/workqueue.h>
-> >  #include <linux/uaccess.h>
+> > -       return sprintf(buf, "%d\n", value);
 >
-> >                         } else if (crt > 0) {
-> > -                               unsigned long crt_k =3D CELSIUS_TO_DECI=
-_KELVIN(crt);
-> > +                               unsigned long crt_k =3D
-> > +                                       celsius_to_deci_kelvin(crt);
+> > +       return sprintf(buf, "%ld\n",
 >
-> It used to be one line, why do two?
+> %d -> %ld must be explained in the commit message (e.g. "due to
+> function returned type).
 
-Because this line over 80 characters.  This patch doesn't make this line
-longer, but checkpatch.pl complains about it.
+OK.
 
-> >         pr_info(PREFIX "%s [%s] (%ld C)\n", acpi_device_name(device),
-> > -               acpi_device_bid(device), DECI_KELVIN_TO_CELSIUS(tz->tem=
-perature));
-> > +               acpi_device_bid(device),
-> > +               deci_kelvin_to_celsius(tz->temperature));
+> > +                      deci_kelvin_to_millicelsius(value & 0xFFFF));
 >
-> Ditto.
+> I prefer to have this in one line.
 
-Same as above, checkpatch.pl complains about line over 80 characters.
+It causes line over 80 characters.
+We had the same conversation in v1 :)

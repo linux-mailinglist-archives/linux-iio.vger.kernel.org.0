@@ -2,46 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16AF111F5CF
+	by mail.lfdr.de (Postfix) with ESMTP id 89DE111F5D0
 	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 06:16:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726036AbfLOFQn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Dec 2019 00:16:43 -0500
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:46924 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725861AbfLOFQn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 00:16:43 -0500
-Received: by mail-pl1-f195.google.com with SMTP id k20so2998607pll.13;
-        Sat, 14 Dec 2019 21:16:42 -0800 (PST)
+        id S1726112AbfLOFQv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Dec 2019 00:16:51 -0500
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:34149 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725861AbfLOFQv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 00:16:51 -0500
+Received: by mail-pl1-f196.google.com with SMTP id x17so3027279pln.1;
+        Sat, 14 Dec 2019 21:16:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=NG3H+s+fBBFZ6iq8D5+2rLQ1nI3ABlA+Ut9Zp7bqJfw=;
-        b=fFllsnGvsEGyNBVt6BCMjcLIs9kK0YQmUxliyDazXC+jL/P/+h+E031C6MADa+BhaZ
-         cPem5VxZc6Xui6mUJ2J+heoRkSdY1Tfr4MTSmtCZRK7GATNQ0SnZEGtE2dQAh3bA4em0
-         6FjpBSRHNHHvvdNJCh9P7mhoscWbr4ZnvdhXZiCIBrUz+5bROc5rWPW9jbji03z6+1ks
-         viwiAT2A0DY9a2/6FuRKgBll3PiZPA5uJtFLf90tssSpQVc1s44SgFV29BuOuz4zVmqH
-         jtOCBkhp0T3zV3WUWq53EDbiDfNfQIqx3f4LqSjJN9Hl19b+cLzQxq/47p/UJDq6jxKM
-         h5ag==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=n0KhyDCT2TCIrEIHc5SljPjq7/DPKAvuDMKsxr9T9Ug=;
+        b=lgIq0zqICEGkShIiMlrRjg7wcHEI9dK51w0R58Dh9CwsqNaakn38i5+2w5nWs5CH7X
+         w2EKVfs7d8XmlDi3EvBlHgX4T/0wVMtgsl0hwYaEz0Aqe0B6GRB0D9xdckPZCrNzQG2f
+         v2x4eesrgQGuTq/s1TIoLj7PEJqYcFbmeSZYPe3p7W6DSo/IPcTtI3k6cv3OjCI/Frs/
+         pHc+af0QUGv3Oj0XSK7fAtkIUrtuyNcs50ocYSusYWnBTqaCDN6CN7wrY0nNgiwLscBG
+         LJ7lG7D5f/5pbURcyx8x4ZqGsBr7/1kpP2jYiui9QXPdmr95VB/CrW+WuX2GkhpC23s+
+         ZI+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=NG3H+s+fBBFZ6iq8D5+2rLQ1nI3ABlA+Ut9Zp7bqJfw=;
-        b=oxmrvZgoVArVicxBmMW+CC8EWikzuYJPgRDxubjXxESJT1lQW639QWhXCr8aNPn6Ol
-         DTYLrEi1w24nZlo7PowUsb/g9Xg68k7SVidCv63oFqIGGLE0gPPMLvr3kJ/ZcSVMdNFP
-         sJ0D2bih3ppDAoCsDkreQeZiAry4mcxGdgD+/cvyCPg/SrxW80YaOM4h1ky+6BeSW1Yz
-         qwtgnK6nLk4cB6X3J3B5VbjUlX954CSeYaEWsNcsEclOTSHKWxFkICQOChrg8wEHdSnh
-         9C4YkZ2nvO8O86n20G4YM7jZfdcGAaTjrE8ZUrurgjPu/MIYyaEoW4KBOX1jD3WkZfxk
-         BCEQ==
-X-Gm-Message-State: APjAAAXMc3hx7J7PWp3vsGTqVnBJ3Za74pm8bxKxt1mpf5iH49H/zVjw
-        5ADcsUQkowMQB/IWqbtyGm8=
-X-Google-Smtp-Source: APXvYqxgtJdFVOCE8Ms0U4eceOkCGxZyfix7v1NLBAjvEFeByQtDfmu1KxfD+5ueGYi8ZtB7bBjehg==
-X-Received: by 2002:a17:902:7896:: with SMTP id q22mr9010139pll.219.1576387002224;
-        Sat, 14 Dec 2019 21:16:42 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=n0KhyDCT2TCIrEIHc5SljPjq7/DPKAvuDMKsxr9T9Ug=;
+        b=U8Q26I8IB5UT8sAdkulIcSjo6/F0vEs45URHNTNjqU1uHqAB+D1h2i8ToyaEowIThF
+         h0u4sBzWMnIy1cK1u9zFoNjzGB41B+8gDLgI53d/pW/VmDPdVEUeWPGyLh+j/LgZi/z5
+         AYYDEg9Y60gQrwtovh7y9EvzuHMmP1HjqooS9U+Ti0vRQvDj6CUC4FcBTfWEqW3X5dPJ
+         hbh3jMn8DWOjZsA89xtGbOipAjecRUWHyFAQOQV79OmhYUB3LoTOvwNXAvQbHogM1BfU
+         OUL0rpM1gj/r4oOjH5TRlWxePBR+zmBFAx0CeEHbudGXozngYNYT3UFSSA2POu13pucx
+         oCfA==
+X-Gm-Message-State: APjAAAWCFxNahHjSLM+YTep0kESEEUnEV6U4dTXgLuWLcE+Us4lU+Oqo
+        KaXiHmAcN/c9ms9SgVXdea8=
+X-Google-Smtp-Source: APXvYqx/G9Lcdyqm7bOXicjyPxETdKBX/bMleOf2pzp/lJbLyACAZhxo8XIP/QCbx34gj5XMJ7UO5w==
+X-Received: by 2002:a17:902:a516:: with SMTP id s22mr9160425plq.89.1576387010091;
+        Sat, 14 Dec 2019 21:16:50 -0800 (PST)
 Received: from localhost.localdomain ([240f:34:212d:1:368e:e048:68f1:84e7])
-        by smtp.gmail.com with ESMTPSA id u10sm16596528pgg.41.2019.12.14.21.16.34
+        by smtp.gmail.com with ESMTPSA id u10sm16596528pgg.41.2019.12.14.21.16.42
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 14 Dec 2019 21:16:41 -0800 (PST)
+        Sat, 14 Dec 2019 21:16:49 -0800 (PST)
 From:   Akinobu Mita <akinobu.mita@gmail.com>
 To:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
@@ -69,10 +70,12 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: [PATCH v4 00/12] add header file for kelvin to/from Celsius conversion helpers
-Date:   Sun, 15 Dec 2019 14:16:03 +0900
-Message-Id: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
+Subject: [PATCH v4 01/12] add helpers for kelvin to/from Celsius conversion
+Date:   Sun, 15 Dec 2019 14:16:04 +0900
+Message-Id: <1576386975-7941-2-git-send-email-akinobu.mita@gmail.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
+References: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -84,71 +87,8 @@ drivers or subsystems, but it's odd to include <linux/thermal.h> just for
 the helpers.
 
 This adds a new <linux/units.h> that provides the equivalent inline
-functions for any drivers or subsystems, and switches all the users of
-conversion helpers in <linux/thermal.h> to use <linux/units.h>
-helpers.
-
-* v4
-- add Reviewed-by and Acked-by tags
-- change include order
-- keep the line over 80 characters because this change doesn't make it longer
-- remove "wireless: " in the title
-
-* v3
-- rename new header name from <linux/temperature.h> to <linux/units.h>
-- add milli_kelvin_to_millicelsius() and millicelsius_to_milli_kelvin() and
-  use them for implementing other helpers
-- add MILLIDEGREE_PER_DEGREE and MILLIDEGREE_PER_DECIDEGREE and replace
-  the hardcoded constants
-- add kelvin_to_celsius() and celsius_to_kelvin() in <linux/units.h>
-- add Reviewed-by tags
-- switch iwlegacy driver to use <linux/units.h> helpers
-- switch iwlwifi driver to use <linux/units.h> helpers
-- remove unused TO_MCELSIUS macro in armada thermal driver
-- switch qcom-vadc-common module to use <linux/units.h> helpers
-
-* v2
-- add deci_kelvin_to_millicelsius_with_offset() in linux/temperature.h
-- stop including linux/temperature.h from linux/thermal.h
-- include <linux/temperature.h> explicitly from thermal drivers
-- fix s/temprature/temperature/ typo in commit log
-- use deci_kelvin_to_millicelsius_with_offset() in ACPI thermal zone driver
-- don't mix up another fix (format string for cellsius value)
-- add Acked-by and Reviewed-by tags
-
-Akinobu Mita (12):
-  add helpers for kelvin to/from Celsius conversion
-  ACPI: thermal: switch to use <linux/units.h> helpers
-  platform/x86: asus-wmi: switch to use <linux/units.h> helpers
-  platform/x86: intel_menlow: switch to use <linux/units.h> helpers
-  thermal: int340x: switch to use <linux/units.h> helpers
-  thermal: intel_pch: switch to use <linux/units.h> helpers
-  nvme: hwmon: switch to use <linux/units.h> helpers
-  thermal: remove kelvin to/from Celsius conversion helpers from
-    <linux/thermal.h>
-  iwlegacy: use <linux/units.h> helpers
-  iwlwifi: use <linux/units.h> helpers
-  thermal: armada: remove unused TO_MCELSIUS macro
-  iio: adc: qcom-vadc-common: use <linux/units.h> helpers
-
- drivers/acpi/thermal.c                             | 34 ++++-----
- drivers/iio/adc/qcom-vadc-common.c                 |  6 +-
- drivers/iio/adc/qcom-vadc-common.h                 |  1 -
- drivers/net/wireless/intel/iwlegacy/4965-mac.c     |  3 +-
- drivers/net/wireless/intel/iwlegacy/4965.c         | 11 +--
- drivers/net/wireless/intel/iwlegacy/common.h       |  3 -
- drivers/net/wireless/intel/iwlwifi/dvm/dev.h       |  5 --
- drivers/net/wireless/intel/iwlwifi/dvm/devices.c   |  6 +-
- drivers/nvme/host/hwmon.c                          | 13 ++--
- drivers/platform/x86/asus-wmi.c                    |  7 +-
- drivers/platform/x86/intel_menlow.c                |  9 ++-
- drivers/thermal/armada_thermal.c                   |  2 -
- .../intel/int340x_thermal/int340x_thermal_zone.c   |  7 +-
- drivers/thermal/intel/intel_pch_thermal.c          |  3 +-
- include/linux/thermal.h                            | 11 ---
- include/linux/units.h                              | 84 ++++++++++++++++++++++
- 16 files changed, 137 insertions(+), 68 deletions(-)
- create mode 100644 include/linux/units.h
+functions for any drivers or subsystems.  It is intended to replace the
+helpers in <linux/thermal.h>.
 
 Cc: Sujith Thomas <sujith.thomas@intel.com>
 Cc: Darren Hart <dvhart@infradead.org>
@@ -172,6 +112,106 @@ Cc: Jonathan Cameron <jic23@kernel.org>
 Cc: Hartmut Knaack <knaack.h@gmx.de>
 Cc: Lars-Peter Clausen <lars@metafoo.de>
 Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+---
+* v4
+- add Reviewed-by tag
+
+ include/linux/units.h | 84 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 84 insertions(+)
+ create mode 100644 include/linux/units.h
+
+diff --git a/include/linux/units.h b/include/linux/units.h
+new file mode 100644
+index 0000000..aaf7163
+--- /dev/null
++++ b/include/linux/units.h
+@@ -0,0 +1,84 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_UNITS_H
++#define _LINUX_UNITS_H
++
++#include <linux/kernel.h>
++
++#define ABSOLUTE_ZERO_MILLICELSIUS -273150
++
++static inline long milli_kelvin_to_millicelsius(long t)
++{
++	return t + ABSOLUTE_ZERO_MILLICELSIUS;
++}
++
++static inline long millicelsius_to_milli_kelvin(long t)
++{
++	return t - ABSOLUTE_ZERO_MILLICELSIUS;
++}
++
++#define MILLIDEGREE_PER_DEGREE 1000
++#define MILLIDEGREE_PER_DECIDEGREE 100
++
++static inline long kelvin_to_millicelsius(long t)
++{
++	return milli_kelvin_to_millicelsius(t * MILLIDEGREE_PER_DEGREE);
++}
++
++static inline long millicelsius_to_kelvin(long t)
++{
++	t = millicelsius_to_milli_kelvin(t);
++
++	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DEGREE);
++}
++
++static inline long deci_kelvin_to_celsius(long t)
++{
++	t = milli_kelvin_to_millicelsius(t * MILLIDEGREE_PER_DECIDEGREE);
++
++	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DEGREE);
++}
++
++static inline long celsius_to_deci_kelvin(long t)
++{
++	t = millicelsius_to_milli_kelvin(t * MILLIDEGREE_PER_DEGREE);
++
++	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DECIDEGREE);
++}
++
++/**
++ * deci_kelvin_to_millicelsius_with_offset - convert Kelvin to Celsius
++ * @t: temperature value in decidegrees Kelvin
++ * @offset: difference between Kelvin and Celsius in millidegrees
++ *
++ * Return: temperature value in millidegrees Celsius
++ */
++static inline long deci_kelvin_to_millicelsius_with_offset(long t, long offset)
++{
++	return t * MILLIDEGREE_PER_DECIDEGREE - offset;
++}
++
++static inline long deci_kelvin_to_millicelsius(long t)
++{
++	return milli_kelvin_to_millicelsius(t * MILLIDEGREE_PER_DECIDEGREE);
++}
++
++static inline long millicelsius_to_deci_kelvin(long t)
++{
++	t = millicelsius_to_milli_kelvin(t);
++
++	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DECIDEGREE);
++}
++
++static inline long kelvin_to_celsius(long t)
++{
++	return t + DIV_ROUND_CLOSEST(ABSOLUTE_ZERO_MILLICELSIUS,
++				     MILLIDEGREE_PER_DEGREE);
++}
++
++static inline long celsius_to_kelvin(long t)
++{
++	return t - DIV_ROUND_CLOSEST(ABSOLUTE_ZERO_MILLICELSIUS,
++				     MILLIDEGREE_PER_DEGREE);
++}
++
++#endif /* _LINUX_UNITS_H */
 -- 
 2.7.4
 

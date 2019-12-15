@@ -2,136 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94D1111FB64
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 22:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 876CE11FBCD
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 00:25:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726219AbfLOVJi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Dec 2019 16:09:38 -0500
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.20]:15269 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726146AbfLOVJi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 16:09:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1576444175;
-        s=strato-dkim-0002; d=plating.de;
-        h=Message-Id:Date:To:From:Subject:X-RZG-CLASS-ID:X-RZG-AUTH:From:
-        Subject:Sender;
-        bh=y//+UnwPsS0RP8TVPRSnhSrh8GeP4PyOWO9gy5PXxlo=;
-        b=TSrvN4yMJih2jlY1tP9/fqBpkmxbHOlsMMuLvLwAImmErXfg5Yo6B5IfyoI0/2ta3d
-        XWCPnvXdF59QMc35zMpLbCWRvgx1ehL82nmlqNWf4YBmeVqIeT9NVLBAdF3nlawWAITd
-        x4vN2nLo4XW+W9IftsmMHqoeAhuitekB5ar0+Bfs3qMVuU5hA1h5w5FbMKdYQHLNKF+j
-        eYO/GrQjQpp03hNMVDvRd2OZ+iD4Dxh3NyfRfmyT8EBPgFfAvKByKW+eD6kSVGr337vG
-        3ix4gsqqkdhwggPcDkfS8wwXoqDpsxuhajRzRXtXy4570Jz5lA+3Si2GCXsSi/GocabD
-        6v2w==
-X-RZG-AUTH: ":P2EQZVataeyI5jZ/YFVerR/NeEUpp/1ZEi4FSKT8sA3i0IzVhLiw6JgrUzaKN77axfKEX18="
-X-RZG-CLASS-ID: mo00
-Received: from mail.dl.plating.de
-        by smtp.strato.de (RZmta 46.0.7 AUTH)
-        with ESMTPSA id n050dcvBFL9Z9si
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Sun, 15 Dec 2019 22:09:35 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.dl.plating.de (Postfix) with ESMTP id 338A3120456;
-        Sun, 15 Dec 2019 22:09:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at dl.plating.de
-Received: from mail.dl.plating.de ([127.0.0.1])
-        by localhost (mail.dl.plating.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id RpxjLWYqlwgO; Sun, 15 Dec 2019 22:09:29 +0100 (CET)
-Received: from mail (localhost [127.0.0.1])
-        by mail.dl.plating.de (Postfix) with ESMTP id 1568F120436;
-        Sun, 15 Dec 2019 22:09:28 +0100 (CET)
-Received: by mail (kopano-spooler) with MAPI; Sun, 15 Dec 2019 22:09:27 +0100
-Subject: RE: [PATCH v3] iio: buffer: align the size of scan bytes to size of
- the largest element
-From:   =?utf-8?Q?Lars_M=C3=B6llendorf?= <lars.moellendorf@plating.de>
-To:     =?utf-8?Q?Lars_M=C3=B6llendorf?= <lars.moellendorf@plating.de>,
-        =?utf-8?Q?Jonathan_Cameron?= <jic23@kernel.org>,
-        =?utf-8?Q?Hartmut_Knaack?= <knaack.h@gmx.de>,
-        =?utf-8?Q?Lars-Peter_Clausen?= <lars@metafoo.de>,
-        =?utf-8?Q?Peter_Meerwald-Stadler?= <pmeerw@pmeerw.net>,
-        =?utf-8?Q?linux-iio=40vger=2Ekernel=2Eorg?= 
-        <linux-iio@vger.kernel.org>
-Date:   Sun, 15 Dec 2019 21:09:27 +0000
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Priority: 3 (Normal)
-X-Mailer: Kopano 8.6.7.0
-Message-Id: <kcis.016016E0AABB4ABC824358438D87FE25@mail>
+        id S1726481AbfLOXZj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Dec 2019 18:25:39 -0500
+Received: from mail-io1-f68.google.com ([209.85.166.68]:44365 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726299AbfLOXZj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 18:25:39 -0500
+Received: by mail-io1-f68.google.com with SMTP id b10so4982113iof.11
+        for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2019 15:25:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WEL4itFmihZqlf+pK1DU7DEDt/SepncHaF9ZMAufTQk=;
+        b=N+c4HK+qYE45RWqlaHU7AnTEY46OfO0t0kBAN2F+qSebIf6nmrna9JaUNv7TDH9X27
+         eCgTN0xBKqFk/ruLZ7CepWQ0jgS9fLOYi7yjsjSN9bKiqaIzJ/+CIrt8kekjVO41P6NN
+         d5Eo49hMKI8IYCNwJ9GMtn/oFArpJVH77Ajsw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WEL4itFmihZqlf+pK1DU7DEDt/SepncHaF9ZMAufTQk=;
+        b=GOF4jBVzCwSlXuaJ8BHINqoG1opULa0axWdlkoTvYUdL0RhVcVzB8yI37rLljOmw9J
+         aLUgQGVhL94S26WTuMxS7Lw7RiQmBl5LJ1dITfiEPtnizMbY7m1QgSSg7f7XUn+56Zr1
+         DwT4B5/UMBGJFl5QOPzmmWTN34wEWX/TDWtZMQ6q1cjI0CQm29pQS+mcUAJ22PL40S4B
+         DHGWwwZXETCFBwgRQT4YDPajCgSp/0wqgKbaOwYOFRoU0GvbVy/XAG2gF1XlnaU98tdj
+         RYl19uzyOQSlce1BEqt7trj0GwhM/BrZH6wo2PrKnMlfIWOuUSHM/M/LBXXs4tbgMS79
+         S15A==
+X-Gm-Message-State: APjAAAXbF0JXIp825ZPBU3QGidq4lsq4QIjuPqV9YRv1uSdtgQMt6SiR
+        xcEWgfWnjuuJOmNZWglBAC5KW3ioDl/Vo6eXmwxlK6xz5PM=
+X-Google-Smtp-Source: APXvYqyxqgqtul5GG7UvGBKwhR/jHF82eADU4suOa7b5QH1cqUuBRY6sCnLgmir+XVDsPtFBuRQBjcI89ud2U+OOQlo=
+X-Received: by 2002:a05:6638:72c:: with SMTP id j12mr9795715jad.136.1576452338679;
+ Sun, 15 Dec 2019 15:25:38 -0800 (PST)
+MIME-Version: 1.0
+References: <20191210210735.9077-1-sashal@kernel.org> <20191210210735.9077-66-sashal@kernel.org>
+ <20191215155329.4c71ad53@archlinux>
+In-Reply-To: <20191215155329.4c71ad53@archlinux>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Sun, 15 Dec 2019 15:25:27 -0800
+Message-ID: <CAJCx=gkM8=WCC6t8bjX-q-mDco7HBMdBmJjOQzRHZr4-nKVvcA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 5.4 105/350] iio: chemical: atlas-ph-sensor: fix
+ iio_triggered_buffer_predisable() position
+To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+Cc:     Sasha Levin <sashal@kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        stable@vger.kernel.org,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
------Urspr=C3=BCngliche Nachricht-----
-> Von: Lars M=C3=B6llendorf <lars.moellendorf@plating.de>
-> Gesendet: Freitag 13 Dezember 2019 14:58
-> An: Jonathan Cameron <jic23@kernel.org>; Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen <lars@metafoo.de>; Peter Meerwald-Stadler <pmeerw@pmeerw.net>; linux-iio@vger.kernel.org
-> CC: Lars M=C3=B6llendorf <lars.moellendorf@plating.de>
-> Betreff: [PATCH v3] iio: buffer: align the size of scan bytes to size of the largest element
->=20
-> Previous versions of `iio_compute_scan_bytes` only aligned each element
-> to its own length (i.e. its own natural alignment). Because multiple
-> consecutive sets of scan elements are buffered this does not work in
-> case the computed scan bytes do not align with the natural alignment of
-> the first scan element in the set.
->=20
-> This commit fixes this by aligning the scan bytes to the natural
-> alignment of the largest scan element in the set.
+On Sun, Dec 15, 2019 at 7:53 AM Jonathan Cameron
+<jic23@jic23.retrosnub.co.uk> wrote:
+>
+> On Tue, 10 Dec 2019 16:03:30 -0500
+> Sasha Levin <sashal@kernel.org> wrote:
+>
+> > From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> >
+> > [ Upstream commit 0c8a6e72f3c04bfe92a64e5e0791bfe006aabe08 ]
+> >
+> > The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+> > the poll functions.
+> >
+> > The iio_triggered_buffer_predisable() should be called last, to detach the
+> > poll func after the devices has been suspended.
+> >
+> > The position of iio_triggered_buffer_postenable() is correct.
+> >
+> > Note this is not stable material. It's a fix in the logical
+> > model rather fixing an actual bug.  These are being tidied up
+> > throughout the subsystem to allow more substantial rework that
+> > was blocked by variations in how things were done.
+>
+> See comment.  This is not what I would consider stable material.
+>
 
+Outside of the comment, which really isn't probably enough to avoid
+the autoselection script from detecting it (could be "stable" in the
+message alone selects it :) ),
+is there any way to signal that a patch is "NOT for stable trees"?
+Probably don't want to clutter up the commit messages of course.
 
+- Matt
 
-After re-reading my commit message, I come to the conclusion that it really is sufficient to align the scan bytes to the natural alignment of the *first* element. This would save us the `max()` comparisons for each bit. At the moment I am not at my workstation, but I could submit a v4 next Friday.
-
-
-
-> Fixes: 959d2952d124 ("staging:iio: make iio_sw_buffer_preenable much more
-> general.")
-> Signed-off-by: Lars M=C3=B6llendorf <lars.moellendorf@plating.de>
-> ---
-> v3:
->   - Fix the problem description in the commit message
->   - Add "Fixes" tag
->=20
-> v2:
->   - Fix subject of patch which marked it the first in a set of three.
->   - Add a description of the problem in the commit message
->=20
-> ---
->  drivers/iio/industrialio-buffer.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index 5d05c38c4ba9..2f037cd59d53 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -546,7 +546,7 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
->  =09=09=09=09const unsigned long *mask, bool timestamp)
->  {
->  =09unsigned bytes =3D 0;
-> -=09int length, i;
-> +=09int length, i, largest =3D 0;
->=20
->  =09/* How much space will the demuxed element take=3F */
->  =09for_each_set_bit(i, mask,
-> @@ -554,13 +554,17 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
->  =09=09length =3D iio_storage_bytes_for_si(indio_dev, i);
->  =09=09bytes =3D ALIGN(bytes, length);
->  =09=09bytes +=3D length;
-> +=09=09largest =3D max(largest, length);
->  =09}
->=20
->  =09if (timestamp) {
->  =09=09length =3D iio_storage_bytes_for_timestamp(indio_dev);
->  =09=09bytes =3D ALIGN(bytes, length);
->  =09=09bytes +=3D length;
-> +=09=09largest =3D max(largest, length);
->  =09}
-> +
-> +=09bytes =3D ALIGN(bytes, largest);
->  =09return bytes;
->  }
->=20
-> --
-> 2.23.0
->=20
+> >
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> > Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  drivers/iio/chemical/atlas-ph-sensor.c | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-ph-sensor.c
+> > index 3a20cb5d9bffc..6c175eb1c7a7f 100644
+> > --- a/drivers/iio/chemical/atlas-ph-sensor.c
+> > +++ b/drivers/iio/chemical/atlas-ph-sensor.c
+> > @@ -323,16 +323,16 @@ static int atlas_buffer_predisable(struct iio_dev *indio_dev)
+> >       struct atlas_data *data = iio_priv(indio_dev);
+> >       int ret;
+> >
+> > -     ret = iio_triggered_buffer_predisable(indio_dev);
+> > +     ret = atlas_set_interrupt(data, false);
+> >       if (ret)
+> >               return ret;
+> >
+> > -     ret = atlas_set_interrupt(data, false);
+> > +     pm_runtime_mark_last_busy(&data->client->dev);
+> > +     ret = pm_runtime_put_autosuspend(&data->client->dev);
+> >       if (ret)
+> >               return ret;
+> >
+> > -     pm_runtime_mark_last_busy(&data->client->dev);
+> > -     return pm_runtime_put_autosuspend(&data->client->dev);
+> > +     return iio_triggered_buffer_predisable(indio_dev);
+> >  }
+> >
+> >  static const struct iio_trigger_ops atlas_interrupt_trigger_ops = {
+>

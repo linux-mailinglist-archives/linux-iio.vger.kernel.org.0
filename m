@@ -2,48 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DBEC411F905
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 17:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6477F11F90D
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 17:37:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726130AbfLOQbL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Dec 2019 11:31:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45514 "EHLO mail.kernel.org"
+        id S1726295AbfLOQfC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Dec 2019 11:35:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47246 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726118AbfLOQbK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Dec 2019 11:31:10 -0500
+        id S1726135AbfLOQfC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Dec 2019 11:35:02 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 61AAD206D8;
-        Sun, 15 Dec 2019 16:31:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 716D1206C3;
+        Sun, 15 Dec 2019 16:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576427469;
-        bh=ktyZ/NUBXxF+ma0Le443TdiIJHqPYVPSGT5eOza8uqI=;
+        s=default; t=1576427700;
+        bh=Qj/LMjimQUlWIIpHUTnD39DZUW7SiK2YRr6BXqJi6do=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=L+WoZdCmm5LMRzwz4zR4g1Ti3mhatn96qsmpPNqBsFyUBpYYSCGoRHnV8nIdNmAZX
-         BZsbhawqYisPXqRxdyVnJdjSiceDTfgYGlFSkV7dNgt7j0GOaEvtDdp0kJ5bGt6Dvj
-         RV/ghdgshYlEBUlMXhwim7yLiaTtEz1mfXDKNVmU=
-Date:   Sun, 15 Dec 2019 16:31:03 +0000
+        b=bGVuxnYiCa1P1cvk6XuW+mSLDWYnV1wclXRRj6lv7wS6yUxtg4uwu8ec/LuP01nCa
+         PF70kSEat7MYJiIh62g5WCI8jMqx92F7noPAWq8ivgwsh8dBw/ar8gA5CQ2Sm9UHQ+
+         efRShABgs+OrBsNFTiO8KLKPDoB0vzG/xV6J8IUQ=
+Date:   Sun, 15 Dec 2019 16:34:55 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Dan Robertson <dan@dlrobertson.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        devicetree <devicetree@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Joe Perches <joe@perches.com>
-Subject: Re: [PATCH v6 2/2] iio: (bma400) add driver for the BMA400
-Message-ID: <20191215163103.17cee7d4@archlinux>
-In-Reply-To: <CAHp75VezHcGwwWZ8tSf6FKoYQ_c4=WhYE2ag6OtcAJ2Z9M3ZOA@mail.gmail.com>
-References: <20191211010308.1525-1-dan@dlrobertson.com>
-        <20191211010308.1525-3-dan@dlrobertson.com>
-        <CAHp75VdAJwMkPZQLLQrOk4HABjG-parEOmH8S-6kU+zyYnnfww@mail.gmail.com>
-        <20191212001735.GA4667@nessie>
-        <CAHp75VezHcGwwWZ8tSf6FKoYQ_c4=WhYE2ag6OtcAJ2Z9M3ZOA@mail.gmail.com>
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>
+Subject: Re: [PATCH v2 5/7] iio: temperature: Add support for Azoteq
+ IQS620AT temperature sensor
+Message-ID: <20191215163455.25ff929f@archlinux>
+In-Reply-To: <1575851866-18919-6-git-send-email-jeff@labundy.com>
+References: <1575851866-18919-1-git-send-email-jeff@labundy.com>
+        <1575851866-18919-6-git-send-email-jeff@labundy.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,111 +54,172 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 12 Dec 2019 11:41:45 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 9 Dec 2019 00:38:38 +0000
+Jeff LaBundy <jeff@labundy.com> wrote:
 
-> On Thu, Dec 12, 2019 at 2:33 AM Dan Robertson <dan@dlrobertson.com> wrote:
-> > On Wed, Dec 11, 2019 at 03:21:56PM +0200, Andy Shevchenko wrote:  
-> > > On Wed, Dec 11, 2019 at 3:20 AM Dan Robertson <dan@dlrobertson.com> wrote:  
+> This patch adds support for the Azoteq IQS620AT temperature sensor,
+> capable of reporting its absolute die temperature.
 > 
-> > > > +#define BMA400_LP_OSR_SHIFT         0x05
-> > > > +#define BMA400_NP_OSR_SHIFT         0x04
-> > > > +#define BMA400_SCALE_SHIFT          0x06  
-> > >
-> > > I'm not sure why this is being defined as hex number instead of plain decimal...  
-> >
-> > Sounds good.
-> >  
-> > > > +#define BMA400_TWO_BITS_MASK        GENMASK(1, 0)
-> > > > +#define BMA400_LP_OSR_MASK          GENMASK(6, BMA400_LP_OSR_SHIFT)
-> > > > +#define BMA400_NP_OSR_MASK          GENMASK(5, BMA400_NP_OSR_SHIFT)
-> > > > +#define BMA400_ACC_ODR_MASK         GENMASK(3, 0)
-> > > > +#define BMA400_ACC_SCALE_MASK       GENMASK(7, BMA400_SCALE_SHIFT)  
-> > >
-> > > And here simple better to put same numbers. It will help to read.  
-> >
-> > Do you mean for the shift or for the mask?  
-> 
-> SHIFTs -> plain decimals
-> 
-> > > > +EXPORT_SYMBOL(bma400_regmap_config);  
-> > >
-> > > I'm not sure I got the idea why this one is being exported.  
-> >
-> > It needs to be exported so that it can be used in the bma400_i2c module and the
-> > future bma400_spi module. In theory, if we _really_ do not want to export this,
-> > then we can define separate regmap configs in each of the bma400_i2c and
-> > (future) bma400_spi modules, but then we would have to export the is_volitile_reg
-> > and is_writable_reg functions. As a result, I do not see any benefits to that
-> > method over exporting the config, but I could be convinced otherwise.  
-> 
-> I think there might be better way to do this.
-> But I leave it to you and maintainer to agree on (I will be fine with
-> any solution you will come to).
+> Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+Looks good to me.
 
-This does always feel a bit silly.  We have plenty of cases of both
-the suggested options (replicate vs export). I don't really care either way.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
+Thanks,
 
+Jonathan
+
+> ---
+> Changes in v2:
+>   - Moved the driver from hwmon to iio
+>   - Merged 'Copyright' and 'Author' lines into one in introductory comments
+>   - Replaced 'error' with 'ret' throughout
+>   - Eliminated tabbed alignment of platform_driver struct members
+>   - Changed Kconfig "depends on" logic to MFD_IQS62X || COMPILE_TEST
 > 
-> > > > +               if (uhz || hz % BMA400_ACC_ODR_MIN_WHOLE_HZ)
-> > > > +                       return -EINVAL;
-> > > > +
-> > > > +               val = hz / BMA400_ACC_ODR_MIN_WHOLE_HZ;
-> > > > +               idx = __ffs(val);
-> > > > +  
-> > >  
-> > > > +               if (val ^ BIT(idx))  
-> > >
-> > > Seems like funny way of checking is_power_of_2(). But it's up to maintainers.
-> > > And your variant may even be better here (in code generation perspective)...
-> > >
-> > > However, the whole idea here is, IIUC, to have something like
-> > >
-> > >   hz = 2^idx * BMA400_ACC_ODR_MIN_WHOLE_HZ
-> > >
-> > > I think you may do it without divisions, i.e. call __ffs() first and then do
-> > >    idx = __ffs(...);
-> > >    val = hz >> idx;
-> > >    if (val != BMA400_ACC_ODR_MIN_WHOLE_HZ)
-> > >     return -EINVAL;
-> > >
-> > > or something like above.  
-> >
-> > It would be more obvious what is being done here with is_power_of_two. I'll
-> > revisit this function with your suggestions. If I can make it simpler, I'll
-> > go this route.  
+>  drivers/iio/temperature/Kconfig         | 10 ++++
+>  drivers/iio/temperature/Makefile        |  1 +
+>  drivers/iio/temperature/iqs620at-temp.c | 97 +++++++++++++++++++++++++++++++++
+>  3 files changed, 108 insertions(+)
+>  create mode 100644 drivers/iio/temperature/iqs620at-temp.c
 > 
-> The main point here to get rid of divisions. Is it achievable?
+> diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
+> index e1ccb40..f1f2a14 100644
+> --- a/drivers/iio/temperature/Kconfig
+> +++ b/drivers/iio/temperature/Kconfig
+> @@ -4,6 +4,16 @@
+>  #
+>  menu "Temperature sensors"
 > 
-> > > > +                       return -EINVAL;  
-> > >
-> > > ...  
+> +config IQS620AT_TEMP
+> +	tristate "Azoteq IQS620AT temperature sensor"
+> +	depends on MFD_IQS62X || COMPILE_TEST
+> +	help
+> +	  Say Y here if you want to build support for the Azoteq IQS620AT
+> +	  temperature sensor.
+> +
+> +	  To compile this driver as a module, choose M here: the module
+> +	  will be called iqs620at-temp.
+> +
+>  config LTC2983
+>  	tristate "Analog Devices Multi-Sensor Digital Temperature Measurement System"
+>  	depends on SPI
+> diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
+> index d6b850b..90c1131 100644
+> --- a/drivers/iio/temperature/Makefile
+> +++ b/drivers/iio/temperature/Makefile
+> @@ -3,6 +3,7 @@
+>  # Makefile for industrial I/O temperature drivers
+>  #
 > 
-> > > > +       ret = regmap_read(data->regmap, BMA400_ACC_CONFIG0_REG, &val);
-> > > > +       if (ret < 0)  
-> > >
-> > > I'm wondering if in all of these regmap_read()...
-> > >  
-> > > > +               return ret;  
-> > >  
-> > > > +       ret = regmap_write(data->regmap, BMA400_ACC_CONFIG0_REG,
-> > > > +                          mode | (val & ~BMA400_TWO_BITS_MASK));
-> > > > +       if (ret < 0) {  
-> > >
-> > > ...and regmap_write() calls you ever can get a positive returned code.  
-> >
-> > From the regmap_read/regmap_write docs:
-> >  
-> > > * A value of zero will be returned on success, a negative errno will
-> > > * be returned in error cases.  
-> >
-> > So I assume ret <= 0  
-> 
-> There is no positive codes mentioned at all. And you assume right.
-> But why we care about positive codes if they never can be returned?
-Agreed, for regmap calls, definitely prefer the driver to check with
-if (ret)
-	...
+> +obj-$(CONFIG_IQS620AT_TEMP) += iqs620at-temp.o
+>  obj-$(CONFIG_LTC2983) += ltc2983.o
+>  obj-$(CONFIG_HID_SENSOR_TEMP) += hid-sensor-temperature.o
+>  obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
+> diff --git a/drivers/iio/temperature/iqs620at-temp.c b/drivers/iio/temperature/iqs620at-temp.c
+> new file mode 100644
+> index 0000000..d20cb6ad
+> --- /dev/null
+> +++ b/drivers/iio/temperature/iqs620at-temp.c
+> @@ -0,0 +1,97 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Azoteq IQS620AT Temperature Sensor
+> + *
+> + * Copyright (C) 2019 Jeff LaBundy <jeff@labundy.com>
+> + */
+> +
+> +#include <linux/device.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mfd/iqs62x.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regmap.h>
+> +
+> +#define IQS620_TEMP_UI_OUT			0x1A
+> +
+> +#define IQS620_TEMP_SCALE			1000
+> +#define IQS620_TEMP_OFFSET			(-100)
+> +
+> +static int iqs620_temp_read_raw(struct iio_dev *indio_dev,
+> +				struct iio_chan_spec const *chan,
+> +				int *val, int *val2, long mask)
+> +{
+> +	struct iqs62x_core *iqs62x = iio_device_get_drvdata(indio_dev);
+> +	int ret;
+> +	__le16 val_buf;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = regmap_raw_read(iqs62x->map, IQS620_TEMP_UI_OUT, &val_buf,
+> +				      sizeof(val_buf));
+> +		if (ret)
+> +			return ret;
+> +
+> +		*val = le16_to_cpu(val_buf);
+> +		return IIO_VAL_INT;
+> +
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*val = IQS620_TEMP_SCALE;
+> +		return IIO_VAL_INT;
+> +
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		*val = IQS620_TEMP_OFFSET;
+> +		return IIO_VAL_INT;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static const struct iio_info iqs620_temp_info = {
+> +	.read_raw = &iqs620_temp_read_raw,
+> +};
+> +
+> +static const struct iio_chan_spec iqs620_temp_channels[] = {
+> +	{
+> +		.type = IIO_TEMP,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +				      BIT(IIO_CHAN_INFO_SCALE) |
+> +				      BIT(IIO_CHAN_INFO_OFFSET),
+> +	},
+> +};
+> +
+> +static int iqs620_temp_probe(struct platform_device *pdev)
+> +{
+> +	struct iqs62x_core *iqs62x = dev_get_drvdata(pdev->dev.parent);
+> +	struct iio_dev *indio_dev;
+> +
+> +	indio_dev = devm_iio_device_alloc(&pdev->dev, 0);
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	iio_device_set_drvdata(indio_dev, iqs62x);
+> +
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->dev.parent = &pdev->dev;
+> +	indio_dev->channels = iqs620_temp_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(iqs620_temp_channels);
+> +	indio_dev->name = iqs62x->dev_desc->dev_name;
+> +	indio_dev->info = &iqs620_temp_info;
+> +
+> +	return devm_iio_device_register(&pdev->dev, indio_dev);
+> +}
+> +
+> +static struct platform_driver iqs620_temp_platform_driver = {
+> +	.driver = {
+> +		.name = IQS620_DRV_NAME_TEMP,
+> +	},
+> +	.probe = iqs620_temp_probe,
+> +};
+> +module_platform_driver(iqs620_temp_platform_driver);
+> +
+> +MODULE_AUTHOR("Jeff LaBundy <jeff@labundy.com>");
+> +MODULE_DESCRIPTION("Azoteq IQS620AT Temperature Sensor");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:" IQS620_DRV_NAME_TEMP);
+> --
+> 2.7.4
 > 
 

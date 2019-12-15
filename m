@@ -2,37 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6E4311F99F
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 18:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9278711F9A4
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 18:24:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726346AbfLORTz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Dec 2019 12:19:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34952 "EHLO mail.kernel.org"
+        id S1726260AbfLORXr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Dec 2019 12:23:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35300 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726282AbfLORTz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Dec 2019 12:19:55 -0500
+        id S1726207AbfLORXr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Dec 2019 12:23:47 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CD6102465E;
-        Sun, 15 Dec 2019 17:19:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D994120726;
+        Sun, 15 Dec 2019 17:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576430393;
-        bh=aTFw+ue28k3fWWpmU7kl52EDBOR30STcBywtYtrnGF0=;
+        s=default; t=1576430627;
+        bh=gUIdizfi8B58M7gFZWEkMo/c8HxUaG2SbJZ2mC7B+Io=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=j4r4yhx31Xgac1qbS50FGIx+Z95MtzryAfqk6mzcfRvNkpDr5PX2PZ0ljNvSk95lu
-         V6Sc10+aZcik5533OOqz9+tD1ByYkqBgfCv1Q20d2Xf+6db0c4HxSZ8MEzTvH6NdKJ
-         WSOYoIPO2DV/NKCEebae4sARRrWQX0g+EwcXk33Y=
-Date:   Sun, 15 Dec 2019 17:19:49 +0000
+        b=k15SrbMx8LW9e59sn1MKQ35A+Vfhmg2w0AYzIBNq27fwyW0ciAXWlBXWfXigafbz+
+         ldbt+dlu7HQrLRablGivvj+DnUhkms6KOpMcjPI9aQkKCgwkk+dpT1JCo7MIn/5Cfw
+         57CqzwL7JRtZhjdHz+zBZLP+qej9TuBFkYtTBs7c=
+Date:   Sun, 15 Dec 2019 17:23:42 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     ruantu <mtwget@gmail.com>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: iio: chemical: Add bindings for
- Dynament Premier series single gas sensor
-Message-ID: <20191215171949.1b817a40@archlinux>
-In-Reply-To: <20191210053744.732093-1-mtwget@gmail.com>
-References: <20191210053744.732093-1-mtwget@gmail.com>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: Fix selection of ST_LSM6DS3_ID
+Message-ID: <20191215172342.1e2ab5c4@archlinux>
+In-Reply-To: <20191209170541.198206-1-stephan@gerhold.net>
+References: <20191209170541.198206-1-stephan@gerhold.net>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,105 +44,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 10 Dec 2019 13:37:44 +0800
-ruantu <mtwget@gmail.com> wrote:
+On Mon,  9 Dec 2019 18:05:41 +0100
+Stephan Gerhold <stephan@gerhold.net> wrote:
 
-> Dynament Premier series single gas sensor.
+> At the moment, attempting to probe a device with ST_LSM6DS3_ID
+> (e.g. using the st,lsm6ds3 compatible) fails with:
 > 
-> Signed-off-by: ruantu <mtwget@gmail.com>
-> ---
->  .../iio/chemical/dynament,premier.yaml        | 43 +++++++++++++++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
->  MAINTAINERS                                   |  1 +
->  3 files changed, 46 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml
+>     st_lsm6dsx_i2c 1-006b: unsupported whoami [69]
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml b/Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml
-> new file mode 100644
-> index 000000000000..076ae9d90cee
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml
-> @@ -0,0 +1,43 @@
-> +# SPDX-License-Identifier: GPL-2.0
+> ... even though 0x69 is the whoami listed for ST_LSM6DS3_ID.
+> 
+> This happens because st_lsm6dsx_check_whoami() also attempts
+> to match unspecified (zero-initialized) entries in the "id" array.
+> ST_LSM6DS3_ID = 0 will therefore match any entry in
+> st_lsm6dsx_sensor_settings (here: the first), because none of them
+> actually have all 12 entries listed in the "id" array.
+> 
+> Avoid this by additionally checking if "name" is set,
+> which is only set for valid entries in the "id" array.
+> 
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Definitely sounds like this wants backporting. 
 
-The dt maintainers are asking if possible for all new bindings to be dual licensed
-with BSD as it makes them easier to reuse outside linux.
-
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/chemical/dynament,premier.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Dynament Premier series single gas sensor
-> +
-> +maintainers:
-> +  - ruantu <mtwget@gmail.com>
-> +
-> +description: |
-> +  single gas sensor capable of measuring gas concentration of dust
-> +  particles, multi-gas sensor are not supported.
-> +
-> +  Specifications about the sensor can be found at:
-> +    https://www.dynament.com/_webedit/uploaded-files/All%20Files/SIL%20Data/tds0045_1.44.pdf, read chapter 1.5.2 Read live data simple
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - dynament,premier
-> +
-> +  vcc-supply:
-> +    description: regulator that provides power to the sensor
-> +
-> +  reset-gpios:
-> +    description: GPIO connected to the RESET line
-> +    maxItems: 1
-Good to have the regulator and reset defined from the start.  It may be worth adding
-the regulator enable to the driver.  Reset is actually optional I assume whereas
-power isn't (it's just a question of whether it is already turned on or not!)
-> +
-> +required:
-> +  - compatible
-> +
-> +examples:
-> +  - |
-> +    serial {
-> +      single-gas-sensor {
-> +        compatible = "dynament,premier";
-> +        vcc-supply = <&reg_vcc5v0>;
-> +      };
-> +    };
-Bindings have indented in multiples of 4 spaces I believe.  That needs tidying
-up in this example.
+If you can figure out a fixes tag that would be great!
 
 Thanks,
 
 Jonathan
 
-> +
-> +...
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> index 6046f4555852..5afca0586c41 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -261,6 +261,8 @@ patternProperties:
->      description: Dragino Technology Co., Limited
->    "^dserve,.*":
->      description: dServe Technology B.V.
-> +  "^dynament,.*":
-> +    description: Dynament, Ltd.
->    "^ea,.*":
->      description: Embedded Artists AB
->    "^ebs-systart,.*":
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 18c26558ddfe..84592789e01b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -13137,6 +13137,7 @@ DYNAMENT PREMIER SERIES SINGLE GAS SENSOR DRIVER
->  M:	ruantu <mtwget@gmail.com>
->  S:	Maintained
->  F:	drivers/iio/chemical/premier.c
-> +F:	Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index a7d40c02ce6b..b921dd9e108f 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1301,7 +1301,8 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
 >  
->  PLANTOWER PMS7003 AIR POLLUTION SENSOR DRIVER
->  M:	Tomasz Duszynski <tduszyns@gmail.com>
+>  	for (i = 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
+>  		for (j = 0; j < ST_LSM6DSX_MAX_ID; j++) {
+> -			if (id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
+> +			if (st_lsm6dsx_sensor_settings[i].id[j].name &&
+> +			    id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
+>  				break;
+>  		}
+>  		if (j < ST_LSM6DSX_MAX_ID)
 

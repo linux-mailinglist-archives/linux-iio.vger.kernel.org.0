@@ -2,49 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A14011F93B
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 17:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8534311F998
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 18:16:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726148AbfLOQxf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Dec 2019 11:53:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53818 "EHLO mail.kernel.org"
+        id S1726148AbfLORQP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Dec 2019 12:16:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60900 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726130AbfLOQxf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Dec 2019 11:53:35 -0500
+        id S1726130AbfLORQO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Dec 2019 12:16:14 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0BF5E206E0;
-        Sun, 15 Dec 2019 16:53:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3D39D24654;
+        Sun, 15 Dec 2019 17:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576428813;
-        bh=bFOx7i8qct0z5oAogxrmFOWA7k/Cv5lRBU/in1X3NSE=;
+        s=default; t=1576430173;
+        bh=atnktRRpqVKJjBv9WG4R0E+PMiRizzDqMT6NyW6rvlQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FJykHYuDtaCYiQxg8uUHd9jdLPUflBVGY7LZou13WKjZQBotZ4SqMgT22sK4iplka
-         CmV3WdXbeog2yPr2tmNxfppjN28xoKMCJKwr0KVVJgEMklV9i84eCVa8zo0BiBgOCZ
-         jKebk3p/Svi6IYXRovnuMrooP6bOg4O7wbjc5WmU=
-Date:   Sun, 15 Dec 2019 16:53:28 +0000
+        b=M6/oCcoLSsDDYKl2qx+dqRPgdzx6EAMBtWocVN95ygwXsItD+FgfUX/gn4gyg4yfE
+         fLSyKTwC396u6kXEUfo82z8R7IeHkWK3gwQ5mxnUp4hbgUIBoCGCSP2jiJyJ7AbIIN
+         3gaNO5mKLMWaD//wLrmBjgDcNSeIhnIQ8qSPK+Xs=
+Date:   Sun, 15 Dec 2019 17:16:09 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     "lee.jones@linaro.org" <lee.jones@linaro.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>
-Subject: Re: [PATCH v2 7/7] iio: position: Add support for Azoteq IQS624/625
- angle sensors
-Message-ID: <20191215165328.789e8a16@archlinux>
-In-Reply-To: <1575851866-18919-8-git-send-email-jeff@labundy.com>
-References: <1575851866-18919-1-git-send-email-jeff@labundy.com>
-        <1575851866-18919-8-git-send-email-jeff@labundy.com>
+To:     ruantu <mtwget@gmail.com>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: chemical: add support for Dynament Premier
+ series single gas sensor
+Message-ID: <20191215171609.1a288b2c@archlinux>
+In-Reply-To: <20191210053721.731859-1-mtwget@gmail.com>
+References: <20191210053721.731859-1-mtwget@gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,405 +42,481 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 9 Dec 2019 00:38:41 +0000
-Jeff LaBundy <jeff@labundy.com> wrote:
+On Tue, 10 Dec 2019 13:37:21 +0800
+ruantu <mtwget@gmail.com> wrote:
 
-> This patch adds support for the Azoteq IQS624 and IQS625 angular position
-> sensors, capable of reporting the angle of a rotating shaft down to 1 and
-> 10 degrees of accuracy, respectively.
+> Add support for Dynament Premier series single gas sensor.
 > 
-> This patch also introduces a home for linear and angular position sensors.
-> Unlike resolvers, they are typically contactless and use the Hall effect.
-> 
-> Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+> Signed-off-by: ruantu <mtwget@gmail.com>
 
-Looks good
+Hi ruantu,
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Welcome to IIO.
 
-My current assumption is that Lee will take this lot via an immutable branch
-in MFD once it's ready.  Shout if a different path makes sense.
+Just to check, could you confirm your signed-off-by meets
+the requirements of Documentation/process/submitting-patches.rst
+wrt to use your full name?  If it does, then my apologies!
+
+Looks pretty good.  A few minor cleanups needed though. See inline.
+
+Thanks,
+
+Jonathan
+
 > ---
-> Changes in v2:
->   - Merged 'Copyright' and 'Author' lines into one in introductory comments
->   - Replaced 'error' with 'ret' throughout
->   - Added iqs624_pos_angle_en and iqs624_pos_angle_get to remove duplicate
->     logic previously used throughout
->   - Refactored the logic in iqs624_pos_notifier and added a lock to safely
->     evaluate variables that may change in response to user action
->   - Refactored the logic in iqs624_pos_read_raw
->   - Added a lock to iqs624_pos_read_event_config to account for cases in which
->     the corresponding hardware state is in the process of being updated
->   - Refactored the logic in iqs624_pos_write_event_config and read the initial
->     angle in case it changed since having first been read in iqs624_pos_init
->   - Removed iqs624_pos_init as its logic has since been absorbed elsewhere
->   - Removed devm_add_action_or_reset failure message
->   - Eliminated tabbed alignment of platform_driver struct members
->   - Changed Kconfig "depends on" logic to MFD_IQS62X || COMPILE_TEST
+>  MAINTAINERS                    |   5 +
+>  drivers/iio/chemical/Kconfig   |  11 ++
+>  drivers/iio/chemical/Makefile  |   1 +
+>  drivers/iio/chemical/premier.c | 349 +++++++++++++++++++++++++++++++++
+>  4 files changed, 366 insertions(+)
+>  create mode 100644 drivers/iio/chemical/premier.c
 > 
->  drivers/iio/Kconfig               |   1 +
->  drivers/iio/Makefile              |   1 +
->  drivers/iio/position/Kconfig      |  19 +++
->  drivers/iio/position/Makefile     |   7 +
->  drivers/iio/position/iqs624-pos.c | 284 ++++++++++++++++++++++++++++++++++++++
->  5 files changed, 312 insertions(+)
->  create mode 100644 drivers/iio/position/Kconfig
->  create mode 100644 drivers/iio/position/Makefile
->  create mode 100644 drivers/iio/position/iqs624-pos.c
-> 
-> diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
-> index 5bd5185..d5c073a 100644
-> --- a/drivers/iio/Kconfig
-> +++ b/drivers/iio/Kconfig
-> @@ -88,6 +88,7 @@ source "drivers/iio/orientation/Kconfig"
->  if IIO_TRIGGER
->     source "drivers/iio/trigger/Kconfig"
->  endif #IIO_TRIGGER
-> +source "drivers/iio/position/Kconfig"
->  source "drivers/iio/potentiometer/Kconfig"
->  source "drivers/iio/potentiostat/Kconfig"
->  source "drivers/iio/pressure/Kconfig"
-> diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
-> index bff682a..1712011 100644
-> --- a/drivers/iio/Makefile
-> +++ b/drivers/iio/Makefile
-> @@ -31,6 +31,7 @@ obj-y += light/
->  obj-y += magnetometer/
->  obj-y += multiplexer/
->  obj-y += orientation/
-> +obj-y += position/
->  obj-y += potentiometer/
->  obj-y += potentiostat/
->  obj-y += pressure/
-> diff --git a/drivers/iio/position/Kconfig b/drivers/iio/position/Kconfig
-> new file mode 100644
-> index 0000000..eda67f0
-> --- /dev/null
-> +++ b/drivers/iio/position/Kconfig
-> @@ -0,0 +1,19 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +#
-> +# Linear and angular position sensors
-> +#
-> +# When adding new entries keep the list in alphabetical order
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 02d5278a4c9a..18c26558ddfe 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13133,6 +13133,11 @@ F:	drivers/i2c/busses/i2c-puv3.c
+>  F:	drivers/video/fbdev/fb-puv3.c
+>  F:	drivers/rtc/rtc-puv3.c
+>  
+> +DYNAMENT PREMIER SERIES SINGLE GAS SENSOR DRIVER
+> +M:	ruantu <mtwget@gmail.com>
+> +S:	Maintained
+> +F:	drivers/iio/chemical/premier.c
+
+MAINTAINERS is in alphabetical order, not grouped by location.
+
 > +
-> +menu "Linear and angular position sensors"
-> +
-> +config IQS624_POS
-> +	tristate "Azoteq IQS624/625 angular position sensors"
-> +	depends on MFD_IQS62X || COMPILE_TEST
+>  PLANTOWER PMS7003 AIR POLLUTION SENSOR DRIVER
+>  M:	Tomasz Duszynski <tduszyns@gmail.com>
+>  S:	Maintained
+> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+> index fa4586037bb8..b75903a5a15c 100644
+> --- a/drivers/iio/chemical/Kconfig
+> +++ b/drivers/iio/chemical/Kconfig
+> @@ -62,6 +62,17 @@ config IAQCORE
+>  	  iAQ-Core Continuous/Pulsed VOC (Volatile Organic Compounds)
+>  	  sensors
+>  
+> +config PREMIER
+> +	tristate "Dynament Premier series sensor"
+> +	depends on SERIAL_DEV_BUS
+> +	select IIO_TRIGGERED_BUFFER
+It looks to me like you started adding triggered buffer support here
+but haven't finished.  For this patch, make sure you clean out any
+initial support.  That can all come in a follow up patch.
+
 > +	help
-> +	  Say Y here if you want to build support for the Azoteq IQS624
-> +	  and IQS625 angular position sensors.
+> +	  Say Y here to build support for the Dynament Premier
+> +	  series sensor.
 > +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called iqs624-pos.
+> +	  To compile this driver as a module, choose M here: the module will
+> +	  be called premier.
 > +
-> +endmenu
-> diff --git a/drivers/iio/position/Makefile b/drivers/iio/position/Makefile
+>  config PMS7003
+>  	tristate "Plantower PMS7003 particulate matter sensor"
+>  	depends on SERIAL_DEV_BUS
+> diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+> index f97270bc4034..c8e779d7cf4a 100644
+> --- a/drivers/iio/chemical/Makefile
+> +++ b/drivers/iio/chemical/Makefile
+> @@ -10,6 +10,7 @@ obj-$(CONFIG_BME680_I2C) += bme680_i2c.o
+>  obj-$(CONFIG_BME680_SPI) += bme680_spi.o
+>  obj-$(CONFIG_CCS811)		+= ccs811.o
+>  obj-$(CONFIG_IAQCORE)		+= ams-iaq-core.o
+> +obj-$(CONFIG_PREMIER)		+= premier.o
+>  obj-$(CONFIG_PMS7003) += pms7003.o
+>  obj-$(CONFIG_SENSIRION_SGP30)	+= sgp30.o
+>  obj-$(CONFIG_SPS30) += sps30.o
+> diff --git a/drivers/iio/chemical/premier.c b/drivers/iio/chemical/premier.c
 > new file mode 100644
-> index 0000000..3cbe7a7
+> index 000000000000..5681e2caa03b
 > --- /dev/null
-> +++ b/drivers/iio/position/Makefile
-> @@ -0,0 +1,7 @@
-> +#
-> +# Makefile for IIO linear and angular position sensors
-> +#
-> +
-> +# When adding new entries keep the list in alphabetical order
-> +
-> +obj-$(CONFIG_IQS624_POS)	+= iqs624-pos.o
-> diff --git a/drivers/iio/position/iqs624-pos.c b/drivers/iio/position/iqs624-pos.c
-> new file mode 100644
-> index 0000000..af629bf5
-> --- /dev/null
-> +++ b/drivers/iio/position/iqs624-pos.c
-> @@ -0,0 +1,284 @@
-> +// SPDX-License-Identifier: GPL-2.0+
+> +++ b/drivers/iio/chemical/premier.c
+> @@ -0,0 +1,349 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +/*
-> + * Azoteq IQS624/625 Angular Position Sensors
+> + * Dynament Premier series single gas sensor driver
 > + *
-> + * Copyright (C) 2019 Jeff LaBundy <jeff@labundy.com>
+> + * Copyright (c) ruantu <mtwget@gmail.com>
 > + */
 > +
+> +#include <asm/unaligned.h>
+> +#include <linux/completion.h>
 > +#include <linux/device.h>
-> +#include <linux/iio/events.h>
+> +#include <linux/errno.h>
+> +#include <linux/iio/buffer.h>
 > +#include <linux/iio/iio.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +#include <linux/jiffies.h>
 > +#include <linux/kernel.h>
-> +#include <linux/mfd/iqs62x.h>
+> +#include <linux/mod_devicetable.h>
 > +#include <linux/module.h>
 > +#include <linux/mutex.h>
-> +#include <linux/notifier.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
+> +#include <linux/serdev.h>
 > +
-> +#define IQS624_POS_DEG_OUT			0x16
+> +#define PREMIER_DRIVER_NAME "premier"
+
+This is a bit of a generic name, perhaps
+dynament-premier?
+
 > +
-> +#define IQS624_POS_SCALE1			(314159 / 180)
-> +#define IQS624_POS_SCALE2			100000
+> +#define DLE (0x10)
+Please prefix these defines.  The chance of them clashing with something
+in a generic header sometime in the future is too high.
+
+PREMIER_CMD_RD etc.
+
+> +#define CMD_RD (0x13)
+> +#define CMD_NAK (0x19)
+> +#define CMD_DAT (0x1a)
+> +#define EOFF (0x1f)
 > +
-> +struct iqs624_pos_private {
-> +	struct iqs62x_core *iqs62x;
-> +	struct notifier_block notifier;
-> +	struct mutex lock;
-> +	bool angle_en;
-> +	u16 angle;
+> +#define PREMIER_TIMEOUT msecs_to_jiffies(6000)
+> +
+> +/*
+> + * commands have following format:
+> + *
+> + * +-----+-----+---------+-----+-----+-----------+-----------+
+> + * | DLE | CMD | PAYLOAD | DLE | EOF | CKSUM MSB | CKSUM LSB |
+> + * +-----+-----+---------+-----+-----+-----------+-----------+
+> + */
+> +static const u8 premier_cmd_read_live_data_simple[] = {
+> +	0x10, 0x13, 0x06, 0x10, 0x1F, 0x00, 0x58
 > +};
 > +
-> +static int iqs624_pos_angle_en(struct iqs62x_core *iqs62x, bool angle_en)
+> +struct premier_frame {
+> +	u8 state;
+> +	u8 is_dat;
+> +	u8 is_nak;
+> +	u8 data_len;
+> +	u8 vi, si, gi, gj;
+> +	u8 gas[4];
+> +	u8 byte_stuffing;
+> +	u8 checksum_received[2];
+> +	u16 checksum_calculated;
+> +};
+> +
+> +struct premier_state {
+> +	struct serdev_device *serdev;
+> +	struct premier_frame frame;
+> +	struct completion frame_ready;
+> +	struct mutex lock;	/* must be held whenever state gets touched */
+> +};
+> +
+> +static int premier_do_cmd_read_live_data(struct premier_state *state)
 > +{
-> +	unsigned int event_mask = IQS624_HALL_UI_WHL_EVENT;
-> +
-> +	/*
-> +	 * The IQS625 reports angular position in the form of coarse intervals,
-> +	 * so only interval change events are unmasked. Conversely, the IQS624
-> +	 * reports angular position down to one degree of resolution, so wheel
-> +	 * movement events are unmasked instead.
-> +	 */
-> +	if (iqs62x->dev_desc->prod_num == IQS625_PROD_NUM)
-> +		event_mask = IQS624_HALL_UI_INT_EVENT;
-> +
-> +	return regmap_update_bits(iqs62x->map, IQS624_HALL_UI, event_mask,
-> +				  angle_en ? 0 : 0xFF);
-> +}
-> +
-> +static int iqs624_pos_notifier(struct notifier_block *notifier,
-> +			       unsigned long event_flags, void *context)
-> +{
-> +	struct iqs62x_event_data *event_data = context;
-> +	struct iqs624_pos_private *iqs624_pos;
-> +	struct iqs62x_core *iqs62x;
-> +	struct iio_dev *indio_dev;
-> +	u16 angle = event_data->ui_data;
-> +	s64 timestamp;
 > +	int ret;
 > +
-> +	iqs624_pos = container_of(notifier, struct iqs624_pos_private,
-> +				  notifier);
-> +	indio_dev = iio_priv_to_dev(iqs624_pos);
-> +	timestamp = iio_get_time_ns(indio_dev);
+> +	ret =
+> +	    serdev_device_write(state->serdev,
+> +				premier_cmd_read_live_data_simple,
+> +				sizeof(premier_cmd_read_live_data_simple),
+> +				PREMIER_TIMEOUT);
+> +	if (ret < sizeof(premier_cmd_read_live_data_simple))
+> +		return ret < 0 ? ret : -EIO;
 > +
-> +	iqs62x = iqs624_pos->iqs62x;
-> +	if (iqs62x->dev_desc->prod_num == IQS625_PROD_NUM)
-> +		angle = event_data->interval;
+> +	ret = wait_for_completion_interruptible_timeout(&state->frame_ready,
+> +							PREMIER_TIMEOUT);
 > +
-> +	mutex_lock(&iqs624_pos->lock);
+> +	if (!ret)
+> +		ret = -ETIMEDOUT;
 > +
-> +	if (event_flags & BIT(IQS62X_EVENT_SYS_RESET)) {
-> +		ret = iqs624_pos_angle_en(iqs62x, iqs624_pos->angle_en);
-> +		if (ret) {
-> +			dev_err(indio_dev->dev.parent,
-> +				"Failed to re-initialize device: %d\n", ret);
-> +			ret = NOTIFY_BAD;
-> +		} else {
-> +			ret = NOTIFY_OK;
-> +		}
-> +	} else if (iqs624_pos->angle_en && (angle != iqs624_pos->angle)) {
-> +		iio_push_event(indio_dev,
-> +			       IIO_UNMOD_EVENT_CODE(IIO_ANGL, 0,
-> +						    IIO_EV_TYPE_CHANGE,
-> +						    IIO_EV_DIR_NONE),
-> +			       timestamp);
+> +	return ret < 0 ? ret : 0;
+> +}
 > +
-> +		iqs624_pos->angle = angle;
-> +		ret = NOTIFY_OK;
-> +	} else {
-> +		ret = NOTIFY_DONE;
+> +static s32 premier_float_to_int_clamped(const u8 *fp)
+> +{
+> +	int val = get_unaligned_le32(fp);
+> +	int mantissa = val & GENMASK(22, 0);
+> +	/* this is fine since passed float is always non-negative */
+> +	int exp = val >> 23;
+> +	int fraction, shift;
+> +
+> +	/* special case 0 */
+> +	if (!exp && !mantissa)
+> +		return 0;
+> +
+> +	exp -= 127;
+> +	if (exp < 0) {
+> +		/* return values ranging from 1 to 99 */
+> +		return ((((1 << 23) + mantissa) * 100) >> 23) >> (-exp);
 > +	}
 > +
-> +	mutex_unlock(&iqs624_pos->lock);
+> +	/* return values ranging from 100 to int_max */
+> +	shift = 23 - exp;
+> +	val = (1 << exp) + (mantissa >> shift);
 > +
-> +	return ret;
+> +	fraction = mantissa & GENMASK(shift - 1, 0);
+> +
+> +	return val * 100 + ((fraction * 100) >> shift);
 > +}
 > +
-> +static void iqs624_pos_notifier_unregister(void *context)
+> +static int premier_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int *val, int *val2, long mask)
 > +{
-> +	struct iqs624_pos_private *iqs624_pos = context;
-> +	struct iio_dev *indio_dev = iio_priv_to_dev(iqs624_pos);
+> +	struct premier_state *state = iio_priv(indio_dev);
+> +	struct premier_frame *frame = &state->frame;
 > +	int ret;
-> +
-> +	ret = blocking_notifier_chain_unregister(&iqs624_pos->iqs62x->nh,
-> +						 &iqs624_pos->notifier);
-> +	if (ret)
-> +		dev_err(indio_dev->dev.parent,
-> +			"Failed to unregister notifier: %d\n", ret);
-> +}
-> +
-> +static int iqs624_pos_angle_get(struct iqs62x_core *iqs62x, unsigned int *val)
-> +{
-> +	int ret;
-> +	__le16 val_buf;
-> +
-> +	if (iqs62x->dev_desc->prod_num == IQS625_PROD_NUM)
-> +		return regmap_read(iqs62x->map, iqs62x->dev_desc->interval,
-> +				   val);
-> +
-> +	ret = regmap_raw_read(iqs62x->map, IQS624_POS_DEG_OUT, &val_buf,
-> +			      sizeof(val_buf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	*val = le16_to_cpu(val_buf);
-> +
-> +	return 0;
-> +}
-> +
-> +static int iqs624_pos_read_raw(struct iio_dev *indio_dev,
-> +			       struct iio_chan_spec const *chan,
-> +			       int *val, int *val2, long mask)
-> +{
-> +	struct iqs624_pos_private *iqs624_pos = iio_priv(indio_dev);
-> +	struct iqs62x_core *iqs62x = iqs624_pos->iqs62x;
-> +	unsigned int scale = 1;
-> +	int ret;
+> +	s32 val_tmp;
 > +
 > +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = iqs624_pos_angle_get(iqs62x, val);
-> +		if (ret)
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +
+> +		mutex_lock(&state->lock);
+> +		ret = premier_do_cmd_read_live_data(state);
+> +		if (ret) {
+> +			mutex_unlock(&state->lock);
 > +			return ret;
-> +
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		if (iqs62x->dev_desc->prod_num == IQS625_PROD_NUM) {
-> +			ret = regmap_read(iqs62x->map, IQS624_INTERVAL_DIV,
-> +					  &scale);
-> +			if (ret)
-> +				return ret;
 > +		}
+> +		val_tmp = premier_float_to_int_clamped(frame->gas);
+> +		mutex_unlock(&state->lock);
 > +
-> +		*val = scale * IQS624_POS_SCALE1;
-> +		*val2 = IQS624_POS_SCALE2;
-> +		return IIO_VAL_FRACTIONAL;
-> +
+> +		*val = val_tmp / 100;
+> +		*val2 = (val_tmp % 100) * 10000;
+> +		return IIO_VAL_INT_PLUS_MICRO;
 > +	default:
 > +		return -EINVAL;
 > +	}
+> +
+> +	return -EINVAL;
 > +}
 > +
-> +static int iqs624_pos_read_event_config(struct iio_dev *indio_dev,
-> +					const struct iio_chan_spec *chan,
-> +					enum iio_event_type type,
-> +					enum iio_event_direction dir)
-> +{
-> +	struct iqs624_pos_private *iqs624_pos = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	mutex_lock(&iqs624_pos->lock);
-> +	ret = iqs624_pos->angle_en;
-> +	mutex_unlock(&iqs624_pos->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static int iqs624_pos_write_event_config(struct iio_dev *indio_dev,
-> +					 const struct iio_chan_spec *chan,
-> +					 enum iio_event_type type,
-> +					 enum iio_event_direction dir,
-> +					 int state)
-> +{
-> +	struct iqs624_pos_private *iqs624_pos = iio_priv(indio_dev);
-> +	struct iqs62x_core *iqs62x = iqs624_pos->iqs62x;
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	mutex_lock(&iqs624_pos->lock);
-> +
-> +	ret = iqs624_pos_angle_get(iqs62x, &val);
-> +	if (ret)
-> +		goto err_mutex;
-> +
-> +	ret = iqs624_pos_angle_en(iqs62x, state);
-> +	if (ret)
-> +		goto err_mutex;
-> +
-> +	iqs624_pos->angle = val;
-> +	iqs624_pos->angle_en = state;
-> +
-> +err_mutex:
-> +	mutex_unlock(&iqs624_pos->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct iio_info iqs624_pos_info = {
-> +	.read_raw = &iqs624_pos_read_raw,
-> +	.read_event_config = iqs624_pos_read_event_config,
-> +	.write_event_config = iqs624_pos_write_event_config,
+> +static const struct iio_info premier_info = {
+> +	.read_raw = premier_read_raw,
 > +};
 > +
-> +static const struct iio_event_spec iqs624_pos_events[] = {
+> +static const struct iio_chan_spec premier_channels[] = {
 > +	{
-> +		.type = IIO_EV_TYPE_CHANGE,
-> +		.dir = IIO_EV_DIR_NONE,
-> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-> +	},
+> +	 .type = IIO_CONCENTRATION,
+> +	 .channel = 1,
+> +	 .info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
+
+The indentation in here needs fixing up.
+
+Also, could you confirm what the units of this reading are and compare
+with the Documented IIO base units in Documentation/ABI/testings/sysfs-bus-iio-*
+
+We have a nasty habit of getting inconsistent ones in new drivers so good
+to check!
+
+> +	 .scan_index = -1,
+> +	  },
+> +	IIO_CHAN_SOFT_TIMESTAMP(0),
 > +};
 > +
-> +static const struct iio_chan_spec iqs624_pos_channels[] = {
-> +	{
-> +		.type = IIO_ANGL,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE),
-> +		.event_spec = iqs624_pos_events,
-> +		.num_event_specs = ARRAY_SIZE(iqs624_pos_events),
-> +	},
-> +};
-> +
-> +static int iqs624_pos_probe(struct platform_device *pdev)
+> +static int premier_receive_buf(struct serdev_device *serdev,
+> +			       const unsigned char *buf, size_t size)
 > +{
-> +	struct iqs62x_core *iqs62x = dev_get_drvdata(pdev->dev.parent);
-> +	struct iqs624_pos_private *iqs624_pos;
+> +	struct iio_dev *indio_dev = serdev_device_get_drvdata(serdev);
+> +	struct premier_state *state = iio_priv(indio_dev);
+> +	struct premier_frame *frame = &state->frame;
+> +	int i;
+> +
+> +	for (i = 0; i < size; i++) {
+> +
+> +		if (frame->state > 0 && frame->state <= 7)
+> +			frame->checksum_calculated += buf[i];
+> +
+> +		switch (frame->state) {
+> +		case 0:
+> +			if (buf[i] == DLE) {
+> +				frame->is_dat = 0;
+> +				frame->is_nak = 0;
+> +				frame->checksum_calculated = buf[i];
+> +				/* we don't initialize checksum_calculated in
+Multiline comment syntax in most of the kernel (including IIO) is
+				/*
+				 * We don't...
+> +				 * the last state in case we didn't go
+> +				 * there because of noise
+> +				 */
+> +				frame->state++;
+> +			}
+> +			break;
+> +		case 1:
+> +			/*
+> +			 * if noise corrupts a byte in the FSM sequence,
+> +			 * we loop between state 0 and 1,
+> +			 * until we have a valid sequence of DLE&DAT or DLE&NAK
+> +			 */
+> +			if (buf[i] == CMD_DAT) {
+> +				frame->is_dat = 1;
+> +				frame->state++;
+> +			} else if (buf[i] == CMD_NAK) {
+> +				frame->is_nak = 1;
+> +				frame->state++;
+> +			} else
+> +				frame->state = 0;
+> +			break;
+> +		case 2:
+> +			if (frame->is_nak)
+> +				frame->state = 0;
+> +			else if (frame->is_dat) {
+> +				frame->data_len = buf[i] - 4;
+> +				/* remove version and status bytes from count */
+> +				if (frame->data_len < 4)
+> +					frame->state = 0;
+> +				/* we check for the upper limit in state 5 */
+> +				else
+> +					frame->state++;
+> +			} else
+> +				frame->state = 0;
+> +			break;
+> +		case 3:
+> +			/* just do nothing for 2 rounds to bypass
+> +			 * the 2 version bytes
+> +			 */
+> +			if (frame->vi < 2 - 1)
+> +				frame->vi++;
+> +			else {
+> +				frame->vi = 0;
+> +				frame->state++;
+> +			}
+> +			break;
+> +		case 4:
+> +			if (frame->si < 2 - 1)
+> +				frame->si++;
+> +			else {
+> +				frame->si = 0;
+> +				frame->state++;
+> +			}
+> +			break;
+> +		case 5:
+> +			if (frame->gi < frame->data_len - 1) {
+> +				if (buf[i] != 0x10 || frame->byte_stuffing) {
+> +					frame->gas[frame->gj] = buf[i];
+> +					frame->byte_stuffing = 0;
+> +					frame->gj++;
+> +					if (frame->gj >= 4)
+> +						frame->state = 0;
+> +					/* don't violate array limits
+> +					 * if data_len corrupt
+> +					 */
+> +				} else
+> +					frame->byte_stuffing = 1;
+> +				frame->gi++;
+> +			} else {
+> +				frame->gas[frame->gj] = buf[i];
+> +				frame->byte_stuffing = 0;
+> +				frame->gi = 0;
+> +				frame->gj = 0;
+> +				frame->state++;
+> +			}
+> +			break;
+> +		case 6:
+> +			if (buf[i] == DLE)
+> +				frame->state++;
+> +			else
+> +				frame->state = 0;
+> +			break;
+> +		case 7:
+> +			if (buf[i] == EOFF)
+> +				frame->state++;
+> +			else
+> +				frame->state = 0;
+> +			break;
+> +		case 8:
+> +			frame->checksum_received[1] = buf[i];
+> +
+> +			frame->state++;
+> +			break;
+> +		case 9:
+> +			frame->checksum_received[0] = buf[i];
+> +
+> +			if (frame->checksum_calculated ==
+> +			    get_unaligned_le16(frame->checksum_received))
+> +				complete(&state->frame_ready);
+> +
+> +			frame->state = 0;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return size;
+> +}
+> +
+> +static const struct serdev_device_ops premier_serdev_ops = {
+> +	.receive_buf = premier_receive_buf,
+> +	.write_wakeup = serdev_device_write_wakeup,
+> +};
+> +
+> +static const unsigned long premier_scan_masks[] = { 0x07, 0x00 };
+> +
+> +static int premier_probe(struct serdev_device *serdev)
+> +{
+> +	struct premier_state *state;
 > +	struct iio_dev *indio_dev;
 > +	int ret;
 > +
-> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*iqs624_pos));
+> +	indio_dev = devm_iio_device_alloc(&serdev->dev, sizeof(*state));
 > +	if (!indio_dev)
 > +		return -ENOMEM;
 > +
-> +	iqs624_pos = iio_priv(indio_dev);
-> +	iqs624_pos->iqs62x = iqs62x;
-> +
+> +	state = iio_priv(indio_dev);
+> +	serdev_device_set_drvdata(serdev, indio_dev);
+> +	state->serdev = serdev;
+> +	indio_dev->dev.parent = &serdev->dev;
+> +	indio_dev->info = &premier_info;
+> +	indio_dev->name = PREMIER_DRIVER_NAME;
+> +	indio_dev->channels = premier_channels,
+
+The line above should end in a semicolon and next one not be indented.
+Although they are related, kernel code conventions don't allow for
+multiple assignment in one line.
+
+> +	    indio_dev->num_channels = ARRAY_SIZE(premier_channels);
 > +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->dev.parent = &pdev->dev;
-> +	indio_dev->channels = iqs624_pos_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(iqs624_pos_channels);
-> +	indio_dev->name = iqs62x->dev_desc->dev_name;
-> +	indio_dev->info = &iqs624_pos_info;
+> +	indio_dev->available_scan_masks = premier_scan_masks;
+
+available_scan_masks is only used if you have buffered support which you
+don't seem to offer in this patch.
+
 > +
-> +	mutex_init(&iqs624_pos->lock);
+> +	mutex_init(&state->lock);
+> +	init_completion(&state->frame_ready);
 > +
-> +	iqs624_pos->notifier.notifier_call = iqs624_pos_notifier;
-> +	ret = blocking_notifier_chain_register(&iqs624_pos->iqs62x->nh,
-> +					       &iqs624_pos->notifier);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "Failed to register notifier: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_add_action_or_reset(&pdev->dev,
-> +				       iqs624_pos_notifier_unregister,
-> +				       iqs624_pos);
+> +	serdev_device_set_client_ops(serdev, &premier_serdev_ops);
+> +	ret = devm_serdev_device_open(&serdev->dev, serdev);
 > +	if (ret)
 > +		return ret;
 > +
-> +	return devm_iio_device_register(&pdev->dev, indio_dev);
+> +	serdev_device_set_baudrate(serdev, 9600);
+> +	serdev_device_set_flow_control(serdev, false);
+> +
+> +	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(&serdev->dev, indio_dev);
 > +}
 > +
-> +static struct platform_driver iqs624_pos_platform_driver = {
-> +	.driver = {
-> +		.name = IQS624_DRV_NAME_POS,
-> +	},
-> +	.probe = iqs624_pos_probe,
+> +static const struct of_device_id premier_of_match[] = {
+> +	{.compatible = "dynament,premier" },
+
+Space needed before .compatible
+
+> +	{ }
 > +};
-> +module_platform_driver(iqs624_pos_platform_driver);
 > +
-> +MODULE_AUTHOR("Jeff LaBundy <jeff@labundy.com>");
-> +MODULE_DESCRIPTION("Azoteq IQS624/625 Angular Position Sensors");
-> +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS("platform:" IQS624_DRV_NAME_POS);
-> --
-> 2.7.4
-> 
+> +MODULE_DEVICE_TABLE(of, premier_of_match);
+> +
+> +static struct serdev_device_driver premier_driver = {
+> +	.driver = {
+> +		   .name = PREMIER_DRIVER_NAME,
+> +		   .of_match_table = premier_of_match,
+Something strange with indenting here.  Normally structure
+members are indented a full extra tab from the structure.
+Here we seem to have som spaces. 
+> +		    },
+> +	.probe = premier_probe,
+> +};
+> +
+> +module_serdev_device_driver(premier_driver);
+> +
+> +MODULE_AUTHOR("ruantu <mtwget@gmail.com>");
+> +MODULE_DESCRIPTION("Dynament Premier series single gas sensor driver");
+> +MODULE_LICENSE("GPL v2");
 

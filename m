@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89DE111F5D0
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 06:16:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 602C411F5DB
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 06:17:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbfLOFQv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Dec 2019 00:16:51 -0500
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:34149 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725861AbfLOFQv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 00:16:51 -0500
-Received: by mail-pl1-f196.google.com with SMTP id x17so3027279pln.1;
-        Sat, 14 Dec 2019 21:16:50 -0800 (PST)
+        id S1726240AbfLOFQ5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Dec 2019 00:16:57 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:38975 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725861AbfLOFQ4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 00:16:56 -0500
+Received: by mail-pg1-f194.google.com with SMTP id b137so1723509pga.6;
+        Sat, 14 Dec 2019 21:16:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=n0KhyDCT2TCIrEIHc5SljPjq7/DPKAvuDMKsxr9T9Ug=;
-        b=lgIq0zqICEGkShIiMlrRjg7wcHEI9dK51w0R58Dh9CwsqNaakn38i5+2w5nWs5CH7X
-         w2EKVfs7d8XmlDi3EvBlHgX4T/0wVMtgsl0hwYaEz0Aqe0B6GRB0D9xdckPZCrNzQG2f
-         v2x4eesrgQGuTq/s1TIoLj7PEJqYcFbmeSZYPe3p7W6DSo/IPcTtI3k6cv3OjCI/Frs/
-         pHc+af0QUGv3Oj0XSK7fAtkIUrtuyNcs50ocYSusYWnBTqaCDN6CN7wrY0nNgiwLscBG
-         LJ7lG7D5f/5pbURcyx8x4ZqGsBr7/1kpP2jYiui9QXPdmr95VB/CrW+WuX2GkhpC23s+
-         ZI+Q==
+        bh=+ni+XvUfeKyfzr2yd/pJZb0s5CL2FQmAH0qUgXjirMQ=;
+        b=f/OUThotWQpXaPGbzZ5R2FFLQ9ZUuy00n1PH97c9VUEl75bjGc9e0sh4S8N0ybzh2n
+         qMJB8Bm9YAiCGqFwp3vDbHJ0xpZ8jEdF/uLy4Alyt3KKPeEo7fQwbL4cnyGigGd5bc8u
+         GtiocPYRjuw8KZon5ULZi9jVlmgPoADTR2ntVtsAUdxzVQq/7iWq5Meu4KkHjL8w60FI
+         iBeFKiN4y48MNQW7DYPIU/98OSOoGsJXtRB8hq4I65KzxdtwjprvTSRnZarEskRf5+by
+         /tVG6bXx5Qn/RUBGtMlwu/9C7yUUCmvHm/Bhsa/AihPo04Ym0Xqdn8C+FjS5DQuavmxk
+         ymsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=n0KhyDCT2TCIrEIHc5SljPjq7/DPKAvuDMKsxr9T9Ug=;
-        b=U8Q26I8IB5UT8sAdkulIcSjo6/F0vEs45URHNTNjqU1uHqAB+D1h2i8ToyaEowIThF
-         h0u4sBzWMnIy1cK1u9zFoNjzGB41B+8gDLgI53d/pW/VmDPdVEUeWPGyLh+j/LgZi/z5
-         AYYDEg9Y60gQrwtovh7y9EvzuHMmP1HjqooS9U+Ti0vRQvDj6CUC4FcBTfWEqW3X5dPJ
-         hbh3jMn8DWOjZsA89xtGbOipAjecRUWHyFAQOQV79OmhYUB3LoTOvwNXAvQbHogM1BfU
-         OUL0rpM1gj/r4oOjH5TRlWxePBR+zmBFAx0CeEHbudGXozngYNYT3UFSSA2POu13pucx
-         oCfA==
-X-Gm-Message-State: APjAAAWCFxNahHjSLM+YTep0kESEEUnEV6U4dTXgLuWLcE+Us4lU+Oqo
-        KaXiHmAcN/c9ms9SgVXdea8=
-X-Google-Smtp-Source: APXvYqx/G9Lcdyqm7bOXicjyPxETdKBX/bMleOf2pzp/lJbLyACAZhxo8XIP/QCbx34gj5XMJ7UO5w==
-X-Received: by 2002:a17:902:a516:: with SMTP id s22mr9160425plq.89.1576387010091;
-        Sat, 14 Dec 2019 21:16:50 -0800 (PST)
+        bh=+ni+XvUfeKyfzr2yd/pJZb0s5CL2FQmAH0qUgXjirMQ=;
+        b=Z2DaRucLW8jLkOKf5XErl5TccVBPOPmSkQqq3RkWHNGNkGbZc1AdxMTuIQVrQz23Ev
+         oOE+AjMMFpsbfQ2VjfgzY2aUxFkNbt32848sixxQgRUbYlO31BMPd2bStvwoOm7qauP4
+         mSbiyX3WIPhiMvsX82Cc/vSvSohAU0QWPDNxbQLpDtNMVAxhHN0ETjliS/jt6eNb8YOQ
+         n3q7F2NgndMNxKM6BcU8WCkM4KAiP/HBpz4Z34Ioc/V3MvGcSXj23VccIKv9BCu24N7V
+         Lgx0+4oI4JRXFl03lLNTFeUx/v4gNjAjml/Jp/ughziykna3b4VE9ovjoPx44sHlem3y
+         U1Ew==
+X-Gm-Message-State: APjAAAU6G4jIh56R2x4bQSUB0hXZdgScLzCxBeY7M0wunk7SGBOx0dCA
+        4mHn1ljsZS4wwhM3Wscvxxc=
+X-Google-Smtp-Source: APXvYqxRB7OPbFfVEFAxX9HKfb1NP04PbmHKjMIQqfZChZstN8X4ZFRN9baeNaRgyvH4MwVUoPUBEw==
+X-Received: by 2002:a63:d544:: with SMTP id v4mr9985261pgi.288.1576387015843;
+        Sat, 14 Dec 2019 21:16:55 -0800 (PST)
 Received: from localhost.localdomain ([240f:34:212d:1:368e:e048:68f1:84e7])
-        by smtp.gmail.com with ESMTPSA id u10sm16596528pgg.41.2019.12.14.21.16.42
+        by smtp.gmail.com with ESMTPSA id u10sm16596528pgg.41.2019.12.14.21.16.50
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 14 Dec 2019 21:16:49 -0800 (PST)
+        Sat, 14 Dec 2019 21:16:55 -0800 (PST)
 From:   Akinobu Mita <akinobu.mita@gmail.com>
 To:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
@@ -59,20 +59,10 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         Guenter Roeck <linux@roeck-us.net>,
         Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
         Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: [PATCH v4 01/12] add helpers for kelvin to/from Celsius conversion
-Date:   Sun, 15 Dec 2019 14:16:04 +0900
-Message-Id: <1576386975-7941-2-git-send-email-akinobu.mita@gmail.com>
+        Sagi Grimberg <sagi@grimberg.me>
+Subject: [PATCH v4 02/12] ACPI: thermal: switch to use <linux/units.h> helpers
+Date:   Sun, 15 Dec 2019 14:16:05 +0900
+Message-Id: <1576386975-7941-3-git-send-email-akinobu.mita@gmail.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
 References: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
@@ -81,14 +71,12 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There are several helper macros to convert kelvin to/from Celsius in
-<linux/thermal.h> for thermal drivers.  These are useful for any other
-drivers or subsystems, but it's odd to include <linux/thermal.h> just for
-the helpers.
+This switches the ACPI thermal zone driver to use celsius_to_deci_kelvin(),
+deci_kelvin_to_celsius(), and deci_kelvin_to_millicelsius_with_offset() in
+<linux/units.h> instead of helpers in <linux/thermal.h>.
 
-This adds a new <linux/units.h> that provides the equivalent inline
-functions for any drivers or subsystems.  It is intended to replace the
-helpers in <linux/thermal.h>.
+This is preparation for centralizing the kelvin to/from Celsius conversion
+helpers in <linux/units.h>.
 
 Cc: Sujith Thomas <sujith.thomas@intel.com>
 Cc: Darren Hart <dvhart@infradead.org>
@@ -102,116 +90,160 @@ Cc: Keith Busch <kbusch@kernel.org>
 Cc: Jens Axboe <axboe@fb.com>
 Cc: Christoph Hellwig <hch@lst.de>
 Cc: Sagi Grimberg <sagi@grimberg.me>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Stanislaw Gruszka <sgruszka@redhat.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Cc: Luca Coelho <luciano.coelho@intel.com>
-Cc: Intel Linux Wireless <linuxwifi@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Hartmut Knaack <knaack.h@gmx.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
 ---
 * v4
-- add Reviewed-by tag
+- change include order
+- keep the line over 80 characters because this change doesn't make it longer
 
- include/linux/units.h | 84 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
- create mode 100644 include/linux/units.h
+ drivers/acpi/thermal.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/units.h b/include/linux/units.h
-new file mode 100644
-index 0000000..aaf7163
---- /dev/null
-+++ b/include/linux/units.h
-@@ -0,0 +1,84 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_UNITS_H
-+#define _LINUX_UNITS_H
+diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+index d831a61..19067a5 100644
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -27,6 +27,7 @@
+ #include <linux/acpi.h>
+ #include <linux/workqueue.h>
+ #include <linux/uaccess.h>
++#include <linux/units.h>
+ 
+ #define PREFIX "ACPI: "
+ 
+@@ -172,7 +173,7 @@ struct acpi_thermal {
+ 	struct acpi_handle_list devices;
+ 	struct thermal_zone_device *thermal_zone;
+ 	int tz_enabled;
+-	int kelvin_offset;
++	int kelvin_offset;	/* in millidegrees */
+ 	struct work_struct thermal_check_work;
+ };
+ 
+@@ -297,7 +298,8 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+ 			if (crt == -1) {
+ 				tz->trips.critical.flags.valid = 0;
+ 			} else if (crt > 0) {
+-				unsigned long crt_k = CELSIUS_TO_DECI_KELVIN(crt);
++				unsigned long crt_k = celsius_to_deci_kelvin(crt);
 +
-+#include <linux/kernel.h>
-+
-+#define ABSOLUTE_ZERO_MILLICELSIUS -273150
-+
-+static inline long milli_kelvin_to_millicelsius(long t)
-+{
-+	return t + ABSOLUTE_ZERO_MILLICELSIUS;
-+}
-+
-+static inline long millicelsius_to_milli_kelvin(long t)
-+{
-+	return t - ABSOLUTE_ZERO_MILLICELSIUS;
-+}
-+
-+#define MILLIDEGREE_PER_DEGREE 1000
-+#define MILLIDEGREE_PER_DECIDEGREE 100
-+
-+static inline long kelvin_to_millicelsius(long t)
-+{
-+	return milli_kelvin_to_millicelsius(t * MILLIDEGREE_PER_DEGREE);
-+}
-+
-+static inline long millicelsius_to_kelvin(long t)
-+{
-+	t = millicelsius_to_milli_kelvin(t);
-+
-+	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DEGREE);
-+}
-+
-+static inline long deci_kelvin_to_celsius(long t)
-+{
-+	t = milli_kelvin_to_millicelsius(t * MILLIDEGREE_PER_DECIDEGREE);
-+
-+	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DEGREE);
-+}
-+
-+static inline long celsius_to_deci_kelvin(long t)
-+{
-+	t = millicelsius_to_milli_kelvin(t * MILLIDEGREE_PER_DEGREE);
-+
-+	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DECIDEGREE);
-+}
-+
-+/**
-+ * deci_kelvin_to_millicelsius_with_offset - convert Kelvin to Celsius
-+ * @t: temperature value in decidegrees Kelvin
-+ * @offset: difference between Kelvin and Celsius in millidegrees
-+ *
-+ * Return: temperature value in millidegrees Celsius
-+ */
-+static inline long deci_kelvin_to_millicelsius_with_offset(long t, long offset)
-+{
-+	return t * MILLIDEGREE_PER_DECIDEGREE - offset;
-+}
-+
-+static inline long deci_kelvin_to_millicelsius(long t)
-+{
-+	return milli_kelvin_to_millicelsius(t * MILLIDEGREE_PER_DECIDEGREE);
-+}
-+
-+static inline long millicelsius_to_deci_kelvin(long t)
-+{
-+	t = millicelsius_to_milli_kelvin(t);
-+
-+	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DECIDEGREE);
-+}
-+
-+static inline long kelvin_to_celsius(long t)
-+{
-+	return t + DIV_ROUND_CLOSEST(ABSOLUTE_ZERO_MILLICELSIUS,
-+				     MILLIDEGREE_PER_DEGREE);
-+}
-+
-+static inline long celsius_to_kelvin(long t)
-+{
-+	return t - DIV_ROUND_CLOSEST(ABSOLUTE_ZERO_MILLICELSIUS,
-+				     MILLIDEGREE_PER_DEGREE);
-+}
-+
-+#endif /* _LINUX_UNITS_H */
+ 				/*
+ 				 * Allow override critical threshold
+ 				 */
+@@ -333,7 +335,7 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+ 		if (psv == -1) {
+ 			status = AE_SUPPORT;
+ 		} else if (psv > 0) {
+-			tmp = CELSIUS_TO_DECI_KELVIN(psv);
++			tmp = celsius_to_deci_kelvin(psv);
+ 			status = AE_OK;
+ 		} else {
+ 			status = acpi_evaluate_integer(tz->device->handle,
+@@ -413,7 +415,7 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+ 					break;
+ 				if (i == 1)
+ 					tz->trips.active[0].temperature =
+-						CELSIUS_TO_DECI_KELVIN(act);
++						celsius_to_deci_kelvin(act);
+ 				else
+ 					/*
+ 					 * Don't allow override higher than
+@@ -421,9 +423,9 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+ 					 */
+ 					tz->trips.active[i - 1].temperature =
+ 						(tz->trips.active[i - 2].temperature <
+-						CELSIUS_TO_DECI_KELVIN(act) ?
++						celsius_to_deci_kelvin(act) ?
+ 						tz->trips.active[i - 2].temperature :
+-						CELSIUS_TO_DECI_KELVIN(act));
++						celsius_to_deci_kelvin(act));
+ 				break;
+ 			} else {
+ 				tz->trips.active[i].temperature = tmp;
+@@ -519,7 +521,7 @@ static int thermal_get_temp(struct thermal_zone_device *thermal, int *temp)
+ 	if (result)
+ 		return result;
+ 
+-	*temp = DECI_KELVIN_TO_MILLICELSIUS_WITH_OFFSET(tz->temperature,
++	*temp = deci_kelvin_to_millicelsius_with_offset(tz->temperature,
+ 							tz->kelvin_offset);
+ 	return 0;
+ }
+@@ -624,7 +626,7 @@ static int thermal_get_trip_temp(struct thermal_zone_device *thermal,
+ 
+ 	if (tz->trips.critical.flags.valid) {
+ 		if (!trip) {
+-			*temp = DECI_KELVIN_TO_MILLICELSIUS_WITH_OFFSET(
++			*temp = deci_kelvin_to_millicelsius_with_offset(
+ 				tz->trips.critical.temperature,
+ 				tz->kelvin_offset);
+ 			return 0;
+@@ -634,7 +636,7 @@ static int thermal_get_trip_temp(struct thermal_zone_device *thermal,
+ 
+ 	if (tz->trips.hot.flags.valid) {
+ 		if (!trip) {
+-			*temp = DECI_KELVIN_TO_MILLICELSIUS_WITH_OFFSET(
++			*temp = deci_kelvin_to_millicelsius_with_offset(
+ 				tz->trips.hot.temperature,
+ 				tz->kelvin_offset);
+ 			return 0;
+@@ -644,7 +646,7 @@ static int thermal_get_trip_temp(struct thermal_zone_device *thermal,
+ 
+ 	if (tz->trips.passive.flags.valid) {
+ 		if (!trip) {
+-			*temp = DECI_KELVIN_TO_MILLICELSIUS_WITH_OFFSET(
++			*temp = deci_kelvin_to_millicelsius_with_offset(
+ 				tz->trips.passive.temperature,
+ 				tz->kelvin_offset);
+ 			return 0;
+@@ -655,7 +657,7 @@ static int thermal_get_trip_temp(struct thermal_zone_device *thermal,
+ 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE &&
+ 		tz->trips.active[i].flags.valid; i++) {
+ 		if (!trip) {
+-			*temp = DECI_KELVIN_TO_MILLICELSIUS_WITH_OFFSET(
++			*temp = deci_kelvin_to_millicelsius_with_offset(
+ 				tz->trips.active[i].temperature,
+ 				tz->kelvin_offset);
+ 			return 0;
+@@ -672,7 +674,7 @@ static int thermal_get_crit_temp(struct thermal_zone_device *thermal,
+ 	struct acpi_thermal *tz = thermal->devdata;
+ 
+ 	if (tz->trips.critical.flags.valid) {
+-		*temperature = DECI_KELVIN_TO_MILLICELSIUS_WITH_OFFSET(
++		*temperature = deci_kelvin_to_millicelsius_with_offset(
+ 				tz->trips.critical.temperature,
+ 				tz->kelvin_offset);
+ 		return 0;
+@@ -692,7 +694,7 @@ static int thermal_get_trend(struct thermal_zone_device *thermal,
+ 
+ 	if (type == THERMAL_TRIP_ACTIVE) {
+ 		int trip_temp;
+-		int temp = DECI_KELVIN_TO_MILLICELSIUS_WITH_OFFSET(
++		int temp = deci_kelvin_to_millicelsius_with_offset(
+ 					tz->temperature, tz->kelvin_offset);
+ 		if (thermal_get_trip_temp(thermal, trip, &trip_temp))
+ 			return -EINVAL;
+@@ -1043,9 +1045,9 @@ static void acpi_thermal_guess_offset(struct acpi_thermal *tz)
+ {
+ 	if (tz->trips.critical.flags.valid &&
+ 	    (tz->trips.critical.temperature % 5) == 1)
+-		tz->kelvin_offset = 2731;
++		tz->kelvin_offset = 273100;
+ 	else
+-		tz->kelvin_offset = 2732;
++		tz->kelvin_offset = 273200;
+ }
+ 
+ static void acpi_thermal_check_fn(struct work_struct *work)
+@@ -1087,7 +1089,7 @@ static int acpi_thermal_add(struct acpi_device *device)
+ 	INIT_WORK(&tz->thermal_check_work, acpi_thermal_check_fn);
+ 
+ 	pr_info(PREFIX "%s [%s] (%ld C)\n", acpi_device_name(device),
+-		acpi_device_bid(device), DECI_KELVIN_TO_CELSIUS(tz->temperature));
++		acpi_device_bid(device), deci_kelvin_to_celsius(tz->temperature));
+ 	goto end;
+ 
+ free_memory:
 -- 
 2.7.4
 

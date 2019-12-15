@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FAC911F5DF
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 06:17:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7BFD11F5E4
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2019 06:17:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbfLOFRD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Dec 2019 00:17:03 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:42630 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725861AbfLOFRC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 00:17:02 -0500
-Received: by mail-pg1-f196.google.com with SMTP id s64so1716349pgb.9;
-        Sat, 14 Dec 2019 21:17:02 -0800 (PST)
+        id S1726548AbfLOFRJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Dec 2019 00:17:09 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:43506 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726514AbfLOFRI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 00:17:08 -0500
+Received: by mail-pj1-f68.google.com with SMTP id g4so1515536pjs.10;
+        Sat, 14 Dec 2019 21:17:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=s9X4iPd0KnMa5KIyBgavR+hocptaY6HIdK2blzLDzaA=;
-        b=FPmAVeP2mdUVq6DwLRYvd9CvKLYcTHemjyCqjRrlXZl9WEmrF1z0xAHiQoxS9gc67/
-         zhyEge0e40HIR579wURSSHamNti6CIEe7Gosq5ThBuDc4iSqL+Bqd0yPAIjDCq9rnlI6
-         8PwmLVKxAwFVNQtYO4DHbtwS8NuO/oTO8cTsrj17hfr0YVizOwfT7bcMGxj581fLb4fF
-         Q+EBHdUwJJKg5IUx05aEP4gRRpMp/8AI+/qxNIwj/N2wI5FJzbeULUdGFDd3Js5WUsL0
-         hgFLna4w1PwiOvokEp3QJXp1owK24s/6XM+zZMa90nP8X+GQhl06fAkKxNhLc4Orehyf
-         TpZg==
+        bh=3my8RP+3u7n3veq9PtxCL/LXumnZQKbolrNqeQogkFY=;
+        b=raWQVX5OuOc2bkMiheKyKPwiClD8x0+EfjKFf0qMGEo02vguYoQC8ljPwoMX+4CxO4
+         vciGC7KJx8rxr6LPTal0qb/QPClRVMM1DzL436GYGp7hk17/XWGuH+bFCvc6dslVRPvU
+         Nm1JdWz2Dn7wwGVYEFRWyFZ/BnALUs8vorqsQzt1kkAxHtVuACbCxT51IiLUXbTig2sy
+         Oy4242wsqTyNwxEioMiTl82h607aQcWJ2H9jyGm4msb+IK5FjYiGaOvzRPMqGXuv+08Z
+         2oB76QVhTlJU8vJtOdFjrQkUhBNR/DNhkv8dy0dyxNZvqhjKtCRkcVLyaXaFboKOZi7n
+         MRWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=s9X4iPd0KnMa5KIyBgavR+hocptaY6HIdK2blzLDzaA=;
-        b=AWkURdWa+/hZh9c/V16kdCB9kZ/6Dleysgm2WlwMzP6V1BLrGBDyY1iYK7Ywm9RDcJ
-         9tvnZjk0MNuGyPAQ0xEl/LDz4E6BmmdeyNRcfJsdu2zy3BQ6Wv5ByndIW89rK2Uy7BxG
-         eclfDyjdP+1kXPv3orxggionoXUoiFVDE/zW+ZYWNlkHoNHVOvSRnM7G+VQ5GtaLaG47
-         WxZytEFM3d3urgkxd1VljO9qVWN5wk2ky/1//Il31MWHuZ7nre75s+Ujjj8HKZDVvqo+
-         WnXyAdqd5XMfETZdapEFDyjF0i3TAjxS0GYdFXqE9nouIosPhR/SBwLiZX3FrsMlgJg/
-         j0Ig==
-X-Gm-Message-State: APjAAAX51IUX5fVA+a5rg3/9BfgFedcF7a4SU916FD5LD42fZcXVKLQ1
-        d2gvI5/S2lw88UUBFN7nbps=
-X-Google-Smtp-Source: APXvYqwaYLWaptacVXVwa4TActC1oLxGg8wUZKowyGri7WYpGP5PtlqW2c8tyhGBSdvFWauo1nBjCw==
-X-Received: by 2002:a63:a53:: with SMTP id z19mr10191253pgk.267.1576387021783;
-        Sat, 14 Dec 2019 21:17:01 -0800 (PST)
+        bh=3my8RP+3u7n3veq9PtxCL/LXumnZQKbolrNqeQogkFY=;
+        b=fRkflNfQx2SM83ynqi2XjQdqDvIFljMwysM/RA8CnyXDyVVNC+gkMw0acLbyt2VEGk
+         QB6MoHHWGsCHfnzUx1aQyGhGjraSRISzyzioCdWzu94BSk58deZV4gp+Pg4ASWeLK5h2
+         Vkr+rgcXC1CBkWH6IIN4tRaW1e9BlyRSdf/TXf5BRfG5toCUk6wR/N/r3F89ei6Acv/i
+         zYZaWXF1ZnciciFeuqqo8stkMwWRl+h1SMOkxoVVFUwnX8l7m+NswUs5ZaWY2lAAwa58
+         xxAb3BZCGIz5BFEDoGLaZcoiHcMDpF1l/7qnFgQg1RreLGMLMFX18Nm+bX8gOmOYL53b
+         LySA==
+X-Gm-Message-State: APjAAAXMJphEGGPolW24MqD+Lg1x0/pRJXDXhf89cZNm8hNbL/zF0/LQ
+        D3wme86MGXGs1oex99hgIkE=
+X-Google-Smtp-Source: APXvYqwQKHV1f9EJqmr0sZGc75iS/LgVRptZfafPMXcin6IZi+sZoqSA1EcyfrXp8opQVtB8978ijw==
+X-Received: by 2002:a17:90a:b94b:: with SMTP id f11mr10518148pjw.5.1576387027338;
+        Sat, 14 Dec 2019 21:17:07 -0800 (PST)
 Received: from localhost.localdomain ([240f:34:212d:1:368e:e048:68f1:84e7])
-        by smtp.gmail.com with ESMTPSA id u10sm16596528pgg.41.2019.12.14.21.16.56
+        by smtp.gmail.com with ESMTPSA id u10sm16596528pgg.41.2019.12.14.21.17.02
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 14 Dec 2019 21:17:01 -0800 (PST)
+        Sat, 14 Dec 2019 21:17:06 -0800 (PST)
 From:   Akinobu Mita <akinobu.mita@gmail.com>
 To:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
@@ -60,9 +60,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
         Christoph Hellwig <hch@lst.de>,
         Sagi Grimberg <sagi@grimberg.me>
-Subject: [PATCH v4 03/12] platform/x86: asus-wmi: switch to use <linux/units.h> helpers
-Date:   Sun, 15 Dec 2019 14:16:06 +0900
-Message-Id: <1576386975-7941-4-git-send-email-akinobu.mita@gmail.com>
+Subject: [PATCH v4 04/12] platform/x86: intel_menlow: switch to use <linux/units.h> helpers
+Date:   Sun, 15 Dec 2019 14:16:07 +0900
+Message-Id: <1576386975-7941-5-git-send-email-akinobu.mita@gmail.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
 References: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
@@ -71,14 +71,14 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The asus-wmi driver doesn't implement the thermal device functionality
-directly, so including <linux/thermal.h> just for DECI_KELVIN_TO_CELSIUS()
-is a bit odd.
+This switches the intel_menlow driver to use deci_kelvin_to_celsius() and
+celsius_to_deci_kelvin() in <linux/units.h> instead of helpers in
+<linux/thermal.h>.
 
-This switches the asus-wmi driver to use deci_kelvin_to_millicelsius() in
-<linux/units.h>.
+This is preparation for centralizing the kelvin to/from Celsius conversion
+helpers in <linux/units.h>.
 
-The format string is changed from %d to %ld due to function returned type.
+This also removes a trailing space, while we're at it.
 
 Cc: Sujith Thomas <sujith.thomas@intel.com>
 Cc: Darren Hart <dvhart@infradead.org>
@@ -92,42 +92,49 @@ Cc: Keith Busch <kbusch@kernel.org>
 Cc: Jens Axboe <axboe@fb.com>
 Cc: Christoph Hellwig <hch@lst.de>
 Cc: Sagi Grimberg <sagi@grimberg.me>
-Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
 ---
-* v4
-- change include order
+* No changes from v3
 
- drivers/platform/x86/asus-wmi.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/platform/x86/intel_menlow.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 821b08e..b254f9f 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -33,9 +33,9 @@
- #include <linux/seq_file.h>
- #include <linux/platform_data/x86/asus-wmi.h>
- #include <linux/platform_device.h>
--#include <linux/thermal.h>
- #include <linux/acpi.h>
- #include <linux/dmi.h>
+diff --git a/drivers/platform/x86/intel_menlow.c b/drivers/platform/x86/intel_menlow.c
+index b102f6d..101d7e7 100644
+--- a/drivers/platform/x86/intel_menlow.c
++++ b/drivers/platform/x86/intel_menlow.c
+@@ -22,6 +22,7 @@
+ #include <linux/slab.h>
+ #include <linux/thermal.h>
+ #include <linux/types.h>
 +#include <linux/units.h>
  
- #include <acpi/battery.h>
- #include <acpi/video.h>
-@@ -1512,9 +1512,8 @@ static ssize_t asus_hwmon_temp1(struct device *dev,
- 	if (err < 0)
- 		return err;
+ MODULE_AUTHOR("Thomas Sujith");
+ MODULE_AUTHOR("Zhang Rui");
+@@ -302,8 +303,10 @@ static ssize_t aux_show(struct device *dev, struct device_attribute *dev_attr,
+ 	int result;
  
--	value = DECI_KELVIN_TO_CELSIUS((value & 0xFFFF)) * 1000;
--
--	return sprintf(buf, "%d\n", value);
-+	return sprintf(buf, "%ld\n",
-+		       deci_kelvin_to_millicelsius(value & 0xFFFF));
+ 	result = sensor_get_auxtrip(attr->handle, idx, &value);
++	if (result)
++		return result;
+ 
+-	return result ? result : sprintf(buf, "%lu", DECI_KELVIN_TO_CELSIUS(value));
++	return sprintf(buf, "%lu", deci_kelvin_to_celsius(value));
  }
  
- /* Fan1 */
+ static ssize_t aux0_show(struct device *dev,
+@@ -332,8 +335,8 @@ static ssize_t aux_store(struct device *dev, struct device_attribute *dev_attr,
+ 	if (value < 0)
+ 		return -EINVAL;
+ 
+-	result = sensor_set_auxtrip(attr->handle, idx, 
+-				    CELSIUS_TO_DECI_KELVIN(value));
++	result = sensor_set_auxtrip(attr->handle, idx,
++				    celsius_to_deci_kelvin(value));
+ 	return result ? result : count;
+ }
+ 
 -- 
 2.7.4
 

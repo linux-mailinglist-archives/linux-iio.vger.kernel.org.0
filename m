@@ -2,26 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79CDB1215B9
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 19:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D0B51215C2
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 19:24:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731937AbfLPSTa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Dec 2019 13:19:30 -0500
-Received: from mga07.intel.com ([134.134.136.100]:64893 "EHLO mga07.intel.com"
+        id S1730538AbfLPSYY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Dec 2019 13:24:24 -0500
+Received: from mga06.intel.com ([134.134.136.31]:56101 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731788AbfLPSTa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S1731795AbfLPSTa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Mon, 16 Dec 2019 13:19:30 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Dec 2019 10:19:28 -0800
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Dec 2019 10:19:29 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.69,322,1571727600"; 
-   d="scan'208";a="297786606"
+   d="scan'208";a="389546049"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 16 Dec 2019 10:19:26 -0800
+  by orsmga005.jf.intel.com with ESMTP; 16 Dec 2019 10:19:26 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id D688C12A; Mon, 16 Dec 2019 20:19:25 +0200 (EET)
+        id E822445; Mon, 16 Dec 2019 20:19:25 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
@@ -29,61 +29,70 @@ To:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/3] iio: st_lsm6dsx: Mark predefined constants with __maybe_unused
-Date:   Mon, 16 Dec 2019 20:19:23 +0200
-Message-Id: <20191216181925.927-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 2/3] iio: st_lsm6dsx: Drop unneeded OF code
+Date:   Mon, 16 Dec 2019 20:19:24 +0200
+Message-Id: <20191216181925.927-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20191216181925.927-1-andriy.shevchenko@linux.intel.com>
+References: <20191216181925.927-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since we put static variable to a header file it's copied to each module
-that includes the header. But not all of them are actually used it.
-
-Mark predefined constants with __maybe_unused to calm a compiler down:
-
-In file included from drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c:17:
-.../st_lsm6dsx/st_lsm6dsx.h:399:28: warning: ‘st_lsm6dsx_available_scan_masks’ defined but not used [-Wunused-const-variable=]
-  399 | static const unsigned long st_lsm6dsx_available_scan_masks[] = {0x7, 0x0};
-      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.../st_lsm6dsx/st_lsm6dsx.h:392:36: warning: ‘st_lsm6dsx_event’ defined but not used [-Wunused-const-variable=]
-  392 | static const struct iio_event_spec st_lsm6dsx_event = {
-      |                                    ^~~~~~~~~~~~~~~~
-...
+There is no need to have OF guard against ID table.
+Drop it for good.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c | 3 +--
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index dc55d7dff3eb..b3fbbae81955 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -389,14 +389,17 @@ struct st_lsm6dsx_hw {
- 	const struct st_lsm6dsx_settings *settings;
- };
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+index cd47ec1fedcb..0fb32131afce 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+@@ -12,7 +12,6 @@
+ #include <linux/module.h>
+ #include <linux/i2c.h>
+ #include <linux/slab.h>
+-#include <linux/of.h>
+ #include <linux/regmap.h>
  
--static const struct iio_event_spec st_lsm6dsx_event = {
-+static __maybe_unused const struct iio_event_spec st_lsm6dsx_event = {
- 	.type = IIO_EV_TYPE_THRESH,
- 	.dir = IIO_EV_DIR_EITHER,
- 	.mask_separate = BIT(IIO_EV_INFO_VALUE) |
- 			 BIT(IIO_EV_INFO_ENABLE)
- };
+ #include "st_lsm6dsx.h"
+@@ -122,7 +121,7 @@ static struct i2c_driver st_lsm6dsx_driver = {
+ 	.driver = {
+ 		.name = "st_lsm6dsx_i2c",
+ 		.pm = &st_lsm6dsx_pm_ops,
+-		.of_match_table = of_match_ptr(st_lsm6dsx_i2c_of_match),
++		.of_match_table = st_lsm6dsx_i2c_of_match,
+ 	},
+ 	.probe = st_lsm6dsx_i2c_probe,
+ 	.id_table = st_lsm6dsx_i2c_id_table,
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+index 67ff36eac247..eb1086e4a951 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+@@ -12,7 +12,6 @@
+ #include <linux/module.h>
+ #include <linux/spi/spi.h>
+ #include <linux/slab.h>
+-#include <linux/of.h>
+ #include <linux/regmap.h>
  
--static const unsigned long st_lsm6dsx_available_scan_masks[] = {0x7, 0x0};
-+static __maybe_unused const unsigned long st_lsm6dsx_available_scan_masks[] = {
-+	0x7, 0x0,
-+};
-+
- extern const struct dev_pm_ops st_lsm6dsx_pm_ops;
- 
- int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ #include "st_lsm6dsx.h"
+@@ -122,7 +121,7 @@ static struct spi_driver st_lsm6dsx_driver = {
+ 	.driver = {
+ 		.name = "st_lsm6dsx_spi",
+ 		.pm = &st_lsm6dsx_pm_ops,
+-		.of_match_table = of_match_ptr(st_lsm6dsx_spi_of_match),
++		.of_match_table = st_lsm6dsx_spi_of_match,
+ 	},
+ 	.probe = st_lsm6dsx_spi_probe,
+ 	.id_table = st_lsm6dsx_spi_id_table,
 -- 
 2.24.0
 

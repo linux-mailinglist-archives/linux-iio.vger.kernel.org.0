@@ -2,122 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 362DC11FBF2
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 01:00:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0196911FF12
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 08:43:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726437AbfLPAAu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Dec 2019 19:00:50 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:43346 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726260AbfLPAAu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 19:00:50 -0500
-Received: by mail-pl1-f193.google.com with SMTP id p27so3661445pli.10
-        for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2019 16:00:49 -0800 (PST)
+        id S1726747AbfLPHns (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Dec 2019 02:43:48 -0500
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:56698 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726558AbfLPHns (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Dec 2019 02:43:48 -0500
+Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBG7eud0029659;
+        Mon, 16 Dec 2019 02:43:32 -0500
+Received: from nam04-sn1-obe.outbound.protection.outlook.com (mail-sn1nam04lp2050.outbound.protection.outlook.com [104.47.44.50])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2wvw8ck2e0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 16 Dec 2019 02:43:32 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dlHwX0HkN6Y9JqymnjuGhvhL90d3At+Wq9KGB4rDUX6PenPW5/AYHaJhCnulh2Cqp196ZDpTLXvuHCvkuNM1EBL0W8Csp5SMVOfoWUbTRJ0cWd4g7QpMu2aAw91092jLzRlFmA1vusK6SAcEPLQhu7ZRgrH2pzpLfeGSK+X9WLnLUyDhzeEB5FhW57xqWXzeKpis3KXbL3LZ6MnvMVoD6kmc/y9qA7LJGN3N4YYUQtnaHNt9drO7WJ3ksyRwlTNH4Bd7hHeah1Uldg63D5ip/GeBpr/LKRWS372Iv8rzAjuSiVdVlTXMoXQQs+/iAfFXY87Dd+R2yNkYEOt7dEKZcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1Uz3Vab7uyYWYl/Y3A1//wx72W8onP/oenZ7UzgqziY=;
+ b=ArlaQhwkscmr21+yuQkY7b7GfijfHRdljZR+AnHg2wX7k4IlTaGqpfVMAItjvwAwIvJisgR6PkhJkUQXoegm1szX7gHSDQENbJPPWXUrKFkTczm3g2aDygsfbSprijUTrRDvVhhhL2nL9AsFod0x8MkxOIbYDuLMJvP1YzAAjIFZUGV20JA7mHQ2dl4Q1uU7b12OPd5PWbEEBZIeITKg/tofJ82JMSKwQwJJivHrZt/6J1dx4+UjGDVahoghfJEcWth5Uuf0rXQzbBzIiRcC59+O0Db1jYxbzHXJfazvuSq1AACenE3MZ7YZ5sb/wlaguhhM8gZ8/VjxdCFugtCW3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2Vu+p6r8ndnRT3v+F71va9D8kd+UdXPMbSeMrQKvqFU=;
-        b=NXI6OvT+MlyG/+pIlnONLowEKkgIBLmkxgTlinIybYVS9lFG+yE2dQUA4+4+GJk9ZW
-         BL4YN+obNb2ehlkrzoTVAi12cj8I91DZkS5lsabhgdFJKpzd4BHp5BYxMFKsLbLdzlFs
-         MbNdLSx1mjyAxnkMSG4DJE/JVRRVO1DfIfe6k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2Vu+p6r8ndnRT3v+F71va9D8kd+UdXPMbSeMrQKvqFU=;
-        b=Q6YtH+N06e7fGug413hVU08iReFCsM66CTcbuXIEYFDPjiHA2kFk6SqDmUFSMjxKPd
-         1ElDixKAUvf+9rOlYyeIqA99BV7L3TgKE8XlK86uh2oRISF03eAEZxCCRjIWO/TIbo7w
-         jNXkNi7YMpnMzcmzLzkcRiVBXg39DWc1yyCehG3YNEQmzKAwYOhOXg/2mNYMieR7RnLo
-         WTynaRwwA0W3EpKE2m51kK2BJgTxVelPyR8XIc+AkRX9PQQp2XX1Ke+0f/J44Qc9FpWJ
-         gBpmXlHR8z3PZEO1sngQV1WrIoROMkdjBuI7iMDt9rAT6U/ZNgPTEg19vgwAEdVVO1GK
-         fEoA==
-X-Gm-Message-State: APjAAAXoclFceTKOTEEx4v/7BksgYhJZVci6Q8SsT8tG+fXHRAm9W6md
-        s1F+ZM5DirxUIYbGJdu1fLTzzmvKMk9pqw==
-X-Google-Smtp-Source: APXvYqxkv/s5cDFZtXlyucGI3NWya4inHS5v6ou0mj9cHOUShPS2kTu0fwsrl65ZZXTykNyFHUdwyQ==
-X-Received: by 2002:a17:90b:85:: with SMTP id bb5mr14146221pjb.22.1576454449266;
-        Sun, 15 Dec 2019 16:00:49 -0800 (PST)
-Received: from localhost.localdomain (50-196-3-218-static.hfc.comcastbusiness.net. [50.196.3.218])
-        by smtp.gmail.com with ESMTPSA id m45sm16751404pje.32.2019.12.15.16.00.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Dec 2019 16:00:47 -0800 (PST)
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-To:     linux-iio@vger.kernel.org
-Cc:     jic23@kernel.org, Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH] iio: chemical: atlas-ph-sensor: rename atlas-ph-sensor to atlas-sensor
-Date:   Sun, 15 Dec 2019 16:00:45 -0800
-Message-Id: <20191216000045.30482-1-matt.ranostay@konsulko.com>
-X-Mailer: git-send-email 2.20.1
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1Uz3Vab7uyYWYl/Y3A1//wx72W8onP/oenZ7UzgqziY=;
+ b=Wxdt9m5TGyA5vsLZlJlNzewtlU5VE7nCwdyvy6ywFpyGbz6nslw7PRlT+VBNZhvA5js0PlmDN38G9MSKTWSmtnSXMowoX+zB4VfIA+ZILvFjuYlXp5K1KQXBil2rTzjcdDUHtJSIthdOTSbtOPsFEnmDjKIe2IDVFU8wPvTIqlw=
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com (20.180.12.152) by
+ CH2PR03MB5221.namprd03.prod.outlook.com (20.180.12.149) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2538.15; Mon, 16 Dec 2019 07:43:30 +0000
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::dce7:7fec:f33f:ad39]) by CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::dce7:7fec:f33f:ad39%7]) with mapi id 15.20.2538.019; Mon, 16 Dec 2019
+ 07:43:30 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>
+Subject: Re: [PATCH] iio: core: use debugfs_remove_recursive() on IIO unload
+Thread-Topic: [PATCH] iio: core: use debugfs_remove_recursive() on IIO unload
+Thread-Index: AQHVsDNcZDFOgo3AjU61+GDlSOs9Y6e7aBuAgAEAgoA=
+Date:   Mon, 16 Dec 2019 07:43:30 +0000
+Message-ID: <4728487938a37207f20cc5d4cb6fbbdd04f56358.camel@analog.com>
+References: <20191211145903.22395-1-alexandru.ardelean@analog.com>
+         <20191215162525.56516ce4@archlinux>
+In-Reply-To: <20191215162525.56516ce4@archlinux>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: cb90ccfd-275b-45d6-5d7b-08d781fba566
+x-ms-traffictypediagnostic: CH2PR03MB5221:
+x-microsoft-antispam-prvs: <CH2PR03MB5221AB109BA0FBD383EBB76FF9510@CH2PR03MB5221.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 02530BD3AA
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(376002)(366004)(396003)(136003)(39860400002)(189003)(199004)(6486002)(86362001)(4001150100001)(76116006)(54906003)(66946007)(66556008)(66446008)(64756008)(66476007)(6512007)(8936002)(6916009)(6506007)(186003)(2906002)(5660300002)(26005)(36756003)(4326008)(478600001)(71200400001)(316002)(8676002)(81156014)(81166006)(2616005);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5221;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: yl9C2o/o5+Jq+ammej8gNulFe4CarCgVM2ARRrRT3TQZ5RIdgbEGJ57RUeTPuyYBw6dk8Oau8WAUvsp8Go0FD5E566Q2vUr3AqJMJKSqzgrzAJFROGlcdX94tRQV8IpCmhbJ3ML0QBeU+Py7tbMkWODuugMd+f9ksNXH5rnTXquDDjPHqXf7OWkbM1sFwtFp9bpTtcxQzBMhhSq1ZQlxCr+DZgeAioFiijoFkqlT6rAUTiv5+scGd5XYO4r0322sOrNFW9bDRdBerlmXB5ttd2RZHyu5T/PenQ36lf0GFeX3jL8CCWgF+9qbnZIE2wbLXbAP0ursirgIm5mHu3m24APiKMdaYtjIUcUZtYkHVe2el1VQFgEUW3zjgcKK7kAH12JUjCcE0LQpzpYD1UdOQ1QOSIM0Y/DaRbfyQTMkUk9qXLSEAiSPfSPoYF+e4MIt
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <F65250A3A42B9940A3584C23D1BA73B9@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb90ccfd-275b-45d6-5d7b-08d781fba566
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Dec 2019 07:43:30.6424
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: L2n33VtqOQ63UUEpyrm35o7VXDnnDZq46Fd3jZA7Bxb0vazfyCgYvFhZ4qb2hdJMe/P57mMFh3TaeE0zmWWCYyJh10l6yZ6zh5pGWiVQ2Xs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5221
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-16_01:2019-12-16,2019-12-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 adultscore=0 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 clxscore=1015 malwarescore=0 bulkscore=0 phishscore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912160068
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since the orginal scope of the driver was to only support
-the pH product from Atlas it has evolved to other sensors.
-
-Rename the file, driver name, and regmap to atlas-sensor which
-reflects this, although keep CONFIG_ATLAS_PH_SENSOR to not cause
-regressions with current configurations.
-
-Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
----
- drivers/iio/chemical/Makefile                          |  2 +-
- .../iio/chemical/{atlas-ph-sensor.c => atlas-sensor.c} | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
- rename drivers/iio/chemical/{atlas-ph-sensor.c => atlas-sensor.c} (98%)
-
-diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-index f97270bc4034..33d3a595dda9 100644
---- a/drivers/iio/chemical/Makefile
-+++ b/drivers/iio/chemical/Makefile
-@@ -4,7 +4,7 @@
- #
- 
- # When adding new entries keep the list in alphabetical order
--obj-$(CONFIG_ATLAS_PH_SENSOR)	+= atlas-ph-sensor.o
-+obj-$(CONFIG_ATLAS_PH_SENSOR)	+= atlas-sensor.o
- obj-$(CONFIG_BME680) += bme680_core.o
- obj-$(CONFIG_BME680_I2C) += bme680_i2c.o
- obj-$(CONFIG_BME680_SPI) += bme680_spi.o
-diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-similarity index 98%
-rename from drivers/iio/chemical/atlas-ph-sensor.c
-rename to drivers/iio/chemical/atlas-sensor.c
-index 6c175eb1c7a7..8cd76d828646 100644
---- a/drivers/iio/chemical/atlas-ph-sensor.c
-+++ b/drivers/iio/chemical/atlas-sensor.c
-@@ -1,8 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0+
- /*
-- * atlas-ph-sensor.c - Support for Atlas Scientific OEM pH-SM sensor
-+ * atlas-sensor.c - Support for Atlas Scientific OEM SM sensors
-  *
-- * Copyright (C) 2015-2018 Matt Ranostay
-+ * Copyright (C) 2015-2019 Konsulko Group
-  * Author: Matt Ranostay <matt.ranostay@konsulko.com>
-  */
- 
-@@ -25,8 +25,8 @@
- #include <linux/iio/triggered_buffer.h>
- #include <linux/pm_runtime.h>
- 
--#define ATLAS_REGMAP_NAME	"atlas_ph_regmap"
--#define ATLAS_DRV_NAME		"atlas_ph"
-+#define ATLAS_REGMAP_NAME	"atlas_regmap"
-+#define ATLAS_DRV_NAME		"atlas"
- 
- #define ATLAS_REG_DEV_TYPE		0x00
- #define ATLAS_REG_DEV_VERSION		0x01
-@@ -681,5 +681,5 @@ static struct i2c_driver atlas_driver = {
- module_i2c_driver(atlas_driver);
- 
- MODULE_AUTHOR("Matt Ranostay <matt.ranostay@konsulko.com>");
--MODULE_DESCRIPTION("Atlas Scientific pH-SM sensor");
-+MODULE_DESCRIPTION("Atlas Scientific SM sensors");
- MODULE_LICENSE("GPL");
--- 
-2.20.1
-
+T24gU3VuLCAyMDE5LTEyLTE1IGF0IDE2OjI1ICswMDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Og0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBXZWQsIDExIERlYyAyMDE5IDE2OjU5OjAzICswMjAw
+DQo+IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+IHdy
+b3RlOg0KPiANCj4gPiBGcm9tOiBMYXJzLVBldGVyIENsYXVzZW4gPGxhcnNAbWV0YWZvby5kZT4N
+Cj4gPiANCj4gPiBUaGUgZGVidWdmcyBkaXIgbWF5IGhhdmUgbXVsdGlwbGUgZmlsZXMvZGlycyBh
+dHRhY2hlZCB0byBpdC4gVXNlDQo+ID4gZGVidWdmc19yZW1vdmVfcmVjdXJzaXZlKCkgdG8gY2xl
+YW4gaXQgdXAgd2hlbiB0aGUgSUlPIG1vZHVsZSB1bmxvYWRzLg0KPiA+IA0KPiA+IFNpZ25lZC1v
+ZmYtYnk6IExhcnMtUGV0ZXIgQ2xhdXNlbiA8bGFyc0BtZXRhZm9vLmRlPg0KPiA+IFNpZ25lZC1v
+ZmYtYnk6IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+
+DQo+ID4gLS0tDQo+ID4gDQo+ID4gTm90ZTogbm90ZSBzdXJlIGlmIHRoaXMgbmVlZHMgYSBGaXhl
+cyB0YWcuIEl0J3MgYmVlbiBpbiBoZXJlIGZvciBhZ2VzDQo+ID4gbm93LA0KPiA+ICAgICAgIHNv
+IGl0IG1heSBub3QgYmUgYSBiaWcgaXNzdWUuDQo+IA0KPiBUaGVyZSBpcyBzb21lIGFyZ3VtZW50
+IGluIGZhdm91ciBvZiBkb2luZyB0aGlzIGFzIGEgZGVmZW5zaXZlIG1lYXN1cmUsDQo+IGJ1dA0K
+PiBpbiBjdXJyZW50IElJTyBkZWJ1Z2ZzIGRpcmVjdG9yaWVzIGFyZSBvbmx5IGNyZWF0ZWQgYnkg
+ZHJpdmVycyB0aGF0IGNhbGwNCj4gKGluZGlyZWN0bHkpIGlpb19kZXZpY2VfcmVnaXN0ZXJfZGVi
+dWdmcyBhbmQgdGhvc2UgbXVzdCBjYWxsDQo+IChhZ2FpbiBpbmRpcmVjdGx5KSBpaW9fZGV2aWNl
+X3VucmVnaXN0ZXJfZGVidWdmcyB3aGljaCBoYXMgY2FsbGVkDQo+IHRoZSByZWN1cnNpdmUgZnJl
+ZSBvbiBldmVyeXRoaW5nIGluIHRoZWlyIGRpcmVjdG9yaWVzLiAgU28gdW5sZXNzDQo+IHNvbWV0
+aGluZw0KPiB2ZXJ5IG9kZCBpcyBnb2luZyBvbiB0aGlzIGlzbid0IGEgYnVnLg0KPiANCj4gQW0g
+SSBtaXNzaW5nIHNvbWV0aGluZz8NCg0KU28sIEkgYWRtaXQgbXkgbm90ZSBpcyBvcGVuIGZvciBp
+bnRlcnByZXRhdGlvbi4NClsgUmVyZ2FyZGluZyB0aGUgIkZpeGVzIiB0YWcsIEknbSBzdGlsbCBu
+b3Qgc3VwZXItY2xlYXIgb24gd2hlbi93aHkvaG93DQppdCdzIG5lZWRlZC4gSSdsbCBnZXQgdGhl
+cmUgc29vbiB0aG91Z2guIF0NCg0KVGhpcyBwYXRjaCBoYXMgYmVlbiBpbiBvdXIgdHJlZSBzaW5j
+ZSAyMDEyLCBhbmQgSSdtIG5vdCBzdXJlIHdoeSBpdCdzIHVzaW5nDQpkZWJ1Z2ZzX3JlbW92ZV9y
+ZWN1cnNpdmUoKSB2cyBwbGFpbiBkZWJ1Z2ZzX3JlbW92ZSgpLg0KDQpJIHNvbWV0aW1lcyB0YWtl
+IGEgbG9vayBhdCB0aGVzZSBvbGQgcGF0Y2hlcywgdHJ5IHRvIG1ha2Ugc29tZSBzZW5zZSBvZg0K
+dGhlbSBhbmQgdXBzdHJlYW0gdGhlbSwgb3Igb3ZlcnJpZGUgdGhlbSB3aXRoIHRoZSB2ZXJzaW9u
+IG9mIHVwc3RyZWFtIGNvZGUuDQpNeSBpbnRlbnQgaXMgdG8gc3luYyBBREkgY29kZSBbZm9yIElJ
+T10gY2xvc2VyIHRvIHVwc3RyZWFtLiBXaGljaCB3b3VsZA0KbWFrZSBpdCBlYXNpZXIgdG8gdHJh
+Y2sgYW55IGRpdmVyZ2VuY2UuDQoNCldlJ3JlIG5vdCBzZWVpbmcgYW55IGJ1ZyB3aXRoL3dpdGhv
+dXQgdGhpcy4NCkkgZ3Vlc3MgbXkgbm90ZSBhYm91dCB0aGUgIkZpeGVzIiB0YWcgbWF5IGJlIGEg
+Yml0IGNsdW1zeS4NCg0KRnJvbSBteSBzaWRlLCBib3RoIGRlYnVnZnNfcmVtb3ZlX3JlY3Vyc2l2
+ZSgpICYgcGxhaW4gZGVidWdmc19yZW1vdmUoKSBhcmUNCmZpbmUuDQoNClRoYW5rcw0KQWxleA0K
+DQo+IA0KPiANCj4gPiAgZHJpdmVycy9paW8vaW5kdXN0cmlhbGlvLWNvcmUuYyB8IDIgKy0NCj4g
+PiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4gDQo+
+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2luZHVzdHJpYWxpby1jb3JlLmMNCj4gPiBiL2Ry
+aXZlcnMvaWlvL2luZHVzdHJpYWxpby1jb3JlLmMNCj4gPiBpbmRleCA5YTM1Nzk5NDM1NzQuLmRh
+YjY3Y2I2OWZlNiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL2lpby9pbmR1c3RyaWFsaW8tY29y
+ZS5jDQo+ID4gKysrIGIvZHJpdmVycy9paW8vaW5kdXN0cmlhbGlvLWNvcmUuYw0KPiA+IEBAIC0y
+OTIsNyArMjkyLDcgQEAgc3RhdGljIHZvaWQgX19leGl0IGlpb19leGl0KHZvaWQpDQo+ID4gIAlp
+ZiAoaWlvX2RldnQpDQo+ID4gIAkJdW5yZWdpc3Rlcl9jaHJkZXZfcmVnaW9uKGlpb19kZXZ0LCBJ
+SU9fREVWX01BWCk7DQo+ID4gIAlidXNfdW5yZWdpc3RlcigmaWlvX2J1c190eXBlKTsNCj4gPiAt
+CWRlYnVnZnNfcmVtb3ZlKGlpb19kZWJ1Z2ZzX2RlbnRyeSk7DQo+ID4gKwlkZWJ1Z2ZzX3JlbW92
+ZV9yZWN1cnNpdmUoaWlvX2RlYnVnZnNfZGVudHJ5KTsNCj4gPiAgfQ0KPiA+ICANCj4gPiAgI2lm
+IGRlZmluZWQoQ09ORklHX0RFQlVHX0ZTKQ0K

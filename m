@@ -2,152 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6118E1215BD
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 19:24:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD06121BBE
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 22:33:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731935AbfLPSTa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Dec 2019 13:19:30 -0500
-Received: from mga17.intel.com ([192.55.52.151]:40691 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731663AbfLPST3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Dec 2019 13:19:29 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Dec 2019 10:19:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,322,1571727600"; 
-   d="scan'208";a="209390126"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP; 16 Dec 2019 10:19:26 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id F3722217; Mon, 16 Dec 2019 20:19:25 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 3/3] iio: st_lsm6dsx: Make use of device properties
-Date:   Mon, 16 Dec 2019 20:19:25 +0200
-Message-Id: <20191216181925.927-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191216181925.927-1-andriy.shevchenko@linux.intel.com>
-References: <20191216181925.927-1-andriy.shevchenko@linux.intel.com>
+        id S1726863AbfLPVcn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Dec 2019 16:32:43 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:33930 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726681AbfLPVcn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Dec 2019 16:32:43 -0500
+Received: by mail-oi1-f195.google.com with SMTP id l136so4536153oig.1;
+        Mon, 16 Dec 2019 13:32:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=IwX6HJZp4kUU0mQp40RPAIjG9iBuDE869U4douXPaCM=;
+        b=oRFCYraemLikzKtfQPGf0LIsieSX34DZvEqiQ04x7dt68F3LfK+R4bgpc4POk7Vj2W
+         Pwm7txAeSYRLuXpHhlaGOXs2dqbG/VdOvI7EX5aayjg7vovieqqiHIeuoeqNnyaxRPkX
+         Lb85yQANb7heXkI13RoLyFRdScXlcjUyx3WkgLr0u0dHsYap11X2a3SclP+UlW5MAxCi
+         p5AF5kO6fXM6KaIaoP39OBRM2INPi9FijmS9ftXqlCjDUqMGHRe+JfIrwrTFN2oQhUnB
+         0VYuJ6wWyXfjfAXI+6jocxfWjMZ496B9qs7d33sS2/sAPzmWY9jDJ6n9jMl6XhN+TEII
+         yVwg==
+X-Gm-Message-State: APjAAAWpymeLUJY4dcJVRE9ayeN/52OonEaAV1M2J4OR2rFZJbtUqNnL
+        uToC52yJN4orDx1BZQSW/HNWFVU=
+X-Google-Smtp-Source: APXvYqyYoLgBFZUpZNtijSy8O8SasS0luLaBe0bGajSGqQBBqoLECG2BqHBeXpEAA+UelSKWQG+g1w==
+X-Received: by 2002:aca:5490:: with SMTP id i138mr672651oib.69.1576531961744;
+        Mon, 16 Dec 2019 13:32:41 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id l128sm7166832oif.55.2019.12.16.13.32.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Dec 2019 13:32:41 -0800 (PST)
+Date:   Mon, 16 Dec 2019 15:32:40 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     tomislav.denis@avl.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] bindings: iio: pressure: Add dlh-i2c documentation
+Message-ID: <20191216213240.GA19920@bogus>
+References: <20191204100354.16652-1-tomislav.denis@avl.com>
+ <20191204100354.16652-4-tomislav.denis@avl.com>
+ <20191207113442.08260820@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191207113442.08260820@archlinux>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Device property API allows to gather device resources from different sources,
-such as ACPI. Convert the drivers to unleash the power of device property API.
+On Sat, Dec 07, 2019 at 11:34:42AM +0000, Jonathan Cameron wrote:
+> On Wed, 4 Dec 2019 11:03:54 +0100
+> <tomislav.denis@avl.com> wrote:
+> 
+> > From: Tomislav Denis <tomislav.denis@avl.com>
+> > 
+> > Add a device tree binding documentation for DLH series pressure
+> > sensors.
+> > 
+> > Signed-off-by: Tomislav Denis <tomislav.denis@avl.com>
+> 
+> One question for DT maintainers.  
+> 
+> Should the file be named after a specific part of is a generic
+> name for the parts covered acceptable?  I would assume it should
+> be a part number, but not sure what precedence there is.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 26 ++++++++++----------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+I would use asc,dlhl60.yaml I think. The rule is match the compatible if 
+there's only one. Otherwise, no hard rule really. Use the first/oldest 
+compatible, do wildcard, or vendor prefix and something else.
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index a7d40c02ce6b..2b01155d1f32 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -54,6 +54,7 @@
- #include <linux/interrupt.h>
- #include <linux/irq.h>
- #include <linux/pm.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/bitfield.h>
- 
-@@ -1826,14 +1827,14 @@ static const struct iio_info st_lsm6dsx_gyro_info = {
- 	.hwfifo_set_watermark = st_lsm6dsx_set_watermark,
- };
- 
--static int st_lsm6dsx_of_get_drdy_pin(struct st_lsm6dsx_hw *hw, int *drdy_pin)
-+static int st_lsm6dsx_get_drdy_pin(struct st_lsm6dsx_hw *hw, int *drdy_pin)
- {
--	struct device_node *np = hw->dev->of_node;
-+	struct device *dev = hw->dev;
- 
--	if (!np)
-+	if (!dev_fwnode(dev))
- 		return -EINVAL;
- 
--	return of_property_read_u32(np, "st,drdy-int-pin", drdy_pin);
-+	return device_property_read_u32(dev, "st,drdy-int-pin", drdy_pin);
- }
- 
- static int
-@@ -1842,7 +1843,7 @@ st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw,
- {
- 	int err = 0, drdy_pin;
- 
--	if (st_lsm6dsx_of_get_drdy_pin(hw, &drdy_pin) < 0) {
-+	if (st_lsm6dsx_get_drdy_pin(hw, &drdy_pin) < 0) {
- 		struct st_sensors_platform_data *pdata;
- 		struct device *dev = hw->dev;
- 
-@@ -1871,15 +1872,15 @@ st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw,
- static int st_lsm6dsx_init_shub(struct st_lsm6dsx_hw *hw)
- {
- 	const struct st_lsm6dsx_shub_settings *hub_settings;
--	struct device_node *np = hw->dev->of_node;
- 	struct st_sensors_platform_data *pdata;
-+	struct device *dev = hw->dev;
- 	unsigned int data;
- 	int err = 0;
- 
- 	hub_settings = &hw->settings->shub_settings;
- 
--	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
--	if ((np && of_property_read_bool(np, "st,pullups")) ||
-+	pdata = (struct st_sensors_platform_data *)dev->platform_data;
-+	if ((dev_fwnode(dev) && device_property_read_bool(dev, "st,pullups")) ||
- 	    (pdata && pdata->pullups)) {
- 		err = st_lsm6dsx_set_page(hw, true);
- 		if (err < 0)
-@@ -2157,9 +2158,9 @@ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
- 
- static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
- {
--	struct device_node *np = hw->dev->of_node;
- 	struct st_sensors_platform_data *pdata;
- 	const struct st_lsm6dsx_reg *reg;
-+	struct device *dev = hw->dev;
- 	unsigned long irq_type;
- 	bool irq_active_low;
- 	int err;
-@@ -2187,8 +2188,8 @@ static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
- 	if (err < 0)
- 		return err;
- 
--	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
--	if ((np && of_property_read_bool(np, "drive-open-drain")) ||
-+	pdata = (struct st_sensors_platform_data *)dev->platform_data;
-+	if ((dev_fwnode(dev) && device_property_read_bool(dev, "drive-open-drain")) ||
- 	    (pdata && pdata->open_drain)) {
- 		reg = &hw->settings->irq_config.od;
- 		err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
-@@ -2218,7 +2219,6 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
- {
- 	struct st_sensors_platform_data *pdata = dev->platform_data;
- 	const struct st_lsm6dsx_shub_settings *hub_settings;
--	struct device_node *np = dev->of_node;
- 	struct st_lsm6dsx_hw *hw;
- 	const char *name = NULL;
- 	int i, err;
-@@ -2281,7 +2281,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
- 			return err;
- 	}
- 
--	if ((np && of_property_read_bool(np, "wakeup-source")) ||
-+	if ((dev_fwnode(dev) && device_property_read_bool(dev, "wakeup-source")) ||
- 	    (pdata && pdata->wakeup_source))
- 		device_init_wakeup(dev, true);
- 
--- 
-2.24.0
+> Otherwise looks good to me, but I will let it sit to give time
+> for DT review.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> > ---
+> >  .../bindings/iio/pressure/asc,dlh-i2c.yaml         | 51 ++++++++++++++++++++++
+> >  MAINTAINERS                                        |  1 +
+> >  2 files changed, 52 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/pressure/asc,dlh-i2c.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/pressure/asc,dlh-i2c.yaml b/Documentation/devicetree/bindings/iio/pressure/asc,dlh-i2c.yaml
+> > new file mode 100644
+> > index 0000000..5de2277
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/pressure/asc,dlh-i2c.yaml
+> > @@ -0,0 +1,51 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/pressure/dlh-i2c.yaml#
 
+Note that the filename doesn't match here. Run 'make dt_binding_check'.
+
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: All Sensors DLH series low voltage digital pressure sensors
+> > +
+> > +maintainers:
+> > +  - Tomislav Denis <tomislav.denis@avl.com>
+> > +
+> > +description: |
+> > +  Bindings for the All Sensors DLH series pressure sensors.
+> > +
+> > +  Specifications about the sensors can be found at:
+> > +    http://www.allsensors.com/cad/DS-0355_Rev_B.PDF
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - asc,dlhl60d
+> > +      - asc,dlhl60g
+> > +
+> > +  reg:
+> > +    description: I2C device address
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    description: interrupt mapping for EOC(data ready) pin
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +
+> > +    i2c0 {
+> > +      #address-cells = <1>;
+> > +      #size-cells = <0>;
+> > +
+> > +      pressure@29 {
+> > +          compatible = "asc,dlhl60d";
+> > +          reg = <0x29>;
+> > +          interrupt-parent = <&gpio0>;
+> > +          interrupts = <10 IRQ_TYPE_EDGE_RISING>;
+> > +      };
+> > +    };
+> > +...
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 39d6f0f..8f0eab0 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -674,6 +674,7 @@ W:	http://www.allsensors.com/
+> >  S:	Maintained
+> >  L:	linux-iio@vger.kernel.org
+> >  F:	drivers/iio/pressure/dlh-i2c.c
+> > +F:	Documentation/devicetree/bindings/iio/pressure/dlh-i2c.yaml
+> >  
+> >  ALLEGRO DVT VIDEO IP CORE DRIVER
+> >  M:	Michael Tretter <m.tretter@pengutronix.de>
+> 

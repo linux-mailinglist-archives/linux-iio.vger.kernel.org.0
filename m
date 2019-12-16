@@ -2,129 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 876CE11FBCD
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 00:25:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 362DC11FBF2
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 01:00:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726481AbfLOXZj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Dec 2019 18:25:39 -0500
-Received: from mail-io1-f68.google.com ([209.85.166.68]:44365 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726299AbfLOXZj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 18:25:39 -0500
-Received: by mail-io1-f68.google.com with SMTP id b10so4982113iof.11
-        for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2019 15:25:39 -0800 (PST)
+        id S1726437AbfLPAAu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Dec 2019 19:00:50 -0500
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:43346 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726260AbfLPAAu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 Dec 2019 19:00:50 -0500
+Received: by mail-pl1-f193.google.com with SMTP id p27so3661445pli.10
+        for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2019 16:00:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WEL4itFmihZqlf+pK1DU7DEDt/SepncHaF9ZMAufTQk=;
-        b=N+c4HK+qYE45RWqlaHU7AnTEY46OfO0t0kBAN2F+qSebIf6nmrna9JaUNv7TDH9X27
-         eCgTN0xBKqFk/ruLZ7CepWQ0jgS9fLOYi7yjsjSN9bKiqaIzJ/+CIrt8kekjVO41P6NN
-         d5Eo49hMKI8IYCNwJ9GMtn/oFArpJVH77Ajsw=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2Vu+p6r8ndnRT3v+F71va9D8kd+UdXPMbSeMrQKvqFU=;
+        b=NXI6OvT+MlyG/+pIlnONLowEKkgIBLmkxgTlinIybYVS9lFG+yE2dQUA4+4+GJk9ZW
+         BL4YN+obNb2ehlkrzoTVAi12cj8I91DZkS5lsabhgdFJKpzd4BHp5BYxMFKsLbLdzlFs
+         MbNdLSx1mjyAxnkMSG4DJE/JVRRVO1DfIfe6k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WEL4itFmihZqlf+pK1DU7DEDt/SepncHaF9ZMAufTQk=;
-        b=GOF4jBVzCwSlXuaJ8BHINqoG1opULa0axWdlkoTvYUdL0RhVcVzB8yI37rLljOmw9J
-         aLUgQGVhL94S26WTuMxS7Lw7RiQmBl5LJ1dITfiEPtnizMbY7m1QgSSg7f7XUn+56Zr1
-         DwT4B5/UMBGJFl5QOPzmmWTN34wEWX/TDWtZMQ6q1cjI0CQm29pQS+mcUAJ22PL40S4B
-         DHGWwwZXETCFBwgRQT4YDPajCgSp/0wqgKbaOwYOFRoU0GvbVy/XAG2gF1XlnaU98tdj
-         RYl19uzyOQSlce1BEqt7trj0GwhM/BrZH6wo2PrKnMlfIWOuUSHM/M/LBXXs4tbgMS79
-         S15A==
-X-Gm-Message-State: APjAAAXbF0JXIp825ZPBU3QGidq4lsq4QIjuPqV9YRv1uSdtgQMt6SiR
-        xcEWgfWnjuuJOmNZWglBAC5KW3ioDl/Vo6eXmwxlK6xz5PM=
-X-Google-Smtp-Source: APXvYqyxqgqtul5GG7UvGBKwhR/jHF82eADU4suOa7b5QH1cqUuBRY6sCnLgmir+XVDsPtFBuRQBjcI89ud2U+OOQlo=
-X-Received: by 2002:a05:6638:72c:: with SMTP id j12mr9795715jad.136.1576452338679;
- Sun, 15 Dec 2019 15:25:38 -0800 (PST)
-MIME-Version: 1.0
-References: <20191210210735.9077-1-sashal@kernel.org> <20191210210735.9077-66-sashal@kernel.org>
- <20191215155329.4c71ad53@archlinux>
-In-Reply-To: <20191215155329.4c71ad53@archlinux>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2Vu+p6r8ndnRT3v+F71va9D8kd+UdXPMbSeMrQKvqFU=;
+        b=Q6YtH+N06e7fGug413hVU08iReFCsM66CTcbuXIEYFDPjiHA2kFk6SqDmUFSMjxKPd
+         1ElDixKAUvf+9rOlYyeIqA99BV7L3TgKE8XlK86uh2oRISF03eAEZxCCRjIWO/TIbo7w
+         jNXkNi7YMpnMzcmzLzkcRiVBXg39DWc1yyCehG3YNEQmzKAwYOhOXg/2mNYMieR7RnLo
+         WTynaRwwA0W3EpKE2m51kK2BJgTxVelPyR8XIc+AkRX9PQQp2XX1Ke+0f/J44Qc9FpWJ
+         gBpmXlHR8z3PZEO1sngQV1WrIoROMkdjBuI7iMDt9rAT6U/ZNgPTEg19vgwAEdVVO1GK
+         fEoA==
+X-Gm-Message-State: APjAAAXoclFceTKOTEEx4v/7BksgYhJZVci6Q8SsT8tG+fXHRAm9W6md
+        s1F+ZM5DirxUIYbGJdu1fLTzzmvKMk9pqw==
+X-Google-Smtp-Source: APXvYqxkv/s5cDFZtXlyucGI3NWya4inHS5v6ou0mj9cHOUShPS2kTu0fwsrl65ZZXTykNyFHUdwyQ==
+X-Received: by 2002:a17:90b:85:: with SMTP id bb5mr14146221pjb.22.1576454449266;
+        Sun, 15 Dec 2019 16:00:49 -0800 (PST)
+Received: from localhost.localdomain (50-196-3-218-static.hfc.comcastbusiness.net. [50.196.3.218])
+        by smtp.gmail.com with ESMTPSA id m45sm16751404pje.32.2019.12.15.16.00.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Dec 2019 16:00:47 -0800 (PST)
 From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Sun, 15 Dec 2019 15:25:27 -0800
-Message-ID: <CAJCx=gkM8=WCC6t8bjX-q-mDco7HBMdBmJjOQzRHZr4-nKVvcA@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 5.4 105/350] iio: chemical: atlas-ph-sensor: fix
- iio_triggered_buffer_predisable() position
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-Cc:     Sasha Levin <sashal@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        stable@vger.kernel.org,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-iio@vger.kernel.org
+Cc:     jic23@kernel.org, Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: [PATCH] iio: chemical: atlas-ph-sensor: rename atlas-ph-sensor to atlas-sensor
+Date:   Sun, 15 Dec 2019 16:00:45 -0800
+Message-Id: <20191216000045.30482-1-matt.ranostay@konsulko.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Dec 15, 2019 at 7:53 AM Jonathan Cameron
-<jic23@jic23.retrosnub.co.uk> wrote:
->
-> On Tue, 10 Dec 2019 16:03:30 -0500
-> Sasha Levin <sashal@kernel.org> wrote:
->
-> > From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> >
-> > [ Upstream commit 0c8a6e72f3c04bfe92a64e5e0791bfe006aabe08 ]
-> >
-> > The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-> > the poll functions.
-> >
-> > The iio_triggered_buffer_predisable() should be called last, to detach the
-> > poll func after the devices has been suspended.
-> >
-> > The position of iio_triggered_buffer_postenable() is correct.
-> >
-> > Note this is not stable material. It's a fix in the logical
-> > model rather fixing an actual bug.  These are being tidied up
-> > throughout the subsystem to allow more substantial rework that
-> > was blocked by variations in how things were done.
->
-> See comment.  This is not what I would consider stable material.
->
+Since the orginal scope of the driver was to only support
+the pH product from Atlas it has evolved to other sensors.
 
-Outside of the comment, which really isn't probably enough to avoid
-the autoselection script from detecting it (could be "stable" in the
-message alone selects it :) ),
-is there any way to signal that a patch is "NOT for stable trees"?
-Probably don't want to clutter up the commit messages of course.
+Rename the file, driver name, and regmap to atlas-sensor which
+reflects this, although keep CONFIG_ATLAS_PH_SENSOR to not cause
+regressions with current configurations.
 
-- Matt
+Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+---
+ drivers/iio/chemical/Makefile                          |  2 +-
+ .../iio/chemical/{atlas-ph-sensor.c => atlas-sensor.c} | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+ rename drivers/iio/chemical/{atlas-ph-sensor.c => atlas-sensor.c} (98%)
 
-> >
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  drivers/iio/chemical/atlas-ph-sensor.c | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-ph-sensor.c
-> > index 3a20cb5d9bffc..6c175eb1c7a7f 100644
-> > --- a/drivers/iio/chemical/atlas-ph-sensor.c
-> > +++ b/drivers/iio/chemical/atlas-ph-sensor.c
-> > @@ -323,16 +323,16 @@ static int atlas_buffer_predisable(struct iio_dev *indio_dev)
-> >       struct atlas_data *data = iio_priv(indio_dev);
-> >       int ret;
-> >
-> > -     ret = iio_triggered_buffer_predisable(indio_dev);
-> > +     ret = atlas_set_interrupt(data, false);
-> >       if (ret)
-> >               return ret;
-> >
-> > -     ret = atlas_set_interrupt(data, false);
-> > +     pm_runtime_mark_last_busy(&data->client->dev);
-> > +     ret = pm_runtime_put_autosuspend(&data->client->dev);
-> >       if (ret)
-> >               return ret;
-> >
-> > -     pm_runtime_mark_last_busy(&data->client->dev);
-> > -     return pm_runtime_put_autosuspend(&data->client->dev);
-> > +     return iio_triggered_buffer_predisable(indio_dev);
-> >  }
-> >
-> >  static const struct iio_trigger_ops atlas_interrupt_trigger_ops = {
->
+diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+index f97270bc4034..33d3a595dda9 100644
+--- a/drivers/iio/chemical/Makefile
++++ b/drivers/iio/chemical/Makefile
+@@ -4,7 +4,7 @@
+ #
+ 
+ # When adding new entries keep the list in alphabetical order
+-obj-$(CONFIG_ATLAS_PH_SENSOR)	+= atlas-ph-sensor.o
++obj-$(CONFIG_ATLAS_PH_SENSOR)	+= atlas-sensor.o
+ obj-$(CONFIG_BME680) += bme680_core.o
+ obj-$(CONFIG_BME680_I2C) += bme680_i2c.o
+ obj-$(CONFIG_BME680_SPI) += bme680_spi.o
+diff --git a/drivers/iio/chemical/atlas-ph-sensor.c b/drivers/iio/chemical/atlas-sensor.c
+similarity index 98%
+rename from drivers/iio/chemical/atlas-ph-sensor.c
+rename to drivers/iio/chemical/atlas-sensor.c
+index 6c175eb1c7a7..8cd76d828646 100644
+--- a/drivers/iio/chemical/atlas-ph-sensor.c
++++ b/drivers/iio/chemical/atlas-sensor.c
+@@ -1,8 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ /*
+- * atlas-ph-sensor.c - Support for Atlas Scientific OEM pH-SM sensor
++ * atlas-sensor.c - Support for Atlas Scientific OEM SM sensors
+  *
+- * Copyright (C) 2015-2018 Matt Ranostay
++ * Copyright (C) 2015-2019 Konsulko Group
+  * Author: Matt Ranostay <matt.ranostay@konsulko.com>
+  */
+ 
+@@ -25,8 +25,8 @@
+ #include <linux/iio/triggered_buffer.h>
+ #include <linux/pm_runtime.h>
+ 
+-#define ATLAS_REGMAP_NAME	"atlas_ph_regmap"
+-#define ATLAS_DRV_NAME		"atlas_ph"
++#define ATLAS_REGMAP_NAME	"atlas_regmap"
++#define ATLAS_DRV_NAME		"atlas"
+ 
+ #define ATLAS_REG_DEV_TYPE		0x00
+ #define ATLAS_REG_DEV_VERSION		0x01
+@@ -681,5 +681,5 @@ static struct i2c_driver atlas_driver = {
+ module_i2c_driver(atlas_driver);
+ 
+ MODULE_AUTHOR("Matt Ranostay <matt.ranostay@konsulko.com>");
+-MODULE_DESCRIPTION("Atlas Scientific pH-SM sensor");
++MODULE_DESCRIPTION("Atlas Scientific SM sensors");
+ MODULE_LICENSE("GPL");
+-- 
+2.20.1
+

@@ -2,127 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC3BF11FF38
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 08:52:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6369611FFF4
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2019 09:37:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726648AbfLPHvc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Dec 2019 02:51:32 -0500
-Received: from www381.your-server.de ([78.46.137.84]:40008 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726054AbfLPHvb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Dec 2019 02:51:31 -0500
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1iglA8-0004QN-T0; Mon, 16 Dec 2019 08:51:28 +0100
-Received: from [93.104.119.42] (helo=[192.168.178.20])
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256)
+        id S1726756AbfLPIhl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Dec 2019 03:37:41 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:57903 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726722AbfLPIhl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Dec 2019 03:37:41 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1iglA8-000U55-K6; Mon, 16 Dec 2019 08:51:28 +0100
-Subject: Re: [PATCH v3] iio: buffer: align the size of scan bytes to size of
- the largest element
-To:     =?UTF-8?Q?Lars_M=c3=b6llendorf?= <lars.moellendorf@plating.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iglso-0001K6-NS; Mon, 16 Dec 2019 09:37:38 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iglsm-0004oC-Vr; Mon, 16 Dec 2019 09:37:36 +0100
+Date:   Mon, 16 Dec 2019 09:37:36 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-References: <kcis.016016E0AABB4ABC824358438D87FE25@mail>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <9e68de59-db62-5ba7-c5b6-26d2a59610a2@metafoo.de>
-Date:   Mon, 16 Dec 2019 08:51:27 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
+        kernel@pengutronix.de
+Subject: Re: [PATCH v4 1/3] iio: adc: ltc2496: provide device tree binding
+ document
+Message-ID: <20191216083736.lzmborv33w6odlaj@pengutronix.de>
+References: <20191209203248.21555-1-u.kleine-koenig@pengutronix.de>
+ <20191209203248.21555-2-u.kleine-koenig@pengutronix.de>
+ <20191215114958.6ad37d19@archlinux>
 MIME-Version: 1.0
-In-Reply-To: <kcis.016016E0AABB4ABC824358438D87FE25@mail>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.101.4/25664/Sun Dec 15 10:51:05 2019)
+In-Reply-To: <20191215114958.6ad37d19@archlinux>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/15/19 10:09 PM, Lars MÃ¶llendorf wrote:
-> -----UrsprÃ¼ngliche Nachricht-----
->> Von: Lars MÃ¶llendorf <lars.moellendorf@plating.de>
->> Gesendet: Freitag 13 Dezember 2019 14:58
->> An: Jonathan Cameron <jic23@kernel.org>; Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen <lars@metafoo.de>; Peter Meerwald-Stadler <pmeerw@pmeerw.net>; linux-iio@vger.kernel.org
->> CC: Lars MÃ¶llendorf <lars.moellendorf@plating.de>
->> Betreff: [PATCH v3] iio: buffer: align the size of scan bytes to size of the largest element
->>
->> Previous versions of `iio_compute_scan_bytes` only aligned each element
->> to its own length (i.e. its own natural alignment). Because multiple
->> consecutive sets of scan elements are buffered this does not work in
->> case the computed scan bytes do not align with the natural alignment of
->> the first scan element in the set.
->>
->> This commit fixes this by aligning the scan bytes to the natural
->> alignment of the largest scan element in the set.
-> 
-> 
-> 
-> After re-reading my commit message, I come to the conclusion that it really is sufficient to align the scan bytes to the natural alignment of the *first* element. This would save us the `max()` comparisons for each bit. At the moment I am not at my workstation, but I could submit a v4 next Friday.
-> 
+Hello Jonathan,
 
-I thought so too in the beginning, but as Jonathan pointed out, it does
-not work for all cases. Lets say you have u16,u16,u32,u16. If all
-channels are enabled the size is aligned to the first element, but the
-u32 would not be aligned in the second dataset.
-
+On Sun, Dec 15, 2019 at 11:49:58AM +0000, Jonathan Cameron wrote:
+> On Mon,  9 Dec 2019 21:32:46 +0100
+> Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
 > 
-> 
->> Fixes: 959d2952d124 ("staging:iio: make iio_sw_buffer_preenable much more
->> general.")
->> Signed-off-by: Lars MÃ¶llendorf <lars.moellendorf@plating.de>
->> ---
->> v3:
->>   - Fix the problem description in the commit message
->>   - Add "Fixes" tag
->>
->> v2:
->>   - Fix subject of patch which marked it the first in a set of three.
->>   - Add a description of the problem in the commit message
->>
->> ---
->>  drivers/iio/industrialio-buffer.c | 6 +++++-
->>  1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
->> index 5d05c38c4ba9..2f037cd59d53 100644
->> --- a/drivers/iio/industrialio-buffer.c
->> +++ b/drivers/iio/industrialio-buffer.c
->> @@ -546,7 +546,7 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
->>  				const unsigned long *mask, bool timestamp)
->>  {
->>  	unsigned bytes = 0;
->> -	int length, i;
->> +	int length, i, largest = 0;
->>
->>  	/* How much space will the demuxed element take? */
->>  	for_each_set_bit(i, mask,
->> @@ -554,13 +554,17 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
->>  		length = iio_storage_bytes_for_si(indio_dev, i);
->>  		bytes = ALIGN(bytes, length);
->>  		bytes += length;
->> +		largest = max(largest, length);
->>  	}
->>
->>  	if (timestamp) {
->>  		length = iio_storage_bytes_for_timestamp(indio_dev);
->>  		bytes = ALIGN(bytes, length);
->>  		bytes += length;
->> +		largest = max(largest, length);
->>  	}
->> +
->> +	bytes = ALIGN(bytes, largest);
->>  	return bytes;
->>  }
->>
->> --
->> 2.23.0
->>
+> > The ADC only requires the standard stuff for spi devices and a reference
+> > voltage.
+> > 
+> > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> Thanks for figuring out what was wrong and fixing it up.
 
+It wasn't done primarily to do you a favour :-)
+
+> > +  spi-max-frequency:
+> > +    description: maximal spi bus frequency supported by the chip
+> 
+> dropped the "by the chip" as this is also about the wiring on the board.  If it
+> were just the chip, it could be put in the driver.  The unknown bit is
+> if there is some other reason why it might need to be set lower than the maximum.
+
+fine for me.
+
+> > +required:
+> > +  - compatible
+> > +  - vref-supply
+> > +  - reg
+> > +
+> > +examples:
+> > +  - |
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        adc@0 {
+> > +        	compatible = "lltc,ltc2496";
+> You can't easily see it here, but this is a mixture of spaces
+> and tabs.  Should be all spaces.  I've tidied that up.
+
+I did that on purpose, spaces to have the needed indention for the yaml
+syntax and then tabs for dts indention (as done in the dts itself, too).
+I thought this to be the right mix, but this was my first yaml binding,
+so you're probably right.
+
+Best regards and thanks
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

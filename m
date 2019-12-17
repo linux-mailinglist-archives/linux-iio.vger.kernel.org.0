@@ -2,125 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 710941228D9
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Dec 2019 11:32:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECCA9122990
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Dec 2019 12:12:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726681AbfLQKcj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Dec 2019 05:32:39 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:48144 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726411AbfLQKcj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Dec 2019 05:32:39 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBHAWWme076204;
-        Tue, 17 Dec 2019 04:32:32 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576578752;
-        bh=5z22DOMxe9ERTYZQN4IPLEVBrsRz70Mah/Vov2vIbjk=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Qie8fWb/48AlIMLVc4ts4LqusyY3F1qPGN4b+o4Xz+bvUjmFuqFw87c+FzZvh9Wm2
-         DzvpAJhd9MKV/aRrzCMtXmmv6cF2iXKwF53uu8+poYhTX6tpcaMcU6Jbk3D8+Lqwnw
-         lk8QhnMz1yOvOLvhm2CrO6PBPB1F4tuJdnzJPqRw=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBHAWV93068770
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 17 Dec 2019 04:32:31 -0600
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 17
- Dec 2019 04:32:30 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 17 Dec 2019 04:32:30 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBHAWSwp012173;
-        Tue, 17 Dec 2019 04:32:29 -0600
-Subject: Re: [PATCH] iio: adc: at91: Use dma_request_chan() instead
- dma_request_slave_channel()
-To:     <Eugen.Hristev@microchip.com>, <jic23@kernel.org>
-CC:     <vkoul@kernel.org>, <Ludovic.Desroches@microchip.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20191217075043.23539-1-peter.ujfalusi@ti.com>
- <102e71da-8b9c-8528-3bec-b4a22895fb44@microchip.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <d4885bc6-4e3b-42ee-1cf6-c782fa70d3cb@ti.com>
-Date:   Tue, 17 Dec 2019 12:32:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726487AbfLQLMF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Dec 2019 06:12:05 -0500
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:36146 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725940AbfLQLME (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Dec 2019 06:12:04 -0500
+Received: by mail-pl1-f193.google.com with SMTP id d15so5954770pll.3;
+        Tue, 17 Dec 2019 03:12:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kY9iDk6ujSVpRSx3i8FBNKdQ/NwXC042Gb3HxrCWJLI=;
+        b=LJHEfkeHlzDWQISdNkdrI92FgGwmERgCSamdNW4XzU3/X5rhVo6Ql0AIjDaRtztLU8
+         N+muQJe0kRVDscjaowPmrETQd3W4qztJv+0JxglpXEY0wcX4Hagklla/7+5W1emK3KFf
+         a4zrRkFOZevNjOn/mMeRhlnBhUkpcJWR76f1RdqXZ/g2w9hNh/TcN+0phaaw2UDgubcq
+         /DBbJOW9UsHjUdmWBIeu3P3jEBP+FpWL8YEOmVjBucaj51PF0/ud50/p+i7fHXWy5zjv
+         kNSMEuATK1ze7pCxM1wbbcJZ3+CGMIy0WiTQnPAa8cC9YbKsgu91CW7RJ62j0PrsmpcV
+         z9Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kY9iDk6ujSVpRSx3i8FBNKdQ/NwXC042Gb3HxrCWJLI=;
+        b=DOLRVRt9evdiNSpy0ztv3FkgVYJsFi829wCrFFsphVomD8FVq/p+gDqHafDZn7Nvjq
+         dzKOHe7mGdWJbH/J2G8sD/+GhFnOHSvtzjvV/76gNcjjnhs6Uposb9JZGUQ10pYeeukg
+         BGJluFTa/nGfbnFOfjZTLWlKOpOzXRNnw+v9NrKhuhsWEO6V4SM4GvAT41da3RT+YMQa
+         gXs6EJEDt9cwXL2it41jF1vNTko1nsdGGVOcp62B5t8SktoEiSqMENKA/PRjPvXrYBT9
+         Pldo1WrzKzMil7pqtkuJ8ULa93aLwMg7rMYF+3fFc6rhWKpJVLEG79N5FOfk1+yNlKf2
+         y+sQ==
+X-Gm-Message-State: APjAAAVNjyD/eDKrUS64JUvDRzz4+GcSqMynazN/h8lRFXehwF36xCtz
+        Ojne3I30MO1ovF2kEw85mO0=
+X-Google-Smtp-Source: APXvYqxYw3VATrq7dAAcXPBZqzaZ6RSACsCYh+aRAb7KVwc9VY/UVgXlAFtChl7rZGp+DiAVZl0UXQ==
+X-Received: by 2002:a17:90b:f06:: with SMTP id br6mr5194967pjb.125.1576581124196;
+        Tue, 17 Dec 2019 03:12:04 -0800 (PST)
+Received: from brcpsddjunho-l.padtec.com.br (apolo.padtec.com.br. [200.228.158.130])
+        by smtp.gmail.com with ESMTPSA id 81sm25855190pfx.73.2019.12.17.03.12.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Dec 2019 03:12:03 -0800 (PST)
+From:   Daniel Junho <djunho@gmail.com>
+To:     "Jonathan Cameron" <jic23@kernel.org>,
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "lkcamp@lists.libreplanetbr.org" <lkcamp@lists.libreplanetbr.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>
+Subject: [PATCH v3 0/4] Add support for the ad7908/ad7918/ad7928
+Date:   Tue, 17 Dec 2019 08:11:54 -0300
+Message-Id: <20191217111158.30888-1-djunho@gmail.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-In-Reply-To: <102e71da-8b9c-8528-3bec-b4a22895fb44@microchip.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Eugen,
+This patch adds support to AD7928 family on the implementation of the
+AD7923.
 
-On 17/12/2019 9.59, Eugen.Hristev@microchip.com wrote:
-> 
-> 
-> On 17.12.2019 09:50, Peter Ujfalusi wrote:
-> 
->> dma_request_slave_channel() is a wrapper on top of dma_request_chan()
->> eating up the error code.
->>
->> By using dma_request_chan() directly the driver can support deferred
->> probing against DMA.
->>
->> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
->> ---
->>   drivers/iio/adc/at91-sama5d2_adc.c | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> Hi Peter,
-> 
-> Thank you for the patch.
-> Nitpick : at91 is another driver (old one for different platforms), so 
-> can you please change the commit oneline to iio: adc: at91-sama5d2_adc: 
-> to not be confused about which driver is affected.
+The ad7928 is software compatible with the ad7923.
+The ad7908 and ad7918 are the 8 and 10-bit versions of the ad7928.
 
-Sorry, just sent v2 with the correct subject prefix.
-By mistake I looked at the git log of at91_adc.c and picked the wrong
-prefix.
+Change log v1 -> v2
+- Split the v1 into 4 commits.
+- Removes a buggy line committed unintentionally.
 
-> 
-> Thanks !
-> Eugen
-> 
->>
->> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
->> index e1850f3d5cf3..a5c7771227d5 100644
->> --- a/drivers/iio/adc/at91-sama5d2_adc.c
->> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
->> @@ -1444,10 +1444,10 @@ static void at91_adc_dma_init(struct platform_device *pdev)
->>          if (st->dma_st.dma_chan)
->>                  return;
->>
->> -       st->dma_st.dma_chan = dma_request_slave_channel(&pdev->dev, "rx");
->> -
->> -       if (!st->dma_st.dma_chan)  {
->> +       st->dma_st.dma_chan = dma_request_chan(&pdev->dev, "rx");
->> +       if (IS_ERR(st->dma_st.dma_chan))  {
->>                  dev_info(&pdev->dev, "can't get DMA channel\n");
->> +               st->dma_st.dma_chan = NULL;
->>                  goto dma_exit;
->>          }
->>
->> --
->> Peter
->>
->> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
->> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
->>
+Change log v2 -> v3
+- Added a comment about the last channel of this driver.
+- Changed some macros that are used only on AD7908/AD7918/AD7928 to AD7908_*
+- Simplified the MODULE_DESCRIPTION
 
-- Péter
+Daniel Junho (4):
+  iio: adc: ad7923: Remove the unused defines
+  iio: adc: ad7923: Fix checkpatch warning
+  iio: adc: ad7923: Add of_device_id table
+  iio: adc: ad7923: Add support for the ad7908/ad7918/ad7928
 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+ drivers/iio/adc/ad7923.c | 73 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 61 insertions(+), 12 deletions(-)
+
+-- 
+2.24.1
+

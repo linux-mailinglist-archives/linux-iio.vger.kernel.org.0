@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D996122995
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Dec 2019 12:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 789C4122997
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Dec 2019 12:12:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727341AbfLQLMM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Dec 2019 06:12:12 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:42575 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727190AbfLQLML (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Dec 2019 06:12:11 -0500
-Received: by mail-pf1-f194.google.com with SMTP id 4so7354517pfz.9;
-        Tue, 17 Dec 2019 03:12:11 -0800 (PST)
+        id S1727402AbfLQLMP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Dec 2019 06:12:15 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:33989 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727397AbfLQLMP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Dec 2019 06:12:15 -0500
+Received: by mail-pj1-f68.google.com with SMTP id j11so4441362pjs.1;
+        Tue, 17 Dec 2019 03:12:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=tDASqqq00AoUFhkrpIeD5i5da1G2sBy2LHsU0nWW8fI=;
-        b=hCpwf90q/OrfsAHOaR73nV4fXGokdZnKxQAEvF5Z2Ia1JhFgNa3ykBd38tixTrgqF/
-         fbniDkJNygUGXcMrwe5mocSrJjqOAtUA2V9a1I0Az3DUtimR7nKKBPiEub0wwkHHnQDo
-         qO4JlpgqGzsZrqzEzYMg/i4Rkp8NiGv60eG9GWxQbukvKMJ74nEg7k3MJCuhSxL5ClzP
-         ceVtf5k8bmDTqtcrG+r3RZWjjN03oQ0SMCs8TywOLNTQ8XkTYA8447eGMa5E89fXiDsB
-         YNSYFXzH/Ls8f64ZksBiqhRno5qd+m/Xbl8T7HFwSOUXdopzWyR5FEli/AOTreVO+/V6
-         lA7w==
+        bh=gLPsXf1M5gmXwUcxazQUZ7xNr2aBinYX1xs0OI9I9S4=;
+        b=VYdWIVofnGsdB2NADPwAXAnESwKkMoKkOvTYlbwhnrqAJEcFL484nJqdgUZXzlF7te
+         MZLtp+rCqg5BmIznBO6kuqppjFnxsaNCiq6ByVD8ntKa/s0O/mVr7d+BtUiOIngH1TV8
+         BWCBjeSsGSJV0uQDGPN/ogQdHzM2IWRVTGTDY/DqALc6IKlSNu1MXV9MuuQxBGq2yu10
+         +M1nc1/hi+NtZ3UzK7mPuyvf2p57XeneskIcsNiXuQPvty0WcDBaD6wTXTukN3kj9gr3
+         RO6VZeQvhjzePAQLTuXrVaGfMScoRSuYzocPqEsvfbGZHvxB4fkJ/H2gXsy9T/1FGplH
+         1Yhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=tDASqqq00AoUFhkrpIeD5i5da1G2sBy2LHsU0nWW8fI=;
-        b=EA5KsSXo/K1ctGD5f0cRJ+EbhDZG8q/EAGM1cM4vgmcMcppeOjn2Ons7eTi4yn62GV
-         7IvOj7Z/wFbU29Mzzmq+IESZW16uqiqyUPsUDo/4WubBucVi3P+SgrlCX2xY9Wq//LW1
-         m4L2jvoaGgOAbRCaYorTjMGVehJOFRhFhMQ3iqEv2/pCo6mK+JJsUlpViCDXmjrrlaVj
-         3Fm856mZZIXxwW4SgrKwb8vUW4ICMlC2M01F5Pg2Ru/jw3YNu+PZo+2mEC7waJ8gabPu
-         UL4tcvNoydcQcYlfv19WWS1wLqumLrR9dZCnNIg+cbQk28OLSk27NlqwkojtnVb8To08
-         LgOA==
-X-Gm-Message-State: APjAAAXGaiNjYZ1U/+9ciUAcobtWwpirAEkGH2g/Ny0hN+NsqeRdi9WV
-        E0UTLMXJD9ly/7nkhps0940=
-X-Google-Smtp-Source: APXvYqxiYGC+TrwRnhox51l4gq20/VDouU9UFpaUB/1tW0upYpQSwe88orItsMFSPZvwDXhrDUD0+w==
-X-Received: by 2002:a65:4109:: with SMTP id w9mr24061803pgp.383.1576581130885;
-        Tue, 17 Dec 2019 03:12:10 -0800 (PST)
+        bh=gLPsXf1M5gmXwUcxazQUZ7xNr2aBinYX1xs0OI9I9S4=;
+        b=cyhComrKtKIQptgj5feznE2H3y1BSYMsrtUPap1Pg02vbifBkvWVV1F90fwEK4+J+2
+         6ZOmVBRA8jCkHCznxA2h6rRBAGpKCCd0nrwwKMghqmrxmczxTe6eFpOLQZ7GxiOfYA3Z
+         SEt7RoS2X8qHNFJZcZJcN+o6RYjbPmAaTaLRGslfcLBGaeYNovsL2Eepii2RgAZ6H1mf
+         UnFKWLAk4N2Tb/IEKlS04bNmjGkdllTdyh2h41SHVfhbc7sZtFk8pLmyjDd/Qud53/sK
+         3m1Ka8eaDiSzkyXprCHYNTLi2/1ouP/ysMxeRk/L24QP/O94poALqt8CUP/+hHfDR2y+
+         Clog==
+X-Gm-Message-State: APjAAAVhRiP8X2rtrg2Ax6Rm7oLWkdGqbHtl6rAD/lJberc6w/xPZtyC
+        W8byRqatumXuvpY9gix0cnw=
+X-Google-Smtp-Source: APXvYqxxtDdg7H7hS9kzLrmzUSDsgQEaNfS2QkpewoXAmH/+9UFHymPBTndK7/foHeWlYvdLwA3ltg==
+X-Received: by 2002:a17:90a:9dc3:: with SMTP id x3mr5276099pjv.45.1576581134621;
+        Tue, 17 Dec 2019 03:12:14 -0800 (PST)
 Received: from brcpsddjunho-l.padtec.com.br (apolo.padtec.com.br. [200.228.158.130])
-        by smtp.gmail.com with ESMTPSA id 81sm25855190pfx.73.2019.12.17.03.12.07
+        by smtp.gmail.com with ESMTPSA id 81sm25855190pfx.73.2019.12.17.03.12.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2019 03:12:10 -0800 (PST)
+        Tue, 17 Dec 2019 03:12:14 -0800 (PST)
 From:   Daniel Junho <djunho@gmail.com>
 To:     "Jonathan Cameron" <jic23@kernel.org>,
         "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
@@ -55,9 +55,9 @@ To:     "Jonathan Cameron" <jic23@kernel.org>,
         "knaack.h@gmx.de" <knaack.h@gmx.de>,
         "Hennerich, Michael" <Michael.Hennerich@analog.com>,
         "lars@metafoo.de" <lars@metafoo.de>
-Subject: [PATCH v3 2/4] iio: adc: ad7923: Fix checkpatch warning
-Date:   Tue, 17 Dec 2019 08:11:56 -0300
-Message-Id: <20191217111158.30888-3-djunho@gmail.com>
+Subject: [PATCH v3 3/4] iio: adc: ad7923: Add of_device_id table
+Date:   Tue, 17 Dec 2019 08:11:57 -0300
+Message-Id: <20191217111158.30888-4-djunho@gmail.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20191217111158.30888-1-djunho@gmail.com>
 References: <20191217111158.30888-1-djunho@gmail.com>
@@ -68,28 +68,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix checkpatch warning:
-WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
-+static int ad7923_scan_direct(struct ad7923_state *st, unsigned ch)
+Accomplish device tree compatibility to driver AD7923
+by adding of_device_id table and making a subsequent call to
+MODULE_DEVICE_TABLE.
 
 Signed-off-by: Daniel Junho <djunho@gmail.com>
 ---
- drivers/iio/adc/ad7923.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7923.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
-index 969c06b7d2b7..e535cec9fc02 100644
+index e535cec9fc02..6d56fa0b9e30 100644
 --- a/drivers/iio/adc/ad7923.c
 +++ b/drivers/iio/adc/ad7923.c
-@@ -184,7 +184,7 @@ static irqreturn_t ad7923_trigger_handler(int irq, void *p)
- 	return IRQ_HANDLED;
- }
+@@ -348,9 +348,19 @@ static const struct spi_device_id ad7923_id[] = {
+ };
+ MODULE_DEVICE_TABLE(spi, ad7923_id);
  
--static int ad7923_scan_direct(struct ad7923_state *st, unsigned ch)
-+static int ad7923_scan_direct(struct ad7923_state *st, unsigned int ch)
- {
- 	int ret, cmd;
- 
++static const struct of_device_id ad7923_of_match[] = {
++	{ .compatible = "adi,ad7904", },
++	{ .compatible = "adi,ad7914", },
++	{ .compatible = "adi,ad7923", },
++	{ .compatible = "adi,ad7924", },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, ad7923_of_match);
++
+ static struct spi_driver ad7923_driver = {
+ 	.driver = {
+ 		.name	= "ad7923",
++		.of_match_table = ad7923_of_match,
+ 	},
+ 	.probe		= ad7923_probe,
+ 	.remove		= ad7923_remove,
 -- 
 2.24.1
 

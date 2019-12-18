@@ -2,553 +2,523 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DAD6123B07
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2019 00:43:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 863E8123CAF
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2019 02:52:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726382AbfLQXns (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Dec 2019 18:43:48 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:43017 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725946AbfLQXns (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Dec 2019 18:43:48 -0500
-Received: by mail-ot1-f66.google.com with SMTP id p8so36216oth.10;
-        Tue, 17 Dec 2019 15:43:47 -0800 (PST)
+        id S1726387AbfLRBwy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Dec 2019 20:52:54 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:32898 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725975AbfLRBwx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Dec 2019 20:52:53 -0500
+Received: by mail-pg1-f193.google.com with SMTP id 6so354386pgk.0;
+        Tue, 17 Dec 2019 17:52:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=8ZYXwbCjtNWqJIDLbVMFamCAEZvutQ9SIc/nE46X/mE=;
+        b=Nh0NFryBhtZo1eAvzgTF8PQKYiR3qMHJ8GBAoAjeeg/EFbUy1g3ZJkpITVMHwwq9x6
+         MyWNboOWs/+wx+L5vIFls2ldq2kpHnfKF3tM1576oxBSosyQmHaRCGw2fxFuHI6eNICX
+         t3AN6rPt7sZ9IZYuj39xcctJF4uoFB1pvkOP426T05UvNZfKQr+UpKRm27EDfaR+Cr90
+         q6a5fY+2HwkbwRlr4Pr1uzQz3k6nZbNVnnbTD3BxoJ1Gy9jGiZBwVQ/5jBhYBoZa+cqd
+         s3LFXL6xmZq2KxKXwTO6ylzacso1kA7NF5mZBrGw20O0OU4nNRXF3hB78z2RF2DqecVZ
+         Ndmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=IGVlsi51wBMoGedqeTz+Ey68UQlFM88VldO63Q3nLRQ=;
-        b=YncNf7h7C4NWgw56Jd3N6/6ZvzudRdZRUS7iamkIwbj+U9+5Jj4T1UeErLAdFs4qgE
-         PW3K7uigvwPuxOs0ylVvDvHGMLWjoEYvCOvq6cwx4qfyK9nXSKylJbIXc9TMu/scNAZ5
-         clU9v7qfcvXZIYx2q7+Lc/+jAd8ZfhzPDXYg0/f01XEMWSYcAQJeB7simmZDioLKGBy4
-         n+iuMB3+I0SxjqSiI1F4pYVvj7Jki85qi40vBxdigX/EFZUjCalAZSEtVGG3qAvOUth8
-         I8Brr3szU/nzyvkRB5WcHU2UeA5tWmhiJD42KgOZQ8M8EEkIN/4LFW4n34XkcrooCK4C
-         +7OA==
-X-Gm-Message-State: APjAAAUGR7Ysy7Ijg8WOAYVLuOCEYL7S+4zj91mO/F+IP47/U2XDWLGw
-        +Lnpa4jzXjuz080jNMC75A==
-X-Google-Smtp-Source: APXvYqyqrKdrMkctouGaopN51KC2pUjOQpD1RG3uWe9FRQZYCgz6+jOAqvGgyxFRpwmFELy9y3Lo+w==
-X-Received: by 2002:a05:6830:1442:: with SMTP id w2mr56075otp.143.1576626226428;
-        Tue, 17 Dec 2019 15:43:46 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 4sm120089otu.0.2019.12.17.15.43.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2019 15:43:45 -0800 (PST)
-Date:   Tue, 17 Dec 2019 17:43:45 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc:     jic23@kernel.org, alexandre.torgue@st.com, mark.rutland@arm.com,
-        mcoquelin.stm32@gmail.com, lars@metafoo.de, knaack.h@gmx.de,
-        pmeerw@pmeerw.net, olivier.moysan@st.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: iio: adc: stm32-adc: convert bindings to
- json-schema
-Message-ID: <20191217234345.GA7738@bogus>
-References: <1575649028-10909-1-git-send-email-fabrice.gasnier@st.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=8ZYXwbCjtNWqJIDLbVMFamCAEZvutQ9SIc/nE46X/mE=;
+        b=HFsjClA1lFYCctfAg/8VpEFebvbdRi14CYJ8QfEdrpEkFdnAfGGwn1T+RBCYGxNHMS
+         PfB+0wq4kkmWgvBIu23fN2ehpah51gx6/s2jvEli5SAUNChu5OkWPiwu8yfK0zDabhEQ
+         05XYZZ4YMM8v3Ls2hXmObshvF8rmp6Bqj0P/o8H9K4SYOzZrFTN7wNXNwUrFzDmkG32s
+         G0sC0F5YXg3gUz/IQkCF/BPT53BvReiZuiq2gP2xlrXejYTwbWtB4ZMLIUXQ4S26vrD4
+         M0efODLiekiC2xHfIGZgyzQ4+tC/FR47uz7EILteD2lCgvM7LNAoThs6OkiINRZ1sFch
+         zVOA==
+X-Gm-Message-State: APjAAAUhOLSVzrANBBO98Ry7bFixcK6te2J3b6auf5vME/nSt3L5UZDS
+        9Fukm/5qS4/N5ML9waHVJu/Tip+x
+X-Google-Smtp-Source: APXvYqx5iEIQz9QzHWP385uYyw3YA/fQl3U99HT+gyUp/y/5U1+Q3gI99i3mnQZ3RBv9T1d0N5EDeA==
+X-Received: by 2002:a63:a555:: with SMTP id r21mr1168013pgu.158.1576633972249;
+        Tue, 17 Dec 2019 17:52:52 -0800 (PST)
+Received: from [0.0.0.0] ([103.103.128.212])
+        by smtp.gmail.com with ESMTPSA id o184sm316873pgo.62.2019.12.17.17.52.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Dec 2019 17:52:51 -0800 (PST)
+Subject: Re: [PATCH v2 1/2] iio: chemical: add support for Dynament Premier
+ series single gas sensor
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Tomasz Duszynski <tduszyns@gmail.com>, mike.looijmans@topic.nl,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20191217102433.24192-1-mtwget@gmail.com>
+ <CAJCx=gm1SC5i6=vAMFdetRAfLg3_s+Wn7rYULy6a=WG8tj6G2A@mail.gmail.com>
+From:   ruantu <mtwget@gmail.com>
+Message-ID: <3a17c9e1-f916-0cde-3296-70066dccb2b3@gmail.com>
+Date:   Wed, 18 Dec 2019 09:52:42 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1575649028-10909-1-git-send-email-fabrice.gasnier@st.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAJCx=gm1SC5i6=vAMFdetRAfLg3_s+Wn7rYULy6a=WG8tj6G2A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Dec 06, 2019 at 05:17:08PM +0100, Fabrice Gasnier wrote:
-> Convert the STM32 ADC binding to DT schema format using json-schema
-> 
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-> ---
-> Note: this applies on top of IIO tree currently (iio-for-5.5c).
-> 
-> Changes in V2:
-> - Take almost all of Rob suggestions (removed reg generic description,
->   added minItems, maxItems, st,max-clk-rate-hz range, drop some pipes,
->   simplify clock-names, remove unneeded allOfs)
-> - For now, keep all in one file despite there are lots of if/thens in the
->   bindings
-> ---
->  .../devicetree/bindings/iio/adc/st,stm32-adc.txt   | 149 -------
->  .../devicetree/bindings/iio/adc/st,stm32-adc.yaml  | 454 +++++++++++++++++++++
->  2 files changed, 454 insertions(+), 149 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/iio/adc/st,stm32-adc.txt
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-
-
-> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-> new file mode 100644
-> index 00000000..60a0212
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-> @@ -0,0 +1,454 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/bindings/iio/adc/st,stm32-adc.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
-> +title: STMicroelectronics STM32 ADC bindings
-> +
-> +description: |
-> +  STM32 ADC is a successive approximation analog-to-digital converter.
-> +  It has several multiplexed input channels. Conversions can be performed
-> +  in single, continuous, scan or discontinuous mode. Result of the ADC is
-> +  stored in a left-aligned or right-aligned 32-bit data register.
-> +  Conversions can be launched in software or using hardware triggers.
-> +
-> +  The analog watchdog feature allows the application to detect if the input
-> +  voltage goes beyond the user-defined, higher or lower thresholds.
-> +
-> +  Each STM32 ADC block can have up to 3 ADC instances.
-> +
-> +maintainers:
-> +  - Fabrice Gasnier <fabrice.gasnier@st.com>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - st,stm32f4-adc-core
-> +      - st,stm32h7-adc-core
-> +      - st,stm32mp1-adc-core
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description: |
-> +      One or more interrupts for ADC block, depending on part used:
-> +        - stm32f4 and stm32h7 share a common ADC interrupt line.
-> +        - stm32mp1 has two separate interrupt lines, one for each ADC within
-> +          ADC block.
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  clocks:
-> +    description: |
-> +      Core can use up to two clocks, depending on part used:
-> +        - "adc" clock: for the analog circuitry, common to all ADCs.
-> +          It's required on stm32f4.
-> +          It's optional on stm32h7 and stm32mp1.
-> +        - "bus" clock: for registers access, common to all ADCs.
-> +          It's not present on stm32f4.
-> +          It's required on stm32h7 and stm32mp1.
-> +
-> +  clock-names: true
-> +
-> +  st,max-clk-rate-hz:
-> +    description:
-> +      Allow to specify desired max clock rate used by analog circuitry.
-> +
-> +  vdda-supply:
-> +    description: Phandle to the vdda input analog voltage.
-> +
-> +  vref-supply:
-> +    description: Phandle to the vref input analog reference voltage.
-> +
-> +  booster-supply:
-> +    description:
-> +      Phandle to the embedded booster regulator that can be used to supply ADC
-> +      analog input switches on stm32h7 and stm32mp1.
-> +
-> +  vdd-supply:
-> +    description:
-> +      Phandle to the vdd input voltage. It can be used to supply ADC analog
-> +      input switches on stm32mp1.
-> +
-> +  st,syscfg:
-> +    description:
-> +      Phandle to system configuration controller. It can be used to control the
-> +      analog circuitry on stm32mp1.
-> +    allOf:
-> +      - $ref: "/schemas/types.yaml#/definitions/phandle-array"
-> +
-> +  interrupt-controller: true
-> +
-> +  '#interrupt-cells':
-> +    const: 1
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: st,stm32f4-adc-core
-> +
-> +    then:
-> +      properties:
-> +        clocks:
-> +          maxItems: 1
-> +
-> +        clock-names:
-> +          const: adc
-> +
-> +        interrupts:
-> +          items:
-> +            - description: interrupt line common for all ADCs
-> +
-> +        st,max-clk-rate-hz:
-> +          minimum: 600000
-> +          maximum: 36000000
-> +          default: 36000000
-> +
-> +        booster-supply: false
-> +
-> +        vdd-supply: false
-> +
-> +        st,syscfg: false
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: st,stm32h7-adc-core
-> +
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 1
-> +          maxItems: 2
-> +
-> +        clock-names:
-> +          items:
-> +            - const: bus
-> +            - const: adc
-> +          minItems: 1
-> +          maxItems: 2
-> +
-> +        interrupts:
-> +          items:
-> +            - description: interrupt line common for all ADCs
-> +
-> +        st,max-clk-rate-hz:
-> +          minimum: 120000
-> +          maximum: 36000000
-> +          default: 36000000
-> +
-> +        vdd-supply: false
-> +
-> +        st,syscfg: false
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: st,stm32mp1-adc-core
-> +
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 1
-> +          maxItems: 2
-> +
-> +        clock-names:
-> +          items:
-> +            - const: bus
-> +            - const: adc
-> +          minItems: 1
-> +          maxItems: 2
-> +
-> +        interrupts:
-> +          items:
-> +            - description: interrupt line for ADC1
-> +            - description: interrupt line for ADC2
-> +
-> +        st,max-clk-rate-hz:
-> +          minimum: 120000
-> +          maximum: 36000000
-> +          default: 36000000
-> +
-> +additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - clock-names
-> +  - vdda-supply
-> +  - vref-supply
-> +  - interrupt-controller
-> +  - '#interrupt-cells'
-> +  - '#address-cells'
-> +  - '#size-cells'
-> +
-> +patternProperties:
-> +  "^adc@[0-9]+$":
-> +    type: object
-> +    description:
-> +      An ADC block node should contain at least one subnode, representing an
-> +      ADC instance available on the machine.
-> +
-> +    properties:
-> +      compatible:
-> +        enum:
-> +          - st,stm32f4-adc
-> +          - st,stm32h7-adc
-> +          - st,stm32mp1-adc
-> +
-> +      reg:
-> +        description: |
-> +          Offset of ADC instance in ADC block. Valid values are:
-> +            - 0x0:   ADC1
-> +            - 0x100: ADC2
-> +            - 0x200: ADC3 (stm32f4 only)
-> +        maxItems: 1
-> +
-> +      '#io-channel-cells':
-> +        const: 1
-> +
-> +      interrupts:
-> +        description: |
-> +          IRQ Line for the ADC instance. Valid values are:
-> +            - 0 for adc@0
-> +            - 1 for adc@100
-> +            - 2 for adc@200 (stm32f4 only)
-> +        maxItems: 1
-> +
-> +      clocks:
-> +        description:
-> +          Input clock private to this ADC instance. It's required only on
-> +          stm32f4, that has per instance clock input for registers access.
-> +        maxItems: 1
-> +
-> +      dmas:
-> +        description: RX DMA Channel
-> +        maxItems: 1
-> +
-> +      dma-names:
-> +        const: rx
-> +
-> +      assigned-resolution-bits:
-> +        description: |
-> +          Resolution (bits) to use for conversions:
-> +            - can be 6, 8, 10 or 12 on stm32f4
-> +            - can be 8, 10, 12, 14 or 16 on stm32h7 and stm32mp1
-> +        allOf:
-> +          - $ref: /schemas/types.yaml#/definitions/uint32
-> +
-> +      st,adc-channels:
-> +        description: |
-> +          List of single-ended channels muxed for this ADC. It can have up to:
-> +            - 16 channels, numbered from 0 to 15 (for in0..in15) on stm32f4
-> +            - 20 channels, numbered from 0 to 19 (for in0..in19) on stm32h7 and
-> +              stm32mp1.
-> +        allOf:
-> +          - $ref: /schemas/types.yaml#/definitions/uint32-array
-> +
-> +      st,adc-diff-channels:
-> +        description: |
-> +          List of differential channels muxed for this ADC. Some channels can
-> +          be configured as differential instead of single-ended on stm32h7 and
-> +          on stm32mp1. Positive and negative inputs pairs are listed:
-> +          <vinp vinn>, <vinp vinn>,... vinp and vinn are numbered from 0 to 19.
-> +
-> +          Note: At least one of "st,adc-channels" or "st,adc-diff-channels" is
-> +          required. Both properties can be used together. Some channels can be
-> +          used as single-ended and some other ones as differential (mixed). But
-> +          channels can't be configured both as single-ended and differential.
-> +        allOf:
-> +          - $ref: /schemas/types.yaml#/definitions/uint32-matrix
-> +          - items:
-> +              items:
-> +                - description: |
-> +                    "vinp" indicates positive input number
-> +                  minimum: 0
-> +                  maximum: 19
-> +                - description: |
-> +                    "vinn" indicates negative input number
-> +                  minimum: 0
-> +                  maximum: 19
-> +
-> +      st,min-sample-time-nsecs:
-> +        description:
-> +          Minimum sampling time in nanoseconds. Depending on hardware (board)
-> +          e.g. high/low analog input source impedance, fine tune of ADC
-> +          sampling time may be recommended. This can be either one value or an
-> +          array that matches "st,adc-channels" and/or "st,adc-diff-channels"
-> +          list, to set sample time resp. for all channels, or independently for
-> +          each channel.
-> +        allOf:
-> +          - $ref: /schemas/types.yaml#/definitions/uint32-array
-> +
-> +    allOf:
-> +      - if:
-> +          properties:
-> +            compatible:
-> +              contains:
-> +                const: st,stm32f4-adc
-> +
-> +        then:
-> +          properties:
-> +            reg:
-> +              enum:
-> +                - 0x0
-> +                - 0x100
-> +                - 0x200
-> +
-> +            interrupts:
-> +              minimum: 0
-> +              maximum: 2
-> +
-> +            assigned-resolution-bits:
-> +              enum: [6, 8, 10, 12]
-> +              default: 12
-> +
-> +            st,adc-channels:
-> +              minItems: 1
-> +              maxItems: 16
-> +              minimum: 0
-> +              maximum: 15
-
-You are mixing array and scalar constraints here. You need:
-
-minItems: 1
-maxItems:16
-items:
-  minimum: 0
-  maximum: 15
-
-Update dtschema. It will now catch this. There's a few others too.
-
-
-> +
-> +            st,adc-diff-channels: false
-> +
-> +            st,min-sample-time-nsecs:
-> +              minItems: 1
-> +              maxItems: 16
-> +              minimum: 80
-> +
-> +          required:
-> +            - clocks
-> +
-> +      - if:
-> +          properties:
-> +            compatible:
-> +              contains:
-> +                enum:
-> +                  - st,stm32h7-adc
-> +                  - st,stm32mp1-adc
-> +
-> +        then:
-> +          properties:
-> +            reg:
-> +              enum:
-> +                - 0x0
-> +                - 0x100
-> +
-> +            interrupts:
-> +              minimum: 0
-> +              maximum: 1
-> +
-> +            assigned-resolution-bits:
-> +              enum: [8, 10, 12, 14, 16]
-> +              default: 16
-> +
-> +            st,adc-channels:
-> +              minItems: 1
-> +              maxItems: 20
-> +              minimum: 0
-> +              maximum: 19
-> +
-> +            st,min-sample-time-nsecs:
-> +              minItems: 1
-> +              maxItems: 20
-> +              minimum: 40
-> +
-> +    additionalProperties: false
-> +
-> +    anyOf:
-> +      - required:
-> +          - st,adc-channels
-> +      - required:
-> +          - st,adc-diff-channels
-> +
-> +    required:
-> +      - compatible
-> +      - reg
-> +      - interrupts
-> +      - '#io-channel-cells'
-> +
-> +examples:
-> +  - |
-> +    // Example 1: with stm32f429
-> +      adc123: adc@40012000 {
-> +        compatible = "st,stm32f4-adc-core";
-> +        reg = <0x40012000 0x400>;
-> +        interrupts = <18>;
-> +        clocks = <&rcc 0 168>;
-> +        clock-names = "adc";
-> +        st,max-clk-rate-hz = <36000000>;
-> +        vdda-supply = <&vdda>;
-> +        vref-supply = <&vref>;
-> +        interrupt-controller;
-> +        #interrupt-cells = <1>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        adc@0 {
-> +          compatible = "st,stm32f4-adc";
-> +          #io-channel-cells = <1>;
-> +          reg = <0x0>;
-> +          clocks = <&rcc 0 168>;
-> +          interrupt-parent = <&adc123>;
-> +          interrupts = <0>;
-> +          st,adc-channels = <8>;
-> +          dmas = <&dma2 0 0 0x400 0x0>;
-> +          dma-names = "rx";
-> +          assigned-resolution-bits = <8>;
-> +        };
-> +        // ...
-> +        // other adc child nodes follow...
-> +      };
-> +
-> +  - |
-> +    // Example 2: with stm32mp157c to setup ADC1 with:
-> +    // - channel 1 as single-ended
-> +    // - channels 2 & 3 as differential (with resp. 6 & 7 negative inputs)
-> +      #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +      #include <dt-bindings/clock/stm32mp1-clks.h>
-> +      adc12: adc@48003000 {
-> +        compatible = "st,stm32mp1-adc-core";
-> +        reg = <0x48003000 0x400>;
-> +        interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
-> +        clocks = <&rcc ADC12>, <&rcc ADC12_K>;
-> +        clock-names = "bus", "adc";
-> +        booster-supply = <&booster>;
-> +        vdd-supply = <&vdd>;
-> +        vdda-supply = <&vdda>;
-> +        vref-supply = <&vref>;
-> +        st,syscfg = <&syscfg>;
-> +        interrupt-controller;
-> +        #interrupt-cells = <1>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        adc@0 {
-> +          compatible = "st,stm32mp1-adc";
-> +          #io-channel-cells = <1>;
-> +          reg = <0x0>;
-> +          interrupt-parent = <&adc12>;
-> +          interrupts = <0>;
-> +          st,adc-channels = <1>;
-> +          st,adc-diff-channels = <2 6>, <3 7>;
-> +          st,min-sample-time-nsecs = <5000>;
-> +          dmas = <&dmamux1 9 0x400 0x05>;
-> +          dma-names = "rx";
-> +        };
-> +        // ...
-> +        // other adc child node follow...
-> +      };
-> +
-> +...
-> -- 
-> 2.7.4
-> 
+On Tue, Dec 17, 2019 at 2:24 AM YuDong Zhang <mtwget@gmail.com> wrote:
+>> Add support for Dynament Premier series single gas sensor.
+>>
+> Just looking the Dynament site and I assume this is for the OEM-1
+> Development kit? If so you probably should
+> note that in the documentation because the sensors themselves are
+> likely to be used in other end products (and not
+> always the dev kit)
+>
+> Also bit of silly question this is an UART device so why not do
+> processing in userspace? :)
+>
+> - Matt
+This is a driver implemented according to the <Dynamization Sensor 
+Communications protocol>. I think the protocol is standard. This is the 
+idea that emerged after the iio subsystem used serial_bus.
+>> Signed-off-by: YuDong Zhang <mtwget@gmail.com>
+>> ---
+>>   MAINTAINERS                    |   5 +
+>>   drivers/iio/chemical/Kconfig   |  10 +
+>>   drivers/iio/chemical/Makefile  |   1 +
+>>   drivers/iio/chemical/premier.c | 366 +++++++++++++++++++++++++++++++++
+>>   4 files changed, 382 insertions(+)
+>>   create mode 100644 drivers/iio/chemical/premier.c
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index a049abccaa26..ae228ac7adc9 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -5792,6 +5792,11 @@ S:       Maintained
+>>   F:     drivers/media/usb/dvb-usb-v2/dvb_usb*
+>>   F:     drivers/media/usb/dvb-usb-v2/usb_urb.c
+>>
+>> +DYNAMENT PREMIER SERIES SINGLE GAS SENSOR DRIVER
+>> +M:     YuDong Zhang <mtwget@gmail.com>
+>> +S:     Maintained
+>> +F:     drivers/iio/chemical/premier.c
+>> +
+>>   DYNAMIC DEBUG
+>>   M:     Jason Baron <jbaron@akamai.com>
+>>   S:     Maintained
+>> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+>> index fa4586037bb8..93c0c108245b 100644
+>> --- a/drivers/iio/chemical/Kconfig
+>> +++ b/drivers/iio/chemical/Kconfig
+>> @@ -62,6 +62,16 @@ config IAQCORE
+>>            iAQ-Core Continuous/Pulsed VOC (Volatile Organic Compounds)
+>>            sensors
+>>
+>> +config PREMIER
+>> +       tristate "Dynament Premier series sensor"
+>> +       depends on SERIAL_DEV_BUS
+>> +       help
+>> +         Say Y here to build support for the Dynament Premier
+>> +         series sensor.
+>> +
+>> +         To compile this driver as a module, choose M here: the module will
+>> +         be called premier.
+>> +
+>>   config PMS7003
+>>          tristate "Plantower PMS7003 particulate matter sensor"
+>>          depends on SERIAL_DEV_BUS
+>> diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
+>> index f97270bc4034..c8e779d7cf4a 100644
+>> --- a/drivers/iio/chemical/Makefile
+>> +++ b/drivers/iio/chemical/Makefile
+>> @@ -10,6 +10,7 @@ obj-$(CONFIG_BME680_I2C) += bme680_i2c.o
+>>   obj-$(CONFIG_BME680_SPI) += bme680_spi.o
+>>   obj-$(CONFIG_CCS811)           += ccs811.o
+>>   obj-$(CONFIG_IAQCORE)          += ams-iaq-core.o
+>> +obj-$(CONFIG_PREMIER)          += premier.o
+>>   obj-$(CONFIG_PMS7003) += pms7003.o
+>>   obj-$(CONFIG_SENSIRION_SGP30)  += sgp30.o
+>>   obj-$(CONFIG_SPS30) += sps30.o
+>> diff --git a/drivers/iio/chemical/premier.c b/drivers/iio/chemical/premier.c
+>> new file mode 100644
+>> index 000000000000..a226dd9d78cb
+>> --- /dev/null
+>> +++ b/drivers/iio/chemical/premier.c
+>> @@ -0,0 +1,366 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Dynament Premier series single gas sensor driver
+>> + *
+>> + * Copyright (c) YuDong Zhang <mtwget@gmail.com>
+>> + */
+>> +
+>> +#include <asm/unaligned.h>
+>> +#include <linux/completion.h>
+>> +#include <linux/device.h>
+>> +#include <linux/errno.h>
+>> +#include <linux/iio/iio.h>
+>> +#include <linux/jiffies.h>
+>> +#include <linux/kernel.h>
+>> +#include <linux/mod_devicetable.h>
+>> +#include <linux/module.h>
+>> +#include <linux/mutex.h>
+>> +#include <linux/of.h>
+>> +#include <linux/regulator/consumer.h>
+>> +#include <linux/serdev.h>
+>> +
+>> +#define PREMIER_DRIVER_NAME "dynament-premier"
+>> +
+>> +#define PREMIER_DLE (0x10)
+>> +#define PREMIER_CMD_RD (0x13)
+>> +#define PREMIER_CMD_NAK (0x19)
+>> +#define PREMIER_CMD_DAT (0x1a)
+>> +#define PREMIER_EOF (0x1f)
+>> +
+>> +#define PREMIER_TIMEOUT msecs_to_jiffies(6000)
+>> +
+>> +/*
+>> + * commands have following format:
+>> + *
+>> + * +-----+-----+---------+-----+-----+-----------+-----------+
+>> + * | DLE | CMD | PAYLOAD | DLE | EOF | CKSUM MSB | CKSUM LSB |
+>> + * +-----+-----+---------+-----+-----+-----------+-----------+
+>> + */
+>> +static const u8 premier_cmd_read_live_data_simple[] = { 0x10, 0x13, 0x06, 0x10,
+>> +                                                       0x1F, 0x00, 0x58 };
+>> +
+>> +struct premier_frame {
+>> +       u8 state;
+>> +       u8 is_dat;
+>> +       u8 is_nak;
+>> +       u8 data_len;
+>> +       u8 vi, si, gi, gj;
+>> +       u8 gas[4];
+>> +       u8 byte_stuffing;
+>> +       u8 checksum_received[2];
+>> +       u16 checksum_calculated;
+>> +};
+>> +
+>> +struct premier_data {
+>> +       struct serdev_device *serdev;
+>> +       struct premier_frame frame;
+>> +       struct completion frame_ready;
+>> +       struct mutex lock; /* must be held whenever state gets touched */
+>> +       struct regulator *vcc;
+>> +};
+>> +
+>> +static int premier_do_cmd_read_live_data(struct premier_data *state)
+>> +{
+>> +       int ret;
+>> +
+>> +       ret = serdev_device_write(state->serdev,
+>> +                                 premier_cmd_read_live_data_simple,
+>> +                                 sizeof(premier_cmd_read_live_data_simple),
+>> +                                 PREMIER_TIMEOUT);
+>> +       if (ret < sizeof(premier_cmd_read_live_data_simple))
+>> +               return ret < 0 ? ret : -EIO;
+>> +
+>> +       ret = wait_for_completion_interruptible_timeout(&state->frame_ready,
+>> +                                                       PREMIER_TIMEOUT);
+>> +
+>> +       if (!ret)
+>> +               ret = -ETIMEDOUT;
+>> +
+>> +       return ret < 0 ? ret : 0;
+>> +}
+>> +
+>> +static s32 premier_float_to_int_clamped(const u8 *fp)
+>> +{
+>> +       int val = get_unaligned_le32(fp);
+>> +       int mantissa = val & GENMASK(22, 0);
+>> +       /* this is fine since passed float is always non-negative */
+>> +       int exp = val >> 23;
+>> +       int fraction, shift;
+>> +
+>> +       /* special case 0 */
+>> +       if (!exp && !mantissa)
+>> +               return 0;
+>> +
+>> +       exp -= 127;
+>> +       if (exp < 0) {
+>> +               /* return values ranging from 1 to 99 */
+>> +               return ((((1 << 23) + mantissa) * 100) >> 23) >> (-exp);
+>> +       }
+>> +
+>> +       /* return values ranging from 100 to int_max */
+>> +       shift = 23 - exp;
+>> +       val = (1 << exp) + (mantissa >> shift);
+>> +
+>> +       fraction = mantissa & GENMASK(shift - 1, 0);
+>> +
+>> +       return val * 100 + ((fraction * 100) >> shift);
+>> +}
+>> +
+>> +static int premier_read_raw(struct iio_dev *indio_dev,
+>> +                           struct iio_chan_spec const *chan, int *val,
+>> +                           int *val2, long mask)
+>> +{
+>> +       struct premier_data *state = iio_priv(indio_dev);
+>> +       struct premier_frame *frame = &state->frame;
+>> +       int ret;
+>> +       s32 val_tmp;
+>> +
+>> +       switch (mask) {
+>> +       case IIO_CHAN_INFO_PROCESSED:
+>> +
+>> +               mutex_lock(&state->lock);
+>> +               ret = premier_do_cmd_read_live_data(state);
+>> +               if (ret) {
+>> +                       mutex_unlock(&state->lock);
+>> +                       return ret;
+>> +               }
+>> +               val_tmp = premier_float_to_int_clamped(frame->gas);
+>> +               mutex_unlock(&state->lock);
+>> +
+>> +               *val = val_tmp / 100;
+>> +               *val2 = (val_tmp % 100) * 10000;
+>> +               return IIO_VAL_INT_PLUS_MICRO;
+>> +       default:
+>> +               return -EINVAL;
+>> +       }
+>> +
+>> +       return -EINVAL;
+>> +}
+>> +
+>> +static const struct iio_info premier_info = {
+>> +       .read_raw = premier_read_raw,
+>> +};
+>> +
+>> +static const struct iio_chan_spec premier_channels[] = {
+>> +       {
+>> +               .type = IIO_MASSCONCENTRATION,
+>> +               .channel = 1,
+>> +               .channel2 = IIO_MOD_CO2,
+>> +               .scan_index = -1,
+>> +               .info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
+>> +               .modified = 1,
+>> +       },
+>> +       IIO_CHAN_SOFT_TIMESTAMP(0),
+>> +};
+>> +
+>> +static int premier_receive_buf(struct serdev_device *serdev,
+>> +                              const unsigned char *buf, size_t size)
+>> +{
+>> +       struct iio_dev *indio_dev = serdev_device_get_drvdata(serdev);
+>> +       struct premier_data *state = iio_priv(indio_dev);
+>> +       struct premier_frame *frame = &state->frame;
+>> +       int i;
+>> +
+>> +       for (i = 0; i < size; i++) {
+>> +               if (frame->state > 0 && frame->state <= 7)
+>> +                       frame->checksum_calculated += buf[i];
+>> +
+>> +               switch (frame->state) {
+>> +               case 0:
+>> +                       if (buf[i] == PREMIER_DLE) {
+>> +                               frame->is_dat = 0;
+>> +                               frame->is_nak = 0;
+>> +                               frame->checksum_calculated = buf[i];
+>> +                               /* We don't initialize checksum_calculated in
+>> +                                * the last state in case we didn't go
+>> +                                * there because of noise
+>> +                                */
+>> +                               frame->state++;
+>> +                       }
+>> +                       break;
+>> +               case 1:
+>> +                       /*
+>> +                        * If noise corrupts a byte in the FSM sequence,
+>> +                        * we loop between state 0 and 1,
+>> +                        * until we have a valid sequence of DLE&DAT or DLE&NAK
+>> +                        */
+>> +                       if (buf[i] == PREMIER_CMD_DAT) {
+>> +                               frame->is_dat = 1;
+>> +                               frame->state++;
+>> +                       } else if (buf[i] == PREMIER_CMD_NAK) {
+>> +                               frame->is_nak = 1;
+>> +                               frame->state++;
+>> +                       } else
+>> +                               frame->state = 0;
+>> +                       break;
+>> +               case 2:
+>> +                       if (frame->is_nak)
+>> +                               frame->state = 0;
+>> +                       else if (frame->is_dat) {
+>> +                               frame->data_len = buf[i] - 4;
+>> +                               /* remove version and status bytes from count */
+>> +                               if (frame->data_len < 4)
+>> +                                       frame->state = 0;
+>> +                               /* we check for the upper limit in state 5 */
+>> +                               else
+>> +                                       frame->state++;
+>> +                       } else
+>> +                               frame->state = 0;
+>> +                       break;
+>> +               case 3:
+>> +                       /* Just do nothing for 2 rounds to bypass
+>> +                        * the 2 version bytes
+>> +                        */
+>> +                       if (frame->vi < 2 - 1)
+>> +                               frame->vi++;
+>> +                       else {
+>> +                               frame->vi = 0;
+>> +                               frame->state++;
+>> +                       }
+>> +                       break;
+>> +               case 4:
+>> +                       if (frame->si < 2 - 1)
+>> +                               frame->si++;
+>> +                       else {
+>> +                               frame->si = 0;
+>> +                               frame->state++;
+>> +                       }
+>> +                       break;
+>> +               case 5:
+>> +                       if (frame->gi < frame->data_len - 1) {
+>> +                               if (buf[i] != PREMIER_DLE ||
+>> +                                   frame->byte_stuffing) {
+>> +                                       frame->gas[frame->gj] = buf[i];
+>> +                                       frame->byte_stuffing = 0;
+>> +                                       frame->gj++;
+>> +                                       if (frame->gj >= 4)
+>> +                                               frame->state = 0;
+>> +                                       /* Don't violate array limits
+>> +                                        * if data_len corrupt
+>> +                                        */
+>> +                               } else
+>> +                                       frame->byte_stuffing = 1;
+>> +                               frame->gi++;
+>> +                       } else {
+>> +                               frame->gas[frame->gj] = buf[i];
+>> +                               frame->byte_stuffing = 0;
+>> +                               frame->gi = 0;
+>> +                               frame->gj = 0;
+>> +                               frame->state++;
+>> +                       }
+>> +                       break;
+>> +               case 6:
+>> +                       if (buf[i] == PREMIER_DLE)
+>> +                               frame->state++;
+>> +                       else
+>> +                               frame->state = 0;
+>> +                       break;
+>> +               case 7:
+>> +                       if (buf[i] == PREMIER_EOF)
+>> +                               frame->state++;
+>> +                       else
+>> +                               frame->state = 0;
+>> +                       break;
+>> +               case 8:
+>> +                       frame->checksum_received[1] = buf[i];
+>> +
+>> +                       frame->state++;
+>> +                       break;
+>> +               case 9:
+>> +                       frame->checksum_received[0] = buf[i];
+>> +
+>> +                       if (frame->checksum_calculated ==
+>> +                           get_unaligned_le16(frame->checksum_received))
+>> +                               complete(&state->frame_ready);
+>> +
+>> +                       frame->state = 0;
+>> +                       break;
+>> +               }
+>> +       }
+>> +
+>> +       return size;
+>> +}
+>> +
+>> +static const struct serdev_device_ops premier_serdev_ops = {
+>> +       .receive_buf = premier_receive_buf,
+>> +       .write_wakeup = serdev_device_write_wakeup,
+>> +};
+>> +
+>> +static int premier_probe(struct serdev_device *serdev)
+>> +{
+>> +       struct premier_data *state;
+>> +       struct iio_dev *indio_dev;
+>> +       int ret;
+>> +
+>> +       indio_dev = devm_iio_device_alloc(&serdev->dev, sizeof(*state));
+>> +       if (!indio_dev)
+>> +               return -ENOMEM;
+>> +
+>> +       state = iio_priv(indio_dev);
+>> +       serdev_device_set_drvdata(serdev, indio_dev);
+>> +       state->serdev = serdev;
+>> +       indio_dev->dev.parent = &serdev->dev;
+>> +       indio_dev->info = &premier_info;
+>> +       indio_dev->name = PREMIER_DRIVER_NAME;
+>> +       indio_dev->channels = premier_channels;
+>> +       indio_dev->num_channels = ARRAY_SIZE(premier_channels);
+>> +       indio_dev->modes = INDIO_DIRECT_MODE;
+>> +
+>> +       mutex_init(&state->lock);
+>> +       init_completion(&state->frame_ready);
+>> +
+>> +       state->vcc = devm_regulator_get(&serdev->dev, "vcc");
+>> +       if (IS_ERR(state->vcc)) {
+>> +               ret = PTR_ERR(state->vcc);
+>> +               return ret;
+>> +       }
+>> +
+>> +       serdev_device_set_client_ops(serdev, &premier_serdev_ops);
+>> +       ret = devm_serdev_device_open(&serdev->dev, serdev);
+>> +       if (ret)
+>> +               return ret;
+>> +
+>> +       serdev_device_set_baudrate(serdev, 9600);
+>> +       serdev_device_set_flow_control(serdev, false);
+>> +
+>> +       ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
+>> +       if (ret)
+>> +               return ret;
+>> +
+>> +       if (state->vcc) {
+>> +               ret = regulator_enable(state->vcc);
+>> +               if (ret)
+>> +                       return ret;
+>> +       }
+>> +
+>> +       return devm_iio_device_register(&serdev->dev, indio_dev);
+>> +}
+>> +
+>> +static void premier_remove(struct serdev_device *serdev)
+>> +{
+>> +       struct iio_dev *indio_dev = serdev_device_get_drvdata(serdev);
+>> +       struct premier_data *state = iio_priv(indio_dev);
+>> +
+>> +       if (state->vcc)
+>> +               regulator_disable(state->vcc);
+>> +}
+>> +
+>> +static const struct of_device_id premier_of_match[] = {
+>> +       { .compatible = "dynament,premier" },
+>> +       {}
+>> +};
+>> +MODULE_DEVICE_TABLE(of, premier_of_match);
+>> +
+>> +static struct serdev_device_driver premier_driver = {
+>> +       .driver = {
+>> +               .name = PREMIER_DRIVER_NAME,
+>> +               .of_match_table = premier_of_match,
+>> +       },
+>> +       .probe = premier_probe,
+>> +       .remove = premier_remove,
+>> +};
+>> +module_serdev_device_driver(premier_driver);
+>> +
+>> +MODULE_AUTHOR("YuDong Zhang <mtwget@gmail.com>");
+>> +MODULE_DESCRIPTION("Dynament Premier series single gas sensor driver");
+>> +MODULE_LICENSE("GPL v2");
+>> --
+>> 2.24.1
+>>

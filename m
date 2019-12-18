@@ -2,15 +2,15 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DAE5124D4E
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2019 17:26:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCAAB124D75
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2019 17:27:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727021AbfLRQYG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Dec 2019 11:24:06 -0500
+        id S1727458AbfLRQ0O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Dec 2019 11:26:14 -0500
 Received: from esa2.microchip.iphmx.com ([68.232.149.84]:12945 "EHLO
         esa2.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726985AbfLRQYF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Dec 2019 11:24:05 -0500
+        with ESMTP id S1727519AbfLRQYH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Dec 2019 11:24:07 -0500
 Received-SPF: Pass (esa2.microchip.iphmx.com: domain of
   Eugen.Hristev@microchip.com designates 198.175.253.82 as
   permitted sender) identity=mailfrom;
@@ -30,30 +30,30 @@ Received-SPF: None (esa2.microchip.iphmx.com: no sender
   x-sender="postmaster@email.microchip.com";
   x-conformance=spf_only
 Authentication-Results: esa2.microchip.iphmx.com; spf=Pass smtp.mailfrom=Eugen.Hristev@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: jCu5830BU85l0txbOUKxGhxBNJ5v409VpwPrcLZMUmKL9ZGMbHpZtIlKFTbBLZ6arVgBOVQBYa
- rB/Hu+4i5s34uRq8Wr0VQlUB6lSaQqzi3Kxa0uTBnV5l7BVAOG/5tzgSiYzc/Q6mnYIX4pKjqz
- 6DB+7stPADCrjMSZwXbhk+6O29wgUiI6iJ6IyeaNYYCeuDuWekRt1Dkyy/rme463DBxChbtGcX
- N0Drc4FUpBGcnrI25QBplXcemwCOn0SQuEKyO//mnhGwdCraRnTlN5UAnmT9bJpop3fvPoHJkW
- e+Q=
+IronPort-SDR: PcQEKEfSyTfD+XhAm0uOOD5LGVV+SiqiT71XH9TdgR2Wrbugw2KE4w/ElpY92XDKLUIrcdF92F
+ pjJdO31HdRg7qYhH3DYyl0d89WKtElFybZDjJpVODXqdKn07moBj31wPEqmJxFT1HRbtU/gGbj
+ 5r7So9UyBeGE4t+Vt7QSPiDn0WfYrko2R8jWowINaH5ufIhndHAVV2vx2ZPvhHpOHM6gP8ly26
+ wAOcoWA3Zb8lJ9a6rsDfiz/RbPigIi6HBBKE4FSp9nqu6+gMujL9pHpqgatGNMRg3XfQF2Sp4E
+ W6A=
 X-IronPort-AV: E=Sophos;i="5.69,330,1571727600"; 
-   d="scan'208";a="60223160"
+   d="scan'208";a="60223176"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 18 Dec 2019 09:24:04 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 18 Dec 2019 09:24:06 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 18 Dec 2019 09:24:07 -0700
+ 15.1.1713.5; Wed, 18 Dec 2019 09:24:08 -0700
 Received: from NAM12-BN8-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
+ email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5 via Frontend
- Transport; Wed, 18 Dec 2019 09:24:07 -0700
+ Transport; Wed, 18 Dec 2019 09:24:04 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZGRG/YknDNBY6wd6eXAlyYPTWPAv2jvsWSX3idgET0OHhLYkC4qGezb87zYL1rNhE54g2h+ArHmOl314813tfWrww2XAo/K5pu7RARHzHaa6rp5X2qIs53pABAyUYJdC6Fs3I/CKODFMFXFsALcp7qh+QY64tDQI97JR0lKV7asEkrZR8syPD67JKyq9C96NH+jUK4TidaB794Ijc+EjYN/cPD8LMKj4e3FXKvNYJYN+nlUqdtSfUaF4lf8LT4pR36/r8kfvlmihHt9lJjvcd6t2RlNKWQH2tb984Cim33gw7ijLnMUS2zkN+g3gM5KZ+wjuYZgB5jWMsVk3+USPzw==
+ b=OOeP6BA/qVSPQqBZv6UjNPM5Fehxc4fhb247rnTjDVC+BDuas9ex33HMKfPE9AkRMsUlmqKXgvrcnlfhbaxz1bCNOhZ9Ab/CY7ErlBOKkeQePtvG6a5WC1azSQDmbt7qcaXaOHM4EowA322BwsR69nEBs48n3f3Ua4m0FNqcoDBoOQPOiKnYhtqi/52Qv1YlgNrLjWdWrv7aC404z7x+3NIiekMmUNzzRpBO+z/0IJbBuoU28oiAJ/sURPIXk0edeJg2+q5xm/qwJetQ1iIIpNxBrp3WU8Ve0oRINJnis1hW0JcOERI3icugk6KyUOvemdLIUEfpR52UEutyW+K5jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GT+kt38DogHrZxEsh9bAfRdM7ydty5Uf6V/qtCsHzhA=;
- b=T+TjhJJ2DTZSWPWYin0Fmz4wuVr2gisLHx6R8gTIqbwD62ncIrujiKnwwaOlDDglTaM5aRTNIEoGN2O46RBM5g9Wz/SEphMkBr1gp7i4HT93SrRBXhBD8GTLS1TjoJYdn3jQb7Gmk6k/sh5CJgbFVM9LGsfgo+clGdXj8dEOHF0is90kkb6rUlQ1RYZoaNVu5VNNGePxTYOFLYhNfIsp1M4CdidkEf+K5yVnOow4/U4JNdRzgf4B9+c8k55B//nT1/dbUrMB4DMr18UUNWqGSfusfftlFntncNUU8U7FpvZ5P9OUvrjIHrWnolhoHrJaw/zWTcc4OMWotFLtmgSlrw==
+ bh=EJqTrSHZ7TbZm2JF06kDVV71UCjwadk6kmq23nwf1Xo=;
+ b=ZAiUHH4SuBp6Grw+HcBWX8IO+D6BRwEKKM9bGSKseKcR3ZI91yZdCbLjnaFnFzK6k/xu5AaXgbMKmO0UWUyhHiJ3G2dUqr3jjsY94RnN1MFK8Qj/n07h+333d7H/5fF1ggXjxUlXj9ESqmM5MuxXYXHQms/OXFtJ/iFQjzHBjevwq2R9WBH/0ax5wQ1lZ/+VfxcQnaBxuyWSJfio+lcizSQm5R1BLlw6xeBqjF/LzwlOchBqQIaPY8gb73R5k0O1V0Y4KbWM/S/zDFCr0lnbznFGt/LocMveUIahAJ3dboJx/5qzZnuNyMSORoKrNYC6FqbkXVLcHlj57/YT8x0MsA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microchip.com; dmarc=pass action=none
  header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
@@ -61,16 +61,16 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microchiptechnology.onmicrosoft.com;
  s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GT+kt38DogHrZxEsh9bAfRdM7ydty5Uf6V/qtCsHzhA=;
- b=UwWYIs4NwC2PboSJtdOgW4az5L87Cwv0KqMFMfRlms1hW0WgahfHQ/RQ3Ki4AjDhPm4HbwL4Du18O0j9AkmZQTjGRIC+iWxCSYw0btxI/hC3KWduMpIouws5dn2kq1t+jAhWMujEVE5rYVOIT6zXkHnH2Hyx4aVgwO9/asJYnWo=
+ bh=EJqTrSHZ7TbZm2JF06kDVV71UCjwadk6kmq23nwf1Xo=;
+ b=T8Qio/2xqykdAtJHWqn4JfGEPXTWG1WEIgswCK83wnYw+3Jb2ytX+/p/mAz1VS0i7KvTmY/ANlIvOQ8tgr0KHeiEabjILa3dZysrXryuTr7o2U0VXLAQIiHDVSgSu4AhY0GMdE47K31oq84VndO9HCMMpJUScxw5/jT5olHI6Bg=
 Received: from DM5PR11MB1242.namprd11.prod.outlook.com (10.168.108.8) by
  DM5PR11MB1769.namprd11.prod.outlook.com (10.175.87.19) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2538.19; Wed, 18 Dec 2019 16:24:02 +0000
+ 15.20.2538.19; Wed, 18 Dec 2019 16:24:04 +0000
 Received: from DM5PR11MB1242.namprd11.prod.outlook.com
  ([fe80::9039:e0e8:9032:20c1]) by DM5PR11MB1242.namprd11.prod.outlook.com
  ([fe80::9039:e0e8:9032:20c1%12]) with mapi id 15.20.2559.012; Wed, 18 Dec
- 2019 16:24:02 +0000
+ 2019 16:24:04 +0000
 From:   <Eugen.Hristev@microchip.com>
 To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
         <alexandre.belloni@bootlin.com>
@@ -80,13 +80,12 @@ CC:     <Nicolas.Ferre@microchip.com>, <linux-iio@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-rtc@vger.kernel.org>,
         <a.zummo@towertech.it>, <Ludovic.Desroches@microchip.com>,
         <Eugen.Hristev@microchip.com>
-Subject: [PATCH 05/10] iio: trigger: at91-rtc-trigger: introduce at91 rtc adc
- trigger driver
-Thread-Topic: [PATCH 05/10] iio: trigger: at91-rtc-trigger: introduce at91 rtc
- adc trigger driver
-Thread-Index: AQHVtb+OYkdaymH01keAcIhHVKgeHg==
-Date:   Wed, 18 Dec 2019 16:24:01 +0000
-Message-ID: <1576686157-11939-6-git-send-email-eugen.hristev@microchip.com>
+Subject: [PATCH 08/10] iio: adc: at91-sama5d2_adc: implement RTC triggering
+Thread-Topic: [PATCH 08/10] iio: adc: at91-sama5d2_adc: implement RTC
+ triggering
+Thread-Index: AQHVtb+PY+2GOhnEgUmPI9B1JjcPqQ==
+Date:   Wed, 18 Dec 2019 16:24:02 +0000
+Message-ID: <1576686157-11939-9-git-send-email-eugen.hristev@microchip.com>
 References: <1576686157-11939-1-git-send-email-eugen.hristev@microchip.com>
 In-Reply-To: <1576686157-11939-1-git-send-email-eugen.hristev@microchip.com>
 Accept-Language: en-US, ro-RO
@@ -96,28 +95,28 @@ X-MS-TNEF-Correlator:
 x-mailer: git-send-email 2.7.4
 x-originating-ip: [94.177.32.156]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: da5b69d9-fa62-48e4-266c-08d783d6b1b6
+x-ms-office365-filtering-correlation-id: de9518a9-816d-4edd-7cd3-08d783d6b2f0
 x-ms-traffictypediagnostic: DM5PR11MB1769:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM5PR11MB176927868032C5BE8C20611AE8530@DM5PR11MB1769.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1091;
+x-microsoft-antispam-prvs: <DM5PR11MB176945A1A774BFD9FD46B209E8530@DM5PR11MB1769.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1247;
 x-forefront-prvs: 0255DF69B9
 x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(366004)(396003)(39860400002)(136003)(346002)(376002)(199004)(189003)(66476007)(66946007)(66446008)(76116006)(91956017)(2616005)(64756008)(66556008)(86362001)(186003)(316002)(110136005)(8676002)(54906003)(8936002)(71200400001)(81166006)(478600001)(2906002)(6512007)(26005)(81156014)(36756003)(4326008)(6506007)(5660300002)(6486002)(107886003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR11MB1769;H:DM5PR11MB1242.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: microchip.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: gZ1G1LkCJGpuNnFsHW7ezN1lfihGNyoYJw32x80ojQ91MrmM3uRXzY5yxtb2ONDQZipi/BODCM488V7fwfJBgq+J6BPI+t9wgbvqud3xW/no9NF9AXxCOpwURqP+xipNxZfa+KfXu0QOhGOkCroo5fzxIc+tmRiA1GFGUdskA1He4SchDdX9N+sxFU/izfPmd2qW0MCJlJdZV/KBHBGlE5mPQ7HcfGysrxnvASDpRgQg1gCCn9ROpioH6GrrshZL7LclzDOjP2YcSlrJttbHTSzJvRZAYijdkFh5nU5a7SRa/kQCl2RkqOvZLdBn7A6HGA4r9ptcBwZmQXUFFJOfKWo+DqnrE2CwSUU9VhfXCCGCuCOWsAtA3TltwEqBLe8BcQPXKdM80XjmH8M1jlC2GgRAkmhYU6hAi5OXZfGFR01joe3TKY16GqmyFgusxKGg
+x-microsoft-antispam-message-info: auXWNrOB7IiMQ6Qv3HJfkGHrvtg5CcOwKG8HCoUvXhr9C12luOXCnO7eI8j1+mdwSYrtAnPn1mQVIcE/v7xXLucIO9exLfhqJxliJMUMNhSR1qTnzAskSTFyZy3/n/ZuagUEVK3akN2iTOy6XSk/2WEaQnjcZzUMhXz/Yo/6Q+VzzOSHwietMXNvvHqQLvp8nTS10qac4u3d4q3wzegOfVSNvfNGD1fHs8TjxiATD2akOiKM1d6KDtVKMXTJo0cObipjUyJ3YsUtnmqmuvjmdQxapWelXUssF4IPIvJ/LKg6r4z3TTdHH7d2oem71AoJZCcGEcuoFm73aztMIQmDxm7RPBa1TxRl8VnzUEPp/o6GpfOkICqgnh0HnJ9REUmUwpJqeasi4xJXYTi8Kq3/cn/53Fhs0LraKYD/7m/6h0ToQJ7wfuj9OMPi8jWLABmm
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: da5b69d9-fa62-48e4-266c-08d783d6b1b6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Dec 2019 16:24:01.0765
+X-MS-Exchange-CrossTenant-Network-Message-Id: de9518a9-816d-4edd-7cd3-08d783d6b2f0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Dec 2019 16:24:02.8277
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WGHdOPoSlT6zVruqW1mA1Xi2pkee4tZY+MMHb2zCiVnn7px7XkHlDXlYhZXC6GoqtEejn2uiAqvgeaKN6ce0AoHTL8/oWZmwBzbgpwyBZBk=
+X-MS-Exchange-CrossTenant-userprincipalname: A0M66B1eUg1QrnZYRG2LpBybtxzJc7NO2O2LkE5DN0XBta2ZvbT4BLM2sN8WlJQJ1eA7DG/Iot0Z6One3E3gTVVUUCTvd1WWXvRjbSbyQJU=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR11MB1769
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -126,275 +125,240 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Eugen Hristev <eugen.hristev@microchip.com>
 
-The AT91 RTC ADC trigger driver registers a trigger into the iio subsystem,
-which can be associated with at91_sama5d2-adc compatible drivers.
-The SAMA5D2 SoC contains a hardware link between the RTC block and the ADC
-block that will allow the RTC to trigger the ADC to perform conversions.
-The at91-rtc-trigger will allow the customisation of the trigger frequency
-from sysfs:
-trigger_frequency_hz_available will display possible frequencies in Hz
-trigger_frequency_hz will allow configuring this frequency.
+Implement the property atmel,rtc-trigger which provides a phandle
+to a RTC trigger.
+To make it work, one has to check at buffer_postenable if the trigger
+the device is using is the one we provide using the phandle link.
+The trigger mode must be selected accordingly in the trigger mode selection
+register.
+The RTC trigger will use our IRQ. Dedicated hardware line inside the SoC
+will actually trigger the ADC to make the conversion, and EOC irqs are fire=
+d
+when conversion is done.
 
 Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>
 ---
- drivers/iio/trigger/Kconfig            |  10 ++
- drivers/iio/trigger/Makefile           |   1 +
- drivers/iio/trigger/at91-rtc-trigger.c | 213 +++++++++++++++++++++++++++++=
-++++
- 3 files changed, 224 insertions(+)
- create mode 100644 drivers/iio/trigger/at91-rtc-trigger.c
+ drivers/iio/adc/at91-sama5d2_adc.c | 109 +++++++++++++++++++++++++++++++++=
+++--
+ 1 file changed, 104 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/trigger/Kconfig b/drivers/iio/trigger/Kconfig
-index 8cef2f7..dc7e6f4 100644
---- a/drivers/iio/trigger/Kconfig
-+++ b/drivers/iio/trigger/Kconfig
-@@ -68,4 +68,14 @@ config IIO_SYSFS_TRIGGER
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called iio-trig-sysfs.
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama=
+5d2_adc.c
+index ccffa48..ac97f4a 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -58,6 +58,8 @@
+ #define	AT91_SAMA5D2_MR_TRGSEL_TRIG6	6
+ /* RTCOUT0 */
+ #define	AT91_SAMA5D2_MR_TRGSEL_TRIG7	7
++/* TRGSEL mask */
++#define AT91_SAMA5D2_MR_TRGSEL_MASK	GENMASK(3, 1)
+ /* Sleep Mode */
+ #define	AT91_SAMA5D2_MR_SLEEP		BIT(5)
+ /* Fast Wake Up */
+@@ -195,6 +197,8 @@
+ #define AT91_SAMA5D2_TRGR_TRGMOD_EXT_TRIG_FALL 2
+ /* Trigger Mode external trigger any edge */
+ #define AT91_SAMA5D2_TRGR_TRGMOD_EXT_TRIG_ANY 3
++/* Trigger Mode RTC - must be any of the above 3 values */
++#define AT91_SAMA5D2_TRGR_TRGMOD_RTC AT91_SAMA5D2_TRGR_TRGMOD_EXT_TRIG_RIS=
+E
+ /* Trigger Mode internal periodic */
+ #define AT91_SAMA5D2_TRGR_TRGMOD_PERIODIC 5
+ /* Trigger Mode - trigger period mask */
+@@ -407,6 +411,8 @@ struct at91_adc_state {
+ 	struct mutex			lock;
+ 	struct work_struct		workq;
+ 	s64				timestamp;
++	struct device			*rtc_trig_dev;
++	bool				rtc_triggered;
+ };
 =20
-+config IIO_AT91_RTC_TRIGGER
-+	tristate "AT91 RTC trigger"
-+	help
-+	  Provides support for using AT91 RTC IP block to generate trigger
-+	  events for ADC devices.
-+	  If unsure, say N (but it's safe to say "Y").
+ static const struct at91_adc_trigger at91_adc_trigger_list[] =3D {
+@@ -737,6 +743,42 @@ static int at91_adc_configure_trigger(struct iio_trigg=
+er *trig, bool state)
+ 	/* set/unset hw trigger */
+ 	at91_adc_writel(st, AT91_SAMA5D2_TRGR, status);
+=20
++	status =3D at91_adc_readl(st, AT91_SAMA5D2_MR);
 +
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called at91-rtc-trigger.
++	status &=3D ~AT91_SAMA5D2_MR_TRGSEL_MASK;
 +
- endmenu
-diff --git a/drivers/iio/trigger/Makefile b/drivers/iio/trigger/Makefile
-index f3d11ac..6512436 100644
---- a/drivers/iio/trigger/Makefile
-+++ b/drivers/iio/trigger/Makefile
-@@ -11,3 +11,4 @@ obj-$(CONFIG_IIO_STM32_LPTIMER_TRIGGER) +=3D stm32-lptime=
-r-trigger.o
- obj-$(CONFIG_IIO_STM32_TIMER_TRIGGER) +=3D stm32-timer-trigger.o
- obj-$(CONFIG_IIO_SYSFS_TRIGGER) +=3D iio-trig-sysfs.o
- obj-$(CONFIG_IIO_TIGHTLOOP_TRIGGER) +=3D iio-trig-loop.o
-+obj-$(CONFIG_IIO_AT91_RTC_TRIGGER) +=3D at91-rtc-trigger.o
-diff --git a/drivers/iio/trigger/at91-rtc-trigger.c b/drivers/iio/trigger/a=
-t91-rtc-trigger.c
-new file mode 100644
-index 0000000..8cdcfeb
---- /dev/null
-+++ b/drivers/iio/trigger/at91-rtc-trigger.c
-@@ -0,0 +1,213 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright 2019 Microchip Technology, Inc. and its subsidiaries
-+ *
-+ * Author: Eugen Hristev <eugen.hristev@microchip.com>
-+ */
++	/* set/unset TRGSEL to ADTRG */
++	if (state)
++		status |=3D AT91_SAMA5D2_MR_TRGSEL(AT91_SAMA5D2_MR_TRGSEL_TRIG0);
 +
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/irq_work.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
++	at91_adc_writel(st, AT91_SAMA5D2_MR, status);
 +
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger.h>
-+
-+#define at91_adc_readl(t, reg)		readl_relaxed((t)->base + (reg))
-+#define at91_adc_writel(t, reg, val)	writel_relaxed(val, (t)->base + (reg)=
-)
-+
-+#define AT91_RTC_MR		0x4
-+#define AT91_RTC_OUT0_MASK	GENMASK(18, 16)
-+#define AT91_RTC_OUT0_NO_WAVE	(0x0 << 16)
-+#define AT91_RTC_OUT0_1HZ	(0x1 << 16)
-+#define AT91_RTC_OUT0_32HZ	(0x2 << 16)
-+#define AT91_RTC_OUT0_64HZ	(0x3 << 16)
-+#define AT91_RTC_OUT0_512HZ	(0x4 << 16)
-+
-+/* attribute pack list */
-+#define AT91_RTC_1HZ		1
-+#define AT91_RTC_32HZ		32
-+#define AT91_RTC_64HZ		64
-+#define AT91_RTC_512HZ		512
-+
-+struct at91_rtc_adc_trig {
-+	struct iio_trigger	*trig;
-+	void __iomem		*base;
-+	unsigned int		hz_config;
-+};
-+
-+static int at91_hz_config_sysfs_to_reg(unsigned int hz_config)
-+{
-+	switch (hz_config) {
-+	case AT91_RTC_1HZ:
-+		return AT91_RTC_OUT0_1HZ;
-+	case AT91_RTC_32HZ:
-+		return AT91_RTC_OUT0_32HZ;
-+	case AT91_RTC_64HZ:
-+		return AT91_RTC_OUT0_64HZ;
-+	case AT91_RTC_512HZ:
-+		return AT91_RTC_OUT0_512HZ;
-+	}
-+	return AT91_RTC_OUT0_1HZ;
++	return 0;
 +}
 +
-+static int at91_configure_trigger(struct iio_trigger *trig, bool state)
++static int at91_adc_rtc_configure_trigger(struct at91_adc_state *st, bool =
+state)
 +{
-+	struct at91_rtc_adc_trig *t =3D iio_trigger_get_drvdata(trig);
-+	u32 mr =3D at91_adc_readl(t, AT91_RTC_MR);
++	u32 status =3D at91_adc_readl(st, AT91_SAMA5D2_TRGR);
 +
-+	mr &=3D ~AT91_RTC_OUT0_MASK;
++	/* clear TRGMOD */
++	status &=3D ~AT91_SAMA5D2_TRGR_TRGMOD_MASK;
 +
 +	if (state)
-+		mr |=3D at91_hz_config_sysfs_to_reg(t->hz_config);
++		status |=3D AT91_SAMA5D2_TRGR_TRGMOD_RTC;
 +
-+	at91_adc_writel(t, AT91_RTC_MR, mr);
++	/* set/unset hw trigger */
++	at91_adc_writel(st, AT91_SAMA5D2_TRGR, status);
 +
-+	return 0;
-+}
++	status =3D at91_adc_readl(st, AT91_SAMA5D2_MR);
 +
-+static const struct iio_trigger_ops at91_rtc_adc_trigger_ops =3D {
-+	.set_trigger_state =3D &at91_configure_trigger,
-+};
++	status &=3D ~AT91_SAMA5D2_MR_TRGSEL_MASK;
 +
-+static ssize_t at91_rtc_trigger_frequency_get(struct device *dev,
-+					      struct device_attribute *attr,
-+					      char *buf)
-+{
-+	struct iio_trigger *trig =3D to_iio_trigger(dev);
-+	struct at91_rtc_adc_trig *t =3D iio_trigger_get_drvdata(trig);
++	/* set/unset TRGSEL to RTCOUT0 */
++	if (state)
++		status |=3D AT91_SAMA5D2_MR_TRGSEL(AT91_SAMA5D2_MR_TRGSEL_TRIG7);
 +
-+	return scnprintf(buf, PAGE_SIZE, "%u\n", t->hz_config);
-+}
++	at91_adc_writel(st, AT91_SAMA5D2_MR, status);
 +
-+static ssize_t at91_rtc_trigger_frequency_set(struct device *dev,
-+					      struct device_attribute *attr,
-+					      const char *buf, size_t count)
-+{
-+	struct iio_trigger *trig =3D to_iio_trigger(dev);
-+	struct at91_rtc_adc_trig *t =3D iio_trigger_get_drvdata(trig);
-+	int ret;
-+	unsigned int val;
+ 	return 0;
+ }
+=20
+@@ -866,7 +908,8 @@ static int at91_adc_dma_start(struct iio_dev *indio_dev=
+)
+ 	if (st->dma_st.dma_chan) \
+ 		use_irq =3D false; \
+ 	/* if the trigger is not ours, then it has its own IRQ */ \
+-	if (iio_trigger_validate_own_device(indio->trig, indio)) \
++	if (iio_trigger_validate_own_device(indio->trig, indio) && \
++		!st->rtc_triggered) \
+ 		use_irq =3D false; \
+ 	}
+=20
+@@ -884,6 +927,18 @@ static int at91_adc_buffer_postenable(struct iio_dev *=
+indio)
+ 		/* touchscreen enabling */
+ 		return at91_adc_configure_touch(st, true);
+ 	}
 +
-+	ret =3D kstrtou32(buf, 10, &val);
-+
-+	if (ret)
-+		return ret;
-+
-+	if (val !=3D AT91_RTC_1HZ && val !=3D AT91_RTC_32HZ &&
-+	    val !=3D AT91_RTC_64HZ && val !=3D AT91_RTC_512HZ)
-+		return -EINVAL;
-+
-+	t->hz_config =3D val;
-+
-+	return count;
-+}
-+
-+static IIO_DEVICE_ATTR(trigger_frequency_hz, 0644,
-+		       at91_rtc_trigger_frequency_get,
-+		       at91_rtc_trigger_frequency_set, 0);
-+
-+static IIO_CONST_ATTR(trigger_frequency_hz_available,
-+		      __stringify(AT91_RTC_1HZ) " "
-+		      __stringify(AT91_RTC_32HZ) " "
-+		      __stringify(AT91_RTC_64HZ) " "
-+		      __stringify(AT91_RTC_512HZ));
-+
-+static struct attribute *at91_rtc_adc_trigger_attributes[] =3D {
-+	&iio_const_attr_trigger_frequency_hz_available.dev_attr.attr,
-+	&iio_dev_attr_trigger_frequency_hz.dev_attr.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group at91_rtc_adc_trigger_attribute_group =
-=3D {
-+	.attrs =3D at91_rtc_adc_trigger_attributes,
-+};
-+
-+static const struct attribute_group *at91_rtc_adc_trigger_attr_groups[] =
-=3D {
-+	&at91_rtc_adc_trigger_attribute_group,
-+	NULL
-+};
-+
-+static void at91_rtc_adc_trigger_remove(void *priv)
-+{
-+	struct at91_rtc_adc_trig *t =3D priv;
-+
-+	iio_trigger_unregister(t->trig);
-+	iio_trigger_free(t->trig);
-+}
-+
-+static int at91_rtc_adc_trigger_probe(struct platform_device *pdev)
-+{
-+	struct device *dev =3D &pdev->dev;
-+	struct resource	*res;
-+	struct at91_rtc_adc_trig *t;
-+	int ret =3D 0;
-+
-+	t =3D devm_kzalloc(dev, sizeof(*t), GFP_KERNEL);
-+
-+	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		return -EINVAL;
-+
-+	t->base =3D devm_ioremap_resource(dev, res);
-+	if (IS_ERR(t->base))
-+		return PTR_ERR(t->base);
-+
-+	t->trig =3D iio_trigger_alloc("%x.at91_rtc_adc", res->start);
-+	if (!t->trig) {
-+		ret =3D -ENOMEM;
-+		return ret;
++	/*
++	 * If our rtc trigger link is identical to the current trigger,
++	 * then we are rtc-triggered.
++	 * Configure accordingly.
++	 */
++	if (!IS_ERR_OR_NULL(st->rtc_trig_dev) &&
++	    st->rtc_trig_dev =3D=3D indio->trig->dev.parent) {
++		at91_adc_rtc_configure_trigger(st, true);
++		st->rtc_triggered =3D true;
 +	}
 +
-+	t->hz_config =3D AT91_RTC_1HZ;
-+
-+	t->trig->ops =3D &at91_rtc_adc_trigger_ops;
-+	t->trig->dev.parent =3D dev;
-+	t->trig->dev.groups =3D at91_rtc_adc_trigger_attr_groups;
-+
-+	iio_trigger_set_drvdata(t->trig, t);
-+
-+	ret =3D iio_trigger_register(t->trig);
-+	if (ret) {
-+		dev_err(dev, "failed to register trigger.\n");
-+		goto at91_rtc_adc_trigger_probe_fail_register;
+ 	/* if we are not in triggered mode, we cannot enable the buffer. */
+ 	if (!(indio->currentmode & INDIO_ALL_TRIGGERED_MODES))
+ 		return -EINVAL;
+@@ -947,6 +1002,17 @@ static int at91_adc_buffer_predisable(struct iio_dev =
+*indio)
+ 	if (!(indio->currentmode & INDIO_ALL_TRIGGERED_MODES))
+ 		return -EINVAL;
+=20
++	/*
++	 * If our rtc trigger link is identical to the current trigger,
++	 * then we are rtc-triggered.
++	 * Unconfigure accordingly.
++	 */
++	if (!IS_ERR_OR_NULL(st->rtc_trig_dev) &&
++	    st->rtc_trig_dev =3D=3D indio->trig->dev.parent) {
++		at91_adc_rtc_configure_trigger(st, false);
++		st->rtc_triggered =3D false;
 +	}
 +
-+	ret =3D devm_add_action_or_reset(dev, at91_rtc_adc_trigger_remove, t);
-+	if (ret) {
-+		dev_err(dev, "failed to add disable action.\n");
-+		goto at91_rtc_adc_trigger_probe_fail_add_action;
+ 	AT91_ADC_BUFFER_CHECK_USE_IRQ(use_irq);
+ 	/*
+ 	 * For each enable channel we must disable it in hardware.
+@@ -1153,8 +1219,15 @@ static irqreturn_t at91_adc_trigger_handler(int irq,=
+ void *p)
+ 	else
+ 		ret =3D at91_adc_trigger_handler_nodma(indio_dev, pf);
+=20
+-	if (!ret)
++	if (!ret) {
+ 		iio_trigger_notify_done(indio_dev->trig);
++		/*
++		 * RTC trigger does not know how to reenable our IRQ.
++		 * So, we must do it.
++		 */
++		if (st->rtc_triggered)
++			enable_irq(st->irq);
++	}
+=20
+ 	return IRQ_HANDLED;
+ }
+@@ -1166,10 +1239,13 @@ irqreturn_t at91_adc_pollfunc(int irq, void *p)
+ 	struct at91_adc_state *st =3D iio_priv(indio_dev);
+=20
+ 	/*
+-	 * If it's not our trigger, start a conversion now, as we are
+-	 * actually polling the trigger now.
++	 * We need to start a software trigger if we are not using a trigger
++	 * that uses our own IRQ.
++	 * External trigger and RTC trigger do not not need software start
++	 * However the other triggers do.
+ 	 */
+-	if (iio_trigger_validate_own_device(indio_dev->trig, indio_dev))
++	if (iio_trigger_validate_own_device(indio_dev->trig, indio_dev) &&
++	    !st->rtc_triggered)
+ 		at91_adc_writel(st, AT91_SAMA5D2_CR, AT91_SAMA5D2_CR_START);
+=20
+ 	return iio_pollfunc_store_time(irq, p);
+@@ -1307,6 +1383,12 @@ static void at91_adc_workq_handler(struct work_struc=
+t *workq)
+=20
+ 		at91_adc_read_and_push_channels(indio_dev, st->timestamp);
+ 		iio_trigger_notify_done(indio_dev->trig);
++		/*
++		 * RTC trigger does not know how to reenable our IRQ.
++		 * So, we must do it.
++		 */
++		if (st->rtc_triggered)
++			enable_irq(st->irq);
+ 	} else {
+ 		iio_push_to_buffers(indio_dev, st->buffer);
+ 	}
+@@ -1712,6 +1794,7 @@ static int at91_adc_probe(struct platform_device *pde=
+v)
+ 	struct iio_dev *indio_dev;
+ 	struct at91_adc_state *st;
+ 	struct resource	*res;
++	struct device_node *rtc_trig_np;
+ 	int ret, i;
+ 	u32 edge_type =3D IRQ_TYPE_NONE;
+=20
+@@ -1737,6 +1820,8 @@ static int at91_adc_probe(struct platform_device *pde=
+v)
+=20
+ 	st->oversampling_ratio =3D AT91_OSR_1SAMPLES;
+=20
++	st->rtc_trig_dev =3D ERR_PTR(-EINVAL);
++
+ 	ret =3D of_property_read_u32(pdev->dev.of_node,
+ 				   "atmel,min-sample-rate-hz",
+ 				   &st->soc_info.min_sample_rate);
+@@ -1784,6 +1869,20 @@ static int at91_adc_probe(struct platform_device *pd=
+ev)
+ 		return -EINVAL;
+ 	}
+=20
++	rtc_trig_np =3D of_parse_phandle(pdev->dev.of_node, "atmel,rtc-trigger",
++				       0);
++	if (rtc_trig_np) {
++		struct platform_device *rtc_trig_plat_dev;
++
++		rtc_trig_plat_dev =3D of_find_device_by_node(rtc_trig_np);
++		if (rtc_trig_plat_dev) {
++			st->rtc_trig_dev =3D &rtc_trig_plat_dev->dev;
++			dev_info(&pdev->dev,
++				 "RTC trigger link set-up with %s\n",
++				 dev_name(st->rtc_trig_dev));
++		}
 +	}
 +
-+	return 0;
-+
-+at91_rtc_adc_trigger_probe_fail_add_action:
-+	iio_trigger_unregister(t->trig);
-+at91_rtc_adc_trigger_probe_fail_register:
-+	iio_trigger_free(t->trig);
-+	return ret;
-+}
-+
-+static const struct of_device_id at91_rtc_adc_trigger_of_match[] =3D {
-+	{
-+		.compatible =3D "microchip,rtc-adc-trigger",
-+	},
-+	{ /* end node */ },
-+};
-+MODULE_DEVICE_TABLE(of, at91_rtc_adc_trigger_of_match);
-+
-+static struct platform_driver at91_rtc_adc_trigger_driver =3D {
-+	.probe =3D at91_rtc_adc_trigger_probe,
-+	.driver =3D {
-+		.name =3D "at91-rtc-adc-trigger",
-+		.of_match_table =3D at91_rtc_adc_trigger_of_match,
-+	},
-+};
-+module_platform_driver(at91_rtc_adc_trigger_driver);
-+
-+MODULE_AUTHOR("Eugen Hristev <eugen.hristev@microchip.com>");
-+MODULE_DESCRIPTION("AT91 RTC ADC trigger driver");
-+MODULE_LICENSE("GPL v2");
-+MODULE_ALIAS("platform:iio-at91-rtc-trigger");
+ 	init_waitqueue_head(&st->wq_data_available);
+ 	mutex_init(&st->lock);
+ 	INIT_WORK(&st->workq, at91_adc_workq_handler);
 --=20
 2.7.4

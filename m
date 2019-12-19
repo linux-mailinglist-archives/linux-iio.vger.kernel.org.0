@@ -2,87 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCEB7126FD4
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2019 22:41:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 011D2126FF7
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2019 22:49:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726873AbfLSVld (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Dec 2019 16:41:33 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:46871 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726986AbfLSVlc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Dec 2019 16:41:32 -0500
-Received: by mail-lj1-f194.google.com with SMTP id m26so5400689ljc.13
-        for <linux-iio@vger.kernel.org>; Thu, 19 Dec 2019 13:41:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ASudMKT9RvM8+uOEJ+om2HEpPLO01yunBeLwD2PFAJc=;
-        b=UXcQVrIGeuZxPW+wBt70BmOeFM34wTHIaDD0QSufDB+hpWy60xAnbwPJzGMxZPXXTh
-         Bvo8xVwa12ZkQ98lNPHyUhNhqkyPhh0MIfsaBBppOcWPWZTk2unZdTF49txMzJY3pHCD
-         YxHDMEoyLpEkPOpdFmf/K3MonB5D7tmCbAN8kHT74gEBRwDcUB8IFxHMaMXJw7WUtcz3
-         +XHy8aT9jY6xESdx5KtiAOTv1zlbyPbECB2s9vvieBjnb2sKKBAWjoVIOiF0jHW9D+FO
-         hbJU/6H/5NVBmZHwpJjIPmmCajp+Vkm1VSI5ttRddK13sa9OsU5HRyIcUFtY30Eo5+Tf
-         ZKSA==
+        id S1727029AbfLSVtN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Dec 2019 16:49:13 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:34467 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726866AbfLSVtN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Dec 2019 16:49:13 -0500
+Received: by mail-ot1-f67.google.com with SMTP id a15so9037188otf.1;
+        Thu, 19 Dec 2019 13:49:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ASudMKT9RvM8+uOEJ+om2HEpPLO01yunBeLwD2PFAJc=;
-        b=kiqZHE5mPaZ2EqCzK+wM5z6gMjjkVkTqFLlGHzj5Fu+fCHavPFc5R4hICbkx92E/W5
-         wjJXEHW4amPW8fOFIZPqot+2KVQRbgoITCzQeJjJFEvzA1/U1zubrOSP8CNaN9aVIGvH
-         /dT/VHuYMNBiYHpdabQczfOWROfH9EEPpzX4tWtgou3SRuPOQaRZCPvuqHIlm0G/03lD
-         NHh3TLf4933xEpzw7bak9P4VvLVCVtBQS4YbuBRIalEOZ60GCKFOcHKdBFXFllGJscWd
-         v+4iu66K2173iDdYE2IuhSBcQnug57wgBHAOeTPSuLvaIQBNlqGYnZLHzgBcM8bPeB6A
-         Sj5w==
-X-Gm-Message-State: APjAAAUwuEiGYjt7bJLOuGwTQF3foXqQN2ES7UJyPXoZaAw/bi6Liwtf
-        AtA5QF1FAaVMp6j5mdy7NL+CHLoj7HGbjX5oLoNv8g==
-X-Google-Smtp-Source: APXvYqy9XFc6i9Ei1l8/pgiZ7fRlyEwn/IPd/gtw9jl+Fsj13MvpzMQ1Czzx4p0iNxwBYpWYIGIEHFQfXkyLyoBw2Kg=
-X-Received: by 2002:a2e:9ec4:: with SMTP id h4mr7762896ljk.77.1576791690711;
- Thu, 19 Dec 2019 13:41:30 -0800 (PST)
-MIME-Version: 1.0
-References: <20191219041039.23396-1-dan@dlrobertson.com> <20191219041039.23396-4-dan@dlrobertson.com>
- <CAHp75VeU07TsV2NC5Myvmi7Q6tARbmt9=wQDRnXFqaX2G2Luiw@mail.gmail.com>
-In-Reply-To: <CAHp75VeU07TsV2NC5Myvmi7Q6tARbmt9=wQDRnXFqaX2G2Luiw@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 19 Dec 2019 22:41:19 +0100
-Message-ID: <CACRpkdbTissSRyJ5uh8X6RFTM+VSSML-JmtOC_i8_UY0VTVRAA@mail.gmail.com>
-Subject: Re: [PATCH v7 3/3] iio: (bma400) basic regulator support
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Dan Robertson <dan@dlrobertson.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        devicetree <devicetree@vger.kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bKIao3Hx9jJKwqQP/RXgQCvGLhPT1+X7pm/hu0NpBV8=;
+        b=TL7jZlXyHGuZNYSFt9vAc+hiWVGQEPCAz0EwmKN2ce6riU9QEFKNJkVkuYc/HSaAso
+         mRcA0IBr4QqXk4iKqoj1tsNIpstyyKo9GtcAqHv0K+RTw0wfTdc59VUdWONDwDreZyYc
+         O8Eeo1YbduqXyqvEgwSmC5+3Ti1Umsukjs40emwq0k1oddWn9ScGEu5eqPVr/BgKF9Yj
+         IojCXAWVMePLTcLrVU1UjEUF/18FtOEilBXZsEWwMF7OB/Q4ysJc8BaMc1dLPZOWgwZa
+         X6EBv6d/wamZDP0ahFlEWM2QKTEFg+QGp8/gPT6dv/kUQ1tb0dK6dV+gbapUV1+GLKnG
+         shpQ==
+X-Gm-Message-State: APjAAAWCf5ZS3OLj4vw6WQnIh7blPtiWFZmH2qFUYfYzhgtYg5pML5fg
+        ujbq28hqLb4wOf4uudQ5+Q==
+X-Google-Smtp-Source: APXvYqz2gW/XlSmYj6ZEO5sdTV3J4iZniHY0zC80aaRxAOIj5Wdn4HTj/NCzv0ZF1vY74TPSXk6Zfw==
+X-Received: by 2002:a9d:24c1:: with SMTP id z59mr10708739ota.207.1576792152312;
+        Thu, 19 Dec 2019 13:49:12 -0800 (PST)
+Received: from localhost ([2607:fb90:1cd2:8a0d:3549:d84c:9720:edb4])
+        by smtp.gmail.com with ESMTPSA id e9sm2461049oia.10.2019.12.19.13.49.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Dec 2019 13:49:11 -0800 (PST)
+Date:   Thu, 19 Dec 2019 15:49:04 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Joe Perches <joe@perches.com>
-Content-Type: text/plain; charset="UTF-8"
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Oleksandr Kravchenko <o.v.kravchenko@globallogic.com>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 4/4] iio: accel: bma180: BMA254 support
+Message-ID: <20191219214904.GA1592@bogus>
+References: <20191211213819.14024-1-linus.walleij@linaro.org>
+ <20191211213819.14024-4-linus.walleij@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191211213819.14024-4-linus.walleij@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Dec 19, 2019 at 12:06 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Thu, Dec 19, 2019 at 6:28 AM Dan Robertson <dan@dlrobertson.com> wrote:
-> >
-> > Add support for the VDD and VDDIO regulators using the regulator
-> > framework.
-> ...
->
-> > +       data->vdd_supply = devm_regulator_get(data->dev, "vdd");
->
-> > +       data->vddio_supply = devm_regulator_get(data->dev, "vddio");
->
-> devm_regulator_bulk_get() ?
+On Wed, 11 Dec 2019 22:38:19 +0100, Linus Walleij wrote:
+> This adds support for the BMA254 variant of this
+> accelerometer. The only difference for the simple IIO
+> driver is that values are 12 bit and the temperature
+> offset differs by 1 degree.
+> 
+> Cc: Peter Meerwald <pmeerw@pmeerw.net>
+> Cc: Oleksandr Kravchenko <o.v.kravchenko@globallogic.com>
+> Cc: devicetree@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  .../devicetree/bindings/iio/accel/bma180.txt  |   7 +-
+>  drivers/iio/accel/Kconfig                     |   4 +-
+>  drivers/iio/accel/bma180.c                    | 108 +++++++++++++++---
+>  3 files changed, 100 insertions(+), 19 deletions(-)
+> 
 
-I always thought to use regulator_bulk* maybe 3 regulators and
-definitely for more that 4 as it also clouds the view bit and is not
-as straightforward to read as the single functions, but I suppose
-it is a bit subjective :)
-
-Linus Walleij
+Acked-by: Rob Herring <robh@kernel.org>

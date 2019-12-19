@@ -2,466 +2,433 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB7CD1257FE
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2019 00:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 541A71258F6
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2019 01:57:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726599AbfLRXw4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Dec 2019 18:52:56 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:43255 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726561AbfLRXw4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Dec 2019 18:52:56 -0500
-Received: by mail-ot1-f67.google.com with SMTP id p8so4619877oth.10;
-        Wed, 18 Dec 2019 15:52:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=upTnIcIu5vXgr/U3LW+h6pgWAnb1nRIxYnJwMc85zdo=;
-        b=LXpsiD4oTKbrYqn8/GHCGICohWfGDI30nIOme0JHO5Vkl7mU1a2n/2DAW/TKCQbxZg
-         WguUtlX69KI1MM9JB/EAkLwYwTvjU/1zwCjJj/5bsJ6DI9vXVNE8oqbZpQ7Lv3cMv2Nc
-         1DDmiB0f77TzCLqk3AWkp9FDCIwWg6mjT2gN8M3opjHbBlCaBALzRzjA7Y2IBkFHaAHe
-         cSEdTV/D73rYElK2J1sWcx2Fh7dSVJjBg0FKjwD9QJnSp4Antgn0JDiwbIcJje74gcQf
-         g2xgVCET5KT+maK1KlAvEDhlnxu32fPvh8HRj+hJfOBa8QI/WVaFSIuit1tC+tHVKzLw
-         1+hw==
-X-Gm-Message-State: APjAAAXNmwm/bcntuXGk0n8pzMOwvdZf45A83SpeaW20mNK9TIx5lNVe
-        Ca0lmpP49m9VqXfBf9RGLQ==
-X-Google-Smtp-Source: APXvYqyyri2C2KUfkCWtaDSlXF3NDr5pX9GjBMF7k4cC2tFr+H6V5d6jbaP0Cat8KCIYFYChKIS/yA==
-X-Received: by 2002:a05:6830:20cf:: with SMTP id z15mr5461285otq.277.1576713173789;
-        Wed, 18 Dec 2019 15:52:53 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 4sm1457087otu.0.2019.12.18.15.52.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2019 15:52:53 -0800 (PST)
-Date:   Wed, 18 Dec 2019 17:52:52 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     "lee.jones@linaro.org" <lee.jones@linaro.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>
-Subject: Re: [PATCH v2 1/7] dt-bindings: Add bindings for Azoteq
- IQS620A/621/622/624/625
-Message-ID: <20191218235252.GA19438@bogus>
-References: <1575851866-18919-1-git-send-email-jeff@labundy.com>
- <1575851866-18919-2-git-send-email-jeff@labundy.com>
+        id S1726722AbfLSA5q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Dec 2019 19:57:46 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:39338 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726518AbfLSA5p (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Dec 2019 19:57:45 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 8CED02911A3
+Received: by earth.universe (Postfix, from userid 1000)
+        id 3CB9B3C0C7B; Thu, 19 Dec 2019 01:57:39 +0100 (CET)
+Date:   Thu, 19 Dec 2019 01:57:39 +0100
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Collabora Kernel ML <kernel@collabora.com>,
+        groeck@chromium.org, bleung@chromium.org, dtor@chromium.org,
+        gwendal@chromium.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        linux-iio@vger.kernel.org, Nick Vaccaro <nvaccaro@chromium.org>,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-rtc@vger.kernel.org, Chanwoo Choi <cw00.choi@samsung.com>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        Lee Jones <lee.jones@linaro.org>,
+        Evan Green <evgreen@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Mark Brown <broonie@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: Re: [PATCH] cros_ec: treewide: Remove 'include/linux/mfd/cros_ec.h'
+Message-ID: <20191219005739.loynj6js32vtwdyq@earth.universe>
+References: <20191203145018.14015-1-enric.balletbo@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="k4no5alxjmkmaa2l"
 Content-Disposition: inline
-In-Reply-To: <1575851866-18919-2-git-send-email-jeff@labundy.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191203145018.14015-1-enric.balletbo@collabora.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Dec 09, 2019 at 12:38:32AM +0000, Jeff LaBundy wrote:
-> This patch adds device tree bindings for the Azoteq IQS620A, IQS621,
-> IQS622, IQS624 and IQS625 multi-function sensors.
-> 
-> A total of three bindings are presented (one MFD and two child nodes);
-> they are submitted as a single patch because the child node bindings
-> have no meaning in the absence of the MFD binding.
-> 
-> Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+
+--k4no5alxjmkmaa2l
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Tue, Dec 03, 2019 at 03:50:18PM +0100, Enric Balletbo i Serra wrote:
+> This header file now only includes the cros_ec_dev struct, however, is the
+> 'include/linux/platform_data/cros_ec_proto.h' who contains the definition=
+ of
+> all the Chrome OS EC related structs. There is no reason to have a
+> separate include for this struct so move to the place where other
+> structs are defined. That way, we can remove the include itself, but also
+> simplify the common pattern
+>=20
+>     #include <linux/mfd/cros_ec.h>
+>     #include <linux/platform_data/cros_ec_proto.h>
+>=20
+> for a single include
+>=20
+>     #include <linux/platform_data/cros_ec_proto.h>
+>=20
+> The changes to remove the cros_ec.h include were generated with the
+> following shell script:
+>=20
+>     git grep -l "<linux/mfd/cros_ec.h>" | xargs sed -i '/<linux\/mfd\/cro=
+s_ec.h>/d'
+>=20
+> Signed-off-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 > ---
-> Changes in v2:
->   - Removed "prox" child node and moved "keys" and "pwm" child nodes to their
->     own bindings
->   - Replaced linux,fw-file property with more common firmware-name property
->   - Converted all bindings to YAML
+>=20
+>  drivers/iio/accel/cros_ec_accel_legacy.c      |  1 -
+>  .../common/cros_ec_sensors/cros_ec_sensors.c  |  1 -
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    |  1 -
+>  drivers/iio/light/cros_ec_light_prox.c        |  1 -
+>  drivers/iio/pressure/cros_ec_baro.c           |  1 -
+>  .../media/platform/cros-ec-cec/cros-ec-cec.c  |  1 -
+>  drivers/mfd/cros_ec_dev.c                     |  1 -
+>  drivers/platform/chrome/cros_ec_chardev.c     |  1 -
+>  drivers/platform/chrome/cros_ec_debugfs.c     |  1 -
+>  drivers/platform/chrome/cros_ec_lightbar.c    |  1 -
+>  drivers/platform/chrome/cros_ec_sensorhub.c   |  1 -
+>  drivers/platform/chrome/cros_ec_sysfs.c       |  1 -
+>  drivers/platform/chrome/cros_ec_vbc.c         |  1 -
+>  drivers/platform/chrome/cros_usbpd_logger.c   |  1 -
+>  drivers/power/supply/cros_usbpd-charger.c     |  1 -
 
-Good job for first go.
+Acked-by: Sebastian Reichel <sre@kernel.org>
 
-> 
->  .../devicetree/bindings/input/iqs62x-keys.yaml     | 126 +++++++++++++++
->  Documentation/devicetree/bindings/mfd/iqs62x.yaml  | 177 +++++++++++++++++++++
->  .../devicetree/bindings/pwm/iqs620a-pwm.yaml       |  30 ++++
->  3 files changed, 333 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/iqs62x-keys.yaml
->  create mode 100644 Documentation/devicetree/bindings/mfd/iqs62x.yaml
->  create mode 100644 Documentation/devicetree/bindings/pwm/iqs620a-pwm.yaml
+Feel free to merge through your tree.
 
-A couple of minor things below. With those fixed:
+-- Sebastian
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+>  drivers/rtc/rtc-cros-ec.c                     |  1 -
+>  include/linux/mfd/cros_ec.h                   | 35 -------------------
+>  include/linux/platform_data/cros_ec_proto.h   | 23 +++++++++++-
+>  18 files changed, 22 insertions(+), 52 deletions(-)
+>  delete mode 100644 include/linux/mfd/cros_ec.h
+>=20
+> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel=
+/cros_ec_accel_legacy.c
+> index 65f85faf6f31..68e847c6255e 100644
+> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> @@ -18,7 +18,6 @@
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drive=
+rs/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> index 7dce04473467..576e45faafaf 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> @@ -16,7 +16,6 @@
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/=
+drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 81a7f692de2f..d3a3626c7cd8 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -13,7 +13,6 @@
+>  #include <linux/iio/kfifo_buf.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/c=
+ros_ec_light_prox.c
+> index d85a391e50c5..7a838e2956f4 100644
+> --- a/drivers/iio/light/cros_ec_light_prox.c
+> +++ b/drivers/iio/light/cros_ec_light_prox.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/c=
+ros_ec_baro.c
+> index 2354302375de..d2a67dceb996 100644
+> --- a/drivers/iio/pressure/cros_ec_baro.c
+> +++ b/drivers/iio/pressure/cros_ec_baro.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/media/platform/cros-ec-cec/cros-ec-cec.c b/drivers/m=
+edia/platform/cros-ec-cec/cros-ec-cec.c
+> index 4a3b3810fd89..72c70f123650 100644
+> --- a/drivers/media/platform/cros-ec-cec/cros-ec-cec.c
+> +++ b/drivers/media/platform/cros-ec-cec/cros-ec-cec.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/cec.h>
+>  #include <linux/slab.h>
+>  #include <linux/interrupt.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+>  #include <media/cec.h>
+> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
+> index c4b977a5dd96..8da4e4cef26f 100644
+> --- a/drivers/mfd/cros_ec_dev.c
+> +++ b/drivers/mfd/cros_ec_dev.c
+> @@ -6,7 +6,6 @@
+>   */
+> =20
+>  #include <linux/mfd/core.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/of_platform.h>
+> diff --git a/drivers/platform/chrome/cros_ec_chardev.c b/drivers/platform=
+/chrome/cros_ec_chardev.c
+> index 74ded441bb50..c65e70bc168d 100644
+> --- a/drivers/platform/chrome/cros_ec_chardev.c
+> +++ b/drivers/platform/chrome/cros_ec_chardev.c
+> @@ -13,7 +13,6 @@
+>  #include <linux/init.h>
+>  #include <linux/device.h>
+>  #include <linux/fs.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/miscdevice.h>
+>  #include <linux/module.h>
+>  #include <linux/notifier.h>
+> diff --git a/drivers/platform/chrome/cros_ec_debugfs.c b/drivers/platform=
+/chrome/cros_ec_debugfs.c
+> index 6ae484989d1f..ecfada00e6c5 100644
+> --- a/drivers/platform/chrome/cros_ec_debugfs.c
+> +++ b/drivers/platform/chrome/cros_ec_debugfs.c
+> @@ -7,7 +7,6 @@
+>  #include <linux/debugfs.h>
+>  #include <linux/delay.h>
+>  #include <linux/fs.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/platform/chrome/cros_ec_lightbar.c b/drivers/platfor=
+m/chrome/cros_ec_lightbar.c
+> index c0f2eec35a48..b4c110c5fee0 100644
+> --- a/drivers/platform/chrome/cros_ec_lightbar.c
+> +++ b/drivers/platform/chrome/cros_ec_lightbar.c
+> @@ -8,7 +8,6 @@
+>  #include <linux/device.h>
+>  #include <linux/fs.h>
+>  #include <linux/kobject.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platfo=
+rm/chrome/cros_ec_sensorhub.c
+> index 04d8879689e9..79fefd3bb0fa 100644
+> --- a/drivers/platform/chrome/cros_ec_sensorhub.c
+> +++ b/drivers/platform/chrome/cros_ec_sensorhub.c
+> @@ -9,7 +9,6 @@
+>  #include <linux/init.h>
+>  #include <linux/device.h>
+>  #include <linux/module.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+>  #include <linux/platform_data/cros_ec_sensorhub.h>
+> diff --git a/drivers/platform/chrome/cros_ec_sysfs.c b/drivers/platform/c=
+hrome/cros_ec_sysfs.c
+> index 74d36b8d4f46..07dac97ad57c 100644
+> --- a/drivers/platform/chrome/cros_ec_sysfs.c
+> +++ b/drivers/platform/chrome/cros_ec_sysfs.c
+> @@ -8,7 +8,6 @@
+>  #include <linux/device.h>
+>  #include <linux/fs.h>
+>  #include <linux/kobject.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/platform/chrome/cros_ec_vbc.c b/drivers/platform/chr=
+ome/cros_ec_vbc.c
+> index f11a1283e5c8..8edae465105c 100644
+> --- a/drivers/platform/chrome/cros_ec_vbc.c
+> +++ b/drivers/platform/chrome/cros_ec_vbc.c
+> @@ -6,7 +6,6 @@
+> =20
+>  #include <linux/of.h>
+>  #include <linux/platform_device.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/platform/chrome/cros_usbpd_logger.c b/drivers/platfo=
+rm/chrome/cros_usbpd_logger.c
+> index 374cdd1e868a..7de3ea75ef46 100644
+> --- a/drivers/platform/chrome/cros_usbpd_logger.c
+> +++ b/drivers/platform/chrome/cros_usbpd_logger.c
+> @@ -6,7 +6,6 @@
+>   */
+> =20
+>  #include <linux/ktime.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/math64.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/power/supply/cros_usbpd-charger.c b/drivers/power/su=
+pply/cros_usbpd-charger.c
+> index 6cc7c3910e09..0aca0da41cb7 100644
+> --- a/drivers/power/supply/cros_usbpd-charger.c
+> +++ b/drivers/power/supply/cros_usbpd-charger.c
+> @@ -5,7 +5,6 @@
+>   * Copyright (c) 2014 - 2018 Google, Inc
+>   */
+> =20
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/rtc/rtc-cros-ec.c b/drivers/rtc/rtc-cros-ec.c
+> index d043d30f05bc..f7343c289cab 100644
+> --- a/drivers/rtc/rtc-cros-ec.c
+> +++ b/drivers/rtc/rtc-cros-ec.c
+> @@ -5,7 +5,6 @@
+>  // Author: Stephen Barber <smbarber@chromium.org>
+> =20
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/include/linux/mfd/cros_ec.h b/include/linux/mfd/cros_ec.h
+> deleted file mode 100644
+> index 61c2875c2a40..000000000000
+> --- a/include/linux/mfd/cros_ec.h
+> +++ /dev/null
+> @@ -1,35 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0-only */
+> -/*
+> - * ChromeOS EC multi-function device
+> - *
+> - * Copyright (C) 2012 Google, Inc
+> - */
+> -
+> -#ifndef __LINUX_MFD_CROS_EC_H
+> -#define __LINUX_MFD_CROS_EC_H
+> -
+> -#include <linux/device.h>
+> -
+> -/**
+> - * struct cros_ec_dev - ChromeOS EC device entry point.
+> - * @class_dev: Device structure used in sysfs.
+> - * @ec_dev: cros_ec_device structure to talk to the physical device.
+> - * @dev: Pointer to the platform device.
+> - * @debug_info: cros_ec_debugfs structure for debugging information.
+> - * @has_kb_wake_angle: True if at least 2 accelerometer are connected to=
+ the EC.
+> - * @cmd_offset: Offset to apply for each command.
+> - * @features: Features supported by the EC.
+> - */
+> -struct cros_ec_dev {
+> -	struct device class_dev;
+> -	struct cros_ec_device *ec_dev;
+> -	struct device *dev;
+> -	struct cros_ec_debugfs *debug_info;
+> -	bool has_kb_wake_angle;
+> -	u16 cmd_offset;
+> -	u32 features[2];
+> -};
+> -
+> -#define to_cros_ec_dev(dev)  container_of(dev, struct cros_ec_dev, class=
+_dev)
+> -
+> -#endif /* __LINUX_MFD_CROS_EC_H */
+> diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/=
+platform_data/cros_ec_proto.h
+> index 30098a551523..119b9951c055 100644
+> --- a/include/linux/platform_data/cros_ec_proto.h
+> +++ b/include/linux/platform_data/cros_ec_proto.h
+> @@ -12,7 +12,6 @@
+>  #include <linux/mutex.h>
+>  #include <linux/notifier.h>
+> =20
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> =20
+>  #define CROS_EC_DEV_NAME	"cros_ec"
+> @@ -185,6 +184,28 @@ struct cros_ec_platform {
+>  	u16 cmd_offset;
+>  };
+> =20
+> +/**
+> + * struct cros_ec_dev - ChromeOS EC device entry point.
+> + * @class_dev: Device structure used in sysfs.
+> + * @ec_dev: cros_ec_device structure to talk to the physical device.
+> + * @dev: Pointer to the platform device.
+> + * @debug_info: cros_ec_debugfs structure for debugging information.
+> + * @has_kb_wake_angle: True if at least 2 accelerometer are connected to=
+ the EC.
+> + * @cmd_offset: Offset to apply for each command.
+> + * @features: Features supported by the EC.
+> + */
+> +struct cros_ec_dev {
+> +	struct device class_dev;
+> +	struct cros_ec_device *ec_dev;
+> +	struct device *dev;
+> +	struct cros_ec_debugfs *debug_info;
+> +	bool has_kb_wake_angle;
+> +	u16 cmd_offset;
+> +	u32 features[2];
+> +};
+> +
+> +#define to_cros_ec_dev(dev)  container_of(dev, struct cros_ec_dev, class=
+_dev)
+> +
+>  int cros_ec_suspend(struct cros_ec_device *ec_dev);
+> =20
+>  int cros_ec_resume(struct cros_ec_device *ec_dev);
+> --=20
+> 2.20.1
+>=20
 
-> 
-> diff --git a/Documentation/devicetree/bindings/input/iqs62x-keys.yaml b/Documentation/devicetree/bindings/input/iqs62x-keys.yaml
-> new file mode 100644
-> index 0000000..e9b54e0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/iqs62x-keys.yaml
-> @@ -0,0 +1,126 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/input/iqs62x-keys.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Azoteq IQS620A/621/622/624/625 Keys and Switches
-> +
-> +maintainers:
-> +  - Jeff LaBundy <jeff@labundy.com>
-> +
-> +description: |
-> +  The Azoteq IQS620A, IQS621, IQS622, IQS624 and IQS625 multi-function sensors
-> +  feature a variety of self-capacitive, mutual-inductive and Hall-effect sens-
-> +  ing capabilities that can facilitate a variety of contactless key and switch
-> +  applications.
-> +
-> +  These functions are collectively represented by a "keys" child node from the
-> +  parent MFD driver. See Documentation/devicetree/bindings/mfd/iqs62x.yaml for
-> +  further details and examples. Sensor hardware configuration (self-capacitive
-> +  vs. mutual-inductive, etc.) is selected based on the device's firmware.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - azoteq,iqs620a-keys
-> +      - azoteq,iqs621-keys
-> +      - azoteq,iqs622-keys
-> +      - azoteq,iqs624-keys
-> +      - azoteq,iqs625-keys
-> +
-> +  linux,keycodes:
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32-array
-> +      - minItems: 1
-> +        maxItems: 16
-> +    description: |
-> +      Specifies the numeric keycodes associated with each available touch or
-> +      proximity event according to the following table. An 'x' indicates the
-> +      event is supported for a given device. Specify 0 for unused events.
-> +
-> +      -------------------------------------------------------------------------
-> +      | #  | Event              | IQS620A | IQS621 | IQS622 | IQS624 | IQS625 |
-> +      -------------------------------------------------------------------------
-> +      | 0  | CH0 Touch          |    x    |    x   |    x   |    x   |    x   |
-> +      |    | Antenna 1 Touch*   |    x    |        |        |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 1  | CH0 Proximity      |    x    |    x   |    x   |    x   |    x   |
-> +      |    | Antenna 1 Prox.*   |    x    |        |        |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 2  | CH1 Touch          |    x    |    x   |    x   |    x   |    x   |
-> +      |    | Ant. 1 Deep Touch* |    x    |        |        |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 3  | CH1 Proximity      |    x    |    x   |    x   |    x   |    x   |
-> +      -------------------------------------------------------------------------
-> +      | 4  | CH2 Touch          |    x    |        |        |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 5  | CH2 Proximity      |    x    |        |        |        |        |
-> +      |    | Antenna 2 Prox.*   |    x    |        |        |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 6  | Metal (+) Touch**  |    x    |    x   |        |        |        |
-> +      |    | Ant. 2 Deep Touch* |    x    |        |        |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 7  | Metal (+) Prox.**  |    x    |    x   |        |        |        |
-> +      |    | Antenna 2 Touch*   |    x    |        |        |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 8  | Metal (-) Touch**  |    x    |    x   |        |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 9  | Metal (-) Prox.**  |    x    |    x   |        |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 10 | SAR Active***      |    x    |        |    x   |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 11 | SAR Quick Rel.***  |    x    |        |    x   |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 12 | SAR Movement***    |    x    |        |    x   |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 13 | SAR Filter Halt*** |    x    |        |    x   |        |        |
-> +      -------------------------------------------------------------------------
-> +      | 14 | Wheel Up           |         |        |        |    x   |        |
-> +      -------------------------------------------------------------------------
-> +      | 15 | Wheel Down         |         |        |        |    x   |        |
-> +      -------------------------------------------------------------------------
-> +      *   Two-channel SAR. Replaces CH0-2 plus metal touch and proximity events
-> +          if enabled via firmware.
-> +      **  "+" and "-" refer to the polarity of a channel's delta (LTA - counts),
-> +          where "LTA" is defined as the channel's long-term average.
-> +      *** One-channel SAR. Replaces CH0-2 touch and proximity events if enabled
-> +          via firmware.
-> +
-> +required:
-> +  - compatible
-> +  - linux,keycodes
+--k4no5alxjmkmaa2l
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Add: 
+-----BEGIN PGP SIGNATURE-----
 
-additionalProperties: false
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl36ywMACgkQ2O7X88g7
++prAzw//QAgClcW4VpTpBRUXBAyl4/w6DmGtBnHiNXjScBr0DHQaptDJPatXaKp8
+wCki9QVLPaszgUT0wcZ430z+nFZes7l3qSfW9jSGBKTYvKOttyytlA8V4SPsapTq
+8KxYCmENcPjIYehHR13JaLJcXfs8Ke1k4wzpxrCaREGBAuy/4Y8ELF7eQZD1x43P
+djHJ77aMVZLJsXZza6iux88CH1xBwvHUDnRphdHkA+AES8ofwBo/NWDWvyOXDu2A
+1CkRRPn9SOz/ndvsTTflk7i1qzCxUSDF+3k/lt+26l9YYuHqQPx08xBogQKcO5sx
+LbeksfW9FgUk1qGRtUOj5L//96uY1bt8IHwrAGdJQZF8DlNwJvOJcaQdqW7/TAVd
+clGsyD6iIUoJxTBlSwMS+GxXopjC/Ib1w86XmwfUIc1ZXD8NMLQTe21CsSYpxFr8
+LWUhkq60apQIV/mnb2+o1B+oKDDm7aU23CmjmIfscNEXr84ChxsMHL3J5UcCkbQ8
+jNxXGPjCQihIlID2KR8fNvBlPs60gGuDjLfXaYprAK5+QWTHRu2+Mjn796de15im
+l9gbts3sSMlKyudRJnir5FSdIWBUr8PyIh3cD56uqcap4M2E3WhAME1P9h59UXCq
+gSrehIaEmtlA0zslfFvTGUK/VvY82QkW729vBG8tiQJpUp2YW1w=
+=Gr0M
+-----END PGP SIGNATURE-----
 
-> +
-> +if:
-> +  properties:
-> +    compatible:
-> +      contains:
-> +        enum:
-> +          - azoteq,iqs620a-keys
-> +          - azoteq,iqs621-keys
-> +          - azoteq,iqs622-keys
-> +then:
-> +  patternProperties:
-> +    "^hall-switch-(north|south)$":
-> +      type: object
-> +      description:
-> +        Represents north/south-field Hall-effect sensor touch or proximity
-> +        events. Note that north/south-field orientation is reversed on the
-> +        IQS620AXzCSR device due to its flip-chip package.
-> +
-> +      properties:
-> +        linux,code:
-> +          $ref: /schemas/types.yaml#/definitions/uint32
-> +          description: Numeric switch code associated with the event.
-> +
-> +        azoteq,use-prox:
-> +          $ref: /schemas/types.yaml#/definitions/flag
-> +          description:
-> +            If present, specifies that Hall-effect sensor reporting should
-> +            use the device's wide-range proximity threshold instead of its
-> +            close-range touch threshold (default).
-> +
-> +      required:
-> +        - linux,code
-> +
-> +...
-> diff --git a/Documentation/devicetree/bindings/mfd/iqs62x.yaml b/Documentation/devicetree/bindings/mfd/iqs62x.yaml
-> new file mode 100644
-> index 0000000..24e6004
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/iqs62x.yaml
-> @@ -0,0 +1,177 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/iqs62x.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Azoteq IQS620A/621/622/624/625 Multi-Function Sensors
-> +
-> +maintainers:
-> +  - Jeff LaBundy <jeff@labundy.com>
-> +
-> +description: |
-> +  The Azoteq IQS620A, IQS621, IQS622, IQS624 and IQS625 multi-function sensors
-> +  integrate multiple sensing technologies in a single package.
-> +
-> +  Link to data sheets: https://www.azoteq.com/
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - azoteq,iqs620a
-> +      - azoteq,iqs621
-> +      - azoteq,iqs622
-> +      - azoteq,iqs624
-> +      - azoteq,iqs625
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  firmware-name:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description:
-> +      Specifies the name of the calibration and configuration file selected by
-> +      the driver. If this property is omitted, the name is chosen based on the
-> +      device name with ".bin" as the extension (e.g. iqs620a.bin for IQS620A).
-> +
-> +  keys:
-> +    $ref: ../input/iqs62x-keys.yaml
-> +
-> +  pwm:
-> +    $ref: ../pwm/iqs620a-pwm.yaml
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-
-Add: 
-
-additionalProperties: false
-
-> +
-> +examples:
-> +  - |
-> +    /*
-> +     * Dual capacitive buttons with additional "air button," unipolar lid
-> +     * switch and panel-mounted LED.
-> +     */
-> +    #include <dt-bindings/input/input.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            iqs620a@44 {
-> +                    compatible = "azoteq,iqs620a";
-> +                    reg = <0x44>;
-> +                    interrupt-parent = <&gpio>;
-> +                    interrupts = <17 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +                    keys {
-> +                            compatible = "azoteq,iqs620a-keys";
-> +
-> +                            linux,keycodes = <KEY_SELECT>,
-> +                                             <KEY_MENU>,
-> +                                             <KEY_OK>,
-> +                                             <KEY_MENU>;
-> +
-> +                            hall-switch-south {
-> +                                    linux,code = <SW_LID>;
-> +                                    azoteq,use-prox;
-> +                            };
-> +                    };
-> +
-> +                    iqs620a_pwm: pwm {
-> +                            compatible = "azoteq,iqs620a-pwm";
-> +                            #pwm-cells = <2>;
-> +                    };
-> +            };
-> +    };
-> +
-> +    pwmleds {
-> +            compatible = "pwm-leds";
-> +
-> +            panel {
-> +                    pwms = <&iqs620a_pwm 0 1000000>;
-> +                    max-brightness = <255>;
-> +            };
-> +    };
-> +
-> +  - |
-> +    /* Single inductive button with bipolar dock/tablet-mode switch. */
-> +    #include <dt-bindings/input/input.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            iqs620a@44 {
-> +                    compatible = "azoteq,iqs620a";
-> +                    reg = <0x44>;
-> +                    interrupt-parent = <&gpio>;
-> +                    interrupts = <17 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +                    firmware-name = "iqs620a_coil.bin";
-> +
-> +                    keys {
-> +                            compatible = "azoteq,iqs620a-keys";
-> +
-> +                            linux,keycodes = <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <KEY_MUTE>;
-> +
-> +                            hall-switch-north {
-> +                                    linux,code = <SW_DOCK>;
-> +                            };
-> +
-> +                            hall-switch-south {
-> +                                    linux,code = <SW_TABLET_MODE>;
-> +                            };
-> +                    };
-> +            };
-> +    };
-> +
-> +  - |
-> +    /* Dual capacitive buttons with volume knob. */
-> +    #include <dt-bindings/input/input.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            iqs624@44 {
-> +                    compatible = "azoteq,iqs624";
-> +                    reg = <0x44>;
-> +                    interrupt-parent = <&gpio>;
-> +                    interrupts = <17 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +                    keys {
-> +                            compatible = "azoteq,iqs624-keys";
-> +
-> +                            linux,keycodes = <BTN_0>,
-> +                                             <0>,
-> +                                             <BTN_1>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <0>,
-> +                                             <KEY_VOLUMEUP>,
-> +                                             <KEY_VOLUMEDOWN>;
-> +                    };
-> +            };
-> +    };
-> +
-> +...
-> diff --git a/Documentation/devicetree/bindings/pwm/iqs620a-pwm.yaml b/Documentation/devicetree/bindings/pwm/iqs620a-pwm.yaml
-> new file mode 100644
-> index 0000000..6b7aaef
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/pwm/iqs620a-pwm.yaml
-> @@ -0,0 +1,30 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/pwm/iqs620a-pwm.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Azoteq IQS620A PWM Generator
-> +
-> +maintainers:
-> +  - Jeff LaBundy <jeff@labundy.com>
-> +
-> +description: |
-> +  The Azoteq IQS620A multi-function sensor generates a fixed-frequency PWM
-> +  output represented by a "pwm" child node from the parent MFD driver. See
-> +  Documentation/devicetree/bindings/mfd/iqs62x.yaml for further details as
-> +  well as an example.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - azoteq,iqs620a-pwm
-> +
-> +  "#pwm-cells":
-> +    const: 2
-> +
-> +required:
-> +  - compatible
-> +  - "#pwm-cells"
-
-Add: 
-
-additionalProperties: false
-
-> +
-> +...
-> --
-> 2.7.4
-> 
+--k4no5alxjmkmaa2l--

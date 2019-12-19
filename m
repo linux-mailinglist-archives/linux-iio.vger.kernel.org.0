@@ -2,29 +2,29 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41D1C1263AF
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2019 14:37:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A1D51263B2
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2019 14:37:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726847AbfLSNh2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Dec 2019 08:37:28 -0500
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:41682 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726695AbfLSNh2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Dec 2019 08:37:28 -0500
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBJDRAwr024888;
-        Thu, 19 Dec 2019 08:37:07 -0500
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2173.outbound.protection.outlook.com [104.47.57.173])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2wxf1n043k-1
+        id S1726734AbfLSNhr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Dec 2019 08:37:47 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:46940 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726695AbfLSNhr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Dec 2019 08:37:47 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBJDUF3Q027292;
+        Thu, 19 Dec 2019 08:37:25 -0500
+Received: from nam04-sn1-obe.outbound.protection.outlook.com (mail-sn1nam04lp2056.outbound.protection.outlook.com [104.47.44.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2wvtfdmhta-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Dec 2019 08:37:07 -0500
+        Thu, 19 Dec 2019 08:37:25 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZiLi0C+WMEx9pNhthDzd6fAAPcp4j5EcSf9u4o2SxfaRQ56GPkgpw+oFBx/dBklOHhw194Rm02Jbv235bsXF2N+6bzu/hvlg/iKY31aX1PcoRgXszHZo1CQsSb7uCzAZs97wDXGySFebFTCPO9RUv72ZFNTKZ4q3+KoY+YuoURk1LRIu313ujnQy2TmjVypo/6OH5ByxEbbAHNy3EgYV0LO24pMAeXPNgcHlRioiXM3KLKg+w9trW2POe9uBkVZWCru2bxl5JqcLCyb125qqzuo1NOl9+BC7YeRGUL2KVWPkUn+JnQJ6FvvTK8cucTrRfv5J/t/5GLPZyu4F8wjiAA==
+ b=DK7ZS/bAx0cjmCK5FeTNhZ1dwrd6SwqfUbvPNFeJcXFKJDxRywZP61EV5wQsRK14xXzkFvZ/4Fok0dJGlg5FsldpXrmnQ80fLhTtTzQblaNHdUcEyySt5tDY2/aEvCsi6kvVfR0Gr9hCCIXJLQYbwI6TuxtONcSTa4V2RFok2cGgsx1lg+p3N01c2HV1rCxcCOXWUvUlH0mOREG0/L68gsUbLIQ9Qp2vlo3RcZ+2rzRHyQllY9rNnSQ6I5KA7Z33xuNz1r2CT7JyeRqzDrU3GU0bjIxKgm9zudeRV6PzRIyAd2/mUDc/FVq7kFkhVeLgETOP7hFEvz/RNTdBAbZXGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0/eivhwkMtCY9Uek1H+CTTN22sVCFWb9qMrJk92j3/Y=;
- b=XyCToRoW7x2pRZDPV8pBPAC9UHTnse0sA7yLrIxCbx2wIDLdTcl77zj0I9ClO9qoo1w1V504g+XSsDDYmLVAqUYcslvHAB4J7LHDlYRUISXm210U7dPl4nTr03GpLxSUh6TbTgKnTzXJSxRS7paSUvl3VW2y7rka8XqZW6sxj3IliQSdSxjvQDSX7f4nJPLzH8wes99csLvoULyYX23GpW5khD/tFNywYPybT85uBt3LT8B7ExwhhuLc+E/w7n5tge1HDCWMFgoH5tGTvdDfYizOFqZUZ52hkYrGNm5Slgl5FsfPqXuDjHh8KEWMAJi+Kf4vPwtjlv5FDPeEuRQ0Fw==
+ bh=oy3B1hnmT/YRaT5SeWs2Fs9eNIM9YStQjj6aIqH2DMw=;
+ b=lxXt7tsvNAUkhp3mhXGuJh8eFpJJYat5+BjaHVZrufEt07SYX0zg7y6Af12jiEUFUIO3RZ0gLq/oKjjfGFYgYmUIr7Ztn7j7xQY589r7lVxmFRd2KHgRGtPOnshPRPFxxnVkI9hqpI2wCjCOj8sPzN71Af0QrOZp6gAW6bSknJZkszi/FCKUIb78R51LDsIVyGPi9RJEvDFHCsUtgTYoLnyhdelJDVxlvdAjmJNIr9yVr3MylVwZdjdRhc8K+pDox3rkckxLSPjtEl8qujUZ8orZfEVZYCLTnvcuZgz3cruLzY/M4lwfKb+yt/kA6mfIGZwj0+4d/WByUeeRGsHgRA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  137.71.25.57) smtp.rcpttodomain=kernel.org smtp.mailfrom=analog.com;
  dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
@@ -32,50 +32,49 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0/eivhwkMtCY9Uek1H+CTTN22sVCFWb9qMrJk92j3/Y=;
- b=NXGebf+boR6i5m1DQPvJCgVE/b9OxNpQ8QrMA8mxH0rvaLw8IqIh1P79chQfg3okv4iNWe3XkkX8k/UrTYxBYbaQfBdFQOPlua8F66JJm8ukAL2HzMDrUkBrcCQkJEJra+KiOPEwvn9Yz0HYaXcZgx1h08VwfQIqYVWJniE/GgA=
-Received: from SN6PR2101CA0029.namprd21.prod.outlook.com
- (2603:10b6:805:106::39) by BN8PR03MB4818.namprd03.prod.outlook.com
- (2603:10b6:408:6a::26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2559.14; Thu, 19 Dec
- 2019 13:37:05 +0000
+ bh=oy3B1hnmT/YRaT5SeWs2Fs9eNIM9YStQjj6aIqH2DMw=;
+ b=hTbCt7nRabmEHdTBISGYPbK1okyg+/3utAkkjdPvK/cBN7GKLC/x1JF0bjMfvBMtONWJg5zgLc1mGlU/lYfoDEuV/lOfTUJN1JtmdTSxVgMzX0VCgvHE0LQ5UcCqzXNpN/xeMxwGBFkwd4E71BpD3VjsagGCfB/MKnPzx0Fgf9Q=
+Received: from SN6PR2101CA0004.namprd21.prod.outlook.com
+ (2603:10b6:805:106::14) by CY4PR03MB2918.namprd03.prod.outlook.com
+ (2603:10b6:903:133::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2538.18; Thu, 19 Dec
+ 2019 13:37:14 +0000
 Received: from SN1NAM02FT061.eop-nam02.prod.protection.outlook.com
- (2603:10b6:805:106:cafe::d2) by SN6PR2101CA0029.outlook.office365.com
- (2603:10b6:805:106::39) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2581.2 via Frontend
- Transport; Thu, 19 Dec 2019 13:37:05 +0000
+ (2603:10b6:805:106:cafe::b8) by SN6PR2101CA0004.outlook.office365.com
+ (2603:10b6:805:106::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2581.3 via Frontend
+ Transport; Thu, 19 Dec 2019 13:37:14 +0000
 Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
  137.71.25.57 as permitted sender) receiver=protection.outlook.com;
  client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
 Received: from nwd2mta2.analog.com (137.71.25.57) by
  SN1NAM02FT061.mail.protection.outlook.com (10.152.72.196) with Microsoft SMTP
  Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2538.14
- via Frontend Transport; Thu, 19 Dec 2019 13:37:04 +0000
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id xBJDb2G1012860
+ via Frontend Transport; Thu, 19 Dec 2019 13:37:14 +0000
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id xBJDbCtP012887
         (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=FAIL);
-        Thu, 19 Dec 2019 05:37:03 -0800
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 19 Dec 2019 05:37:13 -0800
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 19 Dec
- 2019 05:37:00 -0800
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 19 Dec 2019 08:37:00 -0500
+ 2019 08:37:06 -0500
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 19 Dec 2019 05:37:05 -0800
 Received: from ben-Latitude-E6540.ad.analog.com ([10.48.65.231])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id xBJDal8e000582;
-        Thu, 19 Dec 2019 08:36:56 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id xBJDal8f000582;
+        Thu, 19 Dec 2019 08:37:01 -0500
 From:   Beniamin Bia <beniamin.bia@analog.com>
 To:     <jic23@kernel.org>
 CC:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
         <robh+dt@kernel.org>, <mark.rutland@arm.com>,
         <Michael.Hennerich@analog.com>, <linux-iio@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <biabeniamin@outlook.com>,
-        Stefan Popa <stefan.popa@analog.com>,
         Beniamin Bia <beniamin.bia@analog.com>
-Subject: [PATCH 2/3] iio: frequency: adf4371: Introduce channel child nodes
-Date:   Thu, 19 Dec 2019 15:37:54 +0200
-Message-ID: <20191219133755.26109-2-beniamin.bia@analog.com>
+Subject: [PATCH 3/3] dt-binding: iio: Add documentation for ADF4371 channel child notes
+Date:   Thu, 19 Dec 2019 15:37:55 +0200
+Message-ID: <20191219133755.26109-3-beniamin.bia@analog.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191219133755.26109-1-beniamin.bia@analog.com>
 References: <20191219133755.26109-1-beniamin.bia@analog.com>
@@ -84,194 +83,133 @@ Content-Type: text/plain
 X-ADIRoutedOnPrem: True
 X-EOPAttributedMessage: 0
 X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(376002)(346002)(136003)(396003)(39860400002)(189003)(199004)(8936002)(186003)(2616005)(4326008)(426003)(7696005)(26005)(8676002)(356004)(6916009)(54906003)(70206006)(2906002)(36756003)(70586007)(5660300002)(7636002)(478600001)(107886003)(86362001)(44832011)(246002)(336012)(316002)(1076003);DIR:OUT;SFP:1101;SCL:1;SRVR:BN8PR03MB4818;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;MX:1;A:1;
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(396003)(39860400002)(376002)(136003)(346002)(189003)(199004)(426003)(1076003)(70206006)(70586007)(6916009)(7636002)(7696005)(2616005)(478600001)(54906003)(44832011)(8676002)(6666004)(36756003)(26005)(356004)(336012)(107886003)(246002)(5660300002)(86362001)(8936002)(186003)(2906002)(316002)(4326008);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR03MB2918;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;MX:1;A:1;
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 40df0c69-bf90-4ece-265f-08d784888919
-X-MS-TrafficTypeDiagnostic: BN8PR03MB4818:
-X-Microsoft-Antispam-PRVS: <BN8PR03MB481854082BEFF19F21E48D53F0520@BN8PR03MB4818.namprd03.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 235bb793-53e0-4c17-1b37-08d784888ebc
+X-MS-TrafficTypeDiagnostic: CY4PR03MB2918:
+X-Microsoft-Antispam-PRVS: <CY4PR03MB29180BF960553045F4580861F0520@CY4PR03MB2918.namprd03.prod.outlook.com>
 X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
 X-Forefront-PRVS: 0256C18696
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RP6D742haRzSuNkx6VTPZwjwJS9sFwzFgg/Qqthm80zdaU1+JqSCBjsA6Vk7e0Tg8mTdPowLVGQB2vPLd3FC3jrmTGhroD9Ga/nB8+r+wJMug4d1oUdlOrfzZIi1ZWAGSyIF9QNPg9TsUsT5Eruw9CaqYw09kqLF/z0r6Fu8ErgpXWFAVwavz/MwPeDgGVJCRnFFwyKB/rW9KqjjOu17Z8FuczAD+FD5aiAVRc3aHAc1z99uQMPHETRfTL6QGT4sVyS8c2lfktSg7WXEKzYlKSjwMG5WvQeWMOKgTms/E8HZQDBPWwV/OASprT0gzJcsTTY341i6f5zJst5OR4U49+28z7OyEPZefBQjTCndeUvR8GuCQx+CQInpmCZ95yOL7NYl9yrkohB0A2J75Jm/DeSuSq7NNdK/iwY2gfbufeByDG4KUMVKqgtJ4295uYGe
+X-Microsoft-Antispam-Message-Info: 0z7Pd0TJnZtArvG/Lsu0EdahZslZ3sZDIR2OhcfUgfgLqa6voG2ltabk+K0/nqonDxKCUBeM8M6CxttXErungwsZyZQ0icP1a6pGsvbzOBqf1zrHKQq4RHu7aBodmyzTMHX+fH9YaIqykWNNIxoKH3m6Cnn/8fkg9EyTwGGSUAEwPEH39kXFJM8kTB2wqGz1yM5n7vo5oEii+WTDQ1LHm7d9lzXJmNmqQuBqG2uHWfphKRi9TyC3o65eqZ05hQKKKXy2B+gZyPODDxA12nIrayWGkka3Kf7MMpaL6+oQMHFKZX6YaaumIOEWB/ploSXKlB1Hj8RNVEk3kHRGxLlygEFPsLxNIp/YTdmY+H7Vy0NewYesYq2/GHOmsE5Gnf+9fsMMYOKze+vQuU9H8zGOakrqUs+Zvjr1B+ndux4FHIILSfaJTOWS5KRgX/f18qdQ
 X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2019 13:37:04.5599
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2019 13:37:14.0114
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40df0c69-bf90-4ece-265f-08d784888919
+X-MS-Exchange-CrossTenant-Network-Message-Id: 235bb793-53e0-4c17-1b37-08d784888ebc
 X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR03MB4818
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR03MB2918
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-19_01:2019-12-17,2019-12-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 suspectscore=1 impostorscore=0 malwarescore=0 mlxlogscore=999
- clxscore=1015 mlxscore=0 priorityscore=1501 bulkscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
+ clxscore=1015 impostorscore=0 phishscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 suspectscore=1 bulkscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-1910280000 definitions=main-1912190117
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Stefan Popa <stefan.popa@analog.com>
+This patch documents the ADF4371 individual channel configuration.
 
-The ADF4371/ADF4372 devices support individual configurations for the
-output channels. Each child node represents a channel for which
-"power-up-frequency" and "output-enable" optional properties are currently
-supported.
-
-If the "power-up-frequency" is specified for a channel, the driver checks
-if the value provided is in sync with the frequencies set on the other
-channels. This limitation is due to the fact that all the channel
-frequencies are derived from the VCO fundamental frequency.
-
-If the "output-enable" property is specified, then the channel will be
-enabled, otherwise, the driver will initialize the defaults (RF8x will
-be the only enabled channel).
-
-Signed-off-by: Stefan Popa <stefan.popa@analog.com>
 Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
 ---
- drivers/iio/frequency/adf4371.c | 79 ++++++++++++++++++++++++++++++++-
- 1 file changed, 77 insertions(+), 2 deletions(-)
+ .../bindings/iio/frequency/adf4371.yaml       | 63 +++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
-diff --git a/drivers/iio/frequency/adf4371.c b/drivers/iio/frequency/adf4371.c
-index 7d77ebdbea82..e2a599b912e5 100644
---- a/drivers/iio/frequency/adf4371.c
-+++ b/drivers/iio/frequency/adf4371.c
-@@ -154,10 +154,16 @@ struct adf4371_chip_info {
- 	const struct iio_chan_spec *channels;
- };
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+index 7ec3ec94356b..5339c929e883 100644
+--- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
++++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+@@ -40,12 +40,48 @@ properties:
+       output stage will shut down until the ADF4371/ADF4372 achieves lock as
+       measured by the digital lock detect circuitry.
  
-+struct adf4371_channel_config {
-+	bool enable;
-+	unsigned long long freq;
-+};
++  '#address-cells':
++    const: 1
 +
- struct adf4371_state {
- 	struct spi_device *spi;
- 	struct regmap *regmap;
- 	struct clk *clkin;
-+	struct adf4371_channel_config channel_cfg[4];
- 	/*
- 	 * Lock for accessing device registers. Some operations require
- 	 * multiple consecutive R/W operations, during which the device
-@@ -175,6 +181,7 @@ struct adf4371_state {
- 	unsigned int mod2;
- 	unsigned int rf_div_sel;
- 	unsigned int ref_div_factor;
-+	bool mute_till_lock_en;
- 	u8 buf[10] ____cacheline_aligned;
- };
++  '#size-cells':
++    const: 0
++
+ required:
+   - compatible
+   - reg
+   - clocks
+   - clock-names
  
-@@ -480,6 +487,36 @@ static const struct iio_info adf4371_info = {
- 	.debugfs_reg_access = &adf4371_reg_access,
- };
- 
-+static int adf4371_channel_config(struct adf4371_state *st)
-+{
-+	unsigned long long rate;
-+	int i, ret;
++  patternProperties:
++  "^channel@[01]$":
++    type: object
++    description: Represents the external channels which are connected to the device.
 +
-+	for (i = 0; i < st->chip_info->num_channels; i++) {
-+		if (st->channel_cfg[i].freq == 0)
-+			continue;
++    properties:
++      reg:
++        description: |
++          The channel number. It can have up to 3 channels on adf4372
++          and 4 channels on adf4371, numbered from 0 to 3.
++        maxItems: 1
 +
-+		rate = adf4371_pll_fract_n_get_rate(st, i);
-+		if (rate == 0) {
-+			ret = adf4371_set_freq(st, st->channel_cfg[i].freq, i);
-+			if (ret < 0)
-+				return ret;
-+		} else if (rate != st->channel_cfg[i].freq) {
-+			dev_err(&st->spi->dev,
-+				"Clock rate for chanel %d is not in sync\n", i);
-+			return -EINVAL;
-+		}
-+		/* Powerup channel if the property was specified in the dt */
-+		if (st->channel_cfg[i].enable) {
-+			ret = adf4371_channel_power_down(st, i, false);
-+			if (ret < 0)
-+				return ret;
-+		}
-+	}
++      adi,output-enable:
++        description: |
++          If this property is specified, the output channel will be enabled.
++          If left empty, the driver will initialize the defaults (RF8x, channel 0
++          will be the only one enabled).
++        maxItems: 1
 +
-+	return 0;
-+}
++      adi,power-up-frequency:
++        description: |
++          Set the frequency after power up for the channel. If this property is
++          specified, it has to be in sync with the power up frequency set on the
++          other channels. This limitation is due to the fact that all the channel
++          frequencies are derived from the VCO fundamental frequency.
++        maxItems: 1
 +
- static int adf4371_setup(struct adf4371_state *st)
- {
- 	unsigned int synth_timeout = 2, timeout = 1, vco_alc_timeout = 1;
-@@ -497,7 +534,7 @@ static int adf4371_setup(struct adf4371_state *st)
- 		return ret;
- 
- 	/* Mute to Lock Detect */
--	if (device_property_read_bool(&st->spi->dev, "adi,mute-till-lock-en")) {
-+	if (st->mute_till_lock_en) {
- 		ret = regmap_update_bits(st->regmap, ADF4371_REG(0x25),
- 					 ADF4371_MUTE_LD_MSK,
- 					 ADF4371_MUTE_LD(1));
-@@ -545,7 +582,11 @@ static int adf4371_setup(struct adf4371_state *st)
- 	st->buf[3] = synth_timeout;
- 	st->buf[4] = ADF4371_VCO_ALC_TOUT(vco_alc_timeout);
- 
--	return regmap_bulk_write(st->regmap, ADF4371_REG(0x30), st->buf, 5);
-+	ret = regmap_bulk_write(st->regmap, ADF4371_REG(0x30), st->buf, 5);
-+	if (ret < 0)
-+		return 0;
++    required:
++      - reg
 +
-+	return adf4371_channel_config(st);
- }
- 
- static void adf4371_clk_disable(void *data)
-@@ -555,6 +596,36 @@ static void adf4371_clk_disable(void *data)
- 	clk_disable_unprepare(st->clkin);
- }
- 
-+static int adf4371_parse_dt(struct adf4371_state *st)
-+{
-+	unsigned char num_channels;
-+	unsigned int channel;
-+	struct fwnode_handle *child;
-+	int ret;
+ examples:
+   - |
+     spi0 {
+@@ -55,9 +91,36 @@ examples:
+         frequency@0 {
+                 compatible = "adi,adf4371";
+                 reg = <0>;
 +
-+	if (device_property_read_bool(&st->spi->dev, "adi,mute-till-lock-en"))
-+		st->mute_till_lock_en = true;
++                #address-cells = <1>;
++                #size-cells = <0>;
 +
-+	num_channels = device_get_child_node_count(&st->spi->dev);
-+	if (num_channels > st->chip_info->num_channels)
-+		return -EINVAL;
+                 spi-max-frequency = <1000000>;
+                 clocks = <&adf4371_clkin>;
+                 clock-names = "clkin";
 +
-+	device_for_each_child_node(&st->spi->dev, child) {
-+		ret = fwnode_property_read_u32(child, "reg", &channel);
-+		if (ret)
-+			return ret;
++                channel@0 {
++                        reg = <0>;
++                        adi,output-enable;
++                        adi,power-up-frequency = /bits/ 64 <8000000000>;
++                };
 +
-+		ret = fwnode_property_present(child, "adi,output-enable");
-+		st->channel_cfg[channel].enable = ret;
++                channel@1 {
++                        reg = <1>;
++                        adi,output-enable;
++                };
 +
-+		fwnode_property_read_u64(child,
-+					 "adi,power-up-frequency",
-+					 &st->channel_cfg[channel].freq);
-+	}
++                channel@2 {
++                        reg = <2>;
++                        adi,output-enable;
++                        adi,power-up-frequency = /bits/ 64 <16000000000>;
++                };
 +
-+	return 0;
-+}
-+
- static int adf4371_probe(struct spi_device *spi)
- {
- 	const struct spi_device_id *id = spi_get_device_id(spi);
-@@ -602,6 +673,10 @@ static int adf4371_probe(struct spi_device *spi)
- 
- 	st->clkin_freq = clk_get_rate(st->clkin);
- 
-+	ret = adf4371_parse_dt(st);
-+	if (ret < 0)
-+		return ret;
-+
- 	ret = adf4371_setup(st);
- 	if (ret < 0) {
- 		dev_err(&spi->dev, "ADF4371 setup failed\n");
++                channel@3 {
++                        reg = <3>;
++                        adi,output-enable;
++                        adi,power-up-frequency = /bits/ 64 <32000000000>;
++                };
+         };
+     };
+ ...
 -- 
 2.17.1
 

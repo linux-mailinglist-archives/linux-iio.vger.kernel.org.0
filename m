@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C3821280C0
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2019 17:35:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48A221280C3
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2019 17:36:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726808AbfLTQfn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Dec 2019 11:35:43 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:45984 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727391AbfLTQfj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Dec 2019 11:35:39 -0500
-Received: by mail-lf1-f68.google.com with SMTP id 203so7468238lfa.12
-        for <linux-iio@vger.kernel.org>; Fri, 20 Dec 2019 08:35:37 -0800 (PST)
+        id S1727422AbfLTQgG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Dec 2019 11:36:06 -0500
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:32872 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727417AbfLTQgF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Dec 2019 11:36:05 -0500
+Received: by mail-lf1-f66.google.com with SMTP id n25so7533390lfl.0
+        for <linux-iio@vger.kernel.org>; Fri, 20 Dec 2019 08:36:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=BihX16lmLcl6BldTpsH0OGFl1OVMMJgUyjg3R2fKcVU=;
-        b=EmiUr5y3Kd58+fVYmxfPM0pyDKslB1iDO9S9msO5xxUeZIp7Oo+1W9nsF/jWqZ6XEJ
-         JsRnlCqsuqlSz/lUB8FUh0tHu5FiAmUU7iGLbgDvvs3dsWWtP660bJfXbQYcR47Az7/n
-         fNk2w47VtbPgMWhK4Xiqyrh+PiME/NBtIMMi+SfURAjO2KkBN42TOYge+KSXjaBNIQ22
-         ZnqwrWMntyjZA0GtlpN3Oj1G0IShPuZqPDBRvh5vze6Gv+t44X3L2LYsjuO59ANnwq01
-         qrqKJRJ5SnRk1Y3+VEYlzW3dDtK4dVfqVUnlpIiyugd/hoUEeZJ/xAifmc4bb2ofXeeo
-         EfHw==
+        bh=jLa2dN/auoX5wIvaWIVrrYsMpSzoa4LfkaQLVViXRJU=;
+        b=fuTmNCiTKFxJDOBKOwXuPHN1WkPtp9111gau5tq95BiYFaa+9IkBEku2AS9IF8O9c4
+         Ql+JaTxqYS1ZPJiDEyzOJPaJFofEgFs7nuaCyueSOthWkXsR8GmMwuCj0Nb7mhx//Bab
+         Dp+xfI7PSYTXM7XxYDQ+1HwLE/enWpFL/uG5e+SPXedX+3LOhftZU62MGoJcA7CfrkJt
+         x93r9ttFh96VMbpw7GskVb3KTS6NuEhZ/SmftJ3v0f4UtGvomBxElx/UDczf6Wo0+eBT
+         uLV3QyuOERCIk3OUMfGc8ZpawGHK3EmvB/k9GZpnHILSdNwvwQB2jGxOjDVJVj3/fF33
+         5Dhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=BihX16lmLcl6BldTpsH0OGFl1OVMMJgUyjg3R2fKcVU=;
-        b=iSNDdHCCNbf4LmlSwzURDcMIbJiPBt13eyJEMbt3lnjYDL4hhz3Jl4+bZLqS11cT7r
-         FcfGeVnLdHR7z8dJthrcfD3LlTFK6R8pWP3cjGHM3FIR2OYi4bqZZZppi9gDXWLH3c6o
-         2hLhkfSqZlqqsaCeMiwOCzdQl86rDLXbQmnrX9DJW56m9fVXefusDCslS5BMVA3NcE8G
-         KEnv76CauYN/UFxRhmGNzw7NH8SMfcKY2x8uTdaDOEH0cWoVknMvkqITg+olnoWkdyyP
-         QyYKfEJTtz+KHZ56bF6i5vSazgLVd4jAdekKnyi+wRTdvcc7AimALtfEpkvFwOyyRM+c
-         OoMA==
-X-Gm-Message-State: APjAAAXQEKXgYp8098SLc2POu4MvMX5+MY/dXAxZjxruw3Mq2XFLdD/n
-        DRUJBali2nfAn5nDH1wIsUwsjT6TySWAn8q8ZYVsiQ==
-X-Google-Smtp-Source: APXvYqyONHUapWq71uGWVwAZl8s5Y4Swig6bZPiBWn7kpEpTM9J0RVPQRYFiNRxU1bGREdojEqknlhtFlC5l2emladw=
-X-Received: by 2002:ac2:5c4b:: with SMTP id s11mr9445593lfp.133.1576859736469;
- Fri, 20 Dec 2019 08:35:36 -0800 (PST)
+        bh=jLa2dN/auoX5wIvaWIVrrYsMpSzoa4LfkaQLVViXRJU=;
+        b=oxoxYhcyPOpbe1hQ21sVeP5k+9T4KbFcvX1vTxykVg0MQkaPpf/aBOT+M/m0J0LSWU
+         j9yPAa3e7Uy5lTtP/Cc0YRD3kSptCALbBBkKiU0m1PMID0K7VbD2WKBMRh6tl7/Dmvdv
+         GeY5v/iubKZl7RCTAKOL78T/+Nxham1X5TQGhadqIxYJXtM7hFr9Ouj6jmJ88eOebxsv
+         44CaHnerWgrYD31RPjhjtVvwOrKXj+vnwYcSt4s2jMykG5sCrxG6ZqhI+8QZV6a4f0c1
+         mN6KF0EMLXSexiVUCN+vUJ3U6+JXZP4vWQkbJbPKcP5mt0zpMyY8eG/V6crC9gvrMNhL
+         94bQ==
+X-Gm-Message-State: APjAAAUrefeSWODWWTYDlKixzoDdUssY7+fbCWBwzhN/UD93d1b/UPiT
+        dXT6BweHmiucnOk+SenoN/4pG9pZ/darEWe3X+GFoQ==
+X-Google-Smtp-Source: APXvYqx4tffl12i/HGqRf4xn6+oXQ7x7HuEeGMpoti4TzYzcxieGNQFBYTjykMARXxnYBjdpgNmWxoJFilAlNgheiBM=
+X-Received: by 2002:a19:2389:: with SMTP id j131mr9202421lfj.86.1576859762615;
+ Fri, 20 Dec 2019 08:36:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20191220160051.26321-1-dan@dlrobertson.com> <20191220160051.26321-3-dan@dlrobertson.com>
-In-Reply-To: <20191220160051.26321-3-dan@dlrobertson.com>
+References: <20191220160051.26321-1-dan@dlrobertson.com> <20191220160051.26321-4-dan@dlrobertson.com>
+In-Reply-To: <20191220160051.26321-4-dan@dlrobertson.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 20 Dec 2019 17:35:25 +0100
-Message-ID: <CACRpkdZupt+Q-QOuu99QcDVDJqAMtwjndSpdTRihgXjbOq-Msw@mail.gmail.com>
-Subject: Re: [PATCH v8 2/3] iio: (bma400) add driver for the BMA400
+Date:   Fri, 20 Dec 2019 17:35:50 +0100
+Message-ID: <CACRpkdYVSGa4PHT9nHcV-YnVbhd7E3xK1FDhV+50SOMEk699Ww@mail.gmail.com>
+Subject: Re: [PATCH v8 3/3] iio: (bma400) basic regulator support
 To:     Dan Robertson <dan@dlrobertson.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
@@ -67,10 +67,8 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Dec 20, 2019 at 5:17 PM Dan Robertson <dan@dlrobertson.com> wrote:
 
-> Add a IIO driver for the Bosch BMA400 3-axes ultra-low power accelerometer.
-> The driver supports reading from the acceleration and temperature
-> registers. The driver also supports reading and configuring the output data
-> rate, oversampling ratio, and scale.
+> Add support for the VDD and VDDIO regulators using the regulator
+> framework.
 >
 > Signed-off-by: Dan Robertson <dan@dlrobertson.com>
 

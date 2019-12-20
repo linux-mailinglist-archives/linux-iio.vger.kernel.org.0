@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CC8F127D7E
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2019 15:37:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE738127E3D
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2019 15:42:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728195AbfLTOen (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Dec 2019 09:34:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38798 "EHLO mail.kernel.org"
+        id S1727810AbfLTOjT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Dec 2019 09:39:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41876 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728177AbfLTOem (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 20 Dec 2019 09:34:42 -0500
+        id S1727729AbfLTOhq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 20 Dec 2019 09:37:46 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 36BB92467F;
-        Fri, 20 Dec 2019 14:34:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4F9CA24689;
+        Fri, 20 Dec 2019 14:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576852482;
-        bh=nrf6JZB/QVnxN+WIXg+VNkA1Co1/9r7l+7ZvZLKSLlE=;
+        s=default; t=1576852665;
+        bh=5NhTfVD2BU2utSLF0nj12wUSvdjKAOjc/YbRLNs8WuI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HZdjRrziWG4+z2PDUknEOy1CbIJaUuG16gJeQYvCNQLCUW0PmQ0655MThU3t2mVgO
-         HVDLC8/YiuLzom+CEr9/tlfGZdyhF5XkhsLLOvWjAPJBGoQhPE5NpzWYJxegEwZKeA
-         iiQYzYA5PYty7v12BUjDleCWfwIJAvabF7Y0ostM=
+        b=LfYQv1rlRI0CRuYuFNtA2t8ren7lO6z7PUgjB1aMIvhGVLc+cilYBotlZ8S49V0dN
+         GxejmBwznQnaBoVjtoIA+4JAJOXssXnIRsDrbz5cRfO+hC3GZzDfxakURbDozXzks1
+         QOgzl5bZjKK0IagKHDIsR7RpuLxjWj0AxXCDadZY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
@@ -30,12 +30,12 @@ Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 06/34] iio: adc: max9611: Fix too short conversion time delay
-Date:   Fri, 20 Dec 2019 09:34:05 -0500
-Message-Id: <20191220143433.9922-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 02/19] iio: adc: max9611: Fix too short conversion time delay
+Date:   Fri, 20 Dec 2019 09:37:23 -0500
+Message-Id: <20191220143741.10220-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191220143433.9922-1-sashal@kernel.org>
-References: <20191220143433.9922-1-sashal@kernel.org>
+In-Reply-To: <20191220143741.10220-1-sashal@kernel.org>
+References: <20191220143741.10220-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -88,7 +88,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
-index 0884435eec68d..9f1a5ef0b444c 100644
+index 33be07c78b96f..8649a61c50bc3 100644
 --- a/drivers/iio/adc/max9611.c
 +++ b/drivers/iio/adc/max9611.c
 @@ -92,6 +92,12 @@
@@ -119,7 +119,7 @@ index 0884435eec68d..9f1a5ef0b444c 100644
  
  	ret = i2c_smbus_read_word_swapped(max9611->i2c_client, reg_addr);
  	if (ret < 0) {
-@@ -510,7 +514,7 @@ static int max9611_init(struct max9611_dev *max9611)
+@@ -511,7 +515,7 @@ static int max9611_init(struct max9611_dev *max9611)
  			MAX9611_REG_CTRL2, 0);
  		return ret;
  	}

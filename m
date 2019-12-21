@@ -2,1160 +2,626 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1883A1280D6
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2019 17:43:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE3E41286C4
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Dec 2019 04:28:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727362AbfLTQng (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Dec 2019 11:43:36 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:37043 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727181AbfLTQng (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Dec 2019 11:43:36 -0500
-Received: by mail-pj1-f66.google.com with SMTP id m13so4366318pjb.2;
-        Fri, 20 Dec 2019 08:43:35 -0800 (PST)
+        id S1726598AbfLUD2K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Dec 2019 22:28:10 -0500
+Received: from mail-bn8nam12on2066.outbound.protection.outlook.com ([40.107.237.66]:14697
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726537AbfLUD2K (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 20 Dec 2019 22:28:10 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Tg+EDa2aNK6yvGq6P7p9+puxn7GaBJ9WlAqUVQmg4VdAq0kSKQtdScojVseDV5s/ZHnUSgL6FnSBgpHippbm6Twpq1rwiIT5qQR0hoTgbcfF1b5B3ur2ipuLUMNMBSLrdYfp0yJSKzhsAeuyLnSq/zrd30xvtdwHCaMg8UoMGr8xSK29sqMv6soz4QgMQ4qh3eutp2FDIl9EmzUoCexKKUs3nGTnkngvuCRn4+0KiyWV34B2REj72BUwm2NS2RXoR5E3Lg7xTX2unXVQl67BHWZ8hIXLx0iFXuShkEVr2vnvhUgv80xrAvp+t+jRGIMRt2akyIB43owjgUp/W1R4Tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Gq2WCUY9IVLXhNOfrTyThmCc7ylna3H0waBse5oIM0U=;
+ b=SIJaw+LQ3xzPMh2p+x4BwKy4bvgDG4NmNdlVmY6jQ0FdnHBWaImrObJFbYhSbPLJpIMFwz9XLpxOggYFCEwzK1+lRZ2dJUx+3pPaay7Qyectuk3u4pRWOLz2oHoiBNKMHxhZWAfV0r9j2zfV1laG9RGhP14k5UC6TBLeVtfvw6xECN/fFraPv3sgNXgUMByYBKH8M+YQUkP+rTa/6CIsy/uSqqCupaZRKUI4iT9PfOetwsxaLZTbCidW4cRMpZ2iCyq6YmE7id/zXwVGedGCwr2eePlImkl0DEcDBbKRKNRMKC8zB5FDnD7mGf9jCTAz8HItuuB0fw/PnN2qE7DbIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=labundy.com; dmarc=pass action=none header.from=labundy.com;
+ dkim=pass header.d=labundy.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=r9Ue2dsvK4ssYB389es7wsVZoElUpfFU2dBC4UJh4yg=;
-        b=L8W27wsRADIwbEsKyxUhR340fGGvEpPsqCOJ+1iWoP+09BP+pUoX9FEel+omCiqzSo
-         uHwHeN19hOhK8uR5HlDmzjoPitcptHSJ//FU3BCHP/XXlqnafrmY3wkX96UpQHBbBFtN
-         LwGitm5QXho6d80lwV95Z8mgoVgr53uRfXIz5cg9vyfovPsPl+dDladZdL7ToU4eWezV
-         UyXKohEmKOSLBRIEW4tlLrs6XQS8Jl+aydvH8Dv1mFJBoo3j/YsE5nJv4GmwFi6TXb73
-         DgHJ5nr9cQP7RJEFgET5bvL4MLdDrFEvlD0XTpJ04+84co+W2hfFDhgENGGD9Tlje+0/
-         +IBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=r9Ue2dsvK4ssYB389es7wsVZoElUpfFU2dBC4UJh4yg=;
-        b=J7NUr8D9+1gmcsCVlu70Dp7Y7pMMJCndYbKfLeMgD83zodLo/Z4iki06XJScjj9OCS
-         bUBw5tiLFPLzfSwXh7Fx47COD2ZabeyH4spUdEXgMewQbGCh4osSIzJMbs24VG3U06DG
-         yKO5NRKVZI13VEOcQzmqVTYn7vXrSIlgr1Cta6X63f5K2ERJas85J3WqvP4I2RrhoKo4
-         mEa616w5Y8u8FSbOi2jszVWGH6ijmRYfsESaGor6roizAFf28Sd1mlVve2OgYd6lF1+p
-         ht20I5LovEliQxuQTPRQdI9Di+SUF3Iv/WpjHQkDQ1st0LpEQE0wzfvk6FJYR+SS1hpo
-         79qg==
-X-Gm-Message-State: APjAAAUFmx6VPRyiPNRbVuBTHEa0yLf9pkLshyjkAzjemKcptUX1gJGU
-        s30bxepqLZ8uZ6KYZwBcSqtpNN/9noEzUiZAiUc=
-X-Google-Smtp-Source: APXvYqyyfTGpUydJxhKlfkFKtLA+FsxHfI11l78/sybVhci+RDIfhIQNF9fk5ZUaJgyAQTNh7e5fQQwhZ5niKK7ENd4=
-X-Received: by 2002:a17:902:aa08:: with SMTP id be8mr15853376plb.255.1576860214415;
- Fri, 20 Dec 2019 08:43:34 -0800 (PST)
+ d=NETORG5796793.onmicrosoft.com; s=selector1-NETORG5796793-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Gq2WCUY9IVLXhNOfrTyThmCc7ylna3H0waBse5oIM0U=;
+ b=VeSB96TO/nc4Wt/s42goIgH+hfMaunkUhR7NHoPtmBa9yP/Gw/T2hHl0r/0mgH+cA6E5ToLe8rdGB5ppbgi33ZRkvRaHmnFEO3CxeFoWJagRB2wxUDCzav3fblb51eyS/r1aBYmkMoJkfcAMOT3QzuidtrJUJFfBq72sXljT0/Q=
+Received: from SN6PR08MB5053.namprd08.prod.outlook.com (52.135.107.153) by
+ SN6PR08MB3949.namprd08.prod.outlook.com (52.135.66.161) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2559.14; Sat, 21 Dec 2019 03:28:01 +0000
+Received: from SN6PR08MB5053.namprd08.prod.outlook.com
+ ([fe80::7c80:2b62:5d9a:2139]) by SN6PR08MB5053.namprd08.prod.outlook.com
+ ([fe80::7c80:2b62:5d9a:2139%4]) with mapi id 15.20.2559.016; Sat, 21 Dec 2019
+ 03:28:01 +0000
+Received: from labundy.com (136.49.227.119) by SN4PR0201CA0039.namprd02.prod.outlook.com (2603:10b6:803:2e::25) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2559.14 via Frontend Transport; Sat, 21 Dec 2019 03:28:00 +0000
+From:   Jeff LaBundy <jeff@labundy.com>
+To:     =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+CC:     "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH v2 4/7] pwm: Add support for Azoteq IQS620A PWM generator
+Thread-Topic: [PATCH v2 4/7] pwm: Add support for Azoteq IQS620A PWM generator
+Thread-Index: AQHVrij+8yO8xEtV+ECzt9/U9i+G6qexaTEAgAEU0QCAAHrSgIAIuWeAgADVNACABeTNAIAAXxsAgAE1m4A=
+Date:   Sat, 21 Dec 2019 03:28:01 +0000
+Message-ID: <20191221032755.GA3051@labundy.com>
+References: <1575851866-18919-1-git-send-email-jeff@labundy.com>
+ <1575851866-18919-5-git-send-email-jeff@labundy.com>
+ <20191209073206.6pftsak5v25jdepz@pengutronix.de>
+ <20191210000252.GA6361@labundy.com>
+ <20191210072227.434hyv5wl3rwztqx@pengutronix.de>
+ <20191215203607.GA31390@labundy.com>
+ <20191216091912.r4onikojbkbmguag@pengutronix.de>
+ <20191220031924.GA2658@labundy.com>
+ <20191220085948.iagsdpjqd6ixdo7j@pengutronix.de>
+In-Reply-To: <20191220085948.iagsdpjqd6ixdo7j@pengutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: SN4PR0201CA0039.namprd02.prod.outlook.com
+ (2603:10b6:803:2e::25) To SN6PR08MB5053.namprd08.prod.outlook.com
+ (2603:10b6:805:78::25)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=jeff@labundy.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [136.49.227.119]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ede3237e-576b-4337-5784-08d785c5c82c
+x-ms-traffictypediagnostic: SN6PR08MB3949:
+x-microsoft-antispam-prvs: <SN6PR08MB39494E71E37A4D59692FA996D32C0@SN6PR08MB3949.namprd08.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-forefront-prvs: 0258E7CCD4
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(366004)(39830400003)(376002)(346002)(34096005)(396003)(136003)(55674003)(189003)(199004)(508600001)(71200400001)(4326008)(86362001)(5660300002)(8886007)(1076003)(66574012)(186003)(52116002)(26005)(7696005)(16526019)(64756008)(66556008)(8676002)(66476007)(66446008)(81156014)(8936002)(316002)(956004)(55016002)(30864003)(966005)(6916009)(66946007)(36756003)(54906003)(33656002)(2906002)(2616005)(81166006)(7416002);DIR:OUT;SFP:1101;SCL:1;SRVR:SN6PR08MB3949;H:SN6PR08MB5053.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: labundy.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: wBXhCSmaUzMkiHPxzGeDkbR10qx2D5jZ6erTVTV6b2dgcIH2pvAOTWIkim36q3THL/FyaqkCbYLRBT41SCBCGO/jEtUb7gETlHeGH4GvRyXJQ4hfS3CvWa6WMOZ9RgQ9N/3/1xXCiTJ6zdaANHysFG8yzAhAa8Ui96GgJaDf7ghhIm7A4LQOk8Cyl1pUWV5qDnrdXMiseDqkX4w75tXK5rpCVzgeKBW0mS2+XLMk56pUvLC+MA/47ExT0/Dp6XkPmVxiSeg20ktSCF5CgAJv9zVgxcNLNnrZG8aFC3ia2UV9leZXHOMxJUtE5913oFeymbjQWGWbvAQCXYybWHdtzCqYcicb+glNnB4SD8gfLeWZisld/i61uV0/LLhBQkJ1dDO7URsYV7athAV/+coMYlThj1aYZaCdl9owLfi2tq+UbZuFEhCPy7zVmd8MrOLgx9vHBSkyJU8oB/9/6JtQtaFCQFyCTXnUj8Xl/Hbq8TsmIeblrK4xJ6v5oy+ei2Y7gfDed92VXNNCCna/v2A9pLKTTmX75yB21hipsPgsFfM=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <DFB47BA91FE89D47B9A69FF9703440A6@namprd08.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20191220160051.26321-1-dan@dlrobertson.com> <20191220160051.26321-3-dan@dlrobertson.com>
-In-Reply-To: <20191220160051.26321-3-dan@dlrobertson.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 20 Dec 2019 18:43:24 +0200
-Message-ID: <CAHp75Veko7f1cjrOdBf1quN40wJJLCDXaYzyY_AVy7T5tjGWQA@mail.gmail.com>
-Subject: Re: [PATCH v8 2/3] iio: (bma400) add driver for the BMA400
-To:     Dan Robertson <dan@dlrobertson.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        devicetree <devicetree@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Joe Perches <joe@perches.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: labundy.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ede3237e-576b-4337-5784-08d785c5c82c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Dec 2019 03:28:01.3842
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 00b69d09-acab-4585-aca7-8fb7c6323e6f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7OT8lXblqAn4tlEvK70U3GIgTubI5QrQP/G+//UKNF7GsiDIF7GucuctbWixp4u/89wEp73HCvHKGGqlbfnXuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB3949
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Dec 20, 2019 at 6:17 PM Dan Robertson <dan@dlrobertson.com> wrote:
->
-> Add a IIO driver for the Bosch BMA400 3-axes ultra-low power accelerometer.
-> The driver supports reading from the acceleration and temperature
-> registers. The driver also supports reading and configuring the output data
-> rate, oversampling ratio, and scale.
+Hi Uwe,
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-One comment below.
+On Fri, Dec 20, 2019 at 09:59:48AM +0100, Uwe Kleine-K=F6nig wrote:
+> Hello Jeff,
+>=20
+> On Fri, Dec 20, 2019 at 03:19:31AM +0000, Jeff LaBundy wrote:
+> > I apologize for my delayed replies as I have been traveling.
+>=20
+> No problem, I didn't hold my breath :-)
+>=20
+> > On Mon, Dec 16, 2019 at 10:19:12AM +0100, Uwe Kleine-K=F6nig wrote:
+> > > On Sun, Dec 15, 2019 at 08:36:12PM +0000, Jeff LaBundy wrote:
+> > > > On Tue, Dec 10, 2019 at 08:22:27AM +0100, Uwe Kleine-K=F6nig wrote:
+> > > > > On Tue, Dec 10, 2019 at 12:03:02AM +0000, Jeff LaBundy wrote:
+> > > > > > On Mon, Dec 09, 2019 at 08:32:06AM +0100, Uwe Kleine-K=F6nig wr=
+ote:
+> > > > > > > On Mon, Dec 09, 2019 at 12:38:36AM +0000, Jeff LaBundy wrote:
+> > > > > > > > This patch adds support for the Azoteq IQS620A, capable of =
+generating
+> > > > > > > > a 1-kHz PWM output with duty cycle between 0.4% and 100% (i=
+nclusive).
+> > > > > > > >=20
+> > > > > > > > Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+> > > > > > > > ---
+> > > > > > > > Changes in v2:
+> > > > > > > >   - Merged 'Copyright' and 'Author' lines into one in intro=
+ductory comments
+> > > > > > > >   - Added 'Limitations' section to introductory comments
+> > > > > > > >   - Replaced 'error' with 'ret' throughout
+> > > > > > > >   - Added const qualifier to state argument of iqs620_pwm_a=
+pply and removed all
+> > > > > > > >     modifications to the variable's contents
+> > > > > > > >   - Updated iqs620_pwm_apply to return -ENOTSUPP or -EINVAL=
+ if the requested
+> > > > > > > >     polarity is inverted or the requested period is below 1=
+ ms, respectively
+> > > > > > > >   - Updated iqs620_pwm_apply to disable the PWM output if d=
+uty cycle is zero
+> > > > > > > >   - Added iqs620_pwm_get_state
+> > > > > > > >   - Eliminated tabbed alignment of pwm_ops and platform_dri=
+ver struct members
+> > > > > > > >   - Moved notifier unregistration to already present iqs620=
+_pwm_remove, which
+> > > > > > > >     eliminated the need for a device-managed action and rea=
+dy flag
+> > > > > > > >   - Added a comment in iqs620_pwm_probe to explain the orde=
+r of operations
+> > > > > > > >   - Changed Kconfig "depends on" logic to MFD_IQS62X || COM=
+PILE_TEST
+> > > > > > > >=20
+> > > > > > > >  drivers/pwm/Kconfig       |  10 +++
+> > > > > > > >  drivers/pwm/Makefile      |   1 +
+> > > > > > > >  drivers/pwm/pwm-iqs620a.c | 206 ++++++++++++++++++++++++++=
+++++++++++++++++++++
+> > > > > > > >  3 files changed, 217 insertions(+)
+> > > > > > > >  create mode 100644 drivers/pwm/pwm-iqs620a.c
+> > > > > > > >=20
+> > > > > > > > diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+> > > > > > > > index bd21655..60bcf6c 100644
+> > > > > > > > --- a/drivers/pwm/Kconfig
+> > > > > > > > +++ b/drivers/pwm/Kconfig
+> > > > > > > > @@ -222,6 +222,16 @@ config PWM_IMX_TPM
+> > > > > > > >  	  To compile this driver as a module, choose M here: the =
+module
+> > > > > > > >  	  will be called pwm-imx-tpm.
+> > > > > > > >=20
+> > > > > > > > +config PWM_IQS620A
+> > > > > > > > +	tristate "Azoteq IQS620A PWM support"
+> > > > > > > > +	depends on MFD_IQS62X || COMPILE_TEST
+> > > > > > > > +	help
+> > > > > > > > +	  Generic PWM framework driver for the Azoteq IQS620A mul=
+ti-function
+> > > > > > > > +	  sensor.
+> > > > > > > > +
+> > > > > > > > +	  To compile this driver as a module, choose M here: the =
+module will
+> > > > > > > > +	  be called pwm-iqs620a.
+> > > > > > > > +
+> > > > > > > >  config PWM_JZ4740
+> > > > > > > >  	tristate "Ingenic JZ47xx PWM support"
+> > > > > > > >  	depends on MACH_INGENIC
+> > > > > > > > diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
+> > > > > > > > index 9a47507..a59c710 100644
+> > > > > > > > --- a/drivers/pwm/Makefile
+> > > > > > > > +++ b/drivers/pwm/Makefile
+> > > > > > > > @@ -20,6 +20,7 @@ obj-$(CONFIG_PWM_IMG)		+=3D pwm-img.o
+> > > > > > > >  obj-$(CONFIG_PWM_IMX1)		+=3D pwm-imx1.o
+> > > > > > > >  obj-$(CONFIG_PWM_IMX27)		+=3D pwm-imx27.o
+> > > > > > > >  obj-$(CONFIG_PWM_IMX_TPM)	+=3D pwm-imx-tpm.o
+> > > > > > > > +obj-$(CONFIG_PWM_IQS620A)	+=3D pwm-iqs620a.o
+> > > > > > > >  obj-$(CONFIG_PWM_JZ4740)	+=3D pwm-jz4740.o
+> > > > > > > >  obj-$(CONFIG_PWM_LP3943)	+=3D pwm-lp3943.o
+> > > > > > > >  obj-$(CONFIG_PWM_LPC18XX_SCT)	+=3D pwm-lpc18xx-sct.o
+> > > > > > > > diff --git a/drivers/pwm/pwm-iqs620a.c b/drivers/pwm/pwm-iq=
+s620a.c
+> > > > > > > > new file mode 100644
+> > > > > > > > index 0000000..1ea11b9
+> > > > > > > > --- /dev/null
+> > > > > > > > +++ b/drivers/pwm/pwm-iqs620a.c
+> > > > > > > > @@ -0,0 +1,206 @@
+> > > > > > > > +// SPDX-License-Identifier: GPL-2.0+
+> > > > > > > > +/*
+> > > > > > > > + * Azoteq IQS620A PWM Generator
+> > > > > > > > + *
+> > > > > > > > + * Copyright (C) 2019 Jeff LaBundy <jeff@labundy.com>
+> > > > > > > > + *
+> > > > > > > > + * Limitations:
+> > > > > > > > + * - The period is not guaranteed to run to completion whe=
+n the duty cycle is
+> > > > > > > > + *   changed or the output is disabled.
+> > > > > > >=20
+> > > > > > > Do you know more details here? "not guaranteed" means that th=
+e new
+> > > > > > > period starts immediately when duty_cycle or the enabled bit =
+is written?
+> > > > > > >=20
+> > > > > >=20
+> > > > > > Increasing the duty cycle on-the-fly (e.g. 25% to 75%) results =
+in the
+> > > > > > following behavior (depending on where the I2C write falls):
+> > > > > >=20
+> > > > > >                        I2C write
+> > > > > >    __        __        __  V_    ______    ______    ______    =
+__
+> > > > > > __|  |______|  |______|  |_|x|__|      |__|      |__|      |__|
+> > > > > >   ^---1ms---^---1ms---^---1ms---^---1ms---^---1ms---^---1ms---^
+> > > > > >=20
+> > > > > > The PWM continues to tick at 1 ms, but the currently running pe=
+riod suffers
+> > > > > > an extraneous pulse as the output is abruptly set high to "catc=
+h up" to the
+> > > > > > new duty cycle.
+> > > > > >=20
+> > > > > > A similar behavior can occur if the duty cycle is decreased, me=
+aning the
+> > > > > > output is abruptly set low if the I2C transaction completes in =
+what has
+> > > > > > suddenly become the inactive region of the currently running pe=
+riod.
+> > > > > >=20
+> > > > > > The PWM seems to be a simple counter that rolls over at a perio=
+d of 1 ms.
+> > > > > > Both the counter and the IQS620_PWM_DUTY_CYCLE register effecti=
+vely go to
+> > > > > > a comparator whose output is ANDed with IQS620_PWR_SETTINGS_PWM=
+_OUT which
+> > > > > > then drives the PWM output.
+> > > > > >=20
+> > > > > > As such, if either IQS620_PWM_DUTY_CYCLE or IQS620_PWR_SETTINGS=
+_PWM_OUT
+> > > > > > change, so may the PWM output state depending on the counter's =
+value at
+> > > > > > the time the I2C write is completed within the 1-ms continuous =
+loop.
+> > > > > >=20
+> > > > > > For v3 I will update the note as follows:
+> > > > > >=20
+> > > > > > - Changes in duty cycle or enable/disable state are immediately=
+ reflected
+> > > > > >   by the PWM output and are not aligned to the start of any per=
+iod.
+> > > > >=20
+> > > > > I'd like to see a bit more information in the driver. Something a=
+bout
+> > > > > the 1ms rhythm being unaffected by the duty_cycle and enable sett=
+ing.
+> > > > > Maybe:
+> > > > >=20
+> > > > >  - The periods run continuously with a fixed length of 1 ms which=
+ is
+> > > > >    unaffected by register updates. Writing duty cycle or enable
+> > > > >    registers gets active immediately which might result in glitch=
+es.
+> > > > >=20
+> > > > > ?
+> > > > >=20
+> > > >=20
+> > > > I adjusted the wording a bit as per my preference and settled on th=
+e
+> > > > following:
+> > > >=20
+> > > >   - The period is fixed to 1 ms and is generated continuously despi=
+te changes
+> > > >     to the duty cycle or enable/disable state.
+> > > >   - Changes to the duty cycle or enable/disable state take effect i=
+mmediately
+> > > >     and may result in a glitch during the period in which the chang=
+e is made.
+> > > >=20
+> > > > I believe these capture the spirit of your message; please let me k=
+now if
+> > > > you have any concerns.
+> > >=20
+> > > That's fine.
+> > >=20
+> > > > Upon further experimentation, I found that disabling the output (wh=
+ich v2
+> > > > does so as to simulate a 0% duty cycle) does not actively drive zer=
+o, but
+> > > > rather places the output in a high-impedance state with only the de=
+vice's
+> > > > own internal leakage eventually discharging the pin.
+> > >=20
+> > > But maybe this is still the best you can do in this case. @Thierry, w=
+hat
+> > > do you think?
+> > >=20
+> > > > This is fundamentally different than actively driving the pin low t=
+o make
+> > > > a 0% duty cycle, which does not appear to be possible at all. There=
+fore I
+> > > > have removed the control of IQS620_PWR_SETTINGS_PWM_OUT based on th=
+e duty
+> > > > cycle requested by the user and reverted to the behavior of v1, whe=
+re the
+> > > > duty cycle requested by the user is mapped only to IQS620_PWM_DUTY_=
+CYCLE.
+> > > >=20
+> > > > As such, I have also added a third bullet point similar to what you=
+ first
+> > > > suggested following v1:
+> > > >=20
+> > > >   - The device cannot generate a 0% duty cycle.
+> > >=20
+> > > Then this would be:
+> > >=20
+> > >   - The device cannot actively drive a 0% duty cycle. The driver is
+> > >     disabled for small duty_cycles relying on a pull down on the boar=
+d.
+> > >=20
+> > > But maybe it would be more prudent to do this only if the board
+> > > configuration suggests this is save?!
+> > >=20
+> >=20
+> > Given the policy for the actual duty cycle generated by the hardware no=
+t to
+> > exceed that which is requested by the user, it seems there are ultimate=
+ly 3
+> > options for duty_cycle below 1 / 256 ms:
+> >=20
+> > 1. Return -EINVAL.
+> > 2. Disable the output as in v2.
+> > 3. Add an optional boolean in the dts that identifies whether a pull-do=
+wn is
+> >    present; default to option (1) but use option (2) if the boolean is =
+there.
+> >=20
+> > I don't like option (1) because consumers (including leds-pwm) do in fa=
+ct ask
+> > for a 0% duty cycle which would make iqs620_pwm_apply return an error. =
+Things
+> > happen to still work since leds-pwm does not check pwm_config's return =
+value,
+> > but I don't want to rely on this coincidence.
+>=20
+> People implementing PWM drivers seems to mostly care about leds-pwm :-)
+> With that only nearly hitting the requested state isn't that bad. But if
+> you control a step motor that positions a laser, you want to be sure
+> that the request to stop moving it actually worked.
+>=20
+> > Option (2) is better, but I know from experience that board designers d=
+o not
+> > consult driver comments and the requirement to add a pull-down may be e=
+asily
+> > missed as it is not discussed in the data sheet (which is where that so=
+rt of
+> > information belongs, in my opinion).
+>=20
+> Hmm, well, actually I think the problem happened earlier when the
+> hardware designer considered providing 0% to be not important.
+>=20
 
->
-> Signed-off-by: Dan Robertson <dan@dlrobertson.com>
-> ---
->  MAINTAINERS                     |   7 +
->  drivers/iio/accel/Kconfig       |  16 +
->  drivers/iio/accel/Makefile      |   2 +
->  drivers/iio/accel/bma400.h      |  95 ++++
->  drivers/iio/accel/bma400_core.c | 820 ++++++++++++++++++++++++++++++++
->  drivers/iio/accel/bma400_i2c.c  |  61 +++
->  6 files changed, 1001 insertions(+)
->  create mode 100644 drivers/iio/accel/bma400.h
->  create mode 100644 drivers/iio/accel/bma400_core.c
->  create mode 100644 drivers/iio/accel/bma400_i2c.c
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ec020dc504ca..a5f2cb0de34d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3047,6 +3047,13 @@ S:       Supported
->  F:     drivers/net/bonding/
->  F:     include/uapi/linux/if_bonding.h
->
-> +BOSCH SENSORTEC BMA400 ACCELEROMETER IIO DRIVER
-> +M:     Dan Robertson <dan@dlrobertson.com>
-> +L:     linux-iio@vger.kernel.org
-> +S:     Maintained
-> +F:     drivers/iio/accel/bma400*
-> +F:     Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
-> +
->  BPF (Safe dynamic programs and tools)
->  M:     Alexei Starovoitov <ast@kernel.org>
->  M:     Daniel Borkmann <daniel@iogearbox.net>
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index d4ef35aeb579..670e60568033 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -112,6 +112,22 @@ config BMA220
->           To compile this driver as a module, choose M here: the
->           module will be called bma220_spi.
->
-> +config BMA400
-> +       tristate "Bosch BMA400 3-Axis Accelerometer Driver"
-> +       select REGMAP
-> +       select BMA400_I2C if I2C
-> +       help
-> +         Say Y here if you want to build a driver for the Bosch BMA400
-> +         triaxial acceleration sensor.
-> +
-> +         To compile this driver as a module, choose M here: the
-> +         module will be called bma400_core and you will also get
-> +         bma400_i2c if I2C is enabled.
-> +
-> +config BMA400_I2C
-> +       tristate
-> +       depends on BMA400
-> +
->  config BMC150_ACCEL
->         tristate "Bosch BMC150 Accelerometer Driver"
->         select IIO_BUFFER
-> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
-> index 56bd0215e0d4..3a051cf37f40 100644
-> --- a/drivers/iio/accel/Makefile
-> +++ b/drivers/iio/accel/Makefile
-> @@ -14,6 +14,8 @@ obj-$(CONFIG_ADXL372_I2C) += adxl372_i2c.o
->  obj-$(CONFIG_ADXL372_SPI) += adxl372_spi.o
->  obj-$(CONFIG_BMA180) += bma180.o
->  obj-$(CONFIG_BMA220) += bma220_spi.o
-> +obj-$(CONFIG_BMA400) += bma400_core.o
-> +obj-$(CONFIG_BMA400_I2C) += bma400_i2c.o
->  obj-$(CONFIG_BMC150_ACCEL) += bmc150-accel-core.o
->  obj-$(CONFIG_BMC150_ACCEL_I2C) += bmc150-accel-i2c.o
->  obj-$(CONFIG_BMC150_ACCEL_SPI) += bmc150-accel-spi.o
-> diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
-> new file mode 100644
-> index 000000000000..15c0e307d2c4
-> --- /dev/null
-> +++ b/drivers/iio/accel/bma400.h
-> @@ -0,0 +1,95 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Register constants and other forward declarations needed by the bma400
-> + * sources.
-> + *
-> + * Copyright 2019 Dan Robertson <dan@dlrobertson.com>
-> + */
-> +
-> +#ifndef _BMA400_H_
-> +#define _BMA400_H_
-> +
-> +#include <linux/bits.h>
-> +#include <linux/regmap.h>
-> +
-> +/*
-> + * Read-Only Registers
-> + */
-> +
-> +/* Status and ID registers */
-> +#define BMA400_CHIP_ID_REG          0x00
-> +#define BMA400_ERR_REG              0x02
-> +#define BMA400_STATUS_REG           0x03
-> +
-> +/* Acceleration registers */
-> +#define BMA400_X_AXIS_LSB_REG       0x04
-> +#define BMA400_X_AXIS_MSB_REG       0x05
-> +#define BMA400_Y_AXIS_LSB_REG       0x06
-> +#define BMA400_Y_AXIS_MSB_REG       0x07
-> +#define BMA400_Z_AXIS_LSB_REG       0x08
-> +#define BMA400_Z_AXIS_MSB_REG       0x09
-> +
-> +/* Sensor time registers */
-> +#define BMA400_SENSOR_TIME0         0x0a
-> +#define BMA400_SENSOR_TIME1         0x0b
-> +#define BMA400_SENSOR_TIME2         0x0c
-> +
-> +/* Event and interrupt registers */
-> +#define BMA400_EVENT_REG            0x0d
-> +#define BMA400_INT_STAT0_REG        0x0e
-> +#define BMA400_INT_STAT1_REG        0x0f
-> +#define BMA400_INT_STAT2_REG        0x10
-> +
-> +/* Temperature register */
-> +#define BMA400_TEMP_DATA_REG        0x11
-> +
-> +/* FIFO length and data registers */
-> +#define BMA400_FIFO_LENGTH0_REG     0x12
-> +#define BMA400_FIFO_LENGTH1_REG     0x13
-> +#define BMA400_FIFO_DATA_REG        0x14
-> +
-> +/* Step count registers */
-> +#define BMA400_STEP_CNT0_REG        0x15
-> +#define BMA400_STEP_CNT1_REG        0x16
-> +#define BMA400_STEP_CNT3_REG        0x17
-> +#define BMA400_STEP_STAT_REG        0x18
-> +
-> +/*
-> + * Read-write configuration registers
-> + */
-> +#define BMA400_ACC_CONFIG0_REG      0x19
-> +#define BMA400_ACC_CONFIG1_REG      0x1a
-> +#define BMA400_ACC_CONFIG2_REG      0x1b
-> +#define BMA400_CMD_REG              0x7e
-> +
-> +/* Chip ID of BMA 400 devices found in the chip ID register. */
-> +#define BMA400_ID_REG_VAL           0x90
-> +
-> +#define BMA400_LP_OSR_SHIFT         5
-> +#define BMA400_NP_OSR_SHIFT         4
-> +#define BMA400_SCALE_SHIFT          6
-> +
-> +#define BMA400_TWO_BITS_MASK        GENMASK(1, 0)
-> +#define BMA400_LP_OSR_MASK          GENMASK(6, 5)
-> +#define BMA400_NP_OSR_MASK          GENMASK(5, 4)
-> +#define BMA400_ACC_ODR_MASK         GENMASK(3, 0)
-> +#define BMA400_ACC_SCALE_MASK       GENMASK(7, 6)
-> +
-> +#define BMA400_ACC_ODR_MIN_RAW      0x05
-> +#define BMA400_ACC_ODR_LP_RAW       0x06
-> +#define BMA400_ACC_ODR_MAX_RAW      0x0b
-> +
-> +#define BMA400_ACC_ODR_MAX_HZ       800
-> +#define BMA400_ACC_ODR_MIN_WHOLE_HZ 25
-> +#define BMA400_ACC_ODR_MIN_HZ       12
-> +
-> +#define BMA400_SCALE_MIN            38357
-> +#define BMA400_SCALE_MAX            306864
-> +
-> +extern const struct regmap_config bma400_regmap_config;
-> +
-> +int bma400_probe(struct device *dev, struct regmap *regmap, const char *name);
-> +
-> +int bma400_remove(struct device *dev);
-> +
-> +#endif
-> diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-> new file mode 100644
-> index 000000000000..e7ba01e79d2c
-> --- /dev/null
-> +++ b/drivers/iio/accel/bma400_core.c
-> @@ -0,0 +1,820 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Core IIO driver for Bosch BMA400 triaxial acceleration sensor.
-> + *
-> + * Copyright 2019 Dan Robertson <dan@dlrobertson.com>
-> + *
-> + * TODO:
-> + *  - Support for power management
-> + *  - Support events and interrupts
-> + *  - Create channel for step count
-> + *  - Create channel for sensor time
-> + */
-> +
-> +#include <linux/bitops.h>
-> +#include <linux/device.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "bma400.h"
-> +
-> +/*
-> + * The G-range selection may be one of 2g, 4g, 8, or 16g. The scale may
-> + * be selected with the acc_range bits of the ACC_CONFIG1 register.
-> + * NB: This buffer is populated in the device init.
-> + */
-> +static int bma400_scales[8];
-> +
-> +/*
-> + * See the ACC_CONFIG1 section of the datasheet.
-> + * NB: This buffer is populated in the device init.
-> + */
-> +static int bma400_sample_freqs[14];
-> +
-> +static const int bma400_osr_range[] = { 0, 1, 3 };
-> +
-> +/* See the ACC_CONFIG0 section of the datasheet */
-> +enum bma400_power_mode {
-> +       POWER_MODE_SLEEP   = 0x00,
-> +       POWER_MODE_LOW     = 0x01,
-> +       POWER_MODE_NORMAL  = 0x02,
-> +       POWER_MODE_INVALID = 0x03,
-> +};
-> +
-> +struct bma400_sample_freq {
-> +       int hz;
-> +       int uhz;
-> +};
-> +
-> +struct bma400_data {
-> +       struct device *dev;
-> +       struct regmap *regmap;
-> +       struct mutex mutex; /* data register lock */
-> +       struct iio_mount_matrix orientation;
-> +       enum bma400_power_mode power_mode;
-> +       struct bma400_sample_freq sample_freq;
-> +       int oversampling_ratio;
-> +       int scale;
-> +};
-> +
-> +static bool bma400_is_writable_reg(struct device *dev, unsigned int reg)
-> +{
-> +       switch (reg) {
-> +       case BMA400_CHIP_ID_REG:
-> +       case BMA400_ERR_REG:
-> +       case BMA400_STATUS_REG:
-> +       case BMA400_X_AXIS_LSB_REG:
-> +       case BMA400_X_AXIS_MSB_REG:
-> +       case BMA400_Y_AXIS_LSB_REG:
-> +       case BMA400_Y_AXIS_MSB_REG:
-> +       case BMA400_Z_AXIS_LSB_REG:
-> +       case BMA400_Z_AXIS_MSB_REG:
-> +       case BMA400_SENSOR_TIME0:
-> +       case BMA400_SENSOR_TIME1:
-> +       case BMA400_SENSOR_TIME2:
-> +       case BMA400_EVENT_REG:
-> +       case BMA400_INT_STAT0_REG:
-> +       case BMA400_INT_STAT1_REG:
-> +       case BMA400_INT_STAT2_REG:
-> +       case BMA400_TEMP_DATA_REG:
-> +       case BMA400_FIFO_LENGTH0_REG:
-> +       case BMA400_FIFO_LENGTH1_REG:
-> +       case BMA400_FIFO_DATA_REG:
-> +       case BMA400_STEP_CNT0_REG:
-> +       case BMA400_STEP_CNT1_REG:
-> +       case BMA400_STEP_CNT3_REG:
-> +       case BMA400_STEP_STAT_REG:
-> +               return false;
-> +       default:
-> +               return true;
-> +       }
-> +}
-> +
-> +static bool bma400_is_volatile_reg(struct device *dev, unsigned int reg)
-> +{
-> +       switch (reg) {
-> +       case BMA400_ERR_REG:
-> +       case BMA400_STATUS_REG:
-> +       case BMA400_X_AXIS_LSB_REG:
-> +       case BMA400_X_AXIS_MSB_REG:
-> +       case BMA400_Y_AXIS_LSB_REG:
-> +       case BMA400_Y_AXIS_MSB_REG:
-> +       case BMA400_Z_AXIS_LSB_REG:
-> +       case BMA400_Z_AXIS_MSB_REG:
-> +       case BMA400_SENSOR_TIME0:
-> +       case BMA400_SENSOR_TIME1:
-> +       case BMA400_SENSOR_TIME2:
-> +       case BMA400_EVENT_REG:
-> +       case BMA400_INT_STAT0_REG:
-> +       case BMA400_INT_STAT1_REG:
-> +       case BMA400_INT_STAT2_REG:
-> +       case BMA400_TEMP_DATA_REG:
-> +       case BMA400_FIFO_LENGTH0_REG:
-> +       case BMA400_FIFO_LENGTH1_REG:
-> +       case BMA400_FIFO_DATA_REG:
-> +       case BMA400_STEP_CNT0_REG:
-> +       case BMA400_STEP_CNT1_REG:
-> +       case BMA400_STEP_CNT3_REG:
-> +       case BMA400_STEP_STAT_REG:
-> +               return true;
-> +       default:
-> +               return false;
-> +       }
-> +}
-> +
-> +const struct regmap_config bma400_regmap_config = {
-> +       .reg_bits = 8,
-> +       .val_bits = 8,
-> +       .max_register = BMA400_CMD_REG,
-> +       .cache_type = REGCACHE_RBTREE,
-> +       .writeable_reg = bma400_is_writable_reg,
-> +       .volatile_reg = bma400_is_volatile_reg,
-> +};
-> +EXPORT_SYMBOL(bma400_regmap_config);
-> +
-> +static const struct iio_mount_matrix *
-> +bma400_accel_get_mount_matrix(const struct iio_dev *indio_dev,
-> +                             const struct iio_chan_spec *chan)
-> +{
-> +       struct bma400_data *data = iio_priv(indio_dev);
-> +
-> +       return &data->orientation;
-> +}
-> +
-> +static const struct iio_chan_spec_ext_info bma400_ext_info[] = {
-> +       IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, bma400_accel_get_mount_matrix),
-> +       { }
-> +};
-> +
-> +#define BMA400_ACC_CHANNEL(_axis) { \
-> +       .type = IIO_ACCEL, \
-> +       .modified = 1, \
-> +       .channel2 = IIO_MOD_##_axis, \
-> +       .info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ) | \
-> +               BIT(IIO_CHAN_INFO_SCALE) | \
-> +               BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
-> +       .info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ) | \
-> +               BIT(IIO_CHAN_INFO_SCALE) | \
-> +               BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
-> +       .ext_info = bma400_ext_info, \
-> +}
-> +
-> +static const struct iio_chan_spec bma400_channels[] = {
-> +       BMA400_ACC_CHANNEL(X),
-> +       BMA400_ACC_CHANNEL(Y),
-> +       BMA400_ACC_CHANNEL(Z),
-> +       {
-> +               .type = IIO_TEMP,
-> +               .info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-> +               .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> +       },
-> +};
-> +
-> +static int bma400_get_temp_reg(struct bma400_data *data, int *val, int *val2)
-> +{
-> +       unsigned int raw_temp;
-> +       int host_temp;
-> +       int ret;
-> +
-> +       if (data->power_mode == POWER_MODE_SLEEP)
-> +               return -EBUSY;
-> +
-> +       ret = regmap_read(data->regmap, BMA400_TEMP_DATA_REG, &raw_temp);
-> +       if (ret)
-> +               return ret;
-> +
-> +       host_temp = sign_extend32(raw_temp, 7);
-> +       /*
-> +        * The formula for the TEMP_DATA register in the datasheet
-> +        * is: x * 0.5 + 23
-> +        */
-> +       *val = (host_temp >> 1) + 23;
-> +       *val2 = (host_temp & 0x1) * 500000;
-> +       return IIO_VAL_INT_PLUS_MICRO;
-> +}
-> +
-> +static int bma400_get_accel_reg(struct bma400_data *data,
-> +                               const struct iio_chan_spec *chan,
-> +                               int *val)
-> +{
-> +       __le16 raw_accel;
-> +       int lsb_reg;
-> +       int ret;
-> +
-> +       if (data->power_mode == POWER_MODE_SLEEP)
-> +               return -EBUSY;
-> +
-> +       switch (chan->channel2) {
-> +       case IIO_MOD_X:
-> +               lsb_reg = BMA400_X_AXIS_LSB_REG;
-> +               break;
-> +       case IIO_MOD_Y:
-> +               lsb_reg = BMA400_Y_AXIS_LSB_REG;
-> +               break;
-> +       case IIO_MOD_Z:
-> +               lsb_reg = BMA400_Z_AXIS_LSB_REG;
-> +               break;
-> +       default:
-> +               dev_err(data->dev, "invalid axis channel modifier\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       /* bulk read two registers, with the base being the LSB register */
-> +       ret = regmap_bulk_read(data->regmap, lsb_reg, &raw_accel,
-> +                              sizeof(raw_accel));
-> +       if (ret)
-> +               return ret;
-> +
-> +       *val = sign_extend32(le16_to_cpu(raw_accel), 11);
-> +       return IIO_VAL_INT;
-> +}
-> +
-> +static void bma400_output_data_rate_from_raw(int raw, unsigned int *val,
-> +                                            unsigned int *val2)
-> +{
-> +       *val = BMA400_ACC_ODR_MAX_HZ >> (BMA400_ACC_ODR_MAX_RAW - raw);
-> +       if (raw > BMA400_ACC_ODR_MIN_RAW)
-> +               *val2 = 0;
-> +       else
-> +               *val2 = 500000;
-> +}
-> +
-> +static int bma400_get_accel_output_data_rate(struct bma400_data *data)
-> +{
-> +       unsigned int val;
-> +       unsigned int odr;
-> +       int ret;
-> +
-> +       switch (data->power_mode) {
-> +       case POWER_MODE_LOW:
-> +               /*
-> +                * Runs at a fixed rate in low-power mode. See section 4.3
-> +                * in the datasheet.
-> +                */
-> +               bma400_output_data_rate_from_raw(BMA400_ACC_ODR_LP_RAW,
-> +                                                &data->sample_freq.hz,
-> +                                                &data->sample_freq.uhz);
-> +               return 0;
-> +       case POWER_MODE_NORMAL:
-> +               /*
-> +                * In normal mode the ODR can be found in the ACC_CONFIG1
-> +                * register.
-> +                */
-> +               ret = regmap_read(data->regmap, BMA400_ACC_CONFIG1_REG, &val);
-> +               if (ret)
-> +                       goto error;
-> +
-> +               odr = val & BMA400_ACC_ODR_MASK;
-> +               if (odr < BMA400_ACC_ODR_MIN_RAW ||
-> +                   odr > BMA400_ACC_ODR_MAX_RAW) {
-> +                       ret = -EINVAL;
-> +                       goto error;
-> +               }
-> +
-> +               bma400_output_data_rate_from_raw(odr, &data->sample_freq.hz,
-> +                                                &data->sample_freq.uhz);
-> +               return 0;
-> +       case POWER_MODE_SLEEP:
-> +               data->sample_freq.hz = 0;
-> +               data->sample_freq.uhz = 0;
-> +               return 0;
-> +       default:
-> +               ret = 0;
-> +               goto error;
-> +       }
-> +error:
-> +       data->sample_freq.hz = -1;
-> +       data->sample_freq.uhz = -1;
-> +       return ret;
-> +}
-> +
-> +static int bma400_set_accel_output_data_rate(struct bma400_data *data,
-> +                                            int hz, int uhz)
-> +{
-> +       unsigned int idx;
-> +       unsigned int odr;
-> +       unsigned int val;
-> +       int ret;
-> +
-> +       if (hz >= BMA400_ACC_ODR_MIN_WHOLE_HZ) {
-> +               if (uhz || hz > BMA400_ACC_ODR_MAX_HZ)
-> +                       return -EINVAL;
-> +
-> +               idx = __ffs(hz);
-> +
-> +               if (hz >> idx != BMA400_ACC_ODR_MIN_WHOLE_HZ)
+I heard back from the vendor today; they've acknowledged the limitation and
+are considering adding support for 0% in a future ROM spin. In the meantime=
+,
+they've agreed to describe the high-impedance behavior in the data sheet as
+well as include the pull-down resistor in an example schematic.
 
-Yeah, as I said it works if and only if the MIN_WHOLE_HZ % 2 == 1,
-i.e. odd number.
-Luckily the constant is 25.
+> > Option (3) seems like overkill for such a simple PWM, and ultimately do=
+esn't
+> > add any value because I don't want to allow option (1) behavior in any =
+case.
+> > Whether the PWM is disabled because it is truly disabled or to simulate=
+ a 0%
+> > duty cycle as in option (2), the pull-down is ultimately required regar=
+dless
+> > of whether or not the data sheet happens to go into such detail.
+>=20
+> Actually I like option 3 best.
+> =20
 
-Perhaps it needs a comment somewhere.
+Based on your other feedback, I'm moving forward under the impression that
+you'll still accept option (2); please let me know if I have misunderstood
+(thank you for being flexible).
 
-> +                       return -EINVAL;
-> +
-> +               idx += BMA400_ACC_ODR_MIN_RAW + 1;
-> +       } else if (hz == BMA400_ACC_ODR_MIN_HZ && uhz == 500000) {
-> +               idx = BMA400_ACC_ODR_MIN_RAW;
-> +       } else {
-> +               return -EINVAL;
-> +       }
-> +
-> +       ret = regmap_read(data->regmap, BMA400_ACC_CONFIG1_REG, &val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       /* preserve the range and normal mode osr */
-> +       odr = (~BMA400_ACC_ODR_MASK & val) | idx;
-> +
-> +       ret = regmap_write(data->regmap, BMA400_ACC_CONFIG1_REG, odr);
-> +       if (ret)
-> +               return ret;
-> +
-> +       bma400_output_data_rate_from_raw(idx, &data->sample_freq.hz,
-> +                                        &data->sample_freq.uhz);
-> +       return 0;
-> +}
-> +
-> +static int bma400_get_accel_oversampling_ratio(struct bma400_data *data)
-> +{
-> +       unsigned int val;
-> +       unsigned int osr;
-> +       int ret;
-> +
-> +       /*
-> +        * The oversampling ratio is stored in a different register
-> +        * based on the power-mode. In normal mode the OSR is stored
-> +        * in ACC_CONFIG1. In low-power mode it is stored in
-> +        * ACC_CONFIG0.
-> +        */
-> +       switch (data->power_mode) {
-> +       case POWER_MODE_LOW:
-> +               ret = regmap_read(data->regmap, BMA400_ACC_CONFIG0_REG, &val);
-> +               if (ret) {
-> +                       data->oversampling_ratio = -1;
-> +                       return ret;
-> +               }
-> +
-> +               osr = (val & BMA400_LP_OSR_MASK) >> BMA400_LP_OSR_SHIFT;
-> +
-> +               data->oversampling_ratio = osr;
-> +               return 0;
-> +       case POWER_MODE_NORMAL:
-> +               ret = regmap_read(data->regmap, BMA400_ACC_CONFIG1_REG, &val);
-> +               if (ret) {
-> +                       data->oversampling_ratio = -1;
-> +                       return ret;
-> +               }
-> +
-> +               osr = (val & BMA400_NP_OSR_MASK) >> BMA400_NP_OSR_SHIFT;
-> +
-> +               data->oversampling_ratio = osr;
-> +               return 0;
-> +       case POWER_MODE_SLEEP:
-> +               data->oversampling_ratio = 0;
-> +               return 0;
-> +       default:
-> +               data->oversampling_ratio = -1;
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +static int bma400_set_accel_oversampling_ratio(struct bma400_data *data,
-> +                                              int val)
-> +{
-> +       unsigned int acc_config;
-> +       int ret;
-> +
-> +       if (val & ~BMA400_TWO_BITS_MASK)
-> +               return -EINVAL;
-> +
-> +       /*
-> +        * The oversampling ratio is stored in a different register
-> +        * based on the power-mode.
-> +        */
-> +       switch (data->power_mode) {
-> +       case POWER_MODE_LOW:
-> +               ret = regmap_read(data->regmap, BMA400_ACC_CONFIG0_REG,
-> +                                 &acc_config);
-> +               if (ret)
-> +                       return ret;
-> +
-> +               ret = regmap_write(data->regmap, BMA400_ACC_CONFIG0_REG,
-> +                                  (acc_config & ~BMA400_LP_OSR_MASK) |
-> +                                  (val << BMA400_LP_OSR_SHIFT));
-> +               if (ret) {
-> +                       dev_err(data->dev, "Failed to write out OSR\n");
-> +                       return ret;
-> +               }
-> +
-> +               data->oversampling_ratio = val;
-> +               return 0;
-> +       case POWER_MODE_NORMAL:
-> +               ret = regmap_read(data->regmap, BMA400_ACC_CONFIG1_REG,
-> +                                 &acc_config);
-> +               if (ret)
-> +                       return ret;
-> +
-> +               ret = regmap_write(data->regmap, BMA400_ACC_CONFIG1_REG,
-> +                                  (acc_config & ~BMA400_NP_OSR_MASK) |
-> +                                  (val << BMA400_NP_OSR_SHIFT));
-> +               if (ret) {
-> +                       dev_err(data->dev, "Failed to write out OSR\n");
-> +                       return ret;
-> +               }
-> +
-> +               data->oversampling_ratio = val;
-> +               return 0;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +       return ret;
-> +}
-> +
-> +int bma400_accel_scale_to_raw(struct bma400_data *data, unsigned int val)
-> +{
-> +       int raw;
-> +
-> +       if (val == 0)
-> +               return -EINVAL;
-> +
-> +       raw = __ffs(val);
-> +
-> +       if (val >> raw != BMA400_SCALE_MIN)
+My argument is that even if duty cycle is limited to 1 / 256 ms within the
+"no pull-down present" option, the output will still be disabled anyway if
+state->enabled =3D false. In that case, the pull-down is required to preven=
+t
+noise from coupling onto the high-impedance pin (which will likely be tied
+to the high-impedance gate of a MOSFET) and flickering an LED.
 
-Ditto.
-Luckily it's 38357.
+Stated another way, I do not feel option (3) is suitable because the pull-
+down is in fact not optional, but required in my opinion.
 
-> +               return -EINVAL;
-> +
-> +       return raw;
-> +}
-> +
-> +static int bma400_get_accel_scale(struct bma400_data *data)
-> +{
-> +       unsigned int raw_scale;
-> +       unsigned int val;
-> +       int ret;
-> +
-> +       ret = regmap_read(data->regmap, BMA400_ACC_CONFIG1_REG, &val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       raw_scale = (val & BMA400_ACC_SCALE_MASK) >> BMA400_SCALE_SHIFT;
-> +       if (raw_scale > BMA400_TWO_BITS_MASK)
-> +               return -EINVAL;
-> +
-> +       data->scale = BMA400_SCALE_MIN << raw_scale;
-> +
-> +       return 0;
-> +}
-> +
-> +static int bma400_set_accel_scale(struct bma400_data *data, unsigned int val)
-> +{
-> +       unsigned int acc_config;
-> +       int raw;
-> +       int ret;
-> +
-> +       ret = regmap_read(data->regmap, BMA400_ACC_CONFIG1_REG, &acc_config);
-> +       if (ret)
-> +               return ret;
-> +
-> +       raw = bma400_accel_scale_to_raw(data, val);
-> +       if (raw < 0)
-> +               return raw;
-> +
-> +       ret = regmap_write(data->regmap, BMA400_ACC_CONFIG1_REG,
-> +                          (acc_config & ~BMA400_ACC_SCALE_MASK) |
-> +                          (raw << BMA400_SCALE_SHIFT));
-> +       if (ret)
-> +               return ret;
-> +
-> +       data->scale = val;
-> +       return 0;
-> +}
-> +
-> +static int bma400_get_power_mode(struct bma400_data *data)
-> +{
-> +       unsigned int val;
-> +       int ret;
-> +
-> +       ret = regmap_read(data->regmap, BMA400_STATUS_REG, &val);
-> +       if (ret) {
-> +               dev_err(data->dev, "Failed to read status register\n");
-> +               return ret;
-> +       }
-> +
-> +       data->power_mode = (val >> 1) & BMA400_TWO_BITS_MASK;
-> +       return 0;
-> +}
-> +
-> +static int bma400_set_power_mode(struct bma400_data *data,
-> +                                enum bma400_power_mode mode)
-> +{
-> +       unsigned int val;
-> +       int ret;
-> +
-> +       ret = regmap_read(data->regmap, BMA400_ACC_CONFIG0_REG, &val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       if (data->power_mode == mode)
-> +               return 0;
-> +
-> +       if (mode == POWER_MODE_INVALID)
-> +               return -EINVAL;
-> +
-> +       /* Preserve the low-power oversample ratio etc */
-> +       ret = regmap_write(data->regmap, BMA400_ACC_CONFIG0_REG,
-> +                          mode | (val & ~BMA400_TWO_BITS_MASK));
-> +       if (ret) {
-> +               dev_err(data->dev, "Failed to write to power-mode\n");
-> +               return ret;
-> +       }
-> +
-> +       data->power_mode = mode;
-> +
-> +       /*
-> +        * Update our cached osr and odr based on the new
-> +        * power-mode.
-> +        */
-> +       bma400_get_accel_output_data_rate(data);
-> +       bma400_get_accel_oversampling_ratio(data);
-> +       return 0;
-> +}
-> +
-> +static void bma400_init_tables(void)
-> +{
-> +       int raw;
-> +       int i;
-> +
-> +       for (i = 0; i + 1 < ARRAY_SIZE(bma400_sample_freqs); i += 2) {
-> +               raw = (i / 2) + 5;
-> +               bma400_output_data_rate_from_raw(raw, &bma400_sample_freqs[i],
-> +                                                &bma400_sample_freqs[i + 1]);
-> +       }
-> +
-> +       for (i = 0; i + 1 < ARRAY_SIZE(bma400_scales); i += 2) {
-> +               raw = i / 2;
-> +               bma400_scales[i] = 0;
-> +               bma400_scales[i + 1] = BMA400_SCALE_MIN << raw;
-> +       }
-> +}
-> +
-> +static int bma400_init(struct bma400_data *data)
-> +{
-> +       unsigned int val;
-> +       int ret;
-> +
-> +       /* Try to read chip_id register. It must return 0x90. */
-> +       ret = regmap_read(data->regmap, BMA400_CHIP_ID_REG, &val);
-> +       if (ret) {
-> +               dev_err(data->dev, "Failed to read chip id register\n");
-> +               goto out;
-> +       }
-> +
-> +       if (val != BMA400_ID_REG_VAL) {
-> +               dev_err(data->dev, "Chip ID mismatch\n");
-> +               ret = -ENODEV;
-> +               goto out;
-> +       }
-> +
-> +       ret = bma400_get_power_mode(data);
-> +       if (ret) {
-> +               dev_err(data->dev, "Failed to get the initial power-mode\n");
-> +               goto out;
-> +       }
-> +
-> +       if (data->power_mode != POWER_MODE_NORMAL) {
-> +               ret = bma400_set_power_mode(data, POWER_MODE_NORMAL);
-> +               if (ret) {
-> +                       dev_err(data->dev, "Failed to wake up the device\n");
-> +                       goto out;
-> +               }
-> +               /*
-> +                * TODO: The datasheet waits 1500us here in the example, but
-> +                * lists 2/ODR as the wakeup time.
-> +                */
-> +               usleep_range(1500, 2000);
-> +       }
-> +
-> +       bma400_init_tables();
-> +
-> +       ret = bma400_get_accel_output_data_rate(data);
-> +       if (ret)
-> +               goto out;
-> +
-> +       ret = bma400_get_accel_oversampling_ratio(data);
-> +       if (ret)
-> +               goto out;
-> +
-> +       ret = bma400_get_accel_scale(data);
-> +       if (ret)
-> +               goto out;
-> +
-> +       /*
-> +        * Once the interrupt engine is supported we might use the
-> +        * data_src_reg, but for now ensure this is set to the
-> +        * variable ODR filter selectable by the sample frequency
-> +        * channel.
-> +        */
-> +       return regmap_write(data->regmap, BMA400_ACC_CONFIG2_REG, 0x00);
-> +
-> +out:
-> +       return ret;
-> +}
-> +
-> +static int bma400_read_raw(struct iio_dev *indio_dev,
-> +                          struct iio_chan_spec const *chan, int *val,
-> +                          int *val2, long mask)
-> +{
-> +       struct bma400_data *data = iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_PROCESSED:
-> +               mutex_lock(&data->mutex);
-> +               ret = bma400_get_temp_reg(data, val, val2);
-> +               mutex_unlock(&data->mutex);
-> +               return ret;
-> +       case IIO_CHAN_INFO_RAW:
-> +               mutex_lock(&data->mutex);
-> +               ret = bma400_get_accel_reg(data, chan, val);
-> +               mutex_unlock(&data->mutex);
-> +               return ret;
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               switch (chan->type) {
-> +               case IIO_ACCEL:
-> +                       if (data->sample_freq.hz < 0)
-> +                               return -EINVAL;
-> +
-> +                       *val = data->sample_freq.hz;
-> +                       *val2 = data->sample_freq.uhz;
-> +                       return IIO_VAL_INT_PLUS_MICRO;
-> +               case IIO_TEMP:
-> +                       /*
-> +                        * Runs at a fixed sampling frequency. See Section 4.4
-> +                        * of the datasheet.
-> +                        */
-> +                       *val = 6;
-> +                       *val2 = 250000;
-> +                       return IIO_VAL_INT_PLUS_MICRO;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +       case IIO_CHAN_INFO_SCALE:
-> +               *val = 0;
-> +               *val2 = data->scale;
-> +               return IIO_VAL_INT_PLUS_MICRO;
-> +       case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +               /*
-> +                * TODO: We could avoid this logic and returning -EINVAL here if
-> +                * we set both the low-power and normal mode OSR registers when
-> +                * we configure the device.
-> +                */
-> +               if (data->oversampling_ratio < 0)
-> +                       return -EINVAL;
-> +
-> +               *val = data->oversampling_ratio;
-> +               return IIO_VAL_INT;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +static int bma400_read_avail(struct iio_dev *indio_dev,
-> +                            struct iio_chan_spec const *chan,
-> +                            const int **vals, int *type, int *length,
-> +                            long mask)
-> +{
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_SCALE:
-> +               *type = IIO_VAL_INT_PLUS_MICRO;
-> +               *vals = bma400_scales;
-> +               *length = ARRAY_SIZE(bma400_scales);
-> +               return IIO_AVAIL_LIST;
-> +       case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +               *type = IIO_VAL_INT;
-> +               *vals = bma400_osr_range;
-> +               *length = ARRAY_SIZE(bma400_osr_range);
-> +               return IIO_AVAIL_RANGE;
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               *type = IIO_VAL_INT_PLUS_MICRO;
-> +               *vals = bma400_sample_freqs;
-> +               *length = ARRAY_SIZE(bma400_sample_freqs);
-> +               return IIO_AVAIL_LIST;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +static int bma400_write_raw(struct iio_dev *indio_dev,
-> +                           struct iio_chan_spec const *chan, int val, int val2,
-> +                           long mask)
-> +{
-> +       struct bma400_data *data = iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               /*
-> +                * The sample frequency is readonly for the temperature
-> +                * register and a fixed value in low-power mode.
-> +                */
-> +               if (chan->type != IIO_ACCEL)
-> +                       return -EINVAL;
-> +
-> +               mutex_lock(&data->mutex);
-> +               ret = bma400_set_accel_output_data_rate(data, val, val2);
-> +               mutex_unlock(&data->mutex);
-> +               return ret;
-> +       case IIO_CHAN_INFO_SCALE:
-> +               if (val != 0 || val2 > BMA400_SCALE_MAX)
-> +                       return -EINVAL;
-> +
-> +               mutex_lock(&data->mutex);
-> +               ret = bma400_set_accel_scale(data, val2);
-> +               mutex_unlock(&data->mutex);
-> +               return ret;
-> +       case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +               mutex_lock(&data->mutex);
-> +               ret = bma400_set_accel_oversampling_ratio(data, val);
-> +               mutex_unlock(&data->mutex);
-> +               return ret;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +static int bma400_write_raw_get_fmt(struct iio_dev *indio_dev,
-> +                                   struct iio_chan_spec const *chan,
-> +                                   long mask)
-> +{
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               return IIO_VAL_INT_PLUS_MICRO;
-> +       case IIO_CHAN_INFO_SCALE:
-> +               return IIO_VAL_INT_PLUS_MICRO;
-> +       case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +               return IIO_VAL_INT;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +static const struct iio_info bma400_info = {
-> +       .read_raw          = bma400_read_raw,
-> +       .read_avail        = bma400_read_avail,
-> +       .write_raw         = bma400_write_raw,
-> +       .write_raw_get_fmt = bma400_write_raw_get_fmt,
-> +};
-> +
-> +int bma400_probe(struct device *dev, struct regmap *regmap, const char *name)
-> +{
-> +       struct iio_dev *indio_dev;
-> +       struct bma400_data *data;
-> +       int ret;
-> +
-> +       indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +       if (!indio_dev)
-> +               return -ENOMEM;
-> +
-> +       data = iio_priv(indio_dev);
-> +       data->regmap = regmap;
-> +       data->dev = dev;
-> +
-> +       ret = bma400_init(data);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = iio_read_mount_matrix(dev, "mount-matrix", &data->orientation);
-> +       if (ret)
-> +               return ret;
-> +
-> +       mutex_init(&data->mutex);
-> +       indio_dev->dev.parent = dev;
-> +       indio_dev->name = name;
-> +       indio_dev->info = &bma400_info;
-> +       indio_dev->channels = bma400_channels;
-> +       indio_dev->num_channels = ARRAY_SIZE(bma400_channels);
-> +       indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +       dev_set_drvdata(dev, indio_dev);
-> +
-> +       return iio_device_register(indio_dev);
-> +}
-> +EXPORT_SYMBOL(bma400_probe);
-> +
-> +int bma400_remove(struct device *dev)
-> +{
-> +       struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +       struct bma400_data *data = iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       mutex_lock(&data->mutex);
-> +       ret = bma400_set_power_mode(data, POWER_MODE_SLEEP);
-> +       mutex_unlock(&data->mutex);
-> +
-> +       iio_device_unregister(indio_dev);
-> +
-> +       return ret;
-> +}
-> +EXPORT_SYMBOL(bma400_remove);
-> +
-> +MODULE_AUTHOR("Dan Robertson <dan@dlrobertson.com>");
-> +MODULE_DESCRIPTION("Bosch BMA400 triaxial acceleration sensor core");
-> +MODULE_LICENSE("GPL");
-> diff --git a/drivers/iio/accel/bma400_i2c.c b/drivers/iio/accel/bma400_i2c.c
-> new file mode 100644
-> index 000000000000..9dcb7cc9996e
-> --- /dev/null
-> +++ b/drivers/iio/accel/bma400_i2c.c
-> @@ -0,0 +1,61 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * I2C IIO driver for Bosch BMA400 triaxial acceleration sensor.
-> + *
-> + * Copyright 2019 Dan Robertson <dan@dlrobertson.com>
-> + *
-> + * I2C address is either 0x14 or 0x15 depending on SDO
-> + */
-> +#include <linux/i2c.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "bma400.h"
-> +
-> +static int bma400_i2c_probe(struct i2c_client *client,
-> +                           const struct i2c_device_id *id)
-> +{
-> +       struct regmap *regmap;
-> +
-> +       regmap = devm_regmap_init_i2c(client, &bma400_regmap_config);
-> +       if (IS_ERR(regmap)) {
-> +               dev_err(&client->dev, "failed to create regmap\n");
-> +               return PTR_ERR(regmap);
-> +       }
-> +
-> +       return bma400_probe(&client->dev, regmap, id->name);
-> +}
-> +
-> +static int bma400_i2c_remove(struct i2c_client *client)
-> +{
-> +       return bma400_remove(&client->dev);
-> +}
-> +
-> +static const struct i2c_device_id bma400_i2c_ids[] = {
-> +       { "bma400", 0 },
-> +       { }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, bma400_i2c_ids);
-> +
-> +static const struct of_device_id bma400_of_i2c_match[] = {
-> +       { .compatible = "bosch,bma400" },
-> +       { }
-> +};
-> +MODULE_DEVICE_TABLE(of, bma400_of_i2c_match);
-> +
-> +static struct i2c_driver bma400_i2c_driver = {
-> +       .driver = {
-> +               .name = "bma400",
-> +               .of_match_table = bma400_of_i2c_match,
-> +       },
-> +       .probe    = bma400_i2c_probe,
-> +       .remove   = bma400_i2c_remove,
-> +       .id_table = bma400_i2c_ids,
-> +};
-> +
-> +module_i2c_driver(bma400_i2c_driver);
-> +
-> +MODULE_AUTHOR("Dan Robertson <dan@dlrobertson.com>");
-> +MODULE_DESCRIPTION("Bosch BMA400 triaxial acceleration sensor (I2C)");
-> +MODULE_LICENSE("GPL");
->
->
+> > Therefore I have opted to carry forward option (2) from v2 to v3. I rew=
+orded
+> > the third limitation a bit as follows:
+> >=20
+> > - The device cannot generate a 0% duty cycle. For duty cycles below 1 /=
+ 256
+> >   ms, the output is disabled and relies upon an external pull-down resi=
+stor
+> >   to hold the GPIO3/LTX pin low.
+> >=20
+> > I did reach out to the vendor and asked them to consider recommending a=
+ pull-
+> > down resistor in a future revision of the data sheet, although at the t=
+ime of
+> > this writing I have not heard back.
+>=20
+> Good.
+>=20
+> > > > 	/*
+> > > > 	 * The duty cycle generated by the device is calculated as follows=
+:
+> > > > 	 *
+> > > > 	 * duty_cycle =3D (IQS620_PWM_DUTY_CYCLE + 1) / 256 * 1 ms
+> > > > 	 *
+> > > > 	 * ...where IQS620_PWM_DUTY_CYCLE is a register value between 0 an=
+d 255
+> > > > 	 * (inclusive). Therefore the lowest duty cycle the device can gen=
+erate
+> > > > 	 * while the output is enabled is 1 / 256 ms.
+> > > > 	 */
+> > > > 	duty_scale =3D state->duty_cycle * 256 / IQS620_PWM_PERIOD_NS - 1;
+> > >=20
+> > > Hmm, this is violating the policy to implement a value not bigger tha=
+n
+> > > requested with state->duty_cycle =3D=3D 0. I see this has downsides t=
+o not
+> > > simply cheat here, but only claiming to have implemented 0% can hurt,
+> > > too. pwm-rcar returns -EINVAL in this case.
+> > >=20
+> >=20
+> > That's a great point and is addressed by sticking with option (2) descr=
+ibed
+> > above. Here is what I've got for v3:
+> >=20
+> > static int iqs620_pwm_apply(struct pwm_chip *chip, struct pwm_device *p=
+wm,
+> > 			    const struct pwm_state *state)
+> > {
+> > 	struct iqs620_pwm_private *iqs620_pwm;
+> > 	struct iqs62x_core *iqs62x;
+> > 	int duty_scale, ret;
+> >=20
+> > 	if (state->polarity !=3D PWM_POLARITY_NORMAL)
+> > 		return -ENOTSUPP;
+> >=20
+> > 	if (state->period < IQS620_PWM_PERIOD_NS)
+> > 		return -EINVAL;
+> >=20
+> > 	iqs620_pwm =3D container_of(chip, struct iqs620_pwm_private, chip);
+> > 	iqs62x =3D iqs620_pwm->iqs62x;
+> >=20
+> > 	mutex_lock(&iqs620_pwm->lock);
+> >=20
+> > 	/*
+> > 	 * The duty cycle generated by the device is calculated as follows:
+> > 	 *
+> > 	 * duty_cycle =3D (IQS620_PWM_DUTY_CYCLE + 1) / 256 * 1 ms
+> > 	 *
+> > 	 * ...where IQS620_PWM_DUTY_CYCLE is a register value between 0 and 25=
+5
+> > 	 * (inclusive). Therefore the lowest duty cycle the device can generat=
+e
+> > 	 * while the output is enabled is 1 / 256 ms.
+> > 	 *
+> > 	 * For lower duty cycles (e.g. 0), the PWM output is simply disabled t=
+o
+> > 	 * allow an on-board pull-down resistor to hold the GPIO3/LTX pin low.
+> > 	 */
+> > 	duty_scale =3D state->duty_cycle * 256 / IQS620_PWM_PERIOD_NS;
+> >=20
+> > 	if (!state->enabled || !duty_scale) {
+> > 		ret =3D regmap_update_bits(iqs62x->map, IQS620_PWR_SETTINGS,
+> > 					 IQS620_PWR_SETTINGS_PWM_OUT, 0);
+> > 		if (ret)
+> > 			goto err_mutex;
+> > 	}
+> >=20
+> > 	if (duty_scale) {
+> > 		ret =3D regmap_write(iqs62x->map, IQS620_PWM_DUTY_CYCLE,
+> > 				   min(duty_scale - 1, 0xFF));
+> > 		if (ret)
+> > 			goto err_mutex;
+> > 	}
+> >=20
+> > 	if (state->enabled && duty_scale)
+> > 		ret =3D regmap_update_bits(iqs62x->map, IQS620_PWR_SETTINGS,
+> > 					 IQS620_PWR_SETTINGS_PWM_OUT, 0xFF);
+> >=20
+> > err_mutex:
+> > 	mutex_unlock(&iqs620_pwm->lock);
+> >=20
+> > 	return ret;
+> > }
+>=20
+> Looks ok. (Even though it implements (2) which isn't my favorite :-)
+>=20
+> > And for the get_state callback:
+> >=20
+> > static void iqs620_pwm_get_state(struct pwm_chip *chip, struct pwm_devi=
+ce *pwm,
+> > 				 struct pwm_state *state)
+> > {
+> > 	struct iqs620_pwm_private *iqs620_pwm;
+> > 	struct iqs62x_core *iqs62x;
+> > 	unsigned int val;
+> > 	int ret;
+> >=20
+> > 	iqs620_pwm =3D container_of(chip, struct iqs620_pwm_private, chip);
+> > 	iqs62x =3D iqs620_pwm->iqs62x;
+> >=20
+> > 	mutex_lock(&iqs620_pwm->lock);
+> >=20
+> > 	ret =3D regmap_read(iqs62x->map, IQS620_PWR_SETTINGS, &val);
+> > 	if (ret)
+> > 		goto err_mutex;
+> > 	state->enabled =3D val & IQS620_PWR_SETTINGS_PWM_OUT;
+> >=20
+> > 	ret =3D regmap_read(iqs62x->map, IQS620_PWM_DUTY_CYCLE, &val);
+> > 	if (ret)
+> > 		goto err_mutex;
+> > 	state->duty_cycle =3D DIV_ROUND_UP((val + 1) * IQS620_PWM_PERIOD_NS, 2=
+56);
+> > 	state->period =3D IQS620_PWM_PERIOD_NS;
+> >=20
+> > err_mutex:
+> > 	mutex_unlock(&iqs620_pwm->lock);
+> >=20
+> > 	if (ret)
+> > 		dev_err(iqs620_pwm->chip.dev, "Failed to get state: %d\n", ret);
+> > }
+> >=20
+> > If you and/or Thierry have any concerns, please let me know.
+>=20
+> Looks good, too. Maybe add a comment like:
+>=20
+> 	/*
+> 	 * As the hardware cannot implement "enabled with
+> 	 * duty_cycle =3D=3D 0", we're reporting "disabled with
+> 	 * duty_cycle =3D 1/256 ms" after 0% was requested. This is ugly
+> 	 * but the best we can achieve.
+> 	 */
+>=20
 
+Sure thing, will do.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> > > > 	ret =3D regmap_write(iqs62x->map, IQS620_PWM_DUTY_CYCLE,
+> > > > 			   clamp(duty_scale, 0, 0xFF));
+> > > > 	if (ret)
+> > > > 		return ret;
+> > >=20
+> > > I understand your motivation to configure the duty cycle also when th=
+e
+> > > the request has enabled=3Dfalse, but a strange side effect is that a
+> > > failure to configure the dutycycle with .enabled=3Dfalse isn't really=
+ a
+> > > problem, is it?
+> > > (This is not a request to change anything, it's only expression of my
+> > > frustration that we cannot get away without strange effects.)
+> > >=20
+> >=20
+> > True, but it would definitely be a problem in case 01ccf903edd6 returns=
+ and
+> > we're relying on the device's own registers to hold the PWM state.
+>=20
+> You can assume it won't come back as is. There are too many drivers that
+> suffer the same problem. My goal is to let the core not depend on the
+> lowlevel drivers to memorize a duty-cycle for disabled PWMs. The details
+> are not yet thought out. Obvious options are:
+>=20
+>  - cache the value in the core
+>  - make consumers not depend on that
+>=20
+> > Thinking about this more, I agree with your earlier comment that a mean=
+s to
+> > get the actual (quantized) state needs to be a new API function (of int=
+eger
+> > type). Since chip->ops->get_state is void, there is no way for the call=
+back
+> > to warn the core that a register read failed and the PWM state may be j=
+unk.
+>=20
+> Yeah, this is something I intend to change, too. .get_state should
+> return a status code in the long run.
+>=20
+
+Makes sense.
+
+> Best regards
+> Uwe
+>=20
+> --=20
+> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
+  |
+> Industrial Linux Solutions                 | https://www.pengutronix.de/ =
+|
+
+I'll add a comment in get_state and send out a v3 after the holidays.
+
+Kind regards,
+Jeff LaBundy

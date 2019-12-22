@@ -2,227 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CCA0128F39
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Dec 2019 19:07:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACF5D12901A
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Dec 2019 22:49:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726057AbfLVSH4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Dec 2019 13:07:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43772 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725951AbfLVSH4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 22 Dec 2019 13:07:56 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0EE0F206D3;
-        Sun, 22 Dec 2019 18:07:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577038074;
-        bh=AXO3IG0scX/owDhFJ2EPWEb/thMP3sqao2HJei/CAzc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=o8qsTO6uyPeA0tG362Hu/HzXq37yTAu6ytXeCbFzGZt6Zgs6CScuaOoqydSfTJt25
-         KCyhR3cgoe9WOiahsqK16E2Iu8SqTgmI382nqu7/8u7RivHx/xisjRY3W3lcG5ELq9
-         WGnYvm84bN5VEtuIs1fMaDpohhGZOWM7dR3bpFJM=
-Date:   Sun, 22 Dec 2019 18:07:49 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mircea Caprioru <mircea.caprioru@analog.com>
-Cc:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
-        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: iio: frequency: Add docs for LTC6952
-Message-ID: <20191222180749.4ad0a939@archlinux>
-In-Reply-To: <20191219134810.6677-1-mircea.caprioru@analog.com>
-References: <20191219134810.6677-1-mircea.caprioru@analog.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726709AbfLVVtE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Dec 2019 16:49:04 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:34695 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726267AbfLVVtE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Dec 2019 16:49:04 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ij95p-0002Wh-9Q; Sun, 22 Dec 2019 22:48:53 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ij95n-000697-Bk; Sun, 22 Dec 2019 22:48:51 +0100
+Date:   Sun, 22 Dec 2019 22:48:51 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH v2 4/7] pwm: Add support for Azoteq IQS620A PWM generator
+Message-ID: <20191222214851.kapsro6b6qylke43@pengutronix.de>
+References: <1575851866-18919-1-git-send-email-jeff@labundy.com>
+ <1575851866-18919-5-git-send-email-jeff@labundy.com>
+ <20191209073206.6pftsak5v25jdepz@pengutronix.de>
+ <20191210000252.GA6361@labundy.com>
+ <20191210072227.434hyv5wl3rwztqx@pengutronix.de>
+ <20191215203607.GA31390@labundy.com>
+ <20191216091912.r4onikojbkbmguag@pengutronix.de>
+ <20191220031924.GA2658@labundy.com>
+ <20191220085948.iagsdpjqd6ixdo7j@pengutronix.de>
+ <20191221032755.GA3051@labundy.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191221032755.GA3051@labundy.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 19 Dec 2019 15:48:08 +0200
-Mircea Caprioru <mircea.caprioru@analog.com> wrote:
+Hello Jeff,
 
-> Document support for Analog Devices LTC6952 ultralow jitter, 4.5GHz PLL
-> with 11 outputs and JESD204B/C support.
+On Sat, Dec 21, 2019 at 03:28:01AM +0000, Jeff LaBundy wrote:
+> I heard back from the vendor today; they've acknowledged the limitation and
+> are considering adding support for 0% in a future ROM spin. In the meantime,
+> they've agreed to describe the high-impedance behavior in the data sheet as
+> well as include the pull-down resistor in an example schematic.
+
+Oh wow, seems like a good vendor then. :-)
+
+> > > Option (3) seems like overkill for such a simple PWM, and ultimately doesn't
+> > > add any value because I don't want to allow option (1) behavior in any case.
+> > > Whether the PWM is disabled because it is truly disabled or to simulate a 0%
+> > > duty cycle as in option (2), the pull-down is ultimately required regardless
+> > > of whether or not the data sheet happens to go into such detail.
+> > 
+> > Actually I like option 3 best.
+> >  
 > 
-> Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
-I''m far from sure if we have the right balance of clock and IIO specific
-+ device specific bindings in here.
+> Based on your other feedback, I'm moving forward under the impression that
+> you'll still accept option (2); please let me know if I have misunderstood
+> (thank you for being flexible).
 
-For example should the divider only be controlled by whatever the clock
-consumer requests?
+Yeah, that's fine. If in the end it shows that this is a bad idea we can
+still change to (3).
 
-Definitely want some review of this from the clock side of things.
+Best regards
+Uwe
 
-Thanks,
-
-Jonathan
-
-
-> ---
->  .../bindings/iio/frequency/adi,ltc6952.yaml   | 127 ++++++++++++++++++
->  1 file changed, 127 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,ltc6952.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,ltc6952.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,ltc6952.yaml
-> new file mode 100644
-> index 000000000000..a28c773c3948
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,ltc6952.yaml
-> @@ -0,0 +1,127 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2019 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/bindings/iio/frequency/adi,ltc6952.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices LTC6952 ultralow jitter, JESD204B/C clock generation IC.
-> +
-> +maintainers:
-> +  - Mircea Caprioru <mircea.caprioru@analog.com>
-> +
-> +description: |
-> +  Analog Devices LTC6952 ultralow jitter, JESD204B/C clock generation IC.
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc6952.pdf 
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ltc6952
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clock-output-names:
-> +    description: |
-> +      Clock output signal names indexed by the first cell in the clock
-> +      specifier (see clock/clock-bindings.txt)
-> +    maxItems: 1
-> +
-> +  adi,vco-frequency-hz:
-> +    description: |
-> +      VCO input frequency. This is fed to the internal distribution path and
-> +      feedback dividers.
-
-Superficially this feels like it should be a established via the requested
-output frequencies and some idea of a 'best' value to satisfy them?
-
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +    maxItems: 1
-> +
-> +  adi,ref-frequency-hz:
-> +    description: |
-> +      Reference input frequency. This is fed in the reference divider.
-
-Is this not just an upstream clock? 
-
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clock-output-names
-> +
-> +patternProperties:
-> +  "^channel@[0-9]$":
-> +    type: object
-> +    description: Represents the external channels which are connected to the device.
-> +
-> +    properties:
-> +      reg:
-> +        description: |
-> +          The channel number. It can have up to 11 channels numbered from 0 to 10.
-> +        maxItems: 1
-> +
-> +      adi,extended-name:
-> +        description: Descriptive channel name.
-I mention in review of patch 2 this is a definite no.   A separate
-out_chanX_label type attribute could provide this an use standard "label" dt
-binding.  I think we currently have that for the IIO device but not yet its channels.
-
-> +        maxItems: 1
-> +
-> +      adi,divider:
-> +        description: |
-> +          Channel divider. This divides the incoming VCO frequency.
-Fundamental thing here is the output frequency required by any consumer.
-Feels like this should be done through the clock framework bindings rather than
-explicit controls here..
-
-
-> +        maxItems: 1
-> +
-> +      adi,digital-delay:
-
-So I'm assuming there is no binding for this level of fine control in normal
-clock bindings?  I would like some input from people more knowledgeable on
-that framework though.
-
-> +        description: |
-> +          Each output divider can have the start time of the output delayed by
-> +          integer multiples of half of the VCO period after a synchronization
-> +          event.
-> +        allOf:
-> +          - $ref: /schemas/types.yaml#/definitions/uint32
-> +          - minimum: 0
-> +          - maximum: 4095
-> +        maxItems: 1
-> +
-> +      adi,analog-delay:
-> +        description: |
-> +          Each output has a fine analog delay feature to further adjust its
-> +          output delay time (tADELx) in small steps.
-
-Umm. Can we do better than 'small steps' for the units of this?
-
-> +        allOf:
-> +          - $ref: /schemas/types.yaml#/definitions/uint32
-> +          - minimum: 0
-> +          - maximum: 63
-> +        maxItems: 1
-> +
-> +    required:
-> +      - reg
-> +
-> +examples:
-> +   - |
-> +     ltc6952@0 {
-> +       compatible = "adi,ltc6952";
-> +       reg = <0>;
-> +
-> +       #address-cells = <1>;
-> +       #size-cells = <0>;
-> +
-> +       spi-max-frequency = <10000000>;
-> +
-> +       clock-output-names = "ltc6952_out0", "ltc6952_out1", "ltc6952_out2",
-> +         "ltc6952_out3", "ltc6952_out4", "ltc6952_out5", "ltc6952_out6",
-> +         "ltc6952_out7", "ltc6952_out8", "ltc6952_out9", "ltc6952_out10";
-> +       #clock-cells = <1>;
-> +
-> +       adi,vco-frequency-hz = <4000000000>;
-> +       adi,ref-frequency-hz = <100000000>;
-> +
-> +       ltc6952_c0: channel@0 {
-> +         reg = <0>;
-> +         adi,extended-name = "REF_CLK";
-> +         adi,divider = <10>;
-> +         adi,digital-delay = <100>;
-> +         adi,analog-delay = <0>;
-> +       };
-> +
-> +       ltc6952_c1: channel@1 {
-> +         reg = <1>;
-> +         adi,extended-name = "TEST_CLK";
-> +         adi,divider = <10>;
-> +       };
-> +     };
-
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

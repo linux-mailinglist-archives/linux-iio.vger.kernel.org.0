@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14ED9129940
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Dec 2019 18:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0B86129943
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Dec 2019 18:22:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbfLWRUp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Dec 2019 12:20:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51916 "EHLO mail.kernel.org"
+        id S1726997AbfLWRWe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Dec 2019 12:22:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53140 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726907AbfLWRUp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 23 Dec 2019 12:20:45 -0500
+        id S1726925AbfLWRWe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 23 Dec 2019 12:22:34 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9449F20715;
-        Mon, 23 Dec 2019 17:20:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F1121206CB;
+        Mon, 23 Dec 2019 17:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577121644;
-        bh=mG3jWs3C23Ef+pdTe8I8KmB22fvJ7thEhMEGvnXfGTo=;
+        s=default; t=1577121754;
+        bh=5dzUhxJVXJE4MT7lORO4U7iPxMS9do0mraNiK2OkjC4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dH4P/pv6suDCyy7+W2WWXXtQIj5gPzg4UnPU0Sq1Heer6OykcZytFL8SGqGWHhzvT
-         9FS9sX81P0kx5qF09M+r32K85jhNJd2r4hiI0ojW2ba6zvJ1+921gQaltJF6SqTGHl
-         oFLnZBI+hd4pb+GW0TSYhPUFh0P1PV3OHi/z2XTE=
-Date:   Mon, 23 Dec 2019 17:20:40 +0000
+        b=C6CfQUJ18M7EzXAm+bR2kZtTbx6REvWNo5oaHA15YZ2O3v5wQircE7kS4QohrKnHg
+         gZpp6kiMvdYftdP34MzScYSkWxYyNhduscrOWUzZ8vLDcv4YBNddABoZGj0s/5wrfR
+         0EF7cCyhNMurlZugtz8iBxy3uVOkhcGYttMRgT5g=
+Date:   Mon, 23 Dec 2019 17:22:28 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Oleksandr Kravchenko <o.v.kravchenko@globallogic.com>
-Subject: Re: [PATCH 2/4] iio: accel: bma180: Basic regulator support
-Message-ID: <20191223172040.176524aa@archlinux>
-In-Reply-To: <20191211213819.14024-2-linus.walleij@linaro.org>
+Subject: Re: [PATCH 3/4] iio: accel: bma180: Use explicit member assignment
+Message-ID: <20191223172228.0457ec7a@archlinux>
+In-Reply-To: <20191211213819.14024-3-linus.walleij@linaro.org>
 References: <20191211213819.14024-1-linus.walleij@linaro.org>
-        <20191211213819.14024-2-linus.walleij@linaro.org>
+        <20191211213819.14024-3-linus.walleij@linaro.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,110 +44,110 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 11 Dec 2019 22:38:17 +0100
+On Wed, 11 Dec 2019 22:38:18 +0100
 Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> This brings up the VDD and VDDIO regulators using the
-> regulator framework. Platforms that do not use regulators
-> will provide stubs or dummy regulators.
+> This uses the C99 explicit .member assignment for the
+> variant data in struct bma180_part_info. This makes it
+> easier to understand and add new variants.
 > 
 > Cc: Peter Meerwald <pmeerw@pmeerw.net>
 > Cc: Oleksandr Kravchenko <o.v.kravchenko@globallogic.com>
 > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-I made a totally trivial tweak. See below.
 
-Applied to the togreg branch of iio.git and pushed out as testing..
+This I like.  Sensible improvement to readability.
+Not sure why I let it through in the form it was in originally.
+oh well.
 
-etc. etc.
+Applied,
+
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/accel/bma180.c | 43 +++++++++++++++++++++++++++++++++++++-
->  1 file changed, 42 insertions(+), 1 deletion(-)
+>  drivers/iio/accel/bma180.c | 68 ++++++++++++++++++++++++--------------
+>  1 file changed, 44 insertions(+), 24 deletions(-)
 > 
 > diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
-> index 518efbe4eaf6..4a619b5a544a 100644
+> index 4a619b5a544a..f583f10ccbb9 100644
 > --- a/drivers/iio/accel/bma180.c
 > +++ b/drivers/iio/accel/bma180.c
-> @@ -18,6 +18,7 @@
->  #include <linux/of_device.h>
->  #include <linux/of.h>
->  #include <linux/bitops.h>
-> +#include <linux/regulator/consumer.h>
->  #include <linux/slab.h>
->  #include <linux/string.h>
->  #include <linux/iio/iio.h>
-> @@ -110,6 +111,8 @@ struct bma180_part_info {
->  #define BMA250_INT_RESET_MASK	BIT(7) /* Reset pending interrupts */
+> @@ -632,32 +632,52 @@ static const struct iio_chan_spec bma250_channels[] = {
 >  
->  struct bma180_data {
-> +	struct regulator *vdd_supply;
-> +	struct regulator *vddio_supply;
->  	struct i2c_client *client;
->  	struct iio_trigger *trig;
->  	const struct bma180_part_info *part_info;
-> @@ -736,6 +739,40 @@ static int bma180_probe(struct i2c_client *client,
->  	if (ret)
->  		return ret;
+>  static const struct bma180_part_info bma180_part_info[] = {
+>  	[BMA180] = {
+> -		bma180_channels, ARRAY_SIZE(bma180_channels),
+> -		bma180_scale_table, ARRAY_SIZE(bma180_scale_table),
+> -		bma180_bw_table, ARRAY_SIZE(bma180_bw_table),
+> -		BMA180_CTRL_REG0, BMA180_RESET_INT,
+> -		BMA180_CTRL_REG0, BMA180_SLEEP,
+> -		BMA180_BW_TCS, BMA180_BW,
+> -		BMA180_OFFSET_LSB1, BMA180_RANGE,
+> -		BMA180_TCO_Z, BMA180_MODE_CONFIG, BMA180_LOW_POWER,
+> -		BMA180_CTRL_REG3, BMA180_NEW_DATA_INT,
+> -		BMA180_RESET,
+> -		bma180_chip_config,
+> -		bma180_chip_disable,
+> +		.channels = bma180_channels,
+> +		.num_channels = ARRAY_SIZE(bma180_channels),
+> +		.scale_table = bma180_scale_table,
+> +		.num_scales = ARRAY_SIZE(bma180_scale_table),
+> +		.bw_table = bma180_bw_table,
+> +		.num_bw = ARRAY_SIZE(bma180_bw_table),
+> +		.int_reset_reg = BMA180_CTRL_REG0,
+> +		.int_reset_mask = BMA180_RESET_INT,
+> +		.sleep_reg = BMA180_CTRL_REG0,
+> +		.sleep_mask = BMA180_SLEEP,
+> +		.bw_reg = BMA180_BW_TCS,
+> +		.bw_mask = BMA180_BW,
+> +		.scale_reg = BMA180_OFFSET_LSB1,
+> +		.scale_mask = BMA180_RANGE,
+> +		.power_reg = BMA180_TCO_Z,
+> +		.power_mask = BMA180_MODE_CONFIG,
+> +		.lowpower_val = BMA180_LOW_POWER,
+> +		.int_enable_reg = BMA180_CTRL_REG3,
+> +		.int_enable_mask = BMA180_NEW_DATA_INT,
+> +		.softreset_reg = BMA180_RESET,
+> +		.chip_config = bma180_chip_config,
+> +		.chip_disable = bma180_chip_disable,
+>  	},
+>  	[BMA250] = {
+> -		bma250_channels, ARRAY_SIZE(bma250_channels),
+> -		bma250_scale_table, ARRAY_SIZE(bma250_scale_table),
+> -		bma250_bw_table, ARRAY_SIZE(bma250_bw_table),
+> -		BMA250_INT_RESET_REG, BMA250_INT_RESET_MASK,
+> -		BMA250_POWER_REG, BMA250_SUSPEND_MASK,
+> -		BMA250_BW_REG, BMA250_BW_MASK,
+> -		BMA250_RANGE_REG, BMA250_RANGE_MASK,
+> -		BMA250_POWER_REG, BMA250_LOWPOWER_MASK, 1,
+> -		BMA250_INT_ENABLE_REG, BMA250_DATA_INTEN_MASK,
+> -		BMA250_RESET_REG,
+> -		bma250_chip_config,
+> -		bma250_chip_disable,
+> +		.channels = bma250_channels,
+> +		.num_channels = ARRAY_SIZE(bma250_channels),
+> +		.scale_table = bma250_scale_table,
+> +		.num_scales = ARRAY_SIZE(bma250_scale_table),
+> +		.bw_table = bma250_bw_table,
+> +		.num_bw = ARRAY_SIZE(bma250_bw_table),
+> +		.int_reset_reg = BMA250_INT_RESET_REG,
+> +		.int_reset_mask = BMA250_INT_RESET_MASK,
+> +		.sleep_reg = BMA250_POWER_REG,
+> +		.sleep_mask = BMA250_SUSPEND_MASK,
+> +		.bw_reg = BMA250_BW_REG,
+> +		.bw_mask = BMA250_BW_MASK,
+> +		.scale_reg = BMA250_RANGE_REG,
+> +		.scale_mask = BMA250_RANGE_MASK,
+> +		.power_reg = BMA250_POWER_REG,
+> +		.power_mask = BMA250_LOWPOWER_MASK,
+> +		.lowpower_val = 1,
+> +		.int_enable_reg = BMA250_INT_ENABLE_REG,
+> +		.int_enable_mask = BMA250_DATA_INTEN_MASK,
+> +		.softreset_reg = BMA250_RESET_REG,
+> +		.chip_config = bma250_chip_config,
+> +		.chip_disable = bma250_chip_disable,
+>  	},
+>  };
 >  
-> +	data->vdd_supply = devm_regulator_get(dev, "vdd");
-> +	if (IS_ERR(data->vdd_supply)) {
-> +		if (PTR_ERR(data->vdd_supply) != -EPROBE_DEFER)
-> +			dev_err(dev, "Failed to get vdd regulator %d\n",
-> +				(int)PTR_ERR(data->vdd_supply));
-> +		return PTR_ERR(data->vdd_supply);
-> +	}
-> +	data->vddio_supply = devm_regulator_get(dev, "vddio");
-> +	if (IS_ERR(data->vddio_supply)) {
-> +		if (PTR_ERR(data->vddio_supply) != -EPROBE_DEFER)
-> +			dev_err(dev, "Failed to get vddio regulator %d\n",
-> +				(int)PTR_ERR(data->vddio_supply));
-> +		return PTR_ERR(data->vddio_supply);
-> +	}
-> +	/* Typical voltage 2.4V these are min and max */
-> +	ret = regulator_set_voltage(data->vdd_supply, 1620000, 3600000);
-> +	if (ret)
-> +		return ret;
-> +	ret = regulator_set_voltage(data->vddio_supply, 1200000, 3600000);
-> +	if (ret)
-> +		return ret;
-> +	ret = regulator_enable(data->vdd_supply);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to enable vdd regulator: %d\n", ret);
-> +		return ret;
-> +	}
-> +	ret = regulator_enable(data->vddio_supply);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to enable vddio regulator: %d\n", ret);
-> +		goto err_disable_vdd;
-> +	}
-> +	/* Wait to make sure we started up properly (3 ms at least) */
-> +	usleep_range(3000, 5000);
-> +
->  	ret = data->part_info->chip_config(data);
->  	if (ret < 0)
->  		goto err_chip_disable;
-> @@ -798,7 +835,9 @@ static int bma180_probe(struct i2c_client *client,
->  	iio_trigger_free(data->trig);
->  err_chip_disable:
->  	data->part_info->chip_disable(data);
-> -
-If I were feeling really nit pick friendly.  Don't mess with the whitespace!
-
-> +	regulator_disable(data->vddio_supply);
-> +err_disable_vdd:
-> +	regulator_disable(data->vdd_supply);
->  	return ret;
->  }
->  
-> @@ -817,6 +856,8 @@ static int bma180_remove(struct i2c_client *client)
->  	mutex_lock(&data->mutex);
->  	data->part_info->chip_disable(data);
->  	mutex_unlock(&data->mutex);
-> +	regulator_disable(data->vddio_supply);
-> +	regulator_disable(data->vdd_supply);
->  
->  	return 0;
->  }
 

@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DD73129907
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Dec 2019 18:01:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB10129904
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Dec 2019 18:01:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726802AbfLWRBP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Dec 2019 12:01:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45122 "EHLO mail.kernel.org"
+        id S1726766AbfLWRBK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Dec 2019 12:01:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45076 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726718AbfLWRBP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 23 Dec 2019 12:01:15 -0500
+        id S1726718AbfLWRBK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 23 Dec 2019 12:01:10 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E8B0C20709;
-        Mon, 23 Dec 2019 17:01:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 590D720715;
+        Mon, 23 Dec 2019 17:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577120474;
-        bh=NrtETXLLlBj/8Xs0QVX5KTkFYASzQAiY0teBYYbf7w4=;
+        s=default; t=1577120470;
+        bh=x770dpESEPwRzkbZv3BEF4PpGW3zH/7vwBlJKAdIn+Q=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eYESfyCqF5Bg3zTBKcwmzyqKoyr2W0mqseeRPxnIwgq3w1dv5kfFyWF5J/IEuNRu4
-         wFTxiX5+p36DQ+i3jEJlAIAmcAbHtByLXZe7EoxCKbIDozY5iAapPuXsr21599RwEz
-         wY9xv0mAfrLqxSUEqldsdEHYRqxc7pcohyUpLc8A=
-Date:   Mon, 23 Dec 2019 16:51:40 +0000
+        b=ZP9m6Jetd7OFoRKwAc3tK9ohw8KavBZ3bIWYKtSl/lTieMesmf+0tBO1QK3a5sR51
+         zK9KfNwk5hBSfTKh9UpALcnixzXGsVaX3sXkjobim1dijV9WqaK0n70GRkkEQW+Efh
+         /BVAku5/vkNofJa2tICjEL7HJaSBPDvKoSOUmXXg=
+Date:   Mon, 23 Dec 2019 16:51:55 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH 2/6] iio: imu: st_lsm6dsx: check if master_enable is
- located in primary page
-Message-ID: <20191223165140.1da5632c@archlinux>
-In-Reply-To: <9301949c51a78df2c818619c3be634274f13a790.1576341963.git.lorenzo@kernel.org>
+Subject: Re: [PATCH 3/6] iio: imu: st_lsm6dsx: check if pull_up is located
+ in primary page
+Message-ID: <20191223165155.7179f4cd@archlinux>
+In-Reply-To: <7fbb267c585384fd39c2abe7e6250fd1c207bdd3.1576341963.git.lorenzo@kernel.org>
 References: <cover.1576341963.git.lorenzo@kernel.org>
-        <9301949c51a78df2c818619c3be634274f13a790.1576341963.git.lorenzo@kernel.org>
+        <7fbb267c585384fd39c2abe7e6250fd1c207bdd3.1576341963.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,15 +42,15 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 14 Dec 2019 17:52:55 +0100
+On Sat, 14 Dec 2019 17:52:56 +0100
 Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> Check if the master enable register is located in the primary or in the
+> Check if the pull up register is located in the primary or in the
 > secondary memory page. This is a preliminary patch to support i2c master
 > controller on lsm6dsm devices
 > 
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Applied.
+Applied,
 
 Thanks,
 
@@ -58,72 +58,68 @@ Jonathan
 
 > ---
 >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  6 +++++-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |  2 ++
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 11 +++++++----
->  3 files changed, 14 insertions(+), 5 deletions(-)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 13 +++++++++----
+>  2 files changed, 14 insertions(+), 5 deletions(-)
 > 
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> index fb76e0d6770d..0f8f3fbde67a 100644
+> index 0f8f3fbde67a..b4bd02df2900 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -184,7 +184,11 @@ struct st_lsm6dsx_hw_ts_settings {
->   */
->  struct st_lsm6dsx_shub_settings {
->  	struct st_lsm6dsx_reg page_mux;
-> -	struct st_lsm6dsx_reg master_en;
+> @@ -189,7 +189,11 @@ struct st_lsm6dsx_shub_settings {
+>  		u8 addr;
+>  		u8 mask;
+>  	} master_en;
+> -	struct st_lsm6dsx_reg pullup_en;
 > +	struct {
 > +		bool sec_page;
 > +		u8 addr;
 > +		u8 mask;
-> +	} master_en;
->  	struct st_lsm6dsx_reg pullup_en;
+> +	} pullup_en;
 >  	struct st_lsm6dsx_reg aux_sens;
 >  	struct st_lsm6dsx_reg wr_once;
+>  	u8 num_ext_dev;
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index bf995b58c333..fe1aaaf68a9b 100644
+> index fe1aaaf68a9b..6adfc53ef8d0 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -867,6 +867,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  				.mask = BIT(6),
->  			},
->  			.master_en = {
-> +				.sec_page = true,
->  				.addr = 0x14,
+> @@ -872,6 +872,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
 >  				.mask = BIT(2),
 >  			},
-> @@ -1242,6 +1243,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  				.mask = BIT(6),
->  			},
->  			.master_en = {
+>  			.pullup_en = {
 > +				.sec_page = true,
 >  				.addr = 0x14,
+>  				.mask = BIT(3),
+>  			},
+> @@ -1248,6 +1249,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
 >  				.mask = BIT(2),
 >  			},
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> index 5684e663d0aa..767482e61a1e 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> @@ -185,15 +185,18 @@ static int st_lsm6dsx_shub_master_enable(struct st_lsm6dsx_sensor *sensor,
->  	mutex_lock(&hw->page_lock);
+>  			.pullup_en = {
+> +				.sec_page = true,
+>  				.addr = 0x14,
+>  				.mask = BIT(3),
+>  			},
+> @@ -1863,16 +1865,19 @@ static int st_lsm6dsx_init_shub(struct st_lsm6dsx_hw *hw)
+>  	pdata = (struct st_sensors_platform_data *)hw->dev->platform_data;
+>  	if ((np && of_property_read_bool(np, "st,pullups")) ||
+>  	    (pdata && pdata->pullups)) {
+> -		err = st_lsm6dsx_set_page(hw, true);
+> -		if (err < 0)
+> -			return err;
+> +		if (hub_settings->pullup_en.sec_page) {
+> +			err = st_lsm6dsx_set_page(hw, true);
+> +			if (err < 0)
+> +				return err;
+> +		}
 >  
->  	hub_settings = &hw->settings->shub_settings;
-> -	err = st_lsm6dsx_set_page(hw, true);
-> -	if (err < 0)
-> -		goto out;
-> +	if (hub_settings->master_en.sec_page) {
-> +		err = st_lsm6dsx_set_page(hw, true);
-> +		if (err < 0)
-> +			goto out;
-> +	}
+>  		data = ST_LSM6DSX_SHIFT_VAL(1, hub_settings->pullup_en.mask);
+>  		err = regmap_update_bits(hw->regmap,
+>  					 hub_settings->pullup_en.addr,
+>  					 hub_settings->pullup_en.mask, data);
 >  
->  	data = ST_LSM6DSX_SHIFT_VAL(enable, hub_settings->master_en.mask);
->  	err = regmap_update_bits(hw->regmap, hub_settings->master_en.addr,
->  				 hub_settings->master_en.mask, data);
+> -		st_lsm6dsx_set_page(hw, false);
+> +		if (hub_settings->pullup_en.sec_page)
+> +			st_lsm6dsx_set_page(hw, false);
 >  
-> -	st_lsm6dsx_set_page(hw, false);
-> +	if (hub_settings->master_en.sec_page)
-> +		st_lsm6dsx_set_page(hw, false);
->  out:
->  	mutex_unlock(&hw->page_lock);
->  
+>  		if (err < 0)
+>  			return err;
 

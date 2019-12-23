@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 233DB129906
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Dec 2019 18:01:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD11129903
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Dec 2019 18:01:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726795AbfLWRBO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Dec 2019 12:01:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45112 "EHLO mail.kernel.org"
+        id S1726756AbfLWRBJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Dec 2019 12:01:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45044 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726718AbfLWRBO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 23 Dec 2019 12:01:14 -0500
+        id S1726718AbfLWRBJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 23 Dec 2019 12:01:09 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3E72220715;
-        Mon, 23 Dec 2019 17:01:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B34B820709;
+        Mon, 23 Dec 2019 17:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577120473;
-        bh=32jb9DdZTPDTG9+jKWbk1tG02rlB9TK7fgtKJH0GJno=;
+        s=default; t=1577120468;
+        bh=AcKGxlT3BAZYAUTGHDurlIYesU4U8NPAe5VfcD1zuiY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=R/3t7gh7mr/9d/hH4+KJ2moOBlYXzBQIfkxZoGz+v4iNbbAza3zrnvLgbkFqAi2gB
-         +g+rT1uaJf4disenmQbFk8i05HWP/VRb2UYivaWByP3AQGVcRI7Lf1Hf7vcRRXFLro
-         2HoG+bbl9iNIpJfRf24FwRzY83UEkXzZuTYbujwg=
-Date:   Mon, 23 Dec 2019 16:49:17 +0000
+        b=cQv4mTBmO521kFJ2Cx+oF1f9EBlpdwuFXXLCxlnHKpHKxc5dFgjf1dc3wjR0LkwmX
+         SF8fDbf4CD+fmvKnlD77rctUbffalwmc08nQ0GS8DDD9JBKgAVcbIQrbk72CCgaCHq
+         d+WSkydAZXi73YtMSJiiVy4vbQh3uX5kVG8BYm/o=
+Date:   Mon, 23 Dec 2019 16:50:06 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH 6/6] iio: imu: st_lsm6dsx: enable sensor-hub support for
- lsm6dsm
-Message-ID: <20191223164917.6bcb72cf@archlinux>
-In-Reply-To: <aceae99afa9f51f533607c81f1eb1009fe0975d1.1576341963.git.lorenzo@kernel.org>
+Subject: Re: [PATCH 1/6] iio: imu: st_lsm6dsx: export max num of slave
+ devices in st_lsm6dsx_shub_settings
+Message-ID: <20191223165006.3ee0be50@archlinux>
+In-Reply-To: <9c4945c59f4ac63d28de6180da2409a95c60aee5.1576341963.git.lorenzo@kernel.org>
 References: <cover.1576341963.git.lorenzo@kernel.org>
-        <aceae99afa9f51f533607c81f1eb1009fe0975d1.1576341963.git.lorenzo@kernel.org>
+        <9c4945c59f4ac63d28de6180da2409a95c60aee5.1576341963.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,314 +42,85 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 14 Dec 2019 17:52:59 +0100
+On Sat, 14 Dec 2019 17:52:54 +0100
 Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> Enabled i2c master controller support for LSM6DSM sensor. Enable
-> ext_sensor0 for lsm6dsm. This series has been tested using LIS2MDL as
-> slave device connected to the i2c controller of the LSM6DSM
+> Export max number of slave devices supported by the i2c master
+> controller in st_lsm6dsx_shub_settings data structure.
+> This is a preliminary patch to support i2c master controller
+> on lsm6dsm sensors
 > 
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-One question inline.  However I'm happy enough to take it with that
-outstanding on basis I am not going to push out as non rebasing for
-a while yet.
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+Applied.
 
 Thanks,
 
-Jonathan
- 
+J
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  4 ++
->  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 27 ++++++++---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 47 +++++++++++++++++++
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c  | 31 ++++++++----
->  4 files changed, 94 insertions(+), 15 deletions(-)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      | 2 ++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 ++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 3 +--
+>  3 files changed, 5 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> index c2d00c3dd044..1c528b7aefdf 100644
+> index c605b153be41..fb76e0d6770d 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -176,11 +176,13 @@ struct st_lsm6dsx_hw_ts_settings {
+> @@ -176,6 +176,7 @@ struct st_lsm6dsx_hw_ts_settings {
 >   * @pullup_en: i2c controller pull-up register info (addr + mask).
 >   * @aux_sens: aux sensor register info (addr + mask).
 >   * @wr_once: write_once register info (addr + mask).
-> + * @emb_func:  embedded function register info (addr + mask).
->   * @num_ext_dev: max number of slave devices.
+> + * @num_ext_dev: max number of slave devices.
 >   * @shub_out: sensor hub first output register info.
 >   * @slv0_addr: slave0 address in secondary page.
 >   * @dw_slv0_addr: slave0 write register address in secondary page.
->   * @batch_en: Enable/disable FIFO batching.
-> + * @pause: controller pause value.
->   */
->  struct st_lsm6dsx_shub_settings {
->  	struct st_lsm6dsx_reg page_mux;
-> @@ -196,6 +198,7 @@ struct st_lsm6dsx_shub_settings {
->  	} pullup_en;
+> @@ -187,6 +188,7 @@ struct st_lsm6dsx_shub_settings {
+>  	struct st_lsm6dsx_reg pullup_en;
 >  	struct st_lsm6dsx_reg aux_sens;
 >  	struct st_lsm6dsx_reg wr_once;
-> +	struct st_lsm6dsx_reg emb_func;
->  	u8 num_ext_dev;
->  	struct {
->  		bool sec_page;
-> @@ -204,6 +207,7 @@ struct st_lsm6dsx_shub_settings {
+> +	u8 num_ext_dev;
+>  	u8 shub_out;
 >  	u8 slv0_addr;
 >  	u8 dw_slv0_addr;
->  	u8 batch_en;
-> +	u8 pause;
->  };
->  
->  struct st_lsm6dsx_event_settings {
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> index d416990ae309..cc2b19b60d61 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> @@ -332,12 +332,13 @@ static inline int st_lsm6dsx_read_block(struct st_lsm6dsx_hw *hw, u8 addr,
->   */
->  int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
->  {
-> +	struct st_lsm6dsx_sensor *acc_sensor, *gyro_sensor, *ext_sensor = NULL;
-> +	int err, acc_sip, gyro_sip, ts_sip, ext_sip, read_len, offset;
->  	u16 fifo_len, pattern_len = hw->sip * ST_LSM6DSX_SAMPLE_SIZE;
->  	u16 fifo_diff_mask = hw->settings->fifo_ops.fifo_diff.mask;
-> -	int err, acc_sip, gyro_sip, ts_sip, read_len, offset;
-> -	struct st_lsm6dsx_sensor *acc_sensor, *gyro_sensor;
->  	u8 gyro_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
->  	u8 acc_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
-> +	u8 ext_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
->  	bool reset_ts = false;
->  	__le16 fifo_status;
->  	s64 ts = 0;
-> @@ -360,6 +361,8 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
->  
->  	acc_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
->  	gyro_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_GYRO]);
-> +	if (hw->iio_devs[ST_LSM6DSX_ID_EXT0])
-> +		ext_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_EXT0]);
->  
->  	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
->  		err = st_lsm6dsx_read_block(hw, ST_LSM6DSX_REG_FIFO_OUTL_ADDR,
-> @@ -387,12 +390,13 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
->  		 * following pattern is repeated every 9 samples:
->  		 *   - Gx, Gy, Gz, Ax, Ay, Az, Ts, Gx, Gy, Gz, Ts, Gx, ..
->  		 */
-> +		ext_sip = ext_sensor ? ext_sensor->sip : 0;
->  		gyro_sip = gyro_sensor->sip;
->  		acc_sip = acc_sensor->sip;
->  		ts_sip = hw->ts_sip;
->  		offset = 0;
->  
-> -		while (acc_sip > 0 || gyro_sip > 0) {
-> +		while (acc_sip > 0 || gyro_sip > 0 || ext_sip > 0) {
->  			if (gyro_sip > 0) {
->  				memcpy(gyro_buff, &hw->buff[offset],
->  				       ST_LSM6DSX_SAMPLE_SIZE);
-> @@ -403,6 +407,11 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
->  				       ST_LSM6DSX_SAMPLE_SIZE);
->  				offset += ST_LSM6DSX_SAMPLE_SIZE;
->  			}
-> +			if (ext_sip > 0) {
-> +				memcpy(ext_buff, &hw->buff[offset],
-> +				       ST_LSM6DSX_SAMPLE_SIZE);
-> +				offset += ST_LSM6DSX_SAMPLE_SIZE;
-> +			}
->  
->  			if (ts_sip-- > 0) {
->  				u8 data[ST_LSM6DSX_SAMPLE_SIZE];
-> @@ -436,6 +445,10 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
->  				iio_push_to_buffers_with_timestamp(
->  					hw->iio_devs[ST_LSM6DSX_ID_ACC],
->  					acc_buff, acc_sensor->ts_ref + ts);
-> +			if (ext_sip-- > 0)
-> +				iio_push_to_buffers_with_timestamp(
-> +					hw->iio_devs[ST_LSM6DSX_ID_EXT0],
-> +					ext_buff, ext_sensor->ts_ref + ts);
->  		}
->  	}
->  
-> @@ -628,12 +641,12 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
->  		err = st_lsm6dsx_sensor_set_enable(sensor, enable);
->  		if (err < 0)
->  			goto out;
-> -
-> -		err = st_lsm6dsx_set_fifo_odr(sensor, enable);
-> -		if (err < 0)
-> -			goto out;
->  	}
->  
-
-Why this change?  I'm not sure what the original logic was so hard to follow ;)
-
-> +	err = st_lsm6dsx_set_fifo_odr(sensor, enable);
-> +	if (err < 0)
-> +		goto out;
-> +
->  	err = st_lsm6dsx_update_decimators(hw);
->  	if (err < 0)
->  		goto out;
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 679831d84d78..1f00b0d74b25 100644
+> index a4ed72aef93e..bf995b58c333 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -655,6 +655,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  				.addr = 0x08,
->  				.mask = GENMASK(5, 3),
+> @@ -882,6 +882,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  				.addr = 0x14,
+>  				.mask = BIT(6),
 >  			},
-> +			[ST_LSM6DSX_ID_EXT0] = {
-> +				.addr = 0x09,
-> +				.mask = GENMASK(2, 0),
-> +			},
->  		},
->  		.fifo_ops = {
->  			.update_fifo = st_lsm6dsx_update_fifo,
-> @@ -687,6 +691,39 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  				.mask = GENMASK(5, 3),
+> +			.num_ext_dev = 3,
+>  			.shub_out = 0x02,
+>  			.slv0_addr = 0x15,
+>  			.dw_slv0_addr = 0x21,
+> @@ -1256,6 +1257,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+>  				.addr = 0x14,
+>  				.mask = BIT(6),
 >  			},
->  		},
-> +		.shub_settings = {
-> +			.page_mux = {
-> +				.addr = 0x01,
-> +				.mask = BIT(7),
-> +			},
-> +			.master_en = {
-> +				.addr = 0x1a,
-> +				.mask = BIT(0),
-> +			},
-> +			.pullup_en = {
-> +				.addr = 0x1a,
-> +				.mask = BIT(3),
-> +			},
-> +			.aux_sens = {
-> +				.addr = 0x04,
-> +				.mask = GENMASK(5, 4),
-> +			},
-> +			.wr_once = {
-> +				.addr = 0x07,
-> +				.mask = BIT(5),
-> +			},
-> +			.emb_func = {
-> +				.addr = 0x19,
-> +				.mask = BIT(2),
-> +			},
-> +			.num_ext_dev = 1,
-> +			.shub_out = {
-> +				.addr = 0x2e,
-> +			},
-> +			.slv0_addr = 0x02,
-> +			.dw_slv0_addr = 0x0e,
-> +			.pause = 0x7,
-> +		},
->  		.event_settings = {
->  			.enable_reg = {
->  				.addr = 0x58,
-> @@ -1901,6 +1938,16 @@ static int st_lsm6dsx_init_shub(struct st_lsm6dsx_hw *hw)
->  					 hub_settings->aux_sens.mask, data);
->  
->  		st_lsm6dsx_set_page(hw, false);
-> +
-> +		if (err < 0)
-> +			return err;
-> +	}
-> +
-> +	if (hub_settings->emb_func.addr) {
-> +		data = ST_LSM6DSX_SHIFT_VAL(1, hub_settings->emb_func.mask);
-> +		err = regmap_update_bits(hw->regmap,
-> +					 hub_settings->emb_func.addr,
-> +					 hub_settings->emb_func.mask, data);
->  	}
->  
->  	return err;
+> +			.num_ext_dev = 3,
+>  			.shub_out = 0x02,
+>  			.slv0_addr = 0x15,
+>  			.dw_slv0_addr = 0x21,
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> index dc739dfb36f2..eea555617d4a 100644
+> index fa5d1001a46c..5684e663d0aa 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> @@ -221,16 +221,21 @@ st_lsm6dsx_shub_read(struct st_lsm6dsx_sensor *sensor, u8 addr,
->  		     u8 *data, int len)
->  {
->  	const struct st_lsm6dsx_shub_settings *hub_settings;
-> +	u8 config[3], slv_addr, slv_config = 0;
->  	struct st_lsm6dsx_hw *hw = sensor->hw;
-> -	u8 config[3], slv_addr;
-> +	const struct st_lsm6dsx_reg *aux_sens;
->  	int err;
+> @@ -30,7 +30,6 @@
 >  
->  	hub_settings = &hw->settings->shub_settings;
->  	slv_addr = ST_LSM6DSX_SLV_ADDR(0, hub_settings->slv0_addr);
-> +	aux_sens = &hw->settings->shub_settings.aux_sens;
-> +	/* do not overwrite aux_sens */
-> +	if (slv_addr + 2 == aux_sens->addr)
-> +		slv_config = ST_LSM6DSX_SHIFT_VAL(3, aux_sens->mask);
+>  #include "st_lsm6dsx.h"
 >  
->  	config[0] = (sensor->ext_info.addr << 1) | 1;
->  	config[1] = addr;
-> -	config[2] = len & ST_LS6DSX_READ_OP_MASK;
-> +	config[2] = (len & ST_LS6DSX_READ_OP_MASK) | slv_config;
+> -#define ST_LSM6DSX_MAX_SLV_NUM			3
+>  #define ST_LSM6DSX_SLV_ADDR(n, base)		((base) + (n) * 3)
+>  #define ST_LSM6DSX_SLV_SUB_ADDR(n, base)	((base) + 1 + (n) * 3)
+>  #define ST_LSM6DSX_SLV_CONFIG(n, base)		((base) + 2 + (n) * 3)
+> @@ -770,7 +769,7 @@ int st_lsm6dsx_shub_probe(struct st_lsm6dsx_hw *hw, const char *name)
+>  		if (err < 0)
+>  			return err;
 >  
->  	err = st_lsm6dsx_shub_write_reg(hw, slv_addr, config,
->  					sizeof(config));
-> @@ -248,7 +253,9 @@ st_lsm6dsx_shub_read(struct st_lsm6dsx_sensor *sensor, u8 addr,
->  
->  	st_lsm6dsx_shub_master_enable(sensor, false);
->  
-> -	memset(config, 0, sizeof(config));
-> +	config[0] = hub_settings->pause;
-> +	config[1] = 0;
-> +	config[2] = slv_config;
->  	return st_lsm6dsx_shub_write_reg(hw, slv_addr, config,
->  					 sizeof(config));
->  }
-> @@ -305,7 +312,8 @@ st_lsm6dsx_shub_write(struct st_lsm6dsx_sensor *sensor, u8 addr,
->  		st_lsm6dsx_shub_master_enable(sensor, false);
+> -		if (++num_ext_dev >= ST_LSM6DSX_MAX_SLV_NUM)
+> +		if (++num_ext_dev >= hw->settings->shub_settings.num_ext_dev)
+>  			break;
+>  		id++;
 >  	}
->  
-> -	memset(config, 0, sizeof(config));
-> +	config[0] = hub_settings->pause;
-> +	config[1] = 0;
->  	return st_lsm6dsx_shub_write_reg(hw, slv_addr, config, sizeof(config));
->  }
->  
-> @@ -697,14 +705,19 @@ st_lsm6dsx_shub_check_wai(struct st_lsm6dsx_hw *hw, u8 *i2c_addr,
->  			  const struct st_lsm6dsx_ext_dev_settings *settings)
->  {
->  	const struct st_lsm6dsx_shub_settings *hub_settings;
-> +	u8 config[3], data, slv_addr, slv_config = 0;
-> +	const struct st_lsm6dsx_reg *aux_sens;
->  	struct st_lsm6dsx_sensor *sensor;
-> -	u8 config[3], data, slv_addr;
->  	bool found = false;
->  	int i, err;
->  
-> +	sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
->  	hub_settings = &hw->settings->shub_settings;
-> +	aux_sens = &hw->settings->shub_settings.aux_sens;
->  	slv_addr = ST_LSM6DSX_SLV_ADDR(0, hub_settings->slv0_addr);
-> -	sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
-> +	/* do not overwrite aux_sens */
-> +	if (slv_addr + 2 == aux_sens->addr)
-> +		slv_config = ST_LSM6DSX_SHIFT_VAL(3, aux_sens->mask);
->  
->  	for (i = 0; i < ARRAY_SIZE(settings->i2c_addr); i++) {
->  		if (!settings->i2c_addr[i])
-> @@ -713,7 +726,7 @@ st_lsm6dsx_shub_check_wai(struct st_lsm6dsx_hw *hw, u8 *i2c_addr,
->  		/* read wai slave register */
->  		config[0] = (settings->i2c_addr[i] << 1) | 0x1;
->  		config[1] = settings->wai.addr;
-> -		config[2] = 0x1;
-> +		config[2] = 0x1 | slv_config;
->  
->  		err = st_lsm6dsx_shub_write_reg(hw, slv_addr, config,
->  						sizeof(config));
-> @@ -742,7 +755,9 @@ st_lsm6dsx_shub_check_wai(struct st_lsm6dsx_hw *hw, u8 *i2c_addr,
->  	}
->  
->  	/* reset SLV0 channel */
-> -	memset(config, 0, sizeof(config));
-> +	config[0] = hub_settings->pause;
-> +	config[1] = 0;
-> +	config[2] = slv_config;
->  	err = st_lsm6dsx_shub_write_reg(hw, slv_addr, config,
->  					sizeof(config));
->  	if (err < 0)
 

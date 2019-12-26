@@ -2,151 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A326A12AECD
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Dec 2019 22:16:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A884112AF3A
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Dec 2019 23:29:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726748AbfLZVQ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Dec 2019 16:16:26 -0500
-Received: from www381.your-server.de ([78.46.137.84]:43224 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726653AbfLZVQ0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Dec 2019 16:16:26 -0500
-Received: from sslproxy01.your-server.de ([88.198.220.130])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1ikaUY-0006mx-Tt; Thu, 26 Dec 2019 22:16:23 +0100
-Received: from [93.104.100.98] (helo=[192.168.178.20])
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89)
-        (envelope-from <lars@metafoo.de>)
-        id 1ikaUY-0004GG-JD; Thu, 26 Dec 2019 22:16:22 +0100
-Subject: Re: [PATCH v3] iio: buffer: align the size of scan bytes to size of
- the largest element
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     =?UTF-8?Q?Lars_M=c3=b6llendorf?= <lars.moellendorf@plating.de>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-References: <kcis.016016E0AABB4ABC824358438D87FE25@mail>
- <9e68de59-db62-5ba7-c5b6-26d2a59610a2@metafoo.de>
- <20191223170530.1dcfff85@archlinux>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <5d8a64e5-d745-bfc4-57e1-4a24f097d36e@metafoo.de>
-Date:   Thu, 26 Dec 2019 22:16:21 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726277AbfLZW3h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Dec 2019 17:29:37 -0500
+Received: from mail-il1-f194.google.com ([209.85.166.194]:44779 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726105AbfLZW3g (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Dec 2019 17:29:36 -0500
+Received: by mail-il1-f194.google.com with SMTP id z12so21085430iln.11;
+        Thu, 26 Dec 2019 14:29:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=0HfQukFEOKou0TWVAOyJEghUYeBtOwFmOGUx5hYQoQQ=;
+        b=FWneVoon1qpjIG/zrUrKluXRyc/5nXH53yI73RGCsKkaL4EWBfRQShNd5cfCsLEfNk
+         mowt+ksiEZy+qAKuAy2POiRSbtlmVbAFzVtin3LzHnNAPI45e+isQrvbmT3GTYnwg7ax
+         4cDol6sA8KALk7A4m/JGqGiHRKNsu5vrQObYzcPcP8EXmqhFjxIWqbsaOD21AXJ9UTak
+         sNWWSp1MIyJaV54eoL9bHDG95gNNpSGzeOZZ0VJsEuVgJGIYQu1Zur38h34mj6SZonpy
+         D1ficwMv+G1eMJ5qIx0CsHhUG4o10OUyj8dbP3OpdjfX8PpYtzvnYTTBlPOodN8LvTcH
+         uYAw==
+X-Gm-Message-State: APjAAAXr69NmzzDBMDDoijI8vr2VHFoF3O8/z7ST1vUCLFKen+KdLS9e
+        taad2AskJn7yzHUOv+Iykg==
+X-Google-Smtp-Source: APXvYqyKHeFTS1rgXKIJtDHqKWaKwJuhNX9UygXL9K1AQkx1JoP6Vcp4Eq4BkAUtVgXSERlQ2Nhkgg==
+X-Received: by 2002:a92:ce85:: with SMTP id r5mr42607880ilo.301.1577399376036;
+        Thu, 26 Dec 2019 14:29:36 -0800 (PST)
+Received: from localhost ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id t23sm12668682ila.75.2019.12.26.14.29.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Dec 2019 14:29:34 -0800 (PST)
+Date:   Thu, 26 Dec 2019 15:29:33 -0700
+From:   Rob Herring <robh@kernel.org>
+To:     YuDong Zhang <mtwget@gmail.com>
+Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, mark.rutland@arm.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] dt-bindings: iio: chemical: Add bindings for
+ Dynament Premier series single gas sensor
+Message-ID: <20191226222933.GA20958@bogus>
+References: <20191217102930.26102-1-mtwget@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20191223170530.1dcfff85@archlinux>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.101.4/25675/Thu Dec 26 10:55:36 2019)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191217102930.26102-1-mtwget@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/23/19 6:05 PM, Jonathan Cameron wrote:
-> On Mon, 16 Dec 2019 08:51:27 +0100
-> Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Tue, Dec 17, 2019 at 06:29:30PM +0800, YuDong Zhang wrote:
+> Dynament Premier series single gas sensor.
 > 
->> On 12/15/19 10:09 PM, Lars Möllendorf wrote:
->>> -----Ursprüngliche Nachricht-----  
->>>> Von: Lars Möllendorf <lars.moellendorf@plating.de>
->>>> Gesendet: Freitag 13 Dezember 2019 14:58
->>>> An: Jonathan Cameron <jic23@kernel.org>; Hartmut Knaack <knaack.h@gmx.de>; Lars-Peter Clausen <lars@metafoo.de>; Peter Meerwald-Stadler <pmeerw@pmeerw.net>; linux-iio@vger.kernel.org
->>>> CC: Lars Möllendorf <lars.moellendorf@plating.de>
->>>> Betreff: [PATCH v3] iio: buffer: align the size of scan bytes to size of the largest element
->>>>
->>>> Previous versions of `iio_compute_scan_bytes` only aligned each element
->>>> to its own length (i.e. its own natural alignment). Because multiple
->>>> consecutive sets of scan elements are buffered this does not work in
->>>> case the computed scan bytes do not align with the natural alignment of
->>>> the first scan element in the set.
->>>>
->>>> This commit fixes this by aligning the scan bytes to the natural
->>>> alignment of the largest scan element in the set.  
->>>
->>>
->>>
->>> After re-reading my commit message, I come to the conclusion that it really is sufficient to align the scan bytes to the natural alignment of the *first* element. This would save us the `max()` comparisons for each bit. At the moment I am not at my workstation, but I could submit a v4 next Friday.
->>>   
->>
->> I thought so too in the beginning, but as Jonathan pointed out, it does
->> not work for all cases. Lets say you have u16,u16,u32,u16. If all
->> channels are enabled the size is aligned to the first element, but the
->> u32 would not be aligned in the second dataset.
->>
+> Signed-off-by: YuDong Zhang <mtwget@gmail.com>
+> ---
+>  .../iio/chemical/dynament,premier.yaml        | 39 +++++++++++++++++++
+>  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
+>  MAINTAINERS                                   |  1 +
+>  3 files changed, 42 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml
 > 
-> I'm sitting on this at the moment... Can I confirm we have consensus
-> that this patch is the correct fix?
-> 
-> Lars and Lars?
+> diff --git a/Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml b/Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml
+> new file mode 100644
+> index 000000000000..e2bbae4dd086
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml
+> @@ -0,0 +1,39 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/chemical/dynament,premier.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Dynament Premier series single gas sensor
+> +
+> +maintainers:
+> +  - YuDong Zhang <mtwget@gmail.com>
+> +
+> +description: |
+> +  single gas sensor capable of measuring gas concentration of dust
+> +  particles, multi-gas sensor are not supported.
+> +
+> +  Specifications about the sensor can be found at:
+> +    https://www.dynament.com/_webedit/uploaded-files/All%20Files/SIL%20Data/tds0045_1.44.pdf, read chapter 1.5.2 Read live data simple
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - dynament,premier
 
-Current version looks good to me.
+Typically compatible strings are for a specific part #, so you can 
+handle any differences. Unless the differences are discoverable in 
+another way (like registers).
 
-Reviewed-by: Lars-Peter Clausen <lars@metafoo.de>
-
+> +
+> +  vcc-supply:
+> +    description: regulator that provides power to the sensor
+> +
+> +required:
+> +  - compatible
+> +
+> +examples:
+> +  - |
+> +    serial {
+> +      single-gas-sensor {
+> +        compatible = "dynament,premier";
+> +        vcc-supply = <&reg_vcc5v0>;
+> +      };
+> +    };
+> +
+> +...
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> index 6046f4555852..5afca0586c41 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> @@ -261,6 +261,8 @@ patternProperties:
+>      description: Dragino Technology Co., Limited
+>    "^dserve,.*":
+>      description: dServe Technology B.V.
+> +  "^dynament,.*":
+> +    description: Dynament, Ltd.
+>    "^ea,.*":
+>      description: Embedded Artists AB
+>    "^ebs-systart,.*":
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ae228ac7adc9..4842a0afe32b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -5796,6 +5796,7 @@ DYNAMENT PREMIER SERIES SINGLE GAS SENSOR DRIVER
+>  M:	YuDong Zhang <mtwget@gmail.com>
+>  S:	Maintained
+>  F:	drivers/iio/chemical/premier.c
+> +F:	Documentation/devicetree/bindings/iio/chemical/dynament,premier.yaml
+>  
+>  DYNAMIC DEBUG
+>  M:	Jason Baron <jbaron@akamai.com>
+> -- 
+> 2.24.1
 > 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
->>>
->>>   
->>>> Fixes: 959d2952d124 ("staging:iio: make iio_sw_buffer_preenable much more
->>>> general.")
->>>> Signed-off-by: Lars Möllendorf <lars.moellendorf@plating.de>
->>>> ---
->>>> v3:
->>>>   - Fix the problem description in the commit message
->>>>   - Add "Fixes" tag
->>>>
->>>> v2:
->>>>   - Fix subject of patch which marked it the first in a set of three.
->>>>   - Add a description of the problem in the commit message
->>>>
->>>> ---
->>>>  drivers/iio/industrialio-buffer.c | 6 +++++-
->>>>  1 file changed, 5 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
->>>> index 5d05c38c4ba9..2f037cd59d53 100644
->>>> --- a/drivers/iio/industrialio-buffer.c
->>>> +++ b/drivers/iio/industrialio-buffer.c
->>>> @@ -546,7 +546,7 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
->>>>  				const unsigned long *mask, bool timestamp)
->>>>  {
->>>>  	unsigned bytes = 0;
->>>> -	int length, i;
->>>> +	int length, i, largest = 0;
->>>>
->>>>  	/* How much space will the demuxed element take? */
->>>>  	for_each_set_bit(i, mask,
->>>> @@ -554,13 +554,17 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
->>>>  		length = iio_storage_bytes_for_si(indio_dev, i);
->>>>  		bytes = ALIGN(bytes, length);
->>>>  		bytes += length;
->>>> +		largest = max(largest, length);
->>>>  	}
->>>>
->>>>  	if (timestamp) {
->>>>  		length = iio_storage_bytes_for_timestamp(indio_dev);
->>>>  		bytes = ALIGN(bytes, length);
->>>>  		bytes += length;
->>>> +		largest = max(largest, length);
->>>>  	}
->>>> +
->>>> +	bytes = ALIGN(bytes, largest);
->>>>  	return bytes;
->>>>  }
->>>>
->>>> --
->>>> 2.23.0
->>>>  
->>
-> 
-

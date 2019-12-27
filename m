@@ -2,94 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6520E12AF80
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Dec 2019 00:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 307EC12B0A2
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Dec 2019 03:31:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726839AbfLZXED (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Dec 2019 18:04:03 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:35818 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726277AbfLZXEC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Dec 2019 18:04:02 -0500
-Received: by mail-io1-f66.google.com with SMTP id v18so24407708iol.2;
-        Thu, 26 Dec 2019 15:04:02 -0800 (PST)
+        id S1726138AbfL0CbK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 26 Dec 2019 21:31:10 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:34131 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726277AbfL0CbK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Dec 2019 21:31:10 -0500
+Received: from mail-wr1-f71.google.com ([209.85.221.71])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <chia-lin.kao@canonical.com>)
+        id 1ikfP9-0005DS-BL
+        for linux-iio@vger.kernel.org; Fri, 27 Dec 2019 02:31:07 +0000
+Received: by mail-wr1-f71.google.com with SMTP id d8so6752455wrq.12
+        for <linux-iio@vger.kernel.org>; Thu, 26 Dec 2019 18:31:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=4BxjXm5H+PVHzK3XnFpnxXvTcIKYGmKgODVv5UHOsHg=;
-        b=jhYa0XdG6jucyom2rEO5XNwOZjvxQXfQIVg7lVhBedfFrIK04Scj57ByNyFuIoNS1W
-         Kos61ivoZF8rjCTTR4XhTCsPfuY7VhWyTHp2a4bTnnEOPAuGHk7rRokMI9jRAstwoyNV
-         +N4hOf8oWL4CinJ0vwYsbNCnZk6Jgvmbq/hBN06ZEZRhPb+hvUUbfXKMX0z/+k6T2Fo1
-         TXcPIY3HL2BeUb8Si0qQdiXNp5TrO3tNjH0/3khss/cZVftlkygi557/dMHTYgGB4UQs
-         v5EW7usF3jgh+QzE74JZg4nzvc4o+YvuT+4CaRtmfBOHnTWbE72p76zKALFlu6Qj/AmX
-         kKIw==
-X-Gm-Message-State: APjAAAWdcy7UtBL5o0mv4WznWQyp83h6oAhE0YC9cHkrcIOVpRfgn4yo
-        nLG1KYr0FlDN8L3G/zKHLg==
-X-Google-Smtp-Source: APXvYqw2bGRiaMi/uFha0sHVD0awLqueKW90FLWiT0CRk7JBZTxizfad7ua9GqHYh9EH1UVXI14/eg==
-X-Received: by 2002:a5d:93cd:: with SMTP id j13mr31630721ioo.126.1577401442032;
-        Thu, 26 Dec 2019 15:04:02 -0800 (PST)
-Received: from localhost ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id p12sm11217395ils.11.2019.12.26.15.04.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Dec 2019 15:04:00 -0800 (PST)
-Date:   Thu, 26 Dec 2019 16:03:59 -0700
-From:   Rob Herring <robh@kernel.org>
-To:     Dan Robertson <dan@dlrobertson.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
-        Joe Perches <joe@perches.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v8 1/3] dt-bindings: iio: accel: bma400: add bindings
-Message-ID: <20191226230359.GA29435@bogus>
-References: <20191220160051.26321-1-dan@dlrobertson.com>
- <20191220160051.26321-2-dan@dlrobertson.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=4dOBVgYzJQQlBZJLMRejwZCloWBaR9zdLSWOBrbs5HQ=;
+        b=hysS5Zg1MkgyW21Vk5TYXpWr2e6WoRikkBkmccQY78iNBsln+8eMkMatqU8ocF/Zav
+         9rtYyK63/4PyIEeQWGMCEF462CEb38obQl7f0lFVYXFo/M9VJzT+Uj6mUtR793X6bZZQ
+         TJaTIgMg1BeC3NTK1nM7FziUPo/St9oKW3X2JUNDyYEwGpRXM/rH9Ixt6K/h5sMIeunQ
+         Gqg0jf9AzrQEUXyf+e0PI1OsyY6+UUNh0T/19bgl6nmz6RzoHDcQckqv09A92z96IGwj
+         ohwuyaKwUoh3HwF2VT++2KIUY+/qPpka2agCe0es+5mQ870BmNNF5RViMm5MDLnvTywm
+         nSNA==
+X-Gm-Message-State: APjAAAXfSi0b5hy/krjatWwP0kM0RzhlJ7gwQkSS6SSgOlsB77S/+JMy
+        uUoNYd+H4veWvAlRK3qdo/lN7l8rlKVfo6JgCNeypnyassx0oNxKRHpvexnQ+mUkDfJWju98Y2V
+        a5/KQ0870RPlEkIFpNzkztqJ1FgZqPElLxEeTWJ8M7JeYqzTxgmTDtw==
+X-Received: by 2002:a5d:6a0f:: with SMTP id m15mr47804871wru.40.1577413867067;
+        Thu, 26 Dec 2019 18:31:07 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyuFPeM4Ub4t48ORJovS5k1GwCHSAOYNZBKpzgCnLP5EZnMrkgJMqhcW1m8fLymTuVusm6+o3jA0mIqd3h9adM=
+X-Received: by 2002:a5d:6a0f:: with SMTP id m15mr47804862wru.40.1577413866872;
+ Thu, 26 Dec 2019 18:31:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191220160051.26321-2-dan@dlrobertson.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <CAFv23QmiDdhe+xJw2y7CXiWq4-GK1S-1bcKxEpNhNJu3ZtzA_w@mail.gmail.com>
+ <9baeb165eddb4872fb701ff81f11692b7e153bf6.camel@hadess.net>
+In-Reply-To: <9baeb165eddb4872fb701ff81f11692b7e153bf6.camel@hadess.net>
+From:   AceLan Kao <acelan.kao@canonical.com>
+Date:   Fri, 27 Dec 2019 10:30:55 +0800
+Message-ID: <CAFv23Qmj_ZqKs9_tw1Grzzj5unFBLfK0Scy396vcHCEB+fdLOA@mail.gmail.com>
+Subject: Re: Display got wrong rotation after hid_sensor_accel_3d is loaded
+To:     Bastien Nocera <hadess@hadess.net>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Dec 20, 2019 at 04:00:49PM +0000, Dan Robertson wrote:
-> Add devicetree binding for the Bosch BMA400 3-axes ultra-low power
-> accelerometer sensor.
-> 
-> Signed-off-by: Dan Robertson <dan@dlrobertson.com>
-> ---
->  .../bindings/iio/accel/bosch,bma400.yaml      | 54 +++++++++++++++++++
->  1 file changed, 54 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
-> new file mode 100644
-> index 000000000000..e87cb636b3e2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
-> @@ -0,0 +1,54 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/accel/bosch,bma400.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Bosch BMA400 triaxial acceleration sensor
-> +
-> +maintainers:
-> +  - Dan Robertson <dan@dlrobertson.com>
-> +
-> +description: |
-> +  Acceleration and temerature iio sensors with an i2c interface
+Hi Bastien,
 
-checkpatch reports a typo here.
+Thanks for your suggestion.
+I just tried to add the following line into
+/lib/udev/hwdb.d/60-sensor.hwdb and got the correct screen rotation.
+But the cursor is still un-rotated, the cursor is drawn upside down,
+and its coordinates are inverted.
 
-Otherwise,
+#########################################
+# STMicro
+#########################################
+sensor:modalias:platform:platform:HID-SENSOR-200073
+ ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, -1, 0; 0, 0, 1
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+It looks like we should introduce a quirk into hid_sensor_accel_3d driver.
+There are 3 different scale variables in hid_sensor_accel_3d, but I
+don't see any of them would work the way I want.
+Do you mean to introduce new scale variables?
+
+   drivers/iio/accel/hid-sensor-accel-3d.c:34:     int scale_pre_decml;
+   drivers/iio/accel/hid-sensor-accel-3d.c:35:     int scale_post_decml;
+   drivers/iio/accel/hid-sensor-accel-3d.c:36:     int scale_precision;
+
+Bastien Nocera <hadess@hadess.net> 於 2019年12月26日 週四 下午11:03寫道：
+>
+> On Thu, 2019-12-26 at 17:22 +0800, AceLan Kao wrote:
+> > Hi all,
+> >
+> > I'm working on a new platform which comes with an accelerator meter.
+> > It's a STMicroelectronics LSM6DS3US accelerator meter, it doesn't use
+> > st_sensors driver, but hid_sensor_accel_3d.
+> > After hid_sensor_accel_3d is loaded, the display becomes upside down,
+> > so I tried to add some code to make it become normal.(ACCEL_X should
+> > have the same modification)
+> >
+> > I don't know how to fix this in a correct way, please give me some
+> > hints.
+>
+> This needs to be done as a quirk, either by applying a quirk for the
+> HID descriptors (which should have a definition of the scale, which
+> would be negative for this device), or in user-space in systemd's hwdb
+> database, which your user-space consumers need to take care of:
+> https://github.com/systemd/systemd/blob/master/hwdb.d/60-sensor.hwdb
+>
+> Cheers
+>

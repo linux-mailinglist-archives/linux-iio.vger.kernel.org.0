@@ -2,103 +2,189 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC14012B3D4
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Dec 2019 11:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E89212BECF
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2019 21:11:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726365AbfL0KYe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Dec 2019 05:24:34 -0500
-Received: from honk.sigxcpu.org ([24.134.29.49]:58928 "EHLO honk.sigxcpu.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726354AbfL0KYe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 27 Dec 2019 05:24:34 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id C1BF1FB03;
-        Fri, 27 Dec 2019 11:24:31 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
-Received: from honk.sigxcpu.org ([127.0.0.1])
-        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id BIslT7T3Kqzi; Fri, 27 Dec 2019 11:24:30 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id 2E09C49799; Fri, 27 Dec 2019 11:24:30 +0100 (CET)
-Date:   Fri, 27 Dec 2019 11:24:30 +0100
-From:   Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-To:     Marco Felsch <m.felsch@pengutronix.de>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
+        id S1726579AbfL1ULZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Dec 2019 15:11:25 -0500
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:41760 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726371AbfL1ULY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Dec 2019 15:11:24 -0500
+Received: by mail-lf1-f65.google.com with SMTP id m30so22882072lfp.8
+        for <linux-iio@vger.kernel.org>; Sat, 28 Dec 2019 12:11:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Zh8S/4W0ztEaOCn11DyhGNjQj/bRNp6ULAbdfdJJfMM=;
+        b=TBi5LQOED8JDNv5C6um28CrR7N2BYkuKI4C60P7VIYXDNfqMIVHl5A3KX4mQKnuhdq
+         PSeFg48eT8NnQFPGTwh/rnYJEENx7UmiPqodxVpXgvWbsuU8BCk9qK/dqY0Wyde4hWXs
+         lJgpyIfh8aYkuDWLL1OqMNeMqjbLGCvuh4empOZoagah+sgw97WGY1RnwbM3XM7n+JXQ
+         l8/iD5mYAOkV2sz6mHUVhDUrVV5M3cxc5Rh2wuU2Vc8Vd26Ff+vYNE6FXAeiekWOxzPX
+         0w9NI/Voia8QmNPVgz8u2a3RroPJaIjR31qyOUw7LVDBgbXMpSmWDq/9CsfiEN1MQTYS
+         KJDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Zh8S/4W0ztEaOCn11DyhGNjQj/bRNp6ULAbdfdJJfMM=;
+        b=q1FsDmAngWiGxRVdvk7KiY8jyzjXGO33LSW7n8Mk3xnL3AJJJ7WF/rLs5f2JWM95I1
+         nrTHUITNLR/Bu/qcyavefJq9+5lPhl/K0k/x9edawwevrZBAhXBKoDdY1rwgaizpf20C
+         vT7zzGuYmK2nX4+zTC3vyQinXnciSzB5i4Jo3jYWJmDG54fTxUO3zbo/6hzlTNy3hsna
+         Sbsdq7DLPKlpaI5AX7luOpA7LK+CauBRZpXcIJkLgcC/KpVICWHzha6GoCZ7aF+FJiNw
+         MwKyyixJOr+SFHaXHSEvN7DygW/NFE6HmFQ6rVa4FluWwyU/jiYnm7vwf6g4x/5HFpBD
+         bqUw==
+X-Gm-Message-State: APjAAAX2emBPYmDDMSebKcIrBeYvTPx19M/8U3jN6j98K9dsZQrSaD7D
+        nFCVb81bavALEm4tynPO82mjMA==
+X-Google-Smtp-Source: APXvYqwpNVB4U4z1e7+NgxCEHqp1dDo58dJk92Bon+JiAdSe7JzBsZzsK2jl5tZLYcN6yjcxkaeZRA==
+X-Received: by 2002:a19:c7c5:: with SMTP id x188mr32486605lff.22.1577563881848;
+        Sat, 28 Dec 2019 12:11:21 -0800 (PST)
+Received: from localhost.bredbandsbolaget (c-5ac9225c.014-348-6c756e10.bbcust.telenor.se. [92.34.201.90])
+        by smtp.gmail.com with ESMTPSA id r15sm2590064ljh.11.2019.12.28.12.11.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Dec 2019 12:11:20 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        Allison Randal <allison@lohutok.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: vcnl4000: Fix scale for vcnl4040
-Message-ID: <20191227102430.GA4358@bogon.m.sigxcpu.org>
-References: <4f2a980d87a7d5ae27d61ed1d35c4f310bfc607c.1577114947.git.agx@sigxcpu.org>
- <20191227084720.GA6398@pengutronix.de>
+        linux-input@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Donggeun Kim <dg77.kim@samsung.com>,
+        Minkyu Kang <mk7.kang@samsung.com>,
+        =?UTF-8?q?Pawe=C5=82=20Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        devicetree@vger.kernel.org
+Subject: [PATCH 1/2 v1] iio: light: Add DT bindings for GP2AP002
+Date:   Sat, 28 Dec 2019 21:11:08 +0100
+Message-Id: <20191228201109.13635-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191227084720.GA6398@pengutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-On Fri, Dec 27, 2019 at 09:47:20AM +0100, Marco Felsch wrote:
-> Hi Guido,
-> 
-> On 19-12-23 16:30, Guido Günther wrote:
-> > According to the data sheet the ambient sensors's scale is 0.12
-> > lux/step, not 0.024 lux/step as used by vcnl4200.
-> 
-> This is only true if the als_it bits are set to '0'. Is it worth to add
-> a comment here?
+This adds device tree bindings for the GP2AP002 light
+and proximity sensor.
 
-Good point. I've added that to the commit message.
-Cheers,
- -- Guido
+As with other early proximity sensors (~2010) the light
+sensor and proximity sensors were combined into a single
+component.
 
-> 
-> > See p. 8 in https://www.vishay.com/docs/84307/designingvcnl4040.pdf
-> > 
-> > Fixes: 5a441aade5b3 ("light: vcnl4000 add support for the VCNL4040 proximity and light sensor")
-> > Signed-off-by: Guido Günther <agx@sigxcpu.org>
-> 
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-> 
-> > ---
-> >  drivers/iio/light/vcnl4000.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> > index 16dacea9eadf..b0e241aaefb4 100644
-> > --- a/drivers/iio/light/vcnl4000.c
-> > +++ b/drivers/iio/light/vcnl4000.c
-> > @@ -163,7 +163,6 @@ static int vcnl4200_init(struct vcnl4000_data *data)
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > -	data->al_scale = 24000;
-> >  	data->vcnl4200_al.reg = VCNL4200_AL_DATA;
-> >  	data->vcnl4200_ps.reg = VCNL4200_PS_DATA;
-> >  	switch (id) {
-> > @@ -172,11 +171,13 @@ static int vcnl4200_init(struct vcnl4000_data *data)
-> >  		/* show 54ms in total. */
-> >  		data->vcnl4200_al.sampling_rate = ktime_set(0, 54000 * 1000);
-> >  		data->vcnl4200_ps.sampling_rate = ktime_set(0, 4200 * 1000);
-> > +		data->al_scale = 24000;
-> >  		break;
-> >  	case VCNL4040_PROD_ID:
-> >  		/* Integration time is 80ms, add 10ms. */
-> >  		data->vcnl4200_al.sampling_rate = ktime_set(0, 100000 * 1000);
-> >  		data->vcnl4200_ps.sampling_rate = ktime_set(0, 100000 * 1000);
-> > +		data->al_scale = 120000;
-> >  		break;
-> >  	}
-> >  	data->vcnl4200_al.last_measurement = ktime_set(0, 0);
-> > -- 
-> > 2.23.0
-> 
+Cc: Stephan Gerhold <stephan@gerhold.net>
+Cc: Donggeun Kim <dg77.kim@samsung.com>
+Cc: Minkyu Kang <mk7.kang@samsung.com>
+Cc: PaweÅ‚ Chmiel <pawel.mikolaj.chmiel@gmail.com>
+Cc: Jonathan Bakker <xc-racer2@live.ca>
+Cc: Oskar Andero <oskar.andero@gmail.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ .../bindings/iio/light/sharp,gp2ap002.yaml    | 87 +++++++++++++++++++
+ 1 file changed, 87 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/sharp,gp2ap002.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/light/sharp,gp2ap002.yaml b/Documentation/devicetree/bindings/iio/light/sharp,gp2ap002.yaml
+new file mode 100644
+index 000000000000..27d129e76a8b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/sharp,gp2ap002.yaml
+@@ -0,0 +1,87 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/sharp,gp2ap002.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Sharp GP2AP002A00F and GP2AP002S00F proximity and ambient light sensors
++
++maintainers:
++  - Linus Walleij <linus.walleij@linaro.org>
++
++description: |
++  Proximity and ambient light sensor with IR LED for the proximity
++  sensing and an analog output for light intensity. The ambient light
++  sensor output is not available on the GP2AP002S00F variant.
++
++properties:
++  compatible:
++    enum:
++      - sharp,gp2ap002a00f
++      - sharp,gp2ap002s00f
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++    description: an interrupt for proximity, usually a GPIO line
++
++  vdd-supply:
++    maxItems: 1
++    description: VDD power supply a phandle to a regulator
++
++  vio-supply:
++    maxItems: 1
++    description: VIO power supply a phandle to a regulator
++
++  io-channels:
++    maxItems: 1
++    description: ALSOUT ADC channel to read the ambient light
++
++  io-channel-names:
++    const: "alsout"
++
++  sharp,proximity-far-hysteresis:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Hysteresis setting for "far" object detection, this setting is
++      device-unique and adjust the optical setting for proximity detection
++      of a "far away" object in front of the sensor.
++
++  sharp,proximity-close-hysteresis:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Hysteresis setting for "close" object detection, this setting is
++      device-unique and adjust the optical setting for proximity detection
++      of a "close" object in front of the sensor.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - sharp,proximity-far-hysteresis
++  - sharp,proximity-close-hysteresis
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      light-sensor@44 {
++        compatible = "sharp,gp2ap002a00f";
++        reg = <0x44>;
++        interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
++        vdd-supply = <&vdd_regulator>;
++        vio-supply = <&vio_regulator>;
++        io-channels = <&adc_channel>;
++        io-channel-names = "alsout";
++        sharp,proximity-far-hysteresis = <0x2f>;
++        sharp,proximity-close-hysteresis = <0x0f>;
++      };
++    };
++
++...
+-- 
+2.21.0
+

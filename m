@@ -2,63 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7AC812C7CA
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Dec 2019 19:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3EA12CAB8
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Dec 2019 21:09:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731071AbfL2Rq1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Dec 2019 12:46:27 -0500
-Received: from smtpgwv02.dogantelekom.com ([213.243.1.84]:62138 "EHLO
-        smtpgwv02.dogantelekom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731060AbfL2Rq0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Dec 2019 12:46:26 -0500
-X-Greylist: delayed 901 seconds by postgrey-1.27 at vger.kernel.org; Sun, 29 Dec 2019 12:46:22 EST
-X-AuditID: d5f30154-30bff70000001822-12-5e08e2e6441c
-Received: from dolhst01.dol.com.tr (ftp.kozayonetim.com.tr [213.243.39.2])
-        by smtpgwv02.dogantelekom.com (D-Smart Corporate Messaging Gateway) with SMTP id 9C.BC.06178.6E2E80E5; Sun, 29 Dec 2019 20:31:18 +0300 (MSK)
-Received: from 69.164.194.72 ([69.164.194.72]) by dsmartkurumsal.com with MailEnable WebMail; Sun, 29 Dec 2019 20:31:11 +0300
-From:   "Norman HKMA cs" <nener@enercompany.com>
-Subject: 
-Date:   Sun, 29 Dec 2019 18:31:11 +0100
-Message-ID: <34CBFE7BA78C444F8FC1548BA2453ED7.MAI@dsmartkurumsal.com>
+        id S1727295AbfL2UJM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Dec 2019 15:09:12 -0500
+Received: from sender4-op-o18.zoho.com ([136.143.188.18]:17814 "EHLO
+        sender4-op-o18.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727117AbfL2UJM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Dec 2019 15:09:12 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1577650129; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=DnJNwNbmRl7RjLFhqmncyH4Re5uqGpTrX8B/4NYw6C5FrVOd6VfxhqgHcavchsn/Azb3Sf5niECx6vkziJV9TL+f1R0CimaToaRiUJmTta0r7Que3sdJhH9FniYt546pNvXABzGXxZO8xOJG/eJJPaxOdchcHk0k+jpuKlZuqdE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1577650129; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=EuONeAtWAISP85b0HoLOqO+kvuMF7nTdb489a5FgFIg=; 
+        b=nxMiFJ0bMI7EI3cUD4sgpES/5rucN3WzxNF1qFBgFZVgy9EisTcK9aLmVlko/AiqVpZPDa/0M4uXzXcMp6KwthtEmHTjDNR5uGd/pugkDRaZe0He8ttMNReRMbnEsEHijLaRZQnOHL0SfzQR+pMSUL74o5osvDaJUL/k93cUYt8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=dlrobertson.com;
+        spf=pass  smtp.mailfrom=dan@dlrobertson.com;
+        dmarc=pass header.from=<dan@dlrobertson.com> header.from=<dan@dlrobertson.com>
+Received: from nessie (pool-173-73-58-202.washdc.fios.verizon.net [173.73.58.202]) by mx.zohomail.com
+        with SMTPS id 1577650117807460.3664883416958; Sun, 29 Dec 2019 12:08:37 -0800 (PST)
+Date:   Sun, 29 Dec 2019 19:52:57 +0000
+From:   Dan Robertson <dan@dlrobertson.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>, linux-iio@vger.kernel.org,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+        Joe Perches <joe@perches.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v8 1/3] dt-bindings: iio: accel: bma400: add bindings
+Message-ID: <20191229195257.GA3169@nessie>
+References: <20191220160051.26321-1-dan@dlrobertson.com>
+ <20191220160051.26321-2-dan@dlrobertson.com>
+ <20191226230359.GA29435@bogus>
+ <20191229152014.3e269c9f@archlinux>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-        boundary="--=_NextPart_000_000B_4401273EFF49482890298C2F150C4C64"
-X-Mailer: MailEnable WebMail.NET
-X-MimeOLE: Produced By MailEnable WebMail.NET V2.0.0.0
-X-Read: 0
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sf0wTZxzG8969793BvO1WGbzDLHHN5oyLCItuX5LNmCxmtyVbXDYXsyWw
-        Uy4tgdKuBww2NaDIFlpGoaJrxSqxqwP9Y1RIUEmIRTMHA3Qd2onIOoVl/FJwoYSg7mw187/P
-        +z7P833+eQTW4OLShfyiYtVepBQauWQ8dPcVZu34X0JOZrV7BbTWBQjUtw2wcHr+GIbF1gss
-        OBudDBzub8Mw3TeCYMg/x8CIb4aBpivfseA7P4MhUJEK4TNNHDh/6iBw4+QDAv2+nzkYD9Vi
-        uBU6zsBvnVEWLrU38LBQPUeg8mwMQW3PKIETDj8PF6bfgj2RkyyEDupHrnWeRVDT/TeB4cZT
-        BIIXz+nPvkEMg/tK4Fq0ncDly7ME3FdOcXC/7jYHUwvjGNzfaOAYOYo3rZZnwkO83HVvlpGD
-        tR28HGu5wcmnvSO8XHngXyLfdP7Kyf3nYlh211RhOTjXwMt9Y1lyQ8/vrNxcP8rJh9pcvPxP
-        ZEp3hD/ZkvJp8pt5amF+qWpft/HzZPPV3jucrZ0tc/n3kwo0z9SgJIFK6+m92DT/kA3SH4g6
-        wjsTvIsuRj1xT4qEaUsshh8yJ2XQSs+ZuH+5lESDjsE4Y+llGvXXx1mUNtPKQPgRP0t/8dyK
-        Z1lpO/VXHeYTvSvp4v0mkuDXae/S0CNOopfGvMiFRO8Tce8T8QRn0pare9gEv0oDzZPsUYRb
-        UbpmKbaZvizNfC0jz2pS9L0UqgVWS8YOqyWI4qtBH3eiH6o+CCFJQMZl4vcHhRwDUUq1cksI
-        PS8wxufEI3X619PbrXnlZkUz59pLClUthKjAGlPEIhPJMYh5SvlXqt36WFohYGOamPvS29sM
-        kkkpVgtU1abaH6uMkDSB0vSy5WI0ql9epq9Yyzcl5AmULTBSpJtIkT+JNHnT42PTsWZTLHrX
-        ewKnd2nFyv/2NU8JcY8kUxdKr0BpW8wkt8txaLbl+Bt7N0L1ys+uL6YOh23zBz70KltD2asi
-        /me6l1KO3RVzs3wvLMwNBHYrX6e+XzK+2hKo8wW+HS6b2TrWvMk5saOx01M9tqFoybUuObvd
-        7Or+aFX2F2WjvQO71l5kB/bxBe71XR32H08c2dyTNbuteWrynfP7w+++aMSaWclaw9o15T8a
-        0270owMAAA==
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191229152014.3e269c9f@archlinux>
+X-ZohoMailClient: External
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is a multi-part message in MIME format.
+On Sun, Dec 29, 2019 at 03:20:14PM +0000, Jonathan Cameron wrote:
+> On Thu, 26 Dec 2019 16:03:59 -0700
+> Rob Herring <robh@kernel.org> wrote:
+> 
+> > On Fri, Dec 20, 2019 at 04:00:49PM +0000, Dan Robertson wrote:
+> > > Add devicetree binding for the Bosch BMA400 3-axes ultra-low power
+> > > accelerometer sensor.
+> > > 
+> > > Signed-off-by: Dan Robertson <dan@dlrobertson.com>
+> > > ---
+> > >  .../bindings/iio/accel/bosch,bma400.yaml      | 54 +++++++++++++++++++
+> > >  1 file changed, 54 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
+> > > new file mode 100644
+> > > index 000000000000..e87cb636b3e2
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
+> > > @@ -0,0 +1,54 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/accel/bosch,bma400.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Bosch BMA400 triaxial acceleration sensor
+> > > +
+> > > +maintainers:
+> > > +  - Dan Robertson <dan@dlrobertson.com>
+> > > +
+> > > +description: |
+> > > +  Acceleration and temerature iio sensors with an i2c interface  
+> > 
+> > checkpatch reports a typo here.
+> > 
+> > Otherwise,
+> > 
+> > Reviewed-by: Rob Herring <robh@kernel.org>
+> Fixed up and tag added.  Thanks,
 
-----=_NextPart_000_000B_4401273EFF49482890298C2F150C4C64
-Content-type: text/plain; charset="windows-1254"
-Content-Transfer-Encoding: quoted-printable
+Thanks for fixing this. Wasn't sure if this would necessitate another patchset
+version.
 
-I have a business deal worth $150 Million USD which can be invested
-in any business area in your country, reply to me for more info via
-Email: Normanhkma@gmail.com
+Cheers,
 
-
-----=_NextPart_000_000B_4401273EFF49482890298C2F150C4C64--
+ - Dan
 

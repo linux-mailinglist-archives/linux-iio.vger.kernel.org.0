@@ -2,92 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CB4B12C318
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Dec 2019 16:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7AC812C7CA
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Dec 2019 19:15:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726543AbfL2PUU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 29 Dec 2019 10:20:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59278 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726410AbfL2PUU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 29 Dec 2019 10:20:20 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F0EC22071E;
-        Sun, 29 Dec 2019 15:20:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577632820;
-        bh=PPnoXB1UAkWKl8kUep2gTd+3XC7c2Idguvr66bp/Mmg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=az91ijJeVSklF1YwLWGMNkuKUqWsooo3cA2evics5KJhPEg2NWiRR0Sn7GYy0CbF5
-         VWdMaPFqOD9Y9de5Vtsijzcx1GLc52LIb8pBdz/6eBpIJ9vOKs0y+AeHR+eLAO2tO4
-         jMTknGF0DYzFNojE2xm/gmeHUREFoQ4BM6fPOwT4=
-Date:   Sun, 29 Dec 2019 15:20:14 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Dan Robertson <dan@dlrobertson.com>, linux-iio@vger.kernel.org,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        devicetree@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
-        Joe Perches <joe@perches.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v8 1/3] dt-bindings: iio: accel: bma400: add bindings
-Message-ID: <20191229152014.3e269c9f@archlinux>
-In-Reply-To: <20191226230359.GA29435@bogus>
-References: <20191220160051.26321-1-dan@dlrobertson.com>
-        <20191220160051.26321-2-dan@dlrobertson.com>
-        <20191226230359.GA29435@bogus>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1731071AbfL2Rq1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Dec 2019 12:46:27 -0500
+Received: from smtpgwv02.dogantelekom.com ([213.243.1.84]:62138 "EHLO
+        smtpgwv02.dogantelekom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731060AbfL2Rq0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Dec 2019 12:46:26 -0500
+X-Greylist: delayed 901 seconds by postgrey-1.27 at vger.kernel.org; Sun, 29 Dec 2019 12:46:22 EST
+X-AuditID: d5f30154-30bff70000001822-12-5e08e2e6441c
+Received: from dolhst01.dol.com.tr (ftp.kozayonetim.com.tr [213.243.39.2])
+        by smtpgwv02.dogantelekom.com (D-Smart Corporate Messaging Gateway) with SMTP id 9C.BC.06178.6E2E80E5; Sun, 29 Dec 2019 20:31:18 +0300 (MSK)
+Received: from 69.164.194.72 ([69.164.194.72]) by dsmartkurumsal.com with MailEnable WebMail; Sun, 29 Dec 2019 20:31:11 +0300
+From:   "Norman HKMA cs" <nener@enercompany.com>
+Subject: 
+Date:   Sun, 29 Dec 2019 18:31:11 +0100
+Message-ID: <34CBFE7BA78C444F8FC1548BA2453ED7.MAI@dsmartkurumsal.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed;
+        boundary="--=_NextPart_000_000B_4401273EFF49482890298C2F150C4C64"
+X-Mailer: MailEnable WebMail.NET
+X-MimeOLE: Produced By MailEnable WebMail.NET V2.0.0.0
+X-Read: 0
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sf0wTZxzG8969793BvO1WGbzDLHHN5oyLCItuX5LNmCxmtyVbXDYXsyWw
+        Uy4tgdKuBww2NaDIFlpGoaJrxSqxqwP9Y1RIUEmIRTMHA3Qd2onIOoVl/FJwoYSg7mw187/P
+        +z7P833+eQTW4OLShfyiYtVepBQauWQ8dPcVZu34X0JOZrV7BbTWBQjUtw2wcHr+GIbF1gss
+        OBudDBzub8Mw3TeCYMg/x8CIb4aBpivfseA7P4MhUJEK4TNNHDh/6iBw4+QDAv2+nzkYD9Vi
+        uBU6zsBvnVEWLrU38LBQPUeg8mwMQW3PKIETDj8PF6bfgj2RkyyEDupHrnWeRVDT/TeB4cZT
+        BIIXz+nPvkEMg/tK4Fq0ncDly7ME3FdOcXC/7jYHUwvjGNzfaOAYOYo3rZZnwkO83HVvlpGD
+        tR28HGu5wcmnvSO8XHngXyLfdP7Kyf3nYlh211RhOTjXwMt9Y1lyQ8/vrNxcP8rJh9pcvPxP
+        ZEp3hD/ZkvJp8pt5amF+qWpft/HzZPPV3jucrZ0tc/n3kwo0z9SgJIFK6+m92DT/kA3SH4g6
+        wjsTvIsuRj1xT4qEaUsshh8yJ2XQSs+ZuH+5lESDjsE4Y+llGvXXx1mUNtPKQPgRP0t/8dyK
+        Z1lpO/VXHeYTvSvp4v0mkuDXae/S0CNOopfGvMiFRO8Tce8T8QRn0pare9gEv0oDzZPsUYRb
+        UbpmKbaZvizNfC0jz2pS9L0UqgVWS8YOqyWI4qtBH3eiH6o+CCFJQMZl4vcHhRwDUUq1cksI
+        PS8wxufEI3X619PbrXnlZkUz59pLClUthKjAGlPEIhPJMYh5SvlXqt36WFohYGOamPvS29sM
+        kkkpVgtU1abaH6uMkDSB0vSy5WI0ql9epq9Yyzcl5AmULTBSpJtIkT+JNHnT42PTsWZTLHrX
+        ewKnd2nFyv/2NU8JcY8kUxdKr0BpW8wkt8txaLbl+Bt7N0L1ys+uL6YOh23zBz70KltD2asi
+        /me6l1KO3RVzs3wvLMwNBHYrX6e+XzK+2hKo8wW+HS6b2TrWvMk5saOx01M9tqFoybUuObvd
+        7Or+aFX2F2WjvQO71l5kB/bxBe71XR32H08c2dyTNbuteWrynfP7w+++aMSaWclaw9o15T8a
+        0270owMAAA==
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 26 Dec 2019 16:03:59 -0700
-Rob Herring <robh@kernel.org> wrote:
+This is a multi-part message in MIME format.
 
-> On Fri, Dec 20, 2019 at 04:00:49PM +0000, Dan Robertson wrote:
-> > Add devicetree binding for the Bosch BMA400 3-axes ultra-low power
-> > accelerometer sensor.
-> > 
-> > Signed-off-by: Dan Robertson <dan@dlrobertson.com>
-> > ---
-> >  .../bindings/iio/accel/bosch,bma400.yaml      | 54 +++++++++++++++++++
-> >  1 file changed, 54 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
-> > new file mode 100644
-> > index 000000000000..e87cb636b3e2
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
-> > @@ -0,0 +1,54 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/accel/bosch,bma400.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Bosch BMA400 triaxial acceleration sensor
-> > +
-> > +maintainers:
-> > +  - Dan Robertson <dan@dlrobertson.com>
-> > +
-> > +description: |
-> > +  Acceleration and temerature iio sensors with an i2c interface  
-> 
-> checkpatch reports a typo here.
-> 
-> Otherwise,
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
-Fixed up and tag added.  Thanks,
+----=_NextPart_000_000B_4401273EFF49482890298C2F150C4C64
+Content-type: text/plain; charset="windows-1254"
+Content-Transfer-Encoding: quoted-printable
 
-Jonathan
+I have a business deal worth $150 Million USD which can be invested
+in any business area in your country, reply to me for more info via
+Email: Normanhkma@gmail.com
+
+
+----=_NextPart_000_000B_4401273EFF49482890298C2F150C4C64--
 

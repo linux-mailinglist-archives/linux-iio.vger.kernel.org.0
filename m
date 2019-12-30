@@ -2,100 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84E8E12D245
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2019 17:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9065312D26E
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2019 18:18:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726677AbfL3Qta (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Dec 2019 11:49:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59900 "EHLO mail.kernel.org"
+        id S1727235AbfL3RSH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Dec 2019 12:18:07 -0500
+Received: from mga05.intel.com ([192.55.52.43]:29340 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726675AbfL3Qt3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 30 Dec 2019 11:49:29 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 764EE206DB;
-        Mon, 30 Dec 2019 16:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577724569;
-        bh=H+Xixm/5Bouk1S1r30r0nDOhxrKrI3dSi6dVwniIfPA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=X2vKkENQGmNJ7gM4pmz1GLNmrsusKX4AjWYghZtheyg5mVfDKF42eR1lC+d3i82vZ
-         GeBZHw85LSJxrUTdVwSYWZaxg8FofUsTBJz/JiEuCAQ+Br7aH1yNCtf5EkIt0mb9Ea
-         bm/j858Q6l+eWAuF7MD8XoTHMU+KFzBFI87arGCI=
-Date:   Mon, 30 Dec 2019 16:49:24 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: light: vcnl4000: Fix scale for vcnl4040
-Message-ID: <20191230164924.42614610@archlinux>
-In-Reply-To: <6adc62445cac7d16e4688aea905dc1c9cc128488.1577442112.git.agx@sigxcpu.org>
-References: <6adc62445cac7d16e4688aea905dc1c9cc128488.1577442112.git.agx@sigxcpu.org>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+        id S1727207AbfL3RSH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 30 Dec 2019 12:18:07 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Dec 2019 09:18:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,376,1571727600"; 
+   d="scan'208";a="393292748"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.31])
+  by orsmga005.jf.intel.com with ESMTP; 30 Dec 2019 09:18:06 -0800
+Message-ID: <7830ad25a5cb7640e1da55c4278ce73c1ff3e0ad.camel@linux.intel.com>
+Subject: Re: Display got wrong rotation after hid_sensor_accel_3d is loaded
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     AceLan Kao <acelan.kao@canonical.com>,
+        Bastien Nocera <hadess@hadess.net>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
+Date:   Mon, 30 Dec 2019 09:18:06 -0800
+In-Reply-To: <CAFv23Qmj_ZqKs9_tw1Grzzj5unFBLfK0Scy396vcHCEB+fdLOA@mail.gmail.com>
+References: <CAFv23QmiDdhe+xJw2y7CXiWq4-GK1S-1bcKxEpNhNJu3ZtzA_w@mail.gmail.com>
+         <9baeb165eddb4872fb701ff81f11692b7e153bf6.camel@hadess.net>
+         <CAFv23Qmj_ZqKs9_tw1Grzzj5unFBLfK0Scy396vcHCEB+fdLOA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-3.fc28) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 27 Dec 2019 11:22:54 +0100
-Guido G=C3=BCnther <agx@sigxcpu.org> wrote:
+Hi Kao,
 
-> According to the data sheet the ambient sensor's scale is 0.12 lux/step
-> (not 0.024 lux/step as used by vcnl4200) when the integration time is
-> 80ms. The integration time is currently hardcoded in the driver to that
-> value.
->=20
-> See p. 8 in https://www.vishay.com/docs/84307/designingvcnl4040.pdf
->=20
-> Fixes: 5a441aade5b3 ("light: vcnl4000 add support for the VCNL4040 proxim=
-ity and light sensor")
-> Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org>
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Applied to the fixes-togreg branch of iio.git.
+Is this device sold with Windows?
+Can you send full report descriptor (You can get from
+/sys/kernel/debug/hid)?
 
 Thanks,
+Srinivas
 
-Jonathan
-
-> ---
->  drivers/iio/light/vcnl4000.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> index 16dacea9eadf..b0e241aaefb4 100644
-> --- a/drivers/iio/light/vcnl4000.c
-> +++ b/drivers/iio/light/vcnl4000.c
-> @@ -163,7 +163,6 @@ static int vcnl4200_init(struct vcnl4000_data *data)
->  	if (ret < 0)
->  		return ret;
-> =20
-> -	data->al_scale =3D 24000;
->  	data->vcnl4200_al.reg =3D VCNL4200_AL_DATA;
->  	data->vcnl4200_ps.reg =3D VCNL4200_PS_DATA;
->  	switch (id) {
-> @@ -172,11 +171,13 @@ static int vcnl4200_init(struct vcnl4000_data *data)
->  		/* show 54ms in total. */
->  		data->vcnl4200_al.sampling_rate =3D ktime_set(0, 54000 * 1000);
->  		data->vcnl4200_ps.sampling_rate =3D ktime_set(0, 4200 * 1000);
-> +		data->al_scale =3D 24000;
->  		break;
->  	case VCNL4040_PROD_ID:
->  		/* Integration time is 80ms, add 10ms. */
->  		data->vcnl4200_al.sampling_rate =3D ktime_set(0, 100000 * 1000);
->  		data->vcnl4200_ps.sampling_rate =3D ktime_set(0, 100000 * 1000);
-> +		data->al_scale =3D 120000;
->  		break;
->  	}
->  	data->vcnl4200_al.last_measurement =3D ktime_set(0, 0);
+On Fri, 2019-12-27 at 10:30 +0800, AceLan Kao wrote:
+> Hi Bastien,
+> 
+> Thanks for your suggestion.
+> I just tried to add the following line into
+> /lib/udev/hwdb.d/60-sensor.hwdb and got the correct screen rotation.
+> But the cursor is still un-rotated, the cursor is drawn upside down,
+> and its coordinates are inverted.
+> 
+> #########################################
+> # STMicro
+> #########################################
+> sensor:modalias:platform:platform:HID-SENSOR-200073
+>  ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, -1, 0; 0, 0, 1
+> 
+> It looks like we should introduce a quirk into hid_sensor_accel_3d
+> driver.
+> There are 3 different scale variables in hid_sensor_accel_3d, but I
+> don't see any of them would work the way I want.
+> Do you mean to introduce new scale variables?
+> 
+>    drivers/iio/accel/hid-sensor-accel-3d.c:34:     int
+> scale_pre_decml;
+>    drivers/iio/accel/hid-sensor-accel-3d.c:35:     int
+> scale_post_decml;
+>    drivers/iio/accel/hid-sensor-accel-3d.c:36:     int
+> scale_precision;
+> 
+> Bastien Nocera <hadess@hadess.net> 於 2019年12月26日 週四 下午11:03寫道：
+> > 
+> > On Thu, 2019-12-26 at 17:22 +0800, AceLan Kao wrote:
+> > > Hi all,
+> > > 
+> > > I'm working on a new platform which comes with an accelerator
+> > > meter.
+> > > It's a STMicroelectronics LSM6DS3US accelerator meter, it doesn't
+> > > use
+> > > st_sensors driver, but hid_sensor_accel_3d.
+> > > After hid_sensor_accel_3d is loaded, the display becomes upside
+> > > down,
+> > > so I tried to add some code to make it become normal.(ACCEL_X
+> > > should
+> > > have the same modification)
+> > > 
+> > > I don't know how to fix this in a correct way, please give me
+> > > some
+> > > hints.
+> > 
+> > This needs to be done as a quirk, either by applying a quirk for
+> > the
+> > HID descriptors (which should have a definition of the scale, which
+> > would be negative for this device), or in user-space in systemd's
+> > hwdb
+> > database, which your user-space consumers need to take care of:
+> > 
+https://github.com/systemd/systemd/blob/master/hwdb.d/60-sensor.hwdb
+> > 
+> > Cheers
+> > 
 

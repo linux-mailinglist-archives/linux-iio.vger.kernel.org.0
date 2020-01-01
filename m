@@ -2,564 +2,403 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 984E212D72D
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Dec 2019 09:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E8B012E090
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jan 2020 22:32:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726388AbfLaI6G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Dec 2019 03:58:06 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:42088 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725770AbfLaI6G (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Dec 2019 03:58:06 -0500
-Received: by mail-pf1-f195.google.com with SMTP id 4so19493400pfz.9;
-        Tue, 31 Dec 2019 00:58:05 -0800 (PST)
+        id S1727304AbgAAVcs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jan 2020 16:32:48 -0500
+Received: from mail-eopbgr770088.outbound.protection.outlook.com ([40.107.77.88]:20804
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727170AbgAAVcs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 1 Jan 2020 16:32:48 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ekk/GAKu5lihzWk2Wai1Hn8bNc24q8WNKlw+DE3h0gooGNdvChG9AL1Qtk1imZ+CmjTmfHXBlrTlJHjCh2KDGzcrcR+rq44LtKz/03IyFvFs00x7JL7CpZwkXakj7w+d3iKwb4qCYSAmHlWD3nM9LhUOEEeaZki/DVrYhZox1rlUjcJXJy7q6ihXA1kmwMoh5pRzdfbzZzS+Af8NjuwyAMb/XkXSFF8HanFGlyEkotzW04B6PPlWTNXgY+BCjmbiNBCPLu/kNNaeCkW33W4NgXLYEBweZcWX9ZnfxFr2RUoUQgRKv2YNQtIwTJzuiC/PCNJzrZRl0Ikfj2zqom/5wQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H5mKFqO+svw3Vye0B9o2M3vvhXm6Um4Hi+DykCNklbk=;
+ b=W+6ZCFrkYMnkiT8aAx095fDetAIoHwd6//3daupSDotgBwEMvHRWtaXwvIbxjU/t0k1KYK6C5cD2/f4j3sZAR5/2JC/IqiM2S2him9qBFQL9gXaWEYf5G+7hoVKatDHF/uTQEZt/iFbJKY280Olzj8yKJzbPHQv/2zdAAvaKPKy/HoEkMbhpJizw6VdcRkfY4qTDBu9LEKDbYosaDXxLklmaUbEkpLU1J5qSH7gxXTq8QJ1MqvK49WwsfLvXyxBae2ULOZlyDr3dsvuLhz5Ke9kmJZ9EDjJTRuV4H4IdqJr+AlKzPT89Ki5yDHJMuxsdccPvN/wqgujZclsnfYjslA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=labundy.com; dmarc=pass action=none header.from=labundy.com;
+ dkim=pass header.d=labundy.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=ZTbILHgjavD8pUQVlTkHTCm6k/5J8XxDjruksnhX6fc=;
-        b=CP/jy2f+cM56C7UbqfRK/2wtYOg5IEjJGY5dBfcHwlI7jeNpyydAESg1XlnW7/v0oV
-         RczuUStwOmSgrY6zS7cw2JpJQkJXq1ltUq11eBruB3YXon2ItzsYJr4nECYmOEir7hgj
-         3ZWfvgtBh+Txkv9J4VxoSULYETV53CtOSN2tmf/OcbgrUsNEYps8NdXM7ibSDZ9B9AGv
-         /a7dBY+7NhYvXlKCEMOirQ8tYJblQ1vNalomPUyD4PGE1oXTMPdmoWP+gwH1wJkjjDx/
-         zgv+enR8Wy5LnChCA0gW62IyzEUj5uVTLCilKabR7232SIF4AGc7bJjHcsvvOf5rsSV7
-         TTzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=ZTbILHgjavD8pUQVlTkHTCm6k/5J8XxDjruksnhX6fc=;
-        b=PAO7Jr4baaRpIraPf2OHTESSqLUpCFT3edzou662YXNpcnDbX+8KRds7wAHvGdBiqQ
-         zcLDpXPF76eX9J37D2TIXlzKrw3t9ut7laIX63TFPnuflw3JhQmMFpUcfFexEQ7mX9GS
-         nh1IvQDrqFBQxynmtQ94YpZasiRiFBUyt2MmLFdOw8w0l5ZLPdpNDWZ/xTTlsDYWE25P
-         yFYNQY7RogPmBud9rUnHEyfqGDZSaW0cwBmgYWxlo5vTbk7U5cIds+hog2A/V1eLGw4H
-         hOQXUHoZUy33C8OtA8eW3iETsVSLIdUQdZSmMokD4YkeHtFRdYgqEPjvIR6C/LWadhPv
-         1cSg==
-X-Gm-Message-State: APjAAAWu5Kjpxlbm8PsEoVGQWEVjRJK1JdKWVCZEmWCTLzBuS7EVQvCd
-        lMRo1Xh2AUflCeYdw7Thg/Ah87ua
-X-Google-Smtp-Source: APXvYqxTXDW+ncszbLBICFTsb1alLkn5gAdkMafqnX8QwRaT5rVvmlkEpP7p5HbGcgkJq/L8y4zUow==
-X-Received: by 2002:a63:6e0e:: with SMTP id j14mr75608458pgc.361.1577782684680;
-        Tue, 31 Dec 2019 00:58:04 -0800 (PST)
-Received: from [0.0.0.0] ([103.103.128.212])
-        by smtp.gmail.com with ESMTPSA id n26sm53678434pgd.46.2019.12.31.00.58.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Dec 2019 00:58:03 -0800 (PST)
-Subject: Re: [PATCH v2 1/2] iio: chemical: add support for Dynament Premier
- series single gas sensor
-To:     Matt Ranostay <matt.ranostay@konsulko.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Tomasz Duszynski <tduszyns@gmail.com>, mike.looijmans@topic.nl,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <3a17c9e1-f916-0cde-3296-70066dccb2b3@gmail.com>
- <FA803BE2-2715-4F63-8F5B-3A57F700AB1B@konsulko.com>
- <20191223160712.1e1cfcde@archlinux>
- <CAJCx=gk6s=VN9V_BDAr-SXPz1ZU0N6j4KUZbUnZ=gdKqOddupA@mail.gmail.com>
-From:   YuDong Zhang <mtwget@gmail.com>
-Message-ID: <22a26e68-9d0c-60d3-47da-5124402f5f41@gmail.com>
-Date:   Tue, 31 Dec 2019 16:57:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+ d=NETORG5796793.onmicrosoft.com; s=selector1-NETORG5796793-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H5mKFqO+svw3Vye0B9o2M3vvhXm6Um4Hi+DykCNklbk=;
+ b=JQqkZC+hVdmF/pjvyp/Q3sF7YTFr9OP0mYH6r0NKcP+hEEgpD67SszNS6lSo3JgaQlwEIQQrsYNz47TsT4D+UDAoNo3xQOi9BvcTjSbothakrk3er69T9SKBJI84XsGEEDyaYuHr3WjS+Zk7hFmuEdwgOPkd/Y+VOKCo8InYPkI=
+Received: from SN6PR08MB5053.namprd08.prod.outlook.com (52.135.107.153) by
+ SN6PR08MB4062.namprd08.prod.outlook.com (52.135.64.14) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2581.11; Wed, 1 Jan 2020 21:32:39 +0000
+Received: from SN6PR08MB5053.namprd08.prod.outlook.com
+ ([fe80::7c80:2b62:5d9a:2139]) by SN6PR08MB5053.namprd08.prod.outlook.com
+ ([fe80::7c80:2b62:5d9a:2139%4]) with mapi id 15.20.2581.007; Wed, 1 Jan 2020
+ 21:32:38 +0000
+Received: from labundy.com (136.49.227.119) by SN4PR0501CA0150.namprd05.prod.outlook.com (2603:10b6:803:2c::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2602.7 via Frontend Transport; Wed, 1 Jan 2020 21:32:37 +0000
+From:   Jeff LaBundy <jeff@labundy.com>
+To:     Rob Herring <robh@kernel.org>
+CC:     "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>
+Subject: Re: [PATCH v2 1/7] dt-bindings: Add bindings for Azoteq
+ IQS620A/621/622/624/625
+Thread-Topic: [PATCH v2 1/7] dt-bindings: Add bindings for Azoteq
+ IQS620A/621/622/624/625
+Thread-Index: AQHVrij7SDxpuO5/BEuAwvUFNi/XqqfAoDMAgAHXkwCAB3WsgIAMjCoA
+Date:   Wed, 1 Jan 2020 21:32:38 +0000
+Message-ID: <20200101213228.GA14339@labundy.com>
+References: <1575851866-18919-1-git-send-email-jeff@labundy.com>
+ <1575851866-18919-2-git-send-email-jeff@labundy.com>
+ <20191218235252.GA19438@bogus> <20191220040042.GB2658@labundy.com>
+ <CAL_Jsq+eXQKSExm+HU+3iY=zryj-KgfNbJ7sGd=OWQbQ3sn-yg@mail.gmail.com>
+In-Reply-To: <CAL_Jsq+eXQKSExm+HU+3iY=zryj-KgfNbJ7sGd=OWQbQ3sn-yg@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: SN4PR0501CA0150.namprd05.prod.outlook.com
+ (2603:10b6:803:2c::28) To SN6PR08MB5053.namprd08.prod.outlook.com
+ (2603:10b6:805:78::25)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=jeff@labundy.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [136.49.227.119]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 8302e0b9-f9a5-4741-701a-08d78f021fd5
+x-ms-traffictypediagnostic: SN6PR08MB4062:
+x-microsoft-antispam-prvs: <SN6PR08MB40623A178DD95A1338A6C9C7D3210@SN6PR08MB4062.namprd08.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 02698DF457
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(366004)(346002)(39830400003)(376002)(34096005)(136003)(199004)(189003)(66946007)(316002)(54906003)(52116002)(66556008)(6916009)(8886007)(71200400001)(55016002)(64756008)(66446008)(7696005)(966005)(7416002)(508600001)(86362001)(53546011)(8936002)(2906002)(5660300002)(36756003)(81166006)(81156014)(8676002)(1076003)(26005)(4326008)(2616005)(16526019)(186003)(956004)(33656002)(66476007);DIR:OUT;SFP:1101;SCL:1;SRVR:SN6PR08MB4062;H:SN6PR08MB5053.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: labundy.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: jZ/Yydw3+43mZDbmFV8cyppYuG+9f8wgumMxj0pkx4dC3YEWDkpQXlw1bN0/U44TEGjXJekDCaIFWFGVwvKnk3Ee6q8l8GjIUM+wlREByb4m7wb4ehkU9ogirnp7ftZmeTae7Jh8PW1P/J7uTkxkSuRHejWqkL6BB9MN+geNu3hUzmbKDYJBPcyc2VQRKTcODbTPKOlBKamH55HfRaSGWb5K1Fpp4NMZVRoXAEdDGU1bzf4N+zpCNJOMWTlIoGa7udRcNXjhBa+xLmiN7pV2568tLCyS7FgRwEo6H3I7EIL+Iuo1iR4DXRIkvU+bgELrNX22jolNqlpNZcjwGuOQhrULGI5NSPFaZTxyIZJDS9TMKqBfTPJQLQZie4Uvj6/gERjb/B+Q/qAHsp3j1jNarMxTRh8/YCxmmDwSEY9BjnHKwYP+7ip8b1446kYHcR8KQxAjjjo7CMXStFU3H2TmRyvdREG8yWwW258VDVKPyTI=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <7A89DA2269B1C349B527022C2F02D6BB@namprd08.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <CAJCx=gk6s=VN9V_BDAr-SXPz1ZU0N6j4KUZbUnZ=gdKqOddupA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: labundy.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8302e0b9-f9a5-4741-701a-08d78f021fd5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jan 2020 21:32:38.6090
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 00b69d09-acab-4585-aca7-8fb7c6323e6f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 33gNM4JBxxZ/Dj2N8GaDywJ2zJ/voDaHR2OvU3Kslw6ty0fPjWXTE9q0PZJww3MkRABFJI8rEpdMp0LWl3cykQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4062
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Rob,
 
-在 2019/12/31 13:50, Matt Ranostay 写道:
-> On Tue, Dec 24, 2019 at 12:07 AM Jonathan Cameron <jic23@kernel.org> wrote:
->> On Tue, 17 Dec 2019 21:17:43 -0800
->> Matt Ranostay <matt.ranostay@konsulko.com> wrote:
->>
->>>> On Dec 17, 2019, at 17:52, ruantu <mtwget@gmail.com> wrote:
->>>>
->>>> ﻿On Tue, Dec 17, 2019 at 2:24 AM YuDong Zhang <mtwget@gmail.com> wrote:
->>>>>> Add support for Dynament Premier series single gas sensor.
->>>>>>
->>>>> Just looking the Dynament site and I assume this is for the OEM-1
->>>>> Development kit? If so you probably should
->>>>> note that in the documentation because the sensors themselves are
->>>>> likely to be used in other end products (and not
->>>>> always the dev kit)
->>>>>
->>>>> Also bit of silly question this is an UART device so why not do
->>>>> processing in userspace? :)
->>>>>
->>>>> - Matt
->>>> This is a driver implemented according to the <Dynamization Sensor
->>>> Communications protocol>. I think the protocol is standard. This is
->>>> the idea that emerged after the iio subsystem used serial_bus.
->>> Well egg on my face since only got recently back on this mailing
->>> list.... looks good over all but the floating point to fixed point
->>> stuff maybe has some comments. Also I am on holiday till the New Year
->>> but please CC on future changes!
->> The question about whether to allow serial bus drivers in IIO wasn't
->> entirely obvious so reasonable to raise it.  There is a long tradition
->> of doing serial bus drivers only in userspace.  However, there is
->> nothing fundamentally different about them from spi or i2c drivers.
->>
->> Sometimes we have the addition of interrupts or gpio signals (not
->> true for this one though!).
->>
->> Basically it's nicer to have all sensors use a common interface.
->> We could do that the next level up in a userspace library but I'm not
->> sure there is stronger reason to do that in this case than for simple i2c
->> / spi devices.
->>
->> So I saw no reason to block serdev devices in IIO.  Not many there
->> yet though!
-> Ah this could come in handy for the EZO line of Atlas Scientific
-> sensors which communicate over UART (well also i2c but it the same
-> command structure as the UART).
->
-> - Matt
-I need to reconsider this patch because Dynament's multiple gas sensors 
-use the same protocol.
->> Thanks,
->>
->> Jonathan
->>
->>
->>>>>> Signed-off-by: YuDong Zhang <mtwget@gmail.com>
->>>>>> ---
->>>>>>   MAINTAINERS                    |   5 +
->>>>>>   drivers/iio/chemical/Kconfig   |  10 +
->>>>>>   drivers/iio/chemical/Makefile  |   1 +
->>>>>>   drivers/iio/chemical/premier.c | 366 +++++++++++++++++++++++++++++++++
->>>>>>   4 files changed, 382 insertions(+)
->>>>>>   create mode 100644 drivers/iio/chemical/premier.c
->>>>>>
->>>>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>>>> index a049abccaa26..ae228ac7adc9 100644
->>>>>> --- a/MAINTAINERS
->>>>>> +++ b/MAINTAINERS
->>>>>> @@ -5792,6 +5792,11 @@ S:       Maintained
->>>>>>   F:     drivers/media/usb/dvb-usb-v2/dvb_usb*
->>>>>>   F:     drivers/media/usb/dvb-usb-v2/usb_urb.c
->>>>>>
->>>>>> +DYNAMENT PREMIER SERIES SINGLE GAS SENSOR DRIVER
->>>>>> +M:     YuDong Zhang <mtwget@gmail.com>
->>>>>> +S:     Maintained
->>>>>> +F:     drivers/iio/chemical/premier.c
->>>>>> +
->>>>>>   DYNAMIC DEBUG
->>>>>>   M:     Jason Baron <jbaron@akamai.com>
->>>>>>   S:     Maintained
->>>>>> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
->>>>>> index fa4586037bb8..93c0c108245b 100644
->>>>>> --- a/drivers/iio/chemical/Kconfig
->>>>>> +++ b/drivers/iio/chemical/Kconfig
->>>>>> @@ -62,6 +62,16 @@ config IAQCORE
->>>>>>            iAQ-Core Continuous/Pulsed VOC (Volatile Organic Compounds)
->>>>>>            sensors
->>>>>>
->>>>>> +config PREMIER
->>>>>> +       tristate "Dynament Premier series sensor"
->>>>>> +       depends on SERIAL_DEV_BUS
->>>>>> +       help
->>>>>> +         Say Y here to build support for the Dynament Premier
->>>>>> +         series sensor.
->>>>>> +
->>>>>> +         To compile this driver as a module, choose M here: the module will
->>>>>> +         be called premier.
->>>>>> +
->>>>>>   config PMS7003
->>>>>>          tristate "Plantower PMS7003 particulate matter sensor"
->>>>>>          depends on SERIAL_DEV_BUS
->>>>>> diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
->>>>>> index f97270bc4034..c8e779d7cf4a 100644
->>>>>> --- a/drivers/iio/chemical/Makefile
->>>>>> +++ b/drivers/iio/chemical/Makefile
->>>>>> @@ -10,6 +10,7 @@ obj-$(CONFIG_BME680_I2C) += bme680_i2c.o
->>>>>>   obj-$(CONFIG_BME680_SPI) += bme680_spi.o
->>>>>>   obj-$(CONFIG_CCS811)           += ccs811.o
->>>>>>   obj-$(CONFIG_IAQCORE)          += ams-iaq-core.o
->>>>>> +obj-$(CONFIG_PREMIER)          += premier.o
->>>>>>   obj-$(CONFIG_PMS7003) += pms7003.o
->>>>>>   obj-$(CONFIG_SENSIRION_SGP30)  += sgp30.o
->>>>>>   obj-$(CONFIG_SPS30) += sps30.o
->>>>>> diff --git a/drivers/iio/chemical/premier.c b/drivers/iio/chemical/premier.c
->>>>>> new file mode 100644
->>>>>> index 000000000000..a226dd9d78cb
->>>>>> --- /dev/null
->>>>>> +++ b/drivers/iio/chemical/premier.c
->>>>>> @@ -0,0 +1,366 @@
->>>>>> +// SPDX-License-Identifier: GPL-2.0
->>>>>> +/*
->>>>>> + * Dynament Premier series single gas sensor driver
->>>>>> + *
->>>>>> + * Copyright (c) YuDong Zhang <mtwget@gmail.com>
->>>>>> + */
->>>>>> +
->>>>>> +#include <asm/unaligned.h>
->>>>>> +#include <linux/completion.h>
->>>>>> +#include <linux/device.h>
->>>>>> +#include <linux/errno.h>
->>>>>> +#include <linux/iio/iio.h>
->>>>>> +#include <linux/jiffies.h>
->>>>>> +#include <linux/kernel.h>
->>>>>> +#include <linux/mod_devicetable.h>
->>>>>> +#include <linux/module.h>
->>>>>> +#include <linux/mutex.h>
->>>>>> +#include <linux/of.h>
->>>>>> +#include <linux/regulator/consumer.h>
->>>>>> +#include <linux/serdev.h>
->>>>>> +
->>>>>> +#define PREMIER_DRIVER_NAME "dynament-premier"
->>>>>> +
->>>>>> +#define PREMIER_DLE (0x10)
->>>>>> +#define PREMIER_CMD_RD (0x13)
->>>>>> +#define PREMIER_CMD_NAK (0x19)
->>>>>> +#define PREMIER_CMD_DAT (0x1a)
->>>>>> +#define PREMIER_EOF (0x1f)
->>>>>> +
->>>>>> +#define PREMIER_TIMEOUT msecs_to_jiffies(6000)
->>>>>> +
->>>>>> +/*
->>>>>> + * commands have following format:
->>>>>> + *
->>>>>> + * +-----+-----+---------+-----+-----+-----------+-----------+
->>>>>> + * | DLE | CMD | PAYLOAD | DLE | EOF | CKSUM MSB | CKSUM LSB |
->>>>>> + * +-----+-----+---------+-----+-----+-----------+-----------+
->>>>>> + */
->>>>>> +static const u8 premier_cmd_read_live_data_simple[] = { 0x10, 0x13, 0x06, 0x10,
->>>>>> +                                                       0x1F, 0x00, 0x58 };
->>>>>> +
->>>>>> +struct premier_frame {
->>>>>> +       u8 state;
->>>>>> +       u8 is_dat;
->>>>>> +       u8 is_nak;
->>>>>> +       u8 data_len;
->>>>>> +       u8 vi, si, gi, gj;
->>>>>> +       u8 gas[4];
->>>>>> +       u8 byte_stuffing;
->>>>>> +       u8 checksum_received[2];
->>>>>> +       u16 checksum_calculated;
->>>>>> +};
->>>>>> +
->>>>>> +struct premier_data {
->>>>>> +       struct serdev_device *serdev;
->>>>>> +       struct premier_frame frame;
->>>>>> +       struct completion frame_ready;
->>>>>> +       struct mutex lock; /* must be held whenever state gets touched */
->>>>>> +       struct regulator *vcc;
->>>>>> +};
->>>>>> +
->>>>>> +static int premier_do_cmd_read_live_data(struct premier_data *state)
->>>>>> +{
->>>>>> +       int ret;
->>>>>> +
->>>>>> +       ret = serdev_device_write(state->serdev,
->>>>>> +                                 premier_cmd_read_live_data_simple,
->>>>>> +                                 sizeof(premier_cmd_read_live_data_simple),
->>>>>> +                                 PREMIER_TIMEOUT);
->>>>>> +       if (ret < sizeof(premier_cmd_read_live_data_simple))
->>>>>> +               return ret < 0 ? ret : -EIO;
->>>>>> +
->>>>>> +       ret = wait_for_completion_interruptible_timeout(&state->frame_ready,
->>>>>> +                                                       PREMIER_TIMEOUT);
->>>>>> +
->>>>>> +       if (!ret)
->>>>>> +               ret = -ETIMEDOUT;
->>>>>> +
->>>>>> +       return ret < 0 ? ret : 0;
->>>>>> +}
->>>>>> +
->>>>>> +static s32 premier_float_to_int_clamped(const u8 *fp)
->>>>>> +{
->>>>>> +       int val = get_unaligned_le32(fp);
->>>>>> +       int mantissa = val & GENMASK(22, 0);
->>>>>> +       /* this is fine since passed float is always non-negative */
->>>>>> +       int exp = val >> 23;
->>>>>> +       int fraction, shift;
->>>>>> +
->>>>>> +       /* special case 0 */
->>>>>> +       if (!exp && !mantissa)
->>>>>> +               return 0;
->>>>>> +
->>>>>> +       exp -= 127;
->>>>>> +       if (exp < 0) {
->>>>>> +               /* return values ranging from 1 to 99 */
->>>>>> +               return ((((1 << 23) + mantissa) * 100) >> 23) >> (-exp);
->>>>>> +       }
->>>>>> +
->>>>>> +       /* return values ranging from 100 to int_max */
->>>>>> +       shift = 23 - exp;
->>>>>> +       val = (1 << exp) + (mantissa >> shift);
->>>>>> +
->>>>>> +       fraction = mantissa & GENMASK(shift - 1, 0);
->>>>>> +
->>>>>> +       return val * 100 + ((fraction * 100) >> shift);
->>>>>> +}
->>>>>> +
->>>>>> +static int premier_read_raw(struct iio_dev *indio_dev,
->>>>>> +                           struct iio_chan_spec const *chan, int *val,
->>>>>> +                           int *val2, long mask)
->>>>>> +{
->>>>>> +       struct premier_data *state = iio_priv(indio_dev);
->>>>>> +       struct premier_frame *frame = &state->frame;
->>>>>> +       int ret;
->>>>>> +       s32 val_tmp;
->>>>>> +
->>>>>> +       switch (mask) {
->>>>>> +       case IIO_CHAN_INFO_PROCESSED:
->>>>>> +
->>>>>> +               mutex_lock(&state->lock);
->>>>>> +               ret = premier_do_cmd_read_live_data(state);
->>>>>> +               if (ret) {
->>>>>> +                       mutex_unlock(&state->lock);
->>>>>> +                       return ret;
->>>>>> +               }
->>>>>> +               val_tmp = premier_float_to_int_clamped(frame->gas);
->>>>>> +               mutex_unlock(&state->lock);
->>>>>> +
->>>>>> +               *val = val_tmp / 100;
->>>>>> +               *val2 = (val_tmp % 100) * 10000;
->>>>>> +               return IIO_VAL_INT_PLUS_MICRO;
->>>>>> +       default:
->>>>>> +               return -EINVAL;
->>>>>> +       }
->>>>>> +
->>>>>> +       return -EINVAL;
->>>>>> +}
->>>>>> +
->>>>>> +static const struct iio_info premier_info = {
->>>>>> +       .read_raw = premier_read_raw,
->>>>>> +};
->>>>>> +
->>>>>> +static const struct iio_chan_spec premier_channels[] = {
->>>>>> +       {
->>>>>> +               .type = IIO_MASSCONCENTRATION,
->>>>>> +               .channel = 1,
->>>>>> +               .channel2 = IIO_MOD_CO2,
->>>>>> +               .scan_index = -1,
->>>>>> +               .info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
->>>>>> +               .modified = 1,
->>>>>> +       },
->>>>>> +       IIO_CHAN_SOFT_TIMESTAMP(0),
->>>>>> +};
->>>>>> +
->>>>>> +static int premier_receive_buf(struct serdev_device *serdev,
->>>>>> +                              const unsigned char *buf, size_t size)
->>>>>> +{
->>>>>> +       struct iio_dev *indio_dev = serdev_device_get_drvdata(serdev);
->>>>>> +       struct premier_data *state = iio_priv(indio_dev);
->>>>>> +       struct premier_frame *frame = &state->frame;
->>>>>> +       int i;
->>>>>> +
->>>>>> +       for (i = 0; i < size; i++) {
->>>>>> +               if (frame->state > 0 && frame->state <= 7)
->>>>>> +                       frame->checksum_calculated += buf[i];
->>>>>> +
->>>>>> +               switch (frame->state) {
->>>>>> +               case 0:
->>>>>> +                       if (buf[i] == PREMIER_DLE) {
->>>>>> +                               frame->is_dat = 0;
->>>>>> +                               frame->is_nak = 0;
->>>>>> +                               frame->checksum_calculated = buf[i];
->>>>>> +                               /* We don't initialize checksum_calculated in
->>>>>> +                                * the last state in case we didn't go
->>>>>> +                                * there because of noise
->>>>>> +                                */
->>>>>> +                               frame->state++;
->>>>>> +                       }
->>>>>> +                       break;
->>>>>> +               case 1:
->>>>>> +                       /*
->>>>>> +                        * If noise corrupts a byte in the FSM sequence,
->>>>>> +                        * we loop between state 0 and 1,
->>>>>> +                        * until we have a valid sequence of DLE&DAT or DLE&NAK
->>>>>> +                        */
->>>>>> +                       if (buf[i] == PREMIER_CMD_DAT) {
->>>>>> +                               frame->is_dat = 1;
->>>>>> +                               frame->state++;
->>>>>> +                       } else if (buf[i] == PREMIER_CMD_NAK) {
->>>>>> +                               frame->is_nak = 1;
->>>>>> +                               frame->state++;
->>>>>> +                       } else
->>>>>> +                               frame->state = 0;
->>>>>> +                       break;
->>>>>> +               case 2:
->>>>>> +                       if (frame->is_nak)
->>>>>> +                               frame->state = 0;
->>>>>> +                       else if (frame->is_dat) {
->>>>>> +                               frame->data_len = buf[i] - 4;
->>>>>> +                               /* remove version and status bytes from count */
->>>>>> +                               if (frame->data_len < 4)
->>>>>> +                                       frame->state = 0;
->>>>>> +                               /* we check for the upper limit in state 5 */
->>>>>> +                               else
->>>>>> +                                       frame->state++;
->>>>>> +                       } else
->>>>>> +                               frame->state = 0;
->>>>>> +                       break;
->>>>>> +               case 3:
->>>>>> +                       /* Just do nothing for 2 rounds to bypass
->>>>>> +                        * the 2 version bytes
->>>>>> +                        */
->>>>>> +                       if (frame->vi < 2 - 1)
->>>>>> +                               frame->vi++;
->>>>>> +                       else {
->>>>>> +                               frame->vi = 0;
->>>>>> +                               frame->state++;
->>>>>> +                       }
->>>>>> +                       break;
->>>>>> +               case 4:
->>>>>> +                       if (frame->si < 2 - 1)
->>>>>> +                               frame->si++;
->>>>>> +                       else {
->>>>>> +                               frame->si = 0;
->>>>>> +                               frame->state++;
->>>>>> +                       }
->>>>>> +                       break;
->>>>>> +               case 5:
->>>>>> +                       if (frame->gi < frame->data_len - 1) {
->>>>>> +                               if (buf[i] != PREMIER_DLE ||
->>>>>> +                                   frame->byte_stuffing) {
->>>>>> +                                       frame->gas[frame->gj] = buf[i];
->>>>>> +                                       frame->byte_stuffing = 0;
->>>>>> +                                       frame->gj++;
->>>>>> +                                       if (frame->gj >= 4)
->>>>>> +                                               frame->state = 0;
->>>>>> +                                       /* Don't violate array limits
->>>>>> +                                        * if data_len corrupt
->>>>>> +                                        */
->>>>>> +                               } else
->>>>>> +                                       frame->byte_stuffing = 1;
->>>>>> +                               frame->gi++;
->>>>>> +                       } else {
->>>>>> +                               frame->gas[frame->gj] = buf[i];
->>>>>> +                               frame->byte_stuffing = 0;
->>>>>> +                               frame->gi = 0;
->>>>>> +                               frame->gj = 0;
->>>>>> +                               frame->state++;
->>>>>> +                       }
->>>>>> +                       break;
->>>>>> +               case 6:
->>>>>> +                       if (buf[i] == PREMIER_DLE)
->>>>>> +                               frame->state++;
->>>>>> +                       else
->>>>>> +                               frame->state = 0;
->>>>>> +                       break;
->>>>>> +               case 7:
->>>>>> +                       if (buf[i] == PREMIER_EOF)
->>>>>> +                               frame->state++;
->>>>>> +                       else
->>>>>> +                               frame->state = 0;
->>>>>> +                       break;
->>>>>> +               case 8:
->>>>>> +                       frame->checksum_received[1] = buf[i];
->>>>>> +
->>>>>> +                       frame->state++;
->>>>>> +                       break;
->>>>>> +               case 9:
->>>>>> +                       frame->checksum_received[0] = buf[i];
->>>>>> +
->>>>>> +                       if (frame->checksum_calculated ==
->>>>>> +                           get_unaligned_le16(frame->checksum_received))
->>>>>> +                               complete(&state->frame_ready);
->>>>>> +
->>>>>> +                       frame->state = 0;
->>>>>> +                       break;
->>>>>> +               }
->>>>>> +       }
->>>>>> +
->>>>>> +       return size;
->>>>>> +}
->>>>>> +
->>>>>> +static const struct serdev_device_ops premier_serdev_ops = {
->>>>>> +       .receive_buf = premier_receive_buf,
->>>>>> +       .write_wakeup = serdev_device_write_wakeup,
->>>>>> +};
->>>>>> +
->>>>>> +static int premier_probe(struct serdev_device *serdev)
->>>>>> +{
->>>>>> +       struct premier_data *state;
->>>>>> +       struct iio_dev *indio_dev;
->>>>>> +       int ret;
->>>>>> +
->>>>>> +       indio_dev = devm_iio_device_alloc(&serdev->dev, sizeof(*state));
->>>>>> +       if (!indio_dev)
->>>>>> +               return -ENOMEM;
->>>>>> +
->>>>>> +       state = iio_priv(indio_dev);
->>>>>> +       serdev_device_set_drvdata(serdev, indio_dev);
->>>>>> +       state->serdev = serdev;
->>>>>> +       indio_dev->dev.parent = &serdev->dev;
->>>>>> +       indio_dev->info = &premier_info;
->>>>>> +       indio_dev->name = PREMIER_DRIVER_NAME;
->>>>>> +       indio_dev->channels = premier_channels;
->>>>>> +       indio_dev->num_channels = ARRAY_SIZE(premier_channels);
->>>>>> +       indio_dev->modes = INDIO_DIRECT_MODE;
->>>>>> +
->>>>>> +       mutex_init(&state->lock);
->>>>>> +       init_completion(&state->frame_ready);
->>>>>> +
->>>>>> +       state->vcc = devm_regulator_get(&serdev->dev, "vcc");
->>>>>> +       if (IS_ERR(state->vcc)) {
->>>>>> +               ret = PTR_ERR(state->vcc);
->>>>>> +               return ret;
->>>>>> +       }
->>>>>> +
->>>>>> +       serdev_device_set_client_ops(serdev, &premier_serdev_ops);
->>>>>> +       ret = devm_serdev_device_open(&serdev->dev, serdev);
->>>>>> +       if (ret)
->>>>>> +               return ret;
->>>>>> +
->>>>>> +       serdev_device_set_baudrate(serdev, 9600);
->>>>>> +       serdev_device_set_flow_control(serdev, false);
->>>>>> +
->>>>>> +       ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
->>>>>> +       if (ret)
->>>>>> +               return ret;
->>>>>> +
->>>>>> +       if (state->vcc) {
->>>>>> +               ret = regulator_enable(state->vcc);
->>>>>> +               if (ret)
->>>>>> +                       return ret;
->>>>>> +       }
->>>>>> +
->>>>>> +       return devm_iio_device_register(&serdev->dev, indio_dev);
->>>>>> +}
->>>>>> +
->>>>>> +static void premier_remove(struct serdev_device *serdev)
->>>>>> +{
->>>>>> +       struct iio_dev *indio_dev = serdev_device_get_drvdata(serdev);
->>>>>> +       struct premier_data *state = iio_priv(indio_dev);
->>>>>> +
->>>>>> +       if (state->vcc)
->>>>>> +               regulator_disable(state->vcc);
->>>>>> +}
->>>>>> +
->>>>>> +static const struct of_device_id premier_of_match[] = {
->>>>>> +       { .compatible = "dynament,premier" },
->>>>>> +       {}
->>>>>> +};
->>>>>> +MODULE_DEVICE_TABLE(of, premier_of_match);
->>>>>> +
->>>>>> +static struct serdev_device_driver premier_driver = {
->>>>>> +       .driver = {
->>>>>> +               .name = PREMIER_DRIVER_NAME,
->>>>>> +               .of_match_table = premier_of_match,
->>>>>> +       },
->>>>>> +       .probe = premier_probe,
->>>>>> +       .remove = premier_remove,
->>>>>> +};
->>>>>> +module_serdev_device_driver(premier_driver);
->>>>>> +
->>>>>> +MODULE_AUTHOR("YuDong Zhang <mtwget@gmail.com>");
->>>>>> +MODULE_DESCRIPTION("Dynament Premier series single gas sensor driver");
->>>>>> +MODULE_LICENSE("GPL v2");
->>>>>> --
->>>>>> 2.24.1
->>>>>>
+On Tue, Dec 24, 2019 at 02:55:41PM -0700, Rob Herring wrote:
+> On Thu, Dec 19, 2019 at 9:00 PM Jeff LaBundy <jeff@labundy.com> wrote:
+> >
+> > Hi Rob,
+> >
+> > Thank you for your prompt review and your kind words. A couple of quest=
+ions
+> > and comments for you below.
+> >
+> > On Wed, Dec 18, 2019 at 05:52:52PM -0600, Rob Herring wrote:
+> > > On Mon, Dec 09, 2019 at 12:38:32AM +0000, Jeff LaBundy wrote:
+> > > > This patch adds device tree bindings for the Azoteq IQS620A, IQS621=
+,
+> > > > IQS622, IQS624 and IQS625 multi-function sensors.
+> > > >
+> > > > A total of three bindings are presented (one MFD and two child node=
+s);
+> > > > they are submitted as a single patch because the child node binding=
+s
+> > > > have no meaning in the absence of the MFD binding.
+> > > >
+> > > > Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+> > > > ---
+> > > > Changes in v2:
+> > > >   - Removed "prox" child node and moved "keys" and "pwm" child node=
+s to their
+> > > >     own bindings
+> > > >   - Replaced linux,fw-file property with more common firmware-name =
+property
+> > > >   - Converted all bindings to YAML
+> > >
+> > > Good job for first go.
+> > >
+> > > >
+> > > >  .../devicetree/bindings/input/iqs62x-keys.yaml     | 126 +++++++++=
+++++++
+> > > >  Documentation/devicetree/bindings/mfd/iqs62x.yaml  | 177 +++++++++=
+++++++++++++
+> > > >  .../devicetree/bindings/pwm/iqs620a-pwm.yaml       |  30 ++++
+> > > >  3 files changed, 333 insertions(+)
+> > > >  create mode 100644 Documentation/devicetree/bindings/input/iqs62x-=
+keys.yaml
+> > > >  create mode 100644 Documentation/devicetree/bindings/mfd/iqs62x.ya=
+ml
+> > > >  create mode 100644 Documentation/devicetree/bindings/pwm/iqs620a-p=
+wm.yaml
+> > >
+> > > A couple of minor things below. With those fixed:
+> > >
+> > > Reviewed-by: Rob Herring <robh@kernel.org>
+> > >
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/input/iqs62x-keys.ya=
+ml b/Documentation/devicetree/bindings/input/iqs62x-keys.yaml
+> > > > new file mode 100644
+> > > > index 0000000..e9b54e0
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/input/iqs62x-keys.yaml
+> > > > @@ -0,0 +1,126 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/input/iqs62x-keys.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Azoteq IQS620A/621/622/624/625 Keys and Switches
+> > > > +
+> > > > +maintainers:
+> > > > +  - Jeff LaBundy <jeff@labundy.com>
+> > > > +
+> > > > +description: |
+> > > > +  The Azoteq IQS620A, IQS621, IQS622, IQS624 and IQS625 multi-func=
+tion sensors
+> > > > +  feature a variety of self-capacitive, mutual-inductive and Hall-=
+effect sens-
+> > > > +  ing capabilities that can facilitate a variety of contactless ke=
+y and switch
+> > > > +  applications.
+> > > > +
+> > > > +  These functions are collectively represented by a "keys" child n=
+ode from the
+> > > > +  parent MFD driver. See Documentation/devicetree/bindings/mfd/iqs=
+62x.yaml for
+> > > > +  further details and examples. Sensor hardware configuration (sel=
+f-capacitive
+> > > > +  vs. mutual-inductive, etc.) is selected based on the device's fi=
+rmware.
+> > > > +
+> > > > +properties:
+> > > > +  compatible:
+> > > > +    enum:
+> > > > +      - azoteq,iqs620a-keys
+> > > > +      - azoteq,iqs621-keys
+> > > > +      - azoteq,iqs622-keys
+> > > > +      - azoteq,iqs624-keys
+> > > > +      - azoteq,iqs625-keys
+> > > > +
+> > > > +  linux,keycodes:
+> > > > +    allOf:
+> > > > +      - $ref: /schemas/types.yaml#/definitions/uint32-array
+> > > > +      - minItems: 1
+> > > > +        maxItems: 16
+> > > > +    description: |
+> > > > +      Specifies the numeric keycodes associated with each availabl=
+e touch or
+> > > > +      proximity event according to the following table. An 'x' ind=
+icates the
+> > > > +      event is supported for a given device. Specify 0 for unused =
+events.
+> > > > +
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | #  | Event              | IQS620A | IQS621 | IQS622 | IQS6=
+24 | IQS625 |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 0  | CH0 Touch          |    x    |    x   |    x   |    x=
+   |    x   |
+> > > > +      |    | Antenna 1 Touch*   |    x    |        |        |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 1  | CH0 Proximity      |    x    |    x   |    x   |    x=
+   |    x   |
+> > > > +      |    | Antenna 1 Prox.*   |    x    |        |        |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 2  | CH1 Touch          |    x    |    x   |    x   |    x=
+   |    x   |
+> > > > +      |    | Ant. 1 Deep Touch* |    x    |        |        |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 3  | CH1 Proximity      |    x    |    x   |    x   |    x=
+   |    x   |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 4  | CH2 Touch          |    x    |        |        |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 5  | CH2 Proximity      |    x    |        |        |     =
+   |        |
+> > > > +      |    | Antenna 2 Prox.*   |    x    |        |        |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 6  | Metal (+) Touch**  |    x    |    x   |        |     =
+   |        |
+> > > > +      |    | Ant. 2 Deep Touch* |    x    |        |        |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 7  | Metal (+) Prox.**  |    x    |    x   |        |     =
+   |        |
+> > > > +      |    | Antenna 2 Touch*   |    x    |        |        |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 8  | Metal (-) Touch**  |    x    |    x   |        |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 9  | Metal (-) Prox.**  |    x    |    x   |        |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 10 | SAR Active***      |    x    |        |    x   |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 11 | SAR Quick Rel.***  |    x    |        |    x   |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 12 | SAR Movement***    |    x    |        |    x   |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 13 | SAR Filter Halt*** |    x    |        |    x   |     =
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 14 | Wheel Up           |         |        |        |    x=
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      | 15 | Wheel Down         |         |        |        |    x=
+   |        |
+> > > > +      ------------------------------------------------------------=
+-------------
+> > > > +      *   Two-channel SAR. Replaces CH0-2 plus metal touch and pro=
+ximity events
+> > > > +          if enabled via firmware.
+> > > > +      **  "+" and "-" refer to the polarity of a channel's delta (=
+LTA - counts),
+> > > > +          where "LTA" is defined as the channel's long-term averag=
+e.
+> > > > +      *** One-channel SAR. Replaces CH0-2 touch and proximity even=
+ts if enabled
+> > > > +          via firmware.
+> > > > +
+> > > > +required:
+> > > > +  - compatible
+> > > > +  - linux,keycodes
+> > >
+> > > Add:
+> > >
+> > > additionalProperties: false
+> > >
+> >
+> > When I add this, the dt_binding_check step complains that the hall swit=
+ch child nodes
+> > used in the examples are unrecognized, e.g.:
+> >
+> > iqs620a@44: keys: 'hall-switch-south' does not match any of the regexes=
+: 'pinctrl-[0-9]+'
+> >
+> > When I originally encountered this, I found that the mdio-mux child nod=
+e in [0] seems
+> > to be a similar example and omits additionalProperties, which is why I =
+originally did
+> > that here. Do you have any advice on how to proceed?
+>=20
+> That's because the properties are under an if/then. Your options are
+> split the schema into 2 files to eliminate the if/then or just define
+> "^hall-switch-(north|south)$" with just 'true' outside the if/then. A
+> variation on the 2nd option is invert the if/then and make the schema
+> false. Then the 'main' schema defines the full superset of properties
+> and the if/then just filters out ones that don't apply in some cases.
+>=20
+
+Thank you for this detailed explanation; it all makes sense now. For v3
+I've opted for the variant of option (2) because it allows for a single
+binding as I originally intended, and prompts dt_binding_check to throw
+an error if a dts author mistakenly defines the hall-switch-north/south
+nodes within either of the two devices that don't support that feature.
+I also find it simpler and more intuitive.
+
+> >
+> > > > +
+> > > > +if:
+> > > > +  properties:
+> > > > +    compatible:
+> > > > +      contains:
+> > > > +        enum:
+> > > > +          - azoteq,iqs620a-keys
+> > > > +          - azoteq,iqs621-keys
+> > > > +          - azoteq,iqs622-keys
+> > > > +then:
+> > > > +  patternProperties:
+> > > > +    "^hall-switch-(north|south)$":
+> > > > +      type: object
+> > > > +      description:
+> > > > +        Represents north/south-field Hall-effect sensor touch or p=
+roximity
+> > > > +        events. Note that north/south-field orientation is reverse=
+d on the
+> > > > +        IQS620AXzCSR device due to its flip-chip package.
+> > > > +
+> > > > +      properties:
+> > > > +        linux,code:
+> > > > +          $ref: /schemas/types.yaml#/definitions/uint32
+> > > > +          description: Numeric switch code associated with the eve=
+nt.
+> > > > +
+> > > > +        azoteq,use-prox:
+> > > > +          $ref: /schemas/types.yaml#/definitions/flag
+> > > > +          description:
+> > > > +            If present, specifies that Hall-effect sensor reportin=
+g should
+> > > > +            use the device's wide-range proximity threshold instea=
+d of its
+> > > > +            close-range touch threshold (default).
+> > > > +
+> > > > +      required:
+> > > > +        - linux,code
+> > > > +
+> >
+> > Do you think I should specify additionalProperties: false within these =
+child nodes?
+>=20
+> Yes.
+
+Sure thing, will do.
+
+FYI, since these additional changes are quite small and I believe I've
+implemented them exactly as you've suggested, I plan on retaining your
+Reviewed-by for v3 which I'll be sending out soon. However if you find
+that I have misinterpreted anything, please let me know and I will fix
+it promptly.
+
+Wishing you a Happy New Year,
+Jeff LaBundy

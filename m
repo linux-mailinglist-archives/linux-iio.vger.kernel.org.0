@@ -2,116 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24B5C12E391
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2020 08:57:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2910712E3E8
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2020 09:36:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727807AbgABH5e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Jan 2020 02:57:34 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:39944 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727802AbgABH5d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jan 2020 02:57:33 -0500
-Received: by mail-wm1-f65.google.com with SMTP id t14so4883992wmi.5
-        for <linux-iio@vger.kernel.org>; Wed, 01 Jan 2020 23:57:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=UanL6Xg19x3IJk9ON7AVf5trQLWWaJ2V1mNFz4i2lZQ=;
-        b=APZhCqey6B4qED7ETGokXrNnEuOyR9M5iVHr7TkJbN/kb8pcr8dKqESIq+m5v4Pbka
-         LbMt4U7DquYpX6+tWDKArajARZhgiWeg/xAh+/G3yG81hHEclX6mo0LKYKUazrx1+vQ0
-         x12VU1OnfcIX3RqaGrvFyq1zr+Db2M5rYFdsqixq/cr20JaHii0Trkkq5LnQQ2IL0gr1
-         PB70YfwF0+1nwPKzATao4i0beOSWDbcOEEOZ9BeGrZl2MX7fm4bfcVegCMLWctshM6kk
-         eHHZoEL/LoYpD/LUPTsSRQVcrnaPlp+ZEFwaeYieogUeXpQzp0H2sSPylvgcXqDPZf6B
-         M/+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=UanL6Xg19x3IJk9ON7AVf5trQLWWaJ2V1mNFz4i2lZQ=;
-        b=lOy9R8j+7hdo3f0iNRbp2P7pw3sOml1Jot6PcSBixOzoPjQkswfHUVs0x4YVFk5M5O
-         2LIPQgoNcnbgjAdiiQRMWvetp1G8UjMxAXV7a/CYglOsS05Rcy5vEcuXxdggPkprVUEY
-         i5LRRKOh10n0kjDM62T9HPkHwNuZh/N7GcOaSoYDdvOL6q0Jnlx75Vzv8ui2qA9EwQUR
-         uGdrNamd5ejPvcyYkxjXcyqrLMc1M6GKeAg+t69rNm4FmRMQLrWAf3cbnrtTWgZWncOI
-         odjwso5FcAqRKRfgiGxKXuUw1w4bdVkBBqyen6jkeJu8zb/zmQ9uur34/2WAVy51Vz6y
-         UwqQ==
-X-Gm-Message-State: APjAAAXF69oEA07Vc6HmpqRx3177nZql89huEzWYXbu4UjotMNg32wHq
-        xD8R8pQui+PwYsgJsE321DNdrA==
-X-Google-Smtp-Source: APXvYqwwGNguWVcv79X0HETbGo9RlTIwQoUP0B3nLtlPehl4xsbv/YUXMNe/5ajm92azqw8ypm1rvg==
-X-Received: by 2002:a7b:c934:: with SMTP id h20mr12871982wml.103.1577951851625;
-        Wed, 01 Jan 2020 23:57:31 -0800 (PST)
-Received: from dell ([2.27.35.135])
-        by smtp.gmail.com with ESMTPSA id f1sm55533281wru.6.2020.01.01.23.57.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jan 2020 23:57:30 -0800 (PST)
-Date:   Thu, 2 Jan 2020 07:57:43 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>
-Subject: Re: [PATCH v2 7/7] iio: position: Add support for Azoteq IQS624/625
- angle sensors
-Message-ID: <20200102075743.GA3591@dell>
-References: <1575851866-18919-1-git-send-email-jeff@labundy.com>
- <1575851866-18919-8-git-send-email-jeff@labundy.com>
- <20191215165328.789e8a16@archlinux>
- <20200101225058.GC14339@labundy.com>
+        id S1727771AbgABIgr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Jan 2020 03:36:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36342 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727767AbgABIgr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 2 Jan 2020 03:36:47 -0500
+Received: from new-host-4.redhat.com (net-2-42-61-77.cust.vodafonedsl.it [2.42.61.77])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5974C20866;
+        Thu,  2 Jan 2020 08:36:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577954206;
+        bh=S/T899CaR4IPob3wO0sAJQSthMSbRNr+0F3WWN46/3Q=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Pqv7I2eYPaQN/EF2ctKG+P3qbC1xaGDj2z3h4fz0Ku7ThuimM+GRUmOzHjfANDiOv
+         XHzcZ+2R8m6oBzFDrYMXp9op17nr/txTMGqgnQulMFjNpzJhXgTJi1tZFbQXx7XWgT
+         ShlfD5aTGg8flcw7IwGZWjEPw1wcLDsw1N9EGejE=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] iio: imu: st_lsm6dsx: check return value from st_lsm6dsx_sensor_set_enable
+Date:   Thu,  2 Jan 2020 09:36:29 +0100
+Message-Id: <3a7c5182cd676230eadb11510aee7317ce1b4e34.1577954098.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200101225058.GC14339@labundy.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 01 Jan 2020, Jeff LaBundy wrote:
+Add missing return value check in st_lsm6dsx_read_oneshot disabling the
+sensor. The issue is reported by coverity with the following error:
 
-> Hi Jonathan,
-> 
-> Thank you for your continued support on this project.
-> 
-> On Sun, Dec 15, 2019 at 04:53:28PM +0000, Jonathan Cameron wrote:
-> > On Mon, 9 Dec 2019 00:38:41 +0000
-> > Jeff LaBundy <jeff@labundy.com> wrote:
-> > 
-> > > This patch adds support for the Azoteq IQS624 and IQS625 angular position
-> > > sensors, capable of reporting the angle of a rotating shaft down to 1 and
-> > > 10 degrees of accuracy, respectively.
-> > > 
-> > > This patch also introduces a home for linear and angular position sensors.
-> > > Unlike resolvers, they are typically contactless and use the Hall effect.
-> > > 
-> > > Signed-off-by: Jeff LaBundy <jeff@labundy.com>
-> > 
-> > Looks good
-> > 
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > My current assumption is that Lee will take this lot via an immutable branch
-> > in MFD once it's ready.  Shout if a different path makes sense.
-> 
-> Same here. @Lee, please let us know if you disagree.
+Unchecked return value:
+If the function returns an error value, the error value may be mistaken
+for a normal value.
 
-That's fine.
+Addresses-Coverity-ID: 1446733 ("Unchecked return value")
+Fixes: b5969abfa8b8 ("iio: imu: st_lsm6dsx: add motion events")
+Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 0c64e35c7599..a16395598754 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -1534,8 +1534,11 @@ static int st_lsm6dsx_read_oneshot(struct st_lsm6dsx_sensor *sensor,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (!hw->enable_event)
+-		st_lsm6dsx_sensor_set_enable(sensor, false);
++	if (!hw->enable_event) {
++		err = st_lsm6dsx_sensor_set_enable(sensor, false);
++		if (err < 0)
++			return err;
++	}
+ 
+ 	*val = (s16)le16_to_cpu(data);
+ 
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.21.0
+

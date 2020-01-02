@@ -2,137 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E9C12E981
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2020 18:43:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEA1012EC23
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2020 23:15:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727755AbgABRnt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Jan 2020 12:43:49 -0500
-Received: from mga07.intel.com ([134.134.136.100]:49206 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727706AbgABRnt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 2 Jan 2020 12:43:49 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Jan 2020 09:43:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,387,1571727600"; 
-   d="scan'208";a="244666361"
-Received: from spandruv-mobl3.jf.intel.com ([10.254.45.199])
-  by fmsmga004.fm.intel.com with ESMTP; 02 Jan 2020 09:43:47 -0800
-Message-ID: <19ec09f45d1728c852ff30c7a6c18d9aca826923.camel@linux.intel.com>
-Subject: Re: Display got wrong rotation after hid_sensor_accel_3d is loaded
-From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     AceLan Kao <acelan.kao@canonical.com>
-Cc:     Bastien Nocera <hadess@hadess.net>, Jiri Kosina <jikos@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
-Date:   Thu, 02 Jan 2020 09:43:47 -0800
-In-Reply-To: <CAFv23Q=aOq1YCQnW7r_eSRn1COfpvQkfjtK2+a3zU0ggxnuYew@mail.gmail.com>
-References: <CAFv23QmiDdhe+xJw2y7CXiWq4-GK1S-1bcKxEpNhNJu3ZtzA_w@mail.gmail.com>
-         <9baeb165eddb4872fb701ff81f11692b7e153bf6.camel@hadess.net>
-         <CAFv23Qmj_ZqKs9_tw1Grzzj5unFBLfK0Scy396vcHCEB+fdLOA@mail.gmail.com>
-         <7830ad25a5cb7640e1da55c4278ce73c1ff3e0ad.camel@linux.intel.com>
-         <CAFv23Q=aOq1YCQnW7r_eSRn1COfpvQkfjtK2+a3zU0ggxnuYew@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        id S1728102AbgABWPj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Jan 2020 17:15:39 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:36553 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727581AbgABWPh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jan 2020 17:15:37 -0500
+Received: by mail-pg1-f194.google.com with SMTP id k3so22545272pgc.3;
+        Thu, 02 Jan 2020 14:15:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=pf2sPSQ2r8gVDM6GDT9Oydz7LRk2MFbOJVaKwovzVYg=;
+        b=ANs1k2MAT75YWXuwBY6qXWUXxwioKeNQ/7/JLTHIvraQhydyHUxx5OmeL5xNSoxBuO
+         u07eWe9Rl+c/W/16sP1CkNSnAipEKqg36IEkRfdZ1zYOGhBEzPdC0nvxFACCQi/QDtnY
+         Cy+dhitjmXtz0KgjBg+5vseSjwXRQpzfUmx4NnMLSvLXnhEoKGHIPrdVuiX8G51JWQJ1
+         ZrsqPMZEqgBBz0HWDrZMFUNgvOL+Nz1zW9evRrB8hrVXEnefFmeZfwlqVrisk5/W8Odk
+         3mJ5dDM6oQVVn+EqcxRINCOBiKbvpP/qVozvjufcQNwabjpvTIEwpKA3StkWV/pJckW7
+         7+jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=pf2sPSQ2r8gVDM6GDT9Oydz7LRk2MFbOJVaKwovzVYg=;
+        b=cg2bAEwReW3bbM+7CeRGxGCwp+zyYLAO/62tOOzEe5mbx40zCL6euN9Gxlvkmnvz+N
+         BPzFUCVu9yG4W3ooJCTiOfs2jbJw2KNMXFgM3pPh3kcGshPQIniJsjYNGyXi3/eYUXKt
+         q5yHwkV1F0S3TvgPo1CwWKl4Jw6YI9rKXBHvR7uzZELPT+Cxoj1cdUa2h9mUWh74iKtf
+         8IkCVD7Tumk94EUrs6VRutm+jzOC8Jx0konbvYdR+HFClger7IyBay1V+2zanZ5cZIhZ
+         ZRHjvNtrFXhbD/zkZxuF5mr3ZBQ6WDWaGTPyZEi6Ghi0IqqYRiyhOG/FwO+JWHuYdgU9
+         QzHw==
+X-Gm-Message-State: APjAAAU0/MtzT4+ZNlA2zhbHh+HwfXx0iay7RViIt0Yn8cuJ9ueGoe6t
+        ulYHD0iPzVrejlxHsUI5KeA=
+X-Google-Smtp-Source: APXvYqyonRxh/5OL9ZFS6CV6d7AM3DmbkqPcYGdi8P07EG8uPxw+qTrI6XLkOLItci4AWmahz10WLA==
+X-Received: by 2002:a65:5ccc:: with SMTP id b12mr91179615pgt.124.1578003336592;
+        Thu, 02 Jan 2020 14:15:36 -0800 (PST)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id 136sm59225359pgg.74.2020.01.02.14.15.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jan 2020 14:15:36 -0800 (PST)
+Date:   Thu, 2 Jan 2020 14:15:33 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-input@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
+        Donggeun Kim <dg77.kim@samsung.com>,
+        Minkyu Kang <mk7.kang@samsung.com>,
+        =?utf-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Oskar Andero <oskar.andero@gmail.com>
+Subject: Re: [PATCH 2/2 v1] iio: light: Add a driver for Sharp GP2AP002x00F
+Message-ID: <20200102221533.GC8314@dtor-ws>
+References: <20191228201109.13635-1-linus.walleij@linaro.org>
+ <20191228201109.13635-2-linus.walleij@linaro.org>
+ <20191230173919.373f4e8a@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191230173919.373f4e8a@archlinux>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 2020-01-02 at 10:46 +0800, AceLan Kao wrote:
-> Yes, this machine will be sold with Windows, but currently we didn't
-> hear any issues from Windows side.
-There are custom sensors, which probably getting used by Windows
-instead of accel_3d. I didn't see any special fields in accel_3d.
+Hi Jonathan,
 
-Thanks,
-Srinivas
-
-> Here is the rdesc I found under /sys/kernel/debug/hid
+On Mon, Dec 30, 2019 at 05:39:19PM +0000, Jonathan Cameron wrote:
+> On Sat, 28 Dec 2019 21:11:09 +0100
+> Linus Walleij <linus.walleij@linaro.org> wrote:
 > 
-> BTW, we're trying to push BIOS to provide some useful info about the
-> orientation of the sensor, so that we don't have to list those
-> machines in the driver.
+> > +	/* Enable chip and IRQ, disable analog sleep */
+> > +	ret = regmap_write(gp2ap002->map, GP2AP002_OPMOD,
+> > +			   OPMOD_SSD_OPERATING | OPMOD_VCON_IRQ);
+> > +	if (ret < 0) {
+> > +		dev_err(gp2ap002->dev, "error setting up operation mode\n");
+> > +		return ret;
+> > +	}
+> > +
+> > +	/* Interrupt on VOUT enabled */
+> > +	ret = regmap_write(gp2ap002->map, GP2AP002_CON, CON_OCON_ENABLE);
+> > +	if (ret < 0) {
+> > +		dev_err(gp2ap002->dev, "error setting up VOUT control\n");
+> > +		return ret;
 > 
-> Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> 於
-> 2019年12月31日 週二 上午1:18寫道：
-> > Hi Kao,
-> > 
-> > Is this device sold with Windows?
-> > Can you send full report descriptor (You can get from
-> > /sys/kernel/debug/hid)?
-> > 
-> > Thanks,
-> > Srinivas
-> > 
-> > On Fri, 2019-12-27 at 10:30 +0800, AceLan Kao wrote:
-> > > Hi Bastien,
-> > > 
-> > > Thanks for your suggestion.
-> > > I just tried to add the following line into
-> > > /lib/udev/hwdb.d/60-sensor.hwdb and got the correct screen
-> > > rotation.
-> > > But the cursor is still un-rotated, the cursor is drawn upside
-> > > down,
-> > > and its coordinates are inverted.
-> > > 
-> > > #########################################
-> > > # STMicro
-> > > #########################################
-> > > sensor:modalias:platform:platform:HID-SENSOR-200073
-> > >  ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, -1, 0; 0, 0, 1
-> > > 
-> > > It looks like we should introduce a quirk into
-> > > hid_sensor_accel_3d
-> > > driver.
-> > > There are 3 different scale variables in hid_sensor_accel_3d, but
-> > > I
-> > > don't see any of them would work the way I want.
-> > > Do you mean to introduce new scale variables?
-> > > 
-> > >    drivers/iio/accel/hid-sensor-accel-3d.c:34:     int
-> > > scale_pre_decml;
-> > >    drivers/iio/accel/hid-sensor-accel-3d.c:35:     int
-> > > scale_post_decml;
-> > >    drivers/iio/accel/hid-sensor-accel-3d.c:36:     int
-> > > scale_precision;
-> > > 
-> > > Bastien Nocera <hadess@hadess.net> 於 2019年12月26日 週四 下午11:03寫道：
-> > > > On Thu, 2019-12-26 at 17:22 +0800, AceLan Kao wrote:
-> > > > > Hi all,
-> > > > > 
-> > > > > I'm working on a new platform which comes with an accelerator
-> > > > > meter.
-> > > > > It's a STMicroelectronics LSM6DS3US accelerator meter, it
-> > > > > doesn't
-> > > > > use
-> > > > > st_sensors driver, but hid_sensor_accel_3d.
-> > > > > After hid_sensor_accel_3d is loaded, the display becomes
-> > > > > upside
-> > > > > down,
-> > > > > so I tried to add some code to make it become normal.(ACCEL_X
-> > > > > should
-> > > > > have the same modification)
-> > > > > 
-> > > > > I don't know how to fix this in a correct way, please give me
-> > > > > some
-> > > > > hints.
-> > > > 
-> > > > This needs to be done as a quirk, either by applying a quirk
-> > > > for
-> > > > the
-> > > > HID descriptors (which should have a definition of the scale,
-> > > > which
-> > > > would be negative for this device), or in user-space in
-> > > > systemd's
-> > > > hwdb
-> > > > database, which your user-space consumers need to take care of:
-> > > > 
-> > https://github.com/systemd/systemd/blob/master/hwdb.d/60-sensor.hwdb
-> > > > Cheers
-> > > > 
+> drop this return ret out of the brackets as it's either 0 or negative anyway.
 
+Not my subsystem, but $0.02 anyways: I like calling the temp as "error"
+and explicitly return 0 in the success path even if it could be
+collapsed, as you can easily add more initialization without needing
+to go and alter previous blocks.
+
+Thanks.
+
+-- 
+Dmitry

@@ -2,118 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F047D13027F
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2020 14:21:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3088C1303A4
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2020 17:44:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725877AbgADNVG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jan 2020 08:21:06 -0500
-Received: from comms.puri.sm ([159.203.221.185]:46510 "EHLO comms.puri.sm"
+        id S1726054AbgADQom (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jan 2020 11:44:42 -0500
+Received: from rere.qmqm.pl ([91.227.64.183]:61985 "EHLO rere.qmqm.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725862AbgADNVG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 4 Jan 2020 08:21:06 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id DA395E035E;
-        Sat,  4 Jan 2020 05:21:04 -0800 (PST)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id vKecNyt8erw3; Sat,  4 Jan 2020 05:21:03 -0800 (PST)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     lorenzo.bianconi83@gmail.com, jic23@kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Martin Kepplinger <martin.kepplinger@puri.sm>
-Subject: [PATCH v2] iio: imu: st_lsm6dsx: add mount matrix support
-Date:   Sat,  4 Jan 2020 14:20:52 +0100
-Message-Id: <20200104132052.28337-1-martin.kepplinger@puri.sm>
+        id S1726016AbgADQom (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 4 Jan 2020 11:44:42 -0500
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 47qngC2Jt5zGW;
+        Sat,  4 Jan 2020 17:44:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1578156279; bh=oTvnASVeLN6WdH2UHyaweC1pw6TM7iWDLweJ8XiHgAc=;
+        h=Date:From:Subject:To:Cc:From;
+        b=Xw3cGGjvfEgmGqZp3vDZNApHr0TbrZigZU6Gly10uo78nzTE8oSDp6+EHSoDzd5nS
+         NQeVgQe4JxUl+7afm9jBNMGZDclIULb0oxZTAzNbRRzqiQFFXvdc7vpxj3NiB6nOqj
+         z8mUb2vZaAAHYMK7bCsMPtdeYoUJBwPJ7+/51/sPCAcPEKJ93FK7Kojvlg5U58W98E
+         3dyLGoBzpFMf4kWibRNLLHWMvg3htwg+c5GkwhtsTZJD6dxRO4D+Ho3dzEa+kfl8cC
+         TShoNCwI5hK0vQITrP8fXOhwWGBpJzucnKI8mudM0SFmI1hg9eHDqdkmM23xJBEiM8
+         XDBkKWexha27A==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.101.4 at mail
+Date:   Sat, 04 Jan 2020 17:44:39 +0100
+Message-Id: <e03daea84ce5fe5e79311a07fee4636c2a884a8e.1578156240.git.mirq-linux@rere.qmqm.pl>
+From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
+Subject: [PATCH] iio: imu/mpu6050: support dual-edge IRQ
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Allow to read the mount-matrix device tree property and provide the
-mount_matrix file for userspace to read.
+Make mpu6050 usable on platforms which provide only any-edge interrupts.
 
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 ---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 3 ++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  | 1 +
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 6 ++++--
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-tested using the lsm9ds1 on the librem5-devkit (and userspace tools like
-iio-sensor-proxy) where this will be needed.
-
-thanks,
-
-                                       martin
-
-revision history
-----------------
-v2: additions and simplifications according to Lorenzo's review. thanks.
-
-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      | 19 +++++++++++++++++++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |  2 +-
- 2 files changed, 20 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index a763ff46f596..7076fc8c4c3b 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -76,6 +76,7 @@ enum st_lsm6dsx_hw_id {
- 		.endianness = IIO_LE,					\
- 	},								\
- 	.event_spec = &st_lsm6dsx_event,				\
-+	.ext_info = st_lsm6dsx_accel_ext_info,				\
- 	.num_event_specs = 1,						\
- }
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index 0686e41bb8a1..36b6a3922d15 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -1239,9 +1239,10 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+ 	}
  
-@@ -380,6 +381,7 @@ struct st_lsm6dsx_sensor {
-  * @enable_event: enabled event bitmask.
-  * @iio_devs: Pointers to acc/gyro iio_dev instances.
-  * @settings: Pointer to the specific sensor settings in use.
-+ * @orientation: sensor chip orientation relative to main hardware.
-  */
- struct st_lsm6dsx_hw {
- 	struct device *dev;
-@@ -406,6 +408,8 @@ struct st_lsm6dsx_hw {
- 	struct iio_dev *iio_devs[ST_LSM6DSX_ID_MAX];
- 
- 	const struct st_lsm6dsx_settings *settings;
-+
-+	struct iio_mount_matrix orientation;
- };
- 
- static __maybe_unused const struct iio_event_spec st_lsm6dsx_event = {
-@@ -479,4 +483,19 @@ st_lsm6dsx_write_locked(struct st_lsm6dsx_hw *hw, unsigned int addr,
- 	return err;
- }
- 
-+static const inline struct iio_mount_matrix *
-+st_lsm6dsx_get_mount_matrix(const struct iio_dev *iio_dev,
-+			    const struct iio_chan_spec *chan)
-+{
-+	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
-+	struct st_lsm6dsx_hw *hw = sensor->hw;
-+
-+	return &hw->orientation;
-+}
-+
-+static const struct iio_chan_spec_ext_info st_lsm6dsx_accel_ext_info[] = {
-+	IIO_MOUNT_MATRIX(IIO_SHARED_BY_ALL, st_lsm6dsx_get_mount_matrix),
-+	{ }
-+};
-+
- #endif /* ST_LSM6DSX_H */
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 0c64e35c7599..27e157f8a031 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -2325,7 +2325,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
- 	    (pdata && pdata->wakeup_source))
- 		device_init_wakeup(dev, true);
- 
--	return 0;
-+	return iio_read_mount_matrix(hw->dev, "mount-matrix", &hw->orientation);
- }
- EXPORT_SYMBOL(st_lsm6dsx_probe);
+ 	irq_type = irqd_get_trigger_type(desc);
++	st->irq_ignore_spurious = irq_type == (IRQF_TRIGGER_RISING|IRQF_TRIGGER_FALLING);
+ 	if (!irq_type)
+ 		irq_type = IRQF_TRIGGER_RISING;
+-	if (irq_type == IRQF_TRIGGER_RISING)
++	if (irq_type == IRQF_TRIGGER_RISING || st->irq_ignore_spurious)
+ 		st->irq_mask = INV_MPU6050_ACTIVE_HIGH;
+ 	else if (irq_type == IRQF_TRIGGER_FALLING)
+ 		st->irq_mask = INV_MPU6050_ACTIVE_LOW;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+index b096e010d4ee..94ee7b18b198 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -158,6 +158,7 @@ struct inv_mpu6050_state {
+ 	struct regmap *map;
+ 	int irq;
+ 	u8 irq_mask;
++	u8 irq_ignore_spurious;
+ 	unsigned skip_samples;
+ 	s64 chip_period;
+ 	s64 it_timestamp;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index 10d16ec5104b..52f02de3d9b0 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -184,8 +184,10 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 		goto flush_fifo;
+ 	}
+ 	if (!(int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT)) {
+-		dev_warn(regmap_get_device(st->map),
+-			"spurious interrupt with status 0x%x\n", int_status);
++		if (!st->irq_ignore_spurious)
++			dev_warn(regmap_get_device(st->map),
++				 "spurious interrupt with status 0x%x\n",
++				 int_status);
+ 		goto end_session;
+ 	}
  
 -- 
 2.20.1

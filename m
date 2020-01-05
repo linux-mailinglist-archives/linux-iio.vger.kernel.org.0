@@ -2,20 +2,20 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62CB1130530
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2020 01:11:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C4C13052F
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2020 01:11:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbgAEAKj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jan 2020 19:10:39 -0500
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:37699 "EHLO
+        id S1726191AbgAEAKl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jan 2020 19:10:41 -0500
+Received: from relay5-d.mail.gandi.net ([217.70.183.197]:36783 "EHLO
         relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726191AbgAEAKj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jan 2020 19:10:39 -0500
+        with ESMTP id S1726264AbgAEAKl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jan 2020 19:10:41 -0500
 X-Originating-IP: 195.189.32.242
 Received: from pc.localdomain (unknown [195.189.32.242])
         (Authenticated sender: contact@artur-rojek.eu)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 71EC31C0004;
-        Sun,  5 Jan 2020 00:10:35 +0000 (UTC)
+        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id C039C1C0007;
+        Sun,  5 Jan 2020 00:10:37 +0000 (UTC)
 From:   Artur Rojek <contact@artur-rojek.eu>
 To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -25,10 +25,12 @@ To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Artur Rojek <contact@artur-rojek.eu>
-Subject: [PATCH 1/5] IIO: Ingenic JZ47xx: Add xlate cb to retrieve correct channel idx
-Date:   Sun,  5 Jan 2020 01:16:35 +0100
-Message-Id: <20200105001639.142061-1-contact@artur-rojek.eu>
+Subject: [PATCH 2/5] dt-bindings: iio/adc: Add touchscreen idx for JZ47xx SoC ADC
+Date:   Sun,  5 Jan 2020 01:16:36 +0100
+Message-Id: <20200105001639.142061-2-contact@artur-rojek.eu>
 X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200105001639.142061-1-contact@artur-rojek.eu>
+References: <20200105001639.142061-1-contact@artur-rojek.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -36,49 +38,26 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Provide an of_xlate callback in order to retrieve the correct channel
-specifier index from the IIO channels array.
+Introduce support for touchscreen channels found in JZ47xx SoCs.
 
 Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
 Tested-by: Paul Cercueil <paul@crapouillou.net>
 ---
- drivers/iio/adc/ingenic-adc.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ include/dt-bindings/iio/adc/ingenic,adc.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
-index 39c0a609fc94..7a24bc1dabe1 100644
---- a/drivers/iio/adc/ingenic-adc.c
-+++ b/drivers/iio/adc/ingenic-adc.c
-@@ -383,6 +383,21 @@ static int ingenic_adc_read_raw(struct iio_dev *iio_dev,
- 	}
- }
+diff --git a/include/dt-bindings/iio/adc/ingenic,adc.h b/include/dt-bindings/iio/adc/ingenic,adc.h
+index 42f871ab3272..95e20a8d6dc8 100644
+--- a/include/dt-bindings/iio/adc/ingenic,adc.h
++++ b/include/dt-bindings/iio/adc/ingenic,adc.h
+@@ -7,5 +7,7 @@
+ #define INGENIC_ADC_AUX		0
+ #define INGENIC_ADC_BATTERY	1
+ #define INGENIC_ADC_AUX2	2
++#define INGENIC_ADC_TOUCH_XP	3
++#define INGENIC_ADC_TOUCH_YP	4
  
-+static int ingenic_adc_of_xlate(struct iio_dev *iio_dev,
-+				const struct of_phandle_args *iiospec)
-+{
-+	int i;
-+
-+	if (!iiospec->args_count)
-+		return -EINVAL;
-+
-+	for (i = 0; i < iio_dev->num_channels; ++i)
-+		if (iio_dev->channels[i].channel == iiospec->args[0])
-+			return i;
-+
-+	return -EINVAL;
-+}
-+
- static void ingenic_adc_clk_cleanup(void *data)
- {
- 	clk_unprepare(data);
-@@ -392,6 +407,7 @@ static const struct iio_info ingenic_adc_info = {
- 	.write_raw = ingenic_adc_write_raw,
- 	.read_raw = ingenic_adc_read_raw,
- 	.read_avail = ingenic_adc_read_avail,
-+	.of_xlate = ingenic_adc_of_xlate,
- };
- 
- static const struct iio_chan_spec ingenic_channels[] = {
+ #endif
 -- 
 2.24.1
 

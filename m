@@ -2,166 +2,238 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 183B1130BED
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jan 2020 02:53:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 741B5130F2F
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jan 2020 10:05:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727296AbgAFBxr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 5 Jan 2020 20:53:47 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:55888 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727278AbgAFBxr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Jan 2020 20:53:47 -0500
-Received: from mail-wr1-f69.google.com ([209.85.221.69])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <chia-lin.kao@canonical.com>)
-        id 1ioHaS-0003pR-GF
-        for linux-iio@vger.kernel.org; Mon, 06 Jan 2020 01:53:44 +0000
-Received: by mail-wr1-f69.google.com with SMTP id z14so26618943wrs.4
-        for <linux-iio@vger.kernel.org>; Sun, 05 Jan 2020 17:53:44 -0800 (PST)
+        id S1725446AbgAFJE5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jan 2020 04:04:57 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:46237 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725996AbgAFJE5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jan 2020 04:04:57 -0500
+Received: by mail-lj1-f193.google.com with SMTP id m26so47721324ljc.13
+        for <linux-iio@vger.kernel.org>; Mon, 06 Jan 2020 01:04:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dv4kZaHmP0u2M0IyOXWbpByeugvSXZTxxTdznseH8Ow=;
+        b=d4d8wkF7IDb+D+flhwvrhaF990T0WsWJe4M7mt2SMJrIj6HUuHYs4X75LKEr2z7I37
+         Y+CDaSom5N9e2LtQwbqXYfuKf7NvmvwGwsZJVcaNxkYNaeO/R7r1//BQ+yO3/cyuc8bV
+         6cZj8sdxypfKO42bnRkXmNoeCUPWf37RjesN8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=aplBudq8rCxlCvhRC+PlNxRLQg8mVG6pG5DyVN/SbB8=;
-        b=joQuWgGSwXCbCLKF9SXa8O21BrrM3oT1tAZcCVofHWJLnIKOVkvYU+3lGQb5AJIeV9
-         RPxEtFbYuVTtC1r/G7Mf8dd+CO5/TP8SPqg1TqBE5+e4kTbgGQinpLKEKGkhQX2syFO0
-         8MoFLqJwTXNCTQbjhAyOetJL3bhdDQNqisuQRG19tYYx7D/HmhzjPgXBB4Q1P6uds/eS
-         /VDzKCKzaHAS/In81X09HxDAkrE8HVyBdsG3Th2J2TxlJprQmRxznyFOdZK3qDnCXHQA
-         c9Mo9XUtfYQhJ1xS34k5XcRRwugzbx8iF7ps4ed9U6XLS8/gkgtk2PnITaNKAigjccK4
-         raHw==
-X-Gm-Message-State: APjAAAU7EBcxEnHX3bftpgMtfZxF9b+sCmbYru/796/PG+cQCSJ8f6cA
-        KXK0UQm4NvY+wCm5ErvAFANBv8I+bGEv01/2HmghIMZ1d6Or2EtwzRZ0LBc8++L2V3XsWLYnMlP
-        0lmV4Lfkq8hKOEa4QiBwq0p/3p5fD1ZyECqMsGN71P76Z82qC7+mB7g==
-X-Received: by 2002:a1c:80d4:: with SMTP id b203mr31193119wmd.102.1578275624200;
-        Sun, 05 Jan 2020 17:53:44 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwX09GIJKZNyYI69L6r9jLkI+iVSKaZnlKCDaOl4lRD7lj9a/4lLmfP/8ZxEOSxoSNKeqTIPc7S/y0lUL76CNw=
-X-Received: by 2002:a1c:80d4:: with SMTP id b203mr31193100wmd.102.1578275623954;
- Sun, 05 Jan 2020 17:53:43 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dv4kZaHmP0u2M0IyOXWbpByeugvSXZTxxTdznseH8Ow=;
+        b=qunQnRgXqBpJ2ooRcLVbQB3hdAwDk6kkbHEEPGsldtoQrP0p26EbOAJFOvvOlF0f03
+         W5GkueiozAIK08nEKldSHBvtEzbrQPDPHfYfV2V+MPiFMh5dPeqbXADbJpZGjUc8P2Vr
+         n9e97hKaClk+fP2XsTc8C/tXDY+s3m0Ojo026SeiFauIdxtIS7K/n7JCtvFlx+qDb32N
+         Vy2P9ohLh202cgfvkJv98jDgMWknqtrnr2+zcapr8cNbuiuW+vHdYb14Q93scX45zUqi
+         IBOnm64ngHTc7CSFMtJeYC/8w8vfx8kHomSnSOAAbcUhQ5GjkWK21BpNd2as36+oaNnn
+         l5KA==
+X-Gm-Message-State: APjAAAX0ai9NB9CIVRfAOSRIqftcXpXRPITq1gUG3vnAPU8/bCaxWsr1
+        mOUUs/uKd+oTRnrwrV7CeXV2kodRUNOOOuRI
+X-Google-Smtp-Source: APXvYqwokHNVbB7L/c4O2qXGQhEJ/GQSE/8g8NHCte9cSr/nfW6YNK7BVLaP9mpkcRNMnt0jrkzxCA==
+X-Received: by 2002:a2e:8eda:: with SMTP id e26mr57761749ljl.65.1578301494885;
+        Mon, 06 Jan 2020 01:04:54 -0800 (PST)
+Received: from virtualbox.ipredator.se (anon-49-200.vpn.ipredator.se. [46.246.49.200])
+        by smtp.gmail.com with ESMTPSA id k12sm28675500lfc.33.2020.01.06.01.04.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2020 01:04:54 -0800 (PST)
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+To:     linux-iio@vger.kernel.org
+Cc:     jic23@kernel.org, Matt Ranostay <matt.ranostay@konsulko.com>,
+        devicetree@vger.kernel.org
+Subject: [PATCH] iio: chemical: atlas-sensor: add DO-SM module support
+Date:   Mon,  6 Jan 2020 01:03:35 -0800
+Message-Id: <20200106090335.21717-1-matt.ranostay@konsulko.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <CAFv23QmiDdhe+xJw2y7CXiWq4-GK1S-1bcKxEpNhNJu3ZtzA_w@mail.gmail.com>
- <9baeb165eddb4872fb701ff81f11692b7e153bf6.camel@hadess.net>
- <CAFv23Qmj_ZqKs9_tw1Grzzj5unFBLfK0Scy396vcHCEB+fdLOA@mail.gmail.com>
- <7830ad25a5cb7640e1da55c4278ce73c1ff3e0ad.camel@linux.intel.com>
- <CAFv23Q=aOq1YCQnW7r_eSRn1COfpvQkfjtK2+a3zU0ggxnuYew@mail.gmail.com> <19ec09f45d1728c852ff30c7a6c18d9aca826923.camel@linux.intel.com>
-In-Reply-To: <19ec09f45d1728c852ff30c7a6c18d9aca826923.camel@linux.intel.com>
-From:   AceLan Kao <acelan.kao@canonical.com>
-Date:   Mon, 6 Jan 2020 09:53:32 +0800
-Message-ID: <CAFv23QnngVCQQX7OEnBZG2DMUZFmd6ct69YAtYN-OGgoJbtH1w@mail.gmail.com>
-Subject: Re: Display got wrong rotation after hid_sensor_accel_3d is loaded
-To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     Bastien Nocera <hadess@hadess.net>, Jiri Kosina <jikos@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi all,
+Atlas Scientific DO-SM OEM sensor reads disolved oxygen in
+a solution. This is reported back as mg/L which maps directly
+to ppm and so the IIO_CONCENTRATION channel type can be used.
 
-Quick update, ODM BIOS admits it's a BIOS issue, and they will fix
-this from BIOS side.
-Thanks all.
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+---
+ .../bindings/iio/chemical/atlas,do-sm.txt     | 21 ++++++
+ drivers/iio/chemical/atlas-sensor.c           | 64 +++++++++++++++++--
+ 2 files changed, 81 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt
 
-Best regards,
-AceLan Kao.
+diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt
+new file mode 100644
+index 000000000000..fc741ea794c4
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt
+@@ -0,0 +1,21 @@
++* Atlas Scientific DO-SM OEM sensor
++
++http://www.atlas-scientific.com/_files/_datasheets/_oem/DO_oem_datasheet.pdf
++
++Required properties:
++
++  - compatible: must be "atlas,do-sm"
++  - reg: the I2C address of the sensor
++  - interrupts: the sole interrupt generated by the device
++
++  Refer to interrupt-controller/interrupts.txt for generic interrupt client
++  node bindings.
++
++Example:
++
++atlas@64 {
++	compatible = "atlas,do-sm";
++	reg = <0x67>;
++	interrupt-parent = <&gpio1>;
++	interrupts = <16 2>;
++};
+diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
+index 2f0a6fed2589..42ad1ed76144 100644
+--- a/drivers/iio/chemical/atlas-sensor.c
++++ b/drivers/iio/chemical/atlas-sensor.c
+@@ -48,6 +48,11 @@
+ #define ATLAS_REG_EC_CALIB_STATUS_LOW		BIT(2)
+ #define ATLAS_REG_EC_CALIB_STATUS_HIGH		BIT(3)
+ 
++#define ATLAS_REG_DO_CALIB_STATUS		0x09
++#define ATLAS_REG_DO_CALIB_STATUS_MASK		0x03
++#define ATLAS_REG_DO_CALIB_STATUS_PRESSURE	BIT(0)
++#define ATLAS_REG_DO_CALIB_STATUS_DO		BIT(1)
++
+ #define ATLAS_REG_PH_TEMP_DATA		0x0e
+ #define ATLAS_REG_PH_DATA		0x16
+ 
+@@ -60,14 +65,19 @@
+ #define ATLAS_REG_ORP_CALIB_STATUS	0x0d
+ #define ATLAS_REG_ORP_DATA		0x0e
+ 
++#define ATLAS_REG_DO_TEMP_DATA		0x12
++#define ATLAS_REG_DO_DATA		0x22
++
+ #define ATLAS_PH_INT_TIME_IN_MS		450
+ #define ATLAS_EC_INT_TIME_IN_MS		650
+ #define ATLAS_ORP_INT_TIME_IN_MS	450
++#define ATLAS_DO_INT_TIME_IN_MS		450
+ 
+ enum {
+ 	ATLAS_PH_SM,
+ 	ATLAS_EC_SM,
+ 	ATLAS_ORP_SM,
++	ATLAS_DO_SM,
+ };
+ 
+ struct atlas_data {
+@@ -121,7 +131,7 @@ static const struct iio_chan_spec atlas_ph_channels[] = {
+ 	},
+ };
+ 
+-#define ATLAS_EC_CHANNEL(_idx, _addr) \
++#define ATLAS_CONCENTRATION_CHANNEL(_idx, _addr) \
+ 	{\
+ 		.type = IIO_CONCENTRATION, \
+ 		.indexed = 1, \
+@@ -152,8 +162,8 @@ static const struct iio_chan_spec atlas_ec_channels[] = {
+ 			.endianness = IIO_BE,
+ 		},
+ 	},
+-	ATLAS_EC_CHANNEL(0, ATLAS_REG_TDS_DATA),
+-	ATLAS_EC_CHANNEL(1, ATLAS_REG_PSS_DATA),
++	ATLAS_CONCENTRATION_CHANNEL(0, ATLAS_REG_TDS_DATA),
++	ATLAS_CONCENTRATION_CHANNEL(1, ATLAS_REG_PSS_DATA),
+ 	IIO_CHAN_SOFT_TIMESTAMP(3),
+ 	{
+ 		.type = IIO_TEMP,
+@@ -182,6 +192,19 @@ static const struct iio_chan_spec atlas_orp_channels[] = {
+ 	IIO_CHAN_SOFT_TIMESTAMP(1),
+ };
+ 
++static const struct iio_chan_spec atlas_do_channels[] = {
++	ATLAS_CONCENTRATION_CHANNEL(0, ATLAS_REG_DO_DATA),
++	IIO_CHAN_SOFT_TIMESTAMP(1),
++	{
++		.type = IIO_TEMP,
++		.address = ATLAS_REG_DO_TEMP_DATA,
++		.info_mask_separate =
++			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++		.output = 1,
++		.scan_index = -1
++	},
++};
++
+ static int atlas_check_ph_calibration(struct atlas_data *data)
+ {
+ 	struct device *dev = &data->client->dev;
+@@ -262,7 +285,31 @@ static int atlas_check_orp_calibration(struct atlas_data *data)
+ 		dev_warn(dev, "device has not been calibrated\n");
+ 
+ 	return 0;
+-};
++}
++
++static int atlas_check_do_calibration(struct atlas_data *data)
++{
++	struct device *dev = &data->client->dev;
++	int ret;
++	unsigned int val;
++
++	ret = regmap_read(data->regmap, ATLAS_REG_DO_CALIB_STATUS, &val);
++	if (ret)
++		return ret;
++
++	if (!(val & ATLAS_REG_DO_CALIB_STATUS_MASK)) {
++		dev_warn(dev, "device has not been calibrated\n");
++		return 0;
++	}
++
++	if (!(val & ATLAS_REG_DO_CALIB_STATUS_PRESSURE))
++		dev_warn(dev, "device missing atmospheric pressure calibration\n");
++
++	if (!(val & ATLAS_REG_DO_CALIB_STATUS_DO))
++		dev_warn(dev, "device missing dissolved oxygen calibration\n");
++
++	return 0;
++}
+ 
+ struct atlas_device {
+ 	const struct iio_chan_spec *channels;
+@@ -295,6 +342,13 @@ static struct atlas_device atlas_devices[] = {
+ 				.calibration = &atlas_check_orp_calibration,
+ 				.delay = ATLAS_ORP_INT_TIME_IN_MS,
+ 	},
++	[ATLAS_DO_SM] = {
++				.channels = atlas_do_channels,
++				.num_channels = 3,
++				.data_reg = ATLAS_REG_DO_DATA,
++				.calibration = &atlas_check_do_calibration,
++				.delay = ATLAS_DO_INT_TIME_IN_MS,
++	},
+ };
+ 
+ static int atlas_set_powermode(struct atlas_data *data, int on)
+@@ -507,6 +561,7 @@ static const struct i2c_device_id atlas_id[] = {
+ 	{ "atlas-ph-sm", ATLAS_PH_SM},
+ 	{ "atlas-ec-sm", ATLAS_EC_SM},
+ 	{ "atlas-orp-sm", ATLAS_ORP_SM},
++	{ "atlas-do-sm", ATLAS_DO_SM},
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(i2c, atlas_id);
+@@ -515,6 +570,7 @@ static const struct of_device_id atlas_dt_ids[] = {
+ 	{ .compatible = "atlas,ph-sm", .data = (void *)ATLAS_PH_SM, },
+ 	{ .compatible = "atlas,ec-sm", .data = (void *)ATLAS_EC_SM, },
+ 	{ .compatible = "atlas,orp-sm", .data = (void *)ATLAS_ORP_SM, },
++	{ .compatible = "atlas,do-sm", .data = (void *)ATLAS_DO_SM, },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, atlas_dt_ids);
+-- 
+2.20.1
 
-Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> 於 2020年1月3日
-週五 上午1:43寫道：
->
-> On Thu, 2020-01-02 at 10:46 +0800, AceLan Kao wrote:
-> > Yes, this machine will be sold with Windows, but currently we didn't
-> > hear any issues from Windows side.
-> There are custom sensors, which probably getting used by Windows
-> instead of accel_3d. I didn't see any special fields in accel_3d.
->
-> Thanks,
-> Srinivas
->
-> > Here is the rdesc I found under /sys/kernel/debug/hid
-> >
-> > BTW, we're trying to push BIOS to provide some useful info about the
-> > orientation of the sensor, so that we don't have to list those
-> > machines in the driver.
-> >
-> > Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> 於
-> > 2019年12月31日 週二 上午1:18寫道：
-> > > Hi Kao,
-> > >
-> > > Is this device sold with Windows?
-> > > Can you send full report descriptor (You can get from
-> > > /sys/kernel/debug/hid)?
-> > >
-> > > Thanks,
-> > > Srinivas
-> > >
-> > > On Fri, 2019-12-27 at 10:30 +0800, AceLan Kao wrote:
-> > > > Hi Bastien,
-> > > >
-> > > > Thanks for your suggestion.
-> > > > I just tried to add the following line into
-> > > > /lib/udev/hwdb.d/60-sensor.hwdb and got the correct screen
-> > > > rotation.
-> > > > But the cursor is still un-rotated, the cursor is drawn upside
-> > > > down,
-> > > > and its coordinates are inverted.
-> > > >
-> > > > #########################################
-> > > > # STMicro
-> > > > #########################################
-> > > > sensor:modalias:platform:platform:HID-SENSOR-200073
-> > > >  ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, -1, 0; 0, 0, 1
-> > > >
-> > > > It looks like we should introduce a quirk into
-> > > > hid_sensor_accel_3d
-> > > > driver.
-> > > > There are 3 different scale variables in hid_sensor_accel_3d, but
-> > > > I
-> > > > don't see any of them would work the way I want.
-> > > > Do you mean to introduce new scale variables?
-> > > >
-> > > >    drivers/iio/accel/hid-sensor-accel-3d.c:34:     int
-> > > > scale_pre_decml;
-> > > >    drivers/iio/accel/hid-sensor-accel-3d.c:35:     int
-> > > > scale_post_decml;
-> > > >    drivers/iio/accel/hid-sensor-accel-3d.c:36:     int
-> > > > scale_precision;
-> > > >
-> > > > Bastien Nocera <hadess@hadess.net> 於 2019年12月26日 週四 下午11:03寫道：
-> > > > > On Thu, 2019-12-26 at 17:22 +0800, AceLan Kao wrote:
-> > > > > > Hi all,
-> > > > > >
-> > > > > > I'm working on a new platform which comes with an accelerator
-> > > > > > meter.
-> > > > > > It's a STMicroelectronics LSM6DS3US accelerator meter, it
-> > > > > > doesn't
-> > > > > > use
-> > > > > > st_sensors driver, but hid_sensor_accel_3d.
-> > > > > > After hid_sensor_accel_3d is loaded, the display becomes
-> > > > > > upside
-> > > > > > down,
-> > > > > > so I tried to add some code to make it become normal.(ACCEL_X
-> > > > > > should
-> > > > > > have the same modification)
-> > > > > >
-> > > > > > I don't know how to fix this in a correct way, please give me
-> > > > > > some
-> > > > > > hints.
-> > > > >
-> > > > > This needs to be done as a quirk, either by applying a quirk
-> > > > > for
-> > > > > the
-> > > > > HID descriptors (which should have a definition of the scale,
-> > > > > which
-> > > > > would be negative for this device), or in user-space in
-> > > > > systemd's
-> > > > > hwdb
-> > > > > database, which your user-space consumers need to take care of:
-> > > > >
-> > > https://github.com/systemd/systemd/blob/master/hwdb.d/60-sensor.hwdb
-> > > > > Cheers
-> > > > >
->

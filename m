@@ -2,187 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 015B8130FA4
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jan 2020 10:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1426130FAA
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jan 2020 10:41:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726080AbgAFJj1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Jan 2020 04:39:27 -0500
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:27372 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726050AbgAFJj0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jan 2020 04:39:26 -0500
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0069YmlQ023162;
-        Mon, 6 Jan 2020 04:39:23 -0500
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2xawstu5nw-1
+        id S1725821AbgAFJlI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jan 2020 04:41:08 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:60902 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726080AbgAFJlH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jan 2020 04:41:07 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0069cWE4023419;
+        Mon, 6 Jan 2020 04:41:06 -0500
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2047.outbound.protection.outlook.com [104.47.66.47])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2xarg93ku8-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Jan 2020 04:39:23 -0500
+        Mon, 06 Jan 2020 04:41:05 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O2Dxfapy6i2ZIe7P0fJwuo/+2uyl8bkiVpx+cIDpFgJWe27uMJHN2h3ZHyfY689sQ+CvEDn7Pc+4cm755UVor/C73wd7K0oDashD0lqmZ3uVM5TfOZH3q8wbcg6sTAW2KKqzv2hyWYUVGbgh3nJrVHYbGDyl/uGRwaR90BgLh3UkGWZYo2xBcNcWiY9+BUSOzdvYqjU5Iha9ms6qj0KUzc71WZc4uoKPx7DC30jrt/677+KkYr5ehTrlFulJ5lgtF70X19pj7jZsYiffMVNeAFGOHDHGYgJdi6DG9Kjzb6jXyjBYpO75F3fmLwz9x5hsKZ4WxnVBsX7xOgt8hiNtSQ==
+ b=EXpDbg0oclFByCstUQ5XzczcvkKeaHant8Gyx9e9f148otlxbh0B0QSoIA59lkXhoasDxmHn9wRquvfznlvxnfhUaa+bvo1TE9Vkxb6gxDc7rWw9fxfS2m449/kTlQrG7ukDI6fttCSuUVLuFKmUyWtcDXXVK9uMaoKLC0rTixaFUo8Y77cJeFL0zS5cDJ1sGDXnUVSy3l4JYIYBdsu7sfkakHP71Fj2o7rN5mI9tIA07OfoQrw5sGi9XagMG4XLSGEynJyD5SPNZEl2dZFAo0XyTASaTRqL1Z68jQWVCWN4Wv1RzelN4z5X3nUZjpLqGft7u5GxMSO2LRYZROssJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qDwAZJVj/bpel8Nw2Kt2dOdoAzNX76v48/YMGeZ7VoE=;
- b=J2miTAiy+dzj7RKipKrnX7jJGPu5ldLs2SU6/STdGQn92F2pKboiYV3QLubDWLKvH3sG/H2wuZOD4ZYKGzVl9Tv8DNPkPKr5TkGr1DVtMpB/ZJy2XLqscXEZ4yg/MqsVuof8/H6cUItwydVb+7W6MsBKFn2lv1Kw9BdKZr94g9Jzq4U/rZznow8W2aXcoYKmm00Nj2IXsOJDt0oDR6PTxl6KVZivLlmgV4EedWTptNwPjcodpSHiee6j40JAK2B8v9vbv73BYVHao6ZIzlU+5IBJj87rK97yfp8DLmNHnWVyl/4I/36QfP45srmgLOcwJMDl+AoW8uMdkNvrJS8J1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.71.25.55) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
- dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
- not signed); arc=none
+ bh=vPpHMXItwBwwCbMZBbhMpwCxnOqbRBTkOnrcWh4hjNw=;
+ b=U9ZqorcZeDsejOAit4WXX6oj9JfBkOwVkzFFeGr6yxg00jgdXjxfrBD5pbJeHPGx3TgChwjXW56RSPySTjTuUQ3dXGt5mjCP37AZGhxHXDAsq9lUL7+mM1VzAMuwDQnLjwTD8sKVCafGTfTYouu9hMkOqZYxy9VA1GYPjtE80otJp0b4/B++jpnRKHx8mWPTDniH9KcX7ag6gcCw/F40ZfQWiC6VYjeLHx/XdNNQXBa5z+Intav60lqtzerfzGPpuVXibBYMnix0TGL1fa1B8QlNILdVZC9CtaeW4oylU2kiRHBw9kMwKrr5QiJGTLZ0wHM+98TYfEhAw6tZgEmFUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qDwAZJVj/bpel8Nw2Kt2dOdoAzNX76v48/YMGeZ7VoE=;
- b=nOvBEzVNsflSOXvBiUXKW9hIOMekubHPHkujvjpKX5jJTn86ARHf/qmQJhvEkK//4p2oCqigzGFhcImxmBQFGrL8jYsZKI0Y6R1KfKz8ZgVU37EBWgWh1ItVh833iOZvZ3svNU8/10nrA/dLhJe+aViuXw5ymu8c7Ufk0NlqUBM=
-Received: from BY5PR03CA0014.namprd03.prod.outlook.com (2603:10b6:a03:1e0::24)
- by DM5PR03MB2524.namprd03.prod.outlook.com (2603:10b6:3:74::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2602.12; Mon, 6 Jan
- 2020 09:39:21 +0000
-Received: from CY1NAM02FT004.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e45::208) by BY5PR03CA0014.outlook.office365.com
- (2603:10b6:a03:1e0::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2602.11 via Frontend
- Transport; Mon, 6 Jan 2020 09:39:21 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- CY1NAM02FT004.mail.protection.outlook.com (10.152.74.112) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2602.11
- via Frontend Transport; Mon, 6 Jan 2020 09:39:21 +0000
-Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
-        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id 0069dKvF002023
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=FAIL);
-        Mon, 6 Jan 2020 01:39:20 -0800
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Mon, 6 Jan 2020
- 04:39:19 -0500
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Mon, 6 Jan 2020 04:39:19 -0500
-Received: from tachici-Precision-5530.ad.analog.com ([10.48.65.175])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0069dGOm015123;
-        Mon, 6 Jan 2020 04:39:17 -0500
-From:   Alexandru Tachici <alexandru.tachici@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Subject: [PATCH] iio: ad_sigma_delta: Add custom irq flags
-Date:   Mon, 6 Jan 2020 11:38:52 +0200
-Message-ID: <20200106093852.29702-1-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.20.1
+ bh=vPpHMXItwBwwCbMZBbhMpwCxnOqbRBTkOnrcWh4hjNw=;
+ b=Ebb6WwGCzByVYNgZQqGFPlYz4bA++3x4+tUDeShJWMtIsmzGCM6L4MXxb2ZRosR/koVMCLT5j7e7gglxZsRqHZkCjc/n/2AjOVtIHRb6Rf5zPktvelvHHiFdl+FbPrNI0G/kn83Z8xc0zQ2wZjOntM2otJZfRqr/zC7pJi99kS0=
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com (20.180.12.152) by
+ CH2PR03MB5351.namprd03.prod.outlook.com (20.180.5.83) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2602.12; Mon, 6 Jan 2020 09:41:04 +0000
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::dce7:7fec:f33f:ad39]) by CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::dce7:7fec:f33f:ad39%7]) with mapi id 15.20.2602.015; Mon, 6 Jan 2020
+ 09:41:04 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "Tachici, Alexandru" <Alexandru.Tachici@analog.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC:     "jic23@kernel.org" <jic23@kernel.org>
+Subject: Re: [PATCH] iio: ad_sigma_delta: Add custom irq flags
+Thread-Topic: [PATCH] iio: ad_sigma_delta: Add custom irq flags
+Thread-Index: AQHVxHUydvRqWjXxfk6f3TrCdZDjvafdYeeA
+Date:   Mon, 6 Jan 2020 09:41:04 +0000
+Message-ID: <4315d67b125da94e9a172f3860bbfa3bf0086df0.camel@analog.com>
+References: <20200106093852.29702-1-alexandru.tachici@analog.com>
+In-Reply-To: <20200106093852.29702-1-alexandru.tachici@analog.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 5521bf92-e239-4256-ebc0-08d7928c8c3e
+x-ms-traffictypediagnostic: CH2PR03MB5351:
+x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <CH2PR03MB535178C4324B0415326E8107F93C0@CH2PR03MB5351.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 0274272F87
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(39860400002)(376002)(366004)(346002)(136003)(189003)(199004)(86362001)(66476007)(36756003)(71200400001)(76116006)(6512007)(26005)(186003)(66946007)(8936002)(2906002)(66556008)(66446008)(64756008)(4326008)(6506007)(478600001)(8676002)(316002)(81166006)(5660300002)(110136005)(2616005)(6486002)(81156014);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5351;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 2nL7BvsF3mqyaC700zBSAtgjah12aW28CT+d+MgYB9i9qv0Spcy+LS9dI2rBtI/JdyZcB07LlYjCLXgkgsTs2IvmaREZS8IupZ3Ff0s/WGq9E8BR8ZIxnXQWFG/1un+FTt7W2w64MWSvydQxPHe32PGbTxIQdk4v/gs2MpcVS/+PdmdWPoVnm3Q5QfL7R22Hv/NVy8ZzvjbrUxTzAkm3IlsrbQwlPAq8NgUNn5yr9X8zSm3tRqhV68BYZXMh/bL7Ttx+8u4jTDubW6gqxRIl3xemsmJJHnu/xts3vam23yFyqWnXZfOsV6LXDovNnSpz3bvtPrYcSdqZcoKVKUeK840Cxo6wLVNonOacdbsGQHFRMmnA00wBPn9ya5DeUAFW99+9Q1sPd/yPHm6K/JCkkHzy0X2E2EMYAFNBm2O6yLNcOh7TBKov2/3/SfwzPOm7
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9111195465277446B61F69BE3C397B14@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(136003)(396003)(39860400002)(376002)(346002)(189003)(199004)(2616005)(426003)(70206006)(70586007)(5660300002)(7696005)(186003)(4326008)(8936002)(8676002)(478600001)(107886003)(336012)(6666004)(246002)(86362001)(1076003)(44832011)(2906002)(110136005)(36756003)(54906003)(356004)(316002)(26005)(7636002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR03MB2524;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;MX:1;A:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 30328a42-b63e-4c1e-cdaa-08d7928c4ed4
-X-MS-TrafficTypeDiagnostic: DM5PR03MB2524:
-X-Microsoft-Antispam-PRVS: <DM5PR03MB2524D849A892702004A1BE86903C0@DM5PR03MB2524.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
-X-Forefront-PRVS: 0274272F87
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +f2H0k7L+Um0L+oeH/Kw7ENJHBsErwBaRBq8chmh5rJqxRNT+0t08z6tVv07f8L1JWP7ZqryDggs2JuqucFaKa7m9VIwYu5cb91URuQaPzcSCj8FZmpPIwpjB+1m6nO3HZZV/7U+tVzZ4Kf2Vgni+IPSJ5HHrv1WYBQqHpmfhKTcsrX1I3cYohQ289ggOzjXUDWLXzHOj2EgjSllwL5un04E0yPx5PrJ+DRGkl2mY72P/TmhYrUImncOqdR68YVIRqJ5fn0tpyaZTJZha1JtJwN30i0LbXVwK9//2rbpgcWEknoaOmKlO/owFu2hYysuxbBoSSDy92rS9+5uDZ/rGuIYme3JdnaFYrylgHIc35EmQiAJNLOAKGw6aWWPo/mKD82JLv4bidZosL3uYj26nkSi7XTHO5oTcDImfk3A88QcVk/hztfWIdVzpQpxl9T9
 X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2020 09:39:21.0564
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5521bf92-e239-4256-ebc0-08d7928c8c3e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2020 09:41:04.1060
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30328a42-b63e-4c1e-cdaa-08d7928c4ed4
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR03MB2524
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5ujNmeQDRbFUIs2LCXmecfsZ7+vFWBSfaFzu3VErUkIvzv4FNPjZk/pUuJGgLYuV0+Oss84sqWyRHGD1e3cxvG5GLPcDtFCxqXwA1CL8dgA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5351
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2020-01-06_02:2020-01-06,2020-01-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0 mlxscore=0
- priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
+ adultscore=0 mlxscore=0 priorityscore=1501 spamscore=0 suspectscore=0
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 clxscore=1015
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-1910280000 definitions=main-2001060088
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The data-sheet of AD7124, from the Sigma-Delta ADC family,
-recommends that the falling edge of the DOUT line should be used for
-an interrupt.
-
-The ad_sigma_delta implementation hardcodes the irq trigger type
-to low, assuming that all Sigma-Delta ADCs have the same interrupt-type.
-This causes unwanted behaviour. If DOUT line is already low, the
-interrupt will fire once, when enabled and the irq handler will send a
-read request to the device. At this time the device has not yet finished
-the previous conversion and will give a bad reading.
-
-This patch allows drivers using the ad_sigma_delta layer to set the
-irq trigger type to the one specified in the corresponding data-sheet.
-
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
----
- drivers/iio/adc/ad_sigma_delta.c       | 11 ++++++++++-
- include/linux/iio/adc/ad_sigma_delta.h |  5 +++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 8ba90486c787..ef8c356b11ee 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -500,7 +500,7 @@ static int ad_sd_probe_trigger(struct iio_dev *indio_dev)
- 
- 	ret = request_irq(sigma_delta->spi->irq,
- 			  ad_sd_data_rdy_trig_poll,
--			  IRQF_TRIGGER_LOW,
-+			  sigma_delta->irq_flags,
- 			  indio_dev->name,
- 			  sigma_delta);
- 	if (ret)
-@@ -586,8 +586,17 @@ EXPORT_SYMBOL_GPL(ad_sd_cleanup_buffer_and_trigger);
- int ad_sd_init(struct ad_sigma_delta *sigma_delta, struct iio_dev *indio_dev,
- 	struct spi_device *spi, const struct ad_sigma_delta_info *info)
- {
-+	unsigned long set_trigger_flags;
-+
- 	sigma_delta->spi = spi;
- 	sigma_delta->info = info;
-+	sigma_delta->num_slots = 1;
-+	sigma_delta->active_slots = 1;
-+
-+	set_trigger_flags = sigma_delta->irq_flags & IRQF_TRIGGER_MASK;
-+	if (set_trigger_flags == IRQF_TRIGGER_NONE)
-+		sigma_delta->irq_flags |= IRQF_TRIGGER_LOW;
-+
- 	iio_device_set_drvdata(indio_dev, sigma_delta);
- 
- 	return 0;
-diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
-index 8a4e25a7080c..0d3fa1e16f5e 100644
---- a/include/linux/iio/adc/ad_sigma_delta.h
-+++ b/include/linux/iio/adc/ad_sigma_delta.h
-@@ -55,6 +55,8 @@ struct ad_sigma_delta_info {
-  * struct ad_sigma_delta - Sigma Delta device struct
-  * @spi: The spi device associated with the Sigma Delta device.
-  * @trig: The IIO trigger associated with the Sigma Delta device.
-+ * @num_slots: Number of sequencer slots
-+ * @irq_flags: flags for the interrupt used by the triggered buffer
-  *
-  * Most of the fields are private to the sigma delta library code and should not
-  * be accessed by individual drivers.
-@@ -63,6 +65,9 @@ struct ad_sigma_delta {
- 	struct spi_device	*spi;
- 	struct iio_trigger	*trig;
- 
-+	unsigned int		num_slots;
-+	unsigned long		irq_flags;
-+
- /* private: */
- 	struct completion	completion;
- 	bool			irq_dis;
--- 
-2.20.1
-
+T24gTW9uLCAyMDIwLTAxLTA2IGF0IDExOjM4ICswMjAwLCBBbGV4YW5kcnUgVGFjaGljaSB3cm90
+ZToNCj4gW0V4dGVybmFsXQ0KPiANCj4gVGhlIGRhdGEtc2hlZXQgb2YgQUQ3MTI0LCBmcm9tIHRo
+ZSBTaWdtYS1EZWx0YSBBREMgZmFtaWx5LA0KPiByZWNvbW1lbmRzIHRoYXQgdGhlIGZhbGxpbmcg
+ZWRnZSBvZiB0aGUgRE9VVCBsaW5lIHNob3VsZCBiZSB1c2VkIGZvcg0KPiBhbiBpbnRlcnJ1cHQu
+DQo+IA0KPiBUaGUgYWRfc2lnbWFfZGVsdGEgaW1wbGVtZW50YXRpb24gaGFyZGNvZGVzIHRoZSBp
+cnEgdHJpZ2dlciB0eXBlDQo+IHRvIGxvdywgYXNzdW1pbmcgdGhhdCBhbGwgU2lnbWEtRGVsdGEg
+QURDcyBoYXZlIHRoZSBzYW1lIGludGVycnVwdC10eXBlLg0KPiBUaGlzIGNhdXNlcyB1bndhbnRl
+ZCBiZWhhdmlvdXIuIElmIERPVVQgbGluZSBpcyBhbHJlYWR5IGxvdywgdGhlDQo+IGludGVycnVw
+dCB3aWxsIGZpcmUgb25jZSwgd2hlbiBlbmFibGVkIGFuZCB0aGUgaXJxIGhhbmRsZXIgd2lsbCBz
+ZW5kIGENCj4gcmVhZCByZXF1ZXN0IHRvIHRoZSBkZXZpY2UuIEF0IHRoaXMgdGltZSB0aGUgZGV2
+aWNlIGhhcyBub3QgeWV0IGZpbmlzaGVkDQo+IHRoZSBwcmV2aW91cyBjb252ZXJzaW9uIGFuZCB3
+aWxsIGdpdmUgYSBiYWQgcmVhZGluZy4NCj4gDQo+IFRoaXMgcGF0Y2ggYWxsb3dzIGRyaXZlcnMg
+dXNpbmcgdGhlIGFkX3NpZ21hX2RlbHRhIGxheWVyIHRvIHNldCB0aGUNCj4gaXJxIHRyaWdnZXIg
+dHlwZSB0byB0aGUgb25lIHNwZWNpZmllZCBpbiB0aGUgY29ycmVzcG9uZGluZyBkYXRhLXNoZWV0
+Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQWxleGFuZHJ1IFRhY2hpY2kgPGFsZXhhbmRydS50YWNo
+aWNpQGFuYWxvZy5jb20+DQo+IC0tLQ0KPiAgZHJpdmVycy9paW8vYWRjL2FkX3NpZ21hX2RlbHRh
+LmMgICAgICAgfCAxMSArKysrKysrKysrLQ0KPiAgaW5jbHVkZS9saW51eC9paW8vYWRjL2FkX3Np
+Z21hX2RlbHRhLmggfCAgNSArKysrKw0KPiAgMiBmaWxlcyBjaGFuZ2VkLCAxNSBpbnNlcnRpb25z
+KCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vYWRjL2Fk
+X3NpZ21hX2RlbHRhLmMNCj4gYi9kcml2ZXJzL2lpby9hZGMvYWRfc2lnbWFfZGVsdGEuYw0KPiBp
+bmRleCA4YmE5MDQ4NmM3ODcuLmVmOGMzNTZiMTFlZSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9p
+aW8vYWRjL2FkX3NpZ21hX2RlbHRhLmMNCj4gKysrIGIvZHJpdmVycy9paW8vYWRjL2FkX3NpZ21h
+X2RlbHRhLmMNCj4gQEAgLTUwMCw3ICs1MDAsNyBAQCBzdGF0aWMgaW50IGFkX3NkX3Byb2JlX3Ry
+aWdnZXIoc3RydWN0IGlpb19kZXYNCj4gKmluZGlvX2RldikNCj4gIA0KPiAgCXJldCA9IHJlcXVl
+c3RfaXJxKHNpZ21hX2RlbHRhLT5zcGktPmlycSwNCj4gIAkJCSAgYWRfc2RfZGF0YV9yZHlfdHJp
+Z19wb2xsLA0KPiAtCQkJICBJUlFGX1RSSUdHRVJfTE9XLA0KPiArCQkJICBzaWdtYV9kZWx0YS0+
+aXJxX2ZsYWdzLA0KPiAgCQkJICBpbmRpb19kZXYtPm5hbWUsDQo+ICAJCQkgIHNpZ21hX2RlbHRh
+KTsNCj4gIAlpZiAocmV0KQ0KPiBAQCAtNTg2LDggKzU4NiwxNyBAQCBFWFBPUlRfU1lNQk9MX0dQ
+TChhZF9zZF9jbGVhbnVwX2J1ZmZlcl9hbmRfdHJpZ2dlcik7DQo+ICBpbnQgYWRfc2RfaW5pdChz
+dHJ1Y3QgYWRfc2lnbWFfZGVsdGEgKnNpZ21hX2RlbHRhLCBzdHJ1Y3QgaWlvX2Rldg0KPiAqaW5k
+aW9fZGV2LA0KPiAgCXN0cnVjdCBzcGlfZGV2aWNlICpzcGksIGNvbnN0IHN0cnVjdCBhZF9zaWdt
+YV9kZWx0YV9pbmZvICppbmZvKQ0KPiAgew0KPiArCXVuc2lnbmVkIGxvbmcgc2V0X3RyaWdnZXJf
+ZmxhZ3M7DQo+ICsNCj4gIAlzaWdtYV9kZWx0YS0+c3BpID0gc3BpOw0KPiAgCXNpZ21hX2RlbHRh
+LT5pbmZvID0gaW5mbzsNCj4gKwlzaWdtYV9kZWx0YS0+bnVtX3Nsb3RzID0gMTsNCj4gKwlzaWdt
+YV9kZWx0YS0+YWN0aXZlX3Nsb3RzID0gMTsNCg0KVGhlIHNsb3RzIHBhdGNoIHNlZW1zIHRvIGhh
+dmUgc2xpcHBlZCBzb21lIGNoZXJyeS1waWNrcyBhbmQgY29uZmxpY3RzLg0KDQo+ICsNCj4gKwlz
+ZXRfdHJpZ2dlcl9mbGFncyA9IHNpZ21hX2RlbHRhLT5pcnFfZmxhZ3MgJiBJUlFGX1RSSUdHRVJf
+TUFTSzsNCj4gKwlpZiAoc2V0X3RyaWdnZXJfZmxhZ3MgPT0gSVJRRl9UUklHR0VSX05PTkUpDQo+
+ICsJCXNpZ21hX2RlbHRhLT5pcnFfZmxhZ3MgfD0gSVJRRl9UUklHR0VSX0xPVzsNCj4gKw0KPiAg
+CWlpb19kZXZpY2Vfc2V0X2RydmRhdGEoaW5kaW9fZGV2LCBzaWdtYV9kZWx0YSk7DQo+ICANCj4g
+IAlyZXR1cm4gMDsNCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvaWlvL2FkYy9hZF9zaWdt
+YV9kZWx0YS5oDQo+IGIvaW5jbHVkZS9saW51eC9paW8vYWRjL2FkX3NpZ21hX2RlbHRhLmgNCj4g
+aW5kZXggOGE0ZTI1YTcwODBjLi4wZDNmYTFlMTZmNWUgMTAwNjQ0DQo+IC0tLSBhL2luY2x1ZGUv
+bGludXgvaWlvL2FkYy9hZF9zaWdtYV9kZWx0YS5oDQo+ICsrKyBiL2luY2x1ZGUvbGludXgvaWlv
+L2FkYy9hZF9zaWdtYV9kZWx0YS5oDQo+IEBAIC01NSw2ICs1NSw4IEBAIHN0cnVjdCBhZF9zaWdt
+YV9kZWx0YV9pbmZvIHsNCj4gICAqIHN0cnVjdCBhZF9zaWdtYV9kZWx0YSAtIFNpZ21hIERlbHRh
+IGRldmljZSBzdHJ1Y3QNCj4gICAqIEBzcGk6IFRoZSBzcGkgZGV2aWNlIGFzc29jaWF0ZWQgd2l0
+aCB0aGUgU2lnbWEgRGVsdGEgZGV2aWNlLg0KPiAgICogQHRyaWc6IFRoZSBJSU8gdHJpZ2dlciBh
+c3NvY2lhdGVkIHdpdGggdGhlIFNpZ21hIERlbHRhIGRldmljZS4NCj4gKyAqIEBudW1fc2xvdHM6
+IE51bWJlciBvZiBzZXF1ZW5jZXIgc2xvdHMNCj4gKyAqIEBpcnFfZmxhZ3M6IGZsYWdzIGZvciB0
+aGUgaW50ZXJydXB0IHVzZWQgYnkgdGhlIHRyaWdnZXJlZCBidWZmZXINCj4gICAqDQo+ICAgKiBN
+b3N0IG9mIHRoZSBmaWVsZHMgYXJlIHByaXZhdGUgdG8gdGhlIHNpZ21hIGRlbHRhIGxpYnJhcnkg
+Y29kZSBhbmQNCj4gc2hvdWxkIG5vdA0KPiAgICogYmUgYWNjZXNzZWQgYnkgaW5kaXZpZHVhbCBk
+cml2ZXJzLg0KPiBAQCAtNjMsNiArNjUsOSBAQCBzdHJ1Y3QgYWRfc2lnbWFfZGVsdGEgew0KPiAg
+CXN0cnVjdCBzcGlfZGV2aWNlCSpzcGk7DQo+ICAJc3RydWN0IGlpb190cmlnZ2VyCSp0cmlnOw0K
+PiAgDQo+ICsJdW5zaWduZWQgaW50CQludW1fc2xvdHM7DQo+ICsJdW5zaWduZWQgbG9uZwkJaXJx
+X2ZsYWdzOw0KPiArDQo+ICAvKiBwcml2YXRlOiAqLw0KPiAgCXN0cnVjdCBjb21wbGV0aW9uCWNv
+bXBsZXRpb247DQo+ICAJYm9vbAkJCWlycV9kaXM7DQo=

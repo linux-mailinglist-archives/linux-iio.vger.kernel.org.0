@@ -2,191 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5004B13257C
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2020 12:59:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56CE11325EC
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2020 13:19:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727894AbgAGL7m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Jan 2020 06:59:42 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2233 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726690AbgAGL7l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 7 Jan 2020 06:59:41 -0500
-Received: from lhreml709-cah.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 12FB45C68102FBB7BE4F;
-        Tue,  7 Jan 2020 11:59:40 +0000 (GMT)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- lhreml709-cah.china.huawei.com (10.201.108.32) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Tue, 7 Jan 2020 11:59:39 +0000
-Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 7 Jan 2020
- 11:59:39 +0000
-Date:   Tue, 7 Jan 2020 11:59:38 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Linux Input" <linux-input@vger.kernel.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Donggeun Kim <dg77.kim@samsung.com>,
-        Minkyu Kang <mk7.kang@samsung.com>,
-        =?UTF-8?Q?Pawe=C5=82?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
-        "Jonathan Bakker" <xc-racer2@live.ca>,
-        Oskar Andero <oskar.andero@gmail.com>,
-        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>
-Subject: Re: [PATCH 2/2 v1] iio: light: Add a driver for Sharp GP2AP002x00F
-Message-ID: <20200107115938.00005c08@Huawei.com>
-In-Reply-To: <CACRpkdbpqge9beL8QEdqnA3pN+41PUfJg4Zr9hDnnYYkatSYTg@mail.gmail.com>
-References: <20191228201109.13635-1-linus.walleij@linaro.org>
-        <20191228201109.13635-2-linus.walleij@linaro.org>
-        <20191230173919.373f4e8a@archlinux>
-        <CACRpkdbpqge9beL8QEdqnA3pN+41PUfJg4Zr9hDnnYYkatSYTg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727852AbgAGMTf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Jan 2020 07:19:35 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:38142 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727177AbgAGMTf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jan 2020 07:19:35 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 007CJGsI050417;
+        Tue, 7 Jan 2020 06:19:16 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1578399556;
+        bh=0lJyrfWaHAIClz/zSWrqyl3gjx9r8coTtg1Qa6uzAH4=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=s4w3jYTGCgYRMa22i9FZ4VKyAsn1aSA51X38BZzGWOh8+lawk2gkR7JuCtDuv7x8s
+         qukAFEtV829aOgKaaLhAkD5syTS9GTZ/xoagNo644QsWPiD6iwX14xxOz8Ep9T3zlH
+         NWmDr0gpmYl5SGxHp9G5lyTTl3IpxTedtJRKRgYk=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 007CJGYT084614
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 7 Jan 2020 06:19:16 -0600
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 7 Jan
+ 2020 06:19:16 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 7 Jan 2020 06:19:16 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 007CJCbC042717;
+        Tue, 7 Jan 2020 06:19:13 -0600
+Subject: Re: [PATCH] iio: buffer-dmaengine: Use dma_request_chan() directly
+ for channel request
+To:     Jonathan Cameron <jic23@kernel.org>, Vinod Koul <vkoul@kernel.org>
+CC:     <knaack.h@gmx.de>, <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <pmeerw@pmeerw.net>
+References: <20191113092453.30838-1-peter.ujfalusi@ti.com>
+ <20191114043318.GE952516@vkoul-mobl> <20191116162257.550f62d6@archlinux>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+Message-ID: <4d4c4338-b028-e28b-a603-323eadebd261@ti.com>
+Date:   Tue, 7 Jan 2020 14:19:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.57]
-X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+In-Reply-To: <20191116162257.550f62d6@archlinux>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 6 Jan 2020 10:08:55 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+Jonathan,
 
-> Hi Jonathan,
+On 16/11/2019 18.22, Jonathan Cameron wrote:
+> On Thu, 14 Nov 2019 10:03:18 +0530
+> Vinod Koul <vkoul@kernel.org> wrote:
 > 
-> fixed most of the things and resending as v2 soon-ish,
-> some inline responses, comments:
+>> On 13-11-19, 11:24, Peter Ujfalusi wrote:
+>>> dma_request_slave_channel_reason() is:
+>>> #define dma_request_slave_channel_reason(dev, name) \
+>>> 	dma_request_chan(dev, name)  
+>>
+>> Reviewed-by: Vinod Koul <vkoul@kernel.org>
+>>
 > 
-> On Mon, Dec 30, 2019 at 6:39 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Sat, 28 Dec 2019 21:11:09 +0100 Linus Walleij <linus.walleij@linaro.org> wrote:  
-> 
-> > If at all possible I'd like to discourage use of of specific
-> > calls in favour of the generic ones.  It's pretty unlikely we'll
-> > ever see this driver using anything else, but I'd like to build
-> > up a good set of examples to point people at now that functionality
-> > is in place.  
-> 
-> I guess you mean to use fwnode where possible. I comment on this
-> below.
+> Applied to the togreg branch of iio.git and pushed out as testing
+> for the autobuilders to play with it.
 
-yes, though more specifically PRP0001 usage, which basically puts the
-DT directly into ACPI.
+The sole user in mainline for dma_request_slave_channel_reason() is
+industrialio-buffer-dmaengine.c (since v5.5-rc1, 5.4 had 36 users).
 
-> 
-> > > +     iio_push_event(indio_dev, ev, iio_get_time_ns(indio_dev));
-> > > +     usleep_range(20000, 30000);  
-> >
-> > What is the basis for these timings?  
-> 
-> Detection cycle, I explained this with an inline comment.
-> 
-> > > +     gp2ap002->is_gp2ap002s00f =
-> > > +             of_device_is_compatible(np, "sharp,gp2ap002s00f");  
-> >
-> > Hmm. This rather breaks my comment below about trying to avoid making
-> > this of specific if we don't need to...
-> >
-> > I 'think' we could use device_property_read_string
-> > There is a bit of precedence for doing so, but it is not common.  
-> 
-> This is the real trick. Using
-> device_property_read_string(dev, "compatible", str);
-> isn't going to work as ACPI probes from a unique 4-char
-> ID not a compatible string this will never work on ACPI
-> anyways.
+Are you planning to queue this patch for 5.6 (not sure if it could be
+sent to -rc6) so I can retire it from the dmaengine.h?
 
-Is that true for PRP0001?  That's the ACPI case we normally
-care about in cases like this.
-
-https://lkml.org/lkml/2019/3/22/1612
-
-Has an explicit "compatible" property.
-
+Regards,
+- Péter
 
 > 
-> I can try to go some extra mile to support a hypothetical
-> ACPI client by adding a struct with one bool member as
-> match data and pass that around if you insist, but I think it's
-> more something appropriate for the first ACPI user to do.
+> Thanks,
 > 
-> It's no problem if you want it, but it will add a bunch of
-> boilerplate just for this.
-> 
-> > > +     /* Check the device tree for the IR LED hysteresis */
-> > > +     ret = of_property_read_u32(np, "sharp,proximity-far-hysteresis", &val);  
-> >
-> > Do these belong in DT at all, or are they more of a policy decision?
-> > Without a datasheet I'm kind of guessing what they actually are.  
-> 
-> There is a datasheet:
-> https://global.sharp/products/device-china/lineup/data/pdf/datasheet/gp2ap002s00f_appl_e.pdf
-> 
-> > We have the option for hysterisis controls on events from sysfs if that
-> > make sense.  
-> 
-> I don't know, these are two hysteresis settings: one that detects an
-> object close to the sensor and one detecting an object far from
-> the sensor.
-> 
-> The two settings are describes as fixed to mode A, B1 and B2 in the
-> datasheet. However there is a vendor driver in one of the phone
-> trees that use "mode B 1.5" not documented in the datasheet
-> (bummer). So given how fluid this all is I opted for just an u8
-> in the device tree for "close" and "far" hysteresis setting.
-
-OK, lets leave this, but maybe add a comment somewhere to give this
-bit of detail.
-
-> 
-> > Could use the fwnode_get_property_u32 etc to drop reliance on OF.  
-> 
-> Will do if we must support hypotetical non-DT probe.
-> 
-> > > +     /* The GP2AP002A00F has a light sensor too */
-> > > +     if (!gp2ap002->is_gp2ap002s00f) {  
-> >
-> > This section is rather 'unusual' and definitely needs some explanatory
-> > comments - particularly as I can't find any reference docs for the part.  
-> 
-> The only reference for the light sensor part in GP2AP002A00F
-> is the submission from Samsung mentioned in the header of the
-> driver submitted by Donggeun Kim & Minkyu Kang in 2011:
-> https://lore.kernel.org/lkml/1315556546-7445-1-git-send-email-dg77.kim@samsung.com/
-> 
-> It also appears in the GPL code from GT-S7710 which seems to
-> derive from a code drop from Sharp.
-> 
-> Yep the code is the documentation...
-
-:(
-
-> 
-> > I'm guessing that the light sensor is simply an analog output?  As such
-> > you need to wire it up to a separate ADC to actually read the light level...  
-> 
-> Yep that's the same method as used for
-> drivers/iio/light/cm3605.c
-> Most early Androids do something like that, and all SoCs seem to
-> provide some ADC to do the conversion.
+> Jonathan
 > 
 
-Fair enough, a few more comments perhaps in the code for when we inevitably
-forget all this history ;)
-
-Thanks,
-
-Jonathan
-
-> Yours,
-> Linus Walleij
-
-
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

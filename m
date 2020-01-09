@@ -2,104 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C87DD134D1C
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2020 21:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D528013538A
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Jan 2020 08:11:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725881AbgAHUXo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Jan 2020 15:23:44 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:39925 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726758AbgAHUXo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Jan 2020 15:23:44 -0500
-Received: by mail-oi1-f194.google.com with SMTP id a67so3857819oib.6
-        for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2020 12:23:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jqJ3Kb99ht0XkZVU8yBDUn07MFCSBOIqQAw6O1B1GBc=;
-        b=lVTt/ZMlCGZqDeQheCDRAmaevWZVADWsvxgr8uVsHFv2codIe3mre1W1x+M3tp6QpQ
-         PYRea9vlrFD6afpzyw4qV004wkE1Lgtus9mbsiZhhToI9jSU8x1Ljdw981cqr5JZSVPt
-         8C40yNxR8dR05OzTOFWT/nm0Z4fXMkoMP1481PmvggFsHv4hXj0kNQMLQN8QvxX0r8fL
-         h9UJZy7cMY1B1aGAEV99p0t5MuxMk0tfHJfnp9bQh2Hpclq3LyCnx8EdRGngaFUArSVY
-         moOm/1qGPr+QCkrvwJFghQ1CZ2XdFhMvSfqJSYdT9Y/0CA1+ONLaPXXFPeBPQWOEuSi6
-         9onA==
-X-Gm-Message-State: APjAAAWDOQSxCLUaAzu2+l3kYC8Fe9X/89CVku/rtsgZiLcBnPCGi7nu
-        VqZea4SwwMXIqR0qmpdSdX1YEfk=
-X-Google-Smtp-Source: APXvYqzmN2ZsWy+vK4Oi/1jB5WE+K+EA89N9iZIjhpHj7Sz7qrAVkazb4jXYqGBqHD6K7cpunhib3g==
-X-Received: by 2002:aca:4183:: with SMTP id o125mr299177oia.125.1578515023044;
-        Wed, 08 Jan 2020 12:23:43 -0800 (PST)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id v21sm1464884otr.72.2020.01.08.12.23.41
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2020 12:23:42 -0800 (PST)
-Received: from rob (uid 1000)
-        (envelope-from rob@rob-hp-laptop)
-        id 2208fa
-        by rob-hp-laptop (DragonFly Mail Agent v0.11);
-        Wed, 08 Jan 2020 14:23:41 -0600
-Date:   Wed, 8 Jan 2020 14:23:41 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH] iio: chemical: atlas-sensor: add DO-SM module support
-Message-ID: <20200108202341.GA28838@bogus>
-References: <20200106090335.21717-1-matt.ranostay@konsulko.com>
+        id S1728114AbgAIHLE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Jan 2020 02:11:04 -0500
+Received: from mout.kundenserver.de ([217.72.192.74]:51887 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726541AbgAIHLE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jan 2020 02:11:04 -0500
+Received: from localhost ([31.212.60.142]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MfZDK-1jMIjo396O-00fwpo; Thu, 09 Jan 2020 08:10:48 +0100
+Date:   Thu, 9 Jan 2020 08:10:47 +0100
+From:   Andreas Klinger <ak@it-klinger.de>
+To:     Rob Herring <robh@kernel.org>
+Cc:     jic23@kernel.org, mark.rutland@arm.com, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, rpi-receiver@htl-steyr.ac.at,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: devantech-srf04.yaml: add pm feature
+Message-ID: <20200109071047.GA3043@arbad>
+References: <20200102172749.v7ufupd32ytf7jda@arbad>
+ <20200108165813.GA4472@bogus>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200106090335.21717-1-matt.ranostay@konsulko.com>
+In-Reply-To: <20200108165813.GA4472@bogus>
 User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Provags-ID: V03:K1:n4ntl9gVhdsv+OwVdqknKL8TANkqMYHfUGVQTP0bv2p2PAA85Nl
+ 7iPPMgwkQ8uapwU5YKMJMWeuMFow089H1U2dy4bbZYVKrD6YVVQiPQ8NE8akssYB0Wc4G6m
+ /0Zoa31ALt+49KlkgDgDQfwXa2+/WIYOe05+EXL+BA4BM2wS8WwVO0PJBu5TplSPHE3ANbi
+ OLP57Mv1jWP1FysrPyq2g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lCCLisCEUrs=:9ZKaN92OPR8/Y54hM9jcRH
+ s6joxY0YtizkvP4rarCGq9I2q7vo2TBU1xkW7B9VT7FrjNiqcVTt9jFc+N08reBHNT1yTYKHT
+ /k6QzzufTMrto4INolpHzGtBjexDN2WbDN9wL4HnR1tJ/3RNwDWcwDXSF2Rn6muEkbKL/B1wk
+ oAYU4CgLMOfZro3YT5WL1EbRUnzTlihW2mInt7tuLuxua1eAUP92xR5oLRnaSUOSAAVJoNDpi
+ WJOZUTg6WSwZsZQPCCMuUxb/19bIRt7JGV9a4ewAU4ZTKvVVf6n0n2DqgtFR7ZegSmwNuDqPv
+ wvLI9hqCR7Qk+txMSIXRrOWYUHgiGnJ3wiMYC8hLD5HqOKHlGWT7FaACmlH92R5Ky6Z4jUwbG
+ Z8+UKbSVQacz0XO9vxN7NmA49UfA+/E2u2ixrwYqtkVj8iZgrU/lkLNtTUn4iN5OADSK0qEWT
+ BlVWwtvUkPM4m16HViwclJY6PYX/KwFvmXJ5g0XGsi1MANJAZ/GfYlByofgzS8SHFN/JUEIA4
+ iOesEasQXMMXlzkr8Mnkl3obWZmo+hRD2FNtO8Zpae3OqcCK51TNWTqF5FA0tT7LNsvXu6Ofb
+ 1EFQiXIbcZGn9vZPVyVqTIVtsksxFuErXxwvy8ENxnGiRtkNaSSDny6J8mxQq4c/s3g11F+Y5
+ 9wqnoI21A0a0xDzYE2KJfX+37lJzrnlSQr0c4mE95VnUVZO5Bzk2U+U9c78vJkBjtvdhVuais
+ U/eZRhZLcUz0qO2NhZ9RE4wxgHYz/hIIGi10ANNQaLQu2XjJP9+oM/ThtHRhRr/GQRo32AzuK
+ EceoU0RQuz3jLy7pbbjUqkY/sVpl79f7KS6KSOWcAvKCp8GeC2QBqV/EJ0GGGJFSta9K57o3+
+ Bs3moFz3Ibf0QuU8z9Tw==
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jan 06, 2020 at 01:03:35AM -0800, Matt Ranostay wrote:
-> Atlas Scientific DO-SM OEM sensor reads disolved oxygen in
-> a solution. This is reported back as mg/L which maps directly
-> to ppm and so the IIO_CONCENTRATION channel type can be used.
+Hi Rob,
+
+see below.
+
+Rob Herring <robh@kernel.org> schrieb am Mi, 08. Jan 10:58:
+> On Thu, Jan 02, 2020 at 06:27:51PM +0100, Andreas Klinger wrote:
+> > Add GPIO line and startup time for usage of power management
+> > 
+> > Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> > ---
+> >  .../bindings/iio/proximity/devantech-srf04.yaml          | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/proximity/devantech-srf04.yaml b/Documentation/devicetree/bindings/iio/proximity/devantech-srf04.yaml
+> > index 4e80ea7c1475..b3fcb3b79485 100644
+> > --- a/Documentation/devicetree/bindings/iio/proximity/devantech-srf04.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/proximity/devantech-srf04.yaml
+> > @@ -51,6 +51,22 @@ properties:
+> >        the time between two interrupts is measured in the driver.
+> >      maxItems: 1
+> >  
+> > +  power-gpios:
+> > +    description:
+> > +      Definition of the GPIO for power management of connected peripheral
+> > +      (output).
+> > +      This GPIO can be used by the external hardware for power management.
+> > +      When the device gets suspended it's switched off and when it resumes
+> > +      it's switched on again. After some period of inactivity the driver
+> > +      get suspended automatically (autosuspend feature).
+> > +    maxItems: 1
+> > +
+> > +  startup-time-ms:
 > 
-> Cc: devicetree@vger.kernel.org
-> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
-> ---
->  .../bindings/iio/chemical/atlas,do-sm.txt     | 21 ++++++
+> Why isn't this implied by the compatible string? 
 
-Please split bindings to separate patch and make this a DT schema.
+Under the same trade name "SRF-04" there are many different sensors on the
+market which are clones of the original one from Devantech. They are equipped
+with different hardware components and they have a slightly different behavior,
+such as the startup time. 
 
-It seems like all these Atlas sensors are the same. Can you combine them 
-into one schema?
-
->  drivers/iio/chemical/atlas-sensor.c           | 64 +++++++++++++++++--
->  2 files changed, 81 insertions(+), 4 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt
-> new file mode 100644
-> index 000000000000..fc741ea794c4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt
-> @@ -0,0 +1,21 @@
-> +* Atlas Scientific DO-SM OEM sensor
-> +
-> +http://www.atlas-scientific.com/_files/_datasheets/_oem/DO_oem_datasheet.pdf
-> +
-> +Required properties:
-> +
-> +  - compatible: must be "atlas,do-sm"
-> +  - reg: the I2C address of the sensor
-> +  - interrupts: the sole interrupt generated by the device
-> +
-> +  Refer to interrupt-controller/interrupts.txt for generic interrupt client
-> +  node bindings.
-> +
-> +Example:
-> +
-> +atlas@64 {
-> +	compatible = "atlas,do-sm";
-> +	reg = <0x67>;
-> +	interrupt-parent = <&gpio1>;
-> +	interrupts = <16 2>;
-> +};
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> 
+> You can drop this for standard units. 
+> 
+> 0-2^32 is valid?
+
+I can add boundaries here.
+
+> 
+> > +    description:
+> > +      This is the startup time the device needs after a resume to be up and
+> > +      running.
+> > +
+> >  required:
+> >    - compatible
+> >    - trig-gpios
+> > -- 
+> > 2.11.0
+
+Andreas

@@ -2,127 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D39F13621C
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Jan 2020 22:00:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E1FE13628B
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Jan 2020 22:31:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728582AbgAIVAA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Jan 2020 16:00:00 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:51913 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728939AbgAIVAA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jan 2020 16:00:00 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ipeuK-0003wo-H9; Thu, 09 Jan 2020 21:59:56 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ipeuI-0001J3-7H; Thu, 09 Jan 2020 21:59:54 +0100
-Date:   Thu, 9 Jan 2020 21:59:54 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        kernel@pengutronix.de
-Subject: Re: [PATCH v4 1/3] iio: adc: ltc2496: provide device tree binding
- document
-Message-ID: <20200109205954.hyjvtwpddvytzgpr@pengutronix.de>
-References: <20191209203248.21555-1-u.kleine-koenig@pengutronix.de>
- <20191209203248.21555-2-u.kleine-koenig@pengutronix.de>
- <20191215114958.6ad37d19@archlinux>
- <20191216083736.lzmborv33w6odlaj@pengutronix.de>
- <20191223175854.600c7254@archlinux>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191223175854.600c7254@archlinux>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+        id S1728792AbgAIVbI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Jan 2020 16:31:08 -0500
+Received: from foss.arm.com ([217.140.110.172]:37060 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725763AbgAIVbI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 9 Jan 2020 16:31:08 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 59B6931B;
+        Thu,  9 Jan 2020 13:31:07 -0800 (PST)
+Received: from localhost (unknown [10.37.6.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BB1DB3F534;
+        Thu,  9 Jan 2020 13:31:06 -0800 (PST)
+Date:   Thu, 09 Jan 2020 21:31:05 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Claudiu Beznea <claudiu.beznea@microchip.com>
+Cc:     alexandre.belloni@bootlin.com, a.zummo@towertech.it,
+        broonie@kernel.org, devicetree@vger.kernel.org,
+        dmaengine@vger.kernel.org, eugen.hristev@microchip.com,
+        jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        lee.jones@linaro.org, linux-arm-kernel@lists.infradead.org,
+        linux-can@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, ludovic.desroches@microchip.com,
+        Mark Brown <broonie@kernel.org>, mark.rutland@arm.com,
+        mchehab@kernel.org, miquel.raynal@bootlin.com, mkl@pengutronix.de,
+        netdev@vger.kernel.org, nicolas.ferre@microchip.com,
+        pmeerw@pmeerw.net, radu_nicolae.pirea@upb.ro,
+        richard.genoud@gmail.com, richard@nod.at, robh+dt@kernel.org,
+        tudor.ambarus@microchip.com, vigneshr@ti.com, vkoul@kernel.org,
+        wg@grandegger.com
+Subject: Applied "dt-bindings: spi_atmel: add microchip,sam9x60-spi" to the spi tree
+In-Reply-To: <1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com>
+Message-Id: <applied-1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com>
+X-Patchwork-Hint: ignore
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan,
+The patch
 
-On Mon, Dec 23, 2019 at 05:58:54PM +0000, Jonathan Cameron wrote:
-> On Mon, 16 Dec 2019 09:37:36 +0100
-> Uwe Kleine-König         <u.kleine-koenig@pengutronix.de> wrote:
-> 
-> > Hello Jonathan,
-> > 
-> > On Sun, Dec 15, 2019 at 11:49:58AM +0000, Jonathan Cameron wrote:
-> > > On Mon,  9 Dec 2019 21:32:46 +0100
-> > > Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
-> > >   
-> > > > The ADC only requires the standard stuff for spi devices and a reference
-> > > > voltage.
-> > > > 
-> > > > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>  
-> > > Thanks for figuring out what was wrong and fixing it up.  
-> > 
-> > It wasn't done primarily to do you a favour :-)
-> > 
-> > > > +  spi-max-frequency:
-> > > > +    description: maximal spi bus frequency supported by the chip  
-> > > 
-> > > dropped the "by the chip" as this is also about the wiring on the board.  If it
-> > > were just the chip, it could be put in the driver.  The unknown bit is
-> > > if there is some other reason why it might need to be set lower than the maximum.  
-> > 
-> > fine for me.
-> > 
-> > > > +required:
-> > > > +  - compatible
-> > > > +  - vref-supply
-> > > > +  - reg
-> > > > +
-> > > > +examples:
-> > > > +  - |
-> > > > +    spi {
-> > > > +        #address-cells = <1>;
-> > > > +        #size-cells = <0>;
-> > > > +
-> > > > +        adc@0 {
-> > > > +        	compatible = "lltc,ltc2496";  
-> > > You can't easily see it here, but this is a mixture of spaces
-> > > and tabs.  Should be all spaces.  I've tidied that up.  
-> > 
-> > I did that on purpose, spaces to have the needed indention for the yaml
-> > syntax and then tabs for dts indention (as done in the dts itself, too).
-> > I thought this to be the right mix, but this was my first yaml binding,
-> > so you're probably right.
-> 
-> I'll be honest, I'm far from sure on this.
-> 
-> I usually rely on Rob moaning about it if it's wrong :)
-> 
-> Oh well. What's there builds. If we get a 'fix' later then so be it.
+   dt-bindings: spi_atmel: add microchip,sam9x60-spi
 
-I found my commits in your tree (at
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=testing)
-and wonder why they don't appear in next. IMHO it would be good to have
-some exposure there to give more people the opportunity to moan. Is this
-a mistake that your tree is not included in next?
+has been applied to the spi tree at
 
-I assume being in your testing branch means I can reasonably expect they
-will go into 5.6-rc1?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
 
-Best regards
-Uwe
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 0a1eb761ff30cdc089bcc94e1bd540b6956487c5 Mon Sep 17 00:00:00 2001
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
+Date: Wed, 8 Jan 2020 14:55:19 +0200
+Subject: [PATCH] dt-bindings: spi_atmel: add microchip,sam9x60-spi
+
+Add microchip,sam9x60-spi to DT bindings documentation.
+
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/spi_atmel.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi_atmel.txt b/Documentation/devicetree/bindings/spi/spi_atmel.txt
+index f99c733d75c1..5bb4a8f1df7a 100644
+--- a/Documentation/devicetree/bindings/spi/spi_atmel.txt
++++ b/Documentation/devicetree/bindings/spi/spi_atmel.txt
+@@ -1,7 +1,7 @@
+ Atmel SPI device
+ 
+ Required properties:
+-- compatible : should be "atmel,at91rm9200-spi".
++- compatible : should be "atmel,at91rm9200-spi" or "microchip,sam9x60-spi".
+ - reg: Address and length of the register set for the device
+ - interrupts: Should contain spi interrupt
+ - cs-gpios: chipselects (optional for SPI controller version >= 2 with the
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+2.20.1
+

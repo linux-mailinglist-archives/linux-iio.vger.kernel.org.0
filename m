@@ -2,126 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 121DF136A80
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2020 11:06:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14A88136AB4
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2020 11:12:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727460AbgAJKGi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jan 2020 05:06:38 -0500
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:44732 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727451AbgAJKGi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jan 2020 05:06:38 -0500
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00AA3GGC022000;
-        Fri, 10 Jan 2020 11:06:20 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : subject :
- date : message-id : references : in-reply-to : content-type : content-id :
- content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=X/IKNq/8pJeoSL1pB8WIriwvGpAf8+royPr4JdN4o5o=;
- b=OskxaP71K4BlIRa4w8IX7yvBVUjgYvCXCPe6onm4asE5Z2uFKOyXq6A9UVk6RbpffuYO
- SpEXuRkdYlY6uZ28Ng//3Z/U2GYITL8TmyjXzM1sd7H1OcGHAh3UWkwMMRsN1gVU9AIl
- 6Ddhpa/wP/vVZUkSd49BN0Bcr72Abq7e4a7HdpBzf7eUGjQSTmcejs8BInztc+NwPn8t
- EC6bcfBjOlHjDMSwg+w21utR4+Wu162jkNU/Q/g97m/m6n6R5IizQlylL2sr+tXK/BZ7
- rwnwMTvh9rLq65E98OIroTteb34sflFTLgTO0RyVQcubEJCZ1MAdqdkqchw+WZb+Kn33 Ig== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2xdw8b7jex-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Jan 2020 11:06:20 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 42754100042;
-        Fri, 10 Jan 2020 11:06:14 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag5node1.st.com [10.75.127.13])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 348E72A6199;
-        Fri, 10 Jan 2020 11:06:14 +0100 (CET)
-Received: from SFHDAG6NODE2.st.com (10.75.127.17) by SFHDAG5NODE1.st.com
- (10.75.127.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 10 Jan
- 2020 11:06:13 +0100
-Received: from SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6]) by
- SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6%20]) with mapi id
- 15.00.1347.000; Fri, 10 Jan 2020 11:06:13 +0100
-From:   Olivier MOYSAN <olivier.moysan@st.com>
-To:     "jic23@kernel.org" <jic23@kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
-        Alexandre TORGUE <alexandre.torgue@st.com>,
-        Fabrice GASNIER <fabrice.gasnier@st.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Benjamin GAIGNARD <benjamin.gaignard@st.com>
-Subject: Re: [PATCH v2] iio: adc: stm32-dfsdm: adapt sampling rate to
- oversampling ratio
-Thread-Topic: [PATCH v2] iio: adc: stm32-dfsdm: adapt sampling rate to
- oversampling ratio
-Thread-Index: AQHVpSQGsx9/ld0UD0mL7CjGbR/bFqfj4CGA
-Date:   Fri, 10 Jan 2020 10:06:13 +0000
-Message-ID: <9b7e2161-1a31-8d69-52f9-ae9dedc902e3@st.com>
-References: <20191127131008.18896-1-olivier.moysan@st.com>
-In-Reply-To: <20191127131008.18896-1-olivier.moysan@st.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.75.127.50]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1C2AA4C736BB8E4387DC1A086E9FE594@st.com>
-Content-Transfer-Encoding: base64
+        id S1727315AbgAJKMu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jan 2020 05:12:50 -0500
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:35010 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727362AbgAJKMu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jan 2020 05:12:50 -0500
+Received: by mail-lf1-f66.google.com with SMTP id 15so1046712lfr.2
+        for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2020 02:12:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fQ3AvsTOvN2lt6VoCrrcei0UKFhdLdIsH4yixnuLa3k=;
+        b=kyE5WbVDVncQ83eWxFYnHwuIO4on0+uCzONsHYZk9JU4/wZ8gxgImU1EJc31YG0q5x
+         qGjO7znn7L28cBuEjVWUS1yx+CbbkzvPGNov7rMdbn2yz3HWaaIss4luq5yAf7EhCRi4
+         6j9oIGLYvnuNj0XirRn9sj10I44IqzTVZ95zwF7tApE4TJrOFlndqBdQ5o+ew0dd8t1L
+         NGA3tCluT+8GvIuNaEhxuZh9mdenzo9eCAZCiK3W5vi+mUGnZk6zAoNpeeTnbB21VCL1
+         +9Y8k1fhw1yI7zduN3cGQJNkud3vbB/e5qrWJ2kWxNysM5rNKAjtx6GCgX51LJ4PLFBt
+         RU4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fQ3AvsTOvN2lt6VoCrrcei0UKFhdLdIsH4yixnuLa3k=;
+        b=QajICeEA5C4MqcMR9HcVSPEzWkJQ+b5v4CwZaflH37Vwo27FaBlgUNW4hlDHeLdqB+
+         ckDgdzi/P910BHu2NX0/bLjaWoNw3/JelCbBW5RqfwTW420SwyO8QNupxtVbwsC8BDfG
+         hv/3uBee9DROcJfHeO+f1oMuZRqdkr1iht/VGqczyy/u1o0p9bNjZc79BfJWyn6v0RCn
+         tnge/l/pOnDRsC8g1jEciQQSzD8JOQ9rEDbIUsfHi4sz6zdk+8yk+w9fd2uykZXbZBiS
+         qNKArw+ca+vmIF7d0+RGNPiynCy1Ep75VIJg9YHw/murlrRbqhaba1aE8adfnf8cuClt
+         AXWw==
+X-Gm-Message-State: APjAAAVtLWjymeVSPOc2F4YZkou/BSt3Bes05IxoLEFXIIF1trEx+1W/
+        ++0MMlRVx1FVH6Qp9HwtwpHBRw==
+X-Google-Smtp-Source: APXvYqxIqWX62Yhbh9cxP2oXScdnXjTjmA4Dz4GcXs69CvwK9IueOqMCxN2l8kLTrV+9PEW6QyncNA==
+X-Received: by 2002:a19:3f51:: with SMTP id m78mr1877716lfa.70.1578651168048;
+        Fri, 10 Jan 2020 02:12:48 -0800 (PST)
+Received: from localhost.bredbandsbolaget (c-5ac9225c.014-348-6c756e10.bbcust.telenor.se. [92.34.201.90])
+        by smtp.gmail.com with ESMTPSA id s23sm736278lji.70.2020.01.10.02.12.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2020 02:12:46 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-input@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Minkyu Kang <mk7.kang@samsung.com>,
+        =?UTF-8?q?Pawe=C5=82=20Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: [PATCH 1/2 v3] iio: light: Add DT bindings for GP2AP002
+Date:   Fri, 10 Jan 2020 11:12:42 +0100
+Message-Id: <20200110101242.16077-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-10_01:2020-01-10,2020-01-09 signatures=0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgSm9uYXRoYW4sIGFsbCwNCg0KS2luZCByZW1pbmRlciBvbiB0aGlzIHBhdGNoLg0KUmVnYXJk
-cw0KT2xpdmllcg0KDQpPbiAxMS8yNy8xOSAyOjEwIFBNLCBPbGl2aWVyIE1veXNhbiB3cm90ZToN
-Cj4gVXBkYXRlIHNhbXBsaW5nIHJhdGUgd2hlbiBvdmVyc2FtcGxpbmcgcmF0aW8gaXMgY2hhbmdl
-ZA0KPiB0aHJvdWdoIHRoZSBJSU8gQUJJLg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBPbGl2aWVyIE1v
-eXNhbiA8b2xpdmllci5tb3lzYW5Ac3QuY29tPg0KPiAtLS0NCj4gY2hhbmdlcyBpbiB2ZXJzaW9u
-IDI6DQo+IC0gY29ycmVjdCB0aXRsZQ0KPiAtLS0NCj4gICBkcml2ZXJzL2lpby9hZGMvc3RtMzIt
-ZGZzZG0tYWRjLmMgfCAzMiArKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tDQo+ICAgMSBm
-aWxlIGNoYW5nZWQsIDE5IGluc2VydGlvbnMoKyksIDEzIGRlbGV0aW9ucygtKQ0KPg0KPiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9paW8vYWRjL3N0bTMyLWRmc2RtLWFkYy5jIGIvZHJpdmVycy9paW8v
-YWRjL3N0bTMyLWRmc2RtLWFkYy5jDQo+IGluZGV4IDAzMzllY2RkMDZiZC4uODdhODQyNTA3NTA5
-IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2lpby9hZGMvc3RtMzItZGZzZG0tYWRjLmMNCj4gKysr
-IGIvZHJpdmVycy9paW8vYWRjL3N0bTMyLWRmc2RtLWFkYy5jDQo+IEBAIC0xMjIxLDE0ICsxMjIx
-LDMyIEBAIHN0YXRpYyBpbnQgc3RtMzJfZGZzZG1fd3JpdGVfcmF3KHN0cnVjdCBpaW9fZGV2ICpp
-bmRpb19kZXYsDQo+ICAgCXVuc2lnbmVkIGludCBzcGlfZnJlcTsNCj4gICAJaW50IHJldCA9IC1F
-SU5WQUw7DQo+ICAgDQo+ICsJc3dpdGNoIChjaC0+c3JjKSB7DQo+ICsJY2FzZSBERlNETV9DSEFO
-TkVMX1NQSV9DTE9DS19JTlRFUk5BTDoNCj4gKwkJc3BpX2ZyZXEgPSBhZGMtPmRmc2RtLT5zcGlf
-bWFzdGVyX2ZyZXE7DQo+ICsJCWJyZWFrOw0KPiArCWNhc2UgREZTRE1fQ0hBTk5FTF9TUElfQ0xP
-Q0tfSU5URVJOQUxfRElWMl9GQUxMSU5HOg0KPiArCWNhc2UgREZTRE1fQ0hBTk5FTF9TUElfQ0xP
-Q0tfSU5URVJOQUxfRElWMl9SSVNJTkc6DQo+ICsJCXNwaV9mcmVxID0gYWRjLT5kZnNkbS0+c3Bp
-X21hc3Rlcl9mcmVxIC8gMjsNCj4gKwkJYnJlYWs7DQo+ICsJZGVmYXVsdDoNCj4gKwkJc3BpX2Zy
-ZXEgPSBhZGMtPnNwaV9mcmVxOw0KPiArCX0NCj4gKw0KPiAgIAlzd2l0Y2ggKG1hc2spIHsNCj4g
-ICAJY2FzZSBJSU9fQ0hBTl9JTkZPX09WRVJTQU1QTElOR19SQVRJTzoNCj4gICAJCXJldCA9IGlp
-b19kZXZpY2VfY2xhaW1fZGlyZWN0X21vZGUoaW5kaW9fZGV2KTsNCj4gICAJCWlmIChyZXQpDQo+
-ICAgCQkJcmV0dXJuIHJldDsNCj4gKw0KPiAgIAkJcmV0ID0gc3RtMzJfZGZzZG1fY29tcHV0ZV9h
-bGxfb3NycyhpbmRpb19kZXYsIHZhbCk7DQo+IC0JCWlmICghcmV0KQ0KPiArCQlpZiAoIXJldCkg
-ew0KPiArCQkJZGV2X2RiZygmaW5kaW9fZGV2LT5kZXYsDQo+ICsJCQkJIlNhbXBsaW5nIHJhdGUg
-Y2hhbmdlZCBmcm9tICgldSkgdG8gKCV1KVxuIiwNCj4gKwkJCQlhZGMtPnNhbXBsZV9mcmVxLCBz
-cGlfZnJlcSAvIHZhbCk7DQo+ICAgCQkJYWRjLT5vdmVyc2FtcCA9IHZhbDsNCj4gKwkJCWFkYy0+
-c2FtcGxlX2ZyZXEgPSBzcGlfZnJlcSAvIHZhbDsNCj4gKwkJfQ0KPiAgIAkJaWlvX2RldmljZV9y
-ZWxlYXNlX2RpcmVjdF9tb2RlKGluZGlvX2Rldik7DQo+ICAgCQlyZXR1cm4gcmV0Ow0KPiAgIA0K
-PiBAQCAtMTI0MCwxOCArMTI1OCw2IEBAIHN0YXRpYyBpbnQgc3RtMzJfZGZzZG1fd3JpdGVfcmF3
-KHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYsDQo+ICAgCQlpZiAocmV0KQ0KPiAgIAkJCXJldHVy
-biByZXQ7DQo+ICAgDQo+IC0JCXN3aXRjaCAoY2gtPnNyYykgew0KPiAtCQljYXNlIERGU0RNX0NI
-QU5ORUxfU1BJX0NMT0NLX0lOVEVSTkFMOg0KPiAtCQkJc3BpX2ZyZXEgPSBhZGMtPmRmc2RtLT5z
-cGlfbWFzdGVyX2ZyZXE7DQo+IC0JCQlicmVhazsNCj4gLQkJY2FzZSBERlNETV9DSEFOTkVMX1NQ
-SV9DTE9DS19JTlRFUk5BTF9ESVYyX0ZBTExJTkc6DQo+IC0JCWNhc2UgREZTRE1fQ0hBTk5FTF9T
-UElfQ0xPQ0tfSU5URVJOQUxfRElWMl9SSVNJTkc6DQo+IC0JCQlzcGlfZnJlcSA9IGFkYy0+ZGZz
-ZG0tPnNwaV9tYXN0ZXJfZnJlcSAvIDI7DQo+IC0JCQlicmVhazsNCj4gLQkJZGVmYXVsdDoNCj4g
-LQkJCXNwaV9mcmVxID0gYWRjLT5zcGlfZnJlcTsNCj4gLQkJfQ0KPiAtDQo+ICAgCQlyZXQgPSBk
-ZnNkbV9hZGNfc2V0X3NhbXBfZnJlcShpbmRpb19kZXYsIHZhbCwgc3BpX2ZyZXEpOw0KPiAgIAkJ
-aWlvX2RldmljZV9yZWxlYXNlX2RpcmVjdF9tb2RlKGluZGlvX2Rldik7DQo+ICAgCQlyZXR1cm4g
-cmV0Ow0K
+This adds device tree bindings for the GP2AP002 light
+and proximity sensor.
+
+As with other early proximity sensors (~2010) the light
+sensor and proximity sensors were combined into a single
+component.
+
+Cc: Stephan Gerhold <stephan@gerhold.net>
+Cc: Minkyu Kang <mk7.kang@samsung.com>
+Cc: Paweł Chmiel <pawel.mikolaj.chmiel@gmail.com>
+Cc: Jonathan Bakker <xc-racer2@live.ca>
+Cc: Oskar Andero <oskar.andero@gmail.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v1->v3:
+- Drop the maxitems on the supplies, it is already 1
+- Drop quotes around "alsout"
+- Limit the sharp hysteresis to 8 bits as it should be
+- Use /bits/ 8 in the example so it is correct
+---
+ .../bindings/iio/light/sharp,gp2ap002.yaml    | 85 +++++++++++++++++++
+ 1 file changed, 85 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/sharp,gp2ap002.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/light/sharp,gp2ap002.yaml b/Documentation/devicetree/bindings/iio/light/sharp,gp2ap002.yaml
+new file mode 100644
+index 000000000000..12aa16f24772
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/sharp,gp2ap002.yaml
+@@ -0,0 +1,85 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/sharp,gp2ap002.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Sharp GP2AP002A00F and GP2AP002S00F proximity and ambient light sensors
++
++maintainers:
++  - Linus Walleij <linus.walleij@linaro.org>
++
++description: |
++  Proximity and ambient light sensor with IR LED for the proximity
++  sensing and an analog output for light intensity. The ambient light
++  sensor output is not available on the GP2AP002S00F variant.
++
++properties:
++  compatible:
++    enum:
++      - sharp,gp2ap002a00f
++      - sharp,gp2ap002s00f
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++    description: an interrupt for proximity, usually a GPIO line
++
++  vdd-supply:
++    description: VDD power supply a phandle to a regulator
++
++  vio-supply:
++    description: VIO power supply a phandle to a regulator
++
++  io-channels:
++    maxItems: 1
++    description: ALSOUT ADC channel to read the ambient light
++
++  io-channel-names:
++    const: alsout
++
++  sharp,proximity-far-hysteresis:
++    $ref: /schemas/types.yaml#/definitions/uint8
++    description: |
++      Hysteresis setting for "far" object detection, this setting is
++      device-unique and adjust the optical setting for proximity detection
++      of a "far away" object in front of the sensor.
++
++  sharp,proximity-close-hysteresis:
++    $ref: /schemas/types.yaml#/definitions/uint8
++    description: |
++      Hysteresis setting for "close" object detection, this setting is
++      device-unique and adjust the optical setting for proximity detection
++      of a "close" object in front of the sensor.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - sharp,proximity-far-hysteresis
++  - sharp,proximity-close-hysteresis
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      light-sensor@44 {
++        compatible = "sharp,gp2ap002a00f";
++        reg = <0x44>;
++        interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
++        vdd-supply = <&vdd_regulator>;
++        vio-supply = <&vio_regulator>;
++        io-channels = <&adc_channel>;
++        io-channel-names = "alsout";
++        sharp,proximity-far-hysteresis = /bits/ 8 <0x2f>;
++        sharp,proximity-close-hysteresis = /bits/ 8 <0x0f>;
++      };
++    };
++
++...
+-- 
+2.21.0
+

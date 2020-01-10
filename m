@@ -2,103 +2,178 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E1FE13628B
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Jan 2020 22:31:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC1913661D
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2020 05:29:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728792AbgAIVbI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Jan 2020 16:31:08 -0500
-Received: from foss.arm.com ([217.140.110.172]:37060 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725763AbgAIVbI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 9 Jan 2020 16:31:08 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 59B6931B;
-        Thu,  9 Jan 2020 13:31:07 -0800 (PST)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BB1DB3F534;
-        Thu,  9 Jan 2020 13:31:06 -0800 (PST)
-Date:   Thu, 09 Jan 2020 21:31:05 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Claudiu Beznea <claudiu.beznea@microchip.com>
-Cc:     alexandre.belloni@bootlin.com, a.zummo@towertech.it,
-        broonie@kernel.org, devicetree@vger.kernel.org,
-        dmaengine@vger.kernel.org, eugen.hristev@microchip.com,
-        jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        lee.jones@linaro.org, linux-arm-kernel@lists.infradead.org,
-        linux-can@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
-        linux-spi@vger.kernel.org, ludovic.desroches@microchip.com,
-        Mark Brown <broonie@kernel.org>, mark.rutland@arm.com,
-        mchehab@kernel.org, miquel.raynal@bootlin.com, mkl@pengutronix.de,
-        netdev@vger.kernel.org, nicolas.ferre@microchip.com,
-        pmeerw@pmeerw.net, radu_nicolae.pirea@upb.ro,
-        richard.genoud@gmail.com, richard@nod.at, robh+dt@kernel.org,
-        tudor.ambarus@microchip.com, vigneshr@ti.com, vkoul@kernel.org,
-        wg@grandegger.com
-Subject: Applied "dt-bindings: spi_atmel: add microchip,sam9x60-spi" to the spi tree
-In-Reply-To: <1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com>
-Message-Id: <applied-1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com>
-X-Patchwork-Hint: ignore
+        id S1731197AbgAJE3N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Jan 2020 23:29:13 -0500
+Received: from mail-mw2nam12on2078.outbound.protection.outlook.com ([40.107.244.78]:20813
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731162AbgAJE3N (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 9 Jan 2020 23:29:13 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EztRJQ6ynTVijnx8+6q5amTvheNrDvxRsTtUObp4afHJgQ/I0PCmDHyAGUQH0IdQomH9PzhQCTw8gkWkrycZ4A0XM8kgqbldKJmLhvCc/TpVK3JO0cQQgvFOkpbYHVHhNvwSDxniTNeu91KzD5r1bQj/1N8Sq3rOgNXpdDRa/fbJV/7QX56t6wPuMXwtp3fHdlemWWXjrqLtMJMCI2OKh/2TFxAGgpllSSvF1vnye0llLyCmP+2t4IFS5mnREnRquXT4We3/JyZgdbpCePProii+csb1GIwK90OTYclHck6oXvdGHKjoQJlEr6oDscJ9kAvtbluFpg1aJVTI5Vp3oA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GFfuDWrzCVGvAfyLlmgKf/nyRqL2jQilEuiHFfbRoDA=;
+ b=TihYqb4ahsDUBqZaSUdaK/Ah63vQ2bPVBqZKDzD2mGdLYnKGnb1D+ImjwFsCjClkia1JW3dHfA3BC4Q+BuU2d4o6lsvBO8vWAOzoxlBa1vujmfykK1fZzwPO3PVsu6oNqMTWQFjD5QOQW6DuPLoJvvAfaa0GhScpv4r1BtwbH4nD6ZAZbeHg/apbSyQWjK/mLJAItkFoC9oK4cMvDBoooOlHmkdjP4gU0D3o2WscyKGVQVqZxYoX9ZVsfMa1CZw2E9A0GehtnbaDvcngYkEGRTfDbMJVJ92tvhn4+uqcQs1xYfCCbheaD7FBgaqNaHFIeguyVpKFHUEva1IzL6JQHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=labundy.com; dmarc=pass action=none header.from=labundy.com;
+ dkim=pass header.d=labundy.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=NETORG5796793.onmicrosoft.com; s=selector1-NETORG5796793-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GFfuDWrzCVGvAfyLlmgKf/nyRqL2jQilEuiHFfbRoDA=;
+ b=xriLT65/4YAZIVAspSqJvxyMkhJbFtwqX3dZbsc/omXjStxgN9IABrj0gELXq2lAs3HryFe47hoRk5P7bQ5qZFSZV4XoervIQkHcVcPBqLrooYb8iGNcvYwJ2xPTk1gfvoZudc885DASG83vTJKpGXBphKSEJgBQLv5/1jPVxSA=
+Received: from SN6PR08MB5053.namprd08.prod.outlook.com (52.135.107.153) by
+ SN6PR08MB4480.namprd08.prod.outlook.com (52.135.71.144) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2602.12; Fri, 10 Jan 2020 04:29:08 +0000
+Received: from SN6PR08MB5053.namprd08.prod.outlook.com
+ ([fe80::7c80:2b62:5d9a:2139]) by SN6PR08MB5053.namprd08.prod.outlook.com
+ ([fe80::7c80:2b62:5d9a:2139%4]) with mapi id 15.20.2623.010; Fri, 10 Jan 2020
+ 04:29:08 +0000
+Received: from labundy.com (136.49.227.119) by SN6PR16CA0068.namprd16.prod.outlook.com (2603:10b6:805:ca::45) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2623.11 via Frontend Transport; Fri, 10 Jan 2020 04:29:03 +0000
+From:   Jeff LaBundy <jeff@labundy.com>
+To:     =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+CC:     "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>
+Subject: Re: [PATCH v2 4/7] pwm: Add support for Azoteq IQS620A PWM generator
+Thread-Topic: [PATCH v2 4/7] pwm: Add support for Azoteq IQS620A PWM generator
+Thread-Index: AQHVrij+8yO8xEtV+ECzt9/U9i+G6qexaTEAgAEU0QCAAHrSgIAIuWeAgADVNACABeTNAIAAXxsAgAE1m4CAAsXugIAPxXqAgAiwCACABEQ3gA==
+Date:   Fri, 10 Jan 2020 04:29:08 +0000
+Message-ID: <20200110042851.GA23906@labundy.com>
+References: <20191210000252.GA6361@labundy.com>
+ <20191210072227.434hyv5wl3rwztqx@pengutronix.de>
+ <20191215203607.GA31390@labundy.com>
+ <20191216091912.r4onikojbkbmguag@pengutronix.de>
+ <20191220031924.GA2658@labundy.com>
+ <20191220085948.iagsdpjqd6ixdo7j@pengutronix.de>
+ <20191221032755.GA3051@labundy.com>
+ <20191222214851.kapsro6b6qylke43@pengutronix.de>
+ <20200101223933.GB14339@labundy.com>
+ <20200107111940.ymiey7npx6rrppqz@pengutronix.de>
+In-Reply-To: <20200107111940.ymiey7npx6rrppqz@pengutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: SN6PR16CA0068.namprd16.prod.outlook.com
+ (2603:10b6:805:ca::45) To SN6PR08MB5053.namprd08.prod.outlook.com
+ (2603:10b6:805:78::25)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=jeff@labundy.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [136.49.227.119]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: b42492d3-832d-49f4-33f6-08d79585a1ea
+x-ms-traffictypediagnostic: SN6PR08MB4480:
+x-microsoft-antispam-prvs: <SN6PR08MB448088F2923080493736E34BD3380@SN6PR08MB4480.namprd08.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 02788FF38E
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(39830400003)(34096005)(366004)(396003)(346002)(136003)(199004)(189003)(4326008)(66446008)(66556008)(8676002)(16526019)(81156014)(8936002)(64756008)(2906002)(7416002)(52116002)(7696005)(66946007)(6916009)(55016002)(66476007)(186003)(26005)(966005)(54906003)(81166006)(316002)(33656002)(1076003)(36756003)(8886007)(66574012)(71200400001)(2616005)(86362001)(956004)(508600001)(5660300002);DIR:OUT;SFP:1101;SCL:1;SRVR:SN6PR08MB4480;H:SN6PR08MB5053.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: labundy.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: +34nBxNzacjjgFgExyPsoTGISBNRfBk9j0NvStgcdU6THundArt1o8brlwIJ8sfkxho+3g4wTtCXKC5U1VS6PwS3+C0BEaSYbgkOtAHTQgHnORM0cpzn+6NEFe7Lmq3UphlamNLMWTMyL28dSI9LqjwZoT/hl1Hkrx/s0ws6Urlu+rtfBFttTOAsdcqQ7Lj57y5EYfWdG/s4Ty62QYsjjaXVAHssJBhEpThirJ5qQ+LnNrnEzBmkdU82u1TYHb21tNDDkGgQgsBqta/KIY961y/8cO71IGIMzPsSPaszhq0Dddst9aQLsyZbD2ztVKAjllVgERyPBQxYdBYRqwctHR3pVKzANfc5DWa2q6G6Ap/lN4V4rnQ4bHRy67KU5R5nmbPVeZI83t4s8bue6m9R8/jazcSk9S1LOUpQJJNEsASb9G1lJYu5Z9KCOYTDJGdtD6zvHdAiWuxC1BrQ5/Vf6ZgXtRr0svMsQ70JRMKw6wY=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <0BD0E6A2A1A1C145924E6F804C26EE79@namprd08.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: labundy.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b42492d3-832d-49f4-33f6-08d79585a1ea
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jan 2020 04:29:08.3749
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 00b69d09-acab-4585-aca7-8fb7c6323e6f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ro7/kc+o+NMx/h+LZl3lVNfWKBD/ENE/1qAE9CGtJDCi6txZWey7FwpBoejOnPC790k4A8+l+pMzltH+Ea0BDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4480
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The patch
+Hi Uwe,
 
-   dt-bindings: spi_atmel: add microchip,sam9x60-spi
+On Tue, Jan 07, 2020 at 12:19:40PM +0100, Uwe Kleine-K=F6nig wrote:
+> Hi Jeff,
+>=20
+> On Wed, Jan 01, 2020 at 10:39:36PM +0000, Jeff LaBundy wrote:
+> > On Sun, Dec 22, 2019 at 10:48:51PM +0100, Uwe Kleine-K=F6nig wrote:
+> > > On Sat, Dec 21, 2019 at 03:28:01AM +0000, Jeff LaBundy wrote:
+> > > > Based on your other feedback, I'm moving forward under the impressi=
+on that
+> > > > you'll still accept option (2); please let me know if I have misund=
+erstood
+> > > > (thank you for being flexible).
+> > >=20
+> > > Yeah, that's fine. If in the end it shows that this is a bad idea we =
+can
+> > > still change to (3).
+> >=20
+> > Sounds great. As soon as 5.5-rc5 lands this weekend, I'll rebase v3 and
+> > send it out.
+> >=20
+> > I failed to catch this in my previous reply, but the comment I've added
+> > to iqs620_pwm_get_state actually reads as follows:
+> >=20
+> > /*
+> >  * Since the device cannot generate a 0% duty cycle, requests to do so
+> >  * force subsequent calls to iqs620_pwm_get_state to report the output
+> >  * as disabled with duty cycle equal to that which was in use prior to
+> >  * the request. This is not ideal, but is the best compromise based on
+> >  * the capabilities of the device.
+> >  */
+> >=20
+> > This matches the present implementation, not your proposed comment that
+> > claims duty cycle is clamped to 1 / 256 ms following a request for a 0%
+> > duty cycle.
+>=20
+> Yeah, if that's the mechanism that is actually implemented, that's fine
+> of course.
+>=20
+> > This seems OK since the concept of a duty cycle or period aren't really
+> > relevant if the output is disabled in my opinion. However if you prefer
+> > I update iqs620_pwm_apply to clamp duty cycle to 1 / 256 ms (instead of
+> > leaving it untouched) in this case, please let me know.
+>=20
+> For a disabled PWM the duty_cycle and period are not relevant, for an
+> enabled PWM running with 0% the period matters (at least in theory)
+> however.
+>=20
 
-has been applied to the spi tree at
+Agreed in full. We should be covered here since we report the (fixed)
+period in all cases.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
+> Best regards
+> Uwe
+>=20
+> --=20
+> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
+  |
+> Industrial Linux Solutions                 | https://www.pengutronix.de/ =
+|
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+I managed to send out v3 this past weekend; please let me know if you
+have any further feedback or you find it to be satisfactory.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 0a1eb761ff30cdc089bcc94e1bd540b6956487c5 Mon Sep 17 00:00:00 2001
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
-Date: Wed, 8 Jan 2020 14:55:19 +0200
-Subject: [PATCH] dt-bindings: spi_atmel: add microchip,sam9x60-spi
-
-Add microchip,sam9x60-spi to DT bindings documentation.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- Documentation/devicetree/bindings/spi/spi_atmel.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi_atmel.txt b/Documentation/devicetree/bindings/spi/spi_atmel.txt
-index f99c733d75c1..5bb4a8f1df7a 100644
---- a/Documentation/devicetree/bindings/spi/spi_atmel.txt
-+++ b/Documentation/devicetree/bindings/spi/spi_atmel.txt
-@@ -1,7 +1,7 @@
- Atmel SPI device
- 
- Required properties:
--- compatible : should be "atmel,at91rm9200-spi".
-+- compatible : should be "atmel,at91rm9200-spi" or "microchip,sam9x60-spi".
- - reg: Address and length of the register set for the device
- - interrupts: Should contain spi interrupt
- - cs-gpios: chipselects (optional for SPI controller version >= 2 with the
--- 
-2.20.1
-
+Kind regards,
+Jeff LaBundy

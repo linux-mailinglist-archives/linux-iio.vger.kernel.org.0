@@ -2,169 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0796138127
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2020 12:35:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4124113812A
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2020 12:39:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729583AbgAKLfs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Jan 2020 06:35:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44082 "EHLO mail.kernel.org"
+        id S1729226AbgAKLjk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Jan 2020 06:39:40 -0500
+Received: from honk.sigxcpu.org ([24.134.29.49]:40508 "EHLO honk.sigxcpu.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729118AbgAKLfs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 11 Jan 2020 06:35:48 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EFDBB20673;
-        Sat, 11 Jan 2020 11:35:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578742547;
-        bh=U2YJi8SazhqshG6jcTn2DiVpE+zrlZAMRGuXimhCAfk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UjjEAy771+w5OOhwyWpPDKp8cGkgYEB3qMYfX4plFZR0WTRMPwOrT6lItnrXZdJho
-         qIjFTviB/78/9tKCxoZkZJ7v5JJIhjoFSoplwtJgE3AQHb4xmrgCbVvUPQ6VxOLV+L
-         E+UYJ4eMn8O0p5Mr+CIv5GMdJJ4I3CgcguL3Gn2s=
-Date:   Sat, 11 Jan 2020 11:35:44 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Subject: Re: [PATCH v2 2/2] iio: adis: Remove startup_delay
-Message-ID: <20200111113544.1a5e0cce@archlinux>
-In-Reply-To: <20200107111705.24138-2-alexandru.ardelean@analog.com>
-References: <20200107111705.24138-1-alexandru.ardelean@analog.com>
-        <20200107111705.24138-2-alexandru.ardelean@analog.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1729119AbgAKLjk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 11 Jan 2020 06:39:40 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by honk.sigxcpu.org (Postfix) with ESMTP id 60304FB03;
+        Sat, 11 Jan 2020 12:39:38 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
+Received: from honk.sigxcpu.org ([127.0.0.1])
+        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id MxlF7lbEfuJN; Sat, 11 Jan 2020 12:39:37 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+        id 7EC514A3D8; Sat, 11 Jan 2020 12:39:36 +0100 (CET)
+Date:   Sat, 11 Jan 2020 12:39:36 +0100
+From:   Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
+To:     Tomas Novotny <tomas@novotny.cz>
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Angus Ainslie <angus@akkea.ca>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 2/2] iio: light: vcnl4000: update sampling rates for
+ vcnl4040
+Message-ID: <20200111113936.GA15318@bogon.m.sigxcpu.org>
+References: <20200108155852.32702-1-tomas@novotny.cz>
+ <20200108155852.32702-3-tomas@novotny.cz>
+ <20200111112145.GA6565@bogon.m.sigxcpu.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200111112145.GA6565@bogon.m.sigxcpu.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 7 Jan 2020 13:17:05 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+Hi,
+On Sat, Jan 11, 2020 at 12:21:45PM +0100, Guido Günther wrote:
+> Hi,
+> On Wed, Jan 08, 2020 at 04:58:52PM +0100, Tomas Novotny wrote:
+> > Vishay has published a new version of "Designing the VCNL4200 Into an
+> > Application" application note in October 2019. The new version specifies
+> > that there is +-20% of part to part tolerance. Although the application
+> > note is related to vcnl4200, according to support the vcnl4040's "ASIC
+> > is quite similar to that one for the VCNL4200".
+> > 
+> > So update the sampling rates (and comment), including the correct
+> > sampling rate for proximity. Both sampling rates are lower. Users
+> > relying on the blocking behaviour of reading will get proximity
+> > measurements much earlier.
+> > 
+> > Fixes: 5a441aade5b3 ("iio: light: vcnl4000 add support for the VCNL4040 proximity and light sensor")
+> > Signed-off-by: Tomas Novotny <tomas@novotny.cz>
+> > ---
+> >  drivers/iio/light/vcnl4000.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> > index 98428bf430bd..e5b00a6611ac 100644
+> > --- a/drivers/iio/light/vcnl4000.c
+> > +++ b/drivers/iio/light/vcnl4000.c
+> > @@ -174,9 +174,10 @@ static int vcnl4200_init(struct vcnl4000_data *data)
+> >  		data->al_scale = 24000;
+> >  		break;
+> >  	case VCNL4040_PROD_ID:
+> > -		/* Integration time is 80ms, add 10ms. */
+> > -		data->vcnl4200_al.sampling_rate = ktime_set(0, 100000 * 1000);
+> > -		data->vcnl4200_ps.sampling_rate = ktime_set(0, 100000 * 1000);
+> > +		/* Default wait time is 80ms, add 20% tolerance. */
+> > +		data->vcnl4200_al.sampling_rate = ktime_set(0, 96000 * 1000);
+> > +		/* Default wait time is 5ms, add 20% tolerance. */
+> > +		data->vcnl4200_ps.sampling_rate = ktime_set(0, 6000 * 1000);
+> 
+> I'm seeing the 80ms in VCNL4040 Application guide (Revision:
+> 12-Nov-2019) but that one also says 6400us for the proximity so 8000
+> might be more on the safe side which (which i just tested, it's still
+> way better than the current 100000).
 
-> From: Nuno S=C3=A1 <nuno.sa@analog.com>
->=20
-> All timeouts are now handled by a dedicated timeout struct. This
-> variable is no longer needed.
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Applied.
+In fact i was looking at the wrong value so no changes required:
 
-Thanks,
+Reviewed-by: Guido Günther <agx@sigxcpu.org>
+Tested-by: Guido Günther <agx@sigxcpu.org>
 
-Jonathan
+ -- Guido
 
-> ---
->  drivers/iio/accel/adis16201.c         | 1 -
->  drivers/iio/accel/adis16209.c         | 1 -
->  drivers/iio/gyro/adis16136.c          | 1 -
->  drivers/iio/gyro/adis16260.c          | 1 -
->  drivers/iio/imu/adis16400.c           | 1 -
->  drivers/staging/iio/accel/adis16203.c | 1 -
->  drivers/staging/iio/accel/adis16240.c | 1 -
->  include/linux/iio/imu/adis.h          | 1 -
->  8 files changed, 8 deletions(-)
->=20
-> diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
-> index c92d22387b01..0f0f27a8184e 100644
-> --- a/drivers/iio/accel/adis16201.c
-> +++ b/drivers/iio/accel/adis16201.c
-> @@ -247,7 +247,6 @@ static const struct adis_data adis16201_data =3D {
-> =20
->  	.self_test_mask =3D ADIS16201_MSC_CTRL_SELF_TEST_EN,
->  	.self_test_no_autoclear =3D true,
-> -	.startup_delay =3D ADIS16201_STARTUP_DELAY_MS,
->  	.timeouts =3D &adis16201_timeouts,
-> =20
->  	.status_error_msgs =3D adis16201_status_error_msgs,
-> diff --git a/drivers/iio/accel/adis16209.c b/drivers/iio/accel/adis16209.c
-> index f5a78fc11919..c6dbd2424e10 100644
-> --- a/drivers/iio/accel/adis16209.c
-> +++ b/drivers/iio/accel/adis16209.c
-> @@ -257,7 +257,6 @@ static const struct adis_data adis16209_data =3D {
-> =20
->  	.self_test_mask =3D ADIS16209_MSC_CTRL_SELF_TEST_EN,
->  	.self_test_no_autoclear =3D true,
-> -	.startup_delay =3D ADIS16209_STARTUP_DELAY_MS,
->  	.timeouts =3D &adis16209_timeouts,
-> =20
->  	.status_error_msgs =3D adis16209_status_error_msgs,
-> diff --git a/drivers/iio/gyro/adis16136.c b/drivers/iio/gyro/adis16136.c
-> index dc91d8df7697..d5e03a406d4a 100644
-> --- a/drivers/iio/gyro/adis16136.c
-> +++ b/drivers/iio/gyro/adis16136.c
-> @@ -472,7 +472,6 @@ static const struct adis_data adis16136_data =3D {
->  	.msc_ctrl_reg =3D ADIS16136_REG_MSC_CTRL,
-> =20
->  	.self_test_mask =3D ADIS16136_MSC_CTRL_SELF_TEST,
-> -	.startup_delay =3D 80,
-> =20
->  	.read_delay =3D 10,
->  	.write_delay =3D 10,
-> diff --git a/drivers/iio/gyro/adis16260.c b/drivers/iio/gyro/adis16260.c
-> index 0e3a66a7726d..be09b3e5910c 100644
-> --- a/drivers/iio/gyro/adis16260.c
-> +++ b/drivers/iio/gyro/adis16260.c
-> @@ -346,7 +346,6 @@ static const struct adis_data adis16260_data =3D {
->  	.diag_stat_reg =3D ADIS16260_DIAG_STAT,
-> =20
->  	.self_test_mask =3D ADIS16260_MSC_CTRL_MEM_TEST,
-> -	.startup_delay =3D ADIS16260_STARTUP_DELAY,
->  	.timeouts =3D &adis16260_timeouts,
-> =20
->  	.status_error_msgs =3D adis1620_status_error_msgs,
-> diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
-> index 51b1ec23b8ef..cfb1c19eb930 100644
-> --- a/drivers/iio/imu/adis16400.c
-> +++ b/drivers/iio/imu/adis16400.c
-> @@ -1126,7 +1126,6 @@ static const struct adis_data adis16400_data =3D {
->  	.write_delay =3D 50,
-> =20
->  	.self_test_mask =3D ADIS16400_MSC_CTRL_MEM_TEST,
-> -	.startup_delay =3D ADIS16400_STARTUP_DELAY,
-> =20
->  	.status_error_msgs =3D adis16400_status_error_msgs,
->  	.status_error_mask =3D BIT(ADIS16400_DIAG_STAT_ZACCL_FAIL) |
-> diff --git a/drivers/staging/iio/accel/adis16203.c b/drivers/staging/iio/=
-accel/adis16203.c
-> index 3d706ee02df0..39dfe3f7f254 100644
-> --- a/drivers/staging/iio/accel/adis16203.c
-> +++ b/drivers/staging/iio/accel/adis16203.c
-> @@ -251,7 +251,6 @@ static const struct adis_data adis16203_data =3D {
-> =20
->  	.self_test_mask =3D ADIS16203_MSC_CTRL_SELF_TEST_EN,
->  	.self_test_no_autoclear =3D true,
-> -	.startup_delay =3D ADIS16203_STARTUP_DELAY,
->  	.timeouts =3D &adis16203_timeouts,
-> =20
->  	.status_error_msgs =3D adis16203_status_error_msgs,
-> diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/=
-accel/adis16240.c
-> index d4848ef78c75..39eb8364aa95 100644
-> --- a/drivers/staging/iio/accel/adis16240.c
-> +++ b/drivers/staging/iio/accel/adis16240.c
-> @@ -374,7 +374,6 @@ static const struct adis_data adis16240_data =3D {
-> =20
->  	.self_test_mask =3D ADIS16240_MSC_CTRL_SELF_TEST_EN,
->  	.self_test_no_autoclear =3D true,
-> -	.startup_delay =3D ADIS16240_STARTUP_DELAY,
->  	.timeouts =3D &adis16240_timeouts,
-> =20
->  	.status_error_msgs =3D adis16240_status_error_msgs,
-> diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
-> index 853dc8c8365c..d2fcf45b4cef 100644
-> --- a/include/linux/iio/imu/adis.h
-> +++ b/include/linux/iio/imu/adis.h
-> @@ -56,7 +56,6 @@ struct adis_data {
-> =20
->  	unsigned int self_test_mask;
->  	bool self_test_no_autoclear;
-> -	unsigned int startup_delay;
->  	const struct adis_timeout *timeouts;
-> =20
->  	const char * const *status_error_msgs;
-
+> 
+> with that fixed
+> 
+> Reviewed-by: Guido Günther <agx@sigxcpu.org>
+> 
+> Cheers,
+>  -- Guido
+> 
+> >  		data->al_scale = 120000;
+> >  		break;
+> >  	}
+> > -- 
+> > 2.16.4
+> > 

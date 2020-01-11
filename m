@@ -2,39 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FBC913810F
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2020 12:15:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B62A7138114
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2020 12:19:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729498AbgAKLPH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Jan 2020 06:15:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40862 "EHLO mail.kernel.org"
+        id S1729501AbgAKLTm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Jan 2020 06:19:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45214 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729483AbgAKLPH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 11 Jan 2020 06:15:07 -0500
+        id S1729177AbgAKLTm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 11 Jan 2020 06:19:42 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37EFA2082E;
-        Sat, 11 Jan 2020 11:15:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BBEBC2082E;
+        Sat, 11 Jan 2020 11:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578741306;
-        bh=erQ6M4hMxHylqYfd9kNe8cMwdxxMfWcIL4nVaDchgOE=;
+        s=default; t=1578741580;
+        bh=iHeSVqu29bQYYiae+/3FvBEFDlhvViddgtavK8UMSzQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rS1kqrVm1bYPDTCdYCZ7pPKr3VxaGwvPOLjF4nIlSfHNWyOhHgS+RPt9G6E5oRANy
-         AJO+4ejKwlLNFNzmCRAk66UcsP4n4d39IwI1iE9na5KlMLinn3F7NPGxPwb/py1m1x
-         yLWdoaKD8aCDqWIrs2w3vtaK9MhmeY9u0slnnoTE=
-Date:   Sat, 11 Jan 2020 11:15:01 +0000
+        b=OEcF9y98vRXvBRtYxnXIfU85W+nmsio+xD06Dpk0gxk6wIqhDlNsBAEh32BdRf7Vu
+         QaQzkZmpkgMSQWMrtgAwLjCGUbF5sEVH0uFariPUdP3hIWQYh8sgkrOOo0rkq6YQW3
+         dKmVFxmRd8IhvV1Qxu7xvf3PAAsbaVlf8I0gRHso=
+Date:   Sat, 11 Jan 2020 11:19:35 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     <vkoul@kernel.org>, <ludovic.desroches@microchip.com>,
-        <eugen.hristev@microchip.com>, <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] iio: adc: at91-sama5d2_adc: Use dma_request_chan()
- instead dma_request_slave_channel()
-Message-ID: <20200111111501.77d19476@archlinux>
-In-Reply-To: <20200107113729.5505-1-peter.ujfalusi@ti.com>
-References: <20200107113729.5505-1-peter.ujfalusi@ti.com>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH] iio: chemical: atlas-sensor: add DO-SM module support
+Message-ID: <20200111111935.4e36839d@archlinux>
+In-Reply-To: <CAJCx=gnsfVV1egJ8BWzEMAWZnLHYw3qY7_t6MaRwnPJDLa+Z2Q@mail.gmail.com>
+References: <20200106090335.21717-1-matt.ranostay@konsulko.com>
+        <CAJCx=gnsfVV1egJ8BWzEMAWZnLHYw3qY7_t6MaRwnPJDLa+Z2Q@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,58 +42,206 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 7 Jan 2020 13:37:29 +0200
-Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
+On Mon, 6 Jan 2020 17:07:58 +0800
+Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 
-> dma_request_slave_channel() is a wrapper on top of dma_request_chan()
-> eating up the error code.
-> 
-> The dma_request_chan() is the standard API to request slave channel,
-> clients should be moved away from the legacy API to allow us to retire
-> them.
-> 
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> On Mon, Jan 6, 2020 at 5:04 PM Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+> >
+> > Atlas Scientific DO-SM OEM sensor reads disolved oxygen in
+> > a solution. This is reported back as mg/L which maps directly
+> > to ppm and so the IIO_CONCENTRATION channel type can be used.
+> >
+> > Cc: devicetree@vger.kernel.org
+> > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
 
-Applied to the togreg branch of iio.git and pushed out as testing.
-Note that tree will get rebased shortly to catch up with upstream.
-(testing can in theory be rebased at any time even if I don't do it
-that often).
+Seems straight forward to me.
 
-Thanks,
+My only thought is that we perhaps want to think about how we distinguish
+between 'what' the concentration is of?
+
+Doesn't need to be solved today though.
 
 Jonathan
 
-> ---
-> Hi,
+
+> > ---
+> >  .../bindings/iio/chemical/atlas,do-sm.txt     | 21 ++++++
+> >  drivers/iio/chemical/atlas-sensor.c           | 64 +++++++++++++++++--
+> >  2 files changed, 81 insertions(+), 4 deletions(-)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt
+> > new file mode 100644
+> > index 000000000000..fc741ea794c4
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/chemical/atlas,do-sm.txt
+> > @@ -0,0 +1,21 @@
+> > +* Atlas Scientific DO-SM OEM sensor
+> > +
+> > +http://www.atlas-scientific.com/_files/_datasheets/_oem/DO_oem_datasheet.pdf
+> > +
+> > +Required properties:
+> > +
+> > +  - compatible: must be "atlas,do-sm"
+> > +  - reg: the I2C address of the sensor
+> > +  - interrupts: the sole interrupt generated by the device
+> > +
+> > +  Refer to interrupt-controller/interrupts.txt for generic interrupt client
+> > +  node bindings.
+> > +
+> > +Example:
+> > +
+> > +atlas@64 {  
 > 
-> Changes since v2:
-> - Commit message updated
+> Noticed this should be 67.. But won't submit a v2 till some feedback.
 > 
-> Changes since v1:
-> - Subject prefix is corrected to "iio: adc: at91-sama5d2_adc:"
+> - Matt
 > 
-> Regards,
-> Peter
-> 
->  drivers/iio/adc/at91-sama5d2_adc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> index e1850f3d5cf3..a5c7771227d5 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -1444,10 +1444,10 @@ static void at91_adc_dma_init(struct platform_device *pdev)
->  	if (st->dma_st.dma_chan)
->  		return;
->  
-> -	st->dma_st.dma_chan = dma_request_slave_channel(&pdev->dev, "rx");
-> -
-> -	if (!st->dma_st.dma_chan)  {
-> +	st->dma_st.dma_chan = dma_request_chan(&pdev->dev, "rx");
-> +	if (IS_ERR(st->dma_st.dma_chan))  {
->  		dev_info(&pdev->dev, "can't get DMA channel\n");
-> +		st->dma_st.dma_chan = NULL;
->  		goto dma_exit;
->  	}
->  
+> > +       compatible = "atlas,do-sm";
+> > +       reg = <0x67>;
+> > +       interrupt-parent = <&gpio1>;
+> > +       interrupts = <16 2>;
+> > +};
+> > diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
+> > index 2f0a6fed2589..42ad1ed76144 100644
+> > --- a/drivers/iio/chemical/atlas-sensor.c
+> > +++ b/drivers/iio/chemical/atlas-sensor.c
+> > @@ -48,6 +48,11 @@
+> >  #define ATLAS_REG_EC_CALIB_STATUS_LOW          BIT(2)
+> >  #define ATLAS_REG_EC_CALIB_STATUS_HIGH         BIT(3)
+> >
+> > +#define ATLAS_REG_DO_CALIB_STATUS              0x09
+> > +#define ATLAS_REG_DO_CALIB_STATUS_MASK         0x03
+> > +#define ATLAS_REG_DO_CALIB_STATUS_PRESSURE     BIT(0)
+> > +#define ATLAS_REG_DO_CALIB_STATUS_DO           BIT(1)
+> > +
+> >  #define ATLAS_REG_PH_TEMP_DATA         0x0e
+> >  #define ATLAS_REG_PH_DATA              0x16
+> >
+> > @@ -60,14 +65,19 @@
+> >  #define ATLAS_REG_ORP_CALIB_STATUS     0x0d
+> >  #define ATLAS_REG_ORP_DATA             0x0e
+> >
+> > +#define ATLAS_REG_DO_TEMP_DATA         0x12
+> > +#define ATLAS_REG_DO_DATA              0x22
+> > +
+> >  #define ATLAS_PH_INT_TIME_IN_MS                450
+> >  #define ATLAS_EC_INT_TIME_IN_MS                650
+> >  #define ATLAS_ORP_INT_TIME_IN_MS       450
+> > +#define ATLAS_DO_INT_TIME_IN_MS                450
+> >
+> >  enum {
+> >         ATLAS_PH_SM,
+> >         ATLAS_EC_SM,
+> >         ATLAS_ORP_SM,
+> > +       ATLAS_DO_SM,
+> >  };
+> >
+> >  struct atlas_data {
+> > @@ -121,7 +131,7 @@ static const struct iio_chan_spec atlas_ph_channels[] = {
+> >         },
+> >  };
+> >
+> > -#define ATLAS_EC_CHANNEL(_idx, _addr) \
+> > +#define ATLAS_CONCENTRATION_CHANNEL(_idx, _addr) \
+> >         {\
+> >                 .type = IIO_CONCENTRATION, \
+> >                 .indexed = 1, \
+> > @@ -152,8 +162,8 @@ static const struct iio_chan_spec atlas_ec_channels[] = {
+> >                         .endianness = IIO_BE,
+> >                 },
+> >         },
+> > -       ATLAS_EC_CHANNEL(0, ATLAS_REG_TDS_DATA),
+> > -       ATLAS_EC_CHANNEL(1, ATLAS_REG_PSS_DATA),
+> > +       ATLAS_CONCENTRATION_CHANNEL(0, ATLAS_REG_TDS_DATA),
+> > +       ATLAS_CONCENTRATION_CHANNEL(1, ATLAS_REG_PSS_DATA),
+> >         IIO_CHAN_SOFT_TIMESTAMP(3),
+> >         {
+> >                 .type = IIO_TEMP,
+> > @@ -182,6 +192,19 @@ static const struct iio_chan_spec atlas_orp_channels[] = {
+> >         IIO_CHAN_SOFT_TIMESTAMP(1),
+> >  };
+> >
+> > +static const struct iio_chan_spec atlas_do_channels[] = {
+> > +       ATLAS_CONCENTRATION_CHANNEL(0, ATLAS_REG_DO_DATA),
+> > +       IIO_CHAN_SOFT_TIMESTAMP(1),
+> > +       {
+> > +               .type = IIO_TEMP,
+> > +               .address = ATLAS_REG_DO_TEMP_DATA,
+> > +               .info_mask_separate =
+> > +                       BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+> > +               .output = 1,
+> > +               .scan_index = -1
+> > +       },
+> > +};
+> > +
+> >  static int atlas_check_ph_calibration(struct atlas_data *data)
+> >  {
+> >         struct device *dev = &data->client->dev;
+> > @@ -262,7 +285,31 @@ static int atlas_check_orp_calibration(struct atlas_data *data)
+> >                 dev_warn(dev, "device has not been calibrated\n");
+> >
+> >         return 0;
+> > -};
+> > +}
+> > +
+> > +static int atlas_check_do_calibration(struct atlas_data *data)
+> > +{
+> > +       struct device *dev = &data->client->dev;
+> > +       int ret;
+> > +       unsigned int val;
+> > +
+> > +       ret = regmap_read(data->regmap, ATLAS_REG_DO_CALIB_STATUS, &val);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       if (!(val & ATLAS_REG_DO_CALIB_STATUS_MASK)) {
+> > +               dev_warn(dev, "device has not been calibrated\n");
+> > +               return 0;
+> > +       }
+> > +
+> > +       if (!(val & ATLAS_REG_DO_CALIB_STATUS_PRESSURE))
+> > +               dev_warn(dev, "device missing atmospheric pressure calibration\n");
+> > +
+> > +       if (!(val & ATLAS_REG_DO_CALIB_STATUS_DO))
+> > +               dev_warn(dev, "device missing dissolved oxygen calibration\n");
+> > +
+> > +       return 0;
+> > +}
+> >
+> >  struct atlas_device {
+> >         const struct iio_chan_spec *channels;
+> > @@ -295,6 +342,13 @@ static struct atlas_device atlas_devices[] = {
+> >                                 .calibration = &atlas_check_orp_calibration,
+> >                                 .delay = ATLAS_ORP_INT_TIME_IN_MS,
+> >         },
+> > +       [ATLAS_DO_SM] = {
+> > +                               .channels = atlas_do_channels,
+> > +                               .num_channels = 3,
+> > +                               .data_reg = ATLAS_REG_DO_DATA,
+> > +                               .calibration = &atlas_check_do_calibration,
+> > +                               .delay = ATLAS_DO_INT_TIME_IN_MS,
+> > +       },
+> >  };
+> >
+> >  static int atlas_set_powermode(struct atlas_data *data, int on)
+> > @@ -507,6 +561,7 @@ static const struct i2c_device_id atlas_id[] = {
+> >         { "atlas-ph-sm", ATLAS_PH_SM},
+> >         { "atlas-ec-sm", ATLAS_EC_SM},
+> >         { "atlas-orp-sm", ATLAS_ORP_SM},
+> > +       { "atlas-do-sm", ATLAS_DO_SM},
+> >         {}
+> >  };
+> >  MODULE_DEVICE_TABLE(i2c, atlas_id);
+> > @@ -515,6 +570,7 @@ static const struct of_device_id atlas_dt_ids[] = {
+> >         { .compatible = "atlas,ph-sm", .data = (void *)ATLAS_PH_SM, },
+> >         { .compatible = "atlas,ec-sm", .data = (void *)ATLAS_EC_SM, },
+> >         { .compatible = "atlas,orp-sm", .data = (void *)ATLAS_ORP_SM, },
+> > +       { .compatible = "atlas,do-sm", .data = (void *)ATLAS_DO_SM, },
+> >         { }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, atlas_dt_ids);
+> > --
+> > 2.20.1
+> >  
 

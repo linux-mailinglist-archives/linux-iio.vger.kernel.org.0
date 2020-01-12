@@ -2,100 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB15513883C
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2020 21:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABB17138A10
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 04:55:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732825AbgALUdb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Jan 2020 15:33:31 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:34713 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732960AbgALUdb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jan 2020 15:33:31 -0500
-Received: by mail-lj1-f194.google.com with SMTP id z22so7772904ljg.1;
-        Sun, 12 Jan 2020 12:33:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=OEXS1Fk5NwKMmzWNoapPYNtdz3Lk1NcwWzzA/BJNXDg=;
-        b=UpBX2EaY5SAVsaubaMJ7OUg/H+3PFwPFWA3+VizPmtV1FrcMOEUvg+jy+QNcADa0EW
-         wlNKY2usPqmqXZa2RtNx5iAIPpV1lDnV7ivg+LuzaK+mjELcnRZAtiDZyoQe1eOFVkBY
-         Z5u9KtBWEuP5/dXv8h9b50GvFyS1sGqe5OM8+02k/rgagrofWkXwBLMai/gcMtXOJi3k
-         47sMBOgzgLy9n/kbh73QTfpghPMSn9xGgZ3A4zL4X8TDzmhF0HcjwjxgQ7AuBwfcmWXc
-         RBsILhJ3F8f1o5OCgBjh1OFvhsdXIrTfDIQd++tnCXaBDx+oD7dmjl0AwdUFKK0XdJK/
-         FDCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=OEXS1Fk5NwKMmzWNoapPYNtdz3Lk1NcwWzzA/BJNXDg=;
-        b=gDdREcjrq7ntvFyn7HDVRlrHrkfIxpgeb8oLb6+ZKFeGWoU+25/+YjOJs3wgJfxRDy
-         CyPgutGbmEvLXikMi3/SW0Y3UnychC1+kGIlPFCZcyXxN8OGgiSv/2Nk+qur65ltJKg3
-         P0pP8y4Yne7fHo9O4V7GtHDrab1w9a6vNCEj1BBKQG++MXfNZsfV72QZ9ZZhPshBlvN/
-         B4babSnuWDhROf2m6/puNTVPASnXa32wX0lmKp0SacgWyCcZxnTFt0jERwGb/JBHtdAs
-         1QOs2OZjfkYEEcgYsYdNCUaS+27D39/I767SLNrlFs8zDla+4Ap4LBhFG7LkicOY0utN
-         +qsA==
-X-Gm-Message-State: APjAAAXCKQDhGUSpkbz/cyu75FOa6e87HJTfBpoWPiwPqzPI4LH4uK4j
-        cn0d6DKD+P9zpnJ1s8FIuKI=
-X-Google-Smtp-Source: APXvYqwVk17pUy2k573QCR+qFhYjB4UrRtNQEr+dE2/IAp0CfNsasaxxBu5SgNftYikvEYvHIr6TuQ==
-X-Received: by 2002:a2e:8145:: with SMTP id t5mr9097471ljg.144.1578861209411;
-        Sun, 12 Jan 2020 12:33:29 -0800 (PST)
-Received: from localhost.localdomain (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
-        by smtp.gmail.com with ESMTPSA id u16sm5255192lfi.36.2020.01.12.12.33.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jan 2020 12:33:29 -0800 (PST)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Robert Yang <decatf@gmail.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] dt-bindings: iio: accel: kxcjk1013: Document mount-matrix property
-Date:   Sun, 12 Jan 2020 23:33:01 +0300
-Message-Id: <20200112203301.30235-2-digetx@gmail.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20200112203301.30235-1-digetx@gmail.com>
-References: <20200112203301.30235-1-digetx@gmail.com>
+        id S2387474AbgAMDzX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Jan 2020 22:55:23 -0500
+Received: from mail02.vodafone.es ([217.130.24.81]:52393 "EHLO
+        mail02.vodafone.es" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387417AbgAMDzX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jan 2020 22:55:23 -0500
+IronPort-SDR: wc5VbP54JzTqTCarXg4ZxNC4JCrlgQnFb9slLuUKXEwbDRh7JCMLac7bpqQlj6zvCwRqsKjpPj
+ SFLPpKe66LaQ==
+IronPort-PHdr: =?us-ascii?q?9a23=3Aw2N6khZf6gd7D1Ms8aHkfbj/LSx+4OfEezUN45?=
+ =?us-ascii?q?9isYplN5qZr8S9bnLW6fgltlLVR4KTs6sC17ON9fq+CCdevN6oizMrSNR0TR?=
+ =?us-ascii?q?gLiMEbzUQLIfWuLgnFFsPsdDEwB89YVVVorDmROElRH9viNRWJ+iXhpTEdFQ?=
+ =?us-ascii?q?/iOgVrO+/7BpDdj9it1+C15pbffxhEiCCybL9vIhi6txvdu8gSjIdtK6s8yg?=
+ =?us-ascii?q?bCr2dVdehR2W5mP0+YkQzm5se38p5j8iBQtOwk+sVdT6j0fLk2QKJBAjg+PG?=
+ =?us-ascii?q?87+MPktR/YTQuS/XQcSXkZkgBJAwfe8h73WIr6vzbguep83CmaOtD2TawxVD?=
+ =?us-ascii?q?+/4apnVAPkhSEaPDI/923Zl9B/g7heoBOhvhBy3YnUYJuNNPp5ZKPSZ88aSn?=
+ =?us-ascii?q?RYUslPUSxNG5+xb5cTD+UbIelYr5fyp14Qohu4GQmgHf3gyjlRinHx2q061f?=
+ =?us-ascii?q?ouEAHf0AM+GdIFrXDYodvpOKsOVOy4yrTDwzfeYPNMwTrz5ojGcgo/r/+PQL?=
+ =?us-ascii?q?x/ftbex0Y0GgPZjFiftZDpMy+J2ugTtWWQ8upuVfioi24iswx/uCagxtsyhY?=
+ =?us-ascii?q?nTm4kaylfE9SN2wI0oItC4UFB0YcK6H5tKuSCaMI12Qsw5TmFooyY10aEJtY?=
+ =?us-ascii?q?SncygNzZQr3R7fa/+efoWO/xntV/6RLC9miH54er+znQu+/Ea8xuHmSMW530?=
+ =?us-ascii?q?xGoyRFn9TKq3sDzQbc6tKdRft45kqh3DGP2B3N5excOkA0kLbbK4Ymwr4tip?=
+ =?us-ascii?q?ofqUTDETHymEXxlKKWc18r+ums6+T9fLrmooOQOoBuhgHgNaQhh9awAeo/Mg?=
+ =?us-ascii?q?gIQWeX4/qz1Kb78U34RrVFkOE2n7HHvJzHJ8kXvLO1DgFJ3oo59RqyAC2q3d?=
+ =?us-ascii?q?oYkHUfKVJKYhOHj4znO1HUJ/D4CO+yg0yynzd32f/GJLPgApLLLnjMi7rhfa?=
+ =?us-ascii?q?195FVAxwYp0d9f4JdUBqsBIPLwQkPxrsDXDgclMwyoxObqENF91oIYWWKSDa?=
+ =?us-ascii?q?6VKaLSsV6P5u80PemMa5EauCznJ/gm+fHul3k5lkEZfaWz2psXcn+4TbxaJB?=
+ =?us-ascii?q?CdYHzxkpIAEGAioAUzVqrphUeEXDoVYGy9DJgx/jUqNIXzNYrfS5rlv7uH02?=
+ =?us-ascii?q?/vBpBKa3pZDVaDEXTobI+Pc/gJYSOWZMRml2pXe6KmTtoZ2A2jrkfFzLxoZr?=
+ =?us-ascii?q?7M9zEVr43k0tdd5/bZnlc58jkyD8fLgDLFdH19gm5dHmx+56t4u0EokQ/b3A?=
+ =?us-ascii?q?=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2GUIwAv6RtemCMYgtlNGBoBAQEBAQE?=
+ =?us-ascii?q?BAQEDAQEBAREBAQECAgEBAQGBewIBGAEBgS6BTVIgEpNQgU0fg0OLY4EAgx4?=
+ =?us-ascii?q?VhggTDIFbDQEBAQEBNQIBAYRATgEXgQ8kOgQNAgMNAQEFAQEBAQEFBAEBAhA?=
+ =?us-ascii?q?BAQEBAQYNCwYphUqCHQweAQQBAQEBAwMDAQEMAYNdBxkPOUpMAQ4BU4MEgks?=
+ =?us-ascii?q?BATOccgGNBA0NAoUdgkcECoEJgRojgTYBjBgagUE/gSMhgisIAYIBgn8BEgF?=
+ =?us-ascii?q?sgkiCWQSNQhIhgQeIKZgXgkEEdolMjAKCNwEPiAGEMQMQgkUPgQmIA4ROgX2?=
+ =?us-ascii?q?jN1eBDA16cTMagiYagSBPGA2IG44tQIEWEAJPiS6CMgEB?=
+X-IPAS-Result: =?us-ascii?q?A2GUIwAv6RtemCMYgtlNGBoBAQEBAQEBAQEDAQEBAREBA?=
+ =?us-ascii?q?QECAgEBAQGBewIBGAEBgS6BTVIgEpNQgU0fg0OLY4EAgx4VhggTDIFbDQEBA?=
+ =?us-ascii?q?QEBNQIBAYRATgEXgQ8kOgQNAgMNAQEFAQEBAQEFBAEBAhABAQEBAQYNCwYph?=
+ =?us-ascii?q?UqCHQweAQQBAQEBAwMDAQEMAYNdBxkPOUpMAQ4BU4MEgksBATOccgGNBA0NA?=
+ =?us-ascii?q?oUdgkcECoEJgRojgTYBjBgagUE/gSMhgisIAYIBgn8BEgFsgkiCWQSNQhIhg?=
+ =?us-ascii?q?QeIKZgXgkEEdolMjAKCNwEPiAGEMQMQgkUPgQmIA4ROgX2jN1eBDA16cTMag?=
+ =?us-ascii?q?iYagSBPGA2IG44tQIEWEAJPiS6CMgEB?=
+X-IronPort-AV: E=Sophos;i="5.69,427,1571695200"; 
+   d="scan'208";a="323742421"
+Received: from mailrel04.vodafone.es ([217.130.24.35])
+  by mail02.vodafone.es with ESMTP; 13 Jan 2020 04:55:22 +0100
+Received: (qmail 24204 invoked from network); 12 Jan 2020 05:00:20 -0000
+Received: from unknown (HELO 192.168.1.3) (quesosbelda@[217.217.179.17])
+          (envelope-sender <peterwong@hsbc.com.hk>)
+          by mailrel04.vodafone.es (qmail-ldap-1.03) with SMTP
+          for <linux-iio@vger.kernel.org>; 12 Jan 2020 05:00:20 -0000
+Date:   Sun, 12 Jan 2020 06:00:19 +0100 (CET)
+From:   Peter Wong <peterwong@hsbc.com.hk>
+Reply-To: Peter Wong <peterwonghkhsbc@gmail.com>
+To:     linux-iio@vger.kernel.org
+Message-ID: <21884229.460716.1578805219841.JavaMail.cash@217.130.24.55>
+Subject: Investment opportunity
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The generic IIO mount-matrix property conveys physical orientation of the
-hardware chip.
+Greetings,
+Please read the attached investment proposal and reply for more details.
+Are you interested in loan?
+Sincerely: Peter Wong
 
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- .../devicetree/bindings/iio/accel/kionix,kxcjk1013.txt     | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/kionix,kxcjk1013.txt b/Documentation/devicetree/bindings/iio/accel/kionix,kxcjk1013.txt
-index eb76a02e2a82..ce950e162d5d 100644
---- a/Documentation/devicetree/bindings/iio/accel/kionix,kxcjk1013.txt
-+++ b/Documentation/devicetree/bindings/iio/accel/kionix,kxcjk1013.txt
-@@ -9,9 +9,16 @@ Required properties:
-     "kionix,kxtf9"
-  - reg: i2c slave address
- 
-+Optional properties:
-+
-+  - mount-matrix: an optional 3x3 mounting rotation matrix
-+
- Example:
- 
- kxtf9@f {
- 	compatible = "kionix,kxtf9";
- 	reg = <0x0F>;
-+	mount-matrix =	"0", "1", "0",
-+			"1", "0", "0",
-+			"0", "0", "1";
- };
--- 
-2.24.0
+
+
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
 

@@ -2,149 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97C10139ADA
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 21:41:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1ED5139B55
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 22:23:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726488AbgAMUld (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jan 2020 15:41:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55908 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726494AbgAMUld (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 13 Jan 2020 15:41:33 -0500
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EF5A224655;
-        Mon, 13 Jan 2020 20:41:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578948092;
-        bh=5+/QttMFBTDDwggNuisVLgzB3SWlxubJiVA9nfjskkM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cpfntGbdsRS2I6uTn4k8+dkBla5PNezHWPeFDOuKQVaes84OAnAi/zMEP3l2JbRry
-         y2R4sAn45tbCim9mZFk8Ua8iiVdppbOwa46dE566UK71NPZYMhC5iwXzfdw5dRZmsU
-         trCWiLWeEOJzNRlIhLpnYiIQEZ+M1oPJ77apu46M=
-Received: by mail-qv1-f46.google.com with SMTP id n8so4648981qvg.11;
-        Mon, 13 Jan 2020 12:41:31 -0800 (PST)
-X-Gm-Message-State: APjAAAVHOVCyb2/bRHnSWuQm6aFDE/6EWLTQSYs0Ra0MWME4WRbMbxIy
-        6D1/UyPAXEDu0rnkjpadKNlrUnbllbp3+wFzFw==
-X-Google-Smtp-Source: APXvYqwBh8rgbcv6WzjXYOWH4WoTlhfdYVgJpvcmQqGHfiRse1JHvRooPMQAyv3dmdw8NTILDX0JlPQ8wyDZJVjozMc=
-X-Received: by 2002:a0c:f68f:: with SMTP id p15mr12930551qvn.79.1578948091025;
- Mon, 13 Jan 2020 12:41:31 -0800 (PST)
+        id S1726878AbgAMVXb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jan 2020 16:23:31 -0500
+Received: from www381.your-server.de ([78.46.137.84]:38710 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726536AbgAMVXb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jan 2020 16:23:31 -0500
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1ir6mD-0002hu-Mv; Mon, 13 Jan 2020 21:57:33 +0100
+Received: from [93.104.104.184] (helo=[192.168.178.20])
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1ir6mD-000VBg-Bg; Mon, 13 Jan 2020 21:57:33 +0100
+Subject: Re: [PATCH 1/3] iio: amplifiers: hmc425a: Add support for HMC425A
+ step attenuator with gpio interface
+To:     Beniamin Bia <beniamin.bia@analog.com>, jic23@kernel.org
+Cc:     Michael.Hennerich@analog.com, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        biabeniamin@outlook.com, knaack.h@gmx.de, robh+dt@kernel.org,
+        mark.rutland@arm.com, devicetree@vger.kernel.org,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+References: <20200113141555.16117-1-beniamin.bia@analog.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <5ae63616-5749-da51-b0b2-85cdcaa948f3@metafoo.de>
+Date:   Mon, 13 Jan 2020 21:57:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20200113141555.16117-1-beniamin.bia@analog.com> <20200113141555.16117-2-beniamin.bia@analog.com>
-In-Reply-To: <20200113141555.16117-2-beniamin.bia@analog.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 13 Jan 2020 14:41:19 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKX5X6X72Rq7wY7=RRLnUST+eKTPyEbuXKbFJB0_n5QXQ@mail.gmail.com>
-Message-ID: <CAL_JsqKX5X6X72Rq7wY7=RRLnUST+eKTPyEbuXKbFJB0_n5QXQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] dt-bindings: iio: amplifiers: Add docs for HMC425A
- Step Attenuator
-To:     Beniamin Bia <beniamin.bia@analog.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        biabeniamin@outlook.com, Hartmut Knaack <knaack.h@gmx.de>,
-        Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200113141555.16117-1-beniamin.bia@analog.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.101.4/25694/Mon Jan 13 14:35:35 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jan 13, 2020 at 8:14 AM Beniamin Bia <beniamin.bia@analog.com> wrote:
->
-> From: Michael Hennerich <michael.hennerich@analog.com>
->
-> Document support for Analog Devices MC425A Step Attenuator.
->
-> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-> ---
->  .../bindings/iio/amplifiers/adi,hmc425a.yaml  | 55 +++++++++++++++++++
->  1 file changed, 55 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
+On 1/13/20 3:15 PM, Beniamin Bia wrote:
+[...]
+> +static int hmc425a_write(struct iio_dev *indio_dev, u32 value)
+> +{
+> +	struct hmc425a_state *st = iio_priv(indio_dev);
+> +	int i, *values;
+> +
+> +	values = kmalloc_array(st->chip_info->num_gpios, sizeof(int),
+> +			       GFP_KERNEL);
+> +	if (!values)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < st->chip_info->num_gpios; i++)
+> +		values[i] = (value >> i) & 1;
+> +
+> +	gpiod_set_array_value_cansleep(st->gpios->ndescs, st->gpios->desc,
+> +				       values);
 
-Check your bindings with 'make dt_binding_check'. It fails:
+This API got changed a while ago in upstream, see
+https://github.com/analogdevicesinc/linux/commit/b9762bebc6332b40c33e03dea03e30fa12d9e3ed
 
-Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml:
-while scanning a simple key
-  in "<unicode string>", line 24, column 5
-could not find expected ':'
-  in "<unicode string>", line 25, column 5
+> +	kfree(values);
+> +	return 0;
+> +}
+[...]
+> +static int hmc425a_probe(struct platform_device *pdev)
+> +{
+[...]
+> +
+> +	platform_set_drvdata(pdev, indio_dev);
 
->
-> diff --git a/Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml b/Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
-> new file mode 100644
-> index 000000000000..6f4a292395e4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
-> @@ -0,0 +1,55 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/amplifiers/adi,hmc425a.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: HMC425A 6-bit Digital Step Attenuator
-> +
-> +maintainers:
-> +- Michael Hennerich <michael.hennerich@analog.com>
-> +
-> +description: |
-> +  Digital Step Attenuator IIO device with gpio interface.
-> +  HMC425A 0.5 dB LSB GaAs MMIC 6-BIT DIGITAL POSITIVE CONTROL ATTENUATOR, 2.2 - 8.0 GHz
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/hmc425A.pdf
-> +
-> +properties:
-> +compatible:
-> +    enum:
-> +    - adi,hmc425a
+drvdata is never accessed, no need to set it.
 
-nit: this should be indented 2 more spaces.
+> +	mutex_init(&st->lock);
+> +
+> +	indio_dev->dev.parent = &pdev->dev;
+> +	indio_dev->name = np->name;
 
-Or use 'const' instead if there's not more similar parts.
+I know ADI likes to do this in its non upstream drivers, but the above
+is not IIO ABI compliant. The name is supposed to identify the type of
+the device, which means for this driver should be static "hmc425a".
+Maybe consider adding a field to the hmc425a_chip_info for this.
 
+> +	indio_dev->info = &hmc425a_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
 > +
-> +vcc-supply:
-> +    description:
-> +    digital voltage regulator (see regulator/regulator.txt)
+> +	return devm_iio_device_register(&pdev->dev, indio_dev);
+> +}
 
-Text must be indented under the key.
-
-> +    maxItems: 1
-> +
-> +ctrl-gpios:
-> +    description:
-> +    Must contain an array of 6 GPIO specifiers, referring to the GPIO pins
-> +    connected to the control pins V1-V6.
-> +    maxItems: 6
-> +
-> +required:
-> +- compatible
-> +- ctrl-gpios
-> +
-> +examples:
-> +- |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    &gpio {
-> +    #address-cells = <1>;
-> +    #size-cells = <0>;
-> +      gpio_hmc425a: hmc425a {
-> +        compatible = "adi,hmc425a";
-> +        ctrl-gpios = <&gpio 40 GPIO_ACTIVE_HIGH>,
-> +          <&gpio 39 GPIO_ACTIVE_HIGH>,
-> +          <&gpio 38 GPIO_ACTIVE_HIGH>,
-> +          <&gpio 37 GPIO_ACTIVE_HIGH>,
-> +          <&gpio 36 GPIO_ACTIVE_HIGH>,
-> +          <&gpio 35 GPIO_ACTIVE_HIGH>;
-> +
-> +        vcc-supply = <&foo>;
-> +      };
-> +    }
-> --
-> 2.17.1
->

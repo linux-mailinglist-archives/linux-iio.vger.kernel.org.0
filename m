@@ -2,37 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 519AB139C1E
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 23:04:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D15A139C36
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 23:12:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728778AbgAMWEM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jan 2020 17:04:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39192 "EHLO mail.kernel.org"
+        id S1728633AbgAMWMQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jan 2020 17:12:16 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728641AbgAMWEM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 13 Jan 2020 17:04:12 -0500
+        id S1726530AbgAMWMP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 13 Jan 2020 17:12:15 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 658A42072B;
-        Mon, 13 Jan 2020 22:04:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F30952072B;
+        Mon, 13 Jan 2020 22:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578953051;
-        bh=eVSiDXH34AHp/qaoNToMAiWkYfhmwvXPgMqymdVD9Gw=;
+        s=default; t=1578953535;
+        bh=gzCnpKeyHQpfnaGrhe7olX+cuDanMLkgwrM2ErTWP/8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Navce5AJQowEtwXrMVJx6JeK29AmN0rJ5LbNT5wEsfhEmzUW+vI0rxaCoO83eij4D
-         ykF8bxxMuAuYawRwyEm9M4YJ/lCla3aCz8/6RSJq6LtbTy2HGYXngESlCwOAgS5IVn
-         jtignMOKSJk3BEa5jH0/jMwjYBc4FtUvoPlsmMgQ=
-Date:   Mon, 13 Jan 2020 22:04:07 +0000
+        b=2HD80UsjhR5lX4DA0eV2BqvGI3Vso0QfFg9LtK46aJPc8Jfb0afdrlB0w436NOgry
+         O9Tp2PsT9vC5TYlA3FVWh/0iybJrAMXxF3LzSqFiQMCCvwMp9FsPtCQCB6aNc8HcyV
+         NZQgBA0q9wvWFAT+J3ipC9+d798IBo08gzW6guCg=
+Date:   Mon, 13 Jan 2020 22:12:11 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: imu: adis: use new `delay` structure for SPI
- transfer delays
-Message-ID: <20200113220407.62d47084@archlinux>
-In-Reply-To: <20191210140755.14305-1-alexandru.ardelean@analog.com>
-References: <20191204080904.2557-1-alexandru.ardelean@analog.com>
-        <20191210140755.14305-1-alexandru.ardelean@analog.com>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: Fix selection of ST_LSM6DS3_ID
+Message-ID: <20200113221211.27afee1d@archlinux>
+In-Reply-To: <20191215172342.1e2ab5c4@archlinux>
+References: <20191209170541.198206-1-stephan@gerhold.net>
+        <20191215172342.1e2ab5c4@archlinux>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,123 +45,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 10 Dec 2019 16:07:55 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Sun, 15 Dec 2019 17:23:42 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> In a recent change to the SPI subsystem [1], a new `delay` struct was added
-> to replace the `delay_usecs`. This change replaces the current `delay_usecs`
-> with `delay` for this driver.
+> On Mon,  9 Dec 2019 18:05:41 +0100
+> Stephan Gerhold <stephan@gerhold.net> wrote:
 > 
-> The `spi_transfer_delay_exec()` function [in the SPI framework] makes sure
-> that both `delay_usecs` & `delay` are used (in this order to preserve
-> backwards compatibility).
+> > At the moment, attempting to probe a device with ST_LSM6DS3_ID
+> > (e.g. using the st,lsm6ds3 compatible) fails with:
+> > 
+> >     st_lsm6dsx_i2c 1-006b: unsupported whoami [69]
+> > 
+> > ... even though 0x69 is the whoami listed for ST_LSM6DS3_ID.
+> > 
+> > This happens because st_lsm6dsx_check_whoami() also attempts
+> > to match unspecified (zero-initialized) entries in the "id" array.
+> > ST_LSM6DS3_ID = 0 will therefore match any entry in
+> > st_lsm6dsx_sensor_settings (here: the first), because none of them
+> > actually have all 12 entries listed in the "id" array.
+> > 
+> > Avoid this by additionally checking if "name" is set,
+> > which is only set for valid entries in the "id" array.
+> > 
+> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>  
+> Definitely sounds like this wants backporting. 
 > 
-> [1] commit bebcfd272df6485 ("spi: introduce `delay` field for
-> `spi_transfer` + spi_transfer_delay_exec()")
-> 
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Applied to the togreg branch of iio.git and pushed out as testing
-for all the normal reasons.
+> If you can figure out a fixes tag that would be great!
+I've taken a stab at working out when this got introduced and
+came up with:
+
+81956a93b522 "iio: imu: st_lsm6dsx: get device name from st_lsm6dsx_sensor_settings"
+
+If that's wrong please let me know asap.
+
+Applied to the togreg branch of iio.git as we are near the merge
+window opening and marked for stable.
 
 Thanks,
 
 Jonathan
-
-> ---
 > 
-> Changelog v1 -> v2:
-> * fixed typo in commit desc `delay_secs` ->  `delay_usecs`
+> Thanks,
 > 
->  drivers/iio/imu/adis.c | 27 ++++++++++++++++++---------
->  1 file changed, 18 insertions(+), 9 deletions(-)
+> Jonathan
 > 
-> diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-> index e14c8536fd09..3cc57ef22b2e 100644
-> --- a/drivers/iio/imu/adis.c
-> +++ b/drivers/iio/imu/adis.c
-> @@ -38,7 +38,8 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
->  			.bits_per_word = 8,
->  			.len = 2,
->  			.cs_change = 1,
-> -			.delay_usecs = adis->data->write_delay,
-> +			.delay.value = adis->data->write_delay,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
->  			.cs_change_delay.value = adis->data->cs_change_delay,
->  			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
->  		}, {
-> @@ -46,7 +47,8 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
->  			.bits_per_word = 8,
->  			.len = 2,
->  			.cs_change = 1,
-> -			.delay_usecs = adis->data->write_delay,
-> +			.delay.value = adis->data->write_delay,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
->  			.cs_change_delay.value = adis->data->cs_change_delay,
->  			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
->  		}, {
-> @@ -54,19 +56,22 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
->  			.bits_per_word = 8,
->  			.len = 2,
->  			.cs_change = 1,
-> -			.delay_usecs = adis->data->write_delay,
-> +			.delay.value = adis->data->write_delay,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
->  			.cs_change_delay.value = adis->data->cs_change_delay,
->  			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
->  		}, {
->  			.tx_buf = adis->tx + 6,
->  			.bits_per_word = 8,
->  			.len = 2,
-> -			.delay_usecs = adis->data->write_delay,
-> +			.delay.value = adis->data->write_delay,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
->  		}, {
->  			.tx_buf = adis->tx + 8,
->  			.bits_per_word = 8,
->  			.len = 2,
-> -			.delay_usecs = adis->data->write_delay,
-> +			.delay.value = adis->data->write_delay,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
->  		},
->  	};
->  
-> @@ -138,7 +143,8 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
->  			.bits_per_word = 8,
->  			.len = 2,
->  			.cs_change = 1,
-> -			.delay_usecs = adis->data->write_delay,
-> +			.delay.value = adis->data->write_delay,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
->  			.cs_change_delay.value = adis->data->cs_change_delay,
->  			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
->  		}, {
-> @@ -146,7 +152,8 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
->  			.bits_per_word = 8,
->  			.len = 2,
->  			.cs_change = 1,
-> -			.delay_usecs = adis->data->read_delay,
-> +			.delay.value = adis->data->read_delay,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
->  			.cs_change_delay.value = adis->data->cs_change_delay,
->  			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
->  		}, {
-> @@ -155,14 +162,16 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
->  			.bits_per_word = 8,
->  			.len = 2,
->  			.cs_change = 1,
-> -			.delay_usecs = adis->data->read_delay,
-> +			.delay.value = adis->data->read_delay,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
->  			.cs_change_delay.value = adis->data->cs_change_delay,
->  			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
->  		}, {
->  			.rx_buf = adis->rx + 2,
->  			.bits_per_word = 8,
->  			.len = 2,
-> -			.delay_usecs = adis->data->read_delay,
-> +			.delay.value = adis->data->read_delay,
-> +			.delay.unit = SPI_DELAY_UNIT_USECS,
->  		},
->  	};
->  
+> > ---
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > index a7d40c02ce6b..b921dd9e108f 100644
+> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > @@ -1301,7 +1301,8 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id,
+> >  
+> >  	for (i = 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
+> >  		for (j = 0; j < ST_LSM6DSX_MAX_ID; j++) {
+> > -			if (id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
+> > +			if (st_lsm6dsx_sensor_settings[i].id[j].name &&
+> > +			    id == st_lsm6dsx_sensor_settings[i].id[j].hw_id)
+> >  				break;
+> >  		}
+> >  		if (j < ST_LSM6DSX_MAX_ID)  
+> 
 

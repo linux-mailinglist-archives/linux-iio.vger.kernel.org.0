@@ -2,354 +2,380 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DFC313941C
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 15:59:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2982E1396CF
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 17:52:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728799AbgAMO7V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jan 2020 09:59:21 -0500
-Received: from outils.crapouillou.net ([89.234.176.41]:33186 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728646AbgAMO7V (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jan 2020 09:59:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1578927557; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QylB/cC3XR0W6TSZItoFx03/arcyZMHUAVM0VFmVRqM=;
-        b=TduK/K81V72pl7QRPORYrRvjVH7jZNCriEnqdiEI2SIFNy1rvzz2Y/C7VBOzdjdG3FeANP
-        tLRMfKAAEXe7CiXAfUBX8+inXGUXr2pEamSHLh3txsviWt4xamjT/m05aYO3aL5Hn7Hts7
-        0K+LTDPqWKp3GMXZvXTwNDMGnPPwi4A=
-Date:   Mon, 13 Jan 2020 11:59:00 -0300
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 3/5] IIO: Ingenic JZ47xx: Add touchscreen mode.
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-Cc:     Artur Rojek <contact@artur-rojek.eu>,
+        id S1728516AbgAMQwb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jan 2020 11:52:31 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:50324 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726567AbgAMQwb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jan 2020 11:52:31 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: eballetbo)
+        with ESMTPSA id 9533428ED5C
+Subject: Re: [PATCH] cros_ec: treewide: Remove 'include/linux/mfd/cros_ec.h'
+From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Collabora Kernel ML <kernel@collabora.com>, groeck@chromium.org,
+        bleung@chromium.org, dtor@chromium.org, gwendal@chromium.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        linux-iio@vger.kernel.org, Nick Vaccaro <nvaccaro@chromium.org>,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-rtc@vger.kernel.org, Chanwoo Choi <cw00.choi@samsung.com>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        Lee Jones <lee.jones@linaro.org>,
+        Evan Green <evgreen@chromium.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Mark Brown <broonie@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <1578927540.3.0@crapouillou.net>
-In-Reply-To: <20200111114609.1979a8ff@archlinux>
-References: <20200105001639.142061-1-contact@artur-rojek.eu>
-        <20200105001639.142061-3-contact@artur-rojek.eu>
-        <20200111114609.1979a8ff@archlinux>
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+References: <20191203145018.14015-1-enric.balletbo@collabora.com>
+Message-ID: <74a0c896-6d1a-5cb5-d14f-6dd994382982@collabora.com>
+Date:   Mon, 13 Jan 2020 17:52:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191203145018.14015-1-enric.balletbo@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
 
 
-Le sam., janv. 11, 2020 at 11:46, Jonathan Cameron=20
-<jic23@jic23.retrosnub.co.uk> a =E9crit :
-> On Sun,  5 Jan 2020 01:16:37 +0100
-> Artur Rojek <contact@artur-rojek.eu> wrote:
->=20
->>  Implement support for the touchscreen mode found in JZ47xx SoCs ADC.
-> This needs more description.
->=20
-> Looks like it enables a kfifo and also selects the callback buffer
-> stuff to run with a generic touchscreen iio-> input driver.
->=20
-> A few other bits inline, but basically fine.
->=20
-> I've never really thought about whether we support a CB buffer
-> without anything on the IIO side.   That should be possible,
-> but I'm not sure what odd corner cases will turn up.  I'm guessing
-> there are some, or you'd not have bothered exposing it here?
+On 3/12/19 15:50, Enric Balletbo i Serra wrote:
+> This header file now only includes the cros_ec_dev struct, however, is the
+> 'include/linux/platform_data/cros_ec_proto.h' who contains the definition of
+> all the Chrome OS EC related structs. There is no reason to have a
+> separate include for this struct so move to the place where other
+> structs are defined. That way, we can remove the include itself, but also
+> simplify the common pattern
+> 
+>     #include <linux/mfd/cros_ec.h>
+>     #include <linux/platform_data/cros_ec_proto.h>
+> 
+> for a single include
+> 
+>     #include <linux/platform_data/cros_ec_proto.h>
+> 
+> The changes to remove the cros_ec.h include were generated with the
+> following shell script:
+> 
+>     git grep -l "<linux/mfd/cros_ec.h>" | xargs sed -i '/<linux\/mfd\/cros_ec.h>/d'
+> 
+> Signed-off-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 
-I'm sorry, what do you mean by "nothing on the IIO side"?
+Applied for 5.6 with all the collected acks, thanks.
 
+ Enric
 
->=20
-> Thanks
->=20
-> Jonathan
->=20
->=20
->>=20
->>  Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
->>  Tested-by: Paul Cercueil <paul@crapouillou.net>
->>  ---
->>   drivers/iio/adc/Kconfig       |   3 +
->>   drivers/iio/adc/ingenic-adc.c | 120=20
->> +++++++++++++++++++++++++++++++++-
->>   2 files changed, 121 insertions(+), 2 deletions(-)
->>=20
->>  diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->>  index 5d8540b7b427..dabbf15032af 100644
->>  --- a/drivers/iio/adc/Kconfig
->>  +++ b/drivers/iio/adc/Kconfig
->>  @@ -446,6 +446,9 @@ config INA2XX_ADC
->>   config INGENIC_ADC
->>   	tristate "Ingenic JZ47xx SoCs ADC driver"
->>   	depends on MIPS || COMPILE_TEST
->>  +	select IIO_BUFFER
->>  +	select IIO_BUFFER_CB
->=20
-> Feels like IIO_BUFFER_CB should be selected by the driver that
-> uses that functionality rather than this one.
->=20
->>  +	select IIO_KFIFO_BUF
->>   	help
->>   	  Say yes here to build support for the Ingenic JZ47xx SoCs ADC=20
->> unit.
->>=20
->>  diff --git a/drivers/iio/adc/ingenic-adc.c=20
->> b/drivers/iio/adc/ingenic-adc.c
->>  index 7a24bc1dabe1..4dbf15fdd95d 100644
->>  --- a/drivers/iio/adc/ingenic-adc.c
->>  +++ b/drivers/iio/adc/ingenic-adc.c
->>  @@ -8,7 +8,10 @@
->>=20
->>   #include <dt-bindings/iio/adc/ingenic,adc.h>
->>   #include <linux/clk.h>
->>  +#include <linux/iio/buffer.h>
->>   #include <linux/iio/iio.h>
->>  +#include <linux/iio/kfifo_buf.h>
->>  +#include <linux/interrupt.h>
->>   #include <linux/io.h>
->>   #include <linux/iopoll.h>
->>   #include <linux/kernel.h>
->>  @@ -20,6 +23,8 @@
->>   #define JZ_ADC_REG_CFG			0x04
->>   #define JZ_ADC_REG_CTRL			0x08
->>   #define JZ_ADC_REG_STATUS		0x0c
->>  +#define JZ_ADC_REG_ADSAME		0x10
->>  +#define JZ_ADC_REG_ADWAIT		0x14
->>   #define JZ_ADC_REG_ADTCH		0x18
->>   #define JZ_ADC_REG_ADBDAT		0x1c
->>   #define JZ_ADC_REG_ADSDAT		0x20
->>  @@ -28,6 +33,9 @@
->>   #define JZ_ADC_REG_ENABLE_PD		BIT(7)
->>   #define JZ_ADC_REG_CFG_AUX_MD		(BIT(0) | BIT(1))
->>   #define JZ_ADC_REG_CFG_BAT_MD		BIT(4)
->>  +#define JZ_ADC_REG_CFG_PULL_UP(n)	((n) << 16)
->>  +#define JZ_ADC_REG_CFG_SAMPLE_NUM(n)	((n) << 10)
->>  +#define JZ_ADC_REG_CFG_TOUCH_OPS_MASK	(BIT(31) | GENMASK(23, 10))
->>   #define JZ_ADC_REG_ADCLK_CLKDIV_LSB	0
->>   #define JZ4725B_ADC_REG_ADCLK_CLKDIV10US_LSB	16
->>   #define JZ4770_ADC_REG_ADCLK_CLKDIV10US_LSB	8
->>  @@ -44,6 +52,14 @@
->>   #define JZ4770_ADC_BATTERY_VREF			6600
->>   #define JZ4770_ADC_BATTERY_VREF_BITS		12
->>=20
->>  +#define JZ_ADC_IRQ_AUX			BIT(0)
->>  +#define JZ_ADC_IRQ_BATTERY		BIT(1)
->>  +#define JZ_ADC_IRQ_TOUCH		BIT(2)
->>  +#define JZ_ADC_IRQ_PEN_DOWN		BIT(3)
->>  +#define JZ_ADC_IRQ_PEN_UP		BIT(4)
->>  +#define JZ_ADC_IRQ_PEN_DOWN_SLEEP	BIT(5)
->>  +#define JZ_ADC_IRQ_SLEEP		BIT(7)
->>  +
->>   struct ingenic_adc;
->>=20
->>   struct ingenic_adc_soc_data {
->>  @@ -411,6 +427,30 @@ static const struct iio_info ingenic_adc_info=20
->> =3D {
->>   };
->>=20
->>   static const struct iio_chan_spec ingenic_channels[] =3D {
->>  +	{
->>  +		.extend_name =3D "touchscreen_xp",
->=20
-> Note that adding extended names:
->=20
-> 1) Needs documenting as it create ABI - so something in
-> Documentation/ABI/testing/sysfs-bus-iio-*
->=20
-> 2) Breaks any generic userspace application.
->=20
-> Why can't we use modified and an axis to identify this?
-
-I'm in a good place to know that extended names are bad. The problem=20
-here is that Xn/Yn channels will be added later (we have a board that=20
-has one joystick connected to Xp/Yp, and a second joystick connected to=20
-Xn/Yn). I assume that it is not possible to have two channels with the=20
-same type and modifier?
-
-Alternatively I believe we could also have the first two channels as=20
-X/Y single-ended, and then two channels as X/Y differential, and do=20
-some easy math in the joystick driver, but that would make it pretty=20
-hardware-specific.
-
-Cheers,
--Paul
-
->=20
->>  +		.type =3D IIO_POSITIONRELATIVE,
->>  +		.indexed =3D 1,
->>  +		.channel =3D INGENIC_ADC_TOUCH_XP,
->>  +		.scan_index =3D 0,
->>  +		.scan_type =3D {
->>  +			.sign =3D 'u',
->>  +			.realbits =3D 12,
->>  +			.storagebits =3D 16
->>  +		},
->>  +	},
->>  +	{
->>  +		.extend_name =3D "touchscreen_yp",
->>  +		.type =3D IIO_POSITIONRELATIVE,
->>  +		.indexed =3D 1,
->>  +		.channel =3D INGENIC_ADC_TOUCH_YP,
->>  +		.scan_index =3D 1,
->>  +		.scan_type =3D {
->>  +			.sign =3D 'u',
->>  +			.realbits =3D 12,
->>  +			.storagebits =3D 16
->>  +		},
->>  +	},
->>   	{
->>   		.extend_name =3D "aux",
->>   		.type =3D IIO_VOLTAGE,
->>  @@ -418,6 +458,7 @@ static const struct iio_chan_spec=20
->> ingenic_channels[] =3D {
->>   				      BIT(IIO_CHAN_INFO_SCALE),
->>   		.indexed =3D 1,
->>   		.channel =3D INGENIC_ADC_AUX,
->>  +		.scan_index =3D -1
->>   	},
->>   	{
->>   		.extend_name =3D "battery",
->>  @@ -428,6 +469,7 @@ static const struct iio_chan_spec=20
->> ingenic_channels[] =3D {
->>   						BIT(IIO_CHAN_INFO_SCALE),
->>   		.indexed =3D 1,
->>   		.channel =3D INGENIC_ADC_BATTERY,
->>  +		.scan_index =3D -1
->>   	},
->>   	{ /* Must always be last in the array. */
->>   		.extend_name =3D "aux2",
->>  @@ -436,16 +478,70 @@ static const struct iio_chan_spec=20
->> ingenic_channels[] =3D {
->>   				      BIT(IIO_CHAN_INFO_SCALE),
->>   		.indexed =3D 1,
->>   		.channel =3D INGENIC_ADC_AUX2,
->>  +		.scan_index =3D -1
->>   	},
->>   };
->>=20
->>  +static int ingenic_adc_buffer_enable(struct iio_dev *iio_dev)
->>  +{
->>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
->>  +
->>  +	clk_enable(adc->clk);
->>  +	/* It takes significant time for the touchscreen hw to stabilize.=20
->> */
->>  +	msleep(50);
->>  +	ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_TOUCH_OPS_MASK,
->>  +			       JZ_ADC_REG_CFG_SAMPLE_NUM(4) |
->>  +			       JZ_ADC_REG_CFG_PULL_UP(4));
->>  +	writew(80, adc->base + JZ_ADC_REG_ADWAIT);
->>  +	writew(2, adc->base + JZ_ADC_REG_ADSAME);
->>  +	writeb((u8)~JZ_ADC_IRQ_TOUCH, adc->base + JZ_ADC_REG_CTRL);
->>  +	writel(0, adc->base + JZ_ADC_REG_ADTCH);
->>  +	ingenic_adc_enable(adc, 2, true);
->>  +
->>  +	return 0;
->>  +}
->>  +
->>  +static int ingenic_adc_buffer_disable(struct iio_dev *iio_dev)
->>  +{
->>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
->>  +
->>  +	ingenic_adc_enable(adc, 2, false);
->>  +	writeb(0xff, adc->base + JZ_ADC_REG_CTRL);
->>  +	writeb(0xff, adc->base + JZ_ADC_REG_STATUS);
->>  +	ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_TOUCH_OPS_MASK, 0);
->>  +	writew(0, adc->base + JZ_ADC_REG_ADSAME);
->>  +	writew(0, adc->base + JZ_ADC_REG_ADWAIT);
->>  +	clk_disable(adc->clk);
->>  +
->>  +	return 0;
->>  +}
->>  +
->>  +static const struct iio_buffer_setup_ops ingenic_buffer_setup_ops=20
->> =3D {
->>  +	.postenable =3D &ingenic_adc_buffer_enable,
->>  +	.predisable =3D &ingenic_adc_buffer_disable
->>  +};
->>  +
->>  +static irqreturn_t ingenic_adc_irq(int irq, void *data)
->>  +{
->>  +	struct iio_dev *iio_dev =3D data;
->>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
->>  +	u32 tdat;
->>  +
->>  +	tdat =3D readl(adc->base + JZ_ADC_REG_ADTCH);
->>  +	iio_push_to_buffers(iio_dev, &tdat);
->>  +	writeb(JZ_ADC_IRQ_TOUCH, adc->base + JZ_ADC_REG_STATUS);
->>  +
->>  +	return IRQ_HANDLED;
->>  +}
->>  +
->>   static int ingenic_adc_probe(struct platform_device *pdev)
->>   {
->>   	struct device *dev =3D &pdev->dev;
->>   	struct iio_dev *iio_dev;
->>   	struct ingenic_adc *adc;
->>   	const struct ingenic_adc_soc_data *soc_data;
->>  -	int ret;
->>  +	struct iio_buffer *buffer;
->>  +	int irq, ret;
->>=20
->>   	soc_data =3D device_get_match_data(dev);
->>   	if (!soc_data)
->>  @@ -460,6 +556,18 @@ static int ingenic_adc_probe(struct=20
->> platform_device *pdev)
->>   	mutex_init(&adc->aux_lock);
->>   	adc->soc_data =3D soc_data;
->>=20
->>  +	irq =3D platform_get_irq(pdev, 0);
->>  +	if (irq < 0) {
->>  +		dev_err(dev, "Failed to get irq: %d\n", irq);
->>  +		return irq;
->>  +	}
->>  +	ret =3D devm_request_irq(dev, irq, ingenic_adc_irq, 0,
->>  +			       dev_name(dev), iio_dev);
->>  +	if (ret < 0) {
->>  +		dev_err(dev, "Failed to request irq: %d\n", ret);
->>  +		return ret;
->>  +	}
->>  +
->>   	adc->base =3D devm_platform_ioremap_resource(pdev, 0);
->>   	if (IS_ERR(adc->base))
->>   		return PTR_ERR(adc->base);
->>  @@ -499,7 +607,8 @@ static int ingenic_adc_probe(struct=20
->> platform_device *pdev)
->>=20
->>   	iio_dev->dev.parent =3D dev;
->>   	iio_dev->name =3D "jz-adc";
->>  -	iio_dev->modes =3D INDIO_DIRECT_MODE;
->>  +	iio_dev->modes =3D INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
->>  +	iio_dev->setup_ops =3D &ingenic_buffer_setup_ops;
->>   	iio_dev->channels =3D ingenic_channels;
->>   	iio_dev->num_channels =3D ARRAY_SIZE(ingenic_channels);
->>   	/* Remove AUX2 from the list of supported channels. */
->>  @@ -507,6 +616,13 @@ static int ingenic_adc_probe(struct=20
->> platform_device *pdev)
->>   		iio_dev->num_channels -=3D 1;
->>   	iio_dev->info =3D &ingenic_adc_info;
->>=20
->>  +	buffer =3D devm_iio_kfifo_allocate(dev);
->>  +	if (!buffer) {
->>  +		dev_err(dev, "Unable to add IIO buffer\n");
->>  +		return -ENOMEM;
->>  +	}
->>  +	iio_device_attach_buffer(iio_dev, buffer);
->>  +
->>   	ret =3D devm_iio_device_register(dev, iio_dev);
->>   	if (ret)
->>   		dev_err(dev, "Unable to register IIO device\n");
->=20
-
-=
-
+> ---
+> 
+>  drivers/iio/accel/cros_ec_accel_legacy.c      |  1 -
+>  .../common/cros_ec_sensors/cros_ec_sensors.c  |  1 -
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    |  1 -
+>  drivers/iio/light/cros_ec_light_prox.c        |  1 -
+>  drivers/iio/pressure/cros_ec_baro.c           |  1 -
+>  .../media/platform/cros-ec-cec/cros-ec-cec.c  |  1 -
+>  drivers/mfd/cros_ec_dev.c                     |  1 -
+>  drivers/platform/chrome/cros_ec_chardev.c     |  1 -
+>  drivers/platform/chrome/cros_ec_debugfs.c     |  1 -
+>  drivers/platform/chrome/cros_ec_lightbar.c    |  1 -
+>  drivers/platform/chrome/cros_ec_sensorhub.c   |  1 -
+>  drivers/platform/chrome/cros_ec_sysfs.c       |  1 -
+>  drivers/platform/chrome/cros_ec_vbc.c         |  1 -
+>  drivers/platform/chrome/cros_usbpd_logger.c   |  1 -
+>  drivers/power/supply/cros_usbpd-charger.c     |  1 -
+>  drivers/rtc/rtc-cros-ec.c                     |  1 -
+>  include/linux/mfd/cros_ec.h                   | 35 -------------------
+>  include/linux/platform_data/cros_ec_proto.h   | 23 +++++++++++-
+>  18 files changed, 22 insertions(+), 52 deletions(-)
+>  delete mode 100644 include/linux/mfd/cros_ec.h
+> 
+> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> index 65f85faf6f31..68e847c6255e 100644
+> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> @@ -18,7 +18,6 @@
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> index 7dce04473467..576e45faafaf 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> @@ -16,7 +16,6 @@
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 81a7f692de2f..d3a3626c7cd8 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -13,7 +13,6 @@
+>  #include <linux/iio/kfifo_buf.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
+> index d85a391e50c5..7a838e2956f4 100644
+> --- a/drivers/iio/light/cros_ec_light_prox.c
+> +++ b/drivers/iio/light/cros_ec_light_prox.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
+> index 2354302375de..d2a67dceb996 100644
+> --- a/drivers/iio/pressure/cros_ec_baro.c
+> +++ b/drivers/iio/pressure/cros_ec_baro.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/media/platform/cros-ec-cec/cros-ec-cec.c b/drivers/media/platform/cros-ec-cec/cros-ec-cec.c
+> index 4a3b3810fd89..72c70f123650 100644
+> --- a/drivers/media/platform/cros-ec-cec/cros-ec-cec.c
+> +++ b/drivers/media/platform/cros-ec-cec/cros-ec-cec.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/cec.h>
+>  #include <linux/slab.h>
+>  #include <linux/interrupt.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+>  #include <media/cec.h>
+> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
+> index c4b977a5dd96..8da4e4cef26f 100644
+> --- a/drivers/mfd/cros_ec_dev.c
+> +++ b/drivers/mfd/cros_ec_dev.c
+> @@ -6,7 +6,6 @@
+>   */
+>  
+>  #include <linux/mfd/core.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/of_platform.h>
+> diff --git a/drivers/platform/chrome/cros_ec_chardev.c b/drivers/platform/chrome/cros_ec_chardev.c
+> index 74ded441bb50..c65e70bc168d 100644
+> --- a/drivers/platform/chrome/cros_ec_chardev.c
+> +++ b/drivers/platform/chrome/cros_ec_chardev.c
+> @@ -13,7 +13,6 @@
+>  #include <linux/init.h>
+>  #include <linux/device.h>
+>  #include <linux/fs.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/miscdevice.h>
+>  #include <linux/module.h>
+>  #include <linux/notifier.h>
+> diff --git a/drivers/platform/chrome/cros_ec_debugfs.c b/drivers/platform/chrome/cros_ec_debugfs.c
+> index 6ae484989d1f..ecfada00e6c5 100644
+> --- a/drivers/platform/chrome/cros_ec_debugfs.c
+> +++ b/drivers/platform/chrome/cros_ec_debugfs.c
+> @@ -7,7 +7,6 @@
+>  #include <linux/debugfs.h>
+>  #include <linux/delay.h>
+>  #include <linux/fs.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/platform/chrome/cros_ec_lightbar.c b/drivers/platform/chrome/cros_ec_lightbar.c
+> index c0f2eec35a48..b4c110c5fee0 100644
+> --- a/drivers/platform/chrome/cros_ec_lightbar.c
+> +++ b/drivers/platform/chrome/cros_ec_lightbar.c
+> @@ -8,7 +8,6 @@
+>  #include <linux/device.h>
+>  #include <linux/fs.h>
+>  #include <linux/kobject.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platform/chrome/cros_ec_sensorhub.c
+> index 04d8879689e9..79fefd3bb0fa 100644
+> --- a/drivers/platform/chrome/cros_ec_sensorhub.c
+> +++ b/drivers/platform/chrome/cros_ec_sensorhub.c
+> @@ -9,7 +9,6 @@
+>  #include <linux/init.h>
+>  #include <linux/device.h>
+>  #include <linux/module.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+>  #include <linux/platform_data/cros_ec_sensorhub.h>
+> diff --git a/drivers/platform/chrome/cros_ec_sysfs.c b/drivers/platform/chrome/cros_ec_sysfs.c
+> index 74d36b8d4f46..07dac97ad57c 100644
+> --- a/drivers/platform/chrome/cros_ec_sysfs.c
+> +++ b/drivers/platform/chrome/cros_ec_sysfs.c
+> @@ -8,7 +8,6 @@
+>  #include <linux/device.h>
+>  #include <linux/fs.h>
+>  #include <linux/kobject.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/platform/chrome/cros_ec_vbc.c b/drivers/platform/chrome/cros_ec_vbc.c
+> index f11a1283e5c8..8edae465105c 100644
+> --- a/drivers/platform/chrome/cros_ec_vbc.c
+> +++ b/drivers/platform/chrome/cros_ec_vbc.c
+> @@ -6,7 +6,6 @@
+>  
+>  #include <linux/of.h>
+>  #include <linux/platform_device.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/platform/chrome/cros_usbpd_logger.c b/drivers/platform/chrome/cros_usbpd_logger.c
+> index 374cdd1e868a..7de3ea75ef46 100644
+> --- a/drivers/platform/chrome/cros_usbpd_logger.c
+> +++ b/drivers/platform/chrome/cros_usbpd_logger.c
+> @@ -6,7 +6,6 @@
+>   */
+>  
+>  #include <linux/ktime.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/math64.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+> diff --git a/drivers/power/supply/cros_usbpd-charger.c b/drivers/power/supply/cros_usbpd-charger.c
+> index 6cc7c3910e09..0aca0da41cb7 100644
+> --- a/drivers/power/supply/cros_usbpd-charger.c
+> +++ b/drivers/power/supply/cros_usbpd-charger.c
+> @@ -5,7 +5,6 @@
+>   * Copyright (c) 2014 - 2018 Google, Inc
+>   */
+>  
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/drivers/rtc/rtc-cros-ec.c b/drivers/rtc/rtc-cros-ec.c
+> index d043d30f05bc..f7343c289cab 100644
+> --- a/drivers/rtc/rtc-cros-ec.c
+> +++ b/drivers/rtc/rtc-cros-ec.c
+> @@ -5,7 +5,6 @@
+>  // Author: Stephen Barber <smbarber@chromium.org>
+>  
+>  #include <linux/kernel.h>
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
+> diff --git a/include/linux/mfd/cros_ec.h b/include/linux/mfd/cros_ec.h
+> deleted file mode 100644
+> index 61c2875c2a40..000000000000
+> --- a/include/linux/mfd/cros_ec.h
+> +++ /dev/null
+> @@ -1,35 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0-only */
+> -/*
+> - * ChromeOS EC multi-function device
+> - *
+> - * Copyright (C) 2012 Google, Inc
+> - */
+> -
+> -#ifndef __LINUX_MFD_CROS_EC_H
+> -#define __LINUX_MFD_CROS_EC_H
+> -
+> -#include <linux/device.h>
+> -
+> -/**
+> - * struct cros_ec_dev - ChromeOS EC device entry point.
+> - * @class_dev: Device structure used in sysfs.
+> - * @ec_dev: cros_ec_device structure to talk to the physical device.
+> - * @dev: Pointer to the platform device.
+> - * @debug_info: cros_ec_debugfs structure for debugging information.
+> - * @has_kb_wake_angle: True if at least 2 accelerometer are connected to the EC.
+> - * @cmd_offset: Offset to apply for each command.
+> - * @features: Features supported by the EC.
+> - */
+> -struct cros_ec_dev {
+> -	struct device class_dev;
+> -	struct cros_ec_device *ec_dev;
+> -	struct device *dev;
+> -	struct cros_ec_debugfs *debug_info;
+> -	bool has_kb_wake_angle;
+> -	u16 cmd_offset;
+> -	u32 features[2];
+> -};
+> -
+> -#define to_cros_ec_dev(dev)  container_of(dev, struct cros_ec_dev, class_dev)
+> -
+> -#endif /* __LINUX_MFD_CROS_EC_H */
+> diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/platform_data/cros_ec_proto.h
+> index 30098a551523..119b9951c055 100644
+> --- a/include/linux/platform_data/cros_ec_proto.h
+> +++ b/include/linux/platform_data/cros_ec_proto.h
+> @@ -12,7 +12,6 @@
+>  #include <linux/mutex.h>
+>  #include <linux/notifier.h>
+>  
+> -#include <linux/mfd/cros_ec.h>
+>  #include <linux/platform_data/cros_ec_commands.h>
+>  
+>  #define CROS_EC_DEV_NAME	"cros_ec"
+> @@ -185,6 +184,28 @@ struct cros_ec_platform {
+>  	u16 cmd_offset;
+>  };
+>  
+> +/**
+> + * struct cros_ec_dev - ChromeOS EC device entry point.
+> + * @class_dev: Device structure used in sysfs.
+> + * @ec_dev: cros_ec_device structure to talk to the physical device.
+> + * @dev: Pointer to the platform device.
+> + * @debug_info: cros_ec_debugfs structure for debugging information.
+> + * @has_kb_wake_angle: True if at least 2 accelerometer are connected to the EC.
+> + * @cmd_offset: Offset to apply for each command.
+> + * @features: Features supported by the EC.
+> + */
+> +struct cros_ec_dev {
+> +	struct device class_dev;
+> +	struct cros_ec_device *ec_dev;
+> +	struct device *dev;
+> +	struct cros_ec_debugfs *debug_info;
+> +	bool has_kb_wake_angle;
+> +	u16 cmd_offset;
+> +	u32 features[2];
+> +};
+> +
+> +#define to_cros_ec_dev(dev)  container_of(dev, struct cros_ec_dev, class_dev)
+> +
+>  int cros_ec_suspend(struct cros_ec_device *ec_dev);
+>  
+>  int cros_ec_resume(struct cros_ec_device *ec_dev);
+> 

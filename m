@@ -2,108 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C431139205
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 14:19:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AADDC1392BC
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 14:58:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726976AbgAMNTm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jan 2020 08:19:42 -0500
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:8262 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726074AbgAMNTm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jan 2020 08:19:42 -0500
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00DDIVCk021817;
-        Mon, 13 Jan 2020 14:19:22 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=PNpmZ/1bn7ZvtvS1FYTPLDxvUN515Mcm8HzueivD4+0=;
- b=BZ3bX30GGJDNZ+GCxhSU4q7rNQBOnnslt+RwvEWXid6vy9gJsyP7nkdyzLJLkW6JE+OS
- XBv73V/9HRnUYHL0l9h0wDsDKNr1XUGIhbNDeb3eXseoGPCxsh+sZzOmt+IqKR5T7b8u
- RncjhkcbwGx+MM0D2b5z1JjGNMG5jKDvelShapkfeMQoG6v17D5i9UTxHCDeIy270wRg
- Ozvqga/4kDrdCnN49Nlj97Qj9H20ePJuW36/s2HGEo5PnMcWIm71+TGZJySI2BVAxy5N
- t+SKrT7b1uGLHjrQvr41heCV3OOmhpwFi/wuM83A91yWZIpJXw+htV5L5Nn+iKgl0mYZ HQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2xf77arbpq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 13 Jan 2020 14:19:22 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E376C10002A;
-        Mon, 13 Jan 2020 14:19:21 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D36A42B8214;
-        Mon, 13 Jan 2020 14:19:21 +0100 (CET)
-Received: from localhost (10.75.127.44) by SFHDAG5NODE3.st.com (10.75.127.15)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 13 Jan 2020 14:19:21
- +0100
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-To:     <jic23@kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
-        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
-        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <etienne.carriere@st.com>
-Subject: [PATCH] iio: adc: stm32-adc: don't print an error on probe deferral
-Date:   Mon, 13 Jan 2020 14:18:59 +0100
-Message-ID: <1578921539-6353-1-git-send-email-fabrice.gasnier@st.com>
-X-Mailer: git-send-email 2.7.4
+        id S1729203AbgAMN5m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jan 2020 08:57:42 -0500
+Received: from mga14.intel.com ([192.55.52.115]:56477 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729197AbgAMN5l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 13 Jan 2020 08:57:41 -0500
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Jan 2020 05:57:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,429,1571727600"; 
+   d="scan'208";a="219300610"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga008.fm.intel.com with ESMTP; 13 Jan 2020 05:57:39 -0800
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ir0Dr-0008Ue-Pv; Mon, 13 Jan 2020 15:57:39 +0200
+Date:   Mon, 13 Jan 2020 15:57:39 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Leonard Crestez <leonard.crestez@nxp.com>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+Subject: Re: [PATCH v1] iio: st_gyro: Correct data for LSM9DS0 gyro
+Message-ID: <20200113135739.GN32742@smile.fi.intel.com>
+References: <20191217171038.17004-1-andriy.shevchenko@linux.intel.com>
+ <20191223124534.1ed2d23b@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG6NODE2.st.com (10.75.127.17) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-13_03:2020-01-13,2020-01-13 signatures=0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191223124534.1ed2d23b@archlinux>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Etienne Carriere <etienne.carriere@st.com>
+On Mon, Dec 23, 2019 at 12:45:34PM +0000, Jonathan Cameron wrote:
+> On Tue, 17 Dec 2019 19:10:38 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> > The commit 41c128cb25ce ("iio: st_gyro: Add lsm9ds0-gyro support")
+> > assumes that gyro in LSM9DS0 is the same as others with 0xd4 WAI ID,
+> > but datasheet tells slight different story, i.e. the first scale factor
+> > for the chip is 245 dps, and not 250 dps.
+> > 
+> > Correct this by introducing a separate settings for LSM9DS0.
+> > 
+> > Fixes: 41c128cb25ce ("iio: st_gyro: Add lsm9ds0-gyro support")
+> > Depends-on: 45a4e4220bf4 ("iio: gyro: st_gyro: fix L3GD20H support")
+> > Cc: Leonard Crestez <leonard.crestez@nxp.com>
+> > Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Looks good to me.  Will just leave it a bit longer to give others
+> time to check it.
+> 
+> Give me a shout if I seem to have missed this by about a week into the new
+> year (to let people get back from holidays etc).
 
-Do not print an error trace when deferring probe for some resource.
+Gentle ping.
 
-Signed-off-by: Etienne Carriere <etienne.carriere@st.com>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
----
- drivers/iio/adc/stm32-adc-core.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 97655d7..2df88d2 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -688,7 +688,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 	priv->vref = devm_regulator_get(&pdev->dev, "vref");
- 	if (IS_ERR(priv->vref)) {
- 		ret = PTR_ERR(priv->vref);
--		dev_err(&pdev->dev, "vref get failed, %d\n", ret);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(&pdev->dev, "vref get failed, %d\n", ret);
- 		return ret;
- 	}
- 
-@@ -696,7 +697,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->aclk)) {
- 		ret = PTR_ERR(priv->aclk);
- 		if (ret != -ENOENT) {
--			dev_err(&pdev->dev, "Can't get 'adc' clock\n");
-+			if (ret != -EPROBE_DEFER)
-+				dev_err(&pdev->dev, "Can't get 'adc' clock\n");
- 			return ret;
- 		}
- 		priv->aclk = NULL;
-@@ -706,7 +708,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->bclk)) {
- 		ret = PTR_ERR(priv->bclk);
- 		if (ret != -ENOENT) {
--			dev_err(&pdev->dev, "Can't get 'bus' clock\n");
-+			if (ret != -EPROBE_DEFER)
-+				dev_err(&pdev->dev, "Can't get 'bus' clock\n");
- 			return ret;
- 		}
- 		priv->bclk = NULL;
 -- 
-2.7.4
+With Best Regards,
+Andy Shevchenko
+
 

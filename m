@@ -2,380 +2,338 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2982E1396CF
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 17:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 962A41397C5
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2020 18:33:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728516AbgAMQwb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jan 2020 11:52:31 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:50324 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726567AbgAMQwb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jan 2020 11:52:31 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 9533428ED5C
-Subject: Re: [PATCH] cros_ec: treewide: Remove 'include/linux/mfd/cros_ec.h'
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Collabora Kernel ML <kernel@collabora.com>, groeck@chromium.org,
-        bleung@chromium.org, dtor@chromium.org, gwendal@chromium.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        linux-iio@vger.kernel.org, Nick Vaccaro <nvaccaro@chromium.org>,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-rtc@vger.kernel.org, Chanwoo Choi <cw00.choi@samsung.com>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Evan Green <evgreen@chromium.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Mark Brown <broonie@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>
-References: <20191203145018.14015-1-enric.balletbo@collabora.com>
-Message-ID: <74a0c896-6d1a-5cb5-d14f-6dd994382982@collabora.com>
-Date:   Mon, 13 Jan 2020 17:52:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1726878AbgAMRdF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jan 2020 12:33:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57188 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726985AbgAMRdC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 13 Jan 2020 12:33:02 -0500
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D90B221739;
+        Mon, 13 Jan 2020 17:33:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578936781;
+        bh=rauLnSZ+Spi8k3g+WMjDp6jay7fj+iymnbghI+P3bQQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=RddXxICLoCdCCO9dgj6wmhurfypiaN9GtaXGzj4dgkEVb5mi9HS76+FF242UgrREJ
+         aLsams4gnFVdOClooLd+tB/2tfyqOboYsU5Ag7S1sol/KbgVm6WHuvb0cb49DtGxLp
+         PGGTx78ZhER9KB9FKWnzW9T971iaq/6Ia4ecaMEg=
+Received: by mail-qv1-f47.google.com with SMTP id m14so4364596qvl.3;
+        Mon, 13 Jan 2020 09:33:00 -0800 (PST)
+X-Gm-Message-State: APjAAAUdvQLrMNPl2zgQu/4UqWbuIfnW4zSKuAc6i7LvRy3hLCUB7eiD
+        LmQJpj/c5BIVGSnRy2FW0TpR4c9Ut/oZbJSiDw==
+X-Google-Smtp-Source: APXvYqwFeiDJjuedb+BcENgmijC/CtslUg6eGGSdj1HsV8+rVN0gYdrIBEkNEcRJ1aIamgYR+23QW0oWBRUQfNrErFY=
+X-Received: by 2002:a0c:f68f:: with SMTP id p15mr12157541qvn.79.1578936779904;
+ Mon, 13 Jan 2020 09:32:59 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191203145018.14015-1-enric.balletbo@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190807133137.11185-1-beniamin.bia@analog.com> <20190807133137.11185-3-beniamin.bia@analog.com>
+In-Reply-To: <20190807133137.11185-3-beniamin.bia@analog.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 13 Jan 2020 11:32:48 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+3YibutT0kLVcLZEieWM7YkHWMhW4Pcb9Gd0AHtEtAVA@mail.gmail.com>
+Message-ID: <CAL_Jsq+3YibutT0kLVcLZEieWM7YkHWMhW4Pcb9Gd0AHtEtAVA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] dt-bindings: iio: adc: Migrate AD7606
+ documentation to yaml
+To:     Beniamin Bia <beniamin.bia@analog.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        biabeniamin@outlook.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 3/12/19 15:50, Enric Balletbo i Serra wrote:
-> This header file now only includes the cros_ec_dev struct, however, is the
-> 'include/linux/platform_data/cros_ec_proto.h' who contains the definition of
-> all the Chrome OS EC related structs. There is no reason to have a
-> separate include for this struct so move to the place where other
-> structs are defined. That way, we can remove the include itself, but also
-> simplify the common pattern
-> 
->     #include <linux/mfd/cros_ec.h>
->     #include <linux/platform_data/cros_ec_proto.h>
-> 
-> for a single include
-> 
->     #include <linux/platform_data/cros_ec_proto.h>
-> 
-> The changes to remove the cros_ec.h include were generated with the
-> following shell script:
-> 
->     git grep -l "<linux/mfd/cros_ec.h>" | xargs sed -i '/<linux\/mfd\/cros_ec.h>/d'
-> 
-> Signed-off-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-
-Applied for 5.6 with all the collected acks, thanks.
-
- Enric
-
+On Wed, Aug 7, 2019 at 8:32 AM Beniamin Bia <beniamin.bia@analog.com> wrote=
+:
+>
+> The documentation for ad7606 was migrated to yaml.
+>
+> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
 > ---
-> 
->  drivers/iio/accel/cros_ec_accel_legacy.c      |  1 -
->  .../common/cros_ec_sensors/cros_ec_sensors.c  |  1 -
->  .../cros_ec_sensors/cros_ec_sensors_core.c    |  1 -
->  drivers/iio/light/cros_ec_light_prox.c        |  1 -
->  drivers/iio/pressure/cros_ec_baro.c           |  1 -
->  .../media/platform/cros-ec-cec/cros-ec-cec.c  |  1 -
->  drivers/mfd/cros_ec_dev.c                     |  1 -
->  drivers/platform/chrome/cros_ec_chardev.c     |  1 -
->  drivers/platform/chrome/cros_ec_debugfs.c     |  1 -
->  drivers/platform/chrome/cros_ec_lightbar.c    |  1 -
->  drivers/platform/chrome/cros_ec_sensorhub.c   |  1 -
->  drivers/platform/chrome/cros_ec_sysfs.c       |  1 -
->  drivers/platform/chrome/cros_ec_vbc.c         |  1 -
->  drivers/platform/chrome/cros_usbpd_logger.c   |  1 -
->  drivers/power/supply/cros_usbpd-charger.c     |  1 -
->  drivers/rtc/rtc-cros-ec.c                     |  1 -
->  include/linux/mfd/cros_ec.h                   | 35 -------------------
->  include/linux/platform_data/cros_ec_proto.h   | 23 +++++++++++-
->  18 files changed, 22 insertions(+), 52 deletions(-)
->  delete mode 100644 include/linux/mfd/cros_ec.h
-> 
-> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-> index 65f85faf6f31..68e847c6255e 100644
-> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
-> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-> @@ -18,7 +18,6 @@
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
->  #include <linux/kernel.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/slab.h>
->  #include <linux/platform_data/cros_ec_commands.h>
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> index 7dce04473467..576e45faafaf 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-> @@ -16,7 +16,6 @@
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
->  #include <linux/kernel.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_data/cros_ec_proto.h>
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> index 81a7f692de2f..d3a3626c7cd8 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> @@ -13,7 +13,6 @@
->  #include <linux/iio/kfifo_buf.h>
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/kernel.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/slab.h>
->  #include <linux/platform_data/cros_ec_commands.h>
-> diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
-> index d85a391e50c5..7a838e2956f4 100644
-> --- a/drivers/iio/light/cros_ec_light_prox.c
-> +++ b/drivers/iio/light/cros_ec_light_prox.c
-> @@ -14,7 +14,6 @@
->  #include <linux/iio/triggered_buffer.h>
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/kernel.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_data/cros_ec_proto.h>
-> diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
-> index 2354302375de..d2a67dceb996 100644
-> --- a/drivers/iio/pressure/cros_ec_baro.c
-> +++ b/drivers/iio/pressure/cros_ec_baro.c
-> @@ -14,7 +14,6 @@
->  #include <linux/iio/triggered_buffer.h>
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/kernel.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/slab.h>
->  #include <linux/platform_data/cros_ec_commands.h>
-> diff --git a/drivers/media/platform/cros-ec-cec/cros-ec-cec.c b/drivers/media/platform/cros-ec-cec/cros-ec-cec.c
-> index 4a3b3810fd89..72c70f123650 100644
-> --- a/drivers/media/platform/cros-ec-cec/cros-ec-cec.c
-> +++ b/drivers/media/platform/cros-ec-cec/cros-ec-cec.c
-> @@ -14,7 +14,6 @@
->  #include <linux/cec.h>
->  #include <linux/slab.h>
->  #include <linux/interrupt.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_data/cros_ec_proto.h>
->  #include <media/cec.h>
-> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
-> index c4b977a5dd96..8da4e4cef26f 100644
-> --- a/drivers/mfd/cros_ec_dev.c
-> +++ b/drivers/mfd/cros_ec_dev.c
-> @@ -6,7 +6,6 @@
->   */
->  
->  #include <linux/mfd/core.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/of_platform.h>
-> diff --git a/drivers/platform/chrome/cros_ec_chardev.c b/drivers/platform/chrome/cros_ec_chardev.c
-> index 74ded441bb50..c65e70bc168d 100644
-> --- a/drivers/platform/chrome/cros_ec_chardev.c
-> +++ b/drivers/platform/chrome/cros_ec_chardev.c
-> @@ -13,7 +13,6 @@
->  #include <linux/init.h>
->  #include <linux/device.h>
->  #include <linux/fs.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/miscdevice.h>
->  #include <linux/module.h>
->  #include <linux/notifier.h>
-> diff --git a/drivers/platform/chrome/cros_ec_debugfs.c b/drivers/platform/chrome/cros_ec_debugfs.c
-> index 6ae484989d1f..ecfada00e6c5 100644
-> --- a/drivers/platform/chrome/cros_ec_debugfs.c
-> +++ b/drivers/platform/chrome/cros_ec_debugfs.c
-> @@ -7,7 +7,6 @@
->  #include <linux/debugfs.h>
->  #include <linux/delay.h>
->  #include <linux/fs.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
->  #include <linux/platform_data/cros_ec_commands.h>
-> diff --git a/drivers/platform/chrome/cros_ec_lightbar.c b/drivers/platform/chrome/cros_ec_lightbar.c
-> index c0f2eec35a48..b4c110c5fee0 100644
-> --- a/drivers/platform/chrome/cros_ec_lightbar.c
-> +++ b/drivers/platform/chrome/cros_ec_lightbar.c
-> @@ -8,7 +8,6 @@
->  #include <linux/device.h>
->  #include <linux/fs.h>
->  #include <linux/kobject.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_data/cros_ec_proto.h>
-> diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platform/chrome/cros_ec_sensorhub.c
-> index 04d8879689e9..79fefd3bb0fa 100644
-> --- a/drivers/platform/chrome/cros_ec_sensorhub.c
-> +++ b/drivers/platform/chrome/cros_ec_sensorhub.c
-> @@ -9,7 +9,6 @@
->  #include <linux/init.h>
->  #include <linux/device.h>
->  #include <linux/module.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_data/cros_ec_proto.h>
->  #include <linux/platform_data/cros_ec_sensorhub.h>
-> diff --git a/drivers/platform/chrome/cros_ec_sysfs.c b/drivers/platform/chrome/cros_ec_sysfs.c
-> index 74d36b8d4f46..07dac97ad57c 100644
-> --- a/drivers/platform/chrome/cros_ec_sysfs.c
-> +++ b/drivers/platform/chrome/cros_ec_sysfs.c
-> @@ -8,7 +8,6 @@
->  #include <linux/device.h>
->  #include <linux/fs.h>
->  #include <linux/kobject.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_data/cros_ec_proto.h>
-> diff --git a/drivers/platform/chrome/cros_ec_vbc.c b/drivers/platform/chrome/cros_ec_vbc.c
-> index f11a1283e5c8..8edae465105c 100644
-> --- a/drivers/platform/chrome/cros_ec_vbc.c
-> +++ b/drivers/platform/chrome/cros_ec_vbc.c
-> @@ -6,7 +6,6 @@
->  
->  #include <linux/of.h>
->  #include <linux/platform_device.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_data/cros_ec_proto.h>
-> diff --git a/drivers/platform/chrome/cros_usbpd_logger.c b/drivers/platform/chrome/cros_usbpd_logger.c
-> index 374cdd1e868a..7de3ea75ef46 100644
-> --- a/drivers/platform/chrome/cros_usbpd_logger.c
-> +++ b/drivers/platform/chrome/cros_usbpd_logger.c
-> @@ -6,7 +6,6 @@
->   */
->  
->  #include <linux/ktime.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/math64.h>
->  #include <linux/module.h>
->  #include <linux/platform_data/cros_ec_commands.h>
-> diff --git a/drivers/power/supply/cros_usbpd-charger.c b/drivers/power/supply/cros_usbpd-charger.c
-> index 6cc7c3910e09..0aca0da41cb7 100644
-> --- a/drivers/power/supply/cros_usbpd-charger.c
-> +++ b/drivers/power/supply/cros_usbpd-charger.c
-> @@ -5,7 +5,6 @@
->   * Copyright (c) 2014 - 2018 Google, Inc
->   */
->  
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_data/cros_ec_proto.h>
-> diff --git a/drivers/rtc/rtc-cros-ec.c b/drivers/rtc/rtc-cros-ec.c
-> index d043d30f05bc..f7343c289cab 100644
-> --- a/drivers/rtc/rtc-cros-ec.c
-> +++ b/drivers/rtc/rtc-cros-ec.c
-> @@ -5,7 +5,6 @@
->  // Author: Stephen Barber <smbarber@chromium.org>
->  
->  #include <linux/kernel.h>
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/module.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_data/cros_ec_proto.h>
-> diff --git a/include/linux/mfd/cros_ec.h b/include/linux/mfd/cros_ec.h
+> Changes in v2:
+> -old txt file was deleted
+>
+>  .../bindings/iio/adc/adi,ad7606.txt           |  66 ---------
+>  .../bindings/iio/adc/adi,ad7606.yaml          | 134 ++++++++++++++++++
+>  MAINTAINERS                                   |   2 +-
+>  3 files changed, 135 insertions(+), 67 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7606.=
+txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7606.=
+yaml
+>
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.txt b/D=
+ocumentation/devicetree/bindings/iio/adc/adi,ad7606.txt
 > deleted file mode 100644
-> index 61c2875c2a40..000000000000
-> --- a/include/linux/mfd/cros_ec.h
+> index d8652460198e..000000000000
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.txt
 > +++ /dev/null
-> @@ -1,35 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0-only */
-> -/*
-> - * ChromeOS EC multi-function device
-> - *
-> - * Copyright (C) 2012 Google, Inc
-> - */
+> @@ -1,66 +0,0 @@
+> -Analog Devices AD7606 Simultaneous Sampling ADC
 > -
-> -#ifndef __LINUX_MFD_CROS_EC_H
-> -#define __LINUX_MFD_CROS_EC_H
+> -Required properties for the AD7606:
 > -
-> -#include <linux/device.h>
+> -- compatible: Must be one of
+> -       * "adi,ad7605-4"
+> -       * "adi,ad7606-8"
+> -       * "adi,ad7606-6"
+> -       * "adi,ad7606-4"
+> -       * "adi,ad7616"
+> -- reg: SPI chip select number for the device
+> -- spi-max-frequency: Max SPI frequency to use
+> -       see: Documentation/devicetree/bindings/spi/spi-bus.txt
+> -- spi-cpha: See Documentation/devicetree/bindings/spi/spi-bus.txt
+> -- avcc-supply: phandle to the Avcc power supply
+> -- interrupts: IRQ line for the ADC
+> -       see: Documentation/devicetree/bindings/interrupt-controller/inter=
+rupts.txt
+> -- adi,conversion-start-gpios: must be the device tree identifier of the =
+CONVST pin.
+> -                 This logic input is used to initiate conversions on the=
+ analog
+> -                 input channels. As the line is active high, it should b=
+e marked
+> -                 GPIO_ACTIVE_HIGH.
 > -
-> -/**
-> - * struct cros_ec_dev - ChromeOS EC device entry point.
-> - * @class_dev: Device structure used in sysfs.
-> - * @ec_dev: cros_ec_device structure to talk to the physical device.
-> - * @dev: Pointer to the platform device.
-> - * @debug_info: cros_ec_debugfs structure for debugging information.
-> - * @has_kb_wake_angle: True if at least 2 accelerometer are connected to the EC.
-> - * @cmd_offset: Offset to apply for each command.
-> - * @features: Features supported by the EC.
-> - */
-> -struct cros_ec_dev {
-> -	struct device class_dev;
-> -	struct cros_ec_device *ec_dev;
-> -	struct device *dev;
-> -	struct cros_ec_debugfs *debug_info;
-> -	bool has_kb_wake_angle;
-> -	u16 cmd_offset;
-> -	u32 features[2];
-> -};
+> -Optional properties:
 > -
-> -#define to_cros_ec_dev(dev)  container_of(dev, struct cros_ec_dev, class_dev)
+> -- reset-gpios: must be the device tree identifier of the RESET pin. If s=
+pecified,
+> -              it will be asserted during driver probe. As the line is ac=
+tive high,
+> -              it should be marked GPIO_ACTIVE_HIGH.
+> -- standby-gpios: must be the device tree identifier of the STBY pin. Thi=
+s pin is used
+> -               to place the AD7606 into one of two power-down modes, Sta=
+ndby mode or
+> -               Shutdown mode. As the line is active low, it should be ma=
+rked
+> -               GPIO_ACTIVE_LOW.
+> -- adi,first-data-gpios: must be the device tree identifier of the FRSTDA=
+TA pin.
+> -                   The FRSTDATA output indicates when the first channel,=
+ V1, is
+> -                   being read back on either the parallel, byte or seria=
+l interface.
+> -                   As the line is active high, it should be marked GPIO_=
+ACTIVE_HIGH.
+> -- adi,range-gpios: must be the device tree identifier of the RANGE pin. =
+The polarity on
+> -             this pin determines the input range of the analog input cha=
+nnels. If
+> -             this pin is tied to a logic high, the analog input range is=
+ =C2=B110V for
+> -             all channels. If this pin is tied to a logic low, the analo=
+g input range
+> -             is =C2=B15V for all channels. As the line is active high, i=
+t should be marked
+> -             GPIO_ACTIVE_HIGH.
+> -- adi,oversampling-ratio-gpios: must be the device tree identifier of th=
+e over-sampling
+> -                               mode pins. As the line is active high, it=
+ should be marked
+> -                               GPIO_ACTIVE_HIGH.
 > -
-> -#endif /* __LINUX_MFD_CROS_EC_H */
-> diff --git a/include/linux/platform_data/cros_ec_proto.h b/include/linux/platform_data/cros_ec_proto.h
-> index 30098a551523..119b9951c055 100644
-> --- a/include/linux/platform_data/cros_ec_proto.h
-> +++ b/include/linux/platform_data/cros_ec_proto.h
-> @@ -12,7 +12,6 @@
->  #include <linux/mutex.h>
->  #include <linux/notifier.h>
->  
-> -#include <linux/mfd/cros_ec.h>
->  #include <linux/platform_data/cros_ec_commands.h>
->  
->  #define CROS_EC_DEV_NAME	"cros_ec"
-> @@ -185,6 +184,28 @@ struct cros_ec_platform {
->  	u16 cmd_offset;
->  };
->  
-> +/**
-> + * struct cros_ec_dev - ChromeOS EC device entry point.
-> + * @class_dev: Device structure used in sysfs.
-> + * @ec_dev: cros_ec_device structure to talk to the physical device.
-> + * @dev: Pointer to the platform device.
-> + * @debug_info: cros_ec_debugfs structure for debugging information.
-> + * @has_kb_wake_angle: True if at least 2 accelerometer are connected to the EC.
-> + * @cmd_offset: Offset to apply for each command.
-> + * @features: Features supported by the EC.
-> + */
-> +struct cros_ec_dev {
-> +	struct device class_dev;
-> +	struct cros_ec_device *ec_dev;
-> +	struct device *dev;
-> +	struct cros_ec_debugfs *debug_info;
-> +	bool has_kb_wake_angle;
-> +	u16 cmd_offset;
-> +	u32 features[2];
-> +};
+> -Example:
+> -
+> -       adc@0 {
+> -               compatible =3D "adi,ad7606-8";
+> -               reg =3D <0>;
+> -               spi-max-frequency =3D <1000000>;
+> -               spi-cpol;
+> -
+> -               avcc-supply =3D <&adc_vref>;
+> -
+> -               interrupts =3D <25 IRQ_TYPE_EDGE_FALLING>;
+> -               interrupt-parent =3D <&gpio>;
+> -
+> -               adi,conversion-start-gpios =3D <&gpio 17 GPIO_ACTIVE_HIGH=
+>;
+> -               reset-gpios =3D <&gpio 27 GPIO_ACTIVE_HIGH>;
+> -               adi,first-data-gpios =3D <&gpio 22 GPIO_ACTIVE_HIGH>;
+> -               adi,oversampling-ratio-gpios =3D <&gpio 18 GPIO_ACTIVE_HI=
+GH
+> -                                               &gpio 23 GPIO_ACTIVE_HIGH
+> -                                               &gpio 26 GPIO_ACTIVE_HIGH=
+>;
+> -               standby-gpios =3D <&gpio 24 GPIO_ACTIVE_LOW>;
+> -       };
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> new file mode 100644
+> index 000000000000..509dbe9c84d2
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> @@ -0,0 +1,134 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7606.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +#define to_cros_ec_dev(dev)  container_of(dev, struct cros_ec_dev, class_dev)
+> +title: Analog Devices AD7606 Simultaneous Sampling ADC
 > +
->  int cros_ec_suspend(struct cros_ec_device *ec_dev);
->  
->  int cros_ec_resume(struct cros_ec_device *ec_dev);
-> 
+> +maintainers:
+> +  - Beniamin Bia <beniamin.bia@analog.com>
+> +  - Stefan Popa <stefan.popa@analog.com>
+> +
+> +description: |
+> +  Analog Devices AD7606 Simultaneous Sampling ADC
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
+7606_7606-6_7606-4.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD=
+7616.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7605-4
+> +      - adi,ad7606-8
+> +      - adi,ad7606-6
+> +      - adi,ad7606-4
+> +      - adi,ad7616
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-cpha: true
+> +
+> +  avcc-supply:
+> +    description:
+> +      Phandle to the Avcc power supply
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  adi,conversion-start-gpios:
+> +    description:
+> +      Must be the device tree identifier of the CONVST pin.
+> +      This logic input is used to initiate conversions on the analog
+> +      input channels. As the line is active high, it should be marked
+> +      GPIO_ACTIVE_HIGH.
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description:
+> +      Must be the device tree identifier of the RESET pin. If specified,
+> +      it will be asserted during driver probe. As the line is active hig=
+h,
+> +      it should be marked GPIO_ACTIVE_HIGH.
+> +    maxItems: 1
+> +
+> +  standby-gpios:
+> +    description:
+> +       Must be the device tree identifier of the STBY pin. This pin is u=
+sed
+> +       to place the AD7606 into one of two power-down modes, Standby mod=
+e or
+> +       Shutdown mode. As the line is active low, it should be marked
+> +       GPIO_ACTIVE_LOW.
+> +    maxItems: 1
+> +
+> +  adi,first-data-gpios:
+> +    description:
+> +      Must be the device tree identifier of the FRSTDATA pin.
+> +      The FRSTDATA output indicates when the first channel, V1, is
+> +      being read back on either the parallel, byte or serial interface.
+> +      As the line is active high, it should be marked GPIO_ACTIVE_HIGH.
+> +    maxItems: 1
+> +
+> +  adi,range-gpios:
+> +    description:
+> +      Must be the device tree identifier of the RANGE pin. The polarity =
+on
+> +      this pin determines the input range of the analog input channels. =
+If
+> +      this pin is tied to a logic high, the analog input range is =C2=B1=
+10V for
+> +      all channels. If this pin is tied to a logic low, the analog input=
+ range
+> +      is =C2=B15V for all channels. As the line is active high, it shoul=
+d be marked
+> +      GPIO_ACTIVE_HIGH.
+> +    maxItems: 1
+> +
+> +  adi,oversampling-ratio-gpios:
+> +    description:
+> +      Must be the device tree identifier of the over-sampling
+> +      mode pins. As the line is active high, it should be marked
+> +      GPIO_ACTIVE_HIGH.
+> +    maxItems: 1
+> +
+> +  adi,sw-mode:
+> +    description:
+> +      Software mode of operation, so far available only for ad7616.
+> +      It is enabled when all three oversampling mode pins are connected =
+to
+> +      high level. The device is configured by the corresponding register=
+s. If the
+> +      adi,oversampling-ratio-gpios property is defined, then the driver =
+will set the
+> +      oversampling gpios to high. Otherwise, it is assumed that the pins=
+ are hardwired
+> +      to VDD.
+> +    maxItems: 1
+> +    type: boolean
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - spi-cpha
+> +  - avcc-supply
+> +  - interrupts
+> +  - adi,conversion-start-gpios
+> +
+> +examples:
+> +  - |
+> +    spi0 {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        adc@0 {
+> +                compatible =3D "adi,ad7606-8";
+> +                reg =3D <0>;
+> +                spi-max-frequency =3D <1000000>;
+> +                spi-cpol;
+> +
+> +                avcc-supply =3D <&adc_vref>;
+> +
+> +                interrupts =3D <25 IRQ_TYPE_EDGE_FALLING>;
+> +                interrupt-parent =3D <&gpio>;
+> +
+> +                adi,conversion-start-gpios =3D <&gpio 17 GPIO_ACTIVE_HIG=
+H>;
+> +                reset-gpios =3D <&gpio 27 GPIO_ACTIVE_HIGH>;
+> +                adi,first-data-gpios =3D <&gpio 22 GPIO_ACTIVE_HIGH>;
+> +                adi,oversampling-ratio-gpios =3D <&gpio 18 GPIO_ACTIVE_H=
+IGH
+> +                                                &gpio 23 GPIO_ACTIVE_HIG=
+H
+> +                                                &gpio 26 GPIO_ACTIVE_HIG=
+H>;
+
+The schema defines there is only 1 GPIO, but there are 3 here. Please
+fix (note this shows up in -next due to dtc update).
+
+Rob

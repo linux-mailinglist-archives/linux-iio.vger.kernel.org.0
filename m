@@ -2,156 +2,355 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89AC213A21A
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2020 08:28:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9507213A27C
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2020 09:08:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729210AbgANH1c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jan 2020 02:27:32 -0500
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:2584 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728899AbgANH1b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jan 2020 02:27:31 -0500
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00E7QLjw029195;
-        Tue, 14 Jan 2020 02:27:09 -0500
-Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2051.outbound.protection.outlook.com [104.47.37.51])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2xfbvb6xqe-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Jan 2020 02:27:09 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MoFPOxgjyjkX+VQruGxb4nnBt9wpqkgRFLDCZ73uwvYc6I0NKrsxUJFgx9ewVYxrLpoxT+5M0rTMx3wERhhomk1ExJ9jgCBWL/F00dpGEha2AGREVKtopD1MBlHbbEdQNtHmPUdMZsPsMBuyxTtkiFHpGF4JS4nV4iGvsKgDjGSHHTSACrwV7/QKJL0P7qne5OT0ATgGKeQzMJ2PxyU5+vzTVtjbCZc/WvtwRShwP0BJ7A820xHr+HvtGlTK9h4csx/zB35pkqxbtwRKoNggs0L1YB/ImSxOFKuw994r9I6X/cDmMIC3yOkIeMT1GYe0Flig4DRaqVT17REDmOtCcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FXv3V7i8gxyrH/8nZ7nvF+9GgDcdQ6ODxN+ENSOO6F4=;
- b=bi/b83c7v4v0wB092i9XdLCXZgCVM5srxWTGvDW/5FEAd96weEmuD4M/mD127xOFuq4pBGi4CYO4qbHt9d+/fSSLmEnKEKOXDkEZ6Gsr3U06uvRq6RbJQhV83uwR+B6JM+iYRMR42Irw2YsLKDp+yXB/GWJQiiSxU9RWaENNvz2hbiokqSImcuI29pPr8jiqk87GLdOTQ0OFvcFKBFjEWxJ1zYIBl8WbZW3A8aHJVkL5E0Z/s+Xjy83cxEXl8rdA7XMM5fITFYknnScAwttPrcSzcgf+2V0KIaghdaS49m1DoNjJz+O45/g7itRPRCgoVLfrJrUtcvRQkuURgsH5iw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FXv3V7i8gxyrH/8nZ7nvF+9GgDcdQ6ODxN+ENSOO6F4=;
- b=WzQ93q0E8mOdXRN5OjBpp+8h2FcefEd+sVZ95y58iS+X8SCQK9pAUntoY3L+OEBG+PggiMStqYXfD2iveXB0TT9GFFyoMeG6s55N+Cj9OhQEAoPEUnCH/wEIAG6K9wMiOk865QT1tpJdWo+WsAf6e19m9qPSmm0QKXZQ5oEgwZ8=
-Received: from CH2PR03MB5192.namprd03.prod.outlook.com (20.180.12.152) by
- CH2PR03MB5272.namprd03.prod.outlook.com (20.180.4.150) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2623.10; Tue, 14 Jan 2020 07:27:08 +0000
-Received: from CH2PR03MB5192.namprd03.prod.outlook.com
- ([fe80::dce7:7fec:f33f:ad39]) by CH2PR03MB5192.namprd03.prod.outlook.com
- ([fe80::dce7:7fec:f33f:ad39%7]) with mapi id 15.20.2623.015; Tue, 14 Jan 2020
- 07:27:08 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "Bia, Beniamin" <Beniamin.Bia@analog.com>,
+        id S1729031AbgANIIm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Jan 2020 03:08:42 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:44671 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728992AbgANIIm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jan 2020 03:08:42 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1irHFV-0003lE-Oj; Tue, 14 Jan 2020 09:08:29 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1irHFU-0000FI-J4; Tue, 14 Jan 2020 09:08:28 +0100
+Date:   Tue, 14 Jan 2020 09:08:28 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
         "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
         "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "biabeniamin@outlook.com" <biabeniamin@outlook.com>
-Subject: Re: [PATCH 1/3] iio: amplifiers: hmc425a: Add support for HMC425A
- step attenuator with gpio interface
-Thread-Topic: [PATCH 1/3] iio: amplifiers: hmc425a: Add support for HMC425A
- step attenuator with gpio interface
-Thread-Index: AQHVyhvEEIAnedXVb0WyMiMRJByquKfpE+4AgACwfgA=
-Date:   Tue, 14 Jan 2020 07:27:08 +0000
-Message-ID: <5925b4f1d47306ec4376a296a1146ff024239044.camel@analog.com>
-References: <20200113141555.16117-1-beniamin.bia@analog.com>
-         <5ae63616-5749-da51-b0b2-85cdcaa948f3@metafoo.de>
-In-Reply-To: <5ae63616-5749-da51-b0b2-85cdcaa948f3@metafoo.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [137.71.226.54]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 93d07e32-63a5-4af4-a2ef-08d798c329b1
-x-ms-traffictypediagnostic: CH2PR03MB5272:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CH2PR03MB52722574CA650F723DC022CDF9340@CH2PR03MB5272.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 028256169F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(136003)(39860400002)(376002)(366004)(396003)(189003)(199004)(64756008)(6506007)(478600001)(5660300002)(66476007)(966005)(2906002)(6486002)(66556008)(8676002)(81156014)(66446008)(81166006)(53546011)(76116006)(4326008)(86362001)(66946007)(7416002)(110136005)(54906003)(2616005)(36756003)(71200400001)(6512007)(26005)(316002)(186003)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5272;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: pT2dyXY/vUtuRvloq0waWIeBA2j6OpgloVC2CunuEZs2En0udlQYg9Pig+HgwanB22JajQQQ0cmWa4HNFubz0W6mZhY337+b/b4D6tR2sThkIfrWGfEQTZydMKWwdU+q/upioRQ5HEGGp4UDFvJ3LfG512sg6PVk1zcJXubTSxk+41PQY827uxeCXtF07COGFV8VO6YKK5bknsVqN43H0VqBfizXfH/gD6DPN4Z0paihbkEIRjUEP8XXept7Lb4yp9voQVO+uiISjfX4e7XGSBotmIanWPJnMxjeuOwHcqc87YO3dUQolKF97TBT2946j4yuMebhzCvYdSXXxW58xMJVdXtVhuT5k/nSGM9We3scp2Kw2P6ip93Oc26vycvF4PQj6hQ6e12tKNgpz2bTugu+SQRMkxI0kpMkEODRJ1PDm9Y9LscW57L/LxAGSTJqbObTrX2pl/+wnN7pXMEp0K6GibKn5f/ljyvx4/+4myo=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <492776969DF61D4EB8807DF9477039AB@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        "mark.rutland@arm.com" <mark.rutland@arm.com>
+Subject: Re: [PATCH v3 4/7] pwm: Add support for Azoteq IQS620A PWM generator
+Message-ID: <20200114080828.vv7ilksklt27ysh3@pengutronix.de>
+References: <1578271620-2159-1-git-send-email-jeff@labundy.com>
+ <1578271620-2159-5-git-send-email-jeff@labundy.com>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93d07e32-63a5-4af4-a2ef-08d798c329b1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jan 2020 07:27:08.0203
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oP3fg7wqqj1FOZHlSkmfscv3DTg3OJQjhQxrfRykfyYVMOaDydgXo3PLB4ArP8KiVLODnk2lTLffg40kiAKlRCVTaXasoynqgSfa1py2PyA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5272
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-14_01:2020-01-13,2020-01-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- adultscore=0 spamscore=0 phishscore=0 suspectscore=0 bulkscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001140064
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1578271620-2159-5-git-send-email-jeff@labundy.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gTW9uLCAyMDIwLTAxLTEzIGF0IDIxOjU3ICswMTAwLCBMYXJzLVBldGVyIENsYXVzZW4gd3Jv
-dGU6DQo+IFtFeHRlcm5hbF0NCj4gDQo+IE9uIDEvMTMvMjAgMzoxNSBQTSwgQmVuaWFtaW4gQmlh
-IHdyb3RlOg0KPiBbLi4uXQ0KPiA+ICtzdGF0aWMgaW50IGhtYzQyNWFfd3JpdGUoc3RydWN0IGlp
-b19kZXYgKmluZGlvX2RldiwgdTMyIHZhbHVlKQ0KPiA+ICt7DQo+ID4gKwlzdHJ1Y3QgaG1jNDI1
-YV9zdGF0ZSAqc3QgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0KPiA+ICsJaW50IGksICp2YWx1ZXM7
-DQo+ID4gKw0KPiA+ICsJdmFsdWVzID0ga21hbGxvY19hcnJheShzdC0+Y2hpcF9pbmZvLT5udW1f
-Z3Bpb3MsIHNpemVvZihpbnQpLA0KPiA+ICsJCQkgICAgICAgR0ZQX0tFUk5FTCk7DQo+ID4gKwlp
-ZiAoIXZhbHVlcykNCj4gPiArCQlyZXR1cm4gLUVOT01FTTsNCj4gPiArDQo+ID4gKwlmb3IgKGkg
-PSAwOyBpIDwgc3QtPmNoaXBfaW5mby0+bnVtX2dwaW9zOyBpKyspDQo+ID4gKwkJdmFsdWVzW2ld
-ID0gKHZhbHVlID4+IGkpICYgMTsNCj4gPiArDQo+ID4gKwlncGlvZF9zZXRfYXJyYXlfdmFsdWVf
-Y2Fuc2xlZXAoc3QtPmdwaW9zLT5uZGVzY3MsIHN0LT5ncGlvcy0+ZGVzYywNCj4gPiArCQkJCSAg
-ICAgICB2YWx1ZXMpOw0KPiANCj4gVGhpcyBBUEkgZ290IGNoYW5nZWQgYSB3aGlsZSBhZ28gaW4g
-dXBzdHJlYW0sIHNlZQ0KPiBodHRwczovL2dpdGh1Yi5jb20vYW5hbG9nZGV2aWNlc2luYy9saW51
-eC9jb21taXQvYjk3NjJiZWJjNjMzMmI0MGMzM2UwM2RlYTAzZTMwZmExMmQ5ZTNlZA0KPiANCj4g
-PiArCWtmcmVlKHZhbHVlcyk7DQo+ID4gKwlyZXR1cm4gMDsNCj4gPiArfQ0KPiBbLi4uXQ0KPiA+
-ICtzdGF0aWMgaW50IGhtYzQyNWFfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikN
-Cj4gPiArew0KPiBbLi4uXQ0KPiA+ICsNCj4gPiArCXBsYXRmb3JtX3NldF9kcnZkYXRhKHBkZXYs
-IGluZGlvX2Rldik7DQo+IA0KPiBkcnZkYXRhIGlzIG5ldmVyIGFjY2Vzc2VkLCBubyBuZWVkIHRv
-IHNldCBpdC4NCj4gDQo+ID4gKwltdXRleF9pbml0KCZzdC0+bG9jayk7DQo+ID4gKw0KPiA+ICsJ
-aW5kaW9fZGV2LT5kZXYucGFyZW50ID0gJnBkZXYtPmRldjsNCj4gPiArCWluZGlvX2Rldi0+bmFt
-ZSA9IG5wLT5uYW1lOw0KPiANCj4gSSBrbm93IEFESSBsaWtlcyB0byBkbyB0aGlzIGluIGl0cyBu
-b24gdXBzdHJlYW0gZHJpdmVycywgYnV0IHRoZSBhYm92ZQ0KPiBpcyBub3QgSUlPIEFCSSBjb21w
-bGlhbnQuIFRoZSBuYW1lIGlzIHN1cHBvc2VkIHRvIGlkZW50aWZ5IHRoZSB0eXBlIG9mDQo+IHRo
-ZSBkZXZpY2UsIHdoaWNoIG1lYW5zIGZvciB0aGlzIGRyaXZlciBzaG91bGQgYmUgc3RhdGljICJo
-bWM0MjVhIi4NCj4gTWF5YmUgY29uc2lkZXIgYWRkaW5nIGEgZmllbGQgdG8gdGhlIGhtYzQyNWFf
-Y2hpcF9pbmZvIGZvciB0aGlzLg0KDQpXZSd2ZSBhY3R1YWxseSBbcmVjZW50bHldIGhhZCBhIGRp
-c2N1c3Npb24gYWJvdXQgdGhpcyBpbnRlcm5hbGx5IHJlZ2FyZGluZw0KdGhlICdpbmRpb19kZXYt
-Pm5hbWUnLg0KDQpNYXliZSBpdCdzIGEgZ29vZCB0aW1lIHRvIGFzayBoZXJlIChub3cpLg0KQSBs
-b3Qgb2Ygb3VyIHVzZXJzcGFjZSBzdHVmZiBoYXZlIGJlZW4gc2VhcmNoaW5nIElJTyBkZXZpY2Vz
-IHZpYSB0aGUgJ25hbWUnDQpmaWVsZCBpbiBzeXNmcywgd2hpY2ggaXMgdGhlIG5hbWUgYXNzaWdu
-ZWQgaGVyZS4NClRoYXQgY3JlYXRlcyBhIHByb2JsZW0gd2hlbiB5b3UgaGF2ZSBtdWx0aXBsZSBk
-ZXZpY2VzIHdpdGggdGhlIHNhbWUgZHJpdmVyLg0KV2hpY2ggaXMgd2h5LCBvbmUgDQoNClNvLCB0
-aGVuIHNvbWUgcXVlc3Rpb25zIHdvdWxkIGJlOg0KSXMgYSBzZWFyY2hpbmcgZm9yIElJTyBkZXZp
-Y2VzIFtpbiB1c2Vyc3BhY2VdIGJhc2VkIG9uIElJTyBkZXZpY2UtbmFtZSBub3QNCnJlY29tbWVu
-ZGVkPyBJZiBub3QsIHdoYXQgd291bGQgYmU/IE9yIHdoYXQgd291bGQgYmUgYSBiZXR0ZXIgaWRl
-YT8NCg0KVGhlIEFCSSByZWFkcyBbaG9wZWZ1bGx5IEkgcHVsbGVkIHVwIHRoZSByaWdodCBmaWVs
-ZF06DQpXaGF0OiAgICAgICAgICAgL3N5cy9idXMvaWlvL2RldmljZXMvaWlvOmRldmljZVgvbmFt
-ZQ0KS2VybmVsVmVyc2lvbjogIDIuNi4zNQ0KQ29udGFjdDogICAgICAgIGxpbnV4LWlpb0B2Z2Vy
-Lmtlcm5lbC5vcmcNCkRlc2NyaXB0aW9uOg0KICAgICAgICAgICAgICAgIERlc2NyaXB0aW9uIG9m
-IHRoZSBwaHlzaWNhbCBjaGlwIC8gZGV2aWNlIGZvciBkZXZpY2UgWC4NCiAgICAgICAgICAgICAg
-ICBUeXBpY2FsbHkgYSBwYXJ0IG51bWJlci4NCg0KVGhlIHRleHQgaW4gZGVzY3JpcHRpb24gaXMg
-YSBiaXQgb3BlbiB0byBpbnRlcnByZXRhdGlvbiwgc28gSSBjYW4ndCBtYWtlIGFuDQphc3Nlc3Nt
-ZW50IG9mIHdoYXQgaXMgY29ycmVjdC4NCkluIGNhc2UgdGhlcmUgd2FzIGEgZGlzY3Vzc2lvbiBh
-Ym91dCB0aGlzLCBzb3JyeSBmb3IgcmVwZWF0aW5nIHNvbWUgdGhpbmdzDQpub3cuDQoNCg0KPiAN
-Cj4gPiArCWluZGlvX2Rldi0+aW5mbyA9ICZobWM0MjVhX2luZm87DQo+ID4gKwlpbmRpb19kZXYt
-Pm1vZGVzID0gSU5ESU9fRElSRUNUX01PREU7DQo+ID4gKw0KPiA+ICsJcmV0dXJuIGRldm1faWlv
-X2RldmljZV9yZWdpc3RlcigmcGRldi0+ZGV2LCBpbmRpb19kZXYpOw0KPiA+ICt9DQo=
+Hello Jeff,
+
+On Mon, Jan 06, 2020 at 12:48:02AM +0000, Jeff LaBundy wrote:
+> This patch adds support for the Azoteq IQS620A, capable of generating
+> a 1-kHz PWM output with duty cycle between ~0.4% and 100% (inclusive).
+
+Overall a very nice driver, some minor issues below.
+
+> Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+> ---
+> Changes in v3:
+>   - Updated the commit message to say "~0.4%" instead of "0.4%"
+>   - Clarified the effect of duty cycle and state changes in the 'Limitations'
+>     section and added a restriction regarding 0% duty cycle
+>   - Added a comment in iqs620_pwm_apply to explain how duty cycle is derived
+>   - Updated iqs620_pwm_apply to disable the output first and enable it last to
+>     prevent temporarily driving a stale duty cycle
+>   - Rounded the calculation for duty cycle up and down in iqs620_pwm_get_state
+>     and iqs620_pwm_apply, respectively
+>   - Added a comment in iqs620_pwm_get_state to explain what it reports follow-
+>     ing requests to set duty cycle to 0%
+>   - Added a lock to prevent back-to-back access of IQS620_PWR_SETTINGS_PWM_OUT
+>     and IQS620_PWM_DUTY_CYCLE from being interrupted
+>   - Updated iqs620_pwm_notifier to reference pwm->state directly as opposed to
+>     calling pwm_get_state
+>   - Moved notifier unregistration back to a device-managed action
+>   - Added a completion to prevent iqs620_pwm_notifier from referencing the
+>     pwm_chip structure until it has been initialized by pwmchip_add
+> 
+> Changes in v2:
+>   - Merged 'Copyright' and 'Author' lines into one in introductory comments
+>   - Added 'Limitations' section to introductory comments
+>   - Replaced 'error' with 'ret' throughout
+>   - Added const qualifier to state argument of iqs620_pwm_apply and removed all
+>     modifications to the variable's contents
+>   - Updated iqs620_pwm_apply to return -ENOTSUPP or -EINVAL if the requested
+>     polarity is inverted or the requested period is below 1 ms, respectively
+>   - Updated iqs620_pwm_apply to disable the PWM output if duty cycle is zero
+>   - Added iqs620_pwm_get_state
+>   - Eliminated tabbed alignment of pwm_ops and platform_driver struct members
+>   - Moved notifier unregistration to already present iqs620_pwm_remove, which
+>     eliminated the need for a device-managed action and ready flag
+>   - Added a comment in iqs620_pwm_probe to explain the order of operations
+>   - Changed Kconfig "depends on" logic to MFD_IQS62X || COMPILE_TEST
+> 
+>  drivers/pwm/Kconfig       |  10 ++
+>  drivers/pwm/Makefile      |   1 +
+>  drivers/pwm/pwm-iqs620a.c | 254 ++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 265 insertions(+)
+>  create mode 100644 drivers/pwm/pwm-iqs620a.c
+> 
+> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+> index bd21655..60bcf6c 100644
+> --- a/drivers/pwm/Kconfig
+> +++ b/drivers/pwm/Kconfig
+> @@ -222,6 +222,16 @@ config PWM_IMX_TPM
+>  	  To compile this driver as a module, choose M here: the module
+>  	  will be called pwm-imx-tpm.
+> 
+> +config PWM_IQS620A
+> +	tristate "Azoteq IQS620A PWM support"
+> +	depends on MFD_IQS62X || COMPILE_TEST
+> +	help
+> +	  Generic PWM framework driver for the Azoteq IQS620A multi-function
+> +	  sensor.
+> +
+> +	  To compile this driver as a module, choose M here: the module will
+> +	  be called pwm-iqs620a.
+> +
+>  config PWM_JZ4740
+>  	tristate "Ingenic JZ47xx PWM support"
+>  	depends on MACH_INGENIC
+> diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
+> index 9a47507..a59c710 100644
+> --- a/drivers/pwm/Makefile
+> +++ b/drivers/pwm/Makefile
+> @@ -20,6 +20,7 @@ obj-$(CONFIG_PWM_IMG)		+= pwm-img.o
+>  obj-$(CONFIG_PWM_IMX1)		+= pwm-imx1.o
+>  obj-$(CONFIG_PWM_IMX27)		+= pwm-imx27.o
+>  obj-$(CONFIG_PWM_IMX_TPM)	+= pwm-imx-tpm.o
+> +obj-$(CONFIG_PWM_IQS620A)	+= pwm-iqs620a.o
+>  obj-$(CONFIG_PWM_JZ4740)	+= pwm-jz4740.o
+>  obj-$(CONFIG_PWM_LP3943)	+= pwm-lp3943.o
+>  obj-$(CONFIG_PWM_LPC18XX_SCT)	+= pwm-lpc18xx-sct.o
+> diff --git a/drivers/pwm/pwm-iqs620a.c b/drivers/pwm/pwm-iqs620a.c
+> new file mode 100644
+> index 0000000..ee5d8b5
+> --- /dev/null
+> +++ b/drivers/pwm/pwm-iqs620a.c
+> @@ -0,0 +1,254 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Azoteq IQS620A PWM Generator
+> + *
+> + * Copyright (C) 2019 Jeff LaBundy <jeff@labundy.com>
+> + *
+> + * Limitations:
+> + * - The period is fixed to 1 ms and is generated continuously despite changes
+> + *   to the duty cycle or enable/disable state.
+> + * - Changes to the duty cycle or enable/disable state take effect immediately
+> + *   and may result in a glitch during the period in which the change is made.
+> + * - The device cannot generate a 0% duty cycle. For duty cycles below 1 / 256
+> + *   ms, the output is disabled and relies upon an external pull-down resistor
+> + *   to hold the GPIO3/LTX pin low.
+> + */
+> +
+> +#include <linux/completion.h>
+> +#include <linux/device.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mfd/iqs62x.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/notifier.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pwm.h>
+> +#include <linux/regmap.h>
+> +#include <linux/slab.h>
+> +
+> +#define IQS620_PWR_SETTINGS			0xD2
+> +#define IQS620_PWR_SETTINGS_PWM_OUT		BIT(7)
+> +
+> +#define IQS620_PWM_DUTY_CYCLE			0xD8
+> +
+> +#define IQS620_PWM_PERIOD_NS			1000000
+> +
+> +struct iqs620_pwm_private {
+> +	struct iqs62x_core *iqs62x;
+> +	struct pwm_chip chip;
+> +	struct notifier_block notifier;
+> +	struct completion chip_ready;
+> +	struct mutex lock;
+> +};
+> +
+> +static int iqs620_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+> +			    const struct pwm_state *state)
+> +{
+> +	struct iqs620_pwm_private *iqs620_pwm;
+> +	struct iqs62x_core *iqs62x;
+> +	int duty_scale, ret;
+> +
+> +	if (state->polarity != PWM_POLARITY_NORMAL)
+> +		return -ENOTSUPP;
+> +
+> +	if (state->period < IQS620_PWM_PERIOD_NS)
+> +		return -EINVAL;
+> +
+> +	iqs620_pwm = container_of(chip, struct iqs620_pwm_private, chip);
+> +	iqs62x = iqs620_pwm->iqs62x;
+> +
+> +	mutex_lock(&iqs620_pwm->lock);
+> +
+> +	/*
+> +	 * The duty cycle generated by the device is calculated as follows:
+> +	 *
+> +	 * duty_cycle = (IQS620_PWM_DUTY_CYCLE + 1) / 256 * 1 ms
+> +	 *
+> +	 * ...where IQS620_PWM_DUTY_CYCLE is a register value between 0 and 255
+> +	 * (inclusive). Therefore the lowest duty cycle the device can generate
+> +	 * while the output is enabled is 1 / 256 ms.
+> +	 *
+> +	 * For lower duty cycles (e.g. 0), the PWM output is simply disabled to
+> +	 * allow an on-board pull-down resistor to hold the GPIO3/LTX pin low.
+> +	 */
+> +	duty_scale = state->duty_cycle * 256 / IQS620_PWM_PERIOD_NS;
+
+minor optimisation: You could do the division before grabbing the lock.
+(But unsure if this actually gives a better result or the compiler is
+clever enough to do this.)
+
+> +
+> +	if (!state->enabled || !duty_scale) {
+> +		ret = regmap_update_bits(iqs62x->map, IQS620_PWR_SETTINGS,
+> +					 IQS620_PWR_SETTINGS_PWM_OUT, 0);
+> +		if (ret)
+> +			goto err_mutex;
+> +	}
+> +
+> +	if (duty_scale) {
+> +		ret = regmap_write(iqs62x->map, IQS620_PWM_DUTY_CYCLE,
+> +				   min(duty_scale - 1, 0xFF));
+> +		if (ret)
+> +			goto err_mutex;
+> +	}
+> +
+> +	if (state->enabled && duty_scale)
+> +		ret = regmap_update_bits(iqs62x->map, IQS620_PWR_SETTINGS,
+> +					 IQS620_PWR_SETTINGS_PWM_OUT, 0xFF);
+> +
+> +err_mutex:
+> +	mutex_unlock(&iqs620_pwm->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static void iqs620_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
+> +				 struct pwm_state *state)
+> +{
+> +	struct iqs620_pwm_private *iqs620_pwm;
+> +	struct iqs62x_core *iqs62x;
+> +	unsigned int val;
+> +	int ret;
+> +
+> +	iqs620_pwm = container_of(chip, struct iqs620_pwm_private, chip);
+> +	iqs62x = iqs620_pwm->iqs62x;
+> +
+> +	mutex_lock(&iqs620_pwm->lock);
+> +
+> +	/*
+> +	 * Since the device cannot generate a 0% duty cycle, requests to do so
+> +	 * cause subsequent calls to iqs620_pwm_get_state to report the output
+> +	 * as disabled with duty cycle equal to that which was in use prior to
+> +	 * the request. This is not ideal, but is the best compromise based on
+> +	 * the capabilities of the device.
+> +	 */
+> +	ret = regmap_read(iqs62x->map, IQS620_PWR_SETTINGS, &val);
+> +	if (ret)
+> +		goto err_mutex;
+> +	state->enabled = val & IQS620_PWR_SETTINGS_PWM_OUT;
+> +
+> +	ret = regmap_read(iqs62x->map, IQS620_PWM_DUTY_CYCLE, &val);
+> +	if (ret)
+> +		goto err_mutex;
+> +	state->duty_cycle = DIV_ROUND_UP((val + 1) * IQS620_PWM_PERIOD_NS, 256);
+> +	state->period = IQS620_PWM_PERIOD_NS;
+> +
+> +err_mutex:
+> +	mutex_unlock(&iqs620_pwm->lock);
+> +
+> +	if (ret)
+> +		dev_err(iqs620_pwm->chip.dev, "Failed to get state: %d\n", ret);
+> +}
+> +
+
+I thought we dicussed having a comment here, saying something like:
+
+	The device might reset when [...] and as a result looses it's
+	configuration. So the registers must be rewritten when this
+	happens to restore the expected operation.
+
+Is it worth to issue a warning when this happens?
+
+> +static int iqs620_pwm_notifier(struct notifier_block *notifier,
+> +			       unsigned long event_flags, void *context)
+> +{
+> +	struct iqs620_pwm_private *iqs620_pwm;
+> +	int ret;
+> +
+> +	iqs620_pwm = container_of(notifier, struct iqs620_pwm_private,
+> +				  notifier);
+> +
+> +	if (!completion_done(&iqs620_pwm->chip_ready) ||
+> +	    !(event_flags & BIT(IQS62X_EVENT_SYS_RESET)))
+> +		return NOTIFY_DONE;
+
+Is here a (relevant?) race?  Consider the notifier triggers just when
+pwmchip_add returned, (maybe even a consumer configured the device) and
+before complete_all() is called. With my limited knowledge about
+notifiers I'd say waiting for the completion here might be reasonable
+and safe.
+
+> +	ret = iqs620_pwm_apply(&iqs620_pwm->chip, &iqs620_pwm->chip.pwms[0],
+> +			       &iqs620_pwm->chip.pwms[0].state);
+> +	if (ret) {
+> +		dev_err(iqs620_pwm->chip.dev,
+> +			"Failed to re-initialize device: %d\n", ret);
+> +		return NOTIFY_BAD;
+> +	}
+> +
+> +	return NOTIFY_OK;
+> +}
+> +
+> +static const struct pwm_ops iqs620_pwm_ops = {
+> +	.apply = iqs620_pwm_apply,
+> +	.get_state = iqs620_pwm_get_state,
+> +	.owner = THIS_MODULE,
+> +};
+> +
+> +static void iqs620_pwm_notifier_unregister(void *context)
+> +{
+> +	struct iqs620_pwm_private *iqs620_pwm = context;
+> +	int ret;
+> +
+> +	ret = blocking_notifier_chain_unregister(&iqs620_pwm->iqs62x->nh,
+> +						 &iqs620_pwm->notifier);
+> +	if (ret)
+> +		dev_err(iqs620_pwm->chip.dev,
+> +			"Failed to unregister notifier: %d\n", ret);
+
+	dev_err(iqs620_pwm->chip.dev,
+		"Failed to unregister notifier: %pe\n", ERR_PTR(ret));
+
+gives a nicer output. (Also applies to other error messages of course.)
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

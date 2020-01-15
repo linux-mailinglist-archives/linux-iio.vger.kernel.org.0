@@ -2,146 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A48C13CB3B
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2020 18:44:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FCBA13CB4C
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2020 18:46:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728921AbgAORo3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jan 2020 12:44:29 -0500
-Received: from mga18.intel.com ([134.134.136.126]:36161 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728896AbgAORo3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 15 Jan 2020 12:44:29 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Jan 2020 09:44:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,323,1574150400"; 
-   d="scan'208";a="254357316"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 15 Jan 2020 09:44:26 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id DCA1D8D; Wed, 15 Jan 2020 19:44:25 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        id S1728931AbgAORqV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jan 2020 12:46:21 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:47670 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728896AbgAORqV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jan 2020 12:46:21 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00FHca1q045369;
+        Wed, 15 Jan 2020 17:45:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=djjnlZwo7Sn8C6YtSHjBV+KDTuecXFJyPA3THNfjWEo=;
+ b=YCkov1XJcrulZMhYtohcHFiNrIw6i/PY5GcWzChTUbSrnzP8bIRh5Bv1MC8MhvJNog3B
+ d6uls2kLd+KPdOGnu1evKagFcQMYFCOzbNTI6A465lKty6BdrGYOXu5DxkzWLEytK9ER
+ YdAhqu+XF5cQXVS/G+Uu32cjvqMhlgoxx4uUOgKCNzjxzX/7qaewBNYA2rczHdg5v5Lb
+ tAFNKP22QBNVcUetaF7zxX6eUntdLhEQUgObZP8w9WdIhuJC9bO7Uvg1Y7Ue1faei8O0
+ VmnAj2Cq0N9zsnCWlAkjdxVGvxN/Xxgrbb9DNd1F3qmCFBRROZ50swc3DcCyBKfMVhU2 Wg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2xf73twka8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 Jan 2020 17:45:48 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00FHd8UU148598;
+        Wed, 15 Jan 2020 17:45:47 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2xj1aq3cup-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 Jan 2020 17:45:47 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00FHjfEt025908;
+        Wed, 15 Jan 2020 17:45:41 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 15 Jan 2020 09:45:40 -0800
+Date:   Wed, 15 Jan 2020 20:45:31 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Dan Robertson <dan@dlrobertson.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/2] iio: magnetometer: ak8975: Convert to use device_get_match_data()
-Date:   Wed, 15 Jan 2020 19:44:25 +0200
-Message-Id: <20200115174425.70728-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200115174425.70728-1-andriy.shevchenko@linux.intel.com>
-References: <20200115174425.70728-1-andriy.shevchenko@linux.intel.com>
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] iio: accel: bma400: integer underflow setting accel scale
+Message-ID: <20200115174531.p623ukjibn6kg6zz@kili.mountain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9501 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=821
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001150135
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9501 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=873 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001150135
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert to use device_get_match_data() instead of open coded variant.
+We put an upper bound on "val2" but we also need to prevent negative
+values.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 465c811f1f20 ("iio: accel: Add driver for the BMA400")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/iio/magnetometer/ak8975.c | 39 +++++++++++++------------------
- 1 file changed, 16 insertions(+), 23 deletions(-)
+ drivers/iio/accel/bma400_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index 8e50e073bcbf..3c881541ae72 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -203,11 +203,11 @@ static long ak09912_raw_to_gauss(u16 data)
+diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+index ab4a158b35af..ffc7b146bbfc 100644
+--- a/drivers/iio/accel/bma400_core.c
++++ b/drivers/iio/accel/bma400_core.c
+@@ -752,7 +752,7 @@ static int bma400_write_raw(struct iio_dev *indio_dev,
+ 		mutex_unlock(&data->mutex);
+ 		return ret;
+ 	case IIO_CHAN_INFO_SCALE:
+-		if (val != 0 || val2 > BMA400_SCALE_MAX)
++		if (val != 0 || val2 < 0 || val2 > BMA400_SCALE_MAX)
+ 			return -EINVAL;
  
- /* Compatible Asahi Kasei Compass parts */
- enum asahi_compass_chipset {
-+	AKXXXX		= 0,
- 	AK8975,
- 	AK8963,
- 	AK09911,
- 	AK09912,
--	AK_MAX_TYPE
- };
- 
- enum ak_ctrl_reg_addr {
-@@ -245,7 +245,7 @@ struct ak_def {
- 	u8 data_regs[3];
- };
- 
--static const struct ak_def ak_def_array[AK_MAX_TYPE] = {
-+static const struct ak_def ak_def_array[] = {
- 	{
- 		.type = AK8975,
- 		.raw_to_gauss = ak8975_raw_to_gauss,
-@@ -781,19 +781,6 @@ static const struct acpi_device_id ak_acpi_match[] = {
- MODULE_DEVICE_TABLE(acpi, ak_acpi_match);
- #endif
- 
--static const char *ak8975_match_acpi_device(struct device *dev,
--					    enum asahi_compass_chipset *chipset)
--{
--	const struct acpi_device_id *id;
--
--	id = acpi_match_device(dev->driver->acpi_match_table, dev);
--	if (!id)
--		return NULL;
--	*chipset = (int)id->driver_data;
--
--	return dev_name(dev);
--}
--
- static void ak8975_fill_buffer(struct iio_dev *indio_dev)
- {
- 	struct ak8975_data *data = iio_priv(indio_dev);
-@@ -852,9 +839,11 @@ static int ak8975_probe(struct i2c_client *client,
- 	struct ak8975_data *data;
- 	struct iio_dev *indio_dev;
- 	struct gpio_desc *eoc_gpiod;
-+	const void *match;
-+	unsigned int i;
- 	int err;
-+	enum asahi_compass_chipset chipset;
- 	const char *name = NULL;
--	enum asahi_compass_chipset chipset = AK_MAX_TYPE;
- 
- 	/*
- 	 * Grab and set up the supplied GPIO.
-@@ -884,23 +873,27 @@ static int ak8975_probe(struct i2c_client *client,
- 		return err;
- 
- 	/* id will be NULL when enumerated via ACPI */
--	if (id) {
-+	match = device_get_match_data(&client->dev);
-+	if (match) {
-+		chipset = (enum asahi_compass_chipset)(match);
-+		name = dev_name(&client->dev);
-+	} else if (id) {
- 		chipset = (enum asahi_compass_chipset)(id->driver_data);
- 		name = id->name;
--	} else if (ACPI_HANDLE(&client->dev)) {
--		name = ak8975_match_acpi_device(&client->dev, &chipset);
--		if (!name)
--			return -ENODEV;
- 	} else
- 		return -ENOSYS;
- 
--	if (chipset >= AK_MAX_TYPE) {
-+	for (i = 0; i < ARRAY_SIZE(ak_def_array); i++)
-+		if (ak_def_array[i].type == chipset)
-+			break;
-+
-+	if (i == ARRAY_SIZE(ak_def_array)) {
- 		dev_err(&client->dev, "AKM device type unsupported: %d\n",
- 			chipset);
- 		return -ENODEV;
- 	}
- 
--	data->def = &ak_def_array[chipset];
-+	data->def = &ak_def_array[i];
- 
- 	/* Fetch the regulators */
- 	data->vdd = devm_regulator_get(&client->dev, "vdd");
+ 		mutex_lock(&data->mutex);
 -- 
-2.24.1
+2.11.0
 

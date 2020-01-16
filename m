@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA5AE13EFBA
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2020 19:17:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC6113ED2B
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2020 19:01:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407020AbgAPSRI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Jan 2020 13:17:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41010 "EHLO mail.kernel.org"
+        id S2405664AbgAPRl0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Jan 2020 12:41:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57680 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404310AbgAPR3P (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:29:15 -0500
+        id S2405280AbgAPRk2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:40:28 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 815AE246F4;
-        Thu, 16 Jan 2020 17:29:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E754F2470F;
+        Thu, 16 Jan 2020 17:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579195755;
+        s=default; t=1579196427;
         bh=Nl/4LuWz6wnqaAMRmetzu5XfYYSDKGkIzi00bNh4lHs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hKWPGRdO4AoaH5tyfjG9FMGC2LMR3zFkiT4iaP8/5yKi/uxURBOjgHyO0CIU8lBdu
-         AAqTfbTIYHikHDnscNEUOsL0u0UHqZg4pMBWw37n7cWOlTJ8PfDS1d1TosacQ4bFHv
-         il3NjhKnDrfT272fJzD5F9WMZ1MAz8nW9HfN8JBA=
+        b=0Y68BBEc4W0u7TzeNj4Mvn8BoG40pQenyctwYnx+WdS9/55myvUQ5o2FlK18orY/l
+         0MIwP7oo1FiyKb44stlY9BesBUD8RwglIZ0NfSbEiZJbydja4GJf1R7tsrXLuSvp2H
+         70mzlBGTCJUGDpcctGBGYSDTpKL405uZ+jKIP/5I=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Colin Ian King <colin.king@canonical.com>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 286/371] iio: dac: ad5380: fix incorrect assignment to val
-Date:   Thu, 16 Jan 2020 12:22:38 -0500
-Message-Id: <20200116172403.18149-229-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 195/251] iio: dac: ad5380: fix incorrect assignment to val
+Date:   Thu, 16 Jan 2020 12:35:44 -0500
+Message-Id: <20200116173641.22137-155-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
-References: <20200116172403.18149-1-sashal@kernel.org>
+In-Reply-To: <20200116173641.22137-1-sashal@kernel.org>
+References: <20200116173641.22137-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

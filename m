@@ -2,38 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 076C213EF9C
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2020 19:16:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D24C13F066
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2020 19:21:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436466AbgAPSQY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Jan 2020 13:16:24 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2275 "EHLO huawei.com"
+        id S2392515AbgAPSV2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Jan 2020 13:21:28 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2276 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2405344AbgAPSQX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 16 Jan 2020 13:16:23 -0500
-Received: from lhreml701-cah.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id EF11B2307849F84166D6;
-        Thu, 16 Jan 2020 18:16:19 +0000 (GMT)
+        id S2390150AbgAPSV1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 16 Jan 2020 13:21:27 -0500
+Received: from lhreml706-cah.china.huawei.com (unknown [172.18.7.108])
+        by Forcepoint Email with ESMTP id D3F0F750A9DB34BAEAB1;
+        Thu, 16 Jan 2020 18:21:25 +0000 (GMT)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- lhreml701-cah.china.huawei.com (10.201.108.42) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Thu, 16 Jan 2020 18:16:19 +0000
+ lhreml706-cah.china.huawei.com (10.201.108.47) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Thu, 16 Jan 2020 18:21:25 +0000
 Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Thu, 16 Jan
- 2020 18:16:19 +0000
-Date:   Thu, 16 Jan 2020 18:16:18 +0000
+ 2020 18:21:25 +0000
+Date:   Thu, 16 Jan 2020 18:21:24 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Sasha Levin <sashal@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        Chuhong Yuan <hslester96@gmail.com>,
-        Brian Masney <masneyb@onstation.org>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH AUTOSEL 4.19 482/671] iio: tsl2772: Use
- devm_add_action_or_reset for tsl2772_chip_off
-Message-ID: <20200116181618.000063c2@Huawei.com>
-In-Reply-To: <20200116170509.12787-219-sashal@kernel.org>
-References: <20200116170509.12787-1-sashal@kernel.org>
-        <20200116170509.12787-219-sashal@kernel.org>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+CC:     <linux-iio@vger.kernel.org>, <jic23@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 3/3] dt-bindings: iio: chemical: consolidate
+ atlas-sensor docs
+Message-ID: <20200116182124.00006e19@Huawei.com>
+In-Reply-To: <20200114022348.8676-4-matt.ranostay@konsulko.com>
+References: <20200114022348.8676-1-matt.ranostay@konsulko.com>
+        <20200114022348.8676-4-matt.ranostay@konsulko.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -48,83 +46,152 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Jan 2020 12:02:00 -0500
-Sasha Levin <sashal@kernel.org> wrote:
+On Tue, 14 Jan 2020 04:23:48 +0200
+Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 
-> From: Chuhong Yuan <hslester96@gmail.com>
+> Since Atlas Scientific device support only varies from the compatible
+> string is ideal all the respective docs are merged into a single doc
+> named atlas,sensor.txt
 > 
-> [ Upstream commit 338084135aeddb103624a6841972fb8588295cc6 ]
-> 
-> Use devm_add_action_or_reset to call tsl2772_chip_off
-> when the device is removed.
-> This also fixes the issue that the chip is turned off
-> before the device is unregistered.
-> 
-> Not marked for stable as fairly hard to hit the bug and
-> this is in the middle of a set making other cleanups
-> to the driver.  Hence will probably need explicit backporting.
+> Cc: devicetree@vger.kernel.org
+> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
 
-Guess I was wrong and it does go on cleanly.  I took a quick
-look at current 4.19 driver and looks like it's fine on it's
-own.
+No chance of a yaml conversion whilst you are at it?
 
-We need to be careful with this one in general though.
+Maybe dt maintainers will take the view this is step in the right direction and
+let this go, but I will want an Ack for that.
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> for 4.19
-
-> 
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> Fixes: c06c4d793584 ("staging: iio: tsl2x7x/tsl2772: move out of staging")
-> Reviewed-by: Brian Masney <masneyb@onstation.org>
-> Tested-by: Brian Masney <masneyb@onstation.org>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  drivers/iio/light/tsl2772.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
+>  .../bindings/iio/chemical/atlas,ec-sm.txt     | 21 ------------
+>  .../bindings/iio/chemical/atlas,orp-sm.txt    | 21 ------------
+>  .../bindings/iio/chemical/atlas,ph-sm.txt     | 21 ------------
+>  .../bindings/iio/chemical/atlas,sensor.txt    | 34 +++++++++++++++++++
+>  4 files changed, 34 insertions(+), 63 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
+>  delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
+>  delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,sensor.txt
 > 
-> diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
-> index df5b2a0da96c..f2e308c6d6d7 100644
-> --- a/drivers/iio/light/tsl2772.c
-> +++ b/drivers/iio/light/tsl2772.c
-> @@ -716,6 +716,13 @@ static int tsl2772_chip_off(struct iio_dev *indio_dev)
->  	return tsl2772_write_control_reg(chip, 0x00);
->  }
->  
-> +static void tsl2772_chip_off_action(void *data)
-> +{
-> +	struct iio_dev *indio_dev = data;
-> +
-> +	tsl2772_chip_off(indio_dev);
-> +}
-> +
->  /**
->   * tsl2772_invoke_change - power cycle the device to implement the user
->   *                         parameters
-> @@ -1711,9 +1718,14 @@ static int tsl2772_probe(struct i2c_client *clientp,
->  	if (ret < 0)
->  		return ret;
->  
-> +	ret = devm_add_action_or_reset(&clientp->dev,
-> +					tsl2772_chip_off_action,
-> +					indio_dev);
-> +	if (ret < 0)
-> +		return ret;
-> +
->  	ret = iio_device_register(indio_dev);
->  	if (ret) {
-> -		tsl2772_chip_off(indio_dev);
->  		dev_err(&clientp->dev,
->  			"%s: iio registration failed\n", __func__);
->  		return ret;
-> @@ -1740,8 +1752,6 @@ static int tsl2772_remove(struct i2c_client *client)
->  {
->  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
->  
-> -	tsl2772_chip_off(indio_dev);
+> diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
+> deleted file mode 100644
+> index f4320595b851..000000000000
+> --- a/Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
+> +++ /dev/null
+> @@ -1,21 +0,0 @@
+> -* Atlas Scientific EC-SM OEM sensor
 > -
->  	iio_device_unregister(indio_dev);
->  
->  	return 0;
+> -http://www.atlas-scientific.com/_files/_datasheets/_oem/EC_oem_datasheet.pdf
+> -
+> -Required properties:
+> -
+> -  - compatible: must be "atlas,ec-sm"
+> -  - reg: the I2C address of the sensor
+> -  - interrupts: the sole interrupt generated by the device
+> -
+> -  Refer to interrupt-controller/interrupts.txt for generic interrupt client
+> -  node bindings.
+> -
+> -Example:
+> -
+> -atlas@64 {
+> -	compatible = "atlas,ec-sm";
+> -	reg = <0x64>;
+> -	interrupt-parent = <&gpio1>;
+> -	interrupts = <16 2>;
+> -};
+> diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
+> deleted file mode 100644
+> index af1f5a9aa4da..000000000000
+> --- a/Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
+> +++ /dev/null
+> @@ -1,21 +0,0 @@
+> -* Atlas Scientific ORP-SM OEM sensor
+> -
+> -https://www.atlas-scientific.com/_files/_datasheets/_oem/ORP_oem_datasheet.pdf
+> -
+> -Required properties:
+> -
+> -  - compatible: must be "atlas,orp-sm"
+> -  - reg: the I2C address of the sensor
+> -  - interrupts: the sole interrupt generated by the device
+> -
+> -  Refer to interrupt-controller/interrupts.txt for generic interrupt client
+> -  node bindings.
+> -
+> -Example:
+> -
+> -atlas@66 {
+> -	compatible = "atlas,orp-sm";
+> -	reg = <0x66>;
+> -	interrupt-parent = <&gpio1>;
+> -	interrupts = <16 2>;
+> -};
+> diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
+> deleted file mode 100644
+> index 79d90f060327..000000000000
+> --- a/Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
+> +++ /dev/null
+> @@ -1,21 +0,0 @@
+> -* Atlas Scientific pH-SM OEM sensor
+> -
+> -http://www.atlas-scientific.com/_files/_datasheets/_oem/pH_oem_datasheet.pdf
+> -
+> -Required properties:
+> -
+> -  - compatible: must be "atlas,ph-sm"
+> -  - reg: the I2C address of the sensor
+> -  - interrupts: the sole interrupt generated by the device
+> -
+> -  Refer to interrupt-controller/interrupts.txt for generic interrupt client
+> -  node bindings.
+> -
+> -Example:
+> -
+> -atlas@65 {
+> -	compatible = "atlas,ph-sm";
+> -	reg = <0x65>;
+> -	interrupt-parent = <&gpio1>;
+> -	interrupts = <16 2>;
+> -};
+> diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.txt
+> new file mode 100644
+> index 000000000000..518327dc71e2
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.txt
+> @@ -0,0 +1,34 @@
+> +* Atlas Scientific OEM sensors
+> +
+> +Datasheets:
+> +
+> +  http://www.atlas-scientific.com/_files/_datasheets/_oem/DO_oem_datasheet.pdf
+> +  http://www.atlas-scientific.com/_files/_datasheets/_oem/EC_oem_datasheet.pdf
+> +  http://www.atlas-scientific.com/_files/_datasheets/_oem/ORP_oem_datasheet.pdf
+> +  http://www.atlas-scientific.com/_files/_datasheets/_oem/pH_oem_datasheet.pdf
+> +
+> +Required properties:
+> +
+> +  - compatible: must be one of :
+> +	"atlas,do-sm",
+> +	"atlas,ec-sm",
+> +	"atlas,orp-sm",
+> +	"atlas,ph-sm"
+> +
+> +  - reg: the I2C address of the sensor
+> +
+> +Optional properties:
+> +
+> +  - interrupts: the sole interrupt generated by the device
+> +
+> +  Refer to interrupt-controller/interrupts.txt for generic interrupt client
+> +  node bindings.
+> +
+> +Example:
+> +
+> +atlas@66 {
+> +	compatible = "atlas,orp-sm";
+> +	reg = <0x66>;
+> +	interrupt-parent = <&gpio1>;
+> +	interrupts = <16 2>;
+> +};
 
 

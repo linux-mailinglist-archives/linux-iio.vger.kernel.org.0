@@ -2,77 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77372140212
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2020 03:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B8D414047F
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2020 08:34:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729094AbgAQCnK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Jan 2020 21:43:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35412 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729067AbgAQCnK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 16 Jan 2020 21:43:10 -0500
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 64FA02072B;
-        Fri, 17 Jan 2020 02:43:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579228989;
-        bh=icVIaVDWi3vTyx1vb/g5+nyxUn3QmYadK7RMizpkMvg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=2H5qdGxcEvFupn1mLneikZvzAUVpctllA1nwnUE1QYY9mPT+2beJnTxKBBuhbyCUU
-         wzAUXQ820y8HpILkHlloaJIyczUjAY8qHbO5FzMdnIzhJZZJSR3+Fa5bZCKTAETV91
-         vVWdU8IFrCQiR6QMDTJ4Q6ugv0or+VoSbfdMdtqQ=
-Date:   Thu, 16 Jan 2020 21:43:08 -0500
-From:   Sasha Levin <sashal@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Chuhong Yuan <hslester96@gmail.com>,
-        Brian Masney <masneyb@onstation.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 4.19 482/671] iio: tsl2772: Use
- devm_add_action_or_reset for tsl2772_chip_off
-Message-ID: <20200117024308.GM1706@sasha-vm>
-References: <20200116170509.12787-1-sashal@kernel.org>
- <20200116170509.12787-219-sashal@kernel.org>
- <20200116181618.000063c2@Huawei.com>
+        id S1729190AbgAQHej (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jan 2020 02:34:39 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:51903 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726675AbgAQHej (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jan 2020 02:34:39 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1isM9F-0005gR-I7; Fri, 17 Jan 2020 08:34:29 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1isM9D-00028c-L9; Fri, 17 Jan 2020 08:34:27 +0100
+Date:   Fri, 17 Jan 2020 08:34:27 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jeff LaBundy <jeff@labundy.com>
+Cc:     "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>
+Subject: Re: [PATCH v4 4/7] pwm: Add support for Azoteq IQS620A PWM generator
+Message-ID: <20200117073427.ufrduwagvppeasgr@pengutronix.de>
+References: <1579228475-6681-1-git-send-email-jeff@labundy.com>
+ <1579228475-6681-5-git-send-email-jeff@labundy.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200116181618.000063c2@Huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1579228475-6681-5-git-send-email-jeff@labundy.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jan 16, 2020 at 06:16:18PM +0000, Jonathan Cameron wrote:
->On Thu, 16 Jan 2020 12:02:00 -0500
->Sasha Levin <sashal@kernel.org> wrote:
->
->> From: Chuhong Yuan <hslester96@gmail.com>
->>
->> [ Upstream commit 338084135aeddb103624a6841972fb8588295cc6 ]
->>
->> Use devm_add_action_or_reset to call tsl2772_chip_off
->> when the device is removed.
->> This also fixes the issue that the chip is turned off
->> before the device is unregistered.
->>
->> Not marked for stable as fairly hard to hit the bug and
->> this is in the middle of a set making other cleanups
->> to the driver.  Hence will probably need explicit backporting.
->
->Guess I was wrong and it does go on cleanly.  I took a quick
->look at current 4.19 driver and looks like it's fine on it's
->own.
->
->We need to be careful with this one in general though.
->
->Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> for 4.19
+On Fri, Jan 17, 2020 at 02:35:57AM +0000, Jeff LaBundy wrote:
+> +static void iqs620_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
+> +				 struct pwm_state *state)
+> +{
+> +	struct iqs620_pwm_private *iqs620_pwm;
+> +
+> +	iqs620_pwm = container_of(chip, struct iqs620_pwm_private, chip);
+> +
+> +	mutex_lock(&iqs620_pwm->lock);
+> +
+> +	/*
+> +	 * Since the device cannot generate a 0% duty cycle, requests to do so
+> +	 * cause subsequent calls to iqs620_pwm_get_state to report the output
+> +	 * as disabled with duty cycle equal to that which was in use prior to
+> +	 * the request. This is not ideal, but is the best compromise based on
+> +	 * the capabilities of the device.
+> +	 */
+> +	state->enabled = iqs620_pwm->out_en;
 
-Thanks Jonathan. I saw the comment, but it applied and built cleanly,
-and looked sane enough without any related changes.
+Hmm, when .get_state is called first (before the first invokation of
+.apply) .out_en doesn't represent the hardware's state but is false
+unconditionally. This makes it hard to take over a running PWM setup by
+the bootloader.
+
+Best regards
+Uwe
+
+> +	state->duty_cycle = DIV_ROUND_UP((iqs620_pwm->duty_val + 1) *
+> +					 IQS620_PWM_PERIOD_NS, 256);
+> +
+> +	mutex_unlock(&iqs620_pwm->lock);
+> +
+> +	state->period = IQS620_PWM_PERIOD_NS;
+> +}
 
 -- 
-Thanks,
-Sasha
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

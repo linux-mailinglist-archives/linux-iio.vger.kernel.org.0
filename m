@@ -2,41 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E8AB1417ED
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2020 15:22:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A2A1417F9
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2020 15:24:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726302AbgAROWS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jan 2020 09:22:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48100 "EHLO mail.kernel.org"
+        id S1726208AbgAROY1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jan 2020 09:24:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49926 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726208AbgAROWS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jan 2020 09:22:18 -0500
+        id S1726302AbgAROY1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jan 2020 09:24:27 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DD87A2469A;
-        Sat, 18 Jan 2020 14:22:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CDFAA2469A;
+        Sat, 18 Jan 2020 14:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579357337;
-        bh=JrvLwcwKSbaYduAx1j/+g7iO4bO/gKI4RPpGC3Yexg0=;
+        s=default; t=1579357467;
+        bh=wDsN0K978TdKFwZa5i1iSgaPl/wlDU8LtJU3YYcoGis=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=2F4p9QMA24NQEzvX8OMBVSJIXSbPlzCAGzcy7QK5fdv+s54Bng2xUXf16+eqBBPak
-         F4JrGFYDJ/Vsq2R+jFQ2rTEUstN43mvE352lpE1zuRvwXNzyJllpx7bvQL1MrpGvzH
-         bfcTjg1H+8ckLLEdj7MCzWokAPBgoAi6Aq+5l65U=
-Date:   Sat, 18 Jan 2020 14:22:12 +0000
+        b=cNpFpWnwm3SE1saL2qCitCURvABtEQuMyJOcx9zXuxwmuA8lmuVn63/YQoW/qfgZP
+         nkDeRMYaq62skmbKizrD68ZsavpqxVXC+SSRYA/N02w5l+pxYkzPYw9xm1Yu3v98nl
+         trDa1TYskzQqysOYBtkd8sWsOaBy5PU5xcHl7jUw=
+Date:   Sat, 18 Jan 2020 14:24:22 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@st.com>, <olivier.moysan@st.com>,
-        <linux-iio@vger.kernel.org>, <lars@metafoo.de>, <knaack.h@gmx.de>,
-        <pmeerw@pmeerw.net>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <etienne.carriere@st.com>
-Subject: Re: [PATCH] iio: adc: stm32-adc: don't print an error on probe
- deferral
-Message-ID: <20200118142212.55ea44fd@archlinux>
-In-Reply-To: <1578921539-6353-1-git-send-email-fabrice.gasnier@st.com>
-References: <1578921539-6353-1-git-send-email-fabrice.gasnier@st.com>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     lorenzo.bianconi83@gmail.com, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] iio: imu: st_lsm6dsx: add mount matrix support
+Message-ID: <20200118142422.2ec12023@archlinux>
+In-Reply-To: <20200113101140.24305-1-martin.kepplinger@puri.sm>
+References: <20200113101140.24305-1-martin.kepplinger@puri.sm>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,57 +42,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 13 Jan 2020 14:18:59 +0100
-Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
+On Mon, 13 Jan 2020 11:11:40 +0100
+Martin Kepplinger <martin.kepplinger@puri.sm> wrote:
 
-> From: Etienne Carriere <etienne.carriere@st.com>
+> Allow to read the mount-matrix device tree property and provide the
+> mount_matrix file for userspace to read.
 > 
-> Do not print an error trace when deferring probe for some resource.
-> 
-> Signed-off-by: Etienne Carriere <etienne.carriere@st.com>
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-Applied.
+> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/stm32-adc-core.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> index 97655d7..2df88d2 100644
-> --- a/drivers/iio/adc/stm32-adc-core.c
-> +++ b/drivers/iio/adc/stm32-adc-core.c
-> @@ -688,7 +688,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  	priv->vref = devm_regulator_get(&pdev->dev, "vref");
->  	if (IS_ERR(priv->vref)) {
->  		ret = PTR_ERR(priv->vref);
-> -		dev_err(&pdev->dev, "vref get failed, %d\n", ret);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&pdev->dev, "vref get failed, %d\n", ret);
->  		return ret;
+> tested using the lsm9ds1 on the librem5-devkit (and userspace tools like
+> iio-sensor-proxy) where this will be needed.
+> 
+> thanks,
+> 
+>                                        martin
+> 
+> revision history
+> ----------------
+> v3: fix race condition during probe(). thanks Jonathan
+> v2: additions and simplifications according to Lorenzo's review. thanks.
+> 
+> 
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      | 19 +++++++++++++++++++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |  4 ++++
+>  2 files changed, 23 insertions(+)
+> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> index a763ff46f596..7076fc8c4c3b 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> @@ -76,6 +76,7 @@ enum st_lsm6dsx_hw_id {
+>  		.endianness = IIO_LE,					\
+>  	},								\
+>  	.event_spec = &st_lsm6dsx_event,				\
+> +	.ext_info = st_lsm6dsx_accel_ext_info,				\
+>  	.num_event_specs = 1,						\
+>  }
+>  
+> @@ -380,6 +381,7 @@ struct st_lsm6dsx_sensor {
+>   * @enable_event: enabled event bitmask.
+>   * @iio_devs: Pointers to acc/gyro iio_dev instances.
+>   * @settings: Pointer to the specific sensor settings in use.
+> + * @orientation: sensor chip orientation relative to main hardware.
+>   */
+>  struct st_lsm6dsx_hw {
+>  	struct device *dev;
+> @@ -406,6 +408,8 @@ struct st_lsm6dsx_hw {
+>  	struct iio_dev *iio_devs[ST_LSM6DSX_ID_MAX];
+>  
+>  	const struct st_lsm6dsx_settings *settings;
+> +
+> +	struct iio_mount_matrix orientation;
+>  };
+>  
+>  static __maybe_unused const struct iio_event_spec st_lsm6dsx_event = {
+> @@ -479,4 +483,19 @@ st_lsm6dsx_write_locked(struct st_lsm6dsx_hw *hw, unsigned int addr,
+>  	return err;
+>  }
+>  
+> +static const inline struct iio_mount_matrix *
+> +st_lsm6dsx_get_mount_matrix(const struct iio_dev *iio_dev,
+> +			    const struct iio_chan_spec *chan)
+> +{
+> +	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
+> +	struct st_lsm6dsx_hw *hw = sensor->hw;
+> +
+> +	return &hw->orientation;
+> +}
+> +
+> +static const struct iio_chan_spec_ext_info st_lsm6dsx_accel_ext_info[] = {
+> +	IIO_MOUNT_MATRIX(IIO_SHARED_BY_ALL, st_lsm6dsx_get_mount_matrix),
+> +	{ }
+> +};
+> +
+>  #endif /* ST_LSM6DSX_H */
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 0c64e35c7599..6e4d0a03c8b5 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -2312,6 +2312,10 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+>  			return err;
 >  	}
 >  
-> @@ -696,7 +697,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  	if (IS_ERR(priv->aclk)) {
->  		ret = PTR_ERR(priv->aclk);
->  		if (ret != -ENOENT) {
-> -			dev_err(&pdev->dev, "Can't get 'adc' clock\n");
-> +			if (ret != -EPROBE_DEFER)
-> +				dev_err(&pdev->dev, "Can't get 'adc' clock\n");
->  			return ret;
->  		}
->  		priv->aclk = NULL;
-> @@ -706,7 +708,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
->  	if (IS_ERR(priv->bclk)) {
->  		ret = PTR_ERR(priv->bclk);
->  		if (ret != -ENOENT) {
-> -			dev_err(&pdev->dev, "Can't get 'bus' clock\n");
-> +			if (ret != -EPROBE_DEFER)
-> +				dev_err(&pdev->dev, "Can't get 'bus' clock\n");
->  			return ret;
->  		}
->  		priv->bclk = NULL;
+> +	err = iio_read_mount_matrix(hw->dev, "mount-matrix", &hw->orientation);
+> +	if (err)
+> +		return err;
+> +
+>  	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+>  		if (!hw->iio_devs[i])
+>  			continue;
 

@@ -2,247 +2,438 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8A86141932
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2020 20:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9105141A03
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2020 23:15:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726810AbgARTgc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jan 2020 14:36:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52708 "EHLO mail.kernel.org"
+        id S1727056AbgARWOn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jan 2020 17:14:43 -0500
+Received: from mail.andi.de1.cc ([85.214.55.253]:48890 "EHLO mail.andi.de1.cc"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726806AbgARTgb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jan 2020 14:36:31 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 613CB24683;
-        Sat, 18 Jan 2020 19:36:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579376190;
-        bh=kTLxi7ppWw9x+J/dtuURhywkcK2c3hqymu4VTgw8zTo=;
-        h=Date:From:To:Cc:Subject:From;
-        b=WlG85AstyARGhBZBnR/B6U9JK47AmQCcLtxQjm3crwhPsHwlfrO32oEzFmT4Pg7F7
-         /nVX6XgIPUQY43JXTZu87XsvHPnIv6dxf1LxQWlJopnltK4JpZXcINiadYNNhn7evo
-         6NHKCN/WUMmdRtSWuuLB+T3TJUzzbPJpcdHBIb/4=
-Date:   Sat, 18 Jan 2020 19:36:27 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org
-Subject: [PULL] Second set of IIO new device support, cleanups and minor
- fixes for the 5.6 cycle.
-Message-ID: <20200118193627.2a384228@archlinux>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726997AbgARWOn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jan 2020 17:14:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
+        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=8tIlcevMZuK8tzOUEFQH0HMzvOsuxmVV5Iu8EIIenws=; b=TEI+CqdBepm7r5N0g4afC4zpK
+        ay2C9SrHNINiF+r5YwEZ+iy4W1GvL9JtCmwhuIUhcxwW8vdO13BZbWTI9tVNQxkyx3TsMdPDGYv53
+        jrJaN8KsnTK00kTkqXB5QqgkCXanyXHjgukdOUF4apph/qKapGvuHNUm+r77WSTg8S59c=;
+Received: from p200300ccff4ca4007ee9d3fffe1fa246.dip0.t-ipconnect.de ([2003:cc:ff4c:a400:7ee9:d3ff:fe1f:a246] helo=eeepc)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iswMP-0000zS-LT; Sat, 18 Jan 2020 23:14:30 +0100
+Received: from [::1] (helo=localhost)
+        by eeepc with esmtp (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iswMO-0004ru-FF; Sat, 18 Jan 2020 23:14:28 +0100
+Date:   Sat, 18 Jan 2020 23:14:21 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        lee.jones@linaro.org, b.galvani@gmail.com,
+        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, phh@phh.me, stefan@agner.ch,
+        letux-kernel@openphoenux.org
+Subject: Re: [PATCH 3/5] iio: adc: rn5t618: Add ADC driver for
+ RN5T618/RC5T619
+Message-ID: <20200118231421.68546a93@kemnade.info>
+In-Reply-To: <20200118145318.399e8318@archlinux>
+References: <20200117215926.15194-1-andreas@kemnade.info>
+        <20200117215926.15194-4-andreas@kemnade.info>
+        <20200118145318.399e8318@archlinux>
+X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/=AMvpm5u/8xCpl6FYhdCFaC"; protocol="application/pgp-signature"
+X-Spam-Score: -1.0 (-)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The following changes since commit e895bc1ebb31750f3baa74e074617d3cc5d0cee2:
+--Sig_/=AMvpm5u/8xCpl6FYhdCFaC
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-  staging: vc04_services: remove header include path to vc04_services (2020=
--01-10 17:33:41 +0100)
+On Sat, 18 Jan 2020 14:53:18 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-are available in the Git repository at:
+> On Fri, 17 Jan 2020 22:59:24 +0100
+> Andreas Kemnade <andreas@kemnade.info> wrote:
+>=20
+> > Both chips have an A/D converter capable of measuring
+> > things like VBAT, VUSB and analog inputs.
+> >=20
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info> =20
+> A few comments inline, but looks pretty good on the whole.
+>=20
+> Jonathan
+>=20
+> > ---
+> >  drivers/iio/adc/Kconfig       |  10 ++
+> >  drivers/iio/adc/Makefile      |   1 +
+> >  drivers/iio/adc/rn5t618-adc.c | 266 ++++++++++++++++++++++++++++++++++
+> >  3 files changed, 277 insertions(+)
+> >  create mode 100644 drivers/iio/adc/rn5t618-adc.c
+> >=20
+> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > index f0af3a42f53c..9ea9489e3f0a 100644
+> > --- a/drivers/iio/adc/Kconfig
+> > +++ b/drivers/iio/adc/Kconfig
+> > @@ -735,6 +735,16 @@ config RCAR_GYRO_ADC
+> >  	  To compile this driver as a module, choose M here: the
+> >  	  module will be called rcar-gyroadc.
+> > =20
+> > +config RN5T618_ADC
+> > +	tristate "ADC for the RN5T618/RC5T619 family of chips"
+> > +	depends on MFD_RN5T618
+> > +	help
+> > +	  Say yes here to build support for the integrated ADC inside the
+> > +	  RN5T618/619 series PMICs:
+> > +
+> > +	  This driver can also be built as a module. If so, the module
+> > +	  will be called rn5t618-adc.
+> > +
+> >  config ROCKCHIP_SARADC
+> >  	tristate "Rockchip SARADC driver"
+> >  	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
+> > diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> > index ef9cc485fb67..2aea70556ed0 100644
+> > --- a/drivers/iio/adc/Makefile
+> > +++ b/drivers/iio/adc/Makefile
+> > @@ -69,6 +69,7 @@ obj-$(CONFIG_QCOM_VADC_COMMON) +=3D qcom-vadc-common.o
+> >  obj-$(CONFIG_QCOM_SPMI_VADC) +=3D qcom-spmi-vadc.o
+> >  obj-$(CONFIG_QCOM_PM8XXX_XOADC) +=3D qcom-pm8xxx-xoadc.o
+> >  obj-$(CONFIG_RCAR_GYRO_ADC) +=3D rcar-gyroadc.o
+> > +obj-$(CONFIG_RN5T618_ADC) +=3D rn5t618-adc.o
+> >  obj-$(CONFIG_ROCKCHIP_SARADC) +=3D rockchip_saradc.o
+> >  obj-$(CONFIG_SC27XX_ADC) +=3D sc27xx_adc.o
+> >  obj-$(CONFIG_SPEAR_ADC) +=3D spear_adc.o
+> > diff --git a/drivers/iio/adc/rn5t618-adc.c b/drivers/iio/adc/rn5t618-ad=
+c.c
+> > new file mode 100644
+> > index 000000000000..81f872a7ad7f
+> > --- /dev/null
+> > +++ b/drivers/iio/adc/rn5t618-adc.c
+> > @@ -0,0 +1,266 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
+> > +/*
+> > + * ADC driver for the RICOH RN5T618 power management chip family
+> > + *
+> > + * Copyright (C) 2019 Andreas Kemnade
+> > + */
+> > +
+> > +#include <linux/kernel.h>
+> > +#include <linux/device.h>
+> > +#include <linux/errno.h>
+> > +#include <linux/interrupt.h>
+> > +#include <linux/init.h>
+> > +#include <linux/module.h>
+> > +#include <linux/mfd/rn5t618.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/completion.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/slab.h>
+> > +#include <linux/irqdomain.h>
+> > +
+> > +#define RN5T618_ADC_CONVERSION_TIMEOUT   (msecs_to_jiffies(500))
+> > +#define REFERENCE_VOLT 2500
+> > +
+> > +/* mask for selecting channels for single conversion */
+> > +#define ADCCNT3_CHANNEL_MASK 0x7
+> > +/* average 4-time conversion mode */
+> > +#define ADCCNT3_AVG BIT(3)
+> > +/* set for starting a single conversion, gets cleared by hw when done =
+*/
+> > +#define ADCCNT3_GODONE BIT(4)
+> > +/* automatic conversion, period is in ADCCNT2, selected channels are
+> > + * in ADCCNT1
+> > + */
+> > +#define ADCCNT3_AUTO BIT(5)
+> > +#define ADCEND_IRQ BIT(0)
+> > +
+> > +struct rn5t618_adc_data {
+> > +	struct device *dev;
+> > +	struct rn5t618 *rn5t618;
+> > +	struct completion conv_completion;
+> > +	int irq;
+> > +};
+> > +
+> > +struct rn5t618_channel_ratios {
+> > +	u16 numerator;
+> > +	u16 denominator;
+> > +};
+> > +
+> > +static const struct rn5t618_channel_ratios rn5t618_ratios[8] =3D {
+> > +	{50, 32}, /* LIMMON measured across 20mOhm, amplified by 32 */ =20
+> Define an enum for the channel.  Then you can use explicit element
+> setting to make this code self docuemnting.
+>=20
+> [LIMMON] =3D {50, 32},
+> [VBAT] =3D {2, 1}, etc.
+>=20
+> Use the enum to fill in the channel numbers below as well and
+> it all becomes 'obviously' correct rather than having to check the
+> two things are in the same order.
+>=20
+oh, yes that makes sense.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-=
-5.6b
+> > +	{2, 1}, /* VBAT */
+> > +	{3, 1}, /* VADP */
+> > +	{3, 1}, /* VUSB */
+> > +	{3, 1}, /* VSYS */
+> > +	{1, 1}, /* VTHM */
+> > +	{1, 1}, /* AIN1 */
+> > +	{1, 1}, /* AIN0 */
+> > +};
+> > +
+> > +static int rn5t618_read_adc_reg(struct rn5t618 *rn5t618, int reg, u16 =
+*val)
+> > +{
+> > +	unsigned int h;
+> > +	unsigned int l;
+> > +	int ret;
+> > +
+> > +	ret =3D regmap_read(rn5t618->regmap, reg, &h);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	ret =3D regmap_read(rn5t618->regmap, reg + 1, &l);
+> > +	if (ret < 0)
+> > +		return ret; =20
+>=20
+> regmap_bulk_read perhaps?=20
+>=20
+ok, can do that.
+> > +
+> > +	h <<=3D 4;
+> > +	h |=3D (l & 0xF);
+> > +	h &=3D 0xFFF; =20
+>=20
+> I'd mask h before the shift.  More readable I think than
+> masking the l part twice.
+>=20
+or simply don't mask it at all. It is an 8 bit register, so masking it with
+0xff does not make sense at all.
 
-for you to fetch changes up to d344961f55fd6321937d3bc92ad3930dea31189f:
+> > +	*val =3D h;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static irqreturn_t rn5t618_adc_irq(int irq, void *data)
+> > +{
+> > +	struct rn5t618_adc_data *adc =3D data;
+> > +	unsigned int r =3D 0;
+> > +	int ret;
+> > +
+> > +	/* clear low & high threshold irqs */
+> > +	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC1, 0);
+> > +	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC2, 0);
+> > +
+> > +	ret =3D regmap_read(adc->rn5t618->regmap, RN5T618_IR_ADC3, &r);
+> > +	if (ret < 0)
+> > +		dev_err(adc->dev, "failed to read IRQ status: %d\n", ret);
+> > +
+> > +	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC3, 0);
+> > +
+> > +	if (r & ADCEND_IRQ)
+> > +		complete(&adc->conv_completion);
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> > +static int rn5t618_adc_read(struct iio_dev *iio_dev,
+> > +			    const struct iio_chan_spec *chan,
+> > +			    int *val, int *val2, long mask)
+> > +{
+> > +	struct rn5t618_adc_data *adc =3D iio_priv(iio_dev);
+> > +	u16 raw;
+> > +	int ret;
+> > +
+> > +	/* select channel */
+> > +	ret =3D regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
+> > +				 ADCCNT3_CHANNEL_MASK,
+> > +				 chan->channel);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	ret =3D regmap_write(adc->rn5t618->regmap, RN5T618_EN_ADCIR3, ADCEND_=
+IRQ);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	ret =3D regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
+> > +				 ADCCNT3_AVG,
+> > +				 mask =3D=3D IIO_CHAN_INFO_AVERAGE_RAW ?
+> > +				 ADCCNT3_AVG : 0);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	init_completion(&adc->conv_completion);
+> > +	/* single conversion */
+> > +	ret =3D regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
+> > +				 ADCCNT3_GODONE, ADCCNT3_GODONE);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	ret =3D wait_for_completion_timeout(&adc->conv_completion,
+> > +					  RN5T618_ADC_CONVERSION_TIMEOUT);
+> > +	if (ret =3D=3D 0) {
+> > +		dev_warn(adc->dev, "timeout waiting for adc result\n");
+> > +		return -ETIMEDOUT;
+> > +	}
+> > +
+> > +	ret =3D rn5t618_read_adc_reg(adc->rn5t618,
+> > +				   RN5T618_ILIMDATAH + 2 * chan->channel,
+> > +				   &raw);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	*val =3D raw;
+> > +	if (mask =3D=3D IIO_CHAN_INFO_PROCESSED)
+> > +		*val =3D *val * REFERENCE_VOLT *
+> > +		       rn5t618_ratios[chan->channel].numerator /
+> > +		       rn5t618_ratios[chan->channel].denominator / 4095;
+> > +
+> > +	return IIO_VAL_INT;
+> > +}
+> > +
+> > +static const struct iio_info rn5t618_adc_iio_info =3D {
+> > +	.read_raw =3D &rn5t618_adc_read,
+> > +};
+> > +
+> > +#define RN5T618_ADC_CHANNEL(_channel, _type, _name) { \
+> > +	.type =3D _type, \
+> > +	.channel =3D _channel, \
+> > +	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) | \
+> > +			      BIT(IIO_CHAN_INFO_AVERAGE_RAW) | \
+> > +			      BIT(IIO_CHAN_INFO_PROCESSED), \
+> > +	.datasheet_name =3D _name, \
+> > +	.indexed =3D 1. \
+> > +}
+> > +
+> > +static const struct iio_chan_spec rn5t618_adc_iio_channels[] =3D {
+> > +	RN5T618_ADC_CHANNEL(0, IIO_CURRENT, "LIMMON"),
+> > +	RN5T618_ADC_CHANNEL(1, IIO_VOLTAGE, "VBAT"),
+> > +	RN5T618_ADC_CHANNEL(2, IIO_VOLTAGE, "VADP"),
+> > +	RN5T618_ADC_CHANNEL(3, IIO_VOLTAGE, "VUSB"),
+> > +	RN5T618_ADC_CHANNEL(4, IIO_VOLTAGE, "VSYS"),
+> > +	RN5T618_ADC_CHANNEL(5, IIO_VOLTAGE, "VTHM"),
+> > +	RN5T618_ADC_CHANNEL(6, IIO_VOLTAGE, "AIN1"),
+> > +	RN5T618_ADC_CHANNEL(7, IIO_VOLTAGE, "AIN0")
+> > +};
+> > +
+> > +static int rn5t618_adc_probe(struct platform_device *pdev)
+> > +{
+> > +	int ret;
+> > +	struct iio_dev *iio_dev;
+> > +	struct rn5t618_adc_data *adc;
+> > +	struct rn5t618 *rn5t618 =3D dev_get_drvdata(pdev->dev.parent);
+> > +
+> > +	iio_dev =3D devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
+> > +	if (!iio_dev) {
+> > +		dev_err(&pdev->dev, "failed allocating iio device\n");
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	adc =3D iio_priv(iio_dev);
+> > +	adc->dev =3D &pdev->dev;
+> > +	adc->rn5t618 =3D rn5t618;
+> > +	adc->irq =3D -ENOENT;
+> > +
+> > +	if (rn5t618->irq_data)
+> > +		adc->irq =3D regmap_irq_get_virq(rn5t618->irq_data,
+> > +					       RN5T618_IRQ_ADC);
+> > +
+> > +	if (adc->irq  < 0) { =20
+>=20
+> Extra space before the <
+> For an irq 0 usually counts as 'no irq'.  Can that particular
+> path ever give that?
+>=20
+hmm, regmap_irq_get_virq seems to return < 0 or 0 on error depending
+on situation. Unless there is a bug in the mfd parent, it should not fail.
+But maybe better catch that. If the mfd parent itself does not have an IRQ
+irq_data will also be NULL.
+BTW: palmas_gpadc.c does the same strange check, so maybe it should be fixed
+there too.
 
-  iio: dac: stm32-dac: better handle reset controller failures (2020-01-18 =
-14:32:01 +0000)
+> > +		dev_err(&pdev->dev, "get virq failed\n");
+> > +		return adc->irq;
+> > +	}
+> > +
+> > +	init_completion(&adc->conv_completion);
+> > +
+> > +	iio_dev->name =3D dev_name(&pdev->dev);
+> > +	iio_dev->dev.parent =3D &pdev->dev;
+> > +	iio_dev->info =3D &rn5t618_adc_iio_info;
+> > +	iio_dev->modes =3D INDIO_DIRECT_MODE;
+> > +	iio_dev->channels =3D rn5t618_adc_iio_channels;
+> > +	iio_dev->num_channels =3D ARRAY_SIZE(rn5t618_adc_iio_channels);
+> > +
+> > +	/* stop any auto-conversion */
+> > +	ret =3D regmap_write(rn5t618->regmap, RN5T618_ADCCNT3, 0);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	platform_set_drvdata(pdev, iio_dev);
+> > +
+> > +	ret =3D request_threaded_irq(adc->irq, NULL,
+> > +				   rn5t618_adc_irq,
+> > +				   IRQF_ONESHOT, dev_name(adc->dev),
+> > +				   adc);
+> > +	if (ret < 0) {
+> > +		dev_err(adc->dev, "request irq %d failed: %d\n", adc->irq, ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret =3D iio_device_register(iio_dev);
+> > +	if (ret < 0)
+> > +		free_irq(adc->irq, adc);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int rn5t618_adc_remove(struct platform_device *pdev)
+> > +{
+> > +	struct iio_dev *iio_dev =3D platform_get_drvdata(pdev);
+> > +	struct rn5t618_adc_data *adc =3D iio_priv(iio_dev);
+> > +
+> > +	iio_device_unregister(iio_dev);
+> > +	free_irq(adc->irq, adc); =20
+>=20
+> If this is all we are going to have in remove, why not just use
+> the device managed form to do it for us and get rid of remove.
+>=20
+yes, should be a very good idea.
 
-----------------------------------------------------------------
-Second set of new device support, features and minor fixes for IIO in the 5=
-.6 cycle
+Regards,
+Andreas
 
-Just a small set this time.
+--Sig_/=AMvpm5u/8xCpl6FYhdCFaC
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-As we are very near the merge window, I've rolled a few fixes in here
-rather than adding noise just before release.  A short delay here will
-do little harm.
+-----BEGIN PGP SIGNATURE-----
 
-New device support
-* adis16480
-  - Add support for adis16490. After earlier rework this is simple ID plus
-    chip info.
+iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl4jgz0ACgkQl4jFM1s/
+ye+W7w/9EyN0Gq4YI6+s521wX295UnLdEr6Vr1fYS5guUrg/xTw3bqRsQ0eqBtTg
+JlfPYy0Wuey3JM0osTJlr6pgphL3W72/EY8ewYGUEFhs9Gp+lR3tjDabh0ZDURm7
+i8hc3tWdUu6S7kcBFmm7eErJdL+ifcXWWo/SQAu831kkt0viaCXIH8oLIDc9Xoih
+qUX762Ph9NOPJB910FhmmQeqa+v3JJZ421x2eF8Lliiga8dRBBT6QgJasmDWA6bJ
+10xcygJqZXw2Dlm0D/n9yRddF/WEWw3k4vfrolkavKf99JqBhdM9O40NyFcmQcVY
+lFtTAQuE3jKavOPhSVQTY+PBQch/jrN5Fr0k4IFwhLdN+bC+ns0hu7ojUZ+OeqFO
+84FX4B3Z6VlX4SBZkfEcQOotX1YBOOguEzKPEsQT5VX36pbTNUXM2/Exz7Pw/YWs
+JaP79YaTIGicFVR+a6PbrmwtAYGWQ0qBfSGJ9jfKFxeJC4ptt/O8F+YwMy4yQnM2
++OpEjAOku48luRDn+Kb9O/QKa4hDVQHr1slHO0TawnhdyOkbEDolMr4crPL3oTLq
+diQ5qhm5gMuLAZAHjaNcfExmPkSigimC3aoLVeZtkd9z/R9x4Kdmi+QLjrqEau7w
+n7w+gLjccP3emFMEHXiGQkFUVkCWX+uB9JDOq0pzijxK5QfC+II=
+=d551
+-----END PGP SIGNATURE-----
 
-Features
-* kxcjk1013
-  - mount matrix support.
-* lsm_6dsx
-  - mount matrix support.
-
-Cleanups / minor or late breaking fixes
-* ad7124
-  - add support to ad-sigma-delta and use it in this driver to allow
-    the the interrupt type to be IRQF_TRIGGER_LOW unlike most other devices
-    using this framework.
-* adis
-  - use delay structure now available in SPI to handle transfer delays
-  - introduce a timeouts structure to allow support of new devices
-* ak8975
-  - drop platform data support.  No one is using it and it adds complexity.
-  - use device_get_match_data rather than open coding much the same thing.
-* dht11
-  - drop meaningless todo
-* at91-samad2_adc
-  - switch to dma_request_chan
-* altas-sensor
-  - add a helper function to compute number of channels.  Needed for new de=
-vice
-    support that is under review.
-* bma400
-  - add a lower bound check on scale.
-* inv_mpu6050
-  - add support for temperature data in the fifos for all chips.
-  - support an odd situation where a board supports only interrupt triggeri=
-ng
-    on both edges.
-* st_lsm6dsx
-  - check and handle potential error return.
-* st_sensors
-  - fix some values for the LSM9DS0 which is ever so slightly different from
-    other devices using the same whoami value.
-  - switch over to generic functions from dt ones, avoiding need for separa=
-te
-    ACPI support.
-* stm32-adc
-  - switch to dma_request_chan
-  - suppress an error print in deferred probe case.
-* stm32-dac
-  - drop private data structure element for reset controller as only used in
-    probe.
-  - reflect more cleanly that the reset controller is optional whilst ensur=
-ing
-    that if is specified any errors are caught.
-* stm32-dfsdm
-  - switch to dma_request_chan
-  - fix missing application of formatting to single conversions.
-  - ensure the sampling rate is updated when the oversampling ratio is chan=
-ged.
-
-----------------------------------------------------------------
-Alexandru Ardelean (2):
-      iio: imu: adis: use new `delay` structure for SPI transfer delays
-      dt-bindings: iio: adis16480: add compatible entry for ADIS16490
-
-Alexandru Tachici (2):
-      iio: adc: ad-sigma-delta: Allow custom IRQ flags
-      iio: adc: ad7124: Set IRQ type to falling
-
-Andy Shevchenko (5):
-      iio: st_gyro: Correct data for LSM9DS0 gyro
-      iio: st_sensors: Drop redundant parameter from st_sensors_of_name_pro=
-be()
-      iio: st_sensors: Make use of device properties
-      iio: magnetometer: ak8975: Get rid of platform data
-      iio: magnetometer: ak8975: Convert to use device_get_match_data()
-
-Dan Carpenter (1):
-      iio: accel: bma400: prevent setting accel scale too low
-
-Dmitry Osipenko (2):
-      iio: accel: kxcjk1013: Support orientation matrix
-      dt-bindings: iio: accel: kxcjk1013: Document mount-matrix property
-
-Etienne Carriere (3):
-      iio: adc: stm32-adc: don't print an error on probe deferral
-      iio: dac: stm32-dac: use reset controller only at probe time
-      iio: dac: stm32-dac: better handle reset controller failures
-
-Jean-Baptiste Maneyrol (1):
-      iio: imu: inv_mpu6050: add fifo temperature data support
-
-Kent Gustavsson (1):
-      iio: humidity: dht11 remove TODO since it doesn't make sense
-
-Lorenzo Bianconi (1):
-      iio: imu: st_lsm6dsx: check return value from st_lsm6dsx_sensor_set_e=
-nable
-
-Martin Kepplinger (1):
-      iio: imu: st_lsm6dsx: add mount matrix support
-
-Matt Ranostay (1):
-      iio: chemical: atlas-sensor: add helper function atlas_buffer_num_cha=
-nnels()
-
-Micha=C5=82 Miros=C5=82aw (1):
-      iio: imu/mpu6050: support dual-edge IRQ
-
-Nuno S=C3=A1 (2):
-      iio: adis: Introduce timeouts structure
-      iio: adis: Remove startup_delay
-
-Olivier Moysan (2):
-      iio: adc: stm32-dfsdm: fix single conversion
-      iio: adc: stm32-dfsdm: adapt sampling rate to oversampling ratio
-
-Peter Ujfalusi (3):
-      iio: adc: stm32-dfsdm: Use dma_request_chan() instead dma_request_sla=
-ve_channel()
-      iio: adc: stm32-adc: Use dma_request_chan() instead dma_request_slave=
-_channel()
-      iio: adc: at91-sama5d2_adc: Use dma_request_chan() instead dma_reques=
-t_slave_channel()
-
-Stefan Popa (1):
-      iio: imu: adis16480: Add support for ADIS16490
-
- .../bindings/iio/accel/kionix,kxcjk1013.txt        |   7 +
- .../devicetree/bindings/iio/imu/adi,adis16480.txt  |   1 +
- drivers/iio/accel/adis16201.c                      |   8 +-
- drivers/iio/accel/adis16209.c                      |   8 +-
- drivers/iio/accel/bma400_core.c                    |   3 +-
- drivers/iio/accel/kxcjk-1013.c                     |  27 ++-
- drivers/iio/accel/st_accel_i2c.c                   |   6 +-
- drivers/iio/accel/st_accel_spi.c                   |   9 +-
- drivers/iio/adc/ad7124.c                           |   2 +
- drivers/iio/adc/ad7780.c                           |   1 +
- drivers/iio/adc/ad7791.c                           |   1 +
- drivers/iio/adc/ad7793.c                           |   1 +
- drivers/iio/adc/ad_sigma_delta.c                   |   2 +-
- drivers/iio/adc/at91-sama5d2_adc.c                 |   6 +-
- drivers/iio/adc/stm32-adc-core.c                   |   9 +-
- drivers/iio/adc/stm32-adc.c                        |  16 +-
- drivers/iio/adc/stm32-dfsdm-adc.c                  |  55 ++++--
- drivers/iio/chemical/atlas-sensor.c                |  13 +-
- drivers/iio/common/st_sensors/st_sensors_core.c    |  45 ++---
- drivers/iio/common/st_sensors/st_sensors_i2c.c     |  21 ---
- drivers/iio/common/st_sensors/st_sensors_spi.c     |  12 +-
- drivers/iio/dac/stm32-dac-core.c                   |  19 +-
- drivers/iio/gyro/adis16136.c                       |  41 ++++-
- drivers/iio/gyro/adis16260.c                       |   8 +-
- drivers/iio/gyro/st_gyro_core.c                    |  75 +++++++-
- drivers/iio/gyro/st_gyro_i2c.c                     |   9 +-
- drivers/iio/gyro/st_gyro_spi.c                     |   9 +-
- drivers/iio/humidity/dht11.c                       |   1 -
- drivers/iio/imu/adis.c                             |  45 +++--
- drivers/iio/imu/adis16400.c                        |  64 ++++++-
- drivers/iio/imu/adis16460.c                        |   7 +
- drivers/iio/imu/adis16480.c                        |  75 +++++++-
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c         | 202 ++++++++---------=
-----
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h          |  22 +--
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c         |  11 +-
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c      |   3 +
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h            |  19 ++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c       |  11 +-
- drivers/iio/magnetometer/ak8975.c                  |  53 ++----
- drivers/iio/magnetometer/st_magn_i2c.c             |   9 +-
- drivers/iio/magnetometer/st_magn_spi.c             |   9 +-
- drivers/iio/pressure/st_pressure_i2c.c             |  20 +-
- drivers/iio/pressure/st_pressure_spi.c             |   9 +-
- drivers/staging/iio/accel/adis16203.c              |   8 +-
- drivers/staging/iio/accel/adis16240.c              |   8 +-
- include/linux/iio/accel/kxcjk_1013.h               |   3 +
- include/linux/iio/adc/ad_sigma_delta.h             |   2 +
- include/linux/iio/common/st_sensors.h              |  12 +-
- include/linux/iio/common/st_sensors_i2c.h          |  10 -
- include/linux/iio/imu/adis.h                       |  14 +-
- include/linux/iio/magnetometer/ak8975.h            |  15 --
- 51 files changed, 645 insertions(+), 401 deletions(-)
- delete mode 100644 include/linux/iio/magnetometer/ak8975.h
+--Sig_/=AMvpm5u/8xCpl6FYhdCFaC--

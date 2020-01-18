@@ -2,44 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8156414173D
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2020 12:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BFD514174A
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2020 12:39:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727054AbgARL3L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jan 2020 06:29:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45556 "EHLO mail.kernel.org"
+        id S1727116AbgARLia (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jan 2020 06:38:30 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50504 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727033AbgARL3L (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 18 Jan 2020 06:29:11 -0500
+        id S1727081AbgARLi3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 18 Jan 2020 06:38:29 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37B0F24690;
-        Sat, 18 Jan 2020 11:29:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2264824694;
+        Sat, 18 Jan 2020 11:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579346950;
-        bh=D8x+g+unQ8xBuwJgPT/oCsHR7+dsGc9bZHovonk0mNo=;
+        s=default; t=1579347509;
+        bh=iIeg+1dnT7OfcbdP0DXFsamukGRmduf5h01dYC6zKIU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Jxc4Izx3rLBVGIqHKSFZ/VaLeRokaFHkHuFG+PFLz/cfYs0Jk3jSnvMjYq2HgFCl2
-         4eFvcvqlfcrCavpKfr6mecy55lyYOH6WD+KIPq+VcG4YLCZ5wMujGOIzszeZTTFDM8
-         WLhaabbzboOtLcluufTtvS7Ah11zkYr3TZaNdvdM=
-Date:   Sat, 18 Jan 2020 11:29:06 +0000
+        b=0He+lfHV+VXLC+Lfx6CVJ14abmFPPWeak+I7ZjKN6i5gVygu39YT05h62tl5y5GuZ
+         6rnGtDQEb9/2WIzUP5yWhqrsype863uTLr1B9y6tyX9zjouyeWb29Q1q+jopS4dCEF
+         wsmiH5aIVDMcw/kre/owSu4boXloCxPkkW9WgJL0=
+Date:   Sat, 18 Jan 2020 11:38:23 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Hennerich, Michael" <Michael.Hennerich@analog.com>
-Cc:     "Bia, Beniamin" <Beniamin.Bia@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "biabeniamin@outlook.com" <biabeniamin@outlook.com>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>
-Subject: Re: [PATCH] iio: frequency: adf4371: Fix divide by zero exception
- bug
-Message-ID: <20200118112906.0ad6dd6b@archlinux>
-In-Reply-To: <BN6PR03MB25966D74469371C11AFC4E4C8E340@BN6PR03MB2596.namprd03.prod.outlook.com>
-References: <20200107131559.17772-1-beniamin.bia@analog.com>
-        <20200111110848.7c45a4f3@archlinux>
-        <BN6PR03MB25966D74469371C11AFC4E4C8E340@BN6PR03MB2596.namprd03.prod.outlook.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v1 1/2] iio: magnetometer: ak8975: Get rid of platform
+ data
+Message-ID: <20200118113823.5b68bdd1@archlinux>
+In-Reply-To: <20200115174425.70728-1-andriy.shevchenko@linux.intel.com>
+References: <20200115174425.70728-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -49,87 +43,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 14 Jan 2020 16:19:28 +0000
-"Hennerich, Michael" <Michael.Hennerich@analog.com> wrote:
+On Wed, 15 Jan 2020 19:44:24 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> > -----Original Message-----
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Samstag, 11. Januar 2020 12:09
-> > To: Bia, Beniamin <Beniamin.Bia@analog.com>
-> > Cc: lars@metafoo.de; Hennerich, Michael <Michael.Hennerich@analog.com>;
-> > pmeerw@pmeerw.net; linux-iio@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; biabeniamin@outlook.com; knaack.h@gmx.de
-> > Subject: Re: [PATCH] iio: frequency: adf4371: Fix divide by zero exception bug
-> > 
-> > On Tue, 7 Jan 2020 15:15:59 +0200
-> > Beniamin Bia <beniamin.bia@analog.com> wrote:
-> >   
-> > > From: Michael Hennerich <michael.hennerich@analog.com>
-> > >
-> > > During initialization adf4371_pll_fract_n_get_rate() is called on all
-> > > output channels to determine if the device was setup. In this case
-> > > mod2 is zero which can cause a divide by zero exception.
-> > > Return before that can happen.  
-> > I'm confused by this description vs the code.
-> > 
-> > As far as I can see fract_n_get_rate is only called on a sysfs read of the
-> > frequency.  
+> Since IIO framework supports device property API and driver has been moved
+> already to the use of GPIO descriptors the logical continuation is to
+> get rid of platform data completely. We are on the safe side here since
+> there are no users of it in the kernel.
 > 
-> That's not the case. The failure mechanism comes via adf4371_channel_config().
-> It calls adf4371_pll_fract_n_get_rate() prior adf4371_set_freq() which initializes 
-> st->mod2 via adf4371_pll_fract_n_compute(). This only happens the first time 
-> during probe and setup. So the solution was to return 0 if st->mod2 == 0.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Hmm. Fair enough I guess.
 
-Not in mainline it doesn't.   I took a look at the ADI git hub and I see it does
-there.  I think we are missing a precursor patch.
+Applied to the togreg branch of iio.git and pushed out as testing
 
-Probably this one from blame...
-
-https://github.com/analogdevicesinc/linux/commit/c8e6b341abf749f78e00326cb92b365d90d9de1f
+Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/magnetometer/ak8975.c       | 14 +++-----------
+>  include/linux/iio/magnetometer/ak8975.h | 15 ---------------
+>  2 files changed, 3 insertions(+), 26 deletions(-)
+>  delete mode 100644 include/linux/iio/magnetometer/ak8975.h
 > 
-> -Michael
-> 
-> > 
-> > mod2 is set when fract_n_compute is called in the relevant set_freq calls.
-> > This seems to occur on a sysfs set frequency call.
-> > 
-> > So the issue here is that a sysfs read before a write of the frequency will cause a
-> > div zero?  If so, is there a sane set of initial values we can put in mod2 and
-> > friends before exposing them via the device register?
-> > 
-> > If mod2==0 is a valid value and indicates for example that the channel is turned
-> > off, then the description should make that clear.
-> > 
-> > Jonathan
-> >   
-> > >
-> > > Fixes: 7f699bd149134 ("iio: frequency: adf4371: Add support for
-> > > ADF4371 PLL")
-> > > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> > > Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-> > > ---
-> > >  drivers/iio/frequency/adf4371.c | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > >
-> > > diff --git a/drivers/iio/frequency/adf4371.c
-> > > b/drivers/iio/frequency/adf4371.c index e2a599b912e5..c21462238314
-> > > 100644
-> > > --- a/drivers/iio/frequency/adf4371.c
-> > > +++ b/drivers/iio/frequency/adf4371.c
-> > > @@ -191,6 +191,9 @@ static unsigned long long  
-> > adf4371_pll_fract_n_get_rate(struct adf4371_state *st,  
-> > >  	unsigned long long val, tmp;
-> > >  	unsigned int ref_div_sel;
-> > >
-> > > +	if (st->mod2 == 0)
-> > > +		return 0;
-> > > +
-> > >  	val = (((u64)st->integer * ADF4371_MODULUS1) + st->fract1) * st-
-> > >fpfd;
-> > >  	tmp = (u64)st->fract2 * st->fpfd;
-> > >  	do_div(tmp, st->mod2);  
-> 
+> diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+> index 55cffaa82456..8e50e073bcbf 100644
+> --- a/drivers/iio/magnetometer/ak8975.c
+> +++ b/drivers/iio/magnetometer/ak8975.c
+> @@ -28,8 +28,6 @@
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+>  
+> -#include <linux/iio/magnetometer/ak8975.h>
+> -
+>  /*
+>   * Register definitions, as well as various shifts and masks to get at the
+>   * individual fields of the registers.
+> @@ -857,8 +855,6 @@ static int ak8975_probe(struct i2c_client *client,
+>  	int err;
+>  	const char *name = NULL;
+>  	enum asahi_compass_chipset chipset = AK_MAX_TYPE;
+> -	const struct ak8975_platform_data *pdata =
+> -		dev_get_platdata(&client->dev);
+>  
+>  	/*
+>  	 * Grab and set up the supplied GPIO.
+> @@ -883,13 +879,9 @@ static int ak8975_probe(struct i2c_client *client,
+>  	data->eoc_gpiod = eoc_gpiod;
+>  	data->eoc_irq = 0;
+>  
+> -	if (!pdata) {
+> -		err = iio_read_mount_matrix(&client->dev, "mount-matrix",
+> -					    &data->orientation);
+> -		if (err)
+> -			return err;
+> -	} else
+> -		data->orientation = pdata->orientation;
+> +	err = iio_read_mount_matrix(&client->dev, "mount-matrix", &data->orientation);
+> +	if (err)
+> +		return err;
+>  
+>  	/* id will be NULL when enumerated via ACPI */
+>  	if (id) {
+> diff --git a/include/linux/iio/magnetometer/ak8975.h b/include/linux/iio/magnetometer/ak8975.h
+> deleted file mode 100644
+> index df3697183800..000000000000
+> --- a/include/linux/iio/magnetometer/ak8975.h
+> +++ /dev/null
+> @@ -1,15 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0 */
+> -#ifndef __IIO_MAGNETOMETER_AK8975_H__
+> -#define __IIO_MAGNETOMETER_AK8975_H__
+> -
+> -#include <linux/iio/iio.h>
+> -
+> -/**
+> - * struct ak8975_platform_data - AK8975 magnetometer driver platform data
+> - * @orientation: mounting matrix relative to main hardware
+> - */
+> -struct ak8975_platform_data {
+> -	struct iio_mount_matrix orientation;
+> -};
+> -
+> -#endif
 

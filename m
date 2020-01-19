@@ -2,53 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 273D2141E5F
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jan 2020 15:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B125E141F83
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Jan 2020 19:44:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726798AbgASOCH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jan 2020 09:02:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40712 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726778AbgASOCH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 19 Jan 2020 09:02:07 -0500
-Received: from localhost (unknown [84.241.197.67])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8AA2D206D7;
-        Sun, 19 Jan 2020 14:02:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579442526;
-        bh=kLIsjqeQy/pjqylz2DCA6bu9V1trUyO8J/mxrZgumrk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZU1wpQbPY1ZpjYkAbOSJ15ufDUnt2v66EM2+ENYvTxZzlAeetObGWmVKbb9YLJlkH
-         09oeRdFBSr8t2EILYKPkC/P5tMtgTvVXms2st2EgCJekLzgTbhKy4eRZsOQUFhfktt
-         bsBbPqJB4eOAt+S4HF4t0CtfFr9mLL9MosCMOtVc=
-Date:   Sun, 19 Jan 2020 15:01:40 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PULL] Second set of IIO new device support, cleanups and minor
- fixes for the 5.6 cycle.
-Message-ID: <20200119140140.GA227931@kroah.com>
-References: <20200118193627.2a384228@archlinux>
+        id S1728712AbgASSom (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jan 2020 13:44:42 -0500
+Received: from mail-il1-f195.google.com ([209.85.166.195]:47096 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728911AbgASSoi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jan 2020 13:44:38 -0500
+Received: by mail-il1-f195.google.com with SMTP id t17so25477178ilm.13
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jan 2020 10:44:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
+        b=gmKBxPx84PXNKr5CdAEsBl4o6OI0Ul1T9kdeNuOonXVMsPZvHaiVfrF6wsqmkO6amC
+         OhpUNNF3SMjaFtPDB5q+oWHWGLwTM1KQcLAEAJsxead1wkkS8vgEkLcKKIbpXv93k89C
+         Il/b6fig8uFQ2ful9dClSdBh6ES0WHCRI487g5LzaF7Sg904xrrN8vXROMW6UBU7S6v1
+         1KY36Pw5SyxrOXfagNts4/xbaFFgof1/AzREyQlil09RYVWfcnHmKvyC/eKHTr8xAdVR
+         8OHIBUIT1uRPI/WtlHnD2gmL8PhGi3ea1Do5nFE3xaprr/6eI7i7Fk2drMcN+8BwExKd
+         ZFxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
+        b=ZiDe4D5psd9NR9Wk/TwE2GQ1lfSj2Bw93NWvt/ngxYZiJsO2X9wCMgZMYUYHPENoN/
+         wPP7SlaDyXuAaLqYiRr3+e2F5fDptm4Xxw6EWsyzS0rexa2aTjYJljb3Wx7wZy3iTl2O
+         ddTQBD9OjuF7GMpHkBZ59AIj6w10R3p/S0Z56uvAtVMB/W/nziHZlwnPt09xIHg7LI2V
+         2VF1YJTjWyidguEburifntwftotLq2XCS99yOT8opf9zlPVyCgdtWS36dNr3eSoagZ3L
+         qWSepavXTo/Cg8KjWU5kmj0xj3+0DKyHsfOXcUG2h5B+uI4QZu2LsXiv3G+okwuiBBVf
+         12qw==
+X-Gm-Message-State: APjAAAUy3mjvQXrtoCIFJrdEJ/+Wmc4w8hiYBr/mRCN+Gi2rJ52NWPuN
+        5pCzV9FJmxZGuAAIMJW1CsqbnWIFX+9f+0JH4UZae+V99b7/Dg==
+X-Google-Smtp-Source: APXvYqw0/+WGODIUvKkziyHBLuQsuF4sA8inGcr6D1fE0jlGptJu92UkXoVDxAQCBYSMyoJXI0/9BUQNIZC+z8C9ask=
+X-Received: by 2002:a92:5c52:: with SMTP id q79mr7225189ilb.11.1579459477506;
+ Sun, 19 Jan 2020 10:44:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200118193627.2a384228@archlinux>
+Received: by 2002:a02:95c8:0:0:0:0:0 with HTTP; Sun, 19 Jan 2020 10:44:37
+ -0800 (PST)
+Reply-To: favordens@email.com
+From:   Favor Desmond <contecindy5@gmail.com>
+Date:   Sun, 19 Jan 2020 18:44:37 +0000
+Message-ID: <CAOfCPNxP6Zd30BF2yc=mXgSsiq_K60AW+CVH-5JzXJEsBrwaJA@mail.gmail.com>
+Subject: HELLO
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jan 18, 2020 at 07:36:27PM +0000, Jonathan Cameron wrote:
-> The following changes since commit e895bc1ebb31750f3baa74e074617d3cc5d0cee2:
-> 
->   staging: vc04_services: remove header include path to vc04_services (2020-01-10 17:33:41 +0100)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.6b
-
-PUlled and pushed out, thanks.
-
-greg k-h
+Hello Dear
+Greetings to you,I am Favor Desmond from Ivory coast currently living
+in  Togo Republic,I would like to know you more, so that i can tell
+you little amount myself and my photo, email address is
+favordens@email.com
+Thanks
+Favor

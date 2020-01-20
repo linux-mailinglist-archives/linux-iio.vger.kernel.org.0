@@ -2,98 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 868A1143282
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2020 20:39:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4974414335A
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2020 22:21:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726780AbgATTjG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jan 2020 14:39:06 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:39728 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726586AbgATTjF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jan 2020 14:39:05 -0500
-Received: by mail-pj1-f66.google.com with SMTP id e11so225979pjt.4;
-        Mon, 20 Jan 2020 11:39:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=eLo58FMuGoMdp6w5+M67QbJxYW/QcIQpDswNunuEYsA=;
-        b=B3MUc2xN1OEp3r4FUlX15bbX7A+0DqEcz3mHSO0uGswMgozMs5wAI0Q5IC5O4ckaT3
-         qGZr3G9+Pn5Gff8A6+DUdN+FUr5zY4zKynyBEKgNdBQbMs/4C/MqGeAGGLAcC0X4h/eF
-         UeKu/pI0zu/rYOEOrnawOVASJu/s3Mw7spnGtNhpsqFwx2xoDch5TyOsmpLI9XbRgwMP
-         UC82Wb3kg1IYdVQpYL5EVT12MCAB2waDZdzRhG5t7Qo4KbSdLJSFEFmNLlkoiNpN+y7w
-         QmK492TMklTqnnPrdSZSv4a02xJZK7sBcaIPA5+Jgwxbo1uXmUtLGCjziO1yqv9rUxcu
-         vufg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=eLo58FMuGoMdp6w5+M67QbJxYW/QcIQpDswNunuEYsA=;
-        b=HnUrp6A87V3TmH1Zyz7OrokbZU84D/vXlnFcr5WgQGYnhOSCh3P81P/zeUnbFdFwqD
-         TNohVzY54/il9mR0JGSHofLJnO1qE0SyKJpFTbkXRSBOon3LxwehpKIUU6N/WJEG2nAF
-         mUgmP9JmXFfWE3cQ+bgSJKcV+CBl/7OhMS/zxZFIqcmx4jtLDcKnMdeUUjMxfMDnyjnR
-         oqSg6n9Sv9APsuqcC4gRRUw93AAvO90hjqw1dYgZf0fMQjMmU0Vun3jW453y5bjXDOW9
-         vhL2LhPJwPGg6zsbemUU8Oh7uf+ulTebdIuVfMb9P8QhzRpqITykz8r/4X14qLT97ImH
-         3i8A==
-X-Gm-Message-State: APjAAAUkM0O2s1ONYz6cnrh9QbnbCC9RxhJQZpHWVhxO2/bEj3oMVKoY
-        qKAFD02Bf+KimTGbxVzT35WvJekv
-X-Google-Smtp-Source: APXvYqzfiglB9XCPBri33HNxtDQfYGPxIl6uFmhnlOz6wjpagQnug+4agaHE7QwHfOMn5XRmEUTYFQ==
-X-Received: by 2002:a17:90b:145:: with SMTP id em5mr682423pjb.20.1579549144936;
-        Mon, 20 Jan 2020 11:39:04 -0800 (PST)
-Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id b12sm39714158pfi.157.2020.01.20.11.39.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2020 11:39:04 -0800 (PST)
-Date:   Mon, 20 Jan 2020 11:39:02 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-Cc:     Artur Rojek <contact@artur-rojek.eu>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] input: joystick: Add ADC attached joystick driver.
-Message-ID: <20200120193902.GH47797@dtor-ws>
-References: <20200105001639.142061-1-contact@artur-rojek.eu>
- <20200105001639.142061-5-contact@artur-rojek.eu>
- <20200111115440.35f6cbfd@archlinux>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200111115440.35f6cbfd@archlinux>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1726942AbgATVVT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jan 2020 16:21:19 -0500
+Received: from mail.andi.de1.cc ([85.214.55.253]:38594 "EHLO mail.andi.de1.cc"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726874AbgATVVT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 20 Jan 2020 16:21:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Message-Id:Date:Subject:To:From:Sender:Reply-To
+        :Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=yowO245pK1fSPCH+v7F/Y9isOjxDC01NKbLnFHqZKTA=; b=C5MdHt6miaWlSzn5w7Sc2Hmz5t
+        EeVtYDD5IdhOIwcsBDUXG5KASRYRjdvS00TyaV57KVhoijprzd1tT8/uXq9XFZo0PH7bL8KFxiwTk
+        ur2OIh0Vs9gjhl4aFnoahkfBmk9nxTcdXgxzbVceuvMN+Xjod4W+7VvpQp+v61/wU1TI=;
+Received: from p200300ccff0880007ee9d3fffe1fa246.dip0.t-ipconnect.de ([2003:cc:ff08:8000:7ee9:d3ff:fe1f:a246] helo=eeepc)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iteTn-0006vj-92; Mon, 20 Jan 2020 22:21:04 +0100
+Received: from andi by eeepc with local (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iteTl-0007W9-R6; Mon, 20 Jan 2020 22:21:01 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, lee.jones@linaro.org, b.galvani@gmail.com,
+        linus.walleij@linaro.org, andreas@kemnade.info,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        phh@phh.me, stefan@agner.ch, letux-kernel@openphoenux.org,
+        martin.blumenstingl@googlemail.com
+Subject: [PATCH v2 0/3] mfd: rn5t618: add ADC support
+Date:   Mon, 20 Jan 2020 22:20:53 +0100
+Message-Id: <20200120212056.28806-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.11.0
+X-Spam-Score: -1.0 (-)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jan 11, 2020 at 11:54:40AM +0000, Jonathan Cameron wrote:
-> On Sun,  5 Jan 2020 01:16:39 +0100
-> Artur Rojek <contact@artur-rojek.eu> wrote:
-> 
-> > Add a driver for joystick devices connected to ADC controllers
-> > supporting the Industrial I/O subsystem.
-> > 
-> > Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-> > Tested-by: Paul Cercueil <paul@crapouillou.net>
-> 
-> Looks pretty good, but I'd like to see a little more sanity checking
-> on probe that the channels are in a format this driver can actually
-> handle.  Given we can check channel size and consistency etc early
-> it would be better to fail to probe than just report error data later.
+This series adds support for the ADC in the RN5T618/RC5T619.
+It depends on the IRQ support added in the RTC support series here:
+https://lore.kernel.org/lkml/20191220122416.31881-1-andreas@kemnade.info/
 
-Artur,
+I tested the driver only with the RC5T619 but it should work with the with 
+the RN5T618 as well based on these facts:
+- The corresponding register definitions originally went into the kernel
+  for the RN5T618
+- Public datasheet sections about the ADC look same.
+- Out-of-tree code for these chips look same regarding to ADC
 
-From my POV it looks decent so as soon as you address Jonathan requests
-you can add
+But due to missing hardware I cannot test the patches 2/3 and 3/3 which
+add support for the RN5T618 ADC.
+I marked these untested patches as RFC, and IMHO they require a Tested-By.
+Feel free to ignore them if the whole series would be delayed just because
+of missing Tested-By for those.
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Changes in v2:
+- got an "Applied, thanks" message for the first two, so I do not include
+  them anymore
+- some cleanups for the ADC driver itself
 
-assuming you want it to be perged through IIO tree.
+Andreas Kemnade (3):
+  iio: adc: rn5t618: Add ADC driver for RN5T618/RC5T619
+  mfd: rn5t618: add IRQ definitions for RN5T618
+  mfd: rn5t618: add ADC subdevice for RN5T618
 
-Thanks.
+ drivers/iio/adc/Kconfig       |  10 ++
+ drivers/iio/adc/Makefile      |   1 +
+ drivers/iio/adc/rn5t618-adc.c | 253 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/mfd/rn5t618.c         |  47 +++++++-
+ 4 files changed, 309 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iio/adc/rn5t618-adc.c
 
 -- 
-Dmitry
+2.11.0
+

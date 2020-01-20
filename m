@@ -2,299 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82471142E4D
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2020 16:05:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4712143028
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2020 17:44:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726642AbgATPFg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jan 2020 10:05:36 -0500
-Received: from honk.sigxcpu.org ([24.134.29.49]:53908 "EHLO honk.sigxcpu.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726626AbgATPFg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 20 Jan 2020 10:05:36 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id EC18BFB03;
-        Mon, 20 Jan 2020 16:05:34 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
-Received: from honk.sigxcpu.org ([127.0.0.1])
-        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id uFoXFseyJcL4; Mon, 20 Jan 2020 16:05:32 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id 5A4BA404AB; Mon, 20 Jan 2020 16:01:24 +0100 (CET)
-From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
-To:     Tomas Novotny <tomas@novotny.cz>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] iio: vncl4000: Enable runtime pm for vcnl4200/4040
-Date:   Mon, 20 Jan 2020 16:01:24 +0100
-Message-Id: <65d5c7b562f9f7c17857310e8538afe0bb1b2ddb.1579531608.git.agx@sigxcpu.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <cover.1579531608.git.agx@sigxcpu.org>
-References: <cover.1579531608.git.agx@sigxcpu.org>
+        id S1726876AbgATQoy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jan 2020 11:44:54 -0500
+Received: from mout.kundenserver.de ([212.227.126.133]:54743 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726897AbgATQoy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jan 2020 11:44:54 -0500
+Received: from localhost ([217.91.205.33]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MfYc4-1jZDRL25RA-00g3Dd; Mon, 20 Jan 2020 17:44:35 +0100
+Date:   Mon, 20 Jan 2020 17:44:34 +0100
+From:   Andreas Klinger <ak@it-klinger.de>
+To:     jic23@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        rpi-receiver@htl-steyr.ac.at, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] iio: srf04: add support for power management
+Message-ID: <20200120164433.GA8702@arbad>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Provags-ID: V03:K1:gWvLycNxUPsrfbKQlc543piJ9HSAtVHQVSZDVqfMQ5233yg18uB
+ YycTa9XcrDLFra4aaZEPuVfq5Um/1CTNOoKrhTE4OP36JNNPMfA+B/mHkKSDTOMlRKSpyDh
+ QTIYf85itUhYwCyr5k5FvNIRR+1UNWJfFnvWrzDSzaC1mpgMH9KUW77g2px1gMJ/zV1uwia
+ jPjEkCO2BFZaO0tdX1ZqA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1DmxnLrgqy0=:mMbAxVGX4GDdscZIyZiVO4
+ U3LwVClaeAEyH5SFz4Tnnp179vVlTXXfF45o5rmfKf9c+DCaJNamOnNEkrOHqYd8DZ73RwCRz
+ EbOvrP5GYCBIkbGlzrPi7swKZGj28YXqPRBkP2tNkBotlURYcgk5SdVUY09OqUuU3UCw/Yegn
+ 8EOOOE9KaVDK1o01PzQX4zjSv+xQmFlkcu/zHLB1Ze6As+aM++BJNgzIwqCu8gdAIOMZxofjr
+ DwxBEZrq6j35636mdqPueHgVfSR6ZPbhJrQbWzD/wy6VdbbDIEFQ8qNENCkZ5tgw5dlum5EL3
+ 0hMpm35061JMN7UAFL5z+bq63UduB2zuyEbPSYEqMRsF2/fSRrW2B4Ef/O6g4GNdH1X/7B8/Z
+ JAcLC8Y7nHlypedR5RxVi47MtUl8EZld8HfKJhMRMQz6crZKFtmRBPONdqIefWj6ZaNizUU6x
+ OA7X7uia6YcW0P8NIVRkpntkY2oaUTXYbX7WSLvVJKwc7+6cD9tLfSsyH2dQrLTW+lSi89KX/
+ KCgKJ9+8UUN+WBrXBnk72ftd2gOYsKIv58J1YVaAdvqB+S47SH00AF2smY/cjqXc87sRDIxNm
+ D130Pr/GuZIBaPBuX46suADzZiYRHA9GwVdZviUH1qN5+SaPV1FpnFF45ASql5kQ1E6wf6kOG
+ 40oVtOc3ImiTiCsLpt93/CpGisgWQSovEzUaN1jJjHAawNh6bxVFOEKXf4viRkrEy762jTtbd
+ 8FCBvwRFOFf6dCyP7aDxKKI0SBLvjKTp3IP2DtB3TfHW9x2BLY93D+7iqjc/uuEkNeH2utJ7L
+ mx1dGu3crSHQx+/CqrnjZyovHjSqkT/aCLVbC3u5+HY1B9JoMT4ur9UUuDp3bxbkgHNmeeSt1
+ zyVN5Cc75wCvTtzS6niw==
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is modelled after the vcnl4035 driver. The vcnl4000 does not seem
-to have a way to save power so we just leave it running.
+This patchset adds support for power management for the srf04 iio driver.
+It was suggested by Franz for the purpose of saving energy on battery driven
+vehicles.
 
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
----
- drivers/iio/light/vcnl4000.c | 126 +++++++++++++++++++++++++++++++++--
- 1 file changed, 120 insertions(+), 6 deletions(-)
+Changes in v3:
+Thanks to Jonathan for reviewing:
+- drop CONFIG_PM
+- use __maybe_unused for suspend and resume functions
 
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index 8f198383626b..b0396a3f1915 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -22,6 +22,7 @@
- #include <linux/i2c.h>
- #include <linux/err.h>
- #include <linux/delay.h>
-+#include <linux/pm_runtime.h>
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -57,6 +58,8 @@
- #define VCNL4000_AL_OD		BIT(4) /* start on-demand ALS measurement */
- #define VCNL4000_PS_OD		BIT(3) /* start on-demand proximity measurement */
- 
-+#define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
-+
- enum vcnl4000_device_ids {
- 	VCNL4000,
- 	VCNL4010,
-@@ -87,6 +90,7 @@ struct vcnl4000_chip_spec {
- 	int (*init)(struct vcnl4000_data *data);
- 	int (*measure_light)(struct vcnl4000_data *data, int *val);
- 	int (*measure_proximity)(struct vcnl4000_data *data, int *val);
-+	int (*set_power_state)(struct vcnl4000_data *data, bool on);
- };
- 
- static const struct i2c_device_id vcnl4000_id[] = {
-@@ -99,6 +103,12 @@ static const struct i2c_device_id vcnl4000_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, vcnl4000_id);
- 
-+static int vcnl4000_set_power_state(struct vcnl4000_data *data, bool on)
-+{
-+	/* no suspend op */
-+	return 0;
-+}
-+
- static int vcnl4000_init(struct vcnl4000_data *data)
- {
- 	int ret, prod_id;
-@@ -127,9 +137,24 @@ static int vcnl4000_init(struct vcnl4000_data *data)
- 	data->al_scale = 250000;
- 	mutex_init(&data->vcnl4000_lock);
- 
-+	ret = data->chip_spec->set_power_state(data, true);
-+	if (ret < 0)
-+		return ret;
-+
- 	return 0;
- };
- 
-+static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
-+{
-+	u16 val = on ? 0 /* power on */ : 1 /* shut down */;
-+	int ret;
-+
-+	ret = i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, val);
-+	if (ret < 0)
-+		return ret;
-+	return i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
-+}
-+
- static int vcnl4200_init(struct vcnl4000_data *data)
- {
- 	int ret, id;
-@@ -155,11 +180,7 @@ static int vcnl4200_init(struct vcnl4000_data *data)
- 
- 	data->rev = (ret >> 8) & 0xf;
- 
--	/* Set defaults and enable both channels */
--	ret = i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, 0);
--	if (ret < 0)
--		return ret;
--	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, 0);
-+	ret = data->chip_spec->set_power_state(data, true);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -291,24 +312,28 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
- 		.init = vcnl4000_init,
- 		.measure_light = vcnl4000_measure_light,
- 		.measure_proximity = vcnl4000_measure_proximity,
-+		.set_power_state = vcnl4000_set_power_state,
- 	},
- 	[VCNL4010] = {
- 		.prod = "VCNL4010/4020",
- 		.init = vcnl4000_init,
- 		.measure_light = vcnl4000_measure_light,
- 		.measure_proximity = vcnl4000_measure_proximity,
-+		.set_power_state = vcnl4000_set_power_state,
- 	},
- 	[VCNL4040] = {
- 		.prod = "VCNL4040",
- 		.init = vcnl4200_init,
- 		.measure_light = vcnl4200_measure_light,
- 		.measure_proximity = vcnl4200_measure_proximity,
-+		.set_power_state = vcnl4200_set_power_state,
- 	},
- 	[VCNL4200] = {
- 		.prod = "VCNL4200",
- 		.init = vcnl4200_init,
- 		.measure_light = vcnl4200_measure_light,
- 		.measure_proximity = vcnl4200_measure_proximity,
-+		.set_power_state = vcnl4200_set_power_state,
- 	},
- };
- 
-@@ -323,6 +348,23 @@ static const struct iio_chan_spec vcnl4000_channels[] = {
- 	}
- };
- 
-+static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data, bool on)
-+{
-+	struct device *dev = &data->client->dev;
-+	int ret;
-+
-+	if (on) {
-+		ret = pm_runtime_get_sync(dev);
-+		if (ret < 0)
-+			pm_runtime_put_noidle(dev);
-+	} else {
-+		pm_runtime_mark_last_busy(dev);
-+		ret = pm_runtime_put_autosuspend(dev);
-+	}
-+
-+	return ret;
-+}
-+
- static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 				struct iio_chan_spec const *chan,
- 				int *val, int *val2, long mask)
-@@ -332,6 +374,10 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
-+		ret = vcnl4000_set_pm_runtime_state(data, true);
-+		if  (ret < 0)
-+			return ret;
-+
- 		switch (chan->type) {
- 		case IIO_LIGHT:
- 			ret = data->chip_spec->measure_light(data, val);
-@@ -346,6 +392,7 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 		default:
- 			ret = -EINVAL;
- 		}
-+		vcnl4000_set_pm_runtime_state(data, false);
- 		return ret;
- 	case IIO_CHAN_INFO_SCALE:
- 		if (chan->type != IIO_LIGHT)
-@@ -394,7 +441,22 @@ static int vcnl4000_probe(struct i2c_client *client,
- 	indio_dev->name = VCNL4000_DRV_NAME;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
--	return devm_iio_device_register(&client->dev, indio_dev);
-+	ret = pm_runtime_set_active(&client->dev);
-+	if (ret < 0)
-+		goto fail_poweroff;
-+
-+	ret = iio_device_register(indio_dev);
-+	if (ret < 0)
-+		goto fail_poweroff;
-+
-+	pm_runtime_enable(&client->dev);
-+	pm_runtime_set_autosuspend_delay(&client->dev, VCNL4000_SLEEP_DELAY_MS);
-+	pm_runtime_use_autosuspend(&client->dev);
-+
-+	return 0;
-+fail_poweroff:
-+	data->chip_spec->set_power_state(data, false);
-+	return ret;
- }
- 
- static const struct of_device_id vcnl_4000_of_match[] = {
-@@ -422,13 +484,65 @@ static const struct of_device_id vcnl_4000_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, vcnl_4000_of_match);
- 
-+static int vcnl4000_remove(struct i2c_client *client)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
-+
-+	pm_runtime_dont_use_autosuspend(&client->dev);
-+	pm_runtime_disable(&client->dev);
-+	iio_device_unregister(indio_dev);
-+	pm_runtime_set_suspended(&client->dev);
-+
-+	return data->chip_spec->set_power_state(data, false);
-+}
-+
-+static int __maybe_unused vcnl4000_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = data->chip_spec->set_power_state(data, false);
-+
-+	return ret;
-+}
-+
-+static int __maybe_unused vcnl4000_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
-+	unsigned int msecs;
-+	int ret;
-+
-+	ret = data->chip_spec->set_power_state(data, true);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* wait for 1 ALS integration cycle */
-+	msecs =  data->vcnl4200_al.sampling_rate ?
-+		ktime_to_ms(data->vcnl4200_al.sampling_rate) : 100;
-+	msleep(ktime_to_ms(msecs));
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops vcnl4000_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-+				pm_runtime_force_resume)
-+	SET_RUNTIME_PM_OPS(vcnl4000_runtime_suspend,
-+			   vcnl4000_runtime_resume, NULL)
-+};
-+
- static struct i2c_driver vcnl4000_driver = {
- 	.driver = {
- 		.name   = VCNL4000_DRV_NAME,
-+		.pm	= &vcnl4000_pm_ops,
- 		.of_match_table = vcnl_4000_of_match,
- 	},
- 	.probe  = vcnl4000_probe,
- 	.id_table = vcnl4000_id,
-+	.remove	= vcnl4000_remove,
- };
- 
- module_i2c_driver(vcnl4000_driver);
+Changes in v2:
+Thanks to Rob for pointing out some improvements in dt-binding:
+ - add minimum, maximum and default value for startup-time-ms
+ - drop schema reference
+
+Andreas Klinger (2):
+  dt-bindings: devantech-srf04.yaml: add pm feature
+  iio: srf04: add power management feature
+
+ .../iio/proximity/devantech-srf04.yaml        | 18 ++++
+ drivers/iio/proximity/srf04.c                 | 96 ++++++++++++++++++-
+ 2 files changed, 113 insertions(+), 1 deletion(-)
+
 -- 
-2.23.0
-
+2.20.1

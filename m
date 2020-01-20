@@ -2,192 +2,239 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A612C142763
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2020 10:37:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97F6F142D26
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2020 15:21:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726775AbgATJhO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jan 2020 04:37:14 -0500
-Received: from mx0a-00328301.pphosted.com ([148.163.145.46]:21236 "EHLO
-        mx0a-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726642AbgATJhO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jan 2020 04:37:14 -0500
-Received: from pps.filterd (m0156134.ppops.net [127.0.0.1])
-        by mx0a-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00K9Tq6V007127;
-        Mon, 20 Jan 2020 01:37:10 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : content-type :
- mime-version; s=pfpt1; bh=rh+zaW5OdyfhzfHfWg/qF2BHGMCgbuAeMW82swuobGI=;
- b=cXQdVDZQuvUaPBpqNpNJZzhs6qEJV8mIk7T6hpCf49zhFEDTBaqK4+qJk6PWUa8LbOG/
- gLTvigwDr/R/mZAVlHBXncQ2Oc1W+sPgDj6ph0ytSWxztntYfH1BtTHoG9Zy2Mnx4jnI
- 0Fv0kXVZfYL/ii/1e6QITr4cuiLx0MwkDshVhUI+17tJWvF7ibCHorCIHkiuQG8Y4tXa
- bLcy516N49xOPDDXQJ0dzMNfAfP/8Hhy7b0agC/tugboqbrFDiiShXgudjUrJwRaNsj+
- tF1fPuelQKFb02puplTS93YtEmzHWcUdjrVFKSH1vcWz2XLc7RaXfCQpHH0mt2SBl5Ct yw== 
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2175.outbound.protection.outlook.com [104.47.56.175])
-        by mx0a-00328301.pphosted.com with ESMTP id 2xm1gqrmtb-1
+        id S1726942AbgATOVJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jan 2020 09:21:09 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:50510 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726642AbgATOVJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jan 2020 09:21:09 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00KEHZWX020961;
+        Mon, 20 Jan 2020 09:21:05 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2xkyta4mvh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Jan 2020 01:37:10 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RFYPzYBKHv9NNVIAYG3u3WvDpeSOF82acVVAwulf6FdragvJg2TGOtlSgETDOAAhv/MjwgOHuq1fLwDzRXzSIu92eDNOhGIiV8CjEwbpniGQuqVCE9qy9JRQwvuaiGnP9hkM2qhgfp7xyJotvxKmo4wLV5TQXmembJpEfVZupMtUb2CsOL+cWzYJdPOzkxeevplfz+Y0mVw4LzDr2fvTqlA66rPZZUCP11EslbBkUTnUt3TesEt2RgSAaCjayaqX6+aHinoC7wmGcwztFABkxzjBbO3EsQsCTGfU8tomYkAaLpYImXWG4Awl5Hl4yP0V/1ZB+XBBtWQfPDp3Qua+SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rh+zaW5OdyfhzfHfWg/qF2BHGMCgbuAeMW82swuobGI=;
- b=kjm5DiZsLWqDwoPMJD4G1d5T4G85QHySV40wWRtS4yniovA0SuPAWMhFuBdzibV7/uL/nA41br8pVZMMrZyOqkUUt6U5+xXkPcvJjNkAhRxXe6vyAAir9lkkGpsXdBNwWFZ360m8JSt787mEnxVjKJsy+bldnLobtMHv2XfnPuttW9gBSY8/z3ucvA8V/1mJBN74u0tjiuJq/UkrG7X27tkcZQbu9Ks4V4LpMziG19ttHZ416QN9t5oBrNcoG/3i7tGfP+uY61ZIxZQtFV9NIQAbszJRKc/3b5ASTGFI7QDCZQ6n/yQuSWgEM3vsaSedfK0aLWnoUUNqZxGW4+5I9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rh+zaW5OdyfhzfHfWg/qF2BHGMCgbuAeMW82swuobGI=;
- b=A0YQk2hnR8cHkVlwm3lx1ayqW+uvfiFSLCcqX6ILUKVG9go3vPtzmsbxaFEom0B5iBSdxcHDp2ECY5JctQbg85kIEGFVGFGO4tIFDKKw6Q8d7sMkhk3ThNJ3x3AbGIVjGVyGMl59Bk4ytza1CJFAI8+898RZXapuAsA7CkH+xwA=
-Received: from MN2PR12MB3373.namprd12.prod.outlook.com (20.178.242.33) by
- MN2PR12MB4048.namprd12.prod.outlook.com (52.135.49.8) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2644.19; Mon, 20 Jan 2020 09:37:09 +0000
-Received: from MN2PR12MB3373.namprd12.prod.outlook.com
- ([fe80::4028:892b:b405:59fa]) by MN2PR12MB3373.namprd12.prod.outlook.com
- ([fe80::4028:892b:b405:59fa%6]) with mapi id 15.20.2644.024; Mon, 20 Jan 2020
- 09:37:09 +0000
-From:   Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Subject: [PATCH 9/9] iio: imu: inv_mpu6050: fix LPF bandwidth setting
-Date:   Mon, 20 Jan 2020 10:36:20 +0100
-Message-Id: <20200120093620.9681-10-jmaneyrol@invensense.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200120093620.9681-1-jmaneyrol@invensense.com>
-References: <20200120093620.9681-1-jmaneyrol@invensense.com>
-Content-Type: text/plain
-X-ClientProxiedBy: LO2P265CA0146.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:9::14) To MN2PR12MB3373.namprd12.prod.outlook.com
- (2603:10b6:208:c8::33)
+        Mon, 20 Jan 2020 09:21:05 -0500
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 00KEL3p7040627
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 20 Jan 2020 09:21:04 -0500
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Mon, 20 Jan
+ 2020 06:21:03 -0800
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 20 Jan 2020 06:21:02 -0800
+Received: from saturn.ad.analog.com ([10.48.65.124])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 00KEKwib024435;
+        Mon, 20 Jan 2020 09:20:59 -0500
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <devel@driverdev.osuosl.org>, <dragos.bogdan@analog.com>,
+        <nuno.sa@analog.com>, <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH 1/4] iio: imu: adis: Add self_test_reg variable
+Date:   Mon, 20 Jan 2020 16:20:48 +0200
+Message-ID: <20200120142051.28533-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Received: from frgnb-12nlpn2.invcorp.invensense.com (77.157.193.39) by LO2P265CA0146.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:9::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2644.18 via Frontend Transport; Mon, 20 Jan 2020 09:37:06 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [77.157.193.39]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 9645199c-f30f-4133-6994-08d79d8c51a6
-X-MS-TrafficTypeDiagnostic: MN2PR12MB4048:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <MN2PR12MB404862D448217684FD57DE85C4320@MN2PR12MB4048.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
-X-Forefront-PRVS: 0288CD37D9
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(346002)(396003)(39840400004)(376002)(136003)(366004)(189003)(199004)(66946007)(66476007)(66556008)(7696005)(52116002)(86362001)(36756003)(107886003)(5660300002)(6666004)(2906002)(8676002)(81166006)(186003)(81156014)(54906003)(1076003)(8936002)(478600001)(4326008)(16526019)(316002)(956004)(2616005)(26005)(6486002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB4048;H:MN2PR12MB3373.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-Received-SPF: None (protection.outlook.com: invensense.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: P17dr1aUavZcG3iaRTeH9Ew4beG27F1Va8pvp0KTwJKpKudSajfal43Pacn+ca9+Jpo3nMFJ/ZgJyfYM6PH6lKxumt/U5XdgxXEFRyro6aPHqIUQG6LIfSGZyAy58q0OF17UReTsKxOspkBl64aMQa3m1Cv5tWUbxh9TU4KM1OPvOAGtAUyh3DKuzE/j06Qeudjh26W5FooCX24EbczoSvQvBZt1Me2RWA19sN3MASrc/34JCQZhvoEujA3hDiVTH9iWN94SFKO4kduEOb01JIjXiJRtIoHaMJfaXqaLuFxjj/XbQff3o95tlrrassh4Q8qCJDbpQ8maQH8ZCaCIBt9mbQvAaW+PJY9kRvR6PjAJF1wcsTH/m1a6qvjbEW7eBlhThZPKiNLtKBUi12TyMwYSih5JcPKaepjL22BTNKud77cYYbniLWpIi9KDMAG1
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9645199c-f30f-4133-6994-08d79d8c51a6
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2020 09:37:08.9835
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DILJM+ag6JV905LRKR7vAY8W7xp7Mb8rUgvi49hyICny211zlF/GqHpZhlXU9pCBObWNzrdBtV9WTIfFHKinhlGaqeO7QkjqV8iRzadq4c8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4048
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRoutedOnPrem: True
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-20_01:2020-01-16,2020-01-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- bulkscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999
- lowpriorityscore=0 phishscore=0 suspectscore=0 impostorscore=0
- adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001200083
+ definitions=2020-01-20_02:2020-01-20,2020-01-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
+ impostorscore=0 spamscore=0 malwarescore=0 adultscore=0 priorityscore=1501
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001200123
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As every chip has some little variant in LPF bandwidth values,
-use common values that are working for all chips.
-Simplify the LPF setting function.
+From: Nuno Sá <nuno.sa@analog.com>
 
-Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+This patch adds a dedicated self_test_reg variable. This is also a step
+to let new drivers make use of `adis_initial_startup()`. Some devices
+use MSG_CTRL reg to request a self_test command while others use the
+GLOB_CMD register.
+
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 30 ++++++++++++----------
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  | 10 ++++----
- 2 files changed, 21 insertions(+), 19 deletions(-)
+ drivers/iio/accel/adis16201.c         | 1 +
+ drivers/iio/accel/adis16209.c         | 1 +
+ drivers/iio/gyro/adis16136.c          | 1 +
+ drivers/iio/gyro/adis16260.c          | 1 +
+ drivers/iio/imu/adis.c                | 6 +++---
+ drivers/iio/imu/adis16400.c           | 1 +
+ drivers/iio/imu/adis16460.c           | 2 ++
+ drivers/iio/imu/adis16480.c           | 3 +++
+ drivers/staging/iio/accel/adis16203.c | 1 +
+ drivers/staging/iio/accel/adis16240.c | 1 +
+ include/linux/iio/imu/adis.h          | 2 ++
+ 11 files changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 9ecc667debbe..c4db9086775c 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -707,30 +707,32 @@ static int inv_mpu6050_write_raw(struct iio_dev *indio_dev,
- /**
-  *  inv_mpu6050_set_lpf() - set low pass filer based on fifo rate.
-  *
-- *                  Based on the Nyquist principle, the sampling rate must
-- *                  exceed twice of the bandwidth of the signal, or there
-- *                  would be alising. This function basically search for the
-- *                  correct low pass parameters based on the fifo rate, e.g,
-- *                  sampling frequency.
-+ *                  Based on the Nyquist principle, the bandwidth of the low
-+ *                  pass filter must not exceed the signal sampling rate divided
-+ *                  by 2, or there would be aliasing.
-+ *                  This function basically search for the correct low pass
-+ *                  parameters based on the fifo rate, e.g, sampling frequency.
-  *
-  *  lpf is set automatically when setting sampling rate to avoid any aliases.
-  */
- static int inv_mpu6050_set_lpf(struct inv_mpu6050_state *st, int rate)
- {
--	static const int hz[] = {188, 98, 42, 20, 10, 5};
-+	static const int hz[] = {400, 200, 90, 40, 20, 10};
- 	static const int d[] = {
--		INV_MPU6050_FILTER_188HZ, INV_MPU6050_FILTER_98HZ,
--		INV_MPU6050_FILTER_42HZ, INV_MPU6050_FILTER_20HZ,
-+		INV_MPU6050_FILTER_200HZ, INV_MPU6050_FILTER_100HZ,
-+		INV_MPU6050_FILTER_45HZ, INV_MPU6050_FILTER_20HZ,
- 		INV_MPU6050_FILTER_10HZ, INV_MPU6050_FILTER_5HZ
- 	};
--	int i, h, result;
-+	int i, result;
- 	u8 data;
+diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
+index 0f0f27a8184e..4154e7396bbe 100644
+--- a/drivers/iio/accel/adis16201.c
++++ b/drivers/iio/accel/adis16201.c
+@@ -246,6 +246,7 @@ static const struct adis_data adis16201_data = {
+ 	.diag_stat_reg = ADIS16201_DIAG_STAT_REG,
  
--	h = (rate >> 1);
--	i = 0;
--	while ((h < hz[i]) && (i < ARRAY_SIZE(d) - 1))
--		i++;
--	data = d[i];
-+	data = INV_MPU6050_FILTER_5HZ;
-+	for (i = 0; i < ARRAY_SIZE(hz); ++i) {
-+		if (rate >= hz[i]) {
-+			data = d[i];
-+			break;
-+		}
-+	}
- 	result = inv_mpu6050_set_lpf_regs(st, data);
- 	if (result)
- 		return result;
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-index 7ae614052210..9a81098a8b4d 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-@@ -370,14 +370,14 @@ enum inv_mpu6050_scan {
- };
+ 	.self_test_mask = ADIS16201_MSC_CTRL_SELF_TEST_EN,
++	.self_test_reg = ADIS16201_MSC_CTRL_REG,
+ 	.self_test_no_autoclear = true,
+ 	.timeouts = &adis16201_timeouts,
  
- enum inv_mpu6050_filter_e {
--	INV_MPU6050_FILTER_256HZ_NOLPF2 = 0,
--	INV_MPU6050_FILTER_188HZ,
--	INV_MPU6050_FILTER_98HZ,
--	INV_MPU6050_FILTER_42HZ,
-+	INV_MPU6050_FILTER_NOLPF2 = 0,
-+	INV_MPU6050_FILTER_200HZ,
-+	INV_MPU6050_FILTER_100HZ,
-+	INV_MPU6050_FILTER_45HZ,
- 	INV_MPU6050_FILTER_20HZ,
- 	INV_MPU6050_FILTER_10HZ,
- 	INV_MPU6050_FILTER_5HZ,
--	INV_MPU6050_FILTER_2100HZ_NOLPF,
-+	INV_MPU6050_FILTER_NOLPF,
- 	NUM_MPU6050_FILTER
- };
+diff --git a/drivers/iio/accel/adis16209.c b/drivers/iio/accel/adis16209.c
+index c6dbd2424e10..31d45e7c5485 100644
+--- a/drivers/iio/accel/adis16209.c
++++ b/drivers/iio/accel/adis16209.c
+@@ -256,6 +256,7 @@ static const struct adis_data adis16209_data = {
+ 	.diag_stat_reg = ADIS16209_STAT_REG,
+ 
+ 	.self_test_mask = ADIS16209_MSC_CTRL_SELF_TEST_EN,
++	.self_test_reg = ADIS16209_MSC_CTRL_REG,
+ 	.self_test_no_autoclear = true,
+ 	.timeouts = &adis16209_timeouts,
+ 
+diff --git a/drivers/iio/gyro/adis16136.c b/drivers/iio/gyro/adis16136.c
+index d5e03a406d4a..e8375d4a408f 100644
+--- a/drivers/iio/gyro/adis16136.c
++++ b/drivers/iio/gyro/adis16136.c
+@@ -472,6 +472,7 @@ static const struct adis_data adis16136_data = {
+ 	.msc_ctrl_reg = ADIS16136_REG_MSC_CTRL,
+ 
+ 	.self_test_mask = ADIS16136_MSC_CTRL_SELF_TEST,
++	.self_test_reg = ADIS16136_REG_MSC_CTRL,
+ 
+ 	.read_delay = 10,
+ 	.write_delay = 10,
+diff --git a/drivers/iio/gyro/adis16260.c b/drivers/iio/gyro/adis16260.c
+index be09b3e5910c..9823573e811a 100644
+--- a/drivers/iio/gyro/adis16260.c
++++ b/drivers/iio/gyro/adis16260.c
+@@ -346,6 +346,7 @@ static const struct adis_data adis16260_data = {
+ 	.diag_stat_reg = ADIS16260_DIAG_STAT,
+ 
+ 	.self_test_mask = ADIS16260_MSC_CTRL_MEM_TEST,
++	.self_test_reg = ADIS16260_MSC_CTRL,
+ 	.timeouts = &adis16260_timeouts,
+ 
+ 	.status_error_msgs = adis1620_status_error_msgs,
+diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
+index 022bb54fb748..d02b1911b0f2 100644
+--- a/drivers/iio/imu/adis.c
++++ b/drivers/iio/imu/adis.c
+@@ -346,8 +346,8 @@ static int adis_self_test(struct adis *adis)
+ 	int ret;
+ 	const struct adis_timeout *timeouts = adis->data->timeouts;
+ 
+-	ret = __adis_write_reg_16(adis, adis->data->msc_ctrl_reg,
+-			adis->data->self_test_mask);
++	ret = __adis_write_reg_16(adis, adis->data->self_test_reg,
++				  adis->data->self_test_mask);
+ 	if (ret) {
+ 		dev_err(&adis->spi->dev, "Failed to initiate self test: %d\n",
+ 			ret);
+@@ -359,7 +359,7 @@ static int adis_self_test(struct adis *adis)
+ 	ret = __adis_check_status(adis);
+ 
+ 	if (adis->data->self_test_no_autoclear)
+-		__adis_write_reg_16(adis, adis->data->msc_ctrl_reg, 0x00);
++		__adis_write_reg_16(adis, adis->data->self_test_reg, 0x00);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/iio/imu/adis16400.c b/drivers/iio/imu/adis16400.c
+index cfb1c19eb930..a59cd7e0c7ed 100644
+--- a/drivers/iio/imu/adis16400.c
++++ b/drivers/iio/imu/adis16400.c
+@@ -1126,6 +1126,7 @@ static const struct adis_data adis16400_data = {
+ 	.write_delay = 50,
+ 
+ 	.self_test_mask = ADIS16400_MSC_CTRL_MEM_TEST,
++	.self_test_reg = ADIS16400_MSC_CTRL,
+ 
+ 	.status_error_msgs = adis16400_status_error_msgs,
+ 	.status_error_mask = BIT(ADIS16400_DIAG_STAT_ZACCL_FAIL) |
+diff --git a/drivers/iio/imu/adis16460.c b/drivers/iio/imu/adis16460.c
+index 9539cfe4a259..42fa473c6d81 100644
+--- a/drivers/iio/imu/adis16460.c
++++ b/drivers/iio/imu/adis16460.c
+@@ -392,6 +392,8 @@ static const struct adis_timeout adis16460_timeouts = {
+ static const struct adis_data adis16460_data = {
+ 	.diag_stat_reg = ADIS16460_REG_DIAG_STAT,
+ 	.glob_cmd_reg = ADIS16460_REG_GLOB_CMD,
++	.self_test_mask = BIT(2),
++	.self_test_reg = ADIS16460_REG_GLOB_CMD,
+ 	.has_paging = false,
+ 	.read_delay = 5,
+ 	.write_delay = 5,
+diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
+index dac87f1001fd..e1de25f18e2e 100644
+--- a/drivers/iio/imu/adis16480.c
++++ b/drivers/iio/imu/adis16480.c
+@@ -1080,6 +1080,9 @@ static const struct adis_data adis16480_data = {
+ 	.read_delay = 5,
+ 	.write_delay = 5,
+ 
++	.self_test_mask = BIT(1),
++	.self_test_reg = ADIS16480_REG_GLOB_CMD,
++
+ 	.status_error_msgs = adis16480_status_error_msgs,
+ 	.status_error_mask = BIT(ADIS16480_DIAG_STAT_XGYRO_FAIL) |
+ 		BIT(ADIS16480_DIAG_STAT_YGYRO_FAIL) |
+diff --git a/drivers/staging/iio/accel/adis16203.c b/drivers/staging/iio/accel/adis16203.c
+index 39dfe3f7f254..fef52d9b5346 100644
+--- a/drivers/staging/iio/accel/adis16203.c
++++ b/drivers/staging/iio/accel/adis16203.c
+@@ -250,6 +250,7 @@ static const struct adis_data adis16203_data = {
+ 	.diag_stat_reg = ADIS16203_DIAG_STAT,
+ 
+ 	.self_test_mask = ADIS16203_MSC_CTRL_SELF_TEST_EN,
++	.self_test_reg = ADIS16203_MSC_CTRL,
+ 	.self_test_no_autoclear = true,
+ 	.timeouts = &adis16203_timeouts,
+ 
+diff --git a/drivers/staging/iio/accel/adis16240.c b/drivers/staging/iio/accel/adis16240.c
+index 39eb8364aa95..8bd35c6c56a1 100644
+--- a/drivers/staging/iio/accel/adis16240.c
++++ b/drivers/staging/iio/accel/adis16240.c
+@@ -373,6 +373,7 @@ static const struct adis_data adis16240_data = {
+ 	.diag_stat_reg = ADIS16240_DIAG_STAT,
+ 
+ 	.self_test_mask = ADIS16240_MSC_CTRL_SELF_TEST_EN,
++	.self_test_reg = ADIS16240_MSC_CTRL,
+ 	.self_test_no_autoclear = true,
+ 	.timeouts = &adis16240_timeouts,
+ 
+diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+index d2fcf45b4cef..d21a013d1122 100644
+--- a/include/linux/iio/imu/adis.h
++++ b/include/linux/iio/imu/adis.h
+@@ -41,6 +41,7 @@ struct adis_timeout {
+  * @glob_cmd_reg: Register address of the GLOB_CMD register
+  * @msc_ctrl_reg: Register address of the MSC_CTRL register
+  * @diag_stat_reg: Register address of the DIAG_STAT register
++ * @self_test_reg: Register address to request self test command
+  * @status_error_msgs: Array of error messgaes
+  * @status_error_mask:
+  * @timeouts: Chip specific delays
+@@ -55,6 +56,7 @@ struct adis_data {
+ 	unsigned int diag_stat_reg;
+ 
+ 	unsigned int self_test_mask;
++	unsigned int self_test_reg;
+ 	bool self_test_no_autoclear;
+ 	const struct adis_timeout *timeouts;
  
 -- 
-2.17.1
+2.20.1
 

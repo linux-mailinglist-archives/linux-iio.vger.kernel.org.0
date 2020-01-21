@@ -2,134 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 435EE14374F
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2020 07:55:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D874314389D
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2020 09:45:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728811AbgAUGzi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jan 2020 01:55:38 -0500
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:40754 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725789AbgAUGzh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jan 2020 01:55:37 -0500
-Received: by mail-pl1-f194.google.com with SMTP id s21so912431plr.7;
-        Mon, 20 Jan 2020 22:55:37 -0800 (PST)
+        id S1725789AbgAUIp3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jan 2020 03:45:29 -0500
+Received: from mail-eopbgr30129.outbound.protection.outlook.com ([40.107.3.129]:18953
+        "EHLO EUR03-AM5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727817AbgAUIp2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 21 Jan 2020 03:45:28 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=S0d2+Wu74s6RD/B7TJGJQIXqeqsKMdjgRWChR3HOpTTVc/94Yp2NMTgegLT1J5tgke18S9Zma5BdLQT96+DBJ77hnJCV2aaQajEVufFhno0V2IrUC+thwnnCovmymRt7wGqX3F+59na6yzKDpplHiZUn9KncR0B6kYH8D4HsHBNq1vlb1r+XquN1VbH97lrblrws+vs5oOffj9ADTRYzPRHa5xKWNAjLeYFPVIgJJC7WNvwbk6OS0dhGhdoAMvGrpHousd59saUUNAnucjWsDxENMlnLft6x4uvoRnsMb+iLyXuKHlFnY4CMF62R2D6Y547rxkL9cNYtlfLB/uwQug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Un2CAUHZxU329KmtN/tkY7WCo/8+T3GXrT5DL5X1osU=;
+ b=Ej0cBPlsFbfSjHtvBKnU/InanZcbyeLn+Mp/ObppgUgsA+p/mlFtYUpEN8H6wSvsjgMhXkCJlZyVRjUNzqsAWxBQDNx1u2smMZ2CCo3eMJqcQRoJ2xtYFPHSYUw9wjZRb7WPHjkP4V7dtw7jUd5j3NGFLgnJBaicJPjKYsxAZpxKfG9D9hbC6QL5u7jNc4+9XoEuJuI3lTejDxb80b8Fya7ipN28oAPCNlY8AIjpVeoD2y8AusY/WLMG4y+C5T8vsQiA1DpiBjJD1ZSdp6g5i66n5uyKTXrvN2RZN1MKnNe22ZjGxJkIroFAuIKFx9dhS2aAe0BuhsE59aMnXBZKKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=norphonic.com; dmarc=pass action=none
+ header.from=norphonic.com; dkim=pass header.d=norphonic.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=6PzqgL/8WGciYWOgKUtVnsTmTFSDBewNa2kfoHRg408=;
-        b=pAryYGyoK4/sFt4zgrOzH7793pBByZ9HUDxTtfP6f5KMblHeSzrIjcEi06s0aeZ69g
-         fr0bLC7abgju9zmn/O1RbT0zk5TmM60tTV0jTCmzTLvqa9RN4YggILape/e2ZLg/zsVL
-         svJ68qbh3v/CjrtZydJotBGq9RxyBWvTmYfb5Dnkf+pC7F32+oZs28PExNlAYV5VJ9cU
-         FNMeTKui5yVwF+/sELlOoKIwfukf9CmUBk8WFaQ4ghxE8aUgHM0zFJBLS1pt6WxxMLrn
-         Yr/KFwSbpKRPXsc/+ra5+ZoPQXGvVtnEFEM4F2q9Lec6ZqDjPuj8k5xWrE1MtSg48qVi
-         gU6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=6PzqgL/8WGciYWOgKUtVnsTmTFSDBewNa2kfoHRg408=;
-        b=BFITXBIKZc3HrhLjPGxPMQu9Lom48K6bSCqg0epN7bduPtBYJpNaykwBQZ7lA4rhQN
-         AJ0tdN3UT6a/sUz95DysIqTvz4+6nYYw4a3tm10jDuPtfkNP35rKt9E+WVJPKkqfYyqD
-         4CrDzmdRVuGo1JI04JwiLUqFD1xE3LDX0Pp10jg3JCyCJVgkf/xWIPGl2wF0j/X20bBa
-         kvTfZCUVlR317tQmVLgAfG5+GaVhzTl6cbOroRRA99Lva4Rg0wuQplhmABaEyc7wuLRO
-         JzwkKnPNdcCV5iGa++DW+EYknfsxWf2MFBVwcfMiH+rXC/rO0lR3AicnKinJOhcgAwwV
-         Cqmw==
-X-Gm-Message-State: APjAAAWQVqhVRYLA+lcvfySTN/NjLmMoS8FUO52GApUQy5j9I+RaiKB7
-        kiTVcSZp1iFuqk0Ac4tXpzo=
-X-Google-Smtp-Source: APXvYqy2oCuI8DpNUIqrjh8m6wK7ReCcFVoWOkZIMvvB48sYPFNbfSRoLvWgRkjV5RD1NiQnC7EkDg==
-X-Received: by 2002:a17:902:b78b:: with SMTP id e11mr4027580pls.129.1579589736901;
-        Mon, 20 Jan 2020 22:55:36 -0800 (PST)
-Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id i3sm43361101pfo.72.2020.01.20.22.55.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2020 22:55:36 -0800 (PST)
-Date:   Mon, 20 Jan 2020 22:55:33 -0800
-From:   "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     "lee.jones@linaro.org" <lee.jones@linaro.org>,
-        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>
-Subject: Re: [PATCH v4 3/7] input: keyboard: Add support for Azoteq
- IQS620A/621/622/624/625
-Message-ID: <20200121065533.GN47797@dtor-ws>
-References: <1579228475-6681-1-git-send-email-jeff@labundy.com>
- <1579228475-6681-4-git-send-email-jeff@labundy.com>
- <20200117213330.GF47797@dtor-ws>
- <20200119224025.GA28865@labundy.com>
+ d=trafsysas.onmicrosoft.com; s=selector2-trafsysas-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Un2CAUHZxU329KmtN/tkY7WCo/8+T3GXrT5DL5X1osU=;
+ b=hrvgPuCp9Nz3jkKX0hXyDk/FJNlnk+MwwD6sEkx7usMezQGwyTuLnuhh5mWbp/f5wbewMiQw35+cEoBVIu6wMihhhY62J6NBjq2mk+7FwT+5W+/co9VPHIODDrmgGH/cdktfdrCo9nxtQupabR2l0l74AdPaO5Eou08JEoeTIIM=
+Received: from DB6PR06MB3048.eurprd06.prod.outlook.com (10.170.210.140) by
+ DB6PR06MB3096.eurprd06.prod.outlook.com (10.170.209.141) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2644.18; Tue, 21 Jan 2020 08:45:21 +0000
+Received: from DB6PR06MB3048.eurprd06.prod.outlook.com
+ ([fe80::8d7e:fadb:f6c5:a504]) by DB6PR06MB3048.eurprd06.prod.outlook.com
+ ([fe80::8d7e:fadb:f6c5:a504%7]) with mapi id 15.20.2644.024; Tue, 21 Jan 2020
+ 08:45:21 +0000
+Received: from [10.0.1.54] (62.97.226.122) by AM6P194CA0036.EURP194.PROD.OUTLOOK.COM (2603:10a6:209:90::49) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2644.19 via Frontend Transport; Tue, 21 Jan 2020 08:45:20 +0000
+From:   Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Eugene Zalkonnikov <ez@norphonic.com>
+CC:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "development@norphonic.com" <development@norphonic.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v3 1/2] Driver for TI HDC20x0 humidity and temperature
+ sensors
+Thread-Topic: [PATCH v3 1/2] Driver for TI HDC20x0 humidity and temperature
+ sensors
+Thread-Index: AQHVsc26SON/FxISfkecdCGvyqtp7afIBc+AgC0EzYA=
+Date:   Tue, 21 Jan 2020 08:45:21 +0000
+Message-ID: <9d866c18-6643-f76f-df7e-6f29f01274da@norphonic.com>
+References: <B0A4F7BA-0D41-4DA0-985E-F2603D66C48F@norphonic.com>
+ <20191223171627.1179f88b@archlinux>
+In-Reply-To: <20191223171627.1179f88b@archlinux>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: AM6P194CA0036.EURP194.PROD.OUTLOOK.COM
+ (2603:10a6:209:90::49) To DB6PR06MB3048.eurprd06.prod.outlook.com
+ (2603:10a6:6:5::12)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ez@norphonic.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [62.97.226.122]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 96f6e452-eff7-4a19-e5a5-08d79e4e3fd0
+x-ms-traffictypediagnostic: DB6PR06MB3096:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DB6PR06MB3096916AFB25A93A8F05DA12CA0D0@DB6PR06MB3096.eurprd06.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0289B6431E
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(376002)(346002)(39830400003)(366004)(136003)(199004)(189003)(66946007)(4326008)(71200400001)(5660300002)(31686004)(4744005)(81156014)(16576012)(316002)(956004)(110136005)(54906003)(2616005)(52116002)(26005)(81166006)(8936002)(2906002)(53546011)(8676002)(508600001)(6636002)(6486002)(31696002)(16526019)(186003)(36756003)(66556008)(66476007)(66446008)(64756008);DIR:OUT;SFP:1102;SCL:1;SRVR:DB6PR06MB3096;H:DB6PR06MB3048.eurprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: norphonic.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: DueO4lwyWntpI0c/vsvLX++8wE/5EXSSA7lC2qxpPtAVwVLBuuN4/fZthpUjbIDSbdf8em6P3I32tQtX6TyxgSeXhI9hR+rcIgGeVF5kaKhuii6SCQO3OEopvKXvU/4CJQV8SMZAkIy+TFMbbUFsPDjXQduQ6OmK88uF7yx6P/Ilihf5/3iqNOQT1SrG7KouhQVbkQtsMrJef2uL4t//K/nwaK8Ez3LjN8lC2LqIFChav6zXaeAN+eNEZP7XWlWJsgSBvjxOwKtK4VbatmdtlOu+1lbC/0S5IDKOufX+KPfWf28CBavNv5l3ZjNzdiMaNBjvmFg5AD+hCZN+fOblEGM0CZlxe3mHKAfWcK3i9qFLxPiJCfA9ESBF6whRFC049LSDv9QYq8pGjkLB6Mx7AinuNzTjfwO6Nfyi3OCGe7aPfMQpkT3xwUQa4+LisTo9
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A5EABFF494F3AF40B0AEF50D4FBC07E2@eurprd06.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200119224025.GA28865@labundy.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: norphonic.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96f6e452-eff7-4a19-e5a5-08d79e4e3fd0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jan 2020 08:45:21.3815
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: cbf3f496-45ad-415e-97cb-4e62d6cd974f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: srBtn9vhpcmnZO4FIAwPhSCRJ8UBk7ybz4kQ+ch9mEGGJM6ba16cLaji+SM7R5Fkd9HDSv5hDiYcZwkIpgXV+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR06MB3096
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 19, 2020 at 10:40:31PM +0000, Jeff LaBundy wrote:
-> On Fri, Jan 17, 2020 at 01:33:30PM -0800, dmitry.torokhov@gmail.com wrote:
-> > On Fri, Jan 17, 2020 at 02:35:46AM +0000, Jeff LaBundy wrote:
-> > > +
-> > > +	ret = device_property_read_u32_array(&pdev->dev, "linux,keycodes",
-> > > +					     iqs62x_keys->keycode,
-> > > +					     iqs62x_keys->keycodemax);
-> > > +	if (ret) {
-> > > +		dev_err(&pdev->dev, "Failed to read keycodes: %d\n", ret);
-> > > +		return ret;
-> > > +	}
-> > 
-> > I wonder why you can't simply use
-> > 
-> > 	error = device_property_read_u32_array(&pdev->dev, "linux,keycodes",
-> > 						iqs62x_keys->keycode,
-> > 						IQS62X_NUM_KEYS);
-> > 
-> > Are you concerned with someone trying to set up keys that are not
-> > actually exposed later via EVOCSKEYCODES and that is why you are
-> > limiting keycodemax?
-> 
-> When I try this, I find that device_property_read_u32_array returns -EOVERFLOW
-> for arrays with fewer than IQS62X_NUM_KEYS elements. To avoid forcing users to
-> pad the array all the way out to IQS62X_NUM_KEYS in the case of simple channel
-> assignments (like those in the example bindings), keycodemax must be passed to
-> device_property_read_u32_array which means it must be limited before-hand. The
-> same method seems to be used in other drivers as well (e.g. mpr121_touchkey).
-
-Ah, indeed, ignore me here please.
-
-...
-
-> > > +MODULE_AUTHOR("Jeff LaBundy <jeff@labundy.com>");
-> > > +MODULE_DESCRIPTION("Azoteq IQS620A/621/622/624/625 Keys and Switches");
-> > > +MODULE_LICENSE("GPL");
-> > > +MODULE_ALIAS("platform:" IQS62X_DRV_NAME_KEYS);
-> > 
-> > Otherwise
-> > 
-> > Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > 
-> > I suppose it will be merged through MFD?
-> 
-> That's the plan; Lee confirmed this would be OK once the series is ready. Just
-> as a heads up, I expect minor changes to this and other patches as iqs62x.h is
-> hardened (e.g. "iqs62x->map" --> "iqs62x->regmap"). I assume you're OK with me
-> keeping your Acked-by unless there are major changes, but let me know if you'd
-> prefer I didn't.
-
-Yes, please keep Acked-by unless there is significant rework.
-
-Thanks.
-
--- 
-Dmitry
+SGkgSm9uYXRoYW4sDQoNCg0KT24gMjMuMTIuMjAxOSAxODoxNiwgSm9uYXRoYW4gQ2FtZXJvbiB3
+cm90ZToNCj4NCj4gQXMgYmVsb3cuIFdoeSBjaGFuZ2UgdGhlIGV4aXN0aW5nIHJldHVybiB2YWx1
+ZT8NCj4NCj4+ICsJCX0NCj4+ICsJCXJldHVybiByZXQ7DQo+PiArCX0NCj4+ICsJY2FzZSBJSU9f
+Q0hBTl9JTkZPX1BFQUs6IHsNCj4+ICsJCWludCByZXQ7DQo+PiArDQo+PiArCQlyZXQgPSBpaW9f
+ZGV2aWNlX2NsYWltX2RpcmVjdF9tb2RlKGluZGlvX2Rldik7DQo+PiArCQlpZiAocmV0KQ0KPj4g
+KwkJCXJldHVybiByZXQ7DQo+PiArCQltdXRleF9sb2NrKCZkYXRhLT5sb2NrKTsNCj4+ICsJCXJl
+dCA9IGhkYzIwMTBfZ2V0X21lYXN1cmVtZW50X2J5dGUoZGF0YSwgY2hhbik7DQo+PiArCQltdXRl
+eF91bmxvY2soJmRhdGEtPmxvY2spOw0KPj4gKwkJaWlvX2RldmljZV9yZWxlYXNlX2RpcmVjdF9t
+b2RlKGluZGlvX2Rldik7DQo+PiArCQlpZiAocmV0ID49IDApIHsNCj4+ICsJCSAgLyogU2NhbGlu
+ZyB1cCB0aGUgdmFsdWUgc28gd2UgY2FuIHVzZSBzYW1lIG9mZnNldCBhcyBSQVcgKi8NCj4+ICsJ
+CQkqdmFsID0gcmV0ICogMjU2Ow0KPj4gKwkJCXJldCA9IElJT19WQUxfSU5UOw0KPj4gKwkJfSBl
+bHNlDQo+IFdoeSBvdmVyd3JpdGUgcmV0PyAgVGhhdCBtaWdodCBwcm92aWRlIGJldHRlciBpbmZv
+cm1hdGlvbg0KPiBvbiB3aGF0IHdlbnQgd3JvbmcuDQoNCkFzIHdpdGggdGhlIG90aGVyIHN0eWxp
+c3RpYyBub3RlcyBiZWZvcmUsIG5vIGdvb2QgcmVhc29uIG90aGVyIHRoYW4gaG93IGl0IHdhcyBo
+YW5kbGVkIGluIG90aGVyIGRyaXZlcnMgaW4gdGhlIHRyZWUuIFNvIEkgYXNzdW1lZCBpdCB3YXMg
+dGhlIHByYWN0aWNlLiBXaWxsIHRpZHkgdXAgbGF0ZXIgdGhpcyB3ZWVrIEkgaG9wZSBhbmQgc2Vu
+ZCBhIG5ldyBwYXRjaHNldC4NCg0KLS0NCsKgIEV1Z2VuZQ0K

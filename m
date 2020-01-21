@@ -2,75 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C06F1441F2
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2020 17:19:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4FA6144400
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2020 19:06:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728186AbgAUQSD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jan 2020 11:18:03 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:40797 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726555AbgAUQSC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jan 2020 11:18:02 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1itwE2-00080m-0h; Tue, 21 Jan 2020 16:17:58 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] iio: st_sensors: handle memory allocation failure to fix null pointer dereference
-Date:   Tue, 21 Jan 2020 16:17:57 +0000
-Message-Id: <20200121161757.1498082-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        id S1729099AbgAUSGQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jan 2020 13:06:16 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:46511 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728829AbgAUSGQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jan 2020 13:06:16 -0500
+Received: by mail-ot1-f68.google.com with SMTP id r9so3733789otp.13;
+        Tue, 21 Jan 2020 10:06:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=eEdfR3mTvJ+eThLvVUkTAKC1VIt3ekwfcE55oapGA0g=;
+        b=LJQcIRFOFL1henPfN30pYU2blVUjVE4vH+VdIq44x4dlWKs9l5swgiwUyfqg70rfmQ
+         lOMXuRzgeviG9XJPgn3KtU3qC41mRE9YZeHgdFsD7pDa6h/C0r1jFy4S9/s7CsGFd2Fx
+         P7812fKlVqTQHhCD9+gcjHCG3t7I96CwmBY+IobgizZm+faSDNMAb/QMbJWjr9juzEXW
+         2BGwxI690eQnBf6xyYyy1qTd03fd/md1ogMsstpVXkBdObJhw1RR0/apHuaYb99/ZxZH
+         i0oLBTUkDcNmK8DDhdWfgM54D7Ubot1haCyJfRTprPvZXfpASXiZmbb58ZlSRnlq88OX
+         OSuQ==
+X-Gm-Message-State: APjAAAX7yRbJgk0UItqfv9/imaXOn/qxvlpT2X8QO85aS18ZjEEMdUXG
+        Kwdj6qzGGlv995RQ/fGKzATR390=
+X-Google-Smtp-Source: APXvYqw/nM28s3ODhIW4dDHpgRmOwZrHuAp4V8T6pqn0hoLRvfdTkh3AxUNGHRWFC7FAGupJspgX/w==
+X-Received: by 2002:a9d:6849:: with SMTP id c9mr4766302oto.206.1579629975441;
+        Tue, 21 Jan 2020 10:06:15 -0800 (PST)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id i20sm13698624otl.74.2020.01.21.10.06.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jan 2020 10:06:14 -0800 (PST)
+Received: (nullmailer pid 10136 invoked by uid 1000);
+        Tue, 21 Jan 2020 18:06:14 -0000
+Date:   Tue, 21 Jan 2020 12:06:14 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ekigwana@gmail.com, jic23@kernel.org,
+        lars@metafoo.de, Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: Re: [PATCH 2/3] dt-bindings: iio: frequency: Add docs for ADF4360 PLL
+Message-ID: <20200121180614.GA9314@bogus>
+References: <20200121112556.9867-1-alexandru.ardelean@analog.com>
+ <20200121112556.9867-2-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200121112556.9867-2-alexandru.ardelean@analog.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, 21 Jan 2020 13:25:55 +0200, Alexandru Ardelean wrote:
+> From: Edward Kigwana <ekigwana@gmail.com>
+> 
+> This change adds the device-tree bindings documentation for the ADF4360
+> family of PLLs.
+> 
+> Signed-off-by: Edward Kigwana <ekigwana@gmail.com>
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> ---
+>  .../bindings/iio/frequency/adi,adf4360.yaml   | 158 ++++++++++++++++++
+>  1 file changed, 158 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,adf4360.yaml
+> 
 
-A null pointer deference on pdata can occur if the allocation of
-pdata fails.  Fix this by adding a null pointer check and handle
-the -ENOMEM failure in the caller.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Addresses-Coverity: ("Dereference null return value")
-Fixes: 3ce85cc4fbb7 ("iio: st_sensors: get platform data from device tree")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/iio/common/st_sensors/st_sensors_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+warning: no schema found in file: Documentation/devicetree/bindings/iio/frequency/adi,adf4360.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/frequency/adi,adf4360.yaml: ignoring, error parsing file
+Documentation/devicetree/bindings/iio/frequency/adi,adf4360.yaml:  while scanning a simple key
+  in "<unicode string>", line 98, column 5
+could not find expected ':'
+  in "<unicode string>", line 99, column 5
+Documentation/devicetree/bindings/Makefile:12: recipe for target 'Documentation/devicetree/bindings/iio/frequency/adi,adf4360.example.dts' failed
+make[1]: *** [Documentation/devicetree/bindings/iio/frequency/adi,adf4360.example.dts] Error 1
+Makefile:1263: recipe for target 'dt_binding_check' failed
+make: *** [dt_binding_check] Error 2
 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index e051edbc43c1..0e35ff06f9af 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -328,6 +328,8 @@ static struct st_sensors_platform_data *st_sensors_dev_probe(struct device *dev,
- 		return NULL;
- 
- 	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
-+	if (!pdata)
-+		return ERR_PTR(-ENOMEM);
- 	if (!device_property_read_u32(dev, "st,drdy-int-pin", &val) && (val <= 2))
- 		pdata->drdy_int_pin = (u8) val;
- 	else
-@@ -371,6 +373,8 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 
- 	/* If OF/DT pdata exists, it will take precedence of anything else */
- 	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
-+	if (IS_ERR(of_pdata))
-+		return PTR_ERR(of_pdata);
- 	if (of_pdata)
- 		pdata = of_pdata;
- 
--- 
-2.24.0
-
+See https://patchwork.ozlabs.org/patch/1226401
+Please check and re-submit.

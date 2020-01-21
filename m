@@ -2,113 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D874314389D
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2020 09:45:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFAB9143B8F
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2020 12:03:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725789AbgAUIp3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jan 2020 03:45:29 -0500
-Received: from mail-eopbgr30129.outbound.protection.outlook.com ([40.107.3.129]:18953
-        "EHLO EUR03-AM5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727817AbgAUIp2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 21 Jan 2020 03:45:28 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=S0d2+Wu74s6RD/B7TJGJQIXqeqsKMdjgRWChR3HOpTTVc/94Yp2NMTgegLT1J5tgke18S9Zma5BdLQT96+DBJ77hnJCV2aaQajEVufFhno0V2IrUC+thwnnCovmymRt7wGqX3F+59na6yzKDpplHiZUn9KncR0B6kYH8D4HsHBNq1vlb1r+XquN1VbH97lrblrws+vs5oOffj9ADTRYzPRHa5xKWNAjLeYFPVIgJJC7WNvwbk6OS0dhGhdoAMvGrpHousd59saUUNAnucjWsDxENMlnLft6x4uvoRnsMb+iLyXuKHlFnY4CMF62R2D6Y547rxkL9cNYtlfLB/uwQug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Un2CAUHZxU329KmtN/tkY7WCo/8+T3GXrT5DL5X1osU=;
- b=Ej0cBPlsFbfSjHtvBKnU/InanZcbyeLn+Mp/ObppgUgsA+p/mlFtYUpEN8H6wSvsjgMhXkCJlZyVRjUNzqsAWxBQDNx1u2smMZ2CCo3eMJqcQRoJ2xtYFPHSYUw9wjZRb7WPHjkP4V7dtw7jUd5j3NGFLgnJBaicJPjKYsxAZpxKfG9D9hbC6QL5u7jNc4+9XoEuJuI3lTejDxb80b8Fya7ipN28oAPCNlY8AIjpVeoD2y8AusY/WLMG4y+C5T8vsQiA1DpiBjJD1ZSdp6g5i66n5uyKTXrvN2RZN1MKnNe22ZjGxJkIroFAuIKFx9dhS2aAe0BuhsE59aMnXBZKKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=norphonic.com; dmarc=pass action=none
- header.from=norphonic.com; dkim=pass header.d=norphonic.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=trafsysas.onmicrosoft.com; s=selector2-trafsysas-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Un2CAUHZxU329KmtN/tkY7WCo/8+T3GXrT5DL5X1osU=;
- b=hrvgPuCp9Nz3jkKX0hXyDk/FJNlnk+MwwD6sEkx7usMezQGwyTuLnuhh5mWbp/f5wbewMiQw35+cEoBVIu6wMihhhY62J6NBjq2mk+7FwT+5W+/co9VPHIODDrmgGH/cdktfdrCo9nxtQupabR2l0l74AdPaO5Eou08JEoeTIIM=
-Received: from DB6PR06MB3048.eurprd06.prod.outlook.com (10.170.210.140) by
- DB6PR06MB3096.eurprd06.prod.outlook.com (10.170.209.141) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2644.18; Tue, 21 Jan 2020 08:45:21 +0000
-Received: from DB6PR06MB3048.eurprd06.prod.outlook.com
- ([fe80::8d7e:fadb:f6c5:a504]) by DB6PR06MB3048.eurprd06.prod.outlook.com
- ([fe80::8d7e:fadb:f6c5:a504%7]) with mapi id 15.20.2644.024; Tue, 21 Jan 2020
- 08:45:21 +0000
-Received: from [10.0.1.54] (62.97.226.122) by AM6P194CA0036.EURP194.PROD.OUTLOOK.COM (2603:10a6:209:90::49) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2644.19 via Frontend Transport; Tue, 21 Jan 2020 08:45:20 +0000
-From:   Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Eugene Zalkonnikov <ez@norphonic.com>
-CC:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "development@norphonic.com" <development@norphonic.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] Driver for TI HDC20x0 humidity and temperature
- sensors
-Thread-Topic: [PATCH v3 1/2] Driver for TI HDC20x0 humidity and temperature
- sensors
-Thread-Index: AQHVsc26SON/FxISfkecdCGvyqtp7afIBc+AgC0EzYA=
-Date:   Tue, 21 Jan 2020 08:45:21 +0000
-Message-ID: <9d866c18-6643-f76f-df7e-6f29f01274da@norphonic.com>
-References: <B0A4F7BA-0D41-4DA0-985E-F2603D66C48F@norphonic.com>
- <20191223171627.1179f88b@archlinux>
-In-Reply-To: <20191223171627.1179f88b@archlinux>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: AM6P194CA0036.EURP194.PROD.OUTLOOK.COM
- (2603:10a6:209:90::49) To DB6PR06MB3048.eurprd06.prod.outlook.com
- (2603:10a6:6:5::12)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ez@norphonic.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [62.97.226.122]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 96f6e452-eff7-4a19-e5a5-08d79e4e3fd0
-x-ms-traffictypediagnostic: DB6PR06MB3096:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB6PR06MB3096916AFB25A93A8F05DA12CA0D0@DB6PR06MB3096.eurprd06.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 0289B6431E
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(376002)(346002)(39830400003)(366004)(136003)(199004)(189003)(66946007)(4326008)(71200400001)(5660300002)(31686004)(4744005)(81156014)(16576012)(316002)(956004)(110136005)(54906003)(2616005)(52116002)(26005)(81166006)(8936002)(2906002)(53546011)(8676002)(508600001)(6636002)(6486002)(31696002)(16526019)(186003)(36756003)(66556008)(66476007)(66446008)(64756008);DIR:OUT;SFP:1102;SCL:1;SRVR:DB6PR06MB3096;H:DB6PR06MB3048.eurprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: norphonic.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: DueO4lwyWntpI0c/vsvLX++8wE/5EXSSA7lC2qxpPtAVwVLBuuN4/fZthpUjbIDSbdf8em6P3I32tQtX6TyxgSeXhI9hR+rcIgGeVF5kaKhuii6SCQO3OEopvKXvU/4CJQV8SMZAkIy+TFMbbUFsPDjXQduQ6OmK88uF7yx6P/Ilihf5/3iqNOQT1SrG7KouhQVbkQtsMrJef2uL4t//K/nwaK8Ez3LjN8lC2LqIFChav6zXaeAN+eNEZP7XWlWJsgSBvjxOwKtK4VbatmdtlOu+1lbC/0S5IDKOufX+KPfWf28CBavNv5l3ZjNzdiMaNBjvmFg5AD+hCZN+fOblEGM0CZlxe3mHKAfWcK3i9qFLxPiJCfA9ESBF6whRFC049LSDv9QYq8pGjkLB6Mx7AinuNzTjfwO6Nfyi3OCGe7aPfMQpkT3xwUQa4+LisTo9
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A5EABFF494F3AF40B0AEF50D4FBC07E2@eurprd06.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1728741AbgAULDl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jan 2020 06:03:41 -0500
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:56060 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727255AbgAULDk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jan 2020 06:03:40 -0500
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00LAvnn7016644;
+        Tue, 21 Jan 2020 12:03:09 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : subject :
+ date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=acTKJs8fYmE1ommQlydH1CvCtyw2ASLm8YNtpOoq6fs=;
+ b=0eeMhSuWDFasHv0P3bDmczLdHT6I9guO5H4awHuYKUpaV2o9aH6erH3HWUooyGap1nXp
+ g15i7vaPIfb5VsTONUGM8WqVQElt9/cJrZ8NsPBiKjss57BB8mBENDZagDPWYa3x9YhD
+ 0uKblhTbwXKj1XX8c3/vd9HTtlT9ZVhbh79vSsNDVst0HSYd6qU/QReVY0+ZYeWXa1N+
+ 9iSJL8qc1jXEgTdJ/qfXEDgCAttK3GQKmZz5qpF5tkTS8XjCnmyuRHakdi14XV4cPQpw
+ 8mNblruN0sj6poqhP4gp4EZR75vE6go/kLBw8UQpXkmJ5MaW3jmGVJqU69HMApE6p6EI gw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2xkrc4xb9b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Jan 2020 12:03:09 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 79028100038;
+        Tue, 21 Jan 2020 12:03:04 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag6node2.st.com [10.75.127.17])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 67CBB2BD3EE;
+        Tue, 21 Jan 2020 12:03:04 +0100 (CET)
+Received: from localhost (10.75.127.47) by SFHDAG6NODE2.st.com (10.75.127.17)
+ with Microsoft SMTP Server (TLS) id 15.0.1347.2; Tue, 21 Jan 2020 12:03:03
+ +0100
+From:   Olivier Moysan <olivier.moysan@st.com>
+To:     <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
+        <pmeerw@pmeerw.net>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <olivier.moysan@st.com>
+Subject: [PATCH] iio: adc: stm32-dfsdm: fix sleep in atomic context
+Date:   Tue, 21 Jan 2020 12:02:56 +0100
+Message-ID: <20200121110256.12415-1-olivier.moysan@st.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-X-OriginatorOrg: norphonic.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 96f6e452-eff7-4a19-e5a5-08d79e4e3fd0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jan 2020 08:45:21.3815
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: cbf3f496-45ad-415e-97cb-4e62d6cd974f
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: srBtn9vhpcmnZO4FIAwPhSCRJ8UBk7ybz4kQ+ch9mEGGJM6ba16cLaji+SM7R5Fkd9HDSv5hDiYcZwkIpgXV+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR06MB3096
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.47]
+X-ClientProxiedBy: SFHDAG4NODE2.st.com (10.75.127.11) To SFHDAG6NODE2.st.com
+ (10.75.127.17)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-01-21_03:2020-01-21,2020-01-21 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgSm9uYXRoYW4sDQoNCg0KT24gMjMuMTIuMjAxOSAxODoxNiwgSm9uYXRoYW4gQ2FtZXJvbiB3
-cm90ZToNCj4NCj4gQXMgYmVsb3cuIFdoeSBjaGFuZ2UgdGhlIGV4aXN0aW5nIHJldHVybiB2YWx1
-ZT8NCj4NCj4+ICsJCX0NCj4+ICsJCXJldHVybiByZXQ7DQo+PiArCX0NCj4+ICsJY2FzZSBJSU9f
-Q0hBTl9JTkZPX1BFQUs6IHsNCj4+ICsJCWludCByZXQ7DQo+PiArDQo+PiArCQlyZXQgPSBpaW9f
-ZGV2aWNlX2NsYWltX2RpcmVjdF9tb2RlKGluZGlvX2Rldik7DQo+PiArCQlpZiAocmV0KQ0KPj4g
-KwkJCXJldHVybiByZXQ7DQo+PiArCQltdXRleF9sb2NrKCZkYXRhLT5sb2NrKTsNCj4+ICsJCXJl
-dCA9IGhkYzIwMTBfZ2V0X21lYXN1cmVtZW50X2J5dGUoZGF0YSwgY2hhbik7DQo+PiArCQltdXRl
-eF91bmxvY2soJmRhdGEtPmxvY2spOw0KPj4gKwkJaWlvX2RldmljZV9yZWxlYXNlX2RpcmVjdF9t
-b2RlKGluZGlvX2Rldik7DQo+PiArCQlpZiAocmV0ID49IDApIHsNCj4+ICsJCSAgLyogU2NhbGlu
-ZyB1cCB0aGUgdmFsdWUgc28gd2UgY2FuIHVzZSBzYW1lIG9mZnNldCBhcyBSQVcgKi8NCj4+ICsJ
-CQkqdmFsID0gcmV0ICogMjU2Ow0KPj4gKwkJCXJldCA9IElJT19WQUxfSU5UOw0KPj4gKwkJfSBl
-bHNlDQo+IFdoeSBvdmVyd3JpdGUgcmV0PyAgVGhhdCBtaWdodCBwcm92aWRlIGJldHRlciBpbmZv
-cm1hdGlvbg0KPiBvbiB3aGF0IHdlbnQgd3JvbmcuDQoNCkFzIHdpdGggdGhlIG90aGVyIHN0eWxp
-c3RpYyBub3RlcyBiZWZvcmUsIG5vIGdvb2QgcmVhc29uIG90aGVyIHRoYW4gaG93IGl0IHdhcyBo
-YW5kbGVkIGluIG90aGVyIGRyaXZlcnMgaW4gdGhlIHRyZWUuIFNvIEkgYXNzdW1lZCBpdCB3YXMg
-dGhlIHByYWN0aWNlLiBXaWxsIHRpZHkgdXAgbGF0ZXIgdGhpcyB3ZWVrIEkgaG9wZSBhbmQgc2Vu
-ZCBhIG5ldyBwYXRjaHNldC4NCg0KLS0NCsKgIEV1Z2VuZQ0K
+This commit fixes the error message:
+"BUG: sleeping function called from invalid context at kernel/irq/chip.c"
+Suppress the trigger irq handler. Make the buffer transfers directly
+in DMA callback, instead.
+Push buffers without timestamps, as timestamps are not supported
+in DFSDM driver.
+
+Fixes: 11646e81d775 ("iio: adc: stm32-dfsdm: add support for buffer modes")
+
+Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
+---
+There is the same issue on STM32 ADC driver.
+The solution for ADC driver has been already discussed in the thread
+https://lkml.org/lkml/2019/3/30/171
+The current patch for STM32 DFSDM driver, bypasses the IIO IRQ trigger
+handler, as proposed in this thread.
+---
+ drivers/iio/adc/stm32-dfsdm-adc.c | 43 +++++++------------------------
+ 1 file changed, 10 insertions(+), 33 deletions(-)
+
+diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+index 2aad2cda6943..76a60d93fe23 100644
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -842,31 +842,6 @@ static inline void stm32_dfsdm_process_data(struct stm32_dfsdm_adc *adc,
+ 	}
+ }
+ 
+-static irqreturn_t stm32_dfsdm_adc_trigger_handler(int irq, void *p)
+-{
+-	struct iio_poll_func *pf = p;
+-	struct iio_dev *indio_dev = pf->indio_dev;
+-	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+-	int available = stm32_dfsdm_adc_dma_residue(adc);
+-
+-	while (available >= indio_dev->scan_bytes) {
+-		s32 *buffer = (s32 *)&adc->rx_buf[adc->bufi];
+-
+-		stm32_dfsdm_process_data(adc, buffer);
+-
+-		iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+-						   pf->timestamp);
+-		available -= indio_dev->scan_bytes;
+-		adc->bufi += indio_dev->scan_bytes;
+-		if (adc->bufi >= adc->buf_sz)
+-			adc->bufi = 0;
+-	}
+-
+-	iio_trigger_notify_done(indio_dev->trig);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ static void stm32_dfsdm_dma_buffer_done(void *data)
+ {
+ 	struct iio_dev *indio_dev = data;
+@@ -874,11 +849,6 @@ static void stm32_dfsdm_dma_buffer_done(void *data)
+ 	int available = stm32_dfsdm_adc_dma_residue(adc);
+ 	size_t old_pos;
+ 
+-	if (indio_dev->currentmode & INDIO_BUFFER_TRIGGERED) {
+-		iio_trigger_poll_chained(indio_dev->trig);
+-		return;
+-	}
+-
+ 	/*
+ 	 * FIXME: In Kernel interface does not support cyclic DMA buffer,and
+ 	 * offers only an interface to push data samples per samples.
+@@ -906,7 +876,15 @@ static void stm32_dfsdm_dma_buffer_done(void *data)
+ 			adc->bufi = 0;
+ 			old_pos = 0;
+ 		}
+-		/* regular iio buffer without trigger */
++		/*
++		 * In DMA mode the trigger services of IIO are not used
++		 * (e.g. no call to iio_trigger_poll).
++		 * Calling irq handler associated to the hardware trigger is not
++		 * relevant as the conversions have already been done. Data
++		 * transfers are performed directly in DMA callback instead.
++		 * This implementation avoids to call trigger irq handler that
++		 * may sleep, in an atomic context (DMA irq handler context).
++		 */
+ 		if (adc->dev_data->type == DFSDM_IIO)
+ 			iio_push_to_buffers(indio_dev, buffer);
+ 	}
+@@ -1536,8 +1514,7 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
+ 	}
+ 
+ 	ret = iio_triggered_buffer_setup(indio_dev,
+-					 &iio_pollfunc_store_time,
+-					 &stm32_dfsdm_adc_trigger_handler,
++					 &iio_pollfunc_store_time, NULL,
+ 					 &stm32_dfsdm_buffer_setup_ops);
+ 	if (ret) {
+ 		stm32_dfsdm_dma_release(indio_dev);
+-- 
+2.17.1
+

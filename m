@@ -2,83 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBED6146CCA
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Jan 2020 16:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4285A146CD6
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Jan 2020 16:30:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727480AbgAWP2l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Jan 2020 10:28:41 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:42257 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726703AbgAWP2l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jan 2020 10:28:41 -0500
-Received: by mail-lj1-f194.google.com with SMTP id y4so3885526ljj.9
-        for <linux-iio@vger.kernel.org>; Thu, 23 Jan 2020 07:28:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+Qr9BdbkkgkuLaABxg1maqPFbi8IH41Lo7L1VxAqiyw=;
-        b=iGZFnSn+vi28+z3do2lW+WbQQJIwuMVk+nTR6JGwyfDav1RKSSd7CcJ6KK6LcpVCo2
-         0fiNppfjuAfjdpSLuQenKgpCS4QV+Vufpcl2FY4z+ARDLnP0QoKMSlqBVFoiIMk4AcaP
-         lY10C7psqauI55WjsxDwb5YlBe6knaX/slmuyLZvhmUMmFDoRBFAadi1km59bjfF5J4d
-         kWzkfEIo6Hyh8axepy05Q0Y0SukHwLD8Y5KSTFVXhwDfNAMU65YRWb91H4NB0tbBm1YZ
-         /lXTng/W2mJRJ1Q/Wi2BdLzvpkQQ6oKyIgnKelSCPWF84hqCw0+9+1BojMj7gyxKItx7
-         jPEA==
+        id S1728921AbgAWPaF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Jan 2020 10:30:05 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:44868 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727847AbgAWPaF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jan 2020 10:30:05 -0500
+Received: by mail-ot1-f66.google.com with SMTP id h9so3055890otj.11;
+        Thu, 23 Jan 2020 07:30:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+Qr9BdbkkgkuLaABxg1maqPFbi8IH41Lo7L1VxAqiyw=;
-        b=UQgxpSX2/ksMahDWtKYxowjGVAiiSMoBjx6gvvvZiXnhn/kH9kKsmmyAgqZHSRK9Ec
-         L7B/xY7yqXtVPwCUjuZRr4rpOLLaI3K45bCtmizM1b5/iUDy9EcDzDFtfpFGCOxBxmRp
-         /eKCacksq7K7szq4RK8mkvhaRnz8B2hcmAvWg/vJqdYuFi8DQ3zNkFK+F3egpYcCH4zK
-         E5Y3wFYScU1Fg0b/Pmcm2gQr9L7XGevS2dxGjQpZCE19/G7VLe2NUSAvTLXHLeq65e4J
-         h8WUtgW2KL1jG/ovV5uzkNmgkCK0iibxqQqcCh2jOHCt6AFGd2u1Sqf8vk5o8oKvpOUC
-         7mFg==
-X-Gm-Message-State: APjAAAXvCCNVcGMfaJrUDj770q32wYb0OEzM+scPpR1r85Xmn3HM1BWH
-        G6hDK1LPgB9+AsKwXvcuo0v2ucelJUZ3xmdcxpca2w==
-X-Google-Smtp-Source: APXvYqz9aT6DBqL1eSjmsf3APA52AKWR+11VI/tOJBRr1Zl3oa9tmU2n9K3uxQplpdd8BuXZX19EDE3gZHHtzgDtTcc=
-X-Received: by 2002:a2e:81c3:: with SMTP id s3mr23654693ljg.168.1579793319446;
- Thu, 23 Jan 2020 07:28:39 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=YHqBGj/ukTPkl69zvdBgkmcYaLWB1N0Qj6YD43sxU/8=;
+        b=QiVdXJGObleBcBNIEaA1pbFxONW2u86/MusGQU6g9mImTAT2BHsg4IIKpWCm/cYBEa
+         uwIGutMcaFCxfphsVV/vUdFuAcYPjwsAwuYgQr9wcY+orXQs2BGfE1AJuzKtoVIfX6ic
+         8Pa88apJ6B+7vX/Qxl2MbGzBYpOVzt+GyLq20Ew2aWzYLDR7mU+VPnLaaozfd+kb0Qjb
+         Gg9swqYG5Eg9LYmQ7g2vH/SSovebmkjwQjwp2n4N4JGUt2qYcHSXhpZ89By+RUOtweKO
+         +w7PbKq7ECW+YFUVNxsJh+4n16aW/rXB+Cw/M30Y7RMRIRuNv7W+WUCLI//qM7gBq4vS
+         560w==
+X-Gm-Message-State: APjAAAVHvriC6GwCTb89rN40GmuKGhlH1BUs8xjWRjrdmXiQpx3P5pN5
+        i9DEvxWjdABzl2TNzSqVyQ==
+X-Google-Smtp-Source: APXvYqxkWG8AeF8EXXnGTWZ4IdGe6xCc6yw9d5YQpXCkxvBsnWb6O8ACMvnxGdINcohg5IvNyDKtDQ==
+X-Received: by 2002:a05:6830:4ca:: with SMTP id s10mr11737763otd.268.1579793404638;
+        Thu, 23 Jan 2020 07:30:04 -0800 (PST)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id p24sm891368oth.28.2020.01.23.07.30.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jan 2020 07:30:04 -0800 (PST)
+Received: (nullmailer pid 12956 invoked by uid 1000);
+        Thu, 23 Jan 2020 15:30:02 -0000
+Date:   Thu, 23 Jan 2020 09:30:02 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Olivier Moysan <olivier.moysan@st.com>
+Cc:     jic23@kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
+        perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+        mark.rutland@arm.com, mcoquelin.stm32@gmail.com, lars@metafoo.de,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, pmeerw@pmeerw.net, knaack.h@gmx.de,
+        fabrice.gasnier@st.com, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: stm32: convert dfsdm to json-schema
+Message-ID: <20200123153002.GA14241@bogus>
+References: <20200123083432.21997-1-olivier.moysan@st.com>
 MIME-Version: 1.0
-References: <20200121161757.1498082-1-colin.king@canonical.com>
-In-Reply-To: <20200121161757.1498082-1-colin.king@canonical.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 23 Jan 2020 16:28:28 +0100
-Message-ID: <CACRpkdYzd13xu9ETj_a4eWrm4FMrVnF1NQ5G+=d_Ch=6SzRoxA@mail.gmail.com>
-Subject: Re: [PATCH][next] iio: st_sensors: handle memory allocation failure
- to fix null pointer dereference
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200123083432.21997-1-olivier.moysan@st.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jan 21, 2020 at 5:18 PM Colin King <colin.king@canonical.com> wrote:
+On Thu, Jan 23, 2020 at 09:34:31AM +0100, Olivier Moysan wrote:
+> Convert the STM32 DFSDM bindings to DT schema format
+> using json-schema.
+> 
+> Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
+> ---
+> The DT check still returns some warnings on this bindings:
+> dfsdm@4400d000: filter@4: 'st,adc-channels' is a required property
+> dfsdm@4400d000: filter@5: 'st,adc-channels' is a required property ...
+> 
+> These warnings occur because some disabled nodes do not provides the
+> required properties. These nodes are included from SoC DT,
+> and do not provides by default the properties which are board dependent.
 
-> From: Colin Ian King <colin.king@canonical.com>
->
-> A null pointer deference on pdata can occur if the allocation of
-> pdata fails.  Fix this by adding a null pointer check and handle
-> the -ENOMEM failure in the caller.
->
-> Addresses-Coverity: ("Dereference null return value")
+We handle disabled nodes, but not when they are child nodes.
 
-That's a weirdo tag, but I suppose you have aligned with the maintainers
-about this.
+> As workaround in DFSDM yaml bindings, the properties
+> (like st,adc-channels) could be defined as required,
+> only for the nodes which are in enabled state.
 
-> Fixes: 3ce85cc4fbb7 ("iio: st_sensors: get platform data from device tree")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+We should handle this in the tooling, not the schemas. I entered an 
+issue to track this[1].
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  .../bindings/iio/adc/st,stm32-dfsdm-adc.txt   | 135 -------
+>  .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml  | 332 ++++++++++++++++++
+>  2 files changed, 332 insertions(+), 135 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.txt
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
 
-Yours,
-Linus Walleij
+Applied.
+
+[1] https://github.com/devicetree-org/dt-schema/issues/32

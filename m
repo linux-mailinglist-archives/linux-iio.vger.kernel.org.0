@@ -2,110 +2,172 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83996148D14
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2020 18:38:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51B69148F63
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2020 21:32:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388013AbgAXRiA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jan 2020 12:38:00 -0500
-Received: from mail.andi.de1.cc ([85.214.55.253]:50916 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389487AbgAXRiA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 24 Jan 2020 12:38:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
-        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=kO2pTpMXTjirs1T9+Tqx7exh45U6cC4XVCnw+kz4z9E=; b=kMv1Q6A1EdayuI15tq9yAZ6k+
-        qa++o6aMBXi60PmCr+b+soC0XqQAisYB5fIds9C/ILLai0zmZq8Yyg0RIeWY2I0psyaAn6s69AHH7
-        xvyHg8q3olYxaA0+Mbe/yFnIlKHq0szjubS4hfJp0+XfZxVLvWVvGZ6lg8ipISRDkOYBo=;
-Received: from p200300ccff0b16007ee9d3fffe1fa246.dip0.t-ipconnect.de ([2003:cc:ff0b:1600:7ee9:d3ff:fe1f:a246] helo=eeepc.fritz.box)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1iv2tv-0007T7-E8; Fri, 24 Jan 2020 18:37:49 +0100
-Received: from [::1] (helo=localhost)
-        by eeepc with esmtp (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1iv0sq-0006jm-2T; Fri, 24 Jan 2020 16:28:32 +0100
-Date:   Fri, 24 Jan 2020 16:28:18 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, b.galvani@gmail.com, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        phh@phh.me, stefan@agner.ch, letux-kernel@openphoenux.org
-Subject: Re: [PATCH 2/5] mfd: rn5t618: add ADC subdevice for RC5T619
-Message-ID: <20200124162818.0697f551@kemnade.info>
-In-Reply-To: <20200120084934.GZ15507@dell>
-References: <20200117215926.15194-1-andreas@kemnade.info>
-        <20200117215926.15194-3-andreas@kemnade.info>
-        <20200120084934.GZ15507@dell>
-X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
+        id S2392461AbgAXUcE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jan 2020 15:32:04 -0500
+Received: from smtprelay0053.hostedemail.com ([216.40.44.53]:58216 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2387548AbgAXUcE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jan 2020 15:32:04 -0500
+X-Greylist: delayed 486 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Jan 2020 15:32:03 EST
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave06.hostedemail.com (Postfix) with ESMTP id CCE608124187
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jan 2020 20:23:58 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id B7182182CED34;
+        Fri, 24 Jan 2020 20:23:56 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::,RULES_HIT:41:69:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1543:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3870:3871:3872:4250:4321:5007:6737:7576:8603:10004:10400:10848:11026:11232:11473:11658:11914:12043:12048:12296:12297:12438:12555:12679:12740:12760:12895:13095:13439:14093:14097:14181:14659:14721:21080:21433:21627:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: front94_3f46724fd7512
+X-Filterd-Recvd-Size: 5158
+Received: from XPS-9350.home (unknown [47.151.135.224])
+        (Authenticated sender: joe@perches.com)
+        by omf14.hostedemail.com (Postfix) with ESMTPA;
+        Fri, 24 Jan 2020 20:23:54 +0000 (UTC)
+Message-ID: <315149bed8f3442fabcb36ec9d8c8caffe8e11eb.camel@perches.com>
+Subject: Re: [PATCH] iio: ad5755: fix spelling mistake "to" -> "too"
+From:   Joe Perches <joe@perches.com>
+To:     David Laight <David.Laight@ACULAB.COM>,
+        "'Ardelean, Alexandru'" <alexandru.Ardelean@analog.com>,
+        "zzzzPopa, zzzzStefan Serban" <StefanSerban.Popa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>
+Cc:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Fri, 24 Jan 2020 12:22:52 -0800
+In-Reply-To: <69bbc2af79d9463681b54d0aa240f89b@AcuMS.aculab.com>
+References: <20200122235839.2830850-1-colin.king@canonical.com>
+         <c32a44272aa593c3d0cda71a50b08f33338a2dc0.camel@analog.com>
+         <69bbc2af79d9463681b54d0aa240f89b@AcuMS.aculab.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/IMwQ3EA3mlW=xf1Y4GDLMWA"; protocol="application/pgp-signature"
-X-Spam-Score: -1.0 (-)
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---Sig_/IMwQ3EA3mlW=xf1Y4GDLMWA
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+On Thu, 2020-01-23 at 14:55 +0000, David Laight wrote:
+> From Ardelean, Alexandru
+> > Sent: 23 January 2020 07:03
+> > 
+> > On Wed, 2020-01-22 at 23:58 +0000, Colin King wrote:
+> > > [External]
+> > > 
+> > > From: Colin Ian King <colin.king@canonical.com>
+> > > 
+> > > There is a spelling mistake in a dev_err message. Fix it.
+> > > 
+> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > ---
+> > >  drivers/iio/dac/ad5755.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+> > > index b9175fb4c8ab..dad0b26228a2 100644
+> > > --- a/drivers/iio/dac/ad5755.c
+> > > +++ b/drivers/iio/dac/ad5755.c
+> > > @@ -655,7 +655,7 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct
+> > > device *dev)
+> > >  	for_each_child_of_node(np, pp) {
+> > >  		if (devnr >= AD5755_NUM_CHANNELS) {
+> > >  			dev_err(dev,
+> > > -				"There is to many channels defined in DT\n");
+> > > +				"There is too many channels defined in DT\n");
+> > 
+> > If going for the spelling stuff, maybe also change "is" to "are":
+> > 'There are too many channels defined in DT\n'
+> 
+> Probably better still: "The DT defines too many channels\n"
 
-Hi,
+bikeshedding:
 
-hmm, I cannot find this in any branch/repo I know of and not in linux-next,
-just wondering...
-I guess the iio part is something to go towards 5.7 unless 5.5
-is delayed mucch.
+How about fixing:
 
-Regards,
-Andreas
+o missing newlines
+o odd indentation
+o unnecessary braces
+o message grammar
 
-On Mon, 20 Jan 2020 08:49:34 +0000
-Lee Jones <lee.jones@linaro.org> wrote:
+at the same time?
+---
+ drivers/iio/dac/ad5755.c | 25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
-> On Fri, 17 Jan 2020, Andreas Kemnade wrote:
->=20
-> > This adds a subdevice for the ADC in the RC5T619.
-> >=20
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> >  drivers/mfd/rn5t618.c | 1 +
-> >  1 file changed, 1 insertion(+) =20
->=20
-> Applied, thanks.
->=20
-> --=20
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> Linaro Services Technical Lead
-> Linaro.org =E2=94=82 Open source software for ARM SoCs
-> Follow Linaro: Facebook | Twitter | Blog
->=20
+diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+index b9175f..f6e4cf92 100644
+--- a/drivers/iio/dac/ad5755.c
++++ b/drivers/iio/dac/ad5755.c
+@@ -631,10 +631,9 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct device *dev)
+ 			}
+ 		}
+ 
+-		if (i == ARRAY_SIZE(ad5755_dcdc_freq_table)) {
++		if (i == ARRAY_SIZE(ad5755_dcdc_freq_table))
+ 			dev_err(dev,
+-				"adi,dc-dc-freq out of range selecting 410kHz");
+-		}
++				"adi,dc-dc-freq out of range selecting 410kHz\n");
+ 	}
+ 
+ 	pdata->dc_dc_maxv = AD5755_DC_DC_MAXV_23V;
+@@ -645,17 +644,15 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct device *dev)
+ 				break;
+ 			}
+ 		}
+-		if (i == ARRAY_SIZE(ad5755_dcdc_maxv_table)) {
+-				dev_err(dev,
+-					"adi,dc-dc-maxv out of range selecting 23V");
+-		}
++		if (i == ARRAY_SIZE(ad5755_dcdc_maxv_table))
++			dev_err(dev,
++				"adi,dc-dc-maxv out of range selecting 23V\n");
+ 	}
+ 
+ 	devnr = 0;
+ 	for_each_child_of_node(np, pp) {
+ 		if (devnr >= AD5755_NUM_CHANNELS) {
+-			dev_err(dev,
+-				"There is to many channels defined in DT\n");
++			dev_err(dev, "Too many channels defined in DT\n");
+ 			goto error_out;
+ 		}
+ 
+@@ -681,11 +678,10 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct device *dev)
+ 					break;
+ 				}
+ 			}
+-			if (i == ARRAY_SIZE(ad5755_slew_rate_table)) {
++			if (i == ARRAY_SIZE(ad5755_slew_rate_table))
+ 				dev_err(dev,
+-					"channel %d slew rate out of range selecting 64kHz",
++					"channel %d slew rate out of range selecting 64kHz\n",
+ 					devnr);
+-			}
+ 
+ 			pdata->dac[devnr].slew.step_size = AD5755_SLEW_STEP_SIZE_1;
+ 			for (i = 0; i < ARRAY_SIZE(ad5755_slew_step_table); i++) {
+@@ -695,11 +691,10 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct device *dev)
+ 					break;
+ 				}
+ 			}
+-			if (i == ARRAY_SIZE(ad5755_slew_step_table)) {
++			if (i == ARRAY_SIZE(ad5755_slew_step_table))
+ 				dev_err(dev,
+-					"channel %d slew step size out of range selecting 1 LSB",
++					"channel %d slew step size out of range selecting 1 LSB\n",
+ 					devnr);
+-			}
+ 		} else {
+ 			pdata->dac[devnr].slew.enable = false;
+ 			pdata->dac[devnr].slew.rate = AD5755_SLEW_RATE_64k;
 
---Sig_/IMwQ3EA3mlW=xf1Y4GDLMWA
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl4rDRMACgkQl4jFM1s/
-ye+L9hAAs+bo7p2SXf11Rn3tlAHcI94DNVUx7FnrebA36C1LXkMWC0RrclYtKkPS
-xLyxLiZLeUxUvOWjlRXcBU0FU7QVeM+FxB61ze9V50dBGFgj1PHAVPAgmyeM+Ch3
-d/TGMONsI2lfR5NFU/TSWyPan2Em6s5Yet4HAnpv2WIyAGT4qHfyoHo5gmU5GqD3
-wQCekCRwi5gs/yYIKG/AEpVo/MT6DOQ3bSPRmC6sxaqgfJVJXAXsStcNRNW07cq7
-onj/OU+aauVT6xJ2XvB7uiKaC8kzrVXK0t02nOhqDIct3GYOpm2bO0AtFafURKhe
-sGgq/SPFCBISOMqIGvU+0/Hd2abGA/r4win12xYWI9o/0LPMZs25LyFxXNBBaRtc
-9QFhE7DazpoLpPCFv7Za5+KmuZxcifN8DZgFl177V0U79vXPuS52g3vEIbzwZboc
-+HCB2imqCOIhAOMhwGr7ADn0u/ryo8LG4HgozzoEztm7xoSMOyDPf9ct9wZS8Np5
-2ImzgpnYb70qIvSV9y6JCupLXeChZmyB6Kfc3sird2bwNIQNPHOLEQKoDlvkawNG
-7ePxvN0pqZUuS2DhLbbzKFoljnhiR4DEiIHmnQDUEEvEfz6dHDGM7fEzY5679Fuu
-3L0DmPqvHi28vobM2YscZ9VTHimw7N6lZozqVy2t12NNbl36D7E=
-=nb2+
------END PGP SIGNATURE-----
-
---Sig_/IMwQ3EA3mlW=xf1Y4GDLMWA--

@@ -2,121 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 792AA147E8F
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2020 11:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83996148D14
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2020 18:38:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731638AbgAXKOb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jan 2020 05:14:31 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:33883 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729509AbgAXKOb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jan 2020 05:14:31 -0500
-X-Greylist: delayed 361 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Jan 2020 05:14:30 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1579860869;
-        s=strato-dkim-0002; d=plating.de;
-        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
-        Subject:Sender;
-        bh=8SA5S2nypmC1xtLlmQD/4rllmpgnr0vFw0HlX5m+dMw=;
-        b=beqdh9wP/Cu52kmmqawaNdN2AyHiHG2Rrv8lA3B67EA20aRNfu8dbu7tMsQ9LP88Li
-        z3mT9/RnNdwZx0IayAG1snakQjqgx4XE+w6BM2Y3sif4lpdsVi+bNWl6cuAiW7e10S9e
-        SWhgP+z4mcQbfSnaLQ+ezaoLmq/i9qIeLH2tbqPmlwDMMKVL5QV4+Ou+/VRhP81foSzl
-        SltFbaycQbyUp//L3aja5C8A/gEIemANEHTdImAXSADv4Lm6Hgz26rxP6DrOF6UKhVyV
-        3J2iCcjr+7674dniOS353j8OnZYf74TOdxQ1sBZU7He5DhnIjYDcT3QO2ovBdX8DRhQx
-        kVeA==
-X-RZG-AUTH: ":P2EQZVataeyI5jZ/YFVerR/NeEUpp/1ZEi4FSKT8sA3i0IzVhLiw6JgrUzaKN77axfKEX18="
-X-RZG-CLASS-ID: mo00
-Received: from mail.dl.plating.de
-        by smtp.strato.de (RZmta 46.1.7 AUTH)
-        with ESMTPSA id L0b26cw0OA8P4q3
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Fri, 24 Jan 2020 11:08:25 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.dl.plating.de (Postfix) with ESMTP id 16C0D122237;
-        Fri, 24 Jan 2020 11:08:25 +0100 (CET)
-X-Virus-Scanned: amavisd-new at dl.plating.de
-Received: from mail.dl.plating.de ([127.0.0.1])
-        by localhost (mail.dl.plating.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id MgZBhhXL45DQ; Fri, 24 Jan 2020 11:08:18 +0100 (CET)
-Received: from localhost (unknown [172.16.4.186])
-        by mail.dl.plating.de (Postfix) with ESMTPSA id 0321B120413;
-        Fri, 24 Jan 2020 11:08:16 +0100 (CET)
-From:   =?UTF-8?q?Lars=20M=C3=B6llendorf?= <lars.moellendorf@plating.de>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
-        stable@vger.kernel.org
-Cc:     =?UTF-8?q?Lars=20M=C3=B6llendorf?= <lars.moellendorf@plating.de>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH] iio: buffer: align the size of scan bytes to size of the largest element
-Date:   Fri, 24 Jan 2020 11:07:00 +0100
-Message-Id: <20200124100700.25632-1-lars.moellendorf@plating.de>
-X-Mailer: git-send-email 2.23.0
+        id S2388013AbgAXRiA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jan 2020 12:38:00 -0500
+Received: from mail.andi.de1.cc ([85.214.55.253]:50916 "EHLO mail.andi.de1.cc"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389487AbgAXRiA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 24 Jan 2020 12:38:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
+        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=kO2pTpMXTjirs1T9+Tqx7exh45U6cC4XVCnw+kz4z9E=; b=kMv1Q6A1EdayuI15tq9yAZ6k+
+        qa++o6aMBXi60PmCr+b+soC0XqQAisYB5fIds9C/ILLai0zmZq8Yyg0RIeWY2I0psyaAn6s69AHH7
+        xvyHg8q3olYxaA0+Mbe/yFnIlKHq0szjubS4hfJp0+XfZxVLvWVvGZ6lg8ipISRDkOYBo=;
+Received: from p200300ccff0b16007ee9d3fffe1fa246.dip0.t-ipconnect.de ([2003:cc:ff0b:1600:7ee9:d3ff:fe1f:a246] helo=eeepc.fritz.box)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iv2tv-0007T7-E8; Fri, 24 Jan 2020 18:37:49 +0100
+Received: from [::1] (helo=localhost)
+        by eeepc with esmtp (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iv0sq-0006jm-2T; Fri, 24 Jan 2020 16:28:32 +0100
+Date:   Fri, 24 Jan 2020 16:28:18 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, b.galvani@gmail.com, linus.walleij@linaro.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        phh@phh.me, stefan@agner.ch, letux-kernel@openphoenux.org
+Subject: Re: [PATCH 2/5] mfd: rn5t618: add ADC subdevice for RC5T619
+Message-ID: <20200124162818.0697f551@kemnade.info>
+In-Reply-To: <20200120084934.GZ15507@dell>
+References: <20200117215926.15194-1-andreas@kemnade.info>
+        <20200117215926.15194-3-andreas@kemnade.info>
+        <20200120084934.GZ15507@dell>
+X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/IMwQ3EA3mlW=xf1Y4GDLMWA"; protocol="application/pgp-signature"
+X-Spam-Score: -1.0 (-)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-commit 883f61653069 ("iio: buffer: align the size of scan bytes to size of
-the largest element")
+--Sig_/IMwQ3EA3mlW=xf1Y4GDLMWA
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Previous versions of `iio_compute_scan_bytes` only aligned each element
-to its own length (i.e. its own natural alignment). Because multiple
-consecutive sets of scan elements are buffered this does not work in
-case the computed scan bytes do not align with the natural alignment of
-the first scan element in the set.
+Hi,
 
-This commit fixes this by aligning the scan bytes to the natural
-alignment of the largest scan element in the set.
+hmm, I cannot find this in any branch/repo I know of and not in linux-next,
+just wondering...
+I guess the iio part is something to go towards 5.7 unless 5.5
+is delayed mucch.
 
-Fixes: 959d2952d124 ("staging:iio: make iio_sw_buffer_preenable much more general.")
-Signed-off-by: Lars Möllendorf <lars.moellendorf@plating.de>
-Reviewed-by: Lars-Peter Clausen <lars@metafoo.de>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/iio/industrialio-buffer.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Regards,
+Andreas
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index 0f6f63b20263..3534f981e561 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -516,7 +516,7 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
- {
- 	const struct iio_chan_spec *ch;
- 	unsigned bytes = 0;
--	int length, i;
-+	int length, i, largest = 0;
+On Mon, 20 Jan 2020 08:49:34 +0000
+Lee Jones <lee.jones@linaro.org> wrote:
 
- 	/* How much space will the demuxed element take? */
- 	for_each_set_bit(i, mask,
-@@ -529,6 +529,7 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
- 			length = ch->scan_type.storagebits / 8;
- 		bytes = ALIGN(bytes, length);
- 		bytes += length;
-+		largest = max(largest, length);
- 	}
- 	if (timestamp) {
- 		ch = iio_find_channel_from_si(indio_dev,
-@@ -540,7 +541,10 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
- 			length = ch->scan_type.storagebits / 8;
- 		bytes = ALIGN(bytes, length);
- 		bytes += length;
-+		largest = max(largest, length);
- 	}
-+
-+	bytes = ALIGN(bytes, largest);
- 	return bytes;
- }
+> On Fri, 17 Jan 2020, Andreas Kemnade wrote:
+>=20
+> > This adds a subdevice for the ADC in the RC5T619.
+> >=20
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---
+> >  drivers/mfd/rn5t618.c | 1 +
+> >  1 file changed, 1 insertion(+) =20
+>=20
+> Applied, thanks.
+>=20
+> --=20
+> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
+> Linaro Services Technical Lead
+> Linaro.org =E2=94=82 Open source software for ARM SoCs
+> Follow Linaro: Facebook | Twitter | Blog
+>=20
 
---
-2.23.0
+--Sig_/IMwQ3EA3mlW=xf1Y4GDLMWA
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl4rDRMACgkQl4jFM1s/
+ye+L9hAAs+bo7p2SXf11Rn3tlAHcI94DNVUx7FnrebA36C1LXkMWC0RrclYtKkPS
+xLyxLiZLeUxUvOWjlRXcBU0FU7QVeM+FxB61ze9V50dBGFgj1PHAVPAgmyeM+Ch3
+d/TGMONsI2lfR5NFU/TSWyPan2Em6s5Yet4HAnpv2WIyAGT4qHfyoHo5gmU5GqD3
+wQCekCRwi5gs/yYIKG/AEpVo/MT6DOQ3bSPRmC6sxaqgfJVJXAXsStcNRNW07cq7
+onj/OU+aauVT6xJ2XvB7uiKaC8kzrVXK0t02nOhqDIct3GYOpm2bO0AtFafURKhe
+sGgq/SPFCBISOMqIGvU+0/Hd2abGA/r4win12xYWI9o/0LPMZs25LyFxXNBBaRtc
+9QFhE7DazpoLpPCFv7Za5+KmuZxcifN8DZgFl177V0U79vXPuS52g3vEIbzwZboc
++HCB2imqCOIhAOMhwGr7ADn0u/ryo8LG4HgozzoEztm7xoSMOyDPf9ct9wZS8Np5
+2ImzgpnYb70qIvSV9y6JCupLXeChZmyB6Kfc3sird2bwNIQNPHOLEQKoDlvkawNG
+7ePxvN0pqZUuS2DhLbbzKFoljnhiR4DEiIHmnQDUEEvEfz6dHDGM7fEzY5679Fuu
+3L0DmPqvHi28vobM2YscZ9VTHimw7N6lZozqVy2t12NNbl36D7E=
+=nb2+
+-----END PGP SIGNATURE-----
+
+--Sig_/IMwQ3EA3mlW=xf1Y4GDLMWA--

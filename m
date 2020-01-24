@@ -2,172 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51B69148F63
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2020 21:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B01B1490C0
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2020 23:14:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392461AbgAXUcE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jan 2020 15:32:04 -0500
-Received: from smtprelay0053.hostedemail.com ([216.40.44.53]:58216 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2387548AbgAXUcE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jan 2020 15:32:04 -0500
-X-Greylist: delayed 486 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Jan 2020 15:32:03 EST
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave06.hostedemail.com (Postfix) with ESMTP id CCE608124187
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jan 2020 20:23:58 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id B7182182CED34;
-        Fri, 24 Jan 2020 20:23:56 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::,RULES_HIT:41:69:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1543:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3870:3871:3872:4250:4321:5007:6737:7576:8603:10004:10400:10848:11026:11232:11473:11658:11914:12043:12048:12296:12297:12438:12555:12679:12740:12760:12895:13095:13439:14093:14097:14181:14659:14721:21080:21433:21627:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: front94_3f46724fd7512
-X-Filterd-Recvd-Size: 5158
-Received: from XPS-9350.home (unknown [47.151.135.224])
-        (Authenticated sender: joe@perches.com)
-        by omf14.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 24 Jan 2020 20:23:54 +0000 (UTC)
-Message-ID: <315149bed8f3442fabcb36ec9d8c8caffe8e11eb.camel@perches.com>
-Subject: Re: [PATCH] iio: ad5755: fix spelling mistake "to" -> "too"
-From:   Joe Perches <joe@perches.com>
-To:     David Laight <David.Laight@ACULAB.COM>,
-        "'Ardelean, Alexandru'" <alexandru.Ardelean@analog.com>,
-        "zzzzPopa, zzzzStefan Serban" <StefanSerban.Popa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "colin.king@canonical.com" <colin.king@canonical.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>
-Cc:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Fri, 24 Jan 2020 12:22:52 -0800
-In-Reply-To: <69bbc2af79d9463681b54d0aa240f89b@AcuMS.aculab.com>
-References: <20200122235839.2830850-1-colin.king@canonical.com>
-         <c32a44272aa593c3d0cda71a50b08f33338a2dc0.camel@analog.com>
-         <69bbc2af79d9463681b54d0aa240f89b@AcuMS.aculab.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        id S1728731AbgAXWN6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jan 2020 17:13:58 -0500
+Received: from ip-78-45-52-129.net.upcbroadband.cz ([78.45.52.129]:33206 "EHLO
+        ixit.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727264AbgAXWN6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 24 Jan 2020 17:13:58 -0500
+Received: from localhost.localdomain (227.146.230.94.awnet.cz [94.230.146.227])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ixit.cz (Postfix) with ESMTPSA id 278BC251E0;
+        Fri, 24 Jan 2020 23:04:12 +0100 (CET)
+From:   David Heidelberg <david@ixit.cz>
+To:     linux-iio@vger.kernel.org
+Cc:     David Heidelberg <david@ixit.cz>
+Subject: [PATCH 1/7] iio: light: al3320a slightly improve code formatting
+Date:   Fri, 24 Jan 2020 23:03:40 +0100
+Message-Id: <20200124220346.2655336-1-david@ixit.cz>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 2020-01-23 at 14:55 +0000, David Laight wrote:
-> From Ardelean, Alexandru
-> > Sent: 23 January 2020 07:03
-> > 
-> > On Wed, 2020-01-22 at 23:58 +0000, Colin King wrote:
-> > > [External]
-> > > 
-> > > From: Colin Ian King <colin.king@canonical.com>
-> > > 
-> > > There is a spelling mistake in a dev_err message. Fix it.
-> > > 
-> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > > ---
-> > >  drivers/iio/dac/ad5755.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
-> > > index b9175fb4c8ab..dad0b26228a2 100644
-> > > --- a/drivers/iio/dac/ad5755.c
-> > > +++ b/drivers/iio/dac/ad5755.c
-> > > @@ -655,7 +655,7 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct
-> > > device *dev)
-> > >  	for_each_child_of_node(np, pp) {
-> > >  		if (devnr >= AD5755_NUM_CHANNELS) {
-> > >  			dev_err(dev,
-> > > -				"There is to many channels defined in DT\n");
-> > > +				"There is too many channels defined in DT\n");
-> > 
-> > If going for the spelling stuff, maybe also change "is" to "are":
-> > 'There are too many channels defined in DT\n'
-> 
-> Probably better still: "The DT defines too many channels\n"
+Modified to be in part with al3010 driver.
 
-bikeshedding:
-
-How about fixing:
-
-o missing newlines
-o odd indentation
-o unnecessary braces
-o message grammar
-
-at the same time?
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/iio/dac/ad5755.c | 25 ++++++++++---------------
- 1 file changed, 10 insertions(+), 15 deletions(-)
+ drivers/iio/light/al3320a.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
-index b9175f..f6e4cf92 100644
---- a/drivers/iio/dac/ad5755.c
-+++ b/drivers/iio/dac/ad5755.c
-@@ -631,10 +631,9 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct device *dev)
- 			}
- 		}
+diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
+index a21aa99e74e4..613830b7df6e 100644
+--- a/drivers/iio/light/al3320a.c
++++ b/drivers/iio/light/al3320a.c
+@@ -38,6 +38,11 @@
  
--		if (i == ARRAY_SIZE(ad5755_dcdc_freq_table)) {
-+		if (i == ARRAY_SIZE(ad5755_dcdc_freq_table))
- 			dev_err(dev,
--				"adi,dc-dc-freq out of range selecting 410kHz");
--		}
-+				"adi,dc-dc-freq out of range selecting 410kHz\n");
+ #define AL3320A_GAIN_SHIFT		1
+ #define AL3320A_GAIN_MASK		(BIT(2) | BIT(1))
++#define AL3320A_GAIN_READ(g) \
++	(((g) & AL3320A_GAIN_MASK) >> AL3320A_GAIN_SHIFT)
++#define AL3320A_GAIN_WRITE(g) \
++	(((g) << AL3320A_GAIN_SHIFT) & AL3320A_GAIN_MASK)
++
+ 
+ /* chip params default values */
+ #define AL3320A_DEFAULT_MEAN_TIME	4
+@@ -90,7 +95,7 @@ static int al3320a_init(struct al3320a_data *data)
+ 		return ret;
+ 
+ 	ret = i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG_RANGE,
+-					AL3320A_RANGE_3 << AL3320A_GAIN_SHIFT);
++					AL3320A_GAIN_WRITE(AL3320A_RANGE_3));
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -133,7 +138,7 @@ static int al3320a_read_raw(struct iio_dev *indio_dev,
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		ret = (ret & AL3320A_GAIN_MASK) >> AL3320A_GAIN_SHIFT;
++		ret = AL3320A_GAIN_READ(ret);
+ 		*val = al3320a_scales[ret][0];
+ 		*val2 = al3320a_scales[ret][1];
+ 
+@@ -152,11 +157,13 @@ static int al3320a_write_raw(struct iio_dev *indio_dev,
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SCALE:
+ 		for (i = 0; i < ARRAY_SIZE(al3320a_scales); i++) {
+-			if (val == al3320a_scales[i][0] &&
+-			    val2 == al3320a_scales[i][1])
+-				return i2c_smbus_write_byte_data(data->client,
+-					AL3320A_REG_CONFIG_RANGE,
+-					i << AL3320A_GAIN_SHIFT);
++			if (val != al3320a_scales[i][0] ||
++			    val2 != al3320a_scales[i][1])
++				continue;
++
++			return i2c_smbus_write_byte_data(data->client,
++						AL3320A_REG_CONFIG_RANGE,
++						AL3320A_GAIN_WRITE(i));
+ 		}
+ 		break;
  	}
- 
- 	pdata->dc_dc_maxv = AD5755_DC_DC_MAXV_23V;
-@@ -645,17 +644,15 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct device *dev)
- 				break;
- 			}
- 		}
--		if (i == ARRAY_SIZE(ad5755_dcdc_maxv_table)) {
--				dev_err(dev,
--					"adi,dc-dc-maxv out of range selecting 23V");
--		}
-+		if (i == ARRAY_SIZE(ad5755_dcdc_maxv_table))
-+			dev_err(dev,
-+				"adi,dc-dc-maxv out of range selecting 23V\n");
- 	}
- 
- 	devnr = 0;
- 	for_each_child_of_node(np, pp) {
- 		if (devnr >= AD5755_NUM_CHANNELS) {
--			dev_err(dev,
--				"There is to many channels defined in DT\n");
-+			dev_err(dev, "Too many channels defined in DT\n");
- 			goto error_out;
- 		}
- 
-@@ -681,11 +678,10 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct device *dev)
- 					break;
- 				}
- 			}
--			if (i == ARRAY_SIZE(ad5755_slew_rate_table)) {
-+			if (i == ARRAY_SIZE(ad5755_slew_rate_table))
- 				dev_err(dev,
--					"channel %d slew rate out of range selecting 64kHz",
-+					"channel %d slew rate out of range selecting 64kHz\n",
- 					devnr);
--			}
- 
- 			pdata->dac[devnr].slew.step_size = AD5755_SLEW_STEP_SIZE_1;
- 			for (i = 0; i < ARRAY_SIZE(ad5755_slew_step_table); i++) {
-@@ -695,11 +691,10 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct device *dev)
- 					break;
- 				}
- 			}
--			if (i == ARRAY_SIZE(ad5755_slew_step_table)) {
-+			if (i == ARRAY_SIZE(ad5755_slew_step_table))
- 				dev_err(dev,
--					"channel %d slew step size out of range selecting 1 LSB",
-+					"channel %d slew step size out of range selecting 1 LSB\n",
- 					devnr);
--			}
- 		} else {
- 			pdata->dac[devnr].slew.enable = false;
- 			pdata->dac[devnr].slew.rate = AD5755_SLEW_RATE_64k;
-
+-- 
+2.25.0
 

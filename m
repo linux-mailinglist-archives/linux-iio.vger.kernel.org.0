@@ -2,347 +2,208 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CDF3149BD0
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jan 2020 17:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2484C149CD5
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jan 2020 21:27:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728831AbgAZQFd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Jan 2020 11:05:33 -0500
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:41887 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729030AbgAZQFc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jan 2020 11:05:32 -0500
-X-Originating-IP: 195.189.32.242
-Received: from pc.localdomain (unknown [195.189.32.242])
-        (Authenticated sender: contact@artur-rojek.eu)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 493EC1BF20B;
-        Sun, 26 Jan 2020 16:05:28 +0000 (UTC)
-From:   Artur Rojek <contact@artur-rojek.eu>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Paul Cercueil <paul@crapouillou.net>
-Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Artur Rojek <contact@artur-rojek.eu>
-Subject: [PATCH v2 5/5] input: joystick: Add ADC attached joystick driver.
-Date:   Sun, 26 Jan 2020 17:12:36 +0100
-Message-Id: <20200126161236.63631-5-contact@artur-rojek.eu>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200126161236.63631-1-contact@artur-rojek.eu>
-References: <20200126161236.63631-1-contact@artur-rojek.eu>
+        id S1726181AbgAZU12 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Jan 2020 15:27:28 -0500
+Received: from mail-oln040092005107.outbound.protection.outlook.com ([40.92.5.107]:42470
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726087AbgAZU12 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 26 Jan 2020 15:27:28 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Jokq1wbPZQO6njGu0Qfs2hfA/8tG43yJyNhfixEwB6E9L6fDHHU6mv6ZOV+/GF6rCIjOWbd25Y2jc+E7d402dxVGSWWYBzFO1SdLWh8wrxgrUvv+lhNfvEjQUj0wTVluKQkaFMfpJk3eigp5iHOYBQlOpwYGTmJRWPLbuxw/CetDoF6aKLA6tCq93/P0pPd9tQa4w3e5zlzGx1OlfBjTEftsjtPWleN1jGgWwfJHQHMtN/KOxaV7E9mT57GESzOdBX3WYggvKCCrkqJFs0rKpICIDAEsO8SMp3QFcyjWMtaKX1IX9U+/3PkVPgruyd6wsr8Hd7NwuOVTZVaLukdR3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uDVs4Y+0Mq9GgbkiTuvoyb19iNnXsiPL2OTvDg1Tvkw=;
+ b=fhRTurQ5erIn4UtLN/v2eKjp0uX2qBJedKNMsQadDSZN+2dTRc9SJ394nb2kmIR6Xk9rDTRoRoqkQ8sO6XmcC4vhCWtjY2H4BjylpljiKs60WGQqRRnCEmotwjxZprIzdFsnwSmJK0vFzFdL04exkJU59eFl/c2hyN01HqLTHDUX6lM8kj9nVvoPrB4bgXyLE3h5XZJdZyYsDGvcu/u+gjL4759amM1nMS8TdgrgAy0I6gfOv2bL0IvQnDm8hVxR50gJVUVJAN24HJAFegCS08zXa27hJ43zNZD/MVpgVjEcvpHBqtELQUH4ksyLnkD8fuqUXO52DR6QwXs+9DIjsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from BL2NAM02FT055.eop-nam02.prod.protection.outlook.com
+ (10.152.76.53) by BL2NAM02HT164.eop-nam02.prod.protection.outlook.com
+ (10.152.77.189) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2665.18; Sun, 26 Jan
+ 2020 20:27:23 +0000
+Received: from BYAPR10MB3479.namprd10.prod.outlook.com (10.152.76.53) by
+ BL2NAM02FT055.mail.protection.outlook.com (10.152.77.126) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2665.18 via Frontend Transport; Sun, 26 Jan 2020 20:27:23 +0000
+Received: from BYAPR10MB3479.namprd10.prod.outlook.com
+ ([fe80::609c:d845:cbb0:ce16]) by BYAPR10MB3479.namprd10.prod.outlook.com
+ ([fe80::609c:d845:cbb0:ce16%7]) with mapi id 15.20.2665.017; Sun, 26 Jan 2020
+ 20:27:23 +0000
+Received: from [IPv6:2001:569:fb67:7300:9f89:4b96:de0b:cd14] (2001:569:fb67:7300:9f89:4b96:de0b:cd14) by MW2PR2101CA0005.namprd21.prod.outlook.com (2603:10b6:302:1::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2707.0 via Frontend Transport; Sun, 26 Jan 2020 20:27:20 +0000
+From:   Jonathan Bakker <xc-racer2@live.ca>
+To:     Linus Walleij <linus.walleij@linaro.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Minkyu Kang <mk7.kang@samsung.com>,
+        =?utf-8?B?UGF3ZcWCIENobWllbA==?= <pawel.mikolaj.chmiel@gmail.com>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH 2/2 v5] iio: light: Add a driver for Sharp GP2AP002x00F
+Thread-Topic: [PATCH 2/2 v5] iio: light: Add a driver for Sharp GP2AP002x00F
+Thread-Index: AQHV0J5muon1F28DBkWxjme5gakZOaf4/mYAgAQXq4CAAFa1gA==
+Date:   Sun, 26 Jan 2020 20:27:22 +0000
+Message-ID: <BYAPR10MB3479E348502A3E94F293559DA3080@BYAPR10MB3479.namprd10.prod.outlook.com>
+References: <20200121210419.13372-1-linus.walleij@linaro.org>
+ <20200121210419.13372-2-linus.walleij@linaro.org>
+ <BYAPR10MB3479CEEA65545B8422C77091A30E0@BYAPR10MB3479.namprd10.prod.outlook.com>
+ <CACRpkdYMxXL6oY0eA+5EYOUTZ_opAtiT-6THfc9dwy_9Ufq8MQ@mail.gmail.com>
+In-Reply-To: <CACRpkdYMxXL6oY0eA+5EYOUTZ_opAtiT-6THfc9dwy_9Ufq8MQ@mail.gmail.com>
+Accept-Language: en-CA, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: MW2PR2101CA0005.namprd21.prod.outlook.com
+ (2603:10b6:302:1::18) To BYAPR10MB3479.namprd10.prod.outlook.com
+ (2603:10b6:a03:11a::16)
+x-incomingtopheadermarker: OriginalChecksum:E24ABE3F4281B950D9AB14C778179D36266DF9CA4F6116D00426011462D3C090;UpperCasedChecksum:B62B1AF8EE7120D378CD1D02934C55BEF4E4A4AE6231AD0B4CFBE0EE4C88A7D8;SizeAsReceived:8433;Count:50
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn:  [Sc9FURb9PPODoBElwPUDeB5Qr0ODnef/FEcS54IaH7xXJEJI6O3kK7DOttavWmld]
+x-microsoft-original-message-id: <8e8c216e-cf06-2ead-90cd-71a1f70a30e4@live.ca>
+x-ms-publictraffictype: Email
+x-incomingheadercount: 50
+x-eopattributedmessage: 0
+x-ms-office365-filtering-correlation-id: 825eda0b-d8e9-4f07-af96-08d7a29e2565
+x-ms-traffictypediagnostic: BL2NAM02HT164:
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: rUFTv7wk8LnLYReBTQ2cc7IOflZ2OldGCMUAfzM0uzlBirrEj/GqMmLdiVTTElGaqNcDLUzuOgr17Ir2Jr3ZkLSNwqbO6fhEDImjcIacBC2mUjQPjZCGDaKkZXwtTiQ/ah2An3mcWa1y9krc/+j9dwGp9chRThN8GzUd87mKUBwJNGJFOWatLwWyzpYRL5r8ftmQkuHW+baoZ00+hVDLbNXiru0W97kdBDeQp5ouG14=
+x-ms-exchange-antispam-messagedata: cJdvYYRADhHLifhROnPcx6ShpW5IBjX8XcqQlR4JbbS+XN29bdI7EeIjWZvY0sr4VfYhK6+Q57umqQjdSNJKY2a/8JhnXzE9KySoNjOX1N00WfG576Up+KAbHkrJh/We9tLxW/FR6esUkToffSMnuue4Z6akg1tO1UcJu1ZHn4ln+uED0/Cp0AbZ6mrGMfB2TKtRMF53Mepp+HXawWBMbQ==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3C5C16F7D9CD9446BB2CBC96C0E9D627@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 825eda0b-d8e9-4f07-af96-08d7a29e2565
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jan 2020 20:27:23.6364
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2NAM02HT164
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a driver for joystick devices connected to ADC controllers
-supporting the Industrial I/O subsystem.
-
-Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-Tested-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
----
-
- Changes:
-
- v2: - sanity check supported channel format on probe,
-     - rename adc_joystick_disable to a more sensible adc_joystick_cleanup, 
-     - enforce correct axis order by checking the `reg` property of
-       child nodes
-
- drivers/input/joystick/Kconfig        |  10 ++
- drivers/input/joystick/Makefile       |   1 +
- drivers/input/joystick/adc-joystick.c | 245 ++++++++++++++++++++++++++
- 3 files changed, 256 insertions(+)
- create mode 100644 drivers/input/joystick/adc-joystick.c
-
-diff --git a/drivers/input/joystick/Kconfig b/drivers/input/joystick/Kconfig
-index 940b744639c7..efbc20ec5099 100644
---- a/drivers/input/joystick/Kconfig
-+++ b/drivers/input/joystick/Kconfig
-@@ -42,6 +42,16 @@ config JOYSTICK_A3D
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called a3d.
- 
-+config JOYSTICK_ADC
-+	tristate "Simple joystick connected over ADC"
-+	depends on IIO
-+	select IIO_BUFFER_CB
-+	help
-+	  Say Y here if you have a simple joystick connected over ADC.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called adc-joystick.
-+
- config JOYSTICK_ADI
- 	tristate "Logitech ADI digital joysticks and gamepads"
- 	select GAMEPORT
-diff --git a/drivers/input/joystick/Makefile b/drivers/input/joystick/Makefile
-index 8656023f6ef5..58232b3057d3 100644
---- a/drivers/input/joystick/Makefile
-+++ b/drivers/input/joystick/Makefile
-@@ -6,6 +6,7 @@
- # Each configuration option enables a list of files.
- 
- obj-$(CONFIG_JOYSTICK_A3D)		+= a3d.o
-+obj-$(CONFIG_JOYSTICK_ADC)		+= adc-joystick.o
- obj-$(CONFIG_JOYSTICK_ADI)		+= adi.o
- obj-$(CONFIG_JOYSTICK_AMIGA)		+= amijoy.o
- obj-$(CONFIG_JOYSTICK_AS5011)		+= as5011.o
-diff --git a/drivers/input/joystick/adc-joystick.c b/drivers/input/joystick/adc-joystick.c
-new file mode 100644
-index 000000000000..9cb9896da26e
---- /dev/null
-+++ b/drivers/input/joystick/adc-joystick.c
-@@ -0,0 +1,245 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Input driver for joysticks connected over ADC.
-+ * Copyright (c) 2019-2020 Artur Rojek <contact@artur-rojek.eu>
-+ */
-+#include <linux/ctype.h>
-+#include <linux/input.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/consumer.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+
-+struct adc_joystick_axis {
-+	u32 code;
-+	s32 range[2];
-+	s32 fuzz;
-+	s32 flat;
-+};
-+
-+struct adc_joystick {
-+	struct input_dev *input;
-+	struct iio_cb_buffer *buffer;
-+	struct adc_joystick_axis *axes;
-+	struct iio_channel *chans;
-+	int num_chans;
-+};
-+
-+static int adc_joystick_handle(const void *data, void *private)
-+{
-+	struct adc_joystick *joy = private;
-+	enum iio_endian endianness;
-+	int bytes, msb, val, i;
-+	bool sign;
-+
-+	bytes = joy->chans[0].channel->scan_type.storagebits >> 3;
-+
-+	for (i = 0; i < joy->num_chans; ++i) {
-+		endianness = joy->chans[i].channel->scan_type.endianness;
-+		msb = joy->chans[i].channel->scan_type.realbits - 1;
-+		sign = (tolower(joy->chans[i].channel->scan_type.sign) == 's');
-+
-+		switch (bytes) {
-+		case 1:
-+			val = ((const u8 *)data)[i];
-+			break;
-+		case 2:
-+			val = ((const u16 *)data)[i];
-+			if (endianness == IIO_BE)
-+				val = be16_to_cpu(val);
-+			else if (endianness == IIO_LE)
-+				val = le16_to_cpu(val);
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+		val >>= joy->chans[i].channel->scan_type.shift;
-+		if (sign)
-+			val = sign_extend32(val, msb);
-+		else
-+			val &= GENMASK(msb, 0);
-+		input_report_abs(joy->input, joy->axes[i].code, val);
-+	}
-+
-+	input_sync(joy->input);
-+
-+	return 0;
-+}
-+
-+static int adc_joystick_open(struct input_dev *dev)
-+{
-+	struct adc_joystick *joy = input_get_drvdata(dev);
-+	int ret;
-+
-+	ret = iio_channel_start_all_cb(joy->buffer);
-+	if (ret)
-+		dev_err(dev->dev.parent, "Unable to start callback buffer");
-+
-+	return ret;
-+}
-+
-+static void adc_joystick_close(struct input_dev *dev)
-+{
-+	struct adc_joystick *joy = input_get_drvdata(dev);
-+
-+	iio_channel_stop_all_cb(joy->buffer);
-+}
-+
-+static void adc_joystick_cleanup(void *data)
-+{
-+	iio_channel_release_all_cb(data);
-+}
-+
-+static int adc_joystick_set_axes(struct device *dev, struct adc_joystick *joy)
-+{
-+	struct adc_joystick_axis *axes;
-+	struct fwnode_handle *child;
-+	int num_axes, ret, i;
-+
-+	num_axes = device_get_child_node_count(dev);
-+	if (!num_axes) {
-+		dev_err(dev, "Unable to find child nodes");
-+		return -EINVAL;
-+	}
-+
-+	if (num_axes != joy->num_chans) {
-+		dev_err(dev, "Got %d child nodes for %d channels",
-+			num_axes, joy->num_chans);
-+		return -EINVAL;
-+	}
-+
-+	axes = devm_kmalloc_array(dev, num_axes, sizeof(*axes), GFP_KERNEL);
-+	if (!axes)
-+		return -ENOMEM;
-+
-+	device_for_each_child_node(dev, child) {
-+		ret = fwnode_property_read_u32(child, "reg", &i);
-+		if (ret || i >= num_axes) {
-+			dev_err(dev, "reg invalid or missing");
-+			goto err;
-+		}
-+
-+		if (fwnode_property_read_u32(child, "linux,code",
-+					     &axes[i].code)) {
-+			dev_err(dev, "linux,code invalid or missing");
-+			goto err;
-+		}
-+
-+		if (fwnode_property_read_u32_array(child, "abs-range",
-+						   axes[i].range, 2)) {
-+			dev_err(dev, "abs-range invalid or missing");
-+			goto err;
-+		}
-+
-+		fwnode_property_read_u32(child, "abs-fuzz",
-+					 &axes[i].fuzz);
-+		fwnode_property_read_u32(child, "abs-flat",
-+					 &axes[i].flat);
-+
-+		input_set_abs_params(joy->input, axes[i].code,
-+				     axes[i].range[0], axes[i].range[1],
-+				     axes[i].fuzz,
-+				     axes[i].flat);
-+		input_set_capability(joy->input, EV_ABS, axes[i].code);
-+	}
-+
-+	joy->axes = axes;
-+
-+	return 0;
-+
-+err:
-+	fwnode_handle_put(child);
-+	return -EINVAL;
-+}
-+
-+static int adc_joystick_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct adc_joystick *joy;
-+	struct input_dev *input;
-+	int bits, ret, i;
-+
-+	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
-+	if (!joy)
-+		return -ENOMEM;
-+
-+	joy->chans = devm_iio_channel_get_all(dev);
-+	if (IS_ERR(joy->chans)) {
-+		ret = PTR_ERR(joy->chans);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(dev, "Unable to get IIO channels");
-+		return ret;
-+	}
-+
-+	/* Count how many channels we got. NULL terminated. */
-+	while (joy->chans[joy->num_chans].indio_dev)
-+		joy->num_chans++;
-+
-+	bits = joy->chans[0].channel->scan_type.storagebits;
-+	if (!bits || (bits >> 3) > 2) {
-+		dev_err(dev, "Unsupported channel storage size");
-+		return -EINVAL;
-+	}
-+	for (i = 1; i < joy->num_chans; ++i)
-+		if (joy->chans[i].channel->scan_type.storagebits != bits) {
-+			dev_err(dev, "Channels must have equal storage size");
-+			return -EINVAL;
-+		}
-+
-+	input = devm_input_allocate_device(dev);
-+	if (!input) {
-+		dev_err(dev, "Unable to allocate input device");
-+		return -ENOMEM;
-+	}
-+
-+	joy->input = input;
-+	input->name = pdev->name;
-+	input->id.bustype = BUS_HOST;
-+	input->open = adc_joystick_open;
-+	input->close = adc_joystick_close;
-+
-+	ret = adc_joystick_set_axes(dev, joy);
-+	if (ret)
-+		return ret;
-+
-+	input_set_drvdata(input, joy);
-+	ret = input_register_device(input);
-+	if (ret) {
-+		dev_err(dev, "Unable to register input device: %d", ret);
-+		return ret;
-+	}
-+
-+	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
-+	if (IS_ERR(joy->buffer)) {
-+		dev_err(dev, "Unable to allocate callback buffer");
-+		return PTR_ERR(joy->buffer);
-+	}
-+
-+	ret = devm_add_action_or_reset(dev, adc_joystick_cleanup, joy->buffer);
-+	if (ret)
-+		dev_err(dev, "Unable to add action");
-+
-+	return ret;
-+}
-+
-+static const struct of_device_id adc_joystick_of_match[] = {
-+	{ .compatible = "adc-joystick", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, adc_joystick_of_match);
-+
-+static struct platform_driver adc_joystick_driver = {
-+	.driver = {
-+		.name = "adc-joystick",
-+		.of_match_table = of_match_ptr(adc_joystick_of_match),
-+	},
-+	.probe = adc_joystick_probe,
-+};
-+module_platform_driver(adc_joystick_driver);
-+
-+MODULE_DESCRIPTION("Input driver for joysticks connected over ADC");
-+MODULE_AUTHOR("Artur Rojek <contact@artur-rojek.eu>");
-+MODULE_LICENSE("GPL");
--- 
-2.25.0
-
+SGkgTGludXMsDQoNCk9uIDIwMjAtMDEtMjYgNzoxNiBhLm0uLCBMaW51cyBXYWxsZWlqIHdyb3Rl
+Og0KPiBPbiBGcmksIEphbiAyNCwgMjAyMCBhdCAxOjQ3IEFNIEpvbmF0aGFuIEJha2tlciA8eGMt
+cmFjZXIyQGxpdmUuY2E+IHdyb3RlOg0KPiANCj4+IFRoYW5rcyBmb3IgdGhlIGRyaXZlciwgSSd2
+ZSB0ZXN0ZWQgaXQgb24gYSBmaXJzdC1nZW4gR2FsYXh5IFMNCj4+IGRldmljZSB3aXRoIGEgR1Ay
+QVAwMDJBMDBGLiAgSSBoYXZlIGEgZmV3IGNvbW1lbnRzIHRoYXQgSSd2ZSBwdXQgaW5saW5lDQo+
+PiBiYXNlZCBvbiBteSBleHBlcmllbmNlcy4NCj4gDQo+IFRoYW5rcyBhIGxvdCENCj4gDQo+PiBC
+b3RoIHNob3J0bHkgYWZ0ZXIgcHJvYmUgKHdoZW4gcnVudGltZSBwbSB0aW1lb3V0IG9jY3Vycz8p
+IGFuZCBhZnRlcg0KPj4gbWFudWFsbHkgZGlzYWJsaW5nIHRoZSBwcm94aW1pdHkgZXZlbnQsIHRo
+aXMNCj4+IGlycSBoYW5kbGVyIGlzIGNhbGxlZC4gIFNpbmNlIHRoZSBjaGlwIGlzIGluIGxvdyBw
+b3dlciBzdGF0ZSwgaXQgb2J2aW91c2x5DQo+PiBmYWlscyB0byByZWFkIHRoZSBwcm94aW1pdHkg
+dmFsdWUgYW5kIHdyaXRlIHRvIHRoZSBPQ09OIHJlZ2lzdGVyIGJlbG93LCBlZw0KPj4NCj4+IFsg
+ICAgNy4yMTU4NzVdIGdwMmFwMDAyIDExLTAwNDQ6IGVycm9yIHJlYWRpbmcgcHJveGltaXR5DQo+
+PiBbICAgIDguMTA1ODc4XSBncDJhcDAwMiAxMS0wMDQ0OiBlcnJvciBzZXR0aW5nIHVwIFZPVVQg
+Y29udHJvbCAxDQo+Pg0KPj4gQ2FuIHdlIGRvIHNvbWV0aGluZyBsaWtlIGRpc2FibGVfaXJxKCkg
+aW4gdGhlIHJ1bnRpbWUgcG0gZnVuY3Rpb24gdG8gcHJldmVudA0KPj4gdGhpcz8NCj4gDQo+IEkg
+YWRkZWQgdGhhdCBpbiB2NiwgSSBob3BlIHRoaXMgc29sdmVzIHlvdXIgcHJvYmxlbS4NCg0KWWVw
+LCBpdCBhcHBlYXJzIHRvLiAgVGhhbmtzLg0KDQo+IA0KPj4gVGhlIGdwMmFwMDAyczAwZl9yZWdt
+YXBfaTJjX3JlYWQgZnVuY3Rpb24gd29ya3Mgb24gdGhlIGdwMmFwMDAyYTAwZiBhcyB3ZWxsLA0K
+Pj4gc28gdGhpcyBjYW4gYmUgc2ltcGxpZmllZC9kcm9wcGVkLg0KPiANCj4gRml4ZWQgdGhpcyB0
+b28gaW4gdjYuDQo+IA0KPj4+ICsgICAgICAgICAgICAgaWYgKGNoX3R5cGUgIT0gSUlPX0NVUlJF
+TlQpIHsNCj4+PiArICAgICAgICAgICAgICAgICAgICAgZGV2X2VycihkZXYsDQo+Pj4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIndyb25nIHR5cGUgb2YgSUlPIGNoYW5uZWwgc3BlY2lm
+aWVkIGZvciBBTFNPVVRcbiIpOw0KPj4+ICsgICAgICAgICAgICAgICAgICAgICByZXR1cm4gLUVJ
+TlZBTDsNCj4+PiArICAgICAgICAgICAgIH0NCj4+DQo+PiBUaGlzIGVuZm9yY2VzIGEgY3VycmVu
+dCBBREMsIHdoaWxlIHNldmVyYWwgZGV2aWNlcyBiZXNpZGVzIG1pbmUgKGVnIEdhbGF4eSBOZXh1
+cykNCj4+IHVzZSBhIHJlc2lzdG9yIGFuZCBhIHZvbHRhZ2UgQURDLiAgRm9yIHRoaXMgY2FzZSwg
+Y291bGQgd2UgYWRkIGEgZGV2aWNlIHByb3BlcnR5IHN1Y2ggYXMNCj4+IHNoYXJwLGFkYy1hZGp1
+c3RtZW50LXJhdGlvIHRvIGNvbnZlcnQgZnJvbSB0aGUgcmF3IEFEQyB2YWx1ZXMgdG8gYSAiY3Vy
+cmVudCIgdGhhdA0KPj4gY291bGQgYmUgdXNlZCBpbiB0aGUgbG9va3VwIHRhYmxlPyAgU28gdGhl
+ICJjdXJyZW50IiB3b3VsZCBiZSB0aGUgcmF3IEFEQyBkaXZpZGVkDQo+PiBieSB0aGF0IHNwZWNp
+YWwgdmFsdWUuDQo+Pg0KPj4gSW5zdHJ1Y3Rpb25zIGZvciBjb252ZXJ0aW5nIHRoZSBBREMgYmFj
+ayB0byB0aGUgY3VycmVudCBjYW4gYmUgZm91bmQgZWcgYXQNCj4+IGh0dHBzOi8vYW5kcm9pZC5n
+b29nbGVzb3VyY2UuY29tL2RldmljZS9zYW1zdW5nL2NyZXNwby8rLzJlMGFiNzI2NWUzMDM5ZmVl
+Nzg3YzIyMTZlMGM5OGQ5MmVhMGI0OWUlNUUlMjEvI0YwDQo+IA0KPiBJJ2QgbGlrZSB0byBrZWVw
+IHRoYXQgYXMgYSBmdXR1cmUgZW5oYW5jZW1lbnQgdW5sZXNzIHNvbWVvbmUgaXMgdmVyeSBlYWdl
+cg0KPiB0byBnZXQgaXQgYW5kIGhhcyBhIGRldmljZSB0aGV5IGNhbiB0ZXN0IGl0IG9uLiBPdGhl
+cndpc2UgaXQgd2lsbCBiZQ0KPiBqdXN0IGRyeS1jb2RpbmcNCj4gb24gbXkgcGFydC4NCg0KV2Vs
+bCwgSSd2ZSBnb3Qgc3VjaCBhIGRldmljZSBhbmQgY2FuIHRlc3QgOikNCg0KPiANCj4gSSB0aGlu
+ayB0aGUgcHJvcGVydHkgd2Ugd291bGQgYWRkIGluIHRoZSBkZXZpY2UgdHJlZSBpbiB0aGF0IGNh
+c2Ugc2hvdWxkDQo+IGJlIHRoZSByZXNpc3RhbmNlIHZhbHVlLiBUaGlzIGlzIGJhc2VkIG9uIHRo
+ZSBmb2xsb3dpbmcgYXNzdW1wdGlvbg0KPiB3aGljaCBpcyBpbmRlZWQgYSBiaXQgb2Ygc3BlY3Vs
+YXRpb24gc2luY2UgdGhlcmUgaXMgbm8gcHJvcGVyIGRhdGFzaGVldA0KPiBmb3IgdGhlIGxpZ2h0
+IHNlbnNvciBwYXJ0IG9mIHRoZSBjb21wb25lbnQ6DQo+IA0KPiAtIFRoZSBsaWdodCBzZW5zb3Ig
+cGFydCBpcyBzaW1wbHkgYSBwaG90b2Rpb2RlDQo+IC0gVGhpcyBlbWl0cyBhIG5vbmxpbmVhciBj
+dXJyZW50IGluIHJlbGF0aW9uIHRvIGhvdyBtYW55DQo+ICAgcGhvdG9ucyBoaXQgdGhlIHBob3Rv
+ZGlvZGUgaW4gYSB0aW1lIGludGVydmFsLCB0aGUgcmVsYXRpb25zaGlwDQo+ICAgaXMgZGVzY3Jp
+YmVkIGluIHRoZSBjdXJyZW4tPmx1eCB0YWJsZSB3ZSBoYXZlDQo+IC0gU29tZSB2ZW5kb3JzIGRv
+IG5vdCBoYXZlIGFueSBjdXJyZW50IEFEQywgc28gdGhleSBjb25uZWN0DQo+ICAgdGhpcyB0byBh
+IHJlc2lzdG9yLCBhbmQgbWVhc3VyZSB0aGUgdm9sdGFnZSBvdmVyIHRoZQ0KPiAgIHJlc2lzdG9y
+IGJlY2F1c2UgdGhlIGhhdmUgYSB2b2x0YWdlIEFEQw0KPiANCj4gU2luY2UgY3VycmVudCBpcyBs
+aW5lYXIgdG8gdGhlIHZvbHRhZ2Ugb3ZlciB0aGUgcmVzaXN0b3IsIHdlIHNob3VsZA0KPiBpbmNs
+dWRlIHRoZSByZXNpc3RhbmNlIGluIHRoZSBkZXZpY2UgdHJlZSwgdGhlbiB1c2luZyB0aGF0IHRo
+ZQ0KPiBjb3JyZXNwb25kaW5nIGN1cnJlbnQgY2FuIGJlIGNhbGN1bGF0ZWQgYW5kIHdlIHVzZSB0
+aGUgc2FtZQ0KPiBsb29rLXVwIHRhYmxlIHRvIGZpbmQgdGhlIGx1eC4gUHJvYmFibHkgZWFjaCBz
+eXN0ZW0gbWF5IG5lZWQNCj4gdG8gYWxzbyBzdWJ0cmFjdCBzb21lIGJpYXMgdm9sdGFnZSBvciBz
+by4NCg0KWWVzLCB0aGlzIGlzIG15IHVuZGVyc3RhbmRpbmcgb2YgaXQgYXMgd2VsbCAoSSBhbHNv
+IGhhdmUgbm8gZGF0YXNoZWV0KS4NCg0KR2l2ZW4gViA9IGFjdHVhbCB2b2x0YWdlIGluIFYsIFZy
+ZWYgPSByZWZlcmVuY2Ugdm9sdGFnZSBvZiBBREMgaW4gViwgQURDID0gdmFsdWUNCnJlYWQgZnJv
+bSBBREMsIEFEQ21heCA9IG1heGltdW0gcG9zc2libGUgdmFsdWUgcmVhZCBmcm9tIEFEQywgSSA9
+IGN1cnJlbnQgaW4gYW1wcywNClIgPSByZXNpc3RvciB2YWx1ZSBpbiBvaG1zLCB1QSA9IGN1cnJl
+bnQgaW4gbWljcm9hbXBzDQoNClYgLyBWcmVmID0gQURDIC8gQURDbWF4DQpWID0gKEFEQyAvIEFE
+Q21heCkgKiBWcmVmDQoNClYgPSBJICogUg0KSSAqIFIgPSAoQURDIC8gQURDbWF4KSAqIFZyZWYN
+CkkgPSBBREMgKiBWcmVmIC8gQURDbWF4IC8gUg0KDQpIb3dldmVyLCBiZWNhdXNlIHdlIHdhbnQg
+dGhlIGN1cnJlbnQgaW4gdUEgZm9yIHRoZSB0YWJsZSwgKG5vdGUsIHlvdXIgY29tbWVudCBzYXlz
+DQp0aGF0IHRoZSB0YWJsZSBpcyBiYXNlZCBvbiBtQSwgYnV0IEkgYmVsaWV2ZSB0aGF0IGl0IHNo
+b3VsZCBhY3R1YWxseSBiZSB1QSkNCg0KdUEgPSBBREMgKiBWcmVmIC8gQURDbWF4IC8gUiAqIDEw
+MDAwMDANCg0KVGhlbiwgaW4gb3JkZXIgdG8gYXZvaWQgbXVsdGlwbHlpbmcgYnkgYSBkZWNpbWFs
+LCB0aGUgdUEgaXMgdGhlIEFEQyB2YWx1ZSBkaXZpZGVkDQpieSB0aGUgaW52ZXJzZSBvZg0KDQoo
+MTAwMDAwMCAqIFZyZWYgLyBBRENtYXggLyBSKQ0KDQpGb3IgZXhhbXBsZSwgb24gdGhlIGZpcnN0
+IGdlbiBHYWxheHkgUyBzZXJpZXMgYW5kIHRoZSBOZXh1cyBTLCB0aGUgVnJlZiBpcyAzLjNWLA0K
+dGhlIEFEQyBpcyAxMiBiaXQgKDJeMTIgPSA0MDk2LCBzbyBoaWdoIHZhbHVlIGlzIDQwOTUpLCB0
+aGUgcmVzaXN0b3IgaXMgNDcwMDBvaG1zLA0KDQppbnZlcnNlIG9mICgxMDAwMDAwICogMy4zIC8g
+NDA5NSAvIDQ3MDAwKSA9IDU4DQoNCnNvIHdlIG5lZWQgdG8gZGl2aWRlIHRoZSByYXcgQURDIHJl
+YWRpbmcgYnkgNTggaW4gb3JkZXIgdG8gZ2V0IHRoZSB1QSBmb3IgdGhlIGN1cnJlbnQtPmx1eA0K
+dGFibGUuDQoNCkEgcXVpY2sgcGF0Y2ggdGhhdCBJIHVzZWQgZm9yIHRlc3RpbmcgKGJhc2VkIG9m
+ZiBvZiB2NSkgaXMNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2xpZ2h0L2dwMmFwMDAyLmMg
+Yi9kcml2ZXJzL2lpby9saWdodC9ncDJhcDAwMi5jDQppbmRleCBhNTg5Nzk1OWY3MGQuLmI5OGFl
+YzMzN2Y4YiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvaWlvL2xpZ2h0L2dwMmFwMDAyLmMNCisrKyBi
+L2RyaXZlcnMvaWlvL2xpZ2h0L2dwMmFwMDAyLmMNCkBAIC0xMzAsNiArMTMwLDcgQEANCiAgKiBA
+dmRkOiByZWd1bGF0b3IgY29udHJvbGxpbmcgVkREDQogICogQHZpbzogcmVndWxhdG9yIGNvbnRy
+b2xsaW5nIFZJTw0KICAqIEBhbHNvdXQ6IElJTyBBREMgY2hhbm5lbCB0byBjb252ZXJ0IHRoZSBB
+TFNPVVQgc2lnbmFsDQorICogQGFkY19hZGo6IGNvbnZlcnNpb24gZmFjdG9yIGlmIHZvbHRhZ2Ug
+QURDIHVzZWQgaW5zdGVhZCBvZiBjdXJyZW50IEFEQw0KICAqIEBpc19ncDJhcDAwMnMwMGY6IHRo
+aXMgaXMgdGhlIEdQMkFQMDAyRiB2YXJpYW50IG9mIHRoZSBjaGlwDQogICogQGVuYWJsZWQ6IHdl
+IGNhbm5vdCByZWFkIHRoZSBzdGF0dXMgb2YgdGhlIGhhcmR3YXJlIHNvIHdlIG5lZWQgdG8NCiAg
+KiBrZWVwIHRyYWNrIG9mIHdoZXRoZXIgdGhlIGV2ZW50IGlzIGVuYWJsZWQgdXNpbmcgdGhpcyBz
+dGF0ZSB2YXJpYWJsZQ0KQEAgLTE0Myw2ICsxNDQsNyBAQCBzdHJ1Y3QgZ3AyYXAwMDIgew0KIAll
+bnVtIGlpb19ldmVudF9kaXJlY3Rpb24gZGlyOw0KIAl1OCBoeXNfZmFyOw0KIAl1OCBoeXNfY2xv
+c2U7DQorCXU4IGFkY19hZGo7DQogCWJvb2wgaXNfZ3AyYXAwMDJzMDBmOw0KIAlib29sIGVuYWJs
+ZWQ7DQogfTsNCkBAIC0yNzIsNiArMjc0LDkgQEAgc3RhdGljIGludCBncDJhcDAwMl9nZXRfbHV4
+KHN0cnVjdCBncDJhcDAwMiAqZ3AyYXAwMDIpDQogCWlmIChyZXQgPCAwKQ0KIAkJcmV0dXJuIHJl
+dDsNCiANCisJaWYgKGdwMmFwMDAyLT5hZGNfYWRqKQ0KKwkJcmVzIC89IGdwMmFwMDAyLT5hZGNf
+YWRqOw0KKw0KIAlkZXZfZGJnKGdwMmFwMDAyLT5kZXYsICJyZWFkICVkIG1BIGZyb20gQURDXG4i
+LCByZXMpOw0KIA0KIAlpbGwxID0gJmdwMmFwMDAyX2lsbHVtaW5hbmNlX3RhYmxlWzBdOw0KQEAg
+LTU4OCw3ICs1OTMsMTYgQEAgc3RhdGljIGludCBncDJhcDAwMl9wcm9iZShzdHJ1Y3QgaTJjX2Ns
+aWVudCAqY2xpZW50LA0KIAkJcmV0ID0gaWlvX2dldF9jaGFubmVsX3R5cGUoZ3AyYXAwMDItPmFs
+c291dCwgJmNoX3R5cGUpOw0KIAkJaWYgKHJldCA8IDApDQogCQkJcmV0dXJuIHJldDsNCi0JCWlm
+IChjaF90eXBlICE9IElJT19DVVJSRU5UKSB7DQorCQlpZiAoY2hfdHlwZSA9PSBJSU9fVk9MVEFH
+RSkgew0KKwkJCXJldCA9IGRldmljZV9wcm9wZXJ0eV9yZWFkX3U4KGRldiwNCisJCQkJInNoYXJw
+LGFkYy1hZGp1c3RtZW50LXJhdGlvIiwgJnZhbCk7DQorCQkJaWYgKHJldCkgew0KKwkJCQlkZXZf
+ZXJyKGRldiwNCisJCQkJCSJmYWlsZWQgdG8gb2J0YWluIGFkYyBjb252ZXJzaW9uXG4iKTsNCisJ
+CQkJcmV0dXJuIC1FSU5WQUw7DQorCQkJfQ0KKwkJCWdwMmFwMDAyLT5hZGNfYWRqID0gdmFsOw0K
+KwkJfSBlbHNlIGlmIChjaF90eXBlICE9IElJT19DVVJSRU5UKSB7DQogCQkJZGV2X2VycihkZXYs
+DQogCQkJCSJ3cm9uZyB0eXBlIG9mIElJTyBjaGFubmVsIHNwZWNpZmllZCBmb3IgQUxTT1VUXG4i
+KTsNCiAJCQlyZXR1cm4gLUVJTlZBTDsNCg0KQWx0ZXJuYXRpdmVseSwgeW91IGNvdWxkIGNvbGxl
+Y3QgdGhlIHJlc2lzdG9yIHZhbHVlLCB0aGUgQURDIHByZWNpc2lvbiAodGhpcyBkb2Vzbid0DQph
+cHBlYXIgdG8gYmUgcXVlcnlhYmxlIHZpYSB0aGUgSUlPIGxheWVyKSwgYW5kIHRoZSByZWZlcmVu
+Y2Ugdm9sdGFnZSBsZXZlbCAtIGJ1dCBJJ20NCm5vdCBzdXJlIGhvdyB5b3UnZCBkbyB0aGUgaW52
+ZXJzZSBjYWxjdWxhdGlvbiBpbiB0aGUga2VybmVsLg0KDQo+IA0KPiBCdXQgd2UgZGVmaW5hdGVs
+eSBuZWVkIHNvbWV0aGluZyB0byB0ZXN0IG9uIHRvIGRvIHRoaXMgcmlnaHQ+IA0KPiBZb3VycywN
+Cj4gTGludXMgV2FsbGVpag0KPiANCg0KVGhhbmtzLA0KSm9uYXRoYW4gQmFra2VyDQo=

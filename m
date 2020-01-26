@@ -2,77 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD17F1490C4
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2020 23:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 889F3149AA0
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jan 2020 13:50:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728900AbgAXWOB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jan 2020 17:14:01 -0500
-Received: from ip-78-45-52-129.net.upcbroadband.cz ([78.45.52.129]:33216 "EHLO
-        ixit.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727590AbgAXWOA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 24 Jan 2020 17:14:00 -0500
-Received: from localhost.localdomain (227.146.230.94.awnet.cz [94.230.146.227])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ixit.cz (Postfix) with ESMTPSA id 85484251ED;
-        Fri, 24 Jan 2020 23:04:17 +0100 (CET)
-From:   David Heidelberg <david@ixit.cz>
-To:     linux-iio@vger.kernel.org
-Cc:     David Heidelberg <david@ixit.cz>
-Subject: [PATCH 7/7] iio: light: al3320a allow module autoload when defined in dts
-Date:   Fri, 24 Jan 2020 23:03:46 +0100
-Message-Id: <20200124220346.2655336-7-david@ixit.cz>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200124220346.2655336-1-david@ixit.cz>
-References: <20200124220346.2655336-1-david@ixit.cz>
+        id S2387459AbgAZMuj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 26 Jan 2020 07:50:39 -0500
+Received: from mail.karanganyarkab.go.id ([175.106.17.102]:56924 "EHLO
+        srv.karanganyarkab.go.id" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387398AbgAZMui (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jan 2020 07:50:38 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by srv.karanganyarkab.go.id (Postfix) with ESMTP id 51E332804103E;
+        Sun, 26 Jan 2020 19:40:33 +0700 (+07)
+Received: from srv.karanganyarkab.go.id ([127.0.0.1])
+        by localhost (srv.karanganyarkab.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 4a3dFvj3_jC2; Sun, 26 Jan 2020 19:40:32 +0700 (+07)
+Received: from localhost (localhost [127.0.0.1])
+        by srv.karanganyarkab.go.id (Postfix) with ESMTP id D8F8128041038;
+        Sun, 26 Jan 2020 19:40:32 +0700 (+07)
+X-Virus-Scanned: amavisd-new at srv.karanganyarkab.go.id
+Received: from srv.karanganyarkab.go.id ([127.0.0.1])
+        by localhost (srv.karanganyarkab.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id gQecaFpg07zt; Sun, 26 Jan 2020 19:40:32 +0700 (+07)
+Received: from DESKTOP-IB4GLF4.home (unknown [149.140.81.151])
+        by srv.karanganyarkab.go.id (Postfix) with ESMTPSA id C6D762804103E;
+        Sun, 26 Jan 2020 19:40:26 +0700 (+07)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: BIST DU INTERESSIERT?  26-01-2020
+To:     Recipients <Disdukcapil@karanganyarkab.go.id>
+From:   "ATANASOVA RADKA" <Disdukcapil@karanganyarkab.go.id>
+Date:   Sun, 26 Jan 2020 16:39:52 +0300
+Reply-To: atanasovaradka01@hotmail.com
+X-Antivirus: Avast (VPS 200125-0, 01/25/2020), Outbound message
+X-Antivirus-Status: Clean
+Message-Id: <20200126124026.C6D762804103E@srv.karanganyarkab.go.id>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-- also drop init.h and alphabetically sort
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/iio/light/al3320a.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
-index d99f9d139b5f..d66c85b27907 100644
---- a/drivers/iio/light/al3320a.c
-+++ b/drivers/iio/light/al3320a.c
-@@ -12,9 +12,9 @@
-  * potential races with the interrupt handling.
-  */
- 
--#include <linux/module.h>
--#include <linux/init.h>
- #include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -238,9 +238,16 @@ static const struct i2c_device_id al3320a_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, al3320a_id);
- 
-+static const struct of_device_id al3320a_of_match[] = {
-+	{ .compatible = "dynaimage,al3320a", },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, al3320a_of_match);
-+
- static struct i2c_driver al3320a_driver = {
- 	.driver = {
- 		.name = AL3320A_DRV_NAME,
-+		.of_match_table = al3320a_of_match,
- 		.pm = &al3320a_pm_ops,
- 	},
- 	.probe		= al3320a_probe,
--- 
-2.25.0
-
+Ich bin ATANASOVA RADKA LULCHEVA. Ich habe Ihre E-Mail-Adresse für eine Erbschaft im Wert von Millionen von Dollar ausgewählt. Bitte kontaktieren Sie mich für weitere Informationen per E-Mail: atanasovaradka01@hotmail.com

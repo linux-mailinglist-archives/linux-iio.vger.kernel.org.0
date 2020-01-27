@@ -2,102 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4722D14A5A0
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2020 15:02:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B053E14A5FD
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2020 15:26:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727479AbgA0OCH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Jan 2020 09:02:07 -0500
-Received: from mail.andi.de1.cc ([85.214.55.253]:35176 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727177AbgA0OCH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Jan 2020 09:02:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
-        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=LQaQHhSfH+sdElaYG2t4bwuZkno397hqKjUJr+Nywhc=; b=FYZZT5KIWLuwe4lfQSfO73bGe
-        hvlKQKtQk3udLJjRRhOELpAITa8OIkXy5c/hXlYC8c9suhPUnSJ4AEnUVZMsatemtSvzI7iyf2NYt
-        tW+4H990JTXdA8gspRMYjRUgqwToHu04XYeDx5yhO/tfzDPSNOEkDAqc+XoBerBhkN7WU=;
-Received: from [2a02:790:ff:1019:7ee9:d3ff:fe1f:a246] (helo=localhost)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1iw4xg-0000LB-0N; Mon, 27 Jan 2020 15:01:57 +0100
-Received: from [::1] (helo=localhost)
-        by eeepc with esmtp (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1iw2MQ-0007E3-54; Mon, 27 Jan 2020 12:15:18 +0100
-Date:   Mon, 27 Jan 2020 12:15:11 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, b.galvani@gmail.com, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        phh@phh.me, stefan@agner.ch, letux-kernel@openphoenux.org
-Subject: Re: [PATCH 2/5] mfd: rn5t618: add ADC subdevice for RC5T619
-Message-ID: <20200127121422.66f4f3e8@kemnade.info>
-In-Reply-To: <20200127092815.GA3548@dell>
-References: <20200117215926.15194-1-andreas@kemnade.info>
-        <20200117215926.15194-3-andreas@kemnade.info>
-        <20200120084934.GZ15507@dell>
-        <20200124162818.0697f551@kemnade.info>
-        <20200127092815.GA3548@dell>
-X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
+        id S1728241AbgA0O0x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Jan 2020 09:26:53 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:43743 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727235AbgA0O0x (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jan 2020 09:26:53 -0500
+Received: by mail-ot1-f65.google.com with SMTP id p8so8490029oth.10;
+        Mon, 27 Jan 2020 06:26:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=384aXLk+Dp5oNTQmdLCF7Z+jOr9Ua155OMVyKVmomg4=;
+        b=VIWewOxjLUuTP2WoCzETvP8DVDjMBREHRfXYK4fGAaCW0XjBk2XtvaYqp309JaBwio
+         QK9gp4h5SLvlE5+PQm49FhDpAAuXAv8R6mnywS4qKhJ/0TOv0Th0Pj4hQrH5ngffuhhn
+         LspSM1yQQjSQ2kEZAPXfRLz1ROPY7W3plfNd6LkbdfZqxTsX09WjaMYLpiv4O7tIwkn/
+         7vL0S8e8xXuH1ZblAG2lkl2Vc1IdlXkKyOf2ImKTZJBydTOi1mKTr2sCm5h6ud/g3gSw
+         OJMEssjOvzwKgE950jpviFC/aKmGIO150hXVIRdvOucaYDvCpNKSkDKZcx0MHjP1qDSX
+         oB0g==
+X-Gm-Message-State: APjAAAVTIqachpf9810jVb+cDA28vOlfSnGvC1WiSuX3J5H8s7QqZ2/Z
+        K65Q6KaPjE2vdWOJPRvMs4nDaSM=
+X-Google-Smtp-Source: APXvYqyP63MnmHJt0hGWP9PkKahnDDxwFoVmtDIBkx6YXdHnUBlVqA1nwvgSNYg+n1ALMcngCXMc9w==
+X-Received: by 2002:a9d:6f0d:: with SMTP id n13mr12889727otq.165.1580135212187;
+        Mon, 27 Jan 2020 06:26:52 -0800 (PST)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id n2sm4798369oia.58.2020.01.27.06.26.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2020 06:26:51 -0800 (PST)
+Received: (nullmailer pid 30592 invoked by uid 1000);
+        Mon, 27 Jan 2020 14:26:50 -0000
+Date:   Mon, 27 Jan 2020 08:26:50 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Artur Rojek <contact@artur-rojek.eu>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Artur Rojek <contact@artur-rojek.eu>
+Subject: Re: [PATCH v2 4/5] dt-bindings: input: Add docs for ADC driven
+ joystick.
+Message-ID: <20200127142650.GA30045@bogus>
+References: <20200126161236.63631-1-contact@artur-rojek.eu>
+ <20200126161236.63631-4-contact@artur-rojek.eu>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/AnyB9TPe_XHn_KVZv1oPKe_"; protocol="application/pgp-signature"
-X-Spam-Score: -1.0 (-)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200126161236.63631-4-contact@artur-rojek.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---Sig_/AnyB9TPe_XHn_KVZv1oPKe_
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Sun, 26 Jan 2020 17:12:35 +0100, Artur Rojek wrote:
+> Add documentation for the adc-joystick driver, used to provide support
+> for joysticks connected over ADC.
+> 
+> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+> Tested-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+> 
+>  Changes:
+> 
+>  v2: - Add `reg` property to axis subnode in order to enumerate the axes,
+>      - rename `linux,abs-code` property to `linux,code`,
+>      - drop `linux,` prefix from the remaining properties of axis subnode
+> 
+>  .../bindings/input/adc-joystick.yaml          | 117 ++++++++++++++++++
+>  1 file changed, 117 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/adc-joystick.yaml
+> 
 
-On Mon, 27 Jan 2020 09:28:15 +0000
-Lee Jones <lee.jones@linaro.org> wrote:
+My bot found errors running 'make dt_binding_check' on your patch:
 
-> On Fri, 24 Jan 2020, Andreas Kemnade wrote:
-> > hmm, I cannot find this in any branch/repo I know of and not in linux-n=
-ext,
-> > just wondering...
-> > I guess the iio part is something to go towards 5.7 unless 5.5
-> > is delayed mucch. =20
->=20
-> Oh, it looks like there was a conflict.  Could you collect any Acks
-> (including mine) rebase and resend please?
->=20
-on what? It is based on top of my RTC v5 patch series. The ADC series
-as a whole depends on that build-time and runtime as documented in
-the cover letter. Maybe I should have put it into the patches itself.
-I have hopefully addressed every comment in the v5 series.
+Documentation/devicetree/bindings/display/simple-framebuffer.example.dts:21.16-37.11: Warning (chosen_node_is_root): /example-0/chosen: chosen node must be at root node
+Error: Documentation/devicetree/bindings/input/adc-joystick.example.dts:22.31-32 syntax error
+FATAL ERROR: Unable to parse input tree
+scripts/Makefile.lib:300: recipe for target 'Documentation/devicetree/bindings/input/adc-joystick.example.dt.yaml' failed
+make[1]: *** [Documentation/devicetree/bindings/input/adc-joystick.example.dt.yaml] Error 1
+Makefile:1263: recipe for target 'dt_binding_check' failed
+make: *** [dt_binding_check] Error 2
 
-Regards,
-Andreas
-
---Sig_/AnyB9TPe_XHn_KVZv1oPKe_
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl4uxj8ACgkQl4jFM1s/
-ye9Trg/8DZtbTzYhniGrVYebXsC7fhf62BAwRTbAFR/7TnyrgurRe2CZT01DFIYJ
-gO0ZlaH0A+ouoxen85wdKyNIZfEvRJjZFjg3XNfXCQ1xk7oz0Zn7abzTDsoJFNFC
-iOnSYVSmBehBsRtza0vodN4KadAFqLKiPYca/3/TnzCBdnWJukOzYgmSRvjHKqqo
-h99XAKlr6Sw1oYjxUwyTt4Gl0ynvf7CaLSJoHcKsVaAeSONAcsyq/hQjDGf5Fygy
-Fm1RNTvUtf1jXnYiskLgKreHulRy7b303N6CW8KdWbe/NF1UTULloaudmneCcsrJ
-PvtNQW5U6JxOHNARJe+6J5X+VaT13hnVjxwzSUYA/l7qF30y94b5YrUkV6AVkgGn
-Qxhhk9bnY8/S1d25KQqBzQRur++d6sdr3yB7WA0jF7zB+u0CU7xY+Z5wtKHHbvBU
-UUBkC7HfCRLIh6WH3PuU1XR6zQA+IFDH2RScYr9fYWgQHzHbGHaGTycs2xjj304j
-mjHgn+06tB40lE8Ixw9aNMURU+wdNJPYSJLKTHsoI2HZHxMAAODSgZk1czYV/xkz
-WpkBoQ6AzmxptY61PhMgR1YB/Hu2tNJyR9I5Z9NuJro7exYeVEU77T5qUCSgHY8D
-FWmJA4LmlWNZ1lqhZUbQVE+w7UZQjHqDVOlyjdbh889RhrcWUZE=
-=Ssrt
------END PGP SIGNATURE-----
-
---Sig_/AnyB9TPe_XHn_KVZv1oPKe_--
+See https://patchwork.ozlabs.org/patch/1229387
+Please check and re-submit.

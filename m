@@ -2,85 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BC5B14A0B4
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2020 10:28:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A29914A374
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2020 13:04:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729327AbgA0J2F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Jan 2020 04:28:05 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:36144 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729142AbgA0J2F (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jan 2020 04:28:05 -0500
-Received: by mail-wm1-f66.google.com with SMTP id p17so6214313wma.1
-        for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2020 01:28:03 -0800 (PST)
+        id S1730353AbgA0MEP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Jan 2020 07:04:15 -0500
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:43122 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728981AbgA0MEP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jan 2020 07:04:15 -0500
+Received: by mail-pl1-f193.google.com with SMTP id p23so3668752plq.10;
+        Mon, 27 Jan 2020 04:04:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=0rrhtVNAh9PShHy/q9Ma9GVW1EfhEw69zS9XJ919ql0=;
-        b=Ry6MxWHzMuizNcrIXmJ+ILo+Ug7WUFj2cdd4Eac/fjorUhjJ2vLe5BblmPQiY93Ojy
-         ZalxLlJsMUzY5eE/JWqQaa48yat6sljaz/LQePrn8lUkDLo0e4xb0Yhfnsyi3I3dp1Xm
-         VXoU8+gImAEfDIYfovlDVgbs9va2kmsp5dOpps8YcCCzJruwdjxY0jNi7Z//uCkt4mNs
-         7QP/OTgqbl+7t2XJUf0KNj7wII9CH/3zuP7oS0U6piojruWjHIY2LdXiQ2ROqb1A8GCz
-         TYOOrRYslFYNPP27XVVKnsYZ5MirgESSHJvSmm0OYpM0Icbc+1htpRyckYSlwJtShVtE
-         AT0A==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=mbGosBGsyuv+lmcdBTGzW/Sctu3s1c7RllqCHsUWLtE=;
+        b=cI98Ast4BM6oCG197UHLAKlLPa9AATMLdDvUczPi3/aWkMZF2BfUS0YsZ9ozStgo/I
+         fgrOhvWGI8TlHnjph9PJeW/+pWB7CaFc1arfq1QGYCH3/quq9OLulT+LDw9mY96trTIV
+         H5YEhUQZKETi2Ix8DvB8kqDhr88SRRH+9PSpXCgfXeSgeGSQ/ijIZicENUfsO0dEfi3d
+         48VLE2MiBmVDj9T1lUtBeiy0ecpAQhIKiLI/rXJ9zr34PEWGiJcmTVBW6uMGZvdCgQXj
+         oDbmdGXbElHUFivlXivkWENlA5+q7jaCLD8cNUOLXfYe75/iYi5K53cnQp7dTIW+8Ufk
+         qGvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=0rrhtVNAh9PShHy/q9Ma9GVW1EfhEw69zS9XJ919ql0=;
-        b=CRC/CEHoVgSQgUv+1bBeCVJcrCkxx+bLzA2MlWc+A0TtUihW8diRrbLzsXXqswSidA
-         yDisbLswpH3Hu/qClx+5vwZYrpBlT7+P+3COhTHeGOOEFc33m1Jvg8drfs5O9wHrWn4b
-         C7B7X7Q0O1DWhjI85w11RYjZAOJ7YeoAvmvVhhKA9/7/NNvt3qHA+SlZhmpCtz6xLYHr
-         wAc8qxE7Ppuisw5WP8H7ZDvGJgcfByCgNg2l2G7pHFQgWHHX2/IE1sR3YukZGEEDZGMe
-         Pl+wZifW3Z/qRzNLvq2WhPIlzmTSQliSOjYZ2QWeVJYYFzHZe9xGWChiN9vG0AWwm3UJ
-         KKKw==
-X-Gm-Message-State: APjAAAXjpjTOOOnR5JFdf4SroETEkAxeVvQZWMdFeS2l/D4PnTGTUcxq
-        5CscQY3yVhwln1e4I5clZhw9Nw==
-X-Google-Smtp-Source: APXvYqzNHfraG8VHB52d4ZUiAtnUfeH8L+HhvLAOE6hLMkT3axNMdPiY+28wttfTyIVlaLSDOucCtQ==
-X-Received: by 2002:a1c:dcd5:: with SMTP id t204mr12654838wmg.34.1580117283232;
-        Mon, 27 Jan 2020 01:28:03 -0800 (PST)
-Received: from dell ([2.27.35.227])
-        by smtp.gmail.com with ESMTPSA id d14sm21424165wru.9.2020.01.27.01.28.02
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=mbGosBGsyuv+lmcdBTGzW/Sctu3s1c7RllqCHsUWLtE=;
+        b=PB+dpwVY0W1tzK3MAv1+eeA84MGJ/MkKG3cbjAnSsx4pOm9eD6JvQF5wbIXDXkvRun
+         POj757h+3EjQ/7wkAElnH6EKHsjag6H1Ol2wLPXO1Yp+fWhI6GQ1P/8p6F26l7ftLJl3
+         8erP5L0BCq3H8qc2xBSoZ6f0K+Xi70E5bB9K3qsivjgsxmoYd4GXKA99NkIZKJcod4vQ
+         8XhXd72lBpWdxSTZW/4RkAPKmFMr0VVPd+2HJnalP5jQhzPXG56mveicr5TdK57ZcgEC
+         ZgIOxOFpB/7nlVY3RcD8mL/GtHGg+1P1EMnPQTVYrWfrwzm6Jb8Dp/00/IAa/In6iCzl
+         FV6w==
+X-Gm-Message-State: APjAAAWXtlAVlqq+v1HecRw6SpdBKiqwv+jVdJL3z2WnlilUTkmoGk2k
+        D7t25q/c5UtebJU2T+OudcJyNJhI6xA=
+X-Google-Smtp-Source: APXvYqyH5yGQA4JteZYp6k8qa92vWNERBII0FVJ57uJbXRMeoj9ODohNngv0VvCFWgwHKM38I26C9w==
+X-Received: by 2002:a17:902:d918:: with SMTP id c24mr17574054plz.167.1580126654908;
+        Mon, 27 Jan 2020 04:04:14 -0800 (PST)
+Received: from localhost.localdomain ([116.126.226.81])
+        by smtp.googlemail.com with ESMTPSA id u18sm16857352pgn.9.2020.01.27.04.04.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2020 01:28:02 -0800 (PST)
-Date:   Mon, 27 Jan 2020 09:28:15 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
+        Mon, 27 Jan 2020 04:04:14 -0800 (PST)
+From:   JieunKim <jieun.kim4758@gmail.com>
+To:     lorenzo.bianconi83@gmail.com
 Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, b.galvani@gmail.com, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        phh@phh.me, stefan@agner.ch, letux-kernel@openphoenux.org
-Subject: Re: [PATCH 2/5] mfd: rn5t618: add ADC subdevice for RC5T619
-Message-ID: <20200127092815.GA3548@dell>
-References: <20200117215926.15194-1-andreas@kemnade.info>
- <20200117215926.15194-3-andreas@kemnade.info>
- <20200120084934.GZ15507@dell>
- <20200124162818.0697f551@kemnade.info>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200124162818.0697f551@kemnade.info>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        JieunKim <jieun.kim4758@gmail.com>
+Subject: [PATCH] iio: imu: st_lsm6dsx: Fix mismatched comments
+Date:   Mon, 27 Jan 2020 21:03:59 +0900
+Message-Id: <20200127120359.3955-1-jieun.kim4758@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 24 Jan 2020, Andreas Kemnade wrote:
-> hmm, I cannot find this in any branch/repo I know of and not in linux-next,
-> just wondering...
-> I guess the iio part is something to go towards 5.7 unless 5.5
-> is delayed mucch.
+odr to odr_table
+gain to fs_table
 
-Oh, it looks like there was a conflict.  Could you collect any Acks
-(including mine) rebase and resend please?
+'gain' is actually in 'st_lsm6dsx_fs' structure of 'fs_table'
 
+Signed-off-by: JieunKim <jieun.kim4758@gmail.com>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 9c3486a8134f..f2113a63721a 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -230,8 +230,8 @@ enum st_lsm6dsx_ext_sensor_id {
+  * @i2c_addr: I2c slave address list.
+  * @wai: Wai address info.
+  * @id: external sensor id.
+- * @odr: Output data rate of the sensor [Hz].
+- * @gain: Configured sensor sensitivity.
++ * @odr_table: Output data rate of the sensor [Hz].
++ * @fs_table: Configured sensor sensitivity table depending on full scale.
+  * @temp_comp: Temperature compensation register info (addr + mask).
+  * @pwr_table: Power on register info (addr + mask).
+  * @off_canc: Offset cancellation register info (addr + mask).
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.17.1
+

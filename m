@@ -2,347 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86FF414A392
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2020 13:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4722D14A5A0
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2020 15:02:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729633AbgA0MNz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Jan 2020 07:13:55 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2299 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728733AbgA0MNz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Jan 2020 07:13:55 -0500
-Received: from lhreml705-cah.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id A44BEE7812C392F49D43;
-        Mon, 27 Jan 2020 12:13:53 +0000 (GMT)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- lhreml705-cah.china.huawei.com (10.201.108.46) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Mon, 27 Jan 2020 12:13:53 +0000
-Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Mon, 27 Jan
- 2020 12:13:52 +0000
-Date:   Mon, 27 Jan 2020 12:13:51 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     <Eugen.Hristev@microchip.com>
-CC:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <Ludovic.Desroches@microchip.com>,
-        <alexandru.ardelean@analog.com>
-Subject: Re: [PATCH v2 3/3] iio: adc: at91-sama5d2_adc: update for other
- trigger usage
-Message-ID: <20200127121351.00000fbf@Huawei.com>
-In-Reply-To: <feaf0731-331d-6aaf-fe34-4b60e2ef24ba@microchip.com>
-References: <1578917098-9674-1-git-send-email-eugen.hristev@microchip.com>
-        <1578917098-9674-4-git-send-email-eugen.hristev@microchip.com>
-        <20200117174249.000011af@Huawei.com>
-        <feaf0731-331d-6aaf-fe34-4b60e2ef24ba@microchip.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727479AbgA0OCH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Jan 2020 09:02:07 -0500
+Received: from mail.andi.de1.cc ([85.214.55.253]:35176 "EHLO mail.andi.de1.cc"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727177AbgA0OCH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 27 Jan 2020 09:02:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
+        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=LQaQHhSfH+sdElaYG2t4bwuZkno397hqKjUJr+Nywhc=; b=FYZZT5KIWLuwe4lfQSfO73bGe
+        hvlKQKtQk3udLJjRRhOELpAITa8OIkXy5c/hXlYC8c9suhPUnSJ4AEnUVZMsatemtSvzI7iyf2NYt
+        tW+4H990JTXdA8gspRMYjRUgqwToHu04XYeDx5yhO/tfzDPSNOEkDAqc+XoBerBhkN7WU=;
+Received: from [2a02:790:ff:1019:7ee9:d3ff:fe1f:a246] (helo=localhost)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iw4xg-0000LB-0N; Mon, 27 Jan 2020 15:01:57 +0100
+Received: from [::1] (helo=localhost)
+        by eeepc with esmtp (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iw2MQ-0007E3-54; Mon, 27 Jan 2020 12:15:18 +0100
+Date:   Mon, 27 Jan 2020 12:15:11 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, b.galvani@gmail.com, linus.walleij@linaro.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        phh@phh.me, stefan@agner.ch, letux-kernel@openphoenux.org
+Subject: Re: [PATCH 2/5] mfd: rn5t618: add ADC subdevice for RC5T619
+Message-ID: <20200127121422.66f4f3e8@kemnade.info>
+In-Reply-To: <20200127092815.GA3548@dell>
+References: <20200117215926.15194-1-andreas@kemnade.info>
+        <20200117215926.15194-3-andreas@kemnade.info>
+        <20200120084934.GZ15507@dell>
+        <20200124162818.0697f551@kemnade.info>
+        <20200127092815.GA3548@dell>
+X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.57]
-X-ClientProxiedBy: lhreml737-chm.china.huawei.com (10.201.108.187) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/AnyB9TPe_XHn_KVZv1oPKe_"; protocol="application/pgp-signature"
+X-Spam-Score: -1.0 (-)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 20 Jan 2020 07:24:50 +0000
-<Eugen.Hristev@microchip.com> wrote:
+--Sig_/AnyB9TPe_XHn_KVZv1oPKe_
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> On 17.01.2020 19:42, Jonathan Cameron wrote:
-> 
-> > On Mon, 13 Jan 2020 12:07:10 +0000
-> > <Eugen.Hristev@microchip.com> wrote:
-> >   
-> >> From: Eugen Hristev <eugen.hristev@microchip.com>
-> >>
-> >> This change will allow the at91-sama5d2_adc driver to use other triggers
-> >> than it's own.
-> >> In particular, tested with the sysfs trigger.
-> >> To be able to achieve this functionality, some changes were required:
-> >> 1) Do not enable/disable channels when enabling/disabling the trigger.
-> >> This is because the trigger is enabled/disabled only for our trigger
-> >> (obviously). We need channels enabled/disabled regardless of what trigger is
-> >> being used.
-> >> 2) Cope with DMA : DMA cannot be used when using another type of trigger.
-> >> Other triggers work through pollfunc, so we get polled anyway on every trigger.
-> >> Thus we have to obtain data at every trigger.
-> >> 3) When to start conversion? The usual pollfunc (store time from subsystem)
-> >> would be in hard irq and this would be a good way, but current iio subsystem
-> >> recommends to have it in the threaded irq. Thus adding software start
-> >> code in this handler.
-> >> 4) Buffer config: we need to setup buffer regardless of our own device's
-> >> trigger. We may get one attached later.
-> >> 5) IRQ handling: we use our own device IRQ only if it's our own trigger
-> >> and we do not use DMA . If we use DMA, we use the DMA controller's IRQ.
-> >>
-> >> Signed-off-by: Eugen Hristev <eugen.hristev@microchip.com>  
-> > 
-> > +CC Alexandru as he's doing a lot of cleanup around the buffer functions.
-> > I'd like Alex to take a look at this.
-> > 
-> > A few comments inline from me.
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> > 
-> > 
-> >   
-> >> ---
-> >> Changes in v2:
-> >> - adapt to the situation of having the previous two patches ahead in the series
-> >>
-> >>   drivers/iio/adc/at91-sama5d2_adc.c | 140 +++++++++++++++++++------------------
-> >>   1 file changed, 73 insertions(+), 67 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> >> index 454a493..34df043 100644
-> >> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> >> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> >> @@ -728,7 +728,6 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
-> >>        struct iio_dev *indio = iio_trigger_get_drvdata(trig);
-> >>        struct at91_adc_state *st = iio_priv(indio);
-> >>        u32 status = at91_adc_readl(st, AT91_SAMA5D2_TRGR);
-> >> -     u8 bit;
-> >>
-> >>        /* clear TRGMOD */
-> >>        status &= ~AT91_SAMA5D2_TRGR_TRGMOD_MASK;
-> >> @@ -739,45 +738,6 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
-> >>        /* set/unset hw trigger */
-> >>        at91_adc_writel(st, AT91_SAMA5D2_TRGR, status);
-> >>
-> >> -     for_each_set_bit(bit, indio->active_scan_mask, indio->num_channels) {
-> >> -             struct iio_chan_spec const *chan = at91_adc_chan_get(indio, bit);
-> >> -             u32 cor;
-> >> -
-> >> -             if (!chan)
-> >> -                     continue;
-> >> -             /* these channel types cannot be handled by this trigger */
-> >> -             if (chan->type == IIO_POSITIONRELATIVE ||
-> >> -                 chan->type == IIO_PRESSURE)
-> >> -                     continue;
-> >> -
-> >> -             if (state) {
-> >> -                     cor = at91_adc_readl(st, AT91_SAMA5D2_COR);
-> >> -
-> >> -                     if (chan->differential)
-> >> -                             cor |= (BIT(chan->channel) |
-> >> -                                     BIT(chan->channel2)) <<
-> >> -                                     AT91_SAMA5D2_COR_DIFF_OFFSET;
-> >> -                     else
-> >> -                             cor &= ~(BIT(chan->channel) <<
-> >> -                                    AT91_SAMA5D2_COR_DIFF_OFFSET);
-> >> -
-> >> -                     at91_adc_writel(st, AT91_SAMA5D2_COR, cor);
-> >> -             }
-> >> -
-> >> -             if (state)
-> >> -                     at91_adc_writel(st, AT91_SAMA5D2_CHER,
-> >> -                                     BIT(chan->channel));
-> >> -             else
-> >> -                     at91_adc_writel(st, AT91_SAMA5D2_CHDR,
-> >> -                                     BIT(chan->channel));
-> >> -     }
-> >> -     /* enable irq only if not using DMA */
-> >> -     if (state && !st->dma_st.dma_chan)
-> >> -             at91_adc_writel(st, AT91_SAMA5D2_IER, AT91_SAMA5D2_IER_DRDY);
-> >> -     /* disable irq only if not using DMA */
-> >> -     if (!state && !st->dma_st.dma_chan)
-> >> -             at91_adc_writel(st, AT91_SAMA5D2_IDR, AT91_SAMA5D2_IER_DRDY);
-> >> -
-> >>        return 0;
-> >>   }
-> >>
-> >> @@ -901,9 +861,22 @@ static int at91_adc_dma_start(struct iio_dev *indio_dev)
-> >>        return 0;
-> >>   }
-> >>
-> >> +static bool at91_adc_buffer_check_use_irq(struct iio_dev *indio,
-> >> +                                       struct at91_adc_state *st)
-> >> +{
-> >> +     /* if using DMA, we do not use our own IRQ (we use DMA-controller) */
-> >> +     if (st->dma_st.dma_chan)
-> >> +             return false;
-> >> +     /* if the trigger is not ours, then it has its own IRQ */
-> >> +     if (iio_trigger_validate_own_device(indio->trig, indio))
-> >> +             return false;
-> >> +     return true;
-> >> +}
-> >> +
-> >>   static int at91_adc_buffer_postenable(struct iio_dev *indio_dev)
-> >>   {
-> >>        int ret;
-> >> +     u8 bit;
-> >>        struct at91_adc_state *st = iio_priv(indio_dev);
-> >>
-> >>        /* check if we are enabling triggered buffer or the touchscreen */
-> >> @@ -921,9 +894,40 @@ static int at91_adc_buffer_postenable(struct iio_dev *indio_dev)
-> >>        ret = at91_adc_dma_start(indio_dev);
-> >>        if (ret) {
-> >>                dev_err(&indio_dev->dev, "buffer postenable failed\n");
-> >> +             iio_triggered_buffer_predisable(indio_dev);  
-> > 
-> > This seems odd given you have called the iio_triggered_buffer_postenable yet..
-> > That is below.  
-> 
-> Hi Jonathan,
-> 
-> You are right, I will remove this.
-> 
-> >   
-> >>                return ret;
-> >>        }
-> >>
-> >> +     for_each_set_bit(bit, indio_dev->active_scan_mask,
-> >> +                      indio_dev->num_channels) {
-> >> +             struct iio_chan_spec const *chan =
-> >> +                                     at91_adc_chan_get(indio_dev, bit);
-> >> +             u32 cor;
-> >> +
-> >> +             if (!chan)
-> >> +                     continue;
-> >> +             /* these channel types cannot be handled by this trigger */
-> >> +             if (chan->type == IIO_POSITIONRELATIVE ||
-> >> +                 chan->type == IIO_PRESSURE)
-> >> +                     continue;
-> >> +
-> >> +             cor = at91_adc_readl(st, AT91_SAMA5D2_COR);
-> >> +
-> >> +             if (chan->differential)
-> >> +                     cor |= (BIT(chan->channel) | BIT(chan->channel2)) <<
-> >> +                             AT91_SAMA5D2_COR_DIFF_OFFSET;
-> >> +             else
-> >> +                     cor &= ~(BIT(chan->channel) <<
-> >> +                            AT91_SAMA5D2_COR_DIFF_OFFSET);
-> >> +
-> >> +             at91_adc_writel(st, AT91_SAMA5D2_COR, cor);
-> >> +
-> >> +             at91_adc_writel(st, AT91_SAMA5D2_CHER, BIT(chan->channel));
-> >> +     }
-> >> +
-> >> +     if (at91_adc_buffer_check_use_irq(indio_dev, st))
-> >> +             at91_adc_writel(st, AT91_SAMA5D2_IER, AT91_SAMA5D2_IER_DRDY);
-> >> +
-> >>        return iio_triggered_buffer_postenable(indio_dev);
-> >>   }
-> >>
-> >> @@ -944,21 +948,11 @@ static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
-> >>        if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
-> >>                return -EINVAL;
-> >>
-> >> -     /* continue with the triggered buffer */
-> >> -     ret = iio_triggered_buffer_predisable(indio_dev);
-> >> -     if (ret < 0)
-> >> -             dev_err(&indio_dev->dev, "buffer predisable failed\n");
-> >> -
-> >> -     if (!st->dma_st.dma_chan)
-> >> -             return ret;
-> >> -
-> >> -     /* if we are using DMA we must clear registers and end DMA */
-> >> -     dmaengine_terminate_sync(st->dma_st.dma_chan);
-> >> -
-> >>        /*
-> >> -      * For each enabled channel we must read the last converted value
-> >> +      * For each enable channel we must disable it in hardware.
-> >> +      * In the case of DMA, we must read the last converted value
-> >>         * to clear EOC status and not get a possible interrupt later.
-> >> -      * This value is being read by DMA from LCDR anyway
-> >> +      * This value is being read by DMA from LCDR anyway, so it's not lost.
-> >>         */
-> >>        for_each_set_bit(bit, indio_dev->active_scan_mask,
-> >>                         indio_dev->num_channels) {
-> >> @@ -971,12 +965,28 @@ static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
-> >>                if (chan->type == IIO_POSITIONRELATIVE ||
-> >>                    chan->type == IIO_PRESSURE)
-> >>                        continue;
-> >> +
-> >> +             at91_adc_writel(st, AT91_SAMA5D2_CHDR, BIT(chan->channel));
-> >> +
-> >>                if (st->dma_st.dma_chan)
-> >>                        at91_adc_readl(st, chan->address);
-> >>        }
-> >>
-> >> +     if (at91_adc_buffer_check_use_irq(indio_dev, st))
-> >> +             at91_adc_writel(st, AT91_SAMA5D2_IDR, AT91_SAMA5D2_IER_DRDY);
-> >> +
-> >>        /* read overflow register to clear possible overflow status */
-> >>        at91_adc_readl(st, AT91_SAMA5D2_OVER);
-> >> +
-> >> +     /* continue with the triggered buffer */
-> >> +     ret = iio_triggered_buffer_predisable(indio_dev);
-> >> +     if (ret < 0)
-> >> +             dev_err(&indio_dev->dev, "buffer predisable failed\n");
-> >> +
-> >> +     /* if we are using DMA we must clear registers and end DMA */
-> >> +     if (st->dma_st.dma_chan)
-> >> +             dmaengine_terminate_sync(st->dma_st.dma_chan);  
-> > 
-> > This ordering is going to stop Alex doing his rework to remove the need
-> > to manually call iio_triggered_buffer_predisable.  Why does it make
-> > sense to do the dma stuff after that?
-> > 
-> > Ah I see it always did and the postenable is the opposite of what Alex
-> > has been moving to as well.  
-> 
-> Ok, so keep it like this ?
+On Mon, 27 Jan 2020 09:28:15 +0000
+Lee Jones <lee.jones@linaro.org> wrote:
 
-For this series yes.  But I'd like input from Alex on this more generally!
+> On Fri, 24 Jan 2020, Andreas Kemnade wrote:
+> > hmm, I cannot find this in any branch/repo I know of and not in linux-n=
+ext,
+> > just wondering...
+> > I guess the iio part is something to go towards 5.7 unless 5.5
+> > is delayed mucch. =20
+>=20
+> Oh, it looks like there was a conflict.  Could you collect any Acks
+> (including mine) rebase and resend please?
+>=20
+on what? It is based on top of my RTC v5 patch series. The ADC series
+as a whole depends on that build-time and runtime as documented in
+the cover letter. Maybe I should have put it into the patches itself.
+I have hopefully addressed every comment in the v5 series.
 
-Thanks,
+Regards,
+Andreas
 
-Jonathan
+--Sig_/AnyB9TPe_XHn_KVZv1oPKe_
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-> 
-> >   
-> >> +
-> >>        return ret;
-> >>   }
-> >>
-> >> @@ -1131,6 +1141,13 @@ static irqreturn_t at91_adc_trigger_handler(int irq, void *p)
-> >>        struct iio_dev *indio_dev = pf->indio_dev;
-> >>        struct at91_adc_state *st = iio_priv(indio_dev);
-> >>
-> >> +     /*
-> >> +      * If it's not our trigger, start a conversion now, as we are
-> >> +      * actually polling the trigger now.
-> >> +      */
-> >> +     if (iio_trigger_validate_own_device(indio_dev->trig, indio_dev))
-> >> +             at91_adc_writel(st, AT91_SAMA5D2_CR, AT91_SAMA5D2_CR_START);
-> >> +
-> >>        if (st->dma_st.dma_chan)
-> >>                at91_adc_trigger_handler_dma(indio_dev);
-> >>        else
-> >> @@ -1143,20 +1160,9 @@ static irqreturn_t at91_adc_trigger_handler(int irq, void *p)
-> >>
-> >>   static int at91_adc_buffer_init(struct iio_dev *indio)
-> >>   {
-> >> -     struct at91_adc_state *st = iio_priv(indio);
-> >> -
-> >> -     if (st->selected_trig->hw_trig) {
-> >> -             return devm_iio_triggered_buffer_setup(&indio->dev, indio,
-> >> -                     &iio_pollfunc_store_time,
-> >> -                     &at91_adc_trigger_handler, &at91_buffer_setup_ops);
-> >> -     }
-> >> -     /*
-> >> -      * we need to prepare the buffer ops in case we will get
-> >> -      * another buffer attached (like a callback buffer for the touchscreen)
-> >> -      */
-> >> -     indio->setup_ops = &at91_buffer_setup_ops;
-> >> -
-> >> -     return 0;
-> >> +     return devm_iio_triggered_buffer_setup(&indio->dev, indio,
-> >> +             &iio_pollfunc_store_time,
-> >> +             &at91_adc_trigger_handler, &at91_buffer_setup_ops);
-> >>   }
-> >>
-> >>   static unsigned at91_adc_startup_time(unsigned startup_time_min,  
-> > 
-> > 
-> >  
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl4uxj8ACgkQl4jFM1s/
+ye9Trg/8DZtbTzYhniGrVYebXsC7fhf62BAwRTbAFR/7TnyrgurRe2CZT01DFIYJ
+gO0ZlaH0A+ouoxen85wdKyNIZfEvRJjZFjg3XNfXCQ1xk7oz0Zn7abzTDsoJFNFC
+iOnSYVSmBehBsRtza0vodN4KadAFqLKiPYca/3/TnzCBdnWJukOzYgmSRvjHKqqo
+h99XAKlr6Sw1oYjxUwyTt4Gl0ynvf7CaLSJoHcKsVaAeSONAcsyq/hQjDGf5Fygy
+Fm1RNTvUtf1jXnYiskLgKreHulRy7b303N6CW8KdWbe/NF1UTULloaudmneCcsrJ
+PvtNQW5U6JxOHNARJe+6J5X+VaT13hnVjxwzSUYA/l7qF30y94b5YrUkV6AVkgGn
+Qxhhk9bnY8/S1d25KQqBzQRur++d6sdr3yB7WA0jF7zB+u0CU7xY+Z5wtKHHbvBU
+UUBkC7HfCRLIh6WH3PuU1XR6zQA+IFDH2RScYr9fYWgQHzHbGHaGTycs2xjj304j
+mjHgn+06tB40lE8Ixw9aNMURU+wdNJPYSJLKTHsoI2HZHxMAAODSgZk1czYV/xkz
+WpkBoQ6AzmxptY61PhMgR1YB/Hu2tNJyR9I5Z9NuJro7exYeVEU77T5qUCSgHY8D
+FWmJA4LmlWNZ1lqhZUbQVE+w7UZQjHqDVOlyjdbh889RhrcWUZE=
+=Ssrt
+-----END PGP SIGNATURE-----
 
+--Sig_/AnyB9TPe_XHn_KVZv1oPKe_--

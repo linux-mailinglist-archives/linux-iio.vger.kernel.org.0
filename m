@@ -2,122 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BFE14C680
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 07:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F19EC14C6C8
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 08:18:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725866AbgA2Gaq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jan 2020 01:30:46 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5402 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725858AbgA2Gaq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jan 2020 01:30:46 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00T6UAxr008707;
-        Wed, 29 Jan 2020 01:30:32 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2xrkfak9ty-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 29 Jan 2020 01:30:32 -0500
-Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 00T6UU36040828
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 29 Jan 2020 01:30:30 -0500
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Tue, 28 Jan
- 2020 22:30:28 -0800
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 28 Jan 2020 22:30:28 -0800
-Received: from mircea-Precision-5530-2-in-1.ad.analog.com ([10.48.65.114])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 00T6UOO5001325;
-        Wed, 29 Jan 2020 01:30:25 -0500
-From:   Mircea Caprioru <mircea.caprioru@analog.com>
-To:     <jic23@kernel.org>
-CC:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
-        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        Mircea Caprioru <mircea.caprioru@analog.com>
-Subject: [RESEND PATCH V2] iio: adc: ad7124: Add direct reg access
-Date:   Wed, 29 Jan 2020 08:30:32 +0200
-Message-ID: <20200129063032.18047-1-mircea.caprioru@analog.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726091AbgA2HSP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jan 2020 02:18:15 -0500
+Received: from www381.your-server.de ([78.46.137.84]:55430 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726037AbgA2HSP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jan 2020 02:18:15 -0500
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1iwhc1-0008Ma-Ko; Wed, 29 Jan 2020 08:18:09 +0100
+Received: from [93.104.127.234] (helo=[192.168.178.20])
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1iwhc1-000236-CL; Wed, 29 Jan 2020 08:18:09 +0100
+Subject: Re: [RESEND PATCH] iio: adc: ad7124: Add direct reg access
+To:     Mircea Caprioru <mircea.caprioru@analog.com>, jic23@kernel.org
+Cc:     Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
+        gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+References: <20200129051435.15366-1-mircea.caprioru@analog.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <d5d1eb35-fb5f-07d6-e678-3c54709ea75f@metafoo.de>
+Date:   Wed, 29 Jan 2020 08:18:08 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-28_09:2020-01-28,2020-01-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- suspectscore=1 mlxlogscore=818 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1911200001 definitions=main-2001290051
+In-Reply-To: <20200129051435.15366-1-mircea.caprioru@analog.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.101.4/25709/Tue Jan 28 12:49:39 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch adds the posibility do read and write registers from userspace
-using the kernel debug direct register access option.
+On 1/29/20 6:14 AM, Mircea Caprioru wrote:
+> From: Mircea <mircea.caprioru@analog.com>
+> 
+> This patch adds the posibility do read and write registers from userspace
+> using the kernel debug direct register access option.
 
-Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
----
- drivers/iio/adc/ad7124.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Typo: possibility
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 52f45b13da4a..38e67e08a79a 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -93,6 +93,14 @@ static const unsigned int ad7124_gain[8] = {
- 	1, 2, 4, 8, 16, 32, 64, 128
- };
- 
-+static const unsigned int ad7124_reg_size[] = {
-+	1, 2, 3, 3, 2, 1, 3, 3, 1, 2, 2, 2, 2,
-+	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-+	2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3,
-+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-+	3, 3, 3, 3, 3
-+};
-+
- static const int ad7124_master_clk_freq_hz[3] = {
- 	[AD7124_LOW_POWER] = 76800,
- 	[AD7124_MID_POWER] = 153600,
-@@ -360,6 +368,25 @@ static int ad7124_write_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static int ad7124_reg_access(struct iio_dev *indio_dev,
-+			     unsigned int reg,
-+			     unsigned int writeval,
-+			     unsigned int *readval)
-+{
-+	struct ad7124_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+
-+	if (readval)
-+		ret = ad_sd_read_reg(&st->sd, reg, ad7124_reg_size[reg],
-+				     readval);
-+	else
-+		ret = ad_sd_write_reg(&st->sd, reg, ad7124_reg_size[reg],
-+				      writeval);
-+
-+	return ret;
-+}
-+
- static IIO_CONST_ATTR(in_voltage_scale_available,
- 	"0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023");
- 
-@@ -375,6 +402,7 @@ static const struct attribute_group ad7124_attrs_group = {
- static const struct iio_info ad7124_info = {
- 	.read_raw = ad7124_read_raw,
- 	.write_raw = ad7124_write_raw,
-+	.debugfs_reg_access = &ad7124_reg_access,
- 	.validate_trigger = ad_sd_validate_trigger,
- 	.attrs = &ad7124_attrs_group,
- };
--- 
-2.17.1
+> 
+> Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+[...]
+>   
+> +static int ad7124_reg_access(struct iio_dev *indio_dev,
+> +			     unsigned int reg,
+> +			     unsigned int writeval,
+> +			     unsigned int *readval)
+> +{
+> +	struct ad7124_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +
+> +	if (readval)
+> +		ret = ad_sd_read_reg(&st->sd, reg, ad7124_reg_size[reg],
+> +				     readval);
+> +	else
+> +		ret = ad_sd_write_reg(&st->sd, reg, ad7124_reg_size[reg],
+> +				      writeval);
 
+Needs a bounds check to make sure that reg is less then the number of 
+entries in ad7124_reg_size.

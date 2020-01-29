@@ -2,93 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DD0E14CC46
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 15:22:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80E8114D02E
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 19:15:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726797AbgA2OVz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jan 2020 09:21:55 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:43054 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726178AbgA2OVy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jan 2020 09:21:54 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00TEDTG3012736;
-        Wed, 29 Jan 2020 09:21:31 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2xrkfam73m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 29 Jan 2020 09:21:31 -0500
-Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 00TELUfd043131
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 29 Jan 2020 09:21:30 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Wed, 29 Jan
- 2020 09:21:23 -0500
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Wed, 29 Jan 2020 09:21:23 -0500
-Received: from ben-Latitude-E6540.ad.analog.com ([10.48.65.231])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 00TEKwxj027599;
-        Wed, 29 Jan 2020 09:21:20 -0500
-From:   Beniamin Bia <beniamin.bia@analog.com>
-To:     <jic23@kernel.org>
-CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <pmeerw@pmeerw.net>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <biabeniamin@outlook.com>,
-        <knaack.h@gmx.de>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <devicetree@vger.kernel.org>,
-        Beniamin Bia <beniamin.bia@analog.com>
-Subject: [PATCH v4 5/5] MAINTAINERS: add entry for hmc425a driver.
-Date:   Wed, 29 Jan 2020 16:23:01 +0200
-Message-ID: <20200129142301.13918-6-beniamin.bia@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200129142301.13918-1-beniamin.bia@analog.com>
-References: <20200129142301.13918-1-beniamin.bia@analog.com>
+        id S1727198AbgA2SPT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jan 2020 13:15:19 -0500
+Received: from www381.your-server.de ([78.46.137.84]:48004 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726245AbgA2SPT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jan 2020 13:15:19 -0500
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <lars@metafoo.de>)
+        id 1iwrrs-0008Vd-UB; Wed, 29 Jan 2020 19:15:13 +0100
+Received: from [93.104.127.234] (helo=[192.168.178.20])
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1iwrrs-000OrG-Kw; Wed, 29 Jan 2020 19:15:12 +0100
+Subject: Re: [PATCH V3] iio: adc: ad7124: Add direct reg access
+To:     Mircea Caprioru <mircea.caprioru@analog.com>, jic23@kernel.org
+Cc:     Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
+        gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+References: <20200129085356.28899-1-mircea.caprioru@analog.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <eb4d0972-f95c-39f7-0520-c71c8370428d@metafoo.de>
+Date:   Wed, 29 Jan 2020 19:15:11 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-29_03:2020-01-28,2020-01-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- suspectscore=1 mlxlogscore=881 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1911200001 definitions=main-2001290118
+In-Reply-To: <20200129085356.28899-1-mircea.caprioru@analog.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.101.4/25710/Wed Jan 29 12:38:38 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add Beniamin Bia and Michael Hennerich as maintainers for HMC425A
-attenuator.
+[...]
+>   
+> +static int ad7124_reg_access(struct iio_dev *indio_dev,
+> +			     unsigned int reg,
+> +			     unsigned int writeval,
+> +			     unsigned int *readval)
+> +{
+> +	struct ad7124_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	if (reg >= AD7124_REG_NO)
 
-Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+How about ARRAY_SIZE(ad7124_reg_size)? That will make sure that the 
+check is always correct and does not depend on an extra constant that 
+might go out-of-sync with the array. It also makes it easier for 
+reviewers to check that the code is correct. Otherwise they'll have to 
+count how many entries there are in ad7124_reg_size.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e699fe378e71..06c283553e30 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1063,6 +1063,15 @@ F:	drivers/iio/adc/ltc249*
- X:	drivers/iio/*/adjd*
- F:	drivers/staging/iio/*/ad*
- 
-+ANALOG DEVICES INC HMC425A DRIVER
-+M:	Beniamin Bia <beniamin.bia@analog.com>
-+M:	Michael Hennerich <michael.hennerich@analog.com>
-+L:	linux-iio@vger.kernel.org
-+W:	http://ez.analog.com/community/linux-device-drivers
-+S:	Supported
-+F:	drivers/iio/amplifiers/hmc425a.c
-+F:	Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
-+
- ANALOGBITS PLL LIBRARIES
- M:	Paul Walmsley <paul.walmsley@sifive.com>
- S:	Supported
--- 
-2.17.1
+> +		return -EINVAL;
+> +
+> +	if (readval)
+> +		ret = ad_sd_read_reg(&st->sd, reg, ad7124_reg_size[reg],
+> +				     readval);
+> +	else
+> +		ret = ad_sd_write_reg(&st->sd, reg, ad7124_reg_size[reg],
+> +				      writeval);
+> +
+> +	return ret;
+> +}
+> +
+>   static IIO_CONST_ATTR(in_voltage_scale_available,
+>   	"0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023");
+>   
+> @@ -375,6 +406,7 @@ static const struct attribute_group ad7124_attrs_group = {
+>   static const struct iio_info ad7124_info = {
+>   	.read_raw = ad7124_read_raw,
+>   	.write_raw = ad7124_write_raw,
+> +	.debugfs_reg_access = &ad7124_reg_access,
+>   	.validate_trigger = ad_sd_validate_trigger,
+>   	.attrs = &ad7124_attrs_group,
+>   };
+> 
 

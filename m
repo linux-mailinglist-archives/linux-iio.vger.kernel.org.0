@@ -2,59 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE93A14D1F4
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 21:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7A1E14D208
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 21:38:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726708AbgA2Ubq convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 29 Jan 2020 15:31:46 -0500
-Received: from smtp77.ord1c.emailsrvr.com ([108.166.43.77]:34230 "EHLO
-        smtp77.ord1c.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726317AbgA2Ubp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jan 2020 15:31:45 -0500
-X-Greylist: delayed 374 seconds by postgrey-1.27 at vger.kernel.org; Wed, 29 Jan 2020 15:31:45 EST
-X-Auth-ID: nick.burkitt@nanotok.com
-Received: by smtp10.relay.ord1c.emailsrvr.com (Authenticated sender: nick.burkitt-AT-nanotok.com) with ESMTPSA id A643640261
-        for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2020 15:25:30 -0500 (EST)
-X-Sender-Id: nick.burkitt@nanotok.com
-Received: from [192.168.0.5] (108-88-90-111.lightspeed.sntcca.sbcglobal.net [108.88.90.111])
-        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384)
-        by 0.0.0.0:465 (trex/5.7.12);
-        Wed, 29 Jan 2020 15:25:30 -0500
-From:   "Nick Burkitt" <nick.burkitt@nanotok.com>
-To:     linux-iio@vger.kernel.org
-Subject: IIO driver module doesn't load automatically on kernel 4.19
-Date:   Wed, 29 Jan 2020 20:25:28 +0000
-Message-Id: <em32a58ce6-ecc9-4a0a-b47d-5d9b79f9bcc1@nanotok>
-Reply-To: "Nick Burkitt" <nick.burkitt@nanotok.com>
-User-Agent: eM_Client/7.2.36908.0
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+        id S1726672AbgA2Uiy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jan 2020 15:38:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51106 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726259AbgA2Uix (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 29 Jan 2020 15:38:53 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5230E20702;
+        Wed, 29 Jan 2020 20:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1580330333;
+        bh=qNiMEXw2OMq3yQf+yM13b64RxSKj3AzWpXBPeM61NKs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=gjQ4JAx6oTiQjRLTT6FyJbhvrioT+IzWSFCDLHMOo+fkWvTPO0NYb4w7zJgj1wPg0
+         y94X1s6j+RPE3U7asyVVOpo1KsHqy97XLRp+6WriEBtzKODukMxboj67INtSjeYYu1
+         BkcT3QQE/2lbWQpRoGWM5n/2OHdJ8NGfcvEAVZxI=
+Date:   Wed, 29 Jan 2020 20:38:48 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v1] iio: accel: st_accel: Use
+ st_sensors_dev_name_probe()
+Message-ID: <20200129203848.73dd3a9b@archlinux>
+In-Reply-To: <20200120092550.39427-1-andriy.shevchenko@linux.intel.com>
+References: <20200120092550.39427-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi All.
+On Mon, 20 Jan 2020 11:25:50 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Pardon me if I'm in the wrong place, but I have to start somewhere.
-I'm using an IIO driver (based on the BNO055 driver proposed by Vlad 
-Dogaru back in 2016).
-All was well for a couple of years, but after I updated my kernel from 
-4.14 to 4.19, my driver will no longer load on boot, but is still happy 
-to be loaded manually with modprobe.
-All other drivers load normally.
-Has something changed in the way IIO drivers register themselves? Or has 
-some other requirement been added since 4.14 that I have to add to my 
-driver?
-If not, any suggestions on where to go next would be appreciated.
+> Use st_sensors_dev_name_probe() instead open coded variant.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Details:
-Xilinx Zynq-7000 (ARM Cortex-A9, 2 cores@866 MHz), 1 GB RAM
-Linux v4.19.0 (via Xilinx)
-Ubuntu 16.04 and 18.04 (both exhibit the same problem)
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to start poking at it.
 
 Thanks,
 
--Nick
+Jonathan
+
+> ---
+>  drivers/iio/accel/st_accel_i2c.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
+> index 633955d764cc..8c489312f668 100644
+> --- a/drivers/iio/accel/st_accel_i2c.c
+> +++ b/drivers/iio/accel/st_accel_i2c.c
+> @@ -147,12 +147,9 @@ static int st_accel_i2c_probe(struct i2c_client *client)
+>  	const struct st_sensor_settings *settings;
+>  	struct st_sensor_data *adata;
+>  	struct iio_dev *indio_dev;
+> -	const char *match;
+>  	int ret;
+>  
+> -	match = device_get_match_data(&client->dev);
+> -	if (match)
+> -		strlcpy(client->name, match, sizeof(client->name));
+> +	st_sensors_dev_name_probe(&client->dev, client->name, sizeof(client->name));
+>  
+>  	settings = st_accel_get_settings(client->name);
+>  	if (!settings) {
 

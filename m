@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3B3F14C538
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 05:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCE9314C53B
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 05:28:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726605AbgA2E2H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jan 2020 23:28:07 -0500
-Received: from mail-mw2nam12on2046.outbound.protection.outlook.com ([40.107.244.46]:60960
-        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        id S1726739AbgA2E2S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jan 2020 23:28:18 -0500
+Received: from mail-bn8nam11on2071.outbound.protection.outlook.com ([40.107.236.71]:39136
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726401AbgA2E2G (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 28 Jan 2020 23:28:06 -0500
+        id S1726401AbgA2E2R (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 28 Jan 2020 23:28:17 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lsVOX9fdrPeDNkcBnMKTby6+16DUTEp8aCYw6upMy6W4yFYrPf0W7qZg4mLuoABz1Y/neivaob866ZL4P/llde6TDIHXDy5JDfWQLAQVR4vIZNH3b56K63gDYFTsuB7JtS7AwkvkLoVJNYR8Dzh1C3p25+EVnFr/FNOVJaXhXrMYQIeKZHrIbVMJ2VaYvKNVA+Y5WWcbcqsAuQo6PfMHE/czKW6ivhZGzH8r8nKoWLd2pqK0TYvnkIdH6sX/HaIVT6qWA/3rn/bHJdOrMby8I7SI1mmhxlTqYej0WdWDKWCDDQCCkCBQbk44Xg6dSARwZf0NseQkX/CVRtd1gcli3A==
+ b=nD3GLGirjDLgisqBRQpJjVjYiaScfBMZ+AoJxITOJDHDAV5kyeFmeg/859C+d0FAzOz9FRBEYuEnVRDPdiE1tuqZjyZs5vKV5vrvPZUbZC2QHvsIFgPkjqhT0Ti0RF4UbdI5+znQA1yNr6K7WhxB0FHEKQAikj/aWsAbJxCKjZ66GiHUxRI92dV188GOXV3cCOsSXsJCM+HKf6flDCxfCKJdd+kRWZEtxCv8XJQknX+894HDRYqtODMu1qvFpeoiB5FFUqGYSDYMiBtiwR6KPtCt/u+Jwdx1mQLtGZ9bE1QtbxT6MYdtxg1UdCc3u6AlFL/G/I8fkOYQr7UcqH0wew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OAZGp88yGT1F3+MRq73gfGFuwMuK5CX+3s3Eb8AIoII=;
- b=jL8irzfN//c3FCIpds+59zKAOw/ywMaPwIf6xccNIrDOC3n/U/iY2GyZy+uSpyHP09/ksOx1/0wETysIyP2jczz8UZZJRiUqSas4ccFeHUZjRFt9aAD1shqAiMOSwF6xnxOd5pHlvjwtLUY+UInTYY38slT/aWbjksKBSTl6XDrRBaeSZp5FQZnEpiqd3Y9BslwavgsCEheClJOBmCBzPFXBN+vRld/bvSTqGGl56fe3+ud6IK/hbe6y5nM9ny0QC44D0XSP855CzOpKBJJk1Niqb/0hl3F2Es9/QIQJSngyLaRNxBMInfXh/UFCRHLDHRMk0B964hyj+pg2uTjPww==
+ bh=jSK+FNao8F9FoLLkewxeLd7wECELFCnE200juhmq7tI=;
+ b=Jjn11I8uHdgonLXtTF8CQSrCOYmTaPtvDdFykzbCXfCfgRqmmTO/lM/VlQZq6Q9MnRb69/k6nACFsnVGKE9xAn+tSqwJdanfC6+l0pMw3xxiANtt8qWP8rPl9lxXG80mIHN0bZPWvEA1+J81RoLNklm6sK5qXQORfXV8DCu3R18fNzi7skjEnByQlyO0JkhO2i6gxOxLlr12qvB/Led1K9KBziwRsGzFUvszldke4/32Gkg0hvn22W4u6vyvyUEyhd/C02rOdPCl5fh0TAL7ZVeviSIziSaxJKeh0OPYGz7eKj81TrMFFjOzhyNUD/mheqvLHAWrJ7U8qdgzT1LELQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OAZGp88yGT1F3+MRq73gfGFuwMuK5CX+3s3Eb8AIoII=;
- b=qKgeuRX1rysvO2bIF9RZb0Wkni8fNm9a/R1kBV9xySX9v4HLvTGBPwvgh3wFq6GY+tq9LFFxAXadpjirEjFWeXQ4UIQ3cBEvSEtC5EJUl1aASJIIkv3387JwhH/G3YWcn34rSUiMJ00I3Oeh4PrFgVq2aOcQofTpq55OonIB37s=
+ bh=jSK+FNao8F9FoLLkewxeLd7wECELFCnE200juhmq7tI=;
+ b=d9IHdrz1bAdBDLgNnEueUrMG1912xAXPwWFNJkHQuwmjmPWjwmbV4dylF+sAMDdK9TpJzHlQNjk1rUYVLkzHFXr9PguVsL8OiLuOID7S614DF0I+GG8LuTFy+exOaRISQjggBDPccPE1Y7aF+OMdo+uwfgevcYssmoki9eH111A=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Sandeep.Singh@amd.com; 
 Received: from MN2PR12MB3598.namprd12.prod.outlook.com (20.178.244.84) by
- MN2PR12MB3501.namprd12.prod.outlook.com (20.178.241.225) with Microsoft SMTP
+ MN2PR12MB3022.namprd12.prod.outlook.com (20.178.243.160) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2665.23; Wed, 29 Jan 2020 04:28:02 +0000
+ 15.20.2665.22; Wed, 29 Jan 2020 04:28:07 +0000
 Received: from MN2PR12MB3598.namprd12.prod.outlook.com
  ([fe80::10ce:b4fb:586d:8b9c]) by MN2PR12MB3598.namprd12.prod.outlook.com
  ([fe80::10ce:b4fb:586d:8b9c%3]) with mapi id 15.20.2665.026; Wed, 29 Jan 2020
- 04:28:02 +0000
+ 04:28:07 +0000
 From:   Sandeep Singh <Sandeep.Singh@amd.com>
 To:     jikos@kernel.org, benjamin.tissoires@redhat.com,
         linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
@@ -44,9 +44,9 @@ To:     jikos@kernel.org, benjamin.tissoires@redhat.com,
         linux-iio@vger.kernel.org
 Cc:     Shyam-sundar.S-k@amd.com, Sandeep Singh <sandeep.singh@amd.com>,
         Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
-Subject: [PATCH v2 3/4] SFH: Transport Driver to add support of AMD sensor fusion Hub (SFH)
-Date:   Wed, 29 Jan 2020 09:57:25 +0530
-Message-Id: <1580272046-32101-4-git-send-email-Sandeep.Singh@amd.com>
+Subject: [PATCH v2 4/4] SFH: Create HID report to Enable support of AMD sensor fusion Hub (SFH)
+Date:   Wed, 29 Jan 2020 09:57:26 +0530
+Message-Id: <1580272046-32101-5-git-send-email-Sandeep.Singh@amd.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1580272046-32101-1-git-send-email-Sandeep.Singh@amd.com>
 References: <1580272046-32101-1-git-send-email-Sandeep.Singh@amd.com>
@@ -55,33 +55,33 @@ X-ClientProxiedBy: MA1PR0101CA0006.INDPRD01.PROD.OUTLOOK.COM
  (2603:1096:a00:21::16) To MN2PR12MB3598.namprd12.prod.outlook.com
  (2603:10b6:208:d1::20)
 MIME-Version: 1.0
-Received: from andbang2.amd.com (165.204.156.251) by MA1PR0101CA0006.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:21::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.2665.22 via Frontend Transport; Wed, 29 Jan 2020 04:27:59 +0000
+Received: from andbang2.amd.com (165.204.156.251) by MA1PR0101CA0006.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:21::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.2665.22 via Frontend Transport; Wed, 29 Jan 2020 04:28:04 +0000
 X-Mailer: git-send-email 2.7.4
 X-Originating-IP: [165.204.156.251]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: a331c8a6-34a7-40e7-e918-08d7a473a08f
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3501:|MN2PR12MB3501:
+X-MS-Office365-Filtering-Correlation-Id: ceefc5d0-24a9-4e69-2264-08d7a473a3aa
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3022:|MN2PR12MB3022:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <MN2PR12MB3501377A170FB1BB382645C0E0050@MN2PR12MB3501.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:23;
+X-Microsoft-Antispam-PRVS: <MN2PR12MB30226BF378721EC9F15ED859E0050@MN2PR12MB3022.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
 X-Forefront-PRVS: 02973C87BC
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(376002)(346002)(39860400002)(136003)(396003)(189003)(199004)(2906002)(4326008)(5660300002)(66556008)(66476007)(16526019)(956004)(2616005)(26005)(186003)(66946007)(30864003)(36756003)(6486002)(8676002)(81156014)(81166006)(478600001)(7696005)(8936002)(316002)(86362001)(6666004)(52116002)(54906003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB3501;H:MN2PR12MB3598.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(39860400002)(346002)(376002)(396003)(136003)(189003)(199004)(66556008)(66476007)(66946007)(316002)(956004)(6486002)(36756003)(2616005)(478600001)(4326008)(186003)(81166006)(86362001)(8676002)(8936002)(5660300002)(26005)(81156014)(16526019)(54906003)(6666004)(30864003)(7696005)(52116002)(2906002)(579004);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB3022;H:MN2PR12MB3598.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: amd.com does not designate
  permitted sender hosts)
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SbAgQsYa9SPmxn7KlkLKx6501vh6fzE6UJILIbG3IValF5xOvkbEeMuVfv8/EjxyHdt8CHxhpgyBS4H+7NMPV/FvckVqV9yg4CvXQcPkANzLFKfowIewM3BlPS3hRJ7h8lZ4g78OgBgcSRa55VjnuXg/kkaA9Gxr45ui+H7toWjVeAvKt7Fh+p6PqUIwIkxaNNn32iI3hVwXJ8ZjRh2Qd0tqpciTOmX28757xihR8t9eTyunWai40rl8aW2coe3/0Jr4Fdewn07vbfgK3sddbND3ywG1ecMKUKKjauGymQHXg0jytlW7LhwIavRaYL7cd66BiKeWNJyL/FC1JUaPaDy/1sJbi9K6WlRA6gV5bEsE1MSLIWcr7+3px49c9UxMNDUwg5POvctA6UeDX4WGldA07Q67cW7bMHCRQGDxG18vc391hmpz7DqIgaAlEMQ7
-X-MS-Exchange-AntiSpam-MessageData: hcm7bWkD0wxN9hytH06tEqjVql58lgoeS0jLduz6I59ynwycpcl7NRUcjO7+P/wsDtJG8HE/Ku66i5L66wI2Ad6zzo8teRgZxWvEhWAclEJBUNd9RkbAth0VwX00eNtXa7s5XZ/BSx6UbRjc+Rxexw==
+X-Microsoft-Antispam-Message-Info: mdmGk8XN+Z2JxwsuUhGU24dHrKbrTYdHl44rYFydk4jKmBbSzADqQF/sfs7lj/svr8CLwoC9ZYQF36EkLKs++5YLr0uWRLkqYS88BM2vjILBL+O1LY9dgqXiibG7UEo7t6stK1grexXaZRz2ryLIfVNUBr5St5ld7f7i6lh8YPR5q0eocRHCHo8zb+9DfkqbQVcv+ajZyuVo7fN8VY8VTeE7rZ8AfhB+cAEqobbJFBuAYuRcAioFCt7CSl5t2fQAfVaSex1uyuLhLVo6jtaF7CpYPNulO532KsB93tUadTug0p0VDHSmdIr5FPqkZvkd8GNSpN3X8HMDxKdfjXJueuDGkxPkZAnnvGzewrmGDx3ElOXvqR2P+Tp2Xo0Joh1wjNll1wG7IbBgPl2QRRHm0by/whG3YqzotPBGOKRB+oghW3aqiYzFOiHJh9ssRQLc
+X-MS-Exchange-AntiSpam-MessageData: DUR1czAzw9AzuJOTzUZWd49FJBzuuN0gIDKE38cdbZAXhTwXvjp4pQpgnlYxb88MxMYo4wAhWffUjF7bz8XEtMX2/I21RBZG8J8ftisPTFAT35DbWDkQjg/TEKJ/d4ssUrRoU2mmildpV6M/B7Dvxg==
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a331c8a6-34a7-40e7-e918-08d7a473a08f
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2020 04:28:01.9803
+X-MS-Exchange-CrossTenant-Network-Message-Id: ceefc5d0-24a9-4e69-2264-08d7a473a3aa
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2020 04:28:07.5392
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7D60tR0ov5MS2JzYERSQSZIZv8ovKX/kFJAdc7CYYqvStpZUUNn68FTevfIMMbYD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3501
+X-MS-Exchange-CrossTenant-UserPrincipalName: yAmeR1PRwmdbW3wtx9TJsnUGDdkMsstoFSa79Jn3jcsow/i7qlCQtd415Oa3INhm
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3022
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -89,847 +89,1082 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Sandeep Singh <sandeep.singh@amd.com>
 
-This part of module will provide the interaction between HID framework
-and client driver.This modules will registered client driver with
-HID framework.
+This part of module will define the data into HID reports.
+Get data from PCIe driver and populate that data into
+reports. HID core communication between devices and
+HID core is mostly done via HID reports.
 
-Signed-off-by: Sandeep Singh <sandeep.singh@amd.com>
 Signed-off-by: Nehal Shah <Nehal-bakulchandra.Shah@amd.com>
-Reported-by: kbuild test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Sandeep Singh <sandeep.singh@amd.com>
 ---
- drivers/hid/amd-sfh-hid/amdsfh-debugfs.c    | 251 ++++++++++++++++++++++++++
- drivers/hid/amd-sfh-hid/amdsfh-debugfs.h    |  14 ++
- drivers/hid/amd-sfh-hid/amdsfh-hid-client.c | 261 ++++++++++++++++++++++++++++
- drivers/hid/amd-sfh-hid/amdsfh-hid.c        | 179 +++++++++++++++++++
- drivers/hid/amd-sfh-hid/amdsfh-hid.h        |  85 +++++++++
- 5 files changed, 790 insertions(+)
- create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-debugfs.c
- create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-debugfs.h
- create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-hid-client.c
- create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-hid.c
- create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-hid.h
+ .../hid_descriptor/amd_sfh_hid_descriptor.c        | 275 +++++++++
+ .../hid_descriptor/amd_sfh_hid_descriptor.h        | 125 ++++
+ .../hid_descriptor/amd_sfh_hid_report_descriptor.h | 642 +++++++++++++++++++++
+ 3 files changed, 1042 insertions(+)
+ create mode 100644 drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_descriptor.c
+ create mode 100644 drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_descriptor.h
+ create mode 100644 drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_report_descriptor.h
 
-diff --git a/drivers/hid/amd-sfh-hid/amdsfh-debugfs.c b/drivers/hid/amd-sfh-hid/amdsfh-debugfs.c
+diff --git a/drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_descriptor.c b/drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_descriptor.c
 new file mode 100644
-index 0000000..20859d4
+index 0000000..766b0ed
 --- /dev/null
-+++ b/drivers/hid/amd-sfh-hid/amdsfh-debugfs.c
-@@ -0,0 +1,251 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ *  AMD SFH DebugFS
-+ *  This part of module will provide sensors raw value data
-+ *  for AMD SFH debugging.
-+ *  cat /sys/kernel/debug/amd_sfhtp_hid
-+ *  Author: Nehal Bakulchandra Shah <Nehal-Bakulchandra.Shah@amd.com>
-+ */
-+
-+#include <linux/slab.h>
-+#include "amd_mp2_pcie.h"
-+#include "amdsfh-debugfs.h"
-+
-+/* DebugFS helpers */
-+#define	OBUFP		(obuf + oboff)
-+#define	OBUFLEN		512
-+#define	OBUFSPC		(OBUFLEN - oboff)
-+#define	OSCNPRINTF(fmt, ...) \
-+		scnprintf(OBUFP, OBUFSPC, fmt, ## __VA_ARGS__)
-+
-+static ssize_t amdsfh_debugfs_accel_read(struct file *filp, char __user *ubuf,
-+					 size_t count, loff_t *offp)
-+{
-+	unsigned int oboff = 0, i;
-+	struct amdtp_cl_data *cl_data = filp->private_data;
-+	bool found = false;
-+	ssize_t ret;
-+	char *obuf;
-+
-+	for (i = 0; i < cl_data->num_hid_devices; i++) {
-+		if (cl_data->sensor_idx[i] == ACCEL_IDX) {
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	if (!found)
-+		return -1;
-+
-+	obuf = kmalloc(OBUFLEN, GFP_KERNEL);
-+	if (!obuf)
-+		return -ENOMEM;
-+
-+	oboff += OSCNPRINTF("Accel_X_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][0]);
-+	oboff += OSCNPRINTF("Accel_Y_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][1]);
-+	oboff += OSCNPRINTF("Accel_Z_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][2]);
-+	ret = simple_read_from_buffer(ubuf, count, offp, obuf, oboff);
-+
-+	kfree(obuf);
-+
-+	return ret;
-+}
-+
-+static ssize_t amdsfh_debugfs_gyro_read(struct file *filp, char __user *ubuf,
-+					size_t count, loff_t *offp)
-+{
-+	unsigned int oboff = 0, i;
-+	bool found = false;
-+	struct amdtp_cl_data *cl_data = filp->private_data;
-+	ssize_t ret;
-+	char *obuf;
-+
-+	for (i = 0; i < cl_data->num_hid_devices; i++) {
-+		if (cl_data->sensor_idx[i] == GYRO_IDX) {
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	if (!found)
-+		return -1;
-+
-+	obuf = kmalloc(OBUFLEN, GFP_KERNEL);
-+	if (!obuf)
-+		return -ENOMEM;
-+
-+	oboff += OSCNPRINTF("Gyro_X_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][0]);
-+	oboff += OSCNPRINTF("Gyro_Y_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][1]);
-+	oboff += OSCNPRINTF("Gyro_Z_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][2]);
-+	ret = simple_read_from_buffer(ubuf, count, offp, obuf, oboff);
-+
-+	kfree(obuf);
-+
-+	return ret;
-+}
-+
-+static ssize_t amdsfh_debugfs_mag_read(struct file *filp, char __user *ubuf,
-+				       size_t count, loff_t *offp)
-+{
-+	unsigned int oboff = 0, i;
-+	bool found = false;
-+	ssize_t ret;
-+	char *obuf;
-+	struct amdtp_cl_data *cl_data = filp->private_data;
-+
-+	for (i = 0; i < cl_data->num_hid_devices; i++) {
-+		if (cl_data->sensor_idx[i] == MAG_IDX) {
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	if (!found)
-+		return -1;
-+
-+	obuf = kmalloc(OBUFLEN, GFP_KERNEL);
-+	if (!obuf)
-+		return -ENOMEM;
-+
-+	oboff += OSCNPRINTF("Mag_X_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][0]);
-+	oboff += OSCNPRINTF("Mag_Y_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][1]);
-+	oboff += OSCNPRINTF("Mag_Z_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][2]);
-+	ret = simple_read_from_buffer(ubuf, count, offp, obuf, oboff);
-+
-+	kfree(obuf);
-+
-+	return ret;
-+}
-+
-+static ssize_t amdsfh_debugfs_als_read(struct file *filp, char __user *ubuf,
-+				       size_t count, loff_t *offp)
-+{
-+	unsigned int oboff = 0, i;
-+	bool found = false;
-+	ssize_t ret;
-+	char *obuf;
-+	struct amdtp_cl_data *cl_data = filp->private_data;
-+
-+	for (i = 0; i < cl_data->num_hid_devices; i++) {
-+		if (cl_data->sensor_idx[i] == AMBIENT_LIGHT_IDX) {
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	if (!found)
-+		return -1;
-+
-+	obuf = kmalloc(OBUFLEN, GFP_KERNEL);
-+	if (!obuf)
-+		return -ENOMEM;
-+
-+	oboff += OSCNPRINTF("Gyro_X_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][0]);
-+	oboff += OSCNPRINTF("Gyro_Y_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][1]);
-+	oboff += OSCNPRINTF("Gyro_Z_Raw:%d\n",
-+		(int)cl_data->sensor_virt_addr[i][2]);
-+	ret = simple_read_from_buffer(ubuf, count, offp, obuf, oboff);
-+
-+	kfree(obuf);
-+
-+	return ret;
-+}
-+
-+static const struct file_operations amdsfh_debugfs_accel_ops = {
-+	.owner = THIS_MODULE,
-+	.open = simple_open,
-+	.read = amdsfh_debugfs_accel_read,
-+};
-+
-+static const struct file_operations amdsfh_debugfs_gyro_ops = {
-+	.owner = THIS_MODULE,
-+	.open = simple_open,
-+	.read = amdsfh_debugfs_gyro_read,
-+};
-+
-+static const struct file_operations amdsfh_debugfs_mag_ops = {
-+	.owner = THIS_MODULE,
-+	.open = simple_open,
-+	.read = amdsfh_debugfs_mag_read,
-+};
-+
-+static const struct file_operations amdsfh_debugfs_als_ops = {
-+	.owner = THIS_MODULE,
-+	.open = simple_open,
-+	.read = amdsfh_debugfs_als_read,
-+};
-+
-+int amdsfh_debugfs_setup(struct amdtp_cl_data *cl_data)
-+{
-+	/* DebugFS info */
-+	struct dentry *dbgfs;
-+	int i;
-+
-+	if (!debugfs_initialized())
-+		return -1;
-+
-+	if (!cl_data->amd_debugfs_dir)
-+		cl_data->amd_debugfs_dir = debugfs_create_dir
-+					(KBUILD_MODNAME, NULL);
-+
-+	if (!cl_data->amd_debugfs_dir)
-+		return -1;
-+
-+	for (i = 0; i < cl_data->num_hid_devices; i++) {
-+		switch (cl_data->sensor_idx[i]) {
-+		case ACCEL_IDX:
-+			dbgfs = debugfs_create_dir("accel",
-+						   cl_data->amd_debugfs_dir);
-+			debugfs_create_file("raw_value", 0400,
-+					    dbgfs, cl_data,
-+					    &amdsfh_debugfs_accel_ops);
-+			break;
-+
-+		case GYRO_IDX:
-+			dbgfs = debugfs_create_dir("gyro",
-+						   cl_data->amd_debugfs_dir);
-+			debugfs_create_file("raw_value", 0400,
-+					    dbgfs, cl_data,
-+					    &amdsfh_debugfs_gyro_ops);
-+			break;
-+
-+		case MAG_IDX:
-+			 dbgfs = debugfs_create_dir("magnetometer",
-+						    cl_data->amd_debugfs_dir);
-+			 debugfs_create_file("raw_value", 0400,
-+					     dbgfs, cl_data,
-+					     &amdsfh_debugfs_mag_ops);
-+			break;
-+
-+		case AMBIENT_LIGHT_IDX:
-+			 dbgfs =  debugfs_create_dir("als",
-+						     cl_data->amd_debugfs_dir);
-+			 debugfs_create_file("raw_value", 0400,
-+					     dbgfs, cl_data,
-+					     &amdsfh_debugfs_als_ops);
-+			break;
-+
-+		default:
-+			return 0;
-+		}
-+	}
-+	return 0;
-+}
-+EXPORT_SYMBOL(amdsfh_debugfs_setup);
-+
-+void amdsfh_debugfs_destroy(struct amdtp_cl_data *cl_data)
-+{
-+	debugfs_remove_recursive(cl_data->amd_debugfs_dir);
-+}
-+EXPORT_SYMBOL(amdsfh_debugfs_destroy);
-diff --git a/drivers/hid/amd-sfh-hid/amdsfh-debugfs.h b/drivers/hid/amd-sfh-hid/amdsfh-debugfs.h
-new file mode 100644
-index 0000000..470f1f12
---- /dev/null
-+++ b/drivers/hid/amd-sfh-hid/amdsfh-debugfs.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0
-+ *
-+ *  AMD SFH DebugFS
-+ *  Author: Nehal Bakulchandra Shah <Nehal-Bakulchandra.Shah@amd.com>
-+ */
-+#include "amdsfh-hid.h"
-+
-+#ifndef AMDSFH_DEBUGFS_H
-+#define AMDSFH_DEBUGFS_H
-+
-+int amdsfh_debugfs_setup(struct amdtp_cl_data *cl_data);
-+void amdsfh_debugfs_destroy(struct amdtp_cl_data *cl_data);
-+
-+#endif
-diff --git a/drivers/hid/amd-sfh-hid/amdsfh-hid-client.c b/drivers/hid/amd-sfh-hid/amdsfh-hid-client.c
-new file mode 100644
-index 0000000..b59cb2f
---- /dev/null
-+++ b/drivers/hid/amd-sfh-hid/amdsfh-hid-client.c
-@@ -0,0 +1,261 @@
++++ b/drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_descriptor.c
+@@ -0,0 +1,275 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
-+ *  AMD SFH Client Driver
++ *  AMD SFH Report Descriptor generator logic
 + *  Author: Nehal Bakulchandra Shah <Nehal-Bakulchandra.Shah@amd.com>
 + */
 +
-+#include <linux/init.h>
-+#include <linux/module.h>
 +#include <linux/kernel.h>
++#include <linux/string.h>
 +#include <linux/slab.h>
-+#include <linux/workqueue.h>
-+#include <linux/hid.h>
-+#include <linux/list.h>
-+#include <linux/platform_device.h>
-+#include <linux/acpi.h>
-+#include <linux/dma-mapping.h>
-+#include "amdsfh-hid.h"
++#include "amd_sfh_hid_descriptor.h"
++#include "amd_sfh_hid_report_descriptor.h"
 +#include "amd_mp2_pcie.h"
-+#include "hid_descriptor/amd_sfh_hid_descriptor.h"
-+#include "amdsfh-debugfs.h"
 +
-+#define DRIVER_DESC	"AMD(R) PCIe MP2 Communication Client Driver"
-+#define DRIVER_VER	"1.0"
-+#define DRIVER_NAME "AMD_SFH_HID_CLIENT"
-+#define PERIOD  200
++#define	AMD_SFH_FIRMWARE_MULTIPLIER (1000)
++#define HID_USAGE_SENSOR_PROP_REPORTING_STATE_ALL_EVENTS_ENUM	0x41
++#define HID_USAGE_SENSOR_PROP_POWER_STATE_D0_FULL_POWER_ENUM	0x51
++#define HID_DEFAULT_REPORT_INTERVAL				0x50
++#define HID_DEFAULT_MIN_VALUE					0X7F
++#define HID_DEFAULT_MAX_VALUE					0x80
++#define HID_DEFAULT_SENSITIVITY					0x7F
++#define HID_USAGE_SENSOR_PROPERTY_CONNECTION_TYPE_PC_INTEGRATED_ENUM  0x01
++/* state enums */
++#define HID_USAGE_SENSOR_STATE_READY_ENUM                             0x02
++#define HID_USAGE_SENSOR_STATE_INITIALIZING_ENUM                      0x05
++#define HID_USAGE_SENSOR_EVENT_DATA_UPDATED_ENUM                      0x04
 +
-+struct request_list {
-+	u8 report_id;
-+	u8 sensor_idx;
-+	u8 report_type;
-+	u8 current_index;
-+	struct hid_device *hid;
-+	struct list_head list;
-+};
-+
-+static struct request_list req_list;
-+static struct amdtp_cl_data *cl_data_context;
-+
-+void amd_sfh_set_report(struct hid_device *hid, int report_id,
-+			int report_type)
++int get_report_descriptor(int sensor_idx, u8 *rep_desc)
 +{
-+	struct amdtp_hid_data *hid_data = hid->driver_data;
-+	struct amdtp_cl_data *cli_data = hid_data->cli_data;
-+	int i;
-+
-+	for (i = 0; i < cli_data->num_hid_devices; i++) {
-+		if (cli_data->hid_sensor_hubs[i] == hid) {
-+			cli_data->cur_hid_dev = i;
-+			break;
-+		}
-+	}
-+	amdtp_hid_wakeup(hid);
-+}
-+EXPORT_SYMBOL(amd_sfh_set_report);
-+
-+void amd_sfh_get_report(struct hid_device *hid, int report_id,
-+			int report_type)
-+{
-+	struct amdtp_hid_data *hid_data = hid->driver_data;
-+	struct amdtp_cl_data *cli_data = hid_data->cli_data;
-+	int i;
-+
-+	for (i = 0; i < cli_data->num_hid_devices; i++) {
-+		if (cli_data->hid_sensor_hubs[i] == hid) {
-+			struct request_list *new_request = kzalloc
-+				  (sizeof(*new_request), GFP_KERNEL);
-+			new_request->current_index = i;
-+			new_request->sensor_idx = cli_data->sensor_idx[i];
-+			new_request->hid = hid;
-+			new_request->report_type = report_type;
-+			new_request->report_id = report_id;
-+			cli_data->report_id[i] = report_id;
-+			cli_data->request_done[i] = false;
-+			list_add(&new_request->list, &req_list.list);
-+			break;
-+		}
-+	}
-+	schedule_delayed_work(&cli_data->work, 0);
-+}
-+EXPORT_SYMBOL(amd_sfh_get_report);
-+
-+static void amd_sfh_work(struct work_struct *work)
-+{
-+	struct amdtp_cl_data *cli_data = amd_sfh_cldata(work);
-+	struct request_list *req_node;
-+	u8 report_size = 0;
-+	u8 current_index;
-+	u8 sensor_index;
-+	u8 report_id;
-+	u8 node_type;
-+
-+	req_node = list_last_entry(&req_list.list, struct request_list, list);
-+	list_del(&req_node->list);
-+	current_index = req_node->current_index;
-+	sensor_index = req_node->current_index;
-+	report_id = req_node->report_id;
-+	node_type = req_node->report_type;
-+
-+	if (node_type == HID_FEATURE_REPORT) {
-+		report_size = get_feature_report(sensor_index, report_id,
-+						 cli_data->feature_report
-+						 [current_index]);
-+	} else if (node_type == HID_INPUT_REPORT) {
-+		report_size = get_input_report(sensor_index, report_id,
-+					       cli_data->input_report
-+						[current_index],
-+						cli_data->sensor_virt_addr
-+						[current_index]);
-+	}
-+
-+	hid_input_report(cli_data->hid_sensor_hubs[current_index],
-+			 cli_data->report_type[current_index],
-+				 cli_data->input_report[current_index],
-+				report_size, 0);
-+	cli_data->cur_hid_dev = current_index;
-+	cli_data->sensor_requested_cnt[current_index] = 0;
-+	kfree(req_node);
-+	amdtp_hid_wakeup(cli_data->hid_sensor_hubs[current_index]);
-+}
-+
-+static void amd_sfh_work_buffer(struct work_struct *work)
-+{
-+	struct amdtp_cl_data *cli_data = cl_data_context;
-+	unsigned int i;
-+	u8 report_size = 0;
-+
-+	for (i = 0; i < cli_data->num_hid_devices; i++) {
-+		report_size = get_input_report(cli_data->sensor_idx[i],
-+					       cli_data->report_id[i],
-+				cli_data->input_report[i],
-+				cli_data->sensor_virt_addr[i]);
-+		hid_input_report(cli_data->hid_sensor_hubs[i],
-+				 HID_INPUT_REPORT,
-+				 cli_data->input_report[i], report_size, 0);
-+		}
-+
-+	schedule_delayed_work(&cli_data->work_buffer, PERIOD);
-+}
-+
-+static int amd_sfh_hid_client_probe(struct platform_device *pdev)
-+{
-+	struct amd_mp2_sensor_info info;
-+	int rc = 0;
-+	int i;
-+	struct amdtp_cl_device *cl_dev;
-+	struct amdtp_cl_data *cl_data;
-+	u32 feature_report_size = 0;
-+	u32 input_report_size = 0;
-+
-+	cl_dev = devm_kzalloc(&pdev->dev, sizeof(*cl_dev), GFP_KERNEL);
-+	if (!cl_dev)
-+		return -ENOMEM;
-+
-+	cl_dev->pdev = pci_get_device(PCI_VENDOR_ID_AMD,
-+				      PCI_DEVICE_ID_AMD_MP2, NULL);
-+	if (!cl_dev->pdev)
-+		return -ENOMEM;
-+
-+	cl_data = kzalloc(sizeof(*cl_data), GFP_KERNEL);
-+	cl_data->num_hid_devices = amd_mp2_get_sensor_num
-+				   (cl_dev->pdev, &cl_data->sensor_idx[0]);
-+
-+	INIT_DELAYED_WORK(&cl_data->work, amd_sfh_work);
-+	INIT_DELAYED_WORK(&cl_data->work_buffer, amd_sfh_work_buffer);
-+	INIT_LIST_HEAD(&req_list.list);
-+
-+	amdsfh_debugfs_setup(cl_data);
-+
-+	for (i = 0; i < cl_data->num_hid_devices; i++) {
-+		cl_data->sensor_virt_addr[i] = dma_alloc_coherent
-+			(&pdev->dev, sizeof(int) * 8,
-+			&cl_data->sensor_phy_addr[i], GFP_KERNEL);
-+		cl_data->sensor_sts[i] = 0;
-+		cl_data->sensor_requested_cnt[i] = 0;
-+		cl_data->cur_hid_dev = i;
-+
-+		cl_data->report_descr_size[i] = get_descriptor_size
-+				(cl_data->sensor_idx[i], descr_size);
-+
-+		feature_report_size = get_descriptor_size
-+				(cl_data->sensor_idx[i], feature_size);
-+
-+		input_report_size =  get_descriptor_size
-+			(cl_data->sensor_idx[i], input_size);
-+
-+		cl_data->feature_report[i] = kzalloc(feature_report_size,
-+						     GFP_KERNEL);
-+		cl_data->input_report[i] = kzalloc(input_report_size,
-+						   GFP_KERNEL);
-+		info.period = PERIOD;
-+		info.sensor_idx = cl_data->sensor_idx[i];
-+		info.phy_address = cl_data->sensor_phy_addr[i];
-+		cl_data->report_descr[i] = kzalloc
-+			(cl_data->report_descr_size[i], GFP_KERNEL);
-+		if (!cl_data->report_descr[i])
-+			return -ENOMEM;
-+		rc = get_report_descriptor(cl_data->sensor_idx[i],
-+					   cl_data->report_descr[i]);
-+		rc = amdtp_hid_probe(cl_data->cur_hid_dev, cl_data);
-+		rc = amd_start_sensor(cl_dev->pdev, info);
-+			cl_data->sensor_sts[i] = 1;
-+	}
-+
-+	cl_dev->cl_data = cl_data;
-+	cl_data_context = cl_data;
-+	platform_set_drvdata(pdev, cl_dev);
-+	schedule_delayed_work(&cl_data->work_buffer, PERIOD);
-+	return 0;
-+}
-+
-+static int amd_sfh_hid_client_remove(struct platform_device *pdev)
-+{
-+	int i;
-+	struct amdtp_cl_device *cl_dev;
-+	struct amdtp_cl_data *cl_data;
-+
-+	cl_dev = platform_get_drvdata(pdev);
-+	if (!(cl_dev))
-+		return -EINVAL;
-+
-+	cl_data = cl_dev->cl_data;
-+	if (!(cl_data))
-+		return -EINVAL;
-+
-+	for (i = 0; i < cl_data->num_hid_devices; i++)
-+		amd_stop_sensor(cl_dev->pdev, i);
-+	cancel_delayed_work_sync(&cl_data->work);
-+	cancel_delayed_work_sync(&cl_data->work_buffer);
-+	amdsfh_debugfs_destroy(cl_data);
-+	amdtp_hid_remove(cl_data);
-+
-+	for (i = 0; i < cl_data->num_hid_devices; i++) {
-+		if (cl_data->sensor_virt_addr[i])
-+			dma_free_coherent(&pdev->dev, 8 * sizeof(int),
-+					  cl_data->sensor_virt_addr[i],
-+					  cl_data->sensor_phy_addr[i]);
-+	}
-+
-+	kfree(cl_data);
-+	pr_info("%s:%s Exit\n", DRIVER_NAME, __func__);
-+	return 0;
-+}
-+
-+static const struct acpi_device_id amd_sfh_acpi_match[] = { {
-+					"AMDI0080" },
-+					{ },
-+};
-+
-+MODULE_DEVICE_TABLE(acpi, amd_sfh_acpi_match);
-+static struct platform_driver amd_sfh_plat_driver = {
-+	.probe = amd_sfh_hid_client_probe,
-+	.remove = amd_sfh_hid_client_remove,
-+	.driver = {
-+			.name = "amd_sfh_platform",
-+			.acpi_match_table = ACPI_PTR(amd_sfh_acpi_match),
-+	},
-+};
-+module_platform_driver(amd_sfh_plat_driver);
-+MODULE_DESCRIPTION("AMD(R) SFH Client Driver");
-+MODULE_AUTHOR("Nehal Shah <nehal-bakulchandra.shah@amd.com>");
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/hid/amd-sfh-hid/amdsfh-hid.c b/drivers/hid/amd-sfh-hid/amdsfh-hid.c
-new file mode 100644
-index 0000000..89fe35a8
---- /dev/null
-+++ b/drivers/hid/amd-sfh-hid/amdsfh-hid.c
-@@ -0,0 +1,179 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/*
-+ * AMD MP2 Sensors transport  driver
-+ *
-+ * Authors: Sandeep Singh <sandeep.singh@amd.com>
-+ *          Nehal Bakulchandra Shah <Nehal-bakulchandra.shah@amd.com>
-+ */
-+#include <linux/hid.h>
-+#include <linux/wait.h>
-+#include <linux/sched.h>
-+#include "amdsfh-hid.h"
-+
-+#define DRIVER_NAME "AMD_MP2_SENSORS_TRANSPORT"
-+
-+/**
-+ * amdtp_hid_parse() - hid-core .parse() callback
-+ * @hid:	hid device instance
-+ *
-+ * This function gets called during call to hid_add_device
-+ *
-+ * Return: 0 on success and non zero on error
-+ */
-+static int amdtp_hid_parse(struct hid_device *hid)
-+{
-+	struct amdtp_hid_data *hid_data = hid->driver_data;
-+	struct amdtp_cl_data *cli_data = hid_data->cli_data;
-+	int rc;
-+
-+	rc = hid_parse_report(hid, cli_data->report_descr[hid_data->index],
-+			      cli_data->report_descr_size[hid_data->index]);
-+	if (rc)
-+		return rc;
-+	return 0;
-+}
-+
-+/* Empty callbacks with success return code */
-+static int amdtp_hid_start(struct hid_device *hid)
-+{
-+	return 0;
-+}
-+
-+static void amdtp_hid_stop(struct hid_device *hid)
-+{
-+}
-+
-+static int amdtp_hid_open(struct hid_device *hid)
-+{
-+	return 0;
-+}
-+
-+static void amdtp_hid_close(struct hid_device *hid)
-+{
-+}
-+
-+static int amdtp_raw_request(struct hid_device *hdev, unsigned char reportnum,
-+			     u8 *buf, size_t len, unsigned char rtype,
-+			     int reqtype)
-+{
-+	return 0;
-+}
-+
-+static void amdtp_hid_request(struct hid_device *hid, struct hid_report *rep,
-+			      int reqtype)
-+{
-+	switch (reqtype) {
-+	case HID_REQ_GET_REPORT:
-+		amd_sfh_get_report(hid, rep->id, rep->type);
++	switch (sensor_idx) {
++	case ACCEL_IDX: /* accel */
++		memset(rep_desc, 0, sizeof(accel3_report_descriptor));
++		memcpy(rep_desc, accel3_report_descriptor,
++		       sizeof(accel3_report_descriptor));
 +		break;
-+	case HID_REQ_SET_REPORT:
-+		amd_sfh_set_report(hid, rep->id, reqtype);
++
++	case GYRO_IDX: /* gyro */
++		memset(rep_desc, 0, sizeof(gyro3_report_descriptor));
++		memcpy(rep_desc, gyro3_report_descriptor,
++		       sizeof(gyro3_report_descriptor));
++		break;
++
++	case MAG_IDX: /* Magnetometer */
++		memset(rep_desc, 0, sizeof(comp3_report_descriptor));
++		memcpy(rep_desc, comp3_report_descriptor,
++		       sizeof(comp3_report_descriptor));
++		break;
++
++	case AMBIENT_LIGHT_IDX: /* ambient light sensor */
++		memset(rep_desc, 0, sizeof(als_report_descriptor));
++		memcpy(rep_desc, als_report_descriptor,
++		       sizeof(als_report_descriptor));
 +		break;
 +	}
-+}
-+
-+static int amdtp_wait_for_response(struct hid_device *hid)
-+{
-+	struct amdtp_hid_data *hid_data =  hid->driver_data;
-+	struct amdtp_cl_data *cli_data = hid_data->cli_data;
-+	int i = 0;
-+
-+	for (i = 0; i < cli_data->num_hid_devices; i++) {
-+		if (cli_data->hid_sensor_hubs[i] == hid)
-+			break;
-+	}
-+	if (!cli_data->request_done[i])
-+		wait_event_interruptible_timeout(hid_data->hid_wait,
-+						 cli_data->request_done[i],
-+						 1500);
-+	if (!cli_data->request_done[i]) {
-+		hid_err(hid,
-+			"timeout waiting for response from  device\n");
-+		return -ETIMEDOUT;
-+	}
-+	cli_data->request_done[i] = false;
-+
 +	return 0;
 +}
++EXPORT_SYMBOL_GPL(get_report_descriptor);
 +
-+void amdtp_hid_wakeup(struct hid_device *hid)
++u32 get_descriptor_size(int sensor_idx, int descriptor_name)
 +{
-+	struct amdtp_hid_data *hid_data = hid->driver_data;
-+	struct amdtp_cl_data *cli_data = hid_data->cli_data;
++	switch (sensor_idx) {
++	case ACCEL_IDX:
++		if (descriptor_name == descr_size)
++			return sizeof(accel3_report_descriptor);
++		else if (descriptor_name == input_size)
++			return sizeof(struct accel3_input_report);
++		else if (descriptor_name == feature_size)
++			return sizeof(struct accel3_feature_report);
++		break;
 +
-+	cli_data->request_done[cli_data->cur_hid_dev] = true;
-+	wake_up_interruptible(&hid_data->hid_wait);
-+}
++	case GYRO_IDX:
++		if (descriptor_name == descr_size)
++			return sizeof(gyro3_report_descriptor);
++		else if (descriptor_name == input_size)
++			return sizeof(struct gyro_input_report);
++		else if (descriptor_name == feature_size)
++			return sizeof(struct gyro_feature_report);
++		break;
 +
-+static struct hid_ll_driver amdtp_hid_ll_driver = {
-+	.parse	=	amdtp_hid_parse,
-+	.start	=	amdtp_hid_start,
-+	.stop	=	amdtp_hid_stop,
-+	.open	=	amdtp_hid_open,
-+	.close	=	amdtp_hid_close,
-+	.request  =	amdtp_hid_request,
-+	.wait	=	amdtp_wait_for_response,
-+	.raw_request  =	amdtp_raw_request,
-+};
++	case MAG_IDX:
++		if (descriptor_name == descr_size)
++			return sizeof(comp3_report_descriptor);
++		else if (descriptor_name == input_size)
++			return sizeof(struct magno_input_report);
++		else if (descriptor_name == feature_size)
++			return sizeof(struct magno_input_report);
++		break;
 +
-+int amdtp_hid_probe(unsigned int cur_hid_dev,
-+		    struct amdtp_cl_data *cli_data)
-+{
-+	int rc;
-+	struct hid_device *hid;
-+	struct amdtp_hid_data *hid_data;
++	case AMBIENT_LIGHT_IDX:
++		if (descriptor_name == descr_size)
++			return sizeof(als_report_descriptor);
++		else if (descriptor_name == input_size)
++			return sizeof(struct als_input_report);
++		else if (descriptor_name == feature_size)
++			return sizeof(struct als_feature_report);
++		break;
 +
-+	hid = hid_allocate_device();
-+	if (IS_ERR(hid)) {
-+		rc = PTR_ERR(hid);
-+		return -ENOMEM;
++	default:
++		pr_info("Unknown Sensor index detected");
 +	}
-+
-+	hid_data = kzalloc(sizeof(*hid_data), GFP_KERNEL);
-+	if (!hid_data) {
-+		rc = -ENOMEM;
-+		goto err_hid_data;
-+	}
-+
-+	hid->ll_driver = &amdtp_hid_ll_driver;
-+	hid_data->index = cur_hid_dev;
-+	hid_data->cli_data = cli_data;
-+	init_waitqueue_head(&hid_data->hid_wait);
-+
-+	hid->driver_data = hid_data;
-+	cli_data->hid_sensor_hubs[cur_hid_dev] = hid;
-+	hid->bus = BUS_AMD_AMDTP;
-+	hid->version = AMD_SFH_HID_VERSION;
-+	hid->vendor = AMD_SFH_HID_VENDOR;
-+	hid->product = AMD_SFH_HID_PRODUCT;
-+	snprintf(hid->name, sizeof(hid->name), "%s %04X:%04X", "hid-amdtp",
-+		 hid->vendor, hid->product);
-+
-+	rc = hid_add_device(hid);
-+	if (rc)
-+		goto err_hid_device;
-+
 +	return 0;
-+
-+err_hid_device:
-+	kfree(hid_data);
-+err_hid_data:
-+	hid_destroy_device(hid);
-+	return rc;
 +}
++EXPORT_SYMBOL_GPL(get_descriptor_size);
 +
-+void amdtp_hid_remove(struct amdtp_cl_data *cli_data)
++u8 get_feature_report(int sensor_idx, int report_id, u8 *feature_report)
 +{
-+	int i;
++	u8 report_size = 0;
++	struct accel3_feature_report acc_feature;
++	struct gyro_feature_report gyro_feature;
++	struct magno_feature_report magno_feature;
++	struct als_feature_report als_feature;
 +
-+	for (i = 0; i < cli_data->num_hid_devices; ++i) {
-+		kfree(cli_data->feature_report[i]);
-+		kfree(cli_data->input_report[i]);
-+		kfree(cli_data->report_descr[i]);
-+		if (cli_data->hid_sensor_hubs[i]) {
-+			kfree(cli_data->hid_sensor_hubs[i]->driver_data);
-+			hid_destroy_device(cli_data->hid_sensor_hubs[i]);
-+			cli_data->hid_sensor_hubs[i] = NULL;
-+		}
++	if (!feature_report)
++		return report_size;
++
++	switch (sensor_idx) {
++	case ACCEL_IDX: /* accel */
++		acc_feature.common_property.connection_type =
++		HID_USAGE_SENSOR_PROPERTY_CONNECTION_TYPE_PC_INTEGRATED_ENUM;
++		acc_feature.common_property.report_state =
++			HID_USAGE_SENSOR_PROP_REPORTING_STATE_ALL_EVENTS_ENUM;
++		acc_feature.common_property.power_state =
++			HID_USAGE_SENSOR_PROP_POWER_STATE_D0_FULL_POWER_ENUM;
++		acc_feature.common_property.sensor_state =
++			HID_USAGE_SENSOR_STATE_INITIALIZING_ENUM;
++		acc_feature.common_property.report_interval =
++					HID_DEFAULT_REPORT_INTERVAL;
++		acc_feature.accel_change_sesnitivity =
++						HID_DEFAULT_SENSITIVITY;
++		acc_feature.accel_sensitivity_min = HID_DEFAULT_MIN_VALUE;
++		acc_feature.accel_sensitivity_max = HID_DEFAULT_MAX_VALUE;
++		memcpy(feature_report, &acc_feature, sizeof(acc_feature));
++		report_size = sizeof(acc_feature);
++		break;
++
++	case GYRO_IDX: /* gyro */
++		gyro_feature.common_property.connection_type =
++		HID_USAGE_SENSOR_PROPERTY_CONNECTION_TYPE_PC_INTEGRATED_ENUM;
++		gyro_feature.common_property.report_state =
++			HID_USAGE_SENSOR_PROP_REPORTING_STATE_ALL_EVENTS_ENUM;
++		gyro_feature.common_property.power_state =
++			HID_USAGE_SENSOR_PROP_POWER_STATE_D0_FULL_POWER_ENUM;
++		gyro_feature.common_property.sensor_state =
++			HID_USAGE_SENSOR_STATE_INITIALIZING_ENUM;
++		gyro_feature.common_property.report_interval =
++					HID_DEFAULT_REPORT_INTERVAL;
++		gyro_feature.gyro_change_sesnitivity = HID_DEFAULT_SENSITIVITY;
++		gyro_feature.gyro_sensitivity_min = HID_DEFAULT_MIN_VALUE;
++		gyro_feature.gyro_sensitivity_max = HID_DEFAULT_MAX_VALUE;
++		memcpy(feature_report, &gyro_feature, sizeof(gyro_feature));
++		report_size = sizeof(gyro_feature);
++		break;
++
++	case MAG_IDX: /* Magnetometer */
++		magno_feature.common_property.report_id = report_id;
++		magno_feature.common_property.connection_type =
++		HID_USAGE_SENSOR_PROPERTY_CONNECTION_TYPE_PC_INTEGRATED_ENUM;
++		magno_feature.common_property.report_state =
++			HID_USAGE_SENSOR_PROP_REPORTING_STATE_ALL_EVENTS_ENUM;
++		magno_feature.common_property.power_state =
++			HID_USAGE_SENSOR_PROP_POWER_STATE_D0_FULL_POWER_ENUM;
++		magno_feature.common_property.sensor_state =
++			HID_USAGE_SENSOR_STATE_INITIALIZING_ENUM;
++		magno_feature.common_property.report_interval =
++					HID_DEFAULT_REPORT_INTERVAL;
++		magno_feature.magno_headingchange_sensitivity =
++						HID_DEFAULT_SENSITIVITY;
++		magno_feature.heading_min = HID_DEFAULT_MIN_VALUE;
++		magno_feature.heading_max = HID_DEFAULT_MAX_VALUE;
++		magno_feature.flux_change_sensitivity = HID_DEFAULT_MIN_VALUE;
++		magno_feature.flux_min = HID_DEFAULT_MIN_VALUE;
++		magno_feature.flux_max = HID_DEFAULT_MAX_VALUE;
++		memcpy(feature_report, &magno_feature, sizeof(magno_feature));
++		report_size = sizeof(magno_feature);
++		break;
++
++	case AMBIENT_LIGHT_IDX:  /* ambient light sensor */
++		als_feature.common_property.report_id = report_id;
++		als_feature.common_property.connection_type =
++		HID_USAGE_SENSOR_PROPERTY_CONNECTION_TYPE_PC_INTEGRATED_ENUM;
++		als_feature.common_property.report_state =
++			HID_USAGE_SENSOR_PROP_REPORTING_STATE_ALL_EVENTS_ENUM;
++		als_feature.common_property.power_state =
++			HID_USAGE_SENSOR_PROP_POWER_STATE_D0_FULL_POWER_ENUM;
++		als_feature.common_property.sensor_state =
++				HID_USAGE_SENSOR_STATE_INITIALIZING_ENUM;
++		als_feature.common_property.report_interval =
++						HID_DEFAULT_REPORT_INTERVAL;
++		als_feature.als_change_sesnitivity = HID_DEFAULT_SENSITIVITY;
++		als_feature.als_sensitivity_min = HID_DEFAULT_MIN_VALUE;
++		als_feature.als_sensitivity_max = HID_DEFAULT_MAX_VALUE;
++		memcpy(feature_report, &als_feature, sizeof(als_feature));
++		report_size = sizeof(als_feature);
++		break;
 +	}
++	return report_size;
 +}
-diff --git a/drivers/hid/amd-sfh-hid/amdsfh-hid.h b/drivers/hid/amd-sfh-hid/amdsfh-hid.h
++EXPORT_SYMBOL_GPL(get_feature_report);
++
++u8 get_input_report(int sensor_idx, int report_id,
++		    u8 *input_report, u32 *sensor_virt_addr)
++{
++	u8 report_size = 0;
++	struct accel3_input_report acc_input;
++	struct gyro_input_report gyro_input;
++	struct magno_input_report magno_input;
++	struct als_input_report als_input;
++
++	if (!sensor_virt_addr || !input_report)
++		return report_size;
++
++	switch (sensor_idx) {
++	case ACCEL_IDX: /* accel */
++		acc_input.common_property.report_id = report_id;
++		acc_input.common_property.sensor_state =
++					HID_USAGE_SENSOR_STATE_READY_ENUM;
++		acc_input.common_property.event_type =
++				HID_USAGE_SENSOR_EVENT_DATA_UPDATED_ENUM;
++		acc_input.in_accel_x_value = (int)sensor_virt_addr[0] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		acc_input.in_accel_y_value = (int)sensor_virt_addr[1] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		acc_input.in_accel_z_value =  (int)sensor_virt_addr[2] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		memcpy(input_report, &acc_input, sizeof(acc_input));
++		report_size = sizeof(acc_input);
++		break;
++
++	case GYRO_IDX: /* gyro */
++		gyro_input.common_property.report_id = report_id;
++		gyro_input.common_property.sensor_state =
++			HID_USAGE_SENSOR_STATE_READY_ENUM;
++		gyro_input.common_property.event_type =
++			HID_USAGE_SENSOR_EVENT_DATA_UPDATED_ENUM;
++		gyro_input.in_angel_x_value = (int)sensor_virt_addr[0] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		gyro_input.in_angel_y_value = (int)sensor_virt_addr[1] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		gyro_input.in_angel_z_value =  (int)sensor_virt_addr[2] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		memcpy(input_report, &gyro_input, sizeof(gyro_input));
++		report_size = sizeof(gyro_input);
++		break;
++
++	case MAG_IDX: /* Magnetometer */
++		magno_input.common_property.report_id = report_id;
++		magno_input.common_property.sensor_state =
++			HID_USAGE_SENSOR_STATE_READY_ENUM;
++		magno_input.common_property.event_type =
++			HID_USAGE_SENSOR_EVENT_DATA_UPDATED_ENUM;
++		magno_input.in_magno_x = (int)sensor_virt_addr[0] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		magno_input.in_magno_y = (int)sensor_virt_addr[1] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		magno_input.in_magno_z = (int)sensor_virt_addr[2] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		magno_input.in_magno_accuracy = (u16)sensor_virt_addr[3] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		memcpy(input_report, &magno_input, sizeof(magno_input));
++		report_size = sizeof(magno_input);
++		break;
++
++	case AMBIENT_LIGHT_IDX: /* Als */
++		als_input.common_property.report_id = report_id;
++		als_input.common_property.sensor_state =
++					HID_USAGE_SENSOR_STATE_READY_ENUM;
++		als_input.common_property.event_type =
++				HID_USAGE_SENSOR_EVENT_DATA_UPDATED_ENUM;
++		als_input.illuminance_value =  (int)sensor_virt_addr[0] /
++						AMD_SFH_FIRMWARE_MULTIPLIER;
++		report_size = sizeof(als_input);
++		memcpy(input_report, &als_input, sizeof(als_input));
++		break;
++	}
++	return report_size;
++}
+diff --git a/drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_descriptor.h b/drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_descriptor.h
 new file mode 100644
-index 0000000..8bbe40c
+index 0000000..9f0b042
 --- /dev/null
-+++ b/drivers/hid/amd-sfh-hid/amdsfh-hid.h
-@@ -0,0 +1,85 @@
++++ b/drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_descriptor.h
+@@ -0,0 +1,125 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * AMD MP2 Sensors transport  driver
++ * HID report and descriptor stuructures and routines
 + *
-+ * Authors: Sandeep Singh <sandeep.singh@amd.com>
-+ *          Nehal Bakulchandra Shah <Nehal-bakulchandra.shah@amd.com>
++ * Author: Nehal Bakulchandra Shah <Nehal-bakulchandra.shah@amd.com>
 + */
 +
-+#ifndef AMDSFH_HID_H
-+#define AMDSFH_HID_H
-+#include <linux/debugfs.h>
++#ifndef AMD_SFH_HID_DESCRIPTOR_H
++#define AMD_SFH_HID_DESCRIPTOR_H
 +
-+#define MAX_HID_DEVICES		4
-+#define DCD_DATA_SIZE_CHAR	512
-+#define BUS_AMD_AMDTP		0x20
-+#define AMD_SFH_HID_VENDOR	1022
-+#define AMD_SFH_HID_PRODUCT	0x0001
-+#define AMD_SFH_HID_VERSION	0x0001
-+
-+struct amdtp_cl_device {
-+	struct pci_dev *pdev;
-+	struct amdtp_cl_data *cl_data;
++enum desc_type {
++	/* Report descriptor name */
++	descr_size = 1,
++	input_size,
++	feature_size,
 +};
 +
-+struct amdtp_cl_data {
-+	u8 init_done;
-+	unsigned int cur_hid_dev;
-+	unsigned int hid_dev_count;
-+	unsigned int num_hid_devices;
-+	struct device_info *hid_devices;
-+	unsigned char *report_descr[MAX_HID_DEVICES];
-+	int report_descr_size[MAX_HID_DEVICES];
-+	struct hid_device *hid_sensor_hubs[MAX_HID_DEVICES];
-+	unsigned char *hid_descr[MAX_HID_DEVICES];
-+	int hid_descr_size[MAX_HID_DEVICES];
-+	phys_addr_t phy_addr_base;
-+	u32 *sensor_virt_addr[MAX_HID_DEVICES];
-+	phys_addr_t sensor_phy_addr[MAX_HID_DEVICES];
-+	u32 sensor_sts[MAX_HID_DEVICES];
-+	u32 sensor_requested_cnt[MAX_HID_DEVICES];
-+	u8 report_type[MAX_HID_DEVICES];
-+	u8 report_id[MAX_HID_DEVICES];
-+	u8 sensor_idx[MAX_HID_DEVICES];
-+	u8 *feature_report[MAX_HID_DEVICES];
-+	u8 *input_report[MAX_HID_DEVICES];
-+	u8 request_done[MAX_HID_DEVICES];
-+	struct delayed_work work;
-+	struct delayed_work work_buffer;
-+	struct dentry *amd_debugfs_dir;
-+
++struct _hid_report_descriptor {
++	u8 bDescriptorType;
++	u8 wDescriptorLength;
 +};
 +
-+/**
-+ * struct amdtp_hid_data - Per instance HID data
-+ * @index:		Device index in the order of enumeration
-+ * @request_done:	Get Feature/Input report complete flag
-+ *			used during get/set request from hid core
-+ * @cli_data:		Link to the client instance
-+ * @hid_wait:		Completion waitq
++struct common_feature_property {
++	/* common properties */
++	u8	 report_id;
++	u8	 connection_type;
++	u8	 report_state;
++	u8	 power_state;
++	u8	 sensor_state;
++	u32  report_interval;
++} __packed;
++
++struct common_input_porperty {
++	/* common properties */
++	u8	 report_id;
++	u8	 sensor_state;
++	u8	 event_type;
++} __packed;
++
++struct _hid_device_descriptor {
++	u8 bLength;
++	u8 bDescriptorType;
++	u8 bcdHID[2];
++	u8 bCountryCode;
++	u8 bNumDescriptors;
++	struct _hid_report_descriptor *reports;
++};
++
++struct accel3_feature_report {
++	struct common_feature_property common_property;
++	/* properties specific to this sensor */
++	u16  accel_change_sesnitivity;
++	s16  accel_sensitivity_max;
++	s16  accel_sensitivity_min;
++} __packed;
++
++struct accel3_input_report {
++	struct	common_input_porperty common_property;
++	/* values specific to this sensor */
++	int   in_accel_x_value;
++	int   in_accel_y_value;
++	int   in_accel_z_value;
++	/* include if required to support the "shake" event */
++	u8   in_accel_shake_detection;
++} __packed;
++
++struct gyro_feature_report {
++	struct common_feature_property common_property;
++	/* properties specific to this sensor */
++	u16  gyro_change_sesnitivity;
++	s16  gyro_sensitivity_max;
++	s16  gyro_sensitivity_min;
++} __packed;
++
++struct gyro_input_report {
++	struct	common_input_porperty common_property;
++	/* values specific to this sensor */
++	int   in_angel_x_value;
++	int   in_angel_y_value;
++	int   in_angel_z_value;
++} __packed;
++
++struct magno_feature_report {
++	struct common_feature_property common_property;
++	/*properties specific to this sensor */
++	u16	magno_headingchange_sensitivity;
++	s16	heading_min;
++	s16	heading_max;
++	u16	flux_change_sensitivity;
++	s16	flux_min;
++	s16	flux_max;
++} __packed;
++
++struct magno_input_report {
++	struct	common_input_porperty common_property;
++	int	in_magno_x;
++	int	in_magno_y;
++	int	in_magno_z;
++	int	in_magno_accuracy;
++} __packed;
++
++struct als_feature_report {
++	struct common_feature_property common_property;
++	/* properties specific to this sensor */
++	u16  als_change_sesnitivity;
++	s16  als_sensitivity_max;
++	s16  als_sensitivity_min;
++} __packed;
++
++struct als_input_report {
++	struct  common_input_porperty common_property;
++	/* values specific to this sensor */
++	int illuminance_value;
++} __packed;
++
++int get_report_descriptor(int sensor_idx, u8 rep_desc[]);
++u32 get_descriptor_size(int sensor_idx, int descriptor_name);
++//u32 get_report_descriptor_size(int sensor_idx);
++//u32 get_feature_report_size(int sensor_idx);
++//u32 get_input_report_size(int sensor_idx);
++u8 get_feature_report(int sensor_idx, int report_id, u8 *feature_report);
++u8 get_input_report(int sensor_idx, int report_id, u8 *input_report,
++		    u32 *sensor_virt_addr);
++
++#endif
+diff --git a/drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_report_descriptor.h b/drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_report_descriptor.h
+new file mode 100644
+index 0000000..b686ed7
+--- /dev/null
++++ b/drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid_report_descriptor.h
+@@ -0,0 +1,642 @@
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++/*
++ * HID  descriptor stuructures
 + *
-+ * Used to tie hid hid->driver data to driver client instance
++ * Author: Nehal Bakulchandra Shah <Nehal-bakulchandra.shah@amd.com>
 + */
-+struct amdtp_hid_data {
-+	int index;
-+	struct amdtp_cl_data *cli_data;
-+	wait_queue_head_t hid_wait;
++
++#ifndef AMD_SFH_HID_REPORT_DESCRIPTOR_H
++#define AMD_SFH_HID_REPORT_DESCRIPTOR_H
++
++// Accelerometer 3D Sensor
++static const u8 accel3_report_descriptor[] = {
++0x05, 0x20,          /* Usage page */
++0x09, 0x73,          /* Motion type Accel 3D */
++0xA1, 0x00,          /* HID Collection (Physical) */
++
++//feature reports(xmit/receive)
++0x85, 1,           /* HID  Report ID */
++0x05, 0x20,	   /* HID usage page sensor */
++0x0A, 0x09, 0x03,  /* Sensor property and sensor connection type */
++0x15, 0,           /* HID logical MIN_8(0) */
++0x25, 2,	   /* HID logical MAX_8(2) */
++0x75, 8,	   /* HID report size(8) */
++0x95, 1,	   /* HID report count(1) */
++0xA1, 0x02,	   /* HID collection (logical) */
++0x0A, 0x30, 0x08, /* Sensor property connection type intergated sel*/
++0x0A, 0x31, 0x08, /* Sensor property connection type attached sel */
++0x0A, 0x32, 0x08, /* Sensor property connection type external sel */
++0xB1, 0x00,       /* HID feature (Data_Arr_Abs) */
++0xC0,		  /* HID end collection */
++0x0A, 0x16, 0x03, /* HID usage sensor property reporting state */
++0x15, 0,          /* HID logical Min_8(0) */
++0x25, 5,	  /* HID logical Max_8(5) */
++0x75, 8,	  /* HID report size(8) */
++0x95, 1,          /* HID report count(1) */
++0xA1, 0x02,	  /* HID collection(logical) */
++0x0A, 0x40, 0x08, /* Sensor property report state no events sel */
++0x0A, 0x41, 0x08, /* Sensor property report state all events sel */
++0x0A, 0x42, 0x08, /* Sensor property report state threshold events sel */
++0x0A, 0x43, 0x08, /* Sensor property report state no events wake sel */
++0x0A, 0x44, 0x08, /* Sensor property report state all events wake sel */
++0x0A, 0x45, 0x08, /* Sensor property report state threshold events wake sel */
++0xB1, 0x00,	  /* HID feature (Data_Arr_Abs) */
++0xC0,		  /* HID end collection */
++0x0A, 0x19, 0x03, /* HID usage sensor property power state */
++0x15, 0,	  /* HID logical Min_8(0) */
++0x25, 5,	  /* HID logical Max_8(5) */
++0x75, 8,	  /* HID report size(8) */
++0x95, 1,	  /* HID report count(1) */
++0xA1, 0x02,	  /* HID collection(logical) */
++0x0A, 0x50, 0x08, /* Sensor property power state undefined sel */
++0x0A, 0x51, 0x08, /* Sensor property power state D0 full power  sel */
++0x0A, 0x52, 0x08, /* Sensor property power state D1 low power sel */
++0x0A, 0x53, 0x08, /* Sensor property power state D2 standby with wake sel */
++0x0A, 0x54, 0x08, /* Sensor property power state D3 sleep with wake  sel */
++0x0A, 0x55, 0x08, /* Sensor property power state D4 power off sel */
++0xB1, 0x00,       /* HID feature (Data_Arr_Abs) */
++0xC0,		  /* HID end collection */
++0x0A, 0x01, 0x02, /* HID usage sensor state */
++0x15, 0,	  /* HID logical Min_8(0) */
++0x25, 6,	  /* HID logical Max_8(6) */
++0x75, 8,	  /* HID report size(8) */
++0x95, 1,	  /* HID report count(1) */
++0xA1, 0x02,	  /* HID collection(logical) */
++0x0A, 0x00, 0x08, /* HID usage sensor state unknown sel */
++0x0A, 0x01, 0x08, /* HID usage sensor state ready sel */
++0x0A, 0x02, 0x08, /* HID usage sensor state not available sel */
++0x0A, 0x03, 0x08, /* HID usage sensor state no data sel */
++0x0A, 0x04, 0x08, /* HID usage sensor state initializing sel */
++0x0A, 0x05, 0x08, /* HID usage sensor state access denied sel */
++0x0A, 0x06, 0x08, /* HID usage sensor state error sel */
++0xB1, 0x00,	  /* HID feature (Data_Arr_Abs) */
++0xC0,		  /* HID end collection */
++0x0A, 0x0E, 0x03, /* HID usage sensor property report interval */
++0x15, 0,	  /* HID logical Min_8(0) */
++0x27, 0xFF, 0xFF, 0xFF, 0xFF, /* HID logical Max_32 */
++
++0x75, 32,	  /* HID report size(32) */
++0x95, 1,	  /* HID report count(1) */
++0x55, 0,	  /* HID unit exponent(0) */
++0xB1, 0x02,	  /* HID feature (Data_Arr_Abs) */
++0x0A, 0x52, 0x14, /* Sensor data motion accel and mod change sensitivity ABS) */
++
++0x15, 0,		/* HID logical Min_8(0) */
++0x26, 0xFF, 0xFF,	/* HID logical Max_16(0xFF,0xFF) */
++
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x52, 0x24,	/* HID usage sensor data (motion accel and mod max) */
++
++0x16, 0x01, 0x80,	/* HID logical Min_16(0x01,0x80) */
++
++0x26, 0xFF, 0x7F,	/* HID logical Max_16(0xFF,0x7F) */
++
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x52, 0x34,	/* HID usage sensor data (motion accel and mod min) */
++
++0x16, 0x01, 0x80,	/* HID logical Min_16(0x01,0x80) */
++
++0x26, 0xFF, 0x7F,	/* HID logical Max_16(0xFF,0x7F) */
++
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++
++//input report (transmit)
++0x05, 0x20,		 /* HID usage page sensors */
++0x0A, 0x01, 0x02,	 /* HID usage sensor state */
++0x15, 0,		 /* HID logical Min_8(0) */
++0x25, 6,		 /* HID logical Max_8(6) */
++0x75, 8,		 /* HID report size(8) */
++0x95, 1,		 /* HID report count (1) */
++0xA1, 0x02,		 /* HID end collection (logical) */
++0x0A, 0x00, 0x08,	 /* HID usage sensor state unknown sel */
++0x0A, 0x01, 0x08,	 /* HID usage sensor state ready sel */
++0x0A, 0x02, 0x08,	 /* HID usage sensor state not available sel */
++0x0A, 0x03, 0x08,	 /* HID usage sensor state no data sel */
++0x0A, 0x04, 0x08,	 /* HID usage sensor state initializing sel */
++0x0A, 0x05, 0x08,	 /* HID usage sensor state access denied sel */
++0x0A, 0x06, 0x08,	 /* HID usage sensor state error sel */
++0X81, 0x00,		 /* HID Input (Data_Arr_Abs) */
++0xC0,			 /* HID end collection */
++0x0A, 0x02, 0x02,	 /* HID usage sensor event */
++0x15, 0,		 /* HID logical Min_8(0) */
++0x25, 5,		 /* HID logical Max_8(5) */
++0x75, 8,		 /* HID report size(8) */
++0x95, 1,		 /* HID report count (1) */
++0xA1, 0x02,		 /* HID end collection (logical) */
++0x0A, 0x10, 0x08,	 /* HID usage sensor event unknown sel */
++0x0A, 0x11, 0x08,	 /* HID usage sensor event state changed sel */
++0x0A, 0x12, 0x08,	 /* HID usage sensor event property changed sel */
++0x0A, 0x13, 0x08,	 /* HID usage sensor event data updated sel */
++0x0A, 0x14, 0x08,	 /* HID usage sensor event poll response sel */
++0x0A, 0x15, 0x08,	 /* HID usage sensor event change sensitivity sel */
++0X81, 0x00,		 /* HID Input (Data_Arr_Abs) */
++0xC0,			 /* HID end collection */
++0x0A, 0x53, 0x04,	 /* HID usage sensor data motion Acceleration X axis */
++0x17, 0x00, 0x00, 0x01, 0x80, /* HID logical Min_32 */
++
++0x27, 0xFF, 0xff, 0XFF, 0XFF, /* HID logical Max_32  */
++
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count (1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++0x0A, 0x54, 0x04,	/* HID usage sensor data motion Acceleration Y axis */
++0x17, 0X00, 0X00, 0x01, 0x80, /* HID logical Min_32 */
++
++0x27, 0xFF, 0xFF, 0XFF, 0XFF, /* HID logical Max_32 */
++
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count (1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++0x0A, 0x55, 0x04,	/* HID usage sensor data motion Acceleration Z axis */
++0x17, 0X00, 0X00, 0x01, 0x80, /* HID logical Min_32 */
++
++0x27, 0XFF, 0XFF, 0xFF, 0x7F, /* HID logical Max_32 */
++
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count (1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++
++0x0A, 0x51, 0x04,	/* HID usage sensor data motion state */
++0x15, 0,		/* HID logical Min_8(0) False = Still*/
++0x25, 1,		/* HID logical Min_8(1) True = In motion */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count (1) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++0xC0			/* HID end collection */
 +};
 +
-+/* Interface functions between HID LL driver and AMD SFH client */
-+void hid_amdtp_set_feature(struct hid_device *hid, char *buf, unsigned int len,
-+			   int report_id);
-+void hid_amdtp_get_report(struct hid_device *hid, int report_id,
-+			  int report_type);
-+int amdtp_hid_probe(unsigned int cur_hid_dev,
-+		    struct amdtp_cl_data *cli_data);
-+void amdtp_hid_remove(struct amdtp_cl_data *cli_data);
-+void amd_sfh_get_report(struct hid_device *hid, int report_id,
-+			int report_type);
-+void amd_sfh_set_report(struct hid_device *hid, int report_id,
-+			int report_type);
-+void amdtp_hid_wakeup(struct hid_device *hid);
++const unsigned char gyro3_report_descriptor[] = {
++0x05, 0x20,		/* Usage page */
++0x09, 0x76,		/* Motion type Gyro3D */
++0xA1, 0x00,		/* HID Collection (Physical) */
 +
-+#define amd_sfh_cldata(__work) container_of(__work,\
-+					struct amdtp_cl_data, work.work)
-+#endif	/* AMDSFH_HID */
++0x85, 2,		/* HID  Report ID */
++0x05, 0x20,		/* HID usage page sensor */
++0x0A, 0x09, 0x03,	/* Sensor property and sensor connection type */
++0x15, 0,		/* HID logical MIN_8(0) */
++0x25, 2,		/* HID logical MAX_8(2) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection (logical) */
++0x0A, 0x30, 0x08,	/* Sensor property connection type intergated sel */
++0x0A, 0x31, 0x08,	/* Sensor property connection type attached sel */
++0x0A, 0x32, 0x08,	/* Sensor property connection type external sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x16, 0x03,	/* HID usage sensor property reporting state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 5,		/* HID logical Max_8(5) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection(logical) */
++0x0A, 0x40, 0x08,	/* Sensor reporting state no events sel */
++0x0A, 0x41, 0x08,	/* Sensor reporting state all events sel */
++0x0A, 0x42, 0x08,	/* Sensor reporting state threshold events sel */
++0x0A, 0x43, 0x08,	/* Sensor reporting state no events wake sel */
++0x0A, 0x44, 0x08,	/* Sensor reporting state all events wake sel */
++0x0A, 0x45, 0x08,	/* Sensor reporting state threshold events wake sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x19, 0x03,	/* HID usage sensor property power state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 5,		/* HID logical Max_8(5) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection(logical) */
++0x0A, 0x50, 0x08,	/* Sensor  power state undefined sel */
++0x0A, 0x51, 0x08,	/* Sensor  power state D0 full power  sel */
++0x0A, 0x52, 0x08,	/* Sensor  power state D1 low power sel */
++0x0A, 0x53, 0x08,	/* Sensor  power state D2 standby with wake sel */
++0x0A, 0x54, 0x08,	/* Sensor  power state D3 sleep with wake  sel */
++0x0A, 0x55, 0x08,	/* Sensor  power state D4 power off sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x01, 0x02,	/* HID usage sensor state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 6,		/* HID logical Max_8(6) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection(logical) */
++0x0A, 0x00, 0x08,	/* HID usage sensor state unknown sel */
++0x0A, 0x01, 0x08,	/* HID usage sensor state ready sel */
++0x0A, 0x02, 0x08,	/* HID usage sensor state not available sel */
++0x0A, 0x03, 0x08,	/* HID usage sensor state no data sel */
++0x0A, 0x04, 0x08,	/* HID usage sensor state initializing sel */
++0x0A, 0x05, 0x08,	/* HID usage sensor state access denied sel */
++0x0A, 0x06, 0x08,	/* HID usage sensor state error sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x0E, 0x03,	/* HID usage sensor property report interval */
++0x15, 0,		/* HID logical Min_8(0) */
++0x27, 0xFF, 0xFF, 0xFF, 0xFF,	/* HID logical Max_32 */
++
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0,		/* HID unit exponent(0) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x56, 0x14,	/* Angular velocity and mod change sensitivity ABS)*/
++
++0x15, 0,		/* HID logical Min_8(0) */
++0x26, 0xFF, 0xFF,	/* HID logical Max_16(0xFF,0xFF) */
++
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x56, 0x24,	/* Sensor data (motion angular velocity and mod max) */
++
++0x16, 0x01, 0x80,	/* HID logical Min_16(0x01,0x80) */
++
++0x26, 0xFF, 0x7F,	/* HID logical Max_16(0xFF,0x7F) */
++
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x56, 0x34,	/* HID usage sensor data (motion accel and mod min) */
++
++0x16, 0x01, 0x80,	/* HID logical Min_16(0x01,0x80) */
++
++0x26, 0xFF, 0x7F,	/* HID logical Max_16(0xFF,0x7F) */
++
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++
++//Input reports(transmit)
++0x05, 0x20,		/* HID usage page sensors */
++0x0A, 0x01, 0x02,	/* HID usage sensor state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 6,		/* HID logical Max_8(6) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count (1) */
++0xA1, 0x02,		/* HID end collection (logical) */
++0x0A, 0x00, 0x08,	/* HID usage sensor state unknown sel */
++0x0A, 0x01, 0x08,	/* HID usage sensor state ready sel */
++0x0A, 0x02, 0x08,	/* HID usage sensor state not available sel */
++0x0A, 0x03, 0x08,	/* HID usage sensor state no data sel */
++0x0A, 0x04, 0x08,	/* HID usage sensor state initializing sel */
++0x0A, 0x05, 0x08,	/* HID usage sensor state access denied sel */
++0x0A, 0x06, 0x08,	/* HID usage sensor state error sel */
++0X81, 0x00,		/* HID Input (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x02, 0x02,	/* HID usage sensor event */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 5,		/* HID logical Max_8(5) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count (1) */
++0xA1, 0x02,		/* HID end collection (logical) */
++0x0A, 0x10, 0x08,	/* HID usage sensor event unknown sel */
++0x0A, 0x11, 0x08,	/* HID usage sensor event state changed sel */
++0x0A, 0x12, 0x08,	/* HID usage sensor event property changed sel */
++0x0A, 0x13, 0x08,	/* HID usage sensor event data updated sel */
++0x0A, 0x14, 0x08,	/* HID usage sensor event poll response sel */
++0x0A, 0x15, 0x08,	/* HID usage sensor event change sensitivity sel */
++0X81, 0x00,		/* HID Input (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x57, 0x04,	/* Sensor data motion Angular velocity  X axis */
++0x17, 0x00, 0x00, 0x01, 0x80,	/* HID logical Min_32 */
++
++0x27, 0xFF, 0xFF, 0xFF, 0x7F,	/* HID logical Max_32 */
++
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count (1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++0x0A, 0x58, 0x04,	/* Sensor data motion Angular velocity  Y axis */
++0x17, 0x00, 0x00, 0x01, 0x80, /* HID logical Min_32 */
++
++0x27, 0xFF, 0xFF, 0xFF, 0x7F, /* HID logical Max_32 */
++
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count (1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++0x0A, 0x59, 0x04,	/* Sensor data motion Angular velocity  Z axis */
++0x17, 0x00, 0x00, 0x01, 0x80, /* HID logical Min_32 */
++
++0x27, 0xFF, 0xFF, 0xFF, 0x7F, /* HID logical Max_32 */
++
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count (1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++
++0xC0,			/* HID end collection */
++};
++
++const unsigned char comp3_report_descriptor[] = {
++0x05, 0x20,		/* Usage page */
++0x09, 0x83,		/* Motion type Orientation compass 3D */
++0xA1, 0x00,		/* HID Collection (Physical) */
++
++0x05, 0x20,		/* HID usage page sensor */
++0x0A, 0x09, 0x03,	/* Sensor property and sensor connection type */
++0x15, 0,		/* HID logical MIN_8(0) */
++0x25, 2,		/* HID logical MAX_8(2) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection (logical) */
++0x0A, 0x30, 0x08,	/* Sensor property connection type intergated sel */
++0x0A, 0x31, 0x08,	/* Sensor property connection type attached sel */
++0x0A, 0x32, 0x08,	/* Sensor property connection type external sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x16, 0x03,	/* HID usage sensor property reporting state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 5,		/* HID logical Max_8(5) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection(logical) */
++0x0A, 0x40, 0x08,	/* Sensor reporting state no events sel */
++0x0A, 0x41, 0x08,	/* Sensor reporting state all events sel */
++0x0A, 0x42, 0x08,	/* Sensor reporting state threshold events sel */
++0x0A, 0x43, 0x08,	/* Sensor reporting state no events wake sel */
++0x0A, 0x44, 0x08,	/* Sensor reporting state all events wake sel */
++0x0A, 0x45, 0x08,	/* Sensor reporting state threshold events wake sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x19, 0x03,       /* HID usage sensor property power state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 5,		/* HID logical Max_8(5) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection(logical) */
++0x0A, 0x50, 0x08,	/* Sensor power state undefined sel */
++0x0A, 0x51, 0x08,	/* Sensor power state D0 full power  sel */
++0x0A, 0x52, 0x08,	/* Sensor power state D1 low power sel */
++0x0A, 0x53, 0x08,	/* Sensor power state D2 standby with wake sel */
++0x0A, 0x54, 0x08,	/* Sensor power state D3 sleep with wake  sel */
++0x0A, 0x55, 0x08,	/* Sensor power state D4 power off sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x01, 0x02,	/* HID usage sensor state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 6,		/* HID logical Max_8(6) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection(logical) */
++0x0A, 0x00, 0x08,       /* HID usage sensor state unknown sel */
++0x0A, 0x01, 0x08,       /* HID usage sensor state ready sel */
++0x0A, 0x02, 0x08,       /* HID usage sensor state not available sel */
++0x0A, 0x03, 0x08,       /* HID usage sensor state no data sel */
++0x0A, 0x04, 0x08,       /* HID usage sensor state initializing sel */
++0x0A, 0x05, 0x08,       /* HID usage sensor state access denied sel */
++0x0A, 0x06, 0x08,       /* HID usage sensor state error sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x0E, 0x03,	/* HID usage sensor property report interval */
++0x15, 0,		/* HID logical Min_8(0) */
++0x27, 0xFF, 0xFF, 0xFF, 0xFF,	/* HID logical Max_32 */
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0,		/* HID unit exponent(0) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x71, 0x14,	/* Orientation  and mod change sensitivity ABS)*/
++0x15, 0,		/* HID logical Min_8(0) */
++0x26, 0xFF, 0xFF,	/* HID logical Max_16(0xFF,0xFF) */
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x71, 0x24,	/* Sensor data (motion orientation  and mod max) */
++0x16, 0x01, 0x80,	/* HID logical Min_16(0x01,0x80) */
++0x26, 0xFF, 0x7F,	/* HID logical Max_16(0xFF,0x7F) */
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0F,		/* HID unit exponent(0x0F) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x71, 0x34,	/* Sensor data (motion orientation  and mod min) */
++0x16, 0x01, 0x80,	/* HID logical Min_16(0x01,0x80) */
++0x26, 0xFF, 0x7F,	/* HID logical Max_16(0xFF,0x7F) */
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0F,		/* HID unit exponent(0x0F) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x84, 0x14,	/* Maganetic flux and change sensitivity ABS) */
++0x15, 0,		/* HID logical Min_8(0) */
++0x26, 0xFF, 0xFF,	/* HID logical Max_16(0xFF,0xFF) */
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x84, 0x24,	/* Maganetic flux and mod change sensitivity Max) */
++0x16, 0x01, 0x80,	/* HID logical Min_16(0x01,0x80) */
++0x26, 0xFF, 0x7F,	/* HID logical Max_16(0xFF,0x7F) */
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0F,		/* HID unit exponent(0x0F) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0x84, 0x34,	/* Maganetic flux and mod change sensitivity Min */
++0x16, 0x01, 0x80,	/* HID logical Min_16(0x01,0x80) */
++0x26, 0xFF, 0x7F,	/* HID logical Max_16(0xFF,0x7F) */
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0F,		/* HID unit exponent(0x0F) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++
++//Input reports(transmit)
++0x05, 0x20,		/* HID usage page sensors */
++0x0A, 0x01, 0x02,	/* HID usage sensor state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 6,		/* HID logical Max_8(6) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count (1) */
++0xA1, 0x02,		/* HID end collection (logical) */
++0x0A, 0x00, 0x08,	/* HID usage sensor state unknown sel */
++0x0A, 0x01, 0x08,	/* HID usage sensor state ready sel */
++0x0A, 0x02, 0x08,	/* HID usage sensor state not available sel */
++0x0A, 0x03, 0x08,	/* HID usage sensor state no data sel */
++0x0A, 0x04, 0x08,	/* HID usage sensor state initializing sel */
++0x0A, 0x05, 0x08,	/* HID usage sensor state access denied sel */
++0x0A, 0x06, 0x08,	/* HID usage sensor state error sel */
++0X81, 0x00,		/* HID Input (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x02, 0x02,	/* HID usage sensor event */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 5,		/* HID logical Max_8(5) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count (1) */
++0xA1, 0x02,		/* HID end collection (logical) */
++0x0A, 0x10, 0x08,	/* HID usage sensor event unknown sel */
++0x0A, 0x11, 0x08,	/* HID usage sensor event state changed sel */
++0x0A, 0x12, 0x08,	/* HID usage sensor event property changed sel */
++0x0A, 0x13, 0x08,	/* HID usage sensor event data updated sel */
++0x0A, 0x14, 0x08,	/* HID usage sensor event poll response sel */
++0x0A, 0x15, 0x08,	/* HID usage sensor event change sensitivity sel */
++0X81, 0x00,		/* HID Input (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x85, 0x04,	/* Sensor data orientation magnetic flux X axis */
++0x17, 0x00, 0x00, 0x01, 0x80,	/* HID logical Min_32 */
++0x27, 0xFF, 0xFF, 0xFF, 0x7F,	/* HID logical Max_32 */
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count (1) */
++0x55, 0x0D,		/* HID unit exponent(0x0D) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++0x0A, 0x86, 0x04,	/* Sensor data orientation magnetic flux Y axis */
++0x17, 0x00, 0x00, 0x01, 0x80,	/* HID logical Min_32 */
++0x27, 0xFF, 0xFF, 0xFF, 0x7F,	/* HID logical Max_32 */
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count (1) */
++0x55, 0x0D,		/* HID unit exponent(0x0D) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++0x0A, 0x87, 0x04,	/* Sensor data orientation magnetic flux Z axis */
++0x17, 0x00, 0x00, 0x01, 0x80,	/* HID logical Min_32 */
++0x27, 0xFF, 0xFF, 0xFF, 0x7F,	/* HID logical Max_32 */
++0x75, 32,			/* HID report size(32) */
++0x95, 1,			/* HID report count (1) */
++0x55, 0x0D,			/* HID unit exponent(0x0D) */
++0X81, 0x02,			/* HID Input (Data_Arr_Abs) */
++0x0A, 0x88, 0x04,	/* Sensor data orientation magnetometer accuracy */
++0x17, 0x00, 0x00, 0x01, 0x80,	/* HID logical Min_32 */
++0x27, 0xFF, 0xFF, 0xFF, 0x7F,	/* HID logical Max_32 */
++0x75, 32,			/* HID report size(32) */
++0x95, 1,			/* HID report count (1) */
++0X81, 0x02,			/* HID Input (Data_Arr_Abs) */
++0xC0				/* HID end collection */
++};
++
++const unsigned char als_report_descriptor[] = {
++0x05, 0x20,	/* HID usage page sensor */
++0x09, 0x41,	/* HID usage sensor type Ambientlight  */
++0xA1, 0x00,	/* HID Collection (Physical) */
++
++//feature reports(xmit/receive)
++0x05, 0x20,	/* HID usage page sensor */
++0x0A, 0x09, 0x03,	/* Sensor property and sensor connection type */
++0x15, 0,		/* HID logical MIN_8(0) */
++0x25, 2,		/* HID logical MAX_8(2) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection (logical) */
++0x0A, 0x30, 0x08,	/* Sensor property connection type intergated sel */
++0x0A, 0x31, 0x08,	/* Sensor property connection type attached sel */
++0x0A, 0x32, 0x08,	/* Sensor property connection type external sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x16, 0x03,	/* HID usage sensor property reporting state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 5,		/* HID logical Max_8(5) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection(logical) */
++0x0A, 0x40, 0x08,	/* Sensor reporting state no events sel */
++0x0A, 0x41, 0x08,	/* Sensor reporting state all events sel */
++0x0A, 0x42, 0x08,	/* Sensor reporting state threshold events sel */
++0x0A, 0x43, 0x08,	/* Sensor reporting state no events wake sel */
++0x0A, 0x44, 0x08,	/* Sensor reporting state all events wake sel */
++0x0A, 0x45, 0x08,	/* Sensor reporting state threshold events wake sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x19, 0x03,	/* HID usage sensor property power state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 5,		/* HID logical Max_8(5) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection(logical) */
++0x0A, 0x50, 0x08,	/* Sensor power state undefined sel */
++0x0A, 0x51, 0x08,	/* Sensor power state D0 full power  sel */
++0x0A, 0x52, 0x08,	/* Sensor power state D1 low power sel */
++0x0A, 0x53, 0x08,	/* Sensor power state D2 standby with wake sel */
++0x0A, 0x54, 0x08,	/* Sensor power state D3 sleep with wake  sel */
++0x0A, 0x55, 0x08,	/* Sensor power state D4 power off sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x01, 0x02,	/* HID usage sensor state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 6,		/* HID logical Max_8(6) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count(1) */
++0xA1, 0x02,		/* HID collection(logical) */
++0x0A, 0x00, 0x08,	/* HID usage sensor state unknown sel */
++0x0A, 0x01, 0x08,	/* HID usage sensor state ready sel */
++0x0A, 0x02, 0x08,	/* HID usage sensor state not available sel */
++0x0A, 0x03, 0x08,	/* HID usage sensor state no data sel */
++0x0A, 0x04, 0x08,	/* HID usage sensor state initializing sel */
++0x0A, 0x05, 0x08,	/* HID usage sensor state access denied sel */
++0x0A, 0x06, 0x08,	/* HID usage sensor state error sel */
++0xB1, 0x00,		/* HID feature (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x0E, 0x03,	/* HID usage sensor property report interval */
++0x15, 0,		/* HID logical Min_8(0) */
++0x27, 0xFF, 0xFF, 0xFF, 0xFF,	/* HID logical Max_32 */
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0,		/* HID unit exponent(0) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0xD1, 0xE4,	/* Light illuminance and sensitivity REL PCT) */
++0x15, 0,		/* HID logical Min_8(0) */
++0x26, 0x10, 0x27,	/* HID logical Max_16(0x10,0x27) */
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0E,		/* HID unit exponent(0x0E) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0xD1, 0x24,	/* Sensor data (Light illuminance and mod max) */
++0x15, 0,		/* HID logical Min_8(0) */
++0x26, 0xFF, 0xFF,	/* HID logical Max_16(0xFF,0xFF) */
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0F,		/* HID unit exponent(0x0F) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++0x0A, 0xD1, 0x34,	/* Sensor data (Light illuminance and mod min) */
++0x15, 0,		/* HID logical Min_8(0) */
++0x26, 0xFF, 0xFF,	/* HID logical Max_16(0xFF,0xFF) */
++0x75, 16,		/* HID report size(16) */
++0x95, 1,		/* HID report count(1) */
++0x55, 0x0F,		/* HID unit exponent(0x0F) */
++0xB1, 0x02,		/* HID feature (Data_Arr_Abs) */
++
++//Input reports (transmit)
++0x05, 0x20,		/* HID usage page sensors */
++0x0A, 0x01, 0x02,	/* HID usage sensor state */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 6,		/* HID logical Max_8(6) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count (1) */
++0xA1, 0x02,		/* HID end collection (logical) */
++0x0A, 0x00, 0x08,	/* HID usage sensor state unknown sel */
++0x0A, 0x01, 0x08,	/* HID usage sensor state ready sel */
++0x0A, 0x02, 0x08,	/* HID usage sensor state not available sel */
++0x0A, 0x03, 0x08,	/* HID usage sensor state no data sel */
++0x0A, 0x04, 0x08,	/* HID usage sensor state initializing sel */
++0x0A, 0x05, 0x08,	/* HID usage sensor state access denied sel */
++0x0A, 0x06, 0x08,	/* HID usage sensor state error sel */
++0X81, 0x00,		/* HID Input (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0x02, 0x02,	/* HID usage sensor event */
++0x15, 0,		/* HID logical Min_8(0) */
++0x25, 5,		/* HID logical Max_8(5) */
++0x75, 8,		/* HID report size(8) */
++0x95, 1,		/* HID report count (1) */
++0xA1, 0x02,		/* HID end collection (logical) */
++0x0A, 0x10, 0x08,	/* HID usage sensor event unknown sel */
++0x0A, 0x11, 0x08,	/* HID usage sensor event state changed sel */
++0x0A, 0x12, 0x08,	/* HID usage sensor event property changed sel */
++0x0A, 0x13, 0x08,	/* HID usage sensor event data updated sel */
++0x0A, 0x14, 0x08,	/* HID usage sensor event poll response sel */
++0x0A, 0x15, 0x08,	/* HID usage sensor event change sensitivity sel */
++0X81, 0x00,		/* HID Input (Data_Arr_Abs) */
++0xC0,			/* HID end collection */
++0x0A, 0xD1, 0x04,	/* HID usage sensor data light illuminance */
++0x17, 0x00, 0x00, 0x01, 0x80,	 /* HID logical Min_32 */
++0x27, 0xFF, 0xFF, 0xFF, 0x7F,	 /* HID logical Max_32 */
++0x55, 0x0F,		/* HID unit exponent(0x0F) */
++0x75, 32,		/* HID report size(32) */
++0x95, 1,		/* HID report count (1) */
++0X81, 0x02,		/* HID Input (Data_Arr_Abs) */
++0xC0			/* HID end collection */
++};
++#endif
 -- 
 2.7.4
 

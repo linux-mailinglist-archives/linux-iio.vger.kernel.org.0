@@ -2,146 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 539F414D1A0
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 21:01:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE93A14D1F4
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2020 21:31:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727179AbgA2UBu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jan 2020 15:01:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45568 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726171AbgA2UBu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 29 Jan 2020 15:01:50 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B276F2067C;
-        Wed, 29 Jan 2020 20:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580328109;
-        bh=eUqnYUa8xJcvz8vjf0xZN38k+FZQvoRAsBz21Xm6sZU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rjv5RFPqGSLFBb+bMIdmwauMlY6BQgrgduh+b+BbCWLmSNE5sAYkGdk3gjtU5l0cm
-         yM1Mevx+pg8NIM1pZfvo4qhbpqD3PvHGA8bqty+FHme7kVyyJLyOe0Au3HwLzHqd3c
-         2zZHeagcFw2DxanCXC2NByH9ip34n2nnY56U3X64=
-Date:   Wed, 29 Jan 2020 20:01:43 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tomer Maimon <tmaimon77@gmail.com>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        robh+dt@kernel.org, mark.rutland@arm.com, avifishman70@gmail.com,
-        tali.perry1@gmail.com, venture@google.com, yuenn@google.com,
-        benjaminfair@google.com, joel@jms.id.au, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        openbmc@lists.ozlabs.org
-Subject: Re: [PATCH v1 2/2] iio: adc: modify NPCM reset support
-Message-ID: <20200129200143.08bf4a91@archlinux>
-In-Reply-To: <20200119110032.124745-2-tmaimon77@gmail.com>
-References: <20200119110032.124745-1-tmaimon77@gmail.com>
-        <20200119110032.124745-2-tmaimon77@gmail.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1726708AbgA2Ubq convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 29 Jan 2020 15:31:46 -0500
+Received: from smtp77.ord1c.emailsrvr.com ([108.166.43.77]:34230 "EHLO
+        smtp77.ord1c.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726317AbgA2Ubp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jan 2020 15:31:45 -0500
+X-Greylist: delayed 374 seconds by postgrey-1.27 at vger.kernel.org; Wed, 29 Jan 2020 15:31:45 EST
+X-Auth-ID: nick.burkitt@nanotok.com
+Received: by smtp10.relay.ord1c.emailsrvr.com (Authenticated sender: nick.burkitt-AT-nanotok.com) with ESMTPSA id A643640261
+        for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2020 15:25:30 -0500 (EST)
+X-Sender-Id: nick.burkitt@nanotok.com
+Received: from [192.168.0.5] (108-88-90-111.lightspeed.sntcca.sbcglobal.net [108.88.90.111])
+        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384)
+        by 0.0.0.0:465 (trex/5.7.12);
+        Wed, 29 Jan 2020 15:25:30 -0500
+From:   "Nick Burkitt" <nick.burkitt@nanotok.com>
+To:     linux-iio@vger.kernel.org
+Subject: IIO driver module doesn't load automatically on kernel 4.19
+Date:   Wed, 29 Jan 2020 20:25:28 +0000
+Message-Id: <em32a58ce6-ecc9-4a0a-b47d-5d9b79f9bcc1@nanotok>
+Reply-To: "Nick Burkitt" <nick.burkitt@nanotok.com>
+User-Agent: eM_Client/7.2.36908.0
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 19 Jan 2020 13:00:32 +0200
-Tomer Maimon <tmaimon77@gmail.com> wrote:
+Hi All.
 
-> Modify NPCM ADC reset support from
-> direct register access to reset controller support.
-> 
-> Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+Pardon me if I'm in the wrong place, but I have to start somewhere.
+I'm using an IIO driver (based on the BNO055 driver proposed by Vlad 
+Dogaru back in 2016).
+All was well for a couple of years, but after I updated my kernel from 
+4.14 to 4.19, my driver will no longer load on boot, but is still happy 
+to be loaded manually with modprobe.
+All other drivers load normally.
+Has something changed in the way IIO drivers register themselves? Or has 
+some other requirement been added since 4.14 that I have to add to my 
+driver?
+If not, any suggestions on where to go next would be appreciated.
 
-Hmm.  This presumably breaks all old DT. 
+Details:
+Xilinx Zynq-7000 (ARM Cortex-A9, 2 cores@866 MHz), 1 GB RAM
+Linux v4.19.0 (via Xilinx)
+Ubuntu 16.04 and 18.04 (both exhibit the same problem)
 
-If that's not a problem please say why.
+Thanks,
 
-Jonathan
-
-> ---
->  drivers/iio/adc/npcm_adc.c | 30 +++++++++---------------------
->  1 file changed, 9 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/npcm_adc.c b/drivers/iio/adc/npcm_adc.c
-> index a6170a37ebe8..83bad2d5575d 100644
-> --- a/drivers/iio/adc/npcm_adc.c
-> +++ b/drivers/iio/adc/npcm_adc.c
-> @@ -14,6 +14,7 @@
->  #include <linux/regulator/consumer.h>
->  #include <linux/spinlock.h>
->  #include <linux/uaccess.h>
-> +#include <linux/reset.h>
->  
->  struct npcm_adc {
->  	bool int_status;
-> @@ -23,13 +24,9 @@ struct npcm_adc {
->  	struct clk *adc_clk;
->  	wait_queue_head_t wq;
->  	struct regulator *vref;
-> -	struct regmap *rst_regmap;
-> +	struct reset_control *reset;
->  };
->  
-> -/* NPCM7xx reset module */
-> -#define NPCM7XX_IPSRST1_OFFSET		0x020
-> -#define NPCM7XX_IPSRST1_ADC_RST		BIT(27)
-> -
->  /* ADC registers */
->  #define NPCM_ADCCON	 0x00
->  #define NPCM_ADCDATA	 0x04
-> @@ -106,13 +103,11 @@ static int npcm_adc_read(struct npcm_adc *info, int *val, u8 channel)
->  					       msecs_to_jiffies(10));
->  	if (ret == 0) {
->  		regtemp = ioread32(info->regs + NPCM_ADCCON);
-> -		if ((regtemp & NPCM_ADCCON_ADC_CONV) && info->rst_regmap) {
-> +		if (regtemp & NPCM_ADCCON_ADC_CONV) {
->  			/* if conversion failed - reset ADC module */
-> -			regmap_write(info->rst_regmap, NPCM7XX_IPSRST1_OFFSET,
-> -				     NPCM7XX_IPSRST1_ADC_RST);
-> +			reset_control_assert(info->reset);
->  			msleep(100);
-> -			regmap_write(info->rst_regmap, NPCM7XX_IPSRST1_OFFSET,
-> -				     0x0);
-> +			reset_control_deassert(info->reset);
->  			msleep(100);
->  
->  			/* Enable ADC and start conversion module */
-> @@ -186,7 +181,6 @@ static int npcm_adc_probe(struct platform_device *pdev)
->  	struct npcm_adc *info;
->  	struct iio_dev *indio_dev;
->  	struct device *dev = &pdev->dev;
-> -	struct device_node *np = pdev->dev.of_node;
->  
->  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*info));
->  	if (!indio_dev)
-> @@ -199,6 +193,10 @@ static int npcm_adc_probe(struct platform_device *pdev)
->  	if (IS_ERR(info->regs))
->  		return PTR_ERR(info->regs);
->  
-> +	info->reset = devm_reset_control_get(&pdev->dev, NULL);
-> +	if (IS_ERR(info->reset))
-> +		return PTR_ERR(info->reset);
-> +
->  	info->adc_clk = devm_clk_get(&pdev->dev, NULL);
->  	if (IS_ERR(info->adc_clk)) {
->  		dev_warn(&pdev->dev, "ADC clock failed: can't read clk\n");
-> @@ -211,16 +209,6 @@ static int npcm_adc_probe(struct platform_device *pdev)
->  	div = div >> NPCM_ADCCON_DIV_SHIFT;
->  	info->adc_sample_hz = clk_get_rate(info->adc_clk) / ((div + 1) * 2);
->  
-> -	if (of_device_is_compatible(np, "nuvoton,npcm750-adc")) {
-> -		info->rst_regmap = syscon_regmap_lookup_by_compatible
-> -			("nuvoton,npcm750-rst");
-> -		if (IS_ERR(info->rst_regmap)) {
-> -			dev_err(&pdev->dev, "Failed to find nuvoton,npcm750-rst\n");
-> -			ret = PTR_ERR(info->rst_regmap);
-> -			goto err_disable_clk;
-> -		}
-> -	}
-> -
->  	irq = platform_get_irq(pdev, 0);
->  	if (irq <= 0) {
->  		ret = -EINVAL;
+-Nick
 

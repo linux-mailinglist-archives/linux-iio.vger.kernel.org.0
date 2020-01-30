@@ -2,335 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F02E14DC3A
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2020 14:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 341F314E3FD
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2020 21:32:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727139AbgA3Npf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Jan 2020 08:45:35 -0500
-Received: from honk.sigxcpu.org ([24.134.29.49]:53374 "EHLO honk.sigxcpu.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726996AbgA3Npf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 30 Jan 2020 08:45:35 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id 7528BFB03;
-        Thu, 30 Jan 2020 14:45:33 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
-Received: from honk.sigxcpu.org ([127.0.0.1])
-        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id bIifrS_4u1_D; Thu, 30 Jan 2020 14:45:31 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id B228540919; Thu, 30 Jan 2020 14:45:30 +0100 (CET)
-Date:   Thu, 30 Jan 2020 14:45:30 +0100
-From:   Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-To:     Tomas Novotny <tomas@novotny.cz>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        id S1727546AbgA3Ubx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Jan 2020 15:31:53 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:53532 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727511AbgA3Ubx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jan 2020 15:31:53 -0500
+Received: by mail-pj1-f68.google.com with SMTP id n96so1832492pjc.3
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jan 2020 12:31:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=P+0rKLDNQs9w1hNYJYZaKwLvj6vZBP5mJnYXqFucuhM=;
+        b=iq8U0whKUir6BtwA+hkEPrARPnboBH0L4GdBB8V5rfVP4JY5aMnYgRrZmiShSuPqvX
+         BHaonQ7Zj54ppZIG+cuxcjKa9ODjO6MWeiX4jm9xrda4Qvl33AM7moaTllpENFnGWuzV
+         GGY+6lpgCAlmgbbvHnGLrBVN/7YWMNLNTKE2Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=P+0rKLDNQs9w1hNYJYZaKwLvj6vZBP5mJnYXqFucuhM=;
+        b=sEZkqFlTVHWggRGgSyrTJjk4Pw/fglm3NZgluJUog0e3SDxNXdUeJY68KkQLXxJ/mg
+         Mrpbh8htY3lsY2mbhcqB2emkzTvF0lqo+BOYCjFjAlc69tZS7INuU2CakRp96/uSsiCd
+         LTX1QC2dUy3HCZTUODQQ/28WbkVsGeyoOiwTEvK8KU4n/Fa3M2uKyY/qEVKE2hvilq+l
+         MgwfVNSDiYzoL988jM9tQl6VFqd4wYltxTxWfE1lQ1umBkZB+TiIc8hmdhnnqcOFpPkF
+         DVwegFO5G/SMkMIl8sCnlCy6vCzy3p1ZwFNJ4QyRCkWv1TgSMYTj164DTZQsiv5+/oWR
+         xEBA==
+X-Gm-Message-State: APjAAAXpK6+zfZDgOTAe217coBD04fuh4V29Yq/nDJiNK21rPZUUhDzV
+        WLoUcLZH5Wa6gSMo274WAA0Z2g==
+X-Google-Smtp-Source: APXvYqywzkMhkKxlKfSDU6MFr6XCU75z4SAPc7PY0WLGJOKTg2UN9bOXzElPAjE3XEpsIBbIRtv9zg==
+X-Received: by 2002:a17:902:6508:: with SMTP id b8mr6423357plk.201.1580416310690;
+        Thu, 30 Jan 2020 12:31:50 -0800 (PST)
+Received: from pmalani2.mtv.corp.google.com ([2620:15c:202:201:172e:4646:c089:ce59])
+        by smtp.gmail.com with ESMTPSA id q12sm7469321pfh.158.2020.01.30.12.31.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jan 2020 12:31:49 -0800 (PST)
+From:   Prashant Malani <pmalani@chromium.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Prashant Malani <pmalani@chromium.org>,
+        Akshu Agrawal <akshu.agrawal@amd.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        alsa-devel@alsa-project.org (moderated list:SOUND - SOC LAYER / DYNAMIC
+        AUDIO POWER MANAGEM...),
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Evan Green <evgreen@chromium.org>,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        linux-i2c@vger.kernel.org (open list:I2C SUBSYSTEM HOST DRIVERS),
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+        linux-input@vger.kernel.org (open list:HID CORE LAYER),
+        linux-media@vger.kernel.org (open list:MEDIA INPUT INFRASTRUCTURE
+        (V4L/DVB)),
+        linux-pm@vger.kernel.org (open list:POWER SUPPLY CLASS/SUBSYSTEM and
+        DRIVERS), linux-pwm@vger.kernel.org (open list:PWM SUBSYSTEM),
+        linux-rtc@vger.kernel.org (open list:REAL TIME CLOCK (RTC) SUBSYSTEM),
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Nick Vaccaro <nvaccaro@chromium.org>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: vncl4000: Enable runtime pm for vcnl4200/4040
-Message-ID: <20200130134530.GA287278@bogon.m.sigxcpu.org>
-References: <cover.1579531608.git.agx@sigxcpu.org>
- <65d5c7b562f9f7c17857310e8538afe0bb1b2ddb.1579531608.git.agx@sigxcpu.org>
- <20200120182853.37a724fa@tomas.local.tbs-biometrics.cz>
+        Raul E Rangel <rrangel@chromium.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Wolfram Sang <wsa@the-dreams.de>
+Subject: [PATCH 00/17] platform/chrome: Replace cros_ec_cmd_xfer_status
+Date:   Thu, 30 Jan 2020 12:30:31 -0800
+Message-Id: <20200130203106.201894-1-pmalani@chromium.org>
+X-Mailer: git-send-email 2.25.0.341.g760bfbb309-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200120182853.37a724fa@tomas.local.tbs-biometrics.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-On Mon, Jan 20, 2020 at 06:28:53PM +0100, Tomas Novotny wrote:
-> Hi Guido,
-> 
-> On Mon, 20 Jan 2020 16:01:24 +0100
-> Guido Günther <agx@sigxcpu.org> wrote:
-> 
-> > This is modelled after the vcnl4035 driver. The vcnl4000 does not seem
-> > to have a way to save power so we just leave it running.
-> 
-> To be precise - only the on-demand measurement is done for vcnl4000/4010/4020
-> in this driver (so it is not running in the end). The periodic measurement
-> (only) is done for vcnl4040/4200.
+Many callers of cros_ec_cmd_xfer_status() use similar setup and cleanup
+code, including setting up the cros_ec_command message struct and
+copying the received buffer.
 
-Fixed in the commit message.
+This series introduces a replacement function cros_ec_send_cmd_msg() that
+performs this setup and teardown, and then updates all call sites that
+used xfer_status() to use the new function instead.
 
-> 
-> Note below.
-> 
-> > Signed-off-by: Guido Günther <agx@sigxcpu.org>
-> > ---
-> >  drivers/iio/light/vcnl4000.c | 126 +++++++++++++++++++++++++++++++++--
-> >  1 file changed, 120 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> > index 8f198383626b..b0396a3f1915 100644
-> > --- a/drivers/iio/light/vcnl4000.c
-> > +++ b/drivers/iio/light/vcnl4000.c
-> > @@ -22,6 +22,7 @@
-> >  #include <linux/i2c.h>
-> >  #include <linux/err.h>
-> >  #include <linux/delay.h>
-> > +#include <linux/pm_runtime.h>
-> >  
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> > @@ -57,6 +58,8 @@
-> >  #define VCNL4000_AL_OD		BIT(4) /* start on-demand ALS measurement */
-> >  #define VCNL4000_PS_OD		BIT(3) /* start on-demand proximity measurement */
-> >  
-> > +#define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
-> > +
-> >  enum vcnl4000_device_ids {
-> >  	VCNL4000,
-> >  	VCNL4010,
-> > @@ -87,6 +90,7 @@ struct vcnl4000_chip_spec {
-> >  	int (*init)(struct vcnl4000_data *data);
-> >  	int (*measure_light)(struct vcnl4000_data *data, int *val);
-> >  	int (*measure_proximity)(struct vcnl4000_data *data, int *val);
-> > +	int (*set_power_state)(struct vcnl4000_data *data, bool on);
-> >  };
-> >  
-> >  static const struct i2c_device_id vcnl4000_id[] = {
-> > @@ -99,6 +103,12 @@ static const struct i2c_device_id vcnl4000_id[] = {
-> >  };
-> >  MODULE_DEVICE_TABLE(i2c, vcnl4000_id);
-> >  
-> > +static int vcnl4000_set_power_state(struct vcnl4000_data *data, bool on)
-> > +{
-> > +	/* no suspend op */
-> > +	return 0;
-> > +}
-> > +
-> >  static int vcnl4000_init(struct vcnl4000_data *data)
-> >  {
-> >  	int ret, prod_id;
-> > @@ -127,9 +137,24 @@ static int vcnl4000_init(struct vcnl4000_data *data)
-> >  	data->al_scale = 250000;
-> >  	mutex_init(&data->vcnl4000_lock);
-> >  
-> > +	ret = data->chip_spec->set_power_state(data, true);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +
-> >  	return 0;
-> >  };
-> >  
-> > +static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
-> > +{
-> > +	u16 val = on ? 0 /* power on */ : 1 /* shut down */;
-> > +	int ret;
-> > +
-> > +	ret = i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, val);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	return i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
-> > +}
-> > +
-> >  static int vcnl4200_init(struct vcnl4000_data *data)
-> >  {
-> >  	int ret, id;
-> > @@ -155,11 +180,7 @@ static int vcnl4200_init(struct vcnl4000_data *data)
-> >  
-> >  	data->rev = (ret >> 8) & 0xf;
-> >  
-> > -	/* Set defaults and enable both channels */
-> > -	ret = i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, 0);
-> > -	if (ret < 0)
-> > -		return ret;
-> > -	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, 0);
-> > +	ret = data->chip_spec->set_power_state(data, true);
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > @@ -291,24 +312,28 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
-> >  		.init = vcnl4000_init,
-> >  		.measure_light = vcnl4000_measure_light,
-> >  		.measure_proximity = vcnl4000_measure_proximity,
-> > +		.set_power_state = vcnl4000_set_power_state,
-> >  	},
-> >  	[VCNL4010] = {
-> >  		.prod = "VCNL4010/4020",
-> >  		.init = vcnl4000_init,
-> >  		.measure_light = vcnl4000_measure_light,
-> >  		.measure_proximity = vcnl4000_measure_proximity,
-> > +		.set_power_state = vcnl4000_set_power_state,
-> >  	},
-> >  	[VCNL4040] = {
-> >  		.prod = "VCNL4040",
-> >  		.init = vcnl4200_init,
-> >  		.measure_light = vcnl4200_measure_light,
-> >  		.measure_proximity = vcnl4200_measure_proximity,
-> > +		.set_power_state = vcnl4200_set_power_state,
-> >  	},
-> >  	[VCNL4200] = {
-> >  		.prod = "VCNL4200",
-> >  		.init = vcnl4200_init,
-> >  		.measure_light = vcnl4200_measure_light,
-> >  		.measure_proximity = vcnl4200_measure_proximity,
-> > +		.set_power_state = vcnl4200_set_power_state,
-> >  	},
-> >  };
-> >  
-> > @@ -323,6 +348,23 @@ static const struct iio_chan_spec vcnl4000_channels[] = {
-> >  	}
-> >  };
-> >  
-> > +static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data, bool on)
-> > +{
-> > +	struct device *dev = &data->client->dev;
-> > +	int ret;
-> > +
-> > +	if (on) {
-> > +		ret = pm_runtime_get_sync(dev);
-> > +		if (ret < 0)
-> > +			pm_runtime_put_noidle(dev);
-> > +	} else {
-> > +		pm_runtime_mark_last_busy(dev);
-> > +		ret = pm_runtime_put_autosuspend(dev);
-> > +	}
-> > +
-> > +	return ret;
-> > +}
-> > +
-> >  static int vcnl4000_read_raw(struct iio_dev *indio_dev,
-> >  				struct iio_chan_spec const *chan,
-> >  				int *val, int *val2, long mask)
-> > @@ -332,6 +374,10 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
-> >  
-> >  	switch (mask) {
-> >  	case IIO_CHAN_INFO_RAW:
-> > +		ret = vcnl4000_set_pm_runtime_state(data, true);
-> > +		if  (ret < 0)
-> > +			return ret;
-> > +
-> >  		switch (chan->type) {
-> >  		case IIO_LIGHT:
-> >  			ret = data->chip_spec->measure_light(data, val);
-> > @@ -346,6 +392,7 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
-> >  		default:
-> >  			ret = -EINVAL;
-> >  		}
-> > +		vcnl4000_set_pm_runtime_state(data, false);
-> >  		return ret;
-> >  	case IIO_CHAN_INFO_SCALE:
-> >  		if (chan->type != IIO_LIGHT)
-> > @@ -394,7 +441,22 @@ static int vcnl4000_probe(struct i2c_client *client,
-> >  	indio_dev->name = VCNL4000_DRV_NAME;
-> >  	indio_dev->modes = INDIO_DIRECT_MODE;
-> >  
-> > -	return devm_iio_device_register(&client->dev, indio_dev);
-> > +	ret = pm_runtime_set_active(&client->dev);
-> > +	if (ret < 0)
-> > +		goto fail_poweroff;
-> > +
-> > +	ret = iio_device_register(indio_dev);
-> > +	if (ret < 0)
-> > +		goto fail_poweroff;
-> > +
-> > +	pm_runtime_enable(&client->dev);
-> > +	pm_runtime_set_autosuspend_delay(&client->dev, VCNL4000_SLEEP_DELAY_MS);
-> > +	pm_runtime_use_autosuspend(&client->dev);
-> > +
-> > +	return 0;
-> > +fail_poweroff:
-> > +	data->chip_spec->set_power_state(data, false);
-> > +	return ret;
-> >  }
-> >  
-> >  static const struct of_device_id vcnl_4000_of_match[] = {
-> > @@ -422,13 +484,65 @@ static const struct of_device_id vcnl_4000_of_match[] = {
-> >  };
-> >  MODULE_DEVICE_TABLE(of, vcnl_4000_of_match);
-> >  
-> > +static int vcnl4000_remove(struct i2c_client *client)
-> > +{
-> > +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> > +	struct vcnl4000_data *data = iio_priv(indio_dev);
-> > +
-> > +	pm_runtime_dont_use_autosuspend(&client->dev);
-> > +	pm_runtime_disable(&client->dev);
-> > +	iio_device_unregister(indio_dev);
-> > +	pm_runtime_set_suspended(&client->dev);
-> > +
-> > +	return data->chip_spec->set_power_state(data, false);
-> > +}
-> > +
-> > +static int __maybe_unused vcnl4000_runtime_suspend(struct device *dev)
-> > +{
-> > +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> > +	struct vcnl4000_data *data = iio_priv(indio_dev);
-> > +	int ret;
-> > +
-> > +	ret = data->chip_spec->set_power_state(data, false);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int __maybe_unused vcnl4000_runtime_resume(struct device *dev)
-> > +{
-> > +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> > +	struct vcnl4000_data *data = iio_priv(indio_dev);
-> > +	unsigned int msecs;
-> > +	int ret;
-> > +
-> > +	ret = data->chip_spec->set_power_state(data, true);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +
-> > +	/* wait for 1 ALS integration cycle */
-> > +	msecs =  data->vcnl4200_al.sampling_rate ?
-> > +		ktime_to_ms(data->vcnl4200_al.sampling_rate) : 100;
-> > +	msleep(ktime_to_ms(msecs));
-> 
-> What about setting the vcnl4200_{al,ps}.last_measurement to ktime_get() in
-> case of vcnl4040/4200? The sleeping will be handled in the respective channel
-> during measurement. And it will be much faster if you are interested in
-> proximity reading only (you will be blocked only for proximity's 4.2ms
-> instead of 54ms because of ambient light).
+The final patch in the series drops cros_ec_cmd_xfer_status() altogether.
 
-Good point. By just moving that into vcnl4200_set_power_state this
-becomes even more readable.
+Prashant Malani (17):
+  platform/chrome: Add EC command msg wrapper
+  platform/chrome: chardev: Use send_cmd_msg()
+  platform/chrome: proto: Use send_cmd_msg
+  platform/chrome: usbpd_logger: Use cmd_send_msg()
+  platform/chrome: sensorhub: Use send_cmd_msg()
+  platform/chrome: debugfs: Use send_cmd_msg()
+  platform/chrome: sysfs: Use send_cmd_msg()
+  extcon: cros_ec: Use cros_ec_send_cmd_msg()
+  hid: google-hammer: Use cros_ec_send_cmd_msg()
+  iio: cros_ec: Use cros_ec_send_cmd_msg()
+  ASoC: cros_ec_codec: Use cros_ec_send_cmd_msg()
+  power: supply: cros: Use cros_ec_send_cmd_msg()
+  pwm: cros-ec: Remove cros_ec_cmd_xfer_status()
+  rtc: cros-ec: Use cros_ec_send_cmd_msg()
+  media: cros-ec-cec: Use cros_ec_send_cmd_msg()
+  i2c: cros-ec-tunnel: Use cros_ec_send_cmd_msg()
+  platform/chrome: Drop cros_ec_cmd_xfer_status()
 
-Cheers,
- -- Guido
+ drivers/extcon/extcon-usbc-cros-ec.c          |  62 ++------
+ drivers/hid/hid-google-hammer.c               |  23 +--
+ drivers/i2c/busses/i2c-cros-ec-tunnel.c       |  23 ++-
+ .../cros_ec_sensors/cros_ec_sensors_core.c    |  43 +++---
+ .../media/platform/cros-ec-cec/cros-ec-cec.c  |  39 ++---
+ drivers/platform/chrome/cros_ec_chardev.c     |  18 +--
+ drivers/platform/chrome/cros_ec_debugfs.c     | 135 ++++++------------
+ drivers/platform/chrome/cros_ec_proto.c       |  75 ++++++----
+ drivers/platform/chrome/cros_ec_sensorhub.c   |  29 ++--
+ drivers/platform/chrome/cros_ec_sysfs.c       | 106 ++++++--------
+ drivers/platform/chrome/cros_usbpd_logger.c   |  13 +-
+ drivers/power/supply/cros_usbpd-charger.c     |  63 ++------
+ drivers/pwm/pwm-cros-ec.c                     |  27 ++--
+ drivers/rtc/rtc-cros-ec.c                     |  27 ++--
+ include/linux/platform_data/cros_ec_proto.h   |   6 +-
+ sound/soc/codecs/cros_ec_codec.c              |  71 +++------
+ 16 files changed, 276 insertions(+), 484 deletions(-)
 
-> 
-> The sleeping for vcnl4000 is not needed, as there is currently on-demand
-> measurement only.
-> 
-> BTW the second ktime_to_ms shouldn't be called.
-> 
-> Tomas
-> 
-> > +	return 0;
-> > +}
-> > +
-> > +static const struct dev_pm_ops vcnl4000_pm_ops = {
-> > +	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> > +				pm_runtime_force_resume)
-> > +	SET_RUNTIME_PM_OPS(vcnl4000_runtime_suspend,
-> > +			   vcnl4000_runtime_resume, NULL)
-> > +};
-> > +
-> >  static struct i2c_driver vcnl4000_driver = {
-> >  	.driver = {
-> >  		.name   = VCNL4000_DRV_NAME,
-> > +		.pm	= &vcnl4000_pm_ops,
-> >  		.of_match_table = vcnl_4000_of_match,
-> >  	},
-> >  	.probe  = vcnl4000_probe,
-> >  	.id_table = vcnl4000_id,
-> > +	.remove	= vcnl4000_remove,
-> >  };
-> >  
-> >  module_i2c_driver(vcnl4000_driver);
-> 
+-- 
+2.25.0.341.g760bfbb309-goog
+

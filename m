@@ -2,91 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48DE614F0F3
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2020 17:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5A7014F53C
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2020 00:33:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726322AbgAaQ4n convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 31 Jan 2020 11:56:43 -0500
-Received: from smtp111.ord1d.emailsrvr.com ([184.106.54.111]:58110 "EHLO
-        smtp111.ord1d.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726139AbgAaQ4n (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Jan 2020 11:56:43 -0500
-X-Greylist: delayed 601 seconds by postgrey-1.27 at vger.kernel.org; Fri, 31 Jan 2020 11:56:42 EST
-X-Auth-ID: nick.burkitt@nanotok.com
-Received: by smtp6.relay.ord1d.emailsrvr.com (Authenticated sender: nick.burkitt-AT-nanotok.com) with ESMTPSA id C4D77E0387;
-        Fri, 31 Jan 2020 11:46:40 -0500 (EST)
-X-Sender-Id: nick.burkitt@nanotok.com
-Received: from [192.168.0.5] (108-88-90-111.lightspeed.sntcca.sbcglobal.net [108.88.90.111])
-        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384)
-        by 0.0.0.0:465 (trex/5.7.12);
-        Fri, 31 Jan 2020 11:46:41 -0500
-From:   "Nick Burkitt" <nick.burkitt@nanotok.com>
-To:     "Lars-Peter Clausen" <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Re[2]: IIO driver module doesn't load automatically on kernel 4.19
-Date:   Fri, 31 Jan 2020 16:46:39 +0000
-Message-Id: <em73402834-5869-442b-96c8-3106fbc29dae@nanotok>
-In-Reply-To: <7f063be8-d81a-19f6-6357-079c0a479d54@metafoo.de>
-References: <em32a58ce6-ecc9-4a0a-b47d-5d9b79f9bcc1@nanotok>
- <7f063be8-d81a-19f6-6357-079c0a479d54@metafoo.de>
-Reply-To: "Nick Burkitt" <nick.burkitt@nanotok.com>
-User-Agent: eM_Client/7.2.36908.0
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+        id S1726772AbgAaXdW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 31 Jan 2020 18:33:22 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:45417 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726239AbgAaXdW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Jan 2020 18:33:22 -0500
+Received: by mail-io1-f67.google.com with SMTP id i11so10131323ioi.12
+        for <linux-iio@vger.kernel.org>; Fri, 31 Jan 2020 15:33:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=2ChijQNeSygMOIiBqfGiSq2wlNXLnTaZ9Nyhp4udsy8=;
+        b=JIWxTUI+1SF3ugFBPxVc0/fq5SlHBtOZxuLqEbLkSNWVHsZY+u+RvEoLNOnzZpaZlf
+         gyq2HcFrbEZ/DXl8FU5HdC7H9YVti9EZzGxxfp2dVqSEiQD5LzF2TKTOWfRRRyv8m+a+
+         Nttu7gtFMN63gECpaOImS+yueKiWrOewOdcGg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=2ChijQNeSygMOIiBqfGiSq2wlNXLnTaZ9Nyhp4udsy8=;
+        b=H3n+5ogWPq0isYW5oJaJRE/8W2VNveDapfkDzsTVak+oHl2V8V8tI3X6xlyM7ejfdZ
+         IOvB1JRpyHg6nng/nKR5W95D8sncyaRnjY7gqlyGSuqzqiDouH51foPPeqb9UT9ploKL
+         blUHM1lQpjqiJ6hNUU7uYNgxUi+2SYiJTOnAnKP2DkvhYYtkKdgwnQAg0T/v+FVTkMM/
+         giStCKMneju4IUDwAOEjpmZBWERH01g51VBNtH7iQw56SFFbanQq9mXGayumCY0kz5Os
+         7OFb+4QDM0OQDnL8DQ1vFZY9mdO4gCkclDHXpUs4zD0xyD/EmQ6qrzkEN1a8o5nwiDUR
+         8lfw==
+X-Gm-Message-State: APjAAAUv/72urs79Y0wnZewBBDXiYNHs56Q+lFd2ULoffr+ZQ9K+8Lxi
+        2tlKwoCll7b6MSyRW3JIDs+9WQ==
+X-Google-Smtp-Source: APXvYqx5MlhNODdJb/eRfg68qyeStR5KoP8lcg0/PEZAbl/moydcAQNYD0KtV0nv4zTs4CJe+djzpQ==
+X-Received: by 2002:a5d:8b11:: with SMTP id k17mr10681085ion.290.1580513599859;
+        Fri, 31 Jan 2020 15:33:19 -0800 (PST)
+Received: from chromium.org ([2620:15c:183:200:5d69:b29f:8fd8:6f45])
+        by smtp.gmail.com with ESMTPSA id v63sm3740657ill.72.2020.01.31.15.33.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jan 2020 15:33:19 -0800 (PST)
+Date:   Fri, 31 Jan 2020 16:33:17 -0700
+From:   Daniel Campello <campello@chromium.org>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        Enrico Granata <egranata@chromium.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH] iio: Add SEMTECH SX9310/9311 sensor driver
+Message-ID: <20200131233317.GA208488@chromium.org>
+References: <20200121150658.1.I1f56fe698017f22d6e825c913c256d5afc2ad69f@changeid>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200121150658.1.I1f56fe698017f22d6e825c913c256d5afc2ad69f@changeid>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lars-Peter.
+Hello,
 
-Many thanks for your help. I think you've identified where the problem 
-lies. The behavior I'm seeing from the system on boot-up doesn't seem to 
-match that described in the patch, though. Either there have been 
-additional changes, or the description is inaccurate. Specifically, the 
-author writes, "This patch changes the I2C core to report an OF related 
-MODALIAS uevent if  the device was registered via OF," but it appears 
-that an OF MODALIAS event will be reported even if the driver did *not* 
-register via OF. Adding an of_device_id table to the i2c_driver struct 
-seems to cure the problem.
-At any rate, it's definitely not an IIO-related issue. I also found the 
-same problem with the w1/masters/ds2482 driver. I suspect there are more 
-in-tree drivers that have been broken by this change.
-Vielen Dank,
+Are there any updated regarding this patch?
 
--Nick
-
------- Original Message ------
-From: "Lars-Peter Clausen" <lars@metafoo.de>
-To: "Nick Burkitt" <nick.burkitt@nanotok.com>; linux-iio@vger.kernel.org
-Sent: 1/30/2020 12:44:22 PM
-Subject: Re: IIO driver module doesn't load automatically on kernel 4.19
-
->On 1/29/20 9:25 PM, Nick Burkitt wrote:
->>Hi All.
->>
->>Pardon me if I'm in the wrong place, but I have to start somewhere.
->>I'm using an IIO driver (based on the BNO055 driver proposed by Vlad Dogaru back in 2016).
->>All was well for a couple of years, but after I updated my kernel from 4.14 to 4.19, my driver will no longer load on boot, but is still happy to be loaded manually with modprobe.
->>All other drivers load normally.
->>Has something changed in the way IIO drivers register themselves? Or has some other requirement been added since 4.14 that I have to add to my driver?
->>If not, any suggestions on where to go next would be appreciated.
->>
->>Details:
->>Xilinx Zynq-7000 (ARM Cortex-A9, 2 cores@866 MHz), 1 GB RAM
->>Linux v4.19.0 (via Xilinx)
->>Ubuntu 16.04 and 18.04 (both exhibit the same problem)
->
->Hi,
->
->There shouldn't really be a IIO specific reason why it does not work anymore.
->
->Modules for devices are loaded based on the bus that the device is connected to. For sensors typically the I2C or SPI bus.
->
->I had a quick look at what changed in the I2C core that could have broken this and it could maybe be this commit:
->https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=af503716ac1444db61d80cb6d17cfe62929c21df
->
->The commit message warns that the change might break out-of-tree drivers that do not have a OF device table. You can fix the issue by adding such a table.
->
->- Lars
-
+Thanks for your time!
+Daniel

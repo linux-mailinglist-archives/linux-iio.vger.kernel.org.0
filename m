@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCCFB14F8C6
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2020 17:17:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F25E14F8D2
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2020 17:23:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726669AbgBAQRE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Feb 2020 11:17:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47678 "EHLO mail.kernel.org"
+        id S1726669AbgBAQXI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Feb 2020 11:23:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48324 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726622AbgBAQRE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 1 Feb 2020 11:17:04 -0500
+        id S1726643AbgBAQXI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 1 Feb 2020 11:23:08 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AB81F206E3;
-        Sat,  1 Feb 2020 16:17:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CA231206D3;
+        Sat,  1 Feb 2020 16:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580573823;
-        bh=ghKdg5YnErPfJqMCR96sq44hzGMrpHJOnWQD+FPmWHc=;
+        s=default; t=1580574187;
+        bh=x1vznGxXozS/hjB8sqVDcOqBSOe4F3cdKFfOi/g1R6o=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=obaoKBFtwPSL6XLGMgdn0U0A0wm/ixxKlfLvc5Pc4D3CNF08jCpqNgN0R/jrDkn5G
-         +6g8e7YzEN1iNwgEEDnx+QXMCxLSGuJ1qT7M+gxKaMA/dWe94WhMJnQSgLe6qwURwR
-         nUOhu12m8FCbo5d8qshXVor71JewOLtZHJP1I4gs=
-Date:   Sat, 1 Feb 2020 16:16:59 +0000
+        b=YPj/YMO+1KaDaHN7Yg7xZ7p8brl+I5JNyR5i38jw+2S//GR/Da+rzXzhW8TAiVSgH
+         VGN97p3MyVzqgAtBJaFVTBGeqPthq1n0qBQtGrz9ju+YWz1cftREs5GcX8YxwtaMZp
+         pOylV82PyIOk/L+FimAVnmoaM+xyoBF4/MSPBPyQ=
+Date:   Sat, 1 Feb 2020 16:23:03 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 2/9] iio: imu: inv_mpu6050: cleanup spi support
-Message-ID: <20200201161659.52f3fe49@archlinux>
-In-Reply-To: <20200120093620.9681-3-jmaneyrol@invensense.com>
+Subject: Re: [PATCH 9/9] iio: imu: inv_mpu6050: fix LPF bandwidth setting
+Message-ID: <20200201162303.46dc0461@archlinux>
+In-Reply-To: <20200120093620.9681-10-jmaneyrol@invensense.com>
 References: <20200120093620.9681-1-jmaneyrol@invensense.com>
-        <20200120093620.9681-3-jmaneyrol@invensense.com>
+        <20200120093620.9681-10-jmaneyrol@invensense.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,123 +43,105 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 20 Jan 2020 10:36:13 +0100
+On Mon, 20 Jan 2020 10:36:20 +0100
 Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
 
-> Add missing mpu6515 support and add of match table.
-> Reorganize Kconfig to display chips grouped by generations.
+> As every chip has some little variant in LPF bandwidth values,
+> use common values that are working for all chips.
+> Simplify the LPF setting function.
 > 
 > Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+hmm. On this one I wonder if the 'fix' title is strictly accurate.
+It's certainly a good thing to have, but I'm not sure if we will
+want to backport it.  If you do, then break it out of this series
+as a separate fix and add appropriate fixes tag.
 
-The handling of of / acpi / directly probed could do with cleaning up in
-here.
-
-> ---
->  drivers/iio/imu/inv_mpu6050/Kconfig       |  8 +++---
->  drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c | 35 +++++++++++++++++++++++
->  2 files changed, 39 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/inv_mpu6050/Kconfig b/drivers/iio/imu/inv_mpu6050/Kconfig
-> index 017bc0fcc365..003134734646 100644
-> --- a/drivers/iio/imu/inv_mpu6050/Kconfig
-> +++ b/drivers/iio/imu/inv_mpu6050/Kconfig
-> @@ -15,8 +15,8 @@ config INV_MPU6050_I2C
->  	select INV_MPU6050_IIO
->  	select REGMAP_I2C
->  	help
-> -	  This driver supports the Invensense MPU6050/6500/6515,
-> -	  MPU9150/9250/9255 and ICM20608/20602 motion tracking devices
-> +	  This driver supports the Invensense MPU6050/9150,
-> +	  MPU6500/6515/9250/9255, ICM20608 and ICM20602 motion tracking devices
->  	  over I2C.
->  	  This driver can be built as a module. The module will be called
->  	  inv-mpu6050-i2c.
-> @@ -27,8 +27,8 @@ config INV_MPU6050_SPI
->  	select INV_MPU6050_IIO
->  	select REGMAP_SPI
->  	help
-> -	  This driver supports the Invensense MPU6000/6500/6515,
-> -	  MPU9250/9255 and ICM20608/20602 motion tracking devices
-> +	  This driver supports the Invensense MPU6000,
-> +	  MPU6500/6515/9250/9255, ICM20608 and ICM20602 motion tracking devices
->  	  over SPI.
->  	  This driver can be built as a module. The module will be called
->  	  inv-mpu6050-spi.
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-> index ec102d5a5c77..f7276f9d83fc 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-> @@ -74,6 +74,7 @@ static int inv_mpu_probe(struct spi_device *spi)
->  static const struct spi_device_id inv_mpu_id[] = {
->  	{"mpu6000", INV_MPU6000},
->  	{"mpu6500", INV_MPU6500},
-> +	{"mpu6515", INV_MPU6515},
->  	{"mpu9250", INV_MPU9250},
->  	{"mpu9255", INV_MPU9255},
->  	{"icm20608", INV_ICM20608},
-> @@ -83,6 +84,39 @@ static const struct spi_device_id inv_mpu_id[] = {
->  
->  MODULE_DEVICE_TABLE(spi, inv_mpu_id);
->  
-> +static const struct of_device_id inv_of_match[] = {
-> +	{
-> +		.compatible = "invensense,mpu6000",
-> +		.data = (void *)INV_MPU6000
-
-The current code won't actually get this field as it uses
-spi_id->driver_data directly.
-
-We should be looking I think to moved to more unified handling
-rather than explicit acpi / dt legs.
-
-device_get_match_data should simplify things and will mean
-the data pointers here are actually used.
-
-Will still need the special handling for the case where
-the driver wasn't probed as a result of dt or ACPI.
+All the other patches I haven't commented on in this series look fine
+to me subject to Rob's suggestion of combining the dt ID additions for
+the binding doc into one patch.
 
 Thanks,
 
 Jonathan
 
-> +	},
-> +	{
-> +		.compatible = "invensense,mpu6500",
-> +		.data = (void *)INV_MPU6500
-> +	},
-> +	{
-> +		.compatible = "invensense,mpu6515",
-> +		.data = (void *)INV_MPU6515
-> +	},
-> +	{
-> +		.compatible = "invensense,mpu9250",
-> +		.data = (void *)INV_MPU9250
-> +	},
-> +	{
-> +		.compatible = "invensense,mpu9255",
-> +		.data = (void *)INV_MPU9255
-> +	},
-> +	{
-> +		.compatible = "invensense,icm20608",
-> +		.data = (void *)INV_ICM20608
-> +	},
-> +	{
-> +		.compatible = "invensense,icm20602",
-> +		.data = (void *)INV_ICM20602
-> +	},
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, inv_of_match);
-> +
->  static const struct acpi_device_id inv_acpi_match[] = {
->  	{"INVN6000", INV_MPU6000},
->  	{ },
-> @@ -93,6 +127,7 @@ static struct spi_driver inv_mpu_driver = {
->  	.probe		=	inv_mpu_probe,
->  	.id_table	=	inv_mpu_id,
->  	.driver = {
-> +		.of_match_table = inv_of_match,
->  		.acpi_match_table = ACPI_PTR(inv_acpi_match),
->  		.name	=	"inv-mpu6000-spi",
->  		.pm     =       &inv_mpu_pmops,
+> ---
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 30 ++++++++++++----------
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  | 10 ++++----
+>  2 files changed, 21 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> index 9ecc667debbe..c4db9086775c 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> @@ -707,30 +707,32 @@ static int inv_mpu6050_write_raw(struct iio_dev *indio_dev,
+>  /**
+>   *  inv_mpu6050_set_lpf() - set low pass filer based on fifo rate.
+>   *
+> - *                  Based on the Nyquist principle, the sampling rate must
+> - *                  exceed twice of the bandwidth of the signal, or there
+> - *                  would be alising. This function basically search for the
+> - *                  correct low pass parameters based on the fifo rate, e.g,
+> - *                  sampling frequency.
+> + *                  Based on the Nyquist principle, the bandwidth of the low
+> + *                  pass filter must not exceed the signal sampling rate divided
+> + *                  by 2, or there would be aliasing.
+> + *                  This function basically search for the correct low pass
+> + *                  parameters based on the fifo rate, e.g, sampling frequency.
+>   *
+>   *  lpf is set automatically when setting sampling rate to avoid any aliases.
+>   */
+>  static int inv_mpu6050_set_lpf(struct inv_mpu6050_state *st, int rate)
+>  {
+> -	static const int hz[] = {188, 98, 42, 20, 10, 5};
+> +	static const int hz[] = {400, 200, 90, 40, 20, 10};
+>  	static const int d[] = {
+> -		INV_MPU6050_FILTER_188HZ, INV_MPU6050_FILTER_98HZ,
+> -		INV_MPU6050_FILTER_42HZ, INV_MPU6050_FILTER_20HZ,
+> +		INV_MPU6050_FILTER_200HZ, INV_MPU6050_FILTER_100HZ,
+> +		INV_MPU6050_FILTER_45HZ, INV_MPU6050_FILTER_20HZ,
+>  		INV_MPU6050_FILTER_10HZ, INV_MPU6050_FILTER_5HZ
+>  	};
+> -	int i, h, result;
+> +	int i, result;
+>  	u8 data;
+>  
+> -	h = (rate >> 1);
+> -	i = 0;
+> -	while ((h < hz[i]) && (i < ARRAY_SIZE(d) - 1))
+> -		i++;
+> -	data = d[i];
+> +	data = INV_MPU6050_FILTER_5HZ;
+> +	for (i = 0; i < ARRAY_SIZE(hz); ++i) {
+> +		if (rate >= hz[i]) {
+> +			data = d[i];
+> +			break;
+> +		}
+> +	}
+>  	result = inv_mpu6050_set_lpf_regs(st, data);
+>  	if (result)
+>  		return result;
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> index 7ae614052210..9a81098a8b4d 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> @@ -370,14 +370,14 @@ enum inv_mpu6050_scan {
+>  };
+>  
+>  enum inv_mpu6050_filter_e {
+> -	INV_MPU6050_FILTER_256HZ_NOLPF2 = 0,
+> -	INV_MPU6050_FILTER_188HZ,
+> -	INV_MPU6050_FILTER_98HZ,
+> -	INV_MPU6050_FILTER_42HZ,
+> +	INV_MPU6050_FILTER_NOLPF2 = 0,
+> +	INV_MPU6050_FILTER_200HZ,
+> +	INV_MPU6050_FILTER_100HZ,
+> +	INV_MPU6050_FILTER_45HZ,
+>  	INV_MPU6050_FILTER_20HZ,
+>  	INV_MPU6050_FILTER_10HZ,
+>  	INV_MPU6050_FILTER_5HZ,
+> -	INV_MPU6050_FILTER_2100HZ_NOLPF,
+> +	INV_MPU6050_FILTER_NOLPF,
+>  	NUM_MPU6050_FILTER
+>  };
+>  
 

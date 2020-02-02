@@ -2,40 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FDF14FC95
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 11:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0458514FC9E
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 11:41:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725962AbgBBKY2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Feb 2020 05:24:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57782 "EHLO mail.kernel.org"
+        id S1725988AbgBBKlX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Feb 2020 05:41:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60540 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725942AbgBBKY1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 2 Feb 2020 05:24:27 -0500
+        id S1725956AbgBBKlX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 2 Feb 2020 05:41:23 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 31F1920679;
-        Sun,  2 Feb 2020 10:24:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C8D71206D3;
+        Sun,  2 Feb 2020 10:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580639066;
-        bh=yXimWEEizT/Z9z5o6OXIdlNZvMX9GLHJjq4vpo6ES0o=;
+        s=default; t=1580640081;
+        bh=DjmOvLJxu6nBLbbp0bEQYG1bPbOlqP5KLiv8uBsHamI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=V02sxsl3G1YQwEGbgaEHifaCdY1UZKXPFpjsz8UMhL3HrzLf4ZrMP6IxZv+1XMcdv
-         tuaKuP9D/p4GNKTKzXHcW+hTR3jTsUZhRtKK+ZyYSg4I8Getlaty6sDExQGvIFK2xK
-         sLWh6i6dvDTsOnFkrPrWeOOClbikFU+rHK5EBPHs=
-Date:   Sun, 2 Feb 2020 10:24:22 +0000
+        b=zsScn23DkdukUMrzFoLdl+wnQYrmmOGE0mcqREqvOfdr7AbfUVYlITC5u90Ecxxfa
+         XH/vUshLwOEDVRCdYccZFqmaMQDYyi8zBdLfGvcjoSC3+RjVaRdmPitpumWMoDp9A0
+         J2eCm5TVek2pOh0qrS30wga6fSYe3Et/NPRPkJVY=
+Date:   Sun, 2 Feb 2020 10:41:16 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Heidelberg <david@ixit.cz>
-Cc:     linux-iio@vger.kernel.org, Dmitry Osipenko <digetx@gmail.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v3 6/7] iio: light: al3320a implement suspend support
-Message-ID: <20200202102422.1369536d@archlinux>
-In-Reply-To: <20200201180024.328700-7-david@ixit.cz>
-References: <20200201180024.328700-1-david@ixit.cz>
-        <20200201180024.328700-7-david@ixit.cz>
+To:     Beniamin Bia <beniamin.bia@analog.com>
+Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <pmeerw@pmeerw.net>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <biabeniamin@outlook.com>,
+        <knaack.h@gmx.de>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v4 1/5] iio: core: Handle 'dB' suffix in core
+Message-ID: <20200202104116.4f9fa9f3@archlinux>
+In-Reply-To: <20200129142301.13918-2-beniamin.bia@analog.com>
+References: <20200129142301.13918-1-beniamin.bia@analog.com>
+        <20200129142301.13918-2-beniamin.bia@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,87 +45,110 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  1 Feb 2020 19:00:23 +0100
-David Heidelberg <david@ixit.cz> wrote:
+On Wed, 29 Jan 2020 16:22:57 +0200
+Beniamin Bia <beniamin.bia@analog.com> wrote:
 
-> AL3320a is fairly simple chip, so for suspend is enough to disable and
-> later enable it again.
+> This patch handles the db suffix used for writing micro db values.
 > 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
 > ---
->  drivers/iio/light/al3320a.c | 31 ++++++++++++++++++++++++++-----
->  1 file changed, 26 insertions(+), 5 deletions(-)
+>  drivers/iio/industrialio-core.c | 35 ++++++++++++++++++++++++++++++---
+>  1 file changed, 32 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
-> index 613830b7df6e..d99f9d139b5f 100644
-> --- a/drivers/iio/light/al3320a.c
-> +++ b/drivers/iio/light/al3320a.c
-> @@ -7,6 +7,9 @@
->   * IIO driver for AL3320A (7-bit I2C slave address 0x1C).
->   *
->   * TODO: interrupt support, thresholds
-> + * When the driver will get support for interrupt handling, then interrupt
-> + * will need to be disabled before turning sensor OFF in order to avoid
-> + * potential races with the interrupt handling.
->   */
->  
->  #include <linux/module.h>
-> @@ -84,13 +87,19 @@ static const struct attribute_group al3320a_attribute_group = {
->  	.attrs = al3320a_attributes,
->  };
->  
-> +static int al3320a_set_pwr(struct i2c_client *client, bool pwr)
-> +{
-> +	u8 val = pwr ? AL3320A_CONFIG_ENABLE : AL3320A_CONFIG_DISABLE;
-> +	return i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG, val);
-> +}
-> +
-
-One blank line is almost always enough.
-
-> +
->  static int al3320a_init(struct al3320a_data *data)
->  {
->  	int ret;
->  
-> -	/* power on */
-> -	ret = i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG,
-> -					AL3320A_CONFIG_ENABLE);
-> +	ret = al3320a_set_pwr(data->client, true);
-> +
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -208,10 +217,21 @@ static int al3320a_probe(struct i2c_client *client,
->  
->  static int al3320a_remove(struct i2c_client *client)
->  {
-> -	return i2c_smbus_write_byte_data(client, AL3320A_REG_CONFIG,
-> -					 AL3320A_CONFIG_DISABLE);
-> +	return al3320a_set_pwr(client, false);
-> +}
-> +
-> +static int __maybe_unused al3320a_suspend(struct device *dev)
-> +{
-> +	return al3320a_set_pwr(to_i2c_client(dev), false);
-> +}
-> +
-> +static int __maybe_unused al3320a_resume(struct device *dev)
-> +{
-> +	return al3320a_set_pwr(to_i2c_client(dev), true);
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index 65ff0d067018..b70111837420 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -769,17 +769,18 @@ static ssize_t iio_read_channel_info_avail(struct device *dev,
 >  }
 >  
-> +SIMPLE_DEV_PM_OPS(al3320a_pm_ops, al3320a_suspend, al3320a_resume);
+>  /**
+> - * iio_str_to_fixpoint() - Parse a fixed-point number from a string
+> + * __iio_str_to_fixpoint() - Parse a fixed-point number from a string
+>   * @str: The string to parse
+>   * @fract_mult: Multiplier for the first decimal place, should be a power of 10
+>   * @integer: The integer part of the number
+>   * @fract: The fractional part of the number
+> + * @scale_db: True if this should parse as dB
+>   *
+>   * Returns 0 on success, or a negative error code if the string could not be
+>   * parsed.
+>   */
+> -int iio_str_to_fixpoint(const char *str, int fract_mult,
+> -	int *integer, int *fract)
+> +int __iio_str_to_fixpoint(const char *str, int fract_mult,
+> +			  int *integer, int *fract, bool scale_db)
+>  {
+>  	int i = 0, f = 0;
+>  	bool integer_part = true, negative = false;
+> @@ -810,6 +811,10 @@ int iio_str_to_fixpoint(const char *str, int fract_mult,
+>  				break;
+>  			else
+>  				return -EINVAL;
+> +		} else if (!strncmp(str, " dB", sizeof(" dB") - 1) && scale_db) {
+
+I think we need to ignore spacing between the value and the dB.
+
+We could do that by ignoring spaces in general, but that will lead
+to odd results in other cases.  Perhaps we just need to handle " dB" and "dB"
+to cover likely options?
+
+> +			/* Ignore the dB suffix */
+> +			str += sizeof(" dB") - 1;
+> +			continue;
+>  		} else if (*str == '.' && integer_part) {
+>  			integer_part = false;
+>  		} else {
+> @@ -832,6 +837,22 @@ int iio_str_to_fixpoint(const char *str, int fract_mult,
+>  }
+>  EXPORT_SYMBOL_GPL(iio_str_to_fixpoint);
+>  
+> +/**
+> + * iio_str_to_fixpoint() - Parse a fixed-point number from a string
+> + * @str: The string to parse
+> + * @fract_mult: Multiplier for the first decimal place, should be a power of 10
+> + * @integer: The integer part of the number
+> + * @fract: The fractional part of the number
+> + *
+> + * Returns 0 on success, or a negative error code if the string could not be
+> + * parsed.
+> + */
+> +int iio_str_to_fixpoint(const char *str, int fract_mult,
+> +			int *integer, int *fract)
+> +{
+> +	return __iio_str_to_fixpoint(str, fract_mult, integer, fract, false);
+> +}
 > +
->  static const struct i2c_device_id al3320a_id[] = {
->  	{"al3320a", 0},
->  	{}
-> @@ -221,6 +241,7 @@ MODULE_DEVICE_TABLE(i2c, al3320a_id);
->  static struct i2c_driver al3320a_driver = {
->  	.driver = {
->  		.name = AL3320A_DRV_NAME,
-> +		.pm = &al3320a_pm_ops,
->  	},
->  	.probe		= al3320a_probe,
->  	.remove		= al3320a_remove,
+>  static ssize_t iio_write_channel_info(struct device *dev,
+>  				      struct device_attribute *attr,
+>  				      const char *buf,
+> @@ -842,6 +863,7 @@ static ssize_t iio_write_channel_info(struct device *dev,
+>  	int ret, fract_mult = 100000;
+>  	int integer, fract = 0;
+>  	bool is_char = false;
+> +	bool scale_db = false;
+>  
+>  	/* Assumes decimal - precision based on number of digits */
+>  	if (!indio_dev->info->write_raw)
+> @@ -853,6 +875,9 @@ static ssize_t iio_write_channel_info(struct device *dev,
+>  		case IIO_VAL_INT:
+>  			fract_mult = 0;
+>  			break;
+> +		case IIO_VAL_INT_PLUS_MICRO_DB:
+> +			scale_db = true;
+> +			/* fall through */
+>  		case IIO_VAL_INT_PLUS_MICRO:
+>  			fract_mult = 100000;
+>  			break;
+> @@ -877,6 +902,10 @@ static ssize_t iio_write_channel_info(struct device *dev,
+>  		if (ret)
+>  			return ret;
+>  	}
+> +	ret = __iio_str_to_fixpoint(buf, fract_mult, &integer, &fract,
+> +				    scale_db);
+> +	if (ret)
+> +		return ret;
+>  
+>  	ret = indio_dev->info->write_raw(indio_dev, this_attr->c,
+>  					 integer, fract, this_attr->address);
 

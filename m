@@ -2,38 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5BF14FE9A
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 18:25:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E880C14FEA1
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 18:34:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726906AbgBBRZL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Feb 2020 12:25:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56030 "EHLO mail.kernel.org"
+        id S1726912AbgBBReC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Feb 2020 12:34:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57368 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726525AbgBBRZL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 2 Feb 2020 12:25:11 -0500
+        id S1726525AbgBBReC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 2 Feb 2020 12:34:02 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3CB5020658;
-        Sun,  2 Feb 2020 17:25:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 45CA420658;
+        Sun,  2 Feb 2020 17:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580664309;
-        bh=QFx6XAEnnx3HFShS5F8gddxgaI14tq5oojl9WOovMTQ=;
+        s=default; t=1580664840;
+        bh=88LeKWJOM74/Pbs2Z78JetCzN+L40TIDYZiVpDnXMNk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ssxlXcIguXyhwJ0EB9pYHRVRNABhxs+ndgIUISyrLOEsWRn7tjtsLJ0qvwMUqrgFh
-         tm1EQzoe6e0tZDLJJ1Ob6ZHmcA8iLqjmX1/eXVuY5K/+W2Xt8qpGODgPnw68tWu+ld
-         RzxvTkxUxM8TpFGNvyxGzY+0Hcfeqd0yexpOXt5o=
-Date:   Sun, 2 Feb 2020 17:25:05 +0000
+        b=vHN6diPm2xckWM1N2ksYUKDibu2V5oTFuacIQeH7YnIGa2mJYLWNcyRx3Gp5xStOm
+         3Xt6kuoSwMgMNoLTpNJLBJVRZij9w5dKfdpp6QuJFavZdo27hVjfcmwYMSAbS3a5e2
+         ObM1oVtnJAWRl+V/68a27qYNtF7cc+vkTg2m5jrQ=
+Date:   Sun, 2 Feb 2020 17:33:55 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andreas Klinger <ak@it-klinger.de>
-Cc:     robh+dt@kernel.org, mark.rutland@arm.com, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, rpi-receiver@htl-steyr.ac.at,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: srf04: add power management feature
-Message-ID: <20200202172505.4af0f6ef@archlinux>
-In-Reply-To: <20200120164540.GA8725@arbad>
-References: <20200120164540.GA8725@arbad>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        lee.jones@linaro.org, b.galvani@gmail.com,
+        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, phh@phh.me, stefan@agner.ch,
+        letux-kernel@openphoenux.org, martin.blumenstingl@googlemail.com
+Subject: Re: [PATCH v2 1/3] iio: adc: rn5t618: Add ADC driver for
+ RN5T618/RC5T619
+Message-ID: <20200202173355.1b949a37@archlinux>
+In-Reply-To: <20200120212056.28806-2-andreas@kemnade.info>
+References: <20200120212056.28806-1-andreas@kemnade.info>
+        <20200120212056.28806-2-andreas@kemnade.info>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,187 +46,346 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 20 Jan 2020 17:45:41 +0100
-Andreas Klinger <ak@it-klinger.de> wrote:
+On Mon, 20 Jan 2020 22:20:54 +0100
+Andreas Kemnade <andreas@kemnade.info> wrote:
 
-> Add suspend and resume operations for being used by optional power
-> management.
+> Both chips have an A/D converter capable of measuring
+> things like VBAT, VUSB and analog inputs.
 > 
-> The suspend function is switching off an GPIO which can be used by the
-> hardware to switch power off. The resume function is switching the GPIO
-> on and sleeps an adjustable time to give the device a chance to be up
-> and running.
-> 
-> If activated the driver gets into autosuspend after some time of
-> inactivity.
-> 
-> Suggested-by: Franz Parzer <rpi-receiver@htl-steyr.ac.at>
-> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at it.
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Sorry I missed one bigger thing in here around PROCESSED vs RAW.
+See inline.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/proximity/srf04.c | 96 ++++++++++++++++++++++++++++++++++-
->  1 file changed, 95 insertions(+), 1 deletion(-)
+> Changes in v2:
+> - enum for channels
+> - bulk read instead of single byte read for conversion
+>   result
+> - fix get_virq error handling
+> - use devm for registering device and requesting IRQ
 > 
-> diff --git a/drivers/iio/proximity/srf04.c b/drivers/iio/proximity/srf04.c
-> index 01eb8cc63076..568b76e06385 100644
-> --- a/drivers/iio/proximity/srf04.c
-> +++ b/drivers/iio/proximity/srf04.c
-> @@ -45,6 +45,7 @@
->  #include <linux/sched.h>
->  #include <linux/interrupt.h>
->  #include <linux/delay.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
+>  drivers/iio/adc/Kconfig       |  10 ++
+>  drivers/iio/adc/Makefile      |   1 +
+>  drivers/iio/adc/rn5t618-adc.c | 253 ++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 264 insertions(+)
+>  create mode 100644 drivers/iio/adc/rn5t618-adc.c
+> 
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index f0af3a42f53c..9ea9489e3f0a 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -735,6 +735,16 @@ config RCAR_GYRO_ADC
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called rcar-gyroadc.
 >  
-> @@ -56,6 +57,7 @@ struct srf04_data {
->  	struct device		*dev;
->  	struct gpio_desc	*gpiod_trig;
->  	struct gpio_desc	*gpiod_echo;
-> +	struct gpio_desc	*gpiod_power;
->  	struct mutex		lock;
->  	int			irqnr;
->  	ktime_t			ts_rising;
-> @@ -63,6 +65,7 @@ struct srf04_data {
->  	struct completion	rising;
->  	struct completion	falling;
->  	const struct srf04_cfg	*cfg;
-> +	int			startup_time_ms;
->  };
->  
->  static const struct srf04_cfg srf04_cfg = {
-> @@ -97,6 +100,9 @@ static int srf04_read(struct srf04_data *data)
->  	u64 dt_ns;
->  	u32 time_ns, distance_mm;
->  
-> +	if (data->gpiod_power)
-> +		pm_runtime_get_sync(data->dev);
+> +config RN5T618_ADC
+> +	tristate "ADC for the RN5T618/RC5T619 family of chips"
+> +	depends on MFD_RN5T618
+> +	help
+> +	  Say yes here to build support for the integrated ADC inside the
+> +	  RN5T618/619 series PMICs:
+Why :?
 > +
->  	/*
->  	 * just one read-echo-cycle can take place at a time
->  	 * ==> lock against concurrent reading calls
-> @@ -110,6 +116,11 @@ static int srf04_read(struct srf04_data *data)
->  	udelay(data->cfg->trigger_pulse_us);
->  	gpiod_set_value(data->gpiod_trig, 0);
->  
-> +	if (data->gpiod_power) {
-> +		pm_runtime_mark_last_busy(data->dev);
-> +		pm_runtime_put_autosuspend(data->dev);
+> +	  This driver can also be built as a module. If so, the module
+> +	  will be called rn5t618-adc.
+> +
+>  config ROCKCHIP_SARADC
+>  	tristate "Rockchip SARADC driver"
+>  	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index ef9cc485fb67..2aea70556ed0 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -69,6 +69,7 @@ obj-$(CONFIG_QCOM_VADC_COMMON) += qcom-vadc-common.o
+>  obj-$(CONFIG_QCOM_SPMI_VADC) += qcom-spmi-vadc.o
+>  obj-$(CONFIG_QCOM_PM8XXX_XOADC) += qcom-pm8xxx-xoadc.o
+>  obj-$(CONFIG_RCAR_GYRO_ADC) += rcar-gyroadc.o
+> +obj-$(CONFIG_RN5T618_ADC) += rn5t618-adc.o
+>  obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
+>  obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
+>  obj-$(CONFIG_SPEAR_ADC) += spear_adc.o
+> diff --git a/drivers/iio/adc/rn5t618-adc.c b/drivers/iio/adc/rn5t618-adc.c
+> new file mode 100644
+> index 000000000000..667bd814569d
+> --- /dev/null
+> +++ b/drivers/iio/adc/rn5t618-adc.c
+> @@ -0,0 +1,253 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * ADC driver for the RICOH RN5T618 power management chip family
+> + *
+> + * Copyright (C) 2019 Andreas Kemnade
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/device.h>
+> +#include <linux/errno.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/mfd/rn5t618.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/completion.h>
+> +#include <linux/regmap.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/slab.h>
+> +#include <linux/irqdomain.h>
+I may be missing something, but I'm not immediately seeing any irq_domain*
+calls?  I suspect the only call is via stuff buried in regmap so we probably
+don't need the header here.
+
+> +
+> +#define RN5T618_ADC_CONVERSION_TIMEOUT   (msecs_to_jiffies(500))
+> +#define REFERENCE_VOLT 2500
+
+Please prefix these defines
+RN5T618_* 
+
+It avoids potential clashes in future with things defined in headers.
+
+> +
+> +/* mask for selecting channels for single conversion */
+> +#define ADCCNT3_CHANNEL_MASK 0x7
+> +/* average 4-time conversion mode */
+> +#define ADCCNT3_AVG BIT(3)
+> +/* set for starting a single conversion, gets cleared by hw when done */
+> +#define ADCCNT3_GODONE BIT(4)
+> +/* automatic conversion, period is in ADCCNT2, selected channels are
+> + * in ADCCNT1
+> + */
+> +#define ADCCNT3_AUTO BIT(5)
+> +#define ADCEND_IRQ BIT(0)
+> +
+> +struct rn5t618_adc_data {
+> +	struct device *dev;
+> +	struct rn5t618 *rn5t618;
+> +	struct completion conv_completion;
+> +	int irq;
+> +};
+> +
+> +struct rn5t618_channel_ratios {
+> +	u16 numerator;
+> +	u16 denominator;
+> +};
+> +
+> +enum rn5t618_channels {
+> +	LIMMON = 0,
+> +	VBAT,
+> +	VADP,
+> +	VUSB,
+> +	VSYS,
+> +	VTHM,
+> +	AIN1,
+> +	AIN0
+> +};
+> +
+> +static const struct rn5t618_channel_ratios rn5t618_ratios[8] = {
+> +	[LIMMON] = {50, 32}, /* measured across 20mOhm, amplified by 32 */
+> +	[VBAT] = {2, 1},
+> +	[VADP] = {3, 1},
+> +	[VUSB] = {3, 1},
+> +	[VSYS] = {3, 1},
+> +	[VTHM] = {1, 1},
+> +	[AIN1] = {1, 1},
+> +	[AIN0] = {1, 1},
+> +};
+> +
+> +static int rn5t618_read_adc_reg(struct rn5t618 *rn5t618, int reg, u16 *val)
+> +{
+> +	u8 data[2];
+> +	int ret;
+> +
+> +	ret = regmap_bulk_read(rn5t618->regmap, reg, data, sizeof(data));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*val = (data[0] << 4) | (data[1] & 0xF);
+> +
+> +	return 0;
+> +}
+> +
+> +static irqreturn_t rn5t618_adc_irq(int irq, void *data)
+> +{
+> +	struct rn5t618_adc_data *adc = data;
+> +	unsigned int r = 0;
+> +	int ret;
+> +
+> +	/* clear low & high threshold irqs */
+> +	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC1, 0);
+> +	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC2, 0);
+> +
+> +	ret = regmap_read(adc->rn5t618->regmap, RN5T618_IR_ADC3, &r);
+> +	if (ret < 0)
+> +		dev_err(adc->dev, "failed to read IRQ status: %d\n", ret);
+> +
+> +	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC3, 0);
+> +
+> +	if (r & ADCEND_IRQ)
+> +		complete(&adc->conv_completion);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int rn5t618_adc_read(struct iio_dev *iio_dev,
+> +			    const struct iio_chan_spec *chan,
+> +			    int *val, int *val2, long mask)
+> +{
+> +	struct rn5t618_adc_data *adc = iio_priv(iio_dev);
+> +	u16 raw;
+> +	int ret;
+> +
+> +	/* select channel */
+> +	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
+> +				 ADCCNT3_CHANNEL_MASK,
+> +				 chan->channel);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = regmap_write(adc->rn5t618->regmap, RN5T618_EN_ADCIR3, ADCEND_IRQ);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
+> +				 ADCCNT3_AVG,
+> +				 mask == IIO_CHAN_INFO_AVERAGE_RAW ?
+> +				 ADCCNT3_AVG : 0);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	init_completion(&adc->conv_completion);
+> +	/* single conversion */
+> +	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
+> +				 ADCCNT3_GODONE, ADCCNT3_GODONE);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = wait_for_completion_timeout(&adc->conv_completion,
+> +					  RN5T618_ADC_CONVERSION_TIMEOUT);
+> +	if (ret == 0) {
+> +		dev_warn(adc->dev, "timeout waiting for adc result\n");
+> +		return -ETIMEDOUT;
 > +	}
 > +
->  	/* it should not take more than 20 ms until echo is rising */
->  	ret = wait_for_completion_killable_timeout(&data->rising, HZ/50);
->  	if (ret < 0) {
-> @@ -268,6 +279,22 @@ static int srf04_probe(struct platform_device *pdev)
->  		return PTR_ERR(data->gpiod_echo);
->  	}
->  
-> +	data->gpiod_power = devm_gpiod_get_optional(dev, "power",
-> +								GPIOD_OUT_LOW);
-> +	if (IS_ERR(data->gpiod_power)) {
-> +		dev_err(dev, "failed to get power-gpios: err=%ld\n",
-> +						PTR_ERR(data->gpiod_power));
-> +		return PTR_ERR(data->gpiod_power);
-> +	}
-> +	if (data->gpiod_power) {
+> +	ret = rn5t618_read_adc_reg(adc->rn5t618,
+> +				   RN5T618_ILIMDATAH + 2 * chan->channel,
+> +				   &raw);
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +		if (of_property_read_u32(dev->of_node, "startup-time-ms",
-> +						&data->startup_time_ms))
-> +			data->startup_time_ms = 100;
-> +		dev_dbg(dev, "using power gpio: startup-time-ms=%d\n",
-> +							data->startup_time_ms);
+> +	*val = raw;
+> +	if (mask == IIO_CHAN_INFO_PROCESSED)
+> +		*val = *val * REFERENCE_VOLT *
+> +		       rn5t618_ratios[chan->channel].numerator /
+> +		       rn5t618_ratios[chan->channel].denominator / 4095;
+
+This info should be provided as scale so that userspace can do the maths if
+it wants to rather than handling it in kernel.
+
+> +
+> +	return IIO_VAL_INT;
+> +}
+> +
+> +static const struct iio_info rn5t618_adc_iio_info = {
+> +	.read_raw = &rn5t618_adc_read,
+> +};
+> +
+> +#define RN5T618_ADC_CHANNEL(_channel, _type, _name) { \
+> +	.type = _type, \
+> +	.channel = _channel, \
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+> +			      BIT(IIO_CHAN_INFO_AVERAGE_RAW) | \
+> +			      BIT(IIO_CHAN_INFO_PROCESSED), \
+
+Sorry, I missed this before. 
+
+As a general rule it makes no sense to expose both RAW and PROCESSED values.
+It should be possible to work one out from the other if the relationship is
+linear and scale is provided.
+
+> +	.datasheet_name = _name, \
+> +	.indexed = 1. \
+> +}
+> +
+> +static const struct iio_chan_spec rn5t618_adc_iio_channels[] = {
+> +	RN5T618_ADC_CHANNEL(LIMMON, IIO_CURRENT, "LIMMON"),
+> +	RN5T618_ADC_CHANNEL(VBAT, IIO_VOLTAGE, "VBAT"),
+> +	RN5T618_ADC_CHANNEL(VADP, IIO_VOLTAGE, "VADP"),
+> +	RN5T618_ADC_CHANNEL(VUSB, IIO_VOLTAGE, "VUSB"),
+> +	RN5T618_ADC_CHANNEL(VSYS, IIO_VOLTAGE, "VSYS"),
+> +	RN5T618_ADC_CHANNEL(VTHM, IIO_VOLTAGE, "VTHM"),
+> +	RN5T618_ADC_CHANNEL(AIN1, IIO_VOLTAGE, "AIN1"),
+> +	RN5T618_ADC_CHANNEL(AIN0, IIO_VOLTAGE, "AIN0")
+> +};
+> +
+> +static int rn5t618_adc_probe(struct platform_device *pdev)
+> +{
+> +	int ret;
+> +	struct iio_dev *iio_dev;
+> +	struct rn5t618_adc_data *adc;
+> +	struct rn5t618 *rn5t618 = dev_get_drvdata(pdev->dev.parent);
+> +
+> +	iio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
+> +	if (!iio_dev) {
+> +		dev_err(&pdev->dev, "failed allocating iio device\n");
+> +		return -ENOMEM;
 > +	}
 > +
->  	if (gpiod_cansleep(data->gpiod_echo)) {
->  		dev_err(data->dev, "cansleep-GPIOs not supported\n");
->  		return -ENODEV;
-> @@ -296,14 +323,81 @@ static int srf04_probe(struct platform_device *pdev)
->  	indio_dev->channels = srf04_chan_spec;
->  	indio_dev->num_channels = ARRAY_SIZE(srf04_chan_spec);
->  
-> -	return devm_iio_device_register(dev, indio_dev);
-> +	ret = iio_device_register(indio_dev);
+> +	adc = iio_priv(iio_dev);
+> +	adc->dev = &pdev->dev;
+> +	adc->rn5t618 = rn5t618;
+> +
+> +	if (rn5t618->irq_data)
+> +		adc->irq = regmap_irq_get_virq(rn5t618->irq_data,
+> +					       RN5T618_IRQ_ADC);
+> +
+> +	if (adc->irq <= 0) {
+> +		dev_err(&pdev->dev, "get virq failed\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	init_completion(&adc->conv_completion);
+> +
+> +	iio_dev->name = dev_name(&pdev->dev);
+> +	iio_dev->dev.parent = &pdev->dev;
+> +	iio_dev->info = &rn5t618_adc_iio_info;
+> +	iio_dev->modes = INDIO_DIRECT_MODE;
+> +	iio_dev->channels = rn5t618_adc_iio_channels;
+> +	iio_dev->num_channels = ARRAY_SIZE(rn5t618_adc_iio_channels);
+> +
+> +	/* stop any auto-conversion */
+> +	ret = regmap_write(rn5t618->regmap, RN5T618_ADCCNT3, 0);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	platform_set_drvdata(pdev, iio_dev);
+> +
+> +	ret = devm_request_threaded_irq(adc->dev, adc->irq, NULL,
+> +					rn5t618_adc_irq,
+> +					IRQF_ONESHOT, dev_name(adc->dev),
+> +					adc);
 > +	if (ret < 0) {
-> +		dev_err(data->dev, "iio_device_register: %d\n", ret);
+> +		dev_err(adc->dev, "request irq %d failed: %d\n", adc->irq, ret);
 > +		return ret;
 > +	}
 > +
-> +	if (data->gpiod_power) {
-> +		pm_runtime_set_autosuspend_delay(data->dev, 1000);
-> +		pm_runtime_use_autosuspend(data->dev);
-> +
-> +		ret = pm_runtime_set_active(data->dev);
-> +		if (ret) {
-> +			dev_err(data->dev, "pm_runtime_set_active: %d\n", ret);
-> +			iio_device_unregister(indio_dev);
-> +		}
-> +
-> +		pm_runtime_enable(data->dev);
-> +		pm_runtime_idle(data->dev);
-> +	}
+> +	ret = devm_iio_device_register(adc->dev, iio_dev);
 > +
 > +	return ret;
->  }
->  
-> +static int srf04_remove(struct platform_device *pdev)
-> +{
-> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +	struct srf04_data *data = iio_priv(indio_dev);
-> +
-> +	iio_device_unregister(indio_dev);
-> +
-> +	if (data->gpiod_power) {
-> +		pm_runtime_disable(data->dev);
-> +		pm_runtime_set_suspended(data->dev);
-> +	}
-> +
-> +	return 0;
 > +}
 > +
-> +static int __maybe_unused srf04_pm_runtime_suspend(struct device *dev)
-> +{
-> +	struct platform_device *pdev = container_of(dev,
-> +						struct platform_device, dev);
-> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +	struct srf04_data *data = iio_priv(indio_dev);
-> +
-> +	gpiod_set_value(data->gpiod_power, 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static int __maybe_unused srf04_pm_runtime_resume(struct device *dev)
-> +{
-> +	struct platform_device *pdev = container_of(dev,
-> +						struct platform_device, dev);
-> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +	struct srf04_data *data = iio_priv(indio_dev);
-> +
-> +	gpiod_set_value(data->gpiod_power, 1);
-> +	msleep(data->startup_time_ms);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct dev_pm_ops srf04_pm_ops = {
-> +	SET_RUNTIME_PM_OPS(srf04_pm_runtime_suspend,
-> +				srf04_pm_runtime_resume, NULL)
+> +static struct platform_driver rn5t618_adc_driver = {
+> +	.driver = {
+> +		.name   = "rn5t618-adc",
+> +	},
+> +	.probe = rn5t618_adc_probe,
 > +};
 > +
->  static struct platform_driver srf04_driver = {
->  	.probe		= srf04_probe,
-> +	.remove		= srf04_remove,
->  	.driver		= {
->  		.name		= "srf04-gpio",
->  		.of_match_table	= of_srf04_match,
-> +		.pm		= &srf04_pm_ops,
->  	},
->  };
->  
+> +module_platform_driver(rn5t618_adc_driver);
+> +MODULE_ALIAS("platform:rn5t618-adc");
+> +MODULE_DESCRIPTION("RICOH RN5T618 ADC driver");
+> +MODULE_LICENSE("GPL");
 

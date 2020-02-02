@@ -2,121 +2,361 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5457C14FEEF
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 20:36:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B9BB14FF34
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 22:17:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726959AbgBBTgV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Feb 2020 14:36:21 -0500
-Received: from sonic306-20.consmr.mail.ir2.yahoo.com ([77.238.176.206]:46233
-        "EHLO sonic306-20.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726943AbgBBTgV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Feb 2020 14:36:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1580672179; bh=KEQQEuZy9xz1bHJWn+5Og9qtrVRgDE49SeSj/EC+QRY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=n5IQrJiD8VR3iYe2ejLa5BfUXEJjRJnHu6yw8oA2osUK1G4UU/tUQ1vHxjtjmBwTbC9gRSl4PkAygGRIzJM/SibAGiaQhoftf2L0s9qVmlX2ulwuybQ+lyrqwC1nHgDVD3zwNGDPqmCPtbqQB9b20nO2/I3oBPlcoKkVreYMay7i2JlCMH9EDwJ0AkKFOq5aGcfgYPcW9dZjY3C8p/ecgK/g24NT9cZkihPJ0sKaSo1N77dKEr5dkXFXmwEUpv6VNqBipYqo/kWvYts+YDrj3CKWrgFPkqh03iML1oz/ZU+fVS6fPXrIZhB5SHPvj3jS+kwamyVV7VvlOUD1trtkAA==
-X-YMail-OSG: 55k6oEoVM1kByroeJ9TWz5LFQLaXvIGWUQzQuGf18y7nui4EmG4sX.i68aEdBbf
- S61G5cfpypjQ7dyonQjuBmWY6tfrLHT8_OmBAheajSmG4Di4dTEfaDFmxlPfB9SqqamJ0CUZcUxz
- k60w3tZAhvR0VJfsukIIZdLqaMlSy6DAIl4h_aebf9sNM15DgEznwMQIl9ej7wOziEjlUn.gsXp.
- Lm7fEdlg2sZlyhTr9sBHsp7E2T1YIPa81QdV8L1qjv72SwT5oV5jqFKBRnAe1J8AYdKPTkwv2fMl
- VLXZNlMBjM5ATHz0Lrp9mDbtV9wld7s4V4xbUjDTiCMbm0xV8E7yjR8BHpDtgtzzu2MYkM79xYKc
- ccAyb6sK2_vmq2y_o0fbfH6Pl.SG.ITE_kQCQ7NyGahwOaD72q7qd5oPzuPl3MP6MB8c15J6b9Ll
- KpHOCYE9DeY3erYOi31kBmk5QpPr6193mdrYW9P2wqF9jgo6EcZMCOABQQN39MdS8IzIEuH2BPNs
- W6weU5lId1DtKUysR5euDaaeEi7YyZguSl4oWC3wxMfR45nJQ11oAQ5Uh7bySl3DLhMP7toD7PWs
- G1.W7bAfyAfw6GO2jMLba1cvf2PZdKQUWBcV7rZhoH564l9ctdz0t1lluGyuNO4REfZ6Tc.x4OWE
- XuWHE.GedddBNKG61LtOLwpYL.YuTi5vami2iXzVmQbjSxfvzELA3O7jKvTwyZyiJpMZY_G1RvEA
- X.Oe6jUuSDxBom8EnGHpknbjMDEXJAY1LyDMYzsXvFeC3bdlatbQ1fxNIXWGoC.TeuXlA66Ahy5z
- vKMYcZP_AvdlYEmHO8pqZPzMvCJyXypCpxFeuVgLZd.2pB4LBdxnL7P612wE_7i77lPVg1S1g9rv
- IbIQfb77DMV45u_fdGbRo.cdaLbxej9LVSYdNgifDrr1fU1nYf0ZiYP2nYx3WFWERskHWF.8kjZ.
- Qtk3icJtIXCHsZZh5P6UVbdaOieEnqxbKPzR7B_gGK5i7A60qM6OQN.PYlx2hvnhAGfBovbirXx7
- wM0aynoeDfMMyragvky2aENzEmkP.7az2T3bXUnXWqlCoLyurcbw1eJzciX2ykfmZaqTXvZjB6va
- 1yxmoJnyn7UcwCiAz2sQCUU9lEv16a06JOmNs8X0PpZiwTzacLVqrI2IX9R3ENzYMFvt9tTxo3Xm
- YYooDa36czJi0op.FIWowc4Zc83FK.0lQnSkdVG7_NZkMbWPTKp3mxYXFJUIuX7BlXsm32B5kram
- f1OnB6uHQXyOY_Nbzwl3Ep5oGc36wYcHcKCfnwjV79dNFFMY6h4kzJRny7LJnAlDM087KzDj2uU8
- K3_jJVoXKLaLLfYRIEZW5AtmhzEJVpnnPzXXphtQ-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Sun, 2 Feb 2020 19:36:19 +0000
-Date:   Sun, 2 Feb 2020 19:36:15 +0000 (UTC)
-From:   JULIAN WORKER <julian.m.worker122@gmail.com>
-Reply-To: julian.m.worker122@gmail.com
-Message-ID: <840165969.945225.1580672175778@mail.yahoo.com>
-Subject: =?UTF-8?Q?FROM:_Mrs._Julian_M._Wo?= =?UTF-8?Q?rker_=EF=BC=88?=
- =?UTF-8?Q?=E3=83=81=E3=83=A3=E3=83=AA=E3=83=86=E3=82=A3=E3=83=BB?=
- =?UTF-8?Q?=E3=83=89=E3=83=8D=E3=83=BC=E3=82=B7=E3=83=A7=E3=83=B3?=
- =?UTF-8?Q?=E3=83=BB=E3=83=95=E3=82=A1=E3=83=B3=E3=83=89=EF=BC=89?=
+        id S1726971AbgBBVRn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Feb 2020 16:17:43 -0500
+Received: from honk.sigxcpu.org ([24.134.29.49]:59242 "EHLO honk.sigxcpu.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726967AbgBBVRn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 2 Feb 2020 16:17:43 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by honk.sigxcpu.org (Postfix) with ESMTP id 1119CFB04;
+        Sun,  2 Feb 2020 22:17:41 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
+Received: from honk.sigxcpu.org ([127.0.0.1])
+        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id gTUT2lDnnoBF; Sun,  2 Feb 2020 22:17:38 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+        id BEBFB400E9; Sun,  2 Feb 2020 18:58:51 +0100 (CET)
+Date:   Sun, 2 Feb 2020 18:58:51 +0100
+From:   Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Tomas Novotny <tomas@novotny.cz>, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "Angus Ainslie (Purism)" <angus@akkea.ca>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: vncl4000: Enable runtime pm for vcnl4200/4040
+Message-ID: <20200202175851.GA27766@bogon.m.sigxcpu.org>
+References: <cover.1580391472.git.agx@sigxcpu.org>
+ <237488ddf8f2707e905164c0ec81a7979f1fa9a9.1580391472.git.agx@sigxcpu.org>
+ <20200202093408.26bc63b8@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-References: <840165969.945225.1580672175778.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15149 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:72.0) Gecko/20100101 Firefox/72.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200202093408.26bc63b8@archlinux>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DQroia/jgYTkuIDml6UNCg0K44GZ44G544Gm44Gu6Imv44GE44KC44Gu44KS5LiO44GI44KL5LiH
-6LuN44Gu5Li744Gu5ZCN44Gr44KI44Gj44Gm44CB44GC44Gq44Gf44KS6L+O44GI44G+44GZ44CC
-6Imv44GE5LiA5pel44Go5a2j56+A44Gu6LOb6L6e44CB56eB44Gv44Gd44KM44GM5pys5b2T44Gn
-44GC44KL44GT44Go44KS55+l44Gj44Gm44GE44KL44GT44Gu5omL57SZ44Gv44GC44Gq44Gf44Gr
-6ama44GN44Go44GX44Gm5p2l44KL44GL44KC44GX44KM44G+44Gb44KT44CCDQoNCuOBneOCjOOB
-q+OCguOBi+OBi+OCj+OCieOBmuOAgeengeOBr+OBguOBquOBn+OBq+azqOaEj+OCkuaJleOBhOOA
-geOCiOOBj+iBnuOBhOOBpuOBj+OCjOOCi+OBk+OBqOOCkuismeiZmuOBq+OBiumhmOOBhOOBl+OB
-vuOBmeOAguOBl+OBi+OBl+OAgeengeOBr+OAgeOBguOBquOBn+OBruaxuuWumuOBjOWwhuadpeOB
-ruWtmOWcqOOCkuaxuuWumuOBmeOCi+OBn+OCgeOBq+mBoOOBj+mbouOCjOOBpuOBhOOBj+OBruOB
-p+OAgeOBk+OBruODoeODg+OCu+ODvOOCuOOCkuaFjumHjeOBq+i+v+OCi+aZgumWk+OCkuWPluOC
-i+OBk+OBqOOCkumhmOOBo+OBpuOBhOOBvuOBmeOAguengeOBr+OCuOODpeODquOCouODs+ODr+OD
-vOOCq+ODvOWkq+S6uuOAgTU45q2z44Gu5pyq5Lqh5Lq644Gn44GZ44CC57Gz5Zu944Gu44Op44K5
-44OZ44Ks44K55Ye66Lqr44Gn44GZ44CC56eB44Gv6IK644GM44KT44Gr57255oKj44GX44Gm44GK
-44KK44CB54++5Zyo44Gv5LiA6Iis55eF6Zmi44OW44Or44Kt44OK44OV44Kh44K944Gn5YWl6Zmi
-44GX44Gm44GE44G+44GZ44CC56eB44Gv56eB44Gu5b6M5Y2K44Gu5aSr44GL44KJ57aZ5om/44GX
-44Gf6LOH6YeR44KS5oyB44Gj44Gm44GE44G+44GZ77yIJCAxNC41TeODieODq++8ieOBqOengeOB
-r+mdnuW4uOOBq+ato+ebtOOBp+elnuOBjOOBk+OBruizh+mHkeOCkuW8leOBjeWHuuOBmeOBk+OB
-qOOBjOOBp+OBjeOCi+S6uuOCkuaBkOOCjOOBpuOAgeaFiOWWhOa0u+WLleOBruizh+mHkeOCkuS9
-v+eUqOOBmeOCi+OBk+OBqOOBjOW/heimgeOBp+OBl+OBn+OAguengeOBr+aFiOWWhOa0u+WLleOB
-ruOBn+OCgeOBq+OBguOBquOBn+OBq+OBk+OCjOOCieOBruizh+mHkeOCkui0iOOCiuOBn+OBhOOA
-guengeOBr+OBguOBquOBn+OBruODoeODvOODq+OCouODieODrOOCueOCkuOAgeato+ebtOOBquel
-iOOCiuOBruW+jOOBq+WKqeaJi+OBqOengeOCkuOBpOOBquOBkOOBn+OCgeOBq+S4u+OBq+imi+OB
-pOOBkeOBvuOBl+OBn+OAguOBguOBquOBn+OBq+S9leOBi+OBjOi1t+OBk+OCi+WJjeOBq+OAgeOB
-k+OCjOOCieOBruS/oeiol+WfuumHkeOCkuiqoOWun+OBq+aJseOBhuOBk+OBqOOBq+WWnOOCk+OB
-p+iIiOWRs+OBjOOBguOCjOOBsOOAgeengeOBr+OBguOBquOBn+OBq+mAo+e1oeOBmeOCi+OBk+OB
-qOOBq+OBl+OBvuOBl+OBn+OAgg0KDQrnp4Hjga7nirbmhYvjgpLnn6XjgaPjgZ/jga7jgafjgIHn
-p4Hjga/jgZPjga7jgYrph5HjgpLjgIHnp4HjgYzjgZPjgZPjgafmjIflsI7jgZnjgovmlrnms5Xj
-gafjgZPjga7os4fph5HjgpLliKnnlKjjgZnjgovmlZnkvJrjgIHntYTnuZTjgIHjgb7jgZ/jga/l
-loToia/jgarkurrjgZ/jgaHjgavlr4Tku5jjgZnjgovjgZPjgajjgavmsbrjgoHjgb7jgZfjgZ/j
-gILmlZnkvJrjgIHmhYjlloTlm6PkvZPjgIHlraTlhZDpmaLjgIHlr6Hlqabjgarjganjga7jgZ/j
-goHjgavjgIHjgZPjga7os4fph5HjgpLkvb/jgYbjgZPjgajjgpLjgYrli6fjgoHjgZfjgb7jgZnj
-gILnp4Hjga/jgZPjga7jgYrph5HjgpLntpnmib/jgZnjgovlrZDkvpvjgYzjgYTjgarjgYTjga7j
-gafjgIHjgZPjga7msbrlrprjgpLjgZfjgb7jgZfjgZ/jgILjgZXjgonjgavjgIHnp4Hjga7lpKvj
-ga7opqrmiJrjga/np4HjgYzjgZPjga7nmYzjga7llY/poYzjgpLnmbrnl4fjgZfjgabku6XmnaXj
-gIHjgoLjga/jgoTnp4Hjgavov5HjgaXjgYTjgabjgYrjgonjgZrjgIHnp4HjgZ/jgaHjga/lrZDk
-vpvjgYzjgYTjgarjgYTjga7jgafoh6rliIbjga7lr4zjgpLntpnmib/jgZnjgovjgZ/jgoHjgavn
-p4HjgYzmrbvjgpPjgaDjga7jgpLopovjgZ/jgYTjgajmgJ3jgaPjgabjgYTjgb7jgZfjgZ/jgILj
-gZPjgozjgonjga7kurrjgIXjga/jgZPjga7pgbrnlKPjgavjgbXjgZXjgo/jgZfjgY/jgYLjgorj
-gb7jgZvjgpPjgILjgZPjgozjgYznp4HjgYzjgZPjga7msbrlrprjgpLjgZnjgovnkIbnlLHjgafj
-gZnjgIINCg0K44GC44Gq44Gf44Gu57eK5oCl44Gu6L+U5L+h44GM5b+F6KaB44Gn44GZ44CC56eB
-44Gv5byB6K235aOr44Go44GC44Gq44Gf44Gu5Zu944Gu44GC44Gq44Gf44Gu5Y+j5bqn44G444Gu
-44GK6YeR44Gu5Y2z5bqn44Gu56e76Lui44Gu44Gf44KB44Gr6YqA6KGM44GM56eB44Gf44Gh44Gr
-55m66KGM44GX44Gf6aCQ6YeR6aCY5Y+O5pu444KS44GC44Gq44Gf44Gr5rih44GX44Gm44CB56We
-44Gu6Imv44GE5LuV5LqL44KS6ZaL5aeL44GX44G+44GZ56eB44Gv44GC44Gq44Gf44Gu5o+05Yqp
-44KS5b+F5q2744Gr44GX44Gm44GK44KK44CB56eB44Gv44GC44Gq44Gf44Gu44Gf44KB44Gr6YCj
-57Wh44GZ44KL5YuH5rCX44KS5Y+s5Zaa44GX44G+44GX44Gf44CC56eB44Go44GC44Gq44Gf44Gu
-5ZGo44KK44Gu6LKn44GX44GE5Lq644CF44Gu5L2V55m+5LiH5Lq644KC5aSx5pWX44GX44Gm44Gv
-44GE44GR44G+44Gb44KT44CC44GT44KM44Gv55uX44G+44KM44Gf44GK6YeR44Gn44Gv44Gq44GP
-44CB5Y2x6Zm65oCn44Gv44GC44KK44G+44Gb44KT44CC5a6M5YWo44Gq5rOV55qE6Ki85oug44GM
-44GC44KM44GwMTAw77yF5Y2x6Zm644Gn44GZ44CC5oWI5ZaE5LqL5qWt44Gu44Gf44KB44Gr6LOH
-6YeR44KS5L2/55So44Gn44GN44KL44Gu44Gn44GC44KM44Gw44CB44OV44Kh44Oz44OJ44Gu44GC
-44KL6YqA6KGM44Gr44GC44Gq44Gf44KS6YCj57Wh44GZ44KL44Gf44KB44Gr44GZ44GQ44Gr56eB
-44Gr55+l44KJ44Gb44Gm44GP44Gg44GV44GE44CC56eB44Gv44CB56eB44Gu5pyA5b6M44Gu6aGY
-44GE44KS5Y2x6Zm644Gr44GV44KJ44GZ44KI44GG44Gq44GT44Go44Gv5pyb44KT44Gn44GE44Gq
-44GE44Gu44Gn44CB56eB44Gu5b+D44Gu5qyy5pyb44KS6YGU5oiQ44GZ44KL44Gf44KB44Gr44CB
-44GC44Gq44Gf44Gu5pyA44KC5a6I56eY576p5YuZ44Go5L+h6aC844Gr5oSf6Kyd44GX44G+44GZ
-44CC56eB44Gv44GC44Gq44Gf44Gu5YCL5Lq655qE44Gq5L2/55So44Gu44Gf44KB44Gr57eP6aGN
-44GuNDDvvIXjgpLmiZXjgYTjgIHjgYrph5Hjga42MO+8heOBr+aFiOWWhOWbo+S9k+OBq+ihjOOB
-j+OBk+OBqOOCkuacm+OBv+OBvuOBmeOAgg0KDQrjgYLjgarjgZ/jga7ov5Tkv6HjgYzpgYXjgozj
-govjgajjgIHlkIzjgZjnm67nmoTjga7jgZ/jgoHjgavliKXjga7oia/jgYTkurrjgpLmjqLjgZnk
-vZnlnLDjgYzjgYLjgorjgb7jgZnjgILnp4HjgYzjgZPjgZPjgavov7DjgbnjgZ/jgojjgYbjgavo
-oYzli5XjgZnjgovjgZPjgajjgpLnp4Hjgavkv53oqLzjgZfjgabjgY/jgaDjgZXjgYTjgILljLvo
-gIXjga7mjIfnpLrjganjgYrjgorjgavnp4Hjga7lgaXlurfjga7jgZ/jgoHjgavnp4Hjga/jgZPj
-ga7ngrnjgafpm7voqbHpgJrkv6Hjga/lv4XopoHjgYLjgorjgb7jgZvjgpPjgIINCg0K56eB44Gu
-5YCL5Lq644GuReODoeODvOODq+OCouODieODrOOCueOBp+OBmeOBkOOBq+OBguOBquOBn+OBruWb
-nuetlOOCkuWPl+OBkeWPluOCjeOBhuOBqOiAg+OBiOOBpuOBhOOBvuOBme+8mu+8iGp1bGlhbi5t
-LndvcmtlcjEyMkBnbWFpbC5jb23vvIkNCg0K44GC44KK44GM44Go44GG44GU44GW44GE44G+44GX
-44Gf44CCDQrjgYLjgarjgZ/jga7lprnjgIHkuLvjga7kuK3jgavjgIENCuOCuOODpeODquOCouOD
-s+ODr+ODvOOCq+ODvOWkq+S6ug0K
+Hi Jonathan,
+On Sun, Feb 02, 2020 at 09:34:08AM +0000, Jonathan Cameron wrote:
+> On Thu, 30 Jan 2020 14:42:36 +0100
+> Guido Günther <agx@sigxcpu.org> wrote:
+> 
+> > This is modelled after the vcnl4035 driver. For the vcnl40{0,1,2}0
+> > we don't do anything since they use on demand measurement.
+> > 
+> > Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> Hi Guido,
+> 
+> A few minor things inline, but otherwise looks good to me.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> > ---
+> >  drivers/iio/light/vcnl4000.c | 135 ++++++++++++++++++++++++++++++++---
+> >  1 file changed, 124 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> > index 8f198383626b..1395875d9553 100644
+> > --- a/drivers/iio/light/vcnl4000.c
+> > +++ b/drivers/iio/light/vcnl4000.c
+> > @@ -22,6 +22,7 @@
+> >  #include <linux/i2c.h>
+> >  #include <linux/err.h>
+> >  #include <linux/delay.h>
+> > +#include <linux/pm_runtime.h>
+> >  
+> >  #include <linux/iio/iio.h>
+> >  #include <linux/iio/sysfs.h>
+> > @@ -57,6 +58,8 @@
+> >  #define VCNL4000_AL_OD		BIT(4) /* start on-demand ALS measurement */
+> >  #define VCNL4000_PS_OD		BIT(3) /* start on-demand proximity measurement */
+> >  
+> > +#define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
+> > +
+> >  enum vcnl4000_device_ids {
+> >  	VCNL4000,
+> >  	VCNL4010,
+> > @@ -87,6 +90,7 @@ struct vcnl4000_chip_spec {
+> >  	int (*init)(struct vcnl4000_data *data);
+> >  	int (*measure_light)(struct vcnl4000_data *data, int *val);
+> >  	int (*measure_proximity)(struct vcnl4000_data *data, int *val);
+> > +	int (*set_power_state)(struct vcnl4000_data *data, bool on);
+> >  };
+> >  
+> >  static const struct i2c_device_id vcnl4000_id[] = {
+> > @@ -99,6 +103,12 @@ static const struct i2c_device_id vcnl4000_id[] = {
+> >  };
+> >  MODULE_DEVICE_TABLE(i2c, vcnl4000_id);
+> >  
+> > +static int vcnl4000_set_power_state(struct vcnl4000_data *data, bool on)
+> > +{
+> > +	/* no suspend op */
+> > +	return 0;
+> > +}
+> > +
+> >  static int vcnl4000_init(struct vcnl4000_data *data)
+> >  {
+> >  	int ret, prod_id;
+> > @@ -127,9 +137,31 @@ static int vcnl4000_init(struct vcnl4000_data *data)
+> >  	data->al_scale = 250000;
+> >  	mutex_init(&data->vcnl4000_lock);
+> >  
+> > +	ret = data->chip_spec->set_power_state(data, true);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> >  	return 0;
+> >  };
+> >  
+> > +static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
+> > +{
+> > +	u16 val = on ? 0 /* power on */ : 1 /* shut down */;
+> > +	int ret;
+> > +
+> > +	ret = i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, val);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	return i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	/* Wait at least one integration cycle before fetching data */
+> > +	data->vcnl4200_al.last_measurement = ktime_get();
+> > +	data->vcnl4200_ps.last_measurement = ktime_get();
+> 
+> Hmm.  Feels like these only really make sense if we are turning on?
+> They may do no harm in the off path, but better if the code makes
+> it clear they are irrelevant in that path.
+
+You're right, it doesn't matter in the off path but it's clearer when
+only doing it in the 'on' path.
+
+> No return value.
+
+Duh, wonder why gcc didn't warn about that.
+
+> 
+> i.e. return 0;
+> > +}
+> > +
+> >  static int vcnl4200_init(struct vcnl4000_data *data)
+> >  {
+> >  	int ret, id;
+> > @@ -155,14 +187,6 @@ static int vcnl4200_init(struct vcnl4000_data *data)
+> >  
+> >  	data->rev = (ret >> 8) & 0xf;
+> >  
+> > -	/* Set defaults and enable both channels */
+> > -	ret = i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, 0);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, 0);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -
+> >  	data->vcnl4200_al.reg = VCNL4200_AL_DATA;
+> >  	data->vcnl4200_ps.reg = VCNL4200_PS_DATA;
+> >  	switch (id) {
+> > @@ -180,11 +204,13 @@ static int vcnl4200_init(struct vcnl4000_data *data)
+> >  		data->al_scale = 120000;
+> >  		break;
+> >  	}
+> > -	data->vcnl4200_al.last_measurement = ktime_set(0, 0);
+> > -	data->vcnl4200_ps.last_measurement = ktime_set(0, 0);
+> >  	mutex_init(&data->vcnl4200_al.lock);
+> >  	mutex_init(&data->vcnl4200_ps.lock);
+> >  
+> > +	ret = data->chip_spec->set_power_state(data, true);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> >  	return 0;
+> >  };
+> >  
+> > @@ -291,24 +317,28 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+> >  		.init = vcnl4000_init,
+> >  		.measure_light = vcnl4000_measure_light,
+> >  		.measure_proximity = vcnl4000_measure_proximity,
+> > +		.set_power_state = vcnl4000_set_power_state,
+> >  	},
+> >  	[VCNL4010] = {
+> >  		.prod = "VCNL4010/4020",
+> >  		.init = vcnl4000_init,
+> >  		.measure_light = vcnl4000_measure_light,
+> >  		.measure_proximity = vcnl4000_measure_proximity,
+> > +		.set_power_state = vcnl4000_set_power_state,
+> >  	},
+> >  	[VCNL4040] = {
+> >  		.prod = "VCNL4040",
+> >  		.init = vcnl4200_init,
+> >  		.measure_light = vcnl4200_measure_light,
+> >  		.measure_proximity = vcnl4200_measure_proximity,
+> > +		.set_power_state = vcnl4200_set_power_state,
+> >  	},
+> >  	[VCNL4200] = {
+> >  		.prod = "VCNL4200",
+> >  		.init = vcnl4200_init,
+> >  		.measure_light = vcnl4200_measure_light,
+> >  		.measure_proximity = vcnl4200_measure_proximity,
+> > +		.set_power_state = vcnl4200_set_power_state,
+> >  	},
+> >  };
+> >  
+> > @@ -323,6 +353,23 @@ static const struct iio_chan_spec vcnl4000_channels[] = {
+> >  	}
+> >  };
+> >  
+> > +static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data, bool on)
+> > +{
+> > +	struct device *dev = &data->client->dev;
+> > +	int ret;
+> > +
+> > +	if (on) {
+> > +		ret = pm_runtime_get_sync(dev);
+> > +		if (ret < 0)
+> > +			pm_runtime_put_noidle(dev);
+> > +	} else {
+> > +		pm_runtime_mark_last_busy(dev);
+> > +		ret = pm_runtime_put_autosuspend(dev);
+> > +	}
+> > +
+> > +	return ret;
+> > +}
+> > +
+> >  static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+> >  				struct iio_chan_spec const *chan,
+> >  				int *val, int *val2, long mask)
+> > @@ -332,6 +379,10 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+> >  
+> >  	switch (mask) {
+> >  	case IIO_CHAN_INFO_RAW:
+> > +		ret = vcnl4000_set_pm_runtime_state(data, true);
+> > +		if  (ret < 0)
+> > +			return ret;
+> > +
+> >  		switch (chan->type) {
+> >  		case IIO_LIGHT:
+> >  			ret = data->chip_spec->measure_light(data, val);
+> > @@ -346,6 +397,7 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+> >  		default:
+> >  			ret = -EINVAL;
+> >  		}
+> > +		vcnl4000_set_pm_runtime_state(data, false);
+> >  		return ret;
+> >  	case IIO_CHAN_INFO_SCALE:
+> >  		if (chan->type != IIO_LIGHT)
+> > @@ -394,7 +446,22 @@ static int vcnl4000_probe(struct i2c_client *client,
+> >  	indio_dev->name = VCNL4000_DRV_NAME;
+> >  	indio_dev->modes = INDIO_DIRECT_MODE;
+> >  
+> > -	return devm_iio_device_register(&client->dev, indio_dev);
+> > +	ret = pm_runtime_set_active(&client->dev);
+> > +	if (ret < 0)
+> > +		goto fail_poweroff;
+> > +
+> > +	ret = iio_device_register(indio_dev);
+> > +	if (ret < 0)
+> > +		goto fail_poweroff;
+> > +
+> > +	pm_runtime_enable(&client->dev);
+> > +	pm_runtime_set_autosuspend_delay(&client->dev, VCNL4000_SLEEP_DELAY_MS);
+> > +	pm_runtime_use_autosuspend(&client->dev);
+> > +
+> > +	return 0;
+> > +fail_poweroff:
+> > +	data->chip_spec->set_power_state(data, false);
+> > +	return ret;
+> >  }
+> >  
+> >  static const struct of_device_id vcnl_4000_of_match[] = {
+> > @@ -422,13 +489,59 @@ static const struct of_device_id vcnl_4000_of_match[] = {
+> >  };
+> >  MODULE_DEVICE_TABLE(of, vcnl_4000_of_match);
+> >  
+> > +static int vcnl4000_remove(struct i2c_client *client)
+> > +{
+> > +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> > +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> > +
+> > +	pm_runtime_dont_use_autosuspend(&client->dev);
+> > +	pm_runtime_disable(&client->dev);
+> > +	iio_device_unregister(indio_dev);
+> > +	pm_runtime_set_suspended(&client->dev);
+> > +
+> > +	return data->chip_spec->set_power_state(data, false);
+> > +}
+> > +
+> > +static int __maybe_unused vcnl4000_runtime_suspend(struct device *dev)
+> > +{
+> > +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> > +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	ret = data->chip_spec->set_power_state(data, false);
+> > +
+> > +	return ret;
+> 
+> 	return data->chip_spec...
+> 
+> > +}
+> > +
+> > +static int __maybe_unused vcnl4000_runtime_resume(struct device *dev)
+> > +{
+> > +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> > +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	ret = data->chip_spec->set_power_state(data, true);
+> > +	if (ret < 0)
+> > +		return ret;
+> 
+> I would define the set_power_state callback to return only < 0 for error
+> and 0 for no error.  (already true).
+> 
+> then
+> 
+> return data->chip_spec->set_power_state(data, true);
+
+Both returns simplified and also the one in vcnl4000_init.
+
+Thanks for having a look,
+ -- Guido
+
+> 
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static const struct dev_pm_ops vcnl4000_pm_ops = {
+> > +	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+> > +				pm_runtime_force_resume)
+> > +	SET_RUNTIME_PM_OPS(vcnl4000_runtime_suspend,
+> > +			   vcnl4000_runtime_resume, NULL)
+> > +};
+> > +
+> >  static struct i2c_driver vcnl4000_driver = {
+> >  	.driver = {
+> >  		.name   = VCNL4000_DRV_NAME,
+> > +		.pm	= &vcnl4000_pm_ops,
+> >  		.of_match_table = vcnl_4000_of_match,
+> >  	},
+> >  	.probe  = vcnl4000_probe,
+> >  	.id_table = vcnl4000_id,
+> > +	.remove	= vcnl4000_remove,
+> >  };
+> >  
+> >  module_i2c_driver(vcnl4000_driver);
+> 

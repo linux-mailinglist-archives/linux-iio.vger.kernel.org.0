@@ -2,52 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C06514FCE5
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 12:28:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DAD314FD72
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 15:08:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726379AbgBBL2X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Feb 2020 06:28:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38920 "EHLO mail.kernel.org"
+        id S1726679AbgBBOIa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Feb 2020 09:08:30 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56368 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726150AbgBBL2X (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 2 Feb 2020 06:28:23 -0500
+        id S1726669AbgBBOIa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 2 Feb 2020 09:08:30 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 97DA9206D3;
-        Sun,  2 Feb 2020 11:28:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 74D3B20643;
+        Sun,  2 Feb 2020 14:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580642902;
-        bh=idvg0ScIrlr77Wo2HLm6435xerymIe999QDm8yIO6+Y=;
+        s=default; t=1580652509;
+        bh=1gYVSw87cV5telUJWyrU4zFFINerB9YY8C8irZlxApA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=C1HaChaMOIyBwVl9vkRkqNBfD+C/F4DutFmVLMOFlVrERUFr9rh1UBSqkbO74zG/g
-         r5mNxXldsaarO9YcnhvGWebtfKJGT946hzquZCN4XhBAwl7yPyBBQCV/Awg2wJ7xa1
-         d/jHolFONRV+NG2tyijX+90XXdWvNHAIZKwpXFlA=
-Date:   Sun, 2 Feb 2020 11:28:15 +0000
+        b=ess6qBFo/F1BcnkklY0GwQ0BaBxBJsuYomqCrB30q1vmmC6dsjDMoKMpqMIUUZZUK
+         znJl3Dr37+R4USh1jUHGRUCdUaetljWY9diwl/hUxmdeR5wFzc/oo3d2k8GxHsPJkz
+         IPULSo+/5Rx0OTexcH3P9lIQTNvyGSRSCguT0AxY=
+Date:   Sun, 2 Feb 2020 14:08:23 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tomer Maimon <tmaimon77@gmail.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Joel Stanley <joel@jms.id.au>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        OpenBMC Maillist <openbmc@lists.ozlabs.org>
-Subject: Re: [PATCH v1 2/2] iio: adc: modify NPCM reset support
-Message-ID: <20200202112815.66b4b119@archlinux>
-In-Reply-To: <CAP6Zq1hupvQeXwynt02ePu6eL9X5oriNNwSmJEPqQWZBj770oA@mail.gmail.com>
-References: <20200119110032.124745-1-tmaimon77@gmail.com>
-        <20200119110032.124745-2-tmaimon77@gmail.com>
-        <20200129200143.08bf4a91@archlinux>
-        <CAP6Zq1hupvQeXwynt02ePu6eL9X5oriNNwSmJEPqQWZBj770oA@mail.gmail.com>
+To:     Olivier Moysan <olivier.moysan@st.com>
+Cc:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>,
+        <fabrice.gasnier@st.com>, <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: stm32-dfsdm: fix sleep in atomic context
+Message-ID: <20200202140823.531aad39@archlinux>
+In-Reply-To: <20200121110256.12415-1-olivier.moysan@st.com>
+References: <20200121110256.12415-1-olivier.moysan@st.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,159 +45,108 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 30 Jan 2020 10:20:30 +0200
-Tomer Maimon <tmaimon77@gmail.com> wrote:
+On Tue, 21 Jan 2020 12:02:56 +0100
+Olivier Moysan <olivier.moysan@st.com> wrote:
 
-> Hi Jonathan,
+> This commit fixes the error message:
+> "BUG: sleeping function called from invalid context at kernel/irq/chip.c"
+> Suppress the trigger irq handler. Make the buffer transfers directly
+> in DMA callback, instead.
+> Push buffers without timestamps, as timestamps are not supported
+> in DFSDM driver.
 > 
-> The patch replace reset ADC method from direct register access to using
-> reset driver (will applied next Linux version).
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next-history.git/commit/?h=next-20200130&id=9c81b2ccf82da6e995b63e945afa882cfaa03ca9
+> Fixes: 11646e81d775 ("iio: adc: stm32-dfsdm: add support for buffer modes")
 > 
-> 
-> The ADC dt-binding modified as well to use the new reset method (approved
-> by Rob Herring)
-> https://www.spinics.net/lists/devicetree/msg331327.html
-> 
-> Indeed the this modification require DT modification as it described in the
-> ADC dt-binding commit, is it an issue? Do you thnk I should describe it in
-> the commit?
-
-Whether it is an issue depends on nuvoton business model.  Can they ensure
-that all places the kernel is changed will also have appropriate dt updates?
-
-If not, you need to make the code continue to function without the change
-(fall back to old methods).  If they do have enough control to ensure it won't
-break any systems out in the wild, then just add a note to say that is the
-case to the commit message.
-
-Reasons this sort of thing is sometimes safe include:
-* preproduction part so no users outside of people who will expect
-potential breakage
-* dt and new kernel images only distributed in a firmware package, or
-where build script used to build the firmware package will ensure they
-match (this is a bmc chip I think, so I guess not many people build their own
-kernels except via scripting to package everything up as a firmware image
-of some type?)
+> Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
 Thanks,
 
 Jonathan
+
+> ---
+> There is the same issue on STM32 ADC driver.
+> The solution for ADC driver has been already discussed in the thread
+> https://lkml.org/lkml/2019/3/30/171
+> The current patch for STM32 DFSDM driver, bypasses the IIO IRQ trigger
+> handler, as proposed in this thread.
+> ---
+>  drivers/iio/adc/stm32-dfsdm-adc.c | 43 +++++++------------------------
+>  1 file changed, 10 insertions(+), 33 deletions(-)
 > 
-> Thanks,
-> 
-> Tomer
-> 
-> 
-> 
-> On Wed, 29 Jan 2020 at 22:01, Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> > On Sun, 19 Jan 2020 13:00:32 +0200
-> > Tomer Maimon <tmaimon77@gmail.com> wrote:
-> >  
-> > > Modify NPCM ADC reset support from
-> > > direct register access to reset controller support.
-> > >
-> > > Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>  
-> >
-> > Hmm.  This presumably breaks all old DT.
-> >
-> > If that's not a problem please say why.
-> >
-> > Jonathan
-> >  
-> > > ---
-> > >  drivers/iio/adc/npcm_adc.c | 30 +++++++++---------------------
-> > >  1 file changed, 9 insertions(+), 21 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/adc/npcm_adc.c b/drivers/iio/adc/npcm_adc.c
-> > > index a6170a37ebe8..83bad2d5575d 100644
-> > > --- a/drivers/iio/adc/npcm_adc.c
-> > > +++ b/drivers/iio/adc/npcm_adc.c
-> > > @@ -14,6 +14,7 @@
-> > >  #include <linux/regulator/consumer.h>
-> > >  #include <linux/spinlock.h>
-> > >  #include <linux/uaccess.h>
-> > > +#include <linux/reset.h>
-> > >
-> > >  struct npcm_adc {
-> > >       bool int_status;
-> > > @@ -23,13 +24,9 @@ struct npcm_adc {
-> > >       struct clk *adc_clk;
-> > >       wait_queue_head_t wq;
-> > >       struct regulator *vref;
-> > > -     struct regmap *rst_regmap;
-> > > +     struct reset_control *reset;
-> > >  };
-> > >
-> > > -/* NPCM7xx reset module */
-> > > -#define NPCM7XX_IPSRST1_OFFSET               0x020
-> > > -#define NPCM7XX_IPSRST1_ADC_RST              BIT(27)
-> > > -
-> > >  /* ADC registers */
-> > >  #define NPCM_ADCCON   0x00
-> > >  #define NPCM_ADCDATA  0x04
-> > > @@ -106,13 +103,11 @@ static int npcm_adc_read(struct npcm_adc *info,  
-> > int *val, u8 channel)  
-> > >                                              msecs_to_jiffies(10));
-> > >       if (ret == 0) {
-> > >               regtemp = ioread32(info->regs + NPCM_ADCCON);
-> > > -             if ((regtemp & NPCM_ADCCON_ADC_CONV) && info->rst_regmap) {
-> > > +             if (regtemp & NPCM_ADCCON_ADC_CONV) {
-> > >                       /* if conversion failed - reset ADC module */
-> > > -                     regmap_write(info->rst_regmap,  
-> > NPCM7XX_IPSRST1_OFFSET,  
-> > > -                                  NPCM7XX_IPSRST1_ADC_RST);
-> > > +                     reset_control_assert(info->reset);
-> > >                       msleep(100);
-> > > -                     regmap_write(info->rst_regmap,  
-> > NPCM7XX_IPSRST1_OFFSET,  
-> > > -                                  0x0);
-> > > +                     reset_control_deassert(info->reset);
-> > >                       msleep(100);
-> > >
-> > >                       /* Enable ADC and start conversion module */
-> > > @@ -186,7 +181,6 @@ static int npcm_adc_probe(struct platform_device  
-> > *pdev)  
-> > >       struct npcm_adc *info;
-> > >       struct iio_dev *indio_dev;
-> > >       struct device *dev = &pdev->dev;
-> > > -     struct device_node *np = pdev->dev.of_node;
-> > >
-> > >       indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*info));
-> > >       if (!indio_dev)
-> > > @@ -199,6 +193,10 @@ static int npcm_adc_probe(struct platform_device  
-> > *pdev)  
-> > >       if (IS_ERR(info->regs))
-> > >               return PTR_ERR(info->regs);
-> > >
-> > > +     info->reset = devm_reset_control_get(&pdev->dev, NULL);
-> > > +     if (IS_ERR(info->reset))
-> > > +             return PTR_ERR(info->reset);
-> > > +
-> > >       info->adc_clk = devm_clk_get(&pdev->dev, NULL);
-> > >       if (IS_ERR(info->adc_clk)) {
-> > >               dev_warn(&pdev->dev, "ADC clock failed: can't read clk\n");
-> > > @@ -211,16 +209,6 @@ static int npcm_adc_probe(struct platform_device  
-> > *pdev)  
-> > >       div = div >> NPCM_ADCCON_DIV_SHIFT;
-> > >       info->adc_sample_hz = clk_get_rate(info->adc_clk) / ((div + 1) *  
-> > 2);  
-> > >
-> > > -     if (of_device_is_compatible(np, "nuvoton,npcm750-adc")) {
-> > > -             info->rst_regmap = syscon_regmap_lookup_by_compatible
-> > > -                     ("nuvoton,npcm750-rst");
-> > > -             if (IS_ERR(info->rst_regmap)) {
-> > > -                     dev_err(&pdev->dev, "Failed to find  
-> > nuvoton,npcm750-rst\n");  
-> > > -                     ret = PTR_ERR(info->rst_regmap);
-> > > -                     goto err_disable_clk;
-> > > -             }
-> > > -     }
-> > > -
-> > >       irq = platform_get_irq(pdev, 0);
-> > >       if (irq <= 0) {
-> > >               ret = -EINVAL;  
-> >
-> >  
+> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+> index 2aad2cda6943..76a60d93fe23 100644
+> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
+> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+> @@ -842,31 +842,6 @@ static inline void stm32_dfsdm_process_data(struct stm32_dfsdm_adc *adc,
+>  	}
+>  }
+>  
+> -static irqreturn_t stm32_dfsdm_adc_trigger_handler(int irq, void *p)
+> -{
+> -	struct iio_poll_func *pf = p;
+> -	struct iio_dev *indio_dev = pf->indio_dev;
+> -	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+> -	int available = stm32_dfsdm_adc_dma_residue(adc);
+> -
+> -	while (available >= indio_dev->scan_bytes) {
+> -		s32 *buffer = (s32 *)&adc->rx_buf[adc->bufi];
+> -
+> -		stm32_dfsdm_process_data(adc, buffer);
+> -
+> -		iio_push_to_buffers_with_timestamp(indio_dev, buffer,
+> -						   pf->timestamp);
+> -		available -= indio_dev->scan_bytes;
+> -		adc->bufi += indio_dev->scan_bytes;
+> -		if (adc->bufi >= adc->buf_sz)
+> -			adc->bufi = 0;
+> -	}
+> -
+> -	iio_trigger_notify_done(indio_dev->trig);
+> -
+> -	return IRQ_HANDLED;
+> -}
+> -
+>  static void stm32_dfsdm_dma_buffer_done(void *data)
+>  {
+>  	struct iio_dev *indio_dev = data;
+> @@ -874,11 +849,6 @@ static void stm32_dfsdm_dma_buffer_done(void *data)
+>  	int available = stm32_dfsdm_adc_dma_residue(adc);
+>  	size_t old_pos;
+>  
+> -	if (indio_dev->currentmode & INDIO_BUFFER_TRIGGERED) {
+> -		iio_trigger_poll_chained(indio_dev->trig);
+> -		return;
+> -	}
+> -
+>  	/*
+>  	 * FIXME: In Kernel interface does not support cyclic DMA buffer,and
+>  	 * offers only an interface to push data samples per samples.
+> @@ -906,7 +876,15 @@ static void stm32_dfsdm_dma_buffer_done(void *data)
+>  			adc->bufi = 0;
+>  			old_pos = 0;
+>  		}
+> -		/* regular iio buffer without trigger */
+> +		/*
+> +		 * In DMA mode the trigger services of IIO are not used
+> +		 * (e.g. no call to iio_trigger_poll).
+> +		 * Calling irq handler associated to the hardware trigger is not
+> +		 * relevant as the conversions have already been done. Data
+> +		 * transfers are performed directly in DMA callback instead.
+> +		 * This implementation avoids to call trigger irq handler that
+> +		 * may sleep, in an atomic context (DMA irq handler context).
+> +		 */
+>  		if (adc->dev_data->type == DFSDM_IIO)
+>  			iio_push_to_buffers(indio_dev, buffer);
+>  	}
+> @@ -1536,8 +1514,7 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
+>  	}
+>  
+>  	ret = iio_triggered_buffer_setup(indio_dev,
+> -					 &iio_pollfunc_store_time,
+> -					 &stm32_dfsdm_adc_trigger_handler,
+> +					 &iio_pollfunc_store_time, NULL,
+>  					 &stm32_dfsdm_buffer_setup_ops);
+>  	if (ret) {
+>  		stm32_dfsdm_dma_release(indio_dev);
 

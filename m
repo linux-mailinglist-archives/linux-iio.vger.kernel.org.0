@@ -2,390 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E880C14FEA1
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 18:34:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5457C14FEEF
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2020 20:36:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726912AbgBBReC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Feb 2020 12:34:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57368 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726525AbgBBReC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 2 Feb 2020 12:34:02 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 45CA420658;
-        Sun,  2 Feb 2020 17:33:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580664840;
-        bh=88LeKWJOM74/Pbs2Z78JetCzN+L40TIDYZiVpDnXMNk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=vHN6diPm2xckWM1N2ksYUKDibu2V5oTFuacIQeH7YnIGa2mJYLWNcyRx3Gp5xStOm
-         3Xt6kuoSwMgMNoLTpNJLBJVRZij9w5dKfdpp6QuJFavZdo27hVjfcmwYMSAbS3a5e2
-         ObM1oVtnJAWRl+V/68a27qYNtF7cc+vkTg2m5jrQ=
-Date:   Sun, 2 Feb 2020 17:33:55 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        lee.jones@linaro.org, b.galvani@gmail.com,
-        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, phh@phh.me, stefan@agner.ch,
-        letux-kernel@openphoenux.org, martin.blumenstingl@googlemail.com
-Subject: Re: [PATCH v2 1/3] iio: adc: rn5t618: Add ADC driver for
- RN5T618/RC5T619
-Message-ID: <20200202173355.1b949a37@archlinux>
-In-Reply-To: <20200120212056.28806-2-andreas@kemnade.info>
-References: <20200120212056.28806-1-andreas@kemnade.info>
-        <20200120212056.28806-2-andreas@kemnade.info>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726959AbgBBTgV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Feb 2020 14:36:21 -0500
+Received: from sonic306-20.consmr.mail.ir2.yahoo.com ([77.238.176.206]:46233
+        "EHLO sonic306-20.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726943AbgBBTgV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Feb 2020 14:36:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1580672179; bh=KEQQEuZy9xz1bHJWn+5Og9qtrVRgDE49SeSj/EC+QRY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=n5IQrJiD8VR3iYe2ejLa5BfUXEJjRJnHu6yw8oA2osUK1G4UU/tUQ1vHxjtjmBwTbC9gRSl4PkAygGRIzJM/SibAGiaQhoftf2L0s9qVmlX2ulwuybQ+lyrqwC1nHgDVD3zwNGDPqmCPtbqQB9b20nO2/I3oBPlcoKkVreYMay7i2JlCMH9EDwJ0AkKFOq5aGcfgYPcW9dZjY3C8p/ecgK/g24NT9cZkihPJ0sKaSo1N77dKEr5dkXFXmwEUpv6VNqBipYqo/kWvYts+YDrj3CKWrgFPkqh03iML1oz/ZU+fVS6fPXrIZhB5SHPvj3jS+kwamyVV7VvlOUD1trtkAA==
+X-YMail-OSG: 55k6oEoVM1kByroeJ9TWz5LFQLaXvIGWUQzQuGf18y7nui4EmG4sX.i68aEdBbf
+ S61G5cfpypjQ7dyonQjuBmWY6tfrLHT8_OmBAheajSmG4Di4dTEfaDFmxlPfB9SqqamJ0CUZcUxz
+ k60w3tZAhvR0VJfsukIIZdLqaMlSy6DAIl4h_aebf9sNM15DgEznwMQIl9ej7wOziEjlUn.gsXp.
+ Lm7fEdlg2sZlyhTr9sBHsp7E2T1YIPa81QdV8L1qjv72SwT5oV5jqFKBRnAe1J8AYdKPTkwv2fMl
+ VLXZNlMBjM5ATHz0Lrp9mDbtV9wld7s4V4xbUjDTiCMbm0xV8E7yjR8BHpDtgtzzu2MYkM79xYKc
+ ccAyb6sK2_vmq2y_o0fbfH6Pl.SG.ITE_kQCQ7NyGahwOaD72q7qd5oPzuPl3MP6MB8c15J6b9Ll
+ KpHOCYE9DeY3erYOi31kBmk5QpPr6193mdrYW9P2wqF9jgo6EcZMCOABQQN39MdS8IzIEuH2BPNs
+ W6weU5lId1DtKUysR5euDaaeEi7YyZguSl4oWC3wxMfR45nJQ11oAQ5Uh7bySl3DLhMP7toD7PWs
+ G1.W7bAfyAfw6GO2jMLba1cvf2PZdKQUWBcV7rZhoH564l9ctdz0t1lluGyuNO4REfZ6Tc.x4OWE
+ XuWHE.GedddBNKG61LtOLwpYL.YuTi5vami2iXzVmQbjSxfvzELA3O7jKvTwyZyiJpMZY_G1RvEA
+ X.Oe6jUuSDxBom8EnGHpknbjMDEXJAY1LyDMYzsXvFeC3bdlatbQ1fxNIXWGoC.TeuXlA66Ahy5z
+ vKMYcZP_AvdlYEmHO8pqZPzMvCJyXypCpxFeuVgLZd.2pB4LBdxnL7P612wE_7i77lPVg1S1g9rv
+ IbIQfb77DMV45u_fdGbRo.cdaLbxej9LVSYdNgifDrr1fU1nYf0ZiYP2nYx3WFWERskHWF.8kjZ.
+ Qtk3icJtIXCHsZZh5P6UVbdaOieEnqxbKPzR7B_gGK5i7A60qM6OQN.PYlx2hvnhAGfBovbirXx7
+ wM0aynoeDfMMyragvky2aENzEmkP.7az2T3bXUnXWqlCoLyurcbw1eJzciX2ykfmZaqTXvZjB6va
+ 1yxmoJnyn7UcwCiAz2sQCUU9lEv16a06JOmNs8X0PpZiwTzacLVqrI2IX9R3ENzYMFvt9tTxo3Xm
+ YYooDa36czJi0op.FIWowc4Zc83FK.0lQnSkdVG7_NZkMbWPTKp3mxYXFJUIuX7BlXsm32B5kram
+ f1OnB6uHQXyOY_Nbzwl3Ep5oGc36wYcHcKCfnwjV79dNFFMY6h4kzJRny7LJnAlDM087KzDj2uU8
+ K3_jJVoXKLaLLfYRIEZW5AtmhzEJVpnnPzXXphtQ-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Sun, 2 Feb 2020 19:36:19 +0000
+Date:   Sun, 2 Feb 2020 19:36:15 +0000 (UTC)
+From:   JULIAN WORKER <julian.m.worker122@gmail.com>
+Reply-To: julian.m.worker122@gmail.com
+Message-ID: <840165969.945225.1580672175778@mail.yahoo.com>
+Subject: =?UTF-8?Q?FROM:_Mrs._Julian_M._Wo?= =?UTF-8?Q?rker_=EF=BC=88?=
+ =?UTF-8?Q?=E3=83=81=E3=83=A3=E3=83=AA=E3=83=86=E3=82=A3=E3=83=BB?=
+ =?UTF-8?Q?=E3=83=89=E3=83=8D=E3=83=BC=E3=82=B7=E3=83=A7=E3=83=B3?=
+ =?UTF-8?Q?=E3=83=BB=E3=83=95=E3=82=A1=E3=83=B3=E3=83=89=EF=BC=89?=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+References: <840165969.945225.1580672175778.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15149 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:72.0) Gecko/20100101 Firefox/72.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 20 Jan 2020 22:20:54 +0100
-Andreas Kemnade <andreas@kemnade.info> wrote:
-
-> Both chips have an A/D converter capable of measuring
-> things like VBAT, VUSB and analog inputs.
-> 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Sorry I missed one bigger thing in here around PROCESSED vs RAW.
-See inline.
-
-Thanks,
-
-Jonathan
-
-> ---
-> Changes in v2:
-> - enum for channels
-> - bulk read instead of single byte read for conversion
->   result
-> - fix get_virq error handling
-> - use devm for registering device and requesting IRQ
-> 
->  drivers/iio/adc/Kconfig       |  10 ++
->  drivers/iio/adc/Makefile      |   1 +
->  drivers/iio/adc/rn5t618-adc.c | 253 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 264 insertions(+)
->  create mode 100644 drivers/iio/adc/rn5t618-adc.c
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index f0af3a42f53c..9ea9489e3f0a 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -735,6 +735,16 @@ config RCAR_GYRO_ADC
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called rcar-gyroadc.
->  
-> +config RN5T618_ADC
-> +	tristate "ADC for the RN5T618/RC5T619 family of chips"
-> +	depends on MFD_RN5T618
-> +	help
-> +	  Say yes here to build support for the integrated ADC inside the
-> +	  RN5T618/619 series PMICs:
-Why :?
-> +
-> +	  This driver can also be built as a module. If so, the module
-> +	  will be called rn5t618-adc.
-> +
->  config ROCKCHIP_SARADC
->  	tristate "Rockchip SARADC driver"
->  	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index ef9cc485fb67..2aea70556ed0 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -69,6 +69,7 @@ obj-$(CONFIG_QCOM_VADC_COMMON) += qcom-vadc-common.o
->  obj-$(CONFIG_QCOM_SPMI_VADC) += qcom-spmi-vadc.o
->  obj-$(CONFIG_QCOM_PM8XXX_XOADC) += qcom-pm8xxx-xoadc.o
->  obj-$(CONFIG_RCAR_GYRO_ADC) += rcar-gyroadc.o
-> +obj-$(CONFIG_RN5T618_ADC) += rn5t618-adc.o
->  obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
->  obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
->  obj-$(CONFIG_SPEAR_ADC) += spear_adc.o
-> diff --git a/drivers/iio/adc/rn5t618-adc.c b/drivers/iio/adc/rn5t618-adc.c
-> new file mode 100644
-> index 000000000000..667bd814569d
-> --- /dev/null
-> +++ b/drivers/iio/adc/rn5t618-adc.c
-> @@ -0,0 +1,253 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * ADC driver for the RICOH RN5T618 power management chip family
-> + *
-> + * Copyright (C) 2019 Andreas Kemnade
-> + */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/device.h>
-> +#include <linux/errno.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/mfd/rn5t618.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/completion.h>
-> +#include <linux/regmap.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/slab.h>
-> +#include <linux/irqdomain.h>
-I may be missing something, but I'm not immediately seeing any irq_domain*
-calls?  I suspect the only call is via stuff buried in regmap so we probably
-don't need the header here.
-
-> +
-> +#define RN5T618_ADC_CONVERSION_TIMEOUT   (msecs_to_jiffies(500))
-> +#define REFERENCE_VOLT 2500
-
-Please prefix these defines
-RN5T618_* 
-
-It avoids potential clashes in future with things defined in headers.
-
-> +
-> +/* mask for selecting channels for single conversion */
-> +#define ADCCNT3_CHANNEL_MASK 0x7
-> +/* average 4-time conversion mode */
-> +#define ADCCNT3_AVG BIT(3)
-> +/* set for starting a single conversion, gets cleared by hw when done */
-> +#define ADCCNT3_GODONE BIT(4)
-> +/* automatic conversion, period is in ADCCNT2, selected channels are
-> + * in ADCCNT1
-> + */
-> +#define ADCCNT3_AUTO BIT(5)
-> +#define ADCEND_IRQ BIT(0)
-> +
-> +struct rn5t618_adc_data {
-> +	struct device *dev;
-> +	struct rn5t618 *rn5t618;
-> +	struct completion conv_completion;
-> +	int irq;
-> +};
-> +
-> +struct rn5t618_channel_ratios {
-> +	u16 numerator;
-> +	u16 denominator;
-> +};
-> +
-> +enum rn5t618_channels {
-> +	LIMMON = 0,
-> +	VBAT,
-> +	VADP,
-> +	VUSB,
-> +	VSYS,
-> +	VTHM,
-> +	AIN1,
-> +	AIN0
-> +};
-> +
-> +static const struct rn5t618_channel_ratios rn5t618_ratios[8] = {
-> +	[LIMMON] = {50, 32}, /* measured across 20mOhm, amplified by 32 */
-> +	[VBAT] = {2, 1},
-> +	[VADP] = {3, 1},
-> +	[VUSB] = {3, 1},
-> +	[VSYS] = {3, 1},
-> +	[VTHM] = {1, 1},
-> +	[AIN1] = {1, 1},
-> +	[AIN0] = {1, 1},
-> +};
-> +
-> +static int rn5t618_read_adc_reg(struct rn5t618 *rn5t618, int reg, u16 *val)
-> +{
-> +	u8 data[2];
-> +	int ret;
-> +
-> +	ret = regmap_bulk_read(rn5t618->regmap, reg, data, sizeof(data));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val = (data[0] << 4) | (data[1] & 0xF);
-> +
-> +	return 0;
-> +}
-> +
-> +static irqreturn_t rn5t618_adc_irq(int irq, void *data)
-> +{
-> +	struct rn5t618_adc_data *adc = data;
-> +	unsigned int r = 0;
-> +	int ret;
-> +
-> +	/* clear low & high threshold irqs */
-> +	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC1, 0);
-> +	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC2, 0);
-> +
-> +	ret = regmap_read(adc->rn5t618->regmap, RN5T618_IR_ADC3, &r);
-> +	if (ret < 0)
-> +		dev_err(adc->dev, "failed to read IRQ status: %d\n", ret);
-> +
-> +	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC3, 0);
-> +
-> +	if (r & ADCEND_IRQ)
-> +		complete(&adc->conv_completion);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int rn5t618_adc_read(struct iio_dev *iio_dev,
-> +			    const struct iio_chan_spec *chan,
-> +			    int *val, int *val2, long mask)
-> +{
-> +	struct rn5t618_adc_data *adc = iio_priv(iio_dev);
-> +	u16 raw;
-> +	int ret;
-> +
-> +	/* select channel */
-> +	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
-> +				 ADCCNT3_CHANNEL_MASK,
-> +				 chan->channel);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = regmap_write(adc->rn5t618->regmap, RN5T618_EN_ADCIR3, ADCEND_IRQ);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
-> +				 ADCCNT3_AVG,
-> +				 mask == IIO_CHAN_INFO_AVERAGE_RAW ?
-> +				 ADCCNT3_AVG : 0);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	init_completion(&adc->conv_completion);
-> +	/* single conversion */
-> +	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
-> +				 ADCCNT3_GODONE, ADCCNT3_GODONE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = wait_for_completion_timeout(&adc->conv_completion,
-> +					  RN5T618_ADC_CONVERSION_TIMEOUT);
-> +	if (ret == 0) {
-> +		dev_warn(adc->dev, "timeout waiting for adc result\n");
-> +		return -ETIMEDOUT;
-> +	}
-> +
-> +	ret = rn5t618_read_adc_reg(adc->rn5t618,
-> +				   RN5T618_ILIMDATAH + 2 * chan->channel,
-> +				   &raw);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val = raw;
-> +	if (mask == IIO_CHAN_INFO_PROCESSED)
-> +		*val = *val * REFERENCE_VOLT *
-> +		       rn5t618_ratios[chan->channel].numerator /
-> +		       rn5t618_ratios[chan->channel].denominator / 4095;
-
-This info should be provided as scale so that userspace can do the maths if
-it wants to rather than handling it in kernel.
-
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static const struct iio_info rn5t618_adc_iio_info = {
-> +	.read_raw = &rn5t618_adc_read,
-> +};
-> +
-> +#define RN5T618_ADC_CHANNEL(_channel, _type, _name) { \
-> +	.type = _type, \
-> +	.channel = _channel, \
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-> +			      BIT(IIO_CHAN_INFO_AVERAGE_RAW) | \
-> +			      BIT(IIO_CHAN_INFO_PROCESSED), \
-
-Sorry, I missed this before. 
-
-As a general rule it makes no sense to expose both RAW and PROCESSED values.
-It should be possible to work one out from the other if the relationship is
-linear and scale is provided.
-
-> +	.datasheet_name = _name, \
-> +	.indexed = 1. \
-> +}
-> +
-> +static const struct iio_chan_spec rn5t618_adc_iio_channels[] = {
-> +	RN5T618_ADC_CHANNEL(LIMMON, IIO_CURRENT, "LIMMON"),
-> +	RN5T618_ADC_CHANNEL(VBAT, IIO_VOLTAGE, "VBAT"),
-> +	RN5T618_ADC_CHANNEL(VADP, IIO_VOLTAGE, "VADP"),
-> +	RN5T618_ADC_CHANNEL(VUSB, IIO_VOLTAGE, "VUSB"),
-> +	RN5T618_ADC_CHANNEL(VSYS, IIO_VOLTAGE, "VSYS"),
-> +	RN5T618_ADC_CHANNEL(VTHM, IIO_VOLTAGE, "VTHM"),
-> +	RN5T618_ADC_CHANNEL(AIN1, IIO_VOLTAGE, "AIN1"),
-> +	RN5T618_ADC_CHANNEL(AIN0, IIO_VOLTAGE, "AIN0")
-> +};
-> +
-> +static int rn5t618_adc_probe(struct platform_device *pdev)
-> +{
-> +	int ret;
-> +	struct iio_dev *iio_dev;
-> +	struct rn5t618_adc_data *adc;
-> +	struct rn5t618 *rn5t618 = dev_get_drvdata(pdev->dev.parent);
-> +
-> +	iio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
-> +	if (!iio_dev) {
-> +		dev_err(&pdev->dev, "failed allocating iio device\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	adc = iio_priv(iio_dev);
-> +	adc->dev = &pdev->dev;
-> +	adc->rn5t618 = rn5t618;
-> +
-> +	if (rn5t618->irq_data)
-> +		adc->irq = regmap_irq_get_virq(rn5t618->irq_data,
-> +					       RN5T618_IRQ_ADC);
-> +
-> +	if (adc->irq <= 0) {
-> +		dev_err(&pdev->dev, "get virq failed\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	init_completion(&adc->conv_completion);
-> +
-> +	iio_dev->name = dev_name(&pdev->dev);
-> +	iio_dev->dev.parent = &pdev->dev;
-> +	iio_dev->info = &rn5t618_adc_iio_info;
-> +	iio_dev->modes = INDIO_DIRECT_MODE;
-> +	iio_dev->channels = rn5t618_adc_iio_channels;
-> +	iio_dev->num_channels = ARRAY_SIZE(rn5t618_adc_iio_channels);
-> +
-> +	/* stop any auto-conversion */
-> +	ret = regmap_write(rn5t618->regmap, RN5T618_ADCCNT3, 0);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	platform_set_drvdata(pdev, iio_dev);
-> +
-> +	ret = devm_request_threaded_irq(adc->dev, adc->irq, NULL,
-> +					rn5t618_adc_irq,
-> +					IRQF_ONESHOT, dev_name(adc->dev),
-> +					adc);
-> +	if (ret < 0) {
-> +		dev_err(adc->dev, "request irq %d failed: %d\n", adc->irq, ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_iio_device_register(adc->dev, iio_dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static struct platform_driver rn5t618_adc_driver = {
-> +	.driver = {
-> +		.name   = "rn5t618-adc",
-> +	},
-> +	.probe = rn5t618_adc_probe,
-> +};
-> +
-> +module_platform_driver(rn5t618_adc_driver);
-> +MODULE_ALIAS("platform:rn5t618-adc");
-> +MODULE_DESCRIPTION("RICOH RN5T618 ADC driver");
-> +MODULE_LICENSE("GPL");
-
+DQroia/jgYTkuIDml6UNCg0K44GZ44G544Gm44Gu6Imv44GE44KC44Gu44KS5LiO44GI44KL5LiH
+6LuN44Gu5Li744Gu5ZCN44Gr44KI44Gj44Gm44CB44GC44Gq44Gf44KS6L+O44GI44G+44GZ44CC
+6Imv44GE5LiA5pel44Go5a2j56+A44Gu6LOb6L6e44CB56eB44Gv44Gd44KM44GM5pys5b2T44Gn
+44GC44KL44GT44Go44KS55+l44Gj44Gm44GE44KL44GT44Gu5omL57SZ44Gv44GC44Gq44Gf44Gr
+6ama44GN44Go44GX44Gm5p2l44KL44GL44KC44GX44KM44G+44Gb44KT44CCDQoNCuOBneOCjOOB
+q+OCguOBi+OBi+OCj+OCieOBmuOAgeengeOBr+OBguOBquOBn+OBq+azqOaEj+OCkuaJleOBhOOA
+geOCiOOBj+iBnuOBhOOBpuOBj+OCjOOCi+OBk+OBqOOCkuismeiZmuOBq+OBiumhmOOBhOOBl+OB
+vuOBmeOAguOBl+OBi+OBl+OAgeengeOBr+OAgeOBguOBquOBn+OBruaxuuWumuOBjOWwhuadpeOB
+ruWtmOWcqOOCkuaxuuWumuOBmeOCi+OBn+OCgeOBq+mBoOOBj+mbouOCjOOBpuOBhOOBj+OBruOB
+p+OAgeOBk+OBruODoeODg+OCu+ODvOOCuOOCkuaFjumHjeOBq+i+v+OCi+aZgumWk+OCkuWPluOC
+i+OBk+OBqOOCkumhmOOBo+OBpuOBhOOBvuOBmeOAguengeOBr+OCuOODpeODquOCouODs+ODr+OD
+vOOCq+ODvOWkq+S6uuOAgTU45q2z44Gu5pyq5Lqh5Lq644Gn44GZ44CC57Gz5Zu944Gu44Op44K5
+44OZ44Ks44K55Ye66Lqr44Gn44GZ44CC56eB44Gv6IK644GM44KT44Gr57255oKj44GX44Gm44GK
+44KK44CB54++5Zyo44Gv5LiA6Iis55eF6Zmi44OW44Or44Kt44OK44OV44Kh44K944Gn5YWl6Zmi
+44GX44Gm44GE44G+44GZ44CC56eB44Gv56eB44Gu5b6M5Y2K44Gu5aSr44GL44KJ57aZ5om/44GX
+44Gf6LOH6YeR44KS5oyB44Gj44Gm44GE44G+44GZ77yIJCAxNC41TeODieODq++8ieOBqOengeOB
+r+mdnuW4uOOBq+ato+ebtOOBp+elnuOBjOOBk+OBruizh+mHkeOCkuW8leOBjeWHuuOBmeOBk+OB
+qOOBjOOBp+OBjeOCi+S6uuOCkuaBkOOCjOOBpuOAgeaFiOWWhOa0u+WLleOBruizh+mHkeOCkuS9
+v+eUqOOBmeOCi+OBk+OBqOOBjOW/heimgeOBp+OBl+OBn+OAguengeOBr+aFiOWWhOa0u+WLleOB
+ruOBn+OCgeOBq+OBguOBquOBn+OBq+OBk+OCjOOCieOBruizh+mHkeOCkui0iOOCiuOBn+OBhOOA
+guengeOBr+OBguOBquOBn+OBruODoeODvOODq+OCouODieODrOOCueOCkuOAgeato+ebtOOBquel
+iOOCiuOBruW+jOOBq+WKqeaJi+OBqOengeOCkuOBpOOBquOBkOOBn+OCgeOBq+S4u+OBq+imi+OB
+pOOBkeOBvuOBl+OBn+OAguOBguOBquOBn+OBq+S9leOBi+OBjOi1t+OBk+OCi+WJjeOBq+OAgeOB
+k+OCjOOCieOBruS/oeiol+WfuumHkeOCkuiqoOWun+OBq+aJseOBhuOBk+OBqOOBq+WWnOOCk+OB
+p+iIiOWRs+OBjOOBguOCjOOBsOOAgeengeOBr+OBguOBquOBn+OBq+mAo+e1oeOBmeOCi+OBk+OB
+qOOBq+OBl+OBvuOBl+OBn+OAgg0KDQrnp4Hjga7nirbmhYvjgpLnn6XjgaPjgZ/jga7jgafjgIHn
+p4Hjga/jgZPjga7jgYrph5HjgpLjgIHnp4HjgYzjgZPjgZPjgafmjIflsI7jgZnjgovmlrnms5Xj
+gafjgZPjga7os4fph5HjgpLliKnnlKjjgZnjgovmlZnkvJrjgIHntYTnuZTjgIHjgb7jgZ/jga/l
+loToia/jgarkurrjgZ/jgaHjgavlr4Tku5jjgZnjgovjgZPjgajjgavmsbrjgoHjgb7jgZfjgZ/j
+gILmlZnkvJrjgIHmhYjlloTlm6PkvZPjgIHlraTlhZDpmaLjgIHlr6Hlqabjgarjganjga7jgZ/j
+goHjgavjgIHjgZPjga7os4fph5HjgpLkvb/jgYbjgZPjgajjgpLjgYrli6fjgoHjgZfjgb7jgZnj
+gILnp4Hjga/jgZPjga7jgYrph5HjgpLntpnmib/jgZnjgovlrZDkvpvjgYzjgYTjgarjgYTjga7j
+gafjgIHjgZPjga7msbrlrprjgpLjgZfjgb7jgZfjgZ/jgILjgZXjgonjgavjgIHnp4Hjga7lpKvj
+ga7opqrmiJrjga/np4HjgYzjgZPjga7nmYzjga7llY/poYzjgpLnmbrnl4fjgZfjgabku6XmnaXj
+gIHjgoLjga/jgoTnp4Hjgavov5HjgaXjgYTjgabjgYrjgonjgZrjgIHnp4HjgZ/jgaHjga/lrZDk
+vpvjgYzjgYTjgarjgYTjga7jgafoh6rliIbjga7lr4zjgpLntpnmib/jgZnjgovjgZ/jgoHjgavn
+p4HjgYzmrbvjgpPjgaDjga7jgpLopovjgZ/jgYTjgajmgJ3jgaPjgabjgYTjgb7jgZfjgZ/jgILj
+gZPjgozjgonjga7kurrjgIXjga/jgZPjga7pgbrnlKPjgavjgbXjgZXjgo/jgZfjgY/jgYLjgorj
+gb7jgZvjgpPjgILjgZPjgozjgYznp4HjgYzjgZPjga7msbrlrprjgpLjgZnjgovnkIbnlLHjgafj
+gZnjgIINCg0K44GC44Gq44Gf44Gu57eK5oCl44Gu6L+U5L+h44GM5b+F6KaB44Gn44GZ44CC56eB
+44Gv5byB6K235aOr44Go44GC44Gq44Gf44Gu5Zu944Gu44GC44Gq44Gf44Gu5Y+j5bqn44G444Gu
+44GK6YeR44Gu5Y2z5bqn44Gu56e76Lui44Gu44Gf44KB44Gr6YqA6KGM44GM56eB44Gf44Gh44Gr
+55m66KGM44GX44Gf6aCQ6YeR6aCY5Y+O5pu444KS44GC44Gq44Gf44Gr5rih44GX44Gm44CB56We
+44Gu6Imv44GE5LuV5LqL44KS6ZaL5aeL44GX44G+44GZ56eB44Gv44GC44Gq44Gf44Gu5o+05Yqp
+44KS5b+F5q2744Gr44GX44Gm44GK44KK44CB56eB44Gv44GC44Gq44Gf44Gu44Gf44KB44Gr6YCj
+57Wh44GZ44KL5YuH5rCX44KS5Y+s5Zaa44GX44G+44GX44Gf44CC56eB44Go44GC44Gq44Gf44Gu
+5ZGo44KK44Gu6LKn44GX44GE5Lq644CF44Gu5L2V55m+5LiH5Lq644KC5aSx5pWX44GX44Gm44Gv
+44GE44GR44G+44Gb44KT44CC44GT44KM44Gv55uX44G+44KM44Gf44GK6YeR44Gn44Gv44Gq44GP
+44CB5Y2x6Zm65oCn44Gv44GC44KK44G+44Gb44KT44CC5a6M5YWo44Gq5rOV55qE6Ki85oug44GM
+44GC44KM44GwMTAw77yF5Y2x6Zm644Gn44GZ44CC5oWI5ZaE5LqL5qWt44Gu44Gf44KB44Gr6LOH
+6YeR44KS5L2/55So44Gn44GN44KL44Gu44Gn44GC44KM44Gw44CB44OV44Kh44Oz44OJ44Gu44GC
+44KL6YqA6KGM44Gr44GC44Gq44Gf44KS6YCj57Wh44GZ44KL44Gf44KB44Gr44GZ44GQ44Gr56eB
+44Gr55+l44KJ44Gb44Gm44GP44Gg44GV44GE44CC56eB44Gv44CB56eB44Gu5pyA5b6M44Gu6aGY
+44GE44KS5Y2x6Zm644Gr44GV44KJ44GZ44KI44GG44Gq44GT44Go44Gv5pyb44KT44Gn44GE44Gq
+44GE44Gu44Gn44CB56eB44Gu5b+D44Gu5qyy5pyb44KS6YGU5oiQ44GZ44KL44Gf44KB44Gr44CB
+44GC44Gq44Gf44Gu5pyA44KC5a6I56eY576p5YuZ44Go5L+h6aC844Gr5oSf6Kyd44GX44G+44GZ
+44CC56eB44Gv44GC44Gq44Gf44Gu5YCL5Lq655qE44Gq5L2/55So44Gu44Gf44KB44Gr57eP6aGN
+44GuNDDvvIXjgpLmiZXjgYTjgIHjgYrph5Hjga42MO+8heOBr+aFiOWWhOWbo+S9k+OBq+ihjOOB
+j+OBk+OBqOOCkuacm+OBv+OBvuOBmeOAgg0KDQrjgYLjgarjgZ/jga7ov5Tkv6HjgYzpgYXjgozj
+govjgajjgIHlkIzjgZjnm67nmoTjga7jgZ/jgoHjgavliKXjga7oia/jgYTkurrjgpLmjqLjgZnk
+vZnlnLDjgYzjgYLjgorjgb7jgZnjgILnp4HjgYzjgZPjgZPjgavov7DjgbnjgZ/jgojjgYbjgavo
+oYzli5XjgZnjgovjgZPjgajjgpLnp4Hjgavkv53oqLzjgZfjgabjgY/jgaDjgZXjgYTjgILljLvo
+gIXjga7mjIfnpLrjganjgYrjgorjgavnp4Hjga7lgaXlurfjga7jgZ/jgoHjgavnp4Hjga/jgZPj
+ga7ngrnjgafpm7voqbHpgJrkv6Hjga/lv4XopoHjgYLjgorjgb7jgZvjgpPjgIINCg0K56eB44Gu
+5YCL5Lq644GuReODoeODvOODq+OCouODieODrOOCueOBp+OBmeOBkOOBq+OBguOBquOBn+OBruWb
+nuetlOOCkuWPl+OBkeWPluOCjeOBhuOBqOiAg+OBiOOBpuOBhOOBvuOBme+8mu+8iGp1bGlhbi5t
+LndvcmtlcjEyMkBnbWFpbC5jb23vvIkNCg0K44GC44KK44GM44Go44GG44GU44GW44GE44G+44GX
+44Gf44CCDQrjgYLjgarjgZ/jga7lprnjgIHkuLvjga7kuK3jgavjgIENCuOCuOODpeODquOCouOD
+s+ODr+ODvOOCq+ODvOWkq+S6ug0K

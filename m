@@ -2,310 +2,605 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDE851505CB
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2020 13:03:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2868F150819
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2020 15:11:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727148AbgBCMDn convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 3 Feb 2020 07:03:43 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2349 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727102AbgBCMDn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 3 Feb 2020 07:03:43 -0500
-Received: from LHREML710-CAH.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 3CF4667FA7CBC00D936B;
-        Mon,  3 Feb 2020 12:03:40 +0000 (GMT)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- LHREML710-CAH.china.huawei.com (10.201.108.33) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Mon, 3 Feb 2020 12:03:39 +0000
-Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Mon, 3 Feb 2020
- 12:03:39 +0000
-Date:   Mon, 3 Feb 2020 12:03:38 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devel@driverdev.osuosl.org>, <dragos.bogdan@analog.com>
-Subject: Re: [PATCH 2/4] iio: imu: adis: Refactor adis_initial_startup
-Message-ID: <20200203120338.000044c1@Huawei.com>
-In-Reply-To: <da82db5f81e116c7ecc36f5d9833b90b4f7cd15d.camel@gmail.com>
-References: <20200120142051.28533-1-alexandru.ardelean@analog.com>
-        <20200120142051.28533-2-alexandru.ardelean@analog.com>
-        <20200201170839.4ab98d8e@archlinux>
-        <da82db5f81e116c7ecc36f5d9833b90b4f7cd15d.camel@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726244AbgBCOLF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Feb 2020 09:11:05 -0500
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:40735 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727437AbgBCOLF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Feb 2020 09:11:05 -0500
+Received: by mail-pf1-f195.google.com with SMTP id q8so7638083pfh.7;
+        Mon, 03 Feb 2020 06:11:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=IRQ1hHCz0CeKY1g3DDbbp7TdDivpaRH+PNik/agQaN8=;
+        b=CgUTpKQDyVzPKohmcbd6EQ1W/9fcgDkJ0t7n2ZT7j4gnVZKe1P2qsGKBupYKbCkuKS
+         i8mi0ukGCyD6qJCo4wW8fuByob5g+UWRCDfesJOu9IaCDKg46oinWy/aOmiiD5tZ2lPU
+         kRKAt9TL6GSnzf6w4oFwnOR7/Bcc3RGZPSPQnEif8gNKWg0H7aEaHJDRNuK4iOHGxdd2
+         S6NIJaZXbRre+qWgZbpi7nOA/DNhuMAFpGuYs3j9pLETwhuEBeoy6A5hJETe+eouSS2X
+         zWNDPVta4jxRnbhB/pJOM2+7L2zheIBwry4100Jb7Z/23vsQvSTmU3TV4T4F0ECpLiwL
+         XE+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IRQ1hHCz0CeKY1g3DDbbp7TdDivpaRH+PNik/agQaN8=;
+        b=OHXBuleKu20GgWwmDNnBzJMISaf3PTdHqr6YfimEPoPLxfFYKvuQervFxpQQ0doXTf
+         nyo8bvCANnPWQEYEkDmv4iyAFE1874UkQo4X1NRDfl1lzjYAWjkETw82MktSN76XR/59
+         UkcUQB7bFJ4ix0molKEBcsnJ+q7jXUK0JA2Kw+rd4+HqcYaJgQLPEYSwM3oS9jQ6b6sd
+         dcQEVvyMrmnKY3Thm0f0namRyEakQob2iePeKZmaV10Io2pVcfa09j4HwQCnZD2w5gzK
+         SXhsO5Lp1B71mPJrJvb6EHKHHHXvU1/+I2TOUztX8SAN1u2ECALeaBD8we8/Q9xbFeWX
+         6C0Q==
+X-Gm-Message-State: APjAAAWqsqyuVwY4Nf5uk/S6gsD9G5DGxevw0fGZqP7XGRucWUcWO6PR
+        U0nrqMvTE7Lb3Onld8MiOUtUhlh6OXFjeRxYnjU=
+X-Google-Smtp-Source: APXvYqwZTAYrbILCWu7y5BTJeqPAPB1rFBskSHBcp7ocuAG5TDt9SRxEU6oafx3Hpm1Q4UJT5GMI/qeDOmgTlPzMVio=
+X-Received: by 2002:a62:1a09:: with SMTP id a9mr25064930pfa.64.1580739063957;
+ Mon, 03 Feb 2020 06:11:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.226.57]
-X-ClientProxiedBy: lhreml745-chm.china.huawei.com (10.201.108.195) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <20200128111302.24359-1-alexandru.ardelean@analog.com>
+ <20200202144549.3209f04b@archlinux> <9f7217403fc2e69934eded4502d39198c2427806.camel@analog.com>
+In-Reply-To: <9f7217403fc2e69934eded4502d39198c2427806.camel@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 3 Feb 2020 16:10:55 +0200
+Message-ID: <CAHp75Vfc9OeubEGUPrMzKwhWeC1D1rziatARYCFkXy07dNZK_g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] iio: frequency: adf4360: Add support for ADF4360 PLLs
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "jic23@kernel.org" <jic23@kernel.org>,
+        "ekigwana@gmail.com" <ekigwana@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 3 Feb 2020 10:31:30 +0100
-Nuno Sá <noname.nuno@gmail.com> wrote:
-
-> Hi Jonathan,
-> 
-> 
-> On Sat, 2020-02-01 at 17:08 +0000, Jonathan Cameron wrote:
-> > On Mon, 20 Jan 2020 16:20:49 +0200
+On Mon, Feb 3, 2020 at 1:47 PM Ardelean, Alexandru
+<alexandru.Ardelean@analog.com> wrote:
+> On Sun, 2020-02-02 at 14:45 +0000, Jonathan Cameron wrote:
+> > On Tue, 28 Jan 2020 13:13:00 +0200
 > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> >   
-> > > From: Nuno Sá <nuno.sa@analog.com>
-> > > 
-> > > All the ADIS devices perform, at the beginning, a self test to make
-> > > sure
-> > > the device is in a sane state. Furthermore, some drivers also do a
-> > > call
-> > > to `adis_reset()` before the test which is also a good practice.
-> > > This
-> > > patch unifies all those operation so that, there's no need for code
-> > > duplication. Furthermore, the rst pin is also checked to make sure
-> > > the
-> > > device is not in HW reset. On top of this, some drivers also read
-> > > the
-> > > device product id and compare it with the device being probed to
-> > > make
-> > > sure the correct device is being handled. This can also be passed
-> > > to the
-> > > library by introducing a variable holding the PROD_ID register of
-> > > the
-> > > device.
-> > > 
-> > > Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > > ---
-> > >  drivers/iio/imu/Kconfig      |  1 +
-> > >  drivers/iio/imu/adis.c       | 63 ++++++++++++++++++++++++++----
-> > > ------
-> > >  include/linux/iio/imu/adis.h | 15 ++++++++-
-> > >  3 files changed, 61 insertions(+), 18 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/imu/Kconfig b/drivers/iio/imu/Kconfig
-> > > index 60bb1029e759..63036cf473c7 100644
-> > > --- a/drivers/iio/imu/Kconfig
-> > > +++ b/drivers/iio/imu/Kconfig
-> > > @@ -85,6 +85,7 @@ endmenu
-> > >  
-> > >  config IIO_ADIS_LIB
-> > >  	tristate
-> > > +	depends on GPIOLIB
-> > >  	help
-> > >  	  A set of IO helper functions for the Analog Devices ADIS*
-> > > device family.
-> > >  
-> > > diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-> > > index d02b1911b0f2..1eca5271380e 100644
-> > > --- a/drivers/iio/imu/adis.c
-> > > +++ b/drivers/iio/imu/adis.c
-> > > @@ -7,6 +7,7 @@
-> > >   */
-> > >  
-> > >  #include <linux/delay.h>
+
+Just few comments on the code in case either this will go, or to teach
+an author about best practices in LK.
+
+> > > +#include <linux/err.h>
 > > > +#include <linux/gpio/consumer.h>
-> > >  #include <linux/mutex.h>
-> > >  #include <linux/device.h>
-> > >  #include <linux/kernel.h>
-> > > @@ -365,36 +366,64 @@ static int adis_self_test(struct adis *adis)
-> > >  }
-> > >  
-> > >  /**
-> > > - * adis_inital_startup() - Performs device self-test
-> > > + * __adis_initial_startup() - Device initial setup
-> > >   * @adis: The adis device
-> > >   *
-> > > + * This functions makes sure the device is not in reset, via rst
-> > > pin.
-> > > + * Furthermore it performs a SW reset (only in the case we are not
-> > > coming from
-> > > + * reset already) and a self test. It also compares the product id
-> > > with the
-> > > + * device id if the prod_id_reg variable is set.
-> > > + *
-> > >   * Returns 0 if the device is operational, a negative error code
-> > > otherwise.
-> > >   *
-> > >   * This function should be called early on in the device
-> > > initialization sequence
-> > >   * to ensure that the device is in a sane and known state and that
-> > > it is usable.
-> > >   */
-> > > -int adis_initial_startup(struct adis *adis)
-> > > +int __adis_initial_startup(struct adis *adis)
-> > >  {
-> > >  	int ret;
-> > > -
-> > > -	mutex_lock(&adis->state_lock);
-> > > +	struct gpio_desc *gpio;
-> > > +	const struct adis_timeout *timeouts = adis->data->timeouts;
-> > > +	const char *iio_name = spi_get_device_id(adis->spi)->name;
-> > > +	u16 prod_id, dev_id;
-> > > +
-> > > +	/* check if the device has rst pin low */
-> > > +	gpio = devm_gpiod_get_optional(&adis->spi->dev, "reset",
-> > > GPIOD_ASIS);
-> > > +	if (IS_ERR(gpio)) {
-> > > +		return PTR_ERR(gpio);  
-> > 
-> > Given you are returning here, no need for else to follow
-> > 
-> > if (gpio...
-> >   
-> 
-> Definitely...
-> 
-> > > +	} else if (gpio && gpiod_get_value_cansleep(gpio)) {
-> > > +		/* bring device out of reset */
-> > > +		gpiod_set_value_cansleep(gpio, 0);  
-> > 
-> > Hmm. So is a software reset the best option if we have a hardware
-> > reset
-> > line but it's not currently in the reset mode?
-> >   
-> 
-> Hmm, that's a fair question. Now that I think about it, if we do have a
-> gpio we should just assume it's in reset and call
-> `gpiod_set_value_cansleep`. So, I guess we could just ditch the
-> `gpiod_get_value_cansleep(gpio)` part.
+> > > +#include <linux/kernel.h>
+> > > +#include <linux/module.h>
+> > > +#include <linux/of.h>
+> > > +#include <linux/regulator/consumer.h>
+> > > +#include <linux/spi/spi.h>
+> > > +#include <linux/util_macros.h>
 
-Not sure I agree.   For example the driver may well have been unbound
-and rebound for some reason.
+...
 
-I would argue you should just do a set / reset cycle with appropriate sleep
-in between.  If it's already set then no harm done, if it isn't you force
-a hardware reset.
+> > > +enum {
+> > > +   ADF4360_CTRL,
+> > > +   ADF4360_RDIV,
+> > > +   ADF4360_NDIV,
 
-> 
-> > > +		msleep(timeouts->reset_ms);
-> > > +	} else {
-> > > +		ret = __adis_reset(adis);
-> > > +		if (ret)
-> > > +			return ret;
-> > > +	}
-> > >  
-> > >  	ret = adis_self_test(adis);
-> > > -	if (ret) {
-> > > -		dev_err(&adis->spi->dev, "Self-test failed, trying
-> > > reset.\n");
-> > > -		__adis_reset(adis);
-> > > -		ret = adis_self_test(adis);
-> > > -		if (ret) {
-> > > -			dev_err(&adis->spi->dev, "Second self-test
-> > > failed, giving up.\n");
-> > > -			goto out_unlock;
-> > > -		}
-> > > -	}
-> > > +	if (ret)
-> > > +		return ret;
-> > >  
-> > > -out_unlock:
-> > > -	mutex_unlock(&adis->state_lock);
-> > > -	return ret;
-> > > +	if (!adis->data->prod_id_reg)
-> > > +		return 0;
-> > > +
-> > > +	ret = adis_read_reg_16(adis, adis->data->prod_id_reg,
-> > > &prod_id);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	ret = sscanf(iio_name, "adis%hu\n", &dev_id);  
-> > 
-> > Hmm. I have a general dislike of pulling part name strings apart to
-> > get
-> > IDs.  It tends to break when someone comes along and adds a part with
-> > new
-> > branding.  Perhaps just put it in the relevant device part specific
-> > structures
-> > directly?
-> >   
-> 
-> I'll admit that this to orientated to ADI devices and I basically just
-> took what all the drivers were doing and placed it inside the
-> library...
-> 
-> So, you mean passing this to each `chip_info` and then passing it to
-> the library through `adis_data`?
+> > > +   ADF4360_REG_NUM,
 
-Yes.  People don't tend to expect strings to need to take a particular form,
-so pulling them apart in a library can give unexpected results...
+Sounds line no need for comma (is it indeed a terminator line?).
 
-> > > +	if (ret != 1)
-> > > +		return -EINVAL;
-> > > +
-> > > +	if (prod_id != dev_id)
-> > > +		dev_warn(&adis->spi->dev,
-> > > +			 "Device ID(%u) and product ID(%u) do not
-> > > match.",
-> > > +			 dev_id, prod_id);
-> > > +
-> > > +	return 0;
-> > >  }
-> > > -EXPORT_SYMBOL_GPL(adis_initial_startup);
-> > > +EXPORT_SYMBOL_GPL(__adis_initial_startup);
-> > >  
-> > >  /**
-> > >   * adis_single_conversion() - Performs a single sample conversion
-> > > diff --git a/include/linux/iio/imu/adis.h
-> > > b/include/linux/iio/imu/adis.h
-> > > index d21a013d1122..c43e7922ab32 100644
-> > > --- a/include/linux/iio/imu/adis.h
-> > > +++ b/include/linux/iio/imu/adis.h
-> > > @@ -41,6 +41,7 @@ struct adis_timeout {
-> > >   * @glob_cmd_reg: Register address of the GLOB_CMD register
-> > >   * @msc_ctrl_reg: Register address of the MSC_CTRL register
-> > >   * @diag_stat_reg: Register address of the DIAG_STAT register
-> > > + * @prod_id_reg: Register address of the PROD_ID register
-> > >   * @self_test_reg: Register address to request self test command
-> > >   * @status_error_msgs: Array of error messgaes
-> > >   * @status_error_mask:
-> > > @@ -54,6 +55,7 @@ struct adis_data {
-> > >  	unsigned int glob_cmd_reg;
-> > >  	unsigned int msc_ctrl_reg;
-> > >  	unsigned int diag_stat_reg;
-> > > +	unsigned int prod_id_reg;
-> > >  
-> > >  	unsigned int self_test_mask;
-> > >  	unsigned int self_test_reg;
-> > > @@ -299,6 +301,7 @@ static inline int adis_read_reg_32(struct adis
-> > > *adis, unsigned int reg,
-> > >  
-> > >  int adis_enable_irq(struct adis *adis, bool enable);
-> > >  int __adis_check_status(struct adis *adis);
-> > > +int __adis_initial_startup(struct adis *adis);
-> > >  
-> > >  static inline int adis_check_status(struct adis *adis)
-> > >  {
-> > > @@ -311,7 +314,17 @@ static inline int adis_check_status(struct
-> > > adis *adis)
-> > >  	return ret;
-> > >  }
-> > >  
-> > > -int adis_initial_startup(struct adis *adis);
-> > > +/* locked version of __adis_initial_startup() */
-> > > +static inline int adis_initial_startup(struct adis *adis)
+> > > +};
+
+...
+
+> > > +static int adf4360_write_reg(struct adf4360_state *st, unsigned int reg,
+> > > +                        unsigned int val)
 > > > +{
-> > > +	int ret;
+> > > +   int ret;
 > > > +
-> > > +	mutex_lock(&adis->state_lock);
-> > > +	ret = __adis_initial_startup(adis);
-> > > +	mutex_unlock(&adis->state_lock);
+> > > +   val |= reg;
+
+This is dangerous. Shouldn't be some mask applied?
+
+> > > +   st->spi_data[0] = (val >> 16) & 0xff;
+> > > +   st->spi_data[1] = (val >> 8) & 0xff;
+> > > +   st->spi_data[2] = val & 0xff;
+
+All ' & 0xff' are redundant.
+
+> > > +   ret = spi_write(st->spi, st->spi_data, ARRAY_SIZE(st->spi_data));
+> > > +   if (ret == 0)
+> > > +           st->regs[reg] = val;
 > > > +
-> > > +	return ret;
+> > > +   return ret;
+
+Please, use pattern:
+  if (ret)
+    return ret;
+
+  ...
+  return 0;
+
 > > > +}
-> > >  
-> > >  int adis_single_conversion(struct iio_dev *indio_dev,
-> > >  	const struct iio_chan_spec *chan, unsigned int error_mask,  
-> > 
-> >   
-> 
+
+...
+
+> > > +static unsigned int adf4360_calc_prescaler(unsigned int pfd_freq,
+> > > +                                      unsigned int n,
+> > > +                                      unsigned int *out_p,
+> > > +                                      unsigned int *out_a,
+> > > +                                      unsigned int *out_b)
+> > > +{
+> > > +   unsigned int rate = pfd_freq * n;
+> > > +   unsigned int p, a, b;
+> > > +
+> > > +   /* Make sure divider counter input frequency is low enough */
+> > > +   p = 8;
+> > > +   while (p < 32 && rate / p > ADF4360_MAX_COUNTER_RATE)
+> > > +           p *= 2;
+> > > +
+> > > +   /*
+> > > +    * The range of dividers that can be produced using the dual-modulus
+> > > +    * pre-scaler is not continuous for values of n < p*(p-1). If we end up
+> > > +    * with a non supported divider value, pick the next closest one.
+> > > +    */
+> > > +   a = n % p;
+> > > +   b = n / p;
+
+You may avoid divisions if you use shifts.
+Currently it's a bit hard to compiler to prove that p is power of 2.
+
+> > > +   if (b < 3) {
+> > > +           b = 3;
+> > > +           a = 0;
+> > > +   } else if (a > b) {
+
+Does this guarantee p >= a?
+
+> > > +           if (a - b < p - a) {
+> > > +                   a = b;
+> > > +           } else {
+> > > +                   a = 0;
+> > > +                   b++;
+> > > +           }
+> > > +   }
+
+I guess above conditional tree can be a bit improved, although I don't
+see right now in what way.
+
+> > > +   return p * b + a;
+> > > +}
+
+...
+
+> > > +   /* ADF4360-0 to AD4370-7 have an optional by two divider */
+> > > +   if (st->part_id <= ID_ADF4360_7) {
+> > > +           if (rate < st->vco_min / 2)
+> > > +                   return st->vco_min / 2;
+> > > +           if (rate < st->vco_min && rate > st->vco_max / 2) {
+> > > +                   if (st->vco_min - rate < rate - st->vco_max / 2)
+> > > +                           return st->vco_min;
+
+> > > +                   else
+
+Redundant.
+
+> > > +                           return st->vco_max / 2;
+> > > +           }
+
+> > > +   } else {
+> > > +           if (rate < st->vco_min)
+
+} else if (...) {
+
+> > > +                   return st->vco_min;
+> > > +   }
+
+...
+
+> > > +   case ADF4360_POWER_DOWN_REGULATOR:
+> > > +           if (!st->vdd_reg)
+> > > +                   return -ENODEV;
+> > > +
+> > > +           if (st->chip_en_gpio)
+> > > +                   ret = __adf4360_power_down(st, ADF4360_POWER_DOWN_CE);
+> > > +           else
+> > > +                   ret = __adf4360_power_down(st,
+> > > +                                           ADF4360_POWER_DOWN_SOFT_ASYNC);
+
+Missed error check.
+
+> > > +
+> > > +           ret = regulator_disable(st->vdd_reg);
+> > > +           if (ret)
+> > > +                   dev_err(dev, "Supply disable error: %d\n", ret);
+> > > +           break;
+> > > +   }
+
+...
+
+> > > +   if (ret == 0)
+> > > +           st->power_down_mode = mode;
+> > > +
+> > > +   return 0;
+
+Looks like 'return ret;' but see one comment at the beginning of the letter.
+
+...
+
+> > > +static ssize_t adf4360_read(struct iio_dev *indio_dev,
+> > > +                       uintptr_t private,
+> > > +                       const struct iio_chan_spec *chan,
+> > > +                       char *buf)
+> > > +{
+> > > +   struct adf4360_state *st = iio_priv(indio_dev);
+> > > +   unsigned long val;
+
+> > > +   int ret = 0;
+
+Redundant variable.
+
+> > > +
+> > > +   switch ((u32)private) {
+> > > +   case ADF4360_FREQ_REFIN:
+> > > +           val = st->clkin_freq;
+> > > +           break;
+> > > +   case ADF4360_MTLD:
+> > > +           val = st->mtld;
+> > > +           break;
+> > > +   case ADF4360_FREQ_PFD:
+> > > +           val = st->pfd_freq;
+> > > +           break;
+> > > +   default:
+> > > +           ret = -EINVAL;
+> > > +           val = 0;
+> > > +   }
+> > > +
+> > > +   return ret < 0 ? ret : sprintf(buf, "%lu\n", val);
+> > > +}
+
+...
+
+> > > +static ssize_t adf4360_write(struct iio_dev *indio_dev,
+> > > +                        uintptr_t private,
+> > > +                        const struct iio_chan_spec *chan,
+> > > +                        const char *buf, size_t len)
+> > > +{
+> > > +   struct adf4360_state *st = iio_priv(indio_dev);
+> > > +   unsigned long readin, tmp;
+> > > +   bool mtld;
+> > > +   int ret = 0;
+> > > +
+> > > +   mutex_lock(&st->lock);
+> > > +   switch ((u32)private) {
+
+Strange casting. Why?
+
+> > > +           if ((readin > ADF4360_MAX_REFIN_RATE) || (readin == 0)) {
+
+Too many parentheses.
+
+> > > +                   ret = -EINVAL;
+> > > +                   break;
+> > > +           }
+> > > +
+> > > +           if (st->clkin) {
+> > > +                   tmp = clk_round_rate(st->clkin, readin);
+> > > +                   if (tmp != readin) {
+> > > +                           ret = -EINVAL;
+> > > +                           break;
+> > > +                   }
+> > > +
+> > > +                   ret = clk_set_rate(st->clkin, tmp);
+> > > +                   if (ret)
+> > > +                           break;
+> > A bit odd to directly provide an interface to control and entirely different
+> > bit of hardware.   If there are specific demands on the input clock as a
+> > result
+> > of something to do with the outputs, then fair enough.  Direct tweaking like
+> > this seems like a very odd interface.
+> >
+> > > +           }
+> > > +
+> > > +           st->clkin_freq = readin;
+> > > +           break;
+
+> > > +   case ADF4360_FREQ_PFD:
+> > > +           ret = kstrtoul(buf, 10, &readin);
+> > > +           if (ret)
+> > > +                   break;
+> > > +
 
 
+> > > +           if ((readin > ADF4360_MAX_PFD_RATE) || (readin == 0)) {
+
+Ditto.
+
+> > > +                   ret = -EINVAL;
+> > > +                   break;
+> > > +           }
+> > > +
+> > > +           st->pfd_freq = readin;
+> > > +           break;
+> > > +   default:
+> > > +           ret = -EINVAL;
+
+Nevertheless 'break;' is good to have even here.
+
+> > > +   }
+
+> > > +
+> > > +   if (ret == 0)
+
+Maybe this, or maybe
+
+  if (ret)
+    goto out_unlock;
+
+> > > +           ret = adf4360_set_freq(st, st->freq_req);
+> > > +   mutex_unlock(&st->lock);
+> > > +
+> > > +   return ret ? ret : len;
+> > > +}
+
+...
+
+> > > +   int ret = 0;
+
+Redundant assignment.
+
+> > > +   mutex_lock(&st->lock);
+> > > +   writeval = st->regs[ADF4360_CTRL] & ~ADF4360_ADDR_MUXOUT_MSK;
+> > > +   writeval |= ADF4360_MUXOUT(mode & 0x7);
+> > > +   ret = adf4360_write_reg(st, ADF4360_REG(ADF4360_CTRL), writeval);
+
+> > > +   if (ret == 0)
+> > > +           st->muxout_mode = mode & 0x7;
+> > > +   mutex_unlock(&st->lock);
+
+Similar comment to the return check style as above.
+
+> > > +   return ret;
+> > > +}
+
+...
+
+> > > +static const struct iio_chan_spec_ext_info adf4360_ext_info[] = {
+
+> > > +   IIO_ENUM("power_level", false, &adf4360_pwr_lvl_modes_available),
+> > > +   { },
+
+No need to have comma for terminator line.
+
+> > > +};
+
+...
+
+> > > +   struct adf4360_state *st = iio_priv(indio_dev);
+> > > +   bool lk_det;
+> > > +
+> > > +   switch (mask) {
+> > > +   case IIO_CHAN_INFO_FREQUENCY:
+> > > +           if (adf4360_is_powerdown(st))
+> > > +                   return -EBUSY;
+> > > +
+> > > +           lk_det = (ADF4360_MUXOUT_LOCK_DETECT | ADF4360_MUXOUT_OD_LD) &
+> > > +                    st->muxout_mode;
+> > > +           if (lk_det && st->muxout_gpio) {
+> > > +                   if (!gpiod_get_value(st->muxout_gpio)) {
+> > > +                           dev_dbg(&st->spi->dev, "PLL un-locked\n");
+> > > +                           return -EBUSY;
+> > > +                   }
+> > > +           }
+> > > +
+> > > +           *val = st->freq_req;
+
+> > > +           return IIO_VAL_INT;
+> > > +   default:
+> > > +           return -EINVAL;
+> > > +   }
+
+> > > +
+> > > +   return 0;
+
+How this is possible?
+
+...
+
+> > > +   default:
+> > > +           ret = -EINVAL;
+
+break;
+
+...
+
+> > > +   struct adf4360_state *st = iio_priv(indio_dev);
+
+> > > +   int ret = 0;
+
+Would be better to have this assignment...
+
+> > > +
+> > > +   if (reg >= ADF4360_REG_NUM)
+> > > +           return -EFAULT;
+> > > +
+> > > +   mutex_lock(&st->lock);
+> > > +   if (readval) {
+> > > +           *readval = st->regs[reg];
+
+...here.
+
+> > > +   } else {
+> > > +           writeval &= 0xFFFFFC;
+
+What this magic does? Make a define using GENMASK().
+
+> > > +           ret = adf4360_write_reg(st, reg, writeval);
+> > > +   }
+> > > +   mutex_unlock(&st->lock);
+> > > +
+> > > +   return ret;
+> > > +}
+
+...
+
+> > > +   /* ADF4360 PLLs are write only devices, try to probe using GPIO. */
+> > > +   for (i = 0; i < 4; i++) {
+> > > +           if (i & 1)
+> > > +                   val = ADF4360_MUXOUT(ADF4360_MUXOUT_DVDD);
+> > > +           else
+> > > +                   val = ADF4360_MUXOUT(ADF4360_MUXOUT_GND);
+> > > +
+> > > +           ret = adf4360_write_reg(st, ADF4360_REG(ADF4360_CTRL), val);
+> > > +           if (ret)
+> > > +                   return ret;
+> > > +
+> > > +           ret = gpiod_get_value(st->muxout_gpio);
+
+> > > +           if (ret ^ (i & 1)) {
+
+I guess == or != is better than ^ here.
+
+> > > +                   dev_err(dev, "Probe failed (muxout)");
+> > > +                   return -ENODEV;
+> > > +           }
+> > > +   }
+> > > +
+> > > +   return 0;
+> > > +}
+
+...
+
+> > Hmm. This makes me wonder why this is an IIO driver rather than a clk
+> > driver?  Definitely needs some more information in the patch description
+> > or a cover letter.
+
++1.
+
+...
+
+> > > +   ret = device_property_read_string(dev, "clock-output-names",
+> > > +                                     &st->clk_out_name);
+
+Your driver is OF dependent, why to bother with device property API?
+
+> > > +   if ((ret < 0) && dev->of_node)
+
+Oh, this is bad. Why do you need to check for OF node at all?!
+
+> > > +           st->clk_out_name = dev->of_node->name;
+
+...
+
+> > > +           /*
+> > > +            * ADF4360-7 to ADF4360-9 have a VCO that is tuned to a specific
+> > > +            * range using an external inductor. These properties describe
+> > > +            * the range selected by the external inductor.
+> > > +            */
+> > > +           ret = device_property_read_u32(dev,
+> > > +                                          "adi,vco-minimum-frequency-hz",
+> > > +                                          &tmp);
+> > > +           if (ret == 0)
+> > > +                   st->vco_min = max(st->info->vco_min, tmp);
+> > > +           else
+> > > +                   st->vco_min = st->info->vco_min;
+
+Why to use tmp at all?
+
+                                          &st->vco_min);
+           if (ret)
+                   st->vco_min = st->info->vco_min;
+
+           st->vco_min = max(st->info->vco_min, st->vco_min);
+
+> > > +           ret = device_property_read_u32(dev,
+> > > +                                          "adi,vco-maximum-frequency-hz",
+> > > +                                          &tmp);
+> > > +           if (ret == 0)
+> > > +                   st->vco_max = min(st->info->vco_max, tmp);
+> > > +           else
+> > > +                   st->vco_max = st->info->vco_max;
+
+Ditto.
+
+> > > +   ret = device_property_read_u32(dev,
+> > > +                                  "adi,loop-filter-pfd-frequency-hz",
+> > > +                                  &tmp);
+> > > +   if (ret == 0) {
+> > > +           st->pfd_freq = tmp;
+
+Ditto!
+
+> > > +   } else {
+> > > +           dev_err(dev, "PFD frequency property missing\n");
+> > > +           return ret;
+> > > +   }
+
+> > > +
+> > > +   ret = device_property_read_u32(dev,
+> > > +                           "adi,loop-filter-charge-pump-current-microamp",
+> > > +                           &tmp);
+> > > +   if (ret == 0) {
+> > > +           st->cpi = find_closest(tmp, adf4360_cpi_modes,
+> > > +                                  ARRAY_SIZE(adf4360_cpi_modes));
+
+Ditto!
+
+> > > +   } else {
+> > > +           dev_err(dev, "CPI property missing\n");
+> > > +           return ret;
+> > > +   }
+> > > +
+> > > +   ret = device_property_read_u32(dev, "adi,power-up-frequency-hz", &tmp);
+> > > +   if (ret == 0)
+> > > +           st->freq_req = tmp;
+> > > +   else
+> > > +           st->freq_req = st->vco_min;
+
+Ditto.
+
+> > > +   ret = device_property_read_u32(dev, "adi,power-out-level-microamp",
+> > > +                                  &tmp);
+> > > +   if (ret == 0)
+> > > +           st->power_level = find_closest(tmp, adf4360_power_lvl_microamp,
+> > > +                                   ARRAY_SIZE(adf4360_power_lvl_microamp));
+> > > +   else
+> > > +           st->power_level = ADF4360_PL_5;
+
+Ditto.
+
+...
+
+> > > +   if (spi->dev.of_node)
+> > > +           indio_dev->name = spi->dev.of_node->name;
+
+Use %pOFn instead
+
+> > > +   else
+> > > +           indio_dev->name = spi_get_device_id(spi)->name;
+
+...
+
+> > > +static const struct of_device_id adf4360_of_match[] = {
+> > > +   { .compatible = "adi,adf4360-0", },
+> > > +   { .compatible = "adi,adf4360-1", },
+> > > +   { .compatible = "adi,adf4360-2", },
+> > > +   { .compatible = "adi,adf4360-3", },
+> > > +   { .compatible = "adi,adf4360-4", },
+> > > +   { .compatible = "adi,adf4360-5", },
+> > > +   { .compatible = "adi,adf4360-6", },
+> > > +   { .compatible = "adi,adf4360-7", },
+> > > +   { .compatible = "adi,adf4360-8", },
+> > > +   { .compatible = "adi,adf4360-9", },
+
+> > > +   {},
+
+No comma here.
+
+> > > +};
+
+-- 
+With Best Regards,
+Andy Shevchenko

@@ -2,88 +2,419 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5209A151EE8
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2020 18:06:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 651E7152278
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2020 23:49:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727368AbgBDRGn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Feb 2020 12:06:43 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2364 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727347AbgBDRGn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 4 Feb 2020 12:06:43 -0500
-Received: from LHREML714-CAH.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 11EA85ECC9E3C7B82B70;
-        Tue,  4 Feb 2020 17:06:39 +0000 (GMT)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- LHREML714-CAH.china.huawei.com (10.201.108.37) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Tue, 4 Feb 2020 17:06:23 +0000
-Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 4 Feb 2020
- 17:06:23 +0000
-Date:   Tue, 4 Feb 2020 17:06:22 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dylan Howey <Dylan.Howey@tennantco.com>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: Temperature support for FXLS8471Q accelerometer
-Message-ID: <20200204170622.0000132d@Huawei.com>
-In-Reply-To: <20200204163515.GA25185@tennantco.com>
-References: <20200129193237.GA14494@tennantco.com>
-        <c19b2b3b-a1b9-352e-9abc-e52597512158@metafoo.de>
-        <20200204163515.GA25185@tennantco.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727483AbgBDWtQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Feb 2020 17:49:16 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:38099 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727461AbgBDWtQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Feb 2020 17:49:16 -0500
+Received: by mail-wr1-f66.google.com with SMTP id y17so127540wrh.5;
+        Tue, 04 Feb 2020 14:49:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Pky1KTw0cOP0kaW5F0dpGkLApwAJpQUIenp8P/1Tcy0=;
+        b=Mfl3UlRWhyxhdVn/4XmfN4SRE1Kj7vekzentGe6xt8EZDgVLrplWm2yaDD8Syi6aTq
+         DXANTdn4308CHjA90fcMughXMkxKTE4qbf4sI0owksqlXWnZOMkblzAP2h6DEIUugzE+
+         2aCDs6giDV691pQMgBeWvFUxFly8xtryAk3zXlpWMlcXmQwUoXrboast7EtArntDkt00
+         XnlexJlor28xzTEBiiAh0WXScI9K5M1qdgJUxAZaJfqGSwOwxD/qFUtTzxEKYAGhIr3K
+         T+vJGIKKC53yZQ6l8kqGitZ0Og3aJLS+lVLmY44bgNCiLwUpShHfib5xyjN3UpCAOFS4
+         f+4Q==
+X-Gm-Message-State: APjAAAVUeZ3J0ibe8ZqyGz1z/6k7LHaG/29D8lKH0LW/5NOChKioURZK
+        oKcIbg7SLqYLtTRyrzVL65ZXedVkRQ==
+X-Google-Smtp-Source: APXvYqwlZg3q6DGKQOvbIrZRDNDELgxFsQ5MvFhTKl1Tq/EtGC1P/c8QJS4RHkY2tXf/JWetSqx/6Q==
+X-Received: by 2002:adf:f847:: with SMTP id d7mr23815393wrq.35.1580856552430;
+        Tue, 04 Feb 2020 14:49:12 -0800 (PST)
+Received: from xps15.wifiportal.lan (host81-133-38-158.in-addr.btopenworld.com. [81.133.38.158])
+        by smtp.googlemail.com with ESMTPSA id g15sm24777844wro.65.2020.02.04.14.49.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Feb 2020 14:49:11 -0800 (PST)
+From:   Rob Herring <robh@kernel.org>
+To:     devicetree@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-clk@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org
+Subject: [PATCH] dt-bindings: Fix paths in schema $id fields
+Date:   Tue,  4 Feb 2020 22:49:09 +0000
+Message-Id: <20200204224909.26880-1-robh@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.57]
-X-ClientProxiedBy: lhreml726-chm.china.huawei.com (10.201.108.77) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 4 Feb 2020 10:35:17 -0600
-Dylan Howey <Dylan.Howey@tennantco.com> wrote:
+The $id path checks were inadequately checking the path part of the $id
+value. With the check fixed, there's a number of errors that need to be
+fixed. Most of the errors are including 'bindings/' in the path which
+should not be as that is considered the root.
 
-> Any accel tests I should run before submitting changes? E.g. when I sent
-> changes to RTC I ran rtc-test first.
-> 
-We don't have a formal test suite yet.  So normally just
-check the sysfs files return what you expect + if the driver
-supports it, checkout buffered mode using iio_generic_buffer
-in tools/iio
+Cc: Andy Gross <agross@kernel.org>
+Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@st.com>
+Cc: "Nuno Sá" <nuno.sa@analog.com>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Stefan Popa <stefan.popa@analog.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Hartmut Knaack <knaack.h@gmx.de>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc: Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc: Kent Gustavsson <kent@minoris.se>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: linux-clk@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+Cc: linux-input@vger.kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml                  | 2 +-
+ Documentation/devicetree/bindings/arm/qcom.yaml                 | 2 +-
+ Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.yaml | 2 +-
+ Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml      | 2 +-
+ Documentation/devicetree/bindings/clock/imx8mn-clock.yaml       | 2 +-
+ Documentation/devicetree/bindings/clock/imx8mp-clock.yaml       | 2 +-
+ Documentation/devicetree/bindings/clock/milbeaut-clock.yaml     | 2 +-
+ Documentation/devicetree/bindings/clock/qcom,dispcc.yaml        | 2 +-
+ Documentation/devicetree/bindings/clock/qcom,gcc.yaml           | 2 +-
+ Documentation/devicetree/bindings/clock/qcom,gpucc.yaml         | 2 +-
+ Documentation/devicetree/bindings/clock/qcom,mmcc.yaml          | 2 +-
+ Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml        | 2 +-
+ Documentation/devicetree/bindings/clock/qcom,videocc.yaml       | 2 +-
+ Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml    | 2 +-
+ Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml    | 2 +-
+ Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml        | 2 +-
+ Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml       | 2 +-
+ Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml       | 2 +-
+ .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml          | 2 +-
+ .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml         | 2 +-
+ Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml     | 2 +-
+ Documentation/devicetree/bindings/input/gpio-vibrator.yaml      | 2 +-
+ 22 files changed, 22 insertions(+), 22 deletions(-)
 
-Make sure it'll do buffered capture with and without temp
-(if that is supported by your patches - often temp is captured
-via a different path to other channels, so its fine if not)
-
-Jonathan
-
-> On 01/30/2020 21:35, Lars-Peter Clausen wrote:
-> > On 1/29/20 8:32 PM, Dylan Howey wrote:  
-> > > Hi all,
-> > > 
-> > > The mma8452 driver supports MMA845x, MMA865x and FXLS8471Q devices.
-> > > 
-> > > The FXLS8471Q is unique among these devices in that it has the
-> > > additional ability to measure temperature.
-> > > 
-> > > Currently there is no support in mma8452 to measure temperature when
-> > > the device is FXLS8471Q. Would anyone be opposed to me adding support?
-> > > I have hardware and would be able to test my changes.  
-> > 
-> > Hi,
-> > 
-> > Support for new devices is always welcomed :)
-> > 
-> > If you have any questions about the IIO framework let us know.
-> > 
-> > - Lars
-> >   
-> 
-
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index f79683a628f0..b0a7454a70b8 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/arm/fsl.yaml#
++$id: http://devicetree.org/schemas/arm/fsl.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Freescale i.MX Platforms Device Tree Bindings
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index e39d8f02e33c..b5bef5abc281 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/arm/qcom.yaml#
++$id: http://devicetree.org/schemas/arm/qcom.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: QCOM device tree bindings
+diff --git a/Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.yaml b/Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.yaml
+index e63827399c1a..8559fe8f7efd 100644
+--- a/Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.yaml
++++ b/Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/bitmain,bm1880-clk.yaml#
++$id: http://devicetree.org/schemas/clock/bitmain,bm1880-clk.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Bitmain BM1880 Clock Controller
+diff --git a/Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml b/Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml
+index 8fb2060ac47f..fc3bdfdc091a 100644
+--- a/Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/fsl,sai-clock.yaml#
++$id: http://devicetree.org/schemas/clock/fsl,sai-clock.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Freescale SAI bitclock-as-a-clock binding
+diff --git a/Documentation/devicetree/bindings/clock/imx8mn-clock.yaml b/Documentation/devicetree/bindings/clock/imx8mn-clock.yaml
+index 622f3658bd9f..cd0b8a341321 100644
+--- a/Documentation/devicetree/bindings/clock/imx8mn-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx8mn-clock.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/imx8mn-clock.yaml#
++$id: http://devicetree.org/schemas/clock/imx8mn-clock.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: NXP i.MX8M Nano Clock Control Module Binding
+diff --git a/Documentation/devicetree/bindings/clock/imx8mp-clock.yaml b/Documentation/devicetree/bindings/clock/imx8mp-clock.yaml
+index 80278882cf57..89aee63c9019 100644
+--- a/Documentation/devicetree/bindings/clock/imx8mp-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx8mp-clock.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/imx8mp-clock.yaml#
++$id: http://devicetree.org/schemas/clock/imx8mp-clock.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: NXP i.MX8M Plus Clock Control Module Binding
+diff --git a/Documentation/devicetree/bindings/clock/milbeaut-clock.yaml b/Documentation/devicetree/bindings/clock/milbeaut-clock.yaml
+index 5cf0b811821e..f0b804a7f096 100644
+--- a/Documentation/devicetree/bindings/clock/milbeaut-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/milbeaut-clock.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/milbeaut-clock.yaml#
++$id: http://devicetree.org/schemas/clock/milbeaut-clock.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Milbeaut SoCs Clock Controller Binding
+diff --git a/Documentation/devicetree/bindings/clock/qcom,dispcc.yaml b/Documentation/devicetree/bindings/clock/qcom,dispcc.yaml
+index 9c58e02a1de1..795fe686f3ea 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,dispcc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,dispcc.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/qcom,dispcc.yaml#
++$id: http://devicetree.org/schemas/clock/qcom,dispcc.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Qualcomm Display Clock & Reset Controller Binding
+diff --git a/Documentation/devicetree/bindings/clock/qcom,gcc.yaml b/Documentation/devicetree/bindings/clock/qcom,gcc.yaml
+index cac1150c9292..e814eec1bf8d 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,gcc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,gcc.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/qcom,gcc.yaml#
++$id: http://devicetree.org/schemas/clock/qcom,gcc.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Qualcomm Global Clock & Reset Controller Binding
+diff --git a/Documentation/devicetree/bindings/clock/qcom,gpucc.yaml b/Documentation/devicetree/bindings/clock/qcom,gpucc.yaml
+index 622845aa643f..679e7fe0fa83 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,gpucc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,gpucc.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/qcom,gpucc.yaml#
++$id: http://devicetree.org/schemas/clock/qcom,gpucc.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Qualcomm Graphics Clock & Reset Controller Binding
+diff --git a/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml b/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml
+index 91101c915904..85518494ce43 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/qcom,mmcc.yaml#
++$id: http://devicetree.org/schemas/clock/qcom,mmcc.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Qualcomm Multimedia Clock & Reset Controller Binding
+diff --git a/Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml b/Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml
+index 94e2f14eb967..2cd158f13bab 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/qcom,rpmhcc.yaml#
++$id: http://devicetree.org/schemas/clock/qcom,rpmhcc.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Qualcomm Technologies, Inc. RPMh Clocks Bindings
+diff --git a/Documentation/devicetree/bindings/clock/qcom,videocc.yaml b/Documentation/devicetree/bindings/clock/qcom,videocc.yaml
+index 43cfc893a8d1..2946b240e161 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,videocc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,videocc.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/qcom,videocc.yaml#
++$id: http://devicetree.org/schemas/clock/qcom,videocc.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Qualcomm Video Clock & Reset Controller Binding
+diff --git a/Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml b/Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml
+index b8f91e444d2f..4e385508f516 100644
+--- a/Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml
++++ b/Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/st,stm32mp1-rcc.yaml#
++$id: http://devicetree.org/schemas/clock/st,stm32mp1-rcc.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Reset Clock Controller Binding
+diff --git a/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml b/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml
+index f1150cad34a4..229af98b1d30 100644
+--- a/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml
++++ b/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/clock/xlnx,versal-clk.yaml#
++$id: http://devicetree.org/schemas/clock/xlnx,versal-clk.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Xilinx Versal clock controller
+diff --git a/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml b/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
+index ae04903f34bf..6a742a51e2f9 100644
+--- a/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
++++ b/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/hwmon/adi,ltc2947.yaml#
++$id: http://devicetree.org/schemas/hwmon/adi,ltc2947.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Analog Devices LTC2947 high precision power and energy monitor
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+index e932d5aed02f..f0934b295edc 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+@@ -2,7 +2,7 @@
+ # Copyright 2019 Analog Devices Inc.
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/iio/adc/adi,ad7124.yaml#
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7124.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Analog Devices AD7124 ADC device driver
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+index 567a33a83dce..84d25bd39488 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+@@ -2,7 +2,7 @@
+ # Copyright 2019 Analog Devices Inc.
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/iio/adc/adi,ad7192.yaml#
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7192.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Analog Devices AD7192 ADC device driver
+diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+index 881059b80d61..0ce290473fb0 100644
+--- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+@@ -2,7 +2,7 @@
+ # Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/bindings/iio/adc/microchip,mcp3911.yaml#"
++$id: "http://devicetree.org/schemas/iio/adc/microchip,mcp3911.yaml#"
+ $schema: "http://devicetree.org/meta-schemas/core.yaml#"
+ 
+ title: Microchip MCP3911 Dual channel analog front end (ADC)
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+index c91407081aa5..acf36eef728b 100644
+--- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/st,stm32-dfsdm-adc.yaml#
++$id: http://devicetree.org/schemas/iio/adc/st,stm32-dfsdm-adc.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: STMicroelectronics STM32 DFSDM ADC device driver
+diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+index 13d005b68931..a285eaba7125 100644
+--- a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+@@ -2,7 +2,7 @@
+ # Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/bindings/iio/dac/lltc,ltc1660.yaml#"
++$id: "http://devicetree.org/schemas/iio/dac/lltc,ltc1660.yaml#"
+ $schema: "http://devicetree.org/meta-schemas/core.yaml#"
+ 
+ title: Linear Technology Micropower octal 8-Bit and 10-Bit DACs
+diff --git a/Documentation/devicetree/bindings/input/gpio-vibrator.yaml b/Documentation/devicetree/bindings/input/gpio-vibrator.yaml
+index 903475f52dbd..b98bf9363c8f 100644
+--- a/Documentation/devicetree/bindings/input/gpio-vibrator.yaml
++++ b/Documentation/devicetree/bindings/input/gpio-vibrator.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/bindings/input/gpio-vibrator.yaml#
++$id: http://devicetree.org/schemas/input/gpio-vibrator.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: GPIO vibrator
+-- 
+2.20.1
 

@@ -2,198 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF0E41528F9
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2020 11:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD8DD152966
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2020 11:49:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727458AbgBEKRH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Feb 2020 05:17:07 -0500
-Received: from hosting.pavoucek.net ([46.28.107.168]:34116 "EHLO
-        hosting.pavoucek.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727468AbgBEKRH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Feb 2020 05:17:07 -0500
-Received: from 176-74-132-138.netdatacomm.cz (176-74-132-138.netdatacomm.cz [176.74.132.138])
-        (Authenticated sender: tomas@novotny.cz)
-        by hosting.pavoucek.net (Postfix) with ESMTPSA id 66A6B1048E1;
-        Wed,  5 Feb 2020 11:17:05 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 hosting.pavoucek.net 66A6B1048E1
-From:   Tomas Novotny <tomas@novotny.cz>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Angus Ainslie <angus@akkea.ca>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
-        Tomas Novotny <tomas@novotny.cz>
-Subject: [PATCH 5/5] iio: light: vcnl4000: add control of multi pulse
-Date:   Wed,  5 Feb 2020 11:16:55 +0100
-Message-Id: <20200205101655.11728-6-tomas@novotny.cz>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20200205101655.11728-1-tomas@novotny.cz>
-References: <20200205101655.11728-1-tomas@novotny.cz>
+        id S1728142AbgBEKtO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Feb 2020 05:49:14 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:35216 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727234AbgBEKtO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Feb 2020 05:49:14 -0500
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 015AhQR8020225;
+        Wed, 5 Feb 2020 11:49:00 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=6nWcubbJcTb/v+QZhKnKIkzKmQoSurHo8oVRf6+XpXM=;
+ b=Qb8a2pvCcgCQuiIgxFMQg/GM0mYu42OhVkYpk+kJ9oAK375nqc9s/bEWmWWc1FjkFAya
+ 07HCqeHO1cy6Pc3xEpcA6AaAjSudozxw8SIy2bgOhDRE0cIQj9acVWNe308+8v8QFKqs
+ fhOgJspOss2TXypsftkrlEMThuIAnkVZZ+PjpEWLwVpQ9olqO+zHemwgg8lv094p4Eym
+ hwWQtQUthYd22CVkbl/3a6YE0Q3ZjY+2AupiCxF6J16arW2N2BtV6FVgyNTPJ0+aF4v6
+ dTqtNfjZWAlM8oujpXKuUzFDv20zio0jC8G0I5J95rlNzlMKr3Iqh4fFWkB9Dorf8tOU 1Q== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2xyhkycp4e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 05 Feb 2020 11:49:00 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 57DD310002A;
+        Wed,  5 Feb 2020 11:48:53 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4A8522AD9FA;
+        Wed,  5 Feb 2020 11:48:53 +0100 (CET)
+Received: from localhost (10.75.127.47) by SFHDAG5NODE3.st.com (10.75.127.15)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 5 Feb 2020 11:48:52
+ +0100
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+To:     <vilhelm.gray@gmail.com>, <jic23@kernel.org>
+CC:     <alexandre.torgue@st.com>, <mcoquelin.stm32@gmail.com>,
+        <benjamin.gaignard@st.com>, <fabrice.gasnier@st.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] counter: stm32-timer-cnt: add power management support
+Date:   Wed, 5 Feb 2020 11:47:58 +0100
+Message-ID: <1580899678-26393-1-git-send-email-fabrice.gasnier@st.com>
+X-Mailer: git-send-email 2.7.4
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.47]
+X-ClientProxiedBy: SFHDAG1NODE3.st.com (10.75.127.3) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-05_03:2020-02-04,2020-02-05 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Multi pulse settings allow to emit more pulses during one measurement
-(up to 8 on vcnl4040 and vcnl4200). The raw reading is approximately
-multiplied by the multi pulse settings. More information is available in
-the added documentation.
+Add suspend/resume PM sleep ops. When going to low power, enforce the
+counter isn't active.
 
-Multi pulse is specific only for proximity sensor. Only the vcnl4040 and
-vcnl4200 hardware supports this settings.
-
-Signed-off-by: Tomas Novotny <tomas@novotny.cz>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
 ---
- Documentation/ABI/testing/sysfs-bus-iio-vcnl4000 | 21 +++++++++
- drivers/iio/light/vcnl4000.c                     | 60 ++++++++++++++++++++++++
- 2 files changed, 81 insertions(+)
+ drivers/counter/stm32-timer-cnt.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-vcnl4000 b/Documentation/ABI/testing/sysfs-bus-iio-vcnl4000
-index 4860f409dbf0..923a78dc9869 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio-vcnl4000
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-vcnl4000
-@@ -16,3 +16,24 @@ KernelVersion:	5.7
- Contact:	linux-iio@vger.kernel.org
- Description:
- 		The on/off available duty ratios.
+diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+index 3eafcce..3b84503 100644
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -12,6 +12,7 @@
+ #include <linux/iio/types.h>
+ #include <linux/mfd/stm32-timers.h>
+ #include <linux/module.h>
++#include <linux/pinctrl/consumer.h>
+ #include <linux/platform_device.h>
+ 
+ #define TIM_CCMR_CCXS	(BIT(8) | BIT(0))
+@@ -358,10 +359,33 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
+ 	priv->counter.num_signals = ARRAY_SIZE(stm32_signals);
+ 	priv->counter.priv = priv;
+ 
++	platform_set_drvdata(pdev, priv);
 +
-+What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_multi_pulse
-+Date:		February 2020
-+KernelVersion:	5.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Instead of one single pulse per every measurement, more pulses
-+		may be programmed. This leads to a longer led current on-time
-+		for each proximity measurement, which also results in a higher
-+		detection range. The raw reading is approximately multiplied by
-+		the multi pulse settings. The duty ration is not changed. The
-+		settings cannot be changed when the proximity channel is
-+		enabled.  Valid values are in the respective '_available'
-+		attribute.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_multi_pulse_available
-+Date:		February 2020
-+KernelVersion:	5.7
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		List of multi pulse values.
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index a8c2ce1056a6..cc75e5e7e634 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -46,6 +46,7 @@
+ 	/* Register Counter device */
+ 	return devm_counter_register(dev, &priv->counter);
+ }
  
- #define VCNL4200_AL_CONF	0x00 /* Ambient light configuration */
- #define VCNL4200_PS_CONF1	0x03 /* Proximity configuration */
-+#define VCNL4200_PS_CONF3	0x04 /* Proximity conf., white channel, LED I */
- #define VCNL4200_PS_DATA	0x08 /* Proximity data */
- #define VCNL4200_AL_DATA	0x09 /* Ambient light data */
- #define VCNL4200_DEV_ID		0x0e /* Device ID, slave address and version */
-@@ -65,6 +66,8 @@
- #define VCNL4200_PS_DUTY_MASK	GENMASK(7, 6) /* Proximity duty ratio */
- #define VCNL4200_PS_DUTY_SHIFT	6
- #define VCNL4200_PS_SD		BIT(0) /* Proximity shutdown */
-+#define VCNL4200_PS_MPS_MASK	GENMASK(6, 5)
-+#define VCNL4200_PS_MPS_SHIFT	5
- 
- enum vcnl4000_device_ids {
- 	VCNL4000,
-@@ -223,11 +226,24 @@ static const char * const vcnl4200_ps_duty_ratio_items[] = {
- 	"1/1280"
- };
- 
-+/* Values are directly mapped to register values. */
-+static const char * const vcnl4200_ps_multi_pulse_items[] = {
-+	"1",
-+	"2",
-+	"4",
-+	"8"
-+};
-+
- static int vcnl4200_get_ps_duty_ratio(struct iio_dev *indio_dev,
- 				      const struct iio_chan_spec *chan);
- static int vcnl4200_set_ps_duty_ratio(struct iio_dev *indio_dev,
- 				      const struct iio_chan_spec *chan,
- 				      unsigned int mode);
-+static int vcnl4200_get_ps_multi_pulse(struct iio_dev *indio_dev,
-+				       const struct iio_chan_spec *chan);
-+static int vcnl4200_set_ps_multi_pulse(struct iio_dev *indio_dev,
-+				       const struct iio_chan_spec *chan,
-+				       unsigned int mode);
- 
- static const struct iio_enum vcnl4040_ps_duty_ratio_enum = {
- 	.items = vcnl4040_ps_duty_ratio_items,
-@@ -243,15 +259,26 @@ static const struct iio_enum vcnl4200_ps_duty_ratio_enum = {
- 	.set = vcnl4200_set_ps_duty_ratio,
- };
- 
-+static const struct iio_enum vcnl4200_ps_multi_pulse_enum = {
-+	.items = vcnl4200_ps_multi_pulse_items,
-+	.num_items = ARRAY_SIZE(vcnl4200_ps_multi_pulse_items),
-+	.get = vcnl4200_get_ps_multi_pulse,
-+	.set = vcnl4200_set_ps_multi_pulse,
-+};
-+
- static const struct iio_chan_spec_ext_info vcnl4040_ps_ext_info[] = {
- 	IIO_ENUM("duty_ratio", IIO_SEPARATE, &vcnl4040_ps_duty_ratio_enum),
- 	IIO_ENUM_AVAILABLE("duty_ratio", &vcnl4040_ps_duty_ratio_enum),
-+	IIO_ENUM("multi_pulse", IIO_SEPARATE, &vcnl4200_ps_multi_pulse_enum),
-+	IIO_ENUM_AVAILABLE("multi_pulse", &vcnl4200_ps_multi_pulse_enum),
- 	{ },
- };
- 
- static const struct iio_chan_spec_ext_info vcnl4200_ps_ext_info[] = {
- 	IIO_ENUM("duty_ratio", IIO_SEPARATE, &vcnl4200_ps_duty_ratio_enum),
- 	IIO_ENUM_AVAILABLE("duty_ratio", &vcnl4200_ps_duty_ratio_enum),
-+	IIO_ENUM("multi_pulse", IIO_SEPARATE, &vcnl4200_ps_multi_pulse_enum),
-+	IIO_ENUM_AVAILABLE("multi_pulse", &vcnl4200_ps_multi_pulse_enum),
- 	{ },
- };
- 
-@@ -638,6 +665,39 @@ static int vcnl4200_set_ps_duty_ratio(struct iio_dev *indio_dev,
- 	return vcnl4200_set_samp_rate(data, IIO_PROXIMITY);
- };
- 
-+static int vcnl4200_get_ps_multi_pulse(struct iio_dev *indio_dev,
-+				       const struct iio_chan_spec *chan)
++static int __maybe_unused stm32_timer_cnt_suspend(struct device *dev)
 +{
-+	int ret;
-+	unsigned int val;
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
++	struct stm32_timer_cnt *priv = dev_get_drvdata(dev);
++	u32 cr1;
 +
-+	ret = regmap_read(data->regmap, VCNL4200_PS_CONF3, &val);
-+	if (ret < 0)
-+		return ret;
++	/* Check for active counter */
++	regmap_read(priv->regmap, TIM_CR1, &cr1);
++	if (cr1 & TIM_CR1_CEN)
++		return -EBUSY;
 +
-+	val &= VCNL4200_PS_MPS_MASK;
-+	val >>= VCNL4200_PS_MPS_SHIFT;
++	return pinctrl_pm_select_sleep_state(dev);
++}
 +
-+	return val;
-+};
-+
-+static int vcnl4200_set_ps_multi_pulse(struct iio_dev *indio_dev,
-+				       const struct iio_chan_spec *chan,
-+				       unsigned int mode)
++static int __maybe_unused stm32_timer_cnt_resume(struct device *dev)
 +{
-+	int ret;
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
++	return pinctrl_pm_select_default_state(dev);
++}
 +
-+	ret = vcnl4200_check_enabled(data, IIO_PROXIMITY);
-+	if (ret < 0)
-+		return ret;
++static SIMPLE_DEV_PM_OPS(stm32_timer_cnt_pm_ops, stm32_timer_cnt_suspend,
++			 stm32_timer_cnt_resume);
 +
-+	return regmap_update_bits(data->regmap, VCNL4200_PS_CONF3,
-+				  VCNL4200_PS_MPS_MASK,
-+				  mode << VCNL4200_PS_MPS_SHIFT);
-+};
-+
- static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
- 	[VCNL4000] = {
- 		.prod = "VCNL4000",
+ static const struct of_device_id stm32_timer_cnt_of_match[] = {
+ 	{ .compatible = "st,stm32-timer-counter", },
+ 	{},
+@@ -373,6 +397,7 @@ static struct platform_driver stm32_timer_cnt_driver = {
+ 	.driver = {
+ 		.name = "stm32-timer-counter",
+ 		.of_match_table = stm32_timer_cnt_of_match,
++		.pm = &stm32_timer_cnt_pm_ops,
+ 	},
+ };
+ module_platform_driver(stm32_timer_cnt_driver);
 -- 
-2.16.4
+2.7.4
 

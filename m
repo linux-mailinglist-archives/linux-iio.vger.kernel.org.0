@@ -2,54 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0C39153087
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2020 13:25:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 601B715338F
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2020 15:59:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727367AbgBEMZw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Feb 2020 07:25:52 -0500
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:19884 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726809AbgBEMZw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Feb 2020 07:25:52 -0500
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 015CEpco016658;
-        Wed, 5 Feb 2020 07:25:43 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2xyhmk1kf4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 05 Feb 2020 07:25:43 -0500
-Received: from m0167090.ppops.net (m0167090.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 015CPg6j028048;
-        Wed, 5 Feb 2020 07:25:42 -0500
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2044.outbound.protection.outlook.com [104.47.66.44])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2xyhmk1kf2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 05 Feb 2020 07:25:42 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ikZV7sZH8S9jyh9j4U44lAlL1XRwUEpNo9UFrB4nsfwZKTfA9589y0DUZ/Rs9gpPEauZKwrnesHELcpnFxLm5/e9Sr0IKL5Hee+cJ9cyl/wzg1fJNo6ecj+JLtrfcMUCabKc0y2iSH3tLWanLZ0Y7qgqGhTHkpQCkTLBsAMuW6Ssi55m1sba179crDIYbLIq1n2Fvi7NWy8sPdWyt6MkuGOXiduHuIvrxPmBR5FAmwb3yD7pt+kbsf3Z/JI5knNwOM9tcJyM2cXMlWZdFv68L/MFzSKhoJS05z5GO9ilW1ogCgVyxizSgQyx3l/Tq+00+76EOvWeJbJoaBx/ubQ2Yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mBsnIV7QFZmZHeKEi6AoDYTsXI8rb1PF6S8FNx/ot+U=;
- b=Wpi7N66rMUocC0WDxT5Pl8DR9o3xqkf93f0fAAmbWvPQib/qg6eHSeEllb+E8cleSzhukIlGUaiAnS5O5BF7YxcFbjTeHT+DIbVoU6jgyrSJ4YZN+ee4k2W9z71AYfB5F9As/a/UhBxDvz6eS2LzrIre7ECg2qGJa09JSCnJeaUP+ZMyYZ3b1jqfiQ8sjElpgas476nvK111akRtZa1DlHVdWIyfov3d3o7kdk7xrulzjz9o1XM48rEigDZ8SjMZxSAyuyhLgecp0pz3PVy4QcSMa1DnaIdCjzjkBZFPCk6eXZ+S+X3cJSXxWMwtBNXEBs+tBnNEEmK/PmccoFabaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mBsnIV7QFZmZHeKEi6AoDYTsXI8rb1PF6S8FNx/ot+U=;
- b=uYy7g5UVdIrR8Y+VToVuc7lZrmRZZmquLjQrqkbuFuXvjtFDTYSfmrPDjnRWExwLsCANA0Gkya/rlZwq66i3F9c3dgTSzgFgaBRlqdLwn99E/61YOKttsqImN0wcQsVmkZ+88ZygULd22HJKJ1/8JlIFJTIqLUoRooPY41FUBv0=
-Received: from BN6PR03MB3347.namprd03.prod.outlook.com (10.174.94.163) by
- BN6PR03MB2497.namprd03.prod.outlook.com (10.168.223.14) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2686.29; Wed, 5 Feb 2020 12:25:40 +0000
-Received: from BN6PR03MB3347.namprd03.prod.outlook.com
- ([fe80::80b6:bfbd:9b6d:710a]) by BN6PR03MB3347.namprd03.prod.outlook.com
- ([fe80::80b6:bfbd:9b6d:710a%4]) with mapi id 15.20.2707.020; Wed, 5 Feb 2020
- 12:25:40 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>
+        id S1727170AbgBEO7n convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 5 Feb 2020 09:59:43 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2376 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726046AbgBEO7n (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 5 Feb 2020 09:59:43 -0500
+Received: from lhreml702-cah.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 6217756200216D6E71B6;
+        Wed,  5 Feb 2020 14:59:41 +0000 (GMT)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ lhreml702-cah.china.huawei.com (10.201.108.43) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Wed, 5 Feb 2020 14:59:41 +0000
+Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Wed, 5 Feb 2020
+ 14:59:40 +0000
+Date:   Wed, 5 Feb 2020 14:59:38 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
 CC:     "jic23@kernel.org" <jic23@kernel.org>,
         "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -57,237 +31,349 @@ CC:     "jic23@kernel.org" <jic23@kernel.org>,
         "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
         "Bogdan, Dragos" <Dragos.Bogdan@analog.com>
 Subject: Re: [PATCH 2/4] iio: imu: adis: Refactor adis_initial_startup
-Thread-Topic: [PATCH 2/4] iio: imu: adis: Refactor adis_initial_startup
-Thread-Index: AQHVz5zhi5MQxf7Rb0ibWVMdXw5B+KgGpUSAgAKk8ACAACqBAIADKw4A
-Date:   Wed, 5 Feb 2020 12:25:40 +0000
-Message-ID: <182c1f94c7311580aea1b4cabe0ab2ae26bed3a6.camel@analog.com>
+Message-ID: <20200205145938.00006a35@Huawei.com>
+In-Reply-To: <182c1f94c7311580aea1b4cabe0ab2ae26bed3a6.camel@analog.com>
 References: <20200120142051.28533-1-alexandru.ardelean@analog.com>
-         <20200120142051.28533-2-alexandru.ardelean@analog.com>
-         <20200201170839.4ab98d8e@archlinux>
-         <da82db5f81e116c7ecc36f5d9833b90b4f7cd15d.camel@gmail.com>
-         <20200203120338.000044c1@Huawei.com>
-In-Reply-To: <20200203120338.000044c1@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [137.71.226.54]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 9ec1c26a-9b9f-4716-7d4d-08d7aa368382
-x-ms-traffictypediagnostic: BN6PR03MB2497:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BN6PR03MB2497C7F398F277BBDC18954799020@BN6PR03MB2497.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 0304E36CA3
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(39860400002)(136003)(346002)(376002)(366004)(189003)(199004)(26005)(186003)(2906002)(76116006)(6506007)(2616005)(54906003)(36756003)(4326008)(71200400001)(316002)(5660300002)(66946007)(478600001)(107886003)(81166006)(81156014)(64756008)(66556008)(6512007)(6486002)(86362001)(8676002)(6916009)(66476007)(66446008)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR03MB2497;H:BN6PR03MB3347.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: mXg98WC1kTV37E5lZTaaiwyxGkCSXpR+GpLpiKBdawv0p3ck0bbQDwKjxnKdEBdjtH6IlHCrQfN/l/YkB2FyxbKCK9YWdYpGJJgofxcNe/jaJXyeCBZm6vol0G3hTv8AOT7K/XpQOmKRJS/2M0eCyL7qvR2JdOxtYDukt8fTgxTBzO+YJMZOl2xSwg4pwWqaaHNRFV9zkkfg2njzHCErhInuWI59mtN6ziUPWgtaHWGPacFqGpQUQhnXNIH//dIWu+D4tmXP5WS/fHEzNL9fxSQafJitSrx+rGVpjr7alV9wDzlcD3QxCWVuASHQ/YIYcjO0JCiiz4AWc7i5tkFycT1EzZoJnrqE13vpSo38Cje0KzXEdN4ZEiwx3v6ZmexFYS5scan8N0a6r3u+hzNDqx/A54v2FWb8wm5TcDDKkZ8Pbg4ZPuPV3kXaxMnmhMkt
-x-ms-exchange-antispam-messagedata: Fe5ysgpgnqAS/qHGiJOAPRtGgOLBjezhY/JqSSaIlxoxWd1zDPy8/n2xaavhd8fEZyxgumejoZw66UopmdS55sR7jqKK0aKDiMT7OAltIf1HlsTyYOLrPtpOBuKx44v5Y+Ty74E5v4kq8NVlHb1hcA==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4782D7BB70949F42A7468B0B317FA773@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        <20200120142051.28533-2-alexandru.ardelean@analog.com>
+        <20200201170839.4ab98d8e@archlinux>
+        <da82db5f81e116c7ecc36f5d9833b90b4f7cd15d.camel@gmail.com>
+        <20200203120338.000044c1@Huawei.com>
+        <182c1f94c7311580aea1b4cabe0ab2ae26bed3a6.camel@analog.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ec1c26a-9b9f-4716-7d4d-08d7aa368382
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Feb 2020 12:25:40.6917
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: efHFtb316QNwiqoNR4AYNbBRoMWUfiFCMnx75fPBlEHavNzqy75iKNGQiC4w4/2y9NDYvPuaGYnY99OfH5XYtg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR03MB2497
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-05_03:2020-02-04,2020-02-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 adultscore=0
- mlxscore=0 bulkscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002050100
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.57]
+X-ClientProxiedBy: lhreml712-chm.china.huawei.com (10.201.108.63) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gTW9uLCAyMDIwLTAyLTAzIGF0IDEyOjAzICswMDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
-Og0KPiANCj4gT24gTW9uLCAzIEZlYiAyMDIwIDEwOjMxOjMwICswMTAwDQo+IE51bm8gU8OhIDxu
-b25hbWUubnVub0BnbWFpbC5jb20+IHdyb3RlOg0KPiANCj4gPiBIaSBKb25hdGhhbiwNCj4gPiAN
-Cj4gPiANCj4gPiBPbiBTYXQsIDIwMjAtMDItMDEgYXQgMTc6MDggKzAwMDAsIEpvbmF0aGFuIENh
-bWVyb24gd3JvdGU6DQo+ID4gPiBPbiBNb24sIDIwIEphbiAyMDIwIDE2OjIwOjQ5ICswMjAwDQo+
-ID4gPiBBbGV4YW5kcnUgQXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPiB3
-cm90ZToNCj4gPiA+ICAgDQo+ID4gPiA+IEZyb206IE51bm8gU8OhIDxudW5vLnNhQGFuYWxvZy5j
-b20+DQo+ID4gPiA+IA0KPiA+ID4gPiBBbGwgdGhlIEFESVMgZGV2aWNlcyBwZXJmb3JtLCBhdCB0
-aGUgYmVnaW5uaW5nLCBhIHNlbGYgdGVzdCB0bw0KPiA+ID4gPiBtYWtlDQo+ID4gPiA+IHN1cmUN
-Cj4gPiA+ID4gdGhlIGRldmljZSBpcyBpbiBhIHNhbmUgc3RhdGUuIEZ1cnRoZXJtb3JlLCBzb21l
-IGRyaXZlcnMgYWxzbw0KPiA+ID4gPiBkbyBhDQo+ID4gPiA+IGNhbGwNCj4gPiA+ID4gdG8gYGFk
-aXNfcmVzZXQoKWAgYmVmb3JlIHRoZSB0ZXN0IHdoaWNoIGlzIGFsc28gYSBnb29kDQo+ID4gPiA+
-IHByYWN0aWNlLg0KPiA+ID4gPiBUaGlzDQo+ID4gPiA+IHBhdGNoIHVuaWZpZXMgYWxsIHRob3Nl
-IG9wZXJhdGlvbiBzbyB0aGF0LCB0aGVyZSdzIG5vIG5lZWQgZm9yDQo+ID4gPiA+IGNvZGUNCj4g
-PiA+ID4gZHVwbGljYXRpb24uIEZ1cnRoZXJtb3JlLCB0aGUgcnN0IHBpbiBpcyBhbHNvIGNoZWNr
-ZWQgdG8gbWFrZQ0KPiA+ID4gPiBzdXJlDQo+ID4gPiA+IHRoZQ0KPiA+ID4gPiBkZXZpY2UgaXMg
-bm90IGluIEhXIHJlc2V0LiBPbiB0b3Agb2YgdGhpcywgc29tZSBkcml2ZXJzIGFsc28NCj4gPiA+
-ID4gcmVhZA0KPiA+ID4gPiB0aGUNCj4gPiA+ID4gZGV2aWNlIHByb2R1Y3QgaWQgYW5kIGNvbXBh
-cmUgaXQgd2l0aCB0aGUgZGV2aWNlIGJlaW5nIHByb2JlZA0KPiA+ID4gPiB0bw0KPiA+ID4gPiBt
-YWtlDQo+ID4gPiA+IHN1cmUgdGhlIGNvcnJlY3QgZGV2aWNlIGlzIGJlaW5nIGhhbmRsZWQuIFRo
-aXMgY2FuIGFsc28gYmUNCj4gPiA+ID4gcGFzc2VkDQo+ID4gPiA+IHRvIHRoZQ0KPiA+ID4gPiBs
-aWJyYXJ5IGJ5IGludHJvZHVjaW5nIGEgdmFyaWFibGUgaG9sZGluZyB0aGUgUFJPRF9JRCByZWdp
-c3Rlcg0KPiA+ID4gPiBvZg0KPiA+ID4gPiB0aGUNCj4gPiA+ID4gZGV2aWNlLg0KPiA+ID4gPiAN
-Cj4gPiA+ID4gU2lnbmVkLW9mZi1ieTogTnVubyBTw6EgPG51bm8uc2FAYW5hbG9nLmNvbT4NCj4g
-PiA+ID4gU2lnbmVkLW9mZi1ieTogQWxleGFuZHJ1IEFyZGVsZWFuIDwNCj4gPiA+ID4gYWxleGFu
-ZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+DQo+ID4gPiA+IC0tLQ0KPiA+ID4gPiAgZHJpdmVycy9p
-aW8vaW11L0tjb25maWcgICAgICB8ICAxICsNCj4gPiA+ID4gIGRyaXZlcnMvaWlvL2ltdS9hZGlz
-LmMgICAgICAgfCA2MyArKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiA+ID4gPiAtLS0tDQo+
-ID4gPiA+IC0tLS0tLQ0KPiA+ID4gPiAgaW5jbHVkZS9saW51eC9paW8vaW11L2FkaXMuaCB8IDE1
-ICsrKysrKysrLQ0KPiA+ID4gPiAgMyBmaWxlcyBjaGFuZ2VkLCA2MSBpbnNlcnRpb25zKCspLCAx
-OCBkZWxldGlvbnMoLSkNCj4gPiA+ID4gDQo+ID4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lp
-by9pbXUvS2NvbmZpZyBiL2RyaXZlcnMvaWlvL2ltdS9LY29uZmlnDQo+ID4gPiA+IGluZGV4IDYw
-YmIxMDI5ZTc1OS4uNjMwMzZjZjQ3M2M3IDEwMDY0NA0KPiA+ID4gPiAtLS0gYS9kcml2ZXJzL2lp
-by9pbXUvS2NvbmZpZw0KPiA+ID4gPiArKysgYi9kcml2ZXJzL2lpby9pbXUvS2NvbmZpZw0KPiA+
-ID4gPiBAQCAtODUsNiArODUsNyBAQCBlbmRtZW51DQo+ID4gPiA+ICANCj4gPiA+ID4gIGNvbmZp
-ZyBJSU9fQURJU19MSUINCj4gPiA+ID4gIAl0cmlzdGF0ZQ0KPiA+ID4gPiArCWRlcGVuZHMgb24g
-R1BJT0xJQg0KPiA+ID4gPiAgCWhlbHANCj4gPiA+ID4gIAkgIEEgc2V0IG9mIElPIGhlbHBlciBm
-dW5jdGlvbnMgZm9yIHRoZSBBbmFsb2cgRGV2aWNlcw0KPiA+ID4gPiBBRElTKg0KPiA+ID4gPiBk
-ZXZpY2UgZmFtaWx5Lg0KPiA+ID4gPiAgDQo+ID4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lp
-by9pbXUvYWRpcy5jIGIvZHJpdmVycy9paW8vaW11L2FkaXMuYw0KPiA+ID4gPiBpbmRleCBkMDJi
-MTkxMWIwZjIuLjFlY2E1MjcxMzgwZSAxMDA2NDQNCj4gPiA+ID4gLS0tIGEvZHJpdmVycy9paW8v
-aW11L2FkaXMuYw0KPiA+ID4gPiArKysgYi9kcml2ZXJzL2lpby9pbXUvYWRpcy5jDQo+ID4gPiA+
-IEBAIC03LDYgKzcsNyBAQA0KPiA+ID4gPiAgICovDQo+ID4gPiA+ICANCj4gPiA+ID4gICNpbmNs
-dWRlIDxsaW51eC9kZWxheS5oPg0KPiA+ID4gPiArI2luY2x1ZGUgPGxpbnV4L2dwaW8vY29uc3Vt
-ZXIuaD4NCj4gPiA+ID4gICNpbmNsdWRlIDxsaW51eC9tdXRleC5oPg0KPiA+ID4gPiAgI2luY2x1
-ZGUgPGxpbnV4L2RldmljZS5oPg0KPiA+ID4gPiAgI2luY2x1ZGUgPGxpbnV4L2tlcm5lbC5oPg0K
-PiA+ID4gPiBAQCAtMzY1LDM2ICszNjYsNjQgQEAgc3RhdGljIGludCBhZGlzX3NlbGZfdGVzdChz
-dHJ1Y3QgYWRpcw0KPiA+ID4gPiAqYWRpcykNCj4gPiA+ID4gIH0NCj4gPiA+ID4gIA0KPiA+ID4g
-PiAgLyoqDQo+ID4gPiA+IC0gKiBhZGlzX2luaXRhbF9zdGFydHVwKCkgLSBQZXJmb3JtcyBkZXZp
-Y2Ugc2VsZi10ZXN0DQo+ID4gPiA+ICsgKiBfX2FkaXNfaW5pdGlhbF9zdGFydHVwKCkgLSBEZXZp
-Y2UgaW5pdGlhbCBzZXR1cA0KPiA+ID4gPiAgICogQGFkaXM6IFRoZSBhZGlzIGRldmljZQ0KPiA+
-ID4gPiAgICoNCj4gPiA+ID4gKyAqIFRoaXMgZnVuY3Rpb25zIG1ha2VzIHN1cmUgdGhlIGRldmlj
-ZSBpcyBub3QgaW4gcmVzZXQsIHZpYQ0KPiA+ID4gPiByc3QNCj4gPiA+ID4gcGluLg0KPiA+ID4g
-PiArICogRnVydGhlcm1vcmUgaXQgcGVyZm9ybXMgYSBTVyByZXNldCAob25seSBpbiB0aGUgY2Fz
-ZSB3ZSBhcmUNCj4gPiA+ID4gbm90DQo+ID4gPiA+IGNvbWluZyBmcm9tDQo+ID4gPiA+ICsgKiBy
-ZXNldCBhbHJlYWR5KSBhbmQgYSBzZWxmIHRlc3QuIEl0IGFsc28gY29tcGFyZXMgdGhlDQo+ID4g
-PiA+IHByb2R1Y3QgaWQNCj4gPiA+ID4gd2l0aCB0aGUNCj4gPiA+ID4gKyAqIGRldmljZSBpZCBp
-ZiB0aGUgcHJvZF9pZF9yZWcgdmFyaWFibGUgaXMgc2V0Lg0KPiA+ID4gPiArICoNCj4gPiA+ID4g
-ICAqIFJldHVybnMgMCBpZiB0aGUgZGV2aWNlIGlzIG9wZXJhdGlvbmFsLCBhIG5lZ2F0aXZlIGVy
-cm9yDQo+ID4gPiA+IGNvZGUNCj4gPiA+ID4gb3RoZXJ3aXNlLg0KPiA+ID4gPiAgICoNCj4gPiA+
-ID4gICAqIFRoaXMgZnVuY3Rpb24gc2hvdWxkIGJlIGNhbGxlZCBlYXJseSBvbiBpbiB0aGUgZGV2
-aWNlDQo+ID4gPiA+IGluaXRpYWxpemF0aW9uIHNlcXVlbmNlDQo+ID4gPiA+ICAgKiB0byBlbnN1
-cmUgdGhhdCB0aGUgZGV2aWNlIGlzIGluIGEgc2FuZSBhbmQga25vd24gc3RhdGUgYW5kDQo+ID4g
-PiA+IHRoYXQNCj4gPiA+ID4gaXQgaXMgdXNhYmxlLg0KPiA+ID4gPiAgICovDQo+ID4gPiA+IC1p
-bnQgYWRpc19pbml0aWFsX3N0YXJ0dXAoc3RydWN0IGFkaXMgKmFkaXMpDQo+ID4gPiA+ICtpbnQg
-X19hZGlzX2luaXRpYWxfc3RhcnR1cChzdHJ1Y3QgYWRpcyAqYWRpcykNCj4gPiA+ID4gIHsNCj4g
-PiA+ID4gIAlpbnQgcmV0Ow0KPiA+ID4gPiAtDQo+ID4gPiA+IC0JbXV0ZXhfbG9jaygmYWRpcy0+
-c3RhdGVfbG9jayk7DQo+ID4gPiA+ICsJc3RydWN0IGdwaW9fZGVzYyAqZ3BpbzsNCj4gPiA+ID4g
-Kwljb25zdCBzdHJ1Y3QgYWRpc190aW1lb3V0ICp0aW1lb3V0cyA9IGFkaXMtPmRhdGEtDQo+ID4g
-PiA+ID50aW1lb3V0czsNCj4gPiA+ID4gKwljb25zdCBjaGFyICppaW9fbmFtZSA9IHNwaV9nZXRf
-ZGV2aWNlX2lkKGFkaXMtPnNwaSktDQo+ID4gPiA+ID5uYW1lOw0KPiA+ID4gPiArCXUxNiBwcm9k
-X2lkLCBkZXZfaWQ7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwkvKiBjaGVjayBpZiB0aGUgZGV2aWNl
-IGhhcyByc3QgcGluIGxvdyAqLw0KPiA+ID4gPiArCWdwaW8gPSBkZXZtX2dwaW9kX2dldF9vcHRp
-b25hbCgmYWRpcy0+c3BpLT5kZXYsDQo+ID4gPiA+ICJyZXNldCIsDQo+ID4gPiA+IEdQSU9EX0FT
-SVMpOw0KPiA+ID4gPiArCWlmIChJU19FUlIoZ3BpbykpIHsNCj4gPiA+ID4gKwkJcmV0dXJuIFBU
-Ul9FUlIoZ3Bpbyk7ICANCj4gPiA+IA0KPiA+ID4gR2l2ZW4geW91IGFyZSByZXR1cm5pbmcgaGVy
-ZSwgbm8gbmVlZCBmb3IgZWxzZSB0byBmb2xsb3cNCj4gPiA+IA0KPiA+ID4gaWYgKGdwaW8uLi4N
-Cj4gPiA+ICAgDQo+ID4gDQo+ID4gRGVmaW5pdGVseS4uLg0KPiA+IA0KPiA+ID4gPiArCX0gZWxz
-ZSBpZiAoZ3BpbyAmJiBncGlvZF9nZXRfdmFsdWVfY2Fuc2xlZXAoZ3BpbykpIHsNCj4gPiA+ID4g
-KwkJLyogYnJpbmcgZGV2aWNlIG91dCBvZiByZXNldCAqLw0KPiA+ID4gPiArCQlncGlvZF9zZXRf
-dmFsdWVfY2Fuc2xlZXAoZ3BpbywgMCk7ICANCj4gPiA+IA0KPiA+ID4gSG1tLiBTbyBpcyBhIHNv
-ZnR3YXJlIHJlc2V0IHRoZSBiZXN0IG9wdGlvbiBpZiB3ZSBoYXZlIGEgaGFyZHdhcmUNCj4gPiA+
-IHJlc2V0DQo+ID4gPiBsaW5lIGJ1dCBpdCdzIG5vdCBjdXJyZW50bHkgaW4gdGhlIHJlc2V0IG1v
-ZGU/DQo+ID4gPiAgIA0KPiA+IA0KPiA+IEhtbSwgdGhhdCdzIGEgZmFpciBxdWVzdGlvbi4gTm93
-IHRoYXQgSSB0aGluayBhYm91dCBpdCwgaWYgd2UgZG8NCj4gPiBoYXZlIGENCj4gPiBncGlvIHdl
-IHNob3VsZCBqdXN0IGFzc3VtZSBpdCdzIGluIHJlc2V0IGFuZCBjYWxsDQo+ID4gYGdwaW9kX3Nl
-dF92YWx1ZV9jYW5zbGVlcGAuIFNvLCBJIGd1ZXNzIHdlIGNvdWxkIGp1c3QgZGl0Y2ggdGhlDQo+
-ID4gYGdwaW9kX2dldF92YWx1ZV9jYW5zbGVlcChncGlvKWAgcGFydC4NCj4gDQo+IE5vdCBzdXJl
-IEkgYWdyZWUuICAgRm9yIGV4YW1wbGUgdGhlIGRyaXZlciBtYXkgd2VsbCBoYXZlIGJlZW4gdW5i
-b3VuZA0KPiBhbmQgcmVib3VuZCBmb3Igc29tZSByZWFzb24uDQoNClllcywgdGhhdCBpcyB0cnVl
-Li4NCg0KPiBJIHdvdWxkIGFyZ3VlIHlvdSBzaG91bGQganVzdCBkbyBhIHNldCAvIHJlc2V0IGN5
-Y2xlIHdpdGggYXBwcm9wcmlhdGUNCj4gc2xlZXANCj4gaW4gYmV0d2Vlbi4gIElmIGl0J3MgYWxy
-ZWFkeSBzZXQgdGhlbiBubyBoYXJtIGRvbmUsIGlmIGl0IGlzbid0IHlvdQ0KPiBmb3JjZQ0KPiBh
-IGhhcmR3YXJlIHJlc2V0Lg0KDQpTbywgQXMgSW0gdW5kZXJzdGFuZGluZywgaXQgY29tZXMgZG93
-biB0byB3aGF0IHNob3VsZCB3ZSBjb25zaWRlciBhcw0KZGVmYXVsdC4gWW91IHN1Z2dlc3QgdG8g
-Zmlyc3QgZG8gdGhlIHN3IHJlc2V0IGFuZCB0aGUgY2hlY2sgdGhlIGdwaW8NCnN0YXRlIGFuZCBp
-ZiBuZWVkZWQsIGJyaW5nIHRoZSBkZXZpY2Ugb3V0IG9mIHJlc2V0LCByaWdodD8gTm93IHRoYXQg
-SQ0KdGhpbmsgYWJvdXQgaXQsIEkgdGhpbmsgdGhlIG9ubHkgcmVhc29uIEkgaGF2ZW4ndCBkb25l
-IGxpa2UgdGhhdCBpcw0KYmVjYXVzZSB5b3UgbWlnaHQgZW5kIHVwIHNsZWVwaW5nIHF1aXRlIHNv
-bWUgdGltZSAoc3cgcmVzZXQgKyBodw0KcmVzZXQpLiBFaXRoZXIgd2F5LCBJJ20gZmluZSB3aXRo
-IGJvdGggb3B0aW9ucy4gTm90IHN1cmUgaWYgQWxleCBoYXMNCnNvbWV0aGluZyB0byBhZGQuLi4N
-Cg0KDQpOdW5vIFPDoSANCj4gPiA+ID4gKwkJbXNsZWVwKHRpbWVvdXRzLT5yZXNldF9tcyk7DQo+
-ID4gPiA+ICsJfSBlbHNlIHsNCj4gPiA+ID4gKwkJcmV0ID0gX19hZGlzX3Jlc2V0KGFkaXMpOw0K
-PiA+ID4gPiArCQlpZiAocmV0KQ0KPiA+ID4gPiArCQkJcmV0dXJuIHJldDsNCj4gPiA+ID4gKwl9
-DQo+ID4gPiA+ICANCj4gPiA+ID4gIAlyZXQgPSBhZGlzX3NlbGZfdGVzdChhZGlzKTsNCj4gPiA+
-ID4gLQlpZiAocmV0KSB7DQo+ID4gPiA+IC0JCWRldl9lcnIoJmFkaXMtPnNwaS0+ZGV2LCAiU2Vs
-Zi10ZXN0IGZhaWxlZCwNCj4gPiA+ID4gdHJ5aW5nDQo+ID4gPiA+IHJlc2V0LlxuIik7DQo+ID4g
-PiA+IC0JCV9fYWRpc19yZXNldChhZGlzKTsNCj4gPiA+ID4gLQkJcmV0ID0gYWRpc19zZWxmX3Rl
-c3QoYWRpcyk7DQo+ID4gPiA+IC0JCWlmIChyZXQpIHsNCj4gPiA+ID4gLQkJCWRldl9lcnIoJmFk
-aXMtPnNwaS0+ZGV2LCAiU2Vjb25kIHNlbGYtDQo+ID4gPiA+IHRlc3QNCj4gPiA+ID4gZmFpbGVk
-LCBnaXZpbmcgdXAuXG4iKTsNCj4gPiA+ID4gLQkJCWdvdG8gb3V0X3VubG9jazsNCj4gPiA+ID4g
-LQkJfQ0KPiA+ID4gPiAtCX0NCj4gPiA+ID4gKwlpZiAocmV0KQ0KPiA+ID4gPiArCQlyZXR1cm4g
-cmV0Ow0KPiA+ID4gPiAgDQo+ID4gPiA+IC1vdXRfdW5sb2NrOg0KPiA+ID4gPiAtCW11dGV4X3Vu
-bG9jaygmYWRpcy0+c3RhdGVfbG9jayk7DQo+ID4gPiA+IC0JcmV0dXJuIHJldDsNCj4gPiA+ID4g
-KwlpZiAoIWFkaXMtPmRhdGEtPnByb2RfaWRfcmVnKQ0KPiA+ID4gPiArCQlyZXR1cm4gMDsNCj4g
-PiA+ID4gKw0KPiA+ID4gPiArCXJldCA9IGFkaXNfcmVhZF9yZWdfMTYoYWRpcywgYWRpcy0+ZGF0
-YS0+cHJvZF9pZF9yZWcsDQo+ID4gPiA+ICZwcm9kX2lkKTsNCj4gPiA+ID4gKwlpZiAocmV0KQ0K
-PiA+ID4gPiArCQlyZXR1cm4gcmV0Ow0KPiA+ID4gPiArDQo+ID4gPiA+ICsJcmV0ID0gc3NjYW5m
-KGlpb19uYW1lLCAiYWRpcyVodVxuIiwgJmRldl9pZCk7ICANCj4gPiA+IA0KPiA+ID4gSG1tLiBJ
-IGhhdmUgYSBnZW5lcmFsIGRpc2xpa2Ugb2YgcHVsbGluZyBwYXJ0IG5hbWUgc3RyaW5ncyBhcGFy
-dA0KPiA+ID4gdG8NCj4gPiA+IGdldA0KPiA+ID4gSURzLiAgSXQgdGVuZHMgdG8gYnJlYWsgd2hl
-biBzb21lb25lIGNvbWVzIGFsb25nIGFuZCBhZGRzIGEgcGFydA0KPiA+ID4gd2l0aA0KPiA+ID4g
-bmV3DQo+ID4gPiBicmFuZGluZy4gIFBlcmhhcHMganVzdCBwdXQgaXQgaW4gdGhlIHJlbGV2YW50
-IGRldmljZSBwYXJ0DQo+ID4gPiBzcGVjaWZpYw0KPiA+ID4gc3RydWN0dXJlcw0KPiA+ID4gZGly
-ZWN0bHk/DQo+ID4gPiAgIA0KPiA+IA0KPiA+IEknbGwgYWRtaXQgdGhhdCB0aGlzIHRvIG9yaWVu
-dGF0ZWQgdG8gQURJIGRldmljZXMgYW5kIEkgYmFzaWNhbGx5DQo+ID4ganVzdA0KPiA+IHRvb2sg
-d2hhdCBhbGwgdGhlIGRyaXZlcnMgd2VyZSBkb2luZyBhbmQgcGxhY2VkIGl0IGluc2lkZSB0aGUN
-Cj4gPiBsaWJyYXJ5Li4uDQo+ID4gDQo+ID4gU28sIHlvdSBtZWFuIHBhc3NpbmcgdGhpcyB0byBl
-YWNoIGBjaGlwX2luZm9gIGFuZCB0aGVuIHBhc3NpbmcgaXQNCj4gPiB0bw0KPiA+IHRoZSBsaWJy
-YXJ5IHRocm91Z2ggYGFkaXNfZGF0YWA/DQo+IA0KPiBZZXMuICBQZW9wbGUgZG9uJ3QgdGVuZCB0
-byBleHBlY3Qgc3RyaW5ncyB0byBuZWVkIHRvIHRha2UgYQ0KPiBwYXJ0aWN1bGFyIGZvcm0sDQo+
-IHNvIHB1bGxpbmcgdGhlbSBhcGFydCBpbiBhIGxpYnJhcnkgY2FuIGdpdmUgdW5leHBlY3RlZCBy
-ZXN1bHRzLi4uDQo+IA0KPiA+ID4gPiArCWlmIChyZXQgIT0gMSkNCj4gPiA+ID4gKwkJcmV0dXJu
-IC1FSU5WQUw7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwlpZiAocHJvZF9pZCAhPSBkZXZfaWQpDQo+
-ID4gPiA+ICsJCWRldl93YXJuKCZhZGlzLT5zcGktPmRldiwNCj4gPiA+ID4gKwkJCSAiRGV2aWNl
-IElEKCV1KSBhbmQgcHJvZHVjdCBJRCgldSkgZG8NCj4gPiA+ID4gbm90DQo+ID4gPiA+IG1hdGNo
-LiIsDQo+ID4gPiA+ICsJCQkgZGV2X2lkLCBwcm9kX2lkKTsNCj4gPiA+ID4gKw0KPiA+ID4gPiAr
-CXJldHVybiAwOw0KPiA+ID4gPiAgfQ0KPiA+ID4gPiAtRVhQT1JUX1NZTUJPTF9HUEwoYWRpc19p
-bml0aWFsX3N0YXJ0dXApOw0KPiA+ID4gPiArRVhQT1JUX1NZTUJPTF9HUEwoX19hZGlzX2luaXRp
-YWxfc3RhcnR1cCk7DQo+ID4gPiA+ICANCj4gPiA+ID4gIC8qKg0KPiA+ID4gPiAgICogYWRpc19z
-aW5nbGVfY29udmVyc2lvbigpIC0gUGVyZm9ybXMgYSBzaW5nbGUgc2FtcGxlDQo+ID4gPiA+IGNv
-bnZlcnNpb24NCj4gPiA+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvaWlvL2ltdS9hZGlz
-LmgNCj4gPiA+ID4gYi9pbmNsdWRlL2xpbnV4L2lpby9pbXUvYWRpcy5oDQo+ID4gPiA+IGluZGV4
-IGQyMWEwMTNkMTEyMi4uYzQzZTc5MjJhYjMyIDEwMDY0NA0KPiA+ID4gPiAtLS0gYS9pbmNsdWRl
-L2xpbnV4L2lpby9pbXUvYWRpcy5oDQo+ID4gPiA+ICsrKyBiL2luY2x1ZGUvbGludXgvaWlvL2lt
-dS9hZGlzLmgNCj4gPiA+ID4gQEAgLTQxLDYgKzQxLDcgQEAgc3RydWN0IGFkaXNfdGltZW91dCB7
-DQo+ID4gPiA+ICAgKiBAZ2xvYl9jbWRfcmVnOiBSZWdpc3RlciBhZGRyZXNzIG9mIHRoZSBHTE9C
-X0NNRCByZWdpc3Rlcg0KPiA+ID4gPiAgICogQG1zY19jdHJsX3JlZzogUmVnaXN0ZXIgYWRkcmVz
-cyBvZiB0aGUgTVNDX0NUUkwgcmVnaXN0ZXINCj4gPiA+ID4gICAqIEBkaWFnX3N0YXRfcmVnOiBS
-ZWdpc3RlciBhZGRyZXNzIG9mIHRoZSBESUFHX1NUQVQgcmVnaXN0ZXINCj4gPiA+ID4gKyAqIEBw
-cm9kX2lkX3JlZzogUmVnaXN0ZXIgYWRkcmVzcyBvZiB0aGUgUFJPRF9JRCByZWdpc3Rlcg0KPiA+
-ID4gPiAgICogQHNlbGZfdGVzdF9yZWc6IFJlZ2lzdGVyIGFkZHJlc3MgdG8gcmVxdWVzdCBzZWxm
-IHRlc3QNCj4gPiA+ID4gY29tbWFuZA0KPiA+ID4gPiAgICogQHN0YXR1c19lcnJvcl9tc2dzOiBB
-cnJheSBvZiBlcnJvciBtZXNzZ2Flcw0KPiA+ID4gPiAgICogQHN0YXR1c19lcnJvcl9tYXNrOg0K
-PiA+ID4gPiBAQCAtNTQsNiArNTUsNyBAQCBzdHJ1Y3QgYWRpc19kYXRhIHsNCj4gPiA+ID4gIAl1
-bnNpZ25lZCBpbnQgZ2xvYl9jbWRfcmVnOw0KPiA+ID4gPiAgCXVuc2lnbmVkIGludCBtc2NfY3Ry
-bF9yZWc7DQo+ID4gPiA+ICAJdW5zaWduZWQgaW50IGRpYWdfc3RhdF9yZWc7DQo+ID4gPiA+ICsJ
-dW5zaWduZWQgaW50IHByb2RfaWRfcmVnOw0KPiA+ID4gPiAgDQo+ID4gPiA+ICAJdW5zaWduZWQg
-aW50IHNlbGZfdGVzdF9tYXNrOw0KPiA+ID4gPiAgCXVuc2lnbmVkIGludCBzZWxmX3Rlc3RfcmVn
-Ow0KPiA+ID4gPiBAQCAtMjk5LDYgKzMwMSw3IEBAIHN0YXRpYyBpbmxpbmUgaW50IGFkaXNfcmVh
-ZF9yZWdfMzIoc3RydWN0DQo+ID4gPiA+IGFkaXMNCj4gPiA+ID4gKmFkaXMsIHVuc2lnbmVkIGlu
-dCByZWcsDQo+ID4gPiA+ICANCj4gPiA+ID4gIGludCBhZGlzX2VuYWJsZV9pcnEoc3RydWN0IGFk
-aXMgKmFkaXMsIGJvb2wgZW5hYmxlKTsNCj4gPiA+ID4gIGludCBfX2FkaXNfY2hlY2tfc3RhdHVz
-KHN0cnVjdCBhZGlzICphZGlzKTsNCj4gPiA+ID4gK2ludCBfX2FkaXNfaW5pdGlhbF9zdGFydHVw
-KHN0cnVjdCBhZGlzICphZGlzKTsNCj4gPiA+ID4gIA0KPiA+ID4gPiAgc3RhdGljIGlubGluZSBp
-bnQgYWRpc19jaGVja19zdGF0dXMoc3RydWN0IGFkaXMgKmFkaXMpDQo+ID4gPiA+ICB7DQo+ID4g
-PiA+IEBAIC0zMTEsNyArMzE0LDE3IEBAIHN0YXRpYyBpbmxpbmUgaW50IGFkaXNfY2hlY2tfc3Rh
-dHVzKHN0cnVjdA0KPiA+ID4gPiBhZGlzICphZGlzKQ0KPiA+ID4gPiAgCXJldHVybiByZXQ7DQo+
-ID4gPiA+ICB9DQo+ID4gPiA+ICANCj4gPiA+ID4gLWludCBhZGlzX2luaXRpYWxfc3RhcnR1cChz
-dHJ1Y3QgYWRpcyAqYWRpcyk7DQo+ID4gPiA+ICsvKiBsb2NrZWQgdmVyc2lvbiBvZiBfX2FkaXNf
-aW5pdGlhbF9zdGFydHVwKCkgKi8NCj4gPiA+ID4gK3N0YXRpYyBpbmxpbmUgaW50IGFkaXNfaW5p
-dGlhbF9zdGFydHVwKHN0cnVjdCBhZGlzICphZGlzKQ0KPiA+ID4gPiArew0KPiA+ID4gPiArCWlu
-dCByZXQ7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwltdXRleF9sb2NrKCZhZGlzLT5zdGF0ZV9sb2Nr
-KTsNCj4gPiA+ID4gKwlyZXQgPSBfX2FkaXNfaW5pdGlhbF9zdGFydHVwKGFkaXMpOw0KPiA+ID4g
-PiArCW11dGV4X3VubG9jaygmYWRpcy0+c3RhdGVfbG9jayk7DQo+ID4gPiA+ICsNCj4gPiA+ID4g
-KwlyZXR1cm4gcmV0Ow0KPiA+ID4gPiArfQ0KPiA+ID4gPiAgDQo+ID4gPiA+ICBpbnQgYWRpc19z
-aW5nbGVfY29udmVyc2lvbihzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2LA0KPiA+ID4gPiAgCWNv
-bnN0IHN0cnVjdCBpaW9fY2hhbl9zcGVjICpjaGFuLCB1bnNpZ25lZCBpbnQNCj4gPiA+ID4gZXJy
-b3JfbWFzaywgIA0KPiA+ID4gDQo+ID4gPiAgIA0KPiANCj4gDQoNCg==
+On Wed, 5 Feb 2020 12:25:40 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+
+> On Mon, 2020-02-03 at 12:03 +0000, Jonathan Cameron wrote:
+> > 
+> > On Mon, 3 Feb 2020 10:31:30 +0100
+> > Nuno Sá <noname.nuno@gmail.com> wrote:
+> >   
+> > > Hi Jonathan,
+> > > 
+> > > 
+> > > On Sat, 2020-02-01 at 17:08 +0000, Jonathan Cameron wrote:  
+> > > > On Mon, 20 Jan 2020 16:20:49 +0200
+> > > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> > > >     
+> > > > > From: Nuno Sá <nuno.sa@analog.com>
+> > > > > 
+> > > > > All the ADIS devices perform, at the beginning, a self test to
+> > > > > make
+> > > > > sure
+> > > > > the device is in a sane state. Furthermore, some drivers also
+> > > > > do a
+> > > > > call
+> > > > > to `adis_reset()` before the test which is also a good
+> > > > > practice.
+> > > > > This
+> > > > > patch unifies all those operation so that, there's no need for
+> > > > > code
+> > > > > duplication. Furthermore, the rst pin is also checked to make
+> > > > > sure
+> > > > > the
+> > > > > device is not in HW reset. On top of this, some drivers also
+> > > > > read
+> > > > > the
+> > > > > device product id and compare it with the device being probed
+> > > > > to
+> > > > > make
+> > > > > sure the correct device is being handled. This can also be
+> > > > > passed
+> > > > > to the
+> > > > > library by introducing a variable holding the PROD_ID register
+> > > > > of
+> > > > > the
+> > > > > device.
+> > > > > 
+> > > > > Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+> > > > > Signed-off-by: Alexandru Ardelean <  
+> > > > > alexandru.ardelean@analog.com>  
+> > > > > ---
+> > > > >  drivers/iio/imu/Kconfig      |  1 +
+> > > > >  drivers/iio/imu/adis.c       | 63 ++++++++++++++++++++++++++
+> > > > > ----
+> > > > > ------
+> > > > >  include/linux/iio/imu/adis.h | 15 ++++++++-
+> > > > >  3 files changed, 61 insertions(+), 18 deletions(-)
+> > > > > 
+> > > > > diff --git a/drivers/iio/imu/Kconfig b/drivers/iio/imu/Kconfig
+> > > > > index 60bb1029e759..63036cf473c7 100644
+> > > > > --- a/drivers/iio/imu/Kconfig
+> > > > > +++ b/drivers/iio/imu/Kconfig
+> > > > > @@ -85,6 +85,7 @@ endmenu
+> > > > >  
+> > > > >  config IIO_ADIS_LIB
+> > > > >  	tristate
+> > > > > +	depends on GPIOLIB
+> > > > >  	help
+> > > > >  	  A set of IO helper functions for the Analog Devices
+> > > > > ADIS*
+> > > > > device family.
+> > > > >  
+> > > > > diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
+> > > > > index d02b1911b0f2..1eca5271380e 100644
+> > > > > --- a/drivers/iio/imu/adis.c
+> > > > > +++ b/drivers/iio/imu/adis.c
+> > > > > @@ -7,6 +7,7 @@
+> > > > >   */
+> > > > >  
+> > > > >  #include <linux/delay.h>
+> > > > > +#include <linux/gpio/consumer.h>
+> > > > >  #include <linux/mutex.h>
+> > > > >  #include <linux/device.h>
+> > > > >  #include <linux/kernel.h>
+> > > > > @@ -365,36 +366,64 @@ static int adis_self_test(struct adis
+> > > > > *adis)
+> > > > >  }
+> > > > >  
+> > > > >  /**
+> > > > > - * adis_inital_startup() - Performs device self-test
+> > > > > + * __adis_initial_startup() - Device initial setup
+> > > > >   * @adis: The adis device
+> > > > >   *
+> > > > > + * This functions makes sure the device is not in reset, via
+> > > > > rst
+> > > > > pin.
+> > > > > + * Furthermore it performs a SW reset (only in the case we are
+> > > > > not
+> > > > > coming from
+> > > > > + * reset already) and a self test. It also compares the
+> > > > > product id
+> > > > > with the
+> > > > > + * device id if the prod_id_reg variable is set.
+> > > > > + *
+> > > > >   * Returns 0 if the device is operational, a negative error
+> > > > > code
+> > > > > otherwise.
+> > > > >   *
+> > > > >   * This function should be called early on in the device
+> > > > > initialization sequence
+> > > > >   * to ensure that the device is in a sane and known state and
+> > > > > that
+> > > > > it is usable.
+> > > > >   */
+> > > > > -int adis_initial_startup(struct adis *adis)
+> > > > > +int __adis_initial_startup(struct adis *adis)
+> > > > >  {
+> > > > >  	int ret;
+> > > > > -
+> > > > > -	mutex_lock(&adis->state_lock);
+> > > > > +	struct gpio_desc *gpio;
+> > > > > +	const struct adis_timeout *timeouts = adis->data-  
+> > > > > >timeouts;  
+> > > > > +	const char *iio_name = spi_get_device_id(adis->spi)-  
+> > > > > >name;  
+> > > > > +	u16 prod_id, dev_id;
+> > > > > +
+> > > > > +	/* check if the device has rst pin low */
+> > > > > +	gpio = devm_gpiod_get_optional(&adis->spi->dev,
+> > > > > "reset",
+> > > > > GPIOD_ASIS);
+> > > > > +	if (IS_ERR(gpio)) {
+> > > > > +		return PTR_ERR(gpio);    
+> > > > 
+> > > > Given you are returning here, no need for else to follow
+> > > > 
+> > > > if (gpio...
+> > > >     
+> > > 
+> > > Definitely...
+> > >   
+> > > > > +	} else if (gpio && gpiod_get_value_cansleep(gpio)) {
+> > > > > +		/* bring device out of reset */
+> > > > > +		gpiod_set_value_cansleep(gpio, 0);    
+> > > > 
+> > > > Hmm. So is a software reset the best option if we have a hardware
+> > > > reset
+> > > > line but it's not currently in the reset mode?
+> > > >     
+> > > 
+> > > Hmm, that's a fair question. Now that I think about it, if we do
+> > > have a
+> > > gpio we should just assume it's in reset and call
+> > > `gpiod_set_value_cansleep`. So, I guess we could just ditch the
+> > > `gpiod_get_value_cansleep(gpio)` part.  
+> > 
+> > Not sure I agree.   For example the driver may well have been unbound
+> > and rebound for some reason.  
+> 
+> Yes, that is true..
+> 
+> > I would argue you should just do a set / reset cycle with appropriate
+> > sleep
+> > in between.  If it's already set then no harm done, if it isn't you
+> > force
+> > a hardware reset.  
+> 
+> So, As Im understanding, it comes down to what should we consider as
+> default. You suggest to first do the sw reset and the check the gpio
+> state and if needed, bring the device out of reset, right? Now that I
+> think about it, I think the only reason I haven't done like that is
+> because you might end up sleeping quite some time (sw reset + hw
+> reset). Either way, I'm fine with both options. Not sure if Alex has
+> something to add...
+
+Either reset should be good on it's own.  I would use hardware reset
+if the pin is there. If it's not, then use the software reset.
+
+For hardware always set the pin explicitly to reset as that guarantees
+against any race conditions, even if something odd happens.
+
+Jonathan
+
+> 
+> 
+> Nuno Sá 
+> > > > > +		msleep(timeouts->reset_ms);
+> > > > > +	} else {
+> > > > > +		ret = __adis_reset(adis);
+> > > > > +		if (ret)
+> > > > > +			return ret;
+> > > > > +	}
+> > > > >  
+> > > > >  	ret = adis_self_test(adis);
+> > > > > -	if (ret) {
+> > > > > -		dev_err(&adis->spi->dev, "Self-test failed,
+> > > > > trying
+> > > > > reset.\n");
+> > > > > -		__adis_reset(adis);
+> > > > > -		ret = adis_self_test(adis);
+> > > > > -		if (ret) {
+> > > > > -			dev_err(&adis->spi->dev, "Second self-
+> > > > > test
+> > > > > failed, giving up.\n");
+> > > > > -			goto out_unlock;
+> > > > > -		}
+> > > > > -	}
+> > > > > +	if (ret)
+> > > > > +		return ret;
+> > > > >  
+> > > > > -out_unlock:
+> > > > > -	mutex_unlock(&adis->state_lock);
+> > > > > -	return ret;
+> > > > > +	if (!adis->data->prod_id_reg)
+> > > > > +		return 0;
+> > > > > +
+> > > > > +	ret = adis_read_reg_16(adis, adis->data->prod_id_reg,
+> > > > > &prod_id);
+> > > > > +	if (ret)
+> > > > > +		return ret;
+> > > > > +
+> > > > > +	ret = sscanf(iio_name, "adis%hu\n", &dev_id);    
+> > > > 
+> > > > Hmm. I have a general dislike of pulling part name strings apart
+> > > > to
+> > > > get
+> > > > IDs.  It tends to break when someone comes along and adds a part
+> > > > with
+> > > > new
+> > > > branding.  Perhaps just put it in the relevant device part
+> > > > specific
+> > > > structures
+> > > > directly?
+> > > >     
+> > > 
+> > > I'll admit that this to orientated to ADI devices and I basically
+> > > just
+> > > took what all the drivers were doing and placed it inside the
+> > > library...
+> > > 
+> > > So, you mean passing this to each `chip_info` and then passing it
+> > > to
+> > > the library through `adis_data`?  
+> > 
+> > Yes.  People don't tend to expect strings to need to take a
+> > particular form,
+> > so pulling them apart in a library can give unexpected results...
+> >   
+> > > > > +	if (ret != 1)
+> > > > > +		return -EINVAL;
+> > > > > +
+> > > > > +	if (prod_id != dev_id)
+> > > > > +		dev_warn(&adis->spi->dev,
+> > > > > +			 "Device ID(%u) and product ID(%u) do
+> > > > > not
+> > > > > match.",
+> > > > > +			 dev_id, prod_id);
+> > > > > +
+> > > > > +	return 0;
+> > > > >  }
+> > > > > -EXPORT_SYMBOL_GPL(adis_initial_startup);
+> > > > > +EXPORT_SYMBOL_GPL(__adis_initial_startup);
+> > > > >  
+> > > > >  /**
+> > > > >   * adis_single_conversion() - Performs a single sample
+> > > > > conversion
+> > > > > diff --git a/include/linux/iio/imu/adis.h
+> > > > > b/include/linux/iio/imu/adis.h
+> > > > > index d21a013d1122..c43e7922ab32 100644
+> > > > > --- a/include/linux/iio/imu/adis.h
+> > > > > +++ b/include/linux/iio/imu/adis.h
+> > > > > @@ -41,6 +41,7 @@ struct adis_timeout {
+> > > > >   * @glob_cmd_reg: Register address of the GLOB_CMD register
+> > > > >   * @msc_ctrl_reg: Register address of the MSC_CTRL register
+> > > > >   * @diag_stat_reg: Register address of the DIAG_STAT register
+> > > > > + * @prod_id_reg: Register address of the PROD_ID register
+> > > > >   * @self_test_reg: Register address to request self test
+> > > > > command
+> > > > >   * @status_error_msgs: Array of error messgaes
+> > > > >   * @status_error_mask:
+> > > > > @@ -54,6 +55,7 @@ struct adis_data {
+> > > > >  	unsigned int glob_cmd_reg;
+> > > > >  	unsigned int msc_ctrl_reg;
+> > > > >  	unsigned int diag_stat_reg;
+> > > > > +	unsigned int prod_id_reg;
+> > > > >  
+> > > > >  	unsigned int self_test_mask;
+> > > > >  	unsigned int self_test_reg;
+> > > > > @@ -299,6 +301,7 @@ static inline int adis_read_reg_32(struct
+> > > > > adis
+> > > > > *adis, unsigned int reg,
+> > > > >  
+> > > > >  int adis_enable_irq(struct adis *adis, bool enable);
+> > > > >  int __adis_check_status(struct adis *adis);
+> > > > > +int __adis_initial_startup(struct adis *adis);
+> > > > >  
+> > > > >  static inline int adis_check_status(struct adis *adis)
+> > > > >  {
+> > > > > @@ -311,7 +314,17 @@ static inline int adis_check_status(struct
+> > > > > adis *adis)
+> > > > >  	return ret;
+> > > > >  }
+> > > > >  
+> > > > > -int adis_initial_startup(struct adis *adis);
+> > > > > +/* locked version of __adis_initial_startup() */
+> > > > > +static inline int adis_initial_startup(struct adis *adis)
+> > > > > +{
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	mutex_lock(&adis->state_lock);
+> > > > > +	ret = __adis_initial_startup(adis);
+> > > > > +	mutex_unlock(&adis->state_lock);
+> > > > > +
+> > > > > +	return ret;
+> > > > > +}
+> > > > >  
+> > > > >  int adis_single_conversion(struct iio_dev *indio_dev,
+> > > > >  	const struct iio_chan_spec *chan, unsigned int
+> > > > > error_mask,    
+> > > > 
+> > > >     
+> > 
+> >   
+> 
+
+

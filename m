@@ -2,219 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 185CD153EB2
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 07:24:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A4F5154117
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 10:24:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725809AbgBFGYQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Feb 2020 01:24:16 -0500
-Received: from mail-pf1-f181.google.com ([209.85.210.181]:38814 "EHLO
-        mail-pf1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727860AbgBFGYQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Feb 2020 01:24:16 -0500
-Received: by mail-pf1-f181.google.com with SMTP id x185so2534484pfc.5
-        for <linux-iio@vger.kernel.org>; Wed, 05 Feb 2020 22:24:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=izztQoaxTfYh608r7zUZBOPeN+NzswpzW45W6rctyos=;
-        b=q2VHUClJwtxwoLcuIMbaSeogVD0FHsqoPIsjw1lNHdRKeKPkhkf/H3p9Gp6zUSh2Sp
-         Rd0I9eY2Ffl0iWEecgJCq9lLSE9Kjth0JO/0zdN0Fa+nUK4y0lecWVVJQeMCdjJm5Lj3
-         Ia8BTLRccs8w4Hh2EMtfV/ltV6JiIHLnuM/PQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=izztQoaxTfYh608r7zUZBOPeN+NzswpzW45W6rctyos=;
-        b=kTTNkP2SWRqKIOkCleXs1K6ohzAfEcvXvoTPovs07omzCKQgy7vnHeKZCDs5DM7w9I
-         hjgN0j7i/S9QFIO4ftfvTQ+CqEKt/4UEH7bvlRFJqSpQyTN5hiF01ISPST3So4AEWQ/A
-         qfsO8vQIoHYN6xQNFjIGaBF+FqDTyMSPE02d5VZkX25GcNo8AERl4yZFXv1Uy5T1oM6U
-         mBQ0srkbQOQH0UdIwo4CfDvyZ1Kw4mFbZa8I4YUmBSsaKkV7hUWNeaLtKpne6rcV30ne
-         R8rnkYGiIYuPnnESat/Uu+iv2v0hfSC1tAACqGCfnMSc6hAGN1Qu+YWAFOC1JR8oDOt+
-         zTOw==
-X-Gm-Message-State: APjAAAWYFdzHBHwbAzdLLE2fTddAwO0Fa99lmZgc5gKNbqQv6Wlc4cdp
-        L4NDpto8eXVfFRTCsNmlhLsNy06iDkbIY/PB
-X-Google-Smtp-Source: APXvYqw/vp5LNrRJt/Q+qLAv0gBC5SH+qxAyPYIF93LDaSu/2mohDSBDzGKy6o1Kvmhv0Vwzc6QljA==
-X-Received: by 2002:aa7:8149:: with SMTP id d9mr2065758pfn.170.1580970254829;
-        Wed, 05 Feb 2020 22:24:14 -0800 (PST)
-Received: from virtualbox.hsd1.wa.comcast.net (c-67-171-239-254.hsd1.wa.comcast.net. [67.171.239.254])
-        by smtp.gmail.com with ESMTPSA id z127sm1771323pgb.64.2020.02.05.22.24.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2020 22:24:14 -0800 (PST)
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-To:     linux-iio@vger.kernel.org
-Cc:     jic23@kernel.org, Matt Ranostay <matt.ranostay@konsulko.com>,
-        devicetree@vger.kernel.org
-Subject: [PATCH v4 3/3] dt-bindings: iio: chemical: consolidate atlas-sensor docs
-Date:   Wed,  5 Feb 2020 22:13:32 -0800
-Message-Id: <20200206061332.20427-4-matt.ranostay@konsulko.com>
+        id S1728122AbgBFJX6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Feb 2020 04:23:58 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:22516 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727672AbgBFJX6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Feb 2020 04:23:58 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0169Bwco019321;
+        Thu, 6 Feb 2020 04:23:56 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2xyhnkm4cv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 06 Feb 2020 04:23:56 -0500
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0169Nti7025760
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 6 Feb 2020 04:23:55 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 6 Feb 2020
+ 04:23:54 -0500
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 6 Feb 2020 04:23:54 -0500
+Received: from tachici-Precision-5530.ad.analog.com ([10.48.65.175])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0169NoIn010043;
+        Thu, 6 Feb 2020 04:23:51 -0500
+From:   Alexandru Tachici <alexandru.tachici@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Tachici <alexandru.tachici@analog.com>
+Subject: [PATCH 0/2] iio: dac: AD5770R: Add support
+Date:   Thu, 6 Feb 2020 11:23:11 +0200
+Message-ID: <20200206092313.18265-1-alexandru.tachici@analog.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200206061332.20427-1-matt.ranostay@konsulko.com>
-References: <20200206061332.20427-1-matt.ranostay@konsulko.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-05_06:2020-02-04,2020-02-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 impostorscore=0 lowpriorityscore=0
+ spamscore=0 clxscore=1011 suspectscore=0 adultscore=0 bulkscore=0
+ mlxlogscore=677 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2001150001 definitions=main-2002060073
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since Atlas Scientific device support only varies from the compatible
-string is ideal all the respective docs are merged into a single doc
-named atlas,sensor.yaml
+This series of patches adds support for the AD5570R
+14-bit current DAC.
 
-Cc: devicetree@vger.kernel.org
-Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
----
- .../bindings/iio/chemical/atlas,ec-sm.txt     | 21 --------
- .../bindings/iio/chemical/atlas,orp-sm.txt    | 21 --------
- .../bindings/iio/chemical/atlas,ph-sm.txt     | 21 --------
- .../bindings/iio/chemical/atlas,sensor.yaml   | 53 +++++++++++++++++++
- 4 files changed, 53 insertions(+), 63 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
- delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
- delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
- create mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
+It contains changes discussed in:
+https://patchwork.kernel.org/patch/10549129/
 
-diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
-deleted file mode 100644
-index f4320595b851..000000000000
---- a/Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--* Atlas Scientific EC-SM OEM sensor
--
--http://www.atlas-scientific.com/_files/_datasheets/_oem/EC_oem_datasheet.pdf
--
--Required properties:
--
--  - compatible: must be "atlas,ec-sm"
--  - reg: the I2C address of the sensor
--  - interrupts: the sole interrupt generated by the device
--
--  Refer to interrupt-controller/interrupts.txt for generic interrupt client
--  node bindings.
--
--Example:
--
--atlas@64 {
--	compatible = "atlas,ec-sm";
--	reg = <0x64>;
--	interrupt-parent = <&gpio1>;
--	interrupts = <16 2>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
-deleted file mode 100644
-index af1f5a9aa4da..000000000000
---- a/Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--* Atlas Scientific ORP-SM OEM sensor
--
--https://www.atlas-scientific.com/_files/_datasheets/_oem/ORP_oem_datasheet.pdf
--
--Required properties:
--
--  - compatible: must be "atlas,orp-sm"
--  - reg: the I2C address of the sensor
--  - interrupts: the sole interrupt generated by the device
--
--  Refer to interrupt-controller/interrupts.txt for generic interrupt client
--  node bindings.
--
--Example:
--
--atlas@66 {
--	compatible = "atlas,orp-sm";
--	reg = <0x66>;
--	interrupt-parent = <&gpio1>;
--	interrupts = <16 2>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
-deleted file mode 100644
-index 79d90f060327..000000000000
---- a/Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--* Atlas Scientific pH-SM OEM sensor
--
--http://www.atlas-scientific.com/_files/_datasheets/_oem/pH_oem_datasheet.pdf
--
--Required properties:
--
--  - compatible: must be "atlas,ph-sm"
--  - reg: the I2C address of the sensor
--  - interrupts: the sole interrupt generated by the device
--
--  Refer to interrupt-controller/interrupts.txt for generic interrupt client
--  node bindings.
--
--Example:
--
--atlas@65 {
--	compatible = "atlas,ph-sm";
--	reg = <0x65>;
--	interrupt-parent = <&gpio1>;
--	interrupts = <16 2>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml b/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
-new file mode 100644
-index 000000000000..1b0c476838d1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/chemical/atlas,sensor.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Atlas Scientific OEM sensors
-+
-+maintainers:
-+  - Matt Ranostay <matt.ranostay@konsulko.com>
-+
-+description: |
-+  Atlas Scientific OEM sensors connected via I2C
-+
-+  Datasheets:
-+    http://www.atlas-scientific.com/_files/_datasheets/_oem/DO_oem_datasheet.pdf
-+    http://www.atlas-scientific.com/_files/_datasheets/_oem/EC_oem_datasheet.pdf
-+    http://www.atlas-scientific.com/_files/_datasheets/_oem/ORP_oem_datasheet.pdf
-+    http://www.atlas-scientific.com/_files/_datasheets/_oem/pH_oem_datasheet.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - atlas,do-sm
-+      - atlas,ec-sm
-+      - atlas,orp-sm
-+      - atlas,ph-sm
-+
-+  reg:
-+     maxItems: 1
-+
-+  interrupts:
-+     maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      atlas@66 {
-+        compatible = "atlas,orp-sm";
-+        reg = <0x66>;
-+        interrupt-parent = <&gpio1>;
-+        interrupts = <16 2>;
-+      };
-+    };
+Alexandru Tachici (2):
+  iio: dac: ad5770r: Add AD5770R support
+  dt-bindings: iio: dac: Add docs for AD5770R DAC
+
+ .../bindings/iio/dac/adi,ad5770r.yaml         | 176 +++++
+ drivers/iio/dac/Kconfig                       |  10 +
+ drivers/iio/dac/Makefile                      |   1 +
+ drivers/iio/dac/ad5770r.c                     | 662 ++++++++++++++++++
+ include/linux/iio/common/adi_spi_regs.h       |  44 ++
+ 5 files changed, 893 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
+ create mode 100644 drivers/iio/dac/ad5770r.c
+ create mode 100644 include/linux/iio/common/adi_spi_regs.h
+
 -- 
 2.20.1
 

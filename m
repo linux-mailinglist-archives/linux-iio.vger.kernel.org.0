@@ -2,43 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BE721542FE
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 12:26:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC77E154305
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 12:28:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727509AbgBFL06 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Feb 2020 06:26:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58420 "EHLO mail.kernel.org"
+        id S1726687AbgBFL2e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Feb 2020 06:28:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59016 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727505AbgBFL06 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 Feb 2020 06:26:58 -0500
+        id S1726538AbgBFL2e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 Feb 2020 06:28:34 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3C33120730;
-        Thu,  6 Feb 2020 11:26:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2CB4520730;
+        Thu,  6 Feb 2020 11:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580988416;
-        bh=zDweZ3pVi5chcCvpvlKM6/sBvHkzKqjnodN7WSMLmm4=;
+        s=default; t=1580988513;
+        bh=GJcI9nYq59RUzy22koTUfdP4WIB6ekJBAEFQMZMEzGA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jcRSfTR/1YfSmP1xfZ0Pkao74lxFdCpWxQn1jt/7HWPNY6WL5qdEjjLk94ZEsQ2Gi
-         AqX9zaXzZ5ViWQ45wxcCXzAD94D62KYE2U/iP8NAAfx74+/ke2ID1vXu5Gx9AhJl4h
-         f/47XF1eICi1GyXt5WhkuWUHwcI3luGZ5/fwas74=
-Date:   Thu, 6 Feb 2020 11:26:51 +0000
+        b=1QUaqJh1fQnn9mSBJ2cQhTN0wOrKTr1cZG6oCzKXsGeLqlytmoih/5WRAF1SVehI2
+         it+QZuC9Z/m6LHD6jVIKjaxDyxIXPM+K4joB08g2OUDAsv+X+YMwrncr8s1klYEsJh
+         kK4alG0ZJrDHygZKxXzjE0N6q72nPznqqRkwrdx8=
+Date:   Thu, 6 Feb 2020 11:28:29 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>
-Cc:     Tomas Novotny <tomas@novotny.cz>, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: vncl4000: Enable runtime pm for
- vcnl4200/4040
-Message-ID: <20200206112651.2b85e3a8@archlinux>
-In-Reply-To: <60fa4c2a739448778ae56fe3f2fdb10302055c59.1580721204.git.agx@sigxcpu.org>
-References: <cover.1580721204.git.agx@sigxcpu.org>
-        <60fa4c2a739448778ae56fe3f2fdb10302055c59.1580721204.git.agx@sigxcpu.org>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>
+Subject: Re: [PATCH 2/4] iio: imu: adis: Refactor adis_initial_startup
+Message-ID: <20200206112829.4aef53f3@archlinux>
+In-Reply-To: <c46b2821098a07b5fb8bf42b26605e1841672d77.camel@analog.com>
+References: <20200120142051.28533-1-alexandru.ardelean@analog.com>
+        <20200120142051.28533-2-alexandru.ardelean@analog.com>
+        <20200201170839.4ab98d8e@archlinux>
+        <da82db5f81e116c7ecc36f5d9833b90b4f7cd15d.camel@gmail.com>
+        <20200203120338.000044c1@Huawei.com>
+        <182c1f94c7311580aea1b4cabe0ab2ae26bed3a6.camel@analog.com>
+        <20200205145938.00006a35@Huawei.com>
+        <edea0212d5882842c92c638df13bb6e4ed8a1a82.camel@analog.com>
+        <20200206094501.68f47948@archlinux>
+        <c46b2821098a07b5fb8bf42b26605e1841672d77.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -48,286 +54,471 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  3 Feb 2020 10:17:02 +0100
-Guido G=C3=BCnther <agx@sigxcpu.org> wrote:
+On Thu, 6 Feb 2020 10:19:09 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-> This is modelled after the vcnl4035 driver. For the vcnl40{0,1,2}0
-> we don't do anything since they use on demand measurement.
+> On Thu, 2020-02-06 at 09:45 +0000, Jonathan Cameron wrote:
+> > On Wed, 5 Feb 2020 16:44:13 +0000
+> > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+> >  =20
+> > > On Wed, 2020-02-05 at 14:59 +0000, Jonathan Cameron wrote: =20
+> > > > On Wed, 5 Feb 2020 12:25:40 +0000
+> > > > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+> > > >    =20
+> > > > > On Mon, 2020-02-03 at 12:03 +0000, Jonathan Cameron wrote:   =20
+> > > > > > On Mon, 3 Feb 2020 10:31:30 +0100
+> > > > > > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> > > > > >      =20
+> > > > > > > Hi Jonathan,
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > > On Sat, 2020-02-01 at 17:08 +0000, Jonathan Cameron
+> > > > > > > wrote:     =20
+> > > > > > > > On Mon, 20 Jan 2020 16:20:49 +0200
+> > > > > > > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> > > > > > > >        =20
+> > > > > > > > > From: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > > > > > > > >=20
+> > > > > > > > > All the ADIS devices perform, at the beginning, a self
+> > > > > > > > > test
+> > > > > > > > > to
+> > > > > > > > > make
+> > > > > > > > > sure
+> > > > > > > > > the device is in a sane state. Furthermore, some
+> > > > > > > > > drivers
+> > > > > > > > > also
+> > > > > > > > > do a
+> > > > > > > > > call
+> > > > > > > > > to `adis_reset()` before the test which is also a good
+> > > > > > > > > practice.
+> > > > > > > > > This
+> > > > > > > > > patch unifies all those operation so that, there's no
+> > > > > > > > > need
+> > > > > > > > > for
+> > > > > > > > > code
+> > > > > > > > > duplication. Furthermore, the rst pin is also checked
+> > > > > > > > > to
+> > > > > > > > > make
+> > > > > > > > > sure
+> > > > > > > > > the
+> > > > > > > > > device is not in HW reset. On top of this, some drivers
+> > > > > > > > > also
+> > > > > > > > > read
+> > > > > > > > > the
+> > > > > > > > > device product id and compare it with the device being
+> > > > > > > > > probed
+> > > > > > > > > to
+> > > > > > > > > make
+> > > > > > > > > sure the correct device is being handled. This can also
+> > > > > > > > > be
+> > > > > > > > > passed
+> > > > > > > > > to the
+> > > > > > > > > library by introducing a variable holding the PROD_ID
+> > > > > > > > > register
+> > > > > > > > > of
+> > > > > > > > > the
+> > > > > > > > > device.
+> > > > > > > > >=20
+> > > > > > > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > > > > > > > > Signed-off-by: Alexandru Ardelean <     =20
+> > > > > > > > > alexandru.ardelean@analog.com>     =20
+> > > > > > > > > ---
+> > > > > > > > >  drivers/iio/imu/Kconfig      |  1 +
+> > > > > > > > >  drivers/iio/imu/adis.c       | 63
+> > > > > > > > > ++++++++++++++++++++++++++
+> > > > > > > > > ----
+> > > > > > > > > ------
+> > > > > > > > >  include/linux/iio/imu/adis.h | 15 ++++++++-
+> > > > > > > > >  3 files changed, 61 insertions(+), 18 deletions(-)
+> > > > > > > > >=20
+> > > > > > > > > diff --git a/drivers/iio/imu/Kconfig
+> > > > > > > > > b/drivers/iio/imu/Kconfig
+> > > > > > > > > index 60bb1029e759..63036cf473c7 100644
+> > > > > > > > > --- a/drivers/iio/imu/Kconfig
+> > > > > > > > > +++ b/drivers/iio/imu/Kconfig
+> > > > > > > > > @@ -85,6 +85,7 @@ endmenu
+> > > > > > > > > =20
+> > > > > > > > >  config IIO_ADIS_LIB
+> > > > > > > > >  	tristate
+> > > > > > > > > +	depends on GPIOLIB
+> > > > > > > > >  	help
+> > > > > > > > >  	  A set of IO helper functions for the Analog
+> > > > > > > > > Devices
+> > > > > > > > > ADIS*
+> > > > > > > > > device family.
+> > > > > > > > > =20
+> > > > > > > > > diff --git a/drivers/iio/imu/adis.c
+> > > > > > > > > b/drivers/iio/imu/adis.c
+> > > > > > > > > index d02b1911b0f2..1eca5271380e 100644
+> > > > > > > > > --- a/drivers/iio/imu/adis.c
+> > > > > > > > > +++ b/drivers/iio/imu/adis.c
+> > > > > > > > > @@ -7,6 +7,7 @@
+> > > > > > > > >   */
+> > > > > > > > > =20
+> > > > > > > > >  #include <linux/delay.h>
+> > > > > > > > > +#include <linux/gpio/consumer.h>
+> > > > > > > > >  #include <linux/mutex.h>
+> > > > > > > > >  #include <linux/device.h>
+> > > > > > > > >  #include <linux/kernel.h>
+> > > > > > > > > @@ -365,36 +366,64 @@ static int adis_self_test(struct
+> > > > > > > > > adis
+> > > > > > > > > *adis)
+> > > > > > > > >  }
+> > > > > > > > > =20
+> > > > > > > > >  /**
+> > > > > > > > > - * adis_inital_startup() - Performs device self-test
+> > > > > > > > > + * __adis_initial_startup() - Device initial setup
+> > > > > > > > >   * @adis: The adis device
+> > > > > > > > >   *
+> > > > > > > > > + * This functions makes sure the device is not in
+> > > > > > > > > reset,
+> > > > > > > > > via
+> > > > > > > > > rst
+> > > > > > > > > pin.
+> > > > > > > > > + * Furthermore it performs a SW reset (only in the
+> > > > > > > > > case we
+> > > > > > > > > are
+> > > > > > > > > not
+> > > > > > > > > coming from
+> > > > > > > > > + * reset already) and a self test. It also compares
+> > > > > > > > > the
+> > > > > > > > > product id
+> > > > > > > > > with the
+> > > > > > > > > + * device id if the prod_id_reg variable is set.
+> > > > > > > > > + *
+> > > > > > > > >   * Returns 0 if the device is operational, a negative
+> > > > > > > > > error
+> > > > > > > > > code
+> > > > > > > > > otherwise.
+> > > > > > > > >   *
+> > > > > > > > >   * This function should be called early on in the
+> > > > > > > > > device
+> > > > > > > > > initialization sequence
+> > > > > > > > >   * to ensure that the device is in a sane and known
+> > > > > > > > > state
+> > > > > > > > > and
+> > > > > > > > > that
+> > > > > > > > > it is usable.
+> > > > > > > > >   */
+> > > > > > > > > -int adis_initial_startup(struct adis *adis)
+> > > > > > > > > +int __adis_initial_startup(struct adis *adis)
+> > > > > > > > >  {
+> > > > > > > > >  	int ret;
+> > > > > > > > > -
+> > > > > > > > > -	mutex_lock(&adis->state_lock);
+> > > > > > > > > +	struct gpio_desc *gpio;
+> > > > > > > > > +	const struct adis_timeout *timeouts =3D adis- =20
+> > > > > > > > > >data-   =20
+> > > > > > > > > > timeouts;     =20
+> > > > > > > > > +	const char *iio_name =3D spi_get_device_id(adis- =20
+> > > > > > > > > >spi)-   =20
+> > > > > > > > > > name;     =20
+> > > > > > > > > +	u16 prod_id, dev_id;
+> > > > > > > > > +
+> > > > > > > > > +	/* check if the device has rst pin low */
+> > > > > > > > > +	gpio =3D devm_gpiod_get_optional(&adis->spi->dev,
+> > > > > > > > > "reset",
+> > > > > > > > > GPIOD_ASIS);
+> > > > > > > > > +	if (IS_ERR(gpio)) {
+> > > > > > > > > +		return PTR_ERR(gpio);       =20
+> > > > > > > >=20
+> > > > > > > > Given you are returning here, no need for else to follow
+> > > > > > > >=20
+> > > > > > > > if (gpio...
+> > > > > > > >        =20
+> > > > > > >=20
+> > > > > > > Definitely...
+> > > > > > >      =20
+> > > > > > > > > +	} else if (gpio &&
+> > > > > > > > > gpiod_get_value_cansleep(gpio)) {
+> > > > > > > > > +		/* bring device out of reset */
+> > > > > > > > > +		gpiod_set_value_cansleep(gpio,
+> > > > > > > > > 0);       =20
+> > > > > > > >=20
+> > > > > > > > Hmm. So is a software reset the best option if we have a
+> > > > > > > > hardware
+> > > > > > > > reset
+> > > > > > > > line but it's not currently in the reset mode?
+> > > > > > > >        =20
+> > > > > > >=20
+> > > > > > > Hmm, that's a fair question. Now that I think about it, if
+> > > > > > > we
+> > > > > > > do
+> > > > > > > have a
+> > > > > > > gpio we should just assume it's in reset and call
+> > > > > > > `gpiod_set_value_cansleep`. So, I guess we could just ditch
+> > > > > > > the
+> > > > > > > `gpiod_get_value_cansleep(gpio)` part.     =20
+> > > > > >=20
+> > > > > > Not sure I agree.   For example the driver may well have been
+> > > > > > unbound
+> > > > > > and rebound for some reason.     =20
+> > > > >=20
+> > > > > Yes, that is true..
+> > > > >    =20
+> > > > > > I would argue you should just do a set / reset cycle with
+> > > > > > appropriate
+> > > > > > sleep
+> > > > > > in between.  If it's already set then no harm done, if it
+> > > > > > isn't
+> > > > > > you
+> > > > > > force
+> > > > > > a hardware reset.     =20
+> > > > >=20
+> > > > > So, As Im understanding, it comes down to what should we
+> > > > > consider
+> > > > > as
+> > > > > default. You suggest to first do the sw reset and the check the
+> > > > > gpio
+> > > > > state and if needed, bring the device out of reset, right? Now
+> > > > > that
+> > > > > I
+> > > > > think about it, I think the only reason I haven't done like
+> > > > > that is
+> > > > > because you might end up sleeping quite some time (sw reset +
+> > > > > hw
+> > > > > reset). Either way, I'm fine with both options. Not sure if
+> > > > > Alex
+> > > > > has
+> > > > > something to add...   =20
+> > > >=20
+> > > > Either reset should be good on it's own.  I would use hardware
+> > > > reset
+> > > > if the pin is there. If it's not, then use the software reset.
+> > > >=20
+> > > > For hardware always set the pin explicitly to reset as that
+> > > > guarantees
+> > > > against any race conditions, even if something odd happens.
+> > > >=20
+> > > > Jonathan   =20
+> > >=20
+> > > Hmm, I think I'm not getting the point or maybe I failed to explain
+> > > what I was doing... So, on the code in this patch, there's no HW
+> > > reset.
+> > > It checks the reset pin and sees if the part is in reset and, if it
+> > > is,
+> > > it brings it out of reset. In that case, no need for sw reset since
+> > > we
+> > > are coming already from reset. On the other hand, if there's no
+> > > reset
+> > > pin configured or the part is already powered, then I was forcing a
+> > > sw
+> > > reset to guarantee a sane state when starting... =20
+> >=20
+> > Agreed that is what your patch is doing.   However I'm suggesting you
+> > do
+> > something different.  Decide which type of reset takes precedence.
+> > Normally that is hardware reset if it is wired up, but there is no
+> > particular reason it can't be the software reset if they do exactly
+> > the
+> > same thing.
+> >=20
+> > Plan a,
+> > If you decide the software takes precedence you need to check if the
+> > hardware reset is already set.  If so you need to release it and
+> > carry on.
+> > If hardware reset is not provided or not set then you just call the
+> > software
+> > reset.
+> >=20
+> > Plan b, which is the most common one for drivers IIRC...
+> > If you decide to make the hardware reset take precedence and it's
+> > there, then you
+> > 'always' set the pin for appropriate time to trigger a reset.  You
+> > don't
+> > care what state it was previously in as either it's already in reset
+> > in which
+> > case you are making no change, or not in which case you enter reset.
+> > Note this also works if you have an output only pin and no access to
+> > what
+> > its current state is (typically because it was set by firmware).
+> >=20
+> > Then you raise the gpio to take it out of reset and move on.  If the
+> > reset is not provided then you fall back to the software reset. =20
 >=20
-> Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org>
-Applied to the togreg branch of iio.git and pushed out as testing for the
-autobuilders to play with it.
+> Ok, Now I believe I got it. If Im understanding correctly, what is
+> happening right know is plan A. So, on plan B, we actually force the HW
+> reset (if the pin is there) instead of just bringing it out of reset...
 
-I won't push this out as a non rebasing branch for a week or so yet,
-hence plenty of time for others to comment even though I have it queued
-up!
+Yup. Exactly that.
+>=20
+> I already spoke with Alex and we agreed he is sending v2 since he
+> started this series. So, He is deciding which plan to go for :)
+
+Cool
 
 Jonathan
 
-> ---
->  drivers/iio/light/vcnl4000.c | 129 +++++++++++++++++++++++++++++++----
->  1 file changed, 117 insertions(+), 12 deletions(-)
 >=20
-> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> index 8f198383626b..3b71c7d538af 100644
-> --- a/drivers/iio/light/vcnl4000.c
-> +++ b/drivers/iio/light/vcnl4000.c
-> @@ -22,6 +22,7 @@
->  #include <linux/i2c.h>
->  #include <linux/err.h>
->  #include <linux/delay.h>
-> +#include <linux/pm_runtime.h>
-> =20
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -57,6 +58,8 @@
->  #define VCNL4000_AL_OD		BIT(4) /* start on-demand ALS measurement */
->  #define VCNL4000_PS_OD		BIT(3) /* start on-demand proximity measurement =
-*/
-> =20
-> +#define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspe=
-nd */
-> +
->  enum vcnl4000_device_ids {
->  	VCNL4000,
->  	VCNL4010,
-> @@ -87,6 +90,7 @@ struct vcnl4000_chip_spec {
->  	int (*init)(struct vcnl4000_data *data);
->  	int (*measure_light)(struct vcnl4000_data *data, int *val);
->  	int (*measure_proximity)(struct vcnl4000_data *data, int *val);
-> +	int (*set_power_state)(struct vcnl4000_data *data, bool on);
->  };
-> =20
->  static const struct i2c_device_id vcnl4000_id[] =3D {
-> @@ -99,6 +103,12 @@ static const struct i2c_device_id vcnl4000_id[] =3D {
->  };
->  MODULE_DEVICE_TABLE(i2c, vcnl4000_id);
-> =20
-> +static int vcnl4000_set_power_state(struct vcnl4000_data *data, bool on)
-> +{
-> +	/* no suspend op */
-> +	return 0;
-> +}
-> +
->  static int vcnl4000_init(struct vcnl4000_data *data)
->  {
->  	int ret, prod_id;
-> @@ -127,9 +137,31 @@ static int vcnl4000_init(struct vcnl4000_data *data)
->  	data->al_scale =3D 250000;
->  	mutex_init(&data->vcnl4000_lock);
-> =20
-> -	return 0;
-> +	return data->chip_spec->set_power_state(data, true);
->  };
-> =20
-> +static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
-> +{
-> +	u16 val =3D on ? 0 /* power on */ : 1 /* shut down */;
-> +	int ret;
-> +
-> +	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (on) {
-> +		/* Wait at least one integration cycle before fetching data */
-> +		data->vcnl4200_al.last_measurement =3D ktime_get();
-> +		data->vcnl4200_ps.last_measurement =3D ktime_get();
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int vcnl4200_init(struct vcnl4000_data *data)
->  {
->  	int ret, id;
-> @@ -155,14 +187,6 @@ static int vcnl4200_init(struct vcnl4000_data *data)
-> =20
->  	data->rev =3D (ret >> 8) & 0xf;
-> =20
-> -	/* Set defaults and enable both channels */
-> -	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, 0);
-> -	if (ret < 0)
-> -		return ret;
-> -	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, 0);
-> -	if (ret < 0)
-> -		return ret;
-> -
->  	data->vcnl4200_al.reg =3D VCNL4200_AL_DATA;
->  	data->vcnl4200_ps.reg =3D VCNL4200_PS_DATA;
->  	switch (id) {
-> @@ -180,11 +204,13 @@ static int vcnl4200_init(struct vcnl4000_data *data)
->  		data->al_scale =3D 120000;
->  		break;
->  	}
-> -	data->vcnl4200_al.last_measurement =3D ktime_set(0, 0);
-> -	data->vcnl4200_ps.last_measurement =3D ktime_set(0, 0);
->  	mutex_init(&data->vcnl4200_al.lock);
->  	mutex_init(&data->vcnl4200_ps.lock);
-> =20
-> +	ret =3D data->chip_spec->set_power_state(data, true);
-> +	if (ret < 0)
-> +		return ret;
-> +
->  	return 0;
->  };
-> =20
-> @@ -291,24 +317,28 @@ static const struct vcnl4000_chip_spec vcnl4000_chi=
-p_spec_cfg[] =3D {
->  		.init =3D vcnl4000_init,
->  		.measure_light =3D vcnl4000_measure_light,
->  		.measure_proximity =3D vcnl4000_measure_proximity,
-> +		.set_power_state =3D vcnl4000_set_power_state,
->  	},
->  	[VCNL4010] =3D {
->  		.prod =3D "VCNL4010/4020",
->  		.init =3D vcnl4000_init,
->  		.measure_light =3D vcnl4000_measure_light,
->  		.measure_proximity =3D vcnl4000_measure_proximity,
-> +		.set_power_state =3D vcnl4000_set_power_state,
->  	},
->  	[VCNL4040] =3D {
->  		.prod =3D "VCNL4040",
->  		.init =3D vcnl4200_init,
->  		.measure_light =3D vcnl4200_measure_light,
->  		.measure_proximity =3D vcnl4200_measure_proximity,
-> +		.set_power_state =3D vcnl4200_set_power_state,
->  	},
->  	[VCNL4200] =3D {
->  		.prod =3D "VCNL4200",
->  		.init =3D vcnl4200_init,
->  		.measure_light =3D vcnl4200_measure_light,
->  		.measure_proximity =3D vcnl4200_measure_proximity,
-> +		.set_power_state =3D vcnl4200_set_power_state,
->  	},
->  };
-> =20
-> @@ -323,6 +353,23 @@ static const struct iio_chan_spec vcnl4000_channels[=
-] =3D {
->  	}
->  };
-> =20
-> +static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data, boo=
-l on)
-> +{
-> +	struct device *dev =3D &data->client->dev;
-> +	int ret;
-> +
-> +	if (on) {
-> +		ret =3D pm_runtime_get_sync(dev);
-> +		if (ret < 0)
-> +			pm_runtime_put_noidle(dev);
-> +	} else {
-> +		pm_runtime_mark_last_busy(dev);
-> +		ret =3D pm_runtime_put_autosuspend(dev);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->  static int vcnl4000_read_raw(struct iio_dev *indio_dev,
->  				struct iio_chan_spec const *chan,
->  				int *val, int *val2, long mask)
-> @@ -332,6 +379,10 @@ static int vcnl4000_read_raw(struct iio_dev *indio_d=
-ev,
-> =20
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
-> +		ret =3D vcnl4000_set_pm_runtime_state(data, true);
-> +		if  (ret < 0)
-> +			return ret;
-> +
->  		switch (chan->type) {
->  		case IIO_LIGHT:
->  			ret =3D data->chip_spec->measure_light(data, val);
-> @@ -346,6 +397,7 @@ static int vcnl4000_read_raw(struct iio_dev *indio_de=
-v,
->  		default:
->  			ret =3D -EINVAL;
->  		}
-> +		vcnl4000_set_pm_runtime_state(data, false);
->  		return ret;
->  	case IIO_CHAN_INFO_SCALE:
->  		if (chan->type !=3D IIO_LIGHT)
-> @@ -394,7 +446,22 @@ static int vcnl4000_probe(struct i2c_client *client,
->  	indio_dev->name =3D VCNL4000_DRV_NAME;
->  	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> =20
-> -	return devm_iio_device_register(&client->dev, indio_dev);
-> +	ret =3D pm_runtime_set_active(&client->dev);
-> +	if (ret < 0)
-> +		goto fail_poweroff;
-> +
-> +	ret =3D iio_device_register(indio_dev);
-> +	if (ret < 0)
-> +		goto fail_poweroff;
-> +
-> +	pm_runtime_enable(&client->dev);
-> +	pm_runtime_set_autosuspend_delay(&client->dev, VCNL4000_SLEEP_DELAY_MS);
-> +	pm_runtime_use_autosuspend(&client->dev);
-> +
-> +	return 0;
-> +fail_poweroff:
-> +	data->chip_spec->set_power_state(data, false);
-> +	return ret;
->  }
-> =20
->  static const struct of_device_id vcnl_4000_of_match[] =3D {
-> @@ -422,13 +489,51 @@ static const struct of_device_id vcnl_4000_of_match=
-[] =3D {
->  };
->  MODULE_DEVICE_TABLE(of, vcnl_4000_of_match);
-> =20
-> +static int vcnl4000_remove(struct i2c_client *client)
-> +{
-> +	struct iio_dev *indio_dev =3D i2c_get_clientdata(client);
-> +	struct vcnl4000_data *data =3D iio_priv(indio_dev);
-> +
-> +	pm_runtime_dont_use_autosuspend(&client->dev);
-> +	pm_runtime_disable(&client->dev);
-> +	iio_device_unregister(indio_dev);
-> +	pm_runtime_set_suspended(&client->dev);
-> +
-> +	return data->chip_spec->set_power_state(data, false);
-> +}
-> +
-> +static int __maybe_unused vcnl4000_runtime_suspend(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev =3D i2c_get_clientdata(to_i2c_client(dev));
-> +	struct vcnl4000_data *data =3D iio_priv(indio_dev);
-> +
-> +	return data->chip_spec->set_power_state(data, false);
-> +}
-> +
-> +static int __maybe_unused vcnl4000_runtime_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev =3D i2c_get_clientdata(to_i2c_client(dev));
-> +	struct vcnl4000_data *data =3D iio_priv(indio_dev);
-> +
-> +	return data->chip_spec->set_power_state(data, true);
-> +}
-> +
-> +static const struct dev_pm_ops vcnl4000_pm_ops =3D {
-> +	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> +				pm_runtime_force_resume)
-> +	SET_RUNTIME_PM_OPS(vcnl4000_runtime_suspend,
-> +			   vcnl4000_runtime_resume, NULL)
-> +};
-> +
->  static struct i2c_driver vcnl4000_driver =3D {
->  	.driver =3D {
->  		.name   =3D VCNL4000_DRV_NAME,
-> +		.pm	=3D &vcnl4000_pm_ops,
->  		.of_match_table =3D vcnl_4000_of_match,
->  	},
->  	.probe  =3D vcnl4000_probe,
->  	.id_table =3D vcnl4000_id,
-> +	.remove	=3D vcnl4000_remove,
->  };
-> =20
->  module_i2c_driver(vcnl4000_driver);
+> Thanks for your explanation!
+> Nuno S=C3=A1
+> > Jonathan
+> >=20
+> >=20
+> >=20
+> >  =20
+> > > > > Nuno S=C3=A1    =20
+> > > > > > > > > +		msleep(timeouts->reset_ms);
+> > > > > > > > > +	} else {
+> > > > > > > > > +		ret =3D __adis_reset(adis);
+> > > > > > > > > +		if (ret)
+> > > > > > > > > +			return ret;
+> > > > > > > > > +	}
+> > > > > > > > > =20
+> > > > > > > > >  	ret =3D adis_self_test(adis);
+> > > > > > > > > -	if (ret) {
+> > > > > > > > > -		dev_err(&adis->spi->dev, "Self-test
+> > > > > > > > > failed,
+> > > > > > > > > trying
+> > > > > > > > > reset.\n");
+> > > > > > > > > -		__adis_reset(adis);
+> > > > > > > > > -		ret =3D adis_self_test(adis);
+> > > > > > > > > -		if (ret) {
+> > > > > > > > > -			dev_err(&adis->spi->dev,
+> > > > > > > > > "Second self-
+> > > > > > > > > test
+> > > > > > > > > failed, giving up.\n");
+> > > > > > > > > -			goto out_unlock;
+> > > > > > > > > -		}
+> > > > > > > > > -	}
+> > > > > > > > > +	if (ret)
+> > > > > > > > > +		return ret;
+> > > > > > > > > =20
+> > > > > > > > > -out_unlock:
+> > > > > > > > > -	mutex_unlock(&adis->state_lock);
+> > > > > > > > > -	return ret;
+> > > > > > > > > +	if (!adis->data->prod_id_reg)
+> > > > > > > > > +		return 0;
+> > > > > > > > > +
+> > > > > > > > > +	ret =3D adis_read_reg_16(adis, adis->data- =20
+> > > > > > > > > >prod_id_reg, =20
+> > > > > > > > > &prod_id);
+> > > > > > > > > +	if (ret)
+> > > > > > > > > +		return ret;
+> > > > > > > > > +
+> > > > > > > > > +	ret =3D sscanf(iio_name, "adis%hu\n",
+> > > > > > > > > &dev_id);       =20
+> > > > > > > >=20
+> > > > > > > > Hmm. I have a general dislike of pulling part name
+> > > > > > > > strings
+> > > > > > > > apart
+> > > > > > > > to
+> > > > > > > > get
+> > > > > > > > IDs.  It tends to break when someone comes along and adds
+> > > > > > > > a
+> > > > > > > > part
+> > > > > > > > with
+> > > > > > > > new
+> > > > > > > > branding.  Perhaps just put it in the relevant device
+> > > > > > > > part
+> > > > > > > > specific
+> > > > > > > > structures
+> > > > > > > > directly?
+> > > > > > > >        =20
+> > > > > > >=20
+> > > > > > > I'll admit that this to orientated to ADI devices and I
+> > > > > > > basically
+> > > > > > > just
+> > > > > > > took what all the drivers were doing and placed it inside
+> > > > > > > the
+> > > > > > > library...
+> > > > > > >=20
+> > > > > > > So, you mean passing this to each `chip_info` and then
+> > > > > > > passing
+> > > > > > > it
+> > > > > > > to
+> > > > > > > the library through `adis_data`?     =20
+> > > > > >=20
+> > > > > > Yes.  People don't tend to expect strings to need to take a
+> > > > > > particular form,
+> > > > > > so pulling them apart in a library can give unexpected
+> > > > > > results...
+> > > > > >      =20
+> > > > > > > > > +	if (ret !=3D 1)
+> > > > > > > > > +		return -EINVAL;
+> > > > > > > > > +
+> > > > > > > > > +	if (prod_id !=3D dev_id)
+> > > > > > > > > +		dev_warn(&adis->spi->dev,
+> > > > > > > > > +			 "Device ID(%u) and product
+> > > > > > > > > ID(%u) do
+> > > > > > > > > not
+> > > > > > > > > match.",
+> > > > > > > > > +			 dev_id, prod_id);
+> > > > > > > > > +
+> > > > > > > > > +	return 0;
+> > > > > > > > >  }
+> > > > > > > > > -EXPORT_SYMBOL_GPL(adis_initial_startup);
+> > > > > > > > > +EXPORT_SYMBOL_GPL(__adis_initial_startup);
+> > > > > > > > > =20
+> > > > > > > > >  /**
+> > > > > > > > >   * adis_single_conversion() - Performs a single sample
+> > > > > > > > > conversion
+> > > > > > > > > diff --git a/include/linux/iio/imu/adis.h
+> > > > > > > > > b/include/linux/iio/imu/adis.h
+> > > > > > > > > index d21a013d1122..c43e7922ab32 100644
+> > > > > > > > > --- a/include/linux/iio/imu/adis.h
+> > > > > > > > > +++ b/include/linux/iio/imu/adis.h
+> > > > > > > > > @@ -41,6 +41,7 @@ struct adis_timeout {
+> > > > > > > > >   * @glob_cmd_reg: Register address of the GLOB_CMD
+> > > > > > > > > register
+> > > > > > > > >   * @msc_ctrl_reg: Register address of the MSC_CTRL
+> > > > > > > > > register
+> > > > > > > > >   * @diag_stat_reg: Register address of the DIAG_STAT
+> > > > > > > > > register
+> > > > > > > > > + * @prod_id_reg: Register address of the PROD_ID
+> > > > > > > > > register
+> > > > > > > > >   * @self_test_reg: Register address to request self
+> > > > > > > > > test
+> > > > > > > > > command
+> > > > > > > > >   * @status_error_msgs: Array of error messgaes
+> > > > > > > > >   * @status_error_mask:
+> > > > > > > > > @@ -54,6 +55,7 @@ struct adis_data {
+> > > > > > > > >  	unsigned int glob_cmd_reg;
+> > > > > > > > >  	unsigned int msc_ctrl_reg;
+> > > > > > > > >  	unsigned int diag_stat_reg;
+> > > > > > > > > +	unsigned int prod_id_reg;
+> > > > > > > > > =20
+> > > > > > > > >  	unsigned int self_test_mask;
+> > > > > > > > >  	unsigned int self_test_reg;
+> > > > > > > > > @@ -299,6 +301,7 @@ static inline int
+> > > > > > > > > adis_read_reg_32(struct
+> > > > > > > > > adis
+> > > > > > > > > *adis, unsigned int reg,
+> > > > > > > > > =20
+> > > > > > > > >  int adis_enable_irq(struct adis *adis, bool enable);
+> > > > > > > > >  int __adis_check_status(struct adis *adis);
+> > > > > > > > > +int __adis_initial_startup(struct adis *adis);
+> > > > > > > > > =20
+> > > > > > > > >  static inline int adis_check_status(struct adis *adis)
+> > > > > > > > >  {
+> > > > > > > > > @@ -311,7 +314,17 @@ static inline int
+> > > > > > > > > adis_check_status(struct
+> > > > > > > > > adis *adis)
+> > > > > > > > >  	return ret;
+> > > > > > > > >  }
+> > > > > > > > > =20
+> > > > > > > > > -int adis_initial_startup(struct adis *adis);
+> > > > > > > > > +/* locked version of __adis_initial_startup() */
+> > > > > > > > > +static inline int adis_initial_startup(struct adis
+> > > > > > > > > *adis)
+> > > > > > > > > +{
+> > > > > > > > > +	int ret;
+> > > > > > > > > +
+> > > > > > > > > +	mutex_lock(&adis->state_lock);
+> > > > > > > > > +	ret =3D __adis_initial_startup(adis);
+> > > > > > > > > +	mutex_unlock(&adis->state_lock);
+> > > > > > > > > +
+> > > > > > > > > +	return ret;
+> > > > > > > > > +}
+> > > > > > > > > =20
+> > > > > > > > >  int adis_single_conversion(struct iio_dev *indio_dev,
+> > > > > > > > >  	const struct iio_chan_spec *chan, unsigned int
+> > > > > > > > > error_mask,       =20
+> > > > > > > >=20
+> > > > > > > >        =20
+> > > > > >=20
+> > > > > >      =20
+> > > >=20
+> > > >    =20
+>=20
 

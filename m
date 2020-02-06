@@ -2,49 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC77E154305
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 12:28:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42B8415431E
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 12:32:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726687AbgBFL2e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Feb 2020 06:28:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59016 "EHLO mail.kernel.org"
+        id S1727649AbgBFLcE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Feb 2020 06:32:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60080 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726538AbgBFL2e (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 Feb 2020 06:28:34 -0500
+        id S1727007AbgBFLcD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 Feb 2020 06:32:03 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2CB4520730;
-        Thu,  6 Feb 2020 11:28:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1D81620730;
+        Thu,  6 Feb 2020 11:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580988513;
-        bh=GJcI9nYq59RUzy22koTUfdP4WIB6ekJBAEFQMZMEzGA=;
+        s=default; t=1580988721;
+        bh=JNxsz1C6aHr/v+tL+tzAIo/EsrhaWWkpcO1jE44hes4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=1QUaqJh1fQnn9mSBJ2cQhTN0wOrKTr1cZG6oCzKXsGeLqlytmoih/5WRAF1SVehI2
-         it+QZuC9Z/m6LHD6jVIKjaxDyxIXPM+K4joB08g2OUDAsv+X+YMwrncr8s1klYEsJh
-         kK4alG0ZJrDHygZKxXzjE0N6q72nPznqqRkwrdx8=
-Date:   Thu, 6 Feb 2020 11:28:29 +0000
+        b=MUim/WxwriWXHS4XseSwKd4TvwAwzsMacWrDZXs+/p+rojM2X7eAM+sN5oj3OXx6s
+         AU1avzjSWKKFhgcNey6zfgTqdmp0nLshIxr68mGbpZzUrq3ELEdigCAqxv+lHnj9gd
+         QXyHcG9d7XCwPYxHjms1bRh4Y9rBcu9s/G2bzdZI=
+Date:   Thu, 6 Feb 2020 11:31:54 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>
-Subject: Re: [PATCH 2/4] iio: imu: adis: Refactor adis_initial_startup
-Message-ID: <20200206112829.4aef53f3@archlinux>
-In-Reply-To: <c46b2821098a07b5fb8bf42b26605e1841672d77.camel@analog.com>
-References: <20200120142051.28533-1-alexandru.ardelean@analog.com>
-        <20200120142051.28533-2-alexandru.ardelean@analog.com>
-        <20200201170839.4ab98d8e@archlinux>
-        <da82db5f81e116c7ecc36f5d9833b90b4f7cd15d.camel@gmail.com>
-        <20200203120338.000044c1@Huawei.com>
-        <182c1f94c7311580aea1b4cabe0ab2ae26bed3a6.camel@analog.com>
-        <20200205145938.00006a35@Huawei.com>
-        <edea0212d5882842c92c638df13bb6e4ed8a1a82.camel@analog.com>
-        <20200206094501.68f47948@archlinux>
-        <c46b2821098a07b5fb8bf42b26605e1841672d77.camel@analog.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-clk@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Fix paths in schema $id fields
+Message-ID: <20200206113154.5d2383e8@archlinux>
+In-Reply-To: <20200204224909.26880-1-robh@kernel.org>
+References: <20200204224909.26880-1-robh@kernel.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,471 +64,375 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 6 Feb 2020 10:19:09 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+On Tue,  4 Feb 2020 22:49:09 +0000
+Rob Herring <robh@kernel.org> wrote:
 
-> On Thu, 2020-02-06 at 09:45 +0000, Jonathan Cameron wrote:
-> > On Wed, 5 Feb 2020 16:44:13 +0000
-> > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
-> >  =20
-> > > On Wed, 2020-02-05 at 14:59 +0000, Jonathan Cameron wrote: =20
-> > > > On Wed, 5 Feb 2020 12:25:40 +0000
-> > > > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
-> > > >    =20
-> > > > > On Mon, 2020-02-03 at 12:03 +0000, Jonathan Cameron wrote:   =20
-> > > > > > On Mon, 3 Feb 2020 10:31:30 +0100
-> > > > > > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> > > > > >      =20
-> > > > > > > Hi Jonathan,
-> > > > > > >=20
-> > > > > > >=20
-> > > > > > > On Sat, 2020-02-01 at 17:08 +0000, Jonathan Cameron
-> > > > > > > wrote:     =20
-> > > > > > > > On Mon, 20 Jan 2020 16:20:49 +0200
-> > > > > > > > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> > > > > > > >        =20
-> > > > > > > > > From: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > > > > > > >=20
-> > > > > > > > > All the ADIS devices perform, at the beginning, a self
-> > > > > > > > > test
-> > > > > > > > > to
-> > > > > > > > > make
-> > > > > > > > > sure
-> > > > > > > > > the device is in a sane state. Furthermore, some
-> > > > > > > > > drivers
-> > > > > > > > > also
-> > > > > > > > > do a
-> > > > > > > > > call
-> > > > > > > > > to `adis_reset()` before the test which is also a good
-> > > > > > > > > practice.
-> > > > > > > > > This
-> > > > > > > > > patch unifies all those operation so that, there's no
-> > > > > > > > > need
-> > > > > > > > > for
-> > > > > > > > > code
-> > > > > > > > > duplication. Furthermore, the rst pin is also checked
-> > > > > > > > > to
-> > > > > > > > > make
-> > > > > > > > > sure
-> > > > > > > > > the
-> > > > > > > > > device is not in HW reset. On top of this, some drivers
-> > > > > > > > > also
-> > > > > > > > > read
-> > > > > > > > > the
-> > > > > > > > > device product id and compare it with the device being
-> > > > > > > > > probed
-> > > > > > > > > to
-> > > > > > > > > make
-> > > > > > > > > sure the correct device is being handled. This can also
-> > > > > > > > > be
-> > > > > > > > > passed
-> > > > > > > > > to the
-> > > > > > > > > library by introducing a variable holding the PROD_ID
-> > > > > > > > > register
-> > > > > > > > > of
-> > > > > > > > > the
-> > > > > > > > > device.
-> > > > > > > > >=20
-> > > > > > > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > > > > > > > Signed-off-by: Alexandru Ardelean <     =20
-> > > > > > > > > alexandru.ardelean@analog.com>     =20
-> > > > > > > > > ---
-> > > > > > > > >  drivers/iio/imu/Kconfig      |  1 +
-> > > > > > > > >  drivers/iio/imu/adis.c       | 63
-> > > > > > > > > ++++++++++++++++++++++++++
-> > > > > > > > > ----
-> > > > > > > > > ------
-> > > > > > > > >  include/linux/iio/imu/adis.h | 15 ++++++++-
-> > > > > > > > >  3 files changed, 61 insertions(+), 18 deletions(-)
-> > > > > > > > >=20
-> > > > > > > > > diff --git a/drivers/iio/imu/Kconfig
-> > > > > > > > > b/drivers/iio/imu/Kconfig
-> > > > > > > > > index 60bb1029e759..63036cf473c7 100644
-> > > > > > > > > --- a/drivers/iio/imu/Kconfig
-> > > > > > > > > +++ b/drivers/iio/imu/Kconfig
-> > > > > > > > > @@ -85,6 +85,7 @@ endmenu
-> > > > > > > > > =20
-> > > > > > > > >  config IIO_ADIS_LIB
-> > > > > > > > >  	tristate
-> > > > > > > > > +	depends on GPIOLIB
-> > > > > > > > >  	help
-> > > > > > > > >  	  A set of IO helper functions for the Analog
-> > > > > > > > > Devices
-> > > > > > > > > ADIS*
-> > > > > > > > > device family.
-> > > > > > > > > =20
-> > > > > > > > > diff --git a/drivers/iio/imu/adis.c
-> > > > > > > > > b/drivers/iio/imu/adis.c
-> > > > > > > > > index d02b1911b0f2..1eca5271380e 100644
-> > > > > > > > > --- a/drivers/iio/imu/adis.c
-> > > > > > > > > +++ b/drivers/iio/imu/adis.c
-> > > > > > > > > @@ -7,6 +7,7 @@
-> > > > > > > > >   */
-> > > > > > > > > =20
-> > > > > > > > >  #include <linux/delay.h>
-> > > > > > > > > +#include <linux/gpio/consumer.h>
-> > > > > > > > >  #include <linux/mutex.h>
-> > > > > > > > >  #include <linux/device.h>
-> > > > > > > > >  #include <linux/kernel.h>
-> > > > > > > > > @@ -365,36 +366,64 @@ static int adis_self_test(struct
-> > > > > > > > > adis
-> > > > > > > > > *adis)
-> > > > > > > > >  }
-> > > > > > > > > =20
-> > > > > > > > >  /**
-> > > > > > > > > - * adis_inital_startup() - Performs device self-test
-> > > > > > > > > + * __adis_initial_startup() - Device initial setup
-> > > > > > > > >   * @adis: The adis device
-> > > > > > > > >   *
-> > > > > > > > > + * This functions makes sure the device is not in
-> > > > > > > > > reset,
-> > > > > > > > > via
-> > > > > > > > > rst
-> > > > > > > > > pin.
-> > > > > > > > > + * Furthermore it performs a SW reset (only in the
-> > > > > > > > > case we
-> > > > > > > > > are
-> > > > > > > > > not
-> > > > > > > > > coming from
-> > > > > > > > > + * reset already) and a self test. It also compares
-> > > > > > > > > the
-> > > > > > > > > product id
-> > > > > > > > > with the
-> > > > > > > > > + * device id if the prod_id_reg variable is set.
-> > > > > > > > > + *
-> > > > > > > > >   * Returns 0 if the device is operational, a negative
-> > > > > > > > > error
-> > > > > > > > > code
-> > > > > > > > > otherwise.
-> > > > > > > > >   *
-> > > > > > > > >   * This function should be called early on in the
-> > > > > > > > > device
-> > > > > > > > > initialization sequence
-> > > > > > > > >   * to ensure that the device is in a sane and known
-> > > > > > > > > state
-> > > > > > > > > and
-> > > > > > > > > that
-> > > > > > > > > it is usable.
-> > > > > > > > >   */
-> > > > > > > > > -int adis_initial_startup(struct adis *adis)
-> > > > > > > > > +int __adis_initial_startup(struct adis *adis)
-> > > > > > > > >  {
-> > > > > > > > >  	int ret;
-> > > > > > > > > -
-> > > > > > > > > -	mutex_lock(&adis->state_lock);
-> > > > > > > > > +	struct gpio_desc *gpio;
-> > > > > > > > > +	const struct adis_timeout *timeouts =3D adis- =20
-> > > > > > > > > >data-   =20
-> > > > > > > > > > timeouts;     =20
-> > > > > > > > > +	const char *iio_name =3D spi_get_device_id(adis- =20
-> > > > > > > > > >spi)-   =20
-> > > > > > > > > > name;     =20
-> > > > > > > > > +	u16 prod_id, dev_id;
-> > > > > > > > > +
-> > > > > > > > > +	/* check if the device has rst pin low */
-> > > > > > > > > +	gpio =3D devm_gpiod_get_optional(&adis->spi->dev,
-> > > > > > > > > "reset",
-> > > > > > > > > GPIOD_ASIS);
-> > > > > > > > > +	if (IS_ERR(gpio)) {
-> > > > > > > > > +		return PTR_ERR(gpio);       =20
-> > > > > > > >=20
-> > > > > > > > Given you are returning here, no need for else to follow
-> > > > > > > >=20
-> > > > > > > > if (gpio...
-> > > > > > > >        =20
-> > > > > > >=20
-> > > > > > > Definitely...
-> > > > > > >      =20
-> > > > > > > > > +	} else if (gpio &&
-> > > > > > > > > gpiod_get_value_cansleep(gpio)) {
-> > > > > > > > > +		/* bring device out of reset */
-> > > > > > > > > +		gpiod_set_value_cansleep(gpio,
-> > > > > > > > > 0);       =20
-> > > > > > > >=20
-> > > > > > > > Hmm. So is a software reset the best option if we have a
-> > > > > > > > hardware
-> > > > > > > > reset
-> > > > > > > > line but it's not currently in the reset mode?
-> > > > > > > >        =20
-> > > > > > >=20
-> > > > > > > Hmm, that's a fair question. Now that I think about it, if
-> > > > > > > we
-> > > > > > > do
-> > > > > > > have a
-> > > > > > > gpio we should just assume it's in reset and call
-> > > > > > > `gpiod_set_value_cansleep`. So, I guess we could just ditch
-> > > > > > > the
-> > > > > > > `gpiod_get_value_cansleep(gpio)` part.     =20
-> > > > > >=20
-> > > > > > Not sure I agree.   For example the driver may well have been
-> > > > > > unbound
-> > > > > > and rebound for some reason.     =20
-> > > > >=20
-> > > > > Yes, that is true..
-> > > > >    =20
-> > > > > > I would argue you should just do a set / reset cycle with
-> > > > > > appropriate
-> > > > > > sleep
-> > > > > > in between.  If it's already set then no harm done, if it
-> > > > > > isn't
-> > > > > > you
-> > > > > > force
-> > > > > > a hardware reset.     =20
-> > > > >=20
-> > > > > So, As Im understanding, it comes down to what should we
-> > > > > consider
-> > > > > as
-> > > > > default. You suggest to first do the sw reset and the check the
-> > > > > gpio
-> > > > > state and if needed, bring the device out of reset, right? Now
-> > > > > that
-> > > > > I
-> > > > > think about it, I think the only reason I haven't done like
-> > > > > that is
-> > > > > because you might end up sleeping quite some time (sw reset +
-> > > > > hw
-> > > > > reset). Either way, I'm fine with both options. Not sure if
-> > > > > Alex
-> > > > > has
-> > > > > something to add...   =20
-> > > >=20
-> > > > Either reset should be good on it's own.  I would use hardware
-> > > > reset
-> > > > if the pin is there. If it's not, then use the software reset.
-> > > >=20
-> > > > For hardware always set the pin explicitly to reset as that
-> > > > guarantees
-> > > > against any race conditions, even if something odd happens.
-> > > >=20
-> > > > Jonathan   =20
-> > >=20
-> > > Hmm, I think I'm not getting the point or maybe I failed to explain
-> > > what I was doing... So, on the code in this patch, there's no HW
-> > > reset.
-> > > It checks the reset pin and sees if the part is in reset and, if it
-> > > is,
-> > > it brings it out of reset. In that case, no need for sw reset since
-> > > we
-> > > are coming already from reset. On the other hand, if there's no
-> > > reset
-> > > pin configured or the part is already powered, then I was forcing a
-> > > sw
-> > > reset to guarantee a sane state when starting... =20
-> >=20
-> > Agreed that is what your patch is doing.   However I'm suggesting you
-> > do
-> > something different.  Decide which type of reset takes precedence.
-> > Normally that is hardware reset if it is wired up, but there is no
-> > particular reason it can't be the software reset if they do exactly
-> > the
-> > same thing.
-> >=20
-> > Plan a,
-> > If you decide the software takes precedence you need to check if the
-> > hardware reset is already set.  If so you need to release it and
-> > carry on.
-> > If hardware reset is not provided or not set then you just call the
-> > software
-> > reset.
-> >=20
-> > Plan b, which is the most common one for drivers IIRC...
-> > If you decide to make the hardware reset take precedence and it's
-> > there, then you
-> > 'always' set the pin for appropriate time to trigger a reset.  You
-> > don't
-> > care what state it was previously in as either it's already in reset
-> > in which
-> > case you are making no change, or not in which case you enter reset.
-> > Note this also works if you have an output only pin and no access to
-> > what
-> > its current state is (typically because it was set by firmware).
-> >=20
-> > Then you raise the gpio to take it out of reset and move on.  If the
-> > reset is not provided then you fall back to the software reset. =20
+> The $id path checks were inadequately checking the path part of the $id
+> value. With the check fixed, there's a number of errors that need to be
+> fixed. Most of the errors are including 'bindings/' in the path which
+> should not be as that is considered the root.
 >=20
-> Ok, Now I believe I got it. If Im understanding correctly, what is
-> happening right know is plan A. So, on plan B, we actually force the HW
-> reset (if the pin is there) instead of just bringing it out of reset...
-
-Yup. Exactly that.
+> Cc: Andy Gross <agross@kernel.org>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Cc: Michael Turquette <mturquette@baylibre.com>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: NXP Linux Team <linux-imx@nxp.com>
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Alexandre Torgue <alexandre.torgue@st.com>
+> Cc: "Nuno S=C3=A1" <nuno.sa@analog.com>
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Stefan Popa <stefan.popa@analog.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Hartmut Knaack <knaack.h@gmx.de>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> Cc: Marcus Folkesson <marcus.folkesson@gmail.com>
+> Cc: Kent Gustavsson <kent@minoris.se>
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: linux-clk@vger.kernel.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-input@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for iio
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml                  | 2 +-
+>  Documentation/devicetree/bindings/arm/qcom.yaml                 | 2 +-
+>  Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.yaml | 2 +-
+>  Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml      | 2 +-
+>  Documentation/devicetree/bindings/clock/imx8mn-clock.yaml       | 2 +-
+>  Documentation/devicetree/bindings/clock/imx8mp-clock.yaml       | 2 +-
+>  Documentation/devicetree/bindings/clock/milbeaut-clock.yaml     | 2 +-
+>  Documentation/devicetree/bindings/clock/qcom,dispcc.yaml        | 2 +-
+>  Documentation/devicetree/bindings/clock/qcom,gcc.yaml           | 2 +-
+>  Documentation/devicetree/bindings/clock/qcom,gpucc.yaml         | 2 +-
+>  Documentation/devicetree/bindings/clock/qcom,mmcc.yaml          | 2 +-
+>  Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml        | 2 +-
+>  Documentation/devicetree/bindings/clock/qcom,videocc.yaml       | 2 +-
+>  Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml    | 2 +-
+>  Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml    | 2 +-
+>  Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml        | 2 +-
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml       | 2 +-
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml       | 2 +-
+>  .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml          | 2 +-
+>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml         | 2 +-
+>  Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml     | 2 +-
+>  Documentation/devicetree/bindings/input/gpio-vibrator.yaml      | 2 +-
+>  22 files changed, 22 insertions(+), 22 deletions(-)
 >=20
-> I already spoke with Alex and we agreed he is sending v2 since he
-> started this series. So, He is deciding which plan to go for :)
-
-Cool
-
-Jonathan
-
->=20
-> Thanks for your explanation!
-> Nuno S=C3=A1
-> > Jonathan
-> >=20
-> >=20
-> >=20
-> >  =20
-> > > > > Nuno S=C3=A1    =20
-> > > > > > > > > +		msleep(timeouts->reset_ms);
-> > > > > > > > > +	} else {
-> > > > > > > > > +		ret =3D __adis_reset(adis);
-> > > > > > > > > +		if (ret)
-> > > > > > > > > +			return ret;
-> > > > > > > > > +	}
-> > > > > > > > > =20
-> > > > > > > > >  	ret =3D adis_self_test(adis);
-> > > > > > > > > -	if (ret) {
-> > > > > > > > > -		dev_err(&adis->spi->dev, "Self-test
-> > > > > > > > > failed,
-> > > > > > > > > trying
-> > > > > > > > > reset.\n");
-> > > > > > > > > -		__adis_reset(adis);
-> > > > > > > > > -		ret =3D adis_self_test(adis);
-> > > > > > > > > -		if (ret) {
-> > > > > > > > > -			dev_err(&adis->spi->dev,
-> > > > > > > > > "Second self-
-> > > > > > > > > test
-> > > > > > > > > failed, giving up.\n");
-> > > > > > > > > -			goto out_unlock;
-> > > > > > > > > -		}
-> > > > > > > > > -	}
-> > > > > > > > > +	if (ret)
-> > > > > > > > > +		return ret;
-> > > > > > > > > =20
-> > > > > > > > > -out_unlock:
-> > > > > > > > > -	mutex_unlock(&adis->state_lock);
-> > > > > > > > > -	return ret;
-> > > > > > > > > +	if (!adis->data->prod_id_reg)
-> > > > > > > > > +		return 0;
-> > > > > > > > > +
-> > > > > > > > > +	ret =3D adis_read_reg_16(adis, adis->data- =20
-> > > > > > > > > >prod_id_reg, =20
-> > > > > > > > > &prod_id);
-> > > > > > > > > +	if (ret)
-> > > > > > > > > +		return ret;
-> > > > > > > > > +
-> > > > > > > > > +	ret =3D sscanf(iio_name, "adis%hu\n",
-> > > > > > > > > &dev_id);       =20
-> > > > > > > >=20
-> > > > > > > > Hmm. I have a general dislike of pulling part name
-> > > > > > > > strings
-> > > > > > > > apart
-> > > > > > > > to
-> > > > > > > > get
-> > > > > > > > IDs.  It tends to break when someone comes along and adds
-> > > > > > > > a
-> > > > > > > > part
-> > > > > > > > with
-> > > > > > > > new
-> > > > > > > > branding.  Perhaps just put it in the relevant device
-> > > > > > > > part
-> > > > > > > > specific
-> > > > > > > > structures
-> > > > > > > > directly?
-> > > > > > > >        =20
-> > > > > > >=20
-> > > > > > > I'll admit that this to orientated to ADI devices and I
-> > > > > > > basically
-> > > > > > > just
-> > > > > > > took what all the drivers were doing and placed it inside
-> > > > > > > the
-> > > > > > > library...
-> > > > > > >=20
-> > > > > > > So, you mean passing this to each `chip_info` and then
-> > > > > > > passing
-> > > > > > > it
-> > > > > > > to
-> > > > > > > the library through `adis_data`?     =20
-> > > > > >=20
-> > > > > > Yes.  People don't tend to expect strings to need to take a
-> > > > > > particular form,
-> > > > > > so pulling them apart in a library can give unexpected
-> > > > > > results...
-> > > > > >      =20
-> > > > > > > > > +	if (ret !=3D 1)
-> > > > > > > > > +		return -EINVAL;
-> > > > > > > > > +
-> > > > > > > > > +	if (prod_id !=3D dev_id)
-> > > > > > > > > +		dev_warn(&adis->spi->dev,
-> > > > > > > > > +			 "Device ID(%u) and product
-> > > > > > > > > ID(%u) do
-> > > > > > > > > not
-> > > > > > > > > match.",
-> > > > > > > > > +			 dev_id, prod_id);
-> > > > > > > > > +
-> > > > > > > > > +	return 0;
-> > > > > > > > >  }
-> > > > > > > > > -EXPORT_SYMBOL_GPL(adis_initial_startup);
-> > > > > > > > > +EXPORT_SYMBOL_GPL(__adis_initial_startup);
-> > > > > > > > > =20
-> > > > > > > > >  /**
-> > > > > > > > >   * adis_single_conversion() - Performs a single sample
-> > > > > > > > > conversion
-> > > > > > > > > diff --git a/include/linux/iio/imu/adis.h
-> > > > > > > > > b/include/linux/iio/imu/adis.h
-> > > > > > > > > index d21a013d1122..c43e7922ab32 100644
-> > > > > > > > > --- a/include/linux/iio/imu/adis.h
-> > > > > > > > > +++ b/include/linux/iio/imu/adis.h
-> > > > > > > > > @@ -41,6 +41,7 @@ struct adis_timeout {
-> > > > > > > > >   * @glob_cmd_reg: Register address of the GLOB_CMD
-> > > > > > > > > register
-> > > > > > > > >   * @msc_ctrl_reg: Register address of the MSC_CTRL
-> > > > > > > > > register
-> > > > > > > > >   * @diag_stat_reg: Register address of the DIAG_STAT
-> > > > > > > > > register
-> > > > > > > > > + * @prod_id_reg: Register address of the PROD_ID
-> > > > > > > > > register
-> > > > > > > > >   * @self_test_reg: Register address to request self
-> > > > > > > > > test
-> > > > > > > > > command
-> > > > > > > > >   * @status_error_msgs: Array of error messgaes
-> > > > > > > > >   * @status_error_mask:
-> > > > > > > > > @@ -54,6 +55,7 @@ struct adis_data {
-> > > > > > > > >  	unsigned int glob_cmd_reg;
-> > > > > > > > >  	unsigned int msc_ctrl_reg;
-> > > > > > > > >  	unsigned int diag_stat_reg;
-> > > > > > > > > +	unsigned int prod_id_reg;
-> > > > > > > > > =20
-> > > > > > > > >  	unsigned int self_test_mask;
-> > > > > > > > >  	unsigned int self_test_reg;
-> > > > > > > > > @@ -299,6 +301,7 @@ static inline int
-> > > > > > > > > adis_read_reg_32(struct
-> > > > > > > > > adis
-> > > > > > > > > *adis, unsigned int reg,
-> > > > > > > > > =20
-> > > > > > > > >  int adis_enable_irq(struct adis *adis, bool enable);
-> > > > > > > > >  int __adis_check_status(struct adis *adis);
-> > > > > > > > > +int __adis_initial_startup(struct adis *adis);
-> > > > > > > > > =20
-> > > > > > > > >  static inline int adis_check_status(struct adis *adis)
-> > > > > > > > >  {
-> > > > > > > > > @@ -311,7 +314,17 @@ static inline int
-> > > > > > > > > adis_check_status(struct
-> > > > > > > > > adis *adis)
-> > > > > > > > >  	return ret;
-> > > > > > > > >  }
-> > > > > > > > > =20
-> > > > > > > > > -int adis_initial_startup(struct adis *adis);
-> > > > > > > > > +/* locked version of __adis_initial_startup() */
-> > > > > > > > > +static inline int adis_initial_startup(struct adis
-> > > > > > > > > *adis)
-> > > > > > > > > +{
-> > > > > > > > > +	int ret;
-> > > > > > > > > +
-> > > > > > > > > +	mutex_lock(&adis->state_lock);
-> > > > > > > > > +	ret =3D __adis_initial_startup(adis);
-> > > > > > > > > +	mutex_unlock(&adis->state_lock);
-> > > > > > > > > +
-> > > > > > > > > +	return ret;
-> > > > > > > > > +}
-> > > > > > > > > =20
-> > > > > > > > >  int adis_single_conversion(struct iio_dev *indio_dev,
-> > > > > > > > >  	const struct iio_chan_spec *chan, unsigned int
-> > > > > > > > > error_mask,       =20
-> > > > > > > >=20
-> > > > > > > >        =20
-> > > > > >=20
-> > > > > >      =20
-> > > >=20
-> > > >    =20
->=20
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
+on/devicetree/bindings/arm/fsl.yaml
+> index f79683a628f0..b0a7454a70b8 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/arm/fsl.yaml#
+> +$id: http://devicetree.org/schemas/arm/fsl.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Freescale i.MX Platforms Device Tree Bindings
+> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentat=
+ion/devicetree/bindings/arm/qcom.yaml
+> index e39d8f02e33c..b5bef5abc281 100644
+> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/arm/qcom.yaml#
+> +$id: http://devicetree.org/schemas/arm/qcom.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: QCOM device tree bindings
+> diff --git a/Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.y=
+aml b/Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.yaml
+> index e63827399c1a..8559fe8f7efd 100644
+> --- a/Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.yaml
+> +++ b/Documentation/devicetree/bindings/clock/bitmain,bm1880-clk.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/bitmain,bm1880-clk.yam=
+l#
+> +$id: http://devicetree.org/schemas/clock/bitmain,bm1880-clk.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Bitmain BM1880 Clock Controller
+> diff --git a/Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml b=
+/Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml
+> index 8fb2060ac47f..fc3bdfdc091a 100644
+> --- a/Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml
+> +++ b/Documentation/devicetree/bindings/clock/fsl,sai-clock.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/fsl,sai-clock.yaml#
+> +$id: http://devicetree.org/schemas/clock/fsl,sai-clock.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Freescale SAI bitclock-as-a-clock binding
+> diff --git a/Documentation/devicetree/bindings/clock/imx8mn-clock.yaml b/=
+Documentation/devicetree/bindings/clock/imx8mn-clock.yaml
+> index 622f3658bd9f..cd0b8a341321 100644
+> --- a/Documentation/devicetree/bindings/clock/imx8mn-clock.yaml
+> +++ b/Documentation/devicetree/bindings/clock/imx8mn-clock.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/imx8mn-clock.yaml#
+> +$id: http://devicetree.org/schemas/clock/imx8mn-clock.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: NXP i.MX8M Nano Clock Control Module Binding
+> diff --git a/Documentation/devicetree/bindings/clock/imx8mp-clock.yaml b/=
+Documentation/devicetree/bindings/clock/imx8mp-clock.yaml
+> index 80278882cf57..89aee63c9019 100644
+> --- a/Documentation/devicetree/bindings/clock/imx8mp-clock.yaml
+> +++ b/Documentation/devicetree/bindings/clock/imx8mp-clock.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/imx8mp-clock.yaml#
+> +$id: http://devicetree.org/schemas/clock/imx8mp-clock.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: NXP i.MX8M Plus Clock Control Module Binding
+> diff --git a/Documentation/devicetree/bindings/clock/milbeaut-clock.yaml =
+b/Documentation/devicetree/bindings/clock/milbeaut-clock.yaml
+> index 5cf0b811821e..f0b804a7f096 100644
+> --- a/Documentation/devicetree/bindings/clock/milbeaut-clock.yaml
+> +++ b/Documentation/devicetree/bindings/clock/milbeaut-clock.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/milbeaut-clock.yaml#
+> +$id: http://devicetree.org/schemas/clock/milbeaut-clock.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Milbeaut SoCs Clock Controller Binding
+> diff --git a/Documentation/devicetree/bindings/clock/qcom,dispcc.yaml b/D=
+ocumentation/devicetree/bindings/clock/qcom,dispcc.yaml
+> index 9c58e02a1de1..795fe686f3ea 100644
+> --- a/Documentation/devicetree/bindings/clock/qcom,dispcc.yaml
+> +++ b/Documentation/devicetree/bindings/clock/qcom,dispcc.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/qcom,dispcc.yaml#
+> +$id: http://devicetree.org/schemas/clock/qcom,dispcc.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Qualcomm Display Clock & Reset Controller Binding
+> diff --git a/Documentation/devicetree/bindings/clock/qcom,gcc.yaml b/Docu=
+mentation/devicetree/bindings/clock/qcom,gcc.yaml
+> index cac1150c9292..e814eec1bf8d 100644
+> --- a/Documentation/devicetree/bindings/clock/qcom,gcc.yaml
+> +++ b/Documentation/devicetree/bindings/clock/qcom,gcc.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/qcom,gcc.yaml#
+> +$id: http://devicetree.org/schemas/clock/qcom,gcc.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Qualcomm Global Clock & Reset Controller Binding
+> diff --git a/Documentation/devicetree/bindings/clock/qcom,gpucc.yaml b/Do=
+cumentation/devicetree/bindings/clock/qcom,gpucc.yaml
+> index 622845aa643f..679e7fe0fa83 100644
+> --- a/Documentation/devicetree/bindings/clock/qcom,gpucc.yaml
+> +++ b/Documentation/devicetree/bindings/clock/qcom,gpucc.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/qcom,gpucc.yaml#
+> +$id: http://devicetree.org/schemas/clock/qcom,gpucc.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Qualcomm Graphics Clock & Reset Controller Binding
+> diff --git a/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml b/Doc=
+umentation/devicetree/bindings/clock/qcom,mmcc.yaml
+> index 91101c915904..85518494ce43 100644
+> --- a/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml
+> +++ b/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/qcom,mmcc.yaml#
+> +$id: http://devicetree.org/schemas/clock/qcom,mmcc.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Qualcomm Multimedia Clock & Reset Controller Binding
+> diff --git a/Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml b/D=
+ocumentation/devicetree/bindings/clock/qcom,rpmhcc.yaml
+> index 94e2f14eb967..2cd158f13bab 100644
+> --- a/Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml
+> +++ b/Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/qcom,rpmhcc.yaml#
+> +$id: http://devicetree.org/schemas/clock/qcom,rpmhcc.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Qualcomm Technologies, Inc. RPMh Clocks Bindings
+> diff --git a/Documentation/devicetree/bindings/clock/qcom,videocc.yaml b/=
+Documentation/devicetree/bindings/clock/qcom,videocc.yaml
+> index 43cfc893a8d1..2946b240e161 100644
+> --- a/Documentation/devicetree/bindings/clock/qcom,videocc.yaml
+> +++ b/Documentation/devicetree/bindings/clock/qcom,videocc.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/qcom,videocc.yaml#
+> +$id: http://devicetree.org/schemas/clock/qcom,videocc.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Qualcomm Video Clock & Reset Controller Binding
+> diff --git a/Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml=
+ b/Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml
+> index b8f91e444d2f..4e385508f516 100644
+> --- a/Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml
+> +++ b/Documentation/devicetree/bindings/clock/st,stm32mp1-rcc.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/st,stm32mp1-rcc.yaml#
+> +$id: http://devicetree.org/schemas/clock/st,stm32mp1-rcc.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Reset Clock Controller Binding
+> diff --git a/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml=
+ b/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml
+> index f1150cad34a4..229af98b1d30 100644
+> --- a/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml
+> +++ b/Documentation/devicetree/bindings/clock/xlnx,versal-clk.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/clock/xlnx,versal-clk.yaml#
+> +$id: http://devicetree.org/schemas/clock/xlnx,versal-clk.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Xilinx Versal clock controller
+> diff --git a/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml b/D=
+ocumentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
+> index ae04903f34bf..6a742a51e2f9 100644
+> --- a/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
+> +++ b/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/hwmon/adi,ltc2947.yaml#
+> +$id: http://devicetree.org/schemas/hwmon/adi,ltc2947.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Analog Devices LTC2947 high precision power and energy monitor
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+> index e932d5aed02f..f0934b295edc 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+> @@ -2,7 +2,7 @@
+>  # Copyright 2019 Analog Devices Inc.
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/iio/adc/adi,ad7124.yaml#
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7124.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Analog Devices AD7124 ADC device driver
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> index 567a33a83dce..84d25bd39488 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> @@ -2,7 +2,7 @@
+>  # Copyright 2019 Analog Devices Inc.
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/iio/adc/adi,ad7192.yaml#
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7192.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: Analog Devices AD7192 ADC device driver
+> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.=
+yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> index 881059b80d61..0ce290473fb0 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> @@ -2,7 +2,7 @@
+>  # Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
+>  %YAML 1.2
+>  ---
+> -$id: "http://devicetree.org/schemas/bindings/iio/adc/microchip,mcp3911.y=
+aml#"
+> +$id: "http://devicetree.org/schemas/iio/adc/microchip,mcp3911.yaml#"
+>  $schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> =20
+>  title: Microchip MCP3911 Dual channel analog front end (ADC)
+> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc=
+.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+> index c91407081aa5..acf36eef728b 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/st,stm32-dfsdm-adc.yaml#
+> +$id: http://devicetree.org/schemas/iio/adc/st,stm32-dfsdm-adc.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: STMicroelectronics STM32 DFSDM ADC device driver
+> diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml =
+b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+> index 13d005b68931..a285eaba7125 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+> @@ -2,7 +2,7 @@
+>  # Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
+>  %YAML 1.2
+>  ---
+> -$id: "http://devicetree.org/schemas/bindings/iio/dac/lltc,ltc1660.yaml#"
+> +$id: "http://devicetree.org/schemas/iio/dac/lltc,ltc1660.yaml#"
+>  $schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> =20
+>  title: Linear Technology Micropower octal 8-Bit and 10-Bit DACs
+> diff --git a/Documentation/devicetree/bindings/input/gpio-vibrator.yaml b=
+/Documentation/devicetree/bindings/input/gpio-vibrator.yaml
+> index 903475f52dbd..b98bf9363c8f 100644
+> --- a/Documentation/devicetree/bindings/input/gpio-vibrator.yaml
+> +++ b/Documentation/devicetree/bindings/input/gpio-vibrator.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/input/gpio-vibrator.yaml#
+> +$id: http://devicetree.org/schemas/input/gpio-vibrator.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> =20
+>  title: GPIO vibrator
 

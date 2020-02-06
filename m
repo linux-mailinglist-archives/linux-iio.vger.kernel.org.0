@@ -2,1224 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49E5C154BFC
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 20:21:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9A83154CB9
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 21:12:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727951AbgBFTVD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Feb 2020 14:21:03 -0500
-Received: from mail-io1-f68.google.com ([209.85.166.68]:38131 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727848AbgBFTVC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Feb 2020 14:21:02 -0500
-Received: by mail-io1-f68.google.com with SMTP id s24so7485993iog.5
-        for <linux-iio@vger.kernel.org>; Thu, 06 Feb 2020 11:21:02 -0800 (PST)
+        id S1727880AbgBFUMx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Feb 2020 15:12:53 -0500
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:55052 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727851AbgBFUMx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Feb 2020 15:12:53 -0500
+Received: by mail-pj1-f67.google.com with SMTP id dw13so453828pjb.4
+        for <linux-iio@vger.kernel.org>; Thu, 06 Feb 2020 12:12:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fNLk+x7/23SDOz6C44wli5lh7yWTNRb8K8pTqL6wYco=;
-        b=oRk/Neu/Ff1fvQnHDEzB4F4MdO1siNuWtfzFbgjeBsSBJldH7xk5xBNeyoFTKIxB99
-         kN5LbJ/Zfz2mQFg5PTq/y8ZKLdZWZ9zaI0fAoHM6ouP8Q7bEEjOSL04WrZdMyG/MKumM
-         //pplG69hufvGtUVmkXJQ5+Fz4/yoc8TvMv+U=
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=Z6j9xl2gMAuJIZhUM3OZ+/+Wm5NYXPRonJqY9rHuf6Q=;
+        b=GPdbUU4JBvVFhS7rJEgeoHkbVXb9GzIGPU0J7jERwnBHvYLtYmAD1ll1Cga7j3ID3g
+         XUEt8PjNaOVqBa+CnbfH9oNsfyc+E7FT675Gr0zNZVCxWTmUKuLnW1iDC1ldRoxCMhjR
+         +Hmq3zVYVPbp79FzicizP0aOa3w1CpxzXqetZvuvAcplg8JDOohk0idIMjmWrgjBK+oY
+         FBIme313NDOlXXYSzVdrgEnGv9QL4vxFI2WM4STblguOEhb8FvXFskRPn/25ZmPYLm8z
+         IOn4LasE8kQj3lQ06o6jufXO2lJHYw68vrXd0uJrLP3QQIBZOkOco71lIkjh2fPA6EUa
+         DDUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fNLk+x7/23SDOz6C44wli5lh7yWTNRb8K8pTqL6wYco=;
-        b=uGsMibk02DaZftxbXsM0hy9WxV9kJHYBbHllE7cd8T72JXxk1U/mVsFO/l0ZHJxA4L
-         HCT/YmXVG4I3A8slbv4J6x4+AKQ5Ihp/Oip9RIlNLFw4/XrFYDr7p807qCuKEQA6Siiu
-         JOTPqRaykIHVT882uiTXfRlZd/8uiqsGtFeODFgTJY4sTg59i7AbJkgpbSzhJBvlL4aI
-         i2XKVtQc3Ing6SBYhbheUWDwWb4rWNVJp5KXO1eXdmxB6xBZ9GBZ4MEvMEeLkl8vrD93
-         Ijx7VQxRdTyPmUGMga5ZaSjk/Nq9nT7FAW0nGe50bxmlKIEZUFeSOGhIPV/ppvRyNC5c
-         plhw==
-X-Gm-Message-State: APjAAAWvyNPyXSRDyOSa9kyyd3cv7XKbV6w2askGCIUgxB8BXR8seQd3
-        1moWkoFe1EVBvHQF8je0Xwabkg==
-X-Google-Smtp-Source: APXvYqyXssKu5DyOxxSbzkMygKWs7pTcpyTptVUp7oJfdDpnnfulPewD12uW+PUXM2MnyDUZxyCakg==
-X-Received: by 2002:a05:6602:2501:: with SMTP id i1mr34951471ioe.231.1581016861282;
-        Thu, 06 Feb 2020 11:21:01 -0800 (PST)
-Received: from localhost ([2620:15c:183:200:5d69:b29f:8fd8:6f45])
-        by smtp.gmail.com with ESMTPSA id n5sm237185ili.28.2020.02.06.11.21.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Feb 2020 11:21:00 -0800 (PST)
-From:   Daniel Campello <campello@chromium.org>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Daniel Campello <campello@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Enrico Granata <egranata@chromium.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=Z6j9xl2gMAuJIZhUM3OZ+/+Wm5NYXPRonJqY9rHuf6Q=;
+        b=TaWfNQYyFRRjyF62UjEsPkVLAFqSe8W3IKogwcMippBpQhjrfrBdTA3gT0bwdyV9ta
+         ztz+wxHPMmG+PLQn2tg4Iy54662yyXiw/ge1HdZkmMER90iTppomHAa1fUAk+vf09bKW
+         xleJ5Iazp0Cowoe2qKcE8NKIMLjHaT89HCYYucK0apTFBqG7Tr1pemB5Hy9NCAi6AVXX
+         lIgfRTnguIKoL5rApQ6iQJ6a2qhzET+Ei5Hx42uGM9e+LW073OhxMs1SuA3lpqQ2Pw/G
+         iyKrhyOrQbF7mDg2sNkL/bJ3aCUKuvI1h+/pubslIPSpPj1ODbWcbPVowQ+MTo0PCUGF
+         WlYg==
+X-Gm-Message-State: APjAAAUw1NPlHTlS58roTPIq7uyXUaL43kgAMqJTRYbb55kbXpVv7G/X
+        Y1PanYr1dPSgT0yHvlGQQ224qw==
+X-Google-Smtp-Source: APXvYqxCYxs5NXO73LHmmJkSf8xcneqdHgt20U7cp772ADNCXrR7dMyGpQCGHZe8vjEXvFkit8aF4Q==
+X-Received: by 2002:a17:902:8d83:: with SMTP id v3mr5851345plo.282.1581019972735;
+        Thu, 06 Feb 2020 12:12:52 -0800 (PST)
+Received: from yoga (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
+        by smtp.gmail.com with ESMTPSA id u26sm240765pfn.46.2020.02.06.12.12.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2020 12:12:51 -0800 (PST)
+Date:   Thu, 6 Feb 2020 12:12:48 -0800
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Nuno S? <nuno.sa@analog.com>, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Stefan Popa <stefan.popa@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: [PATCH v2] iio: Add SEMTECH SX9310/9311 sensor driver
-Date:   Thu,  6 Feb 2020 12:20:56 -0700
-Message-Id: <20200206121647.1.I1f56fe698017f22d6e825c913c256d5afc2ad69f@changeid>
-X-Mailer: git-send-email 2.25.0.341.g760bfbb309-goog
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-clk@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Fix paths in schema $id fields
+Message-ID: <20200206201248.GO2514@yoga>
+References: <20200204224909.26880-1-robh@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200204224909.26880-1-robh@kernel.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add SEMTECH SX9310/9311 driver.
+On Tue 04 Feb 14:49 PST 2020, Rob Herring wrote:
 
-The device has the following entry points:
+> The $id path checks were inadequately checking the path part of the $id
+> value. With the check fixed, there's a number of errors that need to be
+> fixed. Most of the errors are including 'bindings/' in the path which
+> should not be as that is considered the root.
+> 
+> Cc: Andy Gross <agross@kernel.org>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Cc: Michael Turquette <mturquette@baylibre.com>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: NXP Linux Team <linux-imx@nxp.com>
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Alexandre Torgue <alexandre.torgue@st.com>
+> Cc: "Nuno Sá" <nuno.sa@analog.com>
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Stefan Popa <stefan.popa@analog.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Hartmut Knaack <knaack.h@gmx.de>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> Cc: Marcus Folkesson <marcus.folkesson@gmail.com>
+> Cc: Kent Gustavsson <kent@minoris.se>
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: linux-clk@vger.kernel.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-input@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+[..]
+> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+> index e39d8f02e33c..b5bef5abc281 100644
+> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/bindings/arm/qcom.yaml#
+> +$id: http://devicetree.org/schemas/arm/qcom.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: QCOM device tree bindings
 
-Usual frequency:
-- sampling_frequency
-- sampling_frequency_available
+Acked-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 
-Instant reading of current values for different sensors:
-- in_proximity0_raw
-- in_proximity1_raw
-- in_proximity2_raw
-- in_proximity3_COMB_raw
-and associated events in events/
-
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-Signed-off-by: Enrico Granata <egranata@chromium.org>
-Signed-off-by: Daniel Campello <campello@chromium.org>
----
-v2 changes:
-  - Removed differential channels
-  - Raw channels expose data from SX9310_REG_DIFF_MSB registers
-  - 4th channel uses extend_name = COMB
-  - Allocated data->buffer statically
-  - Check whoami value against i2c / acpi device id
-  - General clean up
-
- drivers/iio/proximity/Kconfig  |   14 +
- drivers/iio/proximity/Makefile |    1 +
- drivers/iio/proximity/sx9310.c | 1080 ++++++++++++++++++++++++++++++++
- 3 files changed, 1095 insertions(+)
- create mode 100644 drivers/iio/proximity/sx9310.c
-
-diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
-index d53601447da433..fd82962f2e3abc 100644
---- a/drivers/iio/proximity/Kconfig
-+++ b/drivers/iio/proximity/Kconfig
-@@ -86,6 +86,20 @@ config SRF04
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called srf04.
-
-+config SX9310
-+	tristate "SX9310/SX9311 Semtech proximity sensor"
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	select REGMAP_I2C
-+	depends on I2C
-+	depends on ACPI
-+	help
-+	  Say Y here to build a driver for Semtech's SX9310/SX9311 capacitive
-+	  proximity/button sensor.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called sx9310.
-+
- config SX9500
- 	tristate "SX9500 Semtech proximity sensor"
- 	select IIO_BUFFER
-diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Makefile
-index 0bb5f9de13d657..b7ebd94a1bb6ed 100644
---- a/drivers/iio/proximity/Makefile
-+++ b/drivers/iio/proximity/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_MB1232)		+= mb1232.o
- obj-$(CONFIG_RFD77402)		+= rfd77402.o
- obj-$(CONFIG_SRF04)		+= srf04.o
- obj-$(CONFIG_SRF08)		+= srf08.o
-+obj-$(CONFIG_SX9310)		+= sx9310.o
- obj-$(CONFIG_SX9500)		+= sx9500.o
- obj-$(CONFIG_VL53L0X_I2C)	+= vl53l0x-i2c.o
-
-diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-new file mode 100644
-index 00000000000000..83c1eb3506a3d2
---- /dev/null
-+++ b/drivers/iio/proximity/sx9310.c
-@@ -0,0 +1,1080 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2018 Google LLC.
-+ *
-+ * Driver for Semtech's SX9310/SX9311 capacitive proximity/button solution.
-+ * Based on SX9500 driver and Semtech driver using the input framework
-+ * <https://my.syncplicity.com/share/teouwsim8niiaud/
-+ *          linux-driver-SX9310_NoSmartHSensing>.
-+ * Reworked April 2019 by Evan Green <evgreen@chromium.org>
-+ * and January 2020 by Daniel Campello <campello@chromium.org>
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/i2c.h>
-+#include <linux/irq.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/pm.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/events.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/trigger_consumer.h>
-+
-+/* Register definitions. */
-+#define SX9310_REG_IRQ_SRC				0x00
-+#define SX9310_REG_STAT0				0x01
-+#define SX9310_REG_STAT1				0x02
-+#define SX9310_REG_IRQ_MSK				0x03
-+#define   SX9310_CONVDONE_IRQ				BIT(3)
-+#define   SX9310_FAR_IRQ				BIT(5)
-+#define   SX9310_CLOSE_IRQ				BIT(6)
-+#define   SX9310_EVENT_IRQ				(SX9310_FAR_IRQ | \
-+							 SX9310_CLOSE_IRQ)
-+#define SX9310_REG_IRQ_FUNC				0x04
-+
-+#define SX9310_REG_PROX_CTRL0				0x10
-+#define   SX9310_REG_PROX_CTRL0_PROXSTAT2		0x10
-+#define   SX9310_REG_PROX_CTRL0_EN_MASK			0x0F
-+#define SX9310_REG_PROX_CTRL1				0x11
-+#define SX9310_REG_PROX_CTRL2				0x12
-+#define   SX9310_REG_PROX_CTRL2_COMBMODE_ALL		0x80
-+#define   SX9310_REG_PROX_CTRL2_SHIELDEN_DYNAMIC	0x04
-+#define SX9310_REG_PROX_CTRL3				0x13
-+#define   SX9310_REG_PROX_CTRL3_GAIN0_X8		0x0c
-+#define   SX9310_REG_PROX_CTRL3_GAIN12_X4		0x02
-+#define SX9310_REG_PROX_CTRL4				0x14
-+#define   SX9310_REG_PROX_CTRL4_RESOLUTION_FINEST	0x07
-+#define SX9310_REG_PROX_CTRL5				0x15
-+#define   SX9310_REG_PROX_CTRL5_RANGE_SMALL		0xc0
-+#define   SX9310_REG_PROX_CTRL5_STARTUPSENS_CS1		0x04
-+#define   SX9310_REG_PROX_CTRL5_RAWFILT_1P25		0x02
-+#define SX9310_REG_PROX_CTRL6				0x16
-+#define   SX9310_REG_PROX_CTRL6_COMP_COMMON		0x20
-+#define SX9310_REG_PROX_CTRL7				0x17
-+#define   SX9310_REG_PROX_CTRL7_AVGNEGFILT_2		0x08
-+#define   SX9310_REG_PROX_CTRL7_AVGPOSFILT_512		0x05
-+#define SX9310_REG_PROX_CTRL8				0x18
-+#define SX9310_REG_PROX_CTRL9				0x19
-+#define   SX9310_REG_PROX_CTRL8_9_PTHRESH12_28		0x40
-+#define   SX9310_REG_PROX_CTRL8_9_PTHRESH_96		0x88
-+#define   SX9310_REG_PROX_CTRL8_9_BODYTHRESH_900	0x03
-+#define   SX9310_REG_PROX_CTRL8_9_BODYTHRESH_1500	0x05
-+#define SX9310_REG_PROX_CTRL10				0x1a
-+#define   SX9310_REG_PROX_CTRL10_HYST_6PCT		0x10
-+#define   SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_8	0x12
-+#define   SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_8		0x03
-+#define SX9310_REG_PROX_CTRL11				0x1b
-+#define SX9310_REG_PROX_CTRL12				0x1c
-+#define SX9310_REG_PROX_CTRL13				0x1d
-+#define SX9310_REG_PROX_CTRL14				0x1e
-+#define SX9310_REG_PROX_CTRL15				0x1f
-+#define SX9310_REG_PROX_CTRL16				0x20
-+#define SX9310_REG_PROX_CTRL17				0x21
-+#define SX9310_REG_PROX_CTRL18				0x22
-+#define SX9310_REG_PROX_CTRL19				0x23
-+#define SX9310_REG_SAR_CTRL0				0x2a
-+#define   SX9310_REG_SAR_CTRL0_SARDEB_4_SAMPLES		0x40
-+#define   SX9310_REG_SAR_CTRL0_SARHYST_8		0x10
-+#define SX9310_REG_SAR_CTRL1				0x2b
-+/* Each increment of the slope register is 0.0078125. */
-+#define   SX9310_REG_SAR_CTRL1_SLOPE(_hnslope)		(_hnslope / 78125)
-+#define SX9310_REG_SAR_CTRL2				0x2c
-+#define   SX9310_REG_SAR_CTRL2_SAROFFSET_DEFAULT	0x3c
-+
-+#define SX9310_REG_SENSOR_SEL				0x30
-+
-+#define SX9310_REG_USE_MSB				0x31
-+#define SX9310_REG_USE_LSB				0x32
-+
-+#define SX9310_REG_AVG_MSB				0x33
-+#define SX9310_REG_AVG_LSB				0x34
-+
-+#define SX9310_REG_DIFF_MSB				0x35
-+#define SX9310_REG_DIFF_LSB				0x36
-+
-+#define SX9310_REG_OFFSET_MSB				0x37
-+#define SX9310_REG_OFFSET_LSB				0x38
-+
-+#define SX9310_REG_SAR_MSB				0x39
-+#define SX9310_REG_SAR_LSB				0x3a
-+
-+#define SX9310_REG_I2CADDR				0x40
-+#define SX9310_REG_PAUSE				0x41
-+#define SX9310_REG_WHOAMI				0x42
-+#define   SX9310_WHOAMI_VALUE				0x01
-+#define   SX9311_WHOAMI_VALUE				0x02
-+
-+#define SX9310_REG_RESET				0x7f
-+#define   SX9310_SOFT_RESET				0xde
-+
-+#define SX9310_I2C_DEVICE_ID				"sx9310"
-+#define SX9311_I2C_DEVICE_ID				"sx9311"
-+#define SX9310_ACPI_DEVICE_ID				"STH9310"
-+#define SX9311_ACPI_DEVICE_ID				"STH9311"
-+
-+#define SX9310_SCAN_PERIOD_MASK				GENMASK(7, 4)
-+#define SX9310_SCAN_PERIOD_SHIFT			4
-+
-+#define SX9310_COMPSTAT_MASK				GENMASK(3, 0)
-+
-+/* 4 hardware channels, as defined in STAT0: COMB, CS2, CS1 and CS0. */
-+#define SX9310_NUM_CHANNELS				4
-+#define SX9310_CHAN_ENABLED_MASK			GENMASK(3, 0)
-+
-+struct sx9310_data {
-+	/* Serialize access to registers and channel configuration */
-+	struct mutex mutex;
-+	struct i2c_client *client;
-+	struct iio_trigger *trig;
-+	struct regmap *regmap;
-+	/*
-+	 * Last reading of the proximity status for each channel.
-+	 * We only send an event to user space when this changes.
-+	 */
-+	bool prox_stat[SX9310_NUM_CHANNELS];
-+	bool trigger_enabled;
-+	__be16 buffer[SX9310_NUM_CHANNELS];
-+	/* Remember enabled channels and sample rate during suspend. */
-+	unsigned int suspend_ctrl0;
-+	struct completion completion;
-+	unsigned int chan_read, chan_event;
-+	int channel_users[SX9310_NUM_CHANNELS];
-+	int whoami;
-+};
-+
-+static const struct iio_event_spec sx9310_events[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_EITHER,
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
-+#define SX9310_CHANNEL(idx, name)					 \
-+	{								 \
-+		.type = IIO_PROXIMITY,					 \
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		 \
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-+		.indexed = 1,						 \
-+		.channel = idx,						 \
-+		.extend_name = name,					 \
-+		.address = SX9310_REG_DIFF_MSB,				 \
-+		.event_spec = sx9310_events,				 \
-+		.num_event_specs = ARRAY_SIZE(sx9310_events),		 \
-+		.scan_index = idx,					 \
-+		.scan_type = {						 \
-+			.sign = 's',					 \
-+			.realbits = 12,					 \
-+			.storagebits = 16,				 \
-+			.endianness = IIO_BE,				 \
-+		},							 \
-+	}
-+
-+static const struct iio_chan_spec sx9310_channels[] = {
-+	SX9310_CHANNEL(0, 0),		/* CS0 */
-+	SX9310_CHANNEL(1, 0),		/* CS1 */
-+	SX9310_CHANNEL(2, 0),		/* CS2 */
-+	SX9310_CHANNEL(3, "COMB"),	/* COMB */
-+
-+	IIO_CHAN_SOFT_TIMESTAMP(4),
-+};
-+
-+/*
-+ * Each entry contains the integer part (val) and the fractional part, in micro
-+ * seconds. It conforms to the IIO output IIO_VAL_INT_PLUS_MICRO.
-+ */
-+static const struct {
-+	int val;
-+	int val2;
-+} sx9310_samp_freq_table[] = {
-+	{ 500, 0 }, /* 0000: Min (no idle time) */
-+	{ 66, 666666 }, /* 0001: 15 ms */
-+	{ 33, 333333 }, /* 0010: 30 ms (Typ.) */
-+	{ 22, 222222 }, /* 0011: 45 ms */
-+	{ 16, 666666 }, /* 0100: 60 ms */
-+	{ 11, 111111 }, /* 0101: 90 ms */
-+	{ 8, 333333 }, /* 0110: 120 ms */
-+	{ 5, 0 }, /* 0111: 200 ms */
-+	{ 2, 500000 }, /* 1000: 400 ms */
-+	{ 1, 666666 }, /* 1001: 600 ms */
-+	{ 1, 250000 }, /* 1010: 800 ms */
-+	{ 1, 0 }, /* 1011: 1 s */
-+	{ 0, 500000 }, /* 1100: 2 s */
-+	{ 0, 333333 }, /* 1101: 3 s */
-+	{ 0, 250000 }, /* 1110: 4 s */
-+	{ 0, 200000 }, /* 1111: 5 s */
-+};
-+static const unsigned int sx9310_scan_period_table[] = {
-+	2,   15,  30,  45,   60,   90,	 120,  200,
-+	400, 600, 800, 1000, 2000, 3000, 4000, 5000,
-+};
-+
-+static ssize_t sx9310_show_samp_freq_avail(struct device *dev,
-+					   struct device_attribute *attr,
-+					   char *buf)
-+{
-+	size_t len = 0;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(sx9310_samp_freq_table); i++)
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%d ",
-+				 sx9310_samp_freq_table[i].val,
-+				 sx9310_samp_freq_table[i].val2);
-+	buf[len - 1] = '\n';
-+	return len;
-+}
-+static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(sx9310_show_samp_freq_avail);
-+
-+static const struct regmap_range sx9310_writable_reg_ranges[] = {
-+	regmap_reg_range(SX9310_REG_IRQ_MSK, SX9310_REG_IRQ_FUNC),
-+	regmap_reg_range(SX9310_REG_PROX_CTRL0, SX9310_REG_PROX_CTRL19),
-+	regmap_reg_range(SX9310_REG_SAR_CTRL0, SX9310_REG_SAR_CTRL2),
-+	regmap_reg_range(SX9310_REG_SENSOR_SEL, SX9310_REG_SENSOR_SEL),
-+	regmap_reg_range(SX9310_REG_OFFSET_MSB, SX9310_REG_OFFSET_LSB),
-+	regmap_reg_range(SX9310_REG_PAUSE, SX9310_REG_PAUSE),
-+	regmap_reg_range(SX9310_REG_RESET, SX9310_REG_RESET),
-+};
-+
-+static const struct regmap_access_table sx9310_writeable_regs = {
-+	.yes_ranges = sx9310_writable_reg_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(sx9310_writable_reg_ranges),
-+};
-+
-+static const struct regmap_range sx9310_readable_reg_ranges[] = {
-+	regmap_reg_range(SX9310_REG_IRQ_SRC, SX9310_REG_IRQ_FUNC),
-+	regmap_reg_range(SX9310_REG_PROX_CTRL0, SX9310_REG_PROX_CTRL19),
-+	regmap_reg_range(SX9310_REG_SAR_CTRL0, SX9310_REG_SAR_CTRL2),
-+	regmap_reg_range(SX9310_REG_SENSOR_SEL, SX9310_REG_SAR_LSB),
-+	regmap_reg_range(SX9310_REG_I2CADDR, SX9310_REG_WHOAMI),
-+	regmap_reg_range(SX9310_REG_RESET, SX9310_REG_RESET),
-+};
-+
-+static const struct regmap_access_table sx9310_readable_regs = {
-+	.yes_ranges = sx9310_readable_reg_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(sx9310_readable_reg_ranges),
-+};
-+
-+static const struct regmap_range sx9310_volatile_reg_ranges[] = {
-+	regmap_reg_range(SX9310_REG_IRQ_SRC, SX9310_REG_STAT1),
-+	regmap_reg_range(SX9310_REG_USE_MSB, SX9310_REG_DIFF_LSB),
-+	regmap_reg_range(SX9310_REG_SAR_MSB, SX9310_REG_SAR_LSB),
-+	regmap_reg_range(SX9310_REG_RESET, SX9310_REG_RESET),
-+};
-+
-+static const struct regmap_access_table sx9310_volatile_regs = {
-+	.yes_ranges = sx9310_volatile_reg_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(sx9310_volatile_reg_ranges),
-+};
-+
-+static const struct regmap_config sx9310_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+
-+	.max_register = SX9310_REG_RESET,
-+	.cache_type = REGCACHE_RBTREE,
-+
-+	.wr_table = &sx9310_writeable_regs,
-+	.rd_table = &sx9310_readable_regs,
-+	.volatile_table = &sx9310_volatile_regs,
-+};
-+
-+static int sx9310_update_chan_en(struct sx9310_data *data,
-+				 unsigned int chan_read,
-+				 unsigned int chan_event)
-+{
-+	int ret;
-+
-+	if ((data->chan_read | data->chan_event) != (chan_read | chan_event)) {
-+		ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL0,
-+					 SX9310_CHAN_ENABLED_MASK,
-+					 chan_read | chan_event);
-+		if (ret)
-+			return ret;
-+	}
-+	data->chan_read = chan_read;
-+	data->chan_event = chan_event;
-+	return 0;
-+}
-+
-+static int sx9310_get_read_channel(struct sx9310_data *data, int channel)
-+{
-+	return sx9310_update_chan_en(data, data->chan_read | BIT(channel),
-+				     data->chan_event);
-+}
-+
-+static int sx9310_put_read_channel(struct sx9310_data *data, int channel)
-+{
-+	return sx9310_update_chan_en(data, data->chan_read & ~BIT(channel),
-+				     data->chan_event);
-+}
-+
-+static int sx9310_get_event_channel(struct sx9310_data *data, int channel)
-+{
-+	return sx9310_update_chan_en(data, data->chan_read,
-+				     data->chan_event | BIT(channel));
-+}
-+
-+static int sx9310_put_event_channel(struct sx9310_data *data, int channel)
-+{
-+	return sx9310_update_chan_en(data, data->chan_read,
-+				     data->chan_event & ~BIT(channel));
-+}
-+
-+static int sx9310_enable_irq(struct sx9310_data *data, unsigned int irq)
-+{
-+	return regmap_update_bits(data->regmap, SX9310_REG_IRQ_MSK, irq, irq);
-+}
-+
-+static int sx9310_disable_irq(struct sx9310_data *data, unsigned int irq)
-+{
-+	return regmap_update_bits(data->regmap, SX9310_REG_IRQ_MSK, irq, 0);
-+}
-+
-+static int sx9310_read_prox_data(struct sx9310_data *data,
-+				 const struct iio_chan_spec *chan, __be16 *val)
-+{
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, SX9310_REG_SENSOR_SEL, chan->channel);
-+	if (ret < 0)
-+		return ret;
-+
-+	return regmap_bulk_read(data->regmap, chan->address, val, 2);
-+}
-+
-+/*
-+ * If we have no interrupt support, we have to wait for a scan period
-+ * after enabling a channel to get a result.
-+ */
-+static int sx9310_wait_for_sample(struct sx9310_data *data)
-+{
-+	int ret;
-+	unsigned int val;
-+
-+	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = (val & SX9310_SCAN_PERIOD_MASK) >> SX9310_SCAN_PERIOD_SHIFT;
-+
-+	msleep(sx9310_scan_period_table[val]);
-+
-+	return 0;
-+}
-+
-+static int sx9310_read_proximity(struct sx9310_data *data,
-+				 const struct iio_chan_spec *chan, int *val)
-+{
-+	int ret = 0;
-+	__be16 rawval;
-+
-+	mutex_lock(&data->mutex);
-+
-+	ret = sx9310_get_read_channel(data, chan->channel);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = sx9310_enable_irq(data, SX9310_CONVDONE_IRQ);
-+	if (ret < 0)
-+		goto out_put_channel;
-+
-+	mutex_unlock(&data->mutex);
-+
-+	if (data->client->irq > 0) {
-+		ret = wait_for_completion_interruptible(&data->completion);
-+		reinit_completion(&data->completion);
-+	} else {
-+		ret = sx9310_wait_for_sample(data);
-+	}
-+
-+	mutex_lock(&data->mutex);
-+
-+	if (ret < 0)
-+		goto out_disable_irq;
-+
-+	ret = sx9310_read_prox_data(data, chan, &rawval);
-+	if (ret < 0)
-+		goto out_disable_irq;
-+
-+	*val = sign_extend32(be16_to_cpu(rawval),
-+			     (chan->address == SX9310_REG_DIFF_MSB ? 11 : 15));
-+
-+	ret = sx9310_disable_irq(data, SX9310_CONVDONE_IRQ);
-+	if (ret < 0)
-+		goto out_put_channel;
-+
-+	ret = sx9310_put_read_channel(data, chan->channel);
-+	if (ret < 0)
-+		goto out;
-+
-+	mutex_unlock(&data->mutex);
-+
-+	return IIO_VAL_INT;
-+
-+out_disable_irq:
-+	sx9310_disable_irq(data, SX9310_CONVDONE_IRQ);
-+out_put_channel:
-+	sx9310_put_read_channel(data, chan->channel);
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	return ret;
-+}
-+
-+static int sx9310_read_samp_freq(struct sx9310_data *data, int *val, int *val2)
-+{
-+	unsigned int regval;
-+	int ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0, &regval);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	regval = (regval & SX9310_SCAN_PERIOD_MASK) >> SX9310_SCAN_PERIOD_SHIFT;
-+	*val = sx9310_samp_freq_table[regval].val;
-+	*val2 = sx9310_samp_freq_table[regval].val2;
-+
-+	return IIO_VAL_INT_PLUS_MICRO;
-+}
-+
-+static int sx9310_read_raw(struct iio_dev *indio_dev,
-+			   const struct iio_chan_spec *chan, int *val,
-+			   int *val2, long mask)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	if (chan->type != IIO_PROXIMITY)
-+		return -EINVAL;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
-+
-+		ret = sx9310_read_proximity(data, chan, val);
-+		iio_device_release_direct_mode(indio_dev);
-+		return ret;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return sx9310_read_samp_freq(data, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int sx9310_set_samp_freq(struct sx9310_data *data, int val, int val2)
-+{
-+	int i, ret;
-+
-+	for (i = 0; i < ARRAY_SIZE(sx9310_samp_freq_table); i++)
-+		if (val == sx9310_samp_freq_table[i].val &&
-+		    val2 == sx9310_samp_freq_table[i].val2)
-+			break;
-+
-+	if (i == ARRAY_SIZE(sx9310_samp_freq_table))
-+		return -EINVAL;
-+
-+	mutex_lock(&data->mutex);
-+
-+	ret = regmap_update_bits(data->regmap, SX9310_REG_PROX_CTRL0,
-+				 SX9310_SCAN_PERIOD_MASK,
-+				 i << SX9310_SCAN_PERIOD_SHIFT);
-+
-+	mutex_unlock(&data->mutex);
-+
-+	return ret;
-+}
-+
-+static int sx9310_write_raw(struct iio_dev *indio_dev,
-+			    const struct iio_chan_spec *chan, int val, int val2,
-+			    long mask)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+
-+	if (chan->type != IIO_PROXIMITY)
-+		return -EINVAL;
-+
-+	if (mask != IIO_CHAN_INFO_SAMP_FREQ)
-+		return -EINVAL;
-+
-+	return sx9310_set_samp_freq(data, val, val2);
-+}
-+
-+static irqreturn_t sx9310_irq_handler(int irq, void *private)
-+{
-+	struct iio_dev *indio_dev = private;
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+
-+	if (data->trigger_enabled)
-+		iio_trigger_poll(data->trig);
-+
-+	/*
-+	 * Even if no event is enabled, we need to wake the thread to
-+	 * clear the interrupt state by reading SX9310_REG_IRQ_SRC.  It
-+	 * is not possible to do that here because regmap_read takes a
-+	 * mutex.
-+	 */
-+	return IRQ_WAKE_THREAD;
-+}
-+
-+static void sx9310_push_events(struct iio_dev *indio_dev)
-+{
-+	int ret;
-+	unsigned int val, chan;
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	s64 timestamp = iio_get_time_ns(indio_dev);
-+
-+	/* Read proximity state on all channels */
-+	ret = regmap_read(data->regmap, SX9310_REG_STAT0, &val);
-+	if (ret < 0) {
-+		dev_err(&data->client->dev, "i2c transfer error in irq\n");
-+		return;
-+	}
-+
-+	for (chan = 0; chan < SX9310_NUM_CHANNELS; chan++) {
-+		int dir;
-+		u64 ev;
-+		bool new_prox = val & BIT(chan);
-+
-+		if (!(data->chan_event & BIT(chan)))
-+			continue;
-+		if (new_prox == data->prox_stat[chan])
-+			/* No change on this channel. */
-+			continue;
-+
-+		dir = new_prox ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
-+		ev = IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, chan,
-+					  IIO_EV_TYPE_THRESH, dir);
-+
-+		iio_push_event(indio_dev, ev, timestamp);
-+		data->prox_stat[chan] = new_prox;
-+	}
-+}
-+
-+static irqreturn_t sx9310_irq_thread_handler(int irq, void *private)
-+{
-+	struct iio_dev *indio_dev = private;
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret;
-+	unsigned int val;
-+
-+	mutex_lock(&data->mutex);
-+
-+	ret = regmap_read(data->regmap, SX9310_REG_IRQ_SRC, &val);
-+	if (ret < 0) {
-+		dev_err(&data->client->dev, "i2c transfer error in irq\n");
-+		goto out;
-+	}
-+
-+	if (val & SX9310_EVENT_IRQ)
-+		sx9310_push_events(indio_dev);
-+
-+	if (val & SX9310_CONVDONE_IRQ)
-+		complete(&data->completion);
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int sx9310_read_event_config(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+
-+	return !!(data->chan_event & BIT(chan->channel));
-+}
-+
-+static int sx9310_write_event_config(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir, int state)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret = 0;
-+
-+	/* If the state hasn't changed, there's nothing to do. */
-+	if (!!(data->chan_event & BIT(chan->channel)) == state)
-+		return 0;
-+
-+	mutex_lock(&data->mutex);
-+	if (state) {
-+		ret = sx9310_get_event_channel(data, chan->channel);
-+		if (ret < 0)
-+			goto out_unlock;
-+		if (!(data->chan_event & ~BIT(chan->channel))) {
-+			ret = sx9310_enable_irq(data, SX9310_EVENT_IRQ);
-+			if (ret < 0)
-+				sx9310_put_event_channel(data, chan->channel);
-+		}
-+	} else {
-+		ret = sx9310_put_event_channel(data, chan->channel);
-+		if (ret < 0)
-+			goto out_unlock;
-+		if (!data->chan_event) {
-+			ret = sx9310_disable_irq(data, SX9310_EVENT_IRQ);
-+			if (ret < 0)
-+				sx9310_get_event_channel(data, chan->channel);
-+		}
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&data->mutex);
-+	return ret;
-+}
-+
-+static struct attribute *sx9310_attributes[] = {
-+	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group sx9310_attribute_group = {
-+	.attrs = sx9310_attributes,
-+};
-+
-+static const struct iio_info sx9310_info = {
-+	.attrs = &sx9310_attribute_group,
-+	.read_raw = sx9310_read_raw,
-+	.write_raw = sx9310_write_raw,
-+	.read_event_config = sx9310_read_event_config,
-+	.write_event_config = sx9310_write_event_config,
-+};
-+
-+static int sx9310_set_trigger_state(struct iio_trigger *trig, bool state)
-+{
-+	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret = 0;
-+
-+	mutex_lock(&data->mutex);
-+
-+	if (state)
-+		ret = sx9310_enable_irq(data, SX9310_CONVDONE_IRQ);
-+	else if (!data->chan_read)
-+		ret = sx9310_disable_irq(data, SX9310_CONVDONE_IRQ);
-+	if (ret < 0)
-+		goto out;
-+
-+	data->trigger_enabled = state;
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	return ret;
-+}
-+
-+static const struct iio_trigger_ops sx9310_trigger_ops = {
-+	.set_trigger_state = sx9310_set_trigger_state,
-+};
-+
-+static irqreturn_t sx9310_trigger_handler(int irq, void *private)
-+{
-+	struct iio_poll_func *pf = private;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	__be16 val;
-+	int bit, ret, i = 0;
-+
-+	mutex_lock(&data->mutex);
-+
-+	for_each_set_bit(bit, indio_dev->active_scan_mask,
-+			 indio_dev->masklength) {
-+		ret = sx9310_read_prox_data(data, &indio_dev->channels[bit],
-+					    &val);
-+		if (ret < 0)
-+			goto out;
-+
-+		data->buffer[i++] = val;
-+	}
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
-+					   pf->timestamp);
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int sx9310_buffer_preenable(struct iio_dev *indio_dev)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	unsigned int channels = 0;
-+	int bit, ret;
-+
-+	mutex_lock(&data->mutex);
-+	for_each_set_bit(bit, indio_dev->active_scan_mask,
-+			 indio_dev->masklength)
-+		channels |= BIT(indio_dev->channels[bit].channel);
-+
-+	ret = sx9310_update_chan_en(data, channels, data->chan_event);
-+	mutex_unlock(&data->mutex);
-+	return ret;
-+}
-+
-+static int sx9310_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&data->mutex);
-+	ret = sx9310_update_chan_en(data, 0, data->chan_event);
-+	mutex_unlock(&data->mutex);
-+	return ret;
-+}
-+
-+static const struct iio_buffer_setup_ops sx9310_buffer_setup_ops = {
-+	.preenable = sx9310_buffer_preenable,
-+	.postenable = iio_triggered_buffer_postenable,
-+	.predisable = iio_triggered_buffer_predisable,
-+	.postdisable = sx9310_buffer_postdisable,
-+};
-+
-+struct sx9310_reg_default {
-+	u8 reg;
-+	u8 def;
-+};
-+
-+#define SX_INIT(_reg, _def)			\
-+	{					\
-+		.reg = SX9310_REG_##_reg,	\
-+		.def = _def,			\
-+	}
-+
-+static const struct sx9310_reg_default sx9310_default_regs[] = {
-+	SX_INIT(IRQ_MSK, 0x00),
-+	SX_INIT(IRQ_FUNC, 0x00),
-+	/*
-+	 * The lower 4 bits should not be set as it enable sensors measurements.
-+	 * Turning the detection on before the configuration values are set to
-+	 * good values can cause the device to return erroneous readings.
-+	 */
-+	SX_INIT(PROX_CTRL0, SX9310_REG_PROX_CTRL0_PROXSTAT2),
-+	SX_INIT(PROX_CTRL1, 0x00),
-+	SX_INIT(PROX_CTRL2, SX9310_REG_PROX_CTRL2_COMBMODE_ALL |
-+			    SX9310_REG_PROX_CTRL2_SHIELDEN_DYNAMIC),
-+	SX_INIT(PROX_CTRL3, SX9310_REG_PROX_CTRL3_GAIN0_X8 |
-+			    SX9310_REG_PROX_CTRL3_GAIN12_X4),
-+	SX_INIT(PROX_CTRL4, SX9310_REG_PROX_CTRL4_RESOLUTION_FINEST),
-+	SX_INIT(PROX_CTRL5, SX9310_REG_PROX_CTRL5_RANGE_SMALL |
-+			    SX9310_REG_PROX_CTRL5_STARTUPSENS_CS1 |
-+			    SX9310_REG_PROX_CTRL5_RAWFILT_1P25),
-+	SX_INIT(PROX_CTRL6, SX9310_REG_PROX_CTRL6_COMP_COMMON),
-+	SX_INIT(PROX_CTRL7, SX9310_REG_PROX_CTRL7_AVGNEGFILT_2 |
-+			    SX9310_REG_PROX_CTRL7_AVGPOSFILT_512),
-+	SX_INIT(PROX_CTRL8, SX9310_REG_PROX_CTRL8_9_PTHRESH_96 |
-+			    SX9310_REG_PROX_CTRL8_9_BODYTHRESH_1500),
-+	SX_INIT(PROX_CTRL9, SX9310_REG_PROX_CTRL8_9_PTHRESH12_28 |
-+			    SX9310_REG_PROX_CTRL8_9_BODYTHRESH_900),
-+	SX_INIT(PROX_CTRL10, SX9310_REG_PROX_CTRL10_HYST_6PCT |
-+			     SX9310_REG_PROX_CTRL10_CLOSE_DEBOUNCE_8 |
-+			     SX9310_REG_PROX_CTRL10_FAR_DEBOUNCE_8),
-+	SX_INIT(PROX_CTRL11, 0x00),
-+	SX_INIT(PROX_CTRL12, 0x00),
-+	SX_INIT(PROX_CTRL13, 0x00),
-+	SX_INIT(PROX_CTRL14, 0x00),
-+	SX_INIT(PROX_CTRL15, 0x00),
-+	SX_INIT(PROX_CTRL16, 0x00),
-+	SX_INIT(PROX_CTRL17, 0x00),
-+	SX_INIT(PROX_CTRL18, 0x00),
-+	SX_INIT(PROX_CTRL19, 0x00),
-+	SX_INIT(SAR_CTRL0, SX9310_REG_SAR_CTRL0_SARDEB_4_SAMPLES |
-+			   SX9310_REG_SAR_CTRL0_SARHYST_8),
-+	SX_INIT(SAR_CTRL1, SX9310_REG_SAR_CTRL1_SLOPE(10781250)),
-+	SX_INIT(SAR_CTRL2, SX9310_REG_SAR_CTRL2_SAROFFSET_DEFAULT),
-+};
-+
-+/* Activate all channels and perform an initial compensation. */
-+static int sx9310_init_compensation(struct iio_dev *indio_dev)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int i, ret;
-+	unsigned int val;
-+	unsigned int ctrl0;
-+
-+	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0, &ctrl0);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* run the compensation phase on all channels */
-+	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
-+			   ctrl0 | SX9310_REG_PROX_CTRL0_EN_MASK);
-+	if (ret < 0)
-+		return ret;
-+
-+	for (i = 100; i >= 0; i--) {
-+		msleep(20);
-+		ret = regmap_read(data->regmap, SX9310_REG_STAT1, &val);
-+		if (ret < 0)
-+			goto out;
-+		if (!(val & SX9310_COMPSTAT_MASK))
-+			break;
-+	}
-+
-+	if (i < 0) {
-+		dev_err(&data->client->dev,
-+			"initial compensation timed out: 0x%02x", val);
-+		ret = -ETIMEDOUT;
-+	}
-+
-+out:
-+	regmap_write(data->regmap, SX9310_REG_PROX_CTRL0, ctrl0);
-+	return ret;
-+}
-+
-+static int sx9310_init_device(struct iio_dev *indio_dev)
-+{
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	const struct sx9310_reg_default *initval;
-+	int ret;
-+	unsigned int i, val;
-+
-+	ret = regmap_write(data->regmap, SX9310_REG_RESET, SX9310_SOFT_RESET);
-+	if (ret < 0)
-+		return ret;
-+
-+	usleep_range(1000, 2000); /* power-up time is ~1ms. */
-+
-+	/* Clear reset interrupt state by reading SX9310_REG_IRQ_SRC. */
-+	ret = regmap_read(data->regmap, SX9310_REG_IRQ_SRC, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Program some sane defaults. */
-+	for (i = 0; i < ARRAY_SIZE(sx9310_default_regs); i++) {
-+		initval = &sx9310_default_regs[i];
-+		ret = regmap_write(data->regmap, initval->reg, initval->def);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return sx9310_init_compensation(indio_dev);
-+}
-+
-+static const struct {
-+	int whoami;
-+	__u8 acpi_id[ACPI_ID_LEN];
-+	char i2c_name[I2C_NAME_SIZE];
-+} sx9310_whoami_table[] = {
-+	{ SX9310_WHOAMI_VALUE, SX9310_ACPI_DEVICE_ID, SX9310_I2C_DEVICE_ID },
-+	{ SX9311_WHOAMI_VALUE, SX9311_ACPI_DEVICE_ID, SX9311_I2C_DEVICE_ID },
-+};
-+
-+static int sx9310_set_indio_dev_name(struct device *dev,
-+				     struct iio_dev *indio_dev,
-+				     const struct i2c_device_id *id, int whoami)
-+{
-+	const struct acpi_device_id *acpi_id;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(sx9310_whoami_table); i++)
-+		if (sx9310_whoami_table[i].whoami == whoami)
-+			break;
-+	if (i == ARRAY_SIZE(sx9310_whoami_table)) {
-+		dev_err(dev, "unexpected WHOAMI response: %u", whoami);
-+		return -ENODEV;
-+	}
-+
-+	/* id will be NULL when enumerated via ACPI */
-+	if (id) {
-+		if (strcmp(id->name, sx9310_whoami_table[i].i2c_name))
-+			dev_err(dev, "WHOAMI does not match i2c_device_id: %s",
-+				id->name);
-+	} else if (ACPI_HANDLE(dev)) {
-+		acpi_id = acpi_match_device(dev->driver->acpi_match_table, dev);
-+		if (!acpi_id)
-+			return -ENODEV;
-+		if (strcmp(acpi_id->id, sx9310_whoami_table[i].acpi_id))
-+			dev_err(dev, "WHOAMI does not match acpi_device_id: %s",
-+				acpi_id->id);
-+	} else
-+		return -ENODEV;
-+
-+	indio_dev->name = sx9310_whoami_table[i].i2c_name;
-+	return 0;
-+}
-+
-+static int sx9310_probe(struct i2c_client *client,
-+			const struct i2c_device_id *id)
-+{
-+	int ret;
-+	struct iio_dev *indio_dev;
-+	struct sx9310_data *data;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	if (indio_dev == NULL)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->client = client;
-+	mutex_init(&data->mutex);
-+	init_completion(&data->completion);
-+
-+	data->regmap = devm_regmap_init_i2c(client, &sx9310_regmap_config);
-+	if (IS_ERR(data->regmap))
-+		return PTR_ERR(data->regmap);
-+
-+	ret = regmap_read(data->regmap, SX9310_REG_WHOAMI, &data->whoami);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "error in reading WHOAMI register: %d",
-+			ret);
-+		return ret;
-+	}
-+
-+	ret = sx9310_set_indio_dev_name(&client->dev, indio_dev, id,
-+					data->whoami);
-+	if (ret < 0)
-+		return ret;
-+
-+	ACPI_COMPANION_SET(&indio_dev->dev, ACPI_COMPANION(&client->dev));
-+	indio_dev->dev.parent = &client->dev;
-+	indio_dev->channels = sx9310_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(sx9310_channels);
-+	indio_dev->info = &sx9310_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	i2c_set_clientdata(client, indio_dev);
-+
-+	ret = sx9310_init_device(indio_dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (client->irq) {
-+		ret = devm_request_threaded_irq(&client->dev, client->irq,
-+						sx9310_irq_handler,
-+						sx9310_irq_thread_handler,
-+						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-+						"sx9310_event", indio_dev);
-+		if (ret < 0)
-+			return ret;
-+
-+		data->trig =
-+			devm_iio_trigger_alloc(&client->dev, "%s-dev%d",
-+					       indio_dev->name, indio_dev->id);
-+		if (!data->trig)
-+			return -ENOMEM;
-+
-+		data->trig->dev.parent = &client->dev;
-+		data->trig->ops = &sx9310_trigger_ops;
-+		iio_trigger_set_drvdata(data->trig, indio_dev);
-+
-+		ret = devm_iio_trigger_register(&client->dev, data->trig);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      sx9310_trigger_handler,
-+					      &sx9310_buffer_setup_ops);
-+	if (ret < 0)
-+		return ret;
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static int __maybe_unused sx9310_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	u8 ctrl0;
-+	int ret;
-+
-+	disable_irq_nosync(data->client->irq);
-+
-+	mutex_lock(&data->mutex);
-+	ret = regmap_read(data->regmap, SX9310_REG_PROX_CTRL0,
-+			  &data->suspend_ctrl0);
-+
-+	if (ret)
-+		goto out;
-+
-+	ctrl0 = data->suspend_ctrl0 & ~SX9310_REG_PROX_CTRL0_EN_MASK;
-+	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0, ctrl0);
-+	if (ret)
-+		goto out;
-+
-+	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 0);
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+	return ret;
-+}
-+
-+static int __maybe_unused sx9310_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct sx9310_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&data->mutex);
-+	ret = regmap_write(data->regmap, SX9310_REG_PAUSE, 1);
-+	if (ret)
-+		goto out;
-+
-+	ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
-+			   data->suspend_ctrl0);
-+
-+out:
-+	mutex_unlock(&data->mutex);
-+
-+	enable_irq(data->client->irq);
-+
-+	return ret;
-+}
-+
-+static const struct dev_pm_ops sx9310_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(sx9310_suspend, sx9310_resume)
-+};
-+
-+static const struct acpi_device_id sx9310_acpi_match[] = {
-+	{ SX9310_ACPI_DEVICE_ID },
-+	{ SX9311_ACPI_DEVICE_ID },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(acpi, sx9310_acpi_match);
-+
-+static const struct of_device_id sx9310_of_match[] = {
-+	{ .compatible = "semtech,sx9310" },
-+	{ .compatible = "semtech,sx9311" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, sx9310_of_match);
-+
-+static const struct i2c_device_id sx9310_id[] = {
-+	{ SX9310_I2C_DEVICE_ID },
-+	{ SX9311_I2C_DEVICE_ID },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(i2c, sx9310_id);
-+
-+static struct i2c_driver sx9310_driver = {
-+	.driver = {
-+		.name	= "sx9310",
-+		.acpi_match_table = ACPI_PTR(sx9310_acpi_match),
-+		.of_match_table = of_match_ptr(sx9310_of_match),
-+		.pm = &sx9310_pm_ops,
-+	},
-+	.probe		= sx9310_probe,
-+	.id_table	= sx9310_id,
-+};
-+module_i2c_driver(sx9310_driver);
-+
-+MODULE_AUTHOR("Gwendal Grignou <gwendal@chromium.org>");
-+MODULE_AUTHOR("Daniel Campello <campello@chromium.org>");
-+MODULE_DESCRIPTION("Driver for Semtech SX9310/SX9311 proximity sensor");
-+MODULE_LICENSE("GPL v2");
---
-2.25.0.341.g760bfbb309-goog
-
+Regards,
+Bjorn

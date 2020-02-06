@@ -2,158 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 421BF1541D4
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 11:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9058C1541DE
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 11:29:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728279AbgBFK0U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Feb 2020 05:26:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42738 "EHLO mail.kernel.org"
+        id S1728457AbgBFK3U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Feb 2020 05:29:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43314 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728394AbgBFK0U (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 Feb 2020 05:26:20 -0500
+        id S1728394AbgBFK3U (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 Feb 2020 05:29:20 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1A94D206CC;
-        Thu,  6 Feb 2020 10:26:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0A46A206CC;
+        Thu,  6 Feb 2020 10:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580984779;
-        bh=0JgSe6SPXxtiGzuqSpPoTEMWToGrknUcN1/s8u6Vf+M=;
+        s=default; t=1580984960;
+        bh=H4ojcjOui5q7QcsywcALwvAJbGNX9wX0l+S2a2fHvY8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MYc2c6ZZyJ8vOUJLwASgkPxI64n+PKHyG9kUruxfxfOcaXwKN20gVAa1F11rD/1xy
-         G1lY/SCl3pbS7xjd6cl5kCtzFLQlYb3Gnci0FlILhLL5dCrwmJ2ac/BY+pS2YCxybZ
-         zmLza8wlOPi9pRe8vIoNSVZmTvbr+VabbcbR7fR8=
-Date:   Thu, 6 Feb 2020 10:26:14 +0000
+        b=bHWdjw7hCXs1FcUOJNXoFKIyAHygzKv+Nha5MecI4AQEl9QrZ0upXWbjKKaEDdxWX
+         qSBMgdtldC7YPDgLYWWufRykoR60UgDS4njwmlJ534qtGUc1Minotjj5/qkxmM59Ck
+         D0yL37Wf0P3Ptvp48n0K0HXZCZ69G11x1drmm99k=
+Date:   Thu, 6 Feb 2020 10:29:15 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "Bia, Beniamin" <Beniamin.Bia@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "biabeniamin@outlook.com" <biabeniamin@outlook.com>
-Subject: Re: [PATCH v4 4/5] dt-bindings: iio: amplifiers: Add docs for
- HMC425A Step Attenuator
-Message-ID: <20200206102614.64593f10@archlinux>
-In-Reply-To: <17fefa85f2c441549bc07e08fb13994b10854fbf.camel@analog.com>
-References: <20200129142301.13918-1-beniamin.bia@analog.com>
-        <20200129142301.13918-5-beniamin.bia@analog.com>
-        <20200202105358.27b6b8a6@archlinux>
-        <17fefa85f2c441549bc07e08fb13994b10854fbf.camel@analog.com>
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, Silvan Murer <silvan.murer@gmail.com>,
+        linux-iio@vger.kernel.org,
+        Maxime Roussin-Belanger <maxime.roussinbelanger@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, kernel@pengutronix.de
+Subject: Re: [PATCH 4/3] iio: dac: ltc2632: remove some unused defines
+Message-ID: <20200206102915.2e32cb5e@archlinux>
+In-Reply-To: <20200203203126.7003-1-u.kleine-koenig@pengutronix.de>
+References: <20200130131549.1170-1-u.kleine-koenig@pengutronix.de>
+        <20200203203126.7003-1-u.kleine-koenig@pengutronix.de>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 3 Feb 2020 11:25:48 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Mon,  3 Feb 2020 21:31:26 +0100
+Uwe Kleine-K=C3=B6nig         <u.kleine-koenig@pengutronix.de> wrote:
 
-> On Sun, 2020-02-02 at 10:53 +0000, Jonathan Cameron wrote:
-> > On Wed, 29 Jan 2020 16:23:00 +0200
-> > Beniamin Bia <beniamin.bia@analog.com> wrote:
-> >   
-> > > From: Michael Hennerich <michael.hennerich@analog.com>
-> > > 
-> > > Document support for Analog Devices MC425A Step Attenuator.
-> > > 
-> > > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> > > Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-> > > ---
-> > >  .../bindings/iio/amplifiers/adi,hmc425a.yaml  | 48 +++++++++++++++++++
-> > >  1 file changed, 48 insertions(+)
-> > >  create mode 100644
-> > > Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
-> > > 
-> > > diff --git
-> > > a/Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
-> > > b/Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
-> > > new file mode 100644
-> > > index 000000000000..d800639c14a5
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
-> > > @@ -0,0 +1,48 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/amplifiers/adi,hmc425a.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: HMC425A 6-bit Digital Step Attenuator
-> > > +
-> > > +maintainers:
-> > > +- Michael Hennerich <michael.hennerich@analog.com>
-> > > +- Beniamin Bia <beniamin.bia@analog.com>
-> > > +
-> > > +description: |
-> > > +  Digital Step Attenuator IIO device with gpio interface.
-> > > +  HMC425A 0.5 dB LSB GaAs MMIC 6-BIT DIGITAL POSITIVE CONTROL ATTENUATOR,
-> > > 2.2 - 8.0 GHz
-> > > +  
-> > > https://www.analog.com/media/en/technical-documentation/data-sheets/hmc425A.pdf
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - adi,hmc425a
-> > > +
-> > > +  vcc-supply: true
-> > > +
-> > > +  ctrl-gpios:
-> > > +    description:
-> > > +      Must contain an array of 6 GPIO specifiers, referring to the GPIO
-> > > pins
-> > > +      connected to the control pins V1-V6.
-> > > +    maxItems: 6  
-> > 
-> > Does this force exactly 6?  
-> 
-> I'm [also] a bit unsure whether to force this number in DT.
-> One idea [with this driver] would be to maybe have it support multiple of these
-> GPIO-controlled attenuators/amplifiers. And those could have a higher/lower
-> number of GPIOs.
-> 
-> In any case, we could enforce this as-is [for now], and see later when/if adding
-> new parts.
-> No strong opinion from my side about this though.
-It should be enforced for each of the devices supported.
-So for devices with less, it would only allow precisely that
-lesser number.
+> These two defines are unused since the driver was introduced in commit
+> 02b829f9e11f ("iio: dac: Add support for ltc2632 DACs").
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+A bit of fuzz and the mysterious bit of this being patch 4 of 3 aside all g=
+ood.
 
-One slight quirk is someone crazy might wire certain pins to high or low
-because they don't need the precision.
+Applied to the togreg branch of iio.git and pushed out as testing.
 
-Not sure how we handle that one but can deal with it when it happens.
+Thanks,
 
 Jonathan
 
-> 
-> >   
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +  - ctrl-gpios
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    #include <dt-bindings/gpio/gpio.h>
-> > > +    gpio_hmc425a: hmc425a {
-> > > +      compatible = "adi,hmc425a";
-> > > +      ctrl-gpios = <&gpio 40 GPIO_ACTIVE_HIGH>,
-> > > +        <&gpio 39 GPIO_ACTIVE_HIGH>,
-> > > +        <&gpio 38 GPIO_ACTIVE_HIGH>,
-> > > +        <&gpio 37 GPIO_ACTIVE_HIGH>,
-> > > +        <&gpio 36 GPIO_ACTIVE_HIGH>,
-> > > +        <&gpio 35 GPIO_ACTIVE_HIGH>;
-> > > +      vcc-supply = <&foo>;
-> > > +    };
-> > > +...  
+> ---
+>  drivers/iio/dac/ltc2632.c | 3 ---
+>  1 file changed, 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/dac/ltc2632.c b/drivers/iio/dac/ltc2632.c
+> index 1e7ffa0f6071..7adc91056aa1 100644
+> --- a/drivers/iio/dac/ltc2632.c
+> +++ b/drivers/iio/dac/ltc2632.c
+> @@ -12,9 +12,6 @@
+>  #include <linux/iio/iio.h>
+>  #include <linux/regulator/consumer.h>
+> =20
+> -#define LTC2632_ADDR_DAC0                       0x0
+> -#define LTC2632_ADDR_DAC1                       0x1
+> -
+>  #define LTC2632_CMD_WRITE_INPUT_N               0x0
+>  #define LTC2632_CMD_UPDATE_DAC_N                0x1
+>  #define LTC2632_CMD_WRITE_INPUT_N_UPDATE_ALL    0x2
 

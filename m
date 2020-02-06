@@ -2,126 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F96815452F
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 14:45:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E18E7154673
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 15:50:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727415AbgBFNpL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Feb 2020 08:45:11 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:40142 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727361AbgBFNpL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Feb 2020 08:45:11 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 88AFF295177
-Subject: Re: [PATCH v2 10/17] iio: cros_ec: Use cros_ec_cmd()
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Prashant Malani <pmalani@chromium.org>
-Cc:     linux-kernel@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        id S1727325AbgBFOuV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Feb 2020 09:50:21 -0500
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:37268 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727279AbgBFOuV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Feb 2020 09:50:21 -0500
+Received: by mail-lj1-f196.google.com with SMTP id v17so6416379ljg.4
+        for <linux-iio@vger.kernel.org>; Thu, 06 Feb 2020 06:50:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Q631zB7rspAWEZ/6z4byLYNG/gSXgdUXdcRN4YlipsE=;
+        b=kM8MQPF7VThq9BeFmsSOKWTXz0TYZmed4HUEQQwhSpFI3L5DzsdB7v19MlCykmClY/
+         J2xWeXXno3pypyOdkLdgkDrxN+vmm8ky+a6M/zSAcj24J2LS93bCdFxpiR8eitgVUtHK
+         9sC4jG3VP8T15Rift2sbIU2dlKAlaHMyqULuT2/XiEsijzlX5etxNuYbZgyWTelKx0Sx
+         XHb1gtD2paSbKGBY6O65wAY2dVipCT6ydlVpK95j0WK45e5aQ/YkcVfyRbp3nMRiAUhI
+         6+qMzWhwEz+tk0ihV4EWnGb+9RQ4KWoWJzFj66H3Dh8w1OcCTh8Yr8jPdBMFghm2YSV0
+         g+bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Q631zB7rspAWEZ/6z4byLYNG/gSXgdUXdcRN4YlipsE=;
+        b=aFvofTvwmDep0RiU+ntJxD/63plyuMA9v5B74E6UbiBV/9MpCbLc0VAHHPolGy6QF8
+         Sa6TM5+In8kP1JlETNSfUROidCmO9uY4qfHhGfiTXsdvieGS6pIBX/m0lsJOFCO4pz3v
+         6b6xNEihU6sAfZARuDQaF4SOl4/hc+oDWdq3PRLFkV0t+4trdRUEZJqnW+eXWRh3krxE
+         1tFggdJU4/6RGsZ39hXTnFg9NRzTPM+FaeiAUWid9sol1hpsP7W2yKLd8we7+7gnPXAp
+         s+JRtevn5zta39TVP19grTf9yJLZ7ncvT1hq1JtPYWKGmvMLPfW/xdlZstnvM0amMYm5
+         3Odw==
+X-Gm-Message-State: APjAAAWKgy1iQnweyXUR33atRwn6+HN3OnKdtKtSM/a/v/uJp4TCigTl
+        pz+jAoUgQFf1gAqw4CoGYg2s1awP
+X-Google-Smtp-Source: APXvYqzBqR572+ZvG7B43oEU5d4pmBN1FdFYArcbX83ipneK4W+oUJGaviZ6FjSsgL4b20Gp/EfzaQ==
+X-Received: by 2002:a2e:9748:: with SMTP id f8mr2371819ljj.178.1581000617541;
+        Thu, 06 Feb 2020 06:50:17 -0800 (PST)
+Received: from [192.168.2.145] (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
+        by smtp.googlemail.com with ESMTPSA id u25sm1481659ljj.70.2020.02.06.06.50.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Feb 2020 06:50:16 -0800 (PST)
+Subject: Re: [PATCH v4 3/7] iio: light: al3320a slightly improve code
+ formatting
+To:     David Heidelberg <david@ixit.cz>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
-References: <20200205190028.183069-1-pmalani@chromium.org>
- <20200205190028.183069-11-pmalani@chromium.org>
- <20200206121753.7b809631@archlinux>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <671a55aa-1e5e-4e21-4a62-55db4dee368a@collabora.com>
-Date:   Thu, 6 Feb 2020 14:45:05 +0100
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     linux-iio@vger.kernel.org
+References: <20200204093031.616409-1-david@ixit.cz>
+ <20200204093031.616409-4-david@ixit.cz>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <791299ad-c8e0-a94a-7dbb-780473c8346c@gmail.com>
+Date:   Thu, 6 Feb 2020 17:50:16 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <20200206121753.7b809631@archlinux>
+In-Reply-To: <20200204093031.616409-4-david@ixit.cz>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Prashant,
+04.02.2020 12:30, David Heidelberg пишет:
+...
+>  #define AL3320A_CONFIG_DISABLE		0x00
+>  #define AL3320A_CONFIG_ENABLE		0x01
+>  
+> -#define AL3320A_GAIN_SHIFT		1
+> -#define AL3320A_GAIN_MASK		(BIT(2) | BIT(1))
+> +#define AL3320A_GAIN_MASK		GENMASK(2, 1)
 
-On 6/2/20 13:17, Jonathan Cameron wrote:
-> On Wed,  5 Feb 2020 11:00:13 -0800
-> Prashant Malani <pmalani@chromium.org> wrote:
-> 
->> Replace cros_ec_cmd_xfer_status() with cros_ec_cmd()
->> which does the message buffer setup and cleanup.
->>
->> For one other usage, replace the cros_ec_cmd_xfer_status() call with a
->> call to cros_ec_cmd_xfer(), in preparation for the removal of the former
->> function.
->>
->> Signed-off-by: Prashant Malani <pmalani@chromium.org>
-> 
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
->> ---
->>
->> Changes in v2:
->> - Updated to use new function name and parameter list.
->> - Used C99 element setting to initialize param struct.
->> - For second usage, replaced cros_ec_cmd_xfer_status() with
->>   cros_ec_cmd_xfer() which is functionally similar.
->>
->>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 25 +++++++------------
->>  1 file changed, 9 insertions(+), 16 deletions(-)
->>
->> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
->> index d3a3626c7cd834..94e22e7d927631 100644
->> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
->> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
->> @@ -30,24 +30,15 @@ static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
->>  					     u16 cmd_offset, u16 cmd, u32 *mask)
->>  {
->>  	int ret;
->> -	struct {
->> -		struct cros_ec_command msg;
->> -		union {
->> -			struct ec_params_get_cmd_versions params;
->> -			struct ec_response_get_cmd_versions resp;
->> -		};
->> -	} __packed buf = {
->> -		.msg = {
->> -			.command = EC_CMD_GET_CMD_VERSIONS + cmd_offset,
->> -			.insize = sizeof(struct ec_response_get_cmd_versions),
->> -			.outsize = sizeof(struct ec_params_get_cmd_versions)
->> -			},
->> -		.params = {.cmd = cmd}
->> +	struct ec_params_get_cmd_versions params = {
->> +		.cmd = cmd,
->>  	};
->> +	struct ec_response_get_cmd_versions resp = {0};
->>  
->> -	ret = cros_ec_cmd_xfer_status(ec_dev, &buf.msg);
->> +	ret = cros_ec_cmd(ec_dev, 0, EC_CMD_GET_CMD_VERSIONS + cmd_offset,
->> +			  &params, sizeof(params), &resp, sizeof(resp), NULL);
->>  	if (ret >= 0)
->> -		*mask = buf.resp.version_mask;
->> +		*mask = resp.version_mask;
->>  	return ret;
->>  }
->>  
->> @@ -171,9 +162,11 @@ int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
->>  
->>  	memcpy(state->msg->data, &state->param, sizeof(state->param));
->>  
->> -	ret = cros_ec_cmd_xfer_status(state->ec, state->msg);
->> +	ret = cros_ec_cmd_xfer(state->ec, state->msg);
->>  	if (ret < 0)
->>  		return ret;
->> +	else if (state->msg->result != EC_RES_SUCCESS)
->> +		return -EPROTO;
->>  
+Looks like you forgot to compile-test this driver because the
+AL3320A_GAIN_SHIFT is removed above, while it's still in-use below.
 
-There is no way to use the new cros_ec_cmd here?
-
-
->>  	if (ret &&
->>  	    state->resp != (struct ec_response_motion_sense *)state->msg->data)
-> 
+>  /* chip params default values */
+>  #define AL3320A_DEFAULT_MEAN_TIME	4
+> @@ -90,7 +89,8 @@ static int al3320a_init(struct al3320a_data *data)
+>  		return ret;
+>  
+>  	ret = i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG_RANGE,
+> -					AL3320A_RANGE_3 << AL3320A_GAIN_SHIFT);
+> +					FIELD_PREP(AL3320A_GAIN_MASK,
+> +						   AL3320A_RANGE_3));
+...

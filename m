@@ -2,36 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CCA15415D
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 10:48:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9D115416F
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 10:57:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728000AbgBFJsA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Feb 2020 04:48:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59650 "EHLO mail.kernel.org"
+        id S1727795AbgBFJ5D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Feb 2020 04:57:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34838 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727920AbgBFJsA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 Feb 2020 04:48:00 -0500
+        id S1727543AbgBFJ5D (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 6 Feb 2020 04:57:03 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1665A214AF;
-        Thu,  6 Feb 2020 09:47:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 25D00218AC;
+        Thu,  6 Feb 2020 09:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580982479;
-        bh=xef0NCCx1xDO991dmmH0lH5zawrBefpc+/7wIhEa6sE=;
+        s=default; t=1580983022;
+        bh=w5Y3Ebc9eXglcMDX0+yLDXi/+gEfId6scYpQlhbnOB4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=sT1Mrad9YkKc7DYosnsyDiIIcC1z7twiQ/TdNNfXC1ON5BNkEPGhMS0pPO/v2dbkw
-         H9CfF/3Ly7E5A0YKZWy9JqwOeFfYjdjd7BFPL+++3SHbaaU1l0/A0oDAUTjal3TQ6Z
-         IRytbgIXcWypFlL909QW+R3PlD4bZEndMMs5OHG8=
-Date:   Thu, 6 Feb 2020 09:47:56 +0000
+        b=yDRQhegVLxfBg/vQDPaq2zQYj8Lg5yMrJ9+FCjaLE20fPcNZHTx/p6oZH1mj7O20j
+         vmRB283zBbLC9ieUPnzOjQ7lrNTL8pz5DR3PbPsnooWd0GX3ey0ZOpjO9260TmrEQc
+         5sUOIlRZb9l/S13iTd50BZCPeL5TchmY1GZQOWcE=
+Date:   Thu, 6 Feb 2020 09:56:59 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Tachici <alexandru.tachici@analog.com>
 Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/5 V2] iio: adc: ad7192: move out of staging
-Message-ID: <20200206094756.52fe8bc0@archlinux>
-In-Reply-To: <20200205171511.25912-1-alexandru.tachici@analog.com>
+Subject: Re: [PATCH 1/5 V2] staging: iio: adc: ad7192: fail probe on
+ get_voltage
+Message-ID: <20200206095659.639218f7@archlinux>
+In-Reply-To: <20200205171511.25912-2-alexandru.tachici@analog.com>
 References: <20200202162215.50915c83@archlinux>
         <20200205171511.25912-1-alexandru.tachici@analog.com>
+        <20200205171511.25912-2-alexandru.tachici@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,56 +43,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 5 Feb 2020 19:15:06 +0200
+On Wed, 5 Feb 2020 19:15:07 +0200
 Alexandru Tachici <alexandru.tachici@analog.com> wrote:
 
-> This series of patches aim to move the ad7192 ADC from staging
-> into mainline.
+> This patch makes the ad7192_probe fail in case
+> regulator_get_voltage will return an error.
 > 
-> 1. Makes probe fail in case get_voltage returns an error.
-> 
-> 2. Changed the iio_chan_spec talbes in order to set the required
-> attributes at compile time.
+> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
 
-tables
+There is a subtlety in here we should handle.
 
+> ---
+>  drivers/staging/iio/adc/ad7192.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> 3. Removed spi_device_id table and moved ID_* in of_Device_id table.
-> 
-> 4. Updates inline sysfs docs.
-> 
-> 5. Full-diff patch to move the ad7192 out of staging.
+> diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
+> index bf3e2a9cc07f..4780ddf99b13 100644
+> --- a/drivers/staging/iio/adc/ad7192.c
+> +++ b/drivers/staging/iio/adc/ad7192.c
+> @@ -899,10 +899,13 @@ static int ad7192_probe(struct spi_device *spi)
+>  
+>  	voltage_uv = regulator_get_voltage(st->avdd);
+>
+I had to dig a bit to check this as it's not documented.
+regulator_get_voltage returns negative for error, not 0.
+0 typically means the voltage has not been set or has been
+explicitly set to 0. 
 
-Couple of process things.  Seems you have this thread with an
-in reply to set to a different thread.
+So if it is set to 0 I suppose we could try setting it as it
+might be a variable high precision reference?
 
-1) Obviously helps if it's the right thread ;)
-2) Don't do it anyway.   Threads get very deep if we take a few versions
-   for a driver so much better to just rely on naming and start a new
-   thread for each version.
+Perhaps for now just spitting out an error is the best plan.
+
+  
+> -	if (voltage_uv)
+> +	if (voltage_uv) {
+>  		st->int_vref_mv = voltage_uv / 1000;
+> -	else
+> +	} else {
+> +		ret = voltage_uv;
+>  		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
+> +		goto error_disable_avdd;
+> +	}
+>  
+>  	spi_set_drvdata(spi, indio_dev);
+>  	st->devid = spi_get_device_id(spi)->driver_data;
+> @@ -957,6 +960,7 @@ static int ad7192_probe(struct spi_device *spi)
+>  	ret = iio_device_register(indio_dev);
+>  	if (ret < 0)
+>  		goto error_disable_clk;
+> +
+We shouldn't have stray white space changes in a patch making a real change.
+
+Thanks,
 
 Jonathan
 
-> 
-> Alexandru Tachici (5):
->   staging: iio: adc: ad7192: fail probe on get_voltage
->   staging: iio: adc: ad7192: modify iio_chan_spec array
->   staging: iio: adc: ad7192: removed spi_device_id
->   Documentation: ABI: testing: ad7192: update sysfs docs
->   staging: iio: adc: ad7192: move out of staging
-> 
->  .../ABI/testing/sysfs-bus-iio-adc-ad7192      |   17 +-
->  MAINTAINERS                                   |    8 +
->  drivers/iio/adc/Kconfig                       |   12 +
->  drivers/iio/adc/Makefile                      |    1 +
->  drivers/iio/adc/ad7192.c                      | 1043 +++++++++++++++++
->  .../iio/Documentation/sysfs-bus-iio-ad7192    |   20 -
->  drivers/staging/iio/adc/Kconfig               |   12 -
->  drivers/staging/iio/adc/Makefile              |    1 -
->  drivers/staging/iio/adc/ad7192.c              | 1022 ----------------
->  9 files changed, 1075 insertions(+), 1061 deletions(-)
->  create mode 100644 drivers/iio/adc/ad7192.c
->  delete mode 100644 drivers/staging/iio/Documentation/sysfs-bus-iio-ad7192
->  delete mode 100644 drivers/staging/iio/adc/ad7192.c
-> 
+>  	return 0;
+>  
+>  error_disable_clk:
 

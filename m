@@ -2,102 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 513CA154DEB
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 22:27:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9DB9154DFD
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 22:34:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727456AbgBFV1l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Feb 2020 16:27:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35754 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726765AbgBFV1l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 6 Feb 2020 16:27:41 -0500
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4ADCD21D7D;
-        Thu,  6 Feb 2020 21:27:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581024460;
-        bh=bGguiQxkk8XQn3N3sNxNrNWAALZLfCly9OgiprbxY7A=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=j/IFbAtb3OufmgHFFwlE/lHuldc23vMOpKjisPtKuzw/+td4lOWTaLTmVz3uF2uUW
-         pDRWadtD4kMo5YoOhzzuNuWw31DWU9tnlv8+xc2t+iKYvblEwKGoX6aKcKf0btpfhq
-         seHuexWxkqfwr90SUs24AdF1W0VjAx0Wdp8moTII=
-Received: by mail-qk1-f182.google.com with SMTP id 21so147490qki.5;
-        Thu, 06 Feb 2020 13:27:40 -0800 (PST)
-X-Gm-Message-State: APjAAAXiHrh0nMN3t4PzRJT748k+E8g39JT9O80qkeSFOXqQC78IAROE
-        EpmYqty7/3HWsITaRvwznt83lhMzC37qWa42sg==
-X-Google-Smtp-Source: APXvYqz0IRt4ytCktNtYMvloUMtLBfZ8eYIo0UcyfQ2YShJbLxjnnIOK1lnbAjSFLFAfxTjhGyySrIW8oOP5goykzjE=
-X-Received: by 2002:ae9:f205:: with SMTP id m5mr4532214qkg.152.1581024459364;
- Thu, 06 Feb 2020 13:27:39 -0800 (PST)
-MIME-Version: 1.0
-References: <20200204093031.616409-1-david@ixit.cz> <20200204093031.616409-2-david@ixit.cz>
- <20200206190758.GA11064@bogus> <1581023799.790008.0@ixit.cz>
-In-Reply-To: <1581023799.790008.0@ixit.cz>
+        id S1727505AbgBFVe3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Feb 2020 16:34:29 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:41177 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727450AbgBFVe3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Feb 2020 16:34:29 -0500
+Received: by mail-pg1-f196.google.com with SMTP id l3so3396831pgi.8;
+        Thu, 06 Feb 2020 13:34:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=F+A5Nf6jojAXkMgoriymn50UInA7zWvy6KKfk99TRuU=;
+        b=I5rCqRlE1E954co/J/Umj2y2j4f5TvQtqattYqLiKLhwnEyjyVskPc0Sm5Draz5JH3
+         wQXDz2Yf9TIwM1TupAzRQ/gtniUV0QXQTJ4PoGyxpFMWmH3dpsWepxFxjksbVNSWyNOJ
+         82AWVWNUj+MY/EuVtamf2YyUEpcNOqDWQDvZtFWD1GemjIyq/ES4Dz0MUawV5HmNCeE7
+         aCyBgHi9kVIYosxdq+Xj+tC/dfaH2d9EUimCSHSdRtJCqvlf3yyaOhntO99GZFNWVI35
+         SJck0Sl2EetF7CGI8mUBUa1iUD0Wzez30NjeXYBroh6Ay5YvjY+gpJ+NB7ThQzA9XSap
+         SFfA==
+X-Gm-Message-State: APjAAAX+hygaLNEmzGeKM6MNfrELXkSNQi4bdQdV0kRa/JxWzgF8UBed
+        BTYopnaR8rLowKDb+SI8hQ==
+X-Google-Smtp-Source: APXvYqwYy/+XAYue+7uOsYCEUX9rEtJ+clY7s1oHaWp5FDC4KLqoEfxmAKeYxPfZNh4BMD/dzqO/UQ==
+X-Received: by 2002:a63:8a42:: with SMTP id y63mr5814347pgd.266.1581024868913;
+        Thu, 06 Feb 2020 13:34:28 -0800 (PST)
+Received: from rob-hp-laptop (63-158-47-182.dia.static.qwest.net. [63.158.47.182])
+        by smtp.gmail.com with ESMTPSA id w26sm332548pfj.119.2020.02.06.13.34.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2020 13:34:28 -0800 (PST)
+Received: (nullmailer pid 14123 invoked by uid 1000);
+        Thu, 06 Feb 2020 21:34:27 -0000
+Date:   Thu, 6 Feb 2020 14:34:27 -0700
 From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 6 Feb 2020 14:27:26 -0700
-X-Gmail-Original-Message-ID: <CAL_JsqKQm7rnfm=QZSS+83czgaLoE6Wtg2se9r0ayvMgtfd-ZQ@mail.gmail.com>
-Message-ID: <CAL_JsqKQm7rnfm=QZSS+83czgaLoE6Wtg2se9r0ayvMgtfd-ZQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/7] dt-bindings: iio: light: add support for
- Dyna-Image AL3320A
-To:     David Heidelberg <david@ixit.cz>
-Cc:     Dmitry Osipenko <digetx@gmail.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To:     Beniamin Bia <beniamin.bia@analog.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, biabeniamin@outlook.com,
+        knaack.h@gmx.de, mark.rutland@arm.com, devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 4/5] dt-bindings: iio: amplifiers: Add docs for
+ HMC425A Step Attenuator
+Message-ID: <20200206213427.GA12507@bogus>
+References: <20200206151149.32122-1-beniamin.bia@analog.com>
+ <20200206151149.32122-4-beniamin.bia@analog.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200206151149.32122-4-beniamin.bia@analog.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Feb 6, 2020 at 2:16 PM David Heidelberg <david@ixit.cz> wrote:
->
->
->
->
-> Rob Herring <robh@kernel.org> napsal =C4=8Ct, 6. =C3=BAno 2020 v 19=E2=88=
-=B607:
-> > On Tue, Feb 04, 2020 at 10:30:27AM +0100, David Heidelberg wrote:
-> >>  This commit add dt-bindings support to al3320a driver and
-> >> vendor-prefix
-> >>  dynaimage.
-> >>
-> >>
-> >>  Signed-off-by: David Heidelberg <david@ixit.cz>
-> >>  ---
-> >>   .../bindings/iio/light/al3320a.yaml           | 45
-> >> +++++++++++++++++++
-> >>   .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
-> >>   2 files changed, 47 insertions(+)
-> >>   create mode 100644
-> >> Documentation/devicetree/bindings/iio/light/al3320a.yaml
-> >>
-> >>  diff --git
-> >> a/Documentation/devicetree/bindings/iio/light/al3320a.yaml
-> >> b/Documentation/devicetree/bindings/iio/light/al3320a.yaml
-> >>  new file mode 100644
-> >>  index 000000000000..08e7ee4bdf55
-> >>  --- /dev/null
-> >>  +++ b/Documentation/devicetree/bindings/iio/light/al3320a.yaml
-> >>  @@ -0,0 +1,45 @@
-> >>  +# SPDX-License-Identifier: (GPL-2.0-only)
-> >
-> > Dual license new bindings:
-> >
-> > (GPL-2.0-only OR BSD-2-Clause)
->
-> It BSD usage in Linux kernel enforced for bindings?
+On Thu, Feb 06, 2020 at 05:11:48PM +0200, Beniamin Bia wrote:
+> From: Michael Hennerich <michael.hennerich@analog.com>
+> 
+> Document support for Analog Devices MC425A Step Attenuator.
+> 
+> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+> ---
+> Changes in v5:
+> -minItems added for ctrl_gpios
+> 
+>  .../bindings/iio/amplifiers/adi,hmc425a.yaml  | 49 +++++++++++++++++++
+>  1 file changed, 49 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml
 
-Yes, bindings are exported and used by other projects. And may get
-moved out completely.
-
->
-> I'd like to publish my code only under GPL if possible.
+Reviewed-by: Rob Herring <robh@kernel.org>

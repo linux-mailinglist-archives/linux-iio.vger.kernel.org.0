@@ -2,410 +2,1191 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B4F1541B2
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 11:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56FE41541C1
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2020 11:20:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728064AbgBFKTS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Feb 2020 05:19:18 -0500
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:14444 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728289AbgBFKTR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Feb 2020 05:19:17 -0500
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 016AF3SD003450;
-        Thu, 6 Feb 2020 05:19:13 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2xyhmk4cm2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 06 Feb 2020 05:19:13 -0500
-Received: from m0167090.ppops.net (m0167090.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 016AJD3c006753;
-        Thu, 6 Feb 2020 05:19:13 -0500
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2107.outbound.protection.outlook.com [104.47.55.107])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2xyhmk4cm0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 06 Feb 2020 05:19:12 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gerABsPvBy8Nhrc3kv9HKC6H4SlFeJPPw3rlh1y55q4WZ5KqB7tCblUTMdM78y13WSUq0jMvl9+F3PzU62uevUp4Qco6hVss1CB0PbEPF5HooH0rf5B8/Zph0zBjyvbIVoA6bJUpfLftTpmVr3CtcB1w+/qX7GJWlAqBpCccS+soCwLD5l02c6waWS1uFIicN56ow+TRXrFqbYqKJoapCiWde+mJ5TuKsDONY0KqD+Iw0Ejm6WsP0pOuPUrTbnAbSpESOcBIbdciwXcy52NWAcxEo9++j5Roriumd0kYIKnrXW7Jw9y33SXHS8NaGrrfQp/MLTBmyQx9AojEvfgJAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UJMEN8zRbHtCUroIN2FXiZl9sybLwjPelM3laXzokPE=;
- b=I3fffitrTyAQdPyO0l3D1nXZL89vSkBehL+h5wvGga6SE4p6qL4VX8eq4DGTHyaye6n+2PBtQeMvi7cj0DrJiSbJoQDnWniMaduEE6NYLByZ9r3gEZTg0TiKqxD3WVlbFZ9Ftiyol5VSXC9KrD9zg5hW0u7424MFlXMXMN0EXxgzTubtuoR1eYWcvKJ6bxWNWexV59C0lzJ8MoXPMm3biYorv4+5r1IRKnFXx4jBV+0cc1apYrCo11YBAYV5Sl2c3bXPIhJoZsRGx2oppiJRM5uRxe0Iku2F08b9qXlDJKdsrj1qF/bxE2nvcvnSauU5a6C4yM3TVJwS1fiopCqsVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UJMEN8zRbHtCUroIN2FXiZl9sybLwjPelM3laXzokPE=;
- b=osHVU1i47wBVqNCRGK/t8D6s79IHeWQ4gL2SIdEMAMeAcz7k7LrupGGgnvPIl49ui0dzrcVv1bD+ODUfGVnlFHl1IbgBtfZG/8hG7GcBJJYr0YRK1jMBHLmTNq9LczrQBqM+7MI3nLxlLJfQl1qkjYsYtTv8S/qCktVR0WYqmaw=
-Received: from BN6PR03MB3347.namprd03.prod.outlook.com (10.174.94.163) by
- BN6PR03MB3140.namprd03.prod.outlook.com (10.174.235.151) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2707.21; Thu, 6 Feb 2020 10:19:11 +0000
-Received: from BN6PR03MB3347.namprd03.prod.outlook.com
- ([fe80::80b6:bfbd:9b6d:710a]) by BN6PR03MB3347.namprd03.prod.outlook.com
- ([fe80::80b6:bfbd:9b6d:710a%4]) with mapi id 15.20.2707.023; Thu, 6 Feb 2020
- 10:19:10 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     "jic23@kernel.org" <jic23@kernel.org>
-CC:     "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>
-Subject: Re: [PATCH 2/4] iio: imu: adis: Refactor adis_initial_startup
-Thread-Topic: [PATCH 2/4] iio: imu: adis: Refactor adis_initial_startup
-Thread-Index: AQHVz5zhi5MQxf7Rb0ibWVMdXw5B+KgGpUSAgAKk8ACAACqBAIADKw4AgAAqyACAAB10gIABHPqAgAAJxYA=
-Date:   Thu, 6 Feb 2020 10:19:09 +0000
-Message-ID: <c46b2821098a07b5fb8bf42b26605e1841672d77.camel@analog.com>
-References: <20200120142051.28533-1-alexandru.ardelean@analog.com>
-         <20200120142051.28533-2-alexandru.ardelean@analog.com>
-         <20200201170839.4ab98d8e@archlinux>
-         <da82db5f81e116c7ecc36f5d9833b90b4f7cd15d.camel@gmail.com>
-         <20200203120338.000044c1@Huawei.com>
-         <182c1f94c7311580aea1b4cabe0ab2ae26bed3a6.camel@analog.com>
-         <20200205145938.00006a35@Huawei.com>
-         <edea0212d5882842c92c638df13bb6e4ed8a1a82.camel@analog.com>
-         <20200206094501.68f47948@archlinux>
-In-Reply-To: <20200206094501.68f47948@archlinux>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [137.71.226.54]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 78753f84-227a-46c0-997e-08d7aaee01f1
-x-ms-traffictypediagnostic: BN6PR03MB3140:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BN6PR03MB3140BDD7963E644C352EDE82991D0@BN6PR03MB3140.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 0305463112
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(136003)(396003)(346002)(366004)(39860400002)(189003)(199004)(66476007)(81156014)(316002)(81166006)(6486002)(8676002)(478600001)(54906003)(66556008)(30864003)(2616005)(5660300002)(66446008)(66946007)(64756008)(2906002)(107886003)(76116006)(36756003)(6512007)(6916009)(6506007)(4326008)(26005)(86362001)(8936002)(186003)(71200400001);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR03MB3140;H:BN6PR03MB3347.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: r7MfH2L1duF8PupfsU2gXCgkB63y2H01qB/7Hi83IuOnvrJ5jnwX7YR+nUPxsXeGfI38z9wc6Xd/rXVxYY3JdSTtd2oOYwiX7ftYBMWpa6DkM9iQm7CIqtLp4VVaqC8pBtrXw9iW2N9bOrw7nfHqjD4GsNWITCdvEqV/taJgh8MD3j+Ck4ac4lQkq2tIrbFC6Qa3kWgzMQ8X3INGhkphhU3YTgyYjSVdpGPiF5uhAOkxOPy/cD9KSlhldlo1nMjdCJxRvPXvsz7S0Q80XfG5KdXWoE2mXeSwkwi5xA8PAh0K4qA+8BCDkzfw0zJ7R69choEumBYC+KX7KU/y/cEHyV0dJlC1JNlSr1vMJo9PY0VfVswHxlQ7ioQVxq9UzYp08aOvoiroUjBJU0cfRkM1CESXA3jKNZnPW+hBSY1jqXC2lFr1M4ZrcGb4Dv029pUr
-x-ms-exchange-antispam-messagedata: 92vW37rd4g0ClNmwf1uH/XaY+5fs8PSbzXk0UArn/7yABSMza1Xy3PG7jybxysp2/II6MvzCFNCcI5y2mrUJrrn+fsfT9oZhxdpITybQE4lBvaSSltZskaXAXT8T1qeJPolbem6KE2pba5dInNy9SA==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BA52FC751BAEAE4D89B43BBC58719E2F@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1728322AbgBFKUq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Feb 2020 05:20:46 -0500
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:51052 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728265AbgBFKUq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Feb 2020 05:20:46 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id 995F19E7732;
+        Thu,  6 Feb 2020 10:20:42 +0000 (GMT)
+Date:   Thu, 6 Feb 2020 10:20:40 +0000
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Alexandru Tachici <alexandru.tachici@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 5/5 V2] staging: iio: adc: ad7192: move out of staging
+Message-ID: <20200206102040.008cc0eb@archlinux>
+In-Reply-To: <20200206101048.6ff9bf19@archlinux>
+References: <20200202162215.50915c83@archlinux>
+        <20200205171511.25912-1-alexandru.tachici@analog.com>
+        <20200205171511.25912-6-alexandru.tachici@analog.com>
+        <20200206101048.6ff9bf19@archlinux>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78753f84-227a-46c0-997e-08d7aaee01f1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Feb 2020 10:19:10.0257
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5cWtXjfLevJSGrnW1auv+R99SqmbYcntoWnSJxxMq0Pw3bZmmX1i4B8eVc4V/fEztj8xdwoJj9sEhwYWCflvSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR03MB3140
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-06_01:2020-02-06,2020-02-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 adultscore=0
- mlxscore=0 bulkscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002060080
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVGh1LCAyMDIwLTAyLTA2IGF0IDA5OjQ1ICswMDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
-Og0KPiBPbiBXZWQsIDUgRmViIDIwMjAgMTY6NDQ6MTMgKzAwMDANCj4gIlNhLCBOdW5vIiA8TnVu
-by5TYUBhbmFsb2cuY29tPiB3cm90ZToNCj4gDQo+ID4gT24gV2VkLCAyMDIwLTAyLTA1IGF0IDE0
-OjU5ICswMDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3RlOg0KPiA+ID4gT24gV2VkLCA1IEZlYiAy
-MDIwIDEyOjI1OjQwICswMDAwDQo+ID4gPiAiU2EsIE51bm8iIDxOdW5vLlNhQGFuYWxvZy5jb20+
-IHdyb3RlOg0KPiA+ID4gICANCj4gPiA+ID4gT24gTW9uLCAyMDIwLTAyLTAzIGF0IDEyOjAzICsw
-MDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3RlOiAgDQo+ID4gPiA+ID4gT24gTW9uLCAzIEZlYiAy
-MDIwIDEwOjMxOjMwICswMTAwDQo+ID4gPiA+ID4gTnVubyBTw6EgPG5vbmFtZS5udW5vQGdtYWls
-LmNvbT4gd3JvdGU6DQo+ID4gPiA+ID4gICAgIA0KPiA+ID4gPiA+ID4gSGkgSm9uYXRoYW4sDQo+
-ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gT24gU2F0LCAyMDIwLTAyLTAx
-IGF0IDE3OjA4ICswMDAwLCBKb25hdGhhbiBDYW1lcm9uDQo+ID4gPiA+ID4gPiB3cm90ZTogICAg
-DQo+ID4gPiA+ID4gPiA+IE9uIE1vbiwgMjAgSmFuIDIwMjAgMTY6MjA6NDkgKzAyMDANCj4gPiA+
-ID4gPiA+ID4gQWxleGFuZHJ1IEFyZGVsZWFuIDxhbGV4YW5kcnUuYXJkZWxlYW5AYW5hbG9nLmNv
-bT4gd3JvdGU6DQo+ID4gPiA+ID4gPiA+ICAgICAgIA0KPiA+ID4gPiA+ID4gPiA+IEZyb206IE51
-bm8gU8OhIDxudW5vLnNhQGFuYWxvZy5jb20+DQo+ID4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4g
-PiA+ID4gQWxsIHRoZSBBRElTIGRldmljZXMgcGVyZm9ybSwgYXQgdGhlIGJlZ2lubmluZywgYSBz
-ZWxmDQo+ID4gPiA+ID4gPiA+ID4gdGVzdA0KPiA+ID4gPiA+ID4gPiA+IHRvDQo+ID4gPiA+ID4g
-PiA+ID4gbWFrZQ0KPiA+ID4gPiA+ID4gPiA+IHN1cmUNCj4gPiA+ID4gPiA+ID4gPiB0aGUgZGV2
-aWNlIGlzIGluIGEgc2FuZSBzdGF0ZS4gRnVydGhlcm1vcmUsIHNvbWUNCj4gPiA+ID4gPiA+ID4g
-PiBkcml2ZXJzDQo+ID4gPiA+ID4gPiA+ID4gYWxzbw0KPiA+ID4gPiA+ID4gPiA+IGRvIGENCj4g
-PiA+ID4gPiA+ID4gPiBjYWxsDQo+ID4gPiA+ID4gPiA+ID4gdG8gYGFkaXNfcmVzZXQoKWAgYmVm
-b3JlIHRoZSB0ZXN0IHdoaWNoIGlzIGFsc28gYSBnb29kDQo+ID4gPiA+ID4gPiA+ID4gcHJhY3Rp
-Y2UuDQo+ID4gPiA+ID4gPiA+ID4gVGhpcw0KPiA+ID4gPiA+ID4gPiA+IHBhdGNoIHVuaWZpZXMg
-YWxsIHRob3NlIG9wZXJhdGlvbiBzbyB0aGF0LCB0aGVyZSdzIG5vDQo+ID4gPiA+ID4gPiA+ID4g
-bmVlZA0KPiA+ID4gPiA+ID4gPiA+IGZvcg0KPiA+ID4gPiA+ID4gPiA+IGNvZGUNCj4gPiA+ID4g
-PiA+ID4gPiBkdXBsaWNhdGlvbi4gRnVydGhlcm1vcmUsIHRoZSByc3QgcGluIGlzIGFsc28gY2hl
-Y2tlZA0KPiA+ID4gPiA+ID4gPiA+IHRvDQo+ID4gPiA+ID4gPiA+ID4gbWFrZQ0KPiA+ID4gPiA+
-ID4gPiA+IHN1cmUNCj4gPiA+ID4gPiA+ID4gPiB0aGUNCj4gPiA+ID4gPiA+ID4gPiBkZXZpY2Ug
-aXMgbm90IGluIEhXIHJlc2V0LiBPbiB0b3Agb2YgdGhpcywgc29tZSBkcml2ZXJzDQo+ID4gPiA+
-ID4gPiA+ID4gYWxzbw0KPiA+ID4gPiA+ID4gPiA+IHJlYWQNCj4gPiA+ID4gPiA+ID4gPiB0aGUN
-Cj4gPiA+ID4gPiA+ID4gPiBkZXZpY2UgcHJvZHVjdCBpZCBhbmQgY29tcGFyZSBpdCB3aXRoIHRo
-ZSBkZXZpY2UgYmVpbmcNCj4gPiA+ID4gPiA+ID4gPiBwcm9iZWQNCj4gPiA+ID4gPiA+ID4gPiB0
-bw0KPiA+ID4gPiA+ID4gPiA+IG1ha2UNCj4gPiA+ID4gPiA+ID4gPiBzdXJlIHRoZSBjb3JyZWN0
-IGRldmljZSBpcyBiZWluZyBoYW5kbGVkLiBUaGlzIGNhbiBhbHNvDQo+ID4gPiA+ID4gPiA+ID4g
-YmUNCj4gPiA+ID4gPiA+ID4gPiBwYXNzZWQNCj4gPiA+ID4gPiA+ID4gPiB0byB0aGUNCj4gPiA+
-ID4gPiA+ID4gPiBsaWJyYXJ5IGJ5IGludHJvZHVjaW5nIGEgdmFyaWFibGUgaG9sZGluZyB0aGUg
-UFJPRF9JRA0KPiA+ID4gPiA+ID4gPiA+IHJlZ2lzdGVyDQo+ID4gPiA+ID4gPiA+ID4gb2YNCj4g
-PiA+ID4gPiA+ID4gPiB0aGUNCj4gPiA+ID4gPiA+ID4gPiBkZXZpY2UuDQo+ID4gPiA+ID4gPiA+
-ID4gDQo+ID4gPiA+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogTnVubyBTw6EgPG51bm8uc2FAYW5h
-bG9nLmNvbT4NCj4gPiA+ID4gPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBBbGV4YW5kcnUgQXJkZWxl
-YW4gPCAgICANCj4gPiA+ID4gPiA+ID4gPiBhbGV4YW5kcnUuYXJkZWxlYW5AYW5hbG9nLmNvbT4g
-ICAgDQo+ID4gPiA+ID4gPiA+ID4gLS0tDQo+ID4gPiA+ID4gPiA+ID4gIGRyaXZlcnMvaWlvL2lt
-dS9LY29uZmlnICAgICAgfCAgMSArDQo+ID4gPiA+ID4gPiA+ID4gIGRyaXZlcnMvaWlvL2ltdS9h
-ZGlzLmMgICAgICAgfCA2Mw0KPiA+ID4gPiA+ID4gPiA+ICsrKysrKysrKysrKysrKysrKysrKysr
-KysrDQo+ID4gPiA+ID4gPiA+ID4gLS0tLQ0KPiA+ID4gPiA+ID4gPiA+IC0tLS0tLQ0KPiA+ID4g
-PiA+ID4gPiA+ICBpbmNsdWRlL2xpbnV4L2lpby9pbXUvYWRpcy5oIHwgMTUgKysrKysrKystDQo+
-ID4gPiA+ID4gPiA+ID4gIDMgZmlsZXMgY2hhbmdlZCwgNjEgaW5zZXJ0aW9ucygrKSwgMTggZGVs
-ZXRpb25zKC0pDQo+ID4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiA+ID4gZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvaWlvL2ltdS9LY29uZmlnDQo+ID4gPiA+ID4gPiA+ID4gYi9kcml2ZXJzL2lpby9p
-bXUvS2NvbmZpZw0KPiA+ID4gPiA+ID4gPiA+IGluZGV4IDYwYmIxMDI5ZTc1OS4uNjMwMzZjZjQ3
-M2M3IDEwMDY0NA0KPiA+ID4gPiA+ID4gPiA+IC0tLSBhL2RyaXZlcnMvaWlvL2ltdS9LY29uZmln
-DQo+ID4gPiA+ID4gPiA+ID4gKysrIGIvZHJpdmVycy9paW8vaW11L0tjb25maWcNCj4gPiA+ID4g
-PiA+ID4gPiBAQCAtODUsNiArODUsNyBAQCBlbmRtZW51DQo+ID4gPiA+ID4gPiA+ID4gIA0KPiA+
-ID4gPiA+ID4gPiA+ICBjb25maWcgSUlPX0FESVNfTElCDQo+ID4gPiA+ID4gPiA+ID4gIAl0cmlz
-dGF0ZQ0KPiA+ID4gPiA+ID4gPiA+ICsJZGVwZW5kcyBvbiBHUElPTElCDQo+ID4gPiA+ID4gPiA+
-ID4gIAloZWxwDQo+ID4gPiA+ID4gPiA+ID4gIAkgIEEgc2V0IG9mIElPIGhlbHBlciBmdW5jdGlv
-bnMgZm9yIHRoZSBBbmFsb2cNCj4gPiA+ID4gPiA+ID4gPiBEZXZpY2VzDQo+ID4gPiA+ID4gPiA+
-ID4gQURJUyoNCj4gPiA+ID4gPiA+ID4gPiBkZXZpY2UgZmFtaWx5Lg0KPiA+ID4gPiA+ID4gPiA+
-ICANCj4gPiA+ID4gPiA+ID4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vaW11L2FkaXMuYw0K
-PiA+ID4gPiA+ID4gPiA+IGIvZHJpdmVycy9paW8vaW11L2FkaXMuYw0KPiA+ID4gPiA+ID4gPiA+
-IGluZGV4IGQwMmIxOTExYjBmMi4uMWVjYTUyNzEzODBlIDEwMDY0NA0KPiA+ID4gPiA+ID4gPiA+
-IC0tLSBhL2RyaXZlcnMvaWlvL2ltdS9hZGlzLmMNCj4gPiA+ID4gPiA+ID4gPiArKysgYi9kcml2
-ZXJzL2lpby9pbXUvYWRpcy5jDQo+ID4gPiA+ID4gPiA+ID4gQEAgLTcsNiArNyw3IEBADQo+ID4g
-PiA+ID4gPiA+ID4gICAqLw0KPiA+ID4gPiA+ID4gPiA+ICANCj4gPiA+ID4gPiA+ID4gPiAgI2lu
-Y2x1ZGUgPGxpbnV4L2RlbGF5Lmg+DQo+ID4gPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxsaW51eC9n
-cGlvL2NvbnN1bWVyLmg+DQo+ID4gPiA+ID4gPiA+ID4gICNpbmNsdWRlIDxsaW51eC9tdXRleC5o
-Pg0KPiA+ID4gPiA+ID4gPiA+ICAjaW5jbHVkZSA8bGludXgvZGV2aWNlLmg+DQo+ID4gPiA+ID4g
-PiA+ID4gICNpbmNsdWRlIDxsaW51eC9rZXJuZWwuaD4NCj4gPiA+ID4gPiA+ID4gPiBAQCAtMzY1
-LDM2ICszNjYsNjQgQEAgc3RhdGljIGludCBhZGlzX3NlbGZfdGVzdChzdHJ1Y3QNCj4gPiA+ID4g
-PiA+ID4gPiBhZGlzDQo+ID4gPiA+ID4gPiA+ID4gKmFkaXMpDQo+ID4gPiA+ID4gPiA+ID4gIH0N
-Cj4gPiA+ID4gPiA+ID4gPiAgDQo+ID4gPiA+ID4gPiA+ID4gIC8qKg0KPiA+ID4gPiA+ID4gPiA+
-IC0gKiBhZGlzX2luaXRhbF9zdGFydHVwKCkgLSBQZXJmb3JtcyBkZXZpY2Ugc2VsZi10ZXN0DQo+
-ID4gPiA+ID4gPiA+ID4gKyAqIF9fYWRpc19pbml0aWFsX3N0YXJ0dXAoKSAtIERldmljZSBpbml0
-aWFsIHNldHVwDQo+ID4gPiA+ID4gPiA+ID4gICAqIEBhZGlzOiBUaGUgYWRpcyBkZXZpY2UNCj4g
-PiA+ID4gPiA+ID4gPiAgICoNCj4gPiA+ID4gPiA+ID4gPiArICogVGhpcyBmdW5jdGlvbnMgbWFr
-ZXMgc3VyZSB0aGUgZGV2aWNlIGlzIG5vdCBpbg0KPiA+ID4gPiA+ID4gPiA+IHJlc2V0LA0KPiA+
-ID4gPiA+ID4gPiA+IHZpYQ0KPiA+ID4gPiA+ID4gPiA+IHJzdA0KPiA+ID4gPiA+ID4gPiA+IHBp
-bi4NCj4gPiA+ID4gPiA+ID4gPiArICogRnVydGhlcm1vcmUgaXQgcGVyZm9ybXMgYSBTVyByZXNl
-dCAob25seSBpbiB0aGUNCj4gPiA+ID4gPiA+ID4gPiBjYXNlIHdlDQo+ID4gPiA+ID4gPiA+ID4g
-YXJlDQo+ID4gPiA+ID4gPiA+ID4gbm90DQo+ID4gPiA+ID4gPiA+ID4gY29taW5nIGZyb20NCj4g
-PiA+ID4gPiA+ID4gPiArICogcmVzZXQgYWxyZWFkeSkgYW5kIGEgc2VsZiB0ZXN0LiBJdCBhbHNv
-IGNvbXBhcmVzDQo+ID4gPiA+ID4gPiA+ID4gdGhlDQo+ID4gPiA+ID4gPiA+ID4gcHJvZHVjdCBp
-ZA0KPiA+ID4gPiA+ID4gPiA+IHdpdGggdGhlDQo+ID4gPiA+ID4gPiA+ID4gKyAqIGRldmljZSBp
-ZCBpZiB0aGUgcHJvZF9pZF9yZWcgdmFyaWFibGUgaXMgc2V0Lg0KPiA+ID4gPiA+ID4gPiA+ICsg
-Kg0KPiA+ID4gPiA+ID4gPiA+ICAgKiBSZXR1cm5zIDAgaWYgdGhlIGRldmljZSBpcyBvcGVyYXRp
-b25hbCwgYSBuZWdhdGl2ZQ0KPiA+ID4gPiA+ID4gPiA+IGVycm9yDQo+ID4gPiA+ID4gPiA+ID4g
-Y29kZQ0KPiA+ID4gPiA+ID4gPiA+IG90aGVyd2lzZS4NCj4gPiA+ID4gPiA+ID4gPiAgICoNCj4g
-PiA+ID4gPiA+ID4gPiAgICogVGhpcyBmdW5jdGlvbiBzaG91bGQgYmUgY2FsbGVkIGVhcmx5IG9u
-IGluIHRoZQ0KPiA+ID4gPiA+ID4gPiA+IGRldmljZQ0KPiA+ID4gPiA+ID4gPiA+IGluaXRpYWxp
-emF0aW9uIHNlcXVlbmNlDQo+ID4gPiA+ID4gPiA+ID4gICAqIHRvIGVuc3VyZSB0aGF0IHRoZSBk
-ZXZpY2UgaXMgaW4gYSBzYW5lIGFuZCBrbm93bg0KPiA+ID4gPiA+ID4gPiA+IHN0YXRlDQo+ID4g
-PiA+ID4gPiA+ID4gYW5kDQo+ID4gPiA+ID4gPiA+ID4gdGhhdA0KPiA+ID4gPiA+ID4gPiA+IGl0
-IGlzIHVzYWJsZS4NCj4gPiA+ID4gPiA+ID4gPiAgICovDQo+ID4gPiA+ID4gPiA+ID4gLWludCBh
-ZGlzX2luaXRpYWxfc3RhcnR1cChzdHJ1Y3QgYWRpcyAqYWRpcykNCj4gPiA+ID4gPiA+ID4gPiAr
-aW50IF9fYWRpc19pbml0aWFsX3N0YXJ0dXAoc3RydWN0IGFkaXMgKmFkaXMpDQo+ID4gPiA+ID4g
-PiA+ID4gIHsNCj4gPiA+ID4gPiA+ID4gPiAgCWludCByZXQ7DQo+ID4gPiA+ID4gPiA+ID4gLQ0K
-PiA+ID4gPiA+ID4gPiA+IC0JbXV0ZXhfbG9jaygmYWRpcy0+c3RhdGVfbG9jayk7DQo+ID4gPiA+
-ID4gPiA+ID4gKwlzdHJ1Y3QgZ3Bpb19kZXNjICpncGlvOw0KPiA+ID4gPiA+ID4gPiA+ICsJY29u
-c3Qgc3RydWN0IGFkaXNfdGltZW91dCAqdGltZW91dHMgPSBhZGlzLQ0KPiA+ID4gPiA+ID4gPiA+
-ID5kYXRhLSAgICANCj4gPiA+ID4gPiA+ID4gPiA+IHRpbWVvdXRzOyAgICANCj4gPiA+ID4gPiA+
-ID4gPiArCWNvbnN0IGNoYXIgKmlpb19uYW1lID0gc3BpX2dldF9kZXZpY2VfaWQoYWRpcy0NCj4g
-PiA+ID4gPiA+ID4gPiA+c3BpKS0gICAgDQo+ID4gPiA+ID4gPiA+ID4gPiBuYW1lOyAgICANCj4g
-PiA+ID4gPiA+ID4gPiArCXUxNiBwcm9kX2lkLCBkZXZfaWQ7DQo+ID4gPiA+ID4gPiA+ID4gKw0K
-PiA+ID4gPiA+ID4gPiA+ICsJLyogY2hlY2sgaWYgdGhlIGRldmljZSBoYXMgcnN0IHBpbiBsb3cg
-Ki8NCj4gPiA+ID4gPiA+ID4gPiArCWdwaW8gPSBkZXZtX2dwaW9kX2dldF9vcHRpb25hbCgmYWRp
-cy0+c3BpLT5kZXYsDQo+ID4gPiA+ID4gPiA+ID4gInJlc2V0IiwNCj4gPiA+ID4gPiA+ID4gPiBH
-UElPRF9BU0lTKTsNCj4gPiA+ID4gPiA+ID4gPiArCWlmIChJU19FUlIoZ3BpbykpIHsNCj4gPiA+
-ID4gPiA+ID4gPiArCQlyZXR1cm4gUFRSX0VSUihncGlvKTsgICAgICANCj4gPiA+ID4gPiA+ID4g
-DQo+ID4gPiA+ID4gPiA+IEdpdmVuIHlvdSBhcmUgcmV0dXJuaW5nIGhlcmUsIG5vIG5lZWQgZm9y
-IGVsc2UgdG8gZm9sbG93DQo+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiBpZiAoZ3Bpby4u
-Lg0KPiA+ID4gPiA+ID4gPiAgICAgICANCj4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gRGVmaW5p
-dGVseS4uLg0KPiA+ID4gPiA+ID4gICAgIA0KPiA+ID4gPiA+ID4gPiA+ICsJfSBlbHNlIGlmIChn
-cGlvICYmDQo+ID4gPiA+ID4gPiA+ID4gZ3Bpb2RfZ2V0X3ZhbHVlX2NhbnNsZWVwKGdwaW8pKSB7
-DQo+ID4gPiA+ID4gPiA+ID4gKwkJLyogYnJpbmcgZGV2aWNlIG91dCBvZiByZXNldCAqLw0KPiA+
-ID4gPiA+ID4gPiA+ICsJCWdwaW9kX3NldF92YWx1ZV9jYW5zbGVlcChncGlvLA0KPiA+ID4gPiA+
-ID4gPiA+IDApOyAgICAgIA0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gSG1tLiBTbyBp
-cyBhIHNvZnR3YXJlIHJlc2V0IHRoZSBiZXN0IG9wdGlvbiBpZiB3ZSBoYXZlIGENCj4gPiA+ID4g
-PiA+ID4gaGFyZHdhcmUNCj4gPiA+ID4gPiA+ID4gcmVzZXQNCj4gPiA+ID4gPiA+ID4gbGluZSBi
-dXQgaXQncyBub3QgY3VycmVudGx5IGluIHRoZSByZXNldCBtb2RlPw0KPiA+ID4gPiA+ID4gPiAg
-ICAgICANCj4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gSG1tLCB0aGF0J3MgYSBmYWlyIHF1ZXN0
-aW9uLiBOb3cgdGhhdCBJIHRoaW5rIGFib3V0IGl0LCBpZg0KPiA+ID4gPiA+ID4gd2UNCj4gPiA+
-ID4gPiA+IGRvDQo+ID4gPiA+ID4gPiBoYXZlIGENCj4gPiA+ID4gPiA+IGdwaW8gd2Ugc2hvdWxk
-IGp1c3QgYXNzdW1lIGl0J3MgaW4gcmVzZXQgYW5kIGNhbGwNCj4gPiA+ID4gPiA+IGBncGlvZF9z
-ZXRfdmFsdWVfY2Fuc2xlZXBgLiBTbywgSSBndWVzcyB3ZSBjb3VsZCBqdXN0IGRpdGNoDQo+ID4g
-PiA+ID4gPiB0aGUNCj4gPiA+ID4gPiA+IGBncGlvZF9nZXRfdmFsdWVfY2Fuc2xlZXAoZ3Bpbylg
-IHBhcnQuICAgIA0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IE5vdCBzdXJlIEkgYWdyZWUuICAgRm9y
-IGV4YW1wbGUgdGhlIGRyaXZlciBtYXkgd2VsbCBoYXZlIGJlZW4NCj4gPiA+ID4gPiB1bmJvdW5k
-DQo+ID4gPiA+ID4gYW5kIHJlYm91bmQgZm9yIHNvbWUgcmVhc29uLiAgICANCj4gPiA+ID4gDQo+
-ID4gPiA+IFllcywgdGhhdCBpcyB0cnVlLi4NCj4gPiA+ID4gICANCj4gPiA+ID4gPiBJIHdvdWxk
-IGFyZ3VlIHlvdSBzaG91bGQganVzdCBkbyBhIHNldCAvIHJlc2V0IGN5Y2xlIHdpdGgNCj4gPiA+
-ID4gPiBhcHByb3ByaWF0ZQ0KPiA+ID4gPiA+IHNsZWVwDQo+ID4gPiA+ID4gaW4gYmV0d2Vlbi4g
-IElmIGl0J3MgYWxyZWFkeSBzZXQgdGhlbiBubyBoYXJtIGRvbmUsIGlmIGl0DQo+ID4gPiA+ID4g
-aXNuJ3QNCj4gPiA+ID4gPiB5b3UNCj4gPiA+ID4gPiBmb3JjZQ0KPiA+ID4gPiA+IGEgaGFyZHdh
-cmUgcmVzZXQuICAgIA0KPiA+ID4gPiANCj4gPiA+ID4gU28sIEFzIEltIHVuZGVyc3RhbmRpbmcs
-IGl0IGNvbWVzIGRvd24gdG8gd2hhdCBzaG91bGQgd2UNCj4gPiA+ID4gY29uc2lkZXINCj4gPiA+
-ID4gYXMNCj4gPiA+ID4gZGVmYXVsdC4gWW91IHN1Z2dlc3QgdG8gZmlyc3QgZG8gdGhlIHN3IHJl
-c2V0IGFuZCB0aGUgY2hlY2sgdGhlDQo+ID4gPiA+IGdwaW8NCj4gPiA+ID4gc3RhdGUgYW5kIGlm
-IG5lZWRlZCwgYnJpbmcgdGhlIGRldmljZSBvdXQgb2YgcmVzZXQsIHJpZ2h0PyBOb3cNCj4gPiA+
-ID4gdGhhdA0KPiA+ID4gPiBJDQo+ID4gPiA+IHRoaW5rIGFib3V0IGl0LCBJIHRoaW5rIHRoZSBv
-bmx5IHJlYXNvbiBJIGhhdmVuJ3QgZG9uZSBsaWtlDQo+ID4gPiA+IHRoYXQgaXMNCj4gPiA+ID4g
-YmVjYXVzZSB5b3UgbWlnaHQgZW5kIHVwIHNsZWVwaW5nIHF1aXRlIHNvbWUgdGltZSAoc3cgcmVz
-ZXQgKw0KPiA+ID4gPiBodw0KPiA+ID4gPiByZXNldCkuIEVpdGhlciB3YXksIEknbSBmaW5lIHdp
-dGggYm90aCBvcHRpb25zLiBOb3Qgc3VyZSBpZg0KPiA+ID4gPiBBbGV4DQo+ID4gPiA+IGhhcw0K
-PiA+ID4gPiBzb21ldGhpbmcgdG8gYWRkLi4uICANCj4gPiA+IA0KPiA+ID4gRWl0aGVyIHJlc2V0
-IHNob3VsZCBiZSBnb29kIG9uIGl0J3Mgb3duLiAgSSB3b3VsZCB1c2UgaGFyZHdhcmUNCj4gPiA+
-IHJlc2V0DQo+ID4gPiBpZiB0aGUgcGluIGlzIHRoZXJlLiBJZiBpdCdzIG5vdCwgdGhlbiB1c2Ug
-dGhlIHNvZnR3YXJlIHJlc2V0Lg0KPiA+ID4gDQo+ID4gPiBGb3IgaGFyZHdhcmUgYWx3YXlzIHNl
-dCB0aGUgcGluIGV4cGxpY2l0bHkgdG8gcmVzZXQgYXMgdGhhdA0KPiA+ID4gZ3VhcmFudGVlcw0K
-PiA+ID4gYWdhaW5zdCBhbnkgcmFjZSBjb25kaXRpb25zLCBldmVuIGlmIHNvbWV0aGluZyBvZGQg
-aGFwcGVucy4NCj4gPiA+IA0KPiA+ID4gSm9uYXRoYW4gIA0KPiA+IA0KPiA+IEhtbSwgSSB0aGlu
-ayBJJ20gbm90IGdldHRpbmcgdGhlIHBvaW50IG9yIG1heWJlIEkgZmFpbGVkIHRvIGV4cGxhaW4N
-Cj4gPiB3aGF0IEkgd2FzIGRvaW5nLi4uIFNvLCBvbiB0aGUgY29kZSBpbiB0aGlzIHBhdGNoLCB0
-aGVyZSdzIG5vIEhXDQo+ID4gcmVzZXQuDQo+ID4gSXQgY2hlY2tzIHRoZSByZXNldCBwaW4gYW5k
-IHNlZXMgaWYgdGhlIHBhcnQgaXMgaW4gcmVzZXQgYW5kLCBpZiBpdA0KPiA+IGlzLA0KPiA+IGl0
-IGJyaW5ncyBpdCBvdXQgb2YgcmVzZXQuIEluIHRoYXQgY2FzZSwgbm8gbmVlZCBmb3Igc3cgcmVz
-ZXQgc2luY2UNCj4gPiB3ZQ0KPiA+IGFyZSBjb21pbmcgYWxyZWFkeSBmcm9tIHJlc2V0LiBPbiB0
-aGUgb3RoZXIgaGFuZCwgaWYgdGhlcmUncyBubw0KPiA+IHJlc2V0DQo+ID4gcGluIGNvbmZpZ3Vy
-ZWQgb3IgdGhlIHBhcnQgaXMgYWxyZWFkeSBwb3dlcmVkLCB0aGVuIEkgd2FzIGZvcmNpbmcgYQ0K
-PiA+IHN3DQo+ID4gcmVzZXQgdG8gZ3VhcmFudGVlIGEgc2FuZSBzdGF0ZSB3aGVuIHN0YXJ0aW5n
-Li4uDQo+IA0KPiBBZ3JlZWQgdGhhdCBpcyB3aGF0IHlvdXIgcGF0Y2ggaXMgZG9pbmcuICAgSG93
-ZXZlciBJJ20gc3VnZ2VzdGluZyB5b3UNCj4gZG8NCj4gc29tZXRoaW5nIGRpZmZlcmVudC4gIERl
-Y2lkZSB3aGljaCB0eXBlIG9mIHJlc2V0IHRha2VzIHByZWNlZGVuY2UuDQo+IE5vcm1hbGx5IHRo
-YXQgaXMgaGFyZHdhcmUgcmVzZXQgaWYgaXQgaXMgd2lyZWQgdXAsIGJ1dCB0aGVyZSBpcyBubw0K
-PiBwYXJ0aWN1bGFyIHJlYXNvbiBpdCBjYW4ndCBiZSB0aGUgc29mdHdhcmUgcmVzZXQgaWYgdGhl
-eSBkbyBleGFjdGx5DQo+IHRoZQ0KPiBzYW1lIHRoaW5nLg0KPiANCj4gUGxhbiBhLA0KPiBJZiB5
-b3UgZGVjaWRlIHRoZSBzb2Z0d2FyZSB0YWtlcyBwcmVjZWRlbmNlIHlvdSBuZWVkIHRvIGNoZWNr
-IGlmIHRoZQ0KPiBoYXJkd2FyZSByZXNldCBpcyBhbHJlYWR5IHNldC4gIElmIHNvIHlvdSBuZWVk
-IHRvIHJlbGVhc2UgaXQgYW5kDQo+IGNhcnJ5IG9uLg0KPiBJZiBoYXJkd2FyZSByZXNldCBpcyBu
-b3QgcHJvdmlkZWQgb3Igbm90IHNldCB0aGVuIHlvdSBqdXN0IGNhbGwgdGhlDQo+IHNvZnR3YXJl
-DQo+IHJlc2V0Lg0KPiANCj4gUGxhbiBiLCB3aGljaCBpcyB0aGUgbW9zdCBjb21tb24gb25lIGZv
-ciBkcml2ZXJzIElJUkMuLi4NCj4gSWYgeW91IGRlY2lkZSB0byBtYWtlIHRoZSBoYXJkd2FyZSBy
-ZXNldCB0YWtlIHByZWNlZGVuY2UgYW5kIGl0J3MNCj4gdGhlcmUsIHRoZW4geW91DQo+ICdhbHdh
-eXMnIHNldCB0aGUgcGluIGZvciBhcHByb3ByaWF0ZSB0aW1lIHRvIHRyaWdnZXIgYSByZXNldC4g
-IFlvdQ0KPiBkb24ndA0KPiBjYXJlIHdoYXQgc3RhdGUgaXQgd2FzIHByZXZpb3VzbHkgaW4gYXMg
-ZWl0aGVyIGl0J3MgYWxyZWFkeSBpbiByZXNldA0KPiBpbiB3aGljaA0KPiBjYXNlIHlvdSBhcmUg
-bWFraW5nIG5vIGNoYW5nZSwgb3Igbm90IGluIHdoaWNoIGNhc2UgeW91IGVudGVyIHJlc2V0Lg0K
-PiBOb3RlIHRoaXMgYWxzbyB3b3JrcyBpZiB5b3UgaGF2ZSBhbiBvdXRwdXQgb25seSBwaW4gYW5k
-IG5vIGFjY2VzcyB0bw0KPiB3aGF0DQo+IGl0cyBjdXJyZW50IHN0YXRlIGlzICh0eXBpY2FsbHkg
-YmVjYXVzZSBpdCB3YXMgc2V0IGJ5IGZpcm13YXJlKS4NCj4gDQo+IFRoZW4geW91IHJhaXNlIHRo
-ZSBncGlvIHRvIHRha2UgaXQgb3V0IG9mIHJlc2V0IGFuZCBtb3ZlIG9uLiAgSWYgdGhlDQo+IHJl
-c2V0IGlzIG5vdCBwcm92aWRlZCB0aGVuIHlvdSBmYWxsIGJhY2sgdG8gdGhlIHNvZnR3YXJlIHJl
-c2V0Lg0KDQpPaywgTm93IEkgYmVsaWV2ZSBJIGdvdCBpdC4gSWYgSW0gdW5kZXJzdGFuZGluZyBj
-b3JyZWN0bHksIHdoYXQgaXMNCmhhcHBlbmluZyByaWdodCBrbm93IGlzIHBsYW4gQS4gU28sIG9u
-IHBsYW4gQiwgd2UgYWN0dWFsbHkgZm9yY2UgdGhlIEhXDQpyZXNldCAoaWYgdGhlIHBpbiBpcyB0
-aGVyZSkgaW5zdGVhZCBvZiBqdXN0IGJyaW5naW5nIGl0IG91dCBvZiByZXNldC4uLg0KDQpJIGFs
-cmVhZHkgc3Bva2Ugd2l0aCBBbGV4IGFuZCB3ZSBhZ3JlZWQgaGUgaXMgc2VuZGluZyB2MiBzaW5j
-ZSBoZQ0Kc3RhcnRlZCB0aGlzIHNlcmllcy4gU28sIEhlIGlzIGRlY2lkaW5nIHdoaWNoIHBsYW4g
-dG8gZ28gZm9yIDopDQoNClRoYW5rcyBmb3IgeW91ciBleHBsYW5hdGlvbiENCk51bm8gU8OhDQo+
-IEpvbmF0aGFuDQo+IA0KPiANCj4gDQo+IA0KPiA+ID4gPiBOdW5vIFPDoSAgIA0KPiA+ID4gPiA+
-ID4gPiA+ICsJCW1zbGVlcCh0aW1lb3V0cy0+cmVzZXRfbXMpOw0KPiA+ID4gPiA+ID4gPiA+ICsJ
-fSBlbHNlIHsNCj4gPiA+ID4gPiA+ID4gPiArCQlyZXQgPSBfX2FkaXNfcmVzZXQoYWRpcyk7DQo+
-ID4gPiA+ID4gPiA+ID4gKwkJaWYgKHJldCkNCj4gPiA+ID4gPiA+ID4gPiArCQkJcmV0dXJuIHJl
-dDsNCj4gPiA+ID4gPiA+ID4gPiArCX0NCj4gPiA+ID4gPiA+ID4gPiAgDQo+ID4gPiA+ID4gPiA+
-ID4gIAlyZXQgPSBhZGlzX3NlbGZfdGVzdChhZGlzKTsNCj4gPiA+ID4gPiA+ID4gPiAtCWlmIChy
-ZXQpIHsNCj4gPiA+ID4gPiA+ID4gPiAtCQlkZXZfZXJyKCZhZGlzLT5zcGktPmRldiwgIlNlbGYt
-dGVzdA0KPiA+ID4gPiA+ID4gPiA+IGZhaWxlZCwNCj4gPiA+ID4gPiA+ID4gPiB0cnlpbmcNCj4g
-PiA+ID4gPiA+ID4gPiByZXNldC5cbiIpOw0KPiA+ID4gPiA+ID4gPiA+IC0JCV9fYWRpc19yZXNl
-dChhZGlzKTsNCj4gPiA+ID4gPiA+ID4gPiAtCQlyZXQgPSBhZGlzX3NlbGZfdGVzdChhZGlzKTsN
-Cj4gPiA+ID4gPiA+ID4gPiAtCQlpZiAocmV0KSB7DQo+ID4gPiA+ID4gPiA+ID4gLQkJCWRldl9l
-cnIoJmFkaXMtPnNwaS0+ZGV2LA0KPiA+ID4gPiA+ID4gPiA+ICJTZWNvbmQgc2VsZi0NCj4gPiA+
-ID4gPiA+ID4gPiB0ZXN0DQo+ID4gPiA+ID4gPiA+ID4gZmFpbGVkLCBnaXZpbmcgdXAuXG4iKTsN
-Cj4gPiA+ID4gPiA+ID4gPiAtCQkJZ290byBvdXRfdW5sb2NrOw0KPiA+ID4gPiA+ID4gPiA+IC0J
-CX0NCj4gPiA+ID4gPiA+ID4gPiAtCX0NCj4gPiA+ID4gPiA+ID4gPiArCWlmIChyZXQpDQo+ID4g
-PiA+ID4gPiA+ID4gKwkJcmV0dXJuIHJldDsNCj4gPiA+ID4gPiA+ID4gPiAgDQo+ID4gPiA+ID4g
-PiA+ID4gLW91dF91bmxvY2s6DQo+ID4gPiA+ID4gPiA+ID4gLQltdXRleF91bmxvY2soJmFkaXMt
-PnN0YXRlX2xvY2spOw0KPiA+ID4gPiA+ID4gPiA+IC0JcmV0dXJuIHJldDsNCj4gPiA+ID4gPiA+
-ID4gPiArCWlmICghYWRpcy0+ZGF0YS0+cHJvZF9pZF9yZWcpDQo+ID4gPiA+ID4gPiA+ID4gKwkJ
-cmV0dXJuIDA7DQo+ID4gPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gPiA+ICsJcmV0ID0gYWRp
-c19yZWFkX3JlZ18xNihhZGlzLCBhZGlzLT5kYXRhLQ0KPiA+ID4gPiA+ID4gPiA+ID5wcm9kX2lk
-X3JlZywNCj4gPiA+ID4gPiA+ID4gPiAmcHJvZF9pZCk7DQo+ID4gPiA+ID4gPiA+ID4gKwlpZiAo
-cmV0KQ0KPiA+ID4gPiA+ID4gPiA+ICsJCXJldHVybiByZXQ7DQo+ID4gPiA+ID4gPiA+ID4gKw0K
-PiA+ID4gPiA+ID4gPiA+ICsJcmV0ID0gc3NjYW5mKGlpb19uYW1lLCAiYWRpcyVodVxuIiwNCj4g
-PiA+ID4gPiA+ID4gPiAmZGV2X2lkKTsgICAgICANCj4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4g
-PiA+IEhtbS4gSSBoYXZlIGEgZ2VuZXJhbCBkaXNsaWtlIG9mIHB1bGxpbmcgcGFydCBuYW1lDQo+
-ID4gPiA+ID4gPiA+IHN0cmluZ3MNCj4gPiA+ID4gPiA+ID4gYXBhcnQNCj4gPiA+ID4gPiA+ID4g
-dG8NCj4gPiA+ID4gPiA+ID4gZ2V0DQo+ID4gPiA+ID4gPiA+IElEcy4gIEl0IHRlbmRzIHRvIGJy
-ZWFrIHdoZW4gc29tZW9uZSBjb21lcyBhbG9uZyBhbmQgYWRkcw0KPiA+ID4gPiA+ID4gPiBhDQo+
-ID4gPiA+ID4gPiA+IHBhcnQNCj4gPiA+ID4gPiA+ID4gd2l0aA0KPiA+ID4gPiA+ID4gPiBuZXcN
-Cj4gPiA+ID4gPiA+ID4gYnJhbmRpbmcuICBQZXJoYXBzIGp1c3QgcHV0IGl0IGluIHRoZSByZWxl
-dmFudCBkZXZpY2UNCj4gPiA+ID4gPiA+ID4gcGFydA0KPiA+ID4gPiA+ID4gPiBzcGVjaWZpYw0K
-PiA+ID4gPiA+ID4gPiBzdHJ1Y3R1cmVzDQo+ID4gPiA+ID4gPiA+IGRpcmVjdGx5Pw0KPiA+ID4g
-PiA+ID4gPiAgICAgICANCj4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gSSdsbCBhZG1pdCB0aGF0
-IHRoaXMgdG8gb3JpZW50YXRlZCB0byBBREkgZGV2aWNlcyBhbmQgSQ0KPiA+ID4gPiA+ID4gYmFz
-aWNhbGx5DQo+ID4gPiA+ID4gPiBqdXN0DQo+ID4gPiA+ID4gPiB0b29rIHdoYXQgYWxsIHRoZSBk
-cml2ZXJzIHdlcmUgZG9pbmcgYW5kIHBsYWNlZCBpdCBpbnNpZGUNCj4gPiA+ID4gPiA+IHRoZQ0K
-PiA+ID4gPiA+ID4gbGlicmFyeS4uLg0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiBTbywgeW91
-IG1lYW4gcGFzc2luZyB0aGlzIHRvIGVhY2ggYGNoaXBfaW5mb2AgYW5kIHRoZW4NCj4gPiA+ID4g
-PiA+IHBhc3NpbmcNCj4gPiA+ID4gPiA+IGl0DQo+ID4gPiA+ID4gPiB0bw0KPiA+ID4gPiA+ID4g
-dGhlIGxpYnJhcnkgdGhyb3VnaCBgYWRpc19kYXRhYD8gICAgDQo+ID4gPiA+ID4gDQo+ID4gPiA+
-ID4gWWVzLiAgUGVvcGxlIGRvbid0IHRlbmQgdG8gZXhwZWN0IHN0cmluZ3MgdG8gbmVlZCB0byB0
-YWtlIGENCj4gPiA+ID4gPiBwYXJ0aWN1bGFyIGZvcm0sDQo+ID4gPiA+ID4gc28gcHVsbGluZyB0
-aGVtIGFwYXJ0IGluIGEgbGlicmFyeSBjYW4gZ2l2ZSB1bmV4cGVjdGVkDQo+ID4gPiA+ID4gcmVz
-dWx0cy4uLg0KPiA+ID4gPiA+ICAgICANCj4gPiA+ID4gPiA+ID4gPiArCWlmIChyZXQgIT0gMSkN
-Cj4gPiA+ID4gPiA+ID4gPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gPiA+ID4gPiA+ID4gPiArDQo+
-ID4gPiA+ID4gPiA+ID4gKwlpZiAocHJvZF9pZCAhPSBkZXZfaWQpDQo+ID4gPiA+ID4gPiA+ID4g
-KwkJZGV2X3dhcm4oJmFkaXMtPnNwaS0+ZGV2LA0KPiA+ID4gPiA+ID4gPiA+ICsJCQkgIkRldmlj
-ZSBJRCgldSkgYW5kIHByb2R1Y3QNCj4gPiA+ID4gPiA+ID4gPiBJRCgldSkgZG8NCj4gPiA+ID4g
-PiA+ID4gPiBub3QNCj4gPiA+ID4gPiA+ID4gPiBtYXRjaC4iLA0KPiA+ID4gPiA+ID4gPiA+ICsJ
-CQkgZGV2X2lkLCBwcm9kX2lkKTsNCj4gPiA+ID4gPiA+ID4gPiArDQo+ID4gPiA+ID4gPiA+ID4g
-KwlyZXR1cm4gMDsNCj4gPiA+ID4gPiA+ID4gPiAgfQ0KPiA+ID4gPiA+ID4gPiA+IC1FWFBPUlRf
-U1lNQk9MX0dQTChhZGlzX2luaXRpYWxfc3RhcnR1cCk7DQo+ID4gPiA+ID4gPiA+ID4gK0VYUE9S
-VF9TWU1CT0xfR1BMKF9fYWRpc19pbml0aWFsX3N0YXJ0dXApOw0KPiA+ID4gPiA+ID4gPiA+ICAN
-Cj4gPiA+ID4gPiA+ID4gPiAgLyoqDQo+ID4gPiA+ID4gPiA+ID4gICAqIGFkaXNfc2luZ2xlX2Nv
-bnZlcnNpb24oKSAtIFBlcmZvcm1zIGEgc2luZ2xlIHNhbXBsZQ0KPiA+ID4gPiA+ID4gPiA+IGNv
-bnZlcnNpb24NCj4gPiA+ID4gPiA+ID4gPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9paW8v
-aW11L2FkaXMuaA0KPiA+ID4gPiA+ID4gPiA+IGIvaW5jbHVkZS9saW51eC9paW8vaW11L2FkaXMu
-aA0KPiA+ID4gPiA+ID4gPiA+IGluZGV4IGQyMWEwMTNkMTEyMi4uYzQzZTc5MjJhYjMyIDEwMDY0
-NA0KPiA+ID4gPiA+ID4gPiA+IC0tLSBhL2luY2x1ZGUvbGludXgvaWlvL2ltdS9hZGlzLmgNCj4g
-PiA+ID4gPiA+ID4gPiArKysgYi9pbmNsdWRlL2xpbnV4L2lpby9pbXUvYWRpcy5oDQo+ID4gPiA+
-ID4gPiA+ID4gQEAgLTQxLDYgKzQxLDcgQEAgc3RydWN0IGFkaXNfdGltZW91dCB7DQo+ID4gPiA+
-ID4gPiA+ID4gICAqIEBnbG9iX2NtZF9yZWc6IFJlZ2lzdGVyIGFkZHJlc3Mgb2YgdGhlIEdMT0Jf
-Q01EDQo+ID4gPiA+ID4gPiA+ID4gcmVnaXN0ZXINCj4gPiA+ID4gPiA+ID4gPiAgICogQG1zY19j
-dHJsX3JlZzogUmVnaXN0ZXIgYWRkcmVzcyBvZiB0aGUgTVNDX0NUUkwNCj4gPiA+ID4gPiA+ID4g
-PiByZWdpc3Rlcg0KPiA+ID4gPiA+ID4gPiA+ICAgKiBAZGlhZ19zdGF0X3JlZzogUmVnaXN0ZXIg
-YWRkcmVzcyBvZiB0aGUgRElBR19TVEFUDQo+ID4gPiA+ID4gPiA+ID4gcmVnaXN0ZXINCj4gPiA+
-ID4gPiA+ID4gPiArICogQHByb2RfaWRfcmVnOiBSZWdpc3RlciBhZGRyZXNzIG9mIHRoZSBQUk9E
-X0lEDQo+ID4gPiA+ID4gPiA+ID4gcmVnaXN0ZXINCj4gPiA+ID4gPiA+ID4gPiAgICogQHNlbGZf
-dGVzdF9yZWc6IFJlZ2lzdGVyIGFkZHJlc3MgdG8gcmVxdWVzdCBzZWxmDQo+ID4gPiA+ID4gPiA+
-ID4gdGVzdA0KPiA+ID4gPiA+ID4gPiA+IGNvbW1hbmQNCj4gPiA+ID4gPiA+ID4gPiAgICogQHN0
-YXR1c19lcnJvcl9tc2dzOiBBcnJheSBvZiBlcnJvciBtZXNzZ2Flcw0KPiA+ID4gPiA+ID4gPiA+
-ICAgKiBAc3RhdHVzX2Vycm9yX21hc2s6DQo+ID4gPiA+ID4gPiA+ID4gQEAgLTU0LDYgKzU1LDcg
-QEAgc3RydWN0IGFkaXNfZGF0YSB7DQo+ID4gPiA+ID4gPiA+ID4gIAl1bnNpZ25lZCBpbnQgZ2xv
-Yl9jbWRfcmVnOw0KPiA+ID4gPiA+ID4gPiA+ICAJdW5zaWduZWQgaW50IG1zY19jdHJsX3JlZzsN
-Cj4gPiA+ID4gPiA+ID4gPiAgCXVuc2lnbmVkIGludCBkaWFnX3N0YXRfcmVnOw0KPiA+ID4gPiA+
-ID4gPiA+ICsJdW5zaWduZWQgaW50IHByb2RfaWRfcmVnOw0KPiA+ID4gPiA+ID4gPiA+ICANCj4g
-PiA+ID4gPiA+ID4gPiAgCXVuc2lnbmVkIGludCBzZWxmX3Rlc3RfbWFzazsNCj4gPiA+ID4gPiA+
-ID4gPiAgCXVuc2lnbmVkIGludCBzZWxmX3Rlc3RfcmVnOw0KPiA+ID4gPiA+ID4gPiA+IEBAIC0y
-OTksNiArMzAxLDcgQEAgc3RhdGljIGlubGluZSBpbnQNCj4gPiA+ID4gPiA+ID4gPiBhZGlzX3Jl
-YWRfcmVnXzMyKHN0cnVjdA0KPiA+ID4gPiA+ID4gPiA+IGFkaXMNCj4gPiA+ID4gPiA+ID4gPiAq
-YWRpcywgdW5zaWduZWQgaW50IHJlZywNCj4gPiA+ID4gPiA+ID4gPiAgDQo+ID4gPiA+ID4gPiA+
-ID4gIGludCBhZGlzX2VuYWJsZV9pcnEoc3RydWN0IGFkaXMgKmFkaXMsIGJvb2wgZW5hYmxlKTsN
-Cj4gPiA+ID4gPiA+ID4gPiAgaW50IF9fYWRpc19jaGVja19zdGF0dXMoc3RydWN0IGFkaXMgKmFk
-aXMpOw0KPiA+ID4gPiA+ID4gPiA+ICtpbnQgX19hZGlzX2luaXRpYWxfc3RhcnR1cChzdHJ1Y3Qg
-YWRpcyAqYWRpcyk7DQo+ID4gPiA+ID4gPiA+ID4gIA0KPiA+ID4gPiA+ID4gPiA+ICBzdGF0aWMg
-aW5saW5lIGludCBhZGlzX2NoZWNrX3N0YXR1cyhzdHJ1Y3QgYWRpcyAqYWRpcykNCj4gPiA+ID4g
-PiA+ID4gPiAgew0KPiA+ID4gPiA+ID4gPiA+IEBAIC0zMTEsNyArMzE0LDE3IEBAIHN0YXRpYyBp
-bmxpbmUgaW50DQo+ID4gPiA+ID4gPiA+ID4gYWRpc19jaGVja19zdGF0dXMoc3RydWN0DQo+ID4g
-PiA+ID4gPiA+ID4gYWRpcyAqYWRpcykNCj4gPiA+ID4gPiA+ID4gPiAgCXJldHVybiByZXQ7DQo+
-ID4gPiA+ID4gPiA+ID4gIH0NCj4gPiA+ID4gPiA+ID4gPiAgDQo+ID4gPiA+ID4gPiA+ID4gLWlu
-dCBhZGlzX2luaXRpYWxfc3RhcnR1cChzdHJ1Y3QgYWRpcyAqYWRpcyk7DQo+ID4gPiA+ID4gPiA+
-ID4gKy8qIGxvY2tlZCB2ZXJzaW9uIG9mIF9fYWRpc19pbml0aWFsX3N0YXJ0dXAoKSAqLw0KPiA+
-ID4gPiA+ID4gPiA+ICtzdGF0aWMgaW5saW5lIGludCBhZGlzX2luaXRpYWxfc3RhcnR1cChzdHJ1
-Y3QgYWRpcw0KPiA+ID4gPiA+ID4gPiA+ICphZGlzKQ0KPiA+ID4gPiA+ID4gPiA+ICt7DQo+ID4g
-PiA+ID4gPiA+ID4gKwlpbnQgcmV0Ow0KPiA+ID4gPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiA+ID4g
-PiArCW11dGV4X2xvY2soJmFkaXMtPnN0YXRlX2xvY2spOw0KPiA+ID4gPiA+ID4gPiA+ICsJcmV0
-ID0gX19hZGlzX2luaXRpYWxfc3RhcnR1cChhZGlzKTsNCj4gPiA+ID4gPiA+ID4gPiArCW11dGV4
-X3VubG9jaygmYWRpcy0+c3RhdGVfbG9jayk7DQo+ID4gPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+
-ID4gPiA+ICsJcmV0dXJuIHJldDsNCj4gPiA+ID4gPiA+ID4gPiArfQ0KPiA+ID4gPiA+ID4gPiA+
-ICANCj4gPiA+ID4gPiA+ID4gPiAgaW50IGFkaXNfc2luZ2xlX2NvbnZlcnNpb24oc3RydWN0IGlp
-b19kZXYgKmluZGlvX2RldiwNCj4gPiA+ID4gPiA+ID4gPiAgCWNvbnN0IHN0cnVjdCBpaW9fY2hh
-bl9zcGVjICpjaGFuLCB1bnNpZ25lZCBpbnQNCj4gPiA+ID4gPiA+ID4gPiBlcnJvcl9tYXNrLCAg
-ICAgIA0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gICAgICAgDQo+ID4gPiA+ID4gDQo+
-ID4gPiA+ID4gICAgIA0KPiA+ID4gDQo+ID4gPiAgIA0KDQo=
+On Thu, 6 Feb 2020 10:10:48 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> On Wed, 5 Feb 2020 19:15:11 +0200
+> Alexandru Tachici <alexandru.tachici@analog.com> wrote:
+> 
+> > Move ad7192 ADC driver out of staging into mainline.
+> > 
+> > Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>  
+> 
+> Nice.  To my eyes only remaining bits are the minor tweaks in earlier
+> patches in this series.
+> 
+> If anyone else has time to look at this one that would be great of
+> course!
+> 
+> Only 2 more ADC drivers to go in staging after this one :)
+Speaking of which:
+
+ad7816 is obsolete so up to Analog to decide if you want to deal with it
+or just drop the driver.  Doesn't look like it would take a 'lot'
+to drag that one into the modern age, but if no one has hardware to
+test...
+
+ad7280a needs events interface bringing up to date and there are a few
+bits of custom ABI that need documenting and might need slighty tweaking.
+Looks easy enough so I'll cross my fingers you or one of the Analog team
+can get that one sorted in near future ;)
+
+Thanks,
+
+Jonathan
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> > ---
+> >  MAINTAINERS                      |    8 +
+> >  drivers/iio/adc/Kconfig          |   12 +
+> >  drivers/iio/adc/Makefile         |    1 +
+> >  drivers/iio/adc/ad7192.c         | 1043 ++++++++++++++++++++++++++++++
+> >  drivers/staging/iio/adc/Kconfig  |   12 -
+> >  drivers/staging/iio/adc/Makefile |    1 -
+> >  drivers/staging/iio/adc/ad7192.c | 1043 ------------------------------
+> >  7 files changed, 1064 insertions(+), 1056 deletions(-)
+> >  create mode 100644 drivers/iio/adc/ad7192.c
+> >  delete mode 100644 drivers/staging/iio/adc/ad7192.c
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index e699fe378e71..c82bdb31e2fb 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -922,6 +922,14 @@ S:	Supported
+> >  F:	drivers/iio/adc/ad7124.c
+> >  F:	Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+> >  
+> > +ANALOG DEVICES INC AD7192 DRIVER
+> > +M:	Alexandru Tachici <alexandru.tachici@analog.com>
+> > +L:	linux-iio@vger.kernel.org
+> > +W:	http://ez.analog.com/community/linux-device-drivers
+> > +S:	Supported
+> > +F:	drivers/iio/adc/ad7192.c
+> > +F:	Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> > +
+> >  ANALOG DEVICES INC AD7292 DRIVER
+> >  M:	Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> >  L:	linux-iio@vger.kernel.org
+> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > index 82e33082958c..f4da821c4022 100644
+> > --- a/drivers/iio/adc/Kconfig
+> > +++ b/drivers/iio/adc/Kconfig
+> > @@ -39,6 +39,18 @@ config AD7124
+> >  	  To compile this driver as a module, choose M here: the module will be
+> >  	  called ad7124.
+> >  
+> > +config AD7192
+> > +	tristate "Analog Devices AD7190 AD7192 AD7193 AD7195 ADC driver"
+> > +	depends on SPI
+> > +	select AD_SIGMA_DELTA
+> > +	help
+> > +	  Say yes here to build support for Analog Devices AD7190,
+> > +	  AD7192, AD7193 or AD7195 SPI analog to digital converters (ADC).
+> > +	  If unsure, say N (but it's safe to say "Y").
+> > +
+> > +	  To compile this driver as a module, choose M here: the
+> > +	  module will be called ad7192.
+> > +
+> >  config AD7266
+> >  	tristate "Analog Devices AD7265/AD7266 ADC driver"
+> >  	depends on SPI_MASTER
+> > diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> > index 919228900df9..8462455b4228 100644
+> > --- a/drivers/iio/adc/Makefile
+> > +++ b/drivers/iio/adc/Makefile
+> > @@ -8,6 +8,7 @@ obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
+> >  obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
+> >  obj-$(CONFIG_AD7091R5) += ad7091r5.o ad7091r-base.o
+> >  obj-$(CONFIG_AD7124) += ad7124.o
+> > +obj-$(CONFIG_AD7192) += ad7192.o
+> >  obj-$(CONFIG_AD7266) += ad7266.o
+> >  obj-$(CONFIG_AD7291) += ad7291.o
+> >  obj-$(CONFIG_AD7292) += ad7292.o
+> > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> > new file mode 100644
+> > index 000000000000..e75d808a2f41
+> > --- /dev/null
+> > +++ b/drivers/iio/adc/ad7192.c
+> > @@ -0,0 +1,1043 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * AD7190 AD7192 AD7193 AD7195 SPI ADC driver
+> > + *
+> > + * Copyright 2011-2015 Analog Devices Inc.
+> > + */
+> > +
+> > +#include <linux/interrupt.h>
+> > +#include <linux/clk.h>
+> > +#include <linux/device.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/slab.h>
+> > +#include <linux/sysfs.h>
+> > +#include <linux/spi/spi.h>
+> > +#include <linux/regulator/consumer.h>
+> > +#include <linux/err.h>
+> > +#include <linux/sched.h>
+> > +#include <linux/delay.h>
+> > +#include <linux/of_device.h>
+> > +
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/iio/sysfs.h>
+> > +#include <linux/iio/buffer.h>
+> > +#include <linux/iio/trigger.h>
+> > +#include <linux/iio/trigger_consumer.h>
+> > +#include <linux/iio/triggered_buffer.h>
+> > +#include <linux/iio/adc/ad_sigma_delta.h>
+> > +
+> > +/* Registers */
+> > +#define AD7192_REG_COMM		0 /* Communications Register (WO, 8-bit) */
+> > +#define AD7192_REG_STAT		0 /* Status Register	     (RO, 8-bit) */
+> > +#define AD7192_REG_MODE		1 /* Mode Register	     (RW, 24-bit */
+> > +#define AD7192_REG_CONF		2 /* Configuration Register  (RW, 24-bit) */
+> > +#define AD7192_REG_DATA		3 /* Data Register	     (RO, 24/32-bit) */
+> > +#define AD7192_REG_ID		4 /* ID Register	     (RO, 8-bit) */
+> > +#define AD7192_REG_GPOCON	5 /* GPOCON Register	     (RO, 8-bit) */
+> > +#define AD7192_REG_OFFSET	6 /* Offset Register	     (RW, 16-bit */
+> > +				  /* (AD7792)/24-bit (AD7192)) */
+> > +#define AD7192_REG_FULLSALE	7 /* Full-Scale Register */
+> > +				  /* (RW, 16-bit (AD7792)/24-bit (AD7192)) */
+> > +
+> > +/* Communications Register Bit Designations (AD7192_REG_COMM) */
+> > +#define AD7192_COMM_WEN		BIT(7) /* Write Enable */
+> > +#define AD7192_COMM_WRITE	0 /* Write Operation */
+> > +#define AD7192_COMM_READ	BIT(6) /* Read Operation */
+> > +#define AD7192_COMM_ADDR(x)	(((x) & 0x7) << 3) /* Register Address */
+> > +#define AD7192_COMM_CREAD	BIT(2) /* Continuous Read of Data Register */
+> > +
+> > +/* Status Register Bit Designations (AD7192_REG_STAT) */
+> > +#define AD7192_STAT_RDY		BIT(7) /* Ready */
+> > +#define AD7192_STAT_ERR		BIT(6) /* Error (Overrange, Underrange) */
+> > +#define AD7192_STAT_NOREF	BIT(5) /* Error no external reference */
+> > +#define AD7192_STAT_PARITY	BIT(4) /* Parity */
+> > +#define AD7192_STAT_CH3		BIT(2) /* Channel 3 */
+> > +#define AD7192_STAT_CH2		BIT(1) /* Channel 2 */
+> > +#define AD7192_STAT_CH1		BIT(0) /* Channel 1 */
+> > +
+> > +/* Mode Register Bit Designations (AD7192_REG_MODE) */
+> > +#define AD7192_MODE_SEL(x)	(((x) & 0x7) << 21) /* Operation Mode Select */
+> > +#define AD7192_MODE_SEL_MASK	(0x7 << 21) /* Operation Mode Select Mask */
+> > +#define AD7192_MODE_DAT_STA	BIT(20) /* Status Register transmission */
+> > +#define AD7192_MODE_CLKSRC(x)	(((x) & 0x3) << 18) /* Clock Source Select */
+> > +#define AD7192_MODE_SINC3	BIT(15) /* SINC3 Filter Select */
+> > +#define AD7192_MODE_ACX		BIT(14) /* AC excitation enable(AD7195 only)*/
+> > +#define AD7192_MODE_ENPAR	BIT(13) /* Parity Enable */
+> > +#define AD7192_MODE_CLKDIV	BIT(12) /* Clock divide by 2 (AD7190/2 only)*/
+> > +#define AD7192_MODE_SCYCLE	BIT(11) /* Single cycle conversion */
+> > +#define AD7192_MODE_REJ60	BIT(10) /* 50/60Hz notch filter */
+> > +#define AD7192_MODE_RATE(x)	((x) & 0x3FF) /* Filter Update Rate Select */
+> > +
+> > +/* Mode Register: AD7192_MODE_SEL options */
+> > +#define AD7192_MODE_CONT		0 /* Continuous Conversion Mode */
+> > +#define AD7192_MODE_SINGLE		1 /* Single Conversion Mode */
+> > +#define AD7192_MODE_IDLE		2 /* Idle Mode */
+> > +#define AD7192_MODE_PWRDN		3 /* Power-Down Mode */
+> > +#define AD7192_MODE_CAL_INT_ZERO	4 /* Internal Zero-Scale Calibration */
+> > +#define AD7192_MODE_CAL_INT_FULL	5 /* Internal Full-Scale Calibration */
+> > +#define AD7192_MODE_CAL_SYS_ZERO	6 /* System Zero-Scale Calibration */
+> > +#define AD7192_MODE_CAL_SYS_FULL	7 /* System Full-Scale Calibration */
+> > +
+> > +/* Mode Register: AD7192_MODE_CLKSRC options */
+> > +#define AD7192_CLK_EXT_MCLK1_2		0 /* External 4.92 MHz Clock connected*/
+> > +					  /* from MCLK1 to MCLK2 */
+> > +#define AD7192_CLK_EXT_MCLK2		1 /* External Clock applied to MCLK2 */
+> > +#define AD7192_CLK_INT			2 /* Internal 4.92 MHz Clock not */
+> > +					  /* available at the MCLK2 pin */
+> > +#define AD7192_CLK_INT_CO		3 /* Internal 4.92 MHz Clock available*/
+> > +					  /* at the MCLK2 pin */
+> > +
+> > +/* Configuration Register Bit Designations (AD7192_REG_CONF) */
+> > +
+> > +#define AD7192_CONF_CHOP	BIT(23) /* CHOP enable */
+> > +#define AD7192_CONF_REFSEL	BIT(20) /* REFIN1/REFIN2 Reference Select */
+> > +#define AD7192_CONF_CHAN(x)	((x) << 8) /* Channel select */
+> > +#define AD7192_CONF_CHAN_MASK	(0x7FF << 8) /* Channel select mask */
+> > +#define AD7192_CONF_BURN	BIT(7) /* Burnout current enable */
+> > +#define AD7192_CONF_REFDET	BIT(6) /* Reference detect enable */
+> > +#define AD7192_CONF_BUF		BIT(4) /* Buffered Mode Enable */
+> > +#define AD7192_CONF_UNIPOLAR	BIT(3) /* Unipolar/Bipolar Enable */
+> > +#define AD7192_CONF_GAIN(x)	((x) & 0x7) /* Gain Select */
+> > +
+> > +#define AD7192_CH_AIN1P_AIN2M	BIT(0) /* AIN1(+) - AIN2(-) */
+> > +#define AD7192_CH_AIN3P_AIN4M	BIT(1) /* AIN3(+) - AIN4(-) */
+> > +#define AD7192_CH_TEMP		BIT(2) /* Temp Sensor */
+> > +#define AD7192_CH_AIN2P_AIN2M	BIT(3) /* AIN2(+) - AIN2(-) */
+> > +#define AD7192_CH_AIN1		BIT(4) /* AIN1 - AINCOM */
+> > +#define AD7192_CH_AIN2		BIT(5) /* AIN2 - AINCOM */
+> > +#define AD7192_CH_AIN3		BIT(6) /* AIN3 - AINCOM */
+> > +#define AD7192_CH_AIN4		BIT(7) /* AIN4 - AINCOM */
+> > +
+> > +#define AD7193_CH_AIN1P_AIN2M	0x001  /* AIN1(+) - AIN2(-) */
+> > +#define AD7193_CH_AIN3P_AIN4M	0x002  /* AIN3(+) - AIN4(-) */
+> > +#define AD7193_CH_AIN5P_AIN6M	0x004  /* AIN5(+) - AIN6(-) */
+> > +#define AD7193_CH_AIN7P_AIN8M	0x008  /* AIN7(+) - AIN8(-) */
+> > +#define AD7193_CH_TEMP		0x100 /* Temp senseor */
+> > +#define AD7193_CH_AIN2P_AIN2M	0x200 /* AIN2(+) - AIN2(-) */
+> > +#define AD7193_CH_AIN1		0x401 /* AIN1 - AINCOM */
+> > +#define AD7193_CH_AIN2		0x402 /* AIN2 - AINCOM */
+> > +#define AD7193_CH_AIN3		0x404 /* AIN3 - AINCOM */
+> > +#define AD7193_CH_AIN4		0x408 /* AIN4 - AINCOM */
+> > +#define AD7193_CH_AIN5		0x410 /* AIN5 - AINCOM */
+> > +#define AD7193_CH_AIN6		0x420 /* AIN6 - AINCOM */
+> > +#define AD7193_CH_AIN7		0x440 /* AIN7 - AINCOM */
+> > +#define AD7193_CH_AIN8		0x480 /* AIN7 - AINCOM */
+> > +#define AD7193_CH_AINCOM	0x600 /* AINCOM - AINCOM */
+> > +
+> > +/* ID Register Bit Designations (AD7192_REG_ID) */
+> > +#define ID_AD7190		0x4
+> > +#define ID_AD7192		0x0
+> > +#define ID_AD7193		0x2
+> > +#define ID_AD7195		0x6
+> > +#define AD7192_ID_MASK		0x0F
+> > +
+> > +/* GPOCON Register Bit Designations (AD7192_REG_GPOCON) */
+> > +#define AD7192_GPOCON_BPDSW	BIT(6) /* Bridge power-down switch enable */
+> > +#define AD7192_GPOCON_GP32EN	BIT(5) /* Digital Output P3 and P2 enable */
+> > +#define AD7192_GPOCON_GP10EN	BIT(4) /* Digital Output P1 and P0 enable */
+> > +#define AD7192_GPOCON_P3DAT	BIT(3) /* P3 state */
+> > +#define AD7192_GPOCON_P2DAT	BIT(2) /* P2 state */
+> > +#define AD7192_GPOCON_P1DAT	BIT(1) /* P1 state */
+> > +#define AD7192_GPOCON_P0DAT	BIT(0) /* P0 state */
+> > +
+> > +#define AD7192_EXT_FREQ_MHZ_MIN	2457600
+> > +#define AD7192_EXT_FREQ_MHZ_MAX	5120000
+> > +#define AD7192_INT_FREQ_MHZ	4915200
+> > +
+> > +#define AD7192_NO_SYNC_FILTER	1
+> > +#define AD7192_SYNC3_FILTER	3
+> > +#define AD7192_SYNC4_FILTER	4
+> > +
+> > +/* NOTE:
+> > + * The AD7190/2/5 features a dual use data out ready DOUT/RDY output.
+> > + * In order to avoid contentions on the SPI bus, it's therefore necessary
+> > + * to use spi bus locking.
+> > + *
+> > + * The DOUT/RDY output must also be wired to an interrupt capable GPIO.
+> > + */
+> > +
+> > +enum {
+> > +   AD7192_SYSCALIB_ZERO_SCALE,
+> > +   AD7192_SYSCALIB_FULL_SCALE,
+> > +};
+> > +
+> > +struct ad7192_state {
+> > +	struct regulator		*avdd;
+> > +	struct regulator		*dvdd;
+> > +	struct clk			*mclk;
+> > +	u16				int_vref_mv;
+> > +	u32				fclk;
+> > +	u32				f_order;
+> > +	u32				mode;
+> > +	u32				conf;
+> > +	u32				scale_avail[8][2];
+> > +	u8				gpocon;
+> > +	u8				devid;
+> > +	u8				clock_sel;
+> > +	struct mutex			lock;	/* protect sensor state */
+> > +	u8				syscalib_mode[8];
+> > +
+> > +	struct ad_sigma_delta		sd;
+> > +};
+> > +
+> > +static const char * const ad7192_syscalib_modes[] = {
+> > +	[AD7192_SYSCALIB_ZERO_SCALE] = "zero_scale",
+> > +	[AD7192_SYSCALIB_FULL_SCALE] = "full_scale",
+> > +};
+> > +
+> > +static int ad7192_set_syscalib_mode(struct iio_dev *indio_dev,
+> > +				    const struct iio_chan_spec *chan,
+> > +				    unsigned int mode)
+> > +{
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +
+> > +	st->syscalib_mode[chan->channel] = mode;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int ad7192_get_syscalib_mode(struct iio_dev *indio_dev,
+> > +				    const struct iio_chan_spec *chan)
+> > +{
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +
+> > +	return st->syscalib_mode[chan->channel];
+> > +}
+> > +
+> > +static ssize_t ad7192_write_syscalib(struct iio_dev *indio_dev,
+> > +				     uintptr_t private,
+> > +				     const struct iio_chan_spec *chan,
+> > +				     const char *buf, size_t len)
+> > +{
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +	bool sys_calib;
+> > +	int ret, temp;
+> > +
+> > +	ret = strtobool(buf, &sys_calib);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	temp = st->syscalib_mode[chan->channel];
+> > +	if (sys_calib) {
+> > +		if (temp == AD7192_SYSCALIB_ZERO_SCALE)
+> > +			ret = ad_sd_calibrate(&st->sd, AD7192_MODE_CAL_SYS_ZERO,
+> > +					      chan->address);
+> > +		else
+> > +			ret = ad_sd_calibrate(&st->sd, AD7192_MODE_CAL_SYS_FULL,
+> > +					      chan->address);
+> > +	}
+> > +
+> > +	return ret ? ret : len;
+> > +}
+> > +
+> > +static const struct iio_enum ad7192_syscalib_mode_enum = {
+> > +	.items = ad7192_syscalib_modes,
+> > +	.num_items = ARRAY_SIZE(ad7192_syscalib_modes),
+> > +	.set = ad7192_set_syscalib_mode,
+> > +	.get = ad7192_get_syscalib_mode
+> > +};
+> > +
+> > +static const struct iio_chan_spec_ext_info ad7192_calibsys_ext_info[] = {
+> > +	{
+> > +		.name = "sys_calibration",
+> > +		.write = ad7192_write_syscalib,
+> > +		.shared = IIO_SEPARATE,
+> > +	},
+> > +	IIO_ENUM("sys_calibration_mode", IIO_SEPARATE,
+> > +		 &ad7192_syscalib_mode_enum),
+> > +	IIO_ENUM_AVAILABLE("sys_calibration_mode", &ad7192_syscalib_mode_enum),
+> > +	{}
+> > +};
+> > +
+> > +static struct ad7192_state *ad_sigma_delta_to_ad7192(struct ad_sigma_delta *sd)
+> > +{
+> > +	return container_of(sd, struct ad7192_state, sd);
+> > +}
+> > +
+> > +static int ad7192_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
+> > +{
+> > +	struct ad7192_state *st = ad_sigma_delta_to_ad7192(sd);
+> > +
+> > +	st->conf &= ~AD7192_CONF_CHAN_MASK;
+> > +	st->conf |= AD7192_CONF_CHAN(channel);
+> > +
+> > +	return ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
+> > +}
+> > +
+> > +static int ad7192_set_mode(struct ad_sigma_delta *sd,
+> > +			   enum ad_sigma_delta_mode mode)
+> > +{
+> > +	struct ad7192_state *st = ad_sigma_delta_to_ad7192(sd);
+> > +
+> > +	st->mode &= ~AD7192_MODE_SEL_MASK;
+> > +	st->mode |= AD7192_MODE_SEL(mode);
+> > +
+> > +	return ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+> > +}
+> > +
+> > +static const struct ad_sigma_delta_info ad7192_sigma_delta_info = {
+> > +	.set_channel = ad7192_set_channel,
+> > +	.set_mode = ad7192_set_mode,
+> > +	.has_registers = true,
+> > +	.addr_shift = 3,
+> > +	.read_mask = BIT(6),
+> > +};
+> > +
+> > +static const struct ad_sd_calib_data ad7192_calib_arr[8] = {
+> > +	{AD7192_MODE_CAL_INT_ZERO, AD7192_CH_AIN1},
+> > +	{AD7192_MODE_CAL_INT_FULL, AD7192_CH_AIN1},
+> > +	{AD7192_MODE_CAL_INT_ZERO, AD7192_CH_AIN2},
+> > +	{AD7192_MODE_CAL_INT_FULL, AD7192_CH_AIN2},
+> > +	{AD7192_MODE_CAL_INT_ZERO, AD7192_CH_AIN3},
+> > +	{AD7192_MODE_CAL_INT_FULL, AD7192_CH_AIN3},
+> > +	{AD7192_MODE_CAL_INT_ZERO, AD7192_CH_AIN4},
+> > +	{AD7192_MODE_CAL_INT_FULL, AD7192_CH_AIN4}
+> > +};
+> > +
+> > +static int ad7192_calibrate_all(struct ad7192_state *st)
+> > +{
+> > +	return ad_sd_calibrate_all(&st->sd, ad7192_calib_arr,
+> > +				   ARRAY_SIZE(ad7192_calib_arr));
+> > +}
+> > +
+> > +static inline bool ad7192_valid_external_frequency(u32 freq)
+> > +{
+> > +	return (freq >= AD7192_EXT_FREQ_MHZ_MIN &&
+> > +		freq <= AD7192_EXT_FREQ_MHZ_MAX);
+> > +}
+> > +
+> > +static int ad7192_of_clock_select(struct ad7192_state *st)
+> > +{
+> > +	struct device_node *np = st->sd.spi->dev.of_node;
+> > +	unsigned int clock_sel;
+> > +
+> > +	clock_sel = AD7192_CLK_INT;
+> > +
+> > +	/* use internal clock */
+> > +	if (PTR_ERR(st->mclk) == -ENOENT) {
+> > +		if (of_property_read_bool(np, "adi,int-clock-output-enable"))
+> > +			clock_sel = AD7192_CLK_INT_CO;
+> > +	} else {
+> > +		if (of_property_read_bool(np, "adi,clock-xtal"))
+> > +			clock_sel = AD7192_CLK_EXT_MCLK1_2;
+> > +		else
+> > +			clock_sel = AD7192_CLK_EXT_MCLK2;
+> > +	}
+> > +
+> > +	return clock_sel;
+> > +}
+> > +
+> > +static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+> > +{
+> > +	struct iio_dev *indio_dev = spi_get_drvdata(st->sd.spi);
+> > +	bool rej60_en, refin2_en;
+> > +	bool buf_en, bipolar, burnout_curr_en;
+> > +	unsigned long long scale_uv;
+> > +	int i, ret, id;
+> > +
+> > +	/* reset the serial interface */
+> > +	ret = ad_sd_reset(&st->sd, 48);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +	usleep_range(500, 1000); /* Wait for at least 500us */
+> > +
+> > +	/* write/read test for device presence */
+> > +	ret = ad_sd_read_reg(&st->sd, AD7192_REG_ID, 1, &id);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	id &= AD7192_ID_MASK;
+> > +
+> > +	if (id != st->devid)
+> > +		dev_warn(&st->sd.spi->dev, "device ID query failed (0x%X)\n",
+> > +			 id);
+> > +
+> > +	st->mode = AD7192_MODE_SEL(AD7192_MODE_IDLE) |
+> > +		AD7192_MODE_CLKSRC(st->clock_sel) |
+> > +		AD7192_MODE_RATE(480);
+> > +
+> > +	st->conf = AD7192_CONF_GAIN(0);
+> > +
+> > +	rej60_en = of_property_read_bool(np, "adi,rejection-60-Hz-enable");
+> > +	if (rej60_en)
+> > +		st->mode |= AD7192_MODE_REJ60;
+> > +
+> > +	refin2_en = of_property_read_bool(np, "adi,refin2-pins-enable");
+> > +	if (refin2_en && st->devid != ID_AD7195)
+> > +		st->conf |= AD7192_CONF_REFSEL;
+> > +
+> > +	st->conf &= ~AD7192_CONF_CHOP;
+> > +	st->f_order = AD7192_NO_SYNC_FILTER;
+> > +
+> > +	buf_en = of_property_read_bool(np, "adi,buffer-enable");
+> > +	if (buf_en)
+> > +		st->conf |= AD7192_CONF_BUF;
+> > +
+> > +	bipolar = of_property_read_bool(np, "bipolar");
+> > +	if (!bipolar)
+> > +		st->conf |= AD7192_CONF_UNIPOLAR;
+> > +
+> > +	burnout_curr_en = of_property_read_bool(np,
+> > +						"adi,burnout-currents-enable");
+> > +	if (burnout_curr_en && buf_en) {
+> > +		st->conf |= AD7192_CONF_BURN;
+> > +	} else if (burnout_curr_en) {
+> > +		dev_warn(&st->sd.spi->dev,
+> > +			 "Can't enable burnout currents: see CHOP or buffer\n");
+> > +	}
+> > +
+> > +	ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = ad7192_calibrate_all(st);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	/* Populate available ADC input ranges */
+> > +	for (i = 0; i < ARRAY_SIZE(st->scale_avail); i++) {
+> > +		scale_uv = ((u64)st->int_vref_mv * 100000000)
+> > +			>> (indio_dev->channels[0].scan_type.realbits -
+> > +			((st->conf & AD7192_CONF_UNIPOLAR) ? 0 : 1));
+> > +		scale_uv >>= i;
+> > +
+> > +		st->scale_avail[i][1] = do_div(scale_uv, 100000000) * 10;
+> > +		st->scale_avail[i][0] = scale_uv;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static ssize_t ad7192_show_ac_excitation(struct device *dev,
+> > +					 struct device_attribute *attr,
+> > +					 char *buf)
+> > +{
+> > +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +
+> > +	return sprintf(buf, "%d\n", !!(st->mode & AD7192_MODE_ACX));
+> > +}
+> > +
+> > +static ssize_t ad7192_show_bridge_switch(struct device *dev,
+> > +					 struct device_attribute *attr,
+> > +					 char *buf)
+> > +{
+> > +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +
+> > +	return sprintf(buf, "%d\n", !!(st->gpocon & AD7192_GPOCON_BPDSW));
+> > +}
+> > +
+> > +static ssize_t ad7192_set(struct device *dev,
+> > +			  struct device_attribute *attr,
+> > +			  const char *buf,
+> > +			  size_t len)
+> > +{
+> > +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
+> > +	int ret;
+> > +	bool val;
+> > +
+> > +	ret = strtobool(buf, &val);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	ret = iio_device_claim_direct_mode(indio_dev);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	switch ((u32)this_attr->address) {
+> > +	case AD7192_REG_GPOCON:
+> > +		if (val)
+> > +			st->gpocon |= AD7192_GPOCON_BPDSW;
+> > +		else
+> > +			st->gpocon &= ~AD7192_GPOCON_BPDSW;
+> > +
+> > +		ad_sd_write_reg(&st->sd, AD7192_REG_GPOCON, 1, st->gpocon);
+> > +		break;
+> > +	case AD7192_REG_MODE:
+> > +		if (val)
+> > +			st->mode |= AD7192_MODE_ACX;
+> > +		else
+> > +			st->mode &= ~AD7192_MODE_ACX;
+> > +
+> > +		ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+> > +		break;
+> > +	default:
+> > +		ret = -EINVAL;
+> > +	}
+> > +
+> > +	iio_device_release_direct_mode(indio_dev);
+> > +
+> > +	return ret ? ret : len;
+> > +}
+> > +
+> > +static void ad7192_get_available_filter_freq(struct ad7192_state *st,
+> > +						    int *freq)
+> > +{
+> > +	unsigned int fadc;
+> > +
+> > +	/* Formulas for filter at page 25 of the datasheet */
+> > +	fadc = DIV_ROUND_CLOSEST(st->fclk,
+> > +				 AD7192_SYNC4_FILTER * AD7192_MODE_RATE(st->mode));
+> > +	freq[0] = DIV_ROUND_CLOSEST(fadc * 240, 1024);
+> > +
+> > +	fadc = DIV_ROUND_CLOSEST(st->fclk,
+> > +				 AD7192_SYNC3_FILTER * AD7192_MODE_RATE(st->mode));
+> > +	freq[1] = DIV_ROUND_CLOSEST(fadc * 240, 1024);
+> > +
+> > +	fadc = DIV_ROUND_CLOSEST(st->fclk, AD7192_MODE_RATE(st->mode));
+> > +	freq[2] = DIV_ROUND_CLOSEST(fadc * 230, 1024);
+> > +	freq[3] = DIV_ROUND_CLOSEST(fadc * 272, 1024);
+> > +}
+> > +
+> > +static ssize_t ad7192_show_filter_avail(struct device *dev,
+> > +					struct device_attribute *attr,
+> > +					char *buf)
+> > +{
+> > +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +	unsigned int freq_avail[4], i;
+> > +	size_t len = 0;
+> > +
+> > +	ad7192_get_available_filter_freq(st, freq_avail);
+> > +
+> > +	for (i = 0; i < ARRAY_SIZE(freq_avail); i++)
+> > +		len += scnprintf(buf + len, PAGE_SIZE - len,
+> > +				 "%d.%d ", freq_avail[i] / 1000,
+> > +				 freq_avail[i] % 1000);
+> > +
+> > +	buf[len - 1] = '\n';
+> > +
+> > +	return len;
+> > +}
+> > +
+> > +static IIO_DEVICE_ATTR(filter_low_pass_3db_frequency_available,
+> > +		       0444, ad7192_show_filter_avail, NULL, 0);
+> > +
+> > +static IIO_DEVICE_ATTR(bridge_switch_en, 0644,
+> > +		       ad7192_show_bridge_switch, ad7192_set,
+> > +		       AD7192_REG_GPOCON);
+> > +
+> > +static IIO_DEVICE_ATTR(ac_excitation_en, 0644,
+> > +		       ad7192_show_ac_excitation, ad7192_set,
+> > +		       AD7192_REG_MODE);
+> > +
+> > +static struct attribute *ad7192_attributes[] = {
+> > +	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
+> > +	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
+> > +	&iio_dev_attr_ac_excitation_en.dev_attr.attr,
+> > +	NULL
+> > +};
+> > +
+> > +static const struct attribute_group ad7192_attribute_group = {
+> > +	.attrs = ad7192_attributes,
+> > +};
+> > +
+> > +static struct attribute *ad7195_attributes[] = {
+> > +	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
+> > +	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
+> > +	NULL
+> > +};
+> > +
+> > +static const struct attribute_group ad7195_attribute_group = {
+> > +	.attrs = ad7195_attributes,
+> > +};
+> > +
+> > +static unsigned int ad7192_get_temp_scale(bool unipolar)
+> > +{
+> > +	return unipolar ? 2815 * 2 : 2815;
+> > +}
+> > +
+> > +static int ad7192_set_3db_filter_freq(struct ad7192_state *st,
+> > +				      int val, int val2)
+> > +{
+> > +	int freq_avail[4], i, ret, freq;
+> > +	unsigned int diff_new, diff_old;
+> > +	int idx = 0;
+> > +
+> > +	diff_old = U32_MAX;
+> > +	freq = val * 1000 + val2;
+> > +
+> > +	ad7192_get_available_filter_freq(st, freq_avail);
+> > +
+> > +	for (i = 0; i < ARRAY_SIZE(freq_avail); i++) {
+> > +		diff_new = abs(freq - freq_avail[i]);
+> > +		if (diff_new < diff_old) {
+> > +			diff_old = diff_new;
+> > +			idx = i;
+> > +		}
+> > +	}
+> > +
+> > +	switch (idx) {
+> > +	case 0:
+> > +		st->f_order = AD7192_SYNC4_FILTER;
+> > +		st->mode &= ~AD7192_MODE_SINC3;
+> > +
+> > +		st->conf |= AD7192_CONF_CHOP;
+> > +		break;
+> > +	case 1:
+> > +		st->f_order = AD7192_SYNC3_FILTER;
+> > +		st->mode |= AD7192_MODE_SINC3;
+> > +
+> > +		st->conf |= AD7192_CONF_CHOP;
+> > +		break;
+> > +	case 2:
+> > +		st->f_order = AD7192_NO_SYNC_FILTER;
+> > +		st->mode &= ~AD7192_MODE_SINC3;
+> > +
+> > +		st->conf &= ~AD7192_CONF_CHOP;
+> > +		break;
+> > +	case 3:
+> > +		st->f_order = AD7192_NO_SYNC_FILTER;
+> > +		st->mode |= AD7192_MODE_SINC3;
+> > +
+> > +		st->conf &= ~AD7192_CONF_CHOP;
+> > +		break;
+> > +	}
+> > +
+> > +	ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	return ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
+> > +}
+> > +
+> > +static int ad7192_get_3db_filter_freq(struct ad7192_state *st)
+> > +{
+> > +	unsigned int fadc;
+> > +
+> > +	fadc = DIV_ROUND_CLOSEST(st->fclk,
+> > +				 st->f_order * AD7192_MODE_RATE(st->mode));
+> > +
+> > +	if (st->conf & AD7192_CONF_CHOP)
+> > +		return DIV_ROUND_CLOSEST(fadc * 240, 1024);
+> > +	if (st->mode & AD7192_MODE_SINC3)
+> > +		return DIV_ROUND_CLOSEST(fadc * 272, 1024);
+> > +	else
+> > +		return DIV_ROUND_CLOSEST(fadc * 230, 1024);
+> > +}
+> > +
+> > +static int ad7192_read_raw(struct iio_dev *indio_dev,
+> > +			   struct iio_chan_spec const *chan,
+> > +			   int *val,
+> > +			   int *val2,
+> > +			   long m)
+> > +{
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +	bool unipolar = !!(st->conf & AD7192_CONF_UNIPOLAR);
+> > +
+> > +	switch (m) {
+> > +	case IIO_CHAN_INFO_RAW:
+> > +		return ad_sigma_delta_single_conversion(indio_dev, chan, val);
+> > +	case IIO_CHAN_INFO_SCALE:
+> > +		switch (chan->type) {
+> > +		case IIO_VOLTAGE:
+> > +			mutex_lock(&st->lock);
+> > +			*val = st->scale_avail[AD7192_CONF_GAIN(st->conf)][0];
+> > +			*val2 = st->scale_avail[AD7192_CONF_GAIN(st->conf)][1];
+> > +			mutex_unlock(&st->lock);
+> > +			return IIO_VAL_INT_PLUS_NANO;
+> > +		case IIO_TEMP:
+> > +			*val = 0;
+> > +			*val2 = 1000000000 / ad7192_get_temp_scale(unipolar);
+> > +			return IIO_VAL_INT_PLUS_NANO;
+> > +		default:
+> > +			return -EINVAL;
+> > +		}
+> > +	case IIO_CHAN_INFO_OFFSET:
+> > +		if (!unipolar)
+> > +			*val = -(1 << (chan->scan_type.realbits - 1));
+> > +		else
+> > +			*val = 0;
+> > +		/* Kelvin to Celsius */
+> > +		if (chan->type == IIO_TEMP)
+> > +			*val -= 273 * ad7192_get_temp_scale(unipolar);
+> > +		return IIO_VAL_INT;
+> > +	case IIO_CHAN_INFO_SAMP_FREQ:
+> > +		*val = st->fclk /
+> > +			(st->f_order * 1024 * AD7192_MODE_RATE(st->mode));
+> > +		return IIO_VAL_INT;
+> > +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> > +		*val = ad7192_get_3db_filter_freq(st);
+> > +		*val2 = 1000;
+> > +		return IIO_VAL_FRACTIONAL;
+> > +	}
+> > +
+> > +	return -EINVAL;
+> > +}
+> > +
+> > +static int ad7192_write_raw(struct iio_dev *indio_dev,
+> > +			    struct iio_chan_spec const *chan,
+> > +			    int val,
+> > +			    int val2,
+> > +			    long mask)
+> > +{
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +	int ret, i, div;
+> > +	unsigned int tmp;
+> > +
+> > +	ret = iio_device_claim_direct_mode(indio_dev);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_SCALE:
+> > +		ret = -EINVAL;
+> > +		mutex_lock(&st->lock);
+> > +		for (i = 0; i < ARRAY_SIZE(st->scale_avail); i++)
+> > +			if (val2 == st->scale_avail[i][1]) {
+> > +				ret = 0;
+> > +				tmp = st->conf;
+> > +				st->conf &= ~AD7192_CONF_GAIN(-1);
+> > +				st->conf |= AD7192_CONF_GAIN(i);
+> > +				if (tmp == st->conf)
+> > +					break;
+> > +				ad_sd_write_reg(&st->sd, AD7192_REG_CONF,
+> > +						3, st->conf);
+> > +				ad7192_calibrate_all(st);
+> > +				break;
+> > +			}
+> > +		mutex_unlock(&st->lock);
+> > +		break;
+> > +	case IIO_CHAN_INFO_SAMP_FREQ:
+> > +		if (!val) {
+> > +			ret = -EINVAL;
+> > +			break;
+> > +		}
+> > +
+> > +		div = st->fclk / (val * st->f_order * 1024);
+> > +		if (div < 1 || div > 1023) {
+> > +			ret = -EINVAL;
+> > +			break;
+> > +		}
+> > +
+> > +		st->mode &= ~AD7192_MODE_RATE(-1);
+> > +		st->mode |= AD7192_MODE_RATE(div);
+> > +		ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+> > +		break;
+> > +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> > +		ret = ad7192_set_3db_filter_freq(st, val, val2 / 1000);
+> > +		break;
+> > +	default:
+> > +		ret = -EINVAL;
+> > +	}
+> > +
+> > +	iio_device_release_direct_mode(indio_dev);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int ad7192_write_raw_get_fmt(struct iio_dev *indio_dev,
+> > +				    struct iio_chan_spec const *chan,
+> > +				    long mask)
+> > +{
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_SCALE:
+> > +		return IIO_VAL_INT_PLUS_NANO;
+> > +	case IIO_CHAN_INFO_SAMP_FREQ:
+> > +		return IIO_VAL_INT;
+> > +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> > +		return IIO_VAL_INT_PLUS_MICRO;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static int ad7192_read_avail(struct iio_dev *indio_dev,
+> > +			     struct iio_chan_spec const *chan,
+> > +			     const int **vals, int *type, int *length,
+> > +			     long mask)
+> > +{
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_SCALE:
+> > +		*vals = (int *)st->scale_avail;
+> > +		*type = IIO_VAL_INT_PLUS_NANO;
+> > +		/* Values are stored in a 2D matrix  */
+> > +		*length = ARRAY_SIZE(st->scale_avail) * 2;
+> > +
+> > +		return IIO_AVAIL_LIST;
+> > +	}
+> > +
+> > +	return -EINVAL;
+> > +}
+> > +
+> > +static const struct iio_info ad7192_info = {
+> > +	.read_raw = ad7192_read_raw,
+> > +	.write_raw = ad7192_write_raw,
+> > +	.write_raw_get_fmt = ad7192_write_raw_get_fmt,
+> > +	.read_avail = ad7192_read_avail,
+> > +	.attrs = &ad7192_attribute_group,
+> > +	.validate_trigger = ad_sd_validate_trigger,
+> > +};
+> > +
+> > +static const struct iio_info ad7195_info = {
+> > +	.read_raw = ad7192_read_raw,
+> > +	.write_raw = ad7192_write_raw,
+> > +	.write_raw_get_fmt = ad7192_write_raw_get_fmt,
+> > +	.read_avail = ad7192_read_avail,
+> > +	.attrs = &ad7195_attribute_group,
+> > +	.validate_trigger = ad_sd_validate_trigger,
+> > +};
+> > +
+> > +#define __AD719x_CHANNEL(_si, _channel1, _channel2, _address, _extend_name, \
+> > +	_type, _mask_type_av, _ext_info) \
+> > +	{ \
+> > +		.type = (_type), \
+> > +		.differential = ((_channel2) == -1 ? 0 : 1), \
+> > +		.indexed = 1, \
+> > +		.channel = (_channel1), \
+> > +		.channel2 = (_channel2), \
+> > +		.address = (_address), \
+> > +		.extend_name = (_extend_name), \
+> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+> > +			BIT(IIO_CHAN_INFO_OFFSET), \
+> > +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
+> > +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) | \
+> > +			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY), \
+> > +		.info_mask_shared_by_type_available = (_mask_type_av), \
+> > +		.ext_info = (_ext_info), \
+> > +		.scan_index = (_si), \
+> > +		.scan_type = { \
+> > +			.sign = 'u', \
+> > +			.realbits = 24, \
+> > +			.storagebits = 32, \
+> > +			.endianness = IIO_BE, \
+> > +		}, \
+> > +	}
+> > +
+> > +#define AD719x_DIFF_CHANNEL(_si, _channel1, _channel2, _address) \
+> > +	__AD719x_CHANNEL(_si, _channel1, _channel2, _address, NULL, \
+> > +		IIO_VOLTAGE, BIT(IIO_CHAN_INFO_SCALE), \
+> > +		ad7192_calibsys_ext_info)
+> > +
+> > +#define AD719x_CHANNEL(_si, _channel1, _address) \
+> > +	__AD719x_CHANNEL(_si, _channel1, -1, _address, NULL, IIO_VOLTAGE, \
+> > +		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
+> > +
+> > +#define AD719x_SHORTED_CHANNEL(_si, _channel1, _address) \
+> > +	__AD719x_CHANNEL(_si, _channel1, -1, _address, "shorted", IIO_VOLTAGE, \
+> > +		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
+> > +
+> > +#define AD719x_TEMP_CHANNEL(_si, _address) \
+> > +	__AD719x_CHANNEL(_si, 0, -1, _address, NULL, IIO_TEMP, 0, NULL)
+> > +
+> > +static const struct iio_chan_spec ad7192_channels[] = {
+> > +	AD719x_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M),
+> > +	AD719x_DIFF_CHANNEL(1, 3, 4, AD7192_CH_AIN3P_AIN4M),
+> > +	AD719x_TEMP_CHANNEL(2, AD7192_CH_TEMP),
+> > +	AD719x_SHORTED_CHANNEL(3, 2, AD7192_CH_AIN2P_AIN2M),
+> > +	AD719x_CHANNEL(4, 1, AD7192_CH_AIN1),
+> > +	AD719x_CHANNEL(5, 2, AD7192_CH_AIN2),
+> > +	AD719x_CHANNEL(6, 3, AD7192_CH_AIN3),
+> > +	AD719x_CHANNEL(7, 4, AD7192_CH_AIN4),
+> > +	IIO_CHAN_SOFT_TIMESTAMP(8),
+> > +};
+> > +
+> > +static const struct iio_chan_spec ad7193_channels[] = {
+> > +	AD719x_DIFF_CHANNEL(0, 1, 2, AD7193_CH_AIN1P_AIN2M),
+> > +	AD719x_DIFF_CHANNEL(1, 3, 4, AD7193_CH_AIN3P_AIN4M),
+> > +	AD719x_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
+> > +	AD719x_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
+> > +	AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
+> > +	AD719x_SHORTED_CHANNEL(5, 2, AD7193_CH_AIN2P_AIN2M),
+> > +	AD719x_CHANNEL(6, 1, AD7193_CH_AIN1),
+> > +	AD719x_CHANNEL(7, 2, AD7193_CH_AIN2),
+> > +	AD719x_CHANNEL(8, 3, AD7193_CH_AIN3),
+> > +	AD719x_CHANNEL(9, 4, AD7193_CH_AIN4),
+> > +	AD719x_CHANNEL(10, 5, AD7193_CH_AIN5),
+> > +	AD719x_CHANNEL(11, 6, AD7193_CH_AIN6),
+> > +	AD719x_CHANNEL(12, 7, AD7193_CH_AIN7),
+> > +	AD719x_CHANNEL(13, 8, AD7193_CH_AIN8),
+> > +	IIO_CHAN_SOFT_TIMESTAMP(14),
+> > +};
+> > +
+> > +static int ad7192_channels_config(struct iio_dev *indio_dev)
+> > +{
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +
+> > +	switch (st->devid) {
+> > +	case ID_AD7193:
+> > +		indio_dev->channels = ad7193_channels;
+> > +		indio_dev->num_channels = ARRAY_SIZE(ad7193_channels);
+> > +		break;
+> > +	default:
+> > +		indio_dev->channels = ad7192_channels;
+> > +		indio_dev->num_channels = ARRAY_SIZE(ad7192_channels);
+> > +		break;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static const struct of_device_id ad7192_of_match[];
+> > +
+> > +static int ad7192_probe(struct spi_device *spi)
+> > +{
+> > +	const struct of_device_id *match;
+> > +	struct ad7192_state *st;
+> > +	struct iio_dev *indio_dev;
+> > +	int ret, voltage_uv = 0;
+> > +
+> > +	if (!spi->irq) {
+> > +		dev_err(&spi->dev, "no IRQ?\n");
+> > +		return -ENODEV;
+> > +	}
+> > +
+> > +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> > +	if (!indio_dev)
+> > +		return -ENOMEM;
+> > +
+> > +	st = iio_priv(indio_dev);
+> > +
+> > +	mutex_init(&st->lock);
+> > +
+> > +	st->avdd = devm_regulator_get(&spi->dev, "avdd");
+> > +	if (IS_ERR(st->avdd))
+> > +		return PTR_ERR(st->avdd);
+> > +
+> > +	ret = regulator_enable(st->avdd);
+> > +	if (ret) {
+> > +		dev_err(&spi->dev, "Failed to enable specified AVdd supply\n");
+> > +		return ret;
+> > +	}
+> > +
+> > +	st->dvdd = devm_regulator_get(&spi->dev, "dvdd");
+> > +	if (IS_ERR(st->dvdd)) {
+> > +		ret = PTR_ERR(st->dvdd);
+> > +		goto error_disable_avdd;
+> > +	}
+> > +
+> > +	ret = regulator_enable(st->dvdd);
+> > +	if (ret) {
+> > +		dev_err(&spi->dev, "Failed to enable specified DVdd supply\n");
+> > +		goto error_disable_avdd;
+> > +	}
+> > +
+> > +	voltage_uv = regulator_get_voltage(st->avdd);
+> > +
+> > +	if (voltage_uv) {
+> > +		st->int_vref_mv = voltage_uv / 1000;
+> > +	} else {
+> > +		ret = voltage_uv;
+> > +		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
+> > +		goto error_disable_avdd;
+> > +	}
+> > +
+> > +	match = of_match_device(ad7192_of_match, &spi->dev);
+> > +	if (!match)
+> > +		return -EINVAL;
+> > +
+> > +	spi_set_drvdata(spi, indio_dev);
+> > +	st->devid = (unsigned long)match->data;
+> > +	indio_dev->dev.parent = &spi->dev;
+> > +	indio_dev->name = spi_get_device_id(spi)->name;
+> > +	indio_dev->modes = INDIO_DIRECT_MODE;
+> > +
+> > +	ret = ad7192_channels_config(indio_dev);
+> > +	if (ret < 0)
+> > +		goto error_disable_dvdd;
+> > +
+> > +	if (st->devid == ID_AD7195)
+> > +		indio_dev->info = &ad7195_info;
+> > +	else
+> > +		indio_dev->info = &ad7192_info;
+> > +
+> > +	ad_sd_init(&st->sd, indio_dev, spi, &ad7192_sigma_delta_info);
+> > +
+> > +	ret = ad_sd_setup_buffer_and_trigger(indio_dev);
+> > +	if (ret)
+> > +		goto error_disable_dvdd;
+> > +
+> > +	st->fclk = AD7192_INT_FREQ_MHZ;
+> > +
+> > +	st->mclk = devm_clk_get(&st->sd.spi->dev, "mclk");
+> > +	if (IS_ERR(st->mclk) && PTR_ERR(st->mclk) != -ENOENT) {
+> > +		ret = PTR_ERR(st->mclk);
+> > +		goto error_remove_trigger;
+> > +	}
+> > +
+> > +	st->clock_sel = ad7192_of_clock_select(st);
+> > +
+> > +	if (st->clock_sel == AD7192_CLK_EXT_MCLK1_2 ||
+> > +	    st->clock_sel == AD7192_CLK_EXT_MCLK2) {
+> > +		ret = clk_prepare_enable(st->mclk);
+> > +		if (ret < 0)
+> > +			goto error_remove_trigger;
+> > +
+> > +		st->fclk = clk_get_rate(st->mclk);
+> > +		if (!ad7192_valid_external_frequency(st->fclk)) {
+> > +			ret = -EINVAL;
+> > +			dev_err(&spi->dev,
+> > +				"External clock frequency out of bounds\n");
+> > +			goto error_disable_clk;
+> > +		}
+> > +	}
+> > +
+> > +	ret = ad7192_setup(st, spi->dev.of_node);
+> > +	if (ret)
+> > +		goto error_disable_clk;
+> > +
+> > +	ret = iio_device_register(indio_dev);
+> > +	if (ret < 0)
+> > +		goto error_disable_clk;
+> > +
+> > +	return 0;
+> > +
+> > +error_disable_clk:
+> > +	clk_disable_unprepare(st->mclk);
+> > +error_remove_trigger:
+> > +	ad_sd_cleanup_buffer_and_trigger(indio_dev);
+> > +error_disable_dvdd:
+> > +	regulator_disable(st->dvdd);
+> > +error_disable_avdd:
+> > +	regulator_disable(st->avdd);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int ad7192_remove(struct spi_device *spi)
+> > +{
+> > +	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> > +	struct ad7192_state *st = iio_priv(indio_dev);
+> > +
+> > +	iio_device_unregister(indio_dev);
+> > +	clk_disable_unprepare(st->mclk);
+> > +	ad_sd_cleanup_buffer_and_trigger(indio_dev);
+> > +
+> > +	regulator_disable(st->dvdd);
+> > +	regulator_disable(st->avdd);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static const struct of_device_id ad7192_of_match[] = {
+> > +	{ .compatible = "adi,ad7190", .data = (void *)ID_AD7190},
+> > +	{ .compatible = "adi,ad7192", .data = (void *)ID_AD7192 },
+> > +	{ .compatible = "adi,ad7193", .data = (void *)ID_AD7193 },
+> > +	{ .compatible = "adi,ad7195", .data = (void *)ID_AD7195 },
+> > +	{}
+> > +};
+> > +
+> > +MODULE_DEVICE_TABLE(of, ad7192_of_match);
+> > +
+> > +static struct spi_driver ad7192_driver = {
+> > +	.driver = {
+> > +		.name	= "ad7192",
+> > +		.of_match_table = ad7192_of_match,
+> > +	},
+> > +	.probe		= ad7192_probe,
+> > +	.remove		= ad7192_remove,
+> > +};
+> > +module_spi_driver(ad7192_driver);
+> > +
+> > +MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
+> > +MODULE_DESCRIPTION("Analog Devices AD7190, AD7192, AD7193, AD7195 ADC");
+> > +MODULE_LICENSE("GPL v2");  
+> 
+> 
+

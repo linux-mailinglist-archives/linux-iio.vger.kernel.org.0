@@ -2,331 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB55E1558A2
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2020 14:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01AA5155B66
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2020 17:07:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726798AbgBGNkx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Feb 2020 08:40:53 -0500
-Received: from hosting.pavoucek.net ([46.28.107.168]:45207 "EHLO
-        hosting.pavoucek.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726674AbgBGNkx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Feb 2020 08:40:53 -0500
-Received: from tomas.local.tbs-biometrics.cz (176-74-132-138.netdatacomm.cz [176.74.132.138])
-        (Authenticated sender: tomas@novotny.cz)
-        by hosting.pavoucek.net (Postfix) with ESMTPSA id 2C91C1010E5;
-        Fri,  7 Feb 2020 14:40:50 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 hosting.pavoucek.net 2C91C1010E5
-Date:   Fri, 7 Feb 2020 14:40:49 +0100
-From:   Tomas Novotny <tomas@novotny.cz>
-To:     Marco Felsch <m.felsch@pengutronix.de>
-Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Angus Ainslie <angus@akkea.ca>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>
-Subject: Re: [PATCH 1/5] iio: light: vcnl4000: convert to regmap
-Message-ID: <20200207144049.0f502211@tomas.local.tbs-biometrics.cz>
-In-Reply-To: <20200205114606.ydjtyeivc67hewqb@pengutronix.de>
-References: <20200205101655.11728-1-tomas@novotny.cz>
-        <20200205101655.11728-2-tomas@novotny.cz>
-        <20200205114606.ydjtyeivc67hewqb@pengutronix.de>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+        id S1726951AbgBGQHx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Feb 2020 11:07:53 -0500
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:39261 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726874AbgBGQHw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Feb 2020 11:07:52 -0500
+Received: by mail-qk1-f196.google.com with SMTP id w15so2687902qkf.6
+        for <linux-iio@vger.kernel.org>; Fri, 07 Feb 2020 08:07:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+h7eckpgK4R3EFDaakIigwALpM/dcTzSWeobZQNuTXg=;
+        b=KXgooSYGo8I6Xq7t6WgrV4xeJF4hrtnBGFZ8w5Zp04Kcbc5Mn9z2yJyNrL4QNuUjQX
+         uySk6/dLJPVQoIMBRcSuahqXLZh5fqkZlSl191K+ii+lBpJrz4h8AxBRCykVrpTKs3n2
+         lsMV0v/oIkxtO9BEiGWmwHWVTRM+aj63nTh7N0nBZre/GqcNYEsC/Sg+8NAtdQbpkY64
+         G41MnBdC5F8A74wwtygcFvlXy+JrXPXUUUFomo2/ZeA4gv79UPUs6A8ZAwPnTo6a0kT2
+         4BFfJOq9slsVNJAV4nm/zDVOPZlqnnZnhGqGqVwvDQfSY3akPtfVzdbB8o4eUgfzEYQA
+         QT0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+h7eckpgK4R3EFDaakIigwALpM/dcTzSWeobZQNuTXg=;
+        b=cWF+Eyu1XD168ryRgev4fAJ0mH1h068HTWz5Zo7LROOUxfPoZczuSj+YanV4PMl+I4
+         k8ncId2NTBKjehmWTxUIo4qv01gVbb/0/tbwNDvlNI1DaJLoRWaYmtiWEpTVg/kzSipO
+         sy1gXfKmOeWw0t+B0eUlBRJpGX7sjkP42rvm0zQSDj/TNjy5dHwjnKLuw0EgPypcJItY
+         oQRwjb8ddft44n7Dhbm3NbnknDQvr9kdDqPQie/iHy3w/Gp+PraVf9ETLtMxuLUpcRV4
+         lmVIj97lbhFLoKAevVUF+BepPV82uZZtTIuzG7PsjdkXsPJwPPZD1Ukp8zbEy97eKCvB
+         JwVg==
+X-Gm-Message-State: APjAAAXxAViHzgSE7q1HpF42xoeCkDi2HsasLCQD/Vs3YdjPZpN6Iv6f
+        R9M02E0y9KKXhPNf4iNInI2GOVr/QQq6AQ==
+X-Google-Smtp-Source: APXvYqzofM3GaXxo67NCZTnrmPENAc3Y2Yx5ujB2nwRqlPow7IwOX1VtiOqJ9oxorK0xfoqFEdv+Mw==
+X-Received: by 2002:a37:a08b:: with SMTP id j133mr7702318qke.424.1581091671218;
+        Fri, 07 Feb 2020 08:07:51 -0800 (PST)
+Received: from mbedesk.Sonatest.net (ipagstaticip-d73c7528-4de5-0861-800b-03d8b15e3869.sdsl.bell.ca. [174.94.156.236])
+        by smtp.gmail.com with ESMTPSA id v10sm1597074qtj.26.2020.02.07.08.07.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2020 08:07:50 -0800 (PST)
+From:   =?UTF-8?q?Maxime=20Roussin-B=C3=A9langer?= 
+        <maxime.roussinbelanger@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net,
+        =?UTF-8?q?Maxime=20Roussin-B=C3=A9langer?= 
+        <maxime.roussinbelanger@gmail.com>,
+        Guillaume Champagne <champagne.guillaume.c@gmail.com>
+Subject: [PATCH] iio: si1133: read 24 signed integer for measurement
+Date:   Fri,  7 Feb 2020 11:07:40 -0500
+Message-Id: <20200207160740.29508-1-maxime.roussinbelanger@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Marco,
+The chip is configured in 24 bit mode. The values read from it must
+always be treated as is. This fixes the issue by replacing the previous
+16 bits value by a 24 bits buffer.
 
-On Wed, 5 Feb 2020 12:46:07 +0100
-Marco Felsch <m.felsch@pengutronix.de> wrote:
+This changes affects the value output by previous version of the driver,
+since the least significant byte was missing. The upper half of 16
+bit values previously output are now the upper half of a 24 bit value.
 
-> Hi Tomas,
-> 
-> thanks for the patche =) Pls. check my comments I made inline.
-> 
-> On 20-02-05 11:16, Tomas Novotny wrote:
-> > It will be easier to configure various device registers.
-> > 
-> > No functional change.  
-> 
-> Yeah.. should we be more verbose here? Regmap also abstracts the locking
-> mechanism, provides caches and more..
+Co-authored-by: Guillaume Champagne <champagne.guillaume.c@gmail.com>
+Signed-off-by: Maxime Roussin-Bélanger <maxime.roussinbelanger@gmail.com>
+---
+ drivers/iio/light/si1133.c | 37 ++++++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
-I used a bit misleading wording. I meant that there are no other features
-except the regmap (which should be implicit). Also the bare minimum is
-configured in regmap. I will change in v2.
+diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
+index 777b1a0848c9..509af982e185 100644
+--- a/drivers/iio/light/si1133.c
++++ b/drivers/iio/light/si1133.c
+@@ -102,6 +102,9 @@
+ #define SI1133_INPUT_FRACTION_LOW	15
+ #define SI1133_LUX_OUTPUT_FRACTION	12
+ #define SI1133_LUX_BUFFER_SIZE		9
++#define SI1133_MEASURE_BUFFER_SIZE	3
++
++#define SI1133_SIGN_BIT_INDEX 23
+ 
+ static const int si1133_scale_available[] = {
+ 	1, 2, 4, 8, 16, 32, 64, 128};
+@@ -234,13 +237,13 @@ static const struct si1133_lux_coeff lux_coeff = {
+ 	}
+ };
+ 
+-static int si1133_calculate_polynomial_inner(u32 input, u8 fraction, u16 mag,
++static int si1133_calculate_polynomial_inner(s32 input, u8 fraction, u16 mag,
+ 					     s8 shift)
+ {
+ 	return ((input << fraction) / mag) << shift;
+ }
+ 
+-static int si1133_calculate_output(u32 x, u32 y, u8 x_order, u8 y_order,
++static int si1133_calculate_output(s32 x, s32 y, u8 x_order, u8 y_order,
+ 				   u8 input_fraction, s8 sign,
+ 				   const struct si1133_coeff *coeffs)
+ {
+@@ -276,7 +279,7 @@ static int si1133_calculate_output(u32 x, u32 y, u8 x_order, u8 y_order,
+  * The algorithm is from:
+  * https://siliconlabs.github.io/Gecko_SDK_Doc/efm32zg/html/si1133_8c_source.html#l00716
+  */
+-static int si1133_calc_polynomial(u32 x, u32 y, u8 input_fraction, u8 num_coeff,
++static int si1133_calc_polynomial(s32 x, s32 y, u8 input_fraction, u8 num_coeff,
+ 				  const struct si1133_coeff *coeffs)
+ {
+ 	u8 x_order, y_order;
+@@ -614,23 +617,24 @@ static int si1133_measure(struct si1133_data *data,
+ {
+ 	int err;
+ 
+-	__be16 resp;
++	u8 buffer[SI1133_MEASURE_BUFFER_SIZE];
+ 
+ 	err = si1133_set_adcmux(data, 0, chan->channel);
+ 	if (err)
+ 		return err;
+ 
+ 	/* Deactivate lux measurements if they were active */
+ 	err = si1133_set_chlist(data, BIT(0));
+ 	if (err)
+ 		return err;
+ 
+-	err = si1133_bulk_read(data, SI1133_REG_HOSTOUT(0), sizeof(resp),
+-			       (u8 *)&resp);
++	err = si1133_bulk_read(data, SI1133_REG_HOSTOUT(0), sizeof(buffer),
++			       buffer);
+ 	if (err)
+ 		return err;
+ 
+-	*val = be16_to_cpu(resp);
++	*val = sign_extend32((buffer[0] << 16) | (buffer[1] << 8) | buffer[2],
++			     SI1133_SIGN_BIT_INDEX);
+ 
+ 	return err;
+ }
+@@ -704,9 +708,9 @@ static int si1133_get_lux(struct si1133_data *data, int *val)
+ {
+ 	int err;
+ 	int lux;
+-	u32 high_vis;
+-	u32 low_vis;
+-	u32 ir;
++	s32 high_vis;
++	s32 low_vis;
++	s32 ir;
+ 	u8 buffer[SI1133_LUX_BUFFER_SIZE];
+ 
+ 	/* Activate lux channels */
+@@ -719,9 +723,16 @@ static int si1133_get_lux(struct si1133_data *data, int *val)
+ 	if (err)
+ 		return err;
+ 
+-	high_vis = (buffer[0] << 16) | (buffer[1] << 8) | buffer[2];
+-	low_vis = (buffer[3] << 16) | (buffer[4] << 8) | buffer[5];
+-	ir = (buffer[6] << 16) | (buffer[7] << 8) | buffer[8];
++	high_vis =
++		sign_extend32((buffer[0] << 16) | (buffer[1] << 8) | buffer[2],
++			      SI1133_SIGN_BIT_INDEX);
++
++	low_vis =
++		sign_extend32((buffer[3] << 16) | (buffer[4] << 8) | buffer[5],
++			      SI1133_SIGN_BIT_INDEX);
++
++	ir = sign_extend32((buffer[6] << 16) | (buffer[7] << 8) | buffer[8],
++			   SI1133_SIGN_BIT_INDEX);
+ 
+ 	if (high_vis > SI1133_ADC_THRESHOLD || ir > SI1133_ADC_THRESHOLD)
+ 		lux = si1133_calc_polynomial(high_vis, ir,
+-- 
+2.20.1
 
-> > Signed-off-by: Tomas Novotny <tomas@novotny.cz>
-> > ---
-> >  drivers/iio/light/Kconfig    |  1 +
-> >  drivers/iio/light/vcnl4000.c | 59 ++++++++++++++++++++++++++++++--------------
-> >  2 files changed, 42 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> > index 4a1a883dc061..ae2b9dafb9f6 100644
-> > --- a/drivers/iio/light/Kconfig
-> > +++ b/drivers/iio/light/Kconfig
-> > @@ -475,6 +475,7 @@ config US5182D
-> >  config VCNL4000
-> >  	tristate "VCNL4000/4010/4020/4200 combined ALS and proximity sensor"
-> >  	depends on I2C
-> > +	select REGMAP_I2C  
-> 
-> We can drop the 'depends on I2C' here.
-
-I'm not sure. I'd say that it protects the situation when I2C isn't selected
-(thus REGMAP_I2C alone would be wrongly selected). Besides of that, every
-other IIO driver in the ligth/ has it, so I would let it as is because of
-consistency (or fix all in a separated change).
-
-> >  	help
-> >  	  Say Y here if you want to build a driver for the Vishay VCNL4000,
-> >  	  VCNL4010, VCNL4020, VCNL4200 combined ambient light and proximity
-> > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> > index e5b00a6611ac..9f673e89084a 100644
-> > --- a/drivers/iio/light/vcnl4000.c
-> > +++ b/drivers/iio/light/vcnl4000.c
-> > @@ -22,6 +22,7 @@
-> >  #include <linux/i2c.h>
-> >  #include <linux/err.h>
-> >  #include <linux/delay.h>
-> > +#include <linux/regmap.h>
-> >  
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> > @@ -73,6 +74,7 @@ struct vcnl4200_channel {
-> >  
-> >  struct vcnl4000_data {
-> >  	struct i2c_client *client;  
-> 
-> Can we drop the 'struct i2c_client' here?
-
-Nice catch. I can get the device struct for dev_* functions from regmap. So
-yes, I will drop it.
-
-> > +	struct regmap *regmap;
-> >  	enum vcnl4000_device_ids id;
-> >  	int rev;
-> >  	int al_scale;
-> > @@ -84,6 +86,7 @@ struct vcnl4000_data {
-> >  
-> >  struct vcnl4000_chip_spec {
-> >  	const char *prod;
-> > +	const struct regmap_config *regmap_config;
-> >  	int (*init)(struct vcnl4000_data *data);
-> >  	int (*measure_light)(struct vcnl4000_data *data, int *val);
-> >  	int (*measure_proximity)(struct vcnl4000_data *data, int *val);
-> > @@ -99,15 +102,27 @@ static const struct i2c_device_id vcnl4000_id[] = {
-> >  };
-> >  MODULE_DEVICE_TABLE(i2c, vcnl4000_id);
-> >  
-> > +static const struct regmap_config vcnl4000_regmap_config = {
-> > +	.reg_bits = 8,
-> > +	.val_bits = 8,
-> > +};
-> > +
-> > +static const struct regmap_config vcnl4200_regmap_config = {
-> > +	.reg_bits = 8,
-> > +	.val_bits = 16,
-> > +	.val_format_endian = REGMAP_ENDIAN_LITTLE,
-> > +};  
-> 
-> We should be more precise here, e.g. add write/reable ranges, specify
-> cache mechanism and so on..
-
-That's a point I was also thinking of. I've selected limited usage as the
-regmap is used solely in this file and the addresses are fixed. The cache is
-not selected because the vast majority of accesses would bypass the cache
-(the sensor readings). There would be only a few cache hits during
-configuration.
-
-That may change in the near future (I saw that PM was already added), so I
-would extend when needed. What do you think?
-
-> >  static int vcnl4000_init(struct vcnl4000_data *data)
-> >  {
-> >  	int ret, prod_id;
-> > +	unsigned int val;
-> >  
-> > -	ret = i2c_smbus_read_byte_data(data->client, VCNL4000_PROD_REV);
-> > +	ret = regmap_read(data->regmap, VCNL4000_PROD_REV, &val);  
-> 
-> Should we use the reg_field mechanism here so we can avoid the shifting
-> and so on.
-
-Yes, you are right, I will use it in v2.
-
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > -	prod_id = ret >> 4;
-> > +	prod_id = val >> 4;
-> >  	switch (prod_id) {
-> >  	case VCNL4000_PROD_ID:
-> >  		if (data->id != VCNL4000)
-> > @@ -123,7 +138,7 @@ static int vcnl4000_init(struct vcnl4000_data *data)
-> >  		return -ENODEV;
-> >  	}
-> >  
-> > -	data->rev = ret & 0xf;
-> > +	data->rev = val & 0xf;
-> >  	data->al_scale = 250000;
-> >  	mutex_init(&data->vcnl4000_lock);  
-> 
-> We can remove the lock if it is used to protect the hw-access.
-
-That lock protects the whole reading (i.e. establish, wait for result and
-then return), so it is still necessary.
-
-> > @@ -133,19 +148,20 @@ static int vcnl4000_init(struct vcnl4000_data *data)
-> >  static int vcnl4200_init(struct vcnl4000_data *data)
-> >  {
-> >  	int ret, id;
-> > +	unsigned int val;
-> >  
-> > -	ret = i2c_smbus_read_word_data(data->client, VCNL4200_DEV_ID);
-> > +	ret = regmap_read(data->regmap, VCNL4200_DEV_ID, &val);  
-> 
-> Same here, we can use the reg_field to avoid bit ops later on.
-
-Yes.
-
-Thanks a lot for the review,
-
-Tomas
-
-> Regards,
->   Marco
-> 
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > -	id = ret & 0xff;
-> > +	id = val & 0xff;
-> >  
-> >  	if (id != VCNL4200_PROD_ID) {
-> > -		ret = i2c_smbus_read_word_data(data->client, VCNL4040_DEV_ID);
-> > +		ret = regmap_read(data->regmap, VCNL4040_DEV_ID, &val);
-> >  		if (ret < 0)
-> >  			return ret;
-> >  
-> > -		id = ret & 0xff;
-> > +		id = val & 0xff;
-> >  
-> >  		if (id != VCNL4040_PROD_ID)
-> >  			return -ENODEV;
-> > @@ -156,10 +172,10 @@ static int vcnl4200_init(struct vcnl4000_data *data)
-> >  	data->rev = (ret >> 8) & 0xf;
-> >  
-> >  	/* Set defaults and enable both channels */
-> > -	ret = i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, 0);
-> > +	ret = regmap_write(data->regmap, VCNL4200_AL_CONF, 0);
-> >  	if (ret < 0)
-> >  		return ret;
-> > -	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, 0);
-> > +	ret = regmap_write(data->regmap, VCNL4200_PS_CONF1, 0);
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > @@ -193,22 +209,22 @@ static int vcnl4000_measure(struct vcnl4000_data *data, u8 req_mask,
-> >  				u8 rdy_mask, u8 data_reg, int *val)
-> >  {
-> >  	int tries = 20;
-> > +	unsigned int status;
-> >  	__be16 buf;
-> >  	int ret;
-> >  
-> >  	mutex_lock(&data->vcnl4000_lock);
-> >  
-> > -	ret = i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND,
-> > -					req_mask);
-> > +	ret = regmap_write(data->regmap, VCNL4000_COMMAND, req_mask);
-> >  	if (ret < 0)
-> >  		goto fail;
-> >  
-> >  	/* wait for data to become ready */
-> >  	while (tries--) {
-> > -		ret = i2c_smbus_read_byte_data(data->client, VCNL4000_COMMAND);
-> > +		ret = regmap_read(data->regmap, VCNL4000_COMMAND, &status);
-> >  		if (ret < 0)
-> >  			goto fail;
-> > -		if (ret & rdy_mask)
-> > +		if (status & rdy_mask)
-> >  			break;
-> >  		msleep(20); /* measurement takes up to 100 ms */
-> >  	}
-> > @@ -220,8 +236,8 @@ static int vcnl4000_measure(struct vcnl4000_data *data, u8 req_mask,
-> >  		goto fail;
-> >  	}
-> >  
-> > -	ret = i2c_smbus_read_i2c_block_data(data->client,
-> > -		data_reg, sizeof(buf), (u8 *) &buf);
-> > +	ret = regmap_bulk_read(data->regmap,
-> > +			data_reg, (u8 *) &buf, sizeof(buf));
-> >  	if (ret < 0)
-> >  		goto fail;
-> >  
-> > @@ -253,12 +269,10 @@ static int vcnl4200_measure(struct vcnl4000_data *data,
-> >  
-> >  	mutex_unlock(&chan->lock);
-> >  
-> > -	ret = i2c_smbus_read_word_data(data->client, chan->reg);
-> > +	ret = regmap_read(data->regmap, chan->reg, val);
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > -	*val = ret;
-> > -
-> >  	return 0;
-> >  }
-> >  
-> > @@ -289,24 +303,28 @@ static int vcnl4200_measure_proximity(struct vcnl4000_data *data, int *val)
-> >  static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
-> >  	[VCNL4000] = {
-> >  		.prod = "VCNL4000",
-> > +		.regmap_config = &vcnl4000_regmap_config,
-> >  		.init = vcnl4000_init,
-> >  		.measure_light = vcnl4000_measure_light,
-> >  		.measure_proximity = vcnl4000_measure_proximity,
-> >  	},
-> >  	[VCNL4010] = {
-> >  		.prod = "VCNL4010/4020",
-> > +		.regmap_config = &vcnl4000_regmap_config,
-> >  		.init = vcnl4000_init,
-> >  		.measure_light = vcnl4000_measure_light,
-> >  		.measure_proximity = vcnl4000_measure_proximity,
-> >  	},
-> >  	[VCNL4040] = {
-> >  		.prod = "VCNL4040",
-> > +		.regmap_config = &vcnl4200_regmap_config,
-> >  		.init = vcnl4200_init,
-> >  		.measure_light = vcnl4200_measure_light,
-> >  		.measure_proximity = vcnl4200_measure_proximity,
-> >  	},
-> >  	[VCNL4200] = {
-> >  		.prod = "VCNL4200",
-> > +		.regmap_config = &vcnl4200_regmap_config,
-> >  		.init = vcnl4200_init,
-> >  		.measure_light = vcnl4200_measure_light,
-> >  		.measure_proximity = vcnl4200_measure_proximity,
-> > @@ -380,6 +398,11 @@ static int vcnl4000_probe(struct i2c_client *client,
-> >  	data->id = id->driver_data;
-> >  	data->chip_spec = &vcnl4000_chip_spec_cfg[data->id];
-> >  
-> > +	data->regmap = devm_regmap_init_i2c(client,
-> > +			data->chip_spec->regmap_config);
-> > +	if (IS_ERR(data->regmap))
-> > +		return PTR_ERR(data->regmap);
-> > +
-> >  	ret = data->chip_spec->init(data);
-> >  	if (ret < 0)
-> >  		return ret;
-> > -- 
-> > 2.16.4  
-> 

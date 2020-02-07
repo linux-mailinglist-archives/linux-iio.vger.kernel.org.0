@@ -2,74 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6016315544E
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2020 10:12:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 204E71557DD
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2020 13:38:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726451AbgBGJMO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Feb 2020 04:12:14 -0500
-Received: from honk.sigxcpu.org ([24.134.29.49]:47094 "EHLO honk.sigxcpu.org"
+        id S1726819AbgBGMiH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Feb 2020 07:38:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33856 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726417AbgBGJMO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 7 Feb 2020 04:12:14 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id A9ABDFB03;
-        Fri,  7 Feb 2020 10:12:11 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
-Received: from honk.sigxcpu.org ([127.0.0.1])
-        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id UkTU13E4jSmg; Fri,  7 Feb 2020 10:12:10 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id F13AA40756; Fri,  7 Feb 2020 10:12:09 +0100 (CET)
-From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
-To:     Tomas Novotny <tomas@novotny.cz>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: vncl4000: Fix early return in vcnl4200_set_power_state
-Date:   Fri,  7 Feb 2020 10:12:09 +0100
-Message-Id: <19efdcd597b21ece9ad0ff894b6566d2ef4e2c02.1581066317.git.agx@sigxcpu.org>
-X-Mailer: git-send-email 2.23.0
+        id S1726798AbgBGMiH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 7 Feb 2020 07:38:07 -0500
+Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 206C920715;
+        Fri,  7 Feb 2020 12:38:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581079086;
+        bh=/yjMAsHmQx+HQ2lCDOXqzVmWYiqBP5NLHVuC89dyBv8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MGyFGpgknm3Ctg2U3mBIi9tnyj/wf7YyhqFO/IzByAZ3Kk0PEkZ5R4896zcjRF1Cz
+         17dGz/FaA7EZfQX3I6WhGe2WWUYqEeihFGn1hGQCBUFXUf7Qw5I0N4eeKuIW5kWnFB
+         goy1G/A9BddASxzN4x57HewdBnnkblXtGcx5nDEU=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] iio: imu: st_lsm6dsx: check return value from st_lsm6dsx_sensor_set_enable
+Date:   Fri,  7 Feb 2020 13:37:54 +0100
+Message-Id: <f0f53dbfdb2c638f8ebb3deca4576886625fa6e8.1581078931.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Don't return early unconditionally.
+Add missing return value check in st_lsm6dsx_shub_read_oneshot disabling
+the slave device connected to the st_lsm6dsx i2c controller.
+The issue is reported by coverity with the following error:
 
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
-Reported-by: kbuild test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Unchecked return value:
+If the function returns an error value, the error value may be mistaken
+for a normal value.
 
+Addresses-Coverity-ID: 1456767 ("Unchecked return value")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-I've not added a 'Fixes:' line since this is not part of Linus tree yet.
-Tested proximity and ambient light on a vcnl4040 and checked the driver
-suspends/resumes correctly and puts out valid data right after resume.  
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- drivers/iio/light/vcnl4000.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index 3b71c7d538af..38fcd9a26046 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -149,7 +149,7 @@ static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+index eea555617d4a..95ddd19d1aa7 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+@@ -464,9 +464,10 @@ st_lsm6dsx_shub_read_oneshot(struct st_lsm6dsx_sensor *sensor,
  
--	return i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
-+	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
- 	if (ret < 0)
- 		return ret;
+ 	len = min_t(int, sizeof(data), ch->scan_type.realbits >> 3);
+ 	err = st_lsm6dsx_shub_read(sensor, ch->address, data, len);
++	if (err < 0)
++		return err;
+ 
+-	st_lsm6dsx_shub_set_enable(sensor, false);
+-
++	err = st_lsm6dsx_shub_set_enable(sensor, false);
+ 	if (err < 0)
+ 		return err;
  
 -- 
-2.23.0
+2.21.1
 

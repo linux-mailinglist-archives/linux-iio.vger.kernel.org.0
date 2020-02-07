@@ -2,329 +2,186 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AACF3155BCA
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2020 17:31:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7CF5155E64
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2020 19:47:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726982AbgBGQbT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Feb 2020 11:31:19 -0500
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:54950 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726936AbgBGQbS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Feb 2020 11:31:18 -0500
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 017GRDex029779;
-        Fri, 7 Feb 2020 17:30:52 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=eynS2NWJgzJPsFwfn39rO+Ib4H8Lzadaw2c3N+8nz14=;
- b=la2ykJAW/nMDix22ZSfhtrmn8NCghZzei0MsqCmvjZk8n7hUbPFIK5e/sjk3aYOXissE
- uv+fcatEt/ED7/5W8+4Posfkub6EWrkf6A1FbSzx0r3U40XT66cqVfSrwR1ov2dqxM0s
- O2PVzVW0LDMQTacEqtxOwwiisoWoDQ58Y6Zc2BFlLW7Lw8LXEVmsWnkaiQfsJR39JNtc
- mwvZIuKuvu7iqx/pEs/BvXXOyNN+g7jj8S74rXXp4uiIApwt7M0YghcevP0KyM7z9JUi
- V4qXRQB1lEv98FxcjT4oGBsf51OMEGnqA5dNpifDweSSYXO1wwWpbVYJaMRXC8SvWmlZ ZQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2xyhkucn68-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 07 Feb 2020 17:30:52 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 332BB10002A;
-        Fri,  7 Feb 2020 17:30:48 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1D3C42B0C8F;
-        Fri,  7 Feb 2020 17:30:48 +0100 (CET)
-Received: from localhost (10.75.127.47) by SFHDAG5NODE3.st.com (10.75.127.15)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 7 Feb 2020 17:30:47
- +0100
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-To:     <jic23@kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
-        <benjamin.gaignard@st.com>, <alexandre.torgue@st.com>,
-        <fabrice.gasnier@st.com>, <olivier.moysan@st.com>,
-        <linux-iio@vger.kernel.org>, <lars@metafoo.de>, <knaack.h@gmx.de>,
-        <pmeerw@pmeerw.net>, <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH v2] iio: trigger: stm32-timer: enable clock when in master mode
-Date:   Fri, 7 Feb 2020 17:30:31 +0100
-Message-ID: <1581093031-9871-1-git-send-email-fabrice.gasnier@st.com>
-X-Mailer: git-send-email 2.7.4
+        id S1727011AbgBGSr1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Feb 2020 13:47:27 -0500
+Received: from mail-il1-f193.google.com ([209.85.166.193]:35990 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726974AbgBGSr1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Feb 2020 13:47:27 -0500
+Received: by mail-il1-f193.google.com with SMTP id b15so424153iln.3
+        for <linux-iio@vger.kernel.org>; Fri, 07 Feb 2020 10:47:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=F9MsQAQcEEzH1CAd4TAuwFn4Rri9pVxiX2YvDtDQNMg=;
+        b=alcfltJxUHLeOXy7aVUPs/ndaolCFvJZZMbfpwc0I2TdOkKpxKp20bO90qIO317i/R
+         FLuQjpayP9Jyyd3hXbgTORhN7wuQ8DDOKR2MJHexgB4ptL+p1pD19qhiU8jxkZ4OYIZ2
+         zDMxLB9GQr+ePvA2QXx3H6oFH3Q7aK/BMfxzI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F9MsQAQcEEzH1CAd4TAuwFn4Rri9pVxiX2YvDtDQNMg=;
+        b=dCN81S4yuMpAmgGOSlMe+NwGMrhl1EJXDO+7iaM735uvOvWZRHZ64x8qPFe9aKQvy3
+         q4IOK57g8Y+63eCy4Dshi9g1e7dV8lSBFYBiI7t1lw0imzP2LEfwr/YCC+lFfBmlzCsT
+         /WGZRPH2VgGiNGmet4U7d8u+OuDRQOOrasMb+digAfGW+Qs61AuGtD0N/poF6sMlXuSV
+         Tvs9AUrQn38QZMD9XxZXx8shVVSE4pszCoPX/wuMLSYYMM8OMnd/IbiyNL19Gf5s3Zbb
+         6WP0jbCIDOOBET2cRBlgjSRFY+WhCrpD/WSe7HYbaESbfqoTj9GEgU2wQOwFqR9ZERs7
+         44tg==
+X-Gm-Message-State: APjAAAWlGQrqqH8iHq7yFa/jX8zJp4rFgwf8MNcgB2L7OymFkKuEFK/c
+        7G/Iq+S42hSnmcElWYrkgdWkiXyrj2YdQDEsS8LP+w==
+X-Google-Smtp-Source: APXvYqwkaBJC+M6eP8LP4dm+tzp8gjr2ykKOn2Rbhn9endggrXK3Q9OMd7Izng9h13khUZovBYh7c4QETZE6Ypfn2dg=
+X-Received: by 2002:a92:8309:: with SMTP id f9mr840293ild.50.1581101246455;
+ Fri, 07 Feb 2020 10:47:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG7NODE3.st.com (10.75.127.21) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-07_02:2020-02-07,2020-02-07 signatures=0
+References: <20200205190028.183069-1-pmalani@chromium.org> <20200205190028.183069-11-pmalani@chromium.org>
+ <20200206121753.7b809631@archlinux> <671a55aa-1e5e-4e21-4a62-55db4dee368a@collabora.com>
+ <CACeCKad4zp9O7WAPu5S1rmUDwkzWLjk_1i7YtPvXUG=nDvkYAA@mail.gmail.com>
+In-Reply-To: <CACeCKad4zp9O7WAPu5S1rmUDwkzWLjk_1i7YtPvXUG=nDvkYAA@mail.gmail.com>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Fri, 7 Feb 2020 10:47:15 -0800
+Message-ID: <CAPUE2usO-Ny61+wEdTcwR3b+RgGjeQ4Jb24UeF8siscqFQ5ogQ@mail.gmail.com>
+Subject: Re: [PATCH v2 10/17] iio: cros_ec: Use cros_ec_cmd()
+To:     Prashant Malani <pmalani@chromium.org>
+Cc:     Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Clock should be enabled as soon as using master modes, even before
-enabling timer. Or, this may provoke bad behavior on the other end
-(slave timer). Then, introduce 'clk_enabled' flag, instead of relying
-on CR1 EN bit, to keep track of clock being enabled (balanced refcount).
-Propagate this anywhere else in the driver.
+On Thu, Feb 6, 2020 at 10:50 AM Prashant Malani <pmalani@chromium.org> wrote:
+>
+> Hi Enric,
+>
+> Thanks for taking a look at the patch. Please see my response inline:
+>
+> On Thu, Feb 6, 2020 at 5:45 AM Enric Balletbo i Serra
+> <enric.balletbo@collabora.com> wrote:
+> >
+> > Hi Prashant,
+> >
+> > On 6/2/20 13:17, Jonathan Cameron wrote:
+> > > On Wed,  5 Feb 2020 11:00:13 -0800
+> > > Prashant Malani <pmalani@chromium.org> wrote:
+> > >
+> > >> Replace cros_ec_cmd_xfer_status() with cros_ec_cmd()
+> > >> which does the message buffer setup and cleanup.
+> > >>
+> > >> For one other usage, replace the cros_ec_cmd_xfer_status() call with a
+> > >> call to cros_ec_cmd_xfer(), in preparation for the removal of the former
+> > >> function.
+> > >>
+> > >> Signed-off-by: Prashant Malani <pmalani@chromium.org>
+> > >
+> > > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > >> ---
+> > >>
+> > >> Changes in v2:
+> > >> - Updated to use new function name and parameter list.
+> > >> - Used C99 element setting to initialize param struct.
+> > >> - For second usage, replaced cros_ec_cmd_xfer_status() with
+> > >>   cros_ec_cmd_xfer() which is functionally similar.
+> > >>
+> > >>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 25 +++++++------------
+> > >>  1 file changed, 9 insertions(+), 16 deletions(-)
+> > >>
+> > >> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > >> index d3a3626c7cd834..94e22e7d927631 100644
+> > >> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > >> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > >> @@ -30,24 +30,15 @@ static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
+> > >>                                           u16 cmd_offset, u16 cmd, u32 *mask)
+> > >>  {
+> > >>      int ret;
+> > >> -    struct {
+> > >> -            struct cros_ec_command msg;
+> > >> -            union {
+> > >> -                    struct ec_params_get_cmd_versions params;
+> > >> -                    struct ec_response_get_cmd_versions resp;
+> > >> -            };
+> > >> -    } __packed buf = {
+> > >> -            .msg = {
+> > >> -                    .command = EC_CMD_GET_CMD_VERSIONS + cmd_offset,
+> > >> -                    .insize = sizeof(struct ec_response_get_cmd_versions),
+> > >> -                    .outsize = sizeof(struct ec_params_get_cmd_versions)
+> > >> -                    },
+> > >> -            .params = {.cmd = cmd}
+> > >> +    struct ec_params_get_cmd_versions params = {
+> > >> +            .cmd = cmd,
+> > >>      };
+> > >> +    struct ec_response_get_cmd_versions resp = {0};
+> > >>
+> > >> -    ret = cros_ec_cmd_xfer_status(ec_dev, &buf.msg);
+> > >> +    ret = cros_ec_cmd(ec_dev, 0, EC_CMD_GET_CMD_VERSIONS + cmd_offset,
+> > >> +                      &params, sizeof(params), &resp, sizeof(resp), NULL);
+> > >>      if (ret >= 0)
+> > >> -            *mask = buf.resp.version_mask;
+> > >> +            *mask = resp.version_mask;
+> > >>      return ret;
+> > >>  }
+> > >>
+> > >> @@ -171,9 +162,11 @@ int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
+> > >>
+> > >>      memcpy(state->msg->data, &state->param, sizeof(state->param));
+> > >>
+> > >> -    ret = cros_ec_cmd_xfer_status(state->ec, state->msg);
+> > >> +    ret = cros_ec_cmd_xfer(state->ec, state->msg);
+> > >>      if (ret < 0)
+> > >>              return ret;
+> > >> +    else if (state->msg->result != EC_RES_SUCCESS)
+> > >> +            return -EPROTO;
+> > >>
+> >
+> > There is no way to use the new cros_ec_cmd here?
+When the EC does not support sensor fifo,
+cros_ec_motion_send_host_cmd() is on the data path. For instance, it
+is called 2 times every 10ms by chrome to calculate the lid angle. I
+would be reluctant to call malloc. Given it is well encapsulated into
+the sensor stack. Does it make sense to call cros_ec_cmd_xfer
+directly?
 
-Also add 'remove' routine to stop timer and disable clock in case it
-has been left enabled. Enforce the user interface has been unregistered
-in the remove routine, before disabling the hardware to avoid possible
-race. So, remove use of devm_ variant to register triggers and unregister
-them before the hardware gets disabled [1].
-[1] https://patchwork.kernel.org/patch/9956247/
-
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
----
-Changes in v2:
-- enforce the user interface has been unregistered in the remove routine,
-  before disabling the hardware to avoid possible race.
----
- drivers/iio/trigger/stm32-timer-trigger.c | 98 ++++++++++++++++++++++++-------
- 1 file changed, 76 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
-index a5dfe65..473853e 100644
---- a/drivers/iio/trigger/stm32-timer-trigger.c
-+++ b/drivers/iio/trigger/stm32-timer-trigger.c
-@@ -79,10 +79,13 @@ struct stm32_timer_trigger {
- 	struct device *dev;
- 	struct regmap *regmap;
- 	struct clk *clk;
-+	bool clk_enabled;
- 	u32 max_arr;
- 	const void *triggers;
- 	const void *valids;
- 	bool has_trgo2;
-+	struct mutex lock; /* concurrent sysfs configuration */
-+	struct list_head tr_list;
- };
- 
- struct stm32_timer_trigger_cfg {
-@@ -106,7 +109,7 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
- {
- 	unsigned long long prd, div;
- 	int prescaler = 0;
--	u32 ccer, cr1;
-+	u32 ccer;
- 
- 	/* Period and prescaler values depends of clock rate */
- 	div = (unsigned long long)clk_get_rate(priv->clk);
-@@ -136,9 +139,11 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
- 	if (ccer & TIM_CCER_CCXE)
- 		return -EBUSY;
- 
--	regmap_read(priv->regmap, TIM_CR1, &cr1);
--	if (!(cr1 & TIM_CR1_CEN))
-+	mutex_lock(&priv->lock);
-+	if (!priv->clk_enabled) {
-+		priv->clk_enabled = true;
- 		clk_enable(priv->clk);
-+	}
- 
- 	regmap_write(priv->regmap, TIM_PSC, prescaler);
- 	regmap_write(priv->regmap, TIM_ARR, prd - 1);
-@@ -157,22 +162,20 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
- 
- 	/* Enable controller */
- 	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, TIM_CR1_CEN);
-+	mutex_unlock(&priv->lock);
- 
- 	return 0;
- }
- 
- static void stm32_timer_stop(struct stm32_timer_trigger *priv)
- {
--	u32 ccer, cr1;
-+	u32 ccer;
- 
- 	regmap_read(priv->regmap, TIM_CCER, &ccer);
- 	if (ccer & TIM_CCER_CCXE)
- 		return;
- 
--	regmap_read(priv->regmap, TIM_CR1, &cr1);
--	if (cr1 & TIM_CR1_CEN)
--		clk_disable(priv->clk);
--
-+	mutex_lock(&priv->lock);
- 	/* Stop timer */
- 	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, 0);
- 	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
-@@ -181,6 +184,12 @@ static void stm32_timer_stop(struct stm32_timer_trigger *priv)
- 
- 	/* Make sure that registers are updated */
- 	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
-+
-+	if (priv->clk_enabled) {
-+		priv->clk_enabled = false;
-+		clk_disable(priv->clk);
-+	}
-+	mutex_unlock(&priv->lock);
- }
- 
- static ssize_t stm32_tt_store_frequency(struct device *dev,
-@@ -295,11 +304,18 @@ static ssize_t stm32_tt_store_master_mode(struct device *dev,
- 	for (i = 0; i <= master_mode_max; i++) {
- 		if (!strncmp(master_mode_table[i], buf,
- 			     strlen(master_mode_table[i]))) {
-+			mutex_lock(&priv->lock);
-+			if (!priv->clk_enabled) {
-+				/* Clock should be enabled first */
-+				priv->clk_enabled = true;
-+				clk_enable(priv->clk);
-+			}
- 			regmap_update_bits(priv->regmap, TIM_CR2, mask,
- 					   i << shift);
- 			/* Make sure that registers are updated */
- 			regmap_update_bits(priv->regmap, TIM_EGR,
- 					   TIM_EGR_UG, TIM_EGR_UG);
-+			mutex_unlock(&priv->lock);
- 			return len;
- 		}
- 	}
-@@ -357,11 +373,21 @@ static const struct attribute_group *stm32_trigger_attr_groups[] = {
- static const struct iio_trigger_ops timer_trigger_ops = {
- };
- 
--static int stm32_setup_iio_triggers(struct stm32_timer_trigger *priv)
-+static void stm32_unregister_iio_triggers(struct stm32_timer_trigger *priv)
-+{
-+	struct iio_trigger *tr;
-+
-+	list_for_each_entry(tr, &priv->tr_list, alloc_list)
-+		iio_trigger_unregister(tr);
-+}
-+
-+static int stm32_register_iio_triggers(struct stm32_timer_trigger *priv)
- {
- 	int ret;
- 	const char * const *cur = priv->triggers;
- 
-+	INIT_LIST_HEAD(&priv->tr_list);
-+
- 	while (cur && *cur) {
- 		struct iio_trigger *trig;
- 		bool cur_is_trgo = stm32_timer_is_trgo_name(*cur);
-@@ -388,9 +414,13 @@ static int stm32_setup_iio_triggers(struct stm32_timer_trigger *priv)
- 
- 		iio_trigger_set_drvdata(trig, priv);
- 
--		ret = devm_iio_trigger_register(priv->dev, trig);
--		if (ret)
-+		ret = iio_trigger_register(trig);
-+		if (ret) {
-+			stm32_unregister_iio_triggers(priv);
- 			return ret;
-+		}
-+
-+		list_add_tail(&trig->alloc_list, &priv->tr_list);
- 		cur++;
- 	}
- 
-@@ -437,7 +467,6 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
- 				   int val, int val2, long mask)
- {
- 	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
--	u32 dat;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
-@@ -448,19 +477,23 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
- 		return -EINVAL;
- 
- 	case IIO_CHAN_INFO_ENABLE:
-+		mutex_lock(&priv->lock);
- 		if (val) {
--			regmap_read(priv->regmap, TIM_CR1, &dat);
--			if (!(dat & TIM_CR1_CEN))
-+			if (!priv->clk_enabled) {
-+				priv->clk_enabled = true;
- 				clk_enable(priv->clk);
-+			}
- 			regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
- 					   TIM_CR1_CEN);
- 		} else {
--			regmap_read(priv->regmap, TIM_CR1, &dat);
- 			regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
- 					   0);
--			if (dat & TIM_CR1_CEN)
-+			if (priv->clk_enabled) {
-+				priv->clk_enabled = false;
- 				clk_disable(priv->clk);
-+			}
- 		}
-+		mutex_unlock(&priv->lock);
- 		return 0;
- 	}
- 
-@@ -556,7 +589,6 @@ static int stm32_set_enable_mode(struct iio_dev *indio_dev,
- {
- 	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
- 	int sms = stm32_enable_mode2sms(mode);
--	u32 val;
- 
- 	if (sms < 0)
- 		return sms;
-@@ -564,11 +596,12 @@ static int stm32_set_enable_mode(struct iio_dev *indio_dev,
- 	 * Triggered mode sets CEN bit automatically by hardware. So, first
- 	 * enable counter clock, so it can use it. Keeps it in sync with CEN.
- 	 */
--	if (sms == 6) {
--		regmap_read(priv->regmap, TIM_CR1, &val);
--		if (!(val & TIM_CR1_CEN))
--			clk_enable(priv->clk);
-+	mutex_lock(&priv->lock);
-+	if (sms == 6 && !priv->clk_enabled) {
-+		clk_enable(priv->clk);
-+		priv->clk_enabled = true;
- 	}
-+	mutex_unlock(&priv->lock);
- 
- 	regmap_update_bits(priv->regmap, TIM_SMCR, TIM_SMCR_SMS, sms);
- 
-@@ -752,8 +785,9 @@ static int stm32_timer_trigger_probe(struct platform_device *pdev)
- 	priv->triggers = triggers_table[index];
- 	priv->valids = cfg->valids_table[index];
- 	stm32_timer_detect_trgo2(priv);
-+	mutex_init(&priv->lock);
- 
--	ret = stm32_setup_iio_triggers(priv);
-+	ret = stm32_register_iio_triggers(priv);
- 	if (ret)
- 		return ret;
- 
-@@ -762,6 +796,25 @@ static int stm32_timer_trigger_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static int stm32_timer_trigger_remove(struct platform_device *pdev)
-+{
-+	struct stm32_timer_trigger *priv = platform_get_drvdata(pdev);
-+	u32 val;
-+
-+	/* Unregister triggers before everything can be safely turned off */
-+	stm32_unregister_iio_triggers(priv);
-+
-+	/* Check if nobody else use the timer, then disable it */
-+	regmap_read(priv->regmap, TIM_CCER, &val);
-+	if (!(val & TIM_CCER_CCXE))
-+		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
-+
-+	if (priv->clk_enabled)
-+		clk_disable(priv->clk);
-+
-+	return 0;
-+}
-+
- static const struct stm32_timer_trigger_cfg stm32_timer_trg_cfg = {
- 	.valids_table = valids_table,
- 	.num_valids_table = ARRAY_SIZE(valids_table),
-@@ -786,6 +839,7 @@ MODULE_DEVICE_TABLE(of, stm32_trig_of_match);
- 
- static struct platform_driver stm32_timer_trigger_driver = {
- 	.probe = stm32_timer_trigger_probe,
-+	.remove = stm32_timer_trigger_remove,
- 	.driver = {
- 		.name = "stm32-timer-trigger",
- 		.of_match_table = stm32_trig_of_match,
--- 
-2.7.4
-
+Gwendal.
+>
+> I think it is doable. From looking at the code I felt the factors we
+> need to be careful about are:
+> - The function cros_ec_motion_send_host_cmd() is called from a few
+> other files, each of which set up the struct cros_ec_command
+> differently (reference:
+> https://elixir.bootlin.com/linux/latest/ident/cros_ec_motion_send_host_cmd)
+> - It is not clear to me how readability will be affected by making the
+> change to cros_ec_cmd().
+>
+> Due to the above two factors, but primarily because I wanted to avoid
+> making such an involved large change in this 17 patch series, I
+> reasoned it would be better to make the transition to cros_ec_cmd()
+> for these files in a separate patch/series.
+> My plan after this patch series is to work on this driver(perhaps we
+> can eliminate cros_ec_motion_send_host_cmd() itself?), and then remove
+> cros_ec_cmd_xfer() usage.
+>
+> WDYT?
+>
+> Best regards,
+>
+>
+> >
+> >
+> > >>      if (ret &&
+> > >>          state->resp != (struct ec_response_motion_sense *)state->msg->data)
+> > >

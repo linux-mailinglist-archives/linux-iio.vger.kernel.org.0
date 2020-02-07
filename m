@@ -2,219 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2DD1551C7
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2020 06:19:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6016315544E
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2020 10:12:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726125AbgBGFTZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Feb 2020 00:19:25 -0500
-Received: from mail-lj1-f180.google.com ([209.85.208.180]:37398 "EHLO
-        mail-lj1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726039AbgBGFTZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Feb 2020 00:19:25 -0500
-Received: by mail-lj1-f180.google.com with SMTP id v17so741218ljg.4
-        for <linux-iio@vger.kernel.org>; Thu, 06 Feb 2020 21:19:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Vo63BAjL+VzKnOnFgPIrKXrUzcWsA/h/8OtoT4tRTTg=;
-        b=kR8L46FfIVfZSNdSuAWYKA4/QDhs0A/RCF7YETjviyVQcYs5jmu8VxCUrmwm/uw/iO
-         YLM4aB6ZCaYGWSCLH6Gcky419yGJEN+8KVLn8T2z1YfRYcHC9aYb55DmRvDZriTc7mHa
-         brCKEeKaUGDB1twRmsuEUzYwyCPi7VlL22DWM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Vo63BAjL+VzKnOnFgPIrKXrUzcWsA/h/8OtoT4tRTTg=;
-        b=Sk15puAlAM8QRsmepsANmZfUri/pCFGGdI+1/1x3PdGRo5m72xbaKOUfW0UgVxqBXc
-         kh8JMtNZuVqglvpDlhdcxiQrvPEzG2CXQRGF+mig+UZaCLCq7yOmF3WM0cnEmB9C/JmK
-         G1ts4V8hc/zsfBrnJqyAlMjBwKw4Ytgy32TWQ8zE4f3USJz8mVW2eNGQ3s0xgqtQS3DT
-         wofHSYy/lw+LVdiaz7nCBLkVWfbDG7HLxJ+OlZobLm6vaa+fxSP/nL7yIjh6je9ROrYC
-         aMYSoFxjMX/AnoOTKyU6EzMULxSzbqW/WMKSl09MQSW9A/fQr2fgYit2cYSegeQqpZsy
-         81UQ==
-X-Gm-Message-State: APjAAAWWh8lCIvUyeETIF7fmFtNxW11hKjI72JDA32pHj3AmEFVKQM+I
-        h/stU0/2+f4iDZkTIlHBVmbDCv7HGINJtysW
-X-Google-Smtp-Source: APXvYqzNOFR3HGKSK362KiDQyNMOvNOu0pP9yFbEcI5rT7ZKZt6Gq5cc7ZhuZHxDUM8+MEvtaVOyNA==
-X-Received: by 2002:a2e:6f19:: with SMTP id k25mr4176626ljc.84.1581052761889;
-        Thu, 06 Feb 2020 21:19:21 -0800 (PST)
-Received: from virtualbox.ipredator.se (anon-49-167.vpn.ipredator.se. [46.246.49.167])
-        by smtp.gmail.com with ESMTPSA id y11sm622069lfc.27.2020.02.06.21.19.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2020 21:19:21 -0800 (PST)
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-To:     linux-iio@vger.kernel.org
-Cc:     jic23@kernel.org, Matt Ranostay <matt.ranostay@konsulko.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v5 3/3] dt-bindings: iio: chemical: consolidate atlas-sensor docs
-Date:   Thu,  6 Feb 2020 21:18:13 -0800
-Message-Id: <20200207051813.9708-4-matt.ranostay@konsulko.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200207051813.9708-1-matt.ranostay@konsulko.com>
-References: <20200207051813.9708-1-matt.ranostay@konsulko.com>
+        id S1726451AbgBGJMO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Feb 2020 04:12:14 -0500
+Received: from honk.sigxcpu.org ([24.134.29.49]:47094 "EHLO honk.sigxcpu.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726417AbgBGJMO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 7 Feb 2020 04:12:14 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by honk.sigxcpu.org (Postfix) with ESMTP id A9ABDFB03;
+        Fri,  7 Feb 2020 10:12:11 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
+Received: from honk.sigxcpu.org ([127.0.0.1])
+        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id UkTU13E4jSmg; Fri,  7 Feb 2020 10:12:10 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+        id F13AA40756; Fri,  7 Feb 2020 10:12:09 +0100 (CET)
+From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
+To:     Tomas Novotny <tomas@novotny.cz>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "Angus Ainslie (Purism)" <angus@akkea.ca>,
+        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: vncl4000: Fix early return in vcnl4200_set_power_state
+Date:   Fri,  7 Feb 2020 10:12:09 +0100
+Message-Id: <19efdcd597b21ece9ad0ff894b6566d2ef4e2c02.1581066317.git.agx@sigxcpu.org>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since Atlas Scientific device support only varies from the compatible
-string is ideal all the respective docs are merged into a single doc
-named atlas,sensor.yaml
+Don't return early unconditionally.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Reported-by: kbuild test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+
 ---
- .../bindings/iio/chemical/atlas,ec-sm.txt     | 21 --------
- .../bindings/iio/chemical/atlas,orp-sm.txt    | 21 --------
- .../bindings/iio/chemical/atlas,ph-sm.txt     | 21 --------
- .../bindings/iio/chemical/atlas,sensor.yaml   | 53 +++++++++++++++++++
- 4 files changed, 53 insertions(+), 63 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
- delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
- delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
- create mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
+I've not added a 'Fixes:' line since this is not part of Linus tree yet.
+Tested proximity and ambient light on a vcnl4040 and checked the driver
+suspends/resumes correctly and puts out valid data right after resume.  
 
-diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
-deleted file mode 100644
-index f4320595b851..000000000000
---- a/Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--* Atlas Scientific EC-SM OEM sensor
--
--http://www.atlas-scientific.com/_files/_datasheets/_oem/EC_oem_datasheet.pdf
--
--Required properties:
--
--  - compatible: must be "atlas,ec-sm"
--  - reg: the I2C address of the sensor
--  - interrupts: the sole interrupt generated by the device
--
--  Refer to interrupt-controller/interrupts.txt for generic interrupt client
--  node bindings.
--
--Example:
--
--atlas@64 {
--	compatible = "atlas,ec-sm";
--	reg = <0x64>;
--	interrupt-parent = <&gpio1>;
--	interrupts = <16 2>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
-deleted file mode 100644
-index af1f5a9aa4da..000000000000
---- a/Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--* Atlas Scientific ORP-SM OEM sensor
--
--https://www.atlas-scientific.com/_files/_datasheets/_oem/ORP_oem_datasheet.pdf
--
--Required properties:
--
--  - compatible: must be "atlas,orp-sm"
--  - reg: the I2C address of the sensor
--  - interrupts: the sole interrupt generated by the device
--
--  Refer to interrupt-controller/interrupts.txt for generic interrupt client
--  node bindings.
--
--Example:
--
--atlas@66 {
--	compatible = "atlas,orp-sm";
--	reg = <0x66>;
--	interrupt-parent = <&gpio1>;
--	interrupts = <16 2>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt b/Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
-deleted file mode 100644
-index 79d90f060327..000000000000
---- a/Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--* Atlas Scientific pH-SM OEM sensor
--
--http://www.atlas-scientific.com/_files/_datasheets/_oem/pH_oem_datasheet.pdf
--
--Required properties:
--
--  - compatible: must be "atlas,ph-sm"
--  - reg: the I2C address of the sensor
--  - interrupts: the sole interrupt generated by the device
--
--  Refer to interrupt-controller/interrupts.txt for generic interrupt client
--  node bindings.
--
--Example:
--
--atlas@65 {
--	compatible = "atlas,ph-sm";
--	reg = <0x65>;
--	interrupt-parent = <&gpio1>;
--	interrupts = <16 2>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml b/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
-new file mode 100644
-index 000000000000..1b0c476838d1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/chemical/atlas,sensor.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Atlas Scientific OEM sensors
-+
-+maintainers:
-+  - Matt Ranostay <matt.ranostay@konsulko.com>
-+
-+description: |
-+  Atlas Scientific OEM sensors connected via I2C
-+
-+  Datasheets:
-+    http://www.atlas-scientific.com/_files/_datasheets/_oem/DO_oem_datasheet.pdf
-+    http://www.atlas-scientific.com/_files/_datasheets/_oem/EC_oem_datasheet.pdf
-+    http://www.atlas-scientific.com/_files/_datasheets/_oem/ORP_oem_datasheet.pdf
-+    http://www.atlas-scientific.com/_files/_datasheets/_oem/pH_oem_datasheet.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - atlas,do-sm
-+      - atlas,ec-sm
-+      - atlas,orp-sm
-+      - atlas,ph-sm
-+
-+  reg:
-+     maxItems: 1
-+
-+  interrupts:
-+     maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      atlas@66 {
-+        compatible = "atlas,orp-sm";
-+        reg = <0x66>;
-+        interrupt-parent = <&gpio1>;
-+        interrupts = <16 2>;
-+      };
-+    };
+ drivers/iio/light/vcnl4000.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index 3b71c7d538af..38fcd9a26046 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -149,7 +149,7 @@ static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
++	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
-2.20.1
+2.23.0
 

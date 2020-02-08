@@ -2,40 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1951215656C
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2020 17:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 032F115657D
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2020 17:32:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727381AbgBHQSy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Feb 2020 11:18:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37448 "EHLO mail.kernel.org"
+        id S1727456AbgBHQcN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Feb 2020 11:32:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41308 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727340AbgBHQSy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 8 Feb 2020 11:18:54 -0500
+        id S1727303AbgBHQcM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 8 Feb 2020 11:32:12 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E033421741;
-        Sat,  8 Feb 2020 16:18:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1AFD92082E;
+        Sat,  8 Feb 2020 16:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581178732;
-        bh=59XuenxOCvoUa9Wj2VYr5TaOvSsiIsqhyk+s+QJ6QYY=;
+        s=default; t=1581179531;
+        bh=fMpJ5niI3lEkPpRN/G2ZZ7MgPe4nf7pK0yIIzHEYJaM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=B2Nf0GkpYS50q+afe1zk7Sac/Z9n70KkhSpw32/Z3OEgtb8QeWtnGYx5Qjs/8SMyO
-         0uLlw1ZvelPmKn4/6YIlQnAuzBI6R0C2bmoUnlCn5ENIOIG9E3550AZ6Mn/FeOaxcL
-         SAUlrOqejV8nYrSWd73OLAAb3wSEVmImiSGxxosw=
-Date:   Sat, 8 Feb 2020 16:18:47 +0000
+        b=dHlZL1ruimU8Epq1gzAKA8DnaJd7p7lm/WCLf7K9ojMS+CpDa//4RV4TqbUdm109d
+         TLcik4a4KQ58quAWnwuCcLybEwg0xA++IRFctbwfJQIiQ2/JIR0wpRjq4GkvNcWi4d
+         UJSCGBfW4X8hNuN4GyMFRx0tA7wo04/XqtstNIaY=
+Date:   Sat, 8 Feb 2020 16:32:07 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Olivier Moysan <olivier.moysan@st.com>
-Cc:     <robh+dt@kernel.org>, <mark.rutland@arm.com>, <knaack.h@gmx.de>,
-        <lars@metafoo.de>, <devicetree@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <pmeerw@pmeerw.net>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 4/4] iio: adc: stm32-dfsdm: add scale and offset support
-Message-ID: <20200208161847.76c7d6e8@archlinux>
-In-Reply-To: <20200204101008.11411-5-olivier.moysan@st.com>
-References: <20200204101008.11411-1-olivier.moysan@st.com>
-        <20200204101008.11411-5-olivier.moysan@st.com>
+To:     Dylan Howey <Dylan.Howey@tennantco.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: mma8452: Expose temperature channel
+Message-ID: <20200208163154.4d4f6752@archlinux>
+In-Reply-To: <20200205203240.13550-1-Dylan.Howey@tennantco.com>
+References: <20200205203240.13550-1-Dylan.Howey@tennantco.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,213 +43,353 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 4 Feb 2020 11:10:08 +0100
-Olivier Moysan <olivier.moysan@st.com> wrote:
+On Wed,  5 Feb 2020 14:32:40 -0600
+Dylan Howey <Dylan.Howey@tennantco.com> wrote:
 
-> Add scale and offset attributes support to STM32 DFSDM.
+> FXLS8471Q devices support temperature readout as 8-bit signed value,
+> 0.960C/LSB, -40C to 125C.
 > 
-> Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
+> Enabling temperature readout reduces the selected ODR by a factor of
+> 2, e.g. with ODR set to 800Hz and temperature enabled the sample rate
+> will be 400Hz.
+That needs to be reflected in the interfaces, so if enabled sampling_frequency
+needs to halve.
 
-Hmm. I can't remember this history of this but we've kind of
-ended up backwards wrt to other consumer drivers.
+> 
+> Signed-off-by: Dylan Howey <Dylan.Howey@tennantco.com>
 
-In some sense this is similar to the analog gyroscopes.  In those
-the consumer driver is the gyroscope which is consuming the raw
-readings from an ADC connected to the channel.  This results
-in us getting readings reported by the gyroscope driver.
+Using enable as you have here creates a non standard userspace interface
+that is effectively unusable by generic code.  Various suggestions inline
+but in short, I'd expect:
 
-Here we have a sigma delta convertor consuming the pulse train
-from a sigma delta device.  So the channels are reported by
-the sigma delta receiver, whereas i think the nearest equivalent
-to the analog voltage outputing gyroscopes would have been if
-we had reported the channel values at the sigma delta converter.
+1) No enable.  We work that out implicitly.
+   A) sysfs read results in temp being enabled for the reading and disabled
+      afterwards
+   B) buffered read allows for explicit control of whether the temp channel
+      is on or not.  If it's enabled then the sampling frequency will half
+2) Sampling frequency attribute needs to output the new value if the temp
+   channel is enabled.  Don't worry too much on it being missleading for sysfs
+   reads, people care about that interface for buffered reads.
 
-This wasn't really an issue when the only values available were
-raw, but if we are adding scale and offset, they are things that
-belong to the ad1201 for example, not the upstream stm32-dfsdm unit.
-
-Thinking of it another way, we don't report an SPI ADC output in
-the driver for the SPI master.
-
-Could we flip it around without breaking anything?
+Anyhow, good to see this support and bad luck that its a bit fiddly.  I'm
+guessing that's why no one has taken it on before!
 
 Jonathan
 
 > ---
->  drivers/iio/adc/stm32-dfsdm-adc.c | 105 +++++++++++++++++++++++++++++-
->  1 file changed, 102 insertions(+), 3 deletions(-)
+>  drivers/iio/accel/mma8452.c | 119 ++++++++++++++++++++++++++++++------
+>  1 file changed, 101 insertions(+), 18 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-> index 07b9dfdf8e76..b85fd3e90496 100644
-> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
-> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-> @@ -10,6 +10,7 @@
->  #include <linux/dma-mapping.h>
->  #include <linux/iio/adc/stm32-dfsdm-adc.h>
->  #include <linux/iio/buffer.h>
-> +#include <linux/iio/consumer.h>
->  #include <linux/iio/hw-consumer.h>
->  #include <linux/iio/sysfs.h>
->  #include <linux/iio/timer/stm32-lptim-trigger.h>
-> @@ -67,6 +68,13 @@ struct stm32_dfsdm_dev_data {
->  	const struct regmap_config *regmap_cfg;
+> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+> index eb6e3dc789b2..016dcc14e96e 100644
+> --- a/drivers/iio/accel/mma8452.c
+> +++ b/drivers/iio/accel/mma8452.c
+> @@ -83,8 +83,13 @@
+>  #define MMA8452_OFF_X				0x2f
+>  #define MMA8452_OFF_Y				0x30
+>  #define MMA8452_OFF_Z				0x31
+> +#define FXLS8471_CLEAR_DRDY			0x33
+> +#define FXLS8471_TEMP_OUT			0x51
+> +#define FXLS8471_TEMP_EN_MASK			GENMASK(1, 0)
+> +#define FXLS8471_CTRL_REG6			0x5b
+> +#define FXLS8471_CTRL_REG7			0x5c
+>  
+> -#define MMA8452_MAX_REG				0x31
+> +#define MMA8452_MAX_REG				0x5c
+>  
+>  #define  MMA8452_INT_DRDY			BIT(0)
+>  #define  MMA8452_INT_FF_MT			BIT(2)
+> @@ -103,6 +108,7 @@ struct mma8452_data {
+>  	struct i2c_client *client;
+>  	struct mutex lock;
+>  	u8 ctrl_reg1;
+> +	u8 ctrl_reg6;
+>  	u8 data_cfg;
+>  	const struct mma_chip_info *chip_info;
+>  };
+> @@ -113,6 +119,7 @@ struct mma8452_data {
+>   * @channels:			struct iio_chan_spec matching the device's
+>   *				capabilities
+>   * @num_channels:		number of channels
+> + * @avaiable_scan_masks:		bitmask of available scan elements
+>   * @mma_scales:			scale factors for converting register values
+>   *				to m/s^2; 3 modes: 2g, 4g, 8g; 2 integers
+>   *				per mode: m/s^2 and micro m/s^2
+> @@ -139,6 +146,7 @@ struct mma_chip_info {
+>  	u8 chip_id;
+>  	const struct iio_chan_spec *channels;
+>  	int num_channels;
+> +	unsigned long available_scan_masks[2];
+>  	const int mma_scales[3][2];
+>  	u8 ev_cfg;
+>  	u8 ev_cfg_ele;
+> @@ -156,6 +164,7 @@ enum {
+>  	idx_x,
+>  	idx_y,
+>  	idx_z,
+> +	idx_temp,
+>  	idx_ts,
 >  };
 >  
-> +struct stm32_dfsdm_sd_chan_info {
-> +	int scale_val;
-> +	int scale_val2;
-> +	int offset;
-> +	unsigned int differential;
-> +};
-> +
->  struct stm32_dfsdm_adc {
->  	struct stm32_dfsdm *dfsdm;
->  	const struct stm32_dfsdm_dev_data *dev_data;
-> @@ -79,6 +87,7 @@ struct stm32_dfsdm_adc {
->  	struct iio_hw_consumer *hwc;
->  	struct completion completion;
->  	u32 *buffer;
-> +	struct stm32_dfsdm_sd_chan_info *sd_chan;
+> @@ -204,7 +213,7 @@ static int mma8452_set_runtime_pm_state(struct i2c_client *client, bool on)
+>  	return 0;
+>  }
 >  
->  	/* Audio specific */
->  	unsigned int spi_freq;  /* SPI bus clock frequency */
-> @@ -1271,7 +1280,10 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
->  				int *val2, long mask)
+> -static int mma8452_read(struct mma8452_data *data, __be16 buf[3])
+> +static int mma8452_read(struct mma8452_data *data, u8 buf[7])
 >  {
->  	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-> -	int ret;
-> +	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[adc->fl_id];
-> +	struct stm32_dfsdm_filter_osr *flo = &fl->flo[fl->fast];
-> +	u32 max = flo->max << (flo->lshift - chan->scan_type.shift);
-> +	int ret, idx = chan->scan_index;
+>  	int ret = mma8452_drdy(data);
+>  
+> @@ -216,7 +225,19 @@ static int mma8452_read(struct mma8452_data *data, __be16 buf[3])
+>  		return ret;
+>  
+>  	ret = i2c_smbus_read_i2c_block_data(data->client, MMA8452_OUT_X,
+> -					    3 * sizeof(__be16), (u8 *)buf);
+> +					    3 * sizeof(__be16), buf);
+> +
+> +	if (FXLS8471_TEMP_EN_MASK & data->ctrl_reg6) {
+> +		buf[6] = i2c_smbus_read_byte_data(data->client,
+> +							FXLS8471_TEMP_OUT);
+
+I'd use an extra parameter passed into mma8452_read. Avoids need to end up
+with loosing the endian markings.
+
+> +
+> +		/*
+> +		 * A read of the dummy register 33h is required to reset drdy
+> +		 * for the next interrupt cycle after reading the temperature.
+> +		 * Value read from register is don't care.
+> +		 */
+> +		i2c_smbus_read_byte_data(data->client, FXLS8471_CLEAR_DRDY);
+> +	}
+>  
+>  	ret = mma8452_set_runtime_pm_state(data->client, false);
+>  
+> @@ -454,7 +475,7 @@ static int mma8452_read_raw(struct iio_dev *indio_dev,
+>  			    int *val, int *val2, long mask)
+>  {
+>  	struct mma8452_data *data = iio_priv(indio_dev);
+> -	__be16 buffer[3];
+> +	u8 buffer[7];
+>  	int i, ret;
 >  
 >  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
-> @@ -1307,6 +1319,41 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
->  		*val = adc->sample_freq;
+> @@ -470,17 +491,37 @@ static int mma8452_read_raw(struct iio_dev *indio_dev,
+>  		if (ret < 0)
+>  			return ret;
+>  
+> -		*val = sign_extend32(be16_to_cpu(
+> -			buffer[chan->scan_index]) >> chan->scan_type.shift,
+> +		switch (chan->type) {
+> +		case IIO_ACCEL:
+> +			*val = sign_extend32(be16_to_cpu(
+> +			*(__be16 *)&buffer[2 * chan->scan_index])
+> +			>> chan->scan_type.shift,
+>  			chan->scan_type.realbits - 1);
+> +			return IIO_VAL_INT;
+> +		case IIO_TEMP:
+> +			if (!(FXLS8471_TEMP_EN_MASK & data->ctrl_reg6))
+> +				return -EINVAL;
+
+If it's there and a read occurs, userspace expects to get an answer.
+So if this happens you should turn it on and wait appropriate time to
+be able to get a reading.
+
+> +
+> +			*val = sign_extend32(buffer[6], 7);
+> +			return IIO_VAL_INT;
+> +		default:
+> +			return -EINVAL;
+> +		}
 >  
 >  		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		/*
-> +		 * Scale is expressed in mV.
-> +		 * When fast mode is disabled, actual resolution may be lower
-> +		 * than 2^n, where n=realbits-1.
-> +		 * This leads to underestimating input voltage. To
-> +		 * compensate this deviation, the voltage reference can be
-> +		 * corrected with a factor = realbits resolution / actual max
-> +		 */
-> +		*val = div_u64((u64)adc->sd_chan[idx].scale_val *
-> +			       (u64)BIT(DFSDM_DATA_RES - 1), max);
-> +		*val2 = chan->scan_type.realbits;
-> +		if (adc->sd_chan[idx].differential)
-> +			*val *= 2;
-> +
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +
+>  	case IIO_CHAN_INFO_SCALE:
+> -		i = data->data_cfg & MMA8452_DATA_CFG_FS_MASK;
+> -		*val = data->chip_info->mma_scales[i][0];
+> -		*val2 = data->chip_info->mma_scales[i][1];
+> -
+> -		return IIO_VAL_INT_PLUS_MICRO;
+> +		switch (chan->type) {
+> +		case IIO_ACCEL:
+> +			i = data->data_cfg & MMA8452_DATA_CFG_FS_MASK;
+> +			*val = data->chip_info->mma_scales[i][0];
+> +			*val2 = data->chip_info->mma_scales[i][1];
+> +			return IIO_VAL_INT_PLUS_MICRO;
+> +		case IIO_TEMP:
+> +			*val = 960;
+> +			return IIO_VAL_INT;
+> +		default:
+> +			return -EINVAL;
+> +		}
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		i = mma8452_get_odr_index(data);
+>  		*val = mma8452_samp_freq[i][0];
+> @@ -517,6 +558,12 @@ static int mma8452_read_raw(struct iio_dev *indio_dev,
+>  
+>  		*val = mma8452_os_ratio[ret][i];
+>  		return IIO_VAL_INT;
 > +	case IIO_CHAN_INFO_OFFSET:
-> +		/*
-> +		 * DFSDM output data are in the range [-2^n,2^n-1],
-> +		 * with n=realbits-1.
-> +		 * - Differential modulator:
-> +		 * Offset correspond to SD modulator offset.
-> +		 * - Single ended modulator:
-> +		 * Input is in [0V,Vref] range, where 0V corresponds to -2^n.
-> +		 * Add 2^n to offset. (i.e. middle of input range)
-> +		 * offset = offset(sd) * vref / res(sd) * max / vref.
-> +		 */
-> +		*val = div_u64((u64)max * adc->sd_chan[idx].offset,
-> +			       BIT(adc->sd_chan[idx].scale_val2 - 1));
-> +		if (!adc->sd_chan[idx].differential)
-> +			*val += max;
-> +
+> +		*val = 50; /* 0 LSB @ 25 degree C */
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_ENABLE:
+> +		*val = !!(data->ctrl_reg6 & FXLS8471_TEMP_EN_MASK);
 > +		return IIO_VAL_INT;
 >  	}
 >  
 >  	return -EINVAL;
-> @@ -1430,7 +1477,9 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev,
->  	 * IIO_CHAN_INFO_RAW: used to compute regular conversion
->  	 * IIO_CHAN_INFO_OVERSAMPLING_RATIO: used to set oversampling
->  	 */
-> -	ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
-> +	ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				 BIT(IIO_CHAN_INFO_SCALE) |
-> +				 BIT(IIO_CHAN_INFO_OFFSET);
->  	ch->info_mask_shared_by_all = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
->  					BIT(IIO_CHAN_INFO_SAMP_FREQ);
->  
-> @@ -1481,8 +1530,10 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
->  {
->  	struct iio_chan_spec *ch;
->  	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-> +	struct iio_channel *channels, *chan;
-> +	struct stm32_dfsdm_sd_chan_info *sd_chan;
->  	int num_ch;
-> -	int ret, chan_idx;
-> +	int ret, chan_idx, val2;
->  
->  	adc->oversamp = DFSDM_DEFAULT_OVERSAMPLING;
->  	ret = stm32_dfsdm_compute_all_osrs(indio_dev, adc->oversamp);
-> @@ -1506,6 +1557,22 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
->  	if (!ch)
->  		return -ENOMEM;
->  
-> +	/* Get SD modulator channels */
-> +	channels = iio_channel_get_all(&indio_dev->dev);
-> +	if (IS_ERR(channels)) {
-> +		dev_err(&indio_dev->dev, "Failed to get channel %ld\n",
-> +			PTR_ERR(channels));
-> +		return PTR_ERR(channels);
-> +	}
-> +	chan = &channels[0];
-> +
-> +	adc->sd_chan = devm_kzalloc(&indio_dev->dev,
-> +				    sizeof(*adc->sd_chan) * num_ch, GFP_KERNEL);
-> +	if (!adc->sd_chan)
-> +		return -ENOMEM;
-> +
-> +	sd_chan = adc->sd_chan;
-> +
->  	for (chan_idx = 0; chan_idx < num_ch; chan_idx++) {
->  		ch[chan_idx].scan_index = chan_idx;
->  		ret = stm32_dfsdm_adc_chan_init_one(indio_dev, &ch[chan_idx]);
-> @@ -1513,6 +1580,38 @@ static int stm32_dfsdm_adc_init(struct iio_dev *indio_dev)
->  			dev_err(&indio_dev->dev, "Channels init failed\n");
->  			return ret;
+> @@ -731,6 +778,16 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
+>  			}
 >  		}
+>  		break;
 > +
-> +		if (!chan->indio_dev)
-> +			return -EINVAL;
+> +	case IIO_CHAN_INFO_ENABLE:
+> +		if (val)
+> +			data->ctrl_reg6 |= FXLS8471_TEMP_EN_MASK;
+> +		else
+> +			data->ctrl_reg6 &= ~FXLS8471_TEMP_EN_MASK;
+> +		/* Note: enabling temperature reduces ODR by a factor of 2. */
+
+Ouch. That explains the why enable control question. However, it still creates
+an unusual userspace interface which basically means no generic code will ever
+turn it on.  
+
+Can we instead deal with it as:
+1) Sysfs read.   Who cares if the temp read is slow, turn it on only
+   when a read occurs.
+
+2) Buffer. Support explicit enable / disable by providing the available_scan_mask
+entries and only pay the penalty if it's enabled.  Given there is a sampling
+frequency control you need to deal with that changing as well when the
+channel is enabled.
+
+> +		return mma8452_change_config(data, FXLS8471_CTRL_REG6,
+> +				data->ctrl_reg6);
 > +
-> +		ret = iio_read_channel_scale(chan, &sd_chan->scale_val,
-> +					     &sd_chan->scale_val2);
-> +		if (ret < 0) {
-> +			dev_err(&indio_dev->dev,
-> +				"Failed to get channel %d scale\n", chan_idx);
-> +			return ret;
-> +		}
-> +
-> +		if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_OFFSET)) {
-> +			ret = iio_read_channel_offset(chan, &sd_chan->offset,
-> +						      &val2);
-> +			if (ret < 0) {
-> +				dev_err(&indio_dev->dev,
-> +					"Failed to get channel %d offset\n",
-> +					chan_idx);
-> +				return ret;
-> +			}
-> +		}
-> +
-> +		sd_chan->differential = chan->channel->differential;
-> +
-> +		dev_dbg(&indio_dev->dev, "Channel %d %s scale ref=%d offset=%d",
-> +			chan_idx, chan->channel->differential ?
-> +			"differential" : "single-ended",
-> +			sd_chan->scale_val, sd_chan->offset);
-> +
-> +		chan++;
-> +		sd_chan++;
->  	}
+>  	default:
+>  		ret = -EINVAL;
+>  		break;
+> @@ -1003,10 +1060,10 @@ static irqreturn_t mma8452_trigger_handler(int irq, void *p)
+>  	struct iio_poll_func *pf = p;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct mma8452_data *data = iio_priv(indio_dev);
+> -	u8 buffer[16]; /* 3 16-bit channels + padding + ts */
+> +	u8 buffer[16]; /* 3 16-bit channels + temp + padding + ts */
+>  	int ret;
 >  
->  	indio_dev->num_channels = num_ch;
+> -	ret = mma8452_read(data, (__be16 *)buffer);
+> +	ret = mma8452_read(data, buffer);
+>  	if (ret < 0)
+>  		goto done;
+>  
+> @@ -1159,6 +1216,19 @@ static struct attribute_group mma8452_event_attribute_group = {
+>  	.num_event_specs = ARRAY_SIZE(mma8452_motion_event), \
+>  }
+>  
+> +#define FXLS8471_TEMP_CHANNEL { \
+> +	.type = IIO_TEMP, \
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+> +		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET) | \
+> +		BIT(IIO_CHAN_INFO_ENABLE), \
+
+Why does this have an enable control?  That would normally be implicit
+in us attempting to read from the device, either via sysfs or by enabling
+buffered output of the channel.
+
+> +	.scan_index = idx_temp, \
+> +	.scan_type = { \
+> +		.sign = 's', \
+> +		.realbits = 8, \
+> +		.storagebits = 8, \
+> +	}, \
+> +}
+> +
+>  static const struct iio_chan_spec mma8451_channels[] = {
+>  	MMA8452_CHANNEL(X, idx_x, 14),
+>  	MMA8452_CHANNEL(Y, idx_y, 14),
+> @@ -1199,6 +1269,15 @@ static const struct iio_chan_spec mma8653_channels[] = {
+>  	MMA8652_FREEFALL_CHANNEL(IIO_MOD_X_AND_Y_AND_Z),
+>  };
+>  
+> +static const struct iio_chan_spec fxls8471_channels[] = {
+> +	MMA8452_CHANNEL(X, idx_x, 14),
+> +	MMA8452_CHANNEL(Y, idx_y, 14),
+> +	MMA8452_CHANNEL(Z, idx_z, 14),
+> +	FXLS8471_TEMP_CHANNEL,
+> +	IIO_CHAN_SOFT_TIMESTAMP(idx_ts),
+> +	MMA8452_FREEFALL_CHANNEL(IIO_MOD_X_AND_Y_AND_Z),
+> +};
+> +
+>  enum {
+>  	mma8451,
+>  	mma8452,
+> @@ -1213,6 +1292,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  		.chip_id = MMA8451_DEVICE_ID,
+>  		.channels = mma8451_channels,
+>  		.num_channels = ARRAY_SIZE(mma8451_channels),
+> +		.available_scan_masks = {0x7, 0},
+>  		/*
+>  		 * Hardware has fullscale of -2G, -4G, -8G corresponding to
+>  		 * raw value -8192 for 14 bit, -2048 for 12 bit or -512 for 10
+> @@ -1237,6 +1317,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  		.chip_id = MMA8452_DEVICE_ID,
+>  		.channels = mma8452_channels,
+>  		.num_channels = ARRAY_SIZE(mma8452_channels),
+> +		.available_scan_masks = {0x7, 0},
+>  		.mma_scales = { {0, 9577}, {0, 19154}, {0, 38307} },
+>  		.ev_cfg = MMA8452_TRANSIENT_CFG,
+>  		.ev_cfg_ele = MMA8452_TRANSIENT_CFG_ELE,
+> @@ -1253,6 +1334,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  		.chip_id = MMA8453_DEVICE_ID,
+>  		.channels = mma8453_channels,
+>  		.num_channels = ARRAY_SIZE(mma8453_channels),
+> +		.available_scan_masks = {0x7, 0},
+>  		.mma_scales = { {0, 38307}, {0, 76614}, {0, 153228} },
+>  		.ev_cfg = MMA8452_TRANSIENT_CFG,
+>  		.ev_cfg_ele = MMA8452_TRANSIENT_CFG_ELE,
+> @@ -1269,6 +1351,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  		.chip_id = MMA8652_DEVICE_ID,
+>  		.channels = mma8652_channels,
+>  		.num_channels = ARRAY_SIZE(mma8652_channels),
+> +		.available_scan_masks = {0x7, 0},
+>  		.mma_scales = { {0, 9577}, {0, 19154}, {0, 38307} },
+>  		.ev_cfg = MMA8452_FF_MT_CFG,
+>  		.ev_cfg_ele = MMA8452_FF_MT_CFG_ELE,
+> @@ -1285,6 +1368,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  		.chip_id = MMA8653_DEVICE_ID,
+>  		.channels = mma8653_channels,
+>  		.num_channels = ARRAY_SIZE(mma8653_channels),
+> +		.available_scan_masks = {0x7, 0},
+>  		.mma_scales = { {0, 38307}, {0, 76614}, {0, 153228} },
+>  		.ev_cfg = MMA8452_FF_MT_CFG,
+>  		.ev_cfg_ele = MMA8452_FF_MT_CFG_ELE,
+> @@ -1299,8 +1383,9 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  	},
+>  	[fxls8471] = {
+>  		.chip_id = FXLS8471_DEVICE_ID,
+> -		.channels = mma8451_channels,
+> -		.num_channels = ARRAY_SIZE(mma8451_channels),
+> +		.channels = fxls8471_channels,
+> +		.num_channels = ARRAY_SIZE(fxls8471_channels),
+> +		.available_scan_masks = {0xf, 0},
+>  		.mma_scales = { {0, 2394}, {0, 4788}, {0, 9577} },
+>  		.ev_cfg = MMA8452_TRANSIENT_CFG,
+>  		.ev_cfg_ele = MMA8452_TRANSIENT_CFG_ELE,
+> @@ -1340,8 +1425,6 @@ static const struct iio_info mma8452_info = {
+>  	.driver_module = THIS_MODULE,
+>  };
+>  
+> -static const unsigned long mma8452_scan_masks[] = {0x7, 0};
+> -
+>  static int mma8452_data_rdy_trigger_set_state(struct iio_trigger *trig,
+>  					      bool state)
+>  {
+> @@ -1487,7 +1570,7 @@ static int mma8452_probe(struct i2c_client *client,
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->channels = data->chip_info->channels;
+>  	indio_dev->num_channels = data->chip_info->num_channels;
+> -	indio_dev->available_scan_masks = mma8452_scan_masks;
+> +	indio_dev->available_scan_masks = data->chip_info->available_scan_masks;
+>  
+>  	ret = mma8452_reset(client);
+>  	if (ret < 0)
 

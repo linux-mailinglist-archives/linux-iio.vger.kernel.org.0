@@ -2,116 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B417156B9A
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Feb 2020 17:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30158156D20
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2020 01:11:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727723AbgBIQr4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Feb 2020 11:47:56 -0500
-Received: from mga07.intel.com ([134.134.136.100]:19230 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727692AbgBIQr4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 9 Feb 2020 11:47:56 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Feb 2020 08:47:54 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,422,1574150400"; 
-   d="scan'208";a="431374169"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 09 Feb 2020 08:47:52 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1j0pkO-000Hkh-2o; Mon, 10 Feb 2020 00:47:52 +0800
-Date:   Mon, 10 Feb 2020 00:47:28 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Daniel Campello <campello@chromium.org>
-Cc:     kbuild-all@lists.01.org, LKML <linux-kernel@vger.kernel.org>,
-        Daniel Campello <campello@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Enrico Granata <egranata@chromium.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v2] iio: Add SEMTECH SX9310/9311 sensor driver
-Message-ID: <202002100001.BwAzqv0v%lkp@intel.com>
-References: <20200206121647.1.I1f56fe698017f22d6e825c913c256d5afc2ad69f@changeid>
+        id S1727122AbgBJALN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Feb 2020 19:11:13 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:43297 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727830AbgBJALN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Feb 2020 19:11:13 -0500
+Received: by mail-lj1-f194.google.com with SMTP id a13so5073988ljm.10
+        for <linux-iio@vger.kernel.org>; Sun, 09 Feb 2020 16:11:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3Ks72LqIqly76h/Rdk1ytCLMvXiVx7asbK5q2IthHrw=;
+        b=ShmWGID3cChkRiKBYC87s6goZ6ahF1glExmovILibwPuhwEEUHdFWoZHiM40tRtvwx
+         +ReJBUdW/N20xjaXDhyzbEVQTxZrRMh/lvq69Md6SJjPon7dPmtusoaezjJIEgx9kahN
+         Go2aooQx3G2FYTFU8l1QQIbI/d5uBdfiEApP4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3Ks72LqIqly76h/Rdk1ytCLMvXiVx7asbK5q2IthHrw=;
+        b=THwUgNUwn1ES2URxhCfwgsFg7jEn/ojDvCet0ntst9vdEixKrYik5zf7ZkiI4Ih4+M
+         zUEOHQdugqPxX3ic69fy/JlXvEDFEsb8h8vzTJoEmSGqEYjBLh93Byzj59VS4ChmA5mY
+         +4+jDoNWIUVE8UGokp3Ju0mBmDNneJQmjiJ7HX3zi6sOOE2N2LuWnRQTUciTNofZ8ubG
+         f79hnPzog0UIeQBjJJceuhLK8qTwi2oehpPCKRQnJRqI376Z5vH7z9r0+GcSY+v2PY8n
+         7cPggYQVF3u+wD5P2RmozurGWZ9AOUoefLnrzPkYPRV52MGzy0KwBwu8UnEG1xIbteFQ
+         X+oA==
+X-Gm-Message-State: APjAAAVXUCUH5DkzTJdsXCAlhYh+9hX2X9lDDIiSL6Bp1G87h3qjkn4g
+        fOgtkWYIDLX10zWeovf6pMXRgDfDUYDMDS1v
+X-Google-Smtp-Source: APXvYqxYFJscEvwoXsjrNmwGEhAg62ZvR5zoM5BWA6udYcZcZLmr/7IR+6EMUT9C67KqibDYLVfkGw==
+X-Received: by 2002:a2e:7818:: with SMTP id t24mr6077202ljc.195.1581293470773;
+        Sun, 09 Feb 2020 16:11:10 -0800 (PST)
+Received: from virtualbox.ipredator.se (anon-49-135.vpn.ipredator.se. [46.246.49.135])
+        by smtp.gmail.com with ESMTPSA id f5sm4424962lfh.32.2020.02.09.16.11.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Feb 2020 16:11:09 -0800 (PST)
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+To:     linux-iio@vger.kernel.org
+Cc:     jic23@kernel.org, Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: [PATCH v6 0/3] iio: chemical: atlas-sensor: add DO support
+Date:   Sun,  9 Feb 2020 16:10:55 -0800
+Message-Id: <20200210001058.7515-1-matt.ranostay@konsulko.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200206121647.1.I1f56fe698017f22d6e825c913c256d5afc2ad69f@changeid>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Daniel,
+Changes from v1:
+* combined dt binding docs
+* added making interrupt line is optional patchset
+* broke out dt changes from DO-SM module patchset
 
-Thank you for the patch! Perhaps something to improve:
+Changes from v2:
+* switch docs to YAML format
 
-[auto build test WARNING on iio/togreg]
-[also build test WARNING on linux/master linus/master v5.5 next-20200207]
-[if your patch is applied to the wrong git tree, please drop us a note to help
-improve the system. BTW, we also suggest to use '--base' option to specify the
-base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+Changes from v3:
+* fix up issues reported with dt-schema
 
-url:    https://github.com/0day-ci/linux/commits/Daniel-Campello/iio-Add-SEMTECH-SX9310-9311-sensor-driver/20200209-180706
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.1-162-g98276e61-dirty
-        make ARCH=x86_64 allmodconfig
-        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+Changes from v4:
+* fix logic issue in optional interrupt patchset
 
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
+Changes from v5:
+* Update license on yaml conversion to GPLv2.0+ and BSD clause
 
+Matt Ranostay (3):
+  iio: chemical: atlas-sensor: allow probe without interrupt line
+  iio: chemical: atlas-sensor: add DO-SM module support
+  dt-bindings: iio: chemical: consolidate atlas-sensor docs
 
-sparse warnings: (new ones prefixed by >>)
+ .../bindings/iio/chemical/atlas,ec-sm.txt     | 21 -----
+ .../bindings/iio/chemical/atlas,orp-sm.txt    | 21 -----
+ .../bindings/iio/chemical/atlas,ph-sm.txt     | 21 -----
+ .../bindings/iio/chemical/atlas,sensor.yaml   | 53 +++++++++++
+ drivers/iio/chemical/atlas-sensor.c           | 91 +++++++++++++++----
+ 5 files changed, 125 insertions(+), 82 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ec-sm.txt
+ delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,orp-sm.txt
+ delete mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,ph-sm.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/atlas,sensor.yaml
 
->> drivers/iio/proximity/sx9310.c:184:9: sparse: sparse: Using plain integer as NULL pointer
-   drivers/iio/proximity/sx9310.c:185:9: sparse: sparse: Using plain integer as NULL pointer
-   drivers/iio/proximity/sx9310.c:186:9: sparse: sparse: Using plain integer as NULL pointer
+-- 
+2.20.1
 
-vim +184 drivers/iio/proximity/sx9310.c
-
-   162	
-   163	#define SX9310_CHANNEL(idx, name)					 \
-   164		{								 \
-   165			.type = IIO_PROXIMITY,					 \
-   166			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		 \
-   167			.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-   168			.indexed = 1,						 \
-   169			.channel = idx,						 \
-   170			.extend_name = name,					 \
-   171			.address = SX9310_REG_DIFF_MSB,				 \
-   172			.event_spec = sx9310_events,				 \
-   173			.num_event_specs = ARRAY_SIZE(sx9310_events),		 \
-   174			.scan_index = idx,					 \
-   175			.scan_type = {						 \
-   176				.sign = 's',					 \
-   177				.realbits = 12,					 \
-   178				.storagebits = 16,				 \
-   179				.endianness = IIO_BE,				 \
-   180			},							 \
-   181		}
-   182	
-   183	static const struct iio_chan_spec sx9310_channels[] = {
- > 184		SX9310_CHANNEL(0, 0),		/* CS0 */
-   185		SX9310_CHANNEL(1, 0),		/* CS1 */
-   186		SX9310_CHANNEL(2, 0),		/* CS2 */
-   187		SX9310_CHANNEL(3, "COMB"),	/* COMB */
-   188	
-   189		IIO_CHAN_SOFT_TIMESTAMP(4),
-   190	};
-   191	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org

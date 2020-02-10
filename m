@@ -2,140 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8A9B157B4C
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2020 14:29:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C39C9157B46
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2020 14:29:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731198AbgBJN2t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Feb 2020 08:28:49 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:14072 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729300AbgBJN2s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Feb 2020 08:28:48 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01ADOBZP009654;
-        Mon, 10 Feb 2020 08:28:47 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2y1tyq81sb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 10 Feb 2020 08:28:46 -0500
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 01ADSjwS022113
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 10 Feb 2020 08:28:45 -0500
-Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 10 Feb 2020 05:28:44 -0800
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 10 Feb 2020 05:28:43 -0800
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Mon, 10 Feb 2020 05:28:43 -0800
-Received: from saturn.ad.analog.com ([10.48.65.124])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 01ADSVZs017670;
-        Mon, 10 Feb 2020 08:28:41 -0500
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <nuno.sa@analog.com>, <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2 9/9] iio: adis16460: Make use of __adis_initial_startup
-Date:   Mon, 10 Feb 2020 15:26:06 +0200
-Message-ID: <20200210132606.9315-9-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200210132606.9315-1-alexandru.ardelean@analog.com>
-References: <20200210132606.9315-1-alexandru.ardelean@analog.com>
+        id S1731420AbgBJN24 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Feb 2020 08:28:56 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:44188 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730875AbgBJN24 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Feb 2020 08:28:56 -0500
+Received: by mail-lj1-f195.google.com with SMTP id q8so7101967ljj.11
+        for <linux-iio@vger.kernel.org>; Mon, 10 Feb 2020 05:28:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GL95utwxmEArT7vI8ObsI7B11hY/zujvM5ThMP8bEas=;
+        b=HlTnbr39ioZad7NdEVerZKdWDhH/IBPgLX8Ypzeu1N2Op81pMcwCT4CTm5aaB9WqUa
+         MyiDoeQBRmPEwZu6AWC794yi37MaZu3CHMuH6F3e2xoocV+bwPEypel8RE3yNje41AO3
+         3jJ/QlpjUmRMHTZKhuVJZtw9IVOvNyH4HxOLIa+feoFA3VgLqw0TQk72i9VjCIe0fXDS
+         ugOuO9zQIxDghuvv6OC1DdprRzs1+iJ4+9xARK75BDuvyDMhHr67Hz5ZskSLRolx9T3J
+         Vv82IQyIevp24q2eSZrKim/vlmmjdxkq1PiSmD44kkC5QVuVAJGMIhHCCg2MikVe0rl4
+         tF9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GL95utwxmEArT7vI8ObsI7B11hY/zujvM5ThMP8bEas=;
+        b=IhDGte3b3afeb+GdxwqCNzGpjWXB/mSl1MrVcP0To2YnHlZT6+RDwDnSUf3Vp4x5Ew
+         MmAQGrfMc/2XpIXubrqIQiVY2lZ86OW3mQiUKr3+uYkkfa+JMyJd9XMznG/fcYDEEFGD
+         lu5xs0+FQuAwJoqmsBVj4tlUAiKh+Dv02CSDEVR5qLgWgkUwhltR6L5cb8nOvNw3Cp6X
+         Vl1Hm6bMqVftkWzT9UoGRaO4UWFuLBgGQIihgGDXoG5OZ4hEAUW9fLu4C2az30IG+n/f
+         LIuuLd3gUNLMBXOEg9tb2n8Kfiwr6G+CCpcgf/99xPhjJRQTQoxeSYd1R0tahK7mCGe5
+         LsFA==
+X-Gm-Message-State: APjAAAUB3cmwzDAA4Soxwas0X7glamlw7RTWteiYn6W0RO/+HLQGhQpZ
+        Nkfel6jfzesyZC8ZkpgARL0AvumPjndunB9YCPEaWQ==
+X-Google-Smtp-Source: APXvYqx0p2nrbVo5AE5n9t4ataK9s2DOHbeNllX/3kCHrlwuBIv1GbKOC7KgB2bEf7PQBc9a6S9oI5MyOiyyrHGK9OI=
+X-Received: by 2002:a2e:9013:: with SMTP id h19mr958186ljg.223.1581341333553;
+ Mon, 10 Feb 2020 05:28:53 -0800 (PST)
 MIME-Version: 1.0
+References: <20200208123359.396-1-linus.walleij@linaro.org> <74ab4b7b-eae2-0c6f-bb4a-eabbd3b4d042@gmail.com>
+In-Reply-To: <74ab4b7b-eae2-0c6f-bb4a-eabbd3b4d042@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 10 Feb 2020 14:28:42 +0100
+Message-ID: <CACRpkdau3ei4OXcpucctxKqb7baHsMf8a0Q6sQ4P=gOf=bxQ5A@mail.gmail.com>
+Subject: Re: [PATCH] RFT: iio: gp2ap002: Replace LUT with math
+To:     Gregor Riepl <onitake@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linux Input <linux-input@vger.kernel.org>,
+        Jonathan Bakker <xc-racer2@live.ca>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-10_04:2020-02-10,2020-02-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 malwarescore=0 mlxscore=0 lowpriorityscore=0
- phishscore=0 mlxlogscore=999 bulkscore=0 impostorscore=0 clxscore=1015
- spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002100105
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Nuno Sá <nuno.sa@analog.com>
+On Sun, Feb 9, 2020 at 11:27 AM Gregor Riepl <onitake@gmail.com> wrote:
 
-All of the actions done in `adis16460_initial_setup()` are now done in
-`__adis_initial_startup()` so, there's no need for code duplication.
+> > -     for (i = 0; i < ARRAY_SIZE(gp2ap002_illuminance_table) - 1; i++) {
+> > -             ill1 = &gp2ap002_illuminance_table[i];
+> > -             ill2 = &gp2ap002_illuminance_table[i + 1];
+> > -
+> > -             if (res > ill2->curr)
+> > -                     continue;
+> > -             if ((res <= ill1->curr) && (res >= ill2->curr))
+> > -                     break;
+>
+> That seems like a really, really contrived way to do a table lookup.
+(...)
+> And since res is linear, interpolation won't even be needed.
 
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/imu/adis16460.c | 38 +++----------------------------------
- 1 file changed, 3 insertions(+), 35 deletions(-)
+Sorry for my quick hack, patches welcome ;)
 
-diff --git a/drivers/iio/imu/adis16460.c b/drivers/iio/imu/adis16460.c
-index 42fa473c6d81..0027683d0256 100644
---- a/drivers/iio/imu/adis16460.c
-+++ b/drivers/iio/imu/adis16460.c
-@@ -333,40 +333,6 @@ static int adis16460_enable_irq(struct adis *adis, bool enable)
- 	return 0;
- }
- 
--static int adis16460_initial_setup(struct iio_dev *indio_dev)
--{
--	struct adis16460 *st = iio_priv(indio_dev);
--	uint16_t prod_id;
--	unsigned int device_id;
--	int ret;
--
--	adis_reset(&st->adis);
--	msleep(222);
--
--	ret = adis_write_reg_16(&st->adis, ADIS16460_REG_GLOB_CMD, BIT(1));
--	if (ret)
--		return ret;
--	msleep(75);
--
--	ret = adis_check_status(&st->adis);
--	if (ret)
--		return ret;
--
--	ret = adis_read_reg_16(&st->adis, ADIS16460_REG_PROD_ID, &prod_id);
--	if (ret)
--		return ret;
--
--	ret = sscanf(indio_dev->name, "adis%u\n", &device_id);
--	if (ret != 1)
--		return -EINVAL;
--
--	if (prod_id != device_id)
--		dev_warn(&indio_dev->dev, "Device ID(%u) and product ID(%u) do not match.",
--				device_id, prod_id);
--
--	return 0;
--}
--
- #define ADIS16460_DIAG_STAT_IN_CLK_OOS	7
- #define ADIS16460_DIAG_STAT_FLASH_MEM	6
- #define ADIS16460_DIAG_STAT_SELF_TEST	5
-@@ -392,6 +358,8 @@ static const struct adis_timeout adis16460_timeouts = {
- static const struct adis_data adis16460_data = {
- 	.diag_stat_reg = ADIS16460_REG_DIAG_STAT,
- 	.glob_cmd_reg = ADIS16460_REG_GLOB_CMD,
-+	.prod_id_reg = ADIS16460_REG_PROD_ID,
-+	.prod_id = 16460,
- 	.self_test_mask = BIT(2),
- 	.self_test_reg = ADIS16460_REG_GLOB_CMD,
- 	.has_paging = false,
-@@ -441,7 +409,7 @@ static int adis16460_probe(struct spi_device *spi)
- 
- 	adis16460_enable_irq(&st->adis, 0);
- 
--	ret = adis16460_initial_setup(indio_dev);
-+	ret = __adis_initial_startup(&st->adis);
- 	if (ret)
- 		goto error_cleanup_buffer;
- 
--- 
-2.20.1
+> > +     lux = int_pow(10, (res/10));
+> > +     if (lux > INT_MAX) {
+> > +             dev_err(gp2ap002->dev, "lux overflow, capped\n");
+> > +             lux = INT_MAX;
+> >       }
+>
+> This is certainly better, but I wonder if it's worth the computational cost.
 
+We don't do this much so certainly the linecount shrink is
+worth it.
+
+> Also: It looks like int_pow doesn't saturate, so even though it uses 64bit
+> integer math, it might be better to move the range check before the calculation.
+
+How do you mean I should be doing that without actually
+doing the power calculation? (Maybe a dumb question but
+math was never my best subject.)
+
+Yours,
+Linus Walleij

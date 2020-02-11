@@ -2,133 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8783B158B10
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 09:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39CA3158B6C
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 09:45:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727687AbgBKIJt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Feb 2020 03:09:49 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:37587 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727618AbgBKIJt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Feb 2020 03:09:49 -0500
-Received: by mail-ed1-f67.google.com with SMTP id cy15so3617334edb.4;
-        Tue, 11 Feb 2020 00:09:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=qP9vlolHUpvniIGESvHc/dzVKJmtPa4m5oDkf6etjNQ=;
-        b=HeBfqybSM8Fe1U/+lGw3hiHOpBCTo7JNmoHibRkVTyZ89oN30pZ9Aqagn1aZ+sYqdP
-         xxDoQDkkE2LvDXk8lxTlt7NMc3rqqcUBYGhJZQsfTIcJJxZmE5K+OMFp7rX6IYYsLPBy
-         q5VnCmuNGOVJEWR0kDWNgS28ugEUwCB4IaIMtk/4hgKsZuHhvuBa5T17C0geS3hEsblh
-         h+PFmTAfL1XjLChBy7HoToK+haEO97FxVBJlUt5e2FMIYKFP6mN3JGNJsz8X8h91XSPx
-         iZN7ls6GawhAnEqQQmw/Bx6uWo3dUeLk5YTSlzckwFiByvhasFq8mZesBpRGNBfCgqUv
-         p/vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=qP9vlolHUpvniIGESvHc/dzVKJmtPa4m5oDkf6etjNQ=;
-        b=TkqPi7TjaYMcchLnaEsJ4wSfnCtHNa9C8pFu7+mwAdp1WjRpX5oPoyveguK0BXWzsB
-         xjHbIAMtR4ep7seifLcHG/SgXSHIbY+14nC2Ncl3i60E9oqGXE7j/bbmS07XkXbBMKw4
-         rbly8uFDpKYo2BkpEI0XkMwGDFJ2WX0W2Wgtj2sD6V41Y7Nxjz1A2U8FFKq8JHui7YdI
-         mQy36KKQ5AY21FHTXIe69anZTBqfIQb55TPhzUkboL2TvBWGNaxDt30IJ+a5/YW18oIQ
-         6Q1QAhGgx6Mk/9bGhrJHhsnK5aCJsmlBrtsM61P2wF4gNTO24Z+qT8eppgyDIIOZav66
-         7sfg==
-X-Gm-Message-State: APjAAAUS6pyCODJlO8K/Qln+GXa56O3C12IVelgJHD77lDwWnaor6yEF
-        FTkQWXMqQ1fF8pucaGDPkwgj3ZPBgAs=
-X-Google-Smtp-Source: APXvYqz9BJSZ/3ks3lGjBuChC1lSDcPAteW1tLkGId0IKFa+ZcG1XKKkAyfpZZPlUm3mjWSH8KamlQ==
-X-Received: by 2002:a17:906:a454:: with SMTP id cb20mr5087711ejb.205.1581408586719;
-        Tue, 11 Feb 2020 00:09:46 -0800 (PST)
-Received: from [100.84.57.50] ([213.55.220.235])
-        by smtp.googlemail.com with ESMTPSA id cb20sm171727edb.1.2020.02.11.00.09.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Feb 2020 00:09:46 -0800 (PST)
-Subject: Re: [PATCH] RFT: iio: gp2ap002: Replace LUT with math
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Jonathan Bakker <xc-racer2@live.ca>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linux Input <linux-input@vger.kernel.org>
-References: <20200208123359.396-1-linus.walleij@linaro.org>
- <74ab4b7b-eae2-0c6f-bb4a-eabbd3b4d042@gmail.com>
- <CACRpkdau3ei4OXcpucctxKqb7baHsMf8a0Q6sQ4P=gOf=bxQ5A@mail.gmail.com>
- <395b3e38-cea4-9376-1544-f1ef85abf171@gmail.com>
- <BYAPR10MB34797AABF2536F03BC3B4065A3190@BYAPR10MB3479.namprd10.prod.outlook.com>
- <9797aa15-eed1-932c-3cd6-64d7ccbf9d5e@gmail.com>
- <CACRpkdb38q0iDa+Y18bE82haoSTXzbuORjer=g9yMtsw4COuJA@mail.gmail.com>
-From:   Gregor Riepl <onitake@gmail.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=onitake@gmail.com; prefer-encrypt=mutual; keydata=
- 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
- WFSiKQ==
-Message-ID: <1777a0f2-08bb-3629-7c85-074819ffa5a0@gmail.com>
-Date:   Tue, 11 Feb 2020 09:09:44 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1727617AbgBKIpE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Feb 2020 03:45:04 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:55532 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725787AbgBKIpE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Feb 2020 03:45:04 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01B8iBMp005289;
+        Tue, 11 Feb 2020 03:44:50 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2y1udmtg66-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Feb 2020 03:44:49 -0500
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 01B8ilOw003719
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 11 Feb 2020 03:44:48 -0500
+Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 11 Feb 2020 00:44:46 -0800
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
+ SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 11 Feb 2020 00:44:46 -0800
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Tue, 11 Feb 2020 00:44:45 -0800
+Received: from mircea-Precision-5530-2-in-1.ad.analog.com ([10.48.65.114])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 01B8igmf029075;
+        Tue, 11 Feb 2020 03:44:43 -0500
+From:   Mircea Caprioru <mircea.caprioru@analog.com>
+To:     <jic23@kernel.org>
+CC:     <Michael.Hennerich@analog.com>, <alexandru.ardelean@analog.com>,
+        <lars@metafoo.de>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        Mircea Caprioru <mircea.caprioru@analog.com>
+Subject: [PATCH V4] iio: adc: ad7124: Add direct reg access
+Date:   Tue, 11 Feb 2020 10:44:53 +0200
+Message-ID: <20200211084453.16866-1-mircea.caprioru@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <CACRpkdb38q0iDa+Y18bE82haoSTXzbuORjer=g9yMtsw4COuJA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-11_02:2020-02-10,2020-02-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=1 bulkscore=0 adultscore=0 mlxlogscore=898 lowpriorityscore=0
+ clxscore=1015 mlxscore=0 impostorscore=0 spamscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002110065
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This patch adds the posibility do read and write registers from userspace
+using the kernel debug direct register access option.
 
-> This looks VERY good!
-> 
-> Can you provide a patch against upstream (Jonathan's tree)
-> or do you want me to pick the method and send a patch (I can
-> add in your Signed-off-by in that case, if you approve).
+Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+---
+Changelog V4:
+- verify limit againg ARRAY_SIZE(ad7124_reg_size)
 
-I think it will be easier if you just pick the method.
+ drivers/iio/adc/ad7124.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-You have my Signed-off.
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index f0206d819fda..a3c0647a5391 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -98,6 +98,14 @@ static const unsigned int ad7124_gain[8] = {
+ 	1, 2, 4, 8, 16, 32, 64, 128
+ };
+ 
++static const unsigned int ad7124_reg_size[] = {
++	1, 2, 3, 3, 2, 1, 3, 3, 1, 2, 2, 2, 2,
++	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
++	2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3,
++	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
++	3, 3, 3, 3, 3
++};
++
+ static const int ad7124_master_clk_freq_hz[3] = {
+ 	[AD7124_LOW_POWER] = 76800,
+ 	[AD7124_MID_POWER] = 153600,
+@@ -427,6 +435,27 @@ static int ad7124_write_raw(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
++static int ad7124_reg_access(struct iio_dev *indio_dev,
++			     unsigned int reg,
++			     unsigned int writeval,
++			     unsigned int *readval)
++{
++	struct ad7124_state *st = iio_priv(indio_dev);
++	int ret;
++
++	if (reg >= ARRAY_SIZE(ad7124_reg_size))
++		return -EINVAL;
++
++	if (readval)
++		ret = ad_sd_read_reg(&st->sd, reg, ad7124_reg_size[reg],
++				     readval);
++	else
++		ret = ad_sd_write_reg(&st->sd, reg, ad7124_reg_size[reg],
++				      writeval);
++
++	return ret;
++}
++
+ static IIO_CONST_ATTR(in_voltage_scale_available,
+ 	"0.000001164 0.000002328 0.000004656 0.000009313 0.000018626 0.000037252 0.000074505 0.000149011 0.000298023");
+ 
+@@ -442,6 +471,7 @@ static const struct attribute_group ad7124_attrs_group = {
+ static const struct iio_info ad7124_info = {
+ 	.read_raw = ad7124_read_raw,
+ 	.write_raw = ad7124_write_raw,
++	.debugfs_reg_access = &ad7124_reg_access,
+ 	.validate_trigger = ad_sd_validate_trigger,
+ 	.attrs = &ad7124_attrs_group,
+ };
+-- 
+2.17.1
+

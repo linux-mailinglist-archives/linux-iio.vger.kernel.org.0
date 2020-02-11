@@ -2,114 +2,314 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2AE515931A
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 16:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07543159347
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 16:38:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728494AbgBKPYk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Feb 2020 10:24:40 -0500
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:53993 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727862AbgBKPYk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Feb 2020 10:24:40 -0500
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01BFClE1006474;
-        Tue, 11 Feb 2020 16:24:21 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=Ezoe/G+jJX5I3pY7QRbq/bcM4zPDwuqJPks4FpvMtAg=;
- b=LJQq/uiVV+asoDaiAIWJc4GnWWL1dMo86OQyN3S/EZepubJjjcFGw+/nO/8AwKkCz8Q8
- 6jbAdWOtrTqk2wQN1FKPjpyiFHVO42Coaxy8UGb7jikQoJZf1B6Cxmzk2DbJF1Nnw5Yo
- gne+/y5LxnTcM1d/S5EGtdBc55790jTXh6krFOdWpEM++9AqxVoKoDrHspAhHTvXrcS8
- w3lGm+loV14d4GC2vnUVxtvuI98wU4jchGI4TwhiN3H243OjwK1YohlbULKLAneCEA0W
- vbT49ombzjku4t65J/VQ849dK2F1ooEZlDEsaB/1o3APzQmA+fEtN/TZkbhYHhvEFMLv /w== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2y1urh68mj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Feb 2020 16:24:21 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 6353110003A;
-        Tue, 11 Feb 2020 16:24:20 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag6node2.st.com [10.75.127.17])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2C9D12BEC69;
-        Tue, 11 Feb 2020 16:24:20 +0100 (CET)
-Received: from SFHDAG6NODE2.st.com (10.75.127.17) by SFHDAG6NODE2.st.com
- (10.75.127.17) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Tue, 11 Feb
- 2020 16:24:19 +0100
-Received: from SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6]) by
- SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6%20]) with mapi id
- 15.00.1347.000; Tue, 11 Feb 2020 16:24:19 +0100
-From:   Olivier MOYSAN <olivier.moysan@st.com>
+        id S1729111AbgBKPiD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Feb 2020 10:38:03 -0500
+Received: from hosting.pavoucek.net ([46.28.107.168]:41568 "EHLO
+        hosting.pavoucek.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728322AbgBKPiC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Feb 2020 10:38:02 -0500
+Received: from tomas.local.tbs-biometrics.cz (176-74-132-138.netdatacomm.cz [176.74.132.138])
+        (Authenticated sender: tomas@novotny.cz)
+        by hosting.pavoucek.net (Postfix) with ESMTPSA id CC826101BDB;
+        Tue, 11 Feb 2020 16:37:59 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 hosting.pavoucek.net CC826101BDB
+Date:   Tue, 11 Feb 2020 16:37:59 +0100
+From:   Tomas Novotny <tomas@novotny.cz>
 To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 1/4] dt-bindings: iio: adc: sd modulator: add vref support
-Thread-Topic: [PATCH 1/4] dt-bindings: iio: adc: sd modulator: add vref
- support
-Thread-Index: AQHV3qHoiCGlg6dSeUqjiNMk6pDzMqgWEKCA
-Date:   Tue, 11 Feb 2020 15:24:19 +0000
-Message-ID: <a2a738c1-4080-be91-a8bf-3aebe20b27f7@st.com>
-References: <20200204101008.11411-1-olivier.moysan@st.com>
- <20200204101008.11411-2-olivier.moysan@st.com>
- <20200208160454.0f153bfb@archlinux>
-In-Reply-To: <20200208160454.0f153bfb@archlinux>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.75.127.44]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BB4AC24A2811754EA7AC0E65DB67844E@st.com>
-Content-Transfer-Encoding: base64
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Angus Ainslie <angus@akkea.ca>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>
+Subject: Re: [PATCH 2/5] iio: light: vcnl4000: add enable attributes for
+ vcnl4040/4200
+Message-ID: <20200211163759.4af7f924@tomas.local.tbs-biometrics.cz>
+In-Reply-To: <20200208145354.18d56940@archlinux>
+References: <20200205101655.11728-1-tomas@novotny.cz>
+        <20200205101655.11728-3-tomas@novotny.cz>
+        <20200208145354.18d56940@archlinux>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-11_04:2020-02-10,2020-02-11 signatures=0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gMi84LzIwIDU6MDQgUE0sIEpvbmF0aGFuIENhbWVyb24gd3JvdGU6DQo+IE9uIFR1ZSwgNCBG
-ZWIgMjAyMCAxMToxMDowNSArMDEwMA0KPiBPbGl2aWVyIE1veXNhbiA8b2xpdmllci5tb3lzYW5A
-c3QuY29tPiB3cm90ZToNCj4NCj4+IEFkZCB2cmVmIHN1cHBseSBzdXBwb3J0IHRvIHNpZ21hIGRl
-bHRhIG1vZHVsYXRvci4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBPbGl2aWVyIE1veXNhbiA8b2xp
-dmllci5tb3lzYW5Ac3QuY29tPg0KPj4gLS0tDQo+PiAgIC4uLi9kZXZpY2V0cmVlL2JpbmRpbmdz
-L2lpby9hZGMvc2lnbWEtZGVsdGEtbW9kdWxhdG9yLnlhbWwgICAgfCA0ICsrKysNCj4+ICAgMSBm
-aWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9Eb2N1bWVu
-dGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9zaWdtYS1kZWx0YS1tb2R1bGF0b3Iu
-eWFtbCBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vYWRjL3NpZ21hLWRl
-bHRhLW1vZHVsYXRvci55YW1sDQo+PiBpbmRleCBhMzkwMzQzZDBjMmEuLjJhZmUwNzY1ZTk3MSAx
-MDA2NDQNCj4+IC0tLSBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vYWRj
-L3NpZ21hLWRlbHRhLW1vZHVsYXRvci55YW1sDQo+PiArKysgYi9Eb2N1bWVudGF0aW9uL2Rldmlj
-ZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9zaWdtYS1kZWx0YS1tb2R1bGF0b3IueWFtbA0KPj4gQEAg
-LTgsNiArOCw3IEBAIHRpdGxlOiBEZXZpY2UtVHJlZSBiaW5kaW5ncyBmb3Igc2lnbWEgZGVsdGEg
-bW9kdWxhdG9yDQo+PiAgIA0KPj4gICBtYWludGFpbmVyczoNCj4+ICAgICAtIEFybmF1ZCBQb3Vs
-aXF1ZW4gPGFybmF1ZC5wb3VsaXF1ZW5Ac3QuY29tPg0KPj4gKyAgLSBPbGl2aWVyIE1veXNhbiA8
-b2xpdmllci5tb3lzYW5Ac3QuY29tPg0KPj4gICANCj4+ICAgcHJvcGVydGllczoNCj4+ICAgICBj
-b21wYXRpYmxlOg0KPj4gQEAgLTIxLDYgKzIyLDkgQEAgcHJvcGVydGllczoNCj4+ICAgICAnI2lv
-LWNoYW5uZWwtY2VsbHMnOg0KPj4gICAgICAgY29uc3Q6IDANCj4+ICAgDQo+PiArICB2cmVmLXN1
-cHBseToNCj4+ICsgICAgZGVzY3JpcHRpb246IFBoYW5kbGUgdG8gdGhlIHZyZWYgaW5wdXQgYW5h
-bG9nIHJlZmVyZW5jZSB2b2x0YWdlLg0KPiBJIG5vdGUgdGhpcyBpbiByZXZpZXcgb2YgcGF0Y2gg
-MiBidXQgaW4gZ2VuZXJhbCBJJ20gbm90IHN1cmUgd2Ugc2hvdWxkDQo+IGJlIGludHJvZHVjaW5n
-IHRoaXMgZm9yIGdlbmVyaWMgZGV2aWNlcy4gICBJdCdzIGZpbmUgaWYgd2UgaGF2ZSBhbg0KPiBl
-eHBsaWNpdCBjb21wYXRpYmxlIGJ1dCB0aGVyZSBpcyBubyByZWFzb24gdG8gYXNzdW1lIGEgZ2Vu
-ZXJpYyBzZC1tb2R1bGF0b3INCj4gdXNlcyBhbiBleHRlcm5hbCByZWZlcmVuY2UuDQo+DQo+IEpv
-bmF0aGFuDQpPaywgSSB3aWxsIHJlbW92ZSByZWZlcmVuY2UgdG8gZXh0ZXJuYWwgdm9sdGFnZSBm
-b3IgZ2VuZXJpYyANCnNkLW1vZHVsYXRvciwgaW4gdjIuDQpJIHdpbGwgYWRkIGl0IGZvciBhZHMx
-MjAxIGNvbXBhdGlibGUsIGluc3RlYWQuDQoNClRoYW5rcyBmb3IgeW91ciByZXZpZXcNCk9saXZp
-ZXINCj4+ICsNCj4+ICAgcmVxdWlyZWQ6DQo+PiAgICAgLSBjb21wYXRpYmxlDQo+PiAgICAgLSAn
-I2lvLWNoYW5uZWwtY2VsbHMnDQo=
+Hi Jonathan,
+
+On Sat, 8 Feb 2020 14:53:54 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> On Wed,  5 Feb 2020 11:16:52 +0100
+> Tomas Novotny <tomas@novotny.cz> wrote:
+> 
+> > Both vcnl4040 and vcnl4200 chips start with ambient light and proximity
+> > channels disabled. The driver enables both channels during
+> > initialization. The channels may be enabled or disabled with this
+> > change.
+> > 
+> > Disabled ambient light channel returns the last measured value on read.
+> > This differs from proximity, which returns 0. Channels return these
+> > values with the configured sampling rate.
+> > 
+> > The driver doesn't configure some defaults during probe now. Only the
+> > enable bit is handled.
+> > 
+> > Signed-off-by: Tomas Novotny <tomas@novotny.cz>  
+> 
+> As a general rule we don't do this.  The enable controls for input devices are
+> only there for things like step counters that will count from point of being
+> enabled until you read them.
+
+ok.
+
+> For light sensors etc it's a userspace control that no standard code knows
+> how to use.  So if it make sense to enable / disable under normal conditions
+> it should either be done for every reading with increased delays, or you
+> should look at doing it with runtime power management.  Typical choice
+> is to turn off if no one has read from the sensor for N seconds.
+> 
+> runtime pm reduces the exposed complexity of the interfaces from userspace
+> and also leads to power savings when a program is taking readings, but not
+> that often.
+
+yes, the PM way is much neater and I will drop this patch in favour of it.
+
+By the way, what about disabled CONFIG_PM? Although it is not my case, is
+there a way how to disable the sensor?
+
+Thanks,
+
+Tomas
+
+> Thanks,
+> 
+> Jonathan
+> 
+> > ---
+> >  drivers/iio/light/vcnl4000.c | 118 +++++++++++++++++++++++++++++++++++++------
+> >  1 file changed, 102 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> > index 9f673e89084a..f351b100a165 100644
+> > --- a/drivers/iio/light/vcnl4000.c
+> > +++ b/drivers/iio/light/vcnl4000.c
+> > @@ -58,6 +58,10 @@
+> >  #define VCNL4000_AL_OD		BIT(4) /* start on-demand ALS measurement */
+> >  #define VCNL4000_PS_OD		BIT(3) /* start on-demand proximity measurement */
+> >  
+> > +/* Bit masks for various configuration registers */
+> > +#define VCNL4200_AL_SD		BIT(0) /* Ambient light shutdown */
+> > +#define VCNL4200_PS_SD		BIT(0) /* Proximity shutdown */
+> > +
+> >  enum vcnl4000_device_ids {
+> >  	VCNL4000,
+> >  	VCNL4010,
+> > @@ -86,10 +90,16 @@ struct vcnl4000_data {
+> >  
+> >  struct vcnl4000_chip_spec {
+> >  	const char *prod;
+> > +	const struct iio_chan_spec *channels;
+> > +	size_t num_channels;
+> >  	const struct regmap_config *regmap_config;
+> >  	int (*init)(struct vcnl4000_data *data);
+> >  	int (*measure_light)(struct vcnl4000_data *data, int *val);
+> >  	int (*measure_proximity)(struct vcnl4000_data *data, int *val);
+> > +	int (*is_enabled)(struct vcnl4000_data *data, enum iio_chan_type type,
+> > +			int *val);
+> > +	int (*enable)(struct vcnl4000_data *data, enum iio_chan_type type,
+> > +			bool val);
+> >  };
+> >  
+> >  static const struct i2c_device_id vcnl4000_id[] = {
+> > @@ -102,6 +112,30 @@ static const struct i2c_device_id vcnl4000_id[] = {
+> >  };
+> >  MODULE_DEVICE_TABLE(i2c, vcnl4000_id);
+> >  
+> > +static const struct iio_chan_spec vcnl4000_channels[] = {
+> > +	{
+> > +		.type = IIO_LIGHT,
+> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > +			BIT(IIO_CHAN_INFO_SCALE),
+> > +	}, {
+> > +		.type = IIO_PROXIMITY,
+> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> > +	}
+> > +};
+> > +
+> > +static const struct iio_chan_spec vcnl4200_channels[] = {
+> > +	{
+> > +		.type = IIO_LIGHT,
+> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > +			BIT(IIO_CHAN_INFO_SCALE) |
+> > +			BIT(IIO_CHAN_INFO_ENABLE),
+> > +	}, {
+> > +		.type = IIO_PROXIMITY,
+> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > +			BIT(IIO_CHAN_INFO_ENABLE),
+> > +	}
+> > +};
+> > +
+> >  static const struct regmap_config vcnl4000_regmap_config = {
+> >  	.reg_bits = 8,
+> >  	.val_bits = 8,
+> > @@ -171,11 +205,10 @@ static int vcnl4200_init(struct vcnl4000_data *data)
+> >  
+> >  	data->rev = (ret >> 8) & 0xf;
+> >  
+> > -	/* Set defaults and enable both channels */
+> > -	ret = regmap_write(data->regmap, VCNL4200_AL_CONF, 0);
+> > +	ret = data->chip_spec->enable(data, IIO_LIGHT, true);
+> >  	if (ret < 0)
+> >  		return ret;
+> > -	ret = regmap_write(data->regmap, VCNL4200_PS_CONF1, 0);
+> > +	ret = data->chip_spec->enable(data, IIO_PROXIMITY, true);
+> >  	if (ret < 0)
+> >  		return ret;
+> >  
+> > @@ -300,9 +333,46 @@ static int vcnl4200_measure_proximity(struct vcnl4000_data *data, int *val)
+> >  	return vcnl4200_measure(data, &data->vcnl4200_ps, val);
+> >  }
+> >  
+> > +static int vcnl4200_is_enabled(struct vcnl4000_data *data,
+> > +			       enum iio_chan_type type, int *val)
+> > +{
+> > +	int ret;
+> > +
+> > +	switch (type) {
+> > +	case IIO_LIGHT:
+> > +		ret = regmap_read(data->regmap, VCNL4200_AL_CONF, val);
+> > +		*val = !(*val & VCNL4200_AL_SD);
+> > +		break;
+> > +	case IIO_PROXIMITY:
+> > +		ret = regmap_read(data->regmap, VCNL4200_PS_CONF1, val);
+> > +		*val = !(*val & VCNL4200_PS_SD);
+> > +		break;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +	return ret < 0 ? ret : IIO_VAL_INT;
+> > +}
+> > +
+> > +static int vcnl4200_enable(struct vcnl4000_data *data, enum iio_chan_type type,
+> > +			   bool val)
+> > +{
+> > +	switch (type) {
+> > +	case IIO_LIGHT:
+> > +		return regmap_update_bits(data->regmap, VCNL4200_AL_CONF,
+> > +				VCNL4200_AL_SD, !val);
+> > +	case IIO_PROXIMITY:
+> > +		return regmap_update_bits(data->regmap, VCNL4200_PS_CONF1,
+> > +				VCNL4200_PS_SD, !val);
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> >  static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+> >  	[VCNL4000] = {
+> >  		.prod = "VCNL4000",
+> > +		.channels = vcnl4000_channels,
+> > +		.num_channels = ARRAY_SIZE(vcnl4000_channels),
+> >  		.regmap_config = &vcnl4000_regmap_config,
+> >  		.init = vcnl4000_init,
+> >  		.measure_light = vcnl4000_measure_light,
+> > @@ -310,6 +380,8 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+> >  	},
+> >  	[VCNL4010] = {
+> >  		.prod = "VCNL4010/4020",
+> > +		.channels = vcnl4000_channels,
+> > +		.num_channels = ARRAY_SIZE(vcnl4000_channels),
+> >  		.regmap_config = &vcnl4000_regmap_config,
+> >  		.init = vcnl4000_init,
+> >  		.measure_light = vcnl4000_measure_light,
+> > @@ -317,31 +389,28 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+> >  	},
+> >  	[VCNL4040] = {
+> >  		.prod = "VCNL4040",
+> > +		.channels = vcnl4200_channels,
+> > +		.num_channels = ARRAY_SIZE(vcnl4200_channels),
+> >  		.regmap_config = &vcnl4200_regmap_config,
+> >  		.init = vcnl4200_init,
+> >  		.measure_light = vcnl4200_measure_light,
+> >  		.measure_proximity = vcnl4200_measure_proximity,
+> > +		.is_enabled = vcnl4200_is_enabled,
+> > +		.enable = vcnl4200_enable,
+> >  	},
+> >  	[VCNL4200] = {
+> >  		.prod = "VCNL4200",
+> > +		.channels = vcnl4200_channels,
+> > +		.num_channels = ARRAY_SIZE(vcnl4200_channels),
+> >  		.regmap_config = &vcnl4200_regmap_config,
+> >  		.init = vcnl4200_init,
+> >  		.measure_light = vcnl4200_measure_light,
+> >  		.measure_proximity = vcnl4200_measure_proximity,
+> > +		.is_enabled = vcnl4200_is_enabled,
+> > +		.enable = vcnl4200_enable,
+> >  	},
+> >  };
+> >  
+> > -static const struct iio_chan_spec vcnl4000_channels[] = {
+> > -	{
+> > -		.type = IIO_LIGHT,
+> > -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > -			BIT(IIO_CHAN_INFO_SCALE),
+> > -	}, {
+> > -		.type = IIO_PROXIMITY,
+> > -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> > -	}
+> > -};
+> > -
+> >  static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+> >  				struct iio_chan_spec const *chan,
+> >  				int *val, int *val2, long mask)
+> > @@ -372,6 +441,22 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+> >  		*val = 0;
+> >  		*val2 = data->al_scale;
+> >  		return IIO_VAL_INT_PLUS_MICRO;
+> > +	case IIO_CHAN_INFO_ENABLE:
+> > +		return data->chip_spec->is_enabled(data, chan->type, val);
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static int vcnl4000_write_raw(struct iio_dev *indio_dev,
+> > +			      struct iio_chan_spec const *chan,
+> > +			      int val, int val2, long mask)
+> > +{
+> > +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_ENABLE:
+> > +		return data->chip_spec->enable(data, chan->type, val);
+> >  	default:
+> >  		return -EINVAL;
+> >  	}
+> > @@ -379,6 +464,7 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+> >  
+> >  static const struct iio_info vcnl4000_info = {
+> >  	.read_raw = vcnl4000_read_raw,
+> > +	.write_raw = vcnl4000_write_raw,
+> >  };
+> >  
+> >  static int vcnl4000_probe(struct i2c_client *client,
+> > @@ -412,8 +498,8 @@ static int vcnl4000_probe(struct i2c_client *client,
+> >  
+> >  	indio_dev->dev.parent = &client->dev;
+> >  	indio_dev->info = &vcnl4000_info;
+> > -	indio_dev->channels = vcnl4000_channels;
+> > -	indio_dev->num_channels = ARRAY_SIZE(vcnl4000_channels);
+> > +	indio_dev->channels = data->chip_spec->channels;
+> > +	indio_dev->num_channels = data->chip_spec->num_channels;
+> >  	indio_dev->name = VCNL4000_DRV_NAME;
+> >  	indio_dev->modes = INDIO_DIRECT_MODE;
+> >    
+> 

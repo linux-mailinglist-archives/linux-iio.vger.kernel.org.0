@@ -2,815 +2,214 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE20B158BFB
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 10:38:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BF76158CF9
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 11:54:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727817AbgBKJii (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Feb 2020 04:38:38 -0500
-Received: from inva020.nxp.com ([92.121.34.13]:37518 "EHLO inva020.nxp.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727566AbgBKJih (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 11 Feb 2020 04:38:37 -0500
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 74D021A32B0;
-        Tue, 11 Feb 2020 10:38:33 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 779FD1A1144;
-        Tue, 11 Feb 2020 10:38:27 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id BEDAB402CF;
-        Tue, 11 Feb 2020 17:38:20 +0800 (SGT)
-From:   haibo.chen@nxp.com
-To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        linux-iio@vger.kernel.org
-Cc:     haibo.chen@nxp.com
-Subject: [PATCH] iio: adc: Add imx8qxp adc driver support
-Date:   Tue, 11 Feb 2020 17:32:35 +0800
-Message-Id: <1581413555-31743-1-git-send-email-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+        id S1727821AbgBKKyc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Feb 2020 05:54:32 -0500
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:59962 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727805AbgBKKyc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Feb 2020 05:54:32 -0500
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01BAsJ9H020617;
+        Tue, 11 Feb 2020 11:54:20 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=3tZrMwq3KMFaha6QMKj6OAVuMaZdKt4Qxfei8VIdqCw=;
+ b=lnQN5ykes8V1oOQcykxeRxvSyDAMBqI2jw5meWEigZ1367afXhoyp6Rpdmttuw0KS7DA
+ ZHu9sPGcyysN9k5TyygkHknSvIvz/LD4mVYjFgrU3D/7aKnzOkxxqmSn/DHV7+vQPVsY
+ C5K+rI1ye4ffeIzir/lsc17Urrx9EaB58wqGJ8iLpI5A8DL1vsAkGyARNBAgUhQ+82fc
+ c0bZ7sv9T1Cfc9L+mOg1DCFcPJl4BSYSs7ZRkNidaHC4Kmz0ZlOCvQppQ+N8OgbcBnu+
+ kZSUpuM0IsVosV1xqkshqlU1r6+UpBnIU/mM08uuXK6i0q/zmsL63SAymGsyJjeBmWN5 eQ== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2y1ufh3epf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Feb 2020 11:54:20 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 81911100050;
+        Tue, 11 Feb 2020 11:54:18 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 72A2F2AEAAB;
+        Tue, 11 Feb 2020 11:54:18 +0100 (CET)
+Received: from [10.48.0.71] (10.75.127.44) by SFHDAG5NODE3.st.com
+ (10.75.127.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 11 Feb
+ 2020 11:54:17 +0100
+Subject: Re: [PATCH v2] counter: stm32-timer-cnt: add power management support
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+CC:     <jic23@kernel.org>, <alexandre.torgue@st.com>,
+        <mcoquelin.stm32@gmail.com>, <benjamin.gaignard@st.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <1581355198-30428-1-git-send-email-fabrice.gasnier@st.com>
+ <20200210174550.GA4626@icarus>
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+Message-ID: <b1e2930a-eeaf-dcfe-3e2c-b666908262bf@st.com>
+Date:   Tue, 11 Feb 2020 11:54:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <20200210174550.GA4626@icarus>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.44]
+X-ClientProxiedBy: SFHDAG4NODE2.st.com (10.75.127.11) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-11_03:2020-02-10,2020-02-11 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Haibo Chen <haibo.chen@nxp.com>
+On 2/10/20 6:45 PM, William Breathitt Gray wrote:
+> On Mon, Feb 10, 2020 at 06:19:58PM +0100, Fabrice Gasnier wrote:
+>> Add suspend/resume PM sleep ops. When going to low power, enforce the
+>> counter isn't active. Gracefully restore its state upon resume in case
+>> it's been left enabled prior to suspend.
+>>
+>> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+>> ---
+>> Changes in v2:
+>> - Don't refuse to suspend in case the counter has been left enabled.
+>>   Gracefully disable it and restore its state upon resume.
+>> ---
+>>  drivers/counter/stm32-timer-cnt.c | 63 +++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 63 insertions(+)
+>>
+>> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+>> index 3eafcce..50496f4 100644
+>> --- a/drivers/counter/stm32-timer-cnt.c
+>> +++ b/drivers/counter/stm32-timer-cnt.c
+>> @@ -12,6 +12,7 @@
+>>  #include <linux/iio/types.h>
+> 
+> Unrelated to your patch but it caught my eye: are iio headers necessary
+> for this file? I suspect they are not needed since this driver does not
+> make use of the IIO interface.
 
-i.MX8QXP B0 and i.MX8QM has the same ADC IP, so add the
-adc driver to support it.
+Hi William,
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
----
- drivers/iio/adc/Kconfig       |  10 +
- drivers/iio/adc/Makefile      |   1 +
- drivers/iio/adc/imx8qxp_adc.c | 723 ++++++++++++++++++++++++++++++++++
- 3 files changed, 734 insertions(+)
- create mode 100644 drivers/iio/adc/imx8qxp_adc.c
+Yes, you're right. Thanks for pointing this!
+I'll push a patch on top of this one to fix it. BTW, I'm not sure if
+this needs to be a marked as a fix, as this seems a quite minor issue?
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 82e33082958c..10329fe5d8d4 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -480,6 +480,16 @@ config IMX7D_ADC
- 	  This driver can also be built as a module. If so, the module will be
- 	  called imx7d_adc.
- 
-+config IMX8QXP_ADC
-+	tristate "IMX8QXP ADC driver"
-+	depends on ARCH_MXC || COMPILE_TEST
-+	depends on HAS_IOMEM
-+	help
-+	  Say yes here to build support for IMX8QXP ADC.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called imx8qxp_adc.
-+
- config LP8788_ADC
- 	tristate "LP8788 ADC driver"
- 	depends on MFD_LP8788
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 919228900df9..480f76b628ca 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -43,6 +43,7 @@ obj-$(CONFIG_FSL_MX25_ADC) += fsl-imx25-gcq.o
- obj-$(CONFIG_HI8435) += hi8435.o
- obj-$(CONFIG_HX711) += hx711.o
- obj-$(CONFIG_IMX7D_ADC) += imx7d_adc.o
-+obj-$(CONFIG_IMX8QXP_ADC) += imx8qxp_adc.o
- obj-$(CONFIG_INA2XX_ADC) += ina2xx-adc.o
- obj-$(CONFIG_INGENIC_ADC) += ingenic-adc.o
- obj-$(CONFIG_INTEL_MRFLD_ADC) += intel_mrfld_adc.o
-diff --git a/drivers/iio/adc/imx8qxp_adc.c b/drivers/iio/adc/imx8qxp_adc.c
-new file mode 100644
-index 000000000000..a6a9c42d08cd
---- /dev/null
-+++ b/drivers/iio/adc/imx8qxp_adc.c
-@@ -0,0 +1,723 @@
-+/*
-+ * NXP i.MX8QXP ADC driver
-+ *
-+ * Copyright (C) 2018 NXP
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/completion.h>
-+#include <linux/err.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/delay.h>
-+#include <linux/module.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/platform_device.h>
-+#include <linux/regulator/consumer.h>
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/driver.h>
-+#include <linux/iio/sysfs.h>
-+
-+/* ADC register */
-+#define IMX8QXP_REG_ADC_VERID		0x00
-+#define IMX8QXP_REG_ADC_PARAM		0x04
-+#define IMX8QXP_REG_ADC_CTRL		0x10
-+#define IMX8QXP_REG_ADC_STAT		0x14
-+#define IMX8QXP_REG_ADC_IE		0x18
-+#define IMX8QXP_REG_ADC_DE		0x1c
-+#define IMX8QXP_REG_ADC_CFG		0x20
-+#define IMX8QXP_REG_ADC_PAUSE		0x24
-+#define IMX8QXP_REG_ADC_FCTRL		0x30
-+#define IMX8QXP_REG_ADC_SWTRIG		0x34
-+#define IMX8QXP_REG_ADC_TCTRL0		0xc0
-+#define IMX8QXP_REG_ADC_TCTRL1		0xc4
-+#define IMX8QXP_REG_ADC_TCTRL2		0xc8
-+#define IMX8QXP_REG_ADC_TCTRL3		0xcc
-+#define IMX8QXP_REG_ADC_TCTRL4		0xd0
-+#define IMX8QXP_REG_ADC_TCTRL5		0xd4
-+#define IMX8QXP_REG_ADC_TCTRL6		0xd8
-+#define IMX8QXP_REG_ADC_TCTRL7		0xdc
-+#define IMX8QXP_REG_ADC_CMDL1		0x100
-+#define IMX8QXP_REG_ADC_CMDH1		0x104
-+#define IMX8QXP_REG_ADC_CMDL2		0x108
-+#define IMX8QXP_REG_ADC_CMDH2		0x10c
-+#define IMX8QXP_REG_ADC_CMDL3		0x110
-+#define IMX8QXP_REG_ADC_CMDH3		0x114
-+#define IMX8QXP_REG_ADC_CMDL4		0x118
-+#define IMX8QXP_REG_ADC_CMDH4		0x11c
-+#define IMX8QXP_REG_ADC_CMDL5		0x120
-+#define IMX8QXP_REG_ADC_CMDH5		0x124
-+#define IMX8QXP_REG_ADC_CMDL6		0x128
-+#define IMX8QXP_REG_ADC_CMDH6		0x12c
-+#define IMX8QXP_REG_ADC_CMDL7		0x130
-+#define IMX8QXP_REG_ADC_CMDH7		0x134
-+#define IMX8QXP_REG_ADC_CMDL8		0x138
-+#define IMX8QXP_REG_ADC_CMDH8		0x13c
-+#define IMX8QXP_REG_ADC_CV1		0x200
-+#define IMX8QXP_REG_ADC_CV2		0x204
-+#define IMX8QXP_REG_ADC_CV3		0x208
-+#define IMX8QXP_REG_ADC_CV4		0x20c
-+#define IMX8QXP_REG_ADC_RESFIFO		0x300
-+#define IMX8QXP_REG_ADC_TST		0xffc
-+
-+/* ADC IE bit shift */
-+#define IMX8QXP_REG_ADC_IE_FOFIE_SHIFT		(1)
-+#define IMX8QXP_REG_ADC_IE_FWMIE_SHIFT		(0)
-+/* ADC CTRL bit shift*/
-+#define IMX8QXP_REG_ADC_CTRL_FIFO_RESET_SHIFT		(8)
-+#define IMX8QXP_REG_ADC_CTRL_SOFTWARE_RESET_SHIFT	(1)
-+#define IMX8QXP_REG_ADC_CTRL_ADC_ENABLE			(0)
-+/* ADC TCTRL bit shift*/
-+#define IMX8QXP_REG_ADC_TCTRL_TCMD_SHIFT	(24)
-+#define IMX8QXP_REG_ADC_TCTRL_TDLY_SHIFT	(16)
-+#define IMX8QXP_REG_ADC_TCTRL_TPRI_SHIFT	(8)
-+#define IMX8QXP_REG_ADC_TCTRL_HTEN_SHIFT	(0)
-+/* ADC CMDL bit shift*/
-+#define IMX8QXP_REG_ADC_CMDL_CSCALE_SHIFT	(8)
-+#define IMX8QXP_REG_ADC_CMDL_MODE_SHIFT		(7)
-+#define IMX8QXP_REG_ADC_CMDL_DIFF_SHIFT		(6)
-+#define IMX8QXP_REG_ADC_CMDL_ABSEL_SHIFT	(5)
-+#define IMX8QXP_REG_ADC_CMDL_ADCH_SHIFT		(0)
-+/* ADC CMDH bit shift*/
-+#define IMX8QXP_REG_ADC_CMDH_NEXT_SHIFT		(24)
-+#define IMX8QXP_REG_ADC_CMDH_LOOP_SHIFT		(16)
-+#define IMX8QXP_REG_ADC_CMDH_AVGS_SHIFT		(12)
-+#define IMX8QXP_REG_ADC_CMDH_STS_SHIFT		(8)
-+#define IMX8QXP_REG_ADC_CMDH_LWI_SHIFT		(7)
-+#define IMX8QXP_REG_ADC_CMDH_CMPEN_SHIFT	(0)
-+/* ADC CFG bit shift*/
-+#define IMX8QXP_REG_ADC_CFG_PWREN_SHIFT		(28)
-+#define IMX8QXP_REG_ADC_CFG_PUDLY_SHIFT		(16)
-+#define IMX8QXP_REG_ADC_CFG_REFSEL_SHIFT	(6)
-+#define IMX8QXP_REG_ADC_CFG_PWRSEL_SHIFT	(4)
-+#define IMX8QXP_REG_ADC_CFG_TPRICTRL_SHIFT	(0)
-+/* ADC FCTRL bit shift*/
-+#define IMX8QXP_ADC_FCTRL_FWMARK_SHIFT		(16)
-+#define IMX8QXP_ADC_FCTRL_FWMARK_MASK		(0x1f << 16)
-+#define IMX8QXP_ADC_FCTRL_FCOUNT_MASK		(0x1f)
-+/* ADC STAT bit shift*/
-+#define IMX8QXP_REG_ADC_STAT_CMDACT_SHIFT	(24)
-+#define IMX8QXP_REG_ADC_STAT_TRGACT_SHIFT	(16)
-+#define IMX8QXP_REG_ADC_STAT_FOF_SHIFT		(1)
-+#define IMX8QXP_REG_ADC_STAT_RDY_SHIFT		(0)
-+
-+/* ADC CMD PARAMETER*/
-+#define IMX8QXP_REG_ADC_CMDL_CNANNEL_SCALE_DOWN		(0)
-+#define IMX8QXP_REG_ADC_CMDL_CHANNEL_SCALE_FULL		(0x3f)
-+#define IMX8QXP_REG_ADC_CMDL_SEL_A_A_B_CHANNEL		(0)
-+#define IMX8QXP_REG_ADC_CMDL_SEL_B_B_A_CHANNEL		(1)
-+#define IMX8QXP_REG_ADC_CMDL_STANDARD_RESOLUTION	(0)
-+#define IMX8QXP_REG_ADC_CMDL_HIGH_RESOLUTION		(1)
-+#define IMX8QXP_REG_ADC_CMDL_MODE_SINGLE		(0)
-+#define IMX8QXP_REG_ADC_CMDL_MODE_DIFF			(1)
-+
-+#define IMX8QXP_REG_ADC_CMDH_LWI_INCREMENT_ENABLE	(1)
-+#define IMX8QXP_REG_ADC_CMDH_LWI_INCREMENT_DISABLE	(0)
-+#define IMX8QXP_REG_ADC_CMDH_CMPEN_DISABLE		(0)
-+#define IMX8QXP_REG_ADC_CMDH_CMPEN_ENABLE_TRUE		(2)
-+#define IMX8QXP_REG_ADC_CMDH_CMPEN_ENABLE_UNTILE_TRUE	(0x3)
-+
-+/* ADC PAUSE PARAMETER*/
-+#define IMX8QXP_REG_ADC_PAUSE_ENABLE		(0x80000000)
-+/* ADC TRIGGER PARAMETER*/
-+#define IMX8QXP_REG_ADC_TCTRL_TPRI_PRIORITY_HIGH	(0)
-+#define IMX8QXP_REG_ADC_TCTRL_TPRI_PRIORITY_LOW	(1)
-+
-+#define IMX8QXP_REG_ADC_TCTRL_HTEN_HARDWARE_TIRGGER_DISABLE	(0)
-+#define IMX8QXP_REG_ADC_TCTRC_HTEN_HARDWARE_TIRGGER_ENABLE	(1)
-+
-+#define MAX_CMD (8)
-+#define MAX_TRIG (8)
-+
-+#define IMX8QXP_ADC_TIMEOUT		msecs_to_jiffies(100)
-+
-+struct imx8qxp_adc_trigger_ctrl {
-+	u32 tcmd;
-+	u32 tdly;
-+	u32 tpri;
-+	u32 hten;
-+};
-+
-+struct imx8qxp_adc_cmd_l {
-+	u32 scale;
-+	u32 mode;
-+	u32 diff;
-+	u32 absel;
-+	u32 adch;
-+};
-+
-+struct imx8qxp_adc_cmd_h {
-+	u32 next;
-+	u32 loop;
-+	u32 avgs;
-+	u32 sts;
-+	u32 lwi;
-+	u32 cmpen;
-+};
-+
-+struct imx8qxp_adc_cfg {
-+	u32 pwren;
-+	u32 pudly;
-+	u32 refsel;
-+	u32 pwrsel;
-+	u32 tprictrl;
-+};
-+
-+struct imx8qxp_adc {
-+	struct device *dev;
-+	void __iomem *regs;
-+	struct clk *clk;
-+	struct clk *ipg_clk;
-+
-+	u32 vref_uv;
-+	u32 value;
-+	u32 channel_id;
-+	u32 trigger_id;
-+	u32 cmd_id;
-+
-+	struct regulator *vref;
-+	struct imx8qxp_adc_cmd_l adc_cmd_l[MAX_CMD + 1];
-+	struct imx8qxp_adc_cmd_h adc_cmd_h[MAX_CMD + 1];
-+	struct imx8qxp_adc_trigger_ctrl adc_trigger_ctrl[MAX_TRIG + 1];
-+	struct imx8qxp_adc_cfg adc_cfg;
-+	struct completion completion;
-+};
-+
-+#define IMX8QXP_ADC_CHAN(_idx) {					\
-+	.type = IIO_VOLTAGE,					\
-+	.indexed = 1,						\
-+	.channel = (_idx),					\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
-+				BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-+}
-+
-+static const struct iio_chan_spec imx8qxp_adc_iio_channels[] = {
-+	IMX8QXP_ADC_CHAN(0),
-+	IMX8QXP_ADC_CHAN(1),
-+	IMX8QXP_ADC_CHAN(2),
-+	IMX8QXP_ADC_CHAN(3),
-+	IMX8QXP_ADC_CHAN(4),
-+	IMX8QXP_ADC_CHAN(5),
-+	IMX8QXP_ADC_CHAN(6),
-+	IMX8QXP_ADC_CHAN(7),
-+};
-+
-+static void imx8qxp_adc_feature_prepare(struct imx8qxp_adc *adc)
-+{
-+	u32 i;
-+
-+	adc->trigger_id = 0;
-+	adc->cmd_id = 0;
-+	adc->channel_id = 0;
-+
-+	for (i = 0; i < MAX_CMD + 1; i++) {
-+		adc->adc_cmd_l[i].scale = 1;
-+		adc->adc_cmd_l[i].mode = 0;
-+		adc->adc_cmd_l[i].diff = 0;
-+		adc->adc_cmd_l[i].absel = 0;
-+		adc->adc_cmd_l[i].adch = 0;
-+		adc->adc_cmd_h[i].next = 0;
-+		adc->adc_cmd_h[i].loop = 0;
-+		adc->adc_cmd_h[i].avgs = 0;
-+		adc->adc_cmd_h[i].sts = 0;
-+		adc->adc_cmd_h[i].lwi = 0;
-+		adc->adc_cmd_h[i].cmpen = 0;
-+	}
-+
-+	for (i = 0; i < MAX_TRIG; i++) {
-+		adc->adc_trigger_ctrl[i].tcmd = 0;
-+		adc->adc_trigger_ctrl[i].tdly = 0;
-+		adc->adc_trigger_ctrl[i].tpri = 0;
-+		adc->adc_trigger_ctrl[i].hten = 0;
-+	}
-+
-+	adc->adc_cfg.pwren = 0;
-+	adc->adc_cfg.pudly = 0;
-+	adc->adc_cfg.refsel = 0;
-+	adc->adc_cfg.pwrsel = 0;
-+	adc->adc_cfg.tprictrl = 0;
-+}
-+
-+static void imx8qxp_adc_reset(struct imx8qxp_adc *adc)
-+{
-+	u32 ctrl;
-+
-+	/*software reset, need to clear the set bit*/
-+	ctrl = readl(adc->regs + IMX8QXP_REG_ADC_CTRL);
-+	ctrl |= 1 << IMX8QXP_REG_ADC_CTRL_SOFTWARE_RESET_SHIFT;
-+	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-+	udelay(10);
-+	ctrl &= ~(1 << IMX8QXP_REG_ADC_CTRL_SOFTWARE_RESET_SHIFT);
-+	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-+
-+	/* reset the fifo */
-+	ctrl |= 1 << IMX8QXP_REG_ADC_CTRL_FIFO_RESET_SHIFT;
-+	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-+}
-+
-+static void imx8qxp_adc_reg_config(struct imx8qxp_adc *adc)
-+{
-+	u32 adc_cfg, adc_tctrl, adc_cmdl, adc_cmdh;
-+	u32 t_id, c_id;
-+
-+	adc_cfg = adc->adc_cfg.pwren << IMX8QXP_REG_ADC_CFG_PWREN_SHIFT
-+			| adc->adc_cfg.pudly << IMX8QXP_REG_ADC_CFG_PUDLY_SHIFT
-+			| adc->adc_cfg.refsel << IMX8QXP_REG_ADC_CFG_REFSEL_SHIFT
-+			| adc->adc_cfg.pwrsel << IMX8QXP_REG_ADC_CFG_PWRSEL_SHIFT
-+			| adc->adc_cfg.tprictrl << IMX8QXP_REG_ADC_CFG_TPRICTRL_SHIFT;
-+	writel(adc_cfg, adc->regs + IMX8QXP_REG_ADC_CFG);
-+
-+	t_id = adc->trigger_id;
-+	adc_tctrl = adc->adc_trigger_ctrl[t_id].tcmd << IMX8QXP_REG_ADC_TCTRL_TCMD_SHIFT
-+			| adc->adc_trigger_ctrl[t_id].tdly << IMX8QXP_REG_ADC_TCTRL_TDLY_SHIFT
-+			| adc->adc_trigger_ctrl[t_id].tpri << IMX8QXP_REG_ADC_TCTRL_TPRI_SHIFT
-+			| adc->adc_trigger_ctrl[t_id].hten << IMX8QXP_REG_ADC_TCTRL_HTEN_SHIFT;
-+	writel(adc_tctrl, adc->regs + IMX8QXP_REG_ADC_TCTRL0 + t_id * 4);
-+
-+	c_id = adc->cmd_id - 1;
-+	adc_cmdl = adc->adc_cmd_l[c_id].scale << IMX8QXP_REG_ADC_CMDL_CSCALE_SHIFT
-+			| adc->adc_cmd_l[c_id].mode << IMX8QXP_REG_ADC_CMDL_MODE_SHIFT
-+			| adc->adc_cmd_l[c_id].diff << IMX8QXP_REG_ADC_CMDL_DIFF_SHIFT
-+			| adc->adc_cmd_l[c_id].absel << IMX8QXP_REG_ADC_CMDL_ABSEL_SHIFT
-+			| adc->adc_cmd_l[c_id].adch << IMX8QXP_REG_ADC_CMDL_ADCH_SHIFT;
-+	writel(adc_cmdl, adc->regs + IMX8QXP_REG_ADC_CMDL1 + c_id * 8);
-+
-+	adc_cmdh = adc->adc_cmd_h[c_id].next << IMX8QXP_REG_ADC_CMDH_NEXT_SHIFT
-+			| adc->adc_cmd_h[c_id].loop << IMX8QXP_REG_ADC_CMDH_LOOP_SHIFT
-+			| adc->adc_cmd_h[c_id].avgs << IMX8QXP_REG_ADC_CMDH_AVGS_SHIFT
-+			| adc->adc_cmd_h[c_id].sts << IMX8QXP_REG_ADC_CMDH_STS_SHIFT
-+			| adc->adc_cmd_h[c_id].lwi << IMX8QXP_REG_ADC_CMDH_LWI_SHIFT
-+			| adc->adc_cmd_h[c_id].cmpen << IMX8QXP_REG_ADC_CMDH_CMPEN_SHIFT;
-+	writel(adc_cmdh, adc->regs + IMX8QXP_REG_ADC_CMDH1 + c_id * 8);
-+}
-+
-+static void imx8qxp_adc_mode_config(struct imx8qxp_adc *adc)
-+{
-+	u32 cmd_id, trigger_id, channel_id;
-+
-+	channel_id = adc->channel_id;
-+	cmd_id = adc->cmd_id - 1;
-+	trigger_id = adc->trigger_id;
-+
-+	/* config the cmd */
-+	adc->adc_cmd_l[cmd_id].scale = IMX8QXP_REG_ADC_CMDL_CHANNEL_SCALE_FULL;
-+	adc->adc_cmd_l[cmd_id].mode = IMX8QXP_REG_ADC_CMDL_STANDARD_RESOLUTION;
-+	adc->adc_cmd_l[cmd_id].diff = IMX8QXP_REG_ADC_CMDL_MODE_SINGLE;
-+	adc->adc_cmd_l[cmd_id].absel = IMX8QXP_REG_ADC_CMDL_SEL_A_A_B_CHANNEL;
-+	adc->adc_cmd_l[cmd_id].adch = channel_id;
-+
-+	adc->adc_cmd_h[cmd_id].next = 0;
-+	adc->adc_cmd_h[cmd_id].loop = 0;
-+	adc->adc_cmd_h[cmd_id].avgs = 7;  // 128 times conversion
-+	adc->adc_cmd_h[cmd_id].sts = 0;
-+	adc->adc_cmd_h[cmd_id].lwi = IMX8QXP_REG_ADC_CMDH_LWI_INCREMENT_DISABLE;
-+	adc->adc_cmd_h[cmd_id].cmpen = IMX8QXP_REG_ADC_CMDH_CMPEN_DISABLE;
-+
-+	/* config the trigger control */
-+	adc->adc_trigger_ctrl[trigger_id].tcmd = adc->cmd_id;  //point to cmd1
-+	adc->adc_trigger_ctrl[trigger_id].tdly = 0;
-+	adc->adc_trigger_ctrl[trigger_id].tpri = IMX8QXP_REG_ADC_TCTRL_TPRI_PRIORITY_HIGH;
-+	adc->adc_trigger_ctrl[trigger_id].hten = IMX8QXP_REG_ADC_TCTRL_HTEN_HARDWARE_TIRGGER_DISABLE;
-+
-+	/* ADC configuration */
-+	adc->adc_cfg.pwren = 1;
-+	adc->adc_cfg.pudly = 0x80;
-+	adc->adc_cfg.refsel = 0;
-+	adc->adc_cfg.pwrsel = 3;
-+	adc->adc_cfg.tprictrl = 0;
-+
-+	imx8qxp_adc_reg_config(adc);
-+}
-+
-+static void imx8qxp_adc_fifo_config(struct imx8qxp_adc *adc)
-+{
-+	u32 fifo_ctrl, interrupt_en;
-+
-+	fifo_ctrl = readl(adc->regs + IMX8QXP_REG_ADC_FCTRL);
-+	fifo_ctrl &= ~IMX8QXP_ADC_FCTRL_FWMARK_MASK;
-+	/* set the watermark level to 1 */
-+	fifo_ctrl |= 0 << IMX8QXP_ADC_FCTRL_FWMARK_SHIFT;
-+	writel(fifo_ctrl, adc->regs + IMX8QXP_REG_ADC_FCTRL);
-+
-+	/* FIFO Watermark Interrupt Enable */
-+	interrupt_en = readl(adc->regs + IMX8QXP_REG_ADC_IE);
-+	interrupt_en |= 1 << IMX8QXP_REG_ADC_IE_FWMIE_SHIFT;
-+	writel(interrupt_en, adc->regs + IMX8QXP_REG_ADC_IE);
-+}
-+
-+static void imx8qxp_adc_disable(struct imx8qxp_adc *adc)
-+{
-+	u32 ctrl;
-+
-+	ctrl = readl(adc->regs + IMX8QXP_REG_ADC_CTRL);
-+	ctrl &=  ~(1 << IMX8QXP_REG_ADC_CTRL_ADC_ENABLE);
-+	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-+}
-+
-+static void imx8qxp_adc_enable(struct imx8qxp_adc *adc)
-+{
-+	u32 ctrl;
-+
-+	ctrl = readl(adc->regs + IMX8QXP_REG_ADC_CTRL);
-+	ctrl |= 1 << IMX8QXP_REG_ADC_CTRL_ADC_ENABLE;
-+	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-+
-+}
-+
-+static void imx8qxp_adc_start_trigger(struct imx8qxp_adc *adc)
-+{
-+	writel(1 << adc->trigger_id, adc->regs + IMX8QXP_REG_ADC_SWTRIG);
-+}
-+
-+static u32 imx8qxp_adc_get_sample_rate(struct imx8qxp_adc *adc)
-+{
-+
-+	u32 input_clk;
-+
-+	input_clk = clk_get_rate(adc->clk);
-+
-+	return input_clk / 3;
-+}
-+
-+static int imx8qxp_adc_read_raw(struct iio_dev *indio_dev,
-+			struct iio_chan_spec const *chan,
-+			int *val,
-+			int *val2,
-+			long mask)
-+{
-+
-+	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-+
-+	u32 channel;
-+	long ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		pm_runtime_get_sync(adc->dev);
-+
-+		mutex_lock(&indio_dev->mlock);
-+		reinit_completion(&adc->completion);
-+
-+		channel = chan->channel & 0x07;
-+		adc->channel_id = channel;
-+		adc->cmd_id = 1;
-+		adc->trigger_id = 0;
-+		imx8qxp_adc_mode_config(adc);
-+
-+		imx8qxp_adc_fifo_config(adc);
-+
-+		imx8qxp_adc_enable(adc);
-+
-+		imx8qxp_adc_start_trigger(adc);
-+
-+		ret = wait_for_completion_interruptible_timeout
-+				(&adc->completion, IMX8QXP_ADC_TIMEOUT);
-+
-+		pm_runtime_mark_last_busy(adc->dev);
-+		pm_runtime_put_sync_autosuspend(adc->dev);
-+
-+		if (ret == 0) {
-+			mutex_unlock(&indio_dev->mlock);
-+			return -ETIMEDOUT;
-+		}
-+		if (ret < 0) {
-+			mutex_unlock(&indio_dev->mlock);
-+			return ret;
-+		}
-+
-+		*val = adc->value;
-+		mutex_unlock(&indio_dev->mlock);
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_SCALE:
-+		adc->vref_uv = regulator_get_voltage(adc->vref);
-+		*val = adc->vref_uv / 1000;
-+		*val2 = 12;
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*val = imx8qxp_adc_get_sample_rate(adc);
-+		return IIO_VAL_INT;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int imx8qxp_adc_read_data(struct imx8qxp_adc *adc)
-+{
-+	u32 value;
-+
-+	value = readl(adc->regs + IMX8QXP_REG_ADC_RESFIFO);
-+	value &= 0xffff;
-+	return (value >> 3);
-+}
-+
-+static irqreturn_t imx8qxp_adc_isr(int irq, void *dev_id)
-+{
-+	struct imx8qxp_adc *adc = (struct imx8qxp_adc *)dev_id;
-+
-+	u32 fifo_count;
-+
-+	fifo_count = readl(adc->regs + IMX8QXP_REG_ADC_FCTRL)
-+			& IMX8QXP_ADC_FCTRL_FCOUNT_MASK;
-+
-+	if (fifo_count) {
-+		adc->value = imx8qxp_adc_read_data(adc);
-+		complete(&adc->completion);
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int imx8qxp_adc_reg_access(struct iio_dev *indio_dev,
-+			unsigned int reg, unsigned int writeval,
-+			unsigned int *readval)
-+{
-+	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-+
-+	if (!readval || reg % 4 || reg > IMX8QXP_REG_ADC_TST)
-+		return -EINVAL;
-+
-+	pm_runtime_get_sync(adc->dev);
-+
-+	*readval = readl(adc->regs + reg);
-+
-+	pm_runtime_mark_last_busy(adc->dev);
-+	pm_runtime_put_sync_autosuspend(adc->dev);
-+
-+	return 0;
-+}
-+
-+static const struct iio_info imx8qxp_adc_iio_info = {
-+	.read_raw = &imx8qxp_adc_read_raw,
-+	.debugfs_reg_access = &imx8qxp_adc_reg_access,
-+};
-+
-+static const struct of_device_id imx8qxp_adc_match[] = {
-+	{ .compatible = "fsl,imx8qxp-adc", },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, imx8qxp_adc_match);
-+
-+static int imx8qxp_adc_probe(struct platform_device *pdev)
-+{
-+	struct imx8qxp_adc *adc;
-+	struct iio_dev *indio_dev;
-+	struct resource *mem;
-+	int irq;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
-+	if (!indio_dev) {
-+		dev_err(&pdev->dev, "Failed allocating iio device\n");
-+		return -ENOMEM;
-+	}
-+
-+	adc = iio_priv(indio_dev);
-+	adc->dev = &pdev->dev;
-+
-+	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	adc->regs = devm_ioremap_resource(&pdev->dev, mem);
-+	if (IS_ERR(adc->regs)) {
-+		ret = PTR_ERR(adc->regs);
-+		dev_err(&pdev->dev,
-+			"Failed to remap adc memory, err = %d\n", ret);
-+		return ret;
-+	}
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(&pdev->dev, "No irq resource?\n");
-+		return irq;
-+	}
-+
-+	adc->clk = devm_clk_get(&pdev->dev, "per");
-+	if (IS_ERR(adc->clk)) {
-+		ret = PTR_ERR(adc->clk);
-+		dev_err(&pdev->dev, "Failed getting clock, err = %d\n", ret);
-+		return ret;
-+	}
-+
-+	adc->ipg_clk = devm_clk_get(&pdev->dev, "ipg");
-+	if (IS_ERR(adc->ipg_clk)) {
-+		ret = PTR_ERR(adc->ipg_clk);
-+		dev_err(&pdev->dev, "Failed getting clock, err = %d\n", ret);
-+		return ret;
-+	}
-+
-+	adc->vref = devm_regulator_get(&pdev->dev, "vref");
-+	if (IS_ERR(adc->vref)) {
-+		ret = PTR_ERR(adc->vref);
-+		dev_err(&pdev->dev,
-+			"Failed getting reference voltage, err = %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = regulator_enable(adc->vref);
-+	if (ret) {
-+		dev_err(&pdev->dev,
-+			"Can't enable adc reference top voltage, err = %d\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	platform_set_drvdata(pdev, indio_dev);
-+
-+	init_completion(&adc->completion);
-+
-+	indio_dev->name = dev_name(&pdev->dev);
-+	indio_dev->dev.parent = &pdev->dev;
-+	indio_dev->info = &imx8qxp_adc_iio_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = imx8qxp_adc_iio_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(imx8qxp_adc_iio_channels);
-+
-+	ret = clk_prepare_enable(adc->clk);
-+	if (ret) {
-+		dev_err(&pdev->dev,
-+			"Could not prepare or enable the clock.\n");
-+		goto error_adc_clk_enable;
-+	}
-+
-+	ret = clk_prepare_enable(adc->ipg_clk);
-+	if (ret) {
-+		dev_err(&pdev->dev,
-+			"Could not prepare or enable the clock.\n");
-+		goto error_adc_ipg_clk_enable;
-+	}
-+
-+	ret = devm_request_irq(adc->dev, irq,
-+				imx8qxp_adc_isr, 0,
-+				dev_name(&pdev->dev), adc);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed requesting irq, irq = %d\n", irq);
-+		goto error_iio_device_register;
-+	}
-+
-+	imx8qxp_adc_feature_prepare(adc);
-+	imx8qxp_adc_reset(adc);
-+
-+	ret = iio_device_register(indio_dev);
-+	if (ret) {
-+		imx8qxp_adc_disable(adc);
-+		dev_err(&pdev->dev, "Couldn't register the device.\n");
-+		goto error_iio_device_register;
-+	}
-+
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+
-+	return 0;
-+
-+error_iio_device_register:
-+	clk_disable_unprepare(adc->ipg_clk);
-+error_adc_ipg_clk_enable:
-+	clk_disable_unprepare(adc->clk);
-+error_adc_clk_enable:
-+	regulator_disable(adc->vref);
-+
-+	return ret;
-+}
-+
-+static int imx8qxp_adc_remove(struct platform_device *pdev)
-+{
-+	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-+	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-+
-+	pm_runtime_get_sync(&pdev->dev);
-+
-+	iio_device_unregister(indio_dev);
-+
-+	imx8qxp_adc_disable(adc);
-+
-+	clk_disable_unprepare(adc->clk);
-+	clk_disable_unprepare(adc->ipg_clk);
-+	regulator_disable(adc->vref);
-+
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
-+
-+
-+	return 0;
-+}
-+
-+static int imx8qxp_adc_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-+
-+	imx8qxp_adc_disable(adc);
-+
-+	clk_disable_unprepare(adc->clk);
-+	clk_disable_unprepare(adc->ipg_clk);
-+	regulator_disable(adc->vref);
-+
-+	return 0;
-+}
-+
-+static int imx8qxp_adc_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regulator_enable(adc->vref);
-+	if (ret) {
-+		dev_err(adc->dev,
-+			"Can't enable adc reference top voltage, err = %d\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	ret = clk_prepare_enable(adc->clk);
-+	if (ret) {
-+		dev_err(adc->dev,
-+			"Could not prepare or enable clock.\n");
-+		regulator_disable(adc->vref);
-+		return ret;
-+	}
-+
-+	ret = clk_prepare_enable(adc->ipg_clk);
-+	if (ret) {
-+		dev_err(adc->dev,
-+			"Could not prepare or enable clock.\n");
-+		clk_disable_unprepare(adc->clk);
-+		regulator_disable(adc->vref);
-+		return ret;
-+	}
-+	imx8qxp_adc_reset(adc);
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops imx8qxp_adc_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-+	SET_RUNTIME_PM_OPS(imx8qxp_adc_runtime_suspend, imx8qxp_adc_runtime_resume, NULL)
-+};
-+
-+static struct platform_driver imx8qxp_adc_driver = {
-+	.probe		= imx8qxp_adc_probe,
-+	.remove		= imx8qxp_adc_remove,
-+	.driver		= {
-+		.name	= "imx8qxp_adc",
-+		.of_match_table = imx8qxp_adc_match,
-+		.pm	= &imx8qxp_adc_pm_ops,
-+	},
-+};
-+
-+module_platform_driver(imx8qxp_adc_driver);
-+
-+MODULE_AUTHOR("Haibo Chen <haibo.chen@nxp.com>");
-+MODULE_DESCRIPTION("NXP IMX8QXP ADC driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.17.1
+Best Regards,
+Fabrice
 
+> 
+> William Breathitt Gray
+> 
+>>  #include <linux/mfd/stm32-timers.h>
+>>  #include <linux/module.h>
+>> +#include <linux/pinctrl/consumer.h>
+>>  #include <linux/platform_device.h>
+>>  
+>>  #define TIM_CCMR_CCXS	(BIT(8) | BIT(0))
+>> @@ -20,11 +21,20 @@
+>>  #define TIM_CCER_MASK	(TIM_CCER_CC1P | TIM_CCER_CC1NP | \
+>>  			 TIM_CCER_CC2P | TIM_CCER_CC2NP)
+>>  
+>> +struct stm32_timer_regs {
+>> +	u32 cr1;
+>> +	u32 cnt;
+>> +	u32 smcr;
+>> +	u32 arr;
+>> +};
+>> +
+>>  struct stm32_timer_cnt {
+>>  	struct counter_device counter;
+>>  	struct regmap *regmap;
+>>  	struct clk *clk;
+>>  	u32 ceiling;
+>> +	bool enabled;
+>> +	struct stm32_timer_regs bak;
+>>  };
+>>  
+>>  /**
+>> @@ -224,6 +234,9 @@ static ssize_t stm32_count_enable_write(struct counter_device *counter,
+>>  			clk_disable(priv->clk);
+>>  	}
+>>  
+>> +	/* Keep enabled state to properly handle low power states */
+>> +	priv->enabled = enable;
+>> +
+>>  	return len;
+>>  }
+>>  
+>> @@ -358,10 +371,59 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
+>>  	priv->counter.num_signals = ARRAY_SIZE(stm32_signals);
+>>  	priv->counter.priv = priv;
+>>  
+>> +	platform_set_drvdata(pdev, priv);
+>> +
+>>  	/* Register Counter device */
+>>  	return devm_counter_register(dev, &priv->counter);
+>>  }
+>>  
+>> +static int __maybe_unused stm32_timer_cnt_suspend(struct device *dev)
+>> +{
+>> +	struct stm32_timer_cnt *priv = dev_get_drvdata(dev);
+>> +
+>> +	/* Only take care of enabled counter: don't disturb other MFD child */
+>> +	if (priv->enabled) {
+>> +		/* Backup registers that may get lost in low power mode */
+>> +		regmap_read(priv->regmap, TIM_SMCR, &priv->bak.smcr);
+>> +		regmap_read(priv->regmap, TIM_ARR, &priv->bak.arr);
+>> +		regmap_read(priv->regmap, TIM_CNT, &priv->bak.cnt);
+>> +		regmap_read(priv->regmap, TIM_CR1, &priv->bak.cr1);
+>> +
+>> +		/* Disable the counter */
+>> +		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
+>> +		clk_disable(priv->clk);
+>> +	}
+>> +
+>> +	return pinctrl_pm_select_sleep_state(dev);
+>> +}
+>> +
+>> +static int __maybe_unused stm32_timer_cnt_resume(struct device *dev)
+>> +{
+>> +	struct stm32_timer_cnt *priv = dev_get_drvdata(dev);
+>> +	int ret;
+>> +
+>> +	ret = pinctrl_pm_select_default_state(dev);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	if (priv->enabled) {
+>> +		clk_enable(priv->clk);
+>> +
+>> +		/* Restore registers that may have been lost */
+>> +		regmap_write(priv->regmap, TIM_SMCR, priv->bak.smcr);
+>> +		regmap_write(priv->regmap, TIM_ARR, priv->bak.arr);
+>> +		regmap_write(priv->regmap, TIM_CNT, priv->bak.cnt);
+>> +
+>> +		/* Also re-enables the counter */
+>> +		regmap_write(priv->regmap, TIM_CR1, priv->bak.cr1);
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static SIMPLE_DEV_PM_OPS(stm32_timer_cnt_pm_ops, stm32_timer_cnt_suspend,
+>> +			 stm32_timer_cnt_resume);
+>> +
+>>  static const struct of_device_id stm32_timer_cnt_of_match[] = {
+>>  	{ .compatible = "st,stm32-timer-counter", },
+>>  	{},
+>> @@ -373,6 +435,7 @@ static struct platform_driver stm32_timer_cnt_driver = {
+>>  	.driver = {
+>>  		.name = "stm32-timer-counter",
+>>  		.of_match_table = stm32_timer_cnt_of_match,
+>> +		.pm = &stm32_timer_cnt_pm_ops,
+>>  	},
+>>  };
+>>  module_platform_driver(stm32_timer_cnt_driver);
+>> -- 
+>> 2.7.4
+>>

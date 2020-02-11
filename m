@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FAE9159972
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 20:12:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80F79159975
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 20:12:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730030AbgBKTMo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Feb 2020 14:12:44 -0500
-Received: from ip-78-45-52-129.net.upcbroadband.cz ([78.45.52.129]:53636 "EHLO
+        id S1730438AbgBKTMw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Feb 2020 14:12:52 -0500
+Received: from ip-78-45-52-129.net.upcbroadband.cz ([78.45.52.129]:53660 "EHLO
         ixit.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729547AbgBKTMo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 11 Feb 2020 14:12:44 -0500
+        id S1729547AbgBKTMw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 11 Feb 2020 14:12:52 -0500
 Received: from localhost.localdomain (227.146.230.94.awnet.cz [94.230.146.227])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ixit.cz (Postfix) with ESMTPSA id 60E0F2517B;
-        Tue, 11 Feb 2020 20:12:40 +0100 (CET)
+        by ixit.cz (Postfix) with ESMTPSA id 40CE525182;
+        Tue, 11 Feb 2020 20:12:49 +0100 (CET)
 From:   David Heidelberg <david@ixit.cz>
 To:     Dmitry Osipenko <digetx@gmail.com>,
         Daniel Baluta <daniel.baluta@nxp.com>,
@@ -28,49 +28,98 @@ To:     Dmitry Osipenko <digetx@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>
 Cc:     David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v5 0/7] iio: light: AL3010 introduction
-Date:   Tue, 11 Feb 2020 20:11:54 +0100
-Message-Id: <20200211191201.1049902-1-david@ixit.cz>
+Subject: [PATCH v5 1/7] dt-bindings: iio: light: add support for Dyna-Image AL3320A
+Date:   Tue, 11 Feb 2020 20:11:55 +0100
+Message-Id: <20200211191201.1049902-2-david@ixit.cz>
 X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200211191201.1049902-1-david@ixit.cz>
+References: <20200211191201.1049902-1-david@ixit.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-These patches implement support for simple iio light sensor AL3010 and
-also improves and align formating of AL3320a which is origin of al3010
-driver.
+This commit add dt-bindings support to al3320a driver and vendor-prefix
+dynaimage.
+Partly based on unmerged commit:
+"iio: Add Dyna-Image AP3223 ambient light and proximity driver"
 
-AL3010 is used in many devices, mostly tegra2/3 based.
-This effort is aimed for reducing number of out-of-tree patches for
-tegra tablets and phones.
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+v5
+ - drop requirement on interrups and vdd-supply
+ - s/al3320a@1c/light-sensor@1c/
+ - dual license also under BSD
 
-This sensor is tested on Nexus 7 (2012, grouper/tilapia).
-
-David Heidelberg (7):
-  dt-bindings: iio: light: add support for Dyna-Image AL3320A
-  dt-bindings: iio: light: add support for Dyna-Image AL3010
-  iio: light: al3320a slightly improve code formatting
-  iio: light: add Dyna-Image AL3010 driver
-  iio: light: al3320a implement suspend support
-  iio: light: al3320a implement devm_add_action_or_reset
-  iio: light: al3320a allow module autoload and polish
-
- .../devicetree/bindings/iio/light/al3010.yaml |  43 ++++
- .../bindings/iio/light/al3320a.yaml           |  43 ++++
- .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
- drivers/iio/light/Kconfig                     |  10 +
- drivers/iio/light/Makefile                    |   1 +
- drivers/iio/light/al3010.c                    | 240 ++++++++++++++++++
- drivers/iio/light/al3320a.c                   |  72 ++++--
- 7 files changed, 394 insertions(+), 17 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/light/al3010.yaml
+ .../bindings/iio/light/al3320a.yaml           | 43 +++++++++++++++++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
+ 2 files changed, 45 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/light/al3320a.yaml
- create mode 100644 drivers/iio/light/al3010.c
 
+diff --git a/Documentation/devicetree/bindings/iio/light/al3320a.yaml b/Documentation/devicetree/bindings/iio/light/al3320a.yaml
+new file mode 100644
+index 000000000000..cdc8d98d114c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/al3320a.yaml
+@@ -0,0 +1,43 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/al3320a.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Dyna-Image AL3320A sensor
++
++maintainers:
++  - David Heidelberg <david@ixit.cz>
++
++properties:
++  compatible:
++    const: dynaimage,al3320a
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  vdd-supply:
++    description: Regulator that provides power to the sensor
++
++required:
++  - compatible
++  - reg
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        light-sensor@1c {
++            compatible = "dynaimage,al3320a";
++            reg = <0x1c>;
++            vdd-supply = <&vdd_reg>;
++            interrupts = <0 99 4>;
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 9cd52d9e1f7f..8d2ebf3d0aa1 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -267,6 +267,8 @@ patternProperties:
+     description: Dragino Technology Co., Limited
+   "^dserve,.*":
+     description: dServe Technology B.V.
++  "^dynaimage,.*":
++    description: Dyna-Image
+   "^ea,.*":
+     description: Embedded Artists AB
+   "^ebs-systart,.*":
 -- 
 2.25.0
 

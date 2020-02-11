@@ -2,94 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C52B6158D06
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 11:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43A78158F86
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2020 14:13:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728471AbgBKK4d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Feb 2020 05:56:33 -0500
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:60260 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727884AbgBKK4d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Feb 2020 05:56:33 -0500
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01BAuKJR011415;
-        Tue, 11 Feb 2020 11:56:25 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=cV1Wais5QMnCi8AYrjauwcQtc7x8Akg7kC3DCHNTrfI=;
- b=cKJVTis8lYfFtJmiAwNtEstgu8ZuVu2qme2/jqgNfi7pG9/H8KjgeBt4JOPrcc/790wY
- ijOpUeKHTdkXZiW4s2GpQ5TARF1uFND/zPKxeJVMfGH/ryd4E4nglrEkvomKjcIfQ8uk
- NpGvOdYh0TnLxQYM7CLRDaaaz6ajHx3kv3l4loO3SAabEbPQEctkz8x6EQLXSmPLbPCv
- WwGQUUXgqs/50JLQEHG9Ho8g5q+ouF1s7IdkRvtR033cAT0Cpqu59gjz81I910V1mZ2x
- mBA1tHHsuktI3Gbi2QXPZE6za+GsD7erMLutX7W/4mdOMHvDKiNhlqVYISlpZIpGqecx PQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2y1ud9m85f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Feb 2020 11:56:25 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id A7594100050;
-        Tue, 11 Feb 2020 11:56:20 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 96D282AEAB8;
-        Tue, 11 Feb 2020 11:56:20 +0100 (CET)
-Received: from localhost (10.75.127.44) by SFHDAG5NODE3.st.com (10.75.127.15)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 11 Feb 2020 11:56:20
- +0100
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-To:     <jic23@kernel.org>
-CC:     <vilhelm.gray@gmail.com>, <alexandre.torgue@st.com>,
-        <mcoquelin.stm32@gmail.com>, <benjamin.gaignard@st.com>,
-        <fabrice.gasnier@st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] counter: stm32-timer-cnt: remove iio headers
-Date:   Tue, 11 Feb 2020 11:56:06 +0100
-Message-ID: <1581418566-31954-1-git-send-email-fabrice.gasnier@st.com>
-X-Mailer: git-send-email 2.7.4
+        id S1727567AbgBKNNB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Feb 2020 08:13:01 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:41796 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728353AbgBKNNB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Feb 2020 08:13:01 -0500
+Received: by mail-wr1-f67.google.com with SMTP id c9so12341333wrw.8
+        for <linux-iio@vger.kernel.org>; Tue, 11 Feb 2020 05:12:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=be2U1w8cWMwS1znOLLGvyu9gD3io+mzqfXIBluHdiTA=;
+        b=GWfuVkDEtXOKWb5CKYVmrPobVMV94DGgOuRHpsqw2XWeoGhMbdxDxumKlK9Op5DeDf
+         xN5P/aLKYPIW0lEAyt2mJCnBPsvzDGf1yt2NQ9KLtf4Qn0QjL67LUup7M21qw9ezHC9s
+         7x1iOjCYu7lcLVLRSaHSTmL/fQF4ppIeaxJfYT7EtAHMYIb+Ks62eYtXQeMsGx4goji2
+         273sZ3Bk1Yp//t6wamQJa2QMN559SRkp4uplHKlxyE6ghi7OL49znMiHs4fwNXiz51q8
+         Gj7wusjiQmpRgseNqAXkIQvaWRFnMNDBPUxn6Qs2ct2BTCMuymaDWbnqaYhsn8a/QaNr
+         onbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=be2U1w8cWMwS1znOLLGvyu9gD3io+mzqfXIBluHdiTA=;
+        b=UJlL8m1cw7UjgHDP3uZN6ovlaJtrKYqQvjbn/h0fIUbvjZaxnfW2ZclxQVyIHHMRhM
+         iENV2oZqzP1QjkOqusXTQMWVy1cZvt5JDFV55EnUBtb55tSvRGXgAZMAZkjTeuFkDbwj
+         TQT8NSbOw0luqi1jgQF/P7B7UrJ1gZst77D/yrZiyawyEldI7fy45RX6tW/EMDeo4LZX
+         aZbxIV4U9cxBNkRWpqQqlQ0QeLnHt2XPx+T6rwJbfvxShnFwZPahx5cOwdXDnzkKsIU0
+         oOUAZhUJPGRJkN6Qrv4nT5ALLShrUOtXaUvQLB//pAEWziGtfSRFmP/sANI8UkJzI/sn
+         LPsQ==
+X-Gm-Message-State: APjAAAV4W16KXf+7pETGsgnTREQd9bOdqp6/W6Ees092n2+Sl222Sbso
+        OyY2mf8YdJ5Yn/6C3lna2kNubg==
+X-Google-Smtp-Source: APXvYqzpLaJmI7tDPA2tDGvz6dBZ9VXm3sif/kYnoWcVrXtWSXV8CQS0YhFVElrGpct/CZfo4eHAnQ==
+X-Received: by 2002:adf:f581:: with SMTP id f1mr8638594wro.264.1581426778842;
+        Tue, 11 Feb 2020 05:12:58 -0800 (PST)
+Received: from localhost.localdomain (lfbn-nic-1-65-232.w2-15.abo.wanadoo.fr. [2.15.156.232])
+        by smtp.gmail.com with ESMTPSA id b21sm3873013wmd.37.2020.02.11.05.12.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Feb 2020 05:12:58 -0800 (PST)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [PATCH v2 0/6] irq/irq_sim: try to improve the API
+Date:   Tue, 11 Feb 2020 14:12:34 +0100
+Message-Id: <20200211131240.15853-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG7NODE3.st.com (10.75.127.21) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-11_03:2020-02-10,2020-02-11 signatures=0
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The stm32-timer-cnt driver doesn't use the iio interface. The iio headers
-aren't relevant and can be removed as reported by William in [1].
-With this change, mod_devicetable.h needs to be added to define the
-'of_device_id' struct.
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-[1] https://lkml.org/lkml/2020/2/10/1516
+This is my second take at improving the interrupt simulator interface.
+I marked it as v2 but it actually takes a completely different approach.
 
-Reported-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
----
-Note this applies on top of:
-- "counter: stm32-timer-cnt: add power management support"
----
- drivers/counter/stm32-timer-cnt.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+The interrupt simulator API exposes a lot of custom data structures and
+functions and doesn't reuse the interfaces already exposed by the irq
+subsystem. This series tries to address it.
 
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index 50496f4..ef2a974 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -8,9 +8,8 @@
-  *
-  */
- #include <linux/counter.h>
--#include <linux/iio/iio.h>
--#include <linux/iio/types.h>
- #include <linux/mfd/stm32-timers.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
+First, we make irq_domain_reset_irq_data() available to non-V2 domain API
+users - that'll be used in the subsequent patch. Next we overhaul the
+public interfaces - we hide all specific data structures and instead
+rely on the irq_domain struct and virtual interrupt numberspace.
+
+Next four patches simplify the interface even more, but since the change
+may be a bit more controversial due to modification of the irq_domain
+I decided to split them out of the second patch.
+
+In patch 3/6 we're adding a new callback to irq_domain_ops that is called
+right before all the other code in irq_domain_remove(). Next we use it to
+remove the simulator-specific cleanup function from irq_sim.h - users now
+can simply use the regular irq_domain_remove().
+
+Last two patches show that the new callback isn't limited to the interrupt
+simulator and can be used to shrink code in real driver too. We introduce
+a new helper for a common use case of disposing of all mappings before
+removing the irq_domain and use it in the keystone irqchip driver.
+
+The end effect is that we limit the interrupt simulator API to two
+functions (plus one device managed variant) and zero new structures.
+
+v1: https://lkml.org/lkml/2019/8/12/558
+
+v1 -> v2:
+- instead of just making the new data structures opaque for users, remove
+  them entirely in favor of irq_domain
+- call irq_set_handler() & irq_domain_reset_irq_data() when unmapping
+  the simulated interrupt
+- fix a memory leak in error path
+- make it possible to use irq_find_matching_fwnode() with the simulator
+  domain
+- correctly use irq_create_mapping() and irq_find_mapping(): only use the
+  former at init-time and the latter at interrupt-time
+
+Bartosz Golaszewski (6):
+  irq: make irq_domain_reset_irq_data() available even for non-V2 users
+  irq/irq_sim: simplify the API
+  irq/domain: add a new callback to domain ops
+  irq/irq_sim: remove irq_domain_remove_sim()
+  irq/domain: provide irq_domain_dispose_mappings() helper
+  irqchip: keystone: use irq_domain_dispose_mappings()
+
+ drivers/gpio/gpio-mockup.c          |  47 ++++--
+ drivers/iio/dummy/iio_dummy_evgen.c |  32 ++--
+ drivers/irqchip/irq-keystone.c      |   5 +-
+ include/linux/irq_sim.h             |  33 ++--
+ include/linux/irqdomain.h           |   9 +-
+ kernel/irq/Kconfig                  |   1 +
+ kernel/irq/irq_sim.c                | 225 ++++++++++++++++------------
+ kernel/irq/irqdomain.c              |  44 ++++--
+ 8 files changed, 238 insertions(+), 158 deletions(-)
+
 -- 
-2.7.4
+2.25.0
 

@@ -2,189 +2,215 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4BC815A72E
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2020 11:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CCBB15AAAA
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2020 15:03:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727279AbgBLK5a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Feb 2020 05:57:30 -0500
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:38955 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727163AbgBLK53 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Feb 2020 05:57:29 -0500
-Received: by mail-vs1-f65.google.com with SMTP id p14so853756vsq.6;
-        Wed, 12 Feb 2020 02:57:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sQAYmYWXHoQ/XJO0IhYrZodteSENqIZeB0+t/OPU7g4=;
-        b=thrksr6Ind35TFRexPrLQ1FhNnDe/HUjzRqldvqnXRS8AsIAem5wZy17LlB09M6/b/
-         RkE57xlXrQOxw6CFJSKDZTBDIEvNbsk/APYaYVGMgEP7w5kag4vPgd7iaLCKMx5Uf7tn
-         SUjHLWcAI/9osscwurri37Uia9Rsg6cdT5RAf3fSzP0IAMAH0599QOW12I83RwywX2HP
-         DDgql9W81PHfS3sXL8h4OJVsDp37hIQP/5p6CnzoH0H2NfslWNnn59u2Fs9I3xFpsXPR
-         i9UxxAiO1SeALjApAp6map780nLjdaZW9BjOdLzIAJnaxka/6oMLUsefadyfpmDCOLMN
-         7EoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sQAYmYWXHoQ/XJO0IhYrZodteSENqIZeB0+t/OPU7g4=;
-        b=oT3iiyd54TWjbfyGSCCSqqOle1ZZ5rYqIwUsEcUPxC1sfuwjELyMgOIioFDU7Q4ZcQ
-         FbnR69WdOnbn4Xn0Fht5PDnR/oh3LBBdI1ungI8JW+IQm0j7Rv6fwH0dP0Onc7NmXu0K
-         njgvnys3QPL2KKdppjAL2sb1/cI/jUI85HglypFJoss+wIpXESApz4cHBS/hgr9lxJWs
-         +IXE9Xq/CScY1HUHyBwmvK5Jeib5BvErKccBt32sdRCtCTI9GY9rGoyaTr7ptkANCDo0
-         bs5Kd7gSqLPdqWjLOPI1KXaTMjKseVFYnLD2wU+iZ+IWzeRoddM8Okyc0V/kIl4pPmW8
-         dHPQ==
-X-Gm-Message-State: APjAAAV3/Tavdpq9/WTT49RKmIGIYmZIiZuU7/5qX6GOIYdcIB6sLDZN
-        Y5ikmusPPcN+r8TQcLSe7UI5trt1C7RsHfpOtFY=
-X-Google-Smtp-Source: APXvYqyp6c21Ni0kb56Qwb6uTMOr6939dOaOsN12CFIM82oglNutoowZ2P0fKXSA1a6LfrDW7L3D9FwaZuzk1025KHE=
-X-Received: by 2002:a67:edd2:: with SMTP id e18mr11208855vsp.211.1581505048414;
- Wed, 12 Feb 2020 02:57:28 -0800 (PST)
+        id S1727904AbgBLODH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Feb 2020 09:03:07 -0500
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:1427 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725887AbgBLODG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Feb 2020 09:03:06 -0500
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01CDwcg2007768;
+        Wed, 12 Feb 2020 15:02:39 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=/8l92jgFtvZ9KFonos6IeWCOhSFNRaH+VFtBAk4RDCo=;
+ b=ChsTacUV8Q4OByXultemNzXtr/cnMMHJ5reMiF4MGcikCkWxcnKUlVuoy6Y4MVbdKGbx
+ t4i83krf+dl603BYsHPaErugW3dvhWq3ky4tFZ2WQM8D1tUoFhp1A77Ob2IoKFUmGdO4
+ vkBoLZc9dR93AKyH6kYU4kYlnWQf19PniZUn9xR5B5pE91j8iv7ZHafW+I+FSOkApOzf
+ cOawaUAMuwgfk/+J2YDir6cFY3yUt0eLWxq5pxvuPfuXsdHDt11f/bAj8v0gdz/28iy7
+ Fe9TsClg15V3akbq2jDD3oEPeGvE6YnjlBa/pycuGSAmRc69v7Tez1IRnn0fEKItvVPA TA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2y1urhet63-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 12 Feb 2020 15:02:39 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 62B8E10002A;
+        Wed, 12 Feb 2020 15:02:38 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4D3452B46AE;
+        Wed, 12 Feb 2020 15:02:38 +0100 (CET)
+Received: from [10.48.0.71] (10.75.127.45) by SFHDAG5NODE3.st.com
+ (10.75.127.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 12 Feb
+ 2020 15:02:37 +0100
+Subject: Re: [PATCH] iio: adc: stm32-adc: fix runtime autosuspend delay when
+ slow polling
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>, <olivier.moysan@st.com>,
+        <linux-iio@vger.kernel.org>, <lars@metafoo.de>, <knaack.h@gmx.de>,
+        <pmeerw@pmeerw.net>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-pm@vger.kernel.org>, <ulf.hansson@linaro.org>,
+        <khilman@kernel.org>
+References: <1579854369-7972-1-git-send-email-fabrice.gasnier@st.com>
+ <20200202153354.3dae5863@archlinux>
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+Message-ID: <d30cb29b-d15c-a9fe-8c95-7ce59ce15062@st.com>
+Date:   Wed, 12 Feb 2020 15:02:37 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20200205002121.30941-1-djunho@padtec.com.br> <b808cd095dd290ce3cf8ec6934f92edb2f94954e.camel@analog.com>
-In-Reply-To: <b808cd095dd290ce3cf8ec6934f92edb2f94954e.camel@analog.com>
-From:   Daniel Junho <djunho@gmail.com>
-Date:   Wed, 12 Feb 2020 07:57:16 -0300
-Message-ID: <CAKxs2cAb=zX9RvBYMQPy_rqcgoAU4dPbgB3JLVWbB-Ro9R2rHA@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: adc: ad7923: Add dt-bindings for AD7928
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "patrick.vasseur@c-s.fr" <patrick.vasseur@c-s.fr>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "lkcamp@lists.libreplanetbr.org" <lkcamp@lists.libreplanetbr.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        Michael Hennerich <michael.hennerich@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200202153354.3dae5863@archlinux>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.45]
+X-ClientProxiedBy: SFHDAG6NODE2.st.com (10.75.127.17) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-12_07:2020-02-11,2020-02-12 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi.
+On 2/2/20 4:33 PM, Jonathan Cameron wrote:
+> On Fri, 24 Jan 2020 09:26:09 +0100
+> Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
+> 
+>> When the ADC is runtime suspended and starting a conversion, the stm32-adc
+>> driver calls pm_runtime_get_sync() that gets cascaded to the parent
+>> (e.g. runtime resume of stm32-adc-core driver). This also kicks the
+>> autosuspend delay (e.g. 2s) of the parent.
+>> Once the ADC is active, calling pm_runtime_get_sync() again (upon a new
+>> capture) won't kick the autosuspend delay for the parent (stm32-adc-core
+>> driver) as already active.
+>>
+>> Currently, this makes the stm32-adc-core driver go in suspend state
+>> every 2s when doing slow polling. As an example, doing a capture, e.g.
+>> cat in_voltageY_raw at a 0.2s rate, the auto suspend delay for the parent
+>> isn't refreshed. Once it expires, the parent immediately falls into
+>> runtime suspended state, in between two captures, as soon as the child
+>> driver falls into runtime suspend state:
+>> - e.g. after 2s, + child calls pm_runtime_put_autosuspend() + 100ms
+>>   autosuspend delay of the child.
+>> - stm32-adc-core switches off regulators, clocks and so on.
+>> - They get switched on back again 100ms later in this example (at 2.2s).
+>>
+>> So, add an explicit call to pm_runtime_mark_last_busy() for the parent
+>> driver (stm32-adc-core), synchronously with the child driver (stm32-adc),
+>> to avoid this.
+>>
+>> Fixes: 9bdbb1139ca1 ("iio: adc: stm32-adc: add power management support")
+>>
+>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+> 
+> Hi Fabrice,
+> 
+> Whilst this will clearly work, it seems like a somewhat adhoc solution.
+> Power management specialists (cc'd):  Is this what we should be doing, or
+> have Fabrice and I both missed something that we should be doing here?
 
-Thank you for your review. I will make these changes and send a v2.
+Hi all, PM specialists,
 
-On Wed, Feb 5, 2020 at 5:24 AM Ardelean, Alexandru
-<alexandru.Ardelean@analog.com> wrote:
->
-> On Tue, 2020-02-04 at 21:21 -0300, Daniel Junho wrote:
-> > From: Daniel Junho <djunho@gmail.com>
-> >
-> > Add device tree bindings documentation for AD7923 adc in YAML format.
-> >
-> > Tested with:
-> > make ARCH=arm dt_binding_check
-> > DT_SCHEMA_FILES=Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-> > make ARCH=arm dtbs_check
-> > DT_SCHEMA_FILES=Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-> >
->
-> Hey,
->
-> Some comments inline.
->
->
-> > Signed-off-by: Daniel Junho <djunho@gmail.com>
-> > ---
-> >
-> > Hi,
-> >
-> > I got maintainers from the driver authors list. Let me know if this is
-> > fine.
-> >
-> > Thanks.
-> >
-> >  .../bindings/iio/adc/adi,ad7923.yaml          | 65 +++++++++++++++++++
-> >  1 file changed, 65 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-> > b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-> > new file mode 100644
-> > index 000000000000..8097441c97be
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-> > @@ -0,0 +1,65 @@
-> > +# SPDX-License-Identifier: GPL-2.0-only
->
-> License header should be:
-> # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->
->
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7923.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Analog Devices AD7923 and similars with 4 and 8 Channel ADCs.
-> > +
-> > +maintainers:
-> > +  - Michael Hennerich <hennerich@blackfin.uclinux.org>"
->
-> For Michael, email now is:  michael.hennerich@analog.com
-> That email may still work, but for new stuff, it should be updated.
->
-> > +  - Patrick Vasseur <patrick.vasseur@c-s.fr>"
-> > +
-> > +description: |
-> > +  Analog Devices AD7904, AD7914, AD7923, AD7924 4 Channel ADCs, and AD7908,
-> > +   AD7918, AD7928 8 Channels ADCs.
-> > +
-> > +  Specifications about the part can be found at:
-> > +
-> > https://www.analog.com/media/en/technical-documentation/data-sheets/AD7923.pdf
-> > +
-> > https://www.analog.com/media/en/technical-documentation/data-sheets/AD7904_7914_7924.pdf
-> > +
-> > https://www.analog.com/media/en/technical-documentation/data-sheets/AD7908_7918_7928.pdf
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - adi,ad7904
-> > +      - adi,ad7914
-> > +      - adi,ad7923
-> > +      - adi,ad7924
-> > +      - adi,ad7908
-> > +      - adi,ad7918
-> > +      - adi,ad7928
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  refin-supply:
-> > +    description: |
-> > +      The regulator supply for ADC reference voltage.
-> > +
-> > +  '#address-cells':
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 0
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +examples:
-> > +  - |
-> > +    spi {
-> > +      #address-cells = <1>;
-> > +      #size-cells = <0>;
-> > +
-> > +      ad7928: adc@0 {
-> > +        compatible = "adi,ad7928";
-> > +        reg = <0>;
-> > +        spi-max-frequency = <25000000>;
-> > +        refin-supply = <&adc_vref>;
-> > +
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +      };
-> > +    };
+As per my understanding, pm_runtime_mark_last_busy() doesn't cascade to
+the parent device:
+
+- in pm_runtime.h:
+static inline void pm_runtime_mark_last_busy(struct device *dev)
+{
+	WRITE_ONCE(dev->power.last_busy, ktime_get_mono_fast_ns());
+}
+
+STM32 ADC driver uses a model with an autosupsend delay for
+- a parent driver to handle common resources, registers etc.
+- child drivers for each ADC.
+
+So the question is on how to fix the behavior I described:
+1: Child  activity with "short" autosuspend_delay
+2: Parent activity with "longer" autosuspend_delay
+     _     _     _     _     _       _     _     _
+1: _| |___| |___| |___| |___| |_..._| |___| |___| |_...
+
+    v v   v v   v v   v v   v v ... v v   v v   v v
+    | |                                     |   |
+    | +- pm_runtime_mark_last_busy()        |   |
+    | +- pm_runtime_put_autosuspend()       v   |
+    |                                       |   |
+    +--- pm_runtime_get_sync()              |   v
+    |                                       |   |
+    +---> expires after autosuspend_delay   |   |
+    |                                       |   |
+    v                                       v   v
+     _______________________________________     ___...
+2: _|                           ...         |___|
+
+Glitches on parent dev near autosuspend_delay ^
+
+- does the child driver needs to "kick" parent driver with
+pm_runtime_mark_last_busy(), as proposed in current patch ?
+
+- or is it something that should be done by PM runtime core routines ?
+e.g. make pm_runtime_mark_last_busy() recursive or something else ?
+
+Please advise
+Best regards,
+Fabrice
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+>> ---
+>>  drivers/iio/adc/stm32-adc.c | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>>
+>> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+>> index 3b291d7..670157e 100644
+>> --- a/drivers/iio/adc/stm32-adc.c
+>> +++ b/drivers/iio/adc/stm32-adc.c
+>> @@ -1157,6 +1157,7 @@ static int stm32_adc_single_conv(struct iio_dev *indio_dev,
+>>  
+>>  	stm32_adc_conv_irq_disable(adc);
+>>  
+>> +	pm_runtime_mark_last_busy(dev->parent);
+>>  	pm_runtime_mark_last_busy(dev);
+>>  	pm_runtime_put_autosuspend(dev);
+>>  
+>> @@ -1278,6 +1279,7 @@ static int stm32_adc_update_scan_mode(struct iio_dev *indio_dev,
+>>  	adc->num_conv = bitmap_weight(scan_mask, indio_dev->masklength);
+>>  
+>>  	ret = stm32_adc_conf_scan_seq(indio_dev, scan_mask);
+>> +	pm_runtime_mark_last_busy(dev->parent);
+>>  	pm_runtime_mark_last_busy(dev);
+>>  	pm_runtime_put_autosuspend(dev);
+>>  
+>> @@ -1329,6 +1331,7 @@ static int stm32_adc_debugfs_reg_access(struct iio_dev *indio_dev,
+>>  	else
+>>  		*readval = stm32_adc_readl(adc, reg);
+>>  
+>> +	pm_runtime_mark_last_busy(dev->parent);
+>>  	pm_runtime_mark_last_busy(dev);
+>>  	pm_runtime_put_autosuspend(dev);
+>>  
+>> @@ -1451,6 +1454,7 @@ static int __stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
+>>  err_clr_trig:
+>>  	stm32_adc_set_trig(indio_dev, NULL);
+>>  err_pm_put:
+>> +	pm_runtime_mark_last_busy(dev->parent);
+>>  	pm_runtime_mark_last_busy(dev);
+>>  	pm_runtime_put_autosuspend(dev);
+>>  
+>> @@ -1487,6 +1491,7 @@ static void __stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
+>>  	if (stm32_adc_set_trig(indio_dev, NULL))
+>>  		dev_err(&indio_dev->dev, "Can't clear trigger\n");
+>>  
+>> +	pm_runtime_mark_last_busy(dev->parent);
+>>  	pm_runtime_mark_last_busy(dev);
+>>  	pm_runtime_put_autosuspend(dev);
+>>  }
+>> @@ -1874,6 +1879,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+>>  		goto err_hw_stop;
+>>  	}
+>>  
+>> +	pm_runtime_mark_last_busy(dev->parent);
+>>  	pm_runtime_mark_last_busy(dev);
+>>  	pm_runtime_put_autosuspend(dev);
+>>  
+> 

@@ -2,285 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDA4B15C0C3
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2020 15:57:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89CFE15CDE2
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2020 23:11:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727347AbgBMO5Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Feb 2020 09:57:16 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:34491 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726282AbgBMO5Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Feb 2020 09:57:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1581605835;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OG+hnrSnkCgWf7UG021Y7MWPAq7aPjND81Zb6RKMks0=;
-        b=ASHeKd4G1NISrcqezwbZKd03mykmxNrIwZmAS8pcNlP3CTA3lrKKvoHugX3O7xQ45kItx+
-        9mpbLSFFWGpq1U5h629HwG1vCRGQKToZ164D534hiQ2uJfZ3QtUC055XUBKznyo7DBCYBC
-        jVU6THMIBz0+GosFWpaFGcgtkJWlqYg=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-25-rK1ZwMiUPxWVUElrFvGr-A-1; Thu, 13 Feb 2020 09:57:08 -0500
-X-MC-Unique: rK1ZwMiUPxWVUElrFvGr-A-1
-Received: by mail-qv1-f70.google.com with SMTP id e26so3660805qvb.4
-        for <linux-iio@vger.kernel.org>; Thu, 13 Feb 2020 06:57:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=OG+hnrSnkCgWf7UG021Y7MWPAq7aPjND81Zb6RKMks0=;
-        b=i8E3GhctqpCIzZ1BeAL9s30RewEwO+c9qvIa+z4HJCi28ReCsDGayIQyBxFszubPdY
-         Wr5HfLKUbShEEPfMDwiE6jTZl0X7OXIQ93fxhli7pcny7KoUDHLNXcZos66qCZeSt+ad
-         Wc8mVyELwUPR/wcV4r0YZdxGbFHm2da0owCP5Ck98knm2WhihsBXteumR2Apx+5RxIqs
-         t9znpoYhPUtSInn+3Z/00wdhVMszQRB7feBselquLaINhwlZhDfU1z8gTkNGAYhvIdHa
-         1yITEDgdwEukPmqgzzhrSN2LMDRi4QuwIUpXuyb/g9w9suGyuQMFSVLFXS/hOGWx3Tqx
-         ESQA==
-X-Gm-Message-State: APjAAAWZnyVXKOOE3jtyz4sXJkWvkeu5bfGA3EKSMlu1fattN8nJ7de0
-        TxAoDNT1XsruAAMkVWlQ90JVe+q45A+yFYWz/9RYUMwFTMF/gATn8etvyOtO65yDq2U5DSUqeJd
-        axqhoEYKAR8w2POPtuKty4m96IEEq73bljEfx
-X-Received: by 2002:a0c:b61c:: with SMTP id f28mr12127451qve.101.1581605828172;
-        Thu, 13 Feb 2020 06:57:08 -0800 (PST)
-X-Google-Smtp-Source: APXvYqw79GfvtUnCv32Ralzh9mb3Ib+MuApX3vGAqTZi5554x+i/wsufiurBMmJpzi5QIWYX18IaVCdLBTvAhDT4Dq0=
-X-Received: by 2002:a0c:b61c:: with SMTP id f28mr12127419qve.101.1581605827808;
- Thu, 13 Feb 2020 06:57:07 -0800 (PST)
+        id S1727845AbgBMWLU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Feb 2020 17:11:20 -0500
+Received: from esa4.tennantco.iphmx.com ([68.232.154.87]:65066 "EHLO
+        esa4.tennantco.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727594AbgBMWLU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Feb 2020 17:11:20 -0500
+X-Greylist: delayed 427 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Feb 2020 17:11:19 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tennantco.com; i=@tennantco.com; q=dns/txt;
+  s=selector1; t=1581631879; x=1613167879;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=pqVksUXZFIO3CYO241ofxw7Twgb97QYczgi2FjRoxHM=;
+  b=r+YVUvKfsaf5V1OZuA10LqXxa7hkTfU8eevxrVOk9bRgzT2Dvkjo2H4p
+   TeJk9imXL9CiKlnFXT2+aQqtL0n3GV4deSRYGfeLw+9qLOMBFetdi8Shc
+   Fwj01HYxuh4s/bgU1kxu08rSnJ3GqNdnox9GD8sKZutD0RFi74Q8UguHR
+   vtD4vRMU1iOvX9RT9Fd5Ch6dUjgE78/VJfpGAcvqfxQ7X/TRCKq9X+yCb
+   V0uf2PqnJnQ1IIzXm1kN01mh/15AIS4AE/1KCxl8ic6mSr6jEoUkm/lfF
+   yT+P1JK1jtX6H4/BAD+eFrLs8vB6tVSP8KDw5LThf0Xp4oEhMGSLwxbw3
+   A==;
+IronPort-SDR: Rsntv9NddgtuY1MbSqB7HcRNeUOWYp0QEuekx+kdJynTx6wiGMTx5GQTPIuXhUfuL3sk95m4/F
+ aaxxrEUabTjliNwA6aK9DjpNenZhJRxKdrOarxzJ3vJgNlRBlrwDDXF2hD5o8B5643REOPBi2M
+ /+ud0CIJ1cgvFX+xSoVzXTxkIi+4IY+Lc2PqgG/zL3WQk/DGj88y7TaGF5cxs5rYvOJsY7D6rH
+ EmVAA5hRFcAZECH2S7PnAp3kmDw9Jm4IqDwgATrxLbk6EPVtUCdlwHYyIhbsQIJsugDg29ScnX
+ bMs=
+IronPort-PHdr: =?us-ascii?q?9a23=3Aj22JfB0c2M37kx/ksmDT+DRfVm0co7zxezQtwd?=
+ =?us-ascii?q?8ZsesWI/nxwZ3uMQTl6Ol3ixeRBMOHsq4C1bqd6v2/EUU7or+/81k6OKRWUB?=
+ =?us-ascii?q?EEjchE1ycBO+WiTXPBEfjxciYhF95DXlI2t1uyMExSBdqsLwaK+i764jEdAA?=
+ =?us-ascii?q?jwOhRoLerpBIHSk9631+ev8JHPfglEnjWwba59IRmsrAjctcYajZZiJ6sz1x?=
+ =?us-ascii?q?DEvmZGd+NKyGxnIl6egwzy7dqq8p559CRQtfMh98peXqj/Yq81U79WAik4Pm?=
+ =?us-ascii?q?4s/MHkugXNQgWJ5nsHT2UZiQFIDBTf7BH7RZj+rC33vfdg1SaAPM32Sbc0WS?=
+ =?us-ascii?q?m+76puVRTlhjsLOyI//WrKkcF7kr5Vrwy9qBx+247UYZ+aNPxifqPGYNgWQX?=
+ =?us-ascii?q?NNUttNWyBdB4+xaZYEAegcMuZCt4TzqVsAowWjCwevCuPg1iJHiX340qI10u?=
+ =?us-ascii?q?QsCh3G0BA6Et4SrHjZttf4OaEPWu611qnIyjDDYutY1zb97IjHaBYhquyOU7?=
+ =?us-ascii?q?J3f8ve10kuHB7Cg1ueqY3lOyma1uIXv2aZ6OphW/ygim48pgFtvDevwMEshZ?=
+ =?us-ascii?q?PPhoIJ1l/E8j91z5oyJd29UUN2Z8OvHphItyyCKod6XswvT3tntSs40LELuZ?=
+ =?us-ascii?q?y2cDIXxJklyBPTc+GLfoyL7x75SuqdPTh1iGhrdb+xnRq+71SsxvH6W8Kpyl?=
+ =?us-ascii?q?hFtDBFncPJtn0V0hzT7dWIReVl80e63DaPyxjT6uZZIUAojabbK4Auwro3lp?=
+ =?us-ascii?q?cLqUrOAij4lFjrgKOPeEsq/eml5/3gYrr9uJCQLYh0ihziMqs1ncy/HOI4PR?=
+ =?us-ascii?q?UUU2iD4+S806Hj8lPlT7VWj/02la/ZvIrdJcQGuq65BwhV0oEg6xqlEzim19?=
+ =?us-ascii?q?EYkWEGLFJDZh2Hk5DkN0zSLP33F/uyjFahnC1ryv3EJLHtH5fAI3fbnLfkZ7?=
+ =?us-ascii?q?l96kpcyAQpzdBY4pJZEr8PIfL3WkDrstzUFB03Mwu6wun5CNRwzZ8eVnyJAq?=
+ =?us-ascii?q?+fKqzSt0OI6f4oI+WWeIAVvzP9J+A/5/HylX85hUMdfa6x0JsVaXC3AupqLk?=
+ =?us-ascii?q?uCbHrvnNgBC2EKsRQ6TODwj12CSzFTbW6oX60g/jE7FJ6mDYDbS4CuhryOxj?=
+ =?us-ascii?q?20EYFVZmxcClCBCnjod4CLWvsWdS2dPNdrkiYYWri5V48hyRauuRf+y7V9NO?=
+ =?us-ascii?q?rU4TYVtZf929hp/eLTmxYy9TtuA8uAzW6HV3t0kX8QRz8qwKB/plRwyk+G0a?=
+ =?us-ascii?q?dmnfNYD9JS6uhRUgc/K5HT0fZ6Ct7oVgLHYNiJVE6sQs+6DjEpUtIx39gObl?=
+ =?us-ascii?q?55G9WjiBDDwiWrD6YUl7yKA5w56bzc33fvKMZn0XrG17cuj0MgQsRRMW2qnK?=
+ =?us-ascii?q?l/9xLcB92Br0LMtaGsfLgc1SiF326GwHCJugkMUg97C/7tXn0FYEbS69Pj6R?=
+ =?us-ascii?q?WRYaWpDOELIw9Iz4aiLbRHe5W9oURCTfGlGNPBbnOZh2q2Ax+O2riLKoHtfj?=
+ =?us-ascii?q?NOj23mFEEYnlVLrj69Pg8kC3Lk+jqGVmY8HE/zY07q7eh1oW+6SUlx1QyRck?=
+ =?us-ascii?q?l9zOTlqAUNi6maTPUelvIftSEtpi88PW713smeSr/i7xFkYL0aZNo85Fld0m?=
+ =?us-ascii?q?eMmx15N5rmD6d9i082bwlxuUroyx5wTI5HlJtioQ=3D=3D?=
+X-IPAS-Result: =?us-ascii?q?A2HECwDTxkVe/645L2hmhBVQXoEIAwQ1CoQKg0cBAYU6h?=
+ =?us-ascii?q?T2XBINsglIDVAkBAQEBAQEBAQEHAS0CBAEBAoQ+AjWCPDgTAgMBDAEBAQUBA?=
+ =?us-ascii?q?QEBAQUCAQEBAQJphTcMgjspAXFxAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBA?=
+ =?us-ascii?q?QEBAQEBAQEBAQEBBQKBDD4CAQMSER0BAREmAQ8LDgwCBSECAg8FHgsgNYVPA?=
+ =?us-ascii?q?y4BoBABgSg+AiMBPwEBC4EFKYhhAQF0gTKCfwEBBYUbGFeBNQkJAYEEKowzg?=
+ =?us-ascii?q?Uw/hCQ+h1sygiyYD5drB4I9fJVJKIJIjF6LcYsEmxGEAAIEAgQFAg4BAQWBa?=
+ =?us-ascii?q?SOBWDMaI4M8UBgNkhCKciQxgQUkjGgBgQ8BAQ?=
+X-IronPort-AV: E=Sophos;i="5.70,438,1574143200"; 
+   d="scan'208";a="17199328"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from mail-dm6nam11lp2174.outbound.protection.outlook.com (HELO NAM11-DM6-obe.outbound.protection.outlook.com) ([104.47.57.174])
+  by ob1.tennantco.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2020 16:04:11 -0600
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WEEv6QSlcjOyUCA4vVL+aFegqRvzg2BWTkDDeUSbdb67W0ZgXOt8KXjZ3F4wnTShKwC142x27DfAGUkW2sodH9LjKCwZhlGOIQA51LWYEmiMSZduao9bjm0EVp7l1qH6zOd0pvQ5fuh0wP6JU+lc51Ev1P1JLBOgwcZfT/VEmjIVgY7rep5fCfCuj7QrpLrzVSgKNWyX41YAtOYgdNvWNL74Ah/us7OUPwPlv5a159hUhUfxyq1zqs2vBUN0aI/s3NgEoQ95tux+XMkCTDdUkxadMqve11Gx9AhW631/2OP1UTV5OIrqLMeT+KAOwayDuq+cfSfNpqryFHi/KfpVTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pqVksUXZFIO3CYO241ofxw7Twgb97QYczgi2FjRoxHM=;
+ b=QUuPU4ujIhk0C0P0dmQkkcAlLDKDWL+eNhJAsitDZXjIBT82dAwGVH4X1tSaJbHjmjJJwNHApucnMEnz+mqVmojmiN1zh4Y0ZZs2IJZrUebUsn/yf1U7fgu7c+Z4AiBlhGLyQvUIisZVL+UpytplszEvFl9U2O7/QwxduUk05x673qQsdbbg0m6rbvHY08NgngA67L5r26BYlw0tULGZrRRc7yKGYlTKR0GAUrEoqauBATpaxZ0562jNfHDeXUx4aUp3dGep4MSd4YVf1O+3gOLP5a4up0JuIIryVLO3WAQjPa/ff6qutja7I0BgNq1pHuWc2zJVYbglWs77wscUnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=tennantco.com; dmarc=pass action=none
+ header.from=tennantco.com; dkim=pass header.d=tennantco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=tennantco.onmicrosoft.com; s=selector2-tennantco-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pqVksUXZFIO3CYO241ofxw7Twgb97QYczgi2FjRoxHM=;
+ b=R1HiveHsNfbtT/mFNS6oOvmy09PJN15TRKosWYxAriILvGTrHyITDqIo0Bo7EdwzP3kOSCf0m8Jlh6ws1tU9LKRAWWlQLAlTg07+IKfLIGkldKkadyitvm8MtFI6UyoZRq7AdWQHMNbSucx6Vq82oPmXhxZljF+DWX0WhC94dNg=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Dylan.Howey@tennantco.com; 
+Received: from CH2PR20MB3271.namprd20.prod.outlook.com (10.255.156.30) by
+ CH2PR20MB2934.namprd20.prod.outlook.com (10.255.156.91) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2729.22; Thu, 13 Feb 2020 22:04:10 +0000
+Received: from CH2PR20MB3271.namprd20.prod.outlook.com
+ ([fe80::b12f:4e2a:2a0:51c1]) by CH2PR20MB3271.namprd20.prod.outlook.com
+ ([fe80::b12f:4e2a:2a0:51c1%7]) with mapi id 15.20.2729.025; Thu, 13 Feb 2020
+ 22:04:10 +0000
+Date:   Thu, 13 Feb 2020 16:04:08 -0600
+From:   Dylan Howey <Dylan.Howey@tennantco.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: mma8452: Expose temperature channel
+Message-ID: <20200213220407.GA11762@tennantco.com>
+References: <20200205203240.13550-1-Dylan.Howey@tennantco.com>
+ <20200208163154.4d4f6752@archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200208163154.4d4f6752@archlinux>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: CH2PR14CA0001.namprd14.prod.outlook.com
+ (2603:10b6:610:60::11) To CH2PR20MB3271.namprd20.prod.outlook.com
+ (2603:10b6:610:2::30)
 MIME-Version: 1.0
-References: <1581476197-25854-1-git-send-email-Sandeep.Singh@amd.com> <1ce6f591-1e8b-8291-7f18-48876fd70e10@redhat.com>
-In-Reply-To: <1ce6f591-1e8b-8291-7f18-48876fd70e10@redhat.com>
-From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Date:   Thu, 13 Feb 2020 15:56:56 +0100
-Message-ID: <CAO-hwJJkWkpApB-i0tHxEb0BeWcMpFLwSsOWKKdzGKnJEbHA_A@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] SFH: Add Support for AMD Sensor Fusion Hub
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Sandeep Singh <Sandeep.Singh@amd.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Nehal-bakulchandra.Shah@amd.com, Shyam-sundar.S-k@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Received: from tennantco.com (198.204.33.200) by CH2PR14CA0001.namprd14.prod.outlook.com (2603:10b6:610:60::11) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2729.25 via Frontend Transport; Thu, 13 Feb 2020 22:04:10 +0000
+X-Originating-IP: [198.204.33.200]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: fce24397-ff1d-4dbb-5697-08d7b0d0a76a
+X-MS-TrafficTypeDiagnostic: CH2PR20MB2934:
+X-Microsoft-Antispam-PRVS: <CH2PR20MB293410E03B67C3F31F409D25EF1A0@CH2PR20MB2934.namprd20.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 031257FE13
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(136003)(366004)(376002)(396003)(39860400002)(346002)(199004)(189003)(956004)(26005)(186003)(2616005)(6916009)(16526019)(4326008)(2906002)(36756003)(1076003)(5660300002)(33656002)(8936002)(86362001)(8676002)(81166006)(81156014)(316002)(54906003)(4744005)(7696005)(52116002)(66556008)(55016002)(66946007)(66476007)(8886007)(478600001);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR20MB2934;H:CH2PR20MB3271.namprd20.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+Received-SPF: None (protection.outlook.com: tennantco.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: fZwUJDAE01TeW/ud4QmsGaiDr9i87Q8ZXjaJFeWacSyCYIrv77b/xx46qhW0QD9F+Dx+QDtY5KdEa3YwejR1uzGHO+uyO50cxvSWlPZy/iA+l5eo4sjxPpwMuVEy4mC2/hbI+THc8+xhEhNTG95b3/Cq/jEP2p94R8eUYhfWJdkDk8X32lUBlO/fOmXocEDrJUPVT0ugsiwteMC38qCdpnUxl27Tnvz/RZOL0VVaaRYaW2nDNrgjtclF79aeYo+M5MrsSSmU+do6kAX2FwVPdwwNqjk/co4+ngwno7Sw4wTLS5c0yksqk7NpXH9dPQMZ3Dpg7UGZb2PWgVcyG+qjUfpdi505ZJlpkAGc3B+W7MyqDMD4FHr5bXPtah7iDLJbqm+VVXgUp2TlSzxZIRZK0c4kIIGTEvntuId/wzBAM+OkvoV/rwZeY1trx3oJ5W+9
+X-MS-Exchange-AntiSpam-MessageData: 8zJuimio5IrdskA/zpina/3OQr8JkbYL/tPQ8FrjrdVMr+upDPsnBcGhZx9UJ1Jt5Gk8jc+OjRePODmZR6LW528b1HwywbJ6FfRFF+YRFp+bJhJhO6kA5d860dy0cy3y7T0Q0w0iyUjsfIpARfi2nA==
+X-OriginatorOrg: tennantco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fce24397-ff1d-4dbb-5697-08d7b0d0a76a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2020 22:04:10.6443
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 854ee4fb-bf50-420c-8a26-5b96d626ac37
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RmYfqZMc5eCugLRTATj/wgQrAUbzNUEpxz7OVovwYl4F9zLqwx1cxnON+EfAlj6OY4EdlvgV3Fq2qNnSiX1WIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR20MB2934
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+I tried disabling the temperature channel after every raw read, but I'm
+running into some issues. When the channel is disabled the data ready
+bits in ctrl_reg1 won't go high anymore, and I'm doing the dummy read of
+33h as the datasheet says. Data ready interrupts also stop working. So
+something is not right with this particular hardware. If you leave the
+channel enabled everything works good.
 
-On Wed, Feb 12, 2020 at 3:45 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 2/12/20 3:56 AM, Sandeep Singh wrote:
-> > From: Sandeep Singh <sandeep.singh@amd.com>
-> >
-> > AMD SFH(Sensor Fusion Hub) is HID based driver.SFH FW
-> > is part of MP2 processor (MP2 which is an ARM=C2=AE Cortex-M4
-> > core based co-processor to x86) and it runs on MP2 where
-> > in driver resides on X86.The driver functionalities are
-> > divided  into three parts:-
-> >
-> > 1: amd-mp2-pcie:-       This module will communicate with MP2 FW and
-> >                          provide that data into DRAM.
-> > 2: Client driver :-     This part for driver will use dram data and
-> >                          convert that data into HID format based on
-> >                          HID reports.
-> > 3: Transport driver :-  This part of driver will communicate with
-> >                          HID core. Communication between devices and
-> >                          HID core is mostly done via HID reports
-> >
-> > In terms of architecture it is much more reassembles like
-> > ISH(Intel Integrated Sensor Hub). However the major difference
-> > is all the hid reports are generated as part of kernel driver.
-> > AMD SFH driver taken reference from ISH in terms of
-> > design and functionalities at fewer location.
-> >
-> > AMD sensor fusion Hub is part of a SOC 17h family based platforms.
-> > The solution is working well on several OEM products.
-> > AMD SFH uses HID over PCIe bus.
->
-> I started looking at this patch because of the phoronix' news item on it.
->
-> First of all I want to say that it is great that AMD is working on
-> getting the Sensor Fusion Hub supported on Linux and that you are
-> working on a driver for this.
+What are my options? I could implicitly enable the channel the first
+time it is used and leave it on, but it seems bad to leave the channel
+enabled. In that case there would be no other way to disable the channel
+other than to reload the module.
 
-Yep, couldn't agree more :)
+Maybe an argument passed to the module to enable temperature output or a
+compile time flag to do this?
 
->
-> But, I've taken a quick look, mainly at the
-> "[PATCH v3 5/5] SFH: Create HID report to Enable support of AMD sensor fu=
-sion Hub (SFH)"
-> patch.
->
-> AFAIK with the Intel ISH the sensor-hub itself is actually providing
-> HID descriptors and HID input reports.
->
-> Looking at the AMD code, that does not seem to be the case, it seems
-> the values come directly from the AMD sensor-hub without being in any
-> HID specific form, e.g.:
->
-> +u8 get_input_report(int sensor_idx, int report_id,
-> +                   u8 *input_report, u32 *sensor_virt_addr)
-> +{
-> +       u8 report_size =3D 0;
-> +       struct accel3_input_report acc_input;
-> +       struct gyro_input_report gyro_input;
-> +       struct magno_input_report magno_input;
-> +       struct als_input_report als_input;
-> +
-> +       if (!sensor_virt_addr || !input_report)
-> +               return report_size;
-> +
-> +       switch (sensor_idx) {
-> +       case ACCEL_IDX: /* accel */
-> +               acc_input.common_property.report_id =3D report_id;
-> +               acc_input.common_property.sensor_state =3D
-> +                                       HID_USAGE_SENSOR_STATE_READY_ENUM=
-;
-> +               acc_input.common_property.event_type =3D
-> +                               HID_USAGE_SENSOR_EVENT_DATA_UPDATED_ENUM;
-> +               acc_input.in_accel_x_value =3D (int)sensor_virt_addr[0] /
-> +                                               AMD_SFH_FIRMWARE_MULTIPLI=
-ER;
-> +               acc_input.in_accel_y_value =3D (int)sensor_virt_addr[1] /
-> +                                               AMD_SFH_FIRMWARE_MULTIPLI=
-ER;
-> +               acc_input.in_accel_z_value =3D  (int)sensor_virt_addr[2] =
-/
-> +                                               AMD_SFH_FIRMWARE_MULTIPLI=
-ER;
-> +               memcpy(input_report, &acc_input, sizeof(acc_input));
-> +               report_size =3D sizeof(acc_input);
-> +               break;
->
-> And the descriptors are hardcoded in the driver so as to fake a HID
-> device.
->
-> So going through the HID subsystem seems like an unnecessary detour,
-> which just makes things needlessly complex and harder to debug
-> (and extend).
->
-> The HID devices which the current patch-set is creating ultimately
-> will result in a number of devices being created under
->
-> /sys/bus/iio/devices
->
-> And this are the devices which userspace uses to get the sensor data.
->
-> IMHO instead of going through the HID subsys the AMD Sensor Fusion Hub
-> driver should simply register 4 (*) iio-devices itself and directly
-> pass the data through at the iio subsys level rather then going the
-> long way around by creating a fake HID device which then gets
-> attached to by the hid-sensor driver to ultimately create the same
-> iio-devices.
->
-> There are examples of e.g. various iio accel drivers under:
-> drivers/iio/accel/ you could start with a simple driver supporting
-> just the accelerometer bits and then extend things from there.
->
-> Benjamin, Jiri, Jonathan, what is your take on this?
-
-Hard to say without knowing AMD roadmap for that. If they intend to
-have an ISH-like approach in the end with reports and descriptors
-provided by the firmwares, then it makes sense to keep this
-architecture for the first revision of devices.
-If not, then yes, this is probably overkill compared to what needs to be do=
-ne.
-
-Sandeep, can you explain to us why you think using HID is the best way?
-
-On a side note, I don't necessarily like patch 4/5 with the debugfs
-interface. It's adding a kernel API for no gain, and we should already
-have the debug API available in the various subsystems involved.
-
-Cheers,
-Benjamin
-
-
-
-
->
-> Regards,
->
-> Hans
->
->
-> *) One for accel, gyra, magneto and light each
->
->
-> > Sandeep Singh (5):
-> >    SFH: Add maintainers and documentation for AMD SFH based on HID
-> >      framework
-> >    SFH: PCI driver to add support of AMD sensor fusion Hub using HID
-> >      framework
-> >    SFH: Transport Driver to add support of AMD Sensor Fusion Hub (SFH)
-> >    SFH: Add debugfs support to AMD Sensor Fusion Hub
-> >    SFH: Create HID report to Enable support of AMD sensor fusion Hub
-> >      (SFH)
-> >
-> > Changes since v1:
-> >          -Fix auto build test warnings
-> >          -Fix warnings captured using smatch
-> >          -Changes suggested by Dan Carpenter
-> >
-> > Links of the review comments for v1:
-> >          [1] https://patchwork.kernel.org/patch/11325163/
-> >          [2] https://patchwork.kernel.org/patch/11325167/
-> >          [3] https://patchwork.kernel.org/patch/11325171/
-> >          [4] https://patchwork.kernel.org/patch/11325187/
-> >
-> >
-> > Changes since v2:
-> >          -Debugfs divided into another patch
-> >          -Fix some cosmetic changes
-> >          -Fix for review comments
-> >           Reported and Suggested by:-  Srinivas Pandruvada
-> >
-> > Links of the review comments for v2:
-> >          [1] https://patchwork.kernel.org/patch/11355491/
-> >          [2] https://patchwork.kernel.org/patch/11355495/
-> >          [3] https://patchwork.kernel.org/patch/11355499/
-> >          [4] https://patchwork.kernel.org/patch/11355503/
-> >
-> >
-> >   Documentation/hid/amd-sfh-hid.rst                  | 160 +++++
-> >   MAINTAINERS                                        |   8 +
-> >   drivers/hid/Kconfig                                |   2 +
-> >   drivers/hid/Makefile                               |   1 +
-> >   drivers/hid/amd-sfh-hid/Kconfig                    |  20 +
-> >   drivers/hid/amd-sfh-hid/Makefile                   |  17 +
-> >   drivers/hid/amd-sfh-hid/amd_mp2_pcie.c             | 243 ++++++++
-> >   drivers/hid/amd-sfh-hid/amd_mp2_pcie.h             | 177 ++++++
-> >   drivers/hid/amd-sfh-hid/amdsfh-debugfs.c           | 250 ++++++++
-> >   drivers/hid/amd-sfh-hid/amdsfh-debugfs.h           |  14 +
-> >   drivers/hid/amd-sfh-hid/amdsfh-hid-client.c        | 260 +++++++++
-> >   drivers/hid/amd-sfh-hid/amdsfh-hid.c               | 179 ++++++
-> >   drivers/hid/amd-sfh-hid/amdsfh-hid.h               |  85 +++
-> >   .../hid_descriptor/amd_sfh_hid_descriptor.c        | 275 +++++++++
-> >   .../hid_descriptor/amd_sfh_hid_descriptor.h        | 125 ++++
-> >   .../hid_descriptor/amd_sfh_hid_report_descriptor.h | 642 ++++++++++++=
-+++++++++
-> >   16 files changed, 2458 insertions(+)
-> >   create mode 100644 Documentation/hid/amd-sfh-hid.rst
-> >   create mode 100644 drivers/hid/amd-sfh-hid/Kconfig
-> >   create mode 100644 drivers/hid/amd-sfh-hid/Makefile
-> >   create mode 100644 drivers/hid/amd-sfh-hid/amd_mp2_pcie.c
-> >   create mode 100644 drivers/hid/amd-sfh-hid/amd_mp2_pcie.h
-> >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-debugfs.c
-> >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-debugfs.h
-> >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-hid-client.c
-> >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-hid.c
-> >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-hid.h
-> >   create mode 100644 drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid=
-_descriptor.c
-> >   create mode 100644 drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid=
-_descriptor.h
-> >   create mode 100644 drivers/hid/amd-sfh-hid/hid_descriptor/amd_sfh_hid=
-_report_descriptor.h
-> >
->
-
+-- 
+Dylan

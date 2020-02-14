@@ -2,227 +2,205 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47F7615F341
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2020 19:21:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 784FA15F524
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2020 19:39:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731324AbgBNPxo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Feb 2020 10:53:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33100 "EHLO mail.kernel.org"
+        id S1729626AbgBNPtD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Feb 2020 10:49:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51334 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731315AbgBNPxn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 14 Feb 2020 10:53:43 -0500
+        id S1729661AbgBNPtC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 14 Feb 2020 10:49:02 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9F13824676;
-        Fri, 14 Feb 2020 15:53:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D0E4722314;
+        Fri, 14 Feb 2020 15:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581695622;
-        bh=FL125QhCHzuD7AKQT3MaXdVgMYJnHSTj6g/WR7tLHu8=;
+        s=default; t=1581695341;
+        bh=iPSMz9m+b6TUU1rBeRiiINPLup/BJ2uTJt5Gu19G7Ts=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VJexUXhK48HNd+vnl59e8rVMhemOt+KkFu+jEhl04k1xL5vnuytQL+cf8j+0liAb3
-         up7Ua3uhmkLD1n5DNwRA5xGjZuvsLgJnmLEWvDF+AuzQDguINmGpW7r3ueKHMAnLxJ
-         6X+pimI4irEJ4/Y7+cM2G+JD1ejQkL1pTQpheWWs=
-Date:   Fri, 14 Feb 2020 15:53:38 +0000
+        b=XOlOtbYN91NTX5WQtG7fSL9pK17AEigsLWFVC3TJd5igmif76Upsz7OR9d8zNfCIF
+         2NmiiQTvlPqirtxwTVxkMiGH2MdyTFsO+cUV+xGpE52QnnaTFf5Ryzsf7IGvYnkcbV
+         oaKuCWEGKACKRRlJlS1Wfb+UnP1PYFCtRGxLTJRs=
+Date:   Fri, 14 Feb 2020 15:47:48 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Maxime =?UTF-8?B?Um91c3Npbi1Cw6lsYW5nZXI=?= 
-        <maxime.roussinbelanger@gmail.com>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Guillaume Champagne <champagne.guillaume.c@gmail.com>
-Subject: Re: [PATCH] iio: si1133: read 24 signed integer for measurement
-Message-ID: <20200214155338.5f54ed51@archlinux>
-In-Reply-To: <CAE=T-s7E46Ym9yvxW4iDVtFqw3VmXQAHRA5kr_VV-uSBnuoXsA@mail.gmail.com>
-References: <20200207160740.29508-1-maxime.roussinbelanger@gmail.com>
-        <20200214142251.6c50ccf2@archlinux>
-        <CAE=T-s7E46Ym9yvxW4iDVtFqw3VmXQAHRA5kr_VV-uSBnuoXsA@mail.gmail.com>
+To:     Alexandru Tachici <alexandru.tachici@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 2/5] staging: iio: adc: ad7192: modify iio_chan_spec
+ array
+Message-ID: <20200214154748.3f977906@archlinux>
+In-Reply-To: <20200212161721.16200-3-alexandru.tachici@analog.com>
+References: <20200212161721.16200-1-alexandru.tachici@analog.com>
+        <20200212161721.16200-3-alexandru.tachici@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 Feb 2020 10:27:45 -0500
-Maxime Roussin-B=C3=A9langer <maxime.roussinbelanger@gmail.com> wrote:
+On Wed, 12 Feb 2020 18:17:18 +0200
+Alexandru Tachici <alexandru.tachici@analog.com> wrote:
 
-> On Fri, Feb 14, 2020 at 9:22 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Fri,  7 Feb 2020 11:07:40 -0500
-> > Maxime Roussin-B=C3=A9langer         <maxime.roussinbelanger@gmail.com>=
- wrote:
-> > =20
-> > > The chip is configured in 24 bit mode. The values read from it must
-> > > always be treated as is. This fixes the issue by replacing the previo=
-us
-> > > 16 bits value by a 24 bits buffer.
-> > >
-> > > This changes affects the value output by previous version of the driv=
-er,
-> > > since the least significant byte was missing. The upper half of 16
-> > > bit values previously output are now the upper half of a 24 bit value.
-> > >
-> > > Co-authored-by: Guillaume Champagne <champagne.guillaume.c@gmail.com>
-> > > Signed-off-by: Maxime Roussin-B=C3=A9langer <maxime.roussinbelanger@g=
-mail.com =20
-> >
-> > Patch looks fine, so question is whether we treat this as an enhancemen=
-t,
-> > or a fix? If it's a fix please provide a suitable fixes tag. =20
->=20
-> I'm not 100% of what fixes tag mean, but I assume it's something like
->=20
-> Tested-By: SomeoneTestedIt <TheDudeEmail@gmail.com>
-Nope it identifies the point at which the issue was originally introduced.
+> This patch changes the static const struct iio_chan_spec arrays
+> in a way that all the necessary attributes are set at
+> compile time. Now ad7192_channels_config only makes the
+> channels attribute of iio_dev point to the right array depending
+> on the chip.
+> 
+> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+Applied, thanks
 
-See  Documentation/process/submitting-patches.rst
 
-Jonathan
-
->=20
-> Am I correct?
->=20
-> Thanks,
-> Max.
->=20
-> >
-> > Thanks,
-> >
-> > Jonathan
-> > =20
-> > > ---
-> > >  drivers/iio/light/si1133.c | 37 ++++++++++++++++++++++++-------------
-> > >  1 file changed, 24 insertions(+), 13 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
-> > > index 777b1a0848c9..509af982e185 100644
-> > > --- a/drivers/iio/light/si1133.c
-> > > +++ b/drivers/iio/light/si1133.c
-> > > @@ -102,6 +102,9 @@
-> > >  #define SI1133_INPUT_FRACTION_LOW    15
-> > >  #define SI1133_LUX_OUTPUT_FRACTION   12
-> > >  #define SI1133_LUX_BUFFER_SIZE               9
-> > > +#define SI1133_MEASURE_BUFFER_SIZE   3
-> > > +
-> > > +#define SI1133_SIGN_BIT_INDEX 23
-> > >
-> > >  static const int si1133_scale_available[] =3D {
-> > >       1, 2, 4, 8, 16, 32, 64, 128};
-> > > @@ -234,13 +237,13 @@ static const struct si1133_lux_coeff lux_coeff =
-=3D {
-> > >       }
-> > >  };
-> > >
-> > > -static int si1133_calculate_polynomial_inner(u32 input, u8 fraction,=
- =20
-> u16 mag,
-> > > +static int si1133_calculate_polynomial_inner(s32 input, u8 fraction,=
- =20
-> u16 mag,
-> > >                                            s8 shift)
-> > >  {
-> > >       return ((input << fraction) / mag) << shift;
-> > >  }
-> > >
-> > > -static int si1133_calculate_output(u32 x, u32 y, u8 x_order, u8 =20
-> y_order,
-> > > +static int si1133_calculate_output(s32 x, s32 y, u8 x_order, u8 =20
-> y_order,
-> > >                                  u8 input_fraction, s8 sign,
-> > >                                  const struct si1133_coeff *coeffs)
-> > >  {
-> > > @@ -276,7 +279,7 @@ static int si1133_calculate_output(u32 x, u32 y, =
-u8 =20
-> x_order, u8 y_order,
-> > >   * The algorithm is from:
-> > >   * =20
-> https://siliconlabs.github.io/Gecko_SDK_Doc/efm32zg/html/si1133_8c_source=
-.html#l00716
-> > >   */
-> > > -static int si1133_calc_polynomial(u32 x, u32 y, u8 input_fraction, u=
-8 =20
-> num_coeff,
-> > > +static int si1133_calc_polynomial(s32 x, s32 y, u8 input_fraction, u=
-8 =20
-> num_coeff,
-> > >                                 const struct si1133_coeff *coeffs)
-> > >  {
-> > >       u8 x_order, y_order;
-> > > @@ -614,23 +617,24 @@ static int si1133_measure(struct si1133_data =20
-> *data,
-> > >  {
-> > >       int err;
-> > >
-> > > -     __be16 resp;
-> > > +     u8 buffer[SI1133_MEASURE_BUFFER_SIZE];
-> > >
-> > >       err =3D si1133_set_adcmux(data, 0, chan->channel);
-> > >       if (err)
-> > >               return err;
-> > >
-> > >       /* Deactivate lux measurements if they were active */
-> > >       err =3D si1133_set_chlist(data, BIT(0));
-> > >       if (err)
-> > >               return err;
-> > >
-> > > -     err =3D si1133_bulk_read(data, SI1133_REG_HOSTOUT(0), sizeof(re=
-sp),
-> > > -                            (u8 *)&resp);
-> > > +     err =3D si1133_bulk_read(data, SI1133_REG_HOSTOUT(0), =20
-> sizeof(buffer),
-> > > +                            buffer);
-> > >       if (err)
-> > >               return err;
-> > >
-> > > -     *val =3D be16_to_cpu(resp);
-> > > +     *val =3D sign_extend32((buffer[0] << 16) | (buffer[1] << 8) | =
-=20
-> buffer[2],
-> > > +                          SI1133_SIGN_BIT_INDEX);
-> > >
-> > >       return err;
-> > >  }
-> > > @@ -704,9 +708,9 @@ static int si1133_get_lux(struct si1133_data *dat=
-a, =20
-> int *val)
-> > >  {
-> > >       int err;
-> > >       int lux;
-> > > -     u32 high_vis;
-> > > -     u32 low_vis;
-> > > -     u32 ir;
-> > > +     s32 high_vis;
-> > > +     s32 low_vis;
-> > > +     s32 ir;
-> > >       u8 buffer[SI1133_LUX_BUFFER_SIZE];
-> > >
-> > >       /* Activate lux channels */
-> > > @@ -719,9 +723,16 @@ static int si1133_get_lux(struct si1133_data =20
-> *data, int *val)
-> > >       if (err)
-> > >               return err;
-> > >
-> > > -     high_vis =3D (buffer[0] << 16) | (buffer[1] << 8) | buffer[2];
-> > > -     low_vis =3D (buffer[3] << 16) | (buffer[4] << 8) | buffer[5];
-> > > -     ir =3D (buffer[6] << 16) | (buffer[7] << 8) | buffer[8];
-> > > +     high_vis =3D
-> > > +             sign_extend32((buffer[0] << 16) | (buffer[1] << 8) | =20
-> buffer[2],
-> > > +                           SI1133_SIGN_BIT_INDEX);
-> > > +
-> > > +     low_vis =3D
-> > > +             sign_extend32((buffer[3] << 16) | (buffer[4] << 8) | =20
-> buffer[5],
-> > > +                           SI1133_SIGN_BIT_INDEX);
-> > > +
-> > > +     ir =3D sign_extend32((buffer[6] << 16) | (buffer[7] << 8) | =20
-> buffer[8],
-> > > +                        SI1133_SIGN_BIT_INDEX);
-> > >
-> > >       if (high_vis > SI1133_ADC_THRESHOLD || ir > SI1133_ADC_THRESHOL=
-D)
-> > >               lux =3D si1133_calc_polynomial(high_vis, ir, =20
+> ---
+>  drivers/staging/iio/adc/ad7192.c | 112 ++++++++++++++++++-------------
+>  1 file changed, 66 insertions(+), 46 deletions(-)
+> 
+> diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
+> index 41da8b4cdc48..8fca8915543d 100644
+> --- a/drivers/staging/iio/adc/ad7192.c
+> +++ b/drivers/staging/iio/adc/ad7192.c
+> @@ -786,73 +786,93 @@ static const struct iio_info ad7195_info = {
+>  	.validate_trigger = ad_sd_validate_trigger,
+>  };
+>  
+> +#define __AD719x_CHANNEL(_si, _channel1, _channel2, _address, _extend_name, \
+> +	_type, _mask_type_av, _ext_info) \
+> +	{ \
+> +		.type = (_type), \
+> +		.differential = ((_channel2) == -1 ? 0 : 1), \
+> +		.indexed = 1, \
+> +		.channel = (_channel1), \
+> +		.channel2 = (_channel2), \
+> +		.address = (_address), \
+> +		.extend_name = (_extend_name), \
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+> +			BIT(IIO_CHAN_INFO_OFFSET), \
+> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
+> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) | \
+> +			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY), \
+> +		.info_mask_shared_by_type_available = (_mask_type_av), \
+> +		.ext_info = (_ext_info), \
+> +		.scan_index = (_si), \
+> +		.scan_type = { \
+> +			.sign = 'u', \
+> +			.realbits = 24, \
+> +			.storagebits = 32, \
+> +			.endianness = IIO_BE, \
+> +		}, \
+> +	}
+> +
+> +#define AD719x_DIFF_CHANNEL(_si, _channel1, _channel2, _address) \
+> +	__AD719x_CHANNEL(_si, _channel1, _channel2, _address, NULL, \
+> +		IIO_VOLTAGE, BIT(IIO_CHAN_INFO_SCALE), \
+> +		ad7192_calibsys_ext_info)
+> +
+> +#define AD719x_CHANNEL(_si, _channel1, _address) \
+> +	__AD719x_CHANNEL(_si, _channel1, -1, _address, NULL, IIO_VOLTAGE, \
+> +		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
+> +
+> +#define AD719x_SHORTED_CHANNEL(_si, _channel1, _address) \
+> +	__AD719x_CHANNEL(_si, _channel1, -1, _address, "shorted", IIO_VOLTAGE, \
+> +		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
+> +
+> +#define AD719x_TEMP_CHANNEL(_si, _address) \
+> +	__AD719x_CHANNEL(_si, 0, -1, _address, NULL, IIO_TEMP, 0, NULL)
+> +
+>  static const struct iio_chan_spec ad7192_channels[] = {
+> -	AD_SD_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M, 24, 32, 0),
+> -	AD_SD_DIFF_CHANNEL(1, 3, 4, AD7192_CH_AIN3P_AIN4M, 24, 32, 0),
+> -	AD_SD_TEMP_CHANNEL(2, AD7192_CH_TEMP, 24, 32, 0),
+> -	AD_SD_SHORTED_CHANNEL(3, 2, AD7192_CH_AIN2P_AIN2M, 24, 32, 0),
+> -	AD_SD_CHANNEL(4, 1, AD7192_CH_AIN1, 24, 32, 0),
+> -	AD_SD_CHANNEL(5, 2, AD7192_CH_AIN2, 24, 32, 0),
+> -	AD_SD_CHANNEL(6, 3, AD7192_CH_AIN3, 24, 32, 0),
+> -	AD_SD_CHANNEL(7, 4, AD7192_CH_AIN4, 24, 32, 0),
+> +	AD719x_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M),
+> +	AD719x_DIFF_CHANNEL(1, 3, 4, AD7192_CH_AIN3P_AIN4M),
+> +	AD719x_TEMP_CHANNEL(2, AD7192_CH_TEMP),
+> +	AD719x_SHORTED_CHANNEL(3, 2, AD7192_CH_AIN2P_AIN2M),
+> +	AD719x_CHANNEL(4, 1, AD7192_CH_AIN1),
+> +	AD719x_CHANNEL(5, 2, AD7192_CH_AIN2),
+> +	AD719x_CHANNEL(6, 3, AD7192_CH_AIN3),
+> +	AD719x_CHANNEL(7, 4, AD7192_CH_AIN4),
+>  	IIO_CHAN_SOFT_TIMESTAMP(8),
+>  };
+>  
+>  static const struct iio_chan_spec ad7193_channels[] = {
+> -	AD_SD_DIFF_CHANNEL(0, 1, 2, AD7193_CH_AIN1P_AIN2M, 24, 32, 0),
+> -	AD_SD_DIFF_CHANNEL(1, 3, 4, AD7193_CH_AIN3P_AIN4M, 24, 32, 0),
+> -	AD_SD_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M, 24, 32, 0),
+> -	AD_SD_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M, 24, 32, 0),
+> -	AD_SD_TEMP_CHANNEL(4, AD7193_CH_TEMP, 24, 32, 0),
+> -	AD_SD_SHORTED_CHANNEL(5, 2, AD7193_CH_AIN2P_AIN2M, 24, 32, 0),
+> -	AD_SD_CHANNEL(6, 1, AD7193_CH_AIN1, 24, 32, 0),
+> -	AD_SD_CHANNEL(7, 2, AD7193_CH_AIN2, 24, 32, 0),
+> -	AD_SD_CHANNEL(8, 3, AD7193_CH_AIN3, 24, 32, 0),
+> -	AD_SD_CHANNEL(9, 4, AD7193_CH_AIN4, 24, 32, 0),
+> -	AD_SD_CHANNEL(10, 5, AD7193_CH_AIN5, 24, 32, 0),
+> -	AD_SD_CHANNEL(11, 6, AD7193_CH_AIN6, 24, 32, 0),
+> -	AD_SD_CHANNEL(12, 7, AD7193_CH_AIN7, 24, 32, 0),
+> -	AD_SD_CHANNEL(13, 8, AD7193_CH_AIN8, 24, 32, 0),
+> +	AD719x_DIFF_CHANNEL(0, 1, 2, AD7193_CH_AIN1P_AIN2M),
+> +	AD719x_DIFF_CHANNEL(1, 3, 4, AD7193_CH_AIN3P_AIN4M),
+> +	AD719x_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
+> +	AD719x_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
+> +	AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
+> +	AD719x_SHORTED_CHANNEL(5, 2, AD7193_CH_AIN2P_AIN2M),
+> +	AD719x_CHANNEL(6, 1, AD7193_CH_AIN1),
+> +	AD719x_CHANNEL(7, 2, AD7193_CH_AIN2),
+> +	AD719x_CHANNEL(8, 3, AD7193_CH_AIN3),
+> +	AD719x_CHANNEL(9, 4, AD7193_CH_AIN4),
+> +	AD719x_CHANNEL(10, 5, AD7193_CH_AIN5),
+> +	AD719x_CHANNEL(11, 6, AD7193_CH_AIN6),
+> +	AD719x_CHANNEL(12, 7, AD7193_CH_AIN7),
+> +	AD719x_CHANNEL(13, 8, AD7193_CH_AIN8),
+>  	IIO_CHAN_SOFT_TIMESTAMP(14),
+>  };
+>  
+>  static int ad7192_channels_config(struct iio_dev *indio_dev)
+>  {
+>  	struct ad7192_state *st = iio_priv(indio_dev);
+> -	const struct iio_chan_spec *channels;
+> -	struct iio_chan_spec *chan;
+> -	int i;
+>  
+>  	switch (st->devid) {
+>  	case ID_AD7193:
+> -		channels = ad7193_channels;
+> +		indio_dev->channels = ad7193_channels;
+>  		indio_dev->num_channels = ARRAY_SIZE(ad7193_channels);
+>  		break;
+>  	default:
+> -		channels = ad7192_channels;
+> +		indio_dev->channels = ad7192_channels;
+>  		indio_dev->num_channels = ARRAY_SIZE(ad7192_channels);
+>  		break;
+>  	}
+>  
+> -	chan = devm_kcalloc(indio_dev->dev.parent, indio_dev->num_channels,
+> -			    sizeof(*chan), GFP_KERNEL);
+> -	if (!chan)
+> -		return -ENOMEM;
+> -
+> -	indio_dev->channels = chan;
+> -
+> -	for (i = 0; i < indio_dev->num_channels; i++) {
+> -		*chan = channels[i];
+> -		chan->info_mask_shared_by_all |=
+> -			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY);
+> -		if (chan->type != IIO_TEMP) {
+> -			chan->info_mask_shared_by_type_available |=
+> -				BIT(IIO_CHAN_INFO_SCALE);
+> -			chan->ext_info = ad7192_calibsys_ext_info;
+> -		}
+> -		chan++;
+> -	}
+> -
+>  	return 0;
+>  }
+>  
 

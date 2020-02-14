@@ -2,880 +2,390 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55B9915DA22
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2020 16:02:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8753215DA58
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2020 16:10:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729278AbgBNPCd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Feb 2020 10:02:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54022 "EHLO mail.kernel.org"
+        id S1729475AbgBNPKR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Feb 2020 10:10:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57198 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729241AbgBNPCd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 14 Feb 2020 10:02:33 -0500
+        id S1729278AbgBNPKR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 14 Feb 2020 10:10:17 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0BD9F24649;
-        Fri, 14 Feb 2020 15:02:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7BDA624670;
+        Fri, 14 Feb 2020 15:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581692551;
-        bh=kXcg0X6us0dKXqHDMNt3WPC+sSHkCBvPZXmoueYQX8w=;
+        s=default; t=1581693016;
+        bh=C4ruZYaMs1nYd0gqhHvdOmkB8OWOp8lsaC2jN1arpN4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=XPKGVmnUmzJC6GJFGtQqkt6bMl1bQNn50tc9z2mKCp3/u+tMHHxPl6HizKQmPq7Jv
-         JKlJwuj6rIhs53TeKd7EkIAZRTqWPgfTXETmM+GuhIAK9u4eXi2JnpbNPtbMmmYGf3
-         /l9D0LtgU/Tw5C3DvRrYvQbAbQEcD2H/3sxcUCOM=
-Date:   Fri, 14 Feb 2020 15:02:25 +0000
+        b=MqGmGnJOi1zsbXYPrFEHiIwrN2I30wVnvtp2y/QcFlG6xq1uFuCM2B1R98BgAeMN1
+         G+AY1N+t4s4uwug0E1lKcUdbGsa8aLwXJMDSAPAO1HbB1FvNzDZ8nfSKBMG2qDZ9DI
+         /eIC4B8BTkmwjE06SoLeKrYmO2wuvRPMo0x55uZM=
+Date:   Fri, 14 Feb 2020 15:10:11 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     haibo.chen@nxp.com
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: Add imx8qxp adc driver support
-Message-ID: <20200214150225.3418a518@archlinux>
-In-Reply-To: <1581413555-31743-1-git-send-email-haibo.chen@nxp.com>
-References: <1581413555-31743-1-git-send-email-haibo.chen@nxp.com>
+To:     Olivier MOYSAN <olivier.moysan@st.com>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 4/4] iio: adc: stm32-dfsdm: add scale and offset support
+Message-ID: <20200214151011.20111e8c@archlinux>
+In-Reply-To: <5b2e74a0-71bd-46d0-0096-b33ff17f780b@st.com>
+References: <20200204101008.11411-1-olivier.moysan@st.com>
+        <20200204101008.11411-5-olivier.moysan@st.com>
+        <20200208161847.76c7d6e8@archlinux>
+        <8400827e-5f3d-ad3f-99c8-986934b1a7b8@st.com>
+        <20200214131113.70aa36b8@archlinux>
+        <5b2e74a0-71bd-46d0-0096-b33ff17f780b@st.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 11 Feb 2020 17:32:35 +0800
-haibo.chen@nxp.com wrote:
+On Fri, 14 Feb 2020 14:49:18 +0000
+Olivier MOYSAN <olivier.moysan@st.com> wrote:
 
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> i.MX8QXP B0 and i.MX8QM has the same ADC IP, so add the
-> adc driver to support it.
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-A few minor things, but mostly looks good to me.
+> Hi Jonathan,
+>=20
+> On 2/14/20 2:11 PM, Jonathan Cameron wrote:
+> > On Tue, 11 Feb 2020 15:19:01 +0000
+> > Olivier MOYSAN <olivier.moysan@st.com> wrote:
+> > =20
+> >> Hi Jonathan,
+> >>
+> >> On 2/8/20 5:18 PM, Jonathan Cameron wrote: =20
+> >>> On Tue, 4 Feb 2020 11:10:08 +0100
+> >>> Olivier Moysan <olivier.moysan@st.com> wrote:
+> >>>    =20
+> >>>> Add scale and offset attributes support to STM32 DFSDM.
+> >>>>
+> >>>> Signed-off-by: Olivier Moysan <olivier.moysan@st.com> =20
+> >>> Hmm. I can't remember this history of this but we've kind of
+> >>> ended up backwards wrt to other consumer drivers.
+> >>>
+> >>> In some sense this is similar to the analog gyroscopes.  In those
+> >>> the consumer driver is the gyroscope which is consuming the raw
+> >>> readings from an ADC connected to the channel.  This results
+> >>> in us getting readings reported by the gyroscope driver.
+> >>>
+> >>> Here we have a sigma delta convertor consuming the pulse train
+> >>> from a sigma delta device.  So the channels are reported by
+> >>> the sigma delta receiver, whereas i think the nearest equivalent
+> >>> to the analog voltage outputing gyroscopes would have been if
+> >>> we had reported the channel values at the sigma delta converter. =20
+> >> The DFSDM driver is currently used as a consumer of the sd modulator.
+> >> The scale and offset values of the channels are already computed by
+> >> the DFSDM driver, and provided by this driver to the IIO ABI.
+> >> However, the DFSDM has no voltage reference, so it has to retrieve
+> >> it from sd-modulator channels, for the scale factor computation.
+> >>
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 scale=
+=C2=A0 offset
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 ^=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 IIO ABI
+> >> +-------------------------------------------------------------+
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |sd driver=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |DFSDM driver |
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
+> >> +-------------------------------------------------------------+
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 HW
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
+> >> +------->+ sd-modulator=C2=A0 +--------->+ DFSDM +-------->
+> >> analog=C2=A0=C2=A0 +------+--------+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 +-------------+ output
+> >> input=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | vref
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 +
+> >>
+> >>
+> >> Is it the topology your are expecting ? =20
+> > It's not the one we'd expect if we are aligning with similar cases
+> > elsewhere in IIO.  For example, if we attach an analog accelerometer
+> > to an ADC, we report the accel channels on the accelerometer not the
+> > ADC.  The equivalent would be to see the DFSDM as providing a
+> > conversion service to the SD device which is actually executing
+> > the measurement and has the input channels.
+> >
+> >
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 scale=C2=A0 offset  r=
+aw
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 ^      ^
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0  |  =C2=A0=C2=A0        =
+                  IIO ABI
+> >   +-------------------------------------------------------------+
+> >    =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
+> >    =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |sd driver=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |DFSDM driver |
+> >    =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
+> >   +-------------------------------------------------------------+
+> >    =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 HW
+> >    =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
+> >   +------->+ sd-modulator=C2=A0 +--------->+ DFSDM +-------->
+> >   analog=C2=A0=C2=A0 +------+--------+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 +-------------+ output
+> >   input=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
+> >    =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | vref =20
+> >>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 +
+> >> =20
+> Thanks for your clarification.
+> ok, moving to this logic is a significant change.
+> I need to evaluate further the impact on the dfsdm driver.
 
-See inline.
-
-Thanks,
+Understood!  If we can't do it without potentially breaking users then
+such is life.
 
 Jonathan
 
-> ---
->  drivers/iio/adc/Kconfig       |  10 +
->  drivers/iio/adc/Makefile      |   1 +
->  drivers/iio/adc/imx8qxp_adc.c | 723 ++++++++++++++++++++++++++++++++++
->  3 files changed, 734 insertions(+)
->  create mode 100644 drivers/iio/adc/imx8qxp_adc.c
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 82e33082958c..10329fe5d8d4 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -480,6 +480,16 @@ config IMX7D_ADC
->  	  This driver can also be built as a module. If so, the module will be
->  	  called imx7d_adc.
->  
-> +config IMX8QXP_ADC
-> +	tristate "IMX8QXP ADC driver"
-> +	depends on ARCH_MXC || COMPILE_TEST
-> +	depends on HAS_IOMEM
-> +	help
-> +	  Say yes here to build support for IMX8QXP ADC.
-> +
-> +	  This driver can also be built as a module. If so, the module will be
-> +	  called imx8qxp_adc.
-> +
->  config LP8788_ADC
->  	tristate "LP8788 ADC driver"
->  	depends on MFD_LP8788
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index 919228900df9..480f76b628ca 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -43,6 +43,7 @@ obj-$(CONFIG_FSL_MX25_ADC) += fsl-imx25-gcq.o
->  obj-$(CONFIG_HI8435) += hi8435.o
->  obj-$(CONFIG_HX711) += hx711.o
->  obj-$(CONFIG_IMX7D_ADC) += imx7d_adc.o
-> +obj-$(CONFIG_IMX8QXP_ADC) += imx8qxp_adc.o
->  obj-$(CONFIG_INA2XX_ADC) += ina2xx-adc.o
->  obj-$(CONFIG_INGENIC_ADC) += ingenic-adc.o
->  obj-$(CONFIG_INTEL_MRFLD_ADC) += intel_mrfld_adc.o
-> diff --git a/drivers/iio/adc/imx8qxp_adc.c b/drivers/iio/adc/imx8qxp_adc.c
-> new file mode 100644
-> index 000000000000..a6a9c42d08cd
-> --- /dev/null
-> +++ b/drivers/iio/adc/imx8qxp_adc.c
-> @@ -0,0 +1,723 @@
-> +/*
-> + * NXP i.MX8QXP ADC driver
-> + *
-> + * Copyright (C) 2018 NXP
-
-Worth updating the date?
-
-Also SPDX headers no required and there will be no need for explicit
-license boilerplate if you add those.
-
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/completion.h>
-> +#include <linux/err.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/kernel.h>
-> +#include <linux/delay.h>
-> +#include <linux/module.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regulator/consumer.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/driver.h>
-> +#include <linux/iio/sysfs.h>
-> +
-> +/* ADC register */
-> +#define IMX8QXP_REG_ADC_VERID		0x00
-> +#define IMX8QXP_REG_ADC_PARAM		0x04
-> +#define IMX8QXP_REG_ADC_CTRL		0x10
-> +#define IMX8QXP_REG_ADC_STAT		0x14
-> +#define IMX8QXP_REG_ADC_IE		0x18
-> +#define IMX8QXP_REG_ADC_DE		0x1c
-> +#define IMX8QXP_REG_ADC_CFG		0x20
-> +#define IMX8QXP_REG_ADC_PAUSE		0x24
-> +#define IMX8QXP_REG_ADC_FCTRL		0x30
-> +#define IMX8QXP_REG_ADC_SWTRIG		0x34
-> +#define IMX8QXP_REG_ADC_TCTRL0		0xc0
-> +#define IMX8QXP_REG_ADC_TCTRL1		0xc4
-> +#define IMX8QXP_REG_ADC_TCTRL2		0xc8
-> +#define IMX8QXP_REG_ADC_TCTRL3		0xcc
-> +#define IMX8QXP_REG_ADC_TCTRL4		0xd0
-> +#define IMX8QXP_REG_ADC_TCTRL5		0xd4
-> +#define IMX8QXP_REG_ADC_TCTRL6		0xd8
-> +#define IMX8QXP_REG_ADC_TCTRL7		0xdc
-> +#define IMX8QXP_REG_ADC_CMDL1		0x100
-> +#define IMX8QXP_REG_ADC_CMDH1		0x104
-> +#define IMX8QXP_REG_ADC_CMDL2		0x108
-> +#define IMX8QXP_REG_ADC_CMDH2		0x10c
-> +#define IMX8QXP_REG_ADC_CMDL3		0x110
-> +#define IMX8QXP_REG_ADC_CMDH3		0x114
-> +#define IMX8QXP_REG_ADC_CMDL4		0x118
-> +#define IMX8QXP_REG_ADC_CMDH4		0x11c
-> +#define IMX8QXP_REG_ADC_CMDL5		0x120
-> +#define IMX8QXP_REG_ADC_CMDH5		0x124
-> +#define IMX8QXP_REG_ADC_CMDL6		0x128
-> +#define IMX8QXP_REG_ADC_CMDH6		0x12c
-> +#define IMX8QXP_REG_ADC_CMDL7		0x130
-> +#define IMX8QXP_REG_ADC_CMDH7		0x134
-> +#define IMX8QXP_REG_ADC_CMDL8		0x138
-> +#define IMX8QXP_REG_ADC_CMDH8		0x13c
-> +#define IMX8QXP_REG_ADC_CV1		0x200
-> +#define IMX8QXP_REG_ADC_CV2		0x204
-> +#define IMX8QXP_REG_ADC_CV3		0x208
-> +#define IMX8QXP_REG_ADC_CV4		0x20c
-> +#define IMX8QXP_REG_ADC_RESFIFO		0x300
-> +#define IMX8QXP_REG_ADC_TST		0xffc
-> +
-> +/* ADC IE bit shift */
-> +#define IMX8QXP_REG_ADC_IE_FOFIE_SHIFT		(1)
-
-Lots of unneeded brackets in here.
-
-> +#define IMX8QXP_REG_ADC_IE_FWMIE_SHIFT		(0)
-> +/* ADC CTRL bit shift*/
-> +#define IMX8QXP_REG_ADC_CTRL_FIFO_RESET_SHIFT		(8)
-> +#define IMX8QXP_REG_ADC_CTRL_SOFTWARE_RESET_SHIFT	(1)
-> +#define IMX8QXP_REG_ADC_CTRL_ADC_ENABLE			(0)
-> +/* ADC TCTRL bit shift*/
-> +#define IMX8QXP_REG_ADC_TCTRL_TCMD_SHIFT	(24)
-> +#define IMX8QXP_REG_ADC_TCTRL_TDLY_SHIFT	(16)
-> +#define IMX8QXP_REG_ADC_TCTRL_TPRI_SHIFT	(8)
-> +#define IMX8QXP_REG_ADC_TCTRL_HTEN_SHIFT	(0)
-> +/* ADC CMDL bit shift*/
-> +#define IMX8QXP_REG_ADC_CMDL_CSCALE_SHIFT	(8)
-> +#define IMX8QXP_REG_ADC_CMDL_MODE_SHIFT		(7)
-> +#define IMX8QXP_REG_ADC_CMDL_DIFF_SHIFT		(6)
-> +#define IMX8QXP_REG_ADC_CMDL_ABSEL_SHIFT	(5)
-> +#define IMX8QXP_REG_ADC_CMDL_ADCH_SHIFT		(0)
-> +/* ADC CMDH bit shift*/
-> +#define IMX8QXP_REG_ADC_CMDH_NEXT_SHIFT		(24)
-> +#define IMX8QXP_REG_ADC_CMDH_LOOP_SHIFT		(16)
-> +#define IMX8QXP_REG_ADC_CMDH_AVGS_SHIFT		(12)
-> +#define IMX8QXP_REG_ADC_CMDH_STS_SHIFT		(8)
-> +#define IMX8QXP_REG_ADC_CMDH_LWI_SHIFT		(7)
-> +#define IMX8QXP_REG_ADC_CMDH_CMPEN_SHIFT	(0)
-> +/* ADC CFG bit shift*/
-> +#define IMX8QXP_REG_ADC_CFG_PWREN_SHIFT		(28)
-> +#define IMX8QXP_REG_ADC_CFG_PUDLY_SHIFT		(16)
-> +#define IMX8QXP_REG_ADC_CFG_REFSEL_SHIFT	(6)
-> +#define IMX8QXP_REG_ADC_CFG_PWRSEL_SHIFT	(4)
-> +#define IMX8QXP_REG_ADC_CFG_TPRICTRL_SHIFT	(0)
-> +/* ADC FCTRL bit shift*/
-> +#define IMX8QXP_ADC_FCTRL_FWMARK_SHIFT		(16)
-> +#define IMX8QXP_ADC_FCTRL_FWMARK_MASK		(0x1f << 16)
-
-GENMASK for masks and you can also use the various FIELD_PREP
-like functions to avoid need to for separately defining shift
-macros
-
-> +#define IMX8QXP_ADC_FCTRL_FCOUNT_MASK		(0x1f)
-> +/* ADC STAT bit shift*/
-> +#define IMX8QXP_REG_ADC_STAT_CMDACT_SHIFT	(24)
-> +#define IMX8QXP_REG_ADC_STAT_TRGACT_SHIFT	(16)
-> +#define IMX8QXP_REG_ADC_STAT_FOF_SHIFT		(1)
-> +#define IMX8QXP_REG_ADC_STAT_RDY_SHIFT		(0)
-> +
-> +/* ADC CMD PARAMETER*/
-> +#define IMX8QXP_REG_ADC_CMDL_CNANNEL_SCALE_DOWN		(0)
-> +#define IMX8QXP_REG_ADC_CMDL_CHANNEL_SCALE_FULL		(0x3f)
-> +#define IMX8QXP_REG_ADC_CMDL_SEL_A_A_B_CHANNEL		(0)
-> +#define IMX8QXP_REG_ADC_CMDL_SEL_B_B_A_CHANNEL		(1)
-> +#define IMX8QXP_REG_ADC_CMDL_STANDARD_RESOLUTION	(0)
-> +#define IMX8QXP_REG_ADC_CMDL_HIGH_RESOLUTION		(1)
-> +#define IMX8QXP_REG_ADC_CMDL_MODE_SINGLE		(0)
-> +#define IMX8QXP_REG_ADC_CMDL_MODE_DIFF			(1)
-> +
-> +#define IMX8QXP_REG_ADC_CMDH_LWI_INCREMENT_ENABLE	(1)
-> +#define IMX8QXP_REG_ADC_CMDH_LWI_INCREMENT_DISABLE	(0)
-> +#define IMX8QXP_REG_ADC_CMDH_CMPEN_DISABLE		(0)
-> +#define IMX8QXP_REG_ADC_CMDH_CMPEN_ENABLE_TRUE		(2)
-> +#define IMX8QXP_REG_ADC_CMDH_CMPEN_ENABLE_UNTILE_TRUE	(0x3)
-> +
-> +/* ADC PAUSE PARAMETER*/
-> +#define IMX8QXP_REG_ADC_PAUSE_ENABLE		(0x80000000)
-> +/* ADC TRIGGER PARAMETER*/
-> +#define IMX8QXP_REG_ADC_TCTRL_TPRI_PRIORITY_HIGH	(0)
-> +#define IMX8QXP_REG_ADC_TCTRL_TPRI_PRIORITY_LOW	(1)
-> +
-> +#define IMX8QXP_REG_ADC_TCTRL_HTEN_HARDWARE_TIRGGER_DISABLE	(0)
-> +#define IMX8QXP_REG_ADC_TCTRC_HTEN_HARDWARE_TIRGGER_ENABLE	(1)
-> +
-> +#define MAX_CMD (8)
-> +#define MAX_TRIG (8)
-
-Please prefix these with IMX8QXP as well.  They are the sort of
-defines that might well clash with something in a common header
-sometime in the future!
-
-> +
-> +#define IMX8QXP_ADC_TIMEOUT		msecs_to_jiffies(100)
-> +
-> +struct imx8qxp_adc_trigger_ctrl {
-> +	u32 tcmd;
-> +	u32 tdly;
-> +	u32 tpri;
-> +	u32 hten;
-> +};
-> +
-> +struct imx8qxp_adc_cmd_l {
-> +	u32 scale;
-> +	u32 mode;
-> +	u32 diff;
-> +	u32 absel;
-> +	u32 adch;
-> +};
-> +
-> +struct imx8qxp_adc_cmd_h {
-> +	u32 next;
-> +	u32 loop;
-> +	u32 avgs;
-> +	u32 sts;
-> +	u32 lwi;
-> +	u32 cmpen;
-> +};
-> +
-> +struct imx8qxp_adc_cfg {
-> +	u32 pwren;
-> +	u32 pudly;
-> +	u32 refsel;
-> +	u32 pwrsel;
-> +	u32 tprictrl;
-> +};
-> +
-> +struct imx8qxp_adc {
-> +	struct device *dev;
-> +	void __iomem *regs;
-> +	struct clk *clk;
-> +	struct clk *ipg_clk;
-> +
-> +	u32 vref_uv;
-> +	u32 value;
-> +	u32 channel_id;
-> +	u32 trigger_id;
-> +	u32 cmd_id;
-> +
-> +	struct regulator *vref;
-> +	struct imx8qxp_adc_cmd_l adc_cmd_l[MAX_CMD + 1];
-> +	struct imx8qxp_adc_cmd_h adc_cmd_h[MAX_CMD + 1];
-> +	struct imx8qxp_adc_trigger_ctrl adc_trigger_ctrl[MAX_TRIG + 1];
-> +	struct imx8qxp_adc_cfg adc_cfg;
-> +	struct completion completion;
-> +};
-> +
-> +#define IMX8QXP_ADC_CHAN(_idx) {					\
-> +	.type = IIO_VOLTAGE,					\
-> +	.indexed = 1,						\
-> +	.channel = (_idx),					\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
-> +				BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-> +}
-> +
-> +static const struct iio_chan_spec imx8qxp_adc_iio_channels[] = {
-> +	IMX8QXP_ADC_CHAN(0),
-> +	IMX8QXP_ADC_CHAN(1),
-> +	IMX8QXP_ADC_CHAN(2),
-> +	IMX8QXP_ADC_CHAN(3),
-> +	IMX8QXP_ADC_CHAN(4),
-> +	IMX8QXP_ADC_CHAN(5),
-> +	IMX8QXP_ADC_CHAN(6),
-> +	IMX8QXP_ADC_CHAN(7),
-> +};
-> +
-> +static void imx8qxp_adc_feature_prepare(struct imx8qxp_adc *adc)
-> +{
-> +	u32 i;
-> +
-> +	adc->trigger_id = 0;
-> +	adc->cmd_id = 0;
-> +	adc->channel_id = 0;
-> +
-> +	for (i = 0; i < MAX_CMD + 1; i++) {
-> +		adc->adc_cmd_l[i].scale = 1;
-> +		adc->adc_cmd_l[i].mode = 0;
-> +		adc->adc_cmd_l[i].diff = 0;
-> +		adc->adc_cmd_l[i].absel = 0;
-> +		adc->adc_cmd_l[i].adch = 0;
-> +		adc->adc_cmd_h[i].next = 0;
-> +		adc->adc_cmd_h[i].loop = 0;
-> +		adc->adc_cmd_h[i].avgs = 0;
-> +		adc->adc_cmd_h[i].sts = 0;
-> +		adc->adc_cmd_h[i].lwi = 0;
-> +		adc->adc_cmd_h[i].cmpen = 0;
-> +	}
-> +
-> +	for (i = 0; i < MAX_TRIG; i++) {
-> +		adc->adc_trigger_ctrl[i].tcmd = 0;
-> +		adc->adc_trigger_ctrl[i].tdly = 0;
-> +		adc->adc_trigger_ctrl[i].tpri = 0;
-> +		adc->adc_trigger_ctrl[i].hten = 0;
-> +	}
-> +
-> +	adc->adc_cfg.pwren = 0;
-> +	adc->adc_cfg.pudly = 0;
-> +	adc->adc_cfg.refsel = 0;
-> +	adc->adc_cfg.pwrsel = 0;
-> +	adc->adc_cfg.tprictrl = 0;
-> +}
-> +
-> +static void imx8qxp_adc_reset(struct imx8qxp_adc *adc)
-> +{
-> +	u32 ctrl;
-> +
-> +	/*software reset, need to clear the set bit*/
-
-/* software reset... bit */
-Spaces around around the text make it a tiny bit more readable.
-
-> +	ctrl = readl(adc->regs + IMX8QXP_REG_ADC_CTRL);
-> +	ctrl |= 1 << IMX8QXP_REG_ADC_CTRL_SOFTWARE_RESET_SHIFT;
-> +	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-> +	udelay(10);
-> +	ctrl &= ~(1 << IMX8QXP_REG_ADC_CTRL_SOFTWARE_RESET_SHIFT);
-> +	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-> +
-> +	/* reset the fifo */
-> +	ctrl |= 1 << IMX8QXP_REG_ADC_CTRL_FIFO_RESET_SHIFT;
-> +	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-> +}
-> +
-> +static void imx8qxp_adc_reg_config(struct imx8qxp_adc *adc)
-> +{
-> +	u32 adc_cfg, adc_tctrl, adc_cmdl, adc_cmdh;
-> +	u32 t_id, c_id;
-> +
-> +	adc_cfg = adc->adc_cfg.pwren << IMX8QXP_REG_ADC_CFG_PWREN_SHIFT
-> +			| adc->adc_cfg.pudly << IMX8QXP_REG_ADC_CFG_PUDLY_SHIFT
-> +			| adc->adc_cfg.refsel << IMX8QXP_REG_ADC_CFG_REFSEL_SHIFT
-> +			| adc->adc_cfg.pwrsel << IMX8QXP_REG_ADC_CFG_PWRSEL_SHIFT
-> +			| adc->adc_cfg.tprictrl << IMX8QXP_REG_ADC_CFG_TPRICTRL_SHIFT;
-> +	writel(adc_cfg, adc->regs + IMX8QXP_REG_ADC_CFG);
-> +
-> +	t_id = adc->trigger_id;
-> +	adc_tctrl = adc->adc_trigger_ctrl[t_id].tcmd << IMX8QXP_REG_ADC_TCTRL_TCMD_SHIFT
-> +			| adc->adc_trigger_ctrl[t_id].tdly << IMX8QXP_REG_ADC_TCTRL_TDLY_SHIFT
-> +			| adc->adc_trigger_ctrl[t_id].tpri << IMX8QXP_REG_ADC_TCTRL_TPRI_SHIFT
-> +			| adc->adc_trigger_ctrl[t_id].hten << IMX8QXP_REG_ADC_TCTRL_HTEN_SHIFT;
-> +	writel(adc_tctrl, adc->regs + IMX8QXP_REG_ADC_TCTRL0 + t_id * 4);
-> +
-> +	c_id = adc->cmd_id - 1;
-> +	adc_cmdl = adc->adc_cmd_l[c_id].scale << IMX8QXP_REG_ADC_CMDL_CSCALE_SHIFT
-> +			| adc->adc_cmd_l[c_id].mode << IMX8QXP_REG_ADC_CMDL_MODE_SHIFT
-> +			| adc->adc_cmd_l[c_id].diff << IMX8QXP_REG_ADC_CMDL_DIFF_SHIFT
-> +			| adc->adc_cmd_l[c_id].absel << IMX8QXP_REG_ADC_CMDL_ABSEL_SHIFT
-> +			| adc->adc_cmd_l[c_id].adch << IMX8QXP_REG_ADC_CMDL_ADCH_SHIFT;
-> +	writel(adc_cmdl, adc->regs + IMX8QXP_REG_ADC_CMDL1 + c_id * 8);
-> +
-> +	adc_cmdh = adc->adc_cmd_h[c_id].next << IMX8QXP_REG_ADC_CMDH_NEXT_SHIFT
-> +			| adc->adc_cmd_h[c_id].loop << IMX8QXP_REG_ADC_CMDH_LOOP_SHIFT
-> +			| adc->adc_cmd_h[c_id].avgs << IMX8QXP_REG_ADC_CMDH_AVGS_SHIFT
-> +			| adc->adc_cmd_h[c_id].sts << IMX8QXP_REG_ADC_CMDH_STS_SHIFT
-> +			| adc->adc_cmd_h[c_id].lwi << IMX8QXP_REG_ADC_CMDH_LWI_SHIFT
-> +			| adc->adc_cmd_h[c_id].cmpen << IMX8QXP_REG_ADC_CMDH_CMPEN_SHIFT;
-> +	writel(adc_cmdh, adc->regs + IMX8QXP_REG_ADC_CMDH1 + c_id * 8);
-> +}
-> +
-> +static void imx8qxp_adc_mode_config(struct imx8qxp_adc *adc)
-> +{
-> +	u32 cmd_id, trigger_id, channel_id;
-> +
-> +	channel_id = adc->channel_id;
-> +	cmd_id = adc->cmd_id - 1;
-> +	trigger_id = adc->trigger_id;
-> +
-> +	/* config the cmd */
-> +	adc->adc_cmd_l[cmd_id].scale = IMX8QXP_REG_ADC_CMDL_CHANNEL_SCALE_FULL;
-> +	adc->adc_cmd_l[cmd_id].mode = IMX8QXP_REG_ADC_CMDL_STANDARD_RESOLUTION;
-> +	adc->adc_cmd_l[cmd_id].diff = IMX8QXP_REG_ADC_CMDL_MODE_SINGLE;
-> +	adc->adc_cmd_l[cmd_id].absel = IMX8QXP_REG_ADC_CMDL_SEL_A_A_B_CHANNEL;
-> +	adc->adc_cmd_l[cmd_id].adch = channel_id;
-> +
-> +	adc->adc_cmd_h[cmd_id].next = 0;
-> +	adc->adc_cmd_h[cmd_id].loop = 0;
-> +	adc->adc_cmd_h[cmd_id].avgs = 7;  // 128 times conversion
-> +	adc->adc_cmd_h[cmd_id].sts = 0;
-> +	adc->adc_cmd_h[cmd_id].lwi = IMX8QXP_REG_ADC_CMDH_LWI_INCREMENT_DISABLE;
-> +	adc->adc_cmd_h[cmd_id].cmpen = IMX8QXP_REG_ADC_CMDH_CMPEN_DISABLE;
-> +
-> +	/* config the trigger control */
-> +	adc->adc_trigger_ctrl[trigger_id].tcmd = adc->cmd_id;  //point to cmd1
-> +	adc->adc_trigger_ctrl[trigger_id].tdly = 0;
-> +	adc->adc_trigger_ctrl[trigger_id].tpri = IMX8QXP_REG_ADC_TCTRL_TPRI_PRIORITY_HIGH;
-> +	adc->adc_trigger_ctrl[trigger_id].hten = IMX8QXP_REG_ADC_TCTRL_HTEN_HARDWARE_TIRGGER_DISABLE;
-> +
-> +	/* ADC configuration */
-> +	adc->adc_cfg.pwren = 1;
-> +	adc->adc_cfg.pudly = 0x80;
-> +	adc->adc_cfg.refsel = 0;
-> +	adc->adc_cfg.pwrsel = 3;
-> +	adc->adc_cfg.tprictrl = 0;
-> +
-> +	imx8qxp_adc_reg_config(adc);
-> +}
-> +
-> +static void imx8qxp_adc_fifo_config(struct imx8qxp_adc *adc)
-> +{
-> +	u32 fifo_ctrl, interrupt_en;
-> +
-> +	fifo_ctrl = readl(adc->regs + IMX8QXP_REG_ADC_FCTRL);
-> +	fifo_ctrl &= ~IMX8QXP_ADC_FCTRL_FWMARK_MASK;
-> +	/* set the watermark level to 1 */
-> +	fifo_ctrl |= 0 << IMX8QXP_ADC_FCTRL_FWMARK_SHIFT;
-> +	writel(fifo_ctrl, adc->regs + IMX8QXP_REG_ADC_FCTRL);
-> +
-> +	/* FIFO Watermark Interrupt Enable */
-> +	interrupt_en = readl(adc->regs + IMX8QXP_REG_ADC_IE);
-> +	interrupt_en |= 1 << IMX8QXP_REG_ADC_IE_FWMIE_SHIFT;
-> +	writel(interrupt_en, adc->regs + IMX8QXP_REG_ADC_IE);
-> +}
-> +
-> +static void imx8qxp_adc_disable(struct imx8qxp_adc *adc)
-> +{
-> +	u32 ctrl;
-> +
-> +	ctrl = readl(adc->regs + IMX8QXP_REG_ADC_CTRL);
-> +	ctrl &=  ~(1 << IMX8QXP_REG_ADC_CTRL_ADC_ENABLE);
-> +	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-> +}
-> +
-> +static void imx8qxp_adc_enable(struct imx8qxp_adc *adc)
-> +{
-> +	u32 ctrl;
-> +
-> +	ctrl = readl(adc->regs + IMX8QXP_REG_ADC_CTRL);
-> +	ctrl |= 1 << IMX8QXP_REG_ADC_CTRL_ADC_ENABLE;
-> +	writel(ctrl, adc->regs + IMX8QXP_REG_ADC_CTRL);
-> +
-> +}
-> +
-> +static void imx8qxp_adc_start_trigger(struct imx8qxp_adc *adc)
-> +{
-> +	writel(1 << adc->trigger_id, adc->regs + IMX8QXP_REG_ADC_SWTRIG);
-> +}
-> +
-> +static u32 imx8qxp_adc_get_sample_rate(struct imx8qxp_adc *adc)
-> +{
-> +
-> +	u32 input_clk;
-> +
-> +	input_clk = clk_get_rate(adc->clk);
-> +
-> +	return input_clk / 3;
-> +}
-> +
-> +static int imx8qxp_adc_read_raw(struct iio_dev *indio_dev,
-> +			struct iio_chan_spec const *chan,
-> +			int *val,
-> +			int *val2,
-> +			long mask)
-> +{
-> +
-> +	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +
-> +	u32 channel;
-> +	long ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		pm_runtime_get_sync(adc->dev);
-> +
-> +		mutex_lock(&indio_dev->mlock);
-> +		reinit_completion(&adc->completion);
-> +
-> +		channel = chan->channel & 0x07;
-> +		adc->channel_id = channel;
-> +		adc->cmd_id = 1;
-> +		adc->trigger_id = 0;
-> +		imx8qxp_adc_mode_config(adc);
-> +
-> +		imx8qxp_adc_fifo_config(adc);
-> +
-> +		imx8qxp_adc_enable(adc);
-> +
-> +		imx8qxp_adc_start_trigger(adc);
-> +
-> +		ret = wait_for_completion_interruptible_timeout
-> +				(&adc->completion, IMX8QXP_ADC_TIMEOUT);
-> +
-> +		pm_runtime_mark_last_busy(adc->dev);
-> +		pm_runtime_put_sync_autosuspend(adc->dev);
-> +
-> +		if (ret == 0) {
-> +			mutex_unlock(&indio_dev->mlock);
-> +			return -ETIMEDOUT;
-> +		}
-> +		if (ret < 0) {
-> +			mutex_unlock(&indio_dev->mlock);
-> +			return ret;
-> +		}
-> +
-> +		*val = adc->value;
-> +		mutex_unlock(&indio_dev->mlock);
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		adc->vref_uv = regulator_get_voltage(adc->vref);
-> +		*val = adc->vref_uv / 1000;
-> +		*val2 = 12;
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*val = imx8qxp_adc_get_sample_rate(adc);
-> +		return IIO_VAL_INT;
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int imx8qxp_adc_read_data(struct imx8qxp_adc *adc)
-> +{
-> +	u32 value;
-> +
-> +	value = readl(adc->regs + IMX8QXP_REG_ADC_RESFIFO);
-> +	value &= 0xffff;
-> +	return (value >> 3);
-> +}
-> +
-> +static irqreturn_t imx8qxp_adc_isr(int irq, void *dev_id)
-> +{
-> +	struct imx8qxp_adc *adc = (struct imx8qxp_adc *)dev_id;
-> +
-> +	u32 fifo_count;
-> +
-> +	fifo_count = readl(adc->regs + IMX8QXP_REG_ADC_FCTRL)
-> +			& IMX8QXP_ADC_FCTRL_FCOUNT_MASK;
-> +
-> +	if (fifo_count) {
-> +		adc->value = imx8qxp_adc_read_data(adc);
-> +		complete(&adc->completion);
-> +	}
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int imx8qxp_adc_reg_access(struct iio_dev *indio_dev,
-> +			unsigned int reg, unsigned int writeval,
-> +			unsigned int *readval)
-> +{
-> +	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +
-> +	if (!readval || reg % 4 || reg > IMX8QXP_REG_ADC_TST)
-> +		return -EINVAL;
-> +
-> +	pm_runtime_get_sync(adc->dev);
-> +
-> +	*readval = readl(adc->regs + reg);
-> +
-> +	pm_runtime_mark_last_busy(adc->dev);
-> +	pm_runtime_put_sync_autosuspend(adc->dev);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct iio_info imx8qxp_adc_iio_info = {
-> +	.read_raw = &imx8qxp_adc_read_raw,
-> +	.debugfs_reg_access = &imx8qxp_adc_reg_access,
-> +};
-> +
-> +static const struct of_device_id imx8qxp_adc_match[] = {
-> +	{ .compatible = "fsl,imx8qxp-adc", },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, imx8qxp_adc_match);
-> +
-> +static int imx8qxp_adc_probe(struct platform_device *pdev)
-> +{
-> +	struct imx8qxp_adc *adc;
-> +	struct iio_dev *indio_dev;
-> +	struct resource *mem;
-> +	int irq;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
-> +	if (!indio_dev) {
-> +		dev_err(&pdev->dev, "Failed allocating iio device\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	adc = iio_priv(indio_dev);
-> +	adc->dev = &pdev->dev;
-> +
-> +	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	adc->regs = devm_ioremap_resource(&pdev->dev, mem);
-
-	devm_platform_ioremap_resource combines the 2 lines above.
-
-> +	if (IS_ERR(adc->regs)) {
-> +		ret = PTR_ERR(adc->regs);
-> +		dev_err(&pdev->dev,
-> +			"Failed to remap adc memory, err = %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	irq = platform_get_irq(pdev, 0);
-> +	if (irq < 0) {
-> +		dev_err(&pdev->dev, "No irq resource?\n");
-> +		return irq;
-> +	}
-> +
-> +	adc->clk = devm_clk_get(&pdev->dev, "per");
-> +	if (IS_ERR(adc->clk)) {
-> +		ret = PTR_ERR(adc->clk);
-> +		dev_err(&pdev->dev, "Failed getting clock, err = %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	adc->ipg_clk = devm_clk_get(&pdev->dev, "ipg");
-> +	if (IS_ERR(adc->ipg_clk)) {
-> +		ret = PTR_ERR(adc->ipg_clk);
-> +		dev_err(&pdev->dev, "Failed getting clock, err = %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	adc->vref = devm_regulator_get(&pdev->dev, "vref");
-> +	if (IS_ERR(adc->vref)) {
-> +		ret = PTR_ERR(adc->vref);
-> +		dev_err(&pdev->dev,
-> +			"Failed getting reference voltage, err = %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = regulator_enable(adc->vref);
-> +	if (ret) {
-> +		dev_err(&pdev->dev,
-> +			"Can't enable adc reference top voltage, err = %d\n",
-> +			ret);
-> +		return ret;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, indio_dev);
-> +
-> +	init_completion(&adc->completion);
-> +
-> +	indio_dev->name = dev_name(&pdev->dev);
-> +	indio_dev->dev.parent = &pdev->dev;
-> +	indio_dev->info = &imx8qxp_adc_iio_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = imx8qxp_adc_iio_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(imx8qxp_adc_iio_channels);
-> +
-> +	ret = clk_prepare_enable(adc->clk);
-> +	if (ret) {
-> +		dev_err(&pdev->dev,
-> +			"Could not prepare or enable the clock.\n");
-> +		goto error_adc_clk_enable;
-> +	}
-> +
-> +	ret = clk_prepare_enable(adc->ipg_clk);
-> +	if (ret) {
-> +		dev_err(&pdev->dev,
-> +			"Could not prepare or enable the clock.\n");
-> +		goto error_adc_ipg_clk_enable;
-> +	}
-> +
-> +	ret = devm_request_irq(adc->dev, irq,
-> +				imx8qxp_adc_isr, 0,
-> +				dev_name(&pdev->dev), adc);
-> +	if (ret < 0) {
-> +		dev_err(&pdev->dev, "Failed requesting irq, irq = %d\n", irq);
-> +		goto error_iio_device_register;
-
-Would normally expect an error with that label to only occur when
-iio_device_register has been called.
-
-Often better to use error label names that reflect what is to be unwound rather
-than what the error was. 
-> +	}
-> +
-> +	imx8qxp_adc_feature_prepare(adc);
-> +	imx8qxp_adc_reset(adc);
-> +
-> +	ret = iio_device_register(indio_dev);
-> +	if (ret) {
-> +		imx8qxp_adc_disable(adc);
-
-I would prefer to see all the error handling done in the error block
-rather than some here and some below.
-
-> +		dev_err(&pdev->dev, "Couldn't register the device.\n");
-> +		goto error_iio_device_register;
-> +	}
-> +
-> +	pm_runtime_set_active(&pdev->dev);
-> +	pm_runtime_set_autosuspend_delay(&pdev->dev, 50);
-> +	pm_runtime_use_autosuspend(&pdev->dev);
-> +	pm_runtime_enable(&pdev->dev);
-> +
-> +	return 0;
-> +
-> +error_iio_device_register:
-> +	clk_disable_unprepare(adc->ipg_clk);
-> +error_adc_ipg_clk_enable:
-> +	clk_disable_unprepare(adc->clk);
-> +error_adc_clk_enable:
-> +	regulator_disable(adc->vref);
-> +
-> +	return ret;
-> +}
-> +
-> +static int imx8qxp_adc_remove(struct platform_device *pdev)
-> +{
-> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +
-> +	pm_runtime_get_sync(&pdev->dev);
-> +
-> +	iio_device_unregister(indio_dev);
-> +
-> +	imx8qxp_adc_disable(adc);
-> +
-> +	clk_disable_unprepare(adc->clk);
-> +	clk_disable_unprepare(adc->ipg_clk);
-> +	regulator_disable(adc->vref);
-> +
-> +	pm_runtime_disable(&pdev->dev);
-
-I would expect to see runtime pm disabled earlier in a remove
-function.  Here it doesn't matter much as you have called
-get_sync, it just feels logically a bit late as it
-is undoing the pm_runtime_enable right at the end of probe.
-
-> +	pm_runtime_put_noidle(&pdev->dev);
-> +
-
-One blank line is nearly always enough.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx8qxp_adc_runtime_suspend(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +
-> +	imx8qxp_adc_disable(adc);
-> +
-> +	clk_disable_unprepare(adc->clk);
-> +	clk_disable_unprepare(adc->ipg_clk);
-> +	regulator_disable(adc->vref);
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx8qxp_adc_runtime_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct imx8qxp_adc *adc = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = regulator_enable(adc->vref);
-> +	if (ret) {
-> +		dev_err(adc->dev,
-> +			"Can't enable adc reference top voltage, err = %d\n",
-> +			ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = clk_prepare_enable(adc->clk);
-> +	if (ret) {
-> +		dev_err(adc->dev,
-> +			"Could not prepare or enable clock.\n");
-> +		regulator_disable(adc->vref);
-> +		return ret;
-> +	}
-> +
-> +	ret = clk_prepare_enable(adc->ipg_clk);
-> +	if (ret) {
-> +		dev_err(adc->dev,
-> +			"Could not prepare or enable clock.\n");
-> +		clk_disable_unprepare(adc->clk);
-> +		regulator_disable(adc->vref);
-> +		return ret;
-> +	}
-> +	imx8qxp_adc_reset(adc);
-
-Doing a reset in resume is unusual as it will undo any state
-that was previously configured. Looks like all state is written
-on each reading so this is probably fine if unusual.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct dev_pm_ops imx8qxp_adc_pm_ops = {
-> +	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-> +	SET_RUNTIME_PM_OPS(imx8qxp_adc_runtime_suspend, imx8qxp_adc_runtime_resume, NULL)
-> +};
-> +
-> +static struct platform_driver imx8qxp_adc_driver = {
-> +	.probe		= imx8qxp_adc_probe,
-> +	.remove		= imx8qxp_adc_remove,
-> +	.driver		= {
-> +		.name	= "imx8qxp_adc",
-> +		.of_match_table = imx8qxp_adc_match,
-> +		.pm	= &imx8qxp_adc_pm_ops,
-> +	},
-> +};
-> +
-> +module_platform_driver(imx8qxp_adc_driver);
-> +
-> +MODULE_AUTHOR("Haibo Chen <haibo.chen@nxp.com>");
-> +MODULE_DESCRIPTION("NXP IMX8QXP ADC driver");
-> +MODULE_LICENSE("GPL v2");
+>=20
+> Regards
+> Olivier
+> >> If not, I probably missedsomething. Could you please clarify this poin=
+t ?
+> >>
+> >> Regards
+> >> Olivier =20
+> >>> This wasn't really an issue when the only values available were
+> >>> raw, but if we are adding scale and offset, they are things that
+> >>> belong to the ad1201 for example, not the upstream stm32-dfsdm unit.
+> >>>
+> >>> Thinking of it another way, we don't report an SPI ADC output in
+> >>> the driver for the SPI master.
+> >>>
+> >>> Could we flip it around without breaking anything?
+> >>>
+> >>> Jonathan
+> >>>    =20
+> >>>> ---
+> >>>>    drivers/iio/adc/stm32-dfsdm-adc.c | 105 +++++++++++++++++++++++++=
+++++-
+> >>>>    1 file changed, 102 insertions(+), 3 deletions(-)
+> >>>>
+> >>>> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm=
+32-dfsdm-adc.c
+> >>>> index 07b9dfdf8e76..b85fd3e90496 100644
+> >>>> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
+> >>>> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+> >>>> @@ -10,6 +10,7 @@
+> >>>>    #include <linux/dma-mapping.h>
+> >>>>    #include <linux/iio/adc/stm32-dfsdm-adc.h>
+> >>>>    #include <linux/iio/buffer.h>
+> >>>> +#include <linux/iio/consumer.h>
+> >>>>    #include <linux/iio/hw-consumer.h>
+> >>>>    #include <linux/iio/sysfs.h>
+> >>>>    #include <linux/iio/timer/stm32-lptim-trigger.h>
+> >>>> @@ -67,6 +68,13 @@ struct stm32_dfsdm_dev_data {
+> >>>>    	const struct regmap_config *regmap_cfg;
+> >>>>    };
+> >>>>   =20
+> >>>> +struct stm32_dfsdm_sd_chan_info {
+> >>>> +	int scale_val;
+> >>>> +	int scale_val2;
+> >>>> +	int offset;
+> >>>> +	unsigned int differential;
+> >>>> +};
+> >>>> +
+> >>>>    struct stm32_dfsdm_adc {
+> >>>>    	struct stm32_dfsdm *dfsdm;
+> >>>>    	const struct stm32_dfsdm_dev_data *dev_data;
+> >>>> @@ -79,6 +87,7 @@ struct stm32_dfsdm_adc {
+> >>>>    	struct iio_hw_consumer *hwc;
+> >>>>    	struct completion completion;
+> >>>>    	u32 *buffer;
+> >>>> +	struct stm32_dfsdm_sd_chan_info *sd_chan;
+> >>>>   =20
+> >>>>    	/* Audio specific */
+> >>>>    	unsigned int spi_freq;  /* SPI bus clock frequency */
+> >>>> @@ -1271,7 +1280,10 @@ static int stm32_dfsdm_read_raw(struct iio_de=
+v *indio_dev,
+> >>>>    				int *val2, long mask)
+> >>>>    {
+> >>>>    	struct stm32_dfsdm_adc *adc =3D iio_priv(indio_dev);
+> >>>> -	int ret;
+> >>>> +	struct stm32_dfsdm_filter *fl =3D &adc->dfsdm->fl_list[adc->fl_id];
+> >>>> +	struct stm32_dfsdm_filter_osr *flo =3D &fl->flo[fl->fast];
+> >>>> +	u32 max =3D flo->max << (flo->lshift - chan->scan_type.shift);
+> >>>> +	int ret, idx =3D chan->scan_index;
+> >>>>   =20
+> >>>>    	switch (mask) {
+> >>>>    	case IIO_CHAN_INFO_RAW:
+> >>>> @@ -1307,6 +1319,41 @@ static int stm32_dfsdm_read_raw(struct iio_de=
+v *indio_dev,
+> >>>>    		*val =3D adc->sample_freq;
+> >>>>   =20
+> >>>>    		return IIO_VAL_INT;
+> >>>> +
+> >>>> +	case IIO_CHAN_INFO_SCALE:
+> >>>> +		/*
+> >>>> +		 * Scale is expressed in mV.
+> >>>> +		 * When fast mode is disabled, actual resolution may be lower
+> >>>> +		 * than 2^n, where n=3Drealbits-1.
+> >>>> +		 * This leads to underestimating input voltage. To
+> >>>> +		 * compensate this deviation, the voltage reference can be
+> >>>> +		 * corrected with a factor =3D realbits resolution / actual max
+> >>>> +		 */
+> >>>> +		*val =3D div_u64((u64)adc->sd_chan[idx].scale_val *
+> >>>> +			       (u64)BIT(DFSDM_DATA_RES - 1), max);
+> >>>> +		*val2 =3D chan->scan_type.realbits;
+> >>>> +		if (adc->sd_chan[idx].differential)
+> >>>> +			*val *=3D 2;
+> >>>> +
+> >>>> +		return IIO_VAL_FRACTIONAL_LOG2;
+> >>>> +
+> >>>> +	case IIO_CHAN_INFO_OFFSET:
+> >>>> +		/*
+> >>>> +		 * DFSDM output data are in the range [-2^n,2^n-1],
+> >>>> +		 * with n=3Drealbits-1.
+> >>>> +		 * - Differential modulator:
+> >>>> +		 * Offset correspond to SD modulator offset.
+> >>>> +		 * - Single ended modulator:
+> >>>> +		 * Input is in [0V,Vref] range, where 0V corresponds to -2^n.
+> >>>> +		 * Add 2^n to offset. (i.e. middle of input range)
+> >>>> +		 * offset =3D offset(sd) * vref / res(sd) * max / vref.
+> >>>> +		 */
+> >>>> +		*val =3D div_u64((u64)max * adc->sd_chan[idx].offset,
+> >>>> +			       BIT(adc->sd_chan[idx].scale_val2 - 1));
+> >>>> +		if (!adc->sd_chan[idx].differential)
+> >>>> +			*val +=3D max;
+> >>>> +
+> >>>> +		return IIO_VAL_INT;
+> >>>>    	}
+> >>>>   =20
+> >>>>    	return -EINVAL;
+> >>>> @@ -1430,7 +1477,9 @@ static int stm32_dfsdm_adc_chan_init_one(struc=
+t iio_dev *indio_dev,
+> >>>>    	 * IIO_CHAN_INFO_RAW: used to compute regular conversion
+> >>>>    	 * IIO_CHAN_INFO_OVERSAMPLING_RATIO: used to set oversampling
+> >>>>    	 */
+> >>>> -	ch->info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW);
+> >>>> +	ch->info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> >>>> +				 BIT(IIO_CHAN_INFO_SCALE) |
+> >>>> +				 BIT(IIO_CHAN_INFO_OFFSET);
+> >>>>    	ch->info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_OVERSAMPLING_R=
+ATIO) |
+> >>>>    					BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> >>>>   =20
+> >>>> @@ -1481,8 +1530,10 @@ static int stm32_dfsdm_adc_init(struct iio_de=
+v *indio_dev)
+> >>>>    {
+> >>>>    	struct iio_chan_spec *ch;
+> >>>>    	struct stm32_dfsdm_adc *adc =3D iio_priv(indio_dev);
+> >>>> +	struct iio_channel *channels, *chan;
+> >>>> +	struct stm32_dfsdm_sd_chan_info *sd_chan;
+> >>>>    	int num_ch;
+> >>>> -	int ret, chan_idx;
+> >>>> +	int ret, chan_idx, val2;
+> >>>>   =20
+> >>>>    	adc->oversamp =3D DFSDM_DEFAULT_OVERSAMPLING;
+> >>>>    	ret =3D stm32_dfsdm_compute_all_osrs(indio_dev, adc->oversamp);
+> >>>> @@ -1506,6 +1557,22 @@ static int stm32_dfsdm_adc_init(struct iio_de=
+v *indio_dev)
+> >>>>    	if (!ch)
+> >>>>    		return -ENOMEM;
+> >>>>   =20
+> >>>> +	/* Get SD modulator channels */
+> >>>> +	channels =3D iio_channel_get_all(&indio_dev->dev);
+> >>>> +	if (IS_ERR(channels)) {
+> >>>> +		dev_err(&indio_dev->dev, "Failed to get channel %ld\n",
+> >>>> +			PTR_ERR(channels));
+> >>>> +		return PTR_ERR(channels);
+> >>>> +	}
+> >>>> +	chan =3D &channels[0];
+> >>>> +
+> >>>> +	adc->sd_chan =3D devm_kzalloc(&indio_dev->dev,
+> >>>> +				    sizeof(*adc->sd_chan) * num_ch, GFP_KERNEL);
+> >>>> +	if (!adc->sd_chan)
+> >>>> +		return -ENOMEM;
+> >>>> +
+> >>>> +	sd_chan =3D adc->sd_chan;
+> >>>> +
+> >>>>    	for (chan_idx =3D 0; chan_idx < num_ch; chan_idx++) {
+> >>>>    		ch[chan_idx].scan_index =3D chan_idx;
+> >>>>    		ret =3D stm32_dfsdm_adc_chan_init_one(indio_dev, &ch[chan_idx]);
+> >>>> @@ -1513,6 +1580,38 @@ static int stm32_dfsdm_adc_init(struct iio_de=
+v *indio_dev)
+> >>>>    			dev_err(&indio_dev->dev, "Channels init failed\n");
+> >>>>    			return ret;
+> >>>>    		}
+> >>>> +
+> >>>> +		if (!chan->indio_dev)
+> >>>> +			return -EINVAL;
+> >>>> +
+> >>>> +		ret =3D iio_read_channel_scale(chan, &sd_chan->scale_val,
+> >>>> +					     &sd_chan->scale_val2);
+> >>>> +		if (ret < 0) {
+> >>>> +			dev_err(&indio_dev->dev,
+> >>>> +				"Failed to get channel %d scale\n", chan_idx);
+> >>>> +			return ret;
+> >>>> +		}
+> >>>> +
+> >>>> +		if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_OFFSET)) {
+> >>>> +			ret =3D iio_read_channel_offset(chan, &sd_chan->offset,
+> >>>> +						      &val2);
+> >>>> +			if (ret < 0) {
+> >>>> +				dev_err(&indio_dev->dev,
+> >>>> +					"Failed to get channel %d offset\n",
+> >>>> +					chan_idx);
+> >>>> +				return ret;
+> >>>> +			}
+> >>>> +		}
+> >>>> +
+> >>>> +		sd_chan->differential =3D chan->channel->differential;
+> >>>> +
+> >>>> +		dev_dbg(&indio_dev->dev, "Channel %d %s scale ref=3D%d offset=3D%=
+d",
+> >>>> +			chan_idx, chan->channel->differential ?
+> >>>> +			"differential" : "single-ended",
+> >>>> +			sd_chan->scale_val, sd_chan->offset);
+> >>>> +
+> >>>> +		chan++;
+> >>>> +		sd_chan++;
+> >>>>    	}
+> >>>>   =20
+> >>>>    	indio_dev->num_channels =3D num_ch; =20
 

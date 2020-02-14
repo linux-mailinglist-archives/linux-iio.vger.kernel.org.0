@@ -2,369 +2,331 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B89E115D804
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2020 14:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD2815D80B
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2020 14:12:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729239AbgBNNLT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Feb 2020 08:11:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45784 "EHLO mail.kernel.org"
+        id S1727822AbgBNNMv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Feb 2020 08:12:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46100 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728895AbgBNNLT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 14 Feb 2020 08:11:19 -0500
+        id S1726191AbgBNNMv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 14 Feb 2020 08:12:51 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 59065222C2;
-        Fri, 14 Feb 2020 13:11:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9FE2B2086A;
+        Fri, 14 Feb 2020 13:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581685878;
-        bh=FHsHZRJpZHbKmcpb1fTmxc1K9yq4sJ5NuR3hevlbaW4=;
+        s=default; t=1581685970;
+        bh=aSWUzcnCmnaiH4OYaVciNX4uIuoCaWsEhjQzWrhuI9c=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ygQq8IAtKw3LAcHJLq59h8acwMxo2J7sJ7lCjry/BupYVvC81YvKaJqkyGWVEmVcI
-         cH+QrE8Qy4Lwe3Huh9NrQDGHzNQ+n33qEbzwMhCVCgYzWRwM6r2ZoLGIOsgswONpde
-         dDwpCmU2gyhlMdOQX7rhjOYdwxme/j5SlBDnbkmk=
-Date:   Fri, 14 Feb 2020 13:11:13 +0000
+        b=Kuy/Du8K/174akt+W7Fyg4Sgmb3svvyt9HQNu9UOoMmG2I5aKN78KAlqh7eStfZRV
+         OtQTcKcr6klaXTvsIOaDAHPAEuyNMUTsbmuJZH0twuXj88b9xWcVBPHZ/eaC6qw2Wl
+         uKcgQOvszGga7DQmPV9SZnWghe51aAgfpaacnDhw=
+Date:   Fri, 14 Feb 2020 13:12:45 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Olivier MOYSAN <olivier.moysan@st.com>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 4/4] iio: adc: stm32-dfsdm: add scale and offset support
-Message-ID: <20200214131113.70aa36b8@archlinux>
-In-Reply-To: <8400827e-5f3d-ad3f-99c8-986934b1a7b8@st.com>
-References: <20200204101008.11411-1-olivier.moysan@st.com>
-        <20200204101008.11411-5-olivier.moysan@st.com>
-        <20200208161847.76c7d6e8@archlinux>
-        <8400827e-5f3d-ad3f-99c8-986934b1a7b8@st.com>
+To:     Tomas Novotny <tomas@novotny.cz>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Angus Ainslie <angus@akkea.ca>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>
+Subject: Re: [PATCH 2/5] iio: light: vcnl4000: add enable attributes for
+ vcnl4040/4200
+Message-ID: <20200214131245.4e01e430@archlinux>
+In-Reply-To: <20200211163759.4af7f924@tomas.local.tbs-biometrics.cz>
+References: <20200205101655.11728-1-tomas@novotny.cz>
+        <20200205101655.11728-3-tomas@novotny.cz>
+        <20200208145354.18d56940@archlinux>
+        <20200211163759.4af7f924@tomas.local.tbs-biometrics.cz>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 11 Feb 2020 15:19:01 +0000
-Olivier MOYSAN <olivier.moysan@st.com> wrote:
+On Tue, 11 Feb 2020 16:37:59 +0100
+Tomas Novotny <tomas@novotny.cz> wrote:
 
 > Hi Jonathan,
->=20
-> On 2/8/20 5:18 PM, Jonathan Cameron wrote:
-> > On Tue, 4 Feb 2020 11:10:08 +0100
-> > Olivier Moysan <olivier.moysan@st.com> wrote:
-> > =20
-> >> Add scale and offset attributes support to STM32 DFSDM.
-> >>
-> >> Signed-off-by: Olivier Moysan <olivier.moysan@st.com> =20
-> > Hmm. I can't remember this history of this but we've kind of
-> > ended up backwards wrt to other consumer drivers.
-> >
-> > In some sense this is similar to the analog gyroscopes.  In those
-> > the consumer driver is the gyroscope which is consuming the raw
-> > readings from an ADC connected to the channel.  This results
-> > in us getting readings reported by the gyroscope driver.
-> >
-> > Here we have a sigma delta convertor consuming the pulse train
-> > from a sigma delta device.  So the channels are reported by
-> > the sigma delta receiver, whereas i think the nearest equivalent
-> > to the analog voltage outputing gyroscopes would have been if
-> > we had reported the channel values at the sigma delta converter. =20
-> The DFSDM driver is currently used as a consumer of the sd modulator.
-> The scale and offset values of the channels are already computed by
-> the DFSDM driver, and provided by this driver to the IIO ABI.
-> However, the DFSDM has no voltage reference, so it has to retrieve
-> it from sd-modulator channels, for the scale factor computation.
->=20
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 scale=C2=A0=
- offset
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- ^=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IIO =
-ABI
-> +-------------------------------------------------------------+
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |sd driver=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-|DFSDM driver |
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
-> +-------------------------------------------------------------+
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 HW
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
-> +------->+ sd-modulator=C2=A0 +--------->+ DFSDM +-------->
-> analog=C2=A0=C2=A0 +------+--------+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 +-------------+ output
-> input=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 | vref
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 +
->=20
->=20
-> Is it the topology your are expecting ?
+> 
+> On Sat, 8 Feb 2020 14:53:54 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
+> 
+> > On Wed,  5 Feb 2020 11:16:52 +0100
+> > Tomas Novotny <tomas@novotny.cz> wrote:
+> >   
+> > > Both vcnl4040 and vcnl4200 chips start with ambient light and proximity
+> > > channels disabled. The driver enables both channels during
+> > > initialization. The channels may be enabled or disabled with this
+> > > change.
+> > > 
+> > > Disabled ambient light channel returns the last measured value on read.
+> > > This differs from proximity, which returns 0. Channels return these
+> > > values with the configured sampling rate.
+> > > 
+> > > The driver doesn't configure some defaults during probe now. Only the
+> > > enable bit is handled.
+> > > 
+> > > Signed-off-by: Tomas Novotny <tomas@novotny.cz>    
+> > 
+> > As a general rule we don't do this.  The enable controls for input devices are
+> > only there for things like step counters that will count from point of being
+> > enabled until you read them.  
+> 
+> ok.
+> 
+> > For light sensors etc it's a userspace control that no standard code knows
+> > how to use.  So if it make sense to enable / disable under normal conditions
+> > it should either be done for every reading with increased delays, or you
+> > should look at doing it with runtime power management.  Typical choice
+> > is to turn off if no one has read from the sensor for N seconds.
+> > 
+> > runtime pm reduces the exposed complexity of the interfaces from userspace
+> > and also leads to power savings when a program is taking readings, but not
+> > that often.  
+> 
+> yes, the PM way is much neater and I will drop this patch in favour of it.
+> 
+> By the way, what about disabled CONFIG_PM? Although it is not my case, is
+> there a way how to disable the sensor?
 
-It's not the one we'd expect if we are aligning with similar cases
-elsewhere in IIO.  For example, if we attach an analog accelerometer
-to an ADC, we report the accel channels on the accelerometer not the
-ADC.  The equivalent would be to see the DFSDM as providing a
-conversion service to the SD device which is actually executing
-the measurement and has the input channels.
+Nope.  If people are running without power management, then they can't
+really expect anything other than everything being turned on all the time.
 
 
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 scale=C2=A0 offset  raw
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 ^      ^
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0  |  =C2=A0=C2=A0              =
-            IIO ABI
- +-------------------------------------------------------------+
-  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
-  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |sd driver=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-|DFSDM driver |
-  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
- +-------------------------------------------------------------+
-  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 HW
-  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +---------------+=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +-------------+
- +------->+ sd-modulator=C2=A0 +--------->+ DFSDM +-------->
- analog=C2=A0=C2=A0 +------+--------+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 +-------------+ output
- input=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
-  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 | vref
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 +
->=20
-
-> If not, I probably missedsomething. Could you please clarify this point ?
->=20
-> Regards
-> Olivier
-> > This wasn't really an issue when the only values available were
-> > raw, but if we are adding scale and offset, they are things that
-> > belong to the ad1201 for example, not the upstream stm32-dfsdm unit.
-> >
-> > Thinking of it another way, we don't report an SPI ADC output in
-> > the driver for the SPI master.
-> >
-> > Could we flip it around without breaking anything?
-> >
+> 
+> Thanks,
+> 
+> Tomas
+> 
+> > Thanks,
+> > 
 > > Jonathan
-> > =20
-> >> ---
-> >>   drivers/iio/adc/stm32-dfsdm-adc.c | 105 ++++++++++++++++++++++++++++=
-+-
-> >>   1 file changed, 102 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32=
--dfsdm-adc.c
-> >> index 07b9dfdf8e76..b85fd3e90496 100644
-> >> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
-> >> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-> >> @@ -10,6 +10,7 @@
-> >>   #include <linux/dma-mapping.h>
-> >>   #include <linux/iio/adc/stm32-dfsdm-adc.h>
-> >>   #include <linux/iio/buffer.h>
-> >> +#include <linux/iio/consumer.h>
-> >>   #include <linux/iio/hw-consumer.h>
-> >>   #include <linux/iio/sysfs.h>
-> >>   #include <linux/iio/timer/stm32-lptim-trigger.h>
-> >> @@ -67,6 +68,13 @@ struct stm32_dfsdm_dev_data {
-> >>   	const struct regmap_config *regmap_cfg;
-> >>   };
-> >>  =20
-> >> +struct stm32_dfsdm_sd_chan_info {
-> >> +	int scale_val;
-> >> +	int scale_val2;
-> >> +	int offset;
-> >> +	unsigned int differential;
-> >> +};
-> >> +
-> >>   struct stm32_dfsdm_adc {
-> >>   	struct stm32_dfsdm *dfsdm;
-> >>   	const struct stm32_dfsdm_dev_data *dev_data;
-> >> @@ -79,6 +87,7 @@ struct stm32_dfsdm_adc {
-> >>   	struct iio_hw_consumer *hwc;
-> >>   	struct completion completion;
-> >>   	u32 *buffer;
-> >> +	struct stm32_dfsdm_sd_chan_info *sd_chan;
-> >>  =20
-> >>   	/* Audio specific */
-> >>   	unsigned int spi_freq;  /* SPI bus clock frequency */
-> >> @@ -1271,7 +1280,10 @@ static int stm32_dfsdm_read_raw(struct iio_dev =
-*indio_dev,
-> >>   				int *val2, long mask)
-> >>   {
-> >>   	struct stm32_dfsdm_adc *adc =3D iio_priv(indio_dev);
-> >> -	int ret;
-> >> +	struct stm32_dfsdm_filter *fl =3D &adc->dfsdm->fl_list[adc->fl_id];
-> >> +	struct stm32_dfsdm_filter_osr *flo =3D &fl->flo[fl->fast];
-> >> +	u32 max =3D flo->max << (flo->lshift - chan->scan_type.shift);
-> >> +	int ret, idx =3D chan->scan_index;
-> >>  =20
-> >>   	switch (mask) {
-> >>   	case IIO_CHAN_INFO_RAW:
-> >> @@ -1307,6 +1319,41 @@ static int stm32_dfsdm_read_raw(struct iio_dev =
-*indio_dev,
-> >>   		*val =3D adc->sample_freq;
-> >>  =20
-> >>   		return IIO_VAL_INT;
-> >> +
-> >> +	case IIO_CHAN_INFO_SCALE:
-> >> +		/*
-> >> +		 * Scale is expressed in mV.
-> >> +		 * When fast mode is disabled, actual resolution may be lower
-> >> +		 * than 2^n, where n=3Drealbits-1.
-> >> +		 * This leads to underestimating input voltage. To
-> >> +		 * compensate this deviation, the voltage reference can be
-> >> +		 * corrected with a factor =3D realbits resolution / actual max
-> >> +		 */
-> >> +		*val =3D div_u64((u64)adc->sd_chan[idx].scale_val *
-> >> +			       (u64)BIT(DFSDM_DATA_RES - 1), max);
-> >> +		*val2 =3D chan->scan_type.realbits;
-> >> +		if (adc->sd_chan[idx].differential)
-> >> +			*val *=3D 2;
-> >> +
-> >> +		return IIO_VAL_FRACTIONAL_LOG2;
-> >> +
-> >> +	case IIO_CHAN_INFO_OFFSET:
-> >> +		/*
-> >> +		 * DFSDM output data are in the range [-2^n,2^n-1],
-> >> +		 * with n=3Drealbits-1.
-> >> +		 * - Differential modulator:
-> >> +		 * Offset correspond to SD modulator offset.
-> >> +		 * - Single ended modulator:
-> >> +		 * Input is in [0V,Vref] range, where 0V corresponds to -2^n.
-> >> +		 * Add 2^n to offset. (i.e. middle of input range)
-> >> +		 * offset =3D offset(sd) * vref / res(sd) * max / vref.
-> >> +		 */
-> >> +		*val =3D div_u64((u64)max * adc->sd_chan[idx].offset,
-> >> +			       BIT(adc->sd_chan[idx].scale_val2 - 1));
-> >> +		if (!adc->sd_chan[idx].differential)
-> >> +			*val +=3D max;
-> >> +
-> >> +		return IIO_VAL_INT;
-> >>   	}
-> >>  =20
-> >>   	return -EINVAL;
-> >> @@ -1430,7 +1477,9 @@ static int stm32_dfsdm_adc_chan_init_one(struct =
-iio_dev *indio_dev,
-> >>   	 * IIO_CHAN_INFO_RAW: used to compute regular conversion
-> >>   	 * IIO_CHAN_INFO_OVERSAMPLING_RATIO: used to set oversampling
-> >>   	 */
-> >> -	ch->info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW);
-> >> +	ch->info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> >> +				 BIT(IIO_CHAN_INFO_SCALE) |
-> >> +				 BIT(IIO_CHAN_INFO_OFFSET);
-> >>   	ch->info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_OVERSAMPLING_RATI=
-O) |
-> >>   					BIT(IIO_CHAN_INFO_SAMP_FREQ);
-> >>  =20
-> >> @@ -1481,8 +1530,10 @@ static int stm32_dfsdm_adc_init(struct iio_dev =
-*indio_dev)
-> >>   {
-> >>   	struct iio_chan_spec *ch;
-> >>   	struct stm32_dfsdm_adc *adc =3D iio_priv(indio_dev);
-> >> +	struct iio_channel *channels, *chan;
-> >> +	struct stm32_dfsdm_sd_chan_info *sd_chan;
-> >>   	int num_ch;
-> >> -	int ret, chan_idx;
-> >> +	int ret, chan_idx, val2;
-> >>  =20
-> >>   	adc->oversamp =3D DFSDM_DEFAULT_OVERSAMPLING;
-> >>   	ret =3D stm32_dfsdm_compute_all_osrs(indio_dev, adc->oversamp);
-> >> @@ -1506,6 +1557,22 @@ static int stm32_dfsdm_adc_init(struct iio_dev =
-*indio_dev)
-> >>   	if (!ch)
-> >>   		return -ENOMEM;
-> >>  =20
-> >> +	/* Get SD modulator channels */
-> >> +	channels =3D iio_channel_get_all(&indio_dev->dev);
-> >> +	if (IS_ERR(channels)) {
-> >> +		dev_err(&indio_dev->dev, "Failed to get channel %ld\n",
-> >> +			PTR_ERR(channels));
-> >> +		return PTR_ERR(channels);
-> >> +	}
-> >> +	chan =3D &channels[0];
-> >> +
-> >> +	adc->sd_chan =3D devm_kzalloc(&indio_dev->dev,
-> >> +				    sizeof(*adc->sd_chan) * num_ch, GFP_KERNEL);
-> >> +	if (!adc->sd_chan)
-> >> +		return -ENOMEM;
-> >> +
-> >> +	sd_chan =3D adc->sd_chan;
-> >> +
-> >>   	for (chan_idx =3D 0; chan_idx < num_ch; chan_idx++) {
-> >>   		ch[chan_idx].scan_index =3D chan_idx;
-> >>   		ret =3D stm32_dfsdm_adc_chan_init_one(indio_dev, &ch[chan_idx]);
-> >> @@ -1513,6 +1580,38 @@ static int stm32_dfsdm_adc_init(struct iio_dev =
-*indio_dev)
-> >>   			dev_err(&indio_dev->dev, "Channels init failed\n");
-> >>   			return ret;
-> >>   		}
-> >> +
-> >> +		if (!chan->indio_dev)
-> >> +			return -EINVAL;
-> >> +
-> >> +		ret =3D iio_read_channel_scale(chan, &sd_chan->scale_val,
-> >> +					     &sd_chan->scale_val2);
-> >> +		if (ret < 0) {
-> >> +			dev_err(&indio_dev->dev,
-> >> +				"Failed to get channel %d scale\n", chan_idx);
-> >> +			return ret;
-> >> +		}
-> >> +
-> >> +		if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_OFFSET)) {
-> >> +			ret =3D iio_read_channel_offset(chan, &sd_chan->offset,
-> >> +						      &val2);
-> >> +			if (ret < 0) {
-> >> +				dev_err(&indio_dev->dev,
-> >> +					"Failed to get channel %d offset\n",
-> >> +					chan_idx);
-> >> +				return ret;
-> >> +			}
-> >> +		}
-> >> +
-> >> +		sd_chan->differential =3D chan->channel->differential;
-> >> +
-> >> +		dev_dbg(&indio_dev->dev, "Channel %d %s scale ref=3D%d offset=3D%d",
-> >> +			chan_idx, chan->channel->differential ?
-> >> +			"differential" : "single-ended",
-> >> +			sd_chan->scale_val, sd_chan->offset);
-> >> +
-> >> +		chan++;
-> >> +		sd_chan++;
-> >>   	}
-> >>  =20
-> >>   	indio_dev->num_channels =3D num_ch; =20
+> >   
+> > > ---
+> > >  drivers/iio/light/vcnl4000.c | 118 +++++++++++++++++++++++++++++++++++++------
+> > >  1 file changed, 102 insertions(+), 16 deletions(-)
+> > > 
+> > > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> > > index 9f673e89084a..f351b100a165 100644
+> > > --- a/drivers/iio/light/vcnl4000.c
+> > > +++ b/drivers/iio/light/vcnl4000.c
+> > > @@ -58,6 +58,10 @@
+> > >  #define VCNL4000_AL_OD		BIT(4) /* start on-demand ALS measurement */
+> > >  #define VCNL4000_PS_OD		BIT(3) /* start on-demand proximity measurement */
+> > >  
+> > > +/* Bit masks for various configuration registers */
+> > > +#define VCNL4200_AL_SD		BIT(0) /* Ambient light shutdown */
+> > > +#define VCNL4200_PS_SD		BIT(0) /* Proximity shutdown */
+> > > +
+> > >  enum vcnl4000_device_ids {
+> > >  	VCNL4000,
+> > >  	VCNL4010,
+> > > @@ -86,10 +90,16 @@ struct vcnl4000_data {
+> > >  
+> > >  struct vcnl4000_chip_spec {
+> > >  	const char *prod;
+> > > +	const struct iio_chan_spec *channels;
+> > > +	size_t num_channels;
+> > >  	const struct regmap_config *regmap_config;
+> > >  	int (*init)(struct vcnl4000_data *data);
+> > >  	int (*measure_light)(struct vcnl4000_data *data, int *val);
+> > >  	int (*measure_proximity)(struct vcnl4000_data *data, int *val);
+> > > +	int (*is_enabled)(struct vcnl4000_data *data, enum iio_chan_type type,
+> > > +			int *val);
+> > > +	int (*enable)(struct vcnl4000_data *data, enum iio_chan_type type,
+> > > +			bool val);
+> > >  };
+> > >  
+> > >  static const struct i2c_device_id vcnl4000_id[] = {
+> > > @@ -102,6 +112,30 @@ static const struct i2c_device_id vcnl4000_id[] = {
+> > >  };
+> > >  MODULE_DEVICE_TABLE(i2c, vcnl4000_id);
+> > >  
+> > > +static const struct iio_chan_spec vcnl4000_channels[] = {
+> > > +	{
+> > > +		.type = IIO_LIGHT,
+> > > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > > +			BIT(IIO_CHAN_INFO_SCALE),
+> > > +	}, {
+> > > +		.type = IIO_PROXIMITY,
+> > > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> > > +	}
+> > > +};
+> > > +
+> > > +static const struct iio_chan_spec vcnl4200_channels[] = {
+> > > +	{
+> > > +		.type = IIO_LIGHT,
+> > > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > > +			BIT(IIO_CHAN_INFO_SCALE) |
+> > > +			BIT(IIO_CHAN_INFO_ENABLE),
+> > > +	}, {
+> > > +		.type = IIO_PROXIMITY,
+> > > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > > +			BIT(IIO_CHAN_INFO_ENABLE),
+> > > +	}
+> > > +};
+> > > +
+> > >  static const struct regmap_config vcnl4000_regmap_config = {
+> > >  	.reg_bits = 8,
+> > >  	.val_bits = 8,
+> > > @@ -171,11 +205,10 @@ static int vcnl4200_init(struct vcnl4000_data *data)
+> > >  
+> > >  	data->rev = (ret >> 8) & 0xf;
+> > >  
+> > > -	/* Set defaults and enable both channels */
+> > > -	ret = regmap_write(data->regmap, VCNL4200_AL_CONF, 0);
+> > > +	ret = data->chip_spec->enable(data, IIO_LIGHT, true);
+> > >  	if (ret < 0)
+> > >  		return ret;
+> > > -	ret = regmap_write(data->regmap, VCNL4200_PS_CONF1, 0);
+> > > +	ret = data->chip_spec->enable(data, IIO_PROXIMITY, true);
+> > >  	if (ret < 0)
+> > >  		return ret;
+> > >  
+> > > @@ -300,9 +333,46 @@ static int vcnl4200_measure_proximity(struct vcnl4000_data *data, int *val)
+> > >  	return vcnl4200_measure(data, &data->vcnl4200_ps, val);
+> > >  }
+> > >  
+> > > +static int vcnl4200_is_enabled(struct vcnl4000_data *data,
+> > > +			       enum iio_chan_type type, int *val)
+> > > +{
+> > > +	int ret;
+> > > +
+> > > +	switch (type) {
+> > > +	case IIO_LIGHT:
+> > > +		ret = regmap_read(data->regmap, VCNL4200_AL_CONF, val);
+> > > +		*val = !(*val & VCNL4200_AL_SD);
+> > > +		break;
+> > > +	case IIO_PROXIMITY:
+> > > +		ret = regmap_read(data->regmap, VCNL4200_PS_CONF1, val);
+> > > +		*val = !(*val & VCNL4200_PS_SD);
+> > > +		break;
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> > > +	return ret < 0 ? ret : IIO_VAL_INT;
+> > > +}
+> > > +
+> > > +static int vcnl4200_enable(struct vcnl4000_data *data, enum iio_chan_type type,
+> > > +			   bool val)
+> > > +{
+> > > +	switch (type) {
+> > > +	case IIO_LIGHT:
+> > > +		return regmap_update_bits(data->regmap, VCNL4200_AL_CONF,
+> > > +				VCNL4200_AL_SD, !val);
+> > > +	case IIO_PROXIMITY:
+> > > +		return regmap_update_bits(data->regmap, VCNL4200_PS_CONF1,
+> > > +				VCNL4200_PS_SD, !val);
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> > > +}
+> > > +
+> > >  static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+> > >  	[VCNL4000] = {
+> > >  		.prod = "VCNL4000",
+> > > +		.channels = vcnl4000_channels,
+> > > +		.num_channels = ARRAY_SIZE(vcnl4000_channels),
+> > >  		.regmap_config = &vcnl4000_regmap_config,
+> > >  		.init = vcnl4000_init,
+> > >  		.measure_light = vcnl4000_measure_light,
+> > > @@ -310,6 +380,8 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+> > >  	},
+> > >  	[VCNL4010] = {
+> > >  		.prod = "VCNL4010/4020",
+> > > +		.channels = vcnl4000_channels,
+> > > +		.num_channels = ARRAY_SIZE(vcnl4000_channels),
+> > >  		.regmap_config = &vcnl4000_regmap_config,
+> > >  		.init = vcnl4000_init,
+> > >  		.measure_light = vcnl4000_measure_light,
+> > > @@ -317,31 +389,28 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+> > >  	},
+> > >  	[VCNL4040] = {
+> > >  		.prod = "VCNL4040",
+> > > +		.channels = vcnl4200_channels,
+> > > +		.num_channels = ARRAY_SIZE(vcnl4200_channels),
+> > >  		.regmap_config = &vcnl4200_regmap_config,
+> > >  		.init = vcnl4200_init,
+> > >  		.measure_light = vcnl4200_measure_light,
+> > >  		.measure_proximity = vcnl4200_measure_proximity,
+> > > +		.is_enabled = vcnl4200_is_enabled,
+> > > +		.enable = vcnl4200_enable,
+> > >  	},
+> > >  	[VCNL4200] = {
+> > >  		.prod = "VCNL4200",
+> > > +		.channels = vcnl4200_channels,
+> > > +		.num_channels = ARRAY_SIZE(vcnl4200_channels),
+> > >  		.regmap_config = &vcnl4200_regmap_config,
+> > >  		.init = vcnl4200_init,
+> > >  		.measure_light = vcnl4200_measure_light,
+> > >  		.measure_proximity = vcnl4200_measure_proximity,
+> > > +		.is_enabled = vcnl4200_is_enabled,
+> > > +		.enable = vcnl4200_enable,
+> > >  	},
+> > >  };
+> > >  
+> > > -static const struct iio_chan_spec vcnl4000_channels[] = {
+> > > -	{
+> > > -		.type = IIO_LIGHT,
+> > > -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> > > -			BIT(IIO_CHAN_INFO_SCALE),
+> > > -	}, {
+> > > -		.type = IIO_PROXIMITY,
+> > > -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> > > -	}
+> > > -};
+> > > -
+> > >  static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+> > >  				struct iio_chan_spec const *chan,
+> > >  				int *val, int *val2, long mask)
+> > > @@ -372,6 +441,22 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+> > >  		*val = 0;
+> > >  		*val2 = data->al_scale;
+> > >  		return IIO_VAL_INT_PLUS_MICRO;
+> > > +	case IIO_CHAN_INFO_ENABLE:
+> > > +		return data->chip_spec->is_enabled(data, chan->type, val);
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> > > +}
+> > > +
+> > > +static int vcnl4000_write_raw(struct iio_dev *indio_dev,
+> > > +			      struct iio_chan_spec const *chan,
+> > > +			      int val, int val2, long mask)
+> > > +{
+> > > +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> > > +
+> > > +	switch (mask) {
+> > > +	case IIO_CHAN_INFO_ENABLE:
+> > > +		return data->chip_spec->enable(data, chan->type, val);
+> > >  	default:
+> > >  		return -EINVAL;
+> > >  	}
+> > > @@ -379,6 +464,7 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+> > >  
+> > >  static const struct iio_info vcnl4000_info = {
+> > >  	.read_raw = vcnl4000_read_raw,
+> > > +	.write_raw = vcnl4000_write_raw,
+> > >  };
+> > >  
+> > >  static int vcnl4000_probe(struct i2c_client *client,
+> > > @@ -412,8 +498,8 @@ static int vcnl4000_probe(struct i2c_client *client,
+> > >  
+> > >  	indio_dev->dev.parent = &client->dev;
+> > >  	indio_dev->info = &vcnl4000_info;
+> > > -	indio_dev->channels = vcnl4000_channels;
+> > > -	indio_dev->num_channels = ARRAY_SIZE(vcnl4000_channels);
+> > > +	indio_dev->channels = data->chip_spec->channels;
+> > > +	indio_dev->num_channels = data->chip_spec->num_channels;
+> > >  	indio_dev->name = VCNL4000_DRV_NAME;
+> > >  	indio_dev->modes = INDIO_DIRECT_MODE;
+> > >      
+> >   
 

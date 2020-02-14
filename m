@@ -2,81 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C445A15D9C4
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2020 15:50:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB86B15D9CB
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2020 15:51:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729345AbgBNOtv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Feb 2020 09:49:51 -0500
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:33618 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729314AbgBNOtu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Feb 2020 09:49:50 -0500
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01EEmsPM006805;
-        Fri, 14 Feb 2020 15:49:22 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=LsGM8Z2ljmgpxpIEWQRsNYUaoPaUb9kWh0D/YqR8nxY=;
- b=bGPWfkU7XBJExtsGtDFbz8ZF3KWwgMw4w/QWL8g9FSqGvQ+o6o8eRsiaDjKAhH5aWlaY
- 3PtEV6YOdj3Sl7pHFo3d7ozSDPloZD3cGxZRISMw7Mmmev0b6PtAemQbGOrImo7RhJFc
- o8aE/xKifrst+qjHxu/JDnYU8zJPrrajjZIhv2uQI42hlAOg5roxiOFWUEW14xK9PsPm
- uFehlAf/zG8wn0bAJJWUTW2ztBmPwLwabMuVHwKKUF+Dbf7xjx7LqDJcPzij4sEFZDIM
- 7dpLl8rRAbvyQIJL3PbSxdIe61sixt6KD0Z/Fe7trndOk4xE7eUUOPL2swY0aAKx5rjP NA== 
+        id S1729241AbgBNOvY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Feb 2020 09:51:24 -0500
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:8804 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726191AbgBNOvY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Feb 2020 09:51:24 -0500
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01EEmxdI007485;
+        Fri, 14 Feb 2020 15:50:59 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=dJryy4yMA/+wSN/NwPRAi+IwjUGX1BreoYLlheDm3XE=;
+ b=E39xSzSq2WOGfh/RMbmvZI60HiC2/BZ2kmFgDbbkuNoEbeKQbSDZwvfCw8U8W/Ba8NvY
+ UxfLFKaSjSI3gyJZGK4VXJ3jgCSzTJKCVs7z+uHHC1eptvv9E6N9MWZM0VD5BUBU0SAf
+ XbgACHsauRaq3WTsoi6TXnI48AigQECSERsbpSVh62ceOgi2tZ7G2+VSNezg0/lxhu1R
+ 41jw9f3t7zy1kUd1N7O8cjOX/mD1jKxZZxM/ZaleNLx67fRsDOpsapjI9MVW0hWqkaT3
+ SHGZ92aCKF5xK5zFedtYKCw1qizRavUJ+K4SkXx8b1RkY7z/lyKYY2SXreCjjYYrD9Pl TQ== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2y1udacdb2-1
+        by mx07-00178001.pphosted.com with ESMTP id 2y1ufhvk1c-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Feb 2020 15:49:22 +0100
+        Fri, 14 Feb 2020 15:50:59 +0100
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 4ABB010002A;
-        Fri, 14 Feb 2020 15:49:19 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2BA722BAEE0;
-        Fri, 14 Feb 2020 15:49:19 +0100 (CET)
-Received: from SFHDAG6NODE2.st.com (10.75.127.17) by SFHDAG6NODE1.st.com
- (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 14 Feb
- 2020 15:49:18 +0100
-Received: from SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6]) by
- SFHDAG6NODE2.st.com ([fe80::a56f:c186:bab7:13d6%20]) with mapi id
- 15.00.1347.000; Fri, 14 Feb 2020 15:49:18 +0100
-From:   Olivier MOYSAN <olivier.moysan@st.com>
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C430510002A;
+        Fri, 14 Feb 2020 15:50:58 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id AFF642BAED7;
+        Fri, 14 Feb 2020 15:50:58 +0100 (CET)
+Received: from [10.48.0.71] (10.75.127.45) by SFHDAG5NODE3.st.com
+ (10.75.127.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 14 Feb
+ 2020 15:50:57 +0100
+Subject: Re: [PATCH v2] iio: trigger: stm32-timer: enable clock when in master
+ mode
 To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 4/4] iio: adc: stm32-dfsdm: add scale and offset support
-Thread-Topic: [PATCH 4/4] iio: adc: stm32-dfsdm: add scale and offset support
-Thread-Index: AQHV3pt2JfVGakxbKUqFj4UrygibDKgWDzEAgASTS4CAABtnAA==
-Date:   Fri, 14 Feb 2020 14:49:18 +0000
-Message-ID: <5b2e74a0-71bd-46d0-0096-b33ff17f780b@st.com>
-References: <20200204101008.11411-1-olivier.moysan@st.com>
- <20200204101008.11411-5-olivier.moysan@st.com>
- <20200208161847.76c7d6e8@archlinux>
- <8400827e-5f3d-ad3f-99c8-986934b1a7b8@st.com>
- <20200214131113.70aa36b8@archlinux>
-In-Reply-To: <20200214131113.70aa36b8@archlinux>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.75.127.51]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <925908DA82157E4489B90F995EC5DDC7@st.com>
-Content-Transfer-Encoding: base64
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <benjamin.gaignard@st.com>, <alexandre.torgue@st.com>,
+        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+References: <1581093031-9871-1-git-send-email-fabrice.gasnier@st.com>
+ <20200214142035.576e11e1@archlinux>
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+Message-ID: <3a9dfc05-f6c3-a283-5791-5d9b72bb44f7@st.com>
+Date:   Fri, 14 Feb 2020 15:50:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
+In-Reply-To: <20200214142035.576e11e1@archlinux>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.45]
+X-ClientProxiedBy: SFHDAG7NODE1.st.com (10.75.127.19) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
  definitions=2020-02-14_04:2020-02-12,2020-02-14 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
@@ -84,206 +67,292 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgSm9uYXRoYW4sDQoNCk9uIDIvMTQvMjAgMjoxMSBQTSwgSm9uYXRoYW4gQ2FtZXJvbiB3cm90
-ZToNCj4gT24gVHVlLCAxMSBGZWIgMjAyMCAxNToxOTowMSArMDAwMA0KPiBPbGl2aWVyIE1PWVNB
-TiA8b2xpdmllci5tb3lzYW5Ac3QuY29tPiB3cm90ZToNCj4NCj4+IEhpIEpvbmF0aGFuLA0KPj4N
-Cj4+IE9uIDIvOC8yMCA1OjE4IFBNLCBKb25hdGhhbiBDYW1lcm9uIHdyb3RlOg0KPj4+IE9uIFR1
-ZSwgNCBGZWIgMjAyMCAxMToxMDowOCArMDEwMA0KPj4+IE9saXZpZXIgTW95c2FuIDxvbGl2aWVy
-Lm1veXNhbkBzdC5jb20+IHdyb3RlOg0KPj4+ICAgDQo+Pj4+IEFkZCBzY2FsZSBhbmQgb2Zmc2V0
-IGF0dHJpYnV0ZXMgc3VwcG9ydCB0byBTVE0zMiBERlNETS4NCj4+Pj4NCj4+Pj4gU2lnbmVkLW9m
-Zi1ieTogT2xpdmllciBNb3lzYW4gPG9saXZpZXIubW95c2FuQHN0LmNvbT4NCj4+PiBIbW0uIEkg
-Y2FuJ3QgcmVtZW1iZXIgdGhpcyBoaXN0b3J5IG9mIHRoaXMgYnV0IHdlJ3ZlIGtpbmQgb2YNCj4+
-PiBlbmRlZCB1cCBiYWNrd2FyZHMgd3J0IHRvIG90aGVyIGNvbnN1bWVyIGRyaXZlcnMuDQo+Pj4N
-Cj4+PiBJbiBzb21lIHNlbnNlIHRoaXMgaXMgc2ltaWxhciB0byB0aGUgYW5hbG9nIGd5cm9zY29w
-ZXMuICBJbiB0aG9zZQ0KPj4+IHRoZSBjb25zdW1lciBkcml2ZXIgaXMgdGhlIGd5cm9zY29wZSB3
-aGljaCBpcyBjb25zdW1pbmcgdGhlIHJhdw0KPj4+IHJlYWRpbmdzIGZyb20gYW4gQURDIGNvbm5l
-Y3RlZCB0byB0aGUgY2hhbm5lbC4gIFRoaXMgcmVzdWx0cw0KPj4+IGluIHVzIGdldHRpbmcgcmVh
-ZGluZ3MgcmVwb3J0ZWQgYnkgdGhlIGd5cm9zY29wZSBkcml2ZXIuDQo+Pj4NCj4+PiBIZXJlIHdl
-IGhhdmUgYSBzaWdtYSBkZWx0YSBjb252ZXJ0b3IgY29uc3VtaW5nIHRoZSBwdWxzZSB0cmFpbg0K
-Pj4+IGZyb20gYSBzaWdtYSBkZWx0YSBkZXZpY2UuICBTbyB0aGUgY2hhbm5lbHMgYXJlIHJlcG9y
-dGVkIGJ5DQo+Pj4gdGhlIHNpZ21hIGRlbHRhIHJlY2VpdmVyLCB3aGVyZWFzIGkgdGhpbmsgdGhl
-IG5lYXJlc3QgZXF1aXZhbGVudA0KPj4+IHRvIHRoZSBhbmFsb2cgdm9sdGFnZSBvdXRwdXRpbmcg
-Z3lyb3Njb3BlcyB3b3VsZCBoYXZlIGJlZW4gaWYNCj4+PiB3ZSBoYWQgcmVwb3J0ZWQgdGhlIGNo
-YW5uZWwgdmFsdWVzIGF0IHRoZSBzaWdtYSBkZWx0YSBjb252ZXJ0ZXIuDQo+PiBUaGUgREZTRE0g
-ZHJpdmVyIGlzIGN1cnJlbnRseSB1c2VkIGFzIGEgY29uc3VtZXIgb2YgdGhlIHNkIG1vZHVsYXRv
-ci4NCj4+IFRoZSBzY2FsZSBhbmQgb2Zmc2V0IHZhbHVlcyBvZiB0aGUgY2hhbm5lbHMgYXJlIGFs
-cmVhZHkgY29tcHV0ZWQgYnkNCj4+IHRoZSBERlNETSBkcml2ZXIsIGFuZCBwcm92aWRlZCBieSB0
-aGlzIGRyaXZlciB0byB0aGUgSUlPIEFCSS4NCj4+IEhvd2V2ZXIsIHRoZSBERlNETSBoYXMgbm8g
-dm9sdGFnZSByZWZlcmVuY2UsIHNvIGl0IGhhcyB0byByZXRyaWV2ZQ0KPj4gaXQgZnJvbSBzZC1t
-b2R1bGF0b3IgY2hhbm5lbHMsIGZvciB0aGUgc2NhbGUgZmFjdG9yIGNvbXB1dGF0aW9uLg0KPj4N
-Cj4+ICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBzY2FsZcKgIG9mZnNldA0KPj4gICDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBewqDCoMKgwqDCoCBeDQo+PiAgIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgwqDCoMKgIHzCoMKg
-wqDCoMKgwqAgSUlPIEFCSQ0KPj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rDQo+PiAgIMKgwqDCoMKgwqDCoMKgwqAgKy0tLS0t
-LS0tLS0tLS0tLSvCoMKgwqDCoMKgwqDCoMKgwqAgKy0tLS0tLS0tLS0tLS0rDQo+PiAgIMKgwqDC
-oMKgwqDCoMKgwqAgfHNkIGRyaXZlcsKgwqDCoMKgwqAgfMKgwqDCoMKgwqDCoMKgwqDCoCB8REZT
-RE0gZHJpdmVyIHwNCj4+ICAgwqDCoMKgwqDCoMKgwqDCoCArLS0tLS0tLS0tLS0tLS0tK8KgwqDC
-oMKgwqDCoMKgwqDCoCArLS0tLS0tLS0tLS0tLSsNCj4+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKw0KPj4gICDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIEhXDQo+PiAgIMKg
-wqDCoMKgwqDCoMKgwqAgKy0tLS0tLS0tLS0tLS0tLSvCoMKgwqDCoMKgwqDCoMKgwqAgKy0tLS0t
-LS0tLS0tLS0rDQo+PiArLS0tLS0tLT4rIHNkLW1vZHVsYXRvcsKgICstLS0tLS0tLS0+KyBERlNE
-TSArLS0tLS0tLS0+DQo+PiBhbmFsb2fCoMKgICstLS0tLS0rLS0tLS0tLS0rwqDCoMKgwqDCoMKg
-wqDCoMKgICstLS0tLS0tLS0tLS0tKyBvdXRwdXQNCj4+IGlucHV0wqDCoMKgwqDCoMKgwqDCoMKg
-wqAgXg0KPj4gICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCB2cmVmDQo+PiAgIMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCArDQo+Pg0KPj4NCj4+IElzIGl0IHRoZSB0b3Bv
-bG9neSB5b3VyIGFyZSBleHBlY3RpbmcgPw0KPiBJdCdzIG5vdCB0aGUgb25lIHdlJ2QgZXhwZWN0
-IGlmIHdlIGFyZSBhbGlnbmluZyB3aXRoIHNpbWlsYXIgY2FzZXMNCj4gZWxzZXdoZXJlIGluIElJ
-Ty4gIEZvciBleGFtcGxlLCBpZiB3ZSBhdHRhY2ggYW4gYW5hbG9nIGFjY2VsZXJvbWV0ZXINCj4g
-dG8gYW4gQURDLCB3ZSByZXBvcnQgdGhlIGFjY2VsIGNoYW5uZWxzIG9uIHRoZSBhY2NlbGVyb21l
-dGVyIG5vdCB0aGUNCj4gQURDLiAgVGhlIGVxdWl2YWxlbnQgd291bGQgYmUgdG8gc2VlIHRoZSBE
-RlNETSBhcyBwcm92aWRpbmcgYQ0KPiBjb252ZXJzaW9uIHNlcnZpY2UgdG8gdGhlIFNEIGRldmlj
-ZSB3aGljaCBpcyBhY3R1YWxseSBleGVjdXRpbmcNCj4gdGhlIG1lYXN1cmVtZW50IGFuZCBoYXMg
-dGhlIGlucHV0IGNoYW5uZWxzLg0KPg0KPg0KPiAgwqDCoMKgwqDCoMKgwqDCoCBzY2FsZcKgIG9m
-ZnNldCAgcmF3DQo+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoCBewqDCoMKgwqDCoCBeICAgICAgXg0K
-PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgwqDCoMKgwqAgfMKgwqDCoMKgICB8ICDCoMKgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBJSU8gQUJJDQo+ICAgKy0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rDQo+ICAgIMKgwqDCoMKg
-wqDCoMKgwqAgKy0tLS0tLS0tLS0tLS0tLSvCoMKgwqDCoMKgwqDCoMKgwqAgKy0tLS0tLS0tLS0t
-LS0rDQo+ICAgIMKgwqDCoMKgwqDCoMKgwqAgfHNkIGRyaXZlcsKgwqDCoMKgwqAgfMKgwqDCoMKg
-wqDCoMKgwqDCoCB8REZTRE0gZHJpdmVyIHwNCj4gICAgwqDCoMKgwqDCoMKgwqDCoCArLS0tLS0t
-LS0tLS0tLS0tK8KgwqDCoMKgwqDCoMKgwqDCoCArLS0tLS0tLS0tLS0tLSsNCj4gICArLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSsN
-Cj4gICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCBIVw0KPiAgICDCoMKgwqDCoMKgwqDCoMKgICstLS0tLS0tLS0tLS0tLS0rwqDCoMKgwqDC
-oMKgwqDCoMKgICstLS0tLS0tLS0tLS0tKw0KPiAgICstLS0tLS0tPisgc2QtbW9kdWxhdG9ywqAg
-Ky0tLS0tLS0tLT4rIERGU0RNICstLS0tLS0tLT4NCj4gICBhbmFsb2fCoMKgICstLS0tLS0rLS0t
-LS0tLS0rwqDCoMKgwqDCoMKgwqDCoMKgICstLS0tLS0tLS0tLS0tKyBvdXRwdXQNCj4gICBpbnB1
-dMKgwqDCoMKgwqDCoMKgwqDCoMKgIF4NCj4gICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIHwgdnJlZg0KPj4gICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKw0KPj4NClRo
-YW5rcyBmb3IgeW91ciBjbGFyaWZpY2F0aW9uLg0Kb2ssIG1vdmluZyB0byB0aGlzIGxvZ2ljIGlz
-IGEgc2lnbmlmaWNhbnQgY2hhbmdlLg0KSSBuZWVkIHRvIGV2YWx1YXRlIGZ1cnRoZXIgdGhlIGlt
-cGFjdCBvbiB0aGUgZGZzZG0gZHJpdmVyLg0KDQpSZWdhcmRzDQpPbGl2aWVyDQo+PiBJZiBub3Qs
-IEkgcHJvYmFibHkgbWlzc2Vkc29tZXRoaW5nLiBDb3VsZCB5b3UgcGxlYXNlIGNsYXJpZnkgdGhp
-cyBwb2ludCA/DQo+Pg0KPj4gUmVnYXJkcw0KPj4gT2xpdmllcg0KPj4+IFRoaXMgd2Fzbid0IHJl
-YWxseSBhbiBpc3N1ZSB3aGVuIHRoZSBvbmx5IHZhbHVlcyBhdmFpbGFibGUgd2VyZQ0KPj4+IHJh
-dywgYnV0IGlmIHdlIGFyZSBhZGRpbmcgc2NhbGUgYW5kIG9mZnNldCwgdGhleSBhcmUgdGhpbmdz
-IHRoYXQNCj4+PiBiZWxvbmcgdG8gdGhlIGFkMTIwMSBmb3IgZXhhbXBsZSwgbm90IHRoZSB1cHN0
-cmVhbSBzdG0zMi1kZnNkbSB1bml0Lg0KPj4+DQo+Pj4gVGhpbmtpbmcgb2YgaXQgYW5vdGhlciB3
-YXksIHdlIGRvbid0IHJlcG9ydCBhbiBTUEkgQURDIG91dHB1dCBpbg0KPj4+IHRoZSBkcml2ZXIg
-Zm9yIHRoZSBTUEkgbWFzdGVyLg0KPj4+DQo+Pj4gQ291bGQgd2UgZmxpcCBpdCBhcm91bmQgd2l0
-aG91dCBicmVha2luZyBhbnl0aGluZz8NCj4+Pg0KPj4+IEpvbmF0aGFuDQo+Pj4gICANCj4+Pj4g
-LS0tDQo+Pj4+ICAgIGRyaXZlcnMvaWlvL2FkYy9zdG0zMi1kZnNkbS1hZGMuYyB8IDEwNSArKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKy0NCj4+Pj4gICAgMSBmaWxlIGNoYW5nZWQsIDEwMiBp
-bnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPj4+Pg0KPj4+PiBkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9paW8vYWRjL3N0bTMyLWRmc2RtLWFkYy5jIGIvZHJpdmVycy9paW8vYWRjL3N0bTMyLWRm
-c2RtLWFkYy5jDQo+Pj4+IGluZGV4IDA3YjlkZmRmOGU3Ni4uYjg1ZmQzZTkwNDk2IDEwMDY0NA0K
-Pj4+PiAtLS0gYS9kcml2ZXJzL2lpby9hZGMvc3RtMzItZGZzZG0tYWRjLmMNCj4+Pj4gKysrIGIv
-ZHJpdmVycy9paW8vYWRjL3N0bTMyLWRmc2RtLWFkYy5jDQo+Pj4+IEBAIC0xMCw2ICsxMCw3IEBA
-DQo+Pj4+ICAgICNpbmNsdWRlIDxsaW51eC9kbWEtbWFwcGluZy5oPg0KPj4+PiAgICAjaW5jbHVk
-ZSA8bGludXgvaWlvL2FkYy9zdG0zMi1kZnNkbS1hZGMuaD4NCj4+Pj4gICAgI2luY2x1ZGUgPGxp
-bnV4L2lpby9idWZmZXIuaD4NCj4+Pj4gKyNpbmNsdWRlIDxsaW51eC9paW8vY29uc3VtZXIuaD4N
-Cj4+Pj4gICAgI2luY2x1ZGUgPGxpbnV4L2lpby9ody1jb25zdW1lci5oPg0KPj4+PiAgICAjaW5j
-bHVkZSA8bGludXgvaWlvL3N5c2ZzLmg+DQo+Pj4+ICAgICNpbmNsdWRlIDxsaW51eC9paW8vdGlt
-ZXIvc3RtMzItbHB0aW0tdHJpZ2dlci5oPg0KPj4+PiBAQCAtNjcsNiArNjgsMTMgQEAgc3RydWN0
-IHN0bTMyX2Rmc2RtX2Rldl9kYXRhIHsNCj4+Pj4gICAgCWNvbnN0IHN0cnVjdCByZWdtYXBfY29u
-ZmlnICpyZWdtYXBfY2ZnOw0KPj4+PiAgICB9Ow0KPj4+PiAgICANCj4+Pj4gK3N0cnVjdCBzdG0z
-Ml9kZnNkbV9zZF9jaGFuX2luZm8gew0KPj4+PiArCWludCBzY2FsZV92YWw7DQo+Pj4+ICsJaW50
-IHNjYWxlX3ZhbDI7DQo+Pj4+ICsJaW50IG9mZnNldDsNCj4+Pj4gKwl1bnNpZ25lZCBpbnQgZGlm
-ZmVyZW50aWFsOw0KPj4+PiArfTsNCj4+Pj4gKw0KPj4+PiAgICBzdHJ1Y3Qgc3RtMzJfZGZzZG1f
-YWRjIHsNCj4+Pj4gICAgCXN0cnVjdCBzdG0zMl9kZnNkbSAqZGZzZG07DQo+Pj4+ICAgIAljb25z
-dCBzdHJ1Y3Qgc3RtMzJfZGZzZG1fZGV2X2RhdGEgKmRldl9kYXRhOw0KPj4+PiBAQCAtNzksNiAr
-ODcsNyBAQCBzdHJ1Y3Qgc3RtMzJfZGZzZG1fYWRjIHsNCj4+Pj4gICAgCXN0cnVjdCBpaW9faHdf
-Y29uc3VtZXIgKmh3YzsNCj4+Pj4gICAgCXN0cnVjdCBjb21wbGV0aW9uIGNvbXBsZXRpb247DQo+
-Pj4+ICAgIAl1MzIgKmJ1ZmZlcjsNCj4+Pj4gKwlzdHJ1Y3Qgc3RtMzJfZGZzZG1fc2RfY2hhbl9p
-bmZvICpzZF9jaGFuOw0KPj4+PiAgICANCj4+Pj4gICAgCS8qIEF1ZGlvIHNwZWNpZmljICovDQo+
-Pj4+ICAgIAl1bnNpZ25lZCBpbnQgc3BpX2ZyZXE7ICAvKiBTUEkgYnVzIGNsb2NrIGZyZXF1ZW5j
-eSAqLw0KPj4+PiBAQCAtMTI3MSw3ICsxMjgwLDEwIEBAIHN0YXRpYyBpbnQgc3RtMzJfZGZzZG1f
-cmVhZF9yYXcoc3RydWN0IGlpb19kZXYgKmluZGlvX2RldiwNCj4+Pj4gICAgCQkJCWludCAqdmFs
-MiwgbG9uZyBtYXNrKQ0KPj4+PiAgICB7DQo+Pj4+ICAgIAlzdHJ1Y3Qgc3RtMzJfZGZzZG1fYWRj
-ICphZGMgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0KPj4+PiAtCWludCByZXQ7DQo+Pj4+ICsJc3Ry
-dWN0IHN0bTMyX2Rmc2RtX2ZpbHRlciAqZmwgPSAmYWRjLT5kZnNkbS0+ZmxfbGlzdFthZGMtPmZs
-X2lkXTsNCj4+Pj4gKwlzdHJ1Y3Qgc3RtMzJfZGZzZG1fZmlsdGVyX29zciAqZmxvID0gJmZsLT5m
-bG9bZmwtPmZhc3RdOw0KPj4+PiArCXUzMiBtYXggPSBmbG8tPm1heCA8PCAoZmxvLT5sc2hpZnQg
-LSBjaGFuLT5zY2FuX3R5cGUuc2hpZnQpOw0KPj4+PiArCWludCByZXQsIGlkeCA9IGNoYW4tPnNj
-YW5faW5kZXg7DQo+Pj4+ICAgIA0KPj4+PiAgICAJc3dpdGNoIChtYXNrKSB7DQo+Pj4+ICAgIAlj
-YXNlIElJT19DSEFOX0lORk9fUkFXOg0KPj4+PiBAQCAtMTMwNyw2ICsxMzE5LDQxIEBAIHN0YXRp
-YyBpbnQgc3RtMzJfZGZzZG1fcmVhZF9yYXcoc3RydWN0IGlpb19kZXYgKmluZGlvX2RldiwNCj4+
-Pj4gICAgCQkqdmFsID0gYWRjLT5zYW1wbGVfZnJlcTsNCj4+Pj4gICAgDQo+Pj4+ICAgIAkJcmV0
-dXJuIElJT19WQUxfSU5UOw0KPj4+PiArDQo+Pj4+ICsJY2FzZSBJSU9fQ0hBTl9JTkZPX1NDQUxF
-Og0KPj4+PiArCQkvKg0KPj4+PiArCQkgKiBTY2FsZSBpcyBleHByZXNzZWQgaW4gbVYuDQo+Pj4+
-ICsJCSAqIFdoZW4gZmFzdCBtb2RlIGlzIGRpc2FibGVkLCBhY3R1YWwgcmVzb2x1dGlvbiBtYXkg
-YmUgbG93ZXINCj4+Pj4gKwkJICogdGhhbiAyXm4sIHdoZXJlIG49cmVhbGJpdHMtMS4NCj4+Pj4g
-KwkJICogVGhpcyBsZWFkcyB0byB1bmRlcmVzdGltYXRpbmcgaW5wdXQgdm9sdGFnZS4gVG8NCj4+
-Pj4gKwkJICogY29tcGVuc2F0ZSB0aGlzIGRldmlhdGlvbiwgdGhlIHZvbHRhZ2UgcmVmZXJlbmNl
-IGNhbiBiZQ0KPj4+PiArCQkgKiBjb3JyZWN0ZWQgd2l0aCBhIGZhY3RvciA9IHJlYWxiaXRzIHJl
-c29sdXRpb24gLyBhY3R1YWwgbWF4DQo+Pj4+ICsJCSAqLw0KPj4+PiArCQkqdmFsID0gZGl2X3U2
-NCgodTY0KWFkYy0+c2RfY2hhbltpZHhdLnNjYWxlX3ZhbCAqDQo+Pj4+ICsJCQkgICAgICAgKHU2
-NClCSVQoREZTRE1fREFUQV9SRVMgLSAxKSwgbWF4KTsNCj4+Pj4gKwkJKnZhbDIgPSBjaGFuLT5z
-Y2FuX3R5cGUucmVhbGJpdHM7DQo+Pj4+ICsJCWlmIChhZGMtPnNkX2NoYW5baWR4XS5kaWZmZXJl
-bnRpYWwpDQo+Pj4+ICsJCQkqdmFsICo9IDI7DQo+Pj4+ICsNCj4+Pj4gKwkJcmV0dXJuIElJT19W
-QUxfRlJBQ1RJT05BTF9MT0cyOw0KPj4+PiArDQo+Pj4+ICsJY2FzZSBJSU9fQ0hBTl9JTkZPX09G
-RlNFVDoNCj4+Pj4gKwkJLyoNCj4+Pj4gKwkJICogREZTRE0gb3V0cHV0IGRhdGEgYXJlIGluIHRo
-ZSByYW5nZSBbLTJebiwyXm4tMV0sDQo+Pj4+ICsJCSAqIHdpdGggbj1yZWFsYml0cy0xLg0KPj4+
-PiArCQkgKiAtIERpZmZlcmVudGlhbCBtb2R1bGF0b3I6DQo+Pj4+ICsJCSAqIE9mZnNldCBjb3Jy
-ZXNwb25kIHRvIFNEIG1vZHVsYXRvciBvZmZzZXQuDQo+Pj4+ICsJCSAqIC0gU2luZ2xlIGVuZGVk
-IG1vZHVsYXRvcjoNCj4+Pj4gKwkJICogSW5wdXQgaXMgaW4gWzBWLFZyZWZdIHJhbmdlLCB3aGVy
-ZSAwViBjb3JyZXNwb25kcyB0byAtMl5uLg0KPj4+PiArCQkgKiBBZGQgMl5uIHRvIG9mZnNldC4g
-KGkuZS4gbWlkZGxlIG9mIGlucHV0IHJhbmdlKQ0KPj4+PiArCQkgKiBvZmZzZXQgPSBvZmZzZXQo
-c2QpICogdnJlZiAvIHJlcyhzZCkgKiBtYXggLyB2cmVmLg0KPj4+PiArCQkgKi8NCj4+Pj4gKwkJ
-KnZhbCA9IGRpdl91NjQoKHU2NCltYXggKiBhZGMtPnNkX2NoYW5baWR4XS5vZmZzZXQsDQo+Pj4+
-ICsJCQkgICAgICAgQklUKGFkYy0+c2RfY2hhbltpZHhdLnNjYWxlX3ZhbDIgLSAxKSk7DQo+Pj4+
-ICsJCWlmICghYWRjLT5zZF9jaGFuW2lkeF0uZGlmZmVyZW50aWFsKQ0KPj4+PiArCQkJKnZhbCAr
-PSBtYXg7DQo+Pj4+ICsNCj4+Pj4gKwkJcmV0dXJuIElJT19WQUxfSU5UOw0KPj4+PiAgICAJfQ0K
-Pj4+PiAgICANCj4+Pj4gICAgCXJldHVybiAtRUlOVkFMOw0KPj4+PiBAQCAtMTQzMCw3ICsxNDc3
-LDkgQEAgc3RhdGljIGludCBzdG0zMl9kZnNkbV9hZGNfY2hhbl9pbml0X29uZShzdHJ1Y3QgaWlv
-X2RldiAqaW5kaW9fZGV2LA0KPj4+PiAgICAJICogSUlPX0NIQU5fSU5GT19SQVc6IHVzZWQgdG8g
-Y29tcHV0ZSByZWd1bGFyIGNvbnZlcnNpb24NCj4+Pj4gICAgCSAqIElJT19DSEFOX0lORk9fT1ZF
-UlNBTVBMSU5HX1JBVElPOiB1c2VkIHRvIHNldCBvdmVyc2FtcGxpbmcNCj4+Pj4gICAgCSAqLw0K
-Pj4+PiAtCWNoLT5pbmZvX21hc2tfc2VwYXJhdGUgPSBCSVQoSUlPX0NIQU5fSU5GT19SQVcpOw0K
-Pj4+PiArCWNoLT5pbmZvX21hc2tfc2VwYXJhdGUgPSBCSVQoSUlPX0NIQU5fSU5GT19SQVcpIHwN
-Cj4+Pj4gKwkJCQkgQklUKElJT19DSEFOX0lORk9fU0NBTEUpIHwNCj4+Pj4gKwkJCQkgQklUKElJ
-T19DSEFOX0lORk9fT0ZGU0VUKTsNCj4+Pj4gICAgCWNoLT5pbmZvX21hc2tfc2hhcmVkX2J5X2Fs
-bCA9IEJJVChJSU9fQ0hBTl9JTkZPX09WRVJTQU1QTElOR19SQVRJTykgfA0KPj4+PiAgICAJCQkJ
-CUJJVChJSU9fQ0hBTl9JTkZPX1NBTVBfRlJFUSk7DQo+Pj4+ICAgIA0KPj4+PiBAQCAtMTQ4MSw4
-ICsxNTMwLDEwIEBAIHN0YXRpYyBpbnQgc3RtMzJfZGZzZG1fYWRjX2luaXQoc3RydWN0IGlpb19k
-ZXYgKmluZGlvX2RldikNCj4+Pj4gICAgew0KPj4+PiAgICAJc3RydWN0IGlpb19jaGFuX3NwZWMg
-KmNoOw0KPj4+PiAgICAJc3RydWN0IHN0bTMyX2Rmc2RtX2FkYyAqYWRjID0gaWlvX3ByaXYoaW5k
-aW9fZGV2KTsNCj4+Pj4gKwlzdHJ1Y3QgaWlvX2NoYW5uZWwgKmNoYW5uZWxzLCAqY2hhbjsNCj4+
-Pj4gKwlzdHJ1Y3Qgc3RtMzJfZGZzZG1fc2RfY2hhbl9pbmZvICpzZF9jaGFuOw0KPj4+PiAgICAJ
-aW50IG51bV9jaDsNCj4+Pj4gLQlpbnQgcmV0LCBjaGFuX2lkeDsNCj4+Pj4gKwlpbnQgcmV0LCBj
-aGFuX2lkeCwgdmFsMjsNCj4+Pj4gICAgDQo+Pj4+ICAgIAlhZGMtPm92ZXJzYW1wID0gREZTRE1f
-REVGQVVMVF9PVkVSU0FNUExJTkc7DQo+Pj4+ICAgIAlyZXQgPSBzdG0zMl9kZnNkbV9jb21wdXRl
-X2FsbF9vc3JzKGluZGlvX2RldiwgYWRjLT5vdmVyc2FtcCk7DQo+Pj4+IEBAIC0xNTA2LDYgKzE1
-NTcsMjIgQEAgc3RhdGljIGludCBzdG0zMl9kZnNkbV9hZGNfaW5pdChzdHJ1Y3QgaWlvX2RldiAq
-aW5kaW9fZGV2KQ0KPj4+PiAgICAJaWYgKCFjaCkNCj4+Pj4gICAgCQlyZXR1cm4gLUVOT01FTTsN
-Cj4+Pj4gICAgDQo+Pj4+ICsJLyogR2V0IFNEIG1vZHVsYXRvciBjaGFubmVscyAqLw0KPj4+PiAr
-CWNoYW5uZWxzID0gaWlvX2NoYW5uZWxfZ2V0X2FsbCgmaW5kaW9fZGV2LT5kZXYpOw0KPj4+PiAr
-CWlmIChJU19FUlIoY2hhbm5lbHMpKSB7DQo+Pj4+ICsJCWRldl9lcnIoJmluZGlvX2Rldi0+ZGV2
-LCAiRmFpbGVkIHRvIGdldCBjaGFubmVsICVsZFxuIiwNCj4+Pj4gKwkJCVBUUl9FUlIoY2hhbm5l
-bHMpKTsNCj4+Pj4gKwkJcmV0dXJuIFBUUl9FUlIoY2hhbm5lbHMpOw0KPj4+PiArCX0NCj4+Pj4g
-KwljaGFuID0gJmNoYW5uZWxzWzBdOw0KPj4+PiArDQo+Pj4+ICsJYWRjLT5zZF9jaGFuID0gZGV2
-bV9remFsbG9jKCZpbmRpb19kZXYtPmRldiwNCj4+Pj4gKwkJCQkgICAgc2l6ZW9mKCphZGMtPnNk
-X2NoYW4pICogbnVtX2NoLCBHRlBfS0VSTkVMKTsNCj4+Pj4gKwlpZiAoIWFkYy0+c2RfY2hhbikN
-Cj4+Pj4gKwkJcmV0dXJuIC1FTk9NRU07DQo+Pj4+ICsNCj4+Pj4gKwlzZF9jaGFuID0gYWRjLT5z
-ZF9jaGFuOw0KPj4+PiArDQo+Pj4+ICAgIAlmb3IgKGNoYW5faWR4ID0gMDsgY2hhbl9pZHggPCBu
-dW1fY2g7IGNoYW5faWR4KyspIHsNCj4+Pj4gICAgCQljaFtjaGFuX2lkeF0uc2Nhbl9pbmRleCA9
-IGNoYW5faWR4Ow0KPj4+PiAgICAJCXJldCA9IHN0bTMyX2Rmc2RtX2FkY19jaGFuX2luaXRfb25l
-KGluZGlvX2RldiwgJmNoW2NoYW5faWR4XSk7DQo+Pj4+IEBAIC0xNTEzLDYgKzE1ODAsMzggQEAg
-c3RhdGljIGludCBzdG0zMl9kZnNkbV9hZGNfaW5pdChzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2
-KQ0KPj4+PiAgICAJCQlkZXZfZXJyKCZpbmRpb19kZXYtPmRldiwgIkNoYW5uZWxzIGluaXQgZmFp
-bGVkXG4iKTsNCj4+Pj4gICAgCQkJcmV0dXJuIHJldDsNCj4+Pj4gICAgCQl9DQo+Pj4+ICsNCj4+
-Pj4gKwkJaWYgKCFjaGFuLT5pbmRpb19kZXYpDQo+Pj4+ICsJCQlyZXR1cm4gLUVJTlZBTDsNCj4+
-Pj4gKw0KPj4+PiArCQlyZXQgPSBpaW9fcmVhZF9jaGFubmVsX3NjYWxlKGNoYW4sICZzZF9jaGFu
-LT5zY2FsZV92YWwsDQo+Pj4+ICsJCQkJCSAgICAgJnNkX2NoYW4tPnNjYWxlX3ZhbDIpOw0KPj4+
-PiArCQlpZiAocmV0IDwgMCkgew0KPj4+PiArCQkJZGV2X2VycigmaW5kaW9fZGV2LT5kZXYsDQo+
-Pj4+ICsJCQkJIkZhaWxlZCB0byBnZXQgY2hhbm5lbCAlZCBzY2FsZVxuIiwgY2hhbl9pZHgpOw0K
-Pj4+PiArCQkJcmV0dXJuIHJldDsNCj4+Pj4gKwkJfQ0KPj4+PiArDQo+Pj4+ICsJCWlmIChpaW9f
-Y2hhbm5lbF9oYXNfaW5mbyhjaGFuLT5jaGFubmVsLCBJSU9fQ0hBTl9JTkZPX09GRlNFVCkpIHsN
-Cj4+Pj4gKwkJCXJldCA9IGlpb19yZWFkX2NoYW5uZWxfb2Zmc2V0KGNoYW4sICZzZF9jaGFuLT5v
-ZmZzZXQsDQo+Pj4+ICsJCQkJCQkgICAgICAmdmFsMik7DQo+Pj4+ICsJCQlpZiAocmV0IDwgMCkg
-ew0KPj4+PiArCQkJCWRldl9lcnIoJmluZGlvX2Rldi0+ZGV2LA0KPj4+PiArCQkJCQkiRmFpbGVk
-IHRvIGdldCBjaGFubmVsICVkIG9mZnNldFxuIiwNCj4+Pj4gKwkJCQkJY2hhbl9pZHgpOw0KPj4+
-PiArCQkJCXJldHVybiByZXQ7DQo+Pj4+ICsJCQl9DQo+Pj4+ICsJCX0NCj4+Pj4gKw0KPj4+PiAr
-CQlzZF9jaGFuLT5kaWZmZXJlbnRpYWwgPSBjaGFuLT5jaGFubmVsLT5kaWZmZXJlbnRpYWw7DQo+
-Pj4+ICsNCj4+Pj4gKwkJZGV2X2RiZygmaW5kaW9fZGV2LT5kZXYsICJDaGFubmVsICVkICVzIHNj
-YWxlIHJlZj0lZCBvZmZzZXQ9JWQiLA0KPj4+PiArCQkJY2hhbl9pZHgsIGNoYW4tPmNoYW5uZWwt
-PmRpZmZlcmVudGlhbCA/DQo+Pj4+ICsJCQkiZGlmZmVyZW50aWFsIiA6ICJzaW5nbGUtZW5kZWQi
-LA0KPj4+PiArCQkJc2RfY2hhbi0+c2NhbGVfdmFsLCBzZF9jaGFuLT5vZmZzZXQpOw0KPj4+PiAr
-DQo+Pj4+ICsJCWNoYW4rKzsNCj4+Pj4gKwkJc2RfY2hhbisrOw0KPj4+PiAgICAJfQ0KPj4+PiAg
-ICANCj4+Pj4gICAgCWluZGlvX2Rldi0+bnVtX2NoYW5uZWxzID0gbnVtX2NoOw0K
+On 2/14/20 3:20 PM, Jonathan Cameron wrote:
+> On Fri, 7 Feb 2020 17:30:31 +0100
+> Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
+> 
+>> Clock should be enabled as soon as using master modes, even before
+>> enabling timer. Or, this may provoke bad behavior on the other end
+>> (slave timer). Then, introduce 'clk_enabled' flag, instead of relying
+>> on CR1 EN bit, to keep track of clock being enabled (balanced refcount).
+>> Propagate this anywhere else in the driver.
+>>
+>> Also add 'remove' routine to stop timer and disable clock in case it
+>> has been left enabled. Enforce the user interface has been unregistered
+>> in the remove routine, before disabling the hardware to avoid possible
+>> race. So, remove use of devm_ variant to register triggers and unregister
+>> them before the hardware gets disabled [1].
+>> [1] https://patchwork.kernel.org/patch/9956247/
+>>
+>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+> Patch looks fine. So is this a fix for a known issue or a theoretical one?
+> Just a question of whether to line it up for an rc, or wait for next
+> merge window.  Ideally please give me a fixes tag as well if this
+> fixes a problem that is being seen in the wild.
+
+Hi Jonathan,
+
+I got no complain for now. So I think this is fine to wait for the next
+merge window.
+
+Thanks,
+Fabrice
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+>> ---
+>> Changes in v2:
+>> - enforce the user interface has been unregistered in the remove routine,
+>>   before disabling the hardware to avoid possible race.
+>> ---
+>>  drivers/iio/trigger/stm32-timer-trigger.c | 98 ++++++++++++++++++++++++-------
+>>  1 file changed, 76 insertions(+), 22 deletions(-)
+>>
+>> diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
+>> index a5dfe65..473853e 100644
+>> --- a/drivers/iio/trigger/stm32-timer-trigger.c
+>> +++ b/drivers/iio/trigger/stm32-timer-trigger.c
+>> @@ -79,10 +79,13 @@ struct stm32_timer_trigger {
+>>  	struct device *dev;
+>>  	struct regmap *regmap;
+>>  	struct clk *clk;
+>> +	bool clk_enabled;
+>>  	u32 max_arr;
+>>  	const void *triggers;
+>>  	const void *valids;
+>>  	bool has_trgo2;
+>> +	struct mutex lock; /* concurrent sysfs configuration */
+>> +	struct list_head tr_list;
+>>  };
+>>  
+>>  struct stm32_timer_trigger_cfg {
+>> @@ -106,7 +109,7 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+>>  {
+>>  	unsigned long long prd, div;
+>>  	int prescaler = 0;
+>> -	u32 ccer, cr1;
+>> +	u32 ccer;
+>>  
+>>  	/* Period and prescaler values depends of clock rate */
+>>  	div = (unsigned long long)clk_get_rate(priv->clk);
+>> @@ -136,9 +139,11 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+>>  	if (ccer & TIM_CCER_CCXE)
+>>  		return -EBUSY;
+>>  
+>> -	regmap_read(priv->regmap, TIM_CR1, &cr1);
+>> -	if (!(cr1 & TIM_CR1_CEN))
+>> +	mutex_lock(&priv->lock);
+>> +	if (!priv->clk_enabled) {
+>> +		priv->clk_enabled = true;
+>>  		clk_enable(priv->clk);
+>> +	}
+>>  
+>>  	regmap_write(priv->regmap, TIM_PSC, prescaler);
+>>  	regmap_write(priv->regmap, TIM_ARR, prd - 1);
+>> @@ -157,22 +162,20 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+>>  
+>>  	/* Enable controller */
+>>  	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, TIM_CR1_CEN);
+>> +	mutex_unlock(&priv->lock);
+>>  
+>>  	return 0;
+>>  }
+>>  
+>>  static void stm32_timer_stop(struct stm32_timer_trigger *priv)
+>>  {
+>> -	u32 ccer, cr1;
+>> +	u32 ccer;
+>>  
+>>  	regmap_read(priv->regmap, TIM_CCER, &ccer);
+>>  	if (ccer & TIM_CCER_CCXE)
+>>  		return;
+>>  
+>> -	regmap_read(priv->regmap, TIM_CR1, &cr1);
+>> -	if (cr1 & TIM_CR1_CEN)
+>> -		clk_disable(priv->clk);
+>> -
+>> +	mutex_lock(&priv->lock);
+>>  	/* Stop timer */
+>>  	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, 0);
+>>  	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
+>> @@ -181,6 +184,12 @@ static void stm32_timer_stop(struct stm32_timer_trigger *priv)
+>>  
+>>  	/* Make sure that registers are updated */
+>>  	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
+>> +
+>> +	if (priv->clk_enabled) {
+>> +		priv->clk_enabled = false;
+>> +		clk_disable(priv->clk);
+>> +	}
+>> +	mutex_unlock(&priv->lock);
+>>  }
+>>  
+>>  static ssize_t stm32_tt_store_frequency(struct device *dev,
+>> @@ -295,11 +304,18 @@ static ssize_t stm32_tt_store_master_mode(struct device *dev,
+>>  	for (i = 0; i <= master_mode_max; i++) {
+>>  		if (!strncmp(master_mode_table[i], buf,
+>>  			     strlen(master_mode_table[i]))) {
+>> +			mutex_lock(&priv->lock);
+>> +			if (!priv->clk_enabled) {
+>> +				/* Clock should be enabled first */
+>> +				priv->clk_enabled = true;
+>> +				clk_enable(priv->clk);
+>> +			}
+>>  			regmap_update_bits(priv->regmap, TIM_CR2, mask,
+>>  					   i << shift);
+>>  			/* Make sure that registers are updated */
+>>  			regmap_update_bits(priv->regmap, TIM_EGR,
+>>  					   TIM_EGR_UG, TIM_EGR_UG);
+>> +			mutex_unlock(&priv->lock);
+>>  			return len;
+>>  		}
+>>  	}
+>> @@ -357,11 +373,21 @@ static const struct attribute_group *stm32_trigger_attr_groups[] = {
+>>  static const struct iio_trigger_ops timer_trigger_ops = {
+>>  };
+>>  
+>> -static int stm32_setup_iio_triggers(struct stm32_timer_trigger *priv)
+>> +static void stm32_unregister_iio_triggers(struct stm32_timer_trigger *priv)
+>> +{
+>> +	struct iio_trigger *tr;
+>> +
+>> +	list_for_each_entry(tr, &priv->tr_list, alloc_list)
+>> +		iio_trigger_unregister(tr);
+>> +}
+>> +
+>> +static int stm32_register_iio_triggers(struct stm32_timer_trigger *priv)
+>>  {
+>>  	int ret;
+>>  	const char * const *cur = priv->triggers;
+>>  
+>> +	INIT_LIST_HEAD(&priv->tr_list);
+>> +
+>>  	while (cur && *cur) {
+>>  		struct iio_trigger *trig;
+>>  		bool cur_is_trgo = stm32_timer_is_trgo_name(*cur);
+>> @@ -388,9 +414,13 @@ static int stm32_setup_iio_triggers(struct stm32_timer_trigger *priv)
+>>  
+>>  		iio_trigger_set_drvdata(trig, priv);
+>>  
+>> -		ret = devm_iio_trigger_register(priv->dev, trig);
+>> -		if (ret)
+>> +		ret = iio_trigger_register(trig);
+>> +		if (ret) {
+>> +			stm32_unregister_iio_triggers(priv);
+>>  			return ret;
+>> +		}
+>> +
+>> +		list_add_tail(&trig->alloc_list, &priv->tr_list);
+>>  		cur++;
+>>  	}
+>>  
+>> @@ -437,7 +467,6 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
+>>  				   int val, int val2, long mask)
+>>  {
+>>  	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
+>> -	u32 dat;
+>>  
+>>  	switch (mask) {
+>>  	case IIO_CHAN_INFO_RAW:
+>> @@ -448,19 +477,23 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
+>>  		return -EINVAL;
+>>  
+>>  	case IIO_CHAN_INFO_ENABLE:
+>> +		mutex_lock(&priv->lock);
+>>  		if (val) {
+>> -			regmap_read(priv->regmap, TIM_CR1, &dat);
+>> -			if (!(dat & TIM_CR1_CEN))
+>> +			if (!priv->clk_enabled) {
+>> +				priv->clk_enabled = true;
+>>  				clk_enable(priv->clk);
+>> +			}
+>>  			regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+>>  					   TIM_CR1_CEN);
+>>  		} else {
+>> -			regmap_read(priv->regmap, TIM_CR1, &dat);
+>>  			regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+>>  					   0);
+>> -			if (dat & TIM_CR1_CEN)
+>> +			if (priv->clk_enabled) {
+>> +				priv->clk_enabled = false;
+>>  				clk_disable(priv->clk);
+>> +			}
+>>  		}
+>> +		mutex_unlock(&priv->lock);
+>>  		return 0;
+>>  	}
+>>  
+>> @@ -556,7 +589,6 @@ static int stm32_set_enable_mode(struct iio_dev *indio_dev,
+>>  {
+>>  	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
+>>  	int sms = stm32_enable_mode2sms(mode);
+>> -	u32 val;
+>>  
+>>  	if (sms < 0)
+>>  		return sms;
+>> @@ -564,11 +596,12 @@ static int stm32_set_enable_mode(struct iio_dev *indio_dev,
+>>  	 * Triggered mode sets CEN bit automatically by hardware. So, first
+>>  	 * enable counter clock, so it can use it. Keeps it in sync with CEN.
+>>  	 */
+>> -	if (sms == 6) {
+>> -		regmap_read(priv->regmap, TIM_CR1, &val);
+>> -		if (!(val & TIM_CR1_CEN))
+>> -			clk_enable(priv->clk);
+>> +	mutex_lock(&priv->lock);
+>> +	if (sms == 6 && !priv->clk_enabled) {
+>> +		clk_enable(priv->clk);
+>> +		priv->clk_enabled = true;
+>>  	}
+>> +	mutex_unlock(&priv->lock);
+>>  
+>>  	regmap_update_bits(priv->regmap, TIM_SMCR, TIM_SMCR_SMS, sms);
+>>  
+>> @@ -752,8 +785,9 @@ static int stm32_timer_trigger_probe(struct platform_device *pdev)
+>>  	priv->triggers = triggers_table[index];
+>>  	priv->valids = cfg->valids_table[index];
+>>  	stm32_timer_detect_trgo2(priv);
+>> +	mutex_init(&priv->lock);
+>>  
+>> -	ret = stm32_setup_iio_triggers(priv);
+>> +	ret = stm32_register_iio_triggers(priv);
+>>  	if (ret)
+>>  		return ret;
+>>  
+>> @@ -762,6 +796,25 @@ static int stm32_timer_trigger_probe(struct platform_device *pdev)
+>>  	return 0;
+>>  }
+>>  
+>> +static int stm32_timer_trigger_remove(struct platform_device *pdev)
+>> +{
+>> +	struct stm32_timer_trigger *priv = platform_get_drvdata(pdev);
+>> +	u32 val;
+>> +
+>> +	/* Unregister triggers before everything can be safely turned off */
+>> +	stm32_unregister_iio_triggers(priv);
+>> +
+>> +	/* Check if nobody else use the timer, then disable it */
+>> +	regmap_read(priv->regmap, TIM_CCER, &val);
+>> +	if (!(val & TIM_CCER_CCXE))
+>> +		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
+>> +
+>> +	if (priv->clk_enabled)
+>> +		clk_disable(priv->clk);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>  static const struct stm32_timer_trigger_cfg stm32_timer_trg_cfg = {
+>>  	.valids_table = valids_table,
+>>  	.num_valids_table = ARRAY_SIZE(valids_table),
+>> @@ -786,6 +839,7 @@ MODULE_DEVICE_TABLE(of, stm32_trig_of_match);
+>>  
+>>  static struct platform_driver stm32_timer_trigger_driver = {
+>>  	.probe = stm32_timer_trigger_probe,
+>> +	.remove = stm32_timer_trigger_remove,
+>>  	.driver = {
+>>  		.name = "stm32-timer-trigger",
+>>  		.of_match_table = stm32_trig_of_match,
+> 

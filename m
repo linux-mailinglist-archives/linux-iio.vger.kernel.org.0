@@ -2,149 +2,293 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4873C15CE00
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2020 23:18:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA43A15D126
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2020 05:40:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727845AbgBMWSR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Feb 2020 17:18:17 -0500
-Received: from mail-db8eur05on2091.outbound.protection.outlook.com ([40.107.20.91]:60384
-        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727722AbgBMWSQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 13 Feb 2020 17:18:16 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=miENUNsRGWXW2OWXoqAQp59wMNyk54C9XeOkCaZTbA53Owh+hmwLW8RaKIeS4K9/PdpdV8YDItjpZzD56abtTI9ioNtJImgPtvfVI4vIHHVAyenRoa7399woSy+ASSIQhw1KhwPBNpB+Pe51g3r7k2tbWI6A4aXrtAA5YeFgo0C70Lq+86VaE8GEYA8ux7DECyHzAjKkAsDVfPcLf0Wtw9sWiU9k6iyiHir3Hw+lMQoIiNJHRs9+JAhlmKk5Aos49EUtqUnAzK2aTT+EeG6UNN9PsAmfwcUX4+vQ8X5yIXnNNAFC+AsVfUwf6dMggEKmf0X2m7hCkdQbsbAhSAlHfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FIci2+FaZulGdoFUjaFx9/APPXv66LLYFIb4U9xDi3w=;
- b=MTBerlVy+CLzVehQT7JCwSt+FPViguBUXcw29UG7Q/pnAaAy1U/YjL324k0RspuqalAGI0kIb3qnvITbeRxZvJvsjCjZhXKEGznBbRbA2pSg3k3LAw26HKxvm8pfFldZ5IXcLgpOI/h9Bnb1XAducknWOUuiQSukdQWNootilseBBfjBmn6ZgKHK/Kld54jlAheYKBYwxHxzLXJTOi7hhlAuOUOoSyQTv090L3OlFh6lKaSZAPAiTLDxuHEWWK9PY2wBWuFR7itLrxxXFI7BorAwvDhBlKZkOEGWCBo9hdzUPnAo1wucyVMUjkVjB5rBprAFncw0Bovbv3K7o14uyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=norphonic.com; dmarc=pass action=none
- header.from=norphonic.com; dkim=pass header.d=norphonic.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=trafsysas.onmicrosoft.com; s=selector2-trafsysas-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FIci2+FaZulGdoFUjaFx9/APPXv66LLYFIb4U9xDi3w=;
- b=j8ne9EOKNn2MU/erbOeCW++L6LjQfSKGnQCFRBc52t1bzL/UipPqLWb2ba2BE/Q7LqT3Tg9svRUJRRt6UIJxMNPyT+nMqU7OLv437HGuCy016ufo+Zs01t8/4W3kBfevpnA414ZxNsSmoswG9U5XyTm9un0ifkRTes3s0+Z94Fc=
-Received: from DB6PR06MB3048.eurprd06.prod.outlook.com (10.170.210.140) by
- DB6PR06MB3960.eurprd06.prod.outlook.com (10.168.19.23) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2707.21; Thu, 13 Feb 2020 22:18:13 +0000
-Received: from DB6PR06MB3048.eurprd06.prod.outlook.com
- ([fe80::d9df:8743:dbc9:e247]) by DB6PR06MB3048.eurprd06.prod.outlook.com
- ([fe80::d9df:8743:dbc9:e247%3]) with mapi id 15.20.2707.031; Thu, 13 Feb 2020
- 22:18:13 +0000
-From:   Eugene Zalkonnikov <ez@norphonic.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "development@norphonic.com" <development@norphonic.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: [PATCH v5 2/2] Device tree bindings for TI HDC20x0 humidity and
- temperature sensors
-Thread-Topic: [PATCH v5 2/2] Device tree bindings for TI HDC20x0 humidity and
- temperature sensors
-Thread-Index: AQHV4rt7AAu36hdxykemm9XjidZh/w==
-Date:   Thu, 13 Feb 2020 22:18:13 +0000
-Message-ID: <90EF52F7-82A2-4617-95FF-CCF37E3FEAC6@norphonic.com>
-References: <CF7736B3-95D6-43E4-BC69-DDB0DFE2A86A@norphonic.com>
-In-Reply-To: <CF7736B3-95D6-43E4-BC69-DDB0DFE2A86A@norphonic.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ez@norphonic.com; 
-x-originating-ip: [85.166.70.90]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9ff5f66a-96bf-4946-7573-08d7b0d29de3
-x-ms-traffictypediagnostic: DB6PR06MB3960:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB6PR06MB39606CDCE3933471340A7790CA1A0@DB6PR06MB3960.eurprd06.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3513;
-x-forefront-prvs: 031257FE13
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39830400003)(376002)(136003)(366004)(396003)(346002)(189003)(199004)(110136005)(54906003)(6486002)(508600001)(26005)(33656002)(36756003)(186003)(6506007)(2616005)(64756008)(66446008)(66476007)(66556008)(81166006)(5660300002)(316002)(81156014)(71200400001)(66946007)(8936002)(8676002)(2906002)(91956017)(4326008)(6512007)(966005)(86362001)(76116006);DIR:OUT;SFP:1102;SCL:1;SRVR:DB6PR06MB3960;H:DB6PR06MB3048.eurprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: norphonic.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GHti0sdMbd/a5Gdfhnt5K1A63wWDF4esU3y9iIxR2Xg1OuTzMqRw1Ie2TXKQzMH/OahDxyAhnRrP4TFV85A21hrBdUTMDuAKn0H9y+Ilgrvazh96HMzIH7IgxAG9d7d/L18AhYitvn837rLS1ohSFUdDZ48Sr3FNEsUy0NFGLa7fzUyReXLdYkewTBLK7bQOr+LKiFXlYnA75Fq/SEhd90HWd3UjFFo0PogQjiiH2QjyzA/0MB0O1OL/EFZmZ7/KYLS2M1dWgzuBtel1jQrLUV4CMDjt8A52UHK/PJYtOqXqXFmAJRV1VrwRYqibGyorkcXrOIjyUQfQOsf3TrcUq9vgPNrlO/+7puMmlwlUNVPLjxbKuRK7wd1PWgfwZBUKxwkoJKGBess+I9e7FOwf+tyI2i09DjDVZmYp/QiDRDSIsfh+vlhIzXCYCalWYHaeWQ1nHbG3XiVAs4rnIodRU4q1UJVlpifadk1lWEfBuL3hWpfcrY3I019kocfPN3fl/Mm/qDu7rguilzMrvovsrQ==
-x-ms-exchange-antispam-messagedata: eJ1P4Gm2fWEKJLm67MmC5b+F3xH3NSlXjGZMYBrVbOcKgNQkswbcEyF19QJx4OpAk6D3chwmcgEikN4NiXgx4LZQx9VxcyqlbqsLXR0nw+57uvm8tKGsor/KSCNI3iH9RUUEb07hdmt7S26P/qwNDw==
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3CCF2D6C85D1FC408616909C9D0D1D39@eurprd06.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1728479AbgBNEkP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Feb 2020 23:40:15 -0500
+Received: from mga07.intel.com ([134.134.136.100]:49367 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728239AbgBNEkO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 13 Feb 2020 23:40:14 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Feb 2020 20:40:13 -0800
+X-IronPort-AV: E=Sophos;i="5.70,439,1574150400"; 
+   d="scan'208";a="347881419"
+Received: from amanivas-mobl.gar.corp.intel.com ([10.252.162.109])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Feb 2020 20:40:08 -0800
+Message-ID: <719b929927ce76dd7dda3a48319b5798aced591a.camel@linux.intel.com>
+Subject: Re: [PATCH v3 0/5] SFH: Add Support for AMD Sensor Fusion Hub
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     Sandeep Singh <Sandeep.Singh@amd.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Nehal-bakulchandra.Shah@amd.com, Shyam-sundar.S-k@amd.com
+Date:   Thu, 13 Feb 2020 20:40:05 -0800
+In-Reply-To: <CAO-hwJJkWkpApB-i0tHxEb0BeWcMpFLwSsOWKKdzGKnJEbHA_A@mail.gmail.com>
+References: <1581476197-25854-1-git-send-email-Sandeep.Singh@amd.com>
+         <1ce6f591-1e8b-8291-7f18-48876fd70e10@redhat.com>
+         <CAO-hwJJkWkpApB-i0tHxEb0BeWcMpFLwSsOWKKdzGKnJEbHA_A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-X-OriginatorOrg: norphonic.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ff5f66a-96bf-4946-7573-08d7b0d29de3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Feb 2020 22:18:13.2766
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: cbf3f496-45ad-415e-97cb-4e62d6cd974f
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Z3hUGkjYSGrjlfIpimR+pOgsgj/ebQ6meinJSRMiaE2ffgLPcwZeyXrbCQ/f4Zazov2wPtcqq/SIc5Z3G3gLrA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR06MB3960
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Amended device tree bindings for the driver.
+On Thu, 2020-02-13 at 15:56 +0100, Benjamin Tissoires wrote:
+> Hi,
+> 
+> On Wed, Feb 12, 2020 at 3:45 PM Hans de Goede <hdegoede@redhat.com>
+> wrote:
+> > Hi,
+> > 
+> > On 2/12/20 3:56 AM, Sandeep Singh wrote:
+> > > From: Sandeep Singh <sandeep.singh@amd.com>
+> > > 
+> > > AMD SFH(Sensor Fusion Hub) is HID based driver.SFH FW
+> > > is part of MP2 processor (MP2 which is an ARM® Cortex-M4
+> > > core based co-processor to x86) and it runs on MP2 where
+> > > in driver resides on X86.The driver functionalities are
+> > > divided  into three parts:-
+> > > 
+> > > 1: amd-mp2-pcie:-       This module will communicate with MP2 FW
+> > > and
+> > >                          provide that data into DRAM.
+> > > 2: Client driver :-     This part for driver will use dram data
+> > > and
+> > >                          convert that data into HID format based
+> > > on
+> > >                          HID reports.
+> > > 3: Transport driver :-  This part of driver will communicate with
+> > >                          HID core. Communication between devices
+> > > and
+> > >                          HID core is mostly done via HID reports
+> > > 
+> > > In terms of architecture it is much more reassembles like
+> > > ISH(Intel Integrated Sensor Hub). However the major difference
+> > > is all the hid reports are generated as part of kernel driver.
+> > > AMD SFH driver taken reference from ISH in terms of
+> > > design and functionalities at fewer location.
+> > > 
+> > > AMD sensor fusion Hub is part of a SOC 17h family based
+> > > platforms.
+> > > The solution is working well on several OEM products.
+> > > AMD SFH uses HID over PCIe bus.
+> > 
+> > I started looking at this patch because of the phoronix' news item
+> > on it.
+> > 
+> > First of all I want to say that it is great that AMD is working on
+> > getting the Sensor Fusion Hub supported on Linux and that you are
+> > working on a driver for this.
+> 
+> Yep, couldn't agree more :)
+> 
+> > But, I've taken a quick look, mainly at the
+> > "[PATCH v3 5/5] SFH: Create HID report to Enable support of AMD
+> > sensor fusion Hub (SFH)"
+> > patch.
+> > 
+> > AFAIK with the Intel ISH the sensor-hub itself is actually
+> > providing
+> > HID descriptors and HID input reports.
+> > 
+> > Looking at the AMD code, that does not seem to be the case, it
+> > seems
+> > the values come directly from the AMD sensor-hub without being in
+> > any
+> > HID specific form, e.g.:
+> > 
+> > +u8 get_input_report(int sensor_idx, int report_id,
+> > +                   u8 *input_report, u32 *sensor_virt_addr)
+> > +{
+> > +       u8 report_size = 0;
+> > +       struct accel3_input_report acc_input;
+> > +       struct gyro_input_report gyro_input;
+> > +       struct magno_input_report magno_input;
+> > +       struct als_input_report als_input;
+> > +
+> > +       if (!sensor_virt_addr || !input_report)
+> > +               return report_size;
+> > +
+> > +       switch (sensor_idx) {
+> > +       case ACCEL_IDX: /* accel */
+> > +               acc_input.common_property.report_id = report_id;
+> > +               acc_input.common_property.sensor_state =
+> > +                                       HID_USAGE_SENSOR_STATE_READ
+> > Y_ENUM;
+> > +               acc_input.common_property.event_type =
+> > +                               HID_USAGE_SENSOR_EVENT_DATA_UPDATED
+> > _ENUM;
+> > +               acc_input.in_accel_x_value =
+> > (int)sensor_virt_addr[0] /
+> > +                                               AMD_SFH_FIRMWARE_MU
+> > LTIPLIER;
+> > +               acc_input.in_accel_y_value =
+> > (int)sensor_virt_addr[1] /
+> > +                                               AMD_SFH_FIRMWARE_MU
+> > LTIPLIER;
+> > +               acc_input.in_accel_z_value
+> > =  (int)sensor_virt_addr[2] /
+> > +                                               AMD_SFH_FIRMWARE_MU
+> > LTIPLIER;
+> > +               memcpy(input_report, &acc_input,
+> > sizeof(acc_input));
+> > +               report_size = sizeof(acc_input);
+> > +               break;
+> > 
+> > And the descriptors are hardcoded in the driver so as to fake a HID
+> > device.
+> > 
+> > So going through the HID subsystem seems like an unnecessary
+> > detour,
+> > which just makes things needlessly complex and harder to debug
+> > (and extend).
+> > 
+> > The HID devices which the current patch-set is creating ultimately
+> > will result in a number of devices being created under
+> > 
+> > /sys/bus/iio/devices
+> > 
+> > And this are the devices which userspace uses to get the sensor
+> > data.
+> > 
+> > IMHO instead of going through the HID subsys the AMD Sensor Fusion
+> > Hub
+> > driver should simply register 4 (*) iio-devices itself and directly
+> > pass the data through at the iio subsys level rather then going the
+> > long way around by creating a fake HID device which then gets
+> > attached to by the hid-sensor driver to ultimately create the same
+> > iio-devices.
+> > 
+> > There are examples of e.g. various iio accel drivers under:
+> > drivers/iio/accel/ you could start with a simple driver supporting
+> > just the accelerometer bits and then extend things from there.
+> > 
+> > Benjamin, Jiri, Jonathan, what is your take on this?
+> 
+> Hard to say without knowing AMD roadmap for that. If they intend to
+> have an ISH-like approach in the end with reports and descriptors
+> provided by the firmwares, then it makes sense to keep this
+> architecture for the first revision of devices.
+> If not, then yes, this is probably overkill compared to what needs to
+> be done.
+> 
+I suggested this approach to follow something like Chrome-OS EC based
+hub, but looks like in longer run this may come from firmware. That's
+why they may have decided.
 
-Signed-off-by: Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
+Thanks,
+Srinivas
+ 
 
-diff -uprN linux-5.3.8/Documentation/devicetree/bindings/iio/humidity/ti,hd=
-c2010.yaml linux-5.3.8_docs/Documentation/devicetree/bindings/iio/humidity/=
-ti,hdc2010.yaml
---- linux-5.3.8/Documentation/devicetree/bindings/iio/humidity/ti,hdc2010.y=
-aml	1970-01-01 01:00:00.000000000 +0100
-+++ linux-5.3.8_docs/Documentation/devicetree/bindings/iio/humidity/ti,hdc2=
-010.yaml	2020-02-12 14:28:42.562903814 +0100
-@@ -0,0 +1,43 @@
-+# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/humidity/hdc2010.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: HDC2010/HDC2080 humidity and temperature iio sensors
-+
-+maintainers:
-+  - Eugene Zaikonnikov <eugene.zaikonnikov@norophonic.com>
-+
-+description: |
-+  Relative humidity and tempereature sensors on I2C bus
-+
-+  Datasheets are available at:
-+    http://www.ti.com/product/HDC2010/datasheet
-+    http://www.ti.com/product/HDC2080/datasheet
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,hdc2010
-+      - ti,hdc2080
-+
-+  vddd-supply:
-+    description:
-+      digital voltage regulator (see regulator/regulator.txt)
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+
-+examples:
-+  - |
-+    i2c0 {
-+      #address-cells =3D <1>;
-+      #size-cells =3D <0>;
-+
-+      hdc200x@40 {
-+          compatible =3D "ti,hdc2010";
-+          reg =3D <0x40>;
-+      };
-+    };
+> Sandeep, can you explain to us why you think using HID is the best
+> way?
+> 
+> On a side note, I don't necessarily like patch 4/5 with the debugfs
+> interface. It's adding a kernel API for no gain, and we should
+> already
+> have the debug API available in the various subsystems involved.
+> 
+> Cheers,
+> Benjamin
+> 
+> 
+> 
+> 
+> > Regards,
+> > 
+> > Hans
+> > 
+> > 
+> > *) One for accel, gyra, magneto and light each
+> > 
+> > 
+> > > Sandeep Singh (5):
+> > >    SFH: Add maintainers and documentation for AMD SFH based on
+> > > HID
+> > >      framework
+> > >    SFH: PCI driver to add support of AMD sensor fusion Hub using
+> > > HID
+> > >      framework
+> > >    SFH: Transport Driver to add support of AMD Sensor Fusion Hub
+> > > (SFH)
+> > >    SFH: Add debugfs support to AMD Sensor Fusion Hub
+> > >    SFH: Create HID report to Enable support of AMD sensor fusion
+> > > Hub
+> > >      (SFH)
+> > > 
+> > > Changes since v1:
+> > >          -Fix auto build test warnings
+> > >          -Fix warnings captured using smatch
+> > >          -Changes suggested by Dan Carpenter
+> > > 
+> > > Links of the review comments for v1:
+> > >          [1] https://patchwork.kernel.org/patch/11325163/
+> > >          [2] https://patchwork.kernel.org/patch/11325167/
+> > >          [3] https://patchwork.kernel.org/patch/11325171/
+> > >          [4] https://patchwork.kernel.org/patch/11325187/
+> > > 
+> > > 
+> > > Changes since v2:
+> > >          -Debugfs divided into another patch
+> > >          -Fix some cosmetic changes
+> > >          -Fix for review comments
+> > >           Reported and Suggested by:-  Srinivas Pandruvada
+> > > 
+> > > Links of the review comments for v2:
+> > >          [1] https://patchwork.kernel.org/patch/11355491/
+> > >          [2] https://patchwork.kernel.org/patch/11355495/
+> > >          [3] https://patchwork.kernel.org/patch/11355499/
+> > >          [4] https://patchwork.kernel.org/patch/11355503/
+> > > 
+> > > 
+> > >   Documentation/hid/amd-sfh-hid.rst                  | 160 +++++
+> > >   MAINTAINERS                                        |   8 +
+> > >   drivers/hid/Kconfig                                |   2 +
+> > >   drivers/hid/Makefile                               |   1 +
+> > >   drivers/hid/amd-sfh-hid/Kconfig                    |  20 +
+> > >   drivers/hid/amd-sfh-hid/Makefile                   |  17 +
+> > >   drivers/hid/amd-sfh-hid/amd_mp2_pcie.c             | 243
+> > > ++++++++
+> > >   drivers/hid/amd-sfh-hid/amd_mp2_pcie.h             | 177 ++++++
+> > >   drivers/hid/amd-sfh-hid/amdsfh-debugfs.c           | 250
+> > > ++++++++
+> > >   drivers/hid/amd-sfh-hid/amdsfh-debugfs.h           |  14 +
+> > >   drivers/hid/amd-sfh-hid/amdsfh-hid-client.c        | 260
+> > > +++++++++
+> > >   drivers/hid/amd-sfh-hid/amdsfh-hid.c               | 179 ++++++
+> > >   drivers/hid/amd-sfh-hid/amdsfh-hid.h               |  85 +++
+> > >   .../hid_descriptor/amd_sfh_hid_descriptor.c        | 275
+> > > +++++++++
+> > >   .../hid_descriptor/amd_sfh_hid_descriptor.h        | 125 ++++
+> > >   .../hid_descriptor/amd_sfh_hid_report_descriptor.h | 642
+> > > +++++++++++++++++++++
+> > >   16 files changed, 2458 insertions(+)
+> > >   create mode 100644 Documentation/hid/amd-sfh-hid.rst
+> > >   create mode 100644 drivers/hid/amd-sfh-hid/Kconfig
+> > >   create mode 100644 drivers/hid/amd-sfh-hid/Makefile
+> > >   create mode 100644 drivers/hid/amd-sfh-hid/amd_mp2_pcie.c
+> > >   create mode 100644 drivers/hid/amd-sfh-hid/amd_mp2_pcie.h
+> > >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-debugfs.c
+> > >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-debugfs.h
+> > >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-hid-client.c
+> > >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-hid.c
+> > >   create mode 100644 drivers/hid/amd-sfh-hid/amdsfh-hid.h
+> > >   create mode 100644 drivers/hid/amd-sfh-
+> > > hid/hid_descriptor/amd_sfh_hid_descriptor.c
+> > >   create mode 100644 drivers/hid/amd-sfh-
+> > > hid/hid_descriptor/amd_sfh_hid_descriptor.h
+> > >   create mode 100644 drivers/hid/amd-sfh-
+> > > hid/hid_descriptor/amd_sfh_hid_report_descriptor.h
+> > > 
 

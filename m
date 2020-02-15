@@ -2,43 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1D1115FFB6
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2020 19:38:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0801915FFC3
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2020 19:41:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726254AbgBOSia (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Feb 2020 13:38:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36300 "EHLO mail.kernel.org"
+        id S1726254AbgBOSll (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Feb 2020 13:41:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37868 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726233AbgBOSia (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 15 Feb 2020 13:38:30 -0500
+        id S1726233AbgBOSlk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 15 Feb 2020 13:41:40 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 42C4B2072D;
-        Sat, 15 Feb 2020 18:38:28 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 94AAC2072D;
+        Sat, 15 Feb 2020 18:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581791909;
-        bh=Vn6EMKEHrAlFXsbzoMOmCsGT35CduBMj1nJoHPtQDLs=;
+        s=default; t=1581792100;
+        bh=BjBazr4WmmuTjxM5m3H0niFodBZruveqbCGfq9sC65Q=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Nhfqwatlu7MaA89FPxhKcJPFm3Xah+2BhcRwXk4FD3Y8+BYuaDyZPKqENELBy0gTS
-         SzQlh+/7imAY751HgVjpadK0Gmv+oaQ/57CDJuB8wV7z601rAfNHcJFdsCKullXTv0
-         njA7LBUIq/auwg/XwlQz9g5AH4OrSFuwaPewnCBw=
-Date:   Sat, 15 Feb 2020 18:38:25 +0000
+        b=djgmAQXjqo+MlqzTZc00spUUBrsvrHJZoZRFnHI9BzjfTLivfrp5FNipSdfQfqJLi
+         BqANi0V7cfltMJT0voJbWwGrIDwFYflw/eT7iFq6/Z8C/njlTvZQT2zhYZc4DWPJlo
+         m2oCHozWKKl/O/5UqGl+ElpKIcR14X8IyJDeTu7w=
+Date:   Sat, 15 Feb 2020 18:41:35 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Heidelberg <david@ixit.cz>
-Cc:     Dmitry Osipenko <digetx@gmail.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 6/7] iio: light: al3320a implement
- devm_add_action_or_reset
-Message-ID: <20200215183825.77bda8a8@archlinux>
-In-Reply-To: <20200211191201.1049902-7-david@ixit.cz>
-References: <20200211191201.1049902-1-david@ixit.cz>
-        <20200211191201.1049902-7-david@ixit.cz>
+To:     Fabrice Gasnier <fabrice.gasnier@st.com>
+Cc:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <benjamin.gaignard@st.com>, <alexandre.torgue@st.com>,
+        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
+        <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: Re: [PATCH] iio: trigger: stm32-timer: disable master mode when
+ stopping
+Message-ID: <20200215184135.10af9907@archlinux>
+In-Reply-To: <1581698795-437-1-git-send-email-fabrice.gasnier@st.com>
+References: <1581698795-437-1-git-send-email-fabrice.gasnier@st.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,65 +46,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 11 Feb 2020 20:12:00 +0100
-David Heidelberg <david@ixit.cz> wrote:
+On Fri, 14 Feb 2020 17:46:35 +0100
+Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
 
-> Use devm_add_action_or_reset to automatically disable the device
-> and allow you to get rid of the remove function entirely.
+> Master mode should be disabled when stopping. This mainly impacts
+> possible other use-case after timer has been stopped. Currently,
+> master mode remains set (from start routine).
 > 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+> Fixes: 6fb34812c2a2 ("iio: stm32 trigger: Add support for TRGO2 triggers")
+> 
+> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+I 'think' this is tangential to the other changes to this driver recently
+and you seem to have prepared this against current mailine.
 
-This doesn't build as is.  I've fixed up but please take a close
-look at the result.
+Hence applied to the fixes-togreg branch of iio.git and marked for stable.
+
+Thanks,
+
+Jonathan
 
 > ---
->  drivers/iio/light/al3320a.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
+>  drivers/iio/trigger/stm32-timer-trigger.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
-> index affa4c6c199a..49e73e24fff6 100644
-> --- a/drivers/iio/light/al3320a.c
-> +++ b/drivers/iio/light/al3320a.c
-> @@ -87,6 +87,13 @@ static int al3320a_set_pwr(struct i2c_client *client, bool pwr)
->  	return i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG, val);
+> diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
+> index 2e0d32a..2f82e8c 100644
+> --- a/drivers/iio/trigger/stm32-timer-trigger.c
+> +++ b/drivers/iio/trigger/stm32-timer-trigger.c
+> @@ -161,7 +161,8 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+>  	return 0;
 >  }
 >  
-> +static void al3320a_set_pwr_off(void *_data)
-> +{
-> +	struct al3320a_data *data = _data;
-> +
-> +	al3320a_set_pwr(data->client, false);
-> +}
-> +
->  static int al3320a_init(struct al3320a_data *data)
+> -static void stm32_timer_stop(struct stm32_timer_trigger *priv)
+> +static void stm32_timer_stop(struct stm32_timer_trigger *priv,
+> +			     struct iio_trigger *trig)
 >  {
->  	int ret;
-> @@ -206,12 +213,14 @@ static int al3320a_probe(struct i2c_client *client,
->  		dev_err(&client->dev, "al3320a chip init failed\n");
->  		return ret;
->  	}
-> -	return devm_iio_device_register(&client->dev, indio_dev);
-> -}
+>  	u32 ccer, cr1;
 >  
-> -static int al3320a_remove(struct i2c_client *client)
-> -{
-> -	return al3320a_set_pwr(client, false);
-> +	ret = devm_add_action_or_reset(&client->dev,
-> +					al3320a_set_pwr_off,
-> +					data);
-> +	if (ret < 0)
-> +		return ret;
+> @@ -179,6 +180,12 @@ static void stm32_timer_stop(struct stm32_timer_trigger *priv)
+>  	regmap_write(priv->regmap, TIM_PSC, 0);
+>  	regmap_write(priv->regmap, TIM_ARR, 0);
+>  
+> +	/* Force disable master mode */
+> +	if (stm32_timer_is_trgo2_name(trig->name))
+> +		regmap_update_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS2, 0);
+> +	else
+> +		regmap_update_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS, 0);
 > +
-> +	return devm_iio_device_register(&client->dev, indio_dev);
+>  	/* Make sure that registers are updated */
+>  	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
 >  }
+> @@ -197,7 +204,7 @@ static ssize_t stm32_tt_store_frequency(struct device *dev,
+>  		return ret;
 >  
->  static int __maybe_unused al3320a_suspend(struct device *dev)
-> @@ -238,7 +247,6 @@ static struct i2c_driver al3320a_driver = {
->  		.pm = &al3320a_pm_ops,
->  	},
->  	.probe		= al3320a_probe,
-> -	.remove		= al3320a_remove,
->  	.id_table	= al3320a_id,
->  };
->  
+>  	if (freq == 0) {
+> -		stm32_timer_stop(priv);
+> +		stm32_timer_stop(priv, trig);
+>  	} else {
+>  		ret = stm32_timer_start(priv, trig, freq);
+>  		if (ret)
 

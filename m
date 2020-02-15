@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCBDB15FF67
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2020 18:09:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EAF415FF76
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2020 18:15:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726233AbgBORJp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Feb 2020 12:09:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54990 "EHLO mail.kernel.org"
+        id S1726254AbgBORPc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Feb 2020 12:15:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55548 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726143AbgBORJo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 15 Feb 2020 12:09:44 -0500
+        id S1726143AbgBORPc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 15 Feb 2020 12:15:32 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2B2FB22314;
-        Sat, 15 Feb 2020 17:09:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1366224654;
+        Sat, 15 Feb 2020 17:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581786584;
-        bh=XqrjFR4H7fLfPMtIrn2laH86wzSLrR6mO90cRhMzou8=;
+        s=default; t=1581786931;
+        bh=f11NRdpr0nr2J8AuXcNN0XnpZrkB1CCBySVmdj/EaQU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MADz65uCDhHLbkDxQlQoA8R89EQh1Kw5okajTn4eWXxHbG3P7dpbLcl0bXV3JZYnK
-         +ays/t2P/yAIrdtCbx0pumA4WaiKf2kH9Mhmv5MsRFs2IR2oCcHFJbKGQsRnGjg778
-         YhchT4p1f6HB1v+j+AxpzWog1kYxCnS91pm27IqM=
-Date:   Sat, 15 Feb 2020 17:09:39 +0000
+        b=Qv1yPTJdxfC8NWzu29T4ry4lKahbpgPerNb542Yoaedx08JVqlMspBWGy2zPvqCdd
+         MhiFue9DSj6631OBvZ3FA0+FY39Pa18r1GY5oHFiRR89WgeBdL5VDPWD5OOtRNqljD
+         NOs+EjxDrkDtKwVB6GofydXR1ts+Pi1FjIHnYfIU=
+Date:   Sat, 15 Feb 2020 17:15:26 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     David Heidelberg <david@ixit.cz>
 Cc:     Dmitry Osipenko <digetx@gmail.com>,
@@ -32,348 +32,106 @@ Cc:     Dmitry Osipenko <digetx@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-Subject: Re: [PATCH v6] iio: light: add Dyna-Image AL3010 driver
-Message-ID: <20200215170939.26fdd01b@archlinux>
-In-Reply-To: <20200214220917.59645-1-david@ixit.cz>
-References: <20200211191201.1049902-5-david@ixit.cz>
-        <20200214220917.59645-1-david@ixit.cz>
+        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 5/7] iio: light: al3320a implement suspend support
+Message-ID: <20200215171526.6de754b4@archlinux>
+In-Reply-To: <20200211191201.1049902-6-david@ixit.cz>
+References: <20200211191201.1049902-1-david@ixit.cz>
+        <20200211191201.1049902-6-david@ixit.cz>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 Feb 2020 23:09:17 +0100
+On Tue, 11 Feb 2020 20:11:59 +0100
 David Heidelberg <david@ixit.cz> wrote:
 
-> Based on:
-> - 3320A in-kernel driver
-> - https://www.spinics.net/lists/linux-iio/msg25145.html
-> - https://lore.kernel.org/patchwork/patch/684179/
->=20
-> I decided to keep it aside of AL3320A due to different approach and much
-> simpler design of 3010.
->=20
-> Tested on Nexus 7 2012 (grouper/tilapia).
->=20
-> Tested-by: David Heidelberg <david@ixit.cz>
-> Tested-by: Dmitry Osipenko <digetx@gmail.com>
-> Tested-by: Micha=C5=82 Miros=C5=82aw <mirq-linux@rere.qmqm.pl>
-> Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
+> AL3320a is fairly simple chip, so for suspend is enough to disable and
+> later enable it again.
+> 
 > Signed-off-by: David Heidelberg <david@ixit.cz>
-Hi.
-
-I'm not generally keen on partial reposts of series, but in this
-case it's so trivial I'll pick it up anyway.
-
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to play with it.
+Applied with a small tweak mentioned below.
 
 Thanks,
 
 Jonathan
 
 > ---
-> v4:
-> - SQUASHed: iio: light: al3010 implement suspend support
-> - switched from _remove to devm_add_action_or_reset
-> - implement bitfields FIELD_PREP & FIELD_GET, no functionality change
-> v6:
-> - add copyright and change driver author field
->=20
->  drivers/iio/light/Kconfig  |  10 ++
->  drivers/iio/light/Makefile |   1 +
->  drivers/iio/light/al3010.c | 242 +++++++++++++++++++++++++++++++++++++
->  3 files changed, 253 insertions(+)
->  create mode 100644 drivers/iio/light/al3010.c
->=20
-> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> index 9968f982fbc7..43d9b830279d 100644
-> --- a/drivers/iio/light/Kconfig
-> +++ b/drivers/iio/light/Kconfig
-> @@ -43,6 +43,16 @@ config ADUX1020
->  	 To compile this driver as a module, choose M here: the
->  	 module will be called adux1020.
-> =20
-> +config AL3010
-> +	tristate "AL3010 ambient light sensor"
-> +	depends on I2C
-> +	help
-> +	  Say Y here if you want to build a driver for the Dyna Image AL3010
-> +	  ambient light sensor.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called al3010.
-> +
->  config AL3320A
->  	tristate "AL3320A ambient light sensor"
->  	depends on I2C
-> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-> index c98d1cefb861..88bb93550fcc 100644
-> --- a/drivers/iio/light/Makefile
-> +++ b/drivers/iio/light/Makefile
-> @@ -7,6 +7,7 @@
->  obj-$(CONFIG_ACPI_ALS)		+=3D acpi-als.o
->  obj-$(CONFIG_ADJD_S311)		+=3D adjd_s311.o
->  obj-$(CONFIG_ADUX1020)		+=3D adux1020.o
-> +obj-$(CONFIG_AL3010)		+=3D al3010.o
->  obj-$(CONFIG_AL3320A)		+=3D al3320a.o
->  obj-$(CONFIG_APDS9300)		+=3D apds9300.o
->  obj-$(CONFIG_APDS9960)		+=3D apds9960.o
-> diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
-> new file mode 100644
-> index 000000000000..84001d04d29d
-> --- /dev/null
-> +++ b/drivers/iio/light/al3010.c
-> @@ -0,0 +1,242 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * AL3010 - Dyna Image Ambient Light Sensor
-> + *
-> + * Copyright (c) 2014, Intel Corporation.
-> + * Copyright (c) 2016, Dyna-Image Corp.
-> + * Copyright (c) 2020, David Heidelberg, Micha=C5=82 Miros=C5=82aw, Dmit=
-ry Osipenko
-> + *
-> + * IIO driver for AL3010 (7-bit I2C slave address 0x1C).
-> + *
-> + * TODO: interrupt support, thresholds
-> + * When the driver will get support for interrupt handling, then interru=
-pt
+>  drivers/iio/light/al3320a.c | 30 +++++++++++++++++++++++++-----
+>  1 file changed, 25 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
+> index 89b935b4fe9e..affa4c6c199a 100644
+> --- a/drivers/iio/light/al3320a.c
+> +++ b/drivers/iio/light/al3320a.c
+> @@ -7,6 +7,9 @@
+>   * IIO driver for AL3320A (7-bit I2C slave address 0x1C).
+>   *
+>   * TODO: interrupt support, thresholds
+> + * When the driver will get support for interrupt handling, then interrupt
 > + * will need to be disabled before turning sensor OFF in order to avoid
 > + * potential races with the interrupt handling.
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/i2c.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +
-> +#define AL3010_DRV_NAME "al3010"
-> +
-> +#define AL3010_REG_SYSTEM		0x00
-> +#define AL3010_REG_DATA_LOW		0x0c
-> +#define AL3010_REG_CONFIG		0x10
-> +
-> +#define AL3010_CONFIG_DISABLE		0x00
-> +#define AL3010_CONFIG_ENABLE		0x01
-> +
-> +#define AL3010_GAIN_MASK		GENMASK(6,4)
-> +
-> +#define AL3010_SCALE_AVAILABLE "1.1872 0.2968 0.0742 0.018"
-> +
-> +enum al3xxxx_range {
-> +	AL3XXX_RANGE_1, /* 77806 lx */
-> +	AL3XXX_RANGE_2, /* 19542 lx */
-> +	AL3XXX_RANGE_3, /*  4863 lx */
-> +	AL3XXX_RANGE_4  /*  1216 lx */
-> +};
-> +
-> +static const int al3010_scales[][2] =3D {
-> +	{0, 1187200}, {0, 296800}, {0, 74200}, {0, 18600}
-> +};
-> +
-> +struct al3010_data {
-> +	struct i2c_client *client;
-> +};
-> +
-> +static const struct iio_chan_spec al3010_channels[] =3D {
-> +	{
-> +		.type	=3D IIO_LIGHT,
-> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE),
-> +	}
-> +};
-> +
-> +static IIO_CONST_ATTR(in_illuminance_scale_available, AL3010_SCALE_AVAIL=
-ABLE);
-> +
-> +static struct attribute *al3010_attributes[] =3D {
-> +	&iio_const_attr_in_illuminance_scale_available.dev_attr.attr,
-> +	NULL,
-> +};
-> +
-> +static const struct attribute_group al3010_attribute_group =3D {
-> +	.attrs =3D al3010_attributes,
-> +};
-> +
-> +static int al3010_set_pwr(struct i2c_client *client, bool pwr)
+>   */
+>  
+>  #include <linux/bitfield.h>
+> @@ -78,13 +81,18 @@ static const struct attribute_group al3320a_attribute_group = {
+>  	.attrs = al3320a_attributes,
+>  };
+>  
+> +static int al3320a_set_pwr(struct i2c_client *client, bool pwr)
 > +{
-> +	u8 val =3D pwr ? AL3010_CONFIG_ENABLE : AL3010_CONFIG_DISABLE;
-> +	return i2c_smbus_write_byte_data(client, AL3010_REG_SYSTEM, val);
+> +	u8 val = pwr ? AL3320A_CONFIG_ENABLE : AL3320A_CONFIG_DISABLE;
+> +	return i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG, val);
 > +}
 > +
-> +static void al3010_set_pwr_off(void *_data)
-> +{
-> +	struct al3010_data *data =3D _data;
+>  static int al3320a_init(struct al3320a_data *data)
+>  {
+>  	int ret;
+>  
+> -	/* power on */
+> -	ret = i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG,
+> -					AL3320A_CONFIG_ENABLE);
+> +	ret = al3320a_set_pwr(data->client, true);
 > +
-> +	al3010_set_pwr(data->client, false);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> @@ -203,10 +211,21 @@ static int al3320a_probe(struct i2c_client *client,
+>  
+>  static int al3320a_remove(struct i2c_client *client)
+>  {
+> -	return i2c_smbus_write_byte_data(client, AL3320A_REG_CONFIG,
+> -					 AL3320A_CONFIG_DISABLE);
+> +	return al3320a_set_pwr(client, false);
+>  }
+>  
+> +static int __maybe_unused al3320a_suspend(struct device *dev)
+> +{
+> +	return al3320a_set_pwr(to_i2c_client(dev), false);
 > +}
 > +
-> +static int al3010_init(struct al3010_data *data)
+> +static int __maybe_unused al3320a_resume(struct device *dev)
 > +{
-> +	int ret;
-> +
-> +	ret =3D al3010_set_pwr(data->client, true);
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret =3D i2c_smbus_write_byte_data(data->client, AL3010_REG_CONFIG,
-> +					FIELD_PREP(AL3010_GAIN_MASK,
-> +						   AL3XXX_RANGE_3));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
+> +	return al3320a_set_pwr(to_i2c_client(dev), true);
 > +}
 > +
-> +static int al3010_read_raw(struct iio_dev *indio_dev,
-> +			   struct iio_chan_spec const *chan, int *val,
-> +			   int *val2, long mask)
-> +{
-> +	struct al3010_data *data =3D iio_priv(indio_dev);
-> +	int ret;
+> +SIMPLE_DEV_PM_OPS(al3320a_pm_ops, al3320a_suspend, al3320a_resume);
+Build test showed this is missing a static.
+Added.
 > +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		/*
-> +		 * ALS ADC value is stored in two adjacent registers:
-> +		 * - low byte of output is stored at AL3010_REG_DATA_LOW
-> +		 * - high byte of output is stored at AL3010_REG_DATA_LOW + 1
-> +		 */
-> +		ret =3D i2c_smbus_read_word_data(data->client,
-> +					       AL3010_REG_DATA_LOW);
-> +		if (ret < 0)
-> +			return ret;
-> +		*val =3D ret;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		ret =3D i2c_smbus_read_byte_data(data->client,
-> +					       AL3010_REG_CONFIG);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret =3D FIELD_GET(AL3010_GAIN_MASK, ret);
-> +		*val =3D al3010_scales[ret][0];
-> +		*val2 =3D al3010_scales[ret][1];
-> +
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	}
-> +	return -EINVAL;
-> +}
-> +
-> +static int al3010_write_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan, int val,
-> +			    int val2, long mask)
-> +{
-> +	struct al3010_data *data =3D iio_priv(indio_dev);
-> +	int i;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		for (i =3D 0; i < ARRAY_SIZE(al3010_scales); i++) {
-> +			if (val !=3D al3010_scales[i][0] ||
-> +			    val2 !=3D al3010_scales[i][1])
-> +				continue;
-> +
-> +			return i2c_smbus_write_byte_data(data->client,
-> +					AL3010_REG_CONFIG,
-> +					FIELD_PREP(AL3010_GAIN_MASK, i));
-> +		}
-> +		break;
-> +	}
-> +	return -EINVAL;
-> +}
-> +
-> +static const struct iio_info al3010_info =3D {
-> +	.read_raw	=3D al3010_read_raw,
-> +	.write_raw	=3D al3010_write_raw,
-> +	.attrs		=3D &al3010_attribute_group,
-> +};
-> +
-> +static int al3010_probe(struct i2c_client *client,
-> +			const struct i2c_device_id *id)
-> +{
-> +	struct al3010_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev =3D devm_iio_device_alloc(&client->dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data =3D iio_priv(indio_dev);
-> +	i2c_set_clientdata(client, indio_dev);
-> +	data->client =3D client;
-> +
-> +	indio_dev->dev.parent =3D &client->dev;
-> +	indio_dev->info =3D &al3010_info;
-> +	indio_dev->name =3D AL3010_DRV_NAME;
-> +	indio_dev->channels =3D al3010_channels;
-> +	indio_dev->num_channels =3D ARRAY_SIZE(al3010_channels);
-> +	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> +
-> +	ret =3D al3010_init(data);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "al3010 chip init failed\n");
-> +		return ret;
-> +	}
-> +
-> +	ret =3D devm_add_action_or_reset(&client->dev,
-> +					al3010_set_pwr_off,
-> +					data);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return devm_iio_device_register(&client->dev, indio_dev);
-> +}
-> +
-> +static int __maybe_unused al3010_suspend(struct device *dev)
-> +{
-> +	return al3010_set_pwr(to_i2c_client(dev), false);
-> +}
-> +
-> +static int __maybe_unused al3010_resume(struct device *dev)
-> +{
-> +	return al3010_set_pwr(to_i2c_client(dev), true);
-> +}
-> +
-> +SIMPLE_DEV_PM_OPS(al3010_pm_ops, al3010_suspend, al3010_resume);
-> +
-> +static const struct i2c_device_id al3010_id[] =3D {
-> +	{"al3010", },
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(i2c, al3010_id);
-> +
-> +static const struct of_device_id al3010_of_match[] =3D {
-> +	{ .compatible =3D "dynaimage,al3010", },
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, al3010_of_match);
-> +
-> +static struct i2c_driver al3010_driver =3D {
-> +	.driver =3D {
-> +		.name =3D AL3010_DRV_NAME,
-> +		.of_match_table =3D al3010_of_match,
-> +		.pm =3D &al3010_pm_ops,
-> +	},
-> +	.probe		=3D al3010_probe,
-> +	.id_table	=3D al3010_id,
-> +};
-> +module_i2c_driver(al3010_driver);
-> +
-> +MODULE_AUTHOR("Daniel Baluta <daniel.baluta@nxp.com>");
-> +MODULE_AUTHOR("David Heidelberg <david@ixit.cz>");
-> +MODULE_DESCRIPTION("AL3010 Ambient Light Sensor driver");
-> +MODULE_LICENSE("GPL v2");
+>  static const struct i2c_device_id al3320a_id[] = {
+>  	{"al3320a", 0},
+>  	{}
+> @@ -216,6 +235,7 @@ MODULE_DEVICE_TABLE(i2c, al3320a_id);
+>  static struct i2c_driver al3320a_driver = {
+>  	.driver = {
+>  		.name = AL3320A_DRV_NAME,
+> +		.pm = &al3320a_pm_ops,
+>  	},
+>  	.probe		= al3320a_probe,
+>  	.remove		= al3320a_remove,
 

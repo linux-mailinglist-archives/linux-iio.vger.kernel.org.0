@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EAF415FF76
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2020 18:15:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B57315FF7C
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2020 18:20:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726254AbgBORPc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Feb 2020 12:15:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55548 "EHLO mail.kernel.org"
+        id S1726296AbgBORU1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Feb 2020 12:20:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56052 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726143AbgBORPc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 15 Feb 2020 12:15:32 -0500
+        id S1726273AbgBORU1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 15 Feb 2020 12:20:27 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1366224654;
-        Sat, 15 Feb 2020 17:15:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9E0102082F;
+        Sat, 15 Feb 2020 17:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581786931;
-        bh=f11NRdpr0nr2J8AuXcNN0XnpZrkB1CCBySVmdj/EaQU=;
+        s=default; t=1581787226;
+        bh=Z+XmmfwTfKE1+XwjmhS6yEAMBpXsWGEfVEm0MS0B1+M=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Qv1yPTJdxfC8NWzu29T4ry4lKahbpgPerNb542Yoaedx08JVqlMspBWGy2zPvqCdd
-         MhiFue9DSj6631OBvZ3FA0+FY39Pa18r1GY5oHFiRR89WgeBdL5VDPWD5OOtRNqljD
-         NOs+EjxDrkDtKwVB6GofydXR1ts+Pi1FjIHnYfIU=
-Date:   Sat, 15 Feb 2020 17:15:26 +0000
+        b=w4/vpu68Y2NkYmJeVhtpqzZYE72JehEJXeJ1m6t6vPt8XE73afULUDF4oGkNg8gRo
+         Gh/TgInpSq6J68GJk0mC0grA6jgFlhbjVeI2fmTllTM7kaXParoxUiCh8j+EZVzOAq
+         BF7G5r4f2j4VFnGXEoXAVI5Qv6+Eu+h97ennCO5w=
+Date:   Sat, 15 Feb 2020 17:20:21 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     David Heidelberg <david@ixit.cz>
 Cc:     Dmitry Osipenko <digetx@gmail.com>,
@@ -34,7 +34,7 @@ Cc:     Dmitry Osipenko <digetx@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org
 Subject: Re: [PATCH v5 5/7] iio: light: al3320a implement suspend support
-Message-ID: <20200215171526.6de754b4@archlinux>
+Message-ID: <20200215172021.5a26d5ec@archlinux>
 In-Reply-To: <20200211191201.1049902-6-david@ixit.cz>
 References: <20200211191201.1049902-1-david@ixit.cz>
         <20200211191201.1049902-6-david@ixit.cz>
@@ -54,12 +54,6 @@ David Heidelberg <david@ixit.cz> wrote:
 > later enable it again.
 > 
 > Signed-off-by: David Heidelberg <david@ixit.cz>
-Applied with a small tweak mentioned below.
-
-Thanks,
-
-Jonathan
-
 > ---
 >  drivers/iio/light/al3320a.c | 30 +++++++++++++++++++++++++-----
 >  1 file changed, 25 insertions(+), 5 deletions(-)
@@ -96,6 +90,10 @@ Jonathan
 > -	ret = i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG,
 > -					AL3320A_CONFIG_ENABLE);
 > +	ret = al3320a_set_pwr(data->client, true);
+
+data doesn't exist.  I've fixed up this as well, but please take a quick
+look.
+
 > +
 >  	if (ret < 0)
 >  		return ret;
@@ -120,8 +118,6 @@ Jonathan
 > +}
 > +
 > +SIMPLE_DEV_PM_OPS(al3320a_pm_ops, al3320a_suspend, al3320a_resume);
-Build test showed this is missing a static.
-Added.
 > +
 >  static const struct i2c_device_id al3320a_id[] = {
 >  	{"al3320a", 0},

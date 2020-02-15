@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C11B15FF64
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2020 18:01:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E677415FF66
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2020 18:08:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbgBORBB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Feb 2020 12:01:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54094 "EHLO mail.kernel.org"
+        id S1726209AbgBORIJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Feb 2020 12:08:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54872 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726143AbgBORBA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 15 Feb 2020 12:01:00 -0500
+        id S1726143AbgBORII (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 15 Feb 2020 12:08:08 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 831F82083B;
-        Sat, 15 Feb 2020 17:00:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1CABB2084E;
+        Sat, 15 Feb 2020 17:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581786060;
-        bh=rpN9KSwCeWF3MfgKjBVx8LSSwJenIzc6kg5Nd3scvZY=;
+        s=default; t=1581786487;
+        bh=BeEiJRU93mnVdW9TOjTggWtMGkZQL7+pZDvoLUw8UXc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=0/Cp2TAUQTiPZiCyD5WErFRVo97f3lJ02dZEZdCxL4pgeGmHPFO6nwhj8R5SlJO8d
-         GIw739tzH+MxEAWBt6m5L/qJOCHa5TkB1gIw+CZt0HEjPOhWZJa0KhgFP8JNNnOo+n
-         sxMGPxfKpBm5vs5FgfRgP6/dMsyfYpUDnKZ0/S2I=
-Date:   Sat, 15 Feb 2020 17:00:55 +0000
+        b=wGF4uywGfCL9kOBb4n++VKiih8w35IEMrjt5sPWxGEKodAJBxNPdoXH5btKMCkWth
+         dtNAwsYzR5p9PvSu2d6xFGHtNITV6X5jUeWxXNPBDDFdv11vmh7zuKfwXfGg3noBNX
+         v0rAOfpwgBPCGVV8/8sd7ip3Lu7894my0t80xSks=
+Date:   Sat, 15 Feb 2020 17:08:01 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     David Heidelberg <david@ixit.cz>
 Cc:     Dmitry Osipenko <digetx@gmail.com>,
@@ -32,14 +32,13 @@ Cc:     Dmitry Osipenko <digetx@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 2/7] dt-bindings: iio: light: add support for
- Dyna-Image AL3010
-Message-ID: <20200215170055.32e63892@archlinux>
-In-Reply-To: <20200211191201.1049902-3-david@ixit.cz>
+        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 3/7] iio: light: al3320a slightly improve code
+ formatting
+Message-ID: <20200215170801.668edf1b@archlinux>
+In-Reply-To: <20200211191201.1049902-4-david@ixit.cz>
 References: <20200211191201.1049902-1-david@ixit.cz>
-        <20200211191201.1049902-3-david@ixit.cz>
+        <20200211191201.1049902-4-david@ixit.cz>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -49,77 +48,92 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 11 Feb 2020 20:11:56 +0100
+On Tue, 11 Feb 2020 20:11:57 +0100
 David Heidelberg <david@ixit.cz> wrote:
 
-> The Dyna-Image AL3010 is a 16-bit digital ambient light sensor which
-> provides a multiple gain function with linear response over a dynamic
-> range 1216/4863/19452/77806.
+> - modified to be in part with al3010 driver
+> - cleanup using bitfield, no functionality change intended
 > 
 > Signed-off-by: David Heidelberg <david@ixit.cz>
-Applied with name tweaked as per patch 1.
+One issue below. Fixed up and applied.
 
 Thanks,
 
 Jonathan
 
 > ---
-> v5
->  - drop requirement on interrups and vdd-supply
->  - s/al3010@1c/light-sensor@1c/
->  - dual license also under BSD
+> v4
+>  - use GENMASK() and bitfields
+>  - sort headers
+>  - drop init.h unused header
 > 
->  .../devicetree/bindings/iio/light/al3010.yaml | 43 +++++++++++++++++++
->  1 file changed, 43 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/al3010.yaml
+>  drivers/iio/light/al3320a.c | 22 ++++++++++++----------
+>  1 file changed, 12 insertions(+), 10 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/al3010.yaml b/Documentation/devicetree/bindings/iio/light/al3010.yaml
-> new file mode 100644
-> index 000000000000..fdd1e5fa9c74
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/al3010.yaml
-> @@ -0,0 +1,43 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/al3010.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
+> index a21aa99e74e4..89b935b4fe9e 100644
+> --- a/drivers/iio/light/al3320a.c
+> +++ b/drivers/iio/light/al3320a.c
+> @@ -9,9 +9,9 @@
+>   * TODO: interrupt support, thresholds
+>   */
+>  
+> -#include <linux/module.h>
+> -#include <linux/init.h>
+> +#include <linux/bitfield.h>
+>  #include <linux/i2c.h>
+> +#include <linux/module.h>
+>  
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> @@ -36,8 +36,7 @@
+>  #define AL3320A_CONFIG_DISABLE		0x00
+>  #define AL3320A_CONFIG_ENABLE		0x01
+>  
+> -#define AL3320A_GAIN_SHIFT		1
+> -#define AL3320A_GAIN_MASK		(BIT(2) | BIT(1))
+> +#define AL3320A_GAIN_MASK		GENMASK(2, 1)
+>  
+>  /* chip params default values */
+>  #define AL3320A_DEFAULT_MEAN_TIME	4
+> @@ -90,7 +89,8 @@ static int al3320a_init(struct al3320a_data *data)
+>  		return ret;
+>  
+>  	ret = i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG_RANGE,
+> -					AL3320A_RANGE_3 << AL3320A_GAIN_SHIFT);
+> +					FIELD_PREP(AL3320A_GAIN_MASK,
+> +						   AL3320A_RANGE_3));
+>  	if (ret < 0)
+>  		return ret;
+>  
+> @@ -133,7 +133,7 @@ static int al3320a_read_raw(struct iio_dev *indio_dev,
+>  		if (ret < 0)
+>  			return ret;
+>  
+> -		ret = (ret & AL3320A_GAIN_MASK) >> AL3320A_GAIN_SHIFT;
+> +		ret = FIELD_GET(AL3320A_GAIN_MASK, ret)
+Missing semicolon.  I fixed up.
+
+
+>  		*val = al3320a_scales[ret][0];
+>  		*val2 = al3320a_scales[ret][1];
+>  
+> @@ -152,11 +152,13 @@ static int al3320a_write_raw(struct iio_dev *indio_dev,
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SCALE:
+>  		for (i = 0; i < ARRAY_SIZE(al3320a_scales); i++) {
+> -			if (val == al3320a_scales[i][0] &&
+> -			    val2 == al3320a_scales[i][1])
+> -				return i2c_smbus_write_byte_data(data->client,
+> +			if (val != al3320a_scales[i][0] ||
+> +			    val2 != al3320a_scales[i][1])
+> +				continue;
 > +
-> +title: Dyna-Image AL3010 sensor
-> +
-> +maintainers:
-> +  - David Heidelberg <david@ixit.cz>
-> +
-> +properties:
-> +  compatible:
-> +    const: dynaimage,al3010
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: Regulator that provides power to the sensor
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        light-sensor@1c {
-> +            compatible = "dynaimage,al3010";
-> +            reg = <0x1c>;
-> +            vdd-supply = <&vdd_reg>;
-> +            interrupts = <0 99 4>;
-> +        };
-> +    };
+> +			return i2c_smbus_write_byte_data(data->client,
+>  					AL3320A_REG_CONFIG_RANGE,
+> -					i << AL3320A_GAIN_SHIFT);
+> +					FIELD_PREP(AL3320A_GAIN_MASK, i));
+>  		}
+>  		break;
+>  	}
 

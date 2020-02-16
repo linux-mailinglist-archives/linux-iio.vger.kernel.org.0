@@ -2,133 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA1AF1600F4
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2020 23:43:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9F6D1606A0
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2020 22:07:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726275AbgBOWn4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Feb 2020 17:43:56 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:45597 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726273AbgBOWnz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Feb 2020 17:43:55 -0500
-Received: by mail-il1-f193.google.com with SMTP id p8so11141587iln.12
-        for <linux-iio@vger.kernel.org>; Sat, 15 Feb 2020 14:43:54 -0800 (PST)
+        id S1726234AbgBPVHz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Feb 2020 16:07:55 -0500
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:38833 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726142AbgBPVHz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Feb 2020 16:07:55 -0500
+Received: by mail-lj1-f196.google.com with SMTP id w1so16505205ljh.5
+        for <linux-iio@vger.kernel.org>; Sun, 16 Feb 2020 13:07:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vv96zpKyFBx2QC1IPRXr1O8XgKuM0hJ/alyw6ceTJIw=;
-        b=BR4A2tAvLDITAP9w9iBGxeYiFJ6tuexDjn/OQhwmDWA4TgcuBcuY/YkvSJCrTPNTEW
-         pZb0cgx92/wFe2skUYYyOVOJX3eCPj6Mrun9vAFqpiz4m4A4C7IewFveU9SHa9BoyBn5
-         F2mizVNrK7gjXxsm12XfuL4ygQYVijGnv9FD0=
+         :cc:content-transfer-encoding;
+        bh=OOZ4PjE77cwP6qXPtnnWF1ug4IfH7DQ7i9i7a7qCaUU=;
+        b=wGzp3VieyNBHHPNe852QT0PCfI54qDMkyWDe3m5Tr3D97SppFv9oodXMT3dRosx10G
+         nluLQiYxpWDj3MaHJK1zD5wmBsoGlmivn18snXb6k3EohbgPJvJc9JQwLsvX1sIYb4TM
+         oMnZYwrRGwGmkX80MpyR5x/AQNopxll1qFPhtgUhq81UzvgP6Zj7Hn7uAGqkd7NWsOGT
+         nayAarn8AE81vcGxDe4EIqUnxRw0hCWD3rscIwIyUlNo5syyERYHzoy9rurdybNm8Uvh
+         aZIYBtzYP3AtXZlYDTnELydQp77ipe9b2TsbxzcB56T+mWwNH1lNf0budpXBIV0ukNkM
+         HJnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vv96zpKyFBx2QC1IPRXr1O8XgKuM0hJ/alyw6ceTJIw=;
-        b=HEl6OMi7ArHbJnh6aGMQdpP4BsdxF9K2vEKWK7LTRNWkPHNPXGVSaef1va+vkt7iBM
-         eI4D6oIgaRYM7onscDxD1IohniH7P1RxIyAlo/pVaPuHQgvEzsDphdCtxpHn8w5eNQJA
-         /algZFUJxE3IufhqdBwb3fKg8qVPUCUGohE5R0MQna5nx09Yv4jeO6c7xa2CmC4o+NVD
-         RNBf2vrbK6gBO/M+H8z1GGzEueSz10JnKzwop/L8n2/H7Yv1pbdmwy+ElgP1KouVneMS
-         vwSZF8I2yEM0NWeLCtKi4AGnYO1iwCWv2rpmgQvmKdym6UrQaOCH6ldK3ySPrVcHVYNJ
-         y2lQ==
-X-Gm-Message-State: APjAAAUTV0SIXokrj81KbOzPURtF0dZT3UXjy/zrAHlduWmr+hF9MwnE
-        W6QAnHvi3TIfz1Ja4PslePYa7mvQudz14F9M472njhx7sWwbqg==
-X-Google-Smtp-Source: APXvYqxatHHB6eM2r5Vr4esO8FTFUrnNk0RQmXy4fojZlPMRkPG2c0soZlrfooyL6mZOk6XxyPssNYagUGR4ahc/vcw=
-X-Received: by 2002:a92:216:: with SMTP id 22mr8672320ilc.53.1581806633597;
- Sat, 15 Feb 2020 14:43:53 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=OOZ4PjE77cwP6qXPtnnWF1ug4IfH7DQ7i9i7a7qCaUU=;
+        b=To3YJnstA1+Bjs6yDHNP5kuROF9SX3Dz9zkwBWhf6JFItETr2xQQxyYwMeG5UXA93n
+         OcQUEGa/qYjS6UR9LOQNWXc4WwuJxUXUQoQOKxuLn7+MD2VWCbI3HPzKY8qJO74hNSmp
+         GBeGTmqVizRoMnldhzfaYjcR+pPKXTIz+AihhuSoTqvAIpmEm2alW/+vrrVbTMW8HHqC
+         ptOqDUQATb/x38WGJbDdppS9nsa4MUguA6NnDEafKdO4bvC+hnXMXL0PE8II0HgNl3iz
+         U4LvY3PGDTSLcVfnZxP/A44AT8ejit+JPVQnuBfNeYQ57QAOv3iQXBZL5PiLbuDVQjBw
+         KHFQ==
+X-Gm-Message-State: APjAAAXD0767GmmKI7eGMKhKA4qtmDajJd9hLwEk3558yzNKb4FWUjGP
+        W1bv7g5Wlt9/NtMxi1dt0a1EIct1L5cU2Kd73ku+vA==
+X-Google-Smtp-Source: APXvYqwrzz6tDwwu00Qc6QjSkBJm0s/uX5VaG/Yl0r/v5hEkBRCUwAQk+mLw6gf11ZRVkUff3dYUQl/Ev2iXs6GAObw=
+X-Received: by 2002:a2e:b6ce:: with SMTP id m14mr7493793ljo.99.1581887273689;
+ Sun, 16 Feb 2020 13:07:53 -0800 (PST)
 MIME-Version: 1.0
-References: <20200210001058.7515-1-matt.ranostay@konsulko.com>
- <20200210001058.7515-2-matt.ranostay@konsulko.com> <20200214142425.431548cf@archlinux>
-In-Reply-To: <20200214142425.431548cf@archlinux>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Sat, 15 Feb 2020 14:43:43 -0800
-Message-ID: <CAJCx=gm6XHfnCF70PgBu4MQHYw0WoB3y4egQa_1NUunr-MfNSw@mail.gmail.com>
-Subject: Re: [PATCH v6 1/3] iio: chemical: atlas-sensor: allow probe without
- interrupt line
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+References: <20200214110324.70972-1-stephan@gerhold.net>
+In-Reply-To: <20200214110324.70972-1-stephan@gerhold.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 16 Feb 2020 22:07:42 +0100
+Message-ID: <CACRpkdYkPeDp8m=v4FbpiEy4XqQf4+=bRc6nF88MNLG2WN4MJw@mail.gmail.com>
+Subject: Re: [PATCH] iio: magnetometer: ak8974: Fix negative raw values in sysfs
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Nick Reitemeyer <nick.reitemeyer@web.de>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Feb 14, 2020 at 6:24 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sun,  9 Feb 2020 16:10:56 -0800
-> Matt Ranostay <matt.ranostay@konsulko.com> wrote:
->
-> > Sensors don't actually need a interrupt line to give valid readings,
-> > and can triggered with CONFIG_IIO_HRTIMER_TRIGGER as well. Remove
-> > the required check for interrupt, and continue along in the probe
-> > function.
-> >
-> > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
->
-> Hi Matt,
->
-> I'm going to hold this for conclusion of the discussion about whether
-> the interrupt enable / disable should be related to the buffer or the trigger.
-> (v4 I think...)
->
+On Fri, Feb 14, 2020 at 12:04 PM Stephan Gerhold <stephan@gerhold.net> wrot=
+e:
 
-Ah yes reading that thread now and think I understand what needs to be changed.
-However the rest of the series can be merged on its own without any issues.
+> At the moment, reading from in_magn_*_raw in sysfs tends to return
+> large values around 65000, even though the output of ak8974 is actually
+> limited to =C2=B132768. This happens because the value is never converted
+> to the signed 16-bit integer variant.
+>
+> Add an explicit cast to s16 to fix this.
+>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Fixes: 7c94a8b2ee8c ("iio: magn: add a driver for AK8974")
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 
-- Matt
+Reviewed-by: Linus Waleij <linus.walleij@linaro.org>
 
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/chemical/atlas-sensor.c | 27 ++++++++++++---------------
-> >  1 file changed, 12 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-> > index 2f0a6fed2589..9a1ab9f8fcc5 100644
-> > --- a/drivers/iio/chemical/atlas-sensor.c
-> > +++ b/drivers/iio/chemical/atlas-sensor.c
-> > @@ -572,11 +572,6 @@ static int atlas_probe(struct i2c_client *client,
-> >       if (ret)
-> >               return ret;
-> >
-> > -     if (client->irq <= 0) {
-> > -             dev_err(&client->dev, "no valid irq defined\n");
-> > -             return -EINVAL;
-> > -     }
-> > -
-> >       ret = chip->calibration(data);
-> >       if (ret)
-> >               return ret;
-> > @@ -596,16 +591,18 @@ static int atlas_probe(struct i2c_client *client,
-> >
-> >       init_irq_work(&data->work, atlas_work_handler);
-> >
-> > -     /* interrupt pin toggles on new conversion */
-> > -     ret = devm_request_threaded_irq(&client->dev, client->irq,
-> > -                                     NULL, atlas_interrupt_handler,
-> > -                                     IRQF_TRIGGER_RISING |
-> > -                                     IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-> > -                                     "atlas_irq",
-> > -                                     indio_dev);
-> > -     if (ret) {
-> > -             dev_err(&client->dev, "request irq (%d) failed\n", client->irq);
-> > -             goto unregister_buffer;
-> > +     if (client->irq > 0) {
-> > +             /* interrupt pin toggles on new conversion */
-> > +             ret = devm_request_threaded_irq(&client->dev, client->irq,
-> > +                             NULL, atlas_interrupt_handler,
-> > +                             IRQF_TRIGGER_RISING |
-> > +                             IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-> > +                             "atlas_irq",
-> > +                             indio_dev);
-> > +
-> > +             if (ret)
-> > +                     dev_warn(&client->dev,
-> > +                             "request irq (%d) failed\n", client->irq);
-> >       }
-> >
-> >       ret = atlas_set_powermode(data, 1);
->
+It's my bug, thanks for fixing!
+
+Yours,
+Linus Walleij

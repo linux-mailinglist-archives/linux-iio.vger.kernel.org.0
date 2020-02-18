@@ -2,214 +2,254 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60838162AF9
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2020 17:46:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A551162E90
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2020 19:30:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726402AbgBRQq3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Feb 2020 11:46:29 -0500
-Received: from mx0a-00328301.pphosted.com ([148.163.145.46]:48234 "EHLO
-        mx0a-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726399AbgBRQq3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Feb 2020 11:46:29 -0500
-Received: from pps.filterd (m0156134.ppops.net [127.0.0.1])
-        by mx0a-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01IGkRso032095;
-        Tue, 18 Feb 2020 08:46:27 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt1;
- bh=fs5UmCeenYJHD34acKcRQRLLTw/ufjfD3zTVLVIDRcI=;
- b=amGed3yxci/Ci/3cWTtkMoYy6uVagMSEIGAaqnWJKu78EBxqTDrrCG5OX3QLjaAoPtFx
- v1/rl/CNPMjoR5EU+6RZukaKFwssJmvEHyVD3c/sr3Ba2MUmJ8LgtMbzXaVIGgIQ1Wm6
- etQpXQUk7k4kdzcTXy4Azy2b0TUASUTK73uSR0Jsihmf0838dYth/uWtbMCuM0qySANu
- ujOmflbGUgjfe11lN3QWjd2zD1fLCmTSaO6zV9RgcyLJXjN219PFkdmMrwQOhs8e3QaD
- SQsXD/R6EY7gt5hrTxA++Tli4/g13zuyGTE96LDWnnXdi8TNMA6oBpQk/8Sv4r0yh+QH gA== 
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2171.outbound.protection.outlook.com [104.47.56.171])
-        by mx0a-00328301.pphosted.com with ESMTP id 2y7f8m0ugr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Feb 2020 08:46:27 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=N7cr1DzCFepAyhk5cdaIuxR60iQFwOADoUEcBNiUTvMEMWCiwPs1EtOOP1zzWxFbPEm3OZDVhJddkiSSrA22TYasdZowwv3TcaHtkX1Tx88X3FV8WNQQJjl8k31F6WjnhauXNAw9RrJoXOrHVev0/3/PoZc4XISwa3Y8kUWN0AV+o0KspgozBdgiIezE8wEHkYbFEpuHt9hLkqyeGJFT0gqDEzv6giOGKyIqzYwKuynWXVvdEx1A6rCI4fajz7Ht14Z43j9Ao2Rw/sHTR18w8oU3H6ppVwT28BCN9hY1i41nI7d7fbqHl6FXzycU4RZb1tLGA6bYRZ39q3ZXjCxj2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fs5UmCeenYJHD34acKcRQRLLTw/ufjfD3zTVLVIDRcI=;
- b=R9MFValslvC2QzG9QPB5ITQJioxvoZqQ8eAX3Z8EcbfiDRonJ5ogUcydbi3pBB1PfEkMPNiyEWZ8c39f90sEP3Vx90mfnTrtJ22ZLXqScNozC5i4RClhlEAdLZRUvMCIW4uwi4EcrIUAi+S2eIRpuXkGrnZ+f+r20KfZRtWQUtv8doS+h+Om5/Fr4H7MeM/3LTpN6k6ylDmoPPMPJirLn7AA4OmLM02QD6jV2zcjZ8/YFUOo5q6uye53cUCFWhEly9HTJRcB5R48A6v52pgJZTy7Nj4vjGcaKWP+JlF8C1LjKsA3lk006NuyfqUiZ912gnec9YFPOMWpRgEv+hf+7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
+        id S1726548AbgBRSaL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Feb 2020 13:30:11 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:41485 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726444AbgBRSaH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Feb 2020 13:30:07 -0500
+Received: by mail-pg1-f196.google.com with SMTP id 70so11340555pgf.8
+        for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2020 10:30:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fs5UmCeenYJHD34acKcRQRLLTw/ufjfD3zTVLVIDRcI=;
- b=WYZ2d0nqmj69gQ3W45hhNwO463/NocPZzNIkgpYwPlguq5TWhAQxEV+R6fOUN89+8RznbS1zQ2LwwxPLjwBB9Ss+5txSbAanGIJLS9ud8hlxDvznMW4hWDzcVmy81DPZ8sQMI8FoagFRHhnkQPXyluDGhFZza65UYdeaIdwzkLQ=
-Received: from CH2PR12MB4181.namprd12.prod.outlook.com (20.180.6.144) by
- CH2PR12MB3703.namprd12.prod.outlook.com (52.132.246.156) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2750.17; Tue, 18 Feb 2020 16:46:24 +0000
-Received: from CH2PR12MB4181.namprd12.prod.outlook.com
- ([fe80::c057:8a13:530a:4340]) by CH2PR12MB4181.namprd12.prod.outlook.com
- ([fe80::c057:8a13:530a:4340%5]) with mapi id 15.20.2729.032; Tue, 18 Feb 2020
- 16:46:24 +0000
-From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 13/13] iio: imu: inv_mpu6050: temperature only work with
- accel/gyro
-Thread-Topic: [PATCH 13/13] iio: imu: inv_mpu6050: temperature only work with
- accel/gyro
-Thread-Index: AQHV4cuu7p/Nv/76mEK79hfT1L9BdKgclmMAgASbu88=
-Date:   Tue, 18 Feb 2020 16:46:24 +0000
-Message-ID: <CH2PR12MB41810127CE6D45D0E75811FFC4110@CH2PR12MB4181.namprd12.prod.outlook.com>
-References: <20200212174048.1034-1-jmaneyrol@invensense.com>
-        <20200212174048.1034-14-jmaneyrol@invensense.com>,<20200215182316.1aecb37e@archlinux>
-In-Reply-To: <20200215182316.1aecb37e@archlinux>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [77.157.193.39]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 1323b2b2-2050-40a3-8b47-08d7b492172f
-x-ms-traffictypediagnostic: CH2PR12MB3703:
-x-microsoft-antispam-prvs: <CH2PR12MB3703686B7215F1D4D9CF25BEC4110@CH2PR12MB3703.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 031763BCAF
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(376002)(136003)(366004)(39850400004)(396003)(189003)(199004)(4326008)(66556008)(66476007)(66446008)(66946007)(76116006)(64756008)(86362001)(91956017)(6916009)(7696005)(26005)(9686003)(8676002)(55016002)(81166006)(81156014)(2906002)(186003)(53546011)(6506007)(8936002)(478600001)(316002)(33656002)(71200400001)(5660300002)(52536014);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR12MB3703;H:CH2PR12MB4181.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: invensense.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: KTsHMh8lIjqNmyzVJSwCyyTQf28jTrjhw5MQAm7j5sk/yIpv+JuDIq4SK4Zfc9/movWEX3DYoa+NAUwEm2PbyCX40urvJBoQVIyTqa/HFmP3iQLzNshKyu0qdwIce9iYdefpULuEUGtJK944giVyP6AWJsyBLDelDjLoXsi8fSLDYt2abOvPHrUVpv2WEnGhOK0QWb2etJGthAyU4Lq0gGrl8b1wPso0ueCmRmcaFMZczajX21UZVshKCaMHHWkqoXs9Nm5o+8sheT5LFhrdQkHmt4wuipIzweEn+ENWEALZ/z9mlIrQlH6Rzv1H83Ljin+QwE2KgLgyR3avK8O2ewRsdOuiJD4f2JqP6pTQCKnKkTqephH3gcXeIx7zr5a6QqqIKgjC4YorTakx5dwJPY7F7Kk7xyz6T+m4Ljd6wmPEuA6MxJHEETk8I+mSpt8Y
-x-ms-exchange-antispam-messagedata: LUDfOUxn704hd7O1Ge0DWF0ckkpCEv5cf4gO3r/cfBM2imQCUeFyPpIZ5lxFRaoN/7SEQnRJ2ZXy94d3/cRUp5Ft0JiXbYtw0tEeo6SaIIdHZHJY3+xwAu4/L9eGAg2Hh6/ZCf3mL+Y9BOC/ifBY8w==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=/05aq8w2Ac9heQRuCsKZ8//q0fIiiZ3ikHYCvXo97do=;
+        b=UG2B8uax7MUwbV9a1ZtWSEVm0fmr4llis9wnqBZFUHEp/p3aY5BE41hsxnbyEz4h3c
+         XCaY+wjxuHbVq4PlXCYJ8Xp2J/7Teym4GhlaD1g1DdyqnLmAdrExaGKla4mFDpfp5cNN
+         x3CWDqtosc1ampS4gQl7o8bf93KDpNdgY4/TI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/05aq8w2Ac9heQRuCsKZ8//q0fIiiZ3ikHYCvXo97do=;
+        b=kOxV8pJv1xra9HshVfhDo7pFOWw2jBpthKLT3O579COuuByWBsU06LDEvSLJEzLMOR
+         3Xzu3Myfuo813ykeiRilwhVAtRTTHGTsCQwllB0baoB7bb/h/c+FwNUxEdBjRQCkrSqH
+         kZQhYe6lK8Tc5rh45tFd7owOBdGX32ZjjJrp8GvooPXomLuXZQzs6WQVjbxud+Boj7MK
+         r7yft0nMaEboBUbB/r5220gYxoZz8+N78YDxPTxeZvuCKD3DRJAMdmrBQLqAbCGYBEjt
+         4DTgjbKD8mkzow4A/dBMuQHBLkqvabytxIc9X4y+j8dOtANM/COG1u/7QDYDV4LP9a4Y
+         JPCw==
+X-Gm-Message-State: APjAAAWFFQKK3B3flPTtOi+CxgUMjKsxWVzwkL8FD+5Q25BspiuPczig
+        yEJHbsFxQcFGgiyd7Wd+mgOTKQ==
+X-Google-Smtp-Source: APXvYqz2HMgsEPxt+fVKPlAmN9ICuVsjj9xIosDvxD2FToPVOHU551WJiw7rjvIjdZIQQ/BuFw5ZoA==
+X-Received: by 2002:a63:5657:: with SMTP id g23mr23422019pgm.452.1582050606668;
+        Tue, 18 Feb 2020 10:30:06 -0800 (PST)
+Received: from google.com ([2620:15c:202:201:172e:4646:c089:ce59])
+        by smtp.gmail.com with ESMTPSA id t11sm5477183pgi.15.2020.02.18.10.30.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2020 10:30:05 -0800 (PST)
+Date:   Tue, 18 Feb 2020 10:30:04 -0800
+From:   Prashant Malani <pmalani@chromium.org>
+To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2 10/17] iio: cros_ec: Use cros_ec_cmd()
+Message-ID: <20200218183004.GA184561@google.com>
+References: <20200205190028.183069-1-pmalani@chromium.org>
+ <20200205190028.183069-11-pmalani@chromium.org>
+ <20200206121753.7b809631@archlinux>
+ <671a55aa-1e5e-4e21-4a62-55db4dee368a@collabora.com>
+ <CACeCKad4zp9O7WAPu5S1rmUDwkzWLjk_1i7YtPvXUG=nDvkYAA@mail.gmail.com>
+ <CAPUE2usO-Ny61+wEdTcwR3b+RgGjeQ4Jb24UeF8siscqFQ5ogQ@mail.gmail.com>
+ <2ebc4e17-df7a-d5c2-f657-16d06e402bd4@collabora.com>
+ <CACeCKafG35Di+SU2i=DD09tUyFvq0wyDOLj5J1fUhnds3bTeDg@mail.gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1323b2b2-2050-40a3-8b47-08d7b492172f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Feb 2020 16:46:24.2495
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hriMPFo79CKrfYBdh9JDaN9YNT9WiTpe14N7+guiKFyWT1LfYr+/MK7gy5RR6/Z2StfzCg/HTSrh6V1nGDe93+GJj6RkoAp/V8HU/41hlf4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB3703
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-18_04:2020-02-18,2020-02-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- phishscore=0 spamscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999
- clxscore=1015 priorityscore=1501 lowpriorityscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002180122
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACeCKafG35Di+SU2i=DD09tUyFvq0wyDOLj5J1fUhnds3bTeDg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,=0A=
-=0A=
-OK it makes sense. I will use -EBUSY in v2=0A=
-=0A=
-JB=0A=
-=0A=
-=0A=
-From: linux-iio-owner@vger.kernel.org <linux-iio-owner@vger.kernel.org> on =
-behalf of Jonathan Cameron <jic23@kernel.org>=0A=
-=0A=
-Sent: Saturday, February 15, 2020 19:23=0A=
-=0A=
-To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>=0A=
-=0A=
-Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>=0A=
-=0A=
-Subject: Re: [PATCH 13/13] iio: imu: inv_mpu6050: temperature only work wit=
-h accel/gyro=0A=
-=0A=
-=A0=0A=
-=0A=
-=0A=
-=A0CAUTION: This email originated from outside of the organization. Please =
-make sure the sender is who they say they are and do not click links or ope=
-n attachments unless you recognize the sender and know the content is safe.=
-=0A=
-=0A=
-=0A=
-=0A=
-On Wed, 12 Feb 2020 18:40:48 +0100=0A=
-=0A=
-Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:=0A=
-=0A=
-=0A=
-=0A=
-> Temperature sensor works correctly only when accel and/or gyro=0A=
-=0A=
-> is turned on. Prevent polling value if they are not running.=0A=
-=0A=
-> Anyway it doesn't make sense to use it without sensor engines=0A=
-=0A=
-> on.=0A=
-=0A=
-> =0A=
-=0A=
-> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>=0A=
-=0A=
-> ---=0A=
-=0A=
->=A0 drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 5 +++++=0A=
-=0A=
->=A0 1 file changed, 5 insertions(+)=0A=
-=0A=
-> =0A=
-=0A=
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu=
-/inv_mpu6050/inv_mpu_core.c=0A=
-=0A=
-> index f698d2aa61f4..3212030cc083 100644=0A=
-=0A=
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c=0A=
-=0A=
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c=0A=
-=0A=
-> @@ -597,6 +597,11 @@ static int inv_mpu6050_read_channel_data(struct iio_=
-dev *indio_dev,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 chan->chann=
-el2, val);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 break;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 case IIO_TEMP:=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* temperature sensor work only wit=
-h accel and/or gyro */=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!st->chip_config.accl_en && !st=
-->chip_config.gyro_en) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D =
--ENOTSUPP;=0A=
-=0A=
-=0A=
-=0A=
-I'd suggest -EBUSY to indicate that it might work sometime in the future.=
-=0A=
-=0A=
-=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!st->chip_config.temp_en=
-) {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 resu=
-lt =3D inv_mpu6050_switch_engine(st, true,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 INV_MPU6050_SENSOR_TEMP);=0A=
-=0A=
-=0A=
-=0A=
+Hi All,
+
+Just thought I'd ping this thread since it's been a week since the last
+email.
+
+On Mon, Feb 10, 2020 at 12:14:01PM -0800, Prashant Malani wrote:
+> Hi All (trimming most code parts of the thread for the sake of brevity),
+> 
+> Thanks for listing the points Enric, Please see my notes inline:
+> 
+> On Mon, Feb 10, 2020 at 3:03 AM Enric Balletbo i Serra
+> <enric.balletbo@collabora.com> wrote:
+> >
+> > Hi Gwendal, Prashant et all
+> >
+> > On 7/2/20 19:47, Gwendal Grignou wrote:
+> > > On Thu, Feb 6, 2020 at 10:50 AM Prashant Malani <pmalani@chromium.org> wrote:
+> > >>
+> > >> Hi Enric,
+> > >>
+> > >> Thanks for taking a look at the patch. Please see my response inline:
+> ....
+> > >>>>> @@ -171,9 +162,11 @@ int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
+> > >>>>>
+> > >>>>>      memcpy(state->msg->data, &state->param, sizeof(state->param));
+> > >>>>>
+> > >>>>> -    ret = cros_ec_cmd_xfer_status(state->ec, state->msg);
+> > >>>>> +    ret = cros_ec_cmd_xfer(state->ec, state->msg);
+> > >>>>>      if (ret < 0)
+> > >>>>>              return ret;
+> > >>>>> +    else if (state->msg->result != EC_RES_SUCCESS)
+> > >>>>> +            return -EPROTO;
+> > >>>>>
+> > >>>
+> > >>> There is no way to use the new cros_ec_cmd here?
+> > > When the EC does not support sensor fifo,
+> > > cros_ec_motion_send_host_cmd() is on the data path. For instance, it
+> > > is called 2 times every 10ms by chrome to calculate the lid angle. I
+> > > would be reluctant to call malloc. Given it is well encapsulated into
+> > > the sensor stack. Does it make sense to call cros_ec_cmd_xfer
+> > > directly?
+> > >
+> >
+> > Thanks Gwendal for pointing this, it makes totally sense, and I suspect this can
+> > happen on other cases.
+> >
+> > Just to make clear, my concern is not about not using the new 'cros_ec_cmd'
+> > here, is about changing 'cros_ec_cmd_xfer_status' for 'cros_ec_cmd_xfer'. Also,
+> > my other concern is how useful is the new 'cros_ec_cmd' replacing what we have
+> > now if cannot replace all current uses.
+> >
+> > My points of view are this:
+> >
+> > * Actually we have cros_ec_cmd_xfer and cros_ec_cmd_xfer_status, use the second
+> > one is better, in fact, we tried to move all the cros_ec_cmd_xfer to the _status
+> > version in the past because makes the code and error handling cleaner. So I'm
+> > reticent to get back to use cros_ec_cmd_xfer instead of cros_ec_cmd_xfer_status.
+> >
+> > * The users of the cros-ec protocol sometimes they mallocing/freeing at runtime,
+> > and sometimes they don't. IMHO *non* mallocing/freeing is usually better, more
+> > efficient and faster. Would be nice to standardize this.
+> 
+> I think we should look at latency (I am assuming that is one of the
+> concerns Gwendal was referring to).
+> We should certainly do more rigorous measurements, but I did a crude
+> measurement across a devm_kzalloc() used on one of the EC commands
+> inside platform/chrome for struct EC command:
+> - Used ktime_get_ns() to record time before and after the devm_kzalloc()
+> - Used ktime_sub to subtract the "after" and "before" values:
+> 
+>         struct cros_ec_command *msg;
+>         int ret;
+> +       ktime_t start, end, diff;
+> 
+> +       start = ktime_get_ns();
+>         msg = kzalloc(sizeof(*msg) + max(outsize, insize), GFP_KERNEL);
+> +       end = ktime_get_ns();
+>         if (!msg)
+>                 return -ENOMEM;
+> 
+> +       diff = ktime_sub(end, start);
+> +       printk("%s(): TEST: kzalloc took: %lld\n", __func__, ktime_to_ns(diff));
+> 
+> On an i5 1.6 GHz system, across 16 call measurements I got the
+> following latency values (in ns):
+> - Count, N:16
+> - Average: 72.375
+> - Std. Dev : 28.768
+> - Max: 143
+> - Min:  51
+> 
+> Are these values significant for the various call-sites? I think the
+> driver authors might be able to comment better there (unfortunately I
+> don't have enough context for each case).
+> Of course there will be other overhead (memcpy) but I think this is a
+> good starting point for the discussion.
+> (My apologies if this measurement method is incorrect/inaccurate.)
+
+Any thoughts / comments here?
+
+On an overall note, I think keeping cros_ec_cmd_xfer() and cros_ec_cmd()
+might be a good starting point.
+
+In this way, we are not introducing any extra function. Also, we can
+begin converting the cros_ec_cmd_xfer() use cases (a few call-sites may
+need to be investigated from a latency perspective). The
+cros_ec_cmd_xfer() conversions are better handled in separate patch
+series.
+
+Best regards,
+
+-Prashant
+> 
+> >
+> > * If we want to introduce a new 'cros_ec_cmd', this should make the code cleaner
+> > and ideally should be the way we tell the users they should use to communicate
+> > with the cros-ec and not open coding constantly. Ideally, should be a
+> > replacement of all current 'cros_ec_cmd_xfer*' versions.
+> 
+> As I mentioned previously, I think all calls of cros_ec_cmd_xfer() can
+> be converted to use cros_ec_cmd() (especially since the new API has a
+> *result pointer),
+> but I think it should be staged out a bit more (since cases like iio:
+> cros_ec driver require non-trivial refactoring which I think is better
+> in a patch/series).
+> 
+> >
+> > * If 'cros_ec_cmd' *cannot* replace all the cases, it should be clear to the
+> > user in which cases he should use this function and in which cases shouldn't use
+> > this function.
+> 
+> This seems like a good compromise, but my expectation is that if there
+> is a "fast" and "slow" version of the same functionality, developers
+> would be inclined to use the "fast" version always?
+> 
+> 
+> > * Finally, what pointed Gwendal, what's the best approach to send commands to
+> > the EC by default, is better use dynamic memory? or is better use the stack? is
+> > it always safe use the stack? is always efficient use allocated memory?
+> >
+> > As you can see I have a lot of questions still around, but taking in
+> > consideration that this will be an important change I think that makes sense
+> > spend some time discussing it.
+> >
+> > What do you think?
+> >
+> > Enric
+> >
+> >
+> > > Gwendal.
+> > >>
+> > >> I think it is doable. From looking at the code I felt the factors we
+> > >> need to be careful about are:
+> > >> - The function cros_ec_motion_send_host_cmd() is called from a few
+> > >> other files, each of which set up the struct cros_ec_command
+> > >> differently (reference:
+> > >> https://elixir.bootlin.com/linux/latest/ident/cros_ec_motion_send_host_cmd)
+> > >> - It is not clear to me how readability will be affected by making the
+> > >> change to cros_ec_cmd().
+> > >>
+> > >> Due to the above two factors, but primarily because I wanted to avoid
+> > >> making such an involved large change in this 17 patch series, I
+> > >> reasoned it would be better to make the transition to cros_ec_cmd()
+> > >> for these files in a separate patch/series.
+> > >> My plan after this patch series is to work on this driver(perhaps we
+> > >> can eliminate cros_ec_motion_send_host_cmd() itself?), and then remove
+> > >> cros_ec_cmd_xfer() usage.
+> > >>
+> > >> WDYT?
+> > >>
+> > >> Best regards,
+> > >>
+> > >>
+> > >>>
+> > >>>
+> > >>>>>      if (ret &&
+> > >>>>>          state->resp != (struct ec_response_motion_sense *)state->msg->data)
+> > >>>>

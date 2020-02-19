@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32F0A164737
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2020 15:40:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2168B164738
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2020 15:40:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726610AbgBSOko (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Feb 2020 09:40:44 -0500
-Received: from mx0b-00328301.pphosted.com ([148.163.141.47]:22564 "EHLO
-        mx0b-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726528AbgBSOko (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Feb 2020 09:40:44 -0500
-Received: from pps.filterd (m0156136.ppops.net [127.0.0.1])
-        by mx0b-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01JEc7kj009174;
-        Wed, 19 Feb 2020 06:40:42 -0800
+        id S1726683AbgBSOkq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Feb 2020 09:40:46 -0500
+Received: from mx0a-00328301.pphosted.com ([148.163.145.46]:59430 "EHLO
+        mx0a-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726528AbgBSOkq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Feb 2020 09:40:46 -0500
+Received: from pps.filterd (m0156134.ppops.net [127.0.0.1])
+        by mx0a-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01JEdZsI016944;
+        Wed, 19 Feb 2020 06:40:45 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : content-type :
- mime-version; s=pfpt1; bh=7FR7F8FgFtcmDyVSk+DOURDCQcMgO+uACeDc9tcm4rQ=;
- b=leZ0PEh0e05qknTlToFyVdmJf8ntyrou3r2qwUxtVIPwLIAPHMqfOH/0ceLPjnWrgmaY
- NCLinWTGVc57QMSj4EDhG+JWWiIIII4pYGAp8tYqxgnoK0V9zymDB8j2SV4m1ha6T1Sv
- Nd0Ke+Zakbse52URxv/gkbgXzTOAkcHwhtH+iW4MUmyqq5BcW2sXxfYlDRlCDvwblGTG
- hRX8dPQR+GL1tDsq7tQ30OoCSkbRjG7dS1AEoOJsxZGp8qj03GiHjZgXVTiVrxrZS/RN
- zG+v+0xDewWsUny3EsydgHV6CkyrJYU48wPn0HitXwA5rCTLyutkrD7i3KqEc3aqqDIS pQ== 
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2171.outbound.protection.outlook.com [104.47.59.171])
-        by mx0b-00328301.pphosted.com with ESMTP id 2y8uc908h4-1
+ mime-version; s=pfpt1; bh=jFPSXbujM9lLcbXjIsL1hv1vTOO0fm/ny77cSG39Ok8=;
+ b=l9SldotHg6vLQbzH9mQFSq9IiOLRYS8hozyzlaP7T4TOOUQJAcoiRM3Keh/0pHPG5hZO
+ pcJjDiV9zPkFRpcQPFwAFo/21/l8dsRKpd4koctE1nmTAQZRLqLr9C/qrk6t5jToNukq
+ 7TFbPfQOYL+bQdlFRej0tCuZe08F7Jsi6XpwmFC95djXEYC8BNms8CIZC7HW3wAoPrb1
+ P/VGfeRXt7sJgU5hvX8Uk1wd3x/qFlFgFIl/uDe4hE1e50AdwiF78Zam4fnwEra9nre2
+ x6/TnCe6gskNCyg5Nlmrf3x7furSPuKN1RuOP4VbP2khyPWcoS3+OgVzSR9ILAoDeaSD FA== 
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2105.outbound.protection.outlook.com [104.47.55.105])
+        by mx0a-00328301.pphosted.com with ESMTP id 2y8uem892j-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Feb 2020 06:40:42 -0800
+        Wed, 19 Feb 2020 06:40:44 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bEQRzIhsLlUAkbBxO/iRkH/E1tOTb8oEJqnWC0W30ZMT0YY1LMrlnxAo2x7yJ7tC2raTIR5Ccwa1Ny2GY+/U8i9xyXJQcChkeHLvi+31E8iPjhZd7x0gwUEkNMDMw016KvWX0rji6SElYpnVtmkmpsyrcZdyRliRAuNJ34T2dWMmQWhl8XX2GeyWAQ8qP9qnv1zMkJvzXYDvvuzUQb7E+R/x228DldlEuNzPAuWtQ4DbO2gZqFIULJLHMBaTFB2QeZGFVBzQZtgMfXtPS09GW2qC7/HhX7UX/4zDOihdBVFkXihltQWu+ufNXhf792RvgOTuUq6MK1tqjvjtyIeJUw==
+ b=JFX9HtnIq6IlHIqGVImydeWlXZ0hf51oyHwJ9slIzgW0vlyJuLuO5toU4TA0AhG2dfdGx8EPkY9oSqUAAk/cPfItygfBYcMmO3JZDHdivamumOVh1bRtXWsLK8JiIPZMnivZ9Y+8AfBExqtC7OsRU8O8o0kWEAY693qI/cBmY8EUKNaRmvrUDc7+OqgwucnsWLSWTQQggyin1fPK8k/J61enPnTESB77ULiz9RCyBR7qiAonmXAkch4gT7sgZaFnumdU7gPV0BxhZUpcSZq5N6wNvgw+0AAb0DS/Dup08aOpRYPmBk7Ah76a0/PAOeN/w8AKNNBx1hTPp98vWYGt3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7FR7F8FgFtcmDyVSk+DOURDCQcMgO+uACeDc9tcm4rQ=;
- b=jkdTQINofAhnxMhrPWHUkMBdfLNg/ymf9wJq7xXOfn14A7xHmD3T03+UIpp0BiIf4r1R8kmvRPvedUWUtd6EJuSZclwplxrXjfl2d9ZRnlV/LO1y1xwWpKTEbSiro4QaH7spy5PEao/Qs3duZocm3SoUeS4Ph8uBElksGd4gVDC/8oVt8ErAO9W4Z0cw85FaPpD59eifbJ6IvNlibkHhkSXnKKVgofYGJT/YXJ4Od5izxA/LA7Q2PKk1MHQWyKvxr48T1y+3m7/A+UzKPtCbN7S3DOuj9i38olKlGtjaiV0faroyuNTXXKzc5zdCVsp6p8eAamf7MYPg1/lePJLlQg==
+ bh=jFPSXbujM9lLcbXjIsL1hv1vTOO0fm/ny77cSG39Ok8=;
+ b=jWvgK2gPwNkDajGC1AT1qE/unmG2qjfOSl/lZzYZRb0yXAI0KcORBPlmPcWknnQk8/z0138OQecyS8NE9Woi8qVuqhzM8O/KosEZfLEdO3qv88nDIZlA6WlRAHkuIxkwej/DxUoDB28twaJ4JuuoB9n6J2aZZRzkpLzTi0j1k7opsxQ+dhZSSbVGHxPRtYFrGvaAJG46NXqTw5laTKrZkkrnYK5DQ+bQgKhdbB+Eba+L+1jvNEDDI8zdb68uO23+zzKYH7DBAktPM3bHbuwHpyX5f5lt9BMeP4dnWBCSpMaLFq5rGBV02fFEAzYrlGH3UwcpJ1myWMiO+5kfvIvVIA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=invensense.com; dmarc=pass action=none
  header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7FR7F8FgFtcmDyVSk+DOURDCQcMgO+uACeDc9tcm4rQ=;
- b=RERouhd4VUQFE3bkbMMGjhv6BI5K2LhZVC/UOJ5OVQIvrR+KyjLk5NoNEV6WDz9R9tygM6KdKj6hARqX2hS7kYAw/gSMmrhsIRcD3aHdJdvY80elUm5zIT8kQIF+xJgls5o7NbYt312LNWkTnYD0BSND+r2oHzwND2/zXrX1LJ0=
+ bh=jFPSXbujM9lLcbXjIsL1hv1vTOO0fm/ny77cSG39Ok8=;
+ b=URkD6Xg3trTUwH77YpAPvtcCniNNdZvTxN8Lhj+r+/2W5bW6PZSbGkhx3U0XDmPuRR4ngXPStqSCdqEH3cEiNFkTRr8i4nfS3b1rbEqfL6JDj0kt+5fvTt3X1MuHSGhiPa5MwHsnwwUWoP8vPesrBbJ/OP/APhnpZtR/jpd2ZcM=
 Received: from CH2PR12MB4181.namprd12.prod.outlook.com (20.180.6.144) by
- CH2PR12MB3878.namprd12.prod.outlook.com (52.132.245.213) with Microsoft SMTP
+ CH2PR12MB4213.namprd12.prod.outlook.com (20.180.5.152) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2750.17; Wed, 19 Feb 2020 14:40:39 +0000
+ 15.20.2729.25; Wed, 19 Feb 2020 14:40:43 +0000
 Received: from CH2PR12MB4181.namprd12.prod.outlook.com
  ([fe80::c057:8a13:530a:4340]) by CH2PR12MB4181.namprd12.prod.outlook.com
  ([fe80::c057:8a13:530a:4340%5]) with mapi id 15.20.2750.016; Wed, 19 Feb 2020
- 14:40:39 +0000
+ 14:40:43 +0000
 From:   Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 To:     jic23@kernel.org, linux-iio@vger.kernel.org
 Cc:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Subject: [PATCH v2 03/13] iio: imu: inv_mpu6050: set power on/off only once during all init
-Date:   Wed, 19 Feb 2020 15:39:48 +0100
-Message-Id: <20200219143958.3548-4-jmaneyrol@invensense.com>
+Subject: [PATCH v2 04/13] iio: imu: inv_mpu6050: simplify polling magnetometer
+Date:   Wed, 19 Feb 2020 15:39:49 +0100
+Message-Id: <20200219143958.3548-5-jmaneyrol@invensense.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200219143958.3548-1-jmaneyrol@invensense.com>
 References: <20200219143958.3548-1-jmaneyrol@invensense.com>
@@ -63,221 +63,140 @@ X-ClientProxiedBy: BYAPR01CA0043.prod.exchangelabs.com (2603:10b6:a03:94::20)
  To CH2PR12MB4181.namprd12.prod.outlook.com (2603:10b6:610:a8::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from frgnb-12nlpn2.invcorp.invensense.com (77.157.193.39) by BYAPR01CA0043.prod.exchangelabs.com (2603:10b6:a03:94::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.17 via Frontend Transport; Wed, 19 Feb 2020 14:40:38 +0000
+Received: from frgnb-12nlpn2.invcorp.invensense.com (77.157.193.39) by BYAPR01CA0043.prod.exchangelabs.com (2603:10b6:a03:94::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.17 via Frontend Transport; Wed, 19 Feb 2020 14:40:42 +0000
 X-Mailer: git-send-email 2.17.1
 X-Originating-IP: [77.157.193.39]
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 54ebdd95-b0a9-4ab3-c962-08d7b549b065
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3878:
+X-MS-Office365-Filtering-Correlation-Id: 354fb49d-0e47-41dd-d723-08d7b549b2ba
+X-MS-TrafficTypeDiagnostic: CH2PR12MB4213:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CH2PR12MB3878A349434080BB22B0D61EC4100@CH2PR12MB3878.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Microsoft-Antispam-PRVS: <CH2PR12MB4213EEB239658250EDA94162C4100@CH2PR12MB4213.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2582;
 X-Forefront-PRVS: 0318501FAE
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(346002)(396003)(376002)(39850400004)(136003)(366004)(189003)(199004)(2906002)(5660300002)(7696005)(36756003)(16526019)(6666004)(81166006)(26005)(956004)(2616005)(52116002)(186003)(1076003)(81156014)(8936002)(86362001)(8676002)(4326008)(66946007)(66556008)(66476007)(316002)(107886003)(478600001)(6486002);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR12MB3878;H:CH2PR12MB4181.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(366004)(376002)(396003)(346002)(39850400004)(136003)(189003)(199004)(2906002)(36756003)(16526019)(26005)(86362001)(107886003)(2616005)(66556008)(66476007)(4326008)(5660300002)(66946007)(81166006)(186003)(478600001)(81156014)(7696005)(8936002)(1076003)(8676002)(6486002)(52116002)(316002)(956004);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR12MB4213;H:CH2PR12MB4181.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 Received-SPF: None (protection.outlook.com: invensense.com does not designate
  permitted sender hosts)
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: CUhz6tjItsTU034MsgbaVHwETh/qI/iYeA8+zigVURFjX+I5uvw7Ce5EGLtBvbPcL3VxZh0z1Mc9nAFfZX2DGerhh1zzjIl5WNi+mtk9uT/c5UMOZsVjm2p61cwBBezNgu+3PYhL9c/T0JyuMJW/j2TGvY8fZynIDrwPLQmNy8wsc61GZuYh6IT8nG/uV4l+2j2HGQknuZ2CPYVr9MgcRue6o9Zp2COOwuJnYUWeqNVM9YG7SKeDT+ayxnby9FsQzFirXTmIeqkH9ucXr/cpjioW5hEkquqLfFUGTgKDMgmktTN795WdH2LiThp2R/PZBN4xSCsb8sTJlJ2NfPCvyOBaEco+5BtDMANLdrgHVy9oXoJ6HoYx3me3QaJ6dDrX1Xxgun+0TQrPeTfexNQf/vX9ELdoT1PHpvlgC0arVF3FUaP53mglmX9ZXG9ugb4V
-X-MS-Exchange-AntiSpam-MessageData: Hl1j1HYXwr8DqhIocQuSQhe68rEML9hKlsLH2J7aDBpoptf7CIDEOmsEZuWyG87FFkpsEjy3TIQkZWxU8MtvyU/swX+aNWNyIo15ikSNvAHTEh5CVZkw16R/vEinr+LFvWj9D2PW5CgQR86rdf9+Jg==
+X-Microsoft-Antispam-Message-Info: 64ameCA4jGudLUQRKmyUcAnbIT5mjsfhZak4zK0A2a0nd4YensUeZEaWeRElvx64rrgWeKGpXj4dYNN4DXBjpKMeeOy6EIwYiW+xhR9APJBOhOiCMkbbbDPKpXIgCeMlpGBhgeKvS/bLvQSUU/0laxkHGKSbU5gtypiv40KUzsuKuXihkD7M6MigjV0/J1/nrnbZkFiGLQp0OQ/Ath2BUF79n1DKTHgnf1oBSb4ujoZXDEjczjE7dmaPuBX/QHZNzQhoyJgN6RIPjIyT+ahA5M24qRGtsK2xK1Nfll2iiCVwjFttguxFCGxGe5192Cdfch5YUfmB/EnxuKBdL32WQ6Kb5cLCUOKvw4vlvgaNbB1NZwI8ae9c3GWUSyNcSvWcvturayUWTpI/nH5YdnHP6bRbtURducbvWH4R1ifFVILtC1Jbd9SaYHTfcKCNf4n6
+X-MS-Exchange-AntiSpam-MessageData: 7C3FFUzrTFsSRYx3/VDmGtg45NVv9GNYM8dx0BtzzPVJrgs0fKWkjOWK5vRXBiB9F8MrIOq0c6+fE2a8DDlGOYHAUAzYXAM07vS7ZIeYGdzSKinyXcc37ApF+KF0owfYuTt6BMU/V2Htimp+wBSx4g==
 X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54ebdd95-b0a9-4ab3-c962-08d7b549b065
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2020 14:40:39.6350
+X-MS-Exchange-CrossTenant-Network-Message-Id: 354fb49d-0e47-41dd-d723-08d7b549b2ba
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2020 14:40:43.5438
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 462b3b3b-e42b-47ea-801a-f1581aac892d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p7nTfjQnOwncxQlJDQ7DR867TviaxKHGRIJHDC7ku3ffZVTrPztwIyveYuNVIUWVunFt14CIi+9HxKV7Jhc/E4EMnE3IBoNCtTKpObDxLMQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB3878
+X-MS-Exchange-CrossTenant-UserPrincipalName: O8+Xlq3CWBuFC9MEAhx1ME4Rn0hJTRk3uhzFL/16hnyXo3RFV4LJndPjEpgPdUa75L+NAuXIhkFnwN4kv6dx/8C9rwkbYz8QH9efMLYAkUw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4213
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
  definitions=2020-02-19_03:2020-02-19,2020-02-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- mlxlogscore=999 malwarescore=0 phishscore=0 bulkscore=0 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1015
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002190113
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+ adultscore=0 clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2001150001 definitions=main-2002190113
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This way there is no need anymore to export the power function to
-i2c and spi modules.
-Bus setup is done inside init when power is on and the result is
-now checked.
+Do not change the sampling rate value. Let userspace decide what
+is the sampling rate to use.
+Read only the requested axis.
 
 Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 41 ++++++++++++----------
- drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c  | 11 +-----
- drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c  | 10 +-----
- 3 files changed, 24 insertions(+), 38 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c | 34 +++++++++-------------
+ 1 file changed, 13 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index c4db9086775c..0b06d6aa6469 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -301,7 +301,6 @@ int inv_mpu6050_set_power_itg(struct inv_mpu6050_state *st, bool power_on)
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c
+index 4f192352521e..607104a2631e 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_magn.c
+@@ -319,36 +319,36 @@ int inv_mpu_magn_set_orient(struct inv_mpu6050_state *st)
+ int inv_mpu_magn_read(const struct inv_mpu6050_state *st, int axis, int *val)
+ {
+ 	unsigned int user_ctrl, status;
+-	__be16 data[3];
++	__be16 data;
+ 	uint8_t addr;
+-	uint8_t d;
+-	unsigned int period_ms;
++	unsigned int freq_hz, period_ms;
+ 	int ret;
  
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(inv_mpu6050_set_power_itg);
+ 	/* quit if chip is not supported */
+ 	if (!inv_magn_supported(st))
+ 		return -ENODEV;
  
- static int inv_mpu6050_set_gyro_fsr(struct inv_mpu6050_state *st,
- 				    enum inv_mpu6050_fsr_e val)
-@@ -371,27 +370,23 @@ static int inv_mpu6050_init_config(struct iio_dev *indio_dev)
- 	u8 d;
- 	struct inv_mpu6050_state *st = iio_priv(indio_dev);
- 
--	result = inv_mpu6050_set_power_itg(st, true);
--	if (result)
--		return result;
--
- 	result = inv_mpu6050_set_gyro_fsr(st, INV_MPU6050_FSR_2000DPS);
- 	if (result)
--		goto error_power_off;
-+		return result;
- 
- 	result = inv_mpu6050_set_lpf_regs(st, INV_MPU6050_FILTER_20HZ);
- 	if (result)
--		goto error_power_off;
-+		return result;
- 
- 	d = INV_MPU6050_FIFO_RATE_TO_DIVIDER(INV_MPU6050_INIT_FIFO_RATE);
- 	result = regmap_write(st->map, st->reg->sample_rate_div, d);
- 	if (result)
--		goto error_power_off;
-+		return result;
- 
- 	d = (INV_MPU6050_FS_02G << INV_MPU6050_ACCL_CONFIG_FSR_SHIFT);
- 	result = regmap_write(st->map, st->reg->accl_config, d);
- 	if (result)
--		goto error_power_off;
-+		return result;
- 
- 	result = regmap_write(st->map, st->reg->int_pin_cfg, st->irq_mask);
- 	if (result)
-@@ -410,13 +405,9 @@ static int inv_mpu6050_init_config(struct iio_dev *indio_dev)
- 	/* magn chip init, noop if not present in the chip */
- 	result = inv_mpu_magn_probe(st);
- 	if (result)
--		goto error_power_off;
--
--	return inv_mpu6050_set_power_itg(st, false);
-+		return result;
- 
--error_power_off:
--	inv_mpu6050_set_power_itg(st, false);
--	return result;
-+	return 0;
- }
- 
- static int inv_mpu6050_sensor_set(struct inv_mpu6050_state  *st, int reg,
-@@ -1176,7 +1167,7 @@ static int inv_check_and_setup_chip(struct inv_mpu6050_state *st)
- 	if (result)
- 		goto error_power_off;
- 
--	return inv_mpu6050_set_power_itg(st, false);
-+	return 0;
- 
- error_power_off:
- 	inv_mpu6050_set_power_itg(st, false);
-@@ -1341,7 +1332,7 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 	result = inv_mpu6050_init_config(indio_dev);
- 	if (result) {
- 		dev_err(dev, "Could not initialize device.\n");
--		return result;
-+		goto error_power_off;
+-	/* Mag data: X - Y - Z */
++	/* Mag data: XH,XL,YH,YL,ZH,ZL */
+ 	switch (axis) {
+ 	case IIO_MOD_X:
+ 		addr = 0;
+ 		break;
+ 	case IIO_MOD_Y:
+-		addr = 1;
++		addr = 2;
+ 		break;
+ 	case IIO_MOD_Z:
+-		addr = 2;
++		addr = 4;
+ 		break;
+ 	default:
+ 		return -EINVAL;
  	}
++	addr += INV_MPU6050_REG_EXT_SENS_DATA;
  
- 	dev_set_drvdata(dev, indio_dev);
-@@ -1353,8 +1344,16 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 		indio_dev->name = dev_name(dev);
+-	/* set sample rate to max mag freq */
+-	d = INV_MPU6050_FIFO_RATE_TO_DIVIDER(INV_MPU_MAGN_FREQ_HZ_MAX);
+-	ret = regmap_write(st->map, st->reg->sample_rate_div, d);
+-	if (ret)
+-		return ret;
++	/* compute period depending on current sampling rate */
++	freq_hz = INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
++	if (freq_hz > INV_MPU_MAGN_FREQ_HZ_MAX)
++		freq_hz = INV_MPU_MAGN_FREQ_HZ_MAX;
++	period_ms = 1000 / freq_hz;
  
- 	/* requires parent device set in indio_dev */
--	if (inv_mpu_bus_setup)
--		inv_mpu_bus_setup(indio_dev);
-+	if (inv_mpu_bus_setup) {
-+		result = inv_mpu_bus_setup(indio_dev);
-+		if (result)
-+			goto error_power_off;
-+	}
-+
-+	/* chip init is done, turning off */
-+	result = inv_mpu6050_set_power_itg(st, false);
-+	if (result)
-+		return result;
+ 	/* start i2c master, wait for xfer, stop */
+ 	user_ctrl = st->chip_config.user_ctrl | INV_MPU6050_BIT_I2C_MST_EN;
+@@ -357,19 +357,12 @@ int inv_mpu_magn_read(const struct inv_mpu6050_state *st, int axis, int *val)
+ 		return ret;
  
- 	switch (chip_type) {
- 	case INV_MPU9150:
-@@ -1413,6 +1412,10 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 	}
+ 	/* need to wait 2 periods + half-period margin */
+-	period_ms = 1000 / INV_MPU_MAGN_FREQ_HZ_MAX;
+ 	msleep(period_ms * 2 + period_ms / 2);
+ 	user_ctrl = st->chip_config.user_ctrl;
+ 	ret = regmap_write(st->map, st->reg->user_ctrl, user_ctrl);
+ 	if (ret)
+ 		return ret;
  
- 	return 0;
-+
-+error_power_off:
-+	inv_mpu6050_set_power_itg(st, false);
-+	return result;
- }
- EXPORT_SYMBOL_GPL(inv_mpu_core_probe);
- 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-index 24df880248f2..6993d3b87bb0 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-@@ -78,22 +78,13 @@ static int inv_mpu_i2c_aux_setup(struct iio_dev *indio_dev)
- 
- 	/* enable i2c bypass when using i2c auxiliary bus */
- 	if (inv_mpu_i2c_aux_bus(dev)) {
--		ret = inv_mpu6050_set_power_itg(st, true);
--		if (ret)
--			return ret;
- 		ret = regmap_write(st->map, st->reg->int_pin_cfg,
- 				   st->irq_mask | INV_MPU6050_BIT_BYPASS_EN);
- 		if (ret)
--			goto error;
--		ret = inv_mpu6050_set_power_itg(st, false);
--		if (ret)
--			goto error;
-+			return ret;
- 	}
- 
- 	return 0;
--error:
--	inv_mpu6050_set_power_itg(st, false);
--	return ret;
- }
- 
- /**
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-index bc351dd58c53..673b198e6368 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-@@ -21,10 +21,6 @@ static int inv_mpu_i2c_disable(struct iio_dev *indio_dev)
- 	struct inv_mpu6050_state *st = iio_priv(indio_dev);
- 	int ret = 0;
- 
--	ret = inv_mpu6050_set_power_itg(st, true);
+-	/* restore sample rate */
+-	d = st->chip_config.divider;
+-	ret = regmap_write(st->map, st->reg->sample_rate_div, d);
 -	if (ret)
 -		return ret;
 -
- 	if (st->reg->i2c_if) {
- 		ret = regmap_write(st->map, st->reg->i2c_if,
- 				   INV_ICM20602_BIT_I2C_IF_DIS);
-@@ -33,12 +29,8 @@ static int inv_mpu_i2c_disable(struct iio_dev *indio_dev)
- 		ret = regmap_write(st->map, st->reg->user_ctrl,
- 				   st->chip_config.user_ctrl);
- 	}
--	if (ret) {
--		inv_mpu6050_set_power_itg(st, false);
--		return ret;
--	}
+ 	/* check i2c status and read raw data */
+ 	ret = regmap_read(st->map, INV_MPU6050_REG_I2C_MST_STATUS, &status);
+ 	if (ret)
+@@ -379,12 +372,11 @@ int inv_mpu_magn_read(const struct inv_mpu6050_state *st, int axis, int *val)
+ 			status & INV_MPU6050_BIT_I2C_SLV1_NACK)
+ 		return -EIO;
  
--	return inv_mpu6050_set_power_itg(st, false);
-+	return ret;
+-	ret = regmap_bulk_read(st->map, INV_MPU6050_REG_EXT_SENS_DATA,
+-			       data, sizeof(data));
++	ret = regmap_bulk_read(st->map, addr, &data, sizeof(data));
+ 	if (ret)
+ 		return ret;
+ 
+-	*val = (int16_t)be16_to_cpu(data[addr]);
++	*val = (int16_t)be16_to_cpu(data);
+ 
+ 	return IIO_VAL_INT;
  }
- 
- static int inv_mpu_probe(struct spi_device *spi)
 -- 
 2.17.1
 

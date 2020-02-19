@@ -2,96 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0051016422F
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2020 11:32:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF82C16456D
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2020 14:25:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726469AbgBSKck (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Feb 2020 05:32:40 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:57909 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726453AbgBSKcj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Feb 2020 05:32:39 -0500
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1j4Meh-0000nA-Tr; Wed, 19 Feb 2020 11:32:35 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1j4Meh-0008SQ-2y; Wed, 19 Feb 2020 11:32:35 +0100
-Date:   Wed, 19 Feb 2020 11:32:35 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Cc:     kernel@pengutronix.de, Geert Uytterhoeven <geert@glider.be>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: enabling a regulator before doing an ADC measurement
-Message-ID: <20200219103235.u2roy3uchlrxqgqw@pengutronix.de>
+        id S1727930AbgBSNZn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 19 Feb 2020 08:25:43 -0500
+Received: from scm.imp.edu.mx ([132.247.16.103]:53040 "EHLO scm.imp.edu.mx"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727873AbgBSNZl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 19 Feb 2020 08:25:41 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 3B6C6188248;
+        Wed, 19 Feb 2020 06:11:32 -0600 (CST)
+X-Virus-Scanned: by SpamTitan at imp.edu.mx
+Received: from scm.imp.edu.mx (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 05C4E18DA1A;
+        Wed, 19 Feb 2020 04:51:48 -0600 (CST)
+Authentication-Results: scm.imp.edu.mx; none
+Received: from imp.edu.mx (unknown [10.249.93.105])
+        by scm.imp.edu.mx (Postfix) with ESMTP id EC4AE18DA02;
+        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id CCC03180635F4F;
+        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id p3LURq5euqGS; Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id A871C180635F42;
+        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+X-Virus-Scanned: amavisd-new at imp.edu.mx
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id k5jEP27VMrxK; Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+Received: from [45.147.4.119] (unknown [45.147.4.119])
+        by imp.edu.mx (Postfix) with ESMTPSA id 0F277180635F48;
+        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: 19-02-2020
+To:     Recipients <mucios@imp.edu.mx>
+From:   "urs portmann" <mucios@imp.edu.mx>
+Date:   Wed, 19 Feb 2020 21:51:40 +1100
+Reply-To: onube@qq.com
+Message-Id: <20200219105143.0F277180635F48@imp.edu.mx>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+Guten Morgen,
+                                          19-02-2020
+Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehˆrt. Haben Sie unsere letzte E-Mail ¸ber Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
 
-I have a hardware setup that looks as follows:
+Wir warten darauf, von Ihnen zu hˆren, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterst¸tzt.
 
-                                ,-------------------.
- ,---------.       ,---/ -------| current-regulator |
- |  ADC    |       |            `-------------------'
- |      CH0--------+
- |         |       |
- `.........'    ,-----.
-                |PT100|
-		`-----'
-		   |
-		   ‚èö
-
-So the idea is that I enable the regulator and then measure the adc's
-input to determine the resistance of the PT100 and so its temperature.
-
-I wonder if/how I should represent that in my device's device tree. I
-discussed this already a bit with Geert on irc and he came up with
-something like:
-
-	adc {
-		...
-		channel@0 {
-			reg = <0>;
-			supply = <&myregulator>;
-		};
-	};
-
-with the intention that the adc driver enables myregulator before
-starting a measurement on channel 0.
-
-Does this sound sensible? Does something like this maybe even already
-exist and I missed it?
-
-What is a bit special here is that usually a regulator is used to supply
-a device and it's just enabled at probe time (or when the device is
-started to be used) and disabled when done. Here the regulator is
-supposed to be enabled only during a measurement[1] to yield the reference
-current and doesn't supply a device. So maybe better use another
-property name instead of plain "supply", maybe "reference-supply"?
-
-Best regards
-Uwe
-
-[1] When the current measurement is done, the regulator must be swiched
-off again to not warm up the PT100 and so fudge future measurements.
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-K√∂nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Mfg
+urs portmann

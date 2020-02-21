@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD087167E0B
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 14:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62C4D167E14
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 14:11:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728086AbgBUNJu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Feb 2020 08:09:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41860 "EHLO mail.kernel.org"
+        id S1728297AbgBUNLu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Feb 2020 08:11:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43226 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727039AbgBUNJt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 21 Feb 2020 08:09:49 -0500
+        id S1727699AbgBUNLu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 21 Feb 2020 08:11:50 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7FB672073A;
-        Fri, 21 Feb 2020 13:09:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D3E42073A;
+        Fri, 21 Feb 2020 13:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582290589;
-        bh=x5dOhvzHSc8beGLE+9gDETJ0R/m5PPi0qfK+oDIEYww=;
+        s=default; t=1582290709;
+        bh=jNY4bnNY/Z3DsEGdGY9Cp0GBQ0q0ns36gFzk+USyEOE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HVh8kJpmpuqQ1D1wq6/C2x7vvemNAjZU8ObMOq47fjSfzZiB8XaZSudlIwhY6SuSi
-         2uaXPFAXV3rAXPw9Kvit8Y0l2+XUsdUL5PqsGhOxQvH2nujJV8Vc4iaYLvcTUyvCtB
-         w7c2qqIkNWlbFvayAUIgNuU9NnitY9ERzIWMI1Ns=
-Date:   Fri, 21 Feb 2020 13:09:45 +0000
+        b=zpJWwd/HmS2+FNKa65UCLMQSxXWKlDNXFqidEvAq9wKNBVastvhIow+a305zcRMb7
+         C2NsXOfgBE+C2SMT7Dgh+a++MKM9W5avvfXSLlmV/VRWlVvq8b4mS6ax/g96cj846s
+         wHd5HvrACnfzRlPJv3NHZe6+hRA/7mZ5swbMFQtE=
+Date:   Fri, 21 Feb 2020 13:11:46 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Tachici <alexandru.tachici@analog.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
 Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: accel: adxl372: Set iio_chan BE
-Message-ID: <20200221130945.3b0111dd@archlinux>
-In-Reply-To: <20200219143112.25976-1-alexandru.tachici@analog.com>
-References: <20200219143112.25976-1-alexandru.tachici@analog.com>
+Subject: Re: [PATCH 1/3] iio: imu: adis: add doc-string for 'adis' struct
+Message-ID: <20200221131146.2213e8e1@archlinux>
+In-Reply-To: <20200221114943.2056-1-alexandru.ardelean@analog.com>
+References: <20200221114943.2056-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,34 +40,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 19 Feb 2020 16:31:12 +0200
-Alexandru Tachici <alexandru.tachici@analog.com> wrote:
+On Fri, 21 Feb 2020 13:49:41 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> Data stored in the iio-buffer is BE and this
-> should be specified in the iio_chan_spec struct.
+> This change adds a doc-string for the 'adis' struct. It details the fields
+> and their roles.
 > 
-> Fixes: f4f55ce38e5f8 ("iio:adxl372: Add FIFO and interrupts support")
-> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-
-Thanks,
-
-Jonathan
-
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 > ---
->  drivers/iio/accel/adxl372.c | 1 +
->  1 file changed, 1 insertion(+)
+>  include/linux/iio/imu/adis.h | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
-> diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
-> index 9c6eebf379ca..3eb413df3c8d 100644
-> --- a/drivers/iio/accel/adxl372.c
-> +++ b/drivers/iio/accel/adxl372.c
-> @@ -237,6 +237,7 @@ static const struct adxl372_axis_lookup adxl372_axis_lookup_table[] = {
->  		.realbits = 12,						\
->  		.storagebits = 16,					\
->  		.shift = 4,						\
-> +		.endianness = IIO_BE,					\
->  	},								\
->  }
+> diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+> index ac7cfd073804..0787a3aabd05 100644
+> --- a/include/linux/iio/imu/adis.h
+> +++ b/include/linux/iio/imu/adis.h
+> @@ -73,6 +73,20 @@ struct adis_data {
+>  	bool has_paging;
+>  };
 >  
+> +/**
+> + * struct adis - ADIS device instance data
+> + * @spi: Reference to SPI device which owns this ADIS IIO device
+> + * @trig: IIO trigger object data
+> + * @data: ADIS chip variant specific data
+> + * @burst: ADIS burst transfer information
+> + * @state_lock: Lock used by the device to protect state
+> + * @msg: SPI message object
+> + * @xfer: SPI transfer objects to be used for a @msg
+> + * @current_page: Some ADIS devices have registers, this selects current page
+> + * @buffer: Data buffer for information read from the device
+> + * @tx: Cacheline aligned TX buffer for SPI transfers
+> + * @rx: Cacheline aligned RX buffer for SPI transfers
+
+This last one isn't true.. 
+
+> + */
+>  struct adis {
+>  	struct spi_device	*spi;
+>  	struct iio_trigger	*trig;
 

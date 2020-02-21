@@ -2,1469 +2,817 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC82167F8C
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 15:04:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFB6D16811C
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 16:05:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728838AbgBUOE3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Feb 2020 09:04:29 -0500
-Received: from mx0a-00328301.pphosted.com ([148.163.145.46]:42832 "EHLO
-        mx0a-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728743AbgBUOE3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Feb 2020 09:04:29 -0500
-Received: from pps.filterd (m0156134.ppops.net [127.0.0.1])
-        by mx0a-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01LDqRbb014332;
-        Fri, 21 Feb 2020 06:04:24 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt1;
- bh=RcoI9hG4Rj9eMBEkocJcepJYkG4xYpVn322ynu1vbuw=;
- b=HHyxRFNmkYFeoGBuXvymtDMZfryCKMDoSeIB63R9jsKM+6Fe2vrMZR1t/LLjA+ZJ3rgB
- +Yd4qYhi36M1k2EzLUBSAXQ6i0/32HvZBwztWhYytryJ07/mhrw3BnqJgoMRxB7yGpH4
- qQr5VcBR3QI3LZorB0HFLBU6k2yVEcb5x4TzBHd7cC8W4mHJFyFO06SM9WH381D16jrp
- HyFdVkHz10vobaen3mmaSbGRfeSx9JyzXdUx3O8EVQmusMuuPOMgnkiwQeg8shutTYa/
- Zg/mU38+EF6QLdRkBCSsdT6pIrf2mHG71XDirbU43+P0bKRmAd+WzjRBhpOtDCKIaZQN 4g== 
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2175.outbound.protection.outlook.com [104.47.58.175])
-        by mx0a-00328301.pphosted.com with ESMTP id 2y8uem9dx3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 21 Feb 2020 06:04:23 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QMBWuOdSy1sJPgKW3CwNQCFOXsoJGfis6Txh8P6CU2U4UcRl+MXjxleSqudxk7ZwrZ7E+fzE7o/pbDHLZjEjChNpTi9Q2JX5ub3PoGT9rExophvsZuI0KBGLjIggvycwdRBiiMH8TWj2/QwBEF8fjU9Mjzh4S9KoTs2dGBDkHFYC2xCT3lO4U5e3Jc/5KJVsnxPTfTsoTu/NE8bWsrQ+0B+wNaZ2/HK9+DP+WkJaY0lr/7PVpodJHeCmW+vUvLY3jLnTLnFHgvu75Lgc0R24ZZZJy2EBcqbD/FsFJrRrsmyfAf01X+KHKEIlGxqAAWnaO66suXSwrBSR0navoUu0vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RcoI9hG4Rj9eMBEkocJcepJYkG4xYpVn322ynu1vbuw=;
- b=hwoTcsDPetgCnhI7okV/rVG1FfsS7miwlz9dDfLazs17ebUjwJzhIErYdAGIK8XkTA7BLzCPpcYhxR3/XeMi8/4Dr9nyAkKMWywj9aU8nnxVxjQmocUWQihg8GIlsiEBLsSNrjV22316ldEaCDf4srbQVZgcF71TbEPl62NEYryKgYW+Ws5ZsZaDVJmG9uIa/0y7IMWKV7b2OwlMBeI7uZUST17/utru+cSsDcsi008I+/4tLxzxG/qvoxXAtueJP7URopw5Lk9617MGvsFTNLbSjgg71n2CqrLJMj0kUGcDqyFPPvsuoU21Rs8SjnkUgJWt0WZ2hrRxaDTGD9lhIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RcoI9hG4Rj9eMBEkocJcepJYkG4xYpVn322ynu1vbuw=;
- b=BE+TsISlgLKJpiKooB6VSbI2r5lTiy6jWPWuEt0FbDlknWRVUgBQK+dWrihnsUc4GfKRys0MHiIw+Y9oc8ykvk71WHV4OS5k2WAndAddP0pDbdnxCmE4zWx2msF02DXoitloQpZ0dKGMCy4IhSYXTGGRN5wKrq7u9KsDD5MX+k4=
-Received: from CH2PR12MB4181.namprd12.prod.outlook.com (2603:10b6:610:a8::16)
- by CH2PR12MB4071.namprd12.prod.outlook.com (2603:10b6:610:7b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2729.22; Fri, 21 Feb
- 2020 14:04:21 +0000
-Received: from CH2PR12MB4181.namprd12.prod.outlook.com
- ([fe80::c057:8a13:530a:4340]) by CH2PR12MB4181.namprd12.prod.outlook.com
- ([fe80::c057:8a13:530a:4340%5]) with mapi id 15.20.2750.021; Fri, 21 Feb 2020
- 14:04:21 +0000
-From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 12/13] iio: imu: inv_mpu6050: use runtime pm with
- autosuspend
-Thread-Topic: [PATCH v2 12/13] iio: imu: inv_mpu6050: use runtime pm with
- autosuspend
-Thread-Index: AQHV5zKiPKrK9DXwykeLcHDQk3kYfKgljQWAgAAkFI8=
-Date:   Fri, 21 Feb 2020 14:04:20 +0000
-Message-ID: <CH2PR12MB41812024EE950EB2D3649648C4120@CH2PR12MB4181.namprd12.prod.outlook.com>
-References: <20200219143958.3548-1-jmaneyrol@invensense.com>
-        <20200219143958.3548-13-jmaneyrol@invensense.com>,<20200221115445.6a535ead@archlinux>
-In-Reply-To: <20200221115445.6a535ead@archlinux>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [91.174.78.156]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: e6cd15b6-a42c-4ae8-12df-08d7b6d6f2de
-x-ms-traffictypediagnostic: CH2PR12MB4071:
-x-microsoft-antispam-prvs: <CH2PR12MB4071C8CA3399D82B31030388C4120@CH2PR12MB4071.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3631;
-x-forefront-prvs: 0320B28BE1
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(39850400004)(396003)(346002)(376002)(366004)(199004)(189003)(5660300002)(52536014)(91956017)(76116006)(64756008)(66556008)(66476007)(6916009)(66446008)(30864003)(26005)(6506007)(66946007)(7696005)(186003)(71200400001)(53546011)(8676002)(316002)(81166006)(2906002)(81156014)(33656002)(8936002)(4326008)(55016002)(478600001)(86362001)(9686003)(579004);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR12MB4071;H:CH2PR12MB4181.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: invensense.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: CqrlWDs/faiJoyO7Be03t50Rbo2s8Umatt1/y0IqQhHFXSl3OSlJ1hYYFZd58FHzc2WSiHhkYW3mKwMoTL/XpN0E966U5S3PZNELEZGoLjsY9Hra3zcm1h1DlWv4hUenr2L/Bbns6hEUQu0Q2lFCmeR0jxyhwFq2B9HaOHMUADwAZOCxJ55Ybi+STuv7V7AnXLptsEqNy3ToOX/Dyiolfr5mfNkInrVFEWNXTwwvTsYFGWU3EFSdDMZGf1byLHzfoyyfuThEaDuSzCEdYEGDfF7RyC/SCiUcHOHxOI16XpIoAdTdmn5BKDtOWcB4sAjeUDYe6/GWSMj+X4FL+FFvnCdwDKfCc3uR20S+7uSOx9n+xffmuK3LYDX7yERQ9Rk+FLmfAtie1w4pvMh4afj9dehoWtK97We6E8OQEs0HXkzl6051t1jiok9g07Zf0SXT
-x-ms-exchange-antispam-messagedata: bYBlfadZ00No3zKYKsr6HvNRmIbCrsfd+3b4W5vVZwhhFjab4QZD4Go8imaGzlK3tWlWyRXDz8gkpo4CodoDpoe5SE5LdekQvUoDV373zjkl0PZCOOE+9VmnSIbVqaIBsmtKYCVQtcelb8C1L2CReg==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1729087AbgBUPFH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Feb 2020 10:05:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37464 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728910AbgBUPFH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 21 Feb 2020 10:05:07 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5D62024650;
+        Fri, 21 Feb 2020 15:05:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582297506;
+        bh=tF+P2FoWp2RC9jToja4iMu9iLdII/bmOTaaFzuEmnUw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=K0qeYC96HDviBqBx1bOCqnZb0IwARLdXhoQ257158iJi7OISKvNsZaaCAM49eNoQa
+         sbguwdYJfWoWSNzRt8jRjFj/HuMWDexiZLVw3LgGgrlW4+U+kHPcx/meD0uQ5tdVij
+         f2di/I2rSZlVUB+qD7a8H4YqDaikuAa63id5jEwQ=
+Date:   Fri, 21 Feb 2020 15:05:02 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Tachici <alexandru.tachici@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Mircea Caprioru <mircea.caprioru@analog.com>
+Subject: Re: [PATCH v4 1/2] iio: dac: ad5770r: Add AD5770R support
+Message-ID: <20200221150502.7949ea11@archlinux>
+In-Reply-To: <20200218121031.27233-2-alexandru.tachici@analog.com>
+References: <20200218121031.27233-1-alexandru.tachici@analog.com>
+        <20200218121031.27233-2-alexandru.tachici@analog.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6cd15b6-a42c-4ae8-12df-08d7b6d6f2de
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2020 14:04:20.8010
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: iZWTaoFHtsJlLfHjkB8S0mvlWh59Ng7cwbu1Ub4HEjoFLxIE/GVLHq4Q+N0/zLLWM14NjXnt/1uGFxlusjrwiZRFxBZqqlft/wN7ve1xSDs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4071
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-21_04:2020-02-19,2020-02-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 bulkscore=0 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
- adultscore=0 clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2001150001 definitions=main-2002210106
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Thanks for catching this up.=0A=
-JB=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-From: Jonathan Cameron <jic23@kernel.org>=0A=
-=0A=
-Sent: Friday, February 21, 2020 12:54=0A=
-=0A=
-To: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>=0A=
-=0A=
-Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>=0A=
-=0A=
-Subject: Re: [PATCH v2 12/13] iio: imu: inv_mpu6050: use runtime pm with au=
-tosuspend=0A=
-=0A=
-=A0=0A=
-=0A=
-=0A=
-=A0CAUTION: This email originated from outside of the organization. Please =
-make sure the sender is who they say they are and do not click links or ope=
-n attachments unless you recognize the sender and know the content is safe.=
-=0A=
-=0A=
-=0A=
-=0A=
-On Wed, 19 Feb 2020 15:39:57 +0100=0A=
-=0A=
-Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:=0A=
-=0A=
-=0A=
-=0A=
-> Use runtime power management for handling chip power and=0A=
-=0A=
-> sensor engines on/off. Simplifies things a lot since pm=0A=
-=0A=
-> runtime already has reference counter.=0A=
-=0A=
-> Usage of autosuspend reduces the number of power on/off. This=0A=
-=0A=
-> makes polling interface now usable to get data at low=0A=
-=0A=
-> frequency.=0A=
-=0A=
-> =0A=
-=0A=
-> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>=0A=
-=0A=
-Missing static marking after reducing scope of one function.=0A=
-=0A=
-See inline. I've fixed that up and applied.=0A=
-=0A=
-=0A=
-=0A=
-Thanks,=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-=0A=
-Jonathan=0A=
-=0A=
-=0A=
-=0A=
-> ---=0A=
-=0A=
->=A0 drivers/iio/imu/inv_mpu6050/inv_mpu_core.c=A0=A0=A0 | 267 ++++++++++++=
-------=0A=
-=0A=
->=A0 drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h=A0=A0=A0=A0 |=A0=A0 5 +-=0A=
-=0A=
->=A0 drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |=A0 33 ++-=0A=
-=0A=
->=A0 3 files changed, 194 insertions(+), 111 deletions(-)=0A=
-=0A=
-> =0A=
-=0A=
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu=
-/inv_mpu6050/inv_mpu_core.c=0A=
-=0A=
-> index 9076b6bb099c..750fbc2614f0 100644=0A=
-=0A=
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c=0A=
-=0A=
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c=0A=
-=0A=
-> @@ -16,6 +16,8 @@=0A=
-=0A=
->=A0 #include <linux/acpi.h>=0A=
-=0A=
->=A0 #include <linux/platform_device.h>=0A=
-=0A=
->=A0 #include <linux/regulator/consumer.h>=0A=
-=0A=
-> +#include <linux/pm.h>=0A=
-=0A=
-> +#include <linux/pm_runtime.h>=0A=
-=0A=
->=A0 #include "inv_mpu_iio.h"=0A=
-=0A=
->=A0 #include "inv_mpu_magn.h"=0A=
-=0A=
->=A0 =0A=
-=0A=
-> @@ -400,26 +402,13 @@ int inv_mpu6050_set_power_itg(struct inv_mpu6050_st=
-ate *st, bool power_on)=0A=
-=0A=
->=A0 {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 int result;=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -=A0=A0=A0=A0 if (power_on) {=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!st->powerup_count) {=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D =
-inv_mpu6050_pwr_mgmt_1_write(st, false, -1, -1);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=
-=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 return result;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_rang=
-e(INV_MPU6050_REG_UP_TIME_MIN,=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0 INV_MPU6050_REG_UP_TIME_MAX);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->powerup_count++;=0A=
-=0A=
-> -=A0=A0=A0=A0 } else {=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (st->powerup_count =3D=3D 1) {=
-=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D =
-inv_mpu6050_pwr_mgmt_1_write(st, true, -1, -1);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=
-=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 return result;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->powerup_count--;=0A=
-=0A=
-> -=A0=A0=A0=A0 }=0A=
-=0A=
-> +=A0=A0=A0=A0 result =3D inv_mpu6050_pwr_mgmt_1_write(st, !power_on, -1, =
--1);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return result;=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -=A0=A0=A0=A0 dev_dbg(regmap_get_device(st->map), "set power %d, count=3D=
-%u\n",=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 power_on, st->powerup_count);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (power_on)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_range(INV_MPU6050_REG_UP_TIM=
-E_MIN,=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0 INV_MPU6050_REG_UP_TIME_MAX);=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 return 0;=0A=
-=0A=
->=A0 }=0A=
-=0A=
-> @@ -563,6 +552,7 @@ static int inv_mpu6050_read_channel_data(struct iio_d=
-ev *indio_dev,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 int *val)=0A=
-=0A=
->=A0 {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct inv_mpu6050_state *st =3D iio_priv(indio_dev)=
-;=0A=
-=0A=
-> +=A0=A0=A0=A0 struct device *pdev =3D regmap_get_device(st->map);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 unsigned int freq_hz, period_us, min_sleep_us, max_s=
-leep_us;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 int result;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 int ret;=0A=
-=0A=
-> @@ -571,92 +561,85 @@ static int inv_mpu6050_read_channel_data(struct iio=
-_dev *indio_dev,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 freq_hz =3D INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chi=
-p_config.divider);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 period_us =3D 1000000 / freq_hz;=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -=A0=A0=A0=A0 result =3D inv_mpu6050_set_power_itg(st, true);=0A=
-=0A=
-> -=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0 result =3D pm_runtime_get_sync(pdev);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (result < 0) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 pm_runtime_put_noidle(pdev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return result;=0A=
-=0A=
-> +=A0=A0=A0=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 switch (chan->type) {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 case IIO_ANGL_VEL:=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, true,=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 INV_MPU6050_SENSOR_GYRO);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* need to wait 2 periods to have f=
-irst valid sample */=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 min_sleep_us =3D 2 * period_us;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 max_sleep_us =3D 2 * (period_us + p=
-eriod_us / 2);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_range(min_sleep_us, max_slee=
-p_us);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!st->chip_config.gyro_en) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D =
-inv_mpu6050_switch_engine(st, true,=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 INV_MPU6050_SENSOR_GYRO);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=
-=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 goto error_power_off;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* need to =
-wait 2 periods to have first valid sample */=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 min_sleep_u=
-s =3D 2 * period_us;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 max_sleep_u=
-s =3D 2 * (period_us + period_us / 2);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_rang=
-e(min_sleep_us, max_sleep_us);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ret =3D inv_mpu6050_sensor_s=
-how(st, st->reg->raw_gyro,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 chan->chann=
-el2, val);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, false,=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 INV_MPU6050_SENSOR_GYRO);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 break;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 case IIO_ACCEL:=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, true,=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 INV_MPU6050_SENSOR_ACCL);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* wait 1 period for first sample a=
-vailability */=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 min_sleep_us =3D period_us;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 max_sleep_us =3D period_us + period=
-_us / 2;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_range(min_sleep_us, max_slee=
-p_us);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!st->chip_config.accl_en) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D =
-inv_mpu6050_switch_engine(st, true,=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 INV_MPU6050_SENSOR_ACCL);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=
-=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 goto error_power_off;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* wait 1 p=
-eriod for first sample availability */=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 min_sleep_u=
-s =3D period_us;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 max_sleep_u=
-s =3D period_us + period_us / 2;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_rang=
-e(min_sleep_us, max_sleep_us);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ret =3D inv_mpu6050_sensor_s=
-how(st, st->reg->raw_accl,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 chan->chann=
-el2, val);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, false,=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 INV_MPU6050_SENSOR_ACCL);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 break;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 case IIO_TEMP:=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, true,=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 INV_MPU6050_SENSOR_TEMP);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* wait 1 period for first sample a=
-vailability */=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 min_sleep_us =3D period_us;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 max_sleep_us =3D period_us + period=
-_us / 2;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_range(min_sleep_us, max_slee=
-p_us);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!st->chip_config.temp_en) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D =
-inv_mpu6050_switch_engine(st, true,=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 INV_MPU6050_SENSOR_TEMP);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=
-=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 goto error_power_off;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* wait 1 p=
-eriod for first sample availability */=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 min_sleep_u=
-s =3D period_us;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 max_sleep_u=
-s =3D period_us + period_us / 2;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_rang=
-e(min_sleep_us, max_sleep_us);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ret =3D inv_mpu6050_sensor_s=
-how(st, st->reg->temperature,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 IIO_MOD_X, =
-val);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, false,=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 INV_MPU6050_SENSOR_TEMP);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 break;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 case IIO_MAGN:=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, true,=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 INV_MPU6050_SENSOR_MAGN);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* frequency is limited for magneto=
-meter */=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (freq_hz > INV_MPU_MAGN_FREQ_HZ_=
-MAX) {=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 freq_hz =3D=
- INV_MPU_MAGN_FREQ_HZ_MAX;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 period_us =
-=3D 1000000 / freq_hz;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!st->chip_config.magn_en) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D =
-inv_mpu6050_switch_engine(st, true,=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 INV_MPU6050_SENSOR_MAGN);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=
-=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 goto error_power_off;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* frequenc=
-y is limited for magnetometer */=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (freq_hz=
- > INV_MPU_MAGN_FREQ_HZ_MAX) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 freq_hz =3D INV_MPU_MAGN_FREQ_HZ_MAX;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 period_us =3D 1000000 / freq_hz;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* need to =
-wait 2 periods to have first valid sample */=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 min_sleep_u=
-s =3D 2 * period_us;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 max_sleep_u=
-s =3D 2 * (period_us + period_us / 2);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_rang=
-e(min_sleep_us, max_sleep_us);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* need to wait 2 periods to have f=
-irst valid sample */=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 min_sleep_us =3D 2 * period_us;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 max_sleep_us =3D 2 * (period_us + p=
-eriod_us / 2);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 usleep_range(min_sleep_us, max_slee=
-p_us);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ret =3D inv_mpu_magn_read(st=
-, chan->channel2, val);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, false,=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 INV_MPU6050_SENSOR_MAGN);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 break;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 default:=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ret =3D -EINVAL;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 break;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -=A0=A0=A0=A0 result =3D inv_mpu6050_set_power_itg(st, false);=0A=
-=0A=
-> -=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_power_off;=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_mark_last_busy(pdev);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_put_autosuspend(pdev);=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 return ret;=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0 error_power_off:=0A=
-=0A=
-> -=A0=A0=A0=A0 inv_mpu6050_set_power_itg(st, false);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_put_autosuspend(pdev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 return result;=0A=
-=0A=
->=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
-> @@ -795,6 +778,7 @@ static int inv_mpu6050_write_raw(struct iio_dev *indi=
-o_dev,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0 int val, int val2, long mask)=0A=
-=0A=
->=A0 {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct inv_mpu6050_state=A0 *st =3D iio_priv(indio_d=
-ev);=0A=
-=0A=
-> +=A0=A0=A0=A0 struct device *pdev =3D regmap_get_device(st->map);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 int result;=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 /*=0A=
-=0A=
-> @@ -806,9 +790,11 @@ static int inv_mpu6050_write_raw(struct iio_dev *ind=
-io_dev,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return result;=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 mutex_lock(&st->lock);=0A=
-=0A=
-> -=A0=A0=A0=A0 result =3D inv_mpu6050_set_power_itg(st, true);=0A=
-=0A=
-> -=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0 result =3D pm_runtime_get_sync(pdev);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (result < 0) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 pm_runtime_put_noidle(pdev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_write_raw_unlock;=
-=0A=
-=0A=
-> +=A0=A0=A0=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 switch (mask) {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 case IIO_CHAN_INFO_SCALE:=0A=
-=0A=
-> @@ -846,7 +832,8 @@ static int inv_mpu6050_write_raw(struct iio_dev *indi=
-o_dev,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 break;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -=A0=A0=A0=A0 result |=3D inv_mpu6050_set_power_itg(st, false);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_mark_last_busy(pdev);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_put_autosuspend(pdev);=0A=
-=0A=
->=A0 error_write_raw_unlock:=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 mutex_unlock(&st->lock);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 iio_device_release_direct_mode(indio_dev);=0A=
-=0A=
-> @@ -903,6 +890,7 @@ inv_mpu6050_fifo_rate_store(struct device *dev, struc=
-t device_attribute *attr,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 int result;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);=
-=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct inv_mpu6050_state *st =3D iio_priv(indio_dev)=
-;=0A=
-=0A=
-> +=A0=A0=A0=A0 struct device *pdev =3D regmap_get_device(st->map);=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 if (kstrtoint(buf, 10, &fifo_rate))=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return -EINVAL;=0A=
-=0A=
-> @@ -920,9 +908,11 @@ inv_mpu6050_fifo_rate_store(struct device *dev, stru=
-ct device_attribute *attr,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D 0;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto fifo_rate_fail_unlock;=
-=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
-> -=A0=A0=A0=A0 result =3D inv_mpu6050_set_power_itg(st, true);=0A=
-=0A=
-> -=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0 result =3D pm_runtime_get_sync(pdev);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (result < 0) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 pm_runtime_put_noidle(pdev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto fifo_rate_fail_unlock;=
-=0A=
-=0A=
-> +=A0=A0=A0=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 result =3D regmap_write(st->map, st->reg->sample_rat=
-e_div, d);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> @@ -938,8 +928,9 @@ inv_mpu6050_fifo_rate_store(struct device *dev, struc=
-t device_attribute *attr,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto fifo_rate_fail_power_of=
-f;=0A=
-=0A=
->=A0 =0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_mark_last_busy(pdev);=0A=
-=0A=
->=A0 fifo_rate_fail_power_off:=0A=
-=0A=
-> -=A0=A0=A0=A0 result |=3D inv_mpu6050_set_power_itg(st, false);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_put_autosuspend(pdev);=0A=
-=0A=
->=A0 fifo_rate_fail_unlock:=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 mutex_unlock(&st->lock);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> @@ -1385,6 +1376,14 @@ static void inv_mpu_core_disable_regulator_action(=
-void *_data)=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 inv_mpu_core_disable_regulator_vddio(st);=0A=
-=0A=
->=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
-> +static void inv_mpu_pm_disable(void *data)=0A=
-=0A=
-> +{=0A=
-=0A=
-> +=A0=A0=A0=A0 struct device *dev =3D data;=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_put_sync_suspend(dev);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_disable(dev);=0A=
-=0A=
-> +}=0A=
-=0A=
-> +=0A=
-=0A=
->=A0 int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *nam=
-e,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 int (*inv_mpu_bus_setup)(str=
-uct iio_dev *), int chip_type)=0A=
-=0A=
->=A0 {=0A=
-=0A=
-> @@ -1409,7 +1408,6 @@ int inv_mpu_core_probe(struct regmap *regmap, int i=
-rq, const char *name,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 st =3D iio_priv(indio_dev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 mutex_init(&st->lock);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 st->chip_type =3D chip_type;=0A=
-=0A=
-> -=A0=A0=A0=A0 st->powerup_count =3D 0;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 st->irq =3D irq;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 st->map =3D regmap;=0A=
-=0A=
->=A0 =0A=
-=0A=
-> @@ -1521,8 +1519,16 @@ int inv_mpu_core_probe(struct regmap *regmap, int =
-irq, const char *name,=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto=
- error_power_off;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -=A0=A0=A0=A0 /* chip init is done, turning off */=0A=
-=0A=
-> -=A0=A0=A0=A0 result =3D inv_mpu6050_set_power_itg(st, false);=0A=
-=0A=
-> +=A0=A0=A0=A0 /* chip init is done, turning on runtime power management *=
-/=0A=
-=0A=
-> +=A0=A0=A0=A0 result =3D pm_runtime_set_active(dev);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_power_off;=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_get_noresume(dev);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_enable(dev);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_set_autosuspend_delay(dev, INV_MPU6050_SUSPEND_D=
-ELAY_MS);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_use_autosuspend(dev);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_put(dev);=0A=
-=0A=
-> +=A0=A0=A0=A0 result =3D devm_add_action_or_reset(dev, inv_mpu_pm_disable=
-, dev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return result;=0A=
-=0A=
->=A0 =0A=
-=0A=
-> @@ -1590,11 +1596,10 @@ int inv_mpu_core_probe(struct regmap *regmap, int=
- irq, const char *name,=0A=
-=0A=
->=A0 }=0A=
-=0A=
->=A0 EXPORT_SYMBOL_GPL(inv_mpu_core_probe);=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -#ifdef CONFIG_PM_SLEEP=0A=
-=0A=
-> -=0A=
-=0A=
-> -static int inv_mpu_resume(struct device *dev)=0A=
-=0A=
-> +static int __maybe_unused inv_mpu_resume(struct device *dev)=0A=
-=0A=
->=A0 {=0A=
-=0A=
-> -=A0=A0=A0=A0 struct inv_mpu6050_state *st =3D iio_priv(dev_get_drvdata(d=
-ev));=0A=
-=0A=
-> +=A0=A0=A0=A0 struct iio_dev *indio_dev =3D dev_get_drvdata(dev);=0A=
-=0A=
-> +=A0=A0=A0=A0 struct inv_mpu6050_state *st =3D iio_priv(indio_dev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 int result;=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 mutex_lock(&st->lock);=0A=
-=0A=
-> @@ -1603,27 +1608,101 @@ static int inv_mpu_resume(struct device *dev)=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_set_power_itg(st, true);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engine(st, true, st->suspende=
-d_sensors);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 if (iio_buffer_enabled(indio_dev))=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_prepare_fifo=
-(st, true);=0A=
-=0A=
-> +=0A=
-=0A=
->=A0 out_unlock:=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 mutex_unlock(&st->lock);=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 return result;=0A=
-=0A=
->=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -static int inv_mpu_suspend(struct device *dev)=0A=
-=0A=
-> +static int __maybe_unused inv_mpu_suspend(struct device *dev)=0A=
-=0A=
->=A0 {=0A=
-=0A=
-> -=A0=A0=A0=A0 struct inv_mpu6050_state *st =3D iio_priv(dev_get_drvdata(d=
-ev));=0A=
-=0A=
-> +=A0=A0=A0=A0 struct iio_dev *indio_dev =3D dev_get_drvdata(dev);=0A=
-=0A=
-> +=A0=A0=A0=A0 struct inv_mpu6050_state *st =3D iio_priv(indio_dev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 int result;=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 mutex_lock(&st->lock);=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 if (iio_buffer_enabled(indio_dev)) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_prepare_fifo=
-(st, false);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_un=
-lock;=0A=
-=0A=
-> +=A0=A0=A0=A0 }=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 st->suspended_sensors =3D 0;=0A=
-=0A=
-> +=A0=A0=A0=A0 if (st->chip_config.accl_en)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->suspended_sensors |=3D INV_MPU6=
-050_SENSOR_ACCL;=0A=
-=0A=
-> +=A0=A0=A0=A0 if (st->chip_config.gyro_en)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->suspended_sensors |=3D INV_MPU6=
-050_SENSOR_GYRO;=0A=
-=0A=
-> +=A0=A0=A0=A0 if (st->chip_config.temp_en)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->suspended_sensors |=3D INV_MPU6=
-050_SENSOR_TEMP;=0A=
-=0A=
-> +=A0=A0=A0=A0 if (st->chip_config.magn_en)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->suspended_sensors |=3D INV_MPU6=
-050_SENSOR_MAGN;=0A=
-=0A=
-> +=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engine(st, false, st->suspend=
-ed_sensors);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
-=0A=
-> +=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_set_power_itg(st, false);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
-=0A=
-> +=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 inv_mpu_core_disable_regulator_vddio(st);=0A=
-=0A=
-> +out_unlock:=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 mutex_unlock(&st->lock);=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 return result;=0A=
-=0A=
->=A0 }=0A=
-=0A=
-> -#endif /* CONFIG_PM_SLEEP */=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -SIMPLE_DEV_PM_OPS(inv_mpu_pmops, inv_mpu_suspend, inv_mpu_resume);=0A=
-=0A=
-> +static int __maybe_unused inv_mpu_runtime_suspend(struct device *dev)=0A=
-=0A=
-> +{=0A=
-=0A=
-> +=A0=A0=A0=A0 struct inv_mpu6050_state *st =3D iio_priv(dev_get_drvdata(d=
-ev));=0A=
-=0A=
-> +=A0=A0=A0=A0 unsigned int sensors;=0A=
-=0A=
-> +=A0=A0=A0=A0 int ret;=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 mutex_lock(&st->lock);=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 sensors =3D INV_MPU6050_SENSOR_ACCL | INV_MPU6050_SENSOR_GY=
-RO |=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 INV_MPU6050=
-_SENSOR_TEMP | INV_MPU6050_SENSOR_MAGN;=0A=
-=0A=
-> +=A0=A0=A0=A0 ret =3D inv_mpu6050_switch_engine(st, false, sensors);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (ret)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 ret =3D inv_mpu6050_set_power_itg(st, false);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (ret)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto out_unlock;=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 inv_mpu_core_disable_regulator_vddio(st);=0A=
-=0A=
-> +=0A=
-=0A=
-> +out_unlock:=0A=
-=0A=
-> +=A0=A0=A0=A0 mutex_unlock(&st->lock);=0A=
-=0A=
-> +=A0=A0=A0=A0 return ret;=0A=
-=0A=
-> +}=0A=
-=0A=
-> +=0A=
-=0A=
-> +static int __maybe_unused inv_mpu_runtime_resume(struct device *dev)=0A=
-=0A=
-> +{=0A=
-=0A=
-> +=A0=A0=A0=A0 struct inv_mpu6050_state *st =3D iio_priv(dev_get_drvdata(d=
-ev));=0A=
-=0A=
-> +=A0=A0=A0=A0 int ret;=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 ret =3D inv_mpu_core_enable_regulator_vddio(st);=0A=
-=0A=
-> +=A0=A0=A0=A0 if (ret)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return ret;=0A=
-=0A=
-> +=0A=
-=0A=
-> +=A0=A0=A0=A0 return inv_mpu6050_set_power_itg(st, true);=0A=
-=0A=
-> +}=0A=
-=0A=
-> +=0A=
-=0A=
-> +const struct dev_pm_ops inv_mpu_pmops =3D {=0A=
-=0A=
-> +=A0=A0=A0=A0 SET_SYSTEM_SLEEP_PM_OPS(inv_mpu_suspend, inv_mpu_resume)=0A=
-=0A=
-> +=A0=A0=A0=A0 SET_RUNTIME_PM_OPS(inv_mpu_runtime_suspend, inv_mpu_runtime=
-_resume, NULL)=0A=
-=0A=
-> +};=0A=
-=0A=
->=A0 EXPORT_SYMBOL_GPL(inv_mpu_pmops);=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0 MODULE_AUTHOR("Invensense Corporation");=0A=
-=0A=
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/=
-inv_mpu6050/inv_mpu_iio.h=0A=
-=0A=
-> index e328c98e362c..cd38b3fccc7b 100644=0A=
-=0A=
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h=0A=
-=0A=
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h=0A=
-=0A=
-> @@ -164,6 +164,7 @@ struct inv_mpu6050_hw {=0A=
-=0A=
->=A0=A0 *=A0 @magn_disabled:=A0=A0=A0=A0 magnetometer disabled for backward=
- compatibility reason.=0A=
-=0A=
->=A0=A0 *=A0 @magn_raw_to_gauss:=A0=A0=A0=A0=A0 coefficient to convert mag =
-raw value to Gauss.=0A=
-=0A=
->=A0=A0 *=A0 @magn_orient:=A0=A0=A0=A0=A0=A0 magnetometer sensor chip orien=
-tation if available.=0A=
-=0A=
-> + *=A0 @suspended_sensors:=A0=A0=A0=A0=A0 sensors mask of sensors turned =
-off for suspend=0A=
-=0A=
->=A0=A0 */=0A=
-=0A=
->=A0 struct inv_mpu6050_state {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct mutex lock;=0A=
-=0A=
-> @@ -174,7 +175,6 @@ struct inv_mpu6050_state {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 enum=A0=A0 inv_devices chip_type;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct i2c_mux_core *muxc;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct i2c_client *mux_client;=0A=
-=0A=
-> -=A0=A0=A0=A0 unsigned int powerup_count;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct inv_mpu6050_platform_data plat_data;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct iio_mount_matrix orientation;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct regmap *map;=0A=
-=0A=
-> @@ -189,6 +189,7 @@ struct inv_mpu6050_state {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 bool magn_disabled;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 s32 magn_raw_to_gauss[3];=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct iio_mount_matrix magn_orient;=0A=
-=0A=
-> +=A0=A0=A0=A0 unsigned int suspended_sensors;=0A=
-=0A=
->=A0 };=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0 /*register and associated bit definition*/=0A=
-=0A=
-> @@ -312,6 +313,7 @@ struct inv_mpu6050_state {=0A=
-=0A=
->=A0 #define INV_MPU6050_ACCEL_UP_TIME=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 20=
-=0A=
-=0A=
->=A0 #define INV_MPU6050_GYRO_UP_TIME=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 3=
-5=0A=
-=0A=
->=A0 #define INV_MPU6050_GYRO_DOWN_TIME=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 150=
-=0A=
-=0A=
-> +#define INV_MPU6050_SUSPEND_DELAY_MS=A0=A0=A0=A0=A0=A0=A0=A0 2000=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0 /* delay time in microseconds */=0A=
-=0A=
->=A0 #define INV_MPU6050_REG_UP_TIME_MIN=A0=A0=A0=A0=A0=A0=A0=A0=A0 5000=0A=
-=0A=
-> @@ -439,7 +441,6 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state=
- *st, bool enable);=0A=
-=0A=
->=A0 int inv_mpu6050_switch_engine(struct inv_mpu6050_state *st, bool en,=
-=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0 unsigned int mask);=0A=
-=0A=
->=A0 int inv_mpu6050_write_reg(struct inv_mpu6050_state *st, int reg, u8 va=
-l);=0A=
-=0A=
-> -int inv_mpu6050_set_power_itg(struct inv_mpu6050_state *st, bool power_o=
-n);=0A=
-=0A=
-Having done this, function should be marked static in _core.c=0A=
-=0A=
-=0A=
-=0A=
-I've done so.=0A=
-=0A=
-=0A=
-=0A=
->=A0 int inv_mpu_acpi_create_mux_client(struct i2c_client *client);=0A=
-=0A=
->=A0 void inv_mpu_acpi_delete_mux_client(struct i2c_client *client);=0A=
-=0A=
->=A0 int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *nam=
-e,=0A=
-=0A=
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/=
-imu/inv_mpu6050/inv_mpu_trigger.c=0A=
-=0A=
-> index f53f50d08b9e..f7b5a70be30f 100644=0A=
-=0A=
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c=0A=
-=0A=
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c=0A=
-=0A=
-> @@ -3,6 +3,7 @@=0A=
-=0A=
->=A0 * Copyright (C) 2012 Invensense, Inc.=0A=
-=0A=
->=A0 */=0A=
-=0A=
->=A0 =0A=
-=0A=
-> +#include <linux/pm_runtime.h>=0A=
-=0A=
->=A0 #include "inv_mpu_iio.h"=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0 static unsigned int inv_scan_query_mpu6050(struct iio_dev *indio_dev)=
-=0A=
-=0A=
-> @@ -156,41 +157,43 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_sta=
-te *st, bool enable)=0A=
-=0A=
->=A0 static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enab=
-le)=0A=
-=0A=
->=A0 {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 struct inv_mpu6050_state *st =3D iio_priv(indio_dev)=
-;=0A=
-=0A=
-> +=A0=A0=A0=A0 struct device *pdev =3D regmap_get_device(st->map);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 unsigned int scan;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 int result;=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -=A0=A0=A0=A0 scan =3D inv_scan_query(indio_dev);=0A=
-=0A=
-> -=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 if (enable) {=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_set_power_it=
-g(st, true);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 scan =3D inv_scan_query(indio_dev);=
-=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D pm_runtime_get_sync(pdev=
-);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result < 0) {=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 pm_runtime_=
-put_noidle(pdev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 retu=
-rn result;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /*=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * In case autosuspend didn't tri=
-gger, turn off first not=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * required sensors.=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 */=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, false, ~scan);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switc=
-h_engine(st, true, scan);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto=
- error_power_off;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->skip_samples =3D inv_com=
-pute_skip_samples(st);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_prepa=
-re_fifo(st, true);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-sensors_off;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 } else {=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_prepa=
-re_fifo(st, false);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-sensors_off;=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_switch_engin=
-e(st, false, scan);=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto error_=
-power_off;=0A=
-=0A=
-> -=0A=
-=0A=
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 result =3D inv_mpu6050_set_power_it=
-g(st, false);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (result)=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 goto=
- error_power_off;=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 pm_runtime_mark_last_busy(pdev);=0A=
-=0A=
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 pm_runtime_put_autosuspend(pdev);=
-=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 return 0;=0A=
-=0A=
->=A0 =0A=
-=0A=
-> -error_sensors_off:=0A=
-=0A=
-> -=A0=A0=A0=A0 inv_mpu6050_switch_engine(st, false, scan);=0A=
-=0A=
->=A0 error_power_off:=0A=
-=0A=
-> -=A0=A0=A0=A0 inv_mpu6050_set_power_itg(st, false);=0A=
-=0A=
-> +=A0=A0=A0=A0 pm_runtime_put_autosuspend(pdev);=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 return result;=0A=
-=0A=
->=A0 }=0A=
-=0A=
->=A0 =0A=
-=0A=
-=0A=
-=0A=
-poer=0A=
-=0A=
+On Tue, 18 Feb 2020 14:10:30 +0200
+Alexandru Tachici <alexandru.tachici@analog.com> wrote:
+
+> The AD5770R is a 6-channel, 14-bit resolution, low noise, programmable
+> current output digital-to-analog converter (DAC) for photonics control
+> applications.
+> 
+> It contains five 14-bit resolution current sourcing DAC channels and one
+> 14-bit resolution current sourcing/sinking DAC channel.
+> 
+> Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+The switch to a dma safe buffer has gone a bit wrong.  See inline.
+
+I've fixed up whilst applying as described.  Please check the result.
+
+Applied to the togreg branch of iio.git and pushed out as testing.
+
+Thanks,
+
+Jonathan
+
+
+> ---
+>  drivers/iio/dac/Kconfig   |  10 +
+>  drivers/iio/dac/Makefile  |   1 +
+>  drivers/iio/dac/ad5770r.c | 695 ++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 706 insertions(+)
+>  create mode 100644 drivers/iio/dac/ad5770r.c
+> 
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index 979070196da9..c74f2151ee42 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -208,6 +208,16 @@ config AD5764
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called ad5764.
+>  
+> +config AD5770R
+> +	tristate "Analog Devices AD5770R IDAC driver"
+> +	depends on SPI_MASTER
+> +	help
+> +	  Say yes here to build support for Analog Devices AD5770R Digital to
+> +	  Analog Converter.
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called ad5770r.
+> +
+>  config AD5791
+>  	tristate "Analog Devices AD5760/AD5780/AD5781/AD5790/AD5791 DAC SPI driver"
+>  	depends on SPI
+> diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
+> index 1369fa1d2f0e..2fc481167724 100644
+> --- a/drivers/iio/dac/Makefile
+> +++ b/drivers/iio/dac/Makefile
+> @@ -19,6 +19,7 @@ obj-$(CONFIG_AD5755) += ad5755.o
+>  obj-$(CONFIG_AD5755) += ad5758.o
+>  obj-$(CONFIG_AD5761) += ad5761.o
+>  obj-$(CONFIG_AD5764) += ad5764.o
+> +obj-$(CONFIG_AD5770R) += ad5770r.o
+>  obj-$(CONFIG_AD5791) += ad5791.o
+>  obj-$(CONFIG_AD5686) += ad5686.o
+>  obj-$(CONFIG_AD5686_SPI) += ad5686-spi.o
+> diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
+> new file mode 100644
+> index 000000000000..0ca2f69644ea
+> --- /dev/null
+> +++ b/drivers/iio/dac/ad5770r.c
+> @@ -0,0 +1,695 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * AD5770R Digital to analog converters driver
+> + *
+> + * Copyright 2018 Analog Devices Inc.
+> + */
+> +
+> +#include <linux/bits.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#define ADI_SPI_IF_CONFIG_A		0x00
+> +#define ADI_SPI_IF_CONFIG_B		0x01
+> +#define ADI_SPI_IF_DEVICE_CONFIG	0x02
+> +#define ADI_SPI_IF_CHIP_TYPE		0x03
+> +#define ADI_SPI_IF_PRODUCT_ID_L		0x04
+> +#define ADI_SPI_IF_PRODUCT_ID_H		0x05
+> +#define ADI_SPI_IF_CHIP_GRADE		0x06
+> +#define ADI_SPI_IF_SCRACTH_PAD		0x0A
+> +#define ADI_SPI_IF_SPI_REVISION		0x0B
+> +#define ADI_SPI_IF_SPI_VENDOR_L		0x0C
+> +#define ADI_SPI_IF_SPI_VENDOR_H		0x0D
+> +#define ADI_SPI_IF_SPI_STREAM_MODE	0x0E
+> +#define ADI_SPI_IF_CONFIG_C		0x10
+> +#define ADI_SPI_IF_STATUS_A		0x11
+> +
+> +/* ADI_SPI_IF_CONFIG_A */
+> +#define ADI_SPI_IF_SW_RESET_MSK		(BIT(0) | BIT(7))
+> +#define ADI_SPI_IF_SW_RESET_SEL(x)	((x) & ADI_SPI_IF_SW_RESET_MSK)
+> +#define ADI_SPI_IF_ADDR_ASC_MSK		(BIT(2) | BIT(5))
+> +#define ADI_SPI_IF_ADDR_ASC_SEL(x)	(((x) << 2) & ADI_SPI_IF_ADDR_ASC_MSK)
+> +
+> +/* ADI_SPI_IF_CONFIG_B */
+> +#define ADI_SPI_IF_SINGLE_INS_MSK	BIT(7)
+> +#define ADI_SPI_IF_SINGLE_INS_SEL(x)	FIELD_PREP(ADI_SPI_IF_SINGLE_INS_MSK, x)
+> +#define ADI_SPI_IF_SHORT_INS_MSK	BIT(7)
+> +#define ADI_SPI_IF_SHORT_INS_SEL(x)	FIELD_PREP(ADI_SPI_IF_SINGLE_INS_MSK, x)
+> +
+> +/* ADI_SPI_IF_CONFIG_C */
+> +#define ADI_SPI_IF_STRICT_REG_MSK	BIT(5)
+> +#define ADI_SPI_IF_STRICT_REG_GET(x)	FIELD_GET(ADI_SPI_IF_STRICT_REG_MSK, x)
+> +
+> +/* AD5770R configuration registers */
+> +#define AD5770R_CHANNEL_CONFIG		0x14
+> +#define AD5770R_OUTPUT_RANGE(ch)	(0x15 + (ch))
+> +#define AD5770R_FILTER_RESISTOR(ch)	(0x1D + (ch))
+> +#define AD5770R_REFERENCE		0x1B
+> +#define AD5770R_DAC_LSB(ch)		(0x26 + 2 * (ch))
+> +#define AD5770R_DAC_MSB(ch)		(0x27 + 2 * (ch))
+> +#define AD5770R_CH_SELECT		0x34
+> +#define AD5770R_CH_ENABLE		0x44
+> +
+> +/* AD5770R_CHANNEL_CONFIG */
+> +#define AD5770R_CFG_CH0_SINK_EN(x)		(((x) & 0x1) << 7)
+> +#define AD5770R_CFG_SHUTDOWN_B(x, ch)		(((x) & 0x1) << (ch))
+> +
+> +/* AD5770R_OUTPUT_RANGE */
+> +#define AD5770R_RANGE_OUTPUT_SCALING(x)		(((x) & GENMASK(5, 0)) << 2)
+> +#define AD5770R_RANGE_MODE(x)			((x) & GENMASK(1, 0))
+> +
+> +/* AD5770R_REFERENCE */
+> +#define AD5770R_REF_RESISTOR_SEL(x)		(((x) & 0x1) << 2)
+> +#define AD5770R_REF_SEL(x)			((x) & GENMASK(1, 0))
+> +
+> +/* AD5770R_CH_ENABLE */
+> +#define AD5770R_CH_SET(x, ch)		(((x) & 0x1) << (ch))
+> +
+> +#define AD5770R_MAX_CHANNELS	6
+> +#define AD5770R_MAX_CH_MODES	14
+> +#define AD5770R_LOW_VREF_mV	1250
+> +#define AD5770R_HIGH_VREF_mV	2500
+> +
+> +enum ad5770r_ch0_modes {
+> +	AD5770R_CH0_0_300 = 0,
+> +	AD5770R_CH0_NEG_60_0,
+> +	AD5770R_CH0_NEG_60_300
+> +};
+> +
+> +enum ad5770r_ch1_modes {
+> +	AD5770R_CH1_0_140_LOW_HEAD = 1,
+> +	AD5770R_CH1_0_140_LOW_NOISE,
+> +	AD5770R_CH1_0_250
+> +};
+> +
+> +enum ad5770r_ch2_5_modes {
+> +	AD5770R_CH_LOW_RANGE = 0,
+> +	AD5770R_CH_HIGH_RANGE
+> +};
+> +
+> +enum ad5770r_ref_v {
+> +	AD5770R_EXT_2_5_V = 0,
+> +	AD5770R_INT_1_25_V_OUT_ON,
+> +	AD5770R_EXT_1_25_V,
+> +	AD5770R_INT_1_25_V_OUT_OFF
+> +};
+> +
+> +enum ad5770r_output_filter_resistor {
+> +	AD5770R_FILTER_60_OHM = 0x0,
+> +	AD5770R_FILTER_5_6_KOHM = 0x5,
+> +	AD5770R_FILTER_11_2_KOHM,
+> +	AD5770R_FILTER_22_2_KOHM,
+> +	AD5770R_FILTER_44_4_KOHM,
+> +	AD5770R_FILTER_104_KOHM,
+> +};
+> +
+> +struct ad5770r_out_range {
+> +	u8	out_scale;
+> +	u8	out_range_mode;
+> +};
+> +
+> +/**
+> + * struct ad5770R_state - driver instance specific data
+> + * @spi:		spi_device
+> + * @regmap:		regmap
+> + * @vref_reg:		fixed regulator for reference configuration
+> + * @gpio_reset:		gpio descriptor
+> + * @output_mode:	array contains channels output ranges
+> + * @vref:		reference value
+> + * @ch_pwr_down:	powerdown flags
+> + * @internal_ref:	internal reference flag
+> + * @external_res:	external 2.5k resistor flag
+> + * @transf_buf:		cache aligned buffer for spi read/write
+> + */
+> +struct ad5770r_state {
+> +	struct spi_device		*spi;
+> +	struct regmap			*regmap;
+> +	struct regulator		*vref_reg;
+> +	struct gpio_desc		*gpio_reset;
+> +	struct ad5770r_out_range	output_mode[AD5770R_MAX_CHANNELS];
+> +	int				vref;
+> +	bool				ch_pwr_down[AD5770R_MAX_CHANNELS];
+> +	bool				internal_ref;
+> +	bool				external_res;
+> +	u8				transf_buf[2] ____cacheline_aligned;
+> +};
+> +
+> +static const struct regmap_config ad5770r_spi_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.read_flag_mask = BIT(7),
+> +};
+> +
+> +struct ad5770r_output_modes {
+> +	unsigned int ch;
+> +	u8 mode;
+> +	int min;
+> +	int max;
+> +};
+> +
+> +static struct ad5770r_output_modes ad5770r_rng_tbl[] = {
+> +	{ 0, AD5770R_CH0_0_300, 0, 300 },
+> +	{ 0, AD5770R_CH0_NEG_60_0, -60, 0 },
+> +	{ 0, AD5770R_CH0_NEG_60_300, -60, 300 },
+> +	{ 1, AD5770R_CH1_0_140_LOW_HEAD, 0, 140 },
+> +	{ 1, AD5770R_CH1_0_140_LOW_NOISE, 0, 140 },
+> +	{ 1, AD5770R_CH1_0_250, 0, 250 },
+> +	{ 2, AD5770R_CH_LOW_RANGE, 0, 55 },
+> +	{ 2, AD5770R_CH_HIGH_RANGE, 0, 150 },
+> +	{ 3, AD5770R_CH_LOW_RANGE, 0, 45 },
+> +	{ 3, AD5770R_CH_HIGH_RANGE, 0, 100 },
+> +	{ 4, AD5770R_CH_LOW_RANGE, 0, 45 },
+> +	{ 4, AD5770R_CH_HIGH_RANGE, 0, 100 },
+> +	{ 5, AD5770R_CH_LOW_RANGE, 0, 45 },
+> +	{ 5, AD5770R_CH_HIGH_RANGE, 0, 100 },
+> +};
+> +
+> +static const unsigned int ad5770r_filter_freqs[] = {
+> +	153, 357, 715, 1400, 2800, 262000,
+> +};
+> +
+> +static const unsigned int ad5770r_filter_reg_vals[] = {
+> +	AD5770R_FILTER_104_KOHM,
+> +	AD5770R_FILTER_44_4_KOHM,
+> +	AD5770R_FILTER_22_2_KOHM,
+> +	AD5770R_FILTER_11_2_KOHM,
+> +	AD5770R_FILTER_5_6_KOHM,
+> +	AD5770R_FILTER_60_OHM
+> +};
+> +
+> +static int ad5770r_set_output_mode(struct ad5770r_state *st,
+> +				   const struct ad5770r_out_range *out_mode,
+> +				   int channel)
+> +{
+> +	unsigned int regval;
+> +
+> +	regval = AD5770R_RANGE_OUTPUT_SCALING(out_mode->out_scale) |
+> +		 AD5770R_RANGE_MODE(out_mode->out_range_mode);
+> +
+> +	return regmap_write(st->regmap,
+> +			    AD5770R_OUTPUT_RANGE(channel), regval);
+> +}
+> +
+> +static int ad5770r_set_reference(struct ad5770r_state *st)
+> +{
+> +	unsigned int regval;
+> +
+> +	regval = AD5770R_REF_RESISTOR_SEL(st->external_res);
+> +
+> +	if (st->internal_ref) {
+> +		regval |= AD5770R_REF_SEL(AD5770R_INT_1_25_V_OUT_OFF);
+> +	} else {
+> +		switch (st->vref) {
+> +		case AD5770R_LOW_VREF_mV:
+> +			regval |= AD5770R_REF_SEL(AD5770R_EXT_1_25_V);
+> +			break;
+> +		case AD5770R_HIGH_VREF_mV:
+> +			regval |= AD5770R_REF_SEL(AD5770R_EXT_2_5_V);
+> +			break;
+> +		default:
+> +			regval = AD5770R_REF_SEL(AD5770R_INT_1_25_V_OUT_OFF);
+> +			break;
+> +		}
+> +	}
+> +
+> +	return regmap_write(st->regmap, AD5770R_REFERENCE, regval);
+> +}
+> +
+> +static int ad5770r_soft_reset(struct ad5770r_state *st)
+> +{
+> +	return regmap_write(st->regmap, ADI_SPI_IF_CONFIG_A,
+> +			    ADI_SPI_IF_SW_RESET_SEL(1));
+> +}
+> +
+> +static int ad5770r_reset(struct ad5770r_state *st)
+> +{
+> +	/* Perform software reset if no GPIO provided */
+> +	if (!st->gpio_reset)
+> +		return ad5770r_soft_reset(st);
+> +
+> +	gpiod_set_value_cansleep(st->gpio_reset, 0);
+> +	usleep_range(10, 20);
+> +	gpiod_set_value_cansleep(st->gpio_reset, 1);
+> +
+> +	/* data must not be written during reset timeframe */
+> +	usleep_range(100, 200);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad5770r_get_range(struct ad5770r_state *st,
+> +			     int ch, int *min, int *max)
+> +{
+> +	int i;
+> +	u8 tbl_ch, tbl_mode, out_range;
+> +
+> +	out_range = st->output_mode[ch].out_range_mode;
+> +
+> +	for (i = 0; i < AD5770R_MAX_CH_MODES; i++) {
+> +		tbl_ch = ad5770r_rng_tbl[i].ch;
+> +		tbl_mode = ad5770r_rng_tbl[i].mode;
+> +		if (tbl_ch == ch && tbl_mode == out_range) {
+> +			*min = ad5770r_rng_tbl[i].min;
+> +			*max = ad5770r_rng_tbl[i].max;
+> +			return 0;
+> +		}
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int ad5770r_get_filter_freq(struct iio_dev *indio_dev,
+> +				   const struct iio_chan_spec *chan, int *freq)
+> +{
+> +	struct ad5770r_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +	unsigned int regval, i;
+> +
+> +	ret = regmap_read(st->regmap,
+> +			  AD5770R_FILTER_RESISTOR(chan->channel), &regval);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(ad5770r_filter_reg_vals); i++)
+> +		if (regval == ad5770r_filter_reg_vals[i])
+> +			break;
+> +	if (i == ARRAY_SIZE(ad5770r_filter_reg_vals))
+> +		return -EINVAL;
+> +
+> +	*freq = ad5770r_filter_freqs[i];
+> +
+> +	return IIO_VAL_INT;
+> +}
+> +
+> +static int ad5770r_set_filter_freq(struct iio_dev *indio_dev,
+> +				   const struct iio_chan_spec *chan,
+> +				   unsigned int freq)
+> +{
+> +	struct ad5770r_state *st = iio_priv(indio_dev);
+> +	unsigned int regval, i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(ad5770r_filter_freqs); i++)
+> +		if (ad5770r_filter_freqs[i] >= freq)
+> +			break;
+> +	if (i == ARRAY_SIZE(ad5770r_filter_freqs))
+> +		return -EINVAL;
+> +
+> +	regval = ad5770r_filter_reg_vals[i];
+> +
+> +	return regmap_write(st->regmap, AD5770R_FILTER_RESISTOR(chan->channel),
+> +			    regval);
+> +}
+> +
+> +static int ad5770r_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int *val, int *val2, long info)
+> +{
+> +	struct ad5770r_state *st = iio_priv(indio_dev);
+> +	int max, min, ret;
+> +	__le16 buf16;
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = regmap_bulk_read(st->regmap,
+> +				       chan->address,
+> +				       st->transf_buf, 2);
+In this case, you are reading into a pair of bytes...
+
+> +		if (ret)
+> +			return 0;
+> +
+> +		buf16 = st->transf_buf[0] + (st->transf_buf[1] << 8);
+
+and you combine them by bad.  The result is what endian type the cpu
+has.
+
+> +		*val = le16_to_cpu(buf16) >> 2;
+So we can drop the le16_to_cpu here + change the type above.
+
+I've fixed up.
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		ret = ad5770r_get_range(st, chan->channel, &min, &max);
+> +		if (ret < 0)
+> +			return ret;
+> +		*val = max - min;
+> +		/* There is no sign bit. (negative current is mapped from 0)
+> +		 * (sourced/sinked) current = raw * scale + offset
+> +		 * where offset in case of CH0 can be negative.
+> +		 */
+> +		*val2 = 14;
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		return ad5770r_get_filter_freq(indio_dev, chan, val);
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		ret = ad5770r_get_range(st, chan->channel, &min, &max);
+> +		if (ret < 0)
+> +			return ret;
+> +		*val = min;
+> +		return IIO_VAL_INT;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad5770r_write_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int val, int val2, long info)
+> +{
+> +	struct ad5770r_state *st = iio_priv(indio_dev);
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		st->transf_buf[0] = ((u16)val >> 6);
+> +		st->transf_buf[1] = (val & GENMASK(5, 0)) << 2;
+> +		return regmap_bulk_write(st->regmap, chan->address,
+> +					 st->transf_buf, 2);
+> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		return ad5770r_set_filter_freq(indio_dev, chan, val);
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad5770r_read_freq_avail(struct iio_dev *indio_dev,
+> +				   struct iio_chan_spec const *chan,
+> +				   const int **vals, int *type, int *length,
+> +				   long mask)
+> +{
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		*type = IIO_VAL_INT;
+> +		*vals = ad5770r_filter_freqs;
+> +		*length = ARRAY_SIZE(ad5770r_filter_freqs);
+> +		return IIO_AVAIL_LIST;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int ad5770r_reg_access(struct iio_dev *indio_dev,
+> +			      unsigned int reg,
+> +			      unsigned int writeval,
+> +			      unsigned int *readval)
+> +{
+> +	struct ad5770r_state *st = iio_priv(indio_dev);
+> +
+> +	if (readval)
+> +		return regmap_read(st->regmap, reg, readval);
+> +	else
+> +		return regmap_write(st->regmap, reg, writeval);
+> +}
+> +
+> +static const struct iio_info ad5770r_info = {
+> +	.read_raw = ad5770r_read_raw,
+> +	.write_raw = ad5770r_write_raw,
+> +	.read_avail = ad5770r_read_freq_avail,
+> +	.debugfs_reg_access = &ad5770r_reg_access,
+> +};
+> +
+> +static int ad5770r_store_output_range(struct ad5770r_state *st,
+> +				      int min, int max, int index)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < AD5770R_MAX_CH_MODES; i++) {
+> +		if (ad5770r_rng_tbl[i].ch != index)
+> +			continue;
+> +		if (ad5770r_rng_tbl[i].min != min ||
+> +		    ad5770r_rng_tbl[i].max != max)
+> +			continue;
+> +		st->output_mode[index].out_range_mode = ad5770r_rng_tbl[i].mode;
+> +
+> +		return 0;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static ssize_t ad5770r_read_dac_powerdown(struct iio_dev *indio_dev,
+> +					  uintptr_t private,
+> +					  const struct iio_chan_spec *chan,
+> +					  char *buf)
+> +{
+> +	struct ad5770r_state *st = iio_priv(indio_dev);
+> +
+> +	return sprintf(buf, "%d\n", st->ch_pwr_down[chan->channel]);
+> +}
+> +
+> +static ssize_t ad5770r_write_dac_powerdown(struct iio_dev *indio_dev,
+> +					   uintptr_t private,
+> +					   const struct iio_chan_spec *chan,
+> +					   const char *buf, size_t len)
+> +{
+> +	struct ad5770r_state *st = iio_priv(indio_dev);
+> +	unsigned int regval;
+> +	unsigned int mask;
+> +	bool readin;
+> +	int ret;
+> +
+> +	ret = kstrtobool(buf, &readin);
+> +	if (ret)
+> +		return ret;
+> +
+> +	readin = !readin;
+> +
+> +	regval = AD5770R_CFG_SHUTDOWN_B(readin, chan->channel);
+> +	if (chan->channel == 0 &&
+> +	    st->output_mode[0].out_range_mode > AD5770R_CH0_0_300) {
+> +		regval |= AD5770R_CFG_CH0_SINK_EN(readin);
+> +		mask = BIT(chan->channel) + BIT(7);
+> +	} else {
+> +		mask = BIT(chan->channel);
+> +	}
+> +	ret = regmap_update_bits(st->regmap, AD5770R_CHANNEL_CONFIG, mask,
+> +				 regval);
+> +	if (ret)
+> +		return ret;
+> +
+> +	regval = AD5770R_CH_SET(readin, chan->channel);
+> +	ret = regmap_update_bits(st->regmap, AD5770R_CH_ENABLE,
+> +				 BIT(chan->channel), regval);
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->ch_pwr_down[chan->channel] = !readin;
+> +
+> +	return len;
+> +}
+> +
+> +static const struct iio_chan_spec_ext_info ad5770r_ext_info[] = {
+> +	{
+> +		.name = "powerdown",
+> +		.read = ad5770r_read_dac_powerdown,
+> +		.write = ad5770r_write_dac_powerdown,
+> +		.shared = IIO_SEPARATE,
+> +	},
+> +	{ }
+> +};
+> +
+> +#define AD5770R_IDAC_CHANNEL(index, reg) {				\
+> +	.type = IIO_CURRENT,						\
+> +	.address = reg,							\
+> +	.indexed = 1,							\
+> +	.channel = index,						\
+> +	.output = 1,							\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
+> +		BIT(IIO_CHAN_INFO_SCALE) |				\
+> +		BIT(IIO_CHAN_INFO_OFFSET) |				\
+> +		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),	\
+> +	.info_mask_shared_by_type_available =				\
+> +		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),	\
+> +	.ext_info = ad5770r_ext_info,					\
+> +}
+> +
+> +static const struct iio_chan_spec ad5770r_channels[] = {
+> +	AD5770R_IDAC_CHANNEL(0, AD5770R_DAC_MSB(0)),
+> +	AD5770R_IDAC_CHANNEL(1, AD5770R_DAC_MSB(1)),
+> +	AD5770R_IDAC_CHANNEL(2, AD5770R_DAC_MSB(2)),
+> +	AD5770R_IDAC_CHANNEL(3, AD5770R_DAC_MSB(3)),
+> +	AD5770R_IDAC_CHANNEL(4, AD5770R_DAC_MSB(4)),
+> +	AD5770R_IDAC_CHANNEL(5, AD5770R_DAC_MSB(5)),
+> +};
+> +
+> +static int ad5770r_channel_config(struct ad5770r_state *st)
+> +{
+> +	int ret, tmp[2], min, max;
+> +	unsigned int num;
+> +	struct fwnode_handle *child;
+> +
+> +	num = device_get_child_node_count(&st->spi->dev);
+> +	if (num != AD5770R_MAX_CHANNELS)
+> +		return -EINVAL;
+> +
+> +	device_for_each_child_node(&st->spi->dev, child) {
+> +		ret = fwnode_property_read_u32(child, "num", &num);
+> +		if (ret)
+> +			return ret;
+> +		if (num > AD5770R_MAX_CHANNELS)
+> +			return -EINVAL;
+> +
+> +		ret = fwnode_property_read_u32_array(child,
+> +						     "adi,range-microamp",
+> +						     tmp, 2);
+> +		if (ret)
+> +			return ret;
+> +
+> +		min = tmp[0] / 1000;
+> +		max = tmp[1] / 1000;
+> +		ret = ad5770r_store_output_range(st, min, max, num);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad5770r_init(struct ad5770r_state *st)
+> +{
+> +	int ret, i;
+> +
+> +	st->gpio_reset = devm_gpiod_get_optional(&st->spi->dev, "reset",
+> +						 GPIOD_OUT_HIGH);
+> +	if (IS_ERR(st->gpio_reset))
+> +		return PTR_ERR(st->gpio_reset);
+> +
+> +	/* Perform a reset */
+> +	ret = ad5770r_reset(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Set output range */
+> +	ret = ad5770r_channel_config(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	for (i = 0; i < AD5770R_MAX_CHANNELS; i++) {
+> +		ret = ad5770r_set_output_mode(st,  &st->output_mode[i], i);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	st->external_res = fwnode_property_read_bool(st->spi->dev.fwnode,
+> +						     "adi,external-resistor");
+> +
+> +	ret = ad5770r_set_reference(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Set outputs off */
+> +	ret = regmap_write(st->regmap, AD5770R_CHANNEL_CONFIG, 0x00);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_write(st->regmap, AD5770R_CH_ENABLE, 0x00);
+> +	if (ret)
+> +		return ret;
+> +
+> +	for (i = 0; i < AD5770R_MAX_CHANNELS; i++)
+> +		st->ch_pwr_down[i] = true;
+> +
+> +	return ret;
+> +}
+> +
+> +static void ad5770r_disable_regulator(void *data)
+> +{
+> +	struct ad5770r_state *st = data;
+> +
+> +	regulator_disable(st->vref_reg);
+> +}
+> +
+> +static int ad5770r_probe(struct spi_device *spi)
+> +{
+> +	struct ad5770r_state *st;
+> +	struct iio_dev *indio_dev;
+> +	struct regmap *regmap;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +	spi_set_drvdata(spi, indio_dev);
+> +
+> +	st->spi = spi;
+> +
+> +	regmap = devm_regmap_init_spi(spi, &ad5770r_spi_regmap_config);
+> +	if (IS_ERR(regmap)) {
+> +		dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
+> +			PTR_ERR(regmap));
+> +		return PTR_ERR(regmap);
+> +	}
+> +	st->regmap = regmap;
+> +
+> +	st->vref_reg = devm_regulator_get_optional(&spi->dev, "vref");
+> +	if (!IS_ERR(st->vref_reg)) {
+> +		ret = regulator_enable(st->vref_reg);
+> +		if (ret) {
+> +			dev_err(&spi->dev,
+> +				"Failed to enable vref regulators: %d\n", ret);
+> +			return ret;
+> +		}
+> +
+> +		ret = devm_add_action_or_reset(&spi->dev,
+> +					       ad5770r_disable_regulator,
+> +					       st);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret = regulator_get_voltage(st->vref_reg);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		st->vref = ret / 1000;
+> +	} else {
+> +		if (PTR_ERR(st->vref_reg) == -ENODEV) {
+> +			st->vref = AD5770R_LOW_VREF_mV;
+> +			st->internal_ref = true;
+> +		} else {
+> +			return PTR_ERR(st->vref_reg);
+> +		}
+> +	}
+> +
+> +	indio_dev->dev.parent = &spi->dev;
+> +	indio_dev->name = spi_get_device_id(spi)->name;
+> +	indio_dev->info = &ad5770r_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = ad5770r_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(ad5770r_channels);
+> +
+> +	ret = ad5770r_init(st);
+> +	if (ret < 0) {
+> +		dev_err(&spi->dev, "AD5770R init failed\n");
+> +		return ret;
+> +	}
+> +
+> +	return devm_iio_device_register(&st->spi->dev, indio_dev);
+> +}
+> +
+> +static const struct of_device_id ad5770r_of_id[] = {
+> +	{ .compatible = "adi,ad5770r", },
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(of, ad5770r_of_id);
+> +
+> +static const struct spi_device_id ad5770r_id[] = {
+> +	{ "ad5770r", 0 },
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(spi, ad5770r_id);
+> +
+> +static struct spi_driver ad5770r_driver = {
+> +	.driver = {
+> +		.name = KBUILD_MODNAME,
+> +		.of_match_table = ad5770r_of_id,
+> +	},
+> +	.probe = ad5770r_probe,
+> +	.id_table = ad5770r_id,
+> +};
+> +
+> +module_spi_driver(ad5770r_driver);
+> +
+> +MODULE_AUTHOR("Mircea Caprioru <mircea.caprioru@analog.com>");
+> +MODULE_DESCRIPTION("Analog Devices AD5770R IDAC");
+> +MODULE_LICENSE("GPL v2");
+

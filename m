@@ -2,36 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B31D7167BE7
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 12:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32A57167C19
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 12:29:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726325AbgBULTt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Feb 2020 06:19:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36090 "EHLO mail.kernel.org"
+        id S1727046AbgBUL33 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Feb 2020 06:29:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38836 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726100AbgBULTs (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 21 Feb 2020 06:19:48 -0500
+        id S1726395AbgBUL33 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 21 Feb 2020 06:29:29 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B5D5924656;
-        Fri, 21 Feb 2020 11:19:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4AF25208C4;
+        Fri, 21 Feb 2020 11:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582283988;
-        bh=cw9e2i1oq9esg/Fhj9BxsXYPufoRyCUMHajPESvIULU=;
+        s=default; t=1582284568;
+        bh=grW6OXb2vxHmgBHZt2eKZCfDKpDOAenLAQU4t1P4nz8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DmS3Mflpn6newQL1Y9L6zcjPg39oF7CoNiH5zWf6lqpvxuOP7EOxkCEp99X+6hW9i
-         h32de39PoM94dlK2rQtWHKtLaBm/9ONHNY3nu439zXppHZ4PKkZ7ewbHl0/U8iZ5qr
-         l06++sluFVpCPjZKNCp1s1QanIEd5qZp9Li0mTlo=
-Date:   Fri, 21 Feb 2020 11:19:44 +0000
+        b=QZ7Deo6vVg4qN/GtbQ6Yf4JbRoV8HxU1dDL/rTViw/scch88+RcgIS0Gu5bxKa4c3
+         ysItOkNpXFNofa8DTdnFEfQEUiblzWxOQqCkTO4T3ksOB69SRsHTTE1vihX+X2KWig
+         3KYr1+bjL0O7ZKAcAGd0JBuN3bvn2E0DO3GPMkow=
+Date:   Fri, 21 Feb 2020 11:29:22 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 02/13] iio: imu: inv_mpu6050: delete useless check
-Message-ID: <20200221111944.15246e38@archlinux>
-In-Reply-To: <20200219143958.3548-3-jmaneyrol@invensense.com>
+Subject: Re: [PATCH v2 07/13] iio: imu: inv_mpu6050: fix sleep time when
+ turning regulators on
+Message-ID: <20200221112922.7f8e98b4@archlinux>
+In-Reply-To: <20200219143958.3548-8-jmaneyrol@invensense.com>
 References: <20200219143958.3548-1-jmaneyrol@invensense.com>
-        <20200219143958.3548-3-jmaneyrol@invensense.com>
+        <20200219143958.3548-8-jmaneyrol@invensense.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,45 +42,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 19 Feb 2020 15:39:47 +0100
+On Wed, 19 Feb 2020 15:39:52 +0100
 Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
 
-> If we are here it means we have fifo enabled for 1 sensor
-> at least. And interrupt is always required for using trigger.
+> Turning vdd regulator on requires a consequent sleep for the
+> chip to power on correctly.
+> Turning vddio regulator is much faster.
 > 
 > Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Applied.
+
+I'm going to retitle this as reduced sleep time rather than fix. 
+The reason is to avoid it getting picked up as something we need
+to backport.
+
+Applied this and the ones before it I didn't reply to, to the togreg
+branch of iio.git and pushed out as testing.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 13 +++++--------
->  1 file changed, 5 insertions(+), 8 deletions(-)
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> index f9fdf4302a91..d7397705974e 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> @@ -123,14 +123,11 @@ int inv_reset_fifo(struct iio_dev *indio_dev)
->  		goto reset_fifo_fail;
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> index 3502b996671c..63cdde20df7e 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+> @@ -1201,7 +1201,7 @@ static int inv_mpu_core_enable_regulator_vddio(struct inv_mpu6050_state *st)
+>  			"Failed to enable vddio regulator: %d\n", result);
+>  	} else {
+>  		/* Give the device a little bit of time to start up. */
+> -		usleep_range(35000, 70000);
+> +		usleep_range(3000, 5000);
+>  	}
 >  
->  	/* enable interrupt */
-> -	if (st->chip_config.accl_fifo_enable ||
-> -	    st->chip_config.gyro_fifo_enable ||
-> -	    st->chip_config.magn_fifo_enable) {
-> -		result = regmap_write(st->map, st->reg->int_enable,
-> -				      INV_MPU6050_BIT_DATA_RDY_EN);
-> -		if (result)
-> -			return result;
-> -	}
-> +	result = regmap_write(st->map, st->reg->int_enable,
-> +			      INV_MPU6050_BIT_DATA_RDY_EN);
-> +	if (result)
-> +		return result;
-> +
->  	/* enable FIFO reading */
->  	d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_EN;
->  	result = regmap_write(st->map, st->reg->user_ctrl, d);
+>  	return result;
+> @@ -1321,6 +1321,7 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+>  		dev_err(dev, "Failed to enable vdd regulator: %d\n", result);
+>  		return result;
+>  	}
+> +	msleep(INV_MPU6050_POWER_UP_TIME);
+>  
+>  	result = inv_mpu_core_enable_regulator_vddio(st);
+>  	if (result) {
 

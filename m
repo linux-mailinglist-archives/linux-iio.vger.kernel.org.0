@@ -2,45 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77582167B8F
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 12:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB14167BDB
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 12:17:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727095AbgBULME (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Feb 2020 06:12:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33544 "EHLO mail.kernel.org"
+        id S1726100AbgBULRV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Feb 2020 06:17:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35622 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726976AbgBULME (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 21 Feb 2020 06:12:04 -0500
+        id S1726268AbgBULRV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 21 Feb 2020 06:17:21 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6015324650;
-        Fri, 21 Feb 2020 11:12:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C4B0A207FD;
+        Fri, 21 Feb 2020 11:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582283523;
-        bh=qleTLHvqC6n6ZmHC89oiIEZYW93ggMTdH0Kta+XWxPw=;
+        s=default; t=1582283840;
+        bh=WaJWdENvtayA6vwi1PUn0lRv0H7Aocfn8bCEGPlSLWE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Y/UcqjLQ8nU1XQFZnXYjH7T++JiqUs13v3VUkvzPtMc/KIguirzCRxrzvopfzL9jJ
-         NTkM95AnlnTS9OyQEPx6IKl8sObGJshDFGnKZII0dMAJkOUsxrvp1/e0K1zDsKayLS
-         TzgQVM4/YSO9EBDGiy0WnNbeK0RPwhXQRaWB50+A=
-Date:   Fri, 21 Feb 2020 11:11:59 +0000
+        b=x7y+hGCUyhRBj+oSULRGXl5UDDNOe2pfLeGAfqorAb2dwSr5olUb3qUuDa3O4eMmX
+         EvfIHYyTTwzj85MXbVeMwrBOkki00lLi8thKlKSFJ8UTciYJnw8bRC6GMGNgKRvFhN
+         Tk3LWMRuLlxE6dKeCKsw1qv6wQyIemXBMjEoXgOo=
+Date:   Fri, 21 Feb 2020 11:17:16 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Heidelberg <david@ixit.cz>
-Cc:     Dmitry Osipenko <digetx@gmail.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 6/7] iio: light: al3320a implement
- devm_add_action_or_reset
-Message-ID: <20200221111159.53100ccc@archlinux>
-In-Reply-To: <1581795779.188492.1@ixit.cz>
-References: <20200211191201.1049902-1-david@ixit.cz>
-        <20200211191201.1049902-7-david@ixit.cz>
-        <20200215183825.77bda8a8@archlinux>
-        <1581795779.188492.1@ixit.cz>
+To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Cc:     linux-iio@vger.kernel.org, Peter Rosin <peda@axentia.se>
+Subject: Re: [PATCH v2 01/13] iio: imu: inv_mpu6050: enable i2c aux mux
+ bypass only once
+Message-ID: <20200221111716.3de97c85@archlinux>
+In-Reply-To: <20200219143958.3548-2-jmaneyrol@invensense.com>
+References: <20200219143958.3548-1-jmaneyrol@invensense.com>
+        <20200219143958.3548-2-jmaneyrol@invensense.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -50,108 +42,146 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 15 Feb 2020 20:42:59 +0100
-David Heidelberg <david@ixit.cz> wrote:
+On Wed, 19 Feb 2020 15:39:46 +0100
+Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
 
-> Thank you for fixes, it does look good.
-> Only thing is fixes which should go into commit "iio: light: al3320a 
-> implement suspend support"[1] when into "iio: light: al3320a implement 
-> devm_add_action_or_reset" [2].
+> i2c auxiliary mux is done by analog switches. You do not need to
+> set them for every i2c transfer.
+> Just set i2c bypass bit at init and do noting in i2c de/select.
 > 
-> + return i2c_smbus_write_byte_data(client, AL3320A_REG_CONFIG, val);
-> 
-> and
-> 
-> +static SIMPLE_DEV_PM_OPS(al3320a_pm_ops, al3320a_suspend, 
-> al3320a_resume);
-> 
-> 
-> Thank you very much for merging and next time
-> I'll spend more time with review and doing final build test.
-Gah. I messed that up.  Anyhow, now fixed and pushed out with changes
-in the right patch.
+> Signed-off-by: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+OK. Given we are keeping the i2c mux stuff mostly for backwards
+compatibility I'll take this.  However, there is still a bit
+of time if Peter want's to comment before I push this out as
+a non rebasing tree.
+
+Please make sure to cc peter on anything touching i2c mux.
+
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c | 71 +++++++++--------------
+>  1 file changed, 28 insertions(+), 43 deletions(-)
 > 
-> David
-> 
-> [1] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=d74856400b2dcb2e0eab2132c779408809566431
-> [2] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=4b1b42bcd993258628fabc5e35f20a202b1e9f7b
-> 
-> 
-> On Sat, Feb 15, 2020 at 18:38, Jonathan Cameron <jic23@kernel.org> 
-> wrote:
-> > On Tue, 11 Feb 2020 20:12:00 +0100
-> > David Heidelberg <david@ixit.cz> wrote:
-> >   
-> >>  Use devm_add_action_or_reset to automatically disable the device
-> >>  and allow you to get rid of the remove function entirely.
-> >> 
-> >>  Signed-off-by: David Heidelberg <david@ixit.cz>  
-> > 
-> > This doesn't build as is.  I've fixed up but please take a close
-> > look at the result.
-> >   
-> >>  ---
-> >>   drivers/iio/light/al3320a.c | 20 ++++++++++++++------
-> >>   1 file changed, 14 insertions(+), 6 deletions(-)
-> >> 
-> >>  diff --git a/drivers/iio/light/al3320a.c 
-> >> b/drivers/iio/light/al3320a.c
-> >>  index affa4c6c199a..49e73e24fff6 100644
-> >>  --- a/drivers/iio/light/al3320a.c
-> >>  +++ b/drivers/iio/light/al3320a.c
-> >>  @@ -87,6 +87,13 @@ static int al3320a_set_pwr(struct i2c_client 
-> >> *client, bool pwr)
-> >>   	return i2c_smbus_write_byte_data(data->client, 
-> >> AL3320A_REG_CONFIG, val);
-> >>   }
-> >> 
-> >>  +static void al3320a_set_pwr_off(void *_data)
-> >>  +{
-> >>  +	struct al3320a_data *data = _data;
-> >>  +
-> >>  +	al3320a_set_pwr(data->client, false);
-> >>  +}
-> >>  +
-> >>   static int al3320a_init(struct al3320a_data *data)
-> >>   {
-> >>   	int ret;
-> >>  @@ -206,12 +213,14 @@ static int al3320a_probe(struct i2c_client 
-> >> *client,
-> >>   		dev_err(&client->dev, "al3320a chip init failed\n");
-> >>   		return ret;
-> >>   	}
-> >>  -	return devm_iio_device_register(&client->dev, indio_dev);
-> >>  -}
-> >> 
-> >>  -static int al3320a_remove(struct i2c_client *client)
-> >>  -{
-> >>  -	return al3320a_set_pwr(client, false);
-> >>  +	ret = devm_add_action_or_reset(&client->dev,
-> >>  +					al3320a_set_pwr_off,
-> >>  +					data);
-> >>  +	if (ret < 0)
-> >>  +		return ret;
-> >>  +
-> >>  +	return devm_iio_device_register(&client->dev, indio_dev);
-> >>   }
-> >> 
-> >>   static int __maybe_unused al3320a_suspend(struct device *dev)
-> >>  @@ -238,7 +247,6 @@ static struct i2c_driver al3320a_driver = {
-> >>   		.pm = &al3320a_pm_ops,
-> >>   	},
-> >>   	.probe		= al3320a_probe,
-> >>  -	.remove		= al3320a_remove,
-> >>   	.id_table	= al3320a_id,
-> >>   };
-> >>   
-> >   
-> 
-> 
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> index 1363d3776523..24df880248f2 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> @@ -20,38 +20,6 @@ static const struct regmap_config inv_mpu_regmap_config = {
+>  
+>  static int inv_mpu6050_select_bypass(struct i2c_mux_core *muxc, u32 chan_id)
+>  {
+> -	struct iio_dev *indio_dev = i2c_mux_priv(muxc);
+> -	struct inv_mpu6050_state *st = iio_priv(indio_dev);
+> -	int ret;
+> -
+> -	mutex_lock(&st->lock);
+> -
+> -	ret = inv_mpu6050_set_power_itg(st, true);
+> -	if (ret)
+> -		goto error_unlock;
+> -
+> -	ret = regmap_write(st->map, st->reg->int_pin_cfg,
+> -			   st->irq_mask | INV_MPU6050_BIT_BYPASS_EN);
+> -
+> -error_unlock:
+> -	mutex_unlock(&st->lock);
+> -
+> -	return ret;
+> -}
+> -
+> -static int inv_mpu6050_deselect_bypass(struct i2c_mux_core *muxc, u32 chan_id)
+> -{
+> -	struct iio_dev *indio_dev = i2c_mux_priv(muxc);
+> -	struct inv_mpu6050_state *st = iio_priv(indio_dev);
+> -
+> -	mutex_lock(&st->lock);
+> -
+> -	/* It doesn't really matter if any of the calls fail */
+> -	regmap_write(st->map, st->reg->int_pin_cfg, st->irq_mask);
+> -	inv_mpu6050_set_power_itg(st, false);
+> -
+> -	mutex_unlock(&st->lock);
+> -
+>  	return 0;
+>  }
+>  
+> @@ -79,19 +47,20 @@ static bool inv_mpu_i2c_aux_bus(struct device *dev)
+>  	}
+>  }
+>  
+> -/*
+> - * MPU9xxx magnetometer support requires to disable i2c auxiliary bus support.
+> - * To ensure backward compatibility with existing setups, do not disable
+> - * i2c auxiliary bus if it used.
+> - * Check for i2c-gate node in devicetree and set magnetometer disabled.
+> - * Only MPU6500 is supported by ACPI, no need to check.
+> - */
+> -static int inv_mpu_magn_disable(struct iio_dev *indio_dev)
+> +static int inv_mpu_i2c_aux_setup(struct iio_dev *indio_dev)
+>  {
+>  	struct inv_mpu6050_state *st = iio_priv(indio_dev);
+>  	struct device *dev = indio_dev->dev.parent;
+>  	struct device_node *mux_node;
+> +	int ret;
+>  
+> +	/*
+> +	 * MPU9xxx magnetometer support requires to disable i2c auxiliary bus.
+> +	 * To ensure backward compatibility with existing setups, do not disable
+> +	 * i2c auxiliary bus if it used.
+> +	 * Check for i2c-gate node in devicetree and set magnetometer disabled.
+> +	 * Only MPU6500 is supported by ACPI, no need to check.
+> +	 */
+>  	switch (st->chip_type) {
+>  	case INV_MPU9150:
+>  	case INV_MPU9250:
+> @@ -107,7 +76,24 @@ static int inv_mpu_magn_disable(struct iio_dev *indio_dev)
+>  		break;
+>  	}
+>  
+> +	/* enable i2c bypass when using i2c auxiliary bus */
+> +	if (inv_mpu_i2c_aux_bus(dev)) {
+> +		ret = inv_mpu6050_set_power_itg(st, true);
+> +		if (ret)
+> +			return ret;
+> +		ret = regmap_write(st->map, st->reg->int_pin_cfg,
+> +				   st->irq_mask | INV_MPU6050_BIT_BYPASS_EN);
+> +		if (ret)
+> +			goto error;
+> +		ret = inv_mpu6050_set_power_itg(st, false);
+> +		if (ret)
+> +			goto error;
+> +	}
+> +
+>  	return 0;
+> +error:
+> +	inv_mpu6050_set_power_itg(st, false);
+> +	return ret;
+>  }
+>  
+>  /**
+> @@ -151,7 +137,7 @@ static int inv_mpu_probe(struct i2c_client *client,
+>  	}
+>  
+>  	result = inv_mpu_core_probe(regmap, client->irq, name,
+> -				    inv_mpu_magn_disable, chip_type);
+> +				    inv_mpu_i2c_aux_setup, chip_type);
+>  	if (result < 0)
+>  		return result;
+>  
+> @@ -160,8 +146,7 @@ static int inv_mpu_probe(struct i2c_client *client,
+>  		/* declare i2c auxiliary bus */
+>  		st->muxc = i2c_mux_alloc(client->adapter, &client->dev,
+>  					 1, 0, I2C_MUX_LOCKED | I2C_MUX_GATE,
+> -					 inv_mpu6050_select_bypass,
+> -					 inv_mpu6050_deselect_bypass);
+> +					 inv_mpu6050_select_bypass, NULL);
+>  		if (!st->muxc)
+>  			return -ENOMEM;
+>  		st->muxc->priv = dev_get_drvdata(&client->dev);
 

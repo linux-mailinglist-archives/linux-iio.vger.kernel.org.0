@@ -2,137 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96DB1167D19
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 13:07:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7EC4167D1D
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 13:09:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727352AbgBUMH1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Feb 2020 07:07:27 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:4650 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727053AbgBUMH0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Feb 2020 07:07:26 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01LC0PKc028503;
-        Fri, 21 Feb 2020 07:07:25 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2y8uduq0k7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 21 Feb 2020 07:07:24 -0500
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 01LC7Nkk032415
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 21 Feb 2020 07:07:23 -0500
-Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 21 Feb 2020 04:07:21 -0800
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
- SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 21 Feb 2020 04:06:32 -0800
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Fri, 21 Feb 2020 04:07:21 -0800
-Received: from tachici-Precision-5530.ad.analog.com ([10.48.65.175])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 01LC7H1L018878;
-        Fri, 21 Feb 2020 07:07:18 -0500
-From:   Alexandru Tachici <alexandru.tachici@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2] iio: industrialio-core: Fix debugfs read
-Date:   Fri, 21 Feb 2020 14:06:55 +0200
-Message-ID: <20200221120655.20252-1-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726909AbgBUMJc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Feb 2020 07:09:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51348 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726410AbgBUMJb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 21 Feb 2020 07:09:31 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9FBE9207FD;
+        Fri, 21 Feb 2020 12:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582286971;
+        bh=rCCt3hQJXbQ3ymL3KjHXQb8VsrsS0ocTxzLO94BzgC4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dndglOlu81JK+OfGO5maXEAQ8JgiNn/iWQ6fHVDgnQp0t1hauKigKnmGapyydPVch
+         JOd4u3L6Bawupx5awsfhGlw+1c3MmeUzZeI2IHHXxrS74Lu9tVrjMW4y2zMAF77Nvk
+         24KWgwii9Sp0ij6LnIpyOTRfIBk5q+Enq9yrlgsY=
+Date:   Fri, 21 Feb 2020 12:09:27 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PATCH v7 1/3] iio: chemical: atlas-sensor: allow probe without
+ interrupt line
+Message-ID: <20200221120927.4f7db7db@archlinux>
+In-Reply-To: <20200218034239.135619-2-matt.ranostay@konsulko.com>
+References: <20200218034239.135619-1-matt.ranostay@konsulko.com>
+        <20200218034239.135619-2-matt.ranostay@konsulko.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-21_03:2020-02-19,2020-02-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 impostorscore=0 spamscore=0 suspectscore=0 mlxlogscore=841
- phishscore=0 mlxscore=0 priorityscore=1501 clxscore=1015 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002210093
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Currently iio_debugfs_read_reg calls debugfs_reg_access
-every time it is ran. Reading the same hardware register
-multiple times during the same reading of a debugfs file
-can cause unintended effects.
+On Mon, 17 Feb 2020 19:42:37 -0800
+Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 
-For example for each: cat iio:device0/direct_reg_access
-the file_operations.read function will be called at least
-twice. First will return the full length of the string in
-bytes  and the second will return 0.
+> Sensors don't actually need a interrupt line to give valid readings,
+> and can triggered with CONFIG_IIO_HRTIMER_TRIGGER as well. Remove
+> the required check for interrupt, and continue along in the probe
+> function.
+> 
+> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Hmm. I'll apply this version, but I'm still not really happy with the logic.
+That interrupt enable should occur in the trigger related callbacks (as it's
+to do with the trigger) rather than in the buffer ones.  The boundary between
+the two is blurred when a device is only used with it's own trigger so this
+only becomes an issue once we have external triggers being supported.
 
-This patch makes iio_debugfs_read_reg to call debugfs_reg_access
-only when the user's buffer position (*ppos) is 0. (meaning
-it is the beginning of a new reading of the debugfs file).
+This is a more minimal change so perhaps you can look at whether the logic
+can be tidied up later.  
 
-Fixes: e553f182d55b ("staging: iio: core: Introduce debugfs support, add support for direct register access")
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
----
- drivers/iio/industrialio-core.c | 15 +++++++++++----
- include/linux/iio/iio.h         |  2 ++
- 2 files changed, 13 insertions(+), 4 deletions(-)
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to play with it.
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 65ff0d067018..c4d5104934fc 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -301,11 +301,14 @@ static ssize_t iio_debugfs_read_reg(struct file *file, char __user *userbuf,
- 			      size_t count, loff_t *ppos)
- {
- 	struct iio_dev *indio_dev = file->private_data;
--	char buf[20];
- 	unsigned val = 0;
--	ssize_t len;
- 	int ret;
- 
-+	if (*ppos > 0)
-+		return simple_read_from_buffer(userbuf, count, ppos,
-+					       indio_dev->read_buf,
-+					       indio_dev->read_buf_len);
-+
- 	ret = indio_dev->info->debugfs_reg_access(indio_dev,
- 						  indio_dev->cached_reg_addr,
- 						  0, &val);
-@@ -314,9 +317,13 @@ static ssize_t iio_debugfs_read_reg(struct file *file, char __user *userbuf,
- 		return ret;
- 	}
- 
--	len = snprintf(buf, sizeof(buf), "0x%X\n", val);
-+	indio_dev->read_buf_len = snprintf(indio_dev->read_buf,
-+					   sizeof(indio_dev->read_buf),
-+					   "0x%X\n", val);
- 
--	return simple_read_from_buffer(userbuf, count, ppos, buf, len);
-+	return simple_read_from_buffer(userbuf, count, ppos,
-+				       indio_dev->read_buf,
-+				       indio_dev->read_buf_len);
- }
- 
- static ssize_t iio_debugfs_write_reg(struct file *file,
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 862ce0019eba..eed58ed2f368 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -568,6 +568,8 @@ struct iio_dev {
- #if defined(CONFIG_DEBUG_FS)
- 	struct dentry			*debugfs_dentry;
- 	unsigned			cached_reg_addr;
-+	char				read_buf[20];
-+	unsigned int			read_buf_len;
- #endif
- };
- 
--- 
-2.20.1
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/chemical/atlas-sensor.c | 33 ++++++++++++++++-------------
+>  1 file changed, 18 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
+> index 2f0a6fed2589..d95818b74770 100644
+> --- a/drivers/iio/chemical/atlas-sensor.c
+> +++ b/drivers/iio/chemical/atlas-sensor.c
+> @@ -76,6 +76,7 @@ struct atlas_data {
+>  	struct atlas_device *chip;
+>  	struct regmap *regmap;
+>  	struct irq_work work;
+> +	unsigned int interrupt_enabled;
+>  
+>  	__be32 buffer[6]; /* 96-bit data + 32-bit pad + 64-bit timestamp */
+>  };
+> @@ -304,6 +305,9 @@ static int atlas_set_powermode(struct atlas_data *data, int on)
+>  
+>  static int atlas_set_interrupt(struct atlas_data *data, bool state)
+>  {
+> +	if (!data->interrupt_enabled)
+> +		return 0;
+> +
+>  	return regmap_update_bits(data->regmap, ATLAS_REG_INT_CONTROL,
+>  				  ATLAS_REG_INT_CONTROL_EN,
+>  				  state ? ATLAS_REG_INT_CONTROL_EN : 0);
+> @@ -572,11 +576,6 @@ static int atlas_probe(struct i2c_client *client,
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (client->irq <= 0) {
+> -		dev_err(&client->dev, "no valid irq defined\n");
+> -		return -EINVAL;
+> -	}
+> -
+>  	ret = chip->calibration(data);
+>  	if (ret)
+>  		return ret;
+> @@ -596,16 +595,20 @@ static int atlas_probe(struct i2c_client *client,
+>  
+>  	init_irq_work(&data->work, atlas_work_handler);
+>  
+> -	/* interrupt pin toggles on new conversion */
+> -	ret = devm_request_threaded_irq(&client->dev, client->irq,
+> -					NULL, atlas_interrupt_handler,
+> -					IRQF_TRIGGER_RISING |
+> -					IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+> -					"atlas_irq",
+> -					indio_dev);
+> -	if (ret) {
+> -		dev_err(&client->dev, "request irq (%d) failed\n", client->irq);
+> -		goto unregister_buffer;
+> +	if (client->irq > 0) {
+> +		/* interrupt pin toggles on new conversion */
+> +		ret = devm_request_threaded_irq(&client->dev, client->irq,
+> +				NULL, atlas_interrupt_handler,
+> +				IRQF_TRIGGER_RISING |
+> +				IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+> +				"atlas_irq",
+> +				indio_dev);
+> +
+> +		if (ret)
+> +			dev_warn(&client->dev,
+> +				"request irq (%d) failed\n", client->irq);
+> +		else
+> +			data->interrupt_enabled = 1;
+>  	}
+>  
+>  	ret = atlas_set_powermode(data, 1);
 

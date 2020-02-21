@@ -2,192 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61E82168200
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 16:40:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C36416827D
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2020 16:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728249AbgBUPkm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Feb 2020 10:40:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34230 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728198AbgBUPkm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 21 Feb 2020 10:40:42 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 067F6206E2;
-        Fri, 21 Feb 2020 15:40:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582299641;
-        bh=Jh0r14Sx0oyGUoFb07Pch7hxaY0df4hPW5J4KmbVf+w=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nkYS1ez+jCG3vnAhzYgYvZwRG+QBxMZJ02Gl2bf/ILueQeUKxyKvHIfpSVZmZOt9m
-         vxRkfQwgYeu1H30w38l0HAyJZmWdhbqYGaUn4FTa5T1VNZ1t7XiS4DlgK8tfESq7RN
-         JKflXBTSeEsaR1vi1hQoXy1c63xt5KanPnHUisK8=
-Date:   Fri, 21 Feb 2020 15:40:37 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Maxime =?UTF-8?B?Um91c3Npbi1Cw6lsYW5nZXI=?= 
-        <maxime.roussinbelanger@gmail.com>
-Cc:     linux-iio@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, Simon Goyette <simon.goyette@gmail.com>,
-        Guillaume Champagne <champagne.guillaume.c@gmail.com>
-Subject: Re: [PATCH v2] iio: si1133: read 24-bit signed integer for
- measurement
-Message-ID: <20200221154037.6445d303@archlinux>
-In-Reply-To: <20200219174008.21429-1-maxime.roussinbelanger@gmail.com>
-References: <20200219174008.21429-1-maxime.roussinbelanger@gmail.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1728668AbgBUP7j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Feb 2020 10:59:39 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:16992 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728235AbgBUP7j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Feb 2020 10:59:39 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01LFiFn3018109;
+        Fri, 21 Feb 2020 10:59:37 -0500
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2177.outbound.protection.outlook.com [104.47.58.177])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2y8ucu7juy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Feb 2020 10:59:36 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nv6gT8d3VCZ3pisH52iOjLlpyfUI5NJqOpDdeHQ2ApU2VikQkWwJpnXqoI08nx0+pRjnUkywE4Tqtdwu/rr7xeXmIzbIHnHf8lYDqE5gRV3gJUrBcM5Cq3PW5EtKRpR79b8cnl3Bo11Oq1/ENVW5Z4FWVeymylLxVy+IAfHx0eC71KzyH9h7va9HKcnPc9lYRluKs/kIYZ95oFTs35CSj1cqZDK7Oq2CgG9vneftgyl2czwKTUh7GoN7sOlC5j/LsDTJGig9DM5AROtpP+80EI6kcGD/XHm58a/25Z++IeqkLlUbkOC+h93KTDovcHCkllHE22elEDVHbdlVU1uyYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=98QCTJjbVsN2gR3Op8+mpd/gmOdTs1fDfBxqky5ZbPQ=;
+ b=l6XnNwLFfUfmMaRw/uhK3vRzOLgiukObEkQASFqa7ATJRqf1gTurm24kilaVGzwY888F8Qygd7nY31jp03uhLT9aocBQvDltkGDptNyXShmKw3Z53UhdqTQzOXEXmya5OfDhk6cvOg4QvlnB5E9fOvpgBYHPuyYu0WIjv9pXHwu6KWfIp8IQqV7p67/8S6fwSCu+/fyLVUIrJEvCktLPXztp5kGDsUMYkgzMtyqfv/8jrae88Dfvzk5JFi5B8w9FYrvbV3bsebCvNcS+T3Nz79HEKmdnU9dB4pjWAxWM9kl4fPgC/PZ2JNiCTwPWw+4UatCc1QPxEZCXFslYudXckw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=98QCTJjbVsN2gR3Op8+mpd/gmOdTs1fDfBxqky5ZbPQ=;
+ b=79ii5LQVfo2k9jc+ttyJl/4c5QRbuocOFVTZtUJg9FtaSuM8f4GKpjxTNcokiOBSsw+X/oZ/l+j+q48l206CdPJThV8X2gIdyT+wqtuRAaaBbiFn3jgPAROdps+ABJBUAWPNnfKjt5gpmDuFzexIyCAgHRkB1Z7EoQTW9rS76mw=
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com (2603:10b6:610:90::24)
+ by CH2PR03MB5317.namprd03.prod.outlook.com (2603:10b6:610:9c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2729.25; Fri, 21 Feb
+ 2020 15:59:35 +0000
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::edf0:3922:83f0:3056]) by CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::edf0:3922:83f0:3056%4]) with mapi id 15.20.2729.033; Fri, 21 Feb 2020
+ 15:59:35 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "jic23@kernel.org" <jic23@kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 1/3] iio: imu: adis: add doc-string for 'adis' struct
+Thread-Topic: [PATCH 1/3] iio: imu: adis: add doc-string for 'adis' struct
+Thread-Index: AQHV6Kyqh2DoHgggAUWjgbyiyGgv6Kgln5YAgAAu4gA=
+Date:   Fri, 21 Feb 2020 15:59:35 +0000
+Message-ID: <414d7e293b75e556ce857e0ce985a0f89fb24ffd.camel@analog.com>
+References: <20200221114943.2056-1-alexandru.ardelean@analog.com>
+         <20200221131146.2213e8e1@archlinux>
+In-Reply-To: <20200221131146.2213e8e1@archlinux>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: e03b09dc-414e-413d-667e-08d7b6e70c07
+x-ms-traffictypediagnostic: CH2PR03MB5317:
+x-microsoft-antispam-prvs: <CH2PR03MB5317C2AABDA2ED3F819DBAEDF9120@CH2PR03MB5317.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-forefront-prvs: 0320B28BE1
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(396003)(366004)(136003)(39860400002)(376002)(199004)(189003)(26005)(186003)(81156014)(6916009)(2906002)(4326008)(81166006)(6506007)(6486002)(8676002)(5660300002)(71200400001)(36756003)(54906003)(91956017)(76116006)(6512007)(66476007)(478600001)(66446008)(86362001)(316002)(64756008)(8936002)(66556008)(2616005)(66946007);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5317;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Y2HVrWNkRx0HVrLJdHKHtkQC+fbJMph5igCvkxl6AKfd4UVoCN4MO5SyVbfLpJz+J5XZ/Z2LU1qDaAr5Csl42cGByDrh28P3fwVCr1m2607qnxG8SbMMfb/o0SIWA30+fR9GMtfPDAe74oqkP7P1rSEInDNOfndV8Ievh9tFdWoFSFJIvgqbbziPCLRbZ/H8I7v611gQobWFWXTr8OGIwBSQMTaMStiOYQV/hrwwbJ2KjHWJsbMaZNBBCgutLIlf+JbJX86QevXYU/UowTWIpxH5Jah6ahB2mJ56XRSVcs+lgt0zyzGE+HvFhaIIRlltnLsY08wX7tktA4U/gnANJhmj4kPZexaTbn1wB84OXIo+A32hZ39zGlJnFhWjpIezVqoRmIbu6puMZa+r/6nhYfDvlye4mAg9HHATaSsSv/WmRak33gGUCUafPc9fe2qH
+x-ms-exchange-antispam-messagedata: jIrwcK+7d8jYVqx9dR59JIsI4hatASNtQmVvB5naDAaPGCE6z1E1wrHgbYqFN9lTXsgdLIc/cr+fZgKlEy5yxr5WnsOICNb3A3ghfXL7a3DxyNQelP1kjOobjfeIxxExYx7IXHSoPn8a1umwEHIYwg==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <03275B5AD207B345B40FD8F7AB89A246@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e03b09dc-414e-413d-667e-08d7b6e70c07
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2020 15:59:35.1179
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: cmWUHfmmijqzSqJUbTeNLKc8B6CYPkO26M3WM+ldBWuwlXuOuMuzuG3kWfULJLEBVa2tyi4pjJPkMHZ6NxlItlyKBqsd7jbTvFliK80xbkE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5317
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-21_05:2020-02-21,2020-02-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ suspectscore=0 mlxscore=0 clxscore=1015 phishscore=0 priorityscore=1501
+ mlxlogscore=999 lowpriorityscore=0 adultscore=0 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002210119
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 19 Feb 2020 12:40:08 -0500
-Maxime Roussin-B=C3=A9langer <maxime.roussinbelanger@gmail.com> wrote:
-
-> The chip is configured in 24 bit mode. The values read from
-> it must always be treated as is. This fixes the issue by
-> replacing the previous 16 bits value by a 24 bits buffer.
->=20
-> This changes affects the value output by previous version of
-> the driver, since the least significant byte was missing.
-> The upper half of 16 bit values previously output are now
-> the upper half of a 24 bit value.
->=20
-> Fixes: e01e7eaf37d8 ("iio: light: introduce si1133")
->=20
-> Reported-by: Simon Goyette <simon.goyette@gmail.com>
-> Co-authored-by: Guillaume Champagne <champagne.guillaume.c@gmail.com>
-> Signed-off-by: Maxime Roussin-B=C3=A9langer <maxime.roussinbelanger@gmail=
-.com>
-> Signed-off-by: Guillaume Champagne <champagne.guillaume.c@gmail.com>
-
-Given this will have significant potential userspace impact, I'm not
-going to queue it up to go in as a fix but instead give it some time
-until the next merge window.
-
-Thanks,
-
-Jonathan
-
-> ---
-> Changes in v2:
-> 	* Add missing `Fixes` tag
-> 	* Add Reported-by
-> 	* Add missing signed-off-by from co-author.
->=20
-> drivers/iio/light/si1133.c | 37 ++++++++++++++++++++++++-------------
->  1 file changed, 24 insertions(+), 13 deletions(-)
->=20
-> diff --git a/drivers/iio/light/si1133.c b/drivers/iio/light/si1133.c
-> index 777b1a0848c9..509af982e185 100644
-> --- a/drivers/iio/light/si1133.c
-> +++ b/drivers/iio/light/si1133.c
-> @@ -102,6 +102,9 @@
->  #define SI1133_INPUT_FRACTION_LOW	15
->  #define SI1133_LUX_OUTPUT_FRACTION	12
->  #define SI1133_LUX_BUFFER_SIZE		9
-> +#define SI1133_MEASURE_BUFFER_SIZE	3
-> +
-> +#define SI1133_SIGN_BIT_INDEX 23
-> =20
->  static const int si1133_scale_available[] =3D {
->  	1, 2, 4, 8, 16, 32, 64, 128};
-> @@ -234,13 +237,13 @@ static const struct si1133_lux_coeff lux_coeff =3D {
->  	}
->  };
-> =20
-> -static int si1133_calculate_polynomial_inner(u32 input, u8 fraction, u16=
- mag,
-> +static int si1133_calculate_polynomial_inner(s32 input, u8 fraction, u16=
- mag,
->  					     s8 shift)
->  {
->  	return ((input << fraction) / mag) << shift;
->  }
-> =20
-> -static int si1133_calculate_output(u32 x, u32 y, u8 x_order, u8 y_order,
-> +static int si1133_calculate_output(s32 x, s32 y, u8 x_order, u8 y_order,
->  				   u8 input_fraction, s8 sign,
->  				   const struct si1133_coeff *coeffs)
->  {
-> @@ -276,7 +279,7 @@ static int si1133_calculate_output(u32 x, u32 y, u8 x=
-_order, u8 y_order,
->   * The algorithm is from:
->   * https://siliconlabs.github.io/Gecko_SDK_Doc/efm32zg/html/si1133_8c_so=
-urce.html#l00716
->   */
-> -static int si1133_calc_polynomial(u32 x, u32 y, u8 input_fraction, u8 nu=
-m_coeff,
-> +static int si1133_calc_polynomial(s32 x, s32 y, u8 input_fraction, u8 nu=
-m_coeff,
->  				  const struct si1133_coeff *coeffs)
->  {
->  	u8 x_order, y_order;
-> @@ -614,23 +617,24 @@ static int si1133_measure(struct si1133_data *data,
->  {
->  	int err;
-> =20
-> -	__be16 resp;
-> +	u8 buffer[SI1133_MEASURE_BUFFER_SIZE];
-> =20
->  	err =3D si1133_set_adcmux(data, 0, chan->channel);
->  	if (err)
->  		return err;
-> =20
->  	/* Deactivate lux measurements if they were active */
->  	err =3D si1133_set_chlist(data, BIT(0));
->  	if (err)
->  		return err;
-> =20
-> -	err =3D si1133_bulk_read(data, SI1133_REG_HOSTOUT(0), sizeof(resp),
-> -			       (u8 *)&resp);
-> +	err =3D si1133_bulk_read(data, SI1133_REG_HOSTOUT(0), sizeof(buffer),
-> +			       buffer);
->  	if (err)
->  		return err;
-> =20
-> -	*val =3D be16_to_cpu(resp);
-> +	*val =3D sign_extend32((buffer[0] << 16) | (buffer[1] << 8) | buffer[2],
-> +			     SI1133_SIGN_BIT_INDEX);
-> =20
->  	return err;
->  }
-> @@ -704,9 +708,9 @@ static int si1133_get_lux(struct si1133_data *data, i=
-nt *val)
->  {
->  	int err;
->  	int lux;
-> -	u32 high_vis;
-> -	u32 low_vis;
-> -	u32 ir;
-> +	s32 high_vis;
-> +	s32 low_vis;
-> +	s32 ir;
->  	u8 buffer[SI1133_LUX_BUFFER_SIZE];
-> =20
->  	/* Activate lux channels */
-> @@ -719,9 +723,16 @@ static int si1133_get_lux(struct si1133_data *data, =
-int *val)
->  	if (err)
->  		return err;
-> =20
-> -	high_vis =3D (buffer[0] << 16) | (buffer[1] << 8) | buffer[2];
-> -	low_vis =3D (buffer[3] << 16) | (buffer[4] << 8) | buffer[5];
-> -	ir =3D (buffer[6] << 16) | (buffer[7] << 8) | buffer[8];
-> +	high_vis =3D
-> +		sign_extend32((buffer[0] << 16) | (buffer[1] << 8) | buffer[2],
-> +			      SI1133_SIGN_BIT_INDEX);
-> +
-> +	low_vis =3D
-> +		sign_extend32((buffer[3] << 16) | (buffer[4] << 8) | buffer[5],
-> +			      SI1133_SIGN_BIT_INDEX);
-> +
-> +	ir =3D sign_extend32((buffer[6] << 16) | (buffer[7] << 8) | buffer[8],
-> +			   SI1133_SIGN_BIT_INDEX);
-> =20
->  	if (high_vis > SI1133_ADC_THRESHOLD || ir > SI1133_ADC_THRESHOLD)
->  		lux =3D si1133_calc_polynomial(high_vis, ir,
-
+T24gRnJpLCAyMDIwLTAyLTIxIGF0IDEzOjExICswMDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Og0KPiBPbiBGcmksIDIxIEZlYiAyMDIwIDEzOjQ5OjQxICswMjAwDQo+IEFsZXhhbmRydSBBcmRl
+bGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+IHdyb3RlOg0KPiANCj4gPiBUaGlz
+IGNoYW5nZSBhZGRzIGEgZG9jLXN0cmluZyBmb3IgdGhlICdhZGlzJyBzdHJ1Y3QuIEl0IGRldGFp
+bHMgdGhlIGZpZWxkcw0KPiA+IGFuZCB0aGVpciByb2xlcy4NCj4gPiANCj4gPiBTaWduZWQtb2Zm
+LWJ5OiBBbGV4YW5kcnUgQXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPg0K
+PiA+IC0tLQ0KPiA+ICBpbmNsdWRlL2xpbnV4L2lpby9pbXUvYWRpcy5oIHwgMTQgKysrKysrKysr
+KysrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBk
+aWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9paW8vaW11L2FkaXMuaCBiL2luY2x1ZGUvbGludXgv
+aWlvL2ltdS9hZGlzLmgNCj4gPiBpbmRleCBhYzdjZmQwNzM4MDQuLjA3ODdhM2FhYmQwNSAxMDA2
+NDQNCj4gPiAtLS0gYS9pbmNsdWRlL2xpbnV4L2lpby9pbXUvYWRpcy5oDQo+ID4gKysrIGIvaW5j
+bHVkZS9saW51eC9paW8vaW11L2FkaXMuaA0KPiA+IEBAIC03Myw2ICs3MywyMCBAQCBzdHJ1Y3Qg
+YWRpc19kYXRhIHsNCj4gPiAgCWJvb2wgaGFzX3BhZ2luZzsNCj4gPiAgfTsNCj4gPiAgDQo+ID4g
+Ky8qKg0KPiA+ICsgKiBzdHJ1Y3QgYWRpcyAtIEFESVMgZGV2aWNlIGluc3RhbmNlIGRhdGENCj4g
+PiArICogQHNwaTogUmVmZXJlbmNlIHRvIFNQSSBkZXZpY2Ugd2hpY2ggb3ducyB0aGlzIEFESVMg
+SUlPIGRldmljZQ0KPiA+ICsgKiBAdHJpZzogSUlPIHRyaWdnZXIgb2JqZWN0IGRhdGENCj4gPiAr
+ICogQGRhdGE6IEFESVMgY2hpcCB2YXJpYW50IHNwZWNpZmljIGRhdGENCj4gPiArICogQGJ1cnN0
+OiBBRElTIGJ1cnN0IHRyYW5zZmVyIGluZm9ybWF0aW9uDQo+ID4gKyAqIEBzdGF0ZV9sb2NrOiBM
+b2NrIHVzZWQgYnkgdGhlIGRldmljZSB0byBwcm90ZWN0IHN0YXRlDQo+ID4gKyAqIEBtc2c6IFNQ
+SSBtZXNzYWdlIG9iamVjdA0KPiA+ICsgKiBAeGZlcjogU1BJIHRyYW5zZmVyIG9iamVjdHMgdG8g
+YmUgdXNlZCBmb3IgYSBAbXNnDQo+ID4gKyAqIEBjdXJyZW50X3BhZ2U6IFNvbWUgQURJUyBkZXZp
+Y2VzIGhhdmUgcmVnaXN0ZXJzLCB0aGlzIHNlbGVjdHMgY3VycmVudA0KPiA+IHBhZ2UNCj4gPiAr
+ICogQGJ1ZmZlcjogRGF0YSBidWZmZXIgZm9yIGluZm9ybWF0aW9uIHJlYWQgZnJvbSB0aGUgZGV2
+aWNlDQo+ID4gKyAqIEB0eDogQ2FjaGVsaW5lIGFsaWduZWQgVFggYnVmZmVyIGZvciBTUEkgdHJh
+bnNmZXJzDQo+ID4gKyAqIEByeDogQ2FjaGVsaW5lIGFsaWduZWQgUlggYnVmZmVyIGZvciBTUEkg
+dHJhbnNmZXJzDQo+IA0KPiBUaGlzIGxhc3Qgb25lIGlzbid0IHRydWUuLiANCg0KT2ggcmlnaHQu
+DQpJIG5vdGljZWQgdGhpcyBhdCBzb21lIHBvaW50LCB0aGVuIGZvcmdvdCBhYm91dCBpdC4NClsg
+VGhlICJqb3lzIiBvZiBtdWx0aS10YXNraW5nOyBzb3JyeSBhYm91dCBpdCA6KSBdDQpJIGd1ZXNz
+IEkgc2hvdWxkIGFsc28gYWRkIGEgcGF0Y2ggaW4gdGhpcyBzZXJpZXMgbWFraW5nIGl0IGNhY2hl
+bGluZS1hbGlnbmVkLg0KSSBkb24ndCBzZWUgYSByZWFzb24gd2h5IG5vdC10byBbdW5sZXNzIEkg
+YW0gbWlzdW5kZXJzdGFuZ2luZyBzb21ldGhpbmddDQoNCg0KPiANCj4gPiArICovDQo+ID4gIHN0
+cnVjdCBhZGlzIHsNCj4gPiAgCXN0cnVjdCBzcGlfZGV2aWNlCSpzcGk7DQo+ID4gIAlzdHJ1Y3Qg
+aWlvX3RyaWdnZXIJKnRyaWc7DQo=

@@ -2,108 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FADD16AE44
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2020 19:00:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A80FD16AF02
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2020 19:27:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727426AbgBXSAJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Feb 2020 13:00:09 -0500
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2460 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726208AbgBXSAJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 24 Feb 2020 13:00:09 -0500
-Received: from lhreml701-cah.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 48F3698E909D9259F339;
-        Mon, 24 Feb 2020 18:00:07 +0000 (GMT)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- lhreml701-cah.china.huawei.com (10.201.108.42) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Mon, 24 Feb 2020 18:00:06 +0000
-Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Mon, 24 Feb
- 2020 18:00:06 +0000
-Date:   Mon, 24 Feb 2020 18:00:03 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
-CC:     <linux-iio@vger.kernel.org>,
-        <device-drivers-devel@blackfin.uclinux.org>
-Subject: Re: IIO staging TODO
-Message-ID: <20200224180003.00007d63@Huawei.com>
-In-Reply-To: <20200223090609.GA5222@SARKAR>
-References: <20200223090609.GA5222@SARKAR>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727756AbgBXS07 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Feb 2020 13:26:59 -0500
+Received: from mail.andi.de1.cc ([85.214.55.253]:59030 "EHLO mail.andi.de1.cc"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727711AbgBXS07 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 24 Feb 2020 13:26:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
+        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=dW1HMa4rYjoRN6o4qGmlHnnb84Fh1VUVfvXVgxMfmUQ=; b=dY8IaE5CkgPLQ7YZC6gvSfchU
+        3ywVvcIqgeMU25nroaLZf32pvbv+xAMcAMNa4+l0rvk0kTOsHKY+JxW591vlJ34Q9KQM97ZZDO4ew
+        VF+TT6zjRvo/eTwvuiU3reMvFZeb/KMqN8fzpOH/J8kCjdTmwLO5KCmzTdd1jBxWrlowM=;
+Received: from p200300ccff096700e2cec3fffe93fc31.dip0.t-ipconnect.de ([2003:cc:ff09:6700:e2ce:c3ff:fe93:fc31] helo=eeepc)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1j6IRO-00020N-La; Mon, 24 Feb 2020 19:26:51 +0100
+Received: from localhost ([::1])
+        by localhost with esmtp (Exim 4.92)
+        (envelope-from <andreas@kemnade.info>)
+        id 1j6IRN-0003Su-VR; Mon, 24 Feb 2020 19:26:50 +0100
+Date:   Mon, 24 Feb 2020 19:26:38 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        lee.jones@linaro.org, b.galvani@gmail.com,
+        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, phh@phh.me, stefan@agner.ch,
+        letux-kernel@openphoenux.org, martin.blumenstingl@googlemail.com
+Subject: Re: [PATCH v3 2/4] iio: adc: rn5t618: Add ADC driver for
+ RN5T618/RC5T619
+Message-ID: <20200224192638.5e928565@kemnade.info>
+In-Reply-To: <20200221130733.240f0d6d@archlinux>
+References: <20200218061725.22420-1-andreas@kemnade.info>
+        <20200218061725.22420-3-andreas@kemnade.info>
+        <20200221130733.240f0d6d@archlinux>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.57]
-X-ClientProxiedBy: lhreml740-chm.china.huawei.com (10.201.108.190) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/8qWJlQBWjvmN_Jw+gTD8qUG"; protocol="application/pgp-signature"
+X-Spam-Score: -1.0 (-)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 23 Feb 2020 14:36:09 +0530
-Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+--Sig_/8qWJlQBWjvmN_Jw+gTD8qUG
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> Hey,
-> I was going through the TODO in staging/iio.
-> 
-> "
-> Convert all uses of the old GPIO API from <linux/gpio.h> to the
-> GPIO descriptor API in <linux/gpio/consumer.h> and look up GPIO
-> lines from device tree, ACPI or board files, board files should
-> use <linux/gpio/machine.h>.
-> "
-> 
-> I couldn't find any usages of the old gpio API in iio staging. We can
-> probably update the TODO to remove this item.
+On Fri, 21 Feb 2020 13:07:33 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-Cool. Patches to the TODO welcome :) I guess the last of these got killed off.
+> On Tue, 18 Feb 2020 07:17:23 +0100
+> Andreas Kemnade <andreas@kemnade.info> wrote:
+>=20
+> > Both chips have an A/D converter capable of measuring
+> > things like VBAT, VUSB and analog inputs.
+> >=20
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info> =20
+> One trivial comment inline.  Looks good to me and I'm assuming
+> this will got through the mfd tree.
+>=20
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> > ---
+> > depends on (build and runtime):
+> > https://lore.kernel.org/lkml/20191220122416.31881-1-andreas@kemnade.inf=
+o/
+> >=20
+Is there anything left on my side to do which prevents merging of these
+series? The above-mentioned series add interrupt support for the mfd, which
+this series uses, so this series cannot be applied without that.
 
-> 
-> Was wondering if there is any other TODO/ low hanging fruit in IIO?
+Regards,
+Andreas
 
-If you want to take a look at device tree bindings there is definitely work
-to be done there.
+--Sig_/8qWJlQBWjvmN_Jw+gTD8qUG
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-* Missing binding docs for devices that are obviously used via device tree.
-* Yaml conversions of abandoned drivers. 
+-----BEGIN PGP SIGNATURE-----
 
-I'd mostly like to leave actually doing yaml conversions of actively
-maintained drivers to their maintainers but I suspect we have quite a few
-where no one has touched them in years.
+iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl5UFV4ACgkQl4jFM1s/
+ye/Ovw/9G4MUqzsiPEnHC0EDXiLwMc2+0J/bKLt40RhYk1A5a2MVuB8JcYaDPsdd
+zeqTnzOpbyytZtrDm1Xnp6qb2jdxBT8fO1n24GxVEpYS+0D55BBK02lxOg5J1czO
+yau4y/N/F7qSYXZNOcr95zcr5/BmSy9TxOyTfiZOF6wh0EkmJi21gn1MbkouiGeM
+rFTw9JzTVm8n+cw/309ltJyzL9mVgFaM/UfJU7nsvxCzjSpIvnn2fkSYCHTfhsQl
+ec742IsXfS/9myKcOi401PuePAvclL52SIoNH+2oc1M1xXGjof93sALEXLF17AiF
+bRGj/w0DDFXwJHnsAdDIYnrUnl0GTcny3tQMvcNVLAWxOQ5QALnIq8uWQa3FaIph
+Z8mdIwCz1Awt5W1h0n/qdObuB75pDHDwChiH7OCF02e7KmXwLG+mPAWOW2IWDhIl
+rsBFrRvwjyvotTCa9AwNLuMwJOl3435AI/hpCUTKsoi4J3tS2c23Cp4UYXSWEe0v
+E50n6reMOof7oM71nNfq8xcvB5gI7UYl8Ay2zAE7MYG2ojyk/8yiGh5RN6it3ZY0
+LUJdIXubjgaXi+EObOGalc4WSs7qqiZp5qGrCr0lLIeDU4spAcIdepcdIKPVcmzD
+/8RxqVNQbIYcxqwh9wVoWNNqUhW8SmYm3ujqyQyOtlchL8X0khQ=
+=sm5T
+-----END PGP SIGNATURE-----
 
-Another area is missing ABI documentation.
-
-Reviewing if there is anything worth keeping in drivers/staging/iio/Documentation
-and putting it in the right place if so is also useful.
-
-For code related stuff, I suspect the remaining staging drivers are still
-there for a reason (often a hard problem to be resolved).
-
-One task we often ask people to look at is uses of iio_dev->mlock.
-That lock should never be used directly but we were less than careful
-about it in the early days of IIO so there are still a few instances
-in drivers.  My max1363 driver for example :)
-
-Moving to either a local lock, or to using the iio_claim_direct etc
-functions to manage this in a race free way tidies this bit of implementation
-mess up.  It requires careful analysis of 'what' the lock is there for and
-patches need to state your conclusions on that clearly so others can
-verify you are correct!
-
-One thing to note is never send too many patches of the same type out
-until you have reviews back.  It's too easy to have the same issue repeated
-many times over, so better to send things out slower.
-
-Thanks and good luck,
-
-Jonathan
-
-> 
-> Thanks,
-> Rohit
-
-
+--Sig_/8qWJlQBWjvmN_Jw+gTD8qUG--

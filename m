@@ -2,108 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A80FD16AF02
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2020 19:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC6C916B031
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2020 20:23:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727756AbgBXS07 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Feb 2020 13:26:59 -0500
-Received: from mail.andi.de1.cc ([85.214.55.253]:59030 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727711AbgBXS07 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 24 Feb 2020 13:26:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
-        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=dW1HMa4rYjoRN6o4qGmlHnnb84Fh1VUVfvXVgxMfmUQ=; b=dY8IaE5CkgPLQ7YZC6gvSfchU
-        3ywVvcIqgeMU25nroaLZf32pvbv+xAMcAMNa4+l0rvk0kTOsHKY+JxW591vlJ34Q9KQM97ZZDO4ew
-        VF+TT6zjRvo/eTwvuiU3reMvFZeb/KMqN8fzpOH/J8kCjdTmwLO5KCmzTdd1jBxWrlowM=;
-Received: from p200300ccff096700e2cec3fffe93fc31.dip0.t-ipconnect.de ([2003:cc:ff09:6700:e2ce:c3ff:fe93:fc31] helo=eeepc)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1j6IRO-00020N-La; Mon, 24 Feb 2020 19:26:51 +0100
-Received: from localhost ([::1])
-        by localhost with esmtp (Exim 4.92)
-        (envelope-from <andreas@kemnade.info>)
-        id 1j6IRN-0003Su-VR; Mon, 24 Feb 2020 19:26:50 +0100
-Date:   Mon, 24 Feb 2020 19:26:38 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        lee.jones@linaro.org, b.galvani@gmail.com,
-        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, phh@phh.me, stefan@agner.ch,
-        letux-kernel@openphoenux.org, martin.blumenstingl@googlemail.com
-Subject: Re: [PATCH v3 2/4] iio: adc: rn5t618: Add ADC driver for
- RN5T618/RC5T619
-Message-ID: <20200224192638.5e928565@kemnade.info>
-In-Reply-To: <20200221130733.240f0d6d@archlinux>
-References: <20200218061725.22420-1-andreas@kemnade.info>
-        <20200218061725.22420-3-andreas@kemnade.info>
-        <20200221130733.240f0d6d@archlinux>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-pc-linux-gnu)
+        id S1726452AbgBXTXe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Feb 2020 14:23:34 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:27017 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725860AbgBXTXe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Feb 2020 14:23:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1582572213;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ucm63i8Qwmi7aPinQR/QfuojbFJEi+6ubQg7jtj81vs=;
+        b=NH1hsHgNMegfnB6Qkvs13/zl0a0/ilCgxtb0h5KfiI/owR4W45jdv2p5OXh2XpgTz2ylb1
+        2FL+cNuuo32DkP5FA6dP2HzBoV+mYAtIxlc9a4pIMSelUViWKhg2BixzlVyNEGSNKvoJ1T
+        7zJWUU+Fz8E8EmS/0lXF73WY1osciv4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-352-tpyZU6apNfysedMTyhu50A-1; Mon, 24 Feb 2020 14:23:31 -0500
+X-MC-Unique: tpyZU6apNfysedMTyhu50A-1
+Received: by mail-wr1-f72.google.com with SMTP id n12so4154889wrp.19
+        for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2020 11:23:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Ucm63i8Qwmi7aPinQR/QfuojbFJEi+6ubQg7jtj81vs=;
+        b=k8S7N7vDM8bHdS9/tcLPDxRq2ubGg8x+i4ohfSlpYXTx6vMypDjq7zIEKwRTJ58q+r
+         yYpH5xkTQ54OXPcE3hB5MNMc7esmMX1ZSHqmZpkdlmmamx/CDyXO7OmjmPepdHm7Epw6
+         vQNReomMtKpuCbWaIyw0tcHyJZluOrIinuw+fdFrk/NFZ28SEqLd6XYb+fi9flhhnQkz
+         o0QEZGggb3UI9MbyWIqwbEtm8MkxdAvbFCITwk04C4uj7C/63X+TheJ5IJlQuUcKaYSz
+         N/CJr+wWDWkkwCLoolT7+yqsPjBDzJRgcyhYIGTe5rtzLd+0WXkmCawq41ffPRMtmtLX
+         igNA==
+X-Gm-Message-State: APjAAAWV1ZYT68Ym7pwqOKnKlpj1IJKDQUaUtN6k58LqjKH3JrbtxeE6
+        Qh5xK6FBOhwTyQj1pQa0pty3J7e4IVCNl1JifvPiRdmvkIHzimBAtO8G12/7bomzxttNaQm6zjD
+        wyzL9ocaX0+//amF3+i7p
+X-Received: by 2002:a5d:4705:: with SMTP id y5mr68677666wrq.370.1582572209722;
+        Mon, 24 Feb 2020 11:23:29 -0800 (PST)
+X-Google-Smtp-Source: APXvYqx3DGTBw2Axqg8/IA9sE56xDTp9aMYq8ha0N03ppzhNAe0VZOA2y4+9tBYdnnKvqdcmqmjJCw==
+X-Received: by 2002:a5d:4705:: with SMTP id y5mr68677646wrq.370.1582572209535;
+        Mon, 24 Feb 2020 11:23:29 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c0c-fe00-fc7e-fd47-85c1-1ab3.cable.dynamic.v6.ziggo.nl. [2001:1c00:c0c:fe00:fc7e:fd47:85c1:1ab3])
+        by smtp.gmail.com with ESMTPSA id 25sm536267wmi.32.2020.02.24.11.23.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Feb 2020 11:23:28 -0800 (PST)
+Subject: Re: [PATCH] iio: st_sensors: remap SMO8840 to LIS2DH12
+To:     Wen-chien Jesse Sung <jesse.sung@canonical.com>,
+        linux-iio@vger.kernel.org
+References: <20200224095426.25681-1-jesse.sung@canonical.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <a4f690f2-19a5-fc67-8072-eb14b8df0017@redhat.com>
+Date:   Mon, 24 Feb 2020 20:23:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/8qWJlQBWjvmN_Jw+gTD8qUG"; protocol="application/pgp-signature"
-X-Spam-Score: -1.0 (-)
+In-Reply-To: <20200224095426.25681-1-jesse.sung@canonical.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---Sig_/8qWJlQBWjvmN_Jw+gTD8qUG
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On Fri, 21 Feb 2020 13:07:33 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On 2/24/20 10:54 AM, Wen-chien Jesse Sung wrote:
+> According to ST, the HID is for LIS2DH12.
+> 
+> Signed-off-by: Wen-chien Jesse Sung <jesse.sung@canonical.com>
 
-> On Tue, 18 Feb 2020 07:17:23 +0100
-> Andreas Kemnade <andreas@kemnade.info> wrote:
->=20
-> > Both chips have an A/D converter capable of measuring
-> > things like VBAT, VUSB and analog inputs.
-> >=20
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info> =20
-> One trivial comment inline.  Looks good to me and I'm assuming
-> this will got through the mfd tree.
->=20
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> > ---
-> > depends on (build and runtime):
-> > https://lore.kernel.org/lkml/20191220122416.31881-1-andreas@kemnade.inf=
-o/
-> >=20
-Is there anything left on my side to do which prevents merging of these
-series? The above-mentioned series add interrupt support for the mfd, which
-this series uses, so this series cannot be applied without that.
+I added the original "SMO8840" entry since I did not have any
+docs I just copied the "SMO8A90" entry. Looking at the driver
+the only difference seems to be that the LNG2DM only has 8 bits
+accuracy where as the LIS2DH12 has 12 bits. I can confirm that
+this patch works on my Lenovo Ideapad Miix 320, for which the
+original patch was submitted, and that I indeed get 12 bits of
+accuracy with this patch.
+
+So this patch is:
+
+Tested-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
 Regards,
-Andreas
 
---Sig_/8qWJlQBWjvmN_Jw+gTD8qUG
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Hans
 
------BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl5UFV4ACgkQl4jFM1s/
-ye/Ovw/9G4MUqzsiPEnHC0EDXiLwMc2+0J/bKLt40RhYk1A5a2MVuB8JcYaDPsdd
-zeqTnzOpbyytZtrDm1Xnp6qb2jdxBT8fO1n24GxVEpYS+0D55BBK02lxOg5J1czO
-yau4y/N/F7qSYXZNOcr95zcr5/BmSy9TxOyTfiZOF6wh0EkmJi21gn1MbkouiGeM
-rFTw9JzTVm8n+cw/309ltJyzL9mVgFaM/UfJU7nsvxCzjSpIvnn2fkSYCHTfhsQl
-ec742IsXfS/9myKcOi401PuePAvclL52SIoNH+2oc1M1xXGjof93sALEXLF17AiF
-bRGj/w0DDFXwJHnsAdDIYnrUnl0GTcny3tQMvcNVLAWxOQ5QALnIq8uWQa3FaIph
-Z8mdIwCz1Awt5W1h0n/qdObuB75pDHDwChiH7OCF02e7KmXwLG+mPAWOW2IWDhIl
-rsBFrRvwjyvotTCa9AwNLuMwJOl3435AI/hpCUTKsoi4J3tS2c23Cp4UYXSWEe0v
-E50n6reMOof7oM71nNfq8xcvB5gI7UYl8Ay2zAE7MYG2ojyk/8yiGh5RN6it3ZY0
-LUJdIXubjgaXi+EObOGalc4WSs7qqiZp5qGrCr0lLIeDU4spAcIdepcdIKPVcmzD
-/8RxqVNQbIYcxqwh9wVoWNNqUhW8SmYm3ujqyQyOtlchL8X0khQ=
-=sm5T
------END PGP SIGNATURE-----
 
---Sig_/8qWJlQBWjvmN_Jw+gTD8qUG--
+
+> ---
+>   drivers/iio/accel/st_accel_i2c.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
+> index 633955d764cc..849cf74153c4 100644
+> --- a/drivers/iio/accel/st_accel_i2c.c
+> +++ b/drivers/iio/accel/st_accel_i2c.c
+> @@ -110,7 +110,7 @@ MODULE_DEVICE_TABLE(of, st_accel_of_match);
+>   
+>   #ifdef CONFIG_ACPI
+>   static const struct acpi_device_id st_accel_acpi_match[] = {
+> -	{"SMO8840", (kernel_ulong_t)LNG2DM_ACCEL_DEV_NAME},
+> +	{"SMO8840", (kernel_ulong_t)LIS2DH12_ACCEL_DEV_NAME},
+>   	{"SMO8A90", (kernel_ulong_t)LNG2DM_ACCEL_DEV_NAME},
+>   	{ },
+>   };
+> 
+

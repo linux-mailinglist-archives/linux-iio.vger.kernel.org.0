@@ -2,277 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61BFD16B72B
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2020 02:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD98E16BA7C
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2020 08:19:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728489AbgBYB1C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Feb 2020 20:27:02 -0500
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:44781 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728011AbgBYB1C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Feb 2020 20:27:02 -0500
-Received: by mail-pl1-f194.google.com with SMTP id d9so4784972plo.11
-        for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2020 17:27:02 -0800 (PST)
+        id S1726587AbgBYHTQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Feb 2020 02:19:16 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:21246 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725788AbgBYHTQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Feb 2020 02:19:16 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01P7Gns5002536;
+        Tue, 25 Feb 2020 02:19:14 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2yb23afup8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 25 Feb 2020 02:19:14 -0500
+Received: from m0167089.ppops.net (m0167089.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01P7JD0i015291;
+        Tue, 25 Feb 2020 02:19:13 -0500
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2173.outbound.protection.outlook.com [104.47.58.173])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2yb23afup6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 25 Feb 2020 02:19:13 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EUWD/nCpJ0WLwxZLI5e01mPUMaTDx6EMHrWfH6C1ndtl8CT/Adf9dZzml8/bKN/GxQw720hfTYpiFT2bRdMx4hozd0Vg6IgbOIj1IzyezMSzFg15zf+qp1zT8Jq7vOXUHPAQEv/zMHeBzl7MP48o35klTxAgxcgjy47adENImyidXE7ltDUhAQcameRDUKQ5hxLesLYHtCCjGx7MZ7E4ptetg1SxGWs+G6+QgW5Gs/RGDGj+cvsOQHdzz34jDTdhjYnVS7E7X0Y9fYVDS+g63Zt6mDyQf6+6xFeNf9isbOJzcYHR0kBZTMaQAFJfZojM1ASGJ9k502F6QdYFmSMdPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z/KM45sjYOlb0vj6A29T+k0pvfRbVfgdJS0rijX7hKM=;
+ b=d+iXqGUwPyAf+qiIO1u/C0V7PeK105GPG8gcMPpT+OyKxozlRO4b779gFQRmxXOAQeUVtWVJJJ2EEjMjiws4yuVHkXyuERA6FYm++sWHzn9fZnNUJhrUw+0esANcTtVCv8d6P7VvniGLT7RUEPcQiQbefgsBlBgf41fMMR9RsuHmcwet4R5zhejbB1C4kTG+pCW7NvC0E8HgEvbJjSct93xT72smA9ZSnrtkxvJhM/dtA7xmkNALLqh+mAzrBM75e2V5ehd+gKuYmYvDDHtbAZ0wHOJBVKrrZyX+JLPHMu+Npg78mD0xCiOkPmL1T9I1QOE0v7fUAZZ2f6FOSOu5cA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=tXtCRq6N50TMVHBgGX7wVHtQFncGCBj7Je/zO9FJX0E=;
-        b=RUqKHO73+u5YoiIoWgGGDqR9gEZ1CQOlfWYfH9fub5W4NVGh2fjjoxumHjE6fDkfKk
-         Xu8gk0Dn1v3vw6yoem0PG1HCste03F0tnFahYu1KCNviPSmts6+CakN/4FHRV48cSx3h
-         hk900b2chyn0e5DQ+ngn4sKqTeax8tx/UfGdo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tXtCRq6N50TMVHBgGX7wVHtQFncGCBj7Je/zO9FJX0E=;
-        b=FBpNlDuH6FZUotXw8uheBNO/1NBIetLvCly3X/tJeJv/nOAeVpdfE9ayWuIlSIECGW
-         6C1qHGQdSryTvTEQNtfC4XNv0JUwCTIN/s77M+z45Vq67zJMiohAfeOyg57bBdVp5gwP
-         DFcxWm2EVAzQ/0jTIqcjTp25j04JQM40slFwl2iAL1y0OWDY37ssjdOMoeUb1uucrw88
-         mQbWfnbvIU/YPrFJlTSNeHGFK9AVbNvRPciHx9AxOR0iHxpWk67TDPA9cYEH4Ahn6qLd
-         TGNqVF9BAAXjS9I+ED8MRdDYuT5K92gEfgi/iSOX2TrKQRBrcnKZ8yoRmwfc6RqghBLq
-         MkHg==
-X-Gm-Message-State: APjAAAU0Q8590r6OLnQefWBKLWYRMsrVk/H59ZOdq6Pq84TVzEPB/rq4
-        ar6JzhFW9BP8tZmEyJfvjQRo/A==
-X-Google-Smtp-Source: APXvYqzTo6wv4ZlB7haxfVEzTLEqXbypHLZ9mkpUtmaqyVn1c9X3k2XK/IQaCoJdpzy4TasArkRjVw==
-X-Received: by 2002:a17:90a:cb0f:: with SMTP id z15mr2174890pjt.67.1582594021382;
-        Mon, 24 Feb 2020 17:27:01 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:476b:691:abc3:38db])
-        by smtp.gmail.com with ESMTPSA id 196sm14604143pfy.86.2020.02.24.17.27.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2020 17:27:00 -0800 (PST)
-Date:   Mon, 24 Feb 2020 17:26:58 -0800
-From:   Prashant Malani <pmalani@chromium.org>
-To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Cc:     Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Fabien Lahoudere <fabien.lahoudere@collabora.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 10/17] iio: cros_ec: Use cros_ec_cmd()
-Message-ID: <20200225012658.GB11971@google.com>
-References: <20200205190028.183069-1-pmalani@chromium.org>
- <20200205190028.183069-11-pmalani@chromium.org>
- <20200206121753.7b809631@archlinux>
- <671a55aa-1e5e-4e21-4a62-55db4dee368a@collabora.com>
- <CACeCKad4zp9O7WAPu5S1rmUDwkzWLjk_1i7YtPvXUG=nDvkYAA@mail.gmail.com>
- <CAPUE2usO-Ny61+wEdTcwR3b+RgGjeQ4Jb24UeF8siscqFQ5ogQ@mail.gmail.com>
- <2ebc4e17-df7a-d5c2-f657-16d06e402bd4@collabora.com>
- <CACeCKafG35Di+SU2i=DD09tUyFvq0wyDOLj5J1fUhnds3bTeDg@mail.gmail.com>
- <20200218183004.GA184561@google.com>
- <3e6c4ffc-5f7d-7b25-0a5a-d293fa6dd4d4@collabora.com>
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z/KM45sjYOlb0vj6A29T+k0pvfRbVfgdJS0rijX7hKM=;
+ b=aFrLcPEFXBkrx7LUGd0ADwMbJ8MHlYN9nw9K4zWex+fEs+Tk2aiAUI4rrTnnVkOL9Tj9PSbNTf84oizEOzDws6F/RhxCkoBUcmTsne0to/anr9aej+MktUgL69c+m4B9L18nvCGZfuF5+UO7WbIrKv1jJBcS82erCSIBskeMNuo=
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com (2603:10b6:610:90::24)
+ by CH2PR03MB5271.namprd03.prod.outlook.com (2603:10b6:610:95::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2750.21; Tue, 25 Feb
+ 2020 07:19:12 +0000
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::edf0:3922:83f0:3056]) by CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::edf0:3922:83f0:3056%4]) with mapi id 15.20.2750.021; Tue, 25 Feb 2020
+ 07:19:12 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
+        "rohitsarkar5398@gmail.com" <rohitsarkar5398@gmail.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "device-drivers-devel@waws-prod-bn1-047.cloudapp.net" 
+        <device-drivers-devel@waws-prod-bn1-047.cloudapp.net>
+Subject: Re: IIO staging TODO
+Thread-Topic: IIO staging TODO
+Thread-Index: AQHV6iiH7NIXzSd5qkqjehNAujwzWagqpCiAgADgGYA=
+Date:   Tue, 25 Feb 2020 07:19:12 +0000
+Message-ID: <5a4c3a4a20b9ae80d8612164d46ccba80a4495aa.camel@analog.com>
+References: <20200223090609.GA5222@SARKAR>
+         <20200224180003.00007d63@Huawei.com>
+In-Reply-To: <20200224180003.00007d63@Huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 82f094c8-8064-474e-81f1-08d7b9c30360
+x-ms-traffictypediagnostic: CH2PR03MB5271:
+x-microsoft-antispam-prvs: <CH2PR03MB5271ACFC3955A21C5605C45AF9ED0@CH2PR03MB5271.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0324C2C0E2
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(136003)(376002)(366004)(346002)(39860400002)(189003)(199004)(110136005)(26005)(3480700007)(54906003)(64756008)(8936002)(66446008)(86362001)(76116006)(66556008)(8676002)(6512007)(186003)(66476007)(66946007)(91956017)(7116003)(316002)(5660300002)(81156014)(6486002)(2616005)(478600001)(4326008)(2906002)(36756003)(81166006)(71200400001)(6506007)(21314003);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5271;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: KcgaVcEfQ5qXh22d9nzqn1NJS5zA/11dZYPyIYDKS2hzgQbQJokt0pshkd5VkwPsWZNkTx2JiEALgDrikyDN9ekuOQX4FMLfoxQQQwQ56rH3nd/G4E65oQckCdo3joS7GFcWjELvNM9fLHKOYUjGdsNku4CSHFkkVnFj2TmVIgW0CeAQBOViYqijjALHI1CacVGRaqoNxVQW787undSDL0ClXDl1efgtZRWUzVu96yowdDXtIYj22j9bmuFeBBS0DZQL2d+BkbQIbVFQjnFj+ua2mtVy4am0wI4VnfAGaNsXHWsKZB+VX6ODjFbfysdQO2I0H5dJxbfuQWAXJLQTF309CeoM6Yu7yaXcxlOL0YCFUYp8BroPvdSp3A3KjRE+fpv3ARHQF1QgrJpaJbTk3KLxatfm7xrgxyOtIbInT2YY/AbGQHJt50A5c/tCOGU1ulTancjDFkJuG0MRIk1tKcbeU1nMgiMwt+dufufPgmSMcZmO1HUK416d/uk45AtS
+x-ms-exchange-antispam-messagedata: ejI9XPVe/IXxaZhR5zR2QiAPzEEyUNG7XRPc9rnMK4NT69HY/TwUTY3O2/6PZilWv0DgL9qmWYtwnnbY9lRgcYX/lSNdyOiO1JMniYtnZZvyGkbjKTBJDzzGl8g88dZ4lEpt60DzPvAX9UsNn8FdkQ==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2CD387597798D74E994BA33D0A853E37@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3e6c4ffc-5f7d-7b25-0a5a-d293fa6dd4d4@collabora.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82f094c8-8064-474e-81f1-08d7b9c30360
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Feb 2020 07:19:12.1118
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JKyMmX2vuaQ44Or9+XdG1Lnh1KqGEiZoB6CWr74hOLQ7FqUJ05x672eRtZ7WO8US5BAoeNBxEuqJplDENCZREWYd5oDK0+VtaGlVU0pDev4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5271
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-25_01:2020-02-21,2020-02-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1011 impostorscore=0 mlxlogscore=999 adultscore=0
+ mlxscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002250059
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Feb 20, 2020 at 05:07:00PM +0100, Enric Balletbo i Serra wrote:
-> Hi Prashant,
-> 
-> Could you base your next series on top of [1]. Also, if you can give your
-> feedback and test those, would be much appreciated ;-)
-
-Sure Enric, I will attempt to rebase on top of [1] this week. I'll
-update you once this is done. Thanks!
-
--Prashant
-> 
-> BTW, I think you need to fix your sendmail as the series are not threaded and
-> appear as independent patches in patchwork, which is a bit hard to follow.
-> 
-> Thanks,
->  Enric
-> 
-> [1] https://lore.kernel.org/patchwork/cover/1197210/
-> 
-> 
-> On 18/2/20 19:30, Prashant Malani wrote:
-> > Hi All,
-> > 
-> > Just thought I'd ping this thread since it's been a week since the last
-> > email.
-> > 
-> > On Mon, Feb 10, 2020 at 12:14:01PM -0800, Prashant Malani wrote:
-> >> Hi All (trimming most code parts of the thread for the sake of brevity),
-> >>
-> >> Thanks for listing the points Enric, Please see my notes inline:
-> >>
-> >> On Mon, Feb 10, 2020 at 3:03 AM Enric Balletbo i Serra
-> >> <enric.balletbo@collabora.com> wrote:
-> >>>
-> >>> Hi Gwendal, Prashant et all
-> >>>
-> >>> On 7/2/20 19:47, Gwendal Grignou wrote:
-> >>>> On Thu, Feb 6, 2020 at 10:50 AM Prashant Malani <pmalani@chromium.org> wrote:
-> >>>>>
-> >>>>> Hi Enric,
-> >>>>>
-> >>>>> Thanks for taking a look at the patch. Please see my response inline:
-> >> ....
-> >>>>>>>> @@ -171,9 +162,11 @@ int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
-> >>>>>>>>
-> >>>>>>>>      memcpy(state->msg->data, &state->param, sizeof(state->param));
-> >>>>>>>>
-> >>>>>>>> -    ret = cros_ec_cmd_xfer_status(state->ec, state->msg);
-> >>>>>>>> +    ret = cros_ec_cmd_xfer(state->ec, state->msg);
-> >>>>>>>>      if (ret < 0)
-> >>>>>>>>              return ret;
-> >>>>>>>> +    else if (state->msg->result != EC_RES_SUCCESS)
-> >>>>>>>> +            return -EPROTO;
-> >>>>>>>>
-> >>>>>>
-> >>>>>> There is no way to use the new cros_ec_cmd here?
-> >>>> When the EC does not support sensor fifo,
-> >>>> cros_ec_motion_send_host_cmd() is on the data path. For instance, it
-> >>>> is called 2 times every 10ms by chrome to calculate the lid angle. I
-> >>>> would be reluctant to call malloc. Given it is well encapsulated into
-> >>>> the sensor stack. Does it make sense to call cros_ec_cmd_xfer
-> >>>> directly?
-> >>>>
-> >>>
-> >>> Thanks Gwendal for pointing this, it makes totally sense, and I suspect this can
-> >>> happen on other cases.
-> >>>
-> >>> Just to make clear, my concern is not about not using the new 'cros_ec_cmd'
-> >>> here, is about changing 'cros_ec_cmd_xfer_status' for 'cros_ec_cmd_xfer'. Also,
-> >>> my other concern is how useful is the new 'cros_ec_cmd' replacing what we have
-> >>> now if cannot replace all current uses.
-> >>>
-> >>> My points of view are this:
-> >>>
-> >>> * Actually we have cros_ec_cmd_xfer and cros_ec_cmd_xfer_status, use the second
-> >>> one is better, in fact, we tried to move all the cros_ec_cmd_xfer to the _status
-> >>> version in the past because makes the code and error handling cleaner. So I'm
-> >>> reticent to get back to use cros_ec_cmd_xfer instead of cros_ec_cmd_xfer_status.
-> >>>
-> >>> * The users of the cros-ec protocol sometimes they mallocing/freeing at runtime,
-> >>> and sometimes they don't. IMHO *non* mallocing/freeing is usually better, more
-> >>> efficient and faster. Would be nice to standardize this.
-> >>
-> >> I think we should look at latency (I am assuming that is one of the
-> >> concerns Gwendal was referring to).
-> >> We should certainly do more rigorous measurements, but I did a crude
-> >> measurement across a devm_kzalloc() used on one of the EC commands
-> >> inside platform/chrome for struct EC command:
-> >> - Used ktime_get_ns() to record time before and after the devm_kzalloc()
-> >> - Used ktime_sub to subtract the "after" and "before" values:
-> >>
-> >>         struct cros_ec_command *msg;
-> >>         int ret;
-> >> +       ktime_t start, end, diff;
-> >>
-> >> +       start = ktime_get_ns();
-> >>         msg = kzalloc(sizeof(*msg) + max(outsize, insize), GFP_KERNEL);
-> >> +       end = ktime_get_ns();
-> >>         if (!msg)
-> >>                 return -ENOMEM;
-> >>
-> >> +       diff = ktime_sub(end, start);
-> >> +       printk("%s(): TEST: kzalloc took: %lld\n", __func__, ktime_to_ns(diff));
-> >>
-> >> On an i5 1.6 GHz system, across 16 call measurements I got the
-> >> following latency values (in ns):
-> >> - Count, N:16
-> >> - Average: 72.375
-> >> - Std. Dev : 28.768
-> >> - Max: 143
-> >> - Min:  51
-> >>
-> >> Are these values significant for the various call-sites? I think the
-> >> driver authors might be able to comment better there (unfortunately I
-> >> don't have enough context for each case).
-> >> Of course there will be other overhead (memcpy) but I think this is a
-> >> good starting point for the discussion.
-> >> (My apologies if this measurement method is incorrect/inaccurate.)
-> > 
-> > Any thoughts / comments here?
-> > 
-> > On an overall note, I think keeping cros_ec_cmd_xfer() and cros_ec_cmd()
-> > might be a good starting point.
-> > 
-> > In this way, we are not introducing any extra function. Also, we can
-> > begin converting the cros_ec_cmd_xfer() use cases (a few call-sites may
-> > need to be investigated from a latency perspective). The
-> > cros_ec_cmd_xfer() conversions are better handled in separate patch
-> > series.
-> > 
-> > Best regards,
-> > 
-> > -Prashant
-> >>
-> >>>
-> >>> * If we want to introduce a new 'cros_ec_cmd', this should make the code cleaner
-> >>> and ideally should be the way we tell the users they should use to communicate
-> >>> with the cros-ec and not open coding constantly. Ideally, should be a
-> >>> replacement of all current 'cros_ec_cmd_xfer*' versions.
-> >>
-> >> As I mentioned previously, I think all calls of cros_ec_cmd_xfer() can
-> >> be converted to use cros_ec_cmd() (especially since the new API has a
-> >> *result pointer),
-> >> but I think it should be staged out a bit more (since cases like iio:
-> >> cros_ec driver require non-trivial refactoring which I think is better
-> >> in a patch/series).
-> >>
-> >>>
-> >>> * If 'cros_ec_cmd' *cannot* replace all the cases, it should be clear to the
-> >>> user in which cases he should use this function and in which cases shouldn't use
-> >>> this function.
-> >>
-> >> This seems like a good compromise, but my expectation is that if there
-> >> is a "fast" and "slow" version of the same functionality, developers
-> >> would be inclined to use the "fast" version always?
-> >>
-> >>
-> >>> * Finally, what pointed Gwendal, what's the best approach to send commands to
-> >>> the EC by default, is better use dynamic memory? or is better use the stack? is
-> >>> it always safe use the stack? is always efficient use allocated memory?
-> >>>
-> >>> As you can see I have a lot of questions still around, but taking in
-> >>> consideration that this will be an important change I think that makes sense
-> >>> spend some time discussing it.
-> >>>
-> >>> What do you think?
-> >>>
-> >>> Enric
-> >>>
-> >>>
-> >>>> Gwendal.
-> >>>>>
-> >>>>> I think it is doable. From looking at the code I felt the factors we
-> >>>>> need to be careful about are:
-> >>>>> - The function cros_ec_motion_send_host_cmd() is called from a few
-> >>>>> other files, each of which set up the struct cros_ec_command
-> >>>>> differently (reference:
-> >>>>> https://elixir.bootlin.com/linux/latest/ident/cros_ec_motion_send_host_cmd)
-> >>>>> - It is not clear to me how readability will be affected by making the
-> >>>>> change to cros_ec_cmd().
-> >>>>>
-> >>>>> Due to the above two factors, but primarily because I wanted to avoid
-> >>>>> making such an involved large change in this 17 patch series, I
-> >>>>> reasoned it would be better to make the transition to cros_ec_cmd()
-> >>>>> for these files in a separate patch/series.
-> >>>>> My plan after this patch series is to work on this driver(perhaps we
-> >>>>> can eliminate cros_ec_motion_send_host_cmd() itself?), and then remove
-> >>>>> cros_ec_cmd_xfer() usage.
-> >>>>>
-> >>>>> WDYT?
-> >>>>>
-> >>>>> Best regards,
-> >>>>>
-> >>>>>
-> >>>>>>
-> >>>>>>
-> >>>>>>>>      if (ret &&
-> >>>>>>>>          state->resp != (struct ec_response_motion_sense *)state->msg->data)
-> >>>>>>>
+T24gTW9uLCAyMDIwLTAyLTI0IGF0IDE4OjAwICswMDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Og0KPiBPbiBTdW4sIDIzIEZlYiAyMDIwIDE0OjM2OjA5ICswNTMwDQo+IFJvaGl0IFNhcmthciA8
+cm9oaXRzYXJrYXI1Mzk4QGdtYWlsLmNvbT4gd3JvdGU6DQo+IA0KPiA+IEhleSwNCj4gPiBJIHdh
+cyBnb2luZyB0aHJvdWdoIHRoZSBUT0RPIGluIHN0YWdpbmcvaWlvLg0KPiA+IA0KPiA+ICINCj4g
+PiBDb252ZXJ0IGFsbCB1c2VzIG9mIHRoZSBvbGQgR1BJTyBBUEkgZnJvbSA8bGludXgvZ3Bpby5o
+PiB0byB0aGUNCj4gPiBHUElPIGRlc2NyaXB0b3IgQVBJIGluIDxsaW51eC9ncGlvL2NvbnN1bWVy
+Lmg+IGFuZCBsb29rIHVwIEdQSU8NCj4gPiBsaW5lcyBmcm9tIGRldmljZSB0cmVlLCBBQ1BJIG9y
+IGJvYXJkIGZpbGVzLCBib2FyZCBmaWxlcyBzaG91bGQNCj4gPiB1c2UgPGxpbnV4L2dwaW8vbWFj
+aGluZS5oPi4NCj4gPiAiDQo+ID4gDQo+ID4gSSBjb3VsZG4ndCBmaW5kIGFueSB1c2FnZXMgb2Yg
+dGhlIG9sZCBncGlvIEFQSSBpbiBpaW8gc3RhZ2luZy4gV2UgY2FuDQo+ID4gcHJvYmFibHkgdXBk
+YXRlIHRoZSBUT0RPIHRvIHJlbW92ZSB0aGlzIGl0ZW0uDQo+IA0KPiBDb29sLiBQYXRjaGVzIHRv
+IHRoZSBUT0RPIHdlbGNvbWUgOikgSSBndWVzcyB0aGUgbGFzdCBvZiB0aGVzZSBnb3Qga2lsbGVk
+IG9mZi4NCj4gDQo+ID4gV2FzIHdvbmRlcmluZyBpZiB0aGVyZSBpcyBhbnkgb3RoZXIgVE9ETy8g
+bG93IGhhbmdpbmcgZnJ1aXQgaW4gSUlPPw0KPiANCj4gSWYgeW91IHdhbnQgdG8gdGFrZSBhIGxv
+b2sgYXQgZGV2aWNlIHRyZWUgYmluZGluZ3MgdGhlcmUgaXMgZGVmaW5pdGVseSB3b3JrDQo+IHRv
+IGJlIGRvbmUgdGhlcmUuDQo+IA0KPiAqIE1pc3NpbmcgYmluZGluZyBkb2NzIGZvciBkZXZpY2Vz
+IHRoYXQgYXJlIG9idmlvdXNseSB1c2VkIHZpYSBkZXZpY2UgdHJlZS4NCj4gKiBZYW1sIGNvbnZl
+cnNpb25zIG9mIGFiYW5kb25lZCBkcml2ZXJzLiANCj4gDQo+IEknZCBtb3N0bHkgbGlrZSB0byBs
+ZWF2ZSBhY3R1YWxseSBkb2luZyB5YW1sIGNvbnZlcnNpb25zIG9mIGFjdGl2ZWx5DQo+IG1haW50
+YWluZWQgZHJpdmVycyB0byB0aGVpciBtYWludGFpbmVycyBidXQgSSBzdXNwZWN0IHdlIGhhdmUg
+cXVpdGUgYSBmZXcNCj4gd2hlcmUgbm8gb25lIGhhcyB0b3VjaGVkIHRoZW0gaW4geWVhcnMuDQo+
+IA0KPiBBbm90aGVyIGFyZWEgaXMgbWlzc2luZyBBQkkgZG9jdW1lbnRhdGlvbi4NCj4gDQo+IFJl
+dmlld2luZyBpZiB0aGVyZSBpcyBhbnl0aGluZyB3b3J0aCBrZWVwaW5nIGluDQo+IGRyaXZlcnMv
+c3RhZ2luZy9paW8vRG9jdW1lbnRhdGlvbg0KPiBhbmQgcHV0dGluZyBpdCBpbiB0aGUgcmlnaHQg
+cGxhY2UgaWYgc28gaXMgYWxzbyB1c2VmdWwuDQo+IA0KPiBGb3IgY29kZSByZWxhdGVkIHN0dWZm
+LCBJIHN1c3BlY3QgdGhlIHJlbWFpbmluZyBzdGFnaW5nIGRyaXZlcnMgYXJlIHN0aWxsDQo+IHRo
+ZXJlIGZvciBhIHJlYXNvbiAob2Z0ZW4gYSBoYXJkIHByb2JsZW0gdG8gYmUgcmVzb2x2ZWQpLg0K
+PiANCj4gT25lIHRhc2sgd2Ugb2Z0ZW4gYXNrIHBlb3BsZSB0byBsb29rIGF0IGlzIHVzZXMgb2Yg
+aWlvX2Rldi0+bWxvY2suDQo+IFRoYXQgbG9jayBzaG91bGQgbmV2ZXIgYmUgdXNlZCBkaXJlY3Rs
+eSBidXQgd2Ugd2VyZSBsZXNzIHRoYW4gY2FyZWZ1bA0KPiBhYm91dCBpdCBpbiB0aGUgZWFybHkg
+ZGF5cyBvZiBJSU8gc28gdGhlcmUgYXJlIHN0aWxsIGEgZmV3IGluc3RhbmNlcw0KPiBpbiBkcml2
+ZXJzLiAgTXkgbWF4MTM2MyBkcml2ZXIgZm9yIGV4YW1wbGUgOikNCj4gDQo+IE1vdmluZyB0byBl
+aXRoZXIgYSBsb2NhbCBsb2NrLCBvciB0byB1c2luZyB0aGUgaWlvX2NsYWltX2RpcmVjdCBldGMN
+Cj4gZnVuY3Rpb25zIHRvIG1hbmFnZSB0aGlzIGluIGEgcmFjZSBmcmVlIHdheSB0aWRpZXMgdGhp
+cyBiaXQgb2YgaW1wbGVtZW50YXRpb24NCj4gbWVzcyB1cC4gIEl0IHJlcXVpcmVzIGNhcmVmdWwg
+YW5hbHlzaXMgb2YgJ3doYXQnIHRoZSBsb2NrIGlzIHRoZXJlIGZvciBhbmQNCj4gcGF0Y2hlcyBu
+ZWVkIHRvIHN0YXRlIHlvdXIgY29uY2x1c2lvbnMgb24gdGhhdCBjbGVhcmx5IHNvIG90aGVycyBj
+YW4NCj4gdmVyaWZ5IHlvdSBhcmUgY29ycmVjdCENCj4gDQo+IE9uZSB0aGluZyB0byBub3RlIGlz
+IG5ldmVyIHNlbmQgdG9vIG1hbnkgcGF0Y2hlcyBvZiB0aGUgc2FtZSB0eXBlIG91dA0KPiB1bnRp
+bCB5b3UgaGF2ZSByZXZpZXdzIGJhY2suICBJdCdzIHRvbyBlYXN5IHRvIGhhdmUgdGhlIHNhbWUg
+aXNzdWUgcmVwZWF0ZWQNCj4gbWFueSB0aW1lcyBvdmVyLCBzbyBiZXR0ZXIgdG8gc2VuZCB0aGlu
+Z3Mgb3V0IHNsb3dlci4NCj4gDQoNCkkgYWxzbyB1c3VhbGx5IGFkZCBoZXJlIHRoZSBjb252ZXJz
+aW9uIG9mIGRyaXZlcnMgZnJvbSBkZXZpY2UtdHJlZS1jZW50cmljIHRvDQp0aGUgbW9yZSBuZXV0
+cmFsL2dlbmVyaWMgcHJvcGVydHktaGFuZGxlcnM7IHVzdWFsbHkgaXQncyBqdXN0IGNvbnZlcnRp
+bmcNCmZ1bmN0aW9ucyAib2ZfcHJvcGVydHlfcmVhZF94eHgoKSIgdG8gImRldmljZV9wcm9wZXJ0
+eV9yZWFkX3h4eCgpIjsgdGhlIGxhdHRlcg0KYWxzbyBzdXBwb3J0cyBBQ1BJLg0KDQpPbiB0aGUg
+c2FtZSBwYWdlLCB0aGVyZSdzIGFsc28gcmVtb3ZpbmcgdGhlIG9sZCBwbGF0Zm9ybV9kYXRhIGNv
+bnN0cnVjdHMgZnJvbQ0KZHJpdmVycyBhbmQgY29udmVydGluZyBpdCB0byBzdGF0ZS1zdHJ1Y3Qg
+YW5kIHVzaW5nIHByb3BlcnR5IGhhbmRsZXJzL3JlYWRlcnMuDQoNClVzdWFsbHkgd2Ugd291bGQg
+anVzdCBzYXkgY29udmVydCBwbGF0Zm9ybS1kYXRhIHRvIGRldmljZS10cmVlLCBidXQgbm93IEkn
+bQ0KdHJ5aW5nIHRvIGdvIGEgYml0IGZ1cnRoZXIgYW5kIHRyeSB0byBtYWtlIHRoaW5ncyBhIGJp
+dCBtb3JlIGdlbmVyaWMgdG8gYWxzbw0KaW5jbHVkZSBBQ1BJLg0KDQo+IFRoYW5rcyBhbmQgZ29v
+ZCBsdWNrLA0KPiANCj4gSm9uYXRoYW4NCj4gDQo+ID4gVGhhbmtzLA0KPiA+IFJvaGl0DQo+IA0K
+PiANCg==

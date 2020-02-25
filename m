@@ -2,35 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69BDA16E92C
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2020 15:59:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7156816E933
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2020 16:01:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730172AbgBYO7f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Feb 2020 09:59:35 -0500
-Received: from broadband.actcorp.in ([49.207.57.206]:7696 "EHLO SARKAR"
-        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729390AbgBYO7f (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 25 Feb 2020 09:59:35 -0500
-X-Greylist: delayed 586 seconds by postgrey-1.27 at vger.kernel.org; Tue, 25 Feb 2020 09:59:33 EST
-Received: by SARKAR (Postfix, from userid 1001)
-        id 4B09E7427DC; Tue, 25 Feb 2020 20:19:35 +0530 (IST)
+        id S1730957AbgBYPBH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Feb 2020 10:01:07 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:52276 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729721AbgBYPBH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Feb 2020 10:01:07 -0500
+Received: by mail-pj1-f68.google.com with SMTP id ep11so1356501pjb.2
+        for <linux-iio@vger.kernel.org>; Tue, 25 Feb 2020 07:01:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:date:from:to:cc:subject:mime-version:content-disposition
+         :user-agent;
+        bh=dDJ+ophuc0rsonzeLWDePL6AJkh0L49xgiit/I70EsU=;
+        b=ZcQ8Hqr7ZPm4BdeF8bgpagl9fX5jrXAu1VyacBxBaKVwYGbxWu8wrzSyy2+p3O2+/h
+         Dy5jpx1QQ65/OdejJqFxcoV91xUS2+4LHFboSaXqmOOZiJwP7jyTUU3E3dIE0TstLtgf
+         0HaERYqB38XOM6y5D2EJxxsdZgs7TU7LREWNYOcTkLUJiTxqMHUfe4cSj5oOO6i4xCue
+         rTlT9M/7lGMq/Ygh8tQgTizCo+G8+f+LygD8H/8OgLyGBNw0MlzYYLGOWmvEhsB4JE0G
+         l4ZXaxUiae5lM6WGuHffUoC9ZUTptoKHU34mT7zvVRC3lIFlzofh+Y59No8YW9S+w/g6
+         m00w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:mime-version
+         :content-disposition:user-agent;
+        bh=dDJ+ophuc0rsonzeLWDePL6AJkh0L49xgiit/I70EsU=;
+        b=NBRSePHpeGyKsyivubTvRFKySZiLDFdEyT1plXY6RtO4QYcOjZL6wmdjXSCmzDh/yJ
+         qSmvigKfreuwZ2stxA6JQRHtasfzJgg1PVOGPAyeY86MKbfZKcknUCLNsFS2oN5xvANx
+         V6zQe7VzalJ8uKi9lD51XRTyeVzzrcIrmewaF7SbBycCGFC+csQGxxQ7vCar3PE2EqcW
+         i/xhJT8SAEdmr5b3/k0fgdu8uKbVXcDfd9p9ePfAEKLIKTREn3W58rMlxbkzhRnQdaAW
+         Ko1pcfc2cA7D7TV/MGAMeXgZ1iPT3OqdTBhiA4mW6/bk6zqq5tlzJYo2kGIky16raZQx
+         nVYA==
+X-Gm-Message-State: APjAAAWwfU0e1CNKBmpLqLzhKQ6FxneiuaX8LdwYOhGnOud4lgUBifOC
+        rP0QlapmCRu7nDpAz1emMMA=
+X-Google-Smtp-Source: APXvYqzgTiN/EmB7DNtu2m2mWEGUraVUqdhRA0AV2wGjtrcrTyN+W4cla+Lubkv9BE44e2ZmJZNLZw==
+X-Received: by 2002:a17:90a:234f:: with SMTP id f73mr5520424pje.109.1582642866596;
+        Tue, 25 Feb 2020 07:01:06 -0800 (PST)
+Received: from SARKAR ([49.207.57.206])
+        by smtp.gmail.com with ESMTPSA id a9sm17120716pfo.35.2020.02.25.07.01.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2020 07:01:05 -0800 (PST)
+Message-ID: <5e5536b1.1c69fb81.5f37a.daf6@mx.google.com>
+X-Google-Original-Message-ID: <20200225150102.GA20845@rohitsarkar5398@gmail.com>
+Date:   Tue, 25 Feb 2020 20:31:02 +0530
 From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
 To:     linux-iio@vger.kernel.org
-Cc:     rohitsarkar5398@gmail.com, jic23@kernel.org
+Cc:     jic23@kernel.org, gregkh@linuxfoundation.org,
+        devel@driverdev.osuosl.org
 Subject: [PATCH v2] staging: iio: update TODO
-Date:   Tue, 25 Feb 2020 20:19:33 +0530
-Message-Id: <20200225144933.19876-1-rohitsarkar5398@gmail.com>
-X-Mailer: git-send-email 2.23.0.385.gbc12974a89
-In-Reply-To: <20200224195915.GA8371@SARKAR>
-References: <20200224195915.GA8371@SARKAR>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-since there are no uses of the old GPIO API, remove the item from the
+Since there are no uses of the old GPIO API, remove the item from the
 TODO and some new items.
 
 Changes from v1:

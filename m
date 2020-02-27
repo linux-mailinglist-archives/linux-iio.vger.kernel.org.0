@@ -2,103 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA12172793
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2020 19:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DF2A172848
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2020 20:03:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729719AbgB0Sbp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Feb 2020 13:31:45 -0500
-Received: from mail.andi.de1.cc ([85.214.55.253]:51264 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729577AbgB0Sbp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 27 Feb 2020 13:31:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=3Bz2vR2Tg5c+O+QNTGdqbIUhPXuM0m6WC7tdqcFYb6M=; b=dMAhh5kVdVTlSW7LUUcZawFdsG
-        VrjszrEQqD55+XATVj+aHw0gxaLaPG+FH+gXNJW020IS+LAwFyobUciaIYlH+tHxgBy4Xmpv7ZUOc
-        odp6oHs+NFEGcQI1/i9Cfzv+nm/BG6fPQ5yHuuOGsCAoSrv3TrThp+C0o00Y6Cen6k4g=;
-Received: from p200300ccff13fd00e2cec3fffe93fc31.dip0.t-ipconnect.de ([2003:cc:ff13:fd00:e2ce:c3ff:fe93:fc31] helo=eeepc)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1j7Nwc-0006zQ-59; Thu, 27 Feb 2020 19:31:34 +0100
-Received: from andi by eeepc with local (Exim 4.92)
-        (envelope-from <andreas@kemnade.info>)
-        id 1j7Nwb-0003oj-Lb; Thu, 27 Feb 2020 19:31:33 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        a.zummo@towertech.it, alexandre.belloni@bootlin.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rtc@vger.kernel.org, stefan@agner.ch, b.galvani@gmail.com,
-        phh@phh.me, letux-kernel@openphoenux.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        jic23@kernel.org
-Cc:     Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH v6 7/7] mfd: rn5t618: cleanup i2c_device_id
-Date:   Thu, 27 Feb 2020 19:31:12 +0100
-Message-Id: <20200227183112.14512-8-andreas@kemnade.info>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200227183112.14512-1-andreas@kemnade.info>
-References: <20200227183112.14512-1-andreas@kemnade.info>
+        id S1729317AbgB0TDW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Feb 2020 14:03:22 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:34158 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729170AbgB0TDW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Feb 2020 14:03:22 -0500
+Received: by mail-pg1-f193.google.com with SMTP id t3so179626pgn.1
+        for <linux-iio@vger.kernel.org>; Thu, 27 Feb 2020 11:03:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:date:from:to:cc:subject:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Qy/YBtdMo7sPQ4js3OQpNzOgMoEq2kdNiffok1y5gUY=;
+        b=FbMHWNFFEe6JlANg/qJ69uVrV379D+xQQ94ZYyxmGFYnf6OLXWr6gWHZ5cZIAdcwNk
+         0ZqG3SxfcQ4M7lJbiImVhYgzyypkO1UirJhU9dqa2mW429Wu1TnGCM1Jjikd9Zm303ho
+         fnFNP60vuoY8U09j5izsRrUUWaoJX87qSSU7QfiwR6GcKmeNoe3L74y1w1mPxYCqhBES
+         AE5+zyPFjO6I4AwYqKwxjlVy64ADPa8TqKy60SkbaWZera/Cv3inW5TKzm2By3gXE79r
+         l+Sw1LOkVW1pguLsbu12oK+SUGuaXi8zSgQ4MaHRr3GL1bXvtqTfqYtvdr//r/ddb58A
+         WOjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Qy/YBtdMo7sPQ4js3OQpNzOgMoEq2kdNiffok1y5gUY=;
+        b=JDwWFVrzgCGe4CkCCyRvSB6SRoyywWHPiEvFrCiAf4WoH7heLtrX7Yc4+ShlGWve71
+         4Zj1uy/Rije9RfJJLDuh+2th8ujvxNfhVm7tyWspcUn3Nvsq9HHh+o0Mdzm5G8xX9C8z
+         RfTZh3WFU0/mtsEfQadNSmg5TzsnQSenC2nAJBQYRwUO2UpnR0n0w4qGv/VUCEzjNtol
+         mSjXxS23CxbhDAfOE1xsOPYE9r5wv2ZEpQd8U9VDwveRY0TqwvIB7r4ROyc9A+JCS8sp
+         1YQqg9L/ZVXP5DeXOlZQBIJY9cjA1yN2g2UrSbJdOwEvgoO2hCCOlemBQjYJxsSOxKZu
+         wyNg==
+X-Gm-Message-State: APjAAAVayEZ/K4WLaykvcik+YndAa/DIyetZOa0Us0WWl91dtR2tvUvQ
+        c9Q28DA4OODeVgCLKKfGFfg=
+X-Google-Smtp-Source: APXvYqymmCPR5DB2VxmAUygXw2UEKVMDH0JILOkjYnGAeaWZ0+DPNGXYo+0Dd1YZrNQp9POlxQzj7g==
+X-Received: by 2002:a65:4c82:: with SMTP id m2mr729072pgt.432.1582830200715;
+        Thu, 27 Feb 2020 11:03:20 -0800 (PST)
+Received: from SARKAR ([49.207.57.206])
+        by smtp.gmail.com with ESMTPSA id p3sm8230475pfg.184.2020.02.27.11.03.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2020 11:03:20 -0800 (PST)
+Message-ID: <5e581278.1c69fb81.611d5.515b@mx.google.com>
+X-Google-Original-Message-ID: <20200227190315.GB8432@rohitsarkar5398@gmail.com>
+Date:   Fri, 28 Feb 2020 00:33:15 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>
+Subject: Re: [PATCH] iio: adc: max1363: replace mlock with own lock
+References: <5e56bdc3.1c69fb81.c3b20.9153@mx.google.com>
+ <b52bf5db819308d1a7456dc37882fa35508a06bf.camel@analog.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0 (-)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b52bf5db819308d1a7456dc37882fa35508a06bf.camel@analog.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-That list was just empty, so it can be removed if .probe_new
-instead of .probe is used
+On Thu, Feb 27, 2020 at 07:00:31AM +0000, Ardelean, Alexandru wrote:
+> On Thu, 2020-02-27 at 00:19 +0530, Rohit Sarkar wrote:
+> > [External]
+> > 
+> > This change replaces indio_dev's mlock with the drivers own lock. In
+> > each case the lock is needed to protect the driver's own state.
+> > 
+> > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> > ---
+> >  drivers/iio/adc/max1363.c | 13 +++++++------
+> >  1 file changed, 7 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+> > index 5c2cc61b666e..b9557f957f3c 100644
+> > --- a/drivers/iio/adc/max1363.c
+> > +++ b/drivers/iio/adc/max1363.c
+> > @@ -169,6 +169,7 @@ struct max1363_state {
+> >  	const struct max1363_mode	*current_mode;
+> >  	u32				requestedmask;
+> >  	struct regulator		*reg;
+> > +	struct mutex lock;
+> 
+> The 'lock' field should be aligned with *reg & requestedmask.
+Ah yes, dont know how I missed that.
 
-Suggested-by: Lee Jones <lee.jones@linaro.org>
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
-Functional independent from the other patches, but since they are
-touching similar areas, commit/merge conflicts would occur.
- drivers/mfd/rn5t618.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+> Also, it's a good idea to do a 'mutex_init(&st->lock)' in max1363_probe().
+> Somewhere after 'st = iio_priv(indio_dev);'
 
-diff --git a/drivers/mfd/rn5t618.c b/drivers/mfd/rn5t618.c
-index 321836f78120..b8033e2d650f 100644
---- a/drivers/mfd/rn5t618.c
-+++ b/drivers/mfd/rn5t618.c
-@@ -153,8 +153,7 @@ static const struct of_device_id rn5t618_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, rn5t618_of_match);
- 
--static int rn5t618_i2c_probe(struct i2c_client *i2c,
--			     const struct i2c_device_id *id)
-+static int rn5t618_i2c_probe(struct i2c_client *i2c)
- {
- 	const struct of_device_id *of_id;
- 	struct rn5t618 *priv;
-@@ -256,11 +255,6 @@ static int __maybe_unused rn5t618_i2c_resume(struct device *dev)
- 	return 0;
- }
- 
--static const struct i2c_device_id rn5t618_i2c_id[] = {
--	{ }
--};
--MODULE_DEVICE_TABLE(i2c, rn5t618_i2c_id);
--
- static SIMPLE_DEV_PM_OPS(rn5t618_i2c_dev_pm_ops,
- 			rn5t618_i2c_suspend,
- 			rn5t618_i2c_resume);
-@@ -271,9 +265,8 @@ static struct i2c_driver rn5t618_i2c_driver = {
- 		.of_match_table = of_match_ptr(rn5t618_of_match),
- 		.pm = &rn5t618_i2c_dev_pm_ops,
- 	},
--	.probe = rn5t618_i2c_probe,
-+	.probe_new = rn5t618_i2c_probe,
- 	.remove = rn5t618_i2c_remove,
--	.id_table = rn5t618_i2c_id,
- };
- 
- module_i2c_driver(rn5t618_i2c_driver);
--- 
-2.20.1
+Will do
+> Rest looks good
+> 
 
+Thanks,
+Rohit

@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5275172076
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2020 15:43:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 269D9172058
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2020 15:43:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731715AbgB0OnK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Feb 2020 09:43:10 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:14992 "EHLO
+        id S1731079AbgB0Ntl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Feb 2020 08:49:41 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:14972 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731070AbgB0Ntk (ORCPT
+        by vger.kernel.org with ESMTP id S1731069AbgB0Ntk (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Feb 2020 08:49:40 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01RDj6UT008510;
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01RDlNZc009483;
         Thu, 27 Feb 2020 08:49:39 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2ydtrx39wh-1
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2ydtrwka5r-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
         Thu, 27 Feb 2020 08:49:39 -0500
-Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 01RDnbxT017476
+Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 01RDncNl059116
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
         Thu, 27 Feb 2020 08:49:38 -0500
-Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
- SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 27 Feb 2020 05:49:36 -0800
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
+ 15.1.1779.2; Thu, 27 Feb 2020 08:49:37 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 27 Feb 2020 05:49:03 -0800
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 27 Feb 2020 05:49:36 -0800
+ 15.1.1779.2; Thu, 27 Feb 2020 08:49:37 -0500
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 27 Feb 2020 08:49:37 -0500
 Received: from saturn.ad.analog.com ([10.48.65.109])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 01RDnVol027892;
-        Thu, 27 Feb 2020 08:49:34 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 01RDnVom027892;
+        Thu, 27 Feb 2020 08:49:35 -0500
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
 To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC:     <jic23@kernel.org>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 4/8] iio: core: drop devm_iio_trigger_unregister() API call
-Date:   Thu, 27 Feb 2020 15:52:23 +0200
-Message-ID: <20200227135227.12433-4-alexandru.ardelean@analog.com>
+Subject: [PATCH 5/8] iio: core: drop devm_iio_trigger_free() API call
+Date:   Thu, 27 Feb 2020 15:52:24 +0200
+Message-ID: <20200227135227.12433-5-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200227135227.12433-1-alexandru.ardelean@analog.com>
 References: <20200227135227.12433-1-alexandru.ardelean@analog.com>
@@ -52,10 +52,10 @@ Content-Transfer-Encoding: 8bit
 X-ADIRoutedOnPrem: True
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
  definitions=2020-02-27_04:2020-02-26,2020-02-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- malwarescore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 phishscore=0 spamscore=0 adultscore=0 mlxlogscore=999
- suspectscore=2 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ phishscore=0 adultscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ suspectscore=2 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2001150001 definitions=main-2002270109
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
@@ -69,87 +69,104 @@ Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
  .../driver-api/driver-model/devres.rst        |  1 -
  Documentation/driver-api/iio/triggers.rst     |  1 -
- drivers/iio/industrialio-trigger.c            | 21 -------------------
- include/linux/iio/trigger.h                   |  3 ---
- 4 files changed, 26 deletions(-)
+ drivers/iio/industrialio-trigger.c            | 32 -------------------
+ include/linux/iio/iio.h                       |  2 --
+ 4 files changed, 36 deletions(-)
 
 diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
-index 6ae6c67dfec0..f638a035e6d2 100644
+index f638a035e6d2..6c401c74e480 100644
 --- a/Documentation/driver-api/driver-model/devres.rst
 +++ b/Documentation/driver-api/driver-model/devres.rst
-@@ -291,7 +291,6 @@ IIO
+@@ -289,7 +289,6 @@ IIO
+   devm_iio_kfifo_free()
+   devm_iio_triggered_buffer_setup()
    devm_iio_trigger_alloc()
-   devm_iio_trigger_free()
+-  devm_iio_trigger_free()
    devm_iio_trigger_register()
--  devm_iio_trigger_unregister()
    devm_iio_channel_get()
    devm_iio_channel_release()
-   devm_iio_channel_get_all()
 diff --git a/Documentation/driver-api/iio/triggers.rst b/Documentation/driver-api/iio/triggers.rst
-index 5c2156de6284..160faa810d12 100644
+index 160faa810d12..dfd7ba3eabde 100644
 --- a/Documentation/driver-api/iio/triggers.rst
 +++ b/Documentation/driver-api/iio/triggers.rst
-@@ -6,7 +6,6 @@ Triggers
+@@ -4,7 +4,6 @@ Triggers
+ 
+ * struct :c:type:`iio_trigger` — industrial I/O trigger device
  * :c:func:`devm_iio_trigger_alloc` — Resource-managed iio_trigger_alloc
- * :c:func:`devm_iio_trigger_free` — Resource-managed iio_trigger_free
+-* :c:func:`devm_iio_trigger_free` — Resource-managed iio_trigger_free
  * :c:func:`devm_iio_trigger_register` — Resource-managed iio_trigger_register
--* :c:func:`devm_iio_trigger_unregister` — Resource-managed
    iio_trigger_unregister
  * :c:func:`iio_trigger_validate_own_device` — Check if a trigger and IIO
-   device belong to the same device
 diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 3908a9a90035..611f608a9da2 100644
+index 611f608a9da2..53d1931f6be8 100644
 --- a/drivers/iio/industrialio-trigger.c
 +++ b/drivers/iio/industrialio-trigger.c
-@@ -673,9 +673,6 @@ static void devm_iio_trigger_unreg(struct device *dev, void *res)
-  * calls iio_trigger_register() internally. Refer to that function for more
-  * information.
+@@ -585,18 +585,6 @@ static void devm_iio_trigger_release(struct device *dev, void *res)
+ 	iio_trigger_free(*(struct iio_trigger **)res);
+ }
+ 
+-static int devm_iio_trigger_match(struct device *dev, void *res, void *data)
+-{
+-	struct iio_trigger **r = res;
+-
+-	if (!r || !*r) {
+-		WARN_ON(!r || !*r);
+-		return 0;
+-	}
+-
+-	return *r == data;
+-}
+-
+ /**
+  * devm_iio_trigger_alloc - Resource-managed iio_trigger_alloc()
+  * @dev:		Device to allocate iio_trigger for
+@@ -608,9 +596,6 @@ static int devm_iio_trigger_match(struct device *dev, void *res, void *data)
+  * Managed iio_trigger_alloc.  iio_trigger allocated with this function is
+  * automatically freed on driver detach.
   *
-- * If an iio_trigger registered with this function needs to be unregistered
-- * separately, devm_iio_trigger_unregister() must be used.
+- * If an iio_trigger allocated with this function needs to be freed separately,
+- * devm_iio_trigger_free() must be used.
 - *
   * RETURNS:
-  * 0 on success, negative error number on failure.
+  * Pointer to allocated iio_trigger on success, NULL on failure.
   */
-@@ -701,24 +698,6 @@ int __devm_iio_trigger_register(struct device *dev,
+@@ -640,23 +625,6 @@ struct iio_trigger *devm_iio_trigger_alloc(struct device *dev,
  }
- EXPORT_SYMBOL_GPL(__devm_iio_trigger_register);
+ EXPORT_SYMBOL_GPL(devm_iio_trigger_alloc);
  
 -/**
-- * devm_iio_trigger_unregister - Resource-managed iio_trigger_unregister()
-- * @dev:	device this iio_trigger belongs to
-- * @trig_info:	the trigger associated with the device
+- * devm_iio_trigger_free - Resource-managed iio_trigger_free()
+- * @dev:		Device this iio_dev belongs to
+- * @iio_trig:		the iio_trigger associated with the device
 - *
-- * Unregister trigger registered with devm_iio_trigger_register().
+- * Free iio_trigger allocated with devm_iio_trigger_alloc().
 - */
--void devm_iio_trigger_unregister(struct device *dev,
--				 struct iio_trigger *trig_info)
+-void devm_iio_trigger_free(struct device *dev, struct iio_trigger *iio_trig)
 -{
 -	int rc;
 -
--	rc = devres_release(dev, devm_iio_trigger_unreg, devm_iio_trigger_match,
--			    trig_info);
+-	rc = devres_release(dev, devm_iio_trigger_release,
+-			    devm_iio_trigger_match, iio_trig);
 -	WARN_ON(rc);
 -}
--EXPORT_SYMBOL_GPL(devm_iio_trigger_unregister);
+-EXPORT_SYMBOL_GPL(devm_iio_trigger_free);
 -
- bool iio_trigger_using_own(struct iio_dev *indio_dev)
+ static void devm_iio_trigger_unreg(struct device *dev, void *res)
  {
- 	return indio_dev->trig->attached_own_device;
-diff --git a/include/linux/iio/trigger.h b/include/linux/iio/trigger.h
-index 84995e2967ac..cad8325903f9 100644
---- a/include/linux/iio/trigger.h
-+++ b/include/linux/iio/trigger.h
-@@ -141,9 +141,6 @@ int __devm_iio_trigger_register(struct device *dev,
-  **/
- void iio_trigger_unregister(struct iio_trigger *trig_info);
- 
--void devm_iio_trigger_unregister(struct device *dev,
--				 struct iio_trigger *trig_info);
+ 	iio_trigger_unregister(*(struct iio_trigger **)res);
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index 2920c065ab9b..1a5d3d630ec1 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -689,8 +689,6 @@ void iio_device_free(struct iio_dev *indio_dev);
+ struct iio_dev *devm_iio_device_alloc(struct device *dev, int sizeof_priv);
+ struct iio_trigger *devm_iio_trigger_alloc(struct device *dev,
+ 						const char *fmt, ...);
+-void devm_iio_trigger_free(struct device *dev, struct iio_trigger *iio_trig);
 -
  /**
-  * iio_trigger_set_immutable() - set an immutable trigger on destination
-  *
+  * iio_buffer_enabled() - helper function to test if the buffer is enabled
+  * @indio_dev:		IIO device structure for device
 -- 
 2.20.1
 

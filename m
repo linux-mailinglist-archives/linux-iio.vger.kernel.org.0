@@ -2,50 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90EF317171F
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2020 13:26:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBC13171735
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2020 13:30:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729120AbgB0MZ5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Feb 2020 07:25:57 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:40074 "EHLO
+        id S1728928AbgB0MaV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Feb 2020 07:30:21 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:20076 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729010AbgB0MZ5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Feb 2020 07:25:57 -0500
+        by vger.kernel.org with ESMTP id S1728856AbgB0MaU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Feb 2020 07:30:20 -0500
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01RCHE6H017057;
-        Thu, 27 Feb 2020 07:25:30 -0500
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01RCHdHW031294;
+        Thu, 27 Feb 2020 07:29:57 -0500
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2ydtrwk2pv-1
+        by mx0a-00128a01.pphosted.com with ESMTP id 2ydtrwk33m-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 27 Feb 2020 07:25:30 -0500
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 01RCPSl5004006
+        Thu, 27 Feb 2020 07:29:57 -0500
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 01RCTtgC004578
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 27 Feb 2020 07:25:28 -0500
-Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 27 Feb 2020 04:25:27 -0800
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 27 Feb 2020 04:25:27 -0800
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 27 Feb 2020 04:25:26 -0800
+        Thu, 27 Feb 2020 07:29:55 -0500
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 27 Feb
+ 2020 04:29:54 -0800
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 27 Feb 2020 04:29:53 -0800
 Received: from analog.ad.analog.com ([10.48.65.180])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 01RCPMxp030792;
-        Thu, 27 Feb 2020 07:25:22 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 01RCToKg031017;
+        Thu, 27 Feb 2020 07:29:51 -0500
 From:   Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <jic23@kernel.org>
-CC:     <pmeerw@pmeerw.net>, <lars@metafoo.de>, <knaack.h@gmx.de>,
-        <tglx@linutronix.de>, <alexios.zavras@intel.com>,
-        <allison@lohutok.net>, <kstewart@linuxfoundation.org>,
+        <jic23@kernel.org>, <gregkh@linuxfoundation.org>
+CC:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <info@metux.net>, <lukas@wunner.de>, <tglx@linutronix.de>,
         Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Subject: [PATCH] iio: adc: max1118: Use new structure for SPI transfer delays
-Date:   Thu, 27 Feb 2020 14:25:15 +0200
-Message-ID: <20200227122515.16628-1-sergiu.cuciurean@analog.com>
+Subject: [PATCH] iio: adc: mcp320x: Use new structure for SPI transfer delays
+Date:   Thu, 27 Feb 2020 14:29:40 +0200
+Message-ID: <20200227122940.18243-1-sergiu.cuciurean@analog.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -75,37 +70,23 @@ backwards compatibility).
 
 Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 ---
- drivers/iio/adc/max1118.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/iio/adc/mcp320x.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/max1118.c b/drivers/iio/adc/max1118.c
-index 3b6f3b9a6c5b..0c5d7aaf6826 100644
---- a/drivers/iio/adc/max1118.c
-+++ b/drivers/iio/adc/max1118.c
-@@ -71,7 +71,10 @@ static int max1118_read(struct spi_device *spi, int channel)
- 		 */
- 		{
- 			.len = 0,
--			.delay_usecs = 1,	/* > CNVST Low Time 100 ns */
-+			.delay = {	/* > CNVST Low Time 100 ns */
-+				.value = 1,
-+				.unit = SPI_DELAY_UNIT_USECS
-+			},
- 			.cs_change = 1,
- 		},
- 		/*
-@@ -81,7 +84,10 @@ static int max1118_read(struct spi_device *spi, int channel)
- 		 */
- 		{
- 			.len = 0,
--			.delay_usecs = 8,
-+			.delay = {
-+				.value = 8,
-+				.unit = SPI_DELAY_UNIT_USECS
-+			},
- 		},
- 		{
- 			.rx_buf = &adc->data,
+diff --git a/drivers/iio/adc/mcp320x.c b/drivers/iio/adc/mcp320x.c
+index 465c7625a55a..2c0eb5de110c 100644
+--- a/drivers/iio/adc/mcp320x.c
++++ b/drivers/iio/adc/mcp320x.c
+@@ -421,7 +421,8 @@ static int mcp320x_probe(struct spi_device *spi)
+ 			adc->transfer[1].len++;
+ 
+ 		/* conversions are started by asserting CS pin for 8 usec */
+-		adc->start_conv_transfer.delay_usecs = 8;
++		adc->start_conv_transfer.delay.value = 8;
++		adc->start_conv_transfer.delay.unit = SPI_DELAY_UNIT_USECS;
+ 		spi_message_init_with_transfers(&adc->start_conv_msg,
+ 						&adc->start_conv_transfer, 1);
+ 
 -- 
 2.17.1
 

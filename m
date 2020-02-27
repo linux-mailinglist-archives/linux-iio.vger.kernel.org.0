@@ -2,159 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2DBB171678
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2020 12:56:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B3C31716EF
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2020 13:18:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728907AbgB0L4c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Feb 2020 06:56:32 -0500
-Received: from mail.andi.de1.cc ([85.214.55.253]:35364 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728893AbgB0L4b (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 27 Feb 2020 06:56:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
-        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=hs+/+Dh4GQJI5ywUkkMPMrtyW5zokXX7/ak0kxRWiMw=; b=h5wF6WN9eECO+56oBJLDA7m5r
-        2BmPipHiHuQxhnjdM8ONt3yFGPM8mIpMSF9eg/LQyLgCypmnhitz9olHW7WdocG+RNJ/5Qld6/mf0
-        qf7iTLN9gpRf+S4BZF+R+gmvzitRJKKig6RhU9Ne7cb3qXnBADwG9mvLMqo7dZftAbhug=;
-Received: from [2a02:790:ff:1019:e2ce:c3ff:fe93:fc31] (helo=localhost)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1j7HmE-00024s-7e; Thu, 27 Feb 2020 12:56:27 +0100
-Received: from localhost ([::1])
-        by localhost with esmtp (Exim 4.92)
-        (envelope-from <andreas@kemnade.info>)
-        id 1j7Hm9-000108-AU; Thu, 27 Feb 2020 12:56:21 +0100
-Date:   Thu, 27 Feb 2020 12:56:14 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        b.galvani@gmail.com, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        phh@phh.me, stefan@agner.ch, letux-kernel@openphoenux.org,
-        jic23@kernel.org
-Subject: Re: [PATCH v5 1/2] mfd: rn5t618: add ADC subdevice for RC5T619
-Message-ID: <20200227125544.510a10f7@kemnade.info>
-In-Reply-To: <20200227094006.GV3494@dell>
-References: <20200223131638.12130-1-andreas@kemnade.info>
-        <20200223131638.12130-2-andreas@kemnade.info>
-        <20200226154055.GQ3494@dell>
-        <20200226174914.047667d5@kemnade.info>
-        <20200226174640.GR3494@dell>
-        <20200226190028.0de5c095@kemnade.info>
-        <20200227094006.GV3494@dell>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-pc-linux-gnu)
+        id S1728942AbgB0MSl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Feb 2020 07:18:41 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:26280 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728856AbgB0MSl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Feb 2020 07:18:41 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01RCHa5Z028892;
+        Thu, 27 Feb 2020 07:18:36 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2ydtrwk24n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Feb 2020 07:18:36 -0500
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 01RCIZHk044665
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 27 Feb 2020 07:18:35 -0500
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 27 Feb
+ 2020 04:18:33 -0800
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Thu, 27 Feb 2020 04:18:33 -0800
+Received: from analog.ad.analog.com ([10.48.65.180])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 01RCIUEO030445;
+        Thu, 27 Feb 2020 07:18:31 -0500
+From:   Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <jic23@kernel.org>
+CC:     <pmeerw@pmeerw.net>, <Michael.Hennerich@analog.com>,
+        <marcelo.schmitt1@gmail.com>,
+        Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Subject: [PATCH] iio: adc: ad9292: Use new structure for SPI transfer delays
+Date:   Thu, 27 Feb 2020 14:18:14 +0200
+Message-ID: <20200227121814.14442-1-sergiu.cuciurean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/yc8PI1h7Z/61=XnB+ULCMgZ"; protocol="application/pgp-signature"
-X-Spam-Score: -1.0 (-)
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-27_03:2020-02-26,2020-02-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ phishscore=0 adultscore=0 spamscore=0 mlxscore=0 mlxlogscore=960
+ suspectscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002270100
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---Sig_/yc8PI1h7Z/61=XnB+ULCMgZ
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+In a recent change to the SPI subsystem [1], a new `delay` struct was added
+to replace the `delay_usecs`. This change replaces the current
+`delay_usecs` with `delay` for this driver.
 
-On Thu, 27 Feb 2020 09:40:06 +0000
-Lee Jones <lee.jones@linaro.org> wrote:
+The `spi_transfer_delay_exec()` function [in the SPI framework] makes sure
+that both `delay_usecs` & `delay` are used (in this order to preserve
+backwards compatibility).
 
-> On Wed, 26 Feb 2020, Andreas Kemnade wrote:
->=20
-> > On Wed, 26 Feb 2020 17:46:40 +0000
-> > Lee Jones <lee.jones@linaro.org> wrote:
-> >  =20
-> > > On Wed, 26 Feb 2020, Andreas Kemnade wrote:
-> > >  =20
-> > > > On Wed, 26 Feb 2020 15:40:55 +0000
-> > > > Lee Jones <lee.jones@linaro.org> wrote:
-> > > >    =20
-> > > > > On Sun, 23 Feb 2020, Andreas Kemnade wrote:
-> > > > >    =20
-> > > > > > This adds a subdevice for the ADC in the RC5T619
-> > > > > >=20
-> > > > > > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > > > > > ---
-> > > > > > depends on:
-> > > > > > https://lore.kernel.org/lkml/20191220122416.31881-1-andreas@kem=
-nade.info/
-> > > > > >=20
-> > > > > > Changes in v3:
-> > > > > > re-added it to the series because of
-> > > > > > "Oh, it looks like there was a conflict.  Could you collect any=
- Acks
-> > > > > > (including mine) rebase and resend please?"     =20
-> > > > >=20
-> > > > > Looks like there is still a conflict.  Sure, it's not a complicat=
-ed
-> > > > > fix, but that's beside the point.  What tree is this set based on?
-> > > > >    =20
-> > > > It must be applied on top of my rc5t619 rtc series here:
-> > > > https://lore.kernel.org/lkml/20191220122416.31881-1-andreas@kemnade=
-.info/
-> > > >=20
-> > > > I expected it to make it into 5.6 and when I first sent the RTC ser=
-ies
-> > > >  (in October) I had no idea when I will continue with other stuff.
-> > > >=20
-> > > > That is why I sent this ADC series separately, also to give the IIO
-> > > > maintainer plenty of time to review.    =20
-> > >=20
-> > > If a patch-set can or should be applied on its own, you should send it
-> > > based on an upstream commit, or else things like this happen.
-> > >  =20
-> > It cannot without breaking bisectability. The RTC series adds IRQ suppo=
-rt in
-> > the PMIC which is used here. =20
->=20
-> Then Kconfig should reflect that.
->=20
-> Or, if that's not possible, then you should not break-up and submit
-> sets which cannot be applied by themselves.  Either submit the whole
-> set together, or submit them piece by piece, not submitting the next
-> part until it's predecessor has been applied.
->=20
-I will send you a complete series containing both RTC and ADC support.
-Then you can decide wether you
-1. apply the whole series (both things)
-2. apply RTC for 5.7 and this series later
-3. ignore them  (not my preferred choice ;-) ).
+[1] commit bebcfd272df6 ("spi: introduce `delay` field for
+`spi_transfer` + spi_transfer_delay_exec()")
 
-BTW: The way I did was based on the following note in=20
-Documentation/process/submitting-patches.rst
+Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+---
+ drivers/iio/adc/ad7292.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-"If one patch depends on another patch in order for a change to be
-complete, that is OK.  Simply note **"this patch depends on patch X"**
-in your patch description."
+diff --git a/drivers/iio/adc/ad7292.c b/drivers/iio/adc/ad7292.c
+index a6798f7dfdb8..6595fd196288 100644
+--- a/drivers/iio/adc/ad7292.c
++++ b/drivers/iio/adc/ad7292.c
+@@ -122,7 +122,10 @@ static int ad7292_single_conversion(struct ad7292_state *st,
+ 		{
+ 			.tx_buf = &st->d8,
+ 			.len = 4,
+-			.delay_usecs = 6,
++			.delay = {
++				.value = 6,
++				.unit = SPI_DELAY_UNIT_USECS
++			},
+ 		}, {
+ 			.rx_buf = &st->d16,
+ 			.len = 2,
+-- 
+2.17.1
 
-
-Regards,
-Andreas
-
---Sig_/yc8PI1h7Z/61=XnB+ULCMgZ
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl5Xrl4ACgkQl4jFM1s/
-ye+f3A//WjqnfE2Ok7w+zmm/hu9FQonJQnp77QUGgDJxnG9IE2f0pdcQO+PZwLTF
-bqP3/lyDiFhCUI425h2UHNm3YB2CxnNDUqcqzmvTKRQVqlNIgInBySfX8VGpLT/J
-AKEV7bwkfpS7J9SxIEV+Gj0ljjkRktc7kFufkXjeMoGaVcflXk981CsfNFQJV5QQ
-ZLx/DDrosKKOB7CzEo5brffI1o7dD64n3qTWlXgBaU56uO/DKQGwqAE1Vfa+V7Jb
-l6IeBJ6cp03ywEHtXdGxSBkmrOxUx39fdWbCnCc+KY9LGzgXf72MSmKfMHJlADmc
-DCg/ZQ0yfpAt+a8LlCTCuhmQ8w3XpapNrDItS8Y0oVp3hqwUt2ttDyKq1Hl4ytqV
-hmf9fz1VAKHnccQ+87T/qYgVuu5HETorKeF9L+EJWYC7Y2yWB4vhPvg7nhOp57nI
-VGV8Vbcz9pdHVWZVTPB+N0D2J1lFZeEKMCNf+GwrEinbLEru5Nq6iybyA1/yHLCA
-FHnAa/sHZnelLqgvpKU09VOMm1T1J+A40TKAENigHCmgkv4TdA1SvgIk++2+qYEY
-dZr/qGv3/9hMpqVBbguifvM1onF8KiyIIh5DpRhFoVLqfrdQ6VzeC8iP/M2rU+RZ
-xi4zqSmPUfai4QpgIHlnwhs7nJJ8GpUZlwPbrFxKlOao3VNLGFo=
-=EWRZ
------END PGP SIGNATURE-----
-
---Sig_/yc8PI1h7Z/61=XnB+ULCMgZ--

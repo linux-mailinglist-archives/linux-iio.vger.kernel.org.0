@@ -2,67 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 598A81733C3
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2020 10:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E184C173616
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2020 12:33:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726413AbgB1JWr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Feb 2020 04:22:47 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:32769 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726148AbgB1JWr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Feb 2020 04:22:47 -0500
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1j7bqv-0004Iz-EA; Fri, 28 Feb 2020 10:22:37 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1j7bqs-0005Tm-LD; Fri, 28 Feb 2020 10:22:34 +0100
-Date:   Fri, 28 Feb 2020 10:22:34 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     lee.jones@linaro.org, dmitry.torokhov@gmail.com,
-        thierry.reding@gmail.com, jic23@kernel.org,
-        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-pwm@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com
-Subject: Re: [PATCH v5 4/7] pwm: Add support for Azoteq IQS620A PWM generator
-Message-ID: <20200228092234.owlqvpuwu4hk3vog@pengutronix.de>
-References: <1581895931-6056-1-git-send-email-jeff@labundy.com>
- <1581895931-6056-5-git-send-email-jeff@labundy.com>
+        id S1725886AbgB1LdT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Feb 2020 06:33:19 -0500
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:33454 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725933AbgB1LdS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Feb 2020 06:33:18 -0500
+Received: by mail-ed1-f66.google.com with SMTP id c62so1446088edf.0;
+        Fri, 28 Feb 2020 03:33:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=nnPLD2kwXHtOQ0PS3CP4V1/yZI3WoezcfPgFUZcg6R4=;
+        b=KF2kxJza+AkIGArL3ACdkNQp+bRjWFAIdwHP0aJK+NYDV18pW1OK6shGOegXiwYHTJ
+         EVjFRFwJ9kI+UHcRBwrC16Jk4EnWw37n6/cuImqD6Ziq0TZz4sAFKH7TZEV817dSB9ci
+         8EHDgW4iC2b6zuatm3/H7da+1alQ+qjjisS1IqLamBUx+hMM7DVe+e2jvdhnhnEd10Ii
+         HHDyf+4aLN4ONeMHrxWRSmX1A/veLEt5K9zrJ3tWEcZCCdjXT0/0nvTyE8VnmH2A5TLC
+         nH5fgqZoFOq+UJMF1E0FEnzMqH5QCW/8Eu/Y3b+7SgzNQdUZhhd+4Tuhd5OwfNFJz62i
+         4efw==
+X-Gm-Message-State: APjAAAWLSwNCvt7TnkohkgtyQhV7EZjufiFzW3hTXO2ANJzUM8G9+spu
+        M/aVlRulgFpwfSZxrYWcneg=
+X-Google-Smtp-Source: APXvYqzx46SGHanL4lMm5q8SuA/FB6FbkYrdqwJkUQducRP6B+eYR5HKx0olozo5cmyHe8LviKHDjg==
+X-Received: by 2002:a17:906:ccc2:: with SMTP id ot2mr3674182ejb.194.1582889597424;
+        Fri, 28 Feb 2020 03:33:17 -0800 (PST)
+Received: from pi3 ([194.230.155.125])
+        by smtp.googlemail.com with ESMTPSA id x13sm353864ejs.27.2020.02.28.03.33.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2020 03:33:16 -0800 (PST)
+Date:   Fri, 28 Feb 2020 12:33:14 +0100
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Marek Szyprowski <m.szyprowski@samsung.com>
+Cc:     linux-iio@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH] iio: adc: exynos: Silence warning about regulators
+ during deferred probe
+Message-ID: <20200228113314.GE9458@pi3>
+References: <CGME20200228092134eucas1p226ebb0e76f2a6c82b62489ae3a0379bd@eucas1p2.samsung.com>
+ <20200228092121.15918-1-m.szyprowski@samsung.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1581895931-6056-5-git-send-email-jeff@labundy.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <20200228092121.15918-1-m.szyprowski@samsung.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jeff,
-
-On Sun, Feb 16, 2020 at 05:32:08PM -0600, Jeff LaBundy wrote:
-> This patch adds support for the Azoteq IQS620A, capable of generating
-> a 1-kHz PWM output with duty cycle between ~0.4% and 100% (inclusive).
+On Fri, Feb 28, 2020 at 10:21:21AM +0100, Marek Szyprowski wrote:
+> Don't confuse user with meaningless warning about the failure in getting
+> regulators in case of deferred probe.
 > 
-> Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> ---
+>  drivers/iio/adc/exynos_adc.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-I like it,
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Best regards,
+Krzysztof
 
-Best regards
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |

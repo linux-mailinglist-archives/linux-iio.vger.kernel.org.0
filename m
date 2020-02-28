@@ -2,70 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E184C173616
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2020 12:33:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CF9B17383A
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2020 14:24:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725886AbgB1LdT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Feb 2020 06:33:19 -0500
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:33454 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725933AbgB1LdS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Feb 2020 06:33:18 -0500
-Received: by mail-ed1-f66.google.com with SMTP id c62so1446088edf.0;
-        Fri, 28 Feb 2020 03:33:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nnPLD2kwXHtOQ0PS3CP4V1/yZI3WoezcfPgFUZcg6R4=;
-        b=KF2kxJza+AkIGArL3ACdkNQp+bRjWFAIdwHP0aJK+NYDV18pW1OK6shGOegXiwYHTJ
-         EVjFRFwJ9kI+UHcRBwrC16Jk4EnWw37n6/cuImqD6Ziq0TZz4sAFKH7TZEV817dSB9ci
-         8EHDgW4iC2b6zuatm3/H7da+1alQ+qjjisS1IqLamBUx+hMM7DVe+e2jvdhnhnEd10Ii
-         HHDyf+4aLN4ONeMHrxWRSmX1A/veLEt5K9zrJ3tWEcZCCdjXT0/0nvTyE8VnmH2A5TLC
-         nH5fgqZoFOq+UJMF1E0FEnzMqH5QCW/8Eu/Y3b+7SgzNQdUZhhd+4Tuhd5OwfNFJz62i
-         4efw==
-X-Gm-Message-State: APjAAAWLSwNCvt7TnkohkgtyQhV7EZjufiFzW3hTXO2ANJzUM8G9+spu
-        M/aVlRulgFpwfSZxrYWcneg=
-X-Google-Smtp-Source: APXvYqzx46SGHanL4lMm5q8SuA/FB6FbkYrdqwJkUQducRP6B+eYR5HKx0olozo5cmyHe8LviKHDjg==
-X-Received: by 2002:a17:906:ccc2:: with SMTP id ot2mr3674182ejb.194.1582889597424;
-        Fri, 28 Feb 2020 03:33:17 -0800 (PST)
-Received: from pi3 ([194.230.155.125])
-        by smtp.googlemail.com with ESMTPSA id x13sm353864ejs.27.2020.02.28.03.33.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2020 03:33:16 -0800 (PST)
-Date:   Fri, 28 Feb 2020 12:33:14 +0100
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     linux-iio@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: adc: exynos: Silence warning about regulators
- during deferred probe
-Message-ID: <20200228113314.GE9458@pi3>
-References: <CGME20200228092134eucas1p226ebb0e76f2a6c82b62489ae3a0379bd@eucas1p2.samsung.com>
- <20200228092121.15918-1-m.szyprowski@samsung.com>
+        id S1725906AbgB1NYI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Feb 2020 08:24:08 -0500
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2479 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725876AbgB1NYI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 28 Feb 2020 08:24:08 -0500
+Received: from LHREML711-CAH.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id E9AD13620E0E587DB714;
+        Fri, 28 Feb 2020 13:24:05 +0000 (GMT)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ LHREML711-CAH.china.huawei.com (10.201.108.34) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Fri, 28 Feb 2020 13:24:05 +0000
+Received: from localhost (10.202.226.57) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Fri, 28 Feb
+ 2020 13:24:05 +0000
+Date:   Fri, 28 Feb 2020 13:24:02 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+CC:     "rohitsarkar5398@gmail.com" <rohitsarkar5398@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: query about locking in IIO
+Message-ID: <20200228132402.00002d9e@Huawei.com>
+In-Reply-To: <a644fc06b461361e6d6b001fe2e4e50dbaba6943.camel@analog.com>
+References: <20200225171150.GD24663@SARKAR>
+        <67108b1b3172e5f51d54a51fbe5a23c7ff4ce5ba.camel@analog.com>
+        <5e56aa03.1c69fb81.3f3c3.8b05@mx.google.com>
+        <a644fc06b461361e6d6b001fe2e4e50dbaba6943.camel@analog.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200228092121.15918-1-m.szyprowski@samsung.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.57]
+X-ClientProxiedBy: lhreml727-chm.china.huawei.com (10.201.108.78) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Feb 28, 2020 at 10:21:21AM +0100, Marek Szyprowski wrote:
-> Don't confuse user with meaningless warning about the failure in getting
-> regulators in case of deferred probe.
+On Thu, 27 Feb 2020 06:58:11 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+
+> On Wed, 2020-02-26 at 22:55 +0530, Rohit Sarkar wrote:
+> > [External]
+> > 
+> > On Wed, Feb 26, 2020 at 06:54:21AM +0000, Ardelean, Alexandru wrote:  
+> > > On Tue, 2020-02-25 at 22:41 +0530, Rohit Sarkar wrote:  
+> > > > Hi,
+> > > > Could someone explain why using indio_dev->mlock directly is a bad idea?
+> > > > Further examples of cases where it cannot be replaced will be helpful
+> > > >   
+> > > 
+> > > Jonathan may add more here.
+> > > 
+> > > But in general, each driver should define it's own explicit lock if it needs
+> > > to.
+> > > Some drivers need explicit locking, some don't.
+> > > 
+> > > A lot of other frameworks already define locks already.
+> > > Like, for example, when an IIO driver uses some SPI transfers, the SPI
+> > > framework
+> > > already uses some locks. So, you don't typically need extra locking; which
+> > > for
+> > > some IIO drivers translates to: no extra explicit locking.
+> > > 
+> > > I guess Jonathan also wants to move the mlock to be used only in the IIO
+> > > framework.
+> > > In some cases, if drivers use this mlock, and the framework uses it, you can
+> > > end
+> > > up trying to acquire the same mlock twice, which can end-up in a deadlock.
+> > > These things can sometimes slip through the code-review.  
+> > 
+> > This makes sense
+> >   
+> > > I guess the docs need a bit of update.
+> > > Because:
+> > > 
+> > > * @mlock:              [DRIVER] lock used to prevent simultaneous device
+> > > state
+> > > *                      changes
+> > > 
+> > > I think it should be converted to [INTERN]
+> > >   
+> > > > Thanks,
+> > > > Rohit
+> > > >   
+> > 
+> > As a follow up would I be right to assume that as long as the mlock is
+> > not being in the IIO framework, explicit locking should be the way to
+> > go?  
 > 
-> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> ---
->  drivers/iio/adc/exynos_adc.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> The question sounds a bit hard to follow.
+> Each driver should define it's own locking if it needs it.
+> mlock will continued to be used only in the IIO framework; it won't be removed.
+> [INTERN] is just a marker in the doc-string to make sure people don't use
+> these fields in drivers.
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Yes.  That's basically it.  mlock is a framework internal lock and we may change
+how it is implemented at any time.
 
-Best regards,
-Krzysztof
+Various drivers using it make any such changes impossible and are much harder to
+reason about because the mlock uses in the core aren't visible within the
+driver.
+
+So basically its a software architecture problem rather than there being any
+known bugs!
+
+Thanks,
+
+Jonathan
+
+> 
+> 
+> > Thanks,
+> > Rohit  
+
 

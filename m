@@ -2,103 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 543A5174DA1
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Mar 2020 15:22:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DEB1174DA2
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Mar 2020 15:24:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726094AbgCAOWY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Mar 2020 09:22:24 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48922 "EHLO mail.kernel.org"
+        id S1726188AbgCAOYP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Mar 2020 09:24:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49162 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725887AbgCAOWY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Mar 2020 09:22:24 -0500
+        id S1725887AbgCAOYP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Mar 2020 09:24:15 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5C20A214DB;
-        Sun,  1 Mar 2020 14:22:22 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BABA2214DB;
+        Sun,  1 Mar 2020 14:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583072543;
-        bh=284bXu3fOQE3oH2K6kBifonaQN3cfx19oSrJKcI1laQ=;
+        s=default; t=1583072654;
+        bh=R0f7aWVxkB1VclGcflnTl+GpVS4uJevvWw/NgoP2MdY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xvUBe1ao1Shm7OhRFs3MFZHLAet62r8+I5nvPCuVLMprKpC4cbXhwpLRVZbogbfKL
-         tnya97ypNrQLVKEbv/EzYf1O1Ylr0revkYHQMFsSaWt3TIcxcQe+oSkPaQJG8GLGoF
-         tEDvTNAk2iecSLZMcMX4X4AB35uME1EKpyk47BlU=
-Date:   Sun, 1 Mar 2020 14:22:18 +0000
+        b=oNQKRYiVUa6RtuajN/EogC9xb2mRbz1jJUxpjVl31syYK5YqWCqgx+W+HegjD8FoH
+         peQUe1y2gKuJCaxjwalg5dMnpDyvPU5papopFsfCVN/vAnofvNTMSnOMaS10Wrz1NR
+         9kvQHyUtPbZbsXgAwHBYTWw7wapMYI0x0F+2yMRU=
+Date:   Sun, 1 Mar 2020 14:24:07 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Wen-chien Jesse Sung <jesse.sung@canonical.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: st_sensors: remap SMO8840 to LIS2DH12
-Message-ID: <20200301142218.07a50a42@archlinux>
-In-Reply-To: <a4f690f2-19a5-fc67-8072-eb14b8df0017@redhat.com>
-References: <20200224095426.25681-1-jesse.sung@canonical.com>
-        <a4f690f2-19a5-fc67-8072-eb14b8df0017@redhat.com>
+To:     Petr =?UTF-8?B?xaB0ZXRpYXI=?= <ynezz@true.cz>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Tomasz Duszynski <tduszyns@gmail.com>, stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: chemical: sps30: fix missing triggered buffer
+ dependency
+Message-ID: <20200301142407.0e63f6dc@archlinux>
+In-Reply-To: <20200227162734.604-1-ynezz@true.cz>
+References: <20200227162734.604-1-ynezz@true.cz>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 24 Feb 2020 20:23:28 +0100
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Thu, 27 Feb 2020 17:27:34 +0100
+Petr =C5=A0tetiar <ynezz@true.cz> wrote:
 
-> Hi,
-> 
-> On 2/24/20 10:54 AM, Wen-chien Jesse Sung wrote:
-> > According to ST, the HID is for LIS2DH12.
-> > 
-> > Signed-off-by: Wen-chien Jesse Sung <jesse.sung@canonical.com>  
-> 
-> I added the original "SMO8840" entry since I did not have any
-> docs I just copied the "SMO8A90" entry. Looking at the driver
-> the only difference seems to be that the LNG2DM only has 8 bits
-> accuracy where as the LIS2DH12 has 12 bits. I can confirm that
-> this patch works on my Lenovo Ideapad Miix 320, for which the
-> original patch was submitted, and that I indeed get 12 bits of
-> accuracy with this patch.
-> 
-> So this patch is:
-> 
-> Tested-by: Hans de Goede <hdegoede@redhat.com>
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> 
-Applied to the fixes-togreg branch of iio.git with fixes
-and stable tags added.
+> SPS30 uses triggered buffer, but the dependency is not specified in the
+> Kconfig file.  Fix this by selecting IIO_BUFFER and IIO_TRIGGERED_BUFFER
+> config symbols.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 232e0f6ddeae ("iio: chemical: add support for Sensirion SPS30 sens=
+or")
+> Signed-off-by: Petr =C5=A0tetiar <ynezz@true.cz>
 
-Whilst it isn't vital this gets backported, it seems unlikely
-to do any harm.
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
-> Regards,
-> 
-> Hans
-> 
-> 
-> 
-> 
-> > ---
-> >   drivers/iio/accel/st_accel_i2c.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
-> > index 633955d764cc..849cf74153c4 100644
-> > --- a/drivers/iio/accel/st_accel_i2c.c
-> > +++ b/drivers/iio/accel/st_accel_i2c.c
-> > @@ -110,7 +110,7 @@ MODULE_DEVICE_TABLE(of, st_accel_of_match);
-> >   
-> >   #ifdef CONFIG_ACPI
-> >   static const struct acpi_device_id st_accel_acpi_match[] = {
-> > -	{"SMO8840", (kernel_ulong_t)LNG2DM_ACCEL_DEV_NAME},
-> > +	{"SMO8840", (kernel_ulong_t)LIS2DH12_ACCEL_DEV_NAME},
-> >   	{"SMO8A90", (kernel_ulong_t)LNG2DM_ACCEL_DEV_NAME},
-> >   	{ },
-> >   };
-> >   
-> 
+> ---
+>  drivers/iio/chemical/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
+> index 0b91de4df8f4..a7e65a59bf42 100644
+> --- a/drivers/iio/chemical/Kconfig
+> +++ b/drivers/iio/chemical/Kconfig
+> @@ -91,6 +91,8 @@ config SPS30
+>  	tristate "SPS30 particulate matter sensor"
+>  	depends on I2C
+>  	select CRC8
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+>  	help
+>  	  Say Y here to build support for the Sensirion SPS30 particulate
+>  	  matter sensor.
 

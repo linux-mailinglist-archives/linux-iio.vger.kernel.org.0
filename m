@@ -2,38 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EE9D174E1A
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Mar 2020 16:53:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C32174E22
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Mar 2020 16:54:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726204AbgCAPxI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Mar 2020 10:53:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35920 "EHLO mail.kernel.org"
+        id S1726527AbgCAPyq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Mar 2020 10:54:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36204 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725945AbgCAPxI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Mar 2020 10:53:08 -0500
+        id S1725945AbgCAPyp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Mar 2020 10:54:45 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7989A24677;
-        Sun,  1 Mar 2020 15:53:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2B0EA2468E;
+        Sun,  1 Mar 2020 15:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583077987;
-        bh=BNvU48AhqE7w6xnebVJSrHAuwWtfIWoXRKT9bbM+zBQ=;
+        s=default; t=1583078085;
+        bh=N11K61PjUnTgCSmuZ96P/U+BYtwhUgB2ShONgN2rnbQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=svmTW3XUdfP8EzFJ/2J+PBd2QK8uMJ+ojASvGwB3my7C3COrMRRb5fNAuxIFDXzF7
-         GlVAaRbmL7V+MZKdnW09O/oc+XG9yEz79kax+Q3n7E5YIhXiHntz82eSDnCyFNgx25
-         kpsB5fJ3L9/rcHpYu+RwZZ8wt/IMMaRhc8YMrt6c=
-Date:   Sun, 1 Mar 2020 15:53:00 +0000
+        b=UmrgeCnyQDafYc/8DnHMNgBXQj/+DnlOROo7rbv4ZEP8AP7to0+WNr8LtETWnIAh5
+         sG9dXVoyufl2KHng39fMV5HIYThCELtNrYQhGpIYVJQvlnEF0gxdLhSwsldRwJNHeG
+         X6YF9YAmvi3HXmOMqBP8ePe1bMxdQ3ZAwvslAHGc=
+Date:   Sun, 1 Mar 2020 15:54:40 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <knaack.h@gmx.de>, <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: imu: adis_buffer: Use new structure for SPI
- transfer delays
-Message-ID: <20200301155300.455551fa@archlinux>
-In-Reply-To: <20200227123859.21757-1-sergiu.cuciurean@analog.com>
-References: <20200227123859.21757-1-sergiu.cuciurean@analog.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] iio: imu: adis: add doc-string for 'adis' struct
+Message-ID: <20200301155440.28991de2@archlinux>
+In-Reply-To: <20200225103319.20751-1-alexandru.ardelean@analog.com>
+References: <20200225103319.20751-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,43 +40,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 27 Feb 2020 14:38:59 +0200
-Sergiu Cuciurean <sergiu.cuciurean@analog.com> wrote:
+On Tue, 25 Feb 2020 12:33:17 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> In a recent change to the SPI subsystem [1], a new `delay` struct was added
-> to replace the `delay_usecs`. This change replaces the current
-> `delay_usecs` with `delay` for this driver.
+> This change adds a doc-string for the 'adis' struct. It details the fields
+> and their roles.
 > 
-> The `spi_transfer_delay_exec()` function [in the SPI framework] makes sure
-> that both `delay_usecs` & `delay` are used (in this order to preserve
-> backwards compatibility).
-> 
-> [1] commit bebcfd272df6 ("spi: introduce `delay` field for
-> `spi_transfer` + spi_transfer_delay_exec()")
-> 
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Applied.
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to poke at it.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/imu/adis_buffer.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/imu/adis_buffer.c b/drivers/iio/imu/adis_buffer.c
-> index 3f4dd5c00b03..04e5e2a0fd6b 100644
-> --- a/drivers/iio/imu/adis_buffer.c
-> +++ b/drivers/iio/imu/adis_buffer.c
-> @@ -97,7 +97,8 @@ int adis_update_scan_mode(struct iio_dev *indio_dev,
->  		if (j != scan_count)
->  			adis->xfer[j].cs_change = 1;
->  		adis->xfer[j].len = 2;
-> -		adis->xfer[j].delay_usecs = adis->data->read_delay;
-> +		adis->xfer[j].delay.value = adis->data->read_delay;
-> +		adis->xfer[j].delay.unit = SPI_DELAY_UNIT_USECS;
->  		if (j < scan_count)
->  			adis->xfer[j].tx_buf = &tx[j];
->  		if (j >= 1)
+> Changelog v1 -> v2:
+> * changed tx/rx descriptions to
+>   ```
+>   @tx: DMA safe TX buffer for SPI transfers
+>   @rx: DMA safe RX buffer for SPI transfers
+>   ```
+> 
+>  include/linux/iio/imu/adis.h | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+> index ac7cfd073804..63e456aa5c8a 100644
+> --- a/include/linux/iio/imu/adis.h
+> +++ b/include/linux/iio/imu/adis.h
+> @@ -73,6 +73,20 @@ struct adis_data {
+>  	bool has_paging;
+>  };
+>  
+> +/**
+> + * struct adis - ADIS device instance data
+> + * @spi: Reference to SPI device which owns this ADIS IIO device
+> + * @trig: IIO trigger object data
+> + * @data: ADIS chip variant specific data
+> + * @burst: ADIS burst transfer information
+> + * @state_lock: Lock used by the device to protect state
+> + * @msg: SPI message object
+> + * @xfer: SPI transfer objects to be used for a @msg
+> + * @current_page: Some ADIS devices have registers, this selects current page
+> + * @buffer: Data buffer for information read from the device
+> + * @tx: DMA safe TX buffer for SPI transfers
+> + * @rx: DMA safe RX buffer for SPI transfers
+> + */
+>  struct adis {
+>  	struct spi_device	*spi;
+>  	struct iio_trigger	*trig;
 

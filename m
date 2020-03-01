@@ -2,83 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DEB1174DA2
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Mar 2020 15:24:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC9E174DAF
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Mar 2020 15:34:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726188AbgCAOYP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Mar 2020 09:24:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49162 "EHLO mail.kernel.org"
+        id S1726103AbgCAOeY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Mar 2020 09:34:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50400 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725887AbgCAOYP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 1 Mar 2020 09:24:15 -0500
+        id S1726094AbgCAOeY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 1 Mar 2020 09:34:24 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BABA2214DB;
-        Sun,  1 Mar 2020 14:24:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 42875214DB;
+        Sun,  1 Mar 2020 14:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583072654;
-        bh=R0f7aWVxkB1VclGcflnTl+GpVS4uJevvWw/NgoP2MdY=;
+        s=default; t=1583073263;
+        bh=/5V1DU1Pod9kXIN7kIdUg6/o4lbHnX4peY9h4Q28sno=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oNQKRYiVUa6RtuajN/EogC9xb2mRbz1jJUxpjVl31syYK5YqWCqgx+W+HegjD8FoH
-         peQUe1y2gKuJCaxjwalg5dMnpDyvPU5papopFsfCVN/vAnofvNTMSnOMaS10Wrz1NR
-         9kvQHyUtPbZbsXgAwHBYTWw7wapMYI0x0F+2yMRU=
-Date:   Sun, 1 Mar 2020 14:24:07 +0000
+        b=mpd6f7IUn9mlKlABdlfsb6VWX/taJoXAW1SS/wrZdyKgQEPLkXDyPZMMJPJVQBqS6
+         wictpMPNVwrJP1k1sOYfxEJD02k5djgQm1WTkHuKO2XvRX2pZNBZYiSQfQwfPV5sJV
+         jYbchJJmHEV2B6RnNBimvTcQlYn/ovi/Ot4roQGs=
+Date:   Sun, 1 Mar 2020 14:34:18 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Petr =?UTF-8?B?xaB0ZXRpYXI=?= <ynezz@true.cz>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Tomasz Duszynski <tduszyns@gmail.com>, stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: chemical: sps30: fix missing triggered buffer
- dependency
-Message-ID: <20200301142407.0e63f6dc@archlinux>
-In-Reply-To: <20200227162734.604-1-ynezz@true.cz>
-References: <20200227162734.604-1-ynezz@true.cz>
+To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+Cc:     dragos.bogdan@analog.com, JManeyrol@invensense.com,
+        linux-iio@vger.kernel.org
+Subject: Re: [GSOC][RFC] Proposal
+Message-ID: <20200301143418.438ce7f9@archlinux>
+In-Reply-To: <5e581673.1c69fb81.9fd7b.25c2@mx.google.com>
+References: <5e55473d.1c69fb81.82355.928d@mx.google.com>
+        <5e581673.1c69fb81.9fd7b.25c2@mx.google.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 27 Feb 2020 17:27:34 +0100
-Petr =C5=A0tetiar <ynezz@true.cz> wrote:
+On Fri, 28 Feb 2020 00:50:15 +0530
+Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
 
-> SPS30 uses triggered buffer, but the dependency is not specified in the
-> Kconfig file.  Fix this by selecting IIO_BUFFER and IIO_TRIGGERED_BUFFER
-> config symbols.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 232e0f6ddeae ("iio: chemical: add support for Sensirion SPS30 sens=
-or")
-> Signed-off-by: Petr =C5=A0tetiar <ynezz@true.cz>
+> On Tue, Feb 25, 2020 at 09:41:37PM +0530, Rohit Sarkar wrote:
+> > Hi,
+> > I am proposing to work on the accelerometer MPU6050 as my primary
+> > project for the summer. The work items are outlined in [1] thanks to
+> > Jean.
+> > If time permits (which it should), I will be picking up other tasks
+> > outlined in [2] by Jonathan and Alexandru.
+> > 
+> > 
+> > Would like to hear people's views on this.
+> > 
+> > [1]: https://marc.info/?l=linux-iio&m=158257639113000&w=2
+> > [2]: https://marc.info/?l=linux-iio&m=158261515624212&w=2
+> > Thanks,
+> > Rohit
+> >   
+> 
+> Hey guys,
+> would love some feedback on this.
+> There are no proposals as such on the GSOC IIO page [1].
+> Was wondering if there is any new iio driver that can be made into a
+> gsoc project.
 
-Applied to the fixes-togreg branch of iio.git.
+Hi Rohit,
+
+A couple of questions.   Do you have a gsoc mentor lined up?
+
+You should discuss a proposal with whoever that is.
+
+My gut feeling is that the features suggested by Jean-Baptisite
+do not form a particularly good focus for the body of a gsoc project.
+There are too many rather disassociated items, without a connected
+'story'.
+
+They are good items for getting familiar with the subsystem and
+a particular driver but for the actual project you probably want
+something that is more 'yours' in the sense that you drive it from
+initial prototypes through to final upstream code.
+
+Previous projects have (I think) mostly centred on support for a new
+driver. 
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/chemical/Kconfig | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-> index 0b91de4df8f4..a7e65a59bf42 100644
-> --- a/drivers/iio/chemical/Kconfig
-> +++ b/drivers/iio/chemical/Kconfig
-> @@ -91,6 +91,8 @@ config SPS30
->  	tristate "SPS30 particulate matter sensor"
->  	depends on I2C
->  	select CRC8
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
->  	help
->  	  Say Y here to build support for the Sensirion SPS30 particulate
->  	  matter sensor.
 

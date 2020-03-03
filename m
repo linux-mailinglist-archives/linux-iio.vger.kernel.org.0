@@ -2,66 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C80E1781EF
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Mar 2020 20:03:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4231C17828D
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Mar 2020 20:03:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732319AbgCCSH6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Mar 2020 13:07:58 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:41741 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732362AbgCCSH5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Mar 2020 13:07:57 -0500
-Received: by mail-il1-f193.google.com with SMTP id q13so3588333ile.8
-        for <linux-iio@vger.kernel.org>; Tue, 03 Mar 2020 10:07:56 -0800 (PST)
+        id S1729425AbgCCSji (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Mar 2020 13:39:38 -0500
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:50327 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728787AbgCCSji (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Mar 2020 13:39:38 -0500
+Received: by mail-pj1-f66.google.com with SMTP id nm6so1323434pjb.0
+        for <linux-iio@vger.kernel.org>; Tue, 03 Mar 2020 10:39:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
-        b=o7knf31qWPPEPlo4w+LEBMwo5OgUZ/Ti89x6f/a7pXPBRHPbLzgFJf7dq9wTqpQHoj
-         NoBpbrdKrkWWhtIIkd0si0GJhfizf8t1VT5Dz1T8BZbZ3uQBimBJ1Wxb0vvqFa0lOSXh
-         5vPchfT4rdRhRU3TlHXsVuIzKP6jUF3la4viTyxJVsa8VGSv9r4Zaixk0eDnoDeojcNe
-         Lh8q7UtxpEHvyCxRxFa1KjdH1T9w+1WM8mWTHv5OFdI3LQv6yfG3SrXMTjbb8xb3MT1g
-         RVF4wylJdEBoE+Q5rd4nfKuB7W19lXiZt1YlynuIcHJGS5ZuFC0xK2jdaJtEXOH8F6IR
-         /sIg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Xnf0NI2/B51uk0B3K8Y5Ue/rYl7PH7wq6tazzg8etpk=;
+        b=o41zjHXRMwWLInppoZq9nKOFbXjndU3IELvyEtzRhT5/u40bug7YIy0iqv4113hl/T
+         g5caHKAt5EAlwhyZ+jMXEHUwmAXeMNo4qizkEyRzH0ZFWlkLn8IGyBvfprXLqpVOPty3
+         X7XoKw03MhZTvvjtCLc7ENqb6Ycy7jt8xshVaqDjhHMP2U3CLX7D26tXQfPJ3P6rR+jF
+         fRE8iNwYisB0+FZoto8TNX768cuXihmHJE9JQsLh6xf+90jshIDCuYi0oelXcnpvw0j7
+         C+O5uR+M1x/HsqcEMX/R2aUafeyHPLUeK+HYwpHeXQ9W626tdAp1DKXVZQKcil74SC/I
+         Wufg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
-        b=W61swEtG5JMwitGCVB6nWFOub5qV9TBKsjTr5kquNi/21yGd9j3mbv531yTWSZoxpM
-         2tQ3VlWahrHhjaciYJspyte9cEheJdHb2kd8n1amcmvruIeRWs36444cjrk6bdqIYw65
-         PIud+skcXL9cXU4KXLVftySPvnVjU2N3veyFIWRvoxSx3STiJNIA1aVjhX0/DmPZeUVs
-         chOTgMW96B8V/pQsVHuuzVZKsmDYdMCdSQBjuUiBbnkgTwDZadvZs1GEU6D7ZVGuD6jc
-         4sknk5gs0wDn9ZLGhcFfiQaQnspzKxQbWUDWeiHJK5pSdswqb0tVh+vh7N5N6j2dF5kj
-         Ccow==
-X-Gm-Message-State: ANhLgQ3i7dUzejNkZMZJbFP9Wd73maJ5grVfAY3k+vle2KM1dw9tr7IP
-        XEZXbTPbJQE+b/R3qA+oiM/ubkG14ZGL62pxMjY=
-X-Google-Smtp-Source: ADFU+vvXxSLX0mdAukHaltiP00d3DRLiPoPjv1jy/cMEv01yuN3pFCHaQq8FSxYmkr/oVSNDya+Fs5MYhcoJCQYJ7JY=
-X-Received: by 2002:a92:8117:: with SMTP id e23mr5815271ild.220.1583258876392;
- Tue, 03 Mar 2020 10:07:56 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Xnf0NI2/B51uk0B3K8Y5Ue/rYl7PH7wq6tazzg8etpk=;
+        b=iAJgwS/4UXMYKGwrLmgwJunuAljIWphjeYt5vsn172UEDtw19dPvac5TXj45DvpBVq
+         7N1XTFn4tKIrCzI27ENE/m+pC5a/wJzK1oOtWHcH2H01yssa6qcJDL4jxAAqFFbgaPrS
+         xqv2jwU/gvqv66TH9jhcUy/3In1TWf0EQfgI3LmaEPNNdbe1HRptuxPL/Dta9KUQ2a1n
+         aGGutrMMWxL+eGNq2URn1y6HfB2YuJjvI/DCsinpf8C7trPth+mVWSNA9NVHQdJnY1th
+         w7kfLtslfIiXlmZcUf0HQ5Mnh48JhX4bY/ZJ2YcqTW2b7C7zX2+M0BZpJhKzTruzgbCk
+         FhFQ==
+X-Gm-Message-State: ANhLgQ2ok7V8SDBawwgh/ctuu61Y9BG7DeFdoWYbHx84kWV2Sh48xKaI
+        tb/J8R8/yFcj3263/6zFqOQ=
+X-Google-Smtp-Source: ADFU+vs4meEItvw+yprlIhr2eH+z7mYrPFCc8mdOqcGoxHq3P1Ck6MIovTiJN0IptWk3j9iKZD3lWQ==
+X-Received: by 2002:a17:902:b28a:: with SMTP id u10mr5532832plr.1.1583260777414;
+        Tue, 03 Mar 2020 10:39:37 -0800 (PST)
+Received: from nish-HP-Pavilion ([113.30.156.69])
+        by smtp.gmail.com with ESMTPSA id d14sm3474291pjz.12.2020.03.03.10.39.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2020 10:39:37 -0800 (PST)
+From:   Nishant Malpani <nish.malpani25@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     jic23@kernel.org, stefan.popa@analog.com,
+        gregkh@linuxfoundation.org, devel@driverdev.osuosl.org,
+        nish.malpani25@gmail.com
+Subject: [PATCH] staging: iio: adc: ad7192: Align with parenthesis
+Date:   Wed,  4 Mar 2020 00:09:32 +0530
+Message-Id: <20200303183932.7051-1-nish.malpani25@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Received: by 2002:a02:9f04:0:0:0:0:0 with HTTP; Tue, 3 Mar 2020 10:07:56 -0800 (PST)
-Reply-To: dr.challynoah@gmail.com
-From:   DR CHALLY NOAH <mayorabrahamedge404@gmail.com>
-Date:   Tue, 3 Mar 2020 19:07:56 +0100
-Message-ID: <CALqVJWfs6c5u8GPtq5eVSK-ajudUdj5-F=fEyHY1UeBaPk8vjg@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Dear,
-What Have Kept You Waiting To Claim Your $600,000.00 USD Compensation Award?
-This said fund was issued out by the UNITED NATIONS To compensate
-you.Please If You Have Not Claim Your Fund (Award),Kindly contact me
-at   DR.CHALLYNOAH@GMAIL.COM   for further details on how to proceed your
-fund (award)release to you or better still reply back Immediately You
-Receive This Information For An Urgent Confirmation And Release Of Your
-Fund To You Without Delays, as your email was listed among those to be
-compensated this year.Congratulations..
-Best Regards,
-Dr Chally Noah.
-Minister Of Finance On Foreign Remittance:
+This patch fixes the checkpatch.pl warning:
+
+CHECK: Alignment should match open parenthesis
++static void ad7192_get_available_filter_freq(struct ad7192_state *st,
++                                                   int *freq)
+
+Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
+---
+ drivers/staging/iio/adc/ad7192.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
+index bf3e2a9cc07f..20fe7464da7f 100644
+--- a/drivers/staging/iio/adc/ad7192.c
++++ b/drivers/staging/iio/adc/ad7192.c
+@@ -477,7 +477,7 @@ static ssize_t ad7192_set(struct device *dev,
+ }
+ 
+ static void ad7192_get_available_filter_freq(struct ad7192_state *st,
+-						    int *freq)
++					     int *freq)
+ {
+ 	unsigned int fadc;
+ 
+-- 
+2.20.1
+

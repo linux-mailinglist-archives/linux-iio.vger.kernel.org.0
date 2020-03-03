@@ -2,129 +2,361 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D60F9178402
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Mar 2020 21:29:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 753C317840E
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Mar 2020 21:32:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731014AbgCCU35 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Mar 2020 15:29:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38476 "EHLO mail.kernel.org"
+        id S1731151AbgCCUcq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Mar 2020 15:32:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39066 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730517AbgCCU35 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 3 Mar 2020 15:29:57 -0500
+        id S1730837AbgCCUcp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Mar 2020 15:32:45 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3878920CC7;
-        Tue,  3 Mar 2020 20:29:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D229420848;
+        Tue,  3 Mar 2020 20:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583267396;
-        bh=t9RfzDI52bSHUruw7b5ag96Nwcv1BtePTSwBPCrtTh8=;
+        s=default; t=1583267564;
+        bh=asWueVinJU+3Ywx2VZZSKud8958wpLEyBceMR5oJMZo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BggjB16YMLOvuRdQBwnOMv5hvOiicsOrXbTaiVcsZU56rTqYFdMEVrsUS38BFZWu4
-         vgpUdpBPj+LcFpVtgomLpvpcf8ze+8knY/XWmDOgz4avEhzOMDICUNqsb3QVYjHxWW
-         MKI5WG8kXtviErKmIG18klTUzkCbUa9qpeibZn8A=
-Date:   Tue, 3 Mar 2020 20:29:50 +0000
+        b=YyC5iVFRnXWAzjX5sjfKDKRk4oHY9j6RfDJ60b8zjLnUA3SmKk+zIm76j/qJFi+/t
+         EzXUsDXwHE/dKYmFT3XQLjU5Zsr/6WpMATJ6khKlv9iE3BEOrYLPCEW82fiwUTVB4Y
+         DuL7Luanb+WHZ6VvU+1QpMLsxKQYhOpE43ivjiZ8=
+Date:   Tue, 3 Mar 2020 20:32:36 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
-Cc:     dragos.bogdan@analog.com, JManeyrol@invensense.com,
-        linux-iio@vger.kernel.org
-Subject: Re: [GSOC][RFC] Proposal
-Message-ID: <20200303202950.1bc0dfc5@archlinux>
-In-Reply-To: <5e5c9393.1c69fb81.18044.9bc8@mx.google.com>
-References: <5e55473d.1c69fb81.82355.928d@mx.google.com>
-        <5e581673.1c69fb81.9fd7b.25c2@mx.google.com>
-        <20200301143418.438ce7f9@archlinux>
-        <5e5c9393.1c69fb81.18044.9bc8@mx.google.com>
+To:     xxm <xxm@rock-chips.com>
+Cc:     Heiko Stuebner <heiko@sntech.de>, lars@metafoo.de,
+        linux-iio@vger.kernel.org,
+        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
+        linux-kernel@vger.kernel.org, kever.yang@rock-chips.com,
+        linux-rockchip@lists.infradead.org, pmeerw@pmeerw.net,
+        knaack.h@gmx.de
+Subject: Re: [PATCH] iio: adc: rockchip_saradc: Add support iio
+ =?UTF-8?B?YnVmZmVyc+OAkOivt+azqOaEj++8jOmCruS7tueUsWxpbnV4LXJvY2tjaGlw?=
+ =?UTF-8?B?LWJvdW5jZXMreHhtPXJvY2stY2hpcHMuY29tQGxpc3RzLmluZnJhZGVhZC5v?=
+ =?UTF-8?B?cmfku6Plj5HjgJE=?=
+Message-ID: <20200303203236.2cbcfeee@archlinux>
+In-Reply-To: <67e46e36-ebac-ebe3-b4f4-9edb88fb0dcf@rock-chips.com>
+References: <20200301112353.887028-1-heiko@sntech.de>
+        <67e46e36-ebac-ebe3-b4f4-9edb88fb0dcf@rock-chips.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2 Mar 2020 10:33:09 +0530
-Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+On Mon, 2 Mar 2020 10:11:02 +0800
+xxm <xxm@rock-chips.com> wrote:
 
-> On Sun, Mar 01, 2020 at 02:34:18PM +0000, Jonathan Cameron wrote:
-> > On Fri, 28 Feb 2020 00:50:15 +0530
-> > Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
-> >   
-> > > On Tue, Feb 25, 2020 at 09:41:37PM +0530, Rohit Sarkar wrote:  
-> > > > Hi,
-> > > > I am proposing to work on the accelerometer MPU6050 as my primary
-> > > > project for the summer. The work items are outlined in [1] thanks to
-> > > > Jean.
-> > > > If time permits (which it should), I will be picking up other tasks
-> > > > outlined in [2] by Jonathan and Alexandru.
-> > > > 
-> > > > 
-> > > > Would like to hear people's views on this.
-> > > > 
-> > > > [1]: https://marc.info/?l=linux-iio&m=158257639113000&w=2
-> > > > [2]: https://marc.info/?l=linux-iio&m=158261515624212&w=2
-> > > > Thanks,
-> > > > Rohit
-> > > >     
-> > > 
-> > > Hey guys,
-> > > would love some feedback on this.
-> > > There are no proposals as such on the GSOC IIO page [1].
-> > > Was wondering if there is any new iio driver that can be made into a
-> > > gsoc project.  
-> > 
-> > Hi Rohit,
-> > 
-> > A couple of questions.   Do you have a gsoc mentor lined up?  
-> 
-> On the GSOC IIO page (https://wiki.linuxfoundation.org/gsoc/2020-gsoc-iio-driver)
-> Dragos has been listed as a mentor. Haven't really heard back from him
-> yet.
+> Hi, Heiko
+>=20
+> =E5=9C=A8 2020/3/1 19:23, Heiko Stuebner =E5=86=99=E9=81=93:
+> > From: Simon Xue <xxm@rock-chips.com>
+> >=20
+> > Add the ability to also support access via (triggered) buffers
+> > next to the existing direct mode.
+> >=20
+> > Device in question is the Odroid Go Advance that connects a joystick
+> > to two of the saradc channels for X and Y axis and the new (and still
+> > pending) adc joystick driver of course wants to use triggered buffers
+> > from the iio subsystem.
+> >=20
+> > Signed-off-by: Simon Xue <xxm@rock-chips.com>
+> > [some simplifications and added commit description]
+> > Signed-off-by: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+> > ---
+> >   drivers/iio/adc/Kconfig           |   2 +
+> >   drivers/iio/adc/rockchip_saradc.c | 137 ++++++++++++++++++++++--------
+> >   2 files changed, 102 insertions(+), 37 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > index 82e33082958c..55d2499ff757 100644
+> > --- a/drivers/iio/adc/Kconfig
+> > +++ b/drivers/iio/adc/Kconfig
+> > @@ -787,6 +787,8 @@ config ROCKCHIP_SARADC
+> >   	tristate "Rockchip SARADC driver"
+> >   	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
+> >   	depends on RESET_CONTROLLER
+> > +	select IIO_BUFFER
+> > +	select IIO_TRIGGERED_BUFFER
+> >   	help
+> >   	  Say yes here to build support for the SARADC found in SoCs from
+> >   	  Rockchip.
+> > diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockch=
+ip_saradc.c
+> > index 582ba047c4a6..402b2210a682 100644
+> > --- a/drivers/iio/adc/rockchip_saradc.c
+> > +++ b/drivers/iio/adc/rockchip_saradc.c
+> > @@ -15,7 +15,11 @@
+> >   #include <linux/delay.h>
+> >   #include <linux/reset.h>
+> >   #include <linux/regulator/consumer.h>
+> > +#include <linux/iio/buffer.h>
+> >   #include <linux/iio/iio.h>
+> > +#include <linux/iio/trigger.h>
+> > +#include <linux/iio/trigger_consumer.h>
+> > +#include <linux/iio/triggered_buffer.h>
+> >  =20
+> >   #define SARADC_DATA			0x00
+> >  =20
+> > @@ -34,7 +38,6 @@
+> >   #define SARADC_TIMEOUT			msecs_to_jiffies(100)
+> >  =20
+> >   struct rockchip_saradc_data {
+> > -	int				num_bits;
+> >   	const struct iio_chan_spec	*channels;
+> >   	int				num_channels;
+> >   	unsigned long			clk_rate;
+> > @@ -49,8 +52,37 @@ struct rockchip_saradc {
+> >   	struct reset_control	*reset;
+> >   	const struct rockchip_saradc_data *data;
+> >   	u16			last_val;
+> > +	const struct iio_chan_spec *last_chan;
+> >   };
+> >  =20
+> > +static void rockchip_saradc_power_down(struct rockchip_saradc *info)
+> > +{
+> > +	/* Clear irq & power down adc */
+> > +	writel_relaxed(0, info->regs + SARADC_CTRL);
+> > +}
+> > +
+> > +static int rockchip_saradc_conversion(struct rockchip_saradc *info,
+> > +				   struct iio_chan_spec const *chan)
+> > +{
+> > +	reinit_completion(&info->completion);
+> > +
+> > +	/* 8 clock periods as delay between power up and start cmd */
+> > +	writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
+> > +
+> > +	info->last_chan =3D chan;
+> > +
+> > +	/* Select the channel to be used and trigger conversion */
+> > +	writel(SARADC_CTRL_POWER_CTRL
+> > +			| (chan->channel & SARADC_CTRL_CHN_MASK)
+> > +			| SARADC_CTRL_IRQ_ENABLE,
+> > +		   info->regs + SARADC_CTRL);
+> > +
+> > +	if (!wait_for_completion_timeout(&info->completion, SARADC_TIMEOUT))
+> > +		return -ETIMEDOUT;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >   static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
+> >   				    struct iio_chan_spec const *chan,
+> >   				    int *val, int *val2, long mask)
+> > @@ -62,24 +94,12 @@ static int rockchip_saradc_read_raw(struct iio_dev =
+*indio_dev,
+> >   	case IIO_CHAN_INFO_RAW:
+> >   		mutex_lock(&indio_dev->mlock);
+> >  =20
+> > -		reinit_completion(&info->completion);
+> > -
+> > -		/* 8 clock periods as delay between power up and start cmd */
+> > -		writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
+> > -
+> > -		/* Select the channel to be used and trigger conversion */
+> > -		writel(SARADC_CTRL_POWER_CTRL
+> > -				| (chan->channel & SARADC_CTRL_CHN_MASK)
+> > -				| SARADC_CTRL_IRQ_ENABLE,
+> > -		       info->regs + SARADC_CTRL);
+> > -
+> > -		if (!wait_for_completion_timeout(&info->completion,
+> > -						 SARADC_TIMEOUT)) {
+> > -			writel_relaxed(0, info->regs + SARADC_CTRL);
+> > +		ret =3D rockchip_saradc_conversion(info, chan);
+> > +		if (ret) {
+> > +			rockchip_saradc_power_down(info);
+> >   			mutex_unlock(&indio_dev->mlock);
+> > -			return -ETIMEDOUT;
+> > +			return ret;
+> >   		}
+> > -
+> >   		*val =3D info->last_val;
+> >   		mutex_unlock(&indio_dev->mlock);
+> >   		return IIO_VAL_INT;
+> > @@ -91,7 +111,7 @@ static int rockchip_saradc_read_raw(struct iio_dev *=
+indio_dev,
+> >   		}
+> >  =20
+> >   		*val =3D ret / 1000;
+> > -		*val2 =3D info->data->num_bits;
+> > +		*val2 =3D chan->scan_type.realbits;
+> >   		return IIO_VAL_FRACTIONAL_LOG2;
+> >   	default:
+> >   		return -EINVAL;
+> > @@ -104,10 +124,9 @@ static irqreturn_t rockchip_saradc_isr(int irq, vo=
+id *dev_id)
+> >  =20
+> >   	/* Read value */
+> >   	info->last_val =3D readl_relaxed(info->regs + SARADC_DATA);
+> > -	info->last_val &=3D GENMASK(info->data->num_bits - 1, 0);
+> > +	info->last_val &=3D GENMASK(info->last_chan->scan_type.realbits - 1, =
+0);
+> >  =20
+> > -	/* Clear irq & power down adc */
+> > -	writel_relaxed(0, info->regs + SARADC_CTRL);
+> > +	rockchip_saradc_power_down(info);
+> >  =20
+> >   	complete(&info->completion);
+> >  =20
+> > @@ -118,51 +137,55 @@ static const struct iio_info rockchip_saradc_iio_=
+info =3D {
+> >   	.read_raw =3D rockchip_saradc_read_raw,
+> >   };
+> >  =20
+> > -#define ADC_CHANNEL(_index, _id) {				\
+> > +#define ADC_CHANNEL(_index, _id, _res) {			\
+> >   	.type =3D IIO_VOLTAGE,					\
+> >   	.indexed =3D 1,						\
+> >   	.channel =3D _index,					\
+> >   	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),		\
+> >   	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),	\
+> >   	.datasheet_name =3D _id,					\
+> > +	.scan_index =3D _index,					\
+> > +	.scan_type =3D {						\
+> > +		.sign =3D 'u',					\
+> > +		.realbits =3D _res,				\
+> > +		.storagebits =3D 16,				\
+> > +		.endianness =3D IIO_LE,				\
+> > +	},							\
+> >   }
+> >  =20
+> >   static const struct iio_chan_spec rockchip_saradc_iio_channels[] =3D {
+> > -	ADC_CHANNEL(0, "adc0"),
+> > -	ADC_CHANNEL(1, "adc1"),
+> > -	ADC_CHANNEL(2, "adc2"),
+> > +	ADC_CHANNEL(0, "adc0", 10),
+> > +	ADC_CHANNEL(1, "adc1", 10),
+> > +	ADC_CHANNEL(2, "adc2", 10),
+> >   };
+> >  =20
+> >   static const struct rockchip_saradc_data saradc_data =3D {
+> > -	.num_bits =3D 10,
+> >   	.channels =3D rockchip_saradc_iio_channels,
+> >   	.num_channels =3D ARRAY_SIZE(rockchip_saradc_iio_channels),
+> >   	.clk_rate =3D 1000000,
+> >   };
+> >  =20
+> >   static const struct iio_chan_spec rockchip_rk3066_tsadc_iio_channels[=
+] =3D {
+> > -	ADC_CHANNEL(0, "adc0"),
+> > -	ADC_CHANNEL(1, "adc1"),
+> > +	ADC_CHANNEL(0, "adc0", 12),
+> > +	ADC_CHANNEL(1, "adc1", 12),
+> >   };
+> >  =20
+> >   static const struct rockchip_saradc_data rk3066_tsadc_data =3D {
+> > -	.num_bits =3D 12,
+> >   	.channels =3D rockchip_rk3066_tsadc_iio_channels,
+> >   	.num_channels =3D ARRAY_SIZE(rockchip_rk3066_tsadc_iio_channels),
+> >   	.clk_rate =3D 50000,
+> >   };
+> >  =20
+> >   static const struct iio_chan_spec rockchip_rk3399_saradc_iio_channels=
+[] =3D {
+> > -	ADC_CHANNEL(0, "adc0"),
+> > -	ADC_CHANNEL(1, "adc1"),
+> > -	ADC_CHANNEL(2, "adc2"),
+> > -	ADC_CHANNEL(3, "adc3"),
+> > -	ADC_CHANNEL(4, "adc4"),
+> > -	ADC_CHANNEL(5, "adc5"),
+> > +	ADC_CHANNEL(0, "adc0", 10),
+> > +	ADC_CHANNEL(1, "adc1", 10),
+> > +	ADC_CHANNEL(2, "adc2", 10),
+> > +	ADC_CHANNEL(3, "adc3", 10),
+> > +	ADC_CHANNEL(4, "adc4", 10),
+> > +	ADC_CHANNEL(5, "adc5", 10),
+> >   };
+> >  =20
+> >   static const struct rockchip_saradc_data rk3399_saradc_data =3D {
+> > -	.num_bits =3D 10,
+> >   	.channels =3D rockchip_rk3399_saradc_iio_channels,
+> >   	.num_channels =3D ARRAY_SIZE(rockchip_rk3399_saradc_iio_channels),
+> >   	.clk_rate =3D 1000000,
+> > @@ -193,6 +216,39 @@ static void rockchip_saradc_reset_controller(struc=
+t reset_control *reset)
+> >   	reset_control_deassert(reset);
+> >   }
+> >  =20
+> > +static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
+> > +{
+> > +	struct iio_poll_func *pf =3D p;
+> > +	struct iio_dev *i_dev =3D pf->indio_dev;
+> > +	struct rockchip_saradc *info =3D iio_priv(i_dev);
+> > +	u16 data[20]; =20
+> How about this:
+> #define MAX_CHANNEL_NUM 16
 
-I would definitely be looking to discuss this with Dragos.
- 
-> 
-> > You should discuss a proposal with whoever that is.
-> > 
-> > My gut feeling is that the features suggested by Jean-Baptisite
-> > do not form a particularly good focus for the body of a gsoc project.
-> > There are too many rather disassociated items, without a connected
-> > 'story'.
-> > 
-> > They are good items for getting familiar with the subsystem and
-> > a particular driver but for the actual project you probably want
-> > something that is more 'yours' in the sense that you drive it from
-> > initial prototypes through to final upstream code.
-> > 
-> > Previous projects have (I think) mostly centred on support for a new
-> > driver.   
-> 
-> Makes sense. Is there any new driver that needs to be added though? And
-> if not what else can qualify as a project?
+Unfortunately this is a bit more complex than it seems.=20
+The buffer needs to be big enough for all the channels
++ a 8 byte aligned space to put the timestamp in.
 
-There might be something, but that sort of project is much harder
-to structure than a clear implement something.
+You can construct that in a fashion suitable to use in a
+macro but it's a bit more fiddly than simply being the
+maximum number of channels.
 
-There are always new devices that don't have drivers that someone
-is interested in supporting.  The main requirement is to find
-find something that the mentor things is the right balance of
-complex and not too complex to support.
-
-The link you have above suggests Dragos was thinking of an Analog
-devices part (which makes sense given his day job ;)
-
-You are still fairly early (which is great) so it may well be that
-Dragos hasn't yet spun up for this round.
-
-Jonathan
-
-> 
-> > Thanks,
-> > 
-> > Jonathan
-> > 
-> >   
-> Thanks,
-> Rohit
+> u16 data[MAX_CHANNEL_NUM];
+> > +	int ret;
+> > +	int i, j =3D 0;
+> > +
+> > +	mutex_lock(&i_dev->mlock);
+> > +
+> > +	for_each_set_bit(i, i_dev->active_scan_mask, i_dev->masklength) {
+> > +		const struct iio_chan_spec *chan =3D &i_dev->channels[i];
+> > +
+> > +		ret =3D rockchip_saradc_conversion(info, chan);
+> > +		if (ret) {
+> > +			rockchip_saradc_power_down(info);
+> > +			goto out;
+> > +		}
+> > +
+> > +		data[j] =3D info->last_val;
+> > +		j++;
+> > +	}
+> > +
+> > +	iio_push_to_buffers_with_timestamp(i_dev, data, iio_get_time_ns(i_dev=
+));
+> > +out:
+> > +	mutex_unlock(&i_dev->mlock);
+> > +
+> > +	iio_trigger_notify_done(i_dev->trig);
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> >   static int rockchip_saradc_probe(struct platform_device *pdev)
+> >   {
+> >   	struct rockchip_saradc *info =3D NULL;
+> > @@ -315,12 +371,19 @@ static int rockchip_saradc_probe(struct platform_=
+device *pdev)
+> >   	indio_dev->channels =3D info->data->channels;
+> >   	indio_dev->num_channels =3D info->data->num_channels;
+> >  =20
+> > -	ret =3D iio_device_register(indio_dev);
+> > +	ret =3D iio_triggered_buffer_setup(indio_dev, NULL,
+> > +					 rockchip_saradc_trigger_handler, NULL); =20
+> devm_iio_triggered_buffer_setup seems better
+> >   	if (ret)
+> >   		goto err_clk;
+> >  =20
+> > +	ret =3D iio_device_register(indio_dev);
+> > +	if (ret)
+> > +		goto err_buffer_cleanup;
+> > +
+> >   	return 0;
+> >  =20
+> > +err_buffer_cleanup:
+> > +	iio_triggered_buffer_cleanup(indio_dev);
+> >   err_clk:
+> >   	clk_disable_unprepare(info->clk);
+> >   err_pclk:
+> >  =20
+> xxm@rock-chips.com
+>=20
+>=20
 

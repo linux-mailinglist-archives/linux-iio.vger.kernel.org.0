@@ -2,88 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4231C17828D
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Mar 2020 20:03:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D60F9178402
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Mar 2020 21:29:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729425AbgCCSji (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Mar 2020 13:39:38 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:50327 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728787AbgCCSji (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Mar 2020 13:39:38 -0500
-Received: by mail-pj1-f66.google.com with SMTP id nm6so1323434pjb.0
-        for <linux-iio@vger.kernel.org>; Tue, 03 Mar 2020 10:39:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Xnf0NI2/B51uk0B3K8Y5Ue/rYl7PH7wq6tazzg8etpk=;
-        b=o41zjHXRMwWLInppoZq9nKOFbXjndU3IELvyEtzRhT5/u40bug7YIy0iqv4113hl/T
-         g5caHKAt5EAlwhyZ+jMXEHUwmAXeMNo4qizkEyRzH0ZFWlkLn8IGyBvfprXLqpVOPty3
-         X7XoKw03MhZTvvjtCLc7ENqb6Ycy7jt8xshVaqDjhHMP2U3CLX7D26tXQfPJ3P6rR+jF
-         fRE8iNwYisB0+FZoto8TNX768cuXihmHJE9JQsLh6xf+90jshIDCuYi0oelXcnpvw0j7
-         C+O5uR+M1x/HsqcEMX/R2aUafeyHPLUeK+HYwpHeXQ9W626tdAp1DKXVZQKcil74SC/I
-         Wufg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Xnf0NI2/B51uk0B3K8Y5Ue/rYl7PH7wq6tazzg8etpk=;
-        b=iAJgwS/4UXMYKGwrLmgwJunuAljIWphjeYt5vsn172UEDtw19dPvac5TXj45DvpBVq
-         7N1XTFn4tKIrCzI27ENE/m+pC5a/wJzK1oOtWHcH2H01yssa6qcJDL4jxAAqFFbgaPrS
-         xqv2jwU/gvqv66TH9jhcUy/3In1TWf0EQfgI3LmaEPNNdbe1HRptuxPL/Dta9KUQ2a1n
-         aGGutrMMWxL+eGNq2URn1y6HfB2YuJjvI/DCsinpf8C7trPth+mVWSNA9NVHQdJnY1th
-         w7kfLtslfIiXlmZcUf0HQ5Mnh48JhX4bY/ZJ2YcqTW2b7C7zX2+M0BZpJhKzTruzgbCk
-         FhFQ==
-X-Gm-Message-State: ANhLgQ2ok7V8SDBawwgh/ctuu61Y9BG7DeFdoWYbHx84kWV2Sh48xKaI
-        tb/J8R8/yFcj3263/6zFqOQ=
-X-Google-Smtp-Source: ADFU+vs4meEItvw+yprlIhr2eH+z7mYrPFCc8mdOqcGoxHq3P1Ck6MIovTiJN0IptWk3j9iKZD3lWQ==
-X-Received: by 2002:a17:902:b28a:: with SMTP id u10mr5532832plr.1.1583260777414;
-        Tue, 03 Mar 2020 10:39:37 -0800 (PST)
-Received: from nish-HP-Pavilion ([113.30.156.69])
-        by smtp.gmail.com with ESMTPSA id d14sm3474291pjz.12.2020.03.03.10.39.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2020 10:39:37 -0800 (PST)
-From:   Nishant Malpani <nish.malpani25@gmail.com>
-To:     linux-iio@vger.kernel.org
-Cc:     jic23@kernel.org, stefan.popa@analog.com,
-        gregkh@linuxfoundation.org, devel@driverdev.osuosl.org,
-        nish.malpani25@gmail.com
-Subject: [PATCH] staging: iio: adc: ad7192: Align with parenthesis
-Date:   Wed,  4 Mar 2020 00:09:32 +0530
-Message-Id: <20200303183932.7051-1-nish.malpani25@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        id S1731014AbgCCU35 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Mar 2020 15:29:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38476 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730517AbgCCU35 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 3 Mar 2020 15:29:57 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3878920CC7;
+        Tue,  3 Mar 2020 20:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583267396;
+        bh=t9RfzDI52bSHUruw7b5ag96Nwcv1BtePTSwBPCrtTh8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=BggjB16YMLOvuRdQBwnOMv5hvOiicsOrXbTaiVcsZU56rTqYFdMEVrsUS38BFZWu4
+         vgpUdpBPj+LcFpVtgomLpvpcf8ze+8knY/XWmDOgz4avEhzOMDICUNqsb3QVYjHxWW
+         MKI5WG8kXtviErKmIG18klTUzkCbUa9qpeibZn8A=
+Date:   Tue, 3 Mar 2020 20:29:50 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+Cc:     dragos.bogdan@analog.com, JManeyrol@invensense.com,
+        linux-iio@vger.kernel.org
+Subject: Re: [GSOC][RFC] Proposal
+Message-ID: <20200303202950.1bc0dfc5@archlinux>
+In-Reply-To: <5e5c9393.1c69fb81.18044.9bc8@mx.google.com>
+References: <5e55473d.1c69fb81.82355.928d@mx.google.com>
+        <5e581673.1c69fb81.9fd7b.25c2@mx.google.com>
+        <20200301143418.438ce7f9@archlinux>
+        <5e5c9393.1c69fb81.18044.9bc8@mx.google.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch fixes the checkpatch.pl warning:
+On Mon, 2 Mar 2020 10:33:09 +0530
+Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
 
-CHECK: Alignment should match open parenthesis
-+static void ad7192_get_available_filter_freq(struct ad7192_state *st,
-+                                                   int *freq)
+> On Sun, Mar 01, 2020 at 02:34:18PM +0000, Jonathan Cameron wrote:
+> > On Fri, 28 Feb 2020 00:50:15 +0530
+> > Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+> >   
+> > > On Tue, Feb 25, 2020 at 09:41:37PM +0530, Rohit Sarkar wrote:  
+> > > > Hi,
+> > > > I am proposing to work on the accelerometer MPU6050 as my primary
+> > > > project for the summer. The work items are outlined in [1] thanks to
+> > > > Jean.
+> > > > If time permits (which it should), I will be picking up other tasks
+> > > > outlined in [2] by Jonathan and Alexandru.
+> > > > 
+> > > > 
+> > > > Would like to hear people's views on this.
+> > > > 
+> > > > [1]: https://marc.info/?l=linux-iio&m=158257639113000&w=2
+> > > > [2]: https://marc.info/?l=linux-iio&m=158261515624212&w=2
+> > > > Thanks,
+> > > > Rohit
+> > > >     
+> > > 
+> > > Hey guys,
+> > > would love some feedback on this.
+> > > There are no proposals as such on the GSOC IIO page [1].
+> > > Was wondering if there is any new iio driver that can be made into a
+> > > gsoc project.  
+> > 
+> > Hi Rohit,
+> > 
+> > A couple of questions.   Do you have a gsoc mentor lined up?  
+> 
+> On the GSOC IIO page (https://wiki.linuxfoundation.org/gsoc/2020-gsoc-iio-driver)
+> Dragos has been listed as a mentor. Haven't really heard back from him
+> yet.
 
-Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
----
- drivers/staging/iio/adc/ad7192.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
-index bf3e2a9cc07f..20fe7464da7f 100644
---- a/drivers/staging/iio/adc/ad7192.c
-+++ b/drivers/staging/iio/adc/ad7192.c
-@@ -477,7 +477,7 @@ static ssize_t ad7192_set(struct device *dev,
- }
+I would definitely be looking to discuss this with Dragos.
  
- static void ad7192_get_available_filter_freq(struct ad7192_state *st,
--						    int *freq)
-+					     int *freq)
- {
- 	unsigned int fadc;
- 
--- 
-2.20.1
+> 
+> > You should discuss a proposal with whoever that is.
+> > 
+> > My gut feeling is that the features suggested by Jean-Baptisite
+> > do not form a particularly good focus for the body of a gsoc project.
+> > There are too many rather disassociated items, without a connected
+> > 'story'.
+> > 
+> > They are good items for getting familiar with the subsystem and
+> > a particular driver but for the actual project you probably want
+> > something that is more 'yours' in the sense that you drive it from
+> > initial prototypes through to final upstream code.
+> > 
+> > Previous projects have (I think) mostly centred on support for a new
+> > driver.   
+> 
+> Makes sense. Is there any new driver that needs to be added though? And
+> if not what else can qualify as a project?
+
+There might be something, but that sort of project is much harder
+to structure than a clear implement something.
+
+There are always new devices that don't have drivers that someone
+is interested in supporting.  The main requirement is to find
+find something that the mentor things is the right balance of
+complex and not too complex to support.
+
+The link you have above suggests Dragos was thinking of an Analog
+devices part (which makes sense given his day job ;)
+
+You are still fairly early (which is great) so it may well be that
+Dragos hasn't yet spun up for this round.
+
+Jonathan
+
+> 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> >   
+> Thanks,
+> Rohit
 

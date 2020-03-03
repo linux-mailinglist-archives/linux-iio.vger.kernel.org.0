@@ -2,228 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 671661766D1
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Mar 2020 23:22:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3257177098
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Mar 2020 08:57:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726728AbgCBWW5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 Mar 2020 17:22:57 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:46249 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725781AbgCBWW5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 Mar 2020 17:22:57 -0500
-Received: by mail-ot1-f68.google.com with SMTP id g96so940120otb.13;
-        Mon, 02 Mar 2020 14:22:56 -0800 (PST)
+        id S1727667AbgCCH5z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Mar 2020 02:57:55 -0500
+Received: from mail-io1-f68.google.com ([209.85.166.68]:46251 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725879AbgCCH5z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Mar 2020 02:57:55 -0500
+Received: by mail-io1-f68.google.com with SMTP id x21so2474684iox.13
+        for <linux-iio@vger.kernel.org>; Mon, 02 Mar 2020 23:57:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=1jgWIQ5qhHPD/OB0fU45dANprOVpISqKroX9vsY1CRU=;
+        b=EjwZW+SH7EytjtajDXzNRus07lEWu2Mmz+276Cm00/dkoK8mPqSqpz72bN7oJ/1rTt
+         igTkBSmgVGzsvMiKS5hAXTh7tCKfzEfJKcsdxRbx0CSbpwNks+QNzyli2PY0pQzKC18J
+         Kokec4Qq9CPSuu5Jq7a2YEo5spm5ifQEEnB40YjVO2h3TfQWuYQ/CCB5jPsqcChgFH9Q
+         3C5DYQVvkLjw4dIDyHbO5NKA0Gmqj01H86u0wBgTenloo6ZKCpXzywIozg072/+ZZtDJ
+         LiDSgFnfktSASPcs0ZoDbQeaNphYswaOmN4wO0ZSIlTt4yxL8ooRx2MVN+n1mqCXtO7S
+         itcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=Mh10aMF/oi3rjlaRMPp5pf7W/UgyFmkGUHizeqaiF0c=;
-        b=ICZUOWsVgpn2nmw9vBnS1fMiPXk46laJtd7Ercxy01j+6nAPObdR6VEPrUTR4WS1OT
-         iunzjCUBoqagDPVj6lzd2UDSXaTOSfqqekzwofy2CdIF/wQfzSOHxLJNJrXEN3WhN1rC
-         2c2Dr6rCCOYHZwzcDgXgmpw9RAiPhv/t/CXXmpUxxasLpGgZv77ZDTy3BCAefD2Cs/Bs
-         EBLe5xkRnNcMiYfX/F72NKyykiwjbrMFfP2DeZMlPAcaWKIzGo2CG61KFUWRTXdFzGCs
-         RwmjJnjY44upyQqpdZdae2qeqaYdjg82n1+MjeodMixXHrmlXj4Mcy5qJYC65EyzLCiM
-         Ry5g==
-X-Gm-Message-State: ANhLgQ3AopyrdfCsJ8V564CjrDOM1eKkn36UGqmJbJz3v+b4jOZ0OIZD
-        Gei6jRZhjC+h9BRE5ITdVUISvhg=
-X-Google-Smtp-Source: ADFU+vvuu9wwWij0ssVuytqOvpgn2VMZuebstNfd9YdrSFmhnG3DJi+5FQrw+p1aTja3qXR+sr0cVQ==
-X-Received: by 2002:a9d:a16:: with SMTP id 22mr1020718otg.31.1583187776486;
-        Mon, 02 Mar 2020 14:22:56 -0800 (PST)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id n27sm6848645oie.18.2020.03.02.14.22.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2020 14:22:55 -0800 (PST)
-Received: (nullmailer pid 5527 invoked by uid 1000);
-        Mon, 02 Mar 2020 22:22:54 -0000
-Date:   Mon, 2 Mar 2020 16:22:54 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=1jgWIQ5qhHPD/OB0fU45dANprOVpISqKroX9vsY1CRU=;
+        b=qC8ajjQuikVaCC0nHIcKoOVd7xZiRn2cqMR9w5j2ZO+vd6l04hO83P2uEA2CSysEq0
+         Tp9G8gzff5HPslt+dodtDwNkY0MN9X8AF0VSd60iteOtlbUj6XqpAQHcZXvEVUBrC7Dm
+         Z0mG8QpawUBoZcfb7VSqAVwpGt0V5C2zEwYUCr9wSzzSY8QFBNMNi18RKzzFgyYAm0eF
+         CVsso5YE7k22yTd0A8JncNKyE+Zt/fPAZ3xjTdC9Mdk7rJIUMBDceWZWG6xpE+orGcJv
+         Xk8zS3WA9juzrll8gU4Md+sFNuMQJCFOAlLQLjwu5Rl5hZOC0kmuaq+AzOvAuInHv2I1
+         QCBA==
+X-Gm-Message-State: ANhLgQ21SylUvVjExqR1GJelJYtUwxoYKovbKhsnUQqz5KlWQuiJOzZH
+        NoQe6SGRgsUeHTRr2FrN7BVS0PdPNjhR9MD8LXtbqQ==
+X-Google-Smtp-Source: ADFU+vvoKoITM9L9lN5OjwuNnB6xxSEKbotb40pNpHliF7dxzlREj4wVsiU8LUIO4QoB9MpXOOqCqy0BqktL/JUyTeg=
+X-Received: by 2002:a5d:8952:: with SMTP id b18mr3019929iot.40.1583222274495;
+ Mon, 02 Mar 2020 23:57:54 -0800 (PST)
+MIME-Version: 1.0
+References: <20200211131240.15853-1-brgl@bgdev.pl>
+In-Reply-To: <20200211131240.15853-1-brgl@bgdev.pl>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 3 Mar 2020 08:57:43 +0100
+Message-ID: <CAMRc=Mc=gTrpQsMdOTBJaYT6JLg=o17Mm78ijAGUJYE2pXcCQQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] irq/irq_sim: try to improve the API
+To:     Linus Walleij <linus.walleij@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH 5/5] dt-bindings: iio: Add adis16475 documentation
-Message-ID: <20200302222254.GA27619@bogus>
-References: <20200225124152.270914-1-nuno.sa@analog.com>
- <20200225124152.270914-6-nuno.sa@analog.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200225124152.270914-6-nuno.sa@analog.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>
+Cc:     "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Feb 25, 2020 at 01:41:52PM +0100, Nuno Sá wrote:
-> Document the ADIS16475 device devicetree bindings.
-> 
-> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-> ---
->  .../bindings/iio/imu/adi,adis16475.yaml       | 130 ++++++++++++++++++
->  MAINTAINERS                                   |   1 +
->  2 files changed, 131 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> new file mode 100644
-> index 000000000000..c0f2146e000c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> @@ -0,0 +1,130 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/imu/adi,adis16475.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices ADIS16475 and similar IMUs
-> +
-> +maintainers:
-> +  - Nuno Sá <nuno.sa@analog.com>
-> +
-> +description: |
-> +  Analog Devices ADIS16475 and similar IMUs
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16475.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,adis16475-1
-> +      - adi,adis16475-2
-> +      - adi,adis16475-3
-> +      - adi,adis16477-1
-> +      - adi,adis16477-2
-> +      - adi,adis16477-3
-> +      - adi,adis16470
-> +      - adi,adis16465-1
-> +      - adi,adis16465-2
-> +      - adi,adis16465-3
-> +      - adi,adis16467-1
-> +      - adi,adis16467-2
-> +      - adi,adis16467-3
-> +      - adi,adis16500
-> +      - adi,adis16505-1
-> +      - adi,adis16505-2
-> +      - adi,adis16505-3
-> +      - adi,adis16507-1
-> +      - adi,adis16507-2
-> +      - adi,adis16507-3
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-cpha: true
-> +
-> +  spi-cpol: true
-> +
-> +  spi-max-frequency:
-> +    maximum: 2000000
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    oneOf:
-> +      - const: sync
-> +      - const: direct-sync
-> +      - const: pulse-sync
-> +      - const: scaled-sync
+wt., 11 lut 2020 o 14:12 Bartosz Golaszewski <brgl@bgdev.pl> napisa=C5=82(a=
+):
+>
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+>
+> This is my second take at improving the interrupt simulator interface.
+> I marked it as v2 but it actually takes a completely different approach.
+>
+> The interrupt simulator API exposes a lot of custom data structures and
+> functions and doesn't reuse the interfaces already exposed by the irq
+> subsystem. This series tries to address it.
+>
+> First, we make irq_domain_reset_irq_data() available to non-V2 domain API
+> users - that'll be used in the subsequent patch. Next we overhaul the
+> public interfaces - we hide all specific data structures and instead
+> rely on the irq_domain struct and virtual interrupt numberspace.
+>
+> Next four patches simplify the interface even more, but since the change
+> may be a bit more controversial due to modification of the irq_domain
+> I decided to split them out of the second patch.
+>
+> In patch 3/6 we're adding a new callback to irq_domain_ops that is called
+> right before all the other code in irq_domain_remove(). Next we use it to
+> remove the simulator-specific cleanup function from irq_sim.h - users now
+> can simply use the regular irq_domain_remove().
+>
+> Last two patches show that the new callback isn't limited to the interrup=
+t
+> simulator and can be used to shrink code in real driver too. We introduce
+> a new helper for a common use case of disposing of all mappings before
+> removing the irq_domain and use it in the keystone irqchip driver.
+>
+> The end effect is that we limit the interrupt simulator API to two
+> functions (plus one device managed variant) and zero new structures.
+>
+> v1: https://lkml.org/lkml/2019/8/12/558
+>
+> v1 -> v2:
+> - instead of just making the new data structures opaque for users, remove
+>   them entirely in favor of irq_domain
+> - call irq_set_handler() & irq_domain_reset_irq_data() when unmapping
+>   the simulated interrupt
+> - fix a memory leak in error path
+> - make it possible to use irq_find_matching_fwnode() with the simulator
+>   domain
+> - correctly use irq_create_mapping() and irq_find_mapping(): only use the
+>   former at init-time and the latter at interrupt-time
+>
 
-According to the datasheet I looked at, the input is called 'sync'. It 
-looks like you are mixing operating mode and clock connection.
+Hi,
 
-> +
-> +  reset-gpios:
-> +    description:
-> +      Must be the device tree identifier of the RESET pin. If specified,
-> +      it will be asserted during driver probe. As the line is active low,
-> +      it should be marked GPIO_ACTIVE_LOW.
-> +    maxItems: 1
-> +
-> +  adi,scaled-output-hz:
-> +    description:
-> +      This property must be present if the clock mode is scaled-sync through
-> +      clock-names property. In this mode, the input clock can have a range
-> +      of 1Hz to 128HZ which must be scaled to originate an allowable sample
-> +      rate. This property specifies that rate.
-> +    minimum: 1900
-> +    maximum: 2100
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - spi-cpha
-> +  - spi-cpol
-> +
-> +if:
-> +  properties:
-> +    compatible:
-> +      contains:
-> +        enum:
-> +          - adi,adis16500
-> +          - adi,adis16505-1
-> +          - adi,adis16505-2
-> +          - adi,adis16505-3
-> +          - adi,adis16507-1
-> +          - adi,adis16507-2
-> +          - adi,adis16507-3
-> +
-> +then:
-> +  properties:
-> +    clock-names:
-> +      oneOf:
-> +        - const: sync
-> +        - const: direct-sync
-> +        - const: scaled-sync
-> +
-> +    adi,burst32-enable:
-> +      description:
-> +        Enable burst32 mode. In this mode, a burst reading contains calibrated
-> +        gyroscope and accelerometer data in 32-bit format.
-> +      type: boolean
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            adis16475: adis16475-3@0 {
-> +                    compatible = "adi,adis16475-3";
-> +                    reg = <0>;
-> +                    spi-cpha;
-> +                    spi-cpol;
-> +                    spi-max-frequency = <2000000>;
-> +                    interrupts = <4 IRQ_TYPE_EDGE_RISING>;
-> +                    interrupt-parent = <&gpio>;
-> +            };
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f11262f1f3bb..f8ccc92ab378 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1015,6 +1015,7 @@ W:	http://ez.analog.com/community/linux-device-drivers
->  S:	Supported
->  F:	drivers/iio/imu/adis16475.c
->  F:	Documentation/ABI/testing/sysfs-bus-iio-imu-adis16475
-> +F:	Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
->  
->  ANALOG DEVICES INC ADM1177 DRIVER
->  M:	Beniamin Bia <beniamin.bia@analog.com>
-> -- 
-> 2.25.1
-> 
+it's been three weeks, so gentle ping on that.
+
+Or should I resend the entire series with a more elaborate commit
+message for patch 1/6?
+
+Bartosz

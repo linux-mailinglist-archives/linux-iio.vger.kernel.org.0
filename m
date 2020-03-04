@@ -2,132 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38B3D178D95
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Mar 2020 10:38:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C8A178F9E
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Mar 2020 12:35:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729223AbgCDJiM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Mar 2020 04:38:12 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:7940 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728953AbgCDJiM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Mar 2020 04:38:12 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0249IOuB031323;
-        Wed, 4 Mar 2020 04:38:09 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2yfnrantwp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 04 Mar 2020 04:38:09 -0500
-Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 0249c7FZ048131
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 4 Mar 2020 04:38:08 -0500
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 4 Mar 2020 01:38:06 -0800
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Wed, 4 Mar 2020 01:38:06 -0800
-Received: from saturn.ad.analog.com ([10.48.65.112])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0249c3rT029656;
-        Wed, 4 Mar 2020 04:38:03 -0500
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <mranostay@gmail.com>,
-        <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2] iio: potentiostat: lmp9100: fix iio_triggered_buffer_{predisable,postenable} positions
-Date:   Wed, 4 Mar 2020 11:41:05 +0200
-Message-ID: <20200304094105.2586-1-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200304093633.32264-1-alexandru.ardelean@analog.com>
-References: <20200304093633.32264-1-alexandru.ardelean@analog.com>
+        id S2387950AbgCDLfN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Mar 2020 06:35:13 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:10722 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726440AbgCDLfN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 4 Mar 2020 06:35:13 -0500
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A00CA218892F29E61954;
+        Wed,  4 Mar 2020 19:35:05 +0800 (CST)
+Received: from localhost (10.173.223.234) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Wed, 4 Mar 2020
+ 19:34:55 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <ak@it-klinger.de>, <jic23@kernel.org>, <knaack.h@gmx.de>,
+        <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <Jonathan.Cameron@huawei.com>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH -next] iio: ping: set pa_laser_ping_cfg in of_ping_match
+Date:   Wed, 4 Mar 2020 19:34:23 +0800
+Message-ID: <20200304113423.26920-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-04_01:2020-03-03,2020-03-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- malwarescore=0 clxscore=1015 spamscore=0 phishscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003040073
+Content-Type: text/plain
+X-Originating-IP: [10.173.223.234]
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-the poll functions.
+pa_laser_ping_cfg should be set in of_ping_match
+instead of pa_ping_cfg.
 
-For the predisable hook, the disable code should occur before detaching
-the poll func, and for the postenable hook, the poll func should be
-attached before the enable code.
-
-The lmp9100 was attaching a poll function but never detaching it via any
-IIO disable hook.
-
-This change adds the detaching of the poll function, and moves/renames
-lmp91000_buffer_preenable() function to lmp91000_buffer_postenable().
-The idea is to make it more symmetrical, so that when the
-iio_triggered_buffer_{predisable,postenable} functions get removed, it's
-easier to see.
-
-Fixes: 67e17300dc1d7 ("iio: potentiostat: add LMP91000 support")
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Fixes: 7bb501f49ddb ("iio: ping: add parallax ping sensors")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
+ drivers/iio/proximity/ping.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changelog v1 -> v2:
-* forgot to call iio_triggered_buffer_postenable() in
-  lmp91000_buffer_postenable() in v1
-
- drivers/iio/potentiostat/lmp91000.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/iio/potentiostat/lmp91000.c b/drivers/iio/potentiostat/lmp91000.c
-index a0e5f530faa9..2cb11da18e0f 100644
---- a/drivers/iio/potentiostat/lmp91000.c
-+++ b/drivers/iio/potentiostat/lmp91000.c
-@@ -275,11 +275,20 @@ static int lmp91000_buffer_cb(const void *val, void *private)
- static const struct iio_trigger_ops lmp91000_trigger_ops = {
- };
+diff --git a/drivers/iio/proximity/ping.c b/drivers/iio/proximity/ping.c
+index 34aff10..12b893c 100644
+--- a/drivers/iio/proximity/ping.c
++++ b/drivers/iio/proximity/ping.c
+@@ -269,7 +269,7 @@ static const struct iio_chan_spec ping_chan_spec[] = {
  
--static int lmp91000_buffer_preenable(struct iio_dev *indio_dev)
-+static int lmp91000_buffer_postenable(struct iio_dev *indio_dev)
- {
- 	struct lmp91000_data *data = iio_priv(indio_dev);
-+	int err;
- 
--	return iio_channel_start_all_cb(data->cb_buffer);
-+	err = iio_triggered_buffer_postenable(indio_dev);
-+	if (err)
-+		return err;
-+
-+	err = iio_channel_start_all_cb(data->cb_buffer);
-+	if (err)
-+		iio_triggered_buffer_predisable(indio_dev);
-+
-+	return err;
- }
- 
- static int lmp91000_buffer_predisable(struct iio_dev *indio_dev)
-@@ -288,12 +297,11 @@ static int lmp91000_buffer_predisable(struct iio_dev *indio_dev)
- 
- 	iio_channel_stop_all_cb(data->cb_buffer);
- 
--	return 0;
-+	return iio_triggered_buffer_predisable(indio_dev);
- }
- 
- static const struct iio_buffer_setup_ops lmp91000_buffer_setup_ops = {
--	.preenable = lmp91000_buffer_preenable,
--	.postenable = iio_triggered_buffer_postenable,
-+	.postenable = lmp91000_buffer_postenable,
- 	.predisable = lmp91000_buffer_predisable,
+ static const struct of_device_id of_ping_match[] = {
+ 	{ .compatible = "parallax,ping", .data = &pa_ping_cfg},
+-	{ .compatible = "parallax,laserping", .data = &pa_ping_cfg},
++	{ .compatible = "parallax,laserping", .data = &pa_laser_ping_cfg},
+ 	{},
  };
  
 -- 
-2.20.1
+2.7.4
+
 

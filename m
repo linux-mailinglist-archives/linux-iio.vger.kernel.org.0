@@ -2,43 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BCA51791C2
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Mar 2020 14:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AED217927F
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Mar 2020 15:41:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729501AbgCDNwu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Mar 2020 08:52:50 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:33658 "EHLO
+        id S1726748AbgCDOlG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Mar 2020 09:41:06 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:46728 "EHLO
         mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728767AbgCDNwu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Mar 2020 08:52:50 -0500
+        by vger.kernel.org with ESMTP id S1726650AbgCDOlG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Mar 2020 09:41:06 -0500
 Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 024Do7Q2013346;
-        Wed, 4 Mar 2020 08:52:48 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2ygm52bar4-1
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 024Ee9Yc007427;
+        Wed, 4 Mar 2020 09:41:04 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2ygm52bhd1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 04 Mar 2020 08:52:48 -0500
+        Wed, 04 Mar 2020 09:41:04 -0500
 Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 024DqkLe022266
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 024Ef28a044783
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 4 Mar 2020 08:52:47 -0500
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+        Wed, 4 Mar 2020 09:41:03 -0500
+Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
  SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 4 Mar 2020 05:52:45 -0800
+ 15.1.1779.2; Wed, 4 Mar 2020 06:41:01 -0800
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 4 Mar 2020 06:40:43 -0800
 Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
  (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Wed, 4 Mar 2020 05:52:45 -0800
+ Transport; Wed, 4 Mar 2020 06:41:01 -0800
 Received: from saturn.ad.analog.com ([10.48.65.112])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 024Dqg9q005240;
-        Wed, 4 Mar 2020 08:52:43 -0500
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 024Eew6g008599;
+        Wed, 4 Mar 2020 09:40:59 -0500
 From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>,
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC:     <jic23@kernel.org>, <robh+dt@kernel.org>,
         Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH] iio: dac: Kconfig: sort symbols alphabetically
-Date:   Wed, 4 Mar 2020 15:55:44 +0200
-Message-ID: <20200304135544.2538-1-alexandru.ardelean@analog.com>
+Subject: [PATCH v6 0/8] iio: adi-axi-adc,ad9647: Add support for AD9467 ADC
+Date:   Wed, 4 Mar 2020 16:43:53 +0200
+Message-ID: <20200304144401.17794-1-alexandru.ardelean@analog.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -50,116 +55,90 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorit
  mlxlogscore=999 mlxscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
  impostorscore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003040106
+ engine=8.12.0-2001150001 definitions=main-2003040111
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-While adding a new device, I noticed these aren't sorted alphabetically [as
-in the Makefile], which messed my head-up.
-This change sorts the devices alphabetically in the drivers/iio/dac/Kconfig
-file as well.
+This changeset adds support for the AD9467 LVDS High-Speed ADC.
+In order to support it, support for an FPGA ADI AXI ADC is added in this
+set.
+This uses the current support for IIO buffer DMAEngine.
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/dac/Kconfig | 62 ++++++++++++++++++++---------------------
- 1 file changed, 31 insertions(+), 31 deletions(-)
+Changelog v5 -> v6
+* fix URLs; got changed during rename
+   https://wiki.analog.com/resources/fpga/docs/adi_axi_adc_ip ->
+   https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+  - noticed while working on the AXI DAC driver
 
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index 63916a6142ec..93744011b63f 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -121,27 +121,6 @@ config AD5624R_SPI
- 	  Say yes here to build support for Analog Devices AD5624R, AD5644R and
- 	  AD5664R converters (DAC). This driver uses the common SPI interface.
- 
--config LTC1660
--	tristate "Linear Technology LTC1660/LTC1665 DAC SPI driver"
--	depends on SPI
--	help
--	  Say yes here to build support for Linear Technology
--	  LTC1660 and LTC1665 Digital to Analog Converters.
--
--	  To compile this driver as a module, choose M here: the
--	  module will be called ltc1660.
--
--config LTC2632
--	tristate "Linear Technology LTC2632-12/10/8 and LTC2636-12/10/8 DAC spi driver"
--	depends on SPI
--	help
--	  Say yes here to build support for Linear Technology
--	  LTC2632-12, LTC2632-10, LTC2632-8, LTC2636-12, LTC2636-10 and
--	  LTC2636-8 converters (DAC).
--
--	  To compile this driver as a module, choose M here: the
--	  module will be called ltc2632.
--
- config AD5686
- 	tristate
- 
-@@ -240,16 +219,6 @@ config AD7303
- 	  To compile this driver as module choose M here: the module will be called
- 	  ad7303.
- 
--config CIO_DAC
--	tristate "Measurement Computing CIO-DAC IIO driver"
--	depends on X86 && (ISA_BUS || PC104)
--	select ISA_BUS_API
--	help
--	  Say yes here to build support for the Measurement Computing CIO-DAC
--	  analog output device family (CIO-DAC16, CIO-DAC08, PC104-DAC06). The
--	  base port addresses for the devices may be configured via the base
--	  array module parameter.
--
- config AD8801
- 	tristate "Analog Devices AD8801/AD8803 DAC driver"
- 	depends on SPI_MASTER
-@@ -260,6 +229,16 @@ config AD8801
- 	  To compile this driver as a module choose M here: the module will be called
- 	  ad8801.
- 
-+config CIO_DAC
-+	tristate "Measurement Computing CIO-DAC IIO driver"
-+	depends on X86 && (ISA_BUS || PC104)
-+	select ISA_BUS_API
-+	help
-+	  Say yes here to build support for the Measurement Computing CIO-DAC
-+	  analog output device family (CIO-DAC16, CIO-DAC08, PC104-DAC06). The
-+	  base port addresses for the devices may be configured via the base
-+	  array module parameter.
-+
- config DPOT_DAC
- 	tristate "DAC emulation using a DPOT"
- 	depends on OF
-@@ -289,6 +268,27 @@ config LPC18XX_DAC
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called lpc18xx_dac.
- 
-+config LTC1660
-+	tristate "Linear Technology LTC1660/LTC1665 DAC SPI driver"
-+	depends on SPI
-+	help
-+	  Say yes here to build support for Linear Technology
-+	  LTC1660 and LTC1665 Digital to Analog Converters.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called ltc1660.
-+
-+config LTC2632
-+	tristate "Linear Technology LTC2632-12/10/8 and LTC2636-12/10/8 DAC spi driver"
-+	depends on SPI
-+	help
-+	  Say yes here to build support for Linear Technology
-+	  LTC2632-12, LTC2632-10, LTC2632-8, LTC2636-12, LTC2636-10 and
-+	  LTC2636-8 converters (DAC).
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called ltc2632.
-+
- config M62332
- 	tristate "Mitsubishi M62332 DAC driver"
- 	depends on I2C
+Changelog v4 -> v5:
+* update drivers/iio/adc/Kconfig note about module name; omitted during first rename
+   - 'module will be called axi-adc.' -> 'module will be called adi-axi-adc.'
+
+Changelog v3 -> v4:
+* addressed Rob's dt-remarks
+   - change 'adi-axi-adc-client' prop to 'adi,adc-dev'
+
+Changelog v2 -> v3:
+* addressed compiler warning
+
+Changelog v1 -> v2:
+* first series was added a bit hastily
+* addressed  'make dt_binding_check' complaints; seems I missed a few when running the check; 
+* added missing patches to include/linux/fpga/adi-axi-common.h
+   - 'include: fpga: adi-axi-common.h: fixup whitespace tab -> space'
+   - 'include: fpga: adi-axi-common.h: add version helper macros'
+* patch 'iio: buffer-dmaengine: add dev-managed calls for buffer alloc/free'
+   - remove copy+pasted comment for 'devm_iio_dmaengine_buffer_alloc()'
+   - removed devm_iio_dmaengine_buffer_free() ; hopefully it might never be needed
+   - fix-up alignment for devm_iio_dmaengine_buffer_alloc() in header
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+   - renamed axi-adc.c -> adi-axi-adc.c & Kconfig symbol
+   - prefix all axi_adc -> adi_axi_adc
+   - removed switch statement in axi_adc_read_raw() & axi_adc_write_raw()
+   - remove axi_adc_chan_spec ; replaced with iio_chan_spec directly ; will think of a simpler solution for extra chan params
+   - removed left-over 'struct axi_adc_cleanup_data'
+   - moved 'devm_add_action_or_reset()' call right after 'adi_axi_adc_attach_client()'
+   - switched to using 'devm_platform_ioremap_resource()'
+* patch 'iio: adc: ad9467: add support AD9467 ADC'
+  - renamed ADI_ADC reg prefixes to AN877_ADC
+  - dropped 'info_mask_separate' field in AD9467_CHAN - will be re-added later when driver gets more features; was left-over from the initial ref driver
+  - remove .shift = 0,  in AD9467_CHAN
+  - renamed 'sample-clock' -> 'adc-clock'
+  - direct returns in ad9467_read_raw() & ad9467_write_raw() & ad9467_setup() switch statements
+  - removed blank line after devm_axi_adc_conv_register()
+  - removed ad9467_id & reworked to use ad9467_of_match
+
+Alexandru Ardelean (6):
+  include: fpga: adi-axi-common.h: fixup whitespace tab -> space
+  include: fpga: adi-axi-common.h: add version helper macros
+  iio: buffer-dmaengine: use %zu specifier for sprintf(align)
+  iio: buffer-dmaengine: add dev-managed calls for buffer alloc
+  dt-bindings: iio: adc: add bindings doc for AXI ADC driver
+  dt-bindings: iio: adc: add bindings doc for AD9467 ADC
+
+Michael Hennerich (2):
+  iio: adc: adi-axi-adc: add support for AXI ADC IP core
+  iio: adc: ad9467: add support AD9467 ADC
+
+ .../bindings/iio/adc/adi,ad9467.yaml          |  65 ++
+ .../bindings/iio/adc/adi,axi-adc.yaml         |  63 ++
+ drivers/iio/adc/Kconfig                       |  35 ++
+ drivers/iio/adc/Makefile                      |   2 +
+ drivers/iio/adc/ad9467.c                      | 432 +++++++++++++
+ drivers/iio/adc/adi-axi-adc.c                 | 566 ++++++++++++++++++
+ .../buffer/industrialio-buffer-dmaengine.c    |  41 +-
+ include/linux/fpga/adi-axi-common.h           |   6 +-
+ include/linux/iio/adc/adi-axi-adc.h           |  63 ++
+ include/linux/iio/buffer-dmaengine.h          |   3 +
+ 10 files changed, 1274 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+ create mode 100644 drivers/iio/adc/ad9467.c
+ create mode 100644 drivers/iio/adc/adi-axi-adc.c
+ create mode 100644 include/linux/iio/adc/adi-axi-adc.h
+
 -- 
 2.20.1
 

@@ -2,229 +2,373 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF1161784A8
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Mar 2020 22:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B4201787AF
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Mar 2020 02:41:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732426AbgCCVLA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Mar 2020 16:11:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46908 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732393AbgCCVK4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 3 Mar 2020 16:10:56 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 016A120848;
-        Tue,  3 Mar 2020 21:10:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583269855;
-        bh=9dEoSv6yhh8eJqi6eAzmQv1Qv1OJbIQTQcJqOl9NTSE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KVIb0g+Ahx/1VYlGJAxPd5CEkpyzquEQtzufQEAaJxDeduvzknsXvzBpqSFcPWAwX
-         +l4Eox4toEbgMQlt3Dy/JBBgiG6lB58k0nHc5FfZG2q+usUKI+sGH2zM2sq7sVVRdI
-         j/GZ0Kwc1Bi2Ytwg6pK5n+QUK/QWjpnOO2HpMWno=
-Date:   Tue, 3 Mar 2020 21:10:45 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH 5/5] dt-bindings: iio: Add adis16475 documentation
-Message-ID: <20200303211045.31f977bb@archlinux>
-In-Reply-To: <20200225124152.270914-6-nuno.sa@analog.com>
-References: <20200225124152.270914-1-nuno.sa@analog.com>
-        <20200225124152.270914-6-nuno.sa@analog.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S2387476AbgCDBj7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Mar 2020 20:39:59 -0500
+Received: from regular1.263xmail.com ([211.150.70.201]:49578 "EHLO
+        regular1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727958AbgCDBj6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Mar 2020 20:39:58 -0500
+Received: from localhost (unknown [192.168.167.69])
+        by regular1.263xmail.com (Postfix) with ESMTP id 1EFDC3B2;
+        Wed,  4 Mar 2020 09:39:13 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-ANTISPAM-LEVEL: 2
+X-SKE-CHECKED: 1
+X-ABS-CHECKED: 1
+Received: from [172.16.12.212] (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P25161T140713912162048S1583285950383736_;
+        Wed, 04 Mar 2020 09:39:11 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <7294d5c2643455ec6586d26a6c2b67e4>
+X-RL-SENDER: xxm@rock-chips.com
+X-SENDER: xxm@rock-chips.com
+X-LOGIN-NAME: xxm@rock-chips.com
+X-FST-TO: knaack.h@gmx.de
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-DNS-TYPE: 0
+X-System-Flag: 0
+Subject: =?UTF-8?Q?Re=3a_=5bPATCH=5d_iio=3a_adc=3a_rockchip=5fsaradc=3a_Add_?=
+ =?UTF-8?B?c3VwcG9ydCBpaW8gYnVmZmVyc+OAkOivt+azqOaEj++8jOmCruS7tueUsWxpbnV4?=
+ =?UTF-8?Q?-rockchip-bounces+xxm=3drock-chips=2ecom=40lists=2einfradead=2eor?=
+ =?UTF-8?B?Z+S7o+WPkeOAkQ==?=
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Heiko Stuebner <heiko@sntech.de>, lars@metafoo.de,
+        linux-iio@vger.kernel.org,
+        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
+        linux-kernel@vger.kernel.org, kever.yang@rock-chips.com,
+        linux-rockchip@lists.infradead.org, pmeerw@pmeerw.net,
+        knaack.h@gmx.de
+References: <20200301112353.887028-1-heiko@sntech.de>
+ <67e46e36-ebac-ebe3-b4f4-9edb88fb0dcf@rock-chips.com>
+ <20200303203236.2cbcfeee@archlinux>
+From:   xxm <xxm@rock-chips.com>
+Message-ID: <9036a57e-be5e-49e1-6f0e-77b3a5e9fa12@rock-chips.com>
+Date:   Wed, 4 Mar 2020 09:39:10 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200303203236.2cbcfeee@archlinux>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 25 Feb 2020 13:41:52 +0100
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+Hi,
 
-> Document the ADIS16475 device devicetree bindings.
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+在 2020/3/4 4:32, Jonathan Cameron 写道:
+> On Mon, 2 Mar 2020 10:11:02 +0800
+> xxm <xxm@rock-chips.com> wrote:
+> 
+>> Hi, Heiko
+>>
+>> 在 2020/3/1 19:23, Heiko Stuebner 写道:
+>>> From: Simon Xue <xxm@rock-chips.com>
+>>>
+>>> Add the ability to also support access via (triggered) buffers
+>>> next to the existing direct mode.
+>>>
+>>> Device in question is the Odroid Go Advance that connects a joystick
+>>> to two of the saradc channels for X and Y axis and the new (and still
+>>> pending) adc joystick driver of course wants to use triggered buffers
+>>> from the iio subsystem.
+>>>
+>>> Signed-off-by: Simon Xue <xxm@rock-chips.com>
+>>> [some simplifications and added commit description]
+>>> Signed-off-by: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+>>> ---
+>>>    drivers/iio/adc/Kconfig           |   2 +
+>>>    drivers/iio/adc/rockchip_saradc.c | 137 ++++++++++++++++++++++--------
+>>>    2 files changed, 102 insertions(+), 37 deletions(-)
+>>>
+>>> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+>>> index 82e33082958c..55d2499ff757 100644
+>>> --- a/drivers/iio/adc/Kconfig
+>>> +++ b/drivers/iio/adc/Kconfig
+>>> @@ -787,6 +787,8 @@ config ROCKCHIP_SARADC
+>>>    	tristate "Rockchip SARADC driver"
+>>>    	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
+>>>    	depends on RESET_CONTROLLER
+>>> +	select IIO_BUFFER
+>>> +	select IIO_TRIGGERED_BUFFER
+>>>    	help
+>>>    	  Say yes here to build support for the SARADC found in SoCs from
+>>>    	  Rockchip.
+>>> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+>>> index 582ba047c4a6..402b2210a682 100644
+>>> --- a/drivers/iio/adc/rockchip_saradc.c
+>>> +++ b/drivers/iio/adc/rockchip_saradc.c
+>>> @@ -15,7 +15,11 @@
+>>>    #include <linux/delay.h>
+>>>    #include <linux/reset.h>
+>>>    #include <linux/regulator/consumer.h>
+>>> +#include <linux/iio/buffer.h>
+>>>    #include <linux/iio/iio.h>
+>>> +#include <linux/iio/trigger.h>
+>>> +#include <linux/iio/trigger_consumer.h>
+>>> +#include <linux/iio/triggered_buffer.h>
+>>>    
+>>>    #define SARADC_DATA			0x00
+>>>    
+>>> @@ -34,7 +38,6 @@
+>>>    #define SARADC_TIMEOUT			msecs_to_jiffies(100)
+>>>    
+>>>    struct rockchip_saradc_data {
+>>> -	int				num_bits;
+>>>    	const struct iio_chan_spec	*channels;
+>>>    	int				num_channels;
+>>>    	unsigned long			clk_rate;
+>>> @@ -49,8 +52,37 @@ struct rockchip_saradc {
+>>>    	struct reset_control	*reset;
+>>>    	const struct rockchip_saradc_data *data;
+>>>    	u16			last_val;
+>>> +	const struct iio_chan_spec *last_chan;
+>>>    };
+>>>    
+>>> +static void rockchip_saradc_power_down(struct rockchip_saradc *info)
+>>> +{
+>>> +	/* Clear irq & power down adc */
+>>> +	writel_relaxed(0, info->regs + SARADC_CTRL);
+>>> +}
+>>> +
+>>> +static int rockchip_saradc_conversion(struct rockchip_saradc *info,
+>>> +				   struct iio_chan_spec const *chan)
+>>> +{
+>>> +	reinit_completion(&info->completion);
+>>> +
+>>> +	/* 8 clock periods as delay between power up and start cmd */
+>>> +	writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
+>>> +
+>>> +	info->last_chan = chan;
+>>> +
+>>> +	/* Select the channel to be used and trigger conversion */
+>>> +	writel(SARADC_CTRL_POWER_CTRL
+>>> +			| (chan->channel & SARADC_CTRL_CHN_MASK)
+>>> +			| SARADC_CTRL_IRQ_ENABLE,
+>>> +		   info->regs + SARADC_CTRL);
+>>> +
+>>> +	if (!wait_for_completion_timeout(&info->completion, SARADC_TIMEOUT))
+>>> +		return -ETIMEDOUT;
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>>    static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
+>>>    				    struct iio_chan_spec const *chan,
+>>>    				    int *val, int *val2, long mask)
+>>> @@ -62,24 +94,12 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
+>>>    	case IIO_CHAN_INFO_RAW:
+>>>    		mutex_lock(&indio_dev->mlock);
+>>>    
+>>> -		reinit_completion(&info->completion);
+>>> -
+>>> -		/* 8 clock periods as delay between power up and start cmd */
+>>> -		writel_relaxed(8, info->regs + SARADC_DLY_PU_SOC);
+>>> -
+>>> -		/* Select the channel to be used and trigger conversion */
+>>> -		writel(SARADC_CTRL_POWER_CTRL
+>>> -				| (chan->channel & SARADC_CTRL_CHN_MASK)
+>>> -				| SARADC_CTRL_IRQ_ENABLE,
+>>> -		       info->regs + SARADC_CTRL);
+>>> -
+>>> -		if (!wait_for_completion_timeout(&info->completion,
+>>> -						 SARADC_TIMEOUT)) {
+>>> -			writel_relaxed(0, info->regs + SARADC_CTRL);
+>>> +		ret = rockchip_saradc_conversion(info, chan);
+>>> +		if (ret) {
+>>> +			rockchip_saradc_power_down(info);
+>>>    			mutex_unlock(&indio_dev->mlock);
+>>> -			return -ETIMEDOUT;
+>>> +			return ret;
+>>>    		}
+>>> -
+>>>    		*val = info->last_val;
+>>>    		mutex_unlock(&indio_dev->mlock);
+>>>    		return IIO_VAL_INT;
+>>> @@ -91,7 +111,7 @@ static int rockchip_saradc_read_raw(struct iio_dev *indio_dev,
+>>>    		}
+>>>    
+>>>    		*val = ret / 1000;
+>>> -		*val2 = info->data->num_bits;
+>>> +		*val2 = chan->scan_type.realbits;
+>>>    		return IIO_VAL_FRACTIONAL_LOG2;
+>>>    	default:
+>>>    		return -EINVAL;
+>>> @@ -104,10 +124,9 @@ static irqreturn_t rockchip_saradc_isr(int irq, void *dev_id)
+>>>    
+>>>    	/* Read value */
+>>>    	info->last_val = readl_relaxed(info->regs + SARADC_DATA);
+>>> -	info->last_val &= GENMASK(info->data->num_bits - 1, 0);
+>>> +	info->last_val &= GENMASK(info->last_chan->scan_type.realbits - 1, 0);
+>>>    
+>>> -	/* Clear irq & power down adc */
+>>> -	writel_relaxed(0, info->regs + SARADC_CTRL);
+>>> +	rockchip_saradc_power_down(info);
+>>>    
+>>>    	complete(&info->completion);
+>>>    
+>>> @@ -118,51 +137,55 @@ static const struct iio_info rockchip_saradc_iio_info = {
+>>>    	.read_raw = rockchip_saradc_read_raw,
+>>>    };
+>>>    
+>>> -#define ADC_CHANNEL(_index, _id) {				\
+>>> +#define ADC_CHANNEL(_index, _id, _res) {			\
+>>>    	.type = IIO_VOLTAGE,					\
+>>>    	.indexed = 1,						\
+>>>    	.channel = _index,					\
+>>>    	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+>>>    	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+>>>    	.datasheet_name = _id,					\
+>>> +	.scan_index = _index,					\
+>>> +	.scan_type = {						\
+>>> +		.sign = 'u',					\
+>>> +		.realbits = _res,				\
+>>> +		.storagebits = 16,				\
+>>> +		.endianness = IIO_LE,				\
+>>> +	},							\
+>>>    }
+>>>    
+>>>    static const struct iio_chan_spec rockchip_saradc_iio_channels[] = {
+>>> -	ADC_CHANNEL(0, "adc0"),
+>>> -	ADC_CHANNEL(1, "adc1"),
+>>> -	ADC_CHANNEL(2, "adc2"),
+>>> +	ADC_CHANNEL(0, "adc0", 10),
+>>> +	ADC_CHANNEL(1, "adc1", 10),
+>>> +	ADC_CHANNEL(2, "adc2", 10),
+>>>    };
+>>>    
+>>>    static const struct rockchip_saradc_data saradc_data = {
+>>> -	.num_bits = 10,
+>>>    	.channels = rockchip_saradc_iio_channels,
+>>>    	.num_channels = ARRAY_SIZE(rockchip_saradc_iio_channels),
+>>>    	.clk_rate = 1000000,
+>>>    };
+>>>    
+>>>    static const struct iio_chan_spec rockchip_rk3066_tsadc_iio_channels[] = {
+>>> -	ADC_CHANNEL(0, "adc0"),
+>>> -	ADC_CHANNEL(1, "adc1"),
+>>> +	ADC_CHANNEL(0, "adc0", 12),
+>>> +	ADC_CHANNEL(1, "adc1", 12),
+>>>    };
+>>>    
+>>>    static const struct rockchip_saradc_data rk3066_tsadc_data = {
+>>> -	.num_bits = 12,
+>>>    	.channels = rockchip_rk3066_tsadc_iio_channels,
+>>>    	.num_channels = ARRAY_SIZE(rockchip_rk3066_tsadc_iio_channels),
+>>>    	.clk_rate = 50000,
+>>>    };
+>>>    
+>>>    static const struct iio_chan_spec rockchip_rk3399_saradc_iio_channels[] = {
+>>> -	ADC_CHANNEL(0, "adc0"),
+>>> -	ADC_CHANNEL(1, "adc1"),
+>>> -	ADC_CHANNEL(2, "adc2"),
+>>> -	ADC_CHANNEL(3, "adc3"),
+>>> -	ADC_CHANNEL(4, "adc4"),
+>>> -	ADC_CHANNEL(5, "adc5"),
+>>> +	ADC_CHANNEL(0, "adc0", 10),
+>>> +	ADC_CHANNEL(1, "adc1", 10),
+>>> +	ADC_CHANNEL(2, "adc2", 10),
+>>> +	ADC_CHANNEL(3, "adc3", 10),
+>>> +	ADC_CHANNEL(4, "adc4", 10),
+>>> +	ADC_CHANNEL(5, "adc5", 10),
+>>>    };
+>>>    
+>>>    static const struct rockchip_saradc_data rk3399_saradc_data = {
+>>> -	.num_bits = 10,
+>>>    	.channels = rockchip_rk3399_saradc_iio_channels,
+>>>    	.num_channels = ARRAY_SIZE(rockchip_rk3399_saradc_iio_channels),
+>>>    	.clk_rate = 1000000,
+>>> @@ -193,6 +216,39 @@ static void rockchip_saradc_reset_controller(struct reset_control *reset)
+>>>    	reset_control_deassert(reset);
+>>>    }
+>>>    
+>>> +static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
+>>> +{
+>>> +	struct iio_poll_func *pf = p;
+>>> +	struct iio_dev *i_dev = pf->indio_dev;
+>>> +	struct rockchip_saradc *info = iio_priv(i_dev);
+>>> +	u16 data[20];
+>> How about this:
+>> #define MAX_CHANNEL_NUM 16
+> 
+> Unfortunately this is a bit more complex than it seems.
+> The buffer needs to be big enough for all the channels
+> + a 8 byte aligned space to put the timestamp in.
+> 
+> You can construct that in a fashion suitable to use in a
+> macro but it's a bit more fiddly than simply being the
+> maximum number of channels.
+> 
+Make use of iio_dev->scan_bytes to alloc a buffer in 
+iio_info->update_scan_mode callback for storing the
+"data + timestamp" is another way
+>> u16 data[MAX_CHANNEL_NUM];
+>>> +	int ret;
+>>> +	int i, j = 0;
+>>> +
+>>> +	mutex_lock(&i_dev->mlock);
+>>> +
+>>> +	for_each_set_bit(i, i_dev->active_scan_mask, i_dev->masklength) {
+>>> +		const struct iio_chan_spec *chan = &i_dev->channels[i];
+>>> +
+>>> +		ret = rockchip_saradc_conversion(info, chan);
+>>> +		if (ret) {
+>>> +			rockchip_saradc_power_down(info);
+>>> +			goto out;
+>>> +		}
+>>> +
+>>> +		data[j] = info->last_val;
+>>> +		j++;
+>>> +	}
+>>> +
+>>> +	iio_push_to_buffers_with_timestamp(i_dev, data, iio_get_time_ns(i_dev));
+>>> +out:
+>>> +	mutex_unlock(&i_dev->mlock);
+>>> +
+>>> +	iio_trigger_notify_done(i_dev->trig);
+>>> +
+>>> +	return IRQ_HANDLED;
+>>> +}
+>>> +
+>>>    static int rockchip_saradc_probe(struct platform_device *pdev)
+>>>    {
+>>>    	struct rockchip_saradc *info = NULL;
+>>> @@ -315,12 +371,19 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+>>>    	indio_dev->channels = info->data->channels;
+>>>    	indio_dev->num_channels = info->data->num_channels;
+>>>    
+>>> -	ret = iio_device_register(indio_dev);
+>>> +	ret = iio_triggered_buffer_setup(indio_dev, NULL,
+>>> +					 rockchip_saradc_trigger_handler, NULL);
+>> devm_iio_triggered_buffer_setup seems better
+>>>    	if (ret)
+>>>    		goto err_clk;
+>>>    
+>>> +	ret = iio_device_register(indio_dev);
+>>> +	if (ret)
+>>> +		goto err_buffer_cleanup;
+>>> +
+>>>    	return 0;
+>>>    
+>>> +err_buffer_cleanup:
+>>> +	iio_triggered_buffer_cleanup(indio_dev);
+>>>    err_clk:
+>>>    	clk_disable_unprepare(info->clk);
+>>>    err_pclk:
+>>>    
+>> xxm@rock-chips.com
+>>
+>>
+> 
+> 
+> 
+> 
 
-One thing inline on the burst mode stuff.
-
-Thanks,
-
-Jonathan
-
-> ---
->  .../bindings/iio/imu/adi,adis16475.yaml       | 130 ++++++++++++++++++
->  MAINTAINERS                                   |   1 +
->  2 files changed, 131 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis164=
-75.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml=
- b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> new file mode 100644
-> index 000000000000..c0f2146e000c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> @@ -0,0 +1,130 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/imu/adi,adis16475.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices ADIS16475 and similar IMUs
-> +
-> +maintainers:
-> +  - Nuno S=C3=A1 <nuno.sa@analog.com>
-> +
-> +description: |
-> +  Analog Devices ADIS16475 and similar IMUs
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD=
-IS16475.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,adis16475-1
-> +      - adi,adis16475-2
-> +      - adi,adis16475-3
-> +      - adi,adis16477-1
-> +      - adi,adis16477-2
-> +      - adi,adis16477-3
-> +      - adi,adis16470
-> +      - adi,adis16465-1
-> +      - adi,adis16465-2
-> +      - adi,adis16465-3
-> +      - adi,adis16467-1
-> +      - adi,adis16467-2
-> +      - adi,adis16467-3
-> +      - adi,adis16500
-> +      - adi,adis16505-1
-> +      - adi,adis16505-2
-> +      - adi,adis16505-3
-> +      - adi,adis16507-1
-> +      - adi,adis16507-2
-> +      - adi,adis16507-3
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-cpha: true
-> +
-> +  spi-cpol: true
-> +
-> +  spi-max-frequency:
-> +    maximum: 2000000
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    oneOf:
-> +      - const: sync
-> +      - const: direct-sync
-> +      - const: pulse-sync
-> +      - const: scaled-sync
-> +
-> +  reset-gpios:
-> +    description:
-> +      Must be the device tree identifier of the RESET pin. If specified,
-> +      it will be asserted during driver probe. As the line is active low,
-> +      it should be marked GPIO_ACTIVE_LOW.
-> +    maxItems: 1
-> +
-> +  adi,scaled-output-hz:
-> +    description:
-> +      This property must be present if the clock mode is scaled-sync thr=
-ough
-> +      clock-names property. In this mode, the input clock can have a ran=
-ge
-> +      of 1Hz to 128HZ which must be scaled to originate an allowable sam=
-ple
-> +      rate. This property specifies that rate.
-> +    minimum: 1900
-> +    maximum: 2100
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - spi-cpha
-> +  - spi-cpol
-> +
-> +if:
-> +  properties:
-> +    compatible:
-> +      contains:
-> +        enum:
-> +          - adi,adis16500
-> +          - adi,adis16505-1
-> +          - adi,adis16505-2
-> +          - adi,adis16505-3
-> +          - adi,adis16507-1
-> +          - adi,adis16507-2
-> +          - adi,adis16507-3
-> +
-> +then:
-> +  properties:
-> +    clock-names:
-> +      oneOf:
-> +        - const: sync
-> +        - const: direct-sync
-> +        - const: scaled-sync
-> +
-> +    adi,burst32-enable:
-> +      description:
-> +        Enable burst32 mode. In this mode, a burst reading contains cali=
-brated
-> +        gyroscope and accelerometer data in 32-bit format.
-
-Why is this in DT?  Is it not a runtime decision
-(ideally automatically selected)
-
-> +      type: boolean
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +            #address-cells =3D <1>;
-> +            #size-cells =3D <0>;
-> +
-> +            adis16475: adis16475-3@0 {
-> +                    compatible =3D "adi,adis16475-3";
-> +                    reg =3D <0>;
-> +                    spi-cpha;
-> +                    spi-cpol;
-> +                    spi-max-frequency =3D <2000000>;
-> +                    interrupts =3D <4 IRQ_TYPE_EDGE_RISING>;
-> +                    interrupt-parent =3D <&gpio>;
-> +            };
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f11262f1f3bb..f8ccc92ab378 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1015,6 +1015,7 @@ W:	http://ez.analog.com/community/linux-device-driv=
-ers
->  S:	Supported
->  F:	drivers/iio/imu/adis16475.c
->  F:	Documentation/ABI/testing/sysfs-bus-iio-imu-adis16475
-> +F:	Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> =20
->  ANALOG DEVICES INC ADM1177 DRIVER
->  M:	Beniamin Bia <beniamin.bia@analog.com>
 

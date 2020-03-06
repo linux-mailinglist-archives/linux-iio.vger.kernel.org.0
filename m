@@ -2,302 +2,273 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76BA417A731
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Mar 2020 15:16:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DBB617B847
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Mar 2020 09:23:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725974AbgCEOQn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Mar 2020 09:16:43 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:44818 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725963AbgCEOQn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Mar 2020 09:16:43 -0500
-Received: by mail-wr1-f65.google.com with SMTP id n7so7193089wrt.11
-        for <linux-iio@vger.kernel.org>; Thu, 05 Mar 2020 06:16:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=spotify.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=eifDdvFkvCJs5UXxx8ZCjJXpTsKOp6h7bU7XtW1Ku+k=;
-        b=Qi5HjooMjLAF8D1dcMtBZx1Tw0wAMhgmwWTgVeCv8nZ9fiCAjjKZ6OjQ6I3Ma6gAmU
-         bl3Azo+UAiyXlxJROE+uDobDest79yHGJ09HG2t92Oo5Q92IswDq5rzsku1DWdTGR4Dk
-         nuDpokHvnM9ccryFVQedzMzGCh7/asKJvzpRs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=eifDdvFkvCJs5UXxx8ZCjJXpTsKOp6h7bU7XtW1Ku+k=;
-        b=myyUh4H68cTPt7TNHXoTk1dwKwBxRfP2lh3NWK1LSei84dNrgZvVPOUZnr7oblIoDu
-         2V0kKhUmOC0fOgJnLQc3oQMaZYvfuk9pIk28NIoJ7G7N1pILvK9AiNI4+1j+KFENuMsP
-         ObLLNy6iNrN3ghymEM0XYAIOldgA1xE8uXZHM9doXcME1pB6ORPR8FDgDWsGjfusfr94
-         xU3009wxSlcfSj33rTNYcVbSlTurn2YlDwSU18sBgD6S1ujmoSRWfBlKAZHyAhDBX4dO
-         GlgVK+nBveVDNr+F+9++PhlBFv9NCsuZ7+p04/XE6BmXsP9zfro8x+mKqsRobZZEkbKK
-         +7hQ==
-X-Gm-Message-State: ANhLgQ1btni+qhvoPTs7omI0g0uduHnHJAjm+QCl3stUiNXMu5UCjrCE
-        9yjBhiXy34gcthKIilOY0HethqvBznN+
-X-Google-Smtp-Source: ADFU+vt2DChTL7nLy7lqGDi9NS6ohSXzxxFK99gYgXXmtDNJZZwNJEU+Eum5YBXdC7o0BP0lffcfXA==
-X-Received: by 2002:a5d:4206:: with SMTP id n6mr10148680wrq.119.1583417799360;
-        Thu, 05 Mar 2020 06:16:39 -0800 (PST)
-Received: from odin.spotify.net ([2001:2030:49:0:b4e8:ff8f:e413:2a12])
-        by smtp.gmail.com with ESMTPSA id a5sm9686927wmb.37.2020.03.05.06.16.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2020 06:16:38 -0800 (PST)
-From:   Mike Goeppner <mikegoeppner@spotify.com>
-To:     linux-iio@vger.kernel.org
-Cc:     pmeerw@pmeerw.net, manivannanece23@gmail.com,
-        Mike Goeppner <mikegoeppner@spotify.com>
-Subject: [PATCH 1/1] iio: light: vl6180: Add support for range ignore
-Date:   Thu,  5 Mar 2020 15:16:15 +0100
-Message-Id: <20200305141615.110423-2-mikegoeppner@spotify.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200305141615.110423-1-mikegoeppner@spotify.com>
-References: <20200305141615.110423-1-mikegoeppner@spotify.com>
+        id S1726029AbgCFIXF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 Mar 2020 03:23:05 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:10456 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725934AbgCFIXE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Mar 2020 03:23:04 -0500
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0268JXJp011415;
+        Fri, 6 Mar 2020 09:22:37 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : from : to : cc
+ : references : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=vTDWnwvCoOz4QiLEmXQSrPQXtR3HRTg+87YDSnBz9WI=;
+ b=agg/LyxR/G+ckCEJBpTv5VjR717mJ2lp8ki8jhXkHsU6n94y8SY3u4DgKC4N8KlYMVV2
+ +VKk3ESuxU1QeEnuwWXaOZHK1A7Pacnjq7SokIMOk7cVahpC+qQGhD114cWvUTNKjMsg
+ WzlxLV07Jcu9bMJQU8mNj8zOZLXAn7oKbI8Bc0kWr5YzolTgtKkuX2BMtt0g2XFQwNYM
+ HL/97bb2/i4KmdBQo2xNzEorK7i6L1BKbAUDilQa5AKo869DqECQQ2057Jsr7Bg0KzUz
+ Nsv+S4QIh7jScRqr5AGlqM4JnFdcwUa3vkRCqoymHCJXSNMXfCXJnQfpnJ1j6olMLGcg PA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2yfdyde7ay-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 06 Mar 2020 09:22:37 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C646310002A;
+        Fri,  6 Mar 2020 09:22:31 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id AEFBF21FE9B;
+        Fri,  6 Mar 2020 09:22:31 +0100 (CET)
+Received: from [10.48.0.71] (10.75.127.47) by SFHDAG5NODE3.st.com
+ (10.75.127.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 6 Mar
+ 2020 09:22:30 +0100
+Subject: Re: [PATCH] iio: adc: stm32-adc: fix runtime autosuspend delay when
+ slow polling
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, <ulf.hansson@linaro.org>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@st.com>, <olivier.moysan@st.com>,
+        <linux-iio@vger.kernel.org>, <lars@metafoo.de>, <knaack.h@gmx.de>,
+        <pmeerw@pmeerw.net>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-pm@vger.kernel.org>, <khilman@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Benjamin GAIGNARD <benjamin.gaignard@st.com>
+References: <1579854369-7972-1-git-send-email-fabrice.gasnier@st.com>
+ <20200202153354.3dae5863@archlinux>
+ <d30cb29b-d15c-a9fe-8c95-7ce59ce15062@st.com>
+Message-ID: <563e72b2-9bef-f00d-429c-db77d7689cc8@st.com>
+Date:   Fri, 6 Mar 2020 09:22:25 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <d30cb29b-d15c-a9fe-8c95-7ce59ce15062@st.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.47]
+X-ClientProxiedBy: SFHDAG7NODE1.st.com (10.75.127.19) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-06_02:2020-03-05,2020-03-06 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This now makes it possible to configure and use the range ignore setting
-on the vl6180 sensor via sysfs. In order to do this, three new device files
-have been added, range_ignore_enable, range_ignore_threshold, and
-range_ignore_valid_height.
+On 2/12/20 3:02 PM, Fabrice Gasnier wrote:
+> On 2/2/20 4:33 PM, Jonathan Cameron wrote:
+>> On Fri, 24 Jan 2020 09:26:09 +0100
+>> Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
+>>
+>>> When the ADC is runtime suspended and starting a conversion, the stm32-adc
+>>> driver calls pm_runtime_get_sync() that gets cascaded to the parent
+>>> (e.g. runtime resume of stm32-adc-core driver). This also kicks the
+>>> autosuspend delay (e.g. 2s) of the parent.
+>>> Once the ADC is active, calling pm_runtime_get_sync() again (upon a new
+>>> capture) won't kick the autosuspend delay for the parent (stm32-adc-core
+>>> driver) as already active.
+>>>
+>>> Currently, this makes the stm32-adc-core driver go in suspend state
+>>> every 2s when doing slow polling. As an example, doing a capture, e.g.
+>>> cat in_voltageY_raw at a 0.2s rate, the auto suspend delay for the parent
+>>> isn't refreshed. Once it expires, the parent immediately falls into
+>>> runtime suspended state, in between two captures, as soon as the child
+>>> driver falls into runtime suspend state:
+>>> - e.g. after 2s, + child calls pm_runtime_put_autosuspend() + 100ms
+>>>   autosuspend delay of the child.
+>>> - stm32-adc-core switches off regulators, clocks and so on.
+>>> - They get switched on back again 100ms later in this example (at 2.2s).
+>>>
+>>> So, add an explicit call to pm_runtime_mark_last_busy() for the parent
+>>> driver (stm32-adc-core), synchronously with the child driver (stm32-adc),
+>>> to avoid this.
+>>>
+>>> Fixes: 9bdbb1139ca1 ("iio: adc: stm32-adc: add power management support")
+>>>
+>>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+>>
+>> Hi Fabrice,
+>>
+>> Whilst this will clearly work, it seems like a somewhat adhoc solution.
+>> Power management specialists (cc'd):  Is this what we should be doing, or
+>> have Fabrice and I both missed something that we should be doing here?
+> 
+> Hi all, PM specialists,
+> 
+> As per my understanding, pm_runtime_mark_last_busy() doesn't cascade to
+> the parent device:
+> 
+> - in pm_runtime.h:
+> static inline void pm_runtime_mark_last_busy(struct device *dev)
+> {
+> 	WRITE_ONCE(dev->power.last_busy, ktime_get_mono_fast_ns());
+> }
 
-range_ignore_threshold and range_ignore_valid_height write to the
-corresponding registers on the sensor. range_ignore_enable sets the
-sysrange__range_ignore_enable bit in the SYSRANGE__RANGE_CHECK_ENABLES
-register.
+Hi all, PM specialists,
 
-Signed-off-by: Mike Goeppner <mikegoeppner@spotify.com>
+Gentle reminder on this topic.
+There maybe several solutions to address this. Not sure what would be
+an acceptable / preferred fix ?
+
+Just to summarize:
 ---
- drivers/iio/light/vl6180.c | 180 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 177 insertions(+), 3 deletions(-)
+A - Current post: I'm wondering if this is suitable to call
+    pm_runtime_mark_last_busy() every time, for the parent device from
+    child driver ?
 
-diff --git a/drivers/iio/light/vl6180.c b/drivers/iio/light/vl6180.c
-index 192c77ef3608..4cc308de97f2 100644
---- a/drivers/iio/light/vl6180.c
-+++ b/drivers/iio/light/vl6180.c
-@@ -41,10 +41,18 @@
- #define VL6180_OUT_OF_RESET 0x016
- #define VL6180_HOLD 0x017
- #define VL6180_RANGE_START 0x018
-+#define VL6180_RANGE_CHECK_ENABLES 0x02d
-+#define VL6180_RANGE_IGNORE_VALID_HEIGHT 0x025
-+#define VL6180_RANGE_IGNORE_THRESHOLD 0x026
- #define VL6180_ALS_START 0x038
- #define VL6180_ALS_GAIN 0x03f
- #define VL6180_ALS_IT 0x040
- 
-+/* Range check enable configuration */
-+#define VL6180_ALS_EARLY_CONVERGENCE_ENABLE (1 << 0)
-+#define VL6180_RANGE_IGNORE_ENABLE (1 << 1)
-+#define VL6180_SIGNAL_TO_NOISE_ENABLE (1 << 4)
-+
- /* Status registers */
- #define VL6180_RANGE_STATUS 0x04d
- #define VL6180_ALS_STATUS 0x04e
-@@ -128,7 +136,7 @@ static const struct vl6180_chan_regs vl6180_chan_regs_table[] = {
- };
- 
- static int vl6180_read(struct i2c_client *client, u16 cmd, void *databuf,
--		       u8 len)
-+			   u8 len)
- {
- 	__be16 cmdbuf = cpu_to_be16(cmd);
- 	struct i2c_msg msgs[2] = {
-@@ -207,6 +215,76 @@ static int vl6180_write_word(struct i2c_client *client, u16 cmd, u16 val)
- 	return 0;
- }
- 
-+static ssize_t vl6180_show_register_byte(struct device *dev, u16 cmd,
-+		char *buff)
-+{
-+	int ret;
-+
-+	struct vl6180_data *data = iio_priv(dev_to_iio_dev(dev));
-+	struct i2c_client *client = data->client;
-+
-+	ret = vl6180_read_byte(client, cmd);
-+	if (ret < 0)
-+		return ret;
-+
-+	return sprintf(buff, "%d\n", ret);
-+}
-+
-+static ssize_t vl6180_store_register_byte(struct device *dev, u16 cmd,
-+		const char *buff, size_t len)
-+{
-+	int ret;
-+	u8 val;
-+
-+	struct vl6180_data *data = iio_priv(dev_to_iio_dev(dev));
-+	struct i2c_client *client = data->client;
-+
-+	ret = kstrtou8(buff, 0, &val);
-+	if (ret != 0)
-+		return ret;
-+
-+	ret = vl6180_write_byte(client, cmd, val);
-+	if (ret < 0)
-+		return ret;
-+
-+	return len;
-+}
-+
-+static ssize_t vl6180_show_register_word(struct device *dev, u16 cmd,
-+		char *buff)
-+{
-+	int ret;
-+
-+	struct vl6180_data *data = iio_priv(dev_to_iio_dev(dev));
-+	struct i2c_client *client = data->client;
-+
-+	ret = vl6180_read_word(client, cmd);
-+	if (ret < 0)
-+		return ret;
-+
-+	return sprintf(buff, "%d\n", ret);
-+}
-+
-+static ssize_t vl6180_store_register_word(struct device *dev, u16 cmd,
-+		const char *buff, size_t len)
-+{
-+	int ret;
-+	u16 val;
-+
-+	struct vl6180_data *data = iio_priv(dev_to_iio_dev(dev));
-+	struct i2c_client *client = data->client;
-+
-+	ret = kstrtou16(buff, 0, &val);
-+	if (ret != 0)
-+		return ret;
-+
-+	ret = vl6180_write_word(client, cmd, val);
-+	if (ret < 0)
-+		return ret;
-+
-+	return len;
-+}
-+
- static int vl6180_measure(struct vl6180_data *data, int addr)
- {
- 	struct i2c_client *client = data->client;
-@@ -343,8 +421,104 @@ static int vl6180_read_raw(struct iio_dev *indio_dev,
- 
- static IIO_CONST_ATTR(als_gain_available, "1 1.25 1.67 2.5 5 10 20 40");
- 
-+static ssize_t vl6180_show_range_ignore_threshold(struct device *dev,
-+		struct device_attribute *attr, char *buff)
-+{
-+	return vl6180_show_register_word(dev, VL6180_RANGE_IGNORE_THRESHOLD,
-+			buff);
-+}
-+
-+static ssize_t vl6180_store_range_ignore_threshold(struct device *dev,
-+		struct device_attribute *attr, const char *buff, size_t len)
-+{
-+	return vl6180_store_register_word(dev, VL6180_RANGE_IGNORE_THRESHOLD,
-+			buff, len);
-+}
-+
-+static IIO_DEVICE_ATTR(range_ignore_threshold,
-+		0644,
-+		vl6180_show_range_ignore_threshold,
-+		vl6180_store_range_ignore_threshold,
-+		0);
-+
-+static ssize_t vl6180_show_range_ignore_valid_height(struct device *dev,
-+		struct device_attribute *attr, char *buff)
-+{
-+	return vl6180_show_register_byte(dev, VL6180_RANGE_IGNORE_VALID_HEIGHT,
-+			buff);
-+}
-+
-+static ssize_t vl6180_store_range_ignore_valid_height(struct device *dev,
-+		struct device_attribute *attr, const char *buff, size_t len)
-+{
-+	return vl6180_store_register_byte(dev, VL6180_RANGE_IGNORE_VALID_HEIGHT,
-+			buff, len);
-+}
-+
-+static IIO_DEVICE_ATTR(range_ignore_valid_height,
-+		0644,
-+		vl6180_show_range_ignore_valid_height,
-+		vl6180_store_range_ignore_valid_height,
-+		0);
-+
-+static ssize_t vl6180_show_range_ignore_enable(struct device *dev,
-+		struct device_attribute *attr, char *buff)
-+{
-+	int ret;
-+
-+	struct vl6180_data *data = iio_priv(dev_to_iio_dev(dev));
-+	struct i2c_client *client = data->client;
-+
-+	ret = vl6180_read_byte(client, VL6180_RANGE_CHECK_ENABLES);
-+	if (ret < 0)
-+		return ret;
-+
-+	return sprintf(buff, "%d\n", !!(ret & VL6180_RANGE_IGNORE_ENABLE));
-+}
-+
-+static ssize_t vl6180_store_range_ignore_enable(struct device *dev,
-+		struct device_attribute *attr, const char *buff, size_t len)
-+{
-+	int ret;
-+	bool val;
-+
-+	struct vl6180_data *data = iio_priv(dev_to_iio_dev(dev));
-+	struct i2c_client *client = data->client;
-+
-+	ret = kstrtobool(buff, &val);
-+	if (ret != 0)
-+		return ret;
-+
-+	ret = vl6180_read_byte(client, VL6180_RANGE_CHECK_ENABLES);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (val)
-+		ret = vl6180_write_byte(client,
-+				VL6180_RANGE_CHECK_ENABLES,
-+				ret | VL6180_RANGE_IGNORE_ENABLE);
-+	else
-+		ret = vl6180_write_byte(client,
-+				VL6180_RANGE_CHECK_ENABLES,
-+				ret & ~VL6180_RANGE_IGNORE_ENABLE);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	return len;
-+}
-+
-+static IIO_DEVICE_ATTR(range_ignore_enable,
-+		0644,
-+		vl6180_show_range_ignore_enable,
-+		vl6180_store_range_ignore_enable,
-+		0);
-+
- static struct attribute *vl6180_attributes[] = {
- 	&iio_const_attr_als_gain_available.dev_attr.attr,
-+	&iio_dev_attr_range_ignore_enable.dev_attr.attr,
-+	&iio_dev_attr_range_ignore_threshold.dev_attr.attr,
-+	&iio_dev_attr_range_ignore_valid_height.dev_attr.attr,
- 	NULL
- };
- 
-@@ -416,8 +590,8 @@ static int vl6180_set_it(struct vl6180_data *data, int val, int val2)
- }
- 
- static int vl6180_write_raw(struct iio_dev *indio_dev,
--			     struct iio_chan_spec const *chan,
--			     int val, int val2, long mask)
-+				 struct iio_chan_spec const *chan,
-+				 int val, int val2, long mask)
- {
- 	struct vl6180_data *data = iio_priv(indio_dev);
- 
--- 
-2.20.1
+---
+B - Is it suitable to update the PM runtime, so it's recursive, to
+    refresh "last_busy" for the parent(s) ? e.g. something like:
 
+ static inline void pm_runtime_mark_last_busy(struct device *dev)
+ {
+        WRITE_ONCE(dev->power.last_busy, ktime_get_mono_fast_ns());
++       if (dev->parent)
++               pm_runtime_mark_last_busy(dev->parent);
+ }
+
+---
+C - I find few drivers that rely on the rmp_idle() callback in the
+    parent to call pm_runtime_mark_last_busy(), like:
+  -> dwc3_runtime_idle()
+  -> gb_bundle_idle()
+
+  -> that may lead in the stm32-adc-core driver to add:
+
++static int stm32_adc_core_runtime_idle(struct device *dev)
++{
++       pm_runtime_mark_last_busy(dev);
++
++       return 0;
++}
+
+ static const struct dev_pm_ops stm32_adc_core_pm_ops = {
+        SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+                                pm_runtime_force_resume)
+        SET_RUNTIME_PM_OPS(stm32_adc_core_runtime_suspend,
+                           stm32_adc_core_runtime_resume,
+-                          NULL)
++                          stm32_adc_core_runtime_idle)
+ };
+
+
+I've test all these solutions. Would you have some recommendations ?
+
+Please advise,
+Best regards,
+Fabrice
+
+> 
+> STM32 ADC driver uses a model with an autosupsend delay for
+> - a parent driver to handle common resources, registers etc.
+> - child drivers for each ADC.
+> 
+> So the question is on how to fix the behavior I described:
+> 1: Child  activity with "short" autosuspend_delay
+> 2: Parent activity with "longer" autosuspend_delay
+>      _     _     _     _     _       _     _     _
+> 1: _| |___| |___| |___| |___| |_..._| |___| |___| |_...
+> 
+>     v v   v v   v v   v v   v v ... v v   v v   v v
+>     | |                                     |   |
+>     | +- pm_runtime_mark_last_busy()        |   |
+>     | +- pm_runtime_put_autosuspend()       v   |
+>     |                                       |   |
+>     +--- pm_runtime_get_sync()              |   v
+>     |                                       |   |
+>     +---> expires after autosuspend_delay   |   |
+>     |                                       |   |
+>     v                                       v   v
+>      _______________________________________     ___...
+> 2: _|                           ...         |___|
+> 
+> Glitches on parent dev near autosuspend_delay ^
+> 
+> - does the child driver needs to "kick" parent driver with
+> pm_runtime_mark_last_busy(), as proposed in current patch ?
+> 
+> - or is it something that should be done by PM runtime core routines ?
+> e.g. make pm_runtime_mark_last_busy() recursive or something else ?
+> 
+> Please advise
+> Best regards,
+> Fabrice
+> 
+>>
+>> Thanks,
+>>
+>> Jonathan
+>>
+>>> ---
+>>>  drivers/iio/adc/stm32-adc.c | 6 ++++++
+>>>  1 file changed, 6 insertions(+)
+>>>
+>>> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+>>> index 3b291d7..670157e 100644
+>>> --- a/drivers/iio/adc/stm32-adc.c
+>>> +++ b/drivers/iio/adc/stm32-adc.c
+>>> @@ -1157,6 +1157,7 @@ static int stm32_adc_single_conv(struct iio_dev *indio_dev,
+>>>  
+>>>  	stm32_adc_conv_irq_disable(adc);
+>>>  
+>>> +	pm_runtime_mark_last_busy(dev->parent);
+>>>  	pm_runtime_mark_last_busy(dev);
+>>>  	pm_runtime_put_autosuspend(dev);
+>>>  
+>>> @@ -1278,6 +1279,7 @@ static int stm32_adc_update_scan_mode(struct iio_dev *indio_dev,
+>>>  	adc->num_conv = bitmap_weight(scan_mask, indio_dev->masklength);
+>>>  
+>>>  	ret = stm32_adc_conf_scan_seq(indio_dev, scan_mask);
+>>> +	pm_runtime_mark_last_busy(dev->parent);
+>>>  	pm_runtime_mark_last_busy(dev);
+>>>  	pm_runtime_put_autosuspend(dev);
+>>>  
+>>> @@ -1329,6 +1331,7 @@ static int stm32_adc_debugfs_reg_access(struct iio_dev *indio_dev,
+>>>  	else
+>>>  		*readval = stm32_adc_readl(adc, reg);
+>>>  
+>>> +	pm_runtime_mark_last_busy(dev->parent);
+>>>  	pm_runtime_mark_last_busy(dev);
+>>>  	pm_runtime_put_autosuspend(dev);
+>>>  
+>>> @@ -1451,6 +1454,7 @@ static int __stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
+>>>  err_clr_trig:
+>>>  	stm32_adc_set_trig(indio_dev, NULL);
+>>>  err_pm_put:
+>>> +	pm_runtime_mark_last_busy(dev->parent);
+>>>  	pm_runtime_mark_last_busy(dev);
+>>>  	pm_runtime_put_autosuspend(dev);
+>>>  
+>>> @@ -1487,6 +1491,7 @@ static void __stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
+>>>  	if (stm32_adc_set_trig(indio_dev, NULL))
+>>>  		dev_err(&indio_dev->dev, "Can't clear trigger\n");
+>>>  
+>>> +	pm_runtime_mark_last_busy(dev->parent);
+>>>  	pm_runtime_mark_last_busy(dev);
+>>>  	pm_runtime_put_autosuspend(dev);
+>>>  }
+>>> @@ -1874,6 +1879,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+>>>  		goto err_hw_stop;
+>>>  	}
+>>>  
+>>> +	pm_runtime_mark_last_busy(dev->parent);
+>>>  	pm_runtime_mark_last_busy(dev);
+>>>  	pm_runtime_put_autosuspend(dev);
+>>>  
+>>

@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4756417CC56
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 06:46:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3593317CCC0
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 09:05:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725907AbgCGFqE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Mar 2020 00:46:04 -0500
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:39714 "EHLO
+        id S1725939AbgCGIE6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 03:04:58 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:33486 "EHLO
         mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725815AbgCGFqE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Mar 2020 00:46:04 -0500
-Received: by mail-pf1-f193.google.com with SMTP id w65so1624977pfb.6
-        for <linux-iio@vger.kernel.org>; Fri, 06 Mar 2020 21:46:03 -0800 (PST)
+        with ESMTP id S1725815AbgCGIE6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Mar 2020 03:04:58 -0500
+Received: by mail-pf1-f193.google.com with SMTP id n7so2301723pfn.0;
+        Sat, 07 Mar 2020 00:04:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=message-id:date:from:to:cc:subject:mime-version:content-disposition
          :user-agent;
-        bh=7aBlp/loUoW6JxlpuDNAhYu/ntHRyYTg9jgRlxbIjNA=;
-        b=kDv8z9uUjYd5J1/05pMjjrtgPAkuEHq1x3PllCL5DuMjt6c+KGp7QFz9QodCiviObw
-         3tMELZsjutDQlKs68DjOqGdI2GQvjLc1Lk2BbIFSy5cP+9Tc5GXuxp7UTol90sNPYT4H
-         DmLpVb6B/oWFIAjBkKFahani7pr/7UNyIZNOntG9HbQeVsKxaf47Q3muae/et3M4JZBl
-         V5ao/Og8GY6OW5xV9vfXN2gIYwxkQTqUdlwzy28qSUGKK4I3FpsHE6gYCvu+cycj+Xs2
-         NjPcRZWOMe3SM59rLXYL+hj5sLy/IjOxWmxdbbpKoaB89D01musmFjEWuXNLHGabfVEu
-         5zMQ==
+        bh=aBepW479p3B/E6bvG9ZQtUHEs6JGGZnu1HbF7uuB6cU=;
+        b=Mbb917iUQzgGBrHr4DYFKbfxPs4ORtlwKhvVh7TnQR2AiF2eWdlE/Ljnq06UQzqM9y
+         +vnWbdk768VuFM5PJFUp7e5apyoEu7cQHUyeY23G8HsfgiiKP9VHfOO0KEL+vWSronF4
+         Y23a37wNd7PQEvsXOBrgcAnz8ycHbVmJBwnaS4QkMG4psPXsK5QdktbNkszaoP1KMA6Y
+         8O9snngMjNy1O2GfbbgXn3FN7iXn44fVmz//X2RBpT6ft59j0UkCYW0pHOoCBMff/h3b
+         DeZYpkeI9qH+C1LFOmMN7hIaZZPvm5/ILRfBzGuhY4Nuuz1fVsiYMytzxhuNEQzL3zBE
+         pc9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:message-id:date:from:to:cc:subject:mime-version
          :content-disposition:user-agent;
-        bh=7aBlp/loUoW6JxlpuDNAhYu/ntHRyYTg9jgRlxbIjNA=;
-        b=m5zKvof929xqvPWyfrp5RK+3VJLOxl1/ppvIEpuGvya6kquh8j1Y/KN78Po0EGWUCG
-         vaysBDopZIFQ5GsQvzP03Luq7cTQyLS3SUb8T2zSEt+7GWvB96R1nq30dawwuf2ugWTZ
-         Oa4nORJvYbk0BF/V9uezrV4RMHmNCBaNsUMwPIzKCnMo9CKAuZG2j08ZAcKqPsv+OLaZ
-         jE9nWnSQIO5H/6AcsurPiG18nmSbfLcj6b68kZ+SKwYqd44Bl4DtviEuq1GZa8E3+MBj
-         yOazCa8Pf37Dbq+dBnAilxj0iLrgxf1jxLfw9nFLPhPzVyr+PeCHlOyV22wDGqjM0vl2
-         QMxQ==
-X-Gm-Message-State: ANhLgQ2Ej1RNZ9SyMonxccDJ8eYwkmf11UMcYyz3Do5bchUw7CZ0Q8Sd
-        GBSs0uC0Jm0iyHk4fa1Wyqw=
-X-Google-Smtp-Source: ADFU+vvX+KGNvcO1GBUrre7hOII22F6YGcptG/1ZReiIPTGLFoEQkp88MFMAQ5uz5va0E0Kjjrtolw==
-X-Received: by 2002:a63:d245:: with SMTP id t5mr6333778pgi.84.1583559962782;
-        Fri, 06 Mar 2020 21:46:02 -0800 (PST)
+        bh=aBepW479p3B/E6bvG9ZQtUHEs6JGGZnu1HbF7uuB6cU=;
+        b=Lep8TInqYNl6dGaVcID+bQ+b2MdQU9ptIVipgLondsa+Rj5lNjOPdNFpHe+x4hzXZq
+         qyNLGcHh126OMxpsNDkH5F3xAhgLTMdLi5OiQmGzRbAkCPJ2w0YcGSuhp3dnUAP4fz8i
+         eUckX/sT1hkVh7PJPX44MwkXlb3rn+3RvFhEjLGgZVIMcBPq9DO9xcNSQrBF2TtcY4EX
+         jeZeGQSCmQYR0RwWnQLWKquGGTTN53djs6U6wkdVFqealvVbw00nEcpa8i9vJf7EBNQX
+         JxqMBFIIK0ufeUSpxjLVGuBhDePysc34zH1KKpOhUkUx8ZvZyLzYsEyrl6f/idkVSEqJ
+         MxcQ==
+X-Gm-Message-State: ANhLgQ2VnNTtGVmmd3LKQR0OCLJTADmqWwYKfqRSLhs//Xt29hptYLP1
+        P3aK9gPrfP44mP0v6hm/EoS8UVAeAsk=
+X-Google-Smtp-Source: ADFU+vufXAOy1RI3AuNchzWgWAfquQXbaJcG6cRWKAM4ZYFYDw6zUmN6pPoRmujB34JmWnpiCGdDfQ==
+X-Received: by 2002:a63:f74a:: with SMTP id f10mr6853056pgk.360.1583568297127;
+        Sat, 07 Mar 2020 00:04:57 -0800 (PST)
 Received: from SARKAR ([43.224.157.39])
-        by smtp.gmail.com with ESMTPSA id x19sm14123117pfc.144.2020.03.06.21.46.01
+        by smtp.gmail.com with ESMTPSA id h65sm15828234pfg.12.2020.03.07.00.04.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2020 21:46:01 -0800 (PST)
-Message-ID: <5e633519.1c69fb81.ec43c.6809@mx.google.com>
-X-Google-Original-Message-ID: <20200307054558.GA32207@rohitsarkar5398@gmail.com>
-Date:   Sat, 7 Mar 2020 11:15:58 +0530
+        Sat, 07 Mar 2020 00:04:56 -0800 (PST)
+Message-ID: <5e6355a8.1c69fb81.36f2c.ab37@mx.google.com>
+X-Google-Original-Message-ID: <20200307080451.GA2587@rohitsarkar5398@gmail.com>
+Date:   Sat, 7 Mar 2020 13:34:51 +0530
 From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     linux-iio@vger.kernel.org
-Cc:     jic23@kernel.org, dragos.bogdan@analog.com,
-        jonathon.cameron@huawei.com, alexandru.ardelean@analog.com
-Subject: [PATCH v3] iio: adc: max1363: replace uses of mlock
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, alexandru.ardelean@analog.com,
+        dragos.bogdan@analog.com
+Subject: [PATCH v4] iio: adc: max1363: replace uses of mlock
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -66,18 +66,28 @@ iio_device_claim_direct_mode.
 
 Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
 ---
+Changelog v3 -> v4
+* Fix indentation
+
+Changelog v2 -> v3
+* use iio_device_claim_direct when switching modes
+* replace mlock usage in max1363_write_event_config
+
+Changelog v1 -> v2
+* Fix indentation
+
  drivers/iio/adc/max1363.c | 24 +++++++++++++++---------
  1 file changed, 15 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-index 5c2cc61b666e..d26f68d23250 100644
+index 5c2cc61b666e..a1550c0b4c0a 100644
 --- a/drivers/iio/adc/max1363.c
 +++ b/drivers/iio/adc/max1363.c
 @@ -150,6 +150,7 @@ struct max1363_chip_info {
   * @current_mode:	the scan mode of this chip
   * @requestedmask:	a valid requested set of channels
   * @reg:		supply regulator
-+ * @lock            lock to ensure state is consistent
++ * @lock		lock to ensure state is consistent
   * @monitor_on:		whether monitor mode is enabled
   * @monitor_speed:	parameter corresponding to device monitor speed setting
   * @mask_high:		bitmask for enabled high thresholds
@@ -161,7 +171,7 @@ index 5c2cc61b666e..d26f68d23250 100644
  	max1363_monitor_mode_update(st, !!(st->mask_high | st->mask_low));
  error_ret:
 -	mutex_unlock(&indio_dev->mlock);
-+	iio_device_release_direct_mode(indio_dev);	
++	iio_device_release_direct_mode(indio_dev);
  
  	return ret;
  }

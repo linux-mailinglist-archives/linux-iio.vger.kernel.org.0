@@ -2,37 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFBDD17CE43
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 14:02:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BC3C17CE47
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 14:05:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726065AbgCGNCg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Mar 2020 08:02:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39566 "EHLO mail.kernel.org"
+        id S1726073AbgCGNFH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 08:05:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40404 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726043AbgCGNCg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Mar 2020 08:02:36 -0500
+        id S1726043AbgCGNFH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 7 Mar 2020 08:05:07 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 135B52073C;
-        Sat,  7 Mar 2020 13:02:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 211142073C;
+        Sat,  7 Mar 2020 13:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583586155;
-        bh=WRkLS1JpGafDBF8ElTetOqejbdjYC+1RowszJglB9Y4=;
+        s=default; t=1583586305;
+        bh=ONFocAkrUcHoVQEyEgxN8icyVv9InTwdB8WDDcNQl3s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mZos1OR/awAfEPwwkFQnU+4jzM+N4AxGZ+C71ggyUSl2dbG7qSujW8RbrzpJE9fI1
-         XVGs6mXYMKRfs2aX2e9HKsXST15Fq5RQhTi5nl3j8pn3R8yzIFBM5RWDoQ2Pl+AowR
-         ivSLv+aGrWKX0AdH5WipuE84FuCnv2osOdt93xv4=
-Date:   Sat, 7 Mar 2020 13:02:32 +0000
+        b=0Fk/1wobdEc6sU534pRZd2KrZ37yXXxMQr8Q2ehM2euopFA6qmaIqDQ6oqWbMXBAW
+         JfadcYCR6HYmc3RHJBFxN7QAIxSo4C3Dx7OXVDut9zQgft2A9LOFnQQlUizkXw4l8T
+         F0XX2JvnrWwYNPL7Qd+O6Jt23hjADUvwQEHAFrtI=
+Date:   Sat, 7 Mar 2020 13:05:02 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        mario.tesi@st.com, vitor.soares@synopsys.com
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: disable I3C support during device
- reset
-Message-ID: <20200307130232.3baf4c89@archlinux>
-In-Reply-To: <7444ee821dd9b1210ce126c317edc3b0c36f9f84.1583090369.git.lorenzo@kernel.org>
-References: <7444ee821dd9b1210ce126c317edc3b0c36f9f84.1583090369.git.lorenzo@kernel.org>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] counter: 104-quad-8: Support Differential Encoder
+ Cable Status
+Message-ID: <20200307130502.5b27b73e@archlinux>
+In-Reply-To: <20200301220719.25173-1-vilhelm.gray@gmail.com>
+References: <20200301220719.25173-1-vilhelm.gray@gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,117 +41,181 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  1 Mar 2020 20:28:03 +0100
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+On Sun,  1 Mar 2020 17:07:19 -0500
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-> Disable MIPI I3C during device reset in order to avoid
-> possible races on interrupt line 1. If the first interrupt
-> line is asserted during hw reset the device will work in
-> I3C-only mode
+> The ACCES 104-QUAD-8 series provides status information about the
+> connection state of the differential encoder cable inputs. This patch
+> implements support to expose such information from these devices.
 > 
-> Reported-by: Mario Tesi <mario.tesi@st.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+Looks good to me.  Applied to the togreg branch of iio.git
+and pushed out as testing for the autobuilders to play with it.
 
-Fixes tag?
-
-One trivial thing inline.
-
-Is this something we should be looking to have applied to stable?
+Thanks,
 
 Jonathan
 
 > ---
-> I have not been able to test this patch on a I3C device, just SPI/I2C
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 ++
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 30 ++++++++++++++++++++
->  2 files changed, 32 insertions(+)
+> Changes in v3:
+>  - Split cable_status attribute into cable_fault and cable_fault_enable;
+>    both under each Signal so we can control each channel independently
+>  - Initialize to a default state of disabled for all channels
 > 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> index f2113a63721a..dfcbe7c42493 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -266,6 +266,7 @@ struct st_lsm6dsx_ext_dev_settings {
->   * @wai: Sensor WhoAmI default value.
->   * @reset: register address for reset.
->   * @boot: register address for boot.
-> + * @i3c_disable:  register address for enabling/disabling I3C (addr + mask).
->   * @bdu: register address for Block Data Update.
->   * @max_fifo_size: Sensor max fifo length in FIFO words.
->   * @id: List of hw id/device name supported by the driver configuration.
-> @@ -284,6 +285,7 @@ struct st_lsm6dsx_settings {
->  	u8 wai;
->  	struct st_lsm6dsx_reg reset;
->  	struct st_lsm6dsx_reg boot;
-> +	struct st_lsm6dsx_reg i3c_disable;
->  	struct st_lsm6dsx_reg bdu;
->  	u16 max_fifo_size;
->  	struct {
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 84d219ae6aee..b1435c5d2d6d 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -751,6 +751,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  			.addr = 0x12,
->  			.mask = BIT(7),
->  		},
-> +		.i3c_disable = {
-> +			.addr = 0x18,
-> +			.mask = BIT(1),
-> +		},
->  		.bdu = {
->  			.addr = 0x12,
->  			.mask = BIT(6),
-> @@ -1128,6 +1132,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  			.addr = 0x12,
->  			.mask = BIT(7),
->  		},
-> +		.i3c_disable = {
-> +			.addr = 0x18,
-> +			.mask = BIT(1),
-> +		},
->  		.bdu = {
->  			.addr = 0x12,
->  			.mask = BIT(6),
-> @@ -2041,6 +2049,19 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
->  	const struct st_lsm6dsx_reg *reg;
->  	int err;
->  
-> +	/* disable MIPI I3C during device reset in order to avoid
-
-comment syntax
-/*
- * disable...
-
-> +	 * possible races on interrupt line 1. If the first interrupt
-> +	 * line is asserted during hw reset the device will work in
-> +	 * I3C-only mode
-> +	 */
-> +	if (hw->settings->i3c_disable.addr) {
-> +		reg = &hw->settings->i3c_disable;
-> +		err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
-> +					 ST_LSM6DSX_SHIFT_VAL(1, reg->mask));
-> +		if (err < 0)
-> +			return err;
-> +	}
+>  .../ABI/testing/sysfs-bus-counter-104-quad-8  | 18 +++++
+>  drivers/counter/104-quad-8.c                  | 75 +++++++++++++++++++
+>  2 files changed, 93 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8 b/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
+> index 3c905d3cf5d7..eac32180c40d 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
+> +++ b/Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
+> @@ -1,3 +1,21 @@
+> +What:		/sys/bus/counter/devices/counterX/signalY/cable_fault
+> +KernelVersion:	5.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Read-only attribute that indicates whether a differential
+> +		encoder cable fault (not connected or loose wires) is detected
+> +		for the respective channel of Signal Y. Valid attribute values
+> +		are boolean. Detection must first be enabled via the
+> +		corresponding cable_fault_enable attribute.
 > +
->  	/* device sw reset */
->  	reg = &hw->settings->reset;
->  	err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
-> @@ -2059,6 +2080,15 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
->  
->  	msleep(50);
->  
-> +	/* enable MIPI I3C */
-> +	if (hw->settings->i3c_disable.addr) {
-> +		reg = &hw->settings->i3c_disable;
-> +		err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
-> +					 ST_LSM6DSX_SHIFT_VAL(0, reg->mask));
-> +		if (err < 0)
-> +			return err;
-> +	}
+> +What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_enable
+> +KernelVersion:	5.7
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Whether detection of differential encoder cable faults for the
+> +		respective channel of Signal Y is enabled. Valid attribute
+> +		values are boolean.
 > +
->  	/* enable Block Data Update */
->  	reg = &hw->settings->bdu;
->  	err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+>  What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler
+>  KernelVersion:	5.7
+>  Contact:	linux-iio@vger.kernel.org
+> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+> index 0cfc813ee2cb..9dab190c49b0 100644
+> --- a/drivers/counter/104-quad-8.c
+> +++ b/drivers/counter/104-quad-8.c
+> @@ -31,6 +31,7 @@ MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
+>  /**
+>   * struct quad8_iio - IIO device private data structure
+>   * @counter:		instance of the counter_device
+> + * @fck_prescaler:	array of filter clock prescaler configurations
+>   * @preset:		array of preset values
+>   * @count_mode:		array of count mode configurations
+>   * @quadrature_mode:	array of quadrature mode configurations
+> @@ -39,6 +40,7 @@ MODULE_PARM_DESC(base, "ACCES 104-QUAD-8 base addresses");
+>   * @preset_enable:	array of set_to_preset_on_index attribute configurations
+>   * @synchronous_mode:	array of index function synchronous mode configurations
+>   * @index_polarity:	array of index function polarity configurations
+> + * @cable_fault_enable:	differential encoder cable status enable configurations
+>   * @base:		base port address of the IIO device
+>   */
+>  struct quad8_iio {
+> @@ -52,11 +54,13 @@ struct quad8_iio {
+>  	unsigned int preset_enable[QUAD8_NUM_COUNTERS];
+>  	unsigned int synchronous_mode[QUAD8_NUM_COUNTERS];
+>  	unsigned int index_polarity[QUAD8_NUM_COUNTERS];
+> +	unsigned int cable_fault_enable;
+>  	unsigned int base;
+>  };
+>  
+>  #define QUAD8_REG_CHAN_OP 0x11
+>  #define QUAD8_REG_INDEX_INPUT_LEVELS 0x16
+> +#define QUAD8_DIFF_ENCODER_CABLE_STATUS 0x17
+>  /* Borrow Toggle flip-flop */
+>  #define QUAD8_FLAG_BT BIT(0)
+>  /* Carry Toggle flip-flop */
+> @@ -1143,6 +1147,66 @@ static ssize_t quad8_count_preset_enable_write(struct counter_device *counter,
+>  	return len;
+>  }
+>  
+> +static ssize_t quad8_signal_cable_fault_read(struct counter_device *counter,
+> +					     struct counter_signal *signal,
+> +					     void *private, char *buf)
+> +{
+> +	const struct quad8_iio *const priv = counter->priv;
+> +	const size_t channel_id = signal->id / 2;
+> +	const bool disabled = !(priv->cable_fault_enable & BIT(channel_id));
+> +	unsigned int status;
+> +	unsigned int fault;
+> +
+> +	if (disabled)
+> +		return -EINVAL;
+> +
+> +	/* Logic 0 = cable fault */
+> +	status = inb(priv->base + QUAD8_DIFF_ENCODER_CABLE_STATUS);
+> +
+> +	/* Mask respective channel and invert logic */
+> +	fault = !(status & BIT(channel_id));
+> +
+> +	return sprintf(buf, "%u\n", fault);
+> +}
+> +
+> +static ssize_t quad8_signal_cable_fault_enable_read(
+> +	struct counter_device *counter, struct counter_signal *signal,
+> +	void *private, char *buf)
+> +{
+> +	const struct quad8_iio *const priv = counter->priv;
+> +	const size_t channel_id = signal->id / 2;
+> +	const unsigned int enb = !!(priv->cable_fault_enable & BIT(channel_id));
+> +
+> +	return sprintf(buf, "%u\n", enb);
+> +}
+> +
+> +static ssize_t quad8_signal_cable_fault_enable_write(
+> +	struct counter_device *counter, struct counter_signal *signal,
+> +	void *private, const char *buf, size_t len)
+> +{
+> +	struct quad8_iio *const priv = counter->priv;
+> +	const size_t channel_id = signal->id / 2;
+> +	bool enable;
+> +	int ret;
+> +	unsigned int cable_fault_enable;
+> +
+> +	ret = kstrtobool(buf, &enable);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (enable)
+> +		priv->cable_fault_enable |= BIT(channel_id);
+> +	else
+> +		priv->cable_fault_enable &= ~BIT(channel_id);
+> +
+> +	/* Enable is active low in Differential Encoder Cable Status register */
+> +	cable_fault_enable = ~priv->cable_fault_enable;
+> +
+> +	outb(cable_fault_enable, priv->base + QUAD8_DIFF_ENCODER_CABLE_STATUS);
+> +
+> +	return len;
+> +}
+> +
+>  static ssize_t quad8_signal_fck_prescaler_read(struct counter_device *counter,
+>  	struct counter_signal *signal, void *private, char *buf)
+>  {
+> @@ -1180,6 +1244,15 @@ static ssize_t quad8_signal_fck_prescaler_write(struct counter_device *counter,
+>  }
+>  
+>  static const struct counter_signal_ext quad8_signal_ext[] = {
+> +	{
+> +		.name = "cable_fault",
+> +		.read = quad8_signal_cable_fault_read
+> +	},
+> +	{
+> +		.name = "cable_fault_enable",
+> +		.read = quad8_signal_cable_fault_enable_read,
+> +		.write = quad8_signal_cable_fault_enable_write
+> +	},
+>  	{
+>  		.name = "filter_clock_prescaler",
+>  		.read = quad8_signal_fck_prescaler_read,
+> @@ -1383,6 +1456,8 @@ static int quad8_probe(struct device *dev, unsigned int id)
+>  		/* Disable index function; negative index polarity */
+>  		outb(QUAD8_CTR_IDR, base_offset + 1);
+>  	}
+> +	/* Disable Differential Encoder Cable Status for all channels */
+> +	outb(0xFF, base[id] + QUAD8_DIFF_ENCODER_CABLE_STATUS);
+>  	/* Enable all counters */
+>  	outb(QUAD8_CHAN_OP_ENABLE_COUNTERS, base[id] + QUAD8_REG_CHAN_OP);
+>  
 

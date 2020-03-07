@@ -2,138 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2085517CF0B
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 16:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FBBF17CF0F
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 16:30:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726105AbgCGPZg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Mar 2020 10:25:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54706 "EHLO mail.kernel.org"
+        id S1726180AbgCGPaG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 10:30:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56284 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726086AbgCGPZg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Mar 2020 10:25:36 -0500
+        id S1726174AbgCGPaF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 7 Mar 2020 10:30:05 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9A3D920656;
-        Sat,  7 Mar 2020 15:25:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D377320656;
+        Sat,  7 Mar 2020 15:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583594735;
-        bh=jTfoDTpBht4Oo/wm8OLluLVKnLxr7/DLRPtg/24rA6c=;
+        s=default; t=1583595005;
+        bh=ET+dIcC8U+H1cgo4LTQc3rW0ut0gu60CQqxHrhomVKc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gsGxyz+O+VogMCFWxY3SocOCsWoXO/Jf3bCMTr09LZGu9hvriHha288PP0urxzqGD
-         uWGG1j/wauuukU3doF14pEC2pV2Dc0NsI/wa12hw9dk3qH0vX5TOla/N2cyZu1yEAx
-         TwdcaOh2SW+nLDliZ1zKVG/nDJDm30Sc5ZYB5raE=
-Date:   Sat, 7 Mar 2020 15:25:31 +0000
+        b=bBdbyjEc3C69CrD/M7sxg/s75pzPy6npNrJFrHy8TXMR4m6vLzHv/xvbhnqFn5I75
+         Vy2Fcvz1By+weuWdtXIoONTa0ZN8izUa9PzMZr5Tbcxeek+czZzcLitMikr6Ss3Iml
+         0cqPjVVL4bCKE44LLjnPg7WytxfI07ny11vy+xmk=
+Date:   Sat, 7 Mar 2020 15:30:00 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matt Ranostay <mranostay@gmail.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        matt.ranostay@konsulko.com
-Subject: Re: [PATCH v2] iio: potentiostat: lmp9100: fix
- iio_triggered_buffer_{predisable,postenable} positions
-Message-ID: <20200307152531.159f14fb@archlinux>
-In-Reply-To: <CAKzfze8KMLG=GbMvZ9eydOer5wZw-i7_5fJVjpFcZ6fqyoHgJQ@mail.gmail.com>
-References: <20200304093633.32264-1-alexandru.ardelean@analog.com>
-        <20200304094105.2586-1-alexandru.ardelean@analog.com>
-        <CAKzfze8KMLG=GbMvZ9eydOer5wZw-i7_5fJVjpFcZ6fqyoHgJQ@mail.gmail.com>
+To:     Andreas Klinger <ak@it-klinger.de>
+Cc:     YueHaibing <yuehaibing@huawei.com>, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, Jonathan.Cameron@huawei.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] iio: ping: set pa_laser_ping_cfg in of_ping_match
+Message-ID: <20200307153000.3b6db32a@archlinux>
+In-Reply-To: <20200304115546.GA8509@arbad>
+References: <20200304113423.26920-1-yuehaibing@huawei.com>
+        <20200304115546.GA8509@arbad>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 4 Mar 2020 13:17:36 -0800
-Matt Ranostay <mranostay@gmail.com> wrote:
+On Wed, 4 Mar 2020 12:55:46 +0100
+Andreas Klinger <ak@it-klinger.de> wrote:
 
-> On Wed, Mar 4, 2020 at 1:38 AM Alexandru Ardelean
-> <alexandru.ardelean@analog.com> wrote:
-> >
-> > The iio_triggered_buffer_{predisable,postenable} functions attach/detach
-> > the poll functions.
-> >
-> > For the predisable hook, the disable code should occur before detaching
-> > the poll func, and for the postenable hook, the poll func should be
-> > attached before the enable code.
-> >
-> > The lmp9100 was attaching a poll function but never detaching it via any
-> > IIO disable hook.
-> >
-> > This change adds the detaching of the poll function, and moves/renames
-> > lmp91000_buffer_preenable() function to lmp91000_buffer_postenable().
-> > The idea is to make it more symmetrical, so that when the
-> > iio_triggered_buffer_{predisable,postenable} functions get removed, it's
-> > easier to see.
-> >
-> > Fixes: 67e17300dc1d7 ("iio: potentiostat: add LMP91000 support")
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> 
-> Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> Acked-by: Andreas Klinger <ak@it-klinger.de>
+Applied to the fixes-togreg branch of iio.git.
 
-I'm not going to rush this one in as it's been like this for a while
-
-Applied to the togreg branch of iio.git and pushed out as testing for the
-autobuilders to play with it,
+Btw this is also in mainline I believe, so the -next is probably an
+inappropriate marking.
 
 Thanks,
 
 Jonathan
 
-> 
+>=20
+> YueHaibing <yuehaibing@huawei.com> schrieb am Mi, 04. M=C3=A4r 19:34:
+> > pa_laser_ping_cfg should be set in of_ping_match
+> > instead of pa_ping_cfg.
+> >=20
+> > Fixes: 7bb501f49ddb ("iio: ping: add parallax ping sensors")
+> > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > > ---
-> >
-> > Changelog v1 -> v2:
-> > * forgot to call iio_triggered_buffer_postenable() in
-> >   lmp91000_buffer_postenable() in v1
-> >
-> >  drivers/iio/potentiostat/lmp91000.c | 18 +++++++++++++-----
-> >  1 file changed, 13 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/iio/potentiostat/lmp91000.c b/drivers/iio/potentiostat/lmp91000.c
-> > index a0e5f530faa9..2cb11da18e0f 100644
-> > --- a/drivers/iio/potentiostat/lmp91000.c
-> > +++ b/drivers/iio/potentiostat/lmp91000.c
-> > @@ -275,11 +275,20 @@ static int lmp91000_buffer_cb(const void *val, void *private)
-> >  static const struct iio_trigger_ops lmp91000_trigger_ops = {
+> >  drivers/iio/proximity/ping.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/iio/proximity/ping.c b/drivers/iio/proximity/ping.c
+> > index 34aff10..12b893c 100644
+> > --- a/drivers/iio/proximity/ping.c
+> > +++ b/drivers/iio/proximity/ping.c
+> > @@ -269,7 +269,7 @@ static const struct iio_chan_spec ping_chan_spec[] =
+=3D {
+> > =20
+> >  static const struct of_device_id of_ping_match[] =3D {
+> >  	{ .compatible =3D "parallax,ping", .data =3D &pa_ping_cfg},
+> > -	{ .compatible =3D "parallax,laserping", .data =3D &pa_ping_cfg},
+> > +	{ .compatible =3D "parallax,laserping", .data =3D &pa_laser_ping_cfg},
+> >  	{},
 > >  };
-> >
-> > -static int lmp91000_buffer_preenable(struct iio_dev *indio_dev)
-> > +static int lmp91000_buffer_postenable(struct iio_dev *indio_dev)
-> >  {
-> >         struct lmp91000_data *data = iio_priv(indio_dev);
-> > +       int err;
-> >
-> > -       return iio_channel_start_all_cb(data->cb_buffer);
-> > +       err = iio_triggered_buffer_postenable(indio_dev);
-> > +       if (err)
-> > +               return err;
-> > +
-> > +       err = iio_channel_start_all_cb(data->cb_buffer);
-> > +       if (err)
-> > +               iio_triggered_buffer_predisable(indio_dev);
-> > +
-> > +       return err;
-> >  }
-> >
-> >  static int lmp91000_buffer_predisable(struct iio_dev *indio_dev)
-> > @@ -288,12 +297,11 @@ static int lmp91000_buffer_predisable(struct iio_dev *indio_dev)
-> >
-> >         iio_channel_stop_all_cb(data->cb_buffer);
-> >
-> > -       return 0;
-> > +       return iio_triggered_buffer_predisable(indio_dev);
-> >  }
-> >
-> >  static const struct iio_buffer_setup_ops lmp91000_buffer_setup_ops = {
-> > -       .preenable = lmp91000_buffer_preenable,
-> > -       .postenable = iio_triggered_buffer_postenable,
-> > +       .postenable = lmp91000_buffer_postenable,
-> >         .predisable = lmp91000_buffer_predisable,
-> >  };
-> >
-> > --
-> > 2.20.1
-> >  
+> > =20
+> > --=20
+> > 2.7.4
+> >=20
+> >  =20
 

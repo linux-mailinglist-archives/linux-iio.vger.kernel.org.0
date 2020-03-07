@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B9A017CF00
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 16:20:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A3F17CF05
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 16:21:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726154AbgCGPUk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Mar 2020 10:20:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52536 "EHLO mail.kernel.org"
+        id S1726114AbgCGPVf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 10:21:35 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53084 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726116AbgCGPUk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Mar 2020 10:20:40 -0500
+        id S1726074AbgCGPVf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 7 Mar 2020 10:21:35 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9FC6D20674;
-        Sat,  7 Mar 2020 15:20:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8CCB020674;
+        Sat,  7 Mar 2020 15:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583594439;
-        bh=WXObIi33XmoyMwmcEZvaU65yLjmbN66OToWMCu6nPyE=;
+        s=default; t=1583594494;
+        bh=zXhA3RoLELcyY2UKL8bcqbSijN27udDZjliB55Zc+PM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FV+tBombC10mD94wQu/owOffP+3osxZtdkbQHT2q9THGErYc3/8iSvySgWfc89yyw
-         NoiEst1cjF1D/c+/yUYQQt5IIACUVC++KmwWImLlyNWgkWnOBcppBH6CsloyMsVl73
-         G9iYUgHc4YxqVoeAFFl6RGOgoc9z+8Umw5WMSdFw=
-Date:   Sat, 7 Mar 2020 15:20:34 +0000
+        b=eH3omeFiyPeHhZ9l62cNGCJmGil5/S2xcf4vhQoBUjPoOWVnsBYBk4gShULYCrSod
+         IdEaczUOrw4cfLWzoM4VAiNV9Vswma2J6qsiaghim6DUNPRFrFW0JuMxPiGK9mCOBn
+         vq8r9qma/eAE8YbYkWUXx3i6r9W5gPVV2ZZaRZ1o=
+Date:   Sat, 7 Mar 2020 15:21:27 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Fabrice Gasnier <fabrice.gasnier@st.com>
 Cc:     <linux-arm-kernel@lists.infradead.org>,
@@ -32,11 +32,12 @@ Cc:     <linux-arm-kernel@lists.infradead.org>,
         <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
         <lars@metafoo.de>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
         <linux-stm32@st-md-mailman.stormreply.com>
-Subject: Re: [PATCH 1/2] iio: trigger: stm32-timer: rename enabled flag
-Message-ID: <20200307152034.0d7e01a5@archlinux>
-In-Reply-To: <1583247585-16698-2-git-send-email-fabrice.gasnier@st.com>
+Subject: Re: [PATCH 2/2] iio: trigger: stm32-timer: add power management
+ support
+Message-ID: <20200307152127.404aba78@archlinux>
+In-Reply-To: <1583247585-16698-3-git-send-email-fabrice.gasnier@st.com>
 References: <1583247585-16698-1-git-send-email-fabrice.gasnier@st.com>
-        <1583247585-16698-2-git-send-email-fabrice.gasnier@st.com>
+        <1583247585-16698-3-git-send-email-fabrice.gasnier@st.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,112 +47,119 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 3 Mar 2020 15:59:44 +0100
+On Tue, 3 Mar 2020 15:59:45 +0100
 Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
 
-> "clk_enabled" flag reflects enabled state of the timer, for master mode,
-> slave mode or trigger (with sampling_frequency). So rename it to "enabled".
+> Add suspend/resume PM sleep ops to stm32-timer-trigger driver.
+> Register contents may be lost depending on low power modes.
+> When going to low power, enforce the timer isn't active. Gracefully
+> restore its state upon resume in case it's been left enabled prior to
+> suspend.
 > 
 > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+Seems sensible. Applied,
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/trigger/stm32-timer-trigger.c | 28 ++++++++++++++--------------
->  1 file changed, 14 insertions(+), 14 deletions(-)
+>  drivers/iio/trigger/stm32-timer-trigger.c | 63 +++++++++++++++++++++++++++++++
+>  1 file changed, 63 insertions(+)
 > 
 > diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
-> index 16a3b6b..32e1249 100644
+> index 32e1249..37545a8 100644
 > --- a/drivers/iio/trigger/stm32-timer-trigger.c
 > +++ b/drivers/iio/trigger/stm32-timer-trigger.c
-> @@ -79,7 +79,7 @@ struct stm32_timer_trigger {
+> @@ -75,6 +75,15 @@ static const void *stm32h7_valids_table[][MAX_VALIDS] = {
+>  	{ }, /* timer 17 */
+>  };
+>  
+> +struct stm32_timer_trigger_regs {
+> +	u32 cr1;
+> +	u32 cr2;
+> +	u32 psc;
+> +	u32 arr;
+> +	u32 cnt;
+> +	u32 smcr;
+> +};
+> +
+>  struct stm32_timer_trigger {
 >  	struct device *dev;
 >  	struct regmap *regmap;
->  	struct clk *clk;
-> -	bool clk_enabled;
-> +	bool enabled;
->  	u32 max_arr;
->  	const void *triggers;
->  	const void *valids;
-> @@ -140,8 +140,8 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
->  		return -EBUSY;
+> @@ -86,6 +95,7 @@ struct stm32_timer_trigger {
+>  	bool has_trgo2;
+>  	struct mutex lock; /* concurrent sysfs configuration */
+>  	struct list_head tr_list;
+> +	struct stm32_timer_trigger_regs bak;
+>  };
 >  
->  	mutex_lock(&priv->lock);
-> -	if (!priv->clk_enabled) {
-> -		priv->clk_enabled = true;
-> +	if (!priv->enabled) {
-> +		priv->enabled = true;
->  		clk_enable(priv->clk);
->  	}
->  
-> @@ -185,8 +185,8 @@ static void stm32_timer_stop(struct stm32_timer_trigger *priv)
->  	/* Make sure that registers are updated */
->  	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
->  
-> -	if (priv->clk_enabled) {
-> -		priv->clk_enabled = false;
-> +	if (priv->enabled) {
-> +		priv->enabled = false;
->  		clk_disable(priv->clk);
->  	}
->  	mutex_unlock(&priv->lock);
-> @@ -305,9 +305,9 @@ static ssize_t stm32_tt_store_master_mode(struct device *dev,
->  		if (!strncmp(master_mode_table[i], buf,
->  			     strlen(master_mode_table[i]))) {
->  			mutex_lock(&priv->lock);
-> -			if (!priv->clk_enabled) {
-> +			if (!priv->enabled) {
->  				/* Clock should be enabled first */
-> -				priv->clk_enabled = true;
-> +				priv->enabled = true;
->  				clk_enable(priv->clk);
->  			}
->  			regmap_update_bits(priv->regmap, TIM_CR2, mask,
-> @@ -476,8 +476,8 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_ENABLE:
->  		mutex_lock(&priv->lock);
->  		if (val) {
-> -			if (!priv->clk_enabled) {
-> -				priv->clk_enabled = true;
-> +			if (!priv->enabled) {
-> +				priv->enabled = true;
->  				clk_enable(priv->clk);
->  			}
->  			regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
-> @@ -485,8 +485,8 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
->  		} else {
->  			regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
->  					   0);
-> -			if (priv->clk_enabled) {
-> -				priv->clk_enabled = false;
-> +			if (priv->enabled) {
-> +				priv->enabled = false;
->  				clk_disable(priv->clk);
->  			}
->  		}
-> @@ -594,9 +594,9 @@ static int stm32_set_enable_mode(struct iio_dev *indio_dev,
->  	 * enable counter clock, so it can use it. Keeps it in sync with CEN.
->  	 */
->  	mutex_lock(&priv->lock);
-> -	if (sms == 6 && !priv->clk_enabled) {
-> +	if (sms == 6 && !priv->enabled) {
->  		clk_enable(priv->clk);
-> -		priv->clk_enabled = true;
-> +		priv->enabled = true;
->  	}
->  	mutex_unlock(&priv->lock);
->  
-> @@ -806,7 +806,7 @@ static int stm32_timer_trigger_remove(struct platform_device *pdev)
->  	if (!(val & TIM_CCER_CCXE))
->  		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
->  
-> -	if (priv->clk_enabled)
-> +	if (priv->enabled)
->  		clk_disable(priv->clk);
->  
+>  struct stm32_timer_trigger_cfg {
+> @@ -812,6 +822,58 @@ static int stm32_timer_trigger_remove(struct platform_device *pdev)
 >  	return 0;
+>  }
+>  
+> +static int __maybe_unused stm32_timer_trigger_suspend(struct device *dev)
+> +{
+> +	struct stm32_timer_trigger *priv = dev_get_drvdata(dev);
+> +
+> +	/* Only take care of enabled timer: don't disturb other MFD child */
+> +	if (priv->enabled) {
+> +		/* Backup registers that may get lost in low power mode */
+> +		regmap_read(priv->regmap, TIM_CR1, &priv->bak.cr1);
+> +		regmap_read(priv->regmap, TIM_CR2, &priv->bak.cr2);
+> +		regmap_read(priv->regmap, TIM_PSC, &priv->bak.psc);
+> +		regmap_read(priv->regmap, TIM_ARR, &priv->bak.arr);
+> +		regmap_read(priv->regmap, TIM_CNT, &priv->bak.cnt);
+> +		regmap_read(priv->regmap, TIM_SMCR, &priv->bak.smcr);
+> +
+> +		/* Disable the timer */
+> +		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
+> +		clk_disable(priv->clk);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused stm32_timer_trigger_resume(struct device *dev)
+> +{
+> +	struct stm32_timer_trigger *priv = dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	if (priv->enabled) {
+> +		ret = clk_enable(priv->clk);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* restore master/slave modes */
+> +		regmap_write(priv->regmap, TIM_SMCR, priv->bak.smcr);
+> +		regmap_write(priv->regmap, TIM_CR2, priv->bak.cr2);
+> +
+> +		/* restore sampling_frequency (trgo / trgo2 triggers) */
+> +		regmap_write(priv->regmap, TIM_PSC, priv->bak.psc);
+> +		regmap_write(priv->regmap, TIM_ARR, priv->bak.arr);
+> +		regmap_write(priv->regmap, TIM_CNT, priv->bak.cnt);
+> +
+> +		/* Also re-enables the timer */
+> +		regmap_write(priv->regmap, TIM_CR1, priv->bak.cr1);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static SIMPLE_DEV_PM_OPS(stm32_timer_trigger_pm_ops,
+> +			 stm32_timer_trigger_suspend,
+> +			 stm32_timer_trigger_resume);
+> +
+>  static const struct stm32_timer_trigger_cfg stm32_timer_trg_cfg = {
+>  	.valids_table = valids_table,
+>  	.num_valids_table = ARRAY_SIZE(valids_table),
+> @@ -840,6 +902,7 @@ static struct platform_driver stm32_timer_trigger_driver = {
+>  	.driver = {
+>  		.name = "stm32-timer-trigger",
+>  		.of_match_table = stm32_trig_of_match,
+> +		.pm = &stm32_timer_trigger_pm_ops,
+>  	},
+>  };
+>  module_platform_driver(stm32_timer_trigger_driver);
 

@@ -2,35 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38F1017CF0A
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 16:24:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2085517CF0B
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 16:25:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726105AbgCGPX7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Mar 2020 10:23:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54110 "EHLO mail.kernel.org"
+        id S1726105AbgCGPZg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 10:25:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54706 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726074AbgCGPX7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Mar 2020 10:23:59 -0500
+        id S1726086AbgCGPZg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 7 Mar 2020 10:25:36 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3019D20656;
-        Sat,  7 Mar 2020 15:23:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9A3D920656;
+        Sat,  7 Mar 2020 15:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583594638;
-        bh=aCCCrUKfXxqxSeeCuhgGwXldBzBnBmy6PVnzue38apw=;
+        s=default; t=1583594735;
+        bh=jTfoDTpBht4Oo/wm8OLluLVKnLxr7/DLRPtg/24rA6c=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=byShzXezRpd9w+PteREvm04Y+ywWHR91lMjGfceHaAa2VF4CHYKPqloHf749Mpiso
-         e5feIdhmyyCdVCBBOQfDoQuTZFqexoyzaHhCNzO6i0HRth9+sCFoTrIW0GbSovViu+
-         ZY+zBabvp1gAtEeQdt5hzfNn77govv0jo18u0tCY=
-Date:   Sat, 7 Mar 2020 15:23:55 +0000
+        b=gsGxyz+O+VogMCFWxY3SocOCsWoXO/Jf3bCMTr09LZGu9hvriHha288PP0urxzqGD
+         uWGG1j/wauuukU3doF14pEC2pV2Dc0NsI/wa12hw9dk3qH0vX5TOla/N2cyZu1yEAx
+         TwdcaOh2SW+nLDliZ1zKVG/nDJDm30Sc5ZYB5raE=
+Date:   Sat, 7 Mar 2020 15:25:31 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: add a TODO
-Message-ID: <20200307152355.17334a4c@archlinux>
-In-Reply-To: <5e5a7725.1c69fb81.e50cb.9224@mx.google.com>
-References: <5e5a7725.1c69fb81.e50cb.9224@mx.google.com>
+To:     Matt Ranostay <mranostay@gmail.com>
+Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        matt.ranostay@konsulko.com
+Subject: Re: [PATCH v2] iio: potentiostat: lmp9100: fix
+ iio_triggered_buffer_{predisable,postenable} positions
+Message-ID: <20200307152531.159f14fb@archlinux>
+In-Reply-To: <CAKzfze8KMLG=GbMvZ9eydOer5wZw-i7_5fJVjpFcZ6fqyoHgJQ@mail.gmail.com>
+References: <20200304093633.32264-1-alexandru.ardelean@analog.com>
+        <20200304094105.2586-1-alexandru.ardelean@analog.com>
+        <CAKzfze8KMLG=GbMvZ9eydOer5wZw-i7_5fJVjpFcZ6fqyoHgJQ@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,74 +45,95 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 29 Feb 2020 20:07:21 +0530
-Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+On Wed, 4 Mar 2020 13:17:36 -0800
+Matt Ranostay <mranostay@gmail.com> wrote:
 
-> This patch adds a TODO file with some work items added with reference to
-> the conversation in [1].
-> A TODO file is immensely useful while onboarding new contributors who
-> are looking for some low hanging fruit to get their foot into the door.
-> Since these items affect all drivers the file has been placed in the
-> root iio directory instead of augmenting the staging TODO.
+> On Wed, Mar 4, 2020 at 1:38 AM Alexandru Ardelean
+> <alexandru.ardelean@analog.com> wrote:
+> >
+> > The iio_triggered_buffer_{predisable,postenable} functions attach/detach
+> > the poll functions.
+> >
+> > For the predisable hook, the disable code should occur before detaching
+> > the poll func, and for the postenable hook, the poll func should be
+> > attached before the enable code.
+> >
+> > The lmp9100 was attaching a poll function but never detaching it via any
+> > IIO disable hook.
+> >
+> > This change adds the detaching of the poll function, and moves/renames
+> > lmp91000_buffer_preenable() function to lmp91000_buffer_postenable().
+> > The idea is to make it more symmetrical, so that when the
+> > iio_triggered_buffer_{predisable,postenable} functions get removed, it's
+> > easier to see.
+> >
+> > Fixes: 67e17300dc1d7 ("iio: potentiostat: add LMP91000 support")
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
 > 
-> Thanks,
-> Rohit
-> 
-> [1]: https://marc.info/?l=linux-iio&m=158256721009892&w=2
-> Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
 
-Hmm.  I worry a bit this will rot, but the current items are fairly
-generic so fair enough.
+I'm not going to rush this one in as it's been like this for a while
 
-Applied to the togreg branch of iio.git with a few tweaks as below
+Applied to the togreg branch of iio.git and pushed out as testing for the
+autobuilders to play with it,
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/TODO | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
->  create mode 100644 drivers/iio/TODO
 > 
-> diff --git a/drivers/iio/TODO b/drivers/iio/TODO
-> new file mode 100644
-> index 000000000000..498f9336def0
-> --- /dev/null
-> +++ b/drivers/iio/TODO
-> @@ -0,0 +1,26 @@
-> +2020-02-29
-> +
-> +Documentation
-> +  - Binding docs for devices that are obviously used via device
-> +tree
-> +  - Yaml conversions for abandoned drivers
-> +  - ABI Documentation
-> +  - Audit driviers/iio/staging/Documentation
-> +
-> +- Replace iio_dev->mlock by either a local lock or use
-> +iio_claim_direct.(Requires analysis of the purpose of the lock.)
-> +
-> +- Converting drivers from device tree centric to more generic
-> +property handlers.
-> +
-> +- Refactor old platform_data constructs from drivers and convert it
-> +to state struct and using property handlers and readers.
-> +
-> +
-> +ADI Drivers:
-> +CC the device-drivers-devel@blackfin.uclinux.org mailing list when
-> +e-mailing the normal IIO list (see below).
-
-To keep this I'll need an ack from analog.  Not sure they really use
-that domain any more!  Probably easier if I just drop it.
-
-
-> +
-> +Contact: Jonathan Cameron <jic23@kernel.org>.
-People will get hold of me just as quickly (if not quicker) via the
-mailing list so I'll drop this.
-
-> +Mailing list: linux-iio@vger.kernel.org
-> +
+> > ---
+> >
+> > Changelog v1 -> v2:
+> > * forgot to call iio_triggered_buffer_postenable() in
+> >   lmp91000_buffer_postenable() in v1
+> >
+> >  drivers/iio/potentiostat/lmp91000.c | 18 +++++++++++++-----
+> >  1 file changed, 13 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/iio/potentiostat/lmp91000.c b/drivers/iio/potentiostat/lmp91000.c
+> > index a0e5f530faa9..2cb11da18e0f 100644
+> > --- a/drivers/iio/potentiostat/lmp91000.c
+> > +++ b/drivers/iio/potentiostat/lmp91000.c
+> > @@ -275,11 +275,20 @@ static int lmp91000_buffer_cb(const void *val, void *private)
+> >  static const struct iio_trigger_ops lmp91000_trigger_ops = {
+> >  };
+> >
+> > -static int lmp91000_buffer_preenable(struct iio_dev *indio_dev)
+> > +static int lmp91000_buffer_postenable(struct iio_dev *indio_dev)
+> >  {
+> >         struct lmp91000_data *data = iio_priv(indio_dev);
+> > +       int err;
+> >
+> > -       return iio_channel_start_all_cb(data->cb_buffer);
+> > +       err = iio_triggered_buffer_postenable(indio_dev);
+> > +       if (err)
+> > +               return err;
+> > +
+> > +       err = iio_channel_start_all_cb(data->cb_buffer);
+> > +       if (err)
+> > +               iio_triggered_buffer_predisable(indio_dev);
+> > +
+> > +       return err;
+> >  }
+> >
+> >  static int lmp91000_buffer_predisable(struct iio_dev *indio_dev)
+> > @@ -288,12 +297,11 @@ static int lmp91000_buffer_predisable(struct iio_dev *indio_dev)
+> >
+> >         iio_channel_stop_all_cb(data->cb_buffer);
+> >
+> > -       return 0;
+> > +       return iio_triggered_buffer_predisable(indio_dev);
+> >  }
+> >
+> >  static const struct iio_buffer_setup_ops lmp91000_buffer_setup_ops = {
+> > -       .preenable = lmp91000_buffer_preenable,
+> > -       .postenable = iio_triggered_buffer_postenable,
+> > +       .postenable = lmp91000_buffer_postenable,
+> >         .predisable = lmp91000_buffer_predisable,
+> >  };
+> >
+> > --
+> > 2.20.1
+> >  
 

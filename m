@@ -2,137 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C02017C23D
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Mar 2020 16:55:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4756417CC56
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 06:46:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726099AbgCFPzU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 6 Mar 2020 10:55:20 -0500
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:1880 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725935AbgCFPzU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 Mar 2020 10:55:20 -0500
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 026FsGah030759;
-        Fri, 6 Mar 2020 16:54:53 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=8+YFUYs96OeEzRQg1qbRyqAhuHAgY/sTMrlNmK3AxsI=;
- b=f2tyXami/1p6FmsCHOVees/qhHxaYS4rhcgqOyY7Ozm3RVuTVzafSKpqQMgFisDshQqz
- MmIvYDy6PB//YsqyU3JSLDpCIzEQ4QgZKWnQAUimGG9Vq+EeNP2Edy9DtJ06KcDF/zYL
- ekAbQJi5mqbj1JA3uDWvrVjby5li7mkpRCRmB04T+W+2f1y+nvzP8VVjhVItQVqHOmI4
- wZ05pH9HqAQn26U5GEEtDvhmBgEFwdzEtJ/V+eUubnp6ezufaWcboNOqZDQ568yllIxY
- UjS6sGgXgvsUG3JM9zzMnZ1NMHmMt8ZohwPB5UD+ANFs70vggTaV+YiF+/Czt1cHhTGm PQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2yfem1g9ht-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 06 Mar 2020 16:54:53 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7F20810003A;
-        Fri,  6 Mar 2020 16:54:45 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag6node2.st.com [10.75.127.17])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4C9522BE23F;
-        Fri,  6 Mar 2020 16:54:45 +0100 (CET)
-Received: from localhost (10.75.127.45) by SFHDAG6NODE2.st.com (10.75.127.17)
- with Microsoft SMTP Server (TLS) id 15.0.1347.2; Fri, 6 Mar 2020 16:54:44
- +0100
-From:   Olivier Moysan <olivier.moysan@st.com>
-To:     <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
-        <pmeerw@pmeerw.net>, <alexandre.torgue@st.com>,
-        <fabrice.gasnier@st.com>, <benjamin.gaignard@st.com>,
-        <olivier.moysan@st.com>
-CC:     <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] iio: adc: stm32-adc: fix sleep in atomic context
-Date:   Fri, 6 Mar 2020 16:53:35 +0100
-Message-ID: <20200306155335.6019-1-olivier.moysan@st.com>
-X-Mailer: git-send-email 2.17.1
+        id S1725907AbgCGFqE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 00:46:04 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:39714 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725815AbgCGFqE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Mar 2020 00:46:04 -0500
+Received: by mail-pf1-f193.google.com with SMTP id w65so1624977pfb.6
+        for <linux-iio@vger.kernel.org>; Fri, 06 Mar 2020 21:46:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:date:from:to:cc:subject:mime-version:content-disposition
+         :user-agent;
+        bh=7aBlp/loUoW6JxlpuDNAhYu/ntHRyYTg9jgRlxbIjNA=;
+        b=kDv8z9uUjYd5J1/05pMjjrtgPAkuEHq1x3PllCL5DuMjt6c+KGp7QFz9QodCiviObw
+         3tMELZsjutDQlKs68DjOqGdI2GQvjLc1Lk2BbIFSy5cP+9Tc5GXuxp7UTol90sNPYT4H
+         DmLpVb6B/oWFIAjBkKFahani7pr/7UNyIZNOntG9HbQeVsKxaf47Q3muae/et3M4JZBl
+         V5ao/Og8GY6OW5xV9vfXN2gIYwxkQTqUdlwzy28qSUGKK4I3FpsHE6gYCvu+cycj+Xs2
+         NjPcRZWOMe3SM59rLXYL+hj5sLy/IjOxWmxdbbpKoaB89D01musmFjEWuXNLHGabfVEu
+         5zMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:mime-version
+         :content-disposition:user-agent;
+        bh=7aBlp/loUoW6JxlpuDNAhYu/ntHRyYTg9jgRlxbIjNA=;
+        b=m5zKvof929xqvPWyfrp5RK+3VJLOxl1/ppvIEpuGvya6kquh8j1Y/KN78Po0EGWUCG
+         vaysBDopZIFQ5GsQvzP03Luq7cTQyLS3SUb8T2zSEt+7GWvB96R1nq30dawwuf2ugWTZ
+         Oa4nORJvYbk0BF/V9uezrV4RMHmNCBaNsUMwPIzKCnMo9CKAuZG2j08ZAcKqPsv+OLaZ
+         jE9nWnSQIO5H/6AcsurPiG18nmSbfLcj6b68kZ+SKwYqd44Bl4DtviEuq1GZa8E3+MBj
+         yOazCa8Pf37Dbq+dBnAilxj0iLrgxf1jxLfw9nFLPhPzVyr+PeCHlOyV22wDGqjM0vl2
+         QMxQ==
+X-Gm-Message-State: ANhLgQ2Ej1RNZ9SyMonxccDJ8eYwkmf11UMcYyz3Do5bchUw7CZ0Q8Sd
+        GBSs0uC0Jm0iyHk4fa1Wyqw=
+X-Google-Smtp-Source: ADFU+vvX+KGNvcO1GBUrre7hOII22F6YGcptG/1ZReiIPTGLFoEQkp88MFMAQ5uz5va0E0Kjjrtolw==
+X-Received: by 2002:a63:d245:: with SMTP id t5mr6333778pgi.84.1583559962782;
+        Fri, 06 Mar 2020 21:46:02 -0800 (PST)
+Received: from SARKAR ([43.224.157.39])
+        by smtp.gmail.com with ESMTPSA id x19sm14123117pfc.144.2020.03.06.21.46.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2020 21:46:01 -0800 (PST)
+Message-ID: <5e633519.1c69fb81.ec43c.6809@mx.google.com>
+X-Google-Original-Message-ID: <20200307054558.GA32207@rohitsarkar5398@gmail.com>
+Date:   Sat, 7 Mar 2020 11:15:58 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     jic23@kernel.org, dragos.bogdan@analog.com,
+        jonathon.cameron@huawei.com, alexandru.ardelean@analog.com
+Subject: [PATCH v3] iio: adc: max1363: replace uses of mlock
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG1NODE3.st.com (10.75.127.3) To SFHDAG6NODE2.st.com
- (10.75.127.17)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-06_05:2020-03-06,2020-03-06 signatures=0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This commit fixes the following error:
-"BUG: sleeping function called from invalid context at kernel/irq/chip.c"
+Replace usage indio_dev's mlock with either local lock or
+iio_device_claim_direct_mode.
 
-In DMA mode suppress the trigger irq handler, and make the buffer
-transfers directly in DMA callback, instead.
-
-Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
+Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
 ---
-This solution has been already discussed in the thread
-https://lkml.org/lkml/2019/3/30/171, and applied in STM32 DFSDM driver:
-e19ac9d9a978 ("iio: adc: stm32-dfsdm: fix sleep in atomic context")
----
- drivers/iio/adc/stm32-adc.c | 31 ++++++++++++++++++++++++++++---
- 1 file changed, 28 insertions(+), 3 deletions(-)
+ drivers/iio/adc/max1363.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index 80c3f963527b..ae622ee6d08c 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -1418,8 +1418,30 @@ static unsigned int stm32_adc_dma_residue(struct stm32_adc *adc)
- static void stm32_adc_dma_buffer_done(void *data)
- {
- 	struct iio_dev *indio_dev = data;
-+	struct stm32_adc *adc = iio_priv(indio_dev);
-+	int residue = stm32_adc_dma_residue(adc);
-+
-+	/*
-+	 * In DMA mode the trigger services of IIO are not used
-+	 * (e.g. no call to iio_trigger_poll).
-+	 * Calling irq handler associated to the hardware trigger is not
-+	 * relevant as the conversions have already been done. Data
-+	 * transfers are performed directly in DMA callback instead.
-+	 * This implementation avoids to call trigger irq handler that
-+	 * may sleep, in an atomic context (DMA irq handler context).
-+	 */
-+	dev_dbg(&indio_dev->dev, "%s bufi=%d\n", __func__, adc->bufi);
+diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+index 5c2cc61b666e..d26f68d23250 100644
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -150,6 +150,7 @@ struct max1363_chip_info {
+  * @current_mode:	the scan mode of this chip
+  * @requestedmask:	a valid requested set of channels
+  * @reg:		supply regulator
++ * @lock            lock to ensure state is consistent
+  * @monitor_on:		whether monitor mode is enabled
+  * @monitor_speed:	parameter corresponding to device monitor speed setting
+  * @mask_high:		bitmask for enabled high thresholds
+@@ -169,6 +170,7 @@ struct max1363_state {
+ 	const struct max1363_mode	*current_mode;
+ 	u32				requestedmask;
+ 	struct regulator		*reg;
++	struct mutex			lock;
  
--	iio_trigger_poll_chained(indio_dev->trig);
-+	while (residue >= indio_dev->scan_bytes) {
-+		u16 *buffer = (u16 *)&adc->rx_buf[adc->bufi];
+ 	/* Using monitor modes and buffer at the same time is
+ 	   currently not supported */
+@@ -364,7 +366,9 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
+ 	struct max1363_state *st = iio_priv(indio_dev);
+ 	struct i2c_client *client = st->client;
+ 
+-	mutex_lock(&indio_dev->mlock);
++	ret = iio_device_claim_direct_mode(indio_dev);
++	if (ret < 0)
++		goto error_ret;
+ 	/*
+ 	 * If monitor mode is enabled, the method for reading a single
+ 	 * channel will have to be rather different and has not yet
+@@ -372,7 +376,7 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
+ 	 *
+ 	 * Also, cannot read directly if buffered capture enabled.
+ 	 */
+-	if (st->monitor_on || iio_buffer_enabled(indio_dev)) {
++	if (st->monitor_on) {
+ 		ret = -EBUSY;
+ 		goto error_ret;
+ 	}
+@@ -404,8 +408,9 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
+ 		data = rxbuf[0];
+ 	}
+ 	*val = data;
 +
-+		iio_push_to_buffers(indio_dev, buffer);
-+
-+		residue -= indio_dev->scan_bytes;
-+		adc->bufi += indio_dev->scan_bytes;
-+		if (adc->bufi >= adc->rx_buf_sz)
-+			adc->bufi = 0;
-+	}
+ error_ret:
+-	mutex_unlock(&indio_dev->mlock);
++	iio_device_release_direct_mode(indio_dev);
+ 	return ret;
+ 
  }
+@@ -705,9 +710,9 @@ static ssize_t max1363_monitor_store_freq(struct device *dev,
+ 	if (!found)
+ 		return -EINVAL;
  
- static int stm32_adc_dma_start(struct iio_dev *indio_dev)
-@@ -1845,6 +1867,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
- {
- 	struct iio_dev *indio_dev;
- 	struct device *dev = &pdev->dev;
-+	irqreturn_t (*handler)(int irq, void *p) = NULL;
- 	struct stm32_adc *adc;
- 	int ret;
+-	mutex_lock(&indio_dev->mlock);
++	mutex_lock(&st->lock);
+ 	st->monitor_speed = i;
+-	mutex_unlock(&indio_dev->mlock);
++	mutex_unlock(&st->lock);
  
-@@ -1911,9 +1934,11 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		return ret;
+ 	return 0;
+ }
+@@ -810,12 +815,12 @@ static int max1363_read_event_config(struct iio_dev *indio_dev,
+ 	int val;
+ 	int number = chan->channel;
  
-+	if (!adc->dma_chan)
-+		handler = &stm32_adc_trigger_handler;
-+
- 	ret = iio_triggered_buffer_setup(indio_dev,
--					 &iio_pollfunc_store_time,
--					 &stm32_adc_trigger_handler,
-+					 &iio_pollfunc_store_time, handler,
- 					 &stm32_adc_buffer_setup_ops);
- 	if (ret) {
- 		dev_err(&pdev->dev, "buffer setup failed\n");
+-	mutex_lock(&indio_dev->mlock);
++	mutex_lock(&st->lock);
+ 	if (dir == IIO_EV_DIR_FALLING)
+ 		val = (1 << number) & st->mask_low;
+ 	else
+ 		val = (1 << number) & st->mask_high;
+-	mutex_unlock(&indio_dev->mlock);
++	mutex_unlock(&st->lock);
+ 
+ 	return val;
+ }
+@@ -962,7 +967,7 @@ static int max1363_write_event_config(struct iio_dev *indio_dev,
+ 	u16 unifiedmask;
+ 	int number = chan->channel;
+ 
+-	mutex_lock(&indio_dev->mlock);
++	iio_device_claim_direct_mode(indio_dev);
+ 	unifiedmask = st->mask_low | st->mask_high;
+ 	if (dir == IIO_EV_DIR_FALLING) {
+ 
+@@ -989,7 +994,7 @@ static int max1363_write_event_config(struct iio_dev *indio_dev,
+ 
+ 	max1363_monitor_mode_update(st, !!(st->mask_high | st->mask_low));
+ error_ret:
+-	mutex_unlock(&indio_dev->mlock);
++	iio_device_release_direct_mode(indio_dev);	
+ 
+ 	return ret;
+ }
+@@ -1587,6 +1592,7 @@ static int max1363_probe(struct i2c_client *client,
+ 
+ 	st = iio_priv(indio_dev);
+ 
++	mutex_init(&st->lock);
+ 	st->reg = devm_regulator_get(&client->dev, "vcc");
+ 	if (IS_ERR(st->reg)) {
+ 		ret = PTR_ERR(st->reg);
 -- 
-2.17.1
+2.23.0.385.gbc12974a89
 

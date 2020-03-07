@@ -2,351 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF5B117CE58
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 14:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6625A17CE6A
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 14:34:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726017AbgCGNMf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Mar 2020 08:12:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43358 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726239AbgCGNMf (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Mar 2020 08:12:35 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 053EB206D5;
-        Sat,  7 Mar 2020 13:12:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583586753;
-        bh=kd5ygdxY/wVgotkVvs/qkM0QcdVksZzKJBjqf/OoaUU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lekVUBehvD3RlpR5565UvGDt4InlqPecSNTU1Hu/cDTPg1J5/plOOCsQArMmcDreH
-         T/Gx7655MsekkLMfKx0PCGdJSDb3nhrUhEFo8Sj7zPk6gHRO5dNdSkYF5E5EeSog1I
-         ymaJYbC5hmGcjDHlhK2kO1DAAR0quWNQQALQdWSQ=
-Date:   Sat, 7 Mar 2020 13:12:29 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Artur Rojek <contact@artur-rojek.eu>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Heiko Stuebner <heiko@sntech.de>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/5] IIO: Ingenic JZ47xx: Add touchscreen mode.
-Message-ID: <20200307131229.571c20c5@archlinux>
-In-Reply-To: <1583585920.3.0@crapouillou.net>
-References: <20200301150920.55993-1-contact@artur-rojek.eu>
-        <20200301150920.55993-3-contact@artur-rojek.eu>
-        <20200307124740.708ae2f3@archlinux>
-        <1583585920.3.0@crapouillou.net>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726271AbgCGNd7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 08:33:59 -0500
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:35964 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726109AbgCGNd6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Mar 2020 08:33:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1583588037;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=GTmcKME6ATPq4QuasV0jMbDnXvL8wNPLVZNJMoJ6AQw=;
+        b=XL27xbqPlF0SZ3shWuSEGUme7zpaqlgmpq8dWE4XBz62Nl5D6/sEi4cFo4vsHlfR6jkJuG
+        znggILjYymGxgHkAsNdA7QyrtcRhhqnOPs4pwb7eBP++jFeDU43xyZu3FkaFQUsb35cs5T
+        jl4PjqjLnOWZXyHIMWVpkk8oOmFKl40=
+Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
+ [209.85.217.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-460-jcSCUIUBMgWVzZcuaIxsCQ-1; Sat, 07 Mar 2020 08:33:55 -0500
+X-MC-Unique: jcSCUIUBMgWVzZcuaIxsCQ-1
+Received: by mail-vs1-f71.google.com with SMTP id v10so604223vso.12
+        for <linux-iio@vger.kernel.org>; Sat, 07 Mar 2020 05:33:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GTmcKME6ATPq4QuasV0jMbDnXvL8wNPLVZNJMoJ6AQw=;
+        b=NVbooTYV0NZg5AK14nyj5ouCoSuGgj94CCsE3ClMNCwD+J+cj3rIDl9gdY56HLWsBy
+         dXgFEFw9uGXGKcTSdRWuZu1LTrAZQ/1i/luF3/sK/DWcjy43rrVL/PHHRSLS5IDepfmf
+         Wn7LQzD8jfeN8lYFmWy6F15VYwN7/3cYRPiBSmK+GKrNCwhS6rXgRqIkn+tTOqHuHDKl
+         xx6+rwIL8S7aL2zLBVSLTDt0H/ha79/LvIJipEPZXr8rON8ZRG2jIN62n6pz0yLoPnfS
+         l/Aoz7jFa5Ii4lCU6IYfHNBcs5uaSdoQ7SOGi1MymU8545p974Mv5IKSg+/KuJJUb6p8
+         s46A==
+X-Gm-Message-State: ANhLgQ1GgIBGYkQhr5Yn9Sydk3WDOHI6UwjSHhFyH94SMG6+gvgwEZgx
+        P+HmtSuJpu0ZdlRzoKYtA0nBE7MVpCMSTltmdmMUUKYekbe7A8aH7criUWztkKU90GT5mfr6JBi
+        bIFBGIgIoxcRE5h/n6N0XHX3c03VrDjARVbVZ
+X-Received: by 2002:a05:6102:7c3:: with SMTP id y3mr668846vsg.233.1583588034781;
+        Sat, 07 Mar 2020 05:33:54 -0800 (PST)
+X-Google-Smtp-Source: ADFU+vswMnl82ysR1sd0Y7jeODDpt2jo/75MzVlEhXDdtBMMb/K6xe2AHcMkH7XuMjyVfDafDbQ8MK6sqQvFBMek4l4=
+X-Received: by 2002:a05:6102:7c3:: with SMTP id y3mr668830vsg.233.1583588034460;
+ Sat, 07 Mar 2020 05:33:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <7444ee821dd9b1210ce126c317edc3b0c36f9f84.1583090369.git.lorenzo@kernel.org>
+ <20200307130232.3baf4c89@archlinux>
+In-Reply-To: <20200307130232.3baf4c89@archlinux>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Sat, 7 Mar 2020 14:33:43 +0100
+Message-ID: <CAJ0CqmWayoApMahU63UcqO-bEygYiTwzyAyOeaRi_0CRordKig@mail.gmail.com>
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: disable I3C support during device reset
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
+        mario.tesi@st.com, vitor.soares@synopsys.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 07 Mar 2020 13:58:40 +0100
-Paul Cercueil <paul@crapouillou.net> wrote:
+>
+> On Sun,  1 Mar 2020 20:28:03 +0100
+> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+>
+> > Disable MIPI I3C during device reset in order to avoid
+> > possible races on interrupt line 1. If the first interrupt
+> > line is asserted during hw reset the device will work in
+> > I3C-only mode
+> >
+> > Reported-by: Mario Tesi <mario.tesi@st.com>
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>
+> Fixes tag?
 
-> Hi Jonathan,
->=20
->=20
-> Le sam., mars 7, 2020 at 12:47, Jonathan Cameron=20
-> <jic23@jic23.retrosnub.co.uk> a =C3=A9crit :
-> > On Sun,  1 Mar 2020 16:09:18 +0100
-> > Artur Rojek <contact@artur-rojek.eu> wrote:
-> >  =20
-> >>  The SADC component in JZ47xx SoCs provides support for touchscreen
-> >>  operations (pen position and pen down pressure) in single-ended and
-> >>  differential modes.
-> >>=20
-> >>  Of the known hardware to use this controller, GCW Zero and Anbernic=20
-> >> RG-350
-> >>  utilize the touchscreen mode by having their joystick(s) attached=20
-> >> to the
-> >>  X/Y positive/negative input pins.
-> >>  GCW Zero comes with a single joystick and is sufficiently handled=20
-> >> with the
-> >>  currently implemented single-ended mode. Support for boards with two
-> >>  joysticks, where one is hooked up to Xn/Yn and the other to Xp/Yp=20
-> >> channels
-> >>  will need to be provided in the future.
-> >>=20
-> >>  The touchscreen component of SADC takes a significant time to=20
-> >> stabilize
-> >>  after first receiving the clock and a delay of 50ms has been=20
-> >> empirically
-> >>  proven to be a safe value before data sampling can begin.
-> >>=20
-> >>  Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-> >>  Tested-by: Paul Cercueil <paul@crapouillou.net> =20
-> >=20
-> > This relies on the use of an irq that wasn't previously used.  Was=20
-> > that
-> > always hooked up?  If not we need to still work as before when it
-> > isn't provided.
-> >=20
-> > Otherwise this looks fine to me. =20
->=20
-> All the boards that probe the ingenic-adc driver have the interrupt=20
-> provided from devicetree, yes.
-Great :)
+Hi Jonathan,
 
-No problem then.  Perhaps add a note to the patch description to say
-that so no one else wonders in future.
+I am not sure since Mario just reported me this issue can occur.
+Maybe this one:
 
-Thanks,
+2660b0080bb2 ("iio: imu: st_lsm6dsx: add i3c basic support for LSM6DSO
+and LSM6DSR")
 
-Jonathan
+>
+> One trivial thing inline.
+>
 
+ack, I will fix it (I am use to network comment syntax now :))
 
->=20
-> Cheers,
-> -Paul
->=20
-> >  =20
-> >>  ---
-> >>=20
-> >>   Changes:
-> >>=20
-> >>   v2: - improve description of the touchscreen mode,
-> >>       - get rid of the unneeded kfifo,
-> >>       - drop IIO_BUFFER_CB from Kconfig,
-> >>       - remove extended names from the touchscreen channels
-> >>=20
-> >>   v3: remove unneeded `linux/iio/kfifo_buf.h` include
-> >>=20
-> >>   drivers/iio/adc/Kconfig       |   1 +
-> >>   drivers/iio/adc/ingenic-adc.c | 109=20
-> >> +++++++++++++++++++++++++++++++++-
-> >>   2 files changed, 108 insertions(+), 2 deletions(-)
-> >>=20
-> >>  diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> >>  index 82e33082958c..d3fd4b6e2d47 100644
-> >>  --- a/drivers/iio/adc/Kconfig
-> >>  +++ b/drivers/iio/adc/Kconfig
-> >>  @@ -453,6 +453,7 @@ config INA2XX_ADC
-> >>   config INGENIC_ADC
-> >>   	tristate "Ingenic JZ47xx SoCs ADC driver"
-> >>   	depends on MIPS || COMPILE_TEST
-> >>  +	select IIO_BUFFER
-> >>   	help
-> >>   	  Say yes here to build support for the Ingenic JZ47xx SoCs ADC=20
-> >> unit.
-> >>=20
-> >>  diff --git a/drivers/iio/adc/ingenic-adc.c=20
-> >> b/drivers/iio/adc/ingenic-adc.c
-> >>  index 7a24bc1dabe1..0dafc8d5d0d8 100644
-> >>  --- a/drivers/iio/adc/ingenic-adc.c
-> >>  +++ b/drivers/iio/adc/ingenic-adc.c
-> >>  @@ -8,7 +8,9 @@
-> >>=20
-> >>   #include <dt-bindings/iio/adc/ingenic,adc.h>
-> >>   #include <linux/clk.h>
-> >>  +#include <linux/iio/buffer.h>
-> >>   #include <linux/iio/iio.h>
-> >>  +#include <linux/interrupt.h>
-> >>   #include <linux/io.h>
-> >>   #include <linux/iopoll.h>
-> >>   #include <linux/kernel.h>
-> >>  @@ -20,6 +22,8 @@
-> >>   #define JZ_ADC_REG_CFG			0x04
-> >>   #define JZ_ADC_REG_CTRL			0x08
-> >>   #define JZ_ADC_REG_STATUS		0x0c
-> >>  +#define JZ_ADC_REG_ADSAME		0x10
-> >>  +#define JZ_ADC_REG_ADWAIT		0x14
-> >>   #define JZ_ADC_REG_ADTCH		0x18
-> >>   #define JZ_ADC_REG_ADBDAT		0x1c
-> >>   #define JZ_ADC_REG_ADSDAT		0x20
-> >>  @@ -28,6 +32,9 @@
-> >>   #define JZ_ADC_REG_ENABLE_PD		BIT(7)
-> >>   #define JZ_ADC_REG_CFG_AUX_MD		(BIT(0) | BIT(1))
-> >>   #define JZ_ADC_REG_CFG_BAT_MD		BIT(4)
-> >>  +#define JZ_ADC_REG_CFG_PULL_UP(n)	((n) << 16)
-> >>  +#define JZ_ADC_REG_CFG_SAMPLE_NUM(n)	((n) << 10)
-> >>  +#define JZ_ADC_REG_CFG_TOUCH_OPS_MASK	(BIT(31) | GENMASK(23, 10))
-> >>   #define JZ_ADC_REG_ADCLK_CLKDIV_LSB	0
-> >>   #define JZ4725B_ADC_REG_ADCLK_CLKDIV10US_LSB	16
-> >>   #define JZ4770_ADC_REG_ADCLK_CLKDIV10US_LSB	8
-> >>  @@ -44,6 +51,14 @@
-> >>   #define JZ4770_ADC_BATTERY_VREF			6600
-> >>   #define JZ4770_ADC_BATTERY_VREF_BITS		12
-> >>=20
-> >>  +#define JZ_ADC_IRQ_AUX			BIT(0)
-> >>  +#define JZ_ADC_IRQ_BATTERY		BIT(1)
-> >>  +#define JZ_ADC_IRQ_TOUCH		BIT(2)
-> >>  +#define JZ_ADC_IRQ_PEN_DOWN		BIT(3)
-> >>  +#define JZ_ADC_IRQ_PEN_UP		BIT(4)
-> >>  +#define JZ_ADC_IRQ_PEN_DOWN_SLEEP	BIT(5)
-> >>  +#define JZ_ADC_IRQ_SLEEP		BIT(7)
-> >>  +
-> >>   struct ingenic_adc;
-> >>=20
-> >>   struct ingenic_adc_soc_data {
-> >>  @@ -411,6 +426,28 @@ static const struct iio_info ingenic_adc_info=20
-> >> =3D {
-> >>   };
-> >>=20
-> >>   static const struct iio_chan_spec ingenic_channels[] =3D {
-> >>  +	{
-> >>  +		.type =3D IIO_POSITIONRELATIVE,
-> >>  +		.indexed =3D 1,
-> >>  +		.channel =3D INGENIC_ADC_TOUCH_XP,
-> >>  +		.scan_index =3D 0,
-> >>  +		.scan_type =3D {
-> >>  +			.sign =3D 'u',
-> >>  +			.realbits =3D 12,
-> >>  +			.storagebits =3D 16
-> >>  +		},
-> >>  +	},
-> >>  +	{
-> >>  +		.type =3D IIO_POSITIONRELATIVE,
-> >>  +		.indexed =3D 1,
-> >>  +		.channel =3D INGENIC_ADC_TOUCH_YP,
-> >>  +		.scan_index =3D 1,
-> >>  +		.scan_type =3D {
-> >>  +			.sign =3D 'u',
-> >>  +			.realbits =3D 12,
-> >>  +			.storagebits =3D 16
-> >>  +		},
-> >>  +	},
-> >>   	{
-> >>   		.extend_name =3D "aux",
-> >>   		.type =3D IIO_VOLTAGE,
-> >>  @@ -418,6 +455,7 @@ static const struct iio_chan_spec=20
-> >> ingenic_channels[] =3D {
-> >>   				      BIT(IIO_CHAN_INFO_SCALE),
-> >>   		.indexed =3D 1,
-> >>   		.channel =3D INGENIC_ADC_AUX,
-> >>  +		.scan_index =3D -1
-> >>   	},
-> >>   	{
-> >>   		.extend_name =3D "battery",
-> >>  @@ -428,6 +466,7 @@ static const struct iio_chan_spec=20
-> >> ingenic_channels[] =3D {
-> >>   						BIT(IIO_CHAN_INFO_SCALE),
-> >>   		.indexed =3D 1,
-> >>   		.channel =3D INGENIC_ADC_BATTERY,
-> >>  +		.scan_index =3D -1
-> >>   	},
-> >>   	{ /* Must always be last in the array. */
-> >>   		.extend_name =3D "aux2",
-> >>  @@ -436,16 +475,69 @@ static const struct iio_chan_spec=20
-> >> ingenic_channels[] =3D {
-> >>   				      BIT(IIO_CHAN_INFO_SCALE),
-> >>   		.indexed =3D 1,
-> >>   		.channel =3D INGENIC_ADC_AUX2,
-> >>  +		.scan_index =3D -1
-> >>   	},
-> >>   };
-> >>=20
-> >>  +static int ingenic_adc_buffer_enable(struct iio_dev *iio_dev)
-> >>  +{
-> >>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
-> >>  +
-> >>  +	clk_enable(adc->clk);
-> >>  +	/* It takes significant time for the touchscreen hw to stabilize.=20
-> >> */
-> >>  +	msleep(50);
-> >>  +	ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_TOUCH_OPS_MASK,
-> >>  +			       JZ_ADC_REG_CFG_SAMPLE_NUM(4) |
-> >>  +			       JZ_ADC_REG_CFG_PULL_UP(4));
-> >>  +	writew(80, adc->base + JZ_ADC_REG_ADWAIT);
-> >>  +	writew(2, adc->base + JZ_ADC_REG_ADSAME);
-> >>  +	writeb((u8)~JZ_ADC_IRQ_TOUCH, adc->base + JZ_ADC_REG_CTRL);
-> >>  +	writel(0, adc->base + JZ_ADC_REG_ADTCH);
-> >>  +	ingenic_adc_enable(adc, 2, true);
-> >>  +
-> >>  +	return 0;
-> >>  +}
-> >>  +
-> >>  +static int ingenic_adc_buffer_disable(struct iio_dev *iio_dev)
-> >>  +{
-> >>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
-> >>  +
-> >>  +	ingenic_adc_enable(adc, 2, false);
-> >>  +	writeb(0xff, adc->base + JZ_ADC_REG_CTRL);
-> >>  +	writeb(0xff, adc->base + JZ_ADC_REG_STATUS);
-> >>  +	ingenic_adc_set_config(adc, JZ_ADC_REG_CFG_TOUCH_OPS_MASK, 0);
-> >>  +	writew(0, adc->base + JZ_ADC_REG_ADSAME);
-> >>  +	writew(0, adc->base + JZ_ADC_REG_ADWAIT);
-> >>  +	clk_disable(adc->clk);
-> >>  +
-> >>  +	return 0;
-> >>  +}
-> >>  +
-> >>  +static const struct iio_buffer_setup_ops ingenic_buffer_setup_ops=20
-> >> =3D {
-> >>  +	.postenable =3D &ingenic_adc_buffer_enable,
-> >>  +	.predisable =3D &ingenic_adc_buffer_disable
-> >>  +};
-> >>  +
-> >>  +static irqreturn_t ingenic_adc_irq(int irq, void *data)
-> >>  +{
-> >>  +	struct iio_dev *iio_dev =3D data;
-> >>  +	struct ingenic_adc *adc =3D iio_priv(iio_dev);
-> >>  +	u32 tdat;
-> >>  +
-> >>  +	tdat =3D readl(adc->base + JZ_ADC_REG_ADTCH);
-> >>  +	iio_push_to_buffers(iio_dev, &tdat);
-> >>  +	writeb(JZ_ADC_IRQ_TOUCH, adc->base + JZ_ADC_REG_STATUS);
-> >>  +
-> >>  +	return IRQ_HANDLED;
-> >>  +}
-> >>  +
-> >>   static int ingenic_adc_probe(struct platform_device *pdev)
-> >>   {
-> >>   	struct device *dev =3D &pdev->dev;
-> >>   	struct iio_dev *iio_dev;
-> >>   	struct ingenic_adc *adc;
-> >>   	const struct ingenic_adc_soc_data *soc_data;
-> >>  -	int ret;
-> >>  +	int irq, ret;
-> >>=20
-> >>   	soc_data =3D device_get_match_data(dev);
-> >>   	if (!soc_data)
-> >>  @@ -460,6 +552,18 @@ static int ingenic_adc_probe(struct=20
-> >> platform_device *pdev)
-> >>   	mutex_init(&adc->aux_lock);
-> >>   	adc->soc_data =3D soc_data;
-> >>=20
-> >>  +	irq =3D platform_get_irq(pdev, 0); =20
-> >=20
-> > Do we need a fallback path if there is no irq provided?  We can't=20
-> > break existing
-> > supported devices that don't specify one.
-> >  =20
-> >>  +	if (irq < 0) {
-> >>  +		dev_err(dev, "Failed to get irq: %d\n", irq);
-> >>  +		return irq;
-> >>  +	}
-> >>  +	ret =3D devm_request_irq(dev, irq, ingenic_adc_irq, 0,
-> >>  +			       dev_name(dev), iio_dev);
-> >>  +	if (ret < 0) {
-> >>  +		dev_err(dev, "Failed to request irq: %d\n", ret);
-> >>  +		return ret;
-> >>  +	}
-> >>  +
-> >>   	adc->base =3D devm_platform_ioremap_resource(pdev, 0);
-> >>   	if (IS_ERR(adc->base))
-> >>   		return PTR_ERR(adc->base);
-> >>  @@ -499,7 +603,8 @@ static int ingenic_adc_probe(struct=20
-> >> platform_device *pdev)
-> >>=20
-> >>   	iio_dev->dev.parent =3D dev;
-> >>   	iio_dev->name =3D "jz-adc";
-> >>  -	iio_dev->modes =3D INDIO_DIRECT_MODE;
-> >>  +	iio_dev->modes =3D INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
-> >>  +	iio_dev->setup_ops =3D &ingenic_buffer_setup_ops;
-> >>   	iio_dev->channels =3D ingenic_channels;
-> >>   	iio_dev->num_channels =3D ARRAY_SIZE(ingenic_channels);
-> >>   	/* Remove AUX2 from the list of supported channels. */ =20
-> >  =20
->=20
->=20
+> Is this something we should be looking to have applied to stable?
+>
+
+Not sure.
+@Vitor: have you ever faced the issue?
+
+Regards,
+Lorenzo
+
+> Jonathan
+>
+> > ---
+> > I have not been able to test this patch on a I3C device, just SPI/I2C
+> > ---
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 ++
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 30 ++++++++++++++++++++
+> >  2 files changed, 32 insertions(+)
+> >
+> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> > index f2113a63721a..dfcbe7c42493 100644
+> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> > @@ -266,6 +266,7 @@ struct st_lsm6dsx_ext_dev_settings {
+> >   * @wai: Sensor WhoAmI default value.
+> >   * @reset: register address for reset.
+> >   * @boot: register address for boot.
+> > + * @i3c_disable:  register address for enabling/disabling I3C (addr + mask).
+> >   * @bdu: register address for Block Data Update.
+> >   * @max_fifo_size: Sensor max fifo length in FIFO words.
+> >   * @id: List of hw id/device name supported by the driver configuration.
+> > @@ -284,6 +285,7 @@ struct st_lsm6dsx_settings {
+> >       u8 wai;
+> >       struct st_lsm6dsx_reg reset;
+> >       struct st_lsm6dsx_reg boot;
+> > +     struct st_lsm6dsx_reg i3c_disable;
+> >       struct st_lsm6dsx_reg bdu;
+> >       u16 max_fifo_size;
+> >       struct {
+> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > index 84d219ae6aee..b1435c5d2d6d 100644
+> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > @@ -751,6 +751,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+> >                       .addr = 0x12,
+> >                       .mask = BIT(7),
+> >               },
+> > +             .i3c_disable = {
+> > +                     .addr = 0x18,
+> > +                     .mask = BIT(1),
+> > +             },
+> >               .bdu = {
+> >                       .addr = 0x12,
+> >                       .mask = BIT(6),
+> > @@ -1128,6 +1132,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+> >                       .addr = 0x12,
+> >                       .mask = BIT(7),
+> >               },
+> > +             .i3c_disable = {
+> > +                     .addr = 0x18,
+> > +                     .mask = BIT(1),
+> > +             },
+> >               .bdu = {
+> >                       .addr = 0x12,
+> >                       .mask = BIT(6),
+> > @@ -2041,6 +2049,19 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+> >       const struct st_lsm6dsx_reg *reg;
+> >       int err;
+> >
+> > +     /* disable MIPI I3C during device reset in order to avoid
+>
+> comment syntax
+> /*
+>  * disable...
+>
+> > +      * possible races on interrupt line 1. If the first interrupt
+> > +      * line is asserted during hw reset the device will work in
+> > +      * I3C-only mode
+> > +      */
+> > +     if (hw->settings->i3c_disable.addr) {
+> > +             reg = &hw->settings->i3c_disable;
+> > +             err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> > +                                      ST_LSM6DSX_SHIFT_VAL(1, reg->mask));
+> > +             if (err < 0)
+> > +                     return err;
+> > +     }
+> > +
+> >       /* device sw reset */
+> >       reg = &hw->settings->reset;
+> >       err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> > @@ -2059,6 +2080,15 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+> >
+> >       msleep(50);
+> >
+> > +     /* enable MIPI I3C */
+> > +     if (hw->settings->i3c_disable.addr) {
+> > +             reg = &hw->settings->i3c_disable;
+> > +             err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> > +                                      ST_LSM6DSX_SHIFT_VAL(0, reg->mask));
+> > +             if (err < 0)
+> > +                     return err;
+> > +     }
+> > +
+> >       /* enable Block Data Update */
+> >       reg = &hw->settings->bdu;
+> >       err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+>
 

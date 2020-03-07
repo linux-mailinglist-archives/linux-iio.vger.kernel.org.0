@@ -2,47 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6319B17CDC8
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 12:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F35C17CDD2
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 12:33:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726127AbgCGL1X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Mar 2020 06:27:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45894 "EHLO mail.kernel.org"
+        id S1726086AbgCGLdz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 06:33:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47082 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726104AbgCGL1X (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Mar 2020 06:27:23 -0500
+        id S1726017AbgCGLdz (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 7 Mar 2020 06:33:55 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B5E332073D;
-        Sat,  7 Mar 2020 11:27:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A26F2206D5;
+        Sat,  7 Mar 2020 11:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583580442;
-        bh=+mDF1Es4cKqD9+h/YcabwuwoWW6L0mM43bPu6zLRqe0=;
+        s=default; t=1583580834;
+        bh=pg4MQZ0CM6vUCN/05TjyICftkFGEZ7Ij8g1yUHlVJag=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=C5bAD/r/ZcbBunBDXf7e/V0yMGUX98gELFhETsgQJ8j8+9bYtdNLf0ZUCyoAr02+V
-         2I3K7YvYFfXxrUvd7xtix/b97J4USba1CEXEtBHD8Z1h2qEMVcCigVYWNjcGjdUPbR
-         D3HGg8nZn/X9sy54q4ktHFzmg026nvPU8lXKW0O4=
-Date:   Sat, 7 Mar 2020 11:27:17 +0000
+        b=B6DcZK8YZCkV6BCnBTJVL7rZy9FKp+cBK14P6J9/9FkQ5qg2nesJtLP967zN8eBZc
+         I4X1u9SffSvADap4+F25ihzQeWgIlid2pPJ1z41M0QtIF387z9tLhBFHF+v/NTVHyQ
+         OrK4USz8lejwqTIkTsi02y8mCFITryFLjwIgfUHg=
+Date:   Sat, 7 Mar 2020 11:33:49 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+Cc:     "lars@metafoo.de" <lars@metafoo.de>,
+        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
         "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>
-Subject: Re: [PATCH 4/5] iio: imu: Add support for adis16475
-Message-ID: <20200307112717.64245cf7@archlinux>
-In-Reply-To: <f1f14ed4f13c41be728cee976b969192af95e61c.camel@analog.com>
+Subject: Re: [PATCH 5/5] dt-bindings: iio: Add adis16475 documentation
+Message-ID: <20200307113349.27e4484a@archlinux>
+In-Reply-To: <a6b4c76a337f53db1ee05a03eca06751b901d04b.camel@analog.com>
 References: <20200225124152.270914-1-nuno.sa@analog.com>
-        <20200225124152.270914-5-nuno.sa@analog.com>
-        <20200303210814.1057fbbb@archlinux>
-        <0021fdd0f92a30209bd798c761add8e67a8df5db.camel@analog.com>
-        <f1f14ed4f13c41be728cee976b969192af95e61c.camel@analog.com>
+        <20200225124152.270914-6-nuno.sa@analog.com>
+        <20200303211045.31f977bb@archlinux>
+        <9b9e18f279edbcb60122a0b0d4c067975868194a.camel@analog.com>
+        <63b5c766-78a2-59c4-6efb-3eb35031a351@metafoo.de>
+        <3bdae6c113381c7dd0645b7b98c67fac734b92ab.camel@analog.com>
+        <13e355c6-af60-772a-92ec-aff17d0255ee@metafoo.de>
+        <a6b4c76a337f53db1ee05a03eca06751b901d04b.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,180 +55,60 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-...
-> > > > +static irqreturn_t adis16475_trigger_handler(int irq, void *p)
-> > > > +{
-> > > > +	struct iio_poll_func *pf =3D p;
-> > > > +	struct iio_dev *indio_dev =3D pf->indio_dev;
-> > > > +	struct adis16475 *st =3D iio_priv(indio_dev);
-> > > > +	struct adis *adis =3D &st->adis;
-> > > > +	int ret, bit, i =3D 0;
-> > > > +	u16 crc, data[ADIS16475_MAX_SCAN_DATA], *buffer, crc_res;
-> > > > +	/* offset until the first element after gyro and accel */
-> > > > +	const u8 offset =3D st->burst32 ? 13 : 7;
-> > > > +
-> > > > +	ret =3D spi_sync(adis->spi, &adis->msg);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	buffer =3D (u16 *)adis->buffer;
-> > > > +
-> > > > +	if (!(adis->burst && adis->burst->en))
-> > > > +		goto push_to_buffers;
-> > > > +
-> > > > +	/* We always validate the crc to at least print a message */
-> > > > +	crc =3D get_unaligned_be16(&buffer[offset + 2]);
-> > > > +	crc_res =3D adis16475_validate_crc((u8 *)adis->buffer, crc,
-> > > > +					 st->burst32);
-> > > > +	if (crc_res)
-> > > > +		dev_err(&adis->spi->dev, "Invalid crc\n");
-> > > > +
-> > > > +	for_each_set_bit(bit, indio_dev->active_scan_mask,
-> > > > +			 indio_dev->masklength) {
-> > > > +		/*
-> > > > +		 * When burst mode is used, system flags is the first
-> > > > data
-> > > > +		 * channel in the sequence, but the scan index is 7.
-> > > > +		 */
-> > > > +		switch (bit) {
-> > > > +		case ADIS16475_SCAN_TEMP:
-> > > > +			data[i++] =3D get_unaligned(&buffer[offset]);
-> > > > +			break;
-> > > > +		case ADIS16475_SCAN_GYRO_X ... ADIS16475_SCAN_ACCEL_Z:
-> > > > +			/*
-> > > > +			 * The first 2 bytes on the received data are
-> > > > the
-> > > > +			 * DIAG_STAT reg, hence the +1 offset here...
-> > > > +			 */
-> > > > +			if (st->burst32) {
-> > > > +				/* upper 16 */
-> > > > +				data[i++] =3D get_unaligned(&buffer[bit *
-> > > > 2 + 2]);
-> > > > +				/* lower 16 */
-> > > > +				data[i++] =3D get_unaligned(&buffer[bit *
-> > > > 2 + 1]);
-> > > > +			} else {
-> > > > +				data[i++] =3D get_unaligned(&buffer[bit +
-> > > > 1]);
-> > > > +				/* lower not used */
-> > > > +				data[i++] =3D 0;
-> > > > +			}
-> > > > +			break;
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > > +	buffer =3D data;
-> > > > +
-> > > > +push_to_buffers:
-> > > > +	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf- =20
-> > > > > timestamp); =20
-> > >=20
-> > > I'm not sure data is the right size.  It needs to have space to
-> > > have
-> > > an aligned
-> > > timestamp at the end. =20
-> >=20
-> > Will double check this... Honestly I did not had the timestamp into
-> > account so the size is probably wrong. =20
->=20
-> I guess you are right. With all the channels enabled I think we need a
-> 40 bytes buffer in order to have the aligned timestamp...
->=20
+On Thu, 5 Mar 2020 13:04:27 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-Sounds right.
-
-> > > > +static const struct spi_device_id adis16475_ids[] =3D { =20
-> > >=20
-> > > Is it actually possible to instantiate this except by
-> > > using the dt table below?  If not, then move the 'data'
-> > > part into that table and don't provide an spi_device_id
-> > > table at all.  It's not relevant to the possible ways
-> > > of causing the driver to probe. =20
+> On Thu, 2020-03-05 at 13:43 +0100, Lars-Peter Clausen wrote:
+> > On 3/5/20 1:27 PM, Sa, Nuno wrote: =20
+> > > > In my opinion there is should not be a difference in the
+> > > > userspace
+> > > > interface for chips that do support 32-bit burst and those that
+> > > > don't.
+> > > > For devices that don't support 32-bit burst it should be emulated
+> > > > by
+> > > > reading the LSB bits registers manually. =20
+> > > Hmm. In terms of interface I think there is no difference. We
+> > > always
+> > > report 32bits channels (for accel and gyro). However, what we do
+> > > right
+> > > know is just to set the LSB to 0 if burst32 is not supported. So,
+> > > we
+> > > can be just ignoring the LSB bits if they are being used... =20
 > >=20
-> > I guess we could use the id table with devicetree even without the dt
-> > table (even though it makes no sense).
-> >=20
-> > So, I can remove it but I was using the id->name to set the the
-> > iio_dev
-> > name which I guess is not the right way?
-> >=20
-> > What Im thinking is having a name/part number string in chip info
-> > that
-> > I can use to set the iio dev name. For parts that have the *-[1|2|3]
-> > variations I could use the devicetree iio label property. Is this the
-> > correct way of handling this? =20
+> > What I meant was that somebody might still want to get the full 32-
+> > bit=20
+> > values in buffered mode, even if the device does not support burst32. =
+=20
 >=20
-> I was misunderstanding some stuff here. So, the *-[1|2|3] are valid
-> part numbers so they can be in the `name`, right? So, labels come into
-> play, for example, when we have multiple instances of the same part,
-> right?
-
-Absolutely fine to have the -1 etc.  They are odd part numbers, but they
-are the ones on the datasheet etc.
-
-> =20
-> > - Nuno S=C3=A1 =20
-> > > > +	{ "adis16470", ADIS16470 },
-> > > > +	{ "adis16475-1", ADIS16475_1 },
-> > > > +	{ "adis16475-2", ADIS16475_2 },
-> > > > +	{ "adis16475-3", ADIS16475_3 },
-> > > > +	{ "adis16477-1", ADIS16477_1 },
-> > > > +	{ "adis16477-2", ADIS16477_2 },
-> > > > +	{ "adis16477-3", ADIS16477_3 },
-> > > > +	{ "adis16465-1", ADIS16465_1 },
-> > > > +	{ "adis16465-2", ADIS16465_2 },
-> > > > +	{ "adis16465-3", ADIS16465_3 },
-> > > > +	{ "adis16467-1", ADIS16467_1 },
-> > > > +	{ "adis16467-2", ADIS16467_2 },
-> > > > +	{ "adis16467-3", ADIS16467_3 },
-> > > > +	{ "adis16500", ADIS16500 },
-> > > > +	{ "adis16505-1", ADIS16505_1 },
-> > > > +	{ "adis16505-2", ADIS16505_2 },
-> > > > +	{ "adis16505-3", ADIS16505_3 },
-> > > > +	{ "adis16507-1", ADIS16507_1 },
-> > > > +	{ "adis16507-2", ADIS16507_2 },
-> > > > +	{ "adis16507-3", ADIS16507_3 },
-> > > > +	{ }
-> > > > +};
-> > > > +MODULE_DEVICE_TABLE(spi, adis16475_ids);
-> > > > +
-> > > > +static const struct of_device_id adis16475_of_match[] =3D {
-> > > > +	{ .compatible =3D "adi,adis16470" },
-> > > > +	{ .compatible =3D "adi,adis16475-1" },
-> > > > +	{ .compatible =3D "adi,adis16475-2" },
-> > > > +	{ .compatible =3D "adi,adis16475-3" },
-> > > > +	{ .compatible =3D "adi,adis16477-1" },
-> > > > +	{ .compatible =3D "adi,adis16477-2" },
-> > > > +	{ .compatible =3D "adi,adis16477-3" },
-> > > > +	{ .compatible =3D "adi,adis16465-1" },
-> > > > +	{ .compatible =3D "adi,adis16465-2" },
-> > > > +	{ .compatible =3D "adi,adis16465-3" },
-> > > > +	{ .compatible =3D "adi,adis16467-1" },
-> > > > +	{ .compatible =3D "adi,adis16467-2" },
-> > > > +	{ .compatible =3D "adi,adis16467-3" },
-> > > > +	{ .compatible =3D "adi,adis16500" },
-> > > > +	{ .compatible =3D "adi,adis16505-1" },
-> > > > +	{ .compatible =3D "adi,adis16505-2" },
-> > > > +	{ .compatible =3D "adi,adis16505-3" },
-> > > > +	{ .compatible =3D "adi,adis16507-1" },
-> > > > +	{ .compatible =3D "adi,adis16507-2" },
-> > > > +	{ .compatible =3D "adi,adis16507-3" },
-> > > > +	{ },
-> > > > +};
-> > > > +MODULE_DEVICE_TABLE(of, adis16475_of_match);
-> > > > +
-> > > > +static struct spi_driver adis16475_driver =3D {
-> > > > +	.driver =3D {
-> > > > +		.name =3D "adis16475",
-> > > > +		.of_match_table =3D adis16475_of_match,
-> > > > +	},
-> > > > +	.id_table =3D adis16475_ids,
-> > > > +	.probe =3D adis16475_probe,
-> > > > +};
-> > > > +module_spi_driver(adis16475_driver);
-> > > > +
-> > > > +MODULE_AUTHOR("Nuno Sa <nuno.sa@analog.com>");
-> > > > +MODULE_DESCRIPTION("Analog Devices ADIS16475 IMU driver");
-> > > > +MODULE_LICENSE("GPL"); =20
+> They are. Just that the LSB part is always set to 0 :). And that, in my
+> opinion, is wrong. As you say, we should do the manual readings if
+> there are any bits on the LSB registers...
 >=20
+> - Nuno S=C3=A1
+> > In=20
+> > that case you can first do a 16-bit burst read to get the MSBs and
+> > then=20
+> > do manual reads of all the LSB registers and then put both into the
+> > buffer.
+> > - Lars
+> >  =20
+>=20
+Thanks Lars and Nuno, I'd not grasped exactly what this was.
+
+Hmm.  Not allowing for variable bit widths has bitten us a few times in the
+past.  Howwever, it's a really nasty thing to try and add to the core now
+unfortunately.
+
+In some cases we've just padded the smaller bitwidth buffer but that
+is costly to actually do.  You get fast reads from the hardware then loose
+at least some of the benefit respacing the data.
+
+Still it is definitely a policy decision so not DT.  It's ugly but if
+we want to support it and can't do it at runtime, perhaps a module parameter
+is the best option?
+
+Thanks,
+
+Jonathan
+
 

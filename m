@@ -2,39 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F59A17CEE7
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 16:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6693717CEEB
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 16:08:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726105AbgCGPFT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Mar 2020 10:05:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46760 "EHLO mail.kernel.org"
+        id S1726086AbgCGPIH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 10:08:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47734 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726065AbgCGPFT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 7 Mar 2020 10:05:19 -0500
+        id S1726065AbgCGPIH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 7 Mar 2020 10:08:07 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 59B7520674;
-        Sat,  7 Mar 2020 15:05:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 91AEB20675;
+        Sat,  7 Mar 2020 15:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583593517;
-        bh=djr7N1lF/PKKB9fp2i9gvINm+MJ4rxqV23JMIjkYYO4=;
+        s=default; t=1583593686;
+        bh=RQpDqkyyxmFg9c3rc/jOhh1yQA+Hq7TSDoK7PRzgQ0I=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cXxT45a+XI3Vfb7mfPiLj/VSNIUGTATR6o2olTOpEYHMESm+uplmvaD3R9b4Hu014
-         zMd2kmTkt0FQ6WlBTv2HZUX5YUnhTvTwx+CnEY9VBgJhCDShl2JqAYFZUeZewlS7Lz
-         8xZk7QeEI0HSkcaGmZN3UNPQx7BQ0EB2N/mzKvQE=
-Date:   Sat, 7 Mar 2020 15:05:13 +0000
+        b=QRgraDd5g2lyhqe/VHYJfWH8Kx0++0nF5g8fRF/GUXbIuEPV9DQEEa1eot9plToWK
+         vpMZCqgUDGZG+77uAOPhuyjJUC1uClW+UBh0S8S+YKoo8YF15uRlT08pYMHJjPDCJJ
+         PsQvSvEBfJGiP17xk+Yba/GFY1PuY6mHGdbrQqAI=
+Date:   Sat, 7 Mar 2020 15:08:01 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v8 7/8] iio: adc: ad9467: add support AD9467 ADC
-Message-ID: <20200307150513.053b198a@archlinux>
-In-Reply-To: <20200306110100.22092-8-alexandru.ardelean@analog.com>
-References: <20200306110100.22092-1-alexandru.ardelean@analog.com>
-        <20200306110100.22092-8-alexandru.ardelean@analog.com>
+To:     Olivier Moysan <olivier.moysan@st.com>
+Cc:     <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <alexandre.torgue@st.com>, <fabrice.gasnier@st.com>,
+        <benjamin.gaignard@st.com>, <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: stm32-adc: fix sleep in atomic context
+Message-ID: <20200307150801.011f35b2@archlinux>
+In-Reply-To: <20200306155335.6019-1-olivier.moysan@st.com>
+References: <20200306155335.6019-1-olivier.moysan@st.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,195 +45,89 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 6 Mar 2020 13:00:59 +0200
-Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+On Fri, 6 Mar 2020 16:53:35 +0100
+Olivier Moysan <olivier.moysan@st.com> wrote:
 
-> From: Michael Hennerich <michael.hennerich@analog.com>
+> This commit fixes the following error:
+> "BUG: sleeping function called from invalid context at kernel/irq/chip.c"
 > 
-> The AD9467 is a 16-bit, monolithic, IF sampling analog-to-digital converter
-> (ADC). It is optimized for high performanceover wide bandwidths and ease of
-> use. The product operates at a 250 MSPS conversion rate and is designed for
-> wireless receivers, instrumentation, and test equipment that require a high
-> dynamic range. The ADC requires 1.8 V and 3.3 V power supplies and a low
-> voltage differential input clock for full performance operation. No
-> external reference or driver components are required for many applications.
-> Data outputs are LVDS compatible (ANSI-644 compatible) and include the
-> means to reduce the overall current needed for short trace distances.
+> In DMA mode suppress the trigger irq handler, and make the buffer
+> transfers directly in DMA callback, instead.
 > 
-> Since the chip can operate at such high sample-rates (much higher than
-> classical interfaces), it requires that a DMA controller be used to
-> interface directly to the chip and push data into memory.
-> Typically, the AXI ADC IP core is used to interface with it.
-> 
-> Link: https://www.analog.com/media/en/technical-documentation/data-sheets/AD9467.pdf
-> 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> Signed-off-by: Olivier Moysan <olivier.moysan@st.com>
+looks good to me, but... fixes tag?
 
-A few minor things but otherwise looks good to me..
+We probably want to backport this so good to know when we introduced
+the issue.
+
+Thanks,
+
+Jonathan
 
 > ---
->  drivers/iio/adc/Kconfig  |  15 ++
->  drivers/iio/adc/Makefile |   1 +
->  drivers/iio/adc/ad9467.c | 432 +++++++++++++++++++++++++++++++++++++++
->  3 files changed, 448 insertions(+)
->  create mode 100644 drivers/iio/adc/ad9467.c
+> This solution has been already discussed in the thread
+> https://lkml.org/lkml/2019/3/30/171, and applied in STM32 DFSDM driver:
+> e19ac9d9a978 ("iio: adc: stm32-dfsdm: fix sleep in atomic context")
+> ---
+>  drivers/iio/adc/stm32-adc.c | 31 ++++++++++++++++++++++++++++---
+>  1 file changed, 28 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 445070abf376..a0796510f9d4 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -246,6 +246,21 @@ config AD799X
->  	  To compile this driver as a module, choose M here: the module will be
->  	  called ad799x.
+> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> index 80c3f963527b..ae622ee6d08c 100644
+> --- a/drivers/iio/adc/stm32-adc.c
+> +++ b/drivers/iio/adc/stm32-adc.c
+> @@ -1418,8 +1418,30 @@ static unsigned int stm32_adc_dma_residue(struct stm32_adc *adc)
+>  static void stm32_adc_dma_buffer_done(void *data)
+>  {
+>  	struct iio_dev *indio_dev = data;
+> +	struct stm32_adc *adc = iio_priv(indio_dev);
+> +	int residue = stm32_adc_dma_residue(adc);
+> +
+> +	/*
+> +	 * In DMA mode the trigger services of IIO are not used
+> +	 * (e.g. no call to iio_trigger_poll).
+> +	 * Calling irq handler associated to the hardware trigger is not
+> +	 * relevant as the conversions have already been done. Data
+> +	 * transfers are performed directly in DMA callback instead.
+> +	 * This implementation avoids to call trigger irq handler that
+> +	 * may sleep, in an atomic context (DMA irq handler context).
+> +	 */
+> +	dev_dbg(&indio_dev->dev, "%s bufi=%d\n", __func__, adc->bufi);
 >  
-...
-> +static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
-> +{
-> +	unsigned char buf[3];
-> +	int ret;
+> -	iio_trigger_poll_chained(indio_dev->trig);
+> +	while (residue >= indio_dev->scan_bytes) {
+> +		u16 *buffer = (u16 *)&adc->rx_buf[adc->bufi];
 > +
-> +	buf[0] = 0x80 | (reg >> 8);
-> +	buf[1] = reg & 0xFF;
+> +		iio_push_to_buffers(indio_dev, buffer);
 > +
-> +	ret = spi_write_then_read(spi, &buf[0], 2, &buf[2], 1);
-
-Why not split buf into send part and receive?  Might make it slightly
-more readable for no actual cost..
-
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return buf[2];
-> +}
-...
-
-> +static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
-> +			    struct iio_chan_spec const *chan,
-> +			    int val, int val2, long mask)
-> +{
-> +	const struct adi_axi_adc_chip_info *info = conv->chip_info;
-> +	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
-> +	unsigned long r_clk;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		return ad9467_set_scale(conv, val, val2);
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		if (!st->clk)
-> +			return -ENODEV;
-> +
-> +		if (chan->extend_name)
-
-This is a very 'odd' test.  Why?
-
-> +			return -ENODEV;
-> +
-> +		r_clk = clk_round_rate(st->clk, val);
-> +		if (r_clk < 0 || r_clk > info->max_rate) {
-> +			dev_warn(&st->spi->dev,
-> +				 "Error setting ADC sample rate %ld", r_clk);
-> +			return -EINVAL;
-> +		}
-> +
-> +		return clk_set_rate(st->clk, r_clk);
-> +	default:
-> +		return -EINVAL;
+> +		residue -= indio_dev->scan_bytes;
+> +		adc->bufi += indio_dev->scan_bytes;
+> +		if (adc->bufi >= adc->rx_buf_sz)
+> +			adc->bufi = 0;
 > +	}
-> +}
+>  }
+>  
+>  static int stm32_adc_dma_start(struct iio_dev *indio_dev)
+> @@ -1845,6 +1867,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+>  {
+>  	struct iio_dev *indio_dev;
+>  	struct device *dev = &pdev->dev;
+> +	irqreturn_t (*handler)(int irq, void *p) = NULL;
+>  	struct stm32_adc *adc;
+>  	int ret;
+>  
+> @@ -1911,9 +1934,11 @@ static int stm32_adc_probe(struct platform_device *pdev)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	if (!adc->dma_chan)
+> +		handler = &stm32_adc_trigger_handler;
 > +
-...
-> +static int ad9467_probe(struct spi_device *spi)
-> +{
-> +	const struct of_device_id *oid;
-> +	struct adi_axi_adc_conv *conv;
-> +	struct ad9467_state *st;
-> +	unsigned int id;
-> +	int ret;
-> +
-> +	if (!spi->dev.of_node) {
-> +		dev_err(&spi->dev, "DT node is null\n");
-> +		return -ENODEV;
-
-Silly question for you.  Can this happen?  We can only probe this
-if it is in DT and hence there must be a node to get here I think.
-
-> +	}
-> +
-> +	oid = of_match_node(ad9467_of_match, spi->dev.of_node);
-> +	if (!oid)
-> +		return -ENODEV;
-
-You only ever want the data field so you can get that directly.
-of_device_get_match_data
-
-> +
-> +	conv = devm_adi_axi_adc_conv_register(&spi->dev, sizeof(*st));
-> +	if (IS_ERR(conv))
-> +		return PTR_ERR(conv);
-> +
-> +	st = adi_axi_adc_conv_priv(conv);
-> +	st->spi = spi;
-> +
-> +	st->clk = devm_clk_get(&spi->dev, "adc-clk");
-> +	if (IS_ERR(st->clk))
-> +		return PTR_ERR(st->clk);
-> +
-> +	ret = clk_prepare_enable(st->clk);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, ad9467_clk_disable, st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
-> +						   GPIOD_OUT_LOW);
-> +	if (IS_ERR(st->pwrdown_gpio))
-> +		return PTR_ERR(st->pwrdown_gpio);
-> +
-> +	st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
-> +						 GPIOD_OUT_LOW);
-> +	if (IS_ERR(st->reset_gpio))
-> +		return PTR_ERR(st->reset_gpio);
-> +
-> +	if (st->reset_gpio) {
-> +		udelay(1);
-> +		ret = gpiod_direction_output(st->reset_gpio, 1);
-> +		mdelay(10);
-> +	}
-> +
-> +	spi_set_drvdata(spi, st);
-> +
-> +	id = (unsigned int)oid->data;
-> +	conv->chip_info = &ad9467_chip_info_tbl[id];
-> +
-> +	id = ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
-> +	if (id != conv->chip_info->id) {
-> +		dev_err(&spi->dev, "Unrecognized CHIP_ID 0x%X\n", id);
-> +		return -ENODEV;
-> +	}
-> +
-> +	conv->reg_access = ad9467_reg_access;
-> +	conv->write_raw = ad9467_write_raw;
-> +	conv->read_raw = ad9467_read_raw;
-> +	conv->preenable_setup = ad9467_preenable_setup;
-> +
-> +	return ad9467_setup(st, id);
-> +}
-> +
-> +static struct spi_driver ad9467_driver = {
-> +	.driver = {
-> +		.name = "ad9467",
-> +		.of_match_table = ad9467_of_match,
-> +	},
-> +	.probe = ad9467_probe,
-> +};
-> +module_spi_driver(ad9467_driver);
-> +
-> +MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
-> +MODULE_DESCRIPTION("Analog Devices AD9467 ADC driver");
-> +MODULE_LICENSE("GPL v2");
+>  	ret = iio_triggered_buffer_setup(indio_dev,
+> -					 &iio_pollfunc_store_time,
+> -					 &stm32_adc_trigger_handler,
+> +					 &iio_pollfunc_store_time, handler,
+>  					 &stm32_adc_buffer_setup_ops);
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "buffer setup failed\n");
 

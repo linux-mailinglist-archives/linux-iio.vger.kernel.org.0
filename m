@@ -2,314 +2,223 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF08E17D076
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Mar 2020 23:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5599A17D0B4
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Mar 2020 00:55:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726264AbgCGWcY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 Mar 2020 17:32:24 -0500
-Received: from smtprelay-out1.synopsys.com ([149.117.87.133]:53224 "EHLO
-        smtprelay-out1.synopsys.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726259AbgCGWcX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Mar 2020 17:32:23 -0500
-Received: from mailhost.synopsys.com (badc-mailhost1.synopsys.com [10.192.0.17])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 36B0CC00F7;
-        Sat,  7 Mar 2020 22:32:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
-        t=1583620341; bh=KLGUn4weS47moSQ1rNvnTKufufUGKRw1PKuXwNmFx1M=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-        b=PzBqlgFwE8NpovFTIB/EU6w3sHSejGIYixMl0Q1CRLWlxfo+AI/r+qEcuTixqJOZ+
-         B3IZUHYjxocaME/y4OD1CwUtaJloqleKX/WLcD14vRn5RoUHJ2pBJQhbO8j90EH+5v
-         BIoBxELjBPaRqLjp75lhic2v6gQ0kFggfSpTL8LAmnrLAgDM+FjvEwkSY5tHf9EUol
-         w8wPcmzHu6z644jK4fnZPQoraPvZqBEs53V91zSDMAype/SEBzzMMjcwI3OIW1UUBE
-         9nytiqP6rgbF9vqrCfLQMRTg5AaA2LZ8IkDwVoUd/n70IlrLgcM1vyHsiGLjEaTbKO
-         RqqdBYRJfWOZQ==
-Received: from US01WEHTC3.internal.synopsys.com (us01wehtc3.internal.synopsys.com [10.15.84.232])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mailhost.synopsys.com (Postfix) with ESMTPS id 217EFA008A;
-        Sat,  7 Mar 2020 22:32:20 +0000 (UTC)
-Received: from us01hybrid1.internal.synopsys.com (10.200.27.51) by
- US01WEHTC3.internal.synopsys.com (10.15.84.232) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Sat, 7 Mar 2020 14:32:19 -0800
-Received: from NAM04-BN3-obe.outbound.protection.outlook.com (10.202.3.67) by
- mrs.synopsys.com (10.200.27.51) with Microsoft SMTP Server (TLS) id
- 14.3.408.0; Sat, 7 Mar 2020 14:32:19 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XpLRqGPlDqXXkuDR6S6JaEuSFvjygLput4lRq2r4ZpGh/sWlcRz/mV8ialwTrNsJXRA1XEe9IqFMu4FToXLCag9lzh+SAMFGqXEzX92oeABbIKtburgcSLsQS5QDnF1Wu6LcXf0vC+XiI8EZ5vd81827lfAYBbL7PVUno8aNXde18r+0bZTAa/e6qm4tV1OgxnpKlh1aeJOaIQZ2V6MGZHEIUQ9/hookfa884PXRwaASqpw+k+2HeYFlb2bBMReCTbWbEIe8e1xv58CkBQmQlUX4slSOVFjsfnD2OSCknR/Jgroi5a1UjQWTOCA5wTE1LCd5TybCooKBWOGhjzdJkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KLGUn4weS47moSQ1rNvnTKufufUGKRw1PKuXwNmFx1M=;
- b=nQjh/lKM8KfgpCExfh/pLJTI8XUzHnZYUqX7nKmn2f+iC6zJh9UejIJFVcRZmGNjomRuDpF3+1hBIvcrIA6+lgo2Vv7AR8jfhcXNWNi/UfXVzRZNZcqN9VnaRPRvH5DuMAtgTh5Dyo+LeifXGyKugyTWQ3gj2eGKMMz1VPju/Z+rkw8YzHrg55rD0aM2ybcb/kU9SUmEQ2IVMB5KS7uByF4/35iHWmWOU7t0HKzBrIy31uQ4BHet9VDseKwMFR1khKfm0in8Fs1V8K9rJtkoIXlyE7JliV71gXgDCKhHR3yrmBPJNCerg+i/StqmUHBP3o4qzjMdZcXOF6Rv6JTvSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
- dkim=pass header.d=synopsys.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=synopsys.onmicrosoft.com; s=selector2-synopsys-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KLGUn4weS47moSQ1rNvnTKufufUGKRw1PKuXwNmFx1M=;
- b=KTzjfeus+x30bNMh609kWg2Q622saP/n8ldKC+GBOhLLDYpudGdFEG/L1uNsp6eywHqTm42OSx1a38zD5nDA8Ty7Wm0WfGcBquQh8az7LtFhcq1MZB0JmLrGlmoO2b+8B9xZaBoiAliZq9x2JdnmUNR6ODXCzoXHTrEgnH29s6Q=
-Received: from CH2PR12MB4216.namprd12.prod.outlook.com (2603:10b6:610:a8::23)
- by CH2PR12MB4296.namprd12.prod.outlook.com (2603:10b6:610:af::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17; Sat, 7 Mar
- 2020 22:32:11 +0000
-Received: from CH2PR12MB4216.namprd12.prod.outlook.com
- ([fe80::c8d1:bea7:c855:bcfe]) by CH2PR12MB4216.namprd12.prod.outlook.com
- ([fe80::c8d1:bea7:c855:bcfe%5]) with mapi id 15.20.2793.013; Sat, 7 Mar 2020
- 22:32:10 +0000
-From:   Vitor Soares <Vitor.Soares@synopsys.com>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Jonathan Cameron <jic23@kernel.org>
-CC:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        id S1726284AbgCGXzG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 Mar 2020 18:55:06 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:33638 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726174AbgCGXzF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 Mar 2020 18:55:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1583625304;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Dc043RWFY4xmq/cwqNSbTR5LvIqJywxBG2BrU2I0yEE=;
+        b=XA5SPWPdFYpkVtrLnkrKUGarkksjAJaTFBUEUB8qJwMkXmOZ/w2qZj2f+L39lKI+gi7SgX
+        LHtekS1d3uXus7Kf1zuGxtbu0hHjgEqByC6lNj1hY8T8SQKF6D+fVlUfblOj3x39yy6AGk
+        Lqz0X3m/zOV9lulf0V88z698Vbwac60=
+Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
+ [209.85.221.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-271-6YyVK1MxNpCK8TrC8VVn3w-1; Sat, 07 Mar 2020 18:55:03 -0500
+X-MC-Unique: 6YyVK1MxNpCK8TrC8VVn3w-1
+Received: by mail-vk1-f197.google.com with SMTP id y5so2760385vkg.19
+        for <linux-iio@vger.kernel.org>; Sat, 07 Mar 2020 15:55:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Dc043RWFY4xmq/cwqNSbTR5LvIqJywxBG2BrU2I0yEE=;
+        b=cSSxq9Mt0C0x1KR+VreF301zAYyYRxdxtlLNkUuPtpBj1s2tAGf4MF4Q7jk3Rztauk
+         H7w/Z7STT8Y50AbFL+aDlol0ClnrhOy3HBuliwZyCp15Ox1KbaJHUDCLqANk03IU23MS
+         /EcLqbSvH+cGcomlcWLjHAeuywu3j0/XzbnxBLY+hUFrxfFK6KJ/e2KfiVQA848+CnZj
+         1wgMvOP+EP6S+BbodLiXTd3DOl/oULxaKFSIgo9J0uTw2lls2ktNCV1ARdjcjpmsmuwZ
+         +V4JNjlV93WnUQ8y5pWknFG1A2Afn0NENpnVrZOZFG2vQRXh+lNyj+pdrIGvC+zPCVv/
+         F5bQ==
+X-Gm-Message-State: ANhLgQ0Yqmm68kkmpAN9vaGadBFZV94J4i3cMy0XhoGm2WD23m/LPM3s
+        nQZnR1HQVy8Bpdxc2sdJgoYRUr2yl/IJ+jrIAP9pZBQGXaMwxKQjErK9tIdlaH0LZks24KBzap9
+        I8MfkEoEPMAln865xWDkXW3aySR6eQeTisDQD
+X-Received: by 2002:a05:6102:a01:: with SMTP id t1mr5825630vsa.102.1583625302503;
+        Sat, 07 Mar 2020 15:55:02 -0800 (PST)
+X-Google-Smtp-Source: ADFU+vvEi74Y3YsrPTgxOmsTb60HulZ1ZT4VZL2vT6i8gd+sP9pext4IeApU9/kNe5z/uae6Z8/IU6eWWL1BhGfST3Q=
+X-Received: by 2002:a05:6102:a01:: with SMTP id t1mr5825622vsa.102.1583625302019;
+ Sat, 07 Mar 2020 15:55:02 -0800 (PST)
+MIME-Version: 1.0
+References: <7444ee821dd9b1210ce126c317edc3b0c36f9f84.1583090369.git.lorenzo@kernel.org>
+ <20200307130232.3baf4c89@archlinux> <CAJ0CqmWayoApMahU63UcqO-bEygYiTwzyAyOeaRi_0CRordKig@mail.gmail.com>
+ <CH2PR12MB4216186A9417754287B06AAFAEE00@CH2PR12MB4216.namprd12.prod.outlook.com>
+In-Reply-To: <CH2PR12MB4216186A9417754287B06AAFAEE00@CH2PR12MB4216.namprd12.prod.outlook.com>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Sun, 8 Mar 2020 00:54:51 +0100
+Message-ID: <CAJ0CqmVA5srd9yfoAfVmOKKfJj4FwL2Ue2dp0XUL0=bn_A_WWQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: disable I3C support during device reset
+To:     Vitor Soares <Vitor.Soares@synopsys.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "mario.tesi@st.com" <mario.tesi@st.com>
-Subject: RE: [PATCH] iio: imu: st_lsm6dsx: disable I3C support during device
- reset
-Thread-Topic: [PATCH] iio: imu: st_lsm6dsx: disable I3C support during device
- reset
-Thread-Index: AQHV7/+b//XBztcpbEiuT+HpJ9P6iag9IVQAgAAItoCAAJSR4A==
-Date:   Sat, 7 Mar 2020 22:32:10 +0000
-Message-ID: <CH2PR12MB4216186A9417754287B06AAFAEE00@CH2PR12MB4216.namprd12.prod.outlook.com>
-References: <7444ee821dd9b1210ce126c317edc3b0c36f9f84.1583090369.git.lorenzo@kernel.org>
- <20200307130232.3baf4c89@archlinux>
- <CAJ0CqmWayoApMahU63UcqO-bEygYiTwzyAyOeaRi_0CRordKig@mail.gmail.com>
-In-Reply-To: <CAJ0CqmWayoApMahU63UcqO-bEygYiTwzyAyOeaRi_0CRordKig@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYzI5aGNtVnpYR0Z3Y0dSaGRHRmNjbTloYldsdVoxd3dPV1E0TkRsaU5p?=
- =?utf-8?B?MHpNbVF6TFRSaE5EQXRPRFZsWlMwMllqZzBZbUV5T1dVek5XSmNiWE5uYzF4?=
- =?utf-8?B?dGMyY3ROemt6Tm1ZeVpXTXROakJqTXkweE1XVmhMVGd5T1RRdFlqZ3dPR05t?=
- =?utf-8?B?TlRsa04yWmpYR0Z0WlMxMFpYTjBYRGM1TXpabU1tVmtMVFl3WXpNdE1URmxZ?=
- =?utf-8?B?UzA0TWprMExXSTRNRGhqWmpVNVpEZG1ZMkp2WkhrdWRIaDBJaUJ6ZWowaU5U?=
- =?utf-8?B?WXdNeUlnZEQwaU1UTXlNamd3T1RNNU1qZ3lNVGs0TkRZNUlpQm9QU0pRTTJk?=
- =?utf-8?B?RlEzSjVlV2gwYm5sUmJHZHlMMFJrYUZKQlFqUnVOVTA5SWlCcFpEMGlJaUJp?=
- =?utf-8?B?YkQwaU1DSWdZbTg5SWpFaUlHTnBQU0pqUVVGQlFVVlNTRlV4VWxOU1ZVWk9R?=
- =?utf-8?B?MmRWUVVGQ1VVcEJRVVJHWWpObk9EQlFWRlpCWldvd2REVk5UMVp2U0ZnMlVG?=
- =?utf-8?B?TXphM2MxVjJka1kwOUJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlNFRkJRVUZEYTBOQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UlVGQlVVRkNRVUZCUVhOUWNGSkhVVUZCUVVGQlFVRkJRVUZCUVVGQlFVbzBR?=
- =?utf-8?B?VUZCUW0xQlIydEJZbWRDYUVGSE5FRlpkMEpzUVVZNFFXTkJRbk5CUjBWQllt?=
- =?utf-8?B?ZENkVUZIYTBGaVowSnVRVVk0UVdSM1FtaEJTRkZCV2xGQ2VVRkhNRUZaVVVK?=
- =?utf-8?B?NVFVZHpRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZGUVVGQlFVRkJRVUZCUVdk?=
- =?utf-8?B?QlFVRkJRVUZ1WjBGQlFVZFpRV0ozUWpGQlJ6UkJXa0ZDZVVGSWEwRllkMEoz?=
- =?utf-8?B?UVVkRlFXTm5RakJCUnpSQldsRkNlVUZJVFVGWWQwSnVRVWRaUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlVVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVTkJRVUZCUVVGRFpVRkJRVUZhWjBKMlFVaFZRV0puUW10QlNF?=
- =?utf-8?B?bEJaVkZDWmtGSVFVRlpVVUo1UVVoUlFXSm5RbXhCU0VsQlkzZENaa0ZJVFVG?=
- =?utf-8?B?WlVVSjBRVWhOUVdSUlFuVkJSMk5CV0hkQ2FrRkhPRUZpWjBKdFFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRa0ZCUVVGQlFVRkJRVUZKUVVGQlFVRkJTalJCUVVGQ2JVRkhPRUZr?=
- =?utf-8?B?VVVKMVFVZFJRV05uUWpWQlJqaEJZMEZDYUVGSVNVRmtRVUoxUVVkVlFXTm5R?=
- =?utf-8?B?bnBCUmpoQlkzZENhRUZITUVGamQwSXhRVWMwUVZwM1FtWkJTRWxCV2xGQ2Vr?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVWQlFVRkJRVUZCUVVGQlowRkJRVUZCUVc1blFV?=
- =?utf-8?B?RkJSMWxCWW5kQ01VRkhORUZhUVVKNVFVaHJRVmgzUW5kQlIwVkJZMmRDTUVG?=
- =?utf-8?B?SE5FRmFVVUo1UVVoTlFWaDNRbnBCUnpCQllWRkNha0ZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRlJRVUZCUVVGQlFVRkJRMEZC?=
- =?utf-8?B?UVVGQlFVTmxRVUZCUVZwblFuWkJTRlZCWW1kQ2EwRklTVUZsVVVKbVFVaEJR?=
- =?utf-8?B?VmxSUW5sQlNGRkJZbWRDYkVGSVNVRmpkMEptUVVoTlFXUkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZDUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVsQlFVRkJRVUZLTkVGQlFVSnRRVWM0UVdSUlFuVkJSMUZCWTJk?=
- =?utf-8?B?Q05VRkdPRUZqUVVKb1FVaEpRV1JCUW5WQlIxVkJZMmRDZWtGR09FRmtRVUo2?=
- =?utf-8?B?UVVjd1FWbDNRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlJVRkJRVUZCUVVGQlFVRm5RVUZCUVVGQmJtZEJRVUZIV1VGaWQwSXhR?=
- =?utf-8?B?VWMwUVZwQlFubEJTR3RCV0hkQ2QwRkhSVUZqWjBJd1FVYzBRVnBSUW5sQlNF?=
- =?utf-8?B?MUJXSGRDTVVGSE1FRlpkMEZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVkZCUVVGQlFVRkJRVUZEUVVGQlFVRkJRMlZCUVVG?=
- =?utf-8?B?QlduZENNRUZJVFVGWWQwSjNRVWhKUVdKM1FtdEJTRlZCV1hkQ01FRkdPRUZr?=
- =?utf-8?B?UVVKNVFVZEZRV0ZSUW5WQlIydEJZbWRDYmtGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVKQlFVRkJRVUZCUVVGQlNVRkJR?=
- =?utf-8?B?VUZCUVVvMFFVRkJRbnBCUjBWQllrRkNiRUZJVFVGWWQwSm9RVWROUVZsM1Fu?=
- =?utf-8?B?WkJTRlZCWW1kQ01FRkdPRUZqUVVKelFVZEZRV0puUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRV2RCUVVGQlFVRnVaMEZCUVVoTlFWbFJRbk5CUjFWQlkzZENaa0ZJ?=
- =?utf-8?B?UlVGa1VVSjJRVWhSUVZwUlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCVVVGQlFVRkJRVUZCUVVOQlFVRkJRVUZEWlVGQlFVRmpkMEoxUVVoQlFX?=
- =?utf-8?B?TjNRbVpCUjNkQllWRkNha0ZIVlVGaVowSjZRVWRWUVZoM1FqQkJSMVZCWTJk?=
- =?utf-8?B?Q2RFRkdPRUZOVVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlNqUkJRVUZD?=
- =?utf-8?B?ZWtGSE5FRmpRVUo2UVVZNFFXSkJRbkJCUjAxQldsRkNkVUZJVFVGYVVVSm1R?=
- =?utf-8?B?VWhSUVZwUlFubEJSekJCV0hkQ2VrRklVVUZrVVVKclFVZFZRV0puUWpCQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVVZCUVVGQlFVRkJRVUZCWjBGQlFV?=
- =?utf-8?B?RkJRVzVuUVVGQlNGbEJXbmRDWmtGSGMwRmFVVUkxUVVoalFXSjNRbmxCUjFG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGUlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlEwRkJRVUZCUVVFOUlpOCtQQzl0WlhSaFBnPT0=?=
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=soares@synopsys.com; 
-x-originating-ip: [2.82.68.230]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 420b8e2c-34d7-4d7a-e4f8-08d7c2e76085
-x-ms-traffictypediagnostic: CH2PR12MB4296:
-x-microsoft-antispam-prvs: <CH2PR12MB42963569254F5C379C5BECE3AEE00@CH2PR12MB4296.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 03355EE97E
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009001)(6009001)(428001)(51704005)(24454002)(199002)(189002)(20776003)(69226001)(63696002)(74876001)(74706001)(54606006)(33656001)(77096001)(76786001)(76796001)(81542001)(54356001)(93136001)(92566001)(46102001)(64706001)(76576001)(81342001)(92726001)(77982001)(59766001)(56816005)(80022001)(66066001)(76482001)(74316001)(90146001)(65816001)(87936001)(56776001)(54316002)(74366001)(44376005)(87266001)(54206007)(2656002)(4396001)(47976001)(50986001)(95666003)(49866001)(47736001)(51856001)(85306002)(79102001)(85852003)(83072002)(21056001)(97336001)(94946001)(93516002)(95416001)(94316002)(86362001)(97186001)(80976001)(81686001)(83322001)(19580405001)(81816001)(31966008)(74662001)(19580395003)(53806001)(74502001)(47446002);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR12MB4296;H:CH2PR12MB4216.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: synopsys.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GUiYmhyHhhowpO0ibTsmvugC9FXGgdV63J3Wozu10Xrj7kOueC88EeKwPTtTKu1DyOk+6d4NYRRIcIXOT4CA6DB+nueM5vedjx3uHOB/xB5AG/b0Z+0BvuaSfaG9PANevv5nP9+aV6OM8SdJU8onDKG7i+IHTEyjOkC2lwWoXincnRWLzIN24bECrJ+0ThiW6fVy+qgcsM0hqaApqF9BXwOUCO8ZmJG0ohvbVrU0WNXfv8ENnqvqD9mCWSFR1ZyyZJLO2ih9wuO7NmSKjxj/fS8eYW6WsLo1SHoA2HjPGcQYx/viJdao1xXLiGq3TLgJzUZhRwJgKtRZnTiNiaIUqZHCb0fldpURd76TvHtls7XbGWGfXx6pOP1CS08AZU7LTOIvwBn3/WbqSNxHb/S2Xb1pdVtDC/QOkAhybBvi82KXved1s0vnNtRwPcdI5Sm4LCagHGmDVnmQT4BG/J7l9al8KYSpyIjc+U3ls2v6L1f95jk4BVB+GMPSyrJlYMLTyudibxFKoiq4k15RwQ0ODw==
-x-ms-exchange-antispam-messagedata: Gm1ZJ9AljF5oMKKMgHFU7zOG8B+FPVmBwR6Rmz3+rNAhCOJcjsYOz6/p/yENFq9VNQYlM8KwO+8SL8j7Fu0w1VWi3XxMtQuqc2mOoFNg0nyVFFtUj7HgjcJGj9KbUsBk6uBY3NpMH+SO2E3vsciftA==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 420b8e2c-34d7-4d7a-e4f8-08d7c2e76085
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2020 22:32:10.7193
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BInmmxZxO8orQAdHbi4nIboxdZ10FVPbvKy+I7uE+c9xdBZBS3XbsyhjOZ0ImNMgXn8Zs5sATca+bn4vO5QXhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4296
-X-OriginatorOrg: synopsys.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGksDQoNCkZyb206IExvcmVuem8gQmlhbmNvbmkgPGxvcmVuem8uYmlhbmNvbmlAcmVkaGF0LmNv
-bT4NCkRhdGU6IFNhdCwgTWFyIDA3LCAyMDIwIGF0IDEzOjMzOjQzDQoNCj4gPg0KPiA+IE9uIFN1
-biwgIDEgTWFyIDIwMjAgMjA6Mjg6MDMgKzAxMDANCj4gPiBMb3JlbnpvIEJpYW5jb25pIDxsb3Jl
-bnpvQGtlcm5lbC5vcmc+IHdyb3RlOg0KPiA+DQo+ID4gPiBEaXNhYmxlIE1JUEkgSTNDIGR1cmlu
-ZyBkZXZpY2UgcmVzZXQgaW4gb3JkZXIgdG8gYXZvaWQNCj4gPiA+IHBvc3NpYmxlIHJhY2VzIG9u
-IGludGVycnVwdCBsaW5lIDEuIElmIHRoZSBmaXJzdCBpbnRlcnJ1cHQNCj4gPiA+IGxpbmUgaXMg
-YXNzZXJ0ZWQgZHVyaW5nIGh3IHJlc2V0IHRoZSBkZXZpY2Ugd2lsbCB3b3JrIGluDQo+ID4gPiBJ
-M0Mtb25seSBtb2RlDQo+ID4gPg0KPiA+ID4gUmVwb3J0ZWQtYnk6IE1hcmlvIFRlc2kgPG1hcmlv
-LnRlc2lAc3QuY29tPg0KPiA+ID4gU2lnbmVkLW9mZi1ieTogTG9yZW56byBCaWFuY29uaSA8bG9y
-ZW56b0BrZXJuZWwub3JnPg0KPiA+DQo+ID4gRml4ZXMgdGFnPw0KPiANCj4gSGkgSm9uYXRoYW4s
-DQo+IA0KPiBJIGFtIG5vdCBzdXJlIHNpbmNlIE1hcmlvIGp1c3QgcmVwb3J0ZWQgbWUgdGhpcyBp
-c3N1ZSBjYW4gb2NjdXIuDQo+IE1heWJlIHRoaXMgb25lOg0KPiANCj4gMjY2MGIwMDgwYmIyICgi
-aWlvOiBpbXU6IHN0X2xzbTZkc3g6IGFkZCBpM2MgYmFzaWMgc3VwcG9ydCBmb3IgTFNNNkRTTw0K
-PiBhbmQgTFNNNkRTUiIpDQo+IA0KPiA+DQo+ID4gT25lIHRyaXZpYWwgdGhpbmcgaW5saW5lLg0K
-PiA+DQo+IA0KPiBhY2ssIEkgd2lsbCBmaXggaXQgKEkgYW0gdXNlIHRvIG5ldHdvcmsgY29tbWVu
-dCBzeW50YXggbm93IDopKQ0KPiANCj4gPiBJcyB0aGlzIHNvbWV0aGluZyB3ZSBzaG91bGQgYmUg
-bG9va2luZyB0byBoYXZlIGFwcGxpZWQgdG8gc3RhYmxlPw0KPiA+DQo+IA0KPiBOb3Qgc3VyZS4N
-Cj4gQFZpdG9yOiBoYXZlIHlvdSBldmVyIGZhY2VkIHRoZSBpc3N1ZT8NCg0KSSB1c2Ugb25seSB3
-aXRoIEkzQyBtb2RlIGFjdGl2ZSAoSU5UMSBwaW4gY29ubmVjdGVkIHRvIFZERF9JTyksIEkgdGhp
-bmsgDQp0aGlzIG9ubHkgYXBwbHkgd2hlbiBJTlQxIGlzIG5vdCBjb25uZWN0ZWQgYW5kIEkyQyBp
-bnRlcmZhY2Ugc3RpbGwgDQphY3RpdmUsIHJpZ2h0Pw0KDQo+IA0KPiBSZWdhcmRzLA0KPiBMb3Jl
-bnpvDQo+IA0KPiA+IEpvbmF0aGFuDQo+ID4NCj4gPiA+IC0tLQ0KPiA+ID4gSSBoYXZlIG5vdCBi
-ZWVuIGFibGUgdG8gdGVzdCB0aGlzIHBhdGNoIG9uIGEgSTNDIGRldmljZSwganVzdCBTUEkvSTJD
-DQo+ID4gPiAtLS0NCj4gPiA+ICBkcml2ZXJzL2lpby9pbXUvc3RfbHNtNmRzeC9zdF9sc202ZHN4
-LmggICAgICB8ICAyICsrDQo+ID4gPiAgZHJpdmVycy9paW8vaW11L3N0X2xzbTZkc3gvc3RfbHNt
-NmRzeF9jb3JlLmMgfCAzMCArKysrKysrKysrKysrKysrKysrKw0KPiA+ID4gIDIgZmlsZXMgY2hh
-bmdlZCwgMzIgaW5zZXJ0aW9ucygrKQ0KPiA+ID4NCj4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJz
-L2lpby9pbXUvc3RfbHNtNmRzeC9zdF9sc202ZHN4LmggYi9kcml2ZXJzL2lpby9pbXUvc3RfbHNt
-NmRzeC9zdF9sc202ZHN4LmgNCj4gPiA+IGluZGV4IGYyMTEzYTYzNzIxYS4uZGZjYmU3YzQyNDkz
-IDEwMDY0NA0KPiA+ID4gLS0tIGEvZHJpdmVycy9paW8vaW11L3N0X2xzbTZkc3gvc3RfbHNtNmRz
-eC5oDQo+ID4gPiArKysgYi9kcml2ZXJzL2lpby9pbXUvc3RfbHNtNmRzeC9zdF9sc202ZHN4LmgN
-Cj4gPiA+IEBAIC0yNjYsNiArMjY2LDcgQEAgc3RydWN0IHN0X2xzbTZkc3hfZXh0X2Rldl9zZXR0
-aW5ncyB7DQo+ID4gPiAgICogQHdhaTogU2Vuc29yIFdob0FtSSBkZWZhdWx0IHZhbHVlLg0KPiA+
-ID4gICAqIEByZXNldDogcmVnaXN0ZXIgYWRkcmVzcyBmb3IgcmVzZXQuDQo+ID4gPiAgICogQGJv
-b3Q6IHJlZ2lzdGVyIGFkZHJlc3MgZm9yIGJvb3QuDQo+ID4gPiArICogQGkzY19kaXNhYmxlOiAg
-cmVnaXN0ZXIgYWRkcmVzcyBmb3IgZW5hYmxpbmcvZGlzYWJsaW5nIEkzQyAoYWRkciArIG1hc2sp
-Lg0KPiA+ID4gICAqIEBiZHU6IHJlZ2lzdGVyIGFkZHJlc3MgZm9yIEJsb2NrIERhdGEgVXBkYXRl
-Lg0KPiA+ID4gICAqIEBtYXhfZmlmb19zaXplOiBTZW5zb3IgbWF4IGZpZm8gbGVuZ3RoIGluIEZJ
-Rk8gd29yZHMuDQo+ID4gPiAgICogQGlkOiBMaXN0IG9mIGh3IGlkL2RldmljZSBuYW1lIHN1cHBv
-cnRlZCBieSB0aGUgZHJpdmVyIGNvbmZpZ3VyYXRpb24uDQo+ID4gPiBAQCAtMjg0LDYgKzI4NSw3
-IEBAIHN0cnVjdCBzdF9sc202ZHN4X3NldHRpbmdzIHsNCj4gPiA+ICAgICAgIHU4IHdhaTsNCj4g
-PiA+ICAgICAgIHN0cnVjdCBzdF9sc202ZHN4X3JlZyByZXNldDsNCj4gPiA+ICAgICAgIHN0cnVj
-dCBzdF9sc202ZHN4X3JlZyBib290Ow0KPiA+ID4gKyAgICAgc3RydWN0IHN0X2xzbTZkc3hfcmVn
-IGkzY19kaXNhYmxlOw0KPiA+ID4gICAgICAgc3RydWN0IHN0X2xzbTZkc3hfcmVnIGJkdTsNCj4g
-PiA+ICAgICAgIHUxNiBtYXhfZmlmb19zaXplOw0KPiA+ID4gICAgICAgc3RydWN0IHsNCj4gPiA+
-IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9pbXUvc3RfbHNtNmRzeC9zdF9sc202ZHN4X2NvcmUu
-YyBiL2RyaXZlcnMvaWlvL2ltdS9zdF9sc202ZHN4L3N0X2xzbTZkc3hfY29yZS5jDQo+ID4gPiBp
-bmRleCA4NGQyMTlhZTZhZWUuLmIxNDM1YzVkMmQ2ZCAxMDA2NDQNCj4gPiA+IC0tLSBhL2RyaXZl
-cnMvaWlvL2ltdS9zdF9sc202ZHN4L3N0X2xzbTZkc3hfY29yZS5jDQo+ID4gPiArKysgYi9kcml2
-ZXJzL2lpby9pbXUvc3RfbHNtNmRzeC9zdF9sc202ZHN4X2NvcmUuYw0KPiA+ID4gQEAgLTc1MSw2
-ICs3NTEsMTAgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBzdF9sc202ZHN4X3NldHRpbmdzIHN0X2xz
-bTZkc3hfc2Vuc29yX3NldHRpbmdzW10gPSB7DQo+ID4gPiAgICAgICAgICAgICAgICAgICAgICAg
-LmFkZHIgPSAweDEyLA0KPiA+ID4gICAgICAgICAgICAgICAgICAgICAgIC5tYXNrID0gQklUKDcp
-LA0KPiA+ID4gICAgICAgICAgICAgICB9LA0KPiA+ID4gKyAgICAgICAgICAgICAuaTNjX2Rpc2Fi
-bGUgPSB7DQo+ID4gPiArICAgICAgICAgICAgICAgICAgICAgLmFkZHIgPSAweDE4LA0KPiA+ID4g
-KyAgICAgICAgICAgICAgICAgICAgIC5tYXNrID0gQklUKDEpLA0KPiA+ID4gKyAgICAgICAgICAg
-ICB9LA0KPiA+ID4gICAgICAgICAgICAgICAuYmR1ID0gew0KPiA+ID4gICAgICAgICAgICAgICAg
-ICAgICAgIC5hZGRyID0gMHgxMiwNCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAubWFzayA9
-IEJJVCg2KSwNCj4gPiA+IEBAIC0xMTI4LDYgKzExMzIsMTAgQEAgc3RhdGljIGNvbnN0IHN0cnVj
-dCBzdF9sc202ZHN4X3NldHRpbmdzIHN0X2xzbTZkc3hfc2Vuc29yX3NldHRpbmdzW10gPSB7DQo+
-ID4gPiAgICAgICAgICAgICAgICAgICAgICAgLmFkZHIgPSAweDEyLA0KPiA+ID4gICAgICAgICAg
-ICAgICAgICAgICAgIC5tYXNrID0gQklUKDcpLA0KPiA+ID4gICAgICAgICAgICAgICB9LA0KPiA+
-ID4gKyAgICAgICAgICAgICAuaTNjX2Rpc2FibGUgPSB7DQo+ID4gPiArICAgICAgICAgICAgICAg
-ICAgICAgLmFkZHIgPSAweDE4LA0KPiA+ID4gKyAgICAgICAgICAgICAgICAgICAgIC5tYXNrID0g
-QklUKDEpLA0KPiA+ID4gKyAgICAgICAgICAgICB9LA0KPiA+ID4gICAgICAgICAgICAgICAuYmR1
-ID0gew0KPiA+ID4gICAgICAgICAgICAgICAgICAgICAgIC5hZGRyID0gMHgxMiwNCj4gPiA+ICAg
-ICAgICAgICAgICAgICAgICAgICAubWFzayA9IEJJVCg2KSwNCj4gPiA+IEBAIC0yMDQxLDYgKzIw
-NDksMTkgQEAgc3RhdGljIGludCBzdF9sc202ZHN4X2luaXRfZGV2aWNlKHN0cnVjdCBzdF9sc202
-ZHN4X2h3ICpodykNCj4gPiA+ICAgICAgIGNvbnN0IHN0cnVjdCBzdF9sc202ZHN4X3JlZyAqcmVn
-Ow0KPiA+ID4gICAgICAgaW50IGVycjsNCj4gPiA+DQo+ID4gPiArICAgICAvKiBkaXNhYmxlIE1J
-UEkgSTNDIGR1cmluZyBkZXZpY2UgcmVzZXQgaW4gb3JkZXIgdG8gYXZvaWQNCj4gPg0KPiA+IGNv
-bW1lbnQgc3ludGF4DQo+ID4gLyoNCj4gPiAgKiBkaXNhYmxlLi4uDQo+ID4NCj4gPiA+ICsgICAg
-ICAqIHBvc3NpYmxlIHJhY2VzIG9uIGludGVycnVwdCBsaW5lIDEuIElmIHRoZSBmaXJzdCBpbnRl
-cnJ1cHQNCj4gPiA+ICsgICAgICAqIGxpbmUgaXMgYXNzZXJ0ZWQgZHVyaW5nIGh3IHJlc2V0IHRo
-ZSBkZXZpY2Ugd2lsbCB3b3JrIGluDQo+ID4gPiArICAgICAgKiBJM0Mtb25seSBtb2RlDQo+ID4g
-PiArICAgICAgKi8NCj4gPiA+ICsgICAgIGlmIChody0+c2V0dGluZ3MtPmkzY19kaXNhYmxlLmFk
-ZHIpIHsNCj4gPiA+ICsgICAgICAgICAgICAgcmVnID0gJmh3LT5zZXR0aW5ncy0+aTNjX2Rpc2Fi
-bGU7DQo+ID4gPiArICAgICAgICAgICAgIGVyciA9IHJlZ21hcF91cGRhdGVfYml0cyhody0+cmVn
-bWFwLCByZWctPmFkZHIsIHJlZy0+bWFzaywNCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIFNUX0xTTTZEU1hfU0hJRlRfVkFMKDEsIHJlZy0+bWFzaykpOw0KPiA+
-ID4gKyAgICAgICAgICAgICBpZiAoZXJyIDwgMCkNCj4gPiA+ICsgICAgICAgICAgICAgICAgICAg
-ICByZXR1cm4gZXJyOw0KPiA+ID4gKyAgICAgfQ0KPiA+ID4gKw0KPiA+ID4gICAgICAgLyogZGV2
-aWNlIHN3IHJlc2V0ICovDQo+ID4gPiAgICAgICByZWcgPSAmaHctPnNldHRpbmdzLT5yZXNldDsN
-Cj4gPiA+ICAgICAgIGVyciA9IHJlZ21hcF91cGRhdGVfYml0cyhody0+cmVnbWFwLCByZWctPmFk
-ZHIsIHJlZy0+bWFzaywNCj4gPiA+IEBAIC0yMDU5LDYgKzIwODAsMTUgQEAgc3RhdGljIGludCBz
-dF9sc202ZHN4X2luaXRfZGV2aWNlKHN0cnVjdCBzdF9sc202ZHN4X2h3ICpodykNCj4gPiA+DQo+
-ID4gPiAgICAgICBtc2xlZXAoNTApOw0KPiA+ID4NCj4gPiA+ICsgICAgIC8qIGVuYWJsZSBNSVBJ
-IEkzQyAqLw0KPiA+ID4gKyAgICAgaWYgKGh3LT5zZXR0aW5ncy0+aTNjX2Rpc2FibGUuYWRkcikg
-ew0KPiA+ID4gKyAgICAgICAgICAgICByZWcgPSAmaHctPnNldHRpbmdzLT5pM2NfZGlzYWJsZTsN
-Cj4gPiA+ICsgICAgICAgICAgICAgZXJyID0gcmVnbWFwX3VwZGF0ZV9iaXRzKGh3LT5yZWdtYXAs
-IHJlZy0+YWRkciwgcmVnLT5tYXNrLA0KPiA+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgU1RfTFNNNkRTWF9TSElGVF9WQUwoMCwgcmVnLT5tYXNrKSk7DQo+ID4gPiAr
-ICAgICAgICAgICAgIGlmIChlcnIgPCAwKQ0KPiA+ID4gKyAgICAgICAgICAgICAgICAgICAgIHJl
-dHVybiBlcnI7DQo+ID4gPiArICAgICB9DQo+ID4gPiArDQo+ID4gPiAgICAgICAvKiBlbmFibGUg
-QmxvY2sgRGF0YSBVcGRhdGUgKi8NCj4gPiA+ICAgICAgIHJlZyA9ICZody0+c2V0dGluZ3MtPmJk
-dTsNCj4gPiA+ICAgICAgIGVyciA9IHJlZ21hcF91cGRhdGVfYml0cyhody0+cmVnbWFwLCByZWct
-PmFkZHIsIHJlZy0+bWFzaywNCj4gPg0KDQoNCg==
+>
+> Hi,
+>
+> From: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+> Date: Sat, Mar 07, 2020 at 13:33:43
+>
+> > >
+> > > On Sun,  1 Mar 2020 20:28:03 +0100
+> > > Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+> > >
+> > > > Disable MIPI I3C during device reset in order to avoid
+> > > > possible races on interrupt line 1. If the first interrupt
+> > > > line is asserted during hw reset the device will work in
+> > > > I3C-only mode
+> > > >
+> > > > Reported-by: Mario Tesi <mario.tesi@st.com>
+> > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > >
+> > > Fixes tag?
+> >
+> > Hi Jonathan,
+> >
+> > I am not sure since Mario just reported me this issue can occur.
+> > Maybe this one:
+> >
+> > 2660b0080bb2 ("iio: imu: st_lsm6dsx: add i3c basic support for LSM6DSO
+> > and LSM6DSR")
+> >
+> > >
+> > > One trivial thing inline.
+> > >
+> >
+> > ack, I will fix it (I am use to network comment syntax now :))
+> >
+> > > Is this something we should be looking to have applied to stable?
+> > >
+> >
+> > Not sure.
+> > @Vitor: have you ever faced the issue?
+>
+> I use only with I3C mode active (INT1 pin connected to VDD_IO), I think
+> this only apply when INT1 is not connected and I2C interface still
+> active, right?
+>
+
+I think the issue occurs when the int1 is connected and it is high
+during device reset.
+If it occurs the sensor will work in I3C active mode even if it is
+connected in I2C.
+
+Regards,
+Lorenzo
+
+> >
+> > Regards,
+> > Lorenzo
+> >
+> > > Jonathan
+> > >
+> > > > ---
+> > > > I have not been able to test this patch on a I3C device, just SPI/I2C
+> > > > ---
+> > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 ++
+> > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 30 ++++++++++++++++++++
+> > > >  2 files changed, 32 insertions(+)
+> > > >
+> > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> > > > index f2113a63721a..dfcbe7c42493 100644
+> > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> > > > @@ -266,6 +266,7 @@ struct st_lsm6dsx_ext_dev_settings {
+> > > >   * @wai: Sensor WhoAmI default value.
+> > > >   * @reset: register address for reset.
+> > > >   * @boot: register address for boot.
+> > > > + * @i3c_disable:  register address for enabling/disabling I3C (addr + mask).
+> > > >   * @bdu: register address for Block Data Update.
+> > > >   * @max_fifo_size: Sensor max fifo length in FIFO words.
+> > > >   * @id: List of hw id/device name supported by the driver configuration.
+> > > > @@ -284,6 +285,7 @@ struct st_lsm6dsx_settings {
+> > > >       u8 wai;
+> > > >       struct st_lsm6dsx_reg reset;
+> > > >       struct st_lsm6dsx_reg boot;
+> > > > +     struct st_lsm6dsx_reg i3c_disable;
+> > > >       struct st_lsm6dsx_reg bdu;
+> > > >       u16 max_fifo_size;
+> > > >       struct {
+> > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > > > index 84d219ae6aee..b1435c5d2d6d 100644
+> > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > > > @@ -751,6 +751,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+> > > >                       .addr = 0x12,
+> > > >                       .mask = BIT(7),
+> > > >               },
+> > > > +             .i3c_disable = {
+> > > > +                     .addr = 0x18,
+> > > > +                     .mask = BIT(1),
+> > > > +             },
+> > > >               .bdu = {
+> > > >                       .addr = 0x12,
+> > > >                       .mask = BIT(6),
+> > > > @@ -1128,6 +1132,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+> > > >                       .addr = 0x12,
+> > > >                       .mask = BIT(7),
+> > > >               },
+> > > > +             .i3c_disable = {
+> > > > +                     .addr = 0x18,
+> > > > +                     .mask = BIT(1),
+> > > > +             },
+> > > >               .bdu = {
+> > > >                       .addr = 0x12,
+> > > >                       .mask = BIT(6),
+> > > > @@ -2041,6 +2049,19 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+> > > >       const struct st_lsm6dsx_reg *reg;
+> > > >       int err;
+> > > >
+> > > > +     /* disable MIPI I3C during device reset in order to avoid
+> > >
+> > > comment syntax
+> > > /*
+> > >  * disable...
+> > >
+> > > > +      * possible races on interrupt line 1. If the first interrupt
+> > > > +      * line is asserted during hw reset the device will work in
+> > > > +      * I3C-only mode
+> > > > +      */
+> > > > +     if (hw->settings->i3c_disable.addr) {
+> > > > +             reg = &hw->settings->i3c_disable;
+> > > > +             err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> > > > +                                      ST_LSM6DSX_SHIFT_VAL(1, reg->mask));
+> > > > +             if (err < 0)
+> > > > +                     return err;
+> > > > +     }
+> > > > +
+> > > >       /* device sw reset */
+> > > >       reg = &hw->settings->reset;
+> > > >       err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> > > > @@ -2059,6 +2080,15 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+> > > >
+> > > >       msleep(50);
+> > > >
+> > > > +     /* enable MIPI I3C */
+> > > > +     if (hw->settings->i3c_disable.addr) {
+> > > > +             reg = &hw->settings->i3c_disable;
+> > > > +             err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> > > > +                                      ST_LSM6DSX_SHIFT_VAL(0, reg->mask));
+> > > > +             if (err < 0)
+> > > > +                     return err;
+> > > > +     }
+> > > > +
+> > > >       /* enable Block Data Update */
+> > > >       reg = &hw->settings->bdu;
+> > > >       err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> > >
+>
+>
+

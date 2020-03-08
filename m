@@ -2,117 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EE7817D51D
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Mar 2020 18:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92A0617D53E
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Mar 2020 18:31:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726318AbgCHRJp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Mar 2020 13:09:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60806 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726297AbgCHRJp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 8 Mar 2020 13:09:45 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BE22D208C3;
-        Sun,  8 Mar 2020 17:09:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583687385;
-        bh=3s8SOGXrFtj1VNmlx2arPZ+GJnBtGQJxrovVye7pJI8=;
-        h=Date:From:To:Subject:From;
-        b=WjgPz/NNBkQITVxn/qOw+DEsYfDK6Mxb5/ALh+iREdFY3QJvrl9vaQ0hTi0GDgyc/
-         U1UbTGU74MCg2P/N4G7FiqCgMVEZGsMMjarPxj1Oy54QJfC/9CNPMZE7IePZg5Mccu
-         de0lGgZA7jdiasdRAtSgIkE7fv6yB5OyhXwkjvYc=
-Date:   Sun, 8 Mar 2020 17:09:41 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] First set of IIO fixes for the 5.6 cycle
-Message-ID: <20200308170941.6d3b36ab@archlinux>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726297AbgCHRbT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Mar 2020 13:31:19 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:44600 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726270AbgCHRbT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Mar 2020 13:31:19 -0400
+Received: by mail-pl1-f193.google.com with SMTP id d9so3016613plo.11;
+        Sun, 08 Mar 2020 10:31:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:date:from:to:cc:subject:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=e9qnB7QZOlUFXtCcAkVq3BX6tJPsQ7OsVoBtR0r8PgQ=;
+        b=E34oMEN10iVxMyUJ+phXZZF8V4aBEG6HuYoJ5hzlZxHQ+uJrxSdvWNVYX2BV1VNecG
+         09q0A4up/lRzCKoQFUkc9OCxWS1NyJuOgBJsswREY5frlZelZnNvYA4wsB8CeYUPO2JQ
+         AEr8nTnQnGTG6/UP6Jq3CrjSvMq029QkjkCOGEXXlD6Bpm6jazOmuBy/x1WSdFel5Uam
+         +0NvZ6b/ayCMRFe72QMVaAV3E7nbzXy3sf0G4t5++vxudlE4b/ekJ5luzZGZIxZKr8Wu
+         VhS08UjGDfbZl5u6FB/ZSZ95ZbKry3a30a9dec9l1Dl1lJhh+JMVrhEGeHstQdDfItWU
+         jjnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=e9qnB7QZOlUFXtCcAkVq3BX6tJPsQ7OsVoBtR0r8PgQ=;
+        b=Wfj2Ux+uHPi9HwUM5+/9TrpiR+1duL9OSbDVJoKgH2noievjGbL8PHwMU4Etgt5I9L
+         kRh2SVeRBGddml+C08Hng4/u0VrLewHF6wvn2xyp8LtU+KvnEyxAmIv4dvmHtPtO3/Ia
+         sihx8/baDnTpE7ZZ23KgH4SbPFLUcQZ9gPBctCszWDteCCYBFrAmvsmlAdA3jeI2wPOP
+         +aKkOYfgC9HtDftxJLLB3J+es8ZN3dOLwm5OGAo/szUcIx54Lu4bErvgl4wE6ByDiMHP
+         czhhR8G0PGK/yFJmrifZHDlEw1h3PocZMppdftREiHFiHAqkYAyRI61osm7lRGnMPG7N
+         fL/Q==
+X-Gm-Message-State: ANhLgQ1VGE+twdmeUQFWAWzUWEB7vr/aGOayZL5dRmEEge8Gs1SHqdWb
+        6Pk/cIc9u89w9iIGxjdMMrN58hLR9tg=
+X-Google-Smtp-Source: ADFU+vuwPWtkQ/fYgwEC65GgR3rod6W5q+rHrwr+KCxdIOPQ4nbCJFoV15A7RVlSMjzpOdfbofYU7w==
+X-Received: by 2002:a17:90a:6448:: with SMTP id y8mr14361094pjm.126.1583688678122;
+        Sun, 08 Mar 2020 10:31:18 -0700 (PDT)
+Received: from SARKAR ([43.224.157.37])
+        by smtp.gmail.com with ESMTPSA id f9sm15855697pje.43.2020.03.08.10.31.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Mar 2020 10:31:17 -0700 (PDT)
+Message-ID: <5e652be5.1c69fb81.bdd67.92b5@mx.google.com>
+X-Google-Original-Message-ID: <20200308173052.GD12716@rohitsarkar5398@gmail.com>
+Date:   Sun, 8 Mar 2020 23:01:12 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alexandru.ardelean@analog.com, dragos.bogdan@analog.com
+Subject: Re: [PATCH v4] iio: adc: max1363: replace uses of mlock
+References: <5e6355a8.1c69fb81.36f2c.ab37@mx.google.com>
+ <20200307141946.79661dd0@archlinux>
+ <5e640c05.1c69fb81.4dd6f.a3c8@mx.google.com>
+ <20200308161426.716d1ffb@archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200308161426.716d1ffb@archlinux>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The following changes since commit 39bed42de2e7d74686a2d5a45638d6a5d7e7d473:
+On Sun, Mar 08, 2020 at 04:14:26PM +0000, Jonathan Cameron wrote:
+> On Sun, 8 Mar 2020 02:32:56 +0530
+> Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+> 
+> > On Sat, Mar 07, 2020 at 02:19:46PM +0000, Jonathan Cameron wrote:
+> > > On Sat, 7 Mar 2020 13:34:51 +0530
+> > > Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+> > >   
+> > > > Replace usage indio_dev's mlock with either local lock or
+> > > > iio_device_claim_direct_mode.
+> > > > 
+> > > > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>  
+> > > 
+> > > There is a subtlety in here (which is why this one never
+> > > got cleaned up before).  We need to protect against:
+> > > 
+> > > 1) Driver state being accessed from multiple places concurrently.
+> > >    That will use your new lock.
+> > > 2) Doing actions that cannot occur if in buffered mode.  The
+> > >    claim_direct_mode stuff is for that.  
+> > I did consider using both, the local driver lock and the claim_direct in
+> > some places, however I noticed that the claim_direct_mode internally uses
+> > the mlock, hence I didnt think it was necessary to set the local lock as
+> > well, as according to my understanding once a process acquires the mlock
+> > no other process can run the critical section before the initial process
+> > releases the mlock. Thus the driver state also remains consistent.
+> 
+> Any state changes in the driver done under the local lock can still happen.
+> There is also a question of 'obviousness'.  The driver code should not
+> 'care' what the internals of claim_direct_mode is doing.
+> That can be expected to protect against moving out of direct mode, but
+> not anything about 'how'.
+> 
+> Hence, take them both.
 
-  Merge tag 'for-linus-hmm' of git://git.kernel.org/pub/scm/linux/kernel/gi=
-t/rdma/rdma (2020-01-29 19:56:50 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixe=
-s-for-5.6a
-
-for you to fetch changes up to 10856d88f7653b42196ca5b2775bbc1f15122a58:
-
-  iio: ping: set pa_laser_ping_cfg in of_ping_match (2020-03-08 16:21:23 +0=
-000)
-
-----------------------------------------------------------------
-First set of IIO fixes in the 5.6 cycle.
-
-* adxl372
-  - Fix marking of buffered values as big endian.
-* ak8974
-  - Fix wrong handling of negative values when read from sysfs.
-* at91-sama5d2
-  - Fix differential mode by ensuring configuration set correctly.
-* ping
-  - Use the write sensor type for of_ping_match table.
-* sps30
-  - Kconfig build dependency fix.
-* st-sensors
-  - Fix a wrong identification of which part the SMO8840 ACPI ID indicates.
-* stm32-dsfdm
-  - Fix a sleep in atomic issue by not using a trigger when it makes no sen=
-se.
-* stm32-timer
-  - Make sure master mode is disabled when stopping.
-* vcnl400
-  - Update some sampling periods based on new docs.
-
-----------------------------------------------------------------
-Alexandru Tachici (1):
-      iio: accel: adxl372: Set iio_chan BE
-
-Eugen Hristev (1):
-      iio: adc: at91-sama5d2_adc: fix differential channels in triggered mo=
-de
-
-Fabrice Gasnier (1):
-      iio: trigger: stm32-timer: disable master mode when stopping
-
-Olivier Moysan (1):
-      iio: adc: stm32-dfsdm: fix sleep in atomic context
-
-Petr =C5=A0tetiar (1):
-      iio: chemical: sps30: fix missing triggered buffer dependency
-
-Stephan Gerhold (1):
-      iio: magnetometer: ak8974: Fix negative raw values in sysfs
-
-Tomas Novotny (2):
-      iio: light: vcnl4000: update sampling periods for vcnl4200
-      iio: light: vcnl4000: update sampling periods for vcnl4040
-
-Wen-chien Jesse Sung (1):
-      iio: st_sensors: remap SMO8840 to LIS2DH12
-
-YueHaibing (1):
-      iio: ping: set pa_laser_ping_cfg in of_ping_match
-
- drivers/iio/accel/adxl372.c               |  1 +
- drivers/iio/accel/st_accel_i2c.c          |  2 +-
- drivers/iio/adc/at91-sama5d2_adc.c        | 15 +++++++++++
- drivers/iio/adc/stm32-dfsdm-adc.c         | 43 +++++++--------------------=
-----
- drivers/iio/chemical/Kconfig              |  2 ++
- drivers/iio/light/vcnl4000.c              | 15 ++++++-----
- drivers/iio/magnetometer/ak8974.c         |  2 +-
- drivers/iio/proximity/ping.c              |  2 +-
- drivers/iio/trigger/stm32-timer-trigger.c | 11 ++++++--
- 9 files changed, 48 insertions(+), 45 deletions(-)
+That does make sense, when I thought about it again I realised doing
+this is essentially what was wrong with the code in the first place.
+Thanks for the pointers. Will send out an update.
+Thanks,
+Rohit

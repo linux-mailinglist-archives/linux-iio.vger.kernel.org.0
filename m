@@ -2,95 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82CE917E735
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Mar 2020 19:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 239B817EA39
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Mar 2020 21:38:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727496AbgCISbk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Mar 2020 14:31:40 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:33851 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727467AbgCISbk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Mar 2020 14:31:40 -0400
-Received: by mail-pg1-f195.google.com with SMTP id t3so5110591pgn.1;
-        Mon, 09 Mar 2020 11:31:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:date:from:to:cc:subject:mime-version:content-disposition
-         :user-agent;
-        bh=yraj5Tql8oxf5l1BCisk3gPL3avSiKpNGBiD85oy6HA=;
-        b=M/TrsNVgPNpqgyAPSWaNXD5hrsdsZxFeSdnV64e+3tLbA1TWaTVO5EJoIkxWXIz4KE
-         +o4+T96PihjHLUpyj7w4RAV6dlqc2FPV1pTlUZUbpbm38h4silLYEMqkqz58WHbzVK6f
-         K8Pv2bGCfUj4MRvy1w9MuBNt23qpm+cd+14rII5BK8OxLizOqca2C2p2eZeAQwYpmS1d
-         ECCKz4lagim+MXgx5CDw3Il8D2F/87olefzBymt3/Dk3sraVsQJkgEdLYeC/fXUt7RBt
-         r6OduFNhJrUXvV5SjVqP48ec+qxFHK2S1x404YQ4R6GbBpA9YLPoN2rDy8Xab++A0rM0
-         9HMg==
+        id S1726669AbgCIUiR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Mar 2020 16:38:17 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:42459 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726096AbgCIUiR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Mar 2020 16:38:17 -0400
+Received: by mail-ot1-f65.google.com with SMTP id 66so10971998otd.9;
+        Mon, 09 Mar 2020 13:38:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:subject:mime-version
-         :content-disposition:user-agent;
-        bh=yraj5Tql8oxf5l1BCisk3gPL3avSiKpNGBiD85oy6HA=;
-        b=NTtUIgjwpezZQnCd4atRXY+I6DuFX3bfMgiEVq1CviG8RQ1EHpCz/8L6c0Y1zQ2z00
-         gWPNiXRuQgyDsLD41hKLX9PSuSWz0WpyABOekN5I2YMp7MrYnrpTFMdnIUxTLN1tuJ40
-         wXG3eOQt99V17ncQ8BkJaoDdjmLCisw5k0U+8rNli/O83oqw2lGKAkvvPimfdKDkPElT
-         fLckJiQKPP/oohjEMP+mVL+F+Sjrj3TLRMKpLuuC0gqFT/gavzh3LpBZaU1hG4JJGvPg
-         QdCgDHHXFg6dYNG3kIm5MHLOnPnFY38zQxPnXdkO81sd7TbMmrJJvqPC10TRYwKBDPp/
-         pCBw==
-X-Gm-Message-State: ANhLgQ1wTq9c7yT32Zz9K1v4RoaWlY/3ql/a3wYOqCEzztI6SwVe5ahe
-        GDRwN7ncjBU+SNMahkLYaHL9aTG1gB6sqA==
-X-Google-Smtp-Source: ADFU+vugVGkRBGTZ4VQ53YA3Ds23WcnxrMGybWKnDU78AmFeAvxhZZWq+awgdEndikah94nMvfDGiQ==
-X-Received: by 2002:a62:f84e:: with SMTP id c14mr18455462pfm.6.1583778698671;
-        Mon, 09 Mar 2020 11:31:38 -0700 (PDT)
-Received: from SARKAR ([2401:4900:330b:b8fc:399a:a833:fab3:83b])
-        by smtp.gmail.com with ESMTPSA id mr7sm246643pjb.12.2020.03.09.11.31.36
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=4sv47E3whDnk7QFlUz6K8G7Rk9bNvaKAJ3x+BtFqMd8=;
+        b=XDnFVn47oye6Q/VhPPqy25QWTqwgGYvlxyDgKvncP8MXRc32LQJV+KPPdZ6u7RoKZW
+         w5W19cBYQ+TV38+LYFbzSkUh2UXqNb2CdqZgNCdUZ0MpSIENynqifj8RuiutOMKuQfQt
+         6UWeg5hvzFVGS7l8ydOdij8fvUeDk1z+Zwzne6hgTWeo6EoImu9n/Lz3C8G62Km0f8a1
+         9tuIPQ1BzyRkf5f0OzG+ZKJZCpn3Y2I5/tyaxnDCZYs6+nzBZZZlepjhHJnfHYCv1pcl
+         TF+HMPSMXfXYv8YzBa+3THJzveKdP9Nf0QRPEHQFBK6ZX9sXjClz7X8KbOdRs/4mbuAx
+         3mcw==
+X-Gm-Message-State: ANhLgQ24K5EytBywQrO+ZUGKFSrYkylRhzDVeexdsrE0KiCwsIJvPald
+        9UFdPYUgHh3YePXyL3XflY3k0DE=
+X-Google-Smtp-Source: ADFU+vt/J1NMy19Vg3cxnshnY12AaBqTlB+fN96FHy9+jFEUvpyhOuxvj76cKzr6obrAP+oVo7WySA==
+X-Received: by 2002:a9d:23e4:: with SMTP id t91mr14274415otb.125.1583786296250;
+        Mon, 09 Mar 2020 13:38:16 -0700 (PDT)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id t21sm2358588otp.80.2020.03.09.13.38.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2020 11:31:37 -0700 (PDT)
-Message-ID: <5e668b89.1c69fb81.d7e4f.0f61@mx.google.com>
-X-Google-Original-Message-ID: <20200309183128.GA21734@rohitsarkar5398@gmail.com>
-Date:   Tue, 10 Mar 2020 00:01:28 +0530
-From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic23@kernel.org, matt.ranostay@konsulko.com
-Subject: [PATCH] iio: health: max30100: remove mlock usage
+        Mon, 09 Mar 2020 13:38:14 -0700 (PDT)
+Received: (nullmailer pid 30910 invoked by uid 1000);
+        Mon, 09 Mar 2020 20:38:14 -0000
+Date:   Mon, 9 Mar 2020 15:38:14 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Artur Rojek <contact@artur-rojek.eu>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Heiko Stuebner <heiko@sntech.de>, linux-input@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, Artur Rojek <contact@artur-rojek.eu>
+Subject: Re: [PATCH v4 4/5] dt-bindings: input: Add docs for ADC driven
+ joystick.
+Message-ID: <20200309203814.GA29255@bogus>
+References: <20200307211412.44148-1-contact@artur-rojek.eu>
+ <20200307211412.44148-4-contact@artur-rojek.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200307211412.44148-4-contact@artur-rojek.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use local lock instead of indio_dev's mlock.
-The mlock was being used to protect local driver state thus using the
-local lock is a better option here.
+On Sat,  7 Mar 2020 22:14:11 +0100, Artur Rojek wrote:
+> Add documentation for the adc-joystick driver, used to provide support
+> for joysticks connected over ADC.
+> 
+> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+> Tested-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+> 
+>  Changes:
+> 
+>  v2: - Add `reg` property to axis subnode in order to enumerate the axes,
+>      - rename `linux,abs-code` property to `linux,code`,
+>      - drop `linux,` prefix from the remaining properties of axis subnode
+> 
+>  v3: no change
+> 
+>  v4: - remove "bindings" from the unique identifier string,
+>      - replace `|` with `>` for all description properties,
+>      - specify the number of items for `io-channels`,
+>      - correct the regex pattern of `axis` property,
+>      - specify the value range of `reg` property for each axis,
+>      - put `abs-range` properties under `allOf` 
+> 
+>  .../bindings/input/adc-joystick.yaml          | 121 ++++++++++++++++++
+>  1 file changed, 121 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/adc-joystick.yaml
+> 
 
-Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
----
- drivers/iio/health/max30100.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+My bot found errors running 'make dt_binding_check' on your patch:
 
-diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
-index 84010501762d..8ddc4649547d 100644
---- a/drivers/iio/health/max30100.c
-+++ b/drivers/iio/health/max30100.c
-@@ -388,7 +388,7 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
- 		 * Temperature reading can only be acquired while engine
- 		 * is running
- 		 */
--		mutex_lock(&indio_dev->mlock);
-+		mutex_lock(&data->lock);
- 
- 		if (!iio_buffer_enabled(indio_dev))
- 			ret = -EAGAIN;
-@@ -399,7 +399,7 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
- 
- 		}
- 
--		mutex_unlock(&indio_dev->mlock);
-+		mutex_unlock(&data->lock);
- 		break;
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 1;  /* 0.0625 */
--- 
-2.23.0.385.gbc12974a89
+Error: Documentation/devicetree/bindings/input/adc-joystick.example.dts:22.31-32 syntax error
+FATAL ERROR: Unable to parse input tree
+scripts/Makefile.lib:311: recipe for target 'Documentation/devicetree/bindings/input/adc-joystick.example.dt.yaml' failed
+make[1]: *** [Documentation/devicetree/bindings/input/adc-joystick.example.dt.yaml] Error 1
+Makefile:1262: recipe for target 'dt_binding_check' failed
+make: *** [dt_binding_check] Error 2
 
+See https://patchwork.ozlabs.org/patch/1250951
+Please check and re-submit.

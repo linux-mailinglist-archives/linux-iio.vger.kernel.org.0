@@ -2,136 +2,313 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62AC117E1CC
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Mar 2020 14:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B2E017E2C9
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Mar 2020 15:55:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726749AbgCIN6s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 Mar 2020 09:58:48 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:32168 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726632AbgCIN6s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Mar 2020 09:58:48 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 029DvUbI016259;
-        Mon, 9 Mar 2020 09:58:47 -0400
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2106.outbound.protection.outlook.com [104.47.70.106])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2ym9db5cfh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 09 Mar 2020 09:58:46 -0400
+        id S1726439AbgCIOzM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 Mar 2020 10:55:12 -0400
+Received: from smtprelay-out1.synopsys.com ([149.117.73.133]:42060 "EHLO
+        smtprelay-out1.synopsys.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726774AbgCIOzL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Mar 2020 10:55:11 -0400
+Received: from mailhost.synopsys.com (badc-mailhost1.synopsys.com [10.192.0.17])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id CDCF1403BD;
+        Mon,  9 Mar 2020 14:55:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
+        t=1583765710; bh=+dvJYqPXNvkRS6pTQoXDHJyghzDOaBh3Y/TqVPXNsn8=;
+        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+        b=ZspLBrVhAQWVt6mcdgU0104nXB/x4Rcm4NS9VPaWIhT9cKnBHiYFGblBawa5sKeZj
+         tbQjPXCgL9aLJ5HRmQr/c0GKSGRxPJoxt35KIHRienHiOwl+SYeGR1+5JG/jXI+vtk
+         n1BvA33oHXypHChgKoLotBLNKWJxARCZw+dQUIqJuilKD2/27XGFt2GIQUjeZWXW5+
+         Vwa3ZqYOZpeTNwMvjGr5W2c0HrsPFmZi76xTDDG+dTFEoqiqOQO6Rr2uR1gBNaFmRQ
+         tRzVGRGAfOBYajqwj70SVE3ME6pauBZEjlgAnqOFIPjpp8NfWer1SXDyg5XtUu/iUi
+         V8oHgwIL8GTTA==
+Received: from US01WEHTC3.internal.synopsys.com (us01wehtc3.internal.synopsys.com [10.15.84.232])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mailhost.synopsys.com (Postfix) with ESMTPS id 9105FA008A;
+        Mon,  9 Mar 2020 14:55:10 +0000 (UTC)
+Received: from us01hybrid1.internal.synopsys.com (10.200.27.51) by
+ US01WEHTC3.internal.synopsys.com (10.15.84.232) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Mon, 9 Mar 2020 07:55:09 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (10.202.3.67) by
+ mrs.synopsys.com (10.200.27.51) with Microsoft SMTP Server (TLS) id
+ 14.3.408.0; Mon, 9 Mar 2020 07:55:09 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HqLfwEvmDYLFxsWAlS4QA4Io3sV+boPVap7Jf4r/TYqGcSEVGgNbXa1rZj2z/S28GEw+S3lKOMUC2mFKdFNn7YJdL5JdB+TPbM4KUnsGY3oMK4zdPVR7LHRkdeFx70T7yYWrqvG/u5cfleQ1JbI1ya79JbYoyYO/auQaP7DaJujbkNbUtvhR1PdeHalsGTT0jSbI2UFVNHu5hQxa+nMcXlFHexrCmU37/tkWf7Mhwq6Xhp7XlJ70cICBn+uQjcQQKu+Op6WBE7jpkJPipnE9/kV146nDoG3v2Oo3Wml6wO0tBIg4H5ejrDFLIQdC7GY4JRDz3+Edm4GxnkVKRs+84A==
+ b=APx8CpBiwcSCj6Box/rtyOhr5yTJ7lHxvcr++ddS5lCRdhmm2zDKlvwjloXmQhpzteK7ZaxxXrWpNzkGidN4Txk5RC2yRlX5jlqbaczvBJHmCKGjunFdrQxDsX2GQn10i8TlqcrJfmViZIqeh9GxOI0FqjpR+RsKrIflTqRfVwCCDF7t4Ub1JYH0Wq8R/csLkpScK59+Ea36R7+VJpjsg2hZDAd/qSdDQdNGsQAvMvYwLwpmsAqGWFxBKA4A+4UG9m+9Qgm59ZdT6fEmjykLFT0Vjgh3Z5OpwG20dxK+bQ3GewpPto/b8JJGh+cXwrsdTLG7IrC0LiDOlFbLxvat4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AhrzlkANeRUJ02ZJWIAj5eahF5oetBFTAajrkNfqOs8=;
- b=U7Yg5QX1VvqwztoUL9oUzWgXUueZAfxPX+xJf87lmpmZan74pwrng2Iq6coBr/AG+ocV3lojWgEScVJCGuy5gq9SxHHjBqIMwCPkBoaEo0teM859pAOOWwAmCrI4vZVHu87+gzoDAxNQyZlhEwDfy5mlBoRSrrvq6kestJvCPIn71MFnUnNNODCYZp22Z08V0sRz2AvXnzfU7EureK+CgN0MmyjSxTFCwL9N0JmlCPTR9vEH9XOpBnax64y5F+cG9pQ35r2N5XcPKy1JZIlcg96RwPMcljG699f7u/xXAyAFhdLanosQ5TzD6Ph5UVmYlvcwcnO+nTY12P52/fD7pA==
+ bh=BJLUphmyRZjAJvDUp2hxC0y7PTkFRpMjPww/cMccves=;
+ b=dxqgynK6bn/uC4SgvuDxyqK0Fqikld+pGt42CfdLCs7oh8P+vQg45MTbyssQUAx9gnGy9rRmbhZH8skhUhfhQrCX5yviH8/jlgedHHUPwbTUPo0KvTd4iiZPGwKjc7yK6AHAqKpopm69a7FE6vTGfvocv0InvHt63BcAipCEHf4hg2OXRUVK+5hhzqLMvdcLDQJP4i/mn/KQ8SJpKQWhoIubCENfXaq9h2ezKpMl6rvvC7KK5gVOtwgZA4Jwe1xDotIa/NcUJ/okPXlmNLXGXYYiSW3AEzQokSNHOF/DTPKHZ8B611rguVnhFFbJrPSoMarDHhnacoCwnuioFS9/Zg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+ smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
+ dkim=pass header.d=synopsys.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ d=synopsys.onmicrosoft.com; s=selector2-synopsys-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AhrzlkANeRUJ02ZJWIAj5eahF5oetBFTAajrkNfqOs8=;
- b=en4dNoeE1qFi0r+Zpo2U3j/rAJ2va4sfni3yHdN+C3HZQJ9Kpr+KJs5ASa02HpVhHLxwZ99CRG85NPQfpUw6+dfXowQxoInlCdgl5jzURE3dzRWsDy1+GMG6DRNh9gbQl0vM8R++yJtN/Avq+w9aSve4Y+kaYzC+9/JJDBhMD4E=
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
- by DM6PR03MB4761.namprd03.prod.outlook.com (2603:10b6:5:18d::23) with
+ bh=BJLUphmyRZjAJvDUp2hxC0y7PTkFRpMjPww/cMccves=;
+ b=EMzUx943G43jn5OXSOlHX5B/+m+/+4BuqcIYZrejUjxfqyLyNtnGDE3fGwhXJkYQec1pwYSCPIa88BoOG1y14YuoQQuteFf4ckWDP46ofsPSjpBqpSyfv4vjiLJlpTrDZXhY066jDs+o4EPEiZc+a1UP89vx2Fro/ZVpdfq/emA=
+Received: from CH2PR12MB4216.namprd12.prod.outlook.com (2603:10b6:610:a8::23)
+ by CH2PR12MB3768.namprd12.prod.outlook.com (2603:10b6:610:22::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17; Mon, 9 Mar
- 2020 13:58:45 +0000
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::f8c4:f7f2:c7a0:cc19]) by DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::f8c4:f7f2:c7a0:cc19%6]) with mapi id 15.20.2793.013; Mon, 9 Mar 2020
- 13:58:45 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "mdf@kernel.org" <mdf@kernel.org>,
+ 2020 14:55:08 +0000
+Received: from CH2PR12MB4216.namprd12.prod.outlook.com
+ ([fe80::c8d1:bea7:c855:bcfe]) by CH2PR12MB4216.namprd12.prod.outlook.com
+ ([fe80::c8d1:bea7:c855:bcfe%5]) with mapi id 15.20.2793.013; Mon, 9 Mar 2020
+ 14:55:08 +0000
+From:   Vitor Soares <Vitor.Soares@synopsys.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>,
         "jic23@kernel.org" <jic23@kernel.org>
-CC:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>
-Subject: Re: [PATCH v8 2/8] include: fpga: adi-axi-common.h: add version
- helper macros
-Thread-Topic: [PATCH v8 2/8] include: fpga: adi-axi-common.h: add version
- helper macros
-Thread-Index: AQHV86YcBP6rketQYUC8BeRDNruucag9MV4AgABcPoCAAsDIAA==
-Date:   Mon, 9 Mar 2020 13:58:44 +0000
-Message-ID: <f1022947596ef9f0d94ca606f26f236c84288b89.camel@analog.com>
-References: <20200306110100.22092-1-alexandru.ardelean@analog.com>
-         <20200306110100.22092-3-alexandru.ardelean@analog.com>
-         <20200307142604.7d597667@archlinux> <20200307195613.GA38707@epycbox.lan>
-In-Reply-To: <20200307195613.GA38707@epycbox.lan>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com>,
+        "mario.tesi@st.com" <mario.tesi@st.com>
+Subject: RE: [PATCH v2] iio: imu: st_lsm6dsx: disable I3C support during
+ device reset
+Thread-Topic: [PATCH v2] iio: imu: st_lsm6dsx: disable I3C support during
+ device reset
+Thread-Index: AQHV9N1xEgEHERgBLUy4R7RxGmU9Q6hAWUgg
+Date:   Mon, 9 Mar 2020 14:55:08 +0000
+Message-ID: <CH2PR12MB4216C6B0B5922780FB13B902AEFE0@CH2PR12MB4216.namprd12.prod.outlook.com>
+References: <c4591fcbbb63c9280532e43b39c4f96323f321c2.1583625699.git.lorenzo@kernel.org>
+In-Reply-To: <c4591fcbbb63c9280532e43b39c4f96323f321c2.1583625699.git.lorenzo@kernel.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-originating-ip: [137.71.226.54]
+x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcc29hcmVzXGFw?=
+ =?us-ascii?Q?cGRhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
+ =?us-ascii?Q?OWUzNWJcbXNnc1xtc2ctZjQxN2M3MTMtNjIxNS0xMWVhLTgyOTQtYjgwOGNm?=
+ =?us-ascii?Q?NTlkN2ZjXGFtZS10ZXN0XGY0MTdjNzE0LTYyMTUtMTFlYS04Mjk0LWI4MDhj?=
+ =?us-ascii?Q?ZjU5ZDdmY2JvZHkudHh0IiBzej0iNDAzMyIgdD0iMTMyMjgyMzkzMDUyMzEz?=
+ =?us-ascii?Q?NjYxIiBoPSJ3S0RySjVjUG9zVnl3Uy9NQUZ1QnZjNTl4WGc9IiBpZD0iIiBi?=
+ =?us-ascii?Q?bD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQUFCUUpBQUE5?=
+ =?us-ascii?Q?K091M0l2YlZBV1R1UjN0RE9iVGlaTzVIZTBNNXRPSU9BQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBSEFBQUFDa0NBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?RUFBUUFCQUFBQXNQcFJHUUFBQUFBQUFBQUFBQUFBQUo0QUFBQm1BR2tBYmdC?=
+ =?us-ascii?Q?aEFHNEFZd0JsQUY4QWNBQnNBR0VBYmdCdUFHa0FiZ0JuQUY4QWR3QmhBSFFB?=
+ =?us-ascii?Q?WlFCeUFHMEFZUUJ5QUdzQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFF?=
+ =?us-ascii?Q?QUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdZQWJ3QjFBRzRBWkFCeUFIa0FYd0J3?=
+ =?us-ascii?Q?QUdFQWNnQjBBRzRBWlFCeUFITUFYd0JuQUdZQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFB?=
+ =?us-ascii?Q?QUFDZUFBQUFaZ0J2QUhVQWJnQmtBSElBZVFCZkFIQUFZUUJ5QUhRQWJnQmxB?=
+ =?us-ascii?Q?SElBY3dCZkFITUFZUUJ0QUhNQWRRQnVBR2NBWHdCakFHOEFiZ0JtQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQkFBQUFBQUFBQUFJQUFBQUFBSjRBQUFCbUFHOEFk?=
+ =?us-ascii?Q?UUJ1QUdRQWNnQjVBRjhBY0FCaEFISUFkQUJ1QUdVQWNnQnpBRjhBY3dCaEFH?=
+ =?us-ascii?Q?MEFjd0IxQUc0QVp3QmZBSElBWlFCekFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR1lBYndCMUFHNEFaQUJ5QUhrQVh3?=
+ =?us-ascii?Q?QndBR0VBY2dCMEFHNEFaUUJ5QUhNQVh3QnpBRzBBYVFCakFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
+ =?us-ascii?Q?QUFBQUNlQUFBQVpnQnZBSFVBYmdCa0FISUFlUUJmQUhBQVlRQnlBSFFBYmdC?=
+ =?us-ascii?Q?bEFISUFjd0JmQUhNQWRBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFKNEFBQUJtQUc4?=
+ =?us-ascii?Q?QWRRQnVBR1FBY2dCNUFGOEFjQUJoQUhJQWRBQnVBR1VBY2dCekFGOEFkQUJ6?=
+ =?us-ascii?Q?QUcwQVl3QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBRUFBQUFBQUFBQUFnQUFBQUFBbmdBQUFHWUFid0IxQUc0QVpBQnlBSGtB?=
+ =?us-ascii?Q?WHdCd0FHRUFjZ0IwQUc0QVpRQnlBSE1BWHdCMUFHMEFZd0FBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVFBQUFBQUFBQUFD?=
+ =?us-ascii?Q?QUFBQUFBQ2VBQUFBWndCMEFITUFYd0J3QUhJQWJ3QmtBSFVBWXdCMEFGOEFk?=
+ =?us-ascii?Q?QUJ5QUdFQWFRQnVBR2tBYmdCbkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUJBQUFBQUFBQUFBSUFBQUFBQUo0QUFBQnpB?=
+ =?us-ascii?Q?R0VBYkFCbEFITUFYd0JoQUdNQVl3QnZBSFVBYmdCMEFGOEFjQUJzQUdFQWJn?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUhNQVlRQnNBR1VBY3dCZkFI?=
+ =?us-ascii?Q?RUFkUUJ2QUhRQVpRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBUUFBQUFBQUFB?=
+ =?us-ascii?Q?QUNBQUFBQUFDZUFBQUFjd0J1QUhBQWN3QmZBR3dBYVFCakFHVUFiZ0J6QUdV?=
+ =?us-ascii?Q?QVh3QjBBR1VBY2dCdEFGOEFNUUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQkFBQUFBQUFBQUFJQUFBQUFBSjRBQUFC?=
+ =?us-ascii?Q?ekFHNEFjQUJ6QUY4QWJBQnBBR01BWlFCdUFITUFaUUJmQUhRQVpRQnlBRzBB?=
+ =?us-ascii?Q?WHdCekFIUUFkUUJrQUdVQWJnQjBBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBSFlBWndCZkFHc0FaUUI1?=
+ =?us-ascii?Q?QUhjQWJ3QnlBR1FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFB?=
+ =?us-ascii?Q?QUFBQ0FBQUFBQUE9Ii8+PC9tZXRhPg=3D=3D?=
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=soares@synopsys.com; 
+x-originating-ip: [83.174.63.141]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: c0efd62a-29d3-491b-7578-08d7c431fbae
-x-ms-traffictypediagnostic: DM6PR03MB4761:
-x-microsoft-antispam-prvs: <DM6PR03MB4761E722FC416281FD948B58F9FE0@DM6PR03MB4761.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-office365-filtering-correlation-id: e17ad4f3-6943-4681-5641-08d7c439dc5d
+x-ms-traffictypediagnostic: CH2PR12MB3768:
+x-microsoft-antispam-prvs: <CH2PR12MB3768FFD0E65B97FC6A28C350AEFE0@CH2PR12MB3768.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
 x-forefront-prvs: 0337AFFE9A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(39860400002)(136003)(396003)(346002)(366004)(199004)(189003)(4326008)(36756003)(71200400001)(54906003)(6486002)(6512007)(966005)(110136005)(316002)(8676002)(81166006)(81156014)(8936002)(26005)(91956017)(76116006)(186003)(6506007)(5660300002)(64756008)(66556008)(66446008)(66946007)(66476007)(478600001)(86362001)(2906002)(2616005);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR03MB4761;H:DM6PR03MB4411.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: analog.com does not designate
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(39860400002)(346002)(366004)(136003)(396003)(189003)(199004)(9686003)(4326008)(478600001)(2906002)(86362001)(66946007)(64756008)(76116006)(66446008)(8676002)(66476007)(66556008)(6506007)(71200400001)(7696005)(186003)(55016002)(54906003)(33656002)(52536014)(110136005)(26005)(316002)(81166006)(5660300002)(81156014)(8936002);DIR:OUT;SFP:1102;SCL:1;SRVR:CH2PR12MB3768;H:CH2PR12MB4216.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: synopsys.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: xs8T2h7wWDa61KOap6isvwFREmbLtG63NQarItkiBpeJPO34/OnbfBC7SgWJzE+EUEb2yNdVoe3k9wjBdHWdCX+1vyXTOCKNeKxgmqfMBKRLBybK5Nrf+N0V+90m6I3jzX+jF5rRBGAXScqnkvB+nBJyogt/nb8XdUUrb5jSkCxSFVuXgw2IAw3soK4JN9vfHIzK5eRMhsLVgtPnUC3b6KNKR6wdL2Vknwi6Bkx7iRZUUZfXRd1rEFMtP95h9pkFFUFtkmRFjkCyaecGPzsNXZ61ZETDIf6MuRJJcoPfMCIMsbszx+FLupkgORPUMsLeVvnTwAn015/cxS2fa5wNYYwo06S80+nK8AXuP/pTRnBtU/0dUhTOTZNjLhpuS9lH9d6wKlo6Nt2ior+GvgD5Al7Bxg7kYLFCj0p9HPJCgzqHB2IrYjhJlrx8wuvfQToxYpzWvt51b06zwUQOIXpFAi5M3oBeXmwbTNw9+jJVHL/+bTk+P8Jc5jboJtK5U0mylHEafhBym0GDFHN4L6csYQ==
-x-ms-exchange-antispam-messagedata: g0FocDeOMXlmY8qmpJFcoEW9LsjhW7kfV5Fj4frcJkW+8OaB3mQRv2nHVD9p24mwWOab7Sd8L5f53BfkU4gvM4o/t0+ZOCKMZ+wslV7sRagS7po5WJO16DvC+gUUabs9tchVic4lpjpdJCIWS6euEQ==
+x-microsoft-antispam-message-info: Ju/A5VWy+DCINrsfvhflGF3Ji+e+tbkbD6xph9MiY9URcP10EJiDj3IACb7DWRdqcJPzN7XHBDbU7ffnDqMPPr/NDrv4dP31JwYSZQkmE9vhh9QauA7mfgm3d75romcxiAI8pNK2G/7Jk0kNEqMAO9UVS4j+Eh1Slc+tVu/E7N6ph/DxZdJnjVFZa3v7zAjBWkQ+B782Te4ed1gZi1YD7wwHW6zZJLz+DsoIMsQlgWIsENmG0SslGc5d4H5NLb7GqftPzhSGJhemuIK/wdclWQQXWbr/ojdA+CUFwCTXvQPlLhPFo/77KhXrAvoyTjy03sdfF7+OeCVNlucrIVquhuXOeTu7U+O43Qz9Emu17P4z6ZBgNjW7zsp3FaGo25J1+q/Rz64GRkldLxyKxfpPtITvXq8tLZwSOwt4yYLq1zdVJKLqO6boJp6s3pMwHpZ5
+x-ms-exchange-antispam-messagedata: NwnWtFdAvBgxKWvPj/vHLme9VZiA0kFyqbzv/IF9gLlczGzml/z8GQ281AHnSR6DC2prh4yVKOHDSrfluu03clo5eL/CcrEoi+oAFG73rdfB+GLGrO9J/ofkZ+oguJBfFG8SLyzMxp8XnBsQ3m+jLQ==
 x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <459DCDB9C617464AB06481564BFBBD0D@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0efd62a-29d3-491b-7578-08d7c431fbae
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Mar 2020 13:58:45.0061
+X-MS-Exchange-CrossTenant-Network-Message-Id: e17ad4f3-6943-4681-5641-08d7c439dc5d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Mar 2020 14:55:08.4254
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vncXNmIcc54EfBM1MuMjUumN3ZRoY+bHdyBQ9puEgnE2ecG12c4jHZamNBWopbb9oOoecliVEjkN4JbZXIKn8efmy2y4w2LIIZlZ5RCN+WI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4761
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-09_04:2020-03-09,2020-03-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
- clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 phishscore=0
- mlxscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003090096
+X-MS-Exchange-CrossTenant-userprincipalname: cS9xW8XMW3Sfakme8UqdqQHKibaObTVCJjxLtag7j3j6TlxScsHKYssWuF3hL7X93JD64rHLNwqCkC17KTuySQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB3768
+X-OriginatorOrg: synopsys.com
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gU2F0LCAyMDIwLTAzLTA3IGF0IDExOjU2IC0wODAwLCBNb3JpdHogRmlzY2hlciB3cm90ZToN
-Cj4gW0V4dGVybmFsXQ0KPiANCj4gT24gU2F0LCBNYXIgMDcsIDIwMjAgYXQgMDI6MjY6MDRQTSAr
-MDAwMCwgSm9uYXRoYW4gQ2FtZXJvbiB3cm90ZToNCj4gPiBPbiBGcmksIDYgTWFyIDIwMjAgMTM6
-MDA6NTQgKzAyMDANCj4gPiBBbGV4YW5kcnUgQXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBh
-bmFsb2cuY29tPiB3cm90ZToNCj4gPiANCj4gPiA+IFRoZSBmb3JtYXQgZm9yIGFsbCBBREkgQVhJ
-IElQIGNvcmVzIGlzIHRoZSBzYW1lLg0KPiA+ID4gaS5lLiAnbWFqb3IubWlub3IucGF0Y2gnLg0K
-PiA+ID4gDQo+ID4gPiBUaGlzIHBhdGNoIGFkZHMgdGhlIGhlbHBlciBtYWNyb3MgdG8gYmUgcmUt
-dXNlZCBpbiBBREkgQVhJIGRyaXZlcnMuDQo+ID4gPiANCj4gPiA+IFNpZ25lZC1vZmYtYnk6IEFs
-ZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+DQo+IEFja2Vk
-LWJ5OiBNb3JpdHogRmlzY2hlciA8bWRmQGtlcm5lbC5vcmc+DQo+IA0KPiA+IEFnYWluLCB0cml2
-aWFsIGJ1dCBuZWVkcyBhIE1vcml0eiBhY2sgYXMgaXQncyBoaXMgc3Vic3lzdGVtLg0KPiANCj4g
-SSBoYWQgb3JpZ2luYWxseSBhc2tlZCB0byBub3QgcHV0IGl0IHVuZGVyIGluY2x1ZGUvbGludXgv
-ZnBnYSwgYnV0IGFsYXMsDQo+IG5vdyBpdCdzIGhlcmUgOikNCj4gDQo+IEl0IG5ldmVyIG1hZGUg
-bXVjaCBzZW5zZSBpbWhvIHRvIGRyb3AgaXQgdW5kZXIgbGludXgvZnBnYSBqdXN0IGJlY2F1c2UN
-Cj4gaXQncyBhIGhhcmR3YXJlIGltcGxlbWVudGVkIGluIGFuIEZQR0EuLi4uDQoNCldlIGNhbiBh
-bHdheXMgbW92ZSBpdC4NCkkgZG9uJ3QgcmVtZW1iZXIgYWJvdXQgYW55IGRpc2N1c3Npb24gb24g
-dGhpcyBtYXR0ZXIuDQpPciBtYXliZSBJIHdhc24ndCBpbmNsdWRlZC4NCk9yIG1heWJlIEkgaGF2
-ZSBzb21lIHNldmVyZSBjYXNlIG9mIGFtbmVzaWEgb3IgY2FyZWxlc3NuZXNzIGZvciBvbWl0dGlu
-Zw0KdGhyZWFkcy4gSSBhbSB0ZXJyaWJsZSBhdCBmb2xsb3dpbmcgdGhyZWFkcy4NCg0KQXBvbG9n
-aWVzIGZvciBhbnl0aGluZyBvbiBteSBwYXJ0Lg0KDQpJZiB5b3UgcHJvcG9zZSBhbm90aGVyIGxv
-Y2F0aW9uLCBJIGNhbiBzcGluLXVwIGEgcGF0Y2ggb24gaXQuDQoNClRoZXNlIHJlZy1kZWZpbml0
-aW9ucyBhcmUgY29tbW9uIHRvIGFsbCBBREkgSERMIHJlZ3MuDQpNYXliZSBtb3JlIG1heSBjb21l
-IHVwIGFzIHN0dWZmIGdldHMgdXBzdHJlYW1lZC4NCg0KVGhlIGZ1bGwtYmxvd24vaW50ZXJuYWwg
-dmVyc2lvbiB3ZSBoYXZlIGlzOg0KaHR0cHM6Ly9naXRodWIuY29tL2FuYWxvZ2RldmljZXNpbmMv
-bGludXgvYmxvYi9tYXN0ZXIvaW5jbHVkZS9saW51eC9mcGdhL2FkaS1heGktY29tbW9uLmgNCg0K
-SXQgdHJpZXMgdG8gZGVmaW5lIHNvbWUgdGhpbmdzIHRoYXQgYXJlIGNvbW1vbiBiZXR3ZWVuIElu
-dGVsLCBYaWxpbnggYW5kIEFESSBJUA0KY29yZXMgYWNyb3NzIFt0aGVzZSBhbmQgaG9wZWZ1bGx5
-IG90aGVyXSBGUEdBIGJvYXJkcy4NCkknbSBub3Qgc2F5aW5nIGl0J3MgZG9pbmcgYSBnb29kIGpv
-YiBvZiB0aGF0IGF0IHRoZSBtb21lbnQuDQrCr1xfKOODhClfL8KvDQpUaGFua3MNCkFsZXgNCg0K
-PiANCj4gQ2hlZXJzLA0KPiBNb3JpdHoNCg==
+Hi Lorenzo,
+
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Sun, Mar 08, 2020 at 00:06:03
+
+> Disable MIPI I3C during device reset in order to avoid
+> possible races on interrupt line 1. If the first interrupt
+> line is asserted during hw reset the device will work in
+> I3C-only mode
+>=20
+> Reported-by: Mario Tesi <mario.tesi@st.com>
+> Fixes: 2660b0080bb2 ("iio: imu: st_lsm6dsx: add i3c basic support for LSM=
+6DSO and LSM6DSR")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+> Changes since v1:
+> - fix comment syntax
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 ++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 31 ++++++++++++++++++++
+>  2 files changed, 33 insertions(+)
+>=20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st=
+_lsm6dsx/st_lsm6dsx.h
+> index f2113a63721a..dfcbe7c42493 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> @@ -266,6 +266,7 @@ struct st_lsm6dsx_ext_dev_settings {
+>   * @wai: Sensor WhoAmI default value.
+>   * @reset: register address for reset.
+>   * @boot: register address for boot.
+> + * @i3c_disable:  register address for enabling/disabling I3C (addr + ma=
+sk).
+>   * @bdu: register address for Block Data Update.
+>   * @max_fifo_size: Sensor max fifo length in FIFO words.
+>   * @id: List of hw id/device name supported by the driver configuration.
+> @@ -284,6 +285,7 @@ struct st_lsm6dsx_settings {
+>  	u8 wai;
+>  	struct st_lsm6dsx_reg reset;
+>  	struct st_lsm6dsx_reg boot;
+> +	struct st_lsm6dsx_reg i3c_disable;
+>  	struct st_lsm6dsx_reg bdu;
+>  	u16 max_fifo_size;
+>  	struct {
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 84d219ae6aee..a2e775d6eaa0 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -751,6 +751,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
+ensor_settings[] =3D {
+>  			.addr =3D 0x12,
+>  			.mask =3D BIT(7),
+>  		},
+> +		.i3c_disable =3D {
+> +			.addr =3D 0x18,
+> +			.mask =3D BIT(1),
+> +		},
+>  		.bdu =3D {
+>  			.addr =3D 0x12,
+>  			.mask =3D BIT(6),
+> @@ -1128,6 +1132,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx=
+_sensor_settings[] =3D {
+>  			.addr =3D 0x12,
+>  			.mask =3D BIT(7),
+>  		},
+> +		.i3c_disable =3D {
+> +			.addr =3D 0x18,
+> +			.mask =3D BIT(1),
+> +		},
+>  		.bdu =3D {
+>  			.addr =3D 0x12,
+>  			.mask =3D BIT(6),
+> @@ -2041,6 +2049,20 @@ static int st_lsm6dsx_init_device(struct st_lsm6ds=
+x_hw *hw)
+>  	const struct st_lsm6dsx_reg *reg;
+>  	int err;
+> =20
+> +	/*
+> +	 * disable MIPI I3C during device reset in order to avoid
+> +	 * possible races on interrupt line 1. If the first interrupt
+> +	 * line is asserted during hw reset the device will work in
+> +	 * I3C-only mode
+> +	 */
+> +	if (hw->settings->i3c_disable.addr) {
+> +		reg =3D &hw->settings->i3c_disable;
+> +		err =3D regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> +					 ST_LSM6DSX_SHIFT_VAL(1, reg->mask));
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+
+After disable the i3c interface the dynamic address is no more accessible=20
+and fails the initialization.
+
+Best regards,
+Vitor Soares
+
+>  	/* device sw reset */
+>  	reg =3D &hw->settings->reset;
+>  	err =3D regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> @@ -2059,6 +2081,15 @@ static int st_lsm6dsx_init_device(struct st_lsm6ds=
+x_hw *hw)
+> =20
+>  	msleep(50);
+> =20
+> +	/* enable MIPI I3C */
+> +	if (hw->settings->i3c_disable.addr) {
+> +		reg =3D &hw->settings->i3c_disable;
+> +		err =3D regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> +					 ST_LSM6DSX_SHIFT_VAL(0, reg->mask));
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+>  	/* enable Block Data Update */
+>  	reg =3D &hw->settings->bdu;
+>  	err =3D regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+> --=20
+> 2.24.1
+
+

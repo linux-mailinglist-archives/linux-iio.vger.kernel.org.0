@@ -2,72 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28D45181917
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Mar 2020 14:05:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 688C1182385
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Mar 2020 21:50:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729468AbgCKNFU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Mar 2020 09:05:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41864 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729345AbgCKNFT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 11 Mar 2020 09:05:19 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5F4842146E;
-        Wed, 11 Mar 2020 13:05:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583931917;
-        bh=Cx+gOZIgKknGIdPl+0Nfn9VKXwKcGh9NBh6FXMSvHUU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XfkqkQlixftkurJ7VriRJAsuscTbNeI8pFMzOp458I4zbmDsgpTj84waelnttSoJ+
-         e6lJangj4aZFHzbvcZuv4U8+/oXCRJKMb7/0/a8XhFwYmZHHftshuk9YAV/yuXkEZI
-         Nc91TFBsb2DmARCHSM9gC8P0UT1b+wFY7pQzNr3Q=
-Date:   Wed, 11 Mar 2020 14:05:15 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Enrique Vargas <jevargas@seas.upenn.edu>
-Cc:     Chas Williams <3chas3@gmail.com>, linux-iio@vger.kernel.org,
-        outreachy-kernel@googlegroups.com
-Subject: Re: [PATCH] remove unnecessary newline for brace
-Message-ID: <20200311130515.GB3823904@kroah.com>
-References: <20200311125507.GA9347@evX1>
+        id S1729001AbgCKUu2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Mar 2020 16:50:28 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:40550 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726713AbgCKUu2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Mar 2020 16:50:28 -0400
+Received: by mail-lj1-f196.google.com with SMTP id 19so3898762ljj.7
+        for <linux-iio@vger.kernel.org>; Wed, 11 Mar 2020 13:50:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=kIernzhyjsVY1rKtF4ETvR/ADo7/EzV9Slge1+0oT4Y=;
+        b=h7Gzd4wH6LcmUMnIjBJHEpbuAzHFiCmBIJSpYU2HKamm4ZJGcY5OwfX2T90YePws7n
+         0vJXI7VEvS1mMHbFbDooAuEPwmrB/GNAkf8V5sZbrPl9Iz6rsQuUjKGeic9Np2672Ruj
+         3Cb0h+iyN6oB+ixhFN8pryr3DLtmdfCKFAEERhmWrIumjg961zodWj4l6tI8AQOPZdmQ
+         NA1X+VbFY8Nl6CgNfWkQ4oYHzFMxvxfTaXag8LHUtSJtEed93wqjZCY027DTdrkfURlN
+         FBrzOyR5xEVVZ9SiitlhWuzFhLBpJUeQXFGxBxsx2Q80tmMvPXZaGyeNtDQAiwjXkvhn
+         kukw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=kIernzhyjsVY1rKtF4ETvR/ADo7/EzV9Slge1+0oT4Y=;
+        b=gJI2U1sbbde3YcPC6FEKJQYXEuZrhMJ1q8PHxjgrgCvJ8CoAk5DYzzgl87cjmRK+yS
+         sBSLGfjeAvvTdjEpDxkN47CYAhRPPE0DFQpaMPxKyLKFwbMtlSLGfWPPx2PMAqLbQ3Ze
+         PEd65g/YRIUUqAXDH/ptjIhZFMfaIP/tkEIgv9+CZe6nD57MXYL4M++yM5AhR0v4aJKd
+         uUir2nSzw3xvZcITf6PWjfsL75cR9WJeVbO3DwXyKuwzjfKzhNIPx8qn+PkRtwIV9FNU
+         CWls8CzANAbYznoyUr5oiKUsypGsrfpJdR1j7ldPCKKDbjgFRzfcLCYWszt8kGRo4k3X
+         kkjg==
+X-Gm-Message-State: ANhLgQ1XRHLRqMLmflemgxSXM8q+mLfNjposvVsJIkHmW8Gpa/ouA+uh
+        /ju/NiylER6EqiJgR/XG1ng=
+X-Google-Smtp-Source: ADFU+vuK9y6FpTluu3YG3LtJdbutTZkdgZDUlfeKaiFg+nCC3BpUWX4Kg/TAlLetOmkqXGMEdQQYFA==
+X-Received: by 2002:a2e:869a:: with SMTP id l26mr3065873lji.286.1583959826219;
+        Wed, 11 Mar 2020 13:50:26 -0700 (PDT)
+Received: from [192.168.16.194] (h-4-68-234.A785.priv.bahnhof.se. [155.4.68.234])
+        by smtp.googlemail.com with ESMTPSA id e4sm18829829ljl.27.2020.03.11.13.50.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Mar 2020 13:50:25 -0700 (PDT)
+From:   Jimmy Assarsson <jimmyassarsson@gmail.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org
+Subject: Use LIS3MDL with LSM6DSM sensor-hub
+Message-ID: <f8489de0-c6a4-f786-b936-679eba6d6804@gmail.com>
+Date:   Wed, 11 Mar 2020 21:50:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200311125507.GA9347@evX1>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Mar 11, 2020 at 06:55:07AM -0600, Enrique Vargas wrote:
-> put brace at the end of line following coding conventions
-> 
-> Signed-off-by: Enrique Vargas <jevargas@seas.upenn.edu>
-> ---
->  drivers/atm/adummy.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/atm/adummy.c b/drivers/atm/adummy.c
-> index 8157925af824..6eeaa1b21f3b 100644
-> --- a/drivers/atm/adummy.c
-> +++ b/drivers/atm/adummy.c
-> @@ -131,8 +131,7 @@ adummy_proc_read(struct atm_dev *dev, loff_t *pos, char *page)
->  	return 0;
->  }
->  
-> -static const struct atmdev_ops adummy_ops =
-> -{
-> +static const struct atmdev_ops adummy_ops = {
->  	.open =		adummy_open,
->  	.close =	adummy_close,	
->  	.send =		adummy_send,
-> -- 
-> 2.17.1
-> 
+Hi,
 
-This is an outreachy application patch?  You need to do work in
-drivers/staging/ only.  Also, the iio mailing list is not the correct
-one at all.
+We are working on a project where we want to connect LS6DSM (via SPI), and
+connect LIS3MDL via the sensor hub, as I2C slave device.
 
-greg k-h
+We would like to add settings/configuration for LIS3MDL, to the shub
+source, since currently only LIS2MDL is supported. We've made an attempt,
+see diff at end of this mail.
+
+1. LIS2MDL only got a single full scale setting, hence it is not possible
+    to change. While LIS3MDL got four possible settings. Is it enough to add
+    a corresponding function like st_lsm6dsx_shub_set_fs_val() and call it
+    from st_lsm6dsx_shub_write_raw(), when mask == IIO_CHAN_INFO_SCALE?
+2. LIS3MDL got 8 possible ODR settings, however ST_LSM6DSX_ODR_LIST_SIZE is
+    defined to 6 (st_lsm6dsx.h). Is it fine to increase
+    ST_LSM6DSX_ODR_LIST_SIZE to 8? This will also affect odr_table in
+    struct st_lsm6dsx_settings.
+3. In the patch, we've tried to copy the correct registers and values from
+    magnetometer/st_magn_core.c, does it look ok?
+
+The IIO subsystem is new to use, we possibly miss fundamental knowledge.
+
+Regards,
+jimmy
+
+---
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+index eea5556..8621dba 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+@@ -88,6 +88,69 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm6dsx_ext_dev_table[] = {
+  			.len = 6,
+  		},
+  	},
++	/* LIS3MDL */
++	{
++		.i2c_addr = { 0x1e },
++		.wai = {
++			.addr = 0x0f,
++			.val = 0x3d,
++		},
++		.id = ST_LSM6DSX_ID_MAGN,
++		.odr_table = {
++			.reg = {
++				.addr = 0x20,
++				.mask = GENMASK(4, 2),
++			},
++			.odr_avl[0] = {  1000, 0x0 },
++			.odr_avl[1] = {  2000, 0x1 },
++			.odr_avl[2] = {  3000, 0x2 },
++			.odr_avl[3] = {  5000, 0x3 },
++			.odr_avl[4] = { 10000, 0x4 },
++			.odr_avl[5] = { 20000, 0x5 },
++			.odr_avl[6] = { 40000, 0x6 },
++			.odr_avl[7] = { 80000, 0x7 },
++			.odr_len = 8,
++		},
++		.fs_table = {
++			.reg = {
++				.addr = 0x21,
++				.mask = GENMASK(6, 5),
++			},
++			.fs_avl[0] = {
++				.gain = 146,
++				.val = 0x00,
++			}, /* 4000 uG/LSB */
++			.fs_avl[1] = {
++				.gain = 292,
++				.val = 0x01,
++			}, /* 8000 uG/LSB */
++			.fs_avl[2] = {
++				.gain = 438,
++				.val = 0x02,
++			}, /* 12000 uG/LSB */
++			.fs_avl[3] = {
++				.gain = 584,
++				.val = 0x03,
++			}, /* 16000 uG/LSB */
++			.fs_len = 4,
++		},
++		.pwr_table = {
++			.reg = {
++				.addr = 0x22,
++				.mask = GENMASK(1, 0),
++			},
++			.off_val = 0x2,
++			.on_val = 0x0,
++		},
++		.bdu = {
++			.addr = 0x24,
++			.mask = BIT(6),
++		},
++		.out = {
++			.addr = 0x28,
++			.len = 6,
++		},
++	},
+  };

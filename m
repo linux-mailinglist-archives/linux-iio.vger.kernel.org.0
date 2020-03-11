@@ -2,81 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB1B51814A8
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Mar 2020 10:22:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2C2718166A
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Mar 2020 12:00:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728263AbgCKJW2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Mar 2020 05:22:28 -0400
-Received: from mga14.intel.com ([192.55.52.115]:36973 "EHLO mga14.intel.com"
+        id S1729056AbgCKLAu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Mar 2020 07:00:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34626 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728255AbgCKJW1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 11 Mar 2020 05:22:27 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Mar 2020 02:22:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,540,1574150400"; 
-   d="scan'208";a="277304117"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 11 Mar 2020 02:22:25 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id CCC3616D; Wed, 11 Mar 2020 11:22:24 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1] iio: adc: intel_mrfld_adc: Use be16_to_cpu() instead of get_unaligned_be16()
-Date:   Wed, 11 Mar 2020 11:22:23 +0200
-Message-Id: <20200311092223.9673-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+        id S1728973AbgCKLAt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 11 Mar 2020 07:00:49 -0400
+Received: from pobox.suse.cz (prg-ext-pat.suse.com [213.151.95.130])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4C42821655;
+        Wed, 11 Mar 2020 11:00:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583924449;
+        bh=MUYZ7/lqrcry2vw0YbC0ytS06So9vPrZnBUmtcQGdcE=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=ch+G2Nu0ekYSPLi39I57RW4bSANtPJJF3T+gxKNwG6H7jCvZvgiCOKHtzJi6aRo/C
+         oLi7VhrrAUlI6YfSthR3GMH6vdd3riy/PWxfzdlwDFcV6zgUicJeJQDRNoRhCW5Dmh
+         WdEnNkfARGNfsNbUfxy1O8xTugnwvLm2kdtAEkhA=
+Date:   Wed, 11 Mar 2020 12:00:46 +0100 (CET)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Takashi Iwai <tiwai@suse.de>
+cc:     Jonathan Cameron <jic23@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] HID: hid-sensor-custom: Use scnprintf() for avoiding
+ potential buffer overflow
+In-Reply-To: <20200311073824.7431-1-tiwai@suse.de>
+Message-ID: <nycvar.YFH.7.76.2003111200300.19500@cbobk.fhfr.pm>
+References: <20200311073824.7431-1-tiwai@suse.de>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There is no need to call unaligned helpers on stack placed variables
-because compiler will align them correctly, accordingly to architectural
-ABI. Moreover, using bitwise type makes it explicit to see what we are
-reading in bulk transfer. On top of that, use sizeof() instead of
-magic value.
+On Wed, 11 Mar 2020, Takashi Iwai wrote:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/adc/intel_mrfld_adc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> Since snprintf() returns the would-be-output size instead of the
+> actual output size, the succeeding calls may go beyond the given
+> buffer limit.  Fix it by replacing with scnprintf().
 
-diff --git a/drivers/iio/adc/intel_mrfld_adc.c b/drivers/iio/adc/intel_mrfld_adc.c
-index c35a1beb817c..a6d2e1f27e76 100644
---- a/drivers/iio/adc/intel_mrfld_adc.c
-+++ b/drivers/iio/adc/intel_mrfld_adc.c
-@@ -75,7 +75,7 @@ static int mrfld_adc_single_conv(struct iio_dev *indio_dev,
- 	struct regmap *regmap = adc->regmap;
- 	unsigned int req;
- 	long timeout;
--	u8 buf[2];
-+	__be16 value;
- 	int ret;
- 
- 	reinit_completion(&adc->completion);
-@@ -105,11 +105,11 @@ static int mrfld_adc_single_conv(struct iio_dev *indio_dev,
- 		goto done;
- 	}
- 
--	ret = regmap_bulk_read(regmap, chan->address, buf, 2);
-+	ret = regmap_bulk_read(regmap, chan->address, &value, sizeof(value));
- 	if (ret)
- 		goto done;
- 
--	*result = get_unaligned_be16(buf);
-+	*result = be16_to_cpu(value);
- 	ret = IIO_VAL_INT;
- 
- done:
+Queued this one in for-5.6/upstream-fixes as well. Thank you Takashi,
+
 -- 
-2.25.1
+Jiri Kosina
+SUSE Labs
 

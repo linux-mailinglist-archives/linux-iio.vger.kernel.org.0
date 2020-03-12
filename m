@@ -2,149 +2,180 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8395C182B59
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Mar 2020 09:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E596182B92
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Mar 2020 09:51:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726718AbgCLIfj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Mar 2020 04:35:39 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:40321 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726680AbgCLIff (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Mar 2020 04:35:35 -0400
-Received: by mail-wm1-f68.google.com with SMTP id e26so5213414wme.5;
-        Thu, 12 Mar 2020 01:35:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Pi3izNgFJ8/Wn3g5uvUevM173nM22Xr7mDvSE98uAq0=;
-        b=iygKix3k8tYPew0DKefQ5Z3MJaVCjgGhTqZe0HktLhOZJ0uvXqTFifYXCVCwh3ZzF4
-         0yI8jvldsCtQupNBwiNphiv+f3kZ59gOb5wgRZHEp9G53cwdLzyIAt2z7MLNUac7QSZb
-         6BsssXqFOwd0NXGJgSm6t1FBu03bM8TsAQN+Z4ZRBcuH3ktOIFWCz56xAvlHjPLeA01k
-         a8ex8c0lYFwYate9tpLOPqLOkmJZbQRoK8f2X+dTaUq6praU77An5bj00F0BpwuJ5146
-         K9083ddJom6yX/OCDQFxZ06zIlqNJodLUgVZ1nY1w4VcVl1AFy0xwyF1nK16X8yu6z9b
-         iZiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Pi3izNgFJ8/Wn3g5uvUevM173nM22Xr7mDvSE98uAq0=;
-        b=DC8i2dS35kXUaPQf7vuxlFlwSY04sdcRIY7hiEImNlMuf80uit0jW5zg0NnmD5wdX5
-         noxZ9FzQVHcpy95ZJe0iiXvGJruHhgtSYeXJ2DhXK3gsCkhZXb+7WMLh34MJhPbjqekn
-         PpD7a4uUrpBSg7veJkg6ZVbeYDGV056O4bOk8UzB46ooXCzxFgkHlPSyukYWogsQt60q
-         oW4aCdUNXxOEjIkiZ/fhahnfZL29/F7vP/xkbTtWlb8dnCOSg34EKtNvlQ5jZl/uEbqR
-         gLL1k3g7TYWtbYZb+3Hu0MY+on95jxAdamAE/75tXvy7nqQptyLlVpLPY6S7wBmcXS0O
-         5p3g==
-X-Gm-Message-State: ANhLgQ22s8+EsaG/kbzlVqnBe9g1+D/m9ekZ7rI6PexQlHbr/b5hLAyq
-        dfMj3NXtrTzsPept9asGGwmP8kzff0I=
-X-Google-Smtp-Source: ADFU+vvooBQ3lq8YA/+dE1Gl1upXgvevHPgfCB3c4nxm763tXD7qjzpNoNXZar8lY5x3PRGFC0cXiw==
-X-Received: by 2002:a1c:ed04:: with SMTP id l4mr3578623wmh.36.1584002130671;
-        Thu, 12 Mar 2020 01:35:30 -0700 (PDT)
-Received: from localhost.localdomain ([188.26.73.247])
-        by smtp.gmail.com with ESMTPSA id 9sm11543334wmo.38.2020.03.12.01.35.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2020 01:35:30 -0700 (PDT)
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-X-Google-Original-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     jic23@kernel.org, robh+dt@kernel.org, Laszlo.Nagy@analog.com,
-        Andrei.Grozav@analog.com, Michael.Hennerich@analog.com,
-        Istvan.Csomortani@analog.com, Adrian.Costina@analog.com,
-        Dragos.Bogdan@analog.com,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v9 8/8] dt-bindings: iio: adc: add bindings doc for AD9467 ADC
-Date:   Thu, 12 Mar 2020 10:35:11 +0200
-Message-Id: <20200312083511.28832-9-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200312083511.28832-1-alexandru.ardelean@analog.com>
-References: <20200312083511.28832-1-alexandru.ardelean@analog.com>
+        id S1726099AbgCLIvX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Mar 2020 04:51:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36830 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726044AbgCLIvX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 12 Mar 2020 04:51:23 -0400
+Received: from lore-desk-wlan (unknown [151.48.128.122])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F374D20578;
+        Thu, 12 Mar 2020 08:51:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584003082;
+        bh=UOIuWREpcZYyUKAISo4TYAVsg/r8eiZjUF7sQ2zpQ1Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jnXG51XW8F+tYRPC4X0EMjSofvpI+tVA8gAdv0OrrKjExVfe08xZLhPQiKdM54HX9
+         sz9Z5ol76Dir7XyBdBTctsnbcBEambMhx7kxRd4//mf5Lei6EdlWZxUdF8+1+oSqIF
+         nF4wGwHi4vTb9znXQ2MvQPQexG6r0BqGEQ0TuFL4=
+Date:   Thu, 12 Mar 2020 09:51:17 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Jimmy Assarsson <jimmyassarsson@gmail.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: Use LIS3MDL with LSM6DSM sensor-hub
+Message-ID: <20200312085117.GA2125633@lore-desk-wlan>
+References: <f8489de0-c6a4-f786-b936-679eba6d6804@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="W/nzBZO5zC0uMSeA"
+Content-Disposition: inline
+In-Reply-To: <f8489de0-c6a4-f786-b936-679eba6d6804@gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This change adds the binding doc for the AD9467 ADC.
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- .../bindings/iio/adc/adi,ad9467.yaml          | 65 +++++++++++++++++++
- 1 file changed, 65 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+--W/nzBZO5zC0uMSeA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-new file mode 100644
-index 000000000000..c4f57fa6aad1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-@@ -0,0 +1,65 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad9467.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD9467 High-Speed ADC
-+
-+maintainers:
-+  - Michael Hennerich <michael.hennerich@analog.com>
-+  - Alexandru Ardelean <alexandru.ardelean@analog.com>
-+
-+description: |
-+  The AD9467 is a 16-bit, monolithic, IF sampling analog-to-digital
-+  converter (ADC).
-+
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/AD9467.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad9467
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: adc-clk
-+
-+  powerdown-gpios:
-+    description:
-+      Pin that controls the powerdown mode of the device.
-+    maxItems: 1
-+
-+  reset-gpios:
-+    description:
-+      Reset pin for the device.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+          compatible = "adi,ad9467";
-+          reg = <0>;
-+          clocks = <&adc_clk>;
-+          clock-names = "adc-clk";
-+        };
-+    };
-+...
--- 
-2.20.1
+> Hi,
 
+Hi Jimmy,
+
+>=20
+> We are working on a project where we want to connect LS6DSM (via SPI), and
+> connect LIS3MDL via the sensor hub, as I2C slave device.
+>=20
+> We would like to add settings/configuration for LIS3MDL, to the shub
+> source, since currently only LIS2MDL is supported. We've made an attempt,
+> see diff at end of this mail.
+>=20
+> 1. LIS2MDL only got a single full scale setting, hence it is not possible
+>    to change. While LIS3MDL got four possible settings. Is it enough to a=
+dd
+>    a corresponding function like st_lsm6dsx_shub_set_fs_val() and call it
+>    from st_lsm6dsx_shub_write_raw(), when mask =3D=3D IIO_CHAN_INFO_SCALE?
+
+I think so, the other routines are already there
+
+> 2. LIS3MDL got 8 possible ODR settings, however ST_LSM6DSX_ODR_LIST_SIZE =
+is
+>    defined to 6 (st_lsm6dsx.h). Is it fine to increase
+>    ST_LSM6DSX_ODR_LIST_SIZE to 8? This will also affect odr_table in
+>    struct st_lsm6dsx_settings.
+
+I think it is ok since the real table size is indicated in the odr_len field
+
+> 3. In the patch, we've tried to copy the correct registers and values from
+>    magnetometer/st_magn_core.c, does it look ok?
+
+I have not double checked, but I guess they should be ok if you copied them
+=66rom st_magn_core.c
+
+Does it work?
+
+Regards,
+Lorenzo
+
+>=20
+> The IIO subsystem is new to use, we possibly miss fundamental knowledge.
+>=20
+> Regards,
+> jimmy
+>=20
+> ---
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_shub.c
+> index eea5556..8621dba 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> @@ -88,6 +88,69 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm=
+6dsx_ext_dev_table[] =3D {
+>  			.len =3D 6,
+>  		},
+>  	},
+> +	/* LIS3MDL */
+> +	{
+> +		.i2c_addr =3D { 0x1e },
+> +		.wai =3D {
+> +			.addr =3D 0x0f,
+> +			.val =3D 0x3d,
+> +		},
+> +		.id =3D ST_LSM6DSX_ID_MAGN,
+> +		.odr_table =3D {
+> +			.reg =3D {
+> +				.addr =3D 0x20,
+> +				.mask =3D GENMASK(4, 2),
+> +			},
+> +			.odr_avl[0] =3D {  1000, 0x0 },
+> +			.odr_avl[1] =3D {  2000, 0x1 },
+> +			.odr_avl[2] =3D {  3000, 0x2 },
+> +			.odr_avl[3] =3D {  5000, 0x3 },
+> +			.odr_avl[4] =3D { 10000, 0x4 },
+> +			.odr_avl[5] =3D { 20000, 0x5 },
+> +			.odr_avl[6] =3D { 40000, 0x6 },
+> +			.odr_avl[7] =3D { 80000, 0x7 },
+> +			.odr_len =3D 8,
+> +		},
+> +		.fs_table =3D {
+> +			.reg =3D {
+> +				.addr =3D 0x21,
+> +				.mask =3D GENMASK(6, 5),
+> +			},
+> +			.fs_avl[0] =3D {
+> +				.gain =3D 146,
+> +				.val =3D 0x00,
+> +			}, /* 4000 uG/LSB */
+> +			.fs_avl[1] =3D {
+> +				.gain =3D 292,
+> +				.val =3D 0x01,
+> +			}, /* 8000 uG/LSB */
+> +			.fs_avl[2] =3D {
+> +				.gain =3D 438,
+> +				.val =3D 0x02,
+> +			}, /* 12000 uG/LSB */
+> +			.fs_avl[3] =3D {
+> +				.gain =3D 584,
+> +				.val =3D 0x03,
+> +			}, /* 16000 uG/LSB */
+> +			.fs_len =3D 4,
+> +		},
+> +		.pwr_table =3D {
+> +			.reg =3D {
+> +				.addr =3D 0x22,
+> +				.mask =3D GENMASK(1, 0),
+> +			},
+> +			.off_val =3D 0x2,
+> +			.on_val =3D 0x0,
+> +		},
+> +		.bdu =3D {
+> +			.addr =3D 0x24,
+> +			.mask =3D BIT(6),
+> +		},
+> +		.out =3D {
+> +			.addr =3D 0x28,
+> +			.len =3D 6,
+> +		},
+> +	},
+>  };
+
+--W/nzBZO5zC0uMSeA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXmn4AgAKCRA6cBh0uS2t
+rNW7AQDBlQu65kVZp8YfBP6InSdxgH1y3L5qLCV0V2D9iBDHpwEAnO22vq7xXbhr
+oAvn7rvyjnbpbtPeqLqROe8UT2vzlQg=
+=ZOxb
+-----END PGP SIGNATURE-----
+
+--W/nzBZO5zC0uMSeA--

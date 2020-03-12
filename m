@@ -2,104 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0F79182F16
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Mar 2020 12:26:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5567183010
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Mar 2020 13:19:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726641AbgCLL0F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Mar 2020 07:26:05 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:41769 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726044AbgCLL0E (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Mar 2020 07:26:04 -0400
-Received: by mail-pl1-f196.google.com with SMTP id t14so2546215plr.8;
-        Thu, 12 Mar 2020 04:26:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=hCHUtum807cKX3xslDRMcG8mu6VO9rXiNzUSRhB+hEo=;
-        b=HGx8U17OPOy4dfSA8M7JE2HX4PnapDtKokLj3HRXNIVSlxYUHDY7LSMcDsEceVkUKY
-         y+dzO5/zCLeNDOiJwo37Ja/GW1VzOJqaNlXvXJVi0XlP3vRROAu79sLV/CsDX6jgzaVm
-         wEkud6VGKIXscsmWmibvlcCsYOzxfCK+vwiGAM/pmm2L8lddYq8ocLixyfNT5DQ6razi
-         BZNIqXPuBQzTif0M8qgOzw28AtY44fa30TtAebrRYfqS0qU1ECqEddkIAOTW3LdSp3qC
-         ptXXDlA9FiQG2OnCuSd2xRiJZQNkYHFBeT0DPIkW691MigcJH9Dsq3hjTytvIygOxBEV
-         agNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=hCHUtum807cKX3xslDRMcG8mu6VO9rXiNzUSRhB+hEo=;
-        b=FupObyigwJ5UwBP8A31URHxOISrWzK8ANRXQaIC7geBqRSPXVtBVDvq3OTGcopQ6HR
-         t3IS4TSFKzrMeHczYbOvER/yhWTzlLAWw1T8uo35y7Cv4vmBzbitJzySM84wWgyExRyn
-         c4jaAhseBMBSInRIHybURlHZzcnTSbs7xjbr3lLznS/3MqM5R3VArPH6Z0IUImPY3qQd
-         Qc3ByRnT20TpRyyQPaFZ/3aveRmtaL2+3UoMsWbN84g24xPIOd3xL4VWfaVG4KgO7ajO
-         HcHx6QOLMdqQZE/QH7XWgyKDQTruPcMlZywM5yLluEjbB20vus7sksZtRD21ZOaA70y6
-         nlnA==
-X-Gm-Message-State: ANhLgQ1zziiiIVX3EUKR/iUpbUyOEnoiER43aJqB5fE0+ITcqMoi336x
-        PpibEGIBFBkM32VzCBwDMQg=
-X-Google-Smtp-Source: ADFU+vs/Dph0h7M0maecFLJAixil9yCmF6RNBuW31PTLglUAiEHErZ13ynxqRVrmIWRV4O14yKD1fg==
-X-Received: by 2002:a17:90a:a10f:: with SMTP id s15mr3647162pjp.40.1584012362234;
-        Thu, 12 Mar 2020 04:26:02 -0700 (PDT)
-Received: from syed ([106.210.44.120])
-        by smtp.gmail.com with ESMTPSA id h2sm8372011pjc.7.2020.03.12.04.25.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Mar 2020 04:26:01 -0700 (PDT)
-Date:   Thu, 12 Mar 2020 16:55:52 +0530
-From:   Syed Nayyar Waris <syednwaris@gmail.com>
-To:     vilhelm.gray@gmail.com
-Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] counter: 104-quad-8: Add lock guards for filter clock
- prescaler
-Message-ID: <20200312112552.GA32509@syed>
+        id S1726395AbgCLMTm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Mar 2020 08:19:42 -0400
+Received: from mga14.intel.com ([192.55.52.115]:22295 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726390AbgCLMTm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 12 Mar 2020 08:19:42 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 05:19:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,544,1574150400"; 
+   d="scan'208";a="354116848"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 12 Mar 2020 05:19:40 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 69990193; Thu, 12 Mar 2020 14:19:39 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, Denis Ciocca <denis.ciocca@st.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/5] iio: light: st_uvis25: Drop unneeded casting when print error code
+Date:   Thu, 12 Mar 2020 14:19:34 +0200
+Message-Id: <20200312121938.45608-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add lock protection from race conditions in the 104-quad-8 counter
-driver for filter clock prescaler related changes. There is no IRQ
-handling so used spin_lock calls for protection.
+Explicit casting in printf() usually shows that something is not okay.
+Here, we really don't need it by providing correct specifier.
 
-Fixes: 9b74dddf79be ("counter: 104-quad-8: Support Filter Clock
-Prescaler")
-
-Signed-off-by: Syed Nayyar Waris <syednwaris@gmail.com>
-
-Split the patch from generic interface and differential encoder cable
-status changes. Also, include more code statements for protection using
-spin_lock calls and remove protection from few code statements which are
-unnecessary.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/counter/104-quad-8.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/light/st_uvis25_i2c.c | 4 ++--
+ drivers/iio/light/st_uvis25_spi.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 9dab190..58615e4 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -1230,6 +1230,8 @@ static ssize_t quad8_signal_fck_prescaler_write(struct counter_device *counter,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/iio/light/st_uvis25_i2c.c b/drivers/iio/light/st_uvis25_i2c.c
+index 4889bbeb0c73..400724069d19 100644
+--- a/drivers/iio/light/st_uvis25_i2c.c
++++ b/drivers/iio/light/st_uvis25_i2c.c
+@@ -31,8 +31,8 @@ static int st_uvis25_i2c_probe(struct i2c_client *client,
  
-+	spin_lock(&priv->lock);
-+
- 	priv->fck_prescaler[channel_id] = prescaler;
+ 	regmap = devm_regmap_init_i2c(client, &st_uvis25_i2c_regmap_config);
+ 	if (IS_ERR(regmap)) {
+-		dev_err(&client->dev, "Failed to register i2c regmap %d\n",
+-			(int)PTR_ERR(regmap));
++		dev_err(&client->dev, "Failed to register i2c regmap %ld\n",
++			PTR_ERR(regmap));
+ 		return PTR_ERR(regmap);
+ 	}
  
- 	/* Reset Byte Pointer */
-@@ -1240,6 +1242,8 @@ static ssize_t quad8_signal_fck_prescaler_write(struct counter_device *counter,
- 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP | QUAD8_RLD_PRESET_PSC,
- 	     base_offset + 1);
+diff --git a/drivers/iio/light/st_uvis25_spi.c b/drivers/iio/light/st_uvis25_spi.c
+index a9ceae4f58b3..cd3761a3ee3f 100644
+--- a/drivers/iio/light/st_uvis25_spi.c
++++ b/drivers/iio/light/st_uvis25_spi.c
+@@ -31,8 +31,8 @@ static int st_uvis25_spi_probe(struct spi_device *spi)
  
-+	spin_unlock(&priv->lock);
-+
- 	return len;
- }
+ 	regmap = devm_regmap_init_spi(spi, &st_uvis25_spi_regmap_config);
+ 	if (IS_ERR(regmap)) {
+-		dev_err(&spi->dev, "Failed to register spi regmap %d\n",
+-			(int)PTR_ERR(regmap));
++		dev_err(&spi->dev, "Failed to register spi regmap %ld\n",
++			PTR_ERR(regmap));
+ 		return PTR_ERR(regmap);
+ 	}
  
 -- 
-2.7.4
+2.25.1
 

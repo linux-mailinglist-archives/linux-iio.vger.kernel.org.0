@@ -2,100 +2,172 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F9A183772
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Mar 2020 18:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 407C11837FC
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Mar 2020 18:49:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726436AbgCLR1S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Mar 2020 13:27:18 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:41691 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726480AbgCLR1R (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Mar 2020 13:27:17 -0400
-Received: by mail-wr1-f68.google.com with SMTP id s14so8549710wrt.8;
-        Thu, 12 Mar 2020 10:27:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=KRSE02FZm7P6c8Anz7DXTPwgZAh3XR1PfKI0+YqCsH0=;
-        b=qQQ1/YtRsH2+vLCwlAajQJMDrp3OULhLWCtX7IpMOgnFTwLtTXNSgfGYAhEFtOiZL2
-         UjfMkU+J9uvd4uMsYq70mS9IbVjwU27S+X8RTEE9sy0d2hcIQueH2bGyhDAj2XPZRd5E
-         1sAjq5z2Cd1WkdBN9q+hEKKFLgV5KwlNHjLfqxPSjXzm+eAV6Kdzjk17Si0u6xDDLRo7
-         iX/Bmkmie+R5nR9kw+lirXhbPUa0wFLQgi0fp5q4itjZ0ROSwApdTecvkwyds2SRxXdx
-         S3SVXpDM/TYdE8OL+ppmhmRSHk02v2+nwJ4zi98d/oYgbBzoZrG7ddLUAHafsPIzBnZ3
-         JK2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=KRSE02FZm7P6c8Anz7DXTPwgZAh3XR1PfKI0+YqCsH0=;
-        b=DggbD4epitbvS4S0WR+5RyrF8axcIf0vku5GsuLa2wS8FzwpJVhnCHa61lHscFjFAg
-         kQurb8d4sFR7+xylJUxR/OnwRxV+29F3Lf37mkvXwsANlg01y1V6CJgsvnrS42sQdyFb
-         PQiEVxxe2BBWbsluPBjiSQGdtpIGMJRVCBJoKo2LWhY7LS/jSylIzjYGfT5+8hvX+z3W
-         x1ZNLt6ws9QLXLo0+/jHGhYuNQH/eIVUfnQD66iwxLZ4Oya3ReuOkZPbucNeImdLV0q8
-         K5+kDBd8zM2byrS+IbXPUCGW4/oNvGO533HW51BVSOcoepRaH07mOjyuY0Qo5wchyrHJ
-         CcJA==
-X-Gm-Message-State: ANhLgQ2iOWIyX1P7LKk5PoTKBQGwzHjDnRJ3i/V9iC/3uwFN/415cBbA
-        /A6vI0c6IVbJYRdWXW3K3Ng=
-X-Google-Smtp-Source: ADFU+vtyIPEP5nNpgz4gNZUrnKE69622tnMXOM8gjU2WgftE1hbzMUd0a84T94iCL+m+jkbziJD95Q==
-X-Received: by 2002:a5d:4ac2:: with SMTP id y2mr6181433wrs.263.1584034035519;
-        Thu, 12 Mar 2020 10:27:15 -0700 (PDT)
-Received: from localhost.localdomain (p5B3F6C4B.dip0.t-ipconnect.de. [91.63.108.75])
-        by smtp.gmail.com with ESMTPSA id c11sm76254500wrp.51.2020.03.12.10.27.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2020 10:27:14 -0700 (PDT)
-From:   Saravanan Sekar <sravanhome@gmail.com>
-To:     lee.jones@linaro.org, robh+dt@kernel.org, jic23@kernel.org,
+        id S1726443AbgCLRtk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Mar 2020 13:49:40 -0400
+Received: from mga04.intel.com ([192.55.52.120]:16068 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726420AbgCLRtj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 12 Mar 2020 13:49:39 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 10:49:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,545,1574150400"; 
+   d="scan'208";a="246448945"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga006.jf.intel.com with ESMTP; 12 Mar 2020 10:49:32 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jCRxd-00944x-F9; Thu, 12 Mar 2020 19:49:33 +0200
+Date:   Thu, 12 Mar 2020 19:49:33 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Saravanan Sekar <sravanhome@gmail.com>
+Cc:     lee.jones@linaro.org, robh+dt@kernel.org, jic23@kernel.org,
         knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         sre@kernel.org, mchehab+huawei@kernel.org, davem@davemloft.net,
-        gregkh@linuxfoundation.org, andriy.shevchenko@linux.intel.com,
-        fabrice.gasnier@st.com, beniamin.bia@analog.com,
-        linus.walleij@linaro.org, u.kleine-koenig@pengutronix.de,
-        fabrizio.castro@bp.renesas.com, info@metux.net,
-        hancock@sedsystems.ca, gregory.clement@bootlin.com,
+        gregkh@linuxfoundation.org, fabrice.gasnier@st.com,
+        beniamin.bia@analog.com, linus.walleij@linaro.org,
+        u.kleine-koenig@pengutronix.de, fabrizio.castro@bp.renesas.com,
+        info@metux.net, hancock@sedsystems.ca, gregory.clement@bootlin.com,
         renatogeh@gmail.com, plr.vincent@gmail.com,
         miquel.raynal@bootlin.com, marcelo.schmitt1@gmail.com,
-        paul@crapouillou.net
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
-        Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH 5/5] MAINTAINERS: Add entry for mp2629 Battery Charger driver
-Date:   Thu, 12 Mar 2020 18:26:49 +0100
-Message-Id: <20200312172649.13702-6-sravanhome@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200312172649.13702-1-sravanhome@gmail.com>
+        paul@crapouillou.net, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH 2/5] mfd: mp2629: Add support for mps battery charger
+Message-ID: <20200312174933.GJ1922688@smile.fi.intel.com>
 References: <20200312172649.13702-1-sravanhome@gmail.com>
+ <20200312172649.13702-3-sravanhome@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200312172649.13702-3-sravanhome@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add MAINTAINERS entry for Monolithic Power Systems mp2629 Charger driver.
+On Thu, Mar 12, 2020 at 06:26:46PM +0100, Saravanan Sekar wrote:
+> mp2629 is a highly-integrated switching-mode battery charge management
+> device for single-cell Li-ion or Li-polymer battery.
+> 
+> Add MFD core enables chip access for ADC driver for battery readings,
+> and a power supply battery-charger driver
 
-Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+...
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 58bb5c4753a8..5f803196d244 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11352,10 +11352,15 @@ F:	drivers/tty/mxser.*
- MONOLITHIC POWER SYSTEM PMIC DRIVER
- M:	Saravanan Sekar <sravanhome@gmail.com>
- S:	Maintained
-+F:	Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
- F:	Documentation/devicetree/bindings/regulator/mps,mp*.yaml
-+F:	drivers/iio/adc/mp2629_adc.c
-+F:	drivers/mfd/mp2629.c
-+F:	drivers/power/supply/mp2629_charger.c
- F:	drivers/regulator/mp5416.c
- F:	drivers/regulator/mpq7920.c
- F:	drivers/regulator/mpq7920.h
-+F:	include/linux/mfd/mp2629.h
- 
- MR800 AVERMEDIA USB FM RADIO DRIVER
- M:	Alexey Klimov <klimov.linux@gmail.com>
+>  drivers/mfd/Kconfig        |  43 +++++----------
+
+Why do you have unrelated changes here?
+
+...
+
+> +int mp2629_set_value(struct regmap *map, u8 reg, u8 mask, unsigned int val)
+> +{
+> +	return regmap_update_bits(map, reg, mask, val);
+> +}
+> +EXPORT_SYMBOL(mp2629_set_value);
+> +
+> +int mp2629_get_value(struct regmap *map, u8 reg, unsigned int *val)
+> +{
+> +	return regmap_read(map, reg, val);
+> +}
+> +EXPORT_SYMBOL(mp2629_get_value);
+
+I'm wondering why a child can get access to parent's regmap?
+I.o.w. why is this being exported?
+
+...
+
+> +static int mp2629_probe(struct i2c_client *client)
+> +{
+> +	struct mp2629_info *info;
+> +	int ret;
+> +
+
+> +	info = devm_kzalloc(&client->dev, sizeof(struct mp2629_info),
+> +					 GFP_KERNEL);
+
+	info = devm_kzalloc(&client->dev, sizeof(*info), GFP_KERNEL);
+
+will be shorter.
+
+> +	if (!info)
+> +		return -ENOMEM;
+
+
+> +	ret = devm_mfd_add_devices(info->dev, -1, mp2629mfd,
+> +				ARRAY_SIZE(mp2629mfd), NULL,
+> +				0, NULL);
+
+-1 has a defined name in this case.
+
+> +	if (ret)
+> +		dev_err(info->dev, "Failed to add mfd %d\n", ret);
+> +
+> +	return ret;
+> +}
+
+...
+
+> +static const struct of_device_id mp2629_of_match[] = {
+> +	{ .compatible = "mps,mp2629"},
+
+> +	{},
+
+Terminator line doesn't require comma.
+
+> +};
+
+...
+
+> +static const struct i2c_device_id mp2629_id[] = {
+> +	{ "mp2629", },
+
+> +	{ },
+
+Ditto.
+
+> +};
+> +MODULE_DEVICE_TABLE(i2c, mp2629_id);
+
+...
+
+> +		.of_match_table = of_match_ptr(mp2629_of_match),
+
+of_match_ptr() is redundant and even might provoke compiler warning...
+
+> +	.probe_new	= mp2629_probe,
+
+...especially taking into consideration ->probe_new().
+
+...
+
+> +#include <linux/platform_device.h>
+
+No user here. (Hint: Use forward declaration of struct device instead)
+
+> +#include <linux/i2c.h>
+
+Ditto.
+
+> +#include <linux/regmap.h>
+
+Ditto. (Hint: Use forward declaration of struct regmap instead)
+
+But linux/types.h is actually missed.
+
+> +int mp2629_set_value(struct regmap *map, u8 reg, u8 mask, unsigned int val);
+> +int mp2629_get_value(struct regmap *map, u8 reg, unsigned int *val);
+
 -- 
-2.17.1
+With Best Regards,
+Andy Shevchenko
+
 

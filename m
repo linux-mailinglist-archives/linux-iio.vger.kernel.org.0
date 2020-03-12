@@ -2,161 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D1A618350A
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Mar 2020 16:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36391183520
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Mar 2020 16:40:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727196AbgCLPez (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Mar 2020 11:34:55 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:41215 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727059AbgCLPez (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Mar 2020 11:34:55 -0400
-Received: by mail-qk1-f196.google.com with SMTP id b5so6866944qkh.8;
-        Thu, 12 Mar 2020 08:34:54 -0700 (PDT)
+        id S1727240AbgCLPkR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 Mar 2020 11:40:17 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:36522 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727196AbgCLPkR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Mar 2020 11:40:17 -0400
+Received: by mail-qt1-f195.google.com with SMTP id m33so4702710qtb.3;
+        Thu, 12 Mar 2020 08:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=cXPkAifA9bHCf5i5mFzjLkwktF2MjYwgFBBl0o0owh4=;
-        b=ZNsh/dlPYQECqvU/01CkKqQ1JCaio3L5WJ1N+HBwKyJIHJV1Lvqzo1K9xw5QbJvaBA
-         t7QXoYPx/74pr24bN2usdLaWP8bi7ezv2bIxQxEwyxPHva+VJjI1/iQcf/6qlP8BjaIk
-         hMEd/KVCqtFYsOjg7LqigAPY5+JdWaO1y/+ul8M5+/WXsbg1H6JXyOerYKqeOcW908XS
-         CqQ07B+yFS6dkCjbgENxUTHR2ObcSLHkhUkhNgMlinORDokvm50mLRnp+yRUDbMX05Oo
-         MDMxNJCKaUTKmEK48zFamsWPxa4nsfrdakXQsg4m89CrfeB9se0lZzWOZ3ufd34B+rRi
-         putw==
+        bh=qRfo0Jsmmm4U/AhlW7P8NwoHLU4zuGZhE4eLNUQ2+QI=;
+        b=bjKtfUCHe7SshAJRfRiHKJiAOfWCuYds+BUm2Ic7P4PVr5vYd9Rfa+cckPqDCC55+t
+         yD6FJBJQGxVdDsr6mWvB+jCljsNaGyJiaiUqfAcvSKwn4RTUKiRjl+2D0kUjaSZYZ/XY
+         zVZJ3Uc9oi0ZS4ATivBPNftm6zmtD5s5kjajFlUfOdy7PQrQMgGKmW6ZvrTjRCiXOinL
+         YQPjJ5mN+yo8u+2bMHHlH82i8vT5gLndH2JADfxHybOavy5KLgWCeegi49dDuXqxVpWB
+         3zovnESyVUNyTYwiZHhbez7gDkl8Yy8lFKI4QLGkPa2TFmA2VluQUaqD3AQSWwWBySja
+         OVGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=cXPkAifA9bHCf5i5mFzjLkwktF2MjYwgFBBl0o0owh4=;
-        b=Ew5m3PCQHMkZZidz/He+EWKzggNjvvaqP8cG1rSda39vxfWzd3kptfzIbMnnVxY+g9
-         /rYj8rWajTcfUL5weuzMoJt/sWDN7EE0nzGK25qQKHCkhrP5LxmqQ8p0Ag9aIZNz/PuC
-         1ViDjlj97zyMUl/yyrmixBWUK8KLV3xhgjKSH1nWjdmYttQVU3mB1bXHceRaGnmM+XCP
-         PXL+SnvUFDcRNZryaUWsoIgDvkdZ2yspdkQf8ku7vRD6VZHoCvCuTvCpZZqi9zXebcc/
-         KO4DJ2ai8AF+GhK7+shqdQze7O5OR+8q5hm8/ES2/jp/TN+eRtA13nOTyBBY+aQdRvM+
-         6D7A==
-X-Gm-Message-State: ANhLgQ1SVhS/+N4yTjKuJygd3+CAv7zzLVoJgT+GJQ6iziqjMWn1eNw9
-        uUrYaX6ithgEf3rZGIsYKfg=
-X-Google-Smtp-Source: ADFU+vuJx50U1pclvEz7bqtZ6Jdg/uO1jKtzO2bzPAA4TOZ0qWa2qFSvulg+XPo5rDrNAxXye/ACZw==
-X-Received: by 2002:a37:d13:: with SMTP id 19mr7847195qkn.404.1584027294205;
-        Thu, 12 Mar 2020 08:34:54 -0700 (PDT)
+        bh=qRfo0Jsmmm4U/AhlW7P8NwoHLU4zuGZhE4eLNUQ2+QI=;
+        b=JVeySvgZZ9bWW25ThEEhTktpnKX9x+tdBbuVW6xhifVAadIQlunMOfdUkgTJAetx2r
+         Gr24XRKOU+aJX7Flaff/3td0tx8iSJJMxmNI8Z59yp0VfRFM1lsE/ZRyIRMKcqH8DSGy
+         7HX0XueMe6EyPawnmPdxukThPr3ReX0STHkXMJARdtIBdvgAvfm7Ku97N1TwkEQR4pFF
+         smFQ+oT8Slbvt4lih9kT/Gvm5FxhG+83X5xWWSdnBzvHFTS2+IrnGvu5FZFurWm7QVw/
+         iRuA+6WuutXmoeWbyVbnk8ibMcdTlZg7xcppQrFb5Zu4rXsYRxUVKscK3FdC2J3BN5EP
+         vOpw==
+X-Gm-Message-State: ANhLgQ12KYteB8STBvarPonsmuU1pVcFqpT74huvRGs3H/kA2t7LWN6b
+        so2pA8idKc+N/PGvIPpH3s0=
+X-Google-Smtp-Source: ADFU+vuALdIRhw3biMmdUsl4H0a9RZFcaeD0dOk9rZJZpV9ei6j1RatB2nqDB4oeJ3UmG5ksN9LQAA==
+X-Received: by 2002:aed:23aa:: with SMTP id j39mr7813677qtc.42.1584027615696;
+        Thu, 12 Mar 2020 08:40:15 -0700 (PDT)
 Received: from icarus (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id o57sm7746602qtf.42.2020.03.12.08.34.51
+        by smtp.gmail.com with ESMTPSA id m92sm1254388qtd.94.2020.03.12.08.40.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2020 08:34:52 -0700 (PDT)
-Date:   Thu, 12 Mar 2020 11:34:50 -0400
+        Thu, 12 Mar 2020 08:40:14 -0700 (PDT)
+Date:   Thu, 12 Mar 2020 11:40:12 -0400
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     Syed Nayyar Waris <syednwaris@gmail.com>
 Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] counter: 104-quad-8: Add lock guards -
- differential encoder cable
-Message-ID: <20200312153450.GB3250@icarus>
-References: <20200312112517.GA32485@syed>
+Subject: Re: [PATCH v3 3/3] counter: 104-quad-8: Add lock guards for filter
+ clock prescaler
+Message-ID: <20200312154012.GC3250@icarus>
+References: <20200312112552.GA32509@syed>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="v9Ux+11Zm5mwPlX6"
+        protocol="application/pgp-signature"; boundary="ncSAzJYg3Aa9+CRW"
 Content-Disposition: inline
-In-Reply-To: <20200312112517.GA32485@syed>
+In-Reply-To: <20200312112552.GA32509@syed>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---v9Ux+11Zm5mwPlX6
+--ncSAzJYg3Aa9+CRW
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 12, 2020 at 04:55:17PM +0530, Syed Nayyar Waris wrote:
+On Thu, Mar 12, 2020 at 04:55:52PM +0530, Syed Nayyar Waris wrote:
 > Add lock protection from race conditions in the 104-quad-8 counter
-> driver for differential encoder cable status changes. There is no IRQ
-> handling so spin_lock calls are used for protection.
+> driver for filter clock prescaler related changes. There is no IRQ
+> handling so used spin_lock calls for protection.
 >=20
-> Fixes: bbef69e088c3 ("counter: 104-quad-8: Support Differential Encoder
-> Cable Status")
+> Fixes: 9b74dddf79be ("counter: 104-quad-8: Support Filter Clock
+> Prescaler")
 >=20
 > Signed-off-by: Syed Nayyar Waris <syednwaris@gmail.com>
 >=20
-> Split the patch from generic driver interface and clock prescaler
-> related code changes. Also, include more code statements for protection
-> using spin_lock calls and remove protection from few code statements as
-> they are unnecessary.
+> Split the patch from generic interface and differential encoder cable
+> status changes. Also, include more code statements for protection using
+> spin_lock calls and remove protection from few code statements which are
+> unnecessary.
 > ---
 
 Hello Syed,
 
-Just like in the first patch, move these comments below the "---" line.
+Remove the review comments from the commit message and I think this
+patch is all right. You can also extend the Fixes line so that it
+doesn't wrap around. Add the following Signed-off-by line underneath
+yours and it'll remind me that I've already reviewed this patch when you
+submit v4 of your patchset:
 
->  drivers/counter/104-quad-8.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-> index 9dab190..1ce9660 100644
-> --- a/drivers/counter/104-quad-8.c
-> +++ b/drivers/counter/104-quad-8.c
-> @@ -1153,16 +1153,22 @@ static ssize_t quad8_signal_cable_fault_read(stru=
-ct counter_device *counter,
->  {
->  	const struct quad8_iio *const priv =3D counter->priv;
->  	const size_t channel_id =3D signal->id / 2;
-> -	const bool disabled =3D !(priv->cable_fault_enable & BIT(channel_id));
-> +	bool disabled;
->  	unsigned int status;
->  	unsigned int fault;
-> =20
-> +	spin_lock(&((struct quad8_iio *)priv)->lock);
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-You can redeclare priv whenever you need to avoid these casts:
-
-	struct quad8_iio *const priv =3D counter->priv;
-	...
-	spin_lock(&priv->lock);
-	...
-	spin_unlock(&priv->lock);
-
-> +
-> +	disabled =3D !(priv->cable_fault_enable & BIT(channel_id));
-> +
->  	if (disabled)
->  		return -EINVAL;
-
-This return statement can cause a deadlock. You can avoid that by
-calling spin_unlock before the return:
-
-	if (disabled) {
-		spin_unlock(&priv->lock);
-		return -EINVAL;
-	}
-
-Sincerely,
+Thank you,
 
 William Breathitt Gray
 
-> =20
->  	/* Logic 0 =3D cable fault */
->  	status =3D inb(priv->base + QUAD8_DIFF_ENCODER_CABLE_STATUS);
-> =20
-> +	spin_unlock(&((struct quad8_iio *)priv)->lock);
-> +
->  	/* Mask respective channel and invert logic */
->  	fault =3D !(status & BIT(channel_id));
-> =20
-> @@ -1194,6 +1200,8 @@ static ssize_t quad8_signal_cable_fault_enable_writ=
-e(
+>  drivers/counter/104-quad-8.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+> index 9dab190..58615e4 100644
+> --- a/drivers/counter/104-quad-8.c
+> +++ b/drivers/counter/104-quad-8.c
+> @@ -1230,6 +1230,8 @@ static ssize_t quad8_signal_fck_prescaler_write(str=
+uct counter_device *counter,
 >  	if (ret)
 >  		return ret;
 > =20
 > +	spin_lock(&priv->lock);
 > +
->  	if (enable)
->  		priv->cable_fault_enable |=3D BIT(channel_id);
->  	else
-> @@ -1204,6 +1212,8 @@ static ssize_t quad8_signal_cable_fault_enable_writ=
-e(
+>  	priv->fck_prescaler[channel_id] =3D prescaler;
 > =20
->  	outb(cable_fault_enable, priv->base + QUAD8_DIFF_ENCODER_CABLE_STATUS);
+>  	/* Reset Byte Pointer */
+> @@ -1240,6 +1242,8 @@ static ssize_t quad8_signal_fck_prescaler_write(str=
+uct counter_device *counter,
+>  	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP | QUAD8_RLD_PRESET_PSC,
+>  	     base_offset + 1);
 > =20
 > +	spin_unlock(&priv->lock);
 > +
@@ -167,24 +130,24 @@ e(
 > 2.7.4
 >=20
 
---v9Ux+11Zm5mwPlX6
+--ncSAzJYg3Aa9+CRW
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl5qVpkACgkQhvpINdm7
-VJIXthAAxkrUmI+zv3FV4D2drUuXL2eSlo+MFgNmnsL+6QhDTMhZPLUWExwQ+0qe
-rMSIvWwfK98TEWgHYKWaGhjH+vJe1AYKyZcHYPJ88265nkdrFfUPgoZdzrrN5Lz+
-/P75CF24KwRlXs+PwETxpLq+FdKJRgmNg9kFw6MaqccfphJ8YJO/VxPlBuzxMHe9
-Ktv9wFOq/VLtlOKLiYgNwRjDBaddUzsGtz+NqegXQFCUWaqBWNA0NQBimw9hLr5u
-XIbb5wSlVumt7DtLihlutJLMVi6W37b4Nks6NX6b8L91tvagMUFYXEOwMVGatkwD
-Le7fxWzEtUTnDxHOsRryvjoyTmYKqANwpxNFWBlwFCIE1JpykrDQIvv5HKhEbXv7
-SHg569ZmWZ37WTh7RVKolsuI/LEolhBFpBC0TdbvAG93PxhYR+i218EZJx6wUvHg
-A4fbxOEBDvR2K7r/5UJQZkaET3eWxwePZPGUfQkeCGmjaDiQjg259RlumnwZu3ok
-istabnTZYqou02V83ud2JyiQDJgduWIpaKfu6APUfVfV4xFn3ObuKUaqkOXwm/Sy
-UOdDlXFbuUmJM1npnAFE58IoCdpUm8vq7HjqWlPLCD65fwMKRy9kmm/EgKwoHY40
-VC48mQNqLLf7DBwdgRrfim5QmQJq+SzTOcYSjuDFU23119x1Dfs=
-=5G6p
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl5qV9wACgkQhvpINdm7
+VJJBLRAA4oZHQ9p7kGoPTgepRi+sfHPlW3qm1lBDpWC5bo41G/pPHv3zy3p2/t6b
+AKKX4/+mE0M43M3APYnYD0tkzl8ZuT29lrnNyOHXink235ljEgysOYeynr+6Ju9n
+Guo7v40BLF+IamooDvrJYIZiwRkcPocV9K7CUAEHz61PDGHqkPvItnf8hzwh1TFa
+5JBkL3uufkMiH1SRvfx1eyGqphToHZH/Eu+2FalWfKyp2fueUmwohmqh6Ju6cP4p
+vAgRs3R7XNmEjRAjV2iGYF4kkcfOy5kMEhSHMzXZQVcQvJ2ENOAiU2VIyifRAhSy
+ZMCGBYxUjIl4n72+hDXoL+WyegKI/wOpYqseNV6xKfxUU8asaclaZIGclXWTWqz7
+kkbehOjVppgxRHdFjfmjBnZh5uYQVYCNt/pZFy8Hqrd2h/JMXc39DPGTxZi0p47p
+7Apl1oWC/nuRHy0Irx8jJk/juw1xhOxRTcZmlrqeMTKsQKQn1IAVC9Y1vTdEWQDS
+pbnMORAdzQFUzqs+vtlDOXOipmATgpURIL96Dh5z84qRM4pTm2uvkhQ7ypsVY7nS
+coOJIX0xMwDZVdhHqd540hClHYbJgqCt/59CiqcHS0LWCKv+OHOgJU9WP5HzioUs
+kEjK9qre3JFwlgb5NyZ9nzZfT1FuNCzvpaaD/CU5wZFE2xBl8ys=
+=cfwF
 -----END PGP SIGNATURE-----
 
---v9Ux+11Zm5mwPlX6--
+--ncSAzJYg3Aa9+CRW--

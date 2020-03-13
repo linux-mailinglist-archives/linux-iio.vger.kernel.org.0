@@ -2,37 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33ECB184E09
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 18:55:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B157E184E56
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 19:06:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbgCMRzM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Mar 2020 13:55:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39040 "EHLO mail.kernel.org"
+        id S1726534AbgCMSGQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Mar 2020 14:06:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42236 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726414AbgCMRzM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 13 Mar 2020 13:55:12 -0400
+        id S1726477AbgCMSGQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 13 Mar 2020 14:06:16 -0400
 Received: from lore-desk-wlan.redhat.com (unknown [151.48.128.122])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C14F72072C;
-        Fri, 13 Mar 2020 17:55:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5190220674;
+        Fri, 13 Mar 2020 18:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584122112;
-        bh=ge8lmYNtgcb053ddtWuR1OxdgckAbYZyxxLxK6mEyY0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wJO1L4O6RM9J+C0hVV6Tb7upwn7+ZImoMjvCcUEY0E+xhQ2iITNq0skY8hepCU3fz
-         pRgvuA20vhOD3n4SjhRXZYVo0SKJmsMSh9JLlPATuT+me3rWGiijC2zuu6GUY9hip/
-         ObtdS+kYkXZtF9kVwWd5AEgZOOPZ750fI577Stok=
+        s=default; t=1584122775;
+        bh=GgsEsmfySKuoVrDluXcysKJXOhDPRmuJn8pnR9p67Q4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=leuysofoNYiSEm86Cu8GjCZmNmzGgi8zd0+ARG7q7fUWvct7qU9Uk5oeYNjgldaan
+         jYKKYJBDhWSQqU/PTvTrO3AbobyfU8/DhycEMHmp216mfZkkzp3B8KoNUxZrYZa5OU
+         +TLMy0BtnjGsRENxqkI6fR+Xx1AgAzjyDLopO2KQ=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, mario.tesi@st.com, denis.ciocca@st.com,
-        lorenzo.bianconi@redhat.com
-Subject: [PATCH 2/2] iio: imu: st_lsm6dsx: specify slave odr in slv_odr
-Date:   Fri, 13 Mar 2020 18:54:42 +0100
-Message-Id: <b24597a5efda4c9d611b59eff18abaaf73bf5e35.1584121852.git.lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        mario.tesi@st.com, vitor.soares@synopsys.com
+Subject: [PATCH] iio: imu: st_lsm6dsx: flush hw FIFO before resetting the device
+Date:   Fri, 13 Mar 2020 19:06:00 +0100
+Message-Id: <e9beff6b3a32ddf0de20821e50cf3ed562e36b48.1584122527.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.24.1
-In-Reply-To: <cover.1584121851.git.lorenzo@kernel.org>
-References: <cover.1584121851.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -40,104 +38,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Introduce slv_odr in ext_info data structure in order to distinguish
-between sensor hub trigger (accel sensor) odr and i2c slave odr and
-properly compute samples in FIFO pattern
+flush hw FIFO before device reset in order to avoid possible races
+on interrupt line 1. If the first interrupt line is asserted during
+hw reset the device will work in I3C-only mode (if it is supported)
 
-Fixes: e485e2a2cfd6 ("iio: imu: st_lsm6dsx: enable sensor-hub support for lsm6dsm")
+Fixes: 801a6e0af0c6 ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
+Fixes: 43901008fde0 ("iio: imu: st_lsm6dsx: add support to LSM6DSR")
+Reported-by: Mario Tesi <mario.tesi@st.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  1 +
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 29 +++++++++++++++-----
- 2 files changed, 23 insertions(+), 7 deletions(-)
+This is a new version of: "iio: imu: st_lsm6dsx: disable I3C support during
+device reset"
+https://patchwork.kernel.org/patch/11425389/
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 24 +++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index e9e756b1e92f..41cb20cb3809 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -357,6 +357,7 @@ struct st_lsm6dsx_sensor {
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 84d219ae6aee..4426524b59f2 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -2036,11 +2036,21 @@ static int st_lsm6dsx_init_hw_timer(struct st_lsm6dsx_hw *hw)
+ 	return 0;
+ }
  
- 	struct {
- 		const struct st_lsm6dsx_ext_dev_settings *settings;
-+		u32 slv_odr;
- 		u8 addr;
- 	} ext_info;
- };
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-index 95ddd19d1aa7..64ef07a30726 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-@@ -421,7 +421,8 @@ int st_lsm6dsx_shub_set_enable(struct st_lsm6dsx_sensor *sensor, bool enable)
- 
- 	settings = sensor->ext_info.settings;
- 	if (enable) {
--		err = st_lsm6dsx_shub_set_odr(sensor, sensor->odr);
-+		err = st_lsm6dsx_shub_set_odr(sensor,
-+					      sensor->ext_info.slv_odr);
- 		if (err < 0)
- 			return err;
- 	} else {
-@@ -459,7 +460,7 @@ st_lsm6dsx_shub_read_oneshot(struct st_lsm6dsx_sensor *sensor,
- 	if (err < 0)
- 		return err;
- 
--	delay = 1000000000 / sensor->odr;
-+	delay = 1000000000 / sensor->ext_info.slv_odr;
- 	usleep_range(delay, 2 * delay);
- 
- 	len = min_t(int, sizeof(data), ch->scan_type.realbits >> 3);
-@@ -500,8 +501,8 @@ st_lsm6dsx_shub_read_raw(struct iio_dev *iio_dev,
- 		iio_device_release_direct_mode(iio_dev);
- 		break;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		*val = sensor->odr / 1000;
--		*val2 = (sensor->odr % 1000) * 1000;
-+		*val = sensor->ext_info.slv_odr / 1000;
-+		*val2 = (sensor->ext_info.slv_odr % 1000) * 1000;
- 		ret = IIO_VAL_INT_PLUS_MICRO;
- 		break;
- 	case IIO_CHAN_INFO_SCALE:
-@@ -535,8 +536,20 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
- 
- 		val = val * 1000 + val2 / 1000;
- 		err = st_lsm6dsx_shub_get_odr_val(sensor, val, &data);
--		if (!err)
--			sensor->odr = val;
-+		if (!err) {
-+			struct st_lsm6dsx_hw *hw = sensor->hw;
-+			struct st_lsm6dsx_sensor *ref_sensor;
-+			u8 odr_val;
-+			int odr;
-+
-+			ref_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
-+			odr = st_lsm6dsx_check_odr(ref_sensor, val, &odr_val);
-+			if (odr < 0)
-+				return odr;
-+
-+			sensor->ext_info.slv_odr = val;
-+			sensor->odr = odr;
-+		}
- 		break;
- 	}
- 	default:
-@@ -613,6 +626,7 @@ st_lsm6dsx_shub_alloc_iiodev(struct st_lsm6dsx_hw *hw,
- 			     const struct st_lsm6dsx_ext_dev_settings *info,
- 			     u8 i2c_addr, const char *name)
+-static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
++static int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw)
  {
-+	enum st_lsm6dsx_sensor_id ref_id = ST_LSM6DSX_ID_ACC;
- 	struct iio_chan_spec *ext_channels;
- 	struct st_lsm6dsx_sensor *sensor;
- 	struct iio_dev *iio_dev;
-@@ -628,7 +642,8 @@ st_lsm6dsx_shub_alloc_iiodev(struct st_lsm6dsx_hw *hw,
- 	sensor = iio_priv(iio_dev);
- 	sensor->id = id;
- 	sensor->hw = hw;
--	sensor->odr = info->odr_table.odr_avl[0].milli_hz;
-+	sensor->odr = hw->settings->odr_table[ref_id].odr_avl[0].milli_hz;
-+	sensor->ext_info.slv_odr = info->odr_table.odr_avl[0].milli_hz;
- 	sensor->gain = info->fs_table.fs_avl[0].gain;
- 	sensor->ext_info.settings = info;
- 	sensor->ext_info.addr = i2c_addr;
+ 	const struct st_lsm6dsx_reg *reg;
+ 	int err;
+ 
++	/*
++	 * flush hw FIFO before device reset in order to avoid
++	 * possible races on interrupt line 1. If the first interrupt
++	 * line is asserted during hw reset the device will work in
++	 * I3C-only mode (if it is supported)
++	 */
++	err = st_lsm6dsx_flush_fifo(hw);
++	if (err < 0 && err != -ENOTSUPP)
++		return err;
++
+ 	/* device sw reset */
+ 	reg = &hw->settings->reset;
+ 	err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
+@@ -2059,6 +2069,18 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+ 
+ 	msleep(50);
+ 
++	return 0;
++}
++
++static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
++{
++	const struct st_lsm6dsx_reg *reg;
++	int err;
++
++	err = st_lsm6dsx_reset_device(hw);
++	if (err < 0)
++		return err;
++
+ 	/* enable Block Data Update */
+ 	reg = &hw->settings->bdu;
+ 	err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
 -- 
 2.24.1
 

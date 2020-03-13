@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A397184E08
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 18:55:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33ECB184E09
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 18:55:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726480AbgCMRzL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Mar 2020 13:55:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39024 "EHLO mail.kernel.org"
+        id S1726528AbgCMRzM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Mar 2020 13:55:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39040 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726414AbgCMRzL (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 13 Mar 2020 13:55:11 -0400
+        id S1726414AbgCMRzM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 13 Mar 2020 13:55:12 -0400
 Received: from lore-desk-wlan.redhat.com (unknown [151.48.128.122])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 07C66206EB;
-        Fri, 13 Mar 2020 17:55:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C14F72072C;
+        Fri, 13 Mar 2020 17:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584122109;
-        bh=pP/kh4TzAUmZr1IFqh1ECEaMLA6t5DguYM3btJYvFm8=;
+        s=default; t=1584122112;
+        bh=ge8lmYNtgcb053ddtWuR1OxdgckAbYZyxxLxK6mEyY0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=umVDiPMyJqXIKdx3CZKPINnytHe5YYFfNUF19sx47DD+YxoZXxX3qEfKcbGBeYCix
-         CJTmODaVSlUy+8eylQ1fwa9A2F7KCGGfga4YHYJM4eKZp0ipb2AkBw5B7taBnOoiOL
-         oXoYAutfRyDHVwAdhaJQLA+Rb+RaESpjIJBngEpY=
+        b=wJO1L4O6RM9J+C0hVV6Tb7upwn7+ZImoMjvCcUEY0E+xhQ2iITNq0skY8hepCU3fz
+         pRgvuA20vhOD3n4SjhRXZYVo0SKJmsMSh9JLlPATuT+me3rWGiijC2zuu6GUY9hip/
+         ObtdS+kYkXZtF9kVwWd5AEgZOOPZ750fI577Stok=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     jic23@kernel.org
 Cc:     linux-iio@vger.kernel.org, mario.tesi@st.com, denis.ciocca@st.com,
         lorenzo.bianconi@redhat.com
-Subject: [PATCH 1/2] iio: imu: st_lsm6dsx: fix read misalignment on untagged FIFO
-Date:   Fri, 13 Mar 2020 18:54:41 +0100
-Message-Id: <f9cdf1a1f69013417a5aaaf11a548e9585bdac20.1584121851.git.lorenzo@kernel.org>
+Subject: [PATCH 2/2] iio: imu: st_lsm6dsx: specify slave odr in slv_odr
+Date:   Fri, 13 Mar 2020 18:54:42 +0100
+Message-Id: <b24597a5efda4c9d611b59eff18abaaf73bf5e35.1584121852.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <cover.1584121851.git.lorenzo@kernel.org>
 References: <cover.1584121851.git.lorenzo@kernel.org>
@@ -40,114 +40,104 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-st_lsm6dsx suffers of a read misalignment on untagged FIFO when
-all 3 supported sensors (accel, gyro and ext device) are running
-at different ODRs (the use-case is reported in the LSM6DSM Application
-Note at pag 100).
-Fix the issue taking into account decimation factor reading the FIFO
-pattern.
+Introduce slv_odr in ext_info data structure in order to distinguish
+between sensor hub trigger (accel sensor) odr and i2c slave odr and
+properly compute samples in FIFO pattern
 
 Fixes: e485e2a2cfd6 ("iio: imu: st_lsm6dsx: enable sensor-hub support for lsm6dsm")
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  2 ++
- .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 23 +++++++++++++------
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  1 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 29 +++++++++++++++-----
+ 2 files changed, 23 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index f2113a63721a..e9e756b1e92f 100644
+index e9e756b1e92f..41cb20cb3809 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -337,6 +337,7 @@ enum st_lsm6dsx_fifo_mode {
-  * @gain: Configured sensor sensitivity.
-  * @odr: Output data rate of the sensor [Hz].
-  * @watermark: Sensor watermark level.
-+ * @decimator: Sensor decimation factor.
-  * @sip: Number of samples in a given pattern.
-  * @ts_ref: Sensor timestamp reference for hw one.
-  * @ext_info: Sensor settings if it is connected to i2c controller
-@@ -350,6 +351,7 @@ struct st_lsm6dsx_sensor {
- 	u32 odr;
+@@ -357,6 +357,7 @@ struct st_lsm6dsx_sensor {
  
- 	u16 watermark;
-+	u8 decimator;
- 	u8 sip;
- 	s64 ts_ref;
+ 	struct {
+ 		const struct st_lsm6dsx_ext_dev_settings *settings;
++		u32 slv_odr;
+ 		u8 addr;
+ 	} ext_info;
+ };
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+index 95ddd19d1aa7..64ef07a30726 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+@@ -421,7 +421,8 @@ int st_lsm6dsx_shub_set_enable(struct st_lsm6dsx_sensor *sensor, bool enable)
  
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-index bb899345f2bb..afd00daeefb2 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -93,6 +93,7 @@ st_lsm6dsx_get_decimator_val(struct st_lsm6dsx_sensor *sensor, u32 max_odr)
- 			break;
+ 	settings = sensor->ext_info.settings;
+ 	if (enable) {
+-		err = st_lsm6dsx_shub_set_odr(sensor, sensor->odr);
++		err = st_lsm6dsx_shub_set_odr(sensor,
++					      sensor->ext_info.slv_odr);
+ 		if (err < 0)
+ 			return err;
+ 	} else {
+@@ -459,7 +460,7 @@ st_lsm6dsx_shub_read_oneshot(struct st_lsm6dsx_sensor *sensor,
+ 	if (err < 0)
+ 		return err;
+ 
+-	delay = 1000000000 / sensor->odr;
++	delay = 1000000000 / sensor->ext_info.slv_odr;
+ 	usleep_range(delay, 2 * delay);
+ 
+ 	len = min_t(int, sizeof(data), ch->scan_type.realbits >> 3);
+@@ -500,8 +501,8 @@ st_lsm6dsx_shub_read_raw(struct iio_dev *iio_dev,
+ 		iio_device_release_direct_mode(iio_dev);
+ 		break;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		*val = sensor->odr / 1000;
+-		*val2 = (sensor->odr % 1000) * 1000;
++		*val = sensor->ext_info.slv_odr / 1000;
++		*val2 = (sensor->ext_info.slv_odr % 1000) * 1000;
+ 		ret = IIO_VAL_INT_PLUS_MICRO;
+ 		break;
+ 	case IIO_CHAN_INFO_SCALE:
+@@ -535,8 +536,20 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+ 
+ 		val = val * 1000 + val2 / 1000;
+ 		err = st_lsm6dsx_shub_get_odr_val(sensor, val, &data);
+-		if (!err)
+-			sensor->odr = val;
++		if (!err) {
++			struct st_lsm6dsx_hw *hw = sensor->hw;
++			struct st_lsm6dsx_sensor *ref_sensor;
++			u8 odr_val;
++			int odr;
++
++			ref_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
++			odr = st_lsm6dsx_check_odr(ref_sensor, val, &odr_val);
++			if (odr < 0)
++				return odr;
++
++			sensor->ext_info.slv_odr = val;
++			sensor->odr = odr;
++		}
+ 		break;
  	}
- 
-+	sensor->decimator = decimator;
- 	return i == max_size ? 0 : st_lsm6dsx_decimator_table[i].val;
- }
- 
-@@ -337,7 +338,7 @@ static inline int st_lsm6dsx_read_block(struct st_lsm6dsx_hw *hw, u8 addr,
- int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
+ 	default:
+@@ -613,6 +626,7 @@ st_lsm6dsx_shub_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+ 			     const struct st_lsm6dsx_ext_dev_settings *info,
+ 			     u8 i2c_addr, const char *name)
  {
- 	struct st_lsm6dsx_sensor *acc_sensor, *gyro_sensor, *ext_sensor = NULL;
--	int err, acc_sip, gyro_sip, ts_sip, ext_sip, read_len, offset;
-+	int err, sip, acc_sip, gyro_sip, ts_sip, ext_sip, read_len, offset;
- 	u16 fifo_len, pattern_len = hw->sip * ST_LSM6DSX_SAMPLE_SIZE;
- 	u16 fifo_diff_mask = hw->settings->fifo_ops.fifo_diff.mask;
- 	u8 gyro_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
-@@ -399,19 +400,20 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
- 		acc_sip = acc_sensor->sip;
- 		ts_sip = hw->ts_sip;
- 		offset = 0;
-+		sip = 0;
- 
- 		while (acc_sip > 0 || gyro_sip > 0 || ext_sip > 0) {
--			if (gyro_sip > 0) {
-+			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
- 				memcpy(gyro_buff, &hw->buff[offset],
- 				       ST_LSM6DSX_SAMPLE_SIZE);
- 				offset += ST_LSM6DSX_SAMPLE_SIZE;
- 			}
--			if (acc_sip > 0) {
-+			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
- 				memcpy(acc_buff, &hw->buff[offset],
- 				       ST_LSM6DSX_SAMPLE_SIZE);
- 				offset += ST_LSM6DSX_SAMPLE_SIZE;
- 			}
--			if (ext_sip > 0) {
-+			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
- 				memcpy(ext_buff, &hw->buff[offset],
- 				       ST_LSM6DSX_SAMPLE_SIZE);
- 				offset += ST_LSM6DSX_SAMPLE_SIZE;
-@@ -441,18 +443,25 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
- 				offset += ST_LSM6DSX_SAMPLE_SIZE;
- 			}
- 
--			if (gyro_sip-- > 0)
-+			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
- 				iio_push_to_buffers_with_timestamp(
- 					hw->iio_devs[ST_LSM6DSX_ID_GYRO],
- 					gyro_buff, gyro_sensor->ts_ref + ts);
--			if (acc_sip-- > 0)
-+				gyro_sip--;
-+			}
-+			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
- 				iio_push_to_buffers_with_timestamp(
- 					hw->iio_devs[ST_LSM6DSX_ID_ACC],
- 					acc_buff, acc_sensor->ts_ref + ts);
--			if (ext_sip-- > 0)
-+				acc_sip--;
-+			}
-+			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
- 				iio_push_to_buffers_with_timestamp(
- 					hw->iio_devs[ST_LSM6DSX_ID_EXT0],
- 					ext_buff, ext_sensor->ts_ref + ts);
-+				ext_sip--;
-+			}
-+			sip++;
- 		}
- 	}
- 
++	enum st_lsm6dsx_sensor_id ref_id = ST_LSM6DSX_ID_ACC;
+ 	struct iio_chan_spec *ext_channels;
+ 	struct st_lsm6dsx_sensor *sensor;
+ 	struct iio_dev *iio_dev;
+@@ -628,7 +642,8 @@ st_lsm6dsx_shub_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+ 	sensor = iio_priv(iio_dev);
+ 	sensor->id = id;
+ 	sensor->hw = hw;
+-	sensor->odr = info->odr_table.odr_avl[0].milli_hz;
++	sensor->odr = hw->settings->odr_table[ref_id].odr_avl[0].milli_hz;
++	sensor->ext_info.slv_odr = info->odr_table.odr_avl[0].milli_hz;
+ 	sensor->gain = info->fs_table.fs_avl[0].gain;
+ 	sensor->ext_info.settings = info;
+ 	sensor->ext_info.addr = i2c_addr;
 -- 
 2.24.1
 

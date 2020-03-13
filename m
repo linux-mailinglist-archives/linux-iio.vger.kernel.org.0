@@ -2,32 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E34A9184106
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 07:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7A7184100
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 07:46:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726504AbgCMGqL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Mar 2020 02:46:11 -0400
-Received: from mail.andi.de1.cc ([85.214.55.253]:55940 "EHLO mail.andi.de1.cc"
+        id S1726643AbgCMGqX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Mar 2020 02:46:23 -0400
+Received: from mail.andi.de1.cc ([85.214.55.253]:56090 "EHLO mail.andi.de1.cc"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726331AbgCMGqK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 13 Mar 2020 02:46:10 -0400
+        id S1726569AbgCMGqN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 13 Mar 2020 02:46:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
         Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=KJSvEB5GYx0NMRbbOsFK/DkUQp3KkBqyuRsPuE4sghw=; b=Yal9W1k8kM3pVZzT7fC7nBi4gn
-        Ug8bHIqPnkSR6Y7gzYoXtzMncvN597X7+eaxvjNR3nVq3L6JhENT9a38Fw6jktwCLYS8eVNlKOabR
-        t665oWn/YYF26Ewef0QRxo6tHDNRvfh0W+Lh1NCzx2snG2W2CyNMl/IGE5brjrlLHZJM=;
+        bh=VIs77+1F4+XA6rucXI4+PQPtYRyTiS5Y+si08pwtFUU=; b=bYTGQ2o1tarbneiXmdsIKiDxCK
+        UcywRn9bpdnlmLV8GR9pzNBjAiCAGutG5Y+OSRufL+/snfCZ1ulyRmGMznyGdjdeEitxs5n+XwgJr
+        Gij9DyrvSriQOw90cpP2ZPsIuSwOwqGJqjnsv3d1Yl/CBQgKTHEc0VN6UGABsgpU2nhw=;
 Received: from p200300ccff096400e2cec3fffe93fc31.dip0.t-ipconnect.de ([2003:cc:ff09:6400:e2ce:c3ff:fe93:fc31] helo=eeepc)
         by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <andreas@kemnade.info>)
-        id 1jCe4v-0002pB-5A; Fri, 13 Mar 2020 07:45:53 +0100
+        id 1jCe4v-0002pE-As; Fri, 13 Mar 2020 07:45:53 +0100
 Received: from andi by eeepc with local (Exim 4.92)
         (envelope-from <andreas@kemnade.info>)
-        id 1jCe4u-0008Ct-Fq; Fri, 13 Mar 2020 07:45:52 +0100
+        id 1jCe4u-0008Cw-Qr; Fri, 13 Mar 2020 07:45:52 +0100
 From:   Andreas Kemnade <andreas@kemnade.info>
 To:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
         a.zummo@towertech.it, alexandre.belloni@bootlin.com,
@@ -36,11 +36,10 @@ To:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
         phh@phh.me, letux-kernel@openphoenux.org, knaack.h@gmx.de,
         lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
         jic23@kernel.org
-Cc:     Andreas Kemnade <andreas@kemnade.info>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH RESEND v6 1/7] dt-bindings: mfd: rn5t618: Document optional property interrupts
-Date:   Fri, 13 Mar 2020 07:45:28 +0100
-Message-Id: <20200313064535.31503-2-andreas@kemnade.info>
+Cc:     Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH RESEND v6 2/7] mfd: rn5t618: add IRQ support
+Date:   Fri, 13 Mar 2020 07:45:29 +0100
+Message-Id: <20200313064535.31503-3-andreas@kemnade.info>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200313064535.31503-1-andreas@kemnade.info>
 References: <20200313064535.31503-1-andreas@kemnade.info>
@@ -52,39 +51,210 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-These chips use interrupts for various things like RTC alarm.
+This adds support for IRQ handling in the RC5T619 which is required
+for properly implementing subdevices like RTC.
+For now only definitions for the variant RC5T619 are included.
 
 Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
-Acked-by: Rob Herring <robh@kernel.org>
 ---
-Changes in v4: add refernce to interrupt binding
-documentation
- Documentation/devicetree/bindings/mfd/rn5t618.txt | 4 ++++
- 1 file changed, 4 insertions(+)
+Changes in v5:
+rn5t618_irq_init static
 
-diff --git a/Documentation/devicetree/bindings/mfd/rn5t618.txt b/Documentation/devicetree/bindings/mfd/rn5t618.txt
-index b74e5e94d1cb..16778ea00dbc 100644
---- a/Documentation/devicetree/bindings/mfd/rn5t618.txt
-+++ b/Documentation/devicetree/bindings/mfd/rn5t618.txt
-@@ -15,6 +15,8 @@ Required properties:
-  - reg: the I2C slave address of the device
+Changes in v4:
+merge rn5t618-irq.c into rn5t618.c
+use macros for IRQ table
+
+Changes in v3:
+alignment cleanup
+
+Changes in v2:
+- no dead code, did some more testing and thinking for that
+- remove extra empty lines
+ drivers/mfd/Kconfig         |  1 +
+ drivers/mfd/rn5t618.c       | 88 +++++++++++++++++++++++++++++++++++++
+ include/linux/mfd/rn5t618.h | 15 +++++++
+ 3 files changed, 104 insertions(+)
+
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 2b203290e7b9..a7067888a41e 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -1058,6 +1058,7 @@ config MFD_RN5T618
+ 	depends on OF
+ 	select MFD_CORE
+ 	select REGMAP_I2C
++	select REGMAP_IRQ
+ 	help
+ 	  Say yes here to add support for the Ricoh RN5T567,
+ 	  RN5T618, RC5T619 PMIC.
+diff --git a/drivers/mfd/rn5t618.c b/drivers/mfd/rn5t618.c
+index ead2e79036a9..849a33d64860 100644
+--- a/drivers/mfd/rn5t618.c
++++ b/drivers/mfd/rn5t618.c
+@@ -8,6 +8,8 @@
  
- Optional properties:
-+ - interrupts: interrupt mapping for IRQ
-+   See Documentation/devicetree/bindings/interrupt-controller/interrupts.txt
-  - system-power-controller:
-    See Documentation/devicetree/bindings/power/power-controller.txt
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/mfd/core.h>
+ #include <linux/mfd/rn5t618.h>
+ #include <linux/module.h>
+@@ -46,9 +48,63 @@ static const struct regmap_config rn5t618_regmap_config = {
+ 	.cache_type	= REGCACHE_RBTREE,
+ };
  
-@@ -32,6 +34,8 @@ Example:
- 	pmic@32 {
- 		compatible = "ricoh,rn5t618";
- 		reg = <0x32>;
-+		interrupt-parent = <&gpio5>;
-+		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
- 		system-power-controller;
++static const struct regmap_irq rc5t619_irqs[] = {
++	REGMAP_IRQ_REG(RN5T618_IRQ_SYS, 0, BIT(0)),
++	REGMAP_IRQ_REG(RN5T618_IRQ_DCDC, 0, BIT(1)),
++	REGMAP_IRQ_REG(RN5T618_IRQ_RTC, 0, BIT(2)),
++	REGMAP_IRQ_REG(RN5T618_IRQ_ADC, 0, BIT(3)),
++	REGMAP_IRQ_REG(RN5T618_IRQ_GPIO, 0, BIT(4)),
++	REGMAP_IRQ_REG(RN5T618_IRQ_CHG, 0, BIT(6)),
++};
++
++static const struct regmap_irq_chip rc5t619_irq_chip = {
++	.name = "rc5t619",
++	.irqs = rc5t619_irqs,
++	.num_irqs = ARRAY_SIZE(rc5t619_irqs),
++	.num_regs = 1,
++	.status_base = RN5T618_INTMON,
++	.mask_base = RN5T618_INTEN,
++	.mask_invert = true,
++};
++
+ static struct rn5t618 *rn5t618_pm_power_off;
+ static struct notifier_block rn5t618_restart_handler;
  
- 		regulators {
++static int rn5t618_irq_init(struct rn5t618 *rn5t618)
++{
++	const struct regmap_irq_chip *irq_chip;
++	int ret;
++
++	if (!rn5t618->irq)
++		return 0;
++
++	switch (rn5t618->variant) {
++	case RC5T619:
++		irq_chip = &rc5t619_irq_chip;
++		break;
++	default:
++		irq_chip = NULL;
++		break;
++	}
++
++	if (!irq_chip) {
++		dev_err(rn5t618->dev, "Currently no IRQ support for variant %d\n",
++			(int)rn5t618->variant);
++		return -ENOENT;
++	}
++
++	ret = devm_regmap_add_irq_chip(rn5t618->dev, rn5t618->regmap,
++				       rn5t618->irq,
++				       IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
++				       0, irq_chip, &rn5t618->irq_data);
++	if (ret) {
++		dev_err(rn5t618->dev, "Failed to register IRQ chip\n");
++		return ret;
++	}
++
++	return 0;
++}
++
+ static void rn5t618_trigger_poweroff_sequence(bool repower)
+ {
+ 	/* disable automatic repower-on */
+@@ -106,6 +162,8 @@ static int rn5t618_i2c_probe(struct i2c_client *i2c,
+ 
+ 	i2c_set_clientdata(i2c, priv);
+ 	priv->variant = (long)of_id->data;
++	priv->irq = i2c->irq;
++	priv->dev = &i2c->dev;
+ 
+ 	priv->regmap = devm_regmap_init_i2c(i2c, &rn5t618_regmap_config);
+ 	if (IS_ERR(priv->regmap)) {
+@@ -138,6 +196,11 @@ static int rn5t618_i2c_probe(struct i2c_client *i2c,
+ 		return ret;
+ 	}
+ 
++	if (priv->irq > 0) {
++		if (rn5t618_irq_init(priv))
++			priv->irq = 0;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -155,15 +218,40 @@ static int rn5t618_i2c_remove(struct i2c_client *i2c)
+ 	return 0;
+ }
+ 
++static int __maybe_unused rn5t618_i2c_suspend(struct device *dev)
++{
++	struct rn5t618 *priv = dev_get_drvdata(dev);
++
++	if (priv->irq)
++		disable_irq(priv->irq);
++
++	return 0;
++}
++
++static int __maybe_unused rn5t618_i2c_resume(struct device *dev)
++{
++	struct rn5t618 *priv = dev_get_drvdata(dev);
++
++	if (priv->irq)
++		enable_irq(priv->irq);
++
++	return 0;
++}
++
+ static const struct i2c_device_id rn5t618_i2c_id[] = {
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, rn5t618_i2c_id);
+ 
++static SIMPLE_DEV_PM_OPS(rn5t618_i2c_dev_pm_ops,
++			rn5t618_i2c_suspend,
++			rn5t618_i2c_resume);
++
+ static struct i2c_driver rn5t618_i2c_driver = {
+ 	.driver = {
+ 		.name = "rn5t618",
+ 		.of_match_table = of_match_ptr(rn5t618_of_match),
++		.pm = &rn5t618_i2c_dev_pm_ops,
+ 	},
+ 	.probe = rn5t618_i2c_probe,
+ 	.remove = rn5t618_i2c_remove,
+diff --git a/include/linux/mfd/rn5t618.h b/include/linux/mfd/rn5t618.h
+index d62ef48060b5..739571656f2b 100644
+--- a/include/linux/mfd/rn5t618.h
++++ b/include/linux/mfd/rn5t618.h
+@@ -242,9 +242,24 @@ enum {
+ 	RC5T619,
+ };
+ 
++/* RN5T618 IRQ definitions */
++enum {
++	RN5T618_IRQ_SYS = 0,
++	RN5T618_IRQ_DCDC,
++	RN5T618_IRQ_RTC,
++	RN5T618_IRQ_ADC,
++	RN5T618_IRQ_GPIO,
++	RN5T618_IRQ_CHG,
++	RN5T618_NR_IRQS,
++};
++
+ struct rn5t618 {
+ 	struct regmap *regmap;
++	struct device *dev;
+ 	long variant;
++
++	int irq;
++	struct regmap_irq_chip_data *irq_data;
+ };
+ 
+ #endif /* __LINUX_MFD_RN5T618_H */
 -- 
 2.20.1
 

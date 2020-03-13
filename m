@@ -2,103 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EF05184104
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 07:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB7FC184535
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 11:50:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726514AbgCMGqL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Mar 2020 02:46:11 -0400
-Received: from mail.andi.de1.cc ([85.214.55.253]:55976 "EHLO mail.andi.de1.cc"
+        id S1726479AbgCMKt7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Mar 2020 06:49:59 -0400
+Received: from mga01.intel.com ([192.55.52.88]:5285 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726364AbgCMGqK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 13 Mar 2020 02:46:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=3Bz2vR2Tg5c+O+QNTGdqbIUhPXuM0m6WC7tdqcFYb6M=; b=ALqDg+ayCRBaYNP9MkESeD7VsK
-        ZNrAE2fQJs3bFQnQ7+xjEqHhy/mVgJxS65akxejk4v6M4Cja0Ny8txbp1xSbVdi3cnT7ODLNVq8MQ
-        6a+a8O6AyWkREURrW4kLsLNEugEGQeFoxAcB/mXsnoqu3Q9DL0k9Sg48kAw8RoFADKNw=;
-Received: from p200300ccff096400e2cec3fffe93fc31.dip0.t-ipconnect.de ([2003:cc:ff09:6400:e2ce:c3ff:fe93:fc31] helo=eeepc)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1jCe4w-0002pn-Im; Fri, 13 Mar 2020 07:45:55 +0100
-Received: from andi by eeepc with local (Exim 4.92)
-        (envelope-from <andreas@kemnade.info>)
-        id 1jCe4w-0008DB-2U; Fri, 13 Mar 2020 07:45:54 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        a.zummo@towertech.it, alexandre.belloni@bootlin.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rtc@vger.kernel.org, stefan@agner.ch, b.galvani@gmail.com,
-        phh@phh.me, letux-kernel@openphoenux.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        jic23@kernel.org
-Cc:     Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH RESEND v6 7/7] mfd: rn5t618: cleanup i2c_device_id
-Date:   Fri, 13 Mar 2020 07:45:34 +0100
-Message-Id: <20200313064535.31503-8-andreas@kemnade.info>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200313064535.31503-1-andreas@kemnade.info>
-References: <20200313064535.31503-1-andreas@kemnade.info>
+        id S1726364AbgCMKt7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 13 Mar 2020 06:49:59 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Mar 2020 03:49:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,548,1574150400"; 
+   d="scan'208";a="266689347"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 13 Mar 2020 03:49:57 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id A653E1C9; Fri, 13 Mar 2020 12:49:56 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, Denis Ciocca <denis.ciocca@st.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 1/8] iio: light: st_uvis25: Drop unneeded casting when print error code
+Date:   Fri, 13 Mar 2020 12:49:48 +0200
+Message-Id: <20200313104955.30423-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0 (-)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-That list was just empty, so it can be removed if .probe_new
-instead of .probe is used
+Explicit casting in printf() usually shows that something is not okay.
+Here, we really don't need it by providing correct specifier.
 
-Suggested-by: Lee Jones <lee.jones@linaro.org>
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
-Functional independent from the other patches, but since they are
-touching similar areas, commit/merge conflicts would occur.
- drivers/mfd/rn5t618.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+v2: no change
+ drivers/iio/light/st_uvis25_i2c.c | 4 ++--
+ drivers/iio/light/st_uvis25_spi.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/rn5t618.c b/drivers/mfd/rn5t618.c
-index 321836f78120..b8033e2d650f 100644
---- a/drivers/mfd/rn5t618.c
-+++ b/drivers/mfd/rn5t618.c
-@@ -153,8 +153,7 @@ static const struct of_device_id rn5t618_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, rn5t618_of_match);
+diff --git a/drivers/iio/light/st_uvis25_i2c.c b/drivers/iio/light/st_uvis25_i2c.c
+index 4889bbeb0c73..400724069d19 100644
+--- a/drivers/iio/light/st_uvis25_i2c.c
++++ b/drivers/iio/light/st_uvis25_i2c.c
+@@ -31,8 +31,8 @@ static int st_uvis25_i2c_probe(struct i2c_client *client,
  
--static int rn5t618_i2c_probe(struct i2c_client *i2c,
--			     const struct i2c_device_id *id)
-+static int rn5t618_i2c_probe(struct i2c_client *i2c)
- {
- 	const struct of_device_id *of_id;
- 	struct rn5t618 *priv;
-@@ -256,11 +255,6 @@ static int __maybe_unused rn5t618_i2c_resume(struct device *dev)
- 	return 0;
- }
+ 	regmap = devm_regmap_init_i2c(client, &st_uvis25_i2c_regmap_config);
+ 	if (IS_ERR(regmap)) {
+-		dev_err(&client->dev, "Failed to register i2c regmap %d\n",
+-			(int)PTR_ERR(regmap));
++		dev_err(&client->dev, "Failed to register i2c regmap %ld\n",
++			PTR_ERR(regmap));
+ 		return PTR_ERR(regmap);
+ 	}
  
--static const struct i2c_device_id rn5t618_i2c_id[] = {
--	{ }
--};
--MODULE_DEVICE_TABLE(i2c, rn5t618_i2c_id);
--
- static SIMPLE_DEV_PM_OPS(rn5t618_i2c_dev_pm_ops,
- 			rn5t618_i2c_suspend,
- 			rn5t618_i2c_resume);
-@@ -271,9 +265,8 @@ static struct i2c_driver rn5t618_i2c_driver = {
- 		.of_match_table = of_match_ptr(rn5t618_of_match),
- 		.pm = &rn5t618_i2c_dev_pm_ops,
- 	},
--	.probe = rn5t618_i2c_probe,
-+	.probe_new = rn5t618_i2c_probe,
- 	.remove = rn5t618_i2c_remove,
--	.id_table = rn5t618_i2c_id,
- };
+diff --git a/drivers/iio/light/st_uvis25_spi.c b/drivers/iio/light/st_uvis25_spi.c
+index a9ceae4f58b3..cd3761a3ee3f 100644
+--- a/drivers/iio/light/st_uvis25_spi.c
++++ b/drivers/iio/light/st_uvis25_spi.c
+@@ -31,8 +31,8 @@ static int st_uvis25_spi_probe(struct spi_device *spi)
  
- module_i2c_driver(rn5t618_i2c_driver);
+ 	regmap = devm_regmap_init_spi(spi, &st_uvis25_spi_regmap_config);
+ 	if (IS_ERR(regmap)) {
+-		dev_err(&spi->dev, "Failed to register spi regmap %d\n",
+-			(int)PTR_ERR(regmap));
++		dev_err(&spi->dev, "Failed to register spi regmap %ld\n",
++			PTR_ERR(regmap));
+ 		return PTR_ERR(regmap);
+ 	}
+ 
 -- 
-2.20.1
+2.25.1
 

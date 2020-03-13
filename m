@@ -2,99 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA448183FA5
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 04:29:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C69818410F
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Mar 2020 07:46:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbgCMD3V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 Mar 2020 23:29:21 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:42022 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726254AbgCMD3V (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 Mar 2020 23:29:21 -0400
-Received: by mail-pf1-f195.google.com with SMTP id x2so3977120pfn.9;
-        Thu, 12 Mar 2020 20:29:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:date:from:to:cc:subject:mime-version:content-disposition
-         :user-agent;
-        bh=vu1mPV5qkLwCnUIC3q92piC5wqu0Lr6m+RWkyhwC2Yc=;
-        b=Cdd3DkLK6UcsCMaFBHgqJwwqXFvibtSujs8UwceTcyohmIWzLVryFfb9v/InGxoS5P
-         1MgO9M/br27LxR5e3eVsZZgUKrjLUjgQ74yBR2otd/bMBY7nQHJEIYWMYsaKQOTBsEyY
-         z1XUSoebQli9lGDEgwKVxpJOnJYG4LevF0+4Pb81cNBMvXvkBOsrgUMBBMYcVga36od8
-         9XJLkwf8c3g0++Zh+kxyK6Z6tXAxacyZgZhEyS3T+Z7LWtARlUDE3VFFPMvskiVfHnXb
-         W+yTTODl+S3Cnc9DCrqAlWyORL/lV1oJJYTwQJnepQFgq/NTliLQ0o83MdIIwC3eSpT7
-         3cDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:subject:mime-version
-         :content-disposition:user-agent;
-        bh=vu1mPV5qkLwCnUIC3q92piC5wqu0Lr6m+RWkyhwC2Yc=;
-        b=tEjtj34G45hUvbm1xLAPBCAMG3Le+lo55IL+wBFm9O01LcaJGUqAMIYQLQLKZy8RBJ
-         kC1zsNJgk+WWy2DJ1+UgglagwIIh0dQ7NGj7IVN6/oT8M1NbiRTkNwijSYq5KHzSGnzt
-         cINsrQIdijREoV68sr+LH9F/jZ0JOxVpLVS2vIOwbpr2Am8/pcS7vfKQ+7D5FAHdZVqB
-         TW72oBOXU7n4Ktx5CRKyeVO25CWsNBWfB0vils4Zd7bDLee816NP26dy9m+0vVZnivNm
-         lw83pZjWKhnVdOyuyNhSZJ5ryV1VsAJ78GPszODcTC0WWq8Mjkli4aCMAWTvWNf8iqVb
-         Li7w==
-X-Gm-Message-State: ANhLgQ1U5Z3bov3gzJodwbvqwy10vexPvfP1skn8rSFW/9lZrc2Ps550
-        kSmhRDtz5H7UCF+MdTAoveg=
-X-Google-Smtp-Source: ADFU+vvoZ/9VLBpjGCRZTRn32q0wnyM03wQW61IIHlT44brOLEj9kIbI1opDxCPexjrw54elb5kvTQ==
-X-Received: by 2002:a62:e306:: with SMTP id g6mr9298330pfh.312.1584070158478;
-        Thu, 12 Mar 2020 20:29:18 -0700 (PDT)
-Received: from SARKAR ([43.224.157.41])
-        by smtp.gmail.com with ESMTPSA id h24sm15017607pfn.49.2020.03.12.20.29.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2020 20:29:17 -0700 (PDT)
-Message-ID: <5e6afe0d.1c69fb81.25912.f2eb@mx.google.com>
-X-Google-Original-Message-ID: <20200313032913.GA28957@rohitsarkar5398@gmail.com>
-Date:   Fri, 13 Mar 2020 08:59:13 +0530
-From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic23@kernel.org, alexandru.Ardelean@analog.com,
-        dragos.bogdan@kernel.org
-Subject: [PATCH] iio: health: max30100: use generic property handler
+        id S1726365AbgCMGqK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Mar 2020 02:46:10 -0400
+Received: from mail.andi.de1.cc ([85.214.55.253]:55942 "EHLO mail.andi.de1.cc"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726216AbgCMGqJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 13 Mar 2020 02:46:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=yQkfOLNuqw0s/C4iIr73jm/g+t03fJKekg1eS9M/yZg=; b=MQ8zVt1jf+3E8VFEr9vHXAwzRP
+        EEpNOjG0j9PXkkpwioOIl1s3ss5UcmCWbUmkf3Lu2/xhN0+0ruZHagfHuVB+NaQVla6w5oLLiutBU
+        QIbBfQv1x+4Q5mzzzwC1GAgSEtF9O3syxxI/jfsgzlEy8/kSht1I7X3a1yCv0EclzO9k=;
+Received: from p200300ccff096400e2cec3fffe93fc31.dip0.t-ipconnect.de ([2003:cc:ff09:6400:e2ce:c3ff:fe93:fc31] helo=eeepc)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1jCe4u-0002p9-GB; Fri, 13 Mar 2020 07:45:52 +0100
+Received: from andi by eeepc with local (Exim 4.92)
+        (envelope-from <andreas@kemnade.info>)
+        id 1jCe4t-0008Cq-SM; Fri, 13 Mar 2020 07:45:51 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        a.zummo@towertech.it, alexandre.belloni@bootlin.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rtc@vger.kernel.org, stefan@agner.ch, b.galvani@gmail.com,
+        phh@phh.me, letux-kernel@openphoenux.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
+        jic23@kernel.org
+Cc:     Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH RESEND v6 0/7] mfd: rn5t618: Add RTC/ADC support
+Date:   Fri, 13 Mar 2020 07:45:27 +0100
+Message-Id: <20200313064535.31503-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.0 (-)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Instead of of_property_read_xxx use device_property_read_xxx as it is
-compatible with ACPI too as opposed to only device tree.
+In the variant RC5T619 the mfd has an RTC. This patchset adds
+support for it. To do so it adds the missing register defines in 
+rn5t618.h and general irq handling for that.
+It seems that the IRQ definitions are the same except missing RTC
+for the RN5T618 but due to missing ability to test that they are
+not added here.
+It also adds support for the ADC, it is available in both the
+RN5T618 and RC5T619 but due to missing ability to test that,
+the subdevice is only added for the RN5T618.
 
-Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
----
- drivers/iio/health/max30100.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+It was tested on the Kobo Clara HD.
 
-diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
-index 84010501762d..8249c6b36818 100644
---- a/drivers/iio/health/max30100.c
-+++ b/drivers/iio/health/max30100.c
-@@ -16,7 +16,7 @@
- #include <linux/irq.h>
- #include <linux/i2c.h>
- #include <linux/mutex.h>
--#include <linux/of.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/buffer.h>
-@@ -267,11 +267,10 @@ static int max30100_get_current_idx(unsigned int val, int *reg)
- static int max30100_led_init(struct max30100_data *data)
- {
- 	struct device *dev = &data->client->dev;
--	struct device_node *np = dev->of_node;
- 	unsigned int val[2];
- 	int reg, ret;
+Changes in v6:
+- put together with ADC series
+- also added cleanup i2_device_id patch to avoid merge
+  conflicts
+
+Changes in v5:
+- static rn5t618_irq_init
+- PLATFORM_DEVID_NONE
+- added some Acked-Bys
+
+Changes in v4:
+- use macros for IRQ definitions
+- merge rn5t618-core.c and rn5t618-irq.c
+
+Changes in v3:
+- alignment cleanup
+- output cleanup, remove useless toggling of alarm flag in rtc probe
+- updated bindings description, so patch 1/5 becomes 2/6 and so on
+
+Changes in v2:
+- no dead code in irq code
+- various improvements and cleanups in rtc driver itself
  
--	ret = of_property_read_u32_array(np, "maxim,led-current-microamp",
-+	ret = device_property_read_u32_array(dev, "maxim,led-current-microamp",
- 					(unsigned int *) &val, 2);
- 	if (ret) {
- 		/* Default to 24 mA RED LED, 50 mA IR LED */
+Andreas Kemnade (7):
+  dt-bindings: mfd: rn5t618: Document optional property interrupts
+  mfd: rn5t618: add IRQ support
+  mfd: rn5t618: add RTC related registers
+  mfd: rn5t618: add more subdevices
+  rtc: rc5t619: add Ricoh RC5T619 RTC driver
+  iio: adc: rn5t618: Add ADC driver for RN5T618/RC5T619
+  mfd: rn5t618: cleanup i2c_device_id
+
+ .../devicetree/bindings/mfd/rn5t618.txt       |   4 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/rn5t618-adc.c                 | 256 ++++++++++
+ drivers/mfd/Kconfig                           |   1 +
+ drivers/mfd/rn5t618.c                         | 119 ++++-
+ drivers/rtc/Kconfig                           |  10 +
+ drivers/rtc/Makefile                          |   1 +
+ drivers/rtc/rtc-rc5t619.c                     | 444 ++++++++++++++++++
+ include/linux/mfd/rn5t618.h                   |  26 +
+ 10 files changed, 862 insertions(+), 10 deletions(-)
+ create mode 100644 drivers/iio/adc/rn5t618-adc.c
+ create mode 100644 drivers/rtc/rtc-rc5t619.c
+
 -- 
-2.23.0.385.gbc12974a89
+2.20.1
 

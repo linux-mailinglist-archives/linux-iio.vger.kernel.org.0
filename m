@@ -2,158 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 360D31857EF
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 02:51:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EFBA18582D
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 02:56:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726847AbgCOBv1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Mar 2020 21:51:27 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:42600 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726643AbgCOBv1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Mar 2020 21:51:27 -0400
-Received: by mail-oi1-f196.google.com with SMTP id 13so4989440oiy.9;
-        Sat, 14 Mar 2020 18:51:26 -0700 (PDT)
+        id S1727179AbgCOB4H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Mar 2020 21:56:07 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:36614 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726881AbgCOB4G (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Mar 2020 21:56:06 -0400
+Received: by mail-ed1-f65.google.com with SMTP id b18so12782632edu.3;
+        Sat, 14 Mar 2020 18:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=35XhdiPf7N2b+kAbuAAdXV42xW5hub0L667+H4IKlmk=;
-        b=YXFjcvBeV6V4LELDQyU58eupJBzeXQnfnsR6yFHR/maxum8Vs72anKO6WdFh/Z/Qek
-         pR6wsEdmurMvkQg0FTAkBdskTO+SOovm+V0vgm8TPwEfYdOff7Us85puFuAtoaa+9d3R
-         6uV4gsymxTnUJsWtXy6OqXtug5iXGH8CEG8XXZrUf9f6qIdAeW9QIQD5AfWg0YT3MhXr
-         6L05Wj/4Bo+kxXcJojXlQcsl1vBGa8whfWQ3dZgyaakzt09KYB831bTUB141MkOzT+BX
-         rrPj1RFcL6QnFjk8lzrKtwMRGqS02I8zJYmyip02DSzSL4Y5UuemFq+tQy7fim/zzF2T
-         YhWg==
+        h=from:to:cc:subject:date:message-id;
+        bh=BopwVe4YzpInbeND4HoB58qSHy7vjLOFIWj76C7HJ64=;
+        b=jIBD9ifs4mqDJGCcXHWyyW4bwywFeg9+6yHHOUcdIDUaT+xtzwY4T4DmL0fklGpEJT
+         Ya8cBHOFTp5RKjq2QnYK8/W0Q9b58FmhUwK20Wa0nUvarbUUGniizcB3QIq58YKE2iF0
+         Iivx/vDt2LOiECyl1cfd/14aGsyOcK86OoACDKq1OQ7ES6j5+t4skGG/5YuYwJgR5mn/
+         chOlX3gq3Y74vabPBWz/6YDPLp7KYua94R63gIS25+rpCFaKvFfh231BG8uehc+QuktT
+         TWluHN5ALuc3dDe1XWpZagzrG8gFYiFoyxh9b7EvoBu57xPlv+Pyk3O5QeotBdTHq5Rt
+         /h2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=35XhdiPf7N2b+kAbuAAdXV42xW5hub0L667+H4IKlmk=;
-        b=GoUi0VcTjOdRvF24ReovgkpQgiOHig8MIxsftsMFT3jPdc9q9uvhIkUCWw11SNt/bt
-         Q30YdxKvQe32zgVFaiX7J8rMwM1ZLbahO5yyIsEo3T8siPtlOgx3SaXHtQfuVPIz8MrL
-         y8SJ+s5ZDA2CXY8FN9/rGM/CQ1SLd6vT4vEcXSZ8T10C/1S80a9yCWd61LNF96XVjkSb
-         4rYyJliDKydQ9vBrLu1EUZfgW1/AF02hz6gE1DeTFgJ3UKNep6T2/U3bJf7xDE84v0Bl
-         jt2FcdyXVl/hB1vhl/UccxaFDZ9klFyxuSKgzjQgXxezpSv1J2K7hflcRXWcntXHxJ3G
-         xHGg==
-X-Gm-Message-State: ANhLgQ1SZzV8hBatpiv+KlAYdBgg365o9y0oetQtyO92MRLgMLMSHGO0
-        P5bxrbFfY1rVRVZAZqmLlWpHksUw
-X-Google-Smtp-Source: ADFU+vsfG2YRIywLZtaTGNFY5QnxtFNloA653nmIEte+/glxpF5LNbpsrXEPBg5BD0BeozWHLv5KUA==
-X-Received: by 2002:a17:90a:a48b:: with SMTP id z11mr15529796pjp.1.1584193385623;
-        Sat, 14 Mar 2020 06:43:05 -0700 (PDT)
-Received: from nish-HP-Pavilion ([113.30.156.69])
-        by smtp.gmail.com with ESMTPSA id md20sm14771530pjb.15.2020.03.14.06.43.04
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=BopwVe4YzpInbeND4HoB58qSHy7vjLOFIWj76C7HJ64=;
+        b=lNFszkY7kHTmStT+M0fCW7SdEoqpIB0GyCpM9rzfwEthkzgfkl/KYz+/O94g+4hf21
+         2RwkjCHreUvVfg/OHYnQlZH/qHL1jouGsXFE/DZjOG8+U417Ad6T8XusR1vIkhQ/vP6c
+         AmQv7vnqAwMhDoHhBevD3EQrwRXxxauCa5IwoeP1f23R0fad484S2DGbKfi7LWHAnnf4
+         oBY0WkGFoAUS78kMp4WvDnTUX9s+x4tqQDUv6H3jN6pFPcu9K5C74oS7s03pX3VY60yn
+         EY5TPFnEwO077xsvh1RT3bGGUDh39YsVK/Vb+cHC1KiEmBI9tzqAc9sb41i/hsPHQORD
+         hIrw==
+X-Gm-Message-State: ANhLgQ3rCvufpsStgO+f2OWq8f4gGKpLS8f5//mbV9QvspKMDm2q5oTu
+        aqSbAd+4/6g8DNT5SswbCM2JBXshLpI=
+X-Google-Smtp-Source: ADFU+vuZ1bb7nbzzZHgugXobRAs4Tc2epJw3o79U0dRRej5zhyAlZo+HB775rGLgmAKAWw6rifbKIQ==
+X-Received: by 2002:adf:f00d:: with SMTP id j13mr27443866wro.207.1584230424960;
+        Sat, 14 Mar 2020 17:00:24 -0700 (PDT)
+Received: from localhost.localdomain (p5B3F731E.dip0.t-ipconnect.de. [91.63.115.30])
+        by smtp.gmail.com with ESMTPSA id 7sm11394469wmf.20.2020.03.14.17.00.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2020 06:43:05 -0700 (PDT)
-From:   Nishant Malpani <nish.malpani25@gmail.com>
-To:     jic23@kernel.org, robh+dt@kernel.org
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        mark.rutland@arm.com, nish.malpani25@gmail.com, sre@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: tsl2563: convert bindings to YAML
-Date:   Sat, 14 Mar 2020 19:12:37 +0530
-Message-Id: <20200314134237.12187-1-nish.malpani25@gmail.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Sat, 14 Mar 2020 17:00:23 -0700 (PDT)
+From:   Saravanan Sekar <sravanhome@gmail.com>
+To:     lee.jones@linaro.org, robh+dt@kernel.org, jic23@kernel.org,
+        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
+        Saravanan Sekar <sravanhome@gmail.com>
+Subject: [PATCH v2 0/5] Add battery charger driver support for MP2629
+Date:   Sun, 15 Mar 2020 01:00:08 +0100
+Message-Id: <20200315000013.4440-1-sravanhome@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the TSL2563 device tree bindings to the new YAML format.
+changes in v2:
+ - removed EXPORT_SYMBOL of register set/get helper
+ - regmap bit filed used, fixed other review comments
 
-Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
----
+This patch series add support for Battery charger control driver for Monolithic
+Power System's MP2629 chipset, includes MFD driver for ADC battery & input
+power supply measurement and battery charger control driver.
 
-The link for the datasheet is not attached in the binding document
-because it was not available on the manufacturer's (AMS) website [1].
+Thanks,
+Saravanan
 
-[1] https://ams.com/ambient-light-sensors
----
- .../devicetree/bindings/iio/light/tsl2563.txt | 19 --------
- .../bindings/iio/light/tsl2563.yaml           | 46 +++++++++++++++++++
- 2 files changed, 46 insertions(+), 19 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/light/tsl2563.txt
- create mode 100644 Documentation/devicetree/bindings/iio/light/tsl2563.yaml
 
-diff --git a/Documentation/devicetree/bindings/iio/light/tsl2563.txt b/Documentation/devicetree/bindings/iio/light/tsl2563.txt
-deleted file mode 100644
-index f91e809e736e..000000000000
---- a/Documentation/devicetree/bindings/iio/light/tsl2563.txt
-+++ /dev/null
-@@ -1,19 +0,0 @@
--* AMS TAOS TSL2563 ambient light sensor
--
--Required properties:
--
--  - compatible : should be "amstaos,tsl2563"
--  - reg : the I2C address of the sensor
--
--Optional properties:
--
--  - amstaos,cover-comp-gain : integer used as multiplier for gain
--                              compensation (default = 1)
--
--Example:
--
--tsl2563@29 {
--	compatible = "amstaos,tsl2563";
--	reg = <0x29>;
--	amstaos,cover-comp-gain = <16>;
--};
-diff --git a/Documentation/devicetree/bindings/iio/light/tsl2563.yaml b/Documentation/devicetree/bindings/iio/light/tsl2563.yaml
-new file mode 100644
-index 000000000000..2a70b8d62760
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/light/tsl2563.yaml
-@@ -0,0 +1,46 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/light/tsl2563.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: AMS TAOS TSL2563 ambient light sensor
-+
-+maintainers:
-+  - Sebastian Reichel <sre@kernel.org>
-+
-+description: |
-+  Ambient light sensor with an i2c interface.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - amstaos,tsl2563
-+
-+  reg:
-+    maxItems: 1
-+
-+  amstaos,cover-comp-gain:
-+    description: Multiplier for gain compensation
-+    allOf:
-+      - $ref: /schemas/types.yaml#/definitions/uint32
-+      - enum: [1, 16]
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    i2c {
-+
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      light-sensor@29 {
-+        compatible = "amstaos,tsl2563";
-+        reg = <0x29>;
-+        amstaos,cover-comp-gain = <16>;
-+      };
-+    };
-+...
+Saravanan Sekar (5):
+  dt-bindings: mfd: add document bindings for mp2629
+  mfd: mp2629: Add support for mps battery charger
+  iio: adc: mp2629: Add support for mp2629 ADC driver
+  power: supply: Add support for mps mp2629 battery charger
+  MAINTAINERS: Add entry for mp2629 Battery Charger driver
+
+ .../devicetree/bindings/mfd/mps,mp2629.yaml   |  62 ++
+ MAINTAINERS                                   |   5 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/mp2629_adc.c                  | 209 ++++++
+ drivers/mfd/Kconfig                           |   9 +
+ drivers/mfd/Makefile                          |   2 +
+ drivers/mfd/mp2629.c                          |  96 +++
+ drivers/power/supply/Kconfig                  |  10 +
+ drivers/power/supply/Makefile                 |   1 +
+ drivers/power/supply/mp2629_charger.c         | 702 ++++++++++++++++++
+ include/linux/mfd/mp2629.h                    |  32 +
+ 12 files changed, 1139 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+ create mode 100644 drivers/iio/adc/mp2629_adc.c
+ create mode 100644 drivers/mfd/mp2629.c
+ create mode 100644 drivers/power/supply/mp2629_charger.c
+ create mode 100644 include/linux/mfd/mp2629.h
+
 -- 
-2.20.1
+2.17.1
 

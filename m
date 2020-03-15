@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D427185C19
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 11:58:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 988A1185C24
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 12:11:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728324AbgCOK6k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Mar 2020 06:58:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53236 "EHLO mail.kernel.org"
+        id S1728327AbgCOLL4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Mar 2020 07:11:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54802 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728234AbgCOK6k (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Mar 2020 06:58:40 -0400
+        id S1728234AbgCOLL4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Mar 2020 07:11:56 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E757E206BE;
-        Sun, 15 Mar 2020 10:58:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EC04D20674;
+        Sun, 15 Mar 2020 11:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584269918;
-        bh=GKvZg20vaGmZ0h4NBf/C9EDtK/ii4Ksp0xz+3VPzmhM=;
+        s=default; t=1584270715;
+        bh=G4PIEQKffdtmoRgJQw0jNBgcUcsY8D9zmgUIqJ9uBJ4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FD3xSF49EZqCtfgRx4gsGhywyNgjqk5rW1lcjV/lJBiDw4GQIx9qrLjpPOykh2+10
-         Pyl4H6LO0Oee2K5LtcFwJGXOqr9/v5sRjLRSwbNCRyFIuXvQ0B9srUvcmyy25Rx65c
-         wmihRAgNYeB8EjLFWxBQBiY5CfC9zjr5f1myB7Ms=
-Date:   Sun, 15 Mar 2020 10:58:34 +0000
+        b=b4aftZajA3z/yuq9QE0z/ZtPM9cVW+3U/KSboKNg239P1gnwQFxL/0+WMEANIkrxW
+         /C5F2TT7Gp0/umTxwEvmC+l9Eesz0CVNTH7Sne/d5xXjmBkfagE4/64CiOzyF0YKvz
+         86080VrZ6dKcFejL1tOgS4FaSF0X5tvkIKeh98/U=
+Date:   Sun, 15 Mar 2020 11:11:51 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nishant Malpani <nish.malpani25@gmail.com>
-Cc:     robh+dt@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, mark.rutland@arm.com, sre@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: tsl2563: convert bindings to YAML
-Message-ID: <20200315105834.7a5f4475@archlinux>
-In-Reply-To: <20200314134237.12187-1-nish.malpani25@gmail.com>
-References: <20200314134237.12187-1-nish.malpani25@gmail.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org, mario.tesi@st.com, denis.ciocca@st.com,
+        lorenzo.bianconi@redhat.com
+Subject: Re: [PATCH 1/2] iio: imu: st_lsm6dsx: fix read misalignment on
+ untagged FIFO
+Message-ID: <20200315111151.6bb864eb@archlinux>
+In-Reply-To: <f9cdf1a1f69013417a5aaaf11a548e9585bdac20.1584121851.git.lorenzo@kernel.org>
+References: <cover.1584121851.git.lorenzo@kernel.org>
+        <f9cdf1a1f69013417a5aaaf11a548e9585bdac20.1584121851.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,128 +43,122 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 14 Mar 2020 19:12:37 +0530
-Nishant Malpani <nish.malpani25@gmail.com> wrote:
+On Fri, 13 Mar 2020 18:54:41 +0100
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> Convert the TSL2563 device tree bindings to the new YAML format.
+> st_lsm6dsx suffers of a read misalignment on untagged FIFO when
+> all 3 supported sensors (accel, gyro and ext device) are running
+> at different ODRs (the use-case is reported in the LSM6DSM Application
+> Note at pag 100).
+> Fix the issue taking into account decimation factor reading the FIFO
+> pattern.
 > 
-> Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
-> ---
-> 
-> The link for the datasheet is not attached in the binding document
-> because it was not available on the manufacturer's (AMS) website [1].
+> Fixes: e485e2a2cfd6 ("iio: imu: st_lsm6dsx: enable sensor-hub support for lsm6dsm")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Queued up.  Not totally sure which branch this will through, but may
+well be in next merge window because of timing.
 
-Very old part now, though plenty of them in circulation or least there
-used to be.  I have though not powered up that board for a while.
-
-When doing these conversions, do sanity check them against the driver
-as the old docs aren't always entirely accurate ;)
+Thanks,
 
 Jonathan
 
-> 
-> [1] https://ams.com/ambient-light-sensors
 > ---
->  .../devicetree/bindings/iio/light/tsl2563.txt | 19 --------
->  .../bindings/iio/light/tsl2563.yaml           | 46 +++++++++++++++++++
->  2 files changed, 46 insertions(+), 19 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/iio/light/tsl2563.txt
->  create mode 100644 Documentation/devicetree/bindings/iio/light/tsl2563.yaml
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  2 ++
+>  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 23 +++++++++++++------
+>  2 files changed, 18 insertions(+), 7 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/tsl2563.txt b/Documentation/devicetree/bindings/iio/light/tsl2563.txt
-> deleted file mode 100644
-> index f91e809e736e..000000000000
-> --- a/Documentation/devicetree/bindings/iio/light/tsl2563.txt
-> +++ /dev/null
-> @@ -1,19 +0,0 @@
-> -* AMS TAOS TSL2563 ambient light sensor
-> -
-> -Required properties:
-> -
-> -  - compatible : should be "amstaos,tsl2563"
-> -  - reg : the I2C address of the sensor
-> -
-> -Optional properties:
-> -
-> -  - amstaos,cover-comp-gain : integer used as multiplier for gain
-> -                              compensation (default = 1)
-> -
-> -Example:
-> -
-> -tsl2563@29 {
-> -	compatible = "amstaos,tsl2563";
-> -	reg = <0x29>;
-> -	amstaos,cover-comp-gain = <16>;
-> -};
-> diff --git a/Documentation/devicetree/bindings/iio/light/tsl2563.yaml b/Documentation/devicetree/bindings/iio/light/tsl2563.yaml
-> new file mode 100644
-> index 000000000000..2a70b8d62760
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/tsl2563.yaml
-> @@ -0,0 +1,46 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/tsl2563.yaml#
-
-Convention is now to name files and this with the manufacturer part
-as well.
-
-light/amstaos,tsl2563.yaml
-
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: AMS TAOS TSL2563 ambient light sensor
-> +
-> +maintainers:
-> +  - Sebastian Reichel <sre@kernel.org>
-> +
-> +description: |
-> +  Ambient light sensor with an i2c interface.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - amstaos,tsl2563
-
-The original binding was wrong on this.   Check the driver :)
-I'm a bit embarrassed I never noticed during review as I have
-a tsl2561, be it on a board that was never converted to DT.
-
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  amstaos,cover-comp-gain:
-> +    description: Multiplier for gain compensation
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - enum: [1, 16]
-
-Not sure it's that restricted...  or to be honest what
-that is for at all.  Superficially it looks like
-a multiplier to change the 'range' of the the sysfs control.
-
-I wonder if anyone cares or if we can just start ignoring that going
-forwards?  Sebastian, anyone else?
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      light-sensor@29 {
-> +        compatible = "amstaos,tsl2563";
-> +        reg = <0x29>;
-> +        amstaos,cover-comp-gain = <16>;
-> +      };
-> +    };
-> +...
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> index f2113a63721a..e9e756b1e92f 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> @@ -337,6 +337,7 @@ enum st_lsm6dsx_fifo_mode {
+>   * @gain: Configured sensor sensitivity.
+>   * @odr: Output data rate of the sensor [Hz].
+>   * @watermark: Sensor watermark level.
+> + * @decimator: Sensor decimation factor.
+>   * @sip: Number of samples in a given pattern.
+>   * @ts_ref: Sensor timestamp reference for hw one.
+>   * @ext_info: Sensor settings if it is connected to i2c controller
+> @@ -350,6 +351,7 @@ struct st_lsm6dsx_sensor {
+>  	u32 odr;
+>  
+>  	u16 watermark;
+> +	u8 decimator;
+>  	u8 sip;
+>  	s64 ts_ref;
+>  
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> index bb899345f2bb..afd00daeefb2 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> @@ -93,6 +93,7 @@ st_lsm6dsx_get_decimator_val(struct st_lsm6dsx_sensor *sensor, u32 max_odr)
+>  			break;
+>  	}
+>  
+> +	sensor->decimator = decimator;
+>  	return i == max_size ? 0 : st_lsm6dsx_decimator_table[i].val;
+>  }
+>  
+> @@ -337,7 +338,7 @@ static inline int st_lsm6dsx_read_block(struct st_lsm6dsx_hw *hw, u8 addr,
+>  int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
+>  {
+>  	struct st_lsm6dsx_sensor *acc_sensor, *gyro_sensor, *ext_sensor = NULL;
+> -	int err, acc_sip, gyro_sip, ts_sip, ext_sip, read_len, offset;
+> +	int err, sip, acc_sip, gyro_sip, ts_sip, ext_sip, read_len, offset;
+>  	u16 fifo_len, pattern_len = hw->sip * ST_LSM6DSX_SAMPLE_SIZE;
+>  	u16 fifo_diff_mask = hw->settings->fifo_ops.fifo_diff.mask;
+>  	u8 gyro_buff[ST_LSM6DSX_IIO_BUFF_SIZE];
+> @@ -399,19 +400,20 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
+>  		acc_sip = acc_sensor->sip;
+>  		ts_sip = hw->ts_sip;
+>  		offset = 0;
+> +		sip = 0;
+>  
+>  		while (acc_sip > 0 || gyro_sip > 0 || ext_sip > 0) {
+> -			if (gyro_sip > 0) {
+> +			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
+>  				memcpy(gyro_buff, &hw->buff[offset],
+>  				       ST_LSM6DSX_SAMPLE_SIZE);
+>  				offset += ST_LSM6DSX_SAMPLE_SIZE;
+>  			}
+> -			if (acc_sip > 0) {
+> +			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
+>  				memcpy(acc_buff, &hw->buff[offset],
+>  				       ST_LSM6DSX_SAMPLE_SIZE);
+>  				offset += ST_LSM6DSX_SAMPLE_SIZE;
+>  			}
+> -			if (ext_sip > 0) {
+> +			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
+>  				memcpy(ext_buff, &hw->buff[offset],
+>  				       ST_LSM6DSX_SAMPLE_SIZE);
+>  				offset += ST_LSM6DSX_SAMPLE_SIZE;
+> @@ -441,18 +443,25 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
+>  				offset += ST_LSM6DSX_SAMPLE_SIZE;
+>  			}
+>  
+> -			if (gyro_sip-- > 0)
+> +			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
+>  				iio_push_to_buffers_with_timestamp(
+>  					hw->iio_devs[ST_LSM6DSX_ID_GYRO],
+>  					gyro_buff, gyro_sensor->ts_ref + ts);
+> -			if (acc_sip-- > 0)
+> +				gyro_sip--;
+> +			}
+> +			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
+>  				iio_push_to_buffers_with_timestamp(
+>  					hw->iio_devs[ST_LSM6DSX_ID_ACC],
+>  					acc_buff, acc_sensor->ts_ref + ts);
+> -			if (ext_sip-- > 0)
+> +				acc_sip--;
+> +			}
+> +			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
+>  				iio_push_to_buffers_with_timestamp(
+>  					hw->iio_devs[ST_LSM6DSX_ID_EXT0],
+>  					ext_buff, ext_sensor->ts_ref + ts);
+> +				ext_sip--;
+> +			}
+> +			sip++;
+>  		}
+>  	}
+>  
 

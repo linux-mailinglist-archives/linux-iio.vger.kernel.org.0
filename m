@@ -2,38 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 960DF185C87
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 14:08:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50B40185C88
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 14:10:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728575AbgCONId (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Mar 2020 09:08:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47408 "EHLO mail.kernel.org"
+        id S1728574AbgCONKM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Mar 2020 09:10:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47952 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728541AbgCONId (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Mar 2020 09:08:33 -0400
+        id S1728541AbgCONKM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Mar 2020 09:10:12 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3B1C620575;
-        Sun, 15 Mar 2020 13:08:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AC24920575;
+        Sun, 15 Mar 2020 13:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584277713;
-        bh=Ap2wlUnkhdDAcTZTZWw0CLc18JpccKznpp2WPyUlBD0=;
+        s=default; t=1584277812;
+        bh=BclL4q3BTBO/kD7NJIxPs6flg8hZRErwfbM6JXTl1tg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=N0C6SS6wwy0QDss3y4YxkqDM1h29WWwC2Ba0HJ27A1khF36uPzWf2hh60QrKjsQTA
-         wxg0k9vKu+HrXhb4JIwQzBLOm0iioi6dRpRN9bBYEKsurzxD6CRLn3LjdPJq9jaSrC
-         UNIjOgYu4ztfRsQbmZHDa723bc+waNsNwvFtAFWY=
-Date:   Sun, 15 Mar 2020 13:08:29 +0000
+        b=2DjiD9Q+cU1FfVYaUqZY/fCaI0uuIPqBxb1neauhxLcSqJCaBZNe5N1N+WbfNi8/p
+         gK+1oPmPzfJRlt3HfnoEcp74+f30wcDkYccFWIfSgxl0zpfOa9eR8xX1OvXu/nH8IQ
+         qU5yHSIErZ9TvqvSv8TQfOrdJwyrjceWBnhhxBUY=
+Date:   Sun, 15 Mar 2020 13:10:08 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: Re: [PATCH v1] iio: adc: intel_mrfld_adc: Use be16_to_cpu() instead
- of get_unaligned_be16()
-Message-ID: <20200315130829.45790821@archlinux>
-In-Reply-To: <20200311092223.9673-1-andriy.shevchenko@linux.intel.com>
-References: <20200311092223.9673-1-andriy.shevchenko@linux.intel.com>
+To:     Brian Masney <masneyb@onstation.org>
+Cc:     Takashi Iwai <tiwai@suse.de>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: tsl2772: Use scnprintf() for avoiding
+ potential buffer overflow
+Message-ID: <20200315131008.587ba23a@archlinux>
+In-Reply-To: <20200315103358.GA4674@onstation.org>
+References: <20200311074325.7922-1-tiwai@suse.de>
+        <20200311074325.7922-3-tiwai@suse.de>
+        <20200315095834.76f50454@archlinux>
+        <20200315103358.GA4674@onstation.org>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,52 +44,70 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 11 Mar 2020 11:22:23 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Sun, 15 Mar 2020 06:33:58 -0400
+Brian Masney <masneyb@onstation.org> wrote:
 
-> There is no need to call unaligned helpers on stack placed variables
-> because compiler will align them correctly, accordingly to architectural
-> ABI. Moreover, using bitwise type makes it explicit to see what we are
-> reading in bulk transfer. On top of that, use sizeof() instead of
-> magic value.
+> On Sun, Mar 15, 2020 at 09:58:34AM +0000, Jonathan Cameron wrote:
+> > On Wed, 11 Mar 2020 08:43:25 +0100
+> > Takashi Iwai <tiwai@suse.de> wrote:
+> >   
+> > > Since snprintf() returns the would-be-output size instead of the
+> > > actual output size, the succeeding calls may go beyond the given
+> > > buffer limit.  Fix it by replacing with scnprintf().
+> > > 
+> > > Signed-off-by: Takashi Iwai <tiwai@suse.de>  
+> > 
+> > This one is printing a short well defined list of values.  No way they go
+> > anywhere near the smallest possible PAGE_SIZE buffer that it's printing
+> > into.
+> > 
+> > Which is handy given the remaining space isn't adjusted as we add items
+> > to the string.  Hence even with scnprintf it would overflow.
+> > 
+> > Brian, can you take a look at this when you get a moment?  
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with it.
+> I also agree that this won't overflow in practice, however we should fix
+> this up. Maybe the scnprintf() calls should be this:
+> 
+>     offset += scnprintf(buf + offset, PAGE_SIZE - offset, ...);
 
-Thanks,
+Agreed.
 
 Jonathan
 
-> ---
->  drivers/iio/adc/intel_mrfld_adc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/intel_mrfld_adc.c b/drivers/iio/adc/intel_mrfld_adc.c
-> index c35a1beb817c..a6d2e1f27e76 100644
-> --- a/drivers/iio/adc/intel_mrfld_adc.c
-> +++ b/drivers/iio/adc/intel_mrfld_adc.c
-> @@ -75,7 +75,7 @@ static int mrfld_adc_single_conv(struct iio_dev *indio_dev,
->  	struct regmap *regmap = adc->regmap;
->  	unsigned int req;
->  	long timeout;
-> -	u8 buf[2];
-> +	__be16 value;
->  	int ret;
->  
->  	reinit_completion(&adc->completion);
-> @@ -105,11 +105,11 @@ static int mrfld_adc_single_conv(struct iio_dev *indio_dev,
->  		goto done;
->  	}
->  
-> -	ret = regmap_bulk_read(regmap, chan->address, buf, 2);
-> +	ret = regmap_bulk_read(regmap, chan->address, &value, sizeof(value));
->  	if (ret)
->  		goto done;
->  
-> -	*result = get_unaligned_be16(buf);
-> +	*result = be16_to_cpu(value);
->  	ret = IIO_VAL_INT;
->  
->  done:
+> Brian
+> 
+> 
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> >   
+> > > ---
+> > >  drivers/iio/light/tsl2772.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
+> > > index be37fcbd4654..44a0b56a558c 100644
+> > > --- a/drivers/iio/light/tsl2772.c
+> > > +++ b/drivers/iio/light/tsl2772.c
+> > > @@ -986,7 +986,7 @@ static ssize_t in_illuminance0_lux_table_show(struct device *dev,
+> > >  	int offset = 0;
+> > >  
+> > >  	while (i < TSL2772_MAX_LUX_TABLE_SIZE) {
+> > > -		offset += snprintf(buf + offset, PAGE_SIZE, "%u,%u,",
+> > > +		offset += scnprintf(buf + offset, PAGE_SIZE, "%u,%u,",
+> > >  			chip->tsl2772_device_lux[i].ch0,
+> > >  			chip->tsl2772_device_lux[i].ch1);
+> > >  		if (chip->tsl2772_device_lux[i].ch0 == 0) {
+> > > @@ -1000,7 +1000,7 @@ static ssize_t in_illuminance0_lux_table_show(struct device *dev,
+> > >  		i++;
+> > >  	}
+> > >  
+> > > -	offset += snprintf(buf + offset, PAGE_SIZE, "\n");
+> > > +	offset += scnprintf(buf + offset, PAGE_SIZE, "\n");
+> > >  	return offset;
+> > >  }
+> > >    
 

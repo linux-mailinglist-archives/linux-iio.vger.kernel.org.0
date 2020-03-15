@@ -2,122 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94029185B78
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 10:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D313B185B83
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 10:32:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728169AbgCOJ26 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Mar 2020 05:28:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40708 "EHLO mail.kernel.org"
+        id S1728109AbgCOJc5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Mar 2020 05:32:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41274 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726521AbgCOJ26 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Mar 2020 05:28:58 -0400
+        id S1728108AbgCOJc4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Mar 2020 05:32:56 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 201A6206B1;
-        Sun, 15 Mar 2020 09:28:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8FE9C206BE;
+        Sun, 15 Mar 2020 09:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584264537;
-        bh=a3TDzGbEzkSLeXinw82ULYy0g3/qKx/I5ol4xjHP/jo=;
+        s=default; t=1584264776;
+        bh=VY4L1xw5QTllEiBo3usXe+erLdqlZxEYoSBW+d90VEM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FfBA9KivPcq2i/xkl3X4fU7JAbz8h0yxx+oZqKHJQ5x7jhklsgxMuE/2WvFgDiDBF
-         o7pdSPWOsANpZFUiHJvKEQwTSbzIyjb1W1C4fGD8h5sY3pHDt+HBI+v9WXsl+WrQ9x
-         ZyIDeRFLkXWNBlDSNIV+zjywyMF69vj0Bi3mF12w=
-Date:   Sun, 15 Mar 2020 09:28:52 +0000
+        b=SSBOFa8IWj/dUFNuK+YgGSexgLn8RggwcdjrAqf+y/Pf6wet/IEZykkRaknB2Nr86
+         dI/xmxy8G2auyb0cQCpFHZScdM4enoXrHnZydob5iwN4FyMJ2f1K5sea7t0AeHp51E
+         NkZAZQLN3AaTFMSEL+h0eqMjQ9VeH0rgXbo17/bo=
+Date:   Sun, 15 Mar 2020 09:32:47 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Artur Rojek <contact@artur-rojek.eu>
-Cc:     Rob Herring <robh@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Heiko Stuebner <heiko@sntech.de>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 4/5] dt-bindings: input: Add docs for ADC driven
- joystick.
-Message-ID: <20200315092852.2d2ecebb@archlinux>
-In-Reply-To: <bb188a58f29dfedcf56bb420f07a6813@artur-rojek.eu>
-References: <20200307211412.44148-1-contact@artur-rojek.eu>
-        <20200307211412.44148-4-contact@artur-rojek.eu>
-        <20200309203814.GA29255@bogus>
-        <bb188a58f29dfedcf56bb420f07a6813@artur-rojek.eu>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-iio@vger.kernel.org,
+        Lars =?UTF-8?B?TcO2bGxlbmRvcmY=?= <lars.moellendorf@plating.de>
+Subject: Re: [PATCH] iio: xilinx-xadc: Fix typo in author's name
+Message-ID: <20200315093247.32b7ae33@archlinux>
+In-Reply-To: <20200309102847.14291-1-lars@metafoo.de>
+References: <20200309102847.14291-1-lars@metafoo.de>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 09 Mar 2020 22:41:00 +0100
-Artur Rojek <contact@artur-rojek.eu> wrote:
+On Mon,  9 Mar 2020 11:28:47 +0100
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> Hi Rob,
-> 
-> On 2020-03-09 21:38, Rob Herring wrote:
-> > On Sat,  7 Mar 2020 22:14:11 +0100, Artur Rojek wrote:  
-> >> Add documentation for the adc-joystick driver, used to provide support
-> >> for joysticks connected over ADC.
-> >> 
-> >> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-> >> Tested-by: Paul Cercueil <paul@crapouillou.net>
-> >> ---
-> >> 
-> >>  Changes:
-> >> 
-> >>  v2: - Add `reg` property to axis subnode in order to enumerate the 
-> >> axes,
-> >>      - rename `linux,abs-code` property to `linux,code`,
-> >>      - drop `linux,` prefix from the remaining properties of axis 
-> >> subnode
-> >> 
-> >>  v3: no change
-> >> 
-> >>  v4: - remove "bindings" from the unique identifier string,
-> >>      - replace `|` with `>` for all description properties,
-> >>      - specify the number of items for `io-channels`,
-> >>      - correct the regex pattern of `axis` property,
-> >>      - specify the value range of `reg` property for each axis,
-> >>      - put `abs-range` properties under `allOf`
-> >> 
-> >>  .../bindings/input/adc-joystick.yaml          | 121 
-> >> ++++++++++++++++++
-> >>  1 file changed, 121 insertions(+)
-> >>  create mode 100644 
-> >> Documentation/devicetree/bindings/input/adc-joystick.yaml
-> >>   
-> > 
-> > My bot found errors running 'make dt_binding_check' on your patch:  
-> Like with the previous versions of this patch set, the DTS example 
-> requires that
-> patch [2/5] is applied first. When that is done, the DT check does 
-> succeed here.
+> It appears the author of the xilinx-xadc driver can't even spell his own
+> name correctly. Fix that.
+>=20
+> Reported-by: Lars M=C3=B6llendorf <lars.moellendorf@plating.de>
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+:)
 
-Fair enough as far as I am concerned.   There were enough comments
-from Rob in the previous version though that I'd definitely like
-him to take another look before I pick this series up.
+Applied to the togreg branch of iio.git. =20
 
 Thanks,
 
 Jonathan
 
-> 
-> Regards,
-> Artur
-> > 
-> > Error:
-> > Documentation/devicetree/bindings/input/adc-joystick.example.dts:22.31-32
-> > syntax error
-> > FATAL ERROR: Unable to parse input tree
-> > scripts/Makefile.lib:311: recipe for target
-> > 'Documentation/devicetree/bindings/input/adc-joystick.example.dt.yaml'
-> > failed
-> > make[1]: ***
-> > [Documentation/devicetree/bindings/input/adc-joystick.example.dt.yaml]
-> > Error 1
-> > Makefile:1262: recipe for target 'dt_binding_check' failed
-> > make: *** [dt_binding_check] Error 2
-> > 
-> > See https://patchwork.ozlabs.org/patch/1250951
-> > Please check and re-submit.  
+> ---
+>  drivers/iio/adc/xilinx-xadc-core.c   | 2 +-
+>  drivers/iio/adc/xilinx-xadc-events.c | 2 +-
+>  drivers/iio/adc/xilinx-xadc.h        | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-=
+xadc-core.c
+> index ec227b358cd6..2d6505a66511 100644
+> --- a/drivers/iio/adc/xilinx-xadc-core.c
+> +++ b/drivers/iio/adc/xilinx-xadc-core.c
+> @@ -3,7 +3,7 @@
+>   * Xilinx XADC driver
+>   *
+>   * Copyright 2013-2014 Analog Devices Inc.
+> - *  Author: Lars-Peter Clauen <lars@metafoo.de>
+> + *  Author: Lars-Peter Clausen <lars@metafoo.de>
+>   *
+>   * Documentation for the parts can be found at:
+>   *  - XADC hardmacro: Xilinx UG480
+> diff --git a/drivers/iio/adc/xilinx-xadc-events.c b/drivers/iio/adc/xilin=
+x-xadc-events.c
+> index dbfd5da290a4..2357f585720a 100644
+> --- a/drivers/iio/adc/xilinx-xadc-events.c
+> +++ b/drivers/iio/adc/xilinx-xadc-events.c
+> @@ -3,7 +3,7 @@
+>   * Xilinx XADC driver
+>   *
+>   * Copyright 2013 Analog Devices Inc.
+> - *  Author: Lars-Peter Clauen <lars@metafoo.de>
+> + *  Author: Lars-Peter Clausen <lars@metafoo.de>
+>   */
+> =20
+>  #include <linux/iio/events.h>
+> diff --git a/drivers/iio/adc/xilinx-xadc.h b/drivers/iio/adc/xilinx-xadc.h
+> index 4017f18b0a4f..25abed9c0285 100644
+> --- a/drivers/iio/adc/xilinx-xadc.h
+> +++ b/drivers/iio/adc/xilinx-xadc.h
+> @@ -3,7 +3,7 @@
+>   * Xilinx XADC driver
+>   *
+>   * Copyright 2013 Analog Devices Inc.
+> - *  Author: Lars-Peter Clauen <lars@metafoo.de>
+> + *  Author: Lars-Peter Clausen <lars@metafoo.de>
+>   */
+> =20
+>  #ifndef __IIO_XILINX_XADC__
 

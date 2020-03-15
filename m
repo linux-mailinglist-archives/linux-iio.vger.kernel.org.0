@@ -2,91 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F4CA185861
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 03:05:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAB45185B5D
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 10:17:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726826AbgCOCFU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Mar 2020 22:05:20 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:45900 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbgCOCFU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Mar 2020 22:05:20 -0400
-Received: by mail-lj1-f195.google.com with SMTP id e18so14764296ljn.12;
-        Sat, 14 Mar 2020 19:05:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=6QvXfJZlpggMK4ANi6m9pBKzrWALkcbq78l8N8OifPg=;
-        b=OIJzVdRqmII3xpN14/wQN0Vvrs1lDoUVouTfyF1AzzfhS7PAX65NnJmEstFfAwHm0J
-         MEdvf9urGT/J4thuvj9vk11uUp5M1ygunTCQ40PysktE5qk6p49gkKWkoPYa8hbxlpZ+
-         8AHxeLhfVqkUX208e6r8trwKTkIzfc7jZVyFb0j7si5B/e5Q5XglfRDu7Lgva68dRazY
-         t3ksP3zdoG8z1pawPZeocy0I+666FiKRbaFcF5tdQuT+avWEfO4hptk359IUQ52E/0AL
-         Fyhc24SsfBPdJPaus75o3DysidczlxbECY0IAS4F8XJ5ZrpGp0mWMaE2ibqoijxKTHF0
-         TMKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=6QvXfJZlpggMK4ANi6m9pBKzrWALkcbq78l8N8OifPg=;
-        b=DvpDYDkZQW5E0JKHHq0vb4oxewJIyQvPWFfQMo/8bD8oXXLgOVOSOL+PE/lTjdehQr
-         V4VC7LazQ5sJhE5W4SGYH3JG2I/FrUtNQYhUx2+C1ES/yF6QpNnwtNqwPutNBsNDn895
-         p3iLvfFNIcFZS2wiM2eXa4dBPZGCoGkQp+cai4WlQGgxp0AktTpH120ACcDuk1pA/6/P
-         x9SJl2sd/L1Yqkf5wqhujO85C9RBOQalq65EpFC5Uw0AJ5t5PcfYQj7p7JkDA4Xpdvnv
-         vpWrQ0ycD3XETabaluWtpVuCxkf4yN53TgaW51Nut+4g6T5O730dosOfPqGFOUVkJ6OJ
-         sHEg==
-X-Gm-Message-State: ANhLgQ0stTElPSOqFS/HY90FHYnOFE+8kKoFTtPcOvZ8ZJLaVg7Iprs0
-        KNhcM5G2lxsZvpyYguDvRqn/Rw7mxR4=
-X-Google-Smtp-Source: ADFU+vsLbPyHg/3H2qHGT2azKEXr7tZwXNK8qhcJh9SO/kwPkfqvtObR5asqoXdlrz1UQKhDfB3WlA==
-X-Received: by 2002:a5d:5290:: with SMTP id c16mr25043929wrv.235.1584230432390;
-        Sat, 14 Mar 2020 17:00:32 -0700 (PDT)
-Received: from localhost.localdomain (p5B3F731E.dip0.t-ipconnect.de. [91.63.115.30])
-        by smtp.gmail.com with ESMTPSA id 7sm11394469wmf.20.2020.03.14.17.00.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2020 17:00:31 -0700 (PDT)
-From:   Saravanan Sekar <sravanhome@gmail.com>
-To:     lee.jones@linaro.org, robh+dt@kernel.org, jic23@kernel.org,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
-        Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH v2 5/5] MAINTAINERS: Add entry for mp2629 Battery Charger driver
-Date:   Sun, 15 Mar 2020 01:00:13 +0100
-Message-Id: <20200315000013.4440-6-sravanhome@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200315000013.4440-1-sravanhome@gmail.com>
-References: <20200315000013.4440-1-sravanhome@gmail.com>
+        id S1728083AbgCOJRo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Mar 2020 05:17:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39126 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728065AbgCOJRo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Mar 2020 05:17:44 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7C5EB205ED;
+        Sun, 15 Mar 2020 09:17:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584263863;
+        bh=M3gQDpipo5zEV/yucmJMkSori8mdYECFiTGbqY+cERQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=R0BstTd1ON4oodAY0pWQJkF40ciLG5q/ilX/Zux1zXD/wd3U+dYsUVpMe63JZNSe5
+         aU6mgOLtT8+uTm8Mb3ajal7L7cvnlFSUD9VGWZtHsh9dvl9W+ZgJFJkXZLND69pGUF
+         1Vtb3i6ocCZ+s56crTxbO5Rnn00XqG6ycbJ/RDh8=
+Date:   Sun, 15 Mar 2020 09:17:38 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <stefan.popa@analog.com>, <knaack.h@gmx.de>, <pmeerw@pmeerw.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] iio:ad7797: Use correct attribute_group
+Message-ID: <20200315091738.71f9dddf@archlinux>
+In-Reply-To: <20200310141654.7188-1-yuehaibing@huawei.com>
+References: <9c53e05a-294a-c2d1-8808-605b10c964a9@metafoo.de>
+        <20200310141654.7188-1-yuehaibing@huawei.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add MAINTAINERS entry for Monolithic Power Systems mp2629 Charger driver.
+On Tue, 10 Mar 2020 22:16:54 +0800
+YueHaibing <yuehaibing@huawei.com> wrote:
 
-Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+> It should use ad7797_attribute_group in ad7797_info,
+> according to commit ("iio:ad7793: Add support for the ad7796 and ad7797").
+> 
+> Scale is fixed for the ad7796 and not programmable, hence
+> should not have the scale_available attribute.
+> 
+> Fixes: fd1a8b912841 ("iio:ad7793: Add support for the ad7796 and ad7797")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Reviewed-by: Lars-Peter Clausen <lars@metafoo.de>
+Thanks,
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 32a95d162f06..0f82d5a7a614 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11358,10 +11358,15 @@ F:	drivers/tty/mxser.*
- MONOLITHIC POWER SYSTEM PMIC DRIVER
- M:	Saravanan Sekar <sravanhome@gmail.com>
- S:	Maintained
-+F:	Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
- F:	Documentation/devicetree/bindings/regulator/mps,mp*.yaml
-+F:	drivers/iio/adc/mp2629_adc.c
-+F:	drivers/mfd/mp2629.c
-+F:	drivers/power/supply/mp2629_charger.c
- F:	drivers/regulator/mp5416.c
- F:	drivers/regulator/mpq7920.c
- F:	drivers/regulator/mpq7920.h
-+F:	include/linux/mfd/mp2629.h
- 
- MR800 AVERMEDIA USB FM RADIO DRIVER
- M:	Alexey Klimov <klimov.linux@gmail.com>
--- 
-2.17.1
+I've queued this up.  Won't push out just yet as I'm waiting for
+Greg to pick up a pull request after which I'd like to fast forward
+the fixes branch.
+
+Thanks,
+
+Jonathan
+
+> ---
+> v2: renew log as Lars-Peter's comment
+> 
+>  drivers/iio/adc/ad7793.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
+> index b747db9..e5691e3 100644
+> --- a/drivers/iio/adc/ad7793.c
+> +++ b/drivers/iio/adc/ad7793.c
+> @@ -542,7 +542,7 @@ static const struct iio_info ad7797_info = {
+>  	.read_raw = &ad7793_read_raw,
+>  	.write_raw = &ad7793_write_raw,
+>  	.write_raw_get_fmt = &ad7793_write_raw_get_fmt,
+> -	.attrs = &ad7793_attribute_group,
+> +	.attrs = &ad7797_attribute_group,
+>  	.validate_trigger = ad_sd_validate_trigger,
+>  };
+>  
 

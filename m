@@ -2,41 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14240185B8B
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 10:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B5B1185BA1
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 10:46:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728176AbgCOJfz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Mar 2020 05:35:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41870 "EHLO mail.kernel.org"
+        id S1728133AbgCOJqJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Mar 2020 05:46:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43392 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728128AbgCOJfy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Mar 2020 05:35:54 -0400
+        id S1728123AbgCOJqJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Mar 2020 05:46:09 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52A38206BE;
-        Sun, 15 Mar 2020 09:35:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DCDE2205C9;
+        Sun, 15 Mar 2020 09:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584264954;
-        bh=bydZt1msrAZyMXtqxKfMHkV2PUIlKeyA7eIC50CIB/M=;
+        s=default; t=1584265568;
+        bh=biUlpyrXNvCOiK31I4zc/E3yxuZCzo2qiuxd+IZSWAU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TBHxriSWt3P/WyyWLaDJyymqjhCzixdbSC6Kom2zz+dKvOk44zqBI4xFqNgxzw0Wy
-         Ec1OcZMiugGyij6LFyACRIo89VS8P5sckaeq5a0n/cowSIEVh/iA3WeJIKg6KgFvoH
-         Qv81sHhcA288CvhJUJKfSFmqxzysIMSHEP4Ff1Yg=
-Date:   Sun, 15 Mar 2020 09:35:49 +0000
+        b=NqUIdla21Wyb2/wkO+hupZvA3i4r2MrUH5+52i5fAChTQMy5pbR+ZmWjlZPW2fclo
+         YHcOxaC9G7ydMGE4FSk1lv5B7YQ2DkVJ9USKze+M//+CZ58eKDNbbBuFAjy8pXXBkC
+         FniQ9c3DkmfrcdF0OnVZRqFOP8sv/L83wN56mv6E=
+Date:   Sun, 15 Mar 2020 09:46:04 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc:     Olivier Moysan <olivier.moysan@st.com>, <knaack.h@gmx.de>,
-        <lars@metafoo.de>, <pmeerw@pmeerw.net>, <alexandre.torgue@st.com>,
-        <benjamin.gaignard@st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: adc: stm32-adc: fix sleep in atomic context
-Message-ID: <20200315093549.20764470@archlinux>
-In-Reply-To: <288fb604-16c6-da52-533f-7f1440ed9daa@st.com>
-References: <20200309100212.16499-1-olivier.moysan@st.com>
-        <288fb604-16c6-da52-533f-7f1440ed9daa@st.com>
+To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        matt.ranostay@konsulko.com
+Subject: Re: [PATCH] iio: health: max30100: remove mlock usage
+Message-ID: <20200315094604.62dc96be@archlinux>
+In-Reply-To: <5e668b89.1c69fb81.d7e4f.0f61@mx.google.com>
+References: <5e668b89.1c69fb81.d7e4f.0f61@mx.google.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,102 +41,78 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 9 Mar 2020 11:39:17 +0100
-Fabrice Gasnier <fabrice.gasnier@st.com> wrote:
+On Tue, 10 Mar 2020 00:01:28 +0530
+Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
 
-> On 3/9/20 11:02 AM, Olivier Moysan wrote:
-> > This commit fixes the following error:
-> > "BUG: sleeping function called from invalid context at kernel/irq/chip.c"
-> > 
-> > In DMA mode suppress the trigger irq handler, and make the buffer
-> > transfers directly in DMA callback, instead.
-> > 
-> > Fixes: 2763ea0585c9 ("iio: adc: stm32: add optional dma support")
-> > 
-> > Signed-off-by: Olivier Moysan <olivier.moysan@st.com>  
+> Use local lock instead of indio_dev's mlock.
+> The mlock was being used to protect local driver state thus using the
+> local lock is a better option here.
 > 
-> Hi Olivier,
-> 
-> Acked-by: Fabrice Gasnier <fabrice.gasnier@st.com>
-Thanks.  Queued up locally but not pushed out just yet as I have a pull
-request out to Greg.  Also marked for stable.
+> Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
 
-thanks,
+Matt.  Definitely need your input on this.
+
+> ---
+>  drivers/iio/health/max30100.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
+> index 84010501762d..8ddc4649547d 100644
+> --- a/drivers/iio/health/max30100.c
+> +++ b/drivers/iio/health/max30100.c
+> @@ -388,7 +388,7 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
+>  		 * Temperature reading can only be acquired while engine
+>  		 * is running
+>  		 */
+> -		mutex_lock(&indio_dev->mlock);
+> +		mutex_lock(&data->lock);
+
+Hmm.. It's another complex one.  What is actually being protected here is
+the buffer state, but not to take it exclusively like claim_direct does.
+
+Here we need the inverse, we want to ensure we are 'not' in the direct
+mode because this hardware requires the buffer to be running to read the
+temperature. 
+
+That is the sort of interface that is going to get userspace very 
+confused.
+
+Matt, normally what I'd suggest here is that the temperature read should:
+
+1) Claim direct mode, if it fails then do the dance you have here
+(with more comments to explain why you are taking an internal lock)
+2) Start up capture as if we were in buffered mode
+3) Grab that temp
+4) stop capture to return to non buffered mode.
+5) Release direct mode.
+
+I guess we decided it wasn't worth the hassle.  
+
+So Rohit.  This one probably needs a comment rather than any change.
+We 'could' add a 'hold_buffered_mode' function that takes the mlock,
+verifies we are in buffered mode and continues to hold the lock 
+until the 'release_buffered_mode'.  However, I'm not sure any other
+drivers do this particular dance, so clear commenting in the driver
+might be enough.   Should we ever change how mlock is used in the
+core, we'd have to fix this driver up as well.
+
+Hmm.  This is really hammering home that perhaps all the remaining
+mlock cases are 'hard'.
+
+Thanks,
 
 Jonathan
 
-> 
-> Thanks,
-> Fabrice
-> 
-> > ---
-> > Changes in v2:
-> > - Add "Fixes" tag in commit message
-> > 
-> > This solution has been already discussed in the thread
-> > https://lkml.org/lkml/2019/3/30/171, and applied in STM32 DFSDM driver:
-> > e19ac9d9a978 ("iio: adc: stm32-dfsdm: fix sleep in atomic context")
-> > ---
-> >  drivers/iio/adc/stm32-adc.c | 31 ++++++++++++++++++++++++++++---
-> >  1 file changed, 28 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> > index 80c3f963527b..ae622ee6d08c 100644
-> > --- a/drivers/iio/adc/stm32-adc.c
-> > +++ b/drivers/iio/adc/stm32-adc.c
-> > @@ -1418,8 +1418,30 @@ static unsigned int stm32_adc_dma_residue(struct stm32_adc *adc)
-> >  static void stm32_adc_dma_buffer_done(void *data)
-> >  {
-> >  	struct iio_dev *indio_dev = data;
-> > +	struct stm32_adc *adc = iio_priv(indio_dev);
-> > +	int residue = stm32_adc_dma_residue(adc);
-> > +
-> > +	/*
-> > +	 * In DMA mode the trigger services of IIO are not used
-> > +	 * (e.g. no call to iio_trigger_poll).
-> > +	 * Calling irq handler associated to the hardware trigger is not
-> > +	 * relevant as the conversions have already been done. Data
-> > +	 * transfers are performed directly in DMA callback instead.
-> > +	 * This implementation avoids to call trigger irq handler that
-> > +	 * may sleep, in an atomic context (DMA irq handler context).
-> > +	 */
-> > +	dev_dbg(&indio_dev->dev, "%s bufi=%d\n", __func__, adc->bufi);
-> >  
-> > -	iio_trigger_poll_chained(indio_dev->trig);
-> > +	while (residue >= indio_dev->scan_bytes) {
-> > +		u16 *buffer = (u16 *)&adc->rx_buf[adc->bufi];
-> > +
-> > +		iio_push_to_buffers(indio_dev, buffer);
-> > +
-> > +		residue -= indio_dev->scan_bytes;
-> > +		adc->bufi += indio_dev->scan_bytes;
-> > +		if (adc->bufi >= adc->rx_buf_sz)
-> > +			adc->bufi = 0;
-> > +	}
-> >  }
-> >  
-> >  static int stm32_adc_dma_start(struct iio_dev *indio_dev)
-> > @@ -1845,6 +1867,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
-> >  {
-> >  	struct iio_dev *indio_dev;
-> >  	struct device *dev = &pdev->dev;
-> > +	irqreturn_t (*handler)(int irq, void *p) = NULL;
-> >  	struct stm32_adc *adc;
-> >  	int ret;
-> >  
-> > @@ -1911,9 +1934,11 @@ static int stm32_adc_probe(struct platform_device *pdev)
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > +	if (!adc->dma_chan)
-> > +		handler = &stm32_adc_trigger_handler;
-> > +
-> >  	ret = iio_triggered_buffer_setup(indio_dev,
-> > -					 &iio_pollfunc_store_time,
-> > -					 &stm32_adc_trigger_handler,
-> > +					 &iio_pollfunc_store_time, handler,
-> >  					 &stm32_adc_buffer_setup_ops);
-> >  	if (ret) {
-> >  		dev_err(&pdev->dev, "buffer setup failed\n");
-> >   
+>  
+>  		if (!iio_buffer_enabled(indio_dev))
+>  			ret = -EAGAIN;
+> @@ -399,7 +399,7 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
+>  
+>  		}
+>  
+> -		mutex_unlock(&indio_dev->mlock);
+> +		mutex_unlock(&data->lock);
+>  		break;
+>  	case IIO_CHAN_INFO_SCALE:
+>  		*val = 1;  /* 0.0625 */
 

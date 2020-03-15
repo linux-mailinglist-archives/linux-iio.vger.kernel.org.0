@@ -2,40 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2AA4185C6E
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 13:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0DD3185C70
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Mar 2020 13:50:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728469AbgCOMo4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 Mar 2020 08:44:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38974 "EHLO mail.kernel.org"
+        id S1728520AbgCOMun (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 Mar 2020 08:50:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40114 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728410AbgCOMo4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 15 Mar 2020 08:44:56 -0400
+        id S1728410AbgCOMun (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 15 Mar 2020 08:50:43 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B1471205ED;
-        Sun, 15 Mar 2020 12:44:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E938E205ED;
+        Sun, 15 Mar 2020 12:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584276295;
-        bh=nsNKZYifArodDQfFPwxBQru3ah7xyFivqbfZZpeGm4o=;
+        s=default; t=1584276643;
+        bh=tSUX5BtR0r5shVkJhiBSsjEhd6hJK8EV8By9+NiYji8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hWB4M41mRKit+hec1XC2C/o8kXzMytuoO2SMMIk7zKnaPsJSmVOOyu7vjLJL+YRWk
-         XH76q6UE1waylofHBvEIxm4ENyh9R0x7SfIB8ipoSjKG6OJ/IHzIsVCusr4hKx8D+D
-         kcGUR05Zj0RXhRpgCg9rvCLXeBOJKTXEUX2Re/xs=
-Date:   Sun, 15 Mar 2020 12:44:51 +0000
+        b=NUJ6pbs01C+UoQMm4altkbimFzj4hq+5lJT3bJdtivP2WzevDKmLpjIquh31vEi8M
+         kH+lo1CVFvqgTPkHVRDX8QPRbloZdLPngsYShTc7+ZwK+S13rnW32SpREupkTj+H08
+         7ZnFsKn8dBKuLH6uw/IQt0DJ+fk22aS96Zih21j8=
+Date:   Sun, 15 Mar 2020 12:50:39 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, Denis Ciocca <denis.ciocca@st.com>
-Subject: Re: [PATCH v2 8/8] iio: humidity: hts221: Drop unneeded casting
- when print error code
-Message-ID: <20200315124451.461856e2@archlinux>
-In-Reply-To: <20200313104955.30423-8-andriy.shevchenko@linux.intel.com>
-References: <20200313104955.30423-1-andriy.shevchenko@linux.intel.com>
-        <20200313104955.30423-8-andriy.shevchenko@linux.intel.com>
+To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alexandru.Ardelean@analog.com, dragos.bogdan@analog.com,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: Re: [PATCH] iio: health: max30100: use generic property handler
+Message-ID: <20200315124955.207d515c@archlinux>
+In-Reply-To: <5e6afe0d.1c69fb81.25912.f2eb@mx.google.com>
+References: <5e6afe0d.1c69fb81.25912.f2eb@mx.google.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,55 +42,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 13 Mar 2020 12:49:55 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Fri, 13 Mar 2020 08:59:13 +0530
+Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
 
-> Explicit casting in printf() usually shows that something is not okay.
-> Here, we really don't need it by providing correct specifier.
+> Instead of of_property_read_xxx use device_property_read_xxx as it is
+> compatible with ACPI too as opposed to only device tree.
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Applied.  These may sit in my local tree for a few days as I have
-an existing pull request out and will want to fast-forward the
-tree after that.
+> Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
 
-Thanks,
+Look at how this driver is probing from DT.  There is another thing you need
+to do to make it possible to use PRP001 ACPI based bindings.
 
+(check what Andy Shevchenko did in a similar patch)
+
+I'm being deliberately vague as useful for you to understand what is going
+on here for yourself :)
+
+Also, make sure to check you have cc'd everyone relevant.  Here you are missing
+the driver author. +cc Matt
 Jonathan
 
 > ---
-> v2: new patch
->  drivers/iio/humidity/hts221_i2c.c | 4 ++--
->  drivers/iio/humidity/hts221_spi.c | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
+>  drivers/iio/health/max30100.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/humidity/hts221_i2c.c b/drivers/iio/humidity/hts221_i2c.c
-> index 1398794e4bc7..cab39c4756f8 100644
-> --- a/drivers/iio/humidity/hts221_i2c.c
-> +++ b/drivers/iio/humidity/hts221_i2c.c
-> @@ -32,8 +32,8 @@ static int hts221_i2c_probe(struct i2c_client *client,
+> diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
+> index 84010501762d..8249c6b36818 100644
+> --- a/drivers/iio/health/max30100.c
+> +++ b/drivers/iio/health/max30100.c
+> @@ -16,7 +16,7 @@
+>  #include <linux/irq.h>
+>  #include <linux/i2c.h>
+>  #include <linux/mutex.h>
+> -#include <linux/of.h>
+> +#include <linux/property.h>
+>  #include <linux/regmap.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/buffer.h>
+> @@ -267,11 +267,10 @@ static int max30100_get_current_idx(unsigned int val, int *reg)
+>  static int max30100_led_init(struct max30100_data *data)
+>  {
+>  	struct device *dev = &data->client->dev;
+> -	struct device_node *np = dev->of_node;
+>  	unsigned int val[2];
+>  	int reg, ret;
 >  
->  	regmap = devm_regmap_init_i2c(client, &hts221_i2c_regmap_config);
->  	if (IS_ERR(regmap)) {
-> -		dev_err(&client->dev, "Failed to register i2c regmap %d\n",
-> -			(int)PTR_ERR(regmap));
-> +		dev_err(&client->dev, "Failed to register i2c regmap %ld\n",
-> +			PTR_ERR(regmap));
->  		return PTR_ERR(regmap);
->  	}
->  
-> diff --git a/drivers/iio/humidity/hts221_spi.c b/drivers/iio/humidity/hts221_spi.c
-> index ba1115489c2c..729e86e433b1 100644
-> --- a/drivers/iio/humidity/hts221_spi.c
-> +++ b/drivers/iio/humidity/hts221_spi.c
-> @@ -31,8 +31,8 @@ static int hts221_spi_probe(struct spi_device *spi)
->  
->  	regmap = devm_regmap_init_spi(spi, &hts221_spi_regmap_config);
->  	if (IS_ERR(regmap)) {
-> -		dev_err(&spi->dev, "Failed to register spi regmap %d\n",
-> -			(int)PTR_ERR(regmap));
-> +		dev_err(&spi->dev, "Failed to register spi regmap %ld\n",
-> +			PTR_ERR(regmap));
->  		return PTR_ERR(regmap);
->  	}
->  
+> -	ret = of_property_read_u32_array(np, "maxim,led-current-microamp",
+> +	ret = device_property_read_u32_array(dev, "maxim,led-current-microamp",
+>  					(unsigned int *) &val, 2);
+>  	if (ret) {
+>  		/* Default to 24 mA RED LED, 50 mA IR LED */
 

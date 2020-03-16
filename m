@@ -2,433 +2,197 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6BAB186DE3
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 15:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 183A9186F2B
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 16:50:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731643AbgCPOzC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Mar 2020 10:55:02 -0400
-Received: from www381.your-server.de ([78.46.137.84]:47118 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731539AbgCPOzB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Mar 2020 10:55:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=vvDbqRwSbUmV4RDLv6R6kVEx+mMcqdMXeLyElgMDDK0=; b=L492P+R3DUTyCEQe9+7bZy4NzB
-        6ikWZsT62teIV64hYgFXblWpa/Nbh6hMXGl21OVJSTdO9E6ETx/gwes4eOhtvzEMjj02HW0KysPs8
-        W6x2HQ5ldoLciA7E1cr3s3Ty43CuCeOgn+TH89qW/+kQdumaGJLsVVs8YJK0rX5v9ok5jmOpeu/QV
-        Yy/09a4KHhM5iRd3l1jD8FYbM7jhzDr0TgTLB5C8WT5JKJvOI1rBz6Xy4cHWNKANaT+AW+thpWGcc
-        LCY+YRhQni2NAKL/oRZY4x6pU+6chdu6ZPgd5n4ucEZzPogDwvPbBWGHFJ7Mp7EEA7WoaDXgj8xoB
-        AqWRBk1A==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jDr8s-0005xO-6B; Mon, 16 Mar 2020 15:54:58 +0100
-Received: from [93.104.121.61] (helo=[192.168.178.20])
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jDr8r-000Baf-RS; Mon, 16 Mar 2020 15:54:58 +0100
-Subject: Re: [PATCH v2] iio: accel: Add support for the Bosch-Sensortec BMI088
-To:     Mike Looijmans <mike.looijmans@topic.nl>, jic23@kernel.org,
-        linux-iio@vger.kernel.org
-Cc:     knaack.h@gmx.de, pmeerw@pmeerw.net
-References: <20200315120238.18c10af0@archlinux>
- <20200313140415.20266-1-mike.looijmans@topic.nl>
- <20200316073208.19715-1-mike.looijmans@topic.nl>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <46bec9b8-28ee-6fd3-f615-2b8db43626aa@metafoo.de>
-Date:   Mon, 16 Mar 2020 15:54:57 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1731900AbgCPPuy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Mar 2020 11:50:54 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:46019 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731890AbgCPPuy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Mar 2020 11:50:54 -0400
+Received: by mail-wr1-f67.google.com with SMTP id t2so11805252wrx.12;
+        Mon, 16 Mar 2020 08:50:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RmLZ2qN4R4wKBOzN/0eeaAXSnhYva6IoUpfiG2sUI4U=;
+        b=ZaNJNA/izv2UTTE0fphMn1Y3rPyGlxHJYmCq9jMTdAGslvX0XRh8BaBdXtEN4bBFIr
+         8gVewYBotOBoYW6HaQzhwYu4Tquy5TmSjvPUnBGX+q40EXlXDuIVH4Yay0Drmv6cMd6D
+         6p11mg9aBwAHoLmNp7G3UdhEo7CUKro9IOM7qd20lIYRJRlmhs4HQGjUrCbNDzNXAMi7
+         ZD6uBeydU/bjFOeQILfUDm5MMxjw0PFHDoQuqGqVxDtvjLBWYklg9/pTtUZIwHBXnv0y
+         uhLUcM2O4Sb0GhliG3mQQLFRJj09SRzP9I+JJ5ktxwAGiWl+Q7KJme0y5Au4tGx3jaFV
+         oHSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RmLZ2qN4R4wKBOzN/0eeaAXSnhYva6IoUpfiG2sUI4U=;
+        b=m2AePkPpCrNk5n/Y9UV4W8l0ZvnsSb0gUVqf8bByfhlGVaHN2JJx8nsopdLES1B8+k
+         zIOFmSqVxpebgIphbxU4NqLZrzUcZAg6nyWEJ/i8xu7A/foRn03Y6+/A0F9mYemU3sUa
+         +DDxWcgGJG4fKvY/yeHhiWZYU5E3TvqyZCo9k84UFxHYSfRh/mqmVsHRAshGbUkCxW3g
+         wAoK456QCtvCzGMeCxmklzrxqNPutPUn+zZLACiCzpxx9D4yKgG7t/dHs/GYb1kMUlHA
+         0L6qamwa9fA7j0CcL2fPw3QIt7hZsGMsjXofLOP4YR+TEZT6kDbZeq9axYu8gO75u13d
+         RfRA==
+X-Gm-Message-State: ANhLgQ1/M/+2sHWaPUHEAHAqPBFHYQDy0jvxBYSX+7corQ4eqrjoy92k
+        Z9fVf/+7ZWsPv/kmr071ZytW2r5v
+X-Google-Smtp-Source: ADFU+vssUSCgq7o2kXHdmInIcujdbFxVHI1N1v0Q6p3GHf7PP2lPeydG+by10GWhERmRAPwzHA6h3g==
+X-Received: by 2002:adf:fd81:: with SMTP id d1mr45471wrr.82.1584373851467;
+        Mon, 16 Mar 2020 08:50:51 -0700 (PDT)
+Received: from saturn.lan ([188.26.73.247])
+        by smtp.gmail.com with ESMTPSA id n14sm153558wmi.19.2020.03.16.08.50.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2020 08:50:50 -0700 (PDT)
+From:   Alexandru Ardelean <ardeleanalex@gmail.com>
+X-Google-Original-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Cc:     jic23@kernel.org, robh+dt@kernel.org, Laszlo.Nagy@analog.com,
+        Andrei.Grozav@analog.com, Michael.Hennerich@analog.com,
+        Istvan.Csomortani@analog.com, Adrian.Costina@analog.com,
+        Dragos.Bogdan@analog.com,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v10 0/8] iio: adi-axi-adc,ad9647: Add support for AD9467 ADC
+Date:   Mon, 16 Mar 2020 17:50:27 +0200
+Message-Id: <20200316155035.25500-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20200316073208.19715-1-mike.looijmans@topic.nl>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25753/Mon Mar 16 14:05:55 2020)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/16/20 8:32 AM, Mike Looijmans wrote:
-> The BMI088 is a combined module with both accelerometer and gyroscope.
-> This adds the accelerometer driver support for the SPI interface.
-> The gyroscope part is already supported by the BMG160 driver.
-Looks very good, a few comments inline.
-> [...]
-> +static int bmi088_accel_get_temp(struct bmi088_accel_data *data, int *val)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
-> +	u8 value[2];
-> +	unsigned int temp;
-> +
-> +	mutex_lock(&data->mutex);
-> +
-> +	/* Read temp reg MSB */
-> +	ret = regmap_bulk_read(data->regmap, BMI088_ACCEL_REG_TEMP,
-> +			       &value, sizeof(value));
-> +	if (ret < 0) {
-> +		dev_err(dev, "Error reading BMI088_ACCEL_REG_TEMP\n");
-> +		mutex_unlock(&data->mutex);
-> +		return ret;
-> +	}
-> +	temp = (unsigned int)value[0] << 3;
-> +	temp |= (value[1] >> 5);
-> +
-> +	if (temp > 1023)
-> +		*val = temp - 2028;
+This changeset adds support for the AD9467 LVDS High-Speed ADC.
+In order to support it, support for an FPGA ADI AXI ADC is added in this
+set.
+This uses the current support for IIO buffer DMAEngine.
 
-I would be highly surprised if this is not supposed to be 2048.
+Changelog v9 -> v10:
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - removed IQ correction logic; the AD9467 ADC driver has only 1 channel,
+    so it can't have I & Q; also the IQ correction assumes that all
+    even channels are Q and all odd channels are I, which is true for
+    current ADI-AXI ADC IP cores, but shouldn't be an assumption designed
+    in the driver; the IQ correction stuff will be re-added later,
+    and will try to use the IIO_MOD_I & IIO_MOD_Q modifiers
 
-If it is you can simplify the expression to be able to work without the 
-conditional by using
+Changelog v8 -> v9:
+* adding more Analog people to the list; predominantly HDL people; this
+  should help me sync people about the details of regs/reg-names
+* added 'Acked-by: Moritz Fischer <mdf@kernel.org>' tag to fpga patches
+  - we can always re-update these patches if something else is decided about
+    the location of the 'adi-axi-common.h' header; I'm not insisting about
+    where to put it; I'm open to other proposals
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - prefixed regs ADI_AXI_ ; I tried ADI_AXI_ADC_, but that seemed to make
+    them too long
+  - dropped unused regs; will add them as stuff gets added in the upstream
+    driver; in the meantime, reg-names can be reworked
+  - dropped generic LOWERXY_SET/GET macros
+  - update reg-names a bit; will update them in the docs and HDL
+  - order in adi_axi_adc_conv_unregister() should now be symmetrically
+    oppposite now to the register function
+  - implemented 'is_visible()' callback to adi_axi_adc_attributes[] so that
+    attrs can be made invisible to userspace if needed;
+  - 'indio_dev->name = "adi-axi-adc";'
+  - added kernel doc-string for @reg_access
+* patch 'iio: adc: ad9467: add support AD9467 ADC'
+  - ad9467_spi_read() split in 2 buffers; tbuf & rbuf
+  - removed 'if (chan->extend_name)' test ; left-over from initial driver
+  - removed 'if (!st->clk)' check; driver will fail probe without a clock
+  - removed 'if (!spi->dev.of_node)' in probe; shouldn't be needed
+  - using 'of_device_get_match_data()' in probe to get data; moved chip
+    info table entry as data on the of_device_id table
 
-*val = sign_extend32(temp, 11);
+Changelog v7 -> v8:
+* in 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - updated register definitions and bits to newer format/docs; the ref driver wasn't really up-to-date
+    -- prefixed bit names with reg-name to avoid bit definition colisions; that makes some macros longer, but at least the format is consistent
+  - using dev_name(&pdev->dev) for indio_dev->name
+  - moved reset to own axi_adc_reset() function; may be re-used later
+  - some re-formatting/alignment changes
+  - address ENOSYS checkpatch complaint; changed with EOPNOTSUPP
 
-I believe it is 11, better double check.
+Changelog v6 -> v7:
+* Fixed dt-schema build for adi,axi-adc.yaml based on Rob's suggestion
+  - added '$ref: /schemas/types.yaml#/definitions/phandle' to 'adi,adc-dev'
+  - dropped 'maxItems' from 'adi,adc-dev'
 
-> +	else
-> +		*val = temp;
-> +
-> +	mutex_unlock(&data->mutex);
-> +
-> +	return IIO_VAL_INT;
-> +}
-> [...]
-> +static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
-> +				 struct iio_chan_spec const *chan,
-> +				 int *val, int *val2, long mask)
-> +{
-> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +	unsigned int range;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		switch (chan->type) {
-> +		case IIO_TEMP:
-> +			return bmi088_accel_get_temp(data, val);
-> +		case IIO_ACCEL:
-> +			if (iio_buffer_enabled(indio_dev))
-> +				return -EBUSY;
+Changelog v5 -> v6
+* fix URLs; got changed during rename
+   https://wiki.analog.com/resources/fpga/docs/adi_axi_adc_ip ->
+   https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+  - noticed while working on the AXI DAC driver
 
-I think there is a race condition here. If the buffer is enabled after 
-the check undefined behavior might occur. Jonathan already mentioned it 
-in his review. Best is to use iio_device_{claim,release}_direct_mode().
+Changelog v4 -> v5:
+* update drivers/iio/adc/Kconfig note about module name; omitted during first rename
+   - 'module will be called axi-adc.' -> 'module will be called adi-axi-adc.'
 
-> +
-> +			ret = regmap_read(data->regmap,
-> +				BMI088_ACCEL_REG_ACC_RANGE, &range);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			ret = bmi088_accel_get_axis(data, chan, val);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			*val = (*val * 3 * 980 * (0x01 << range)) >> 15;
-> +
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> [...]
-> +}
-> +
-> +static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
-> +				  struct iio_chan_spec const *chan,
-> +				  int val, int val2, long mask)
-> +{
-> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		mutex_lock(&data->mutex);
-> +		ret = bmi088_accel_set_bw(data, val, val2);
-> +		mutex_unlock(&data->mutex);
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("12.5 25 50 100 200 400 800 1600");
-> +
-> +static struct attribute *bmi088_accel_attributes[] = {
-> +	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
-> +	NULL,
-> +};
-> +
-> +static const struct attribute_group bmi088_accel_attrs_group = {
-> +	.attrs = bmi088_accel_attributes,
-> +};
-> +
-> +#define BMI088_ACCEL_CHANNEL(_axis, bits) {				\
-> +	.type = IIO_ACCEL,						\
-> +	.modified = 1,							\
-> +	.channel2 = IIO_MOD_##_axis,					\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
-> +				BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
-> +	.scan_index = AXIS_##_axis,					\
-> +	.scan_type = {							\
-> +		.sign = 's',						\
-> +		.realbits = (bits),					\
-> +		.storagebits = 16,					\
-> +		.shift = 16 - (bits),					\
-> +		.endianness = IIO_LE,					\
-> +	},								\
-> +}
-> +
-> +#define BMI088_ACCEL_CHANNELS(bits) {					\
-> +	{								\
-> +		.type = IIO_TEMP,					\
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
-> +				      BIT(IIO_CHAN_INFO_SCALE) |	\
-> +				      BIT(IIO_CHAN_INFO_OFFSET),	\
-> +		.scan_index = -1,					\
-> +	},								\
-> +	BMI088_ACCEL_CHANNEL(X, bits),					\
-> +	BMI088_ACCEL_CHANNEL(Y, bits),					\
-> +	BMI088_ACCEL_CHANNEL(Z, bits),					\
-> +	IIO_CHAN_SOFT_TIMESTAMP(3),					\
-> +}
-> +
-> +static const struct iio_chan_spec bmi088_accel_channels[] =
-> +	BMI088_ACCEL_CHANNELS(16);
-> +
-> +static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
-> +	[0] = {
-> +		.name = "BMI088A",
-> +		.chip_id = 0x1E,
-> +		.channels = bmi088_accel_channels,
-> +		.num_channels = ARRAY_SIZE(bmi088_accel_channels),
-> +		.scale_table = { {9610, BMI088_ACCEL_RANGE_3G},
-> +				 {19122, BMI088_ACCEL_RANGE_6G},
-> +				 {38344, BMI088_ACCEL_RANGE_12G},
-> +				 {76590, BMI088_ACCEL_RANGE_24G} },
-> +		},
-> +};
-> +
-> +static const struct iio_info bmi088_accel_info = {
-> +	.attrs		= &bmi088_accel_attrs_group,
-> +	.read_raw	= bmi088_accel_read_raw,
-> +	.write_raw	= bmi088_accel_write_raw,
-> +};
-> +
-> +static const unsigned long bmi088_accel_scan_masks[] = {
-> +				BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
-> +				0};
-> +
-> +
-> +
-> +#ifdef CONFIG_PM
-> +static int bmi088_accel_set_power_state(struct bmi088_accel_data *data,
-> +	bool on)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
-> +
-> +	if (on) {
-> +		ret = pm_runtime_get_sync(dev);
-> +	} else {
-> +		pm_runtime_mark_last_busy(dev);
-> +		ret = pm_runtime_put_autosuspend(dev);
-> +	}
-> +
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed: %s(%d)\n", __func__, on);
-> +		if (on)
-> +			pm_runtime_put_noidle(dev);
-> +
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +#else
-> +static int bmi088_accel_set_power_state(struct bmi088_accel_data *data,
-> +	bool on)
-> +{
-> +	return 0;
-> +}
-> +#endif
-> +
-> +static int bmi088_accel_chip_init(struct bmi088_accel_data *data)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret, i;
-> +	unsigned int val;
-> +
-> +	/* Do a dummy read (of chip ID), to enable SPI interface */
-> +	regmap_read(data->regmap, BMI088_ACCEL_REG_CHIP_ID, &val);
-> +
-> +	/*
-> +	 * Reset chip to get it in a known good state. A delay of 1ms after
-> +	 * reset is required according to the data sheet
-> +	 */
-> +	regmap_write(data->regmap, BMI088_ACCEL_REG_RESET,
-> +		     BMI088_ACCEL_RESET_VAL);
-> +	usleep_range(1000, 2000);
-> +
-> +	/* Do a dummy read (of chip ID), to enable SPI interface after reset */
-> +	regmap_read(data->regmap, BMI088_ACCEL_REG_CHIP_ID, &val);
-> +
-> +	/* Read chip ID */
-> +	ret = regmap_read(data->regmap, BMI088_ACCEL_REG_CHIP_ID, &val);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Error: Reading chip id\n");
-> +		return ret;
-> +	}
-> +
-> +	/* Validate chip ID */
-> +	dev_dbg(dev, "Chip Id %x\n", val);
-> +	for (i = 0; i < ARRAY_SIZE(bmi088_accel_chip_info_tbl); i++) {
-> +		if (bmi088_accel_chip_info_tbl[i].chip_id == val) {
-> +			data->chip_info = &bmi088_accel_chip_info_tbl[i];
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (!data->chip_info) {
-> +		dev_err(dev, "Invalid chip %x\n", val);
-> +		return -ENODEV;
-> +	}
-> +
-> +	/* Set Active mode (and wait for 5ms) */
-> +	ret = bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_ACTIVE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	usleep_range(5000, 10000);
-> +
-> +	/* Enable accelerometer */
-> +	ret = bmi088_accel_enable(data, true);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set Bandwidth */
-> +	ret = bmi088_accel_set_bw(data, BMI088_ACCEL_MODE_ODR_100,
-> +		BMI088_ACCEL_MODE_OSR_NORMAL);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set Default Range */
-> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_ACC_RANGE,
-> +			   BMI088_ACCEL_RANGE_6G);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Error writing ACC_RANGE\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap,
-> +	int irq, const char *name, bool block_supported)
-> +{
-> +	struct bmi088_accel_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	dev_set_drvdata(dev, indio_dev);
-> +
-> +	data->regmap = regmap;
-> +
-> +	ret = bmi088_accel_chip_init(data);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	mutex_init(&data->mutex);
-> +
-> +	indio_dev->dev.parent = dev;
-> +	indio_dev->channels = data->chip_info->channels;
-> +	indio_dev->num_channels = data->chip_info->num_channels;
-> +	indio_dev->name = name ? name : data->chip_info->name;
-Considering that chip_info is chosen by the product ID register, 
-regardless of what the compatible string was, maybe it is best to always 
-use chip_info->name here.
-> +	indio_dev->available_scan_masks = bmi088_accel_scan_masks;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &bmi088_accel_info;
->
-> diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
-> new file mode 100644
-> index 000000000000..920e146f07d3
-> --- /dev/null
-> +++ b/drivers/iio/accel/bmi088-accel-spi.c
-> @@ -0,0 +1,100 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
-> + *  - BMI088
-> + *
-> + * Copyright (c) 2018, Topic Embedded Products
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/slab.h>
-> +#include <linux/acpi.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "bmi088-accel.h"
-> +
-> +int bmi088_regmap_spi_write(void *context, const void *data, size_t count)
-> +{
-> +	struct spi_device *spi = context;
-> +	u8 buf[count];
-> +
-> +	memcpy(buf, data, count);
-> +
-> +	dev_dbg(&spi->dev, "Write val: %x to reg: %x\n", buf[1], buf[0]);
-> +
-> +	/*
-> +	 * The SPI register address (= full register address without bit 7)
-> +	 * and the write command (bit7 = RW = '0')
-> +	 */
-> +	buf[0] &= ~0x80;
-> +
-> +	return spi_write(spi, buf, count);
-> +}
-> +
-> +int bmi088_regmap_spi_read(void *context, const void *reg,
-> +				size_t reg_size, void *val, size_t val_size)
-> +{
-> +	struct spi_device *spi = context;
-> +	u8 addr[reg_size + 1];
-I believe there is an effort to eliminate variable length arrays that 
-are placed on the stack from the kernel. reg_size should have a very 
-small upper limit you should be able to get away with a statically sized 
-array.
-> +
-> +	addr[0] = *(u8 *)reg;
-> +
-> +	dev_dbg(&spi->dev, "Read reg: %x\n", addr[0]);
-> +
-> +	addr[0] |= 0x80; /* bit7 = RW = '1' */
-> +
-> +	/* Do a write of 2 to mimic the dummy byte (see datasheet) */
-> +	return spi_write_then_read(spi, addr, sizeof(addr), val, val_size);
-> +}
-[...]
+Changelog v3 -> v4:
+* addressed Rob's dt-remarks
+   - change 'adi-axi-adc-client' prop to 'adi,adc-dev'
 
+Changelog v2 -> v3:
+* addressed compiler warning
+
+Changelog v1 -> v2:
+* first series was added a bit hastily
+* addressed  'make dt_binding_check' complaints; seems I missed a few when running the check; 
+* added missing patches to include/linux/fpga/adi-axi-common.h
+   - 'include: fpga: adi-axi-common.h: fixup whitespace tab -> space'
+   - 'include: fpga: adi-axi-common.h: add version helper macros'
+* patch 'iio: buffer-dmaengine: add dev-managed calls for buffer alloc/free'
+   - remove copy+pasted comment for 'devm_iio_dmaengine_buffer_alloc()'
+   - removed devm_iio_dmaengine_buffer_free() ; hopefully it might never be needed
+   - fix-up alignment for devm_iio_dmaengine_buffer_alloc() in header
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+   - renamed axi-adc.c -> adi-axi-adc.c & Kconfig symbol
+   - prefix all axi_adc -> adi_axi_adc
+   - removed switch statement in axi_adc_read_raw() & axi_adc_write_raw()
+   - remove axi_adc_chan_spec ; replaced with iio_chan_spec directly ; will think of a simpler solution for extra chan params
+   - removed left-over 'struct axi_adc_cleanup_data'
+   - moved 'devm_add_action_or_reset()' call right after 'adi_axi_adc_attach_client()'
+   - switched to using 'devm_platform_ioremap_resource()'
+* patch 'iio: adc: ad9467: add support AD9467 ADC'
+  - renamed ADI_ADC reg prefixes to AN877_ADC
+  - dropped 'info_mask_separate' field in AD9467_CHAN - will be re-added later when driver gets more features; was left-over from the initial ref driver
+  - remove .shift = 0,  in AD9467_CHAN
+  - renamed 'sample-clock' -> 'adc-clock'
+  - direct returns in ad9467_read_raw() & ad9467_write_raw() & ad9467_setup() switch statements
+  - removed blank line after devm_axi_adc_conv_register()
+  - removed ad9467_id & reworked to use ad9467_of_match
+
+Alexandru Ardelean (6):
+  include: fpga: adi-axi-common.h: fixup whitespace tab -> space
+  include: fpga: adi-axi-common.h: add version helper macros
+  iio: buffer-dmaengine: use %zu specifier for sprintf(align)
+  iio: buffer-dmaengine: add dev-managed calls for buffer alloc
+  dt-bindings: iio: adc: add bindings doc for AXI ADC driver
+  dt-bindings: iio: adc: add bindings doc for AD9467 ADC
+
+Michael Hennerich (2):
+  iio: adc: adi-axi-adc: add support for AXI ADC IP core
+  iio: adc: ad9467: add support AD9467 ADC
+
+ .../bindings/iio/adc/adi,ad9467.yaml          |  65 +++
+ .../bindings/iio/adc/adi,axi-adc.yaml         |  63 +++
+ drivers/iio/adc/Kconfig                       |  35 ++
+ drivers/iio/adc/Makefile                      |   2 +
+ drivers/iio/adc/ad9467.c                      | 420 +++++++++++++++
+ drivers/iio/adc/adi-axi-adc.c                 | 495 ++++++++++++++++++
+ .../buffer/industrialio-buffer-dmaengine.c    |  41 +-
+ include/linux/fpga/adi-axi-common.h           |   6 +-
+ include/linux/iio/adc/adi-axi-adc.h           |  64 +++
+ include/linux/iio/buffer-dmaengine.h          |   3 +
+ 10 files changed, 1192 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+ create mode 100644 drivers/iio/adc/ad9467.c
+ create mode 100644 drivers/iio/adc/adi-axi-adc.c
+ create mode 100644 include/linux/iio/adc/adi-axi-adc.h
+
+-- 
+2.20.1
 

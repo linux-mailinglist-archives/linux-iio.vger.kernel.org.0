@@ -2,40 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD7A0186A74
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 12:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A899B186B5F
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 13:49:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730883AbgCPL4M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Mar 2020 07:56:12 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2564 "EHLO huawei.com"
+        id S1731068AbgCPMtJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Mar 2020 08:49:09 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2565 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730882AbgCPL4M (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Mar 2020 07:56:12 -0400
-Received: from LHREML711-CAH.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 0AE0F9E51C01A518A474;
-        Mon, 16 Mar 2020 11:56:11 +0000 (GMT)
+        id S1730979AbgCPMtJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 16 Mar 2020 08:49:09 -0400
+Received: from lhreml709-cah.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id E6D132FC0547468146FE;
+        Mon, 16 Mar 2020 12:49:07 +0000 (GMT)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- LHREML711-CAH.china.huawei.com (10.201.108.34) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Mon, 16 Mar 2020 11:56:10 +0000
+ lhreml709-cah.china.huawei.com (10.201.108.32) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Mon, 16 Mar 2020 12:49:07 +0000
 Received: from localhost (10.47.94.88) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Mon, 16 Mar
- 2020 11:56:10 +0000
-Date:   Mon, 16 Mar 2020 11:56:08 +0000
+ 2020 12:49:07 +0000
+Date:   Mon, 16 Mar 2020 12:49:05 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Rohit Sarkar <rohitsarkar5398@gmail.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        <dragos.bogdan@analog.com>
-Subject: Re: [PATCH] iio: health: max30100: use generic property handler
-Message-ID: <20200316115608.00003b34@Huawei.com>
-In-Reply-To: <CAJCx=gk-oycno_NPtNFAvuX8ibsLEGLq0FrLvfXeaJwuvuTjcg@mail.gmail.com>
-References: <5e6afe0d.1c69fb81.25912.f2eb@mx.google.com>
-        <20200315124955.207d515c@archlinux>
-        <CAJCx=gk-oycno_NPtNFAvuX8ibsLEGLq0FrLvfXeaJwuvuTjcg@mail.gmail.com>
+To:     Mike Looijmans <mike.looijmans@topic.nl>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>
+Subject: Re: [PATCH] iio: accel: Add support for the Bosch-Sensortec BMI088
+Message-ID: <20200316124905.00003de8@Huawei.com>
+In-Reply-To: <cba4a7c9-68a0-f268-bc78-ad6ab07fc70d@topic.nl>
+References: <20200313140415.20266-1-mike.looijmans@topic.nl>
+        <20200315120238.18c10af0@archlinux>
+        <cba4a7c9-68a0-f268-bc78-ad6ab07fc70d@topic.nl>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -50,80 +46,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 16 Mar 2020 01:08:20 -0700
-Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+On Mon, 16 Mar 2020 07:27:12 +0100
+Mike Looijmans <mike.looijmans@topic.nl> wrote:
 
-> On Sun, Mar 15, 2020 at 5:50 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Fri, 13 Mar 2020 08:59:13 +0530
-> > Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
-> >  
-> > > Instead of of_property_read_xxx use device_property_read_xxx as it is
-> > > compatible with ACPI too as opposed to only device tree.
-> > >
-> > > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>  
-> >
-> > Look at how this driver is probing from DT.  There is another thing you need
-> > to do to make it possible to use PRP001 ACPI based bindings.
-> >
-> > (check what Andy Shevchenko did in a similar patch)
-> >
-> > I'm being deliberately vague as useful for you to understand what is going
-> > on here for yourself :)
-> >
-> > Also, make sure to check you have cc'd everyone relevant.  Here you are missing
-> > the driver author. +cc Matt
-> > Jonathan
-> >  
+> On 15-03-2020 13:02, Jonathan Cameron wrote:
+> > On Fri, 13 Mar 2020 15:04:15 +0100
+> > Mike Looijmans <mike.looijmans@topic.nl> wrote:
+> >   
+> >> The BMI088 is a combined module with both accelerometer and gyroscope.
+> >> This adds the accelerometer driver support for the SPI interface.
+> >> The gyroscope part is already supported by the BMG160 driver.  
+> > 
+> > There doesn't seem to be a specific compatible entry in the bmg160 driver.
+> > Perhaps we should look to add one?  
 > 
-> Highly doubt anyone is using this in an ACPI setting. Am I missing
-> something though?
+> I actually have it already, I'll submit it.
+> 
+> >   
+> >>
+> >> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>  
+> > 
+> > For a modern driver I'd normally expect to also see DT bindings.
+> > How are you probing this?  
+> 
+> DT bindings, should I submit those as a separate patch?
+> They're pretty trivial.
 
-The 'new' wonder that is the ACPI ID PRP001.  It lets you instantiate
-a device with a DT binding but using a chunk of DSDT.
-
-Where it comes in handy is if you happen to have an X86 machine that you
-are using to test and do it by overriding the DSDT (easy to do) to add
-whatever controller you are using and the device.  Basically it is the
-ACPI equivalent of hacking the dt file for a board.
-
-Very convenient for testing device drivers.
-
-Jonathan
+Yes. Separate patch for those as it means Rob doesn't have to plough through
+the whole driver to find them!
 
 > 
-> - Matt
+> > There is a lot of half implemented code for features that I assume will follow
+> > in later patches.  Please rip all that out for now.  A simple initial driver
+> > is great but must only include the stuff it actually uses.  
 > 
-> > > ---
-> > >  drivers/iio/health/max30100.c | 5 ++---
-> > >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
-> > > index 84010501762d..8249c6b36818 100644
-> > > --- a/drivers/iio/health/max30100.c
-> > > +++ b/drivers/iio/health/max30100.c
-> > > @@ -16,7 +16,7 @@
-> > >  #include <linux/irq.h>
-> > >  #include <linux/i2c.h>
-> > >  #include <linux/mutex.h>
-> > > -#include <linux/of.h>
-> > > +#include <linux/property.h>
-> > >  #include <linux/regmap.h>
-> > >  #include <linux/iio/iio.h>
-> > >  #include <linux/iio/buffer.h>
-> > > @@ -267,11 +267,10 @@ static int max30100_get_current_idx(unsigned int val, int *reg)
-> > >  static int max30100_led_init(struct max30100_data *data)
-> > >  {
-> > >       struct device *dev = &data->client->dev;
-> > > -     struct device_node *np = dev->of_node;
-> > >       unsigned int val[2];
-> > >       int reg, ret;
-> > >
-> > > -     ret = of_property_read_u32_array(np, "maxim,led-current-microamp",
-> > > +     ret = device_property_read_u32_array(dev, "maxim,led-current-microamp",
-> > >                                       (unsigned int *) &val, 2);
-> > >       if (ret) {
-> > >               /* Default to 24 mA RED LED, 50 mA IR LED */  
-> >  
+> I'll do some cleanup, didn't notice that.
+> 
+> Mike.
 
 

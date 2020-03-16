@@ -2,37 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B3A3186A4F
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 12:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4CA186A5A
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 12:49:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730872AbgCPLpX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Mar 2020 07:45:23 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2561 "EHLO huawei.com"
+        id S1730881AbgCPLtX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Mar 2020 07:49:23 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2562 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729043AbgCPLpX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Mar 2020 07:45:23 -0400
-Received: from lhreml709-cah.china.huawei.com (unknown [172.18.7.108])
-        by Forcepoint Email with ESMTP id 83B2B9CE06A100C7DF0E;
-        Mon, 16 Mar 2020 11:45:20 +0000 (GMT)
+        id S1730882AbgCPLtX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 16 Mar 2020 07:49:23 -0400
+Received: from LHREML711-CAH.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id 88596452F718665D9F9F;
+        Mon, 16 Mar 2020 11:49:22 +0000 (GMT)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- lhreml709-cah.china.huawei.com (10.201.108.32) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Mon, 16 Mar 2020 11:45:19 +0000
+ LHREML711-CAH.china.huawei.com (10.201.108.34) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Mon, 16 Mar 2020 11:49:21 +0000
 Received: from localhost (10.47.94.88) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Mon, 16 Mar
- 2020 11:45:19 +0000
-Date:   Mon, 16 Mar 2020 11:45:18 +0000
+ 2020 11:49:21 +0000
+Date:   Mon, 16 Mar 2020 11:49:20 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>
-Subject: Re: [PATCH 1/8] iio: core: drop devm_iio_device_unregister() API
- call
-Message-ID: <20200316114518.00005440@Huawei.com>
-In-Reply-To: <9a18cedd0e537927aad27001dfc5e8845d302e46.camel@analog.com>
-References: <20200227135227.12433-1-alexandru.ardelean@analog.com>
-        <9a18cedd0e537927aad27001dfc5e8845d302e46.camel@analog.com>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Rohit Sarkar <rohitsarkar5398@gmail.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: health: max30100: remove mlock usage
+Message-ID: <20200316114920.00000689@Huawei.com>
+In-Reply-To: <CAJCx=g=7_S5=JJ1K8JCLd06hTbhqTHupUJ1tYX6uiAP+1WtjsQ@mail.gmail.com>
+References: <5e668b89.1c69fb81.d7e4f.0f61@mx.google.com>
+        <20200315094604.62dc96be@archlinux>
+        <CAJCx=gkZEDa5vg1R2gta9vERy2+W4vst0et0THO9Oth3d3Yzfg@mail.gmail.com>
+        <CAJCx=g=7_S5=JJ1K8JCLd06hTbhqTHupUJ1tYX6uiAP+1WtjsQ@mail.gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -47,109 +49,115 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 16 Mar 2020 09:09:08 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Mon, 16 Mar 2020 01:29:28 -0700
+Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 
-> On Thu, 2020-02-27 at 15:52 +0200, Alexandru Ardelean wrote:
-> > It's unused so far, so it can't be removed. Also makes sense to remove it
-> > to discourage weird uses of this call during review.  
+> On Mon, Mar 16, 2020 at 1:21 AM Matt Ranostay
+> <matt.ranostay@konsulko.com> wrote:
+> >
+> > On Sun, Mar 15, 2020 at 2:46 AM Jonathan Cameron <jic23@kernel.org> wrote:  
+> > >
+> > > On Tue, 10 Mar 2020 00:01:28 +0530
+> > > Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+> > >  
+> > > > Use local lock instead of indio_dev's mlock.
+> > > > The mlock was being used to protect local driver state thus using the
+> > > > local lock is a better option here.
+> > > >
+> > > > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>  
+> > >
+> > > Matt.  Definitely need your input on this.
+> > >  
+> > > > ---
+> > > >  drivers/iio/health/max30100.c | 4 ++--
+> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
+> > > > index 84010501762d..8ddc4649547d 100644
+> > > > --- a/drivers/iio/health/max30100.c
+> > > > +++ b/drivers/iio/health/max30100.c
+> > > > @@ -388,7 +388,7 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
+> > > >                * Temperature reading can only be acquired while engine
+> > > >                * is running
+> > > >                */
+> > > > -             mutex_lock(&indio_dev->mlock);
+> > > > +             mutex_lock(&data->lock);  
+> > >
+> > > Hmm.. It's another complex one.  What is actually being protected here is
+> > > the buffer state, but not to take it exclusively like claim_direct does.
+> > >
+> > > Here we need the inverse, we want to ensure we are 'not' in the direct
+> > > mode because this hardware requires the buffer to be running to read the
+> > > temperature.
+> > >
+> > > That is the sort of interface that is going to get userspace very
+> > > confused.
+> > >
+> > > Matt, normally what I'd suggest here is that the temperature read should:
+> > >
+> > > 1) Claim direct mode, if it fails then do the dance you have here
+> > > (with more comments to explain why you are taking an internal lock)
+> > > 2) Start up capture as if we were in buffered mode
+> > > 3) Grab that temp
+> > > 4) stop capture to return to non buffered mode.
+> > > 5) Release direct mode.
+> > >
+> > > I guess we decided it wasn't worth the hassle.
+> > >
+> > > So Rohit.  This one probably needs a comment rather than any change.
+> > > We 'could' add a 'hold_buffered_mode' function that takes the mlock,
+> > > verifies we are in buffered mode and continues to hold the lock
+> > > until the 'release_buffered_mode'.  However, I'm not sure any other
+> > > drivers do this particular dance, so clear commenting in the driver
+> > > might be enough.   Should we ever change how mlock is used in the
+> > > core, we'd have to fix this driver up as well.
+> > >
+> > > Hmm.  This is really hammering home that perhaps all the remaining
+> > > mlock cases are 'hard'.  
+> >
+> > Heh really had to look this over what I was doing since it has been
+> > almost half a decade now :).
+> >
+> > Think locking that mutex was only to prevent another read during the
+> > temp reading, and not really
+> > not sure how effective that is actually. Especially since the I2C
+> > subsystem should handle those reads
+> > in a queue like fashion.
+> >
+> > - Matt
+> >  
 > 
-> Any thoughts on this?
-> I suspect that this may be one of those "I'd like to sit on this for a while"
-> patchsets?
-> Which is fine.
+> So to be clear I think we can just remove the lock period since the
+> odds of this actually being requested (or disabled) at the
+> exact time so very remote. Along with the worse case being a failed read.
 
-Got it in one.   It's both extremely simple and extremely likely to break
-someones out of tree driver.  I guessing all the ADI ones are fine though :)
-
-> But I'm also wondering if this got omitted.
-
-Wise to check, it wouldn't be the first time I'd lost a whole
-series.
-
-Thanks,
+I disagree.   What that lock prevents is disabling buffered mode between
+the check on whether it is enabled and the read.   That's a clear race
+so we should keep the lock.
 
 Jonathan
 
 
-
 > 
-> Thanks
-> Alex
+> - Matt
 > 
-> > 
-> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-> > ---
-> >  .../driver-api/driver-model/devres.rst          |  1 -
-> >  drivers/iio/industrialio-core.c                 | 17 -----------------
-> >  include/linux/iio/iio.h                         |  4 ----
-> >  3 files changed, 22 deletions(-)
-> > 
-> > diff --git a/Documentation/driver-api/driver-model/devres.rst
-> > b/Documentation/driver-api/driver-model/devres.rst
-> > index 46c13780994c..0580c64ebdfd 100644
-> > --- a/Documentation/driver-api/driver-model/devres.rst
-> > +++ b/Documentation/driver-api/driver-model/devres.rst
-> > @@ -286,7 +286,6 @@ IIO
-> >    devm_iio_device_alloc()
-> >    devm_iio_device_free()
-> >    devm_iio_device_register()
-> > -  devm_iio_device_unregister()
-> >    devm_iio_kfifo_allocate()
-> >    devm_iio_kfifo_free()
-> >    devm_iio_triggered_buffer_setup()
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> > index 0b14666dff09..e4011f8431f9 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -1823,23 +1823,6 @@ int __devm_iio_device_register(struct device *dev,
-> > struct iio_dev *indio_dev,
-> >  }
-> >  EXPORT_SYMBOL_GPL(__devm_iio_device_register);
-> >  
-> > -/**
-> > - * devm_iio_device_unregister - Resource-managed iio_device_unregister()
-> > - * @dev:	Device this iio_dev belongs to
-> > - * @indio_dev:	the iio_dev associated with the device
-> > - *
-> > - * Unregister iio_dev registered with devm_iio_device_register().
-> > - */
-> > -void devm_iio_device_unregister(struct device *dev, struct iio_dev
-> > *indio_dev)
-> > -{
-> > -	int rc;
-> > -
-> > -	rc = devres_release(dev, devm_iio_device_unreg,
-> > -			    devm_iio_device_match, indio_dev);
-> > -	WARN_ON(rc);
-> > -}
-> > -EXPORT_SYMBOL_GPL(devm_iio_device_unregister);
-> > -
-> >  /**
-> >   * iio_device_claim_direct_mode - Keep device in direct mode
-> >   * @indio_dev:	the iio_dev associated with the device
-> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> > index 862ce0019eba..0eb9e8d7ec68 100644
-> > --- a/include/linux/iio/iio.h
-> > +++ b/include/linux/iio/iio.h
-> > @@ -591,9 +591,6 @@ void iio_device_unregister(struct iio_dev *indio_dev);
-> >   * calls iio_device_register() internally. Refer to that function for more
-> >   * information.
-> >   *
-> > - * If an iio_dev registered with this function needs to be unregistered
-> > - * separately, devm_iio_device_unregister() must be used.
-> > - *
-> >   * RETURNS:
-> >   * 0 on success, negative error number on failure.
-> >   */
-> > @@ -601,7 +598,6 @@ void iio_device_unregister(struct iio_dev *indio_dev);
-> >  	__devm_iio_device_register((dev), (indio_dev), THIS_MODULE);
-> >  int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
-> >  			       struct module *this_mod);
-> > -void devm_iio_device_unregister(struct device *dev, struct iio_dev
-> > *indio_dev);
-> >  int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
-> >  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
-> >  void iio_device_release_direct_mode(struct iio_dev *indio_dev);  
+> > >
+> > > Thanks,
+> > >
+> > > Jonathan
+> > >  
+> > > >
+> > > >               if (!iio_buffer_enabled(indio_dev))
+> > > >                       ret = -EAGAIN;
+> > > > @@ -399,7 +399,7 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
+> > > >
+> > > >               }
+> > > >
+> > > > -             mutex_unlock(&indio_dev->mlock);
+> > > > +             mutex_unlock(&data->lock);
+> > > >               break;
+> > > >       case IIO_CHAN_INFO_SCALE:
+> > > >               *val = 1;  /* 0.0625 */  
+> > >  
 
 

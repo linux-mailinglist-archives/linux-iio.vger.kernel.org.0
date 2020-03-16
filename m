@@ -2,24 +2,24 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A107218716F
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 18:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D66E187174
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 18:46:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732168AbgCPRq0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Mar 2020 13:46:26 -0400
-Received: from honk.sigxcpu.org ([24.134.29.49]:54054 "EHLO honk.sigxcpu.org"
+        id S1732248AbgCPRq3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Mar 2020 13:46:29 -0400
+Received: from honk.sigxcpu.org ([24.134.29.49]:54132 "EHLO honk.sigxcpu.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731715AbgCPRq0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Mar 2020 13:46:26 -0400
+        id S1732228AbgCPRq2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 16 Mar 2020 13:46:28 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id D83F8FB07;
-        Mon, 16 Mar 2020 18:46:22 +0100 (CET)
+        by honk.sigxcpu.org (Postfix) with ESMTP id 5CED2FB06;
+        Mon, 16 Mar 2020 18:46:27 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
 Received: from honk.sigxcpu.org ([127.0.0.1])
         by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 46RZyJU6HEyS; Mon, 16 Mar 2020 18:46:21 +0100 (CET)
+        with ESMTP id 7xGcqZA3zAmj; Mon, 16 Mar 2020 18:46:23 +0100 (CET)
 Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id D6CBE40D82; Mon, 16 Mar 2020 18:46:20 +0100 (CET)
+        id E114041257; Mon, 16 Mar 2020 18:46:20 +0100 (CET)
 From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
 To:     Tomas Novotny <tomas@novotny.cz>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -32,9 +32,9 @@ To:     Tomas Novotny <tomas@novotny.cz>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v2 2/4] dt-bindings: iio: light: vcnl4000: Add near-level
-Date:   Mon, 16 Mar 2020 18:46:18 +0100
-Message-Id: <65e1007c48f24c44fba0c12b1d5d31af2b5d3a1a.1584380360.git.agx@sigxcpu.org>
+Subject: [PATCH v2 3/4] iio: vcnl4000: Export near level property for proximity sensor
+Date:   Mon, 16 Mar 2020 18:46:19 +0100
+Message-Id: <5566fe01df933d3281f058666e2147cb97b38126.1584380360.git.agx@sigxcpu.org>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1584380360.git.agx@sigxcpu.org>
 References: <cover.1584380360.git.agx@sigxcpu.org>
@@ -46,40 +46,76 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This value indicates when userspace should consider an object
-near to the sensor/device.
+When an object can be considered close to the sensor is hardware
+dependent. Allowing to configure the property via device tree
+allows to configure this device specific value.
+
+This is useful for e.g. iio-sensor-proxy to indicate to userspace
+if an object is close to the sensor.
 
 Signed-off-by: Guido Günther <agx@sigxcpu.org>
 ---
- Documentation/devicetree/bindings/iio/light/vcnl4000.yaml | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/iio/light/vcnl4000.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
-index 74d53cfbeb85..fc24800f530a 100644
---- a/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
-+++ b/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
-@@ -25,6 +25,13 @@ properties:
-   reg:
-     maxItems: 1
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index 38fcd9a26046..7111118e0fda 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -83,6 +83,7 @@ struct vcnl4000_data {
+ 	struct mutex vcnl4000_lock;
+ 	struct vcnl4200_channel vcnl4200_al;
+ 	struct vcnl4200_channel vcnl4200_ps;
++	uint32_t near_level;
+ };
  
-+  near-level:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Raw proximity values equal or above this level should be
-+      considered 'near' to the device (an object is near to the
-+      sensor).
+ struct vcnl4000_chip_spec {
+@@ -342,6 +343,26 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+ 	},
+ };
+ 
 +
- required:
-   - compatible
-   - reg
-@@ -40,6 +47,7 @@ examples:
-       light-sensor@51 {
-               compatible = "vishay,vcnl4200";
-               reg = <0x51>;
-+              near-level = <220>;
-       };
-   };
- ...
++static ssize_t vcnl4000_read_near_level(struct iio_dev *indio_dev,
++					uintptr_t priv,
++					const struct iio_chan_spec *chan,
++					char *buf)
++{
++	struct vcnl4000_data *data = iio_priv(indio_dev);
++
++	return sprintf(buf, "%u\n", data->near_level);
++}
++
++static const struct iio_chan_spec_ext_info vcnl4000_ext_info[] = {
++	{
++		.name = "near_level",
++		.shared = IIO_SEPARATE,
++		.read = vcnl4000_read_near_level,
++	},
++	{ /* sentinel */ }
++};
++
+ static const struct iio_chan_spec vcnl4000_channels[] = {
+ 	{
+ 		.type = IIO_LIGHT,
+@@ -350,6 +371,7 @@ static const struct iio_chan_spec vcnl4000_channels[] = {
+ 	}, {
+ 		.type = IIO_PROXIMITY,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
++		.ext_info = vcnl4000_ext_info,
+ 	}
+ };
+ 
+@@ -439,6 +461,10 @@ static int vcnl4000_probe(struct i2c_client *client,
+ 	dev_dbg(&client->dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
+ 		data->chip_spec->prod, data->rev);
+ 
++	if (device_property_read_u32(&client->dev, "near-level",
++				     &data->near_level) < 0)
++		data->near_level = 0;
++
+ 	indio_dev->dev.parent = &client->dev;
+ 	indio_dev->info = &vcnl4000_info;
+ 	indio_dev->channels = vcnl4000_channels;
 -- 
 2.23.0
 

@@ -2,116 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDF218661E
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 09:08:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE7FB186645
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 09:21:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729966AbgCPIIe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Mar 2020 04:08:34 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:43183 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729662AbgCPIIc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Mar 2020 04:08:32 -0400
-Received: by mail-io1-f65.google.com with SMTP id n21so16114324ioo.10
-        for <linux-iio@vger.kernel.org>; Mon, 16 Mar 2020 01:08:32 -0700 (PDT)
+        id S1730034AbgCPIVp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Mar 2020 04:21:45 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:39620 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730119AbgCPIVo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Mar 2020 04:21:44 -0400
+Received: by mail-io1-f68.google.com with SMTP id c19so15128290ioo.6
+        for <linux-iio@vger.kernel.org>; Mon, 16 Mar 2020 01:21:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4C2QkAKPFn1QPCfwIwQSCmTCJeHSpIXw2b0k4lFrSqw=;
-        b=fm03qKP6u2MIv0CLrzY6ofU6yjZHgvQe+TbeLEntGXpI0hO9eXYatpS9h57CEiZIr6
-         1ySpUt7WdvD5OnUwPShXMoisuWsd4epIw+0qkyDd/uc0RF8KmlYU3tI8eFCcexvH4rAA
-         Eqizgf7FiaTXaWdZ50zDduVks6W5BQE7rxDRc=
+        bh=fZYO6PdRUaR2GzeYHtNLWRoMQgJ9+WJyqfFclTBz8Is=;
+        b=Qdlvvbcj/qr4QzRGGZQWnxl9bC8JQb/EovzyCFwHoSeSq0PfsxKGU8msQitfHR6YHd
+         JmAOwBxsdqyoTq07A6d+nkzEJxEhdMMOyC6iUvMBxrmz1c6j8VU6IGatnTIaD5zEWRMe
+         DjkrQkqHgcGbO6Th22lb92dvS9hAWERdo5K+Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4C2QkAKPFn1QPCfwIwQSCmTCJeHSpIXw2b0k4lFrSqw=;
-        b=NnXwaCZYYZS59NpWZA1q2RfhUio408/51McKSGgGiT+PyW2hVHn+NGersO7Oc2jIpu
-         SiekL2H93RotWL3zE23SXfxnuh7rkxXH8huWTTA3gAsfR2aUTcgdwJjAhRPOatloKxIZ
-         9JX1pd7w+/5c1YTnxJoqp4l4+0+MsEBcIQg9eLs3Czy8QaKUt2U93qLEASG7NlwUOVX1
-         aycBLkEm35gafvukpN9t8GTCXPddufS2lQI6MGbKJKkBufTOHaY7m1wuq2Zt5RrY3bsT
-         DIzPagcs5Caluf1n16BU7E8mbAcR4LSDhMmVdiC215ulg5Q0k8eNBlgf0aWak+OR8JYr
-         xsyA==
-X-Gm-Message-State: ANhLgQ2Mo/4eZY770znhyLZkGvckjRdFNKMQwxQi5My+65+YVW7b86GJ
-        Ivw08OPf94fo6QAsJB/jGcIyG44X+bGJ/H9q6sB4PQ==
-X-Google-Smtp-Source: ADFU+vvUoUlnuc+QBhJPp+Zphd2rGyw07LcSM/dHzCQLm0j6Q1O+0HputdWdJU3Z6rEnbvLjs0RfwrkIUSOkBCmF23M=
-X-Received: by 2002:a02:3b4a:: with SMTP id i10mr25473277jaf.131.1584346111516;
- Mon, 16 Mar 2020 01:08:31 -0700 (PDT)
+        bh=fZYO6PdRUaR2GzeYHtNLWRoMQgJ9+WJyqfFclTBz8Is=;
+        b=A8cqsd6K40Rj30BEIl9QBfkQmAoXm4q8QOQk5x+qCLqMMTI7JQIN0t3T9J5QDSztEp
+         Dd7GJzzNGINkEpFNeZDYTal3bTyLQ9dyKKlFTkaoBIqbe9an80z5rclLKhBVL/PxPt0J
+         BXYAy7Yxx3hc+ZZru/IEKAUGiiuiqgpE1ZbHytzvyod2UebmmcrVyEVNawHmyjTEUgb3
+         1e+r014T8LIV/8gck7zx3KuFhdaiAThzeMdRs66QhxPJlt+WVhaLELsru23Zqp6aFfar
+         h47eciEDyBDUCQqzuWwxQaDQvSImFFekT578vU1VSzpDEouO9w2qEJtNQgZILMzC/2r4
+         uwmw==
+X-Gm-Message-State: ANhLgQ2uvfIDYVgpD8AawxtTzctcVy2LpHZgUnooqOHclpHHIxk7Dijt
+        oUZmDZcWBbnV2+5NAWy7/W6WIbi5m1SFfffWwhGl3yKxlfk=
+X-Google-Smtp-Source: ADFU+vusngpc29O5m0Xi8COoflqmamL0gNziA8vMQem/YIDZwQGt/+dNb/hGQXkepJsvZCJE/vipLoUtsvBzvFgREag=
+X-Received: by 2002:a05:6638:103:: with SMTP id x3mr12142684jao.62.1584346902777;
+ Mon, 16 Mar 2020 01:21:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <5e6afe0d.1c69fb81.25912.f2eb@mx.google.com> <20200315124955.207d515c@archlinux>
-In-Reply-To: <20200315124955.207d515c@archlinux>
+References: <5e668b89.1c69fb81.d7e4f.0f61@mx.google.com> <20200315094604.62dc96be@archlinux>
+In-Reply-To: <20200315094604.62dc96be@archlinux>
 From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Mon, 16 Mar 2020 01:08:20 -0700
-Message-ID: <CAJCx=gk-oycno_NPtNFAvuX8ibsLEGLq0FrLvfXeaJwuvuTjcg@mail.gmail.com>
-Subject: Re: [PATCH] iio: health: max30100: use generic property handler
+Date:   Mon, 16 Mar 2020 01:21:32 -0700
+Message-ID: <CAJCx=gkZEDa5vg1R2gta9vERy2+W4vst0et0THO9Oth3d3Yzfg@mail.gmail.com>
+Subject: Re: [PATCH] iio: health: max30100: remove mlock usage
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Rohit Sarkar <rohitsarkar5398@gmail.com>,
         "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Alexandru Ardelean <alexandru.Ardelean@analog.com>,
-        dragos.bogdan@analog.com
+        open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Mar 15, 2020 at 5:50 AM Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, Mar 15, 2020 at 2:46 AM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> On Fri, 13 Mar 2020 08:59:13 +0530
+> On Tue, 10 Mar 2020 00:01:28 +0530
 > Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
 >
-> > Instead of of_property_read_xxx use device_property_read_xxx as it is
-> > compatible with ACPI too as opposed to only device tree.
+> > Use local lock instead of indio_dev's mlock.
+> > The mlock was being used to protect local driver state thus using the
+> > local lock is a better option here.
 > >
 > > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
 >
-> Look at how this driver is probing from DT.  There is another thing you need
-> to do to make it possible to use PRP001 ACPI based bindings.
+> Matt.  Definitely need your input on this.
 >
-> (check what Andy Shevchenko did in a similar patch)
+> > ---
+> >  drivers/iio/health/max30100.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
+> > index 84010501762d..8ddc4649547d 100644
+> > --- a/drivers/iio/health/max30100.c
+> > +++ b/drivers/iio/health/max30100.c
+> > @@ -388,7 +388,7 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
+> >                * Temperature reading can only be acquired while engine
+> >                * is running
+> >                */
+> > -             mutex_lock(&indio_dev->mlock);
+> > +             mutex_lock(&data->lock);
 >
-> I'm being deliberately vague as useful for you to understand what is going
-> on here for yourself :)
+> Hmm.. It's another complex one.  What is actually being protected here is
+> the buffer state, but not to take it exclusively like claim_direct does.
 >
-> Also, make sure to check you have cc'd everyone relevant.  Here you are missing
-> the driver author. +cc Matt
-> Jonathan
+> Here we need the inverse, we want to ensure we are 'not' in the direct
+> mode because this hardware requires the buffer to be running to read the
+> temperature.
 >
+> That is the sort of interface that is going to get userspace very
+> confused.
+>
+> Matt, normally what I'd suggest here is that the temperature read should:
+>
+> 1) Claim direct mode, if it fails then do the dance you have here
+> (with more comments to explain why you are taking an internal lock)
+> 2) Start up capture as if we were in buffered mode
+> 3) Grab that temp
+> 4) stop capture to return to non buffered mode.
+> 5) Release direct mode.
+>
+> I guess we decided it wasn't worth the hassle.
+>
+> So Rohit.  This one probably needs a comment rather than any change.
+> We 'could' add a 'hold_buffered_mode' function that takes the mlock,
+> verifies we are in buffered mode and continues to hold the lock
+> until the 'release_buffered_mode'.  However, I'm not sure any other
+> drivers do this particular dance, so clear commenting in the driver
+> might be enough.   Should we ever change how mlock is used in the
+> core, we'd have to fix this driver up as well.
+>
+> Hmm.  This is really hammering home that perhaps all the remaining
+> mlock cases are 'hard'.
 
-Highly doubt anyone is using this in an ACPI setting. Am I missing
-something though?
+Heh really had to look this over what I was doing since it has been
+almost half a decade now :).
+
+Think locking that mutex was only to prevent another read during the
+temp reading, and not really
+not sure how effective that is actually. Especially since the I2C
+subsystem should handle those reads
+in a queue like fashion.
 
 - Matt
 
-> > ---
-> >  drivers/iio/health/max30100.c | 5 ++---
-> >  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> Thanks,
+>
+> Jonathan
+>
 > >
-> > diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
-> > index 84010501762d..8249c6b36818 100644
-> > --- a/drivers/iio/health/max30100.c
-> > +++ b/drivers/iio/health/max30100.c
-> > @@ -16,7 +16,7 @@
-> >  #include <linux/irq.h>
-> >  #include <linux/i2c.h>
-> >  #include <linux/mutex.h>
-> > -#include <linux/of.h>
-> > +#include <linux/property.h>
-> >  #include <linux/regmap.h>
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/buffer.h>
-> > @@ -267,11 +267,10 @@ static int max30100_get_current_idx(unsigned int val, int *reg)
-> >  static int max30100_led_init(struct max30100_data *data)
-> >  {
-> >       struct device *dev = &data->client->dev;
-> > -     struct device_node *np = dev->of_node;
-> >       unsigned int val[2];
-> >       int reg, ret;
+> >               if (!iio_buffer_enabled(indio_dev))
+> >                       ret = -EAGAIN;
+> > @@ -399,7 +399,7 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
 > >
-> > -     ret = of_property_read_u32_array(np, "maxim,led-current-microamp",
-> > +     ret = device_property_read_u32_array(dev, "maxim,led-current-microamp",
-> >                                       (unsigned int *) &val, 2);
-> >       if (ret) {
-> >               /* Default to 24 mA RED LED, 50 mA IR LED */
+> >               }
+> >
+> > -             mutex_unlock(&indio_dev->mlock);
+> > +             mutex_unlock(&data->lock);
+> >               break;
+> >       case IIO_CHAN_INFO_SCALE:
+> >               *val = 1;  /* 0.0625 */
 >

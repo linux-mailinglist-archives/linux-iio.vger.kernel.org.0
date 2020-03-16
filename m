@@ -2,100 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADBAA186B6C
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 13:50:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C0B3186B73
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 13:52:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731004AbgCPMuw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Mar 2020 08:50:52 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:34613 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730919AbgCPMuw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Mar 2020 08:50:52 -0400
-Received: by mail-pl1-f193.google.com with SMTP id a23so7977603plm.1;
-        Mon, 16 Mar 2020 05:50:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=ZpMGbXXqa6m8v2kNHAjkP9KJ7pUf2Se2goyp9p1li6k=;
-        b=NnXOaYWUoKo1njr2t55uW/zLpCKfUWwvjr3b+cokM1mR9fcQFQRpINqCBE8U1i5BQK
-         zVdwbJPsBri/RXvJL3SEulKlFkZiQWBy83dxvT/IQVWbFERoFxFt+WFTX52Uwwv6h6E7
-         eT1Gd8B9WV9ukU2/LorE2hsqhMxIVNx2X7HDTiBzMh2ZmSCB6MNsVxa0R3w4x6z5rb8I
-         chO2G14Y1l4NvF4evo8hpkmHigA4IRUMtPkopNLMouvx2ygRbnCZCJnzKPLIcc30p+iL
-         jx3XUmc3WYkSRLzfSfUOa8Iq0mOESfGQUS6vaJ8bCyr354blfoIQNpWKNPrYn39HtCQw
-         446Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=ZpMGbXXqa6m8v2kNHAjkP9KJ7pUf2Se2goyp9p1li6k=;
-        b=rlr+dMMu/P60ZmOrzwBF8h4D3wanJB5oOK1PmPkoMo+smLr2ZIomaB+a/WgvwVz5PZ
-         ONHEe/RYQyiEylln1ZDsdzqKLOLK+/kG2Ex4MdWGdhbfC+QlEOAVPBFxZn3cRSs0ZUAK
-         uhZmIASKV2B3wNNHQf6ZhaxHKd6P0/McBLH0yUrU3qj6EJjbI6y/I84PCbPCfkO+t0kR
-         gzKRIP7YCgLpi5xyLRWUWw7r8seqhNYnwppm1w8VtE7SANWUHBsVesARJ5sfHvcLroqv
-         mSai1G+ngbE+o2NZwl9c0FYKX9OU8agNk1MN3hEM8+moGvsgXOsO/OXd0cW1F2gnOAQ7
-         cvsA==
-X-Gm-Message-State: ANhLgQ3zND0UiMdFdJxNaWHDwqdG/TB/C5tgGBf5BlZEExVFfcHXiPzp
-        3mvqDDzrl83KMZfEF78gxl36XuWk
-X-Google-Smtp-Source: ADFU+vu/T0lBhYXxYtLJIVNw5uA6jj60DJQmEi8a7FlabEhKBO84KKPdVPI4bOmahLEeho6N0spV+Q==
-X-Received: by 2002:a17:902:bc47:: with SMTP id t7mr27046019plz.47.1584363051640;
-        Mon, 16 Mar 2020 05:50:51 -0700 (PDT)
-Received: from syed.domain.name ([103.201.127.108])
-        by smtp.gmail.com with ESMTPSA id e189sm61874290pfa.139.2020.03.16.05.50.49
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 16 Mar 2020 05:50:51 -0700 (PDT)
-Date:   Mon, 16 Mar 2020 18:20:46 +0530
-From:   Syed Nayyar Waris <syednwaris@gmail.com>
-To:     vilhelm.gray@gmail.com
-Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v5 3/3] counter: 104-quad-8: Add lock guards - filter clock
- prescaler
-Message-ID: <20200316125046.GA447@syed.domain.name>
+        id S1730980AbgCPMwm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Mar 2020 08:52:42 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:33866 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730919AbgCPMwm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Mar 2020 08:52:42 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02GCiSlL000566;
+        Mon, 16 Mar 2020 08:52:20 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2yrs47eax7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 16 Mar 2020 08:52:20 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 02GCqIca023875
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 16 Mar 2020 08:52:18 -0400
+Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 16 Mar 2020 05:52:17 -0700
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
+ SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 16 Mar 2020 05:51:30 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Mon, 16 Mar 2020 05:52:16 -0700
+Received: from nsa.sphairon.box ([10.44.3.98])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 02GCqD8F003537;
+        Mon, 16 Mar 2020 08:52:13 -0400
+From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
+To:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: [PATCH v2 0/6] Support ADIS16475 and similar IMUs
+Date:   Mon, 16 Mar 2020 13:53:06 +0100
+Message-ID: <20200316125312.39178-1-nuno.sa@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-16_03:2020-03-12,2020-03-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 mlxlogscore=999 adultscore=0 priorityscore=1501
+ phishscore=0 suspectscore=0 bulkscore=0 spamscore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003160063
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add lock protection from race conditions to the 104-quad-8 counter
-driver for filter clock prescaler code changes. Mutex calls used for
-protection.
+This series adds support for the adis16475 and similar IMUs. This driver
+will be the first user of some changes on the adis library. Hence, the
+first three patches are related to the library:
+ * Add anaged device functions for registering triggers with the library;
+ * Updates the way `irq_mask` is passed to `request_irq()`;
+ * It adds an update_bits() like API.
 
-Signed-off-by: Syed Nayyar Waris <syednwaris@gmail.com>
----
-Changes in v5:
- - Change spin lock calls to mutex lock calls.
- - Modify the title description.
+A new patch was introduced (iio: adis: Add burst_max_len variable) in
+order to make burst32 configuration at runtime.
 
- drivers/counter/104-quad-8.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Nuno Sá (6):
+  iio: imu: adis: Add Managed device functions
+  iio: imu: adis: Add irq mask variable
+  iio: adis: Add adis_update_bits() APIs
+  iio: adis: Add burst_max_len variable
+  iio: imu: Add support for adis16475
+  dt-bindings: iio: Add adis16475 documentation
 
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 9dab190..b268165 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -1230,6 +1230,8 @@ static ssize_t quad8_signal_fck_prescaler_write(struct counter_device *counter,
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&priv->lock);
-+
- 	priv->fck_prescaler[channel_id] = prescaler;
- 
- 	/* Reset Byte Pointer */
-@@ -1240,6 +1242,8 @@ static ssize_t quad8_signal_fck_prescaler_write(struct counter_device *counter,
- 	outb(QUAD8_CTR_RLD | QUAD8_RLD_RESET_BP | QUAD8_RLD_PRESET_PSC,
- 	     base_offset + 1);
- 
-+	mutex_unlock(&priv->lock);
-+
- 	return len;
- }
- 
+ .../bindings/iio/imu/adi,adis16475.yaml       |  146 ++
+ MAINTAINERS                                   |    9 +
+ drivers/iio/imu/Kconfig                       |   13 +
+ drivers/iio/imu/Makefile                      |    1 +
+ drivers/iio/imu/adis.c                        |   26 +
+ drivers/iio/imu/adis16475.c                   | 1344 +++++++++++++++++
+ drivers/iio/imu/adis_buffer.c                 |   47 +-
+ drivers/iio/imu/adis_trigger.c                |   65 +-
+ include/linux/iio/imu/adis.h                  |   81 +
+ 9 files changed, 1725 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
+ create mode 100644 drivers/iio/imu/adis16475.c
+
 -- 
-2.7.4
+2.25.1
 

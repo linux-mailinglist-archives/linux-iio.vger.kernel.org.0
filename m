@@ -2,24 +2,24 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1986118716D
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 18:46:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A107218716F
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 18:46:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732212AbgCPRq1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Mar 2020 13:46:27 -0400
-Received: from honk.sigxcpu.org ([24.134.29.49]:54096 "EHLO honk.sigxcpu.org"
+        id S1732168AbgCPRq0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 Mar 2020 13:46:26 -0400
+Received: from honk.sigxcpu.org ([24.134.29.49]:54054 "EHLO honk.sigxcpu.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732161AbgCPRq1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 16 Mar 2020 13:46:27 -0400
+        id S1731715AbgCPRq0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 16 Mar 2020 13:46:26 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id 08DACFB02;
-        Mon, 16 Mar 2020 18:46:25 +0100 (CET)
+        by honk.sigxcpu.org (Postfix) with ESMTP id D83F8FB07;
+        Mon, 16 Mar 2020 18:46:22 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
 Received: from honk.sigxcpu.org ([127.0.0.1])
         by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id jDHNVtI2q1gO; Mon, 16 Mar 2020 18:46:23 +0100 (CET)
+        with ESMTP id 46RZyJU6HEyS; Mon, 16 Mar 2020 18:46:21 +0100 (CET)
 Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id CBDD640847; Mon, 16 Mar 2020 18:46:20 +0100 (CET)
+        id D6CBE40D82; Mon, 16 Mar 2020 18:46:20 +0100 (CET)
 From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
 To:     Tomas Novotny <tomas@novotny.cz>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -32,9 +32,9 @@ To:     Tomas Novotny <tomas@novotny.cz>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v2 1/4] dt-bindings: iio: vcnl4000: convert bindings to YAML format
-Date:   Mon, 16 Mar 2020 18:46:17 +0100
-Message-Id: <6182053bb8c442e0b4d72b34c83c7f1565f4a258.1584380360.git.agx@sigxcpu.org>
+Subject: [PATCH v2 2/4] dt-bindings: iio: light: vcnl4000: Add near-level
+Date:   Mon, 16 Mar 2020 18:46:18 +0100
+Message-Id: <65e1007c48f24c44fba0c12b1d5d31af2b5d3a1a.1584380360.git.agx@sigxcpu.org>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <cover.1584380360.git.agx@sigxcpu.org>
 References: <cover.1584380360.git.agx@sigxcpu.org>
@@ -46,97 +46,40 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the vcnl4000 device tree bindings to the new YAML format.
+This value indicates when userspace should consider an object
+near to the sensor/device.
 
 Signed-off-by: Guido Günther <agx@sigxcpu.org>
 ---
- .../bindings/iio/light/vcnl4000.txt           | 24 ----------
- .../bindings/iio/light/vcnl4000.yaml          | 45 +++++++++++++++++++
- 2 files changed, 45 insertions(+), 24 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/light/vcnl4000.txt
- create mode 100644 Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
+ Documentation/devicetree/bindings/iio/light/vcnl4000.yaml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/light/vcnl4000.txt b/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
-deleted file mode 100644
-index 955af4555c90..000000000000
---- a/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
-+++ /dev/null
-@@ -1,24 +0,0 @@
--VISHAY VCNL4000 -  Ambient Light and proximity sensor
--
--This driver supports the VCNL4000/10/20/40 and VCNL4200 chips
--
--Required properties:
--
--	-compatible: must be one of :
--        vishay,vcnl4000
--        vishay,vcnl4010
--        vishay,vcnl4020
--        vishay,vcnl4040
--        vishay,vcnl4200
--
--	-reg: I2C address of the sensor, should be one from below based on the model:
--        0x13
--        0x51
--        0x60
--
--Example:
--
--light-sensor@51 {
--	compatible = "vishay,vcnl4200";
--	reg = <0x51>;
--};
 diff --git a/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
-new file mode 100644
-index 000000000000..74d53cfbeb85
---- /dev/null
+index 74d53cfbeb85..fc24800f530a 100644
+--- a/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
 +++ b/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
-@@ -0,0 +1,45 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/light/vcnl4000.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+@@ -25,6 +25,13 @@ properties:
+   reg:
+     maxItems: 1
+ 
++  near-level:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Raw proximity values equal or above this level should be
++      considered 'near' to the device (an object is near to the
++      sensor).
 +
-+title: VISHAY VCNL4000 ambient light and proximity sensor
-+
-+maintainers:
-+  - Peter Meerwald <pmeerw@pmeerw.net>
-+
-+description: |
-+  Ambient light sensing with proximity detection over an i2c
-+  interface.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - vishay,vcnl4000
-+      - vishay,vcnl4010
-+      - vishay,vcnl4020
-+      - vishay,vcnl4040
-+      - vishay,vcnl4200
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+- |
-+  i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      light-sensor@51 {
-+              compatible = "vishay,vcnl4200";
-+              reg = <0x51>;
-+      };
-+  };
-+...
+ required:
+   - compatible
+   - reg
+@@ -40,6 +47,7 @@ examples:
+       light-sensor@51 {
+               compatible = "vishay,vcnl4200";
+               reg = <0x51>;
++              near-level = <220>;
+       };
+   };
+ ...
 -- 
 2.23.0
 

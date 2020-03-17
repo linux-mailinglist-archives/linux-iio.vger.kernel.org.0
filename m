@@ -2,121 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EAE0187239
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Mar 2020 19:23:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A44A187E09
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Mar 2020 11:18:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732247AbgCPSXL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Mar 2020 14:23:11 -0400
-Received: from www381.your-server.de ([78.46.137.84]:39600 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732242AbgCPSXK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Mar 2020 14:23:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=M7ml/Y4gDZjel4sRH32iDPtQppbmjBMK4zkw++HJBF0=; b=U81rN3TZfipi2EFc5vAjnlQVfp
-        avCVc4cUmvOv8fSdHFTPVEj2qrOpx7JJUlVTvVLwoxNwbUY/4t0fqn2dqVKPoelH/L54y7Ij6Sli9
-        Nv5D+IsLVpcC8zcjoOsbs0hiGF8VEg3XxcCICM1zEh8ipt2TsGhLUZjSb8aoBAcAZdhgw0Ybjh7AN
-        nWeNJhkJrIA90f/6vHBB84wWkLBBmKL3miWDYU5/eNo0Cw0D+0QnfwAFZnahXBkfr/4tifX/r82SJ
-        hiGIXjs6Rsy9IWSGoJoDgdp1ntAIj8TCRBnkOpcu2fvczOP8DbbSdmeluHKTatYfZKkTgZcEjd+Tt
-        ltBCRERg==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jDuOF-0004KC-09; Mon, 16 Mar 2020 19:23:03 +0100
-Received: from [93.104.121.61] (helo=[192.168.178.20])
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jDuOE-000HJ7-Lf; Mon, 16 Mar 2020 19:23:02 +0100
-Subject: Re: [PATCH v2 3/4] iio: vcnl4000: Export near level property for
- proximity sensor
-To:     =?UTF-8?Q?Guido_G=c3=bcnther?= <agx@sigxcpu.org>,
-        Tomas Novotny <tomas@novotny.cz>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S1726399AbgCQKSS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Mar 2020 06:18:18 -0400
+Received: from mga07.intel.com ([134.134.136.100]:4738 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726416AbgCQKSR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 17 Mar 2020 06:18:17 -0400
+IronPort-SDR: L+KRsNYXHdLsxEmkgNMZvdPiAxvpGl/y3ZEm/UpvInMsWjSqA9gNTBwLQ9EDo0QgOP1Uf2ZqNs
+ 1m/3xIdleXGg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2020 03:18:17 -0700
+IronPort-SDR: 2ed2QYFpxtb02Y6MOCgeXCKTXBu9aeFlmsea+gJ4UdQZhZ4wyR14ZiHTs/79QdOzwbPtm4jxvi
+ inFNwLLLC0cg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,564,1574150400"; 
+   d="scan'208";a="233453315"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 17 Mar 2020 03:18:15 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 30610178; Tue, 17 Mar 2020 12:18:13 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <cover.1584380360.git.agx@sigxcpu.org>
- <5566fe01df933d3281f058666e2147cb97b38126.1584380360.git.agx@sigxcpu.org>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <c787921f-c412-4986-14ea-e31b531d3d5b@metafoo.de>
-Date:   Mon, 16 Mar 2020 19:23:01 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH v1 1/5] iio: pressure: bmp280: Tolerate IRQ before registering
+Date:   Tue, 17 Mar 2020 12:18:09 +0200
+Message-Id: <20200317101813.30829-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <5566fe01df933d3281f058666e2147cb97b38126.1584380360.git.agx@sigxcpu.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25753/Mon Mar 16 14:05:55 2020)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/16/20 6:46 PM, Guido Günther wrote:
-> [...]
-> +static ssize_t vcnl4000_read_near_level(struct iio_dev *indio_dev,
-> +					uintptr_t priv,
-> +					const struct iio_chan_spec *chan,
-> +					char *buf)
-> +{
-> +	struct vcnl4000_data *data = iio_priv(indio_dev);
-> +
-> +	return sprintf(buf, "%u\n", data->near_level);
-> +}
-> +
-> +static const struct iio_chan_spec_ext_info vcnl4000_ext_info[] = {
-> +	{
-> +		.name = "near_level",
+With DEBUG_SHIRQ enabled we have a kernel crash
 
-Generally having properties with a underscore in them breaks generic 
-parsing of the property name by userspace applications. This is because 
-we use underscores to separate different components (type, modifier, 
-etc.) of the attribute from each other.
+[  116.482696] BUG: kernel NULL pointer dereference, address: 0000000000000000
 
-Do you think calling this "nearlevel" would work?
+...
 
-I know there are existing bad examples of properties that use an 
-underscore, but we should try to limit introducing new ones.
+[  116.606571] Call Trace:
+[  116.609023]  <IRQ>
+[  116.611047]  complete+0x34/0x50
+[  116.614206]  bmp085_eoc_irq+0x9/0x10 [bmp280]
 
-> +		.shared = IIO_SEPARATE,
-> +		.read = vcnl4000_read_near_level,
-> +	},
-> +	{ /* sentinel */ }
-> +};
-> +
->   static const struct iio_chan_spec vcnl4000_channels[] = {
->   	{
->   		.type = IIO_LIGHT,
-> @@ -350,6 +371,7 @@ static const struct iio_chan_spec vcnl4000_channels[] = {
->   	}, {
->   		.type = IIO_PROXIMITY,
->   		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> +		.ext_info = vcnl4000_ext_info,
->   	}
->   };
->   
-> @@ -439,6 +461,10 @@ static int vcnl4000_probe(struct i2c_client *client,
->   	dev_dbg(&client->dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
->   		data->chip_spec->prod, data->rev);
->   
-> +	if (device_property_read_u32(&client->dev, "near-level",
-> +				     &data->near_level) < 0)
-> +		data->near_level = 0;
-> +
->   	indio_dev->dev.parent = &client->dev;
->   	indio_dev->info = &vcnl4000_info;
->   	indio_dev->channels = vcnl4000_channels;
+because DEBUG_SHIRQ mechanism fires an IRQ before registration and drivers
+ought to be able to handle an interrupt happening before request_irq() returns.
 
+Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/pressure/bmp280-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 29c209cc1108..5e229b95308e 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -712,8 +712,7 @@ static int bmp180_measure(struct bmp280_data *data, u8 ctrl_meas)
+ 	unsigned int delay_us;
+ 	unsigned int ctrl;
+ 
+-	if (data->use_eoc)
+-		init_completion(&data->done);
++	reinit_completion(&data->done);
+ 
+ 	ret = regmap_write(data->regmap, BMP280_REG_CTRL_MEAS, ctrl_meas);
+ 	if (ret)
+@@ -969,6 +968,9 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
+ 			"trying to enforce it\n");
+ 		irq_trig = IRQF_TRIGGER_RISING;
+ 	}
++
++	init_completion(&data->done);
++
+ 	ret = devm_request_threaded_irq(dev,
+ 			irq,
+ 			bmp085_eoc_irq,
+-- 
+2.25.1
 

@@ -2,206 +2,260 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88552189D24
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 14:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0F98189E4B
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 15:51:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727101AbgCRNhp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 09:37:45 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:50360 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727068AbgCRNhn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 09:37:43 -0400
-Received: by mail-wm1-f65.google.com with SMTP id z13so3435277wml.0;
-        Wed, 18 Mar 2020 06:37:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Fg/oIfqQ+gNzoy16Mzvfp1csyxYIH4NAu3GYVv8LK7I=;
-        b=H/NFPN/dCIxSzoA06xzEGbBztKMI6c7klOVBM2TwwQX5tvz6oXVo58KNcKKcetKzxk
-         kcaFOz+pc+FNObg2yVLZAfZKNNVDrU1oQLKAw4kVh4Ptz8ZLMtYZp4HSYUu8O3mo+7BT
-         VWbXQ+1l/SyUyJgN/7r/BitJ+hw+m5KcrCWG7jVBibf1QhOq2RFAtugZUaEFpAwFlza7
-         O1MYkZseZ++mNQ0y2syyyJlxUisIUzI8ruO/ohBM0OdFqmg2N9tQfncQprIMyGvz3JgM
-         7uuHFMKs1Nmo/KU8RC6fQftnUsnbNDt6yIYGfEwPx/2Ewl5lESCgSkini8Y+a/+4nvjb
-         qMEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Fg/oIfqQ+gNzoy16Mzvfp1csyxYIH4NAu3GYVv8LK7I=;
-        b=QHiV5rBjdYgRh5uq50szk9wmQRfYABSQbuKDRLP5Ie/neq1xfpzmXsbTYTC7GzrYLJ
-         2PtSXurdoYlItU3JMaVe46WIIJjt7ntL1dUFj9XOjeVZbfZtTeb4jzhUPTQ420b1QBv9
-         GzkWg6M9cO0T1qhYXvk6FVJm+Zqc2oxcUF6p+Oo8nVq7qiNVLlxilBmLogojc+vfrIla
-         vG9WlUr6zhfPbvMlUihNIZwnvkIi0vBsZ0lOrY1UiWylTQG6kSA9hBcoml8tJO5LEMQu
-         Zs+kvrZkzsIJvbDbbfx3UPQ9ojltTIngTtLYzoz1YP0jYbs+G2sdfLLA6JxMRKHwqXpi
-         Jp+g==
-X-Gm-Message-State: ANhLgQ3j1QpVDDyP8SnimQeWD6aQ6DY0FVfl4wm48OS0WGeQYvjzOgdg
-        i/dQOcU3BL4ibxsbonN37RjaSe+F
-X-Google-Smtp-Source: ADFU+vv2KwYF7ZeaI/+26c45LVnAOy7SEdmxLjXvha2ssMjE4DCXtmR+j9VM6vHIPe/PAZxiCcXN6w==
-X-Received: by 2002:a7b:c947:: with SMTP id i7mr5313681wml.116.1584538659794;
-        Wed, 18 Mar 2020 06:37:39 -0700 (PDT)
-Received: from saturn.lan ([188.26.73.247])
-        by smtp.gmail.com with ESMTPSA id f15sm9444002wru.83.2020.03.18.06.37.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2020 06:37:39 -0700 (PDT)
-From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-X-Google-Original-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Michael.Hennerich@analog.com, renatogeh@gmail.com, lars@metafoo.de,
-        jic23@kernel.org, mircea.caprioru@analog.com,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 5/5] iio: adc: ad7793: use read_avail iio hook for scale available
-Date:   Wed, 18 Mar 2020 15:40:42 +0200
-Message-Id: <20200318134042.30133-6-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200318134042.30133-1-alexandru.ardelean@analog.com>
-References: <20200318134042.30133-1-alexandru.ardelean@analog.com>
+        id S1726671AbgCROvq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 10:51:46 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:36916 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726638AbgCROvq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 10:51:46 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02IEcWpY031412;
+        Wed, 18 Mar 2020 15:51:21 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=AtAQ6Omp1kqvN3R2P3Ojq/dUkGTPHDTP71rAjUnsU+g=;
+ b=yflygsXu04iS8mLX+60UttjdYpPiJKyzWBEm3v0ejRG2+CyZykKK438rf0MPYBFVUn5S
+ xVwFRl3IiFHH4EqdKie/Zx/GEbimNiSf4jv4jZBgjWY6elmjJU3GMq4FQTlNHSKF5AyD
+ cWgZZdUtdcpUvRKPKe4v1MW3k2qLxPkKVbqediBQlB9P7yWn9b0dePUyb4mkavF69xjm
+ VxMpgDs9PZ7yEzpO2vqm7ZWdeKVcDvdKbcnCq3xD5VysVXcSSE3Yfc0qGtrNNx9YqA+6
+ e453O+qAQjlyAFfCBDGs11drAWv30u6NoRI5cbIYkETCBvlZdRfWgnigfIn0Ny0VTVqT Hg== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2yu95um43b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 18 Mar 2020 15:51:21 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3C62C10002A;
+        Wed, 18 Mar 2020 15:51:20 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1FDE42AE6B7;
+        Wed, 18 Mar 2020 15:51:20 +0100 (CET)
+Received: from localhost (10.75.127.44) by SFHDAG5NODE3.st.com (10.75.127.15)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 18 Mar 2020 15:51:19
+ +0100
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+To:     <robh+dt@kernel.org>, <jic23@kernel.org>
+CC:     <alexandre.torgue@st.com>, <mark.rutland@arm.com>,
+        <mcoquelin.stm32@gmail.com>, <lars@metafoo.de>, <knaack.h@gmx.de>,
+        <pmeerw@pmeerw.net>, <fabrice.gasnier@st.com>,
+        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] dt-bindings: iio: dac: stm32-dac: convert bindings to json-schema
+Date:   Wed, 18 Mar 2020 15:50:37 +0100
+Message-ID: <1584543037-32095-1-git-send-email-fabrice.gasnier@st.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.44]
+X-ClientProxiedBy: SFHDAG4NODE2.st.com (10.75.127.11) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
+ definitions=2020-03-18_06:2020-03-18,2020-03-18 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This change uses the read_avail and '.info_mask_shared_by_type_available'
-modifier to set the available scale.
-Essentially, nothing changes to the driver's ABI.
+Convert the STM32 DAC binding to DT schema format using json-schema
 
-The main idea for this patch is to remove the AD7793 driver from
-checkpatch's radar. There have been about ~3 attempts to fix/break the
-'in_voltage-voltage_scale_available' attribute, because checkpatch assumed
-it to be an arithmetic operation and people were trying to change that.
-
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
 ---
- drivers/iio/adc/ad7793.c | 53 +++++++++++++++++++++++++++-------------
- 1 file changed, 36 insertions(+), 17 deletions(-)
+ .../devicetree/bindings/iio/dac/st,stm32-dac.txt   |  63 ------------
+ .../devicetree/bindings/iio/dac/st,stm32-dac.yaml  | 110 +++++++++++++++++++++
+ 2 files changed, 110 insertions(+), 63 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
 
-diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
-index 5592ae573e6b..fad98f1801db 100644
---- a/drivers/iio/adc/ad7793.c
-+++ b/drivers/iio/adc/ad7793.c
-@@ -354,29 +354,28 @@ static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
- static IIO_CONST_ATTR_NAMED(sampling_frequency_available_ad7797,
- 	sampling_frequency_available, "123 62 50 33 17 16 12 10 8 6 4");
- 
--static ssize_t ad7793_show_scale_available(struct device *dev,
--			struct device_attribute *attr, char *buf)
-+static int ad7793_read_avail(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     const int **vals, int *type, int *length,
-+			     long mask)
- {
--	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7793_state *st = iio_priv(indio_dev);
--	int i, len = 0;
- 
--	for (i = 0; i < ARRAY_SIZE(st->scale_avail); i++)
--		len += sprintf(buf + len, "%d.%09u ", st->scale_avail[i][0],
--			       st->scale_avail[i][1]);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		*vals = (int *)st->scale_avail;
-+		*type = IIO_VAL_INT_PLUS_NANO;
-+		/* Values are stored in a 2D matrix  */
-+		*length = ARRAY_SIZE(st->scale_avail) * 2;
- 
--	len += sprintf(buf + len, "\n");
-+		return IIO_AVAIL_LIST;
-+	}
- 
--	return len;
-+	return -EINVAL;
- }
- 
--static IIO_DEVICE_ATTR_NAMED(in_m_in_scale_available,
--		in_voltage-voltage_scale_available, S_IRUGO,
--		ad7793_show_scale_available, NULL, 0);
+diff --git a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt
+deleted file mode 100644
+index bf2925c..00000000
+--- a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt
++++ /dev/null
+@@ -1,63 +0,0 @@
+-STMicroelectronics STM32 DAC
 -
- static struct attribute *ad7793_attributes[] = {
- 	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
--	&iio_dev_attr_in_m_in_scale_available.dev_attr.attr,
- 	NULL
- };
- 
-@@ -534,6 +533,7 @@ static const struct iio_info ad7793_info = {
- 	.read_raw = &ad7793_read_raw,
- 	.write_raw = &ad7793_write_raw,
- 	.write_raw_get_fmt = &ad7793_write_raw_get_fmt,
-+	.read_avail = ad7793_read_avail,
- 	.attrs = &ad7793_attribute_group,
- 	.validate_trigger = ad_sd_validate_trigger,
- };
-@@ -547,7 +547,7 @@ static const struct iio_info ad7797_info = {
- };
- 
- #define __AD7793_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
--	_storagebits, _shift, _extend_name, _type, _mask_all) \
-+	_storagebits, _shift, _extend_name, _type, _mask_type_av, _mask_all) \
- 	{ \
- 		.type = (_type), \
- 		.differential = (_channel2 == -1 ? 0 : 1), \
-@@ -559,6 +559,7 @@ static const struct iio_info ad7797_info = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
- 			BIT(IIO_CHAN_INFO_OFFSET), \
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
-+		.info_mask_shared_by_type_available = (_mask_type_av), \
- 		.info_mask_shared_by_all = _mask_all, \
- 		.scan_index = (_si), \
- 		.scan_type = { \
-@@ -574,23 +575,41 @@ static const struct iio_info ad7797_info = {
- 	_storagebits, _shift) \
- 	__AD7793_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
- 		_storagebits, _shift, NULL, IIO_VOLTAGE, \
-+		BIT(IIO_CHAN_INFO_SCALE), \
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ))
- 
- #define AD7793_SHORTED_CHANNEL(_si, _channel, _address, _bits, \
- 	_storagebits, _shift) \
- 	__AD7793_CHANNEL(_si, _channel, _channel, _address, _bits, \
- 		_storagebits, _shift, "shorted", IIO_VOLTAGE, \
-+		BIT(IIO_CHAN_INFO_SCALE), \
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ))
- 
- #define AD7793_TEMP_CHANNEL(_si, _address, _bits, _storagebits, _shift) \
- 	__AD7793_CHANNEL(_si, 0, -1, _address, _bits, \
- 		_storagebits, _shift, NULL, IIO_TEMP, \
-+		0, \
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ))
- 
- #define AD7793_SUPPLY_CHANNEL(_si, _channel, _address, _bits, _storagebits, \
- 	_shift) \
- 	__AD7793_CHANNEL(_si, _channel, -1, _address, _bits, \
- 		_storagebits, _shift, "supply", IIO_VOLTAGE, \
-+		0, \
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ))
+-The STM32 DAC is a 12-bit voltage output digital-to-analog converter. The DAC
+-may be configured in 8 or 12-bit mode. It has two output channels, each with
+-its own converter.
+-It has built-in noise and triangle waveform generator and supports external
+-triggers for conversions. The DAC's output buffer allows a high drive output
+-current.
+-
+-Contents of a stm32 dac root node:
+------------------------------------
+-Required properties:
+-- compatible: Should be one of:
+-  "st,stm32f4-dac-core"
+-  "st,stm32h7-dac-core"
+-- reg: Offset and length of the device's register set.
+-- clocks: Must contain an entry for pclk (which feeds the peripheral bus
+-  interface)
+-- clock-names: Must be "pclk".
+-- vref-supply: Phandle to the vref+ input analog reference supply.
+-- #address-cells = <1>;
+-- #size-cells = <0>;
+-
+-Optional properties:
+-- resets: Must contain the phandle to the reset controller.
+-- A pinctrl state named "default" for each DAC channel may be defined to set
+-  DAC_OUTx pin in mode of operation for analog output on external pin.
+-
+-Contents of a stm32 dac child node:
+------------------------------------
+-DAC core node should contain at least one subnode, representing a
+-DAC instance/channel available on the machine.
+-
+-Required properties:
+-- compatible: Must be "st,stm32-dac".
+-- reg: Must be either 1 or 2, to define (single) channel in use
+-- #io-channel-cells = <1>: See the IIO bindings section "IIO consumers" in
+-  Documentation/devicetree/bindings/iio/iio-bindings.txt
+-
+-Example:
+-	dac: dac@40007400 {
+-		compatible = "st,stm32h7-dac-core";
+-		reg = <0x40007400 0x400>;
+-		clocks = <&clk>;
+-		clock-names = "pclk";
+-		vref-supply = <&reg_vref>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&dac_out1 &dac_out2>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		dac1: dac@1 {
+-			compatible = "st,stm32-dac";
+-			#io-channels-cells = <1>;
+-			reg = <1>;
+-		};
+-
+-		dac2: dac@2 {
+-			compatible = "st,stm32-dac";
+-			#io-channels-cells = <1>;
+-			reg = <2>;
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+new file mode 100644
+index 00000000..2b4a955
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+@@ -0,0 +1,110 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/bindings/iio/dac/st,stm32-dac.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
 +
-+#define AD7797_DIFF_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
-+	_storagebits, _shift) \
-+	__AD7793_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
-+		_storagebits, _shift, NULL, IIO_VOLTAGE, \
-+		0, \
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ))
++title: STMicroelectronics STM32 DAC bindings
 +
-+#define AD7797_SHORTED_CHANNEL(_si, _channel, _address, _bits, \
-+	_storagebits, _shift) \
-+	__AD7793_CHANNEL(_si, _channel, _channel, _address, _bits, \
-+		_storagebits, _shift, "shorted", IIO_VOLTAGE, \
-+		0, \
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ))
- 
- #define DECLARE_AD7793_CHANNELS(_name, _b, _sb, _s) \
-@@ -620,8 +639,8 @@ const struct iio_chan_spec _name##_channels[] = { \
- 
- #define DECLARE_AD7797_CHANNELS(_name, _b, _sb) \
- const struct iio_chan_spec _name##_channels[] = { \
--	AD7793_DIFF_CHANNEL(0, 0, 0, AD7793_CH_AIN1P_AIN1M, (_b), (_sb), 0), \
--	AD7793_SHORTED_CHANNEL(1, 0, AD7793_CH_AIN1M_AIN1M, (_b), (_sb), 0), \
-+	AD7797_DIFF_CHANNEL(0, 0, 0, AD7793_CH_AIN1P_AIN1M, (_b), (_sb), 0), \
-+	AD7797_SHORTED_CHANNEL(1, 0, AD7793_CH_AIN1M_AIN1M, (_b), (_sb), 0), \
- 	AD7793_TEMP_CHANNEL(2, AD7793_CH_TEMP, (_b), (_sb), 0), \
- 	AD7793_SUPPLY_CHANNEL(3, 3, AD7793_CH_AVDD_MONITOR, (_b), (_sb), 0), \
- 	IIO_CHAN_SOFT_TIMESTAMP(4), \
++description: |
++  The STM32 DAC is a 12-bit voltage output digital-to-analog converter. The DAC
++  may be configured in 8 or 12-bit mode. It has two output channels, each with
++  its own converter.
++  It has built-in noise and triangle waveform generator and supports external
++  triggers for conversions. The DAC's output buffer allows a high drive output
++  current.
++
++maintainers:
++  - Fabrice Gasnier <fabrice.gasnier@st.com>
++
++properties:
++  compatible:
++    enum:
++      - st,stm32f4-dac-core
++      - st,stm32h7-dac-core
++
++  reg:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    items:
++      - const: pclk
++
++  vref-supply:
++    description: Phandle to the vref input analog reference voltage.
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - vref-supply
++  - '#address-cells'
++  - '#size-cells'
++
++patternProperties:
++  "^dac@[1-2]+$":
++    type: object
++    description:
++      A DAC block node should contain at least one subnode, representing an
++      DAC instance/channel available on the machine.
++
++    properties:
++      compatible:
++        const: st,stm32-dac
++
++      reg:
++        description: Must be either 1 or 2, to define (single) channel in use
++        enum: [1, 2]
++
++      '#io-channel-cells':
++        const: 1
++
++    additionalProperties: false
++
++    required:
++      - compatible
++      - reg
++      - '#io-channel-cells'
++
++examples:
++  - |
++    // Example on stm32mp157c
++    #include <dt-bindings/clock/stm32mp1-clks.h>
++    dac: dac@40017000 {
++      compatible = "st,stm32h7-dac-core";
++      reg = <0x40017000 0x400>;
++      clocks = <&rcc DAC12>;
++      clock-names = "pclk";
++      vref-supply = <&vref>;
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      dac@1 {
++        compatible = "st,stm32-dac";
++        #io-channel-cells = <1>;
++        reg = <1>;
++      };
++
++      dac@2 {
++        compatible = "st,stm32-dac";
++        #io-channel-cells = <1>;
++        reg = <2>;
++      };
++    };
++
++...
 -- 
-2.20.1
+2.7.4
 

@@ -2,98 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 167FB1894E4
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 05:28:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB81B18951A
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 06:16:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726478AbgCRE2V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 00:28:21 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:33377 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726250AbgCRE2V (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 00:28:21 -0400
-Received: by mail-pl1-f194.google.com with SMTP id ay11so10618323plb.0
-        for <linux-iio@vger.kernel.org>; Tue, 17 Mar 2020 21:28:20 -0700 (PDT)
+        id S1726478AbgCRFQQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 01:16:16 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:45863 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726227AbgCRFQQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 01:16:16 -0400
+Received: by mail-pf1-f194.google.com with SMTP id 2so13224651pfg.12;
+        Tue, 17 Mar 2020 22:16:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Yby+mB+m4t6+rWgz+NdAFsUfRpAwoGudrPEsW25H53E=;
-        b=GC1QPTmaU4fhhDidbDtOc+AEKg+aD4AaLcCbrnW76z3DHn2OdeWguFtlDvGPNNSuw+
-         fw2E0Y6R/PL5W/dk0RxSg5c7HPLuafM3vebU1yi0xiTDx4q7kF308y5fHyT/MbzimAw7
-         u2BIE0eWC0UiBjH8d0+dzfE3JYLhqNmrPOxFiaCEldgqaHlW8diIzn7AixXdxN686fuV
-         3Y9i7G8E3m2LQv3e8GDbXqEBdBJX3fj8DtquSCIrvve+L8O9T/wzldthMBvzLWg6/C01
-         yMNLE9RjoA8H4b9IhRKKvkSZ8pqj+5e3e+R1BFbiopZK+PS8cO+ACb9h7t81u0tl4rPN
-         gTKA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HlwaAt0Q9Ki0s2/sS1b607ZcJpVqAr5H+69fMO0HjgI=;
+        b=TzJDmjwdj55mwAp95w0Xzx8U18G2cfzG9JLhtMNbWyM+X6LQREWfBymZn9A1xhXgmS
+         3sTKe1Ft+t8MrIHsTwM4MgsEAhd1CzfT2M0y8TG5sUkJKkU67pWg0mKWqSPXDzpGy6g6
+         nIWXR4xRVnkvp9R3rnlSez1VwIO9RZrxEIpD3QO/8qKfPuXli/j3bWvDmeyWM+1Lueas
+         zsBJh8Iad3T2kyZrmT581Tw5yeQLaQj+nf1FnFYKMLzqMYLF1AQPkyXwNAbYLLSnErPI
+         l/mgYrXy0ZQnMeA4m+ssEbnTSVdiXKhFPqLuoFFimf86HfTuBnbnsIyD2SQmmMxuFJqh
+         T6zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Yby+mB+m4t6+rWgz+NdAFsUfRpAwoGudrPEsW25H53E=;
-        b=UE9wYMaHOciqSRjaaoyXPMo6QR8jjn+JLCPUXONOdMinTJoGvF7cmpYtyFRtUv7sFi
-         5PnUmW0kvahpxF29EMtItHEV2eWrTt1mMNcWH7a+gjkj2Dl2sxwQMp3hEnr/zMpQ9R87
-         FrOPFPwXd9rU+yLnt8UCI4Li0+v1mJjtfh8mzjC1mWeYAcTcSPOyTcnjnv8LRF1Pdvlw
-         7gsAzncWNH4uCX4iUA/qn9U2anasANGlLabc5uWJ6A5f+AAFnW/P0Lx0ohatro4ro0R3
-         Tl3qXLQZlKY/cmWgrVBgXrqIsrt/yJI7MkFMZlRejYrbn2WLfrQZ7f/1H5ZFNIYNYqiA
-         uvWw==
-X-Gm-Message-State: ANhLgQ0VauDAFUNhhFZp7qagl1Mp7ibq/tawmGvFJhDfik0lYL8dIop/
-        8cFbg3TduNA6VK5rNAUGS7s=
-X-Google-Smtp-Source: ADFU+vvjD5kV+dV3vUmVyghVqK+mGfQbD/VMmbOANpS9BgbOG/YNIYYVvy6FWID4BDr+v8yqInzh/Q==
-X-Received: by 2002:a17:90b:4d07:: with SMTP id mw7mr2674077pjb.94.1584505699730;
-        Tue, 17 Mar 2020 21:28:19 -0700 (PDT)
-Received: from deeUbuntu ([103.241.226.97])
-        by smtp.gmail.com with ESMTPSA id m68sm730572pjb.0.2020.03.17.21.28.16
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 17 Mar 2020 21:28:19 -0700 (PDT)
-Date:   Wed, 18 Mar 2020 09:58:13 +0530
-From:   Deepak R Varma <mh12gx2825@gmail.com>
-To:     outreachy-kernel@googlegroups.com, gregkh@linuxfoundation.org,
-        daniel.baluta@gmail.com, kieran.bingham@ideasonboard.com
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
-        stefan.popa@analog.com, jic23@kernel.org, knaack.h@gmx.de,
-        pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
-        linux-iio@vger.kernel.org
-Subject: [PATCH 2/2] staging: iio: adc: ad7280a: Add spaces around operators
-Message-ID: <6703668c512dd665a2299a1f5bf14d99262314f8.1584505215.git.mh12gx2825@gmail.com>
-References: <cover.1584505215.git.mh12gx2825@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HlwaAt0Q9Ki0s2/sS1b607ZcJpVqAr5H+69fMO0HjgI=;
+        b=hHh2EHuU3jf9wYqHpbdnBWxDaSF0xOkwoFygr+VSS+lwgAqzJlDBLkrfOQXkxrmzHs
+         lQdQ0oItMOfXGSWDlByI5SFmd+hZPkRs+l3qREv6QutuYj4rZMMpmpYyBySExIA20Gpr
+         uOEmirg7mRCOdpXCFcfcSKispLHpNPpxm81GVNIMD84mXgqzh7KXA49s84yK+bohQP/u
+         AhB02Ptg6Ut5NkJ30DdCoF4xDY9lwC2TEy8LfQDtJFIhbkZ4+bjhV6v5bL8yUGOmKaHz
+         3JUKLokYFJ9yXVd+UNZOhqbXlpxyOlO0vRZXHFizcUVi3ceSvfQHaHc/XWETiWUYJnYM
+         MYSg==
+X-Gm-Message-State: ANhLgQ18+qmcOrqnCXPm2whFWosye6B07/9c6REfJndGySw9YdMjag4Q
+        rxWQ5mYnoe4uXYG6+kWaRIyWTqeNlDM=
+X-Google-Smtp-Source: ADFU+vv7rYa7a2qA5/TNJKZmXHnyu1FhULOs8SlM3+WrA1nDojWzpiNNErloEXfgq3uS4CfhC6NxzQ==
+X-Received: by 2002:aa7:9481:: with SMTP id z1mr2411232pfk.185.1584508574446;
+        Tue, 17 Mar 2020 22:16:14 -0700 (PDT)
+Received: from nish-HP-Pavilion ([2409:4072:6086:470e:bc8d:c185:c429:a95b])
+        by smtp.gmail.com with ESMTPSA id k5sm919794pju.29.2020.03.17.22.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2020 22:16:13 -0700 (PDT)
+From:   Nishant Malpani <nish.malpani25@gmail.com>
+To:     jic23@kernel.org, robh+dt@kernel.org
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        mark.rutland@arm.com, nish.malpani25@gmail.com,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] dt-bindings: iio: tsl2563: convert bindings to YAML
+Date:   Wed, 18 Mar 2020 10:45:39 +0530
+Message-Id: <20200318051539.958-1-nish.malpani25@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1584505215.git.mh12gx2825@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add spaces around operator symbols to improve readability. Warning
-flagged by checkpatch script.
+Convert the TSL2563 device tree bindings to the new YAML format.
 
-Signed-off-by: Deepak R Varma <mh12gx2825@gmail.com>
+Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
 ---
- drivers/staging/iio/adc/ad7280a.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/iio/adc/ad7280a.c b/drivers/staging/iio/adc/ad7280a.c
-index 19a5f244dcae..34ca0d09db85 100644
---- a/drivers/staging/iio/adc/ad7280a.c
-+++ b/drivers/staging/iio/adc/ad7280a.c
-@@ -825,14 +825,14 @@ static irqreturn_t ad7280_event_handler(int irq, void *private)
- }
+Changes in v2:
+  - Rename the dt-bindings to include manufacturer's name.
+  - Synchronize the bindings with the driver.
+---
+ .../bindings/iio/light/{tsl2563.yaml => amstaos,tsl2563.yaml}  | 3 +++
+ 1 file changed, 3 insertions(+)
+ rename Documentation/devicetree/bindings/iio/light/{tsl2563.yaml => amstaos,tsl2563.yaml} (92%)
+
+diff --git a/Documentation/devicetree/bindings/iio/light/tsl2563.yaml b/Documentation/devicetree/bindings/iio/light/amstaos,tsl2563.yaml
+similarity index 92%
+rename from Documentation/devicetree/bindings/iio/light/tsl2563.yaml
+rename to Documentation/devicetree/bindings/iio/light/amstaos,tsl2563.yaml
+index 2a70b8d62760..141c7ae1edc8 100644
+--- a/Documentation/devicetree/bindings/iio/light/tsl2563.yaml
++++ b/Documentation/devicetree/bindings/iio/light/amstaos,tsl2563.yaml
+@@ -15,6 +15,9 @@ description: |
+ properties:
+   compatible:
+     enum:
++      - amstaos,tsl2560
++      - amstaos,tsl2561
++      - amstaos,tsl2562
+       - amstaos,tsl2563
  
- static IIO_DEVICE_ATTR_NAMED(in_thresh_low_value,
--			     in_voltage-voltage_thresh_low_value,
-+			     in_voltage - voltage_thresh_low_value,
- 			     0644,
- 			     ad7280_read_channel_config,
- 			     ad7280_write_channel_config,
- 			     AD7280A_CELL_UNDERVOLTAGE);
- 
- static IIO_DEVICE_ATTR_NAMED(in_thresh_high_value,
--			     in_voltage-voltage_thresh_high_value,
-+			     in_voltage - voltage_thresh_high_value,
- 			     0644,
- 			     ad7280_read_channel_config,
- 			     ad7280_write_channel_config,
+   reg:
 -- 
-2.17.1
+2.20.1
 

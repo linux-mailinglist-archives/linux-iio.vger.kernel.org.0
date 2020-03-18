@@ -2,106 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 455A41890B2
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Mar 2020 22:40:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B5981893ED
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 03:15:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726494AbgCQVkw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Mar 2020 17:40:52 -0400
-Received: from www381.your-server.de ([78.46.137.84]:60586 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726530AbgCQVkw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Mar 2020 17:40:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=TDcS8WDpOd5O4xjP3FdoBHEQZzFDW+bKJ1zrGNNcg84=; b=Kc37eTBdjzVqIpeRKSFEzV8ASv
-        65ucjQfQpTN4EYc9QXRdpl4kC125r9P7lwz8sr6fTNKT8M3hQAnoWV71a/RUeMnDauVwrL+QJx1wi
-        CGXVP5ZiRszd5Pl8wcefiN3YdzzFUBVkUrEMVvY48uG8NmBdNoMInd4ARqMR4Jd9z2zzpvEPP9NWM
-        sbSI/oEJOtQ2kZXAKuIuEJuML4x0//sx1Tqb7NJXJ7ZNt3jzkdOrSTGVaS9LZAm+8AHoP2tEq8BtF
-        HeR4IR62vcwcRIGsWSCtwAnBBiNcMAEbdEUtFkl85ot8JZtkkjVyvwUdzVdRAUUT7LqtLka7ftSdB
-        WsmiKQcA==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jEJxB-0003Fl-PM; Tue, 17 Mar 2020 22:40:49 +0100
-Received: from [93.104.105.202] (helo=[192.168.178.20])
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jEJxB-000TFi-GO; Tue, 17 Mar 2020 22:40:49 +0100
-Subject: Re: [PATCH 1/2] iio: adc: Add MAX1241 driver
-To:     Alexandru Lazar <alazar@startmail.com>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org, knaack.h@gmx.de,
-        pmeerw@pmeerw.net, robh+dt@kernel.org, mark.rutland@arm.com
-References: <20200317201710.23180-1-alazar@startmail.com>
- <20200317201710.23180-2-alazar@startmail.com>
- <370e807c-da03-e925-2eac-1e7e92c124e4@metafoo.de>
- <20200317212857.GA28983@leena.republic>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <fc961f0a-134d-7084-ce16-142cf5d5cc6b@metafoo.de>
-Date:   Tue, 17 Mar 2020 22:40:48 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1726680AbgCRCPH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Mar 2020 22:15:07 -0400
+Received: from mail-qv1-f68.google.com ([209.85.219.68]:40835 "EHLO
+        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726229AbgCRCPH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Mar 2020 22:15:07 -0400
+Received: by mail-qv1-f68.google.com with SMTP id cy12so6200820qvb.7;
+        Tue, 17 Mar 2020 19:15:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=PNhoxWWto3OTBxATPguCKxBnejir/6rqXXsL2C1SRpI=;
+        b=avtYE708cQqm4Rs6uB5LNa14AEB6+HCUP4pIFrrwqwuKznNHMQqhppgzehGXdkcC8n
+         Jj/GuBv4ScSGA1Mvppdj4U/7e7tRyroZHduT/w62KpaEXK8KWP0bdNESJsfTxCeR6HQG
+         lkrDjRUQ9KSf4CBC85dSy7fKj4NJowOZ5bqfGhm3tAXNVEpPcL6LD5hNJaXEGqYtFonW
+         zZnEElIYzkSRQt+FEv4C0QzOzB/zZSNh/rhwdHpatbGx82WKV10UbVdNLz8N6FQ3gZQw
+         s1mErBGBHJtSzf4kKJ69Ax9Ze3mZaEWVthJ95xcfmL3S3uPoFWyWGEfFrWwHOwoxvnQE
+         5z5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=PNhoxWWto3OTBxATPguCKxBnejir/6rqXXsL2C1SRpI=;
+        b=OzohwrnyxBKjEjk5/+n7nS4gbGlEO9Ihwc3flNX1UD798poPQzxEbwGwhsyGmo3Zs0
+         Xm45IBtaXPkVDKifTNTMd1eXn7wwy1PgEMYI/AHhA6dfnX2uaVj18aZxPfkEnSHua2OH
+         Fhg/BB1kLlobRf9FpL7r01BarFUrWJy5eYIg14aCjPk1tE9bke1YZbuE0kHk3bjBi5nY
+         Ot3SAS4McgULOAvUq2fMKFK7xyiEiPVWv+ny6pTTVARX54mvov6lHtWzlTutrp5Jj3qT
+         GjC7kBtNp0o36/L3kCK4Bpjkzfg8xPVdArUNttP0JA+DpTsP1Wv6JfAOLk9JRi1/g/+x
+         ztSg==
+X-Gm-Message-State: ANhLgQ1yzsDfws2Fb8AhMOecLBqucVGZl6mqlTmi5GAUNXZLzq1czPNi
+        CYMXwyEil/EQOOFLHaIRDP4=
+X-Google-Smtp-Source: ADFU+vvU6pH/mf08SGHxjLsH3az/2PjNFKYB2VAjp4Y4Ded+iT//bzPvgndTJsKppFrqIOk+ROQyMw==
+X-Received: by 2002:a0c:ed2d:: with SMTP id u13mr2106999qvq.203.1584497706026;
+        Tue, 17 Mar 2020 19:15:06 -0700 (PDT)
+Received: from icarus (072-189-064-225.res.spectrum.com. [72.189.64.225])
+        by smtp.gmail.com with ESMTPSA id x3sm3540710qts.17.2020.03.17.19.15.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2020 19:15:04 -0700 (PDT)
+Date:   Tue, 17 Mar 2020 22:14:49 -0400
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Syed Nayyar Waris <syednwaris@gmail.com>, jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/3] counter: 104-quad-8: Add lock guards - generic
+ interface
+Message-ID: <20200318020506.GA45571@icarus>
+References: <20200316124929.GA389@syed.domain.name>
 MIME-Version: 1.0
-In-Reply-To: <20200317212857.GA28983@leena.republic>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25754/Tue Mar 17 14:09:15 2020)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="VrqPEDrXMn8OVzN4"
+Content-Disposition: inline
+In-Reply-To: <20200316124929.GA389@syed.domain.name>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/17/20 10:28 PM, Alexandru Lazar wrote:
-> Hi Lars,
-> 
-> Thank you very much for your comments! I'll send a version with the
-> fixes in a day or two (ar as soon as there's no more feedback, anyways)
-> -- in the meantime I have a question about this one:
-> 
->>> +	if (!adc->shdn)
->>> +		dev_info(&spi->dev, "no shdn pin passed, low-power mode disabled");
->>> +	else
->>> +		dev_info(&spi->dev, "shdn pin passed, low-power mode enabled");
->>
->> I can see how these message above are useful during development, but I'd
->> remove them or turn them into dev_dbg() for the "production" version of the
->> driver. Imagine every driver printed something like this, there would be a
->> lot of spam in the bootlog.
-> 
-> I thought this should go under info, rather than debug, because it's
-> (possibly) relevant runtime information. It doesn't require any action,
-> but it's something that a user of this driver may want to be aware
-> of. The timing (and power consumption, of course) in low-power mode are
-> different. It's akin to e.g.:
-> 
-> ./at91_adc.c:782: dev_info(&idev->dev, "Resolution used: %u bits\n", st->res);
-> ./at91_adc.c:842: dev_info(dev, "ADC Touch screen is disabled.\n");
-> ./at91_adc.c:955: dev_info(&idev->dev, "not support touchscreen in the adc compatible string.\n");
-> 
-> or:
-> 
-> ./ti-ads124s08.c:320: dev_info(&spi->dev, "Reset GPIO not defined\n");
-> 
-> which is why I figured I'd do the same in my code (what can I say, I
-> wear my code monkey badge with pride!).
-> 
-> Needless to say, since you've seen more IIO subsystem drivers than I've
-> seen, I totally trust your assessment of whether this is debug or info
-> more than I trust mine. If this was a false positive on your "looks like
-> a leftover debug message", let me know (and while I'm at it I might make
-> the message more useful/friendly...). Otherwise it'll get bumped down to
-> dev_dbg in my next revision.
 
-If I was to write this driver I would not make it dev_info(). In my 
-opinion drivers should only print essential information during probe, 
-like when something goes wrong. Otherwise the boot log gets very noisy 
-quickly.
+--VrqPEDrXMn8OVzN4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- Lars
+On Mon, Mar 16, 2020 at 06:19:30PM +0530, Syed Nayyar Waris wrote:
+> Add lock protection from race conditions to 104-quad-8 counter driver
+> generic interface code changes. Mutex calls used for protection.
+>=20
+> Fixes: f1d8a071d45b ("counter: 104-quad-8: Add Generic Counter interface
+> support")
+>=20
+> Signed-off-by: Syed Nayyar Waris <syednwaris@gmail.com>
+> ---
+> Changes in v5:
+>  - Change spin lock calls to mutex lock calls
+>  - Modify the title description.
+
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+
+--VrqPEDrXMn8OVzN4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl5xhBkACgkQhvpINdm7
+VJJAzw//buE31KKpnVswNZUMEJFGXFI0JLTQ8Zkp+cJtL3wlaA4OgPLq+6Ywm46v
+s80WagAdGLA48a++Kzyy+fZyWlhV8btVi11MNtMeckV0nFFYuQmenJc/6IY3E4Uv
+l/HuwJbcPkRBp187VkrBTyV5pcEAMMHi6qz+hMqhqqB6eQM6Ci8Cc9RHw8yuaDpr
+jO2Tj92wVnofvx7WQ+wwIq+Mpzo3eE9JNRCCP9K+GMjBugBIPcEbLjZNKKTgkT0u
+0A1+A8l/ssXkbaqqJJfS0GhhSNXMlfJG3m1RWZdi1vwRyBiOVBJWBzNc7pl7WGFt
+ECc6BukRYBnyAGnsKdjtght/7vkyJbbGKp6jzUuE+EQNI4glfP1auxHMkloidWua
+y6+aM46JY8doUlBrg2obO0Mf5w74HQJJPNesIGptwuZ8FnjOBjIHVY5jOWTChPrp
+Cjcix9o1/rHA5Rf1Ry5S4hPR29rwpT7TJ5/H8n7ACQ03GlsajrcqWDWhg+57Ypu7
+QAgft4MTU1WlyFD6i3Bg7kPNrJFSoruz/63bqdYvl6fHqDQWbqVSiCglJ90wl08G
+aqGs0e9VpaG3egr1UNQYMIeiMe71aeWReDnPIZx4xKYdgQgzkguz2dGBaWRs3nzR
+3plaO1eMWMRnON/cXM/ApN+aSoDm7R5wwUnBArFtDkn+i5S+dek=
+=F2+4
+-----END PGP SIGNATURE-----
+
+--VrqPEDrXMn8OVzN4--

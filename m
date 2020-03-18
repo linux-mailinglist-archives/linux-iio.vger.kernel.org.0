@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 474BB189673
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 09:03:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 009F5189675
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 09:03:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727113AbgCRIDi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 04:03:38 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:39987 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726513AbgCRIDi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 04:03:38 -0400
-Received: by mail-pf1-f196.google.com with SMTP id l184so13451263pfl.7;
-        Wed, 18 Mar 2020 01:03:36 -0700 (PDT)
+        id S1727331AbgCRIDn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 04:03:43 -0400
+Received: from mail-pj1-f65.google.com ([209.85.216.65]:35838 "EHLO
+        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726513AbgCRIDm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 04:03:42 -0400
+Received: by mail-pj1-f65.google.com with SMTP id j20so92275pjz.0;
+        Wed, 18 Mar 2020 01:03:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ho6gtyEr6bMozXOZgwqOnVf9KcSgoOM+OYbUJ5doEgg=;
-        b=CeuxHui0pw5J3J1NQm0KTZ9Wu9TDDXJ4NQjkb8wBDkiaCXpRny2Q5KeazPFhfn48nF
-         MWMmVB3sktl8upi1HwXx5K+aB8JeYsrJP4yKFNfxsteL+1fk5QQT6/xG2VAyIFsfXMxj
-         YMCsp0+h7NaXFtIyDSeyEj16dPza2GZl46jQQifCQv7FrDvcXe+cPHppB9TCPIQz2tu+
-         OfWj1VXcrBXBPcYwLLAl6Vv826FQ/FwzNmcItUaJdDDLQgAfuhpl5EPYUpZl4s+/RGo1
-         s3BUbapi8NCymY4tU3ISxP4JjfmTzBxlgSCWiPZXfIgRkOf7NmeLz4VoRcFz4SC+D7u1
-         s2bg==
+        bh=SRRxwcT2DK84I13cW0E/YZOsB1KtG3yTR1IN8guZbqk=;
+        b=bxzvTsA1BmMECj72WnpTo0FMnHkfAZ5Rqh1JO1krTVzPxFM7sw1G2FLQ+x22VM58nk
+         IwAZSb3xPeAFD8su7SQUIR3F5YksNeXuJQxKOdprS/vjo1CWnv/5UfHAX9UVWETt/j6X
+         VD00Nttiyqg3R3rlu3WL4RXg1miNYGMf5X7tKyneW3cvrQjYiJ2R0yBIDVKoAisM75Ii
+         JclOEtWozSwGM1wWMl4kq0Ds9/doh3sasYEcmxu0cFPhpaoO5jNYHmHFmsq15HjUyL/7
+         woEnihYUtCj84mk0cjyEbIFw9TtAY8jCAernk08lP/iXsaMaQgTBCNx+PDRUhDprSrFA
+         46Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ho6gtyEr6bMozXOZgwqOnVf9KcSgoOM+OYbUJ5doEgg=;
-        b=W5MFgCmMXu06pBlYoIbzPERBaWM/ZLwQa7jSIlDM0mQvfLynFCIDzUuA/0ztH8K6zy
-         lRsX24LhFnOGTK0vNhaGIC7dF735Ze/lKWhthg1Shibo+EzsjqjrzJefrfwGOLRAuYDY
-         b93BsyD2M05F7pxSTawWudZqfB82/vE5wkrUJa4oU2yYFws7H1HWRNvWAs/Laiweb2Av
-         WfpB9hBy0NLjPAcSKGygnQVajUrALYJQkrKyxYLRzl6SNrdUxUBPiK2HOq1zaABKrEiq
-         3AmQrnuLAS2tGCq6drywfeOe8n3XED1r+Q0i8qh9REARK7QYgf8Dy3juYXTSozT0nOlm
-         qJ3g==
-X-Gm-Message-State: ANhLgQ0YOqSdTiy2CW+Y+lXa8hyap1GovlpXcfAu1T8pV1bs1c58Zzi0
-        E4R8ujKjzBqQjMhCZJJ/x3URD3zZ
-X-Google-Smtp-Source: ADFU+vtdSspEr+tWxy+ufMNQkfOLV1KBXFINTxqopzXm6Qb2N5sXDID01BwwJODw6l9KZ9xrYP02EA==
-X-Received: by 2002:aa7:9790:: with SMTP id o16mr3120245pfp.322.1584518615827;
-        Wed, 18 Mar 2020 01:03:35 -0700 (PDT)
+        bh=SRRxwcT2DK84I13cW0E/YZOsB1KtG3yTR1IN8guZbqk=;
+        b=Wm+M5fBOEXCvWDB6xy+10sp85uZcaD6ito0kKzOystn301ppAOu78vlR0wiQJj+1mL
+         2+sgdvCIcDGcEB/pxRYMZ+oJds3GoyZJs0pbvkS1te6Uva/5JpVee0gGw+P6Puv01ZeG
+         j0/lMDHdjDKqP1DlPfMmlehXVWzQRJbGyYJM+ZGKppMEujcWtZxnQazRpqTz2SlKwYVB
+         tUB0byeTpenZur+twencl3/B9MXIWwcrNnq6qWKsOQ5Wsk/iOfB7Pp/m7ZeYAM9TESwc
+         CDsRc4xPAoaqmPKhCE/GkBsHzylh1hE5L7a8yi5RL9kaolThbqJof2as3RgZSVUJ7eAU
+         57IA==
+X-Gm-Message-State: ANhLgQ1jGL4LodJOwQICqkwS+UjD+VFuco6U/PjLgYPkyB/ErOVpSFZ3
+        ZZysKIGseki2Tr/6PpLctgiD0ryn
+X-Google-Smtp-Source: ADFU+vtliEPML8ZXPYnJBzaKOBmd5DBL5XIOLLF8tbtGd+k54545C8B/UoUSJ+b+QhljqQgGCCQM1Q==
+X-Received: by 2002:a17:902:9b8b:: with SMTP id y11mr2743283plp.189.1584518621031;
+        Wed, 18 Mar 2020 01:03:41 -0700 (PDT)
 Received: from nish-HP-Pavilion ([2409:4072:6086:470e:bc8d:c185:c429:a95b])
-        by smtp.gmail.com with ESMTPSA id v5sm2049822pjn.2.2020.03.18.01.03.34
+        by smtp.gmail.com with ESMTPSA id 189sm5686376pfw.203.2020.03.18.01.03.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2020 01:03:35 -0700 (PDT)
+        Wed, 18 Mar 2020 01:03:40 -0700 (PDT)
 From:   Nishant Malpani <nish.malpani25@gmail.com>
 To:     jic23@kernel.org
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         nish.malpani25@gmail.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] iio: light: tsl2563: Wrap comment description
-Date:   Wed, 18 Mar 2020 13:33:10 +0530
-Message-Id: <9129a6c25f772bdfba28d556190e5511c7005e8a.1584518000.git.nish.malpani25@gmail.com>
+Subject: [PATCH 2/2] iio: light: tsl2563: Rename macro to fix typo
+Date:   Wed, 18 Mar 2020 13:33:11 +0530
+Message-Id: <0793346ea429cc0c932a5857678c802ad7421d80.1584518000.git.nish.malpani25@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <cover.1584518000.git.nish.malpani25@gmail.com>
 References: <cover.1584518000.git.nish.malpani25@gmail.com>
@@ -62,33 +62,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch wraps the comment description at 75 chars. Fixes the
-following warning generated by checkpatch.pl:
+This patch renames macro to fix the following warning generated by
+checkpatch.pl:
 
-WARNING: Possible unwrapped commit description (prefer a maximum 75 chars per line)
+WARNING: 'DISBLED' may be misspelled - perhaps 'DISABLED'?
 
 Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
 ---
- drivers/iio/light/tsl2563.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/light/tsl2563.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
-index d8c40a83097d..260b38ee81f7 100644
+index 260b38ee81f7..356f4927cc46 100644
 --- a/drivers/iio/light/tsl2563.c
 +++ b/drivers/iio/light/tsl2563.c
-@@ -222,9 +222,9 @@ static int tsl2563_read_id(struct tsl2563_chip *chip, u8 *id)
- }
+@@ -69,7 +69,7 @@
+ #define TSL2563_TIMING_GAIN16	0x10
+ #define TSL2563_TIMING_GAIN1	0x00
  
- /*
-- * "Normalized" ADC value is one obtained with 400ms of integration time and
-- * 16x gain. This function returns the number of bits of shift needed to
-- * convert between normalized values and HW values obtained using given
-+ * "Normalized" ADC value is one obtained with 400ms of integration time
-+ * and 16x gain. This function returns the number of bits of shift needed
-+ * to convert between normalized values and HW values obtained using given
-  * timing and gain settings.
-  */
- static int tsl2563_adc_shiftbits(u8 timing)
+-#define TSL2563_INT_DISBLED	0x00
++#define TSL2563_INT_DISABLED	0x00
+ #define TSL2563_INT_LEVEL	0x10
+ #define TSL2563_INT_PERSIST(n)	((n) & 0x0F)
+ 
 -- 
 2.20.1
 

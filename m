@@ -2,57 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 155B5189670
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 09:03:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 474BB189673
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 09:03:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbgCRIDV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 04:03:21 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:46488 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726513AbgCRIDV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 04:03:21 -0400
-Received: by mail-pg1-f193.google.com with SMTP id y30so13205767pga.13;
-        Wed, 18 Mar 2020 01:03:20 -0700 (PDT)
+        id S1727113AbgCRIDi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 04:03:38 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:39987 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726513AbgCRIDi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 04:03:38 -0400
+Received: by mail-pf1-f196.google.com with SMTP id l184so13451263pfl.7;
+        Wed, 18 Mar 2020 01:03:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+tjztlV5Mv0iMohhZrLS2wOZqAb5HkFjm8+HcL+NmWo=;
-        b=cJe+1kTgLZMTksYnnj5t+rRVT6v3V0tkI+kcIX+jzCC69I+XumCDIKjTDGaVgIvq+7
-         /PVdZHmhdDUjpeCVlG96aCdMhqpusIA9NrTaUSlIKELvIm8s+tklb/h5NxxoPpIog24k
-         kPC0NKz35S9D3t7YxC1igGaOgCsIfgV9IRErOrYjgkOzsGvDnEl5dD3pd48btwJk6MnA
-         8ZbVmU1TTnQBdjg3YC7g3onJuDkth3gasKf1mEkr1nRoNqMsyp0OLdO4YAAJojXO41Rt
-         KFnDVKwWVKNJzQssdMuKH1DmMnWRVm93dRo+wQf5cVZYc5I/Fkr1h7kUIgwVm2RmS+it
-         FNcA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=ho6gtyEr6bMozXOZgwqOnVf9KcSgoOM+OYbUJ5doEgg=;
+        b=CeuxHui0pw5J3J1NQm0KTZ9Wu9TDDXJ4NQjkb8wBDkiaCXpRny2Q5KeazPFhfn48nF
+         MWMmVB3sktl8upi1HwXx5K+aB8JeYsrJP4yKFNfxsteL+1fk5QQT6/xG2VAyIFsfXMxj
+         YMCsp0+h7NaXFtIyDSeyEj16dPza2GZl46jQQifCQv7FrDvcXe+cPHppB9TCPIQz2tu+
+         OfWj1VXcrBXBPcYwLLAl6Vv826FQ/FwzNmcItUaJdDDLQgAfuhpl5EPYUpZl4s+/RGo1
+         s3BUbapi8NCymY4tU3ISxP4JjfmTzBxlgSCWiPZXfIgRkOf7NmeLz4VoRcFz4SC+D7u1
+         s2bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+tjztlV5Mv0iMohhZrLS2wOZqAb5HkFjm8+HcL+NmWo=;
-        b=p2/ab+aRhbLK+Td/b5Ny6mc3rYpN7EmPNBMYyrm8qA4qLBJ1NpLSvXK/jC8bjNcXhD
-         LnUZ1BlpqPMbsi9GDLiqjL6icFPxhUJfojj8efbdwMUnlYqQPPrNx3rLIxY7u+PTEa/f
-         /eET+xeu8RCVEkUaq8pYvCinvSOLa2j4nbGY36Wto/ApZeq/WBjfipq+SVmZtH70Ge9T
-         OV06v3A8sLfkBE38pSWV92yVY4QUJ3alAVyRbXx6yM7bgD+Cn4uDK7Wasik1aiIWKB7+
-         fP3icZ7nwfg6aQxPmcWkVcppFsb2NDbDG27qmq/HtqXqOK+qFhQoSg/8i7xfAKKu0vDa
-         eTlA==
-X-Gm-Message-State: ANhLgQ1UzMF8JZEoRGBgC10L92rbWzef2ggt02ptdApsCRTqkF8nr71a
-        jnXvdJoIJI+M60Dg6h6u5j8kuqns
-X-Google-Smtp-Source: ADFU+vsrLIOON3SE0xGvJYZKl1MCEb0SLtrxPf7VDlXH0VOc1znagOnbAy1D5LKY6d1HOLuqpvyt/w==
-X-Received: by 2002:a63:7e1a:: with SMTP id z26mr3279575pgc.226.1584518599727;
-        Wed, 18 Mar 2020 01:03:19 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ho6gtyEr6bMozXOZgwqOnVf9KcSgoOM+OYbUJ5doEgg=;
+        b=W5MFgCmMXu06pBlYoIbzPERBaWM/ZLwQa7jSIlDM0mQvfLynFCIDzUuA/0ztH8K6zy
+         lRsX24LhFnOGTK0vNhaGIC7dF735Ze/lKWhthg1Shibo+EzsjqjrzJefrfwGOLRAuYDY
+         b93BsyD2M05F7pxSTawWudZqfB82/vE5wkrUJa4oU2yYFws7H1HWRNvWAs/Laiweb2Av
+         WfpB9hBy0NLjPAcSKGygnQVajUrALYJQkrKyxYLRzl6SNrdUxUBPiK2HOq1zaABKrEiq
+         3AmQrnuLAS2tGCq6drywfeOe8n3XED1r+Q0i8qh9REARK7QYgf8Dy3juYXTSozT0nOlm
+         qJ3g==
+X-Gm-Message-State: ANhLgQ0YOqSdTiy2CW+Y+lXa8hyap1GovlpXcfAu1T8pV1bs1c58Zzi0
+        E4R8ujKjzBqQjMhCZJJ/x3URD3zZ
+X-Google-Smtp-Source: ADFU+vtdSspEr+tWxy+ufMNQkfOLV1KBXFINTxqopzXm6Qb2N5sXDID01BwwJODw6l9KZ9xrYP02EA==
+X-Received: by 2002:aa7:9790:: with SMTP id o16mr3120245pfp.322.1584518615827;
+        Wed, 18 Mar 2020 01:03:35 -0700 (PDT)
 Received: from nish-HP-Pavilion ([2409:4072:6086:470e:bc8d:c185:c429:a95b])
-        by smtp.gmail.com with ESMTPSA id 184sm4969255pgb.52.2020.03.18.01.03.18
+        by smtp.gmail.com with ESMTPSA id v5sm2049822pjn.2.2020.03.18.01.03.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2020 01:03:19 -0700 (PDT)
+        Wed, 18 Mar 2020 01:03:35 -0700 (PDT)
 From:   Nishant Malpani <nish.malpani25@gmail.com>
 To:     jic23@kernel.org
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         nish.malpani25@gmail.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] iio: light: tsl2563: Fix checkpatch warnings
-Date:   Wed, 18 Mar 2020 13:33:09 +0530
-Message-Id: <cover.1584518000.git.nish.malpani25@gmail.com>
+Subject: [PATCH 1/2] iio: light: tsl2563: Wrap comment description
+Date:   Wed, 18 Mar 2020 13:33:10 +0530
+Message-Id: <9129a6c25f772bdfba28d556190e5511c7005e8a.1584518000.git.nish.malpani25@gmail.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <cover.1584518000.git.nish.malpani25@gmail.com>
+References: <cover.1584518000.git.nish.malpani25@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -60,16 +62,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patchset cleans up the TSL2563 driver by fixing warnings generated
-by checkpatch.pl.
+This patch wraps the comment description at 75 chars. Fixes the
+following warning generated by checkpatch.pl:
 
-Nishant Malpani (2):
-  iio: light: tsl2563: Wrap comment description
-  iio: light: tsl2563: Rename macro to fix typo
+WARNING: Possible unwrapped commit description (prefer a maximum 75 chars per line)
 
- drivers/iio/light/tsl2563.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
+---
+ drivers/iio/light/tsl2563.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+index d8c40a83097d..260b38ee81f7 100644
+--- a/drivers/iio/light/tsl2563.c
++++ b/drivers/iio/light/tsl2563.c
+@@ -222,9 +222,9 @@ static int tsl2563_read_id(struct tsl2563_chip *chip, u8 *id)
+ }
+ 
+ /*
+- * "Normalized" ADC value is one obtained with 400ms of integration time and
+- * 16x gain. This function returns the number of bits of shift needed to
+- * convert between normalized values and HW values obtained using given
++ * "Normalized" ADC value is one obtained with 400ms of integration time
++ * and 16x gain. This function returns the number of bits of shift needed
++ * to convert between normalized values and HW values obtained using given
+  * timing and gain settings.
+  */
+ static int tsl2563_adc_shiftbits(u8 timing)
 -- 
 2.20.1
 

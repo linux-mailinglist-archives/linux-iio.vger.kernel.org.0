@@ -2,143 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03C2B18A18A
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 18:30:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E45F418A18D
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 18:31:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726776AbgCRRah (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 13:30:37 -0400
-Received: from www381.your-server.de ([78.46.137.84]:37426 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726781AbgCRRah (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 13:30:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=8jXKOPcxkZWvkP619eIGDOeVHZThU9Ay4Wk8qdDv3GE=; b=h9wETDcSthKR491wqOMm3gB4uS
-        QoAUqbBXc1eFodJ5UfZwryUF3sGMkN1mNN73RDUNjeQksi/g/SFuyW7j87HfUkAxBXESLlSBBYP3s
-        aoqGUuueCEcIHyXdf18cdVGzbKsgoVRoOwgesyu9AjAgXStvpuf+FboHqdl+5ZZflvi0/n97xKeYb
-        2yKlvcV3zPMdCKSnJkatQDCM8iznQq9IaXjoIWcaHiHKJ5FU+8O8HlES+Lb3PKSBGmZNv7OsB3/J6
-        xfM4qa1oESEw8UvZa8aqzyO6c8o+FN8t6oI7HQFWAckEkq40ieQJJYvoLbc4+KyDwy3Gf72WbavXJ
-        dctoPVeg==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jEcWU-0004OJ-HI; Wed, 18 Mar 2020 18:30:30 +0100
-Received: from [93.104.115.49] (helo=[192.168.178.20])
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jEcWU-0003Wr-6y; Wed, 18 Mar 2020 18:30:30 +0100
-Subject: Re: [PATCH 1/3] iio: dac: ad5686: add support for AD5338R
-To:     Michael Auchter <michael.auchter@ni.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     linux-pm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200318153434.62833-1-michael.auchter@ni.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <461dc314-87b9-fa40-e407-4bff9a95205b@metafoo.de>
-Date:   Wed, 18 Mar 2020 18:30:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1726781AbgCRRbM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 13:31:12 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:43438 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726813AbgCRRbL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 13:31:11 -0400
+Received: by mail-pf1-f196.google.com with SMTP id f206so3248209pfa.10
+        for <linux-iio@vger.kernel.org>; Wed, 18 Mar 2020 10:31:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=HTqD50UmZr45My6NDxgCN8OAOaGi7lH1op3LMlJyHq8=;
+        b=h5ffyvKMJRys5b/9wFJ7Bms4kpRKV0vgeD1c7kybEAMBadJZ0WgnLXvaNXieJRyDYl
+         lQIj/g2NQnBk/ZDCbsUsnmfH6aV668g4vjIf5hkvVCNygF9/+9RRCt4QJHL+Mmhbz9Fl
+         IToLMKMeCmDEMte81ZgJCdGps2TZBL6dwPTi5DhpfDRySWYTvXN78AHVKDhJkgElRtjU
+         N9bZY1UzPdeU/3Zj/xBbZGwmbDcq0LuSmfQkMh2pb3gbaTBo3D+c1Ar65dXkcFzkCdWE
+         UrWyS10EbIYWWUMU73xqP/y8PTnZkrkav78JVVFgIxVvDL6xO0OIDMY7nWm+5g8kvKhB
+         RYKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=HTqD50UmZr45My6NDxgCN8OAOaGi7lH1op3LMlJyHq8=;
+        b=nIyZ+mChxf98mzGR/NW80UCPJoefNhEreIxrXFbyN+Hu4jc8yvrQp95CEiwvBVdKi5
+         MTs/le3k2yxvuj4hYvxtu2EyZkupE24XJslEnde0WwwILfnNY/92aculViFMbcdYGIdd
+         L0gFuee7UO8/+Rb+XflEsb68TCQXtPmVZXGJD2FcjM3GAKWD3KtkHrPefqdBDSCPz63v
+         HjfbOAcuni7SAGmErFIiBNKZqvmpfZA6i0WwApTM+VSuPhQZSeVJFI6VLM8e7SLqNEvX
+         M8MCqZFZ5q5JgOjkegLa1RAqjAGgRkSDrZQnQOxcMBfwSGEOyV1oKJ9eY52rAMmi+jus
+         SheQ==
+X-Gm-Message-State: ANhLgQ1/muv7gNiWEeGCHp+QLI+iLl/9lOyYUJFppt6sxvdJ8Tq9CukL
+        eSspjJU3TFVBiB0ZFwbn64Q=
+X-Google-Smtp-Source: ADFU+vuj2oALlMfF26Kk0CKIMACjZe8I43+Ze3oN1LskRCGJSZRqBcpm7wZMtp0U3r0HBjrtyM6skQ==
+X-Received: by 2002:a63:7783:: with SMTP id s125mr5662374pgc.214.1584552670514;
+        Wed, 18 Mar 2020 10:31:10 -0700 (PDT)
+Received: from deeUbuntu ([103.241.226.97])
+        by smtp.gmail.com with ESMTPSA id x27sm7464069pfj.74.2020.03.18.10.31.06
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 18 Mar 2020 10:31:10 -0700 (PDT)
+Date:   Wed, 18 Mar 2020 23:01:04 +0530
+From:   DEEPAK VARMA <mh12gx2825@gmail.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Rohit Sarkar <rohitsarkar5398@gmail.com>,
+        Stefano Brivio <sbrivio@redhat.com>,
+        outreachy-kernel@googlegroups.com, gregkh@linuxfoundation.org,
+        daniel.baluta@gmail.com, kieran.bingham@ideasonboard.com,
+        Michael.Hennerich@analog.com, jic23@kernel.org, knaack.h@gmx.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org
+Subject: Re: [Outreachy kernel] [PATCH 1/2] staging: iio: adc: ad7192:
+ Reformat lines crossing 80 columns
+Message-ID: <20200318173102.GA23740@deeUbuntu>
+References: <cover.1584505215.git.mh12gx2825@gmail.com>
+ <50419988d636c90511a07da256c91aa3b3e33bff.1584505215.git.mh12gx2825@gmail.com>
+ <20200318093158.192a27ce@elisabeth>
+ <20200318160649.GA23154@deeUbuntu>
+ <5e724ad5.1c69fb81.7d54e.9f63@mx.google.com>
+ <20200318164306.GA23434@deeUbuntu>
+ <1fe9df37-4d83-82e6-bd57-ecb4195447a5@metafoo.de>
 MIME-Version: 1.0
-In-Reply-To: <20200318153434.62833-1-michael.auchter@ni.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25755/Wed Mar 18 14:14:00 2020)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1fe9df37-4d83-82e6-bd57-ecb4195447a5@metafoo.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/18/20 4:34 PM, Michael Auchter wrote:
-> The AD5338R is a 10-bit DAC with 2 outputs and an internal 2.5V
-> reference (enabled by default). The register configuration is nearly
-> identical to the AD5696R DAC that's already supported by this driver,
-> with the channel selection bits being the only thing different.
+On Wed, Mar 18, 2020 at 05:44:16PM +0100, Lars-Peter Clausen wrote:
+> On 3/18/20 5:43 PM, DEEPAK VARMA wrote:
+> > On Wed, Mar 18, 2020 at 09:52:41PM +0530, Rohit Sarkar wrote:
+> > > On Wed, Mar 18, 2020 at 09:36:50PM +0530, DEEPAK VARMA wrote:
+> > > > On Wed, Mar 18, 2020 at 09:31:58AM +0100, Stefano Brivio wrote:
+> > > > > On Wed, 18 Mar 2020 09:56:59 +0530
+> > > > > Deepak R Varma <mh12gx2825@gmail.com> wrote:
+> > > > > 
+> > > > > > Macro arguments are computed at the time of macro invocation. This makes
+> > > > > > the lines cross 80 column width. Add variables to perform the
+> > > > > > calculations before hand and use these new variable in the macro calls
+> > > > > > instead.
+> > > > > > 
+> > > > > > Also re-indent enum members to address checkpatch warning / check messages.
+> > > > > > 
+> > > > > > Signed-off-by: Deepak R Varma <mh12gx2825@gmail.com>
+> > > > > > ---
+> > > > > >   drivers/staging/iio/adc/ad7192.c | 15 ++++++++-------
+> > > > > >   1 file changed, 8 insertions(+), 7 deletions(-)
+> > > > > > 
+> > > > > > diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
+> > > > > > index bf3e2a9cc07f..0265f6607d75 100644
+> > > > > > --- a/drivers/staging/iio/adc/ad7192.c
+> > > > > > +++ b/drivers/staging/iio/adc/ad7192.c
+> > > > > > @@ -156,8 +156,8 @@
+> > > > > >    */
+> > > > > >   enum {
+> > > > > > -   AD7192_SYSCALIB_ZERO_SCALE,
+> > > > > > -   AD7192_SYSCALIB_FULL_SCALE,
+> > > > > > +	AD7192_SYSCALIB_ZERO_SCALE,
+> > > > > > +	AD7192_SYSCALIB_FULL_SCALE,
+> > > > > >   };
+> > > > > >   struct ad7192_state {
+> > > > > > @@ -477,17 +477,18 @@ static ssize_t ad7192_set(struct device *dev,
+> > > > > >   }
+> > > > > >   static void ad7192_get_available_filter_freq(struct ad7192_state *st,
+> > > > > > -						    int *freq)
+> > > > > > +					     int *freq)
+> > > > > >   {
+> > > > > >   	unsigned int fadc;
+> > > > > > +	unsigned int sync3_filter, sync4_filter;
+> > > > > >   	/* Formulas for filter at page 25 of the datasheet */
+> > > > > > -	fadc = DIV_ROUND_CLOSEST(st->fclk,
+> > > > > > -				 AD7192_SYNC4_FILTER * AD7192_MODE_RATE(st->mode));
+> > > > > > +	sync4_filter = AD7192_SYNC4_FILTER * AD7192_MODE_RATE(st->mode);
+> > > > > 
+> > > > > Have you read page 25 of the datasheet? Why is this called
+> > > > > sync4_filter, with a 'y'?
+> > > > > 
+> > > > 
+> > > > Sorry, I am not sure what you are referring to. Can you please elaborate
+> > > > or point me to where the data sheet is located?
+> > > > 
+> > > > Deepak.
+> > > 
+> > > Hey Deepak,
+> > > You can find the datasheet for ad7192 here https://pdf1.alldatasheet.com/datasheet-pdf/view/988287/AD/AD7192.html
+> > > 
+> > 
+> > Thank you Rohit. I got it. I understand Stefano's comments now. I named
+> > the variables with a 'y' to keep it similar to the macro
+> > AD7192_SYNCn_FILTER. Let me know if the variable name looks odd and I
+> > should rename it to sinc4_filter instead.
 > 
-> Signed-off-by: Michael Auchter <michael.auchter@ni.com>
-
-Patch looks good, thanks. I just have one wish, which is to keep 
-everything sorted by device ID. This will improve the longterm 
-maintainability of the driver. AD5338R should be after AD5311R.
-
-Also consider updating the Kconfig entry.
-
-> ---
->   drivers/iio/dac/ad5686.c     | 13 +++++++++++++
->   drivers/iio/dac/ad5686.h     |  1 +
->   drivers/iio/dac/ad5696-i2c.c |  1 +
->   3 files changed, 15 insertions(+)
+> Hi,
 > 
-> diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
-> index e06b29c565b9..bbcac0e44837 100644
-> --- a/drivers/iio/dac/ad5686.c
-> +++ b/drivers/iio/dac/ad5686.c
-> @@ -210,6 +210,12 @@ static struct iio_chan_spec name[] = {				\
->   		AD5868_CHANNEL(0, 0, bits, _shift),		\
->   }
->   
-> +#define DECLARE_AD5338R_CHANNELS(name, bits, _shift)		\
-> +static struct iio_chan_spec name[] = {				\
-> +		AD5868_CHANNEL(0, 1, bits, _shift),		\
-> +		AD5868_CHANNEL(1, 8, bits, _shift),		\
-> +}
-> +
->   #define DECLARE_AD5686_CHANNELS(name, bits, _shift)		\
->   static struct iio_chan_spec name[] = {				\
->   		AD5868_CHANNEL(0, 1, bits, _shift),		\
-> @@ -262,6 +268,7 @@ DECLARE_AD5686_CHANNELS(ad5686_channels, 16, 0);
->   DECLARE_AD5693_CHANNELS(ad5693_channels, 16, 0);
->   DECLARE_AD5693_CHANNELS(ad5692r_channels, 14, 2);
->   DECLARE_AD5693_CHANNELS(ad5691r_channels, 12, 4);
-> +DECLARE_AD5338R_CHANNELS(ad5338r_channels, 10, 6); >
->   static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
->   	[ID_AD5310R] = {
-> @@ -413,6 +420,12 @@ static const struct ad5686_chip_info ad5686_chip_info_tbl[] = {
->   		.num_channels = 4,
->   		.regmap_type = AD5686_REGMAP,
->   	},
-> +	[ID_AD5338R] = {
-> +		.channels = ad5338r_channels,
-> +		.int_vref_mv = 2500,
-> +		.num_channels = 2,
-> +		.regmap_type = AD5686_REGMAP,
-> +	}, >   };
->   
->   int ad5686_probe(struct device *dev,
-> diff --git a/drivers/iio/dac/ad5686.h b/drivers/iio/dac/ad5686.h
-> index 70a779939ddb..02eb196fcf0f 100644
-> --- a/drivers/iio/dac/ad5686.h
-> +++ b/drivers/iio/dac/ad5686.h
-> @@ -77,6 +77,7 @@ enum ad5686_supported_device_ids {
->   	ID_AD5695R,
->   	ID_AD5696,
->   	ID_AD5696R,
-> +	ID_AD5338R,
->   };
->   
->   enum ad5686_regmap_type {
-> diff --git a/drivers/iio/dac/ad5696-i2c.c b/drivers/iio/dac/ad5696-i2c.c
-> index ccf794caef43..f100a5fe4219 100644
-> --- a/drivers/iio/dac/ad5696-i2c.c
-> +++ b/drivers/iio/dac/ad5696-i2c.c
-> @@ -83,6 +83,7 @@ static const struct i2c_device_id ad5686_i2c_id[] = {
->   	{"ad5695r", ID_AD5695R},
->   	{"ad5696", ID_AD5696},
->   	{"ad5696r", ID_AD5696R},
-> +	{"ad5338r", ID_AD5338R},
->   	{}
->   };
->   MODULE_DEVICE_TABLE(i2c, ad5686_i2c_id);
+> Please send a patch to rename the macro to SINC as well. This is a typo in
+> the macro.
 > 
+> Thanks,
+> - Lars
 
+Sure. Will send a separate patch for the macro name correction in the same
+pathset.
+
+Deepak.

@@ -2,90 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9825E18A036
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 17:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5713B18A066
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 17:22:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbgCRQL6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 12:11:58 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:38305 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726733AbgCRQL6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 12:11:58 -0400
-Received: by mail-pg1-f194.google.com with SMTP id x7so13947099pgh.5;
-        Wed, 18 Mar 2020 09:11:57 -0700 (PDT)
+        id S1726767AbgCRQWs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 12:22:48 -0400
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:52992 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726647AbgCRQWs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 12:22:48 -0400
+Received: by mail-pj1-f67.google.com with SMTP id ng8so1560452pjb.2
+        for <linux-iio@vger.kernel.org>; Wed, 18 Mar 2020 09:22:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:date:from:to:cc:subject:mime-version:content-disposition
-         :user-agent;
-        bh=LWuGqqiVZStjA49iRqkB2ECGeP11khRAviVxRIQYens=;
-        b=hJ7/AnymbJqEL9fDuUD1UXa4a8M+PhkAlkiJxpd/HpgvsQN9ycgElBYdD2wF6KqzQi
-         9l4eprE+HBCuCqsilh4rJEN/+DOAhV7icJNaBCoFdX9BLt5s6C9ogqCVmb1jnojQ+NfE
-         oK52vugCG2BeY3o4AR0/dwv0PmmCzV9RhSpYUg0gmAAYnQijiFUck2kqJdGA4jQ7iKtW
-         S0riliFEbzOm5WuHnyI/o9Et9bnZhBB/+/3ZPNYyfhgyhEpTudH6rQJm7WlE3651vlx5
-         93Sb5qubnCm9StZFeETTMrg7ytES7wN5+ZNy/S+XWwc3+32R7lbZKDMXZm0WhJYBRG12
-         kKDw==
+        h=message-id:date:from:to:cc:subject:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=s3CKavgybeEOpXAZe+xBIGcFk7Vj/l1+eTJ8QUFIoJs=;
+        b=Yxge4Ry5vFOHN/E6WRoS1R820nnS6WJDZq9mjgaZLOrnbqWkKFIp8dPZVt//BWqS0r
+         5Z2azsstxdYpDTnytEEpvmzQwbz7QdePieWGNQkT90JaQaPGtLDDPityknQdXpD96o7Z
+         CpcuyC4Zb6Q2eYS16bz/6gtvs+6klzKe45WaFNPYyYgAKHkO+dXdffvu3JpS2CFGdpDt
+         KQjfXzHO8fya59guzla/8qjh2/XCGZBVI4u3F/c3pUL4aDzOQjQFhwVvmXBS8N2yOuM4
+         B5OyT3KdQFQMiccd1fhZ9FYQ2IZETmWQ8E8uJyriGXAdQt9oLJgOYf05c/K7MwmzDi98
+         WXqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:subject:mime-version
-         :content-disposition:user-agent;
-        bh=LWuGqqiVZStjA49iRqkB2ECGeP11khRAviVxRIQYens=;
-        b=pObCP0KvNXY+c8FOOmD5KFr8Y1K7+BDeMXC5nXO3/DyMe+JOu2YJeKZgbpf+zlC16Z
-         kHyUQRIaxkOyw8SemHz1XslIBDas2/yYB3KLTGW1H1ard8njyF5NlY0K4NEr9n3Un392
-         Ex+aUrssHSkXV09LdE0xUWV0ScAAsEIqr3RyhkkZgzdo6o3jGVhuKQZdsYk1xR8mY3cI
-         Ml2zURscZzMc8p//4nEbjPcvf8XU1UJeQFT9BL16yNI8bnzZTdFsiKxLeXREo52jyjDx
-         6yXyoejdgV3ctWRt0ek172rX18zc2wwIjfmycX6zLSnIJ+rTfo91HUbo6+aWK277GzZ9
-         ptkQ==
-X-Gm-Message-State: ANhLgQ0xesU/dZ/uEw3hp9rrz7dD9MhOfjpv9+pjibMTXV67hUE0cFRi
-        UpiygJ9tw5csH6xgzNP1Bdwf5hvjMoA=
-X-Google-Smtp-Source: ADFU+vsO9tap4oeyRWVuzA9XlsiET4/dRMS4Pk/tQwU5/YnV0jOhKwCBCopromTwiUxlYpEq3zes6A==
-X-Received: by 2002:a63:7c02:: with SMTP id x2mr5576113pgc.236.1584547916442;
-        Wed, 18 Mar 2020 09:11:56 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=s3CKavgybeEOpXAZe+xBIGcFk7Vj/l1+eTJ8QUFIoJs=;
+        b=U7UzObXqzTmVElsEaXhCrbOdjHkNfCRbTai1zmXZ8+CWwX6iNdXeu8e2B0h0J99Nmr
+         RnUQYWrIIbdNFyccjPqAhC28+lTG7EohPcsPLvprp/Rj3AmYu5By8TF48HJJTwIuCsVD
+         uNCPzNAuzCS5Pdx9Ah9jzwOiua1XHf0wJ6glysSeXTid9Se5SuhuRj1oryEK0TDXNJpU
+         qFe48KJ9c++a3gtbsmMsqlmxVrbBndu/Bmgjzp72cODalyMXTLKgDcJT7gZfmS92cbpK
+         4P2ka4+yFzR5cp0ia9K5wqOQuRwS/3YkNQmxw2efBFZ/9kGjr//Yv/eBIcz4ZB2k50Cu
+         Rv6A==
+X-Gm-Message-State: ANhLgQ1JKH7Qt9unBDzyZU5Dvf+srTYpZe9U4Caa1fYbBCrcgxz0o56r
+        k6lWIkk2C2IzInfzfPF6/vWshGN/8Ws=
+X-Google-Smtp-Source: ADFU+vuvZvhCj/RnrQOTAISMOb/daExPGR+dHXjaxabBbv1m+SDkzzsJSqqdh6kK5LmeC4g0K19pMA==
+X-Received: by 2002:a17:902:788b:: with SMTP id q11mr3719212pll.20.1584548566539;
+        Wed, 18 Mar 2020 09:22:46 -0700 (PDT)
 Received: from SARKAR ([43.224.157.42])
-        by smtp.gmail.com with ESMTPSA id f19sm6356308pgf.33.2020.03.18.09.11.55
+        by smtp.gmail.com with ESMTPSA id a19sm7223462pfk.110.2020.03.18.09.22.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2020 09:11:55 -0700 (PDT)
-Message-ID: <5e72484b.1c69fb81.53f77.5a16@mx.google.com>
-X-Google-Original-Message-ID: <20200318161151.GA31012@rohitsarkar5398@gmail.com>
-Date:   Wed, 18 Mar 2020 21:41:51 +0530
+        Wed, 18 Mar 2020 09:22:45 -0700 (PDT)
+Message-ID: <5e724ad5.1c69fb81.7d54e.9f63@mx.google.com>
+X-Google-Original-Message-ID: <20200318162241.GB10427@rohitsarkar5398@gmail.com>
+Date:   Wed, 18 Mar 2020 21:52:41 +0530
 From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: core: Make mlock internal to the iio core
+To:     DEEPAK VARMA <mh12gx2825@gmail.com>
+Cc:     Stefano Brivio <sbrivio@redhat.com>,
+        outreachy-kernel@googlegroups.com, gregkh@linuxfoundation.org,
+        daniel.baluta@gmail.com, kieran.bingham@ideasonboard.com,
+        lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+        knaack.h@gmx.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org
+Subject: Re: [Outreachy kernel] [PATCH 1/2] staging: iio: adc: ad7192:
+ Reformat lines crossing 80 columns
+References: <cover.1584505215.git.mh12gx2825@gmail.com>
+ <50419988d636c90511a07da256c91aa3b3e33bff.1584505215.git.mh12gx2825@gmail.com>
+ <20200318093158.192a27ce@elisabeth>
+ <20200318160649.GA23154@deeUbuntu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20200318160649.GA23154@deeUbuntu>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-"mlock" should ideally only be used by the iio core. The mlock
-implementation may change in the future which means that no driver
-should be explicitly using mlock.
+On Wed, Mar 18, 2020 at 09:36:50PM +0530, DEEPAK VARMA wrote:
+> On Wed, Mar 18, 2020 at 09:31:58AM +0100, Stefano Brivio wrote:
+> > On Wed, 18 Mar 2020 09:56:59 +0530
+> > Deepak R Varma <mh12gx2825@gmail.com> wrote:
+> > 
+> > > Macro arguments are computed at the time of macro invocation. This makes
+> > > the lines cross 80 column width. Add variables to perform the
+> > > calculations before hand and use these new variable in the macro calls
+> > > instead.
+> > > 
+> > > Also re-indent enum members to address checkpatch warning / check messages.
+> > > 
+> > > Signed-off-by: Deepak R Varma <mh12gx2825@gmail.com>
+> > > ---
+> > >  drivers/staging/iio/adc/ad7192.c | 15 ++++++++-------
+> > >  1 file changed, 8 insertions(+), 7 deletions(-)
+> > > 
+> > > diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
+> > > index bf3e2a9cc07f..0265f6607d75 100644
+> > > --- a/drivers/staging/iio/adc/ad7192.c
+> > > +++ b/drivers/staging/iio/adc/ad7192.c
+> > > @@ -156,8 +156,8 @@
+> > >   */
+> > >  
+> > >  enum {
+> > > -   AD7192_SYSCALIB_ZERO_SCALE,
+> > > -   AD7192_SYSCALIB_FULL_SCALE,
+> > > +	AD7192_SYSCALIB_ZERO_SCALE,
+> > > +	AD7192_SYSCALIB_FULL_SCALE,
+> > >  };
+> > >  
+> > >  struct ad7192_state {
+> > > @@ -477,17 +477,18 @@ static ssize_t ad7192_set(struct device *dev,
+> > >  }
+> > >  
+> > >  static void ad7192_get_available_filter_freq(struct ad7192_state *st,
+> > > -						    int *freq)
+> > > +					     int *freq)
+> > >  {
+> > >  	unsigned int fadc;
+> > > +	unsigned int sync3_filter, sync4_filter;
+> > >  
+> > >  	/* Formulas for filter at page 25 of the datasheet */
+> > > -	fadc = DIV_ROUND_CLOSEST(st->fclk,
+> > > -				 AD7192_SYNC4_FILTER * AD7192_MODE_RATE(st->mode));
+> > > +	sync4_filter = AD7192_SYNC4_FILTER * AD7192_MODE_RATE(st->mode);
+> > 
+> > Have you read page 25 of the datasheet? Why is this called
+> > sync4_filter, with a 'y'?
+> > 
+> 
+> Sorry, I am not sure what you are referring to. Can you please elaborate
+> or point me to where the data sheet is located?
+> 
+> Deepak.
 
-Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
----
- include/linux/iio/iio.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hey Deepak,
+You can find the datasheet for ad7192 here https://pdf1.alldatasheet.com/datasheet-pdf/view/988287/AD/AD7192.html
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index eed58ed2f368..e975020abaa6 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -492,7 +492,7 @@ struct iio_buffer_setup_ops {
-  * @buffer:		[DRIVER] any buffer present
-  * @buffer_list:	[INTERN] list of all buffers currently attached
-  * @scan_bytes:		[INTERN] num bytes captured to be fed to buffer demux
-- * @mlock:		[DRIVER] lock used to prevent simultaneous device state
-+ * @mlock:		[INTERN] lock used to prevent simultaneous device state
-  *			changes
-  * @available_scan_masks: [DRIVER] optional array of allowed bitmasks
-  * @masklength:		[INTERN] the length of the mask established from
--- 
-2.23.0.385.gbc12974a89
-
+Thanks,
+Rohit

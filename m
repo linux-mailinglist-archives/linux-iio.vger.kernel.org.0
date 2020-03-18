@@ -2,194 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F851897F0
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 10:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86B6B18989B
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 10:54:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727443AbgCRJbp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 05:31:45 -0400
-Received: from www381.your-server.de ([78.46.137.84]:54006 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726994AbgCRJbp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 05:31:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=TpFgcT2A69hsAHzkZ/eq7Xfpt0y03z3Espf7finxK3w=; b=B/LKwAedMxQm0+u2d+yScbP0yy
-        7Gog8ZYTXNCnbnd+4RLXp9HBQiJb+mPG/eQnKhYJ/oLmqR6deemlyNsGSu5rUwXR4DwmPqI8PWabu
-        LhSdCrOKt9cDuNua5lLFgVxvsJU4Tyxo/s6t2h91tHpLWP667roy4DHVZ1pqThqnm/IlVUGRGu5Sb
-        G23SaVDZC99JrtDcD9aFuVB9z5+VlSd79yI6MlGsy38qg/UBxcJw2zeMX8dy9go9cLJOE8xeNRDiC
-        WO2zxIkSn1VNnTuKqjQ9JXaEhDGPJD0oD6f32gRRBsSjz5yeRjsEhMm6vzyMj0P46WAwXxAqwL5V2
-        47x5eSaw==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jEV37-0004BF-Hf; Wed, 18 Mar 2020 10:31:41 +0100
-Received: from [93.104.115.49] (helo=[192.168.178.20])
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jEV37-000DLv-7l; Wed, 18 Mar 2020 10:31:41 +0100
-Subject: Re: [PATCH 1/2] iio: adc: Add MAX1241 driver
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "alazar@startmail.com" <alazar@startmail.com>,
+        id S1727558AbgCRJyv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 05:54:51 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:54134 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727513AbgCRJyv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 05:54:51 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02I9l6iw031955;
+        Wed, 18 Mar 2020 05:54:24 -0400
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2170.outbound.protection.outlook.com [104.47.57.170])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2yu750t2y4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 18 Mar 2020 05:54:24 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=E+nBdbYXMPfBPN/5DdRXRdSSL0PNT76W7kpRjqTR68xjRmuzVo8JnOaRXqbz1mBDkSq5U3hlOawy8xFC6O0brO9W+Dbft0sgiU1+zlen9H3MX5KXwRS01oLZrbXRj70sgPBmd16N65An2G9GvQ4zp7Gysyw75wvbAz+8admHXUypxlE+H80Ka2dulQOZIk4pNcFta+MtQ+IGlxT8nxK7keBwgcrQ4rNP48qbbjE++4s4FedlCmkEtzBPz6JevYKOrOGnyh/LJHGmwqvIi7lPdnReuCmtLT+GzBZ/2OHgDpMcZhszuG+b5dadVhrJJCpQBrIapc5ki2GC2wOHnoQwHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WnVyJrBVH8+u3T7o08iMet91zrN/iLqCYCEu15Hm/HI=;
+ b=DeKdkJbbu0HCg750IKerziRoISkkZ1dTzwwyyJRGdDPAymK9wb7RnDWzWLN5JyRCQPFEJk72Z+9farKwmmwqRin6atmx1fer3OZAPTQq2Tz36y+279dp0kgwTgrOzOYaybl+qpiiE59InOuQhzP9jB8nlH5zecZXdHjdhZtnZepxZkNQqDtx9KVwydEftmX30h4GmhODFf+oYWvXH4RHJ8SA3nLqlkroz9sPg7fHcqyzA89nzccWZTZjM06xoe5jQ5PVXB9r0e2tiL0vfXy8VylmNJ4f4pF059EXswiA9RbiWcSNWCLtqXJU+lRP9kI/RzGmO2wvYF+TH/gXoGcN2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WnVyJrBVH8+u3T7o08iMet91zrN/iLqCYCEu15Hm/HI=;
+ b=cTCBC8EiTcBRyp2Q8i1Kn9Ved9rY7ZmXQFqoxQpqwa9z+QlieLU4WKF6I1nbyZ/c/SUeglxlp8/Z59ezwfcTCYUDnIFe90EbkSoRlj7BIuZRBhOwU3zTbUm7fKQGHG/YX/tT/xpBZdU34WGAUCZLqlqLD+cEzyuF++5seMZ+eMc=
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
+ by DM6PR03MB4092.namprd03.prod.outlook.com (2603:10b6:5:57::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.18; Wed, 18 Mar
+ 2020 09:54:22 +0000
+Received: from DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::c47f:ceee:cfda:6a7f]) by DM6PR03MB4411.namprd03.prod.outlook.com
+ ([fe80::c47f:ceee:cfda:6a7f%3]) with mapi id 15.20.2814.021; Wed, 18 Mar 2020
+ 09:54:22 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "alazar@startmail.com" <alazar@startmail.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Cc:     "jic23@kernel.org" <jic23@kernel.org>,
+CC:     "jic23@kernel.org" <jic23@kernel.org>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "knaack.h@gmx.de" <knaack.h@gmx.de>,
         "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>
+Subject: Re: [PATCH 1/2] iio: adc: Add MAX1241 driver
+Thread-Topic: [PATCH 1/2] iio: adc: Add MAX1241 driver
+Thread-Index: AQHV/Jm3hJBztslZHU2H1pYVzV94AKhN6s+AgAAsDACAAAdHgA==
+Date:   Wed, 18 Mar 2020 09:54:22 +0000
+Message-ID: <5de5804ecc7d4dfc4d0514727c3ef626b25e1b55.camel@analog.com>
 References: <20200317201710.23180-1-alazar@startmail.com>
- <20200317201710.23180-2-alazar@startmail.com>
- <2964715e81108283d08258bcfa8420baef36737f.camel@analog.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <c388a975-553a-c438-37de-2078555c5a89@metafoo.de>
-Date:   Wed, 18 Mar 2020 10:31:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <2964715e81108283d08258bcfa8420baef36737f.camel@analog.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+         <20200317201710.23180-2-alazar@startmail.com>
+         <2964715e81108283d08258bcfa8420baef36737f.camel@analog.com>
+         <c388a975-553a-c438-37de-2078555c5a89@metafoo.de>
+In-Reply-To: <c388a975-553a-c438-37de-2078555c5a89@metafoo.de>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25754/Tue Mar 17 14:09:15 2020)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [188.26.73.247]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: f6db8f0e-dc68-4fd4-2a8c-08d7cb2255c3
+x-ms-traffictypediagnostic: DM6PR03MB4092:
+x-microsoft-antispam-prvs: <DM6PR03MB4092B0AAB7A815678938AABAF9F70@DM6PR03MB4092.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:353;
+x-forefront-prvs: 03468CBA43
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(366004)(39860400002)(346002)(136003)(396003)(376002)(199004)(54906003)(110136005)(186003)(2616005)(8936002)(4326008)(2906002)(81166006)(26005)(316002)(6512007)(66446008)(36756003)(66556008)(64756008)(86362001)(91956017)(478600001)(6506007)(81156014)(8676002)(66946007)(76116006)(5660300002)(6486002)(71200400001)(966005)(66476007)(53546011);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR03MB4092;H:DM6PR03MB4411.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: j2O7KNpeTFRv9er9rGzrZF4cdNLdPunyf6503xn4/KSz1cC/Wygjtjsv00Dm4XojH0gJbrFa+EwOWe7rsqa2IxO2zw0yLcJ230fD6ANZxRvUvd04Np5++3YfxajVfUz/oCVCdtLtGzPTyU0ClYgz+e4ox2loF7I8W0DjbCbraMGuNvV02ApwTXLR0LA/SDVtmMIkTjIk+GhhQc/8zgXeqg7KiSQcgKi740kHYxe83R0W5YLzO86LwpESP6QfA0MqHsDWRHnVrmWw2jCsv1JZVoYc2hXZ+KnDKFKBMpYVRevdmDPE6hCHBVJfIjDSz33q1bk5MOfc80B5dtoSD93xe0ek0DWPyi3uEvVnBPnSx1NzC5HMSBHToav/1Sf79c+ARboOGIuICSmec9wp0QlNDuPlzCYz10seIaVHpJol+TPAZNett2hfW/ZK7Pm6ZgUYWD/NtfZoEfzhGdSKi8rvELrzKqmGCpCQuuziutLJ8wQyg9JC2cAt/xLms+yo7vCAnwcgFuH4oQeOP6cYDJad6w==
+x-ms-exchange-antispam-messagedata: KYpAsFXIqWwx/IVhk5HEGSCYAGdOQZxIE8v1cw9OiMhPcBPew8Nm9unG9eqZMdVT+hw/pCbGX6IhG83IMZ0LpJEDcTN6HrfALr21ByrqlKqLcUovXjbnSnPhy3MwDotEzKu/vLoUmnngJjnmx5UlPg==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6E063D868DF337468523D3A3A7155672@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6db8f0e-dc68-4fd4-2a8c-08d7cb2255c3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2020 09:54:22.3225
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qQ0NDYsPr44gCtZDmawhxJyeVjmG7iO6tuNEacWas5A519JtFSXSMpMnWkUmlTvyOKxRbLMAhftLoATOb7wEEORWzLkSFS1G09P146F9ZOQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4092
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
+ definitions=2020-03-18_04:2020-03-17,2020-03-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 phishscore=0 malwarescore=0 mlxscore=0 suspectscore=0
+ clxscore=1015 adultscore=0 spamscore=0 mlxlogscore=999 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003180049
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/18/20 7:50 AM, Ardelean, Alexandru wrote:
-> On Tue, 2020-03-17 at 22:17 +0200, Alexandru Lazar wrote:
->> [External]
->>
->> Add driver for the Maxim MAX1241 12-bit, single-channel ADC. The driver
->> includes support for this device's low-power operation mode.
-> 
-> hey,
-> 
-> overall looks good;
-> 
-> i'd run ./scripts/checpatch.pl on the patches a bit;
-> you can run it on the patch file, or on the git commit with
-> ./scripts/checpatch.pl -g <git-commits>
-> 
-> i usually do ./scripts/checpatch.pl -g HEAD~2.. [or something like that] before
-> generating patches;
-> i sometimes forget to do that;
-> 
-> some more comments inline
-> 
-> 
->>
->> Signed-off-by: Alexandru Lazar <alazar@startmail.com>
->> ---
->>   drivers/iio/adc/Kconfig   |  12 +++
->>   drivers/iio/adc/Makefile  |   1 +
->>   drivers/iio/adc/max1241.c | 215 ++++++++++++++++++++++++++++++++++++++
->>   3 files changed, 228 insertions(+)
->>   create mode 100644 drivers/iio/adc/max1241.c
->>
->> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->> index 5d8540b7b427..3a55beec69c9 100644
->> --- a/drivers/iio/adc/Kconfig
->> +++ b/drivers/iio/adc/Kconfig
->> @@ -566,6 +566,18 @@ config MAX1118
->>   	  To compile this driver as a module, choose M here: the module will be
->>   	  called max1118.
->>   
->> +config MAX1241
->> +	tristate "Maxim max1241 ADC driver"
->> +	depends on SPI
->> +	select IIO_BUFFER
->> +	select IIO_TRIGGERED_BUFFER
->> +	help
->> +	  Say yes here to build support for Maxim max1241 12-bit, single-channel
->> +          ADC.
-> 
-> nitpick: this looks inconsistently indented
-> 
->> +
->> +	  To compile this driver as a module, choose M here: the module will be
->> +	  called max1118.
->> +
->>   config MAX1363
->>   	tristate "Maxim max1363 ADC driver"
->>   	depends on I2C
->> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
->> index a1f1fbec0f87..37d6f17559dc 100644
->> --- a/drivers/iio/adc/Makefile
->> +++ b/drivers/iio/adc/Makefile
->> @@ -54,6 +54,7 @@ obj-$(CONFIG_LTC2497) += ltc2497.o
->>   obj-$(CONFIG_MAX1027) += max1027.o
->>   obj-$(CONFIG_MAX11100) += max11100.o
->>   obj-$(CONFIG_MAX1118) += max1118.o
->> +obj-$(CONFIG_MAX1241) += max1241.o
->>   obj-$(CONFIG_MAX1363) += max1363.o
->>   obj-$(CONFIG_MAX9611) += max9611.o
->>   obj-$(CONFIG_MCP320X) += mcp320x.o
->> diff --git a/drivers/iio/adc/max1241.c b/drivers/iio/adc/max1241.c
->> new file mode 100644
->> index 000000000000..2bd31f22fb2c
->> --- /dev/null
->> +++ b/drivers/iio/adc/max1241.c
->> @@ -0,0 +1,215 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * MAX1241 low-power, 12-bit serial ADC
->> + *
->> + * Copyright (c) 2020 Ioan-Alexandru Lazar <alazar@startmail.com>
->> + *
->> + * This file is subject to the terms and conditions of version 2 of
->> + * the GNU General Public License.  See the file COPYING in the main
->> + * directory of this archive for more details.
-> 
-> This license text is no longer needed.
-> The SPDX-License-Identifier header should handle that.
-> 
->> + *
->> + * Datasheet:
->> https://datasheets.maximintegrated.com/en/ds/MAX1240-MAX1241.pdf
->> + */
->> +
->> +#include <linux/regulator/consumer.h>
->> +#include <linux/delay.h>
->> +#include <linux/gpio/consumer.h>
->> +#include <linux/gpio/driver.h>
->> +#include <linux/gpio.h>
->> +#include <linux/iio/iio.h>
->> +#include <linux/module.h>
->> +#include <linux/spi/spi.h>
->> +
->> +#define MAX1241_VAL_MASK 0xFFF
->> +#define MAX1241_SHDN_DELAY_USEC 4
->> +
->> +enum max1241_id {
->> +	max1241,
->> +};
->> +
->> +struct max1241 {
->> +	struct spi_device *spi;
->> +	struct mutex lock;
->> +	struct regulator *reg;
->> +	struct gpio_desc *shdn;
->> +
->> +	__be16 data ____cacheline_aligned;
-> 
-> Jonathan may know better than me here, but you could technically avoid needing
-> to explicitly use the __be16 datatype; and just use u16;
-> 
-> i think the SPI framework should have some handling for that;
-> maybe using the 'bits_per_word' field;
-> you'd probably still need to do the shifting though;
-> i remember some discussion about this on ad7949.c
-> though there may be other drivers doing this as well
-
-I'd keep it as it is. Which bits_per_word values are supported depends 
-on the SPI master driver. All of them support 8-bit, but many don't 
-support 16-bit.
-
-- Lars
+T24gV2VkLCAyMDIwLTAzLTE4IGF0IDEwOjMxICswMTAwLCBMYXJzLVBldGVyIENsYXVzZW4gd3Jv
+dGU6DQo+IE9uIDMvMTgvMjAgNzo1MCBBTSwgQXJkZWxlYW4sIEFsZXhhbmRydSB3cm90ZToNCj4g
+PiBPbiBUdWUsIDIwMjAtMDMtMTcgYXQgMjI6MTcgKzAyMDAsIEFsZXhhbmRydSBMYXphciB3cm90
+ZToNCj4gPiA+IFtFeHRlcm5hbF0NCj4gPiA+IA0KPiA+ID4gQWRkIGRyaXZlciBmb3IgdGhlIE1h
+eGltIE1BWDEyNDEgMTItYml0LCBzaW5nbGUtY2hhbm5lbCBBREMuIFRoZSBkcml2ZXINCj4gPiA+
+IGluY2x1ZGVzIHN1cHBvcnQgZm9yIHRoaXMgZGV2aWNlJ3MgbG93LXBvd2VyIG9wZXJhdGlvbiBt
+b2RlLg0KPiA+IA0KPiA+IGhleSwNCj4gPiANCj4gPiBvdmVyYWxsIGxvb2tzIGdvb2Q7DQo+ID4g
+DQo+ID4gaSdkIHJ1biAuL3NjcmlwdHMvY2hlY3BhdGNoLnBsIG9uIHRoZSBwYXRjaGVzIGEgYml0
+Ow0KPiA+IHlvdSBjYW4gcnVuIGl0IG9uIHRoZSBwYXRjaCBmaWxlLCBvciBvbiB0aGUgZ2l0IGNv
+bW1pdCB3aXRoDQo+ID4gLi9zY3JpcHRzL2NoZWNwYXRjaC5wbCAtZyA8Z2l0LWNvbW1pdHM+DQo+
+ID4gDQo+ID4gaSB1c3VhbGx5IGRvIC4vc2NyaXB0cy9jaGVjcGF0Y2gucGwgLWcgSEVBRH4yLi4g
+W29yIHNvbWV0aGluZyBsaWtlIHRoYXRdDQo+ID4gYmVmb3JlDQo+ID4gZ2VuZXJhdGluZyBwYXRj
+aGVzOw0KPiA+IGkgc29tZXRpbWVzIGZvcmdldCB0byBkbyB0aGF0Ow0KPiA+IA0KPiA+IHNvbWUg
+bW9yZSBjb21tZW50cyBpbmxpbmUNCj4gPiANCj4gPiANCj4gPiA+IFNpZ25lZC1vZmYtYnk6IEFs
+ZXhhbmRydSBMYXphciA8YWxhemFyQHN0YXJ0bWFpbC5jb20+DQo+ID4gPiAtLS0NCj4gPiA+ICAg
+ZHJpdmVycy9paW8vYWRjL0tjb25maWcgICB8ICAxMiArKysNCj4gPiA+ICAgZHJpdmVycy9paW8v
+YWRjL01ha2VmaWxlICB8ICAgMSArDQo+ID4gPiAgIGRyaXZlcnMvaWlvL2FkYy9tYXgxMjQxLmMg
+fCAyMTUgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiA+ICAgMyBm
+aWxlcyBjaGFuZ2VkLCAyMjggaW5zZXJ0aW9ucygrKQ0KPiA+ID4gICBjcmVhdGUgbW9kZSAxMDA2
+NDQgZHJpdmVycy9paW8vYWRjL21heDEyNDEuYw0KPiA+ID4gDQo+ID4gPiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9paW8vYWRjL0tjb25maWcgYi9kcml2ZXJzL2lpby9hZGMvS2NvbmZpZw0KPiA+ID4g
+aW5kZXggNWQ4NTQwYjdiNDI3Li4zYTU1YmVlYzY5YzkgMTAwNjQ0DQo+ID4gPiAtLS0gYS9kcml2
+ZXJzL2lpby9hZGMvS2NvbmZpZw0KPiA+ID4gKysrIGIvZHJpdmVycy9paW8vYWRjL0tjb25maWcN
+Cj4gPiA+IEBAIC01NjYsNiArNTY2LDE4IEBAIGNvbmZpZyBNQVgxMTE4DQo+ID4gPiAgIAkgIFRv
+IGNvbXBpbGUgdGhpcyBkcml2ZXIgYXMgYSBtb2R1bGUsIGNob29zZSBNIGhlcmU6IHRoZSBtb2R1
+bGUNCj4gPiA+IHdpbGwgYmUNCj4gPiA+ICAgCSAgY2FsbGVkIG1heDExMTguDQo+ID4gPiAgIA0K
+PiA+ID4gK2NvbmZpZyBNQVgxMjQxDQo+ID4gPiArCXRyaXN0YXRlICJNYXhpbSBtYXgxMjQxIEFE
+QyBkcml2ZXIiDQo+ID4gPiArCWRlcGVuZHMgb24gU1BJDQo+ID4gPiArCXNlbGVjdCBJSU9fQlVG
+RkVSDQo+ID4gPiArCXNlbGVjdCBJSU9fVFJJR0dFUkVEX0JVRkZFUg0KPiA+ID4gKwloZWxwDQo+
+ID4gPiArCSAgU2F5IHllcyBoZXJlIHRvIGJ1aWxkIHN1cHBvcnQgZm9yIE1heGltIG1heDEyNDEg
+MTItYml0LCBzaW5nbGUtY2hhbm5lbA0KPiA+ID4gKyAgICAgICAgICBBREMuDQo+ID4gDQo+ID4g
+bml0cGljazogdGhpcyBsb29rcyBpbmNvbnNpc3RlbnRseSBpbmRlbnRlZA0KPiA+IA0KPiA+ID4g
+Kw0KPiA+ID4gKwkgIFRvIGNvbXBpbGUgdGhpcyBkcml2ZXIgYXMgYSBtb2R1bGUsIGNob29zZSBN
+IGhlcmU6IHRoZSBtb2R1bGUgd2lsbCBiZQ0KPiA+ID4gKwkgIGNhbGxlZCBtYXgxMTE4Lg0KPiA+
+ID4gKw0KPiA+ID4gICBjb25maWcgTUFYMTM2Mw0KPiA+ID4gICAJdHJpc3RhdGUgIk1heGltIG1h
+eDEzNjMgQURDIGRyaXZlciINCj4gPiA+ICAgCWRlcGVuZHMgb24gSTJDDQo+ID4gPiBkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9paW8vYWRjL01ha2VmaWxlIGIvZHJpdmVycy9paW8vYWRjL01ha2VmaWxl
+DQo+ID4gPiBpbmRleCBhMWYxZmJlYzBmODcuLjM3ZDZmMTc1NTlkYyAxMDA2NDQNCj4gPiA+IC0t
+LSBhL2RyaXZlcnMvaWlvL2FkYy9NYWtlZmlsZQ0KPiA+ID4gKysrIGIvZHJpdmVycy9paW8vYWRj
+L01ha2VmaWxlDQo+ID4gPiBAQCAtNTQsNiArNTQsNyBAQCBvYmotJChDT05GSUdfTFRDMjQ5Nykg
+Kz0gbHRjMjQ5Ny5vDQo+ID4gPiAgIG9iai0kKENPTkZJR19NQVgxMDI3KSArPSBtYXgxMDI3Lm8N
+Cj4gPiA+ICAgb2JqLSQoQ09ORklHX01BWDExMTAwKSArPSBtYXgxMTEwMC5vDQo+ID4gPiAgIG9i
+ai0kKENPTkZJR19NQVgxMTE4KSArPSBtYXgxMTE4Lm8NCj4gPiA+ICtvYmotJChDT05GSUdfTUFY
+MTI0MSkgKz0gbWF4MTI0MS5vDQo+ID4gPiAgIG9iai0kKENPTkZJR19NQVgxMzYzKSArPSBtYXgx
+MzYzLm8NCj4gPiA+ICAgb2JqLSQoQ09ORklHX01BWDk2MTEpICs9IG1heDk2MTEubw0KPiA+ID4g
+ICBvYmotJChDT05GSUdfTUNQMzIwWCkgKz0gbWNwMzIweC5vDQo+ID4gPiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9paW8vYWRjL21heDEyNDEuYyBiL2RyaXZlcnMvaWlvL2FkYy9tYXgxMjQxLmMNCj4g
+PiA+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+ID4gPiBpbmRleCAwMDAwMDAwMDAwMDAuLjJiZDMx
+ZjIyZmIyYw0KPiA+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ID4gKysrIGIvZHJpdmVycy9paW8vYWRj
+L21heDEyNDEuYw0KPiA+ID4gQEAgLTAsMCArMSwyMTUgQEANCj4gPiA+ICsvLyBTUERYLUxpY2Vu
+c2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5DQo+ID4gPiArLyoNCj4gPiA+ICsgKiBNQVgxMjQx
+IGxvdy1wb3dlciwgMTItYml0IHNlcmlhbCBBREMNCj4gPiA+ICsgKg0KPiA+ID4gKyAqIENvcHly
+aWdodCAoYykgMjAyMCBJb2FuLUFsZXhhbmRydSBMYXphciA8YWxhemFyQHN0YXJ0bWFpbC5jb20+
+DQo+ID4gPiArICoNCj4gPiA+ICsgKiBUaGlzIGZpbGUgaXMgc3ViamVjdCB0byB0aGUgdGVybXMg
+YW5kIGNvbmRpdGlvbnMgb2YgdmVyc2lvbiAyIG9mDQo+ID4gPiArICogdGhlIEdOVSBHZW5lcmFs
+IFB1YmxpYyBMaWNlbnNlLiAgU2VlIHRoZSBmaWxlIENPUFlJTkcgaW4gdGhlIG1haW4NCj4gPiA+
+ICsgKiBkaXJlY3Rvcnkgb2YgdGhpcyBhcmNoaXZlIGZvciBtb3JlIGRldGFpbHMuDQo+ID4gDQo+
+ID4gVGhpcyBsaWNlbnNlIHRleHQgaXMgbm8gbG9uZ2VyIG5lZWRlZC4NCj4gPiBUaGUgU1BEWC1M
+aWNlbnNlLUlkZW50aWZpZXIgaGVhZGVyIHNob3VsZCBoYW5kbGUgdGhhdC4NCj4gPiANCj4gPiA+
+ICsgKg0KPiA+ID4gKyAqIERhdGFzaGVldDoNCj4gPiA+IGh0dHBzOi8vZGF0YXNoZWV0cy5tYXhp
+bWludGVncmF0ZWQuY29tL2VuL2RzL01BWDEyNDAtTUFYMTI0MS5wZGYNCj4gPiA+ICsgKi8NCj4g
+PiA+ICsNCj4gPiA+ICsjaW5jbHVkZSA8bGludXgvcmVndWxhdG9yL2NvbnN1bWVyLmg+DQo+ID4g
+PiArI2luY2x1ZGUgPGxpbnV4L2RlbGF5Lmg+DQo+ID4gPiArI2luY2x1ZGUgPGxpbnV4L2dwaW8v
+Y29uc3VtZXIuaD4NCj4gPiA+ICsjaW5jbHVkZSA8bGludXgvZ3Bpby9kcml2ZXIuaD4NCj4gPiA+
+ICsjaW5jbHVkZSA8bGludXgvZ3Bpby5oPg0KPiA+ID4gKyNpbmNsdWRlIDxsaW51eC9paW8vaWlv
+Lmg+DQo+ID4gPiArI2luY2x1ZGUgPGxpbnV4L21vZHVsZS5oPg0KPiA+ID4gKyNpbmNsdWRlIDxs
+aW51eC9zcGkvc3BpLmg+DQo+ID4gPiArDQo+ID4gPiArI2RlZmluZSBNQVgxMjQxX1ZBTF9NQVNL
+IDB4RkZGDQo+ID4gPiArI2RlZmluZSBNQVgxMjQxX1NIRE5fREVMQVlfVVNFQyA0DQo+ID4gPiAr
+DQo+ID4gPiArZW51bSBtYXgxMjQxX2lkIHsNCj4gPiA+ICsJbWF4MTI0MSwNCj4gPiA+ICt9Ow0K
+PiA+ID4gKw0KPiA+ID4gK3N0cnVjdCBtYXgxMjQxIHsNCj4gPiA+ICsJc3RydWN0IHNwaV9kZXZp
+Y2UgKnNwaTsNCj4gPiA+ICsJc3RydWN0IG11dGV4IGxvY2s7DQo+ID4gPiArCXN0cnVjdCByZWd1
+bGF0b3IgKnJlZzsNCj4gPiA+ICsJc3RydWN0IGdwaW9fZGVzYyAqc2hkbjsNCj4gPiA+ICsNCj4g
+PiA+ICsJX19iZTE2IGRhdGEgX19fX2NhY2hlbGluZV9hbGlnbmVkOw0KPiA+IA0KPiA+IEpvbmF0
+aGFuIG1heSBrbm93IGJldHRlciB0aGFuIG1lIGhlcmUsIGJ1dCB5b3UgY291bGQgdGVjaG5pY2Fs
+bHkgYXZvaWQNCj4gPiBuZWVkaW5nDQo+ID4gdG8gZXhwbGljaXRseSB1c2UgdGhlIF9fYmUxNiBk
+YXRhdHlwZTsgYW5kIGp1c3QgdXNlIHUxNjsNCj4gPiANCj4gPiBpIHRoaW5rIHRoZSBTUEkgZnJh
+bWV3b3JrIHNob3VsZCBoYXZlIHNvbWUgaGFuZGxpbmcgZm9yIHRoYXQ7DQo+ID4gbWF5YmUgdXNp
+bmcgdGhlICdiaXRzX3Blcl93b3JkJyBmaWVsZDsNCj4gPiB5b3UnZCBwcm9iYWJseSBzdGlsbCBu
+ZWVkIHRvIGRvIHRoZSBzaGlmdGluZyB0aG91Z2g7DQo+ID4gaSByZW1lbWJlciBzb21lIGRpc2N1
+c3Npb24gYWJvdXQgdGhpcyBvbiBhZDc5NDkuYw0KPiA+IHRob3VnaCB0aGVyZSBtYXkgYmUgb3Ro
+ZXIgZHJpdmVycyBkb2luZyB0aGlzIGFzIHdlbGwNCj4gDQo+IEknZCBrZWVwIGl0IGFzIGl0IGlz
+LiBXaGljaCBiaXRzX3Blcl93b3JkIHZhbHVlcyBhcmUgc3VwcG9ydGVkIGRlcGVuZHMgDQo+IG9u
+IHRoZSBTUEkgbWFzdGVyIGRyaXZlci4gQWxsIG9mIHRoZW0gc3VwcG9ydCA4LWJpdCwgYnV0IG1h
+bnkgZG9uJ3QgDQo+IHN1cHBvcnQgMTYtYml0Lg0KDQpGYWlyIGVub3VnaC4NCkknbSBhIGJpdCB2
+YWd1ZSBvbiB0aGUgZGV0YWlscyBoZXJlLg0KDQo+IA0KPiAtIExhcnMNCg==

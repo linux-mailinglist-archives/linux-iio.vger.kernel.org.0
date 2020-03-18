@@ -2,260 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F98189E4B
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 15:51:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0753F189E5C
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 15:55:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726671AbgCROvq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 10:51:46 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:36916 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726638AbgCROvq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 10:51:46 -0400
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02IEcWpY031412;
-        Wed, 18 Mar 2020 15:51:21 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=AtAQ6Omp1kqvN3R2P3Ojq/dUkGTPHDTP71rAjUnsU+g=;
- b=yflygsXu04iS8mLX+60UttjdYpPiJKyzWBEm3v0ejRG2+CyZykKK438rf0MPYBFVUn5S
- xVwFRl3IiFHH4EqdKie/Zx/GEbimNiSf4jv4jZBgjWY6elmjJU3GMq4FQTlNHSKF5AyD
- cWgZZdUtdcpUvRKPKe4v1MW3k2qLxPkKVbqediBQlB9P7yWn9b0dePUyb4mkavF69xjm
- VxMpgDs9PZ7yEzpO2vqm7ZWdeKVcDvdKbcnCq3xD5VysVXcSSE3Yfc0qGtrNNx9YqA+6
- e453O+qAQjlyAFfCBDGs11drAWv30u6NoRI5cbIYkETCBvlZdRfWgnigfIn0Ny0VTVqT Hg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2yu95um43b-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 Mar 2020 15:51:21 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3C62C10002A;
-        Wed, 18 Mar 2020 15:51:20 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1FDE42AE6B7;
-        Wed, 18 Mar 2020 15:51:20 +0100 (CET)
-Received: from localhost (10.75.127.44) by SFHDAG5NODE3.st.com (10.75.127.15)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 18 Mar 2020 15:51:19
- +0100
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-To:     <robh+dt@kernel.org>, <jic23@kernel.org>
-CC:     <alexandre.torgue@st.com>, <mark.rutland@arm.com>,
-        <mcoquelin.stm32@gmail.com>, <lars@metafoo.de>, <knaack.h@gmx.de>,
-        <pmeerw@pmeerw.net>, <fabrice.gasnier@st.com>,
-        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] dt-bindings: iio: dac: stm32-dac: convert bindings to json-schema
-Date:   Wed, 18 Mar 2020 15:50:37 +0100
-Message-ID: <1584543037-32095-1-git-send-email-fabrice.gasnier@st.com>
-X-Mailer: git-send-email 2.7.4
+        id S1726647AbgCROzh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 10:55:37 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:36134 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726473AbgCROzg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 10:55:36 -0400
+Received: by mail-pl1-f195.google.com with SMTP id g2so8783724plo.3;
+        Wed, 18 Mar 2020 07:55:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:date:from:to:cc:subject:mime-version:content-disposition
+         :user-agent;
+        bh=K/Y339cjUVl/X/gAfLYDhApN5kiIl0QX/F4UwUPxkPo=;
+        b=dkLLYf1XuBtBB0cr+RAmVC2P30NOhT0B9wQTmx6gLUZ4ZIW+fqxffEdI5wtPsMvN6b
+         LarULhRV2iou62gQ+/KsPgVjNk4bjRk4JOojhfToE7utMecARpXRCwKn/QEIABAVApec
+         GlEtyWd3fk9lUrDZIOXgZcjXF2Kc/LfC6KLyFqk8nT0FZ9nj5Jbmw+US1n4zNJGoDTVK
+         dKUH9/8XmdPgQKro0Ad9203CL52+lh/zb9o9BlpEmv+CMiO+KhwuESVFyiVzsWbrrHqA
+         58HLZVpeaOIqZzWbzrfbiWvmzPzM97DZynJTXNueLTZx96bDrjUJFZslhr+6Cf4rI9qg
+         XGMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:mime-version
+         :content-disposition:user-agent;
+        bh=K/Y339cjUVl/X/gAfLYDhApN5kiIl0QX/F4UwUPxkPo=;
+        b=gjbLY20ycW+hW2Cwbvstt0K8llSLByijJwM1+p33CXpMlWGb+roegy6/LAQl77ngAE
+         lk3VcWrfdf0S1Dl7QaRwlD6qdRZvLK4/pwFIO9rbiwyPdG++pZh+QJ9sJv5w1BwPCajD
+         dOaD3zQ/siYzRptv8lRmOwlKJWCRNyX+HB8/UzfQlcgBc/w8A2KioFXQHrmNusw7lKZ9
+         YvuWvZUmLIff7TxeqLbWbI8KSPSI6GauObfjNnqvnnNV1dZ8LbysGkrulUGlGnXQMAQQ
+         GGXn2q3pMmCuxN33zOhW9FPCJalKLtkviIAsapAZsHEwopwx/t3CEoOYbD4R086oyqn7
+         CGZw==
+X-Gm-Message-State: ANhLgQ3khnwFhkNxjq+lmY6QWuHcGaFFmCPsJZfDDCG/H2M9TIojdDj+
+        qsTrg6g1cbmRQz0MjqZN4n4=
+X-Google-Smtp-Source: ADFU+vvEiYfnwlDKHhp+F7QPB5wCfOW2vxUzhH1bpBEv4VpKvvSLT2X3ZJj2LES6gmmfXqeif0E+7Q==
+X-Received: by 2002:a17:90a:32d0:: with SMTP id l74mr5154984pjb.61.1584543335235;
+        Wed, 18 Mar 2020 07:55:35 -0700 (PDT)
+Received: from SARKAR ([43.224.157.42])
+        by smtp.gmail.com with ESMTPSA id x16sm6532676pfn.42.2020.03.18.07.55.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2020 07:55:34 -0700 (PDT)
+Message-ID: <5e723666.1c69fb81.3545b.79c3@mx.google.com>
+X-Google-Original-Message-ID: <20200318145522.GA21528@rohitsarkar5398@gmail.com>
+Date:   Wed, 18 Mar 2020 20:25:22 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, rohitsarkar5398@gmail.com,
+        dragos.bogdan@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>, knaack.h@gmx.de,
+        pmeerw@pmeerw.net
+Subject: [PATCH] iio: gyro: adis16136: use scnprintf instead of snprintf
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG4NODE2.st.com (10.75.127.11) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
- definitions=2020-03-18_06:2020-03-18,2020-03-18 signatures=0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the STM32 DAC binding to DT schema format using json-schema
+scnprintf returns the actual number of bytes written into the buffer as
+opposed to snprintf which returns the number of bytes that would have
+been written if the buffer was big enough. Using the output of snprintf
+may lead to difficult to detect bugs.
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+Thanks,
+Rohit
+
+Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
 ---
- .../devicetree/bindings/iio/dac/st,stm32-dac.txt   |  63 ------------
- .../devicetree/bindings/iio/dac/st,stm32-dac.yaml  | 110 +++++++++++++++++++++
- 2 files changed, 110 insertions(+), 63 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt
- create mode 100644 Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+ drivers/iio/gyro/adis16136.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt
-deleted file mode 100644
-index bf2925c..00000000
---- a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt
-+++ /dev/null
-@@ -1,63 +0,0 @@
--STMicroelectronics STM32 DAC
--
--The STM32 DAC is a 12-bit voltage output digital-to-analog converter. The DAC
--may be configured in 8 or 12-bit mode. It has two output channels, each with
--its own converter.
--It has built-in noise and triangle waveform generator and supports external
--triggers for conversions. The DAC's output buffer allows a high drive output
--current.
--
--Contents of a stm32 dac root node:
-------------------------------------
--Required properties:
--- compatible: Should be one of:
--  "st,stm32f4-dac-core"
--  "st,stm32h7-dac-core"
--- reg: Offset and length of the device's register set.
--- clocks: Must contain an entry for pclk (which feeds the peripheral bus
--  interface)
--- clock-names: Must be "pclk".
--- vref-supply: Phandle to the vref+ input analog reference supply.
--- #address-cells = <1>;
--- #size-cells = <0>;
--
--Optional properties:
--- resets: Must contain the phandle to the reset controller.
--- A pinctrl state named "default" for each DAC channel may be defined to set
--  DAC_OUTx pin in mode of operation for analog output on external pin.
--
--Contents of a stm32 dac child node:
-------------------------------------
--DAC core node should contain at least one subnode, representing a
--DAC instance/channel available on the machine.
--
--Required properties:
--- compatible: Must be "st,stm32-dac".
--- reg: Must be either 1 or 2, to define (single) channel in use
--- #io-channel-cells = <1>: See the IIO bindings section "IIO consumers" in
--  Documentation/devicetree/bindings/iio/iio-bindings.txt
--
--Example:
--	dac: dac@40007400 {
--		compatible = "st,stm32h7-dac-core";
--		reg = <0x40007400 0x400>;
--		clocks = <&clk>;
--		clock-names = "pclk";
--		vref-supply = <&reg_vref>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&dac_out1 &dac_out2>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		dac1: dac@1 {
--			compatible = "st,stm32-dac";
--			#io-channels-cells = <1>;
--			reg = <1>;
--		};
--
--		dac2: dac@2 {
--			compatible = "st,stm32-dac";
--			#io-channels-cells = <1>;
--			reg = <2>;
--		};
--	};
-diff --git a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
-new file mode 100644
-index 00000000..2b4a955
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
-@@ -0,0 +1,110 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/bindings/iio/dac/st,stm32-dac.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: STMicroelectronics STM32 DAC bindings
-+
-+description: |
-+  The STM32 DAC is a 12-bit voltage output digital-to-analog converter. The DAC
-+  may be configured in 8 or 12-bit mode. It has two output channels, each with
-+  its own converter.
-+  It has built-in noise and triangle waveform generator and supports external
-+  triggers for conversions. The DAC's output buffer allows a high drive output
-+  current.
-+
-+maintainers:
-+  - Fabrice Gasnier <fabrice.gasnier@st.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - st,stm32f4-dac-core
-+      - st,stm32h7-dac-core
-+
-+  reg:
-+    maxItems: 1
-+
-+  resets:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: pclk
-+
-+  vref-supply:
-+    description: Phandle to the vref input analog reference voltage.
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - vref-supply
-+  - '#address-cells'
-+  - '#size-cells'
-+
-+patternProperties:
-+  "^dac@[1-2]+$":
-+    type: object
-+    description:
-+      A DAC block node should contain at least one subnode, representing an
-+      DAC instance/channel available on the machine.
-+
-+    properties:
-+      compatible:
-+        const: st,stm32-dac
-+
-+      reg:
-+        description: Must be either 1 or 2, to define (single) channel in use
-+        enum: [1, 2]
-+
-+      '#io-channel-cells':
-+        const: 1
-+
-+    additionalProperties: false
-+
-+    required:
-+      - compatible
-+      - reg
-+      - '#io-channel-cells'
-+
-+examples:
-+  - |
-+    // Example on stm32mp157c
-+    #include <dt-bindings/clock/stm32mp1-clks.h>
-+    dac: dac@40017000 {
-+      compatible = "st,stm32h7-dac-core";
-+      reg = <0x40017000 0x400>;
-+      clocks = <&rcc DAC12>;
-+      clock-names = "pclk";
-+      vref-supply = <&vref>;
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      dac@1 {
-+        compatible = "st,stm32-dac";
-+        #io-channel-cells = <1>;
-+        reg = <1>;
-+      };
-+
-+      dac@2 {
-+        compatible = "st,stm32-dac";
-+        #io-channel-cells = <1>;
-+        reg = <2>;
-+      };
-+    };
-+
-+...
+diff --git a/drivers/iio/gyro/adis16136.c b/drivers/iio/gyro/adis16136.c
+index a4c967a5fc5c..0a8bb02dc4b9 100644
+--- a/drivers/iio/gyro/adis16136.c
++++ b/drivers/iio/gyro/adis16136.c
+@@ -96,7 +96,7 @@ static ssize_t adis16136_show_serial(struct file *file,
+ 	if (ret)
+ 		return ret;
+ 
+-	len = snprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
++	len = scnprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
+ 		lot3, serial);
+ 
+ 	return simple_read_from_buffer(userbuf, count, ppos, buf, len);
 -- 
-2.7.4
+2.23.0.385.gbc12974a89
 

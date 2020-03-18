@@ -2,132 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5713B18A066
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 17:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9659B18A06D
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 17:24:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726767AbgCRQWs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 12:22:48 -0400
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:52992 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726647AbgCRQWs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 12:22:48 -0400
-Received: by mail-pj1-f67.google.com with SMTP id ng8so1560452pjb.2
-        for <linux-iio@vger.kernel.org>; Wed, 18 Mar 2020 09:22:47 -0700 (PDT)
+        id S1726767AbgCRQYE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 12:24:04 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:34959 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726647AbgCRQYD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 12:24:03 -0400
+Received: by mail-pl1-f193.google.com with SMTP id g6so11406730plt.2
+        for <linux-iio@vger.kernel.org>; Wed, 18 Mar 2020 09:24:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:date:from:to:cc:subject:references:mime-version
+        h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=s3CKavgybeEOpXAZe+xBIGcFk7Vj/l1+eTJ8QUFIoJs=;
-        b=Yxge4Ry5vFOHN/E6WRoS1R820nnS6WJDZq9mjgaZLOrnbqWkKFIp8dPZVt//BWqS0r
-         5Z2azsstxdYpDTnytEEpvmzQwbz7QdePieWGNQkT90JaQaPGtLDDPityknQdXpD96o7Z
-         CpcuyC4Zb6Q2eYS16bz/6gtvs+6klzKe45WaFNPYyYgAKHkO+dXdffvu3JpS2CFGdpDt
-         KQjfXzHO8fya59guzla/8qjh2/XCGZBVI4u3F/c3pUL4aDzOQjQFhwVvmXBS8N2yOuM4
-         B5OyT3KdQFQMiccd1fhZ9FYQ2IZETmWQ8E8uJyriGXAdQt9oLJgOYf05c/K7MwmzDi98
-         WXqw==
+        bh=sfRBQs5Dz5VvxU1A2guJOa7lJTCHsI6FTFKGIebxiLg=;
+        b=uDQ1IytFO3yVt58CQ2Td/kbum+bs7anqBJTh1zRZ+9i5iiRwYoy6yv5Qu1YveN/2bb
+         PnBoO2IIDsY+W3icf/CJUauBBhg05s3x7bjwIld/bhqu72f1spMoiRXMGCgk70A6mzjo
+         CjNHQ8oyJXICLbjvkPuR1oUa63VdrzTPDbyn5Yu5a1YpkTyS3U7CMcXL+gW9Z3j+pI7m
+         mk2TDs+cWCuHXD5VX2vlu89+F1Xp4Y6Eq55aWw85HM6AIatlzTIZ3GpldQpIUKAiHKOT
+         sJaW9ZEyJH+VRicCoV+iJ+bysnrBT7zBkKX906ex+8VlCqYDA6jihEQUzC7qwjtv6rTB
+         gdlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=s3CKavgybeEOpXAZe+xBIGcFk7Vj/l1+eTJ8QUFIoJs=;
-        b=U7UzObXqzTmVElsEaXhCrbOdjHkNfCRbTai1zmXZ8+CWwX6iNdXeu8e2B0h0J99Nmr
-         RnUQYWrIIbdNFyccjPqAhC28+lTG7EohPcsPLvprp/Rj3AmYu5By8TF48HJJTwIuCsVD
-         uNCPzNAuzCS5Pdx9Ah9jzwOiua1XHf0wJ6glysSeXTid9Se5SuhuRj1oryEK0TDXNJpU
-         qFe48KJ9c++a3gtbsmMsqlmxVrbBndu/Bmgjzp72cODalyMXTLKgDcJT7gZfmS92cbpK
-         4P2ka4+yFzR5cp0ia9K5wqOQuRwS/3YkNQmxw2efBFZ/9kGjr//Yv/eBIcz4ZB2k50Cu
-         Rv6A==
-X-Gm-Message-State: ANhLgQ1JKH7Qt9unBDzyZU5Dvf+srTYpZe9U4Caa1fYbBCrcgxz0o56r
-        k6lWIkk2C2IzInfzfPF6/vWshGN/8Ws=
-X-Google-Smtp-Source: ADFU+vuvZvhCj/RnrQOTAISMOb/daExPGR+dHXjaxabBbv1m+SDkzzsJSqqdh6kK5LmeC4g0K19pMA==
-X-Received: by 2002:a17:902:788b:: with SMTP id q11mr3719212pll.20.1584548566539;
-        Wed, 18 Mar 2020 09:22:46 -0700 (PDT)
-Received: from SARKAR ([43.224.157.42])
-        by smtp.gmail.com with ESMTPSA id a19sm7223462pfk.110.2020.03.18.09.22.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2020 09:22:45 -0700 (PDT)
-Message-ID: <5e724ad5.1c69fb81.7d54e.9f63@mx.google.com>
-X-Google-Original-Message-ID: <20200318162241.GB10427@rohitsarkar5398@gmail.com>
-Date:   Wed, 18 Mar 2020 21:52:41 +0530
-From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     DEEPAK VARMA <mh12gx2825@gmail.com>
-Cc:     Stefano Brivio <sbrivio@redhat.com>,
-        outreachy-kernel@googlegroups.com, gregkh@linuxfoundation.org,
-        daniel.baluta@gmail.com, kieran.bingham@ideasonboard.com,
-        lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-        knaack.h@gmx.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org
-Subject: Re: [Outreachy kernel] [PATCH 1/2] staging: iio: adc: ad7192:
- Reformat lines crossing 80 columns
+        bh=sfRBQs5Dz5VvxU1A2guJOa7lJTCHsI6FTFKGIebxiLg=;
+        b=gGHohA/lgaO/PI6/wQrJf0Ekmp8OUsKyv+ulsRio6NhIpEjYcSauXLaK05/XSIjIk1
+         rOQA5j1VbacHEPjmGy9ZXQB5FAd+aNDxvlJeIrILo98x1G3XdF+/k2o/GyKeNocgnIqy
+         wo/mWboB24Jgq6yOyp3NrXe5jQbxVcw3BJuYX0BhQtjuArZ9mWcA+32WuP5yOb/cZknQ
+         OyGPv6chcu4WMdcbV5lfTJasVNA/19TsQGh9i5ud/V7SdOJWoON9pfKrVyw6GYXWc5bI
+         HCQgfjtjo8CJWo+t5wtBEiY9lRYMxSpC0gckLsYZkU8F/h1X0mMmU/GhYzJlU7CyoZ8P
+         3jYw==
+X-Gm-Message-State: ANhLgQ3QE1AteGOOycFQ2uhwt204onWLaT3lf6W0M8gJZM4owJyttqRV
+        RvBVf/rv4RvIG31PQ6mUa00=
+X-Google-Smtp-Source: ADFU+vv/6302wqFSb2p+EQAZKGrBV4Ov2uR9irG+8OOVqH+Ms9WCcMQUgdORCPfGNLzLiGa0KnqhGA==
+X-Received: by 2002:a17:902:aa88:: with SMTP id d8mr4525413plr.201.1584548640964;
+        Wed, 18 Mar 2020 09:24:00 -0700 (PDT)
+Received: from deeUbuntu ([103.241.226.97])
+        by smtp.gmail.com with ESMTPSA id y131sm7280908pfg.25.2020.03.18.09.23.57
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 18 Mar 2020 09:24:00 -0700 (PDT)
+Date:   Wed, 18 Mar 2020 21:53:55 +0530
+From:   DEEPAK VARMA <mh12gx2825@gmail.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        outreachy-kernel@googlegroups.com, daniel.baluta@gmail.com,
+        kieran.bingham@ideasonboard.com, Michael.Hennerich@analog.com,
+        jic23@kernel.org, knaack.h@gmx.de, pmeerw@pmeerw.net,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 2/2] staging: iio: adc: ad7280a: Add spaces around
+ operators
+Message-ID: <20200318162353.GA23226@deeUbuntu>
 References: <cover.1584505215.git.mh12gx2825@gmail.com>
- <50419988d636c90511a07da256c91aa3b3e33bff.1584505215.git.mh12gx2825@gmail.com>
- <20200318093158.192a27ce@elisabeth>
- <20200318160649.GA23154@deeUbuntu>
+ <6703668c512dd665a2299a1f5bf14d99262314f8.1584505215.git.mh12gx2825@gmail.com>
+ <20200318060038.GB1594471@kroah.com>
+ <35afdc4b-bd59-7851-aa4f-3d8807668931@metafoo.de>
+ <20200318151924.GB2862853@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200318160649.GA23154@deeUbuntu>
+In-Reply-To: <20200318151924.GB2862853@kroah.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Mar 18, 2020 at 09:36:50PM +0530, DEEPAK VARMA wrote:
-> On Wed, Mar 18, 2020 at 09:31:58AM +0100, Stefano Brivio wrote:
-> > On Wed, 18 Mar 2020 09:56:59 +0530
-> > Deepak R Varma <mh12gx2825@gmail.com> wrote:
-> > 
-> > > Macro arguments are computed at the time of macro invocation. This makes
-> > > the lines cross 80 column width. Add variables to perform the
-> > > calculations before hand and use these new variable in the macro calls
-> > > instead.
+On Wed, Mar 18, 2020 at 04:19:24PM +0100, Greg KH wrote:
+> On Wed, Mar 18, 2020 at 04:12:28PM +0100, Lars-Peter Clausen wrote:
+> > On 3/18/20 7:00 AM, Greg KH wrote:
+> > > On Wed, Mar 18, 2020 at 09:58:13AM +0530, Deepak R Varma wrote:
+> > > > Add spaces around operator symbols to improve readability. Warning
+> > > > flagged by checkpatch script.
+> > > > 
+> > > > Signed-off-by: Deepak R Varma <mh12gx2825@gmail.com>
+> > > > ---
+> > > >   drivers/staging/iio/adc/ad7280a.c | 4 ++--
+> > > >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/staging/iio/adc/ad7280a.c b/drivers/staging/iio/adc/ad7280a.c
+> > > > index 19a5f244dcae..34ca0d09db85 100644
+> > > > --- a/drivers/staging/iio/adc/ad7280a.c
+> > > > +++ b/drivers/staging/iio/adc/ad7280a.c
+> > > > @@ -825,14 +825,14 @@ static irqreturn_t ad7280_event_handler(int irq, void *private)
+> > > >   }
+> > > >   static IIO_DEVICE_ATTR_NAMED(in_thresh_low_value,
+> > > > -			     in_voltage-voltage_thresh_low_value,
+> > > > +			     in_voltage - voltage_thresh_low_value,
+> > > >   			     0644,
+> > > >   			     ad7280_read_channel_config,
+> > > >   			     ad7280_write_channel_config,
+> > > >   			     AD7280A_CELL_UNDERVOLTAGE);
+> > > >   static IIO_DEVICE_ATTR_NAMED(in_thresh_high_value,
+> > > > -			     in_voltage-voltage_thresh_high_value,
+> > > > +			     in_voltage - voltage_thresh_high_value,
+> > > >   			     0644,
+> > > >   			     ad7280_read_channel_config,
+> > > >   			     ad7280_write_channel_config,
 > > > 
-> > > Also re-indent enum members to address checkpatch warning / check messages.
+> > > Did you try building this code?
 > > > 
-> > > Signed-off-by: Deepak R Varma <mh12gx2825@gmail.com>
-> > > ---
-> > >  drivers/staging/iio/adc/ad7192.c | 15 ++++++++-------
-> > >  1 file changed, 8 insertions(+), 7 deletions(-)
-> > > 
-> > > diff --git a/drivers/staging/iio/adc/ad7192.c b/drivers/staging/iio/adc/ad7192.c
-> > > index bf3e2a9cc07f..0265f6607d75 100644
-> > > --- a/drivers/staging/iio/adc/ad7192.c
-> > > +++ b/drivers/staging/iio/adc/ad7192.c
-> > > @@ -156,8 +156,8 @@
-> > >   */
-> > >  
-> > >  enum {
-> > > -   AD7192_SYSCALIB_ZERO_SCALE,
-> > > -   AD7192_SYSCALIB_FULL_SCALE,
-> > > +	AD7192_SYSCALIB_ZERO_SCALE,
-> > > +	AD7192_SYSCALIB_FULL_SCALE,
-> > >  };
-> > >  
-> > >  struct ad7192_state {
-> > > @@ -477,17 +477,18 @@ static ssize_t ad7192_set(struct device *dev,
-> > >  }
-> > >  
-> > >  static void ad7192_get_available_filter_freq(struct ad7192_state *st,
-> > > -						    int *freq)
-> > > +					     int *freq)
-> > >  {
-> > >  	unsigned int fadc;
-> > > +	unsigned int sync3_filter, sync4_filter;
-> > >  
-> > >  	/* Formulas for filter at page 25 of the datasheet */
-> > > -	fadc = DIV_ROUND_CLOSEST(st->fclk,
-> > > -				 AD7192_SYNC4_FILTER * AD7192_MODE_RATE(st->mode));
-> > > +	sync4_filter = AD7192_SYNC4_FILTER * AD7192_MODE_RATE(st->mode);
+> > > It catches everyone...
 > > 
-> > Have you read page 25 of the datasheet? Why is this called
-> > sync4_filter, with a 'y'?
-> > 
+> > The problem is it builds. The token is stringyfied and
+> > "in_voltage - voltage_thresh_high_value" is a valid string.
 > 
-> Sorry, I am not sure what you are referring to. Can you please elaborate
-> or point me to where the data sheet is located?
+> Ah, I thought it used to break the build when it happened.  Oh well,
+> it's still a great "trick" to see if people understand C or not :)
 > 
-> Deepak.
-
-Hey Deepak,
-You can find the datasheet for ad7192 here https://pdf1.alldatasheet.com/datasheet-pdf/view/988287/AD/AD7192.html
+Yes, it did build. I am sorry but I am not following you fully. Can you
+please let me know if the change I introduced is not good. You may
+please direct me to a document where I can read more about it.
 
 Thanks,
-Rohit
+Deepak.
+> thanks,
+> 
+> greg k-h

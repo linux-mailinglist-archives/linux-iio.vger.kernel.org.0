@@ -2,108 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C01918A19B
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 18:34:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F95918A2E1
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 20:07:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726671AbgCRReG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 13:34:06 -0400
-Received: from www381.your-server.de ([78.46.137.84]:40248 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726663AbgCRReG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 13:34:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=55s4KdzIkIbrPk24SHC9GIhNl5gysbT015bgWowvoYE=; b=B0xM0xac8I/sAY/v4Fy1CC5a1d
-        IUZx+cRKdtENa8HeY/f41HzkgA37T0SiEPmsCqf92GOSYBIC/wzXZYqA+T8PsPMfgqFcqjp3Ba8Ln
-        0alyli/aojkBt9KY391U0dtUsPQnTvXT9zIlVsCC5bgULlR+Uxb67nKnV7kq6t7zAznYkwAQCHP7G
-        43VPflDV+bY3NloMR7c8wyLSE9TFDydqTX4iua24yizb7Nzb276m9+6MQ3YcwfnvGWumM1ePBMphQ
-        yJkFBIhWW9oqEax/H4z+YZKFiaOBA0RlH0aPrSSF3OVZOaSwIFUvri2zVmlB5F9xyyYNUkcvWc7iC
-        fCTCrmUA==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <lars@metafoo.de>)
-        id 1jEcZr-0004ZL-PW; Wed, 18 Mar 2020 18:34:00 +0100
-Received: from [93.104.115.49] (helo=[192.168.178.20])
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1jEcZr-000P08-Fy; Wed, 18 Mar 2020 18:33:59 +0100
-Subject: Re: [PATCH 2/3] iio: dac: ad5686: add of_match_table
-To:     Michael Auchter <michael.auchter@ni.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     linux-pm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200318153434.62833-1-michael.auchter@ni.com>
- <20200318153434.62833-2-michael.auchter@ni.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <b67c7147-e35c-2408-8324-c688af4e82b7@metafoo.de>
-Date:   Wed, 18 Mar 2020 18:33:58 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1726619AbgCRTHc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 15:07:32 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:45428 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726506AbgCRTHc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 15:07:32 -0400
+Received: by mail-pg1-f196.google.com with SMTP id m15so14188314pgv.12
+        for <linux-iio@vger.kernel.org>; Wed, 18 Mar 2020 12:07:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=SLRLiX9u8sqIIOBIxJVUp11WU6ba1yuoaRErY2Y3s4M=;
+        b=YcoSrqe0P0xYIOCyS3zhEA4SzIfagTLj/71PKOBqbkikayHbIVTcZwjPxe9AX3vqyh
+         DcDH1Dmi2/bHTPQXvkAZE1JoU4+yZ7/Uw1Sz1ecNWLaQiOuyLHBmuJh7yXeYgEADrJb4
+         pJA4xaeBeWiSSurKGX1PjyfYy93Czu2WCxpYYA8Ig3LXweV9WLpCds7jc1bqGLtAK5Ge
+         tLRpAugITMH5IpooscZk8KyoFnkJolDKHGnjJoFyEfYs1LbQRGcRBAGS4agvgCjeftMU
+         9mczb68fVY/bemmWef9flKdAF2bpov18OybG15V0AQMpfWFh/36oGnzgVzf8XSwV+9AL
+         dDTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=SLRLiX9u8sqIIOBIxJVUp11WU6ba1yuoaRErY2Y3s4M=;
+        b=eFOoc/f7BOlFIWwpA4XpnI2fw1pFDsDLPdV86+7ibb6FRPO2NtT+sE3usQnA+tPPbv
+         6Nq/RunAzcVyL/UOzqyWbINniDvkspWbW34wFioZXNx+tzt6OKGrXUj+HWT8QyAgifkV
+         e2+dNv+0yz3/etdHwhddQinixBOauRvyjsbny9I6Myk4M8qJ511BKLtjPadxBxiUKxFY
+         Iar6ydnTKjyNaDF3aAZE7Ihc6nf27EaVrbpaU1Csxu+Nj6IvC2D1rKI9Yu6wVi3wGOz/
+         N8OL1WsdQrk/u6cu+EQQKs9UjPYtKenggfzl2L1w+tvEsIJ1CF3noITQ/6E6Y5/pxSOk
+         ZBNA==
+X-Gm-Message-State: ANhLgQ3aw8TBHFCCirkLprLkAbm1Ew6smurZM5OFFqFVwcH8/1MS0KZt
+        +LSFdPIuRwVYNv2am3zk6TU=
+X-Google-Smtp-Source: ADFU+vuYInjRBuyPuaWlFBjLbJ8BhXC1L8ehxsOUFwylxnD7bcAKGZsAJB8n2ZKlFKOuVQIWANh1KA==
+X-Received: by 2002:a63:2ec1:: with SMTP id u184mr5801633pgu.446.1584558451685;
+        Wed, 18 Mar 2020 12:07:31 -0700 (PDT)
+Received: from deeUbuntu ([103.241.226.97])
+        by smtp.gmail.com with ESMTPSA id x27sm7588780pfj.74.2020.03.18.12.07.28
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 18 Mar 2020 12:07:31 -0700 (PDT)
+Date:   Thu, 19 Mar 2020 00:37:25 +0530
+From:   Deepak R Varma <mh12gx2825@gmail.com>
+To:     outreachy-kernel@googlegroups.com, gregkh@linuxfoundation.org,
+        daniel.baluta@gmail.com, kieran.bingham@ideasonboard.com
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+        knaack.h@gmx.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v2 0/3] staging: iio: adc: General code reformatting /
+ cleanup patchset
+Message-ID: <cover.1584557481.git.mh12gx2825@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200318153434.62833-2-michael.auchter@ni.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25755/Wed Mar 18 14:14:00 2020)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/18/20 4:34 PM, Michael Auchter wrote:
-> Add of_match_table to this driver, so devices can be probed based on
-> device tree contents.
-> 
-> Signed-off-by: Michael Auchter <michael.auchter@ni.com>
-> ---
->   drivers/iio/dac/ad5696-i2c.c | 19 +++++++++++++++++++
->   1 file changed, 19 insertions(+)
-> 
-> diff --git a/drivers/iio/dac/ad5696-i2c.c b/drivers/iio/dac/ad5696-i2c.c
-> index f100a5fe4219..26818bccffa2 100644
-> --- a/drivers/iio/dac/ad5696-i2c.c
-> +++ b/drivers/iio/dac/ad5696-i2c.c
-> @@ -88,9 +88,28 @@ static const struct i2c_device_id ad5686_i2c_id[] = {
->   };
->   MODULE_DEVICE_TABLE(i2c, ad5686_i2c_id);
->   
-> +static const struct of_device_id ad5686_of_match[] = {
-> +	{ .compatible = "adi,ad5311r" },
-> +	{ .compatible = "adi,ad5671r" },
-> +	{ .compatible = "adi,ad5675r" },
-> +	{ .compatible = "adi,ad5691r" },
-> +	{ .compatible = "adi,ad5692r" },
-> +	{ .compatible = "adi,ad5693" },
-> +	{ .compatible = "adi,ad5693r" },
-> +	{ .compatible = "adi,ad5694" },
-> +	{ .compatible = "adi,ad5694r" },
-> +	{ .compatible = "adi,ad5695r" },
-> +	{ .compatible = "adi,ad5696" },
-> +	{ .compatible = "adi,ad5696r" },
-> +	{ .compatible = "adi,ad5338r" },
+Address code formatting warnings and check messages flagged by
+checkpatch script. Also include another improvement for correcting macro
+name typos. Changes intended to improve readability of code.
 
-Same here, table should be ordered.
+Changes since v1:
+	1. Add separate patch for code re-indentation comment
+	2. Add separate patch for correcting macro names as suggested by
+	   Lars-Peter.
+	3. Update variable name from sync* to sinc* as suggested by
+	   Stefano. 
+	4. Revert patch intended to add space around "-" operator. It
+	   was a string with a "-" sign further formatted using
+	   stringification. That patch is out of the patchset now.
 
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(of, ad5686_of_match);
-> +
->   static struct i2c_driver ad5686_i2c_driver = {
->   	.driver = {
->   		.name = "ad5696",
-> +		.of_match_table = of_match_ptr(ad5686_of_match),
->   	},
->   	.probe = ad5686_i2c_probe,
->   	.remove = ad5686_i2c_remove,
-> 
+
+Deepak R Varma (3):
+  staging: iio: adc: ad7192: Re-indent enum labels
+  staging: iio: adc: ad7192: Correct macro names from SYNC to SINC
+  staging: iio: adc: ad7192: Reformat lines crossing 80 columns
+
+ drivers/staging/iio/adc/ad7192.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
+
+-- 
+2.17.1
 

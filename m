@@ -2,79 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85E7A18A897
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 23:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE86918A8CA
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 23:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726663AbgCRWvO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 18:51:14 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:38228 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726619AbgCRWvO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 18:51:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584571873;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OsT8y8UZFRfG+HGRJDP8qrLB9AX5R1GNyZr/HRuK41I=;
-        b=GGgPeyRudFZnZVQ+04MB3UapVHUjqB2djnjAIZidMWCARzNR0Nc27o1bZBxW34kOBA/aQK
-        H/jjqGJnVXrJ42wWay0K5d9WJYYFEBwYH6OBKjOmIpBn4xdU5Wf4SiFdVykvoS6y7ejE2a
-        uH9mRKr5c4PXFRJwhKZr1oH3UrqcQyo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-355-KMlfn90nOf2rypVQW7CKPg-1; Wed, 18 Mar 2020 18:51:09 -0400
-X-MC-Unique: KMlfn90nOf2rypVQW7CKPg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D7ADA107B7D7;
-        Wed, 18 Mar 2020 22:51:07 +0000 (UTC)
-Received: from elisabeth (unknown [10.40.208.69])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id C6D4C912AC;
-        Wed, 18 Mar 2020 22:51:03 +0000 (UTC)
-Date:   Wed, 18 Mar 2020 23:50:57 +0100
-From:   Stefano Brivio <sbrivio@redhat.com>
-To:     Deepak R Varma <mh12gx2825@gmail.com>
-Cc:     outreachy-kernel@googlegroups.com, gregkh@linuxfoundation.org,
-        daniel.baluta@gmail.com, kieran.bingham@ideasonboard.com,
-        lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-        knaack.h@gmx.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org
-Subject: Re: [Outreachy kernel] [PATCH 2/3] staging: iio: adc: ad7192:
- Correct macro names from SYNC to SINC
-Message-ID: <20200318235057.4da5cd5c@elisabeth>
-In-Reply-To: <4eaa90f120a24fd5f08338d0643ee8f215f169b1.1584557481.git.mh12gx2825@gmail.com>
-References: <cover.1584557481.git.mh12gx2825@gmail.com>
-        <4eaa90f120a24fd5f08338d0643ee8f215f169b1.1584557481.git.mh12gx2825@gmail.com>
-Organization: Red Hat
+        id S1726795AbgCRW7T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 18:59:19 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:45458 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726647AbgCRW7S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 18:59:18 -0400
+Received: by mail-il1-f196.google.com with SMTP id m9so423616ilq.12;
+        Wed, 18 Mar 2020 15:59:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:content-language
+         :content-id:user-agent;
+        bh=WG++1Z0XEGF8QjOEAy+cWUTtbp6Q7m3dGXGb9K3xIFE=;
+        b=AbZ3qUI/CKmrt/ajVHPiCV45CTqy5HvXZET0G1UgCkxcDUEtLT2kR73/ptZR0g9UnK
+         RlZA5Om9Ll1F7iges0dBXqDrreqzzTsiAN4hlINViOjJSfm3uWJz6p9FmIwIPfL1lHLy
+         JEUvnOSDGMAUq5iGTsMWxENdXwCgFr7UwWZOovSFJejppiAlPp+13TLmPS+L/NFHC6Q/
+         8cflHGqmbqWQYlU+SIfg52g/6XonuG/NzOGC3GH7POUeq/8CB4llDgz8NkCm+Sx+VKei
+         yd6FqTzO03D3iWTa/9E4JNgCPkNejfgq4/a4tn4lYYYRx0hqT/J+nfAVEg1l5DnzTDIJ
+         oP8Q==
+X-Gm-Message-State: ANhLgQ23hAK9X78iRLRdJmcYIMZHiT6eDwvoizE+hBZJC1hnQqD5U3C3
+        DMqPhRDOOkPB+s4CLGUOfA==
+X-Google-Smtp-Source: ADFU+vvQu/ofiAgtyXPA30BdpK0s2M4IVdyqhYxGuUk+ta8FD03+S125+4JrMJsyywR83s2B6+q9jQ==
+X-Received: by 2002:a92:358b:: with SMTP id c11mr425751ilf.64.1584572357681;
+        Wed, 18 Mar 2020 15:59:17 -0700 (PDT)
+Received: from rob-hp-laptop ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id w88sm114692ila.24.2020.03.18.15.59.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2020 15:59:16 -0700 (PDT)
+Received: (nullmailer pid 27686 invoked by uid 1000);
+        Wed, 18 Mar 2020 22:59:15 -0000
+Date:   Wed, 18 Mar 2020 16:59:15 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Eugene Zalkonnikov <ez@norphonic.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "development@norphonic.com" <development@norphonic.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v6 2/2] Device tree bindings for TI HDC20x0 humidity and
+  temperature sensors
+Message-ID: <20200318225915.GA25864@bogus>
+References: <84EE5291-D8C4-40D3-A75C-92362BF9DF8B@norphonic.com>
+ <1C2C8CD5-4BF0-40AE-932A-4AD506664B9D@norphonic.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1C2C8CD5-4BF0-40AE-932A-4AD506664B9D@norphonic.com>
+Content-Language: en-US
+Content-ID: <3A479F18FEBC5A46BFE84B5E87D23497@eurprd06.prod.outlook.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 19 Mar 2020 00:39:13 +0530
-Deepak R Varma <mh12gx2825@gmail.com> wrote:
+On Tue, 17 Mar 2020 20:09:48 +0000, Eugene Zalkonnikov wrote:
+> 
+> Device tree bindings for the HDC2010/2080 driver.
+> 
+> Signed-off-by: Eugene Zaikonnikov <eugene.zaikonnikov@norphonic.com>
+> 
+> diff -uprN linux-5.3.8/Documentation/devicetree/bindings/iio/humidity/ti,hdc2010.yaml linux-5.3.8_docs/Documentation/devicetree/bindings/iio/humidity/ti,hdc2010.yaml
+> --- linux-5.3.8/Documentation/devicetree/bindings/iio/humidity/ti,hdc2010.yaml	1970-01-01 01:00:00.000000000 +0100
+> +++ linux-5.3.8_docs/Documentation/devicetree/bindings/iio/humidity/ti,hdc2010.yaml	2020-02-12 14:28:42.562903814 +0100
+> @@ -0,0 +1,43 @@
+> +# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/humidity/hdc2010.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: HDC2010/HDC2080 humidity and temperature iio sensors
+> +
+> +maintainers:
+> +  - Eugene Zaikonnikov <eugene.zaikonnikov@norophonic.com>
+> +
+> +description: |
+> +  Relative humidity and tempereature sensors on I2C bus
+> +
+> +  Datasheets are available at:
+> +    http://www.ti.com/product/HDC2010/datasheet
+> +    http://www.ti.com/product/HDC2080/datasheet
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,hdc2010
+> +      - ti,hdc2080
+> +
+> +  vddd-supply:
+> +    description:
+> +      digital voltage regulator (see regulator/regulator.txt)
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +
+> +examples:
+> +  - |
+> +    i2c0 {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      hdc200x@40 {
+> +          compatible = "ti,hdc2010";
+> +          reg = <0x40>;
+> +      };
+> +    };
+> 
 
-> Three macros include SYNC in their names which is a typo. Update those
-> names to SINC. Change suggested by Lars-Peter Clausen.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-There are tags for that, in particular:
+Documentation/devicetree/bindings/iio/humidity/ti,hdc2010.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/iio/humidity/ti,hdc2010.yaml#
 
-Suggested-by: Lars-Peter Clausen <lars@metafoo.de>
-Fixes: 77f6a23092c0 ("staging: iio: adc: ad7192: Add low_pass_3db_filter_frequency")
-
-Please keep an eye on messages from/to others on the outreachy-kernel
-list, these topics are being discussed quite frequently.
-
-> Signed-off-by: Deepak R Varma <mh12gx2825@gmail.com>
-> ---
->
-> [...]
-
--- 
-Stefano
-
+See https://patchwork.ozlabs.org/patch/1256878
+Please check and re-submit.

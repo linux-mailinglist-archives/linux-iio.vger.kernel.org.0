@@ -2,94 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0753F189E5C
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 15:55:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EF08189F1C
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 16:09:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726647AbgCROzh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Mar 2020 10:55:37 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:36134 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726473AbgCROzg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 10:55:36 -0400
-Received: by mail-pl1-f195.google.com with SMTP id g2so8783724plo.3;
-        Wed, 18 Mar 2020 07:55:35 -0700 (PDT)
+        id S1727213AbgCRPI5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Mar 2020 11:08:57 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:33702 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727223AbgCRPI4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Mar 2020 11:08:56 -0400
+Received: by mail-wr1-f67.google.com with SMTP id a25so30864958wrd.0
+        for <linux-iio@vger.kernel.org>; Wed, 18 Mar 2020 08:08:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:date:from:to:cc:subject:mime-version:content-disposition
-         :user-agent;
-        bh=K/Y339cjUVl/X/gAfLYDhApN5kiIl0QX/F4UwUPxkPo=;
-        b=dkLLYf1XuBtBB0cr+RAmVC2P30NOhT0B9wQTmx6gLUZ4ZIW+fqxffEdI5wtPsMvN6b
-         LarULhRV2iou62gQ+/KsPgVjNk4bjRk4JOojhfToE7utMecARpXRCwKn/QEIABAVApec
-         GlEtyWd3fk9lUrDZIOXgZcjXF2Kc/LfC6KLyFqk8nT0FZ9nj5Jbmw+US1n4zNJGoDTVK
-         dKUH9/8XmdPgQKro0Ad9203CL52+lh/zb9o9BlpEmv+CMiO+KhwuESVFyiVzsWbrrHqA
-         58HLZVpeaOIqZzWbzrfbiWvmzPzM97DZynJTXNueLTZx96bDrjUJFZslhr+6Cf4rI9qg
-         XGMA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Ph/tiCxt6J8lQbta3ZHrGApdLgqUBYn0fpRyKCOIpm8=;
+        b=pXGlTxgl7Y/qcqQKc1SP2kNyIf0Zk9WqSgqIc1/0o0atH4ARmESTMI3SoSrOP1w6hA
+         vlYW3/18YdzNEYYPdWBR2Sma+6F2xAZQdBLxTEz9yZ42n1T3H5oKQEMP1YEmgFa2dlEt
+         3cjklorb7aLyepr7JNR5cLZCq9ubkEggw3vDIX8RqoHTwPQv+7HKINYUIConutLAbyrX
+         uO5vXOqPZqBfLxhCSJzJUuQ6SWha+j4yExA17jt1HUhd462sv8Mfnm6hBYA4NJcb474h
+         MKNzvC6AquLe1bu+fdLsOHi+pJ3VotTV8Qt4rZHjzP99x+HNsVULfhpBnZstIWorxmkS
+         LG7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:subject:mime-version
-         :content-disposition:user-agent;
-        bh=K/Y339cjUVl/X/gAfLYDhApN5kiIl0QX/F4UwUPxkPo=;
-        b=gjbLY20ycW+hW2Cwbvstt0K8llSLByijJwM1+p33CXpMlWGb+roegy6/LAQl77ngAE
-         lk3VcWrfdf0S1Dl7QaRwlD6qdRZvLK4/pwFIO9rbiwyPdG++pZh+QJ9sJv5w1BwPCajD
-         dOaD3zQ/siYzRptv8lRmOwlKJWCRNyX+HB8/UzfQlcgBc/w8A2KioFXQHrmNusw7lKZ9
-         YvuWvZUmLIff7TxeqLbWbI8KSPSI6GauObfjNnqvnnNV1dZ8LbysGkrulUGlGnXQMAQQ
-         GGXn2q3pMmCuxN33zOhW9FPCJalKLtkviIAsapAZsHEwopwx/t3CEoOYbD4R086oyqn7
-         CGZw==
-X-Gm-Message-State: ANhLgQ3khnwFhkNxjq+lmY6QWuHcGaFFmCPsJZfDDCG/H2M9TIojdDj+
-        qsTrg6g1cbmRQz0MjqZN4n4=
-X-Google-Smtp-Source: ADFU+vvEiYfnwlDKHhp+F7QPB5wCfOW2vxUzhH1bpBEv4VpKvvSLT2X3ZJj2LES6gmmfXqeif0E+7Q==
-X-Received: by 2002:a17:90a:32d0:: with SMTP id l74mr5154984pjb.61.1584543335235;
-        Wed, 18 Mar 2020 07:55:35 -0700 (PDT)
-Received: from SARKAR ([43.224.157.42])
-        by smtp.gmail.com with ESMTPSA id x16sm6532676pfn.42.2020.03.18.07.55.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2020 07:55:34 -0700 (PDT)
-Message-ID: <5e723666.1c69fb81.3545b.79c3@mx.google.com>
-X-Google-Original-Message-ID: <20200318145522.GA21528@rohitsarkar5398@gmail.com>
-Date:   Wed, 18 Mar 2020 20:25:22 +0530
-From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     jic23@kernel.org, rohitsarkar5398@gmail.com,
-        dragos.bogdan@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>, knaack.h@gmx.de,
-        pmeerw@pmeerw.net
-Subject: [PATCH] iio: gyro: adis16136: use scnprintf instead of snprintf
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Ph/tiCxt6J8lQbta3ZHrGApdLgqUBYn0fpRyKCOIpm8=;
+        b=DedrX8YxJn4+liNs1mmPG2HZ+7j97reLa360FifegKBe+fz5zm9YfVTreS5StTi3vU
+         YYmbZqpEAJj+o6SRJ8Jcqs7WwX/TO6wCjCUlKiuZYLDGylpGSr3yhzDIAtWtF0K5rrZd
+         P8IIZtdKPlE0rlMISM8fBrHhfIq93gdbQnNQ/972PlRsYSKSxH4HxgyZT/jHy6Wo40n7
+         e48zWNwqrL8Jh3Li24kav+eHbbJYUJ/AwK6Ri5QsUtxwuHEy9SQBLmgUI+uz5EQ9gY7b
+         oHrAv1Y3Zx7sN0bpzrtuRlitjblTw4HCLMoe7E5sb4mCW7Gpg72ZGfR/DEo0hkjJFibV
+         vIVg==
+X-Gm-Message-State: ANhLgQ2TiirrlFJWd/If60/CU6WWqiPsXZhk+qZT6a9Fa6HUd+fTY5U2
+        zuBdmOaym77qeCSIgW0BBoIjnUAC9lJJ4ecVJKA=
+X-Google-Smtp-Source: ADFU+vsDiSiiVghGfigtPEgRnyTj4Lmg8GnzIfEA0AaMJYbjXCBhaYxqkSRzXWWnjL+B3KkLE84aosJ2wm5DLPBokqY=
+X-Received: by 2002:a5d:4104:: with SMTP id l4mr6448041wrp.55.1584544134683;
+ Wed, 18 Mar 2020 08:08:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Received: by 2002:adf:cf0c:0:0:0:0:0 with HTTP; Wed, 18 Mar 2020 08:08:53
+ -0700 (PDT)
+Reply-To: sulembello879@gmail.com
+From:   Mr Suleman Bello <vstj6740@gmail.com>
+Date:   Wed, 18 Mar 2020 08:08:53 -0700
+Message-ID: <CAHCARkm5kKDxZR-euS+jkAT_=h14JiSmLn4wK+3yvVCZgLfe7w@mail.gmail.com>
+Subject: CAN I TRUST YOU?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-scnprintf returns the actual number of bytes written into the buffer as
-opposed to snprintf which returns the number of bytes that would have
-been written if the buffer was big enough. Using the output of snprintf
-may lead to difficult to detect bugs.
+Dear Friend,
 
-Thanks,
-Rohit
+Please i want you to read this letter very carefully and i must
+apologize for berging this message into your mail box without any
+formal introduction due to the urgency and confidential of this issue
+and i know that this message will come to you as a surprise, Please
+this is not a joke and i will not like you to joke with it.I am
+Mr.Suleman Bello, a staff in African Development Bank (A.D.B)
+Ouagadougou, Burkina faso West Africa.I discovered existing dormant
+account for years. When I discovered that there had been neither
+continuation nor withdrawals from this account for this long period
+and according to the laws and constitution guiding this banking
+institution, any unserviceable account for more than (7) seven years,
+that fund will be transferred to national treasury as unclaimed fund.
 
-Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
----
- drivers/iio/gyro/adis16136.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I Hoped that you will not expose or betray this trust and confident
+that i am about to extablish with you for the mutual benefit of you
+and i.I need your urgent assistance in transferring the sum of $10.5
+)million usd into your account within 7 banking days. This money has
+been dormant for years in our Bank, and The request of foreigner in
+this transaction is necessary because our late customer was a
+foreigner and a burkinabe cannot stand as next of kin to a
+foreigner.Because of the static of this transaction I want you to
+stand as the next of kin so that our bank will accord you the
+recognition and have the fund transferred to your account.
 
-diff --git a/drivers/iio/gyro/adis16136.c b/drivers/iio/gyro/adis16136.c
-index a4c967a5fc5c..0a8bb02dc4b9 100644
---- a/drivers/iio/gyro/adis16136.c
-+++ b/drivers/iio/gyro/adis16136.c
-@@ -96,7 +96,7 @@ static ssize_t adis16136_show_serial(struct file *file,
- 	if (ret)
- 		return ret;
- 
--	len = snprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
-+	len = scnprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
- 		lot3, serial);
- 
- 	return simple_read_from_buffer(userbuf, count, ppos, buf, len);
--- 
-2.23.0.385.gbc12974a89
+Upon your response, I shall then provide you with further information
+and more deities that will help you understand the transaction. I am
+expecting your urgent response to enable me inform you on how the
+business will be executed. Please I would like you to keep this
+transaction confidential and as a top secret or delete if you are not
+interested.
 
+Thanks
+Mr.Suleman Bello.

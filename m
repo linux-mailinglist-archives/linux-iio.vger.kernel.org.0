@@ -2,105 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B5981893ED
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 03:15:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D7161893F3
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Mar 2020 03:18:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726680AbgCRCPH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Mar 2020 22:15:07 -0400
-Received: from mail-qv1-f68.google.com ([209.85.219.68]:40835 "EHLO
-        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726229AbgCRCPH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Mar 2020 22:15:07 -0400
-Received: by mail-qv1-f68.google.com with SMTP id cy12so6200820qvb.7;
-        Tue, 17 Mar 2020 19:15:06 -0700 (PDT)
+        id S1726871AbgCRCSH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Mar 2020 22:18:07 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:39840 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726229AbgCRCSG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Mar 2020 22:18:06 -0400
+Received: by mail-qt1-f194.google.com with SMTP id f17so18159041qtq.6;
+        Tue, 17 Mar 2020 19:18:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=PNhoxWWto3OTBxATPguCKxBnejir/6rqXXsL2C1SRpI=;
-        b=avtYE708cQqm4Rs6uB5LNa14AEB6+HCUP4pIFrrwqwuKznNHMQqhppgzehGXdkcC8n
-         Jj/GuBv4ScSGA1Mvppdj4U/7e7tRyroZHduT/w62KpaEXK8KWP0bdNESJsfTxCeR6HQG
-         lkrDjRUQ9KSf4CBC85dSy7fKj4NJowOZ5bqfGhm3tAXNVEpPcL6LD5hNJaXEGqYtFonW
-         zZnEElIYzkSRQt+FEv4C0QzOzB/zZSNh/rhwdHpatbGx82WKV10UbVdNLz8N6FQ3gZQw
-         s1mErBGBHJtSzf4kKJ69Ax9Ze3mZaEWVthJ95xcfmL3S3uPoFWyWGEfFrWwHOwoxvnQE
-         5z5w==
+        bh=gwlzqeZj4d3b961byPyFVrEOJd+bwlw/Cv25SoFLeBI=;
+        b=FnkI7Hf4aobxD7Mbzp+6UCkJHwEUJUtmKlGIBVgagNQDs9KazggfL0FMl3zl0RC9Tq
+         YsrjkW6M5gRPEUliOWv8C+Dmjjy+DcTgzpnVpx+GTIT/ZPJ+Y874zsTi6EdlzOjNSFWX
+         HtuBIsIZU4NM3QSpBQ5j6qnSw54uQnldE1uPhj4eVZ9h80m4K4iDRc20MofkmjCBliNP
+         I4WRIO+fL/vdize/oQLvHdG5gx75O4iX73XmI47OqLipFzJ2k6cRtnInPXK/G0tzoFQP
+         QqfQv4C7CaiUZcV6lnd9tKhx4vFXlASSNt8WxJzeGx+LR2fpeT4s9fHMoZFgf03ZkecP
+         MqLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=PNhoxWWto3OTBxATPguCKxBnejir/6rqXXsL2C1SRpI=;
-        b=OzohwrnyxBKjEjk5/+n7nS4gbGlEO9Ihwc3flNX1UD798poPQzxEbwGwhsyGmo3Zs0
-         Xm45IBtaXPkVDKifTNTMd1eXn7wwy1PgEMYI/AHhA6dfnX2uaVj18aZxPfkEnSHua2OH
-         Fhg/BB1kLlobRf9FpL7r01BarFUrWJy5eYIg14aCjPk1tE9bke1YZbuE0kHk3bjBi5nY
-         Ot3SAS4McgULOAvUq2fMKFK7xyiEiPVWv+ny6pTTVARX54mvov6lHtWzlTutrp5Jj3qT
-         GjC7kBtNp0o36/L3kCK4Bpjkzfg8xPVdArUNttP0JA+DpTsP1Wv6JfAOLk9JRi1/g/+x
-         ztSg==
-X-Gm-Message-State: ANhLgQ1yzsDfws2Fb8AhMOecLBqucVGZl6mqlTmi5GAUNXZLzq1czPNi
-        CYMXwyEil/EQOOFLHaIRDP4=
-X-Google-Smtp-Source: ADFU+vvU6pH/mf08SGHxjLsH3az/2PjNFKYB2VAjp4Y4Ded+iT//bzPvgndTJsKppFrqIOk+ROQyMw==
-X-Received: by 2002:a0c:ed2d:: with SMTP id u13mr2106999qvq.203.1584497706026;
-        Tue, 17 Mar 2020 19:15:06 -0700 (PDT)
+        bh=gwlzqeZj4d3b961byPyFVrEOJd+bwlw/Cv25SoFLeBI=;
+        b=LodeWK5HRuDZMxhbZZTXwTxLTsYZq1nwhX9rXCGZuhPxeQdQHpcoiK52I5uegdZ1Yo
+         5qemeJ2ny9+QT/oYaAKyD+J88KMMhUo+fJ2UyDeuuHj4flJquvH7628ZUePXEf0irMDk
+         oTzJxzokBS8f84/4Vq3EELy+24zSOBLp/kibTUaiN9Ks9vU9lWR9WizzDJcIQlX52lPr
+         X/soXTtX0Oa6fG/2WtNZ5AC5q4Sxyk7qhhaYNm5ZfTtwq5fWJfJ5MI2ClQBCW+rFHRmH
+         PwxRZ2JJzF4981MUdHQtrvdjA1+zL3ymWq5TpUyVfe46yK0oRWEugrd1VnyWFOK5MsF0
+         whxA==
+X-Gm-Message-State: ANhLgQ1jm5KOiZv7mhWVPcYqXJ8xo+K9a+5oDo035P3uHF8ag/Wj6oNp
+        6iaRyLT2iRmWlY5UJr32rI3MDKpO0X2cGA==
+X-Google-Smtp-Source: ADFU+vv5HD9xXsH8mTL6DvQT5Pg/4NoEqtBsEYA+KV0Y6AW4tN9pogaXID1SkaBoJevPxnQMrdDL9g==
+X-Received: by 2002:ac8:7a96:: with SMTP id x22mr2406587qtr.0.1584497885590;
+        Tue, 17 Mar 2020 19:18:05 -0700 (PDT)
 Received: from icarus (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id x3sm3540710qts.17.2020.03.17.19.15.04
+        by smtp.gmail.com with ESMTPSA id m19sm3232429qkk.1.2020.03.17.19.18.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2020 19:15:04 -0700 (PDT)
-Date:   Tue, 17 Mar 2020 22:14:49 -0400
+        Tue, 17 Mar 2020 19:18:04 -0700 (PDT)
+Date:   Tue, 17 Mar 2020 22:18:02 -0400
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     Syed Nayyar Waris <syednwaris@gmail.com>, jic23@kernel.org
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] counter: 104-quad-8: Add lock guards - generic
- interface
-Message-ID: <20200318020506.GA45571@icarus>
-References: <20200316124929.GA389@syed.domain.name>
+Subject: Re: [PATCH v5 2/3] counter: 104-quad-8: Add lock guards -
+ differential encoder
+Message-ID: <20200318021802.GB45571@icarus>
+References: <20200316125006.GA415@syed.domain.name>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="VrqPEDrXMn8OVzN4"
+        protocol="application/pgp-signature"; boundary="NKoe5XOeduwbEQHU"
 Content-Disposition: inline
-In-Reply-To: <20200316124929.GA389@syed.domain.name>
+In-Reply-To: <20200316125006.GA415@syed.domain.name>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---VrqPEDrXMn8OVzN4
+--NKoe5XOeduwbEQHU
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 16, 2020 at 06:19:30PM +0530, Syed Nayyar Waris wrote:
+On Mon, Mar 16, 2020 at 06:20:06PM +0530, Syed Nayyar Waris wrote:
 > Add lock protection from race conditions to 104-quad-8 counter driver
-> generic interface code changes. Mutex calls used for protection.
->=20
-> Fixes: f1d8a071d45b ("counter: 104-quad-8: Add Generic Counter interface
-> support")
+> for differential encoder status code changes. Mutex lock calls used for
+> protection.
 >=20
 > Signed-off-by: Syed Nayyar Waris <syednwaris@gmail.com>
 > ---
 > Changes in v5:
->  - Change spin lock calls to mutex lock calls
+>  - Change spin lock calls to mutex lock calls.
 >  - Modify the title description.
+
+Looks like the Fixes tags were dropped in these last two patches. I
+suppose they aren't really necessary though since these features haven't
+yet made it out of the IIO tree, so no need to backport these fixes.
 
 Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
---VrqPEDrXMn8OVzN4
+--NKoe5XOeduwbEQHU
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl5xhBkACgkQhvpINdm7
-VJJAzw//buE31KKpnVswNZUMEJFGXFI0JLTQ8Zkp+cJtL3wlaA4OgPLq+6Ywm46v
-s80WagAdGLA48a++Kzyy+fZyWlhV8btVi11MNtMeckV0nFFYuQmenJc/6IY3E4Uv
-l/HuwJbcPkRBp187VkrBTyV5pcEAMMHi6qz+hMqhqqB6eQM6Ci8Cc9RHw8yuaDpr
-jO2Tj92wVnofvx7WQ+wwIq+Mpzo3eE9JNRCCP9K+GMjBugBIPcEbLjZNKKTgkT0u
-0A1+A8l/ssXkbaqqJJfS0GhhSNXMlfJG3m1RWZdi1vwRyBiOVBJWBzNc7pl7WGFt
-ECc6BukRYBnyAGnsKdjtght/7vkyJbbGKp6jzUuE+EQNI4glfP1auxHMkloidWua
-y6+aM46JY8doUlBrg2obO0Mf5w74HQJJPNesIGptwuZ8FnjOBjIHVY5jOWTChPrp
-Cjcix9o1/rHA5Rf1Ry5S4hPR29rwpT7TJ5/H8n7ACQ03GlsajrcqWDWhg+57Ypu7
-QAgft4MTU1WlyFD6i3Bg7kPNrJFSoruz/63bqdYvl6fHqDQWbqVSiCglJ90wl08G
-aqGs0e9VpaG3egr1UNQYMIeiMe71aeWReDnPIZx4xKYdgQgzkguz2dGBaWRs3nzR
-3plaO1eMWMRnON/cXM/ApN+aSoDm7R5wwUnBArFtDkn+i5S+dek=
-=F2+4
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl5xhNoACgkQhvpINdm7
+VJKOqxAA0HEYpYOE9HFYYHkmUWf9sjCh4Op7o6kpfjdbOABgZ8z28RiGFVReqRDH
+PUUd+fa5ytttaczn6NKnwUtdR7ExetwqdCBTKQ2ouY/q9N6nl5cR+DNDphTZz4Ig
+Nhdr+M5NrUd0OyUE6SUzz0OlIAl2xE8Z7+bVesPWCdRWPrUwWjy/lhQ6zyCzHnpe
+gg+C3YwpoEq0we4Hw8fynbmq/D/uMjOEwLAEe7Tqs2trwvp31hK2+BcCiEA9YfO6
+4lntatXjEh9QXL5wnr/sVsLNOMttJ00qiFSUnqFmrUXwB7YwisjAlfwmsVgiIlvD
+zAuBqvIwQntWnEUa3tCG/HLQXaPji2lSqyiqdhsx4YnN5kjGdPnGfDFwYvlXOp/T
+xRMr6ESopn8UzYQ6ch0p2esCX75RCBgutcM/vvxsZUacOAzcnCiKe/TpzIa/X1Pb
+i+NCrqa2B40HKPPoSEWQcOKwGXWCUxNj/1NzTjN95aMOdXCtSq+c4Bv9cPH0AGJh
+QvJFaI6tLKSzxhsMeNr8fyvChVEvHf6ESgMfaqLYc3XXfoe4ndswIaDxpq/JVdya
+EgDFoBdOpwNvTDOk0ZjjWxNKWRvNCSvpH1I6NQEVTK4v3bDIeToUCoOKwwV3Avp0
+f42QA4M6jHxJuS2Edf2vKk+sk3ydw0LO1nAUYAJw50WrUAaf/e4=
+=z7tb
 -----END PGP SIGNATURE-----
 
---VrqPEDrXMn8OVzN4--
+--NKoe5XOeduwbEQHU--

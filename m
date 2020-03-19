@@ -2,893 +2,302 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F73518BB80
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Mar 2020 16:48:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F7D18BBF6
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Mar 2020 17:11:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727222AbgCSPsz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Mar 2020 11:48:55 -0400
-Received: from jax4mhob16.registeredsite.com ([64.69.218.104]:55836 "EHLO
-        jax4mhob16.registeredsite.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727189AbgCSPsz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Mar 2020 11:48:55 -0400
-Received: from mailpod.hostingplatform.com ([10.30.71.205])
-        by jax4mhob16.registeredsite.com (8.14.4/8.14.4) with ESMTP id 02JFmk7Q147523
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
-        for <linux-iio@vger.kernel.org>; Thu, 19 Mar 2020 11:48:46 -0400
-Received: (qmail 18114 invoked by uid 0); 19 Mar 2020 15:48:46 -0000
-X-TCPREMOTEIP: 83.128.90.119
-X-Authenticated-UID: mike@milosoftware.com
-Received: from unknown (HELO phenom.domain?not?set.invalid) (mike@milosoftware.com@83.128.90.119)
-  by 0 with ESMTPA; 19 Mar 2020 15:48:46 -0000
-From:   Mike Looijmans <mike.looijmans@topic.nl>
-To:     jic23@kernel.org, linux-iio@vger.kernel.org
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        Mike Looijmans <mike.looijmans@topic.nl>
-Subject: [PATCH v3] iio: accel: Add support for the Bosch-Sensortec BMI088
-Date:   Thu, 19 Mar 2020 16:48:42 +0100
-Message-Id: <20200319154842.1950-1-mike.looijmans@topic.nl>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200316073208.19715-1-mike.looijmans@topic.nl>
-References: <20200316073208.19715-1-mike.looijmans@topic.nl>, <20200315120238.18c10af0@archlinux>, <20200313140415.20266-1-mike.looijmans@topic.nl>, <46bec9b8-28ee-6fd3-f615-2b8db43626aa@metafoo.de>
+        id S1728113AbgCSQLH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Mar 2020 12:11:07 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:35273 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727822AbgCSQLG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Mar 2020 12:11:06 -0400
+Received: by mail-wm1-f68.google.com with SMTP id m3so2991641wmi.0
+        for <linux-iio@vger.kernel.org>; Thu, 19 Mar 2020 09:11:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=sWuJdiN77I0SRgdziu/ANQCfcDyI2dyQpD0oHzx05RE=;
+        b=NRa2TH1KNI20HKrUdaB3mq5Pgdr1fkTVBjHkK/j6Qbqy8i//ZRT2cAze9k5sXg0Zvy
+         eLOhkWXlswuuJ0k0yrX7QAekZqGfRoUNh2t3ivM7JMntHXaj+GSk6Wqh1f8mLrEJX2Rp
+         8QBQkqWD4HnIkigqg+eHV3l87n8x29UMh95ytehJ/c+BJq2YaHf8LONa/5gcM325uWTk
+         MRqJgDV6n+mZfEVeNmeq0nzd+QCfmn4C0rudw87mHF8HlL+lDqjdcQYIFsSixSU6DsMq
+         3ouPozXhOEHsKRIBd6sbq6qV7bly3FFsohcvjPWp637TEUerlgV3/7R1l8pbZH3d/ZkE
+         vVTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=sWuJdiN77I0SRgdziu/ANQCfcDyI2dyQpD0oHzx05RE=;
+        b=AFVs500/7dY0KHgHBQMhrMemoKwN50NIAY1Rs0kCy99UR5nPAQazyeCofLYUnJ6Nzy
+         xz3HeJEOickQYBuSz9kZQae7SWcJPWi4+4N90wWFcfCZSy4Kx7+aPzG2ObN9VOGUdZzz
+         mZ9Jl0gThMN6h40BL0nQk9v23P8mTGhRrNY8cJyaj1030D9S7KH/VUnIkEQeQMn45Vf9
+         9KivwBkIl/zPEXUrlYr/sxQLO2MrgXExbw5OD9prbvHrFhz8E0Xu/13aHmmHDOVESbiv
+         vSV9D8Gj5OdUnAm1+GTlsvTj6XN338+FJ+XpNZi4ZfKhOv11BmKIjZxLyUGuS7aRxUuP
+         asqQ==
+X-Gm-Message-State: ANhLgQ0c20HTjqhT/83XPZO2hfyp7vpS1PwDngnATtpA6HeR7M3SuDi3
+        K4bz5BK9VNtgEz6KZgfYU0ufzQ==
+X-Google-Smtp-Source: ADFU+vtOE3VlyG9v+RM4DJhmHiqbPcL3RRCD1IQqEyTkro7G/tSGEAywOgeiEyqGnDiLbv1bZbTwsg==
+X-Received: by 2002:a1c:4e14:: with SMTP id g20mr4309223wmh.143.1584634263756;
+        Thu, 19 Mar 2020 09:11:03 -0700 (PDT)
+Received: from dell ([2.27.35.213])
+        by smtp.gmail.com with ESMTPSA id l13sm4046033wrm.57.2020.03.19.09.11.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2020 09:11:03 -0700 (PDT)
+Date:   Thu, 19 Mar 2020 16:11:49 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     robh+dt@kernel.org, mark.rutland@arm.com, a.zummo@towertech.it,
+        alexandre.belloni@bootlin.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
+        stefan@agner.ch, b.galvani@gmail.com, phh@phh.me,
+        letux-kernel@openphoenux.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, jic23@kernel.org
+Subject: Re: [PATCH RESEND v6 2/7] mfd: rn5t618: add IRQ support
+Message-ID: <20200319161149.GB5477@dell>
+References: <20200313064535.31503-1-andreas@kemnade.info>
+ <20200313064535.31503-3-andreas@kemnade.info>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200313064535.31503-3-andreas@kemnade.info>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The BMI088 is a combined module with both accelerometer and gyroscope.
-This adds the accelerometer driver support for the SPI interface.
-The gyroscope part is already supported by the BMG160 driver.
+On Fri, 13 Mar 2020, Andreas Kemnade wrote:
 
-Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
----
-v2: Remove unused typedefs and variables
-    Fix error return when iio_device_register fails
-v3: Processed comments from Jonathan Cameron and Lars-Peter Clausen
-    implement runtime PM (tested by code tracing) and sleep
-    fix scale and offset factors for accel and temperature and
-    return raw values instead of pre-scaled ones
-    Use iio_device_{claim,release}_direct_mode
-    Remove unused code and structs
-    Use a cache-aligned buffer for bulk read
-    Configure and enable caching register values    
+> This adds support for IRQ handling in the RC5T619 which is required
+> for properly implementing subdevices like RTC.
+> For now only definitions for the variant RC5T619 are included.
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+> Changes in v5:
+> rn5t618_irq_init static
+> 
+> Changes in v4:
+> merge rn5t618-irq.c into rn5t618.c
+> use macros for IRQ table
+> 
+> Changes in v3:
+> alignment cleanup
+> 
+> Changes in v2:
+> - no dead code, did some more testing and thinking for that
+> - remove extra empty lines
+>  drivers/mfd/Kconfig         |  1 +
+>  drivers/mfd/rn5t618.c       | 88 +++++++++++++++++++++++++++++++++++++
+>  include/linux/mfd/rn5t618.h | 15 +++++++
+>  3 files changed, 104 insertions(+)
+> 
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index 2b203290e7b9..a7067888a41e 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -1058,6 +1058,7 @@ config MFD_RN5T618
+>  	depends on OF
+>  	select MFD_CORE
+>  	select REGMAP_I2C
+> +	select REGMAP_IRQ
+>  	help
+>  	  Say yes here to add support for the Ricoh RN5T567,
+>  	  RN5T618, RC5T619 PMIC.
+> diff --git a/drivers/mfd/rn5t618.c b/drivers/mfd/rn5t618.c
+> index ead2e79036a9..849a33d64860 100644
+> --- a/drivers/mfd/rn5t618.c
+> +++ b/drivers/mfd/rn5t618.c
+> @@ -8,6 +8,8 @@
+>  
+>  #include <linux/delay.h>
+>  #include <linux/i2c.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+>  #include <linux/mfd/core.h>
+>  #include <linux/mfd/rn5t618.h>
+>  #include <linux/module.h>
+> @@ -46,9 +48,63 @@ static const struct regmap_config rn5t618_regmap_config = {
+>  	.cache_type	= REGCACHE_RBTREE,
+>  };
+>  
+> +static const struct regmap_irq rc5t619_irqs[] = {
+> +	REGMAP_IRQ_REG(RN5T618_IRQ_SYS, 0, BIT(0)),
+> +	REGMAP_IRQ_REG(RN5T618_IRQ_DCDC, 0, BIT(1)),
+> +	REGMAP_IRQ_REG(RN5T618_IRQ_RTC, 0, BIT(2)),
+> +	REGMAP_IRQ_REG(RN5T618_IRQ_ADC, 0, BIT(3)),
+> +	REGMAP_IRQ_REG(RN5T618_IRQ_GPIO, 0, BIT(4)),
+> +	REGMAP_IRQ_REG(RN5T618_IRQ_CHG, 0, BIT(6)),
+> +};
+> +
+> +static const struct regmap_irq_chip rc5t619_irq_chip = {
+> +	.name = "rc5t619",
+> +	.irqs = rc5t619_irqs,
+> +	.num_irqs = ARRAY_SIZE(rc5t619_irqs),
+> +	.num_regs = 1,
+> +	.status_base = RN5T618_INTMON,
+> +	.mask_base = RN5T618_INTEN,
+> +	.mask_invert = true,
+> +};
+> +
+>  static struct rn5t618 *rn5t618_pm_power_off;
+>  static struct notifier_block rn5t618_restart_handler;
+>  
+> +static int rn5t618_irq_init(struct rn5t618 *rn5t618)
+> +{
+> +	const struct regmap_irq_chip *irq_chip;
+> +	int ret;
+> +
+> +	if (!rn5t618->irq)
+> +		return 0;
+> +
+> +	switch (rn5t618->variant) {
+> +	case RC5T619:
+> +		irq_chip = &rc5t619_irq_chip;
+> +		break;
+> +	default:
+> +		irq_chip = NULL;
 
- drivers/iio/accel/Kconfig             |  17 +
- drivers/iio/accel/Makefile            |   2 +
- drivers/iio/accel/bmi088-accel-core.c | 671 ++++++++++++++++++++++++++
- drivers/iio/accel/bmi088-accel-spi.c  |  85 ++++
- drivers/iio/accel/bmi088-accel.h      |  12 +
- 5 files changed, 787 insertions(+)
- create mode 100644 drivers/iio/accel/bmi088-accel-core.c
- create mode 100644 drivers/iio/accel/bmi088-accel-spi.c
- create mode 100644 drivers/iio/accel/bmi088-accel.h
+If you initialised this at the top, you can rid this line.
 
-diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-index 5d91a6dda894..7ed9c82b731b 100644
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -151,6 +151,23 @@ config BMC150_ACCEL_SPI
- 	tristate
- 	select REGMAP_SPI
- 
-+config BMI088_ACCEL
-+	tristate "Bosch BMI088 Accelerometer Driver"
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	select REGMAP
-+	select BMI088_ACCEL_SPI
-+	help
-+	  Say yes here to build support for the Bosch BMI088 accelerometer.
-+
-+	  This is a combo module with both accelerometer and gyroscope.
-+	  This driver is only implementing accelerometer part, which has
-+	  its own address and register map.
-+
-+config BMI088_ACCEL_SPI
-+	tristate
-+	select REGMAP_SPI
-+
- config DA280
- 	tristate "MiraMEMS DA280 3-axis 14-bit digital accelerometer driver"
- 	depends on I2C
-diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
-index 3a051cf37f40..f44613103ae5 100644
---- a/drivers/iio/accel/Makefile
-+++ b/drivers/iio/accel/Makefile
-@@ -19,6 +19,8 @@ obj-$(CONFIG_BMA400_I2C) += bma400_i2c.o
- obj-$(CONFIG_BMC150_ACCEL) += bmc150-accel-core.o
- obj-$(CONFIG_BMC150_ACCEL_I2C) += bmc150-accel-i2c.o
- obj-$(CONFIG_BMC150_ACCEL_SPI) += bmc150-accel-spi.o
-+obj-$(CONFIG_BMI088_ACCEL) += bmi088-accel-core.o
-+obj-$(CONFIG_BMI088_ACCEL_SPI) += bmi088-accel-spi.o
- obj-$(CONFIG_DA280)	+= da280.o
- obj-$(CONFIG_DA311)	+= da311.o
- obj-$(CONFIG_DMARD06)	+= dmard06.o
-diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
-new file mode 100644
-index 000000000000..b1e496f1389d
---- /dev/null
-+++ b/drivers/iio/accel/bmi088-accel-core.c
-@@ -0,0 +1,671 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
-+ *  - BMI088
-+ *
-+ * Copyright (c) 2018-2020, Topic Embedded Products
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/interrupt.h>
-+#include <linux/delay.h>
-+#include <linux/slab.h>
-+#include <linux/acpi.h>
-+#include <linux/pm.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/events.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/regmap.h>
-+#include <asm/unaligned.h>
-+
-+#include "bmi088-accel.h"
-+
-+#define BMI088_ACCEL_DRV_NAME	"bmi088_accel"
-+#define BMI088_ACCEL_IRQ_NAME	"bmi088_accel_event"
-+
-+#define BMI088_ACCEL_REG_CHIP_ID			0x00
-+#define BMI088_ACCEL_REG_ERROR				0x02
-+
-+#define BMI088_ACCEL_REG_INT_STATUS			0x1D
-+#define BMI088_ACCEL_INT_STATUS_BIT_DRDY		BIT(7)
-+
-+#define BMI088_ACCEL_REG_RESET				0x7E
-+#define BMI088_ACCEL_RESET_VAL				0xB6
-+
-+#define BMI088_ACCEL_REG_PWR_CTRL			0x7D
-+#define BMI088_ACCEL_REG_PWR_CONF			0x7C
-+
-+#define BMI088_ACCEL_REG_INT_MAP_DATA			0x58
-+#define BMI088_ACCEL_INT_MAP_DATA_BIT_INT1_DRDY		BIT(2)
-+#define BMI088_ACCEL_INT_MAP_DATA_BIT_INT2_FWM		BIT(5)
-+
-+#define BMI088_ACCEL_REG_INT1_IO_CONF			0x53
-+#define BMI088_ACCEL_INT1_IO_CONF_BIT_ENABLE_OUT	BIT(3)
-+#define BMI088_ACCEL_INT1_IO_CONF_BIT_LVL		BIT(1)
-+
-+#define BMI088_ACCEL_REG_INT2_IO_CONF			0x54
-+#define BMI088_ACCEL_INT2_IO_CONF_BIT_ENABLE_OUT	BIT(3)
-+#define BMI088_ACCEL_INT2_IO_CONF_BIT_LVL		BIT(1)
-+
-+#define BMI088_ACCEL_REG_ACC_CONF			0x40
-+#define BMI088_ACCEL_REG_ACC_RANGE			0x41
-+#define BMI088_ACCEL_RANGE_3G				0x00
-+#define BMI088_ACCEL_RANGE_6G				0x01
-+#define BMI088_ACCEL_RANGE_12G				0x02
-+#define BMI088_ACCEL_RANGE_24G				0x03
-+
-+#define BMI088_ACCEL_REG_TEMP				0x22
-+#define BMI088_ACCEL_TEMP_UNIT				125
-+#define BMI088_ACCEL_TEMP_OFFSET			23000
-+
-+#define BMI088_ACCEL_REG_XOUT_L				0x12
-+#define BMI088_ACCEL_AXIS_TO_REG(axis) \
-+	(BMI088_ACCEL_REG_XOUT_L + (axis * 2))
-+
-+#define BMI088_ACCEL_MAX_STARTUP_TIME_MS		1
-+#define BMI088_AUTO_SUSPEND_DELAY_MS			2000
-+
-+#define BMI088_ACCEL_REG_FIFO_STATUS			0x0E
-+#define BMI088_ACCEL_REG_FIFO_CONFIG0			0x48
-+#define BMI088_ACCEL_REG_FIFO_CONFIG1			0x49
-+#define BMI088_ACCEL_REG_FIFO_DATA			0x3F
-+#define BMI088_ACCEL_FIFO_LENGTH			100
-+
-+#define BMI088_ACCEL_FIFO_MODE_FIFO			0x40
-+#define BMI088_ACCEL_FIFO_MODE_STREAM			0x80
-+
-+enum bmi088_accel_axis {
-+	AXIS_X,
-+	AXIS_Y,
-+	AXIS_Z,
-+	AXIS_MAX,
-+};
-+
-+enum bmi088_power_modes {
-+	BMI088_ACCEL_MODE_ACTIVE,
-+	BMI088_ACCEL_MODE_SUSPEND,
-+};
-+
-+/* Available OSR (over sampling rate) sets the 3dB cut-off frequency */
-+enum bmi088_osr_modes {
-+	BMI088_ACCEL_MODE_OSR_NORMAL = 0xA,
-+	BMI088_ACCEL_MODE_OSR_2 = 0x9,
-+	BMI088_ACCEL_MODE_OSR_4 = 0x8,
-+};
-+
-+/* Available ODR (output data rates) in Hz */
-+enum bmi088_odr_modes {
-+	BMI088_ACCEL_MODE_ODR_12_5 = 0x5,
-+	BMI088_ACCEL_MODE_ODR_25 = 0x6,
-+	BMI088_ACCEL_MODE_ODR_50 = 0x7,
-+	BMI088_ACCEL_MODE_ODR_100 = 0x8,
-+	BMI088_ACCEL_MODE_ODR_200 = 0x9,
-+	BMI088_ACCEL_MODE_ODR_400 = 0xa,
-+	BMI088_ACCEL_MODE_ODR_800 = 0xb,
-+	BMI088_ACCEL_MODE_ODR_1600 = 0xc,
-+};
-+
-+struct bmi088_scale_info {
-+	int scale;
-+	u8 reg_range;
-+};
-+
-+struct bmi088_accel_chip_info {
-+	const char *name;
-+	u8 chip_id;
-+	const struct iio_chan_spec *channels;
-+	int num_channels;
-+};
-+
-+struct bmi088_accel_data {
-+	struct regmap *regmap;
-+	struct mutex mutex;
-+	const struct bmi088_accel_chip_info *chip_info;
-+	u8 buffer[2] ____cacheline_aligned;
-+};
-+
-+static const struct regmap_range bmi088_volatile_ranges[] = {
-+	/* All registers below 0x40 are volatile, except the CHIP ID. */
-+	regmap_reg_range(BMI088_ACCEL_REG_ERROR, 0x3f),
-+	/* Mark the RESET as volatile too, it is self-clearing */
-+	regmap_reg_range(BMI088_ACCEL_REG_RESET, BMI088_ACCEL_REG_RESET),
-+};
-+
-+static const struct regmap_access_table bmi088_volatile_table = {
-+	.yes_ranges     = bmi088_volatile_ranges,
-+	.n_yes_ranges   = ARRAY_SIZE(bmi088_volatile_ranges),
-+};
-+
-+const struct regmap_config bmi088_regmap_conf = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = 0x7E,
-+	.volatile_table = &bmi088_volatile_table,
-+	.cache_type = REGCACHE_RBTREE,
-+};
-+EXPORT_SYMBOL_GPL(bmi088_regmap_conf);
-+
-+
-+#ifdef CONFIG_PM
-+static int bmi088_accel_set_power_state(struct bmi088_accel_data *data,
-+	bool on)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
-+
-+	if (on) {
-+		ret = pm_runtime_get_sync(dev);
-+	} else {
-+		pm_runtime_mark_last_busy(dev);
-+		ret = pm_runtime_put_autosuspend(dev);
-+	}
-+
-+	if (ret < 0) {
-+		dev_err(dev, "Failed: %s(%d)\n", __func__, on);
-+		if (on)
-+			pm_runtime_put_noidle(dev);
-+
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+#else
-+static int bmi088_accel_set_power_state(struct bmi088_accel_data *data,
-+	bool on)
-+{
-+	return 0;
-+}
-+#endif
-+
-+static int bmi088_accel_enable(struct bmi088_accel_data *data,
-+				bool on_off)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CTRL,
-+				on_off ? 0x4 : 0x0);
-+	if (ret < 0) {
-+		dev_err(dev, "Error writing ACC_PWR_CTRL reg\n");
-+		return ret;
-+	}
-+	/* Datasheet recommends to wait at least 5ms before communication */
-+	usleep_range(5000, 6000);
-+
-+	return 0;
-+}
-+
-+/* In suspend mode, only the accelerometer is powered down. */
-+static int bmi088_accel_set_mode(struct bmi088_accel_data *data,
-+				enum bmi088_power_modes mode)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CONF,
-+			   mode == BMI088_ACCEL_MODE_SUSPEND ? 0x3 : 0x0);
-+	if (ret < 0) {
-+		dev_err(dev, "Error writing ACCEL_PWR_CONF reg\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int bmi088_accel_set_bw(struct bmi088_accel_data *data,
-+				enum bmi088_odr_modes odr_mode,
-+				enum bmi088_osr_modes osr_mode)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
-+	u8 value = (osr_mode << 4) | (odr_mode & 0xF);
-+
-+	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_ACC_CONF, value);
-+	if (ret < 0) {
-+		dev_err(dev, "Error writing ACCEL_PWR_CONF reg\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int bmi088_accel_get_sample_freq(struct bmi088_accel_data *data,
-+					int* val, int *val2)
-+{
-+	unsigned int value;
-+	int ret;
-+
-+	ret = regmap_read(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
-+			  &value);
-+	if (ret < 0)
-+		return ret;
-+
-+	value &= 0xf; /* ODR in lower 4 bits */
-+	if (value == BMI088_ACCEL_MODE_ODR_12_5) {
-+		*val = 12;
-+		*val2 = 500000;
-+		ret = IIO_VAL_INT_PLUS_MICRO;
-+	} else {
-+		*val = 25 << (value - BMI088_ACCEL_MODE_ODR_25);
-+		*val2 = 0;
-+		ret = IIO_VAL_INT;
-+	}
-+
-+	return ret;
-+}
-+
-+static int bmi088_accel_set_sample_freq(struct bmi088_accel_data *data, int val)
-+{
-+	unsigned int value = BMI088_ACCEL_MODE_ODR_1600;
-+	unsigned int freq = 1600;
-+	int ret;
-+
-+	if (val < 12 || val > 1600)
-+		return -EINVAL;
-+
-+	while (freq > val && value > BMI088_ACCEL_MODE_ODR_12_5) {
-+		--value;
-+		freq >>= 1;
-+	}
-+
-+	ret = regmap_update_bits(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
-+				 0x0f, value);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int bmi088_accel_get_temp(struct bmi088_accel_data *data, int *val)
-+{
-+	int ret;
-+	__s16 temp;
-+
-+	mutex_lock(&data->mutex);
-+
-+	ret = regmap_bulk_read(data->regmap, BMI088_ACCEL_REG_TEMP,
-+			       &data->buffer, 2);
-+	temp = get_unaligned_be16(data->buffer);
-+
-+	mutex_unlock(&data->mutex);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = temp >> 5;
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static int bmi088_accel_get_axis(struct bmi088_accel_data *data,
-+				 struct iio_chan_spec const *chan,
-+				 int *val)
-+{
-+	int ret;
-+	__s16 raw_val;
-+
-+	mutex_lock(&data->mutex);
-+
-+	ret = bmi088_accel_set_power_state(data, true);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = regmap_bulk_read(data->regmap,
-+			       BMI088_ACCEL_AXIS_TO_REG(chan->scan_index),
-+			       data->buffer, 2);
-+	raw_val = get_unaligned_le16(data->buffer);
-+
-+	bmi088_accel_set_power_state(data, false);
-+
-+	mutex_unlock(&data->mutex);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = raw_val;
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
-+				 struct iio_chan_spec const *chan,
-+				 int *val, int *val2, long mask)
-+{
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			return bmi088_accel_get_temp(data, val);
-+		case IIO_ACCEL:
-+			ret = iio_device_claim_direct_mode(indio_dev);
-+			if (ret < 0)
-+				return ret;
-+
-+			ret = bmi088_accel_get_axis(data, chan, val);
-+			iio_device_release_direct_mode(indio_dev);
-+			if (ret < 0)
-+				return ret;
-+
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_OFFSET:
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			/* Offset applies before scale */
-+			*val = BMI088_ACCEL_TEMP_OFFSET/BMI088_ACCEL_TEMP_UNIT;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = 0;
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			/* 0.125 degrees per LSB */
-+			*val = BMI088_ACCEL_TEMP_UNIT;
-+			return IIO_VAL_INT;
-+		case IIO_ACCEL:
-+		{
-+			ret = regmap_read(data->regmap,
-+					  BMI088_ACCEL_REG_ACC_RANGE, val);
-+			if (ret < 0)
-+				return ret;
-+
-+			*val2 =  15 - (*val & 0x3);
-+			*val = 3 * 980;
-+
-+			return IIO_VAL_FRACTIONAL_LOG2;
-+		}
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		mutex_lock(&data->mutex);
-+		ret = bmi088_accel_get_sample_freq(data, val, val2);
-+		mutex_unlock(&data->mutex);
-+		return ret;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
-+				  struct iio_chan_spec const *chan,
-+				  int val, int val2, long mask)
-+{
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		mutex_lock(&data->mutex);
-+		ret = bmi088_accel_set_sample_freq(data, val);
-+		mutex_unlock(&data->mutex);
-+		break;
-+	default:
-+		ret = -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
-+static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("12.5 25 50 100 200 400 800 1600");
-+
-+static struct attribute *bmi088_accel_attributes[] = {
-+	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group bmi088_accel_attrs_group = {
-+	.attrs = bmi088_accel_attributes,
-+};
-+
-+#define BMI088_ACCEL_CHANNEL(_axis) {					\
-+	.type = IIO_ACCEL,						\
-+	.modified = 1,							\
-+	.channel2 = IIO_MOD_##_axis,					\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
-+				BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
-+	.scan_index = AXIS_##_axis,					\
-+}
-+
-+static const struct iio_chan_spec bmi088_accel_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE) |
-+				      BIT(IIO_CHAN_INFO_OFFSET),
-+		.scan_index = -1,
-+	},
-+	BMI088_ACCEL_CHANNEL(X),
-+	BMI088_ACCEL_CHANNEL(Y),
-+	BMI088_ACCEL_CHANNEL(Z),
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
-+static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
-+	[0] = {
-+		.name = "bmi088a",
-+		.chip_id = 0x1E,
-+		.channels = bmi088_accel_channels,
-+		.num_channels = ARRAY_SIZE(bmi088_accel_channels),
-+	},
-+};
-+
-+static const struct iio_info bmi088_accel_info = {
-+	.attrs		= &bmi088_accel_attrs_group,
-+	.read_raw	= bmi088_accel_read_raw,
-+	.write_raw	= bmi088_accel_write_raw,
-+};
-+
-+static const unsigned long bmi088_accel_scan_masks[] = {
-+				BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
-+				0};
-+
-+
-+static int bmi088_accel_chip_init(struct bmi088_accel_data *data)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret, i;
-+	unsigned int val;
-+
-+	/* Do a dummy read to enable SPI interface, won't harm I2C */
-+	regmap_read(data->regmap, BMI088_ACCEL_REG_INT_STATUS, &val);
-+
-+	/*
-+	 * Reset chip to get it in a known good state. A delay of 1ms after
-+	 * reset is required according to the data sheet
-+	 */
-+	regmap_write(data->regmap, BMI088_ACCEL_REG_RESET,
-+		     BMI088_ACCEL_RESET_VAL);
-+	usleep_range(1000, 2000);
-+
-+	/* Do a dummy read again after a reset to enable the SPI interface */
-+	regmap_read(data->regmap, BMI088_ACCEL_REG_INT_STATUS, &val);
-+
-+	/* Read chip ID */
-+	ret = regmap_read(data->regmap, BMI088_ACCEL_REG_CHIP_ID, &val);
-+	if (ret < 0) {
-+		dev_err(dev, "Error: Reading chip id\n");
-+		return ret;
-+	}
-+
-+	/* Validate chip ID */
-+	for (i = 0; i < ARRAY_SIZE(bmi088_accel_chip_info_tbl); i++) {
-+		if (bmi088_accel_chip_info_tbl[i].chip_id == val) {
-+			data->chip_info = &bmi088_accel_chip_info_tbl[i];
-+			break;
-+		}
-+	}
-+
-+	if (!data->chip_info) {
-+		dev_err(dev, "Invalid chip %x\n", val);
-+		return -ENODEV;
-+	}
-+
-+	/* Enable accelerometer after reset */
-+	ret = bmi088_accel_enable(data, true);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Set sampling frequency and bandwidth defaults */
-+	ret = bmi088_accel_set_bw(data, BMI088_ACCEL_MODE_ODR_25,
-+				  BMI088_ACCEL_MODE_OSR_NORMAL);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Set Default Range */
-+	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_ACC_RANGE,
-+			   BMI088_ACCEL_RANGE_6G);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap,
-+	int irq, const char *name, bool block_supported)
-+{
-+	struct bmi088_accel_data *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	dev_set_drvdata(dev, indio_dev);
-+
-+	data->regmap = regmap;
-+
-+	ret = bmi088_accel_chip_init(data);
-+	if (ret < 0)
-+		return ret;
-+
-+	mutex_init(&data->mutex);
-+
-+	indio_dev->dev.parent = dev;
-+	indio_dev->channels = data->chip_info->channels;
-+	indio_dev->num_channels = data->chip_info->num_channels;
-+	indio_dev->name = name ? name : data->chip_info->name;
-+	indio_dev->available_scan_masks = bmi088_accel_scan_masks;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &bmi088_accel_info;
-+
-+	ret = pm_runtime_set_active(dev);
-+	if (ret)
-+		return ret;
-+
-+	pm_runtime_enable(dev);
-+	pm_runtime_set_autosuspend_delay(dev, BMI088_AUTO_SUSPEND_DELAY_MS);
-+	pm_runtime_use_autosuspend(dev);
-+
-+	ret = iio_device_register(indio_dev);
-+	if (ret < 0) {
-+		dev_err(dev, "Unable to register iio device\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(bmi088_accel_core_probe);
-+
-+int bmi088_accel_core_remove(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+
-+	iio_device_unregister(indio_dev);
-+
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
-+	pm_runtime_put_noidle(dev);
-+
-+	mutex_lock(&data->mutex);
-+	bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_SUSPEND);
-+	mutex_unlock(&data->mutex);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(bmi088_accel_core_remove);
-+
-+/* When going into system sleep, put the chip in power down */
-+static int __maybe_unused bmi088_accel_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+
-+	mutex_lock(&data->mutex);
-+	bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_SUSPEND);
-+	bmi088_accel_set_power_state(data, false);
-+	mutex_unlock(&data->mutex);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused bmi088_accel_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+
-+	mutex_lock(&data->mutex);
-+	bmi088_accel_set_power_state(data, true);
-+	bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_ACTIVE);
-+	mutex_unlock(&data->mutex);
-+
-+	return 0;
-+}
-+
-+/* For runtime PM put the chip in suspend mode */
-+static int __maybe_unused bmi088_accel_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_SUSPEND);
-+	if (ret < 0)
-+		return -EAGAIN;
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused bmi088_accel_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi088_accel_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_ACTIVE);
-+	if (ret < 0)
-+		return ret;
-+
-+	usleep_range(BMI088_ACCEL_MAX_STARTUP_TIME_MS * 1000,
-+		BMI088_ACCEL_MAX_STARTUP_TIME_MS * 1000 * 2);
-+
-+	return 0;
-+}
-+
-+const struct dev_pm_ops bmi088_accel_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(bmi088_accel_suspend, bmi088_accel_resume)
-+	SET_RUNTIME_PM_OPS(bmi088_accel_runtime_suspend,
-+			   bmi088_accel_runtime_resume, NULL)
-+};
-+EXPORT_SYMBOL_GPL(bmi088_accel_pm_ops);
-+
-+MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("BMI088 accelerometer driver (core)");
-diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
-new file mode 100644
-index 000000000000..4116122cbac0
---- /dev/null
-+++ b/drivers/iio/accel/bmi088-accel-spi.c
-@@ -0,0 +1,85 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
-+ *  - BMI088
-+ *
-+ * Copyright (c) 2018-2020, Topic Embedded Products
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/slab.h>
-+#include <linux/spi/spi.h>
-+#include <linux/regmap.h>
-+
-+#include "bmi088-accel.h"
-+
-+int bmi088_regmap_spi_write(void *context, const void *data, size_t count)
-+{
-+	struct spi_device *spi = context;
-+
-+	/* Write register is same as generic SPI */
-+	return spi_write(spi, data, count);
-+}
-+
-+int bmi088_regmap_spi_read(void *context, const void *reg,
-+				size_t reg_size, void *val, size_t val_size)
-+{
-+	struct spi_device *spi = context;
-+	u8 addr[2];
-+
-+	addr[0] = *(u8 *)reg;
-+	addr[0] |= 0x80; /* bit7 = RW = '1' */
-+	addr[1] = 0; /* Read requires a dummy byte transfer */
-+
-+	return spi_write_then_read(spi, addr, sizeof(addr), val, val_size);
-+}
-+
-+static struct regmap_bus bmi088_regmap_bus = {
-+	.write = bmi088_regmap_spi_write,
-+	.read = bmi088_regmap_spi_read,
-+	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
-+	.val_format_endian_default = REGMAP_ENDIAN_BIG,
-+};
-+
-+static int bmi088_accel_probe(struct spi_device *spi)
-+{
-+	struct regmap *regmap;
-+	const struct spi_device_id *id = spi_get_device_id(spi);
-+
-+	regmap = devm_regmap_init(&spi->dev, &bmi088_regmap_bus,
-+			spi, &bmi088_regmap_conf);
-+
-+	if (IS_ERR(regmap)) {
-+		dev_err(&spi->dev, "Failed to initialize spi regmap\n");
-+		return PTR_ERR(regmap);
-+	}
-+
-+	return bmi088_accel_core_probe(&spi->dev, regmap, spi->irq, id->name,
-+				       true);
-+}
-+
-+static int bmi088_accel_remove(struct spi_device *spi)
-+{
-+	return bmi088_accel_core_remove(&spi->dev);
-+}
-+
-+static const struct spi_device_id bmi088_accel_id[] = {
-+	{"bmi088_accel", 0},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, bmi088_accel_id);
-+
-+static struct spi_driver bmi088_accel_driver = {
-+	.driver = {
-+		.name	= "bmi088_accel_spi",
-+		.pm	= &bmi088_accel_pm_ops,
-+	},
-+	.probe		= bmi088_accel_probe,
-+	.remove		= bmi088_accel_remove,
-+	.id_table	= bmi088_accel_id,
-+};
-+module_spi_driver(bmi088_accel_driver);
-+
-+MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("BMI088 accelerometer driver (SPI)");
-diff --git a/drivers/iio/accel/bmi088-accel.h b/drivers/iio/accel/bmi088-accel.h
-new file mode 100644
-index 000000000000..fce6427bb7b8
---- /dev/null
-+++ b/drivers/iio/accel/bmi088-accel.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef BMI088_ACCEL_H
-+#define BMI088_ACCEL_H
-+
-+extern const struct regmap_config bmi088_regmap_conf;
-+extern const struct dev_pm_ops bmi088_accel_pm_ops;
-+
-+int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
-+			    const char *name, bool block_supported);
-+int bmi088_accel_core_remove(struct device *dev);
-+
-+#endif /* BMI088_ACCEL_H */
+Don't you want to put a message in here about an unsupported device?
+
+> +		break;
+> +	}
+> +
+> +	if (!irq_chip) {
+> +		dev_err(rn5t618->dev, "Currently no IRQ support for variant %d\n",
+> +			(int)rn5t618->variant);
+> +		return -ENOENT;
+> +	}
+
+Ah yes.  Put this in 'default' instead.
+
+> +	ret = devm_regmap_add_irq_chip(rn5t618->dev, rn5t618->regmap,
+> +				       rn5t618->irq,
+> +				       IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+> +				       0, irq_chip, &rn5t618->irq_data);
+> +	if (ret) {
+> +		dev_err(rn5t618->dev, "Failed to register IRQ chip\n");
+> +		return ret;
+
+Make this a one line if.
+
+> +	}
+> +
+> +	return 0;
+
+... and return ret.
+
+> +}
+> +
+>  static void rn5t618_trigger_poweroff_sequence(bool repower)
+>  {
+>  	/* disable automatic repower-on */
+> @@ -106,6 +162,8 @@ static int rn5t618_i2c_probe(struct i2c_client *i2c,
+>  
+>  	i2c_set_clientdata(i2c, priv);
+>  	priv->variant = (long)of_id->data;
+> +	priv->irq = i2c->irq;
+> +	priv->dev = &i2c->dev;
+>  
+>  	priv->regmap = devm_regmap_init_i2c(i2c, &rn5t618_regmap_config);
+>  	if (IS_ERR(priv->regmap)) {
+> @@ -138,6 +196,11 @@ static int rn5t618_i2c_probe(struct i2c_client *i2c,
+>  		return ret;
+>  	}
+>  
+> +	if (priv->irq > 0) {
+
+There are already have checks in rn5t618_irq_init().
+
+Just call it regardless.
+
+> +		if (rn5t618_irq_init(priv))
+
+If this returns an error, you should return that error from .probe().
+
+> +			priv->irq = 0;
+> +	}
+> +
+>  	return 0;
+>  }
+>  
+> @@ -155,15 +218,40 @@ static int rn5t618_i2c_remove(struct i2c_client *i2c)
+>  	return 0;
+>  }
+>  
+> +static int __maybe_unused rn5t618_i2c_suspend(struct device *dev)
+> +{
+> +	struct rn5t618 *priv = dev_get_drvdata(dev);
+> +
+> +	if (priv->irq)
+> +		disable_irq(priv->irq);
+> +
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused rn5t618_i2c_resume(struct device *dev)
+> +{
+> +	struct rn5t618 *priv = dev_get_drvdata(dev);
+> +
+> +	if (priv->irq)
+> +		enable_irq(priv->irq);
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct i2c_device_id rn5t618_i2c_id[] = {
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(i2c, rn5t618_i2c_id);
+>  
+> +static SIMPLE_DEV_PM_OPS(rn5t618_i2c_dev_pm_ops,
+> +			rn5t618_i2c_suspend,
+> +			rn5t618_i2c_resume);
+> +
+>  static struct i2c_driver rn5t618_i2c_driver = {
+>  	.driver = {
+>  		.name = "rn5t618",
+>  		.of_match_table = of_match_ptr(rn5t618_of_match),
+> +		.pm = &rn5t618_i2c_dev_pm_ops,
+>  	},
+>  	.probe = rn5t618_i2c_probe,
+>  	.remove = rn5t618_i2c_remove,
+> diff --git a/include/linux/mfd/rn5t618.h b/include/linux/mfd/rn5t618.h
+> index d62ef48060b5..739571656f2b 100644
+> --- a/include/linux/mfd/rn5t618.h
+> +++ b/include/linux/mfd/rn5t618.h
+> @@ -242,9 +242,24 @@ enum {
+>  	RC5T619,
+>  };
+>  
+> +/* RN5T618 IRQ definitions */
+> +enum {
+> +	RN5T618_IRQ_SYS = 0,
+> +	RN5T618_IRQ_DCDC,
+> +	RN5T618_IRQ_RTC,
+> +	RN5T618_IRQ_ADC,
+> +	RN5T618_IRQ_GPIO,
+> +	RN5T618_IRQ_CHG,
+> +	RN5T618_NR_IRQS,
+> +};
+> +
+>  struct rn5t618 {
+>  	struct regmap *regmap;
+> +	struct device *dev;
+>  	long variant;
+> +
+> +	int irq;
+> +	struct regmap_irq_chip_data *irq_data;
+>  };
+>  
+>  #endif /* __LINUX_MFD_RN5T618_H */
+
 -- 
-2.17.1
-
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

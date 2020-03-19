@@ -2,270 +2,263 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE8C18BE51
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Mar 2020 18:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B3F18BEAC
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Mar 2020 18:47:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727189AbgCSRkp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Mar 2020 13:40:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36206 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727434AbgCSRkp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 19 Mar 2020 13:40:45 -0400
-Received: from lore-desk-wlan (unknown [151.48.128.122])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3569D2071C;
-        Thu, 19 Mar 2020 17:40:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584639644;
-        bh=vTCr2kLPisdR/t7hwfNP3+scoVV0sNqQmzf1paBmYoQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CQqGKXYu9h8ARTueekub6W+ZvjyFyGpGAIbhDN7fodLnISn9Fd/y18ht59gvh1HTp
-         taLfLKSKVnJR6/bLnPEQDJ3GN4NGjIcitKZiOWRaaOyZ/ud1iKKPHSTxGUwCDKB+aG
-         sesmSe9ekO0dkCJyDHDi0YsIBodYclDRgczuC/DI=
-Date:   Thu, 19 Mar 2020 18:40:39 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jimmy Assarsson <jimmyassarsson@gmail.com>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: Use LIS3MDL with LSM6DSM sensor-hub
-Message-ID: <20200319174039.GA1564882@lore-desk-wlan>
-References: <f8489de0-c6a4-f786-b936-679eba6d6804@gmail.com>
- <20200314124324.GA144176@lore-desk-wlan>
- <217cb6b1-d3b3-bccf-b081-d4beb0888615@gmail.com>
+        id S1727253AbgCSRrQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Mar 2020 13:47:16 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:37700 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728114AbgCSRrQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Mar 2020 13:47:16 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02JHd8Pr016532;
+        Thu, 19 Mar 2020 18:46:46 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=STMicroelectronics;
+ bh=oXNrCInOKbWks9uJELVsod6DJLx4EuXuc92666BUHsg=;
+ b=joiRPfWQ3YTPizPjgewsnfWMlRMJgf9xM2g+O10bOzXQkut+CiKD/ghpy0SX4W/0hFNs
+ 6SPcYpUfV6hTd1HC1Jh585SCZafcNzTqjGqgAvHy0K4ZcxWsGgwPK06ScXR0WZiLkgWh
+ P8asSmh/YZ+6RVlKkE9DSTW2XVUEw48aLNeO/Mmxtvqd3mAHaN1/ssSpjgBu/LhfbIW2
+ a+vlC5d/y9jeXCp5AuwaCIR7DTRsxbzDNz1MsDeWaiNixgkicUIssL4HcL+l6SYDW52G
+ PndouZu3/uGfmA4ROdoSrP7D23gbdWeI1VodeKkKxrkVYyzr/hXwtFMAYLiwXNnI+q6f bA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2yu95uu1ay-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 19 Mar 2020 18:46:46 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0D2E010002A;
+        Thu, 19 Mar 2020 18:46:40 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C88F42B4D56;
+        Thu, 19 Mar 2020 18:46:40 +0100 (CET)
+Received: from localhost (10.75.127.45) by SFHDAG5NODE3.st.com (10.75.127.15)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 19 Mar 2020 18:46:40
+ +0100
+From:   Fabrice Gasnier <fabrice.gasnier@st.com>
+To:     <robh+dt@kernel.org>, <jic23@kernel.org>
+CC:     <alexandre.torgue@st.com>, <mark.rutland@arm.com>,
+        <mcoquelin.stm32@gmail.com>, <lars@metafoo.de>, <knaack.h@gmx.de>,
+        <pmeerw@pmeerw.net>, <fabrice.gasnier@st.com>,
+        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] dt-bindings: iio: dac: stm32-dac: convert bindings to json-schema
+Date:   Thu, 19 Mar 2020 18:46:23 +0100
+Message-ID: <1584639983-31098-1-git-send-email-fabrice.gasnier@st.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zYM0uCDKw75PZbzx"
-Content-Disposition: inline
-In-Reply-To: <217cb6b1-d3b3-bccf-b081-d4beb0888615@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.45]
+X-ClientProxiedBy: SFHDAG6NODE2.st.com (10.75.127.17) To SFHDAG5NODE3.st.com
+ (10.75.127.15)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
+ definitions=2020-03-19_06:2020-03-19,2020-03-19 signatures=0
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Convert the STM32 DAC binding to DT schema format using json-schema
 
---zYM0uCDKw75PZbzx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
+---
+Changes in v2:
+- Fix id relative path/filename as detected by Rob's bot
+---
+ .../devicetree/bindings/iio/dac/st,stm32-dac.txt   |  63 ------------
+ .../devicetree/bindings/iio/dac/st,stm32-dac.yaml  | 110 +++++++++++++++++++++
+ 2 files changed, 110 insertions(+), 63 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
 
-> On 2020-03-14 13:43, Lorenzo Bianconi wrote:
-> > On Mar 11, Jimmy Assarsson wrote:
-> > > Hi,
-> > >=20
-> > > We are working on a project where we want to connect LS6DSM (via SPI)=
-, and
-> > > connect LIS3MDL via the sensor hub, as I2C slave device.
-> > >=20
-> > > We would like to add settings/configuration for LIS3MDL, to the shub
-> > > source, since currently only LIS2MDL is supported. We've made an atte=
-mpt,
-> > > see diff at end of this mail.
-> > >=20
-> > > 1. LIS2MDL only got a single full scale setting, hence it is not poss=
-ible
-> > >     to change. While LIS3MDL got four possible settings. Is it enough=
- to add
-> > >     a corresponding function like st_lsm6dsx_shub_set_fs_val() and ca=
-ll it
-> > >     from st_lsm6dsx_shub_write_raw(), when mask =3D=3D IIO_CHAN_INFO_=
-SCALE?
-> > > 2. LIS3MDL got 8 possible ODR settings, however ST_LSM6DSX_ODR_LIST_S=
-IZE is
-> > >     defined to 6 (st_lsm6dsx.h). Is it fine to increase
-> > >     ST_LSM6DSX_ODR_LIST_SIZE to 8? This will also affect odr_table in
-> > >     struct st_lsm6dsx_settings.
-> > > 3. In the patch, we've tried to copy the correct registers and values=
- from
-> > >     magnetometer/st_magn_core.c, does it look ok?
-> > >=20
-> > > The IIO subsystem is new to use, we possibly miss fundamental knowled=
-ge.
-> > >=20
-> > > Regards,
-> > > jimmy
-> >=20
-> > Hi Jimmy,
-> >=20
-> > in order to set the full scale on LIS3MDL you can try the following pat=
-ch (just
-> > compiled, not tested)
-> >=20
-> > Regards,
-> > Lorenzo
->=20
-> Hi Lorenzo,
->=20
-> Sorry for the late response and thanks for the patch!
+diff --git a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt
+deleted file mode 100644
+index bf2925c..00000000
+--- a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.txt
++++ /dev/null
+@@ -1,63 +0,0 @@
+-STMicroelectronics STM32 DAC
+-
+-The STM32 DAC is a 12-bit voltage output digital-to-analog converter. The DAC
+-may be configured in 8 or 12-bit mode. It has two output channels, each with
+-its own converter.
+-It has built-in noise and triangle waveform generator and supports external
+-triggers for conversions. The DAC's output buffer allows a high drive output
+-current.
+-
+-Contents of a stm32 dac root node:
+------------------------------------
+-Required properties:
+-- compatible: Should be one of:
+-  "st,stm32f4-dac-core"
+-  "st,stm32h7-dac-core"
+-- reg: Offset and length of the device's register set.
+-- clocks: Must contain an entry for pclk (which feeds the peripheral bus
+-  interface)
+-- clock-names: Must be "pclk".
+-- vref-supply: Phandle to the vref+ input analog reference supply.
+-- #address-cells = <1>;
+-- #size-cells = <0>;
+-
+-Optional properties:
+-- resets: Must contain the phandle to the reset controller.
+-- A pinctrl state named "default" for each DAC channel may be defined to set
+-  DAC_OUTx pin in mode of operation for analog output on external pin.
+-
+-Contents of a stm32 dac child node:
+------------------------------------
+-DAC core node should contain at least one subnode, representing a
+-DAC instance/channel available on the machine.
+-
+-Required properties:
+-- compatible: Must be "st,stm32-dac".
+-- reg: Must be either 1 or 2, to define (single) channel in use
+-- #io-channel-cells = <1>: See the IIO bindings section "IIO consumers" in
+-  Documentation/devicetree/bindings/iio/iio-bindings.txt
+-
+-Example:
+-	dac: dac@40007400 {
+-		compatible = "st,stm32h7-dac-core";
+-		reg = <0x40007400 0x400>;
+-		clocks = <&clk>;
+-		clock-names = "pclk";
+-		vref-supply = <&reg_vref>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&dac_out1 &dac_out2>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		dac1: dac@1 {
+-			compatible = "st,stm32-dac";
+-			#io-channels-cells = <1>;
+-			reg = <1>;
+-		};
+-
+-		dac2: dac@2 {
+-			compatible = "st,stm32-dac";
+-			#io-channels-cells = <1>;
+-			reg = <2>;
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+new file mode 100644
+index 00000000..393f700
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+@@ -0,0 +1,110 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/iio/dac/st,stm32-dac.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: STMicroelectronics STM32 DAC bindings
++
++description: |
++  The STM32 DAC is a 12-bit voltage output digital-to-analog converter. The DAC
++  may be configured in 8 or 12-bit mode. It has two output channels, each with
++  its own converter.
++  It has built-in noise and triangle waveform generator and supports external
++  triggers for conversions. The DAC's output buffer allows a high drive output
++  current.
++
++maintainers:
++  - Fabrice Gasnier <fabrice.gasnier@st.com>
++
++properties:
++  compatible:
++    enum:
++      - st,stm32f4-dac-core
++      - st,stm32h7-dac-core
++
++  reg:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    items:
++      - const: pclk
++
++  vref-supply:
++    description: Phandle to the vref input analog reference voltage.
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - vref-supply
++  - '#address-cells'
++  - '#size-cells'
++
++patternProperties:
++  "^dac@[1-2]+$":
++    type: object
++    description:
++      A DAC block node should contain at least one subnode, representing an
++      DAC instance/channel available on the machine.
++
++    properties:
++      compatible:
++        const: st,stm32-dac
++
++      reg:
++        description: Must be either 1 or 2, to define (single) channel in use
++        enum: [1, 2]
++
++      '#io-channel-cells':
++        const: 1
++
++    additionalProperties: false
++
++    required:
++      - compatible
++      - reg
++      - '#io-channel-cells'
++
++examples:
++  - |
++    // Example on stm32mp157c
++    #include <dt-bindings/clock/stm32mp1-clks.h>
++    dac: dac@40017000 {
++      compatible = "st,stm32h7-dac-core";
++      reg = <0x40017000 0x400>;
++      clocks = <&rcc DAC12>;
++      clock-names = "pclk";
++      vref-supply = <&vref>;
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      dac@1 {
++        compatible = "st,stm32-dac";
++        #io-channel-cells = <1>;
++        reg = <1>;
++      };
++
++      dac@2 {
++        compatible = "st,stm32-dac";
++        #io-channel-cells = <1>;
++        reg = <2>;
++      };
++    };
++
++...
+-- 
+2.7.4
 
-Hi Jimmy,
-
-ok, I will post the patch, thx for testing.
-
->=20
-> The patches seems to work.
-> Are there any specific tests that we should carry out?
-> Via the sysfs interface, we've tested reading raw values of each channel =
-and
-> configuring ODR and full scale.
-
-you can try to enable batching in the hw FIFO doing something like:
-
-$echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_x_en
-$echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_y_en
-$echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_z_en
-$echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_timestamp_en
-
-$watermark=3D64
-$echo $((2*watermark)) > /sys/bus/iio/devices/<iio-magn>/buffer/length
-$echo $watermark > /sys/bus/iio/devices/<iio-magn>/buffer/watermark
-
-$generic_buffer -gn lsm6dsm_magn -c <# of samples>
-
-Regards,
-Lorenzo
-
->=20
-> Regards,
-> jimmy
->=20
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio=
-/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > index 64ef07a30726..fec1dbd5f00d 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > @@ -518,6 +518,36 @@ st_lsm6dsx_shub_read_raw(struct iio_dev *iio_dev,
-> >   	return ret;
-> >   }
-> > +static int
-> > +st_lsm6dsx_shub_set_full_scale(struct st_lsm6dsx_sensor *sensor,
-> > +			       u32 gain)
-> > +{
-> > +	const struct st_lsm6dsx_fs_table_entry *fs_table;
-> > +	int i, err;
-> > +
-> > +	fs_table =3D &sensor->ext_info.settings->fs_table;
-> > +	if (!fs_table->reg.addr)
-> > +		return -ENOTSUPP;
-> > +
-> > +	for (i =3D 0; i < fs_table->fs_len; i++) {
-> > +		if (fs_table->fs_avl[i].gain =3D=3D gain)
-> > +			break;
-> > +	}
-> > +
-> > +	if (i =3D=3D fs_table->fs_len)
-> > +		return -EINVAL;
-> > +
-> > +	err =3D st_lsm6dsx_shub_write_with_mask(sensor, fs_table->reg.addr,
-> > +					      fs_table->reg.mask,
-> > +					      fs_table->fs_avl[i].val);
-> > +	if (err < 0)
-> > +		return err;
-> > +
-> > +	sensor->gain =3D gain;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >   static int
-> >   st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
-> >   			  struct iio_chan_spec const *chan,
-> > @@ -552,6 +582,9 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
-> >   		}
-> >   		break;
-> >   	}
-> > +	case IIO_CHAN_INFO_SCALE:
-> > +		err =3D st_lsm6dsx_shub_set_full_scale(sensor, val2);
-> > +		break;
-> >   	default:
-> >   		err =3D -EINVAL;
-> >   		break;
-> >=20
-> > >=20
-> > > ---
-> > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/i=
-io/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > > index eea5556..8621dba 100644
-> > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > > @@ -88,6 +88,69 @@ static const struct st_lsm6dsx_ext_dev_settings st=
-_lsm6dsx_ext_dev_table[] =3D {
-> > >   			.len =3D 6,
-> > >   		},
-> > >   	},
-> > > +	/* LIS3MDL */
-> > > +	{
-> > > +		.i2c_addr =3D { 0x1e },
-> > > +		.wai =3D {
-> > > +			.addr =3D 0x0f,
-> > > +			.val =3D 0x3d,
-> > > +		},
-> > > +		.id =3D ST_LSM6DSX_ID_MAGN,
-> > > +		.odr_table =3D {
-> > > +			.reg =3D {
-> > > +				.addr =3D 0x20,
-> > > +				.mask =3D GENMASK(4, 2),
-> > > +			},
-> > > +			.odr_avl[0] =3D {  1000, 0x0 },
-> > > +			.odr_avl[1] =3D {  2000, 0x1 },
-> > > +			.odr_avl[2] =3D {  3000, 0x2 },
-> > > +			.odr_avl[3] =3D {  5000, 0x3 },
-> > > +			.odr_avl[4] =3D { 10000, 0x4 },
-> > > +			.odr_avl[5] =3D { 20000, 0x5 },
-> > > +			.odr_avl[6] =3D { 40000, 0x6 },
-> > > +			.odr_avl[7] =3D { 80000, 0x7 },
-> > > +			.odr_len =3D 8,
-> > > +		},
-> > > +		.fs_table =3D {
-> > > +			.reg =3D {
-> > > +				.addr =3D 0x21,
-> > > +				.mask =3D GENMASK(6, 5),
-> > > +			},
-> > > +			.fs_avl[0] =3D {
-> > > +				.gain =3D 146,
-> > > +				.val =3D 0x00,
-> > > +			}, /* 4000 uG/LSB */
-> > > +			.fs_avl[1] =3D {
-> > > +				.gain =3D 292,
-> > > +				.val =3D 0x01,
-> > > +			}, /* 8000 uG/LSB */
-> > > +			.fs_avl[2] =3D {
-> > > +				.gain =3D 438,
-> > > +				.val =3D 0x02,
-> > > +			}, /* 12000 uG/LSB */
-> > > +			.fs_avl[3] =3D {
-> > > +				.gain =3D 584,
-> > > +				.val =3D 0x03,
-> > > +			}, /* 16000 uG/LSB */
-> > > +			.fs_len =3D 4,
-> > > +		},
-> > > +		.pwr_table =3D {
-> > > +			.reg =3D {
-> > > +				.addr =3D 0x22,
-> > > +				.mask =3D GENMASK(1, 0),
-> > > +			},
-> > > +			.off_val =3D 0x2,
-> > > +			.on_val =3D 0x0,
-> > > +		},
-> > > +		.bdu =3D {
-> > > +			.addr =3D 0x24,
-> > > +			.mask =3D BIT(6),
-> > > +		},
-> > > +		.out =3D {
-> > > +			.addr =3D 0x28,
-> > > +			.len =3D 6,
-> > > +		},
-> > > +	},
-> > >   };
-
---zYM0uCDKw75PZbzx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXnOulAAKCRA6cBh0uS2t
-rDrrAQCd+yoxxie7CMHLMg63CD9ZNE2DvjZNDicJJMSti5wmjwD/ZgykRvronoaw
-0edhQjKgiff0Y/mdQvP1lUMo2cYN+g8=
-=03j3
------END PGP SIGNATURE-----
-
---zYM0uCDKw75PZbzx--

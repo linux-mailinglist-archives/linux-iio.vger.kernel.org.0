@@ -2,78 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 815EC18BDB9
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Mar 2020 18:13:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F312518BDE4
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Mar 2020 18:23:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728630AbgCSRMz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Mar 2020 13:12:55 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:46073 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727564AbgCSRMy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Mar 2020 13:12:54 -0400
-Received: by mail-io1-f65.google.com with SMTP id e20so2644388ios.12;
-        Thu, 19 Mar 2020 10:12:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=yjdXxP3e2wpG/l7NWK6DuDmfBjGoZQM8YvboOq+g7g0=;
-        b=q36m784BlzP+5dMUYG4Cvr07uB4e8mqQwMY1ZouKOGIg7m81jNtLlR5uL3LfCSaxW3
-         o798OvXP9kMDAsjOztu1eHO2V+Br+yh+GHfsx0V6yAqRsKqVt0XXGshF55JwFSDOLWNS
-         QKlj/8o6lu6y52K+XPag5CruPWaEQtGH64u6MFvXGBOLFTWr3qCGlZcExghp0kzraQea
-         m3521P7vkgbN7AAEx0wdfF1l6/8WS3NEd23/O8Ef4ZNc+hdhbYpMs1sjhLc0ARFCeKH7
-         +F1sDlDUw50PQOSVwiJZdRhMEq5MUuYi0hG/GIPSppxmZbuv19Q/M2niy8ffhPddAMmu
-         ZAZg==
-X-Gm-Message-State: ANhLgQ3UncpD063svQMmJge2xm2EOCTmM8TbT8xN0DLLdLFRT523KF9o
-        LPy5U+D+OFma1ZqJP4WnJw==
-X-Google-Smtp-Source: ADFU+vt/3mP0N3TAh9zjuCMufES4VN4ncBMPZcxaQCjBQ9DTKU7vUU/BzJycRBTeTbllCakvwTHedg==
-X-Received: by 2002:a5d:9315:: with SMTP id l21mr3648105ion.122.1584637973687;
-        Thu, 19 Mar 2020 10:12:53 -0700 (PDT)
-Received: from rob-hp-laptop ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id d70sm1053550ill.57.2020.03.19.10.12.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2020 10:12:53 -0700 (PDT)
-Received: (nullmailer pid 18786 invoked by uid 1000);
-        Thu, 19 Mar 2020 17:12:52 -0000
-Date:   Thu, 19 Mar 2020 11:12:52 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Michael Auchter <michael.auchter@ni.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Michael Auchter <michael.auchter@ni.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: iio: dac: ad5686: add binding
-Message-ID: <20200319171252.GA18056@bogus>
-References: <20200318153434.62833-1-michael.auchter@ni.com>
- <20200318153434.62833-3-michael.auchter@ni.com>
+        id S1727192AbgCSRXO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Mar 2020 13:23:14 -0400
+Received: from mail.andi.de1.cc ([85.214.55.253]:54976 "EHLO mail.andi.de1.cc"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727235AbgCSRXO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 19 Mar 2020 13:23:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
+        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=ovRcEyST6vxl255ZVDdgE7BcGNIyoIHopOrx8AXs9gM=; b=Dbw47AkXiYvUXThvxlbZtE+DA
+        Y0GxYKJ++idEBgCvWNVod6japta8/yN72xUPkCPPP9cLPscL1qCYO1+Dyz4vX/6ojKSkPypZA9rDV
+        ozk0eFteFa9eJ6y16X1fWRjCKU2YsyOdZoPCk5n4YrU1Mr/ANH5p8ls+P6qOQsVysl1Bw=;
+Received: from p200300ccff0fcb00e2cec3fffe93fc31.dip0.t-ipconnect.de ([2003:cc:ff0f:cb00:e2ce:c3ff:fe93:fc31] helo=eeepc)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1jEysi-0003to-BZ; Thu, 19 Mar 2020 18:22:56 +0100
+Received: from [::1] (helo=localhost)
+        by eeepc with esmtp (Exim 4.92)
+        (envelope-from <andreas@kemnade.info>)
+        id 1jEysh-0004Yu-8T; Thu, 19 Mar 2020 18:22:55 +0100
+Date:   Thu, 19 Mar 2020 18:22:46 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     robh+dt@kernel.org, mark.rutland@arm.com, a.zummo@towertech.it,
+        alexandre.belloni@bootlin.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
+        stefan@agner.ch, b.galvani@gmail.com, phh@phh.me,
+        letux-kernel@openphoenux.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, jic23@kernel.org
+Subject: Re: [PATCH RESEND v6 2/7] mfd: rn5t618: add IRQ support
+Message-ID: <20200319182246.27d4809b@kemnade.info>
+In-Reply-To: <20200319161149.GB5477@dell>
+References: <20200313064535.31503-1-andreas@kemnade.info>
+        <20200313064535.31503-3-andreas@kemnade.info>
+        <20200319161149.GB5477@dell>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200318153434.62833-3-michael.auchter@ni.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/siGgyZ4Qye9Mavy.deiaD6/"; protocol="application/pgp-signature"
+X-Spam-Score: -1.0 (-)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 18 Mar 2020 10:34:34 -0500, Michael Auchter wrote:
-> Add a binding for AD5686
-> 
-> Signed-off-by: Michael Auchter <michael.auchter@ni.com>
-> ---
->  .../bindings/iio/dac/adi,ad5686.yaml          | 61 +++++++++++++++++++
->  1 file changed, 61 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
-> 
+--Sig_/siGgyZ4Qye9Mavy.deiaD6/
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-My bot found errors running 'make dt_binding_check' on your patch:
+On Thu, 19 Mar 2020 16:11:49 +0000
+Lee Jones <lee.jones@linaro.org> wrote:
 
-Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml: $id: relative path/filename doesn't match actual path or filename
-	expected: http://devicetree.org/schemas/iio/dac/adi,ad5686.yaml#
+> On Fri, 13 Mar 2020, Andreas Kemnade wrote:
+[...]
+I agree to the other comments.
 
-See https://patchwork.ozlabs.org/patch/1257638
-Please check and re-submit.
+> > +	if (priv->irq > 0) { =20
+>=20
+> There are already have checks in rn5t618_irq_init().
+>=20
+> Just call it regardless.
+>=20
+> > +		if (rn5t618_irq_init(priv)) =20
+>=20
+> If this returns an error, you should return that error from .probe().
+>=20
+Hmm, that would be a regression. Current users do not specify an interrupt
+in the devicetree yet, so the MFD driver would stop working on these devices
+completely.
+Therefore I think we should keep the existing functionality if there is no
+IRQ specified in the devicetree and ignore the error. The new subdevices
+are checking the IRQ availability and give error messages and have
+reduced functionality.
+
+Regards,
+Andreas
+
+--Sig_/siGgyZ4Qye9Mavy.deiaD6/
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl5zqmcACgkQl4jFM1s/
+ye9G7w//WlnawIpi36NIAadLtast9vu33weBJVgKnN3mfwzi5RbM/l5IAVJZH+uN
+gpKeObNx1hxpWNresKQfEnEapfmnINbb6l3v4JzoiGtpyWWZeb1jFrWZjzxhqtMv
+oqqfUkhETSDajTzt+siADhGd/CcldVY9oZOsGOzzAyO7hTKqP1wLaYi3ZcHTKE2q
+HgXYnqYUMANhN1M9uWgAIt4uz41uHrvoFpnL8X1nUj3cEUU3L7ik1lK4uuDFcnQQ
+Yu5EA27appMEeLf3scttVFfec9854vq7lxbLHWd1qnS/9R5QFxxguL3EOWLI5FGz
+WW5VPTY6ke+s3Srf5fj6ZZuiVzyScXWTMFnaIgo0wHieeAA8yVcd5DG7qJrB03nE
+2nRz/IdvHdMLJPAeMOYM9NMqYkbJtB6u19IFVvr9G+5tEAlhTeYqwbRp8W5CSY6N
+8oY2Dd6wDJjQWfQ6nadeQ97hKIZhKQzLV0ApFLVI+hbP3v1QwGUNu+lWxO9Hm7yl
+LuUFK4vnj/BWiCNzlZAJHq2E3N/wwVcIMtKBp5Xl4QXxNUgVD1VjDFdcYCyHfZUy
+Xb6WWsn8t+dvby2nUGJm6WyNKoUzeb+HFh2R2YoeTNFO6sz1lo2aVFFq4oxSDK/F
+yF/FaLCKTTCfbHlUN6nR9yCeXKqYzt+dUIiKYepMLuN/1Ddu3tk=
+=DMzN
+-----END PGP SIGNATURE-----
+
+--Sig_/siGgyZ4Qye9Mavy.deiaD6/--

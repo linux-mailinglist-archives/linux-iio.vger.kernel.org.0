@@ -2,89 +2,286 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8C6B18BF33
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Mar 2020 19:19:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 171E718BF95
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Mar 2020 19:45:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726912AbgCSSTU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Mar 2020 14:19:20 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:35317 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726663AbgCSSTU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Mar 2020 14:19:20 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02JIEBPw006390;
-        Thu, 19 Mar 2020 19:18:54 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=/NryDuotj7GwNZeRIKiNEE04efcoGmBTQAarcZjEeEM=;
- b=ilA6UgYTk/SDj4tn5Z6fnFBav5jjz1+QPUuhykOWCICXnTQbuN9lCImuGO5mfM74pK5G
- zwHzIGNe8OZtgvP8b5h5uHX0X664bbc8r2oBXBCViIyVq6UU8eCUfmYGPO8UL857euAg
- Gl2bMIbLLfn8BKroKXWRAudQVM0xht+L59+g07dQg8c9X9ox8mDre43QM2mDXwS8j4Ck
- v6Pfv3qj514b276Bct9qyAKQAjVmywK3rRSN3IDEN3TU36uvbU9i3ZJugxrVWoWsB56w
- SGT5h/Ct2mhkqEEqorqZVUL2hJ2XgJY3U4MJC3z/gG+fMxSwKZdKbI9BlZoXv0KbXF4e +w== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2yu8etkc0q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Mar 2020 19:18:54 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 733AC10002A;
-        Thu, 19 Mar 2020 19:18:49 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag5node3.st.com [10.75.127.15])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3AC7A2A70CB;
-        Thu, 19 Mar 2020 19:18:49 +0100 (CET)
-Received: from localhost (10.75.127.47) by SFHDAG5NODE3.st.com (10.75.127.15)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 19 Mar 2020 19:18:48
- +0100
-From:   Fabrice Gasnier <fabrice.gasnier@st.com>
-To:     <robh+dt@kernel.org>, <jic23@kernel.org>
-CC:     <alexandre.torgue@st.com>, <mark.rutland@arm.com>,
-        <mcoquelin.stm32@gmail.com>, <lars@metafoo.de>, <knaack.h@gmx.de>,
-        <pmeerw@pmeerw.net>, <fabrice.gasnier@st.com>,
-        <olivier.moysan@st.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] dt-bindings: iio: adc: stm32-adc: fix id relative path
-Date:   Thu, 19 Mar 2020 19:18:27 +0100
-Message-ID: <1584641907-8228-1-git-send-email-fabrice.gasnier@st.com>
-X-Mailer: git-send-email 2.7.4
+        id S1726663AbgCSSpr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Mar 2020 14:45:47 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:41489 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726589AbgCSSpq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Mar 2020 14:45:46 -0400
+Received: by mail-lj1-f194.google.com with SMTP id o10so3697446ljc.8
+        for <linux-iio@vger.kernel.org>; Thu, 19 Mar 2020 11:45:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=zhyrOcb0AkX/SlvnqHPqKpN6VvRz9fxS/CUk59MBVuw=;
+        b=tiH6gI+rh3Gb+bNDFXkdNskdn+PlYVxxGg8WhXI6LxlnxSd54QL1BbZuAww+gMGgL5
+         69KBHhlLGgYl3YFyZjI32yl/vkefZNk2FITRE1Acav7jjH1dgUmTV6WxpJbRmBDbMqNp
+         R+0Th9o9BdA8XSf6EonSuUnzwOMjRiWh0XUnL5CD6DrKboXG0ab/y83iKfQPs0SlEuIF
+         /vFQCUYH4DbT68gWhgdnUnT9kZnKHMeaaHl1P2n7SkaD3QWy9geN/m8WpYOOHBOfb7+Y
+         WbmBOTks1/Jv2hJQV9NbiiW7KxuqhLTTH6VqLA/ZII1lse5m3N2JEz3wEUMB/lQboIsy
+         mWEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=zhyrOcb0AkX/SlvnqHPqKpN6VvRz9fxS/CUk59MBVuw=;
+        b=fcuPsE4ZKHUicH/j7WF/fqOlLRDT8ebC3GN4w2eq7dEzWikfdgEuA1aQ5P3+zK8Y6x
+         lxgbiRMSyli6zdLNyb/GdZ59xQA3cEMTuL9pm+DHzProrr1+eEFVymzKtAYnqcm8RdZ6
+         sbj+ezdZB+7xXvRJQdmU1oQsu34T/bfS1BNvvN1WiytkXLo2kA818gWbaqmM0zPl/0fQ
+         rt/1zvYZvZK6spdAZ1FlsHuPypTRIPG+qqw0yiTaql5BLIcQnQ+Ta89ILZ2KmgXcD9W0
+         9kIstKlMN1t5ZZoPZ1qZzpOq+lCweDzpZcw2U6803g/eYoaXp0bwiIuV/15LqsvISjdt
+         qtZw==
+X-Gm-Message-State: ANhLgQ0eFBR/ZdvIt+/DYSpd5/QQWDh61YCnCtCtTDIJRzd2A0U68bO6
+        SiDCX+7Xs4b5m4OvnBhxE9QaV+is
+X-Google-Smtp-Source: ADFU+vtsBVFlgnSmek1oiqxPhkvC/WX5X8ZtXI/NDfRbIi/33YX25B/1rtmFm6Ryr13hIDQZmwKGhw==
+X-Received: by 2002:a2e:81cc:: with SMTP id s12mr3077545ljg.35.1584643542952;
+        Thu, 19 Mar 2020 11:45:42 -0700 (PDT)
+Received: from [192.168.16.194] (h-4-68-234.A785.priv.bahnhof.se. [155.4.68.234])
+        by smtp.googlemail.com with ESMTPSA id u14sm2271765ljj.54.2020.03.19.11.45.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Mar 2020 11:45:42 -0700 (PDT)
+Subject: Re: Use LIS3MDL with LSM6DSM sensor-hub
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org
+References: <f8489de0-c6a4-f786-b936-679eba6d6804@gmail.com>
+ <20200314124324.GA144176@lore-desk-wlan>
+ <217cb6b1-d3b3-bccf-b081-d4beb0888615@gmail.com>
+ <20200319174039.GA1564882@lore-desk-wlan>
+From:   Jimmy Assarsson <jimmyassarsson@gmail.com>
+Message-ID: <ef4aa50f-4aa6-cb87-06b6-913e2abbb23c@gmail.com>
+Date:   Thu, 19 Mar 2020 19:45:41 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG5NODE3.st.com
- (10.75.127.15)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
- definitions=2020-03-19_07:2020-03-19,2020-03-19 signatures=0
+In-Reply-To: <20200319174039.GA1564882@lore-desk-wlan>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix id relative path that shouldn't contain 'bindings', as pointed out
-when submitting st,stm32-dac bindings conversion to json-schema [1].
-[1] https://patchwork.ozlabs.org/patch/1257568/
+On 2020-03-19 18:40, Lorenzo Bianconi wrote:
+>> On 2020-03-14 13:43, Lorenzo Bianconi wrote:
+>>> On Mar 11, Jimmy Assarsson wrote:
+>>>> Hi,
+>>>>
+>>>> We are working on a project where we want to connect LS6DSM (via SPI), and
+>>>> connect LIS3MDL via the sensor hub, as I2C slave device.
+>>>>
+>>>> We would like to add settings/configuration for LIS3MDL, to the shub
+>>>> source, since currently only LIS2MDL is supported. We've made an attempt,
+>>>> see diff at end of this mail.
+>>>>
+>>>> 1. LIS2MDL only got a single full scale setting, hence it is not possible
+>>>>      to change. While LIS3MDL got four possible settings. Is it enough to add
+>>>>      a corresponding function like st_lsm6dsx_shub_set_fs_val() and call it
+>>>>      from st_lsm6dsx_shub_write_raw(), when mask == IIO_CHAN_INFO_SCALE?
+>>>> 2. LIS3MDL got 8 possible ODR settings, however ST_LSM6DSX_ODR_LIST_SIZE is
+>>>>      defined to 6 (st_lsm6dsx.h). Is it fine to increase
+>>>>      ST_LSM6DSX_ODR_LIST_SIZE to 8? This will also affect odr_table in
+>>>>      struct st_lsm6dsx_settings.
+>>>> 3. In the patch, we've tried to copy the correct registers and values from
+>>>>      magnetometer/st_magn_core.c, does it look ok?
+>>>>
+>>>> The IIO subsystem is new to use, we possibly miss fundamental knowledge.
+>>>>
+>>>> Regards,
+>>>> jimmy
+>>>
+>>> Hi Jimmy,
+>>>
+>>> in order to set the full scale on LIS3MDL you can try the following patch (just
+>>> compiled, not tested)
+>>>
+>>> Regards,
+>>> Lorenzo
+>>
+>> Hi Lorenzo,
+>>
+>> Sorry for the late response and thanks for the patch!
+> 
+> Hi Jimmy,
+> 
+> ok, I will post the patch, thx for testing.
 
-Fixes: a8cf1723c4b7 ("dt-bindings: iio: adc: stm32-adc: convert bindings to json-schema")
+Great, you can add
+Tested-by: Jimmy Assarsson <jimmyassarsson@gmail.com>
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@st.com>
----
- Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>> The patches seems to work.
+>> Are there any specific tests that we should carry out?
+>> Via the sysfs interface, we've tested reading raw values of each channel and
+>> configuring ODR and full scale.
+> 
+> you can try to enable batching in the hw FIFO doing something like:
+> 
+> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_x_en
+> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_y_en
+> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_z_en
+> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_timestamp_en
+> 
+> $watermark=64
+> $echo $((2*watermark)) > /sys/bus/iio/devices/<iio-magn>/buffer/length
+> $echo $watermark > /sys/bus/iio/devices/<iio-magn>/buffer/watermark
+> 
+> $generic_buffer -gn lsm6dsm_magn -c <# of samples>
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-index 933ba37..dd8eb15 100644
---- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/bindings/iio/adc/st,stm32-adc.yaml#"
-+$id: "http://devicetree.org/schemas/iio/adc/st,stm32-adc.yaml#"
- $schema: "http://devicetree.org/meta-schemas/core.yaml#"
- 
- title: STMicroelectronics STM32 ADC bindings
--- 
-2.7.4
+Ok. I don't got any scan_elements nor buffer directory, for any of the devices.
+I guess it is not possible to use the FIFO without configuring any interrupt?
+We got the following dts:
+&spi1 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	lsm6dsm@0 {
+		compatible = "st,lsm6dsm";
+		reg = <0x0>;
 
+		spi-max-frequency = <500000>;
+		st,pullups = "true";
+	};
+};
+
+I'll look into this tomorrow or in the beginning of next week, thanks for the help.
+
+Regards,
+jimmy
+
+> 
+> Regards,
+> Lorenzo
+> 
+>>
+>> Regards,
+>> jimmy
+>>
+>>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+>>> index 64ef07a30726..fec1dbd5f00d 100644
+>>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+>>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+>>> @@ -518,6 +518,36 @@ st_lsm6dsx_shub_read_raw(struct iio_dev *iio_dev,
+>>>    	return ret;
+>>>    }
+>>> +static int
+>>> +st_lsm6dsx_shub_set_full_scale(struct st_lsm6dsx_sensor *sensor,
+>>> +			       u32 gain)
+>>> +{
+>>> +	const struct st_lsm6dsx_fs_table_entry *fs_table;
+>>> +	int i, err;
+>>> +
+>>> +	fs_table = &sensor->ext_info.settings->fs_table;
+>>> +	if (!fs_table->reg.addr)
+>>> +		return -ENOTSUPP;
+>>> +
+>>> +	for (i = 0; i < fs_table->fs_len; i++) {
+>>> +		if (fs_table->fs_avl[i].gain == gain)
+>>> +			break;
+>>> +	}
+>>> +
+>>> +	if (i == fs_table->fs_len)
+>>> +		return -EINVAL;
+>>> +
+>>> +	err = st_lsm6dsx_shub_write_with_mask(sensor, fs_table->reg.addr,
+>>> +					      fs_table->reg.mask,
+>>> +					      fs_table->fs_avl[i].val);
+>>> +	if (err < 0)
+>>> +		return err;
+>>> +
+>>> +	sensor->gain = gain;
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>>    static int
+>>>    st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+>>>    			  struct iio_chan_spec const *chan,
+>>> @@ -552,6 +582,9 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+>>>    		}
+>>>    		break;
+>>>    	}
+>>> +	case IIO_CHAN_INFO_SCALE:
+>>> +		err = st_lsm6dsx_shub_set_full_scale(sensor, val2);
+>>> +		break;
+>>>    	default:
+>>>    		err = -EINVAL;
+>>>    		break;
+>>>
+>>>>
+>>>> ---
+>>>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+>>>> index eea5556..8621dba 100644
+>>>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+>>>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+>>>> @@ -88,6 +88,69 @@ static const struct st_lsm6dsx_ext_dev_settings st_lsm6dsx_ext_dev_table[] = {
+>>>>    			.len = 6,
+>>>>    		},
+>>>>    	},
+>>>> +	/* LIS3MDL */
+>>>> +	{
+>>>> +		.i2c_addr = { 0x1e },
+>>>> +		.wai = {
+>>>> +			.addr = 0x0f,
+>>>> +			.val = 0x3d,
+>>>> +		},
+>>>> +		.id = ST_LSM6DSX_ID_MAGN,
+>>>> +		.odr_table = {
+>>>> +			.reg = {
+>>>> +				.addr = 0x20,
+>>>> +				.mask = GENMASK(4, 2),
+>>>> +			},
+>>>> +			.odr_avl[0] = {  1000, 0x0 },
+>>>> +			.odr_avl[1] = {  2000, 0x1 },
+>>>> +			.odr_avl[2] = {  3000, 0x2 },
+>>>> +			.odr_avl[3] = {  5000, 0x3 },
+>>>> +			.odr_avl[4] = { 10000, 0x4 },
+>>>> +			.odr_avl[5] = { 20000, 0x5 },
+>>>> +			.odr_avl[6] = { 40000, 0x6 },
+>>>> +			.odr_avl[7] = { 80000, 0x7 },
+>>>> +			.odr_len = 8,
+>>>> +		},
+>>>> +		.fs_table = {
+>>>> +			.reg = {
+>>>> +				.addr = 0x21,
+>>>> +				.mask = GENMASK(6, 5),
+>>>> +			},
+>>>> +			.fs_avl[0] = {
+>>>> +				.gain = 146,
+>>>> +				.val = 0x00,
+>>>> +			}, /* 4000 uG/LSB */
+>>>> +			.fs_avl[1] = {
+>>>> +				.gain = 292,
+>>>> +				.val = 0x01,
+>>>> +			}, /* 8000 uG/LSB */
+>>>> +			.fs_avl[2] = {
+>>>> +				.gain = 438,
+>>>> +				.val = 0x02,
+>>>> +			}, /* 12000 uG/LSB */
+>>>> +			.fs_avl[3] = {
+>>>> +				.gain = 584,
+>>>> +				.val = 0x03,
+>>>> +			}, /* 16000 uG/LSB */
+>>>> +			.fs_len = 4,
+>>>> +		},
+>>>> +		.pwr_table = {
+>>>> +			.reg = {
+>>>> +				.addr = 0x22,
+>>>> +				.mask = GENMASK(1, 0),
+>>>> +			},
+>>>> +			.off_val = 0x2,
+>>>> +			.on_val = 0x0,
+>>>> +		},
+>>>> +		.bdu = {
+>>>> +			.addr = 0x24,
+>>>> +			.mask = BIT(6),
+>>>> +		},
+>>>> +		.out = {
+>>>> +			.addr = 0x28,
+>>>> +			.len = 6,
+>>>> +		},
+>>>> +	},
+>>>>    };

@@ -2,33 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E13BE18D205
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Mar 2020 15:56:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E27E318D206
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Mar 2020 15:56:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726983AbgCTO4z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Mar 2020 10:56:55 -0400
-Received: from mx-out2.startmail.com ([145.131.90.155]:51425 "EHLO
+        id S1726986AbgCTO45 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Mar 2020 10:56:57 -0400
+Received: from mx-out2.startmail.com ([145.131.90.155]:45571 "EHLO
         mx-out2.startmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726954AbgCTO4z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Mar 2020 10:56:55 -0400
+        with ESMTP id S1726954AbgCTO45 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Mar 2020 10:56:57 -0400
 From:   Alexandru Lazar <alazar@startmail.com>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=startmail.com;
-        s=2017-11; t=1584716212;
-        bh=sZD0qWHqFqESLhv5Lfz3UbS8xmvjsTflHa3pdsR+j74=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ELtOtXxsWBfWi8U4ybnW8KdB/WFIQ+qrIaTzOiGI7/v9sNqCI5SHdFl4Cs2y6pF3e
-         O6dTaMqigrzlc5NGLjc/JdXNo1/4TvT1AfMejK1yLTU8OjPupgAffs2+ZeuJYDuuF1
-         mFccLUzKIsw/d96H9PfkrsuUU6JZVqSjaXX4FUxEeIZTBlocfXYUAGGE/E3Pv+J1As
-         TyZRWD8oPAYbJDBNUGamS62oAWvGznmvABHl6qL9z40J6nJfBjMDD622Jifvbn3Q3y
-         QAAESMf0Dc5uHYsWLYrnhs2PGxK1Ul4whnSW7Ius3ZnzsokDrzzHXqtPnC2Pjn1rGs
-         //xrQ16qq+msw==
+        s=2017-11; t=1584716215;
+        bh=BDMdTrRlnXEyFmyRKV7vZNwqmtPAlf9h0jxHDoYIymc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=MXtuA5rXX2SpDi9VENihjyQADPuvVTNyQeb98aVeSgI32XnjfHx8LuPcxJKNjGDZO
+         9T+N4aa2FzvvCKkwrVeuHnD3O2eaOJCHxYagUnDrRk0MuWyXtKhZG3NI0jFHWHy5sZ
+         1xvMqwKL/7KROWothBrdY0mDLUVXLpssVOezYV5HpyKYQQwMJuP3T2y4bPtU+NPsOS
+         fmCr+T7Tzh6lzibUB/haqt4AvwtM3ETMlQlyt0Gq0BPVu0xQkX969Tf8isNFpn8k1A
+         8sz7FCNY8rmkASZLqdZQ4gxYyQ4K/JXcjn2J8Axgy1PtN3AFxVxWZI6mCA0ZRIEU7M
+         g8kkOFGAciEMA==
 To:     linux-iio@vger.kernel.org
 Cc:     devicetree@vger.kernel.org, jic23@kernel.org, knaack.h@gmx.de,
         lars@metafoo.de, pmeerw@pmeerw.net, robh+dt@kernel.org,
         mark.rutland@arm.com, Alexandru Lazar <alazar@startmail.com>
-Subject: [PATCH v4 0/2] Maxim MAX1241 driver
-Date:   Fri, 20 Mar 2020 17:01:13 +0200
-Message-Id: <20200320150114.9297-1-alazar@startmail.com>
+Subject: [PATCH v4 1/2] dt-bindings: iio: adc: Add MAX1241 device tree bindings in documentation
+Date:   Fri, 20 Mar 2020 17:01:14 +0200
+Message-Id: <20200320150114.9297-2-alazar@startmail.com>
+In-Reply-To: <20200320150114.9297-1-alazar@startmail.com>
+References: <20200320150114.9297-1-alazar@startmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
@@ -36,60 +38,81 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello again,
+Add device-tree bindings documentation for the MAX1241 device driver.
 
-Here's version 4 of a patch series which adds support for the Maxim
-MAX1241, a 12-bit, single-channel, SPI-connected ADC.
-
-Changelog so far:
-
-v4:
-
-* Dropped explicit documentation of SPI reg property
-* Reordered patch series so that dt bindings come first
-
-v3:
-
-* Fixed silly copy-paste error in Kconfig description
-
-v2:
-
-* Removed useeless header includes
-* Dropped needlessly verbose stuff in _read and _probe functions
-* Dropped useless GPL notice
-* Lowered log level of shdn pin status in probe function, now it's
-  dev_dbg
-* Added proper error checking for the GPIO shutdown pin
-* remove now always returns zero (man, I've been wrong about this for
-  *years* now...)
-* Added regulator disable action, cleanup is now handled via devm
-* Drop delay_usecs, use delay.value, delay.unit
-* Drop config_of, of_match_ptr call
-* Dropped IIO_BUFFER, IIO_TRIGGERED_BUFFER dependencies, set SPI_MASTER
-  as dependency, fix indenting.
-* DT binding: use correct id, add reg description (looks pretty
-  standard), dropped spi-max-frequency, fixed dt_binding_check
-  complaints (oops!)
-
-Apologies for the last botched message -- my machine died at the
-wrongest possible time.
-
-All the best,
-Alex
-
-Alexandru Lazar (2):
-  dt-bindings: iio: adc: Add MAX1241 device tree bindings in
-    documentation
-  iio: adc: Add MAX1241 driver
-
- .../bindings/iio/adc/maxim,max1241.yaml       |  61 ++++++
- drivers/iio/adc/Kconfig                       |  10 +
- drivers/iio/adc/Makefile                      |   1 +
- drivers/iio/adc/max1241.c                     | 206 ++++++++++++++++++
- 4 files changed, 278 insertions(+)
+Signed-off-by: Alexandru Lazar <alazar@startmail.com>
+---
+ .../bindings/iio/adc/maxim,max1241.yaml       | 61 +++++++++++++++++++
+ 1 file changed, 61 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max1241.yaml
- create mode 100644 drivers/iio/adc/max1241.c
 
+diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max1241.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max1241.yaml
+new file mode 100644
+index 000000000000..de41d422ce3b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/maxim,max1241.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: GPL-2.0
++# Copyright 2020 Ioan-Alexandru Lazar
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/maxim,max1241.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Maxim MAX1241 12-bit, single-channel analog to digital converter
++
++maintainers:
++  - Ioan-Alexandru Lazar <alazar@startmail.com>
++
++description: |
++  Bindings for the max1241 12-bit, single-channel ADC device. This
++  driver supports voltage reading and can optionally be configured for
++  power-down mode operation. The datasheet can be found at:
++    https://datasheets.maximintegrated.com/en/ds/MAX1240-MAX1241.pdf
++
++properties:
++  compatible:
++    enum:
++      - maxim,max1241
++
++  reg:
++    maxItems: 1
++
++  vref-supply:
++    description:
++      Device tree identifier of the regulator that provides the external
++      reference voltage.
++    maxItems: 1
++
++  shdn-gpios:
++    description:
++      GPIO spec for the GPIO pin connected to the ADC's /SHDN pin. If
++      specified, the /SHDN pin will be asserted between conversions,
++      thus enabling power-down mode.
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - vref-supply
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    spi0 {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++        adc@0 {
++            compatible = "maxim,max1241";
++            reg = <0>;
++            vref-supply = <&vdd_3v3_reg>;
++            spi-max-frequency = <1000000>;
++            shdn-gpios = <&gpio 26 1>;
++        };
++    };
++
++
 -- 
 2.25.2
 

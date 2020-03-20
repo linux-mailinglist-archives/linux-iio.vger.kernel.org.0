@@ -2,14 +2,14 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB1118C8BC
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Mar 2020 09:12:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D67D218C8C2
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Mar 2020 09:12:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727103AbgCTILu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Mar 2020 04:11:50 -0400
-Received: from mail.andi.de1.cc ([85.214.55.253]:51334 "EHLO mail.andi.de1.cc"
+        id S1727163AbgCTIL7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Mar 2020 04:11:59 -0400
+Received: from mail.andi.de1.cc ([85.214.55.253]:51356 "EHLO mail.andi.de1.cc"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726843AbgCTILb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S1726834AbgCTILb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Fri, 20 Mar 2020 04:11:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
@@ -17,17 +17,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=BWSO0GEnFuwCd56UyPa2qPit9eRUDoC3PkmwZirRPf0=; b=BkVTGRMKo3AJ46eZePO4KUOp7f
-        vlDYPMbFAdLtbCywKEM5AvDOYqbPs0TFXk8ctMuKaN07ndh29kK4JM2XOfRJPsae0yNUlo2UFgNF3
-        4oBu4bWWWbc+s9JqiI6bA8/GWUNiuUpD3tf9o6nNshlJrBYDE5JScE9wyOP8Y14WuGi4=;
+        bh=s/jpbJXvX0poWDXg12dxzkxm8UtMRubj6+CdqKO528s=; b=nvA9mhbbLU0G5Bo/PUEo0Vg4zu
+        aGAyu6qMNoAqC1J7jYMPfU9ZPafmRl5QAhdJl0JJfK9NrjnmA0LM2yeeVgZ6T8BOX2rYeqnhMnifg
+        q6hcb+bNgEixNZvx+SsR65fVMU9P3vXnMF+QEySbKVNc97F7l/WwvAWFGWryXmj/NWh8=;
 Received: from p200300ccff093a00e2cec3fffe93fc31.dip0.t-ipconnect.de ([2003:cc:ff09:3a00:e2ce:c3ff:fe93:fc31] helo=eeepc)
         by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <andreas@kemnade.info>)
-        id 1jFCkP-00058X-5c; Fri, 20 Mar 2020 09:11:18 +0100
+        id 1jFCkP-00058R-7R; Fri, 20 Mar 2020 09:11:18 +0100
 Received: from andi by eeepc with local (Exim 4.92)
         (envelope-from <andreas@kemnade.info>)
-        id 1jFCkI-00039T-Os; Fri, 20 Mar 2020 09:11:10 +0100
+        id 1jFCkJ-00039W-Bd; Fri, 20 Mar 2020 09:11:11 +0100
 From:   Andreas Kemnade <andreas@kemnade.info>
 To:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
         a.zummo@towertech.it, alexandre.belloni@bootlin.com,
@@ -36,10 +36,11 @@ To:     lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
         phh@phh.me, letux-kernel@openphoenux.org, knaack.h@gmx.de,
         lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
         jic23@kernel.org
-Cc:     Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH v7 5/7] rtc: rc5t619: add Ricoh RC5T619 RTC driver
-Date:   Fri, 20 Mar 2020 09:11:03 +0100
-Message-Id: <20200320081105.12026-6-andreas@kemnade.info>
+Cc:     Andreas Kemnade <andreas@kemnade.info>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v7 6/7] iio: adc: rn5t618: Add ADC driver for RN5T618/RC5T619
+Date:   Fri, 20 Mar 2020 09:11:04 +0100
+Message-Id: <20200320081105.12026-7-andreas@kemnade.info>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200320081105.12026-1-andreas@kemnade.info>
 References: <20200320081105.12026-1-andreas@kemnade.info>
@@ -51,98 +52,77 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add an RTC driver for the RTC device on Ricoh MFD RC5T619,
-which is implemented as a variant of RN5T618.
-
-rtc-range output:
-Testing 2000-02-28 23:59:59.
-OK
-
-Testing 2038-01-19 03:14:07.
-OK
-
-Testing 2069-12-31 23:59:59.
-OK
-
-Testing 2099-12-31 23:59:59.
-KO RTC_RD_TIME returned 22 (line 138)
-
-Testing 2100-02-28 23:59:59.
-KO RTC_SET_TIME returned 34 (line 122)
-
-Testing 2106-02-07 06:28:15.
-KO RTC_SET_TIME returned 34 (line 122)
-
-Testing 2262-04-11 23:47:16.
-KO RTC_SET_TIME returned 34 (line 122)
+Both chips have an A/D converter capable of measuring
+things like VBAT, VUSB and analog inputs.
 
 Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
+- was in a separate patchset
+
+Changes in v4:
+- merged ret = and return into one line
+- added Reviewed-by:
+
 Changes in v3:
-- further output cleanup
-- remove useless toggling of alarm flag in rtc probe
-- alignment cleanup
+- output scale instead of processed
+- prefixed symbols with RN5T618
 
 Changes in v2:
-- correct subject line
-- reset pon flag not at probe but later
-- initialize things only on pon
-- 12h handling
-- ranges
-- style cleanup
-- less magic values
+- enum for channels
+- bulk read instead of single byte read for conversion
+  result
+- fix get_virq error handling
+- use devm for registering device and requesting IRQ
 
- drivers/rtc/Kconfig       |  10 +
- drivers/rtc/Makefile      |   1 +
- drivers/rtc/rtc-rc5t619.c | 444 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 455 insertions(+)
- create mode 100644 drivers/rtc/rtc-rc5t619.c
+ drivers/iio/adc/Kconfig       |  10 ++
+ drivers/iio/adc/Makefile      |   1 +
+ drivers/iio/adc/rn5t618-adc.c | 256 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 267 insertions(+)
+ create mode 100644 drivers/iio/adc/rn5t618-adc.c
 
-diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-index 34c8b6c7e095..72fed8dc55e8 100644
---- a/drivers/rtc/Kconfig
-+++ b/drivers/rtc/Kconfig
-@@ -591,6 +591,16 @@ config RTC_DRV_RC5T583
- 	  This driver can also be built as a module. If so, the module
- 	  will be called rtc-rc5t583.
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 82e33082958c..300904b93656 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -783,6 +783,16 @@ config RCAR_GYRO_ADC
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called rcar-gyroadc.
  
-+config RTC_DRV_RC5T619
-+	tristate "RICOH RC5T619 RTC driver"
++config RN5T618_ADC
++	tristate "ADC for the RN5T618/RC5T619 family of chips"
 +	depends on MFD_RN5T618
 +	help
-+	  If you say yes here you get support for the RTC on the
-+	  RICOH RC5T619 chips.
++	  Say yes here to build support for the integrated ADC inside the
++	  RN5T618/619 series PMICs:
 +
 +	  This driver can also be built as a module. If so, the module
-+	  will be called rtc-rc5t619.
++	  will be called rn5t618-adc.
 +
- config RTC_DRV_S35390A
- 	tristate "Seiko Instruments S-35390A"
- 	select BITREVERSE
-diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-index 4ac8f19fb631..7612912cdf00 100644
---- a/drivers/rtc/Makefile
-+++ b/drivers/rtc/Makefile
-@@ -137,6 +137,7 @@ obj-$(CONFIG_RTC_DRV_PXA)	+= rtc-pxa.o
- obj-$(CONFIG_RTC_DRV_R7301)	+= rtc-r7301.o
- obj-$(CONFIG_RTC_DRV_R9701)	+= rtc-r9701.o
- obj-$(CONFIG_RTC_DRV_RC5T583)	+= rtc-rc5t583.o
-+obj-$(CONFIG_RTC_DRV_RC5T619)	+= rtc-rc5t619.o
- obj-$(CONFIG_RTC_DRV_RK808)	+= rtc-rk808.o
- obj-$(CONFIG_RTC_DRV_RP5C01)	+= rtc-rp5c01.o
- obj-$(CONFIG_RTC_DRV_RS5C313)	+= rtc-rs5c313.o
-diff --git a/drivers/rtc/rtc-rc5t619.c b/drivers/rtc/rtc-rc5t619.c
+ config ROCKCHIP_SARADC
+ 	tristate "Rockchip SARADC driver"
+ 	depends on ARCH_ROCKCHIP || (ARM && COMPILE_TEST)
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index 919228900df9..b182d234f45a 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -74,6 +74,7 @@ obj-$(CONFIG_QCOM_VADC_COMMON) += qcom-vadc-common.o
+ obj-$(CONFIG_QCOM_SPMI_VADC) += qcom-spmi-vadc.o
+ obj-$(CONFIG_QCOM_PM8XXX_XOADC) += qcom-pm8xxx-xoadc.o
+ obj-$(CONFIG_RCAR_GYRO_ADC) += rcar-gyroadc.o
++obj-$(CONFIG_RN5T618_ADC) += rn5t618-adc.o
+ obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
+ obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
+ obj-$(CONFIG_SPEAR_ADC) += spear_adc.o
+diff --git a/drivers/iio/adc/rn5t618-adc.c b/drivers/iio/adc/rn5t618-adc.c
 new file mode 100644
-index 000000000000..24e386ecbc7e
+index 000000000000..f21027e4e26a
 --- /dev/null
-+++ b/drivers/rtc/rtc-rc5t619.c
-@@ -0,0 +1,444 @@
++++ b/drivers/iio/adc/rn5t618-adc.c
+@@ -0,0 +1,256 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * drivers/rtc/rtc-rc5t619.c
-+ *
-+ * Real time clock driver for RICOH RC5T619 power management chip.
++ * ADC driver for the RICOH RN5T618 power management chip family
 + *
 + * Copyright (C) 2019 Andreas Kemnade
 + */
@@ -150,437 +130,251 @@ index 000000000000..24e386ecbc7e
 +#include <linux/kernel.h>
 +#include <linux/device.h>
 +#include <linux/errno.h>
++#include <linux/interrupt.h>
 +#include <linux/init.h>
 +#include <linux/module.h>
 +#include <linux/mfd/rn5t618.h>
 +#include <linux/platform_device.h>
++#include <linux/completion.h>
 +#include <linux/regmap.h>
-+#include <linux/bcd.h>
-+#include <linux/rtc.h>
++#include <linux/iio/iio.h>
 +#include <linux/slab.h>
-+#include <linux/irqdomain.h>
 +
-+struct rc5t619_rtc {
-+	int			irq;
-+	struct rtc_device	*rtc;
++#define RN5T618_ADC_CONVERSION_TIMEOUT   (msecs_to_jiffies(500))
++#define RN5T618_REFERENCE_VOLT 2500
++
++/* mask for selecting channels for single conversion */
++#define RN5T618_ADCCNT3_CHANNEL_MASK 0x7
++/* average 4-time conversion mode */
++#define RN5T618_ADCCNT3_AVG BIT(3)
++/* set for starting a single conversion, gets cleared by hw when done */
++#define RN5T618_ADCCNT3_GODONE BIT(4)
++/* automatic conversion, period is in ADCCNT2, selected channels are
++ * in ADCCNT1
++ */
++#define RN5T618_ADCCNT3_AUTO BIT(5)
++#define RN5T618_ADCEND_IRQ BIT(0)
++
++struct rn5t618_adc_data {
++	struct device *dev;
 +	struct rn5t618 *rn5t618;
++	struct completion conv_completion;
++	int irq;
 +};
 +
-+#define CTRL1_ALARM_ENABLED 0x40
-+#define CTRL1_24HR 0x20
-+#define CTRL1_PERIODIC_MASK 0xf
-+
-+#define CTRL2_PON 0x10
-+#define CTRL2_ALARM_STATUS 0x80
-+#define CTRL2_CTFG 0x4
-+#define CTRL2_CTC 0x1
-+
-+#define MONTH_CENTFLAG 0x80
-+#define HOUR_PMFLAG 0x20
-+#define MDAY_DAL_EXT 0x80
-+
-+static uint8_t rtc5t619_12hour_bcd2bin(uint8_t hour)
-+{
-+	if (hour & HOUR_PMFLAG) {
-+		hour = bcd2bin(hour & ~HOUR_PMFLAG);
-+		return hour == 12 ? 12 : 12 + hour;
-+	}
-+
-+	hour = bcd2bin(hour);
-+	return hour == 12 ? 0 : hour;
-+}
-+
-+static uint8_t rtc5t619_12hour_bin2bcd(uint8_t hour)
-+{
-+	if (!hour)
-+		return 0x12;
-+
-+	if (hour < 12)
-+		return bin2bcd(hour);
-+
-+	if (hour == 12)
-+		return 0x12 | HOUR_PMFLAG;
-+
-+	return bin2bcd(hour - 12) | HOUR_PMFLAG;
-+}
-+
-+static int rc5t619_rtc_periodic_disable(struct device *dev)
-+{
-+	struct rc5t619_rtc *rtc = dev_get_drvdata(dev);
-+	int err;
-+
-+	/* disable function */
-+	err = regmap_update_bits(rtc->rn5t618->regmap,
-+				 RN5T618_RTC_CTRL1, CTRL1_PERIODIC_MASK, 0);
-+	if (err < 0)
-+		return err;
-+
-+	/* clear alarm flag and CTFG */
-+	err = regmap_update_bits(rtc->rn5t618->regmap, RN5T618_RTC_CTRL2,
-+				 CTRL2_ALARM_STATUS | CTRL2_CTFG | CTRL2_CTC,
-+				 0);
-+	if (err < 0)
-+		return err;
-+
-+	return 0;
-+}
-+
-+/* things to be done once after power on */
-+static int rc5t619_rtc_pon_setup(struct device *dev)
-+{
-+	struct rc5t619_rtc *rtc = dev_get_drvdata(dev);
-+	int err;
-+	unsigned int reg_data;
-+
-+	err = regmap_read(rtc->rn5t618->regmap, RN5T618_RTC_CTRL2, &reg_data);
-+	if (err < 0)
-+		return err;
-+
-+	/* clear VDET PON */
-+	reg_data &= ~(CTRL2_PON | CTRL2_CTC | 0x4a);	/* 0101-1011 */
-+	reg_data |= 0x20;	/* 0010-0000 */
-+	err = regmap_write(rtc->rn5t618->regmap, RN5T618_RTC_CTRL2, reg_data);
-+	if (err < 0)
-+		return err;
-+
-+	/* clearing RTC Adjust register */
-+	err = regmap_write(rtc->rn5t618->regmap, RN5T618_RTC_ADJUST, 0);
-+	if (err)
-+		return err;
-+
-+	return regmap_update_bits(rtc->rn5t618->regmap,
-+					RN5T618_RTC_CTRL1,
-+					CTRL1_24HR, CTRL1_24HR);
-+}
-+
-+static int rc5t619_rtc_read_time(struct device *dev, struct rtc_time *tm)
-+{
-+	struct rc5t619_rtc *rtc = dev_get_drvdata(dev);
-+	u8 buff[7];
-+	int err;
-+	int cent_flag;
-+	unsigned int ctrl1;
-+	unsigned int ctrl2;
-+
-+	err = regmap_read(rtc->rn5t618->regmap, RN5T618_RTC_CTRL2, &ctrl2);
-+	if (err < 0)
-+		return err;
-+
-+	if (ctrl2 & CTRL2_PON)
-+		return -EINVAL;
-+
-+	err = regmap_read(rtc->rn5t618->regmap, RN5T618_RTC_CTRL1, &ctrl1);
-+	if (err < 0)
-+		return err;
-+
-+	err = regmap_bulk_read(rtc->rn5t618->regmap, RN5T618_RTC_SECONDS,
-+			       buff, sizeof(buff));
-+	if (err < 0)
-+		return err;
-+
-+	if (buff[5] & MONTH_CENTFLAG)
-+		cent_flag = 1;
-+	else
-+		cent_flag = 0;
-+
-+	tm->tm_sec  = bcd2bin(buff[0]);
-+	tm->tm_min  = bcd2bin(buff[1]);
-+
-+	if (ctrl1 & CTRL1_24HR)
-+		tm->tm_hour = bcd2bin(buff[2]);
-+	else
-+		tm->tm_hour = rtc5t619_12hour_bcd2bin(buff[2]);
-+
-+	tm->tm_wday = bcd2bin(buff[3]);
-+	tm->tm_mday = bcd2bin(buff[4]);
-+	tm->tm_mon  = bcd2bin(buff[5] & 0x1f) - 1; /* back to system 0-11 */
-+	tm->tm_year = bcd2bin(buff[6]) + 100 * cent_flag;
-+
-+	return 0;
-+}
-+
-+static int rc5t619_rtc_set_time(struct device *dev, struct rtc_time *tm)
-+{
-+	struct rc5t619_rtc *rtc = dev_get_drvdata(dev);
-+	u8 buff[7];
-+	int err;
-+	int cent_flag;
-+	unsigned int ctrl1;
-+	unsigned int ctrl2;
-+
-+	err = regmap_read(rtc->rn5t618->regmap, RN5T618_RTC_CTRL2, &ctrl2);
-+	if (err < 0)
-+		return err;
-+
-+	if (ctrl2 & CTRL2_PON)
-+		rc5t619_rtc_pon_setup(dev);
-+
-+	err = regmap_read(rtc->rn5t618->regmap, RN5T618_RTC_CTRL1, &ctrl1);
-+	if (err < 0)
-+		return err;
-+
-+	if (tm->tm_year >= 100)
-+		cent_flag = 1;
-+	else
-+		cent_flag = 0;
-+
-+	buff[0] = bin2bcd(tm->tm_sec);
-+	buff[1] = bin2bcd(tm->tm_min);
-+
-+	if (ctrl1 & CTRL1_24HR)
-+		buff[2] = bin2bcd(tm->tm_hour);
-+	else
-+		buff[2] = rtc5t619_12hour_bin2bcd(tm->tm_hour);
-+
-+	buff[3] = bin2bcd(tm->tm_wday);
-+	buff[4] = bin2bcd(tm->tm_mday);
-+	buff[5] = bin2bcd(tm->tm_mon + 1);	/* system set 0-11 */
-+	buff[6] = bin2bcd(tm->tm_year - cent_flag * 100);
-+
-+	if (cent_flag)
-+		buff[5] |= MONTH_CENTFLAG;
-+
-+	err = regmap_bulk_write(rtc->rn5t618->regmap, RN5T618_RTC_SECONDS,
-+				buff, sizeof(buff));
-+	if (err < 0) {
-+		dev_err(dev, "failed to program new time: %d\n", err);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+/* 0-disable, 1-enable */
-+static int rc5t619_rtc_alarm_enable(struct device *dev, unsigned int enabled)
-+{
-+	struct rc5t619_rtc *rtc = dev_get_drvdata(dev);
-+
-+	return regmap_update_bits(rtc->rn5t618->regmap,
-+			RN5T618_RTC_CTRL1,
-+			CTRL1_ALARM_ENABLED,
-+			enabled ? CTRL1_ALARM_ENABLED : 0);
-+}
-+
-+static int rc5t619_rtc_read_alarm(struct device *dev, struct rtc_wkalrm *alrm)
-+{
-+	struct rc5t619_rtc *rtc = dev_get_drvdata(dev);
-+	u8 buff[6];
-+	unsigned int buff_cent;
-+	int err;
-+	int cent_flag;
-+	unsigned int ctrl1;
-+
-+	err = regmap_read(rtc->rn5t618->regmap, RN5T618_RTC_CTRL1, &ctrl1);
-+	if (err)
-+		return err;
-+
-+	err = regmap_read(rtc->rn5t618->regmap, RN5T618_RTC_MONTH, &buff_cent);
-+	if (err < 0) {
-+		dev_err(dev, "failed to read time: %d\n", err);
-+		return err;
-+	}
-+
-+	if (buff_cent & MONTH_CENTFLAG)
-+		cent_flag = 1;
-+	else
-+		cent_flag = 0;
-+
-+	err = regmap_bulk_read(rtc->rn5t618->regmap, RN5T618_RTC_ALARM_Y_SEC,
-+			       buff, sizeof(buff));
-+	if (err)
-+		return err;
-+
-+	buff[3] = buff[3] & 0x3f;
-+
-+	alrm->time.tm_sec  = bcd2bin(buff[0]);
-+	alrm->time.tm_min  = bcd2bin(buff[1]);
-+
-+	if (ctrl1 & CTRL1_24HR)
-+		alrm->time.tm_hour = bcd2bin(buff[2]);
-+	else
-+		alrm->time.tm_hour = rtc5t619_12hour_bcd2bin(buff[2]);
-+
-+	alrm->time.tm_mday = bcd2bin(buff[3]);
-+	alrm->time.tm_mon  = bcd2bin(buff[4]) - 1;
-+	alrm->time.tm_year = bcd2bin(buff[5]) + 100 * cent_flag;
-+	alrm->enabled = !!(ctrl1 & CTRL1_ALARM_ENABLED);
-+	dev_dbg(dev, "read alarm: %ptR\n", &alrm->time);
-+
-+	return 0;
-+}
-+
-+static int rc5t619_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
-+{
-+	struct rc5t619_rtc *rtc = dev_get_drvdata(dev);
-+	u8 buff[6];
-+	int err;
-+	int cent_flag;
-+	unsigned int ctrl1;
-+
-+	err = regmap_read(rtc->rn5t618->regmap, RN5T618_RTC_CTRL1, &ctrl1);
-+	if (err)
-+		return err;
-+
-+	err = rc5t619_rtc_alarm_enable(dev, 0);
-+	if (err < 0)
-+		return err;
-+
-+	if (rtc->irq == -1)
-+		return -EINVAL;
-+
-+	if (alrm->enabled == 0)
-+		return 0;
-+
-+	if (alrm->time.tm_year >= 100)
-+		cent_flag = 1;
-+	else
-+		cent_flag = 0;
-+
-+	alrm->time.tm_mon += 1;
-+	buff[0] = bin2bcd(alrm->time.tm_sec);
-+	buff[1] = bin2bcd(alrm->time.tm_min);
-+
-+	if (ctrl1 & CTRL1_24HR)
-+		buff[2] = bin2bcd(alrm->time.tm_hour);
-+	else
-+		buff[2] = rtc5t619_12hour_bin2bcd(alrm->time.tm_hour);
-+
-+	buff[3] = bin2bcd(alrm->time.tm_mday);
-+	buff[4] = bin2bcd(alrm->time.tm_mon);
-+	buff[5] = bin2bcd(alrm->time.tm_year - 100 * cent_flag);
-+	buff[3] |= MDAY_DAL_EXT;
-+
-+	err = regmap_bulk_write(rtc->rn5t618->regmap, RN5T618_RTC_ALARM_Y_SEC,
-+				buff, sizeof(buff));
-+	if (err < 0)
-+		return err;
-+
-+	return rc5t619_rtc_alarm_enable(dev, alrm->enabled);
-+}
-+
-+static const struct rtc_class_ops rc5t619_rtc_ops = {
-+	.read_time	= rc5t619_rtc_read_time,
-+	.set_time	= rc5t619_rtc_set_time,
-+	.set_alarm	= rc5t619_rtc_set_alarm,
-+	.read_alarm	= rc5t619_rtc_read_alarm,
-+	.alarm_irq_enable = rc5t619_rtc_alarm_enable,
++struct rn5t618_channel_ratios {
++	u16 numerator;
++	u16 denominator;
 +};
 +
-+static int rc5t619_rtc_alarm_flag_clr(struct device *dev)
-+{
-+	struct rc5t619_rtc *rtc = dev_get_drvdata(dev);
++enum rn5t618_channels {
++	LIMMON = 0,
++	VBAT,
++	VADP,
++	VUSB,
++	VSYS,
++	VTHM,
++	AIN1,
++	AIN0
++};
 +
-+	/* clear alarm-D status bits.*/
-+	return regmap_update_bits(rtc->rn5t618->regmap,
-+				RN5T618_RTC_CTRL2,
-+				CTRL2_ALARM_STATUS | CTRL2_CTC, 0);
++static const struct rn5t618_channel_ratios rn5t618_ratios[8] = {
++	[LIMMON] = {50, 32}, /* measured across 20mOhm, amplified by 32 */
++	[VBAT] = {2, 1},
++	[VADP] = {3, 1},
++	[VUSB] = {3, 1},
++	[VSYS] = {3, 1},
++	[VTHM] = {1, 1},
++	[AIN1] = {1, 1},
++	[AIN0] = {1, 1},
++};
++
++static int rn5t618_read_adc_reg(struct rn5t618 *rn5t618, int reg, u16 *val)
++{
++	u8 data[2];
++	int ret;
++
++	ret = regmap_bulk_read(rn5t618->regmap, reg, data, sizeof(data));
++	if (ret < 0)
++		return ret;
++
++	*val = (data[0] << 4) | (data[1] & 0xF);
++
++	return 0;
 +}
 +
-+static irqreturn_t rc5t619_rtc_irq(int irq, void *data)
++static irqreturn_t rn5t618_adc_irq(int irq, void *data)
 +{
-+	struct device *dev = data;
-+	struct rc5t619_rtc *rtc = dev_get_drvdata(dev);
++	struct rn5t618_adc_data *adc = data;
++	unsigned int r = 0;
++	int ret;
 +
-+	rc5t619_rtc_alarm_flag_clr(dev);
++	/* clear low & high threshold irqs */
++	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC1, 0);
++	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC2, 0);
 +
-+	rtc_update_irq(rtc->rtc, 1, RTC_IRQF | RTC_AF);
++	ret = regmap_read(adc->rn5t618->regmap, RN5T618_IR_ADC3, &r);
++	if (ret < 0)
++		dev_err(adc->dev, "failed to read IRQ status: %d\n", ret);
++
++	regmap_write(adc->rn5t618->regmap, RN5T618_IR_ADC3, 0);
++
++	if (r & RN5T618_ADCEND_IRQ)
++		complete(&adc->conv_completion);
++
 +	return IRQ_HANDLED;
 +}
 +
-+static int rc5t619_rtc_probe(struct platform_device *pdev)
++static int rn5t618_adc_read(struct iio_dev *iio_dev,
++			    const struct iio_chan_spec *chan,
++			    int *val, int *val2, long mask)
 +{
-+	struct device *dev = &pdev->dev;
-+	struct rn5t618 *rn5t618 = dev_get_drvdata(pdev->dev.parent);
-+	struct rc5t619_rtc *rtc;
-+	unsigned int ctrl2;
-+	int err;
++	struct rn5t618_adc_data *adc = iio_priv(iio_dev);
++	u16 raw;
++	int ret;
 +
-+	rtc = devm_kzalloc(dev, sizeof(*rtc), GFP_KERNEL);
-+	if (IS_ERR(rtc)) {
-+		err = PTR_ERR(rtc);
++	if (mask == IIO_CHAN_INFO_SCALE) {
++		*val = RN5T618_REFERENCE_VOLT *
++		       rn5t618_ratios[chan->channel].numerator;
++		*val2 = rn5t618_ratios[chan->channel].denominator * 4095;
++
++		return IIO_VAL_FRACTIONAL;
++	}
++
++	/* select channel */
++	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
++				 RN5T618_ADCCNT3_CHANNEL_MASK,
++				 chan->channel);
++	if (ret < 0)
++		return ret;
++
++	ret = regmap_write(adc->rn5t618->regmap, RN5T618_EN_ADCIR3,
++			   RN5T618_ADCEND_IRQ);
++	if (ret < 0)
++		return ret;
++
++	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
++				 RN5T618_ADCCNT3_AVG,
++				 mask == IIO_CHAN_INFO_AVERAGE_RAW ?
++				 RN5T618_ADCCNT3_AVG : 0);
++	if (ret < 0)
++		return ret;
++
++	init_completion(&adc->conv_completion);
++	/* single conversion */
++	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
++				 RN5T618_ADCCNT3_GODONE,
++				 RN5T618_ADCCNT3_GODONE);
++	if (ret < 0)
++		return ret;
++
++	ret = wait_for_completion_timeout(&adc->conv_completion,
++					  RN5T618_ADC_CONVERSION_TIMEOUT);
++	if (ret == 0) {
++		dev_warn(adc->dev, "timeout waiting for adc result\n");
++		return -ETIMEDOUT;
++	}
++
++	ret = rn5t618_read_adc_reg(adc->rn5t618,
++				   RN5T618_ILIMDATAH + 2 * chan->channel,
++				   &raw);
++	if (ret < 0)
++		return ret;
++
++	*val = raw;
++
++	return IIO_VAL_INT;
++}
++
++static const struct iio_info rn5t618_adc_iio_info = {
++	.read_raw = &rn5t618_adc_read,
++};
++
++#define RN5T618_ADC_CHANNEL(_channel, _type, _name) { \
++	.type = _type, \
++	.channel = _channel, \
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
++			      BIT(IIO_CHAN_INFO_AVERAGE_RAW) | \
++			      BIT(IIO_CHAN_INFO_SCALE), \
++	.datasheet_name = _name, \
++	.indexed = 1. \
++}
++
++static const struct iio_chan_spec rn5t618_adc_iio_channels[] = {
++	RN5T618_ADC_CHANNEL(LIMMON, IIO_CURRENT, "LIMMON"),
++	RN5T618_ADC_CHANNEL(VBAT, IIO_VOLTAGE, "VBAT"),
++	RN5T618_ADC_CHANNEL(VADP, IIO_VOLTAGE, "VADP"),
++	RN5T618_ADC_CHANNEL(VUSB, IIO_VOLTAGE, "VUSB"),
++	RN5T618_ADC_CHANNEL(VSYS, IIO_VOLTAGE, "VSYS"),
++	RN5T618_ADC_CHANNEL(VTHM, IIO_VOLTAGE, "VTHM"),
++	RN5T618_ADC_CHANNEL(AIN1, IIO_VOLTAGE, "AIN1"),
++	RN5T618_ADC_CHANNEL(AIN0, IIO_VOLTAGE, "AIN0")
++};
++
++static int rn5t618_adc_probe(struct platform_device *pdev)
++{
++	int ret;
++	struct iio_dev *iio_dev;
++	struct rn5t618_adc_data *adc;
++	struct rn5t618 *rn5t618 = dev_get_drvdata(pdev->dev.parent);
++
++	iio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
++	if (!iio_dev) {
++		dev_err(&pdev->dev, "failed allocating iio device\n");
 +		return -ENOMEM;
 +	}
 +
-+	rtc->rn5t618 = rn5t618;
-+
-+	dev_set_drvdata(dev, rtc);
-+	rtc->irq = -1;
++	adc = iio_priv(iio_dev);
++	adc->dev = &pdev->dev;
++	adc->rn5t618 = rn5t618;
 +
 +	if (rn5t618->irq_data)
-+		rtc->irq = regmap_irq_get_virq(rn5t618->irq_data,
-+					       RN5T618_IRQ_RTC);
++		adc->irq = regmap_irq_get_virq(rn5t618->irq_data,
++					       RN5T618_IRQ_ADC);
 +
-+	if (rtc->irq  < 0)
-+		rtc->irq = -1;
-+
-+	err = regmap_read(rtc->rn5t618->regmap, RN5T618_RTC_CTRL2, &ctrl2);
-+	if (err < 0)
-+		return err;
-+
-+	/* disable rtc periodic function */
-+	err = rc5t619_rtc_periodic_disable(&pdev->dev);
-+	if (err)
-+		return err;
-+
-+	if (ctrl2 & CTRL2_PON) {
-+		err = rc5t619_rtc_alarm_flag_clr(&pdev->dev);
-+		if (err)
-+			return err;
++	if (adc->irq <= 0) {
++		dev_err(&pdev->dev, "get virq failed\n");
++		return -EINVAL;
 +	}
 +
-+	rtc->rtc = devm_rtc_allocate_device(&pdev->dev);
-+	if (IS_ERR(rtc->rtc)) {
-+		err = PTR_ERR(rtc->rtc);
-+		dev_err(dev, "RTC device register: err %d\n", err);
-+		return err;
++	init_completion(&adc->conv_completion);
++
++	iio_dev->name = dev_name(&pdev->dev);
++	iio_dev->dev.parent = &pdev->dev;
++	iio_dev->info = &rn5t618_adc_iio_info;
++	iio_dev->modes = INDIO_DIRECT_MODE;
++	iio_dev->channels = rn5t618_adc_iio_channels;
++	iio_dev->num_channels = ARRAY_SIZE(rn5t618_adc_iio_channels);
++
++	/* stop any auto-conversion */
++	ret = regmap_write(rn5t618->regmap, RN5T618_ADCCNT3, 0);
++	if (ret < 0)
++		return ret;
++
++	platform_set_drvdata(pdev, iio_dev);
++
++	ret = devm_request_threaded_irq(adc->dev, adc->irq, NULL,
++					rn5t618_adc_irq,
++					IRQF_ONESHOT, dev_name(adc->dev),
++					adc);
++	if (ret < 0) {
++		dev_err(adc->dev, "request irq %d failed: %d\n", adc->irq, ret);
++		return ret;
 +	}
 +
-+	rtc->rtc->ops = &rc5t619_rtc_ops;
-+	rtc->rtc->range_min = RTC_TIMESTAMP_BEGIN_1900;
-+	rtc->rtc->range_max = RTC_TIMESTAMP_END_2099;
-+
-+	/* set interrupt and enable it */
-+	if (rtc->irq != -1) {
-+		err = devm_request_threaded_irq(&pdev->dev, rtc->irq, NULL,
-+						rc5t619_rtc_irq,
-+						IRQF_ONESHOT,
-+						"rtc-rc5t619",
-+						&pdev->dev);
-+		if (err < 0) {
-+			dev_err(&pdev->dev, "request IRQ:%d fail\n", rtc->irq);
-+			rtc->irq = -1;
-+
-+			err = rc5t619_rtc_alarm_enable(&pdev->dev, 0);
-+			if (err)
-+				return err;
-+
-+		} else {
-+			/* enable wake */
-+			device_init_wakeup(&pdev->dev, 1);
-+			enable_irq_wake(rtc->irq);
-+		}
-+	} else {
-+		/* system don't want to using alarm interrupt, so close it */
-+		err = rc5t619_rtc_alarm_enable(&pdev->dev, 0);
-+		if (err)
-+			return err;
-+
-+		dev_warn(&pdev->dev, "rc5t619 interrupt is disabled\n");
-+	}
-+
-+	return rtc_register_device(rtc->rtc);
++	return devm_iio_device_register(adc->dev, iio_dev);
 +}
 +
-+static struct platform_driver rc5t619_rtc_driver = {
-+	.driver	= {
-+		.name	= "rc5t619-rtc",
++static struct platform_driver rn5t618_adc_driver = {
++	.driver = {
++		.name   = "rn5t618-adc",
 +	},
-+	.probe	= rc5t619_rtc_probe,
++	.probe = rn5t618_adc_probe,
 +};
 +
-+module_platform_driver(rc5t619_rtc_driver);
-+MODULE_ALIAS("platform:rc5t619-rtc");
-+MODULE_DESCRIPTION("RICOH RC5T619 RTC driver");
++module_platform_driver(rn5t618_adc_driver);
++MODULE_ALIAS("platform:rn5t618-adc");
++MODULE_DESCRIPTION("RICOH RN5T618 ADC driver");
 +MODULE_LICENSE("GPL");
 -- 
 2.20.1

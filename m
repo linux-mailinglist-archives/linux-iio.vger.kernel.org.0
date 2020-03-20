@@ -2,96 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C099B18C315
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Mar 2020 23:41:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C1A718C428
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Mar 2020 01:15:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727550AbgCSWlW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Mar 2020 18:41:22 -0400
-Received: from mail.andi.de1.cc ([85.214.55.253]:55432 "EHLO mail.andi.de1.cc"
+        id S1726950AbgCTAPm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Mar 2020 20:15:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57220 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727178AbgCSWlV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 19 Mar 2020 18:41:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
-        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=UxynVAQmB37MrV2BBnLFAl3yAnEIKuq4soEmhRhTUMY=; b=bLPyBAYAEOMNB1jI8DwJ7T0y7
-        ZUDtkFc6/LyuMwPrJ4cDJKsFgBSL8M9ib+hnkTgkjt7y9um5YO/6lnplfyHTRzmuUJ6iHyeQCkCwA
-        9vYzINSz0kf2H0K7s9NbW0+QsjP4ORmiHj8YMyi1xfAuaB1+18Menlst+7erJhI0iHqfw=;
-Received: from p200300ccff0fcb00e2cec3fffe93fc31.dip0.t-ipconnect.de ([2003:cc:ff0f:cb00:e2ce:c3ff:fe93:fc31] helo=eeepc)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1jF3qc-0007UW-46; Thu, 19 Mar 2020 23:41:06 +0100
-Received: from [::1] (helo=localhost)
-        by eeepc with esmtp (Exim 4.92)
-        (envelope-from <andreas@kemnade.info>)
-        id 1jF3qb-0007PO-3s; Thu, 19 Mar 2020 23:41:05 +0100
-Date:   Thu, 19 Mar 2020 23:40:55 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     robh+dt@kernel.org, mark.rutland@arm.com, a.zummo@towertech.it,
-        alexandre.belloni@bootlin.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
-        stefan@agner.ch, b.galvani@gmail.com, phh@phh.me,
-        letux-kernel@openphoenux.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, jic23@kernel.org
-Subject: Re: [PATCH RESEND v6 2/7] mfd: rn5t618: add IRQ support
-Message-ID: <20200319234055.4caddf44@kemnade.info>
-In-Reply-To: <20200319161149.GB5477@dell>
-References: <20200313064535.31503-1-andreas@kemnade.info>
-        <20200313064535.31503-3-andreas@kemnade.info>
-        <20200319161149.GB5477@dell>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-pc-linux-gnu)
+        id S1725787AbgCTAPm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 19 Mar 2020 20:15:42 -0400
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EB7F120775;
+        Fri, 20 Mar 2020 00:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584663341;
+        bh=OSlquqcH1F8KsOyuUEWI4dxT8R0DknRunxtYQ4e6SkU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=pDRtiBhvsn2C3cD7sTKzyxKg3MRHANHuxnnJtZNqYg8bjnRnnyY9Obtwj37LbmS4M
+         OjZ9WA2yF186vM0J23vV7BxzaFiktb+WfBqKe0x0tPvDS747DEJ0dUICSGuAYiPuwl
+         fF5e8BciNSgxqYIf6qbEeeQEUulSsSzS7QjclNOE=
+Received: by mail-qv1-f54.google.com with SMTP id n1so2108278qvz.4;
+        Thu, 19 Mar 2020 17:15:40 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ1aH6gGCNxMPLrpuBg1CCJKiUJREuWLuTI+3p118Oz+ocakE+dH
+        nN/KqlLXcuB5O9WYCN6Z+XiQsq3pIo4+Y8/KUg==
+X-Google-Smtp-Source: ADFU+vtDeHt6XN4u8uvVz1l8xo+9/2SGnnkDtYwkNgIcwRW4yk4GSbVrdqQP/nQ7RorZzhOFOnNPoI46lwJxuSM9uDU=
+X-Received: by 2002:ad4:4502:: with SMTP id k2mr5779706qvu.85.1584663339950;
+ Thu, 19 Mar 2020 17:15:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_//EX9XsAMI56qY1RDkmzKv0C"; protocol="application/pgp-signature"
-X-Spam-Score: -1.0 (-)
+References: <20200307211412.44148-1-contact@artur-rojek.eu> <20200307211412.44148-4-contact@artur-rojek.eu>
+In-Reply-To: <20200307211412.44148-4-contact@artur-rojek.eu>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 19 Mar 2020 18:15:28 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+oTCQKUNdfapFjf7p0YnKQSyd6USvaOQQA6FqgwNg0fA@mail.gmail.com>
+Message-ID: <CAL_Jsq+oTCQKUNdfapFjf7p0YnKQSyd6USvaOQQA6FqgwNg0fA@mail.gmail.com>
+Subject: Re: [PATCH v4 4/5] dt-bindings: input: Add docs for ADC driven joystick.
+To:     Artur Rojek <contact@artur-rojek.eu>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Linux Input <linux-input@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---Sig_//EX9XsAMI56qY1RDkmzKv0C
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Sat, Mar 7, 2020 at 2:06 PM Artur Rojek <contact@artur-rojek.eu> wrote:
+>
+> Add documentation for the adc-joystick driver, used to provide support
+> for joysticks connected over ADC.
+>
+> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+> Tested-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>
+>  Changes:
+>
+>  v2: - Add `reg` property to axis subnode in order to enumerate the axes,
+>      - rename `linux,abs-code` property to `linux,code`,
+>      - drop `linux,` prefix from the remaining properties of axis subnode
+>
+>  v3: no change
+>
+>  v4: - remove "bindings" from the unique identifier string,
+>      - replace `|` with `>` for all description properties,
+>      - specify the number of items for `io-channels`,
+>      - correct the regex pattern of `axis` property,
+>      - specify the value range of `reg` property for each axis,
+>      - put `abs-range` properties under `allOf`
+>
+>  .../bindings/input/adc-joystick.yaml          | 121 ++++++++++++++++++
+>  1 file changed, 121 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/adc-joystick.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/input/adc-joystick.yaml b/Documentation/devicetree/bindings/input/adc-joystick.yaml
+> new file mode 100644
+> index 000000000000..b0d2aa28d8c6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/adc-joystick.yaml
+> @@ -0,0 +1,121 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2019-2020 Artur Rojek
+> +%YAML 1.2
+> +---
+> +$id: "http://devicetree.org/schemas/input/adc-joystick.yaml#"
+> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> +
+> +title: ADC attached joystick
+> +
+> +maintainers:
+> +  - Artur Rojek <contact@artur-rojek.eu>
+> +
+> +description: >
+> +  Bindings for joystick devices connected to ADC controllers supporting
+> +  the Industrial I/O subsystem.
+> +
+> +properties:
+> +  compatible:
+> +    const: adc-joystick
+> +
+> +  io-channels:
+> +    minItems: 1
+> +    maxItems: 1024
+> +    description: >
+> +      List of phandle and IIO specifier pairs.
+> +      Each pair defines one ADC channel to which a joystick axis is connected.
+> +      See Documentation/devicetree/bindings/iio/iio-bindings.txt for details.
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +required:
+> +  - compatible
+> +  - io-channels
+> +  - '#address-cells'
+> +  - '#size-cells'
+> +
+> +additionalProperties: false
+> +
+> +patternProperties:
+> +  "^axis@[0-9]+$":
 
-On Thu, 19 Mar 2020 16:11:49 +0000
-Lee Jones <lee.jones@linaro.org> wrote:
+unit-addresses are hex, so add 'a-f' in there.
 
-[...]
->=20
-> > +		if (rn5t618_irq_init(priv)) =20
->=20
-> If this returns an error, you should return that error from .probe().
->=20
-Ah, ok, I am returning 0 if there is no irq, so
-forget my previous comment about regressions.
+With that,
 
-Regards,
-Andreas
-
---Sig_//EX9XsAMI56qY1RDkmzKv0C
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl5z9PcACgkQl4jFM1s/
-ye+9PBAAkD8XGU0U70Nq6g9WtazIPRJkbU7warY/dnCxjXOwPNdyFK6k548ojrxL
-gnTkd9ernC1OlbMV//88bqZ+bHwRzO+ndeI1EhD9GP88t+YGhVRfzuLq9Qfc65s+
-s6BMzOdzOuIuQkCxRA3ekxourgniXtG60hJVPvn6HXhBbCi7CpXWrUkl1CGwNgsc
-7JkUwWJuAfHq0YoGdh1RU7L/NgBtNz/WZnL5Tdzj/KD/M1USMGDQpu7Amx57fAcR
-Q91Lh3dYnp3fALNCbKLOoFph9o23bmxOAohoZugH9dLlDXH3nAESMs7Bm69C+iew
-B1PY4Tr9hOuDd51HCRJXJv9Hdr3LjRWT+aVrnyq9qI6IT1HUKDoPVkgDJaFk1rtP
-wHkaT72OMC2/pFGAXZQ9xc6GIIVQphE6D6rBO5fjbBroCA191taxvprxW09bxOLi
-MT08eTvxwoIuz2YbI7BjO+ubAyeTZ07UT5rMHCK6cFhKfeav7EHU03uopgitZRb+
-4XBIg+EimxtGk69XUNNRWXUlXuBbxik45b4evoP3vCFzia6nAbYoXerq7efD1uRC
-eRpPst3mQFQCDITCW+WtiM0QlRxMuqbMjo5PtpKctu/R9M/LC0I5CyjpH7eaENln
-6F6cQdPcnrATMf6xNHCvmCYW/G2BWTrI0JlAhiL29gisfQNUUxY=
-=a4gN
------END PGP SIGNATURE-----
-
---Sig_//EX9XsAMI56qY1RDkmzKv0C--
+Reviewed-by: Rob Herring <robh@kernel.org>

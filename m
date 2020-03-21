@@ -2,62 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AC8D18E12B
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 13:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D5DF18E177
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 14:10:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726607AbgCUM2m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 08:28:42 -0400
-Received: from smtprelay0077.hostedemail.com ([216.40.44.77]:50760 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726192AbgCUM2m (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 08:28:42 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 76636837F24F;
-        Sat, 21 Mar 2020 12:28:41 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3350:3622:3865:3866:3867:3868:4321:4384:5007:10004:10400:10848:11026:11232:11658:11914:12043:12297:12438:12740:12760:12895:13069:13311:13357:13439:13972:14659:14721:21080:21627:30034:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:15,LUA_SUMMARY:none
-X-HE-Tag: wall25_68ce15f06c463
-X-Filterd-Recvd-Size: 1554
-Received: from XPS-9350.home (unknown [47.151.143.254])
-        (Authenticated sender: joe@perches.com)
-        by omf05.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 21 Mar 2020 12:28:40 +0000 (UTC)
-Message-ID: <a7778635620163cb6185192819a56ed44d76d4b0.camel@perches.com>
-Subject: Re: [PATCH] drivers: iio: Drop unnecessary explicit casting
-From:   Joe Perches <joe@perches.com>
-To:     Nishant Malpani <nish.malpani25@gmail.com>, jic23@kernel.org
+        id S1726997AbgCUNKZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 09:10:25 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:39288 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726652AbgCUNKZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 09:10:25 -0400
+Received: by mail-pg1-f195.google.com with SMTP id b22so4530599pgb.6;
+        Sat, 21 Mar 2020 06:10:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=0vQsQdcUJTfpg3tUTgYBPKfSjhWzRCMyiQPBapbD6bQ=;
+        b=rh+Wml1AYoYlGwP/sBjz7Maol2ZAJci5n+FHkZt5xqOngDOsEWIkMOqnMSRmwzEdzy
+         aOBz3DjPabcP0iBoMSGhg97lFXJdk5m/YyLeJR5Py9WUlNL3YAGFEn8YBJpo46KmrO+8
+         H46gDPt23aGEk7b+3A9Hf2FP21U9CNzQsZ+51I/j8cg26eQ0hpZKnRoIgTZGVDLov/HJ
+         DfNo8iqatf3fCSVdA+i+nRMC4tApZzSx7tkSQYLEq7L6RwGo/OudBYN6qESaYygVEvZV
+         UYsP+zqkCTq2XNR0qYBYekvsrHgbt38DQpMRgqG4kV42P9x2OzD2TfmPkDdUJV+MJh2q
+         8lRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=0vQsQdcUJTfpg3tUTgYBPKfSjhWzRCMyiQPBapbD6bQ=;
+        b=i0gnQin2gKrVJ2MgrgEaQJcorZJgIK6RThuhe9q8FT/MXv7L/BRXbkY952/GPUwNIq
+         gYUn1pdmvcqkrDa5qly+J7id6qWNOp+YgKJvJhWWYyO+wvM/ahFRh7+TTIc5G+knrRnE
+         3cmM48+b0Uv9oINMsMKxrmFS9eN2uREHNCsx9ige0OgNltD8zrSjc4NGekFYTvISw66u
+         jXdgtoB1kORfrQ25DQrgiEzeavLnHt4V6lyLYM7rHV1t2iSw/YWKJlwaA1tBLJIP8e75
+         b1IhlDwQwfCLp0fwyWtNAE6e9zh2Z/1IzPMXYZv8KyueCuwbfEbF+2AN2ZhXrVTqEdkD
+         lTCw==
+X-Gm-Message-State: ANhLgQ1km6NemdTLQsGjpjuu7YuqJ8dSZYg1Nzg/43WcdN8V1x6rGXJr
+        ta8HZoGC3hGsBjzte2sfXDX757PD
+X-Google-Smtp-Source: ADFU+vvfqnXCj9Ov7oFxufOOvZcJ03Cdw7Bd+ttiglbLInNO3TlvJ2etGW3YmQ7aI7sO9eu4+XXtTA==
+X-Received: by 2002:aa7:9f49:: with SMTP id h9mr12829539pfr.217.1584796223891;
+        Sat, 21 Mar 2020 06:10:23 -0700 (PDT)
+Received: from ?IPv6:2409:4072:6e97:2149:892d:8d8:1a6c:acda? ([2409:4072:6e97:2149:892d:8d8:1a6c:acda])
+        by smtp.gmail.com with ESMTPSA id k4sm8932688pfh.0.2020.03.21.06.10.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Mar 2020 06:10:23 -0700 (PDT)
+Subject: Re: [PATCH 1/2] iio: light: tsl2563: Wrap comment description
+To:     Joe Perches <joe@perches.com>, jic23@kernel.org
 Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Sat, 21 Mar 2020 05:26:52 -0700
-In-Reply-To: <20200318100754.25667-1-nish.malpani25@gmail.com>
-References: <20200318100754.25667-1-nish.malpani25@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+References: <cover.1584518000.git.nish.malpani25@gmail.com>
+ <9129a6c25f772bdfba28d556190e5511c7005e8a.1584518000.git.nish.malpani25@gmail.com>
+ <c68e74af78fa0f73a9dc4cf5535a2dc16b99b729.camel@perches.com>
+From:   Nishant Malpani <nish.malpani25@gmail.com>
+Message-ID: <62965030-3cc8-78d3-ef80-f88c585f82e2@gmail.com>
+Date:   Sat, 21 Mar 2020 18:40:16 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
+In-Reply-To: <c68e74af78fa0f73a9dc4cf5535a2dc16b99b729.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2020-03-18 at 15:37 +0530, Nishant Malpani wrote:
-> Provide correct specifiers while printing error logs to discard the use
-> of unnecessary explicit casting.
-[]
-> diff --git a/drivers/iio/accel/kxsd9-i2c.c b/drivers/iio/accel/kxsd9-i2c.c
-[]
-> @@ -21,8 +21,8 @@ static int kxsd9_i2c_probe(struct i2c_client *i2c,
->  
->  	regmap = devm_regmap_init_i2c(i2c, &config);
->  	if (IS_ERR(regmap)) {
-> -		dev_err(&i2c->dev, "Failed to register i2c regmap %d\n",
-> -			(int)PTR_ERR(regmap));
-> +		dev_err(&i2c->dev, "Failed to register i2c regmap %ld\n",
-> +			PTR_ERR(regmap));
+On 21/03/20 5:21 pm, Joe Perches wrote:
+> On Wed, 2020-03-18 at 13:33 +0530, Nishant Malpani wrote:
+>> This patch wraps the comment description at 75 chars. Fixes the
+>> following warning generated by checkpatch.pl:
+>>
+>> WARNING: Possible unwrapped commit description (prefer a maximum 75 chars per line)
+> 
+> Please do not scan files as patches.
+> 
+> checkpatch does not emit this message on a file
+> when used properly with the -f option.
+> 
+You're right, Joe. I had used checkpatch.pl without the -f option on a 
+file, ergo giving me the aforementioned warning. My bad, I shall refrain 
+from not doing this in the future. Thank you and Jonathan for correcting me.
 
-Another option would be to use %pe to print the error identifier
-and not the error number
+With regards,
+Nishant Malpani
 
-etc...
-
-
+>> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+> []
+>> @@ -222,9 +222,9 @@ static int tsl2563_read_id(struct tsl2563_chip *chip, u8 *id)
+>>   }
+>>   
+>>   /*
+>> - * "Normalized" ADC value is one obtained with 400ms of integration time and
+>> - * 16x gain. This function returns the number of bits of shift needed to
+>> - * convert between normalized values and HW values obtained using given
+>> + * "Normalized" ADC value is one obtained with 400ms of integration time
+>> + * and 16x gain. This function returns the number of bits of shift needed
+>> + * to convert between normalized values and HW values obtained using given
+>>    * timing and gain settings.
+>>    */
+>>   static int tsl2563_adc_shiftbits(u8 timing)
+> 

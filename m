@@ -2,103 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D5DF18E177
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 14:10:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4240318E2F8
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 17:47:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726997AbgCUNKZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 09:10:25 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:39288 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726652AbgCUNKZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 09:10:25 -0400
-Received: by mail-pg1-f195.google.com with SMTP id b22so4530599pgb.6;
-        Sat, 21 Mar 2020 06:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=0vQsQdcUJTfpg3tUTgYBPKfSjhWzRCMyiQPBapbD6bQ=;
-        b=rh+Wml1AYoYlGwP/sBjz7Maol2ZAJci5n+FHkZt5xqOngDOsEWIkMOqnMSRmwzEdzy
-         aOBz3DjPabcP0iBoMSGhg97lFXJdk5m/YyLeJR5Py9WUlNL3YAGFEn8YBJpo46KmrO+8
-         H46gDPt23aGEk7b+3A9Hf2FP21U9CNzQsZ+51I/j8cg26eQ0hpZKnRoIgTZGVDLov/HJ
-         DfNo8iqatf3fCSVdA+i+nRMC4tApZzSx7tkSQYLEq7L6RwGo/OudBYN6qESaYygVEvZV
-         UYsP+zqkCTq2XNR0qYBYekvsrHgbt38DQpMRgqG4kV42P9x2OzD2TfmPkDdUJV+MJh2q
-         8lRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=0vQsQdcUJTfpg3tUTgYBPKfSjhWzRCMyiQPBapbD6bQ=;
-        b=i0gnQin2gKrVJ2MgrgEaQJcorZJgIK6RThuhe9q8FT/MXv7L/BRXbkY952/GPUwNIq
-         gYUn1pdmvcqkrDa5qly+J7id6qWNOp+YgKJvJhWWYyO+wvM/ahFRh7+TTIc5G+knrRnE
-         3cmM48+b0Uv9oINMsMKxrmFS9eN2uREHNCsx9ige0OgNltD8zrSjc4NGekFYTvISw66u
-         jXdgtoB1kORfrQ25DQrgiEzeavLnHt4V6lyLYM7rHV1t2iSw/YWKJlwaA1tBLJIP8e75
-         b1IhlDwQwfCLp0fwyWtNAE6e9zh2Z/1IzPMXYZv8KyueCuwbfEbF+2AN2ZhXrVTqEdkD
-         lTCw==
-X-Gm-Message-State: ANhLgQ1km6NemdTLQsGjpjuu7YuqJ8dSZYg1Nzg/43WcdN8V1x6rGXJr
-        ta8HZoGC3hGsBjzte2sfXDX757PD
-X-Google-Smtp-Source: ADFU+vvfqnXCj9Ov7oFxufOOvZcJ03Cdw7Bd+ttiglbLInNO3TlvJ2etGW3YmQ7aI7sO9eu4+XXtTA==
-X-Received: by 2002:aa7:9f49:: with SMTP id h9mr12829539pfr.217.1584796223891;
-        Sat, 21 Mar 2020 06:10:23 -0700 (PDT)
-Received: from ?IPv6:2409:4072:6e97:2149:892d:8d8:1a6c:acda? ([2409:4072:6e97:2149:892d:8d8:1a6c:acda])
-        by smtp.gmail.com with ESMTPSA id k4sm8932688pfh.0.2020.03.21.06.10.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 21 Mar 2020 06:10:23 -0700 (PDT)
-Subject: Re: [PATCH 1/2] iio: light: tsl2563: Wrap comment description
-To:     Joe Perches <joe@perches.com>, jic23@kernel.org
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1584518000.git.nish.malpani25@gmail.com>
- <9129a6c25f772bdfba28d556190e5511c7005e8a.1584518000.git.nish.malpani25@gmail.com>
- <c68e74af78fa0f73a9dc4cf5535a2dc16b99b729.camel@perches.com>
-From:   Nishant Malpani <nish.malpani25@gmail.com>
-Message-ID: <62965030-3cc8-78d3-ef80-f88c585f82e2@gmail.com>
-Date:   Sat, 21 Mar 2020 18:40:16 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1727567AbgCUQqs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 12:46:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43710 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726961AbgCUQqr (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 21 Mar 2020 12:46:47 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A97A320739;
+        Sat, 21 Mar 2020 16:46:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584809206;
+        bh=vYbULo9CJnfDockLM5jOYJkQXCKXQwm4lW58TnsCHkQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dqr1PSFbTbdzXalDyEChhdhgE571QWeyNHXtVVjRnlsigvbJxKX6JjvCpHkreYCvm
+         Jvjl7cU86vKwg1iltPQe2t6vhIOza96XlrETuJBbo7gzKM1U/Cbxxk/hjp3OtEUxnt
+         0882HyZ67WFOQnX+5njqMB30S/rxIIMlO6ZAtuFY=
+Date:   Sat, 21 Mar 2020 16:46:42 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>
+Subject: Re: [PATCH v2] MAINTAINERS: remove Stefan Popa's email
+Message-ID: <20200321164642.0cad6b9d@archlinux>
+In-Reply-To: <20200321090442.11383-1-alexandru.ardelean@analog.com>
+References: <20200317143336.6098-1-alexandru.ardelean@analog.com>
+        <20200321090442.11383-1-alexandru.ardelean@analog.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <c68e74af78fa0f73a9dc4cf5535a2dc16b99b729.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 21/03/20 5:21 pm, Joe Perches wrote:
-> On Wed, 2020-03-18 at 13:33 +0530, Nishant Malpani wrote:
->> This patch wraps the comment description at 75 chars. Fixes the
->> following warning generated by checkpatch.pl:
->>
->> WARNING: Possible unwrapped commit description (prefer a maximum 75 chars per line)
-> 
-> Please do not scan files as patches.
-> 
-> checkpatch does not emit this message on a file
-> when used properly with the -f option.
-> 
-You're right, Joe. I had used checkpatch.pl without the -f option on a 
-file, ergo giving me the aforementioned warning. My bad, I shall refrain 
-from not doing this in the future. Thank you and Jonathan for correcting me.
+On Sat, 21 Mar 2020 11:04:42 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-With regards,
-Nishant Malpani
-
->> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
-> []
->> @@ -222,9 +222,9 @@ static int tsl2563_read_id(struct tsl2563_chip *chip, u8 *id)
->>   }
->>   
->>   /*
->> - * "Normalized" ADC value is one obtained with 400ms of integration time and
->> - * 16x gain. This function returns the number of bits of shift needed to
->> - * convert between normalized values and HW values obtained using given
->> + * "Normalized" ADC value is one obtained with 400ms of integration time
->> + * and 16x gain. This function returns the number of bits of shift needed
->> + * to convert between normalized values and HW values obtained using given
->>    * timing and gain settings.
->>    */
->>   static int tsl2563_adc_shiftbits(u8 timing)
+> The email is no longer active. This change removes Stefan's email from the
+> MAINTAINERS list and replaces it with Michael Hennerich's.
 > 
+> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied.  Thanks,
+
+Jonathan
+
+> ---
+> 
+> Changelog v1 -> v2:
+> * re-send + change author @analog.com; GMail messed it up
+> 
+>  MAINTAINERS | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8fa40c3eb72a..72e8960c4f4f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -552,7 +552,7 @@ F:	drivers/input/misc/adxl34x.c
+>  F:	Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
+>  
+>  ADXL372 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
+> -M:	Stefan Popa <stefan.popa@analog.com>
+> +M:	Michael Hennerich <michael.hennerich@analog.com>
+>  W:	http://ez.analog.com/community/linux-device-drivers
+>  S:	Supported
+>  F:	drivers/iio/accel/adxl372.c
+> @@ -900,7 +900,7 @@ F:	drivers/net/ethernet/amd/xgbe/
+>  F:	arch/arm64/boot/dts/amd/amd-seattle-xgbe*.dtsi
+>  
+>  ANALOG DEVICES INC AD5686 DRIVER
+> -M:	Stefan Popa <stefan.popa@analog.com>
+> +M:	Michael Hennerich <Michael.Hennerich@analog.com>
+>  L:	linux-pm@vger.kernel.org
+>  W:	http://ez.analog.com/community/linux-device-drivers
+>  S:	Supported
+> @@ -908,7 +908,7 @@ F:	drivers/iio/dac/ad5686*
+>  F:	drivers/iio/dac/ad5696*
+>  
+>  ANALOG DEVICES INC AD5758 DRIVER
+> -M:	Stefan Popa <stefan.popa@analog.com>
+> +M:	Michael Hennerich <Michael.Hennerich@analog.com>
+>  L:	linux-iio@vger.kernel.org
+>  W:	http://ez.analog.com/community/linux-device-drivers
+>  S:	Supported
+> @@ -924,7 +924,7 @@ F:	drivers/iio/adc/ad7091r5.c
+>  F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r5.yaml
+>  
+>  ANALOG DEVICES INC AD7124 DRIVER
+> -M:	Stefan Popa <stefan.popa@analog.com>
+> +M:	Michael Hennerich <Michael.Hennerich@analog.com>
+>  L:	linux-iio@vger.kernel.org
+>  W:	http://ez.analog.com/community/linux-device-drivers
+>  S:	Supported
+> @@ -948,7 +948,7 @@ F:	drivers/iio/adc/ad7292.c
+>  F:	Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+>  
+>  ANALOG DEVICES INC AD7606 DRIVER
+> -M:	Stefan Popa <stefan.popa@analog.com>
+> +M:	Michael Hennerich <Michael.Hennerich@analog.com>
+>  M:	Beniamin Bia <beniamin.bia@analog.com>
+>  L:	linux-iio@vger.kernel.org
+>  W:	http://ez.analog.com/community/linux-device-drivers
+> @@ -957,7 +957,7 @@ F:	drivers/iio/adc/ad7606.c
+>  F:	Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+>  
+>  ANALOG DEVICES INC AD7768-1 DRIVER
+> -M:	Stefan Popa <stefan.popa@analog.com>
+> +M:	Michael Hennerich <Michael.Hennerich@analog.com>
+>  L:	linux-iio@vger.kernel.org
+>  W:	http://ez.analog.com/community/linux-device-drivers
+>  S:	Supported
+> @@ -1018,7 +1018,7 @@ F:	drivers/hwmon/adm1177.c
+>  F:	Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
+>  
+>  ANALOG DEVICES INC ADP5061 DRIVER
+> -M:	Stefan Popa <stefan.popa@analog.com>
+> +M:	Michael Hennerich <Michael.Hennerich@analog.com>
+>  L:	linux-pm@vger.kernel.org
+>  W:	http://ez.analog.com/community/linux-device-drivers
+>  S:	Supported
+> @@ -1078,7 +1078,6 @@ F:	drivers/dma/dma-axi-dmac.c
+>  ANALOG DEVICES INC IIO DRIVERS
+>  M:	Lars-Peter Clausen <lars@metafoo.de>
+>  M:	Michael Hennerich <Michael.Hennerich@analog.com>
+> -M:	Stefan Popa <stefan.popa@analog.com>
+>  W:	http://wiki.analog.com/
+>  W:	http://ez.analog.com/community/linux-device-drivers
+>  S:	Supported
+

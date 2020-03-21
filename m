@@ -2,39 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CDF818DF78
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 11:38:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D9918DFA4
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 11:48:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728113AbgCUKiF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 06:38:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34574 "EHLO mail.kernel.org"
+        id S1727926AbgCUKsa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 06:48:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36336 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726607AbgCUKiF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 21 Mar 2020 06:38:05 -0400
+        id S1726607AbgCUKsa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 21 Mar 2020 06:48:30 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B0E4E2072C;
-        Sat, 21 Mar 2020 10:38:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 88201206F9;
+        Sat, 21 Mar 2020 10:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584787083;
-        bh=hKz1RERkkN+w1E+koh4wmpVaOH/nKXnTlEK28C/vUGs=;
+        s=default; t=1584787709;
+        bh=G9TQJhuKk9QTxhifNhsvZL3BXJunCj0M8xqSAZqlYJw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=T32hXV5UR7vsxbXDuJZOlVcgVyBIYNx/A4d1wrOqR8MCvr7aMMdtdoSbG+XO3lXJa
-         QnMxu4n7GMye+eOnUe+TeyoIllnuBDkyWnmNd05cC3JkriWF4TNoX9cuKqM5aua4wi
-         7Xb1w3CX/Y/4OBtO69AaKnSr1vDRQRIO21oGdcHU=
-Date:   Sat, 21 Mar 2020 10:38:05 +0000
+        b=b4E8lQ1V2L9jJ8Zja0K4eVYe5qinxxtLitE0pUk2vayOmR8831U5SJrxtUKbqYTJs
+         3wzqFDFTxaT+LtzndqvE/lo9mEvRXVvJcHd4wN67OlJb1ReJJk906GhW3B7YseFSm9
+         QRC7yDqp3Qoh/fN2RGZcqfK6oRJUVjC2HLckUOoU=
+Date:   Sat, 21 Mar 2020 10:48:29 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Alexandru Tachici <alexandru.tachici@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mircea Caprioru <mircea.caprioru@analog.com>
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: dac: Add docs for AD5770R DAC
-Message-ID: <20200321103805.74285450@archlinux>
-In-Reply-To: <20200320004922.GA3641@bogus>
-References: <20200218121031.27233-1-alexandru.tachici@analog.com>
-        <20200218121031.27233-3-alexandru.tachici@analog.com>
-        <20200320004922.GA3641@bogus>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "ardeleanalex@gmail.com" <ardeleanalex@gmail.com>,
+        "Nagy, Laszlo" <Laszlo.Nagy@analog.com>,
+        "Csomortani, Istvan" <Istvan.Csomortani@analog.com>,
+        "Grozav, Andrei" <Andrei.Grozav@analog.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        "Costina, Adrian" <Adrian.Costina@analog.com>
+Subject: Re: [PATCH v9 0/8] iio: adi-axi-adc,ad9647: Add support for AD9467
+ ADC
+Message-ID: <20200321104829.040661d9@archlinux>
+In-Reply-To: <227c4c793044ca9a4e50f5d68d3de204c53d26e6.camel@analog.com>
+References: <20200312083511.28832-1-alexandru.ardelean@analog.com>
+        <20200315130625.705548ce@archlinux>
+        <227c4c793044ca9a4e50f5d68d3de204c53d26e6.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -44,262 +53,216 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 19 Mar 2020 18:49:22 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Mon, 16 Mar 2020 08:47:27 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> On Tue, Feb 18, 2020 at 02:10:31PM +0200, Alexandru Tachici wrote:
-> > Adding dt-bindings documentation for AD5770R DAC.  
-> 
-> DT list needs to be Cc'ed if you want bindings reviewed.
-
-Doh. I missed that.
-
-> 
-> > Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
-> > Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
-> > ---
-> >  .../bindings/iio/dac/adi,ad5770r.yaml         | 185 ++++++++++++++++++
-> >  1 file changed, 185 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
+> On Sun, 2020-03-15 at 13:06 +0000, Jonathan Cameron wrote:
+> > On Thu, 12 Mar 2020 10:35:03 +0200
+> > Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+> >   
+> > > This changeset adds support for the AD9467 LVDS High-Speed ADC.
+> > > In order to support it, support for an FPGA ADI AXI ADC is added in this
+> > > set.
+> > > This uses the current support for IIO buffer DMAEngine.  
 > > 
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> > new file mode 100644
-> > index 000000000000..13d6b5ff479d
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> > @@ -0,0 +1,185 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +# Copyright 2020 Analog Devices Inc.
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/bindings/iio/adc/adi,ad5770r.yaml#  
+> > I took a look through this series and I'm think I'm now happy with it.
+> > However, I'd like to leave a bit of time for Rob, the DT binding
+> > Maintainer to take a look at the bindings.
+> > 
+> > Long term I sort of wonder if we might get some alternative for the
+> > ADI-AXI interface, either because Analog decide to rewrite it, or
+> > because someone else puts together similar IP. At that point we may
+> > want a more sophisticated registration framework etc.  I guess we
+> > can wait and see if anyone ever does that though.  
 > 
-> Jonathan mentioned 'adc' part, but 'bindings' is also wrong. Should be:
+> This registration mechanism is a bit of a rewrite of an older mechanism that's
+> been in-use for 7+ years.
+> https://github.com/analogdevicesinc/linux/blob/master/drivers/iio/adc/cf_axi_adc_core.c#L832
+> Essentially, the old one searches on the SPI bus for a device, while this one
+> makes the coupling to the AXI-ADC driver a bit tighter, by requiring it to
+> explicitly register with the AXI-ADC driver.
+> No idea which is better; since both implementations require knowledge about the
+> AXI-ADC driver.
+> In the DT, the main difference is a rename of the property 'spibus-connected' to
+> 'adi,adc-dev'.
 
-Alexandru, please send a fixup patch for the various things Rob has highlighted.
+The approach here seems reasonable to me.  We can be more flexible
+if we ever need to.
+
+> 
+> I agree that a more sophisticated/generalized interface between the 2 would be a
+> better idea, but [given how long this has been as-is], I don't feel it happening
+> really soon.
+> 
+> I'm also preparing now an AXI-DAC driver, similar to this one.
+> The idea would be to also prepare upstreaming the AD9361, which is an RF
+> transceiver. I'm not sure whether that would classify as an MFD device [ADC &
+> DAC], or whether as an IIO device, with a drivers/iio/transceiver sub-type.
+
+We did have the slightly silly naming of addac in staging for a while.
+
+Anyhow, I'd say a single driver (not mfd), in a new directory as appropriate.
+
+> 
+> Related, what would be interesting, is a generic multi-chip-sync mechanism.
+> For many complicated devices [typically high-speed ADCs/DACs/transceivers], this
+> seems to be a more common use-case.
+> I've been wondering about a way to do it; if you have any input, or a subsystem
+> that does that well, I'm open to inputs.
+> MFD doesn't seem to be quite be that. Doing it with clocks has been tried and is
+> not very easy.
+> Another idea would be to try to implement some device-group mechanism. The idea
+> would be to have state-transition tables, and each driver defines it's own
+> callbacks for each state/state-transition. Whenever a device-group needs to jump
+> a certain state, all callbacks are called to put each device in it's own sub-
+> state.
+> Still not sure how good this approach is, but it sounds the closest to something
+> that would work.
+
+I'm not sure I follow in enough detail what you mean to offer detailed opinions.
+Are we talking pipeling type setups similar to the media framework does?
+
+It would certainly be possible to have a notification system that multiple driver
+can register to but I'm not sure I follow the usecase.  Perhaps some in depth
+examples would help me understand?
+
+Thanks,
 
 Jonathan
 
-
 > 
-> .../schemas/iio/dac/...
+> Thanks
+> Alex
 > 
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Analog Devices AD5770R DAC device driver
-> > +
-> > +maintainers:
-> > +  - Mircea Caprioru <mircea.caprioru@analog.com>
-> > +
-> > +description: |
-> > +  Bindings for the Analog Devices AD5770R current DAC device. Datasheet can be
-> > +  found here:
-> > +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD5770R.pdf
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - adi,ad5770r
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  avdd-supply:
-> > +    description:
-> > +      AVdd voltage supply. Represents two different supplies in the datasheet
-> > +      that are in fact the same.
-> > +
-> > +  iovdd-supply:
-> > +    description:
-> > +      Voltage supply for the chip interface.
-> > +
-> > +  vref-supply:
-> > +    description: Specify the voltage of the external reference used.
-> > +      Available reference options are 1.25 V or 2.5 V. If no
-> > +      external reference declared then the device will use the
-> > +      internal reference of 1.25 V.
-> > +
-> > +  adi,external-resistor:
-> > +    description: Specify if an external 2.5k ohm resistor is used. If not
-> > +      specified the device will use an internal 2.5k ohm resistor.
-> > +      The precision resistor is used for reference current generation.
-> > +    type: boolean
-> > +
-> > +  reset-gpios:
-> > +    description: GPIO spec for the RESET pin. If specified, it will be
-> > +      asserted during driver probe.
-> > +    maxItems: 1
-> > +
-> > +  channel0:  
-> 
-> channel@0 ???
-> 
-> Once you fix that, your example will start failing.
-> 
-> > +    description: Represents an external channel which are
-> > +      connected to the DAC. Channel 0 can act both as a current
-> > +      source and sink.
-> > +    type: object
-> > +
-> > +    properties:
-> > +      num:  
-> 
-> Use 'reg' instead.
-> 
-> > +        description: This represents the channel number.
-> > +        items:  
-> 
-> You can drop items.
-> 
-> > +          const: 0
-> > +
-> > +      adi,range-microamp:
-> > +          description: Output range of the channel.
-> > +          oneOf:
-> > +            - $ref: /schemas/types.yaml#/definitions/int32-array  
-> 
-> *-microamp already has a type, so this should be dropped. However, I 
-> believe it's unsigned currently, but we can fix it to be signed.
-> 
-> > +            - items:
-> > +                - enum: [0 300000]
-> > +                - enum: [-60000 0]
-> > +                - enum: [-60000 300000]  
-> 
-> Negative values don't yet work until we fix dtc to be able to output 
-> negative values. For now, can you just avoid negative numbers in the 
-> example.
-> 
-> What's defined here doesn't match the example. You are saying there are 
-> 3 cells with 2 possible values each. I think you want:
-> 
-> oneOf:
->   - items:
->       - const: 0
->       - const: 300000
->   - items:
->       - const: -60000
->       - const: 0
->   - items:
->       - const: -60000
->       - const: 300000
->       
-> 
-> > +
-> > +  channel1:
-> > +    description: Represents an external channel which are
-> > +      connected to the DAC.
-> > +    type: object
-> > +
-> > +    properties:
-> > +      num:
-> > +        description: This represents the channel number.
-> > +        items:
-> > +          const: 1
-> > +
-> > +      adi,range-microamp:
-> > +          description: Output range of the channel.
-> > +          oneOf:
-> > +            - $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +            - items:
-> > +                - enum: [0 140000]
-> > +                - enum: [0 250000]
-> > +
-> > +  channel2:
-> > +    description: Represents an external channel which are
-> > +      connected to the DAC.
-> > +    type: object
-> > +
-> > +    properties:
-> > +      num:
-> > +        description: This represents the channel number.
-> > +        items:
-> > +          const: 2
-> > +
-> > +      adi,range-microamp:
-> > +          description: Output range of the channel.
-> > +          oneOf:
-> > +            - $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +            - items:
-> > +                - enum: [0 140000]
-> > +                - enum: [0 250000]
-> > +
-> > +patternProperties:
-> > +  "^channel@([3-5])$":
-> > +    type: object
-> > +    description: Represents the external channels which are connected to the DAC.
-> > +    properties:
-> > +      num:
-> > +        description: This represents the channel number.
-> > +        items:
-> > +          minimum: 3
-> > +          maximum: 5
-> > +
-> > +      adi,range-microamp:
-> > +          description: Output range of the channel.
-> > +          oneOf:
-> > +            - $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +            - items:
-> > +                - enum: [0 45000]
-> > +                - enum: [0 100000]
-> > +
-> > +required:
-> > +- reg
-> > +- diff-channels
-> > +- channel0
-> > +- channel1
-> > +- channel2
-> > +- channel3
-> > +- channel4
-> > +- channel5
-> > +
-> > +examples:
-> > +  - |
-> > +        spi {
-> > +                #address-cells = <1>;
-> > +                #size-cells = <0>;
-> > +
-> > +                ad5770r@0 {
-> > +                        compatible = "ad5770r";
-> > +                        reg = <0>;
-> > +                        spi-max-frequency = <1000000>;
-> > +                        vref-supply = <&vref>;
-> > +                        adi,external-resistor;
-> > +                        reset-gpios = <&gpio 22 0>;
-> > +
-> > +                        channel@0 {
-> > +                                num = <0>;
-> > +                                adi,range-microamp = <(-60000) 300000>;
-> > +                        };
-> > +
-> > +                        channel@1 {
-> > +                                num = <1>;
-> > +                                adi,range-microamp = <0 140000>;
-> > +                        };
-> > +
-> > +                        channel@2 {
-> > +                                num = <2>;
-> > +                                adi,range-microamp = <0 55000>;
-> > +                        };
-> > +
-> > +                        channel@3 {
-> > +                                num = <3>;
-> > +                                adi,range-microamp = <0 45000>;
-> > +                        };
-> > +
-> > +                        channel@4 {
-> > +                                num = <4>;
-> > +                                adi,range-microamp = <0 45000>;
-> > +                        };
-> > +
-> > +                        channel@5 {
-> > +                                num = <5>;
-> > +                                adi,range-microamp = <0 45000>;
-> > +                        };
-> > +                };
-> > +        };
-> > +...
-> > -- 
-> > 2.20.1
+> > 
+> > Jonathan
 > >   
+> > > Changelog v8 -> v9:
+> > > * adding more Analog people to the list; predominantly HDL people; this
+> > >   should help me sync people about the details of regs/reg-names
+> > > * added 'Acked-by: Moritz Fischer <mdf@kernel.org>' tag to fpga patches
+> > >   - we can always re-update these patches if something else is decided about
+> > >     the location of the 'adi-axi-common.h' header; I'm not insisting about
+> > >     where to put it; I'm open to other proposals
+> > > * patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+> > >   - prefixed regs ADI_AXI_ ; I tried ADI_AXI_ADC_, but that seemed to make
+> > >     them too long
+> > >   - dropped unused regs; will add them as stuff gets added in the upstream
+> > >     driver; in the meantime, reg-names can be reworked
+> > >   - dropped generic LOWERXY_SET/GET macros
+> > >   - update reg-names a bit; will update them in the docs and HDL
+> > >   - order in adi_axi_adc_conv_unregister() should now be symmetrically
+> > >     oppposite now to the register function
+> > >   - implemented 'is_visible()' callback to adi_axi_adc_attributes[] so that
+> > >     attrs can be made invisible to userspace if needed;
+> > >   - 'indio_dev->name = "adi-axi-adc";'
+> > >   - added kernel doc-string for @reg_access
+> > > * patch 'iio: adc: ad9467: add support AD9467 ADC'
+> > >   - ad9467_spi_read() split in 2 buffers; tbuf & rbuf
+> > >   - removed 'if (chan->extend_name)' test ; left-over from initial driver
+> > >   - removed 'if (!st->clk)' check; driver will fail probe without a clock
+> > >   - removed 'if (!spi->dev.of_node)' in probe; shouldn't be needed
+> > >   - using 'of_device_get_match_data()' in probe to get data; moved chip
+> > >     info table entry as data on the of_device_id table
+> > > 
+> > > Changelog v7 -> v8:
+> > > * in 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+> > >   - updated register definitions and bits to newer format/docs; the ref
+> > > driver wasn't really up-to-date
+> > >     -- prefixed bit names with reg-name to avoid bit definition colisions;
+> > > that makes some macros longer, but at least the format is consistent
+> > >   - using dev_name(&pdev->dev) for indio_dev->name
+> > >   - moved reset to own axi_adc_reset() function; may be re-used later
+> > >   - some re-formatting/alignment changes
+> > >   - address ENOSYS checkpatch complaint; changed with EOPNOTSUPP
+> > > 
+> > > Changelog v6 -> v7:
+> > > * Fixed dt-schema build for adi,axi-adc.yaml based on Rob's suggestion
+> > >   - added '$ref: /schemas/types.yaml#/definitions/phandle' to 'adi,adc-dev'
+> > >   - dropped 'maxItems' from 'adi,adc-dev'
+> > > 
+> > > Changelog v5 -> v6
+> > > * fix URLs; got changed during rename
+> > >    https://wiki.analog.com/resources/fpga/docs/adi_axi_adc_ip ->
+> > >    https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> > >   - noticed while working on the AXI DAC driver
+> > > 
+> > > Changelog v4 -> v5:
+> > > * update drivers/iio/adc/Kconfig note about module name; omitted during
+> > > first rename
+> > >    - 'module will be called axi-adc.' -> 'module will be called adi-axi-
+> > > adc.'
+> > > 
+> > > Changelog v3 -> v4:
+> > > * addressed Rob's dt-remarks
+> > >    - change 'adi-axi-adc-client' prop to 'adi,adc-dev'
+> > > 
+> > > Changelog v2 -> v3:
+> > > * addressed compiler warning
+> > > 
+> > > Changelog v1 -> v2:
+> > > * first series was added a bit hastily
+> > > * addressed  'make dt_binding_check' complaints; seems I missed a few when
+> > > running the check; 
+> > > * added missing patches to include/linux/fpga/adi-axi-common.h
+> > >    - 'include: fpga: adi-axi-common.h: fixup whitespace tab -> space'
+> > >    - 'include: fpga: adi-axi-common.h: add version helper macros'
+> > > * patch 'iio: buffer-dmaengine: add dev-managed calls for buffer alloc/free'
+> > >    - remove copy+pasted comment for 'devm_iio_dmaengine_buffer_alloc()'
+> > >    - removed devm_iio_dmaengine_buffer_free() ; hopefully it might never be
+> > > needed
+> > >    - fix-up alignment for devm_iio_dmaengine_buffer_alloc() in header
+> > > * patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+> > >    - renamed axi-adc.c -> adi-axi-adc.c & Kconfig symbol
+> > >    - prefix all axi_adc -> adi_axi_adc
+> > >    - removed switch statement in axi_adc_read_raw() & axi_adc_write_raw()
+> > >    - remove axi_adc_chan_spec ; replaced with iio_chan_spec directly ; will
+> > > think of a simpler solution for extra chan params
+> > >    - removed left-over 'struct axi_adc_cleanup_data'
+> > >    - moved 'devm_add_action_or_reset()' call right after
+> > > 'adi_axi_adc_attach_client()'
+> > >    - switched to using 'devm_platform_ioremap_resource()'
+> > > * patch 'iio: adc: ad9467: add support AD9467 ADC'
+> > >   - renamed ADI_ADC reg prefixes to AN877_ADC
+> > >   - dropped 'info_mask_separate' field in AD9467_CHAN - will be re-added
+> > > later when driver gets more features; was left-over from the initial ref
+> > > driver
+> > >   - remove .shift = 0,  in AD9467_CHAN
+> > >   - renamed 'sample-clock' -> 'adc-clock'
+> > >   - direct returns in ad9467_read_raw() & ad9467_write_raw() &
+> > > ad9467_setup() switch statements
+> > >   - removed blank line after devm_axi_adc_conv_register()
+> > >   - removed ad9467_id & reworked to use ad9467_of_match
+> > > 
+> > > Alexandru Ardelean (6):
+> > >   include: fpga: adi-axi-common.h: fixup whitespace tab -> space
+> > >   include: fpga: adi-axi-common.h: add version helper macros
+> > >   iio: buffer-dmaengine: use %zu specifier for sprintf(align)
+> > >   iio: buffer-dmaengine: add dev-managed calls for buffer alloc
+> > >   dt-bindings: iio: adc: add bindings doc for AXI ADC driver
+> > >   dt-bindings: iio: adc: add bindings doc for AD9467 ADC
+> > > 
+> > > Michael Hennerich (2):
+> > >   iio: adc: adi-axi-adc: add support for AXI ADC IP core
+> > >   iio: adc: ad9467: add support AD9467 ADC
+> > > 
+> > >  .../bindings/iio/adc/adi,ad9467.yaml          |  65 +++
+> > >  .../bindings/iio/adc/adi,axi-adc.yaml         |  63 +++
+> > >  drivers/iio/adc/Kconfig                       |  35 ++
+> > >  drivers/iio/adc/Makefile                      |   2 +
+> > >  drivers/iio/adc/ad9467.c                      | 420 ++++++++++++++
+> > >  drivers/iio/adc/adi-axi-adc.c                 | 518 ++++++++++++++++++
+> > >  .../buffer/industrialio-buffer-dmaengine.c    |  41 +-
+> > >  include/linux/fpga/adi-axi-common.h           |   6 +-
+> > >  include/linux/iio/adc/adi-axi-adc.h           |  64 +++
+> > >  include/linux/iio/buffer-dmaengine.h          |   3 +
+> > >  10 files changed, 1215 insertions(+), 2 deletions(-)
+> > >  create mode 100644
+> > > Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,axi-
+> > > adc.yaml
+> > >  create mode 100644 drivers/iio/adc/ad9467.c
+> > >  create mode 100644 drivers/iio/adc/adi-axi-adc.c
+> > >  create mode 100644 include/linux/iio/adc/adi-axi-adc.h
+> > >   
 

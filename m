@@ -2,71 +2,216 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D59018E3B1
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 19:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6CE18E3BB
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 19:43:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727028AbgCUSfj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 14:35:39 -0400
-Received: from smtprelay0124.hostedemail.com ([216.40.44.124]:43138 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727015AbgCUSfj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 14:35:39 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id DB539182CED28;
-        Sat, 21 Mar 2020 18:35:37 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2560:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3873:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4384:5007:9025:10004:10400:11026:11232:11658:11914:12043:12297:12438:12740:12760:12895:13069:13311:13357:13439:13972:14181:14659:14721:14764:21080:21627:30029:30034:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: word42_6b2f3b9dd3046
-X-Filterd-Recvd-Size: 2030
-Received: from XPS-9350.home (unknown [47.151.143.254])
-        (Authenticated sender: joe@perches.com)
-        by omf16.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 21 Mar 2020 18:35:36 +0000 (UTC)
-Message-ID: <ed459ac3c268d6287f70a0aa8ca682b022f27a8e.camel@perches.com>
-Subject: Re: [PATCH] drivers: iio: Drop unnecessary explicit casting
-From:   Joe Perches <joe@perches.com>
-To:     Nishant Malpani <nish.malpani25@gmail.com>, jic23@kernel.org
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Sat, 21 Mar 2020 11:33:48 -0700
-In-Reply-To: <9aa90ffd-9574-d615-0bc0-f791e51b3be4@gmail.com>
-References: <20200318100754.25667-1-nish.malpani25@gmail.com>
-         <a7778635620163cb6185192819a56ed44d76d4b0.camel@perches.com>
-         <9aa90ffd-9574-d615-0bc0-f791e51b3be4@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        id S1727637AbgCUSni (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 14:43:38 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:45853 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727028AbgCUSnh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 14:43:37 -0400
+Received: by mail-pf1-f194.google.com with SMTP id j10so5146000pfi.12;
+        Sat, 21 Mar 2020 11:43:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:date:from:to:cc:subject:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=yRcLkteyX6PlC1Vm2e1Pax2AHd9o6wiG1snjmj+oGxk=;
+        b=A2jHP2XnccTjVNIPvy0XT63cZVksWDKO2+FU+Yzk8ybgFn3cg695kgKrGA+DJdZSLt
+         aQdr7UlGUe3IgGT/Nm4m5vpq/yoBFyspcoWP38tRC208c7lBbms3+HaXmVKeWUqkDSlH
+         ocVjE2tKhePOJVysyMPoA0vwFbFOOLQVOJTvdlTLwRhKYvDSQw8Qof/Ufi21RDmL0aY+
+         6XfTJVOnepR2NA0BcBDXJRprwnzLQrlE2Qoa6ctb+mrL27Z4SkDN363NOu22l05Kz2sI
+         /t8C5+qCa5Pnk2//r5yBPuQOtvG10otTLpuyWHpRsK4SynEYUCRCqehvvnmvMuE77cTk
+         MhSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=yRcLkteyX6PlC1Vm2e1Pax2AHd9o6wiG1snjmj+oGxk=;
+        b=KfPWceXjRMdL/ZQSHYTv7wb8Q+wCSbQICRqtqm5pFEfEdeLb1Lb4FWDxTw6nMNAC8G
+         aOelFx46Ghyc/XT8qH7c7YNjatK7haiCnbbJqrdB553dChnli9KK99VAIMrIhiHGB16h
+         sDPLGComT4YOOfr3rkoBgZBq+YorLIhl9FBavDvb1QHDVm3C0YP8GH0wUTpJDLhH6Tuz
+         f6/BSmJ0p4GkRke0wJHIWUHCmvaHr1bB3cdQShk94jf41zfNVKV4YzxXCH+Oc1ASJbFY
+         QpKooQfEk6NGuaLe63HFrD40OHkjcSkSBWYgMYzJfb8+ZOFwwi3RBkQBXxf47knM+l++
+         0Oiw==
+X-Gm-Message-State: ANhLgQ3An6g7PGd1UJuzzYCj+/DTfeNiYU8ZHbnnfNJYs0jRdLxZVVAF
+        O2JY+3zMRngHuVJolAbn6mitZCUl
+X-Google-Smtp-Source: ADFU+vvkGl9qxAFdRG4hK7oBMzQSoFQPdeBPeBd6QW3hOi+39SP8/ltnO6dJWjRfu0nKspP1yfspCA==
+X-Received: by 2002:a62:1a03:: with SMTP id a3mr16284219pfa.171.1584816216757;
+        Sat, 21 Mar 2020 11:43:36 -0700 (PDT)
+Received: from SARKAR ([49.207.56.153])
+        by smtp.gmail.com with ESMTPSA id w4sm8058003pgg.2.2020.03.21.11.43.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Mar 2020 11:43:36 -0700 (PDT)
+Message-ID: <5e766058.1c69fb81.a65ff.d2eb@mx.google.com>
+X-Google-Original-Message-ID: <20200321184332.GA10817@rohitsarkar5398@gmail.com>
+Date:   Sun, 22 Mar 2020 00:13:32 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, dragos.bogdan@analog.com
+Subject: Re: [PATCH v7] iio: adc: max1363: replace uses of mlock
+References: <5e6e522d.1c69fb81.10f54.f95c@mx.google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5e6e522d.1c69fb81.10f54.f95c@mx.google.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 2020-03-21 at 23:56 +0530, Nishant Malpani wrote:
-> On 21/03/20 5:56 pm, Joe Perches wrote:
-> > On Wed, 2020-03-18 at 15:37 +0530, Nishant Malpani wrote:
-> > > Provide correct specifiers while printing error logs to discard the use
-> > > of unnecessary explicit casting.
-> > []
-> > > diff --git a/drivers/iio/accel/kxsd9-i2c.c b/drivers/iio/accel/kxsd9-i2c.c
-> > []
-> > > @@ -21,8 +21,8 @@ static int kxsd9_i2c_probe(struct i2c_client *i2c,
-> > >   
-> > >   	regmap = devm_regmap_init_i2c(i2c, &config);
-> > >   	if (IS_ERR(regmap)) {
-> > > -		dev_err(&i2c->dev, "Failed to register i2c regmap %d\n",
-> > > -			(int)PTR_ERR(regmap));
-> > > +		dev_err(&i2c->dev, "Failed to register i2c regmap %ld\n",
-> > > +			PTR_ERR(regmap));
-> > 
-> > Another option would be to use %pe to print the error identifier
-> > and not the error number
-> > 
-> By 'error identifier' you mean the symbolic error name (as described in 
-> docs [1]), right?
+Hey,
+Does this look fine? Wondering if this was missed during review
+Thanks,
+Rohit
 
-Yes
-
-> https://www.kernel.org/doc/html/latest/core-api/printk-formats.html#error-pointers
-
-
+On Sun, Mar 15, 2020 at 09:34:58PM +0530, Rohit Sarkar wrote:
+> Replace usage indio_dev's mlock with either local lock or
+> iio_device_claim_direct_mode.
+> 
+> Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> ---
+> Changelog v6 -> v7
+> * Fix failure handling logic
+> 
+> Changelog v5 -> v6
+> * Minor failure handling fixes
+> 
+> Changelog v4 -> v5
+> * Use local lock too at places where driver state needs to be protected.
+> 
+> Changelog v3 -> v4
+> * Fix indentation
+> 
+> Changelog v2 -> v3
+> * use iio_device_claim_direct when switching modes
+> * replace mlock usage in max1363_write_event_config
+> 
+> Changelog v1 -> v2
+> * Fix indentation
+> 
+>  drivers/iio/adc/max1363.c | 37 ++++++++++++++++++++++++++++---------
+>  1 file changed, 28 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+> index 5c2cc61b666e..12d72bf3f12a 100644
+> --- a/drivers/iio/adc/max1363.c
+> +++ b/drivers/iio/adc/max1363.c
+> @@ -150,6 +150,7 @@ struct max1363_chip_info {
+>   * @current_mode:	the scan mode of this chip
+>   * @requestedmask:	a valid requested set of channels
+>   * @reg:		supply regulator
+> + * @lock		lock to ensure state is consistent
+>   * @monitor_on:		whether monitor mode is enabled
+>   * @monitor_speed:	parameter corresponding to device monitor speed setting
+>   * @mask_high:		bitmask for enabled high thresholds
+> @@ -169,6 +170,7 @@ struct max1363_state {
+>  	const struct max1363_mode	*current_mode;
+>  	u32				requestedmask;
+>  	struct regulator		*reg;
+> +	struct mutex			lock;
+>  
+>  	/* Using monitor modes and buffer at the same time is
+>  	   currently not supported */
+> @@ -364,7 +366,13 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
+>  	struct max1363_state *st = iio_priv(indio_dev);
+>  	struct i2c_client *client = st->client;
+>  
+> -	mutex_lock(&indio_dev->mlock);
+> +	ret = iio_device_claim_direct_mode(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +	mutex_lock(&st->lock);
+> +
+> +	if (ret < 0)
+> +		goto error_ret;
+>  	/*
+>  	 * If monitor mode is enabled, the method for reading a single
+>  	 * channel will have to be rather different and has not yet
+> @@ -372,7 +380,7 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
+>  	 *
+>  	 * Also, cannot read directly if buffered capture enabled.
+>  	 */
+> -	if (st->monitor_on || iio_buffer_enabled(indio_dev)) {
+> +	if (st->monitor_on) {
+>  		ret = -EBUSY;
+>  		goto error_ret;
+>  	}
+> @@ -404,8 +412,10 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
+>  		data = rxbuf[0];
+>  	}
+>  	*val = data;
+> +
+>  error_ret:
+> -	mutex_unlock(&indio_dev->mlock);
+> +	mutex_unlock(&st->lock);
+> +	iio_device_release_direct_mode(indio_dev);
+>  	return ret;
+>  
+>  }
+> @@ -705,9 +715,9 @@ static ssize_t max1363_monitor_store_freq(struct device *dev,
+>  	if (!found)
+>  		return -EINVAL;
+>  
+> -	mutex_lock(&indio_dev->mlock);
+> +	mutex_lock(&st->lock);
+>  	st->monitor_speed = i;
+> -	mutex_unlock(&indio_dev->mlock);
+> +	mutex_unlock(&st->lock);
+>  
+>  	return 0;
+>  }
+> @@ -810,12 +820,12 @@ static int max1363_read_event_config(struct iio_dev *indio_dev,
+>  	int val;
+>  	int number = chan->channel;
+>  
+> -	mutex_lock(&indio_dev->mlock);
+> +	mutex_lock(&st->lock);
+>  	if (dir == IIO_EV_DIR_FALLING)
+>  		val = (1 << number) & st->mask_low;
+>  	else
+>  		val = (1 << number) & st->mask_high;
+> -	mutex_unlock(&indio_dev->mlock);
+> +	mutex_unlock(&st->lock);
+>  
+>  	return val;
+>  }
+> @@ -962,7 +972,14 @@ static int max1363_write_event_config(struct iio_dev *indio_dev,
+>  	u16 unifiedmask;
+>  	int number = chan->channel;
+>  
+> -	mutex_lock(&indio_dev->mlock);
+> +	ret = iio_device_claim_direct_mode(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +	mutex_lock(&st->lock);
+> +
+> +	if (ret < 0)
+> +		goto error_ret;
+> +
+>  	unifiedmask = st->mask_low | st->mask_high;
+>  	if (dir == IIO_EV_DIR_FALLING) {
+>  
+> @@ -989,7 +1006,8 @@ static int max1363_write_event_config(struct iio_dev *indio_dev,
+>  
+>  	max1363_monitor_mode_update(st, !!(st->mask_high | st->mask_low));
+>  error_ret:
+> -	mutex_unlock(&indio_dev->mlock);
+> +	mutex_unlock(&st->lock);
+> +	iio_device_release_direct_mode(indio_dev);
+>  
+>  	return ret;
+>  }
+> @@ -1587,6 +1605,7 @@ static int max1363_probe(struct i2c_client *client,
+>  
+>  	st = iio_priv(indio_dev);
+>  
+> +	mutex_init(&st->lock);
+>  	st->reg = devm_regulator_get(&client->dev, "vcc");
+>  	if (IS_ERR(st->reg)) {
+>  		ret = PTR_ERR(st->reg);
+> -- 
+> 2.23.0.385.gbc12974a89
+> 

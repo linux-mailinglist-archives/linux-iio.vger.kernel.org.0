@@ -2,38 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC95718E314
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 17:57:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BC0318E326
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 18:15:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727244AbgCUQ5U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 12:57:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45896 "EHLO mail.kernel.org"
+        id S1727323AbgCURPm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 13:15:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49662 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726961AbgCUQ5U (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 21 Mar 2020 12:57:20 -0400
+        id S1727262AbgCURPm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 21 Mar 2020 13:15:42 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5AAA520732;
-        Sat, 21 Mar 2020 16:57:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1A8BB20724;
+        Sat, 21 Mar 2020 17:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584809839;
-        bh=7jXMHHcxQ7d68jYn4uXmaF7e4FZZUPFhRc7XvdSPvqs=;
+        s=default; t=1584810940;
+        bh=K7C5yHgrVLE9KowLB4MW29yZsn8PlKOnsoDA0zK/mqA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=D25faL/NyU+1i4AjQ5GHDz/AmAmC+mWtb7FfmoVJW9uU3px8fa04ZDHiTIcGloGst
-         3oC/280PDhBkEDDRNjyYLH2gVv7q2sBVTNT7reK8VT5yje5GETnDGCaS6rVD8yw+nz
-         vfKxIpFWM9w2MB9MO/zWlnCIaJCq6v+3+1Na+L8A=
-Date:   Sat, 21 Mar 2020 16:57:15 +0000
+        b=FQG5YX4cIpCrrZ8A3xWuFFmPoxPXfj9LyDA/C/ypKc20JM/pdrrAzMuyDGXhLZTLP
+         vFP2eSq8fwMs5omc+I9U7fq6/5BaYpamaypxeV5jVySUMUN/Q2bSO8L1XtxpHIg4lZ
+         ISni8aKmksLr0Dy2T7evQO2Z3vCVgWO0tO6XxqU0=
+Date:   Sat, 21 Mar 2020 17:15:35 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
 Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lars@metafoo.de>
-Subject: Re: [PATCH v2 5/5] iio: adc: ad7793: use read_avail iio hook for
- scale available
-Message-ID: <20200321165715.79c9906d@archlinux>
-In-Reply-To: <20200321090802.11537-5-alexandru.ardelean@analog.com>
-References: <20200321090802.11537-1-alexandru.ardelean@analog.com>
-        <20200321090802.11537-5-alexandru.ardelean@analog.com>
+        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+        <Laszlo.Nagy@analog.com>, <Andrei.Grozav@analog.com>,
+        <Michael.Hennerich@analog.com>, <Istvan.Csomortani@analog.com>,
+        <Adrian.Costina@analog.com>, <Dragos.Bogdan@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v11 5/8] iio: adc: adi-axi-adc: add support for AXI ADC
+ IP core
+Message-ID: <20200321171535.1eaef9f2@archlinux>
+In-Reply-To: <20200321085315.11030-6-alexandru.ardelean@analog.com>
+References: <20200321085315.11030-1-alexandru.ardelean@analog.com>
+        <20200321085315.11030-6-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,156 +47,672 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 21 Mar 2020 11:08:02 +0200
+On Sat, 21 Mar 2020 10:53:12 +0200
 Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> This change uses the read_avail and '.info_mask_shared_by_type_available'
-> modifier to set the available scale.
-> Essentially, nothing changes to the driver's ABI.
+> From: Michael Hennerich <michael.hennerich@analog.com>
 > 
-> The main idea for this patch is to remove the AD7793 driver from
-> checkpatch's radar. There have been about ~3 attempts to fix/break the
-> 'in_voltage-voltage_scale_available' attribute, because checkpatch assumed
-> it to be an arithmetic operation and people were trying to change that.
+> This change adds support for the Analog Devices Generic AXI ADC IP core.
+> The IP core is used for interfacing with analog-to-digital (ADC) converters
+> that require either a high-speed serial interface (JESD204B/C) or a source
+> synchronous parallel interface (LVDS/CMOS).
 > 
+> Usually, some other interface type (i.e SPI) is used as a control interface
+> for the actual ADC, while the IP core (controlled via this driver), will
+> interface to the data-lines of the ADC and handle  the streaming of data
+> into memory via DMA.
+> 
+> Because of this, the AXI ADC driver needs the other SPI-ADC driver to
+> register with it. The SPI-ADC needs to be register via the SPI framework,
+> while the AXI ADC registers as a platform driver. The two cannot be ordered
+> in a hierarchy as both drivers have their own registers, and trying to
+> organize this [in a hierarchy becomes] problematic when trying to map
+> memory/registers.
+> 
+> There are some modes where the AXI ADC can operate as standalone ADC, but
+> those will be implemented at a later point in time.
+> 
+> Link: https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> 
+> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-At some point it might be nice to move the sampling_frequency over as well
-but clearly not remotely urgent!
+Trivial missing static... I've fixed up.
 
-Applied to the togreg branch of iio.git and pushed out as testing
-for the autobuilders to poke at it.
+Applied to the togreg branch of iio.git and pushed out as testing.
 
-Thanks,
+This may be interesting as I think it's the first time we've actually
+exposed the dma buffer stuff to proper build testing on all the
+weird architectures 0-day etc will hit it with.
+
+Thanks
 
 Jonathan
- 
+
 > ---
->  drivers/iio/adc/ad7793.c | 53 +++++++++++++++++++++++++++-------------
->  1 file changed, 36 insertions(+), 17 deletions(-)
+>  drivers/iio/adc/Kconfig             |  20 ++
+>  drivers/iio/adc/Makefile            |   1 +
+>  drivers/iio/adc/adi-axi-adc.c       | 495 ++++++++++++++++++++++++++++
+>  include/linux/iio/adc/adi-axi-adc.h |  64 ++++
+>  4 files changed, 580 insertions(+)
+>  create mode 100644 drivers/iio/adc/adi-axi-adc.c
+>  create mode 100644 include/linux/iio/adc/adi-axi-adc.h
 > 
-> diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
-> index 5592ae573e6b..fad98f1801db 100644
-> --- a/drivers/iio/adc/ad7793.c
-> +++ b/drivers/iio/adc/ad7793.c
-> @@ -354,29 +354,28 @@ static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
->  static IIO_CONST_ATTR_NAMED(sampling_frequency_available_ad7797,
->  	sampling_frequency_available, "123 62 50 33 17 16 12 10 8 6 4");
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index f4da821c4022..445070abf376 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -246,6 +246,26 @@ config AD799X
+>  	  To compile this driver as a module, choose M here: the module will be
+>  	  called ad799x.
 >  
-> -static ssize_t ad7793_show_scale_available(struct device *dev,
-> -			struct device_attribute *attr, char *buf)
-> +static int ad7793_read_avail(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     const int **vals, int *type, int *length,
-> +			     long mask)
->  {
-> -	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
->  	struct ad7793_state *st = iio_priv(indio_dev);
-> -	int i, len = 0;
->  
-> -	for (i = 0; i < ARRAY_SIZE(st->scale_avail); i++)
-> -		len += sprintf(buf + len, "%d.%09u ", st->scale_avail[i][0],
-> -			       st->scale_avail[i][1]);
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*vals = (int *)st->scale_avail;
-> +		*type = IIO_VAL_INT_PLUS_NANO;
-> +		/* Values are stored in a 2D matrix  */
-> +		*length = ARRAY_SIZE(st->scale_avail) * 2;
->  
-> -	len += sprintf(buf + len, "\n");
-> +		return IIO_AVAIL_LIST;
+> +config ADI_AXI_ADC
+> +	tristate "Analog Devices Generic AXI ADC IP core driver"
+> +	select IIO_BUFFER
+> +	select IIO_BUFFER_HW_CONSUMER
+> +	select IIO_BUFFER_DMAENGINE
+> +	help
+> +	  Say yes here to build support for Analog Devices Generic
+> +	  AXI ADC IP core. The IP core is used for interfacing with
+> +	  analog-to-digital (ADC) converters that require either a high-speed
+> +	  serial interface (JESD204B/C) or a source synchronous parallel
+> +	  interface (LVDS/CMOS).
+> +	  Typically (for such devices) SPI will be used for configuration only,
+> +	  while this IP core handles the streaming of data into memory via DMA.
+> +
+> +	  Link: https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> +	  If unsure, say N (but it's safe to say "Y").
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called adi-axi-adc.
+> +
+>  config ASPEED_ADC
+>  	tristate "Aspeed ADC"
+>  	depends on ARCH_ASPEED || COMPILE_TEST
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index 8462455b4228..7c6594d049f9 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -26,6 +26,7 @@ obj-$(CONFIG_AD7793) += ad7793.o
+>  obj-$(CONFIG_AD7887) += ad7887.o
+>  obj-$(CONFIG_AD7949) += ad7949.o
+>  obj-$(CONFIG_AD799X) += ad799x.o
+> +obj-$(CONFIG_ADI_AXI_ADC) += adi-axi-adc.o
+>  obj-$(CONFIG_ASPEED_ADC) += aspeed_adc.o
+>  obj-$(CONFIG_AT91_ADC) += at91_adc.o
+>  obj-$(CONFIG_AT91_SAMA5D2_ADC) += at91-sama5d2_adc.o
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> new file mode 100644
+> index 000000000000..8d966b47edc9
+> --- /dev/null
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -0,0 +1,495 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Analog Devices Generic AXI ADC IP core
+> + * Link: https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> + *
+> + * Copyright 2012-2020 Analog Devices Inc.
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/clk.h>
+> +#include <linux/io.h>
+> +#include <linux/delay.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/buffer-dmaengine.h>
+> +
+> +#include <linux/fpga/adi-axi-common.h>
+> +#include <linux/iio/adc/adi-axi-adc.h>
+> +
+> +/**
+> + * Register definitions:
+> + *   https://wiki.analog.com/resources/fpga/docs/axi_adc_ip#register_map
+> + */
+> +
+> +/* ADC controls */
+> +
+> +#define ADI_AXI_REG_RSTN			0x0040
+> +#define   ADI_AXI_REG_RSTN_CE_N			BIT(2)
+> +#define   ADI_AXI_REG_RSTN_MMCM_RSTN		BIT(1)
+> +#define   ADI_AXI_REG_RSTN_RSTN			BIT(0)
+> +
+> +/* ADC Channel controls */
+> +
+> +#define ADI_AXI_REG_CHAN_CTRL(c)		(0x0400 + (c) * 0x40)
+> +#define   ADI_AXI_REG_CHAN_CTRL_LB_OWR		BIT(11)
+> +#define   ADI_AXI_REG_CHAN_CTRL_PN_SEL_OWR	BIT(10)
+> +#define   ADI_AXI_REG_CHAN_CTRL_IQCOR_EN	BIT(9)
+> +#define   ADI_AXI_REG_CHAN_CTRL_DCFILT_EN	BIT(8)
+> +#define   ADI_AXI_REG_CHAN_CTRL_FMT_SIGNEXT	BIT(6)
+> +#define   ADI_AXI_REG_CHAN_CTRL_FMT_TYPE	BIT(5)
+> +#define   ADI_AXI_REG_CHAN_CTRL_FMT_EN		BIT(4)
+> +#define   ADI_AXI_REG_CHAN_CTRL_PN_TYPE_OWR	BIT(1)
+> +#define   ADI_AXI_REG_CHAN_CTRL_ENABLE		BIT(0)
+> +
+> +#define ADI_AXI_REG_CHAN_CTRL_DEFAULTS		\
+> +	(ADI_AXI_REG_CHAN_CTRL_FMT_SIGNEXT |	\
+> +	 ADI_AXI_REG_CHAN_CTRL_FMT_EN |		\
+> +	 ADI_AXI_REG_CHAN_CTRL_ENABLE)
+> +
+> +struct adi_axi_adc_core_info {
+> +	unsigned int				version;
+> +};
+> +
+> +struct adi_axi_adc_state {
+> +	struct mutex				lock;
+> +
+> +	struct adi_axi_adc_client		*client;
+> +	void __iomem				*regs;
+> +};
+> +
+> +struct adi_axi_adc_client {
+> +	struct list_head			entry;
+> +	struct adi_axi_adc_conv			conv;
+> +	struct adi_axi_adc_state		*state;
+> +	struct device				*dev;
+> +	const struct adi_axi_adc_core_info	*info;
+> +};
+> +
+> +static LIST_HEAD(registered_clients);
+> +static DEFINE_MUTEX(registered_clients_lock);
+> +
+> +static struct adi_axi_adc_client *conv_to_client(struct adi_axi_adc_conv *conv)
+> +{
+> +	if (!conv)
+> +		return NULL;
+> +	return container_of(conv, struct adi_axi_adc_client, conv);
+> +}
+> +
+> +void *adi_axi_adc_conv_priv(struct adi_axi_adc_conv *conv)
+> +{
+> +	struct adi_axi_adc_client *cl = conv_to_client(conv);
+> +
+> +	if (!cl)
+> +		return NULL;
+> +
+> +	return (char *)cl + ALIGN(sizeof(struct adi_axi_adc_client), IIO_ALIGN);
+> +}
+> +EXPORT_SYMBOL_GPL(adi_axi_adc_conv_priv);
+> +
+> +static void adi_axi_adc_write(struct adi_axi_adc_state *st,
+> +			      unsigned int reg,
+> +			      unsigned int val)
+> +{
+> +	iowrite32(val, st->regs + reg);
+> +}
+> +
+> +static unsigned int adi_axi_adc_read(struct adi_axi_adc_state *st,
+> +				     unsigned int reg)
+> +{
+> +	return ioread32(st->regs + reg);
+> +}
+> +
+> +static int adi_axi_adc_config_dma_buffer(struct device *dev,
+> +					 struct iio_dev *indio_dev)
+> +{
+> +	struct iio_buffer *buffer;
+> +	const char *dma_name;
+> +
+> +	if (!device_property_present(dev, "dmas"))
+> +		return 0;
+> +
+> +	if (device_property_read_string(dev, "dma-names", &dma_name))
+> +		dma_name = "rx";
+> +
+> +	buffer = devm_iio_dmaengine_buffer_alloc(indio_dev->dev.parent,
+> +						 dma_name);
+> +	if (IS_ERR(buffer))
+> +		return PTR_ERR(buffer);
+> +
+> +	indio_dev->modes |= INDIO_BUFFER_HARDWARE;
+> +	iio_device_attach_buffer(indio_dev, buffer);
+> +
+> +	return 0;
+> +}
+> +
+> +static int adi_axi_adc_read_raw(struct iio_dev *indio_dev,
+> +				struct iio_chan_spec const *chan,
+> +				int *val, int *val2, long mask)
+> +{
+> +	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+> +	struct adi_axi_adc_conv *conv = &st->client->conv;
+> +
+> +	if (!conv->read_raw)
+> +		return -EOPNOTSUPP;
+> +
+> +	return conv->read_raw(conv, chan, val, val2, mask);
+> +}
+> +
+> +static int adi_axi_adc_write_raw(struct iio_dev *indio_dev,
+> +				 struct iio_chan_spec const *chan,
+> +				 int val, int val2, long mask)
+> +{
+> +	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+> +	struct adi_axi_adc_conv *conv = &st->client->conv;
+> +
+> +	if (!conv->write_raw)
+> +		return -EOPNOTSUPP;
+> +
+> +	return conv->write_raw(conv, chan, val, val2, mask);
+> +}
+> +
+> +static int adi_axi_adc_update_scan_mode(struct iio_dev *indio_dev,
+> +					const unsigned long *scan_mask)
+> +{
+> +	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+> +	struct adi_axi_adc_conv *conv = &st->client->conv;
+> +	unsigned int i, ctrl;
+> +
+> +	for (i = 0; i < conv->chip_info->num_channels; i++) {
+> +		ctrl = adi_axi_adc_read(st, ADI_AXI_REG_CHAN_CTRL(i));
+> +
+> +		if (test_bit(i, scan_mask))
+> +			ctrl |= ADI_AXI_REG_CHAN_CTRL_ENABLE;
+> +		else
+> +			ctrl &= ~ADI_AXI_REG_CHAN_CTRL_ENABLE;
+> +
+> +		adi_axi_adc_write(st, ADI_AXI_REG_CHAN_CTRL(i), ctrl);
 > +	}
->  
-> -	return len;
-> +	return -EINVAL;
->  }
->  
-> -static IIO_DEVICE_ATTR_NAMED(in_m_in_scale_available,
-> -		in_voltage-voltage_scale_available, S_IRUGO,
-> -		ad7793_show_scale_available, NULL, 0);
-> -
->  static struct attribute *ad7793_attributes[] = {
->  	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
-> -	&iio_dev_attr_in_m_in_scale_available.dev_attr.attr,
->  	NULL
->  };
->  
-> @@ -534,6 +533,7 @@ static const struct iio_info ad7793_info = {
->  	.read_raw = &ad7793_read_raw,
->  	.write_raw = &ad7793_write_raw,
->  	.write_raw_get_fmt = &ad7793_write_raw_get_fmt,
-> +	.read_avail = ad7793_read_avail,
->  	.attrs = &ad7793_attribute_group,
->  	.validate_trigger = ad_sd_validate_trigger,
->  };
-> @@ -547,7 +547,7 @@ static const struct iio_info ad7797_info = {
->  };
->  
->  #define __AD7793_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
-> -	_storagebits, _shift, _extend_name, _type, _mask_all) \
-> +	_storagebits, _shift, _extend_name, _type, _mask_type_av, _mask_all) \
->  	{ \
->  		.type = (_type), \
->  		.differential = (_channel2 == -1 ? 0 : 1), \
-> @@ -559,6 +559,7 @@ static const struct iio_info ad7797_info = {
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
->  			BIT(IIO_CHAN_INFO_OFFSET), \
->  		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
-> +		.info_mask_shared_by_type_available = (_mask_type_av), \
->  		.info_mask_shared_by_all = _mask_all, \
->  		.scan_index = (_si), \
->  		.scan_type = { \
-> @@ -574,23 +575,41 @@ static const struct iio_info ad7797_info = {
->  	_storagebits, _shift) \
->  	__AD7793_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
->  		_storagebits, _shift, NULL, IIO_VOLTAGE, \
-> +		BIT(IIO_CHAN_INFO_SCALE), \
->  		BIT(IIO_CHAN_INFO_SAMP_FREQ))
->  
->  #define AD7793_SHORTED_CHANNEL(_si, _channel, _address, _bits, \
->  	_storagebits, _shift) \
->  	__AD7793_CHANNEL(_si, _channel, _channel, _address, _bits, \
->  		_storagebits, _shift, "shorted", IIO_VOLTAGE, \
-> +		BIT(IIO_CHAN_INFO_SCALE), \
->  		BIT(IIO_CHAN_INFO_SAMP_FREQ))
->  
->  #define AD7793_TEMP_CHANNEL(_si, _address, _bits, _storagebits, _shift) \
->  	__AD7793_CHANNEL(_si, 0, -1, _address, _bits, \
->  		_storagebits, _shift, NULL, IIO_TEMP, \
-> +		0, \
->  		BIT(IIO_CHAN_INFO_SAMP_FREQ))
->  
->  #define AD7793_SUPPLY_CHANNEL(_si, _channel, _address, _bits, _storagebits, \
->  	_shift) \
->  	__AD7793_CHANNEL(_si, _channel, -1, _address, _bits, \
->  		_storagebits, _shift, "supply", IIO_VOLTAGE, \
-> +		0, \
-> +		BIT(IIO_CHAN_INFO_SAMP_FREQ))
 > +
-> +#define AD7797_DIFF_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
-> +	_storagebits, _shift) \
-> +	__AD7793_CHANNEL(_si, _channel1, _channel2, _address, _bits, \
-> +		_storagebits, _shift, NULL, IIO_VOLTAGE, \
-> +		0, \
-> +		BIT(IIO_CHAN_INFO_SAMP_FREQ))
+> +	return 0;
+> +}
 > +
-> +#define AD7797_SHORTED_CHANNEL(_si, _channel, _address, _bits, \
-> +	_storagebits, _shift) \
-> +	__AD7793_CHANNEL(_si, _channel, _channel, _address, _bits, \
-> +		_storagebits, _shift, "shorted", IIO_VOLTAGE, \
-> +		0, \
->  		BIT(IIO_CHAN_INFO_SAMP_FREQ))
->  
->  #define DECLARE_AD7793_CHANNELS(_name, _b, _sb, _s) \
-> @@ -620,8 +639,8 @@ const struct iio_chan_spec _name##_channels[] = { \
->  
->  #define DECLARE_AD7797_CHANNELS(_name, _b, _sb) \
->  const struct iio_chan_spec _name##_channels[] = { \
-> -	AD7793_DIFF_CHANNEL(0, 0, 0, AD7793_CH_AIN1P_AIN1M, (_b), (_sb), 0), \
-> -	AD7793_SHORTED_CHANNEL(1, 0, AD7793_CH_AIN1M_AIN1M, (_b), (_sb), 0), \
-> +	AD7797_DIFF_CHANNEL(0, 0, 0, AD7793_CH_AIN1P_AIN1M, (_b), (_sb), 0), \
-> +	AD7797_SHORTED_CHANNEL(1, 0, AD7793_CH_AIN1M_AIN1M, (_b), (_sb), 0), \
->  	AD7793_TEMP_CHANNEL(2, AD7793_CH_TEMP, (_b), (_sb), 0), \
->  	AD7793_SUPPLY_CHANNEL(3, 3, AD7793_CH_AVDD_MONITOR, (_b), (_sb), 0), \
->  	IIO_CHAN_SOFT_TIMESTAMP(4), \
+> +static struct adi_axi_adc_conv *adi_axi_adc_conv_register(struct device *dev,
+> +							  int sizeof_priv)
+> +{
+> +	struct adi_axi_adc_client *cl;
+> +	size_t alloc_size;
+> +
+> +	alloc_size = sizeof(struct adi_axi_adc_client);
+> +	if (sizeof_priv) {
+> +		alloc_size = ALIGN(alloc_size, IIO_ALIGN);
+> +		alloc_size += sizeof_priv;
+> +	}
+> +	alloc_size += IIO_ALIGN - 1;
+> +
+> +	cl = kzalloc(alloc_size, GFP_KERNEL);
+> +	if (!cl)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	mutex_lock(&registered_clients_lock);
+> +
+> +	get_device(dev);
+> +	cl->dev = dev;
+> +
+> +	list_add_tail(&cl->entry, &registered_clients);
+> +
+> +	mutex_unlock(&registered_clients_lock);
+> +
+> +	return &cl->conv;
+> +}
+> +
+> +static void adi_axi_adc_conv_unregister(struct adi_axi_adc_conv *conv)
+> +{
+> +	struct adi_axi_adc_client *cl = conv_to_client(conv);
+> +
+> +	if (!cl)
+> +		return;
+> +
+> +	mutex_lock(&registered_clients_lock);
+> +
+> +	list_del(&cl->entry);
+> +	put_device(cl->dev);
+> +
+> +	mutex_unlock(&registered_clients_lock);
+> +
+> +	kfree(cl);
+> +}
+> +
+> +static void devm_adi_axi_adc_conv_release(struct device *dev, void *res)
+> +{
+> +	adi_axi_adc_conv_unregister(*(struct adi_axi_adc_conv **)res);
+> +}
+> +
+> +struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+> +							int sizeof_priv)
+> +{
+> +	struct adi_axi_adc_conv **ptr, *conv;
+> +
+> +	ptr = devres_alloc(devm_adi_axi_adc_conv_release, sizeof(*ptr),
+> +			   GFP_KERNEL);
+> +	if (!ptr)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	conv = adi_axi_adc_conv_register(dev, sizeof_priv);
+> +	if (IS_ERR(conv)) {
+> +		devres_free(ptr);
+> +		return ERR_CAST(conv);
+> +	}
+> +
+> +	*ptr = conv;
+> +	devres_add(dev, ptr);
+> +
+> +	return conv;
+> +}
+> +EXPORT_SYMBOL_GPL(devm_adi_axi_adc_conv_register);
+> +
+> +static ssize_t in_voltage_scale_available_show(struct device *dev,
+> +					       struct device_attribute *attr,
+> +					       char *buf)
+> +{
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+> +	struct adi_axi_adc_conv *conv = &st->client->conv;
+> +	size_t len = 0;
+> +	int i;
+> +
+> +	for (i = 0; i < conv->chip_info->num_scales; i++) {
+> +		const unsigned int *s = conv->chip_info->scale_table[i];
+> +
+> +		len += scnprintf(buf + len, PAGE_SIZE - len,
+> +				 "%u.%06u ", s[0], s[1]);
+> +	}
+> +	buf[len - 1] = '\n';
+> +
+> +	return len;
+> +}
+> +
+> +static IIO_DEVICE_ATTR_RO(in_voltage_scale_available, 0);
+> +
+> +enum {
+> +	ADI_AXI_ATTR_SCALE_AVAIL,
+> +};
+> +
+> +#define ADI_AXI_ATTR(_en_, _file_)			\
+> +	[ADI_AXI_ATTR_##_en_] = &iio_dev_attr_##_file_.dev_attr.attr
+> +
+> +static struct attribute *adi_axi_adc_attributes[] = {
+> +	ADI_AXI_ATTR(SCALE_AVAIL, in_voltage_scale_available),
+> +	NULL,
+> +};
+> +
+> +static umode_t axi_adc_attr_is_visible(struct kobject *kobj,
+> +				       struct attribute *attr, int n)
+> +{
+> +	struct device *dev = container_of(kobj, struct device, kobj);
+> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> +	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+> +	struct adi_axi_adc_conv *conv = &st->client->conv;
+> +
+> +	switch (n) {
+> +	case ADI_AXI_ATTR_SCALE_AVAIL:
+> +		if (!conv->chip_info->num_scales)
+> +			return 0;
+> +		return attr->mode;
+> +	default:
+> +		return attr->mode;
+> +	}
+> +}
+> +
+> +static const struct attribute_group adi_axi_adc_attribute_group = {
+> +	.attrs = adi_axi_adc_attributes,
+> +	.is_visible = axi_adc_attr_is_visible,
+> +};
+> +
+> +static const struct iio_info adi_axi_adc_info = {
+> +	.read_raw = &adi_axi_adc_read_raw,
+> +	.write_raw = &adi_axi_adc_write_raw,
+> +	.attrs = &adi_axi_adc_attribute_group,
+> +	.update_scan_mode = &adi_axi_adc_update_scan_mode,
+> +};
+> +
+> +static const struct adi_axi_adc_core_info adi_axi_adc_10_0_a_info = {
+> +	.version = ADI_AXI_PCORE_VER(10, 0, 'a'),
+> +};
+> +
+> +/* Match table for of_platform binding */
+> +static const struct of_device_id adi_axi_adc_of_match[] = {
+> +	{ .compatible = "adi,axi-adc-10.0.a", .data = &adi_axi_adc_10_0_a_info },
+> +	{ /* end of list */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, adi_axi_adc_of_match);
+> +
+> +struct adi_axi_adc_client *adi_axi_adc_attach_client(struct device *dev)
+
+Should be declared static.
+
+> +{
+> +	const struct of_device_id *id;
+> +	struct adi_axi_adc_client *cl;
+> +	struct device_node *cln;
+> +
+> +	if (!dev->of_node) {
+> +		dev_err(dev, "DT node is null\n");
+> +		return ERR_PTR(-ENODEV);
+> +	}
+> +
+> +	id = of_match_node(adi_axi_adc_of_match, dev->of_node);
+> +	if (!id)
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	cln = of_parse_phandle(dev->of_node, "adi,adc-dev", 0);
+> +	if (!cln) {
+> +		dev_err(dev, "No 'adi,adc-dev' node defined\n");
+> +		return ERR_PTR(-ENODEV);
+> +	}
+> +
+> +	mutex_lock(&registered_clients_lock);
+> +
+> +	list_for_each_entry(cl, &registered_clients, entry) {
+> +		if (!cl->dev)
+> +			continue;
+> +		if (cl->dev->of_node == cln) {
+> +			if (!try_module_get(dev->driver->owner)) {
+> +				mutex_unlock(&registered_clients_lock);
+> +				return ERR_PTR(-ENODEV);
+> +			}
+> +			get_device(dev);
+> +			cl->info = id->data;
+> +			mutex_unlock(&registered_clients_lock);
+> +			return cl;
+> +		}
+> +	}
+> +
+> +	mutex_unlock(&registered_clients_lock);
+> +
+> +	return ERR_PTR(-EPROBE_DEFER);
+> +}
+> +
+> +static int adi_axi_adc_setup_channels(struct device *dev,
+> +				      struct adi_axi_adc_state *st)
+> +{
+> +	struct adi_axi_adc_conv *conv = conv = &st->client->conv;
+> +	int i, ret;
+> +
+> +	if (conv->preenable_setup) {
+> +		ret = conv->preenable_setup(conv);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	for (i = 0; i < conv->chip_info->num_channels; i++) {
+> +		adi_axi_adc_write(st, ADI_AXI_REG_CHAN_CTRL(i),
+> +				  ADI_AXI_REG_CHAN_CTRL_DEFAULTS);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void axi_adc_reset(struct adi_axi_adc_state *st)
+> +{
+> +	adi_axi_adc_write(st, ADI_AXI_REG_RSTN, 0);
+> +	mdelay(10);
+> +	adi_axi_adc_write(st, ADI_AXI_REG_RSTN, ADI_AXI_REG_RSTN_MMCM_RSTN);
+> +	mdelay(10);
+> +	adi_axi_adc_write(st, ADI_AXI_REG_RSTN,
+> +			  ADI_AXI_REG_RSTN_RSTN | ADI_AXI_REG_RSTN_MMCM_RSTN);
+> +}
+> +
+> +static void adi_axi_adc_cleanup(void *data)
+> +{
+> +	struct adi_axi_adc_client *cl = data;
+> +
+> +	put_device(cl->dev);
+> +	module_put(cl->dev->driver->owner);
+> +}
+> +
+> +static int adi_axi_adc_probe(struct platform_device *pdev)
+> +{
+> +	struct adi_axi_adc_conv *conv;
+> +	struct iio_dev *indio_dev;
+> +	struct adi_axi_adc_client *cl;
+> +	struct adi_axi_adc_state *st;
+> +	unsigned int ver;
+> +	int ret;
+> +
+> +	cl = adi_axi_adc_attach_client(&pdev->dev);
+> +	if (IS_ERR(cl))
+> +		return PTR_ERR(cl);
+> +
+> +	ret = devm_add_action_or_reset(&pdev->dev, adi_axi_adc_cleanup, cl);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*st));
+> +	if (indio_dev == NULL)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +	st->client = cl;
+> +	cl->state = st;
+> +	mutex_init(&st->lock);
+> +
+> +	st->regs = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(st->regs))
+> +		return PTR_ERR(st->regs);
+> +
+> +	conv = &st->client->conv;
+> +
+> +	axi_adc_reset(st);
+> +
+> +	ver = adi_axi_adc_read(st, ADI_AXI_REG_VERSION);
+> +
+> +	if (cl->info->version > ver) {
+> +		dev_err(&pdev->dev,
+> +			"IP core version is too old. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
+> +			ADI_AXI_PCORE_VER_MAJOR(cl->info->version),
+> +			ADI_AXI_PCORE_VER_MINOR(cl->info->version),
+> +			ADI_AXI_PCORE_VER_PATCH(cl->info->version),
+> +			ADI_AXI_PCORE_VER_MAJOR(ver),
+> +			ADI_AXI_PCORE_VER_MINOR(ver),
+> +			ADI_AXI_PCORE_VER_PATCH(ver));
+> +		return -ENODEV;
+> +	}
+> +
+> +	indio_dev->info = &adi_axi_adc_info;
+> +	indio_dev->dev.parent = &pdev->dev;
+> +	indio_dev->name = "adi-axi-adc";
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->num_channels = conv->chip_info->num_channels;
+> +	indio_dev->channels = conv->chip_info->channels;
+> +
+> +	ret = adi_axi_adc_config_dma_buffer(&pdev->dev, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = adi_axi_adc_setup_channels(&pdev->dev, st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
+> +		 ADI_AXI_PCORE_VER_MAJOR(ver),
+> +		 ADI_AXI_PCORE_VER_MINOR(ver),
+> +		 ADI_AXI_PCORE_VER_PATCH(ver));
+> +
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver adi_axi_adc_driver = {
+> +	.driver = {
+> +		.name = KBUILD_MODNAME,
+> +		.of_match_table = adi_axi_adc_of_match,
+> +	},
+> +	.probe = adi_axi_adc_probe,
+> +};
+> +module_platform_driver(adi_axi_adc_driver);
+> +
+> +MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
+> +MODULE_DESCRIPTION("Analog Devices Generic AXI ADC IP core driver");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/include/linux/iio/adc/adi-axi-adc.h b/include/linux/iio/adc/adi-axi-adc.h
+> new file mode 100644
+> index 000000000000..2ae9a99965e6
+> --- /dev/null
+> +++ b/include/linux/iio/adc/adi-axi-adc.h
+> @@ -0,0 +1,64 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Analog Devices Generic AXI ADC IP core driver/library
+> + * Link: https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> + *
+> + * Copyright 2012-2020 Analog Devices Inc.
+> + */
+> +#ifndef __ADI_AXI_ADC_H__
+> +#define __ADI_AXI_ADC_H__
+> +
+> +struct device;
+> +struct iio_chan_spec;
+> +
+> +/**
+> + * struct adi_axi_adc_chip_info - Chip specific information
+> + * @name		Chip name
+> + * @id			Chip ID (usually product ID)
+> + * @channels		Channel specifications of type @struct axi_adc_chan_spec
+> + * @num_channels	Number of @channels
+> + * @scale_table		Supported scales by the chip; tuples of 2 ints
+> + * @num_scales		Number of scales in the table
+> + * @max_rate		Maximum sampling rate supported by the device
+> + */
+> +struct adi_axi_adc_chip_info {
+> +	const char			*name;
+> +	unsigned int			id;
+> +
+> +	const struct iio_chan_spec	*channels;
+> +	unsigned int			num_channels;
+> +
+> +	const unsigned int		(*scale_table)[2];
+> +	int				num_scales;
+> +
+> +	unsigned long			max_rate;
+> +};
+> +
+> +/**
+> + * struct adi_axi_adc_conv - data of the ADC attached to the AXI ADC
+> + * @chip_info		chip info details for the client ADC
+> + * @preenable_setup	op to run in the client before enabling the AXI ADC
+> + * @reg_access		IIO debugfs_reg_access hook for the client ADC
+> + * @read_raw		IIO read_raw hook for the client ADC
+> + * @write_raw		IIO write_raw hook for the client ADC
+> + */
+> +struct adi_axi_adc_conv {
+> +	const struct adi_axi_adc_chip_info		*chip_info;
+> +
+> +	int (*preenable_setup)(struct adi_axi_adc_conv *conv);
+> +	int (*reg_access)(struct adi_axi_adc_conv *conv, unsigned int reg,
+> +			  unsigned int writeval, unsigned int *readval);
+> +	int (*read_raw)(struct adi_axi_adc_conv *conv,
+> +			struct iio_chan_spec const *chan,
+> +			int *val, int *val2, long mask);
+> +	int (*write_raw)(struct adi_axi_adc_conv *conv,
+> +			 struct iio_chan_spec const *chan,
+> +			 int val, int val2, long mask);
+> +};
+> +
+> +struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+> +							int sizeof_priv);
+> +
+> +void *adi_axi_adc_conv_priv(struct adi_axi_adc_conv *conv);
+> +
+> +#endif
 

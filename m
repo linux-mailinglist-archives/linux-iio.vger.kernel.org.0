@@ -2,97 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFAC918E4AA
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 22:03:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9264918E4B3
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 22:11:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728196AbgCUVDZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 17:03:25 -0400
-Received: from mail-pj1-f65.google.com ([209.85.216.65]:55301 "EHLO
-        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728212AbgCUVDZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 17:03:25 -0400
-Received: by mail-pj1-f65.google.com with SMTP id mj6so4140850pjb.5;
-        Sat, 21 Mar 2020 14:03:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ISJDxYcNYwrHzHLY1hairRUTWGOjeAfmeJMLZDyJzbM=;
-        b=RA7I2FyCwTXqAIFLyAcHsYuaPekEEPhXzhOyMHBed7fO5es13LbkG+NQel8BIK6wGj
-         ZGkfBtMOtj0gaY2hg/zh+kLNHHqHiT6aPTqjyODcoGF497kddcLgz6jEDpa2teBrZ8t1
-         12DN3xOu6cgrsKJzK5wBhPOpH0LccPdN9ysKsaAbgS3PZAG7ViCpJGlWIAtKooAYL2YW
-         5sQ5dAjDQeEb6lWAit/zPwtl5jRcHEA4FuPMkjdXpoYAU3uCymLDn7o7XgtsrZpM4NZp
-         qd0G6CmZNoqfklflZvo6Wbv+BACM7y473NTLi47KnTlC4JZWSon5J2OXxPexpRU++aqr
-         B/Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ISJDxYcNYwrHzHLY1hairRUTWGOjeAfmeJMLZDyJzbM=;
-        b=i+J2tPOT4cd6htPJrHRv3tt8L5nCAei7bR3B5bsjYmCWA3YjVG/FNliNO/+e/g+2Mh
-         E6xObYPJB9nm3EK3kCH7PwvdE5HNua6ZAosafyjaNjnHVCbg6aBDbhvAVpzvaLgY+U3E
-         l2VbE/yy+VHx9d1Ejfonq3XQ5NwJVIxnhcRlx4GX+MqlBt0ItTkgsuVkCgPPiu1bK4lD
-         QevHvEJ7VjsUDDJqF+Vm5qFroS8tOBcmJVjp2TSsTJjrUXVMrJZt+rNZVFg/ieTPmJ83
-         5I+V3+Sb8ZIH/MTGRvIFYIeq8h52stzidEnvMilASQSeH9Lx0sv35SHsVWFfCB1j9wSI
-         pRuA==
-X-Gm-Message-State: ANhLgQ2piLCLlguQyTP227+JOkXo8Te0BfskPbNDNr3RtepS7/lqvdll
-        pFnRD5t/USQ6QGJaejFAynNC0yrfSak=
-X-Google-Smtp-Source: ADFU+vvajlpR5QRnV3pGnxcrHEBhRSUrvVqR6LmKzk8FmuW7RRq8AbM6m7Pjc8w2az+lOimebYxdeQ==
-X-Received: by 2002:a17:902:54f:: with SMTP id 73mr14561917plf.255.1584824602950;
-        Sat, 21 Mar 2020 14:03:22 -0700 (PDT)
-Received: from nish-HP-Pavilion ([2409:4072:488:8b8b:892d:8d8:1a6c:acda])
-        by smtp.gmail.com with ESMTPSA id f45sm7839396pjg.29.2020.03.21.14.03.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2020 14:03:22 -0700 (PDT)
-From:   Nishant Malpani <nish.malpani25@gmail.com>
-To:     jic23@kernel.org
-Cc:     andriy.shevchenko@linux.intel.com, joe@perches.com,
-        knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        nish.malpani25@gmail.com, linux-iio@vger.kernel.org,
+        id S1727224AbgCUVLF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 17:11:05 -0400
+Received: from smtprelay0009.hostedemail.com ([216.40.44.9]:49014 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726366AbgCUVLF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 17:11:05 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 2AED72490;
+        Sat, 21 Mar 2020 21:11:04 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:2840:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3871:4321:4384:5007:10004:10400:10848:11026:11232:11658:11914:12043:12297:12438:12740:12760:12895:13069:13311:13357:13439:13972:14659:14721:21080:21611:21627:30029:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: offer68_9258a7d97a5b
+X-Filterd-Recvd-Size: 2021
+Received: from XPS-9350.home (unknown [47.151.143.254])
+        (Authenticated sender: joe@perches.com)
+        by omf13.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 21 Mar 2020 21:11:02 +0000 (UTC)
+Message-ID: <e7188ce191ab1dfb06db0346f45e20829df63c70.camel@perches.com>
+Subject: Re: [PATCH 01/13] iio: accel: kxsd9: Use suitable format specifier
+From:   Joe Perches <joe@perches.com>
+To:     Nishant Malpani <nish.malpani25@gmail.com>, jic23@kernel.org
+Cc:     andriy.shevchenko@linux.intel.com, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 13/13] iio: st_sensors_spi: Use suitable format specifier
-Date:   Sun, 22 Mar 2020 02:32:04 +0530
-Message-Id: <20200321210204.18106-14-nish.malpani25@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200321210204.18106-1-nish.malpani25@gmail.com>
+Date:   Sat, 21 Mar 2020 14:09:14 -0700
+In-Reply-To: <20200321210204.18106-2-nish.malpani25@gmail.com>
 References: <20200321210204.18106-1-nish.malpani25@gmail.com>
+         <20200321210204.18106-2-nish.malpani25@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Provide more suitable format specifiers while printing error logs.
-Discards the use of unnecessary explicit casting and prints symbolic
-error name which might prove to be convenient during debugging.
+On Sun, 2020-03-22 at 02:31 +0530, Nishant Malpani wrote:
+> Provide more suitable format specifiers while printing error logs.
+> Discards the use of unnecessary explicit casting and prints symbolic
+> error name which might prove to be convenient during debugging.
 
-Signed-off-by: Nishant Malpani <nish.malpani25@gmail.com>
----
 
-Based on conversations in [1] & [2].
+'Use suitable format specifier' is obscure and not specific.
 
-[1] https://marc.info/?l=linux-iio&m=158427554607223&w=2
-[2] https://marc.info/?l=linux-iio&m=158481647605891&w=2
----
- drivers/iio/common/st_sensors/st_sensors_spi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+All the subjects should likely be something like
 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_spi.c b/drivers/iio/common/st_sensors/st_sensors_spi.c
-index 1275fb0eda31..052fb21f2769 100644
---- a/drivers/iio/common/st_sensors/st_sensors_spi.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_spi.c
-@@ -101,8 +101,8 @@ int st_sensors_spi_configure(struct iio_dev *indio_dev,
- 
- 	sdata->regmap = devm_regmap_init_spi(spi, config);
- 	if (IS_ERR(sdata->regmap)) {
--		dev_err(&spi->dev, "Failed to register spi regmap (%d)\n",
--			(int)PTR_ERR(sdata->regmap));
-+		dev_err(&spi->dev, "Failed to register spi regmap (%pe)\n",
-+			sdata->regmap);
- 		return PTR_ERR(sdata->regmap);
- 	}
- 
--- 
-2.20.1
+[PATCH] subsystem: Use vsprintf extension %pe for symbolic error name
+
+
+> diff --git a/drivers/iio/accel/kxsd9-i2c.c b/drivers/iio/accel/kxsd9-i2c.c
+[]
+> @@ -21,8 +21,8 @@ static int kxsd9_i2c_probe(struct i2c_client *i2c,
+>  
+>  	regmap = devm_regmap_init_i2c(i2c, &config);
+>  	if (IS_ERR(regmap)) {
+> -		dev_err(&i2c->dev, "Failed to register i2c regmap %d\n",
+> -			(int)PTR_ERR(regmap));
+> +		dev_err(&i2c->dev, "Failed to register i2c regmap %pe\n",
+> +			regmap;
+
+And this could use a separator between regmap and errname like
+
+		dev_err(&i2c->dev, "Failed to register i2c regmap: %pe\n",
+or
+		dev_err(&i2c->dev, "Failed to register i2c regmap - %pe\n",
+
 

@@ -2,57 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F4018E49C
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 22:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E897118E49E
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 22:02:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727628AbgCUVCx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 17:02:53 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:34931 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728076AbgCUVCw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 17:02:52 -0400
-Received: by mail-pf1-f196.google.com with SMTP id u68so5292917pfb.2;
-        Sat, 21 Mar 2020 14:02:52 -0700 (PDT)
+        id S1728016AbgCUVC6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 17:02:58 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:40946 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727883AbgCUVC6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 17:02:58 -0400
+Received: by mail-pl1-f194.google.com with SMTP id h11so4069822plk.7;
+        Sat, 21 Mar 2020 14:02:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=7hmgJGWzVkKtIDfK7DCr04tH78rbXV1H1joYwA10/tU=;
-        b=MiZQhIThLfh4XVRHc8IBfzzuiRv8TlTbh8grovFpxGZa7U8xuFk7DbFToQe5bY4zFx
-         8OVfbc6D3EPoA2bozUlKyKYzPiiYmXVsZuKenGslsaaLGHQTwiLg5K2FrNKncsThaFoW
-         +1WX9QX99Nena0M7phmGkgl/EiVolxdUQxjrcw+PWrzzg0acXJU7gMBbtP4C9x6A0pGH
-         n6Dc9zfV+5XMwM5e3UJpaWJTHdWWWVe1nIK01L5WGLkyFhyiHFCihUA4k+msokkqHkuT
-         Wh9PXcspAd8lI2waRO0gf/SXCvlB4bodqRqef5HLWkQm69hhbED1rSvf1o9+0eINAeCu
-         qfig==
+        bh=d7GKDF50XnkZ+DrwxrjAqJqC7VsUaW4M1DlGKJ84ra8=;
+        b=Y6K1mkGAMsOub4j68QY3+sa/ZN/+N0aZrTS9gO4K2e1DETgGhuLRkao9DjNs63raLI
+         TXVwrSdOqkOCim8QAi8Q9YZ4PZug3orRYmqIf1XAsQ6L3dWFCgv2aBKHbzgnobJbSKw8
+         T+5taZ4dbuU8Qb7Jl67j1sF0WmWNAu74o7cwzYzo9lGXiaFI6LlBfd1JATx2al18bIR/
+         Kdzor+OR8LWw+VFs7iisbrmcBRPzhsVUp/jb4+sX3Rj7uF6gIWy/X5yVzJ8ydBWjKSxH
+         +wu6bTbeBbo0n9M+f/po3uZHkcp7ditvd3+cmpoxntgxuFH+CEVgz+bRWhoEuVdmma0d
+         IyXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=7hmgJGWzVkKtIDfK7DCr04tH78rbXV1H1joYwA10/tU=;
-        b=N/E2vEK4MbV3FU0tMU3V1DNKDgLZQGBSZDl0TOKM9uJm/zxgHp7hTrwNbYG0PHcsxx
-         Pf3NmDGuUAPehPbgp9/uFq0W94xr/U/BkMkRfDPLakKIftukTXXfN9+DwpPirdqSWmUo
-         sgiDeQb2YLKAl6ZaqLkCUdL9EtLjttQwgJf7ukFwYIEg5YdJN5cdG8O8CvV+FDEZ/XRU
-         cEE32J5nm6vXGXv24dtCH43BZdFNZsUcbW36UP7akn1YuQSJGAUVXYjt3bLl4lt63wKA
-         hwJzNRK8TOVADZHJG27/RpV5Z/DzPX1HUzWfcuP0s61GETuoSz2lA80+7y643JfngqAI
-         J+5g==
-X-Gm-Message-State: ANhLgQ0+B1LC7/MgogOiEwkbNfZ5ipNluIk8WD1ZRVg0Y7wsHwNMi19E
-        D4hcS2hR8/y/alK4HwvUaS4EmiCLbnc=
-X-Google-Smtp-Source: ADFU+vsuHgHA1RyuqhAoQFgN8y5rXzAikx4GnsZJ/SIZ+B6w2q/qkOPftFI2WKN7xoNK1S7P9eDI5g==
-X-Received: by 2002:a62:820e:: with SMTP id w14mr17043681pfd.59.1584824571541;
-        Sat, 21 Mar 2020 14:02:51 -0700 (PDT)
+        bh=d7GKDF50XnkZ+DrwxrjAqJqC7VsUaW4M1DlGKJ84ra8=;
+        b=YkfLr7Hp86dT19v9+/FzMb1SpwJHO6GJfgb9KOk896QaOA8QC0oX17ag9FBxGZPA+D
+         qUMJBJcBhrHX9x8aAqjfat82V7zQXxYtdR5UNBbVHqxJ8Bl+A/4YK/iiKf7LwxqA+A+G
+         avFmGL8Veyk2HWaKc/0tZMLurMPyRz3IlsxyUI4MvXbqM8rjIKd4bzNk9cWRodLftw7D
+         1xX5ko+CgA2zH1RdILzlbJ/kFGU9iFKSHEaIJ7s2p8b8r7WkdC5FLuxHqrsr4v6rCdj0
+         8v91+1dvEBgSGflGY8RbkOtbqc/kYnrKwCFGbm9DswhaI+e9x6Yzjwgu9vUU4SUAP/3d
+         afaw==
+X-Gm-Message-State: ANhLgQ1gY8yDauzixaRnbn5CVi7/wYLr5QCmrIZaWrA/DU3WOKIVoNlV
+        qg2Cc5RnAgkJEWy5pYlZmBzgwqkK/5M=
+X-Google-Smtp-Source: ADFU+vszA/WWf8CSo2FHjddz7c5XEg/XRI/tXEJoAgHWGiYcgMwLlVsLUGzbOvPdu/d1DXqevEzS4A==
+X-Received: by 2002:a17:902:b088:: with SMTP id p8mr15170011plr.106.1584824577792;
+        Sat, 21 Mar 2020 14:02:57 -0700 (PDT)
 Received: from nish-HP-Pavilion ([2409:4072:488:8b8b:892d:8d8:1a6c:acda])
-        by smtp.gmail.com with ESMTPSA id m9sm5550818pff.93.2020.03.21.14.02.50
+        by smtp.gmail.com with ESMTPSA id f15sm7078472pfq.100.2020.03.21.14.02.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2020 14:02:51 -0700 (PDT)
+        Sat, 21 Mar 2020 14:02:57 -0700 (PDT)
 From:   Nishant Malpani <nish.malpani25@gmail.com>
 To:     jic23@kernel.org
 Cc:     andriy.shevchenko@linux.intel.com, joe@perches.com,
         knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         nish.malpani25@gmail.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 07/13] iio: imu: inv_mpu6050_i2c: Use suitable format specifier
-Date:   Sun, 22 Mar 2020 02:31:58 +0530
-Message-Id: <20200321210204.18106-8-nish.malpani25@gmail.com>
+Subject: [PATCH 08/13] iio: imu: inv_mpu6050_spi: Use suitable format specifier
+Date:   Sun, 22 Mar 2020 02:31:59 +0530
+Message-Id: <20200321210204.18106-9-nish.malpani25@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200321210204.18106-1-nish.malpani25@gmail.com>
 References: <20200321210204.18106-1-nish.malpani25@gmail.com>
@@ -75,20 +75,20 @@ Based on conversations in [1] & [2].
 [1] https://marc.info/?l=linux-iio&m=158427554607223&w=2
 [2] https://marc.info/?l=linux-iio&m=158481647605891&w=2
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c | 4 ++--
+ drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-index 6993d3b87bb0..5588946dd60d 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-@@ -122,8 +122,8 @@ static int inv_mpu_probe(struct i2c_client *client,
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+index 673b198e6368..fa1d571cb4b8 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+@@ -53,8 +53,8 @@ static int inv_mpu_probe(struct spi_device *spi)
  
- 	regmap = devm_regmap_init_i2c(client, &inv_mpu_regmap_config);
+ 	regmap = devm_regmap_init_spi(spi, &inv_mpu_regmap_config);
  	if (IS_ERR(regmap)) {
--		dev_err(&client->dev, "Failed to register i2c regmap %d\n",
+-		dev_err(&spi->dev, "Failed to register spi regmap %d\n",
 -			(int)PTR_ERR(regmap));
-+		dev_err(&client->dev, "Failed to register i2c regmap %pe\n",
++		dev_err(&spi->dev, "Failed to register spi regmap %pe\n",
 +			regmap);
  		return PTR_ERR(regmap);
  	}

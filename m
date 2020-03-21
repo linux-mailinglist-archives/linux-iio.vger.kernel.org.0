@@ -2,84 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD8718E3A2
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 19:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9415918E3A4
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 19:26:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727224AbgCUSXQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 14:23:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58508 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727015AbgCUSXQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 21 Mar 2020 14:23:16 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 562EA20753;
-        Sat, 21 Mar 2020 18:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584814996;
-        bh=M090htPaj/DOtMSYrda8MnL613ues5ssiUlI6AZOQDo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=1Uq0HFfbmiy/xmg5BWBTejz8rq8Kv3CRkPhEOE/gkhfsOjIpJWVNSM/2vKZvqUH5m
-         O6SCCR69KEghSwKtr8KZHAXzW+HDpFxFLCdSC0wpb7oswiYb3nv0FQUkZnPX0O2lp6
-         /ha9v18xXbN39N8V1BLwTc3rPsCFfZ4C8NpW20qA=
-Date:   Sat, 21 Mar 2020 18:23:12 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Syed Nayyar Waris <syednwaris@gmail.com>,
+        id S1727028AbgCUS0l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 14:26:41 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:43199 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727015AbgCUS0l (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 14:26:41 -0400
+Received: by mail-pl1-f193.google.com with SMTP id f8so3953320plt.10;
+        Sat, 21 Mar 2020 11:26:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=q7P3d4bottmxnpPOnOchr0kX1G9VuQbjItV2DWo+ReI=;
+        b=ck6e0qmrGP019nLsTNhKoxpxi5Hju4mUcMJmewHC4zXcbf8gTgVg0QapUB5ayqEw83
+         dVG5fzCw/iCdfp9BbXvDnUbaIrPP0sUtirLggqjJ3bsPP3IFQJ0s1TnzXzhKes9IJlw3
+         K0jrkLnwT8G220oscM12N/Em1SGwqEf07cnNWJqf2OPclVlK8HUmq4d4i8j2HfB9g4OA
+         cyRVvRs0GrC5NQL52cs4UNEKWErvhLY5WoGZqhVMYQUgOrmlYMAobBZl8uUq330z2ZH/
+         ZsZkokYanK69CuttpAySF6x17tBOJbIeHccEIDk83EZLV0FPMEpvnzbgsBjZPB8VCohp
+         P8gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=q7P3d4bottmxnpPOnOchr0kX1G9VuQbjItV2DWo+ReI=;
+        b=MifzuwpFwpNtxWe/CHpPVu8tDG9P7n/qChJ2+IotmFw2rraUsbZUhjv1uUUioQ/Kkf
+         xmYA0osnhlcbDNDc8dIBnrbGvgrExTm4tVzWPECEqJFTLP4cwjQw4BsKNVzxsNdYVmvb
+         dCeTDbjkgQaHmYEmkS06FJr1FNHs2mIN2eXNaGU4/Hu+z69+Y7c+Bs7wPwDD3e7DZcdY
+         aIoRlEzpI1BN5/8rtDBn8Q1gVZGHyMkrmunJBKS+6hXDGK5K9JCXYhmdsSkCKd0eIWJ8
+         oO2G9jstathu8+ZZG1JKo/jXF8bwyMfJKUEo1QdCIpXHZ1xAxV34EMMUQxrmDYodvJRo
+         xnpQ==
+X-Gm-Message-State: ANhLgQ0dKV1roUHONCKmgpiOUahgckiouQXBS7wHWrUY8h3wKMQ6cheq
+        IwVjNLJuGE3XIxSdkNZw8UaOWkSG
+X-Google-Smtp-Source: ADFU+vsE2wBajoWcVKTltv0mpxrIblb1XoCzJLo/RJrGumdhqJmVSQEDRqFR+jGDHc1jd9A1G2bj2w==
+X-Received: by 2002:a17:902:7593:: with SMTP id j19mr14744776pll.55.1584815200085;
+        Sat, 21 Mar 2020 11:26:40 -0700 (PDT)
+Received: from ?IPv6:2409:4072:488:8b8b:892d:8d8:1a6c:acda? ([2409:4072:488:8b8b:892d:8d8:1a6c:acda])
+        by smtp.gmail.com with ESMTPSA id w9sm9187583pfd.94.2020.03.21.11.26.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Mar 2020 11:26:39 -0700 (PDT)
+Subject: Re: [PATCH] drivers: iio: Drop unnecessary explicit casting
+To:     Joe Perches <joe@perches.com>, jic23@kernel.org
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] MAINTAINERS: Add Syed Nayyar Waris to ACCES
- 104-QUAD-8 driver
-Message-ID: <20200321182312.57a93f88@archlinux>
-In-Reply-To: <20200320133522.GA3223@icarus>
-References: <20200320081257.GA5818@syed.domain.name>
-        <20200320133522.GA3223@icarus>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+References: <20200318100754.25667-1-nish.malpani25@gmail.com>
+ <a7778635620163cb6185192819a56ed44d76d4b0.camel@perches.com>
+From:   Nishant Malpani <nish.malpani25@gmail.com>
+Message-ID: <9aa90ffd-9574-d615-0bc0-f791e51b3be4@gmail.com>
+Date:   Sat, 21 Mar 2020 23:56:33 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <a7778635620163cb6185192819a56ed44d76d4b0.camel@perches.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 20 Mar 2020 09:36:00 -0400
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-
-> On Fri, Mar 20, 2020 at 01:42:58PM +0530, Syed Nayyar Waris wrote:
-> > Add Syed Nayyar Waris as a co-maintainer for the ACCES 104-QUAD-8
-> > counter driver.
-> > 
-> > Cc: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > Signed-off-by: Syed Nayyar Waris <syednwaris@gmail.com>
-> > ---
-> >  MAINTAINERS | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 8fa40c3..55c7794 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -276,6 +276,7 @@ F:	drivers/gpio/gpio-104-idio-16.c
-> >  
-> >  ACCES 104-QUAD-8 DRIVER
-> >  M:	William Breathitt Gray <vilhelm.gray@gmail.com>
-> > +M:	Syed Nayyar Waris <syednwaris@gmail.com>
-> >  L:	linux-iio@vger.kernel.org
-> >  S:	Maintained
-> >  F:	Documentation/ABI/testing/sysfs-bus-counter-104-quad-8
-> > -- 
-> > 2.7.4  
+On 21/03/20 5:56 pm, Joe Perches wrote:
+> On Wed, 2020-03-18 at 15:37 +0530, Nishant Malpani wrote:
+>> Provide correct specifiers while printing error logs to discard the use
+>> of unnecessary explicit casting.
+> []
+>> diff --git a/drivers/iio/accel/kxsd9-i2c.c b/drivers/iio/accel/kxsd9-i2c.c
+> []
+>> @@ -21,8 +21,8 @@ static int kxsd9_i2c_probe(struct i2c_client *i2c,
+>>   
+>>   	regmap = devm_regmap_init_i2c(i2c, &config);
+>>   	if (IS_ERR(regmap)) {
+>> -		dev_err(&i2c->dev, "Failed to register i2c regmap %d\n",
+>> -			(int)PTR_ERR(regmap));
+>> +		dev_err(&i2c->dev, "Failed to register i2c regmap %ld\n",
+>> +			PTR_ERR(regmap));
 > 
-> The 104-QUAD-8 driver is getting large so having another set of eyes on
-> it is much appreciated. Thanks!
+> Another option would be to use %pe to print the error identifier
+> and not the error number
 > 
-> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+By 'error identifier' you mean the symbolic error name (as described in 
+docs [1]), right? Yes, to me, it makes sense too, as it would be more 
+"readable" during debugging. Jonathan, if you agree, do I send a 
+patchset replacing with %pe specifier for all the drivers in consideration?
 
-Applied.
+With regards,
+Nishant Malpani
 
-Thanks,
+[1] 
+https://www.kernel.org/doc/html/latest/core-api/printk-formats.html#error-pointers
 
-Jonathan
-
-
+> etc...
+> 
+> 

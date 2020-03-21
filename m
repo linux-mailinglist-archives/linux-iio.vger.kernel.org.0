@@ -2,75 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A15118E419
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 20:59:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D516318E42A
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 21:11:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727610AbgCUT7d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 15:59:33 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:39929 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727264AbgCUT7d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 15:59:33 -0400
-Received: by mail-pg1-f196.google.com with SMTP id b22so4911200pgb.6;
-        Sat, 21 Mar 2020 12:59:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+GB8B3hXvLrixG0/eEEGrzhPFDoA164EX4PeTwfvh/Y=;
-        b=WHlMxUIWt9GFOsul4SxdZbzfHh7zYlKO1SB5cQFO+UCJW5tM48KITFHyXRnEJR6WGp
-         qRJ5J7T0/97zyveV1vQvtf2z4mUROQUwu+PfdN4NnWKRjCYL9sfFrgYQPVFJ5mBgHAoR
-         PtE2fZBxkn008CSzKZUAugr5qPfe07C7cvSgZffLyTroB+hSwXfNjpyNqV36v2Otya7S
-         v0hFf/iyIHM2yhD/f5Eu+OvauwgcRqnJd99deiHPoNAAR7q6Ejc6z38JyqTkWdAQBVwh
-         6ts7OlC9KXHIGVXHQoaIzL1qdIwqIvL2nfT/h45BJXF9LRy5NNjxsvyVDnhuxcW10UvG
-         buJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+GB8B3hXvLrixG0/eEEGrzhPFDoA164EX4PeTwfvh/Y=;
-        b=W0NH3phaVB/zO7SWryzMBOwnFW1pkRp+teNKnA0oTKkzI0lE7i8kzoQvNQ/1UE3NGK
-         Q0s7sukF1WauqDb/XubphjRa6V5Jkjybz9s/MZs4pZ7ZuOuoofCqtvEyn/HVpLFjW6NK
-         SeZCLhn6I8Bhc0d8yQn7ufJow4XMHVMiwhIPRMcSWugtRr/56ZY/13GLyiQ17ft5ueGp
-         3Af7Jg9Dpy2IPbNEDALlmSn4EgSdabJH8zaJfKdZTWO48qQhfYm8M/EkXt0GfI7VLiXM
-         Z322+cnZsuPE5nfp9TAACgDR1Oke90ZfelIWru6zeQNJUQMsiEDVjoj/Pop7UqTXIN5d
-         B2ig==
-X-Gm-Message-State: ANhLgQ2h6Zf7g9l6Qx8YNRaeU4nDpLQQIsuy5CjfShGomZ5/3zOnIKWG
-        HTGL8rxLdJxO3zCGkM1O+ZXX+pk2V7vbKJ/beQc=
-X-Google-Smtp-Source: ADFU+vsqaKrYFn2wQ+0rxTXNK55h2zW7WiYm1hvNa4ptmNMMRytvTCef0I/UszdLw5xbAbNUqC6OIUeBi0WzfoiiN38=
-X-Received: by 2002:aa7:958f:: with SMTP id z15mr16030512pfj.130.1584820771967;
- Sat, 21 Mar 2020 12:59:31 -0700 (PDT)
+        id S1727913AbgCUULC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 16:11:02 -0400
+Received: from smtprelay0159.hostedemail.com ([216.40.44.159]:40818 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726777AbgCUULB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 16:11:01 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 357BB837F24A;
+        Sat, 21 Mar 2020 20:11:00 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:967:968:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1431:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2194:2198:2199:2200:2393:2525:2553:2560:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3353:3622:3865:3867:3868:3870:3871:3872:3873:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:6119:7903:8784:8985:9010:9025:9108:9121:10004:10400:10848:11232:11233:11658:11914:12043:12050:12262:12297:12438:12555:12679:12740:12760:12895:13019:13069:13311:13357:13439:14096:14097:14181:14659:14721:14777:21080:21365:21433:21451:21627:21660:21811:21819:30022:30054:30064:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: chess81_42bd387190014
+X-Filterd-Recvd-Size: 3099
+Received: from XPS-9350.home (unknown [47.151.143.254])
+        (Authenticated sender: joe@perches.com)
+        by omf12.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 21 Mar 2020 20:10:58 +0000 (UTC)
+Message-ID: <c026dcc85e8454a1ea191c20ba03ce2072271af9.camel@perches.com>
+Subject: Re: [PATCH] MAINTAINERS: remove Stefan Popa's email
+From:   Joe Perches <joe@perches.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        gregkh@linuxfoundation.org, Jonathan.Cameron@huawei.com,
+        jic23@kernel.org,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Michael Hennerich <michael.hennerich@analog.com>
+Date:   Sat, 21 Mar 2020 13:09:10 -0700
+In-Reply-To: <20200321194859.GA2813896@smile.fi.intel.com>
+References: <20200317143336.6098-1-alexandru.ardelean@analog.com>
+         <20200321194859.GA2813896@smile.fi.intel.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-References: <20200320081257.GA5818@syed.domain.name> <20200320133522.GA3223@icarus>
- <20200321182312.57a93f88@archlinux>
-In-Reply-To: <20200321182312.57a93f88@archlinux>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 21 Mar 2020 21:59:20 +0200
-Message-ID: <CAHp75VdO_aA79i-4ZcyasqSwFq8fyEQPnOAhEH=oM8qRFScn-Q@mail.gmail.com>
-Subject: Re: [PATCH v1] MAINTAINERS: Add Syed Nayyar Waris to ACCES 104-QUAD-8 driver
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Syed Nayyar Waris <syednwaris@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Mar 21, 2020 at 8:23 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Fri, 20 Mar 2020 09:36:00 -0400
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-> > On Fri, Mar 20, 2020 at 01:42:58PM +0530, Syed Nayyar Waris wrote:
+On Sat, 2020-03-21 at 21:48 +0200, Andy Shevchenko wrote:
+> On Tue, Mar 17, 2020 at 04:33:36PM +0200, Alexandru Ardelean wrote:
+> > The email is no longer active. This change removes Stefan's email from the
+> > MAINTAINERS list and replaces it with Michael Hennerich's.
+> > 
+> 
+> Are you planning to fix entries as parse-maintainers.pl does?
+> (Maybe in a separate change, but also why not here)
 
-> Applied.
+I think perhaps you should not ask people to use parse-maintainers
+on specific sections anymore as it's rather confusing to use and
+it's best done as a one-shot by Linus one day.  I hope soon.
 
-Jonathan, JFYI: we have parse-maintainers.pl which would be nice to
-run when changes to MAINTAINERS happen.
+Linus, are you going to apply this patch to parse-maintainers
+and one day run and commit the large change to MAINTAINERS?
 
-P.S. This change is probably okay, but for the future.
+https://lore.kernel.org/lkml/4d5291fa3fb4962b1fa55e8fd9ef421ef0c1b1e5.camel@perches.com/
 
--- 
-With Best Regards,
-Andy Shevchenko
+$ ./scripts/parse-maintainers.pl --input=MAINTAINERS --output=MAINTAINERS
+
+Current diffstat for -next would be:
+
+$ git diff --shortstat MAINTAINERS
+ 1 file changed, 2749 insertions(+), 2749 deletions(-)
+
+btw: your current tree is still missing this patch from
+-next to fix a broken pattern in 'TI VPE/CAL DRIVERS'
+
+commit d44535cb14c981dea66e565edf1df1df4b9e823b
+Author: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date:   Tue Jan 28 11:58:28 2020 -0300
+
+    media: MAINTAINERS: Sort entries in database for TI VPE/CAL
+    
+    Run parse-maintainers.pl and choose TI VPE/CAL record. Fix it accordingly.
+    
+    Note, this is urgent fix, without which parse-maintainers.pl throws
+    an exception:
+    
+    Odd non-pattern line '  Documentation/devicetree/bindings/media/ti,cal.yaml
+    ' for 'TI VPE/CAL DRIVERS' at scripts/parse-maintainers.pl line 147, <$file> line 16770.
+    
+    Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+    Acked-by: Benoit Parrot <bparrot@ti.com>
+    Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+    Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+
+
+

@@ -2,220 +2,304 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D1E718DF67
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 11:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CDF818DF78
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Mar 2020 11:38:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727434AbgCUKZg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 06:25:36 -0400
-Received: from mail-pj1-f65.google.com ([209.85.216.65]:54174 "EHLO
-        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727131AbgCUKZg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 06:25:36 -0400
-Received: by mail-pj1-f65.google.com with SMTP id l36so3639543pjb.3
-        for <linux-iio@vger.kernel.org>; Sat, 21 Mar 2020 03:25:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=GV6AYP7Qr5KcHjwhZEBtuMmcE1Vx0cgZ94j7L8L7P+Q=;
-        b=Tjpv1N0meLL6K559HHlnLIWF/jI3ZrBg7DyCgthGpNcaf4zYNwVdTujaztCVNMrUd8
-         szI3CB4sibRFH3OaajjfaHhlnbyxlqbGRksUsydKfDagmQfSoqHfKsJXfu+YEZdHZWWu
-         POD/m/si4TupAEzWvD6uo+MO2/731Wl1hi0v4mJtfBP0+WjvEh3bSPLgtngyHOJazyLd
-         LQTu0CKPgOqCKGJjd04dPQzbBBNv7HtQppEfGo5QQLStvPmHpLNBv5vQ8XTIzL1/IsMQ
-         KlhXuthhn5Yshug7S4RAUsjyCaVus/7PWfZ55LXn4oYuB4rRXQQazUxgEuyngGJdlbss
-         2b5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=GV6AYP7Qr5KcHjwhZEBtuMmcE1Vx0cgZ94j7L8L7P+Q=;
-        b=raFxLdXpu0qeLTILAfQ7nF5JOJ2GHNNp1VcO+IdYGwc3C1DbFWoprD7V++i0dMZAnQ
-         f7hldI5Hfc+8Fzg0artDYjK8qjySC9y/YNsHCP7PepbXPT1r1mC2X8qkeMw36F5y6JhD
-         hiSF+TJWYH3EZMcHxkExWvH3t8ttXOyITh7UzgFOQhoaiFfyFMw+laftrKx7R6T8FhYr
-         3rqklkRnP03YdCHC/U5giBr0srGxSBFNu/lo1vqiBdyEt+j94FO+ZkSf4Qdiu3+Qd5b0
-         A0KzclYBAPnsw259PB3VIgd3xQyxsEqqSmnmt8sGdhvfM7OHwMU5WrOaSGqG5tqC0peV
-         1mUg==
-X-Gm-Message-State: ANhLgQ3QMsAXtAyxBX5wllkspWrx3UpKV0J+/4MtTu9t++yEA9fjOW4O
-        w80ay1SRXbhI2oFUjQJ5GDE=
-X-Google-Smtp-Source: ADFU+vsNw8f+xhE68zAUTpBU6weoDd+MD4cPOvTXSg/aEztbuBQFthqpofL9svgNaEcl+up51hKKSA==
-X-Received: by 2002:a17:90a:e7c8:: with SMTP id kb8mr14086355pjb.79.1584786332770;
-        Sat, 21 Mar 2020 03:25:32 -0700 (PDT)
-Received: from deeUbuntu ([103.241.226.132])
-        by smtp.gmail.com with ESMTPSA id v123sm6140571pfv.41.2020.03.21.03.25.27
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 21 Mar 2020 03:25:32 -0700 (PDT)
-Date:   Sat, 21 Mar 2020 15:55:23 +0530
-From:   DEEPAK VARMA <mh12gx2825@gmail.com>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "julia.lawall@inria.fr" <julia.lawall@inria.fr>,
-        "kieran.bingham@ideasonboard.com" <kieran.bingham@ideasonboard.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "daniel.baluta@gmail.com" <daniel.baluta@gmail.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "outreachy-kernel@googlegroups.com" 
-        <outreachy-kernel@googlegroups.com>
-Subject: Re: [Outreachy kernel] Re: [PATCH 2/2] staging: iio: adc: ad7280a:
- Add spaces around operators
-Message-ID: <20200321102522.GA3019@deeUbuntu>
-References: <20200318060038.GB1594471@kroah.com>
- <35afdc4b-bd59-7851-aa4f-3d8807668931@metafoo.de>
- <20200318151924.GB2862853@kroah.com>
- <20200318162353.GA23226@deeUbuntu>
- <alpine.DEB.2.21.2003181727440.2979@hadrien>
- <20200318170051.GA23498@deeUbuntu>
- <b471d6102a731d577fff9f2175d4e35217a45e18.camel@analog.com>
- <alpine.DEB.2.21.2003190802450.3010@hadrien>
- <f783d807e2e74ae492c83eb9827ac43767411808.camel@analog.com>
- <20200319161608.GA14738@deeUbuntu>
+        id S1728113AbgCUKiF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 06:38:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34574 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726607AbgCUKiF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 21 Mar 2020 06:38:05 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B0E4E2072C;
+        Sat, 21 Mar 2020 10:38:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584787083;
+        bh=hKz1RERkkN+w1E+koh4wmpVaOH/nKXnTlEK28C/vUGs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=T32hXV5UR7vsxbXDuJZOlVcgVyBIYNx/A4d1wrOqR8MCvr7aMMdtdoSbG+XO3lXJa
+         QnMxu4n7GMye+eOnUe+TeyoIllnuBDkyWnmNd05cC3JkriWF4TNoX9cuKqM5aua4wi
+         7Xb1w3CX/Y/4OBtO69AaKnSr1vDRQRIO21oGdcHU=
+Date:   Sat, 21 Mar 2020 10:38:05 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Alexandru Tachici <alexandru.tachici@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mircea Caprioru <mircea.caprioru@analog.com>
+Subject: Re: [PATCH v4 2/2] dt-bindings: iio: dac: Add docs for AD5770R DAC
+Message-ID: <20200321103805.74285450@archlinux>
+In-Reply-To: <20200320004922.GA3641@bogus>
+References: <20200218121031.27233-1-alexandru.tachici@analog.com>
+        <20200218121031.27233-3-alexandru.tachici@analog.com>
+        <20200320004922.GA3641@bogus>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200319161608.GA14738@deeUbuntu>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Mar 19, 2020 at 09:46:10PM +0530, DEEPAK VARMA wrote:
-> On Thu, Mar 19, 2020 at 07:07:20AM +0000, Ardelean, Alexandru wrote:
-> > On Thu, 2020-03-19 at 08:03 +0100, Julia Lawall wrote:
-> > > [External]
-> > > 
-> > > 
-> > > 
-> > > On Thu, 19 Mar 2020, Ardelean, Alexandru wrote:
-> > > 
-> > > > On Wed, 2020-03-18 at 22:30 +0530, DEEPAK VARMA wrote:
-> > > > > [External]
-> > > > > 
-> > > > > On Wed, Mar 18, 2020 at 05:28:17PM +0100, Julia Lawall wrote:
-> > > > > > On Wed, 18 Mar 2020, DEEPAK VARMA wrote:
-> > > > > > 
-> > > > > > > On Wed, Mar 18, 2020 at 04:19:24PM +0100, Greg KH wrote:
-> > > > > > > > On Wed, Mar 18, 2020 at 04:12:28PM +0100, Lars-Peter Clausen wrote:
-> > > > > > > > > On 3/18/20 7:00 AM, Greg KH wrote:
-> > > > > > > > > > On Wed, Mar 18, 2020 at 09:58:13AM +0530, Deepak R Varma wrote:
-> > > > > > > > > > > Add spaces around operator symbols to improve readability.
-> > > > > > > > > > > Warning
-> > > > > > > > > > > flagged by checkpatch script.
-> > > > > > > > > > > 
-> > > > > > > > > > > Signed-off-by: Deepak R Varma <mh12gx2825@gmail.com>
-> > > > > > > > > > > ---
-> > > > > > > > > > >   drivers/staging/iio/adc/ad7280a.c | 4 ++--
-> > > > > > > > > > >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > > > > > > > > > > 
-> > > > > > > > > > > diff --git a/drivers/staging/iio/adc/ad7280a.c
-> > > > > > > > > > > b/drivers/staging/iio/adc/ad7280a.c
-> > > > > > > > > > > index 19a5f244dcae..34ca0d09db85 100644
-> > > > > > > > > > > --- a/drivers/staging/iio/adc/ad7280a.c
-> > > > > > > > > > > +++ b/drivers/staging/iio/adc/ad7280a.c
-> > > > > > > > > > > @@ -825,14 +825,14 @@ static irqreturn_t
-> > > > > > > > > > > ad7280_event_handler(int
-> > > > > > > > > > > irq, void *private)
-> > > > > > > > > > >   }
-> > > > > > > > > > >   static IIO_DEVICE_ATTR_NAMED(in_thresh_low_value,
-> > > > > > > > > > > -			     in_voltage-
-> > > > > > > > > > > voltage_thresh_low_value,
-> > > > > > > > > > > +			     in_voltage -
-> > > > > > > > > > > voltage_thresh_low_value,
-> > > > > > > > > > >   			     0644,
-> > > > > > > > > > >   			     ad7280_read_channel_config,
-> > > > > > > > > > >   			     ad7280_write_channel_config,
-> > > > > > > > > > >   			     AD7280A_CELL_UNDERVOLTAGE);
-> > > > > > > > > > >   static IIO_DEVICE_ATTR_NAMED(in_thresh_high_value,
-> > > > > > > > > > > -			     in_voltage-
-> > > > > > > > > > > voltage_thresh_high_value,
-> > > > > > > > > > > +			     in_voltage -
-> > > > > > > > > > > voltage_thresh_high_value,
-> > > > > > > > > > >   			     0644,
-> > > > > > > > > > >   			     ad7280_read_channel_config,
-> > > > > > > > > > >   			     ad7280_write_channel_config,
-> > > > > > > > > > 
-> > > > > > > > > > Did you try building this code?
-> > > > > > > > > > 
-> > > > > > > > > > It catches everyone...
-> > > > > > > > > 
-> > > > > > > > > The problem is it builds. The token is stringyfied and
-> > > > > > > > > "in_voltage - voltage_thresh_high_value" is a valid string.
-> > > > > > > > 
-> > > > > > > > Ah, I thought it used to break the build when it happened.  Oh well,
-> > > > > > > > it's still a great "trick" to see if people understand C or not :)
-> > > > > > > > 
-> > > > > > > Yes, it did build. I am sorry but I am not following you fully. Can
-> > > > > > > you
-> > > > > > > please let me know if the change I introduced is not good. You may
-> > > > > > > please direct me to a document where I can read more about it.
-> > > > > > 
-> > > > > > The code involves a macro, as indicated by the capital letters.  You
-> > > > > > will
-> > > > > > see the issue when you look at the definition of the macro.
-> > > > > > 
-> > > > > > julia
-> > > > > 
-> > > > > Thank you Julia and all. I got my mistake. I will revert the change.
-> > > > > Sorry for the trouble.
-> > > > 
-> > > > I'll try to make some time to address this somehow, so that checkpatch
-> > > > doesn't
-> > > > bump into this.
-> > > > 
-> > > > In the last 2-3 years, I think I saw 3-4 patches trying to address this [for
-> > > > various Analog drivers].
-> > > > So, don't feel too bad.
-> > > 
-> > > Maybe a comment?
-> > 
-> > Comment works for now.
-> > Anybody wants to do a patch for that?
-> > If nobody sends a patch for this in 1-2 weeks, I'll send one.
-> > 
-> > Particularly, this would help with review, since people that are unfamiliar with
-> > IIO-specific macros would also find it easier at review.
-> > 
-> > The good part, is that it's only needed for AD7280A.
-> > AD7192 has been re-worked, and is no longer on checkpatch's radar.
-> > I'm reworking AD7793 now.
-> > 
-> 
-> I will be happy to add a comment around the code area to indicate
-> ignore checkpatch warning for the mentioned argument. Please confirm if
-> that is what you are expecting to be done.
-> 
+On Thu, 19 Mar 2020 18:49:22 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-Hello Alexandru,
-could you please confirm if I should add a comment around the code in
-ad7280a.c to avoid further changes being made to the string argument?
+> On Tue, Feb 18, 2020 at 02:10:31PM +0200, Alexandru Tachici wrote:
+> > Adding dt-bindings documentation for AD5770R DAC.  
+> 
+> DT list needs to be Cc'ed if you want bindings reviewed.
+
+Doh. I missed that.
+
+> 
+> > Signed-off-by: Mircea Caprioru <mircea.caprioru@analog.com>
+> > Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+> > ---
+> >  .../bindings/iio/dac/adi,ad5770r.yaml         | 185 ++++++++++++++++++
+> >  1 file changed, 185 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
+> > new file mode 100644
+> > index 000000000000..13d6b5ff479d
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
+> > @@ -0,0 +1,185 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +# Copyright 2020 Analog Devices Inc.
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/bindings/iio/adc/adi,ad5770r.yaml#  
+> 
+> Jonathan mentioned 'adc' part, but 'bindings' is also wrong. Should be:
+
+Alexandru, please send a fixup patch for the various things Rob has highlighted.
+
+Jonathan
 
 
-> Thanks,
-> Deepak.
 > 
-> > 
-> > > 
-> > > julia
-> > > 
-> > > > 
-> > > > > Deepak.
-> > > > > > > Thanks,
-> > > > > > > Deepak.
-> > > > > > > > thanks,
-> > > > > > > > 
-> > > > > > > > greg k-h
-> > > > > > > 
-> > > > > > > --
-> > > > > > > You received this message because you are subscribed to the Google
-> > > > > > > Groups
-> > > > > > > "outreachy-kernel" group.
-> > > > > > > To unsubscribe from this group and stop receiving emails from it, send
-> > > > > > > an
-> > > > > > > email to outreachy-kernel+unsubscribe@googlegroups.com.
-> > > > > > > To view this discussion on the web visit
-> > > > > > > https://groups.google.com/d/msgid/outreachy-kernel/20200318162353.GA23226%40deeUbuntu
-> > > > > > > .
-> > > > > > > 
+> .../schemas/iio/dac/...
+> 
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Analog Devices AD5770R DAC device driver
+> > +
+> > +maintainers:
+> > +  - Mircea Caprioru <mircea.caprioru@analog.com>
+> > +
+> > +description: |
+> > +  Bindings for the Analog Devices AD5770R current DAC device. Datasheet can be
+> > +  found here:
+> > +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD5770R.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - adi,ad5770r
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  avdd-supply:
+> > +    description:
+> > +      AVdd voltage supply. Represents two different supplies in the datasheet
+> > +      that are in fact the same.
+> > +
+> > +  iovdd-supply:
+> > +    description:
+> > +      Voltage supply for the chip interface.
+> > +
+> > +  vref-supply:
+> > +    description: Specify the voltage of the external reference used.
+> > +      Available reference options are 1.25 V or 2.5 V. If no
+> > +      external reference declared then the device will use the
+> > +      internal reference of 1.25 V.
+> > +
+> > +  adi,external-resistor:
+> > +    description: Specify if an external 2.5k ohm resistor is used. If not
+> > +      specified the device will use an internal 2.5k ohm resistor.
+> > +      The precision resistor is used for reference current generation.
+> > +    type: boolean
+> > +
+> > +  reset-gpios:
+> > +    description: GPIO spec for the RESET pin. If specified, it will be
+> > +      asserted during driver probe.
+> > +    maxItems: 1
+> > +
+> > +  channel0:  
+> 
+> channel@0 ???
+> 
+> Once you fix that, your example will start failing.
+> 
+> > +    description: Represents an external channel which are
+> > +      connected to the DAC. Channel 0 can act both as a current
+> > +      source and sink.
+> > +    type: object
+> > +
+> > +    properties:
+> > +      num:  
+> 
+> Use 'reg' instead.
+> 
+> > +        description: This represents the channel number.
+> > +        items:  
+> 
+> You can drop items.
+> 
+> > +          const: 0
+> > +
+> > +      adi,range-microamp:
+> > +          description: Output range of the channel.
+> > +          oneOf:
+> > +            - $ref: /schemas/types.yaml#/definitions/int32-array  
+> 
+> *-microamp already has a type, so this should be dropped. However, I 
+> believe it's unsigned currently, but we can fix it to be signed.
+> 
+> > +            - items:
+> > +                - enum: [0 300000]
+> > +                - enum: [-60000 0]
+> > +                - enum: [-60000 300000]  
+> 
+> Negative values don't yet work until we fix dtc to be able to output 
+> negative values. For now, can you just avoid negative numbers in the 
+> example.
+> 
+> What's defined here doesn't match the example. You are saying there are 
+> 3 cells with 2 possible values each. I think you want:
+> 
+> oneOf:
+>   - items:
+>       - const: 0
+>       - const: 300000
+>   - items:
+>       - const: -60000
+>       - const: 0
+>   - items:
+>       - const: -60000
+>       - const: 300000
+>       
+> 
+> > +
+> > +  channel1:
+> > +    description: Represents an external channel which are
+> > +      connected to the DAC.
+> > +    type: object
+> > +
+> > +    properties:
+> > +      num:
+> > +        description: This represents the channel number.
+> > +        items:
+> > +          const: 1
+> > +
+> > +      adi,range-microamp:
+> > +          description: Output range of the channel.
+> > +          oneOf:
+> > +            - $ref: /schemas/types.yaml#/definitions/uint32-array
+> > +            - items:
+> > +                - enum: [0 140000]
+> > +                - enum: [0 250000]
+> > +
+> > +  channel2:
+> > +    description: Represents an external channel which are
+> > +      connected to the DAC.
+> > +    type: object
+> > +
+> > +    properties:
+> > +      num:
+> > +        description: This represents the channel number.
+> > +        items:
+> > +          const: 2
+> > +
+> > +      adi,range-microamp:
+> > +          description: Output range of the channel.
+> > +          oneOf:
+> > +            - $ref: /schemas/types.yaml#/definitions/uint32-array
+> > +            - items:
+> > +                - enum: [0 140000]
+> > +                - enum: [0 250000]
+> > +
+> > +patternProperties:
+> > +  "^channel@([3-5])$":
+> > +    type: object
+> > +    description: Represents the external channels which are connected to the DAC.
+> > +    properties:
+> > +      num:
+> > +        description: This represents the channel number.
+> > +        items:
+> > +          minimum: 3
+> > +          maximum: 5
+> > +
+> > +      adi,range-microamp:
+> > +          description: Output range of the channel.
+> > +          oneOf:
+> > +            - $ref: /schemas/types.yaml#/definitions/uint32-array
+> > +            - items:
+> > +                - enum: [0 45000]
+> > +                - enum: [0 100000]
+> > +
+> > +required:
+> > +- reg
+> > +- diff-channels
+> > +- channel0
+> > +- channel1
+> > +- channel2
+> > +- channel3
+> > +- channel4
+> > +- channel5
+> > +
+> > +examples:
+> > +  - |
+> > +        spi {
+> > +                #address-cells = <1>;
+> > +                #size-cells = <0>;
+> > +
+> > +                ad5770r@0 {
+> > +                        compatible = "ad5770r";
+> > +                        reg = <0>;
+> > +                        spi-max-frequency = <1000000>;
+> > +                        vref-supply = <&vref>;
+> > +                        adi,external-resistor;
+> > +                        reset-gpios = <&gpio 22 0>;
+> > +
+> > +                        channel@0 {
+> > +                                num = <0>;
+> > +                                adi,range-microamp = <(-60000) 300000>;
+> > +                        };
+> > +
+> > +                        channel@1 {
+> > +                                num = <1>;
+> > +                                adi,range-microamp = <0 140000>;
+> > +                        };
+> > +
+> > +                        channel@2 {
+> > +                                num = <2>;
+> > +                                adi,range-microamp = <0 55000>;
+> > +                        };
+> > +
+> > +                        channel@3 {
+> > +                                num = <3>;
+> > +                                adi,range-microamp = <0 45000>;
+> > +                        };
+> > +
+> > +                        channel@4 {
+> > +                                num = <4>;
+> > +                                adi,range-microamp = <0 45000>;
+> > +                        };
+> > +
+> > +                        channel@5 {
+> > +                                num = <5>;
+> > +                                adi,range-microamp = <0 45000>;
+> > +                        };
+> > +                };
+> > +        };
+> > +...
+> > -- 
+> > 2.20.1
+> >   
+

@@ -2,178 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21A3918EB83
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 19:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B234A18EB86
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 19:26:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725997AbgCVSYY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 14:24:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44820 "EHLO mail.kernel.org"
+        id S1725997AbgCVS0q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 14:26:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45196 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725785AbgCVSYX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 22 Mar 2020 14:24:23 -0400
+        id S1725785AbgCVS0q (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Mar 2020 14:26:46 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 16EAB206F9;
-        Sun, 22 Mar 2020 18:24:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B3EC320719;
+        Sun, 22 Mar 2020 18:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584901462;
-        bh=yCz/ZT341lKLDKklGLVfKp6Q+x33rLv+tIrcibyvKJ0=;
+        s=default; t=1584901606;
+        bh=JNL/JoCsYbg+cQsO68XaEG0HOUodGMAq71VOxp587uI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=0AfrCZThU/qf/WRxw+8nyxnzHig5IhoLfg2M1gD/6LwD6K3zDgO9Fa0JRZE/GZnI9
-         mhSK6+zutycPn7AJuRr8JQfKtVriZG2Y5U/rkOVjUiiBQcZERn55lyVdeKlhE9HzVf
-         DYKR0488Q5VkdbT7Dqgd1lzqo68OmqsWwJmi8nGk=
-Date:   Sun, 22 Mar 2020 18:24:16 +0000
+        b=jfzoqi5jPVKbH9aUMQP6pANm54u6xELSZBReLqSNiaiRXP/bj7AnxRIiPQotPjprM
+         jScVSCRFJW0/jng8wCQ65+HqBNdhb7EF3vQAKVg5wtGI44+2PFR33JFlDQ8HzWKIxv
+         rYWN1HPhr0OWTB6BDZvakTefVbeHyDaQ8UcFiHb4=
+Date:   Sun, 22 Mar 2020 18:26:40 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nishant Malpani <nish.malpani25@gmail.com>
-Cc:     Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>,
-        Tomas Novotny <tomas@novotny.cz>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 1/4] dt-bindings: iio: vcnl4000: convert bindings to
- YAML format
-Message-ID: <20200322182416.079dc992@archlinux>
-In-Reply-To: <f5ea512c-d427-94c7-cf5f-f1300cbd4aa3@gmail.com>
-References: <cover.1584380360.git.agx@sigxcpu.org>
-        <6182053bb8c442e0b4d72b34c83c7f1565f4a258.1584380360.git.agx@sigxcpu.org>
-        <20200322172910.51456fe4@archlinux>
-        <f5ea512c-d427-94c7-cf5f-f1300cbd4aa3@gmail.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "keescook@chromium.org" <keescook@chromium.org>,
+        "Costina, Adrian" <Adrian.Costina@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Grozav, Andrei" <Andrei.Grozav@analog.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "Nagy, Laszlo" <Laszlo.Nagy@analog.com>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        "Csomortani, Istvan" <Istvan.Csomortani@analog.com>
+Subject: Re: [PATCH v11 5/8] iio: adc: adi-axi-adc: add support for AXI ADC
+ IP core
+Message-ID: <20200322182640.20b83ce0@archlinux>
+In-Reply-To: <319e36a6e4553a54812c63d89df181aee165bd4b.camel@analog.com>
+References: <20200321085315.11030-1-alexandru.ardelean@analog.com>
+        <20200321085315.11030-6-alexandru.ardelean@analog.com>
+        <CAHp75VecnornqckmG_WgN-V9A1VSQfRT85TxFzwHgaLw9dAHeA@mail.gmail.com>
+        <979ef870a4f0935e41e95e7759847eba8bd0407c.camel@analog.com>
+        <CAHp75Vdna2+txY=w87n+SWE3x3FYJLeMjYbYa6V-co3z0mYx_g@mail.gmail.com>
+        <202003220901.880A6DF@keescook>
+        <20200322165317.0b1f0674@archlinux>
+        <319e36a6e4553a54812c63d89df181aee165bd4b.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Mar 2020 23:07:00 +0530
-Nishant Malpani <nish.malpani25@gmail.com> wrote:
+On Sun, 22 Mar 2020 17:40:30 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> On 22/03/20 10:59 pm, Jonathan Cameron wrote:
-> > On Mon, 16 Mar 2020 18:46:17 +0100
-> > Guido G=C3=BCnther <agx@sigxcpu.org> wrote:
-> >  =20
-> >> Convert the vcnl4000 device tree bindings to the new YAML format.
-> >>
-> >> Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org> =20
-> > Looks good to me. However, I've made far too many mistakes in
-> > DT binding review recently, so will definitely be waiting for Rob to
-> > get a chance to look at it!
-> >=20
-> > Jonathan
-> >  =20
-> >> ---
-> >>   .../bindings/iio/light/vcnl4000.txt           | 24 ----------
-> >>   .../bindings/iio/light/vcnl4000.yaml          | 45 +++++++++++++++++=
-++
-> >>   2 files changed, 45 insertions(+), 24 deletions(-)
-> >>   delete mode 100644 Documentation/devicetree/bindings/iio/light/vcnl4=
-000.txt
-> >>   create mode 100644 Documentation/devicetree/bindings/iio/light/vcnl4=
-000.yaml
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/iio/light/vcnl4000.txt =
-b/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
-> >> deleted file mode 100644
-> >> index 955af4555c90..000000000000
-> >> --- a/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
-> >> +++ /dev/null
-> >> @@ -1,24 +0,0 @@
-> >> -VISHAY VCNL4000 -  Ambient Light and proximity sensor
-> >> -
-> >> -This driver supports the VCNL4000/10/20/40 and VCNL4200 chips
-> >> -
-> >> -Required properties:
-> >> -
-> >> -	-compatible: must be one of :
-> >> -        vishay,vcnl4000
-> >> -        vishay,vcnl4010
-> >> -        vishay,vcnl4020
-> >> -        vishay,vcnl4040
-> >> -        vishay,vcnl4200
-> >> -
-> >> -	-reg: I2C address of the sensor, should be one from below based on t=
-he model:
-> >> -        0x13
-> >> -        0x51
-> >> -        0x60
-> >> -
-> >> -Example:
-> >> -
-> >> -light-sensor@51 {
-> >> -	compatible =3D "vishay,vcnl4200";
-> >> -	reg =3D <0x51>;
-> >> -};
-> >> diff --git a/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml=
- b/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
-> >> new file mode 100644
-> >> index 000000000000..74d53cfbeb85
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
-> >> @@ -0,0 +1,45 @@
-> >> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> >> +%YAML 1.2
-> >> +---
-> >> +$id: http://devicetree.org/schemas/iio/light/vcnl4000.yaml# =20
-> Shouldn't the devicetree binding document be named with the manufacturer=
-=20
-> part as well?
+> On Sun, 2020-03-22 at 16:53 +0000, Jonathan Cameron wrote:
+> > On Sun, 22 Mar 2020 09:16:36 -0700
+> > Kees Cook <keescook@chromium.org> wrote:
+> >   
+> > > On Sun, Mar 22, 2020 at 12:45:39PM +0200, Andy Shevchenko wrote:  
+> > > > +Cc Kees (see below about allocation size checks)
+> > > > 
+> > > > On Sun, Mar 22, 2020 at 11:36 AM Ardelean, Alexandru
+> > > > <alexandru.Ardelean@analog.com> wrote:    
+> > > > > On Sat, 2020-03-21 at 23:38 +0200, Andy Shevchenko wrote:    
+> > > > > > On Sat, Mar 21, 2020 at 10:55 AM Alexandru Ardelean
+> > > > > > <alexandru.ardelean@analog.com> wrote:    
+> > > > 
+> > > > ...
+> > > >     
+> > > > > > > +static struct adi_axi_adc_conv *adi_axi_adc_conv_register(struct
+> > > > > > > device
+> > > > > > > *dev,
+> > > > > > > +                                                         int
+> > > > > > > sizeof_priv)
+> > > > > > > +{
+> > > > > > > +       struct adi_axi_adc_client *cl;
+> > > > > > > +       size_t alloc_size;
+> > > > > > > +
+> > > > > > > +       alloc_size = sizeof(struct adi_axi_adc_client);
+> > > > > > > +       if (sizeof_priv) {
+> > > > > > > +               alloc_size = ALIGN(alloc_size, IIO_ALIGN);
+> > > > > > > +               alloc_size += sizeof_priv;
+> > > > > > > +       }
+> > > > > > > +       alloc_size += IIO_ALIGN - 1;    
+> > > > > > 
+> > > > > > Have you looked at linux/overflow.h?    
+> > > > > 
+> > > > > i did now;
+> > > > > any hints where i should look closer?    
+> > > > 
+> > > > It seems it lacks of this kind of allocation size checks... Perhaps add
+> > > > one?
+> > > > Kees, what do you think?
+> > > >     
+> > > > > > > +       cl = kzalloc(alloc_size, GFP_KERNEL);
+> > > > > > > +       if (!cl)
+> > > > > > > +               return ERR_PTR(-ENOMEM);    
+> > > 
+> > > My head hurts trying to read this! ;) Okay, so the base size is
+> > > sizeof(struct adi_axi_adc_client). But if sizeof_priv is non-zero
+> > > (this arg should be size_t not int), then we need to make the struct
+> > > size ALIGNed? And then what is the "+= IIO_ALIGN - 1" for?  
+> > 
+> > I'm a bit embarrassed.  I can't remember what the += IIO_ALIGN - 1
+> > was for in the first place and I can't work it out now.
+> > 
+> > The purpose of the fun here was to end up with a structure that
+> > was either
+> > a) sizeof(struct iio_dev) long,
+> > b) sizeof(struct iio_dev) + padding + sizeof_priv 
+> > where the padding ensured that any __cacheline_aligned elements
+> > in the private structure were cacheline aligned within resulting
+> > allocation.
+> > 
+> > So why the extra IIO_ALIGN - 1....
+> > 
+> > The original patch doesn't help much either given it's got a question
+> > in there for why this bit is needed.
+> > 
+> > https://lore.kernel.org/linux-iio/1302890160-8823-5-git-send-email-jic23@cam.ac.uk/
+> > 
+> > However, it rang a slight bell.  Seems I lifted the code from netdev.
+> > https://elixir.bootlin.com/linux/latest/source/net/core/dev.c#L9718
+> > 
+> > I'm fairly sure we don't need that padding here..  What can I say,
+> > I was young and stupid :)
+> > 
+> > I did add a question mark so clearly meant to come back and
+> > take another look ;)
+> > 
+> > One vague thought is that it's about ensuring we are big enough to
+> > ensure we are cacheline aligned.  That's obviously not a problem with
+> > current struct iio_dev which is far from small,
+> > but in theory it could have been.  Also, thinking about it we only
+> > need the struct iio_dev to be cacheline aligned if we have
+> > an iio_priv structure.  If we have one of those it will definitely
+> > be big enough anyway.
+> > 
+> > At somepoint I'd like to look at cleaning it up for iio_device_alloc
+> > but with a lot of testing as who knows what is relying on this behaviour
+> > or if I've missed something.  Crashes around this alignment are
+> > infrequent and nasty to trace at the best of times.  
+> 
+> In the meantime, are there any objections if I leave the allocation as-is for
+> this driver as well?
+> I've tested the driver a bit more with this form.
 
-Yup. Good spot.  Told you I kept missing things ;)
+Hmm. I'd rather we didn't introduce this with the extra padding unless we
+can figure out why it would need it.  It would be a bit horrible to
+patch this in a few weeks time for this reason.
+
+If you absolutely can't retest for remote reasons then I suppose we could
+merge it and tidy up later.
 
 Jonathan
 
->=20
-> With regards,
-> Nishant
->=20
-> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >> +
-> >> +title: VISHAY VCNL4000 ambient light and proximity sensor
-> >> +
-> >> +maintainers:
-> >> +  - Peter Meerwald <pmeerw@pmeerw.net>
-> >> +
-> >> +description: |
-> >> +  Ambient light sensing with proximity detection over an i2c
-> >> +  interface.
-> >> +
-> >> +properties:
-> >> +  compatible:
-> >> +    enum:
-> >> +      - vishay,vcnl4000
-> >> +      - vishay,vcnl4010
-> >> +      - vishay,vcnl4020
-> >> +      - vishay,vcnl4040
-> >> +      - vishay,vcnl4200
-> >> +
-> >> +  reg:
-> >> +    maxItems: 1
-> >> +
-> >> +required:
-> >> +  - compatible
-> >> +  - reg
-> >> +
-> >> +additionalProperties: false
-> >> +
-> >> +examples:
-> >> +- |
-> >> +  i2c {
-> >> +      #address-cells =3D <1>;
-> >> +      #size-cells =3D <0>;
-> >> +
-> >> +      light-sensor@51 {
-> >> +              compatible =3D "vishay,vcnl4200";
-> >> +              reg =3D <0x51>;
-> >> +      };
-> >> +  };
-> >> +... =20
-> >  =20
+> 
+> > 
+> > Jonathan
+> >   
+> > > It's not clear to me what the expect alignment/padding is here.
+> > > 
+> > > I would probably construct this as:
+> > > 
+> > > 	sizeof_self = sizeof(struct adi_axi_adc_client);
+> > > 	if (sizeof_priv)
+> > > 		sizeof_self = ALIGN(sizeof_self, IIO_ALIGN);
+> > > 	if (check_add_overflow(sizeof_self, sizeof_priv, &sizeof_alloc))
+> > > 		return ERR_PTR(-ENOMEM);
+> > > 	if (check_add_overflow(sizeof_alloc, IIO_ALIGN - 1, &sizeof_alloc))
+> > > 		return ERR_PTR(-ENOMEM);
+> > > 
+> > > But I don't understand the "IIO_ALIGN - 1" part, so I assume this could
+> > > be shortened with better use of ALIGN()?
+> > > 
+> > > Also, this feels like a weird driver allocation overall:
+> > > 
+> > > +	struct adi_axi_adc_conv **ptr, *conv;
+> > > +
+> > > +	ptr = devres_alloc(devm_adi_axi_adc_conv_release, sizeof(*ptr),
+> > > +			   GFP_KERNEL);
+> > > +	if (!ptr)
+> > > +		return ERR_PTR(-ENOMEM);
+> > > +
+> > > +	conv = adi_axi_adc_conv_register(dev, sizeof_priv);
+> > > 
+> > > devres_alloc() allocates storage for a _single pointer_. :P That's not
+> > > useful for resource tracking. Why is devres_alloc() being called here
+> > > and not down in adi_axi_adc_conv_register() and just passing the pointer
+> > > back up?
+> > >   
 

@@ -2,104 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A201418EC08
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 20:53:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B454D18EC0A
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 20:54:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726781AbgCVTxI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 15:53:08 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:34207 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726756AbgCVTxI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 15:53:08 -0400
-Received: by mail-pg1-f193.google.com with SMTP id t3so6053594pgn.1
-        for <linux-iio@vger.kernel.org>; Sun, 22 Mar 2020 12:53:06 -0700 (PDT)
+        id S1726756AbgCVTyU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 15:54:20 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:32980 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726710AbgCVTyU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 15:54:20 -0400
+Received: by mail-pf1-f193.google.com with SMTP id j1so3684924pfe.0
+        for <linux-iio@vger.kernel.org>; Sun, 22 Mar 2020 12:54:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=J/841JuvCeA53RZ8dJXKpt1uGhDH+Vva83ItLHx0E8w=;
-        b=S2OAnJqE2XEFXo+9v8HxtNKphSgU625kheUFLaMTwdbTBV66YzTkdY1MDrQYFhK3mI
-         64d4dBsCQge9cS6PV/5MkS5qmPyD7vXLPKuKEGJCwTkzcrHCZ2E6v3WrEV6BkvoTb2gy
-         BHr3NJfSgbZ2Hs/p6FKTUpmwjVJE9V+VIeSe+w0q0cCVnWfWzjEI0R+jQrcYDrfEjr1t
-         OLX/xftpol7+m90/3HjWbIc0JaTKVrpQ/EKmjZs1asROSLom0/rf5gzOFryIyo7sNVu+
-         kLJorDbRxddWYPh59Xw7Jq8NvzMJDaXLpPD4wePgV77bKzYxQK07y3okd2z32vcT7t6H
-         05Rg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=2/rQmKX0XdBt7pgAhTvraA8XGz+IqOTJZGXuwXaH9V4=;
+        b=cVOWD3+iu9cLu8Lrk1PJiZ6vFi9ssNFMzMXk9FMX6JlNIZYsJgjJY1CsazofylfVbn
+         t0YfSOsNPgFqQj+NcC2UvHyyOI4uQuGO72cJtnxdFVnGTuF8kWCcnijW44u7baYubzPA
+         zWj4OcW+1PGRx1j1OBtFqvtn29GdLv/QLl00BN5WmEOVB4ERwM9OGTi1pRn0rhsbBY9U
+         JZ92bGgcq4QUjhZTSRXyw+unfovaVgTDsz1Z12b5vkjaRk7+/S2Ke7kCO8gST8kvkzck
+         0bFcjs0H2iqhasmUFU3PmrR5ggcTXOHwOzenKIFr1btCii5yBrhTXZAmVN0eIigIHxUY
+         +KGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=J/841JuvCeA53RZ8dJXKpt1uGhDH+Vva83ItLHx0E8w=;
-        b=tWcyA3sTss3hAEjbDwyyLua7eP5ci8Es/PmPy0+W0DzqXNJs5zNlxDWvEgN+JIa9Ze
-         ycSMH7awUL7JB3qov02c2yoR4MG8laN9AGP2/+EOB8WTbAUi3AaQlOebD4WiK8Ftgqlw
-         t/E7kyElg87WvMExFVAq7mdprM5cxz/RV+t6Qz0TFOPnyT6VQKFu8gEgTM/G00eSuhnJ
-         uCINxlM5UyvjSQc118EdD9JTAZEIQCgTjl1DU2Mn5pRfDNlspfPNgoF5lHJGqu0ZuQY/
-         9Omzg2ien7Ky+3F1iO88pZxpa6B77Cq3Ozdk/5BFWUKzuaLXGsryaa7+f6LXRNjn5my7
-         JHlg==
-X-Gm-Message-State: ANhLgQ2WIAJgSOYGoeB0SZCwDzTBq9m0QXspSTbDTTJchPurElE2cujM
-        l9LPwuGlmUxdkmXvuSsETio=
-X-Google-Smtp-Source: ADFU+vsiSNXgH13Sh83un2FDx1VAQhzHLF/Eb+G4TfS8RUDHlzVkmufAgXc8Db/k3i+owcB3MRAzxg==
-X-Received: by 2002:a63:4641:: with SMTP id v1mr18310060pgk.156.1584906786215;
-        Sun, 22 Mar 2020 12:53:06 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=2/rQmKX0XdBt7pgAhTvraA8XGz+IqOTJZGXuwXaH9V4=;
+        b=giA7y5TOtBVWRYGWp8nd9UfwummJUOc5RiTvM+7NtTgJuRLrGouM3Scb0sRmyGLyTu
+         UGQTWmw5vokoafF7Kw9FTKhfeYs/41lxSP2Uch46oYIwFHg7K1r+WTmYgt+okh0Z0TPG
+         uMHIv5sc/uT312c5V06sBNAK4TXyFPRUHRtaSv4CI8KygbC6wPvSihkE85lytQnUuJg1
+         1E/5yDt2iomdqXnvNw6r5HE7tjXgRlerRVot1+IEhmpMh4j/a+FkMj3VjzhTDHZWa7hj
+         l6gUcQ0Lz3MSxPMrPUK3On2ph2Z1WFfI32FCC6Py7TBhvPp9Bh8VXNOaLTW5FmOpthrb
+         FBPQ==
+X-Gm-Message-State: ANhLgQ3fMUkqhBSAxdOFjMKiCWgr9f/RNZ3uIKk6YPWitziIMIrcDsJB
+        wURJmaG6d7Uhsk3Ur81MRC0=
+X-Google-Smtp-Source: ADFU+vtFuD5Yqy5uCDWudJZHEEorQEawZybLCok0GUJ2TB0WggeljPQgiWUfqxRTUwk0hpK7IuCp8w==
+X-Received: by 2002:a63:7359:: with SMTP id d25mr17991902pgn.2.1584906859588;
+        Sun, 22 Mar 2020 12:54:19 -0700 (PDT)
 Received: from deeUbuntu ([103.240.207.191])
-        by smtp.gmail.com with ESMTPSA id q185sm10650767pfb.154.2020.03.22.12.53.02
+        by smtp.gmail.com with ESMTPSA id b16sm3463815pfb.71.2020.03.22.12.54.16
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 22 Mar 2020 12:53:05 -0700 (PDT)
-Date:   Mon, 23 Mar 2020 01:23:00 +0530
+        Sun, 22 Mar 2020 12:54:19 -0700 (PDT)
+Date:   Mon, 23 Mar 2020 01:24:13 +0530
 From:   Deepak R Varma <mh12gx2825@gmail.com>
 To:     outreachy-kernel@googlegroups.com, gregkh@linuxfoundation.org,
         daniel.baluta@gmail.com, kieran.bingham@ideasonboard.com
 Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
         knaack.h@gmx.de, pmeerw@pmeerw.net, gregkh@linuxfoundation.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH v3 0/4] staging: iio: adc: General code reformatting /
- cleanup patchset
-Message-ID: <cover.1584904896.git.mh12gx2825@gmail.com>
+Subject: [PATCH v3 1/4] staging: iio: adc: ad7192: Re-indent enum labels
+Message-ID: <5c6bef6462d135b748f58f8c2645c60234482f52.1584904896.git.mh12gx2825@gmail.com>
+References: <cover.1584904896.git.mh12gx2825@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <cover.1584904896.git.mh12gx2825@gmail.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Re-indent enum labels as per coding style guidelines. Problem
+detected by checkpatch script.
 
-Address code formatting warnings and check messages flagged by
-checkpatch script. Includes improvement for correcting macro
-name typos and simplified function implementation. Changes 
-intended to improve readability of code.
+Signed-off-by: Deepak R Varma <mh12gx2825@gmail.com>
+---
 
 Changes since v2:
-	1. Add new patch to the series for ad7280a driver to add
-	   comments near code that flags a misleading checkpatch
-	   warning.
-	2. Add patch version number v3 in individual patch subject 
-	   lines.
-	3. Simplified current implementation of function get_filter_freq
-	   per advice from Stefano.
+	- None. Version number increment to follow patch series version.
 
 Changes since v1:
-        1. Add separate patch for code re-indentation comment
-        2. Add separate patch for correcting macro names as suggested by
-           Lars-Peter.
-        3. Update variable name from sync* to sinc* as suggested by
-           Stefano.
-        4. Revert patch intended to add space around "-" operator. It
-           was a string with a "-" sign further formatted using
-           stringification. That patch is out of the patchset now.
+	1. Separated other change into a separate patch as suggested by
+	   Greg KH.
 
 
-Deepak R Varma (4):
-  staging: iio: adc: ad7192: Re-indent enum labels
-  staging: iio: adc: ad7192: Correct macro names from SYNC to SINC
-  staging: iio: adc: ad7192: get_filter_freq code optimization
-  staging: iio: adc: ad7280a: Add comments to clarify stringified
-    arguments
+ drivers/iio/adc/ad7192.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/iio/adc/ad7192.c          | 37 +++++++++++++------------------
- drivers/staging/iio/adc/ad7280a.c |  4 ++++
- 2 files changed, 20 insertions(+), 21 deletions(-)
-
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 8ec28aa8fa8a..02981f3d1794 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -157,8 +157,8 @@
+  */
+ 
+ enum {
+-   AD7192_SYSCALIB_ZERO_SCALE,
+-   AD7192_SYSCALIB_FULL_SCALE,
++	AD7192_SYSCALIB_ZERO_SCALE,
++	AD7192_SYSCALIB_FULL_SCALE,
+ };
+ 
+ struct ad7192_state {
 -- 
 2.17.1
 

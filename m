@@ -2,50 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 811BE18EA9E
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 17:57:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E2A018EAA1
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 18:01:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726741AbgCVQ5f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 12:57:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42088 "EHLO mail.kernel.org"
+        id S1725985AbgCVRBk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 13:01:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42986 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725785AbgCVQ5f (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 22 Mar 2020 12:57:35 -0400
+        id S1725881AbgCVRBk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Mar 2020 13:01:40 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7018C206F8;
-        Sun, 22 Mar 2020 16:57:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D49FF20724;
+        Sun, 22 Mar 2020 17:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584896255;
-        bh=Fdqxq266lPbGuDaZ/yl7AHdNhTLSHTmg63L7vb+eiTg=;
+        s=default; t=1584896499;
+        bh=fRgZZMF3O8FsJEBNZuwdEDytSWq+gORzarwQbFC502M=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xcTrgHu932AP0DbnZ1vvDF6/PoTrapK+LGnaRqhJ2hoWJ+P6ZAm8OkYTHpEsu7fcu
-         S/KAOii/yQW2EJ4H2Z0Cby+tK5DREd6SuJETkrEinsGfHL5LuzJE3hx3SUhKe9zkVX
-         Y/NcgIygxrIfMwrXR0D84rZqE/yuzAOORHgiwXyI=
-Date:   Sun, 22 Mar 2020 16:57:30 +0000
+        b=icTarVVZBn8HYnGaH7DB2idV9R5zd0ChanKmPcbwcm+MUn6QvqZVMti4e75xzTDDc
+         EO8N+2l3FlE58AzsWiD2tqjxHBf09vfYEeg0cTnHHB2RcK6otA4nGfuz0uAcRd4Z7i
+         qoiBKz44XQNNjqLn77Kx6gyYSO3EGUolGKyyGzcU=
+Date:   Sun, 22 Mar 2020 17:01:31 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Lazar <alazar@startmail.com>
-Cc:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "lars@metafoo.de" <lars@metafoo.de>
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: Add MAX1241 device tree
- bindings in documentation
-Message-ID: <20200322165730.11fa376a@archlinux>
-In-Reply-To: <20200322160604.GA222611@leena.republic>
-References: <20200320150114.9297-1-alazar@startmail.com>
-        <20200320150114.9297-2-alazar@startmail.com>
-        <20200321173412.52548ef1@archlinux>
-        <20200321193541.GA16892@leena.republic>
-        <1e51c4079222858410e9fe94c9d7f21d99abfe15.camel@analog.com>
-        <20200322095317.GA3099@leena.republic>
-        <20200322152735.36cb3493@archlinux>
-        <20200322160604.GA222611@leena.republic>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lars@metafoo.de>, <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2] iio: buffer: re-introduce bitmap_zalloc() for
+ trialmask
+Message-ID: <20200322170131.3e83f0bd@archlinux>
+In-Reply-To: <20200321085956.11213-1-alexandru.ardelean@analog.com>
+References: <20200317123621.27722-1-alexandru.ardelean@analog.com>
+        <20200321085956.11213-1-alexandru.ardelean@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,36 +43,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Mar 2020 18:06:04 +0200
-Alexandru Lazar <alazar@startmail.com> wrote:
+On Sat, 21 Mar 2020 10:59:56 +0200
+Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
 
-> > You'd be surprised how often this gets added to drivers precisely because
-> > people will put it on a controllable supply.  It may well not have it's own
-> > supply but it may share one with a bunch of other external chips and
-> > all of them need to use the regulator framework controls to make sure it's
-> > only disabled when they are all suspended etc.  
+> Commit 3862828a903d3 ("iio: buffer: Switch to bitmap_zalloc()") introduced
+> bitmap_alloc(), but commit 20ea39ef9f2f9 ("iio: Fix scan mask selection")
+> reverted it.
 > 
-> I figured it might be something like this :-). I've added the vdd-supply
-> binding in v5.
+> This change adds it back. The only difference is that it's adding
+> bitmap_zalloc(). There might be some changes later that would require
+> initializing it to zero. In any case, now it's already zero-ing the
+> trialmask.
 > 
-> If this isn't something that can be easily handled in the core, do you
-> think we can document it somewhere as a convention/common idiom?
-> (Assuming it's not already documented, of course). It seems like it's
-> something that all IIO devices would need. I can do the writing part.
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-Hmm. We could do with a sort of 'things you'd normally find in a driver'
-document.  We don't have such a document, but interesting to think about
-what would be in it...  Perhaps a 'best practice' document would
-be a better way of putting it.  I don't really want to see a huge
-number of patches adding regulators to drivers that don't have them already
-for example.  Clearly no one needed them yet :)
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to poke it.
 
-If you want to take a stab at such a document that would be great.
+Thanks,
 
 Jonathan
-
-
+> ---
 > 
-> Thanks,
-> Alex
+> Changelog v1 -> v2:
+> * add 'Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>' 
+> * re-send from an Analog server; GMail changed the author to @gmail.com
+> 
+>  drivers/iio/industrialio-buffer.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> index 4ada5592aa2b..5ff34ce8b6a2 100644
+> --- a/drivers/iio/industrialio-buffer.c
+> +++ b/drivers/iio/industrialio-buffer.c
+> @@ -316,8 +316,7 @@ static int iio_scan_mask_set(struct iio_dev *indio_dev,
+>  	const unsigned long *mask;
+>  	unsigned long *trialmask;
+>  
+> -	trialmask = kcalloc(BITS_TO_LONGS(indio_dev->masklength),
+> -			    sizeof(*trialmask), GFP_KERNEL);
+> +	trialmask = bitmap_zalloc(indio_dev->masklength, GFP_KERNEL);
+>  	if (trialmask == NULL)
+>  		return -ENOMEM;
+>  	if (!indio_dev->masklength) {
 

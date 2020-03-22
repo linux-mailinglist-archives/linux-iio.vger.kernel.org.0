@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CFF918EB1F
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 18:51:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C49D18EB22
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 18:52:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726623AbgCVRus (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 13:50:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33012 "EHLO mail.kernel.org"
+        id S1726137AbgCVRwd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 13:52:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34418 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726710AbgCVRur (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 22 Mar 2020 13:50:47 -0400
+        id S1725997AbgCVRwd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Mar 2020 13:52:33 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A1FC5206C3;
-        Sun, 22 Mar 2020 17:50:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 24B63206C3;
+        Sun, 22 Mar 2020 17:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584899446;
-        bh=Sh7L3UieGYgixm8GAYfakbok0Y3K+sHMc1ocIK9XGkg=;
+        s=default; t=1584899551;
+        bh=E4tkfsLC2npwliTDR8mBLrea9DerZNIIDxFJTaOlD0k=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ktftY6ofPak9V2HY5dfbS30wwGib13PT/8ptEYmPwtilPfKvU1P0KmPJUtDPaf0XO
-         5N8GybHQEcLNsSyOqaovwArE4vDlxcnzseasiGCYzq1CrDO4iLJLuFsZISf9XR8B+a
-         /Xw72O8RB+XdYs3bCgvjyN5wkKoeQfLDG+oFv3to=
-Date:   Sun, 22 Mar 2020 17:50:42 +0000
+        b=xFXRyqaXvjCustqER/6dHYlCtRtCClXD9avWVmoAzhiR8JaxhRGNOykk4cBwEzcOR
+         RNcYWwpEgqSKS3s5lkvcdMnvJVQWJ6Xe4GCgEMEHekIhMFp2AcoyIPml19SAPRRlKl
+         6YbNPlIbCICXOejuiwNTmgQ3MnkS7q/Fz6sJzIfE=
+Date:   Sun, 22 Mar 2020 17:52:27 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        alexandru.Ardelean@analog.com, dragos.bogdan@analog.com,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: Re: [PATCH v2] iio: health: max30100: use generic property handler
-Message-ID: <20200322175042.7903862d@archlinux>
-In-Reply-To: <5e6e48dd.1c69fb81.11507.523e@mx.google.com>
-References: <5e6e48dd.1c69fb81.11507.523e@mx.google.com>
+        dragos.bogdan@analog.com
+Subject: Re: [PATCH v7] iio: adc: max1363: replace uses of mlock
+Message-ID: <20200322175227.1623048e@archlinux>
+In-Reply-To: <5e766058.1c69fb81.a65ff.d2eb@mx.google.com>
+References: <5e6e522d.1c69fb81.10f54.f95c@mx.google.com>
+        <5e766058.1c69fb81.a65ff.d2eb@mx.google.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,64 +42,169 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 15 Mar 2020 20:55:12 +0530
+On Sun, 22 Mar 2020 00:13:32 +0530
 Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
 
-> Instead of of_property_read_xxx use device_property_read_xxx as it is
-> compatible with ACPI too as opposed to only device tree.
-> 
-> Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> Hey,
+> Does this look fine? Wondering if this was missed during review
+> Thanks,
+> Rohit
 
-Looks good to me.
+Nope just a busy week.  + I review from latest emails backwards
+(and almost always get through everything).
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to play with them.
-
-Thanks,
+Questions have a habit of being resolved quicker that way
+around ;)
 
 Jonathan
 
-> ---
-> Changelog
-> v1 -> v2
-> - remove of_match_ptr to make it possible to use PRP0001 ACPI based
->   bindings
->  drivers/iio/health/max30100.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
-> index 84010501762d..546fc37ad75d 100644
-> --- a/drivers/iio/health/max30100.c
-> +++ b/drivers/iio/health/max30100.c
-> @@ -16,7 +16,7 @@
->  #include <linux/irq.h>
->  #include <linux/i2c.h>
->  #include <linux/mutex.h>
-> -#include <linux/of.h>
-> +#include <linux/property.h>
->  #include <linux/regmap.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/buffer.h>
-> @@ -267,11 +267,10 @@ static int max30100_get_current_idx(unsigned int val, int *reg)
->  static int max30100_led_init(struct max30100_data *data)
->  {
->  	struct device *dev = &data->client->dev;
-> -	struct device_node *np = dev->of_node;
->  	unsigned int val[2];
->  	int reg, ret;
->  
-> -	ret = of_property_read_u32_array(np, "maxim,led-current-microamp",
-> +	ret = device_property_read_u32_array(dev, "maxim,led-current-microamp",
->  					(unsigned int *) &val, 2);
->  	if (ret) {
->  		/* Default to 24 mA RED LED, 50 mA IR LED */
-> @@ -502,7 +501,7 @@ MODULE_DEVICE_TABLE(of, max30100_dt_ids);
->  static struct i2c_driver max30100_driver = {
->  	.driver = {
->  		.name	= MAX30100_DRV_NAME,
-> -		.of_match_table	= of_match_ptr(max30100_dt_ids),
-> +		.of_match_table	= max30100_dt_ids,
->  	},
->  	.probe		= max30100_probe,
->  	.remove		= max30100_remove,
+> On Sun, Mar 15, 2020 at 09:34:58PM +0530, Rohit Sarkar wrote:
+> > Replace usage indio_dev's mlock with either local lock or
+> > iio_device_claim_direct_mode.
+> > 
+> > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> > ---
+> > Changelog v6 -> v7
+> > * Fix failure handling logic
+> > 
+> > Changelog v5 -> v6
+> > * Minor failure handling fixes
+> > 
+> > Changelog v4 -> v5
+> > * Use local lock too at places where driver state needs to be protected.
+> > 
+> > Changelog v3 -> v4
+> > * Fix indentation
+> > 
+> > Changelog v2 -> v3
+> > * use iio_device_claim_direct when switching modes
+> > * replace mlock usage in max1363_write_event_config
+> > 
+> > Changelog v1 -> v2
+> > * Fix indentation
+> > 
+> >  drivers/iio/adc/max1363.c | 37 ++++++++++++++++++++++++++++---------
+> >  1 file changed, 28 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+> > index 5c2cc61b666e..12d72bf3f12a 100644
+> > --- a/drivers/iio/adc/max1363.c
+> > +++ b/drivers/iio/adc/max1363.c
+> > @@ -150,6 +150,7 @@ struct max1363_chip_info {
+> >   * @current_mode:	the scan mode of this chip
+> >   * @requestedmask:	a valid requested set of channels
+> >   * @reg:		supply regulator
+> > + * @lock		lock to ensure state is consistent
+> >   * @monitor_on:		whether monitor mode is enabled
+> >   * @monitor_speed:	parameter corresponding to device monitor speed setting
+> >   * @mask_high:		bitmask for enabled high thresholds
+> > @@ -169,6 +170,7 @@ struct max1363_state {
+> >  	const struct max1363_mode	*current_mode;
+> >  	u32				requestedmask;
+> >  	struct regulator		*reg;
+> > +	struct mutex			lock;
+> >  
+> >  	/* Using monitor modes and buffer at the same time is
+> >  	   currently not supported */
+> > @@ -364,7 +366,13 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
+> >  	struct max1363_state *st = iio_priv(indio_dev);
+> >  	struct i2c_client *client = st->client;
+> >  
+> > -	mutex_lock(&indio_dev->mlock);
+> > +	ret = iio_device_claim_direct_mode(indio_dev);
+> > +	if (ret)
+> > +		return ret;
+> > +	mutex_lock(&st->lock);
+> > +
+> > +	if (ret < 0)
+> > +		goto error_ret;
+> >  	/*
+> >  	 * If monitor mode is enabled, the method for reading a single
+> >  	 * channel will have to be rather different and has not yet
+> > @@ -372,7 +380,7 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
+> >  	 *
+> >  	 * Also, cannot read directly if buffered capture enabled.
+> >  	 */
+> > -	if (st->monitor_on || iio_buffer_enabled(indio_dev)) {
+> > +	if (st->monitor_on) {
+> >  		ret = -EBUSY;
+> >  		goto error_ret;
+> >  	}
+> > @@ -404,8 +412,10 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
+> >  		data = rxbuf[0];
+> >  	}
+> >  	*val = data;
+> > +
+> >  error_ret:
+> > -	mutex_unlock(&indio_dev->mlock);
+> > +	mutex_unlock(&st->lock);
+> > +	iio_device_release_direct_mode(indio_dev);
+> >  	return ret;
+> >  
+> >  }
+> > @@ -705,9 +715,9 @@ static ssize_t max1363_monitor_store_freq(struct device *dev,
+> >  	if (!found)
+> >  		return -EINVAL;
+> >  
+> > -	mutex_lock(&indio_dev->mlock);
+> > +	mutex_lock(&st->lock);
+> >  	st->monitor_speed = i;
+> > -	mutex_unlock(&indio_dev->mlock);
+> > +	mutex_unlock(&st->lock);
+> >  
+> >  	return 0;
+> >  }
+> > @@ -810,12 +820,12 @@ static int max1363_read_event_config(struct iio_dev *indio_dev,
+> >  	int val;
+> >  	int number = chan->channel;
+> >  
+> > -	mutex_lock(&indio_dev->mlock);
+> > +	mutex_lock(&st->lock);
+> >  	if (dir == IIO_EV_DIR_FALLING)
+> >  		val = (1 << number) & st->mask_low;
+> >  	else
+> >  		val = (1 << number) & st->mask_high;
+> > -	mutex_unlock(&indio_dev->mlock);
+> > +	mutex_unlock(&st->lock);
+> >  
+> >  	return val;
+> >  }
+> > @@ -962,7 +972,14 @@ static int max1363_write_event_config(struct iio_dev *indio_dev,
+> >  	u16 unifiedmask;
+> >  	int number = chan->channel;
+> >  
+> > -	mutex_lock(&indio_dev->mlock);
+> > +	ret = iio_device_claim_direct_mode(indio_dev);
+> > +	if (ret)
+> > +		return ret;
+> > +	mutex_lock(&st->lock);
+> > +
+> > +	if (ret < 0)
+> > +		goto error_ret;
+> > +
+> >  	unifiedmask = st->mask_low | st->mask_high;
+> >  	if (dir == IIO_EV_DIR_FALLING) {
+> >  
+> > @@ -989,7 +1006,8 @@ static int max1363_write_event_config(struct iio_dev *indio_dev,
+> >  
+> >  	max1363_monitor_mode_update(st, !!(st->mask_high | st->mask_low));
+> >  error_ret:
+> > -	mutex_unlock(&indio_dev->mlock);
+> > +	mutex_unlock(&st->lock);
+> > +	iio_device_release_direct_mode(indio_dev);
+> >  
+> >  	return ret;
+> >  }
+> > @@ -1587,6 +1605,7 @@ static int max1363_probe(struct i2c_client *client,
+> >  
+> >  	st = iio_priv(indio_dev);
+> >  
+> > +	mutex_init(&st->lock);
+> >  	st->reg = devm_regulator_get(&client->dev, "vcc");
+> >  	if (IS_ERR(st->reg)) {
+> >  		ret = PTR_ERR(st->reg);
+> > -- 
+> > 2.23.0.385.gbc12974a89
+> >   
 

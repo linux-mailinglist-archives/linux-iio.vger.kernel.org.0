@@ -2,259 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB8AF18E812
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 11:45:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0059018E941
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 14:58:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726902AbgCVKpw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 06:45:52 -0400
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:35940 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726866AbgCVKpw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 06:45:52 -0400
-Received: by mail-pj1-f66.google.com with SMTP id nu11so4655785pjb.1;
-        Sun, 22 Mar 2020 03:45:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FTXhdL097mlQS8O83uIhN8J/RXoDYEHu/eJEovfEf50=;
-        b=j16kbwfvZ6b/h7plszo+4PDUT4dltIeuOjYOotcspckdlvCKYMRoq1dccXM6071Jn1
-         x/6WumK330hnk0A8BZFLu7gGS7Q9xq/LfLfTZwiCdC0LbfM8nauaFt7+0iHihlpQtQAS
-         FFSoTL0CwhPVXOaPMT8CQsy0mnFm8dJ8Xo4L+zOIdIKC3DDVyUBsCO6UP73PWfuzBIhb
-         9i1j4GFTp5mCCTxqz+pVPjB1nnKODUY0a8yDPEL+aNfUZzFIhcak9n8ky6AOHXN4y7eS
-         qx5fuqqcluyKB9I7ncy0u24MXXMjklb6aLDdpQdyfGv0C2GVlvlPZsza8fH0Ey5Orw79
-         FKCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FTXhdL097mlQS8O83uIhN8J/RXoDYEHu/eJEovfEf50=;
-        b=Fco+LUH6OA/v1yGml9pa66cI0L0IKm5kLj5EMMzekG53sq6JBstahZcWS8pALaMY6b
-         SkODBaYQ++pJlU6LtwU9nwLL9y8E0L2RXGVHAOymID0RiQ5mkAIzxdBHu0cZupMm8h8d
-         KNNBmPZqDC2mQCbazXdvfyZt3q5aVNarKiLJo+3kBGx8v2Z5tEF7cxkbOQwxb+wjZtJq
-         VlMMTzj0wfXazI7gLEqUu+INHCEBhQDfhyURRNMOudfgBHmop9anDs6MH0Te8zqZkSdQ
-         uzki6nQXmxUxCXM5tWlhUc3/tFIkvggFSOb1ebRMWsx0DApWrw9/vbC6ZDbtZAt0MKsP
-         yGBQ==
-X-Gm-Message-State: ANhLgQ0PRiflCOAEoM5+BvmRa6OQSkD2p6MD9mJVaFE0GczZwqDmMsEb
-        VG3QTiF0sTn3+dP+KaVmEfUp9KG7Hscg+ntWtSs=
-X-Google-Smtp-Source: ADFU+vu/NzJaf+DFmVD2TpaRkf1INuqzH/WyAn2qxOgwW62B7hPcNFfvFj0veIfxEP6emXobsGKYMCdAzXzT7wU9yW8=
-X-Received: by 2002:a17:902:54f:: with SMTP id 73mr16624130plf.255.1584873951235;
- Sun, 22 Mar 2020 03:45:51 -0700 (PDT)
+        id S1725997AbgCVN6G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 09:58:06 -0400
+Received: from mx-out2.startmail.com ([145.131.90.155]:46330 "EHLO
+        mx-out2.startmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725970AbgCVN6G (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 09:58:06 -0400
+From:   Alexandru Lazar <alazar@startmail.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=startmail.com;
+        s=2017-11; t=1584885484;
+        bh=lXnTtC4eUU6M3jrOm/vCYMsZljQfVh1oMFlBSrISk2s=;
+        h=From:To:Cc:Subject:Date:From;
+        b=AQnUG9x/x8PeJQZxiLMsu1bHMdeJqZgcHJgaKRbMI2D39SuvVzs4VTI5LyeCiarVn
+         JYQqGzrTwTzPmsDS5OFGg/tskBDSKlqKr1x7gaZsvaQhlg2kdQYsrBYdoMXXPBGjsS
+         /896fZhQsSXYG+g/209fQ6/QBvwmMmhmbxHpoKYljas6IGswfwovjsAcJeuE/MO8d8
+         WS0YoHW+adVhO0b9ib32k8W4d0cCe8vCo9KD6u7lrmuLEfHbjzItdE5g9HBwSbmoLb
+         4RRiK+opMOZyizyv+zuTeMrx2yJKCKxJdoc2j96ycarsMJDyhptD5h5l1k4cLHEZ8Y
+         JbtejBap0ErAQ==
+To:     linux-iio@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, jic23@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, robh+dt@kernel.org,
+        mark.rutland@arm.com, Alexandru Lazar <alazar@startmail.com>
+Subject: [PATCH v5 0/2] Maxim MAX1241 driver
+Date:   Sun, 22 Mar 2020 16:02:35 +0200
+Message-Id: <20200322140237.211347-1-alazar@startmail.com>
 MIME-Version: 1.0
-References: <20200321085315.11030-1-alexandru.ardelean@analog.com>
- <20200321085315.11030-6-alexandru.ardelean@analog.com> <CAHp75VecnornqckmG_WgN-V9A1VSQfRT85TxFzwHgaLw9dAHeA@mail.gmail.com>
- <979ef870a4f0935e41e95e7759847eba8bd0407c.camel@analog.com>
-In-Reply-To: <979ef870a4f0935e41e95e7759847eba8bd0407c.camel@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 22 Mar 2020 12:45:39 +0200
-Message-ID: <CAHp75Vdna2+txY=w87n+SWE3x3FYJLeMjYbYa6V-co3z0mYx_g@mail.gmail.com>
-Subject: Re: [PATCH v11 5/8] iio: adc: adi-axi-adc: add support for AXI ADC IP core
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        Kees Cook <keescook@chromium.org>
-Cc:     "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Grozav, Andrei" <Andrei.Grozav@analog.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "Nagy, Laszlo" <Laszlo.Nagy@analog.com>,
-        "Csomortani, Istvan" <Istvan.Csomortani@analog.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        "Costina, Adrian" <Adrian.Costina@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-+Cc Kees (see below about allocation size checks)
+Hello again,
 
-On Sun, Mar 22, 2020 at 11:36 AM Ardelean, Alexandru
-<alexandru.Ardelean@analog.com> wrote:
-> On Sat, 2020-03-21 at 23:38 +0200, Andy Shevchenko wrote:
-> > On Sat, Mar 21, 2020 at 10:55 AM Alexandru Ardelean
-> > <alexandru.ardelean@analog.com> wrote:
+Here's version 5 of a patch series which adds support for the Maxim
+MAX1241, a 12-bit, single-channel, SPI-connected ADC.
 
-...
+Changelog so far:
 
-> > > Link: https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
-> >
->
-> i can send a v12 for this in a few days;
->
-> > Is it tag or simple link? I would suggest not to use Link: if it's not a tag.
->
-> simple link
-> any suggestions/alternatives?
-> i wasn't aware of conventions about this;
+v5:
 
-Use like [1] ...
-...
+* Add vdd supply binding
+* Reorder include headers -- one of them had escaped the long mechanized
+  hand of the Alphabetron
+* Drop scan_index and scan_type from channel spec, as the driver
+  doesn't support buffered modes
+* Drop a useless initialization of a local variable in probe function
+* Revise dt-bindings patch subject line, revise maintainer and
+  copyright to match the Signed-off: string, drop reference to driver
+  from bindings description
+* Various readability/cosmetic fixes
 
-[1]: https://...
+v4:
 
-Or maybe introduce is as a tag DocLink:, for example?
-Or Datasheet: ?
+* Dropped explicit documentation of SPI reg property
+* Reordered patch series so that dt bindings come first
 
-...
+v3:
 
-> > > +static struct adi_axi_adc_client *conv_to_client(struct adi_axi_adc_conv
-> > > *conv)
-> > > +{
-> > > +       if (!conv)
-> > > +               return NULL;
-> >
-> > This is so unusual. Why do you need it?
->
-> see [1]
->
-> >
-> > > +       return container_of(conv, struct adi_axi_adc_client, conv);
-> > > +}
-> > > +
-> > > +void *adi_axi_adc_conv_priv(struct adi_axi_adc_conv *conv)
-> > > +{
-> > > +       struct adi_axi_adc_client *cl = conv_to_client(conv);
-> > > +
-> > > +       if (!cl)
-> > > +               return NULL;
-> >
-> > So about this.
->
-> [1]
-> because 'adi_axi_adc_conv_priv()' (and implicitly conv_to_client()) gets called
-> from other drivers; we can't expect to be sure that conv & cl aren't NULL;
+* Fixed silly copy-paste error in Kconfig description
 
-In both cases it's pointer arithmetic, right? Even look at the example
-of netdev you gave below, they haven't done these (redundant) checks.
-The outcome that crashes if any will be more distinct.
+v2:
 
-> > > +       return (char *)cl + ALIGN(sizeof(struct adi_axi_adc_client),
-> > > IIO_ALIGN);
-> >
-> > This all looks a bit confusing. Is it invention of offsetof() ?
->
-> umm; tbh, it's more of a copy/clone of iio_priv()
->
-> it's not un-common though;
-> see [and this one has more exposure]:
-> --------------------------------------------------------
-> static inline void *netdev_priv(const struct net_device *dev)
-> {
->         return (char *)dev + ALIGN(sizeof(struct net_device), NETDEV_ALIGN);
-> }
-> --------------------------------------------------------
+* Removed useeless header includes
+* Dropped needlessly verbose stuff in _read and _probe functions
+* Dropped useless GPL notice
+* Lowered log level of shdn pin status in probe function, now it's
+  dev_dbg
+* Added proper error checking for the GPIO shutdown pin
+* remove now always returns zero (man, I've been wrong about this for
+  *years* now...)
+* Added regulator disable action, cleanup is now handled via devm
+* Drop delay_usecs, use delay.value, delay.unit
+* Drop config_of, of_match_ptr call
+* Dropped IIO_BUFFER, IIO_TRIGGERED_BUFFER dependencies, set SPI_MASTER
+  as dependency, fix indenting.
+* DT binding: use correct id, add reg description (looks pretty
+  standard), dropped spi-max-frequency, fixed dt_binding_check
+  complaints (oops!)
 
-Good point.
+Thanks,
+Alex
 
-> > > +}
+Alexandru Lazar (2):
+  dt-bindings: iio: adc: Add MAX1241 bindings
+  iio: adc: Add MAX1241 driver
 
-...
-
-> > > +static struct adi_axi_adc_conv *adi_axi_adc_conv_register(struct device
-> > > *dev,
-> > > +                                                         int sizeof_priv)
-> > > +{
-> > > +       struct adi_axi_adc_client *cl;
-> > > +       size_t alloc_size;
-> > > +
-> > > +       alloc_size = sizeof(struct adi_axi_adc_client);
-> > > +       if (sizeof_priv) {
-> > > +               alloc_size = ALIGN(alloc_size, IIO_ALIGN);
-> > > +               alloc_size += sizeof_priv;
-> > > +       }
-> > > +       alloc_size += IIO_ALIGN - 1;
-> >
-> > Have you looked at linux/overflow.h?
->
-> i did now;
-> any hints where i should look closer?
-
-It seems it lacks of this kind of allocation size checks... Perhaps add one?
-Kees, what do you think?
-
-> > > +       cl = kzalloc(alloc_size, GFP_KERNEL);
-> > > +       if (!cl)
-> > > +               return ERR_PTR(-ENOMEM);
-
-...
-
-> > > +static void adi_axi_adc_conv_unregister(struct adi_axi_adc_conv *conv)
-> > > +{
-> > > +       struct adi_axi_adc_client *cl = conv_to_client(conv);
-> > > +
-> > > +       if (!cl)
-> > > +               return;
-> >
-> > When is this possible?
->
-> good point; it isn't;
-> it's a left-over from when adi_axi_adc_conv_unregister() was exported
-> still, i wouldn't mind leaving it [for paranoia], if there isn't a strong
-> opinion to remove it;
-
-I think it makes code dirty (too much protective programming). We have
-a lot places where we can shoot our feet, but at least not hiding the
-issue is a benefit in my opinion.
-
-...
-
-
-
-> > > +static struct attribute *adi_axi_adc_attributes[] = {
-> > > +       ADI_AXI_ATTR(SCALE_AVAIL, in_voltage_scale_available),
-> > > +       NULL,
-> >
-> > Terminators good w/o comma.
->
-> i don't feel strongly pro/against
-> sure
-
-There is a rationale behind this. If there is a weird case of adding
-entry behind the terminator, you will see it immediately at compile
-time (consider automatic rebase).
-
-> > > +};
-> >
-> > ...
-> >
-> > > +/* Match table for of_platform binding */
-> > > +static const struct of_device_id adi_axi_adc_of_match[] = {
-> > > +       { .compatible = "adi,axi-adc-10.0.a", .data =
-> > > &adi_axi_adc_10_0_a_info },
-> > > +       { /* end of list */ },
-> >
-> > Ditto.
-
-Ditto.
-
-> > > +};
-
-...
-
-> > > +       if (!dev->of_node) {
-> > > +               dev_err(dev, "DT node is null\n");
-> > > +               return ERR_PTR(-ENODEV);
-> > > +       }
-
-I guess this check is redundant since following OF calls will fail anyway.
-
-> > > +
-> > > +       id = of_match_node(adi_axi_adc_of_match, dev->of_node);
-> >
-> > You may use this from struct driver and move the table after this function.
->
->
-> right; it didn't occur to me, since i was already using
-> of_device_get_match_data() in ad9467
-
-Even better. But see above note.
-
-> > > +       if (!id)
-> > > +               return ERR_PTR(-ENODEV);
+ .../bindings/iio/adc/maxim,max1241.yaml       |  65 ++++++
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/max1241.c                     | 213 ++++++++++++++++++
+ 4 files changed, 289 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max1241.yaml
+ create mode 100644 drivers/iio/adc/max1241.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.2
+

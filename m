@@ -2,101 +2,258 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED9AC18E805
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 11:27:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB8AF18E812
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 11:45:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726897AbgCVK1m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 06:27:42 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:38748 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726866AbgCVK1l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 06:27:41 -0400
-Received: by mail-pg1-f194.google.com with SMTP id x7so5590557pgh.5;
-        Sun, 22 Mar 2020 03:27:39 -0700 (PDT)
+        id S1726902AbgCVKpw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 06:45:52 -0400
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:35940 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726866AbgCVKpw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 06:45:52 -0400
+Received: by mail-pj1-f66.google.com with SMTP id nu11so4655785pjb.1;
+        Sun, 22 Mar 2020 03:45:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=6RAxGHRXwEXJ3h4vDKdrVJV5D7I4VTDkjCteTqg0DE4=;
-        b=ATE6Wt1XqdxMdfB6ou2BNReL2AzFsbSGPTn5HoGlIN4Q6h7cfr0WqFjvEvVjrY30yT
-         Jb+wYwsT8bxXm4+Sh7wct5MsDaHkeXrFnOkd93E0ZBw8hymUaMeV4TTLt5SV4EPYeVsR
-         iPaPZQ6ctkYq6Mjq05DnsrrCy5Foxz19G/vbybFsZ3N5OhGga/yCIkeY1GjbIcdq1w+g
-         Ju2qRnzfvi9BgDK1piO4F7jg1H3K+iiSM5QON+uLXKbczFZg+drHIrbmKO6ma24Nmpmk
-         /da4ek4CdMZKcqANCcRayKiUjjJAa6aRB3qt19mNUTBu2JV+go4LRUC4zxl5901vAZ5h
-         Sn6Q==
+        bh=FTXhdL097mlQS8O83uIhN8J/RXoDYEHu/eJEovfEf50=;
+        b=j16kbwfvZ6b/h7plszo+4PDUT4dltIeuOjYOotcspckdlvCKYMRoq1dccXM6071Jn1
+         x/6WumK330hnk0A8BZFLu7gGS7Q9xq/LfLfTZwiCdC0LbfM8nauaFt7+0iHihlpQtQAS
+         FFSoTL0CwhPVXOaPMT8CQsy0mnFm8dJ8Xo4L+zOIdIKC3DDVyUBsCO6UP73PWfuzBIhb
+         9i1j4GFTp5mCCTxqz+pVPjB1nnKODUY0a8yDPEL+aNfUZzFIhcak9n8ky6AOHXN4y7eS
+         qx5fuqqcluyKB9I7ncy0u24MXXMjklb6aLDdpQdyfGv0C2GVlvlPZsza8fH0Ey5Orw79
+         FKCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=6RAxGHRXwEXJ3h4vDKdrVJV5D7I4VTDkjCteTqg0DE4=;
-        b=pXGhojYWX7839IPrc+ZvB+q3N+RKzQYcbWbvEdSFbA6ywkbWhJ7/iowSaty8mrA1Q9
-         meb7L7RHb0nzBMFDY/KB75FJdohaoZtzPHmHYDE1li7qULg41bSFJLV0rGDp+ioV6x5z
-         r9w5JnpPp3hVVmN9fPLtL/lh+nLzlYto1RziQ2MMYQwGOlhePk90Mb+TvGL5SbVZ+6tO
-         qSCW1Gm/HplGMT+5eUgY/INXDPoylQPM+jI+Txq5acLV+7BjMcHwZIdk8qbO2gf8nvuc
-         /FfhC3Otry3SVZm/G6oAfJRE5OnjZb8D4QQaOU+GiTkvNBIMcHaNdixQyXnCTjIFQ8tM
-         /wug==
-X-Gm-Message-State: ANhLgQ2iy/H3HOQyYEa1Njav3nxHKpQwRO/mT9zuKL05HgS5DXuIsQAs
-        d8HAiTHqr0wGw6lHcTDom1JTxdoEgz8wfJWn51s=
-X-Google-Smtp-Source: ADFU+vsOBdai13yG5KtkS+8b8BWb50/R/N+cQ1nIdFkd26CYl5CiTZpnHfGQVrzjz6buvXEsIGim5HwlmqFXmONvLCc=
-X-Received: by 2002:a63:798a:: with SMTP id u132mr17648380pgc.203.1584872859132;
- Sun, 22 Mar 2020 03:27:39 -0700 (PDT)
+        bh=FTXhdL097mlQS8O83uIhN8J/RXoDYEHu/eJEovfEf50=;
+        b=Fco+LUH6OA/v1yGml9pa66cI0L0IKm5kLj5EMMzekG53sq6JBstahZcWS8pALaMY6b
+         SkODBaYQ++pJlU6LtwU9nwLL9y8E0L2RXGVHAOymID0RiQ5mkAIzxdBHu0cZupMm8h8d
+         KNNBmPZqDC2mQCbazXdvfyZt3q5aVNarKiLJo+3kBGx8v2Z5tEF7cxkbOQwxb+wjZtJq
+         VlMMTzj0wfXazI7gLEqUu+INHCEBhQDfhyURRNMOudfgBHmop9anDs6MH0Te8zqZkSdQ
+         uzki6nQXmxUxCXM5tWlhUc3/tFIkvggFSOb1ebRMWsx0DApWrw9/vbC6ZDbtZAt0MKsP
+         yGBQ==
+X-Gm-Message-State: ANhLgQ0PRiflCOAEoM5+BvmRa6OQSkD2p6MD9mJVaFE0GczZwqDmMsEb
+        VG3QTiF0sTn3+dP+KaVmEfUp9KG7Hscg+ntWtSs=
+X-Google-Smtp-Source: ADFU+vu/NzJaf+DFmVD2TpaRkf1INuqzH/WyAn2qxOgwW62B7hPcNFfvFj0veIfxEP6emXobsGKYMCdAzXzT7wU9yW8=
+X-Received: by 2002:a17:902:54f:: with SMTP id 73mr16624130plf.255.1584873951235;
+ Sun, 22 Mar 2020 03:45:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <5e723666.1c69fb81.3545b.79c3@mx.google.com> <20200322002542.GA2826015@smile.fi.intel.com>
- <5e77017a.1c69fb81.dc341.8ab9@mx.google.com>
-In-Reply-To: <5e77017a.1c69fb81.dc341.8ab9@mx.google.com>
+References: <20200321085315.11030-1-alexandru.ardelean@analog.com>
+ <20200321085315.11030-6-alexandru.ardelean@analog.com> <CAHp75VecnornqckmG_WgN-V9A1VSQfRT85TxFzwHgaLw9dAHeA@mail.gmail.com>
+ <979ef870a4f0935e41e95e7759847eba8bd0407c.camel@analog.com>
+In-Reply-To: <979ef870a4f0935e41e95e7759847eba8bd0407c.camel@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 22 Mar 2020 12:27:27 +0200
-Message-ID: <CAHp75VddtJs1ZCk1XAZ2WJLhWQDcVwiiN5gDpK9oYPEOS=c_ZQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: gyro: adis16136: use scnprintf instead of snprintf
-To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>, dragos.bogdan@analog.com,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>
+Date:   Sun, 22 Mar 2020 12:45:39 +0200
+Message-ID: <CAHp75Vdna2+txY=w87n+SWE3x3FYJLeMjYbYa6V-co3z0mYx_g@mail.gmail.com>
+Subject: Re: [PATCH v11 5/8] iio: adc: adi-axi-adc: add support for AXI ADC IP core
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
+        Kees Cook <keescook@chromium.org>
+Cc:     "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Grozav, Andrei" <Andrei.Grozav@analog.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "Nagy, Laszlo" <Laszlo.Nagy@analog.com>,
+        "Csomortani, Istvan" <Istvan.Csomortani@analog.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        "Costina, Adrian" <Adrian.Costina@analog.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Mar 22, 2020 at 8:11 AM Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
++Cc Kees (see below about allocation size checks)
+
+On Sun, Mar 22, 2020 at 11:36 AM Ardelean, Alexandru
+<alexandru.Ardelean@analog.com> wrote:
+> On Sat, 2020-03-21 at 23:38 +0200, Andy Shevchenko wrote:
+> > On Sat, Mar 21, 2020 at 10:55 AM Alexandru Ardelean
+> > <alexandru.ardelean@analog.com> wrote:
+
+...
+
+> > > Link: https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> >
 >
-> On Sun, Mar 22, 2020 at 02:25:42AM +0200, Andy Shevchenko wrote:
-> > On Wed, Mar 18, 2020 at 08:25:22PM +0530, Rohit Sarkar wrote:
-> > > scnprintf returns the actual number of bytes written into the buffer as
-> > > opposed to snprintf which returns the number of bytes that would have
-> > > been written if the buffer was big enough. Using the output of snprintf
-> > > may lead to difficult to detect bugs.
-> >
-> > Nice. Have you investigate the code?
-> >
-> > > @@ -96,7 +96,7 @@ static ssize_t adis16136_show_serial(struct file *file,
-> > >     if (ret)
-> > >             return ret;
-> > >
-> > > -   len = snprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
-> > > +   len = scnprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
-> > >             lot3, serial);
-> > >
-> > >     return simple_read_from_buffer(userbuf, count, ppos, buf, len);
-> >
-> > The buffer size is 20, the pattern size I count to 19. Do you think snprintf()
-> > can fail?
-> That might be the case, but IMO using scnprintf can be considered as a
-> best practice. There is no overhead with this change and further if the
-> pattern is changed by someone in the future they might overlook the
-> buffersize
+> i can send a v12 for this in a few days;
+>
+> > Is it tag or simple link? I would suggest not to use Link: if it's not a tag.
+>
+> simple link
+> any suggestions/alternatives?
+> i wasn't aware of conventions about this;
 
-If we cut the string above we will give wrong information to the user space.
-I think scnprintf() change is a noise and does not improve the situation anyhow.
+Use like [1] ...
+...
 
-So, when anybody modifying such code the test should be performed.
+[1]: https://...
 
+Or maybe introduce is as a tag DocLink:, for example?
+Or Datasheet: ?
+
+...
+
+> > > +static struct adi_axi_adc_client *conv_to_client(struct adi_axi_adc_conv
+> > > *conv)
+> > > +{
+> > > +       if (!conv)
+> > > +               return NULL;
+> >
+> > This is so unusual. Why do you need it?
+>
+> see [1]
+>
+> >
+> > > +       return container_of(conv, struct adi_axi_adc_client, conv);
+> > > +}
+> > > +
+> > > +void *adi_axi_adc_conv_priv(struct adi_axi_adc_conv *conv)
+> > > +{
+> > > +       struct adi_axi_adc_client *cl = conv_to_client(conv);
+> > > +
+> > > +       if (!cl)
+> > > +               return NULL;
+> >
+> > So about this.
+>
+> [1]
+> because 'adi_axi_adc_conv_priv()' (and implicitly conv_to_client()) gets called
+> from other drivers; we can't expect to be sure that conv & cl aren't NULL;
+
+In both cases it's pointer arithmetic, right? Even look at the example
+of netdev you gave below, they haven't done these (redundant) checks.
+The outcome that crashes if any will be more distinct.
+
+> > > +       return (char *)cl + ALIGN(sizeof(struct adi_axi_adc_client),
+> > > IIO_ALIGN);
+> >
+> > This all looks a bit confusing. Is it invention of offsetof() ?
+>
+> umm; tbh, it's more of a copy/clone of iio_priv()
+>
+> it's not un-common though;
+> see [and this one has more exposure]:
+> --------------------------------------------------------
+> static inline void *netdev_priv(const struct net_device *dev)
+> {
+>         return (char *)dev + ALIGN(sizeof(struct net_device), NETDEV_ALIGN);
+> }
+> --------------------------------------------------------
+
+Good point.
+
+> > > +}
+
+...
+
+> > > +static struct adi_axi_adc_conv *adi_axi_adc_conv_register(struct device
+> > > *dev,
+> > > +                                                         int sizeof_priv)
+> > > +{
+> > > +       struct adi_axi_adc_client *cl;
+> > > +       size_t alloc_size;
+> > > +
+> > > +       alloc_size = sizeof(struct adi_axi_adc_client);
+> > > +       if (sizeof_priv) {
+> > > +               alloc_size = ALIGN(alloc_size, IIO_ALIGN);
+> > > +               alloc_size += sizeof_priv;
+> > > +       }
+> > > +       alloc_size += IIO_ALIGN - 1;
+> >
+> > Have you looked at linux/overflow.h?
+>
+> i did now;
+> any hints where i should look closer?
+
+It seems it lacks of this kind of allocation size checks... Perhaps add one?
+Kees, what do you think?
+
+> > > +       cl = kzalloc(alloc_size, GFP_KERNEL);
+> > > +       if (!cl)
+> > > +               return ERR_PTR(-ENOMEM);
+
+...
+
+> > > +static void adi_axi_adc_conv_unregister(struct adi_axi_adc_conv *conv)
+> > > +{
+> > > +       struct adi_axi_adc_client *cl = conv_to_client(conv);
+> > > +
+> > > +       if (!cl)
+> > > +               return;
+> >
+> > When is this possible?
+>
+> good point; it isn't;
+> it's a left-over from when adi_axi_adc_conv_unregister() was exported
+> still, i wouldn't mind leaving it [for paranoia], if there isn't a strong
+> opinion to remove it;
+
+I think it makes code dirty (too much protective programming). We have
+a lot places where we can shoot our feet, but at least not hiding the
+issue is a benefit in my opinion.
+
+...
+
+
+
+> > > +static struct attribute *adi_axi_adc_attributes[] = {
+> > > +       ADI_AXI_ATTR(SCALE_AVAIL, in_voltage_scale_available),
+> > > +       NULL,
+> >
+> > Terminators good w/o comma.
+>
+> i don't feel strongly pro/against
+> sure
+
+There is a rationale behind this. If there is a weird case of adding
+entry behind the terminator, you will see it immediately at compile
+time (consider automatic rebase).
+
+> > > +};
+> >
+> > ...
+> >
+> > > +/* Match table for of_platform binding */
+> > > +static const struct of_device_id adi_axi_adc_of_match[] = {
+> > > +       { .compatible = "adi,axi-adc-10.0.a", .data =
+> > > &adi_axi_adc_10_0_a_info },
+> > > +       { /* end of list */ },
+> >
+> > Ditto.
+
+Ditto.
+
+> > > +};
+
+...
+
+> > > +       if (!dev->of_node) {
+> > > +               dev_err(dev, "DT node is null\n");
+> > > +               return ERR_PTR(-ENODEV);
+> > > +       }
+
+I guess this check is redundant since following OF calls will fail anyway.
+
+> > > +
+> > > +       id = of_match_node(adi_axi_adc_of_match, dev->of_node);
+> >
+> > You may use this from struct driver and move the table after this function.
+>
+>
+> right; it didn't occur to me, since i was already using
+> of_device_get_match_data() in ad9467
+
+Even better. But see above note.
+
+> > > +       if (!id)
+> > > +               return ERR_PTR(-ENODEV);
 
 -- 
 With Best Regards,

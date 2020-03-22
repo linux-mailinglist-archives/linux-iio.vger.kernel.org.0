@@ -2,41 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B2E18EAFD
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 18:47:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1A5C18EB02
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 18:49:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725985AbgCVRrM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 13:47:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53286 "EHLO mail.kernel.org"
+        id S1726664AbgCVRtb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 13:49:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58488 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725972AbgCVRrM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 22 Mar 2020 13:47:12 -0400
+        id S1726502AbgCVRtb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Mar 2020 13:49:31 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7CA5E206C3;
-        Sun, 22 Mar 2020 17:47:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 626F6206C3;
+        Sun, 22 Mar 2020 17:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584899230;
-        bh=/Sfx35/lbxSEwz+oNvhZACwi9r0RaxI9wbsCKzXEgvM=;
+        s=default; t=1584899369;
+        bh=xWZ+9Hk+7CmkAXkMWRgHpCdKK6RUdKjXx/cD4FrL7K4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Y8XcOmYYFctDFQpBztaiNYdAvGH0JM1GOVFTh/PzMd5imG5l4HehDrMzs2cslLjaG
-         E26Nv6+XegCFzNvhVY7ts1mXSXAjNUOaBDY90iNUSDVMMeXgJLWVC5WDF07XMGz10w
-         VGpVBny0/eJXv01SL2mRgkB7//BqMFVzU/VAvbWo=
-Date:   Sun, 22 Mar 2020 17:47:04 +0000
+        b=B7Ab9FEgsu65DVMG5HmZvjtHtghllBi8eLu2NGLH87vJVYav7tABqLUT3hG7XoHms
+         1C6phC1l1DGdo5Um4b8JQ5S1iDAJ46eEjTVipVsOBbWgUJIjVYxGXOjoivotmCo4VQ
+         Qnk9PA2wKv+MMl852uSHEr29m1VdI5rwF5NdPqs0=
+Date:   Sun, 22 Mar 2020 17:49:24 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     linux-iio@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net
-Subject: Re: [PATCH v3] iio: accel: Add support for the Bosch-Sensortec
- BMI088
-Message-ID: <20200322174704.2cd84baf@archlinux>
-In-Reply-To: <20200319154842.1950-1-mike.looijmans@topic.nl>
-References: <20200316073208.19715-1-mike.looijmans@topic.nl>
-        <20200315120238.18c10af0@archlinux>
-        <20200313140415.20266-1-mike.looijmans@topic.nl>
-        <46bec9b8-28ee-6fd3-f615-2b8db43626aa@metafoo.de>
-        <20200319154842.1950-1-mike.looijmans@topic.nl>
+To:     saravanan sekar <sravanhome@gmail.com>
+Cc:     lee.jones@linaro.org, robh+dt@kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] power: supply: Add support for mps mp2629
+ battery charger
+Message-ID: <20200322174924.7c4120d5@archlinux>
+In-Reply-To: <0d629253-ee3f-c32b-d5e6-80d193b2b8df@gmail.com>
+References: <20200315000013.4440-1-sravanhome@gmail.com>
+        <20200315000013.4440-5-sravanhome@gmail.com>
+        <20200315104503.0e98c923@archlinux>
+        <0d629253-ee3f-c32b-d5e6-80d193b2b8df@gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,893 +47,806 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 19 Mar 2020 16:48:42 +0100
-Mike Looijmans <mike.looijmans@topic.nl> wrote:
+On Sun, 15 Mar 2020 22:29:39 +0100
+saravanan sekar <sravanhome@gmail.com> wrote:
 
-> The BMI088 is a combined module with both accelerometer and gyroscope.
-> This adds the accelerometer driver support for the SPI interface.
-> The gyroscope part is already supported by the BMG160 driver.
+> Hi Jonathan,
 > 
-> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
-
-Hi Mike,
-
-Please don't post each version as a reply to the previous version.
-It can nest very deeply and get very confusing.
-
-New thread for each version.  We can use the naming to find the
-previous ones if needed.
-
-I don't have much to add to what Andy found.  However,
-please make sure you are consistent on checking return values
-form spi accesses.  There are a few random ones in here
-that just get ignored.
-
-That's kind of find in remove paths etc as no way of really reporting
-the error, but there are a few normal paths in here as well.
-
-Looks pretty good.
-
-Jonathan
-
-> ---
-> v2: Remove unused typedefs and variables
->     Fix error return when iio_device_register fails
-> v3: Processed comments from Jonathan Cameron and Lars-Peter Clausen
->     implement runtime PM (tested by code tracing) and sleep
->     fix scale and offset factors for accel and temperature and
->     return raw values instead of pre-scaled ones
->     Use iio_device_{claim,release}_direct_mode
->     Remove unused code and structs
->     Use a cache-aligned buffer for bulk read
->     Configure and enable caching register values    
+> On 15/03/20 11:45 am, Jonathan Cameron wrote:
+> > On Sun, 15 Mar 2020 01:00:12 +0100
+> > Saravanan Sekar <sravanhome@gmail.com> wrote:
+> >  
+> >> The mp2629 provides switching-mode battery charge management for
+> >> single-cell Li-ion or Li-polymer battery. Driver supports the
+> >> access/control input source and battery charging parameters.
+> >>
+> >> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>  
+> > Hi Saravanan.
+> >
+> > Just to play devils advocate, are the ADC channels on this device actually
+> > usable for anything other than power supply control?
+> >
+> > If not, what is the benefit in exposing them at all to IIO and going through
+> > the dance of having an MFD?  As far as I'm concerned its perfectly acceptable
+> > to have ADC channels and handling embedded directly in a power supply driver
+> > if that's all they are for.
+> >
+> > Things get a lot messier when we have general purpose ADC channels that might
+> > be used for battery monitoring or a device that provides some AUX channels.
+> > As far as I can tell (can't get to the data sheet right now as waiting for
+> > account confirmation), this isn't true here.  They are internal measurements
+> > of the power supply and battery charging outputs.
+> >
+> > My initial impression is you would be better off with a monolithic power
+> > supply driver combining the 3 parts you currently have and not exposing
+> > IIO interfaces at all.  
 > 
->  drivers/iio/accel/Kconfig             |  17 +
->  drivers/iio/accel/Makefile            |   2 +
->  drivers/iio/accel/bmi088-accel-core.c | 671 ++++++++++++++++++++++++++
->  drivers/iio/accel/bmi088-accel-spi.c  |  85 ++++
->  drivers/iio/accel/bmi088-accel.h      |  12 +
->  5 files changed, 787 insertions(+)
->  create mode 100644 drivers/iio/accel/bmi088-accel-core.c
->  create mode 100644 drivers/iio/accel/bmi088-accel-spi.c
->  create mode 100644 drivers/iio/accel/bmi088-accel.h
+> The basic idea is to isolate ADC reading from charger control separately and
+
+That can be done structurally within one driver...
+
 > 
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index 5d91a6dda894..7ed9c82b731b 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -151,6 +151,23 @@ config BMC150_ACCEL_SPI
->  	tristate
->  	select REGMAP_SPI
->  
-> +config BMI088_ACCEL
-> +	tristate "Bosch BMI088 Accelerometer Driver"
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
-> +	select REGMAP
-> +	select BMI088_ACCEL_SPI
-> +	help
-> +	  Say yes here to build support for the Bosch BMI088 accelerometer.
-> +
-> +	  This is a combo module with both accelerometer and gyroscope.
-> +	  This driver is only implementing accelerometer part, which has
-> +	  its own address and register map.
-> +
-> +config BMI088_ACCEL_SPI
-> +	tristate
-> +	select REGMAP_SPI
-> +
->  config DA280
->  	tristate "MiraMEMS DA280 3-axis 14-bit digital accelerometer driver"
->  	depends on I2C
-> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
-> index 3a051cf37f40..f44613103ae5 100644
-> --- a/drivers/iio/accel/Makefile
-> +++ b/drivers/iio/accel/Makefile
-> @@ -19,6 +19,8 @@ obj-$(CONFIG_BMA400_I2C) += bma400_i2c.o
->  obj-$(CONFIG_BMC150_ACCEL) += bmc150-accel-core.o
->  obj-$(CONFIG_BMC150_ACCEL_I2C) += bmc150-accel-i2c.o
->  obj-$(CONFIG_BMC150_ACCEL_SPI) += bmc150-accel-spi.o
-> +obj-$(CONFIG_BMI088_ACCEL) += bmi088-accel-core.o
-> +obj-$(CONFIG_BMI088_ACCEL_SPI) += bmi088-accel-spi.o
->  obj-$(CONFIG_DA280)	+= da280.o
->  obj-$(CONFIG_DA311)	+= da311.o
->  obj-$(CONFIG_DMARD06)	+= dmard06.o
-> diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
-> new file mode 100644
-> index 000000000000..b1e496f1389d
-> --- /dev/null
-> +++ b/drivers/iio/accel/bmi088-accel-core.c
-> @@ -0,0 +1,671 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
-> + *  - BMI088
-> + *
-> + * Copyright (c) 2018-2020, Topic Embedded Products
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/delay.h>
-> +#include <linux/slab.h>
-> +#include <linux/acpi.h>
-> +#include <linux/pm.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/events.h>
-> +#include <linux/iio/trigger.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/regmap.h>
-> +#include <asm/unaligned.h>
-> +
-> +#include "bmi088-accel.h"
-> +
-> +#define BMI088_ACCEL_DRV_NAME	"bmi088_accel"
-> +#define BMI088_ACCEL_IRQ_NAME	"bmi088_accel_event"
-> +
-> +#define BMI088_ACCEL_REG_CHIP_ID			0x00
-> +#define BMI088_ACCEL_REG_ERROR				0x02
-> +
-> +#define BMI088_ACCEL_REG_INT_STATUS			0x1D
-> +#define BMI088_ACCEL_INT_STATUS_BIT_DRDY		BIT(7)
-> +
-> +#define BMI088_ACCEL_REG_RESET				0x7E
-> +#define BMI088_ACCEL_RESET_VAL				0xB6
-> +
-> +#define BMI088_ACCEL_REG_PWR_CTRL			0x7D
-> +#define BMI088_ACCEL_REG_PWR_CONF			0x7C
-> +
-> +#define BMI088_ACCEL_REG_INT_MAP_DATA			0x58
-> +#define BMI088_ACCEL_INT_MAP_DATA_BIT_INT1_DRDY		BIT(2)
-> +#define BMI088_ACCEL_INT_MAP_DATA_BIT_INT2_FWM		BIT(5)
-> +
-> +#define BMI088_ACCEL_REG_INT1_IO_CONF			0x53
-> +#define BMI088_ACCEL_INT1_IO_CONF_BIT_ENABLE_OUT	BIT(3)
-> +#define BMI088_ACCEL_INT1_IO_CONF_BIT_LVL		BIT(1)
-> +
-> +#define BMI088_ACCEL_REG_INT2_IO_CONF			0x54
-> +#define BMI088_ACCEL_INT2_IO_CONF_BIT_ENABLE_OUT	BIT(3)
-> +#define BMI088_ACCEL_INT2_IO_CONF_BIT_LVL		BIT(1)
-> +
-> +#define BMI088_ACCEL_REG_ACC_CONF			0x40
-> +#define BMI088_ACCEL_REG_ACC_RANGE			0x41
-> +#define BMI088_ACCEL_RANGE_3G				0x00
-> +#define BMI088_ACCEL_RANGE_6G				0x01
-> +#define BMI088_ACCEL_RANGE_12G				0x02
-> +#define BMI088_ACCEL_RANGE_24G				0x03
-> +
-> +#define BMI088_ACCEL_REG_TEMP				0x22
-> +#define BMI088_ACCEL_TEMP_UNIT				125
-> +#define BMI088_ACCEL_TEMP_OFFSET			23000
-> +
-> +#define BMI088_ACCEL_REG_XOUT_L				0x12
-> +#define BMI088_ACCEL_AXIS_TO_REG(axis) \
-> +	(BMI088_ACCEL_REG_XOUT_L + (axis * 2))
-> +
-> +#define BMI088_ACCEL_MAX_STARTUP_TIME_MS		1
-> +#define BMI088_AUTO_SUSPEND_DELAY_MS			2000
-> +
-> +#define BMI088_ACCEL_REG_FIFO_STATUS			0x0E
-> +#define BMI088_ACCEL_REG_FIFO_CONFIG0			0x48
-> +#define BMI088_ACCEL_REG_FIFO_CONFIG1			0x49
-> +#define BMI088_ACCEL_REG_FIFO_DATA			0x3F
-> +#define BMI088_ACCEL_FIFO_LENGTH			100
-> +
-> +#define BMI088_ACCEL_FIFO_MODE_FIFO			0x40
-> +#define BMI088_ACCEL_FIFO_MODE_STREAM			0x80
-> +
-> +enum bmi088_accel_axis {
-> +	AXIS_X,
-> +	AXIS_Y,
-> +	AXIS_Z,
-> +	AXIS_MAX,
-> +};
-> +
-> +enum bmi088_power_modes {
-> +	BMI088_ACCEL_MODE_ACTIVE,
-> +	BMI088_ACCEL_MODE_SUSPEND,
-> +};
-> +
-> +/* Available OSR (over sampling rate) sets the 3dB cut-off frequency */
-> +enum bmi088_osr_modes {
-> +	BMI088_ACCEL_MODE_OSR_NORMAL = 0xA,
-> +	BMI088_ACCEL_MODE_OSR_2 = 0x9,
-> +	BMI088_ACCEL_MODE_OSR_4 = 0x8,
-> +};
-> +
-> +/* Available ODR (output data rates) in Hz */
-> +enum bmi088_odr_modes {
-> +	BMI088_ACCEL_MODE_ODR_12_5 = 0x5,
-> +	BMI088_ACCEL_MODE_ODR_25 = 0x6,
-> +	BMI088_ACCEL_MODE_ODR_50 = 0x7,
-> +	BMI088_ACCEL_MODE_ODR_100 = 0x8,
-> +	BMI088_ACCEL_MODE_ODR_200 = 0x9,
-> +	BMI088_ACCEL_MODE_ODR_400 = 0xa,
-> +	BMI088_ACCEL_MODE_ODR_800 = 0xb,
-> +	BMI088_ACCEL_MODE_ODR_1600 = 0xc,
-> +};
-> +
-> +struct bmi088_scale_info {
-> +	int scale;
-> +	u8 reg_range;
-> +};
-> +
-> +struct bmi088_accel_chip_info {
-> +	const char *name;
-> +	u8 chip_id;
-> +	const struct iio_chan_spec *channels;
-> +	int num_channels;
-> +};
-> +
-> +struct bmi088_accel_data {
-> +	struct regmap *regmap;
-> +	struct mutex mutex;
-> +	const struct bmi088_accel_chip_info *chip_info;
-> +	u8 buffer[2] ____cacheline_aligned;
-> +};
-> +
-> +static const struct regmap_range bmi088_volatile_ranges[] = {
-> +	/* All registers below 0x40 are volatile, except the CHIP ID. */
-> +	regmap_reg_range(BMI088_ACCEL_REG_ERROR, 0x3f),
-> +	/* Mark the RESET as volatile too, it is self-clearing */
-> +	regmap_reg_range(BMI088_ACCEL_REG_RESET, BMI088_ACCEL_REG_RESET),
-> +};
-> +
-> +static const struct regmap_access_table bmi088_volatile_table = {
-> +	.yes_ranges     = bmi088_volatile_ranges,
-> +	.n_yes_ranges   = ARRAY_SIZE(bmi088_volatile_ranges),
-> +};
-> +
-> +const struct regmap_config bmi088_regmap_conf = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	.max_register = 0x7E,
-> +	.volatile_table = &bmi088_volatile_table,
-> +	.cache_type = REGCACHE_RBTREE,
-> +};
-> +EXPORT_SYMBOL_GPL(bmi088_regmap_conf);
-> +
-> +
-> +#ifdef CONFIG_PM
-> +static int bmi088_accel_set_power_state(struct bmi088_accel_data *data,
-> +	bool on)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
-> +
-> +	if (on) {
-> +		ret = pm_runtime_get_sync(dev);
-> +	} else {
-> +		pm_runtime_mark_last_busy(dev);
-> +		ret = pm_runtime_put_autosuspend(dev);
-> +	}
-> +
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed: %s(%d)\n", __func__, on);
-> +		if (on)
-> +			pm_runtime_put_noidle(dev);
-> +
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +#else
-> +static int bmi088_accel_set_power_state(struct bmi088_accel_data *data,
-> +	bool on)
-> +{
-> +	return 0;
-> +}
-> +#endif
-> +
-> +static int bmi088_accel_enable(struct bmi088_accel_data *data,
-> +				bool on_off)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
-> +
-> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CTRL,
-> +				on_off ? 0x4 : 0x0);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Error writing ACC_PWR_CTRL reg\n");
-> +		return ret;
-> +	}
-> +	/* Datasheet recommends to wait at least 5ms before communication */
-> +	usleep_range(5000, 6000);
-> +
-> +	return 0;
-> +}
-> +
-> +/* In suspend mode, only the accelerometer is powered down. */
-> +static int bmi088_accel_set_mode(struct bmi088_accel_data *data,
-> +				enum bmi088_power_modes mode)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
-> +
-> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CONF,
-> +			   mode == BMI088_ACCEL_MODE_SUSPEND ? 0x3 : 0x0);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Error writing ACCEL_PWR_CONF reg\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int bmi088_accel_set_bw(struct bmi088_accel_data *data,
-> +				enum bmi088_odr_modes odr_mode,
-> +				enum bmi088_osr_modes osr_mode)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
-> +	u8 value = (osr_mode << 4) | (odr_mode & 0xF);
-> +
-> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_ACC_CONF, value);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Error writing ACCEL_PWR_CONF reg\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int bmi088_accel_get_sample_freq(struct bmi088_accel_data *data,
-> +					int* val, int *val2)
-> +{
-> +	unsigned int value;
-> +	int ret;
-> +
-> +	ret = regmap_read(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
-> +			  &value);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	value &= 0xf; /* ODR in lower 4 bits */
-> +	if (value == BMI088_ACCEL_MODE_ODR_12_5) {
-> +		*val = 12;
-> +		*val2 = 500000;
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
-> +	} else {
-> +		*val = 25 << (value - BMI088_ACCEL_MODE_ODR_25);
-> +		*val2 = 0;
-> +		ret = IIO_VAL_INT;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int bmi088_accel_set_sample_freq(struct bmi088_accel_data *data, int val)
-> +{
-> +	unsigned int value = BMI088_ACCEL_MODE_ODR_1600;
-> +	unsigned int freq = 1600;
-> +	int ret;
-> +
-> +	if (val < 12 || val > 1600)
-> +		return -EINVAL;
-> +
-> +	while (freq > val && value > BMI088_ACCEL_MODE_ODR_12_5) {
-> +		--value;
-> +		freq >>= 1;
-> +	}
-> +
-> +	ret = regmap_update_bits(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
-> +				 0x0f, value);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static int bmi088_accel_get_temp(struct bmi088_accel_data *data, int *val)
-> +{
-> +	int ret;
-> +	__s16 temp;
-> +
-> +	mutex_lock(&data->mutex);
-> +
-> +	ret = regmap_bulk_read(data->regmap, BMI088_ACCEL_REG_TEMP,
-> +			       &data->buffer, 2);
-> +	temp = get_unaligned_be16(data->buffer);
-> +
-> +	mutex_unlock(&data->mutex);
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val = temp >> 5;
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static int bmi088_accel_get_axis(struct bmi088_accel_data *data,
-> +				 struct iio_chan_spec const *chan,
-> +				 int *val)
-> +{
-> +	int ret;
-> +	__s16 raw_val;
-> +
-> +	mutex_lock(&data->mutex);
-> +
-> +	ret = bmi088_accel_set_power_state(data, true);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = regmap_bulk_read(data->regmap,
-> +			       BMI088_ACCEL_AXIS_TO_REG(chan->scan_index),
-> +			       data->buffer, 2);
-> +	raw_val = get_unaligned_le16(data->buffer);
-> +
-> +	bmi088_accel_set_power_state(data, false);
-> +
-> +	mutex_unlock(&data->mutex);
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val = raw_val;
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
-> +				 struct iio_chan_spec const *chan,
-> +				 int *val, int *val2, long mask)
-> +{
-> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		switch (chan->type) {
-> +		case IIO_TEMP:
-> +			return bmi088_accel_get_temp(data, val);
-> +		case IIO_ACCEL:
-> +			ret = iio_device_claim_direct_mode(indio_dev);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			ret = bmi088_accel_get_axis(data, chan, val);
-> +			iio_device_release_direct_mode(indio_dev);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		switch (chan->type) {
-> +		case IIO_TEMP:
-> +			/* Offset applies before scale */
-> +			*val = BMI088_ACCEL_TEMP_OFFSET/BMI088_ACCEL_TEMP_UNIT;
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 0;
-> +		switch (chan->type) {
-> +		case IIO_TEMP:
-> +			/* 0.125 degrees per LSB */
-> +			*val = BMI088_ACCEL_TEMP_UNIT;
-> +			return IIO_VAL_INT;
-> +		case IIO_ACCEL:
-> +		{
-> +			ret = regmap_read(data->regmap,
-> +					  BMI088_ACCEL_REG_ACC_RANGE, val);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			*val2 =  15 - (*val & 0x3);
-> +			*val = 3 * 980;
-> +
-> +			return IIO_VAL_FRACTIONAL_LOG2;
-> +		}
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		mutex_lock(&data->mutex);
-> +		ret = bmi088_accel_get_sample_freq(data, val, val2);
-> +		mutex_unlock(&data->mutex);
-> +		return ret;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
-> +				  struct iio_chan_spec const *chan,
-> +				  int val, int val2, long mask)
-> +{
-> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		mutex_lock(&data->mutex);
-> +		ret = bmi088_accel_set_sample_freq(data, val);
-> +		mutex_unlock(&data->mutex);
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("12.5 25 50 100 200 400 800 1600");
-> +
-> +static struct attribute *bmi088_accel_attributes[] = {
-> +	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
-> +	NULL,
-> +};
-> +
-> +static const struct attribute_group bmi088_accel_attrs_group = {
-> +	.attrs = bmi088_accel_attributes,
-> +};
-> +
-> +#define BMI088_ACCEL_CHANNEL(_axis) {					\
-> +	.type = IIO_ACCEL,						\
-> +	.modified = 1,							\
-> +	.channel2 = IIO_MOD_##_axis,					\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
-> +				BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
-> +	.scan_index = AXIS_##_axis,					\
-> +}
-> +
-> +static const struct iio_chan_spec bmi088_accel_channels[] = {
-> +	{
-> +		.type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
-> +				      BIT(IIO_CHAN_INFO_OFFSET),
-> +		.scan_index = -1,
-> +	},
-> +	BMI088_ACCEL_CHANNEL(X),
-> +	BMI088_ACCEL_CHANNEL(Y),
-> +	BMI088_ACCEL_CHANNEL(Z),
-> +	IIO_CHAN_SOFT_TIMESTAMP(3),
-> +};
-> +
-> +static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
-> +	[0] = {
-> +		.name = "bmi088a",
-> +		.chip_id = 0x1E,
-> +		.channels = bmi088_accel_channels,
-> +		.num_channels = ARRAY_SIZE(bmi088_accel_channels),
-> +	},
-> +};
-> +
-> +static const struct iio_info bmi088_accel_info = {
-> +	.attrs		= &bmi088_accel_attrs_group,
-> +	.read_raw	= bmi088_accel_read_raw,
-> +	.write_raw	= bmi088_accel_write_raw,
-> +};
-> +
-> +static const unsigned long bmi088_accel_scan_masks[] = {
-> +				BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
-> +				0};
-> +
-> +
-> +static int bmi088_accel_chip_init(struct bmi088_accel_data *data)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret, i;
-> +	unsigned int val;
-> +
-> +	/* Do a dummy read to enable SPI interface, won't harm I2C */
-> +	regmap_read(data->regmap, BMI088_ACCEL_REG_INT_STATUS, &val);
-> +
-> +	/*
-> +	 * Reset chip to get it in a known good state. A delay of 1ms after
-> +	 * reset is required according to the data sheet
-> +	 */
-> +	regmap_write(data->regmap, BMI088_ACCEL_REG_RESET,
-> +		     BMI088_ACCEL_RESET_VAL);
-
-Be consistent on error checking.  They should all be checked unless there is
-no way of reporting the error onwards.
-
-> +	usleep_range(1000, 2000);
-> +
-> +	/* Do a dummy read again after a reset to enable the SPI interface */
-> +	regmap_read(data->regmap, BMI088_ACCEL_REG_INT_STATUS, &val);
-> +
-> +	/* Read chip ID */
-> +	ret = regmap_read(data->regmap, BMI088_ACCEL_REG_CHIP_ID, &val);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Error: Reading chip id\n");
-> +		return ret;
-> +	}
-> +
-> +	/* Validate chip ID */
-> +	for (i = 0; i < ARRAY_SIZE(bmi088_accel_chip_info_tbl); i++) {
-> +		if (bmi088_accel_chip_info_tbl[i].chip_id == val) {
-> +			data->chip_info = &bmi088_accel_chip_info_tbl[i];
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (!data->chip_info) {
-> +		dev_err(dev, "Invalid chip %x\n", val);
-> +		return -ENODEV;
-> +	}
-> +
-> +	/* Enable accelerometer after reset */
-> +	ret = bmi088_accel_enable(data, true);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set sampling frequency and bandwidth defaults */
-> +	ret = bmi088_accel_set_bw(data, BMI088_ACCEL_MODE_ODR_25,
-> +				  BMI088_ACCEL_MODE_OSR_NORMAL);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set Default Range */
-> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_ACC_RANGE,
-> +			   BMI088_ACCEL_RANGE_6G);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-Andy pointed this out, but regmap_read / write always uses negative or
-zero.  Cleaning the checks up to be if (ret) is neater and
-lets you just do
-
-	return regmap_write(...)
-for the last call here.
-
-> +}
-> +
-> +int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap,
-> +	int irq, const char *name, bool block_supported)
-> +{
-> +	struct bmi088_accel_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	dev_set_drvdata(dev, indio_dev);
-> +
-> +	data->regmap = regmap;
-> +
-> +	ret = bmi088_accel_chip_init(data);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	mutex_init(&data->mutex);
-> +
-> +	indio_dev->dev.parent = dev;
-> +	indio_dev->channels = data->chip_info->channels;
-> +	indio_dev->num_channels = data->chip_info->num_channels;
-> +	indio_dev->name = name ? name : data->chip_info->name;
-> +	indio_dev->available_scan_masks = bmi088_accel_scan_masks;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &bmi088_accel_info;
-> +
-> +	ret = pm_runtime_set_active(dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	pm_runtime_enable(dev);
-> +	pm_runtime_set_autosuspend_delay(dev, BMI088_AUTO_SUSPEND_DELAY_MS);
-> +	pm_runtime_use_autosuspend(dev);
-> +
-> +	ret = iio_device_register(indio_dev);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Unable to register iio device\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(bmi088_accel_core_probe);
-> +
-> +int bmi088_accel_core_remove(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> +
-> +	iio_device_unregister(indio_dev);
-> +
-> +	pm_runtime_disable(dev);
-> +	pm_runtime_set_suspended(dev);
-> +	pm_runtime_put_noidle(dev);
-> +
-> +	mutex_lock(&data->mutex);
-> +	bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_SUSPEND);
-> +	mutex_unlock(&data->mutex);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(bmi088_accel_core_remove);
-> +
-> +/* When going into system sleep, put the chip in power down */
-> +static int __maybe_unused bmi088_accel_suspend(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> +
-> +	mutex_lock(&data->mutex);
-> +	bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_SUSPEND);
-> +	bmi088_accel_set_power_state(data, false);
-> +	mutex_unlock(&data->mutex);
-> +
-> +	return 0;
-> +}
-> +
-> +static int __maybe_unused bmi088_accel_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> +
-> +	mutex_lock(&data->mutex);
-> +	bmi088_accel_set_power_state(data, true);
-> +	bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_ACTIVE);
-> +	mutex_unlock(&data->mutex);
-> +
-> +	return 0;
-> +}
-> +
-> +/* For runtime PM put the chip in suspend mode */
-> +static int __maybe_unused bmi088_accel_runtime_suspend(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_SUSPEND);
-> +	if (ret < 0)
-> +		return -EAGAIN;
-> +
-> +	return 0;
-> +}
-> +
-> +static int __maybe_unused bmi088_accel_runtime_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_ACTIVE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	usleep_range(BMI088_ACCEL_MAX_STARTUP_TIME_MS * 1000,
-> +		BMI088_ACCEL_MAX_STARTUP_TIME_MS * 1000 * 2);
-> +
-> +	return 0;
-> +}
-> +
-> +const struct dev_pm_ops bmi088_accel_pm_ops = {
-> +	SET_SYSTEM_SLEEP_PM_OPS(bmi088_accel_suspend, bmi088_accel_resume)
-> +	SET_RUNTIME_PM_OPS(bmi088_accel_runtime_suspend,
-> +			   bmi088_accel_runtime_resume, NULL)
-> +};
-> +EXPORT_SYMBOL_GPL(bmi088_accel_pm_ops);
-> +
-> +MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
-> +MODULE_LICENSE("GPL v2");
-> +MODULE_DESCRIPTION("BMI088 accelerometer driver (core)");
-> diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
-> new file mode 100644
-> index 000000000000..4116122cbac0
-> --- /dev/null
-> +++ b/drivers/iio/accel/bmi088-accel-spi.c
-> @@ -0,0 +1,85 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * 3-axis accelerometer driver supporting following Bosch-Sensortec chips:
-> + *  - BMI088
-> + *
-> + * Copyright (c) 2018-2020, Topic Embedded Products
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/slab.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "bmi088-accel.h"
-> +
-> +int bmi088_regmap_spi_write(void *context, const void *data, size_t count)
-> +{
-> +	struct spi_device *spi = context;
-> +
-> +	/* Write register is same as generic SPI */
-> +	return spi_write(spi, data, count);
-> +}
-> +
-> +int bmi088_regmap_spi_read(void *context, const void *reg,
-> +				size_t reg_size, void *val, size_t val_size)
-> +{
-> +	struct spi_device *spi = context;
-> +	u8 addr[2];
-> +
-> +	addr[0] = *(u8 *)reg;
-> +	addr[0] |= 0x80; /* bit7 = RW = '1' */
-> +	addr[1] = 0; /* Read requires a dummy byte transfer */
-> +
-> +	return spi_write_then_read(spi, addr, sizeof(addr), val, val_size);
-> +}
-> +
-> +static struct regmap_bus bmi088_regmap_bus = {
-> +	.write = bmi088_regmap_spi_write,
-> +	.read = bmi088_regmap_spi_read,
-> +	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
-> +	.val_format_endian_default = REGMAP_ENDIAN_BIG,
-> +};
-> +
-> +static int bmi088_accel_probe(struct spi_device *spi)
-> +{
-> +	struct regmap *regmap;
-> +	const struct spi_device_id *id = spi_get_device_id(spi);
-> +
-> +	regmap = devm_regmap_init(&spi->dev, &bmi088_regmap_bus,
-> +			spi, &bmi088_regmap_conf);
-> +
-> +	if (IS_ERR(regmap)) {
-> +		dev_err(&spi->dev, "Failed to initialize spi regmap\n");
-> +		return PTR_ERR(regmap);
-> +	}
-> +
-> +	return bmi088_accel_core_probe(&spi->dev, regmap, spi->irq, id->name,
-> +				       true);
-> +}
-> +
-> +static int bmi088_accel_remove(struct spi_device *spi)
-> +{
-> +	return bmi088_accel_core_remove(&spi->dev);
-> +}
-> +
-> +static const struct spi_device_id bmi088_accel_id[] = {
-> +	{"bmi088_accel", 0},
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(spi, bmi088_accel_id);
-> +
-> +static struct spi_driver bmi088_accel_driver = {
-> +	.driver = {
-> +		.name	= "bmi088_accel_spi",
-> +		.pm	= &bmi088_accel_pm_ops,
-> +	},
-> +	.probe		= bmi088_accel_probe,
-> +	.remove		= bmi088_accel_remove,
-> +	.id_table	= bmi088_accel_id,
-> +};
-> +module_spi_driver(bmi088_accel_driver);
-> +
-> +MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
-> +MODULE_LICENSE("GPL v2");
-> +MODULE_DESCRIPTION("BMI088 accelerometer driver (SPI)");
-> diff --git a/drivers/iio/accel/bmi088-accel.h b/drivers/iio/accel/bmi088-accel.h
-> new file mode 100644
-> index 000000000000..fce6427bb7b8
-> --- /dev/null
-> +++ b/drivers/iio/accel/bmi088-accel.h
-> @@ -0,0 +1,12 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef BMI088_ACCEL_H
-> +#define BMI088_ACCEL_H
-> +
-> +extern const struct regmap_config bmi088_regmap_conf;
-> +extern const struct dev_pm_ops bmi088_accel_pm_ops;
-> +
-> +int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
-> +			    const char *name, bool block_supported);
-> +int bmi088_accel_core_remove(struct device *dev);
-> +
-> +#endif /* BMI088_ACCEL_H */
+> another reason is ADC reading of system voltage and NTC voltage (not 
+> part of current
+> 
+> patch) is not used by power supply control, which has to expose by IIO.
+> 
+This last reason is fair enough.  Makes more sense now ;)
+> 
+> Thanks,
+> Saravanan
+> 
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> >> ---
+> >>   drivers/power/supply/Kconfig          |  10 +
+> >>   drivers/power/supply/Makefile         |   1 +
+> >>   drivers/power/supply/mp2629_charger.c | 702 ++++++++++++++++++++++++++
+> >>   3 files changed, 713 insertions(+)
+> >>   create mode 100644 drivers/power/supply/mp2629_charger.c
+> >>
+> >> diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
+> >> index f3424fdce341..f45409d26d54 100644
+> >> --- a/drivers/power/supply/Kconfig
+> >> +++ b/drivers/power/supply/Kconfig
+> >> @@ -541,6 +541,16 @@ config CHARGER_MAX8998
+> >>   	  Say Y to enable support for the battery charger control sysfs and
+> >>   	  platform data of MAX8998/LP3974 PMICs.
+> >>   
+> >> +config CHARGER_MP2629
+> >> +	bool "Monolithic power system MP2629 Battery charger"
+> >> +	depends on MFD_MP2629
+> >> +	depends on MP2629_ADC
+> >> +	depends on IIO
+> >> +	help
+> >> +	  Select this option to enable support for Monolithic power system
+> >> +	  Battery charger. This driver provies Battery charger power management
+> >> +	  functions on the systems.
+> >> +
+> >>   config CHARGER_QCOM_SMBB
+> >>   	tristate "Qualcomm Switch-Mode Battery Charger and Boost"
+> >>   	depends on MFD_SPMI_PMIC || COMPILE_TEST
+> >> diff --git a/drivers/power/supply/Makefile b/drivers/power/supply/Makefile
+> >> index 6c7da920ea83..41cb64f09e49 100644
+> >> --- a/drivers/power/supply/Makefile
+> >> +++ b/drivers/power/supply/Makefile
+> >> @@ -75,6 +75,7 @@ obj-$(CONFIG_CHARGER_MAX77650)	+= max77650-charger.o
+> >>   obj-$(CONFIG_CHARGER_MAX77693)	+= max77693_charger.o
+> >>   obj-$(CONFIG_CHARGER_MAX8997)	+= max8997_charger.o
+> >>   obj-$(CONFIG_CHARGER_MAX8998)	+= max8998_charger.o
+> >> +obj-$(CONFIG_CHARGER_MP2629)	+= mp2629_charger.o
+> >>   obj-$(CONFIG_CHARGER_QCOM_SMBB)	+= qcom_smbb.o
+> >>   obj-$(CONFIG_CHARGER_BQ2415X)	+= bq2415x_charger.o
+> >>   obj-$(CONFIG_CHARGER_BQ24190)	+= bq24190_charger.o
+> >> diff --git a/drivers/power/supply/mp2629_charger.c b/drivers/power/supply/mp2629_charger.c
+> >> new file mode 100644
+> >> index 000000000000..8dab4250710f
+> >> --- /dev/null
+> >> +++ b/drivers/power/supply/mp2629_charger.c
+> >> @@ -0,0 +1,702 @@
+> >> +// SPDX-License-Identifier: GPL-2.0-or-later
+> >> +/*
+> >> + * MP2629 battery charger driver
+> >> + *
+> >> + * Copyright 2020 Monolithic Power Systems, Inc
+> >> + *
+> >> + * Author: Saravanan Sekar <sravanhome@gmail.com>
+> >> + */
+> >> +
+> >> +#include <linux/module.h>
+> >> +#include <linux/platform_device.h>
+> >> +#include <linux/of_device.h>
+> >> +#include <linux/interrupt.h>
+> >> +#include <linux/iio/consumer.h>
+> >> +#include <linux/iio/types.h>
+> >> +#include <linux/power_supply.h>
+> >> +#include <linux/workqueue.h>
+> >> +#include <linux/regmap.h>
+> >> +
+> >> +#include <linux/mfd/core.h>
+> >> +#include <linux/mfd/mp2629.h>
+> >> +
+> >> +#define MP2629_REG_INPUT_ILIM		0x00
+> >> +#define MP2629_REG_INPUT_VLIM		0x01
+> >> +#define MP2629_REG_CHARGE_CTRL		0x04
+> >> +#define MP2629_REG_CHARGE_ILIM		0x05
+> >> +#define MP2629_REG_PRECHARGE		0x06
+> >> +#define MP2629_REG_TERM_CURRENT		0x06
+> >> +#define MP2629_REG_CHARGE_VLIM		0x07
+> >> +#define MP2629_REG_TIMER_CTRL		0x08
+> >> +#define MP2629_REG_IMPEDANCE_COMP	0x09
+> >> +#define MP2629_REG_INTERRUPT		0x0b
+> >> +#define MP2629_REG_STATUS		0x0c
+> >> +#define MP2629_REG_FAULT		0x0d
+> >> +
+> >> +#define MP2629_MASK_INPUT_TYPE		0xe0
+> >> +#define MP2629_MASK_CHARGE_TYPE		0x18
+> >> +#define MP2629_MASK_CHARGE_CTRL		0x30
+> >> +#define MP2629_MASK_WDOG_CTRL		0x30
+> >> +#define MP2629_MASK_IMPEDANCE		0xf0
+> >> +
+> >> +#define MP2629_INPUTSOURCE_CHANGE	GENMASK(7, 5)
+> >> +#define MP2629_CHARGING_CHANGE		GENMASK(4, 3)
+> >> +#define MP2629_FAULT_BATTERY		BIT(3)
+> >> +#define MP2629_FAULT_THERMAL		BIT(4)
+> >> +#define MP2629_FAULT_INPUT		BIT(5)
+> >> +#define MP2629_FAULT_OTG		BIT(6)
+> >> +
+> >> +#define MP2629_MAX_BATT_CAPACITY	100
+> >> +
+> >> +#define MP2629_PROPS(_idx, _min, _max, _step)		\
+> >> +	[_idx] = {					\
+> >> +		.min	= _min,				\
+> >> +		.max	= _max,				\
+> >> +		.step	= _step,			\
+> >> +}
+> >> +
+> >> +enum mp2629_source_type {
+> >> +	MP2629_SOURCE_TYPE_NO_INPUT,
+> >> +	MP2629_SOURCE_TYPE_NON_STD,
+> >> +	MP2629_SOURCE_TYPE_SDP,
+> >> +	MP2629_SOURCE_TYPE_CDP,
+> >> +	MP2629_SOURCE_TYPE_DCP,
+> >> +	MP2629_SOURCE_TYPE_OTG = 7,
+> >> +};
+> >> +
+> >> +enum mp2629_field {
+> >> +	INPUT_ILIM,
+> >> +	INPUT_VLIM,
+> >> +	CHARGE_ILIM,
+> >> +	CHARGE_VLIM,
+> >> +	PRECHARGE,
+> >> +	TERM_CURRENT,
+> >> +};
+> >> +
+> >> +struct mp2629_charger {
+> >> +	struct mp2629_info *info;
+> >> +	struct device *dev;
+> >> +	struct work_struct charger_work;
+> >> +	int status;
+> >> +	int fault;
+> >> +
+> >> +	struct regmap_field *regmap_fields[TERM_CURRENT + 1];
+> >> +	struct mutex lock;
+> >> +	struct power_supply *usb;
+> >> +	struct power_supply *battery;
+> >> +	struct iio_channel *iiochan[MP2629_ADC_CHAN_END];
+> >> +};
+> >> +
+> >> +struct mp2629_prop {
+> >> +	int reg;
+> >> +	int mask;
+> >> +	int min;
+> >> +	int max;
+> >> +	int step;
+> >> +	int shift;
+> >> +};
+> >> +
+> >> +static enum power_supply_usb_type mp2629_usb_types[] = {
+> >> +	POWER_SUPPLY_USB_TYPE_SDP,
+> >> +	POWER_SUPPLY_USB_TYPE_DCP,
+> >> +	POWER_SUPPLY_USB_TYPE_CDP,
+> >> +	POWER_SUPPLY_USB_TYPE_PD_DRP,
+> >> +	POWER_SUPPLY_USB_TYPE_UNKNOWN
+> >> +};
+> >> +
+> >> +static enum power_supply_property mp2629_charger_usb_props[] = {
+> >> +	POWER_SUPPLY_PROP_ONLINE,
+> >> +	POWER_SUPPLY_PROP_USB_TYPE,
+> >> +	POWER_SUPPLY_PROP_VOLTAGE_NOW,
+> >> +	POWER_SUPPLY_PROP_CURRENT_NOW,
+> >> +	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+> >> +	POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT,
+> >> +};
+> >> +
+> >> +static enum power_supply_property mp2629_charger_bat_props[] = {
+> >> +	POWER_SUPPLY_PROP_STATUS,
+> >> +	POWER_SUPPLY_PROP_HEALTH,
+> >> +	POWER_SUPPLY_PROP_CHARGE_TYPE,
+> >> +	POWER_SUPPLY_PROP_VOLTAGE_NOW,
+> >> +	POWER_SUPPLY_PROP_CURRENT_NOW,
+> >> +	POWER_SUPPLY_PROP_CAPACITY,
+> >> +	POWER_SUPPLY_PROP_PRECHARGE_CURRENT,
+> >> +	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
+> >> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+> >> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
+> >> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+> >> +	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
+> >> +};
+> >> +
+> >> +static struct mp2629_prop props[] = {
+> >> +	MP2629_PROPS(INPUT_ILIM, 100000, 3250000, 50000),
+> >> +	MP2629_PROPS(INPUT_VLIM, 3800000, 5300000, 100000),
+> >> +	MP2629_PROPS(CHARGE_ILIM, 320000, 4520000, 40000),
+> >> +	MP2629_PROPS(CHARGE_VLIM, 3400000, 4670000, 10000),
+> >> +	MP2629_PROPS(PRECHARGE, 120000, 720000, 40000),
+> >> +	MP2629_PROPS(TERM_CURRENT, 80000, 680000, 40000),
+> >> +};
+> >> +
+> >> +static const struct reg_field mp2629_reg_fields[] = {
+> >> +	[INPUT_ILIM]	= REG_FIELD(MP2629_REG_INPUT_ILIM, 0, 5),
+> >> +	[INPUT_VLIM]	= REG_FIELD(MP2629_REG_INPUT_VLIM, 0, 3),
+> >> +	[CHARGE_ILIM]	= REG_FIELD(MP2629_REG_CHARGE_ILIM, 0, 6),
+> >> +	[CHARGE_VLIM]	= REG_FIELD(MP2629_REG_CHARGE_VLIM, 1, 7),
+> >> +	[PRECHARGE]	= REG_FIELD(MP2629_REG_PRECHARGE, 4, 7),
+> >> +	[TERM_CURRENT]	= REG_FIELD(MP2629_REG_TERM_CURRENT, 0, 3),
+> >> +};
+> >> +
+> >> +static char *adc_chan_name[] = {
+> >> +	"mp2629-batt-volt",
+> >> +	"mp2629-system-volt",
+> >> +	"mp2629-input-volt",
+> >> +	"mp2629-batt-current",
+> >> +	"mp2629-input-current",
+> >> +};
+> >> +
+> >> +static int mp2629_read_adc(struct mp2629_charger *charger,
+> >> +			   enum mp2629_adc_chan ch,
+> >> +			   union power_supply_propval *val)
+> >> +{
+> >> +	int ret;
+> >> +	int chval;
+> >> +
+> >> +	ret = iio_read_channel_processed(charger->iiochan[ch], &chval);
+> >> +	if (ret < 0)
+> >> +		return ret;
+> >> +
+> >> +	val->intval = chval * 1000;
+> >> +
+> >> +	return 0;
+> >> +}
+> >> +
+> >> +static int mp2629_get_prop(struct mp2629_charger *charger,
+> >> +			   enum mp2629_field fld,
+> >> +			   union power_supply_propval *val)
+> >> +{
+> >> +	int ret;
+> >> +	unsigned int rval;
+> >> +
+> >> +	ret = regmap_field_read(charger->regmap_fields[fld], &rval);
+> >> +	if (!ret)
+> >> +		val->intval = (rval * props[fld].step) + props[fld].min;
+> >> +
+> >> +	return ret;
+> >> +}
+> >> +
+> >> +static int mp2629_set_prop(struct mp2629_charger *charger,
+> >> +			   enum mp2629_field fld,
+> >> +			   const union power_supply_propval *val)
+> >> +{
+> >> +	unsigned int rval;
+> >> +
+> >> +	if (val->intval < props[fld].min || val->intval > props[fld].max)
+> >> +		return -EINVAL;
+> >> +
+> >> +	rval = (val->intval - props[fld].min) / props[fld].step;
+> >> +	return regmap_field_write(charger->regmap_fields[fld], rval);
+> >> +}
+> >> +
+> >> +static int mp2629_get_battery_capacity(struct mp2629_charger *charger,
+> >> +				       union power_supply_propval *val)
+> >> +{
+> >> +	union power_supply_propval vnow, vlim;
+> >> +	int ret;
+> >> +
+> >> +	ret = mp2629_read_adc(charger, MP2629_BATT_VOLT, &vnow);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	ret = mp2629_get_prop(charger, CHARGE_VLIM, &vlim);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	val->intval = (vnow.intval * 100) / vlim.intval;
+> >> +	val->intval = min(val->intval, MP2629_MAX_BATT_CAPACITY);
+> >> +
+> >> +	return 0;
+> >> +}
+> >> +
+> >> +static int mp2629_charger_battery_get_prop(struct power_supply *psy,
+> >> +					enum power_supply_property psp,
+> >> +					union power_supply_propval *val)
+> >> +{
+> >> +	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
+> >> +	struct mp2629_info *info = charger->info;
+> >> +	unsigned int rval;
+> >> +	int ret = 0;
+> >> +
+> >> +	switch (psp) {
+> >> +	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+> >> +		ret = mp2629_read_adc(charger, MP2629_BATT_VOLT, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CURRENT_NOW:
+> >> +		ret = mp2629_read_adc(charger, MP2629_BATT_CURRENT, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+> >> +		val->intval = 4520000;
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
+> >> +		val->intval = 4670000;
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CAPACITY:
+> >> +		ret = mp2629_get_battery_capacity(charger, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+> >> +		ret = mp2629_get_prop(charger, TERM_CURRENT, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
+> >> +		ret = mp2629_get_prop(charger, PRECHARGE, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+> >> +		ret = mp2629_get_prop(charger, CHARGE_VLIM, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+> >> +		ret = mp2629_get_prop(charger, CHARGE_ILIM, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_HEALTH:
+> >> +		if (!charger->fault)
+> >> +			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+> >> +		if (MP2629_FAULT_BATTERY & charger->fault)
+> >> +			val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+> >> +		else if (MP2629_FAULT_THERMAL & charger->fault)
+> >> +			val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+> >> +		else if (MP2629_FAULT_INPUT & charger->fault)
+> >> +			val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_STATUS:
+> >> +		ret = regmap_read(info->regmap, MP2629_REG_STATUS, &rval);
+> >> +		if (ret)
+> >> +			break;
+> >> +
+> >> +		rval = (rval & MP2629_MASK_CHARGE_TYPE) >> 3;
+> >> +		switch (rval) {
+> >> +		case 0x00:
+> >> +			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+> >> +			break;
+> >> +		case 0x01:
+> >> +		case 0x10:
+> >> +			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+> >> +			break;
+> >> +		case 0x11:
+> >> +			val->intval = POWER_SUPPLY_STATUS_FULL;
+> >> +		}
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+> >> +		ret = regmap_read(info->regmap, MP2629_REG_STATUS, &rval);
+> >> +		if (ret)
+> >> +			break;
+> >> +
+> >> +		rval = (rval & MP2629_MASK_CHARGE_TYPE) >> 3;
+> >> +		switch (rval) {
+> >> +		case 0x00:
+> >> +			val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
+> >> +			break;
+> >> +		case 0x01:
+> >> +			val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+> >> +			break;
+> >> +		case 0x10:
+> >> +			val->intval = POWER_SUPPLY_CHARGE_TYPE_STANDARD;
+> >> +			break;
+> >> +		default:
+> >> +			val->intval = POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
+> >> +		}
+> >> +		break;
+> >> +
+> >> +	default:
+> >> +		return -EINVAL;
+> >> +	}
+> >> +
+> >> +	return ret;
+> >> +}
+> >> +
+> >> +static int mp2629_charger_battery_set_prop(struct power_supply *psy,
+> >> +					enum power_supply_property psp,
+> >> +					const union power_supply_propval *val)
+> >> +{
+> >> +	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
+> >> +	int ret;
+> >> +
+> >> +	switch (psp) {
+> >> +	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+> >> +		ret = mp2629_set_prop(charger, TERM_CURRENT, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
+> >> +		ret = mp2629_set_prop(charger, PRECHARGE, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+> >> +		ret = mp2629_set_prop(charger, CHARGE_VLIM, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+> >> +		ret = mp2629_set_prop(charger, CHARGE_ILIM, val);
+> >> +		break;
+> >> +
+> >> +	default:
+> >> +		return -EINVAL;
+> >> +	}
+> >> +
+> >> +	return ret;
+> >> +}
+> >> +
+> >> +static int mp2629_charger_usb_get_prop(struct power_supply *psy,
+> >> +				enum power_supply_property psp,
+> >> +				union power_supply_propval *val)
+> >> +{
+> >> +	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
+> >> +	struct mp2629_info *info = charger->info;
+> >> +	unsigned int rval;
+> >> +	int ret;
+> >> +
+> >> +	switch (psp) {
+> >> +	case POWER_SUPPLY_PROP_ONLINE:
+> >> +		ret = regmap_read(info->regmap, MP2629_REG_STATUS, &rval);
+> >> +		if (!ret)
+> >> +			val->intval = !!(rval & MP2629_MASK_INPUT_TYPE);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_USB_TYPE:
+> >> +		ret = regmap_read(info->regmap, MP2629_REG_STATUS, &rval);
+> >> +		if (ret)
+> >> +			break;
+> >> +
+> >> +		rval = (rval & MP2629_MASK_INPUT_TYPE) >> 5;
+> >> +		switch (rval) {
+> >> +		case MP2629_SOURCE_TYPE_SDP:
+> >> +			val->intval = POWER_SUPPLY_USB_TYPE_SDP;
+> >> +			break;
+> >> +		case MP2629_SOURCE_TYPE_CDP:
+> >> +			val->intval = POWER_SUPPLY_USB_TYPE_CDP;
+> >> +			break;
+> >> +		case MP2629_SOURCE_TYPE_DCP:
+> >> +			val->intval = POWER_SUPPLY_USB_TYPE_DCP;
+> >> +			break;
+> >> +		case MP2629_SOURCE_TYPE_OTG:
+> >> +			val->intval = POWER_SUPPLY_USB_TYPE_PD_DRP;
+> >> +			break;
+> >> +		default:
+> >> +			val->intval = POWER_SUPPLY_USB_TYPE_UNKNOWN;
+> >> +			break;
+> >> +		}
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+> >> +		ret = mp2629_read_adc(charger, MP2629_INPUT_VOLT, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_CURRENT_NOW:
+> >> +		ret = mp2629_read_adc(charger, MP2629_INPUT_CURRENT, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
+> >> +		ret = mp2629_get_prop(charger, INPUT_VLIM, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+> >> +		ret = mp2629_get_prop(charger, INPUT_ILIM, val);
+> >> +		break;
+> >> +
+> >> +	default:
+> >> +		return -EINVAL;
+> >> +	}
+> >> +
+> >> +	return ret;
+> >> +}
+> >> +
+> >> +static int mp2629_charger_usb_set_prop(struct power_supply *psy,
+> >> +				enum power_supply_property psp,
+> >> +				const union power_supply_propval *val)
+> >> +{
+> >> +	struct mp2629_charger *charger = dev_get_drvdata(psy->dev.parent);
+> >> +	int ret;
+> >> +
+> >> +	switch (psp) {
+> >> +	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
+> >> +		ret = mp2629_set_prop(charger, INPUT_VLIM, val);
+> >> +		break;
+> >> +
+> >> +	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+> >> +		ret = mp2629_set_prop(charger, INPUT_ILIM, val);
+> >> +		break;
+> >> +
+> >> +	default:
+> >> +		return -EINVAL;
+> >> +	}
+> >> +
+> >> +	return ret;
+> >> +}
+> >> +
+> >> +static int mp2629_charger_battery_prop_writeable(struct power_supply *psy,
+> >> +				     enum power_supply_property psp)
+> >> +{
+> >> +	return (psp == POWER_SUPPLY_PROP_PRECHARGE_CURRENT ||
+> >> +		psp == POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT ||
+> >> +		psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT ||
+> >> +		psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE);
+> >> +}
+> >> +
+> >> +static int mp2629_charger_usb_prop_writeable(struct power_supply *psy,
+> >> +				     enum power_supply_property psp)
+> >> +{
+> >> +	return (psp == POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT ||
+> >> +		psp == POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT);
+> >> +}
+> >> +
+> >> +static void mp2629_charger_work(struct work_struct *work)
+> >> +{
+> >> +	struct mp2629_charger *charger;
+> >> +	struct mp2629_info *info;
+> >> +	unsigned int rval;
+> >> +	int ret;
+> >> +
+> >> +	charger = container_of(work, struct mp2629_charger, charger_work);
+> >> +	info = charger->info;
+> >> +
+> >> +	mutex_lock(&charger->lock);
+> >> +
+> >> +	ret = regmap_read(info->regmap, MP2629_REG_FAULT, &rval);
+> >> +	if (ret)
+> >> +		goto unlock;
+> >> +
+> >> +	if (rval) {
+> >> +		charger->fault = rval;
+> >> +		if (MP2629_FAULT_BATTERY & rval)
+> >> +			dev_err(info->dev, "Battery fault OVP");
+> >> +		else if (MP2629_FAULT_THERMAL & rval)
+> >> +			dev_err(info->dev, "Thermal shutdown fault");
+> >> +		else if (MP2629_FAULT_INPUT & rval)
+> >> +			dev_err(info->dev, "no input or input OVP");
+> >> +		else if (MP2629_FAULT_OTG & rval)
+> >> +			dev_err(info->dev, "VIN overloaded");
+> >> +
+> >> +		goto unlock;
+> >> +	}
+> >> +
+> >> +	ret = regmap_read(info->regmap, MP2629_REG_STATUS, &rval);
+> >> +	if (ret)
+> >> +		goto unlock;
+> >> +
+> >> +	if (rval & MP2629_INPUTSOURCE_CHANGE)
+> >> +		power_supply_changed(charger->usb);
+> >> +	else if (rval & MP2629_CHARGING_CHANGE)
+> >> +		power_supply_changed(charger->battery);
+> >> +
+> >> +unlock:
+> >> +	mutex_unlock(&charger->lock);
+> >> +}
+> >> +
+> >> +static irqreturn_t mp2629_irq_handler(int irq, void *dev_id)
+> >> +{
+> >> +	struct mp2629_charger *charger = dev_id;
+> >> +
+> >> +	schedule_work(&charger->charger_work);
+> >> +	return IRQ_HANDLED;
+> >> +}
+> >> +
+> >> +static const struct power_supply_desc mp2629_usb_desc = {
+> >> +	.name		= "mp2629_usb",
+> >> +	.type		= POWER_SUPPLY_TYPE_USB,
+> >> +	.usb_types      = mp2629_usb_types,
+> >> +	.num_usb_types  = ARRAY_SIZE(mp2629_usb_types),
+> >> +	.properties	= mp2629_charger_usb_props,
+> >> +	.num_properties	= ARRAY_SIZE(mp2629_charger_usb_props),
+> >> +	.get_property	= mp2629_charger_usb_get_prop,
+> >> +	.set_property	= mp2629_charger_usb_set_prop,
+> >> +	.property_is_writeable = mp2629_charger_usb_prop_writeable,
+> >> +};
+> >> +
+> >> +static const struct power_supply_desc mp2629_battery_desc = {
+> >> +	.name		= "mp2629_battery",
+> >> +	.type		= POWER_SUPPLY_TYPE_BATTERY,
+> >> +	.properties	= mp2629_charger_bat_props,
+> >> +	.num_properties	= ARRAY_SIZE(mp2629_charger_bat_props),
+> >> +	.get_property	= mp2629_charger_battery_get_prop,
+> >> +	.set_property	= mp2629_charger_battery_set_prop,
+> >> +	.property_is_writeable = mp2629_charger_battery_prop_writeable,
+> >> +};
+> >> +
+> >> +static ssize_t batt_impedance_compensation_show(struct device *dev,
+> >> +					   struct device_attribute *attr,
+> >> +					   char *buf)
+> >> +{
+> >> +	struct mp2629_charger *charger = dev_get_drvdata(dev->parent);
+> >> +	struct mp2629_info *info = charger->info;
+> >> +	unsigned int rval;
+> >> +	int ret;
+> >> +
+> >> +	ret = regmap_read(info->regmap, MP2629_REG_IMPEDANCE_COMP, &rval);
+> >> +	if (ret < 0)
+> >> +		return ret;
+> >> +
+> >> +	rval = (rval >> 4) * 10;
+> >> +
+> >> +	return scnprintf(buf, PAGE_SIZE, "%d mohm\n", rval);
+> >> +}
+> >> +
+> >> +static ssize_t batt_impedance_compensation_store(struct device *dev,
+> >> +					    struct device_attribute *attr,
+> >> +					    const char *buf,
+> >> +					    size_t count)
+> >> +{
+> >> +	struct mp2629_charger *charger = dev_get_drvdata(dev->parent);
+> >> +	struct mp2629_info *info = charger->info;
+> >> +	long val;
+> >> +	int ret;
+> >> +
+> >> +	ret = kstrtol(buf, 10, &val);
+> >> +	if (ret < 0)
+> >> +		return ret;
+> >> +
+> >> +	if (val < 0 && val > 140)
+> >> +		return -ERANGE;
+> >> +
+> >> +	/* multiples of 10 mohm so round off */
+> >> +	val = val / 10;
+> >> +	ret = regmap_update_bits(info->regmap, MP2629_REG_IMPEDANCE_COMP,
+> >> +					MP2629_MASK_IMPEDANCE, val << 4);
+> >> +	if (ret < 0)
+> >> +		return ret;
+> >> +
+> >> +	return count;
+> >> +}
+> >> +
+> >> +static DEVICE_ATTR_RW(batt_impedance_compensation);
+> >> +
+> >> +static struct attribute *mp2629_charger_sysfs_attrs[] = {
+> >> +	&dev_attr_batt_impedance_compensation.attr,
+> >> +	NULL
+> >> +};
+> >> +ATTRIBUTE_GROUPS(mp2629_charger_sysfs);
+> >> +
+> >> +static int mp2629_charger_probe(struct platform_device *pdev)
+> >> +{
+> >> +	struct device *dev = &pdev->dev;
+> >> +	struct mp2629_charger *charger;
+> >> +	struct mp2629_info *info = dev_get_drvdata(dev->parent);
+> >> +	struct power_supply_config psy_cfg = {0};
+> >> +	int ret, i;
+> >> +
+> >> +	charger = devm_kzalloc(dev, sizeof(*charger), GFP_KERNEL);
+> >> +	if (!charger)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	platform_set_drvdata(pdev, charger);
+> >> +	charger->info = info;
+> >> +	charger->dev = dev;
+> >> +
+> >> +	for (i = 0; i <= TERM_CURRENT; i++) {
+> >> +		charger->regmap_fields[i] = devm_regmap_field_alloc(dev,
+> >> +					info->regmap, mp2629_reg_fields[i]);
+> >> +		if (IS_ERR(charger->regmap_fields[i])) {
+> >> +			dev_err(dev, "regmap field alloc fail %d\n", i);
+> >> +			return PTR_ERR(charger->regmap_fields[i]);
+> >> +		}
+> >> +	}
+> >> +
+> >> +	for (i = 0; i < MP2629_ADC_CHAN_END; i++) {
+> >> +		charger->iiochan[i] = iio_channel_get(dev, adc_chan_name[i]);
+> >> +		if (IS_ERR(charger->iiochan[i])) {
+> >> +			ret = PTR_ERR(charger->iiochan[i]);
+> >> +			goto iio_fail;
+> >> +		}
+> >> +	}
+> >> +
+> >> +	charger->usb = devm_power_supply_register(dev, &mp2629_usb_desc, NULL);
+> >> +	if (IS_ERR(charger->usb)) {
+> >> +		ret = PTR_ERR(charger->usb);
+> >> +		goto iio_fail;
+> >> +	}
+> >> +
+> >> +	psy_cfg.drv_data = charger;
+> >> +	psy_cfg.attr_grp = mp2629_charger_sysfs_groups;
+> >> +	charger->battery = devm_power_supply_register(dev,
+> >> +					 &mp2629_battery_desc, &psy_cfg);
+> >> +	if (IS_ERR(charger->battery)) {
+> >> +		ret = PTR_ERR(charger->battery);
+> >> +		goto iio_fail;
+> >> +	}
+> >> +
+> >> +	ret = regmap_update_bits(info->regmap, MP2629_REG_CHARGE_CTRL,
+> >> +					MP2629_MASK_CHARGE_CTRL, BIT(4));
+> >> +	if (ret) {
+> >> +		dev_err(dev, "enable charge fail: %d\n", ret);
+> >> +		goto iio_fail;
+> >> +	}
+> >> +
+> >> +	regmap_update_bits(info->regmap, MP2629_REG_TIMER_CTRL,
+> >> +					MP2629_MASK_WDOG_CTRL, 0);
+> >> +
+> >> +	INIT_WORK(&charger->charger_work, mp2629_charger_work);
+> >> +	mutex_init(&charger->lock);
+> >> +
+> >> +	if (info->irq) {
+> >> +		ret = devm_request_irq(dev, info->irq, mp2629_irq_handler,
+> >> +				 IRQF_TRIGGER_RISING, "mp2629-charger",
+> >> +				 charger);
+> >> +		if (ret) {
+> >> +			dev_info(dev, "failed to request gpio IRQ\n");
+> >> +			goto iio_fail;
+> >> +		}
+> >> +	}
+> >> +
+> >> +	regmap_update_bits(info->regmap, MP2629_REG_INTERRUPT,
+> >> +				GENMASK(6, 5), (BIT(6) | BIT(5)));
+> >> +
+> >> +	return 0;
+> >> +
+> >> +iio_fail:
+> >> +	while (i--)
+> >> +		iio_channel_release(charger->iiochan[i]);
+> >> +
+> >> +	dev_err(dev, "driver register fail: %d\n", ret);
+> >> +	return ret;
+> >> +}
+> >> +
+> >> +static int mp2629_charger_remove(struct platform_device *pdev)
+> >> +{
+> >> +	struct mp2629_charger *charger = platform_get_drvdata(pdev);
+> >> +	struct mp2629_info *info = charger->info;
+> >> +	int i;
+> >> +
+> >> +	cancel_work_sync(&charger->charger_work);
+> >> +
+> >> +	for (i = 0; i < MP2629_ADC_CHAN_END; i++)
+> >> +		iio_channel_release(charger->iiochan[i]);
+> >> +
+> >> +	regmap_update_bits(info->regmap, MP2629_REG_CHARGE_CTRL,
+> >> +					MP2629_MASK_CHARGE_CTRL, 0);
+> >> +	return 0;
+> >> +}
+> >> +
+> >> +static const struct of_device_id mp2629_charger_of_match[] = {
+> >> +	{ .compatible = "mps,mp2629_charger"},
+> >> +	{}
+> >> +};
+> >> +MODULE_DEVICE_TABLE(of, mp2629_charger_of_match);
+> >> +
+> >> +static struct platform_driver mp2629_charger_driver = {
+> >> +	.driver = {
+> >> +		.name = "mp2629_charger",
+> >> +		.of_match_table = mp2629_charger_of_match,
+> >> +	},
+> >> +	.probe		= mp2629_charger_probe,
+> >> +	.remove		= mp2629_charger_remove,
+> >> +};
+> >> +module_platform_driver(mp2629_charger_driver);
+> >> +
+> >> +MODULE_AUTHOR("Saravanan Sekar <sravanhome@gmail.com>");
+> >> +MODULE_DESCRIPTION("MP2629 Charger driver");
+> >> +MODULE_LICENSE("GPL");  
 

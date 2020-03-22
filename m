@@ -2,209 +2,209 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C49D18EB22
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 18:52:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64D4318EB24
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 18:53:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726137AbgCVRwd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 13:52:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34418 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725997AbgCVRwd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 22 Mar 2020 13:52:33 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 24B63206C3;
-        Sun, 22 Mar 2020 17:52:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584899551;
-        bh=E4tkfsLC2npwliTDR8mBLrea9DerZNIIDxFJTaOlD0k=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xFXRyqaXvjCustqER/6dHYlCtRtCClXD9avWVmoAzhiR8JaxhRGNOykk4cBwEzcOR
-         RNcYWwpEgqSKS3s5lkvcdMnvJVQWJ6Xe4GCgEMEHekIhMFp2AcoyIPml19SAPRRlKl
-         6YbNPlIbCICXOejuiwNTmgQ3MnkS7q/Fz6sJzIfE=
-Date:   Sun, 22 Mar 2020 17:52:27 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dragos.bogdan@analog.com
-Subject: Re: [PATCH v7] iio: adc: max1363: replace uses of mlock
-Message-ID: <20200322175227.1623048e@archlinux>
-In-Reply-To: <5e766058.1c69fb81.a65ff.d2eb@mx.google.com>
-References: <5e6e522d.1c69fb81.10f54.f95c@mx.google.com>
-        <5e766058.1c69fb81.a65ff.d2eb@mx.google.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726843AbgCVRx6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 13:53:58 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:22636 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725985AbgCVRx6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 13:53:58 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02MHjB4O001968;
+        Sun, 22 Mar 2020 13:53:56 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2ywcs5v5am-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 22 Mar 2020 13:53:56 -0400
+Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 02MHrsQT059308
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Sun, 22 Mar 2020 13:53:55 -0400
+Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
+ SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Sun, 22 Mar 2020 10:53:53 -0700
+Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
+ SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Sun, 22 Mar 2020 10:53:53 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX11.ad.analog.com
+ (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Sun, 22 Mar 2020 10:53:53 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 02MHro3f027953;
+        Sun, 22 Mar 2020 13:53:50 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC:     <jic23@kernel.org>, <robh+dt@kernel.org>, <Laszlo.Nagy@analog.com>,
+        <Andrei.Grozav@analog.com>, <Michael.Hennerich@analog.com>,
+        <Istvan.Csomortani@analog.com>, <Adrian.Costina@analog.com>,
+        <Dragos.Bogdan@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v12 0/8] iio: adi-axi-adc,ad9647: Add support for AD9467 ADC
+Date:   Sun, 22 Mar 2020 19:53:17 +0200
+Message-ID: <20200322175325.42469-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
+ definitions=2020-03-22_06:2020-03-21,2020-03-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 clxscore=1015 suspectscore=0 spamscore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003220107
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Mar 2020 00:13:32 +0530
-Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+Changelog v11 -> v12:
+* used DocLink: and Datasheet: instead of Link: tag
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - removed NULL checks from places where the code does pointer
+    arithmethic
+  - removed comma from NULL terminators in list
+  - changed to use of_device_get_match_data() to get driver data
+  - moved device table data to bottom of driver
+* patch 'iio: adc: ad9467: add support AD9467 ADC'
+  - moved device table data to bottom of driver
 
-> Hey,
-> Does this look fine? Wondering if this was missed during review
-> Thanks,
-> Rohit
+Changelog v10 -> v11:
+* added 'Reviewed-by: Rob Herring <robh@kernel.org>' tag to DT bindings patches
+* patch 'dt-bindings: iio: adc: add bindings doc for AXI ADC driver'
+  removed 'maxItems' from dma-names property
+* sent from an @analog.com server; author was showing as @gmail.com on
+  V9 & V10
 
-Nope just a busy week.  + I review from latest emails backwards
-(and almost always get through everything).
+Changelog v9 -> v10:
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - removed IQ correction logic; the AD9467 ADC driver has only 1 channel,
+    so it can't have I & Q; also the IQ correction assumes that all
+    even channels are Q and all odd channels are I, which is true for
+    current ADI-AXI ADC IP cores, but shouldn't be an assumption designed
+    in the driver; the IQ correction stuff will be re-added later,
+    and will try to use the IIO_MOD_I & IIO_MOD_Q modifiers
 
-Questions have a habit of being resolved quicker that way
-around ;)
+Changelog v8 -> v9:
+* adding more Analog people to the list; predominantly HDL people; this
+  should help me sync people about the details of regs/reg-names
+* added 'Acked-by: Moritz Fischer <mdf@kernel.org>' tag to fpga patches
+  - we can always re-update these patches if something else is decided about
+    the location of the 'adi-axi-common.h' header; I'm not insisting about
+    where to put it; I'm open to other proposals
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - prefixed regs ADI_AXI_ ; I tried ADI_AXI_ADC_, but that seemed to make
+    them too long
+  - dropped unused regs; will add them as stuff gets added in the upstream
+    driver; in the meantime, reg-names can be reworked
+  - dropped generic LOWERXY_SET/GET macros
+  - update reg-names a bit; will update them in the docs and HDL
+  - order in adi_axi_adc_conv_unregister() should now be symmetrically
+    oppposite now to the register function
+  - implemented 'is_visible()' callback to adi_axi_adc_attributes[] so that
+    attrs can be made invisible to userspace if needed;
+  - 'indio_dev->name = "adi-axi-adc";'
+  - added kernel doc-string for @reg_access
+* patch 'iio: adc: ad9467: add support AD9467 ADC'
+  - ad9467_spi_read() split in 2 buffers; tbuf & rbuf
+  - removed 'if (chan->extend_name)' test ; left-over from initial driver
+  - removed 'if (!st->clk)' check; driver will fail probe without a clock
+  - removed 'if (!spi->dev.of_node)' in probe; shouldn't be needed
+  - using 'of_device_get_match_data()' in probe to get data; moved chip
+    info table entry as data on the of_device_id table
 
-Jonathan
+Changelog v7 -> v8:
+* in 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - updated register definitions and bits to newer format/docs; the ref driver wasn't really up-to-date
+    -- prefixed bit names with reg-name to avoid bit definition colisions; that makes some macros longer, but at least the format is consistent
+  - using dev_name(&pdev->dev) for indio_dev->name
+  - moved reset to own axi_adc_reset() function; may be re-used later
+  - some re-formatting/alignment changes
+  - address ENOSYS checkpatch complaint; changed with EOPNOTSUPP
 
-> 
-> On Sun, Mar 15, 2020 at 09:34:58PM +0530, Rohit Sarkar wrote:
-> > Replace usage indio_dev's mlock with either local lock or
-> > iio_device_claim_direct_mode.
-> > 
-> > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
-> > ---
-> > Changelog v6 -> v7
-> > * Fix failure handling logic
-> > 
-> > Changelog v5 -> v6
-> > * Minor failure handling fixes
-> > 
-> > Changelog v4 -> v5
-> > * Use local lock too at places where driver state needs to be protected.
-> > 
-> > Changelog v3 -> v4
-> > * Fix indentation
-> > 
-> > Changelog v2 -> v3
-> > * use iio_device_claim_direct when switching modes
-> > * replace mlock usage in max1363_write_event_config
-> > 
-> > Changelog v1 -> v2
-> > * Fix indentation
-> > 
-> >  drivers/iio/adc/max1363.c | 37 ++++++++++++++++++++++++++++---------
-> >  1 file changed, 28 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-> > index 5c2cc61b666e..12d72bf3f12a 100644
-> > --- a/drivers/iio/adc/max1363.c
-> > +++ b/drivers/iio/adc/max1363.c
-> > @@ -150,6 +150,7 @@ struct max1363_chip_info {
-> >   * @current_mode:	the scan mode of this chip
-> >   * @requestedmask:	a valid requested set of channels
-> >   * @reg:		supply regulator
-> > + * @lock		lock to ensure state is consistent
-> >   * @monitor_on:		whether monitor mode is enabled
-> >   * @monitor_speed:	parameter corresponding to device monitor speed setting
-> >   * @mask_high:		bitmask for enabled high thresholds
-> > @@ -169,6 +170,7 @@ struct max1363_state {
-> >  	const struct max1363_mode	*current_mode;
-> >  	u32				requestedmask;
-> >  	struct regulator		*reg;
-> > +	struct mutex			lock;
-> >  
-> >  	/* Using monitor modes and buffer at the same time is
-> >  	   currently not supported */
-> > @@ -364,7 +366,13 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
-> >  	struct max1363_state *st = iio_priv(indio_dev);
-> >  	struct i2c_client *client = st->client;
-> >  
-> > -	mutex_lock(&indio_dev->mlock);
-> > +	ret = iio_device_claim_direct_mode(indio_dev);
-> > +	if (ret)
-> > +		return ret;
-> > +	mutex_lock(&st->lock);
-> > +
-> > +	if (ret < 0)
-> > +		goto error_ret;
-> >  	/*
-> >  	 * If monitor mode is enabled, the method for reading a single
-> >  	 * channel will have to be rather different and has not yet
-> > @@ -372,7 +380,7 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
-> >  	 *
-> >  	 * Also, cannot read directly if buffered capture enabled.
-> >  	 */
-> > -	if (st->monitor_on || iio_buffer_enabled(indio_dev)) {
-> > +	if (st->monitor_on) {
-> >  		ret = -EBUSY;
-> >  		goto error_ret;
-> >  	}
-> > @@ -404,8 +412,10 @@ static int max1363_read_single_chan(struct iio_dev *indio_dev,
-> >  		data = rxbuf[0];
-> >  	}
-> >  	*val = data;
-> > +
-> >  error_ret:
-> > -	mutex_unlock(&indio_dev->mlock);
-> > +	mutex_unlock(&st->lock);
-> > +	iio_device_release_direct_mode(indio_dev);
-> >  	return ret;
-> >  
-> >  }
-> > @@ -705,9 +715,9 @@ static ssize_t max1363_monitor_store_freq(struct device *dev,
-> >  	if (!found)
-> >  		return -EINVAL;
-> >  
-> > -	mutex_lock(&indio_dev->mlock);
-> > +	mutex_lock(&st->lock);
-> >  	st->monitor_speed = i;
-> > -	mutex_unlock(&indio_dev->mlock);
-> > +	mutex_unlock(&st->lock);
-> >  
-> >  	return 0;
-> >  }
-> > @@ -810,12 +820,12 @@ static int max1363_read_event_config(struct iio_dev *indio_dev,
-> >  	int val;
-> >  	int number = chan->channel;
-> >  
-> > -	mutex_lock(&indio_dev->mlock);
-> > +	mutex_lock(&st->lock);
-> >  	if (dir == IIO_EV_DIR_FALLING)
-> >  		val = (1 << number) & st->mask_low;
-> >  	else
-> >  		val = (1 << number) & st->mask_high;
-> > -	mutex_unlock(&indio_dev->mlock);
-> > +	mutex_unlock(&st->lock);
-> >  
-> >  	return val;
-> >  }
-> > @@ -962,7 +972,14 @@ static int max1363_write_event_config(struct iio_dev *indio_dev,
-> >  	u16 unifiedmask;
-> >  	int number = chan->channel;
-> >  
-> > -	mutex_lock(&indio_dev->mlock);
-> > +	ret = iio_device_claim_direct_mode(indio_dev);
-> > +	if (ret)
-> > +		return ret;
-> > +	mutex_lock(&st->lock);
-> > +
-> > +	if (ret < 0)
-> > +		goto error_ret;
-> > +
-> >  	unifiedmask = st->mask_low | st->mask_high;
-> >  	if (dir == IIO_EV_DIR_FALLING) {
-> >  
-> > @@ -989,7 +1006,8 @@ static int max1363_write_event_config(struct iio_dev *indio_dev,
-> >  
-> >  	max1363_monitor_mode_update(st, !!(st->mask_high | st->mask_low));
-> >  error_ret:
-> > -	mutex_unlock(&indio_dev->mlock);
-> > +	mutex_unlock(&st->lock);
-> > +	iio_device_release_direct_mode(indio_dev);
-> >  
-> >  	return ret;
-> >  }
-> > @@ -1587,6 +1605,7 @@ static int max1363_probe(struct i2c_client *client,
-> >  
-> >  	st = iio_priv(indio_dev);
-> >  
-> > +	mutex_init(&st->lock);
-> >  	st->reg = devm_regulator_get(&client->dev, "vcc");
-> >  	if (IS_ERR(st->reg)) {
-> >  		ret = PTR_ERR(st->reg);
-> > -- 
-> > 2.23.0.385.gbc12974a89
-> >   
+Changelog v6 -> v7:
+* Fixed dt-schema build for adi,axi-adc.yaml based on Rob's suggestion
+  - added '$ref: /schemas/types.yaml#/definitions/phandle' to 'adi,adc-dev'
+  - dropped 'maxItems' from 'adi,adc-dev'
+
+Changelog v5 -> v6
+* fix URLs; got changed during rename
+   https://wiki.analog.com/resources/fpga/docs/adi_axi_adc_ip ->
+   https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+  - noticed while working on the AXI DAC driver
+
+Changelog v4 -> v5:
+* update drivers/iio/adc/Kconfig note about module name; omitted during first rename
+   - 'module will be called axi-adc.' -> 'module will be called adi-axi-adc.'
+
+Changelog v3 -> v4:
+* addressed Rob's dt-remarks
+   - change 'adi-axi-adc-client' prop to 'adi,adc-dev'
+
+Changelog v2 -> v3:
+* addressed compiler warning
+
+Changelog v1 -> v2:
+* first series was added a bit hastily
+* addressed  'make dt_binding_check' complaints; seems I missed a few when running the check;
+* added missing patches to include/linux/fpga/adi-axi-common.h
+   - 'include: fpga: adi-axi-common.h: fixup whitespace tab -> space'
+   - 'include: fpga: adi-axi-common.h: add version helper macros'
+* patch 'iio: buffer-dmaengine: add dev-managed calls for buffer alloc/free'
+   - remove copy+pasted comment for 'devm_iio_dmaengine_buffer_alloc()'
+   - removed devm_iio_dmaengine_buffer_free() ; hopefully it might never be needed
+   - fix-up alignment for devm_iio_dmaengine_buffer_alloc() in header
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+   - renamed axi-adc.c -> adi-axi-adc.c & Kconfig symbol
+   - prefix all axi_adc -> adi_axi_adc
+   - removed switch statement in axi_adc_read_raw() & axi_adc_write_raw()
+   - remove axi_adc_chan_spec ; replaced with iio_chan_spec directly ; will think of a simpler solution for extra chan params
+   - removed left-over 'struct axi_adc_cleanup_data'
+   - moved 'devm_add_action_or_reset()' call right after 'adi_axi_adc_attach_client()'
+   - switched to using 'devm_platform_ioremap_resource()'
+* patch 'iio: adc: ad9467: add support AD9467 ADC'
+  - renamed ADI_ADC reg prefixes to AN877_ADC
+  - dropped 'info_mask_separate' field in AD9467_CHAN - will be re-added later when driver gets more features; was left-over from the initial ref driver
+  - remove .shift = 0,  in AD9467_CHAN
+  - renamed 'sample-clock' -> 'adc-clock'
+  - direct returns in ad9467_read_raw() & ad9467_write_raw() & ad9467_setup() switch statements
+  - removed blank line after devm_axi_adc_conv_register()
+  - removed ad9467_id & reworked to use ad9467_of_match
+
+Alexandru Ardelean (6):
+  include: fpga: adi-axi-common.h: fixup whitespace tab -> space
+  include: fpga: adi-axi-common.h: add version helper macros
+  iio: buffer-dmaengine: use %zu specifier for sprintf(align)
+  iio: buffer-dmaengine: add dev-managed calls for buffer alloc
+  dt-bindings: iio: adc: add bindings doc for AXI ADC driver
+  dt-bindings: iio: adc: add bindings doc for AD9467 ADC
+
+Michael Hennerich (2):
+  iio: adc: adi-axi-adc: add support for AXI ADC IP core
+  iio: adc: ad9467: add support AD9467 ADC
+
+ .../bindings/iio/adc/adi,ad9467.yaml          |  65 +++
+ .../bindings/iio/adc/adi,axi-adc.yaml         |  62 +++
+ drivers/iio/adc/Kconfig                       |  35 ++
+ drivers/iio/adc/Makefile                      |   2 +
+ drivers/iio/adc/ad9467.c                      | 420 +++++++++++++++
+ drivers/iio/adc/adi-axi-adc.c                 | 485 ++++++++++++++++++
+ .../buffer/industrialio-buffer-dmaengine.c    |  41 +-
+ include/linux/fpga/adi-axi-common.h           |   6 +-
+ include/linux/iio/adc/adi-axi-adc.h           |  64 +++
+ include/linux/iio/buffer-dmaengine.h          |   3 +
+ 10 files changed, 1181 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+ create mode 100644 drivers/iio/adc/ad9467.c
+ create mode 100644 drivers/iio/adc/adi-axi-adc.c
+ create mode 100644 include/linux/iio/adc/adi-axi-adc.h
+
+-- 
+2.17.1
 

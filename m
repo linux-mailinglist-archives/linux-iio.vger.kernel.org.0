@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A50B18ECE9
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 23:30:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF25B18ECF3
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 23:30:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726875AbgCVWa3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 18:30:29 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:40437 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726797AbgCVWa3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 18:30:29 -0400
-Received: by mail-wm1-f67.google.com with SMTP id a81so6931374wmf.5;
-        Sun, 22 Mar 2020 15:30:27 -0700 (PDT)
+        id S1726979AbgCVWad (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 18:30:33 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:55847 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726944AbgCVWad (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 18:30:33 -0400
+Received: by mail-wm1-f66.google.com with SMTP id 6so12621247wmi.5;
+        Sun, 22 Mar 2020 15:30:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=V1IoBnnxV2Y83h2tlBdWy/1+5bjdle9P7nqs3bJI3i8=;
-        b=XtTdCQkpr+o6kyj73/aQkfTjIwMxz9y4AdHrLcVTm6dU7p02lHc2xghfjD/MNZzzJu
-         k4jQxRVegQTIy4APZ/F6XwKw0PzQXisKO4VkiojrjUA/CF9dbRvtpBYvKfchEq5U5xh+
-         UlNZXEvsQNIOapPVZClHmziLzIdz2e1g/AL6NPsbz27poj5nwoOHFWksZX5IfETxdzI6
-         6PpiggwonuXKjDEmlu8p2yI/d+3Rsf3npJnREawz5jFPGjNE2aLObxdptKbnRvHpb/Nl
-         uOGCxmLelQ2oyTQzpjLmAd/EOMDJvjBCPXJzGG7RSxJ7BVXvyZI9doMgArjBYSY+n7S5
-         BaSg==
+        bh=1CcZArctEEFdFZ3lV0Ksbnx22Bq4V6ii1JwnJkHBEDk=;
+        b=Qp2XexoHIzz1cQ2WhFmfG04EH+cNiHlMgIgI8FxHu1BvKynfMN6HWuNUx+jeyE9Lpp
+         pqWlIhLLtNJzgHIij39di0FPYW56aQZvdDRiihz/TyGTQNYOOb36gWqRy8PYGTLAhOET
+         SsnXrs30eThEbjKL2LabV3yuEj8h52r1ydaKWVOHT1mvPfxzytKPbXXQ9RGmwFlN1eMz
+         /Kg25wKJOtgEZWAsuGazbR/ekAKCCdzrIMfgQ7j9i4u61yB6j7WKZn5Q+7CALPSEvvtd
+         KFHEWTDxohiIKuq0CcHzBvjI+bme7l5IYHIPIRc1C7o9+kyRgnnQoLmHlHtNL2gfBG/S
+         RHKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=V1IoBnnxV2Y83h2tlBdWy/1+5bjdle9P7nqs3bJI3i8=;
-        b=VlEbSVWwzgpTNBn7808lDn5WjjBOGZA29AEDnCOCquPCIzFE52sXziz9RQXC6ITqx9
-         ZOKz2EELgV9kbuoXgSCQHzd6stsXK16DMWNTCtlLLCRKWuOcjxSaZgP89AXBwG7X1Ozq
-         WQq5AJsdzRIrWxLvZXW7XIOnSIPaI0cM4DLj3UuFup+4W6EDHTXaYYY3XU/c/GKHse0s
-         zm6jTvletz2Hp4lPONqBskR1VP6YtJW971xW9shn6jJP3P+QlVc6RIguVVKpldGCFfcS
-         ihjrunDIr38Zgth0NzuLtC8VU2+TtrntW4OSL50UtokB/DPDkOpdh1gHGpptILoyp0aU
-         aMxQ==
-X-Gm-Message-State: ANhLgQ0vhohePvACvasw/UanLw6iAj2UiZ7LX1w+eEalMlpcIKb33TP8
-        mwOYBXmvAgVAesedeteuuKU2X5uR0nI=
-X-Google-Smtp-Source: ADFU+vt6WlMVjqpsPBPqnWoIiKd2ytsU9yzX0B0Smb/AF63Sc62fiu+9H+YrqMVCDAwy+28cuKiSSQ==
-X-Received: by 2002:a7b:ce19:: with SMTP id m25mr24368421wmc.134.1584916226413;
-        Sun, 22 Mar 2020 15:30:26 -0700 (PDT)
+        bh=1CcZArctEEFdFZ3lV0Ksbnx22Bq4V6ii1JwnJkHBEDk=;
+        b=YwDJGE+0O8iJapBMm0IHgGSqTg4p8lr6iGbXsIyJEOUz1YsVVa6M+hhElHhjje4mTM
+         Ty0NDwdsuvbfON6F7YlVRJYnHEcUqP6XCeIhFZUuhDkxLNwYSXb8KvNiKOB5F5IqTa3U
+         FwyhO0gXe+YrIgjqC03lbYQ18ISbaRcHzqPmL+ARBV4k0HjfK4O5jWOeuB9PartUJkM0
+         71iswU+FzMzCtBWn4xO9bUwSsyaBOETEJBdj/Y7YsR3IR7wS95wmjdy2t15b9fn40uwe
+         HodIf2DE2PeVLXuoWidIu3SWf4lqbS0pVSDwGMtA/V6xjgC47OYLn0eKPADqkZeC7fZY
+         8BJQ==
+X-Gm-Message-State: ANhLgQ0I4/GJRN+KUnYHWeiqV6QmKEHoCTLq22Gs9DZjS3BFpjG1kB5Z
+        NrNDL0itpDaH7i1Vlj/4Tuo=
+X-Google-Smtp-Source: ADFU+vsAeO//CcjdvQAwHFZUQw7VW5KhA1vStlCO/W4lmSgueqSSlpbHg7xkMadFUPm7UgfL6fXRVw==
+X-Received: by 2002:a7b:c40f:: with SMTP id k15mr18587913wmi.144.1584916228014;
+        Sun, 22 Mar 2020 15:30:28 -0700 (PDT)
 Received: from localhost.localdomain (p5DCFFFE5.dip0.t-ipconnect.de. [93.207.255.229])
-        by smtp.gmail.com with ESMTPSA id p13sm8060517wru.3.2020.03.22.15.30.24
+        by smtp.gmail.com with ESMTPSA id p13sm8060517wru.3.2020.03.22.15.30.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2020 15:30:25 -0700 (PDT)
+        Sun, 22 Mar 2020 15:30:27 -0700 (PDT)
 From:   Saravanan Sekar <sravanhome@gmail.com>
 To:     lee.jones@linaro.org, robh+dt@kernel.org, jic23@kernel.org,
         knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net, sre@kernel.org
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
         Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH v3 1/5] dt-bindings: mfd: add document bindings for mp2629
-Date:   Sun, 22 Mar 2020 23:30:12 +0100
-Message-Id: <20200322223016.11509-2-sravanhome@gmail.com>
+Subject: [PATCH v3 2/5] mfd: mp2629: Add support for mps battery charger
+Date:   Sun, 22 Mar 2020 23:30:13 +0100
+Message-Id: <20200322223016.11509-3-sravanhome@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200322223016.11509-1-sravanhome@gmail.com>
 References: <20200322223016.11509-1-sravanhome@gmail.com>
@@ -60,82 +60,205 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add device tree binding information for mp2629 mfd driver.
+mp2629 is a highly-integrated switching-mode battery charge management
+device for single-cell Li-ion or Li-polymer battery.
+
+Add MFD core enables chip access for ADC driver for battery readings,
+and a power supply battery-charger driver
 
 Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
 ---
- .../devicetree/bindings/mfd/mps,mp2629.yaml   | 62 +++++++++++++++++++
- 1 file changed, 62 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+ drivers/mfd/Kconfig        |   9 +++
+ drivers/mfd/Makefile       |   2 +
+ drivers/mfd/mp2629.c       | 116 +++++++++++++++++++++++++++++++++++++
+ include/linux/mfd/mp2629.h |  22 +++++++
+ 4 files changed, 149 insertions(+)
+ create mode 100644 drivers/mfd/mp2629.c
+ create mode 100644 include/linux/mfd/mp2629.h
 
-diff --git a/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 3c547ed575e6..f3f0a2908f16 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -434,6 +434,15 @@ config MFD_MC13XXX_I2C
+ 	help
+ 	  Select this if your MC13xxx is connected via an I2C bus.
+ 
++config MFD_MP2629
++	bool "Monolithic power system MP2629 ADC and Battery charger"
++	depends on I2C
++	select REGMAP_I2C
++	help
++	  Select this option to enable support for Monolithic power system
++	  Battery charger. This provides ADC, thermal, Battery charger power
++	  management functions on the systems.
++
+ config MFD_MXS_LRADC
+ 	tristate "Freescale i.MX23/i.MX28 LRADC"
+ 	depends on ARCH_MXS || COMPILE_TEST
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index f935d10cbf0f..d6c210f96d02 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -170,6 +170,8 @@ obj-$(CONFIG_MFD_MAX8925)	+= max8925.o
+ obj-$(CONFIG_MFD_MAX8997)	+= max8997.o max8997-irq.o
+ obj-$(CONFIG_MFD_MAX8998)	+= max8998.o max8998-irq.o
+ 
++obj-$(CONFIG_MFD_MP2629)	+= mp2629.o
++
+ pcf50633-objs			:= pcf50633-core.o pcf50633-irq.o
+ obj-$(CONFIG_MFD_PCF50633)	+= pcf50633.o
+ obj-$(CONFIG_PCF50633_ADC)	+= pcf50633-adc.o
+diff --git a/drivers/mfd/mp2629.c b/drivers/mfd/mp2629.c
 new file mode 100644
-index 000000000000..f5b8c73123c6
+index 000000000000..41a4082387ce
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-@@ -0,0 +1,62 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mfd/mps,mp2629.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/mfd/mp2629.c
+@@ -0,0 +1,116 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * MP2629 MFD Driver for ADC and battery charger
++ *
++ * Copyright 2020 Monolithic Power Systems, Inc
++ *
++ * Author: Saravanan Sekar <sravanhome@gmail.com>
++ */
 +
-+title: MP2629 Battery Charger PMIC from Monolithic Power System.
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/i2c.h>
++#include <linux/regmap.h>
++#include <linux/slab.h>
++#include <linux/irq.h>
++#include <linux/interrupt.h>
++#include <linux/mfd/core.h>
++#include <linux/mfd/mp2629.h>
 +
-+maintainers:
-+  - Saravanan Sekar <sravanhome@gmail.com>
++enum {
++	MP2629_MFD_ADC,
++	MP2629_MFD_CHARGER,
++	MP2629_MFD_MAX
++};
 +
-+description: |
-+  MP2629 is an PMIC providing battery charging and power supply for smartphones,
-+  Wireless camera and portable devices. Chip is contrlled over I2C.
++static struct resource mp2629_irq_rsrc[] = {
++	{
++		.flags = IORESOURCE_IRQ,
++	},
++};
 +
-+  The MFD device handles battery charger controller and ADC IIO device for
-+  battery, system voltage
++static struct mfd_cell mp2629mfd[] = {
++	[MP2629_MFD_ADC] = {
++		.name = "mp2629_adc",
++		.of_compatible = "mps,mp2629_adc",
++	},
++	[MP2629_MFD_CHARGER] = {
++		.name = "mp2629_charger",
++		.of_compatible = "mps,mp2629_charger",
++		.resources = mp2629_irq_rsrc,
++		.num_resources = ARRAY_SIZE(mp2629_irq_rsrc),
++	}
++};
 +
-+properties:
-+  compatible:
-+    const: mps,mp2629
++static const struct regmap_config mp2629_regmap_config = {
++	.reg_bits = 8,
++	.val_bits = 8,
++	.max_register = 0x17,
++};
 +
-+  reg:
-+    description:
-+      I2C device address.
-+    maxItems: 1
++static int mp2629_probe(struct i2c_client *client)
++{
++	struct mp2629_info *info;
++	struct resource	*resources;
++	int ret;
++	int i;
 +
-+  interrupts:
-+    maxItems: 1
++	info = devm_kzalloc(&client->dev, sizeof(*info), GFP_KERNEL);
++	if (!info)
++		return -ENOMEM;
 +
-+  interrupt-controller: true
++	info->dev = &client->dev;
++	i2c_set_clientdata(client, info);
 +
-+  "#interrupt-cells":
-+    const: 2
-+    description:
-+      The first cell is the IRQ number, the second cell is the trigger type.
++	info->regmap = devm_regmap_init_i2c(client, &mp2629_regmap_config);
++	if (IS_ERR(info->regmap)) {
++		dev_err(info->dev, "Failed to allocate regmap!\n");
++		return PTR_ERR(info->regmap);
++	}
 +
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - interrupt-controller
-+  - "#interrupt-cells"
++	for (i = 0; i < MP2629_MFD_MAX; i++) {
++		mp2629mfd[i].platform_data = &info->regmap;
++		mp2629mfd[i].pdata_size = sizeof(info->regmap);
 +
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/input/linux-event-codes.h>
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++		resources = (struct resource *)mp2629mfd[i].resources;
++		if (resources) {
++			resources[0].start = client->irq;
++			resources[0].end = client->irq;
++		}
++	}
 +
-+        pmic@4b {
-+            compatible = "mps,mp2629";
-+            reg = <0x4b>;
++	ret = devm_mfd_add_devices(info->dev, PLATFORM_DEVID_NONE, mp2629mfd,
++				ARRAY_SIZE(mp2629mfd), NULL,
++				0, NULL);
++	if (ret)
++		dev_err(info->dev, "Failed to add mfd %d\n", ret);
 +
-+            interrupt-controller;
-+            interrupt-parent = <&gpio2>;
-+            #interrupt-cells = <2>;
-+            interrupts = <3 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
++	return ret;
++}
++
++static const struct of_device_id mp2629_of_match[] = {
++	{ .compatible = "mps,mp2629"},
++	{ }
++};
++MODULE_DEVICE_TABLE(of, mp2629_of_match);
++
++static const struct i2c_device_id mp2629_id[] = {
++	{ "mp2629", },
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, mp2629_id);
++
++static struct i2c_driver mp2629_driver = {
++	.driver = {
++		.name = "mp2629",
++		.of_match_table = mp2629_of_match,
++	},
++	.probe_new	= mp2629_probe,
++	.id_table	= mp2629_id,
++};
++module_i2c_driver(mp2629_driver);
++
++MODULE_AUTHOR("Saravanan Sekar <sravanhome@gmail.com>");
++MODULE_DESCRIPTION("MP2629 Battery charger mfd driver");
++MODULE_LICENSE("GPL");
+diff --git a/include/linux/mfd/mp2629.h b/include/linux/mfd/mp2629.h
+new file mode 100644
+index 000000000000..371e44330ba8
+--- /dev/null
++++ b/include/linux/mfd/mp2629.h
+@@ -0,0 +1,22 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * mp2629.h  - register definitions for mp2629 charger
++ *
++ * Copyright 2020 Monolithic Power Systems, Inc
++ *
++ */
++
++#ifndef __MP2629_H__
++#define __MP2629_H__
++
++#include <linux/types.h>
++
++struct device;
++struct regmap;
++
++struct mp2629_info {
++	struct device *dev;
++	struct regmap *regmap;
++};
++
++#endif
 -- 
 2.17.1
 

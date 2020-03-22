@@ -2,98 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E1A18EC98
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 22:20:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A897418ECDB
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 23:19:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726783AbgCVVU0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 17:20:26 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:34150 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726623AbgCVVU0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 17:20:26 -0400
-Received: by mail-pf1-f193.google.com with SMTP id 23so6469876pfj.1
-        for <linux-iio@vger.kernel.org>; Sun, 22 Mar 2020 14:20:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VC/JIV5qsOwhxCouss2cmvEeqs2TDLhQ0mM661bN7ok=;
-        b=JreVjbG7GWoEhyATN9gjfqr1fAfKWXoK7BHrNzRhQQs3zEsN1jESPGgXvsPUAya3i6
-         AacswSAGm6xzObV7YZWJAuMvpTMmHylZbbscv1FkeNx4V73nNHIgaEvedYyaACtvurCr
-         jMwBCKl3ghXFo2rDCgOcSsCi8Gp9Q3IUKE/UO6PDnsA9WI6R3rzETZ+Sfjo4BpIRjPvv
-         w4sxwYIoV71C+ocsySxKVY/ZhZffqxJELqaogh2UWud++yRnljMzj8x+6cHiXpIzNmpf
-         4+kc46qAF04susDv9ZTPglITqPLlaRqnDmG4kFo/8YnvAlTiwxcWAcC4MLVdRft6Qigz
-         N8+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VC/JIV5qsOwhxCouss2cmvEeqs2TDLhQ0mM661bN7ok=;
-        b=Hx7Ro0d3Rxm5tBwWOMvfE6O10A8S41WvLseTXOUKzTHaLdR0nOh1m16p85FJXn5rqW
-         IKpvrjHtS/uS2YfKFAXMnP6GGWlFIvryuSrZtVSGmBl7JKBmBioWiUsXhTTJUK/TV/Gb
-         Dqcw6ER8jiu75Mj1DPfHoVCgYvc2tLoEZdx8QFBMYNmoXcx9YlboX/NP1HvXZe6BSMQZ
-         AdlU8i+mFbzIK0E61mZTqLoJnPRVpNkyzeutO25T73kGL97CtxfYQeNhKsymYj1wxxiM
-         7Ti2S5T7AEAwXVSrcvEyIpsSdfJICddETJLjn4LmAx7dVnmkEzjssnmWJ43T+o1LP27T
-         9j/A==
-X-Gm-Message-State: ANhLgQ01lRVP2EyPIeTnlwZmX6XBPyMHhWLiNeLIPEfvb4Vz9MyxEroj
-        B03F28Md3/KckRVY1C/LczDpdNRexUC8bDsA64U=
-X-Google-Smtp-Source: ADFU+vvMqD1JFdk69IMTU5ITVy0rQwPkOKE4NmtF0eEp/1gy1dl7vSR8G/ltqrccm7pnYbAbAQ4mRIMnk6x2FhpcQwA=
-X-Received: by 2002:aa7:958f:: with SMTP id z15mr20424965pfj.130.1584912024846;
- Sun, 22 Mar 2020 14:20:24 -0700 (PDT)
+        id S1726809AbgCVWTP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 18:19:15 -0400
+Received: from mga09.intel.com ([134.134.136.24]:5508 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726786AbgCVWTO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Mar 2020 18:19:14 -0400
+IronPort-SDR: MnHtTAhXaQ4HBKsKSXHdFg95ntStwAeBdkcA1gia4PzMZbQQLmfse14sVBF7cS13xrjwUB2jtI
+ z98QpBxUHdNg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2020 15:19:12 -0700
+IronPort-SDR: ArCCCWHZfxdjjjQGOMdgfA+yfU2ZGiAWq4zyZfdIijj1MbxJkGc/2Lb2CyulLY0Y45akDwVBGA
+ QNH8hg24P3UQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,294,1580803200"; 
+   d="scan'208";a="280987324"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga002.fm.intel.com with ESMTP; 22 Mar 2020 15:19:10 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1jG8w5-00C5OE-1f; Mon, 23 Mar 2020 00:19:13 +0200
+Date:   Mon, 23 Mar 2020 00:19:13 +0200
+From:   "andriy.shevchenko@intel.com" <andriy.shevchenko@intel.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "Tachici, Alexandru" <Alexandru.Tachici@analog.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Caprioru, Mircea" <Mircea.Caprioru@analog.com>
+Subject: Re: [PATCH v4 1/2] iio: dac: ad5770r: Add AD5770R support
+Message-ID: <20200322221913.GA1922688@smile.fi.intel.com>
+References: <20200218121031.27233-1-alexandru.tachici@analog.com>
+ <20200218121031.27233-2-alexandru.tachici@analog.com>
+ <20200321210921.GA2814584@smile.fi.intel.com>
+ <2942e900ab01957027b918b2a5fdbd665fe6b2ed.camel@analog.com>
 MIME-Version: 1.0
-References: <20200317101813.30829-1-andriy.shevchenko@linux.intel.com>
- <20200317101813.30829-4-andriy.shevchenko@linux.intel.com> <20200322172156.6c6ffb3b@archlinux>
-In-Reply-To: <20200322172156.6c6ffb3b@archlinux>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 22 Mar 2020 23:20:13 +0200
-Message-ID: <CAHp75Vc9gFX0C1ae_vs40+RRmQEdPRbkWCDA15OLrBmWuu7cdA@mail.gmail.com>
-Subject: Re: [PATCH v1 4/5] iio: pressure: bmp280: Drop unneeded explicit castings
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2942e900ab01957027b918b2a5fdbd665fe6b2ed.camel@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Mar 22, 2020 at 7:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Tue, 17 Mar 2020 12:18:12 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->
-> > In few places the unnecessary explicit castings are being used.
-> > Drop them for good.
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->
-> A passing comment inline, but seems sensible to me.
+On Sun, Mar 22, 2020 at 09:17:06AM +0000, Ardelean, Alexandru wrote:
+> On Sat, 2020-03-21 at 23:09 +0200, Andy Shevchenko wrote:
+> > On Tue, Feb 18, 2020 at 02:10:30PM +0200, Alexandru Tachici wrote:
+> > > The AD5770R is a 6-channel, 14-bit resolution, low noise, programmable
+> > > current output digital-to-analog converter (DAC) for photonics control
+> > > applications.
+> > > 
+> > > It contains five 14-bit resolution current sourcing DAC channels and one
+> > > 14-bit resolution current sourcing/sinking DAC channel.
+> > 
+> 
+> This patch made it into linux-next.
+> Doing a v2 now may be a bit noisy.
+> 
+> Maybe we can tidy-this-up later.
+> To be honest, it won't be the highest on our list.
+> [ I know how that sounds ]
 
-...
+Yes, you may consider a follow up.
 
-> > +     ret = regmap_bulk_read(data->regmap, BMP280_REG_PRESS_MSB, &tmp, 3);
+> We can probably leave it for other people to clean it up.
+> [ People that want to start contributing to the kernel ]
 
-(left for a context)
+Maybe, but isn't better to supply cleaner code in the first place?
 
-...
-
-> > +     __be16 tmp;
-> >       int ret;
-> > -     __be16 tmp = 0;
->
-> I haven't checked it but normally that sort of initialization got added
-> because a compiler got 'clever' and decided that it might be used uninitialized.
->
-> However, it's a bit odd in this case as there are lots of other calls
-> of the same thing that don't bother initializing.  So must not be that...
-
-When it's 3 bytes read (24 bit) it's required to get correct sign from
-the value or in general to avoid garbage in one byte.
-But here are two bytes to read to the 16 bit variable. No
-initialization required.
+I mean that these comments may be taken into consideration for the future
+contributions.
 
 -- 
 With Best Regards,
 Andy Shevchenko
+
+

@@ -2,43 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F42E18EB7C
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 19:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21A3918EB83
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 19:24:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725972AbgCVSXY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 14:23:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44562 "EHLO mail.kernel.org"
+        id S1725997AbgCVSYY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 14:24:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44820 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725785AbgCVSXX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 22 Mar 2020 14:23:23 -0400
+        id S1725785AbgCVSYX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Mar 2020 14:24:23 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4EEE620719;
-        Sun, 22 Mar 2020 18:23:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 16EAB206F9;
+        Sun, 22 Mar 2020 18:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584901402;
-        bh=5kXlQUFhN/OsSbu6PFT1ivfOoWp7NepQJnoeulgEEac=;
+        s=default; t=1584901462;
+        bh=yCz/ZT341lKLDKklGLVfKp6Q+x33rLv+tIrcibyvKJ0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hkb+yF6iLCOKhAJjZmv+4HYex2N/RGNlMz8pgfqQwU8v5Uw72G5wK/PIDFHgA5Sta
-         FvmZgaMyhoY5cxVx2D8jJ/zPmMtaiYxn21t8vnEk7CxwtTTXsyuxfH6t/41JlvFfrZ
-         LxjKCdDUpW7xnLnpXuj9CEbsPLds1MNMDOTdDcB8=
-Date:   Sun, 22 Mar 2020 18:23:18 +0000
+        b=0AfrCZThU/qf/WRxw+8nyxnzHig5IhoLfg2M1gD/6LwD6K3zDgO9Fa0JRZE/GZnI9
+         mhSK6+zutycPn7AJuRr8JQfKtVriZG2Y5U/rkOVjUiiBQcZERn55lyVdeKlhE9HzVf
+         DYKR0488Q5VkdbT7Dqgd1lzqo68OmqsWwJmi8nGk=
+Date:   Sun, 22 Mar 2020 18:24:16 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+To:     Nishant Malpani <nish.malpani25@gmail.com>
+Cc:     Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>,
+        Tomas Novotny <tomas@novotny.cz>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v2 6/6] dt-bindings: iio: Add adis16475 documentation
-Message-ID: <20200322182318.5029a402@archlinux>
-In-Reply-To: <20200316125312.39178-7-nuno.sa@analog.com>
-References: <20200316125312.39178-1-nuno.sa@analog.com>
-        <20200316125312.39178-7-nuno.sa@analog.com>
+        "Angus Ainslie (Purism)" <angus@akkea.ca>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: vcnl4000: convert bindings to
+ YAML format
+Message-ID: <20200322182416.079dc992@archlinux>
+In-Reply-To: <f5ea512c-d427-94c7-cf5f-f1300cbd4aa3@gmail.com>
+References: <cover.1584380360.git.agx@sigxcpu.org>
+        <6182053bb8c442e0b4d72b34c83c7f1565f4a258.1584380360.git.agx@sigxcpu.org>
+        <20200322172910.51456fe4@archlinux>
+        <f5ea512c-d427-94c7-cf5f-f1300cbd4aa3@gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -48,203 +53,127 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 16 Mar 2020 13:53:12 +0100
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Sun, 22 Mar 2020 23:07:00 +0530
+Nishant Malpani <nish.malpani25@gmail.com> wrote:
 
-> Document the ADIS16475 device devicetree bindings.
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> On 22/03/20 10:59 pm, Jonathan Cameron wrote:
+> > On Mon, 16 Mar 2020 18:46:17 +0100
+> > Guido G=C3=BCnther <agx@sigxcpu.org> wrote:
+> >  =20
+> >> Convert the vcnl4000 device tree bindings to the new YAML format.
+> >>
+> >> Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org> =20
+> > Looks good to me. However, I've made far too many mistakes in
+> > DT binding review recently, so will definitely be waiting for Rob to
+> > get a chance to look at it!
+> >=20
+> > Jonathan
+> >  =20
+> >> ---
+> >>   .../bindings/iio/light/vcnl4000.txt           | 24 ----------
+> >>   .../bindings/iio/light/vcnl4000.yaml          | 45 +++++++++++++++++=
+++
+> >>   2 files changed, 45 insertions(+), 24 deletions(-)
+> >>   delete mode 100644 Documentation/devicetree/bindings/iio/light/vcnl4=
+000.txt
+> >>   create mode 100644 Documentation/devicetree/bindings/iio/light/vcnl4=
+000.yaml
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/iio/light/vcnl4000.txt =
+b/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
+> >> deleted file mode 100644
+> >> index 955af4555c90..000000000000
+> >> --- a/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
+> >> +++ /dev/null
+> >> @@ -1,24 +0,0 @@
+> >> -VISHAY VCNL4000 -  Ambient Light and proximity sensor
+> >> -
+> >> -This driver supports the VCNL4000/10/20/40 and VCNL4200 chips
+> >> -
+> >> -Required properties:
+> >> -
+> >> -	-compatible: must be one of :
+> >> -        vishay,vcnl4000
+> >> -        vishay,vcnl4010
+> >> -        vishay,vcnl4020
+> >> -        vishay,vcnl4040
+> >> -        vishay,vcnl4200
+> >> -
+> >> -	-reg: I2C address of the sensor, should be one from below based on t=
+he model:
+> >> -        0x13
+> >> -        0x51
+> >> -        0x60
+> >> -
+> >> -Example:
+> >> -
+> >> -light-sensor@51 {
+> >> -	compatible =3D "vishay,vcnl4200";
+> >> -	reg =3D <0x51>;
+> >> -};
+> >> diff --git a/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml=
+ b/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
+> >> new file mode 100644
+> >> index 000000000000..74d53cfbeb85
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/iio/light/vcnl4000.yaml
+> >> @@ -0,0 +1,45 @@
+> >> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: http://devicetree.org/schemas/iio/light/vcnl4000.yaml# =20
+> Shouldn't the devicetree binding document be named with the manufacturer=
+=20
+> part as well?
 
-Hmm. A bit fiddly so definitely want a review from Rob.
-
-Thanks,
+Yup. Good spot.  Told you I kept missing things ;)
 
 Jonathan
-> ---
-> Changes in v2:
->  * Remove burst32 property;
->  * Rename clk-mode to adi,sync-mode;
->  * Remove clock-names;
->  * Add conditionals to state that clocks is only needed depending on adi,=
-sync-mode property
->=20
->  .../bindings/iio/imu/adi,adis16475.yaml       | 146 ++++++++++++++++++
->  MAINTAINERS                                   |   1 +
->  2 files changed, 147 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis164=
-75.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml=
- b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> new file mode 100644
-> index 000000000000..9eeb42773edd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> @@ -0,0 +1,146 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/imu/adi,adis16475.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices ADIS16475 and similar IMUs
-> +
-> +maintainers:
-> +  - Nuno S=C3=A1 <nuno.sa@analog.com>
-> +
-> +description: |
-> +  Analog Devices ADIS16475 and similar IMUs
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD=
-IS16475.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,adis16475-1
-> +      - adi,adis16475-2
-> +      - adi,adis16475-3
-> +      - adi,adis16477-1
-> +      - adi,adis16477-2
-> +      - adi,adis16477-3
-> +      - adi,adis16470
-> +      - adi,adis16465-1
-> +      - adi,adis16465-2
-> +      - adi,adis16465-3
-> +      - adi,adis16467-1
-> +      - adi,adis16467-2
-> +      - adi,adis16467-3
-> +      - adi,adis16500
-> +      - adi,adis16505-1
-> +      - adi,adis16505-2
-> +      - adi,adis16505-3
-> +      - adi,adis16507-1
-> +      - adi,adis16507-2
-> +      - adi,adis16507-3
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-cpha: true
-> +
-> +  spi-cpol: true
-> +
-> +  spi-max-frequency:
-> +    maximum: 2000000
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description:
-> +      Must be the device tree identifier of the RESET pin. If specified,
-> +      it will be asserted during driver probe. As the line is active low,
-> +      it should be marked GPIO_ACTIVE_LOW.
-> +    maxItems: 1
-> +
-> +  adi,sync-mode:
-> +    description:
-> +      Configures the device SYNC pin. The following modes are supported
-> +      0 - output_sync
-> +      1 - direct_sync
-> +      2 - scaled_sync
-> +      3 - pulse_sync
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 0
-> +    maximum: 3
-> +
-> +  adi,scaled-output-hz:
-> +    description:
-> +      This property must be present if the clock mode is scaled-sync thr=
-ough
-> +      clock-names property. In this mode, the input clock can have a ran=
-ge
-> +      of 1Hz to 128HZ which must be scaled to originate an allowable sam=
-ple
-> +      rate. This property specifies that rate.
-> +    minimum: 1900
-> +    maximum: 2100
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - spi-cpha
-> +  - spi-cpol
-> +
-> +if:
-> +  properties:
-> +    compatible:
-> +      contains:
-> +        enum:
-> +          - adi,adis16500
-> +          - adi,adis16505-1
-> +          - adi,adis16505-2
-> +          - adi,adis16505-3
-> +          - adi,adis16507-1
-> +          - adi,adis16507-2
-> +          - adi,adis16507-3
-> +
-> +then:
-> +  properties:
-> +    adi,sync-mode:
-> +      minimum: 0
-> +      maximum: 2
-> +
-> +  if:
-> +    properties:
-> +      adi,sync-mode:
-> +        enum: [1, 2]
-> +
-> +  then:
-> +    dependencies:
-> +      adi,sync-mode: [ clocks ]
-> +
-> +else:
-> +  if:
-> +    properties:
-> +      adi,sync-mode:
-> +        enum: [1, 2, 3]
-> +
-> +  then:
-> +    dependencies:
-> +      adi,sync-mode: [ clocks ]
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +            #address-cells =3D <1>;
-> +            #size-cells =3D <0>;
-> +
-> +            adis16475: adis16475-3@0 {
 
-Generic name for nodes.  imu I guess here.
-
-> +                    compatible =3D "adi,adis16475-3";
-> +                    reg =3D <0>;
-> +                    spi-cpha;
-> +                    spi-cpol;
-> +                    spi-max-frequency =3D <2000000>;
-> +                    interrupts =3D <4 IRQ_TYPE_EDGE_RISING>;
-> +                    interrupt-parent =3D <&gpio>;
-> +            };
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f11262f1f3bb..f8ccc92ab378 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1015,6 +1015,7 @@ W:	http://ez.analog.com/community/linux-device-driv=
-ers
->  S:	Supported
->  F:	drivers/iio/imu/adis16475.c
->  F:	Documentation/ABI/testing/sysfs-bus-iio-imu-adis16475
-> +F:	Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> =20
->  ANALOG DEVICES INC ADM1177 DRIVER
->  M:	Beniamin Bia <beniamin.bia@analog.com>
+>=20
+> With regards,
+> Nishant
+>=20
+> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >> +
+> >> +title: VISHAY VCNL4000 ambient light and proximity sensor
+> >> +
+> >> +maintainers:
+> >> +  - Peter Meerwald <pmeerw@pmeerw.net>
+> >> +
+> >> +description: |
+> >> +  Ambient light sensing with proximity detection over an i2c
+> >> +  interface.
+> >> +
+> >> +properties:
+> >> +  compatible:
+> >> +    enum:
+> >> +      - vishay,vcnl4000
+> >> +      - vishay,vcnl4010
+> >> +      - vishay,vcnl4020
+> >> +      - vishay,vcnl4040
+> >> +      - vishay,vcnl4200
+> >> +
+> >> +  reg:
+> >> +    maxItems: 1
+> >> +
+> >> +required:
+> >> +  - compatible
+> >> +  - reg
+> >> +
+> >> +additionalProperties: false
+> >> +
+> >> +examples:
+> >> +- |
+> >> +  i2c {
+> >> +      #address-cells =3D <1>;
+> >> +      #size-cells =3D <0>;
+> >> +
+> >> +      light-sensor@51 {
+> >> +              compatible =3D "vishay,vcnl4200";
+> >> +              reg =3D <0x51>;
+> >> +      };
+> >> +  };
+> >> +... =20
+> >  =20
 

@@ -2,90 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57F6618EAA3
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 18:03:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33B2D18EAA9
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 18:12:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725985AbgCVRDD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 13:03:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43204 "EHLO mail.kernel.org"
+        id S1726583AbgCVRMV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 13:12:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46452 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725971AbgCVRDD (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 22 Mar 2020 13:03:03 -0400
+        id S1725972AbgCVRMV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Mar 2020 13:12:21 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 557FE20724;
-        Sun, 22 Mar 2020 17:03:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6D59E20724;
+        Sun, 22 Mar 2020 17:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584896582;
-        bh=FC8f42LrzM3LM3z5glrs2yzPEu23CwcVxoLsC9Kmaj4=;
+        s=default; t=1584897140;
+        bh=RNQAFnyFMkXLrBsta3/IXISWmGcuSDF4CGTlFiPimsM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=wfPc2ENOFhFnKKcmap5OjSUWOS/zaG/bfv1luQjBzEIfrvVgoBFbt6QQlIOJL5AC0
-         I0CCpL6bT4T2Wm5cAsR+RrmZN2Wp6+GjL2BG6Caz5Vt9I5Uk6CvmHeqQEX8PJ7d/B7
-         YXU64T6MFlZGpSEWY+dt0oTr08EYPChWHRU/8IhQ=
-Date:   Sun, 22 Mar 2020 17:02:58 +0000
+        b=AoVCimXv2hBVMlntlIz4eP20CJSDK+1ZzwBhN90oBM31QC11kgS8a45kUanDl7hVH
+         0OUdPRj0WkcANaFjta+Wk/yMuiiy9TgAgTdQ+pFnmO+UR2VAi/tu6xpPbdOnhiMnJQ
+         r574M90BGIjqWUlvpMHKUTPZY5SHEm/k4snPpInM=
+Date:   Sun, 22 Mar 2020 17:12:16 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "ardeleanalex@gmail.com" <ardeleanalex@gmail.com>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: buffer: re-introduce bitmap_zalloc() for trialmask
-Message-ID: <20200322170258.3abd9454@archlinux>
-In-Reply-To: <46516126-d22f-4bf8-a711-8218277d69f1@metafoo.de>
-References: <20200317123621.27722-1-alexandru.ardelean@analog.com>
-        <20200317125223.GC1922688@smile.fi.intel.com>
-        <cb09b6f882a786a74919eda8812f27d502363150.camel@analog.com>
-        <46516126-d22f-4bf8-a711-8218277d69f1@metafoo.de>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v1 1/5] iio: pressure: bmp280: Tolerate IRQ before
+ registering
+Message-ID: <20200322171216.3260cd37@archlinux>
+In-Reply-To: <20200317101813.30829-1-andriy.shevchenko@linux.intel.com>
+References: <20200317101813.30829-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 17 Mar 2020 14:18:43 +0100
-Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> On 3/17/20 1:53 PM, Ardelean, Alexandru wrote:
-> > On Tue, 2020-03-17 at 14:52 +0200, Andy Shevchenko wrote: =20
-> >> [External]
-> >>
-> >> On Tue, Mar 17, 2020 at 02:36:21PM +0200, Alexandru Ardelean wrote: =20
-> >>> Commit 3862828a903d3 ("iio: buffer: Switch to bitmap_zalloc()") intro=
-duced
-> >>> bitmap_alloc(), but commit 20ea39ef9f2f9 ("iio: Fix scan mask selecti=
-on")
-> >>> reverted it.
-> >>>
-> >>> This change adds it back. The only difference is that it's adding
-> >>> bitmap_zalloc(). There might be some changes later that would require
-> >>> initializing it to zero. In any case, now it's already zero-ing the
-> >>> trialmask. =20
-> >>
-> >> FWIW,
-> >> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> =20
-> >=20
-> > Thanks.
-> > And sorry for the hiccup back there. =20
->=20
-> It looks like a merge conflict. Both patches are in parallel sub-trees.=20
-> I guess one went through fixes and the other through the normal tree and=
-=20
-> then when they were merged, the issue was not resolved properly.
->=20
-> 2019-04-21 Greg Kroah-Hartman   M=E2=94=80=E2=94=90 Merge 5.1-rc6 into st=
-aging-next
-> 2019-02-20 Lars-Peter Clausen   =E2=94=82 o iio: Fix scan mask selection
-> 2019-03-04 Andy Shevchenko      o =E2=94=82 iio: buffer: Switch to bitmap=
-_zalloc
-> 2018-02-20 Greg Kroah-Hartman   M=E2=94=80=E2=94=A4 Merge tag 'iio-fixes-=
-for-4.16a
+On Tue, 17 Mar 2020 12:18:09 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Thanks for the detective work. I've added a note to the patch description.
+> With DEBUG_SHIRQ enabled we have a kernel crash
+> 
+> [  116.482696] BUG: kernel NULL pointer dereference, address: 0000000000000000
+> 
+> ...
+> 
+> [  116.606571] Call Trace:
+> [  116.609023]  <IRQ>
+> [  116.611047]  complete+0x34/0x50
+> [  116.614206]  bmp085_eoc_irq+0x9/0x10 [bmp280]
+> 
+> because DEBUG_SHIRQ mechanism fires an IRQ before registration and drivers
+> ought to be able to handle an interrupt happening before request_irq() returns.
+> 
+> Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+Hmm. Nasty corner case but fair enough to fix it up.
+I guess we should audit other drivers for similar paths...
+
+> ---
+>  drivers/iio/pressure/bmp280-core.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index 29c209cc1108..5e229b95308e 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -712,8 +712,7 @@ static int bmp180_measure(struct bmp280_data *data, u8 ctrl_meas)
+>  	unsigned int delay_us;
+>  	unsigned int ctrl;
+>  
+> -	if (data->use_eoc)
+> -		init_completion(&data->done);
+> +	reinit_completion(&data->done);
+
+reinit on the completion when we don't even have an interrupt
+(hence data->use_eoc == false) seems excessive.  Why did
+you drop the conditional?
 
 Jonathan
+
+
+
+>  
+>  	ret = regmap_write(data->regmap, BMP280_REG_CTRL_MEAS, ctrl_meas);
+>  	if (ret)
+> @@ -969,6 +968,9 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
+>  			"trying to enforce it\n");
+>  		irq_trig = IRQF_TRIGGER_RISING;
+>  	}
+> +
+> +	init_completion(&data->done);
+> +
+>  	ret = devm_request_threaded_irq(dev,
+>  			irq,
+>  			bmp085_eoc_irq,
+

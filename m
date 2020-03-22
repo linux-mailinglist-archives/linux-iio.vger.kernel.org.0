@@ -2,109 +2,280 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB26F18E578
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 00:46:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E957318E586
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Mar 2020 01:16:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728132AbgCUXqe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 Mar 2020 19:46:34 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:36185 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728056AbgCUXqe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 Mar 2020 19:46:34 -0400
-Received: by mail-pg1-f193.google.com with SMTP id z72so5138197pgz.3;
-        Sat, 21 Mar 2020 16:46:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=n9metYm6s3YaJ3/ZpWocgeR+36BfZbh9vZcxH9YLqhQ=;
-        b=RWYTwADMv+A/J38l0sD9mzA8pLC6AZPex1ResDj34HPdpL7xsBD9LFn8TNthBELoK/
-         pl8jMIhcgFav4787w9aCPwbDz6k1VjWIwt+VTS8X0/vmQ5LyA3uVV8vGbScyyL6f8w/e
-         kCmro/1Xcr90aQRrYjkrjKET6tLmMsR4M9dvCv01G5g2lEGAd+loYahtubNPZ5Ra5P2d
-         6403CIBtIKpJ1lXyaCuwlA7CEvem2quVixBojH6/3NgXOVbkQXAWvz9zO0rQQ60Tw18Y
-         JidI4EAoX0+TvEakQPcJ7cDahbNTx7H0zOTdaBSJPDxbCaowdXMidXINS+kpNJC9Xx+u
-         cmmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=n9metYm6s3YaJ3/ZpWocgeR+36BfZbh9vZcxH9YLqhQ=;
-        b=iNLL9PA6Vtd/LMelIJvCUiDIlSPfEQLLnP9luit8zmY7iS9H1BWIZ06h6NR4i+ktbU
-         2y0llg500ofFPSpXxM91aPNsjmh5VrRAOueidZXI6z5XJDU+8c74ld4TCO4lLfELvrkx
-         rOcAvvbLPPkI1YpFjEx6ZfFSfCmP1HIpYXMPbBMi9iJTXW0IP8+HQkCIbg/bGeB42J/S
-         DwjHTaiLa1hBlYB3I+8pZtlIEtK7x7Cur1WDM6irncgRBFmqvpZSTmFHMYCAgg9oZOU+
-         tLKU2I335VZCciSo6jSwGjHhkb+G25kt0afor7HGNpkRt+XHBp2B/R+5hhjCDkqAzUZj
-         amUw==
-X-Gm-Message-State: ANhLgQ0WJsow0WUgyPh0aj+3f+2+s/z3USgXOvNIjzruo226dP4FMPvR
-        +NS8GqW+2rqe4x6FfeXnrfauAJehB0F8nhesI0k=
-X-Google-Smtp-Source: ADFU+vt+H219tQ2mBEOX37saN+D653nyAXnJlOi1NauFfeSanfWKl/R5MXuCfLEicw6KCg5p6lT1s0j9dJyeS8TzoPQ=
-X-Received: by 2002:a05:6a00:2b4:: with SMTP id q20mr5566713pfs.36.1584834393200;
- Sat, 21 Mar 2020 16:46:33 -0700 (PDT)
+        id S1728035AbgCVAQ2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 21 Mar 2020 20:16:28 -0400
+Received: from mga04.intel.com ([192.55.52.120]:63640 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727533AbgCVAQ1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 21 Mar 2020 20:16:27 -0400
+IronPort-SDR: wcI2rlbUTz4rNlbAT4D21XudTzVrQYWYD1iLtOO/3xHaFy4k6ZDbNHZiHQLh4Snpm/KihCf/mY
+ 2Z3s110vRtTg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2020 17:16:27 -0700
+IronPort-SDR: qwzcQufUQI4z65Jdn4vXGYJt8gFp7OQsXvVcgDwmkwKi6cTTxIKgRukxqCddyW5YAe6kgN3sIR
+ jqfhYkV2Acrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,290,1580803200"; 
+   d="scan'208";a="292245426"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by FMSMGA003.fm.intel.com with ESMTP; 21 Mar 2020 17:16:25 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1jFoI0-00Br79-8M; Sun, 22 Mar 2020 02:16:28 +0200
+Date:   Sun, 22 Mar 2020 02:16:28 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Mike Looijmans <mike.looijmans@topic.nl>
+Cc:     jic23@kernel.org, linux-iio@vger.kernel.org, knaack.h@gmx.de,
+        lars@metafoo.de, pmeerw@pmeerw.net
+Subject: Re: [PATCH v3] iio: accel: Add support for the Bosch-Sensortec BMI088
+Message-ID: <20200322001628.GA2824675@smile.fi.intel.com>
+References: <20200316073208.19715-1-mike.looijmans@topic.nl>
+ <20200315120238.18c10af0@archlinux>
+ <20200313140415.20266-1-mike.looijmans@topic.nl>
+ <46bec9b8-28ee-6fd3-f615-2b8db43626aa@metafoo.de>
+ <20200319154842.1950-1-mike.looijmans@topic.nl>
 MIME-Version: 1.0
-References: <20200317135649.8876-1-michael.auchter@ni.com> <20200317145113.12413-1-michael.auchter@ni.com>
-In-Reply-To: <20200317145113.12413-1-michael.auchter@ni.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 22 Mar 2020 01:46:21 +0200
-Message-ID: <CAHp75Veh3QRfqVFOpYbuuxcPqirc1_YrF-iZfRjNsYk7DWqYpQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: adc: ad7291: convert to device tree
-To:     Michael Auchter <michael.auchter@ni.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200319154842.1950-1-mike.looijmans@topic.nl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 17, 2020 at 4:53 PM Michael Auchter <michael.auchter@ni.com> wrote:
->
-> There are no in-tree users of the platform data for this driver, so
-> remove it and convert the driver to use device tree instead.
+On Thu, Mar 19, 2020 at 04:48:42PM +0100, Mike Looijmans wrote:
+> The BMI088 is a combined module with both accelerometer and gyroscope.
+> This adds the accelerometer driver support for the SPI interface.
+> The gyroscope part is already supported by the BMG160 driver.
 
 ...
 
-> +       chip->reg = devm_regulator_get_optional(&client->dev, "vref");
-> +       if (!IS_ERR(chip->reg)) {
+> +#include <linux/acpi.h>
 
-Why not to go with usual positive conditional?
-
-> +               ret = regulator_enable(chip->reg);
-> +               if (ret)
-> +                       return ret;
-> +
->                 chip->command |= AD7291_EXT_REF;
-> +       } else {
-> +               if (PTR_ERR(chip->reg) != -ENODEV)
-> +                       return PTR_ERR(chip->reg);
-> +
-> +               chip->reg = NULL;
-> +       }
+How this is being used?
 
 ...
 
-> +static const struct of_device_id ad7291_of_match[] = {
-> +       { .compatible = "adi,ad7291", },
+> +EXPORT_SYMBOL_GPL(bmi088_regmap_conf);
+> +
+> +
 
-> +       {},
+Too many blank lines
 
-No need for comma.
+...
+
+> +#ifdef CONFIG_PM
+
+Hmm... Why do you need this? Doesn't PM runtime have the stubs for !PM case?
+
+> +#else
+> +static int bmi088_accel_set_power_state(struct bmi088_accel_data *data,
+> +	bool on)
+> +{
+> +	return 0;
+> +}
+> +#endif
+
+...
+
+> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CTRL,
+> +				on_off ? 0x4 : 0x0);
+> +	if (ret < 0) {
+
+Why all these ' < 0'? I don't remember that regmap API returns positive numbers
+from this type of calls.
+
+...
+
+> +
+> +static int bmi088_accel_set_sample_freq(struct bmi088_accel_data *data, int val)
+> +{
+> +	unsigned int value = BMI088_ACCEL_MODE_ODR_1600;
+> +	unsigned int freq = 1600;
+> +	int ret;
+> +
+> +	if (val < 12 || val > 1600)
+> +		return -EINVAL;
+
+> +	while (freq > val && value > BMI088_ACCEL_MODE_ODR_12_5) {
+> +		--value;
+> +		freq >>= 1;
+> +	}
+
+You can use bit operations instead of loop.
+
+> +	ret = regmap_update_bits(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
+> +				 0x0f, value);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
+
+	return regmap_...(...);
+
+> +}
+
+...
+
+> +static int bmi088_accel_get_temp(struct bmi088_accel_data *data, int *val)
+> +{
+> +	int ret;
+> +	__s16 temp;
+> +
+> +	mutex_lock(&data->mutex);
+
+> +	ret = regmap_bulk_read(data->regmap, BMI088_ACCEL_REG_TEMP,
+> +			       &data->buffer, 2);
+
+sizeof() ?
+
+> +	temp = get_unaligned_be16(data->buffer);
+> +
+> +	mutex_unlock(&data->mutex);
+> +
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*val = temp >> 5;
+> +
+> +	return IIO_VAL_INT;
+> +}
+
+...
+
+> +static int bmi088_accel_get_axis(struct bmi088_accel_data *data,
+> +				 struct iio_chan_spec const *chan,
+> +				 int *val)
+> +{
+> +	int ret;
+
+> +	__s16 raw_val;
+
+s16 ?
+Also applies to the rest.
+
+> +	return IIO_VAL_INT;
+> +}
+
+...
+
+> +static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
+> +				  struct iio_chan_spec const *chan,
+> +				  int val, int val2, long mask)
+> +{
+> +	struct bmi088_accel_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		mutex_lock(&data->mutex);
+> +		ret = bmi088_accel_set_sample_freq(data, val);
+> +		mutex_unlock(&data->mutex);
+> +		break;
+> +	default:
+> +		ret = -EINVAL;
+> +	}
+> +
+
+> +	return ret;
+
+Replace break with this?
+
+> +}
+
+...
+
+> +static struct attribute *bmi088_accel_attributes[] = {
+> +	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
+
+> +	NULL,
+
+Terminators are good w/o comma.
 
 > +};
 
 ...
 
-> +               .of_match_table = of_match_ptr(ad7291_of_match),
+> +static const unsigned long bmi088_accel_scan_masks[] = {
+> +				BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
+> +				0};
 
-No need to use of_match_ptr(). Haven't you got a compiler warning in !OF case?
+Indentation issues.
+
+> +
+> +
+
+Too many blank lines.
+
+...
+
+> +	/* Validate chip ID */
+> +	for (i = 0; i < ARRAY_SIZE(bmi088_accel_chip_info_tbl); i++) {
+> +		if (bmi088_accel_chip_info_tbl[i].chip_id == val) {
+> +			data->chip_info = &bmi088_accel_chip_info_tbl[i];
+> +			break;
+> +		}
+> +	}
+
+> +
+
+No need for this blank line.
+
+> +	if (!data->chip_info) {
+
+More usual pattern to check loop counter against array size.
+
+> +		dev_err(dev, "Invalid chip %x\n", val);
+> +		return -ENODEV;
+> +	}
+
+...
+
+> +	/* Set Default Range */
+> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_ACC_RANGE,
+> +			   BMI088_ACCEL_RANGE_6G);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
+
+	return regmap_...();
+
+...
+
+> +	ret = iio_device_register(indio_dev);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Unable to register iio device\n");
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+
+	if (ret)
+		dev_err();
+	return ret;
+
+...
+
+> +	ret = bmi088_accel_set_mode(data, BMI088_ACCEL_MODE_SUSPEND);
+> +	if (ret < 0)
+> +		return -EAGAIN;
+
+Is this error code dictated by PM runtime API?
+Otherwise
+	return bmi088_...();
+
+> +
+> +	return 0;
 
 -- 
 With Best Regards,
 Andy Shevchenko
+
+

@@ -2,134 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFFA318FBE9
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 18:52:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 238B418FCF1
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 19:45:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726962AbgCWRwd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Mar 2020 13:52:33 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:41264 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725880AbgCWRwd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Mar 2020 13:52:33 -0400
-Received: by mail-pl1-f195.google.com with SMTP id t16so6218559plr.8
-        for <linux-iio@vger.kernel.org>; Mon, 23 Mar 2020 10:52:33 -0700 (PDT)
+        id S1727544AbgCWSp3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Mar 2020 14:45:29 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:37840 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727275AbgCWSp3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Mar 2020 14:45:29 -0400
+Received: by mail-io1-f67.google.com with SMTP id q9so15415802iod.4
+        for <linux-iio@vger.kernel.org>; Mon, 23 Mar 2020 11:45:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=NTsJVXFyBe5n2J4yvrNhtYB6s8FILu94rLXAvDE+4Gk=;
-        b=QqKcyBZOabFgMGkIZO+TEilyn0nNbsds6TzI6VKrhH3UaZ316WHPhXT7W5z9ibLcZZ
-         0WdK7LJGolrpMlmObvNl33iYMNE61QNV1WO1tprnzIqew5+YnkZIANSR1iiAMKMm7VtQ
-         /vDMVoM84lf7I0A3r279o3Hg4Sbkj2/4xSsTrIgsSnJdfRrZe80ayPyuzNv9mNi/KUMz
-         o/yC18rucrBUcU20OwrRBN3QQQOPA/CZ9r/Nu+5DZU2BMv97KWGVRWbAT6R7QYiQlH84
-         l+HUcnufMcljStmESnn9dZnDawarsJkIqEC4xSKgtUnsUXOp8s51XqBVhzd1LqMhQRwM
-         U1ag==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=icZYPj4zSkGWnoVAnbdqNMAmgPXta//xqBn7Y00v1rM=;
+        b=C1U5zzFeDObXO/GEF8f9ha1SyRra8p24g9S0I9zXXHkKED7mSKpS0EdX1oG4RhkYAA
+         T0tOhRkaqFmEzbgUBgS4d1T6Dov97Aa5JZJ0HFsQY20ukbD6rc/xFdkKYWxK5ZVNVttn
+         61p1oDzsJpnANqPkcbQErqfOcC7SOdtnaz/lU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=NTsJVXFyBe5n2J4yvrNhtYB6s8FILu94rLXAvDE+4Gk=;
-        b=JNIvcz7W8MLKOsejkQEmJ0aRuTqeX4xXDalvqC1hVDq0fJS6iDa8f2c0QlzN+Y/Sge
-         6sopbeqEHWDvpsV3SwIg0weHjAP54dvb14f1hm6aTPZICuG6opPLwhO/8WFL1TAUZPJE
-         R/VAqhqTU/KJR4vE6YNMJcl2gmQjWXWkwJCCFPxnVXwVbzVhVn691sCx6+PEDimeltfY
-         Rf2GkujyybYYwXB8FRz9f/bvNQcO1cU7E1I85uf0k1D35xSj38fgweSwMq3hfrR2ybJx
-         QFN4frg6t0ntKT8+BkEDiX7LWA6KhlbXFOO5aPsKQHL3WIKXl1PsiK0Q3ujf/26Xw8qK
-         U8AA==
-X-Gm-Message-State: ANhLgQ1hRut480srqHdPYRU++/nFCA8qfHdw3u1R0HZd1xXG5zkpqr8M
-        m9kXUdVkvRjpHl3ExAwGMaM=
-X-Google-Smtp-Source: ADFU+vuYP7OS5jVAvY0oLvrokrcY96CYIAJFNHNrsBj4EmVocePSJeFsEI3QicVVWxxXtbusYmNWBQ==
-X-Received: by 2002:a17:90a:fa96:: with SMTP id cu22mr482775pjb.187.1584985952666;
-        Mon, 23 Mar 2020 10:52:32 -0700 (PDT)
-Received: from deeUbuntu ([103.240.207.191])
-        by smtp.gmail.com with ESMTPSA id 189sm4195902pgh.58.2020.03.23.10.52.28
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 23 Mar 2020 10:52:32 -0700 (PDT)
-Date:   Mon, 23 Mar 2020 23:22:24 +0530
-From:   DEEPAK VARMA <mh12gx2825@gmail.com>
-To:     Stefano Brivio <sbrivio@redhat.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        outreachy-kernel@googlegroups.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Baluta <daniel.baluta@gmail.com>,
-        kieran.bingham@ideasonboard.com,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=icZYPj4zSkGWnoVAnbdqNMAmgPXta//xqBn7Y00v1rM=;
+        b=bqIJz0vD/+fGktXBl8/czHpyq6Xf+OAyyX0uDkadwc8jeD4Yu8W/edZJn1hnCcU8nu
+         X7UOjeHd4xnErin8XNSizMdwFQT0bSaMOsncyTgXs2hrlDznnbiTtZprOTiSo1dxHVgO
+         jHlAYNdEPkBnEC+t80lHkfZFGR5HGFmMDNDoSJI/Lpz7DV0e0pRaMJH5c4zQLIyHMi5c
+         uoBOk2OEZIb7o6ZRvA7gb+P7JQydZtGd+f5e114/jwgfYiW5BNFQ/i/KJUgY8sf+zrp+
+         ki0/AziM8brqpJCI2ds5w39kQoy8CQM3UOlTIJzCmdqsovCa5dXCVGU5KfugDcjGbUbr
+         5C8g==
+X-Gm-Message-State: ANhLgQ29zd8vf/xziDq2YkgW0LIFfsxyXu5OUG3Es2+wF3w8sAWvwrxn
+        /zBTa7uznzUt8D4u/lp4lsH3JpBnreY=
+X-Google-Smtp-Source: ADFU+vulf7R6STk8+OCHoqvxohDJjIWY7qIWjV1A2vWb23ySpEkG8Wsj9uavHDn/ly08NYJCj6mYOA==
+X-Received: by 2002:a5e:d919:: with SMTP id n25mr20218429iop.205.1584989127783;
+        Mon, 23 Mar 2020 11:45:27 -0700 (PDT)
+Received: from derch.Home (75-166-136-192.hlrn.qwest.net. [75.166.136.192])
+        by smtp.gmail.com with ESMTPSA id y6sm604857ilc.41.2020.03.23.11.45.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2020 11:45:27 -0700 (PDT)
+From:   Daniel Campello <campello@chromium.org>
+To:     LKML <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Daniel Campello <campello@chromium.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [Outreachy kernel] Re: [PATCH v3 3/4] staging: iio: adc: ad7192:
- get_filter_freq code optimization
-Message-ID: <20200323175223.GC22110@deeUbuntu>
-References: <cover.1584904896.git.mh12gx2825@gmail.com>
- <dad3cdb5de76234cc460300c31aea6af671f81ad.1584904896.git.mh12gx2825@gmail.com>
- <CAHp75VfC=y1mHW5=ghwdMMZYg=00_a5RB0Phz4j_vM77pehvMA@mail.gmail.com>
- <20200323014935.48048405@elisabeth>
- <CAHp75VfF+oDWsOF+_=U6YBeP60XLF=SLYzExa=5WjLSgoMUw9A@mail.gmail.com>
- <20200323131531.1d6c8f93@elisabeth>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: iio: Add bindings for sx9310 sensor
+Date:   Mon, 23 Mar 2020 12:45:14 -0600
+Message-Id: <20200323124310.1.I6ed779cd21abf3e70f21c1562bbda81f590976ab@changeid>
+X-Mailer: git-send-email 2.25.1.696.g5e7596f4ac-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200323131531.1d6c8f93@elisabeth>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 23, 2020 at 01:15:31PM +0100, Stefano Brivio wrote:
-> On Mon, 23 Mar 2020 11:28:52 +0200
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> 
-> > On Mon, Mar 23, 2020 at 2:49 AM Stefano Brivio <sbrivio@redhat.com> wrote:
-> > > On Mon, 23 Mar 2020 01:44:20 +0200
-> > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:  
-> > > > On Sun, Mar 22, 2020 at 9:57 PM Deepak R Varma <mh12gx2825@gmail.com> wrote:  
-> > > > >
-> > > > > Current implementation of the function ad7192_get_available_filter_freq
-> > > > > repeats calculation of output data rate a few times. We can simplify
-> > > > > these steps by refactoring out the calculation of fADC. This would also
-> > > > > addresses the checkpatch warning of line exceeding 80 character.  
-> > > >
-> > > > I'm not sure you did an equivalent changes. I believe in the original
-> > > > code precision is better. Consider low clock frequencies when 10 bit
-> > > > right shift may hide some bits of the division.  
-> > >
-> > > Note that those bits are eventually "hidden" in the same way later,  
-> > 
-> > Even if mathematically (arithmetically) evaluation is correct, we have
-> > to remember that computers are bad with floating point and especially
-> > kernel, which uses integer arithmetic. That said, it's easy to get
-> > off-by-one error (due to precision lost) if we do big division before
-> > (not so big) multiplication.
-> 
-> That's exactly the point I was trying to explain below: swapping steps
-> in a sequence of DIV_ROUND_CLOSEST() (*not* of arithmetic divisions),
-> *should* not affect quantisation ("off-by-one") error.
-> 
-> I'm not entirely sure in this case, so a quick "demonstration" in
-> Python or suchlike as you suggested would be nice to have, indeed.
-> 
-> > > despite the different sequence, due to DIV_ROUND_CLOSEST() being used
-> > > at every step (both before and after the change) without other
-> > > operations occurring.  
-> > 
-> > By the way, where AD7192_SINC3_FILTER and AD7192_SINC4_FILTER
-> > multiplications disappear and why?
-> 
-> Those were in fact divisions (multiplications of the divisor). Overall,
-> these steps are now arranged in a way closer to how they are presented
-> in the datasheet mentioned here (up to "Chop Enabled" paragraph, page
-> 26).
-> 
+Adds device tree bandings for sx9310 sensor.
 
-Thank you Andy and Stefano for your comments. Its very thoughtful. I am
-not much familiar with Python so far, but thinking on evaluating your
-suggestion in a sample c program. I will share the outcome shortly.
+Signed-off-by: Daniel Campello <campello@chromium.org>
+---
 
-Deepak.
+ .../iio/proximity/semtech,sx9310.yaml         | 52 +++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
 
+diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+new file mode 100644
+index 00000000000000..da3424abe37e9d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+@@ -0,0 +1,52 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9310.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Semtech's SX9310 capacitive proximity sensor
++
++maintainers:
++  - Daniel Campello <campello@chromium.org>
++
++description: |
++  Semtech's SX9310/SX9311 capacitive proximity/button solution.
++
++  Specifications about the devices can be found at:
++  https://www.semtech.com/products/smart-sensing/sar-sensors/sx9310
++
++properties:
++  compatible:
++    enum:
++      - semtech,sx9310
++      - semtech,sx9311
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    description:
++      The sole interrupt generated by the device used to announce the
++      preceding reading request has finished and that data is
++      available or that a close/far proximity event has happened.
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      proximity@28 {
++        compatible = "semtech,sx9310";
++        reg = <0x28>;
++        interrupt-parent = <&pio>;
++        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
++      };
++    };
+--
+2.25.1.696.g5e7596f4ac-goog
 
-> -- 
-> Stefano
-> 

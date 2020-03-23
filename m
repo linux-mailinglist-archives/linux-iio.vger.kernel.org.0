@@ -2,125 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AC3818F939
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 17:05:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78ABA18FA14
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 17:40:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727485AbgCWQFe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Mar 2020 12:05:34 -0400
-Received: from mga07.intel.com ([134.134.136.100]:46754 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727479AbgCWQFe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 23 Mar 2020 12:05:34 -0400
-IronPort-SDR: t/H1DBiayEHmqAkdDEAoeAGIG4Ez1Aax5SU24Fn9IRHigGJ0q7+WqNXxwASdxg6cxohpjejQun
- +NBivTErJfBA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2020 09:05:33 -0700
-IronPort-SDR: 7O/Nrp0ZmN2eUWqYaSNVfMn+7z3XKsjRcZ2D6zOChIXsFrixHltSjKSGQKeMNLmc6hj0/jdKmS
- lWbogD1KkJLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,297,1580803200"; 
-   d="scan'208";a="246241169"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga003.jf.intel.com with ESMTP; 23 Mar 2020 09:05:30 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1jGPa0-00CHXi-RE; Mon, 23 Mar 2020 18:05:32 +0200
-Date:   Mon, 23 Mar 2020 18:05:32 +0200
-From:   'Andy Shevchenko' <andy.shevchenko@gmail.com>
-To:     David Laight <David.Laight@ACULAB.COM>
-Cc:     Rohit Sarkar <rohitsarkar5398@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "dragos.bogdan@analog.com" <dragos.bogdan@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>
-Subject: Re: [PATCH] iio: gyro: adis16136: use scnprintf instead of snprintf
-Message-ID: <20200323160532.GS1922688@smile.fi.intel.com>
-References: <5e723666.1c69fb81.3545b.79c3@mx.google.com>
- <20200322002542.GA2826015@smile.fi.intel.com>
- <5e77017a.1c69fb81.dc341.8ab9@mx.google.com>
- <CAHp75VddtJs1ZCk1XAZ2WJLhWQDcVwiiN5gDpK9oYPEOS=c_ZQ@mail.gmail.com>
- <81821e142e3c48febb7ab357dd200992@AcuMS.aculab.com>
+        id S1727491AbgCWQk3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Mar 2020 12:40:29 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2584 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727479AbgCWQk3 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 23 Mar 2020 12:40:29 -0400
+Received: from lhreml701-cah.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id E7219BDF19CD4CCF572A;
+        Mon, 23 Mar 2020 16:40:26 +0000 (GMT)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ lhreml701-cah.china.huawei.com (10.201.108.42) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Mon, 23 Mar 2020 16:40:26 +0000
+Received: from localhost (10.47.90.106) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Mon, 23 Mar
+ 2020 16:40:25 +0000
+Date:   Mon, 23 Mar 2020 16:40:21 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+CC:     Mike Looijmans <mike.looijmans@topic.nl>, <jic23@kernel.org>,
+        <linux-iio@vger.kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
+        <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v3] iio: accel: Add support for the Bosch-Sensortec
+ BMI088
+Message-ID: <20200323164021.0000601f@Huawei.com>
+In-Reply-To: <20200323104543.GH1922688@smile.fi.intel.com>
+References: <20200316073208.19715-1-mike.looijmans@topic.nl>
+        <20200315120238.18c10af0@archlinux>
+        <20200313140415.20266-1-mike.looijmans@topic.nl>
+        <46bec9b8-28ee-6fd3-f615-2b8db43626aa@metafoo.de>
+        <20200319154842.1950-1-mike.looijmans@topic.nl>
+        <20200322001628.GA2824675@smile.fi.intel.com>
+        <826f5f78-6ce7-91f0-0ca2-880ac45c8df2@topic.nl>
+        <20200323104543.GH1922688@smile.fi.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <81821e142e3c48febb7ab357dd200992@AcuMS.aculab.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.90.106]
+X-ClientProxiedBy: lhreml721-chm.china.huawei.com (10.201.108.72) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 23, 2020 at 03:04:23PM +0000, David Laight wrote:
-> From: Andy Shevchenko
-> > Sent: 22 March 2020 10:27
-> > On Sun, Mar 22, 2020 at 8:11 AM Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
-> > >
-> > > On Sun, Mar 22, 2020 at 02:25:42AM +0200, Andy Shevchenko wrote:
-> > > > On Wed, Mar 18, 2020 at 08:25:22PM +0530, Rohit Sarkar wrote:
-> > > > > scnprintf returns the actual number of bytes written into the buffer as
-> > > > > opposed to snprintf which returns the number of bytes that would have
-> > > > > been written if the buffer was big enough. Using the output of snprintf
-> > > > > may lead to difficult to detect bugs.
-> > > >
-> > > > Nice. Have you investigate the code?
-> > > >
-> > > > > @@ -96,7 +96,7 @@ static ssize_t adis16136_show_serial(struct file *file,
-> > > > >     if (ret)
-> > > > >             return ret;
-> > > > >
-> > > > > -   len = snprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
-> > > > > +   len = scnprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
-> > > > >             lot3, serial);
-> > > > >
-> > > > >     return simple_read_from_buffer(userbuf, count, ppos, buf, len);
-> > > >
-> > > > The buffer size is 20, the pattern size I count to 19. Do you think snprintf()
-> > > > can fail?
-> > > That might be the case, but IMO using scnprintf can be considered as a
-> > > best practice. There is no overhead with this change and further if the
-> > > pattern is changed by someone in the future they might overlook the
-> > > buffersize
+On Mon, 23 Mar 2020 12:45:43 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+
+> On Mon, Mar 23, 2020 at 10:21:07AM +0100, Mike Looijmans wrote:
+> > On 22-03-2020 01:16, Andy Shevchenko wrote:  
+> > > On Thu, Mar 19, 2020 at 04:48:42PM +0100, Mike Looijmans wrote:  
+> 
+> ...
+> 
+> > > > +static int bmi088_accel_get_temp(struct bmi088_accel_data *data, int *val)
+> > > > +{
+> > > > +	int ret;
+> > > > +	__s16 temp;
+> > > > +
+> > > > +	mutex_lock(&data->mutex);  
+> > >   
+> > > > +	ret = regmap_bulk_read(data->regmap, BMI088_ACCEL_REG_TEMP,
+> > > > +			       &data->buffer, 2);  
+> > > 
+> > > sizeof() ?  
 > > 
-> > If we cut the string above we will give wrong information to the user space.
-> > I think scnprintf() change is a noise and does not improve the situation anyhow.
+> > The buffer is a shared buffer, it will grow to accommodate reading all axis
+> > and timestamp in a single read (9 bytes) and for FIFO reads in foreseeable
+> > future.
+> > 
+> > I could use sizeof(temp) here though, but that wouldn't that be more
+> > confusing?  
 > 
-> If, for any reason, any of the values are large the user will get
-> corrupt data.
+> Yeah, perhaps comment explaining why 2 is being used there and why you write
+> directly to the buffer (no temporary variable being involved)?
 
-> But you don't want to leak random kernel memory to the user.
+This is all about ensuring it's a dma safe buffer without having to explicit
+kmallocs on eveyr read.  buffer is the temporary variable.
 
-How? Kernel already got crashed at this point.
+I would suggest using sizeof(__be16) which would make it clearer perhaps.
+
+Jonathan
+
 
 > 
-> So while you may be able to prove that this particular snprintf()
-> can't overflow, in general checking it requires knowledge of the code.
-
-Here it's still a noise.
-
-> With scnprintf() you know nothing odd will happen.
-
-...and quite likely hide a lot of issues.
-
-Really any "micro" / "small" correction / optimization to be very carefully
-thought through.
-
-> FWIW I suspect the 'standard' return value from snprintf() comes
-> from the return value of the original user-space implementations
-> which faked-up a FILE structure on stack and just silently discarded
-> the output bytes that wouldn't fit in the buffer (they'd usually
-> by flushed to a real file).
-> The original sprintf() just specified a very big length so the
-> flush would never be requested.
-
--- 
-With Best Regards,
-Andy Shevchenko
+> > > > +	temp = get_unaligned_be16(data->buffer);
+> > > > +
+> > > > +	mutex_unlock(&data->mutex);
+> > > > +
+> > > > +	if (ret < 0)
+> > > > +		return ret;
+> > > > +
+> > > > +	*val = temp >> 5;
+> > > > +
+> > > > +	return IIO_VAL_INT;
+> > > > +}  
+> 
 
 

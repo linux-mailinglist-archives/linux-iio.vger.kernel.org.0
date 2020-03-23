@@ -2,211 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02D4018F678
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 14:58:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F6818F713
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 15:39:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728562AbgCWN6w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Mar 2020 09:58:52 -0400
-Received: from mail-am6eur05on2063.outbound.protection.outlook.com ([40.107.22.63]:6561
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        id S1726263AbgCWOji (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Mar 2020 10:39:38 -0400
+Received: from mail-db8eur05on2096.outbound.protection.outlook.com ([40.107.20.96]:62329
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728548AbgCWN6v (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 23 Mar 2020 09:58:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=topicbv.onmicrosoft.com; s=selector2-topicbv-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bUz1W5XgDFmfYGfbsn4jn9YDesdu/f6qhDTPCclr2aw=;
- b=aw6fkybrW0SlD8rPjlZn+HIyqwWNj3aTA89wCUfRb2CXNcORGQK39nIyprxuUmIwumli3MMXxK3a0ac1NTumK0V6LG7Yt/7znWyj2ehPBkScuIs/65vDB/rijVho9o2V7KG52TaQMtHTvlZz7GqCYPYVgyaJxYRUk98kywBVnRE=
-Received: from AM6PR05CA0003.eurprd05.prod.outlook.com (2603:10a6:20b:2e::16)
- by DB6PR0401MB2424.eurprd04.prod.outlook.com (2603:10a6:4:4b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.20; Mon, 23 Mar
- 2020 13:58:45 +0000
-Received: from VE1EUR01FT032.eop-EUR01.prod.protection.outlook.com
- (2603:10a6:20b:2e:cafe::7) by AM6PR05CA0003.outlook.office365.com
- (2603:10a6:20b:2e::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.15 via Frontend
- Transport; Mon, 23 Mar 2020 13:58:45 +0000
-Authentication-Results: spf=pass (sender IP is 13.81.10.179)
- smtp.mailfrom=topicproducts.com; pmeerw.net; dkim=fail (signature did not
- verify) header.d=topicbv.onmicrosoft.com;pmeerw.net; dmarc=none action=none
- header.from=topic.nl;
-Received-SPF: Pass (protection.outlook.com: domain of topicproducts.com
- designates 13.81.10.179 as permitted sender) receiver=protection.outlook.com;
- client-ip=13.81.10.179; helo=westeu13-emailsignatures-cloud.codetwo.com;
-Received: from westeu13-emailsignatures-cloud.codetwo.com (13.81.10.179) by
- VE1EUR01FT032.mail.protection.outlook.com (10.152.2.222) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2814.14 via Frontend Transport; Mon, 23 Mar 2020 13:58:45 +0000
-Received: from EUR03-AM5-obe.outbound.protection.outlook.com (104.47.8.54) by westeu13-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Mon, 23 Mar 2020 13:58:43 +0000
+        id S1725830AbgCWOji (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 23 Mar 2020 10:39:38 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VZzJ1QxoYhkc2gn0Wco8U20I+L06S+/+stbpyBXxFid+ZX422T1txbuFaRPi1C0+QKwcOqoTRORYBnDxWwsMnkjTVs1lTw8ri8duMj3DHc81EmkAJoQe6CxahdWztbFYyY+JB5GWNZJPNlG3CSRAtrar+DpECPOVqNIkBBSVD6fvNm8qaEUVHUzjVeH4kUAz7Tx8+TG/z6IcAZAg6qUm6OiJx+CcnGB/vWdTX4y6EvAHe9bDPdnFLCokG3hdi9VQ42x8md3L9pv+WOiudg2Fnro6C3xq54X+9ibYCd7YB6N/hIqfG5A4ralwl7VH5UcAY00bcmEy1xlw//sHhpI2wQ==
+ b=NPxrwTjEmjiBiDY8LZpEK4w/WSfY1wkOyfeUKteW39624tdEdXx8z9aQZri5vlex6TuQFk9OdyixwUCFcSl1aP0x2pq/N17OH9D/6Bjdti1GI9OgOvpXyM+d5kDeLFxTYTa8E0i8NpFtpwqlwIix7RiT6cX+aLAJ8TUuWfQeBkEMoMhDHoDxJap8DtYXQVZZg5eG3sE0J4ATDgZ48igKUzY0kt10/aIP5HVH8cZEE4lr2meo/ba2WvkxjgMoZdsX5v9WAauesG0xK5s9yaGKDE5Ys/ChCFV7e4PhvC1J4KT5R/8xbf3wA4imRsYgq67wn1ElZ3LvtxLv9qBEkJWhxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bUz1W5XgDFmfYGfbsn4jn9YDesdu/f6qhDTPCclr2aw=;
- b=kUiCAIHTh6s+swusove4Da7xWJOApWaiqyYO/57k63s0rl++GQAd9ov6lgYhuxBUDHK7r/iVuzCoKDMrrPq36kSOLI4XA0dOavlaDslHpsW9ec2wm632qR7gfIkWUxsmtGSvkr5/Sm6dslJmPRrESbZm4sqoT+pDqG757OhUOCODhyYWP6p5bWwaSBgNPhUNuTZEPdvDldYL1R0mSMcz+kZVbQfewlef/3tdyPcqiiznxYtNTROeuNeA6XDeV558owKlnq3z6/1oiRpsgwr00jFPvwsRi5evlSYd955ht+zmMiVaylJ4F6h2HNSnwEA1PXJPBtz0xYwH32V/2Y+bUw==
+ bh=FKaw+4s7oO/7VK0GnXfWUNMG3BTlWobqcvB9P4MPNrk=;
+ b=NPCxjnhSZ6TzYIH1QN0N3jxPZb553VDbWqjC+NTZ39Y4gcqWzvS/SqqpiVdbXevxDvFAmjFca3vXivYtOU3KrqnctVAg3vzOCsu2CwiTOnls60R1EIUJ66Nv/nB9vz87A05kU1YKfbNgjJn5LVPi+jtn4TpRS/N5lUKfX8BLIH7yjM0DX3jfBckSGHgQEQky2Fwxk2uA22EjubvUz4OEpku60KtzT0qAI5S9mkDS0PSqccMBHrbt5LCDwPf6W92f0FelbLp4wvWX6dQ9jlmf1NZSoB6qpjavR7mVjZKWFdHu6wkgviZx9sypIwYZoU6mZYdjW9wAgtM9RwOwEzHp8g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=topicproducts.com; dmarc=pass action=none header.from=topic.nl;
- dkim=pass header.d=topic.nl; arc=none
+ smtp.mailfrom=norphonic.com; dmarc=pass action=none
+ header.from=norphonic.com; dkim=pass header.d=norphonic.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=topicbv.onmicrosoft.com; s=selector2-topicbv-onmicrosoft-com;
+ d=trafsysas.onmicrosoft.com; s=selector2-trafsysas-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bUz1W5XgDFmfYGfbsn4jn9YDesdu/f6qhDTPCclr2aw=;
- b=kjVZB/ZCCGf0pXh6yH8BC0xE2v3Qmdi+kne/i1EqKZOme5mv1uXlBFrizb8HSSWjGYHvCvkoo9jvxN0AZOrvq2ScHSezxJ1JNRkQ8Xqx6vs/i9tQxO2IZeWzhIliuRod70ZTMVCWUAyrKPBOHK+Q+AGwITtKL4aNgVhzeEsLQZs=
-Authentication-Results-Original: spf=none (sender IP is )
- smtp.mailfrom=mike.looijmans@topicproducts.com; 
-Received: from DB3PR0402MB3947.eurprd04.prod.outlook.com (52.134.67.147) by
- DB3PR0402MB3913.eurprd04.prod.outlook.com (52.134.65.143) with Microsoft SMTP
+ bh=FKaw+4s7oO/7VK0GnXfWUNMG3BTlWobqcvB9P4MPNrk=;
+ b=UZ0qdTw60u41bZRmV1Jm+d1GH28l2XwkGaWll+4vzyoVOjAsEIzbxCbtD/L1I/4gJqlPRmg7fj8YAsCmTLivXn52NUaTZoytoQ9qFIr0k8ezE4hvvnL+eQUiPpz1ZPC0Fg7+MXZnuHBQPFK1R7fVimIJLZu9Xaa7osBZDwL0SAw=
+Received: from DB6PR06MB3048.eurprd06.prod.outlook.com (10.170.210.140) by
+ DB6PR06MB4005.eurprd06.prod.outlook.com (10.168.21.30) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2835.18; Mon, 23 Mar 2020 13:58:41 +0000
-Received: from DB3PR0402MB3947.eurprd04.prod.outlook.com
- ([fe80::380e:f722:2d0d:9c71]) by DB3PR0402MB3947.eurprd04.prod.outlook.com
- ([fe80::380e:f722:2d0d:9c71%6]) with mapi id 15.20.2835.021; Mon, 23 Mar 2020
- 13:58:41 +0000
-Subject: Re: [PATCH v4] iio: accel: Add support for the Bosch-Sensortec BMI088
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>
-CC:     jic23@kernel.org, linux-iio@vger.kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net
-References: <20200323092830.29708-1-mike.looijmans@topic.nl>
- <20200323113120.GI1922688@smile.fi.intel.com>
- <35eef6af-bf1f-53e0-56a7-aa8161b4f867@topic.nl>
- <20200323134719.GN1922688@smile.fi.intel.com>
-From:   Mike Looijmans <mike.looijmans@topic.nl>
-Organization: Topic
-Message-ID: <1b99c64a-bf5c-0533-d70e-ab2734676e11@topic.nl>
-Date:   Mon, 23 Mar 2020 14:58:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-In-Reply-To: <20200323134719.GN1922688@smile.fi.intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+ 15.20.2835.22; Mon, 23 Mar 2020 14:39:34 +0000
+Received: from DB6PR06MB3048.eurprd06.prod.outlook.com
+ ([fe80::c9cc:78ea:1bdd:5094]) by DB6PR06MB3048.eurprd06.prod.outlook.com
+ ([fe80::c9cc:78ea:1bdd:5094%5]) with mapi id 15.20.2835.021; Mon, 23 Mar 2020
+ 14:39:34 +0000
+From:   Eugene Zalkonnikov <ez@norphonic.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "development@norphonic.com" <development@norphonic.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v6 1/2] Driver for TI HDC20x0 humidity and temperature
+ sensors
+Thread-Topic: [PATCH v6 1/2] Driver for TI HDC20x0 humidity and temperature
+ sensors
+Thread-Index: AQHV/Jd7aicLLyk+Yk+vDytuCt/ZmahU0YwAgAF3AYA=
+Date:   Mon, 23 Mar 2020 14:39:34 +0000
+Message-ID: <F8BF24B6-5686-437E-8EE4-1A2151C848CF@norphonic.com>
+References: <84EE5291-D8C4-40D3-A75C-92362BF9DF8B@norphonic.com>
+ <20200322161722.0feb8da8@archlinux>
+In-Reply-To: <20200322161722.0feb8da8@archlinux>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR05CA0027.eurprd05.prod.outlook.com
- (2603:10a6:208:55::40) To DB3PR0402MB3947.eurprd04.prod.outlook.com
- (2603:10a6:8:7::19)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ez@norphonic.com; 
+x-originating-ip: [62.97.226.122]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 1f270351-f55a-4a28-7eab-08d7cf38016b
+x-ms-traffictypediagnostic: DB6PR06MB4005:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DB6PR06MB4005FA0C46BD1179C69F2A5DCAF00@DB6PR06MB4005.eurprd06.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 0351D213B3
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(39830400003)(136003)(346002)(396003)(376002)(199004)(2906002)(4744005)(4326008)(33656002)(86362001)(6916009)(316002)(71200400001)(186003)(26005)(2616005)(508600001)(54906003)(64756008)(66946007)(66556008)(66446008)(76116006)(91956017)(66476007)(36756003)(5660300002)(6506007)(81156014)(81166006)(8676002)(53546011)(8936002)(6486002)(6512007);DIR:OUT;SFP:1102;SCL:1;SRVR:DB6PR06MB4005;H:DB6PR06MB3048.eurprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+received-spf: None (protection.outlook.com: norphonic.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: AzQ1jTm1CX12GeQdTqkjuuZ5QJGNc61CkRNoX+FSKB3bcVr1+us+KwlfGKGGYNBbdxuXNcVFZhtaVh7g7wJKOCflh7c25iOnNmMi4ShOaa7mcoJBYJu0QvGO7T3AwazTdpjTNhfev8IdXt/a6RiFvnf09nwMAu7vBdq5Wi6gLT0MUatsNNMiQcBIOJN/HYGs4g/zXXcUOFL+Hfbp7TeS2/DXPcGCdly+FWSijBc794ZX1b4xRSC0mWYfJyhGIN8cikJvHbrmZPfQZiW8K8PCGHa3WQhg16UY0VYNtmWrGaZeV++gtHsYjni+9TWCcfBJYaTEypqdqhAlJMDM+fE3uaD94ouIJU8tXgR13MJ/yaKLed0ZsaIvxgMp3r9IO5ekrXutuEMsJ+EmZVB4mLCPaveLfXmpT16D3ameGGKOdZA4hNSNajLmPOnAxX3RwL85
+x-ms-exchange-antispam-messagedata: OLm19PX8/tNB7p5RX8Z226agAGtrUszAzPGZ2e164e6R7g/xculp7KJHWvz1dMnkYEEMr0D1I/GqiTlohduy/wbHX8CK15QMc/8LzabQtAs8gY/uVCpVvOnWa0TKzf8Lfi/1YieVZAbzPula+GgkXA==
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E710DA5E8F5D9D41B38096733AB87748@eurprd06.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.130] (83.128.90.119) by AM0PR05CA0027.eurprd05.prod.outlook.com (2603:10a6:208:55::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.19 via Frontend Transport; Mon, 23 Mar 2020 13:58:40 +0000
-X-Originating-IP: [83.128.90.119]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1954909e-2137-4f78-0672-08d7cf324dad
-X-MS-TrafficTypeDiagnostic: DB3PR0402MB3913:|DB6PR0401MB2424:
-X-Microsoft-Antispam-PRVS: <DB6PR0401MB2424454F7C2457AB5C269DF396F00@DB6PR0401MB2424.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;OLM:10000;
-X-Forefront-PRVS: 0351D213B3
-X-Forefront-Antispam-Report-Untrusted: SFV:NSPM;SFS:(10009020)(366004)(376002)(136003)(346002)(396003)(39840400004)(199004)(186003)(16526019)(8936002)(31686004)(36756003)(26005)(508600001)(81156014)(31696002)(8676002)(66476007)(66556008)(81166006)(5660300002)(52116002)(66946007)(42882007)(16576012)(2906002)(44832011)(36916002)(6486002)(6916009)(2616005)(53546011)(956004)(316002)(4326008);DIR:OUT;SFP:1101;SCL:1;SRVR:DB3PR0402MB3913;H:DB3PR0402MB3947.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
-Received-SPF: None (protection.outlook.com: topicproducts.com does not
- designate permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: N0UCEdyzdGNj4uiSugZdToARJRt/egFdBHbdsgMkaQRdj2dkKvJkhMknqv9cLQs8Abs3Sb2p3Hhkusc10ZYwAlSKdGR4mhoTOXLlSz1qSixPb6vtw+ttkj0RwuXmfyEbfS+sRhLgFA3YRwqsWYfJAfxUAJFa1rkFwnMuQ5up818lL4XtgrZFpOrMKEodxEFsHAxEaeXe0xXeWddxVc1SqWof+jV5E0SHcA1SeorPt2xYixFLN/OhkR3pKiARadzPFmpcHNdJPfmdOTt/iqA4CBVdweyJLsWeWVg47wIxknJ3ZQPSrhvCuLIrMi6zC1DhNnYEWbnfTLtWz0xOB4nk+C/fCbrlUbTKyHH6KgClAYKSiye2lqknTeprpEuD5295yM12UpWsZSPQLmQeQyayqdCakA9XVhlumjKaxG8x77eW9JGVzYXYNaFnuS+Q/xwo
-X-MS-Exchange-AntiSpam-MessageData: DhEm98EsHkWxg/Kh3RrBkEqtLCJWmLRjpFcb6J/Jozgknd7nufJrarjVshFXzdYUFk6TABH0boej3PVGe/jO7Ntxikp8qn6EY15W/GKI2S6WHjsb3Iqi8aiOWutnY8s54pC9U1P6GroZN0J75RXALA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0402MB3913
-X-CodeTwo-MessageID: 0327296a-e67d-4382-a0e8-aa896adfe386.20200323135842@westeu13-emailsignatures-cloud.codetwo.com
-X-CodeTwoProcessed: true
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: VE1EUR01FT032.eop-EUR01.prod.protection.outlook.com
-X-Forefront-Antispam-Report: CIP:13.81.10.179;IPV:;CTRY:NL;EFV:NLI;SFV:NSPM;SFS:(10009020)(376002)(136003)(39840400004)(346002)(396003)(199004)(46966005)(53546011)(186003)(16526019)(26005)(316002)(16576012)(36756003)(36916002)(336012)(44832011)(6486002)(70586007)(70206006)(42882007)(31696002)(4326008)(2616005)(5660300002)(956004)(356004)(82310400001)(31686004)(2906002)(6916009)(508600001)(7636002)(7596002)(246002)(8676002)(47076004)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:DB6PR0401MB2424;H:westeu13-emailsignatures-cloud.codetwo.com;FPR:;SPF:Pass;LANG:en;PTR:westeu13-emailsignatures-cloud.codetwo.com;A:1;
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 01ce2c1c-114d-426b-725c-08d7cf324b09
-X-Forefront-PRVS: 0351D213B3
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: i4AUPoUBsyQa6YaDyeFE8Qhb8pDZZzumvx62XzTw7nFEwFPSLtrWZqGR8YLJfVrx1+me7YWoBzWafZIxaDWUVMri6MuXoPoudd7iYXPQ0z17Z4GHmfHx1CZQQOExdFSuoX8HLlXPyvUMhv2rziCLVz8rtNeYMms1fqobyOQHyZlfQVYQiLWRhDik0ZW7lIU5z42koV/y2aMLJ/uQUrNuMJmqgX/EwT5XWQAMtfN6nnXW8gFtorYM7dHcIXRNeqekXLANlnMHiLDLgxrgAU70HKsWAGDPh+9hJXI3WqRbsr4z5pj6WeBaFvLKZJ1ZkV+J/ApwO9o7sQMNedRHkh/esvwO2DUVApkPZgFt4L5LPoihO7kwvpgN4F8zhqHaw3SQ+3op8qk0xW57S58UgZzQ9pki9k77bJYkmLbsYaR7Adars3S+7I/z3jQzzb4b20BBcIxzUgJac3HUZPWTfZux/koIR8Fq5WbB4WGhJsgxrU8oaiT5KXsV//MFtGPDWrCt9ovvh3obbslRJ+YRl4KoYA==
-X-OriginatorOrg: topic.nl
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2020 13:58:45.2784
+X-OriginatorOrg: norphonic.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f270351-f55a-4a28-7eab-08d7cf38016b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2020 14:39:34.4684
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1954909e-2137-4f78-0672-08d7cf324dad
-X-MS-Exchange-CrossTenant-Id: 449607a5-3517-482d-8d16-41dd868cbda3
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=449607a5-3517-482d-8d16-41dd868cbda3;Ip=[13.81.10.179];Helo=[westeu13-emailsignatures-cloud.codetwo.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0401MB2424
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: cbf3f496-45ad-415e-97cb-4e62d6cd974f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qmm7WHKplT+k7W4VfgZmThMlPUFtcPjhpOzHccAYj6Lyjdh9aSfW1ifb9PkdOzYZDybLqIXzFYcxTWfqGqSAdQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR06MB4005
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 23-03-2020 14:47, Andy Shevchenko wrote:
-> On Mon, Mar 23, 2020 at 01:33:58PM +0100, Mike Looijmans wrote:
->> On 23-03-2020 12:31, Andy Shevchenko wrote:
->>> On Mon, Mar 23, 2020 at 10:28:30AM +0100, Mike Looijmans wrote:
->>>> The BMI088 is a combined module with both accelerometer and gyroscope.
->>>> This adds the accelerometer driver support for the SPI interface.
->>>> The gyroscope part is already supported by the BMG160 driver.
->>>
->>>
->>> Thank you, the comment about shared buffer given to v3 still applies.
->>> Also see below.
-> 
-> Since you didn't comment on many, I assume you are in favor to follow.
-> Please, comment if it's not the case.
-
-Didn't mention it explicitly, but no comment means "I agree".
-
-
-> 
-> ...
-> 
->> As most of the method body depends on that "bool" argument, I would actually
->> just split it into separate "enable" and "disable" methods. Simpler to read
->> and understand, and probably doesn't make a difference in compiled size
->> either.
-> 
-> It's even better!
-> 
-> ...
-
-Hmm, reading the datasheet again about the power modes is now confusing 
-me. It's been awhile since I read that, and I don't think that I got it 
-right....
-
-there are two power setting registers, and it's not quite clear to me 
-any more what I'm supposed to do with them...
-
-I think the intention is that I just set ACC_PWR_CTRL to "4" after 
-reset/probe, and leave it there, and use the ACC_PWR_CONF register to go 
-in and out of suspend state. This affects the temperature sensor as well.
-
-
-I'll need a bit of caffeine before I get to v5.
-
-
-> 
->>>> +#ifndef BMI088_ACCEL_H
->>>> +#define BMI088_ACCEL_H
->>>> +
->>>> +extern const struct regmap_config bmi088_regmap_conf;
->>>> +extern const struct dev_pm_ops bmi088_accel_pm_ops;
->>>
->>> Do you need extern?
->>
->> probably not.
->>
->>>
->>>> +int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
->>>> +			    const char *name, bool block_supported);
->>>> +int bmi088_accel_core_remove(struct device *dev);
->>>
->>> This needs
->>>
->>> #include <linux/types.h>
->>>
->>> struct device;
->>> struct regmap;
->>>
->>
->> Hmm, and "struct regmap_config" as well I guess (see above)
-> 
-> Oh, it requires headers then
-> 
-> So,
-> 
-> #include <linux/pm.h>
-> #include <linux/regmap.h>
-> #include <linux/types.h>
-> 
-> struct device;
-> 
-
-
--- 
-Mike Looijmans
+SGkgSm9uYXRoYW4sDQoNCj4gT24gMjIgTWFyIDIwMjAsIGF0IDE3OjE3LCBKb25hdGhhbiBDYW1l
+cm9uIDxqaWMyM0BrZXJuZWwub3JnPiB3cm90ZToNCj4+ICtzdGF0aWMgaW50IGhkYzIwMTBfd3Jp
+dGVfcmF3KHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYsDQo+PiArCQkJICAgICBzdHJ1Y3QgaWlv
+X2NoYW5fc3BlYyBjb25zdCAqY2hhbiwNCj4+ICsJCQkgICAgIGludCB2YWwsIGludCB2YWwyLCBs
+b25nIG1hc2spDQo+PiArew0KPj4gKwlzdHJ1Y3QgaGRjMjAxMF9kYXRhICpkYXRhID0gaWlvX3By
+aXYoaW5kaW9fZGV2KTsNCj4+ICsJaW50IG5ldywgcmV0ID0gLUVJTlZBTDsNCj4gDQo+IFVubGVz
+cyBJJ20gaGFsZiBhc2xlZXAgKHdoaWNoIGlzIHBvc3NpYmxlIDopIHJldCBpcyBhbHdheXMNCj4g
+d3JpdHRlbiBiZWxvdyBiZWZvcmUgYmVpbmcgdXNlZC4gIEhlbmNlIHRoaXMgaW5pdCBpc24ndCBu
+ZWVkZWQuDQo+IA0KSSBzdXNwZWN0IGl04oCZcyBhIHZlc3RpZ2UgZnJvbSBiZWZvcmUgYWxsIHN0
+eWxpc3RpYyByZXdyaXRlcyBpbiByZWNlbnQgcGF0Y2hlcy4gDQpTYW1lIGZvciB0aGUgc2hhcmVk
+IHJldHVybnMuIFdpbGwgY2hhbmdlIHRoYXQuDQoNCj4+ICsNCj4+ICsJaW5kaW9fZGV2LT5kZXYu
+cGFyZW50ID0gJmNsaWVudC0+ZGV2Ow0KPj4gKwlpbmRpb19kZXYtPm5hbWUgPSBkZXZfbmFtZSgm
+Y2xpZW50LT5kZXYpOw0KPiANCj4gVGhhdCBzaG91bGQgYmUgdGhlIHBhcnQgbnVtYmVyLiAgSUlS
+QyB0aGF0J3Mgbm90IHdoYXQgeW91J2xsIGdldA0KPiBmcm9tIGRldl9uYW1lIGNhbGxlZCBvbiB0
+aGUgaTJjIGRldmljZS4gIE5vdGUgd2UgbGV0IGEgZmV3IG9mDQo+IHRoZXNlIGluIGluIHRoZSBw
+YXN0IGFuZCBhcmUgbm93IHN0dWNrIHdpdGggdGhlbS4uLiANCj4gDQpNeSBhY2Nlc3MgdG8gYWN0
+dWFsIGh3IGlzIGxpbWl0ZWQgbm93LCBzbyB0byByZWR1Y2UgdGhlIGl0ZXJhdGlvbnMgaGVyZTog
+d2hhdA0KaXMgZ29pbmcgdG8gYmUgYSBzdWl0YWJsZSBkZXZpY2UgbmFtZT8gV291bGQg4oCcaGRj
+MjB4MOKAnSBkbz8g4oCcaGRjMjAxMOKAnT8NCg0KDQpSZWdhcmRzLA0KICBFdWdlbmUu

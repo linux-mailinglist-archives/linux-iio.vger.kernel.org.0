@@ -2,105 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E6E18F81E
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 16:04:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0451418F85E
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 16:17:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725990AbgCWPE3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Mar 2020 11:04:29 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:44493 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726955AbgCWPE2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Mar 2020 11:04:28 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-230-B2u6v4l1P-67PVtv6VFiCw-1; Mon, 23 Mar 2020 15:04:24 +0000
-X-MC-Unique: B2u6v4l1P-67PVtv6VFiCw-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 23 Mar 2020 15:04:23 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Mon, 23 Mar 2020 15:04:23 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Andy Shevchenko' <andy.shevchenko@gmail.com>,
-        Rohit Sarkar <rohitsarkar5398@gmail.com>
-CC:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "dragos.bogdan@analog.com" <dragos.bogdan@analog.com>,
+        id S1727024AbgCWPRU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Mar 2020 11:17:20 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:38318 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726049AbgCWPRT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Mar 2020 11:17:19 -0400
+Received: by mail-pg1-f196.google.com with SMTP id x7so7349800pgh.5
+        for <linux-iio@vger.kernel.org>; Mon, 23 Mar 2020 08:17:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Y5WxcqTugnAo9X+DA9YOBgJCfSv0O7b15VIBu8XZa4A=;
+        b=dwq6Y3oh/SSqSVYxAanGu7uxp0yDphGU1TNq+c4SKtXqlb9zuvHXCaH0gOHVf+5owJ
+         +P2Pu9mYk41+q9pQeY0ykRWhajyOPs3Brrxy+so9T94idHN72XXDNXUEUsaEKpfWaZv6
+         vXzcQmMJelkP9IhglFwx6U1FyWlfxLLQLk4n+rdMmAmGPeUIWdsPEsshDHuXFHrb30pf
+         bWFyUZLg0RGBpwL+pnvpXAPtVFCrdoB/eRXRGKJPUM8TxGIO4wWHes/GEVprU7BTahs7
+         p+u4Vv8vxKVlnacXkB5mR7RxVqCxF5Y7aHmMVqykJpLC1piO3Ffh4bU1tZIe1/WLMlUu
+         9M2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Y5WxcqTugnAo9X+DA9YOBgJCfSv0O7b15VIBu8XZa4A=;
+        b=DF+SnC6BpIMz5rnAagLSU5aaGAzPE8tED1rCFRIfS5nNbZEp2jGmoEAFZgTrBPMpD3
+         2Hh/2yoPdgwqVCLuxm0mUiJvfHlUHqAgoDzF3dU7vFK5hzIXw+L3P6qzZwDtgFRR7kfs
+         i6vi5GWqVe1Th5rKOVG7v6aM+5INl/xODSZHCe/j9LCfMI1so3uYgoBnCVE1w3uoiGvT
+         Zr0SB2SYDc5iRRUbZrsyR4Gd8VKi7GcUfHXlUu7fPyYW/0HERlZLWnm+yQMWSb2tYTVn
+         UcCVh1wF4S1eRP9jeBLOrI1ztAN/QJM756G0paGwSNCrqNA3uld3k88uRGB07aW/aN7h
+         uQAA==
+X-Gm-Message-State: ANhLgQ1HdR3NUYnldwpWWjhc3yOZR9ZU4dEolF4JL1aMGsFWTBlGKvsl
+        O3vYxrBd2ZIwVB3IJEUcOMQ=
+X-Google-Smtp-Source: ADFU+vsLgUSOlKYleVFj8hshgXTaxjeig+FDVpdTlRGs2VtJLisA5pe5cnBHT5G8sxHrpr2RoXcIeg==
+X-Received: by 2002:a63:8b41:: with SMTP id j62mr21702334pge.18.1584976638849;
+        Mon, 23 Mar 2020 08:17:18 -0700 (PDT)
+Received: from deeUbuntu ([103.240.207.191])
+        by smtp.gmail.com with ESMTPSA id i187sm13502225pfg.33.2020.03.23.08.17.15
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 23 Mar 2020 08:17:18 -0700 (PDT)
+Date:   Mon, 23 Mar 2020 20:47:12 +0530
+From:   DEEPAK VARMA <mh12gx2825@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     outreachy-kernel@googlegroups.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Baluta <daniel.baluta@gmail.com>,
+        kieran.bingham@ideasonboard.com,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        "Stefan Popa" <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
-        "Peter Meerwald" <pmeerw@pmeerw.net>
-Subject: RE: [PATCH] iio: gyro: adis16136: use scnprintf instead of snprintf
-Thread-Topic: [PATCH] iio: gyro: adis16136: use scnprintf instead of snprintf
-Thread-Index: AQHWADSGKND5IUy8BE2X+HWi1cqZDKhWRidA
-Date:   Mon, 23 Mar 2020 15:04:23 +0000
-Message-ID: <81821e142e3c48febb7ab357dd200992@AcuMS.aculab.com>
-References: <5e723666.1c69fb81.3545b.79c3@mx.google.com>
- <20200322002542.GA2826015@smile.fi.intel.com>
- <5e77017a.1c69fb81.dc341.8ab9@mx.google.com>
- <CAHp75VddtJs1ZCk1XAZ2WJLhWQDcVwiiN5gDpK9oYPEOS=c_ZQ@mail.gmail.com>
-In-Reply-To: <CAHp75VddtJs1ZCk1XAZ2WJLhWQDcVwiiN5gDpK9oYPEOS=c_ZQ@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2] media: staging/intel-ipu3: Reformat pointer
+ initialization
+Message-ID: <20200323151710.GA22110@deeUbuntu>
+References: <20200322185350.GA12377@deeUbuntu>
+ <CAHp75VcP1O_QwepgAHPBaTLcr_3=ynV6hsmcgvYnBCz7DdoWxw@mail.gmail.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcP1O_QwepgAHPBaTLcr_3=ynV6hsmcgvYnBCz7DdoWxw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-RnJvbTogQW5keSBTaGV2Y2hlbmtvDQo+IFNlbnQ6IDIyIE1hcmNoIDIwMjAgMTA6MjcNCj4gT24g
-U3VuLCBNYXIgMjIsIDIwMjAgYXQgODoxMSBBTSBSb2hpdCBTYXJrYXIgPHJvaGl0c2Fya2FyNTM5
-OEBnbWFpbC5jb20+IHdyb3RlOg0KPiA+DQo+ID4gT24gU3VuLCBNYXIgMjIsIDIwMjAgYXQgMDI6
-MjU6NDJBTSArMDIwMCwgQW5keSBTaGV2Y2hlbmtvIHdyb3RlOg0KPiA+ID4gT24gV2VkLCBNYXIg
-MTgsIDIwMjAgYXQgMDg6MjU6MjJQTSArMDUzMCwgUm9oaXQgU2Fya2FyIHdyb3RlOg0KPiA+ID4g
-PiBzY25wcmludGYgcmV0dXJucyB0aGUgYWN0dWFsIG51bWJlciBvZiBieXRlcyB3cml0dGVuIGlu
-dG8gdGhlIGJ1ZmZlciBhcw0KPiA+ID4gPiBvcHBvc2VkIHRvIHNucHJpbnRmIHdoaWNoIHJldHVy
-bnMgdGhlIG51bWJlciBvZiBieXRlcyB0aGF0IHdvdWxkIGhhdmUNCj4gPiA+ID4gYmVlbiB3cml0
-dGVuIGlmIHRoZSBidWZmZXIgd2FzIGJpZyBlbm91Z2guIFVzaW5nIHRoZSBvdXRwdXQgb2Ygc25w
-cmludGYNCj4gPiA+ID4gbWF5IGxlYWQgdG8gZGlmZmljdWx0IHRvIGRldGVjdCBidWdzLg0KPiA+
-ID4NCj4gPiA+IE5pY2UuIEhhdmUgeW91IGludmVzdGlnYXRlIHRoZSBjb2RlPw0KPiA+ID4NCj4g
-PiA+ID4gQEAgLTk2LDcgKzk2LDcgQEAgc3RhdGljIHNzaXplX3QgYWRpczE2MTM2X3Nob3dfc2Vy
-aWFsKHN0cnVjdCBmaWxlICpmaWxlLA0KPiA+ID4gPiAgICAgaWYgKHJldCkNCj4gPiA+ID4gICAg
-ICAgICAgICAgcmV0dXJuIHJldDsNCj4gPiA+ID4NCj4gPiA+ID4gLSAgIGxlbiA9IHNucHJpbnRm
-KGJ1Ziwgc2l6ZW9mKGJ1ZiksICIlLjR4JS40eCUuNHgtJS40eFxuIiwgbG90MSwgbG90MiwNCj4g
-PiA+ID4gKyAgIGxlbiA9IHNjbnByaW50ZihidWYsIHNpemVvZihidWYpLCAiJS40eCUuNHglLjR4
-LSUuNHhcbiIsIGxvdDEsIGxvdDIsDQo+ID4gPiA+ICAgICAgICAgICAgIGxvdDMsIHNlcmlhbCk7
-DQo+ID4gPiA+DQo+ID4gPiA+ICAgICByZXR1cm4gc2ltcGxlX3JlYWRfZnJvbV9idWZmZXIodXNl
-cmJ1ZiwgY291bnQsIHBwb3MsIGJ1ZiwgbGVuKTsNCj4gPiA+DQo+ID4gPiBUaGUgYnVmZmVyIHNp
-emUgaXMgMjAsIHRoZSBwYXR0ZXJuIHNpemUgSSBjb3VudCB0byAxOS4gRG8geW91IHRoaW5rIHNu
-cHJpbnRmKCkNCj4gPiA+IGNhbiBmYWlsPw0KPiA+IFRoYXQgbWlnaHQgYmUgdGhlIGNhc2UsIGJ1
-dCBJTU8gdXNpbmcgc2NucHJpbnRmIGNhbiBiZSBjb25zaWRlcmVkIGFzIGENCj4gPiBiZXN0IHBy
-YWN0aWNlLiBUaGVyZSBpcyBubyBvdmVyaGVhZCB3aXRoIHRoaXMgY2hhbmdlIGFuZCBmdXJ0aGVy
-IGlmIHRoZQ0KPiA+IHBhdHRlcm4gaXMgY2hhbmdlZCBieSBzb21lb25lIGluIHRoZSBmdXR1cmUg
-dGhleSBtaWdodCBvdmVybG9vayB0aGUNCj4gPiBidWZmZXJzaXplDQo+IA0KPiBJZiB3ZSBjdXQg
-dGhlIHN0cmluZyBhYm92ZSB3ZSB3aWxsIGdpdmUgd3JvbmcgaW5mb3JtYXRpb24gdG8gdGhlIHVz
-ZXIgc3BhY2UuDQo+IEkgdGhpbmsgc2NucHJpbnRmKCkgY2hhbmdlIGlzIGEgbm9pc2UgYW5kIGRv
-ZXMgbm90IGltcHJvdmUgdGhlIHNpdHVhdGlvbiBhbnlob3cuDQoNCklmLCBmb3IgYW55IHJlYXNv
-biwgYW55IG9mIHRoZSB2YWx1ZXMgYXJlIGxhcmdlIHRoZSB1c2VyIHdpbGwgZ2V0DQpjb3JydXB0
-IGRhdGEuDQpCdXQgeW91IGRvbid0IHdhbnQgdG8gbGVhayByYW5kb20ga2VybmVsIG1lbW9yeSB0
-byB0aGUgdXNlci4NCg0KU28gd2hpbGUgeW91IG1heSBiZSBhYmxlIHRvIHByb3ZlIHRoYXQgdGhp
-cyBwYXJ0aWN1bGFyIHNucHJpbnRmKCkNCmNhbid0IG92ZXJmbG93LCBpbiBnZW5lcmFsIGNoZWNr
-aW5nIGl0IHJlcXVpcmVzIGtub3dsZWRnZSBvZiB0aGUgY29kZS4NCg0KV2l0aCBzY25wcmludGYo
-KSB5b3Uga25vdyBub3RoaW5nIG9kZCB3aWxsIGhhcHBlbi4NCg0KRldJVyBJIHN1c3BlY3QgdGhl
-ICdzdGFuZGFyZCcgcmV0dXJuIHZhbHVlIGZyb20gc25wcmludGYoKSBjb21lcw0KZnJvbSB0aGUg
-cmV0dXJuIHZhbHVlIG9mIHRoZSBvcmlnaW5hbCB1c2VyLXNwYWNlIGltcGxlbWVudGF0aW9ucw0K
-d2hpY2ggZmFrZWQtdXAgYSBGSUxFIHN0cnVjdHVyZSBvbiBzdGFjayBhbmQganVzdCBzaWxlbnRs
-eSBkaXNjYXJkZWQNCnRoZSBvdXRwdXQgYnl0ZXMgdGhhdCB3b3VsZG4ndCBmaXQgaW4gdGhlIGJ1
-ZmZlciAodGhleSdkIHVzdWFsbHkNCmJ5IGZsdXNoZWQgdG8gYSByZWFsIGZpbGUpLg0KVGhlIG9y
-aWdpbmFsIHNwcmludGYoKSBqdXN0IHNwZWNpZmllZCBhIHZlcnkgYmlnIGxlbmd0aCBzbyB0aGUN
-CmZsdXNoIHdvdWxkIG5ldmVyIGJlIHJlcXVlc3RlZC4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVy
-ZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5
-bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+On Mon, Mar 23, 2020 at 01:35:58AM +0200, Andy Shevchenko wrote:
+> On Sun, Mar 22, 2020 at 8:54 PM Deepak R Varma <mh12gx2825@gmail.com> wrote:
+> >
+> > Reformat pointer initialization to make it more readable as per the
+> > coding standards. Problem detected by checkpatch.
+> 
+> > -       struct imgu_v4l2_subdev *imgu_sd =
+> > -               container_of(ctrl->handler, struct imgu_v4l2_subdev, ctrl_handler);
+> > +       struct imgu_v4l2_subdev *imgu_sd = container_of(ctrl->handler,
+> > +                                                       struct imgu_v4l2_subdev,
+> > +                                                       ctrl_handler);
+> 
+> I'm sorry I don't see benefit of this change, actually an opposite.
 
+Hello Andy,
+Thank you for your comment. To me, it helps quickly and clearly spot
+*imgu_sd. Also the initialization looks more structured. But that's just
+me.
+
+I will wait to see if anyone else wants to share their thoughts, and
+then circle back to you on next steps. Is that fine?
+
+Deepak.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko

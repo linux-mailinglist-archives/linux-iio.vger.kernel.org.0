@@ -2,158 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E3518F873
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 16:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AC3818F939
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 17:05:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727130AbgCWPVz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Mar 2020 11:21:55 -0400
-Received: from mail-wr1-f52.google.com ([209.85.221.52]:45533 "EHLO
-        mail-wr1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727113AbgCWPVz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Mar 2020 11:21:55 -0400
-Received: by mail-wr1-f52.google.com with SMTP id t7so12895855wrw.12
-        for <linux-iio@vger.kernel.org>; Mon, 23 Mar 2020 08:21:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=vXdvpTkOmEglHmM2yHjsDxxC5nrdm8XvoMKCOYdLBlA=;
-        b=urWfSTCUjHV6ukVnb7VLozoUJNnGOv1Sjlr6lyuDO1Il5pCj6VWzJApPKxv1bLgXvi
-         Htli9o5YxIj4qTmKlz42e61LbGs+r9FDSgYffIGIq2Wj2YwS074ox4F4kDuYuuFgSZch
-         ASd9qtHBd1kbdtddFNQT6nuyFOH9bYgwPUja+GJJ0OG5EJgrrPsIzirJmPvwqesx9Et4
-         AjDw1wE2uuAaSg6qzfh5Y8KHWo7GYhPB9R1+EV3VXTWdV/utn1jr1RPyPZEx3KFIiIZK
-         UatwYNhaj8poKvyZ0E2pRsil+nyOz+Xfe8OQE0EyFRR50yubJToxlxdhldP4yJYfVO+s
-         DJcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vXdvpTkOmEglHmM2yHjsDxxC5nrdm8XvoMKCOYdLBlA=;
-        b=ENNX/yZ/86GabvpwWU1xvDnAe9jsDPIhy6YhKXQqlyTMbbbcQui80pqjH3/7AG4tB3
-         KPUuiFiYkOTMDV3orINIjKYUOD7J9GkaG8BFRcd8wsI4EipkE+HT0BND6QVnroL52zSI
-         nEXtGbEWO9nnxJg1vRTfRetJ7uYy8D72emz64E/3CkKX6Q0kYs5mhpTR3pa31kRn0ro/
-         +F5Q277BzVllwxMaALdxUX17Eq0d90DbsON+ZgqGw7P09FH9nIvqoqS4AMP1qigy8kOy
-         zaDfIWBQeL3piDpS+Xc5WENAnqqkhwvGiK0VMEXW+1DFrGQKkW8txB3onFfzhmWx4BWj
-         /C/Q==
-X-Gm-Message-State: ANhLgQ3JFoQwU/9ClxUafZSvAlv7+8Ox7DFbJM+rb31+irOU7A+QQU25
-        2afz70UDcY4DvsMtplViAe7Ns0mI
-X-Google-Smtp-Source: ADFU+vsosS/+fiq1gFBUcvi1frH2Fuu4wSBRLmlj3B432c3aM44mTApd4Ybw316Ky4DPJJkf87JpNg==
-X-Received: by 2002:adf:e48c:: with SMTP id i12mr30654626wrm.173.1584976912507;
-        Mon, 23 Mar 2020 08:21:52 -0700 (PDT)
-Received: from [192.168.16.194] (h-4-68-234.A785.priv.bahnhof.se. [155.4.68.234])
-        by smtp.googlemail.com with ESMTPSA id b187sm22633716wmb.42.2020.03.23.08.21.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2020 08:21:51 -0700 (PDT)
-Subject: Re: Use LIS3MDL with LSM6DSM sensor-hub
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-iio@vger.kernel.org
-References: <f8489de0-c6a4-f786-b936-679eba6d6804@gmail.com>
- <20200314124324.GA144176@lore-desk-wlan>
- <217cb6b1-d3b3-bccf-b081-d4beb0888615@gmail.com>
- <20200319174039.GA1564882@lore-desk-wlan>
- <ef4aa50f-4aa6-cb87-06b6-913e2abbb23c@gmail.com>
- <20200319204937.GB1564882@lore-desk-wlan>
-From:   Jimmy Assarsson <jimmyassarsson@gmail.com>
-Message-ID: <37e50d0e-0618-eeba-8cf9-7c1272097a62@gmail.com>
-Date:   Mon, 23 Mar 2020 16:21:49 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1727485AbgCWQFe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Mar 2020 12:05:34 -0400
+Received: from mga07.intel.com ([134.134.136.100]:46754 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727479AbgCWQFe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 23 Mar 2020 12:05:34 -0400
+IronPort-SDR: t/H1DBiayEHmqAkdDEAoeAGIG4Ez1Aax5SU24Fn9IRHigGJ0q7+WqNXxwASdxg6cxohpjejQun
+ +NBivTErJfBA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2020 09:05:33 -0700
+IronPort-SDR: 7O/Nrp0ZmN2eUWqYaSNVfMn+7z3XKsjRcZ2D6zOChIXsFrixHltSjKSGQKeMNLmc6hj0/jdKmS
+ lWbogD1KkJLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,297,1580803200"; 
+   d="scan'208";a="246241169"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga003.jf.intel.com with ESMTP; 23 Mar 2020 09:05:30 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andy.shevchenko@gmail.com>)
+        id 1jGPa0-00CHXi-RE; Mon, 23 Mar 2020 18:05:32 +0200
+Date:   Mon, 23 Mar 2020 18:05:32 +0200
+From:   'Andy Shevchenko' <andy.shevchenko@gmail.com>
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     Rohit Sarkar <rohitsarkar5398@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "dragos.bogdan@analog.com" <dragos.bogdan@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>
+Subject: Re: [PATCH] iio: gyro: adis16136: use scnprintf instead of snprintf
+Message-ID: <20200323160532.GS1922688@smile.fi.intel.com>
+References: <5e723666.1c69fb81.3545b.79c3@mx.google.com>
+ <20200322002542.GA2826015@smile.fi.intel.com>
+ <5e77017a.1c69fb81.dc341.8ab9@mx.google.com>
+ <CAHp75VddtJs1ZCk1XAZ2WJLhWQDcVwiiN5gDpK9oYPEOS=c_ZQ@mail.gmail.com>
+ <81821e142e3c48febb7ab357dd200992@AcuMS.aculab.com>
 MIME-Version: 1.0
-In-Reply-To: <20200319204937.GB1564882@lore-desk-wlan>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81821e142e3c48febb7ab357dd200992@AcuMS.aculab.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2020-03-19 21:49, Lorenzo Bianconi wrote:
->> On 2020-03-19 18:40, Lorenzo Bianconi wrote:
->>>> On 2020-03-14 13:43, Lorenzo Bianconi wrote:
->>>>> On Mar 11, Jimmy Assarsson wrote:
->>>>>> Hi,
->>>>>>
+On Mon, Mar 23, 2020 at 03:04:23PM +0000, David Laight wrote:
+> From: Andy Shevchenko
+> > Sent: 22 March 2020 10:27
+> > On Sun, Mar 22, 2020 at 8:11 AM Rohit Sarkar <rohitsarkar5398@gmail.com> wrote:
+> > >
+> > > On Sun, Mar 22, 2020 at 02:25:42AM +0200, Andy Shevchenko wrote:
+> > > > On Wed, Mar 18, 2020 at 08:25:22PM +0530, Rohit Sarkar wrote:
+> > > > > scnprintf returns the actual number of bytes written into the buffer as
+> > > > > opposed to snprintf which returns the number of bytes that would have
+> > > > > been written if the buffer was big enough. Using the output of snprintf
+> > > > > may lead to difficult to detect bugs.
+> > > >
+> > > > Nice. Have you investigate the code?
+> > > >
+> > > > > @@ -96,7 +96,7 @@ static ssize_t adis16136_show_serial(struct file *file,
+> > > > >     if (ret)
+> > > > >             return ret;
+> > > > >
+> > > > > -   len = snprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
+> > > > > +   len = scnprintf(buf, sizeof(buf), "%.4x%.4x%.4x-%.4x\n", lot1, lot2,
+> > > > >             lot3, serial);
+> > > > >
+> > > > >     return simple_read_from_buffer(userbuf, count, ppos, buf, len);
+> > > >
+> > > > The buffer size is 20, the pattern size I count to 19. Do you think snprintf()
+> > > > can fail?
+> > > That might be the case, but IMO using scnprintf can be considered as a
+> > > best practice. There is no overhead with this change and further if the
+> > > pattern is changed by someone in the future they might overlook the
+> > > buffersize
+> > 
+> > If we cut the string above we will give wrong information to the user space.
+> > I think scnprintf() change is a noise and does not improve the situation anyhow.
 > 
-> [...]
-> 
->>>>> Hi Jimmy,
->>>>>
->>>>> in order to set the full scale on LIS3MDL you can try the following patch (just
->>>>> compiled, not tested)
->>>>>
->>>>> Regards,
->>>>> Lorenzo
->>>>
->>>> Hi Lorenzo,
->>>>
->>>> Sorry for the late response and thanks for the patch!
->>>
->>> Hi Jimmy,
->>>
->>> ok, I will post the patch, thx for testing.
->>
->> Great, you can add
->> Tested-by: Jimmy Assarsson <jimmyassarsson@gmail.com>
->>
->>>> The patches seems to work.
->>>> Are there any specific tests that we should carry out?
->>>> Via the sysfs interface, we've tested reading raw values of each channel and
->>>> configuring ODR and full scale.
->>>
->>> you can try to enable batching in the hw FIFO doing something like:
->>>
->>> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_x_en
->>> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_y_en
->>> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_z_en
->>> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_timestamp_en
->>>
->>> $watermark=64
->>> $echo $((2*watermark)) > /sys/bus/iio/devices/<iio-magn>/buffer/length
->>> $echo $watermark > /sys/bus/iio/devices/<iio-magn>/buffer/watermark
->>>
->>> $generic_buffer -gn lsm6dsm_magn -c <# of samples>
->>
->> Ok. I don't got any scan_elements nor buffer directory, for any of the devices.
->> I guess it is not possible to use the FIFO without configuring any interrupt?
->> We got the following dts:
->> &spi1 {
->> 	#address-cells = <1>;
->> 	#size-cells = <0>;
->> 	lsm6dsm@0 {
->> 		compatible = "st,lsm6dsm";
->> 		reg = <0x0>;
->>
->> 		spi-max-frequency = <500000>;
->> 		st,pullups = "true";
-> 
-> yes, you need to provide the interrupt line doing something like (this is from
-> the dts on my rpi):
-> 
-> 	lsm6dsm@0 {
-> 		...
-> 		interrupt-parent = <&gpio>;
-> 		interrupts = <21 0x4>;
-> 		...
-> 	};
-> 
->> 	};
->> };
->>
->> I'll look into this tomorrow or in the beginning of next week, thanks for the help.
+> If, for any reason, any of the values are large the user will get
+> corrupt data.
 
-Now I've tested this. It looks fine, except for the very first sample:
-$ ./iio_generic_buffer -gn lsm6dsm_magn -c 1
-iio device number being used is 3
-trigger-less mode selected
--3.250836 -2.796192 10.212408 1584976428879020199
-1.893036 2.343738 -0.853224 1584976428917070199
-1.888218 2.343300 -0.852786 1584976428955095199
-1.888218 2.343300 -0.852786 1584976428993145199
-1.889532 2.345490 -0.851472 1584976429031170199
+> But you don't want to leak random kernel memory to the user.
 
-Is this expected?
+How? Kernel already got crashed at this point.
 
-Regards,
-jimmy
+> 
+> So while you may be able to prove that this particular snprintf()
+> can't overflow, in general checking it requires knowledge of the code.
+
+Here it's still a noise.
+
+> With scnprintf() you know nothing odd will happen.
+
+...and quite likely hide a lot of issues.
+
+Really any "micro" / "small" correction / optimization to be very carefully
+thought through.
+
+> FWIW I suspect the 'standard' return value from snprintf() comes
+> from the return value of the original user-space implementations
+> which faked-up a FILE structure on stack and just silently discarded
+> the output bytes that wouldn't fit in the buffer (they'd usually
+> by flushed to a real file).
+> The original sprintf() just specified a very big length so the
+> flush would never be requested.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

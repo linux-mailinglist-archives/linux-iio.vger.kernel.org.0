@@ -2,381 +2,299 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5248418F3AD
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 12:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4237A18F419
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 13:10:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727658AbgCWLbX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Mar 2020 07:31:23 -0400
-Received: from mga09.intel.com ([134.134.136.24]:61095 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727529AbgCWLbX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 23 Mar 2020 07:31:23 -0400
-IronPort-SDR: Bta/wWckJXfzKOj7hPpRt69BwS/7R3l2zwfx+yKyYUik6vhDRP96K8liB1WvOmTjCnkUU/u5Yd
- LL0tG57QTmTA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2020 04:31:20 -0700
-IronPort-SDR: Wjyvv2Kx0BWtgkP7c9TIRKr+sa/KSa8eKsyGCJUbpPjeG+jc/4iC7MQTGgAJ/FesABeV3zVnE4
- 0kNB+Pl+ilaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,296,1580803200"; 
-   d="scan'208";a="246167057"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga003.jf.intel.com with ESMTP; 23 Mar 2020 04:31:18 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1jGLIe-00CE0U-H1; Mon, 23 Mar 2020 13:31:20 +0200
-Date:   Mon, 23 Mar 2020 13:31:20 +0200
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     jic23@kernel.org, linux-iio@vger.kernel.org, knaack.h@gmx.de,
-        lars@metafoo.de, pmeerw@pmeerw.net
-Subject: Re: [PATCH v4] iio: accel: Add support for the Bosch-Sensortec BMI088
-Message-ID: <20200323113120.GI1922688@smile.fi.intel.com>
-References: <20200323092830.29708-1-mike.looijmans@topic.nl>
+        id S1727458AbgCWMKg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Mar 2020 08:10:36 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:35964 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727384AbgCWMKf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Mar 2020 08:10:35 -0400
+Received: by mail-pg1-f194.google.com with SMTP id j29so218362pgl.3;
+        Mon, 23 Mar 2020 05:10:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=MlNbdsKoZglu02JmE6j7s82pOmi6hUKrXhzXXYWzb3U=;
+        b=b8v722V3lHjGLReQGi5K9OvQK6x9ONT+ZTYq1NU0THWLfDdApSvvP/M8z9/kxQrlRD
+         jg58JB8Ve57GDm99BztkqNxw3AM7mmQRs7FxA0ETQ++matXgRTHh3cj9Vt6um3V+RbK+
+         w7cR/bdN0Tq03HcSpAf/3hgUAqvLK/4a4QTwvAwSqyNI1kPFd+pSEkTMT8nRmRWGLEFx
+         u8AQBvi0moW8dQHBLGDkFnRVO/PDrJW9q338CnEcAP4esOeFQClvR2p+e70aV+wRE6LI
+         h8G2MDiT2hBXf2x0FyEWrNIuGdwKhzjixduxxWNADDVof9TvDrl4MpjICbjquVRH8ktb
+         6RVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=MlNbdsKoZglu02JmE6j7s82pOmi6hUKrXhzXXYWzb3U=;
+        b=nfhNGkiJ2aS2LeJuB0+7QYuwY8wDhIlPfPddG4LUx0LGjRryAGQwd93GJa+65Bi7Qd
+         5y5KGqBLjx4VOPmh4QDuEzk27uHSU/HV1TH2N4SQONW+wAvs6/FeJkESEhHYJEBErsy8
+         pPEydpR1QAdo+k1uazfW1lz0QJ7EcsXgDl5LT+cTf5HLDSP7LfaRdv1NbPOaLlLqRRhE
+         BUdYSxPqHe15q7otDW+NiF80gXdtQRUg9rzUu5/NE38CPBufo1UiV7FyD6iVWKXK4E9+
+         prijj1zcvlgt01qyT05cOi6nvvhX6EhxeVukKgFbFb8aBne1jIHG98us3iSmqm7QaqOg
+         OXlg==
+X-Gm-Message-State: ANhLgQ15I7ZeSQUaUJf0k6bb69CpmJLraq5u5jiOZ/RCYeQjxAKigc73
+        8BELdYt3/40DO6UQ1IIomcMS6NCoQVuUOf66SXU=
+X-Google-Smtp-Source: ADFU+vtPHwwDms34oGPAgbK5FoVt8CGhBDYsS8GEceo6UTeFwpey3XsHjBzgJHRFUoWAlESzy6YFOA7a0a8rw7ZYkfU=
+X-Received: by 2002:a63:798a:: with SMTP id u132mr22684974pgc.203.1584965434383;
+ Mon, 23 Mar 2020 05:10:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200323092830.29708-1-mike.looijmans@topic.nl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200323103926.21271-1-i.mikhaylov@yadro.com> <20200323103926.21271-3-i.mikhaylov@yadro.com>
+In-Reply-To: <20200323103926.21271-3-i.mikhaylov@yadro.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 23 Mar 2020 14:10:27 +0200
+Message-ID: <CAHp75Ve4rejBKjG+mioRL3S7i3meyy=_4TtW1fr2aGvnVn2tBA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: proximity: Add driver support for vcnl3020
+ proximity sensor
+To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 23, 2020 at 10:28:30AM +0100, Mike Looijmans wrote:
-> The BMI088 is a combined module with both accelerometer and gyroscope.
-> This adds the accelerometer driver support for the SPI interface.
-> The gyroscope part is already supported by the BMG160 driver.
+On Mon, Mar 23, 2020 at 12:41 PM Ivan Mikhaylov <i.mikhaylov@yadro.com> wro=
+te:
+>
+> Proximity sensor driver based on light/vcnl4000.c code.
+> For now supports only the single on-demand measurement.
+>
+> The VCNL3020 is a fully integrated proximity sensor. Fully
+> integrated means that the infrared emitter is included in the
+> package. It has 16-bit resolution. It includes a signal
+> processing IC and features standard I2C communication
+> interface. It features an interrupt function.
 
+Thank you for a patch, my comments below.
 
-Thank you, the comment about shared buffer given to v3 still applies.
-Also see below.
+> Datasheet available at:
+> http://www.vishay.com/docs/84150/vcnl3020.pdf
+
+I'm thinking that we may simple introduce new tag, called Datesheet:
+to put such links.
+
+> Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
 
 ...
 
-> +enum bmi088_accel_axis {
-> +	AXIS_X,
-> +	AXIS_Y,
-> +	AXIS_Z,
+>  obj-$(CONFIG_SRF08)            +=3D srf08.o
+>  obj-$(CONFIG_SX9500)           +=3D sx9500.o
+>  obj-$(CONFIG_VL53L0X_I2C)      +=3D vl53l0x-i2c.o
+> +obj-$(CONFIG_VCNL3020)         +=3D vcnl3020.o
 
-> +	AXIS_MAX,
+Perhaps keep ordered?
 
-If it's a terminator entry, comma is not needed.
+...
+
+> +/*
+> + * vcnl3020.c - Support for Vishay VCNL3020 proximity sensor
+
+Using file names in themselves is a bad idea. Whenever you would
+rename file (for instance, to support new sensors from the same family
+in the future) you will forget (often, I see this in practice!) to
+update this line.
+Just drop it from here and try to avoid in the future.
+
+> + *
+> + * based on vcnl4000.c
+
+This sounds like a continuation of previous sentence. Drop line in
+between and use proper English grammar and punctuation.
+
+> + */
+
+...
+
+> +struct vcnl3020_data {
+> +       struct i2c_client *client;
+> +       u32 rev;
+
+> +       struct mutex vcnl3020_lock; /* for i2c operations */
+
+Simple 'lock' is enough, the rest is dup noise.
+Also, consider kernel doc format instead of odd comments.
 
 > +};
 
 ...
 
-> +/* Available ODR (output data rates) in Hz */
-> +enum bmi088_odr_modes {
-> +	BMI088_ACCEL_MODE_ODR_12_5 = 0x5,
-> +	BMI088_ACCEL_MODE_ODR_25 = 0x6,
-> +	BMI088_ACCEL_MODE_ODR_50 = 0x7,
-> +	BMI088_ACCEL_MODE_ODR_100 = 0x8,
-> +	BMI088_ACCEL_MODE_ODR_200 = 0x9,
-> +	BMI088_ACCEL_MODE_ODR_400 = 0xa,
-> +	BMI088_ACCEL_MODE_ODR_800 = 0xb,
-> +	BMI088_ACCEL_MODE_ODR_1600 = 0xc,
+> +static const struct i2c_device_id vcnl3020_id[] =3D {
+> +       { "vcnl3020", 0 },
+> +       {}
 > +};
+> +MODULE_DEVICE_TABLE(i2c, vcnl3020_id);
 
-I'm wondering if you need this enum at all? Only 3 out of 8 are in use, and 25
-of them can be still derived from the 12.5 one.
-
-Maybe replace with comment and ranges?
-
-(But it's up to you, I have no strong opinion here)
+Can you group this with OF table below?
 
 ...
 
-> +static int bmi088_accel_set_power_state(struct bmi088_accel_data *data, bool on)
+> +static int32_t vcnl3020_init(struct vcnl3020_data *data)
+
+int32_t...
+
 > +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
-> +
-> +	if (on) {
-> +		ret = pm_runtime_get_sync(dev);
 
-		if (ret < 0)
-			pm_runtime_put_noidle(dev);
+> +       s32 rc;
 
-See below.
+...s32?!
 
-> +	} else {
-> +		pm_runtime_mark_last_busy(dev);
-> +		ret = pm_runtime_put_autosuspend(dev);
-> +	}
-> +
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed: %s(%d)\n", __func__, on);
+Applies to entire code.
 
-> +		if (on)
-> +			pm_runtime_put_noidle(dev);
+> +       u32 led_current;
+> +       struct device *dev =3D &data->client->dev;
 
-Perhaps refactor as above?
+Reversed xmas tree order looks better.
 
-In this case it maybe simple...
+> +       rc =3D i2c_smbus_read_byte_data(data->client, VCNL_PROD_REV);
 
-> +
-> +		return ret;
-> +	}
-> +
-> +	return 0;
+Can you use regmap I=C2=B2C API?
 
-...like this
-
-	if (ret < 0)
-		dev_err(dev, "Failed: %s(%d)\n", __func__, on);
-
-	return ret < 0 ? ret : 0;
-
-(I guess compiler is clever enough to avoid condition twice, but again, I have
- no strong opinion)
-
-> +}
-
-...
-
-> +static int bmi088_accel_enable(struct bmi088_accel_data *data, bool on_off)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
+> +       if (rc < 0) {
+> +               dev_err(dev, "Error (%d) reading product revision", rc);
+> +               goto exit;
+> +       }
 > +
 
-> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CTRL,
-> +			   on_off ? 0x4 : 0x0);
+> +       if (rc =3D=3D VCNL3020_PROD_ID) {
+> +               data->rev =3D rc & 0xff;
 
-I think
+This conjunction looks strange. Also, why type of rev is u32 instead of u8?
 
-	u32 val = on_off ? 0x4 : 0x0;
-	...
-	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CTRL, val);
-
-will look better.
-
-
-> +	if (ret) {
-> +		dev_err(dev, "Error writing ACC_PWR_CTRL reg\n");
-> +		return ret;
-> +	}
-
-> +	return 0;
-> +}
+> +               mutex_init(&data->vcnl3020_lock);
+> +       } else {
+> +               dev_err(dev, "Product id (%x) did not match vcnl3020 (%x)=
+", rc,
+> +                       VCNL3020_PROD_ID);
+> +               rc =3D -ENODEV;
+> +               goto exit;
+> +       }
 > +
-> +/* In suspend mode, only the accelerometer is powered down. */
-> +static int bmi088_accel_set_mode(struct bmi088_accel_data *data,
-> +				enum bmi088_power_modes mode)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
+> +       /* set led current */
+> +       rc =3D i2c_smbus_write_byte_data(data->client, VCNL_LED_CURRENT,
+> +                                      led_current);
+> +       if (rc < 0) {
+> +               dev_err(dev, "Error (%d) setting LED current", rc);
+> +               goto exit;
+> +       }
 > +
-> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_PWR_CONF,
-> +			   mode == BMI088_ACCEL_MODE_SUSPEND ? 0x3 : 0x0);
+> +       return 0;
 
-Ditto.
+> +exit:
+> +       return rc;
 
-> +	if (ret) {
-> +		dev_err(dev, "Error writing ACCEL_PWR_CONF reg\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int bmi088_accel_set_bw(struct bmi088_accel_data *data,
-> +				enum bmi088_odr_modes odr_mode,
-> +				enum bmi088_osr_modes osr_mode)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
-> +	u8 value = (osr_mode << 4) | (odr_mode & 0xF);
-
-_MASK (GENMASK() + _SHIFT? (See also below)
-
-	u8 value = (osr_mode << _SHIFT) | (odr_mode & _MASK);
-	int ret;
-
-(note reverse xmas tree ordering)
-
-> +
-> +	ret = regmap_write(data->regmap, BMI088_ACCEL_REG_ACC_CONF, value);
-> +	if (ret) {
-> +		dev_err(dev, "Error writing ACCEL_PWR_CONF reg\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int bmi088_accel_get_sample_freq(struct bmi088_accel_data *data,
-> +					int* val, int *val2)
-> +{
-> +	unsigned int value;
-> +	int ret;
-
-> +	value &= 0xf; /* ODR in lower 4 bits */
-
-_MASK? See above.
-
-> +	if (value == BMI088_ACCEL_MODE_ODR_12_5) {
-> +		*val = 12;
-> +		*val2 = 500000;
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
-> +	} else {
-> +		*val = 25 << (value - BMI088_ACCEL_MODE_ODR_25);
-> +		*val2 = 0;
-> +		ret = IIO_VAL_INT;
-> +	}
-> +
-> +	return ret;
-> +}
-
-...
-
-> +
-> +static int bmi088_accel_set_sample_freq(struct bmi088_accel_data *data, int val)
-> +{
-> +	unsigned int value = BMI088_ACCEL_MODE_ODR_1600;
-> +
-> +	if (val < 12 || val > 1600)
-> +		return -EINVAL;
-> +
-
-> +	value = fls(val) + (BMI088_ACCEL_MODE_ODR_12_5 - 4);
-
-Wouldn't be
-
-	value = fls(val) + 1;
-
-more obvious? Or, perhaps,
-
-	roundup_pow_of_two()
-
-?
-
-> +	return regmap_update_bits(data->regmap, BMI088_ACCEL_REG_ACC_CONF,
-> +				  0x0f, value);
-
-_MASK ?
-
-> +}
-
-> +	if (ret)
-> +		return ret;
-> +
-
-> +	*val = temp >> 5;
-
-Magic shift.
-
-...
-
-> +	s16 raw_val;
-
-> +	ret = regmap_bulk_read(data->regmap,
-> +			       BMI088_ACCEL_AXIS_TO_REG(chan->scan_index),
-> +			       data->buffer, 2);
-> +	raw_val = get_unaligned_le16(data->buffer);
-
-
-I'm wondering if you can simple use le16_to_cpu()? I guess that buffer is
-always aligned and since you access it always by even addresses, it implies
-aligned access. Applies to other places as well.
-
-...
-
-> +		case IIO_ACCEL:
-
-> +		{
-
-Why do you need block?
-
-> +			ret = regmap_read(data->regmap,
-> +					  BMI088_ACCEL_REG_ACC_RANGE, val);
-> +			if (ret)
-> +				return ret;
-> +
-
-> +			*val2 =  15 - (*val & 0x3);
-
-Extra spaces.
-
-> +			*val = 3 * 980;
-> +
-> +			return IIO_VAL_FRACTIONAL_LOG2;
-> +		}
-> +		default:
-> +			return -EINVAL;
-> +		}
-
-...
-
-> +static const unsigned long bmi088_accel_scan_masks[] = {
-> +	BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
-> +	0
-
-+ comma or is it agreed value for termination the list?
+Useless. Return directly.
 
 > +};
 
 ...
 
+> +       /* wait for data to become ready */
+> +       while (tries--) {
+> +               rc =3D i2c_smbus_read_byte_data(data->client, VCNL_COMMAN=
+D);
+> +               if (rc < 0)
+> +                       goto fail;
+> +               if (rc & VCNL_PS_RDY)
+> +                       break;
+> +               msleep(20); /* measurement takes up to 100 ms */
+> +       }
 
-> +	usleep_range(BMI088_ACCEL_MAX_STARTUP_TIME_MS * 1000,
-> +		BMI088_ACCEL_MAX_STARTUP_TIME_MS * 1000 * 2);
+Timeout loops look more naturally in do {} while format.
 
-	unsigned long /* or what is used */ sleep = BMI088_ACCEL_MAX_STARTUP_TIME_MS * USEC_PER_MSEC;
-	...
-	usleep_range(sleep, 2 * sleep);
+  unsigned int tries =3D 5;
+  ...
 
-?
+  do {
+  ...
+  } while (--tries);
 
 ...
 
-> +	addr[0] |= 0x80; /* bit7 = RW = '1' */
+> +       *val =3D (rc & 0xff) << 8;
 
-BIT(7) ?
+> +       *val |=3D rc & 0xff;
+
+All these conjunctions looks fishy. Why do you need them? Cant you
+rely on the returned value by I=C2=B2C API?
 
 ...
 
-> +static const struct spi_device_id bmi088_accel_id[] = {
+> +fail:
 
-> +	{"bmi088_accel", 0},
+Better name is 'err_unlock' or 'out_unlock'. The rule of thumb to
+describe in the label what you *about to do* there.
 
-', 0' part is not needed.
+> +       mutex_unlock(&data->vcnl3020_lock);
+> +
+> +       return rc;
+> +}
 
-> +	{}
+...
+
+> +                       rc =3D vcnl3020_measure_proximity(data, val);
+> +                       if (rc < 0)
+
+Can rc be positive? Drop all these ' < 0' in cases where it is
+guaranteed not to be the case.
+
+> +                               return rc;
+
+...
+
+> +static int32_t vcnl3020_probe(struct i2c_client *client,
+> +                             const struct i2c_device_id *id)
+
+Can you switch to ->probe_new() ?
+
+...
+
+> +       dev_info(&client->dev, "Proximity sensor, Rev: %02x\n",
+> +                data->rev);
+
+Noise.
+
+...
+
+> +       rc =3D devm_iio_device_register(&client->dev, indio_dev);
+> +       if (rc !=3D 0)
+
+Redundant ' !=3D 0' part.
+
+> +               goto out;
+> +
+> +       return rc;
+
+> +out:
+> +       devm_iio_device_free(&client->dev, indio_dev);
+> +       return rc;
+
+Managed resources are exactly for this not to be appeared in the code.
+
+> +}
+
+...
+
+> +static const struct of_device_id vcnl3020_of_match[] =3D {
+> +       {
+> +               .compatible =3D "vishay,vcnl3020",
+> +       },
+
+Missed terminator. How did you test this?
+
 > +};
 
-
-
-> +++ b/drivers/iio/accel/bmi088-accel.h
-> @@ -0,0 +1,12 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef BMI088_ACCEL_H
-> +#define BMI088_ACCEL_H
-> +
-> +extern const struct regmap_config bmi088_regmap_conf;
-> +extern const struct dev_pm_ops bmi088_accel_pm_ops;
-
-Do you need extern?
-
-> +int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
-> +			    const char *name, bool block_supported);
-> +int bmi088_accel_core_remove(struct device *dev);
-
-This needs
-
-#include <linux/types.h>
-
-struct device;
-struct regmap;
-
--- 
+--
 With Best Regards,
 Andy Shevchenko
-
-

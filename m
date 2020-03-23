@@ -2,93 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A39AB18ED80
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 01:50:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C53B18EDEA
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 03:16:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726936AbgCWAuA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Mar 2020 20:50:00 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:46727 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726925AbgCWAuA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Mar 2020 20:50:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584924599;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4WJG8kX5wGWaQ/wYthBFIkeuh/CAXA1gW5ZNSHD9JAs=;
-        b=Izq+6922QyCIgdq2L9llerOP/yWBZJmeR3V0QaE8QOSa1ZiMhtlt7Lm+3yIvliijEKcyuT
-        KNoxMaNVlvY4KaG5cZcGAaOuC2GFviuo6KViye8D2tmridP8ZjWw8UW6FMJZLW0FuZb3z6
-        or+o/6FdPbiJy3MjdvQyc9uEe+B3kFE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-338-y4Xmhf-lNJSBUqIv0LtY0Q-1; Sun, 22 Mar 2020 20:49:55 -0400
-X-MC-Unique: y4Xmhf-lNJSBUqIv0LtY0Q-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DD6E98017CC;
-        Mon, 23 Mar 2020 00:49:52 +0000 (UTC)
-Received: from elisabeth (unknown [10.40.208.5])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 2D9159B927;
-        Mon, 23 Mar 2020 00:49:42 +0000 (UTC)
-Date:   Mon, 23 Mar 2020 01:49:35 +0100
-From:   Stefano Brivio <sbrivio@redhat.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Deepak R Varma <mh12gx2825@gmail.com>,
-        outreachy-kernel@googlegroups.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Baluta <daniel.baluta@gmail.com>,
-        kieran.bingham@ideasonboard.com,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [Outreachy kernel] Re: [PATCH v3 3/4] staging: iio: adc:
- ad7192: get_filter_freq code optimization
-Message-ID: <20200323014935.48048405@elisabeth>
-In-Reply-To: <CAHp75VfC=y1mHW5=ghwdMMZYg=00_a5RB0Phz4j_vM77pehvMA@mail.gmail.com>
-References: <cover.1584904896.git.mh12gx2825@gmail.com>
-        <dad3cdb5de76234cc460300c31aea6af671f81ad.1584904896.git.mh12gx2825@gmail.com>
-        <CAHp75VfC=y1mHW5=ghwdMMZYg=00_a5RB0Phz4j_vM77pehvMA@mail.gmail.com>
-Organization: Red Hat
+        id S1726982AbgCWCQR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Mar 2020 22:16:17 -0400
+Received: from mail-bn8nam12on2046.outbound.protection.outlook.com ([40.107.237.46]:3680
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726958AbgCWCQR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 22 Mar 2020 22:16:17 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TCSFPRg4zyrl2/jHTgvQHsDbP+DQ6Ei+tMgu9edt859q8ZbEDSUQUJ4lomCmCVYWbYd4ofbQLUDu46U3zNiWsCEqRZXxlnjN+8KBMSa71N+7TOQV7MrhRQI1T54Bop1pCLhl2zWgqvIZIw4cBeI9+v/8irEVI4vrc2nNl3D7kcZ9G8/OH8h8W0LVjwFAk9P5O7BLWSjKG8h20ErrLHWdVgcYgrdY6T9QQ6qkI2rDPpoRJjTUixJR+HSHsZLOpwY9iqlNiELQ5R4ygSrGtEF+P0EJ4Aa3bhE/BqgBz7D45OLW1QtWvjVf30MVHBiuEiiO0q0wekTrYlj/a43yoLm6YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dbBvtZL/EKf7OWNdo/un9vRVM623L5JFkAzHqseC2YI=;
+ b=hewXEJxWa0WhCfMaiQ7CDoGI+EfYWYCahHalZ5KUTZQ9HFCk18/8AsCot7hLFEWUAb7es0pSvZTHONBXSsaz76oeZg3uPTtPRRffgIhqgXA3q0mkOH+olquJiySPwR0ywlKNlc3SlJWSqAms2BcV45j8nvoTIlkQF7/w4jWtCKTZw836Bulmx/0CW8oi88lvGhrSG4RAql7QR7A1YHXNlkecC0EHuDV7nQiI9+CA0m63AmudivGIjE0G9kqYljYo2bgEl/a/SSXmIBGn9tUhXa1mFe/DjSglN1843yMzcAnN2dHXZ4KkAixNYduCBK1UeYdwXe/BehPHChllFMNeTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=labundy.com; dmarc=pass action=none header.from=labundy.com;
+ dkim=pass header.d=labundy.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=NETORG5796793.onmicrosoft.com; s=selector1-NETORG5796793-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dbBvtZL/EKf7OWNdo/un9vRVM623L5JFkAzHqseC2YI=;
+ b=lvm2skNHRL3yMgDBnrBYHnuGBlklIBq5SY076qBf48SS2AQXPr7aFuMV422Nhciclnr95SNcM4slSU6WFrrOFuGpOYEkfhuzZQseF3bvqG/50MsEiFV0aGhp2gPz2gzcfcK0UoXH8WYiW94DET+m9eaiNaL15k8wPBjQ3YdTY2g=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=jeff@labundy.com; 
+Received: from SN6PR08MB5517.namprd08.prod.outlook.com (2603:10b6:805:fb::32)
+ by SN6PR08MB5120.namprd08.prod.outlook.com (2603:10b6:805:70::31) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.22; Mon, 23 Mar
+ 2020 02:16:13 +0000
+Received: from SN6PR08MB5517.namprd08.prod.outlook.com
+ ([fe80::e87b:9b6:d4b8:af68]) by SN6PR08MB5517.namprd08.prod.outlook.com
+ ([fe80::e87b:9b6:d4b8:af68%6]) with mapi id 15.20.2835.017; Mon, 23 Mar 2020
+ 02:16:12 +0000
+Date:   Sun, 22 Mar 2020 21:16:05 -0500
+From:   Jeff LaBundy <jeff@labundy.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     dmitry.torokhov@gmail.com, thierry.reding@gmail.com,
+        jic23@kernel.org, devicetree@vger.kernel.org,
+        linux-input@vger.kernel.org, u.kleine-koenig@pengutronix.de,
+        linux-pwm@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com
+Subject: Re: [PATCH v5 2/7] mfd: Add support for Azoteq
+ IQS620A/621/622/624/625
+Message-ID: <20200323021605.GA2731@labundy.com>
+References: <1581895931-6056-1-git-send-email-jeff@labundy.com>
+ <1581895931-6056-3-git-send-email-jeff@labundy.com>
+ <20200224111448.GS3494@dell>
+ <20200228034220.GA3510@labundy.com>
+ <20200302120458.GY3494@dell>
+ <20200302141117.GA11787@labundy.com>
+ <20200302142405.GA3494@dell>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200302142405.GA3494@dell>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-ClientProxiedBy: DM6PR17CA0002.namprd17.prod.outlook.com
+ (2603:10b6:5:1b3::15) To SN6PR08MB5517.namprd08.prod.outlook.com
+ (2603:10b6:805:fb::32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from labundy.com (136.49.227.119) by DM6PR17CA0002.namprd17.prod.outlook.com (2603:10b6:5:1b3::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.15 via Frontend Transport; Mon, 23 Mar 2020 02:16:11 +0000
+X-Originating-IP: [136.49.227.119]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: fb9c19f7-95c1-471e-0c69-08d7ced02848
+X-MS-TrafficTypeDiagnostic: SN6PR08MB5120:
+X-Microsoft-Antispam-PRVS: <SN6PR08MB51204FA55EF6716EB2BC559AD3F00@SN6PR08MB5120.namprd08.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 0351D213B3
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(346002)(396003)(376002)(39830400003)(366004)(136003)(199004)(6666004)(2616005)(186003)(508600001)(33656002)(956004)(16526019)(26005)(6916009)(1076003)(86362001)(7416002)(66476007)(66556008)(36756003)(66946007)(8886007)(55016002)(8936002)(81156014)(81166006)(316002)(5660300002)(2906002)(52116002)(7696005)(4326008)(8676002);DIR:OUT;SFP:1101;SCL:1;SRVR:SN6PR08MB5120;H:SN6PR08MB5517.namprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+Received-SPF: None (protection.outlook.com: labundy.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Lt6SJbb9FYxKSlN+rfNryuw8WC7AO5EvoNQJoH4kdf60PW2hUOff6+ETrcNNPYjYDb5dhqqDBfjnR0IC7WuX/tNhHnOm2RAqZoyXB83AopKq6Q8k+svk9+sy/71j/g1xM3Kcz0QnMU6SRjncwi+7/F4OpKreArZmt2wBFMwVTO7rtE8lgy52iueWJllWDPETsRaiDwxNrSK7lNJZlRgLwY4vPW+s0G+KUNbTBOcKRqn4PnpLeWDWTSJecsd0nnJE+ALb59d1QIT9AmXX9ntsTCMOjca4UgqyfXplQLpJVAIJPZ3AE0ZUjLmH8r+MWKbJ6k67xS/AFU8egJmsZsME9W9T/DO1hHzoC1XzjTV31vEoBHtQkaVJydKXxhaWO9iLkhu7cHn3QPvZT1KIgqnFbwUyFmit7BL/sx8nf447CSM4XU1tdBGJT7k16Mj+sQWV
+X-MS-Exchange-AntiSpam-MessageData: K7+lIfuY9XeXy789g03ittDPyoWjwY3w2xi0WDd5AKLVlODIo9azgObGvibx/FRs7gpa5tyEmABTBM3/WlZTDZKcKHysY9PD5TXCcYG6www4r3fPQ9P996guUmvG3HHsReQ9GuRzWp1Hwfhox5nbGQ==
+X-OriginatorOrg: labundy.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb9c19f7-95c1-471e-0c69-08d7ced02848
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2020 02:16:12.7040
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 00b69d09-acab-4585-aca7-8fb7c6323e6f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cUdrbTHpoc1jBFZ37Cqs7hGjUt/FaFuLEJF780t6r3J8pzx9EZ9qW2GJDQSYFrnPjVEOiYU7BCSQm2M1za1ImA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB5120
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Andy,
+Hi Lee,
 
-On Mon, 23 Mar 2020 01:44:20 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-
-> On Sun, Mar 22, 2020 at 9:57 PM Deepak R Varma <mh12gx2825@gmail.com> wrote:
-> >
-> > Current implementation of the function ad7192_get_available_filter_freq
-> > repeats calculation of output data rate a few times. We can simplify
-> > these steps by refactoring out the calculation of fADC. This would also
-> > addresses the checkpatch warning of line exceeding 80 character.  
+On Mon, Mar 02, 2020 at 02:24:05PM +0000, Lee Jones wrote:
+> On Mon, 02 Mar 2020, Jeff LaBundy wrote:
 > 
-> I'm not sure you did an equivalent changes. I believe in the original
-> code precision is better. Consider low clock frequencies when 10 bit
-> right shift may hide some bits of the division.
+> > Hi Lee,
+> > 
+> > On Mon, Mar 02, 2020 at 12:04:58PM +0000, Lee Jones wrote:
+> > > On Thu, 27 Feb 2020, Jeff LaBundy wrote:
+> > > 
+> > > > Hi Lee,
+> > > > 
+> > > > On Mon, Feb 24, 2020 at 11:14:48AM +0000, Lee Jones wrote:
+> > > > 
+> > > > [...]
+> > > > 
+> > > > > 
+> > > > > Well done Jeff.  Good job.
+> > > > > 
+> > > > > Applied, thanks.
+> > > > > 
+> > > > 
+> > > > Thank you for your kind words as well as your support in fleshing out this
+> > > > series.
+> > > > 
+> > > > Just to confirm, does your offer to take the remainder (once everything is
+> > > > approved) through immutable branches still stand?
+> > > 
+> > > Depends how quickly you can get the other drivers turned around.
+> > 
+> > With Uwe's approval from Friday, all five drivers are complete. Dmitry and
+> > Jonathan's approvals were given in previous review cycles and were carried
+> > forward with their permission. If anything else is required, please let me
+> > know.
+> 
+> Does Uwe's review mean that Thierry's is not required?
 
-Note that those bits are eventually "hidden" in the same way later,
-despite the different sequence, due to DIV_ROUND_CLOSEST() being used
-at every step (both before and after the change) without other
-operations occurring. Anyway,
+Sorry about that; I was jumping the gun (thank you Uwe for clarifying).
+The pwm patch still needs an Ack from Thierry before it can be applied.
 
-> Care to write a python script to check the precision between old and new code?
+I have not received any feedback from Thierry throughout this patch set,
+and I'd like to unblock the remainder if possible. In case Thierry does
+not respond by the time you elect to send your next pull request, would
+you be willing to drop the pwm patch and take the input and iio patches
+through your tree?
 
-yes, that would be nice no matter what.
+If so, I'll re-send the pwm patch on its own to Thierry during a future
+cycle so that he can take it through his tree at his convenience.
 
--- 
-Stefano
+> 
+> -- 
+> Lee Jones [李琼斯]
+> Linaro Services Technical Lead
+> Linaro.org │ Open source software for ARM SoCs
+> Follow Linaro: Facebook | Twitter | Blog
 
+Kind regards,
+Jeff LaBundy

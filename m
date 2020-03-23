@@ -2,104 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E71A518F1F5
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 10:40:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 305F518F236
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Mar 2020 10:56:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727754AbgCWJkZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Mar 2020 05:40:25 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2583 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727695AbgCWJkY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 23 Mar 2020 05:40:24 -0400
-Received: from lhreml703-cah.china.huawei.com (unknown [172.18.7.106])
-        by Forcepoint Email with ESMTP id 9488083465067C7A73B8;
-        Mon, 23 Mar 2020 09:40:23 +0000 (GMT)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- lhreml703-cah.china.huawei.com (10.201.108.44) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Mon, 23 Mar 2020 09:40:22 +0000
-Received: from localhost (10.47.90.106) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Mon, 23 Mar
- 2020 09:40:22 +0000
-Date:   Mon, 23 Mar 2020 09:40:18 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Peter Meerwald-Stadler" <pmeerw@pmeerw.net>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v1 1/5] iio: pressure: bmp280: Tolerate IRQ before
- registering
-Message-ID: <20200323094018.00002190@Huawei.com>
-In-Reply-To: <CAHp75VcUPSmCnKFSm8y6Nq_qCcMHHihACC+49FyzrawAqMjQDA@mail.gmail.com>
-References: <20200317101813.30829-1-andriy.shevchenko@linux.intel.com>
-        <20200322171216.3260cd37@archlinux>
-        <CAHp75VcUPSmCnKFSm8y6Nq_qCcMHHihACC+49FyzrawAqMjQDA@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.90.106]
-X-ClientProxiedBy: lhreml721-chm.china.huawei.com (10.201.108.72) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+        id S1727828AbgCWJ4A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Mar 2020 05:56:00 -0400
+Received: from jax4mhob01.myregisteredsite.com ([64.69.218.81]:59526 "EHLO
+        jax4mhob01.myregisteredsite.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727827AbgCWJz7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Mar 2020 05:55:59 -0400
+Received: from mailpod.hostingplatform.com (atl4qobmail03pod0.registeredsite.com [10.30.71.205])
+        by jax4mhob01.myregisteredsite.com (8.14.4/8.14.4) with ESMTP id 02N9ttdt027175
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
+        for <linux-iio@vger.kernel.org>; Mon, 23 Mar 2020 05:55:55 -0400
+Received: (qmail 5728 invoked by uid 0); 23 Mar 2020 09:55:55 -0000
+X-TCPREMOTEIP: 83.128.90.119
+X-Authenticated-UID: mike@milosoftware.com
+Received: from unknown (HELO phenom.domain?not?set.invalid) (mike@milosoftware.com@83.128.90.119)
+  by 0 with ESMTPA; 23 Mar 2020 09:55:55 -0000
+From:   Mike Looijmans <mike.looijmans@topic.nl>
+To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        jic23@kernel.org
+Cc:     linux-kernel@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, robh+dt@kernel.org, mark.rutland@arm.com,
+        Mike Looijmans <mike.looijmans@topic.nl>
+Subject: [PATCH v2] dt-bindings: iio: accel: Add bmi088 accelerometer bindings
+Date:   Mon, 23 Mar 2020 10:55:51 +0100
+Message-Id: <20200323095551.23500-1-mike.looijmans@topic.nl>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Mar 2020 23:15:13 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+This adds the device-tree bindings for the Bosch Sensortec BMI088 IMU,
+the accelerometer part.
 
-> On Sun, Mar 22, 2020 at 7:14 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Tue, 17 Mar 2020 12:18:09 +0200
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> >  
-> > > With DEBUG_SHIRQ enabled we have a kernel crash
-> > >
-> > > [  116.482696] BUG: kernel NULL pointer dereference, address: 0000000000000000
-> > >
-> > > ...
-> > >
-> > > [  116.606571] Call Trace:
-> > > [  116.609023]  <IRQ>
-> > > [  116.611047]  complete+0x34/0x50
-> > > [  116.614206]  bmp085_eoc_irq+0x9/0x10 [bmp280]
-> > >
-> > > because DEBUG_SHIRQ mechanism fires an IRQ before registration and drivers
-> > > ought to be able to handle an interrupt happening before request_irq() returns.
-> > >
-> > > Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
-> > > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
-> >
-> > Hmm. Nasty corner case but fair enough to fix it up.
-> > I guess we should audit other drivers for similar paths...  
-> 
-> One can easily test, no device even needed (however in this case I have one)
-> 
-> ...
-> 
-> > > -     if (data->use_eoc)
-> > > -             init_completion(&data->done);
-> > > +     reinit_completion(&data->done);  
-> >
-> > reinit on the completion when we don't even have an interrupt
-> > (hence data->use_eoc == false) seems excessive.  Why did
-> > you drop the conditional?  
-> 
-> It's harmless and gives less code I believe.
-> But if you insist I can put it back.
-> 
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+---
+v2: convert to yaml format
 
-I agree it's harmless but breaks the logical flow by doing
-something unnecessary so either we need a comment to say that
-or easier option, just put the condition back in.
+ .../bindings/iio/accel/bosch,bmi088.yaml      | 38 +++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
 
-Jonathan
-
+diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+new file mode 100644
+index 000000000000..715f79c3b2a9
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+@@ -0,0 +1,38 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/accel/bosch,bma400.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Bosch BMI088 IMU accelerometer part
++
++maintainers:
++  - Mike Looijmans <mike.looijmans@topic.nl>
++
++description: |
++  Acceleration part of the IMU sensor with an SPI interface
++
++  Specifications about the sensor can be found at:
++    https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf
++
++properties:
++  compatible:
++    enum:
++      - bosch,bmi088_accel
++
++  reg:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++examples:
++  - |
++  spi {
++    bmi088_accel@1 {
++      compatible = "bosch,bmi088_accel";
++      reg = <1>;
++      spi-max-frequency = <10000000>;
++    };
++  };
+-- 
+2.17.1
 

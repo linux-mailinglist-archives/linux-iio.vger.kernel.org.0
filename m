@@ -2,121 +2,213 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAFF4190CFC
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Mar 2020 13:03:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 918301911CF
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Mar 2020 14:47:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727407AbgCXMDO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Mar 2020 08:03:14 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:45548 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727238AbgCXMDN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Mar 2020 08:03:13 -0400
-Received: by mail-pl1-f196.google.com with SMTP id b9so7304348pls.12;
-        Tue, 24 Mar 2020 05:03:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=J2EXDFgxva5oF0426JjSTRbKqwLaE46RW/hlFLUbrrA=;
-        b=G5/TSnOHqp5DlvZeCBAifsCPJVcPcwb9Bepaavt3fg4yKA34r6/pNilltLQNEnhbcn
-         5BQ7/UWFVlePUAVM277SAwkeJJ9BO1PAPl3xa+nYtYBQziiAvJvgFyOkA9rDVvLeVwtI
-         IEfWnkwFz0fsZ3X9HCnYHGx+CLiyk+X61kZ0noAhYFHRG6vtYolDzMGP6jOT59IBvhi8
-         XSraOhsyArognYXGKQFqpzlZyburAUHq23mcrd9M4sntUkuTX4Sayx17qlk1zGauNvE5
-         0M81TYnmG0eOMpyAzCrPf9HBIgFn1+//GjuEjCYq2Eh54wQvZ5isrPm86ujp/BGNNvtS
-         eT5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=J2EXDFgxva5oF0426JjSTRbKqwLaE46RW/hlFLUbrrA=;
-        b=RJndM1W2jrtOLiV2M34Wj7iGFuhoOrT7lg7t8aqAsoZCDsyw+HE3d1fvpzmjbrvFsD
-         i37td2XlJ8KbJpr5g3sSSU8N9ColG4ZfCZK66dxwZaJsxh8kJj8+yyhaFUSfJi+UQHi0
-         7mh79fJEWUd53Kt6mheqZR9I9mj/lNwy1+Rqqni2UBPyv18xgxB2dPMEQkdjJFUHZ90j
-         wXikZ3N9inQFkwmPUay/RGNGexEI79KLJnZOQYd3oGtV6yqJAWH6x0hrcisV4W0GgqmM
-         PibOnplzRxHdGkgJS1Fn5e48srAm/2qcf1GvP6ehAki8PH30MkXMj+niHPNjQvG+TEjR
-         k69g==
-X-Gm-Message-State: ANhLgQ28QENBpWreo6o3Yu4xUBEJxy1TiwtFBcwyNnxh5A5ynJnUqndE
-        yUxKK/54t14QMb87HGZ4W8u1rPUDogLsB6mdUy9rCy+YE2I=
-X-Google-Smtp-Source: ADFU+vt4rHgVamUtya4h3lHE3q6Yop3GkBHyB2s5gDiR0Em1mTuxwPzZuqQ5a6G8Mr9p+7OsPvhIrBUPP5Fwdd0Xj68=
-X-Received: by 2002:a17:902:54f:: with SMTP id 73mr26037755plf.255.1585051391994;
- Tue, 24 Mar 2020 05:03:11 -0700 (PDT)
+        id S1727720AbgCXNrX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Mar 2020 09:47:23 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:58742 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727684AbgCXNrX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Mar 2020 09:47:23 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02ODj8AQ027847;
+        Tue, 24 Mar 2020 09:47:20 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2ywcs626a8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 24 Mar 2020 09:47:20 -0400
+Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 02ODlIbP063675
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 24 Mar 2020 09:47:19 -0400
+Received: from SCSQCASHYB6.ad.analog.com (10.77.17.132) by
+ SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 24 Mar 2020 06:47:17 -0700
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
+ SCSQCASHYB6.ad.analog.com (10.77.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 24 Mar 2020 06:46:58 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Tue, 24 Mar 2020 06:47:16 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 02ODlDni002365;
+        Tue, 24 Mar 2020 09:47:13 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC:     <jic23@kernel.org>, <robh+dt@kernel.org>, <Laszlo.Nagy@analog.com>,
+        <Andrei.Grozav@analog.com>, <Michael.Hennerich@analog.com>,
+        <Istvan.Csomortani@analog.com>, <Adrian.Costina@analog.com>,
+        <Dragos.Bogdan@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v13 0/8] iio: adi-axi-adc,ad9647: Add support for AD9467 ADC
+Date:   Tue, 24 Mar 2020 15:46:28 +0200
+Message-ID: <20200324134636.64643-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20200323103926.21271-1-i.mikhaylov@yadro.com> <20200323103926.21271-3-i.mikhaylov@yadro.com>
- <CAHp75Ve4rejBKjG+mioRL3S7i3meyy=_4TtW1fr2aGvnVn2tBA@mail.gmail.com> <321453af40ca49839bc7b9d1c65b828841492f72.camel@yadro.com>
-In-Reply-To: <321453af40ca49839bc7b9d1c65b828841492f72.camel@yadro.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 24 Mar 2020 14:03:04 +0200
-Message-ID: <CAHp75VeHRxgKFfiqO3V+=jMB-Pqe9-1YM+0oFuuo=cjJfJa+bA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: proximity: Add driver support for vcnl3020
- proximity sensor
-To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
+ definitions=2020-03-24_05:2020-03-23,2020-03-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 clxscore=1015 suspectscore=0 spamscore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003240074
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 1:52 PM Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
-> On Mon, 2020-03-23 at 14:10 +0200, Andy Shevchenko wrote:
-> > On Mon, Mar 23, 2020 at 12:41 PM Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
+Changelog v12 -> v13:
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - removed padding around 'adi_axi_adc_conv_register()' 
 
-...
+Changelog v11 -> v12:
+* used DocLink: and Datasheet: instead of Link: tag
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - removed NULL checks from places where the code does pointer
+    arithmethic
+  - removed comma from NULL terminators in list
+  - changed to use of_device_get_match_data() to get driver data
+  - moved device table data to bottom of driver
+* patch 'iio: adc: ad9467: add support AD9467 ADC'
+  - moved device table data to bottom of driver
 
-> > > +static int32_t vcnl3020_init(struct vcnl3020_data *data)
-> >
-> > int32_t...
-> >
-> > > +{
-> > > +       s32 rc;
-> >
-> > ...s32?!
-> >
-> > Applies to entire code.
->
-> checkpatch.pl --strict doesn't show anything bad in it but I can change from
-> int32_t/s32 into int easily, it's not a problem for me.
+Changelog v10 -> v11:
+* added 'Reviewed-by: Rob Herring <robh@kernel.org>' tag to DT bindings patches
+* patch 'dt-bindings: iio: adc: add bindings doc for AXI ADC driver'
+  removed 'maxItems' from dma-names property
+* sent from an @analog.com server; author was showing as @gmail.com on
+  V9 & V10
 
-The problem is consistency. You code should be self-consistent.
-And yes, s32 is quite unusual for (generic) returning variables.
+Changelog v9 -> v10:
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - removed IQ correction logic; the AD9467 ADC driver has only 1 channel,
+    so it can't have I & Q; also the IQ correction assumes that all
+    even channels are Q and all odd channels are I, which is true for
+    current ADI-AXI ADC IP cores, but shouldn't be an assumption designed
+    in the driver; the IQ correction stuff will be re-added later,
+    and will try to use the IIO_MOD_I & IIO_MOD_Q modifiers
 
-...
+Changelog v8 -> v9:
+* adding more Analog people to the list; predominantly HDL people; this
+  should help me sync people about the details of regs/reg-names
+* added 'Acked-by: Moritz Fischer <mdf@kernel.org>' tag to fpga patches
+  - we can always re-update these patches if something else is decided about
+    the location of the 'adi-axi-common.h' header; I'm not insisting about
+    where to put it; I'm open to other proposals
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - prefixed regs ADI_AXI_ ; I tried ADI_AXI_ADC_, but that seemed to make
+    them too long
+  - dropped unused regs; will add them as stuff gets added in the upstream
+    driver; in the meantime, reg-names can be reworked
+  - dropped generic LOWERXY_SET/GET macros
+  - update reg-names a bit; will update them in the docs and HDL
+  - order in adi_axi_adc_conv_unregister() should now be symmetrically
+    oppposite now to the register function
+  - implemented 'is_visible()' callback to adi_axi_adc_attributes[] so that
+    attrs can be made invisible to userspace if needed;
+  - 'indio_dev->name = "adi-axi-adc";'
+  - added kernel doc-string for @reg_access
+* patch 'iio: adc: ad9467: add support AD9467 ADC'
+  - ad9467_spi_read() split in 2 buffers; tbuf & rbuf
+  - removed 'if (chan->extend_name)' test ; left-over from initial driver
+  - removed 'if (!st->clk)' check; driver will fail probe without a clock
+  - removed 'if (!spi->dev.of_node)' in probe; shouldn't be needed
+  - using 'of_device_get_match_data()' in probe to get data; moved chip
+    info table entry as data on the of_device_id table
 
-> > > +       dev_info(&client->dev, "Proximity sensor, Rev: %02x\n",
-> > > +                data->rev);
-> >
-> > Noise.
->
-> Doesn't it help to determine the presence of driver to a common user?
+Changelog v7 -> v8:
+* in 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+  - updated register definitions and bits to newer format/docs; the ref driver wasn't really up-to-date
+    -- prefixed bit names with reg-name to avoid bit definition colisions; that makes some macros longer, but at least the format is consistent
+  - using dev_name(&pdev->dev) for indio_dev->name
+  - moved reset to own axi_adc_reset() function; may be re-used later
+  - some re-formatting/alignment changes
+  - address ENOSYS checkpatch complaint; changed with EOPNOTSUPP
 
-You have a lot of knobs to detect this. Starting from sysfs to 'initcall_debug'.
+Changelog v6 -> v7:
+* Fixed dt-schema build for adi,axi-adc.yaml based on Rob's suggestion
+  - added '$ref: /schemas/types.yaml#/definitions/phandle' to 'adi,adc-dev'
+  - dropped 'maxItems' from 'adi,adc-dev'
 
-...
+Changelog v5 -> v6
+* fix URLs; got changed during rename
+   https://wiki.analog.com/resources/fpga/docs/adi_axi_adc_ip ->
+   https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+  - noticed while working on the AXI DAC driver
 
-> > > +               goto out;
-> > > +
-> > > +       return rc;
-> > > +out:
-> > > +       devm_iio_device_free(&client->dev, indio_dev);
-> > > +       return rc;
-> >
-> > Managed resources are exactly for this not to be appeared in the code.
->
-> I can do something like this:
-> return devm_iio_device_register(&client->dev, indio_dev);
->
-> Would it suffice?
+Changelog v4 -> v5:
+* update drivers/iio/adc/Kconfig note about module name; omitted during first rename
+   - 'module will be called axi-adc.' -> 'module will be called adi-axi-adc.'
 
-I think so, but you may double check with documentation.
+Changelog v3 -> v4:
+* addressed Rob's dt-remarks
+   - change 'adi-axi-adc-client' prop to 'adi,adc-dev'
+
+Changelog v2 -> v3:
+* addressed compiler warning
+
+Changelog v1 -> v2:
+* first series was added a bit hastily
+* addressed  'make dt_binding_check' complaints; seems I missed a few when running the check;
+* added missing patches to include/linux/fpga/adi-axi-common.h
+   - 'include: fpga: adi-axi-common.h: fixup whitespace tab -> space'
+   - 'include: fpga: adi-axi-common.h: add version helper macros'
+* patch 'iio: buffer-dmaengine: add dev-managed calls for buffer alloc/free'
+   - remove copy+pasted comment for 'devm_iio_dmaengine_buffer_alloc()'
+   - removed devm_iio_dmaengine_buffer_free() ; hopefully it might never be needed
+   - fix-up alignment for devm_iio_dmaengine_buffer_alloc() in header
+* patch 'iio: adc: adi-axi-adc: add support for AXI ADC IP core'
+   - renamed axi-adc.c -> adi-axi-adc.c & Kconfig symbol
+   - prefix all axi_adc -> adi_axi_adc
+   - removed switch statement in axi_adc_read_raw() & axi_adc_write_raw()
+   - remove axi_adc_chan_spec ; replaced with iio_chan_spec directly ; will think of a simpler solution for extra chan params
+   - removed left-over 'struct axi_adc_cleanup_data'
+   - moved 'devm_add_action_or_reset()' call right after 'adi_axi_adc_attach_client()'
+   - switched to using 'devm_platform_ioremap_resource()'
+* patch 'iio: adc: ad9467: add support AD9467 ADC'
+  - renamed ADI_ADC reg prefixes to AN877_ADC
+  - dropped 'info_mask_separate' field in AD9467_CHAN - will be re-added later when driver gets more features; was left-over from the initial ref driver
+  - remove .shift = 0,  in AD9467_CHAN
+  - renamed 'sample-clock' -> 'adc-clock'
+  - direct returns in ad9467_read_raw() & ad9467_write_raw() & ad9467_setup() switch statements
+  - removed blank line after devm_axi_adc_conv_register()
+  - removed ad9467_id & reworked to use ad9467_of_match
+
+Alexandru Ardelean (6):
+  include: fpga: adi-axi-common.h: fixup whitespace tab -> space
+  include: fpga: adi-axi-common.h: add version helper macros
+  iio: buffer-dmaengine: use %zu specifier for sprintf(align)
+  iio: buffer-dmaengine: add dev-managed calls for buffer alloc
+  dt-bindings: iio: adc: add bindings doc for AXI ADC driver
+  dt-bindings: iio: adc: add bindings doc for AD9467 ADC
+
+Michael Hennerich (2):
+  iio: adc: adi-axi-adc: add support for AXI ADC IP core
+  iio: adc: ad9467: add support AD9467 ADC
+
+ .../bindings/iio/adc/adi,ad9467.yaml          |  65 +++
+ .../bindings/iio/adc/adi,axi-adc.yaml         |  62 +++
+ drivers/iio/adc/Kconfig                       |  35 ++
+ drivers/iio/adc/Makefile                      |   2 +
+ drivers/iio/adc/ad9467.c                      | 420 +++++++++++++++
+ drivers/iio/adc/adi-axi-adc.c                 | 482 ++++++++++++++++++
+ .../buffer/industrialio-buffer-dmaengine.c    |  41 +-
+ include/linux/fpga/adi-axi-common.h           |   6 +-
+ include/linux/iio/adc/adi-axi-adc.h           |  64 +++
+ include/linux/iio/buffer-dmaengine.h          |   3 +
+ 10 files changed, 1178 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+ create mode 100644 drivers/iio/adc/ad9467.c
+ create mode 100644 drivers/iio/adc/adi-axi-adc.c
+ create mode 100644 include/linux/iio/adc/adi-axi-adc.h
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.17.1
+

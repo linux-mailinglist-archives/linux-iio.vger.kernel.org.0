@@ -2,148 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 675A51911DA
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Mar 2020 14:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8406A1911EB
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Mar 2020 14:48:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727960AbgCXNrj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Mar 2020 09:47:39 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:12776 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727323AbgCXNri (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Mar 2020 09:47:38 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02ODj82V027850;
-        Tue, 24 Mar 2020 09:47:37 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2ywcs626b6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 24 Mar 2020 09:47:36 -0400
-Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 02ODlZ0C053426
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 24 Mar 2020 09:47:35 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 24 Mar 2020 09:47:35 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 24 Mar 2020 09:47:34 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 24 Mar 2020 09:47:34 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 02ODlDnq002365;
-        Tue, 24 Mar 2020 09:47:31 -0400
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC:     <jic23@kernel.org>, <robh+dt@kernel.org>, <Laszlo.Nagy@analog.com>,
-        <Andrei.Grozav@analog.com>, <Michael.Hennerich@analog.com>,
-        <Istvan.Csomortani@analog.com>, <Adrian.Costina@analog.com>,
-        <Dragos.Bogdan@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v13 8/8] dt-bindings: iio: adc: add bindings doc for AD9467 ADC
-Date:   Tue, 24 Mar 2020 15:46:36 +0200
-Message-ID: <20200324134636.64643-9-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200324134636.64643-1-alexandru.ardelean@analog.com>
-References: <20200324134636.64643-1-alexandru.ardelean@analog.com>
+        id S1727338AbgCXNr6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Mar 2020 09:47:58 -0400
+Received: from mail-lj1-f182.google.com ([209.85.208.182]:41999 "EHLO
+        mail-lj1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728220AbgCXNrw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Mar 2020 09:47:52 -0400
+Received: by mail-lj1-f182.google.com with SMTP id q19so18587463ljp.9
+        for <linux-iio@vger.kernel.org>; Tue, 24 Mar 2020 06:47:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=7sPUO3nKuWyw3u4EPckU3OQ1+tz2YBvaiK7jw8BfyAY=;
+        b=FARO73PFVzpOwufSle+uAUuc/63y8nK3yRAB9Pnof91vl5dg/wad9Kt5lAngsSQQ+s
+         cJHhBpu/v/niAdnpsSfp2QPQEcNNF519iw58HVBStuGttWtPrQwHNXXzpdh91Em8pl+S
+         5CVd5lUiQci7ev9FnrrgZpv9If8WxaSoUhkiYvJWOy3zaIeclPYJdmAEeYCTnNuXgfAM
+         6JRqmP3xRVBLnmJYxtkIwDAGZQNcGym+rIVE1q2JwqcnoxxKej1IqlKGNv+zS9PleUt4
+         OxCR1r8YaQQLFO4I6IiJpN8OjdCjrATZ/61r426EhY6cWWS6M+lQEgXgMI4Ecw6RxU9j
+         gqyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=7sPUO3nKuWyw3u4EPckU3OQ1+tz2YBvaiK7jw8BfyAY=;
+        b=R7Ino6uT+xx3Qz39BuwhMEx4kJkvadmb5opm+vTvLrG5fi/lJhU0m/rSguofJ1DPSo
+         A8OfNblSSCFSML2GSKu1JI9qaTGKONAFtfJWqMrRuPytwmnJ6ZJ6SHz+O3uSurj+kKR/
+         jy9/BXu1fdggUk900tp7H/Wuq2tAagPVuxnYEAIgITU31KP1w0hOYol8ezMmhRRYsUU+
+         RrsErNmvpE2LmmgIlx5J+C2VpWXSNYu1jB2uL9eD602XrjynSCL9YvUMIjd3PJl0+ifC
+         5mI60NhDzMhYAVaVXNumFBBIKIdjw39l8WGIYQbV4h3m2tpAmIk7wTObmaZ761N9WeEB
+         Mcag==
+X-Gm-Message-State: ANhLgQ1q0HEn34kx4ztyrp7VdISGuh1wr2jvp3NPuL0MtkBekt8GGmAE
+        c6THSOeCbcfWN3GocWc7wVQPAnzx
+X-Google-Smtp-Source: ADFU+vswnj2ms5CIXyL/o4V6DJXc5/yRX1W41Rya3MFA9Fz+vHOaHt2Wg0Z8bpxl0BAnR51RQiH8dQ==
+X-Received: by 2002:a2e:7a0c:: with SMTP id v12mr16995478ljc.274.1585057669052;
+        Tue, 24 Mar 2020 06:47:49 -0700 (PDT)
+Received: from [192.168.16.194] (h-4-68-234.A785.priv.bahnhof.se. [155.4.68.234])
+        by smtp.googlemail.com with ESMTPSA id c4sm8248690lfm.37.2020.03.24.06.47.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Mar 2020 06:47:48 -0700 (PDT)
+Subject: Re: Use LIS3MDL with LSM6DSM sensor-hub
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org
+References: <f8489de0-c6a4-f786-b936-679eba6d6804@gmail.com>
+ <20200314124324.GA144176@lore-desk-wlan>
+ <217cb6b1-d3b3-bccf-b081-d4beb0888615@gmail.com>
+ <20200319174039.GA1564882@lore-desk-wlan>
+ <ef4aa50f-4aa6-cb87-06b6-913e2abbb23c@gmail.com>
+ <20200319204937.GB1564882@lore-desk-wlan>
+ <37e50d0e-0618-eeba-8cf9-7c1272097a62@gmail.com>
+ <20200324082017.GA1387749@lore-desk-wlan>
+From:   Jimmy Assarsson <jimmyassarsson@gmail.com>
+Message-ID: <9e34cc2a-dd62-f915-6e82-02af151a26d9@gmail.com>
+Date:   Tue, 24 Mar 2020 14:47:47 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
- definitions=2020-03-24_05:2020-03-23,2020-03-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 clxscore=1015 suspectscore=0 spamscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003240074
+In-Reply-To: <20200324082017.GA1387749@lore-desk-wlan>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This change adds the binding doc for the AD9467 ADC.
+On 2020-03-24 09:20, Lorenzo Bianconi wrote:
+>> On 2020-03-19 21:49, Lorenzo Bianconi wrote:
+>>>> On 2020-03-19 18:40, Lorenzo Bianconi wrote:
+>>>>>> On 2020-03-14 13:43, Lorenzo Bianconi wrote:
+>>>>>>> On Mar 11, Jimmy Assarsson wrote:
+>>>>>>>> Hi,
+>>>>>>>>
+>>>
+>>> [...]
+>>>
+>>>>>>> Hi Jimmy,
+>>>>>>>
+>>>>>>> in order to set the full scale on LIS3MDL you can try the following patch (just
+>>>>>>> compiled, not tested)
+>>>>>>>
+>>>>>>> Regards,
+>>>>>>> Lorenzo
+>>>>>>
+>>>>>> Hi Lorenzo,
+>>>>>>
+>>>>>> Sorry for the late response and thanks for the patch!
+>>>>>
+>>>>> Hi Jimmy,
+>>>>>
+>>>>> ok, I will post the patch, thx for testing.
+>>>>
+>>>> Great, you can add
+>>>> Tested-by: Jimmy Assarsson <jimmyassarsson@gmail.com>
+>>>>
+>>>>>> The patches seems to work.
+>>>>>> Are there any specific tests that we should carry out?
+>>>>>> Via the sysfs interface, we've tested reading raw values of each channel and
+>>>>>> configuring ODR and full scale.
+>>>>>
+>>>>> you can try to enable batching in the hw FIFO doing something like:
+>>>>>
+>>>>> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_x_en
+>>>>> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_y_en
+>>>>> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_z_en
+>>>>> $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_timestamp_en
+>>>>>
+>>>>> $watermark=64
+>>>>> $echo $((2*watermark)) > /sys/bus/iio/devices/<iio-magn>/buffer/length
+>>>>> $echo $watermark > /sys/bus/iio/devices/<iio-magn>/buffer/watermark
+>>>>>
+>>>>> $generic_buffer -gn lsm6dsm_magn -c <# of samples>
+>>>>
+>>>> Ok. I don't got any scan_elements nor buffer directory, for any of the devices.
+>>>> I guess it is not possible to use the FIFO without configuring any interrupt?
+>>>> We got the following dts:
+>>>> &spi1 {
+>>>> 	#address-cells = <1>;
+>>>> 	#size-cells = <0>;
+>>>> 	lsm6dsm@0 {
+>>>> 		compatible = "st,lsm6dsm";
+>>>> 		reg = <0x0>;
+>>>>
+>>>> 		spi-max-frequency = <500000>;
+>>>> 		st,pullups = "true";
+>>>
+>>> yes, you need to provide the interrupt line doing something like (this is from
+>>> the dts on my rpi):
+>>>
+>>> 	lsm6dsm@0 {
+>>> 		...
+>>> 		interrupt-parent = <&gpio>;
+>>> 		interrupts = <21 0x4>;
+>>> 		...
+>>> 	};
+>>>
+>>>> 	};
+>>>> };
+>>>>
+>>>> I'll look into this tomorrow or in the beginning of next week, thanks for the help.
+>>
+>> Now I've tested this. It looks fine, except for the very first sample:
+>> $ ./iio_generic_buffer -gn lsm6dsm_magn -c 1
+>> iio device number being used is 3
+>> trigger-less mode selected
+>> -3.250836 -2.796192 10.212408 1584976428879020199
+>> 1.893036 2.343738 -0.853224 1584976428917070199
+>> 1.888218 2.343300 -0.852786 1584976428955095199
+>> 1.888218 2.343300 -0.852786 1584976428993145199
+>> 1.889532 2.345490 -0.851472 1584976429031170199
+> 
+> values seems reasonable but I guess it depends on sensor calibration and how is
+> oriented. Do you have any app to test it?
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- .../bindings/iio/adc/adi,ad9467.yaml          | 65 +++++++++++++++++++
- 1 file changed, 65 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+I think the values are correct. If I rotate the sensor the values change.
+And I get similar values when the sensor reach the same orientation as before.
+The only thing that looks strange, is the very first sample (-3.250836 -2.796192 10.212408),
+which is not close to any of the other samples. When I plot the samples, the other samples
+form a circle, while the first sample is way outside of the circle.
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-new file mode 100644
-index 000000000000..c4f57fa6aad1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
-@@ -0,0 +1,65 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad9467.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD9467 High-Speed ADC
-+
-+maintainers:
-+  - Michael Hennerich <michael.hennerich@analog.com>
-+  - Alexandru Ardelean <alexandru.ardelean@analog.com>
-+
-+description: |
-+  The AD9467 is a 16-bit, monolithic, IF sampling analog-to-digital
-+  converter (ADC).
-+
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/AD9467.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad9467
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: adc-clk
-+
-+  powerdown-gpios:
-+    description:
-+      Pin that controls the powerdown mode of the device.
-+    maxItems: 1
-+
-+  reset-gpios:
-+    description:
-+      Reset pin for the device.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+          compatible = "adi,ad9467";
-+          reg = <0>;
-+          clocks = <&adc_clk>;
-+          clock-names = "adc-clk";
-+        };
-+    };
-+...
--- 
-2.17.1
+What about calibration? Is there any functionality in iio for calibration, or in libiio, or will
+this always be part of the application?
 
+Unfortunately we don't got any app for this yet.
+
+Regards,
+jimmy
+
+> Regards,
+> Lorenzo
+> 
+>>
+>> Is this expected?
+>>
+>> Regards,
+>> jimmy

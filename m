@@ -2,209 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F261919167D
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Mar 2020 17:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 831DF191AE7
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Mar 2020 21:27:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727273AbgCXQdk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Mar 2020 12:33:40 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:35486 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727161AbgCXQdk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Mar 2020 12:33:40 -0400
-Received: by mail-pg1-f194.google.com with SMTP id 7so9301645pgr.2;
-        Tue, 24 Mar 2020 09:33:39 -0700 (PDT)
+        id S1727279AbgCXU1r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Mar 2020 16:27:47 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:33253 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725953AbgCXU1r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Mar 2020 16:27:47 -0400
+Received: by mail-pl1-f195.google.com with SMTP id g18so7906539plq.0
+        for <linux-iio@vger.kernel.org>; Tue, 24 Mar 2020 13:27:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=iyN1hBaAFSOHm3J/cqXgvfDBZR4y77oHwv+quvoJ2Ow=;
-        b=n0yORBkxyDKz3l+5kEyjxxdVxjiqvfxWjr9KzX7zthOx3zoi4FaxmCBPHrzaATQ+DR
-         uFAmkKdf89YlaAmcZ+BiKZbr/41CEZDvzGmVgMyNiNh0qgjSIYLZWMRbyXHAAz5TKs/3
-         d1TMGFu+nVqG6Gu94QrgQKIZ1qdQFlZneEAOZLf+aYtLuVr9GDnehP50IUA1MzFSNIb6
-         ttXQ9ZhcbPjKHY0F4U5hVNA5OflhweFQ4r/p+8eeVnLL0tfr9f2PzMzGfQ9PKnJyvGKL
-         vBAZq2R4qITHVrEOtuact0xmIaJyrCzo4+qX28D/RdlSLLTnxXHtHwqhT/othhzKHPPG
-         gTKg==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VW77brf4/DB30Av5/e9eE1qVytMveWFMmosb2tkTGWQ=;
+        b=MilKqsOYHxMM3hcJiRdIJYCR5wQNd2azNK6VJjgdydP7wFNNzjefP9LTdY8KwJxOQ8
+         E59j8XE/zByx2tDz4vQF9htOPX7Ak1d7unlY+m7L0c1W+X9fyYlxs1iuJFThW8MhHOfH
+         pMM4PifelTHaL9Fn1UNwzrofPZKaQx2NnH64U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iyN1hBaAFSOHm3J/cqXgvfDBZR4y77oHwv+quvoJ2Ow=;
-        b=RbJIuzVftmKzCaoxMAteLR8vkyZrsG2bfr+HvxhI/IB3adsITrc70DxQASq2eDJIH1
-         I3KHdHwM1S06/hdxd898V5KttFl5eDX6gWpvy8vAeKlR+RhIuZHg/zJfeMw3s2Ph5Txc
-         sGAkSGnK3x67Qw69bZ02AsHCj0V8m9I6hXQnu8eKL2UT7F588ea5albA2JBuMve55wOB
-         ZEtY++GHlVboNkSZV2h82wtVWVh3xLS/r6r69VaroHJr+4LkbMNfJ3MzXbJZfnziwrhj
-         HfPAcga6fVYrpe+hFQuOfz375rXj28uExLreCRTrJJy1mLeNkRe8ZDqt9g89/eeU8K7n
-         vRVw==
-X-Gm-Message-State: ANhLgQ3Wo4Yooh8t65MxlktFKASkAplOS3IcLTS1jNlcb86r3f5HYYlj
-        nda5PhrUHNkcPlEm2vOcZUd6wW2nqPWSeKH95YEpAOtXuB1a/g==
-X-Google-Smtp-Source: ADFU+vunIaPHWUUqedQrpgKWtpPoP3M7Xizwmytl/c1HZPLqo46nZbzfQGaudS9BltKy1Pv3nq8w/yYVltMJ7cU06ZA=
-X-Received: by 2002:a63:798a:: with SMTP id u132mr29374862pgc.203.1585067618685;
- Tue, 24 Mar 2020 09:33:38 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VW77brf4/DB30Av5/e9eE1qVytMveWFMmosb2tkTGWQ=;
+        b=uj99nS2JDggADmIWWl51C/5ACZ6YVlukHHO4qIYb19iAWWU3TJX+KSnw5Se2+5jdB9
+         2NcvQJoE1xXmUEBybzUCNONAhqCcsNt9FT9KE3WQ+OB9gGoXAE36w/Pl9ARvlIwysppW
+         6KtWSae+dQ1XfpBiwjAjUO/Bi/aP4QCi23X8QV15d0G9BKrRyB1sKelRII0BhgchFAyq
+         wxEmuS+WHDAiCeK16obfWL5ZIFspuGJumAlHazj5KJUrdtmIHCTqhsBprhPiRn49zE0m
+         uFtsEqLBZP++LVOVTUiFnLvvHBz6B+f6SAR0cQ4R8BNQj2y5sWMddhfQAiXz9JpHK6qU
+         +2GA==
+X-Gm-Message-State: ANhLgQ3C7xn6WmT4R9xeN1EQBn09LozGIDzM4F9XK05wRe+nkKy8BvUM
+        UEtskAFeryCYCWv5N6I9NkvU/Q==
+X-Google-Smtp-Source: ADFU+vuaRhlr2ACZb+PkHDJQkmA31Q5nXWsygxXXlJNW4AfPt9CFfRx0dc76oFs1wS0cK2VzS55pCQ==
+X-Received: by 2002:a17:902:463:: with SMTP id 90mr29726944ple.213.1585081664593;
+        Tue, 24 Mar 2020 13:27:44 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:4cc0:7eee:97c9:3c1a])
+        by smtp.gmail.com with ESMTPSA id g81sm16558739pfb.188.2020.03.24.13.27.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Mar 2020 13:27:43 -0700 (PDT)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     bleung@chromium.org, enric.balletbo@collabora.com,
+        Jonathan.Cameron@huawei.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v6 00/11] Cros EC sensor hub FIFO support
+Date:   Tue, 24 Mar 2020 13:27:25 -0700
+Message-Id: <20200324202736.243314-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.25.1.696.g5e7596f4ac-goog
 MIME-Version: 1.0
-References: <1585064650-16235-1-git-send-email-jprakash@codeaurora.org> <1585064650-16235-4-git-send-email-jprakash@codeaurora.org>
-In-Reply-To: <1585064650-16235-4-git-send-email-jprakash@codeaurora.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 24 Mar 2020 18:33:31 +0200
-Message-ID: <CAHp75Vfk1DZ+bz6h_prm6Tp7kXos6jio5JCpg6=wvGRmDPTBsw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] iio: adc: Add support for PMIC7 ADC
-To:     Jishnu Prakash <jprakash@codeaurora.org>
-Cc:     agross@kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        smohanad@codeaurora.org, kgunda@codeaurora.org,
-        aghayal@codeaurora.org, Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-msm@vger.kernel.org,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-arm-msm-owner@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 5:46 PM Jishnu Prakash <jprakash@codeaurora.org> wrote:
->
-> The ADC architecture on PMIC7 is changed as compared to PMIC5. The
-> major change from PMIC5 is that all SW communication to ADC goes through
-> PMK8350, which communicates with other PMICs through PBS when the ADC
-> on PMK8350 works in master mode. The SID register is used to identify the
-> PMICs with which the PBS needs to communicate. Add support for the same.
->
-> In addition, add definitions for ADC channels and virtual channel
-> definitions per PMIC, to be used by ADC clients for PMIC7.
+This patchset adds a sensorhub driver for spreading sensor
+events coming from the Embedded controller sensor FIFO:
 
-...
+       +---------------+ +--------------+ +----
+       | cros_ec_accel | | cros_ec_gyro | | ...
+       +---------------+ +--------------+ +----
+           id:0       \        id:1 |       / id:..
+                 +------------------------------+
+                 |       cros-ec-sensorhub      |
+                 +------------------------------+
+                 |           cros_ec_dev        |
+                 +------------------------------+
+                 | cros_ec_i2c, cros_ec_lpc, .. |
+                 +------------------------------+
+                                 |
+                                 EC
 
-> +#define ADC_CHANNEL_OFFSET                     0x8
-> +#define ADC_CHANNEL_MASK                       0xff
+When new sensors events are present, the EC raises and interrupt,
+sensorhub reads the FIFO and uses the 'id' field to spread the event to
+the proper IIO sensors. This stack is similar to the HID sensor input
+stack.
 
-GENMASK()
+The patch set allows the host to receive MEMS sensor sample
+asynchronously from ChromeOS Emebedded Controller (EC).
 
-...
+Given the EC and the host are not synchronized, the timestamp generated
+by the EC drifts and the AP interrupt latency adds variable delay.
 
-> +#define ADC_APP_SID                            0x40
-> +#define ADC_APP_SID_MASK                       0xf
+When events arrive, the driver stores the time of the interrupt and use
+that information to convert the timestamp from the EC time domain to the
+AP time domain. To prevent the errors from the interrupt time variation,
+a median filter smooth the timestamp generation and prevents timestamps
+to go in the past.
 
-GENMASK()
+When a batch of sensor events arrives, the sensor hub ring code spreads
+the timestamps.
 
-> +#define ADC7_CONV_TIMEOUT                      msecs_to_jiffies(10)
+The buffer interaface is presentid through the IIO ABI.
+And extra parameter - flush - (presents on HID and ST sensor hub
+implementation) force the EC to send accumulated events in its queue,
+without waiting for buffer hwfifo_timeout to expire.
 
-Useless.
+To access sensor data, we can use iio_readdev like:
+ iio_readdev -T 10000 -s 4 -b 2 iio:device4
 
-...
+When FIFO is not supported by the EC, a trigger is present in the
+directory. After registering a trigger, setting sampling_frequency,
+the latest data collected by the sensor will be retrieved by the host
+when the trigger expires.
 
-> +       buf[1] &= (u8) ~ADC5_USR_FAST_AVG_CTL_SAMPLES_MASK;
+When cros_ec_accel_legacy driver is used, no FIFO is supported and the
+sampling frequency for the accelerometers is hard coded at 10Hz.
 
-Use '0xFF ^ _MASK' instead of casting.
+Gwendal Grignou (11):
+  platform: chrome: sensorhub: Add FIFO support
+  platform: chrome: sensorhub: Add code to spread timestmap
+  platform: chrome: sensorhub: Add median filter
+  iio: cros_ec: Move function description to .c file
+  iio: expose iio_device_set_clock
+  iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO
+  iio: cros_ec: Remove pm function
+  iio: cros_ec: Expose hwfifo_timeout
+  iio: cros_ec: Report hwfifo_watermark_max
+  iio: cros_ec: Use Hertz as unit for sampling frequency
+  iio: cros_ec: flush as hwfifo attribute
 
-...
-
-> +       buf[3] &= (u8) ~ADC5_USR_HW_SETTLE_DELAY_MASK;
-
-Ditto.
-
-...
-
-> +       ret = adc5_write(adc, ADC5_USR_CONV_REQ, &conv_req, 1);
-> +
-> +       return ret;
-
-return adc5_write(...);
-
-...
-
-> +               pr_err("ADC configure failed with %d\n", ret);
-
-Use dev_*() instead everywhere.
-
-...
-
-> +       /* No support for polling mode at present*/
-> +       wait_for_completion_timeout(&adc->complete,
-> +                                       ADC7_CONV_TIMEOUT);
-
-One line. The limit is 80 and it can be bend in some cases a little bit.
-
-...
-
-> +               v_channel = ((adc->chan_props[i].sid << ADC_CHANNEL_OFFSET) |
-> +                       adc->chan_props[i].channel);
-
-Too many parentheses.
-
-...
-
-> +               sid = (chan >> ADC_CHANNEL_OFFSET);
-> +               chan = (chan & ADC_CHANNEL_MASK);
-
-Ditto.
-
-...
-
-> +                       (adc->is_pmic7))
-
-Ditto.
-
-...
-
-> +       if (of_device_is_compatible(node, "qcom,spmi-adc7")) {
-> +               indio_dev->info = &adc7_info;
-> +               adc->is_pmic7 = true;
-> +       } else {
-> +               indio_dev->info = &adc5_info;
-> +       }
-
-Hmm... I would rather put this as driver_data in ID structure(s).
-
-...
-
-> +static int adc5_exit(struct platform_device *pdev)
-> +{
-> +       struct adc5_chip *adc = platform_get_drvdata(pdev);
-> +
-
-> +       mutex_destroy(&adc->lock);
-
-Are you sure you will have no race conditions? Does this driver use IRQs?
-
-> +       return 0;
-> +}
-
-...
-
-> +       s64 resistance = 0;
-
-= adc_code  // or sign extended variant if needed.
-
-> +       /* (ADC code * R_PULLUP (100Kohm)) / (full_scale_code - ADC code)*/
-
-> +       resistance = (s64) adc_code * R_PU_100K;
-> +       resistance = div64_s64(resistance, (RATIO_MAX_ADC7 - adc_code));
-
- resistance *= R_PU_100K;
- resistance = div64_s64(resistance, RATIO_MAX_ADC7 - adc_code);
-
-...
-
-> +       int voltage, vtemp0, temp, i = 0;
-
-> +       while (i < ARRAY_SIZE(adcmap7_die_temp)) {
-> +               if (adcmap7_die_temp[i].x > voltage)
-> +                       break;
-> +               i++;
-> +       }
-
-for loop (one line less, more explicit initial value assignment)?
+ drivers/iio/accel/cros_ec_accel_legacy.c      |    8 +-
+ .../cros_ec_sensors/cros_ec_lid_angle.c       |    3 +-
+ .../common/cros_ec_sensors/cros_ec_sensors.c  |   13 +-
+ .../cros_ec_sensors/cros_ec_sensors_core.c    |  404 +++++--
+ drivers/iio/industrialio-core.c               |    8 +-
+ drivers/iio/light/cros_ec_light_prox.c        |   15 +-
+ drivers/iio/pressure/cros_ec_baro.c           |   14 +-
+ drivers/platform/chrome/Makefile              |    4 +-
+ drivers/platform/chrome/cros_ec_sensorhub.c   |  107 +-
+ .../platform/chrome/cros_ec_sensorhub_ring.c  | 1002 +++++++++++++++++
+ .../linux/iio/common/cros_ec_sensors_core.h   |  104 +-
+ include/linux/iio/iio.h                       |    2 +
+ .../linux/platform_data/cros_ec_sensorhub.h   |  166 +++
+ 13 files changed, 1612 insertions(+), 238 deletions(-)
+ create mode 100644 drivers/platform/chrome/cros_ec_sensorhub_ring.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.1.696.g5e7596f4ac-goog
+

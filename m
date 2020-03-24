@@ -2,136 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BDB190766
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Mar 2020 09:16:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B08119076D
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Mar 2020 09:20:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727234AbgCXIQE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Mar 2020 04:16:04 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:55475 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727050AbgCXIQE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Mar 2020 04:16:04 -0400
-Received: by mail-wm1-f68.google.com with SMTP id v25so326362wmh.5
-        for <linux-iio@vger.kernel.org>; Tue, 24 Mar 2020 01:16:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=nCmrtRi63VazCm5/zsbCw7DEK5Z7dLbwQao7Tq0w8UI=;
-        b=TYxi9wxqyr7ZuG8v7NeMKLzIJ5DKBo0KD25LlPVXxOMPs9byUNhx5xErNOM2TNuu4W
-         uBQ5djcQQUevw22VSpRPc+SGlWLzzM3AHp1SwUhrvqAOIhayuejqPjAmtJP7agqPd6TX
-         7/A5dhfR3w1WC3TWWDv/dQ+y2AT4kyf6qBWOnSNmY0LDL8p2FCUI+v3XQIIgF+P0Gjo9
-         ZVRykXOxoW2DEfM77oSzjwjeNrqKvnGsSqmbQCDnBQEI2lziwn2q89CgYC56yEf7YG90
-         CbgVL68NrZX32+c59WxzYUknlxv/eGId9maiUFN2jENO3yLPZlOWOY7eLLTIoqpCuS0g
-         BWOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=nCmrtRi63VazCm5/zsbCw7DEK5Z7dLbwQao7Tq0w8UI=;
-        b=Otht7DwwhSAHxh/eJ8ZJpaCU7XhF/HyInn/zK3nhSVZuQzSYjGl/XOVRr5EigJd1hD
-         2cAEzvEiBTEhZEP195LaQCkwR0Y9lUhmcYNFC/cdcYh4peZp3D1SLZFkqGnTkZAga9FY
-         p+UcAOwXZfxjnkx8PBMXzI5HuRoQS3n5p2mf612bkXGh6+2sSpEG3QJCHfyoF38zqQUc
-         KadcOEVqhsBrkQ/H0nmBLwSxOEyNq6MgHXDbJowbts0qjs7fClLJIaU5IlGSWdPq0IAh
-         GoXdwP3UVrCjNny/qN/N6p5zLgqLS3SF3MhCNrRhO3oXJ0koCEzjwmL3wiVLam8e0yPU
-         p01w==
-X-Gm-Message-State: ANhLgQ0UWAral/wYasJ95tVtJm9gXFxT5O58tj1Au1ZixyAyZ933UPz4
-        FTUDIrCLhk+4gDjuNkXkvCK0HQ==
-X-Google-Smtp-Source: ADFU+vu2MY3Q/scatxmu05MiPn0AajbEO2ZWaYCbPYz5dU4kEJeQFhYcQWrbv+Zv6zDqL1jyIuSs7w==
-X-Received: by 2002:a05:600c:2283:: with SMTP id 3mr3900004wmf.157.1585037762724;
-        Tue, 24 Mar 2020 01:16:02 -0700 (PDT)
-Received: from dell ([2.27.35.213])
-        by smtp.gmail.com with ESMTPSA id n124sm3337129wma.11.2020.03.24.01.16.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2020 01:16:01 -0700 (PDT)
-Date:   Tue, 24 Mar 2020 08:16:51 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     dmitry.torokhov@gmail.com, thierry.reding@gmail.com,
-        jic23@kernel.org, devicetree@vger.kernel.org,
-        linux-input@vger.kernel.org, u.kleine-koenig@pengutronix.de,
-        linux-pwm@vger.kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        mark.rutland@arm.com
-Subject: Re: [PATCH v5 2/7] mfd: Add support for Azoteq
- IQS620A/621/622/624/625
-Message-ID: <20200324081651.GG5477@dell>
-References: <1581895931-6056-1-git-send-email-jeff@labundy.com>
- <1581895931-6056-3-git-send-email-jeff@labundy.com>
- <20200224111448.GS3494@dell>
- <20200228034220.GA3510@labundy.com>
- <20200302120458.GY3494@dell>
- <20200302141117.GA11787@labundy.com>
- <20200302142405.GA3494@dell>
- <20200323021605.GA2731@labundy.com>
+        id S1726167AbgCXIUY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Mar 2020 04:20:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37274 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726166AbgCXIUY (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 24 Mar 2020 04:20:24 -0400
+Received: from lore-desk-wlan (unknown [151.48.139.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5C697207FF;
+        Tue, 24 Mar 2020 08:20:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585038023;
+        bh=QKvx2s6maWbHGLNWsypQpBBQ9isEnujedYm/qx4Y9xM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yGJjn34ABq34NpHOMG7QZnyHeoRapz+0TbaP9wqgRXp/GXLyPA7/Z1A5Zywhc+r4j
+         bMvXvcBDtvCjml3VHNdTxB84SJDBbPM2GmzYqGMsK+9DY6qOcawf2WFZAUa6zNRm+E
+         a/xp4OhSRIX865ffMkEbg/5zXgMqaKb2mKgBy3ho=
+Date:   Tue, 24 Mar 2020 09:20:17 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Jimmy Assarsson <jimmyassarsson@gmail.com>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: Use LIS3MDL with LSM6DSM sensor-hub
+Message-ID: <20200324082017.GA1387749@lore-desk-wlan>
+References: <f8489de0-c6a4-f786-b936-679eba6d6804@gmail.com>
+ <20200314124324.GA144176@lore-desk-wlan>
+ <217cb6b1-d3b3-bccf-b081-d4beb0888615@gmail.com>
+ <20200319174039.GA1564882@lore-desk-wlan>
+ <ef4aa50f-4aa6-cb87-06b6-913e2abbb23c@gmail.com>
+ <20200319204937.GB1564882@lore-desk-wlan>
+ <37e50d0e-0618-eeba-8cf9-7c1272097a62@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="RnlQjJ0d97Da+TV1"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200323021605.GA2731@labundy.com>
+In-Reply-To: <37e50d0e-0618-eeba-8cf9-7c1272097a62@gmail.com>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 Mar 2020, Jeff LaBundy wrote:
 
-> Hi Lee,
-> 
-> On Mon, Mar 02, 2020 at 02:24:05PM +0000, Lee Jones wrote:
-> > On Mon, 02 Mar 2020, Jeff LaBundy wrote:
-> > 
-> > > Hi Lee,
-> > > 
-> > > On Mon, Mar 02, 2020 at 12:04:58PM +0000, Lee Jones wrote:
-> > > > On Thu, 27 Feb 2020, Jeff LaBundy wrote:
-> > > > 
-> > > > > Hi Lee,
-> > > > > 
-> > > > > On Mon, Feb 24, 2020 at 11:14:48AM +0000, Lee Jones wrote:
-> > > > > 
-> > > > > [...]
-> > > > > 
-> > > > > > 
-> > > > > > Well done Jeff.  Good job.
-> > > > > > 
-> > > > > > Applied, thanks.
-> > > > > > 
-> > > > > 
-> > > > > Thank you for your kind words as well as your support in fleshing out this
-> > > > > series.
-> > > > > 
-> > > > > Just to confirm, does your offer to take the remainder (once everything is
-> > > > > approved) through immutable branches still stand?
-> > > > 
-> > > > Depends how quickly you can get the other drivers turned around.
-> > > 
-> > > With Uwe's approval from Friday, all five drivers are complete. Dmitry and
-> > > Jonathan's approvals were given in previous review cycles and were carried
-> > > forward with their permission. If anything else is required, please let me
-> > > know.
-> > 
-> > Does Uwe's review mean that Thierry's is not required?
-> 
-> Sorry about that; I was jumping the gun (thank you Uwe for clarifying).
-> The pwm patch still needs an Ack from Thierry before it can be applied.
-> 
-> I have not received any feedback from Thierry throughout this patch set,
-> and I'd like to unblock the remainder if possible. In case Thierry does
-> not respond by the time you elect to send your next pull request, would
-> you be willing to drop the pwm patch and take the input and iio patches
-> through your tree?
-> 
-> If so, I'll re-send the pwm patch on its own to Thierry during a future
-> cycle so that he can take it through his tree at his convenience.
+--RnlQjJ0d97Da+TV1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hopefully we hear fro Thierry.
+> On 2020-03-19 21:49, Lorenzo Bianconi wrote:
+> > > On 2020-03-19 18:40, Lorenzo Bianconi wrote:
+> > > > > On 2020-03-14 13:43, Lorenzo Bianconi wrote:
+> > > > > > On Mar 11, Jimmy Assarsson wrote:
+> > > > > > > Hi,
+> > > > > > >=20
+> >=20
+> > [...]
+> >=20
+> > > > > > Hi Jimmy,
+> > > > > >=20
+> > > > > > in order to set the full scale on LIS3MDL you can try the follo=
+wing patch (just
+> > > > > > compiled, not tested)
+> > > > > >=20
+> > > > > > Regards,
+> > > > > > Lorenzo
+> > > > >=20
+> > > > > Hi Lorenzo,
+> > > > >=20
+> > > > > Sorry for the late response and thanks for the patch!
+> > > >=20
+> > > > Hi Jimmy,
+> > > >=20
+> > > > ok, I will post the patch, thx for testing.
+> > >=20
+> > > Great, you can add
+> > > Tested-by: Jimmy Assarsson <jimmyassarsson@gmail.com>
+> > >=20
+> > > > > The patches seems to work.
+> > > > > Are there any specific tests that we should carry out?
+> > > > > Via the sysfs interface, we've tested reading raw values of each =
+channel and
+> > > > > configuring ODR and full scale.
+> > > >=20
+> > > > you can try to enable batching in the hw FIFO doing something like:
+> > > >=20
+> > > > $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_x_en
+> > > > $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_y_en
+> > > > $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_magn_z_en
+> > > > $echo 1 > /sys/bus/iio/devices/<iio-magn>/scan_elements/in_timestam=
+p_en
+> > > >=20
+> > > > $watermark=3D64
+> > > > $echo $((2*watermark)) > /sys/bus/iio/devices/<iio-magn>/buffer/len=
+gth
+> > > > $echo $watermark > /sys/bus/iio/devices/<iio-magn>/buffer/watermark
+> > > >=20
+> > > > $generic_buffer -gn lsm6dsm_magn -c <# of samples>
+> > >=20
+> > > Ok. I don't got any scan_elements nor buffer directory, for any of th=
+e devices.
+> > > I guess it is not possible to use the FIFO without configuring any in=
+terrupt?
+> > > We got the following dts:
+> > > &spi1 {
+> > > 	#address-cells =3D <1>;
+> > > 	#size-cells =3D <0>;
+> > > 	lsm6dsm@0 {
+> > > 		compatible =3D "st,lsm6dsm";
+> > > 		reg =3D <0x0>;
+> > >=20
+> > > 		spi-max-frequency =3D <500000>;
+> > > 		st,pullups =3D "true";
+> >=20
+> > yes, you need to provide the interrupt line doing something like (this =
+is from
+> > the dts on my rpi):
+> >=20
+> > 	lsm6dsm@0 {
+> > 		...
+> > 		interrupt-parent =3D <&gpio>;
+> > 		interrupts =3D <21 0x4>;
+> > 		...
+> > 	};
+> >=20
+> > > 	};
+> > > };
+> > >=20
+> > > I'll look into this tomorrow or in the beginning of next week, thanks=
+ for the help.
+>=20
+> Now I've tested this. It looks fine, except for the very first sample:
+> $ ./iio_generic_buffer -gn lsm6dsm_magn -c 1
+> iio device number being used is 3
+> trigger-less mode selected
+> -3.250836 -2.796192 10.212408 1584976428879020199
+> 1.893036 2.343738 -0.853224 1584976428917070199
+> 1.888218 2.343300 -0.852786 1584976428955095199
+> 1.888218 2.343300 -0.852786 1584976428993145199
+> 1.889532 2.345490 -0.851472 1584976429031170199
 
-If not, yes I can apply the set without the PWM patch.
+values seems reasonable but I guess it depends on sensor calibration and ho=
+w is
+oriented. Do you have any app to test it?
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Regards,
+Lorenzo
+
+>=20
+> Is this expected?
+>=20
+> Regards,
+> jimmy
+
+--RnlQjJ0d97Da+TV1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXnnCvgAKCRA6cBh0uS2t
+rEwCAQCdR4Y+NU6Dki8VMAS4fVyvae53RP1shH/nYr+d+WvTcQEAvIzhi7Y9CApS
+MfT4nwoZiI4kK+uxxbf1OAdoZG5seAw=
+=UtB8
+-----END PGP SIGNATURE-----
+
+--RnlQjJ0d97Da+TV1--

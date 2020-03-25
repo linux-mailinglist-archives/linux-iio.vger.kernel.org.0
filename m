@@ -2,28 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A3219338F
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Mar 2020 23:08:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60CD21934A7
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Mar 2020 00:34:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727451AbgCYWHw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Mar 2020 18:07:52 -0400
-Received: from foss.arm.com ([217.140.110.172]:53740 "EHLO foss.arm.com"
+        id S1727556AbgCYXeN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Mar 2020 19:34:13 -0400
+Received: from onstation.org ([52.200.56.107]:42750 "EHLO onstation.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727357AbgCYWHw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 25 Mar 2020 18:07:52 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F6641FB;
-        Wed, 25 Mar 2020 15:07:51 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE6623F71E;
-        Wed, 25 Mar 2020 15:07:50 -0700 (PDT)
-Date:   Wed, 25 Mar 2020 22:07:49 +0000
-From:   Mark Brown <broonie@kernel.org>
+        id S1727395AbgCYXeM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 25 Mar 2020 19:34:12 -0400
+Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: masneyb)
+        by onstation.org (Postfix) with ESMTPSA id D9ADB3E993;
+        Wed, 25 Mar 2020 23:34:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
+        s=default; t=1585179251;
+        bh=UmMfQfL2Dh6nfn2syBX2sC1MPLmcaAcwUvfWVe3vkpM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BPWtzEWeaE0xPqB52s39r4KFFu9CAc2XWbyWEeiYjMFFp4zI3Jnc7Ce1qomgad3+i
+         Zssb5erETKV/5tFlC9CDhOpLk9pnxg2NCChpeKVZIiBN8eTPwpTU1e5qXBz7i2qmMi
+         ohX+2HrLcdpwIAUyrpKCZpDJiGxTBey+OAukZuAo=
+Date:   Wed, 25 Mar 2020 19:34:09 -0400
+From:   Brian Masney <masneyb@onstation.org>
 To:     Rob Herring <robh@kernel.org>
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Brian Masney <masneyb@onstation.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         "David S. Miller" <davem@davemloft.net>,
         Guillaume La Roque <glaroque@baylibre.com>,
@@ -34,6 +40,7 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lee Jones <lee.jones@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Michael Hennerich <michael.hennerich@analog.com>,
@@ -48,56 +55,30 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: Re: [PATCH 4/4] dt-bindings: Add missing 'additionalProperties:
- false'
-Message-ID: <20200325220749.GF12169@sirena.org.uk>
+Subject: Re: [PATCH 2/4] dt-bindings: sram: qcom: Clean-up 'ranges' and child
+ node names
+Message-ID: <20200325233409.GB16767@onstation.org>
 References: <20200325220542.19189-1-robh@kernel.org>
- <20200325220542.19189-5-robh@kernel.org>
+ <20200325220542.19189-3-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="sDKAb4OeUBrWWL6P"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200325220542.19189-5-robh@kernel.org>
-X-Cookie: Do not stamp.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200325220542.19189-3-robh@kernel.org>
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Mar 25, 2020 at 04:05:39PM -0600, Rob Herring wrote:
+> The regex for child nodes doesn't match the example. This wasn't flagged
+> with 'additionalProperties: false' missing. The child node schema was also
+> incorrect with 'ranges' property as it applies to child nodes and should
+> be moved up to the parent node.
+> 
+> Fixes: 957fd69d396b ("dt-bindings: soc: qcom: add On Chip MEMory (OCMEM) bindings")
+> Cc: Brian Masney <masneyb@onstation.org>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: linux-arm-msm@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
---sDKAb4OeUBrWWL6P
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Mar 25, 2020 at 04:05:41PM -0600, Rob Herring wrote:
-> Setting 'additionalProperties: false' is frequently omitted, but is
-> important in order to check that there aren't extra undocumented
-> properties in a binding.
->=20
-> Ideally, we'd just add this automatically and make this the default, but
-> there's some cases where it doesn't work. For example, if a common
-> schema is referenced, then properties in the common schema aren't part
-> of what's considered for 'additionalProperties'. Also, sometimes there
-> are bus specific properties such as 'spi-max-frequency' that go into
-> bus child nodes, but aren't defined in the child node's schema.
-
-Acked-by: Mark Brown <broonie@kernel.org>
-
---sDKAb4OeUBrWWL6P
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl571jQACgkQJNaLcl1U
-h9Afjwf/TlVFnvMm+meLOwlfTMDT7xvKv6i3g4S/t/OkkG/qfuDfUpRz0LarRYTg
-8163ZrHY0aAQmLzyxMQR2cBhzM1tfANuY93djQNhe1ac6MUdNxTGLm1n+m9xh/o8
-IsSrgrnEqXCNCgqkAvPcDY7qkeLi68p5VqJIfdOjjeJkusQL3Q0kQUv7kpi6cgXn
-5Y+PlKm4cxLmOxFeUmCLQKocDSMttTCjxA/jm7jX+CWzKJjObhgsoHP9rg+uIO+1
-VHCHKXwxl1a8dhfG9ZnUxXY9UqGqGINojiPmRtTBX5oZqY95zShlcNiJ2HNaRRsT
-oIsZgkZuypvPpKies+jaVF2IuoSbcA==
-=EzfV
------END PGP SIGNATURE-----
-
---sDKAb4OeUBrWWL6P--
+Reviewed-by: Brian Masney <masneyb@onstation.org>

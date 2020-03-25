@@ -2,51 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69F8C192D3B
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Mar 2020 16:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35D2C192D7B
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Mar 2020 16:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727774AbgCYPsB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 Mar 2020 11:48:01 -0400
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:39595 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727701AbgCYPsB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Mar 2020 11:48:01 -0400
-Received: by mail-pj1-f68.google.com with SMTP id z3so651689pjr.4;
-        Wed, 25 Mar 2020 08:48:00 -0700 (PDT)
+        id S1727253AbgCYPyG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 Mar 2020 11:54:06 -0400
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:33249 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726264AbgCYPyG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 Mar 2020 11:54:06 -0400
+Received: by mail-pj1-f67.google.com with SMTP id jz1so2395405pjb.0;
+        Wed, 25 Mar 2020 08:54:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=sHLzrrFkz02OANjXXXqYyNxuX8bvrVIchzwqAUHYgdc=;
-        b=Irn64M+Metg1KLx4yeGU1A1For4ZpyIGrSlxfUdZSvDUCZAZxyGeeVYHi9vdMWgPJx
-         dSW6MinuHTPYnFcTz+bx6C73F0VDbgOapZ8zA4ftKuF2/pIAqc9FbasaEx7wgb2v0u9d
-         V/qznbasgzvRWo4tQJLjn7yhjlAux1soZc9MjjbZq8zBmnVhOV/hQpmPoEOienzSwUKF
-         +HUNXXrtRxMMfOevMkbMpxKjBbqt1ByfWajuVOUey073jBVA6J5EvcFpujOaWHKJMtpU
-         zVZC9iyBW8EFSKmD5IDG7HDZBsQyn9uqgU8GOWhAQmr/LS1Edq1/UTxsFf9YX78eXKJ9
-         JYUw==
+        bh=m2KTzbKyqjKYw4vr9/LcS8DzT4Q8P/nBfhkd8Raxax0=;
+        b=J1vLle3i29D1ETVntQbTdDTo7RbhoAw4biGBEDwG+xA9B4DG3sbgqMKgP3pTvAKQT4
+         bapLIr0OOYwFQPfPRaIfl7yokOqbx+ItAiIhLj667sdoKkZkf5GekVnBYl4tZ2G6GCcJ
+         iRJNaGGoWZ5Yleyvy0DQJLYJUBxfc6sL9KG9zdAN3s3ZX9g33lrIvZhuRddMvSKtX7MC
+         wy1hIfDzWHbcAOVE8fi19Da+UBBOV2+LZtRjFvY+itZJJd+tPnEgWkji64tWIK7kXjlP
+         ZUBeNugEChi6JH16CzF2ti+g8kUB6s4Lz0lddmdx3bcwrdvXSfmTGGDcLZ+82bZwOfgb
+         6Dng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sHLzrrFkz02OANjXXXqYyNxuX8bvrVIchzwqAUHYgdc=;
-        b=sWTVPgwNq94KSxmvnpyHmNwuM2ee9KqCUgg73Sv3r0Bs4YaJfibrX5uJZBGfxiJBpT
-         lNAG1NI0dAqvasdFMrbzyB1rK9AoCbOCkDHNGKSTCBsb8T2Kq4/ItoR2D2O4GxiLoZoX
-         mE8NST142NzFwOLMsxQ4HqLd97s6eOKKwN8IuxLQbg58WnorMCnIcy2VVNqm2n3wr+E8
-         DxNw8+G10e6zToJVsPaXAtwGwoAZRUZOmi4pCZQcFotbFQDCiQC4oRFhKpRKrsmhO/2Y
-         W2tVLVIOrFPeg4fteUx5kQw5Wb85Su2/4WamQPf3Q6abKzanVXhHnto4GHyrD/YLhaPR
-         n/5g==
-X-Gm-Message-State: ANhLgQ3tiWl+39x+YQlDsHOLwiTvnmwH8Uou07+2kNs5BglkISUPnoAt
-        hSOdfpVRogdC9gCZq1s3tkxA9o1UVR4AUKkXtR5VV3PD
-X-Google-Smtp-Source: ADFU+vu2Wws6sn7JbXvxhKP610uZyziu+NwzlFdVceSABJSdPjxRhAUXSVWDb9uo1oVEvddulgPCEVW6/siZQogcHfI=
-X-Received: by 2002:a17:90a:3602:: with SMTP id s2mr4345960pjb.143.1585151280026;
- Wed, 25 Mar 2020 08:48:00 -0700 (PDT)
+        bh=m2KTzbKyqjKYw4vr9/LcS8DzT4Q8P/nBfhkd8Raxax0=;
+        b=AOifu5JN5pkSuDXtL2AkhEeDtsTRkZHxarGCDNz1E2snZ9NUtQtldqOJ+2l1D3WIjw
+         iElxBn5iz0mqTr5U8ngei4WQlVMTUIP+uG6ZKqNtxe+cbNsdCF931dUOFEUtxHOtcu6T
+         NCdOo/fbbmMjFVlty7Np189uYjg53//vgkap51b4BBKkDdEGZE/xJ8nK9yRWQRClPrrD
+         gIvWSNYhG9on/rUPBvC7rGt7ZKrhQyIcn9Af+Ng8hEb0br77xu3PntnD5pUSNferTOvv
+         f/MBfC1/PGYZqYUW/1J7Wa5sdo1fOWPwyA6CBbf61i2hTDbHg7ELGpX02RAsZhF5Absj
+         X3Qw==
+X-Gm-Message-State: ANhLgQ00oaPdqAMAhEC6PZGNb3telphfF8miBms/dtCULvMYHwI6UahT
+        TIpvBpv9WrTRQC6VZQZdSXzhADg1Dd7p96AOhY0=
+X-Google-Smtp-Source: ADFU+vs1t1sRby5FeNyrAmPWma3Y7Ur7v+64WoOhzdYpplXZSsXcLF5yer3YjgSOIvPcvdhBWolXsHmRB3zEkOiP0sQ=
+X-Received: by 2002:a17:90a:8403:: with SMTP id j3mr4520249pjn.8.1585151644817;
+ Wed, 25 Mar 2020 08:54:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200325151211.19949-1-i.mikhaylov@yadro.com>
-In-Reply-To: <20200325151211.19949-1-i.mikhaylov@yadro.com>
+References: <20200325151211.19949-1-i.mikhaylov@yadro.com> <20200325151211.19949-3-i.mikhaylov@yadro.com>
+In-Reply-To: <20200325151211.19949-3-i.mikhaylov@yadro.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 25 Mar 2020 17:47:52 +0200
-Message-ID: <CAHp75Vc13sKEF0jHY=Bzde3e0t9tnkX-42LrRQigZRmqRQfKHw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] iio: proximity: driver for vcnl3020
+Date:   Wed, 25 Mar 2020 17:53:57 +0200
+Message-ID: <CAHp75VfjqtAtS-iXS6vz452m-EUtPcNt7EPm1JvQwC4VeX-k1A@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: proximity: Add driver support for vcnl3020
+ proximity sensor
 To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
@@ -65,29 +66,97 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, Mar 25, 2020 at 5:14 PM Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
 >
-> Add proximity sensor driver for Vishay vcnl3020. Only on-demand
-> measurement is supported for now.
+> Proximity sensor driver based on light/vcnl4000.c code.
+> For now supports only the single on-demand measurement.
 >
+> The VCNL3020 is a fully integrated proximity sensor. Fully
+> integrated means that the infrared emitter is included in the
+> package. It has 16-bit resolution. It includes a signal
+> processing IC and features standard I2C communication
+> interface. It features an interrupt function.
 
-You missed chagelog here. (For the future, please, don't miss, but now
-send a followup message what you have done in v2)
+Thank you for an update, my comments below.
 
-> Ivan Mikhaylov (2):
->   iio: proximity: provide device tree binding document
->   iio: proximity: Add driver support for vcnl3020 proximity sensor
->
->  .../bindings/iio/proximity/vcnl3020.yaml      |  47 ++++
->  drivers/iio/proximity/Kconfig                 |  10 +
->  drivers/iio/proximity/Makefile                |   1 +
->  drivers/iio/proximity/vcnl3020.c              | 242 ++++++++++++++++++
->  4 files changed, 300 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/vcnl3020.yaml
->  create mode 100644 drivers/iio/proximity/vcnl3020.c
->
-> --
-> 2.21.1
->
+...
 
+> +config VCNL3020
+> +       tristate "VCNL3020 proximity sensor"
+
+> +       depends on I2C
+
+REGMAP_I2C
+
+...
+
+> +struct vcnl3020_data {
+> +       struct regmap *regmap;
+
+> +       struct i2c_client *client;
+
+Since you have switched to regmap I2C API, do you really need client
+here, perhaps struct device *dev would be enough?
+
+> +       u8 rev;
+> +       struct mutex lock;
+> +};
+
+...
+
+> +       rc = regmap_read(data->regmap, VCNL_PROD_REV, &reg);
+
+> +       if (rc < 0) {
+
+I think you may drop all these ' < 0' checks for regmap, otherwise can
+you elaborate what positive return code, if any, means?
+
+> +               dev_err(&data->client->dev,
+> +                       "Error (%d) reading product revision", rc);
+> +               return rc;
+> +       }
+
+...
+
+> +       rc = regmap_write(data->regmap, VCNL_LED_CURRENT, led_current);
+> +       if (rc < 0) {
+
+...after above change...
+
+> +               dev_err(&data->client->dev, "Error (%d) setting LED current",
+> +                       rc);
+
+> +               return rc;
+> +       }
+> +
+> +       return 0;
+
+...simple return rc; here.
+
+...
+
+> +       /* wait for data to become ready */
+> +       do {
+> +               rc = regmap_read(data->regmap, VCNL_COMMAND, &reg);
+> +               if (rc < 0)
+> +                       goto err_unlock;
+> +               if (reg & VCNL_PS_RDY)
+> +                       break;
+> +               msleep(20); /* measurement takes up to 100 ms */
+> +       } while (--tries);
+
+regmap_read_poll_timeput()
+
+...
+
+> +static const struct iio_chan_spec vcnl3020_channels[] = {
+> +       {
+> +               .type = IIO_PROXIMITY,
+> +               .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+
+> +       }
+
+Leave comma here.
+
+> +};
 
 -- 
 With Best Regards,

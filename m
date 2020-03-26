@@ -2,205 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF08C193B29
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Mar 2020 09:39:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F287193B5A
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Mar 2020 09:56:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727674AbgCZIjY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Mar 2020 04:39:24 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:44673 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726298AbgCZIjX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Mar 2020 04:39:23 -0400
-Received: by mail-wr1-f65.google.com with SMTP id m17so6591656wrw.11
-        for <linux-iio@vger.kernel.org>; Thu, 26 Mar 2020 01:39:22 -0700 (PDT)
+        id S1726318AbgCZI4T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Mar 2020 04:56:19 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:44220 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726210AbgCZI4T (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Mar 2020 04:56:19 -0400
+Received: by mail-io1-f66.google.com with SMTP id v3so5166151iot.11
+        for <linux-iio@vger.kernel.org>; Thu, 26 Mar 2020 01:56:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:autocrypt:organization:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=TLKfrWP8AcWMfXeFe+OL6HzlrP4WSBWNABjm4srbTno=;
-        b=J5gCYRRbYEj1hCUaEBVlU8bi9gpdFIkdCjjUKomRB01ovaQLmGoZezSV4UymD5J3Vk
-         UAQxUniYX12deWTkW2AoIfX8E0qqGRlViNFjELQqjswB0Ky5fe73mKF7U2oK3f+87AGk
-         apIJUNtPXDBW+DXgBlYQQ8G2wNlz5goRvUYS2XlnXUNWPg/ZkWNo6JPPdnEam/DLwCQo
-         lcizhqwTuoW7QH+u8TPnsYPhxgo0kuYLCsz+05OmYvB080/4lnQthTrOeNgwUYsfHhuY
-         V82r7rl7iMbh/wAzhsNyWZYchZdm8rEWBKL/b9eIdJLE9vEG7Zgqfl5mTb1K50VXGdJJ
-         UVew==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=B4BkKkSWsXgd9zhr3xGlzgu7rQZxjaKeG55M2mFPNmM=;
+        b=Y5WYiPh4K1lNsZW7ekBaN2gk0Gty0qBY1OAqswpyRemzCKfnLTP9AZonz92H/kqTI9
+         UBWYktedINkOj9BA/JvUxpMwx/1+DgjSDGE2D49DIsR1Ka684azz4xS1UNYltHw3Q4Ip
+         2nSZr+GJC7JtcDZ7L1CSHbhxI2iv5IoRNc1Lg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
-         :organization:message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=TLKfrWP8AcWMfXeFe+OL6HzlrP4WSBWNABjm4srbTno=;
-        b=mN5Te1Ka4525TjlR0k9OIqYW+Rr2Tu+VStGIfiJAHaVEFAVxiFiwuqemIpqymsoEug
-         gn01166dTpoZyaO/xiQiQXSSqzq6MbDXRPtghjWbt7rHpbgDVZNGmrQt12xdPKNzyTOT
-         ZHIMzXI3/YznicA9WPnSOq3C2NOQJvFp8dQmzUxnFseUdoKfasViBx4IujzQzQ1qBaAf
-         MmM1xinKSfY8wNEe7uFLJgvMXuTGf6iqoTwuDf4+w32n5inNQp11vxQX+lLF3fli4BB5
-         gPItkKloaIXHWZo9DtSr300MGrssQG1OSRhcItFXM1RtTeAZPeA+SO+T4zyy2+uAg2vv
-         R9Lg==
-X-Gm-Message-State: ANhLgQ3ySrn5O3n+7iddGDxi+TG28I5mdrE5/l1wlV/jkiDu5YTcboMl
-        YDlCo1K8RK4avw9nsA7Mk5rZMQ==
-X-Google-Smtp-Source: ADFU+vvzuQ4QxVS/s0ibmVMZp4jdcmJoedPChELBVbuKyTFcPAB+5OcyntAwpr9Tl9sZS9yiTvZRQg==
-X-Received: by 2002:adf:c587:: with SMTP id m7mr8354429wrg.64.1585211961242;
-        Thu, 26 Mar 2020 01:39:21 -0700 (PDT)
-Received: from ?IPv6:2a01:e35:2ec0:82b0:25f2:833f:2a30:1344? ([2a01:e35:2ec0:82b0:25f2:833f:2a30:1344])
-        by smtp.gmail.com with ESMTPSA id l4sm1317884wru.1.2020.03.26.01.39.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Mar 2020 01:39:20 -0700 (PDT)
-Subject: Re: [PATCH 3/4] dt-bindings: Clean-up schema errors due to missing
- 'addtionalProperties: false'
-To:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Brian Masney <masneyb@onstation.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Guillaume La Roque <glaroque@baylibre.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Zhang Rui <rui.zhang@intel.com>,
-        dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <20200325220542.19189-1-robh@kernel.org>
- <20200325220542.19189-4-robh@kernel.org>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
- 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
- BSwxi7g3Mu7u5kUByanqHyA=
-Organization: Baylibre
-Message-ID: <e60df575-c70d-a194-6c54-32b5ae69a041@baylibre.com>
-Date:   Thu, 26 Mar 2020 09:39:17 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=B4BkKkSWsXgd9zhr3xGlzgu7rQZxjaKeG55M2mFPNmM=;
+        b=ChhUnGeu+cQRvflKVNKS4RJQrDROzaJnnpYXR20tklf7uir7uT3yWIiwOlBpq8iI4G
+         io3H7r6BAneLciruRJ4BnQNsJ+Sjc0IAlUjDmg8M7KaRDA82gdkd6ojwgPCY/2q0m4UI
+         XmLbpUY7HbAAIJBYTHPKyZIruA65FK6zWWaVEITT8QB2+xOxUqxuT68YARP8XbQqSs8s
+         d46B0rMzbWnTM9ZBd5kP31ZfNq+jRmpL3IRbmBdCVbZMQ5LHi/Y96nZGKUjIxxh+rb5p
+         Lz2+3p8yE4o5QJz/4l8aQVgrkBGiC3hmpDlBgumIaBO2VLNlTMN3Aqvy4oDB/3i8aY8K
+         LwBA==
+X-Gm-Message-State: ANhLgQ1q4k0a9L9ZNwKW6MMjrDIiO0/78d8YTXpMdb31oOWyZOosU3XL
+        gBb0QlTolVJsqgxocY+NvyycMIVXocIQrvvoJrmcmqcalZg=
+X-Google-Smtp-Source: ADFU+vu3Aj7r8bt/5fXJjo5M+vxQmLU7QpupN9Z40j0q7Vn1qJy6ni6vhLPryvDgJnekPhQFIHj7uKM1SCTyqOcvGzM=
+X-Received: by 2002:a5e:990d:: with SMTP id t13mr6873751ioj.52.1585212978063;
+ Thu, 26 Mar 2020 01:56:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200325220542.19189-4-robh@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200324202736.243314-1-gwendal@chromium.org> <20200324202736.243314-2-gwendal@chromium.org>
+ <399a282a-e6a6-a1ed-26c4-1999008f242d@collabora.com>
+In-Reply-To: <399a282a-e6a6-a1ed-26c4-1999008f242d@collabora.com>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Thu, 26 Mar 2020 01:56:06 -0700
+Message-ID: <CAPUE2uvZdbeU0zAgCGErDbDqu-VifVuNcLzvuo6mYY1MwYsaPQ@mail.gmail.com>
+Subject: Re: [PATCH v6 01/11] platform: chrome: sensorhub: Add FIFO support
+To:     Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Cc:     Benson Leung <bleung@chromium.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 25/03/2020 23:05, Rob Herring wrote:
-> Numerous schemas are missing 'additionalProperties: false' statements which
-> ensures a binding doesn't have any extra undocumented properties or child
-> nodes. Fixing this reveals various missing properties, so let's fix all
-> those occurrences.
-> 
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Hartmut Knaack <knaack.h@gmx.de>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> Cc: Neil Armstrong <narmstrong@baylibre.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Kevin Hilman <khilman@baylibre.com>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Liam Girdwood <lgirdwood@gmail.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Guillaume La Roque <glaroque@baylibre.com>
-> Cc: Zhang Rui <rui.zhang@intel.com>
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: linux-clk@vger.kernel.org
-> Cc: linux-gpio@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-iio@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Cc: linux-amlogic@lists.infradead.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-pm@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  .../devicetree/bindings/clock/fsl,plldig.yaml |  3 +++
->  .../gpio/socionext,uniphier-gpio.yaml         |  2 ++
->  .../bindings/gpu/arm,mali-bifrost.yaml        |  6 ++---
->  .../bindings/gpu/arm,mali-midgard.yaml        |  3 +++
->  .../bindings/iio/adc/adi,ad7192.yaml          |  1 -
->  .../bindings/iio/pressure/bmp085.yaml         |  3 +++
->  .../media/amlogic,meson-gx-ao-cec.yaml        |  9 +++++---
->  .../bindings/mfd/rohm,bd71828-pmic.yaml       |  3 +++
->  .../bindings/net/ti,cpsw-switch.yaml          | 23 ++++++++++++-------
->  .../regulator/max77650-regulator.yaml         |  2 +-
->  .../bindings/thermal/amlogic,thermal.yaml     |  2 ++
->  .../bindings/timer/arm,arch_timer_mmio.yaml   |  2 ++
->  12 files changed, 43 insertions(+), 16 deletions(-)
-> 
-
-For:
-  .../bindings/gpu/arm,mali-bifrost.yaml        |  6 ++---
-  .../bindings/gpu/arm,mali-midgard.yaml        |  3 +++
-  .../media/amlogic,meson-gx-ao-cec.yaml        |  9 +++++---
-  .../bindings/thermal/amlogic,thermal.yaml     |  2 ++
-
-
-Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
-
+On Wed, Mar 25, 2020 at 9:28 AM Enric Balletbo i Serra
+<enric.balletbo@collabora.com> wrote:
+>
+> Hi Gwendal,
+>
+> Many thanks for sending this series upstream. Just one comment, other than that
+> looks good to me.
+>
+> On 24/3/20 21:27, Gwendal Grignou wrote:
+> > cros_ec_sensorhub registers a listener and query motion sense FIFO,
+> > spread to iio sensors registers.
+> >
+> > To test, we can use libiio:
+> > iiod&
+> > iio_readdev -u ip:localhost -T 10000 -s 25 -b 16 cros-ec-gyro | od -x
+> >
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+>
+> [snip]
+>
+> > +/**
+> > + * cros_ec_sensorhub_ring_handler() - The trigger handler function
+> > + *
+> > + * @sensorhub: Sensor Hub object.
+> > + *
+> > + * Called by the notifier, process the EC sensor FIFO queue.
+> > + */
+> > +static void cros_ec_sensorhub_ring_handler(struct cros_ec_sensorhub *sensorhub)
+> > +{
+> > +     struct cros_ec_fifo_info *fifo_info = &sensorhub->fifo_info;
+> > +     struct cros_ec_dev *ec = sensorhub->ec;
+> > +     ktime_t fifo_timestamp, current_timestamp;
+> > +     int i, j, number_data, ret;
+> > +     unsigned long sensor_mask = 0;
+> > +     struct ec_response_motion_sensor_data *in;
+> > +     struct cros_ec_sensors_ring_sample *out, *last_out;
+> > +
+> > +     mutex_lock(&sensorhub->cmd_lock);
+> > +
+> > +     /* Get FIFO information if there are lost vectors. */
+> > +     if (fifo_info->info.total_lost) {
+> > +             /* Need to retrieve the number of lost vectors per sensor */
+> > +             sensorhub->params->cmd = MOTIONSENSE_CMD_FIFO_INFO;
+> > +             sensorhub->msg->outsize = 1;
+> > +             sensorhub->msg->insize =
+> > +                     sizeof(struct ec_response_motion_sense_fifo_info) +
+> > +                     sizeof(u16) * CROS_EC_SENSOR_MAX;
+> > +
+> > +             if (cros_ec_cmd_xfer_status(ec->ec_dev, sensorhub->msg) < 0)
+> > +                     goto error;
+> > +
+> > +             memcpy(fifo_info, &sensorhub->resp->fifo_info,
+> > +                    sizeof(*fifo_info));
+> > +
+>
+> Smatch is reporting:
+Which version of smatch are you using? I am using
+v0.5.0-6279-g2f013029 and the problem is not reported.
+>
+> cros_ec_sensorhub_ring_handler() error: memcpy() '&sensorhub->resp->fifo_info'
+> too small (10 vs 42)
+>
+> Is it fine and safe to copy always the 42 bytes? I suspect that we should only
+> copy the number of lost events, total_lost , not always the maximum (16). Or the
+> EC is always sending the full array (16 bytes)?
+EC will not fill the 42 bytes if it has less than 16 sensors. It is
+safe because we are not looking at the bytes we don't need, but it is
+not clean.
+Working on a new patch set where I remove the CROS_EC_SENSOR_MAX
+constant and dynamically allocate the data I need based on the number
+of sensors.
+>
+> Thanks,
+> Enric
+>

@@ -2,138 +2,298 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5BA4193ABD
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Mar 2020 09:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 267F4193B1C
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Mar 2020 09:37:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727655AbgCZIWs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 Mar 2020 04:22:48 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:19214 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727585AbgCZIWr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Mar 2020 04:22:47 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02Q8JP9o029819;
-        Thu, 26 Mar 2020 04:22:26 -0400
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2105.outbound.protection.outlook.com [104.47.55.105])
-        by mx0a-00128a01.pphosted.com with ESMTP id 2ywcs68bcq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 Mar 2020 04:22:26 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Uy//o451YBdH22qTGF6lGcN9e5sPFzUSX1hSjMNO8a5JhS1V8GFFbDH8ahPlw/1/EwSqFrUNJbQ8UPojcyig02mb3p9HEZqlCDsEFtS79dmyXWDQnoM9DPRGaJtT0l98BppMZLuAegt4RCScUugEV0Bt02WkcfqrAwZ9dJaQjdzYWU3FLarASVE4kk8NfjRvirKgUKiGor1fKC/jFjbFvHFa7koe1TAcVn2Nbtz3LaRafpuD/tV+2N+Mn/NukEIPuOhHnK2a/onGknvS4xgl9/Y5QbrB9FJtxF2k3bTkmaEyD+B/1Fkgr4c9LJN7NImHp0PFyC4ucg4Piqkvvl+WqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fmQylVdCTCbbdg4vtDSpaz1beGpeQLHM+Bw6BibvdcU=;
- b=BvAx6hYzviL8Pf+AXrqD7hFJ7emx3PPg2JFymHKXKSNJc5IHjsBWnyIpGipmFeWvgyen7MP+PNe25nlITGIgLKDrjGCBgirZxIFtkt0qB3oeee3dhEHmrJ2u7oAzD/rHOEjo5IyzPmrxUG/AgcAOzexJfPhY9hEYv91jAOJ2u3cg3/71IOk6NX75NozRk1K76EXlDMBhG0/uUtFUQT9yGKuLw7xq1r/AWCmnfFasX/f1P1PMoRP3emwBLSOv/At/SowiVbvFNfNovq39FTCO1xC3v2RzCyVyGsQZqyqMxUBSbLXlXL91D38lN1VXLrDxzibPT0X8wZWjHtYFF2pzoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        id S1727720AbgCZIh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 Mar 2020 04:37:26 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:43400 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727666AbgCZIhY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 Mar 2020 04:37:24 -0400
+Received: by mail-wr1-f68.google.com with SMTP id m11so728613wrx.10
+        for <linux-iio@vger.kernel.org>; Thu, 26 Mar 2020 01:37:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fmQylVdCTCbbdg4vtDSpaz1beGpeQLHM+Bw6BibvdcU=;
- b=dq0UOcolzlkReHJD/l/kqcyTV2pvw2v+K0fh7paCa4O96UOEz0Czl1gk6NvTe22nwZpW3fJgMA96LTEY179+cCnu/t2z5E50wUkSV03ZOAMOMIl0/1LE3/Q1UbXzec/eOL6Dc3xcTasvtAGz9gnBWhbRPSZ2YEPVHsGWiUuVy3c=
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com (2603:10b6:5:10f::14)
- by DM6PR03MB4746.namprd03.prod.outlook.com (2603:10b6:5:18b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.20; Thu, 26 Mar
- 2020 08:22:25 +0000
-Received: from DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::c47f:ceee:cfda:6a7f]) by DM6PR03MB4411.namprd03.prod.outlook.com
- ([fe80::c47f:ceee:cfda:6a7f%3]) with mapi id 15.20.2856.019; Thu, 26 Mar 2020
- 08:22:25 +0000
-From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To:     "mh12gx2825@gmail.com" <mh12gx2825@gmail.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "outreachy-kernel@googlegroups.com" 
-        <outreachy-kernel@googlegroups.com>,
-        "kieran.bingham@ideasonboard.com" <kieran.bingham@ideasonboard.com>,
-        "daniel.baluta@gmail.com" <daniel.baluta@gmail.com>
-CC:     "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>
-Subject: Re: [PATCH v3 1/4] staging: iio: adc: ad7192: Re-indent enum labels
-Thread-Topic: [PATCH v3 1/4] staging: iio: adc: ad7192: Re-indent enum labels
-Thread-Index: AQHWAIOyM0GegiihW0G94ym/VoVsuahajoGAgAAAzAA=
-Date:   Thu, 26 Mar 2020 08:22:25 +0000
-Message-ID: <259e81ea9237cb764786b5f9aeb99a80ba4eed55.camel@analog.com>
-References: <cover.1584904896.git.mh12gx2825@gmail.com>
-         <5c6bef6462d135b748f58f8c2645c60234482f52.1584904896.git.mh12gx2825@gmail.com>
-         <0308197b41f1faeac7b0f76b07fcc6d65dc1cfd8.camel@analog.com>
-In-Reply-To: <0308197b41f1faeac7b0f76b07fcc6d65dc1cfd8.camel@analog.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [188.26.73.247]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 2b683861-1e0b-4666-2126-08d7d15ed0b1
-x-ms-traffictypediagnostic: DM6PR03MB4746:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM6PR03MB4746C9B3E1123BE469C08344F9CF0@DM6PR03MB4746.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-forefront-prvs: 0354B4BED2
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(366004)(346002)(376002)(39860400002)(136003)(2616005)(36756003)(8676002)(26005)(81156014)(8936002)(6486002)(81166006)(4326008)(2906002)(6512007)(186003)(110136005)(6506007)(478600001)(316002)(66556008)(66446008)(5660300002)(7416002)(54906003)(64756008)(86362001)(66946007)(76116006)(91956017)(71200400001)(66476007);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR03MB4746;H:DM6PR03MB4411.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;
-received-spf: None (protection.outlook.com: analog.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: gUyJCwNAEF6JCXCU4BFqkt2+zATSJO24sikbQScrXzePmwslvo25HTh4M2pzi/FUjCgXdBJJHXda2G1QnnlRjhbQbVVpvZgKl92xAqRQHcspAO+BST0GBTLwzb8zsryrQkvK6nY8l9o4ab17HoNWRMq9Ac/Cn74NnvenXdpEKGv3fKkrHbU1e3Lu1nE881fbdOFEKudixxt79eka4mGTzX5k0TA8F5GuLpll9mm2HMw4w+66tlzQLbAevD0KAjjvTxCA1Pn1uBtFcbiRteOuIhHUPFgvKpkEZLvrDe00aWVTXOuzEF9egKPO7W0LCqM0iWdbqYy+81V9RQKzR22PoimGg5p09oq7/I7a0r6tU5wdkfS6HapwPHVQgjAwwXqbB3/r6jxxtTRfJFjekcKikWBGkiTvGcdJKs30Oq0r/M0nJrUCNjWD6IYEegXKLqXg
-x-ms-exchange-antispam-messagedata: ylnRtau7/asmFmhqbcaJhpYUlsQNwYF1cth462OGMCxZaKXhqNLWUECnNMOmNgcKfOJ5ttL367hj0Y7KZEd0q4Oxfq5XChinvabpW5Bo7mTCnRc3qIJ2NsbHrQXaa+ZuIdbxHwYgPjCNMmXJ5kpHrQ==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F64253CB5F7D7D46973E0CD059215ACB@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:autocrypt:organization:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=pXR82osHIkK+BAujG1JZhhCQ8WhSN81meh6IAg+eIhY=;
+        b=Ub7Ye3VqwM2djDzizU6cSyxA3L3kJlmoDWEL3/sRxrgMsxi5ek3FWL5WuB2NSlh+Id
+         JgrPaNcjtBEDrM5M0SaZWt+201gkW10H+dcn9DxSzqjW5JOy84nF26gdbDAxFwZzCNTN
+         VtAA3u0ovxjRSkfvIgAVjUniM/avIaXnoHRb9XXGJUBLYC2YT2VUFsIYNNOps9OUZMeK
+         WGAAqlRaSMSU639OznxEdrHAr5lliv9tGj6li6m05s4Q88wrQ25TeqnsbXwXBPucnb+k
+         l0aCfXqU3QePgij9m+m119sYDTdRGYNR2xyIbWEHoHx0E/qJm2Po1jKd/oHGfcWYXeCn
+         QUMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :organization:message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=pXR82osHIkK+BAujG1JZhhCQ8WhSN81meh6IAg+eIhY=;
+        b=p98DZ9yfWArQFSNxJhC9eOenvIJA4yAbv17SYqN90+u0mJ9Tvj02x+h26AsGwf9CdG
+         tYREpK6XYNrO1ms9i/Akbwj5gXTiE5vrg3Rk7z6YCL++jG52ewUAqIukBy6hNFeq9rlu
+         8eXZJAwrHL+UVEsgtDHunW7SztcRoi33iyvDT5duKnFcC3eP4hOozAHlKUvA2KTMO9TJ
+         /Xk+LwADnJsaZpEXb977A/dmmreYjQBUMWvg01l+l5mTtAD+XKn3DzlH3Y/mnN9u3WQn
+         nMO5IbwX1ER2IMlW4cYUSl1NlO405d5REhg854zMQ90nT+Jga9z3QOd5cfcHkgLTPaZp
+         6C5Q==
+X-Gm-Message-State: ANhLgQ3EIZa8wZl7u4yjXM2dLKjQqJeCjLmmtfvdCj6QaY+ghIyN40Pi
+        NxMU/pb0+sSQYRQvL8UmCdIQLQ==
+X-Google-Smtp-Source: ADFU+vsYjTqfEWPknLjNwIub37ZfUBmR6EQVrktciDTTfd+VYo7Gj0t8gLB5S6/mFNn+5Z/4WT4x9A==
+X-Received: by 2002:a5d:574b:: with SMTP id q11mr7894476wrw.417.1585211839977;
+        Thu, 26 Mar 2020 01:37:19 -0700 (PDT)
+Received: from ?IPv6:2a01:e35:2ec0:82b0:5c5f:613e:f775:b6a2? ([2a01:e35:2ec0:82b0:5c5f:613e:f775:b6a2])
+        by smtp.gmail.com with ESMTPSA id b67sm2492273wmh.29.2020.03.26.01.37.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Mar 2020 01:37:19 -0700 (PDT)
+Subject: Re: [PATCH 4/4] dt-bindings: Add missing 'additionalProperties:
+ false'
+To:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Brian Masney <masneyb@onstation.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guillaume La Roque <glaroque@baylibre.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Zhang Rui <rui.zhang@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        netdev@vger.kernel.org
+References: <20200325220542.19189-1-robh@kernel.org>
+ <20200325220542.19189-5-robh@kernel.org>
+From:   Neil Armstrong <narmstrong@baylibre.com>
+Autocrypt: addr=narmstrong@baylibre.com; prefer-encrypt=mutual; keydata=
+ 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
+ BSwxi7g3Mu7u5kUByanqHyA=
+Organization: Baylibre
+Message-ID: <88deb8bb-718c-f8ce-885e-dbc122201f16@baylibre.com>
+Date:   Thu, 26 Mar 2020 09:37:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b683861-1e0b-4666-2126-08d7d15ed0b1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Mar 2020 08:22:25.4334
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1Q3luubXtIGpw+cHw59pS6JP1weLHbDjDBA3eXV5oAVxKzLmZRA+ZNj3jv0I4W8Z4NpOyfuLVhwH6F8q2FptJCDdbeCQ+NiT2DIGSeAIAyQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4746
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
- definitions=2020-03-25_15:2020-03-24,2020-03-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 clxscore=1015 suspectscore=0 spamscore=0 mlxlogscore=958
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003260060
+In-Reply-To: <20200325220542.19189-5-robh@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVGh1LCAyMDIwLTAzLTI2IGF0IDA4OjE5ICswMDAwLCBBcmRlbGVhbiwgQWxleGFuZHJ1IHdy
-b3RlOg0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBNb24sIDIwMjAtMDMtMjMgYXQgMDE6MjQgKzA1
-MzAsIERlZXBhayBSIFZhcm1hIHdyb3RlOg0KPiA+IFtFeHRlcm5hbF0NCj4gPiANCj4gPiBSZS1p
-bmRlbnQgZW51bSBsYWJlbHMgYXMgcGVyIGNvZGluZyBzdHlsZSBndWlkZWxpbmVzLiBQcm9ibGVt
-DQo+ID4gZGV0ZWN0ZWQgYnkgY2hlY2twYXRjaCBzY3JpcHQuDQo+IA0KPiBJdCdzIGN1c3RvbWFy
-eSB0byBrZWVwIHRoZSByZXZpZXcgdGFncyB5b3UgcmVjZWl2ZSBmcm9tIGVhcmxpZXIgcGF0Y2hz
-ZXRzIGluDQo+IHlvdXIgbmV4dCBzZXRzLg0KPiBVb3UgY2FuIG5vdyBhZGQgaXQgW3R5cGljYWxs
-eSBiZWZvcmUgeW91ciBTaWduZWQtb2ZmLWJ5IHRhZ10gc3RhcnRpbmcgd2l0aCBWMw0KPiBhbmQg
-b253YXJkcy4NCj4gWW91IGRvbid0IG5lZWQgdG8gc2VuZCBhIFY0IGp1c3QgZm9yIHRoaXMuDQo+
-IA0KPiBTbywgSSBhZGRlZCBbZm9yIHRoaXNdOg0KPiANCj4gUmV2aWV3ZWQtYnk6IEFsZXhhbmRy
-dSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+DQoNCg0KV2FpdDsgbXkg
-YmFkOyBJIGFtIGdldHRpbmcgbG9zdCBpbiBlbWFpbHMgbm93Lg0KSSBmb3VuZCBhIFJldmlld2Vk
-LWJ5IHRhZyBvbiB0aGlzIHNldC4NCkRpc3JlZ2FyZCB0aGlzIGNvbW1lbnQuDQoNCj4gDQo+IA0K
-PiA+IFNpZ25lZC1vZmYtYnk6IERlZXBhayBSIFZhcm1hIDxtaDEyZ3gyODI1QGdtYWlsLmNvbT4N
-Cj4gPiAtLS0NCj4gPiANCj4gPiBDaGFuZ2VzIHNpbmNlIHYyOg0KPiA+IAktIE5vbmUuIFZlcnNp
-b24gbnVtYmVyIGluY3JlbWVudCB0byBmb2xsb3cgcGF0Y2ggc2VyaWVzIHZlcnNpb24uDQo+ID4g
-DQo+ID4gQ2hhbmdlcyBzaW5jZSB2MToNCj4gPiAJMS4gU2VwYXJhdGVkIG90aGVyIGNoYW5nZSBp
-bnRvIGEgc2VwYXJhdGUgcGF0Y2ggYXMgc3VnZ2VzdGVkIGJ5DQo+ID4gCSAgIEdyZWcgS0guDQo+
-ID4gDQo+ID4gDQo+ID4gIGRyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYyB8IDQgKystLQ0KPiA+ICAx
-IGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+
-IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9hZGMvYWQ3MTkyLmMgYi9kcml2ZXJzL2lpby9hZGMv
-YWQ3MTkyLmMNCj4gPiBpbmRleCA4ZWMyOGFhOGZhOGEuLjAyOTgxZjNkMTc5NCAxMDA2NDQNCj4g
-PiAtLS0gYS9kcml2ZXJzL2lpby9hZGMvYWQ3MTkyLmMNCj4gPiArKysgYi9kcml2ZXJzL2lpby9h
-ZGMvYWQ3MTkyLmMNCj4gPiBAQCAtMTU3LDggKzE1Nyw4IEBADQo+ID4gICAqLw0KPiA+ICANCj4g
-PiAgZW51bSB7DQo+ID4gLSAgIEFENzE5Ml9TWVNDQUxJQl9aRVJPX1NDQUxFLA0KPiA+IC0gICBB
-RDcxOTJfU1lTQ0FMSUJfRlVMTF9TQ0FMRSwNCj4gPiArCUFENzE5Ml9TWVNDQUxJQl9aRVJPX1ND
-QUxFLA0KPiA+ICsJQUQ3MTkyX1NZU0NBTElCX0ZVTExfU0NBTEUsDQo+ID4gIH07DQo+ID4gIA0K
-PiA+ICBzdHJ1Y3QgYWQ3MTkyX3N0YXRlIHsNCg==
+On 25/03/2020 23:05, Rob Herring wrote:
+> Setting 'additionalProperties: false' is frequently omitted, but is
+> important in order to check that there aren't extra undocumented
+> properties in a binding.
+> 
+> Ideally, we'd just add this automatically and make this the default, but
+> there's some cases where it doesn't work. For example, if a common
+> schema is referenced, then properties in the common schema aren't part
+> of what's considered for 'additionalProperties'. Also, sometimes there
+> are bus specific properties such as 'spi-max-frequency' that go into
+> bus child nodes, but aren't defined in the child node's schema.
+> 
+> So let's stick with the json-schema defined default and add
+> 'additionalProperties: false' where needed. This will be a continual
+> review comment and game of wack-a-mole.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../devicetree/bindings/arm/altera/socfpga-clk-manager.yaml    | 2 ++
+>  .../bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml       | 2 ++
+>  Documentation/devicetree/bindings/arm/msm/qcom,llcc.yaml       | 2 ++
+>  Documentation/devicetree/bindings/arm/renesas,prr.yaml         | 2 ++
+>  .../devicetree/bindings/arm/samsung/exynos-chipid.yaml         | 2 ++
+>  Documentation/devicetree/bindings/arm/samsung/pmu.yaml         | 2 ++
+>  .../bindings/arm/samsung/samsung-secure-firmware.yaml          | 2 ++
+>  .../devicetree/bindings/arm/stm32/st,stm32-syscon.yaml         | 2 ++
+>  Documentation/devicetree/bindings/clock/fsl,plldig.yaml        | 2 ++
+>  Documentation/devicetree/bindings/clock/imx8mn-clock.yaml      | 2 ++
+>  Documentation/devicetree/bindings/clock/imx8mp-clock.yaml      | 2 ++
+>  Documentation/devicetree/bindings/clock/milbeaut-clock.yaml    | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-apq8064.yaml  | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-ipq8074.yaml  | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-msm8996.yaml  | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-msm8998.yaml  | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-qcs404.yaml   | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-sc7180.yaml   | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc-sm8150.yaml   | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,gcc.yaml          | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,mmcc.yaml         | 2 ++
+>  .../devicetree/bindings/clock/qcom,msm8998-gpucc.yaml          | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,rpmhcc.yaml       | 2 ++
+>  .../devicetree/bindings/clock/qcom,sc7180-dispcc.yaml          | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,sc7180-gpucc.yaml | 2 ++
+>  .../devicetree/bindings/clock/qcom,sc7180-videocc.yaml         | 2 ++
+>  .../devicetree/bindings/clock/qcom,sdm845-dispcc.yaml          | 2 ++
+>  Documentation/devicetree/bindings/clock/qcom,sdm845-gpucc.yaml | 2 ++
+>  .../devicetree/bindings/clock/qcom,sdm845-videocc.yaml         | 2 ++
+>  .../devicetree/bindings/display/amlogic,meson-vpu.yaml         | 2 ++
+>  .../devicetree/bindings/dma/sifive,fu540-c000-pdma.yaml        | 2 ++
+>  Documentation/devicetree/bindings/dsp/fsl,dsp.yaml             | 2 ++
+>  Documentation/devicetree/bindings/eeprom/at24.yaml             | 2 ++
+>  .../firmware/intel,ixp4xx-network-processing-engine.yaml       | 3 +++
+>  .../devicetree/bindings/gpio/brcm,xgs-iproc-gpio.yaml          | 2 ++
+>  .../devicetree/bindings/gpio/socionext,uniphier-gpio.yaml      | 2 ++
+>  Documentation/devicetree/bindings/gpio/xylon,logicvc-gpio.yaml | 2 ++
+>  Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml    | 2 ++
+>  Documentation/devicetree/bindings/gpu/arm,mali-midgard.yaml    | 2 ++
+>  Documentation/devicetree/bindings/gpu/arm,mali-utgard.yaml     | 2 ++
+>  Documentation/devicetree/bindings/gpu/samsung-rotator.yaml     | 2 ++
+>  Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml       | 2 ++
+>  Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml       | 2 ++
+>  Documentation/devicetree/bindings/hwmon/pmbus/ti,ucd90320.yaml | 2 ++
+>  Documentation/devicetree/bindings/hwmon/ti,tmp513.yaml         | 2 ++
+>  Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml  | 2 ++
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml    | 2 ++
+>  .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml         | 2 ++
+>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml        | 2 ++
+>  .../devicetree/bindings/iio/chemical/plantower,pms7003.yaml    | 2 ++
+>  .../devicetree/bindings/iio/chemical/sensirion,sps30.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml    | 2 ++
+>  Documentation/devicetree/bindings/iio/light/adux1020.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/light/bh1750.yaml        | 2 ++
+>  Documentation/devicetree/bindings/iio/light/isl29018.yaml      | 2 ++
+>  Documentation/devicetree/bindings/iio/light/noa1305.yaml       | 2 ++
+>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml       | 2 ++
+>  Documentation/devicetree/bindings/iio/light/tsl2583.yaml       | 2 ++
+>  Documentation/devicetree/bindings/iio/light/tsl2772.yaml       | 2 ++
+>  Documentation/devicetree/bindings/iio/light/veml6030.yaml      | 2 ++
+>  .../devicetree/bindings/iio/pressure/asc,dlhl60d.yaml          | 2 ++
+>  Documentation/devicetree/bindings/iio/pressure/bmp085.yaml     | 2 ++
+>  .../devicetree/bindings/iio/proximity/devantech-srf04.yaml     | 2 ++
+>  .../devicetree/bindings/iio/proximity/parallax-ping.yaml       | 2 ++
+>  .../devicetree/bindings/iio/temperature/adi,ltc2983.yaml       | 2 ++
+>  Documentation/devicetree/bindings/input/gpio-vibrator.yaml     | 2 ++
+>  Documentation/devicetree/bindings/input/max77650-onkey.yaml    | 3 +++
+>  .../bindings/interrupt-controller/intel,ixp4xx-interrupt.yaml  | 2 ++
+>  Documentation/devicetree/bindings/iommu/samsung,sysmmu.yaml    | 2 ++
+>  Documentation/devicetree/bindings/leds/leds-max77650.yaml      | 3 +++
+>  Documentation/devicetree/bindings/leds/rohm,bd71828-leds.yaml  | 3 +++
+>  .../devicetree/bindings/mailbox/amlogic,meson-gxbb-mhu.yaml    | 2 ++
+>  Documentation/devicetree/bindings/media/amlogic,gx-vdec.yaml   | 2 ++
+>  .../devicetree/bindings/media/amlogic,meson-gx-ao-cec.yaml     | 2 ++
+>  Documentation/devicetree/bindings/media/renesas,ceu.yaml       | 2 ++
+>  Documentation/devicetree/bindings/mfd/max77650.yaml            | 2 ++
+>  Documentation/devicetree/bindings/mfd/rohm,bd71828-pmic.yaml   | 2 ++
+>  .../bindings/misc/intel,ixp4xx-ahb-queue-manager.yaml          | 2 ++
+>  Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml      | 2 ++
+>  .../devicetree/bindings/phy/allwinner,sun50i-h6-usb3-phy.yaml  | 2 ++
+>  .../bindings/phy/amlogic,meson-g12a-usb3-pcie-phy.yaml         | 2 ++
+>  Documentation/devicetree/bindings/phy/intel,lgm-emmc-phy.yaml  | 2 ++
+>  .../devicetree/bindings/phy/marvell,mmp3-hsic-phy.yaml         | 2 ++
+>  Documentation/devicetree/bindings/phy/ti,phy-j721e-wiz.yaml    | 2 ++
+>  .../devicetree/bindings/pinctrl/aspeed,ast2400-pinctrl.yaml    | 2 ++
+>  .../devicetree/bindings/pinctrl/aspeed,ast2500-pinctrl.yaml    | 2 ++
+>  .../devicetree/bindings/pinctrl/aspeed,ast2600-pinctrl.yaml    | 2 ++
+>  .../devicetree/bindings/pinctrl/st,stm32-pinctrl.yaml          | 2 ++
+>  .../devicetree/bindings/power/amlogic,meson-ee-pwrc.yaml       | 2 ++
+>  .../devicetree/bindings/power/reset/syscon-poweroff.yaml       | 2 ++
+>  .../devicetree/bindings/power/reset/syscon-reboot.yaml         | 2 ++
+>  .../devicetree/bindings/power/supply/max77650-charger.yaml     | 3 +++
+>  Documentation/devicetree/bindings/ptp/ptp-idtcm.yaml           | 2 ++
+>  .../devicetree/bindings/regulator/max77650-regulator.yaml      | 3 +++
+>  .../devicetree/bindings/reset/amlogic,meson-reset.yaml         | 2 ++
+>  .../bindings/reset/brcm,bcm7216-pcie-sata-rescal.yaml          | 2 ++
+>  Documentation/devicetree/bindings/rng/amlogic,meson-rng.yaml   | 2 ++
+>  Documentation/devicetree/bindings/rng/brcm,bcm2835.yaml        | 2 ++
+>  Documentation/devicetree/bindings/rtc/renesas,sh-rtc.yaml      | 2 ++
+>  Documentation/devicetree/bindings/rtc/st,stm32-rtc.yaml        | 2 ++
+>  .../devicetree/bindings/serial/amlogic,meson-uart.yaml         | 2 ++
+>  .../devicetree/bindings/soc/amlogic/amlogic,canvas.yaml        | 2 ++
+>  Documentation/devicetree/bindings/sound/adi,adau7118.yaml      | 2 ++
+>  Documentation/devicetree/bindings/sound/qcom,wcd934x.yaml      | 2 ++
+>  Documentation/devicetree/bindings/sound/renesas,fsi.yaml       | 2 ++
+>  Documentation/devicetree/bindings/sound/samsung,odroid.yaml    | 2 ++
+>  Documentation/devicetree/bindings/sound/samsung-i2s.yaml       | 2 ++
+>  Documentation/devicetree/bindings/sram/qcom,ocmem.yaml         | 2 ++
+>  Documentation/devicetree/bindings/thermal/amlogic,thermal.yaml | 2 ++
+>  Documentation/devicetree/bindings/timer/arm,arch_timer.yaml    | 2 ++
+>  .../devicetree/bindings/timer/arm,arch_timer_mmio.yaml         | 2 ++
+>  Documentation/devicetree/bindings/timer/arm,global_timer.yaml  | 2 ++
+>  .../devicetree/bindings/timer/intel,ixp4xx-timer.yaml          | 2 ++
+>  .../devicetree/bindings/timer/samsung,exynos4210-mct.yaml      | 2 ++
+>  Documentation/devicetree/bindings/trivial-devices.yaml         | 2 ++
+>  117 files changed, 240 insertions(+)
+> 
+
+For:
+ .../bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml       | 2 ++
+ .../devicetree/bindings/display/amlogic,meson-vpu.yaml         | 2 ++
+ .../devicetree/bindings/mailbox/amlogic,meson-gxbb-mhu.yaml    | 2 ++
+ .../devicetree/bindings/media/amlogic,meson-gx-ao-cec.yaml     | 2 ++
+ Documentation/devicetree/bindings/media/amlogic,gx-vdec.yaml   | 2 ++
+ .../bindings/phy/amlogic,meson-g12a-usb3-pcie-phy.yaml         | 2 ++
+ .../devicetree/bindings/power/amlogic,meson-ee-pwrc.yaml       | 2 ++
+ .../devicetree/bindings/reset/amlogic,meson-reset.yaml         | 2 ++
+ Documentation/devicetree/bindings/rng/amlogic,meson-rng.yaml   | 2 ++
+ .../devicetree/bindings/serial/amlogic,meson-uart.yaml         | 2 ++
+ .../devicetree/bindings/soc/amlogic/amlogic,canvas.yaml        | 2 ++
+ Documentation/devicetree/bindings/thermal/amlogic,thermal.yaml | 2 ++
+
+Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>

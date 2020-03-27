@@ -2,206 +2,374 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0738D1955CA
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 11:56:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F003195612
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 12:12:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726333AbgC0K4m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 06:56:42 -0400
-Received: from mx0a-00328301.pphosted.com ([148.163.145.46]:13070 "EHLO
-        mx0a-00328301.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726217AbgC0K4m (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 06:56:42 -0400
-Received: from pps.filterd (m0156134.ppops.net [127.0.0.1])
-        by mx0a-00328301.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02RAtstL031717;
-        Fri, 27 Mar 2020 03:56:37 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invensense.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt1;
- bh=RpOxYwDXicCrU5+AlZmZl4QIIcTM49hKOgNKxaO8xhU=;
- b=X75R6UCDVjiRqXkfyINg99NmnSegPBe+Ku/u1aCmR3h+/nRJwregl243Erge72e2//d4
- NNFyuTVOTJxbl8ohHrkobX7BnsN1Dtd2LDAT5l/JQU5qlmCB+thQTy1ZD+n9190xnYdR
- BgSgYJEG2Hqhx7k0Jg2qkyt3cL9xahBE3gcZ6kLiKYDXnRdpUOmN28HUJPSDtA8W4OoG
- KUxONMZjbQTbcb7+ikK++y4B4D1XaFCjvLAra0oapZuhn7hUQPt3alWDNFMM2/I4gGlD
- /JcXmZf5PghseBKgGf5UMB8bo0QHVVtJAHqrSV8fOaAwwUIZAtt8lGnvB7oDoQuJa1l6 NQ== 
-Received: from nam04-sn1-obe.outbound.protection.outlook.com (mail-sn1nam04lp2055.outbound.protection.outlook.com [104.47.44.55])
-        by mx0a-00328301.pphosted.com with ESMTP id 2yxuxdt6qb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Mar 2020 03:56:37 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FIAM5O6qKR+jvk64Li+K1VoKTHZqLEX/ltwJu7mY4cWW3j47r3tBRlWGrzxL6ge7RbNto6dzhoBrisqKX9zp00jqIpCCu1uAISVpbfuJu/RW/kjI43KS2HcgS+pgDvDPg9RQ6a99FL+shhMPRZBaLJkqWiNH5Wa/W1DO1l8/5xR7r6q/GnT9eknO6cuFaNKfU5JslBddEb50Jqv9nBU3ikUI4v389tsVbbxEXB9X4g5Ed3ABwvekF0lOZG76wcvQH0pSWJ3m9AG5drYXdZrAnwL9PaGVyOtpJkVtAIAgXURGWlO/q+Tj0qRTGasJpZGJJkv1oBiPhBLni1QbtJ04qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RpOxYwDXicCrU5+AlZmZl4QIIcTM49hKOgNKxaO8xhU=;
- b=gF0VytvU8iozYZLzAdogiFS3tXe/BXKpbY6zniI5DGEWLh9O7CitXZC7RtKUvA1J9wEZQVJnewNFS6Po/VyQMhq1cUuk+OOHQMeXwqV2DCZSBxyijLNr7gFBjLFtdHfQc7mFs4I9lSRKe6NtUEk1iuDgULsDN2vy/jTYL1x31Mpz9Ly6sD9O0Jd38fCHnrYZaBxj6SZqqCxdNw8zGNocpI6cbFi73FtKDvlqclnBo20BFY9xXLuT8dCkPVcK1YksNTe73wwHnVdwYYa4uh0PsQ8iMkcw8I43DQnLF7fy7fjuUf1/RR6sFR/Dvq7BGSltn8tlpCW09CqPTMVavtg6jA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=invensense.com; dmarc=pass action=none
- header.from=invensense.com; dkim=pass header.d=invensense.com; arc=none
+        id S1726661AbgC0LLy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 07:11:54 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:34995 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726217AbgC0LLy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 07:11:54 -0400
+Received: by mail-pg1-f193.google.com with SMTP id k5so2217561pga.2;
+        Fri, 27 Mar 2020 04:11:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=invensense.onmicrosoft.com; s=selector2-invensense-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RpOxYwDXicCrU5+AlZmZl4QIIcTM49hKOgNKxaO8xhU=;
- b=ZgOrDaBOW1NDyym/4Re9zcJWGWMWTl6ixJI8yOnSZzo33d67XxULxSugSwQlSdsY86sUEOSANtD4HsvkYsWueKeRHkicQZv0/4cYf19ABGXMyqNDxU4dOGjefMTkvleu20UZmK4JR7gt+4P0/Du3hZ/1GWh/8BaebO9rBnaCaqU=
-Received: from MN2PR12MB4422.namprd12.prod.outlook.com (2603:10b6:208:265::9)
- by MN2PR12MB3549.namprd12.prod.outlook.com (2603:10b6:208:107::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Fri, 27 Mar
- 2020 10:56:34 +0000
-Received: from MN2PR12MB4422.namprd12.prod.outlook.com
- ([fe80::7471:da8b:8ca1:6af0]) by MN2PR12MB4422.namprd12.prod.outlook.com
- ([fe80::7471:da8b:8ca1:6af0%4]) with mapi id 15.20.2835.021; Fri, 27 Mar 2020
- 10:56:34 +0000
-From:   Jean-Baptiste Maneyrol <JManeyrol@invensense.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-CC:     Rohit Sarkar <rohitsarkar5398@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: add debugfs register r/w interface
-Thread-Topic: [PATCH] iio: imu: inv_mpu6050: add debugfs register r/w
- interface
-Thread-Index: AQHV/bS2NtvR2YaS+UCRrBJpOPlDy6hPtZkAgAALrTuAA6FNAIAAFsWAgAjXRDs=
-Date:   Fri, 27 Mar 2020 10:56:33 +0000
-Message-ID: <MN2PR12MB4422EA3CFA8DCFC397502B02C4CC0@MN2PR12MB4422.namprd12.prod.outlook.com>
-References: <5e730c2f.1c69fb81.9eda3.5c70@mx.google.com>
- <CAHp75Vf+SA7ptRQRxvMtVfN0MzQeQ_AgzAP7fc3eaT5nmsxo_g@mail.gmail.com>
- <MN2PR12MB4422876C03060876ACBB4414C4F40@MN2PR12MB4422.namprd12.prod.outlook.com>
- <20200321183154.128d8920@archlinux>,<CAHp75VcUtMZDMqizhW=oayvbGcMTZ9M0s=7L0TngkdXz=M49uQ@mail.gmail.com>
-In-Reply-To: <CAHp75VcUtMZDMqizhW=oayvbGcMTZ9M0s=7L0TngkdXz=M49uQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [91.174.78.156]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d8bde5f9-458d-4d30-3968-08d7d23d83d8
-x-ms-traffictypediagnostic: MN2PR12MB3549:
-x-microsoft-antispam-prvs: <MN2PR12MB35499676F5EE2CF03CCDBC76C4CC0@MN2PR12MB3549.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 0355F3A3AE
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(376002)(39850400004)(366004)(136003)(346002)(26005)(52536014)(66446008)(64756008)(5660300002)(478600001)(8936002)(71200400001)(86362001)(66556008)(66476007)(91956017)(76116006)(2906002)(66946007)(4326008)(33656002)(186003)(8676002)(55016002)(81156014)(81166006)(54906003)(7696005)(110136005)(6506007)(53546011)(316002)(9686003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB3549;H:MN2PR12MB4422.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;
-received-spf: None (protection.outlook.com: invensense.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ViXF65aAym7tnCMmUA+pHos13c9r4XxFcCMdRi87E0zsEKYVBFZz6ozYlStfI9Ww/0W6+6kBk+zyQCsu6yDq/lC2aomrNT/D/l0HMzOGDEg6/JX9szquYF2reIuFeulVMOtipq7kyx63x3mt0E6StpYAHoM3imNpye9XyhzyR9J/mW9bV+E6t21X/KJCZnyTJmppbsmRGtp5kTTLSoQSiWrmMLiKBO+o9dhMAb+6pJ6VF0UXG3gd3AUl8A6uu9UPlrRKsYnmK0lkDRApd+2rtvjzoNx3Bs1DzCrtj9bXCM4GKTJ/djeT0MIBuY1agT+9EtmhADWD5dhZ8Ccq1nmSzXePUIfC3TTC578p4Ya/RyzcHMCHSN4ao8vQ1HEN3ZvRZpLlZi4p7DsSLdGRFLG+4s6qNAie2Vv6+eWlna+ee56SGMAxahjAvALgrzplENQK
-x-ms-exchange-antispam-messagedata: qrJTlhMMlaGOl+ai8d0SfB1L97G06aEo4ZLAGEH21uKHk28VO6B4LzL2ukI4HR0Ihge+qD/kZ//wvpOg87jkkaQXOu1YtIgcCFP2vyFFGH2ga4s2xDXIr7KMmB/wQ3Mq/nDCnzstuWg+L5tV0PgF5w==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vpwdgC8BGWFlwEMxB8JFCMQtTjzy7GYAjOLBn6pZm5Q=;
+        b=vA14d69toaxxkbY0qj53G+6GWUWs7HOx05+aX2K2d/AvcmfrgSYSKTaht7L4WoZIrh
+         md/BYgqTZRf0QIlzcz6TqSUEcBCDisfVrCBPRggcr11a8p1ZOQIhhIhi2aGeb4hF0Ka5
+         hjibT3v2rHOhpn7Cyj3WfkTUZaz3janD1kOFrYhH7WqnYoqq9aOKSCqoE5kCMB0FMfnI
+         YouJOulZn+xpePDXBDLWLLWn+SVdp+m8rMfQAStEt3XqeTR4d1EeG4NqvDxA2ZdYMUP7
+         gTJ39KTp1Vea7Mz3Kn64rTHCnUFxQIVot0GaVtFtdFSICw1Zrt2iF77IiByPeQok7fJe
+         0SuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vpwdgC8BGWFlwEMxB8JFCMQtTjzy7GYAjOLBn6pZm5Q=;
+        b=mGeX4FYe/5h8VUiDarUIiYzT+gUK3q872m3YUaYH+lAtdxMVV8ox4E5/mPpe4HPBds
+         a0g4PI7kfcH9Gim0TJ5f6Oc9pg/GWFU9twTCD5dE3kquJ2bt8ajxuUwOxjMRqhz2O/vY
+         MaBtyK6eGOQzMi5njSSGR9gziHR9YrpUajNYV6MVBE6qgPIFjTc2lgOn36RvHcyQTjAc
+         6EgGDozX2xW8OikCY2YgUEja6A6Ic6MMgqoEGVk/UMSH2TiOw7cCKWjc4vVjT3y0YutA
+         1yvJhSLS5PJhG7+kV+oIMADrXQt883HvViqAwE+S/hSi8Phjg5jAf+kAQt4SUYg3D/Hz
+         hdTg==
+X-Gm-Message-State: ANhLgQ1gnAJFTagJPrmzEAoZfd9KEuHE6J6d5P9UAhf27hEBzOJW0pFB
+        R2Wp0jSbjKPu77AkceF459qBGcup+VylFfAXhTE=
+X-Google-Smtp-Source: ADFU+vstL4LF+wuHArdR8s82Arpddby+ge4tiLwJeRDPV4hQOW2bTUhFfc4NZDsBKX2+NmTHitHVPjcMgJVykRt0f1o=
+X-Received: by 2002:a63:798a:: with SMTP id u132mr14026257pgc.203.1585307512879;
+ Fri, 27 Mar 2020 04:11:52 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: invensense.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8bde5f9-458d-4d30-3968-08d7d23d83d8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2020 10:56:34.1953
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 462b3b3b-e42b-47ea-801a-f1581aac892d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0OJdw8Prirh9WDo1DrzgSLu79QNMwBzU6/663+dbHOnZt1IFeHh1rUDsXzyMp54SUPkdRChfR5l090yMzQrjLLj6jCuP2XGm6ATTooIRX7Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3549
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.645
- definitions=2020-03-27_03:2020-03-27,2020-03-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
- mlxlogscore=860 mlxscore=0 phishscore=0 bulkscore=0 spamscore=0
- impostorscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003270100
+References: <20200327104954.27829-1-i.mikhaylov@yadro.com> <20200327104954.27829-3-i.mikhaylov@yadro.com>
+In-Reply-To: <20200327104954.27829-3-i.mikhaylov@yadro.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 27 Mar 2020 13:11:45 +0200
+Message-ID: <CAHp75VfQ1-ErTv7YZRjGTo71TaOW0frvjAE60iWFBVJusPnPBA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] iio: proximity: Add driver support for vcnl3020
+ proximity sensor
+To:     Ivan Mikhaylov <i.mikhaylov@yadro.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,=0A=
-=0A=
-this is quite useful for me for debugging and testing. So I am in favor.=0A=
-=0A=
-Just one comment, I think it is safer here to lock the mutex to ensure this=
- doesn't happen in the middle of an interrupt or anything else.=0A=
-I am waiting for V2.=0A=
-=0A=
-Thanks for the patch,=0A=
-JB=0A=
-=0A=
-=0A=
-=0A=
-From: Andy Shevchenko <andy.shevchenko@gmail.com>=0A=
-=0A=
-Sent: Saturday, March 21, 2020 20:53=0A=
-=0A=
-To: Jonathan Cameron <jic23@jic23.retrosnub.co.uk>=0A=
-=0A=
-Cc: Jean-Baptiste Maneyrol <JManeyrol@invensense.com>; Rohit Sarkar <rohits=
-arkar5398@gmail.com>; linux-iio <linux-iio@vger.kernel.org>=0A=
-=0A=
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: add debugfs register r/w interf=
-ace=0A=
-=0A=
-=A0=0A=
-=0A=
-=0A=
-=A0CAUTION: This email originated from outside of the organization. Please =
-make sure the sender is who they say they are and do not click links or ope=
-n attachments unless you recognize the sender and know the content is safe.=
-=0A=
-=0A=
-=0A=
-=0A=
-On Sat, Mar 21, 2020 at 8:31 PM Jonathan Cameron=0A=
-=0A=
-<jic23@jic23.retrosnub.co.uk> wrote:=0A=
-=0A=
-> On Thu, 19 Mar 2020 11:08:44 +0000=0A=
-=0A=
-> Jean-Baptiste Maneyrol <JManeyrol@invensense.com> wrote:=0A=
-=0A=
-=0A=
-=0A=
-> > iio debugfs register interface is quite handy because we can read a sin=
-gle register and write a value.=0A=
-=0A=
-> >=0A=
-=0A=
-> > regmap debugfs is only a dump of all registers, as far as I know (may h=
-ave missed something).=0A=
-=0A=
->=0A=
-=0A=
-> So this is something Mark has discussed before around regmap=0A=
-=0A=
-> and more generally IIRC.=A0 The issue is that a write=0A=
-=0A=
-> interface does make it somewhat easy to do really nasty things=0A=
-=0A=
-> in some drivers that use regmap (to the extent of setting boards=0A=
-=0A=
-> on fire etc).=A0 For IIO we are much safer - the worst you can do=0A=
-=0A=
-> is break the IIO driver.=0A=
-=0A=
-=0A=
-=0A=
-Sometimes IIO driver provides a sensor data about platform facilities,=0A=
-=0A=
-such as temperature of the die / chip or battery voltage threshold.=0A=
-=0A=
-=0A=
-=0A=
-> I've never been that fussed myself about the debugfs interfaces=0A=
-=0A=
-> as it's easy to hack them in when needed for actual debugging, but=0A=
-=0A=
-> have taken the view that if someone has enough of a usecase to=0A=
-=0A=
-> want to add them to a particular driver, then it's up to them.=0A=
-=0A=
-=0A=
-=0A=
-Good to know your p.o.v.!=0A=
-=0A=
-=0A=
-=0A=
--- =0A=
-=0A=
-With Best Regards,=0A=
-=0A=
-Andy Shevchenko=0A=
-=0A=
+On Fri, Mar 27, 2020 at 12:49 PM Ivan Mikhaylov <i.mikhaylov@yadro.com> wrote:
+>
+> Proximity sensor driver based on light/vcnl4000.c code.
+> For now supports only the single on-demand measurement.
+>
+> The VCNL3020 is a fully integrated proximity sensor. Fully
+> integrated means that the infrared emitter is included in the
+> package. It has 16-bit resolution. It includes a signal
+> processing IC and features standard I2C communication
+> interface. It features an interrupt function.
+
+(When somebody gives you a tag and you are about to send new version
+without [drastical] changes, don't forget to add it to your patch)
+
+One nit below, after addressing,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Datasheet: http://www.vishay.com/docs/84150/vcnl3020.pdf
+> Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
+> ---
+>  drivers/iio/proximity/Kconfig    |  11 ++
+>  drivers/iio/proximity/Makefile   |   1 +
+>  drivers/iio/proximity/vcnl3020.c | 232 +++++++++++++++++++++++++++++++
+>  3 files changed, 244 insertions(+)
+>  create mode 100644 drivers/iio/proximity/vcnl3020.c
+>
+> diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
+> index d53601447da4..b8d2b17e60ac 100644
+> --- a/drivers/iio/proximity/Kconfig
+> +++ b/drivers/iio/proximity/Kconfig
+> @@ -112,6 +112,17 @@ config SRF08
+>           To compile this driver as a module, choose M here: the
+>           module will be called srf08.
+>
+> +config VCNL3020
+> +       tristate "VCNL3020 proximity sensor"
+> +       select REGMAP_I2C
+> +       depends on I2C
+> +       help
+> +         Say Y here if you want to build a driver for the Vishay VCNL3020
+> +         proximity sensor.
+> +
+> +         To compile this driver as a module, choose M here: the
+> +         module will be called vcnl3020.
+> +
+>  config VL53L0X_I2C
+>         tristate "STMicroelectronics VL53L0X ToF ranger sensor (I2C)"
+>         depends on I2C
+> diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Makefile
+> index 0bb5f9de13d6..8245978ced30 100644
+> --- a/drivers/iio/proximity/Makefile
+> +++ b/drivers/iio/proximity/Makefile
+> @@ -12,5 +12,6 @@ obj-$(CONFIG_RFD77402)                += rfd77402.o
+>  obj-$(CONFIG_SRF04)            += srf04.o
+>  obj-$(CONFIG_SRF08)            += srf08.o
+>  obj-$(CONFIG_SX9500)           += sx9500.o
+> +obj-$(CONFIG_VCNL3020)         += vcnl3020.o
+>  obj-$(CONFIG_VL53L0X_I2C)      += vl53l0x-i2c.o
+>
+> diff --git a/drivers/iio/proximity/vcnl3020.c b/drivers/iio/proximity/vcnl3020.c
+> new file mode 100644
+> index 000000000000..fcde509238f9
+> --- /dev/null
+> +++ b/drivers/iio/proximity/vcnl3020.c
+> @@ -0,0 +1,232 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Support for Vishay VCNL3020 proximity sensor on i2c bus.
+> + * Based on Vishay VCNL4000 driver code.
+> + *
+> + * TODO: interrupts.
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/i2c.h>
+> +#include <linux/err.h>
+> +#include <linux/delay.h>
+> +#include <linux/regmap.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +
+> +#define VCNL_DRV_NAME          "vcnl3020"
+> +#define VCNL_REGMAP_NAME       "vcnl3020_regmap"
+> +#define VCNL3020_PROD_ID       0x21
+> +
+> +#define VCNL_COMMAND           0x80 /* Command register */
+> +#define VCNL_PROD_REV          0x81 /* Product ID and Revision ID */
+> +#define VCNL_PROXIMITY_RATE    0x82 /* Rate of Proximity Measurement */
+> +#define VCNL_LED_CURRENT       0x83 /* IR LED current for proximity mode */
+> +#define VCNL_PS_RESULT_HI      0x87 /* Proximity result register, MSB */
+> +#define VCNL_PS_RESULT_LO      0x88 /* Proximity result register, LSB */
+> +#define VCNL_PS_ICR            0x89 /* Interrupt Control Register  */
+> +
+> +#define VCNL_PS_LO_THR_HI      0x8a /* High byte of low threshold value */
+> +#define VCNL_PS_LO_THR_LO      0x8b /* Low byte of low threshold value */
+> +#define VCNL_PS_HI_THR_HI      0x8c /* High byte of high threshold value */
+> +#define VCNL_PS_HI_THR_LO      0x8d /* Low byte of high threshold value */
+> +#define VCNL_ISR               0x8e /* Interrupt Status Register */
+> +#define VCNL_PS_MOD_ADJ                0x8f /* Proximity Modulator Timing Adjustment */
+> +
+> +/* Bit masks for COMMAND register */
+> +#define VCNL_PS_RDY            BIT(5) /* proximity data ready? */
+> +#define VCNL_PS_OD             BIT(3) /* start on-demand proximity
+> +                                       * measurement
+> +                                       */
+> +
+> +#define VCNL_ON_DEMAND_TIMEOUT_US      100000
+> +#define VCNL_POLL_US                   20000
+> +
+> +struct vcnl3020_data {
+> +       struct regmap *regmap;
+> +       struct device *dev;
+> +       u8 rev;
+> +       struct mutex lock;
+> +};
+> +
+> +static int vcnl3020_init(struct vcnl3020_data *data)
+> +{
+> +       int rc;
+> +       unsigned int reg;
+> +       u32 led_current;
+> +
+> +       rc = device_property_read_u32(data->dev, "led-current", &led_current);
+> +       if (rc) {
+> +               dev_err(data->dev, "Couldn't get led current (%d)", rc);
+> +               return rc;
+> +       }
+> +
+> +       rc = regmap_read(data->regmap, VCNL_PROD_REV, &reg);
+> +       if (rc) {
+> +               dev_err(data->dev,
+> +                       "Error (%d) reading product revision", rc);
+> +               return rc;
+> +       }
+> +
+> +       if (reg != VCNL3020_PROD_ID) {
+> +               dev_err(data->dev,
+> +                       "Product id (%x) did not match vcnl3020 (%x)", reg,
+> +                       VCNL3020_PROD_ID);
+> +               return -ENODEV;
+
+> +       } else {
+> +               data->rev = reg;
+> +               mutex_init(&data->lock);
+> +       }
+
+As I have told you before the 'else' now is redundant, you may put the
+code as mainstream flow here.
+
+> +       /* set led current */
+> +       rc = regmap_write(data->regmap, VCNL_LED_CURRENT, led_current);
+> +       if (rc)
+> +               dev_err(data->dev, "Error (%d) setting LED current", rc);
+> +
+> +       return rc;
+> +};
+> +
+> +static int vcnl3020_measure_proximity(struct vcnl3020_data *data, int *val)
+> +{
+> +       int rc;
+> +       unsigned int reg;
+> +       unsigned int hi, lo;
+> +
+> +       mutex_lock(&data->lock);
+> +
+> +       rc = regmap_write(data->regmap, VCNL_COMMAND, VCNL_PS_OD);
+> +       if (rc)
+> +               goto err_unlock;
+> +
+> +       /* wait for data to become ready */
+> +       rc = regmap_read_poll_timeout(data->regmap, VCNL_COMMAND, reg,
+> +                                     reg & VCNL_PS_RDY, VCNL_POLL_US,
+> +                                     VCNL_ON_DEMAND_TIMEOUT_US);
+> +       if (rc) {
+> +               dev_err(data->dev,
+> +                       "vcnl3020_measure() failed, data is not ready");
+> +               goto err_unlock;
+> +       }
+> +
+> +       rc = regmap_read(data->regmap, VCNL_PS_RESULT_HI, &hi);
+> +       if (rc)
+> +               goto err_unlock;
+> +       dev_dbg(data->dev, "result high byte 0x%x", hi);
+> +
+> +       rc = regmap_read(data->regmap, VCNL_PS_RESULT_LO, &lo);
+> +       if (rc)
+> +               goto err_unlock;
+> +       dev_dbg(data->dev, "result low byte 0x%x", lo);
+> +       *val = (hi << 8) | lo;
+> +
+> +err_unlock:
+> +       mutex_unlock(&data->lock);
+> +
+> +       return rc;
+> +}
+> +
+> +static const struct iio_chan_spec vcnl3020_channels[] = {
+> +       {
+> +               .type = IIO_PROXIMITY,
+> +               .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +       },
+> +};
+> +
+> +static int vcnl3020_read_raw(struct iio_dev *indio_dev,
+> +                            struct iio_chan_spec const *chan, int *val,
+> +                            int *val2, long mask)
+> +{
+> +       int rc;
+> +       struct vcnl3020_data *data = iio_priv(indio_dev);
+> +
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_RAW:
+> +               switch (chan->type) {
+> +               case IIO_PROXIMITY:
+> +                       rc = vcnl3020_measure_proximity(data, val);
+> +                       if (rc)
+> +                               return rc;
+> +                       return IIO_VAL_INT;
+> +               default:
+> +                       return -EINVAL;
+> +               }
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +static const struct iio_info vcnl3020_info = {
+> +       .read_raw = vcnl3020_read_raw,
+> +};
+> +
+> +static const struct regmap_config vcnl3020_regmap_config = {
+> +       .name           = VCNL_REGMAP_NAME,
+> +       .reg_bits       = 8,
+> +       .val_bits       = 8,
+> +       .max_register   = VCNL_PS_MOD_ADJ,
+> +};
+> +
+> +static int vcnl3020_probe(struct i2c_client *client)
+> +{
+> +       struct vcnl3020_data *data;
+> +       struct iio_dev *indio_dev;
+> +       struct regmap *regmap;
+> +       int rc;
+> +
+> +       regmap = devm_regmap_init_i2c(client, &vcnl3020_regmap_config);
+> +       if (IS_ERR(regmap)) {
+> +               dev_err(&client->dev, "regmap_init failed!");
+> +               return PTR_ERR(regmap);
+> +       }
+> +
+> +       indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> +       if (!indio_dev)
+> +               return -ENOMEM;
+> +
+> +       data = iio_priv(indio_dev);
+> +       i2c_set_clientdata(client, indio_dev);
+> +       data->regmap = regmap;
+> +       data->dev = &client->dev;
+> +
+> +       rc = vcnl3020_init(data);
+> +       if (rc)
+> +               return rc;
+> +
+> +       indio_dev->dev.parent = &client->dev;
+> +       indio_dev->info = &vcnl3020_info;
+> +       indio_dev->channels = vcnl3020_channels;
+> +       indio_dev->num_channels = ARRAY_SIZE(vcnl3020_channels);
+> +       indio_dev->name = VCNL_DRV_NAME;
+> +       indio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +       return devm_iio_device_register(&client->dev, indio_dev);
+> +}
+> +
+> +static const struct i2c_device_id vcnl3020_id[] = {
+> +       { "vcnl3020", 0 },
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(i2c, vcnl3020_id);
+> +
+> +static const struct of_device_id vcnl3020_of_match[] = {
+> +       {
+> +               .compatible = "vishay,vcnl3020",
+> +       },
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(of, vcnl3020_of_match);
+> +
+> +static struct i2c_driver vcnl3020_driver = {
+> +       .driver = {
+> +               .name   = VCNL_DRV_NAME,
+> +               .of_match_table = vcnl3020_of_match,
+> +       },
+> +       .probe_new  = vcnl3020_probe,
+> +       .id_table = vcnl3020_id,
+> +};
+> +module_i2c_driver(vcnl3020_driver);
+> +
+> +MODULE_AUTHOR("Ivan Mikhaylov <i.mikhaylov@yadro.com>");
+> +MODULE_DESCRIPTION("Vishay VCNL3020 proximity sensor driver");
+> +MODULE_LICENSE("GPL");
+> --
+> 2.21.1
+>
+
+
+-- 
+With Best Regards,
+Andy Shevchenko

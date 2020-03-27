@@ -2,143 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9C26195F8A
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 21:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 190BC19602D
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 22:05:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727423AbgC0UWO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 16:22:14 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:38568 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726710AbgC0UWN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 16:22:13 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727548AbgC0VFm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 17:05:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52712 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727352AbgC0VFl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 27 Mar 2020 17:05:41 -0400
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id 14C2B804E5;
-        Fri, 27 Mar 2020 21:22:01 +0100 (CET)
-Date:   Fri, 27 Mar 2020 21:21:59 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        linux-iio@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Guillaume La Roque <glaroque@baylibre.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Lee Jones <lee.jones@linaro.org>, linux-clk@vger.kernel.org,
-        Kevin Hilman <khilman@baylibre.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-gpio@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-amlogic@lists.infradead.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Stephen Boyd <sboyd@kernel.org>, netdev@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>, linux-media@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 1/4] dt-bindings: iio/accel: Drop duplicate adi,
- adxl345/6 from trivial-devices.yaml
-Message-ID: <20200327202159.GA12749@ravnborg.org>
-References: <20200325220542.19189-1-robh@kernel.org>
- <20200325220542.19189-2-robh@kernel.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id F3F2A2074A;
+        Fri, 27 Mar 2020 21:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585343141;
+        bh=k6qmyW97YGA1y4XcZyq/RlW4XCWHs8OoW8pQlNO23/I=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=2kDM2fILBoLG/958xBtNYyVMLmBxMhy2RFG8YffVdLBjIFOeQrO8bEf9AYPoVXbHB
+         U0zKTEmG6kHt2UKACR+vDgIYkoh4VGEc55Vix0vMWWfrWwIzV0/pKu6GMKVubHdf0H
+         BjA2BndXrwvrLEHuftZIqVRHXlYFU4896/KSZTsU=
+Received: by mail-qt1-f176.google.com with SMTP id i3so9824212qtv.8;
+        Fri, 27 Mar 2020 14:05:40 -0700 (PDT)
+X-Gm-Message-State: ANhLgQ3yO/txPo5SuNu+9YLjuX8u0t/cr3yljP7Vt2YJia+wIyB9Pmvh
+        pgksWm8JZHkec3GfNs1Ys4o2cMu/Fbv7jiQxtA==
+X-Google-Smtp-Source: ADFU+vtvqz5AI4wH7P3cIuqZB25uwXMJTnHRkOu86W3BaXrP190mY4bBYCobUgQbF2yoqkp07GyxKABJIEepzVVyjJw=
+X-Received: by 2002:ac8:1b33:: with SMTP id y48mr1314603qtj.136.1585343140157;
+ Fri, 27 Mar 2020 14:05:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200325220542.19189-2-robh@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=XpTUx2N9 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=gAnH3GRIAAAA:8
-        a=VwQbUJbxAAAA:8 a=DN42nk9sAAAA:8 a=e5mUnYsNAAAA:8 a=KWDWuRJ9IF3UujpQpV0A:9
-        a=CjuIK1q_8ugA:10 a=oVHKYsEdi7-vN-J5QA_j:22 a=AjGcO6oz07-iQ99wixmX:22
-        a=ee1JA_unvF1TMR62yWF-:22 a=Vxmtnl_E_bksehYqCbjh:22
+References: <20200327131825.23650-1-festevam@gmail.com> <20200327131825.23650-2-festevam@gmail.com>
+In-Reply-To: <20200327131825.23650-2-festevam@gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Fri, 27 Mar 2020 15:05:27 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLeZoJ3qRuVFs7wLD+WtwY4Yw4DKiXi=spk9w6nxyg8FQ@mail.gmail.com>
+Message-ID: <CAL_JsqLeZoJ3qRuVFs7wLD+WtwY4Yw4DKiXi=spk9w6nxyg8FQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] dt-bindings: iio: dac: ad5770r: Remove unneeded unit names
+To:     Fabio Estevam <festevam@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Rob.
+On Fri, Mar 27, 2020 at 7:18 AM Fabio Estevam <festevam@gmail.com> wrote:
+>
+> The following warnings are seen with 'make dt_binding_check':
+>
+> Documentation/devicetree/bindings/iio/dac/adi,ad5770r.example.dts:29.35-32.27: Warning (unit_address_vs_reg): /example-0/spi/ad5770r@0/channel@0: node has a unit name, but no reg or ranges property
+> Documentation/devicetree/bindings/iio/dac/adi,ad5770r.example.dts:34.35-37.27: Warning (unit_address_vs_reg): /example-0/spi/ad5770r@0/channel@1: node has a unit name, but no reg or ranges property
+> Documentation/devicetree/bindings/iio/dac/adi,ad5770r.example.dts:39.35-42.27: Warning (unit_address_vs_reg): /example-0/spi/ad5770r@0/channel@2: node has a unit name, but no reg or ranges property
+> Documentation/devicetree/bindings/iio/dac/adi,ad5770r.example.dts:44.35-47.27: Warning (unit_address_vs_reg): /example-0/spi/ad5770r@0/channel@3: node has a unit name, but no reg or ranges property
+> Documentation/devicetree/bindings/iio/dac/adi,ad5770r.example.dts:49.35-52.27: Warning (unit_address_vs_reg): /example-0/spi/ad5770r@0/channel@4: node has a unit name, but no reg or ranges property
+> Documentation/devicetree/bindings/iio/dac/adi,ad5770r.example.dts:54.35-57.27: Warning (unit_address_vs_reg): /example-0/spi/ad5770r@0/channel@5: node has a unit name, but no reg or ranges property
+>
+> Fix them by removing the unneeded unit addresses.
 
-On Wed, Mar 25, 2020 at 04:05:38PM -0600, Rob Herring wrote:
-> The 'adi,adxl345' definition is a duplicate as there's a full binding in:
-> Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> 
-> The trivial-devices binding doesn't capture that 'adi,adxl346' has a
-> fallback compatible 'adi,adxl345', so let's add it to adi,adxl345.yaml.
-> 
-> Cc: Michael Hennerich <michael.hennerich@analog.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Hartmut Knaack <knaack.h@gmx.de>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-> Cc: linux-iio@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  .../devicetree/bindings/iio/accel/adi,adxl345.yaml     | 10 +++++++---
->  Documentation/devicetree/bindings/trivial-devices.yaml |  4 ----
->  2 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> index c602b6fe1c0c..d124eba1ce54 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> @@ -17,9 +17,13 @@ description: |
->  
->  properties:
->    compatible:
-> -    enum:
-> -      - adi,adxl345
-> -      - adi,adxl375
-> +    oneOf:
-> +      - items:
-> +          - const: adi,adxl346
-> +          - const: adi,adxl345
-> +      - enum:
-> +          - adi,adxl345
-> +          - adi,adxl375
+Actually, we want to use 'reg' instead of 'num'. Alexandru is
+attempting to fix[1].
 
-I assume it is my schema understanding that is poor.
-But I cannot parse the above.
+But looks like you found another issue with patch 1.
 
-The mix of items, enum and const confuses me.
+Rob
 
-I guess that if I am confused then others may end in the same situation.
-Can we improve readability here or amybe add a comment?
-
-	Sam
-
->  
->    reg:
->      maxItems: 1
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index 978de7d37c66..51d1f6e43c02 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -42,10 +42,6 @@ properties:
->            - adi,adt7476
->              # +/-1C TDM Extended Temp Range I.C
->            - adi,adt7490
-> -            # Three-Axis Digital Accelerometer
-> -          - adi,adxl345
-> -            # Three-Axis Digital Accelerometer (backward-compatibility value "adi,adxl345" must be listed too)
-> -          - adi,adxl346
->              # AMS iAQ-Core VOC Sensor
->            - ams,iaq-core
->              # i2c serial eeprom  (24cxx)
-> -- 
-> 2.20.1
-> 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+[1] https://lore.kernel.org/linux-iio/CAL_JsqKFdcACQtXd5h=4Pxbij+=uoHr2rLTFZMq4fVX8ph398g@mail.gmail.com/

@@ -2,107 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 958A91957B1
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 14:03:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B4F81957BD
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Mar 2020 14:10:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727349AbgC0NDe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 Mar 2020 09:03:34 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:55452 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726758AbgC0NDe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 09:03:34 -0400
-Received: by mail-wm1-f65.google.com with SMTP id z5so11313590wml.5;
-        Fri, 27 Mar 2020 06:03:33 -0700 (PDT)
+        id S1726742AbgC0NK2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 Mar 2020 09:10:28 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:33084 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726165AbgC0NK2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 Mar 2020 09:10:28 -0400
+Received: by mail-pf1-f194.google.com with SMTP id j1so4502080pfe.0;
+        Fri, 27 Mar 2020 06:10:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=4sUrD9MyEjEQo8VVi0oe8ImEVPpX8XndbtrgsNn8Hro=;
-        b=k3fAd+N3UUPr5JqvkwyYIQ3I5rmkEDExPOKxSUbK2uVu95M6vI9Cc0n8/HWTVaB5w9
-         efRkMUWEMU8vjuR26ph/FAyyTJDcJteeNocO9z8kLNGaeMYi+ff6G0ZpB+d2XLqmVk9i
-         Ogkl+er3XssGB7nZ4L85DTPu6qAPIpySqEXeSzvQ8DfMjg2IjlQlyKwUrP6MJ/Nm9HXI
-         6rsqqHww23a5IdnfzQuZrxC3zYD4M2wbk+1HXItPIO3oiVD74QMIVMQ/HyXcbID3RB8u
-         vGbzNMusIAL00IxOlS8kw55LkxbzNuGo7dPE5zFFuKb85SYNgN0hwn4c389A9OKH0hPS
-         smsQ==
+        h=message-id:date:from:to:cc:subject:mime-version:content-disposition
+         :user-agent;
+        bh=KViQIRagSE5vWsB7ZI4K2nCzq1NtvcnA0oI0AGtFtWo=;
+        b=kgXGh9wjh/uHFhjV7vcqGaaTAJIVW2/rw5thPMYEE+e4Ga6zKjSWASF51JILRBwtyN
+         +pR4fyZe6KVWlAL0u03kxheh+4vulKtEQw1HqR04JJWABaoGJJv/mEmnzslsCJu1k93X
+         ytc+gHgag4UCYo1Gy+xM449DDsT9n2speS3vlpbfc3Wd8uRZ9IkMXoHJLGIdX/bmqeY0
+         Qe3eBM0tkWDXNH2Qgg4E15D+54UncaZk2HuiGi3gZgOn30PTiVvfh3snAhxw8LjZWZMp
+         FitGhQwdw5LDYu2nSpPncIO7F+FBhvaWV/Ibl3obAlq011SWaIo1ErVf9liE6mXDS9g9
+         6X+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=4sUrD9MyEjEQo8VVi0oe8ImEVPpX8XndbtrgsNn8Hro=;
-        b=cSQ+5TUi5j4tozKOB3h+ue+71PoZerOk7iyOz3S9U8wLpwecWmdL6cihjN+pvcwuQ4
-         E9oPz+Bze3B+m8b+97XsWDrsE7+DqADUavu23BK6Qyqu2BJGdJGzsw/r1N82Qu8Yd5V0
-         2s1gDcV9TrLXcSqhWf2tizAnmDpp7Tov3ENsl0gVcH0c/s+nbRxqtLSE1rGUOcB+KqKu
-         I2SF0BptWGG7XKbbh4Mp/WMNKxhN5NiqspZrLaZHKnmCFX+rtfAFfmof1BKFZhEvkc8E
-         +a84Db057xYwGLwzyjIKqqtRg8nasaptmmZ1qeym4yhCZi4SAs/0cZokiBBSzAoXE3At
-         ll9Q==
-X-Gm-Message-State: ANhLgQ2Zj3UOgFEyyT4jnQPjymJbMnD5hyQtbvN1L8qe3teOEMgS0aqw
-        CSwUhAcSXk1w+5VkFy4Rohw=
-X-Google-Smtp-Source: ADFU+vt4R8l6MctQ+O8OeALik5hRcIOsWR7Swbne1HmZmA6QJ6AaKwQ0Y/3YcOWeOBuZIUqrwzXQYg==
-X-Received: by 2002:a05:600c:257:: with SMTP id 23mr5479663wmj.155.1585314212411;
-        Fri, 27 Mar 2020 06:03:32 -0700 (PDT)
-Received: from [192.168.0.104] (p5B3F6E13.dip0.t-ipconnect.de. [91.63.110.19])
-        by smtp.gmail.com with ESMTPSA id f9sm8028235wrc.71.2020.03.27.06.03.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Mar 2020 06:03:31 -0700 (PDT)
-Subject: Re: [PATCH v4 2/5] mfd: mp2629: Add support for mps battery charger
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:mime-version
+         :content-disposition:user-agent;
+        bh=KViQIRagSE5vWsB7ZI4K2nCzq1NtvcnA0oI0AGtFtWo=;
+        b=ULTGy/dbvHB5GSUizEclZ8UwHV7X0b1i6UN3kvFMDD5eSrKYSlkELpuDJuw18wCEKi
+         rvW7QwS7rrH7eMuH1i7TPDRdH1Y1zBFmzjDSmj+8niNoVy6fNweWNTIlmUq+1j1U/Y41
+         OPJtzThZebTIxiIxjdDuEeAudIXUXvFmd40+7aiEi66oyGQNSflzT8grlldExQ3bi39s
+         oo1NxobvuMLpZWdja5N8uoqYcGyozpBS/kxj9Kze+UpCUrC3EhfI+Fw5i6xO9g1CvE91
+         l57FYXGqk5woDhp+OBHezG0nPMLUvHtkVLy5ko/Z+rMbnp7VXtrOaXAkXhRg1fNBquBU
+         i9AQ==
+X-Gm-Message-State: ANhLgQ0pcWpCCRMPHA8niNE4uc3zOw3IAx9g2JO0uuZxKlEnxA6OufvP
+        +RcX9YqdPUC8biZknlVm6jFoIK8IYnY=
+X-Google-Smtp-Source: ADFU+vtihaqniBbb4UWdvb8sN2yhD1p87rsvI1TM8mXLVHnnbphL6DTbblF1Iaw/cM0L3xZY5Ixfjw==
+X-Received: by 2002:a62:76cb:: with SMTP id r194mr14632276pfc.302.1585314626326;
+        Fri, 27 Mar 2020 06:10:26 -0700 (PDT)
+Received: from SARKAR ([106.51.108.92])
+        by smtp.gmail.com with ESMTPSA id r186sm4195723pfc.181.2020.03.27.06.10.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2020 06:10:25 -0700 (PDT)
+Message-ID: <5e7dfb41.1c69fb81.cc4bb.042f@mx.google.com>
+X-Google-Original-Message-ID: <20200327131023.GA28157@rohitsarkar5398@gmail.com>
+Date:   Fri, 27 Mar 2020 18:40:23 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-References: <20200322224626.13160-1-sravanhome@gmail.com>
- <20200322224626.13160-3-sravanhome@gmail.com> <20200327075541.GF603801@dell>
- <a6098b6a-2b2f-5279-f9fc-85201b9aabde@gmail.com> <20200327102221.GA3383@dell>
- <a679aba5-4cfb-1b6c-8cb0-dab3a644f3e7@gmail.com> <20200327112523.GC3383@dell>
- <45f68c40-8e50-e0a2-a89a-b5a164d6b75c@gmail.com>
- <CAHp75VcAq-CwsXccbLVxEwGjZjNhdcbMyM-Y-=SEbmexBidCHw@mail.gmail.com>
-From:   saravanan sekar <sravanhome@gmail.com>
-Message-ID: <0f344b03-ce5e-4a31-5268-6db4266b352e@gmail.com>
-Date:   Fri, 27 Mar 2020 14:03:30 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] iio: imu: inv_mpu6050: add debugfs register r/w interface
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VcAq-CwsXccbLVxEwGjZjNhdcbMyM-Y-=SEbmexBidCHw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-iio-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+The debugfs interface provides direct access to read and write device
+registers if debugfs is enabled.
 
-On 27/03/20 1:56 pm, Andy Shevchenko wrote:
-> On Fri, Mar 27, 2020 at 2:41 PM saravanan sekar <sravanhome@gmail.com> wrote:
->> On 27/03/20 12:25 pm, Lee Jones wrote:
->>> On Fri, 27 Mar 2020, saravanan sekar wrote:
->>>> On 27/03/20 11:22 am, Lee Jones wrote:
->>> So Andy has reviewed, but you still don't have him on Cc?
->> Sorry one of his hint made me removed him in CC unknowingly.
->>
->> "For the future, hint:
->>           scripts/get_maintainer.pl --git --git-min-percent=67 ..."
->>
-> Perhaps I have to elaborate. The above hint for the initial submit.
-> Then the rule of thumb: Include reviewers into Cc (to the patches they
-> have reviewed), because you can't know their intention and maybe they
-> want to follow a development.
-Thanks for more details. Between Lee has not recommended "forward 
-declarations", the review comment
-you gave on my V1 patch (more info on previous email). Hope you agree 
-with the same.
->> My fault, added him in CC
-> No problem.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+---
+Changelog v1->v2
+* grab a lock to protect driver state
+* add a comma at the end of structure member initialisation
+
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index 7cb9ff3d3e94..381a3fb09858 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -1248,12 +1248,31 @@ static const struct attribute_group inv_attribute_group = {
+ 	.attrs = inv_attributes
+ };
+ 
++static int inv_mpu6050_reg_access(struct iio_dev *indio_dev,
++				  unsigned int reg,
++				  unsigned int writeval,
++				  unsigned int *readval)
++{
++	struct inv_mpu6050_state *st = iio_priv(indio_dev);
++	int ret = 0;
++
++	mutex_lock(&st->lock);
++	if (readval)
++		ret = regmap_read(st->map, reg, readval);
++	else
++		ret = regmap_write(st->map, reg, writeval);
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
+ static const struct iio_info mpu_info = {
+ 	.read_raw = &inv_mpu6050_read_raw,
+ 	.write_raw = &inv_mpu6050_write_raw,
+ 	.write_raw_get_fmt = &inv_write_raw_get_fmt,
+ 	.attrs = &inv_attribute_group,
+ 	.validate_trigger = inv_mpu6050_validate_trigger,
++	.debugfs_reg_access = &inv_mpu6050_reg_access,
+ };
+ 
+ /**
+-- 
+2.23.0.385.gbc12974a89
+
